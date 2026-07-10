@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57E8DC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 20:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37671C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 20:24:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 511E26B00B3; Fri, 10 Jul 2026 16:24:32 -0400 (EDT)
+	id 1DE446B00B5; Fri, 10 Jul 2026 16:24:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2476B00B5; Fri, 10 Jul 2026 16:24:32 -0400 (EDT)
+	id 18FF96B00B7; Fri, 10 Jul 2026 16:24:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 363946B00B6; Fri, 10 Jul 2026 16:24:32 -0400 (EDT)
+	id 0571F6B00B8; Fri, 10 Jul 2026 16:24:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F2AC26B00B3
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:24:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86C60A054D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:24:31 +0000 (UTC)
-X-FDA: 84973994742.28.7814232
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8E313140004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:24:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fO/0r1DL";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C93376B00B5
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:24:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 690071A0584
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:24:54 +0000 (UTC)
+X-FDA: 84973995708.12.3EFA896
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9EA2614000A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:24:52 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W7uhOJok;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783715069;
+	s=arc-20220608; t=1783715092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bjkfDpfHAUpgl/iZpWEg536DG4CNTbwjWyWDryptZiM=;
-	b=nGEyLnNBoPYpE0h4piGaRRd4wQhR5lwxGiAnl80rz9z0/8zw8wor3Gkx7Z86VWtsNV+aso
-	Bay8zRAxSggZIafc8OMeDvq7hR6eJIsiTBJ4CyWU82Hv19Q/3PrUvNKz06hnZ9j+yMSGpI
-	8A983eIzZYWzoUYUh+KYNcjK6hq4V5A=
+	bh=C9U7hTVIV5hnW3Iy6tzDPxArKTc/td9u7V5EE/DSgA8=;
+	b=cZPK5arqk4IozmLFUGmTWLHP0NV8pGXdiOxJ//E5Dc/HTOE6rCLjj1mM5d6v464VtyfdO9
+	UnrkAY3qHegOKh2C/vBw7/67FGtgJdMSj1invP9dsfaO0EKUPwcpg4CZz8iuJCtS5SJC97
+	v4f8dJnZw/rZp865w0Sol03tlshLZdU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fO/0r1DL";
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W7uhOJok;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783715069;
-	b=JRw9VfDrC8+C7MsNX6AszWtXW6LEECIH3sOsRfK9UEAgzwX6k0scatiRS29trsIVkYSKG2
-	aoK6ebBY6HkWnmgyBR7nNHWuD/uINy6XryP9rCN6c4ky0DyrDQpn2aRKLF5N+4Py/K2ex9
-	RmcN2SydiCC2rNzfT7IXmtu/Cc5izUI=
+	t=1783715092;
+	b=mgCntnUHb9lzxPt1EeO/1MAm1sCdB8zMOAWBcR/knZad+Km9zkxIfyAuO1M4jPEkrK7yqW
+	y0IxVER/ICyvjDu0vz3KqoqgXaaKT9vMCZsWGi69XYXQXj1pxJBTN/fIP59hz1IH85+lpi
+	heZvSKOr7UOoQCxM3NJoisiL7PmtXVY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C393841F9C;
+	by tor.source.kernel.org (Postfix) with ESMTP id 100096111A;
+	Fri, 10 Jul 2026 20:24:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3C11F00A3A;
 	Fri, 10 Jul 2026 20:24:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069A31F00A3F;
-	Fri, 10 Jul 2026 20:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783715068;
-	bh=bjkfDpfHAUpgl/iZpWEg536DG4CNTbwjWyWDryptZiM=;
+	s=k20260515; t=1783715091;
+	bh=C9U7hTVIV5hnW3Iy6tzDPxArKTc/td9u7V5EE/DSgA8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=fO/0r1DL4fCgi00mH7JcivwwVa0NtA7gWxDhKu/UslTiJOcVZxnTm5AhEq/6RKkgL
-	 GKbBP8TgytJGGi5FsG85kFxyTZjx61g2VX6dZmnUMxkWN/mhFIH8Hhj/F0DXOqPft5
-	 KZXe7t645JQH3DNi4voaNJXoNAEsYrVOfvaSsMx3wK7kEvGt3OkbXPoulhhyp0PgMl
-	 3SeHsp5Tq7kWCxvgIleVRWqrdKtaCQzYQS2HuW5Y2GafB/staGHTLwAZnTMRid2Y9k
-	 w57uxea5v0YRtqwGpwl2yZ04XHsf5kX4/ajs8KOezcOwlSzxyQAVPm9lZ9yVjRMlFW
-	 VHv8zqdIUK8+w==
+	b=W7uhOJokhKc2gJUfGeoUmCzknt4Uxys2U+9X59vh+pxKi5io2g2zMfJcd7yhqe+Rz
+	 PJuzoJIGnd3IH7hewvWSxE5ZTmcXH6LdeBTOkn/+XgwR9cqd6axeVqm1wxysu08ieN
+	 MLVpRkBnA0838K8Rrt8GC8FcdYZk8MTw62dLxILsRnOz2/SC4Dv9NtLxpF37T0uAdj
+	 VJEdaWU+Rv29jCHBWZafM0pjlpkfNbnmHg4dVJxwp5wGPBCtM2aP7vZJ7HTPwMkCkm
+	 XljXzGGXS0Cpa8u/2enRoxyu8aqSQAUNeUJ1sSuPOzOysHNf2I58eZf7+Fp8a5rNPh
+	 318DpOBchn2jQ==
 From: Lorenzo Stoakes <ljs@kernel.org>
-Date: Fri, 10 Jul 2026 21:16:59 +0100
-Subject: [PATCH v2 18/33] mm/vma: use vma_start_pgoff(),
- linear_page_index() in mm code
+Date: Fri, 10 Jul 2026 21:17:00 +0100
+Subject: [PATCH v2 19/33] mm: prefer vma_[start,end]_pgoff() to
+ vma->vm_pgoff in kernel/
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-b4-pre-scalable-cow-v2-18-2a5aa403d977@kernel.org>
+Message-Id: <20260710-b4-pre-scalable-cow-v2-19-2a5aa403d977@kernel.org>
 References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
 In-Reply-To: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -152,28 +152,28 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
  freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
  kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=27816; i=ljs@kernel.org;
- h=from:subject:message-id; bh=rKOwkwD1MT9ko/73T9Gwlp9PQTP+UA4dlbMuAhZn7p0=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICg23aor14dGS+zapqL5jQ8ebHitlH7rsJ7pnq+4H/X
- 9Brtb+SHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjI/L0M/5R81tlz6OyyePs4
- r+q+6OmNp5aEPJ+Quqv06cRlNhLvmhwYGWbtMptY495ekrcnXGfNC4ntgenq9rW7eGd6PLny4dR
- 6Sx4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11256; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=0R0W7VTOgU1IPpg8ezqD30zdmiulVdYqX8Tjb5nSXd4=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICg230KqLcZxxjPdSmk3RkvUZI5Yr7Siffuqxo/H0xZ
+ G121+RZHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIdRfDHy537lDf6d4PPjFf
+ OW++NrVRreKvwy6H2xnT9ZK8tjoWRTL8M5XKqlxwI3v6u/lWb176Vz6e9TjqwvY3u9v4rzx8zvi
+ XnxsA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8E313140004
-X-Stat-Signature: p7pj88hiki8ppem8zqbs94s7gchpb334
 X-Rspam-User: 
-X-HE-Tag: 1783715069-594941
-X-HE-Meta: U2FsdGVkX19d4BLMA7JhYLYAmQFzvL2y6pB/D1YcrKbdL1/2jrbOkwMG8XyiDVtNHpd+dBXoCAs5acNHRwdTV10djmOOXrLXyAqdhC25fgLXn2Xs44ZGAgfCYsNUr4wqPB8f4WBpLHkcW3sMmN1dIAIueH19t33pGZrdznOZk7OvidWZAUemghEilg+d1N5YcMb6MlRE/boIZzZOKFFwZ2kguIXGYfv0FKs3grUpEdfhYdX4Q1OR0thS4tutGZpqLjeVAh8CAgwof3xAplr+TSWP9r7AH2mDcwvQT3GwF1pFOpnPYQVokr4B2nohreAHEfesZtdOXHxKXOZAsBKvCPyZm/3Ia8Ddp6Iwyu5OZMESttdIxlEQIZVtOfcWNClfbf/SG2/+oAIGkqdhUb82+UbKlyGqzBr6sbtwFM6RO4IHeFHMOxjhpjnmtHSC61xzZ69Y1mCftPkqLqbS0Dcxdy6Orv501DexR7Xi9KQG9S77M09Ce8GBdbDYT3NvgiTFN4Ky19nfbDo40xN925y1N2p29wP18E754TEPjaNIer97GUJowhekMQJfmwqvVf/SysnBds6InQdPeZEUvvKfDLg2asFuzS8G1Kxn0SBj/xKhCOBgePZxUUt1WmU7yTEKgowsEp61LQhA+c2nngEa7pEDKHhTDZ+UAyGy89nTHjCRoqOMfwMByFNiRsCOcokYY17EFKHktmqetLSHqHeoAeNgniovR3zf6m/ZBCn6cm6LVqzFfQggONSYbmE+wxRUf4Dr4P8Xss5hOf6NA5rKwue5tl+658yOgWchbmu7UcZgSnCLb2v+VzJSlsknctV1FUAHHhwHi3MH/kuw9rnQdOk9dlKRX0Uijd9Wuy4M8fKNfr0rRMIRQhXN+EnPnv3Njg0oMoI1PGPbRIbD/CoyY1M/wzbnk7ezlWmqnV82iFH0EDr9Wd0hP0PS6k1F8fcnbmYZpIvdi2iLvMxSUWT
- /o3rmABM
- mJifHvmAy57CctRgAqj82es9zBnEeGNSSJ4EAFj1HWoA89xULAf3e052x6aO5dUnLzavLYJpDtat5Y1fMB1fXYJyFiez0As5CvkEqQVkOxeWcQGUxphgQea00FZ7UShgJCHcUQkWCPzcjywPz7jrSPqepFCEY5PpC+aiZyFBKGK3XGPJLcTYdB1uFxr86K7YWvjtJcgtkScN1IxG0/g4rY2h4aLBEogYaJWp0SAHIYDhQFMiaLFwg0wUuTqjC87mLtibzVNLmxnFxhTw/vbwV8MksAzsazE/tZDBGV1YHi3g7UQl4tinKFBpl3fydXDrFY9reQeC7g/w+pcIcQ4EUIzAbRSHHUa/SPqp/H4LTPojItzd4tXUg0SdBqD5V0WaMxwdoDu5kZTA3zeh5/APKeRrMP8eItUlhVx3KqAy9KaMO8+X4Yx1E2sUtvGLX53+0NCxfhpTBj7HYha8DuwKB3C7zqFgk+gGkG2HkZTQWTUwvVJ2RO3kVdu/jH4Z8Xf6MfQnHuOf2T2Vjg6IPieCyniAPeVFyGJp7i+HlhHj3jfz7eG6YFNGOj2xc/TOhWDGJUjGHPVsg1oSVWXdMFDFKXKrGJddEVuO0hGC+zUUeOHBMM9obO4tl/zKhBXoD0vVoN307v3HOVKL0DN70eMRAsK+S2ePfcTE8b0fArrJG295LKkJns1CO1W8CkZCr1crN7WZIB8GZDZdS6OG2gUgxM6/fwYDl6pvc9x7zKd2gJwUSI4ZhH6Cp12mlzpRzIwM4OtLWeJFRlxPJRU8/AUsGUk4ttRyhjYTuB85jmSTY6XYNW+XoL/uX2D/0bSVpjFwMy8IDMAY74k9xP0pM5Q9eyM0Z7Sf2xmlXUaG0wRECfFjUu8NhmqXmpBtzYhYCHPwYkKreQKcqBALxiok1mso+03p0DhLWAv9zD5IiLuMEVx81Q+ZEA9JovbM+HNoS6/ZPfExXEq6jFzL+TW4Xl0i1SnYN1Zel
- mFOgGkDT
- VuNzSQ/OrqqPc90W+mpRraz2pu6vNgH1JwHAAzqWqWR0j66ciN8ELm8zuu2aO6IKxnM7RTd+MpeebJvMqTklc7Zt+dOknUSK0zPd2+3rYSWow2CErvQk2KOlzs2j2RqBxmN5ypN0bEIQ8Z7zhKCAx23myG0/roVfk083E/DGdy3AYQhk+348FhvnN2sXezytk/5blIHazXzZMAYYEHaT6dQ8n6Se5/dflQF7nyMsXfmj+7ZDgwZArhBaL2hd7tLuDHKP3655ZjPFV1tdV/xNhRh2+VdYhFUk2XccTfCJrQm3zjkli8ZhEOBm61/Wej3si4rZfekHQ+E4trx2Slb8MB7MuaHv09NuaaQEyfSjjXoOb+tjNXAhODOyU0VMGslxaSTo0DrtPZE/7qI1z23fC11hssPPBOfopHhcrP99zEtEMW9eTNXznIrycU7ZEbpbKJel6EgFDos3RiahtMBWbZ/gkWM37qDuYqqnDBDvsDbTmNUe/S2iwm+usqP05q6XoIjuXJYxF0lCGW4/gOZ2DSpfNOvRVgMu8bDFhH21Nm6OsozIQ1AULPKMX7ZwrohueEPan7VysBkEVqpsMTO8WCg3rZmq6M6K2x1WqYXS/1VRGTniacFJw+oW4SIcHw1NYqbcCajstrEy3kyJ1FLRH+Sx/JChkqtwLLROABkhEmLIbf1mUWaF0L2I0epeqsiW46D9N+GlUWPIzvvpnyd1LocteJcG3ZUxwLYTX+ZnJhAvvSSgIVpDQd931h852InzP84c9YxlcSMWzZ4gMxiFXS1QVpKefx1SezjXkQG6x/QG6LRkn9Qh2aFEE5/Whj1b9Hp3h9WOwFzbRLemIb3bKrGuQkZRbnbVjLxySmDX5wqXCgJlOda+43Wn77s5MrUyqggasPRWSr48IrnDQsXWHMrK2R0QzPnHivOId/gkNfolOe82F1jHIFdR1lN2DR2HUIRkdpaiD7hKV40BfZNF85fXDv7J0
- qwkeORvJ
- v/l7Dv6EgLNAftTFTy25VKzrkzdd6GYhy5u0kmL/GYOnyZFn6bwb6UH03+BliU5nv6CFg3VfEDVGfORTP18FN++X6PKoP3fPBfzUAUQpBFja03iUe9QIy3MQByU8ui66lyVsWDs+HHc35UEFzineNWM6QUBNK4c3TuueMi7sA4mUqT8SB6WLWsl27Hdhh4HQc1+sOgy/WTWQx4AvdEtnTeP9XE8gpw3UOO4pK+o0/7aITNxh55jyfPTyEy9JeTqvK5s//FGkYkNdk5E6zt6Vj/hwrUtp1AamjoVOS58EmDoQP/YI67PwT1nPTz1BLzBUNMFz22uBZWIRikUd/jxdom6Wb5/ls3RAzm6eNhpNhRn1MaNuSuzqmrgiDTG/aCgeoIsgFc7j3Qez0VAuc0tUQrWuCyy9djpTdJ1a1bG/pCft2bBaQ0b5IxhJN9RGyFswnuzIIG4sSgoABqat9VqhgmppgHIMCKnrGBfOl9YkFIWrJQQBwnW25KWxhCWXohFswIejSVPsmpI6Sm7hNHFhkLTZFvh3MMi2+WhNGtV4YT1rP1ZBNYE83B2tKf8bnrZ6UVPVVBLsM7nwkpWvuTN/18zh6MB49tHpRV9l0eDLp/MCRB+F80hKuVkVS6LDjVcBqr+0Twojo/F0U3BuExPHjQd5vhidLxrIvQG2LKPBcEhlXBT17h02TOwuB21K0Y5aR3HjhbvSpU2354pq55uri5iERizOdNxRKrMmxjLOJDss5y4kOe+VaWKYi8OJyjvC9QWaR2ACajvIUIZ8210fUL5EVtb0bzp1Pq+LEI9kaVKUNbrKZL7yKiq5elMcleU6n/GrTYEeBDcI4lgqNhNOTeUqbA3v/5HcnhPf5v/kOTB4FgKJ6gOSAVnMYzqNFy/7KDasMlybXxjcnfp1+sjm8hjhyN32wYIsWL1JAybcNGteTriTJGGQx0Sfi1Y7sis5OUunh1/yhdohYFzPkVtxr0B4vWP9Y
- N1ryxg/L
- ESkZmpkBw7BQLAmFBO5uuX+j+d4kFNbfuwl0lwn90gDep+hSxgPQvTzvH/SVBqC+GpAvkINu8pPjfWNTWC2CYNnNtBjLCoaFzp2Dyxo5tolXY7ey/hYEt8nPPpAOdDD68GnHr5V3pf5e9fhuT9FWC4WzUzEawlYXmjFXlMOCarWpZsY8a5IfU3AvChEisQNLdpvP01iEUmXvEXMvkEflX2z2iJOMWKg228GzJMnNh7OtFccHNi+jFDUR6KYNbYUsZNDqyb1L0gdIsF2gOfFrUM93QXEiHfF8g6ojLLjq/Nj5OuDtZV0NjQVvPyV5YhUvSq6glIVz22o4n1CZpTbmTUPOme+5UHVzSt0RvASs/qO9bjVfDIIkh61I9M/my8ixT6iqGT0r08sMYF0ZMhMrTcduL6GvTi2p6Amvv2gwiXqqEVJP0JMUm/C4vxnIBRnclDg0YRbmZcXG11N7v9fPhTvg1lpGDHv2x2W4BPEssmIC8Xh/M4ycHCSfOpeAlj0agDpU5fBOzoIvTJm5xMg2NA4qkeL2Aio5rL7zoV0vLDnd5dROoG0vC+
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9EA2614000A
+X-Stat-Signature: wfd6537jq5r17rir44izy5h3fcn3fof9
+X-HE-Tag: 1783715092-724172
+X-HE-Meta: U2FsdGVkX188/JNhHNhnkXcuzSMldCz7v21UJ5IAQKQQnlSUB9rkL3C8ZEscLRygirLt/j8r0VOo2m0s8hLQpVFHrtTn3TGKoUr7ZQ+SLc3DlZ2VwneUwtnzUXAPzFuzswTfAIAv72QzWp5om7uyVPgm9I/W6QlH9g/2MU3lYUmS0q68jH4sJXkOZDKkC0O0JwaRah/BPXQ5TCxBsKW2vieYA2bmKh2sD+hNwlLsaBxFoYef7voJaS9M/A3eXvpPIG+CBLMuhtHsSkqfQ0eYV+bDRtYpBn4lkvgOFzh3sXpNBZheBfJ0JjUUO5Vd39teSEc56n7a8eWc+eklSOKPSWVJjp/j6hQExcOckSuwfQ/7/CfQmvPxQB/1SUcTNqPLbdZNqB6s1ZZDCaZh4R2mTL4pWcBuYdpAw0gxMcy4mVDGRPXy87tK+mT9eun8BaOWjOCxBV/TY8B9vSZdle6JXTIJc3FTfRNSecnVrVdk88NQUWBn+4VYR/Ck28nLjapngSEnCJx9Ec8ZTIzl8ib6USQKIflRPcq3sslPQq5fMy/2epHcMEmuoaqa5TqAgXEsZRtl22g3s1UuHVbDOhhbkSP+uh9HuZcFCYaK+vNwTaXner+2PdDREqezXOFWP1ZmdQJgLEweLhcoOGIEblcxuOcu0MuU4NnvW01iiljN5BF+/3lVh/0J8+KXYFtNcQ+kExfpZqB7JLrOe12js8hAyswgjB240VdY2YeyxIi691PbdXmfOyqkNjfCoLcfMcgKOrYhjuKcuMXPHJ9Iki/TiQCzQCUMH4Z+WgnlZSO5EFYQWEmZTmgZ6pdmD2lk8oc0DFQE/lwCECnKGtkYuONPXMfN5ZuhIz3L6HnR4ZoWASVtmvRTvsWLhHt9Vtl18GQqAsUi6hNunjyTA5mJSdqcqMOAtXKb8DhMOcFCgwGhs8bWHnQy45Cs85IAkjuCc52e7W/Ee13xJbAWr/MTpoE
+ Xcgu2Y44
+ GVwwbN5J+kJ9UByZ7THjc0qJcl2KQMhFdoMT2k55KyYAdTrQDqqUx6B4hI7pS/xZytN/B44XRmKImTaLMHYoM5HRMRjOvB6NBzl9lr6BJluDuvcl3wCnBGHb/unsTIh+s9AyVfwmh7spsSMKBwLG3EMjZ//C804NEH5FqWiW3bM76SMonmyxL2ULkalSNz2kZ/L/pNdz3aVBW6TSxzWJlB//jzooobfz32NWBtAocdp/gYYSF7l/nIXP1oWh0Vg/f2kh/RbnUpDdHKlaej7JCDpOdCmmOu71sM/MOzwFfE8aZI/BFbwPasKjWcv8f2TuytfKt6F8jdh4qasOJ6uHNp4TXozx2qIWef8fU/NXlgtcjYSKzmlAT/ft27X2zBVP/kGjFWRpZtdfN4jNCMH63kpXPc6wt5Be4Z52fWQmv1kAO8CKzESZ6xSqcKj7/bJVz0U6CnZC/+wzTh3lgQxIBnOI2c4eyRVOi8RCVhBdzw5cBdxLhSmaWIleZbG1CdDBYX1nNOejboYMsCRkY2JskDQ/bBOTN2ewG1rFxYYVMp2GZeNk4Z60Cp/OEf1XHcKpRv+xLpiMIxnirsgVucfBEpWrjgoMPFAOt2VRaPTJ/jsg1vECa57Fk8/VNj6Ew47T6A5mP9dW52cID8jtpZI9565G2J16FT8aOPI+ExAkgjQikV0kqunLj9XevH7MKXqLKnfMRp3fpyGXvfPzZPF4YQrd5J+xLUrmtpu2UIQGALmAbpXTBAkCC6fM1Uw6d+375IaKAV36zapfMcBdnJ7Vj+OI6oyuxkNOHRUczZXhSqdSVUK5JTzCTsnI9bUjixb0BjhlxXd+21r+ZF51Y+NmgbMmkDyGEh6EhyVzsXYKnCozjIktB9dMQ6ikVKjlwPASETT6jau3Ro1hfFKGM7f93UT4UwAUdK9kMCPS8EnsCIofOdxCjhiZ7uDLwSHnBztQas3YCK+KkU4Qy8EooSLrIYNObgnUe
+ 9W4FoLIC
+ 7dkc99ur2NgxvDmBoniRo0aG4C/OEMSgWF6Lj3i2dr1b4aWn6kqbwOE+H+af+vdEtMfhAWsvcENlcreOrXVk7/+G/kCxJgEYjPLtepzYUePj6GskL3emQIztWdkRoZlg5Qj2sXPm1vQw2amspMhHi+0zY9N9YydYBaiSyBB6TeUbC8US8npbdZPHlrtVVJO87NROnKs8brxegWMDh2StfF8bTOV971UVmDhTpSa2aSIni9nD869X9PpxR7h80x9W3lo0gdhNAnSD2P2pQvu1PrtlfNZpB6iuxRYQk1uvI2m/kh/78BMXJs1lEvn9MdPEUtzC//fHGMj20qg9eVb97BYqN2kjKb1b7m9rQqlwkFsQpxEG5PwMATtOPrzGAD/MUfiBgAbj4I0NPXpARGMcj3m5H7PP3WlCDjpzlpKJKUQRvXySZohd6MUZW8N+h+qNkK10stVA2Wx1PPSRtEc+WvAItTocHFmdpWnKJHyeuwKN2LpqRMLqMdyaB9pkOcSXfVVNm2omV4dacwudwIZv0bnxSkC8p0Bb0vR58uyZVfUo5nuK0Dpw/J/htyEPeGwkvb/efO+/7yW1HpEfCpKt893/4r8Ivddega1gPc7+DUiBG6DrN+CxdhASGXTXSDEwkTbCUo7QrPsGWQSwYpFmyL/tmXXMyeHAy8JdYgtpQvcIgFyHQQwwx9khBzQ+T42Lxm8ej+0ZNOYE3G4EdtRRQCth1p59c7s6UQFqAavj4aiI/pXhG8hy7c6Bt54SJLrVdy8ZDrBi+sYLhwDzqlfW8hD+i3doA4mYTGzEj50jM2Kw5eVqvQhH//FSQnvNWJRHfERSAXrdUNkvc+eKsWD8IEahKcx7RpfRIWDOtIREnsyjW30COgKsXSIpUzQPsaBBBjXz8o6YsV+GDz0SVB9XvjllD3Y531XTJVF8o52mzJifSwmGIy9T1/y4EAF95T0+8/aTasrEjtsmGvEnLt1yDfy3I3Uie
+ d6qWtFn2
+ zRQLuG+v1mEyzzexhhpcKiuntaZJ+KgO57WBF+DJFLFNkPw88TcuU1OTGQUIjDaS1V/oVokqf4QCsMXbhw48sj60WItsATf+7AwVRn9hTc138n7eH7mFyzs/jkMhH6d/Q1NXvbchrfAxsueZvdWfMB9VykWqPo17oISmEtVJ8U28m7pMJGJr8lsWMsc49YMPrE47YFy8s3fCv9Hgxs/CCiI/JiZY5Om/r46BjxD54EsNXEVk8o01wrL4E70jGClSQ2Ija4dLe3AH7cIQdS8O2IyLsbPxTG8pFZzpPy41z6Ts5uXsoIXOpAM1e+auXwju/qKxvy+UVAOhOsqZ9YGk1XQpyvGlqe2hjPcMuHx0lPgKzcEKdRDl8sY8IVpB9ayT8Ij3H/+fFjqTgZ67f+khbBUhnIRFtfStmQ/hPs3PObIkl63ZyzIeSiSAR3biRhosmDqwnapqRlDFkUqgNrTV/Al+L6jcqSHEypXPGcxu8o3exKTKjem4ba+TwqKykGXddwWZ8CWRbRc+BvOLgIjX69vkUiyq5krSzhgR0y/56U7doVDIW9FdsQrAh20Jkh1wVpTgpGEL37U+g/lsRsDwZq/0fjmi26nBD9YgUiUVEbyyjEVyah9Yvx8JN+ntSgG0TdPBu5RCsj6T1aykmU2YGdqPZSCL/7b2tUW0vEfxJzGRO8EIPmSsXmM7sdCLRul/T91gYWFVGO/1tQbcZCwrNnPtmgDczdsa9qp5+nVrSnLgXg8/lzSecO7D/iQNKcoIVUG1+H1IwsKtuDPHGus6UG1a11MbFxJSUQh1YTwngFg1TdkIOQ4Tihn77ZJkhzF8Il/Y0gzeUdbVj1ToaqNHzmgtQtPAP3p3W6lqGxWcJBlj2OglYaTvk7jwZh0kVA4u++lO2t0suVpWTPbUQwaVFpzNU6aNMrj6jAGjNXQhM2R1OwwE22ayUjSdIjS7anMm2PjVz0htT1F4AAooZaOCyL9REMiQZ
+ /y2Um+oB
+ rb+NUHDUo/x4Rweh/7pgub5LDBxESNV5QCzxBWWjkP7qol4Gc4Ej4RvavBz2GgnAgqpxvf6D5wLA9xpMwgYXjwpn8or4Pcz6fju/R1TuORraelK2UPjptPuWXWw+xnwX7bixYUrZbYX4B+v7MvNNfXOyvJQ4PP/10SSXalF8E6lwe0ffQXc3r/AIQhxIFgL8JE+Ht6prBvG90cNUyPnjve+SNdu+ZZCEp7vbsdJFbNJEggFJYP04f8BJBc3RmqEwJJIOacxCNQEpwpmzQMK+bZtqgyOakbBiapPCyFT6efOO7F722kVaxe3Hx6jgn0s4UQAs+apwG/M/QILdbE5I7gU//A8EImWJgH39nQEeNGnpZ1BjjWNv3xJqkTrSzG6TsaU51Wi0XpD2oWiZR7hUD1NUm+vW4/eUyg+AUfXu/mA9TlDIMBac8LUoqdv1E+JmhN6a+7T9LDESiobJwLVdcU9wTprWK9YGkTlm6jaE2t/327p9ua5F4Joqf+O7b6XQ7YetTzB4L7IPPLOp4SkFtxOvEvLeJp9miJOKJIBnOPJYH+A/Cx/W7KVD5gozrWEUqXMnRXUiaR2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,742 +181,279 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are many instances in which linear_page_index() (as well as
-linear_page_delta()) is open-coded, which is confusing and inconsistent.
+Be consistent in using vma_start_pgoff() and vma_end_pgoff(), which clearly
+indicates which part of the VMA the page offset refers to and aids
+greppability.
 
-Additionally, vma->vm_pgoff doesn't necessarily make it clear that this is
-the page offset of the start of the VMA range.
-
-Doing so also aids greppability.
-
-So use vma_start_pgoff() in favour of directly accessing vma->vm_pgoff, and
-linear_page_index() where we can.
-
-This also lays the ground for future changes which will add an anonymous
-page offset in order to be able to index MAP_PRIVATE-file backed anon
-folios in terms of their virtual page offset.
+This is part of a broader series laying the ground to provide a virtual
+page offset for MAP_PRIVATE-file backed anon folios.
 
 No functional change intended.
 
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com> # for kernel/dma
 Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: SJ Park <sj@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- include/linux/huge_mm.h    |  1 +
- include/linux/hugetlb.h    |  3 +--
- include/linux/pagemap.h    |  2 +-
- mm/damon/vaddr.c           |  5 +++--
- mm/debug.c                 |  2 +-
- mm/filemap.c               |  7 ++++---
- mm/huge_memory.c           |  2 +-
- mm/hugetlb.c               | 11 ++++-------
- mm/internal.h              | 24 ++++++++++++++----------
- mm/khugepaged.c            |  3 ++-
- mm/madvise.c               |  6 +++---
- mm/mapping_dirty_helpers.c |  2 +-
- mm/memory.c                | 25 +++++++++++++------------
- mm/mempolicy.c             | 13 +++++++------
- mm/mremap.c                | 12 ++++--------
- mm/msync.c                 |  4 ++--
- mm/nommu.c                 |  7 ++++---
- mm/pagewalk.c              |  2 +-
- mm/shmem.c                 |  9 +++++----
- mm/userfaultfd.c           |  4 ++--
- mm/util.c                  |  4 ++--
- mm/vma.c                   | 15 +++++++--------
- mm/vma_exec.c              |  4 ++--
- mm/vma_init.c              |  2 +-
- 24 files changed, 86 insertions(+), 83 deletions(-)
+ kernel/dma/coherent.c      |  7 ++++---
+ kernel/dma/direct.c        |  6 ++++--
+ kernel/dma/mapping.c       |  8 +++++---
+ kernel/dma/ops_helpers.c   |  4 ++--
+ kernel/events/core.c       | 20 +++++++++++---------
+ kernel/events/uprobes.c    | 11 +++++++----
+ kernel/kcov.c              |  2 +-
+ kernel/trace/ring_buffer.c |  3 ++-
+ 8 files changed, 36 insertions(+), 25 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 19a7bfce279e..cae97c307280 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -230,6 +230,7 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
- 
- 	/* Don't have to check pgoff for anonymous vma */
- 	if (!vma_is_anonymous(vma)) {
-+		/* vma_start_pgoff() in mm.h so not available. */
- 		if (!IS_ALIGNED((vma->vm_start >> PAGE_SHIFT) - vma->vm_pgoff,
- 				hpage_size >> PAGE_SHIFT))
- 			return false;
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 4115076e4922..32901236ab0f 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -801,8 +801,7 @@ static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
+diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+index bcdc0f76d2e8..2d3195eb7e83 100644
+--- a/kernel/dma/coherent.c
++++ b/kernel/dma/coherent.c
+@@ -236,14 +236,15 @@ static int __dma_mmap_from_coherent(struct dma_coherent_mem *mem,
  {
- 	struct hstate *h = hstate_vma(vma);
+ 	if (mem && vaddr >= mem->virt_base && vaddr + size <=
+ 		   (mem->virt_base + ((dma_addr_t)mem->size << PAGE_SHIFT))) {
+-		unsigned long off = vma->vm_pgoff;
++		const pgoff_t pgoff_start = vma_start_pgoff(vma);
++		const pgoff_t pgoff_end = vma_end_pgoff(vma);
+ 		int start = (vaddr - mem->virt_base) >> PAGE_SHIFT;
+ 		unsigned long user_count = vma_pages(vma);
+ 		int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
  
--	return ((address - vma->vm_start) >> huge_page_shift(h)) +
--		(vma->vm_pgoff >> huge_page_order(h));
-+	return linear_page_index(vma, address) >> huge_page_order(h);
+ 		*ret = -ENXIO;
+-		if (off < count && user_count <= count - off) {
+-			unsigned long pfn = mem->pfn_base + start + off;
++		if (pgoff_start < count && pgoff_end <= count) {
++			unsigned long pfn = mem->pfn_base + start + pgoff_start;
+ 			*ret = remap_pfn_range(vma, vma->vm_start, pfn,
+ 					       user_count << PAGE_SHIFT,
+ 					       vma->vm_page_prot);
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 4391b797d4db..436310d6e4a2 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -534,6 +534,8 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
+ 	unsigned long user_count = vma_pages(vma);
+ 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+ 	unsigned long pfn = PHYS_PFN(dma_to_phys(dev, dma_addr));
++	const pgoff_t pgoff_start = vma_start_pgoff(vma);
++	const pgoff_t pgoff_end = vma_end_pgoff(vma);
+ 	int ret = -ENXIO;
+ 
+ 	vma->vm_page_prot = dma_pgprot(dev, vma->vm_page_prot, attrs);
+@@ -545,9 +547,9 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
+ 	if (dma_mmap_from_global_coherent(vma, cpu_addr, size, &ret))
+ 		return ret;
+ 
+-	if (vma->vm_pgoff >= count || user_count > count - vma->vm_pgoff)
++	if (pgoff_start >= count || pgoff_end > count)
+ 		return -ENXIO;
+-	return remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
++	return remap_pfn_range(vma, vma->vm_start, pfn + pgoff_start,
+ 			user_count << PAGE_SHIFT, vma->vm_page_prot);
  }
  
- static inline bool order_is_gigantic(unsigned int order)
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index a950070b045f..c6fc783aaee5 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1097,7 +1097,7 @@ static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
- 	pgoff_t pgoff;
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 4fe04669e5e6..c986639044e9 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -761,12 +761,14 @@ EXPORT_SYMBOL_GPL(dma_free_pages);
+ int dma_mmap_pages(struct device *dev, struct vm_area_struct *vma,
+ 		size_t size, struct page *page)
+ {
+-	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
++	const pgoff_t pgoff_start = vma_start_pgoff(vma);
++	const pgoff_t pgoff_end = vma_end_pgoff(vma);
++	const unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
  
- 	pgoff = linear_page_delta(vma, address);
--	pgoff += vma->vm_pgoff;
-+	pgoff += vma_start_pgoff(vma);
- 	return pgoff;
+-	if (vma->vm_pgoff >= count || vma_pages(vma) > count - vma->vm_pgoff)
++	if (pgoff_start >= count || pgoff_end > count)
+ 		return -ENXIO;
+ 	return remap_pfn_range(vma, vma->vm_start,
+-			       page_to_pfn(page) + vma->vm_pgoff,
++			       page_to_pfn(page) + pgoff_start,
+ 			       vma_pages(vma) << PAGE_SHIFT, vma->vm_page_prot);
  }
+ EXPORT_SYMBOL_GPL(dma_mmap_pages);
+diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
+index 20caf9cabf69..6b5f9208d31c 100644
+--- a/kernel/dma/ops_helpers.c
++++ b/kernel/dma/ops_helpers.c
+@@ -39,7 +39,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
+ #ifdef CONFIG_MMU
+ 	unsigned long user_count = vma_pages(vma);
+ 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+-	unsigned long off = vma->vm_pgoff;
++	unsigned long off = vma_start_pgoff(vma);
+ 	struct page *page = dma_common_vaddr_to_page(cpu_addr);
+ 	int ret = -ENXIO;
  
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 2058db9c01d5..d10b8042adb5 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -10,6 +10,7 @@
- #include <linux/mman.h>
- #include <linux/mmu_notifier.h>
- #include <linux/page_idle.h>
-+#include <linux/pagemap.h>
- #include <linux/pagewalk.h>
- #include <linux/sched/mm.h>
+@@ -52,7 +52,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
+ 		return -ENXIO;
  
-@@ -623,8 +624,8 @@ static void damos_va_migrate_dests_add(struct folio *folio,
- 	}
+ 	return remap_pfn_range(vma, vma->vm_start,
+-			page_to_pfn(page) + vma->vm_pgoff,
++			page_to_pfn(page) + vma_start_pgoff(vma),
+ 			user_count << PAGE_SHIFT, vma->vm_page_prot);
+ #else
+ 	return -ENXIO;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d7f3e2c2ecb1..44a092db5d58 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6998,7 +6998,7 @@ static void perf_mmap_open(struct vm_area_struct *vma)
+ 	refcount_inc(&event->mmap_count);
+ 	refcount_inc(&event->rb->mmap_count);
  
- 	order = folio_order(folio);
--	ilx = vma->vm_pgoff >> order;
--	ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-+	ilx = vma_start_pgoff(vma) >> order;
-+	ilx += linear_page_delta(vma, addr) >> order;
+-	if (vma->vm_pgoff)
++	if (vma_start_pgoff(vma))
+ 		refcount_inc(&event->rb->aux_mmap_count);
  
- 	for (i = 0; i < dests->nr_dests; i++)
- 		weight_total += dests->weight_arr[i];
-diff --git a/mm/debug.c b/mm/debug.c
-index 77fa8fe1d641..497654b36f1a 100644
---- a/mm/debug.c
-+++ b/mm/debug.c
-@@ -163,7 +163,7 @@ void dump_vma(const struct vm_area_struct *vma)
- 		"flags: %#lx(%pGv)\n",
- 		vma, (void *)vma->vm_start, (void *)vma->vm_end, vma->vm_mm,
- 		(unsigned long)pgprot_val(vma->vm_page_prot),
--		vma->anon_vma, vma->vm_ops, vma->vm_pgoff,
-+		vma->anon_vma, vma->vm_ops, vma_start_pgoff(vma),
- 		vma->vm_file, vma->vm_private_data,
- #ifdef CONFIG_PER_VMA_LOCK
- 		refcount_read(&vma->vm_refcnt),
-diff --git a/mm/filemap.c b/mm/filemap.c
-index b39111abdc4b..1dbb4c6f824e 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3411,8 +3411,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		 * of memory.
- 		 */
- 		struct vm_area_struct *vma = vmf->vma;
--		unsigned long start = vma->vm_pgoff;
--		unsigned long end = start + vma_pages(vma);
-+		const unsigned long start = vma_start_pgoff(vma);
-+		const unsigned long end = vma_end_pgoff(vma);
- 		unsigned long ra_end;
- 
- 		ra->order = exec_folio_order();
-@@ -3930,7 +3930,8 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 		goto out;
- 	}
- 
--	addr = vma->vm_start + ((start_pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-+	addr = vma->vm_start +
-+		((start_pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
- 	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
- 	if (!vmf->pte) {
- 		folio_unlock(folio);
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 25612af72dca..790d2720b9e3 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -180,7 +180,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+ 	if (mapped)
+@@ -7032,7 +7032,7 @@ static void perf_mmap_close(struct vm_area_struct *vma)
+ 	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
+ 	 * to avoid complications.
  	 */
- 	if (!in_pf && shmem_file(vma->vm_file))
- 		return orders & shmem_allowable_huge_orders(file_inode(vma->vm_file),
--						   vma, vma->vm_pgoff, 0,
-+						   vma, vma_start_pgoff(vma), 0,
- 						   forced_collapse);
- 
- 	if (!vma_is_anonymous(vma)) {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 92796c0cd89e..30f257a2bfee 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1011,8 +1011,7 @@ static long region_count(struct resv_map *resv, long f, long t)
- static pgoff_t vma_hugecache_offset(struct hstate *h,
- 			struct vm_area_struct *vma, unsigned long address)
- {
--	return ((address - vma->vm_start) >> huge_page_shift(h)) +
--			(vma->vm_pgoff >> huge_page_order(h));
-+	return linear_page_index(vma, address) >> huge_page_order(h);
- }
- 
- /*
-@@ -5444,8 +5443,7 @@ static void unmap_ref_private(struct mm_struct *mm, struct vm_area_struct *vma,
- 	 * from page cache lookup which is in HPAGE_SIZE units.
+-	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
++	if (rb_has_aux(rb) && vma_start_pgoff(vma) == rb->aux_pgoff &&
+ 	    refcount_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
+ 		/*
+ 		 * Stop all AUX events that are writing to this buffer,
+@@ -7190,7 +7190,8 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
  	 */
- 	address = address & huge_page_mask(h);
--	pgoff = ((address - vma->vm_start) >> PAGE_SHIFT) +
--			vma->vm_pgoff;
-+	pgoff = linear_page_index(vma, address);
- 	mapping = vma->vm_file->f_mapping;
+ 	for (pagenum = 0; pagenum < nr_pages; pagenum++) {
+ 		unsigned long va = vma->vm_start + PAGE_SIZE * pagenum;
+-		struct page *page = perf_mmap_to_page(rb, vma->vm_pgoff + pagenum);
++		struct page *page = perf_mmap_to_page(rb,
++				vma_start_pgoff(vma) + pagenum);
  
- 	/*
-@@ -6904,7 +6902,7 @@ static unsigned long page_table_shareable(struct vm_area_struct *svma,
- 				struct vm_area_struct *vma,
- 				unsigned long addr, pgoff_t idx)
- {
--	unsigned long saddr = ((idx - svma->vm_pgoff) << PAGE_SHIFT) +
-+	unsigned long saddr = ((idx - vma_start_pgoff(svma)) << PAGE_SHIFT) +
- 				svma->vm_start;
- 	unsigned long sbase = saddr & PUD_MASK;
- 	unsigned long s_end = sbase + PUD_SIZE;
-@@ -6989,8 +6987,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 		      unsigned long addr, pud_t *pud)
- {
- 	struct address_space *mapping = vma->vm_file->f_mapping;
--	pgoff_t idx = ((addr - vma->vm_start) >> PAGE_SHIFT) +
--			vma->vm_pgoff;
-+	const pgoff_t idx = linear_page_index(vma, addr);
- 	struct vm_area_struct *svma;
- 	unsigned long saddr;
- 	pte_t *spte = NULL;
-diff --git a/mm/internal.h b/mm/internal.h
-index 3d30650a8440..01a762bcc2b2 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1004,26 +1004,28 @@ static inline bool
- folio_within_range(struct folio *folio, struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end)
- {
--	pgoff_t pgoff, addr;
--	unsigned long vma_pglen = vma_pages(vma);
-+	const unsigned long vma_pglen = vma_pages(vma);
-+	pgoff_t pgoff_folio, pgoff_vma_start;
-+	unsigned long addr;
- 
- 	VM_WARN_ON_FOLIO(folio_test_ksm(folio), folio);
- 	if (start > end)
- 		return false;
- 
-+	pgoff_folio = folio_pgoff(folio);
-+	pgoff_vma_start = vma_start_pgoff(vma);
-+
- 	if (start < vma->vm_start)
- 		start = vma->vm_start;
- 
- 	if (end > vma->vm_end)
- 		end = vma->vm_end;
- 
--	pgoff = folio_pgoff(folio);
--
- 	/* if folio start address is not in vma range */
--	if (!in_range(pgoff, vma->vm_pgoff, vma_pglen))
-+	if (!in_range(pgoff_folio, pgoff_vma_start, vma_pglen))
- 		return false;
- 
--	addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-+	addr = vma->vm_start + ((pgoff_folio - pgoff_vma_start) << PAGE_SHIFT);
- 
- 	return !(addr < start || end - addr < folio_size(folio));
- }
-@@ -1095,15 +1097,16 @@ extern pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
- static inline unsigned long vma_address(const struct vm_area_struct *vma,
- 		pgoff_t pgoff, unsigned long nr_pages)
+ 		if (page == NULL) {
+ 			err = -EINVAL;
+@@ -7344,6 +7345,7 @@ static int perf_mmap_rb(struct vm_area_struct *vma, struct perf_event *event,
+ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+ 			 unsigned long nr_pages)
  {
 +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
- 	unsigned long address;
- 
--	if (pgoff >= vma->vm_pgoff) {
-+	if (pgoff >= pgoff_start) {
- 		address = vma->vm_start +
--			((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-+			((pgoff - pgoff_start) << PAGE_SHIFT);
- 		/* Check for address beyond vma (or wrapped through 0?) */
- 		if (address < vma->vm_start || address >= vma->vm_end)
- 			address = -EFAULT;
--	} else if (pgoff + nr_pages - 1 >= vma->vm_pgoff) {
-+	} else if (pgoff + nr_pages - 1 >= pgoff_start) {
- 		/* Test above avoids possibility of wrap to 0 on 32-bit */
- 		address = vma->vm_start;
- 	} else {
-@@ -1127,7 +1130,8 @@ static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
- 		return pvmw->address + PAGE_SIZE;
- 
- 	pgoff = pvmw->pgoff + pvmw->nr_pages;
--	address = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-+	address = vma->vm_start +
-+		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
- 	/* Check for address beyond vma (or wrapped through 0?) */
- 	if (address < vma->vm_start || address > vma->vm_end)
- 		address = vma->vm_end;
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 912be3daf37e..45e8245d80da 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2150,7 +2150,8 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
- 		spinlock_t *ptl;
- 		bool success = false;
- 
--		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-+		addr = vma->vm_start +
-+			((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
- 		if (addr & ~HPAGE_PMD_MASK ||
- 		    vma->vm_end < addr + HPAGE_PMD_SIZE)
- 			continue;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 9292f60b19aa..917f764fef80 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -253,7 +253,7 @@ static void shmem_swapin_range(struct vm_area_struct *vma,
- 			continue;
- 
- 		addr = vma->vm_start +
--			((xas.xa_index - vma->vm_pgoff) << PAGE_SHIFT);
-+			((xas.xa_index - vma_start_pgoff(vma)) << PAGE_SHIFT);
- 		xas_pause(&xas);
- 		rcu_read_unlock();
- 
-@@ -318,7 +318,7 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
- 	mark_mmap_lock_dropped(madv_behavior);
- 	get_file(file);
- 	offset = (loff_t)(start - vma->vm_start)
--			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-+			+ ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
- 	mmap_read_unlock(mm);
- 	vfs_fadvise(file, offset, end - start, POSIX_FADV_WILLNEED);
- 	fput(file);
-@@ -1022,7 +1022,7 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
- 		return -EACCES;
- 
- 	offset = (loff_t)(start - vma->vm_start)
--			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-+			+ ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
- 
- 	/*
- 	 * Filesystem's fallocate may need to take i_rwsem.  We need to
-diff --git a/mm/mapping_dirty_helpers.c b/mm/mapping_dirty_helpers.c
-index 737c407f4081..e0efa36e0a07 100644
---- a/mm/mapping_dirty_helpers.c
-+++ b/mm/mapping_dirty_helpers.c
-@@ -95,7 +95,7 @@ static int clean_record_pte(pte_t *pte, unsigned long addr,
- 
- 	if (pte_dirty(ptent)) {
- 		pgoff_t pgoff = ((addr - walk->vma->vm_start) >> PAGE_SHIFT) +
--			walk->vma->vm_pgoff - cwalk->bitmap_pgoff;
-+			vma_start_pgoff(walk->vma) - cwalk->bitmap_pgoff;
- 		pte_t old_pte = ptep_modify_prot_start(walk->vma, addr, pte);
- 
- 		ptent = pte_mkclean(old_pte);
-diff --git a/mm/memory.c b/mm/memory.c
-index b7e9a7e53516..fb7a246487ac 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -725,10 +725,10 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 				if (!pfn_valid(pfn))
- 					return NULL;
- 			} else {
--				unsigned long off = (addr - vma->vm_start) >> PAGE_SHIFT;
-+				const pgoff_t index = linear_page_index(vma, addr);
- 
- 				/* Only CoW'ed anon folios are "normal". */
--				if (pfn == vma->vm_pgoff + off)
-+				if (pfn == index)
- 					return NULL;
- 				if (!is_cow_mapping(vma->vm_flags))
- 					return NULL;
-@@ -2663,7 +2663,7 @@ static int __vm_map_pages(struct vm_area_struct *vma, struct page **pages,
- int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
- 				unsigned long num)
- {
--	return __vm_map_pages(vma, pages, num, vma->vm_pgoff);
-+	return __vm_map_pages(vma, pages, num, vma_start_pgoff(vma));
- }
- EXPORT_SYMBOL(vm_map_pages);
- 
-@@ -3318,7 +3318,8 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
- 	unsigned long pfn;
- 	int err;
- 
--	err = __simple_ioremap_prep(vm_len, vma->vm_pgoff, start, len, &pfn);
-+	err = __simple_ioremap_prep(vm_len, vma_start_pgoff(vma), start, len,
-+				    &pfn);
- 	if (err)
- 		return err;
- 
-@@ -4366,15 +4367,15 @@ static inline void unmap_mapping_range_tree(struct address_space *mapping,
- 					    struct zap_details *details)
- {
- 	struct vm_area_struct *vma;
--	unsigned long start, size;
- 	struct mmu_gather tlb;
- 
- 	mapping_rmap_tree_foreach(vma, mapping, first_index, last_index) {
--		const pgoff_t start_idx = max(first_index, vma->vm_pgoff);
-+		const pgoff_t start_idx = max(first_index, vma_start_pgoff(vma));
- 		const pgoff_t end_idx = min(last_index, vma_last_pgoff(vma)) + 1;
--
--		start = vma->vm_start + ((start_idx - vma->vm_pgoff) << PAGE_SHIFT);
--		size = (end_idx - start_idx) << PAGE_SHIFT;
-+		const pgoff_t offset = start_idx - vma_start_pgoff(vma);
-+		const unsigned long offset_bytes = offset << PAGE_SHIFT;
-+		const unsigned long start = vma->vm_start + offset_bytes;
-+		const unsigned long size = (end_idx - start_idx) << PAGE_SHIFT;
- 
- 		tlb_gather_mmu(&tlb, vma->vm_mm);
- 		zap_vma_range_batched(&tlb, vma, start, size, details);
-@@ -5712,7 +5713,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	} else if (nr_pages > 1) {
- 		pgoff_t idx = folio_page_idx(folio, page);
- 		/* The page offset of vmf->address within the VMA. */
--		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
-+		pgoff_t vma_off = vmf->pgoff - vma_start_pgoff(vmf->vma);
- 		/* The index of the entry in the pagetable for fault page. */
- 		pgoff_t pte_off = pte_index(vmf->address);
- 
-@@ -5824,7 +5825,7 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
- 	pgoff_t nr_pages = READ_ONCE(fault_around_pages);
- 	pgoff_t pte_off = pte_index(vmf->address);
- 	/* The page offset of vmf->address within the VMA. */
--	pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
-+	pgoff_t vma_off = vmf->pgoff - vma_start_pgoff(vmf->vma);
- 	pgoff_t from_pte, to_pte;
- 	vm_fault_t ret;
- 
-@@ -7352,7 +7353,7 @@ void print_vma_addr(char *prefix, unsigned long ip)
- 	if (vma && vma->vm_file) {
- 		struct file *f = vma->vm_file;
- 		ip -= vma->vm_start;
--		ip += vma->vm_pgoff << PAGE_SHIFT;
-+		ip += vma_start_pgoff(vma) << PAGE_SHIFT;
- 		printk("%s%pD[%lx,%lx+%lx]", prefix, f, ip,
- 				vma->vm_start,
- 				vma->vm_end - vma->vm_start);
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 914f81863db5..bf6608309cea 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2049,8 +2049,8 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
- 		pol = get_task_policy(current);
- 	if (pol->mode == MPOL_INTERLEAVE ||
- 	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
--		*ilx += vma->vm_pgoff >> order;
--		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-+		*ilx += vma_start_pgoff(vma) >> order;
-+		*ilx += linear_page_delta(vma, addr) >> order;
- 	}
- 	return pol;
- }
-@@ -3244,16 +3244,17 @@ EXPORT_SYMBOL_FOR_MODULES(mpol_shared_policy_init, "kvm");
- int mpol_set_shared_policy(struct shared_policy *sp,
- 			struct vm_area_struct *vma, struct mempolicy *pol)
- {
--	int err;
-+	const pgoff_t pgoff = vma_start_pgoff(vma);
-+	const pgoff_t pgoff_end = vma_end_pgoff(vma);
- 	struct sp_node *new = NULL;
--	unsigned long sz = vma_pages(vma);
-+	int err;
- 
- 	if (pol) {
--		new = sp_alloc(vma->vm_pgoff, vma->vm_pgoff + sz, pol);
-+		new = sp_alloc(pgoff, pgoff_end, pol);
- 		if (!new)
- 			return -ENOMEM;
- 	}
--	err = shared_policy_replace(sp, vma->vm_pgoff, vma->vm_pgoff + sz, new);
-+	err = shared_policy_replace(sp, pgoff, pgoff_end, new);
- 	if (err && new)
- 		sp_free(new);
- 	return err;
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 8a46ec5831c8..384ef4cc2195 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -957,8 +957,7 @@ static unsigned long vrm_set_new_addr(struct vma_remap_struct *vrm)
- 	struct vm_area_struct *vma = vrm->vma;
- 	unsigned long map_flags = 0;
- 	/* Page Offset _into_ the VMA. */
--	pgoff_t internal_pgoff = (vrm->addr - vma->vm_start) >> PAGE_SHIFT;
--	pgoff_t pgoff = vma->vm_pgoff + internal_pgoff;
-+	const pgoff_t pgoff = linear_page_index(vma, vrm->addr);
- 	unsigned long new_addr = vrm_implies_new_addr(vrm) ? vrm->new_addr : 0;
- 	unsigned long res;
- 
-@@ -1264,12 +1263,10 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
- static int copy_vma_and_data(struct vma_remap_struct *vrm,
- 			     struct vm_area_struct **new_vma_ptr)
- {
--	unsigned long internal_offset = vrm->addr - vrm->vma->vm_start;
--	unsigned long internal_pgoff = internal_offset >> PAGE_SHIFT;
--	unsigned long new_pgoff = vrm->vma->vm_pgoff + internal_pgoff;
--	unsigned long moved_len;
-+	const unsigned long new_pgoff = linear_page_index(vrm->vma, vrm->addr);
- 	struct vm_area_struct *vma = vrm->vma;
- 	struct vm_area_struct *new_vma;
-+	unsigned long moved_len;
- 	int err = 0;
- 	PAGETABLE_MOVE(pmc, NULL, NULL, vrm->addr, vrm->new_addr, vrm->old_len);
- 
-@@ -1811,8 +1808,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
- 		vrm->populate_expand = true;
- 
- 	/* Need to be careful about a growing mapping */
--	pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
--	pgoff += vma->vm_pgoff;
-+	pgoff = linear_page_index(vma, addr);
- 	if (pgoff + (new_len >> PAGE_SHIFT) < pgoff)
+ 	long extra = 0, user_extra = nr_pages;
+ 	u64 aux_offset, aux_size;
+ 	struct perf_buffer *rb;
+@@ -7366,11 +7368,11 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+ 	if (aux_offset < perf_data_size(rb) + PAGE_SIZE)
  		return -EINVAL;
  
-diff --git a/mm/msync.c b/mm/msync.c
-index ac4c9bfea2e7..90b491a27a14 100644
---- a/mm/msync.c
-+++ b/mm/msync.c
-@@ -12,6 +12,7 @@
- #include <linux/mm.h>
- #include <linux/mman.h>
- #include <linux/file.h>
-+#include <linux/pagemap.h>
- #include <linux/syscalls.h>
- #include <linux/sched.h>
+-	if (aux_offset != vma->vm_pgoff << PAGE_SHIFT)
++	if (aux_offset != pgoff_start << PAGE_SHIFT)
+ 		return -EINVAL;
  
-@@ -85,8 +86,7 @@ SYSCALL_DEFINE3(msync, unsigned long, start, size_t, len, int, flags)
- 			goto out_unlock;
- 		}
- 		file = vma->vm_file;
--		fstart = (start - vma->vm_start) +
--			 ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-+		fstart = (loff_t)linear_page_index(vma, start) << PAGE_SHIFT;
- 		fend = fstart + (min(end, vma->vm_end) - start) - 1;
- 		start = vma->vm_end;
- 		if ((flags & MS_SYNC) && file &&
-diff --git a/mm/nommu.c b/mm/nommu.c
-index f51a4a375c8c..52074ea90acb 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -975,7 +975,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
- 		/* read the contents of a file into the copy */
- 		loff_t fpos;
+ 	/* already mapped with a different offset */
+-	if (rb_has_aux(rb) && rb->aux_pgoff != vma->vm_pgoff)
++	if (rb_has_aux(rb) && rb->aux_pgoff != pgoff_start)
+ 		return -EINVAL;
  
--		fpos = vma->vm_pgoff;
-+		fpos = vma_start_pgoff(vma);
- 		fpos <<= PAGE_SHIFT;
+ 	if (aux_size != nr_pages * PAGE_SIZE)
+@@ -7400,7 +7402,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+ 		if (vma->vm_flags & VM_WRITE)
+ 			rb_flags |= RING_BUFFER_WRITABLE;
  
- 		ret = kernel_read(vma->vm_file, base, len, &fpos);
-@@ -1378,7 +1378,8 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	delete_nommu_region(vma->vm_region);
- 	if (new_below) {
- 		vma->vm_region->vm_start = vma->vm_start = addr;
--		vma->vm_region->vm_pgoff = vma->vm_pgoff += npages;
-+		vma->vm_pgoff += npages;
-+		vma->vm_region->vm_pgoff = vma_start_pgoff(vma);
- 	} else {
- 		vma->vm_region->vm_end = vma->vm_end = addr;
- 		vma->vm_region->vm_top = addr;
-@@ -1630,7 +1631,7 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
- 	unsigned long pfn = start >> PAGE_SHIFT;
- 	unsigned long vm_len = vma->vm_end - vma->vm_start;
+-		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
++		ret = rb_alloc_aux(rb, event, pgoff_start, nr_pages,
+ 				   event->attr.aux_watermark, rb_flags);
+ 		if (ret) {
+ 			refcount_dec(&rb->mmap_count);
+@@ -7457,7 +7459,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 		if (event->state <= PERF_EVENT_STATE_REVOKED)
+ 			return -ENODEV;
  
--	pfn += vma->vm_pgoff;
-+	pfn += vma_start_pgoff(vma);
- 	return io_remap_pfn_range(vma, vma->vm_start, pfn, vm_len, vma->vm_page_prot);
- }
- EXPORT_SYMBOL(vm_iomap_memory);
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 7e7819cf5a3a..dd854c734877 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -813,7 +813,7 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
- 	mapping_rmap_tree_foreach(vma, mapping, first_index,
- 				  first_index + nr - 1) {
- 		/* Clip to the vma */
--		vba = vma->vm_pgoff;
-+		vba = vma_start_pgoff(vma);
- 		vea = vba + vma_pages(vma);
- 		cba = first_index;
- 		cba = max(cba, vba);
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 3fb6dbbfa20b..c8e2011e0ce6 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1032,6 +1032,8 @@ unsigned long shmem_swap_usage(struct vm_area_struct *vma)
- 	struct inode *inode = file_inode(vma->vm_file);
- 	struct shmem_inode_info *info = SHMEM_I(inode);
- 	struct address_space *mapping = inode->i_mapping;
-+	const pgoff_t pgoff = vma_start_pgoff(vma);
-+	const pgoff_t pgoff_end = vma_end_pgoff(vma);
- 	unsigned long swapped;
- 
- 	/* Be careful as we don't hold info->lock */
-@@ -1045,12 +1047,11 @@ unsigned long shmem_swap_usage(struct vm_area_struct *vma)
- 	if (!swapped)
- 		return 0;
- 
--	if (!vma->vm_pgoff && vma->vm_end - vma->vm_start >= inode->i_size)
-+	if (!pgoff && vma->vm_end - vma->vm_start >= inode->i_size)
- 		return swapped << PAGE_SHIFT;
- 
- 	/* Here comes the more involved part */
--	return shmem_partial_swap_usage(mapping, vma->vm_pgoff,
--					vma->vm_pgoff + vma_pages(vma));
-+	return shmem_partial_swap_usage(mapping, pgoff, pgoff_end);
- }
- 
- /*
-@@ -2840,7 +2841,7 @@ static struct mempolicy *shmem_get_policy(struct vm_area_struct *vma,
- 	 * by page order, as in shmem_get_pgoff_policy() and get_vma_policy()).
- 	 */
- 	*ilx = inode->i_ino;
--	index = ((addr - vma->vm_start) >> PAGE_SHIFT) + vma->vm_pgoff;
-+	index = linear_page_index(vma, addr);
- 	return mpol_shared_policy_lookup(&SHMEM_I(inode)->policy, index);
- }
- 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 73f32299453b..8fd24c8b428e 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -481,7 +481,7 @@ static void mfill_retry_state_save(struct mfill_retry_state *s,
+-		if (vma->vm_pgoff == 0)
++		if (!vma_start_pgoff(vma))
+ 			ret = perf_mmap_rb(vma, event, nr_pages);
+ 		else
+ 			ret = perf_mmap_aux(vma, event, nr_pages);
+@@ -9884,7 +9886,7 @@ static bool perf_addr_filter_vma_adjust(struct perf_addr_filter *filter,
+ 					struct perf_addr_filter_range *fr)
  {
- 	s->flags = vma_flags_and_mask(&vma->flags, MFILL_RETRY_STATE_VMA_FLAGS);
- 	s->ops = vma_uffd_ops(vma);
--	s->pgoff = vma->vm_pgoff;
-+	s->pgoff = vma_start_pgoff(vma);
+ 	unsigned long vma_size = vma->vm_end - vma->vm_start;
+-	unsigned long off = vma->vm_pgoff << PAGE_SHIFT;
++	unsigned long off = vma_start_pgoff(vma) << PAGE_SHIFT;
+ 	struct file *file = vma->vm_file;
  
- 	if (vma->vm_file)
- 		s->file = get_file(vma->vm_file);
-@@ -507,7 +507,7 @@ static bool mfill_retry_state_changed(struct mfill_retry_state *state,
+ 	if (!perf_addr_filter_match(filter, file, off, vma_size))
+@@ -9974,7 +9976,7 @@ void perf_event_mmap(struct vm_area_struct *vma)
+ 			/* .tid */
+ 			.start  = vma->vm_start,
+ 			.len    = vma->vm_end - vma->vm_start,
+-			.pgoff  = (u64)vma->vm_pgoff << PAGE_SHIFT,
++			.pgoff  = (u64)vma_start_pgoff(vma) << PAGE_SHIFT,
+ 		},
+ 		/* .maj (attr_mmap2 only) */
+ 		/* .min (attr_mmap2 only) */
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index ac340a703d06..ae2f3b9f8d50 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -144,12 +144,14 @@ static bool valid_vma(struct vm_area_struct *vma, bool is_register)
  
- 	/* VMA was file backed, but file, inode or offset has changed */
- 	if (!vma->vm_file || vma->vm_file->f_inode != state->file->f_inode ||
--	    state->file != vma->vm_file || vma->vm_pgoff != state->pgoff)
-+	    state->file != vma->vm_file || vma_start_pgoff(vma) != state->pgoff)
- 		return true;
- 
- 	return false;
-diff --git a/mm/util.c b/mm/util.c
-index 34cb43b3eaa4..5090457542ca 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1188,7 +1188,7 @@ void compat_set_desc_from_vma(struct vm_area_desc *desc,
- 	desc->start = vma->vm_start;
- 	desc->end = vma->vm_end;
- 
--	desc->pgoff = vma->vm_pgoff;
-+	desc->pgoff = vma_start_pgoff(vma);
- 	desc->vm_file = vma->vm_file;
- 	desc->vma_flags = vma->flags;
- 	desc->page_prot = vma->vm_page_prot;
-@@ -1379,7 +1379,7 @@ static int call_vma_mapped(struct vm_area_struct *vma)
- 	if (!vm_ops || !vm_ops->mapped)
- 		return 0;
- 
--	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff,
-+	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma_start_pgoff(vma),
- 			     vma->vm_file, &vm_private_data);
- 	if (err)
- 		return err;
-diff --git a/mm/vma.c b/mm/vma.c
-index 5d5e60ea8a25..4a4d096ba86a 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -967,10 +967,9 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 		 *   prev   middle   next
- 		 *  extend  delete  delete
- 		 */
--
- 		vmg->start = prev->vm_start;
- 		vmg->end = next->vm_end;
--		vmg->pgoff = prev->vm_pgoff;
-+		vmg->pgoff = vma_start_pgoff(prev);
- 
- 		/*
- 		 * We already ensured anon_vma compatibility above, so now it's
-@@ -987,9 +986,8 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 		 *   prev     middle
- 		 *  extend shrink/delete
- 		 */
--
- 		vmg->start = prev->vm_start;
--		vmg->pgoff = prev->vm_pgoff;
-+		vmg->pgoff = vma_start_pgoff(prev);
- 
- 		if (!vmg->__remove_middle)
- 			vmg->__adjust_middle_start = true;
-@@ -1011,13 +1009,13 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 
- 		if (vmg->__remove_middle) {
- 			vmg->end = next->vm_end;
--			vmg->pgoff = next->vm_pgoff - pglen;
-+			vmg->pgoff = vma_start_pgoff(next) - pglen;
- 		} else {
- 			/* We shrink middle and expand next. */
- 			vmg->__adjust_next_start = true;
- 			vmg->start = middle->vm_start;
- 			vmg->end = start;
--			vmg->pgoff = middle->vm_pgoff;
-+			vmg->pgoff = vma_start_pgoff(middle);
- 		}
- 
- 		err = dup_anon_vma(next, middle, &anon_dup);
-@@ -1126,7 +1124,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
- 	if (can_merge_left) {
- 		vmg->start = prev->vm_start;
- 		vmg->target = prev;
--		vmg->pgoff = prev->vm_pgoff;
-+		vmg->pgoff = vma_start_pgoff(prev);
- 
- 		/*
- 		 * If this merge would result in removal of the next VMA but we
-@@ -1957,7 +1955,8 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 			VM_BUG_ON_VMA(faulted_in_anon_vma, new_vma);
- 			*vmap = vma = new_vma;
- 		}
--		*need_rmap_locks = (new_vma->vm_pgoff <= vma->vm_pgoff);
-+		*need_rmap_locks =
-+			(vma_start_pgoff(new_vma) <= vma_start_pgoff(vma));
- 	} else {
- 		new_vma = vm_area_dup(vma);
- 		if (!new_vma)
-diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-index 5cee8b7efa0f..e3644a3042e2 100644
---- a/mm/vma_exec.c
-+++ b/mm/vma_exec.c
-@@ -37,7 +37,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 	unsigned long new_end = old_end - shift;
- 	VMA_ITERATOR(vmi, mm, new_start);
- 	VMG_STATE(vmg, mm, &vmi, new_start, old_end, EMPTY_VMA_FLAGS,
--		  vma->vm_pgoff);
-+		  vma_start_pgoff(vma));
- 	struct vm_area_struct *next;
- 	struct mmu_gather tlb;
- 	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
-@@ -89,7 +89,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 
- 	vma_prev(&vmi);
- 	/* Shrink the vma to just the new range */
--	return vma_shrink(&vmi, vma, new_start, new_end, vma->vm_pgoff);
-+	return vma_shrink(&vmi, vma, new_start, new_end, vma_start_pgoff(vma));
+ static unsigned long offset_to_vaddr(struct vm_area_struct *vma, loff_t offset)
+ {
+-	return vma->vm_start + offset - ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
++	return vma->vm_start + offset -
++		((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
  }
  
- /*
-diff --git a/mm/vma_init.c b/mm/vma_init.c
-index 3c0b65950510..a459669a1654 100644
---- a/mm/vma_init.c
-+++ b/mm/vma_init.c
-@@ -46,7 +46,7 @@ static void vm_area_init_from(const struct vm_area_struct *src,
- 	dest->vm_start = src->vm_start;
- 	dest->vm_end = src->vm_end;
- 	dest->anon_vma = src->anon_vma;
--	dest->vm_pgoff = src->vm_pgoff;
-+	dest->vm_pgoff = vma_start_pgoff(src);
- 	dest->vm_file = src->vm_file;
- 	dest->vm_private_data = src->vm_private_data;
- 	vm_flags_init(dest, src->vm_flags);
+ static loff_t vaddr_to_offset(struct vm_area_struct *vma, unsigned long vaddr)
+ {
+-	return ((loff_t)vma->vm_pgoff << PAGE_SHIFT) + (vaddr - vma->vm_start);
++	return ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT) +
++		(vaddr - vma->vm_start);
+ }
+ 
+ /**
+@@ -1482,7 +1484,7 @@ static int unapply_uprobe(struct uprobe *uprobe, struct mm_struct *mm)
+ 		    file_inode(vma->vm_file) != uprobe->inode)
+ 			continue;
+ 
+-		offset = (loff_t)vma->vm_pgoff << PAGE_SHIFT;
++		offset = (loff_t)vma_start_pgoff(vma) << PAGE_SHIFT;
+ 		if (uprobe->offset <  offset ||
+ 		    uprobe->offset >= offset + vma->vm_end - vma->vm_start)
+ 			continue;
+@@ -2453,7 +2455,8 @@ static struct uprobe *find_active_uprobe_speculative(unsigned long bp_vaddr)
+ 	if (!vm_file)
+ 		return NULL;
+ 
+-	offset = (loff_t)(vma->vm_pgoff << PAGE_SHIFT) + (bp_vaddr - vma->vm_start);
++	offset = (loff_t)(vma_start_pgoff(vma) << PAGE_SHIFT) +
++		(bp_vaddr - vma->vm_start);
+ 	uprobe = find_uprobe_rcu(vm_file->f_inode, offset);
+ 	if (!uprobe)
+ 		return NULL;
+diff --git a/kernel/kcov.c b/kernel/kcov.c
+index 1df373fb562b..b19b473c366a 100644
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -512,7 +512,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
+ 
+ 	spin_lock_irqsave(&kcov->lock, flags);
+ 	size = kcov->size * sizeof(unsigned long);
+-	if (kcov->area == NULL || vma->vm_pgoff != 0 ||
++	if (kcov->area == NULL || vma_start_pgoff(vma) ||
+ 	    vma->vm_end - vma->vm_start != size) {
+ 		res = -EINVAL;
+ 		goto exit;
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 56a328e94395..dfa493d54ef9 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -7613,7 +7613,8 @@ static int __rb_inc_dec_mapped(struct ring_buffer_per_cpu *cpu_buffer,
+ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
+ 			struct vm_area_struct *vma)
+ {
+-	unsigned long nr_subbufs, nr_pages, nr_vma_pages, pgoff = vma->vm_pgoff;
++	unsigned long nr_subbufs, nr_pages, nr_vma_pages;
++	pgoff_t pgoff = vma_start_pgoff(vma);
+ 	unsigned int subbuf_pages, subbuf_order;
+ 	struct page **pages __free(kfree) = NULL;
+ 	int p = 0, s = 0;
 
 -- 
 2.55.0
