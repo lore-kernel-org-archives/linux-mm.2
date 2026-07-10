@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C1DC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:24:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB60AC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:25:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFC326B008C; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
+	id E76066B00A7; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DADC56B0093; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
+	id E53676B00A9; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC37D6B009B; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
+	id D65076B00AA; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ACB236B008C
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50A5C1A0484
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:24:22 +0000 (UTC)
-X-FDA: 84973087164.26.30B4EEF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B4AACA0009
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:24:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hvve1BE2;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783693460;
-	b=hGTqjbi9WWIjCodaGYMilmPKPn5QvpJwHSZwnSQgfoiie4bs42JEtremTEtUSxkLKgphGW
-	kwfS5nDU7JcYVZxuncZfN6IA2Yvc7uLjj6qUz90c3WZTvN3b6zY/2uOODzCNxGmoB+Sv7b
-	Q0uILyO1BnItF+3rePCa2webyuwNe5c=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hvve1BE2;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B539F6B00A7
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F25640495
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:42 +0000 (UTC)
+X-FDA: 84973090524.18.4A612D9
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B480E8000A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HrOLXIlJ;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783693460;
+	s=arc-20220608; t=1783693540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3rUDxcBxSTvUCkBAHloVtxdehX9iYZCWsP8zEYUkkqw=;
-	b=e7rqnuHORZYsD5FMPvqc+VvCOz7vcRgqpeDCo2PJeDBrfXfv3cr83F2YHbr2dLLkGXhedT
-	WacV5nzU/9hosMh/2jkBt9oi8ZBpiEYJ8pIbwDyfNjpLeXKp7HlmS+5jHxCW+MSM6+6er5
-	11PzJHRa710xPq2PQge/Mcu+PpNceyo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98A2B43833;
-	Fri, 10 Jul 2026 14:24:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466B51F000E9;
-	Fri, 10 Jul 2026 14:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783693459;
-	bh=3rUDxcBxSTvUCkBAHloVtxdehX9iYZCWsP8zEYUkkqw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hvve1BE2sLwGuVY56H2t3YRIg4JB6/lGKUEcaHRfIRmslgZQM1dWvquBGhjH8LPNG
-	 7MAh73cA/ZThpxDisFOVLqJma1hCTpoEQr7x0p3pXY72M4CIrGZE0/nOMElLE42gjB
-	 PhQs8w872asSL4tvX2dIqASl+Nh3j8hWlXNHecXaY7KilPkY5UFeIDVTZqhSHTAFeZ
-	 wSOb6BLr/KOuXCiZf/0ChdtvZm/TbPEdoCwCzhkLCSH2WNra5AHzdb0AOS/JkyCTj+
-	 jwuj34JJwC0SaRmMbRcyqiR51x6NVGF30d0i94LCcjzEu/TMMhilGa1W0iNgbVk+NU
-	 QBQaZkEOtekxA==
-From: SJ Park <sj@kernel.org>
-To: Song Hu <husong@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
+	bh=1VlKCpo+tnRr2SOFJ9r1et+U9+XWbDNAx+XfTXQ4ZpM=;
+	b=iXxjImjxyj7fH+cxR0U868NxgI9M30YA8dMgHaF9mk9acmJsrAPoXyg0oXQYWTe5Djsphq
+	jNHgyloHZoAQggUwcgjMRAAmzEq9Vln6J3sxVZfCeYhegll25+SszXMqynHyoMeUx0ookk
+	xeaw7FI1gMCv7yFJC7/F2b6uDc5/Lmk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HrOLXIlJ;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783693540;
+	b=inmE0mxVADBJnwtL7XAIg6zQCy9comq97nptSk5xRDMf7FbGfZiMQrEgj05wWxkZ7KHP6d
+	k9E4FEywS8SI7dqDQ6EbZPM858YdEmkESY3UG5aLjw9avzsJy1kNmRqRJ4gOuDf6EBqrG5
+	HSnl32kr3iFdztQ9ZPpaMJhQNOo84sA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783693535;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1VlKCpo+tnRr2SOFJ9r1et+U9+XWbDNAx+XfTXQ4ZpM=;
+	b=HrOLXIlJK5byvxMRl92Xt9Qe8BH9aa97sbTEINkk6Tl1g3pRas93d3bcKawXhxT4wPQSH2
+	pUVy4GlMnPr0RDwlU+9UJT9dIuS7ZGqUPO7aQcEEzvGXQBanYYA0jXc9PaBax+GsITsfCw
+	JKZWwia7gUFzCW5BmNzi7XeiOzZU9LU=
+From: Usama Arif <usama.arif@linux.dev>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH 3/4] Docs/ABI/damon: document update_tuned_intervals state command
-Date: Fri, 10 Jul 2026 07:24:15 -0700
-Message-ID: <20260710142416.25073-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260710044737.561102-4-husong@kylinos.cn>
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH v2 00/10] Use generic_file_read_iter() in hugetlbfs
+Date: Fri, 10 Jul 2026 07:25:16 -0700
+Message-ID: <20260710142517.1022940-1-usama.arif@linux.dev>
+In-Reply-To: <20260709184740.1286561-1-willy@infradead.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B4AACA0009
-X-Stat-Signature: esffgkp39tk896ybrefu7oiprx8e7fi7
-X-HE-Tag: 1783693460-265537
-X-HE-Meta: U2FsdGVkX1+eLIKBTEGD44wu4KEW0G2nfzdrvYy+Ww6km+rBC5t/izaCnvjshjIb3uOvZcHEUPIhucIP29XpdMHFp3PXEX051UlzUV8MWaHQCP9JrjLHVp8OM6lYRf9q3DdNje+oyhbLV86AcIhanh/8/4bF8br/+Mj/C/a6hFGgAYg/36S/pyrO38xuljsSqbsbIKDqn/niZa6zejujq77s1LMwILgH5XWv0MLTJIdTjaVhYPfCjSriYo9nQgtlGTbL/0+nkEDbHyH4RsJiNla4HdQp2jmK3/1UXGDpzowvnqDeGVfeXiaUaa8IuNnzCe/J7oazJIut7HOAt122WTSxbYctDPLnIpwJRxAHKdpV+K1+2gKvO/mJ0D1g+5R5gc0Tiv4ybk/8Fud0YKJgge/gu3F8FycoaTwxIq+vopD/tjsvBwh8i+0xLg9GlHkSDCbOXcu8TIZKLW4yiZczfcq5PtCUf+ML5X3QB5hLP/aqdJNTRKygUWoDfvKRtfXgyU3uGxqWPU5Ic7eiTkujI1ekvS08z9h4CTy0a+MdgxEROcSkgARCeEHGaLrisNYL7qQTi7dUn44gseGz+kJclJx9YXrO29XQlrWs/NdH6H2DFonRLPMeJRvpimBJFpk5KV8nKvD7KzaBfjl49wE/a7L9JbV/pmYdm2R5aCh7CldWBqzT+29QsvD1nTzWuJ1PTElE1ZS2DkGDrpLNRB/V+27K80hdrdkHYXc3DSgYGFQ7iRP3XJ6h+mgtWCD9M5HAgmC6n0iNjPUH/pVGTtFh2WlShZLpTZMEMd1MCZ7vOXUx25IS0IUgDEACswQRE9szlkytK0F85LmUDPG+ac3FsoOozxbeHfFfJWPfNDoqQ3DnlnhI6X7igEJsq1I2NbLdEaQ6S0vQ0xk/70daGiYreraoESCCz0D8Icq5piYvqHGLI7S5YEa5+fg3EO2LXhy9Hj4dQRJUlcu518ILGLd
- RpcCyvSt
- dMTQ41ce92O4JbyPTKV07AeXn+c9nvWsqWQMRRhKIEo66z+McvjnNfBr9E7cKf+o6iN0um0301DrSQ9LKTcfTeV0m0iXPTz/VFWtMtRh39aBABcPIW4t7K/KLVia27AQVQWH8OeHT5YOdPeZwY6bTTtdNo4/hvd6TujyRgFXE47pyzQ2qdNIkCI+3ljcGmlH2NiabVdASVqFhka+SvxY9uQD558A7N8n64s5Co9bMXOlMyNCfKgBetc8zK7sSLjUTPwJzgvDXYtXr5dqg3EfWZE4aLg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B480E8000A
+X-Stat-Signature: k9rtwaf8zqero4683yh8dhr945obrkzf
+X-HE-Tag: 1783693538-188196
+X-HE-Meta: U2FsdGVkX19sZRk1ya9hFJd7WabWegEy52uSbSqFXoeZek6+QVzIk2L7KyIVUPksujEyBgmy7wi3T3607Zs4HVlQ6aCscZRSSBPQabu8WscqgEBDDEqOuSiwFWjWhfEZMG7YPHo8xIcRdYkEmljrseeR+ETNxl6TfiRRv9zPFt/KlpWF9s+m6Ky4fCHQ6x55hCgPwvMsZ7MMOY7XFdXL+xEPcK86CdZv6YmKs/CHiUYm4MdO44eaTsmO7XKaInkZgYppyIIqJz7i0zTEz3V0Ltym+eDL1ovqqQvRGHMAc8w7RPuWlf+vDLvC/9cwHShLgbH3faMqSW4ztY43UZYPQEY3ktDUvmm8eY0vohG7NtykpZgfhH7srzwGDXoP24xorewLJIXlzy5mzasfxTvAg5xOkT+cxGpnfTp6VM+E3XR52BIKLxRz9u11COb1i3mrIvDZSWjTIPkdwS6HFmBZqsS5iJ54B3YJv3xTtUhGRbt+t/mF66xMiMK7wt4a7lCZnHFSwu32MymSAEkXaFyKBe3in3+gmaz8AaBc0q65r+m4u4iqC7rMBSLmPzHmYZ9E6iLNIVpII9M/IfYJZa+3R8pGC1ccM5VcJSJPZGjHIdbL33LQaJ+rhq0RZPTu8m6ZzjdMPpNIC4HrKdm7v5iFNsV5JodcIoptPiEYzUJnq17/KKox7iqqM+HJ/QXAnRI/xT+j7aKbVet7xeuPMCY1caGJOjdDNtYfI1LZ04xQ/chvXRHaUL0EfBp1/1txaIyyTs0qitxls4D6f3IXCOWpjBrGUNWvnXO2vQrRYpA5JF6Y4dxe1Ta2ase/NobKC6ovqmzmPWOEYHJwyqiWDmiCtCLsv6n4YvRZxBg5bzkAVbyGJ0hpGgTKb8gmu8zb2eP4+to8IyZRPmb7SmNgmtUmww7wCjA3p+IHhXeIRg4j4dZQ9gAMMJgMPWu4SGNYQfYD58CcRltv3vQlPdxAu9W
+ nVcltei8
+ ArxBMbqMINj9xkdg4HFYWe5GhQVq+Y/UtyQG2crGi4OCm/EzkC3bSqLUqK9IBbADTt64+wXSPoACwtP3RsRvFpn4pMIcGWeJlP7BcRK8gNzR6c5n86dFsoUAKD5HxuuCKLdWuzuiHDX/LYiID4b43bk9jeR3+XeCMz0JjE9GFvA2HUhJsq5snhhv4LdIcjwOpvcTaIlKBKbx5P5yFI0Ia0laYSa4TcX9U16Du+/nxIoW/maWOGag1UWx4u086Ps3bjC/owph+CF5KjGrLnen6K7tFZpFGR6wYB8U2LMGpQDlIu65AkDh297HQcRSLOqrSeb6e3OVr4BA2PajymePj794bniFF55LVPqYRNTtjP0FIbtKhvH8HDkigXwJRx5mw5hO0Ic9/DA4gXKz/Qjf19TlihofYlih62dhBYcTLIbu2tuk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,46 +96,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 12:47:36 +0800 Song Hu <husong@kylinos.cn> wrote:
+On Thu,  9 Jul 2026 19:47:28 +0100 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
 
-> The 'update_tuned_intervals' command of the 'state' file, added in
-> commit 1077605396b4 ("mm/damon/sysfs: implement a command to update
-> auto-tuned monitoring intervals"), is described in usage.rst but
-> missing from the canonical ABI document.  Add it.
-
-I initially thought this information is better to be only in usage document.
-But, ABI doc is already describing all the inputs.  So, this looks good to me
-now.
-
+> This set of patches are separated out from Jane's earlier series.
+> https://lore.kernel.org/linux-mm/20260617172534.1740152-1-jane.chu@oracle.com/
 > 
-> Signed-off-by: Song Hu <husong@kylinos.cn>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-> ---
->  Documentation/ABI/testing/sysfs-kernel-mm-damon | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> There's enough potentially controversial things in here that I think
+> it's worth considering them by themselves.  First, handling hwpoison
+> in filemap_read().  I want this for shmem as well as for hugetlbfs (a
+> later patchset, maybe).  Second, handling misses in the pagecache as
+> holes rather than opportunities to populate the pagecache.
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> index 03aecc07a5bd..7e8192527191 100644
-> --- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> @@ -36,7 +36,10 @@ Description:	Writing 'on' or 'off' to this file makes the kdamond starts or
->  		kdamond.  Writing 'clear_schemes_tried_regions' to the file
->  		removes contents of the 'tried_regions' directory.  Writing
->  		'update_schemes_effective_quotas' to the file updates
-> -		'.../quotas/effective_bytes' files of this kdamond.
-> +		'.../quotas/effective_bytes' files of this kdamond.  Writing
-> +		'update_tuned_intervals' to the file updates 'sample_us' and
-> +		'aggr_us' files under 'monitoring_attrs/intervals' with the
-> +		auto-tuned sampling and aggregation intervals.
->  
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/pid
->  Date:		Mar 2022
+> v1 here: https://lore.kernel.org/linux-mm/20260707181713.208282-1-willy@infradead.org/
+> Sashiko had a lot of valuable feedback on that, and that's all addressed
+> here except for the things that I don't think are relevant.
+> 
+> Jane Chu (2):
+>   filemap: Add hwpoison handling to filemap_read()
+>   hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
+> 
+> Matthew Wilcox (Oracle) (8):
+>   mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
+>   hugetlb: Mark some function arguments as const
+>   filemap: Remove checks in mapping_set_folio_order_range()
+>   hugetlb: Set mapping folio order
+>   memory-failure: Remove raw_hwp_list_head()
+>   memory-failure: Prevent UAF in raw_hwp_page list
+>   mm: Handle hugetlb correctly in is_page_hwpoison()
+>   filemap: Add support for authoritative mappings
+> 
+>  fs/hugetlbfs/inode.c       | 122 ++++---------------------------------
+
+I really like the deletions here in hugetlbfs :)
+
+>  include/linux/hugetlb.h    |  24 +++-----
+>  include/linux/mm_types.h   |   4 +-
+>  include/linux/page-flags.h |  28 ++++++---
+>  include/linux/pagemap.h    |  32 +++++-----
+>  mm/filemap.c               |  46 +++++++++++++-
+>  mm/huge_memory.c           |   2 +-
+>  mm/hugetlb.c               |   2 +-
+>  mm/memory-failure.c        |  39 ++++++------
+>  mm/memory_hotplug.c        |   2 +-
+>  mm/shmem.c                 |   2 +-
+>  mm/vmscan.c                |   2 +-
+>  12 files changed, 128 insertions(+), 177 deletions(-)
+> 
 > -- 
-> 2.43.0
-
-
-Thanks,
-SJ
+> 2.47.3
+> 
+> 
 
