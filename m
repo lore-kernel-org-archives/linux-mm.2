@@ -4,119 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01AA0C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A81EEC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:40:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD3B26B0088; Fri, 10 Jul 2026 09:39:25 -0400 (EDT)
+	id B51856B0088; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5E366B008A; Fri, 10 Jul 2026 09:39:25 -0400 (EDT)
+	id AB36F6B008A; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B26076B008C; Fri, 10 Jul 2026 09:39:25 -0400 (EDT)
+	id 97D626B008C; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D5296B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:39:25 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20832A045E
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:39:25 +0000 (UTC)
-X-FDA: 84972973890.19.EE6453B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 679E1180013
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:39:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fydQPaDx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 71E106B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 051988E705
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:40:30 +0000 (UTC)
+X-FDA: 84972976662.24.54E72A8
+Received: from mail-10696.protonmail.ch (mail-10696.protonmail.ch [79.135.106.96])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 359C418000E
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:40:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail header.b=hMk7Alrl;
+	spf=pass (imf06.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783690763;
+	s=arc-20220608; t=1783690829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hWe5y0XfVr4QQQGo0kaEF8UGbBWB4HZz8UbrXKM7Z28=;
-	b=WdVpfXwpiCbIfbBglRdAckgo/jql3bv+9E41ESlvgv6US+DDxFTpntRgnVBO08otuuZhx1
-	3CcEIBTNXDULFnhzNawbF4fper0SBO2j5CEgaUIVRcmpZj5OvDFQS8lLf9PV2rKli6I6uD
-	KU+nj6CHS30qJcdmOpKbL0kj4nHDfTs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fydQPaDx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=vIiiJ+cCf8lqAIOs514qP+AoBMOvT7LpG/tOo8gCmII=;
+	b=8Es5osqccuKJqSdpBOFTT40Bp1OQFkND2jkWDPghCuu5zIJpVpBnoK02rFy/PiH3v4y+6s
+	ADoYg+tjcT+NAncArpVEdqtb5NigFQYdGHVo6eeKPwa1olU0E9AX/Ojnwi0yX24vLJbjYk
+	ea4pGciMirUFUZ5ezmAQMZFVtP1Mfe0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783690763;
-	b=cA7Nixd1tE8ARwrR8fLQ548L2rnYuOdNseKDGw+Gw9H6czIeSTT776syxmBkhT5Wa4Fwh2
-	dddzcfn1YNMityzNF4VgEvfVr3DbFXVVRyHZ/UawBdO8/12lAUWiCsjvHTrvhyLCiisDZk
-	3pVXLjr9Zg4jKjVtA68bFfC24oia0j0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8B73443C2D;
-	Fri, 10 Jul 2026 13:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F051F000E9;
-	Fri, 10 Jul 2026 13:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783690762;
-	bh=hWe5y0XfVr4QQQGo0kaEF8UGbBWB4HZz8UbrXKM7Z28=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fydQPaDxS/hHGLVdvf977qUXBNSF6t19lqQW/RqVTS+Xk5pgKo0deA+cWIFhyYRvv
-	 IeSezmg4COMZrohE1QJ6gnvclo/bOnA8j2IrdEmxinGMPa0Cv9pB6NQzVtyWt96x//
-	 6dNWU5GX7waS+2jwE8BVZ3WNZw/wsfy0C0SSKxIKb3QlnIRCNzHVm3c5Ps0q8mrTgW
-	 zsWArKYrCmnfDcrebwcipzmYNQ0mhqZJQQZSGHykLDKtejNlCDmPcno/dc/3rjzGeu
-	 kuxVdLjqHCE3kyZgIMxt9Re36Qo0mzOOVMmO0ZdfPfAx62l26oANlEaaJo1XHJjjzR
-	 MdqLjT6QyxJDg==
-Date: Fri, 10 Jul 2026 14:38:58 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Matthew Wilcox <willy@infradead.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 02/30] mm: add kdoc comments for vma_start/last_pgoff()
-Message-ID: <alD1h7kHZdX_0I-0@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <8c618dfd7de419e3b797b8bd1cd921d4c5b8878b.1782735110.git.ljs@kernel.org>
- <03762de9-c695-4cdd-8c25-4fc31335ea15@kernel.org>
+	t=1783690829;
+	b=VITVzBfmMc0r2lGeUFRVtXaU0at0u5j3mMOVhiGAgMax8Bc7KGM5QfdXsd9uEVt/lx5TIL
+	W7y+mKdk00Awx1ybAFSYWi5dj6e/OmxrD/1teXYg2xTS5nyLNR89wnS80EE9/t9wWRpiQ1
+	qQdKi0OmyNQQUOvHNQ9wyDQa/l6bgmc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail header.b=hMk7Alrl;
+	spf=pass (imf06.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1783690824; x=1783950024;
+	bh=vIiiJ+cCf8lqAIOs514qP+AoBMOvT7LpG/tOo8gCmII=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=hMk7Alrlqw7r1hFNUhRlV1qHOjskMYC3pW0uNzpxYGV8k1v3L73TCrSshT9w+bbhD
+	 ThbiHw4Dw1y3uFJzlZyYvHiuLmsaSM4ZqL4stx7Sbdg/KxdOFbatEL531tuolLxpU/
+	 fXpC7dgE263LggkjoXBG2dDecdbp/q0nbCkQlHekjD/QCkqlTowEjGbQBIvlFNK4Ze
+	 gmYaXBVo6e2Ga7sOofmFH1W/3YVyOsr0u7Fs7hm30E1+aXCL5H4nEYfwQWdq2Tt9tH
+	 KGpsZQz1VaNYl6mYdxlJ6D59Nt0pKR+/zVwRAV+lZ5klOw9jtU2lsbnj+De7GPBcH+
+	 lp6vqOyucVd8g==
+Date: Fri, 10 Jul 2026 13:40:17 +0000
+To: "paul@paul-moore.com" <paul@paul-moore.com>
+From: BoxStrikesTeam <BoxStrikesTeam@proton.me>
+Cc: "rppt@kernel.org" <rppt@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "jmorris@namei.org" <jmorris@namei.org>, "serge@hallyn.com" <serge@hallyn.com>
+Subject: =?utf-8?Q?=C4=B0lt:_Re:_[RFC/discuss]_memfd=5Fsecret():_opt-in_visibility_for_security_monitoring_(eBPF/audit)?=
+Message-ID: <pciGBFzXU6ZhxcvS_9tWNr4oA-3uEmqoXh-B63mT0hsw3Deyl5pud2MXgRGQ6lHx59gqVkFekZjMMI3dhlkJemkaY63utKQplAIw1Tj-jS0=@proton.me>
+In-Reply-To: <CAHC9VhRCo1nc2qLfq=Fk9Q26vjSOUBgfM8wV6U4S+Hv1KM9LNQ@mail.gmail.com>
+References: <umQp9Qs18vw53oZDFIgYE4MyUWNemeNL8-Vbs-BOYEvQByiyPSZ3RrEvOpmdWUZ1YtjEHpjlgZnMo5DkJuJziwrKWTYS_A0QF_B3ixToMBY=@proton.me> <CAHC9VhRCo1nc2qLfq=Fk9Q26vjSOUBgfM8wV6U4S+Hv1KM9LNQ@mail.gmail.com>
+Feedback-ID: 205449183:user:proton
+X-Pm-Message-ID: 249e68c2716dbae997f0bb878229f5895b302bd6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <03762de9-c695-4cdd-8c25-4fc31335ea15@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 679E1180013
-X-Stat-Signature: bqwszduncgj8hcmcq3qjjq77xdgdzsst
-X-HE-Tag: 1783690763-964805
-X-HE-Meta: U2FsdGVkX1+VHNVKgb7VS26lPfT5VJVL9J581idti8q+gsHHufkbz+YzDb3oMmT3QynNX0ktWmWq/Mwd+QuwIuM6V7OyuClcfybos2cS35p7NCwn2noFNJCujZySsrHzevwSMi3/Pv5DDdKQKLcTASIBIcA2lc1mNTo685VekdM6P/X/cWMv4AQ75BFCmYfLCWjJjRyt2KN5IJ1jmFBDfn1/kFwIFVZ1JI6CBNUqAPGGpMFdUTkBYO23sbw9rZcdapsDmRZFM+lJ4DhhHKRCqOr+SQYf/WW9xkkmZqPHN6LFP0H331lq7IuSfI1Ud5Aj13OdncscMRw7GxMT2lRQnGtloqdw8si3duUchtuVc8BWAF5c6H/RjXe0d+PwP1br7HCiPZNv3OThFQQ0M/fy5uMjURjI2PqLXUApsE8C+nfV4x/q+HuCRWs++7EL8RHKK0tFiBfRRvLpnG5XXXpWGE1LQ2/JzYvbHHgLITIXE8Cd9hGXzMjyA/CnMzhWlbOe9+Tzn1VQX7S+F1vFpwpx7/yW+idxvocGHiM7BbsFM5b+JOe9A95yAPgGNc1Fx5+1Ol0TMcGu18lbvhlXr5KbqGg9MQI2idBHau+ZpOmejWh2tSEtzvdBYlEQq0ySJRRU6Pn3sFMN6y0cJH4uBqopKvzFCv/fxqMhUzZTvEQqVcVpGxWKvxSDB7dauYSjhsX6O7D+Ym8YBNLYGPL3BUyRmglqYnSVXDCEKKjiYSp+bA0PI4ZHmsoLFI7FBPcC8y9NdSvb9mnTpBRtd5esK1zui0v1fkX2D3CxfcVzJgBUyRZ2cLwkYKJXVDDyr1UgbIxj+ykqJv8J0iEXXBLIOrHzjVdPNLqRSgGEAuMwy0ulghYMXhppFcAfaS/fbmEd6sATQLWJpPP13HinfNoEkC0zfhrXt0l8WyGvFJEixB5+OlyphBEFBmCZFcODBtza9yqDoVmzrlIala+q+1tu+ZT
- 8l3TO4TL
- H+AMBKvq5ljcuNp68iyZszCb4tlfzy5n2XxeJe2uxwUqw2pnYRrA/iUyZ5xbxDNud0aSGDBRGq/28EcyMPMYCQnrtlIz0HVG2ohxVMKJ5rMQd/mNwSZnJp1SGOanQyukhjlqvoXrPYy9+conuqzTNJ6g94gf6oOZt5fJzrMbS+BCKn+QL4YlA31u+a8G8yBfDvgU10T2z6DAtElbFG3ZjkOsqM3KiPCPD+nrgLRA2P/aTG2AXWZNGFcARSQgFsSxhKKsa9VdTXGzCPqLjOBtFH0gfnXbDuYWOkNLgamp5KtEwyO8Qj/DiKi8gYnP6EzSwhObjbjH3uGa02/WeUSa5+1Iw6x+pzO0oBL3V7UIi8LcX74O64TSbqXGATXj8bmD6r1ohJXKI5LCTbJM=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 359C418000E
+X-Stat-Signature: to8rx4zru3befezgeqqmgcjfyop33huy
+X-HE-Tag: 1783690829-907915
+X-HE-Meta: U2FsdGVkX1+KfFd36ErmLY9/viAc4oF1QNDokzj2EgU+vGjZXLHDPQ7WmzwBAiIXCeoq+GfR+lVDVOSE0rIT6CGQeZh4Zpn1gp1TrZEitGLrT9u99nx5IC7sL7/JJdyAI0Afaitk76d6aRIoqnce7gszfmS2NXtd8nvusghz5Lp7ReThcWQw8dQXPSyZYX3vzrV2NqdxzlsZ9tYL0nANJJsEKsJYMK1mCXJObXwOhZOTF9kg34ep5ts1SMqg2oYOayU3g0UCt3Dv6jRtGOZrizOomlKp/vyyj+a0qw83T8KG8SQ22C9A10YdXL4WTFGjsGyHQzsyp5yJRaZiNbvaWF1x4j+tVW4GqxaeGMnUfEHQTHN+Yjeog6IaRSDGT6mg7IcCq+5V8G7aCm9tQTaq1f3eDgukxzuBROeI8D0BV04dh+teQ39gQReSNhoWXOtv7hx5Nbyp8jHWt83JNgvi9wV1V/gEO//UdyWWftpBaS1KXZGZXuhQgaV0NQn20Pk6e+9TJyOYM/WLzI6jCmwhDrHm3HL6Ha5pwiFvfmcvapQoDYP0CvAuRKpPxT+XtkyREZUSPIsKUMmBm+o9vyMVUns3rOL6i4Ijk+KAxN8bNwXkdY4rIDCr35dtwsoaU4rOVMUCBZcwIo0eix4aoVNjj9lTwJRFLN1m+lrlBPvywVbbuoV/kVj4Xje3FA0uhqeOdmCuC62D5XIESDCn9BAZOKi2Xy1pA8X9UoSdNk2FDiGTUa0IO2S3/0s+dZWT4zGa9ynTVjXzfCMjdw5zKvExNBi8brhVb8dy2Nb/eZaQKM9Eb8o0KeqWWUWKViPuqMlqvbdJN8+cKPBPWFPTd3+Iz5wfp5XOc1rc0rW0y3tf68bWsFZd3GwdehqISpasz1GV3l9zkddDNtqjngmy0hpFhHc/jfNWZwxdlXaIotk2FqI3+bFpPgZMyB0TEk7jUMldFVNjHU2EHILHjjBQMlN
+ mYK1UG46
+ 6GKH1cyk9E8WODF4pNnctmFXUyFAVVDFTgXAjrMc71kIc/6s0OCwhSuJTLxajeQazlXOEXftw8TDhmbQmIX0pDKiAiQ37FrbNtn47d1v2cfg/EN5kxQ1Hl1B4JnCIXH3/yZekZB+9wxeo9ishcZCL/GDcHZPC8REcSKgdAMJ8t+/gp82JDryKthLzf3x6ETom5pfcfRbqFbMyyM1xWkHYBNbRnElgb2RXZNnIixotLpV6ZcgkzTEniEgPUg9Za5bk822GtSBJb+5yfW3sMfdMg+PHjF2CXVoUKz7dLCjZCqqO229Or31eCHxAVBFkOjkQCS6yLb+6Ijl5PQowjwnMoxTYEV9nrl+4Z4Vrh326tUr7rndq8i3jwVGT5kJCKfnISdeR1gWYsBRYlWCeCI5rBSBSISlvVBPIB4nVe5BqfXNLDpnHrhc86Il4aq8c65056jmAu2T8Ep2ye5DHQkHWIFEsZAWedvkt4pHdgGMrd2wLXyw1SqNp9Wt486LEu7Hf5znc4/IDdhqP9ulYJV5DlMisaub8xEKxqcxqB+TahZTK2hP0qNvDzMi1RMMRw5Ovgx7BM6WUDto4Ou4gsIqF81cHySl+oi0HbNHlpziq2a0AaJNrcjPtYGlpaL+NWa0z2sB41zdHDZvbHKuJ8W56vkl0mfZCHAI7TEhVPCUyZJJwkWc1o05sWfKtb/c1ua2zx9Ym/Um/T767pAGuV26RT7TGJC2sVFY3Tz5yrqwKr8AcMoKAeEV6tWjZxrcDpHi7zNfMqdfG4+JZjzvHM6FZ3DYqhrOrb49lHhG/W/9tbJ9FZEJGjkBcEW7l9sW8uSAqt/VKrLZaBRgH5jA20P4iIQB7gq2CZTPQMoexdjAtGSCRmAxlhz4zI+bFux9HPCrmkwsNbZ3QcjydYrdr0sErNonSDKLGlJBK7umrun5kju6lVdsPWXBRSxV1ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,56 +89,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 04:46:13PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/29/26 14:23, Lorenzo Stoakes wrote:
-> > Describe what vma_start_pgoff() and vma_last_pgoff() actually provide in
-> > detail.
-> >
-> > This is in order that we can differentiate this between functions that will
-> > be added in a subsequent patch which provide a different page offset.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  include/linux/mm.h | 26 ++++++++++++++++++++++++++
-> >  1 file changed, 26 insertions(+)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 059144435729..2f00c75e66bd 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -4278,11 +4278,37 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
-> >  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
-> >  }
-> >
-> > +/**
-> > + * vma_start_pgoff() - Get the page offset of the start of @vma
-> > + * @vma: The VMA whose page offset is required.
-> > + *
-> > + * If the VMA is file-backed, this is the page offset into the file.
-> > + *
-> > + * If the VMA is anonymous, this is the virtual page offset of the start of the
-> > + * VMA - if unfaulted, then vma->vm_start >> PAGE_SHIFT, if faulted then the
-> > + * virtual page offset at the time of first fault.
-> > + *
-> > + * Note that if @vma is a MAP_PRIVATE file-backed mapping, then this returns the
-> > + * file offset.
->
-> There is the ugly case of @vma being a MAP_PRIVATE PFNMAP mapping, where it
-> returns something different.
+Proton Mail g=C3=BCvenli e-posta ile g=C3=B6nderildi.
 
-Yup, the pfn  I will update doc to mention this abomination too.
 
-The virt pgoff stuff in the RFC fixes this also.
+------- Forwarded Message -------
+Kimden: Paul Moore paul@paul-moore.com
 
->
-> (remap_pfn_range_prepare_vma() -> vma->vm_pgoff set to PFN)
->
+Tarih: 9 Temmuz 2026 Per=C5=9Fembe saat 05:21
+Konu: Re: [RFC/discuss] memfd_secret(): opt-in visibility for security moni=
+toring (eBPF/audit)
+Kime: BoxStrikesTeam BoxStrikesTeam@proton.me
+
+CC: rppt@kernel.org rppt@kernel.org, akpm@linux-foundation.org akpm@linux-f=
+oundation.org, linux-mm@kvack.org linux-mm@kvack.org, linux-security-module=
+@vger.kernel.org linux-security-module@vger.kernel.org, jmorris@namei.org j=
+morris@namei.org, serge@hallyn.com serge@hallyn.com
+
+
+
+> On Wed, Jul 8, 2026 at 8:09=E2=80=AFAM BoxStrikesTeam BoxStrikesTeam@prot=
+on.me wrote:
+>=20
+> > Hi,
+> >=20
+> > While experimenting with mseal() and memfd_secret() together on a
+> > recent kernel, I ran into what looks like a gap worth discussing:
+> > content placed in memfd_secret()-backed memory is invisible not just
+> > to other processes, but also to in-kernel tracing/observability
+> > mechanisms such as eBPF's bpf_probe_read_user() (EFAULT, as expected,
+> > since the region is removed from the direct map and kernel page
+> > tables entirely).
+> >=20
+> > That's working as designed for the threat model memfd_secret targets
+> > (protect secrets even from a compromised kernel / ROP-based
+> > exfiltration). But it does mean a local, unprivileged process can
+> > now allocate memory that:
+> >=20
+> > 1. Is invisible to kernel-side introspection (eBPF tracing,
+> > /proc/<pid>/mem, ptrace-based tooling) once populated via
+> > memfd_secret(), and
+> > 2. Can additionally be sealed against mprotect()/munmap()/mremap()
+> > via mseal() so its protection bits can't be relaxed either.
+> >=20
+> > Neither primitive alone is new or alarming - mseal() protects mapping
+> > metadata, not confidentiality, and memfd_secret() is explicitly
+> > opt-in and disabled by default. But combined, they let a process
+> > carve out a region that a host-based EDR relying on eBPF
+> > tracing/probe_read helpers cannot inspect, and cannot force back into
+> > an inspectable state either. For userland security tooling that
+> > assumes 'anything a tracing eBPF program can attach to, it can read',
+> > this is a small blind spot.
+> >=20
+> > I want to be clear I'm not suggesting memfd_secret()'s core guarantee
+> > should be weakened - the ability to keep data hidden from a
+> > compromised kernel is the entire point, and forcibly exposing content
+> > to tracing programs would undermine that model and create a new
+> > attack surface via the eBPF verifier/helper path itself.
+> >=20
+> > What I'd like to raise for discussion instead is something closer to
+> > what was already anticipated in the original series - Mike, your
+> > commit message for memfd_secret() mentions: 'Once there will be a use
+> > case that will require exposing secretmem to the kernel it will be an
+> > opt-in request in the system call flags.' Two lighter-weight
+> > directions that stay consistent with that opt-in philosophy:
+> >=20
+> > a) An LSM hook / audit event at memfd_secret() call time (this
+> > echoes Christian Gottsche's 2022 RFC to label secretmem inodes
+> > via inode_init_security_anon for SELinux). Even without content
+> > visibility, logging 'process X created a N-byte kernel-invisible
+> > mapping' gives EDR/audit systems a behavioral signal to alert on,
+> > without touching the confidentiality guarantee at all.
+> >=20
+> > b) A distinct opt-in flag (as foreshadowed in the original commit)
+> > that a process could set to allow a CAP_BPF/CAP_SYS_ADMIN-gated
+> > tracing context to read the region for legitimate
+> > monitoring/debugging - fully opt-in, off by default, and never
+> > implicitly available to unprivileged tracers.
+> >=20
+> > Is (a) something that's been considered further since the 2022
+> > secretmem-inode-labeling thread? And is there any existing tracking
+> > issue for the kind of opt-in-visibility idea in (b), or was it
+> > dropped as not worth the complexity?
+>=20
+> Modern kernels do allow LSM labeling of secretmem inodes, see
+> secretmem_file_create().
+>=20
 > --
-> Cheers,
->
-> David
+> paul-moore.com
 
-Cheers, Lorenzo
+
+Hello,
+
+Option B caught my interest. Do you have any updates, disclosures, new idea=
+s, or anything new to share?
+
+By the way, I strengthened my finding with a proof of concept and have now =
+disclosed it publicly.
+
+Thank you.
+
+https://github.com/BoxStrikesTeam/Counter-Attack-Injection-Method
+
+https://boxstrikesteam.github.io/Bulgular/001/finding-001.html
 
