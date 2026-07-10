@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92CF8C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 05:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FB5C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 05:31:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B99B76B0093; Fri, 10 Jul 2026 01:31:20 -0400 (EDT)
+	id 09D496B0095; Fri, 10 Jul 2026 01:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B72226B0095; Fri, 10 Jul 2026 01:31:20 -0400 (EDT)
+	id ECC166B0096; Fri, 10 Jul 2026 01:31:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94E5A6B0098; Fri, 10 Jul 2026 01:31:20 -0400 (EDT)
+	id D94576B0098; Fri, 10 Jul 2026 01:31:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 512236B0093
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 90CE76B0096
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 01:31:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AAD2F12038E
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:31:19 +0000 (UTC)
-X-FDA: 84971743878.26.172B713
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A0F5A0358
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:31:20 +0000 (UTC)
+X-FDA: 84971743920.10.6DA5D6B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BE43B2000A
+	by imf28.hostedemail.com (Postfix) with ESMTP id EAFEEC0006
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:31:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTwPePKK;
-	spf=pass (imf03.hostedemail.com: domain of devnull+m.mavick.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+m.mavick.dev@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l65Scuad;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of devnull+m.mavick.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+m.mavick.dev@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783661477;
-	b=69hu67SQXvsA32aliWCZcwix37ISbZmrfxJcIrTgSSkdacke2pl9gGbyhGw0SPw70xq/X0
-	ehUtupj2Eyg1ZId2vflaAx//LJoxn5HoWOD6GhD3wZdt1yk3jhQLZ3DYmxbARgJWPxSsII
-	RmUjx8+qV2R62G19K0qZhfdqHXnuhiI=
+	t=1783661478;
+	b=OOSCPXF51qSa0Mcuuu1uP1IMwHzg5YItLaC0j70gXeou1ZRNyDDGsyc9e0pTd541MvffVb
+	Ozk6M2ztXjMgy3STEVn4wB2NR1L6bLVC+mt8ceGrzOXhd0OjS9DK1ttfXtQ7q5pLlTXsRi
+	2yj7UGY0uB8S7TjIGwSK5Suay773Q7Y=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTwPePKK;
-	spf=pass (imf03.hostedemail.com: domain of devnull+m.mavick.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+m.mavick.dev@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l65Scuad;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of devnull+m.mavick.dev@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+m.mavick.dev@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783661477;
+	s=arc-20220608; t=1783661478;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7TLyFbGuuklzUrw5MTa+nUkArs/G5WrJWz49khOadlA=;
-	b=YX+WF5OV9cRX/bYOVfA57Rqt8cghuUsjcnMR/0UK6ZGsnjEzSqU4Uoi9hDPKdgPJ07N30W
-	3gbopLl+x9/rItEXEongKZLJgsBXcB2tGpV5Ck2hT+y60f13KsCAirlWmK1oDj/N11DxXJ
-	hXBpbH2EWGH4ZO5V4xpfjhgTbSekK6E=
+	bh=D1NZ1kFpqgty2czs0pmJvulJgVjk7bOc97fFjwsZ+ew=;
+	b=hFe54W4XJj8Bmo9D1chnTaeA3DosisV7T8WtL/42YFCpPggYSDqaB0EtwSTUOus6oIetyo
+	NrDIKTQrz5R7yx67DxWAaDhiHuTUkEmsgMXfZ44EUEjNrHtQboeWnHZ/BT8yNW6yRJe9WJ
+	ZZmGsYQFqFFQ8nxFcFDFWikKKzKJlGs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7784844FF3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7216444FE4;
 	Fri, 10 Jul 2026 05:31:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A299C2BCFC;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 34CBCC2BCFB;
 	Fri, 10 Jul 2026 05:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783661476;
-	bh=N3UNjWOifoQciMT8bRgQar7ekquskU0egj4OqvXH15w=;
+	bh=hYItlIxI3TFxH56tjyUfH5lTleoN/4M0MjnyxZ2eCSw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WTwPePKKIBMnJ83AaPUEC7cUUPfM//rKzNoWC2n47+rKDIXlR9KkD2IYKRCa1mz/t
-	 y9TvjYaISfnHmEzXrvxC49FYTriD4f+whjvU8AyYf82kRqMBsFeEOiBcRtqNoiQ5e1
-	 8g+G2cJ4MMTnvsPAN+bomjEMkWbeakkfHK1C5Gz2/FxmRJ96C40aYePCDqbMgDLXQF
-	 2BtA7Dfmgy3giEep4D9XWCziwp/vVufH/gqoaDCc7aYuMHuHI9bQMYOGQpL+zKdO7c
-	 3S8FOvIFMxr3JSxDePMPirSxpLd/iEGDFTcDTKtyL92FLuEICXxPsZDilaR59PDYPO
-	 Zu+kyupNOvSPg==
+	b=l65ScuadIrCDCzyddzFeUgvv1Sxf2QFAxdvh+6epe1m+3ntxxcipFUji0CHV7n13f
+	 e2X7H0WyQSX+dI95L/fe1pz7Sk1k7gQfxtETgDN1xMoTyq1DPv6fTVJwWO/E6ZND4G
+	 c/Of4WSTzT0ASWATk1kCH+EFISLrG3ZQt7J5XV6ROdSxDTLHSAxldCsLKix70ePI3n
+	 qRZgRVflHgR1HpWq5JW6T3HjdcWpTydbZAP/ZDJbFV4/IaRWsAcreUFzhYv51uDSqK
+	 2KceLTGKkQU31pb/edjGPJPbkrdL+Rlpo6zbvjZg/pFvRUfOtsJxIwCizfF4V4UcwB
+	 s7xMK6KVmo8fA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 313EFC43458;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20261C44509;
 	Fri, 10 Jul 2026 05:31:16 +0000 (UTC)
 From: Eugene Mavick via B4 Relay <devnull+m.mavick.dev@kernel.org>
-Date: Fri, 10 Jul 2026 13:30:43 +0800
-Subject: [PATCH v2 5/5] MAINTAINERS: add entries for ref_trace_final_put
+Date: Fri, 10 Jul 2026 13:30:42 +0800
+Subject: [PATCH v2 4/5] kunit: add test for ref_trace_final_put
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-refcount-final-put-trace-v2-5-557cfce860a2@mavick.dev>
+Message-Id: <20260710-refcount-final-put-trace-v2-4-557cfce860a2@mavick.dev>
 References: <20260710-refcount-final-put-trace-v2-0-557cfce860a2@mavick.dev>
 In-Reply-To: <20260710-refcount-final-put-trace-v2-0-557cfce860a2@mavick.dev>
 To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
@@ -86,26 +86,26 @@ To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
  linux-mm@kvack.org, Eugene Mavick <m@mavick.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=665; i=m@mavick.dev;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5506; i=m@mavick.dev;
  h=from:subject:message-id;
- bh=qY0jw9qG8rTERqF+Mm/JywN3bXE+e644UzadbgoAM88=;
- b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFkBzT1/DcKkKm17S69+OZR4JdNRoG2tTpF8UDNXWP7Mx
- Uyp9nkdpSwMYlwMsmKKLDVZCe4ZK2clGh+d1AMzh5UJZAgDF6cATCR6NcM/I6ODKmyXLLZ/eT5J
- 9dAyI6OMB79Djq3a8L/smAyrtc/jXkaGdfeUHiw5E3Xwy0SZeqWnt9eVFZw1Wb+ssaP0hajyx/y
- 1XAA=
+ bh=/9Dev+Y5OluuMZTbdCo5lc9tYCtS2UAK0B+nMvLxkRA=;
+ b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFkBzT3XlnTrxwqYtC050Bi7wWrFRla/teG+d+LXfH/vu
+ Dqtwzezo5SFQYyLQVZMkaUmK8E9Y+WsROOjk3pg5rAygQxh4OIUgInkyzH80137etGuGXom334l
+ 7cxMMWp0jt3csPWciFXil8ULhTO3iTEyvLTfz7vtbLpA+bapb3MeeP01j1aqVvzZeJ4t8WJ0Ue4
+ HfgA=
 X-Developer-Key: i=m@mavick.dev; a=openpgp;
  fpr=7C6A604768A99A6133C5928C9D1FCA7EDB7D344F
 X-Endpoint-Received: by B4 Relay for m@mavick.dev/default with auth_id=850
 X-Original-From: Eugene Mavick <m@mavick.dev>
 Reply-To: m@mavick.dev
+X-Rspamd-Queue-Id: EAFEEC0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BE43B2000A
-X-Stat-Signature: jyjmtdc97xw7aeem3q5ae4oahacye5yq
-X-HE-Tag: 1783661477-946238
-X-HE-Meta: U2FsdGVkX186A2p8cqZH4sqHGquEsqwFw3RNtko1ASHtrDna9edpG4KFO4iq499mEGJ6MjfWBFFoEBJz8THz7JuhK6lp87+1Z3n73qpI2SvrB/+WkgzjBdHwz/EdB9h+Oy6w+hyJS985TcakhY93G+i3+0ExmtDQTD8NpDAU8sKF/Ly1TzkShmqxiQ7CwielQxzX0zwADZOh6Jh9+XFmTXiNatm1lt/vQ7iQzGwqDDQEose6XVVj98SiM+LSUVpTRh3mYq0P/11WThzYVidTfzVWkf1paCds0cKNzQGvbLGWgCLLNRGulAY9iO4lNm2I7kHeJ6OhuOuED63ViA0fyDYqaAyY1X26aCfxk+EnQEULiSqa6YBcVrX18KO529/tKJDauMKw+i8XLvHPc2NO060dfvzPWdByLQ5VrvC+GZ07VUCv3OpyiZT65oR/hBvx5ahIdDinm652d9UgB+BedOkHfaBKji35YZulkkVR4ZgnDguRJds21fsJNBYV5IfeTfD9P0GUJvd4YoQ5Z8ERiVyPsqxj4UpfwMzqb7hO875Rfb/gAW2IQ17ZlItgwMxH4U6WIu1/ZA8qtBN34PCZV7pNfofE0D1JE9i1cLEg3JFNC0hvr5fBQi9WTTRyeTCu1XTK3M3hK6E6vbTGtstWKKrXi6CykiNkmAQIGWw+PWjdwk6FQ8XJkdGGHq4XJYgRbEvyw6J9Nx72XyDkfaQzex3j+IQv1oiImCZ3hsqGzQOMuoKkwWegj+eRSJjY6jEq4bNYdXP3xvgOFGZbgehU9Am/+wlj0oeiy+GuhnJpquC4o8TOu4sl/rHGjf4Mpd11CSM0sBT1sNhpjuMqhzuttDYg3HyMIHiFcz98ljC7Y09XFg3wwe0M55o4Jy3BuCqblM+RMQsCXbEuLcrOUY5/1RHmnEP63PFhmh96tX3DpLnpK0D+G5PCZfqcH46Ivddwy1L3o582dAjv+uYOB5p
- 26ZcE1LO
- xri/Uy2E6aQ0Ti3qkHNazLLT1yQhJvLHbi5Q2YE4cYH7dxtq04shGoshHzoOPwoZRlFep4wleVje+aZ9e+9rNsxbw2VhRAYZsvb7RgxbNq29HEdlvi4ffsvvTfeo+G61p+aQ0QAXCy8YJLPGn6XWLEHbvhyY5hrgwMTktiduVzyWHvWBaZ7KLNgZQS1EJUSLnfEPzoQ4LXiBahnutmQ6yEbzYbpV/dkDWdIz/py26Bhpf8lk/txT8Z+X8ixVdPAVnKUDuqXATNOcQqOSt6Ts8peREHq50wUsgrVw8ouYbaZ4PVs1SkAjMpjODa3mVHdhNMYuXByqA/pOMGjKAycK1Dk4+9grAcvYfuitS5dsgPjTNoTwi0JIhAJv+JJjuepUIw5jLMAYzXZ+uYy49/N9rypnn0p7Ard1lBBrG
+X-Stat-Signature: tz1tjcb8xoc1cs7o1usd6bxucnxiq8b4
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783661477-775585
+X-HE-Meta: U2FsdGVkX19R460hyyppR7UUMQUzWmiPiEAAjMZcyxq0BhmOn6qr2N4UM3ZLLXbfBUYGwpfICZ/fB3pLFnATpPjSVefOlBKZ3D/OZA9DylIqD7aPZ+KiVxPfhX1JDrjpvYQADvzIOXN7bEnrComb6vY3lfVSe4OLVKYTPUZyBAV1T0AYb2kwO94WP6pcEYJNl271Msc03uujcj0MdUz14RV4CMUZax4uxhL014lJf/PAuaDw6QkFwk3CBa9wFGU76PM8dyuLniU7Yhj/VAmJtZ6T7uRDwylEufCHfXKoHtii5Z4ILUwuvkcHNSFgrSms6kwIg0P6iivefWAj5fTbwrpHNrLwlSPnDzmSXbJ9fO6U2KdcnOEk7n3S80FuMpk/tuAr7InbEcjvLCBa4ZRQoDxpN3tA8XkYqOCpdELj1mfE7nZmvOni8TF5XLL0ZRisxx8vndePOw2OuBt6oXxAaZ0MFtcjTeaYmQ9SdszgckTv5n+X47OukNOGspj29FtAVA/XjvAyq5GCBVjDSUt3TZz6e0QNVxpMGP6UwE6KEtkCQsg6ipKcdM4oTA8LahUkBqYWwX6qziYLy8CDfkFqcUKA3Dn6PHXXBu9juYmqfJMRdxX1lRO/7vxtWpuVKybEsWEwNt5ArZ5aXUAjQv02wSDfaS+5d5mDV43FZtGc26wSwj4+RKtqtgIBmRaai2qEMaXzX8Ij+88BtVLMzH73t5uOroz56zXyjySejQsIzpSRniXputCXOK6CDxz0m2FSnvjD5uAYuIEGrtxFh4BCIcsF4kEddCvOyTMIqLdTQKrymVfzlcRPwNJGjp22Exwv3JUlrZr2zHq+oTSiqfScYR1u2bwvMqLQniSalOTdliYe0IZixa8LgfHSlQWvwAEFAvK4+cj09ynij5VdiV4DgEBxHcA5Nx3YYf5zMxgxYrb9jeV7kI5plESsJ0MGkgiW0GtsdeSdthWf1VldYz1
+ /zG8OBGl
+ tZkcI17So/xadKq9b88gxpoj8WiaFWxa0QVVIM6/0hs6dqcRtlCp4BiNI5mwlgO+63p0Wqam7QVJtluodNeyE9ARFLDhI2BLALubzd3OrgNajbJ59I+NY5HSgpPYNVD1Xl3VZjBDszc2WB8pCEejZ5QGyGKpaFD3h35DwDs+OvJIjwF482EMMrogKLyDrHh86KB+MyVYFV/ekjX1Kif3ipGQMDnIKl+CBt1f4q6XA5Ketaf9HszfyR84CQoGCuuhMeJzX0BRFKFrdAwKHFpOVQOvGMT3n00RgnOPU/Nz5lE1QkeLcLlxw5tqxahGZ1YVP12pPHbVcqPGfCCsI0RmlPi0H4rabva6BTGi+J/I6S1mXYd+2HRZdMi9Fcal0B+34BKIow7f+Ri7fOhUoaD96TLqgdBXbvQgJIfUWfZNcn/5yN5cZBKmee2ttZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,31 +115,201 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Eugene Mavick <m@mavick.dev>
 
-Add new files added in the patch series to MAINTAINERS
+Add a KUnit test suite for the ref_trace_final_put tracepoint.
+
+The test registers a probe function and triggers both refcount_t and
+percpu_ref final put paths, verifying that the tracepoint fires
+correctly and that the recorded fields match expected values.
 
 Signed-off-by: Eugene Mavick <m@mavick.dev>
 ---
 v2:
-This patch was added in v2
+-fix v1 bug where test gave consistent false pass
+-make probe minimal, and only check obj and store the values
+-add test_init macro to register and reset count
+-move value checking to new test_exit macro
+-move MAINTAINERS file entries to new MAINTAINERS commit
+-v1:https://lore.kernel.org/all/20260705-refcount-final-put-trace-v1-4-cdd0014626a9@mavick.dev/
 ---
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/Kconfig                 |  10 ++++
+ lib/tests/Makefile          |   1 +
+ lib/tests/ref_trace_kunit.c | 136 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 147 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 10e8253181d3..2dbb7441906e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4210,7 +4210,10 @@ S:	Maintained
- F:	Documentation/atomic_*.txt
- F:	arch/*/include/asm/atomic*.h
- F:	include/*/atomic*.h
-+F:	include/linux/ref_trace.h
- F:	include/linux/refcount.h
-+F:	lib/ref_trace.c
-+F:	lib/tests/ref_trace_kunit.c
- F:	scripts/atomic/
- F:	rust/kernel/sync/atomic.rs
- F:	rust/kernel/sync/atomic/
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 00a9509636c1..c29b2ccb3c31 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -52,6 +52,16 @@ config PACKING_KUNIT_TEST
+ 
+ 	  When in doubt, say N.
+ 
++config REF_TRACE_KUNIT_TEST
++	bool "ref_trace kunit test" if !KUNIT_ALL_TESTS
++	depends on KUNIT && FTRACE
++	default KUNIT_ALL_TESTS
++	help
++	  This option enables the KUnit test suite for the ref_trace_final_put
++	  tracepoint.
++
++	  If unsure, say N
++
+ config BITREVERSE
+ 	tristate
+ 
+diff --git a/lib/tests/Makefile b/lib/tests/Makefile
+index 7e9c2fa52e35..828a030ad8c7 100644
+--- a/lib/tests/Makefile
++++ b/lib/tests/Makefile
+@@ -57,5 +57,6 @@ obj-$(CONFIG_USERCOPY_KUNIT_TEST) += usercopy_kunit.o
+ obj-$(CONFIG_UTIL_MACROS_KUNIT) += util_macros_kunit.o
+ obj-$(CONFIG_RATELIMIT_KUNIT_TEST) += test_ratelimit.o
+ obj-$(CONFIG_UUID_KUNIT_TEST) += uuid_kunit.o
++obj-$(CONFIG_REF_TRACE_KUNIT_TEST) += ref_trace_kunit.o
+ 
+ obj-$(CONFIG_TEST_RUNTIME_MODULE)		+= module/
+diff --git a/lib/tests/ref_trace_kunit.c b/lib/tests/ref_trace_kunit.c
+new file mode 100644
+index 000000000000..5c7e9d29a030
+--- /dev/null
++++ b/lib/tests/ref_trace_kunit.c
+@@ -0,0 +1,136 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/kernel.h>
++#include <kunit/test.h>
++#include <linux/compiler_attributes.h>
++#include <linux/wait_bit.h>
++#include <linux/instruction_pointer.h>
++#include <linux/kallsyms.h>
++#include <linux/percpu-refcount.h>
++#include <linux/refcount.h>
++#include <linux/types.h>
++#include <linux/atomic.h>
++#include <trace/events/ref_trace.h>
++
++struct data {
++	unsigned long caller;
++	const char *fn;
++	const void *obj;
++	atomic_t count;
++};
++
++struct data capture;
++
++const void *chk_obj;
++
++#define test_init()								\
++	do {									\
++		KUNIT_EXPECT_FALSE(						\
++			test, register_trace_ref_trace_final_put(probe, NULL));	\
++										\
++		atomic_set_release(&capture.count, 0);				\
++										\
++		chk_obj = &obj;							\
++	} while (0)
++
++
++#define test_exit(func_name)							\
++	do {									\
++		/* wait for probe completion */					\
++		wait_var_event(							\
++			&capture.count,						\
++			atomic_read_acquire(&capture.count) != 0);		\
++										\
++		unregister_trace_ref_trace_final_put(probe, NULL);		\
++										\
++		KUNIT_EXPECT_EQ(test, atomic_read_acquire(&capture.count), 1);	\
++		/*								\
++		 * caller testing may be flaky					\
++		 * due to compile optimisations so omit				\
++		 */								\
++		KUNIT_EXPECT_STREQ(test, capture.fn, #func_name);		\
++		KUNIT_EXPECT_PTR_EQ(test, capture.obj, &obj);			\
++	} while (0)
++
++static void probe(
++	  void *ignore,
++	  unsigned long caller,
++	  const char *fn,
++	  const void *obj)
++{
++	//prevent non test func final_puts from changing captured values
++	if (chk_obj != obj)
++		return;
++
++	capture.caller = caller;	
++	capture.fn = fn;	
++	capture.obj = obj;	
++
++	atomic_inc_return_release(&capture.count); //increase count
++}
++
++static noinline void test_refcount_sub_and_test(struct kunit *test)
++{
++	refcount_t obj;
++
++	test_init();
++	refcount_set(&obj, 2);
++
++	KUNIT_EXPECT_FALSE(test, refcount_dec_and_test(&obj));
++	KUNIT_EXPECT_TRUE(test, refcount_dec_and_test(&obj));
++
++	test_exit(__refcount_sub_and_test);
++}
++
++static __always_inline void test_refcount_dec_if_one(struct kunit *test)
++{
++	refcount_t obj;
++
++	test_init();
++	refcount_set(&obj, 2);
++
++	KUNIT_EXPECT_FALSE(test, refcount_dec_and_test(&obj));
++	KUNIT_EXPECT_TRUE(test, refcount_dec_if_one(&obj));
++
++	test_exit(refcount_dec_if_one);
++}
++static void dummy_release(struct percpu_ref *ref) {}
++
++static noinline void test_percpu_ref_put_many(struct kunit *test)
++{
++	struct percpu_ref obj;
++
++	test_init();
++
++	KUNIT_EXPECT_FALSE(test, percpu_ref_init(&obj, dummy_release, 0, GFP_KERNEL));
++
++	percpu_ref_get(&obj);
++	percpu_ref_get(&obj);
++
++	percpu_ref_put(&obj);
++	percpu_ref_put(&obj);
++
++	percpu_ref_switch_to_atomic_sync(&obj);
++
++	percpu_ref_put(&obj);
++
++	test_exit(percpu_ref_put_many);
++	percpu_ref_exit(&obj);
++}
++
++static struct kunit_case __refdata ref_trace_test_cases[] = {
++	KUNIT_CASE(test_refcount_sub_and_test),
++	KUNIT_CASE(test_refcount_dec_if_one),
++	KUNIT_CASE(test_percpu_ref_put_many),
++	{}
++};
++
++static struct kunit_suite ref_trace_test_suite = {
++	.name = "ref-trace",
++	.test_cases = ref_trace_test_cases
++};
++
++kunit_test_suites(&ref_trace_test_suite);
++
++MODULE_AUTHOR("Eugene Mavick <m@mavick.dev>");
++MODULE_DESCRIPTION("KUnit test for ref_trace");
++MODULE_LICENSE("GPL");
 
 -- 
 2.51.2
