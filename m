@@ -4,119 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC2F0C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2745CC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:51:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E63FE6B008C; Fri, 10 Jul 2026 08:50:56 -0400 (EDT)
+	id F032F6B0093; Fri, 10 Jul 2026 08:51:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E13F36B0093; Fri, 10 Jul 2026 08:50:56 -0400 (EDT)
+	id EB2E46B0095; Fri, 10 Jul 2026 08:51:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D05A96B0095; Fri, 10 Jul 2026 08:50:56 -0400 (EDT)
+	id DA3426B0098; Fri, 10 Jul 2026 08:51:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A5ABF6B008C
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:50:56 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4767E120466
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:50:56 +0000 (UTC)
-X-FDA: 84972851712.26.9F776D6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B59496B0093
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:51:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4A6851695A8
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:51:55 +0000 (UTC)
+X-FDA: 84972854190.14.2494573
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3BB0816000D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:50:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BtIu9TIz;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 75D2A1C0002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:51:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHlv+QvM;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783687854;
+	s=arc-20220608; t=1783687913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1iw77b8X16gJrVhQCh42mIIYra8xo3Yaosq5oDaaVCE=;
-	b=bJgqslzhdgVKIZvmYRbvfOFK8ZdrUkaBK0+6BNDxbzqiGKHgX3A2wSEZ/FXtBNStsiXPCu
-	fX5v5d+SEyAuxGkfHNzQcMo0RUe+t4dZxU44bzhCpQsCKhs0azEbI3BHAafWR9rBYp64vT
-	/X8Oti8Nk+DwcpHIBbf17IoQqtRalyc=
+	bh=oaMzaexiFIv5g4v2t+25ouPoSogbN+EZFjvcofhoUWs=;
+	b=p5+vHV8lwhidMyFHvEbAYha7WW2TgVJmyGl+LMjYwOwjTHK8hFi7czyeutR1nLAc+pSo5E
+	giXb1fkyOMBIcbV8X7T/sReaInl6Vlkxey4XZS/oENTDw5NS6WotpYQYgjLjehyc9s2BVU
+	ypcCx7pUxLIUDVUq5jLKSTVmo35YjIY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BtIu9TIz;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHlv+QvM;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783687854;
-	b=Z0pAWwp/8OG0pG/dYt/KcIv/ajLMMm6ZUH88n/Te0Zon3Gt1P2/3dkwBCYGhTu909ysQ69
-	sODMF9Wj1K3JkSQUPlBbZIuWMjJXpPZ08d3KyhAB4jFxwE+v5kch8zyvKl94dqXvb89L3V
-	2yArk8ods0JmOzu+wgq9ROPBTsmUEEE=
+	t=1783687913;
+	b=ygP8EkE8YHs+BXV0FrXeudF7ByKlG00hacNBUDzbnlsGwioHk/Jtt+8Ew01GwPvYufXdTk
+	l56Df6Vqvzg+hzw1GmWQxInfPleyKO4fXmEMPrPhJQ2brImK6JE3SNLJ9QqtUmjGV46Qi1
+	v4mU3/AiSq+1gKLoFVWPCPGis5Aonio=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 512F543EEF;
-	Fri, 10 Jul 2026 12:50:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865571F000E9;
-	Fri, 10 Jul 2026 12:50:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C5E6A40F51;
+	Fri, 10 Jul 2026 12:51:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6488D1F000E9;
+	Fri, 10 Jul 2026 12:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783687853;
-	bh=1iw77b8X16gJrVhQCh42mIIYra8xo3Yaosq5oDaaVCE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BtIu9TIzl1M9XFsV3gqi76cbHzlZ6zMvVfGaZhbvQUI8MMp7QoLK8JO+VaM4s4SAP
-	 pFtuUvoD3dzOZV6462v3x1pCtBvz7Vty6NI3aEOq26HbdKscVM4MEmhSC/40xPERaW
-	 4vmdkoEU+hDFxJDr5AJNzj9fKWamHGWyNBK9b8RBhWR3mJvn7Y7C0rj3/m6CySE6zP
-	 /OmkA4e9W9pVi2Scqj6Q2qnXmMnuMcdklTGTzhnJstjkUPf+06GniKe9a1+x7uJ338
-	 p5Gmq0KthQLWuAPGAx9v0l1vLB5V0Griemw1ISgvrxpY8N1FvNSWgOMqTEN+H6Hby1
-	 9BUjDFT4Fk0jA==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9CF7EF40244;
-	Fri, 10 Jul 2026 08:50:51 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Fri, 10 Jul 2026 08:50:51 -0400
-X-ME-Sender: <xms:q-pQajhNh2CvMVMs04M2RE_-I5qeg_oeq1NSooS9Ejg2MGa7jtaCow>
-    <xme:q-pQajUfLl-n5OeAYWDS5cVYTzxyYzG1O8a1IYAMbhz4qXJaSe1JzSyvUnJeKh81D
-    2veYgZ4iul4w1BCOd7R_y_ZBdhFRZVZ2qP3bIHavfR9RskFz4Y8Qg>
-X-ME-Received: <xmr:q-pQanKRwL__-j4KAi0qotz1jyqsdJ4IXAFhgt4tODMThg2kTd4pgr8THeWLgQ>
-X-ME-Proxy-Cause: dmFkZTGqkcapElgZfb8WjwSkBUsAgnVqOvHxOfUoaJ4ounnuNfZAYA0+YO2qLAIPT58/FN
-    Ix7SS+Y5Wcoqe7NAjDsgp9IeAYHG6o6YNMxvMnDIu5Z4Iviba9gq6emkFYIqhRXnurJOw4
-    Cge+6seryEkCJ3T22+a2Mb8c1r7a4P9zvoHvKbxIiDqAtMCGr9F7B/1SLGQmC+rnQp+hS7
-    kuFuzIAj3ENg+QOoTmsDUnayPmoHZyCy3nvgUZTAyu0O8MtyCOnVof4iQcB8CCLS7IkmZm
-    3N1z9AhCnOmG5ydzgdftJsEAwCE8jUoLyHLdBW5RrZhSWqChiWQnk+xE2gOOJtUAtQnDaK
-    S9Hgku7WaQp2kh43WURBLaZnl41STtc9QDDTYK7YOI/kXezNye55d3fQWfhMpug69SjUOf
-    kOX3fClx1zGFIaUF3psaJGJohc8a9lurgq5FSKaPhxzS33SWLdQbnsU5HSU7mu3I5vLpMS
-    LyhJdrAG33EhQ9ZbAru8cK1Mph1OHsPq3kU8U1E0IGiKYJEbKCYq0sY7fnCUNayg46r3Eq
-    qxomXq0U2jhuU7+Gl0pm+O62UYTEvv7JxVyKOcfUsT/+XcHpTOkp6uwv4Q561mnPU4JFzp
-    vcbelLVQa8ff92o7KW4Ry+H6I6nFf3gn5+T6klUQOaQ9VY6eybKWvzywKRjw
-X-ME-Proxy: <xmx:q-pQamqjkc0G63olNJFoMBMX61nqaH2sTVPtDNv2-2vM6yDH5Eu-5w>
-    <xmx:q-pQamsTYEFb93c_cm7GArnDbPMJUQgpIFRSUW12wH3H23LGihLW6Q>
-    <xmx:q-pQapVs01DUCrPedF183EAtiE4TTT74e34llLlG2XqJGddA8CGKww>
-    <xmx:q-pQaq2NxFiMrDb_1jTx9onYvW5oqqIW22BdKL3Y9yXsQo2ywq5bPg>
-    <xmx:q-pQaiceiJ_87dsJf3d-KxP0rlTZmo7_1X0ECN3ihJc01wA_VO-VBdF9>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jul 2026 08:50:50 -0400 (EDT)
-Date: Fri, 10 Jul 2026 13:50:50 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Carlier <devnexen@gmail.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/mm/pat: acquire mmap lock on page table free to
- avoid ptdump UAF
-Message-ID: <alDqg4CMUIu_pLVn@thinkstation>
-References: <20260710-fix-cpa-ptdump-race-v1-1-d898699a7417@kernel.org>
+	s=k20260515; t=1783687912;
+	bh=oaMzaexiFIv5g4v2t+25ouPoSogbN+EZFjvcofhoUWs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HHlv+QvMWh9O5/PuGdrPqfosBq3s0VwP+PfR5ZoZBFdnaN0wjcq5uWeSZ/T7YRf8+
+	 N6+PNVsUNC9lPu3eChx3cj6Q1GhMaUo+AZWy+ZuemeXgwNeIDCdd0RqK12Zdcs61oq
+	 luh/ZInTXGaeGYv0BNyHK+hWEAIl84oPZmgXqdxXHsT4k5gFJ6ZszPQfW+jAiFNXwL
+	 yCR1ncxotTKyP8TAsfbYHofhZqO6HSnYh4TZBOfx1w6JG6mRiFI+vjxj4UkjmlL8YT
+	 2pOCpAkuTSOFJE1IATAxf6jl+//WTgH8vva4kkaaw/xMVP1v/H+NEFVbzboQpZtGzx
+	 Iu4tV74s0+RIA==
+Message-ID: <73007de1-6372-4cf9-8373-323e48eec0fe@kernel.org>
+Date: Fri, 10 Jul 2026 14:51:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-fix-cpa-ptdump-race-v1-1-d898699a7417@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/5] mm/page_alloc: make sure tail_page->private is
+ zero at page free time
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260709-keep-subpage-private-zero-at-free-v3-0-7e4fe155f5b9@nvidia.com>
+ <20260709-keep-subpage-private-zero-at-free-v3-4-7e4fe155f5b9@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260709-keep-subpage-private-zero-at-free-v3-4-7e4fe155f5b9@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bdy3otcbn7nakzskbgog3jjhwdpaoj8h
+X-Rspamd-Queue-Id: 75D2A1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3BB0816000D
-X-Stat-Signature: 3pb4zyf9eta7zoy8nogre6wrik8oi3k9
-X-HE-Tag: 1783687854-55022
-X-HE-Meta: U2FsdGVkX1833bcDrMTo9RIRs0xC/TbWYmf/eDPbJ3CBzS6Tn95WBs2KcVnLvw7d3dC3eeHWNfsMn6eaHjm/EZLTGqz6tPxMVB/GPK4W/O9T2bODIUrfivFPL6QtDFPskz2JSRt4E9aUW6xu7JNr3cFcpm81tx8B/i02O3rZSbswUv5uGz4lWZkgi0fenG+tBGSZ6YDggu926WtX3NKJFO23JV6CQj9bJ5+TU5Q1dYJ+n1eNWvQ9yHbZyXcgYALWMN4tXgwsZtTNeahi0rt21NLsbwkEG4zWK67A4M74E14QzAFVS+e2Wimjj/bjM94zP1XrNteUDLPJTLu8jP6fsaHNG4v/S+/39bBK2+emkSGQ6redJadztUw7Hje6cGADE4q1hBKL79Y2z3qYVT/fwZh/+NfP9jxeegtBDUVub0PnLBNDm/irLXc7vSWH5s1hbhnsT02tgfmLvHT8Qr5tAOC6djBNx55x/BmCsBtvpCiwunXLRDM2HWwiBAC1KtZje+PtF8UHNm57HNc9UJggvIJPPELYodhSob1v1avSgKqKDIPymhFQG3U9GcQRSKZVg3tpgq5qbGUwl94tht8ECEn09me0pEMaFLQZO/+3lmkDxSeLO6hvguYyiwL/Au42tIn8t/zVWl2DkSNe0ZFsCi6YVV9sL1yc+5AXJZUkbCskkZLcQ29FUzMzrFmBNiRyi8xqUnXOYK3RwTatenwjtiPeuRrXI2iclc3xdpB1Hi4yw89Yjzktls/Wq5c1wZcNdDqYvyNsJ95gkq4csv/BgPO4nIxfM9yKf45r40xV9Es5bv7eeKjSrUIMobXGQaTrKr3yavC1Hy5FxNpDTIQ0ntnJVIBgwmY3iViVj699JY/3gOo812rulvOwgyBkTJPO+oPiI1Nwzf2q2Ytj+3Psah36KuGbggDoNSR+caOJ9aSKCkuMYODw3G0ARhuJ/Wxjoh4g41jjApc+6d1NPmc
- 4+fTTouU
- yFr3zFJZe8kKqALrQ/IIMQy8m8b6XM4kE8ce9QzzfmqWZAWY4SeZh+phxc/IT7XiZXi+dJ+KUmOrWOmkr0No1KzCuhYuUTxdtbACxanjKjSXTv7GHO2ArH3U8V6P2hAmCL+HYw2pcFRI7Zjd6UE8ZhAgd4U4HidCfxosoG106nNUitdKVFT0R2Hq4d5orw6F5IbevnbM4+F0uZYexxF8IvvPZJTEASKbNUlpuD6ZWu5ZIFYeoDYUUDsQ7SsmJomuCQVrfBkPBteGQQQZUVg0TJEMuOH8Sq1m1ic9RKCzuGGb0zJs=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783687913-198592
+X-HE-Meta: U2FsdGVkX18M+0wXhDM/rmzYdzhvDYTHtjk9dwJ7R8vh1OgigzaDpZFHASOhrDTYKkCgGkNEqotfG3YHtHPx4UuJghYgx0Cwcxgz21v91O1wYC5vfoSPkOjlRxznECz9o6khpsE1i/0RbuVbs4TV3RqyGg6VNr4jw005IFr8BaYAOnlGWQCt/FU5pRsLcho+HDVq6rGncgtrLIiD6ouisFAwHzzAXlTYJ7+uHWqj7N2DO6u2dRJD9+May0xBN71F9GiULKtkQOH4Vt65VutMe10Yre0S72mg4LW807nfV3aAX4D8WE+sSw/CIJWc4G9d1rmj03uzZiGfoX5lyMYFYiB/5lJZbG+XqlvoDZ88QqSBoOmgNvjuRVQPUWv6SvxIe1rVJzxI0rCWlKfNKlZbWUqGbmWpzMjlVPfAYkIa6pV9wtFFlHHQTF2EgypDcyd9F7LvoNrpiAWtv6ZqDB16KN8kmXsCmn7tVXtfbrRD6D7RD/9DQOFrolS/s+B2rS1KRmmimC7i3TPwITIrgw+P0aC/LKPs2CvOReC3nhE1/QYGv9hgQ7uWkecleU0fbXIMgda6QIO/Nz8hpWsUs5rZHydRTZvZZqwPA8zyOjd3gavv3qqt7rbUDenB4z70+yeSbfDgk68AyzC/mASPynvGHGS5tPlRoY8FkoGrTkyNMEUxKhM78XLglJ5gRDVcXMRQWgnlkT+XQ3Bs8zKIKaBrmnPAU6DdomanelK3TPstjJLfbtqiRU7fNd045EXlGU8VOs9/d8nLqiuLYjhL/hQQMuHmO+xU8FIyBK+Vci5WMAHWQtR3rhKMdvmyMxCjpLd3RVU+JUPk6u2SEg83o5U1gNZKMYHaH6/+Fsv/d55+YrbQwbr63il5+KcT5qwFEMz1LjdlSnydb8GpyJ5RRODEpvMSJH7o5KZBtctsgqa0LoIP13qbHzXQyzY8rYLEIhuD6iIpmEgEnkEi19SX/4g
+ 5foJRl10
+ o38oAtPe30xXKdkd4D34DfNZ280VXp0eNto7XfTt7wG9kcOtHSTgR7Pjfj+U1UpIYh9T5uI2OIv1m+4b/Tm92iMSHz89U6LXk3CkdmLDD1hPXReuopeH/ko6wxf7NUgdnMm2UfTc+0W5IOlgnLjpgKFpEj974zNaGmFnXDYkLGXBbYVL5mefoBlmeb6mSLPJ2CmWsTqwxWJYBuuVMhYH0vglU3jNFqCXAuR/jS7xCI2XQ0jV6/eymrKcTtVEs83gwRAERqrNkqw66EFUSJdc/seU6sEjpOO4gRWuzsonSaFOSnFjZyN6tlZZ0bb74Z3zTcQgqg6zh/ITHHGFDrS0SfqQvpac/KUIvdbBp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,54 +148,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 12:56:40PM +0100, Lorenzo Stoakes wrote:
-> x86 implements page attribute modification using its Change Page
-> Attributes (CPA) mechanism.
+On 7/9/26 20:06, Zi Yan wrote:
+> Any code using tail_page->private of a folio, a compound page or a
+> high-order page is supposed to reset it after use, otherwise ->private data
+> can leak to new page user and cause unexpected issues. Add a bad_page()
+> check at page free path for it.
 > 
-> This tracks properties of ranges such as cache mode through x86 page
-> attributes, and as part of that logic manipulates kernel page tables.
-> 
-> Since commit 41d88484c71c ("x86/mm/pat: restore large ROX pages after
-> fragmentation") ranges of kernel page table entries can be collapsed into
-> huge page table entries as part of this logic.
-> 
-> As part of this collapse, it frees the page tables which the collapsed
-> entries previously pointed to, and it does so without any relevant locks
-> being held to preclude concurrent kernel page table walkers.
-> 
-> The only way this code can be reached is if CPA_COLLAPSE is specified, and
-> this is only set in set_memory_rox() via:
-> 
-> set_memory_rox()
-> -> change_page_attr_set_clr()
-> -> cpa_flush()
-> -> cpa_collapse_large_pages()
-> 
-> Notable users of this are execmem and bpf when manipulating executable
-> mappings.
-> 
-> However, this is problematic for ptdump, as it walks ranges it does not own
-> and thus runs the risk of a use-after-free on page tables freed underneath
-> it.
-> 
-> This patch resolves the issue by acquiring the mmap read lock on init_mm to
-> provide mutual exclusion against ptdump, which acquires the init_mm write
-> lock.
-> 
-> It is safe to acquire a sleeping lock as all the callers invoke
-> set_memory_rox() from process context and in any case,
-> change_page_attr_set_clr() calls vm_unmap_alias() which ultimately takes a
-> mutex, disallowing atomic context here.
-> 
-> We also include cleanup.h in order to use a scoped_guard() to implement
-> this cleanly.
-> 
-> Fixes: 41d88484c71c ("x86/mm/pat: restore large ROX pages after fragmentation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
- 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
