@@ -4,119 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C865C44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 19:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D12BC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 19:38:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0F116B0088; Fri, 10 Jul 2026 15:36:11 -0400 (EDT)
+	id 7497A6B0005; Fri, 10 Jul 2026 15:38:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC02F6B008A; Fri, 10 Jul 2026 15:36:11 -0400 (EDT)
+	id 7202A6B0088; Fri, 10 Jul 2026 15:38:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB18C6B008C; Fri, 10 Jul 2026 15:36:11 -0400 (EDT)
+	id 5EACE6B008A; Fri, 10 Jul 2026 15:38:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EF9C6B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:36:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1899B40537
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:36:11 +0000 (UTC)
-X-FDA: 84973872942.06.3AE92F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6DE6220002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:36:09 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GMSJQzHY;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 379F76B0005
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:38:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE798120570
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:38:48 +0000 (UTC)
+X-FDA: 84973879536.18.862B663
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 097AE180009
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:38:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LTTgI4JQ;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783712327;
+	b=FGyERgjGaB6uUKq46vNFaL8WazAPIM3u9hMnSgBMgm27OnQjYrSmt1kX8WA7P2gZIsR7/N
+	91+lp8aLhx6QAg+kqdugnAs4+iFOmUf1z57e8lYU1h8JH9YrhOWv3zpJ6vL6wH0Si/93Da
+	rx0sQnhG7XikaU7xmlQRBgmEH7TLLsw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LTTgI4JQ;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783712169;
+	s=arc-20220608; t=1783712327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FfLPpKhOWsC/sVsNuiGUTkxCqQvuOvc9PrMkV9J6Kkg=;
-	b=TPVA+1qA4pwAKUMcS95NLApmbMGfDGwcu31JK7wVUQprlbVtoYPMz0KprRlMr6ifcpnbkT
-	vWp2V32MA8mRuJ3mYwYlnCALTwurBkTCrrJLABHE4pcfBx6hIKzQzU42mVp5Jr/b+eVuGh
-	JPT+EI+WgZ1+uxdIsM/gQYDq3gsfABQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783712169;
-	b=Ewuhd2mTUYv8YiF5D687WZWo2sKRc/sOLnlM3Pl0UyM9kp040erl3t9p4rByArBiysq9Be
-	jNlkCIfSsrVK8ZCuqQfoWw7jwsjAe71H8IERC2fN1d64m8Gn2B5PiJiDhK8Ki/39qwgOsJ
-	VZS9wDzVKyT/jH9vSk42nuBbNfegm1I=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GMSJQzHY;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 21B84413DA;
-	Fri, 10 Jul 2026 19:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EA21F000E9;
-	Fri, 10 Jul 2026 19:35:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783712168;
-	bh=FfLPpKhOWsC/sVsNuiGUTkxCqQvuOvc9PrMkV9J6Kkg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GMSJQzHYzzqQWm9PYMzUnrJgvzs2G9TH47wDGMDemvUAcIBLvWbRt6SIta8fNBwpk
-	 4I1KzrcwinweqkCs0PIx0LTM6cTuB1EbRcqAQa1jYKzjr9JQ5Wtcz35zBJE5VHsTO2
-	 cG9UL0/p5mQIf6dJdIDATgnZoBwiS18qqWXfRPN1X9YuCai4Sxlbmwyp1iHn5oqaVT
-	 dYn1B2V/Mcdasv1lXZW09wtL6Km0Wa4YkT0iudkguHEDJPY6VHY2zx2FH0me1qiUli
-	 FT7YTboRx/zld4NxRHycYg9RobUPctsDzxrL3Ch4bqyHkHMgOJIWg31b9WaLtB1aK1
-	 q5GlLYmUSufqg==
-Date: Fri, 10 Jul 2026 20:35:43 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	bh=68XwZpqFqsaLFsxYJLdxs3+k1PzHke/kGWmUPy80R6g=;
+	b=rCNRZAex7Rjhict5j4q1cT1i2QGlYhGkav4kkhMnNQ7FhYMsAL4uxp9eQkRtE6AHlU0SJB
+	9g8T6IeC9cN0ZCNMGfAwMoHhBI8xg8NfbS9fM9AUkonSStCuEeB0MweSjE7/nzVjxslGPi
+	te1hp3HlszQ5ABOYoIIkHYxMPg8iCnk=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8f032b47e3cso10244436d6.0
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:38:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1783712326; x=1784317126; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=68XwZpqFqsaLFsxYJLdxs3+k1PzHke/kGWmUPy80R6g=;
+        b=LTTgI4JQcAabk8COzk7EpoqEpsJQQ2vMhij55Ejp2ivhkto4Og3J/IU4DVvRIgXhfT
+         e7ntVLQQUOyM/JHsXpoN7OJZCyIMtLi0ShPCQzsW5+2lYpBwAGHftNRTE/+JxmdpvGI9
+         ruyLRCkOvexvQk5ZbjGDfjgaTHNBCLXY4QR+jTDHx7zoyy+hbtPmmFDW7Ty7xr6BlXy/
+         fdVaSNsdl5UpaEDeqthYPbGEM7k3j29Rc7R7b0cu2SQFC2X4JllOkUssmZ0JQVtqDMG/
+         VGpj7uHNo/85rERtNXROi3dktGtoT6uqoAt8WuzabVjOMB4YXPuBAx2Oj/7U2E8BtfPt
+         CbTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783712326; x=1784317126;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=68XwZpqFqsaLFsxYJLdxs3+k1PzHke/kGWmUPy80R6g=;
+        b=F6srOe4d/6U9O6rzp9N289GQVrqpJYZjhCuka8HEt+WnBnc9bqydDYbhw0ONsL6OdH
+         fySBhWtu8vdei6wTABy2lZk8S4m7ZlO5uQ+22HSHOCiRjrnHTXZn/L/gRWienBzWoFG2
+         Cy1N2XVD5Z7/ZJlrQETvMU0bCbazJnwYNX7feGRcU2COEiW52RrJNTf0wakeibwUM3Jt
+         /hAh1AfctfX8uf5O2OZkT8jsSr8neXsUTS789KU7UvCyDL/gQcguiAccuxyQSxhM+ivP
+         S1H1vzbThJ2fYeb4qVBn5wb8nKkdtqMU4oUqUPcW3UhPCOQQPvhZwTLdRr7d0/N1xC//
+         fD7w==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6AksUEvl5HT7wc7NHavRmuMjjAfJhM10WQWoJwdo6MjG0R7Kc65s9bBhK7C0o63dcFJTGbI6pRA==@kvack.org
+X-Gm-Message-State: AOJu0Yytf/7Vo0S20vVRQTRZDA3BgDb2nFHH0yB7vh76ca24cncvw+rD
+	/45YPhzrGfMaQi1eXzx4N7mjXwLfdFKHRsGzGvw0uz/XRpKB03blfak1c+4NTrVjEts=
+X-Gm-Gg: AfdE7ckmSRstkRIx1oQYUh1lYLf5fgKSytf0HtJokr/aFJBT63OQrIjwaKanCAe5u3y
+	Qt0R55qavB6/8iX05ATqRbZUb57QDUSCQKCr5uvE7u0/DLO4XrNnPpBAbRE2lv8CsXxZEl/rzLl
+	CP4O4XVtJ80fRbzQr8DH6GV377fRy8ZJopOp1awj7lrMz+MgdQS3CYtzQx/goEpSFFSpk9Oqnsy
+	12mZwOvz6gZ8xl1m3OWER0LhPlsDIiLLaZnOQBdMk9dH/1q7Hw6ctDz+MzwN5A/4hCJ6W1XpKHb
+	Rl3qcF/X0AVn1rLbIPwrIv8mB25weQ7Zc05ea6FO2Qqf4fO3F8sfO9/i55RP+vlrUuuv2RlFFcv
+	Td3Tmwq0LeBhIGSQsxK7RIq/52eMYnFywWsvtXR2nbemP3EH7zTp/0x6zIMEzb4IRzH1kIwzoyQ
+	/Nho2XgfgUhxcBH2cCLxY+MrDijatlo1bd2gwl5o9L1foaX+sIbg2jLpybkUOw2ajVAcUl
+X-Received: by 2002:a05:6214:4b08:b0:8dd:fde8:68c7 with SMTP id 6a1803df08f44-90402c685c0mr4983166d6.30.1783712326120;
+        Fri, 10 Jul 2026 12:38:46 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd87c9500sm48486486d6.46.2026.07.10.12.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 12:38:45 -0700 (PDT)
+Date: Fri, 10 Jul 2026 15:38:40 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
+	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 27/30] mm/vma: correct incorrect vma.h inclusion
-Message-ID: <alFJUfaGHVnKd-Nb@lucifer>
+Subject: Re: [PATCH 28/30] mm/vma: use guard clauses in
+ can_vma_merge_[before, after]()
+Message-ID: <alFKQOJrgiJl0p_t@gourry-fedora-PF4VCD3F>
 References: <cover.1782735110.git.ljs@kernel.org>
- <22d0f4e3fe11f6fd1312734e242d008267ad142c.1782735110.git.ljs@kernel.org>
- <alFHR3fg8K1-SITK@gourry-fedora-PF4VCD3F>
+ <213918ef85ed427d29d0635db6b07b15280d3bb0.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alFHR3fg8K1-SITK@gourry-fedora-PF4VCD3F>
+In-Reply-To: <213918ef85ed427d29d0635db6b07b15280d3bb0.1782735110.git.ljs@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6DE6220002
-X-Stat-Signature: oe67zp7yrh1fai9c9ibf8z8jccfeto37
-X-HE-Tag: 1783712169-453167
-X-HE-Meta: U2FsdGVkX1+UJ+B+CvHmGqYE2gYjHFLAvLshbvh51UYRXpOPeI/4SkRTy+ZUkEg6nRS6maPozlXC+7R6yQxx1sOjTL4HclbOZcaFBrpv0D/MDxSI4YvT0pjkY0YgSe1E/XEQbrDgzRCABC2zumNaXwcOQRgjdeg7/66CL0ng4w3groq6NOfhHoDErAToHtE8+I7FKnDZ8ka8XR6x72EhsHBmKjMTb8+d20zYQWHCR80P/hhH1Fb29zJdG6tvq6HfEm67fx/1ZzwgGv6cgtDAlk3p+1mFfXHDbUbzr9Nu2GT3TjzCZpGfc70mgk/kPYUhJUa+KTTXSxpb/cfPC8Nr+8Thcui/h14JLd0kpgvCgcar9fX9jU1NKtwTCXzPmqCwmLCX4Aok0SuUGRiwIhiM78OuY5tiQ1332F8NnFVWHT8L1xYOH2d/1IlMpCyhXmBkHoOvSLz4mV9ZD8TGTC6BmbfSG/EK1e7ruMEoiYm6k98rd3JVCBjFHZVUtw1Z8m+s8DXq4EZn9l1EQtQMVF+pHyrQr3nS9ox4wCq96us01TvGv4qso8nCEeukMUT8YyQeT9gs2VpsWkTPJ4wq0sXjF835qWps+YnR84qDX6LIjJdf7C042PW14kM7pnyfSNHxS282zpWRYc45lYyYeJb2CosGUe10eSRlqfw3RfmMixrnNG2aDleCr1+J+CdcfcbKbT+cW3bZHkc0/4tSPaNiFIlcFYfyIgTbrr6sG9r9CKtcQRKOP1BP/8LwjRAZ/LY36CRnXz7vXiAONprExuGwbh8IN+/dHTAElgMPATDu5EMBjkR7hyqPdl9ND+0Fu9Bmu71U0M0rKQf3L7dLTUDpa1PRMMGqJGQhP1nk5VUev7mTNDwlfNtaG/N6l+HVUc6GpzCQ/hsf8LRKu1aagaEdh5BHiK0W6/hCNWO7tgKzxwzs8gistFIQSvQ0WWDMNI07AOeGncJzeBJrd3YFz/A
- iEROmHCM
- V3kopPyLFuqKrW7Wq0otVdawZh3q0OPTHPuXSgFPqkctf8S/QDb2MoWbyST0jvahzWi80ziiSE+AqpCMK1Vbt/OV6Gcvy2ZnHlqfrffDeqkcNLr62/NsEO3KlGgSdXUq8ybn+1ifdpNBVpZHttfqFUVeimXb77zk5rx6UQCJO545vKu/3aiA4lOTFb37tddAgNSDxlny7cDs2PrdbzFXE8itbXdcLfleP0I+BrBo+TPo0MHFeO34EVQes1uwhWCKYguBSTE36WtD5js5qFY5FEkMhzfuZT/ZqchOX71a6JSEUIo/dfi/vu0z9NT5Pu5Ok32Gar4Crk4uwMKobWwivSw/zru0iMJlpxp2M0s7GjvG382t0tAWHykRIym1pYdb4Fk+n2UKLaaAdt8M+erxRuNUIRFtjkVCp3+cI
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 097AE180009
+X-Stat-Signature: 1z7bnr5xgo68dpizzmmq4pijom36uocm
+X-HE-Tag: 1783712326-192365
+X-HE-Meta: U2FsdGVkX1+93ZQ0wJrClzMwFOOHHShnoeDluh8ufckX92sUqS39Me8mPYXAy9CRHeTydawRpmxgLj0AG6D5ce6BTsazUCe0pFPh72DZHHefso9Ln9XvRG/lTvmG3QSTIIB/Tlk7pITcot+vrmeKRNeSS8R9S7DXPL+0H/dbjWGFXtiej7OcNbSvTVNdazMbem3v0CZl808IAGE0REj9Ud68VKHWGEOkL2uzGAR4era0eoVkl2Njr4AX7oJRf25FGYp0x4npkw6THWPuQXHn/+l7vfRAvlk73N8FNK/KBc8en/ihypzHYe6ijA3YWyk4K/Wxp8vZBqTvDLQB6l8INVNpagzAR/tNVngVRP+mvzFPJ/skpcR4ykERw3yEu+K+nLTl+DYLan/QhfAgKdh/2mCT9WLDP/TxIiZio0vpPFaK2CMcZEgSEIkj9nuLlTrKNfx+D4n3E3P5TYq/OwriuzHpu6XmE/8ek3R1BTf7KSqm0GZKgmX7hup+WKoknaMJPZwTSkgUUw2nFkyRpd7VPgvvDMBa3LmvPQrCDw1vggEv69x6Ma7YkxJ809Pj7wqie/pVLZJ0OeXln1hgCP3to0zdh+plqVUFrGiu5UxY99GFsJwolhINomxE5zhkraD/hsYItdb3ZX4MrxheVh8dzEu/2fyshMDOUfrZpmPSEG0Zrx7xyqGZzCo9P4rn3D2r8RNFzoXtJ3iHWTzMn7lF78VusXsYd4C+2JwdWL9ygzHntspHPRjFLiS48BuwqcuK6QdeLHCwkYZS9cNmlBMDyaPv1PN5moE8kj4mKoO5+ultTGk8kx2MR5NVZFeJ5XPsaScLUKF/L72HSzeBkh2XmB4UUi2BgBuYP6iI4bq5EXrmtqNhliFFbaavhTUOC85A4rPrG80dsafumrxRKsufZKIBAnPn1U0DyUCSeFtTBOy/VLXOWLhJv59g6KdQvYNvdrER7bd9xbrXxklQ+4y
+ 37AEfFYV
+ WP4A9KXTRnIOiQSny5G22xN8z+bVlCXfL/kGBBH2TPRjMa5xrPDd4xZ5qdCLdGH0WJsjiDuPN0MjrqaRHL5MgQdIda7NtfJSHCG17TNpOo5XULctXlm1OtfUR5yuC3ZM6GgaoLmcDWnQgC5gK5v6taMvlO3JyWPzwziJvXnysr2G625A9LJZV3nRdAeJ371MeEI5LMunglfg6SGUemvXN3v8TJvWMUlqmvQzS2ucEGOtno8f3/xv0zyiDlpSc6EH+8x62IcjE2J+eeRxqkb5tRxrzvzCEGK3G69bud08sweZqcaxlhcx6Fez+b6AhIeQFbCPAkSfY4pMdxGoqBAfQ5Xcm5laT6+dsobyo3GKamkqgknlb6oV4DnzQMjMKnSUqljT7B6CWwP1g9e7a9s/SCB3/RAedCW3jKjBLMsy0tlz4Ad8CKyL103JbbLLAxnWCPYGfLasZw+uDEq49ZwRBHfL3diCihB5oNefI4bONuy94jARI6UjH248pxlW62HnlUeXxn1F8mc1sMOojsqpzSQyjZRMlT3kuicvJgf5NuoGFvcUnFTazHOUGXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,55 +173,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 03:25:59PM -0400, Gregory Price wrote:
-> On Mon, Jun 29, 2026 at 01:23:38PM +0100, Lorenzo Stoakes wrote:
-> > The only files which should be including vma.h are the implementation files
-> > for the core VMA logic - vma.c, vma_init.c, and vma_exec.c.
-> >
-> > This is in order to allow for userland testing of core VMA logic. In this
-> > cases, vma_internal.h and vma.h are included, providing both the
-> > dependencies upon which the core VMA logic requires and its declarations.
-> >
-> > Userland testable VMA logic is achieved by having separate vma_internal.h
-> > implementations for userland and kernel.
-> >
-> > Callers other than the core VMA implementation should include internal.h
-> > instead. This header does not need to include vma_internal.h as it only
-> > contains the vma.h declarations, for which the includes already present
-> > suffice.
-> >
-> > Update code to reflect this, update comments to reflect the fact there are
-> > 3 VMA implementation files and document things more clearly.
-> >
-> > While we're here, slightly improve the language of the comment describing
-> > vma_exec.c.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->
-> Reviewed-by: Gregory Price <gourry@gourry.net>
->
-> > +/*
-> > + * To allow for userland testing we place internal dependencies in
-> > + * vma_internal.h and external VMA API declarations in vma.h.
-> > + */
-> ...
-> > +/*
-> > + * To allow for userland testing we place internal dependencies in
-> > + * vma_internal.h and external VMA API declarations in vma.h.
-> > + */
-> ...
-> > +/*
-> > + * To allow for userland testing we place internal dependencies in
-> > + * vma_internal.h and external VMA API declarations in vma.h.
-> > + */
->
-> Do you actually need 3 copies of this comment or just one copy in
-> vma_internal.h?
+On Mon, Jun 29, 2026 at 01:23:39PM +0100, Lorenzo Stoakes wrote:
+> Rather than combining a bunch of conditionals in a single expression,
+> simplify by inverting the mergeability requirements into guard clauses.
+> 
+> that is - instead of checking what must be true for the conditions to be
+> met, instead check the inverse of the requirements and return false if any
+> are true, defaulting to true.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-I'd rather have it at a glance, it's a bit silly but C headers are silly :P
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-BTW you're kinda racing against time here as I'm on the verge of sending v2
-:P
 
