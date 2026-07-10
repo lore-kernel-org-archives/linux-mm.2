@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3AFBC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:42:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AC13C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:42:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D172F6B008C; Fri, 10 Jul 2026 08:41:59 -0400 (EDT)
+	id 9BD256B0092; Fri, 10 Jul 2026 08:42:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF5B6B0092; Fri, 10 Jul 2026 08:41:59 -0400 (EDT)
+	id 993FC6B0093; Fri, 10 Jul 2026 08:42:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C05386B0093; Fri, 10 Jul 2026 08:41:59 -0400 (EDT)
+	id 8AB356B0095; Fri, 10 Jul 2026 08:42:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 94CA26B008C
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:41:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25822140422
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:41:59 +0000 (UTC)
-X-FDA: 84972829158.25.78D198E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 69E5F6B0092
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:42:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 023DFA0402
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:42:06 +0000 (UTC)
+X-FDA: 84972829494.14.E5A73DB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6EAD1A0004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:41:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fCVFfO9m;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 429CF40002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:42:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iTPZDjsZ;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783687317;
-	b=PDk1fEA30yBkWC7edv3D9bEIeEY4wrGSYzlwve4bsUuA5KcgdDYEd7J9m/ZA2PDN+mSxzK
-	kkNac5hbXfxBvCh6KAF4lIUNCWV/xr2goEGlJeuOGWwdDMv4y3Yn09aNSPcQLS9BgFrha+
-	SWq7PaPVxEg8tZcI3bFQGUU1lkCx96I=
+	t=1783687325;
+	b=AcXSOfciU3+/7+UA/8ZwXa4zStj1c3nYa4nxO6uuvyXPbMSBQ4ny1Kwt7RZCX0MIv3QlRT
+	pqUCv6qKJixdesnaX7EL/nW7phNDBkv2mcV9tBS6puepLkdwrbsA6f1OKmIbLQoQot0Be/
+	xSr7o/jAzsQD1LsU3vw1gbdBpfqLCk0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fCVFfO9m;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iTPZDjsZ;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783687317;
+	s=arc-20220608; t=1783687325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=Ul3sRLhwjrxQoJQnvumZ0PUhmDQ8XYv0aOjCqcjQNpM=;
-	b=oFfy2GVFG8SyILOcUx5cORc5CcavmgMCyt6pgIntt6NKeY7tCFhWI1ajnfqcaH47Eegomu
-	NDgvsC54OnFkgGx5dt3dO2kTVYcFnqAgAKU0UFMq+k+kYn2kPwVeN2J+XCfu1z2WweRbMT
-	uxlbhMbjqvb1wMmRJI9ZWWIy4D4v5gc=
+	b=nNzJUGYk4p7gONh7RKVs8gqqdcUt170AJJVRIpBh1gkiae9ib/HcKqJ0Fci0ubTp+7Bj/g
+	bdppks9HS10F/JmCwnAj6jzQTzxHEOPp12lgGLf1K3j6CVg29Z1SvKr3SmccuEnQLGkfIt
+	M36R6XhhGvVmUSEJb2NbI5jWzHB27Gs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA63F60052;
-	Fri, 10 Jul 2026 12:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530D21F000E9;
-	Fri, 10 Jul 2026 12:41:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DB97B60052;
+	Fri, 10 Jul 2026 12:42:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24331F00A3A;
+	Fri, 10 Jul 2026 12:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783687316;
+	s=k20260515; t=1783687324;
 	bh=Ul3sRLhwjrxQoJQnvumZ0PUhmDQ8XYv0aOjCqcjQNpM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fCVFfO9m4IzAP/wLQyhgQloMt80bQ5IwGpNIuTW9LwD9oZ/XvQAcTOdJGAM/c7dJE
-	 r9Yk5/nzIgBnh1LNVNhCLeoKT26eV18U8A9jSCt0j0pLm/rdT1CNRPYczRHWWE1cQO
-	 XLBswv9UmPxB0abMYjaKn2EyKBUvcG9DL04WZ9jEOqnQG1c+D5vdeBK4X9KBOnhOdE
-	 XUfM0AMy1Lh4Xh+hTvqWoh0ICLqxxg9a/jf5K+uizSCB/32YFTH45pnS7L+qZVduIc
-	 Y2P7dZTpm7THC3xWck3OwjF7SLg3wluXoKTppqOOvGN2RfOT8qJEa5vxM2ieFTU1fj
-	 Y8mvSwMOrzgQQ==
-Message-ID: <a160217b-c0aa-4ef8-bbf6-e75a8ff25cea@kernel.org>
-Date: Fri, 10 Jul 2026 14:41:48 +0200
+	b=iTPZDjsZPGmzN5+vwYYtBkEavSQKPLJaVniKtsesqVlHMN/bvuWdgrvmGVDmu/eiH
+	 0mFYun3HE1zMV87WcauZgUZ/3c/TWL/epVu6UgyTKU6mIKmXn7kfrvo30JHrExzZ93
+	 X0yO+L4gkL0ZeJ8rrZMydc/xZP7/aqXzrgI1pMOUdKVJ/q7uKoXfnCOKh1wwLD1krj
+	 czDViz5NaH24tW3yoRoR5Pqt+4HEm3xe8wt1/sHbty9xwk2Utg+lnbWql4zc8/5uzf
+	 P+K3LuDd6voF3tR0LCtb6Ov5bHRppYcfIbXZUIAiSUDzyZN8xMRW6a1G2fNe2yGFp4
+	 oFryCi5+eL3wg==
+Message-ID: <82607f71-8fdd-4a97-8350-810bb6c65f75@kernel.org>
+Date: Fri, 10 Jul 2026 14:41:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 3/3] mm/huge_memory: skip device-private PMDs in
@@ -133,12 +133,12 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6EAD1A0004
+X-Rspamd-Queue-Id: 429CF40002
 X-Stat-Signature: qx3d3jwowo67j3esnsij1b3mcosmf357
-X-HE-Tag: 1783687317-385392
-X-HE-Meta: U2FsdGVkX188dUfeaM+mbryAQVx46PSw4rDwzJx1XOjxD0BErDCfwKJDZ2WksLjxtsqMZYf1w+flfdcN2skqCQHnJV4UwPzH11bWNX1enrl46KgvpCJx8oTL4AdYIyrmz4EWUkKqz9ajdrPOg45ANhwJrGu8g27h/k8Mdsd64Q6dJmn7mIIiO5+CDXVnQYY7nLWKuT37TzwnMsHlmn3OZdftuKLCIegnE1NpI0QcYvlSYzALUuttm/DEHnNYdKT9qiLvVJPX7fszWgwzkzf1FE6RrP+L4cMa7WYM0WTe8+YnXGDUdog4vYBcuvZkmQ/3QWK/I8s66chV9H9cFHymiFkwJE3g3TLzPg0jUuu481t54hi+YaFsseOjNNvIpRnn5/gMBVbb3PHmpCn9EArPjIW0ZusWmm3wBbeWHWzTtNLn5QFVW7+jCM1sfs3TpSD1oFDTw/wpOw8uYAX0N0Y0BtquLIvrkpZnl2NFSby1cxgdSX0HvHgjEHi80drkrUqSuP8AQMJg9cHkZ5fvSEYLbC2Z/lMB3sqpjPmHrnnpvQwXhadsakRmyCYc/R8zeWW1qMZAo0qCFtjtKIbADbPlfXm2M+KDFtBC1AoB+uZFwROI9N1g5p93BhhQVbHT2i9OMr+c55PEKOnHFlMVd1xib1PMeCC4xQ185qxZo6ii4Y6vh6Je086uuwFQ4yClpcoTgx9iDRb7ixYoc8OdqlBnDlSEjqGyz2xu0SN0D1YU5J775s796wyOlmWs0Us8EO8xhAePfbeU8lecRUxa0Z68SNC1QnzFc0t1cjoGW5zrQiCrOy+Xf2N4IDRe/Ut3ATziBodJG/oLaRZUp3RwC5y4Rr7IcIIa3NXDImaig5RCJNURuXHYID6DBcQ/R9QV99IAy3u1FRMUVZvnemk0PxVe1ce3i1siF0EkDMW2D9M5cPdujrk5FULLFFqm4wjPJo9bQ44z/sWapynPA7iFfEt
- kJ286F01
- +3y/mj26xKOB99xhnqMRUJkTf5jULpDYs850LrF4cpNEAq+KXsVwRQOoQ8Qj6BZO16OtrrPlMn/j6NLV0Hlbam3Fbhwe3oXb8RE5ycikbuUcIehe7hpm9NW4DZ/O+ZGY74Tx5wV9G+bYgizq8yQGJF63P3HgmEFJkZF8C5GvqesmHitGtOtWs14LTn92613+QWHosws2BuTv9wSeN5RbD+NymMJDXCb9I98uZx4b9hmr7rnLna6Da+DbX4OZS4/X+qH173TwiQlwv0g0erKjLJkFHsZHLZuDEWQ5YoGtcNNWxsuXwVKD4fabnZy4TRbbidJAK9ycos2+t1UCJnxf2ScMOYp6al7rCX6eQeiAvoOJkIFw7F+jr3Npdnma6JOeWxE0PM4OiwJZKy0cSals4CLM7CXAby7YFWckmrXiC2gRkswmJRfgE+HHmZmFHxnzN//FYuOxNtnsV5dQ=
+X-HE-Tag: 1783687325-449522
+X-HE-Meta: U2FsdGVkX1+HM84nbAXax49IuVMiTOW2DMUjd9ZHoZ8CghuCXluzUKRMFK8pAvEA8YadYgti4RNskk8dlhZ4yXZabgqoMI3ZN0ke7Ui18kjZS0BZd3m2uyM8iGONxlEXH3o3+6dpbIOaBHKefgBBzwkSKM33u3YO92spu1TAv9fvI84Becsy95o7+m9KhK4sZTGTliJDvcnb+6vnoyLVcQnnWvV2r3R3QHL+rPH4cin9t2NoS6YnhTI5DjS2QfmALyw3TjVKwNkGlFveyI2lzdA33UiFwt6ANGCAjOrKvwIvwka8o0XrIWjvPJpiz/ImGSkR/7fmFLP3ETLmTrP9wUV1Nj+sBMvwHt6ryNk3mtQiQqXwfLGKb5nL10/XQPYuZUbWyHeNIFzxb1P3X1MbkRKwZjBgGkwldxY5y5wnjwjxLSYyPAvm+aSwQOYEI2IEbKkGE4dhwo/+qrwtIHjlk+ExwMC53Q5pAzEa0ezt2gB48LOAcZa5icu/kBND8fWS/2lsGdxmyCtVMjYRnXPgms1+Qy6V9YzihpibiVK0k7SYJ5v2aUrH2T7qzOiOlN1+GiqqJvTfeRewe2Gb1O/Vcvm+9PSDBkW+QnkAz2av5aLZy4kpqszynBphFc970btZJKncZ6Z8KmDSTNUZpx2L3oGdn7tulw8sIwSuevf5W4BzR2uu4PljNR1FJgwmr+dI807qPcQEnVhTUiejo02vFEFzYJ953XutUc4grrBYMAQC4qxVZs5OMtwNqsGy6d1pv7xgIvPmHga7WIfqeuyESXQsd3nYk8kAgmVwVvqkdwM4WzyNgTtPY3hpP+mSMgGKguxRs/ulWJ7xGJut/uQjx8F2m4REb+4bgQgCsrIHQG4PJtu8+al+G2dBqNZu3Sv+1ogYsfgt0uDo1rv02X71avOfs54SHlkOcC23oUivS7y76V+92dFhrQmJiog10AYdeqvT07nHgqEZt7o4SkG
+ GgYNTsEz
+ Cs3tOZdseMgBCA4eYBcJ1CJHPq6u4hgyI5EeRTq4TUoIrFW+8v563vvfv/AifQ6PIFzPWOzmdoreMuHYDtW5EWilr0QhEYasZG7C1eqyvKDqlq9U6B1Sy8/ruVub9ucjEtTXVo8PJ08P+G4kOqz+YcR7Q1Nc84UGEO91E/KpRKMNoNYHHu0LrX/5CdTjM1cCZ2a65DTObQPcmNPCJedLhSyDuCy0NzTEYRgUD6skmkviGi5tdqH9h7CjibBSGX/Pdx6+ln975CsRZORRxeIpcv2xY/t/KeEleRNYlNOtEYFoImjWYBRMdUBwcsPmAWfYyn87Y8anRGbTtbEkWn6qeSSekan7e16YLm0UvxyZ9d0sPyj2w56jdgZD/x6+Poudvhrw6GktVTyOqj5YdePStboZYZ01JoYA6bdYeGgtx49fC82cxlf84hkGpwMBFlIeuM+ZbyE02WXiowOc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
