@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A41C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 06:51:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC230C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:05:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 066B26B0088; Fri, 10 Jul 2026 02:51:35 -0400 (EDT)
+	id A49A86B0088; Fri, 10 Jul 2026 03:05:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 017516B008C; Fri, 10 Jul 2026 02:51:34 -0400 (EDT)
+	id 9FA466B008A; Fri, 10 Jul 2026 03:05:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6F006B0093; Fri, 10 Jul 2026 02:51:34 -0400 (EDT)
+	id 8E86E6B008C; Fri, 10 Jul 2026 03:05:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C6C9B6B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:51:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C6C8140392
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:51:34 +0000 (UTC)
-X-FDA: 84971946108.27.74312A2
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 69C10180003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:51:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nivqoX0M;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 64F8D6B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:05:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC2DE14038D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:05:50 +0000 (UTC)
+X-FDA: 84971982060.16.6AA306E
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 11F0740006
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:05:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PfumpgFU;
+	spf=pass (imf04.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783667149;
+	b=lHXSHGNxh70vLajLCB5qkzjhwJFs0Ef4hIeB4C8l7a3a1YSN5JacBPrrk13NHo89aWpqSI
+	ydxvEwtvmwdtVwuNrSsP1jbL4fJMSL6DzdyjAwn2LnHqd6jotKrUdO1XSsR8IASBUDNqxY
+	0sJvWdBBLOxFdeEsztvhMxrzC8QBoX0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PfumpgFU;
+	spf=pass (imf04.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783666292;
+	s=arc-20220608; t=1783667149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p+EOd49UJOd0Hs2rJAZdYLRfuniqnHdpSf3dvb6ZXso=;
-	b=ZCulgBNoLszOZRK5Wv42jI90smFuw9yXDWPhq7eAxw6bwPGKUVXo3nFPvJPnSGtqcRD9jo
-	3GlQschpkE6jpm6HsViTSixuc3TwTJ/93i9le4t8FeeT4CjN66B1xKB35y351W2DF3ZvU7
-	eBd/5HWOLKUNGJnOdXsbQyt8EnXSfeA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nivqoX0M;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783666292;
-	b=7oOh13QBEGFe/xGnmoyfVYm9L87cwmJb3/Opv50OQUFlqmnUv89PFvAzawMpW3Lwti3cs1
-	s+BjuA6b+BMz8SBr5ROOVA5ZU0Jg+VxjbDOrwqhgu6vtOo6i9B2JAXlv11HRw25RTU2uha
-	2Rpu1IUoiR1ocmvNn7pKj/oVlDeTcXE=
-Message-ID: <4d8e0125-0630-4070-95cd-acec3d626329@linux.dev>
+	bh=2IeWWRnXJl0FyJaE8bU1EmfZ2s+EZ/aZ88TxmbZe9QA=;
+	b=2Mcx+BDaihiqOoWdaPzqaewM1GUlZs9x5uohDO0tLpIlHreoCO6zgoTCMfuFHNciMq87DR
+	aJpip6IcTXYnOgvw3Z2GIYbjYg0QYPc8k8Mjz+I4p4RQey0Myt+d5pjiaza8cke3SS03bu
+	97tcWwCD0lvExpjzchVVPQ2sPuZNrQg=
+Message-ID: <9d8627fe-1fb6-47ff-9ca9-ff3b90a12bd8@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783666290;
+	t=1783667147;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p+EOd49UJOd0Hs2rJAZdYLRfuniqnHdpSf3dvb6ZXso=;
-	b=nivqoX0MCv2W6gMLb6RZcwdDAmRwpMKJJwxNzTU4O8nRQJWfkA3q/hfildPz5E+//ji5oz
-	9H3wNOmjwHpyu4rslf5Ynxrla3pvDiE7qeQghvjQDPLNE8fT/k3LKDsECgz/iAM8Kn1XmR
-	Yb/rTzZTugw4Xlb3vdZ+1c/cUe+YMfs=
-Date: Fri, 10 Jul 2026 14:51:11 +0800
+	bh=2IeWWRnXJl0FyJaE8bU1EmfZ2s+EZ/aZ88TxmbZe9QA=;
+	b=PfumpgFUc91Ke3c1jMEhn6jql0L7RatPOOPesyVnqRXUKc1TX6MQ6By9Q1FgPLmxbiGVlQ
+	ttEihD1vbh7LnM1q5LEYFOR1UMmrApPmSiORLB1gWcIJRRZczywx2FIhnf/fyFbgz8g9S6
+	Snsc6khHrR7KNX8xPXw91Sbz2tINA2k=
+Date: Fri, 10 Jul 2026 15:05:18 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 9/9] mm/page_owner: use memcg_data snapshot instead of
- PageMemcgKmem() to avoid TOCTOU VM_BUG_ON
-To: Zi Yan <ziy@nvidia.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/9] mm/page_owner: misc cleanups
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zi Yan <ziy@nvidia.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260701061101.344679-1-ye.liu@linux.dev>
- <20260701061101.344679-10-ye.liu@linux.dev>
- <0E890CCC-818A-47DE-9D1C-9EEF98CC758D@nvidia.com>
+ <20260701171115.79148d1c7e4f07ebf419c185@linux-foundation.org>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <0E890CCC-818A-47DE-9D1C-9EEF98CC758D@nvidia.com>
+In-Reply-To: <20260701171115.79148d1c7e4f07ebf419c185@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 69C10180003
-X-Stat-Signature: 4g945u3m15ojj4c9n4th5wpb5fhi85c5
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783666292-24527
-X-HE-Meta: U2FsdGVkX1+fp5DWvPxqJxsRXIv5r1F4UEbCa2g4rG94EWruNHgY7HPxliRohHp/3iMqmzWlKWHE7lbx+kKRGwwu+oTj0DIQ2KZIM+8ylqufbHLru1c0rgWOIdNTIxJwfg9pVogo9YJ2t7C44BxSCKQZNerbEXmAGfeVQPsJ+7rCYoCU4ef0MOv+dOrKQMmpSx9X1TtawCONWxIkZBZxtHQ6amU81X/WBWlptWJRmj+uml1CSnfjTjnNZ8NipwzxWqM/0YDLSXMasacXQvY/pzu7PoRIsTn+lMhe5gfQo6A0T6wpOpfY9SRcIZV4axgYC3l8IR8dh0Ww/DGPYyWVTJv+rKUmgdYz2T4UXfJDP7TbN6cRDpj253svL817v/SOYjQTvpyDhCaAW0rHZHY+6Jwtfa4HPp4B+n0/IXOX8xYKizIDpM65slEi1yBtuuzexy8shW8oLhZje42Y6aGZDS0AL8JTazPWGZObU8fxSxQrLOW4BQJJUNrmEzhKVNO6LTyVF54Y2Q9IvXdR6pI4RYPRlaGSktFesK7QQjveOfSuz00qR83evwyMWu8TcSjgbEWLpRU6Cx8PHz15334NJcQLsxrGTbeqHjebL/j+F9YTwqw+IfQsa9kp/9zO1+mdI0L/4hHe4YDrwKTtGnuQDaZehTpC5kq5xkBOpRNn32+5oWCV6+4zhTs1TXca5IE+nuc8YpAQTuPqVWbykyXMFA0/dT9tAqiXkvZIc/bkAFIgXPP/447iR5zfX2n3GhMp5wFb3jiWK6TYyaKiZxcNrsfEhIPjy4LkAF3vl0JtJ30x8FgJ9NJbQD8ly2sNevX4qR/56/5JTBtd2U7eBJyKEoPqXDkcCXo1x9Yc1BA/DUlq+j3nI+SHix8J72rO6M4yTRKIIHGe2iCt4VFB0ZmNsZavOg06SgwV/3t3q1VEzpveXVh3LSs02c+U8Y0f9BXQYaSJE/xcFTuxqk+iITD
- hfsnYWWz
- docheMxZNFz1uDyasly2GVXtofz6IxMlCg1j65Wc2q7pwX92pl6yjbBVQ6BPFGS0DXwUaCz/HBdDMC3S9w9pcCDSAyaAikU4ef1kZohUOmoX4t9NgEbdLHwSoCdsWw7afO7113uhbzFoEOU0FW5615J28AGR++Sp47Sv0DJ1Mv+lu+CSKbTblh2xXphFCejj7w9bROdls42/Hxp5rFHYB1GPTI6I4lY7Coualg1SG0ZdW+IFXb1lfz37+MRKgMkAcZNqj2rT35knQ1dT4gbnwjcyVfNSdr78HIWbFdI5Q2EpIyYAXafuUF5mdN6HTh2JJETcWifHnWjpPgLKvi4WnYQj3n3uxMzScb6siy4mn/HwRhrU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 11F0740006
+X-Stat-Signature: babgdedajb9t9t6bqynsae311r1dojpd
+X-HE-Tag: 1783667148-4599
+X-HE-Meta: U2FsdGVkX19UrNpSNIWeRdoFBuERRGdTzAdi6MdFPjDNRDu8hMOJlXWeJbe14wHG/vV7sDcIHrBmNpVyqOXu+uONg4n/fF5Fl0PSfRdgvg42ut+vmh4GLM/JvKhN1cjv8ZVCGqt6HrSes4xcRc6nsQmqCckHpVZ4En059lYNkXXwSYXaNy6Vc0TMbrD43sSLPezWvU1izOyv7YpsXZmICOnS3TUPjSfjOrsO/269v3hqnUcqu/BjIuVMJqxlL+JQYThHz/+1KBXwunOpBjXVdJa6oyIBjtg/IA49OBTrIXrheEN6wzEcXEobMLfPUugHV89dZJDzY4OzoLLlIxTA/8hRP7Bnq2uGge+2aeANt8KeMIpCVHpI0bx57sxZ+TUcA5GNVywosC9K/S4BzQ2hvpDWEXUK4q8NRPcyDKRzwD4R3V1VNii46wu+1xn7aYLGOVzHDOGK3ZhuoBN0YCAdth7huJrAK4MHVHyKsftdtln8j0utWw5Zq0TIdy4s1QZKVCTjURyajbpjsPdvDEYAuyB1ZF3y3TiqxfLiPjy+I1fcHrrPNjpeYut1rnSgamBRviFzF20gp4/P9Huvbo4R3SNO3HDHo2fwjGjQHEUf7YlcY+0BZcooQJOerBGY2egvUMRVA1YM/7FyMqkct9l+dgOf8IA6W4GNf0di3AViTY8+hjkwv842QFEsrhL8DhXBNDBs32QDLEqakZS50kXWMWU47PLJzVBucYXajGNoCgO2elzlJqwQhzIOdanpgijdcWjh91yhMdpuO+s9ypR6oTi8pnp08PeIQkKaS0j7by/CmYtg7bgztqiU1Sjhot8nXtIckjHB0PfzcSocV1/rXY+PWETBqK9s0deLne6zh0G5mQQJSbIunEbSPJdqCLjNOe2muY/lZelcsdH/VQfah4er6/ebaONHj7kl1SJL7tH487Z1T4lfJxRHGYt9cywy0grD+DbiR4DEClAoqAB
+ DXqVnDLZ
+ RgLM1nv2UNUnm6qhcVSQh+y/Pd+tPbLxY3363e8ujlo1rDGBcnbi0/1R/Vq+9g9AkQ6Q06y8kBYa0ICxrKczvRll99rpdeD/q02Rvbm0Efqza3+fOuv0MM40bkfYzPEYvjOF7h+101gg1TkQGdlrSVeYx3djQJHXNQXFELemrM5kehJOsaXiGgf6XJrSl0HGGkeh7RJldXeYIED92ca71JOGXNPoPxx3m1EWLvbcHnq/R/x+oLe3XNfBGiw+zM3OATi1XNq+Z7pfYz+Ry/xqJtI1TNGnvRaNcN7MnFcW90L8FUoftKj22OQB6Dj8fBaFu6oXvMehhwQMcNdgnV6g9t7fMEnceEstvN6/NztSP/KLej44=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,85 +94,95 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2026/7/2 10:02, Zi Yan 写道:
-> On 1 Jul 2026, at 2:10, Ye Liu wrote:
+在 2026/7/2 08:11, Andrew Morton 写道:
+> On Wed,  1 Jul 2026 14:10:43 +0800 Ye Liu <ye.liu@linux.dev> wrote:
 > 
->> print_page_owner_memcg() takes a snapshot of page->memcg_data via
->> READ_ONCE at the top of the function and guards against tail pages
->> and NULL memcg_data.  However, at the end it calls PageMemcgKmem(page)
->> which internally calls folio_memcg_kmem() — and that function re-reads
->> folio->memcg_data and page->compound_head locklessly, wrapping both
->> in VM_BUG_ON assertions:
->>
->>     VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
->>     VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
->>
->> If the page is concurrently freed and reallocated as a THP tail page
->> or a slab page between the initial guards and this final call, the
->> VM_BUG_ON assertions can fire on debug builds (CONFIG_DEBUG_VM=y),
->> causing a kernel panic.
->>
->> Fix by reusing the memcg_data snapshot already taken at function entry
->> instead of calling PageMemcgKmem(), which is semantically equivalent:
->> PageMemcgKmem()->folio_memcg_kmem()->folio->memcg_data & MEMCG_DATA_KMEM.
->> This avoids both the TOCTOU window and the assertions entirely.
->>
->> Signed-off-by: Ye Liu <ye.liu@linux.dev>
->> ---
->>  mm/page_owner.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
-> LGTM.
+>> This series collects a few cleanups for mm/page_owner.c that have been
+>> accumulated while reading through the file.  There is no functional
+>> change -- the goal is to make the code easier to read and maintain.
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>Hi,Zi,Vlastimil                                                                                  
-                                                                                                 
-This patch still has warnings (see sashiko link[1]).                                             
-I've made the following modifications, or do you have any better suggestions?
-                  
-[1]:https://sashiko.dev/#/patchset/20260701061101.344679-1-ye.liu@linux.dev                      
-                                                                                                 
-diff --git a/mm/page_owner.c b/mm/page_owner.c                                                   
-index 2e3880053a34..e18512a49e38 100644                                                          
---- a/mm/page_owner.c                                                                            
-+++ b/mm/page_owner.c                                                                            
-@@ -540,6 +540,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,  
-                                         struct page *page)                                      
- {                                                                                               
-        unsigned long memcg_data;                                                                
-+       struct obj_cgroup *objcg;                                                                
-        struct mem_cgroup *memcg;                                                                
-        bool online;                                                                             
-        char name[80];                                                                           
-@@ -549,11 +550,14 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
-        if (!memcg_data || PageTail(page))                                                       
-                goto out_unlock;                                                                 
-                                                                                                 
--       if (memcg_data & MEMCG_DATA_OBJEXTS)                                                     
-+       if (memcg_data & MEMCG_DATA_OBJEXTS) {                                                   
-                ret += scnprintf(kbuf + ret, count - ret,                                        
-                                "Slab cache page\n");                                            
-+               goto out_unlock;                                                                 
-+       }                                                                                        
-                                                                                                 
--       memcg = page_memcg_check(page);                                                          
-+       objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);                                      
-+       memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;                                          
-        if (!memcg)                                                                              
-                goto out_unlock;                                                                 
-                                                                                                 
-@@ -561,7 +565,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,  
-        cgroup_name(memcg->css.cgroup, name, sizeof(name));                                      
-        ret += scnprintf(kbuf + ret, count - ret,                                                
-                        "Charged %sto %smemcg %s\n",                                             
--                       PageMemcgKmem(page) ? "(via objcg) " : "",                               
-+                       (memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",                    
-                        online ? "" : "offline ",                                                
-                        name);                                                                   
- out_unlock:                                                                                     
+> Thanks, updated.
+> 
+> And...  this series is wearing out my keyboard.  Please leave it a
+> week, gather up any additional feedback and only then send v6, if
+> needed?
+> 
+Sorry Andrew, I had more time last week and updated more frequently.
+I will wait and communicate fully for each version.
 
+> btw, it's conventional to place the what-changed-since-last-time info
+> below the ^---$ separator rather than at top-of-changelog.  That's where
+> we place info which isn't appropriate for the mainline tree.
 > 
-> Best Regards,
-> Yan, Zi
+I also have a question about this. Is the changelog placed in [PATCH 0/N] 
+or in the patch [PATCH M/N] that needs to be modified? 
+I've looked at some content on the mailing list, 
+and it seems there are both options.
+> AI review flagged another possible pre-existing issue.  A second
+> occurrence of the race your "mm/page_owner: fix TOCTOU races in
+> lockless page state reading" series addresses:
+> 
+> 	https://sashiko.dev/#/patchset/20260701061101.344679-1-ye.liu@linux.dev
+> 
+I will fix this warning in [PATCH 9/9] of V6.
+>> v5:
+>>  - Place the two patches corresponding to the Close connection, patch8 
+>>    and patch9, together in this part.
+>>  - Close: https://lore.kernel.org/all/20260625014708.87386-1-ye.liu@linux.dev/
+>>  - Link: https://lore.kernel.org/all/20260701012239.315262-1-ye.liu@linux.dev/
+> 
+> Below is how v9 altered mm.git.  This is the addition of your
+> "mm/page_owner: fix TOCTOU races in lockless page state reading"
+> series, 
+> 
+I've added this part to this patch series. 
+And how to close https://lore.kernel.org/all/20260625014708.87386-1-ye.liu@linux.dev/ ?
+> 
+> 
+>  mm/page_owner.c |   16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> --- a/mm/page_owner.c~b
+> +++ a/mm/page_owner.c
+> @@ -428,6 +428,12 @@ void __folio_copy_owner(struct folio *ne
+>   * to skip less than the full buddy block, but that is acceptable for page owner
+>   * iteration purposes.
+>   *
+> + * The lockless read of buddy_order_unsafe() can also return a garbage order if
+> + * the page is concurrently allocated and PageBuddy is cleared between the check
+> + * and the read. Clamp the advance at the next MAX_ORDER_NR_PAGES boundary so
+> + * that a bogus order cannot carry @pfn into an unvalidated memory section,
+> + * which would break callers that rely on boundary-aligned pfn_valid() checks.
+> + *
+>   * Return: true if the page was skipped (caller should continue its loop),
+>   *         false if the page is not a buddy page and should be processed normally.
+>   */
+> @@ -439,8 +445,12 @@ static inline bool skip_buddy_pages(unsi
+>  		return false;
+>  
+>  	order = buddy_order_unsafe(page);
+> -	if (order <= MAX_PAGE_ORDER)
+> -		*pfn += (1UL << order) - 1;
+> +	if (order <= MAX_PAGE_ORDER) {
+> +		unsigned long new_pfn = *pfn + (1UL << order);
+> +		unsigned long boundary = ALIGN(*pfn + 1, MAX_ORDER_NR_PAGES);
+> +
+> +		*pfn = min(new_pfn, boundary) - 1;
+> +	}
+>  
+>  	return true;
+>  }
+> @@ -551,7 +561,7 @@ static inline int print_page_owner_memcg
+>  	cgroup_name(memcg->css.cgroup, name, sizeof(name));
+>  	ret += scnprintf(kbuf + ret, count - ret,
+>  			"Charged %sto %smemcg %s\n",
+> -			PageMemcgKmem(page) ? "(via objcg) " : "",
+> +			(memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",
+>  			online ? "" : "offline ",
+>  			name);
+>  out_unlock:
+> _
+> 
 
 -- 
 Thanks,
