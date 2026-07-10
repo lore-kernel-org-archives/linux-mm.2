@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6CDBC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 20:28:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5211CC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 20:29:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 801966B00BD; Fri, 10 Jul 2026 16:28:47 -0400 (EDT)
+	id 430FD6B00A5; Fri, 10 Jul 2026 16:29:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B1796B00C7; Fri, 10 Jul 2026 16:28:47 -0400 (EDT)
+	id 3E1D06B00BE; Fri, 10 Jul 2026 16:29:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6527D6B00C8; Fri, 10 Jul 2026 16:28:47 -0400 (EDT)
+	id 2AA086B00C7; Fri, 10 Jul 2026 16:29:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FCC16B00BD
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:28:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B2BA21A0581
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:28:46 +0000 (UTC)
-X-FDA: 84974005452.04.28A166C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E2DC914000B
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:28:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UJnlrTyq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 014DE6B00A5
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:29:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 933A61C3BE7
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:29:09 +0000 (UTC)
+X-FDA: 84974006418.24.88E68B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E0428140003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:29:07 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HN/nTgeK";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783715347;
+	b=5AGjtZXyr6fpWyedSiudMaL3IAggIgRVYcTO6GX2d925PUnfyIuPw1hudISUgY3tZBrYtm
+	Ghtr1XCoon0wrUV/WR0IB1IwLfpDC6wvVD+gKuBgIxClqtCFpabVWveFX3k6e8EE8JeslI
+	tqeDajZD8cy1MJXF8HWk4tYpSXKUq+Y=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HN/nTgeK";
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783715325;
+	s=arc-20220608; t=1783715347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2+OkEViyUBUTI9uYLEX4a4/L0I2mHL2JL8LovbGGiMs=;
-	b=tnI6OhbZAuBVtpq9U1x9tGLRPQP7vtnGdFOnq0GAY6GorDjuRmZjzZMIEV1XRdrqg4GeZp
-	BSAe/BVrQ7yBBpeKF/PKIC6zUWSBU/udPMJ92of/6I5GHnl/+8YdbaxgA/J7aJHwKTOLXe
-	EFlfJzbah3oLk47an4dTtZ9w/JtIu8k=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UJnlrTyq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783715325;
-	b=ePPqQzjxGgL2zt4HzGHf04bhDOdPJCY+RcS+nK0o6kAyUgmS+Otsp1Kej7Y0q/ibJmX9rF
-	HXrCepQgP4uxMoSFPlw9wSGot5gfFlp+NrWA4Xoz6H7iu47tCKPqClMCLmCSDgGZLDr9KW
-	G4flcdcJTNFrfQe2ZMOkF083uVPrJoQ=
+	bh=1ql8pfD2dLkZ3j2ZLRgwxtlbsXGEbzU77QdgKu6+RW0=;
+	b=jsZg6geWZxITdsSeD97w/d7b6kNCOOPLx3yM1tGHJL75eTCHFp5xT/7Djmunqsznv7+mZx
+	z0K03x0+SvpBmh5OmWUZxxp+nz0caBv2nCBQMmzl8dT3bwY4syBauzefw0jmaiHHBgdGlU
+	r3NriP+EmJNQ/iUcWnc7HWV92rCpu2Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 04F1540016;
+	by tor.source.kernel.org (Postfix) with ESMTP id 83392601D9;
+	Fri, 10 Jul 2026 20:29:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563BD1F00A3D;
 	Fri, 10 Jul 2026 20:28:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCC91F00A3A;
-	Fri, 10 Jul 2026 20:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783715323;
-	bh=2+OkEViyUBUTI9uYLEX4a4/L0I2mHL2JL8LovbGGiMs=;
+	s=k20260515; t=1783715347;
+	bh=1ql8pfD2dLkZ3j2ZLRgwxtlbsXGEbzU77QdgKu6+RW0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UJnlrTyqmIX76dhyuIJH+ZWeuwY2uSvegVNMHFmEwJS5ocaNZYISJS5JyWmBkSzbH
-	 UKl7cX8yUe6IAwGKYMBvQ1AtAheCCYRuKTz3ZwBjHtWknVjpRaA2L1umW1nd+gocfN
-	 uYSLyXTLS9g/m49T3bKQBwJ6bVtk02YqDXiOTC3Z0Ae1w7haCafZThtvQIsOsq/xD2
-	 TyOEZJuaBvJm3nFlQnmL5EMx7WPZf7duGBLnLNoh4wgb9e/im1OGNIk33fMzJZFzeH
-	 8IMw/hMYKsEbQCSkfHU9sEt4oreIes1GlIljfxrfCHA321k3WfSaKpA6UXcsWBD0jS
-	 PXToqOuC7BRlA==
+	b=HN/nTgeKq3AnMjIs0u7JOFWgL8V6dcLlJmk9ikJ8fDUbMBlZLUk6KpsqhTpY6f4Rk
+	 cqc+QtS61rJvVT+Ieot26FX4QBYJX2NWdolyKNWZN+OpJv8b6VLbVV1oQSiHVnosL+
+	 el9kwv9KVuOaHbau8QAS8wvLAfNTYvAb4ZJWcc07ARv1rGWx3AiJuSs2p6HMNHxhrr
+	 yNxDfm62mwI2vkLsGoWHpLP8BEUXJ7q8pRDCBdgChs4OndWDlfPdmsS0BndIlw9ftX
+	 kdZHMOwRHnn1aHsvYqf0OdH7AS7sYRrsyWJy4u0ytikVJxADHfDwEbDXZMERb/f5Qq
+	 9Tw8VKMmYGVQg==
 From: Lorenzo Stoakes <ljs@kernel.org>
-Date: Fri, 10 Jul 2026 21:17:10 +0100
-Subject: [PATCH v2 29/33] mm/vma: introduce and use vma_set_pgoff()
+Date: Fri, 10 Jul 2026 21:17:11 +0100
+Subject: [PATCH v2 30/33] mm/vma: correct incorrect vma.h inclusion
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-b4-pre-scalable-cow-v2-29-2a5aa403d977@kernel.org>
+Message-Id: <20260710-b4-pre-scalable-cow-v2-30-2a5aa403d977@kernel.org>
 References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
 In-Reply-To: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -151,28 +151,28 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
  freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
  kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6848; i=ljs@kernel.org;
- h=from:subject:message-id; bh=lsNQUYSqY8ftQ/S4LD1hHSt9yR5KwVcyJgXwScgbugs=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICg21rKw7tulL8I+ZRxy4Dt53VciHnrd73X9PobOva3
- V6pJ2fbUcrCIMbFICumyPL8i/j+IJGweZ0X/N1g5rAygQxh4OIUgIlYvGX4Xz5p+j7GExfu3Dws
- dUiu/h7j+1myno/eP78s28f/8YCc51SG/4VH5p2X8H/x3WJ6GqdZs/vz0HfMsw8mG4jETHd4vdf
- pKRsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4536; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=shpFTR/kYRzffTsm0zlgjzVGjq2PyyHz+kDqenhzfis=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICg201dv0WDPnXKfD02fVrd2xmnJGosao9+KtYLrPMT
+ ee3uOTFjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExk6htGhutMvdsKbROmGXpe
+ 9bRozf2k9WX9ovWH62umFivq6Py9+pCRoftC5fGIB3Fbpepc7q+dFC6dVurt13dkg9IG04qXXkn
+ b+AA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: E2DC914000B
-X-Stat-Signature: 14z9gg8mxn6ab3p1i43z876ahximmeth
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783715324-713734
-X-HE-Meta: U2FsdGVkX1/jHsnXLQgef0CtSqJEXl4+70zHMDmJADzsVFVcK1a/uWuKlmdzER4jqSslaUxnIfl7X4UfSNH/YV/qAP1eLRNC4E4iSlVIOOv8y/1pDWGKrJNW+ON8nUW6ROEveMkRZ7NTfprGaGzoJFdKDWEXMUo5XUOR1uhtWBHRv8kLS6zDkY2P4sUxP5LAoOfG426g0gJGfOnKVSe1N6poZ+G38tvN43HIg6bOgBImHV/boCHP8PfSHRhfZO0FVKPnoOdUpYMT3/NPB7mUVmrypIX6Ts7P0+vXr30OO2FCoHrKSp4hv9jN8E1heqBlyEZ1mPcwmw0G/omVdUyIl0p/pi4PfSj5AMbHZOqGCY4GAdrgQ+7fs5aBDTwd5wq5RssuwLPfx819ldb2eTy/J2+lGyTEgsiJ8CxENaBpzEJrXkDQfU5kKkutwxil6+lNqVsrUQICHWSAVEjIKqfJOTUSu12U9d9UCogch7biR03kB9qj86IWUN+T93A/tK69y1lOz/98GiPg/NhLWkxwTJ7+6qs258BStBgWGw2YiFLI810OuEW5yWvib+lv5awNCdwogOsEm+qXyLVU5RVFqtAr6qCPQlpCN3+IArbTFnl3n3GUWbZI69qK04yNIipQKNxcO8RXig2I55WprnEjN9uO6f5QM9OiKWAh5+UrqXuuOcwZhVua19HAAA8vmeaRVYlL+pBjtYu1Yv9XyfxnqJL/l+B97fzYO9DxYvCNpTbkcLwgi4GBrZ8OtaJvma/1qAaU53rqgzvlh3h+3MAlACWVvHYnJULXT6mozVrR6UUVEsoAke3ybce/gxUBVZMsTOK2Xk8nQLSrVcB6OfxJaIf0YloNVziGzx/soRmmbHQEdBtvZ9Kely3JrtxLLc5YTid2lGQi9u6qF5F3c1YW5TCl/hBHO7ymUsVQCUWrjQ9fab14rQhm+X/dr6XHUeEQtIIIUDBzc0Xs50eAUFK
- 0Y7YGX7V
- 7JGIBLIiPt1ICBwNlkl9Qr7GUHM6lpJ46UCF5OatBr6y0u1S38G57bd8sHwXkJdRpsL85hxknfxRigxQShi97AndJVkZcmGfuia/sHbg7E0SFsYd5L6vEPhFqZm82njK3vMxuOjsDyyNWG10xj3s6TqDTUpiWoWjNrRA/5Ob1Pl6u4UM6WqopZ8bBeIcsOs3Itm+xvoxgOQ0dl0mdPnORtMZ5FonGVZEkiXcNHukwmgShboUlnnDoHM7/iDlh3pRgahNGQS84NjPY0ckGkSlD9vg4MEJHn57vX7l9XBcwSfbre67reDJ9nvaqbIZqONbiMxS5BfM4HHIYZd4VhJ12UfLKPv0/PFtT51CS5fDWmHBaUveazGBVxk5H9kiZltZP19M5Ep/QWZZrqzsW6b3eAn1xPuXwDDMsF3X6Bsww5z+nxGFr+06e1OqKo3OSCTNCCR9erQT0BUgCR/oYr65IMRdbPrt8CWUV/vQCliA/6z5gtqwK8+bYOjFkKUZp6mbgDqWxya68/jSmy6SpY8uv7waYjT3w2yYSazQsY/iGapOFY2gOFnxKS3SRlaSL29NmLW7qKr3u4A9cGThNov/4eRoflxdHmY3BZ0Wpob6Xv1N3qHqkrKQari/4E1M0opbkQM8cfD43KHwUlT3jQ8fhM2Skr5kReOc0z7B6cnuJddMOlJWO2KfJnBu5N88G1T5pWO454xwjnRL1LyHYuBBWdb45Sao+MtEdScyMlpZMZiZ9AXqkSMLR3k5/os8Ir5UKDZ2OcmK/RTo5il0AhciiH+luQrsDdwmhzebyWVToAuNqFONyLiJZc/FlMj+U/BVTioOELusg5n+FEyV+Hm+yaSczycas4yt5TtvNErg4yc/Q9pBtnB7TzSGn3nu4tyKVemd0suaOYWwLsymM5fR03Lpd7VaOtHZr9l05pwPrDWBDtVcMkI2pFc2kRP3Z5j0pWrVG5L+thspBciEI+2ySYe+6rCrf
- ij7olfUA
- ZtLyiLDzWMR08KSU0Tx/ahckiXTqKFTtrvlRA55I+6ShBD4tGzyeyf9Cba+bJ/+6K4gPceJk3ynP+K5pKKGdjtv8IPgWMCQGIgPK258JJplW9pC5Za/vmt93TGEYrsxSad4yVrHf+QvyjcI0i852S5q2D6V6W3u31msHvbPEyaOR07WKlYmREaIQuVRjeFbROCeu6tUL33oHh5vDe9Cpw3yntdlOWuNQXaGyDmETdlX0XfIxFGd5HPVQ5o5ZdzXWzNxRj2p8AzVc2cHmgSlcoanl8LPBnOWDRe23DaBMeamiGVtPbzMPU2ZXEn59gNkeH8v+xIkTAVFKN+7F+s4Pb7U/uns8wiC/hOWZAgutSY1pZzqfzINUcJQZByscuRVowYEhA7mDKOEeveyZHKV08pIw1yupassUxyx2B/5uc1jBfW/2+CWnugxP1W9aWiZJ6Qom3Q6yoEi+2Mg3yjcBfLg8BfiS/3GBEdjoJDrk1fk+QgKMO7GpkzIqpCydO7d3OyXa28xyV9w4L8L9MEdJmAeyriAxrQS32GCqWRLf4ypd0vM4iVWn27zfbgqKHzG32EB76I+VHgM92JUsoTwM4/m7mJE3auOU9QZQrqsryeY5fq5ZugUc+VFRTMcIH20ux6wcHA0Q4Q1we/GwB+p1yFmInWB976dWDEzju2PfYLQnRWtH+sCCYYma4NeigKpQQkimOUaH1LZt4LkSEQ5UawX8E4bur2MuG8M4DeRp+LtOw9VXh/IwbNUQz1h4Pgzvko7okWs5ZPlK5EMO6BOvh8OIo1k/IHlNdvqxGgVr7mYItmYu2ohsmwK4hesELxaX1ICBRoXfYygBFRBaTw/P5X7i0tfLQUEhZ0RbJDvAn7x1bMpPKmX4bLoeoi9FNiIZT5M2Ay/qgB6R2KVi1dz4WJjJ0H5mgaAusR9WoSyHBvVGAo7fjIQ1jJM/c4dMiTsH3C4TWODOfoMshd6DW5FrBLHxj+eTU
- lC/+gTFo
- slM0BHvZbRCXRa+cKyy4X8IljA9f5fF6h4DFQzyAeEYQR+segtlW7e8LhtL+hnE/pn7MGwOTYYpM4SZshTq5Zg0UxfYF5C1ue6uCVTtf6Ija8zx93gbrC28Ran24WGpduLPeeei0cqmnt2jSgSOYUpRpe1ys0/Eu3bxku/kFT6zVx3/RpeTdwbLnZaeD+vqIs60ij55lC4ACfWLSx6rB6YjZ2iq0EtrTCCPsXAZLjFLt7F/B9ktT9/Kp/PLAYylj2PF20kMunOyOJH/0OJ+oaqh3Y2EXsuFSxBhXqzuRUSPDuShaeZPA8CQYJgdtzUMsXPmaRiEPC7OmRLIpDhMWC0HKyfL4WuXYu0Efca6YJGU7XzpIcWtxeiGSaUJbUM6u4z2RedevAnYaHHejhON6i8JsGW6h3fKBkExjYSxcASKbR9LVtz/oMtre4tKZT8voXmKAoQs7xcxxBnjlblqF0JZESSwvW8Gvei1L0HCc7F4igEtuG2TV3hgyEnxVyrFh4hjN1b/Y3k2Jz0htgxhk96rCUgAuei2INfW0Nis3TcHy/2xLCOPN7kQ3K2FMwgIshKqz4EL2ggk+bOc8EY31oYxDToRnwxvjic5ATFETa9LNB65PDUjgGCipbuG+dilwDprw1pn0jyszABNoNxsG5wVSiVaW+mIHpvjgi7p84d2EMbJBa6r5HI9ALCUjeQMljzdC0B35/YIKEGfraOeGr/Gk7oQzxbX2RJIAwMNCuZXwZ9oqlfZMLzKLmZ8hIqbhXzZHjqcjdEosvMOj/hHg7LhXMwNZCErkyS0r6HwZNLtY8UT8PGM4aAwsb/kme7w2MuisDUm4mDNHRw8n6qw076zs4Yzzgj8uCYEmybC6lbloVWrW+SfvXm0sf57ZKDmmgPd1Fsa5EgG80pwOSfcJLjl6ZAPJhi/yx0tlEEBtGkMn1rl9ID7lFS/LAiQQehXtxWNDQBt/cewm8TUN+Pv9/tYR7+nus
- L0n6x+jw
- 5wdnSvuv3EnRAvEY5Q9TKB8qcxCX3/pXFLA/bRT+GL1pkNjvBxzAeak6hb58/Q4N0eI5PoPQMSmHsk7M9oPTbprARy3+KWbS5SMhB45/KVp2eUye6wYZgI+hXwO7TXOCsFjOEyyTNjz97LhQPUREQb89f8b4Jhb9U35Fx26CcyM+wGs3vZ0sektau58ihTi1bqUgkdfnhZ8EqlMtLS4xKQc8rMfnX+jgYqItSZqRibJ+J88+11hvHXwvQPzBgxxr/ouBrtMzgag0OQEXGiG3RIXPIWTHinrlwQMJ6Ibl0Z+xL1YRUXGgVdAsuCPpUdp9LQh+INUQt+gSXA0H0vWaoMvklY4lqzxYt8nJ+zKxOYU4Hsm4LrbcGjyoXwsqb+2yzvQUAhjgaZ2srnIBFfAMDcyVCf03LLcv5H9EI1pAgl/CsSn6gZqoQWelfwRWv/9qO/5+LGXaX5ZDxoSv8C6YQ7vLf2UG2OyCZQwvsN1+a8WqpP63KoVFiL
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E0428140003
+X-Stat-Signature: i3wi4bar5yt9pamg6n78hhddeoe55x7u
+X-HE-Tag: 1783715347-285898
+X-HE-Meta: U2FsdGVkX19AWgoDi00Mf5he745RnI5Z+89tE0v2ynhMPeo/lPayUzNquWRMt9iFIwud5kSfbKcPKZ3SG3Zih1I1/XPEqQGv+sxTsFz5YOb8fXtSpxV0Imwrj758WExhOaJXWPOoz9Us4/M22QrIpLYnptRXuG84FIq6SQzoAZddkynLZOEN2RjlsWmOkoP8Wwo/571715nv1iYHJU85vk0P4GD6988cWm+Znong3kKqCAH5wQm1AFVAYZePOghO4nxeBfUS3sMcTbAxNk/lbq2AwpK6L1i+coHKCbdWvNAAGQOQPahn3bNO3XavlUnkDVrb5QlDDH+DEVH7z0ndQ3+02v8ZebtINPDZQhCODUXoF81ImBTT6DlhIns5znLzIAp3orHNSg/Yxz54JTd7X6180XS9j1mYCY+AoeMhnJDJ3ORcAHCmmidacpH3yXo/cfqmVPzD2nULSOu+yNH8Ma6uocHbfMUmAHjdVvT/bWnkf/8K2WM7VzhKLpgv+LxRv1G0oOoiHjEPrCZKu6mEXkLsMdd28MxMNjaYubEwsnxs+7HQ+unq6V/xtM7E8VOuXn/JQvISPl8/TE90b2zlrytKggls7UZGUEqUq1F6yQdQmA2/a9VEBFb6wCKyy5eXJikVgn9zslnkmDu2OVdVsyIheN3IukL/nNbqkTUeS43V/0U1c67mR0WIqgDH7sY/plOpHO0LZe70g8WF5GYXalPqC49nZqRnw62WLLIADigeD0f24fA6nzgPuDp4PnRU4fQGUsLS6PtzRWUo5lbbqnNGT5eE8x4CcDBXOOEIUKSqQYccLCO+7V9dJc28Jgpqm4BF4+6fvFAYCSUTJGj795ce+la8JhU7WqtIAYIGW4/5bgYmjFhQt1ndPNQCMEy+mY54+pD44A8MkizPbpLKcTTgfhE69miRF9PjRMhe9gP4FGcERsY5YJVdP4Nm7ckGQ4wrn/9wymItelh3j41
+ /4BgxZ2t
+ e0C6aozPFnLKQhbFfVoVC4n49LnHAwoQFm5bLKKOg9/lIN03CS18YtxiKb52li6BiOGBvigc1ormwJzJyteannDavQy8hPiGDHKZAxD3SSbs19+PP+DvUWlrLvlwR/xtGxZDQCNM8x5dJ/KPv6tMzK6V8vItYovyizIC1pactGjvfAHlAfE8+TTd8edn17j4hs9bc8/pbvAZ76vFjU1WeH1ILfiTXJci5FL2rKIaKHrWd+J/kgzSpO3vgQu4Yd9b+zY9FxTZmKICST7CrRpeYdyBr9sWGhwt5FAtuhTxCxUxphBN/nXwu1PUh2C437kaqfmJofh56Hm6Z6lNNYNShlBOgdOnBXJzJh7IKCmWijOvkgGgkDshTaZtIPkZ/990bbLOgKo1zkUcJvdff3RN8s4eitCkoNdlFwsR406iYdrwj/CqufrJx8xuz0op/TX8hoeQwx2fFP31nNJ3aVf0YaMvA+38A3MA7KbFM7jtZ/rn90Isoaj3vlY+dZa8+HYyyrfO2FdZ2wP+ZWSb2zMKv8cFvxI1yFI96DJQhjJzcD/cgcrfJT/cMwXkKcz9+2qJA8Sc3K11KtSJaSpt7e7oeWYZvpc1eZ95mmk2+fFGGJ9F8pqymcIFnJ/rMvkjZMut14ZXr1TeSPrYf/fYp0oBJ8zVOoGWfSARX6baiIjcFf0KBwl86l7EoTWFvGd1FR+tjDHYYBk0MINbgDiBoVuJEfDm883E62TKL21NED8VEsKyB4wqiLnSGd/ukJS9sZE68pTbuXV4QIeXi1zbsGjebBtkzV2wmDZNKaHRyJmLPa+r6Lwzm/S6dvSbpwWQ/MdVeyrpdPmMOOrmQwe4IeGLLsQzQdIrFuzZiWKeLyQR5CsEfXyh1gDaBCD6bAakQIzCD7rJ9RzfZrpPpNJxBt7BhReDjvuhWgYNiLBOnpBil9kNs/VWR0bvKj7+HUfbFyFJ6GmH/CI1XKwHp+R5jxUj7uFox+LU5
+ ovHNdplh
+ i8wXW6SWWAfURd5qE6xIBkQpjijwuoBDPHUunQWiPke7x6HelzSYXR62+ZDai5Z6NhyVXDktfxm3GpfD5U4eDItx8Wv278dJBvxygeWquxN0bwTPhsnUfqulFtgT27P/0RArgjJIqAtVJB+KnEDcZ6498s2KBmOxZfYKlYOvtSUTuy408nduKAqGf9idSFVxQ6EzdjwFvstd/YmvsNSSszrM91CfZDwYjo3PzslIlc1WWf5svMZXsdAF/s4zZytEYPkkbRiKqYv7O6cNWNSbR9wUup+N93Bu+1KGKGa8TBy03lU2Gv+x6zMppOZbs/zkkuWAajWjYM6CQPR5q1bWq6L+AHtMxIZ2ZKmqYCXU4q5dzViO0MqDOqqcgY+dpml2yBmipRUnlqC1oRA9J7Xi8dADEHvWVAmydpP/q1zoBF86Q98mEOgPOjJEFwiQjMtDLMXa2Q5c9M5fd/JbiEeOMdOiNlRSc0ZoanVf4E3C2gHgx8K0QtFFtADCLa4p9iSJV19qOss5RmZc/evZEwxJSbijmb77YrocsVE1wsdYxI6RzUA0V9zJyV6pD3/ArgGIX+KS1Na7RxMLLBSlJ9oqxxR75cvllb597wg3VKqHiwIY3hYcflMi4+DXWTdKQGxAU7rbMDw6BAScvgZvIWxEF6UNW55tmidsmdj/5ubj7Hj9iT7yosas/asYPuqsLaKUPnv2+uW1VE6hwRsERqe2psLpzNn1ENStjiEKhxhld1rdvPaWNSb3VAk8MbXYdSI5fSQMP7IiAN7pRBem6zpd4S8A13jMkrCXJAjOsvBD7548MiMt30dujGENTWWXnrq/LAlhEYwYsUolwMDeODF/7eEsmur4kmde9KPWAHZ+H0XdFGUPQp7dfBCmjai9hwEHbvQYItexkzbOFDbKKBdf44JiSXdzFRfpLMuyUtT+mKQLt6NSwEefa9wZCRVhWntc9t/tIoif7RXgPRVHXVNFWsOjrMyMY
+ 0NZ44fLQ
+ KLTJpg2EevfERfdtYA7pgqlMysOlDYQ4j+Kxbi4ple0nVFvh8hgGB/hJIWuLkxZSkz97gj9nIafnwutNWcksJOVApEhnNoC8MWxTFlHNGHny02sVXvTplnsTKRbtE3mUWuvFLwgmuQwGXJVsg27OLE5pCdW4I/ljqQ+gucK+1n9XROpj6Bb769bXzb/pYSNF42KgqEZ8l6s++XeLlJS9neQVbCOAy3haz558SA4mA3VZvqqPoOlqsWqnuLgL4L/EDMSdQPhYubkSpU4+zpcKzMhapINa43uZmMg0H6oUsEJi5veodHm3uC6kLzZXE1I1Wc3xoDO+UKjK0NOcCeHTInPyuJqnelWcY3SFM03/ou6LGWzgnd9D6Rmy1+rkHeh6hfn/7elU7IKTSkWmJD9wyRmEoSu/oyWXunmopEzkXVKVZzch/Vg6nJpoAmE3Zv3k2OXCkZu4KRFSulElbsM2QG2HoDuIWa6NA2ZiXvyAK0/dlNf1QTgXXsoCFGAxqGfmx6HwRw6bH5dVnP7R2SOy6oEQajnYRYKVF62MYDj/6IYAspFmFqb8vvv6b8AQfZiG+ONlg9usL4rTcyxfnyySKCfjcZCiOhyOvjEsBtYZl0WmDBTpDiBO3Ph8eUQwzid2Eyb1g5vqNPyK83A2Tj4JfO5zBadenJW/DyPrpjnBtVgoA6r0hF3Kg+Y0l+uOhtNKbceRsHEO4KkV4+mX45Y5742RTMAeaXnX/CHGDzRyXSlGrZmKBFWITKe+6MQnVOcbpaXHaFelOX7nIBCBsIbcgtofcmq14Aaj2b54XnKgnUXjvl7Vey+sRc8zhnIyJ1vEgkGTnLS+rDuET+VHN1+tEN+Cc1QRZEIwTuuDJLr8dQGMKGSz4vokwboeOec7DP7CUTLeSQjEf4YgPBOZ/JR3hntCdK5VPYhz+Y//zduu/PS4W5sG5ff7TapHNZmQpp0RMDtyy8O4vqqo73XqyI0JncMf6sBCO
+ dn3skBO7
+ gGqQfvnpQoBnFv99A1ie3Q4sVtj3mtI6Ie1l3ughk0+U/Z0SU47juZWEri5yVpYy3OigjMDT66StM8T9ld7giFLLhbacN/mBafpOqtw3kJk7CdP10xfA3Ri5ujqgNDmbL2cqToiu6wzEv4aJ1myC9ClIOoPjBYJeGQ2QM6CnXSsbW8w/YxVjuvup9MDc9Mz8d5GPoHc83H+cPf8z7aSDAdcsqaRCPZRZY8OlT68G/mU7WeXI6MD2UmFKFs8Eg7WoPy4w2rBJ+48TLGfpCoh/VfcWLsz6zIxdVhT6dJWB/AWncDLIwSZKFdIONgBapyKqsR/Ulxv2lCAEl/xuy3iCS+DQJRYFDrwWu1y7TjHi6BIry0ElG8dxcajkTXs7377H1B9EZP+1SI0Z7hwQOTYTKd5m7ECs2o8ZFPWk5n0pux9bZv7dilMmfWznnSnXX8o4h6RNg4yVBeUplkkeIwk+AnYo2vVpFznSUhKqq2CkYEI1djBnZqHIIx9cGAuTOCl+JJ53ddcCvRig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,199 +180,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to lay the foundation for work that permits us to track the
-virtual page offset of MAP_PRIVATE file-backed mappings, we abstract the
-assignment of vma->vm_pgoff to vma_set_pgoff().
+The only files which should be including vma.h are the implementation files
+for the core VMA logic - vma.c, vma_init.c, and vma_exec.c.
 
-We additionally add a lock check here using the newly introduced
-vma_assert_can_modify(). This asserts the VMA write lock if the VMA is
-attached.
+This is in order to allow for userland testing of core VMA logic. In this
+cases, vma_internal.h and vma.h are included, providing both the
+dependencies upon which the core VMA logic requires and its declarations.
 
-We also assert that, if this is an anonymous VMA and unfaulted, that its
-(virtual) page offset is equal to the page offset of the VMA's address.
+Userland testable VMA logic is achieved by having separate vma_internal.h
+implementations for userland and kernel.
 
-We must be careful about MAP_PRIVATE-/dev/zero which violates fundamental
-assumptions about anonymous memory, so we check for !vma->vm_file after
-using vma_is_anonymous() which these mappings satisfy.
+Callers other than the core VMA implementation should include internal.h
+instead. This header does not need to include vma_internal.h as it only
+contains the vma.h declarations, for which the includes already present
+suffice.
 
-Additionally, we only perform the assert if CONFIG_MMU is defined, as nommu
-does not set vma->vm_pgoff = addr >> PAGE_SHIFT. This isn't really relevant
-to rmap as it has no anon rmap (nor needs it), but we must avoid it
-asserting falsely.
+Update code to reflect this, update comments to reflect the fact there are
+3 VMA implementation files and document things more clearly.
 
-All of this logic is kept in assert_sane_pgoff() to keep things clear.
-
-In order to maintain correctness given this assert, we also update
-__install_special_mapping() to invoke vma_set_range() after it's set
-vma->vm_ops (which determine whether the VMA is anonymous or not).
-
-We do not use vma_set_pgoff() in vm_area_init_from(), as at the point of
-forking, we don't necessarily have correct locking state.
-
-Updating vma_set_range() covers most cases, but in addition to this we also
-update insert_vm_struct(), compat_set_vma_from_desc() and nommu callers.
-
-We also update vma_add_pgoff() and vma_sub_pgoff() to use vma_set_pgoff().
-
-While we're here, we drop a BUG_ON() and update insert_vm_struct()'s
-comment to reflect the fact anonymous mappings can be added here.
-
-Finally, we update the CONFIG_MMU, CONFIG_PER_VMA_LOCK defines in the VMA
-userland tests so IS_ENABLED() will work correctly with them.
+While we're here, slightly improve the language of the comment describing
+vma_exec.c.
 
 No functional change intended.
 
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Gregory Price <gourry@gourry.net>
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/nommu.c                       |  2 +-
- mm/vma.c                         | 14 +++++++-------
- mm/vma.h                         | 35 ++++++++++++++++++++++++++++++++---
- tools/testing/vma/vma_internal.h |  4 ++--
- 4 files changed, 42 insertions(+), 13 deletions(-)
+ mm/mmu_notifier.c | 2 +-
+ mm/nommu.c        | 1 -
+ mm/vma.c          | 4 ++++
+ mm/vma.h          | 9 ++++++++-
+ mm/vma_exec.c     | 8 ++++++--
+ mm/vma_init.c     | 4 ++++
+ mm/vma_internal.h | 4 ++--
+ 7 files changed, 25 insertions(+), 7 deletions(-)
 
+diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+index 245b74f39f91..df69ba6e797f 100644
+--- a/mm/mmu_notifier.c
++++ b/mm/mmu_notifier.c
+@@ -19,7 +19,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/slab.h>
+ 
+-#include "vma.h"
++#include "internal.h"
+ 
+ /* global SRCU for all MMs */
+ DEFINE_STATIC_SRCU(srcu);
 diff --git a/mm/nommu.c b/mm/nommu.c
-index 2a0136f6081d..21cbe8b093fc 100644
+index 21cbe8b093fc..adc0b0ca906b 100644
 --- a/mm/nommu.c
 +++ b/mm/nommu.c
-@@ -1062,7 +1062,7 @@ unsigned long do_mmap(struct file *file,
- 	region->vm_pgoff = pgoff;
+@@ -41,7 +41,6 @@
+ #include <asm/tlbflush.h>
+ #include <asm/mmu_context.h>
+ #include "internal.h"
+-#include "vma.h"
  
- 	vm_flags_init(vma, vm_flags);
--	vma->vm_pgoff = pgoff;
-+	vma_set_pgoff(vma, pgoff);
- 
- 	if (file) {
- 		region->vm_file = get_file(file);
+ unsigned long highest_memmap_pfn;
+ int heap_stack_gap = 0;
 diff --git a/mm/vma.c b/mm/vma.c
-index ec64e179d2f9..7c75dd78edef 100644
+index 7c75dd78edef..737f0d692e6b 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -81,7 +81,7 @@ static void vma_set_range(struct vm_area_struct *vma, unsigned long start,
- 			  unsigned long end, pgoff_t pgoff)
- {
- 	__vma_set_range(vma, start, end);
--	vma->vm_pgoff = pgoff;
-+	vma_set_pgoff(vma, pgoff);
- }
- 
- /* Was this VMA ever forked from a parent, i.e. maybe contains CoW mappings? */
-@@ -3347,9 +3347,9 @@ int __vm_munmap(unsigned long start, size_t len, bool unlock)
- 	return ret;
- }
- 
--/* Insert vm structure into process list sorted by address
-- * and into the inode's i_mmap tree.  If vm_file is non-NULL
-- * then i_mmap_rwsem is taken here.
-+/*
-+ * Insert vm structure into process list sorted by address
-+ * and into the inode's i_mmap tree if file-backed.
+@@ -4,6 +4,10 @@
+  * VMA-specific functions.
   */
- int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
- {
-@@ -3375,8 +3375,8 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
- 	 * Similarly in do_mmap and in do_brk_flags.
- 	 */
- 	if (vma_is_anonymous(vma)) {
--		BUG_ON(vma->anon_vma);
--		vma->vm_pgoff = vma->vm_start >> PAGE_SHIFT;
-+		WARN_ON_ONCE(vma->anon_vma);
-+		vma_set_pgoff(vma, vma->vm_start >> PAGE_SHIFT);
- 	}
  
- 	if (vma_link(mm, vma)) {
-@@ -3422,7 +3422,6 @@ struct vm_area_struct *__install_special_mapping(
- 	if (unlikely(vma == NULL))
- 		return ERR_PTR(-ENOMEM);
++/*
++ * To allow for userland testing we place internal dependencies in
++ * vma_internal.h and external VMA API declarations in vma.h.
++ */
+ #include "vma_internal.h"
+ #include "vma.h"
  
--	vma_set_range(vma, addr, addr + len, 0);
- 	vm_flags |= mm->def_flags | VM_DONTEXPAND;
- 	if (pgtable_supports_soft_dirty())
- 		vm_flags |= VM_SOFTDIRTY;
-@@ -3431,6 +3430,7 @@ struct vm_area_struct *__install_special_mapping(
- 
- 	vma->vm_ops = ops;
- 	vma->vm_private_data = priv;
-+	vma_set_range(vma, addr, addr + len, 0);
- 
- 	ret = insert_vm_struct(mm, vma);
- 	if (ret)
 diff --git a/mm/vma.h b/mm/vma.h
-index 40effaa3ebe4..58f48609ce22 100644
+index 58f48609ce22..adb7a0ba1192 100644
 --- a/mm/vma.h
 +++ b/mm/vma.h
-@@ -247,16 +247,45 @@ static inline pgoff_t vmg_end_pgoff(const struct vma_merge_struct *vmg)
- 	return vmg_start_pgoff(vmg) + vmg_pages(vmg);
- }
+@@ -2,7 +2,14 @@
+ /*
+  * vma.h
+  *
+- * Core VMA manipulation API implemented in vma.c.
++ * Core VMA manipulation API implemented in vma.c, vma_init.c and vma_exec.c.
++ *
++ * Note that, in order for VMA logic to be userland testable, this header
++ * intentionally includes no dependencies.
++ *
++ * This is specifically scoped to mm-only. Users of this functionality (other
++ * than the core VMA implementation itself) should not include this header
++ * directly, but rather include internal.h.
+  */
+ #ifndef __MM_VMA_H
+ #define __MM_VMA_H
+diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+index 13a05e041195..ef1fa2b161f3 100644
+--- a/mm/vma_exec.c
++++ b/mm/vma_exec.c
+@@ -1,10 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
-+static inline void assert_sane_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
-+{
-+	/* nommu doesn't set a virtual pgoff for anon VMAs. */
-+	if (!IS_ENABLED(CONFIG_MMU))
-+		return;
-+	/*
-+	 * File-backed VMAs have arbitrary page offset (either page offset into
-+	 * file or for pfnmap the PFN of the start of the range or drivers may
-+	 * set arbitrary page offset).
-+	 */
-+	if (!vma_is_anonymous(vma))
-+		return;
-+	/* MAP_PRIVATE-/dev/zero is anon, non-NULL vm_file, but has file pgoff. */
-+	if (vma->vm_file)
-+		return;
-+	/* If faulted in, could have been remapped. */
-+	if (vma->anon_vma)
-+		return;
-+	/* OK this is really an anon VMA - expect virtual page offset. */
-+	VM_WARN_ON_ONCE(pgoff != vma->vm_start >> PAGE_SHIFT);
-+}
-+
-+static inline void vma_set_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
-+{
-+	vma_assert_can_modify(vma);
-+	assert_sane_pgoff(vma, pgoff);
-+	vma->vm_pgoff = pgoff;
-+}
-+
- static inline void vma_add_pgoff(struct vm_area_struct *vma, pgoff_t delta)
- {
- 	vma_assert_can_modify(vma);
--	vma->vm_pgoff += delta;
-+	vma_set_pgoff(vma, vma_start_pgoff(vma) + delta);
- }
+ /*
+- * Functions explicitly implemented for exec functionality which however are
+- * explicitly VMA-only logic.
++ * Functions provided for exec functionality which however are
++ * specifically VMA-only logic.
+  */
  
- static inline void vma_sub_pgoff(struct vm_area_struct *vma, pgoff_t delta)
- {
- 	vma_assert_can_modify(vma);
--	vma->vm_pgoff -= delta;
-+	vma_set_pgoff(vma, vma_start_pgoff(vma) - delta);
- }
++/*
++ * To allow for userland testing we place internal dependencies in
++ * vma_internal.h and external VMA API declarations in vma.h.
++ */
+ #include "vma_internal.h"
+ #include "vma.h"
  
- #define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
-@@ -331,7 +360,7 @@ static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
- 	 */
+diff --git a/mm/vma_init.c b/mm/vma_init.c
+index a459669a1654..715feee283f0 100644
+--- a/mm/vma_init.c
++++ b/mm/vma_init.c
+@@ -5,6 +5,10 @@
+  * between CONFIG_MMU and non-CONFIG_MMU kernel configurations.
+  */
  
- 	/* Mutable fields. Populated with initial state. */
--	vma->vm_pgoff = desc->pgoff;
-+	vma_set_pgoff(vma, desc->pgoff);
- 	if (desc->vm_file != vma->vm_file)
- 		vma_set_file(vma, desc->vm_file);
- 	vma->flags = desc->vma_flags;
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index e12ab2c80f95..4f6c5666ac07 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -14,8 +14,8 @@
++/*
++ * To allow for userland testing we place internal dependencies in
++ * vma_internal.h and external VMA API declarations in vma.h.
++ */
+ #include "vma_internal.h"
+ #include "vma.h"
  
- #include <stdlib.h>
+diff --git a/mm/vma_internal.h b/mm/vma_internal.h
+index 2da6d224c1a8..4d300e7bbaf4 100644
+--- a/mm/vma_internal.h
++++ b/mm/vma_internal.h
+@@ -2,8 +2,8 @@
+ /*
+  * vma_internal.h
+  *
+- * Headers required by vma.c, which can be substituted accordingly when testing
+- * VMA functionality.
++ * Headers required by vma.c, vma_init.c and vma_exec.c, which can be
++ * substituted accordingly when testing VMA functionality.
+  */
  
--#define CONFIG_MMU
--#define CONFIG_PER_VMA_LOCK
-+#define CONFIG_MMU		1
-+#define CONFIG_PER_VMA_LOCK	1
- 
- #ifdef __CONCAT
- #undef __CONCAT
+ #ifndef __MM_VMA_INTERNAL_H
 
 -- 
 2.55.0
