@@ -4,142 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1E19C44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FA78C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:32:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 527526B0088; Thu,  9 Jul 2026 23:29:42 -0400 (EDT)
+	id 8D7766B0088; Thu,  9 Jul 2026 23:32:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D7C46B008A; Thu,  9 Jul 2026 23:29:42 -0400 (EDT)
+	id 8612B6B008A; Thu,  9 Jul 2026 23:32:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A15E6B0092; Thu,  9 Jul 2026 23:29:42 -0400 (EDT)
+	id 776DB6B008C; Thu,  9 Jul 2026 23:32:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F08E06B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:29:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88B101C885A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:29:41 +0000 (UTC)
-X-FDA: 84971437362.03.90B9F1F
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9BC2D80005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:29:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Df1kMmMZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of richardycc@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=richardycc@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783654179;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46F986B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:32:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BCBAE1693B0
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:32:24 +0000 (UTC)
+X-FDA: 84971444208.12.696E7BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2A77F40005
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:32:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SQmEZ512;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783654343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nhxH01x/G1oVoXsCxh8uiOizTJqiYQTwrU6XhUjYUXA=;
-	b=XYjc3cq2Tsd5m4JYW/iETrk1qjvnbX7ON5tOD/eK/GbkHUcqk6lesQ/GHG43GZhbpqk3Qp
-	SzK5qb8Td6VA2OQywmlqb8qm9KjJmWSCTLmys4QWYHspkhy+iETuOliD0qTadre7bz4jsG
-	ziZJ8AqV2EVlkmF6qdDv3cf6Dk9NsdM=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Df1kMmMZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of richardycc@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=richardycc@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783654179;
-	b=hYovXs9qV0yRhNVs7I7cDuDcBog2+XPYiNk/xKjX/kLBQbAbOlSicT3sXpTyrX+LtwKRuG
-	1Hi2c7KrRWpTYORdDCR4E3wVw3JAJmzsYydAxO6nuzSd+Aa/pWB0WS7l8CHVp9FJRdfxYM
-	o0+Cc/JqFkDMlKeE52bCsc44MX+zipQ=
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so2813e87.1
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 20:29:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783654178; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Iff+AOoBg8QlUjftHU6VqM38l/CnvZmFlt9DR7Kxuke/CLRNj03OUrfPzqedo7Xi8k
-         kGhaNpU/IwIYj8FQJnhiFqJz8AK4KgPnoAMuvCm6JQIP1SBKP0Jev0DonmuagUVAHi/R
-         QXNglLJ4dSLWdUq0bh0ekyLav5OtVLWHqMnfKAzgupVxzkbpSzDK80Dlf2OfR19T9ygN
-         IfoZgY/epgYsL86lqfkSwRVWOyC20A2yTT92RhP46posKVj0v+3lhY1uhO5zCmC1c+hf
-         CHJQkQHG5ol2n7FWPr6Y9n3mnB3/YtOHkG8KTblQ2obq40CaJD1/jp/H22RODNAkJqvg
-         C0/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nhxH01x/G1oVoXsCxh8uiOizTJqiYQTwrU6XhUjYUXA=;
-        fh=JUyzh0FoY+vQQz5qKeHSfeRazmh5NzGy+kAOs3oS78c=;
-        b=HZfB5rfWLO8nAhOl5C/vuW+8zSlQCNuiv7O/cfEsfsbiEAps0oGt2DxTXvFXuCgnf+
-         V3XAcUz/WNrQDBh+v9zt0f31oTVQAYfmateV5EU1yHZqRUh5vc+TbVRpGl2rss0XO8qz
-         90lRQ0CH0iB7uxZ2tDhGYJxENeXhHlXB846A3VntLN9k9STagrxZIXp9z0J/CweLEgNf
-         ym8xd3764TQc7YZh3ATyKUpRwbE39tnuaA0MIFfKtav9PPLLvvVzJc7EL7M0zB/BxkPf
-         7iAVt3rU4J5QDcGDlviirGDgn5Y0WUAev8P9FQKZWMYm1TyO5400GXd5bi8jfEs+shHW
-         8ZjA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=mQ6hMMNdMWZsQvQubRaY7o6TY5m2sf5lSbS/0dE799E=;
+	b=Y0HXV48bzg7Ji6+7aSfI1sthmgG80i9bBBeHHsYQRPBDal7MD3YuJkkVQuQRMgM9+XisvO
+	MbfHKYQYcgU3uu22hCVtCmEDo6ykoVJZcCRxZjoGN8E5nHMaaSrtn86QdqCHL9Pvoxihdr
+	FNRh7VPyzMnYZYS054a6jioLQ3G2+s0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=SQmEZ512;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783654343;
+	b=4mvYFqqjYjaNAVc/Kw3VI9/SRFtZSZxq9RFKapVtO+tKDBfqsczBPE9d1JgkoNiIshEhqr
+	DGU/uV+F/cHTlDYw3xJyB7rKRltfAWQji//wNGSmZkURUxgLnofECTwMh6iq1keDQpKO37
+	ZY1oRns8UZcX//KxZqJ4sH/3bCMmjC4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8784E6001A;
+	Fri, 10 Jul 2026 03:32:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B521F000E9;
+	Fri, 10 Jul 2026 03:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783654178; x=1784258978; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nhxH01x/G1oVoXsCxh8uiOizTJqiYQTwrU6XhUjYUXA=;
-        b=Df1kMmMZ5sMpWelWRGzKH0CFLyTOoZD5p54oczarvVficVNXW6w6q4Kx4aJZZS9oUe
-         xgHyPWrgvWn/rsdBExciD4I/hhigAhzg6bQUva8AT6DAvnJLOPqu6CHOHX5HHLtJh9dI
-         x2xrB/+B/rVUfR1TXahAxIr5AfMiuIcwGwCvTygmZuS9dNUHG7fJ97J/xivBOOF7lY/f
-         EaiaWYjs+UjSfoAGVOq2xTVmWFNrZlK1eZ5yOOc3bOYDZbqlLA/ZZxUotygYSL/NARiN
-         adAVIzYiMenp8REzG1IMA8jCVUPd7RdfWfsa+raudAGsDf0uSP6c1G9J4u47JDxZSjhg
-         0plQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783654178; x=1784258978;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nhxH01x/G1oVoXsCxh8uiOizTJqiYQTwrU6XhUjYUXA=;
-        b=djwXrFpG8V4ElNwA3QVRioAgxfs82OOkwjN4N6I9gl4+jdelpX7a+6HB64Lbp/kmXD
-         ps7XzNmYt+cy0dO19iKTt24dHTizxOp0339n2p5cKKUXag6lGuYmehRUYmZPVQgksj2O
-         IYRdzd4ZCaGGSRX4XTBAGe/5GxIIyP6lqEizj9sGJ0UJTfX9L0PsaIt8hAC+yRmVyJTk
-         +ESM/JwTu4eAsH/9M0L1Qbd6OxvKLxDwgWgWNcrwe8FWEBwDq4I6NXDYeL6/twMW5fkH
-         jWLK2Y65wXrLVi9dXYqGCU5xXOIFf6jDaIKWCBNkvsdKvXP4BlsxBSzkJSSPGXzVmk6L
-         wuKA==
-X-Forwarded-Encrypted: i=1; AHgh+RroB39PB6/oqnMoGL0WTar6vtgKRG+iwtvx7VBVeXQVSZPtXqHN+aT+dWOXTpttYJJlBj7kY+ELWQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywl13y5ttSuSyVI5bSClZWZxw72VFDF5vqYhb0BEKETSgORZx4q
-	dLXBmO2gf1CljLKJyRBcgdhVHcMWRcjdSZEMUEIm6eM2UNlUhqgxgjUpaPCS5tCGCNGagdKOSXn
-	LMudrUA2OFckm76pxQVCC0tlr1VvdON0Otf877OE=
-X-Gm-Gg: AfdE7cnw+DW6eGsMgyRt5hQTZtm4hl+scUzOMimRDHID0/96O2TddnfOCy2Pmd2E/rp
-	1F9Uq2pMsynug9Da9Ce/hziDtZ1XG766mwRJvg+g+LebCyFRg8OIZOpi5r2S9V2iyi7kcLiFcL0
-	9f0lGWBD7797RFM9fIRdm8TccjqarBYDx7GlV4fkZdey4wBOgDv39fq6LDWKLdGgu/QVOFRS/3y
-	vU448eMl416UW8CC9LIQnPN4DEIyMF/TTlkzogk5S96EONqXWQ3Xc6w7si59ZI1i5xtVd/bPT44
-	0dppNE1ySfNXSs8W
-X-Received: by 2002:a05:6512:2201:b0:5a8:6646:d7b4 with SMTP id
- 2adb3069b0e04-5b01cd3d81emr74320e87.1.1783654177440; Thu, 09 Jul 2026
- 20:29:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <ak5-qwmpXrYi5md6@linux.dev> <20260709072231.3163082-1-richardycc@google.com>
- <ak-OyACkE8lLaRRS@tiehlicka>
-In-Reply-To: <ak-OyACkE8lLaRRS@tiehlicka>
-From: Richard Chang <richardycc@google.com>
-Date: Fri, 10 Jul 2026 11:29:25 +0800
-X-Gm-Features: AVVi8CdEDrZKrrKRh8Eb_gCprI7zkoPCteZBESFwGkJDbtyr3UZeK0JLPbOvLgM
-Message-ID: <CALC_0q8O1uw18aWM8w8be60TxW02Os90AKSOLFoqubYAbLjkrA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: vmscan: abort proactive reclaim early when
- freezing for suspend
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9BC2D80005
-X-Stat-Signature: 7i8we175u6auak5q1hzacrx1nknwigts
+	d=linux-foundation.org; s=korg; t=1783654342;
+	bh=mQ6hMMNdMWZsQvQubRaY7o6TY5m2sf5lSbS/0dE799E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SQmEZ512lakzjBI+To/Kg9qX2xfzBFENrhLV10TA7stQYPVYi1BqPJNKj+5ABvuXR
+	 ZnSMhfQyh/4UZXdCFenl5JupgriV/BjmLPbYn0+mnDmpCEvLLE2DD+ui/FXzTUo3K/
+	 g5C9Zg88TZo7/4Tpq9YjtpZ6WSiamd9TLjTYgGWY=
+Date: Thu, 9 Jul 2026 20:32:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, andriy.shevchenko@linux.intel.com,
+ usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
+ ryan.roberts@arm.com, "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
+Message-Id: <20260709203221.573de46038f027c2ccad641e@linux-foundation.org>
+In-Reply-To: <25857f58-9ef1-49e0-99f7-366d91028c02@arm.com>
+References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
+	<20260709170816.4e876a16eef9a93f41bb1940@linux-foundation.org>
+	<25857f58-9ef1-49e0-99f7-366d91028c02@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1783654179-815307
-X-HE-Meta: U2FsdGVkX1+ItbWZFT7pWXtjiue3BnRhg1gIRDkPOKCqaN+rDMnv+Lym1mz1oDfGbeprmqeBgP8HTjX32x73b8vgLl4oxE/6EAocMtJiRYH2BRQ2B9BTxs9uCsT0/t8dKopoIztBBJwdQ6vfMrRomYM9cA6DqYMkkm7ftcfdPSJwkTv+P36EsXjEg0z+Vjh1wGXkYWshD5kGu8M6b3uWNmJtQ4BHAJqENh6ptN4TRwKqCHomK57tIRnSW2xnxTuypgIFxhVS+SQadlFV3FyFo/qB3/l/C+FehWTjHCV1Gx/lphB8Ye4J22D9YhbuvQbGqMRcBGshDhqJKTod+03YQcjd/f8cst4is4qLbOmxMI/nMqqtu9gnZpPtiOUtwSzXJd413TGMP02oSh+/yrOTMnWa8hXD59El82muZnPiW4jXHHdVVsym5rUV5oVWqsCWJyF7qTcJlZ9glK9icyTr80jIJpBGJhM8u7jI5j0YsR4lZDfgRpKvikhpEAXKBB/Zx5kPlb1QYMH50N7iqLrHWolDCckLFy6wJt5znjPIiQn/Sotux8ln1ghP6lFYE0tKMV6HLo0B/imo/PUL7i6j/hrhxlTtN2jjLyWMNLpdp1fzu4Qh2kBd6Am5W9xOGAHB8n0iyO1hkuL6F/bs2DXHp4bJCwYksHa7MMfsRCYd3sQluQkjKKPbUUGGhrPrPtDOJyi5RW6YKKsTKWezSeTMJFNQmn7YQB/GfkO7I6q6ozVQ6pI82xWKs1K8q+ZCJXypiS+ITRWNWqa6i33xXwznK/vjP4gXmOPxQFIR0QQF7n7ubkah6XHcc2yOKnVpy4GEUqEWx1MEHE44VPv/LV7YrQ2+/tNx1NSIujw4BZ4kZlo4iJeWMHjo8Ab0LukcxveAa0r7z5MWWxVf0Kr0P+ydBJ0Wx4e/Qoe65qTRAwehwzoo9TmNfKNe2TzETRhF77x+jftn8IA1f3y5AztSzat
- IGcp1sZO
- 9PKiNIi3J4fvvkwV2JLlHuym0llsrTU1gHOM4wSRxbPtljLs28cK1p6hzLzMrVf1epthZkAvHX9olQNA43hD6CvNaKM1paxKKeqrncK6L35KF5Zy6lbK4xh7BhsD9g+GX1g4hjnAC3KWU7ve56bIq/hZ9jJb5t07G/+Ok2A8VA9qq3vZvhcAXHvdvmIfq81Z/4tL/85VNiar3Hr568G6nwmxfgeMIJZbFEBpU9CrYOZydPnV6H6foEQOyZo7QbdVFe4gOgPYbcr3yLm7Bqz6ai9yVEjovk4LMrUzCkorI0oobn41DaNhw2HSxRBxv7JBLfpDr
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2A77F40005
+X-Stat-Signature: 7e8414sqapbjrw8cd3n3djd1ssjud675
+X-HE-Tag: 1783654343-554366
+X-HE-Meta: U2FsdGVkX1+6wzcxRpf60i7JIjsnPvyHf3d0ZIvyJvKem3sH5kid7fHUb8lnLdeyyi414C9WfDkKfg++HX+De60qbHrILu0xRRbrXjAjvHIafWvRMwZjznR86I2hp0d7TFwHjgLvOwsnJ2ouDyah7qo38TcpyqO0swCSbLuFfNZLp76M90u8odlx9dUA6M6wXDSVIuZxPfDBD/S7ipWI0AWnwyKVR0FUJ6F2M6pIvBNRhMmXZOt2PoARngsDlqxx70fUxfUex/i75cvgmgm5y7iIQ1hLfB9rFFK9E7lPqHYcW/hHrBZIOxUZRm+oMReTl8o+NHAK4TwAALaG5/XFE8BYSLMv8vnZofrW+dLwXU4Ghp41jOA+DF2UvEsMkp9Fwq57Vg1VEcjJTjmLwKqHht/4ISomhH40JVAQZMKM0JsIfOgiZt6ZikkuT29y9zGbYcnsa1dgtb6xQB4qLouAfQ4/ldTxVXCVlOc5/75kfCBun2tNNoKALc0/AqhhwrtdEx+gx58gqgwwCTT8iqukTu6qPw+YTgqhglHEEMbqVvFPEHgyitutyKlh5h5pPyW4agxnDbHUu71DooyCqxTzshuNlowP0mzzjuZWPwdXM5tBtNVl6gOE6Sg5KmJp4g0iS7ewzMiWwEd3wEjfuOc9JcWSKUxLvRm7OYb8dP7wklF5CUYKbTmfLfxfkuIkk5i8uA72JvvRe+psC/FlmoQDUJMPi3yT46V5CtMbWPULZejgDpiCJn9N2WKy6MLlmkPlMMPO5ymsb90qRbO2ebJYaDFNHZy1+HVfkJ667ubSDNyYF0IwNsOropL82Ly548BK0wg/0FtnhIVBmZEPUPZ6bwsDoLM6W7uTWcp2T3TBfQJ5pFn1xpHVCkPpH/R6hz39yGX1sbnofNFM2vt6GTxBeHUlKRpQeNNemHZVD4XW4i56/5EQPWYfQAYhtHH3nH6nj7+Vu07iFvLPru5Vkta
+ QuM3/RU3
+ B9fQUTjyWlvSTr8gau/xNcRGyzxO8pKuMlnZVfa+mbOcnnEHjWVsJb0MuYIcD9iBJTN6qAEeJnz6tXD/jITpr9BCxa0xlwD9lSGbjFj9DFBCR50xxpOogyLAnNsA3n+JtCNLudJkNX4TFZoiP78fR9hmP1ASKBPtaWYVac1WY37jt78L/p6VZ72s2xaN6ZYgOZsQBMuLeIJnK5yHfSU78vauVESU9Tont9by4Q4nUQ8GBy6+7LUUOZrPDFdplJJ0lUOFa0qbkvK7PCB1LtHeZqKzXSzQ7q7/15AbvfcQHS4/oQBXztbUdltH+c46IBab9EZtrhe3lc5t3FPY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,25 +93,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
+On Fri, 10 Jul 2026 08:40:25 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-On Thu, Jul 9, 2026 at 8:06=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrote=
-:
->
-> The changelog doesn't explain whether this is MGRLU specific problem as
-> the fix is MGRLU specific AFAICS.
->
-I will prepare the v3 changelog update. Thanks.
+> 
+> 
+> On 10/07/26 5:38 AM, Andrew Morton wrote:
+> > On Thu,  9 Jul 2026 10:13:34 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> > 
+> >> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> >>
+> >> Bad page map reporting currently stores page table entry values in an
+> >> unsigned long long and prints them with fixed 64-bit-oriented format
+> >> strings. This is inconsistent across call sites and does not work well for
+> >> architectures where page table entry values are not naturally represented
+> >> as 64-bit values, such as 32-bit or 128-bit entries.
+> > 
+> > Well grumble.  It's a lot of fuss for something which nobody is hurting
+> > from.  Or are they?  What's the actual utility here?
+> 
+> Current page table entries print does not work here for
+> 128 bits format (arm64 D128) because neither 'unsigned
+> long long' can hold 128 bits nor printing extracts u64
+> from the 128 bit entries while printing with "%llx".
+> 
+> Proposed a separate printk format %pp[te|md|ud|p4d|gd]
+> 
+> https://lore.kernel.org/all/20260610043545.3725735-1-anshuman.khandual@arm.com/  
+>  
+> But there after it was decided to rather have a local
+> solution in mm/memory.c instead of adding a new print
+> format.
 
-> Also do I get it right that freezing a task while doing the pro-active
-> reclaim will force EINTR early return even if no real signal was
-> delivered to the task?
->
-Yes, that is correct.
-The PM freezer ( freeze_task() ) calls fake_signal_wake_up(), which
-sets TIF_SIGPENDING on the target task.
-Returning -EINTR when checking by signal_pending(current) is already
-the existing behavior of user_proactive_reclaim().
-This patch does not change the behavior, it just allows the task to
-exit the inner loop quickly.
+OK, thanks.  Let's please spell such things out in the changelogging. 
+Explaining how a change helps our users (ie, improves Linux) is super
+important!
+
+> >>  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+> >> -		pr_alert("pgd:%08llx\n", pgdv);
+> >> +		pr_alert("pgd:%s\n", pgd_str);
+> > 
+> > can this do
+> > 		pr_alert("pgd:%s\n", ptval_to_str(pgd_str, pgd_val(*pgdp)));
+> > 
+> > and eliminate a few locals?
+> 
+> But that would not eliminate any local variable.
+> 
+> The helper ptval_to_str() does not return but instead
+> fills up the provided buffer which later gets printed.
+
+Well yes.  Changing it to return `buf' was kinda implicit!
 
