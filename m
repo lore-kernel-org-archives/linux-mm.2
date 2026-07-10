@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB338C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A83D8C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4C6C6B00B0; Fri, 10 Jul 2026 05:34:00 -0400 (EDT)
+	id A371C6B00B2; Fri, 10 Jul 2026 05:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA5F6B00B2; Fri, 10 Jul 2026 05:34:00 -0400 (EDT)
+	id A0EEA6B00B3; Fri, 10 Jul 2026 05:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 996F56B00B0; Fri, 10 Jul 2026 05:34:00 -0400 (EDT)
+	id 94B6D6B00B4; Fri, 10 Jul 2026 05:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7419A6B00B0
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:34:00 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 121D01C3A85
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:34:00 +0000 (UTC)
-X-FDA: 84972355440.28.4C85784
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 713D06B00B2
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:34:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0395A1203D0
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:34:01 +0000 (UTC)
+X-FDA: 84972355524.16.AFF92C6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 350A5C0003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WOGjXkUu;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 312641C0008
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:34:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YWXqt8ow;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783676038;
+	s=arc-20220608; t=1783676040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4L+ewyd/DXbi01Z/LJ2w2Zg6TXNholpeEmz+tC5Twp8=;
-	b=Wyvvoi78cS7ruCItDBvt6J8lmdGjPUmeIAHEtGyUs+ygfXbH0W4Xo0bx6Xja2Lmf5Gm5oc
-	CTQJ1JxfbyXu0n78HGnqri15LYVfAyuVV5hRPF5iY4FKL3XHK+VOEimxpTjV6DbQGjQkFE
-	bu0LAzh3AKZMvaUsPZrPkxsSeIaBv7Q=
+	bh=OccYc8NxGsDMDGI6vq4nPL3MmgM3Zh80pxvV6GiHRMM=;
+	b=rBTvbkRR+klwuHhJrJGkRrs5i/MQRghRcHm6RMJtjqDgg6kcbG5PNl6Jv0dq/NTz+sZBFL
+	c7+moAyBWY8kXJLydeZUViPwQX7PJdupNqs5/asTLSpZUEAOTIzqt5tDAnNDjZ+Xs5z0cg
+	51oxWJWIR50szDWyY2MJHS5EQtGvLTM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WOGjXkUu;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YWXqt8ow;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783676038;
-	b=QgHPUJ6krqVttRdxZ/pljYyDw79jJjz+CWkOR4zZeeTtFP7vC7SIljlZ75sSmSoQV3266r
-	QbFjRUI0AkQ3aOjrP5x2NKnfI4xPGGAkwG/tRLzXKDqUMDhPLSyGIBlIkZIsjCwG8d8HCG
-	Fz+LTwVc8TK0/ihHWnyrwOtA4/CU6Kc=
+	t=1783676040;
+	b=7qgEA0YM1EusJ45WeL0i+TxxVRy4P4XqcehQeRHKivUR0WxcdkS1D5R8gk3EUQJEWf0ZCG
+	GkqwDZRNDy7zzLHr4nUui0pYXedtljSj/ZHBkjH3EuteLI/yj2ebLJYGk1sThhom5xkMhP
+	IL28neJ4YD1ELnm3QMqJ96Y2EDlQZHc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8AFD443D7E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A05E43D67;
+	Fri, 10 Jul 2026 09:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9BA1F000E9;
 	Fri, 10 Jul 2026 09:33:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155061F00A3A;
-	Fri, 10 Jul 2026 09:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783676037;
-	bh=4L+ewyd/DXbi01Z/LJ2w2Zg6TXNholpeEmz+tC5Twp8=;
+	s=k20260515; t=1783676039;
+	bh=OccYc8NxGsDMDGI6vq4nPL3MmgM3Zh80pxvV6GiHRMM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=WOGjXkUusrAH8RHIytLylACCQ+MXGAryQVnLcSJb4+/FZJYFgeNr/USQwWtKYQyYn
-	 79DggVuuLRA8yKoCgz/2NAg6vam7ryTZNbkL9i1hQ3rPuca4yabkGmYgqRh6fTCTBM
-	 mIKLcHsK1BnIAX8yBT8ZTVqBG03J2je9+rBH97yZ+eSnc/7nLyEr+PoTc9+ayKeuVs
-	 kkzVJLIrNR5lTz3sVPBg/v4fxuppbrOVRueAXf2r2PGx8LxVXg+37q6STwe4oq5aFZ
-	 LWWgkKUqsort5kGxtSZIjjEYrRk+B/i0JZj1sTaMpvM5QAu5jIw/cP9JTNjrMSrm2p
-	 DA7mvCPejCpHQ==
+	b=YWXqt8owcIw+8pJKVus3nEG0j5OP6I4LZuipqZ5tyTNaHu7GGGexqzuAi/09T92V0
+	 UyKd7EQGcpIyfjnGX9VIoZm3ebQnIXW2CP4LEUtwqn2e9VJnmPWJEyp6Ogr32KCkNA
+	 FU8W3kqvYkUsL4Rb0+hVNSIIwuZKfTOQCv7KniXWIAN20vLo1XA4SNHvP3YlijZioa
+	 ER6cxEvmpvaTkzw1YXL3FFHkqnXfrWlli8hRjqnMFVK8uZYleSX1Z5BiUIoNlULzrC
+	 gWvFx8s9JqO+JfIeMd2GUAaZxxujitJm9ME1ECBOMTuPGIHgS2l2nx3hxO0/dFDaWd
+	 niWX4D9UIPlag==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 11:33:20 +0200
-Subject: [PATCH v3 19/24] binfmt_misc: use a flexible array member for the
- register string
+Date: Fri, 10 Jul 2026 11:33:21 +0200
+Subject: [PATCH v3 20/24] binfmt_misc: split the field parsing out of
+ create_entry()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v3-19-a162f7cb58d6@kernel.org>
+Message-Id: <20260710-work-binfmt_misc-locking-v3-20-a162f7cb58d6@kernel.org>
 References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
 In-Reply-To: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -80,22 +80,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
  jannh@google.com
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2390; i=brauner@kernel.org;
- h=from:subject:message-id; bh=op5FT6KTOFj4auKeOC4UkTSWzUEhg5f38f9n59dfWiA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7In/kVv9cIbmhvspmu4xXYc9zfx3sU/Pdq+7fXBVU
- o31Jl+jjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImc+cXwz6Cl48HU+/tOJv1f
- 5qq0V0yg9fUbO/n5j/d9W7ylUyN0wi+G/ymntv/8dtvr8RL785+V7pbkWjycYb/6jZljbsDReWe
- t5zEAAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9225; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=25W/cgoz/HpXh1KEXu/W3hNEhoDDwyECTUQhuRK1V1w=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7Il/mDanxkT488yZ3O7vfEVXM5w6XCdj8NA31Dq6Y
+ veXQxOudpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExk+xOG/z7c0ZpG/9bJCzS6
+ C18VP6yRxJOw6UR0HEPdbeWLwjn8TowMSyULvnZWGs19HvQhvYlthfzXi68P/SrcwXp3Scij22t
+ mMwAA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: dimhpope9xdu7fhg8kprhaq7w37n97ri
-X-Rspamd-Queue-Id: 350A5C0003
+X-Rspamd-Queue-Id: 312641C0008
+X-Stat-Signature: 1m3ma7jiqmayji8qdqbe3us9f5j81x5s
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783676038-87994
-X-HE-Meta: U2FsdGVkX18wCBASkACMHSZVMlJIUiiH8uQotg1LtpkVLmgpBCcpXveC5pecvDvr8jIYde5r+0mJnmBarjlX9yh7X32VJwekcxeVZ0Td5hR9sppI3KDTfDW4M2UQg+HIn1K3cSeZTm061HQYH91UJPZY9g1nkA0Ix8aA8HZwynjbOvac3BhhtakBX9sUpdURT0aywg4hm8aFaJAMOMcRv2KhbQNJLvk6PWB34MnQmqbIg+9NjoZWtvFwWuRjuREvsPo0hQnYIForrZAdNXGT3y7s8kaJEEn1etdRXhmnguuaMjBZbhTKTJbxDZD8xedSfAvhLI/yoSYGkIW+zhu7R0RE5K+erhYjFgeoGGM/GuiAeQjV52TmYNbeEELTwtWIdR58MPejMvHScnndWY4ZUzYy4B/4ZOmzqlSmVV2oPaPXEKCgtJuQZRybNV9YsjKjEFzsEjfaMI3qEsswlo4CXGszI3DN/4sqruFWhmlgJv0yxnkhhNV6F0kzw6RCJXTN93t2HpuDnPluddRUjdSLWDqWrBZ76YNRi01/UDGuIKTguUHBFTftJRJ1tzoVrjJPlFmS32X+YcIbUCBNX0xuDLyOI6VOOGB3RoJVJ3cvgYl27PJDetc/hoKcpeOlktCSB2eicD+co9fepyNbDldXxhvBC7E7Orv1Cr53fMOCZMEpCrZUoAFTL0HCk2OG3pVv/Eoo52ZnFxVseF1O9HVmoZ/epl8FqAVvcGE6BJqVqLCW2h9juPcXoYETm8YgnIpAPE85lmzKFwlxKbueo3isXnJ9rtP1qZ2xMbyQEKWqatFyd+5odX43K5VmqjC/mjtllTs3Qc8Wid33mFKHsJdVaF+sh6qcShGb8JHWce14XKr4qDDm2WUfI40gvTKpRfEoSC8NE6DP6YrtaqF4zb8bekc1l7JNJNMyxOwd/xDFgqa4UGqUNUpm4761CMZKS4ZS5lk6jVpLA3zN6sp67dd
- KKTjTn/r
- Y8WeeD3L6zmX7S/Dd2FFa0PO5H3jV5YMIZXTpQ95Z0CNx9MzZyuu/Cycoz32pt39+dnKyNTz3yGsWdO1j5UIMGHMhULNUE+1m2Omyi/Ip01oHNpmoMcYdPEkncA/VJ+cbYChBocHC0ZbJLmpog/2ayIHYuesnxJaVw9gyyrsPqrDhiW0SX53iX/l4T6tOe8AteDwIF1m1/887CH6YVqSp2sapfSaRTQ8NRsamOkei/xXOZKF8ZrzgiQUQWoC0sclZR6od+992HNEJFaDBuBvyKvT09YkdpapZa+4QYZXNuyMYBzZT52Sl9ucl+wgdzgO3D3UBxwsvt8rUruvhzM6/lw6TyZUA7Rm6fWMxrdESZ46iCEM=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783676040-754020
+X-HE-Meta: U2FsdGVkX1/UI1FpDckcdH2rOus4kRsqLw66TU0tzhaT8r1gsfsDJFVc3LYM19EGf9NvM3gDQqjw+l15dS8lilXPFJA5KQzSfUiJ5AqywyRLnpp9XXfXoYrDQWemvICcS7vBJy4YsXi7loY0rYk0s0BuwbFlvYVJw5D9LQ7lcvQPP6KVNZkMveYupYiolPNuCmucPZittT/FmATJFc9MnGBHyf5UCzeLvlG7vcrf3Be8cqqfOWQdPO3C3bRD33lYEtQPCDYmavmyKaDow78QxWB+eBzgAOQtxmKLthf1gV3IoLIZDD0F3IujkKROPqZTmrn5cSwiJoi8+FxDIrnsxCoLwGk+GdfthWIQEFiwIvuEGdW5CTo4sqh0n5agAAw77BM2H2XQIFh4pewO80mWa94Z5Hd0eb9aH8Ra8sJW2ExAj7cM980Ev0EY9G4nOAOYwyvKH+ybfdhBbqkbwOTITwiBw2UO88sov6ajhv10hNlM02IzpMCPCPfovhD05TMntrw7bAzgJPfORMotZy8Ha0aEe9kYrLyxM30ps9fHzqM3q2jqcOTFyiMNaHX7NBFQZhBV9Tw1k58eL0Qejg+mw7o9toqCRlxifxpj7HsIXGzUC0adJBG5yklMcODO6gu03g7f9NMFQYQXS72U97wW7e7BY8t0wdP+A3YXOU7jnaCaKsa7TE+hORuO20vjuQKNWCj/IYZCDh/GdC90xeUIHcMV7Y7PIjF3W5uDqRggAzXjnYgRRcfVDolomBoGtNzBJfhTYiRvzB2Vj4zfSQZpdUBPm8oHauHaI48i7AMX3xUyVLYLjKHFRP8NPNxjE14aJ1zfzgWcbe1/DU990odT068lPeCPlRvj9EL1cTvcCEqJfRp0Wg+84uqzx6Prtkf1YstwVUDF8Dcmi82BuPtNbR649b3asedCNP5GWn+SMFbtR+V9862rsK/xiyZFgPEZ/fxZe/1C70xUxjAqeBG
+ BjGxgCVP
+ 3Dy1fPvaP3HYPiZMJXANWlVKDYk6AcpQ/LLeWwdBzn9JPcfnMj3IIncJvFfCG64ODZXOSI3hspSfVgMGNsuUERbYTRmweTmeLlbSAb67veFfGGaZoS0Ue5aBD1xlUzK/PM6OAOOYZWddpZImVsZxRI6FogupUoOEaRoGlJgL4WjjTWuRot7vDn8vyzYdEa5NEwdv+N08qOaVDGcMZ21pA2C8oy/826L6ZXbPL4emsaOwn7Dcs3Z1b/949sFytV8ba0Fj3p7i0kfI0QK+abmoktOzQNODnTArHhdubHnczTxWSem9Fr3/UpJY5SeURf1AiEoo8ERpgJKSO3FQnvxpqkkcireXhKKwtuZgHDN99r5rjPITniLT3wD8P0oBx5sJw3mhbF+m920tHtV0Ht1tCPxrPsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,77 +103,330 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-create_entry() allocates the entry and the register string it parses
-into in one chunk and finds the string part again through manual
-pointer arithmetic behind a cast. Make the layout explicit with a
-flexible array member and struct_size(), and give the magic pad of
-trailing delimiters a name while at it.
+create_entry() is a two hundred line parser with the M and E field
+handling inlined as the two arms of its largest branch. Move them
+into parse_magic_fields() and parse_extension_fields() which return
+the new parse position or NULL so create_entry() itself reads like
+the register string grammar again.
 
-No functional change.
+The offset parsing loses a provably dead check on the way: after
+*s = '\0' and p = s the subsequent if (*p++) always reads the just
+written NUL byte and can never fail, it only obscured that the code
+simply advances past the delimiter.
+
+With the field parsing gone every remaining failure unwinds the same
+way, so hand the entry to __free(kfree), return errors directly and
+pass ownership out via no_free_ptr() on success instead of routing
+every exit through goto tails.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/binfmt_misc.c | 225 ++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 108 insertions(+), 117 deletions(-)
 
 diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index d9dc9546d199..4cfd3ce5e47e 100644
+index 4cfd3ce5e47e..a9e1e0bbcc60 100644
 --- a/fs/binfmt_misc.c
 +++ b/fs/binfmt_misc.c
-@@ -59,6 +59,7 @@ struct binfmt_misc_entry {
- 	struct file *interp_file;
- 	refcount_t users;		/* sync removal with load_misc_binary() */
- 	struct rcu_head rcu;
-+	char buf[];			/* register string, fields point in here */
- };
+@@ -340,6 +340,95 @@ static char *check_special_flags(char *p, struct binfmt_misc_entry *e)
+ 	}
+ }
  
- static struct file_system_type bm_fs_type;
-@@ -78,6 +79,9 @@ static struct file_system_type bm_fs_type;
-  */
- #define MAX_REGISTER_LENGTH 1920
- 
-+/* Trailing delimiter pad so field parsing always terminates at a delimiter. */
-+#define MISC_DELIM_PAD 8
++/* Parse the 'offset', 'magic' and 'mask' fields of an 'M' entry. */
++static char *parse_magic_fields(struct binfmt_misc_entry *e, char *p, char del)
++{
++	char *s;
 +
- /* Check if @e's magic matches @bprm's buffer, applying the mask if set. */
- static bool entry_matches_magic(const struct binfmt_misc_entry *e,
- 				const struct linux_binprm *bprm)
-@@ -345,9 +349,9 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
++	/* Parse the 'offset' field. */
++	s = strchr(p, del);
++	if (!s)
++		return NULL;
++	*s = '\0';
++	if (p != s) {
++		if (kstrtoint(p, 10, &e->offset) || e->offset < 0)
++			return NULL;
++	}
++	p = s + 1;
++	pr_debug("register: offset: %#x\n", e->offset);
++
++	/* Parse the 'magic' field. */
++	e->magic = p;
++	p = scanarg(p, del);
++	if (!p || !e->magic[0])
++		return NULL;
++	print_hex_dump_debug(
++		KBUILD_MODNAME ": register: magic[raw]: ",
++		DUMP_PREFIX_NONE, 16, 1, e->magic, p - e->magic, true);
++
++	/* Parse the 'mask' field. */
++	e->mask = p;
++	p = scanarg(p, del);
++	if (!p)
++		return NULL;
++	if (!e->mask[0]) {
++		e->mask = NULL;
++		pr_debug("register:  mask[raw]: none\n");
++	} else {
++		print_hex_dump_debug(
++			KBUILD_MODNAME ": register:  mask[raw]: ",
++			DUMP_PREFIX_NONE, 16, 1, e->mask, p - e->mask, true);
++	}
++
++	/*
++	 * Decode the magic & mask fields. Note: while we might have accepted
++	 * embedded NUL bytes from above, the unescape helpers will stop at
++	 * the first one they encounter.
++	 */
++	e->size = string_unescape_inplace(e->magic, UNESCAPE_HEX);
++	if (e->mask && string_unescape_inplace(e->mask, UNESCAPE_HEX) != e->size)
++		return NULL;
++	if (e->size > BINPRM_BUF_SIZE || BINPRM_BUF_SIZE - e->size < e->offset)
++		return NULL;
++	pr_debug("register: magic/mask length: %i\n", e->size);
++	print_hex_dump_debug(
++		KBUILD_MODNAME ": register: magic[decoded]: ",
++		DUMP_PREFIX_NONE, 16, 1, e->magic, e->size, true);
++	if (e->mask)
++		print_hex_dump_debug(
++			KBUILD_MODNAME ": register:  mask[decoded]: ",
++			DUMP_PREFIX_NONE, 16, 1, e->mask, e->size, true);
++	return p;
++}
++
++/* Parse the 'magic' field of an 'E' entry: the filename extension. */
++static char *parse_extension_fields(struct binfmt_misc_entry *e, char *p,
++				    char del)
++{
++	/* Skip the 'offset' field. */
++	p = strchr(p, del);
++	if (!p)
++		return NULL;
++	*p++ = '\0';
++
++	/* Parse the 'magic' field. */
++	e->magic = p;
++	p = strchr(p, del);
++	if (!p)
++		return NULL;
++	*p++ = '\0';
++	if (!e->magic[0] || strchr(e->magic, '/'))
++		return NULL;
++	pr_debug("register: extension: {%s}\n", e->magic);
++
++	/* Skip the 'mask' field. */
++	p = strchr(p, del);
++	if (!p)
++		return NULL;
++	*p++ = '\0';
++	return p;
++}
++
+ /*
+  * This registers a new binary format, it recognises the syntax
+  * ':name:type:offset:magic:mask:interpreter:flags'
+@@ -348,29 +437,26 @@ static char *check_special_flags(char *p, struct binfmt_misc_entry *e)
+ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
  					      size_t count)
  {
- 	struct binfmt_misc_entry *e;
--	int memsize, err;
+-	struct binfmt_misc_entry *e;
++	struct binfmt_misc_entry *e __free(kfree) = NULL;
  	char *buf, *p;
  	char del;
-+	int err;
+-	int err;
  
  	pr_debug("register: received %zu bytes\n", count);
  
-@@ -357,12 +361,12 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
- 		goto out;
+ 	/* some sanity checks */
+-	err = -EINVAL;
+ 	if ((count < 11) || (count > MAX_REGISTER_LENGTH))
+-		goto out;
++		return ERR_PTR(-EINVAL);
  
- 	err = -ENOMEM;
--	memsize = sizeof(*e) + count + 8;
--	e = kmalloc(memsize, GFP_KERNEL_ACCOUNT);
-+	e = kmalloc(struct_size(e, buf, count + MISC_DELIM_PAD),
-+		    GFP_KERNEL_ACCOUNT);
+-	err = -ENOMEM;
+ 	e = kmalloc(struct_size(e, buf, count + MISC_DELIM_PAD),
+ 		    GFP_KERNEL_ACCOUNT);
  	if (!e)
- 		goto out;
+-		goto out;
++		return ERR_PTR(-ENOMEM);
  
--	p = buf = (char *)e + sizeof(*e);
-+	p = buf = e->buf;
+ 	p = buf = e->buf;
  
  	memset(e, 0, sizeof(*e));
  	if (copy_from_user(buf, buffer, count))
-@@ -377,7 +381,7 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
- 		goto einval;
+-		goto efault;
++		return ERR_PTR(-EFAULT);
+ 
+ 	del = *p++;	/* delimeter */
+ 
+@@ -378,7 +464,7 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 
+ 	/* A flag-char delimiter runs the flag scan off the buffer. */
+ 	if (del == 'P' || del == 'O' || del == 'C' || del == 'F')
+-		goto einval;
++		return ERR_PTR(-EINVAL);
  
  	/* Pad the buffer with the delim to simplify parsing below. */
--	memset(buf + count, del, 8);
-+	memset(buf + count, del, MISC_DELIM_PAD);
- 
- 	/* Parse the 'name' field. */
+ 	memset(buf + count, del, MISC_DELIM_PAD);
+@@ -387,13 +473,13 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
  	e->name = p;
+ 	p = strchr(p, del);
+ 	if (!p)
+-		goto einval;
++		return ERR_PTR(-EINVAL);
+ 	*p++ = '\0';
+ 	if (!e->name[0] ||
+ 	    !strcmp(e->name, ".") ||
+ 	    !strcmp(e->name, "..") ||
+ 	    strchr(e->name, '/'))
+-		goto einval;
++		return ERR_PTR(-EINVAL);
+ 
+ 	pr_debug("register: name: {%s}\n", e->name);
+ 
+@@ -408,111 +494,26 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 		e->flags = BIT(MISC_FMT_ENABLED_BIT) | BIT(MISC_FMT_MAGIC_BIT);
+ 		break;
+ 	default:
+-		goto einval;
++		return ERR_PTR(-EINVAL);
+ 	}
+ 	if (*p++ != del)
+-		goto einval;
+-
+-	if (test_bit(MISC_FMT_MAGIC_BIT, &e->flags)) {
+-		/* Handle the 'M' (magic) format. */
+-		char *s;
+-
+-		/* Parse the 'offset' field. */
+-		s = strchr(p, del);
+-		if (!s)
+-			goto einval;
+-		*s = '\0';
+-		if (p != s) {
+-			int r = kstrtoint(p, 10, &e->offset);
+-			if (r != 0 || e->offset < 0)
+-				goto einval;
+-		}
+-		p = s;
+-		if (*p++)
+-			goto einval;
+-		pr_debug("register: offset: %#x\n", e->offset);
+-
+-		/* Parse the 'magic' field. */
+-		e->magic = p;
+-		p = scanarg(p, del);
+-		if (!p)
+-			goto einval;
+-		if (!e->magic[0])
+-			goto einval;
+-		print_hex_dump_debug(
+-			KBUILD_MODNAME ": register: magic[raw]: ",
+-			DUMP_PREFIX_NONE, 16, 1, e->magic, p - e->magic, true);
+-
+-		/* Parse the 'mask' field. */
+-		e->mask = p;
+-		p = scanarg(p, del);
+-		if (!p)
+-			goto einval;
+-		if (!e->mask[0]) {
+-			e->mask = NULL;
+-			pr_debug("register:  mask[raw]: none\n");
+-		} else {
+-			print_hex_dump_debug(
+-				KBUILD_MODNAME ": register:  mask[raw]: ",
+-				DUMP_PREFIX_NONE, 16, 1, e->mask, p - e->mask,
+-				true);
+-		}
++		return ERR_PTR(-EINVAL);
+ 
+-		/*
+-		 * Decode the magic & mask fields.
+-		 * Note: while we might have accepted embedded NUL bytes from
+-		 * above, the unescape helpers here will stop at the first one
+-		 * it encounters.
+-		 */
+-		e->size = string_unescape_inplace(e->magic, UNESCAPE_HEX);
+-		if (e->mask &&
+-		    string_unescape_inplace(e->mask, UNESCAPE_HEX) != e->size)
+-			goto einval;
+-		if (e->size > BINPRM_BUF_SIZE ||
+-		    BINPRM_BUF_SIZE - e->size < e->offset)
+-			goto einval;
+-		pr_debug("register: magic/mask length: %i\n", e->size);
+-		print_hex_dump_debug(
+-			KBUILD_MODNAME ": register: magic[decoded]: ",
+-			DUMP_PREFIX_NONE, 16, 1, e->magic, e->size, true);
+-		if (e->mask)
+-			print_hex_dump_debug(
+-				KBUILD_MODNAME ": register:  mask[decoded]: ",
+-				DUMP_PREFIX_NONE, 16, 1, e->mask, e->size, true);
+-	} else {
+-		/* Handle the 'E' (extension) format. */
+-
+-		/* Skip the 'offset' field. */
+-		p = strchr(p, del);
+-		if (!p)
+-			goto einval;
+-		*p++ = '\0';
+-
+-		/* Parse the 'magic' field. */
+-		e->magic = p;
+-		p = strchr(p, del);
+-		if (!p)
+-			goto einval;
+-		*p++ = '\0';
+-		if (!e->magic[0] || strchr(e->magic, '/'))
+-			goto einval;
+-		pr_debug("register: extension: {%s}\n", e->magic);
+-
+-		/* Skip the 'mask' field. */
+-		p = strchr(p, del);
+-		if (!p)
+-			goto einval;
+-		*p++ = '\0';
+-	}
++	if (test_bit(MISC_FMT_MAGIC_BIT, &e->flags))
++		p = parse_magic_fields(e, p, del);
++	else
++		p = parse_extension_fields(e, p, del);
++	if (!p)
++		return ERR_PTR(-EINVAL);
+ 
+ 	/* Parse the 'interpreter' field. */
+ 	e->interpreter = p;
+ 	p = strchr(p, del);
+ 	if (!p)
+-		goto einval;
++		return ERR_PTR(-EINVAL);
+ 	*p++ = '\0';
+ 	if (!e->interpreter[0])
+-		goto einval;
++		return ERR_PTR(-EINVAL);
+ 	pr_debug("register: interpreter: {%s}\n", e->interpreter);
+ 
+ 	/* Parse the 'flags' field. */
+@@ -520,19 +521,9 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
+ 	if (*p == '\n')
+ 		p++;
+ 	if (p != buf + count)
+-		goto einval;
+-
+-	return e;
+-
+-out:
+-	return ERR_PTR(err);
++		return ERR_PTR(-EINVAL);
+ 
+-efault:
+-	kfree(e);
+-	return ERR_PTR(-EFAULT);
+-einval:
+-	kfree(e);
+-	return ERR_PTR(-EINVAL);
++	return no_free_ptr(e);
+ }
+ 
+ /* Commands accepted by the /status and /<entry> files. */
 
 -- 
 2.53.0
