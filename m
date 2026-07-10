@@ -4,86 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F32EC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 00:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94091C44506
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 00:13:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 404E76B0005; Thu,  9 Jul 2026 20:08:21 -0400 (EDT)
+	id 5986D6B0005; Thu,  9 Jul 2026 20:13:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B5856B0088; Thu,  9 Jul 2026 20:08:21 -0400 (EDT)
+	id 547F76B0088; Thu,  9 Jul 2026 20:13:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F1746B008A; Thu,  9 Jul 2026 20:08:21 -0400 (EDT)
+	id 4605F6B008A; Thu,  9 Jul 2026 20:13:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 038F96B0005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 20:08:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81E3D1402FA
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:08:20 +0000 (UTC)
-X-FDA: 84970929960.10.EEB5AA5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E8646B0005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 20:13:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57AE41C3391
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:13:37 +0000 (UTC)
+X-FDA: 84970943274.28.68CB527
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CA0591A000A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:08:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2S2q+QsA;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf06.hostedemail.com (Postfix) with ESMTP id C1C09180003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:13:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KUyXaCZA;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783642098;
+	s=arc-20220608; t=1783642415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o1KNst9m0viCssFZX760yV51UEXnWc+mJTMWEKbthB4=;
-	b=iIgpQG+5Jbv9ThbNJrGklNg0tXZBhjR5zh8V6DVBzrOMxy+8VuJ0Yqi28pgniD0Yhsu3b1
-	1zaCJga2AMhKJxh8u3Q4UuHKA3pXP69yv7O52AA0wzwkLk8aZ37yMnOkZPBgYsagGfGF4x
-	5mMQqZFw+QKx24hSG4kxff/L8zAzmhk=
+	bh=9gjBmaqSneqTuRoIZKmkOm++Q8E0rqDqKSQfqW/IN64=;
+	b=s10zgPFQJohOA2o3eFZmJ2IC/uWYAYCXezYW2f5qCp8Nq8upx7UCZhiZwFvpQqK4FF9ebI
+	rdjtpJDOtJE9DjQux8bmB1kfc/L/+/xhgECaNq2oPZkfydfIn2GVQ2NYHSYg+X7PU02cKb
+	HXGN90l9eYbq6fTSQUC0PcAngdYrR7E=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2S2q+QsA;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KUyXaCZA;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783642098;
-	b=kFTERxx+GRGySMAtDoAjhGBDBVF9xUNC8GvMaCvivn/2+gsl+hNVeXsGcZOIDGyjMT8oGc
-	gDsPz7tZ7h1DUnFJix3C18Y+3iiOLPd1eJLuAWUHhtUsTFgwUNKNZD5rYh0toH9koheaX+
-	CGL30DSO/UgjxNZjAn82uscIcnqpuSs=
+	t=1783642415;
+	b=sGAwEmV78RAHTqP1MoNnHSSqa3PyGu+IWH+y4nligYemT7nlyE52ZU0Feb1Agq8tO1FrjA
+	59I7QeBMRQk12g9cvtQCFYEDLPO4ElAqBBdpNg32dIEfF5CUx9k1AHo6ma9nE8jZy8IBuQ
+	FWAnI4ga6z+HKZJ8+gFeSaUMBpwJCfI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E16F5600C3;
-	Fri, 10 Jul 2026 00:08:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB971F000E9;
-	Fri, 10 Jul 2026 00:08:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783642097;
-	bh=o1KNst9m0viCssFZX760yV51UEXnWc+mJTMWEKbthB4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=2S2q+QsAZMz8+dQethGHyaKFC+9XY9MLQio0kwqC2KSN9Wq4tu95OilsmGvt4leva
-	 S9G32VV8l5HLhH9UPJB/g+uKkoTpVwbTYkiK8tmXi46R42gjMqn6xcVC+3hZvq0Qpy
-	 DrqnqIfLFJKVe738s0+ckfVVD5ZovjowCdvj7w9Q=
-Date: Thu, 9 Jul 2026 17:08:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, andriy.shevchenko@linux.intel.com,
- usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
- ryan.roberts@arm.com, "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
-Message-Id: <20260709170816.4e876a16eef9a93f41bb1940@linux-foundation.org>
-In-Reply-To: <20260709044334.1741263-1-anshuman.khandual@arm.com>
-References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: n5earf1taycxmpdgtbr7tugq4h1o6fxz
-X-Rspamd-Queue-Id: CA0591A000A
+	by tor.source.kernel.org (Postfix) with ESMTP id 3738060EEF;
+	Fri, 10 Jul 2026 00:13:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63B81F000E9;
+	Fri, 10 Jul 2026 00:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783642414;
+	bh=9gjBmaqSneqTuRoIZKmkOm++Q8E0rqDqKSQfqW/IN64=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KUyXaCZAaX3ttnttEEVV/zT4iS+V7t0wzxg+ALl7LU7XP+H5rZ4vcZ9K0mwASjdKd
+	 98z37XWKnBN3JSgoRN8caw4/S9K98lzFFehmZjq9hOo8rkQC1uWXYXsMekk0zkxVyQ
+	 WWFZTcox/X8ToOmCS2e+ev/feYTtU9T7ZM5kWBL7cVK4UoLTJmb/h42Di5LXTKuGO2
+	 aOwnamxhd2bD3iLH4hZxQEjnK+q7zhlp3YR8tnI87sXVHbk4+EvMQgfR+GNtxsXtTL
+	 OmsHiyPSmTfaqxdRILAtu/Jd2JjEf3B7kN/V6xOkOqU4bWdgGxZsCJPMt+IfVu+eUt
+	 RRuJtj2DMafnw==
+From: SJ Park <sj@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Alexander Potapenko <glider@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	kasan-dev@googlegroups.com,
+	kexec@lists.infradead.org,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/3] mm: split a couple of headers from internal.h
+Date: Thu,  9 Jul 2026 17:13:25 -0700
+Message-ID: <20260710001326.110758-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260709-internal-h-v2-0-695631425968@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783642098-689280
-X-HE-Meta: U2FsdGVkX1973x4g/XmG5qfjTs5o+BSGLOl7D3CxuYdgPqAimPG7oSxQClXcKLzKHiGiUMonnIW9VXuvY/+FVh6GfQ77NHH/xrc6436+RWd8VeApH0Z96YB0EcrnXpX8RHlM5gg+VnCHQpEuJ4mpeaY4AL1Cl08w4OccVEeQN0Cm5/d797yfRdJIzW3mXLxl3poW26DjZy2fqpDfYsaMNINWn+bus3/KVGoeEYKegaHFhhoIjUKXj68xFNIhNYf9wiMKVXcdFqJuUO8wWNWuxup6OW5NppbIbeFpRtbDhYRjmFqWFcZDJ8byKXVEcaBAvdI2tboF5ya40+Ve42XHklyyxM3IhAraiRGd1oroDPe2KJQPgE382/JuZVUwYHmvgM5sLCVM0ymOJFvhWJaLIR/cRj5DLeW68CHzM35rn78TM3yIRtHtLsye3q2UX7UM2HyVn+61FDoVV3RHPFGalgwhBcbFfHXadiB3u1RxoQJgmZSSagjci+f1E/vhDjKmLDh4qYTm37NWRJWJ+oM2nehz+7L0v/iFyHb6CZFA3qrC2ILu1KJscbg1icpkuXW65dNUdGI9Fr371xb/KwBftUN0/0QrIi78o67vS6mPUL+Psk59jSnKh9YQOqNvu4k2xH0rSCdH+JUlAEHk64loNY5cCd2DHA/KDRZlR8m8GLw6HQayfmBSgOLQ783yTjwysnt0QjWxHgK7wR9M5wFQtfLilmSaMjhEu00zVKxAn9kkCxG2z3bFhuanDzZstd8aq8jDY2OZpUgPKUDt5PlRaO3u+IgCmOQubKM1mBska7K2AMa15BriOeEWYLG9N4vMRD5krgzMT5IO9mZ5yce47UYOLV2pY0CrbtPJem5Zjggg9M2gBlf9sEG2sjDhK3xQ30Bdt4SS96SyXBMS+rSB3bafhoEJAIgXlS0X3NX8z5fX6MAOuHpMbeAe1fdXwW3LIDl5882GPsd63JrSgzV
- SK6rG2b2
- W4ullVz28CHYBF3VpccF8XFFG1M4WfwOnatDyMkvA7Uwb4SyLYQ7tQiiSgKcNY4nSGWhYIajO3AwixRpEgxifn3vvczWMQ/O/sRazT1hKBYBTAIGVpILNWlYFdJ9+wJRX4T942jHbVbwgO1qNfiPJT1OQu4IM2/gxo+uPBpunDUf1svxznDq38DysqZkrm3tpya9TR0ZtUxAxSesYljABpjZXLt1b+SfgheMPH7BVaRYvjBrBbnNqE94VBrJ/rlEVR8+GRjvt8SHa+LtxvanlaG+XS1ed7/+uiwAlH118duyRoGHqtnSLbyyO/gDFQO8iB0qiufygGxjQF/A=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C1C09180003
+X-Stat-Signature: 6spt86oemm4u1td7fnboeo4qyye83g8i
+X-HE-Tag: 1783642415-610837
+X-HE-Meta: U2FsdGVkX1/v1kdv+RJU3xQEp7VTqHSFNOTgHog/UdmuEnjXkwciRVNUKHKH33btHbPTJ/pTj5pOBzdRGz75wZp9JK1YiiRLBFIKEmxxkBBv98ZK44F5JYIaj2IaC0ZfVUmigfYZgHRFmTrecluv7NrKjtjkRY4EECnahLGavHW8K0mmEtbvTM3YrRMr2f/vL33WfS9z4BJu6N2ypPVedv995nK40ZAJ1CHs4qoScoz5ksv4lKlPpL60DLbYLIMe8hMG00HLWfKp9kcvM1QLEWquS8G5ygTeCrSxj8DUF/9CLA/OgFzDuVbbPwfrOjKAHOD4IWzNjredjSyNMAccZZFZaNTE2/6eJYRJct2er76aJUXVDTYOvI9G7n84sxBswpyGlAlJ+m3aNvvx6Ep2ee3OsN/dwTYdKodF/Qb5rK3pah+2Xm243kSqypWPwY1KjC0YZcOcAUjOPvYLdypFe8sRR66UMIYMGlf0jdpg7QktLq7YtILAZ7Q9Ui8HFkxvDg223xl29hY5x7vmUoD19HszbhuJxuIpz//XWiFZrh63/TzdmnnGAPOCCEYLjGwqrr+UnlKM6Q8/sFsuMESBGqzNdcDfiNC8J7Ja5roLTjDJPJZsMS1Q9Dacq6+x1cKdF3nsa74mZB4F+/7OwVVwrsGRyUbYKhwfmwQrF9sgUryKq6xDgpLDI8QPH+wbmqFJ+GWEK+f/eFhaXPTbTniqHMki/BE6wlK3S1Ti9naY/g8gKmBACFuiK63RJg2cMUZs8GE4HZLgLwpU1FtoaE6//4uoKFtq6YWlgWRerR4zJlUoSGdxRhMnrbuUnQZiCrx1vgf4mECiFo/5iv+XNVEp9s/UaI/VFNClkFwKif9Plxf/E340hiL8FWDwTteruluTljsm1gp4I51q3AszhkS6Y9UCV/O8NsbCC2DaBa7LK6yDBUujjjIb9Z4RrdwqUb9duKTcYETGmrqe+JJcdco
+ G0esSOmU
+ 9LxuccZZcF6yP/8TpXEot5xSXvW/0mP4DrpMXlfjJ2EcAY9glVhcMxvGU2voRvKy7gaR+ogHC9LtK/YEWFAWqeXoVuV6XdvRHsoA8XFsM5Ay/H+4uhQhKQp5UIEmWVqWS2KT2dKGSNmynCrQwqEddpKepubzURH1xmQiYKLCQCEu+0fd8A7Q6Z2mFrtAVOC6rCDE4TrmHji4470neU+YbIjVoTR51IQC29SNu5AckpnU86Rs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,71 +116,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  9 Jul 2026 10:13:34 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+On Thu, 09 Jul 2026 13:00:02 +0300 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> mm/internal.h becomes more and more bloated.
 > 
-> Bad page map reporting currently stores page table entry values in an
-> unsigned long long and prints them with fixed 64-bit-oriented format
-> strings. This is inconsistent across call sites and does not work well for
-> architectures where page table entry values are not naturally represented
-> as 64-bit values, such as 32-bit or 128-bit entries.
+> Split declarations related to mm_init, memblock, vmalloc and sparse into
+> new headers.
 
-Well grumble.  It's a lot of fuss for something which nobody is hurting
-from.  Or are they?  What's the actual utility here?
+Nice.  I also confirmed I can successfully build mm/ for my main test setup
+after applying this series.
 
-> Introduce a common helper to convert raw page table entry values into a
-> fixed-width hexadecimal string based on the actual entry size. Use it for
-> bad page map reporting and for dumping the page table walk in
-> __print_bad_page_map_pgtable().
-> 
-> Pass page table entry values to the reporting path as raw bytes together
-> with their size, instead of forcing them through an unsigned long long.
-> It keeps the printed output consistent and avoids truncation or misleading
-> formatting for non-64-bit page table entries.
-> 
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
->
-> ...
->
-> +#if defined(__SIZEOF_INT128__)
-> +#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
-> +#else
-> +#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
-> +#endif
-> +
->  static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
->  {
-> -	unsigned long long pgdv, p4dv, pudv, pmdv;
-> +	char pgd_str[PTVAL_STR_MAX];
-> +	char p4d_str[PTVAL_STR_MAX];
-> +	char pud_str[PTVAL_STR_MAX];
-> +	char pmd_str[PTVAL_STR_MAX];
+For the series,
 
-That's another 128b of stack, in a potentially deep code path.
-
-Hopefully gcc can reuse the same stack space for some of these but it's
-not been good at this in the past.
-
->  	p4d_t p4d, *p4dp;
->  	pud_t pud, *pudp;
->  	pmd_t pmd, *pmdp;
-> @@ -532,34 +575,34 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->  	 * see locking requirements for print_bad_page_map().
->  	 */
->  	pgdp = pgd_offset(mm, addr);
-> -	pgdv = pgd_val(*pgdp);
-> +	ptval_to_str(pgd_str, pgd_val(*pgdp));
->  
->  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
-> -		pr_alert("pgd:%08llx\n", pgdv);
-> +		pr_alert("pgd:%s\n", pgd_str);
-
-can this do
-		pr_alert("pgd:%s\n", ptval_to_str(pgd_str, pgd_val(*pgdp)));
-
-and eliminate a few locals?
+Acked-by: SJ Park <sj@kernel.org>
 
 
+Thanks,
+SJ
+
+[...]
 
