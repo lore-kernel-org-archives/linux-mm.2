@@ -4,95 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A71B3C44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6007C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:47:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9C136B0088; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
+	id 0B0746B008A; Fri, 10 Jul 2026 09:47:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4C016B008A; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
+	id 0127B6B008C; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93DAE6B008C; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
+	id E6A2E6B0092; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E6BE6B0088
+	by kanga.kvack.org (Postfix) with ESMTP id C78CF6B008A
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1432FA0441
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70FDEA045E
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:47:03 +0000 (UTC)
-X-FDA: 84972993126.18.28EDF8B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 701E41C0003
+X-FDA: 84972993126.01.391A14B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E0E6240002
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:47:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=De6YCh9k;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kN6RGv2k;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783691221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=F5AOmdAHXog1rg+jz/2akDmqr4uv17auS4VY00P0nsk=;
-	b=xoHv6QNPa6X06SL83jtkovI9pUt7Ay6EjsT8AKYk8Lfg1U6Z29btHMjWFbhJzZ9EFZIu7p
-	6Atdxb8Tx08c+iJlzE8G8whNLFT/NsgMub/+YS4kMFnaa7a3GiHc8QR4neeqpqw4K3zYSP
-	400jYSVtVHZUvDewqD+5aBtOfV1B0uM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xQG5oz4wU5m7lLv6nGv8jRYxqbEgbwiFogSXia05QXQ=;
+	b=zJmiqroYRRO9Xb2905bAzzd9eaF22znRHUrKb8V/RIF4cN2/Y+GhPeUJkuKt5Tvq+h+dwS
+	LY51vr0wjJIMNwZOJWBnz6HGwXawVggtyd4rTFiiwDU1ACd3QUDHFCokTdr0b+dFiK+H0h
+	PBjpi0jb63xx6Xr1SNkOWM/5yaaWuzo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=De6YCh9k;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kN6RGv2k;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783691221;
-	b=eDZJBF91XY9SDiXAg/1kJ9FC9G25+ln1Fg1UUg+6NfT6P0238mO5bP+UnZdkvuq8nUPTuO
-	/E6jBHA422J+ujpfvdGVMvBPpdUkHn1KAKBe1JTqB4tTc7/uhZCIm3Ig+UqAmYo/027gJd
-	n5K9PXKsZYBMJHajAJnvAX6gL9sdRKo=
+	b=zQKqnhczxbvRpvJfXkmIIowH9nR+veAcQXdsdlOnhi5LiKztXgLKGrDvoIWGzVYvjo9CyF
+	R0/KDtK0hnPlt6xODSkUcMFBElCAf7/ar1Mo0G/oHgBCGPZNkn+/EUEm+rZ33r1MFi2yNQ
+	zpR2C9VAQBn0GzVko2CRF3GFw2wE/5o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9667C418E3;
+	by tor.source.kernel.org (Postfix) with ESMTP id 65BD8600C3;
+	Fri, 10 Jul 2026 13:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA231F00A3E;
 	Fri, 10 Jul 2026 13:47:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703C91F000E9;
-	Fri, 10 Jul 2026 13:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783691220;
-	bh=F5AOmdAHXog1rg+jz/2akDmqr4uv17auS4VY00P0nsk=;
-	h=From:To:Cc:Subject:Date;
-	b=De6YCh9k2DWS+HtnAc27vzQ8a+Rt9P/ruPDPlwlvxY5Faj8i3fvrqluq4bS5rXYP9
-	 O3SKjrfjJAaAd+4IQX6tcCj10QlrIoMZ9Kih1OloYAffq3Ske8THiIesHu5Gu4vSGW
-	 xZPZljpw+OqSywpKmRGWuo/lEVfvpsch5wcjN/+341HaTzUfh2Vt8mwJPTJwT+wDAu
-	 jSk7N3bRrJrh7Cq7LMYd3xgeLzRHaSScB7kBjNjYfOtxwOO9qGT8LbM/cVGbINJRfP
-	 rEGhOotmLrzxUxVilzaEgE4Yeu+kpGC3AOI5byQCdJ4wYOw5F+mWelq4ubQHZ2nJlQ
-	 d6bKBh6iX+OwA==
+	s=k20260515; t=1783691221;
+	bh=xQG5oz4wU5m7lLv6nGv8jRYxqbEgbwiFogSXia05QXQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kN6RGv2kBQYvnluj9kSRwWn/4/aFEUj7Z34Y5X0eVd8qUpPGhMFyuNQevNjFxixuq
+	 Y0zPoQw6R6zx43FjqD6+qcXi8jeiqt1a1sm+xtyZ9RAVshdkUwV89cZ4/Akv08x3A8
+	 2v2bBTzt7McA7oODOjPbzvnh8vT7wvuoIWfuV0yf+mQ7utlCKHxACrAzcWQgIV1qAb
+	 KDDBpgowGiofSckyaaqZ17kLHwH/N7zQ5Sd1KiqYra/SDZejcY2UiL/nsYggVSMyen
+	 mPn+ZPygaxFS3V0gTcEmYTtiGzyOpLZAQ3jHs2fMGZbygdnVOl0B7dBpqxKBDCv2VX
+	 5Hdsh6MN88BVw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 00/19] mm/damon: introduce data attributes only monitoring
-Date: Fri, 10 Jul 2026 06:46:29 -0700
-Message-ID: <20260710134651.18084-1-sj@kernel.org>
+Subject: [PATCH 02/19] mm/damon/core: ask apply_probes() ops callback to set sampling address
+Date: Fri, 10 Jul 2026 06:46:31 -0700
+Message-ID: <20260710134651.18084-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260710134651.18084-1-sj@kernel.org>
+References: <20260710134651.18084-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 701E41C0003
-X-Stat-Signature: 79jr6ox3zzzgqjyse4ax8iikpryx7sow
-X-HE-Tag: 1783691221-866236
-X-HE-Meta: U2FsdGVkX19lXi0Mp9NyHoIK4R5MlPis+nzYTwAHraMJBvobnqwm9Yz+0Z2ulWJ+6YjyAW7lDFDhqtVA7BvLo5tniIm4JdBdoZ8onN2lACyPU0lewNsO9yzEWcD7UZ40c4Y2p/Quii/EISvLJ1Qte52qHh3av3Ji8y6ze1XMDfRgcrXxtmiUUtIlRkUdfUZG1DeMj+8pGgib0zfF/o94vCZ6dWo4tZtsSdEdlm8sn36iD6EmuBNTldEMjptXpLU2kU1TPfsqSjqrRIEsT22p7angBN2KBzJFCrYHSyt1mpiVGC0oFeUIT9u0cnlcbvOFq+KJDy+5ZLu+iUxQKU0jSkohtqEDKMiYfLZV4hnk75oSbnDb5tkDMw84umB3A9+P3Rlvdp62n9Wjtb40rsxM2jrM4rUa8wn01L73vDvmyCRJVACTFPHwkTCqY3fLg6mnqQ8TktYhbBuB2rImsAC9ya2bmZ6MOUcR+JgbZAouYuHZeAtX51fv0MopFx5hwd7CPbbkh1y7YjABoCqSaz5pF8UUzqgwNFVB0Sb93L+Ee9pcz3TFLsHzfDgW0gP66Muu7pUh9PrSwEzeDQjkPKFxxe47ZQhopBob7L7FQoGtr3leF4/dAIca7jlIMglGsvp6qfMJVuwQB4lMUt7NHhEs2imO8ClNaKoUHu4vY+WszLz+Lfajj/qZvYiMcYTepZOn8Q9+xV8LRMTPsfo4H+yDsBU/r7IdCXt+WmMdbm0deXYcE42RJ2+x+AqvVhnF72Nwwl4oQI+fNTFbeBV8NDt9yXMssZS/Ist0sBclll0UZ23X445i2lO654HLdu9P4TLOnbY+bmyduI8a76fkng6ajyWjEmrkkfaqu6i6XGAJlKbWvGPI3EW2S1F0FfnQUM7IXP9l7bDkIRd3xtWqflJc9Rk+SiONyciQpeL3moJCMpqJhJ/fhP5SrHlUoqw6TDmiYehfAvMC2QofFmFCuo/
- 2CqxgIUv
- 75KMWGtkHQ1jGarLKQ8ofckjYRQYpVytptzlqNIk9sXJ1YawyiHwpJ/udiVBIEzbvvGtF9s/WC8yQb70BLarkuG376a3lI4qigx1LYHy+TR4wxCjPGrHE0XfQkbk3VjpVVLgA4lqFca7Mkl9YMyfGbrKXyvhg+YvTo9YGyIF1vGvi1LiFFAM9PZkgxcqHsEVF14MAMBUhiAnRi0Os9WK/GX/4qgS1fNrLsdZHZlH9JJmYvSSs2k4uAGNhqvfVAv8jd6P4
+X-Rspamd-Queue-Id: E0E6240002
+X-Stat-Signature: xfm1yii8t7asxe6sd9fjzin8ykc4x83o
+X-HE-Tag: 1783691221-606050
+X-HE-Meta: U2FsdGVkX1+a6b3NI9U5W/YPJ764yQnKyu68pHM/ykHAO/r0yzOJ5vXsnn7xqUNK/TTB3LyYWUx5O5wf8d3fYffKxKs1Wwk9M23tuS25YVnPbrjIK5MG+SXzC+39VwdDqVIFV48eVihcU5wkTo09a8YP5166Q020zGYFx0Bd5qkr/xAxY+Fu3p4j4zzgmi1OUMGnayOXW2WdT3w0PVZt2Kr9FhvLKYITVyIiJLFt0wxkD4CHe12pAREgT/L6euGj2CCZ8BIubjJhTvhqFu9XELe4aFnXMwKSefWkl4xrfus8xTkpCXZpkO86rAgfdlzB4TzljjEoEYUJucC7rQccCAps62gvqyjUULKkRxPnarFQmR9iCWMTPUpqL9x7gcpJfi+W+V9bRBY3oeMW1JgbqkADIPzlkyx6OkQuFjHrq6xrsrOSvRpQBnnnb+NsraUign+6LizHxHdtYnRs7qXzvLJ26oNh3arLbdySbuGSOUVxLmzVcQM745RFmyer2gLkjSQNMtb7gUib8HNTOmYbHKF1oQrl4Gly4s+zFQSJmIw0XAUrqgA034dq2+8Am1ms7WE8TUv/cQBq46FJOevMFEFWzWxYEXCUDhlqSJdwC+AXPXREq/o304+iVdemh9d6lCKN+/pG2VZ42AIQ/Qu01OYygtozOGY+qXkFq417MI78VwBnEs4Rdm/+cmJ97xW3OoQI+t+TMHkszqrcJozf6zNViqPLAAmR7DP5WUYkS1Cds/HYC+UjhxzfoEwemyZw1m9FaI6prClcJZRNN6KED93BL3b2W0Vtjd6PooPNW/3TxyWSueA4Of8/KBaTLIl68ruCLw36BtwtOVaKxOfiyzYkb/Pbsq6kHnYTTEz+pTY45W3dH4pjKePabDl+oRcuEpAw0PIyeYwPKbRNmbt2Kxaw9iRFmvlpTJPrCuW4rMzsCXHCDLytLP+BJ7qpDlpdZrMnfPeUX4qPylzdwai
+ fjhC0u6+
+ 5jZ87NjhWwdx5jSg4aO9aGM3i3qZW96PZMbXcjl3Y//6aYHPBS1vjAcfWssz4RKMtG54TvO3lc4lJbdvXQEeysCZ+VM6QieL4sudspOyvU6qEPPng4IMH4GU7BhVF4OAvM9iEwteOw2vLkld4LmyF9n7h3idybh2Oz7QFGxd0HXxWUcdrRL7L9Y9QDG7xDUllOrtXvfymPuTeecsLBwE+iFv8BkeMRX3iyqro0xbDmNAksyzO+xHW0qETT/iQSB97StQiIycuA3PKdQHQcSWDeJspNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,216 +92,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL;DR: Introduce a way to get DAMON's best effort accuracy monitoring of
-user-demanding non-access data attributes.
+prepare_access_checks() DAMON ops callback sets the monitoring sampling
+address per region.  In future, DAMON will be able to call only
+apply_probes().  In this case, applyy_probes() may need to do the
+sampling address setup, to minimize unnecessary regions iteration.
+Update the protocol for the request.
 
-Background
-==========
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ include/linux/damon.h | 5 +++--
+ mm/damon/core.c       | 2 +-
+ mm/damon/paddr.c      | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-DAMON was initially designed for only access monitoring.  It turned out
-users want to get the information together with more data attributes.
-For example, some users want to know how much of a hot memory region
-belongs to huge pages or specific cgroups.  Page level properties based
-monitoring was introduced with commit 626ffabe67c2 ("mm/damon: clarify
-trying vs applying on damos_stat kernel-doc comment") to fill the gap.
-Because it works only at snapshot level and snapshot capturing in the
-mode can induce high overhead, commit 45c49d9fd608 ("mm/damon/core:
-introduce struct damon_probe") introduced data attributes monitoring.
-
-Data attributes monitoring treats the attributes as only additional and
-subordinate information.  Data access monitoring is always turned on,
-and regions are adjusted for best accuracy of the access information. In
-some cases, users may be primarily interested in the attributes more
-than the access.  They might even not care about the access information
-at all.  Because DAMON treats data accesses as the only primary
-information, such users cannot get high quality attributes information.
-
-Design and Implementation
-=========================
-
-Introduce another way for treating data attributes as the primary
-information.  Add 'weight' property to each data attribute probe.  When
-any of the weights are set, the mode is enabled.  Data access monitoring
-is completely turned off in the mode.  For region  adjustment, the
-weighted sum of probe hit counters is used instead of the nr_accesses.
-
-Using the weights, users can specify to what attributes they are
-interested in to what degree.  DAMON will adjust the regions and provide
-the best-effort quality monitoring that is optimized for the user
-demands.
-
-Extend damon_operations for efficient use of probe hits.  Update regions
-merge and kdamond main logic to support the new mode.  Add a new struct
-field and a sysfs file for API callers and ABI users, respectively.
-
-Test
-====
-
-On ~7 GiB memory idle system, run a simple AI-assisted program.  The
-program allocates and faults 2 GiB anonymous pages.  Then, it does
-nothing but wait until the user terminates it.  Hence, the system ~2 GiB
-of anonymous pages with no active accesses.
-
-Monitor the distribution of the anonymous pages using DAMON attributes
-monitoring mode, using DAMON user-space tool, damo [1].
-
-    $ sudo ./damo start --probe_filter allow anon
-    $ sudo ./damo report access --dont_merge_regions
-    heatmap: 00000000000000000000000000000000000000000000000399999995111111146666666666666666
-    # min/max temperatures: -2,470,000,000, -1,620,000,000, column size: 99.800 MiB
-    intervals: sample 5 ms aggr 100 ms (max access hz 200)
-    #   <start>      <size>       <freq> <age>         <probe hits>
-    0   4.000 KiB    79.840 MiB   0 hz   24.700 s      2
-    1   79.844 MiB   718.562 MiB  0 hz   24.700 s      8
-    2   798.406 MiB  793.148 MiB  0 hz   24.700 s      7
-    3   1.554 GiB    797.828 MiB  0 hz   24.700 s      7
-    4   2.333 GiB    794.668 MiB  0 hz   24.600 s      8
-    5   3.109 GiB    791.117 MiB  0 hz   24.500 s      0
-    6   3.882 GiB    785.312 MiB  0 hz   24 s          2
-    7   4.649 GiB    787.867 MiB  0 hz   16.200 s      6
-    8   5.418 GiB    784.477 MiB  0 hz   23.300 s      6
-    9   6.184 GiB    783.820 MiB  0 hz   18.200 s      9
-    10  6.950 GiB    797.730 MiB  0 hz   18.900 s      7
-    11  7.729 GiB    69.625 MiB   0 hz   18.900 s      0
-    memory bw estimate: 0 B per second
-    total size: 7.797 GiB
-    record DAMON intervals: sample 5 ms, aggr 100 ms
-
-Note that the line after the line starting with "intervals:" is not
-provided by the current version of 'damo'.  I manually added the legends
-line for easier understanding of these results.
-
-Each of the 12 lines after the legend line shows the DAMON-found
-regions.  Each line shows 1) index of the region, 2) start address of
-the region, 3) size of the region, 4) access frequency of the region, 5)
-age (how long the access frequency on the region was kept) of the
-region, and finally 6) the probe hit count.
-
-Because data access is the primary information that adjusts region for,
-and there is only nearly zero access on the system, regions are naively
-adjusted with the same size.  Still <probe hits> show different
-distribution of the anonymous pages, but it is obviously very rough
-information.
-
-Switch to the attributes only mode and show how it changes the picture:
-
-    $ sudo ./damo tune --probe_filter allow anon --probe_weight 100
-    $ sudo ./damo report access --dont_merge_regions
-    heatmap: 88888888888888888889888999999889999999000004888888888888889999988888898888888888
-    # min/max temperatures: -4,430,000,000, 0, column size: 99.800 MiB
-    intervals: sample 5 ms aggr 100 ms (max access hz 200)
-    #   <start>      <size>       <freq> <age>         <probe hits>
-    0   4.000 KiB    60.445 MiB   0 hz   700 ms        0
-    1   60.449 MiB   1.363 MiB    0 hz   600 ms        18
-    2   61.812 MiB   144.000 KiB  0 hz   0 ns          1
-    3   61.953 MiB   1.922 MiB    0 hz   2.400 s       19
-    4   63.875 MiB   12.133 MiB   0 hz   200 ms        0
-    [...]
-    500 5.132 GiB    8.000 KiB    0 hz   2 m 15.800 s  20
-    501 5.132 GiB    8.000 KiB    0 hz   2 m 16.200 s  0
-    502 5.132 GiB    16.000 KiB   0 hz   2 m 16.900 s  20
-    503 5.132 GiB    24.000 KiB   0 hz   2 m 14.200 s  0
-    504 5.132 GiB    8.000 KiB    0 hz   2 m 14.900 s  20
-    [...]
-    923 7.534 GiB    126.637 MiB  0 hz   0 ns          6
-    924 7.658 GiB    252.000 KiB  0 hz   54.800 s      20
-    925 7.658 GiB    142.242 MiB  0 hz   300 ms        0
-    memory bw estimate: 0 B per second
-    total size: 7.797 GiB
-    record DAMON intervals: sample 5 ms, aggr 100 ms
-
-As expected, regions are adjusted to provide the best accurate picture
-for the anonymous pages distribution (<probe hits>).  The region 0
-(60.445 MiB memory from the address 4.000 KiB) has nearly zero anonymous
-pages.  The region 1 (1.363 MiB memory from the address 60.449 MiB) is
-nearly full with anonymous pages.  Region 500 (8 KiB memory from the
-address 5.132 GiB) is certainly two anonymous pages.
-
-Future Work
-===========
-
-Attributes only monitoring disables access monitoring.  We will enable
-that in future, by extending the supported attributes to include data
-accesses.  This patch series, and the future work are parts of the
-ongoing project [2] for extending DAMON.  The project aims to extend
-DAMON with primitives other than page table accessed bits such as AMD
-IBS, Intel PEBS, and Arm SPE, to provide more powerful and detailed
-information like per-CPUs/threads/reads/writes monitoring.
-
-Patches Sequence
-================
-
-Patch 1 introduces damon_probe->weight for specifying the weights of
-each attribute.  Patches 2-6 extends apply_probe() damon_ops callback to
-efficiently support the new mode.  Patch 7 fixes wrong use of abs() in
-the regions merge code.  Patch 8 extends regions merge function to work
-with probe hits in the mode.  Patch 8 also introduces the function for
-detecting the mode enablement but always returns false, for safe and
-incremental changes.  Patches 9 and 10 adds user parameters validation
-to prevent theoretical overflow of probe hits and the weighted sum.
-Patches 11-14 incrementally update kdamond_fn() to support the mode.
-Patch 15 completes the mode detection function implementation, so that
-the new mode really works.  Patch 16 introduces a new sysfs file for ABI
-users.  Finally, patches 17-19 respectively updates design, usage and
-ABI documents for the new feature and interfaces.
-
-[1] https://github.com/damonitor/damo
-[2] https://lore.kernel.org/20260525225208.1179-1-sj@kernel.org/
-
-Changelog
-=========
-
-Changes from RFC v1.3
-- RFC v1.3: https://lore.kernel.org/20260710002349.111414-1-sj@kernel.org
-- Drop RFC tag.
-- Rebase to latest mm-new.
-Changes from RFC v1.2
-- RFC v1.2: https://lore.kernel.org/20260709140600.90950-1-sj@kernel.org
-- Fix two typos in comments.
-Changes from RFC v1.1
-- RFC v1.1: https://lore.kernel.org/20260706141912.88445-1-sj@kernel.org
-- Fix typos in comments.
-- Fix wrong use of abs() with abs_diff().
-- Prevent probe hits and its weighted sum overflow.
-Changes from RFC
-- RFC: https://lore.kernel.org/20260705205743.98656-1-sj@kernel.org
-- Add kernel-doc comment for damon_probe->weight.
-- Fix typos in kernel-doc, design and usage documents.
-
-SJ Park (19):
-  mm/damon/core: introduce damon_probe->weight
-  mm/damon/core: ask apply_probes() ops callback to set sampling address
-  mm/damon/paddr: set samples in apply_probes() if requested
-  mm/damon/core: ask apply_probe() to return max probe hits weighted sum
-  mm/damon/core: implement damon_probe_hits_wsum()
-  mm/damon/paddr: respect return_max_wsum
-  mm/damon/core: use abs_diff() instead of abs()
-  mm/damon/core: extend merge function to work with probe hits
-  mm/damon/core: disallow probe_hits overflow on attrs only monitoring
-  mm/damon/core: validate params for probe hits weighted sum overflow
-  mm/damon/core: disable access monitoring when probe weights are set
-  mm/damon/core: set samples in apply_probes() if probe weights are set
-  mm/damon/core: s/max_nr_accesses/max_merge_score/ in kdamond_fn()
-  mm/damon/core: get merge threshold from probe hits when weights are
-    set
-  mm/damon/core: implement damon_has_probe_weight()
-  mm/damon/sysfs: implement probe/weight file
-  Docs/mm/damon/design: document attrs-only monitoring
-  Docs/admin-guide/mm/damon/usage: document weight sysfs file
-  Docs/ABI/damon: document probe weight file
-
- .../ABI/testing/sysfs-kernel-mm-damon         |   6 +
- Documentation/admin-guide/mm/damon/usage.rst  |  11 +-
- Documentation/mm/damon/design.rst             |  25 ++++
- include/linux/damon.h                         |  12 +-
- mm/damon/core.c                               | 139 +++++++++++++++---
- mm/damon/paddr.c                              |  11 +-
- mm/damon/sysfs.c                              |  25 ++++
- mm/damon/tests/core-kunit.h                   |  13 +-
- 8 files changed, 217 insertions(+), 25 deletions(-)
-
-
-base-commit: 6af40ebf40984a5ea1bbf273c65c9ad4b6e73291
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index d8251c83e6e55..aee28b05acc6c 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -647,7 +647,8 @@ enum damon_ops_id {
+  * It should also return max number of observed accesses that made as a result
+  * of its update.  The value will be used for regions adjustment threshold.
+  * @apply_probes should apply the data attribute probes to each region and
+- * accordingly update the probe hits counter of the region.
++ * accordingly update the probe hits counter of the region.  It should also
++ * set &damon_region->sampling_addr of each region if ``set_samples`` is true.
+  * @get_scheme_score should return the priority score of a region for a scheme
+  * as an integer in [0, &DAMOS_MAX_SCORE].
+  * @apply_scheme is called from @kdamond when a region for user provided
+@@ -665,7 +666,7 @@ struct damon_operations {
+ 	void (*update)(struct damon_ctx *context);
+ 	void (*prepare_access_checks)(struct damon_ctx *context);
+ 	unsigned int (*check_accesses)(struct damon_ctx *context);
+-	void (*apply_probes)(struct damon_ctx *context);
++	void (*apply_probes)(struct damon_ctx *context, bool set_samples);
+ 	int (*get_scheme_score)(struct damon_ctx *context,
+ 			struct damon_region *r, struct damos *scheme);
+ 	unsigned long (*apply_scheme)(struct damon_ctx *context,
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 327398fa4ee56..9fbea6204520b 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3692,7 +3692,7 @@ static int kdamond_fn(void *data)
+ 		if (ctx->ops.check_accesses)
+ 			max_nr_accesses = ctx->ops.check_accesses(ctx);
+ 		if (ctx->ops.apply_probes)
+-			ctx->ops.apply_probes(ctx);
++			ctx->ops.apply_probes(ctx, false);
+ 
+ 		if (time_after_eq(ctx->passed_sample_intervals,
+ 					next_aggregation_sis)) {
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 6172464981730..b13bf7c6eade3 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -166,7 +166,7 @@ static bool damon_pa_filter_pass(phys_addr_t pa, struct folio *folio,
+ 	return pass;
+ }
+ 
+-static void damon_pa_apply_probes(struct damon_ctx *ctx)
++static void damon_pa_apply_probes(struct damon_ctx *ctx, bool set_samples)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
 -- 
 2.47.3
 
