@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5D8CC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F997C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:33:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B72D6B0093; Fri, 10 Jul 2026 05:33:29 -0400 (EDT)
+	id 999E56B0095; Fri, 10 Jul 2026 05:33:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48F296B0095; Fri, 10 Jul 2026 05:33:29 -0400 (EDT)
+	id 925366B0098; Fri, 10 Jul 2026 05:33:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E1996B0096; Fri, 10 Jul 2026 05:33:29 -0400 (EDT)
+	id 836196B0095; Fri, 10 Jul 2026 05:33:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B0916B0093
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93F568DCB8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5710A6B0095
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0443A0307
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:29 +0000 (UTC)
+X-FDA: 84972354138.28.9B6FC68
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3349310000F
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:28 +0000 (UTC)
-X-FDA: 84972354096.05.34C63C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C4E39160003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q+4J0Pd6;
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nN7+0tvZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783676006;
+	s=arc-20220608; t=1783676008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=677B5n0kvLgyERJskeE3rTX4vg8H2agSafboCd79Yqo=;
-	b=RRBUmMW3PQDPZ/+3nnNPKUqvMXZnEyrk8OudB/0CI5Om3ATQanves6j4xdEmtY58dl9q4K
-	eiLUmuiP0AfynuTnzLaA8EHOm8B1Hmp6wPgXfJtiCbQhP94FFCq0zpgNtyHFBMmKxIMYEC
-	bVBQyWY+VhhldUNMF8bB3rC2g4shxtM=
+	bh=xrs5lraalE2UG0MriVBsYhlbNUjZEy2u+I/gnOfdohU=;
+	b=PJtr5jpjuh5EraE7uz4zksHIYHykJVIvMULhQNc5p4mCLHLjkuZX4Cl+kGiKmFyg+xHPVR
+	Pizx6zOHUl6FAJUZEdro6RDyNskeBc9KXJKaAyp4vTm1awNCdCRw/XHjhXTkKLDi7ZV5Gt
+	Dmo7lQj1y+0PLOc5c5npRysL0h/U02o=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q+4J0Pd6;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nN7+0tvZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783676006;
-	b=gqFBiuIw1a4fEELUti8PG9VS5Je5Uz6sq+9Tpu7Rx6yW6L5pa+jtREpGNCV7BN/4NRwFIQ
-	QNcg3ZHF15AyaNFGcuIXNErWpDiDT82eH9mZ47idytrdc4+2o12oZi0L2dn/7X4gn/HZQu
-	QfwGu5pXm9OFSOn70eLneYy6DOSF0iY=
+	t=1783676008;
+	b=Hwk3b9yV0/DzbmWcFxGkHDYI/PRJfprmbgjQaq1zWuSozQv+81NDPebEG+6dCCYGrycVQH
+	3sOVCVCEl5iDGRtbE8IMFlSUXbjKwAyJu44cFXRkuMNG6Trj/Q6b4bvek9qV6g01FCrmG5
+	zeSiLzLywsSFZxgzHFVN61clwyR//aw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E4DB43EEF;
+	by tor.source.kernel.org (Postfix) with ESMTP id C542160EEF;
+	Fri, 10 Jul 2026 09:33:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2AC1F00A3A;
 	Fri, 10 Jul 2026 09:33:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE32E1F000E9;
-	Fri, 10 Jul 2026 09:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783676005;
-	bh=677B5n0kvLgyERJskeE3rTX4vg8H2agSafboCd79Yqo=;
+	s=k20260515; t=1783676007;
+	bh=xrs5lraalE2UG0MriVBsYhlbNUjZEy2u+I/gnOfdohU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Q+4J0Pd6ng6ubEjGKldN+ZwnNlaXTHRBG4JDGidI/IFXx3AiPc5GYSSB8dqilObCI
-	 DeHusH9lngPlqGDv761pwm/nPtfB6CWlhryRuw+077asKZRErtQv6fvHr72V2kTk/v
-	 lTp5Rds+eFiZylc4Mm5T/eVoIyIZ6FvpDf/HPEq6cFC3j6XmOpsVvitO0Xh1aCcVyi
-	 dNY2OgZ5fNVud9Ry28m7d2TiJU99WLMgTPI1U4w6/yGfodxj0ugFp1XCfFTc9I3xbl
-	 R2ZPBJJcG5inqt1O082blA2cwCARQCitjSa1VN+rwp47B0vFqeEj0x+EPMoKVTHsZG
-	 3dScYBrQpxFQA==
+	b=nN7+0tvZRI8ao2T+BWyC2xVLZc9ZQ6PLswTiXRS2Z9lqXMUCPS1wpQxTSbT22Exct
+	 K1JLTiwFpJ/XWy5Rf8To66gjwDJBIXlEHoAHCGj8HjSBts4kRQrHj/hUPv/49oukbI
+	 I4MVlqSXSao9gatsjqV9Ttgi6B8iBiGZGJc3QRoFCK/YeKRyoj+uAb67EiQ4CT8hy8
+	 IchSa1/AR8ooDSzLMgxajnyCOF8u1sBMi626J6ze54bXDSIhq+4PMpHnyJXsrj9gtz
+	 zcgrxWBy3LYJXwckMZUfLM5vv2JFNAnyKJ1hgS6YY2ZkGl6OgcE+2tCgTzRzY/3HHN
+	 Z4W3URY0XuuuA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 11:33:03 +0200
-Subject: [PATCH v3 02/24] binfmt_misc: use exe_file_deny_write_access() for
- the interpreter clone
+Date: Fri, 10 Jul 2026 11:33:04 +0200
+Subject: [PATCH v3 03/24] binfmt_misc: reject a flag character as the field
+ delimiter
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v3-2-a162f7cb58d6@kernel.org>
+Message-Id: <20260710-work-binfmt_misc-locking-v3-3-a162f7cb58d6@kernel.org>
 References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
 In-Reply-To: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -80,22 +80,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
  jannh@google.com, stable@vger.kernel.org
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2087; i=brauner@kernel.org;
- h=from:subject:message-id; bh=AYPobXhR7tlhSW9eVD0N+FrhRjSI1w+57SYynhHowac=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7InL7jz/42a2SStPxL6X2XHSW85+ePiljGFT9Txrg
- bv3P65N6ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIyS1GhrfvXG0CXqa2Pbya
- Yz0xyGbdMT9D3hi3XalnlC5MimI3sGdkuJ7Zb3wooV30yU21FsXU91d4//5jvvooLC1mWnLtg56
- r7AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2408; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=LJghwtw/rZdPZpzGD37v4e9liYjTcIOPdSBYtvPd6LM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7IkLu1Tdkxr3luHWi29BHPxrVucsefmc+cTOA490o
+ jfVJmZe6ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIjJOMDCcn+nFPWZjX5ePN
+ x7z6tcfrj3NOL9yf+NnnVoTVrgXrSvcyMjQHXBAQvhmS2lkjH2+2O7VxgfSVQKvfBTFB2SnZP37
+ 48AMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C4E39160003
-X-Stat-Signature: m9yf9beyxdaziubhthhstq7idhtpkdxu
+X-Stat-Signature: 5zbb1dzntuwxorueujoo8weaqozgu3ki
+X-Rspamd-Queue-Id: 3349310000F
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783676006-484026
-X-HE-Meta: U2FsdGVkX19Sno02qi9y3GgtuQyCSLd9VY7hxsZbYaDuhO1xm1+aO6w6u0ohYlWphq0wiA+UCuIhX3Kd22kv9C64NzU1GZxwB0cnc5oIv5LHNbzBwoaaZRt8bwui0PknMLIpLq83Lk2Bubfc/DPK7/XxUHshUSJKxb+rpL5C3X4YZojXoTvEqAsjBSphhV0fPjD2On5OKIxsxK/wWasxMQUfKAlBzuSr3LvEIfwIBfACAcfK1d9tevctGivRi4Pil3y4e150yuKLOkAZPhBu9VrjoGO3+buFU34eJSEVn/rU7eT68q+FxMvgg0+XVGnkBzsEoxjh5kK6wBnJt95OONiSCBa86C89/+eJ6wCM1jPBZskBh9N5+6EMpD3VUDmYF6Gk4/CTjWqhFJv/w6uF7/xPFM89OwKrsby7mPjBhuN8ABs1yw/Guhk7ezkRrrjF5MmPxpMjdH/vxu4PMFuHPcr155hQkTdi5dSdetI+Ru0SPEpx35gYr+KdQAfL9qUcizrkw19o/3EQSG/we3nde4pEgf4oMCQFg8sKgVrGVSZvybi0rDdewrtUvPNMvWptzd1A6V4ialAiIbfVDRd+TiH9HOdb4Ze0+QyzIBcOX0fYE81SSYXXFva+eQT/sNANXyKdfpBplSj3vsWpwnrWm4H+aIParxQ97x3zbU3KRI/tbic8aFQJQE4xOsH5x4RmXVvty7Pog64OFkH07s3XRSh2LHeW+7K4ym2rVXaTILpllxILuG01olWcZIW7EHdiLBbZhhpiaaJM8cCRMtwIrsNGQwXX34r8ZRs39DKHmShggVMzGTjUz1A0apZjj8GDtlnLzVMkazU/p1Sn6QKy7x0oZJ+LM/hWc+t+w4+qvLZU4mVdsv6aMCNWseqD9yJTEEUzR/+dwjQ02wiHaJLaOEIHtf7NfBRcyEEN3g/Eh2wb5X3VD+3RT9rBN8ZdxT7qNSWCo7+RcUM7hPSkvvY
- AGLXcEEQ
- j37pRqYfZM61OEyj0qM5IStrdQhgSuHcvCt6pyXRBwZdaXg7NozPqnHg16afK+PMpTjp4eJrClNcbrO6MfjraxO+vGB0kjlwio+8+5R8bJwS9wmqrpxftJgkLkAB7Gor7yuU6EdCymgRaeBBOymvEF7e05WBLghCwZuDgyCGReAj1Hjh9JRfb0kuD9rgUaWoZBNxjfM+JZGoxFS+fK6msuYSzedq1u2HRuZh3lrObRHY2GoahLuUxjqHTERcsgceuXUTATWIRPEHLj/nMHFPGyRymHF3qRTHg+r+0RVYy8rHjJfIFUnO+K8bs9Gn2964MnyD99qsEFrK2/0K5VHdDXuiRPnaG1j7iV3ehJ3+2XSEUMxbigy1wPzaGjOlB3NdJyWBqmKFljbih9jk=
+X-HE-Tag: 1783676008-889987
+X-HE-Meta: U2FsdGVkX1/Yi9xlPfDOklQyhGgCAR8HN/gSn79CkxuDEOaliqonZzf7j6wIVLt4c8kqKSF3q3YuxwMge+fEUB9DhFWOaweSDzir7oQpltgF57GGwx0j3uFlRBdWvi40pY1O63tLQ8kA6+2HWNvfVeBJ2EUYSUygQAkIPRp11JAQ/uyfcrPSCnhpyrbBOQtzI+aGsCuLpqibdObuu6G1KciOuPMtsJPmZkELy+I5AH1npZVUaeCerUTCb+U3fXz50kyPbx0zaL6L4uvxCPwCu71GI1r0KpOf8W/DlvlTOXzSzHy8jH26gs3Eamqmsm4aejvuE3Qlh7hoS0E25Hf9jAypMtoT4SxifJBrwF1HBjvcKngLqfKujrcOgSgQXGllmsoqgZ2Svcwv2G4ADFNaAXMP8aHK4AKMPm2MnjoRUr8TfAKUk6FxaRs1flnHOBlRBqlH5NW+Syp7x809Ht4fYp1OHcgKwf9CXBP3b0dDZt5h668nT73NuyRyG7Z1umatmBJ/N1TcJVszeqLGKp5SCKUglPSG5d/QO3iUrUCn8YDhjI5rb6YZ/inikRE6D2l4wIWMsszzyp9Vv0KnTH+X1hpmTOq2PdugyB2DbRoH3ob36VwR7sjHUNjxHqTAjQUUGtrMUcodZJaqoJIUGl8M2XfxsqnMwc1BLoveTwJ8T5uID04eqUQcDGkHp3pnEKoFs7RcWabC/WDP14ITVpwthUnHQtX8Fg3FNJoL1+GtHGxbN+xSQzF5GRTG/kTwqXbti6Lj1BiF+uDXmY60kRtfq4gNxHoLrYYMNWjwlI9+kWuOodBN3hBWeliFdYoPOjM5n1O6usb7hsDcT5lh5vpyy0idzWavlYeZLlCngJYMmAy+mvSQZSUQRbV3Oe5G2yXZLkXj+ERuhAbQUf+9bvOUkt3T5UW9jiNj/Or5lOo1PTd75dLX182lOXqFV4qwkZdBt/pQ0LsZUuJDKhWKx5B
+ VgrZBmgn
+ CSFiMO79WWmNZvK5S3Dg2o+M8Gf+r1Im1kGOSoIuJGhuA/JxTWD22ghQTc8kyKpjkn8Cu8ZkIdS4amNnbNlMtsdkbCbfyl0IwGliNB2ZZ/zO0RBWd+2PfIaM2xASBLhk+7m4ufUuhSH8U4afZLHg8ZOTeduV5spwJxkMraDXqh856H8amATt7bAgXZ0I2Q035zRxAll1NWf4bgQw+qwPfDBowRMTiDrlQUI4hW3BnCNgPR9Fjy0noVYK4y3uUFzgv2Rx3YLYca8JjOhUJM6yk43fVhvxUIM9G4Z34B/HAA5iHnmSLUsTztpUGJfM6WSEfcjWl3PN9VEBOimUPIRIbQVv6wba+0vfnM7JZrpdzb0VRt/c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,56 +103,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For MISC_FMT_OPEN_FILE entries load_misc_binary() clones the
-registered interpreter file and denies write access to the clone via
-plain deny_write_access(). The clone is installed as
-bprm->interpreter and later released by the exec machinery through
-exe_file_allow_write_access() which skips the i_writecount increment
-for files with FMODE_FSNOTIFY_HSM set.
+The registration string starts with a user chosen delimiter that
+separates the individual fields. So that the field parsers terminate
+even on a truncated string create_entry() pads the buffer with that
+same delimiter:
 
-The deny and allow side can therefore come to different conclusions
-when pre-content watches are in play: if a pre-content watch is added
-to the interpreter after registration every subsequent exec through
-that entry takes a write denial on the clone that is never paired
-with a write allowance, driving the interpreter inode's i_writecount
-further down with each exec and leaving the interpreter unwritable
-even after the entry and all its users are gone.
+	memset(buf + count, del, 8);
 
-Take the write denial via exe_file_deny_write_access() so both sides
-of the pairing base their decision on the same file mode, and
-propagate failure instead of silently ignoring it: an interpreter
-that is concurrently open for writing now fails the exec with
-ETXTBSY, exactly like an interpreter freshly opened via open_exec()
-would.
+Most fields are scanned for the delimiter with strchr()/scanarg() and
+happily stop on the padding. The flags field is different: instead of
+scanning for the delimiter check_special_flags() consumes the flag
+characters 'P', 'O', 'C' and 'F' and stops at the first byte that is
+none of them, relying on the trailing delimiter to end the scan.
 
-Fixes: 0357ef03c94e ("fs: don't block write during exec on pre-content watched files")
+If the delimiter is itself a flag character the padding no longer acts
+as a terminator. The scan swallows all eight padding bytes and keeps
+reading past the end of the allocation until it hits a byte that is
+not a flag character. For example registering
+
+	PaPEPPxPPiP
+
+with 'P' as the delimiter (name "a", type extension, magic "x",
+interpreter "i", empty flags) leaves the flag scan running off the end
+of the buffer. The registration is rejected in the end because the
+parser does not stop exactly at buf + count, but only after the out of
+bounds read has already happened. With an unlucky allocation layout the
+scan can walk into an unmapped page; under KASAN it is reported as a
+slab out of bounds read. binfmt_misc mounts are available to
+unprivileged users in a user namespace so the read is reachable without
+privileges.
+
+Reject a delimiter that is one of the flag characters up front. Such a
+registration was always rejected anyway, only after the out of bounds
+read, so no valid registration string changes meaning.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/binfmt_misc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index de50a7468b07..24142859658c 100644
+index 24142859658c..b7664d90eb8f 100644
 --- a/fs/binfmt_misc.c
 +++ b/fs/binfmt_misc.c
-@@ -252,8 +252,14 @@ static int load_misc_binary(struct linux_binprm *bprm)
+@@ -385,6 +385,10 @@ static Node *create_entry(const char __user *buffer, size_t count)
  
- 	if (fmt->flags & MISC_FMT_OPEN_FILE) {
- 		interp_file = file_clone_open(fmt->interp_file);
--		if (!IS_ERR(interp_file))
--			deny_write_access(interp_file);
-+		if (!IS_ERR(interp_file)) {
-+			int err = exe_file_deny_write_access(interp_file);
+ 	pr_debug("register: delim: %#x {%c}\n", del, del);
+ 
++	/* A flag-char delimiter runs the flag scan off the buffer. */
++	if (del == 'P' || del == 'O' || del == 'C' || del == 'F')
++		goto einval;
 +
-+			if (err) {
-+				fput(interp_file);
-+				interp_file = ERR_PTR(err);
-+			}
-+		}
- 	} else {
- 		interp_file = open_exec(fmt->interpreter);
- 	}
+ 	/* Pad the buffer with the delim to simplify parsing below. */
+ 	memset(buf + count, del, 8);
+ 
 
 -- 
 2.53.0
