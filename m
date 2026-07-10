@@ -4,98 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C49C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:59:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05AFAC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 08:16:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5426B0088; Fri, 10 Jul 2026 03:59:02 -0400 (EDT)
+	id B820E6B0088; Fri, 10 Jul 2026 04:16:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9862C6B008A; Fri, 10 Jul 2026 03:59:02 -0400 (EDT)
+	id B33DC6B008A; Fri, 10 Jul 2026 04:16:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874FB6B008C; Fri, 10 Jul 2026 03:59:02 -0400 (EDT)
+	id 9FD2B6B008C; Fri, 10 Jul 2026 04:16:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 660A76B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:59:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4500120325
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:59:01 +0000 (UTC)
-X-FDA: 84972116082.27.67C965A
+	by kanga.kvack.org (Postfix) with ESMTP id 79F136B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:16:20 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0BBE1203E2
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:16:19 +0000 (UTC)
+X-FDA: 84972159678.18.03F8833
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3D35D20007
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:59:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XT9ruq9V;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783670340;
-	b=h1v1+uWnPBzEcq7uRIA8ot5f9wa33ZwI2Wya25cabQ7kj9PbGP52QOz9967RBGzW5BXXWJ
-	IYbNKSaI0c7/dG747Z9I2Q7wob+LBhXsBze5dBvPa3mMpjD4DXVKDAir+a5dOAuABwXzTI
-	OLMf5NPzhlck6TDtiMt+EKm2n51KEU4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XT9ruq9V;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4910B80003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:16:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxC+ZLDg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783670340;
+	s=arc-20220608; t=1783671378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7z64Yjh6oprdYOkOccqXqa+zyIEaBTLMckJTU03fgvM=;
-	b=Rt1BRxRKUGPqdBRvWRFWGOI1aB3qjpOh+77d+Q9dE8ULriB27HMBbuZljPLpuziDLSyXzt
-	vBYr/cYdcZNq1flE4bwiSptIrcmc9vqO6mC7rLsZoUs51/wo05cHrd27+fneFIlIb45Gq0
-	QETuSeqNEnXDc+PtN1xvJC6kzWBKQYk=
+	bh=C3lfbzXwAKJJMyBDQQnH0hMEZobiBMZs7iflO0l0S2o=;
+	b=HsnBIteRn0dDSs5KzCCl5os0CrM8tYuIpfuDv4GQY3ZGoeRKa7BADK/2pGIf0NZAOQM5+O
+	rLRLkNkOHGwnATrRr27VswwIL6a648F6DMDpflgcUB/7UuWn3sPbuRZXOxZYMt+TvlFxzq
+	6TTh6K25gdXFu5RXHIyFYya2jPTE2zQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxC+ZLDg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783671378;
+	b=BlqYeZUG729RjfWAJNq3Xy47U8focn1Me0FiCPsGlcXjV9Z95fZZYz4fjHMtQJhtWfygwK
+	gEb1yDYHobtsYW1QcSxqQTEbQd/j51uX5DFcRAfGrK1Y6BhK2cvyWnHnla5Akq0HD2swPT
+	T17kCMWo2o3ZVL1UtF5tppeRIbvvUAk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB9B16001A;
-	Fri, 10 Jul 2026 07:58:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39F11F000E9;
-	Fri, 10 Jul 2026 07:58:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9005A600C3;
+	Fri, 10 Jul 2026 08:16:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329961F000E9;
+	Fri, 10 Jul 2026 08:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783670339;
-	bh=7z64Yjh6oprdYOkOccqXqa+zyIEaBTLMckJTU03fgvM=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=XT9ruq9VLPkDmgX6GaPHCeU92R+VAHAxOgUyPGuxt/IgDJuTSU+rJO8dxJUNP7oWm
-	 f4qi9Wt1H8sn0KRTRJoQHNDNDF5YgfZnE1XEwPFLQkGwimI1HMTAcFRFK+5zRT+cWt
-	 DzlY1CmYhH7cncVFJhzjeNYgKGWjxrh5SjcvRzGRX+XNirRHPgnU59ODeSJ2fyaGfB
-	 k75/kXY3FuJedD7aZEXU0cpMRutjOM4MHXuNINZ20BnW+Spgu8OrEV9gzCsz+T1s2D
-	 Bpb2Cj+6bEH2zMEaovvnpBRJt6d8H9aaUYPHYl9hxnRSjc6xmzqwct99h8wIHWG4EF
-	 zz1TnhESfcQHQ==
+	s=k20260515; t=1783671377;
+	bh=C3lfbzXwAKJJMyBDQQnH0hMEZobiBMZs7iflO0l0S2o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JxC+ZLDgIXwuH9JuHUjDWYdggID9/dxMCsywLopj9ykUTKnr1KkuuBzBnTLeqXQZJ
+	 qJxq93cUryMnIbJXZWxWajUaQtUBBDoK0VmlOxhhzu73ZLFfqGzRtgcpAWdX+aHqBd
+	 6kWfpY6t3+aaB6wbZwLIdKuZNOmeEKx8F6ttyANmRUxkNSXTdTLFJVq55VtEiMQpjk
+	 k7YZwBbwoCFRrZ3ZgODKjjLBbWQDj13Z2laqRZ7yWx3kO9eBwm7h/uye09H9s/f5Rx
+	 GfoHgz317VhnsBc57u32V6NNc/WPfUuRNEjyeuAMO8Ik6dRI41dVFjFkilis8GKYQh
+	 O+Lxf3BIw5M5w==
+Message-ID: <22bae03a-1a7e-41f4-8012-a511c173400d@kernel.org>
+Date: Fri, 10 Jul 2026 10:16:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, andriy.shevchenko@linux.intel.com,
+ usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
+ ryan.roberts@arm.com, linux-kernel@vger.kernel.org
+References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
+ <20260709170816.4e876a16eef9a93f41bb1940@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260709170816.4e876a16eef9a93f41bb1940@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 00/23] binfmt_misc: write access fixes, RCU handler
- lookup and cleanups
-From: Christian Brauner <brauner@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
- Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com, 
- stable@vger.kernel.org
-In-Reply-To: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
-References: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
-Date: Fri, 10 Jul 2026 09:58:54 +0200
-Message-Id: <20260710-holzweg-berechenbar-unbeirrbar-83c525ecee0a@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5229; i=brauner@kernel.org;
- h=from:subject:message-id; bh=i+9k/qCZC42axD9e/Q5BsbX8vqk8Mlzz3oda8wQw/FE=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFLHOMVJHT6usLvxh7edclrWmb14Qe+vnAVnrDj3vzf
- wgdP/f1U0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEzNwZGc7v+TShIvdgeWX9
- Y5+dTdJdU1er5RoeKl8gG5ilGOnptYeR4R93y7wHErWqnr/9uHa+keKK2iByu+vSutdxhzhWLF7
- yjxcA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: m3o9x8sbmnbesjdr4bj7nx46asit8i8k
+X-Rspamd-Queue-Id: 4910B80003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3D35D20007
-X-Stat-Signature: earh36fddsib4fo7dn6ssozy863ojozh
-X-HE-Tag: 1783670340-104349
-X-HE-Meta: U2FsdGVkX19ZMALTvVAo7kPPu68Iaay2CkKhfkiSLDxbozsCUcG+xOwXb2tQh6Sfzc3UxtLZvPbzfA1xoV6PWn11f5QbM/PI49TqIYuE4DbmOp7ENI2liYA3f1oXNkMrr0ei0Iow6XtOAnUVnOp85dzG6bbzVQB81qBhLNJAIrf4n8mDAP8NNfeAn9efATw6wJaTe2uE6aXtTFvIYY56TWWKpzLwku+Cu2PHl2ztwdwjDJGpi9RGoijaF1LFaK24Kqq38BArvKvnk0JOqaVItuRDMqvxepyvyhu6WwWRpgqISuDiUpH+kEGaFIS1rC46aZh2a7y+PqRF87KEdwloORrdE6bKkj266vExNNCBonYrtCTjfNLNWL7mT8W9QCjgaEsMIF04sKmqDy7H4xjdbtDql+4NuVWMajzN3wr4ndXMNYXrWc8NJX/wYOH6VSagr5q3FfkOzx1eqb7Ldpq9m4buN5DO3px79PS/ljiehWRAfpq0pH5HomG0UcX+BxiCd3KWE3B7StHeG+lu1D/z/GDQlhevY1VAvHG8yMWsDdV1sX7sp7sAZv9fEg1XIJqRS5+IXs08lRtcJX4cOxo78UcqdHrAWAs8qMj7W8x1Ct8bkmYNNhDsvjQnK7At/DREPk09e8zmBof2af+Yfoo6FMDwayFKuDwcLiCrAu5xbUHIfERWYnsL2DS62ODJnckA1KrY8/IPIym6eQ32AWuKARJOeGzwe6ZO/JgT23IgIq62R2yXfzqSR69wK7ZAAFl3/b7881hDqz7fudzHTmxnSZAmxzyIg5O0/G8VvAvjyiADjz9ZPvniZxV/a7la3ih4hV3zZghc/dLQMWaBuUjigpFQLSD9hlmCvXUsdReuvvSj6Atlt/c2kGbnSFAo6P+Q2lhjE89BmzQhtYIAaCSaBk5J5THf+nyA3hNNAq5NTtHbYx82aU8wlaYRs2SK29zKx2YcjMjxA+wZshtEAwG
- 8gDrfpK1
- HwK6QQHfCzhoJ7MN8PAfGMPTR3FZz9kMG6urgi1RCBhcBNLYlbDdDCHxMfLWfhQ+p+4wgSO0JG2k2i4YG8Z7tVK26BH5XnfaIrfMCr3S+zP2IzBT11+hV+TloxTuN9cxp8O5U4omv/RV6ehbYWbCc+yztpkXORpAlxDMksDcYRiMBqEmGVgPFH6loqAfODdx4+TJJa99OkaWF0ZwabL4pdDs+2c6ktQkNAFqfVstVw6SlodCFaRwmWlb13XdIP2QSd8SMb4v2XsMf211N6DfVveVBBpwYY5utjRJLWs4/pDke3sn48Tf1jlyJl8L2Yz68D/Un0nrdEWk0c6Vix/nPQomzjTRu4z7LEhU5s1oqIG7s8wcoUzLrLW6fZCzgXdPQLgUUy+qnFD7fHzWNDtYwKI9vLFFlOTAaUV75/94LFu7X1AC9SEl+yzZVw0+OelELmqABAheFY0Tou8u47ulDdLw47cXdvA8Oc5xqctzPqekT1N7b0jWTNq1zfdRbr5tZ5Dx1PMCZ7D2a+vs=
+X-HE-Tag: 1783671378-740286
+X-HE-Meta: U2FsdGVkX19F8lPv2gFDYebZcrWAdadCUt20P5HTivgaKPPD1KSuFAkf/1vMjyoyz8VWvXIOB6y0bkIwn/mKrotToF6roIgp+DZVCq23CWSU5bdmV/gpt8BWjoWB4+ZWlUgvIGq4dqutp8RgYMpTCnIZbjfmVx3GMwBqz5ig0CtwZoN9lcD6aEtbMeOuQ/NX+s3DWhDxI3vJVw4s9an1qis+tiAPNE1mLaotv6csjLSMgNtgoszVJVZXujw0pWfFdIcVys0O3L+g/ni285Uzcuivgy/UUKav6YDqZ4xHaWVv25hIPTvlnuos/AJ4w4ucpsQqWIXYrPeB8Cl2iz8CXOaVZO0uAZJRONdSAlinxafPmdAWw3HoQp1/wACRcjd1dDZdoewq7CdXfFKs15Z+ya4frN+74LU3CJ/HpBoBILYD/KAS2ldJoLVhfZQG0EPR+KRLERI7Gw8Nz/VPz4BNlyKt5D3EdnJYdsEDnRP8f8YVk1ZkFzwQUtzzvRr3oHx8lpwl+73zGUpRsgf/afejUb8yvkh3WCR8isCdBkLhBHBzBZBPpKxg5lNrCN3jUejsRYcoBlQinEgkTvVhUdwcby0oUwyEFPQqgFVFPYNATFCfinLMomPxPB8ocV19p91+s6TnFj25Skukx7Pe5i46IxbsYHSEop38m/N/mNo6YVATcHI3gu/1zTHDsGyzxsbx5uMpJoKlhRjoZ56iDc70n98q+bZeWItPiPaDC1bGI0DJal2vPTJfXrblmgFIYJrWaGkO1XenTixwXrz4Re7XQMnI1/M/BqrzuuvMpXg6nt9SeazbKnLOEh3zDC5/Y2K7DhyHNbsmirrV+iPgoLDtBK0OV5bHzrQJQdNLdOuHCkgvv4Hf3a12+njkyq17IGxwQQkjydC2RgJS3MAwnd0xFo/+LY2FaiRAFKPZ1DgE6u48HegU0eLknkQdLkXWsdiAQvE/KC+trzRt2eBfP/T
+ G/t9msu0
+ DhXE72VYHEx2jVN/xhOviSEJWtL9Xq2n55CY6kB1eN3m0gvsG4wVieurWlP8zZ0K1D8VrUi5QbB3s8uEUom1LSJStH02vjR9r2VvlcZX2jZV0qqTWS28dbqLSlKyWnfdC+EnbHOobI7UdfljAZf6geFNzNgbg5elv9vbALdpnG1RMrfmPfj3VVDkM/HCjiHJThpry6ZQQ4Vf0UX7hhQwWEzyHJhASluQN3LysFNItYPUk86WLISfSJWgvt1D58OcSQSgyvpfFsmioqA04De9oKoAImuLnrECMOa7x5CxkZNUkGIrWTKmiC2l2jwj3pdx12FyFI/hyUC/4LgeJKfWeVWdc8HKbi4e3MP64rHKhRGkj9tI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,99 +140,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The first two patches fix two i_writecount imbalances on
-> MISC_FMT_OPEN_FILE interpreter files that turned up while auditing
-> the file for the rework below and are marked for stable: removing an
-> entry never restored the write access denied by open_exec() at
-> registration, leaving the interpreter unwritable until its inode gets
-> evicted, and the write denial taken on the interpreter clone during
-> exec is not paired with the FMODE_FSNOTIFY_HSM aware release the exec
-> machinery uses, so pre-content watches make execs leak write denials.
+On 7/10/26 02:08, Andrew Morton wrote:
+> On Thu,  9 Jul 2026 10:13:34 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 > 
-> The rest reworks the locking and tidies the file up.
+>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>>
+>> Bad page map reporting currently stores page table entry values in an
+>> unsigned long long and prints them with fixed 64-bit-oriented format
+>> strings. This is inconsistent across call sites and does not work well for
+>> architectures where page table entry values are not naturally represented
+>> as 64-bit values, such as 32-bit or 128-bit entries.
 > 
-> Once binfmt_misc is loaded load_misc_binary() runs for every execve()
-> on the system since binfmt_misc registers at the head of the formats
-> list. Every exec therefore performs read_lock() and read_unlock() on
-> the entries_lock of the relevant binfmt_misc instance, i.e., two
-> atomic read-modify-writes on a shared cacheline, in the common case
-> just to conclude that the binary matches no handler. User namespaces
-> without their own binfmt_misc mount fall back to an ancestor's
-> instance so on container-heavy systems every exec on the machine
-> typically ends up hammering the cacheline of init_binfmt_misc. On
-> PREEMPT_RT the rwlock additionally turns the handler lookup into a
-> sleeping lock on the exec fast path.
-> 
-> The lock protects very little. Entries are immutable after publication
-> except for the Enabled bit which is already toggled locklessly via
-> set_bit()/clear_bit() and entry lifetime is already handled by the
-> users refcount. The read lock's only remaining job is to make "the
-> entry is still linked" and "take a reference" atomic with respect to
-> the unlink sites.
-> 
-> So make the lookup an RCU walk that acquires a reference via
-> refcount_inc_not_zero() and free entries via kfree_rcu(). The removal
-> paths need to detect whether an entry has already been unlinked and
-> rely on list_del_init() reinitialization for that today, but
-> reinitializing the forward pointer of a removed entry would make a
-> concurrent lockless walker standing on it loop indefinitely. hlists
-> support exactly this pattern: hlist_del_init_rcu() keeps the forward
-> pointer of a removed entry intact for concurrent walkers and only
-> zeroes ->pprev with hlist_unhashed() serving as the linked test. Hence
-> the third patch converts the entry list to an hlist so the RCU
-> conversion in the fourth is a pure locking change.
-> 
-> Writers remain serialized by the inode lock of the root dentry with
-> one exception: bm_evict_inode() unlinks entries during umount without
-> holding it. A spinlock stays around the unlink sites to make that
-> exclusion explicit instead of relying on superblock lifetime rules to
-> provide it implicitly.
-> 
-> Handler removal semantics are unchanged. An exec that acquired a
-> reference just before its handler was unregistered already completes
-> with the removed handler today. The read lock never protected against
-> that, it only made the window smaller.
-> 
-> With this an exec that matches no binfmt_misc entry no longer writes
-> to any shared cacheline at all. The fifth patch annotates the
-> long-standing lockless ->enabled accesses for KCSAN and the three
-> patches after it make the entry flags proper enums and give struct
-> binfmt_misc_entry a name that isn't Node.
-> 
-> The remaining patches are a cleanup pass over the whole file: remove
-> the VERBOSE_STATUS and USE_DEBUG compile-time toggles, convert the
-> entry file to seq_file, factor out entry matching, entry removal and
-> the register string field parsing, make the entry/register string
-> allocation a flexible array member, give the parse_command() results
-> names, let cleanup.h unwind the entry registration and exec error paths
-> and prune the include list down to what is used. Aside from
-> seq_lseek() now bounding seeks on entry files and the ETXTBSY
-> propagation in the second patch the cleanups have no user-visible
-> effect.
-> 
-> The last patch adds what the comment in remove_binfmt_handler() had
-> been suggesting for years: entries can now be removed via unlink(2)
-> in addition to the -1 write. The status and register control files
-> refuse removal.
-> 
-> ---
-> Changes in v2:
-> - Allow removing entries via unlink(2).
-> - Add two stable-marked fixes restoring i_writecount balance for
->   MISC_FMT_OPEN_FILE interpreter files, first so they apply to
->   mainline directly.
-> - Turn the entry bit numbers and behavior flags into proper enums and
->   rename Node to struct binfmt_misc_entry.
-> - Add a cleanup pass over the whole file: remove the VERBOSE_STATUS
->   and USE_DEBUG toggles, convert the entry file to seq_file, factor
->   out entry matching, entry removal and register string parsing, use
->   a flexible array member for the register string, name the
->   parse_command() results, use cleanup.h for the entry error
->   unwinding in registration and exec and prune the include list.
-> - Link to v1: https://patch.msgid.link/20260708-work-binfmt_misc-locking-v1-0-a009dd5b56db@kernel.org
+> Well grumble.  It's a lot of fuss for something which nobody is hurting
+> from.  Or are they?  What's the actual utility here?
 
-I'll send a v3 in a bit with one more fix.
+Hugh seems to rely on this information heavily when debugging
+
+https://lore.kernel.org/r/3afa822d-3cc9-1068-9a10-94a5f2e4d29a@google.com
 
 -- 
-Christian Brauner <brauner@kernel.org>
+Cheers,
+
+David
 
