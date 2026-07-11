@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3B29C44506
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:25:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0B87C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:32:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FBF56B0093; Fri, 10 Jul 2026 20:25:55 -0400 (EDT)
+	id 796FE6B0088; Fri, 10 Jul 2026 20:32:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AC896B0095; Fri, 10 Jul 2026 20:25:55 -0400 (EDT)
+	id 746F86B008A; Fri, 10 Jul 2026 20:32:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C2E76B0096; Fri, 10 Jul 2026 20:25:55 -0400 (EDT)
+	id 684056B008C; Fri, 10 Jul 2026 20:32:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A6996B0093
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:25:55 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FEEAA0406
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:25:54 +0000 (UTC)
-X-FDA: 84974603028.10.66C534D
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1FD5318000A
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:25:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LJ59kQOf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 431186B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:32:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BEB8DA05F7
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:32:28 +0000 (UTC)
+X-FDA: 84974619576.13.CB33D46
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 33B4B20002
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:32:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fbpGi1y9;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783729553;
+	s=arc-20220608; t=1783729947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ozuHQhVAjCW4JCxIsyp8AZOTcw8eEPsbEwyEh/H07xc=;
-	b=DJ4paanAUPSrwZYfhrViRzklPUd/h7JlANiL97JwzJNMFv2pWyx4fC2eRIiD0dBUemidiL
-	qnR52wozuIVEmzaremOSLtZnBUx7n+mSEMLdyiY2Zmkw6RB9TxZSUFWRxFg1DBZA1GhfPL
-	6ASXV3njelHO2LafDgHg/tWT69/FDMg=
+	bh=O94T837359p5/1+I5KrV7oXNHB34fvrkADLpD0vBISo=;
+	b=Bjw36CwhzHqonqbtfmEff1Wv2G8Qg21WgqusWUkd5fKvueuK6eenQrjlKnXlu9UpLGBbE5
+	xzcCvt9T0zSAAbraEr6c/yn29Cl0gGz79dzkdpEUTdAz5WnaihVMIRolnGeI/sa4+kdkou
+	MhhleQY5tynGF7C7X94JwqJO6AA3log=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LJ59kQOf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fbpGi1y9;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783729553;
-	b=0R+OKf+4LZ8WNAka6az6Eq8UGeLosJEzAQf5Ojdu6k5O3flkqh5YA2azacQw3CFg6PrgaH
-	/UaBAtpfXQ7/eMbq4W41djP2eV4HivNRog0gwjVrweLgKShfIFzXWqmvvGAh/G15hHDbuv
-	sCLvhgKGHyDHVoO2sZCdGuijY7buBnM=
-Message-ID: <133c3c19-22ae-4de5-98e0-6970b707bf37@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783729546;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ozuHQhVAjCW4JCxIsyp8AZOTcw8eEPsbEwyEh/H07xc=;
-	b=LJ59kQOflH4Xwi55pz3SR4YZ+SZR4DgfALUVoXqN08vKRlsEwz2raNVipgNS9depuera86
-	58A2/XqIqEGURFDg0itA/yBn4xNw8b/j6f4yCsOwD2cxdZFpKNR+uqvznbvoqrIgZewPTK
-	LY00VDlf7sl1JHOE+tUToHYnrxcTUGg=
-Date: Sat, 11 Jul 2026 08:25:31 +0800
+	t=1783729947;
+	b=Ym6nRLbwp0jjSOATdUAkSpi1zPXZDQyHwFGG/z86ARpZKEy4aHZrxnykIQCOaKho5cuWvk
+	9giDPDgCEBaPIuGLHSk9aJ8WoOkXNBVmT2mysR1phUx8e937Ehfz5rPMbkcGI5MgV7ABNT
+	h3D/7DdAmsKHDGX49wZbSa9dlHb3+Tw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0BF75408F3;
+	Sat, 11 Jul 2026 00:32:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2AA1F000E9;
+	Sat, 11 Jul 2026 00:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783729945;
+	bh=O94T837359p5/1+I5KrV7oXNHB34fvrkADLpD0vBISo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fbpGi1y9TAMeC8S1d+Mt8Ak4Q9UfxJ3DzSFKxt7fP6P6JdoUOCm2TV6KIhs9FczX7
+	 dctEH2co+Y/neXeCeUx5sOvnF1JEkDb2IXIsn6YNi+ZzH8Sal3vLTeHt9B8H1R4TqP
+	 hoykd/sktfwieRnftMgVsvY8marBmlcb5sC8AMd8wUsBH7y0JvSRir/kjc4NDpBnYK
+	 ErrsXoGS+z4zeIwsomsxGxyfbsTo/L189C8UbFNu8a3Zoex5/6g27Uz5Nom39hApTv
+	 kUBmo1i55K9g0hS8/oe8aHEWRhiztsJavFzCsRXrhVue9celdaRonrOaMNi/Zwzdam
+	 REZpW/zAFMskg==
+From: SJ Park <sj@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	muchun.song@linux.dev
+Subject: Re: [PATCH] selftests/mm: remove obsolete hugetlb vmemmap test
+Date: Fri, 10 Jul 2026 17:32:14 -0700
+Message-ID: <20260711003215.32222-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260710092427.3459121-1-songmuchun@bytedance.com>
+References: 
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/zswap: flush dcache in the compressed decompression
- path
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, Song Hu <husong@kylinos.cn>,
- linux-mm@kvack.org, hannes@cmpxchg.org, nphamcs@gmail.com,
- chengming.zhou@linux.dev, ljs@kernel.org, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, herbert@gondor.apana.org.au
-References: <CAO9r8zN4ig_GGP4a=NLZ9PUW+jFmSfY1yBLrkPA9azvDCrGSvQ@mail.gmail.com>
- <20260710184052.3614560-1-joshua.hahnjy@gmail.com>
- <CAO9r8zOuRFcYnLGUcRYyg9_nAk1TvCxUvV_0101msKL0Mx0P6A@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <CAO9r8zOuRFcYnLGUcRYyg9_nAk1TvCxUvV_0101msKL0Mx0P6A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 1FD5318000A
-X-Stat-Signature: o574neptgppe1zppcxjksro63oq7ky8b
+X-Stat-Signature: wgmepk4t78d8s9zqdxh3ow3bgs6p9zbq
+X-Rspamd-Queue-Id: 33B4B20002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783729550-123899
-X-HE-Meta: U2FsdGVkX1/kYbZOLdrjrOM9VfS+oSPcmG3SlIoqsOKbI7oiiYM12Cbc16i6mgbZH36jfewTX0h+xohXzlnhvhLEVVy1eU0LhmqUa4/8fYEhArraHz3kcasvfxAv2rEVkHmFelfKz0r5ioGuc6nycitm4ACHPuKlJryHh/Wjn98e7/pXRrvKkyjgOF/oSFmKPWXhpeLPdiM4JZ2aP4fQK5V0VtmTmJGB26msrD4s7T3xZn9hNU/fdnOGSab+CTHeenRVuKFdFzKM6/GiLNlQix4ZuXGmZPsDaDV9Ls8MsxXvRKYKAf++4j9r0prc8TE/9+LSoNxMSdtt0pLF+fn8KJN0UHtgakSOrkZhLFqbYjkvdc/8zBjZdWLmtV9v3aXn2snLPY4vkKD4TWmgy5ewGIDVLDHVt8g77qwRs9vNGUk0nkZ09hAQ9MHYgJ2L1ViXPaytdBFo9BKOBoPis2XVU/bXn7TgAz7vshpQxisgyRPgOhrr8I5Ts4WjmMSP2vzOnJtbkNSIKl4HP/8wQUQGYrpy7GDL9GOIfMUT7zkTPyduzEsyE381PM330G/Rcw7ztpWYFaoyts7NExbIRtFVQ3Y68hQw3pTwGc0Zd3DC84UCC2I1p8+RksEz9BGmqTafCCjaCmgR8DzVGhwyYHK/QJItsvgp8UUcfrtU7SnPgJMWx6N7DdlXbpTt5Z4FvjtlGUNY0vnPnJYxId0CkUS7RTfUOGHq1+MagRfEBNsktZFV99f4gq+L1HLwdaPP/r9Rilio2PO1H3DnshLsmPHMG92o7JF8/pTlE5Az6drMUekH7xuYbKwwRpHC7pGzrqZANDkXihhQ//9vWiw26YqLEd5CudBQlwbHpGX3v/z7awJzPTwrGKCVo5Km+IZZxkh55t73Aw7HeoTq7hq5pyNLgaLP00xNfRh21J5UIS0KfOfLkJNz+2b+G5vdCrI4+mY/X5zrAT30psxWVB0dDMF
- oTGsS/0+
- 0vgelX5uRmQHvG9EORxuTKtyx4VAlzbZFPAKYKdOmRuXdCrvVGgdX0XzqjWQUFl3fPAax2SqtzumpqEEJrttqfuklxvx8Ajq5TOR8YXNGO4Uj4cix1lL4g7DmBI+8LM5Bfvd+wDhw4KoWLsbt4AGurkNiaHcKn08L4IHPPVdxf9KI7ImcLsJ+yKpz3DfpyA5WpifhbkN5m/y3DhOS3HGladb29kxvgLQnp0ptrfZN5DNZu2IZuCeYmdTKf8P8yIoV/UPfuuz36D8GrJcfLW5HuZNvvkgujCuKrskhWT8/IqEusCQXGSC+UUKDgt9Gen67t+8X1qudMEK/UbF7qqVs3BkztQjbSTXHvp+iEaYYqFVofRM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783729947-326487
+X-HE-Meta: U2FsdGVkX1/0/6eX+ccgrcTyG3XNdy2JyWe0J5T5RffxxqALmHRBOR5ZfStOGqJFlI8KIeJzzbIeEsZI+nLg2lpnVPo7ggkQwSSkRHfUHZLa6V2Xic+2IhaNax/OBbJ3BaZMbTWT8e0UlfocrrZhzHKJ/zrrcagUeTcP4clnvmp9k7XiGRy42/e8bkm5/lotWGJIZbtNSpUNvEdOkMfPBDwPcdR9kqokquyOvXxL5d3SuYVq3Naidbc6hLg2bdcdKnYI2GZXkw02Pi9neXa3kA/623LaIFTo3a+Jkg9ovOTvfmdTkLm/y1pE2QwBwJ3zYtUrfTBo0cvjjYLARrw8J2gUhmd7Mghq6hCQzDtNHABtFrjhISmdGe7NW8+Tl5U1StFu6Od08oypu9OAFo9n1RvDJ/oKiztYqKlniShy1HDnvhGhWb4IVEVUmTfHh2rv9JJekCjghGSMlTdyoTgyGpQcn2kyyJvDLY60WrFjviVVdp/rKKOgnNuIzbvP/nlHRoBfZQATViGcEpNPSTEyF+/ofzx9G4klLcVrDK20L2L8j0p+XJtSUQbQtqiU3Smadt7GGqgq8kR4ABASG8v89I6WvxP8rz9XsPMm2hWsrRjXPfb6sptBDdoMNiz0vM9RCPY4nOhYk3K+wsfsoFMonmHMFxkRA/V9K7mMpINcVkhCyE7a94tdQSx8kbFszmSSzYJd5s+k9gYVxCOz4js4IbZ7P4wmpEuyw0vYmcqhsx0K1KjqbBzHmVIcntShMyvSJeU2nrP/jpAUHrJn5IDD/op8rbyrcZQ1TyX02pmlOwBL2aQtRw3plNE9ZolrNMxZM1sxnGuDFeFrkTMs53QeyBiS/BEvgqqu3V54jlSrywmITthBAXVVRLcRYlWfLBlJMiftflH5ODwIXHzJFQmJNWwY5CD051yI6LwBS8y6tnReP2yuIc/UcQC8mdoQ8XyhSNnRuO1zJS3I6kNtsb4
+ KCgq13wU
+ SYtDtKCz93pTFOOf50iaJoY/wZcblFDpTIgamzWGs25nrh87K9ROoreeaEetxJpffIAfG4fuQ/Io4ySYQppfyDERZ+qGHNcW1bAr/DzO9Z3H7gZn+GpNZtSDyGaQHZ7KBa4hB3jFo2XPRoVAAyak+BmrV7j0HNYr1n+lfruwOzWcDr/Jj0FqX9mmvspJ/U6T8PYk84evTcY7yLMRI/fdGdMBpXiilRIf2AiP6LWRm8f2n4O11g7Qp5c7LIHtbAXyi22wKMc36oIFoaNmLN5Hz6PnOPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +102,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[+Cc Herbert, in case you missed that]
+On Fri, 10 Jul 2026 17:24:27 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
 
-On 7/11/26 2:43 AM, Yosry Ahmed wrote:
-> On Fri, Jul 10, 2026 at 11:40 AM Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> >
-> > On Fri, 10 Jul 2026 11:22:43 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
-> >
-> > > On Fri, Jul 10, 2026 at 1:28 AM Song Hu <husong@kylinos.cn> wrote:
-> > > >
-> > > > Both branches of zswap_decompress() write the destination folio through a
-> > > > kernel mapping: the incompressible branch via kmap_local_folio() and the
-> > > > compressed branch via the crypto scatterwalk. Yet only the incompressible
-> > > > branch calls flush_dcache_folio(); the compressed branch was missed. On
-> > > > aliasing D-cache architectures this can leave stale cache lines visible to
-> > > > userland after a zswap load.
-> > >
-> > > Adding Herbert here.
-> > >
-> > > Doesn't the Crypto API take care of this for the decompression path?
-> > > Maybe in scomp_acomp_comp_decomp()?
-> >
-> > This is what I think too. Actually if you use something like
-> > zstd_decompress() as well, it ends up calling:
-> > acomp_walk_done_dst() --> scatterwalk_done_dst()
-> >                       --> __scatterwalk_flush_dcache_pages()
-> >                       --> flush_dcache_page()
-> > over all the pages in the loop.
-> >
-> > Maybe I'm missing a path here that would require us to manually flush
-> > from zswap? But even still, I think that should be handled by the
-> > path that is repsonsible for doing the actual decompression, not
-> > zswap.
-> >
-> > What do you think?
+> The hugetlb vmemmap selftest was added to check the old HVO
+> layout where tail vmemmap pages reused the head page.  That
+> assumption no longer matches the current HVO mapping layout.
 > 
-> Yeah I am hoping Herbert will help us out here.
+> HVO now keeps a private backing page for the head vmemmap page
+> and remaps redundant tail vmemmap pages to a shared read-only
+> backing page.  The old page flag check is therefore testing an
+> obsolete implementation detail rather than the current ABI or
+> behavior.
 > 
+> Remove the stale test and its build, run, and ignore entries.
+
+Nice!
+
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+> ---
+>  tools/testing/selftests/mm/.gitignore        |   2 -
+>  tools/testing/selftests/mm/Makefile          |   1 -
+>  tools/testing/selftests/mm/hugetlb-vmemmap.c | 132 -------------------
+>  tools/testing/selftests/mm/run_vmtests.sh    |   1 -
+>  4 files changed, 136 deletions(-)
+>  delete mode 100644 tools/testing/selftests/mm/hugetlb-vmemmap.c
+> 
+> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+> index 9ccd9e1447e6..227476d8ff1f 100644
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -3,11 +3,9 @@ cow
+>  hugepage-mmap
+>  hugepage-mremap
+>  hugepage-shm
+> -hugepage-vmemmap
+>  hugetlb-mmap
+>  hugetlb-mremap
+>  hugetlb-shm
+> -hugetlb-vmemmap
+>  hugetlb-madvise
+>  hugetlb-read-hwpoison
+>  hugetlb-soft-offline
+
+I remember Linus argued [1] we shouldn't remove names from giignore.  I don't
+really care, so feel free to add my R-b: tag.  I just wanted to call out,
+though.
+
+[1] https://lore.kernel.org/all/CAHk-=whVY4mq1Fd=Vhwy0dK8fR5cOLkiy1OZMG4QyEMaGEd9ZQ@mail.gmail.com/
+
+
+Thanks,
+SJ
+
+[...]
 
