@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E3CC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 04:20:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A738C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 04:30:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5059D6B0088; Sat, 11 Jul 2026 00:20:07 -0400 (EDT)
+	id 0B09D6B0005; Sat, 11 Jul 2026 00:30:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B5026B008A; Sat, 11 Jul 2026 00:20:07 -0400 (EDT)
+	id 061A56B0088; Sat, 11 Jul 2026 00:30:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F2C86B008C; Sat, 11 Jul 2026 00:20:07 -0400 (EDT)
+	id EB9C76B008A; Sat, 11 Jul 2026 00:30:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 180FA6B0088
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:20:07 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9AD1A1C8E59
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:20:06 +0000 (UTC)
-X-FDA: 84975193212.14.64B3D76
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DA19D40007
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:20:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF7546B0005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:30:52 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 634B61C3E7C
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:30:52 +0000 (UTC)
+X-FDA: 84975220344.06.52F4624
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 412FF100009
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:30:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hxkH6wQ8;
+	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783744250;
+	b=BrpT4Bn1lrobchLfNRAJSWBdXUf+CEMY4SuMOXX1F89nehnpZd/HDrb7snzVixFFv/KeeG
+	xtZ+dMyndrislqVyMph3FtoVK81u+dz1js/RZs9jNTHr8y1nYWDl4HzaQhEHZ0Nwgh85zj
+	pLmoPxU/T/Z+NO7BlUquxyETc1PWYxg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hxkH6wQ8;
+	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783743604;
+	s=arc-20220608; t=1783744250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=XmfqQjQRIgHhyF0Pu7ZGuSqDmgxI/VEgjOlfmIo0zu0=;
-	b=6PZuFSwBXln22FQBj420/3kpB5z4mnS48VHOtZoDcT/draZFjzT6ZdqroK1Eo36Hm/2733
-	TElgWbwbipL9rV5PVaIPLBZYnZfScVl0k6aF5Uf3UKHuwJeH0ceQ9IRZdrX9BLhdbMn8Ou
-	4ciOXvF1VEoI/h6+/2/IdPEaVRAJjsU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783743604;
-	b=752AYp+Mfq2olgWZLC2C8bLh32ajCPYCDIlHaMcLqutfSsTrIBvNqqQ6mRZvSQZlN4Fq7a
-	NVQuQ7GF6Xc9gVxjFY/yhuW+EUt4qPX7xDfUGjGfNFagnOwdgS6dv0IvvT3jg5EFunVfsi
-	RhOf8Fb1AJ5GMwZvbcDmdVd3x3DI4Oc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn;
-	dmarc=none
-X-UUID: c742c4a07cdf11f1aa26b74ffac11d73-20260711
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:8f0cc9af-a872-43b3-8a0c-47185e98c887,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:d01a9fcadf696ed342315feaf3c2f80d,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
-	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: c742c4a07cdf11f1aa26b74ffac11d73-20260711
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1833275747; Sat, 11 Jul 2026 12:19:58 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: akpm@linux-foundation.org,
-	david@fromorbit.com,
-	qi.zheng@linux.dev,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: shrinker: Fix double-free in alloc_shrinker_info error path
-Date: Sat, 11 Jul 2026 12:19:54 +0800
-Message-Id: <20260711041954.95749-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=i40M0n26D/c6f9fCElUXR+GcUKJsl/7kjtyXElmGveg=;
+	b=BUCd5IQNvlksdoPTrM7Jy/oMxgcEhjYuc4v4srf/PEGUSuGbN9K7lwUwlR4kKRPCS0VRHa
+	WcooaPn5XIoBjrg0wvU0SRIdXTAOE+NCZwXcJCT+EsA6DbKfvZaAkNxA9UQP2HpyCwpG2I
+	vie94ybwQF7eYfYwz2/NoVoHR15Pae4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=i40M0n26D/c6f9fCElUXR+GcUKJsl/7kjtyXElmGveg=; b=hxkH6wQ80oK2NruateAZxX0nkq
+	3vYZlH55iGxjGEavjF1ZiFi+lQ/HpSmORWf1KCJGJomk1Xa59R3Q0nJ5vUPDZ7B3rmbab9vfGcDSe
+	gTNaJmKlxlUAEs0chSQd4upcoMgMhwqXzrlgC/x4tWA5Pul6iYJLLCyiz9Zf+DgJMTe6l+epX/Ijz
+	KRbZgpFhA2Qde0wARjDsmCdtrvA5zCbDxN8VLMwVLCoYiAI87reHIs/nV2Iyf4jW1CxyPBHiYfqzb
+	yJnWarGkmAbxk3/dzha1PtzcEixUqasb3512hpvyoYD0myjLnzsBiMf3SyhaAWHjuzRHR/PUveKg8
+	qvs/PF1A==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wiPMP-00000008eDH-1RTT;
+	Sat, 11 Jul 2026 04:30:41 +0000
+Date: Sat, 11 Jul 2026 05:30:41 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: xu.xin16@zte.com.cn, akpm@linux-foundation.org, david@kernel.org,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+	lance.yang@linux.dev, usama.arif@linux.dev,
+	chengming.zhou@linux.dev, qi.zheng@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, wang.yaxin@zte.com.cn
+Subject: Re: [PATCH] mm/mm_slot.h: add a helper function mm_slot_remove
+Message-ID: <alHG8YMmPYZWrKQz@casper.infradead.org>
+References: <20260710131536564mY9CDv7aP2dKPiLFXbrBv@zte.com.cn>
+ <178368585772.363984.12871786869575753171.b4-review@b4>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178368585772.363984.12871786869575753171.b4-review@b4>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DA19D40007
-X-Stat-Signature: nt5fscgqokri7k7dgoum8wmrnk71tcse
-X-HE-Tag: 1783743603-162917
-X-HE-Meta: U2FsdGVkX19E+oYVB8TDZfc6vFS2ZJVFcXlrvnvMM6SiNg2bHowJw+frtKb91xB9lFTl2/oCAjPmZIeM1JYGIeMr5xwzDceUzR9gZfRO2jWomgre8+vUxidZ9Lh6zP//ZwP198MeyRyaWRR/2bWkRLaPsZnIbAwxOy8o5g/71k307CJLSw2ELVuzkk4HbNLr6zy0rxUOAhhSrPoS9M26BWTTadeIoxVjSERqyNOAb5kAJ01LEcIleL1luNlcnkXs4eoDHYertRHN7RBDfySJXbGXY1u17r8em/VfPCTAuwdi29dczK4uPjbwN+XiU0jCVNHMR8SpXqOMWP+uRdym6aq6AEP3Z6JqMwUrdqYAbBmOloDFxzD17fMYl4neC55DQpKoaIaGcG/CpQPXKDysFV3whvnU7RF75NX2oN/2XSBN0hRU1u2r+FCmGRUvU1P2nMqUFk/w7zP4MPct+tAt6FB+IQ0xPFOGziWnfXpVudiSuBU5U7ivXmG7CyAOB6CyUuYPFwwkC1G6FWD5SibIDvpcD8QYaWKHrmUy0kYD67o0hT7stTTHawsDoitR9JHzfU7cSlxU5I8UH33+x0KcvXo+wM38RBtLK+bsJDvsIW3omFBiNyz8TR8yylHUKIeExnkAuzx6OiE2cYFAm7mrW0KbMYIfTWuCEwt0weE1+GtkV49uYkme71frp5bfu+zvTBLEGyFYbb2Gl7KWeQfX5f8otCwdMsO33izMldqCRYr59F4qdFnkrCMnVq1y29i2tlU32XhXMIF7UE2gtajTAFG2JISljb4v3OAqghksxKPkuqB08/DSBch31w6sSaAuxTdAnxDf2P8o/YsdMdU3+4rMkXp3CJantBeVHXk1lGHlFhY/XnZGNFAaKEgGf/xvMO5JH2fgY+5wl+SVlkMtmpV3IvMbJSBNa5/JS4x33y02JMzJ+Qw/IUMhxQEidvmpP/sIqjMfekVlBbnzAOB
- 19bk9BXR
- r62fAQ3jutOXyXR/zQq1rhGUZfSNEYMqC4OS0A27N6Y6WIM+avTLdIo9TXV7xlFRTGNW7/zDXprym/UQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 412FF100009
+X-Stat-Signature: gumr3izupa4kfdhi9uezix33uujk673o
+X-HE-Tag: 1783744249-183437
+X-HE-Meta: U2FsdGVkX19EXMxWzYWdJ/R5byg1msrpepUAAQ+uzic3G6zc0TQNgufvWtmXUKrVuNxNPQNJvVzXR6fmEgte9/TbWaiehes5wJZLXKFJ2aU8S6qLZgXDI8yLf/nd9x7A2Dy6nTnNVLYWvGX5OKtk7OW9/uYEZlDKnAR9bdDEaFpAb2WEBqFKJVOH0jaEBkMKkCFrK4noVAgevfayGS1L8JW2WDWPYK7p1vAa/QTB2axT9P1XHJ/DU86luwuVJB6MD/4HcesmCokboixZyUounPn7y54w95dgJ/QB2feb3u0kt+7xJFG1u868dHt8Al1NOfd35cEFM3Ke66owkz3IZn4cH4WUWdWpU69zlpO5H0DoF9xHfmjopG1s/PSF2ThvMSvXYPpbhAZ3CujCegOIEQfvVdU5AJmFglQaNJIapJtEqEKxZNi3I3WYjULj18CNcijJpMHQVE+lyZ39QwKFbMZKcrZYi8ijpUDTERMw7DHlXUASYYGpp7assrf22xl1bCspFsJits5s0I/VX0jJbdfOlMW23UNcI1iC7YTsUL5Qld/4pqTuEeWlxp1SNKzmT57Pm3c3wvkLQZfvDzcE07hC63zvn4UswaECNxLI7vcyc2SSX2Oh1dl3hyJrH4r18HmjDAdvh6P3CziaScnmW02D4JkBLEjTYfxYgLohFFhRvjN6wsKIG54M8jAscilZvH2WCHMlRUAXLM3BDvC7f7ohT43Di87hKxTk8XQGHJnbBzOBxmG8i+hq759vo69d/YD16BQ7X8hQVzrazUI4jfYTr5j9GX9YpYiMEHm5P++ADHcad7kKx3vXhDQsV5XWPQZkbu86KnutwYhflrBvsvo4QnHaTX3HTzS9eTvoQisU5Pq7X5EOkQ4Rrn2XR+37OVnVXIfn00geObNpNMkeZ9TNdMbDbFjc+H/KBGQVInZooZXcTrW7x2mT+g2V9tQiurZv7nT7aQf+su3CtpQ
+ HFBi1mOh
+ ZXVJNmTgczoY6GII38gssqacWWyiM4Fzrw/Tdh1go7zB3TdGWhYjydKbXiYtQgnDr1Foi8iSvc2/XPe3mH8dw0IS2z2DAYeevn6m1div1xsqIS9A7dwhjNo13cPTAWlYoH1ZJKNPDqD0zd68psiVPQ6KNN+xzx0dBRa9bSQYMAzl/OyEX0PuJVIyxCdjFl77ZliLc2y39uAoMcLX5Ma3VsCYsi9GvMHtMWdFjz39MkKoK2+PNxeyY+RJ9QZCdrADBo9nm7pYSvhe19vruE9OHYZtY6sTAitK1JfoG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,56 +93,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In alloc_shrinker_info(), when shrinker_unit_alloc() fails for a node,
-the error handler calls free_shrinker_info() which iterates over ALL
-nodes and tries to free their shrinker_info. For the failed node,
-rcu_assign_pointer() was skipped, so its shrinker_info still points
-to old data. This causes double-free of valid shrinker_info structures.
+On Fri, Jul 10, 2026 at 01:17:37PM +0100, Lorenzo Stoakes wrote:
+> In general it's fine but I want more :) see below.
 
-Fix by tracking which node failed and only freeing shrinker_info
-structures that were successfully assigned via rcu_assign_pointer()
-in this call. Failed/unhandled nodes are left untouched.
-
-Fixes: 15e8156713cc ("mm: shrinker: avoid memleak in alloc_shrinker_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
----
- mm/shrinker.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 7082d01c8c9d..92c6cb455fc9 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -78,6 +78,7 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
- {
- 	int nid, ret = 0;
- 	int array_size = 0;
-+	int failed_nid;
- 
- 	mutex_lock(&shrinker_mutex);
- 	array_size = shrinker_unit_size(shrinker_nr_max);
-@@ -98,8 +99,18 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
- 	return ret;
- 
- err:
-+	failed_nid = nid;
-+	for_each_node(nid) {
-+		struct shrinker_info *info;
-+
-+		if (nid >= failed_nid)
-+			break;
-+		info = shrinker_info_protected(memcg, nid);
-+		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, NULL);
-+		shrinker_unit_free(info, 0);
-+		kvfree(info);
-+	}
- 	mutex_unlock(&shrinker_mutex);
--	free_shrinker_info(memcg);
- 	return -ENOMEM;
- }
- 
--- 
-2.25.1
-
+... and these functions all need kernel-doc.
+Not sure where to suggest that it be added to the Documentation/
+Thoughts?
 
