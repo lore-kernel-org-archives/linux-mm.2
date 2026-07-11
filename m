@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B13DC44501
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 08:03:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E45DC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 08:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D443D6B008C; Sat, 11 Jul 2026 04:03:09 -0400 (EDT)
+	id 1FE1D6B008A; Sat, 11 Jul 2026 04:05:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5066B0092; Sat, 11 Jul 2026 04:03:09 -0400 (EDT)
+	id 1AF8C6B008C; Sat, 11 Jul 2026 04:05:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0AF26B0093; Sat, 11 Jul 2026 04:03:09 -0400 (EDT)
+	id 0C6B86B0092; Sat, 11 Jul 2026 04:05:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A35476B008C
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:03:09 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13043C1E4E
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 07:53:57 +0000 (UTC)
-X-FDA: 84975732114.10.EDE4B61
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2D81A160005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 07:53:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=iLrS1o52;
-	dmarc=pass (policy=none) header.from=126.com;
-	spf=pass (imf08.hostedemail.com: domain of zhongling0719@126.com designates 117.135.210.8 as permitted sender) smtp.mailfrom=zhongling0719@126.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783756435;
-	b=SXlOud0Ovjb+C9jXr7OX3zQJHOP6MWPqh2UpX9aAwWGP6CKMkcjEdeTqJHZOLFSFKw1sCO
-	1pp2664V+uvHkJY0Malp1IX0KHpCWfQeH7hGiYoFgRUESg7X2JqS/UTGcCLztCt7ROfk8/
-	chbCMF3xAYUfXaJNolL7UDOyffZFPRg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=126.com header.s=s110527 header.b=iLrS1o52;
-	dmarc=pass (policy=none) header.from=126.com;
-	spf=pass (imf08.hostedemail.com: domain of zhongling0719@126.com designates 117.135.210.8 as permitted sender) smtp.mailfrom=zhongling0719@126.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E03516B008A
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:05:18 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 752C8A0692
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:05:18 +0000 (UTC)
+X-FDA: 84975760716.04.1E19838
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DE6A61C0006
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:05:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrA69GHo;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783756435;
+	s=arc-20220608; t=1783757116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Og51IuOMC4sUgh7fHR2b6CD95EpwXnuhBRb4AGzlVns=;
-	b=SowO06+FhODneuGEMyvQLH+nGEIxtf16U/NbANNblvFoU90CFKxnHT3eeCQteP5r5Sn20r
-	LNdmqwZ7OwFkFS3PrHWBPo9yVf9rZ9CA2LjCwUEoZRigJIPdeQeqWpP6OX9P1JdHv4e54G
-	IwjDvVvLtjm3S+1LOYrXv7pI4Ou2C3I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:From:MIME-Version:To:Subject:
-	Content-Type; bh=Og51IuOMC4sUgh7fHR2b6CD95EpwXnuhBRb4AGzlVns=;
-	b=iLrS1o52zhz1omy5BiOwM+PF7EyU1ALML7GEsKGeoAjdlotGRCVnQHhDho99W7
-	o6o0et3Bk5bLwmyvqsxJ60LVaAtkpOdqB6pVOb2ZXbdX/vWSp3TFaZqbQQfE3Pcr
-	zuKDqh+0GgXI+EZ+ZRVKmrXqCLga2McspF/tOQURWtF6g=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3b0CA9lFqJAzODA--.38605S2;
-	Sat, 11 Jul 2026 15:53:36 +0800 (CST)
-Message-ID: <6A51F670.9020104@126.com>
-Date: Sat, 11 Jul 2026 15:53:20 +0800
-From: Hongling Zeng <zhongling0719@126.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+	bh=oEJXi3Ipa/GF3uVFfVgIRTBsXVg1ufevqdVuD40f/4c=;
+	b=fJSXZ+KDaptOuU5sXmp+37PlzBrxdhsTb2G6/B4rPzWXeguONaocWdmYPrSNN1kK3b6U1F
+	Wxrf2RO6BIdubDNh3esKc/6sj8rJzD/0YTyHb3HQLwST8YWLx1Vvqo9gq9zX6Cha1ZA48t
+	e7jwld+w7Dl7dNvXUMNmdQabtifJzBw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783757116;
+	b=PK39/UkheANPs3DuclrxYmulYkG6cmVNidGeHrzAclIngPD8qDaNyAa/VpmZAxXh3WVZ2C
+	JD5THkIwmALa5q013rQEs81jvH1kg9/yKx8J04Q2e2Lm0oJNW/eW9vDwhtWZMgzkSOQe7d
+	7TczGqxT1K1GcBF5wybEI1q2Ph5YZNc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrA69GHo;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 554CC60051;
+	Sat, 11 Jul 2026 08:05:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A3C1F000E9;
+	Sat, 11 Jul 2026 08:05:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783757116;
+	bh=oEJXi3Ipa/GF3uVFfVgIRTBsXVg1ufevqdVuD40f/4c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RrA69GHoEQEWSHV9FU+fJtMJB2iGQ06pVUQwtOrx8BpMO1GgoBGlvan9iYFRWTfNP
+	 9GGC5tfncOgs7hIDPl0MF43uMuNPgPDJR0n149gZx4Bnm9sRD4kPH4jEaGUplQ+Ko7
+	 INy66aVReGmFuTWGgR4BC/GBMV2Ll54xeCnx2JWTKiBLoOpSIZ3EaVcY9J/AHtNbg/
+	 TjVgv122gKFOPu7uoXJgvJaRGVJM7rW/8D2ocoNsrL1BRoSFquwgMRG1+N0KtcKUBq
+	 lyd2gOAlszvYPPmKIITFDPK3wZWBDHFJh9S2M6ySdIW1C5ACa3ykMpDNj09Sz+YlVZ
+	 UFofibfsgZMSg==
+Date: Sat, 11 Jul 2026 09:05:03 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Xie Yuanbin <xieyuanbin1@huawei.com>
+Cc: linux@armlinux.org.uk, akpm@linux-foundation.org, david@kernel.org, 
+	liam@infradead.org, liaohua4@huawei.com, lilinjie8@huawei.com, linusw@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mhocko@suse.com, rppt@kernel.org, sunnanyong@huawei.com, surenb@google.com, 
+	vbabka@kernel.org, wangkefeng.wang@huawei.com, xiqi2@huawei.com
+Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault()
+ under CONFIG_DEBUG_USER
+Message-ID: <alH4-zEWkSDK5EvK@lucifer>
+References: <alHnqsIdcMghnUER@lucifer>
+ <20260711075651.3114-1-xieyuanbin1@huawei.com>
 MIME-Version: 1.0
-To: Qi Zheng <qi.zheng@linux.dev>, 
- Hongling Zeng <zenghongling@kylinos.cn>,
- akpm@linux-foundation.org, david@fromorbit.com, 
- roman.gushchin@linux.dev, muchun.song@linux.dev
-CC: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-Subject: Re: [PATCH] mm: shrinker: Fix double-free in alloc_shrinker_info
- error path
-References: <20260711041954.95749-1-zenghongling@kylinos.cn> <ab1bdfa0-7382-4d26-a65d-68eb172eb84a@linux.dev>
-In-Reply-To: <ab1bdfa0-7382-4d26-a65d-68eb172eb84a@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3b0CA9lFqJAzODA--.38605S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuF1fWFWrWFy7CF43Cw1fCrg_yoW5ZrW7pF
-	Z2gayDKFW5A3409r1av3W7XrySqw1Fkr4rGwnaqw1jyr1fuF1aqr47Ar4a9ryDu3WxGF4D
-	tFWDXr1jgw1YyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjyIUUUUUU=
-X-Originating-IP: [112.64.161.44]
-X-CM-SenderInfo: x2kr0wpolqwiqxrzqiyswou0bp/xtbBrwDMnWpR9oCLegAA3C
-X-Rspamd-Queue-Id: 2D81A160005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260711075651.3114-1-xieyuanbin1@huawei.com>
 X-Rspam-User: 
-X-Stat-Signature: i3k8oizpmyh8f1b43scc699oghwmr1r9
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783756432-744452
-X-HE-Meta: U2FsdGVkX19viqq1WLcegEIDJLiQwwyxwm2a/NBK5uvjwo/qDYJA8M70BUd+7ugZun8qIoHga7RuQuiuY2zFkDcpM8onk2fUnXGxAYQcpH2xTJz18dKjo4ZA1QJ3vrT5dYIlQR9v7AD88sKbqf3vxV/VwU/+T1x+nAkFTi9QtUF8i07w5CD1SkRdvjrVCCiEy3O41EXywOoHm+N6uIaT0fUTpqhvCPsFDgfV/Saqq9e0q3qDrr09gkAw4p8w695+xXX2ns4qDSVi20hoxxR5ucoxb4OHj6wPtJ3vnpFfBDk9QwlGhC4Ec/Jkpa0jkxPnQZD/wXMLLni6j3kiqT0jf50sGHngkKdTacLpBXbkOUQzwtAd2mlG9rQuxj7G48RG5pFT6gxmbPDjf28aQ5CiNIObeaoSUccOBp1kecXH97GSrq+Dp+DsM2FrTsz6IyVVRSxJ9V+XUP1b/nJpamD7x27ToYyW8qP8wzsfKz/6xtyCERcN9MCnVgnFWEl0NzEE8X1ShYP7rzoNugONQEu/sIHcvWlgtilDGUKvGQB1b8+p32TbXmVlTYoahUN56La/FyS4WTBHwa+FokAmzSyGFpJRlWIaMjKRmxdFr0GPYeQhSYGXeLu9ZCh+cF3JF4TBlQOoa2EuKEvTEmrn0io8GH9/jowpr2I4MSvJkvXdfGp2H4cF2OVQgECPlvEJOA01/35LRptVs2wwfBjeTQbvVTSny07bT0beXGPCokS2QhFZrjWWVXrxWZltHPOpT6YB5RGrr+ngMmKDOmKXr+rK96DN7kqMB1DEhweZm0rSjaomGWOlVsipHNEJWG41bhsijUKSOTuxhnAuGDhjz7hBZjuxpmz5XfGPDYxxUnSVB6FAe3pPRuQthJPBoB7r++sEzZlW99FF4plDZuxO8/A4pt0l3wOfIiprAAmLoUVLnRP6PUty/HbvZ+BFn1hTy9g2PzRX4YBBNBwo4bTuxNO
- eUJTCV7L
- qutR4JXS7S2O0to6mca91EBItp4SAMo3E7oV1CLVCj74QtAnklhAi7ogMdBiZDMXxr47V/ojSSz6C9iMblrISERFmiIpkIMPaoxkkRJaW3fmT8gZ51lYu2FJN5rAIyTK5tOEEwR8YZj6T9SI4riP3Qey9j5r8e5JOg0s6i1a91KuQLVA0zMprAytvAvew49vi66/VozdSOAhTcL9lw2CtkwaHWPi8kggX95/5n2fyOWcmxhxYkKmC+Uzii0na/683oEMxVaPQgsbKFP7iGrlYhi7ZVKQ8UurGU+AEUsWpzqsydsvg6W82QjLRBQGpDVeDW1IEjJznbwN5s5NAyE8xefFgevRbcZi9BPLUnXmT/OlsR/SCQGFV2SyQVaK2TeTlBrwATP49Uc21Y4qy8zvDOCsRMOmtM7frtxPWmhv+tNuG8ZsKN2yk/ObW/rhEH9xaAcrqxcL+GMpks092y5FLrhpaeyNrnKMgSjWjEoVLQNOvqymSdwfG49ihyg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DE6A61C0006
+X-Stat-Signature: 5toqk7qohi8famzynssn9zfceukwdep7
+X-HE-Tag: 1783757116-727419
+X-HE-Meta: U2FsdGVkX1+pXaqBm150oLzVOsw+uVzF1iSceuMAwoPslggPA0rWGmYCscfXJ8BPjOiQoNtCLF1rhoezObMK2AhhedFYqd757lPPlmI5L1LijxdTrh/0a2hNS70EO6hvxtS0kLjLLOP1okHgXnZdwogD1MR2ulSNdTuoV/NhL/uJrkDykH49Yps6cISIYsAVViq93KABSguRjaQ7SnfuPd/yn8hPi+ylYvIx+yUVN3tMNX6j2JYorPDEHy7/NO04y/bDtiYEUweb+f9Rrk1HuOVY/N/PMjI1Ygp0cmSbjiu4vOcvECC2VfxvN7fo3tG/hO5fd/fCM/k6mejntDyNS+vOWF4d/hQyWR9B7xhQuafkzeg8LBaA+t1DxzMecN71bKFIneQuU0U7cLXruC5ScefshnvhDGRamW6srBSZCMG7aJvY0Lxc8MtdwYRE67ckCEsCaJrvJ4YHgrhWiGNdAfUBCFnJGcu5DTOcwupa1WKZ/dYJ2we/BT9aLXt5WVUv5MDbFJgswugeni+ioLiySnAlkL+SHOopXPJe0WsZQgXR6wLX0rDFY7yK1l0GlpKn85czhC24jofdYL2GFt+2oj33lGIxrl1OGcTf2fvLeQT4Y4bAvmmngBDg1BBhftVbYh5JVe+N9ZW5RidHsxOwgNIVrrjuYoEu8E5thI7UelQHn2g4Q7XtF8Hq0pR8RyxQ/72qmGHkmh3GvCP3UtsFDCnyBalXEh6tuPgAaAZbZD0MbfDQOJYAcJ1XIXhPsh8rNsNNi07HTzv4pjIFo/qRMQNrJ93ax7auempx8Xpvixzi7v7cJ25xxxyOj/RYSVGYDiwFvKQiI49xSGnv3IemcgD4d17MC8WZiKhGPGwGsFoKBtY/AQXS7vWHW9kbxccD1G9uIXO5xoR1bYXWZjtFYb4imhWXTA/m4pwPiLSWF2IChqVVc5fh1e++3/EidGcaA/8AkHJ07TuWOFw7mF5
+ QN7e/VlE
+ jTFI/OHTUgxPSMQvPQEzujw8D1CUMm0OF50Q67fWy+OPY0jfiO4Lz7hnuP4HQxs0nlbkU6VhDW0IKqWC1uV4C2eBS19lUnIYKOIyWVbmh1AUFZDtH9XkPPFihuBHN9arzum3jU4qb4/tPBxSRTE0yhtIW5h+3OF7oXsanmqVK6JHLioVGqSajkKwMs0vRqkGcw0d1iFPC1pEenPotZ+r3MT+m181S+c/HLDxeLcFaufwiOxp2xgiyNg0eFxDjsNivPJuv/JOQchbVJLX85gq9viJTA/3Eud38EKx98yK+VJM7nh3UiywSomzIbNBsNwFhHLBCd7BlvbMrQ+cIIMuxDnKun5eqkFN36xFXYZ+QjLwzr2I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,90 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Jul 11, 2026 at 03:56:51PM +0800, Xie Yuanbin wrote:
+> On Sat, 11 Jul 2026 08:27:23 +0100, Lorenzo Stoakes wrote:
+> > In general yeah but with mmap_write_trylock() after you add the attached
+> > patch to a series (making sure to cc- the right people etc.)... but also,
+> > wouldn't you just generally want this in show_pte()?
+> >
+> > Seems to me best way is to put the existing show_pte() into a __show_pte()
+> > and then do show_pte() like (untested top of my head thing):
+> >
+> > void show_pte(const char *lvl, struct mm_struct *mm, unsigned long addr,
+> > 	      bool is_user)
+> > {
+> > 	/* Write lock needed to account for concurrent downgraded munmap(). */
+> > 	if (is_user && !mmap_write_trylock(mm)) {
+> > 		printk("%s[%08lx] unable to acquire lock for PTE output\n",
+> > 			lvl, addr);
+> > 		return;
+> > 	}
+> > 	__show_pte(lvl, mm, addr);
+> > 	if (is_user)
+> > 		mmap_write_unlock(mm);
+> > }
+>
+> For user faults, I think we don't need to worry about deadlock issues.
+>
+> As Russell King described, deadlock problems can only occur in kernel faults.
+> On Tue, 7 Jul 2026 16:34:21 +0100, Russell King wrote:
+> > Unconditionally taking the lock could lead to a deadlock. Consider
+> > the case where the mmap lock is held, and we get an unrecognised
+> > abort from the kernel.
+>
+> As we never return to user mode with mmap lock held, so for user faults,
+> it is safe to acquire mmap lock. This is just the same with the syscall
+> entry of `pkey_alloc`, we immediately acquire the mmap write lock:
+> Link: https://elixir.bootlin.com/linux/v7.2-rc2/source/mm/mprotect.c#L1011
+>
+> For the kernel, the user faults entry and the system call entry are not
+> fundamentally different; they are both kernel entry points.
 
-在 2026年07月11日 13:31, Qi Zheng 写道:
-> Hi Hongling,
->
-> On 7/11/26 12:19 PM, Hongling Zeng wrote:
->> In alloc_shrinker_info(), when shrinker_unit_alloc() fails for a node,
->> the error handler calls free_shrinker_info() which iterates over ALL
->> nodes and tries to free their shrinker_info. For the failed node,
->> rcu_assign_pointer() was skipped, so its shrinker_info still points
->> to old data. This causes double-free of valid shrinker_info structures.
->
-> No, it will be NULL, not old data. Therefore, the double-free you
-> mentioned doesn't exist. Before sending the fix, please verify the
-> problem exists and your fix actually works.
->
-  Sorry, You're absolutely right. After carefully re-examining the code, 
-I now see that:
-   1. alloc_mem_cgroup_per_node_info() allocates with __GFP_ZERO, so 
-shrinker_info is initialized to NULL, not old data
-   2. The error handler in alloc_shrinker_info() correctly bounds 
-cleanup with if (nid >= failed_nid) break;, so it only frees 
-successfully allocated structures
-   My analysis was incorrect - there is no double-free issue in this 
-code path, I apologize for submitting this patch without proper 
-verification.
-> And as a reminder, please don't repeatedly send identical patches:
->
-> 1. 
-> https://lore.kernel.org/all/20260711041509.92926-1-zenghongling@kylinos.cn/
-> 2. 
-> https://lore.kernel.org/all/20260711041823.95135-1-zenghongling@kylinos.cn/
-> 3. 
-> https://lore.kernel.org/all/20260711041954.95749-1-zenghongling@kylinos.cn/
->
-> One last thing, please make sure to base your changes on the latest
-> tree.
->
-> Thanks,
-> Qi
-I also apologize for the multiple identical submissions ，my email 
-client was reporting errors when sending, so I retried thinking the 
-emails weren't going through。
->
->>
->> Fix by tracking which node failed and only freeing shrinker_info
->> structures that were successfully assigned via rcu_assign_pointer()
->> in this call. Failed/unhandled nodes are left untouched.
->>
->> Fixes: 15e8156713cc ("mm: shrinker: avoid memleak in 
->> alloc_shrinker_info")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
->> ---
->>   mm/shrinker.c | 13 ++++++++++++-
->>   1 file changed, 12 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/shrinker.c b/mm/shrinker.c
->> index 7082d01c8c9d..92c6cb455fc9 100644
->> --- a/mm/shrinker.c
->> +++ b/mm/shrinker.c
->> @@ -78,6 +78,7 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
->>   {
->>       int nid, ret = 0;
->>       int array_size = 0;
->> +    int failed_nid;
->>         mutex_lock(&shrinker_mutex);
->>       array_size = shrinker_unit_size(shrinker_nr_max);
->> @@ -98,8 +99,18 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
->>       return ret;
->>     err:
->> +    failed_nid = nid;
->> +    for_each_node(nid) {
->> +        struct shrinker_info *info;
->> +
->> +        if (nid >= failed_nid)
->> +            break;
->> +        info = shrinker_info_protected(memcg, nid);
->> + rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, NULL);
->> +        shrinker_unit_free(info, 0);
->> +        kvfree(info);
->> +    }
->>       mutex_unlock(&shrinker_mutex);
->> -    free_shrinker_info(memcg);
->>       return -ENOMEM;
->>   }
-
+OK given arm32 can't do any of the stuff that makes kernel faults an issue, and
+if it's certain you can't deadlock on mmap write lock for VMA or non-VMA ranges
+on user fault, then no need for the mmap write trylock, and just take the mmap
+write lock unconditionally for user faults, and no lock for kernel faults I
+guess?
 
