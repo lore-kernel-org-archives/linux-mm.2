@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E99C5C44501
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 18:47:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F71C44506
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 18:48:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 023936B00A0; Sat, 11 Jul 2026 14:47:52 -0400 (EDT)
+	id E09296B00A2; Sat, 11 Jul 2026 14:48:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEFD76B009B; Sat, 11 Jul 2026 14:47:51 -0400 (EDT)
+	id D930B6B00A1; Sat, 11 Jul 2026 14:48:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB8146B00A0; Sat, 11 Jul 2026 14:47:51 -0400 (EDT)
+	id C59166B00A3; Sat, 11 Jul 2026 14:48:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ACF7B6B0096
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 14:47:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57D6F1C4029
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 18:47:51 +0000 (UTC)
-X-FDA: 84977379942.13.8F22BB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0C0DBC0003;
-	Sat, 11 Jul 2026 18:47:48 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cWfdCojd;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8F7D46B00A1
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 14:48:12 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BD6C169A04
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 18:48:12 +0000 (UTC)
+X-FDA: 84977380824.28.1258EA9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D5CB21C0002;
+	Sat, 11 Jul 2026 18:48:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jgpXcvfv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783795669;
+	s=arc-20220608; t=1783795690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mLC9P7bLR/Uoa69VZ1d0HzztKwzCdHVcxkdSF4M05FQ=;
-	b=duWBAnjednLk/uZvUjTyFK/K5TGqCo2KqHUJndqRFpjEPiK+2wn2a4W2wD8Ih7fAJHu4o3
-	UU3Samvn5xSKLHB4dRZ/TccVSJYE2ICF7qZ2ItjCE2UAnha7EdOSk18nfcUmlrP/UnXB9r
-	EdD/0+/mUV2SUi6vjFg2RdjDY6vVZGk=
+	bh=QPt/8l9E60JoRhMjGZtDOkVB0VSnW+l2hm5OFyFrrO0=;
+	b=N8wwopoY85nOwTkXIjYHV+M43a1zAnBln6u9wHlNQS9nUCJQQmwEs7kOQQzlUyyLm1m+mx
+	S+n15i+MUEAwDzZ1j+3yCqBULyP+fKZyM6NjUAW9C8aZeYeZG6znWFz41dnWx+0ojfJ7dN
+	9kepyG1BIRyxBqQ0SOuPEl+qO6EOt8k=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cWfdCojd;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jgpXcvfv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783795669;
-	b=NIErYmvzD7Jliov0DPcPJQxIx/KnamIRYdqRo75O4zhezRNzFamIvMHTO/BSW4p5OGcYwy
-	SaWZXefN23zo1hvivy7UPbIk+Np3gy5SG8swlv61cl1bEe6tQzy2KT0JGG/wXlIlB0pd9t
-	TK7c+duoPEsg4G95b3NtauE57+kd/GI=
+	t=1783795690;
+	b=LWNXiN2Fw5TvowRENia1tLQIcoTFjVBFvfidsfq+WrrXvc8zO1IN392AqnX7jbrIrUsv8V
+	WW4zPHmBw9k28SGdaIDYdpCECpt8P1JZZXjzmtvkNh8QbTmGwwfaAGjwpZRs9vsqM/+67s
+	XMsMKPVnymaYM3n+R2ZWeSsm/0Xx3aY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3AAE7436AC;
+	by tor.source.kernel.org (Postfix) with ESMTP id 49C4360052;
+	Sat, 11 Jul 2026 18:48:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E9F1F00A3A;
 	Sat, 11 Jul 2026 18:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4801F000E9;
-	Sat, 11 Jul 2026 18:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783795668;
-	bh=mLC9P7bLR/Uoa69VZ1d0HzztKwzCdHVcxkdSF4M05FQ=;
+	s=k20260515; t=1783795689;
+	bh=QPt/8l9E60JoRhMjGZtDOkVB0VSnW+l2hm5OFyFrrO0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=cWfdCojd9BEVdJixJem5fW1yN2WMCBSqX49JBrY8VEVdZfJU2N7N3Nxjti2dd1PAY
-	 jHUCK8DxeZrKYnvyB+RT9x7Cp2M5SoYFjZcIsDmFeaH1lqF767UeNHIIBPY+Sng5Fp
-	 MK+9v3J7Qa9RSE25T4WS2oSi8fTCtKzWW6Odi2CaiQPPbEjTa8vRRaWJWdUuMUts4O
-	 cA9jeJjD4VBwS0DTGUMhgeHN9UmX28wOStoae3Af6e7oQlz0+Dgt1jAYXhFRrvXj3V
-	 aDj9iQonQd8MmaaAgMBdzyflHOa0sh1Ocs8CIFYwiYPnS5VCh7VghyS+RJDWLO0kSW
-	 ijUTjw6rx6hTw==
+	b=jgpXcvfv3gVBn7IsGBF1ebSBCDETWMhhmUgGYFu1KJSh6jDQWPcTX0Vq7whuKCVn4
+	 rBhFdMRmgxmdR8P0PcWxbkTlO8COzjvSFflXXXwYeV1HcoXi8sN68u8NJ26w+IOyUw
+	 R0sApERkImbfGC1PQUNQIDENSFzQep8HDEipIa0GQAQDHYmD1VBxVxmWBk3vGxNW/K
+	 4N9W61bIOsobxULyDZZV6QFTrlSEId1V48hblg2M8NWfCHnUNfV+Pr7EKw+8P7wBkV
+	 cuWci1FXthx0PZWUsCVBzadkDWBmiusvn/RlVjMBQh/ePtU/5mvkHHdKyTyd9zk3sK
+	 /EpfagqzUOOIA==
 From: Lorenzo Stoakes <ljs@kernel.org>
-Date: Sat, 11 Jul 2026 19:45:03 +0100
-Subject: [PATCH v2 06/13] mm/vma: convert vm_pgprot_modify() to use
- vma_flags_t and rename
+Date: Sat, 11 Jul 2026 19:45:04 +0100
+Subject: [PATCH v2 07/13] mm/vma: rename vma_get_page_prot to
+ vma_flags_to_page_prot
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260711-b4-vma-flags-mm-v2-6-0fa2357d5431@kernel.org>
+Message-Id: <20260711-b4-vma-flags-mm-v2-7-0fa2357d5431@kernel.org>
 References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
 In-Reply-To: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -143,22 +143,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
  intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, 
  linux-fbdev@vger.kernel.org, linux-sound@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4379; i=ljs@kernel.org;
- h=from:subject:message-id; bh=zyqVv3UzBLKq1hjuUUCPSl3cGoER1z2LvGWjiRKvzK0=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKC+i1XKLHOjEnRP75gpcyaV01nzvXnrX6+LO73lGlC/
- +aJsv8/0VHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJBNoyMuzw9q5WXt7gt/vl
- TK3NR7uCs2/mFnmo127Y8Mp28h/pyrmMDPe0ts0S3/2Ix3jO9zPB+xdkc/g3qqdk5hRZZBpk9Qb
- 58QMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2845; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=Soud7SJAfopgWlkROt1dYPu535d7z0wbh0cd1bt/8n8=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKC+i1r+Lfnqbc90vrVGDSl+P4cT/kJqy/bTGI35c5dL
+ sXF8uhaRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACaSn8zwP+Tvx29OMZ4Olxy3
+ dh5LDd7V18X908Jec02jyvrfMTdLNRj+cLwPSWPNn3D00+v715gv/5eulHkbvKPiskGWQoG+s6U
+ EAwA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: cob83srbczhd1zftuhx6694agqdtd5ph
+X-Rspamd-Queue-Id: D5CB21C0002
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0C0DBC0003
-X-Stat-Signature: egzdmxwbpurza97fkryehj339wmwj6sr
-X-HE-Tag: 1783795668-595363
-X-HE-Meta: U2FsdGVkX19ZRVmuaVFw6KalctFnrW9UfWn2Qv6PvkVz6QayWyFVzZk9PuwWasJVEOxO9PZvEHbw/S/yAyEUAZj2NTRWwTFoXwGaKy3IFnwtshD0d9ysIFxd/pg4Z6CepSlHNyK5PEw02K8uEkLpWWY449oZueYpEg/waSA26ITGiHK0fvBkcGvMJADUwFFspt6V8Ce0Ujt0BgyaZ7ACmQME04rahwiilJpOdEU71PlH/RwNAZnmpTvyWSQdPWN2EARJDKI0Vrtf1plX6WI9j3Ficawd8iEj6Vez1TPrPIUw450EnxCjs/ZIyWZ99TtXKlgGNglGnLOTfsftKvuQEbFMg47i3YSlk9Rnk2zqIqT/ygYECyq9t/49jALcMxXA++OihvsS5+j1iSYxWes+zBUMnAl630N+nD3OVFhf71oDntDFuRfuiV8oxcchSjAKfTDwL9EZG7Damb/xvLEgwUPZlGs6FDjmqFh5a1LB2VMvM912/12+O8bTygeixs8jngcBDTACS7INJSH9xxQSBxk42eR63rJRepdk+7ZqbPWwLM23Redx3l3OrNaUe9+XIuyb7ebAJUmwnLm6j/nrvuPROgFn8otVyY72lOu9YZdcQ6HFvTCejjWLoOIvV0lMYzxvMfx2SvGEDB/uGcKGwwPxOaHTbZPkBjH31LE9nVqR6yxf1jJZURy7eaadIShM2IrMuz5IKrt+DBn8RaJufQc3mfs2FtpA3e5FozbyUgmVlt35yAAd70Glbfu7aL5nLCXEiT170WwZp3WmoHmnQyZOojMoUfQF7SMrlJGnxluLYr6dEi7qsPH1qiMRjQUnrPGtsoGPac0UA6FJuwL5sNXWmbKmBSz8ACcN7dtN0iFPdeWHsBk1HdbiCpLE2zoNMt0GR0pnC+MDKRwQnVpn+1pNn7iLuo5JJwKQrbOSJb00ZXIA0FlhPIH1Qs5QYucYp+eR84QCloUGBQZDH8E
- j9dH/vTM
- pLtcDHHkiEZG5uuKsJkeupbpkpT5cLlr/r9O8vK0jdllIxnuQIOUTPuAmWujGMWeucTYg8TMHWHCHXvqEZxDLfz0QktQ5NTE/EDIHbChPFQIMHXQ2KMM4ezEE6E89xPm1th3H0ZylcOkElCind/JrE4F3mSO5MqSk0wGJeAh4RQhEoj2a+uDI3Wi9C6N+uFTq7S8Ljzo3jUnv4AHsrUoj9BscywT6ET7kMeRE8mXI9vzB0PF7PtbR59xbjYq1Y3oHv4gsqIAEJltv/laHzediCMib1ukyU0HAkCgiV1cfhIrPK/Y1HR4aiyj7WlpEno6aPNMkbdPE5bph2NPwUXapIdCZSugypA4/wne6Kz0O/PB31fM+aj3aQgq3C/Xk8+DP5i+JvOPccqaAVZwinVtKWIOoKAwasY8NiXPcL8K41yhVcjs9yqrhroYQag==
+X-HE-Tag: 1783795689-385446
+X-HE-Meta: U2FsdGVkX1/SRM510jIh34wKbPYpeoBm9lpfOQf9x4viGl9DU8Mz6bYohv4bPaOILDNJ71E8z0EfHtUJd5Iom1glp4Y0nwc+XYs87pCfHNXwDe7yC9Ck8B4YyxDG5/Nqu4Ojp8Hag9JHlC1QPpcIgGLn91bpz2CvgJId+b+mip7oGfq0ZZs1q6yhw4mBsXGfHmWuE+44wPWzKLpUD71PG7R73WzvW9IPybV6KkAgVS6g1Gvkb7q+v5ggi7CrM9qejs7JcyoODfYwDTJ3THuAe5lfiJ8Qc7stWbN6ALmfjQdslFUORJ2DBkyhSJ+FhnvsuANItUxwp7tHw89fTNMxPWMEW/5F12CLRZzTmZSwu75D48eDuT0pktOmFrAQPQwPbOflYH5Ya7c0Mqse4uSAT0Cp8dqSCmqFV0/RBGLZXssk8sbI5/ATRdk9GTdD95haOxd7gHT76Ce2V/FIMw3pQTS719eD73EE6FdFunE//vM+6PLOkXKNcEp1uutDY6sXUbCHUNAkpIIMr9bDvw6PG6RgRd7eVlj+hasj2HP5X3ZmF2Yf6bFbH7GhURrFiRDjVrUNF9uMJQ4RQlerud6g1zgRiDqFQnYtAoTtaVxz7mtxEnHjQ2fi28t/KVRqK+IVYa5TWY1EmzoHrulAkVp8xit8kGxn445BROorY8qG9g/0y/GnyIjcN85HOikRoOrdP7pakEko5kfQoYaZ+v2X2j9OQJwwSJUdjcgsJBtB6TbR7hEZNdcVv46sJHsR6MmGhba862t2JAmfLJmIC4/+iNVmZMBP62y2EfKqz2fiKT23lRDr71JH+cuUMWfxF1UtswKhHaoFw4cwa6GDm7clRke5Oa/UvOkDby94oZSODQkpJHyIuttL9kIpmMcr+wZ3O5BaRkhCV+AU7wL5HZBEtkrIVesuc0LLL55EXP11Dxc+gVZU2hMEFrmNQGYgq0urDaSqq/z1wH6l0JBh1kq
+ pVd0iLZB
+ E8HCjcicXKwOjJ0kkvOLMmrotbd+K838oSiFXAoHozQAWjNBVSEkwN5rIkc2ZwC6nFVBpQFrRa4/wwXVQA/r1pQEecrGJFrE/KXfhnAdZkmdxCY2DzeUw1Z3OZDB/oHXC3hLHYFBfcotStEgK8M4PmR+mSDK8g+K1xeNkD0RuFBcsC/SJejzAiaFPUyWGwFFKHIF5/STSbx16f4LBR/Ry4VT7HfKDX/Fm1zi8HPQmCsjYj1zdOZlqsVGeM2a2Dc9QwLOT8pztx43T7sVzPkUvxDRH584lIga+xCnT+oqmmS1IiMJTGgHxtAmYe3OVGpBTWbHWQeaP9k64Flxb/xgBhWJ8CNHoqYY9j9moZ4Y/g3lPZwMm3GBcFox7otzMzalI6ZvwMvp3/cxVs8T8Bw4vg1cKPyYhjxCkfnoc4LqDeMm0N84=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,17 +166,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update vm_pgprot_modify() to use the new VMA flags type vma_flags_t, and
-rename to vma_pgprot_modify() accordingly.
+Having vma_get_page_prot() refer to VMA flags and vma_set_page_prot() refer
+to a VMA is confusing.
 
-This is part of the ongoing work to convert vm_flags_t to vma_flags_t, in
-order to eliminate the arbitrary limit of the number of bits in a system
-word on available VMA flags.
-
-Update VMA userland tests accordingly, updating vma_set_page_prot() to no
-longer inline vma_pgprot_modify(), rather we can simply define
-vma_pgprot_modify() as a static inline function and the tests will pick it
-up from vma.h.
+Rename vma_get_page_prot() to vma_flags_to_page_prot() to resolve this
+confusion.
 
 No functional change intended.
 
@@ -184,95 +178,73 @@ Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/mmap.c                       |  8 ++++----
- mm/vma.c                        |  2 +-
- mm/vma.h                        |  6 ++++--
- tools/testing/vma/include/dup.h | 12 +++++-------
- 4 files changed, 14 insertions(+), 14 deletions(-)
+ include/linux/mm.h              | 4 ++--
+ mm/vma.c                        | 2 +-
+ mm/vma.h                        | 2 +-
+ tools/testing/vma/include/dup.h | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index ae9a5018e20e..2076c70e7700 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -80,13 +80,13 @@ core_param(ignore_rlimit_data, ignore_rlimit_data, bool, 0644);
- /* Update vma->vm_page_prot to reflect vma->vm_flags. */
- void vma_set_page_prot(struct vm_area_struct *vma)
- {
--	vm_flags_t vm_flags = vma->vm_flags;
-+	vma_flags_t vma_flags = vma->flags;
- 	pgprot_t vm_page_prot;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5b3825fddf58..b8fe40f89d87 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4603,7 +4603,7 @@ static inline bool range_in_vma_desc(const struct vm_area_desc *desc,
+ #ifdef CONFIG_MMU
+ pgprot_t vm_get_page_prot(vm_flags_t vm_flags);
  
--	vm_page_prot = vm_pgprot_modify(vma->vm_page_prot, vm_flags);
-+	vm_page_prot = vma_pgprot_modify(vma->vm_page_prot, vma_flags);
- 	if (vma_wants_writenotify(vma, vm_page_prot)) {
--		vm_flags &= ~VM_SHARED;
--		vm_page_prot = vm_pgprot_modify(vm_page_prot, vm_flags);
-+		vma_flags_clear(&vma_flags, VMA_SHARED_BIT);
-+		vm_page_prot = vma_pgprot_modify(vm_page_prot, vma_flags);
- 	}
- 	/* remove_protection_ptes reads vma->vm_page_prot without mmap_lock */
- 	WRITE_ONCE(vma->vm_page_prot, vm_page_prot);
+-static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
++static inline pgprot_t vma_flags_to_page_prot(vma_flags_t vma_flags)
+ {
+ 	const vm_flags_t vm_flags = vma_flags_to_legacy(vma_flags);
+ 
+@@ -4616,7 +4616,7 @@ static inline pgprot_t vm_get_page_prot(vm_flags_t vm_flags)
+ {
+ 	return __pgprot(0);
+ }
+-static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
++static inline pgprot_t vma_flags_to_page_prot(vma_flags_t vma_flags)
+ {
+ 	return __pgprot(0);
+ }
 diff --git a/mm/vma.c b/mm/vma.c
-index 1f443d979a7d..a74a0e467c63 100644
+index a74a0e467c63..38481aca7321 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -2176,7 +2176,7 @@ bool vma_wants_writenotify(struct vm_area_struct *vma, pgprot_t vm_page_prot)
- 	/* The open routine did something to the protections that pgprot_modify
- 	 * won't preserve? */
- 	if (pgprot_val(vm_page_prot) !=
--	    pgprot_val(vm_pgprot_modify(vm_page_prot, vma->vm_flags)))
-+	    pgprot_val(vma_pgprot_modify(vm_page_prot, vma->flags)))
- 		return false;
+@@ -56,7 +56,7 @@ struct mmap_state {
+ 		.pglen = PHYS_PFN(len_),				\
+ 		.vma_flags = vma_flags_,				\
+ 		.file = file_,						\
+-		.page_prot = vma_get_page_prot(vma_flags_),		\
++		.page_prot = vma_flags_to_page_prot(vma_flags_),	\
+ 	}
  
- 	/*
+ #define VMG_MMAP_STATE(name, map_, vma_)				\
 diff --git a/mm/vma.h b/mm/vma.h
-index 4eb85b4a6adc..8ca6e7e8ae28 100644
+index 8ca6e7e8ae28..0bc7d521e976 100644
 --- a/mm/vma.h
 +++ b/mm/vma.h
-@@ -541,9 +541,11 @@ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma
- }
- 
+@@ -543,7 +543,7 @@ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma
  #ifdef CONFIG_MMU
--static inline pgprot_t vm_pgprot_modify(pgprot_t oldprot, vm_flags_t vm_flags)
-+static inline pgprot_t vma_pgprot_modify(pgprot_t oldprot, vma_flags_t vma_flags)
+ static inline pgprot_t vma_pgprot_modify(pgprot_t oldprot, vma_flags_t vma_flags)
  {
--	return pgprot_modify(oldprot, vm_get_page_prot(vm_flags));
-+	const pgprot_t prot = vma_get_page_prot(vma_flags);
-+
-+	return pgprot_modify(oldprot, prot);
- }
- #endif
+-	const pgprot_t prot = vma_get_page_prot(vma_flags);
++	const pgprot_t prot = vma_flags_to_page_prot(vma_flags);
  
+ 	return pgprot_modify(oldprot, prot);
+ }
 diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 773e23303e26..24955a1e318a 100644
+index 24955a1e318a..8621a7ae8980 100644
 --- a/tools/testing/vma/include/dup.h
 +++ b/tools/testing/vma/include/dup.h
-@@ -1424,20 +1424,18 @@ struct vm_area_struct *vma_iter_next_range(struct vma_iterator *vmi)
- }
+@@ -1545,7 +1545,7 @@ static inline int get_sysctl_max_map_count(void)
+ #define pgtable_supports_soft_dirty()	IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
+ #endif
  
- bool vma_wants_writenotify(struct vm_area_struct *vma, pgprot_t vm_page_prot);
-+static inline pgprot_t vma_pgprot_modify(pgprot_t oldprot, vma_flags_t vma_flags);
- 
- /* Update vma->vm_page_prot to reflect vma->vm_flags. */
- static inline void vma_set_page_prot(struct vm_area_struct *vma)
+-static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
++static inline pgprot_t vma_flags_to_page_prot(vma_flags_t vma_flags)
  {
--	vm_flags_t vm_flags = vma->vm_flags;
-+	vma_flags_t vma_flags = vma->flags;
- 	pgprot_t vm_page_prot;
+ 	const vm_flags_t vm_flags = vma_flags_to_legacy(vma_flags);
  
--	/* testing: we inline vm_pgprot_modify() to avoid clash with vma.h. */
--	vm_page_prot = pgprot_modify(vma->vm_page_prot, vm_get_page_prot(vm_flags));
--
-+	vm_page_prot = vma_pgprot_modify(vma->vm_page_prot, vma_flags);
- 	if (vma_wants_writenotify(vma, vm_page_prot)) {
--		vm_flags &= ~VM_SHARED;
--		/* testing: we inline vm_pgprot_modify() to avoid clash with vma.h. */
--		vm_page_prot = pgprot_modify(vm_page_prot, vm_get_page_prot(vm_flags));
-+		vma_flags_clear(&vma_flags, VMA_SHARED_BIT);
-+		vm_page_prot = vma_pgprot_modify(vm_page_prot, vma_flags);
- 	}
- 	/* remove_protection_ptes reads vma->vm_page_prot without mmap_lock */
- 	WRITE_ONCE(vma->vm_page_prot, vm_page_prot);
 
 -- 
 2.55.0
