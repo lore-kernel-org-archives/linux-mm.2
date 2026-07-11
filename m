@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7CEEC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 23:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402FAC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:03:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89BFF6B0088; Fri, 10 Jul 2026 19:53:53 -0400 (EDT)
+	id EF3586B0098; Fri, 10 Jul 2026 20:03:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84CA16B008A; Fri, 10 Jul 2026 19:53:53 -0400 (EDT)
+	id ECABD6B0099; Fri, 10 Jul 2026 20:03:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73C026B008C; Fri, 10 Jul 2026 19:53:53 -0400 (EDT)
+	id DE0B46B009D; Fri, 10 Jul 2026 20:03:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4537D6B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:53:53 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BAD3612061C
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:53:52 +0000 (UTC)
-X-FDA: 84974522304.25.61E2015
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BC2CB6B0098
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:03:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F9041C3E27
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:03:15 +0000 (UTC)
+X-FDA: 84974545950.22.C86B94C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BC94A40007
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:53:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=REiuFs4V;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf08.hostedemail.com (Postfix) with ESMTP id 90159160003
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:03:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ks717yvF;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783727631;
+	s=arc-20220608; t=1783728193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HVL+OWDjz7dR1B8k2mIwS3yFQn8TSeFYCxydqWdE8V4=;
-	b=BsKNuv2VDhcBXW/OSEDUxaYJMeCkK8qg9Vqoe0PB+xq3J/4HhW4p053s3vpZESnZl5Z8iQ
-	GjTZuCTwncOiC6IEQKzk7oMjKyMF5Wkaejo72d4dB13KWu2Kfn8lHytCDMB7WCm4CIzt4N
-	CqmGHsSaPyz0FMNOHvLcIN5nughrVKo=
+	bh=xuhLIGvoMzgdosMhkd0fNaNt5l4k3HBHBOpccxuxKL0=;
+	b=3z9pzKI2kMYU/4qVg/jyvGB4l7c5Z2ci/hU4Ke//NYIbtbPiVB9oMSwdlw0Mm0c67y1Fcr
+	i6cIUvOIZkV6hTX4iZB/8ZID0mrS/7U95QSJ51JeKARo9ec2E7xr3US7XGYhuqEMkbtEVJ
+	HjtJ602wSKCf+Ak+dw5Mu4WoAQnT5KU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=REiuFs4V;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ks717yvF;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783727631;
-	b=TTO4cut242yha4lkQLCZ+18t+BGtsUVhBuBe3CFDMQ+N7G3QO8ptyqCXAyCfgP7iqVKZ+A
-	2bk7UWSZ68SJYWxkXmmz0OkvN6gG+6Lr5hPe0XwawewY/t3Zwm/+ccFoP+O0kiqk8QMTLn
-	y/8u65Kt8LLIEe5jECUBSWrUiP7oZbQ=
+	t=1783728193;
+	b=2klI0fjpYH8IPtf+WjQHm/WcIsOd3mp6/QxZ5n4AruOq/JihDhi1J/7Xa9ChI10QkuKrti
+	ni2YwT+PdDvZPymVu6gZMvydaKoMpPDF0L4XTQRKmtPCjPuL3t+RPltTXBbg26SFT5CPX7
+	7pvZg4ozWGkL/ucDoV6EkO/tHkXEY8E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7454041AA3;
-	Fri, 10 Jul 2026 23:53:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52AB1F000E9;
-	Fri, 10 Jul 2026 23:53:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D2B4405A6;
+	Sat, 11 Jul 2026 00:03:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1A11F000E9;
+	Sat, 11 Jul 2026 00:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783727629;
-	bh=HVL+OWDjz7dR1B8k2mIwS3yFQn8TSeFYCxydqWdE8V4=;
+	d=linux-foundation.org; s=korg; t=1783728192;
+	bh=xuhLIGvoMzgdosMhkd0fNaNt5l4k3HBHBOpccxuxKL0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=REiuFs4VZ8HBHgEuS8pPATEsHkD67CqvsVug2ISH3ua+FB7HXhRIT42SsJ522Cw+R
-	 4RqPTXUcoSl3sv9Nx0CKFVeyB/CD/AOjA+DBcmQVnwjcj3BAB7XLv8oNxPSn2XhyYx
-	 Nb5shhdV5JTt0cIfb3ciLGYnVvFYGsDsaTGMTEZw=
-Date: Fri, 10 Jul 2026 16:53:48 -0700
+	b=ks717yvFqYIqA6WR+QY37XIQWgJADMKlFNW8jw3XJ2p3rnLamQ14UKrDDItXLbEl4
+	 qMcKrFN9cPWw4pHi6vEKiLUVCcNSTKGHw5XWQFPyyn4tHd+4kR4/AfwoZFuob4diub
+	 l93MdDD/tamKwNitPw3Y4n9eHiC14DinXg6/RRiE=
+Date: Fri, 10 Jul 2026 17:03:11 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: apopple@nvidia.com, balbirs@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, david@kernel.org,
- dev.jain@arm.com, gourry@gourry.net, jannh@google.com,
- joshua.hahnjy@gmail.com, lance.yang@linux.dev, liam@infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- matthew.brost@intel.com, npache@redhat.com, rakie.kim@sk.com,
- ryan.roberts@arm.com, vbabka@kernel.org, ying.huang@linux.alibaba.com,
- ziy@nvidia.com, shakeel.butt@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH v3 0/3] mm: handle device-private PMDs in walk callbacks
-Message-Id: <20260710165348.cab6f58aa81b30e34d121d0d@linux-foundation.org>
-In-Reply-To: <20260710105557.1987433-1-usama.arif@linux.dev>
-References: <20260710105557.1987433-1-usama.arif@linux.dev>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Shakeel Butt <shakeel.butt@linux.dev>, Harry
+ Yoo <harry@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+Message-Id: <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+In-Reply-To: <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+	<20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b9s1xy8graw99nqaz1zg9henz6eqf8es
+X-Rspamd-Queue-Id: 90159160003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BC94A40007
-X-Stat-Signature: jycmn5469exaashtut77chud7swf3rss
-X-HE-Tag: 1783727630-946906
-X-HE-Meta: U2FsdGVkX1+3llgfx1kLqHBwlBfhJ95osBwXDQvEgbCcMCStbMPn6bXcghgYMALIJ/j0AAmjRm2Zrf/mN3YX+VPyziuFmYoeGHemM8MHn8cl5bJKo069UNQB5Z0ZrhZbUOntzvXfSWbGNZgykPojrEaNBX5bHKZ5Fz9d/8qeKq46uBV1QJz+BrQ5kjrYhIJRvUOyvFs2kv+I4y+DEswP37dtkcgO/o6VVgec09xQ3n39kGp+F1K+nqaZo0h0OGNmNRlGUzKQ7BWME6M43n4vSRjY3/4cQL3C4zoOBpwG2m+f5PeYTF5NhfQPnGlz1rDwz7uuafMbDtR5z5El3Y5BizcfC1daV0pwXCGp87oAFiIpACYthNEDSrDN84+tzOYSdmewtjn/X5NO9PgXGxhbscXYhyVyPUHea7A1TFRNDciCMScDVstM1DBwoQmuYwfS2OpjmCQvmn+defpDx48fBOrf+HOaaQUX1eiJehjAhRkX2AxecCxBc6VKtjYlRh2YuHI4j1BjKGYJyCcuN/r0mWBAF81/Y+VnGUAAvycbhwsMoHH2/ynFHXm4TUkkLHiOJ28FZzgK5JmRZsMrcLueyBpwYRtLG4m3kBMhQG3dzrzheJ9hp1zOSPoSoxlYAdomQgJZu0WfWcqKja223I96GDzXYMUGIMGrxVUPbZ7Fis4kIT07g8Zb2QkvYIwd+7eiAZXHdKWRdtzKmMV/eQ0gnKGKqZigc7a5KTqV6wQJld6l9Jkx2u+CC70SH5o6rUWqsMdlU/fhfyMX27hPnME0PRz99zEiA/AvFoRz1DZLK5Ny3tG2/GfcSLg+YPLw1bGgr4BYX/BeFPpLyi+UD68AGnHeOBoKualt/E18Ee//MYwGMuTReggkd6rHF1iljBzav3DoYRaNrLWJBcQd8SRwUvO3wFvnp/XsVoJf6nO6E5nFHR3wDBhMjTMdPrCSlVwe3Kb5EXxFLhg9FT36h40
- NiBbbH06
- J22kOhJxt3kHUZeVaW0noQth9OCfMAkri2Sk2ZzDdSl7CXphdCt9+Af+dSzR+5B0uC98zYvxxIibXDLM9e1EholRuiG1rvVMrVdad0LNiOcCc92PD13weigsaECyEuhYMWMPSPudJrW4U0NKyx3VO01wwCxz0cV+Qr/Wm/6TAND/OdplLjsB4b11gtkgK28S8ZQlq9mKWLsuNv8mjw2ghH74uQwhNqSk9+jOZa8e5m/xrkFc2ujsCgr7q+11rp+rXACqT7K73nPRE2tP0As1CLJej2lg7F0GwiYXsDcAANJ+0jt5lsGegvi6+aTtW718OqVp8PDNpAABvO4cj5QWL1zdzDE/IzHhETILTdTk4mH+auhp/n1QwcOmmfiJ+3zHcIMqf
+X-HE-Tag: 1783728193-51727
+X-HE-Meta: U2FsdGVkX1/gne5LzodMquE1/QP3JZjxoM0jDqUqt5K3mOki/29Xrr6pyXkV5cDJxKgDOs+twZW4LPNutvBh/18eEFHsjvY0nKj3BHhrJC3Q2K89hTIVjnzo0OLd7UCobl9XiWeZdk/H2orCCCohLKBGvRugabIRmTYFv4SbTiXy43uTmF8Mh5g4V4yGWR4u4UtIqYoYh4r6cdINKoh9uJkInDMxpux91fvqriNm8PWTi2Ia/n82CIpUeYR7LHlujRcpsQMSkCpjGFHz5tGu0FZWuegSwVJYWl5UyFQ+gy6CMtFgngFQQHC+ecIAVZfxcuvVEGIMEqZZNu2usagPrzPlS3T+8j+ImBKiMD5LpG4qPaMu5KZS6LRg59v9JaoxSot22LDraNEuISNUYBgQske8LcreSMgjmsbBaHc0FWNiJTTmbc+XW5lrPQwJU73sOL6N8+2ANAJhdY/MvIOqYZ//KlhdbGq8ScHRaBSz8Ml41EwtNUObzIpLnMt99dH3fOxJRApbtAr5poOfN4/ypCB8nAbAjSwJHf/svjaFTKFh/6KiRnfs/r/nVZChTC36v2mwx+XReE/GrYSwyAzoe3dpl9oMMoXBlq1ZpSR2sSai2VH1SYSU1+c46gaUvKVzFi/DfLaSG3QUZf3aKhjgEYwO25AFq3zMM4QcgHbyefCo1RGpPLSE93LYMj6oJ7KS7rzgleWRuOm0Q7QMDGDvVoFGFKsXNH1/5fH/ACG0wCY0CexS6+YYbSVmUt/uOjQ23igI6UQcaxcGAx4oc84ZG7kSibjF2ZtYRTlvFagiWV1obwotNgMOXn/8597+bUdz00Zbqq4pUr5xP2AcZMkzrITp+KZ9Q7HttTZ4FF2bycQS6QuZ15ft4gnggPOjMjC28pdEOVBYsfyohWJeLwRHDAclvTeTXBkJiiSk3BNg1c9bT0jtc2vxHvvSMfJh7QNSlQi6Pp8rC782v7l/z4j
+ w59TnRV5
+ 7FIfNkbXQSLxuQCwEQuPxL14hwQVBp8KrujJzSuhShznewDw5q6Ch4KreKi4BmUzqWJ7T0++QG2JuoRi4Ygl1jAyFMPZ6HLrPI71rmDw3VXM8LmTIO5vZAnWL6nhyeVvPWPFwchDSYze/58bsIwRDeaMaso0IQOfJTHVn+j+NrKx4t+Izc0/2USEVonyJSPyYWtXkEUELwQT5MZbv7W9+E07lOsv46IJXJd0TXlaDHImDAT6AXawhd+44a9PPmMts1wDMDA3TmwkzBz/J2GvItuWzTAnDc/Ot+xlUzaIpxxeLqi/XblHw2dKxyXJn3kRyLykDI+G4KSPjpMlMB86Xzn3cKMEgEB90u2p8e6wVk8w1zLgIqSIti1OS/+EiLLrAAEsgrGtrrM9o5cA4us8CjMeYkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,30 +97,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 03:55:20 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.com> wrote:
 
-> Since commit 368076f52ebe ("mm/huge_memory: add device-private THP support
-> to PMD operations") a PMD may hold a device-private swap entry whenever
-> an HMM-based GPU driver migrates an anonymous THP folio to device memory
-> via migrate_vma_pages().
+> As noted in can_spin_trylock(), using this is unsafe in this context.
+> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
+> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc side
+> but missed the free side.
 > 
-> pmd_trans_huge_lock() succeeds for such PMDs (pmd_is_huge() returns true
-> for any non-present, non-none huge PMD), so several MM walk callbacks
-> that used to assume present THP or migration entry are now reachable with
-> a device-private PMD. The results range from a VM_BUG_ON() firing on debug
-> kernels, to an oops on a bogus vmemmap dereference, to silently isolating
-> an unrelated live folio from LRU in the aliasing case.
+> Reported-by: sashiko-bot@kernel.org
+> Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b714e19d3@google.com
+> Cc: stable@vger.kernel.org
+> Fixes: d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
 
-Added, thanks.
+Is this correct?  I'm not seeing anything in that commit which could
+have caused this?
 
-I didn't add these as hotfixes - the Fixes: commit is somewhat old. 
-Feel free to disagree with this!
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2979,8 +2979,7 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+>  		migratetype = MIGRATE_MOVABLE;
+>  	}
+>  
+> -	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT_RT)
+> -		     && (in_nmi() || in_hardirq()))) {
+> +	if (unlikely((fpi_flags & FPI_TRYLOCK) && !can_spin_trylock())) {
+>  		add_page_to_zone_llist(zone, page, order);
+>  		return;
+>  	}
 
-Sashiko went nuts over possible pre-existing issues:
+It would be nice to include a description of the userspace impact.  I'm
+suspecting that's "none known", but some speculation on what might
+happen to someone is appropriate.
 
-	https://sashiko.dev/#/patchset/20260710105557.1987433-1-usama.arif@linux.dev
+Also, please let's not combine a cc:stable bugfix with a minor macro
+renaming.  They're very different things and will take quite different
+paths into mainline and -stable kernels.
 
-
+Also, Sashiko might have found yet more pre-existing issues:
+	https://sashiko.dev/#/patchset/20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com
 
 
 
