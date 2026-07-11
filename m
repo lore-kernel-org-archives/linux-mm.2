@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C5E5C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 09:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D33ADC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 09:30:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FB196B0088; Sat, 11 Jul 2026 05:18:03 -0400 (EDT)
+	id 8DB6C6B0005; Sat, 11 Jul 2026 05:30:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AC546B0093; Sat, 11 Jul 2026 05:18:03 -0400 (EDT)
+	id 8653A6B008A; Sat, 11 Jul 2026 05:30:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C1A66B0095; Sat, 11 Jul 2026 05:18:03 -0400 (EDT)
+	id 780826B0005; Sat, 11 Jul 2026 05:30:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 04CA96B0088
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 05:18:02 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 720F912069E
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 09:18:02 +0000 (UTC)
-X-FDA: 84975944004.21.10C0B8D
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 40C48120005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 09:18:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d+Asd+6Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F0886B0005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 05:30:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1C141699C9
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 09:30:20 +0000 (UTC)
+X-FDA: 84975975000.26.86441B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1747040009
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 09:30:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oKHJRnBP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783761480;
+	s=arc-20220608; t=1783762219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KkBQdQqW9l/vkDYfka0IKWJdPmtoY2v3nYkEf3NdSrc=;
-	b=S0x2i2hIZyDZJoyj9va4kT9+RV12mcKBHYRxFjpQ917CexB+WxNZi8gKruhxCMwLAFAs66
-	rZT59RTK2URVcicqQij27uNgzIbl923KF2BnvsJCUcC6zTumGw4Ff9+HLoj01GeGg1dXjc
-	Dt7LU4kNvK4a7X8awci43tTawAEdxSI=
+	bh=wMYPfyTsBLTuv/VNc1Ad6qGQ7OM9n6X/3M55TFPtdc8=;
+	b=AuXaoy94/TC45Yw9Q173yE+F5XifzNSPyheWyIZMCssXBDjBeUaZKnx45m8eGwOJmCfiIr
+	4GLOT20Mc6j4AkV61c0ADsqZZTUnTEowRZNC2o1/FgcFULkBeUsGTQg0mZjzkfCYNEAlU1
+	iVKBBnzOKvjYVYhCZuIQIexgKlM5TKI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d+Asd+6Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oKHJRnBP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783761480;
-	b=c+LIFA8Cz8tXKazdeVUF/FgrU7at9Xr3yJFVTnrJAUP5uIW5+9c7J4mx2Vaa4I83cs3F/C
-	96xhquiVGXFS6k17p7OpCHOkDBG5Xws07+DIJijnPBaQNjSBgm/u3WxY0mj3GCNAY5dXZl
-	iYV+9PdFdQjo6Rv0fhvvcqPQqEdV1qM=
-Message-ID: <a8698739-6987-4f4c-aa68-ff0fb98a0c29@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783761478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KkBQdQqW9l/vkDYfka0IKWJdPmtoY2v3nYkEf3NdSrc=;
-	b=d+Asd+6Q4RHoaNC1k4UuSAQh6JkxcKjIkj6+0umPOhRLz62ERK8kdLcfL2hQO/TP7oatHc
-	IE69EkW/tg/GGFYQpoceI9SUAQ858KEUzl1Y6OsFIUv9KKuDJ5K36IgX9IvUGdqwfMKqvX
-	B4mlE2stVO0JCse0GTDPHYFAUgNOLjM=
-Date: Sat, 11 Jul 2026 17:17:35 +0800
+	t=1783762219;
+	b=Q6Z2CiSmn5PdrOqnj3KeoIkaIXBYV91jMr2tfw/+LmHwU7m+oJtSQ9NpzRWDEge7nyNb92
+	r3ZYlYiK4akCovFPdXsrd9Dl7sd7Q8StVydnXC9UQ+tTiQecTyBOvPaEEizIBFmo9XOmWe
+	I6ohu2BHiIeqXDiGG+r27cS/BBt4Wjk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5A647600C3;
+	Sat, 11 Jul 2026 09:30:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DCA1F000E9;
+	Sat, 11 Jul 2026 09:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783762218;
+	bh=wMYPfyTsBLTuv/VNc1Ad6qGQ7OM9n6X/3M55TFPtdc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oKHJRnBPFx5ib22zJ5SuEM6vSjo63Hsw+PMuKp0Vczhmn3i7ESnfc/eYbgMF2I/CG
+	 Unvtjto65X/PtKcCKSHMn/hfQ7IBn6NNy0//Xw3Nb7lJH04SvAYHXtJ+7hLoAeu4WP
+	 CXlo7sqO3wa+2fxlcy9vp5yMJDpl08i5VUvXAAAGZCSrSAPVICVtKWmuviqCzZEHfZ
+	 YIf6DcjUaI0kIZZg0wupyGaHg8Pq8b5HJnup/4pjY8hxetJLZI2wpHcZk+x+HkxsMm
+	 jJRH64uxBhsQssoRV6sOT0gYsnSxa0Ee+el6WJJCsjXGjCg7COYDZSVgJZ9bjUQEV8
+	 lHREPDJ+GE7Kw==
+Date: Sat, 11 Jul 2026 12:30:12 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] tty: replace __get_free_pages() with kmalloc()
+Message-ID: <alINJCLaJ8xo4ein@kernel.org>
+References: <20260630-b4-tty-v3-0-a8476c66c582@kernel.org>
+ <2026071056-comfort-dynamic-a713@gregkh>
 MIME-Version: 1.0
-Subject: Re: [PATCH -next] memcg: move mem_cgroup_swappiness to memcontrol.h
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>
-Cc: Muchun Song <muchun.song@linux.dev>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260710111224.2355668-1-ridong.chen@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260710111224.2355668-1-ridong.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: g99ksr8cgpmu1pdy434bbb6zu5ppu45q
-X-Rspamd-Queue-Id: 40C48120005
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026071056-comfort-dynamic-a713@gregkh>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1747040009
+X-Stat-Signature: px6kxgs36nqngpxsqyy5tqopfoia43rj
 X-Rspam-User: 
-X-HE-Tag: 1783761480-884427
-X-HE-Meta: U2FsdGVkX1/Ckjg2PuI5xMt3PbqPQgv6BluisDfBzarNMXM0C8+hczWaH+S9h3tYz8D5n8qsNNONQEAIxYmSz/EDpYDv5ZncMI1mw8+yCSVPcyJ4pveqSCvz9Oy4Mufbq16P4DXqMdESgIaqZLlBs1j5+vLFO+TUSYuyDIhRoIk9g9UdDA21Kar/IIxssOmE3Yj/DqrgEgcsnODm++esdu9QWnfNHicuf8ihnVBjLzBNqvOnjO6MUbetrO1uAtq5pcXE1nztIIjgeqtQbnzClzNLK63Vzkd8gqJNCQZT9vv+9CGWpmIgAM92k6jBx/9Ln3SYIWrtZOeNkrmnlIJhp8verJq8SrRgEH9dNTQ1H7VbunqqN0OErC16bDEkF6/StVMjhnYZP9W9zdHTMxQNjQ8AAocL4NQkwG230QTg1DEovxXWlRQEDD/EaCgRvKvGbf42+aLLnHPlWFDtmNReHl3YIidnaqxZ2Ez6wgKkqv4/w8PhXW9CFBdc3ycsgPLnjsvzljBcNQZT0K67kiMFc3oP7rJpqy1WO0UQmyuc+OPekINyds79HcEY2DBmyPMcE0oh0ZX6iEZ1I+nq8mztVyKqmXInhM/C4ANd8H63QBI/YmdWIHLjXBGdfpcoo5geIhQ41WoNwzUB6rjKaBK9XLSAlH5WFlsXnUSF5bqZh5M1iUKGJcBaAsXfWwOrvl/seL2hYLpXJnYja5W9Dt6P1OlF2O78rQB2xHzpkyWxfzfNGuwGsMQLqvpbnJ7yuZdd2uFc7MvfRwaBevTs4VZmCkC+q0l+B2wCTn625kIJaLZjoY2SSDHBv/XQII+e6XFXGAtSoHiLJS1ELG4a/oTMe7he/FRyq4fEeZi2FMZ0uMSZTSsFg22Vggt9NbjHDX0ouf5tKFQUv0jMUFOxd+MLA1mqk+E7Hu91aDE/I5Y9JXoZBDybZcyyHt3phQVkKQP7m0WeH4/7NI2Ojnn3gS/
- 14rJg1b6
- 86RCjcTlKU/kOx14L0/xJ6ugrjDBueigGfEO53m5jfDcXTuJpCbpIkm6V9PGnMVTWQhRgKNakqrN97HnBmX0PIDj76wvPQL3/OufY7YeEvzIQohY6HxchCHDRWXir/fgM2w1JQLGpR8A20UPuV+48dnzNjq2K35Tbw4t8vtTh4vH2a/eTpyrvHAYK4zGI66uP5pnucVxqYNdDFYRW+O0dZkTFzel3sA2Q7mlJhQhaoHoSpesJSChADTD+ATtqWwqB1aEZSYzoApT+/6kQsTPgwghZx4IgsX2NWhtB7Qx0gO7Ay8U=
+X-HE-Tag: 1783762218-215330
+X-HE-Meta: U2FsdGVkX1+rE12E2bWqa52h8GBbs/CCwZMAw5uLlywFrU59ErAGNrs06rak0eEN9j8pV2S4isuWrqpz0Y3W5D9umbo7q9WlPBDp/uUyASzM8KR1Lh0N5FXSCo6vgF6xus/sMtuIojWNbttXzNH+AZ9PSz7806f5B6NXyy0cjmcrb0ur3LIVeqDX0k+qQLEgagWcNiAsaA4cNYs4i0HXQoCib6c83xVwBm3s2VH6hsu84yJDZbpyWOWoodnDzyEM3nUzUt+NM+isR4Bou6bJswARXj6R880+kUCKKLpe9ZtrtXp7ssOXEHC2QCGrJSKbQDl+KUYpuP9ibd/yxivyQcrpTLMXNTbTfCgJAq3pMId+E18TE1Ihc0WV9ahxyJ/04cgUm3P2MOG22GvChABou/N6FeTo+2vMyuecmMIe2hzFh4dFMEj2W9cosz7tc4SfO0yMwNHZhYJeFs17p/PWCUp5hNFOCr+NYKxREZO+BarGRG6qjFZQa9WekqIlFlJkxTMe76RrgzMwvDPQW4efIjT2gX9uU0Nn1DnmZZwLw7Tz6fCji3QHVLts/uqfvg0dFbkUmgJ796D5dDNpkBTIBe/1IqnEoEQhMlldZW3QdzBVCdUZzFXFnW08DxaKECvLCpyaTKkEivWqXK1w1XQRvFcsi46MCB0YgZbKVJUN/JG4w2Wnf8px3WOBwf4zpll+ngnaJcK9rfwLrfup+Vn1XLlLGl4Rkcmr+SRzkFtPEseeNmCfSJyTl+wxRVBZReWc8g7aN6EYAGe0kXNtAxKhWRuwCU2KqXKBWpLd36ADq4qzG1P6/tyJ0gwkEPgjfK1oF9tqu+tp/rS8/QmkTJB6abSMjTrMyyEkql1ZSc2mh6wX6lCPUKqVOCUX9UIyJWIVgk0lmvKpCISBXb/FZw6Etj2SoMrEcsIHdb2pr9KFq2QYv9XdVSkAJF0jzFy5ZqO4qP3kXs/NY562/Tdvzms
+ mKGi2H5Q
+ wrqiQnjjO9jDNsp1g+ZswD6+j+rQqd+EFKLiBCRloYX/IZ9yx76xd+DlBqf9mL/s+pGVdX6VqFc9wJy8vlqY/R4840sAK8JyaQkV1i3lkMeph1JJxzBTrjY+17Xky7rBPqoZxaba13mHgZ6Kl1mPBR5ZEZSPYFk5Nfd+7gksk+qzmBjFLqDm+tri8s5VEmPc4W+ypAzBDVxK7KsEKZqUd/gi5Obw5OaNY7T4ys90P2YREsNIa4YO0690Xh3WLpEX/xOgNWuxbHbMTmzAh3voSRNmrSzYTEYwbIEwJbBoTOjulnoc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,146 +91,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Jul 10, 2026 at 02:44:16PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Jun 30, 2026 at 12:54:02PM +0300, Mike Rapoport (Microsoft) wrote:
+> > This is a (tiny) part of larger work of replacing page allocator calls
+> > with kmalloc.
+> > 
+> > Nowadays the right way to say "I need a buffer" is kmalloc() rather than
+> > ancient and ugly __get_free_pages().
+> 
+> I already applied an earlier version of this series, so can you just
+> send the fixes you made between them?
 
+The only change was the placement of include <linux/slab.h> in
+men_z135_uart and it looks like you fixed it up when applying :)
 
-On 7/10/2026 7:12 PM, Ridong wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> The per-memcg swappiness knob is v1-only; v2 always uses global
-> vm_swappiness and ignores the per-cgroup field.
-> 
-> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
-> to memcontrol.h where it belongs.
-> 
-> No functional change for v1; v2-only kernels drop the unused field.
-> 
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->  include/linux/memcontrol.h | 25 +++++++++++++++++++++++--
->  include/linux/swap.h       | 19 -------------------
->  mm/memcontrol.c            |  3 +--
->  3 files changed, 24 insertions(+), 23 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index e1f46a0016fc..f59614956f96 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -239,8 +239,6 @@ struct mem_cgroup {
->  	 */
->  	bool oom_group;
->  
-> -	int swappiness;
-> -
->  	/* memory.events and memory.events.local */
->  	struct cgroup_file events_file;
->  	struct cgroup_file events_local_file;
-> @@ -318,6 +316,9 @@ struct mem_cgroup {
->  	/* List of events which userspace want to receive */
->  	struct list_head event_list;
->  	spinlock_t event_list_lock;
-> +
-> +	int swappiness;
-> +
->  #endif /* CONFIG_MEMCG_V1 */
->  
->  	struct mem_cgroup_per_node *nodeinfo[];
-> @@ -365,6 +366,9 @@ enum objext_flags {
->  
->  #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
->  
-> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
-> +extern int vm_swappiness;
-> +
->  #ifdef CONFIG_MEMCG
->  /*
->   * After the initialization objcg->memcg is always pointing at
-> @@ -1440,6 +1444,23 @@ static inline void mem_cgroup_flush_workqueue(void) { }
->  static inline int mem_cgroup_init(void) { return 0; }
->  #endif /* CONFIG_MEMCG */
->  
-> +static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
-> +{
-> +#ifdef CONFIG_MEMCG_V1
-> +	/* Cgroup2 doesn't have per-cgroup swappiness */
-> +	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> +		return READ_ONCE(vm_swappiness);
-> +
-> +	/* root ? */
-> +	if (mem_cgroup_disabled() || mem_cgroup_is_root(memcg))
-> +		return READ_ONCE(vm_swappiness);
-> +
-> +	return READ_ONCE(memcg->swappiness);
-> +#else
-> +	return READ_ONCE(vm_swappiness);
-> +#endif
-> +}
-> +
->  /*
->   * Extended information for slab objects stored as an array in page->memcg_data
->   * if MEMCG_DATA_OBJEXTS is set.
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 3f31b6a56788..f27e73f29195 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -366,7 +366,6 @@ extern unsigned long mem_cgroup_shrink_node(struct mem_cgroup *mem,
->  						pg_data_t *pgdat,
->  						unsigned long *nr_scanned);
->  extern unsigned long shrink_all_memory(unsigned long nr_pages);
-> -extern int vm_swappiness;
->  long remove_mapping(struct address_space *mapping, struct folio *folio);
->  
->  #if defined(CONFIG_SYSFS) && defined(CONFIG_NUMA)
-> @@ -530,25 +529,7 @@ static inline int add_swap_extent(struct swap_info_struct *sis,
->  }
->  #endif /* CONFIG_SWAP */
->  #ifdef CONFIG_MEMCG
-> -static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
-> -{
-> -	/* Cgroup2 doesn't have per-cgroup swappiness */
-> -	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> -		return READ_ONCE(vm_swappiness);
-> -
-> -	/* root ? */
-> -	if (mem_cgroup_disabled() || mem_cgroup_is_root(memcg))
-> -		return READ_ONCE(vm_swappiness);
-> -
-> -	return READ_ONCE(memcg->swappiness);
-> -}
-> -
->  void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid);
-> -#else
-> -static inline int mem_cgroup_swappiness(struct mem_cgroup *mem)
-> -{
-> -	return READ_ONCE(vm_swappiness);
-> -}
->  #endif
->  
->  #if defined(CONFIG_SWAP) && defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 938f190a98fe..2d659b76cd77 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -4174,11 +4174,10 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
->  #endif
->  	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
->  	if (parent) {
-> -		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
-> -
->  		page_counter_init(&memcg->memory, &parent->memory, memcg_on_dfl);
->  		page_counter_init(&memcg->swap, &parent->swap, false);
->  #ifdef CONFIG_MEMCG_V1
-> +		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
->  		memcg->memory.track_failcnt = !memcg_on_dfl;
->  		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
->  		page_counter_init(&memcg->kmem, &parent->kmem, false);
-
-I have resent this patch [1], as I found another issue related to it.
-
-[1]
-https://lore.kernel.org/linux-mm/20260711091157.306070-1-ridong.chen@linux.dev/
+> thanks,
+> greg k-h
 
 -- 
-Best regards,
-Ridong
-
+Sincerely yours,
+Mike.
 
