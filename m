@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE414C44506
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 18:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4215C44506
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 18:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DBA86B00AE; Sat, 11 Jul 2026 14:49:57 -0400 (EDT)
+	id 9ED736B00B4; Sat, 11 Jul 2026 14:50:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88BE86B00B1; Sat, 11 Jul 2026 14:49:57 -0400 (EDT)
+	id 977636B00B2; Sat, 11 Jul 2026 14:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72C216B00AE; Sat, 11 Jul 2026 14:49:57 -0400 (EDT)
+	id 840206B00B5; Sat, 11 Jul 2026 14:50:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 318776B00AF
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 14:49:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AD13E40785
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 18:49:56 +0000 (UTC)
-X-FDA: 84977385192.26.42672EC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 468CB6B00B1
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 14:50:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C808B1C4012
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 18:50:17 +0000 (UTC)
+X-FDA: 84977386074.29.0465F56
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7922840007;
-	Sat, 11 Jul 2026 18:49:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCh2Wp49;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7DF374000A;
+	Sat, 11 Jul 2026 18:50:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kGl604zO;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783795815;
+	b=sn7twDwSVfiCNIiHqmr6GzhiKN5DbJKbtTtnI0CvAi65sqgdy/M//RPU7+5/2ouFfnqmXP
+	3qg3JI0delh8bA/ERc8gTqvAC5nTyqLnK0ZdcCNBT4FXoFLJ5XWuZ30E2Jqc6DMf/B+mrB
+	tOtL8svf96jXr0tZB7eVLPC7/eSka/g=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kGl604zO;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783795794;
+	s=arc-20220608; t=1783795815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fr9+W5ioGfovNH8dryM/kzP+up/ElY+Oy2uwfNl+UZQ=;
-	b=YZGZY14/7e+dCYNFTAeaU3+48zC0Lym23D68+CUquz1+fbvYGBAS787ymUWqyCURrSeAgo
-	NF9Ki+MhzInDHxJZmamuuKJ5gO0+b5ijp5brBcSBHWQMzhqqIjf6JCL6tXrqqN+gXRMKOp
-	l6oqgRGz5/yN62LWDNaITLQv/qZGaq0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCh2Wp49;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783795794;
-	b=ytPK9H9xjeAMmqBJBrPbEaq75qPrrPtkn8o24Kk6+YB90S87PKHiFpAdwxzX5tokUSLFgS
-	opPfgRcJ/Xle2TvpbCLcsCQ/vzaxXA7X0VEA0hrddhnOrlTvy9cApVNIF9mBWTigoijBur
-	A4LMZxNZ70dsJc9XyCeRW6fdPnzTQOk=
+	bh=VYkDI6h+waLNcPjkBya9DGnDggZvgWVLygEReXlfsZM=;
+	b=m+qdnThIrgC7yNgsVn1dDCb6xrylnGBh/SxSvDaP6+NCrBpU5ilN5c1uDmmPykHYJ19ISP
+	zgJrB2eEhuZTJd090BhceAQNrmNu5ZtzTyHSERaJFKVpXzEPz3Jm07KycWwMR5j9BESDNr
+	GzexONw9epNZUq4RN6J0LrI3OivPmBs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB32D60052;
+	by tor.source.kernel.org (Postfix) with ESMTP id 16B8760052;
+	Sat, 11 Jul 2026 18:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2690E1F00A3A;
 	Sat, 11 Jul 2026 18:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE8B1F000E9;
-	Sat, 11 Jul 2026 18:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783795793;
-	bh=Fr9+W5ioGfovNH8dryM/kzP+up/ElY+Oy2uwfNl+UZQ=;
+	s=k20260515; t=1783795814;
+	bh=VYkDI6h+waLNcPjkBya9DGnDggZvgWVLygEReXlfsZM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KCh2Wp49fergCiFPuJT2qu+NLRDa7tcNsKE68tr0X57/gxQeoxFEQALVKzPPGCBCs
-	 1S2aNlk++tT/2vIRKjYUsq8gWVO5hc3Pv8Wj7ehGz3ecvbnsQJtpGf+Z3pEmCQ5Zpb
-	 0G4kl6AsVgK7NukwvKxLJBKVBgW4cGFGkyDpvnIWMOL+cqs+XQ3maPfs9w3a7IE778
-	 VHeldKO9fd0SwC8Wj8f7RSPZ4Jk+y+nxR+cKOZdHbk7BShTL6YF9RcqJ6dbx/Ra7Fm
-	 TE7Z2bwnikCj/QtjUnOZ8uMRw3s/GTnG9x5fnIpGmsCUudhHKyJXYAWkomP4MG/RhR
-	 DQejuUUlKg3zw==
+	b=kGl604zOY5i/9BHc7cLc4ryqHD+01SAUicrFqMKwslfHQhi80jDyaMm2MyxhO5qOt
+	 5Pq/TrS3o9h1Q+W/qwP8lSEVI5jCfMdWQHJGOSTzqQxcgi/ZcaaOXqvQkVb1FUVgE6
+	 9YbVEPYs9ZC7WBFyRZhHqrj+/ntYKTZVK3XRtCayQvKHxiWeP6HYUE54e0sI1syKFA
+	 s2zK3U9ax8wTAugutxfyxWaRWS5LrbXoh4d2i5NgoY8R2qopkb5XoFfc+IxgcXnP6J
+	 LumgNfEnvhlL0OZHtdfacxoMtfjedGIBKxF4rKadinDpk8PtJvmtheBqh+pFiShHQX
+	 BbDB2Fj9clkaw==
 From: Lorenzo Stoakes <ljs@kernel.org>
-Date: Sat, 11 Jul 2026 19:45:09 +0100
-Subject: [PATCH v2 12/13] mm/mprotect: convert mprotect code to use
- vma_flags_t
+Date: Sat, 11 Jul 2026 19:45:10 +0100
+Subject: [PATCH v2 13/13] mm/mremap: convert mremap code to use vma_flags_t
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260711-b4-vma-flags-mm-v2-12-0fa2357d5431@kernel.org>
+Message-Id: <20260711-b4-vma-flags-mm-v2-13-0fa2357d5431@kernel.org>
 References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
 In-Reply-To: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -143,22 +142,22 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
  intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, 
  linux-fbdev@vger.kernel.org, linux-sound@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2996; i=ljs@kernel.org;
- h=from:subject:message-id; bh=srWqnQOI/gzNhpzulQ661PMe2/Xdt3Viy9gVjyuNxVs=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKC+q08lh17/Pn9DO6GppTAjP7Fs7Y758nqdTXNm/9By
- 2P20jvmHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIo6cM/6OUTKz3VR0/Kd/z
- 9N+FX84lasa5MY7rRCqXPVqaO+Hv4qeMDLfOLP6RuO0wS2eR6YK62aGFcS/ctwjs0Qu2mW4r7s7
- Dww8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6381; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=PIqQBUvFAhhZLltfbuAmGUSiDj9zb0uqnBAJox/uNeE=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKC+q2WCm/T1ymxZjMq/yxer2XvM7/x212H55Myy179n
+ RqvN8Gno5SFQYyLQVZMkeX5F/H9QSJh8zov+LvBzGFlAhnCwMUpABPpOszIsGhLcPGPAz1FjgKb
+ Jc53v4/W6X/HznOmXdW58Edb+l2lCQz/DLaa7emYsZ9lb/CKY38l3gjvWSW8537dgQvfdvIpbK9
+ 8xgIA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7922840007
-X-Stat-Signature: duzwk1ktnbjm7omyhj9oparduozwfded
-X-HE-Tag: 1783795794-919478
-X-HE-Meta: U2FsdGVkX1/oV6zN1MGNdrS7fqzD7CHVWAOw3QfuG0fC6NEqQQPEoU4HSeRj2XZsYNVnaw6/EXCLeXQsW4vSR2jQqGJiEVLsxQ1JnXLeG2TH1O9UhQR/jLXM1ZNwwlS9/gGbF5eaUSggCJTX9nFoGL6lKeK9KWrG1SbAONYRmEzaBKrgLPEeBL7TFAcwi77aoeGr2Qc8V2+muk2fDkGHha3xZECJg0YZ1Ym2DqkjtR+6ZK14YHUUVOqr9d7fmcj1FnZD4+CT51beAD4TDzccdAvZEavbubWnzTn6qVr5Vrtdryx10AIJHLgPlKe7Yl+09+cXM76Fq3db3cc5bKuuDVxTNSKBMC/e5rF1Hj57RpJAfKn2p8YTlr49prQh/8Hg1EW110DBMFBd31x02E80wKnlmZMuDpJcH20ucRqkVHSzYjsAW+3ThWO6yNMbT0SR4UPx/LPlR2X9oL5F7p2I7fLHmkqLkWRj5bB2sms0bis+TKT5tHeXEW9H6KvvLHh/y78ppfq/8NgFrfMYK1so9NYlCK/g7MTsXz0FYUt49ZgADlVYcNO3Hy6eD7QFPPpVsXZu9QLAPMXJizI29cgDasX7SjGjdZ2kbZRcrlolFlcTaZSwowT6ScBUQjNZ+NN9C0kGz4e2pPKXnNeAUhK7ohlFJwyyLQnxAr4gUYUkn+Lpr/pmM/DaN0I9zlK0tCT90DGQ6oxIwgEYH2SmerPytJ7+mzyg5+cOzG7gv4FlCSYGNF7PuZFMq94bvuwYxWbsYZUttlFW7lfRHLgcTIa9q+B1RBZqCSiW+CJoYBXswOH3owbajU2TLaPzyfArK6ZBBZ5hOeaoHADBBwCcAACCx4iXW/J0qMHEvAhms4CPEtlYUbE3rlwDp2yYE0Rs5Ca6fgTseX9iMttzHkVNKNQ3QtbjBqOmpAn4+0ZENsTwHmnon/hgFuhk2t8pAQALgyWREDa7L2I05YFZMjDgDip
- b1s7PNv5
- m++h3WCWbx/L6lgOin8+2YLl6TG4A7M1PZrgSJzGlXRFr15o0V2bAcZV6mskOn1OqLUli7gTKF3vpdp3eP6WapFrlIxG85eP1LsCaEjdA0oo71U9CHmeiaj8lECWrcckDDgSjs0xXYjLL7X06pEHK21ipF3Qk7TauZP0dyIfnTF/W4PfrVw79yEjTiiIKcTrrkvGDY3FhOCZDLUanSz4ALyYPgi9WuSMIFgPTK/PibwfAtSY9tNrwd7PkPc41TP/vnLsO1ojZSZdoHYTAlGduKujlzGl0FOOyxat1O1lvTyOTkHMkARR5AaacWZKeX6skeUlTtJTH6HXil7v8c2zqWaZZedn/kOQYhAUGT/eJkPUUdPqGVYIkgT38RxfarU5OILTFRhNLS39EcT0ovIB6sUOmDVHHXF+U//vIJ6Hr8FnhD3AyyGDS6M9fVdFrIJ98nZfNVzxvZU3BQRB9bgI7gHxPFn048H3Nl2nke1xw9+wq5nPUk8A01xg0QNJIJ9+Mcsc7YyuF2min+e8yvzBqg0E1GQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7DF374000A
+X-Stat-Signature: b8jj9on1pjb7m5j1wj4h44k55kpw5tr4
+X-HE-Tag: 1783795815-665076
+X-HE-Meta: U2FsdGVkX1/Ic06c/a7FYrKSb6wVzantOEgoOA9EGUvEQYHmnoT0kYpcJ8ihAAm5t0n6gBoRTmOLSLLDnNMPhIfUE1FtoyKLgc9LSyFjAd/APHkod6rWUNIAuCEDtWSCoJFHj4dYCTdcF+vTwpI8o+YRXThCHlBCl4xhGU1D+lDkex3KmEpzfVychhtqW9wLhgBfmgK6iZR7/VJxcFR5Mz4wWf/CfxL9SY6dlkW/+JTfOl2/3WW9H6ePMkVDQZAloFLFjrZIzEjrzOHehXdZF+E0yTSnNt0YLCe/shTF3aYtsEtKxQCUrB/Un5BCeqclilkULbESW+4+B2u+xwLf/R4rXnc7vwdmUKO2vGKZu6HLRXgG1qtMim74S5EGp9bBs6QwEvX9GoIGKpoMxW9xRXJ+FpsFKvweU4tmInuAPboZvdcSTbe26HoWAdR7ri7bP9+RqdNJFjmcqeZlQ0sjChGnXLoGmIefuA2PIEG9+O5FnKEgV63moeUvnbF+nXXtqCTFd0eKjI4lr8ISnRmDoX3+bkTuI367RQW9/aTuf5eSCgPTiCVpyLjukFWnSVzn3gQD7vCU7hK5i/RfqfHqzXB+tCIWv59TGwa8hBMokxbx4d3AYUaX/8J8nGJebCbutOnZ3ZAn/Bf33sH5HjCJvKlczDcs1DIsFB2vdiV0o/cINRh80A+S7hFL4etrbmewq6BCYhHh2EOOYo5wmm1h2lPIEK1q5t+tdQcvySigzDGV01rrp6WoDKQ6+1bAFxuHdlLUuJP0uAP7JF4Dn1uFUp71Wbf7u7p5W5VjywbD1rLr0Si1Jn8oahb7TzdmdSLcmrKvdci053m1l4NrR4PxrTE/AvG0lLedDlwk4u/+2E+Fgw9A4dnvAtwI0DD3mdhHs5+a1KNdu+l506q4ofCQgD2t5EWlUy0g4a9RQgi5i1TzAHyuy+QaR3ULviur/hPk+HvQLmKT71gjNxDSa+W
+ htrMDJDP
+ 7GpMnR5PqzTrlgzrzjXUq5GZI7BfDcyEVuj4oCByV3M5DE/p7DaSGGyrbjvHoXoorHk4rEdQAzZSejKLAAuUyxmiZ9bozYHbRbPjkKyNrT5ZaGJZ2YBaSl8KG49s05KARn2f3tTP85WxtNk0Q2y+z6M5JLsUItfgchdvLgjmHHw93UMub00Umz3xw5dkvESjmKbLld5QxeTCOoFnTGqRzZKkAcIPizM5Oxz0+lHVLtJzQdN+Wb7nZFJUvPT00zxp7xjJrVmbmXUBYPKPYB1RLUZ+49LzDsb5AqOPnXMdBS5UMtJKnYgVAEZG6gYeuwYot4OEDFQI1pTm0AEKPKEPwyHfm0LGxLZbqM1+ucGZIlXdqdZGoRnuoeuv9DoyJRChzcU+L5sk4UtX9Prxnce8CW7fkhfIkeMa/IsoigSZivNDlK7gdF7R6Af+KzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,90 +166,176 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Replace use of the legacy vm_flags_t flags with vma_flags_t values
-throughout the mprotect logic.
+throughout the mremap logic.
 
-Note that we retain the legacy vm_flags_t bit shifting code in
-do_mprotect_pkey(), deferring a vma_flags_t approach to this for the time
-being.
+Note that, in replacing vm_flags_clear() (which takes the VMA write lock)
+with vma_clear_flags() and vma_clear_flags_mask() (which do not)
+respectively in unmap_source_vma() and dontunmap_complete(), we do not add
+a VMA write lock to account for htis.
+
+This is because, in both cases, move_vma() is their calling function and
+this has already acquired the VMA write lock on vrm->vma whose VMA flags
+are being cleared.
+
+In the case of vma_set_flags() in unmap_source_vma() we do need to do this
+- as prev and next were not necessarily write locked at this point.
 
 Additionally update comments to reflect the changes to be consistent.
 
 No functional change intended.
 
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/mprotect.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ mm/mremap.c | 38 ++++++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index dc27bbc1712f..2888ee638d87 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -40,7 +40,7 @@
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 384ef4cc2195..b64aa1f6e07e 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -68,7 +68,7 @@ struct vma_remap_struct {
+ 	bool populate_expand;		/* mlock()'d expanded, must populate. */
+ 	enum mremap_type remap_type;	/* expand, shrink, etc. */
+ 	bool mmap_locked;		/* Is mm currently write-locked? */
+-	unsigned long charged;		/* If VM_ACCOUNT, # pages to account. */
++	unsigned long charged;		/* If VMA_ACCOUNT_BIT, # pgs to account */
+ 	bool vmi_needs_invalidate;	/* Is the VMA iterator invalidated? */
+ };
  
- static bool maybe_change_pte_writable(struct vm_area_struct *vma, pte_t pte)
+@@ -963,7 +963,7 @@ static unsigned long vrm_set_new_addr(struct vma_remap_struct *vrm)
+ 
+ 	if (vrm->flags & MREMAP_FIXED)
+ 		map_flags |= MAP_FIXED;
+-	if (vma->vm_flags & VM_MAYSHARE)
++	if (vma_test(vma, VMA_MAYSHARE_BIT))
+ 		map_flags |= MAP_SHARED;
+ 
+ 	res = get_unmapped_area(vma->vm_file, new_addr, vrm->new_len, pgoff,
+@@ -985,7 +985,7 @@ static bool vrm_calc_charge(struct vma_remap_struct *vrm)
  {
--	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
-+	if (WARN_ON_ONCE(!vma_test(vma, VMA_WRITE_BIT)))
- 		return false;
+ 	unsigned long charged;
  
- 	/* Don't touch entries that are not even readable. */
-@@ -97,7 +97,7 @@ static bool can_change_shared_pte_writable(struct vm_area_struct *vma,
- bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
- 			     pte_t pte)
- {
--	if (!(vma->vm_flags & VM_SHARED))
-+	if (!vma_test(vma, VMA_SHARED_BIT))
- 		return can_change_private_pte_writable(vma, addr, pte);
- 
- 	return can_change_shared_pte_writable(vma, pte);
-@@ -194,7 +194,7 @@ static __always_inline void set_write_prot_commit_flush_ptes(struct vm_area_stru
- {
- 	bool set_write;
- 
--	if (vma->vm_flags & VM_SHARED) {
-+	if (vma_test(vma, VMA_SHARED_BIT)) {
- 		set_write = can_change_shared_pte_writable(vma, ptent);
- 		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, nr_ptes,
- 				       /* idx = */ 0, set_write, tlb);
-@@ -846,8 +846,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- 		vm_unacct_memory(nrpages);
+-	if (!(vrm->vma->vm_flags & VM_ACCOUNT))
++	if (!vma_test(vrm->vma, VMA_ACCOUNT_BIT))
+ 		return true;
  
  	/*
--	 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
--	 * fault on access.
-+	 * Private VMA_LOCKED_BIT VMA becoming writable: trigger COW to avoid
-+	 * major fault on access.
+@@ -1012,7 +1012,7 @@ static bool vrm_calc_charge(struct vma_remap_struct *vrm)
+  */
+ static void vrm_uncharge(struct vma_remap_struct *vrm)
+ {
+-	if (!(vrm->vma->vm_flags & VM_ACCOUNT))
++	if (!vma_test(vrm->vma, VMA_ACCOUNT_BIT))
+ 		return;
+ 
+ 	vm_unacct_memory(vrm->charged);
+@@ -1032,7 +1032,7 @@ static void vrm_stat_account(struct vma_remap_struct *vrm,
+ 	struct vm_area_struct *vma = vrm->vma;
+ 
+ 	vm_stat_account(mm, vma->vm_flags, pages);
+-	if (vma->vm_flags & VM_LOCKED)
++	if (vma_test(vma, VMA_LOCKED_BIT))
+ 		mm->locked_vm += pages;
+ }
+ 
+@@ -1176,7 +1176,7 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
+ 	 * arose, in which case we _do_ wish to unmap the _new_ VMA, which means
+ 	 * we actually _do_ want it be unaccounted.
  	 */
- 	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT) &&
- 	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT) &&
-@@ -921,7 +921,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 			goto out;
- 		start = vma->vm_start;
- 		error = -EINVAL;
--		if (!(vma->vm_flags & VM_GROWSDOWN))
-+		if (!vma_test(vma, VMA_GROWSDOWN_BIT))
- 			goto out;
- 	} else {
- 		if (vma->vm_start > start)
-@@ -929,7 +929,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 		if (unlikely(grows & PROT_GROWSUP)) {
- 			end = vma->vm_end;
- 			error = -EINVAL;
--			if (!(vma->vm_flags & VM_GROWSUP))
-+			if (!vma_test_single_mask(vma, VMA_GROWSUP))
- 				goto out;
+-	bool accountable_move = (vma->vm_flags & VM_ACCOUNT) &&
++	bool accountable_move = vma_test(vma, VMA_ACCOUNT_BIT) &&
+ 		!(vrm->flags & MREMAP_DONTUNMAP);
+ 
+ 	/*
+@@ -1195,7 +1195,7 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
+ 	 * portions of the original VMA that remain.
+ 	 */
+ 	if (accountable_move) {
+-		vm_flags_clear(vma, VM_ACCOUNT);
++		vma_clear_flags(vma, VMA_ACCOUNT_BIT);
+ 		/* We are about to split vma, so store the start/end. */
+ 		vm_start = vma->vm_start;
+ 		vm_end = vma->vm_end;
+@@ -1220,8 +1220,8 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
+ 	 * |             |
+ 	 * |-------------|
+ 	 *
+-	 * Having cleared VM_ACCOUNT from the whole VMA, after we unmap above
+-	 * we'll end up with:
++	 * Having cleared VMA_ACCOUNT_BIT from the whole VMA, after we unmap
++	 * above we'll end up with:
+ 	 *
+ 	 *    addr  end
+ 	 *     |     |
+@@ -1241,13 +1241,15 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
+ 		if (vm_start < addr) {
+ 			struct vm_area_struct *prev = vma_prev(&vmi);
+ 
+-			vm_flags_set(prev, VM_ACCOUNT); /* Acquires VMA lock. */
++			vma_start_write(prev);
++			vma_set_flags(prev, VMA_ACCOUNT_BIT);
+ 		}
+ 
+ 		if (vm_end > end) {
+ 			struct vm_area_struct *next = vma_next(&vmi);
+ 
+-			vm_flags_set(next, VM_ACCOUNT); /* Acquires VMA lock. */
++			vma_start_write(next);
++			vma_set_flags(next, VMA_ACCOUNT_BIT);
  		}
  	}
-@@ -953,7 +953,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 		}
+ }
+@@ -1330,8 +1332,8 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
+ 	unsigned long old_start = vrm->vma->vm_start;
+ 	unsigned long old_end = vrm->vma->vm_end;
  
- 		/* Does the application expect PROT_READ to imply PROT_EXEC */
--		if (rier && (vma->vm_flags & VM_MAYEXEC))
-+		if (rier && vma_test(vma, VMA_MAYEXEC_BIT))
- 			prot |= PROT_EXEC;
+-	/* We always clear VM_LOCKED[ONFAULT] on the old VMA. */
+-	vm_flags_clear(vrm->vma, VM_LOCKED_MASK);
++	/* We always clear VMA_LOCKED[ONFAULT]_BIT on the old VMA. */
++	vma_clear_flags_mask(vrm->vma, VMA_LOCKED_MASK);
  
- 		/*
+ 	/*
+ 	 * anon_vma links of the old vma is no longer needed after its page
+@@ -1767,14 +1769,14 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
+ 	 * based on the original.  There are no known use cases for this
+ 	 * behavior.  As a result, fail such attempts.
+ 	 */
+-	if (!old_len && !(vma->vm_flags & (VM_SHARED | VM_MAYSHARE))) {
++	if (!old_len && !vma_test_any(vma, VMA_SHARED_BIT, VMA_MAYSHARE_BIT)) {
+ 		pr_warn_once("%s (%d): attempted to duplicate a private mapping with mremap.  This is not supported.\n",
+ 			     current->comm, current->pid);
+ 		return -EINVAL;
+ 	}
+ 
+ 	if ((vrm->flags & MREMAP_DONTUNMAP) &&
+-			(vma->vm_flags & (VM_DONTEXPAND | VM_PFNMAP)))
++	    vma_test_any(vma, VMA_DONTEXPAND_BIT, VMA_PFNMAP_BIT))
+ 		return -EINVAL;
+ 
+ 	/*
+@@ -1804,7 +1806,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
+ 		return 0;
+ 
+ 	/* We are expanding and the VMA is mlock()'d so we need to populate. */
+-	if (vma->vm_flags & VM_LOCKED)
++	if (vma_test(vma, VMA_LOCKED_BIT))
+ 		vrm->populate_expand = true;
+ 
+ 	/* Need to be careful about a growing mapping */
+@@ -1812,10 +1814,10 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
+ 	if (pgoff + (new_len >> PAGE_SHIFT) < pgoff)
+ 		return -EINVAL;
+ 
+-	if (vma->vm_flags & (VM_DONTEXPAND | VM_PFNMAP))
++	if (vma_test_any(vma, VMA_DONTEXPAND_BIT, VMA_PFNMAP_BIT))
+ 		return -EFAULT;
+ 
+-	if (!mlock_future_ok(mm, vma->vm_flags & VM_LOCKED, vrm->delta))
++	if (!mlock_future_ok(mm, vma_test(vma, VMA_LOCKED_BIT), vrm->delta))
+ 		return -EAGAIN;
+ 
+ 	if (!may_expand_vm(mm, &vma->flags, vrm->delta >> PAGE_SHIFT))
 
 -- 
 2.55.0
