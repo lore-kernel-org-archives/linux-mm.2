@@ -4,103 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3217C44501
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 04:41:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C9BC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 04:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B78216B0096; Sat, 11 Jul 2026 00:41:39 -0400 (EDT)
+	id 801F06B0098; Sat, 11 Jul 2026 00:46:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2F946B0098; Sat, 11 Jul 2026 00:41:39 -0400 (EDT)
+	id 7B1766B009B; Sat, 11 Jul 2026 00:46:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C9AA6B009B; Sat, 11 Jul 2026 00:41:39 -0400 (EDT)
+	id 6A0476B009E; Sat, 11 Jul 2026 00:46:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 747496B0096
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:41:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07A05120660
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:41:39 +0000 (UTC)
-X-FDA: 84975247518.01.76D9F64
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5088A1C0003
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:41:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=YKPgpTkN;
-	spf=pass (imf21.hostedemail.com: domain of m@mavick.dev designates 80.241.56.151 as permitted sender) smtp.mailfrom=m@mavick.dev;
-	dmarc=pass (policy=quarantine) header.from=mavick.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A2F36B0098
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:46:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD1404063E
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:46:04 +0000 (UTC)
+X-FDA: 84975258648.04.BE7E6B6
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 197C840002
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:46:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fA1rAf4B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of ahacigu.linux@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=ahacigu.linux@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783745163;
+	b=TKUrb8PujefON2R8o9zLacZvAhix2wkX4R1ZyxUqcgg9dRMv7fXJlFWjjFJ5qCyNFVb0jB
+	GjWqlDPl0xTofev0w5ajcYkeSa/QcsfrZRpyvzUVvXYS5+517yNNtnhnSMiwWOhbmnqm/8
+	bzOb4+e/Weu950JvGbR8ZfgmKnUnjRU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fA1rAf4B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of ahacigu.linux@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=ahacigu.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783744897;
+	s=arc-20220608; t=1783745163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2tAcnncj6o0PHFFxyod2DNFn1o5vZ+4t+GMElLi3co=;
-	b=kgEWNII77oWfd1f7g01p/9a37q4PghX20cVpVy5unN6iYU+1R3mkcZVLPCg21LFYrInxoD
-	y/6APNVPhVGoQ9ejOK7cx24s4yI7/K5ENAw2Ndz7abkF33EVeeM8Tay/n4sXbLbLhIvkIF
-	weQnnjEdYeND58jaulBjf97qveOmF5o=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=mavick.dev header.s=MBO0001 header.b=YKPgpTkN;
-	spf=pass (imf21.hostedemail.com: domain of m@mavick.dev designates 80.241.56.151 as permitted sender) smtp.mailfrom=m@mavick.dev;
-	dmarc=pass (policy=quarantine) header.from=mavick.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783744897;
-	b=aPKqf9qX++qJ3JoKiyUK/DnLg/MuXcTK/sRbZgaxVeKXCshHKiw7DFqRNljGhnTySL271F
-	gEMpa25Kq+g2j4wR3khsr6IZFKF82M7oOSKTg60uLXGY+w3d49NG40rWktbiAV3gGaiJER
-	i+SCX4+38d982BD3+S2DcycY5xa7zeU=
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gxwyR0NHYz8tyn;
-	Sat, 11 Jul 2026 06:41:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mavick.dev; s=MBO0001;
-	t=1783744895;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X2tAcnncj6o0PHFFxyod2DNFn1o5vZ+4t+GMElLi3co=;
-	b=YKPgpTkNGHTkTmCpFJvuS4tmvjFHHnLcQnpxSY0fG3To+T2mWazjnSrVml1aTmPMLJatDv
-	+KYB5awsHiUUOoOPgSNKwCAB8HgkMZCPiyvP6ZszW+J2BDYF6GEMjdoOaSI1QclRAtaU+b
-	VnDUyd9idDjkuYGleHKVxXWpxjN53O00xtUOVNjBq8+pLFUayKd9xOC0iz6lCONcQMbxuY
-	CZMp/DRgOiqSFrWexUbOLasDOnIi6I16CqFxBiqrGoPbPkabvJpHD9t6FcCC5QS3LCb4+M
-	81c5XFlGW61FpcPANvkVzhuBZ6Z9sJm46WCVC//IyLYqk/3eNs+hSHB4dbfqgA==
-From: Eugene Mavick <m@mavick.dev>
-Date: Sat, 11 Jul 2026 12:40:23 +0800
-Subject: [PATCH v3 5/5] MAINTAINERS: add entries for ref_trace_final_put
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rwiqhuS1dgr/o//ceIUYjpzsCv14pH4erOSkAkROOoo=;
+	b=4QAtwAR54dEOE+70f1B2k7j127bFYzavxFaJTMYJs7i8ZUB/0s7xGof6e/hK3/yY5TTFgf
+	PLeuycZFYTGIr/brzt7sK4zE2uyBWaL8MQiZqqx4exQTcUrZisIr2IGYgX1SkNHrOmrbR1
+	oA22RC/vfKNgj7ASv53RqRVuu+6rvAY=
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-80c5cb9a888so18363047b3.3
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:46:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783745162; x=1784349962; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rwiqhuS1dgr/o//ceIUYjpzsCv14pH4erOSkAkROOoo=;
+        b=fA1rAf4BZxLkdFAL7khytrvPdrdFlp+k76DLjFZUR6FmsoHrg1hCWg5TBhAoTztdI4
+         C43qmSjOtuRcBzqt7rl3rpG8yT3OamIJe5WuOYw1xiAXWVOm1IdCdMqtDQwbdViEq40+
+         JktkzNd2w9lKi+1HWdbujS0SK89OacnoENQUNv+R7OWGVX9jVlHeHWKZ7xJxjr4j4sdX
+         grjbv2i3Jd0dNN8NBuqSgagTCzQewrb/bxyZrnMq2HDDf4DaihHqecFhcpBo6pLE3xMx
+         3pnsvNy+a2GTYbPf340oX2An6GzM6EFJQCZ72V4GyWyT1QjPnlMWFElg7Qb1EpXYWJLg
+         bdvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783745162; x=1784349962;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rwiqhuS1dgr/o//ceIUYjpzsCv14pH4erOSkAkROOoo=;
+        b=tKb3MP3KFL4ldxtzOa7vkSEQyuAsS07oiIDIrQy3FsTH0C6hxpx2IDEaulm5OygmOu
+         1brnPIYSBAR5+pQibiKdnleP8FBJ0FoFalRzdncIHLsbZnECaCkfvkoOEoW5PJx8/FWf
+         Pt3Sygx0wNigRTARj6V2w+M3DT+Dnh+Xr4jjq6eo6cAKvUTZ6RI/gYICnOccONGYjj7m
+         WNvyfqv6AU/h3Bu8EfwtiEt70m1Elc0Ju45NfFim6j8Mk3otZwiCp/zX7Ml06bl9B1pZ
+         ndqLEUMShTzQm1X5ETQiAp8Osk9pU3SvI310/TQ8Mpa5gn+4EZSyW2r4O1727BIvP/x3
+         0ibw==
+X-Forwarded-Encrypted: i=1; AHgh+RrQY5BgnMq0aAVvHPqE2CVDjg0Px/tYjj2mHoRxKszOfinDp/IciH2/QEJhTutf9YuytB58M6awCQ==@kvack.org
+X-Gm-Message-State: AOJu0YzPnlT+BR3pE9Fa3QE+oAG1Pb4mEqrYGapkPkNz4CNRMTAkqYJV
+	2w9v2zF0g029373pL2aXbnAuVPF/cZPwJSp0Q5zh8ZpPIvsdEIFYEqW8
+X-Gm-Gg: AfdE7cmmRXKxPxm3MOIcwXhIDKsHSOTyTrW1qLO91TmTw1RnTfCBrYIZtqrKXv1rWmp
+	9Len2ZkQ4ITGAJlCm1xiT0PShLG43RuPPxGs98z2TPXaH8bcmHfiRnMAG0pB1PLzll/QSC4Scks
+	S4rUApVKqOr4UW4knHHR3K59TJCxjszBba3yXD7NJfS7h5Zo2dzMflH7dK/S6iHV8TBwnX5esEX
+	sW/836y4iMYNca6R18rCWjjVH/2FA09Mf77D33lvIBlGAdP7oCm3xgrlIYKsUKByY3WgBtMhm6X
+	qUrb8ZDvJUhu94BQxouL2+qwKEMd7eS4MD6+hrDBr55LCLbVD24IZd9vvCnwQrY2ndkb9zyF9JD
+	tzLk9/5NLFgEmt8A0V23K12aIjFQVdnSc9C3bNEJRUeBh9nnmEgNui47ooQRvPY1pd7GI8G0Chp
+	wPVsY1RBJ/lceQD15g
+X-Received: by 2002:a05:690c:688e:b0:81e:79f0:4898 with SMTP id 00721157ae682-81e9000683dmr11835697b3.15.1783745161966;
+        Fri, 10 Jul 2026 21:46:01 -0700 (PDT)
+Received: from host.arpa ([2600:1700:7c:96e0:d1e9:c04d:a97e:9636])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e950567eesm2640477b3.13.2026.07.10.21.45.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 21:46:00 -0700 (PDT)
+From: Altan Hacigumus <ahacigu.linux@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/vmscan: clear hopeless kswapd when global direct reclaim makes progress
+Date: Fri, 10 Jul 2026 21:39:46 -0700
+Message-ID: <20260711043946.68421-1-ahacigu.linux@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260711-refcount-final-put-trace-v3-5-674c8f03d9f9@mavick.dev>
-References: <20260711-refcount-final-put-trace-v3-0-674c8f03d9f9@mavick.dev>
-In-Reply-To: <20260711-refcount-final-put-trace-v3-0-674c8f03d9f9@mavick.dev>
-To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Boqun Feng <boqun@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Gary Guo <gary@garyguo.net>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
- linux-mm@kvack.org, Eugene Mavick <m@mavick.dev>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=627; i=m@mavick.dev;
- h=from:subject:message-id; bh=h+1tyznbFEOyuRy4iHAT3B3e7gGvTqt1Z3Rotq3NoN4=;
- b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFmBJ21v2yzi+zRlaZGezLG5JizShe9a81LsYvQ/nV1kc
- muu64IvHaUsDGJcDLJiiiw1WQnuGStnJRofndQDM4eVCWQIAxenAEwk5zgjw6YdTc9mn0rWMTs2
- x5ljwrekf347GjOX7hLiMXs1WVH1WjIjw5pCnp3mIY8Wzpjy/JSF97mX+otcX1xIZtBkFpYJqpv
- UyAUA
-X-Developer-Key: i=m@mavick.dev; a=openpgp;
- fpr=7C6A604768A99A6133C5928C9D1FCA7EDB7D344F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 197C840002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5088A1C0003
-X-Stat-Signature: 594pr7whnutkidocgqrgngsjaxwth9fs
-X-HE-Tag: 1783744897-378329
-X-HE-Meta: U2FsdGVkX18+EUSGwF2FGfHRaefQyPAi7OB8acmQSN+zDja1uIeMM6kJ4hwP1F2VDD9c4Opg4MjkW8nunui48y+t3QU9bb+rpuEjD/0KAthP1fcgwD9fwGWZYUleP2xFhSO1MDxIiE8IwNNvv9bchYdkM3EYpHe4GrauyuwsjGKwQzUjKJSi2XfWQLBdIxdo/pWctt4fk+Mv493n7Z07A1D7FXK0jR0QNClXMICxB2KNtAuePaiXLFsy0xRlpwSXVBDPt2vKrd7MZEF70ejd/F320mgx2IFwwBK7xET1yrx/wjMM6quBnsvGY40wHx4wLMn3ouMeP7e7374xtbh/XGAxnpQpNHguYatfkaLUxEcihGW4ephgdzVJDZ7lPaK38/U3UXA0yUh8I6udI2icn5PbI3KlQ05NUr4x0+LrWBAsMczHu9YZvMeCPphknhsm00mqG7MzQ3xR258M967m9hKGbXvtDBSeWPq7NS8YMyzqPplGa93X2G9NhdG4LuGkC4aHrBvWF87xViPfe9LBE0bVpszhvIYTfwTYtQ1P6PHpB2xOrR8nzsk8+cReX3QHi9FSRQ1EyeStnjrnuvCui+u3WEEKiSllXgB9TK/E0qpkEWJ2g0nyh2+tNG81Lzz0JqIfUrgl9V3rqoHIsAGejjoAlguLpWr1CeYzcQYRImu2b/QfOvuMCsWslBrOAb4cwqi7qGtwKCsk3wtdw9O1uuQ/JdmfckrOh711mvA33kGvl1Lvne1dd9HvWRbDEFAoDF4/N9mWAsUNYVaktoAx/Wsi3m7dK950+NRYVTbz11OEAVigljfWLt7p7bkVPFpwoOU2jGHFzUSgrP9b0lAsI8rxN5d8jIZW9HsdSONzqMAv9vTgoQYM/Df6AOoPUHTSEFcPR8ZkJp1ZNlLmbAUGugRqaAqGejjctSC4uE/CQS+ipg/7PNifdRmoNSb7linUKjBydYC+8fHKqzmtGVe
- 2NN85012
- SO4ccsIxyB/MZP/tiX4WIL3I49HtYhy884bxvsmLNeDku57K2QwnXXQ8gz3DvikLL0eI+TgdtITh6MFc8kSHk6s6cP9V+sG8BkMwDQ7n5m/inUOp23Qxzp79myPGU2Z3j1wOpay50WpJbUrYU4qF7ZFIZiamLEagJP0dH951vAC1y6mqGPmJ+KbVHrXzfMM4vmzs45pNU30+6gf4pWhJ0efj2R22szT3JGZpxA0xdFk0w6Qjnw0R7wXb8d3CG82ObIaJZvBdSHgZJgTJSCYvN2ZuLyIUa7upFiNFUwCyO53l0h0c=
+X-Stat-Signature: s6z4gfmq6rdgxedmzr9t73f5c1b4x8j1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783745162-879177
+X-HE-Meta: U2FsdGVkX19TQfzZWY4G90+57qn/nSjrWbSEJyaOgTdAc/Dpf8iMhdXEPVN5DSoyb3rxzUgWIMBkmt2LrYNXME+XEC6Sz9Ccjm1XTAGGQxspiKkoWPOZWq5saTZzfSIIyTzjBpBYuN86bMMctgM6NDwVF26wcbQ3fsdobSctySwhYRviK2WgyV/BDQW5Cy5f3TZ9mM4h/jxLV46CX54oXVyqDxgOct4klajsbxLCoulP/llJzbbFdMiuP84rZNZUFD04vyJTXLrAk36BOdnXr3vQutPHFlru47WPSnh23HAtBK9K0ozm7pcgi5oWu0IgnlOUYlch9DrfHgaAMvjs+aE+q3Wn9zslhA0EQs70tyMkL5HppPgaxhA85v5ds9rfMp30bD9Ta32tcooGn9TTUNfYbpOVoTTfRRgn7Bv/IICAsM/zcZ8griE3yCRniMzY1Rv4Yei2gbO2j+q+28tbvXJa8omodlzsoP2kePoC+HpOz7PqrOgzEb9m8GoGoZIj5o8i3D0L4IEKlEvW9zE5wdes3jSDzwKZyhFgsDrJf6hMmwsYhaaeBPqG2U6/+Hj6vEN1k4OsQoUpX0Jk5eXRT+rZtLXwNvUgxhGdNqJiRWY+bWvwQd6kEL9llCTJ/heZdO3xbt/kUaBM+ntkDiFcEA/4MPupUPmkWKD6rnvyaYVRTSoqCUl150k4txWZxOxEIrJVyGZCyMVLGQLhymlALXsDeHgPO6Msqp8o89PgmREpBIZjO7CB0R7vLIWnGng11ZoX2uKzo3oszT5pjRw0EOC+gqk+rzVN9GQUL17Hw1P92oRyXtBcfGDnWUsrIbneJJkwg7brtlNH/xSHLWj9Rh+5wLY3zNJqZqv01uC8iBqu9020E6kWj/Mj3DBum5wMtNk/uvntQOAuElQxJdyEVUOWacp9gA7gsSf0UiEvd6Zn4yKTQgx//WUH3fwej2yMvxQhyAFbYQQL+ojq3Y4
+ TiFKeW+e
+ fOcq5ySl9kq780t5hza0mdZnj9hOf4CqEMj9O0jMq9CbYmnv38MvJYnyZTzmnM0rXv4V264lV19MCQjo+lSWuGuqTeKbST2NZsC3NnVxzd6jmIZnHNAcgNjxXGooQHIKXO/jtzba4excY8rTPSDMPt5rl2DuMVyY38Yzq0qJofbhJzoRq4PUOso8QSP/PbLC9ijnHJq0MhFdmE6xm0ovXbJXNg/TKWD3HOKnaqzzZuwODdNAlAIoA23A+sBa4v9dQs+VRSSfuDz+RweLStyniAKUH4TUbjjm8IpnAKBaugxy6tcM+MdoXDB382+333V9cpAU+Q142iDLvj5WJm4QOq+K6Q+yFKms6uCYFTob/wak2HkJlVFj0uYxpN1MrywMRHzgX5N4RGET0dN+HktjODHCQny3i43GU4apF7xBbGlIFBgU1weSq7OrJjyFjm07jIe1hicSZIt8GkdjSp1PkZAJDPcPBe6kLlRefWauR3wDL5cE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,30 +130,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new files added in the patch series to MAINTAINERS
+Direct reclaim clears the hopeless kswapd state only once the node
+becomes balanced - added by commit dc9fe9b7056a ("mm/vmscan: mitigate
+spurious kswapd_failures reset from direct reclaim") so that cgroup
+memory.high reclaim cannot repeatedly revive a kswapd that is unable to
+balance the node. Before it, any reclaim progress revived kswapd.
 
-Signed-off-by: Eugene Mavick <m@mavick.dev>
+However, this restriction also prevents global direct reclaim from
+reviving kswapd. Under sustained memory pressure, global direct reclaim
+may continue making progress without the node ever reaching the high
+watermark, leaving reclaim to allocating tasks.
+
+The effect is visible on systems where a database workload mlocks most
+of memory and the remainder is under continuous pressure: allocations
+stall long enough that ordinary tasks (e.g. ssh) become slow or
+unresponsive, while kswapd sits idle.
+
+Unlike memcg reclaim, global direct reclaim follows the same node-wide
+reclaim path as kswapd. Clear the hopeless state when global direct
+reclaim makes progress, while continuing to require a balanced node for
+memcg reclaim. kswapd_try_clear_hopeless() becomes static since struct
+scan_control is private to vmscan.c.
+
+On a workload with most memory mlocked and the remainder under sustained
+churn, with swap enabled, comparing the same 60s window:
+                              base       patched
+  allocstall (all zones)    413441          6532
+  pgsteal_direct          15889552        255619
+  pgsteal_kswapd                 0      26079382
+  PSI memory full avg60     13.10%         9.37%
+
+Direct reclaim was already reclaiming many pages in the baseline;
+this change lets kswapd resume doing that work asynchronously.
+
+Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
 ---
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+v2: fold the impact and the origin commit into the changelog
+v1: https://lore.kernel.org/all/20260710024429.70923-1-ahacigu.linux@gmail.com/
+---
+ include/linux/mmzone.h |  2 --
+ mm/vmscan.c            | 23 ++++++++++++++---------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 10e8253181d3..2dbb7441906e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4210,7 +4210,10 @@ S:	Maintained
- F:	Documentation/atomic_*.txt
- F:	arch/*/include/asm/atomic*.h
- F:	include/*/atomic*.h
-+F:	include/linux/ref_trace.h
- F:	include/linux/refcount.h
-+F:	lib/ref_trace.c
-+F:	lib/tests/ref_trace_kunit.c
- F:	scripts/atomic/
- F:	rust/kernel/sync/atomic.rs
- F:	rust/kernel/sync/atomic/
-
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index ca2712187147..1db6f8dac927 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1630,8 +1630,6 @@ enum kswapd_clear_hopeless_reason {
+ 
+ void wakeup_kswapd(struct zone *zone, gfp_t gfp_mask, int order,
+ 		   enum zone_type highest_zoneidx);
+-void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
+-			       unsigned int order, int highest_zoneidx);
+ void kswapd_clear_hopeless(pg_data_t *pgdat, enum kswapd_clear_hopeless_reason reason);
+ bool kswapd_test_hopeless(pg_data_t *pgdat);
+ 
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..78fd35a11eee 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -198,6 +198,9 @@ struct scan_control {
+  */
+ int vm_swappiness = 60;
+ 
++static void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
++				      struct scan_control *sc);
++
+ #ifdef CONFIG_MEMCG
+ 
+ /* Returns true for reclaim through cgroup limits or cgroup interfaces. */
+@@ -5172,7 +5175,7 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
+ 	blk_finish_plug(&plug);
+ done:
+ 	if (sc->nr_reclaimed > reclaimed)
+-		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
++		kswapd_try_clear_hopeless(pgdat, sc);
+ }
+ 
+ /******************************************************************************
+@@ -6251,7 +6254,7 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
+ 	 * successful direct reclaim run will revive a dormant kswapd.
+ 	 */
+ 	if (reclaimable)
+-		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
++		kswapd_try_clear_hopeless(pgdat, sc);
+ 	else if (sc->cache_trim_mode)
+ 		sc->cache_trim_mode_failed = 1;
+ }
+@@ -7530,15 +7533,17 @@ void kswapd_clear_hopeless(pg_data_t *pgdat, enum kswapd_clear_hopeless_reason r
+ }
+ 
+ /*
+- * Reset kswapd_failures only when the node is balanced. Without this
+- * check, successful direct reclaim (e.g., from cgroup memory.high
+- * throttling) can keep resetting kswapd_failures even when the node
+- * cannot be balanced, causing kswapd to run endlessly.
++ * Reset kswapd_failures when the node is balanced, or when global
++ * direct reclaim makes progress - then kswapd can make progress too.
++ * Memcg reclaim can succeed where kswapd cannot (memcg protection is
++ * not enforced against the reclaim target), so its progress resets
++ * kswapd_failures only when the node is balanced.
+  */
+-void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
+-			       unsigned int order, int highest_zoneidx)
++static void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
++				      struct scan_control *sc)
+ {
+-	if (pgdat_balanced(pgdat, order, highest_zoneidx))
++	if ((!current_is_kswapd() && !cgroup_reclaim(sc)) ||
++	    pgdat_balanced(pgdat, sc->order, sc->reclaim_idx))
+ 		kswapd_clear_hopeless(pgdat, current_is_kswapd() ?
+ 			KSWAPD_CLEAR_HOPELESS_KSWAPD : KSWAPD_CLEAR_HOPELESS_DIRECT);
+ }
 -- 
-2.51.2
+2.55.0
 
 
