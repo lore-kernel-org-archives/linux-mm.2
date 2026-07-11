@@ -4,104 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1DAAC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 05:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EBE2C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 05:32:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE61B6B0005; Sat, 11 Jul 2026 01:12:01 -0400 (EDT)
+	id 709D96B0005; Sat, 11 Jul 2026 01:32:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B978B6B0088; Sat, 11 Jul 2026 01:12:01 -0400 (EDT)
+	id 693EC6B0088; Sat, 11 Jul 2026 01:32:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A85736B008A; Sat, 11 Jul 2026 01:12:01 -0400 (EDT)
+	id 55BB56B008A; Sat, 11 Jul 2026 01:32:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B18A6B0005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 01:12:01 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EAD2E1C3E8E
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 05:12:00 +0000 (UTC)
-X-FDA: 84975324000.03.D9E3AD9
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0A23D140005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 05:11:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 313BA6B0005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 01:32:25 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB5DD4064C
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 05:32:24 +0000 (UTC)
+X-FDA: 84975375408.05.71C0E94
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D5808100005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 05:32:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=deige75K;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783746718;
+	s=arc-20220608; t=1783747943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wAPQbaieGs9nKR9d4K0gpydHyzURMMBfPnt+0C55iO8=;
-	b=AkFE5i++4IB5JuckJ0Z12O0KSfpihuSTs0LrJV383OAR9wgMiFfKARumzAat+AbVwHigZf
-	sLWxKPigXWlmZPa6OdpaP7ZhOwURU6XbyqHsiyJ1Zo99PWCInJ7YR4tHqxYAZoGzB1IfBA
-	sKfD/mfyLhk/T+n3v6JKOhLblAGcGbE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G5NmJY2iw9mr7LiD+wBGyisuFVRNUZ+aiJ7vkuUhCAE=;
+	b=Xo8TyscrdAXZzSn7u/A53U5K4CmS+ya/Ifobq3YfnDJB4fs6COkg9nkLrE7LNgOzfvUM30
+	u21YbPJlwOA7XNR8+/Wkuzv8wLx1sMcleJ5rUwiyouHgSwhptAQU7lk5PaRSoElid7C9+2
+	bc9fQKMOP6fdr029q7Lo3kWbOMHV4wU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=deige75K;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783746718;
-	b=G5Mz+JYFw4pX67zbksr2a+zXBL98A3gjz7zz0qiofDjlIH/RCcUPLccwkRDcpyXKma8es9
-	qP97pBXTP7IDj0mNL7iYJ1rEfB0RoyufpR9aDD/ABzLn1leGZ9HENS72vF67xL+AhgCr6v
-	zSzuNTHPDPFhGt/afwsYko5RcFceT+k=
-X-UUID: 048ab6cc7ce711f1aa26b74ffac11d73-20260711
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_QP, HR_CTT_TXT
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_MAILER_MTBG
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
-	DN_TRUSTED, SRC_TRUSTED, SA_EXISTED, SN_UNTRUSTED, SN_UNFAMILIAR
-	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, UD_TRUSTED, CIE_GOOD_SPF
-	CIE_UNKNOWN, GTI_FG_BS, GTI_C_CI, GTI_FG_IT, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:c4f4e401-dc88-4d47-9040-54b3aed482a8,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:c4f4e401-dc88-4d47-9040-54b3aed482a8,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:a6d662c7724aa7a570282950bd995e40,BulkI
-	D:260710220255YPJJGYNN,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:99|1,File:
-	nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:
-	0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 048ab6cc7ce711f1aa26b74ffac11d73-20260711
-X-User: husong@kylinos.cn
-Received: from ehlo.thunderbird.net [(223.160.130.75)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1057582826; Sat, 11 Jul 2026 13:11:48 +0800
-Date: Sat, 11 Jul 2026 13:11:42 +0800
-From: Song Hu <husong@kylinos.cn>
-To: SJ Park <sj@kernel.org>
-CC: akpm@linux-foundation.org, shu17az@gmail.com, jiayuan.chen@shopee.com,
- damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/tests/core-kunit: test damon_nr_accesses_mvsum()
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260710140238.24103-1-sj@kernel.org>
-References:  <20260710140238.24103-1-sj@kernel.org>
-Message-ID: <B4B6791A-5400-4342-B43D-FA9C7895E7BF@kylinos.cn>
+	t=1783747943;
+	b=MkVg5NqTxZVOmrcPXQzHgbCoQErgO/lKxv4oQDTIhxe6KkzOsIzFGwF+8ohSTkhj4RVX0J
+	chTxq6gVSYxXH7MCx6Dvl0hSuB6AY0bernaicjSjWtEfSM0peCvt+FYan2NehK+/lbALPE
+	9lkh9ud+ok3iTE1+Nlh/kcENCkpWrUo=
+Message-ID: <ab1bdfa0-7382-4d26-a65d-68eb172eb84a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783747940;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G5NmJY2iw9mr7LiD+wBGyisuFVRNUZ+aiJ7vkuUhCAE=;
+	b=deige75KcMd91XGDV/xznNzEracNWg8yXfEIAK9/OOOe8uqF1uoLyRtIg5SSGFwX2AQ8jc
+	WqXflyjQsmlcZq67w+XQRJVVFQ4k2yAoCA5Pj3Ag6IHox67Nho1Z+EK2liTxHbD25RhjwS
+	8hKFh1eTpSfmQhoXQoLcCR3KpQ6sEZA=
+Date: Sat, 11 Jul 2026 13:31:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] mm: shrinker: Fix double-free in alloc_shrinker_info
+ error path
+To: Hongling Zeng <zenghongling@kylinos.cn>, akpm@linux-foundation.org,
+ david@fromorbit.com, roman.gushchin@linux.dev, muchun.song@linux.dev
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhongling0719@126.com,
+ stable@vger.kernel.org
+References: <20260711041954.95749-1-zenghongling@kylinos.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260711041954.95749-1-zenghongling@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0A23D140005
-X-Stat-Signature: n7y8cgsj89fah5976c1mgs7pbjejtjya
-X-HE-Tag: 1783746716-640549
-X-HE-Meta: U2FsdGVkX181Sz0UnAJJYlrADZ6PatBsq+cJUwOlgh4V31s920dK7U9IbeMmlBN1HnfQKhyBAzoqDlteqRTwuJP4axIoRYuN155GJskPKkhJGZQr8dqAySUKQne9/XiZbNLRPj6jAkRO8Fagw3DZJHqi+wNWPa0KcPXO5XEc3kM6WPhwles4CaEqZvZEBJ4XVtUF4q2/GJJdpziPjeEO0JtNEtoDRHuotGBFxU84gkzXi4CkWLPTELDSoyPIZ1mcnoXpUr/ctS2naAFFJu44zP5k6Vthx1oaeYOUoAo9bkvhsYrEj/jhqbZr4ffq+QrYXwp0ObtDxQxYU1k0fa093rspUJ2Z8lOaEUOlNj7YcqwEDFXa9FFbcHaYgL0AyfrjEf72WAFymw4xJhuu1S356429KOjDvl0nwpriJmikBECCbw6/btApJKvu/BAiRahNxUILmb7hMXBrBiPe13mCMLYUY0LeoGfJ6zGbxbGDsxs1smbCqof0ZbATzA7TE1FJD4/0Jc07k8kP4wN6x3Ych+ocmc2nA2ACUasYP4bdCEAvU0+pbtLGWSBc1EhB2BSfF3GgAaNfk95M9LHrGJhmWQAhcnT1t1jm3S9AYjBIWHqsHoJUfoFkCxrQXyP6lxum7a9UGmSlPkcHgD04qtdh6rFQyQ3MnBcjC8krhj37cRsRGd1mEZC1PtHsLSWJ2VzUt7T5EyLkSP0snvblAn7OTmcGn+C/W0G8OSqOZSx+1fzA7BNKfacG/WKNFsT3SUu0hSTJvq3HhHgJlvQmwXvzsQOiRKBLNbj3+IAULPJ2d4uspS/YhTDyfGN7jyvQRxCg7kNp26fdzDBt4i/dvDMLwyfZ8cSKK4S1tdwSVbsdyhPix6FDruG7UyosgEfAUxrOT1D0xXnqM5zRsqhFJiWEfI2mTx4Lqu1ocFF6I8u2f7J7bizqUCsh0YPXDwhCBVfVhh8TTVUQVPyiSq3GsH4
- r2BqspWf
- dF3+nhXHZpFwyi/NRKPi6bN0u52I2a4jNajj9C2WjEWXH1D5ZELA1ftg3+yULBAfZuF7vlZeWFPVVTDKU8D0zAWi6vM4V91fJGO4TAXfBTFfrjo6kb5gzt5CZx5g9pcneV56H2uygslnmcpCp6kEpzDdXuu/Tpa4yBlBjrIadKmxfRFPZOUKVC01QGZ6CaI3IEXtkf2fNZidPM3oGzb1Ala/MtQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D5808100005
+X-Stat-Signature: 4t1eorwitf31kuqfptztf4syzw6zk1yp
+X-HE-Tag: 1783747942-131605
+X-HE-Meta: U2FsdGVkX19u/AWsgUbVlXSq1WKRcvU7bqlf7RAAEZw/18b0qsb9WWO8hvNKFzQtik+Xa3Z17fCwhisbA3bMxqeDoTvprCXVSSSOrY3Mkj5Pk6wJy28FhuEFQPrFUGt0ChCFeSdaFIthgMBpf9BiuFRvbr7mKK4HVvKKIzSZPngh4amEm9RFMtOn5ex0+Gur2UE/8bgg/O3QVnqO8dCkclW/nIOrFCx+xtD3rLD0XPuVsmD/o7igtQ/t7cZHO1YG63NLN7lEtkC5v5+0QiDXCbadDwF1UlijfYiAwzSFhLOXnOSHvT9TWiZcNkBmjrY+qjc9PrH03OyUWxmExOziLBeQ3phJL3yJk3ThKe5vjzbTLXqzyb8B+1bfDRhEBtQC3LczHkH8fyeItHjcYKwRHWrCyMYrOLzSfi9bMipiFLsM7Tkf/HvTbIYJigrGi6MuEttcZ9bM2ghKt0qnS2YsbjyhBVgkQQ7pMDcnTZAUE1y3L9k/PIh35tYIEVk9X5OxBeTuvLZZrPOCFfGRpZ3f/xdUKnwfcqjhAsVs4l51b6toNWnTVtVZhnMZPi6pAVhxteJFne9XrDACJJ2kHetIIAY3Lsews4EJbaK0Vi1QYiqpk9nTMa1zryfkweViATkuoWhVrHtykW7h5709sXdjSqhaUiiGT3lfmWOzpR5mrTvL++chPvc5vtfC2ccKCfxGKlO9AwjTprrxJ2oA3DayarZLPT0MKcNbh/H7xu+6j5CahoZQc5MrtNx/IqGpfwY6uu50uT6lb9K+1jCQmfa76CB3lH25co849GgrS/CTD2yX4DaZqeF308GrGzF9ihAImSxo0UE1uVaP1A+jWv38pCLH2GFJGVkj89jNfWmDBwsxXiGoa0oTxHWSAOe3GTZqDHsOYArWbac/Fg8moSz1vzZBWHZ3hYgaWWuxSVrgg6y1424W6H8wP0CpEXJ6Ijs9PPpqq6hXRNEzJyTnHRm
+ v0RQg0QO
+ DoIu42AIbyN7YbnlR2OCoPliC6hNkz93INaavf/T+zqXId3PSwJtARK6DdlZBPsSQnFdNU9vLJlUczhg84y215uPwQlvMbaJq0zrk6I1f9qDq9cjxq/avpnGajUiENLAyyoWO0s+WOb6UkW3X7bawBOO/9ShYa/zdLaWqobhJU/2KhBh8pdBQk+pgfsk2LL49xqzZswqpci/yZPxRwk/6BXwNc/tEFAHPFU88mqhE9+Xbf5TEMpoqGHgtqGGUNjl0wS8RGcRKDjHXbD/vdNjPt1EAMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,89 +90,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Hongling,
 
+On 7/11/26 12:19 PM, Hongling Zeng wrote:
+> In alloc_shrinker_info(), when shrinker_unit_alloc() fails for a node,
+> the error handler calls free_shrinker_info() which iterates over ALL
+> nodes and tries to free their shrinker_info. For the failed node,
+> rcu_assign_pointer() was skipped, so its shrinker_info still points
+> to old data. This causes double-free of valid shrinker_info structures.
 
-=E4=BA=8E 2026=E5=B9=B47=E6=9C=8810=E6=97=A5 GMT+08:00 22:02:37=EF=BC=8CSJ=
- Park <sj@kernel=2Eorg> =E5=86=99=E9=81=93=EF=BC=9A
->On Fri, 10 Jul 2026 12:15:30 +0800 Song Hu <husong@kylinos=2Ecn> wrote:
->
->> damon_nr_accesses_mvsum() wraps damon_mvsum() with the monitoring
->> intervals of the context to compute the pseudo moving sum of a region's
->> access frequency, with a special case for when the whole aggregation
->> window remains=2E damon_mvsum() itself is already covered by
->> damon_test_mvsum(), but the wrapper is not=2E
->>=20
->> Add a table-driven KUnit test that exercises the full-window-remaining
->> boundary (with both reset and not-yet-reset nr_accesses), partially
->> elapsed windows, and the no-window-remaining case=2E
->
->Nice!  Thank you!
->
->>=20
->> Signed-off-by: Song Hu <husong@kylinos=2Ecn>
->> ---
->>  mm/damon/tests/core-kunit=2Eh | 49 +++++++++++++++++++++++++++++++++++=
-++
->>  1 file changed, 49 insertions(+)
->>=20
->> diff --git a/mm/damon/tests/core-kunit=2Eh b/mm/damon/tests/core-kunit=
-=2Eh
->> index 0124f83b39b8=2E=2E8c030282a638 100644
->> --- a/mm/damon/tests/core-kunit=2Eh
->> +++ b/mm/damon/tests/core-kunit=2Eh
->> @@ -683,6 +683,54 @@ static void damon_test_mvsum(struct kunit *test)
->>  	}
->>  }
->> =20
->> +/*
->> + * Test damon_nr_accesses_mvsum(), which wraps damon_mvsum() with the =
-monitoring
->
->Please wrap lines [1] for 80 columns limit=2E
+No, it will be NULL, not old data. Therefore, the double-free you
+mentioned doesn't exist. Before sending the fix, please verify the
+problem exists and your fix actually works.
 
-Hi SJ,
+And as a reminder, please don't repeatedly send identical patches:
 
-Thanks for your review=2E This was my mistake, and I will resolve it in th=
-e next patch version=2E
+1. 
+https://lore.kernel.org/all/20260711041509.92926-1-zenghongling@kylinos.cn/
+2. 
+https://lore.kernel.org/all/20260711041823.95135-1-zenghongling@kylinos.cn/
+3. 
+https://lore.kernel.org/all/20260711041954.95749-1-zenghongling@kylinos.cn/
 
->
->> + * intervals of the context=2E  With a sample interval of 1 and an agg=
-regation
->> + * interval of 10, an aggregation window is 10 sample intervals long=
-=2E  Each row
->> + * below specifies the passed sample intervals, the next aggregation t=
-ime in
->> + * sample intervals, the current and last nr_accesses of a region, and=
- the
->> + * expected return value=2E
->> + */
->> +static void damon_test_nr_accesses_mvsum(struct kunit *test)
->> +{
->> +	unsigned long input_expects[] =3D {
->> +		/* passed, next_aggr, nr_accesses, last_nr_accesses, expect */
->> +		0, 10, 5, 3, 3,		/* bp=3D10000: unreset nr_accesses ignored */
->
->I was bit confused what 'bp' means=2E  Can we just drop 'bp=3D=2E=2E=2E:'=
- part from the
->comment?
->
-
-This explanation is just my personal guess=2E I will delete all uncertain =
-content in the revised patch=2E
+One last thing, please make sure to base your changes on the latest
+tree.
 
 Thanks,
-Song
+Qi
 
->Also, let's keep the 80 columns limit=2E
->
->[=2E=2E=2E]
->
->Other than those, looks good to me!
->
->[1] https://docs=2Ekernel=2Eorg/process/coding-style=2Ehtml#breaking-long=
--lines-and-strings
->
->
->Thanks,
->SJ
+> 
+> Fix by tracking which node failed and only freeing shrinker_info
+> structures that were successfully assigned via rcu_assign_pointer()
+> in this call. Failed/unhandled nodes are left untouched.
+> 
+> Fixes: 15e8156713cc ("mm: shrinker: avoid memleak in alloc_shrinker_info")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+> ---
+>   mm/shrinker.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/shrinker.c b/mm/shrinker.c
+> index 7082d01c8c9d..92c6cb455fc9 100644
+> --- a/mm/shrinker.c
+> +++ b/mm/shrinker.c
+> @@ -78,6 +78,7 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+>   {
+>   	int nid, ret = 0;
+>   	int array_size = 0;
+> +	int failed_nid;
+>   
+>   	mutex_lock(&shrinker_mutex);
+>   	array_size = shrinker_unit_size(shrinker_nr_max);
+> @@ -98,8 +99,18 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+>   	return ret;
+>   
+>   err:
+> +	failed_nid = nid;
+> +	for_each_node(nid) {
+> +		struct shrinker_info *info;
+> +
+> +		if (nid >= failed_nid)
+> +			break;
+> +		info = shrinker_info_protected(memcg, nid);
+> +		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, NULL);
+> +		shrinker_unit_free(info, 0);
+> +		kvfree(info);
+> +	}
+>   	mutex_unlock(&shrinker_mutex);
+> -	free_shrinker_info(memcg);
+>   	return -ENOMEM;
+>   }
+>   
+
 
