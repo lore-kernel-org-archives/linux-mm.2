@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E45DC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 08:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 876EEC44501
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 08:13:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FE1D6B008A; Sat, 11 Jul 2026 04:05:19 -0400 (EDT)
+	id 3493B6B0005; Sat, 11 Jul 2026 04:13:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AF8C6B008C; Sat, 11 Jul 2026 04:05:19 -0400 (EDT)
+	id 2D2BA6B0088; Sat, 11 Jul 2026 04:13:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6B86B0092; Sat, 11 Jul 2026 04:05:19 -0400 (EDT)
+	id 19AAE6B008A; Sat, 11 Jul 2026 04:13:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E03516B008A
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:05:18 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 752C8A0692
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:05:18 +0000 (UTC)
-X-FDA: 84975760716.04.1E19838
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DE6A61C0006
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:05:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrA69GHo;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E95376B0005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:13:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 658291C3B7D
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:13:32 +0000 (UTC)
+X-FDA: 84975781464.20.E83B882
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 37B3B40002
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:13:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xw9nzOU5;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf04.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783757116;
+	s=arc-20220608; t=1783757610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oEJXi3Ipa/GF3uVFfVgIRTBsXVg1ufevqdVuD40f/4c=;
-	b=fJSXZ+KDaptOuU5sXmp+37PlzBrxdhsTb2G6/B4rPzWXeguONaocWdmYPrSNN1kK3b6U1F
-	Wxrf2RO6BIdubDNh3esKc/6sj8rJzD/0YTyHb3HQLwST8YWLx1Vvqo9gq9zX6Cha1ZA48t
-	e7jwld+w7Dl7dNvXUMNmdQabtifJzBw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783757116;
-	b=PK39/UkheANPs3DuclrxYmulYkG6cmVNidGeHrzAclIngPD8qDaNyAa/VpmZAxXh3WVZ2C
-	JD5THkIwmALa5q013rQEs81jvH1kg9/yKx8J04Q2e2Lm0oJNW/eW9vDwhtWZMgzkSOQe7d
-	7TczGqxT1K1GcBF5wybEI1q2Ph5YZNc=
+	bh=RivUc5YUXnOdUgRz0a+Ib/89lZt+K/9x14yXx6ELMXI=;
+	b=vfjOVjkKlL7MSEH4WCEHYd05JMN/XQb+J2UVbqR80YBoynfssUXi49VIkbOFmSPtckm09s
+	WZVkEoKWU5TiVhryF7TSk8sAWiengk7b4164j5vVaiRNFywzAlwJKwtCTgohYXy336yCGy
+	m2QebP+4m/ttCgnVG59efrE6olJK9Zw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrA69GHo;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 554CC60051;
-	Sat, 11 Jul 2026 08:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A3C1F000E9;
-	Sat, 11 Jul 2026 08:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783757116;
-	bh=oEJXi3Ipa/GF3uVFfVgIRTBsXVg1ufevqdVuD40f/4c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RrA69GHoEQEWSHV9FU+fJtMJB2iGQ06pVUQwtOrx8BpMO1GgoBGlvan9iYFRWTfNP
-	 9GGC5tfncOgs7hIDPl0MF43uMuNPgPDJR0n149gZx4Bnm9sRD4kPH4jEaGUplQ+Ko7
-	 INy66aVReGmFuTWGgR4BC/GBMV2Ll54xeCnx2JWTKiBLoOpSIZ3EaVcY9J/AHtNbg/
-	 TjVgv122gKFOPu7uoXJgvJaRGVJM7rW/8D2ocoNsrL1BRoSFquwgMRG1+N0KtcKUBq
-	 lyd2gOAlszvYPPmKIITFDPK3wZWBDHFJh9S2M6ySdIW1C5ACa3ykMpDNj09Sz+YlVZ
-	 UFofibfsgZMSg==
-Date: Sat, 11 Jul 2026 09:05:03 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: linux@armlinux.org.uk, akpm@linux-foundation.org, david@kernel.org, 
-	liam@infradead.org, liaohua4@huawei.com, lilinjie8@huawei.com, linusw@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mhocko@suse.com, rppt@kernel.org, sunnanyong@huawei.com, surenb@google.com, 
-	vbabka@kernel.org, wangkefeng.wang@huawei.com, xiqi2@huawei.com
-Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault()
- under CONFIG_DEBUG_USER
-Message-ID: <alH4-zEWkSDK5EvK@lucifer>
-References: <alHnqsIdcMghnUER@lucifer>
- <20260711075651.3114-1-xieyuanbin1@huawei.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xw9nzOU5;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf04.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783757610;
+	b=SNTKoNSpInmYsPmIaJRMasOnIAC8P+Il5fYnJ3+NABPVefaOvSeWPRWCbEU546ln9zeUZI
+	/pgJqGAqbNjUS+ns0FyDzCkr5h25xssRazabdehQuW9jIy1T8waLq0dKW0syEWJOdVsRkc
+	4nCTt75Vfzw3ud2TBcHQWOQ4Wmt5Pco=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=RivUc5YUXnOdUgRz0a+Ib/89lZt+K/9x14yXx6ELMXI=;
+	b=xw9nzOU534pfyhWOzj9pKap8q4607bkkToe3Ipnkb6QWR+MDZTi9e3O/H+gkxG0muwtB62cmy
+	590BeUAhjDQbde2s0E8aqoxW1fmQ4KWS6jkFNgDjFuif9yo4slxZHN8h5FhDdby0SSxkWEGjE0z
+	aOQke9SiLgZeI4qAHKPdblw=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gy1S444tjz1prLT;
+	Sat, 11 Jul 2026 16:04:04 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 647634057D;
+	Sat, 11 Jul 2026 16:13:22 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Sat, 11 Jul 2026 16:13:21 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <ljs@kernel.org>, <linux@armlinux.org.uk>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>, <liam@infradead.org>,
+	<liaohua4@huawei.com>, <lilinjie8@huawei.com>, <linusw@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <mhocko@suse.com>, <rppt@kernel.org>,
+	<sunnanyong@huawei.com>, <surenb@google.com>, <vbabka@kernel.org>,
+	<wangkefeng.wang@huawei.com>, <xieyuanbin1@huawei.com>, <xiqi2@huawei.com>
+Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault() under CONFIG_DEBUG_USER
+Date: Sat, 11 Jul 2026 16:13:03 +0800
+Message-ID: <20260711081303.5472-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <alH4-zEWkSDK5EvK@lucifer>
+References: <alH4-zEWkSDK5EvK@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260711075651.3114-1-xieyuanbin1@huawei.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Stat-Signature: u7iox93xt7qau8pwiponh1hh77fuq8pu
+X-Rspamd-Queue-Id: 37B3B40002
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DE6A61C0006
-X-Stat-Signature: 5toqk7qohi8famzynssn9zfceukwdep7
-X-HE-Tag: 1783757116-727419
-X-HE-Meta: U2FsdGVkX1+pXaqBm150oLzVOsw+uVzF1iSceuMAwoPslggPA0rWGmYCscfXJ8BPjOiQoNtCLF1rhoezObMK2AhhedFYqd757lPPlmI5L1LijxdTrh/0a2hNS70EO6hvxtS0kLjLLOP1okHgXnZdwogD1MR2ulSNdTuoV/NhL/uJrkDykH49Yps6cISIYsAVViq93KABSguRjaQ7SnfuPd/yn8hPi+ylYvIx+yUVN3tMNX6j2JYorPDEHy7/NO04y/bDtiYEUweb+f9Rrk1HuOVY/N/PMjI1Ygp0cmSbjiu4vOcvECC2VfxvN7fo3tG/hO5fd/fCM/k6mejntDyNS+vOWF4d/hQyWR9B7xhQuafkzeg8LBaA+t1DxzMecN71bKFIneQuU0U7cLXruC5ScefshnvhDGRamW6srBSZCMG7aJvY0Lxc8MtdwYRE67ckCEsCaJrvJ4YHgrhWiGNdAfUBCFnJGcu5DTOcwupa1WKZ/dYJ2we/BT9aLXt5WVUv5MDbFJgswugeni+ioLiySnAlkL+SHOopXPJe0WsZQgXR6wLX0rDFY7yK1l0GlpKn85czhC24jofdYL2GFt+2oj33lGIxrl1OGcTf2fvLeQT4Y4bAvmmngBDg1BBhftVbYh5JVe+N9ZW5RidHsxOwgNIVrrjuYoEu8E5thI7UelQHn2g4Q7XtF8Hq0pR8RyxQ/72qmGHkmh3GvCP3UtsFDCnyBalXEh6tuPgAaAZbZD0MbfDQOJYAcJ1XIXhPsh8rNsNNi07HTzv4pjIFo/qRMQNrJ93ax7auempx8Xpvixzi7v7cJ25xxxyOj/RYSVGYDiwFvKQiI49xSGnv3IemcgD4d17MC8WZiKhGPGwGsFoKBtY/AQXS7vWHW9kbxccD1G9uIXO5xoR1bYXWZjtFYb4imhWXTA/m4pwPiLSWF2IChqVVc5fh1e++3/EidGcaA/8AkHJ07TuWOFw7mF5
- QN7e/VlE
- jTFI/OHTUgxPSMQvPQEzujw8D1CUMm0OF50Q67fWy+OPY0jfiO4Lz7hnuP4HQxs0nlbkU6VhDW0IKqWC1uV4C2eBS19lUnIYKOIyWVbmh1AUFZDtH9XkPPFihuBHN9arzum3jU4qb4/tPBxSRTE0yhtIW5h+3OF7oXsanmqVK6JHLioVGqSajkKwMs0vRqkGcw0d1iFPC1pEenPotZ+r3MT+m181S+c/HLDxeLcFaufwiOxp2xgiyNg0eFxDjsNivPJuv/JOQchbVJLX85gq9viJTA/3Eud38EKx98yK+VJM7nh3UiywSomzIbNBsNwFhHLBCd7BlvbMrQ+cIIMuxDnKun5eqkFN36xFXYZ+QjLwzr2I=
+X-HE-Tag: 1783757608-261028
+X-HE-Meta: U2FsdGVkX18sc4fa+HiWRKc/8W366Ssxa7w2jpAe2fLdWfhmahi1WShYZYZW/ZhSbtd6KgX6xZODk29cfIA5fO80+XPNSCO8rtvWxJURa0VVUgt4v8W7sLEdKiOEIxBDmwL4qfTyO00h4vDUaYJcOK9Ckq4eGd6XeAocyioDhKuItglVMzERwoh1NAJYksK/lU/MRn0fI5uupqlHqsFtfRW/iz7e7QN+UrsTdMe7OpkM7PrQgztcn11z9JT8pd0vE80Vp4UEsZJ4UiSYDioS4/39FyU+av0oeIUUspGJE/if3JDgvKOY7ETUEwb6A44toW9q3iVscC3zoJFqdl/z+AxMGcK4DdMehBXd1ZRCWyjEdwN1hQkLqBjmBcqAc0TInx9xp9IV4X2NUVD0G29t5nyqmJXT2EH9IqOO1hqQyn53qtMX6HoBPrjW84pmyg05ZoQPF5GoQzGb1DHyKsdTJ/3ytoNDClDSWnuLgf7AhDMD+wrD7Cb1Qffb8M0mDUPE7Rb5IuunVwnF6/ZQuUWcM1TCtXiegGIEemSOK69OC5MxYrkOShBlyIo3hBpntOKqfpv/g71ZcexMWcGfkh4oN8ccAhdINfFmXtBrDKdc/tRu13DarnVox2baWKwvGKfTwBxsN039gpOGuOg8mJC1JjWgHnzOpx+P1m0hYvy7WaXt7drS6tuMMukpWr8+idm0rfRUIkIgFeKoRS7Ee+/2XSW3D1vR9jlwmt8UOWF4cH+HZGJLResPykm0SPrgdA8T9beH3UqdL3yqWkZ+LF551ilrBEudIvfmTkVyNgm2q17dT7f92JdwNctx7Nn1tEFdZkKhOO4seTQ6Rot/ZS9e8UeRsBt4RK80rrtlmY8wIPlggltWVIixsErpHVyOztBMzuxfcj3xshcCgU3zGHP0LgsV0LuczAlILyYtRiiVPgr1f2GG2Js1ingNeHMQoLlT3aWYeb4GahPU+vzgO8A
+ 6Fxwhv1p
+ hPKHtkaljh8fxulZaAfA8ukvDGkCenZXW/3d7yPFMGA3ftOkqKkI5ooytQL+greqhMrJMWi2UJPYpow7ho180+I/onZOmPmRSkFAcBpjniyRONhaIPMpaMvNOSN0Uhy4FP25w+WinmaX33GJJON1M8e73A56VYZXSEvSSe/pLNFbZD1Ncu4h9jU7yrGJSBR0bTTdKgojs/270SmzvkrFebMwxv+CA7CnNWfX3LAsW53QRyVFsfw1Os/lMNAJmfnO6355WhXN3polEtms/xAXI5fzJN3/nMj7B0KDAHPW4M7Ck9OGDnhOMGXqt99hA9hXPDxHS4eKWaf1GxF8Z12HJ0fMpmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,48 +101,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 11, 2026 at 03:56:51PM +0800, Xie Yuanbin wrote:
-> On Sat, 11 Jul 2026 08:27:23 +0100, Lorenzo Stoakes wrote:
-> > In general yeah but with mmap_write_trylock() after you add the attached
-> > patch to a series (making sure to cc- the right people etc.)... but also,
-> > wouldn't you just generally want this in show_pte()?
-> >
-> > Seems to me best way is to put the existing show_pte() into a __show_pte()
-> > and then do show_pte() like (untested top of my head thing):
-> >
-> > void show_pte(const char *lvl, struct mm_struct *mm, unsigned long addr,
-> > 	      bool is_user)
-> > {
-> > 	/* Write lock needed to account for concurrent downgraded munmap(). */
-> > 	if (is_user && !mmap_write_trylock(mm)) {
-> > 		printk("%s[%08lx] unable to acquire lock for PTE output\n",
-> > 			lvl, addr);
-> > 		return;
-> > 	}
-> > 	__show_pte(lvl, mm, addr);
-> > 	if (is_user)
-> > 		mmap_write_unlock(mm);
-> > }
->
-> For user faults, I think we don't need to worry about deadlock issues.
->
-> As Russell King described, deadlock problems can only occur in kernel faults.
-> On Tue, 7 Jul 2026 16:34:21 +0100, Russell King wrote:
-> > Unconditionally taking the lock could lead to a deadlock. Consider
-> > the case where the mmap lock is held, and we get an unrecognised
-> > abort from the kernel.
->
-> As we never return to user mode with mmap lock held, so for user faults,
-> it is safe to acquire mmap lock. This is just the same with the syscall
-> entry of `pkey_alloc`, we immediately acquire the mmap write lock:
-> Link: https://elixir.bootlin.com/linux/v7.2-rc2/source/mm/mprotect.c#L1011
->
-> For the kernel, the user faults entry and the system call entry are not
-> fundamentally different; they are both kernel entry points.
+On Sat, 11 Jul 2026 09:05:03 +0100, Lorenzo Stoakes wrote:
+> OK given arm32 can't do any of the stuff that makes kernel faults an issue, and
+> if it's certain you can't deadlock on mmap write lock for VMA or non-VMA ranges
+> on user fault, then no need for the mmap write trylock, and just take the mmap
+> write lock unconditionally for user faults, and no lock for kernel faults I
+> guess?
 
-OK given arm32 can't do any of the stuff that makes kernel faults an issue, and
-if it's certain you can't deadlock on mmap write lock for VMA or non-VMA ranges
-on user fault, then no need for the mmap write trylock, and just take the mmap
-write lock unconditionally for user faults, and no lock for kernel faults I
-guess?
+Yes, that's exactly what I think. We are waiting for ARM's maintainer Russell King
+to confirm, and then we will send out the new patch. :)
 
