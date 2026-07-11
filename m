@@ -4,86 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 053C4C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4266CC44501
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:45:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA5246B0005; Fri, 10 Jul 2026 20:43:44 -0400 (EDT)
+	id 1257D6B008A; Fri, 10 Jul 2026 20:45:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2F156B0088; Fri, 10 Jul 2026 20:43:44 -0400 (EDT)
+	id 0D6B16B008C; Fri, 10 Jul 2026 20:45:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1D546B008A; Fri, 10 Jul 2026 20:43:44 -0400 (EDT)
+	id F07B66B0092; Fri, 10 Jul 2026 20:45:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 929F66B0005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:43:44 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C89E40592
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:43:44 +0000 (UTC)
-X-FDA: 84974647968.15.202CEDA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 51420C0004
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:43:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Bt0/BvUx";
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CA6016B008A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:45:05 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6785E9029C
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:45:05 +0000 (UTC)
+X-FDA: 84974651370.09.204B979
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7664B10000B
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:45:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTpii3ZT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of djbw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djbw@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783730622;
+	s=arc-20220608; t=1783730703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/LbfHUrmsdfE/Gd8GJrnmyAOP3YNcTodQ3L23/iC5b0=;
-	b=zg3oRAufi53ndyNGdAZwb5DaFSmGba1Dlf+LlfkYPMdMyNSKj8vJi6kMT0q4U29z+Y3ejh
-	bEFVGjNfahC736hK2dwQn/w1P8sU3zAJovJzhHCFcYvRCDFYTjOOvvG2DdM9a0T4Zt/BjM
-	55vb5uTJYp7MqQwFfCuyD3kNzyqfGG4=
+	bh=KIlT+GTV4WhhrNy4N/2keFT3wGvoTbsHteN+Z3WZskc=;
+	b=IPXDP7Q1K5rjPsJ0av8wJZRUFBtoo8nbIZdQhx+ldGSsHJXKeiUs/qmLAIXkjTbS8YavpQ
+	90eKyx+ZmaDQh9d7ofN2Ew9oKstGoFWqctaSbd5u6CTiT1QfLZfMeUKHMcI1NLOpAXW39/
+	aXSVynOhayqZEYJKgDoHkYbAw2gHj+s=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Bt0/BvUx";
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTpii3ZT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of djbw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djbw@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783730622;
-	b=tbc+UQn8SuRd0dPTY0KsGh/QSLz4R7OdJButhIqulUNJIhYQwH4dDxOgtKQ+B9lkycgelj
-	Q1wtkypCuaWL+jh6G9NPZfwHCX/qXW2hLJiKMRiF0l3JBsNAhwytMdL/IcRZPBcC+RXpkj
-	6VOG+fSW1vrEOF/GS3uYclAcBI/OxOo=
+	t=1783730703;
+	b=p2BBw5aQe3Rd24DGWQyaLTtQevzhDwnhxfVBQH3lEIUseKfQQ+gjqwsA3h1/0bCXbtEuLH
+	t333mVqjkr1U4VrC/JAmYjxioexbu3xHaJoiK/gjmdJJB9DBSg9E25jo8S0dvjzp/ubGEY
+	XCfmzEOSxDuhEVd+C3gpKVj5ViD8P1w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80A76408A2;
-	Sat, 11 Jul 2026 00:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F9A1F000E9;
-	Sat, 11 Jul 2026 00:43:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783730621;
-	bh=/LbfHUrmsdfE/Gd8GJrnmyAOP3YNcTodQ3L23/iC5b0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Bt0/BvUxbtZOGR9BnfwlJwap/0GQ8fHT1MZ9VGpIu0afakcvrOaFjGwt5JLkDhW/7
-	 2Euz7Z3ngnsUmpKO5aSIs4xOgtemWJ6hb2Znyblf06uxfAJ2en3cY2WQbAwWjFhsyQ
-	 Q1Z2slFaS8g8rOHPuXuXa9DGrhQyJ/yrbicPHS1o=
-Date: Fri, 10 Jul 2026 17:43:40 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hajime Tazaki <thehajime@gmail.com>
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, jannh@google.com,
- pfalcato@suse.de, linux-mm@kvack.org, geert@linux-m68k.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: nommu: free unused resources when mremap shrinks
- the vma
-Message-Id: <20260710174340.9f3b420629769b556f44640f@linux-foundation.org>
-In-Reply-To: <20260710021028.892645-1-thehajime@gmail.com>
-References: <20260710021028.892645-1-thehajime@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by tor.source.kernel.org (Postfix) with ESMTP id CE13B60EEF;
+	Sat, 11 Jul 2026 00:45:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A141F00A3D;
+	Sat, 11 Jul 2026 00:45:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783730702;
+	bh=KIlT+GTV4WhhrNy4N/2keFT3wGvoTbsHteN+Z3WZskc=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=UTpii3ZTDjIqVdqCN3Y7JfG8857lWe/8ShEDy/EdfU3y/XMnyR+G1cxIkOL4O+39U
+	 DhJyWR41oHjppG+ui0PPQ4f06lLHkzHP5JETmOobXocWuKLRdZ4XRZ2qM01xe6gGFs
+	 TUOBaN/2ZcbgNJ7OdTpd0LDccKTM0pD+uMugDiJmAe5wcEll+CVo8U4xyouB4gbKXR
+	 LJGPccgGwIoMJGU0hcB8CCrfZ/9m3pF5ef46DuTkdn57vH6bhuljSDDgkXng5mlRaX
+	 cqnDsFAKwQajYYT3g8dp1yzEmqxojWvcOBpnPKAKnfVnZVBkblRry+ZIqYqzfiM3al
+	 OyKh72u6/dtUA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C3820F40213;
+	Fri, 10 Jul 2026 20:45:00 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Fri, 10 Jul 2026 20:45:00 -0400
+X-ME-Sender: <xms:DJJRahdIAQytT5U6Nr9NADrFKI5X32Ef6eIeXrnSsVS-uAfPEHNo5g>
+    <xme:DJJRaoZlNfqciEJoJGQHyC_74CCjXfgmfHMQpSVehkbOSM9vXB3PzU1_ELaXWb8sN
+    GK26JE0CYKmXxGmjRMt60VU5-M3aMuPIaMO-HagBlwHpJ6hsCEJkQ>
+X-ME-Received: <xmr:DJJRakp_KEuh8p92LpbvK9AG7ALSylMrpwmSY3OqkrCToAG4Er5h-j40BPWEdh-OqqigdjJDXJifaCilJGOAeezcPxJiGZR5B9E>
+X-ME-Proxy-Cause: dmFkZTF2lv/BTmJtmx58UCBnX4LYuS/hSPolWJtMhIC6n0miZhX4RDMWuAT1Cl4GARjHte
+    lqEr6OARdwjx3wovv+JqFFm48+pvz4Zx4EQgeWrHiwpat62fKOUYIDPSrStJXAVJdwqAxx
+    1VEqZJrIf0stTWrfvXtzf0i7jWSJNy8uf/jMXDtx7Ywygxat1p6MeXmPc0lsZiFUkLa3sn
+    qa6w0Xk6djDcgTGYwGlBlj0VErXEEYhYZKCiUyzXOxRQ/T3BtU3+nzlNyVrmTVdMzrm/96
+    wcvb3aTmxG5/VfGOD77r/GAytqa5b3EPaQD9Vf4C29SbV+quV+TOBZUtmCKPnndUNJDSRZ
+    +ToTW+SzNgQPekcbdtuVHSCZJfTWEvui+ohy6FWXQGTH1WxWfOkyT5SfiV0QmnNv9YTVyW
+    Az3C/jQXQ4aeolLcpVA+KSPE8sQ/+V81F48UYQyA6+hB3F5Tcft4haEs5wdocS7yCVLRmM
+    eSiI1bmkYAGgHgFPZbPfSjjX7xTDURKGauaHAqJAUKmeWcQOaIbRLhfpOBpXDtRQUr4SiG
+    51D5Yz83d+midz8y+A0C1ngj1l5eqsImNnder4kQrBTBEBTa0W2jRC0Bk7wTpgyAL8NADc
+    UEb/7ghPKpmuk6TFsfN4MhANBLmxJZlqzMh+KiUGp/hqzMkKRBDuput0FGOQ
+X-ME-Proxy: <xmx:DJJRar0B9iN8wAOFCHuPaFQbJb8V8saeOyXydt1pXldNWq5erw9Yaw>
+    <xmx:DJJRapp1RbqjinFk8me3sngyUaRw2_y5e6QtzTp_k_cSm22LLuphaA>
+    <xmx:DJJRalTyfinINTP6H7IfX-AARPsLe8FiwAF8iHR8kaKh6oW9h24D0g>
+    <xmx:DJJRapoNmiKSZjaNy8ogBdajJy32RFp9tqhPPoJ7V2wugW-DP9cCoQ>
+    <xmx:DJJRarwG0Kc32_-9CRKv0pWv_Eu4zCEifedKZPHpwBNqYnreLAv8agHk>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Jul 2026 20:44:59 -0400 (EDT)
+Date: Fri, 10 Jul 2026 17:44:58 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: Gregory Price <gourry@gourry.net>, 
+ "Dan Williams (nvidia)" <djbw@kernel.org>
+Cc: linux-mm@kvack.org, 
+ nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, 
+ driver-core@lists.linux.dev, 
+ linux-kselftest@vger.kernel.org, 
+ kernel-team@meta.com, 
+ david@kernel.org, 
+ osalvador@suse.de, 
+ gregkh@linuxfoundation.org, 
+ rafael@kernel.org, 
+ dakr@kernel.org, 
+ vishal.l.verma@intel.com, 
+ dave.jiang@intel.com, 
+ alison.schofield@intel.com, 
+ akpm@linux-foundation.org, 
+ ljs@kernel.org, 
+ liam@infradead.org, 
+ vbabka@kernel.org, 
+ rppt@kernel.org, 
+ surenb@google.com, 
+ mhocko@suse.com, 
+ shuah@kernel.org, 
+ iweiny@kernel.org, 
+ Smita.KoralahalliChannabasappa@amd.com, 
+ apopple@nvidia.com
+Message-ID: <6a51920acece6_35cf3310061@djbw-dev.notmuch>
+In-Reply-To: <alBLJoM86ujz5Fg1@gourry-fedora-PF4VCD3F>
+References: <20260630211842.2252800-1-gourry@gourry.net>
+ <20260630211842.2252800-8-gourry@gourry.net>
+ <6a5016bf71df4_3b7ee5100b3@djbw-dev.notmuch>
+ <alAb7Q_Ku5dVRKZ7@gourry-fedora-PF4VCD3F>
+ <alBLJoM86ujz5Fg1@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v6 07/10] dax: plumb hotplug online_type through dax
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e3dxbk6qem3riozdwsffsb88iqfxr73u
-X-Rspamd-Queue-Id: 51420C0004
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783730622-246916
-X-HE-Meta: U2FsdGVkX1/G/9Z5h9NraIgu5lznevNIksZaNJXBAT2PqqxvUxbCXW9x9p+qGjSIonu7OKOyegWT5WGxEfA02/on/4YqztJY1tRqSdbPxihqexIBjsOpyc0sLr/UbqCNiqnc8FYtHqxBmG4A8r+UNVg82BEroS7IslbXglg8SsXC2m+SLg6Pq5uT5Hx5DboiphjWmc+YCzJxMV+3xzVoXd505ucP/X1hOeq54Ge/9L4PA2uNocGDMCH9WKTHPGQ9f1/5i9eqjLp40odJOzXZX27hSi3wtVmjGxACnImhQrbjoC48u0tt2uq+IYcYKmSPrCCKcOdiHJ1CDmyNmUHxki4wlK+izjjNibhsBKflVYObLV7CygkjtsOp9L+Cc5Vs048El7/qAc3QanF5epBCGUsjPPMBtuEf9HQlIkFMlWA7yiD+QLy6ZxZWIz0CRV/6zahQNoZQnQEs5Z7rpb7NG8wnwMryclwcAqoYnADg2UAMGdUeEmNyPIIUq2N2a7qtX+/N3CamUD8NC6uVG0u3vO0HxQDrkodyvA89cxmkgNuPPAqIJCWKE02Ufddg23OM28DyrHE2POxBnJv1QX774e0hJqxjx/yThLd+Bac3hro053RuRbwy7D7SOXU3Ra7oKliA/0y6W9RDmYS6vop3EI4jrOjSrDiqTLDLxRhVz5vZP9uy812wUT8Tn47SXuN6Nk1+ek37XcGq7JjySk3v1Iup3i5FgDWbZI1T0IRPhjB3AOZ23aFZQLU7CGV2Kx7w0JZy6sXD4k8jLqE8qGEeJpqxq1D7hLJrKQGnxSoJ+XyLEoE20PTOVFb4uF6wdTeTWbBy4KyMKoRofesNxVqCMaWk2roIzhiL3JIMqIJnvEKjvf+4q5Nr0loWST9GteTEYv5CVwPj+cm6e6N+cEbFOS99XvawSAD4ViNV6k9JeL5AieAl/Vie70tiRmDoDOR5LpeR39CGe0aNCuKtTOk
- N00n4OpI
- b+yLethJ6qgp2IiLpgTqxXX1xDX0l485Ojhyc0CEwBM211oXRpUIraqrxupMhdT9n5WIOoESh49xKc8YjVRoILGs+NKnaCimvV6iBBn98SIdldRkkpFsnM/GbXec+dlgqbk28QcTxbz68dPZP9BR/+DwcaX4DmVzj1Om7JCeVIBeuc8zZc2BlSXNDPl3xz01yKgJo0b0TcZNo6OhoICFKccS1LQdACBZ65MssZhX8EVZF4O/yaIiW3hqFcQq+29pTzrNsiNWrc4jbDrG+kshnpNzk8/WHS2h6Ns7knNkQsmJ7kY+YsqlMrLGWDPFKEaX025iXHlIWWwOj+0vwQS0wtVBptJjGmS0LWANCOrJ+MapHCdU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7664B10000B
+X-Stat-Signature: ctdieyphmdwwf9pskf6xhip5sshcwf3n
+X-HE-Tag: 1783730703-819559
+X-HE-Meta: U2FsdGVkX18VYcqbwWKssv5Xaj7/BmlWQpKLpjwjOJODyevrj1vH2No4rCzYyU09y9A4JCp1wmHVBkQFq15jk6BZngvq7Wb3KgR+YhzDDDKX4dcjqQBNpa41xzXLb7sEbLzv0OGT1IBWD7aLrpM+Kd2TT6Wum1AGUrICHfV24qRSRzJUyphYfGG133gIXudvk0sR4oSfKu26RZ9SOUWRE/GUJa7QrTX7YruoZaEOTdZK3nFqXSORPAjkm6aoZGbCPonewsZgOt/xE7SQk4YEITdoSMxXA9olU9xrS8xltuEuBbEb+oLseMnC1FRypjDx4uIU70SPRtJm4WOOLNSazMhv+qKu2ttYPKgcVDkw8DheXARgQ1oYQIvWYu95/fM1RBY3Hn2kj1LYiIr6QGQUVXKsOqaxNoHji9AYaLIWmHZtp6FSPEa5w+RQv5P2weroKePpIaTRMfdrqtwcaQvLPXJdw6MzqpAcTN+G30Hjoy82EUda2ykRkXES6GMo8LU1OFvwBbD/6z3GlwJRkt7DAlTQkM15Y9iQ/R/Fv7PkBCrha/CccStj/Mrr53oYmEWKieXMAJsTqkCA+c0MbTFNUuzefdw9ciTAfoxMuSPs/YfTsXH6F4biB5CG24AWVGEMI72iTUHAklrOHbv86pNqs1wYrMnzTTDYFmj7ZBQfrx+aFy9ayj02ud/GlNaTWxKlBBysTAHtM7FJw9SNhA0zAnTuHR++1NrY1ntcIUTpANBt1R0P0gVKe2kvUdaJPxT0qg8ToJnrGyrb5PCiQpBy1vJzFAhIg5H0ijWgKER7JDrtIJJrtH9SbwZ6ZigttbIA7MY/8hzIOgAGRkRF3oeA7H1TsPMjBsWtEeZq83g9+jImnJ6dHKRvalYXl92CVB6GvR/pcVpzgNek9x85PSRR+GJkMtkzDX4yYEbrGhJQTXwwTbo5Wj3k71hHUH6yovwarcAFJcv19UG2uOjHzjo
+ HTODXjtC
+ Yf5ng37WJfoedx0NsStRRu686b+48G/v5/vx3IC071DDBKZEei8cHFruanpfY+TY5jDFlyoX/wOxicE2CQpWXuhgYcZ9GrqF6NoV1lY5JA+jeRMTdPwFDrwPqtkRV/yL8uNEbEwgQR/AYrdcf4gOjtJm7AahdPevNge8U8GYb7QUgmscen5uDZy62DcYuSvqymIUW44wrst+nJokVsnLip4UcYewyFin/cI1MAVG3BLHQNeLf6AlTNXGHOS2Kfe3LvY9au4CUPVmZfT2VYVYhqmJY6kV2eD2FXa9vg41QXd9qI+7iFGADF19DCuMybO09mzaFBPGjz/A4eflyQf/WparPvsIfwH10hw94D5yhEqDPXTPCqxGKhFX5/qXNNnBpsw/+2VsEtTzgg0s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,28 +148,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 11:10:28 +0900 Hajime Tazaki <thehajime@gmail.com> wrote:
-
-> When shrinking a VMA via mremap, the bounds are modified directly:
-> mm/nommu.c:do_mremap() {
->     ...
->     vma->vm_end = vma->vm_start + new_len;
->     ...
-> }
-> This shrink the VMA without updating its bounds in the maple tree.
-> If the maple tree (mm->mm_mt) still contains the old bounds, a user
-> process could access the freed portion. The stale maple tree would
-> incorrectly return the shrunk VMA for an address past its new vm_end.
+Gregory Price wrote:
+> On Thu, Jul 09, 2026 at 06:08:45PM -0400, Gregory Price wrote:
+> > On Thu, Jul 09, 2026 at 02:46:39PM -0700, Dan Williams (nvidia) wrote:
+> > 
+> > This was more a matter of having the DEFAULT set consistently across
+> > the dax driver variant probe() functions to make the behavior explicit.
+> > I didn't want an un-set value bug to creep in here somehow.
+> > 
+> > Happy to drop them if you think that's unneeded.
+> > 
 > 
-> This commit fixes this issue by calling vmi_shrink_vma() when shrink
-> happens.
+> Ah
+> 
+> Not setting the value in each of those places is equivalent to setting
+> MMOP_OFFLINE (0), so better to just set DEFAULT regardless.
+> 
+> So unless you have strong feelings i will keep them as-is.
 
-Thanks again for helping with NOMMU.  I'd like to give you a medal, but
-you'll have to settle for an overstuffed inbox.
+Right, the mild feelings are only coming from the changelog mismatch
+which says "Oh no, device-dax drivers can not specify their online type
+besides the default" and all this series does is keep the status quo.
 
-Sashiko is up to its usual tricks:
-	https://sashiko.dev/#/patchset/20260710021028.892645-1-thehajime@gmail.com
+That can be had by just having unconditional:
 
-I assume that ENOMEM is more likely on NOMMU, and that we should hence be
-more defensive about handling it.  Seems we have not been.
+     online_type = mhp_get_default_online_type();
+
+...in dev_dax_kmem_probe() and get rid of dev_dax->online_type until the
+first user arrives. If you are respinning the series and that patch
+drops, yay. If not, oh well.
 
