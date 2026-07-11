@@ -4,112 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB702C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 15:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2614BC44507
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 16:23:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48DB6B0005; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
+	id A1E8F6B0005; Sat, 11 Jul 2026 12:23:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD8C66B0088; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
+	id 9A89A6B0088; Sat, 11 Jul 2026 12:23:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99C636B008A; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
+	id 8C0626B0092; Sat, 11 Jul 2026 12:23:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EC986B0005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9083120791
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 15:44:02 +0000 (UTC)
-X-FDA: 84976916724.20.DF8FF36
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 608CB6B0088
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 12:23:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF6A01406EC
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 16:23:49 +0000 (UTC)
+X-FDA: 84977016978.24.F29FE48
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3A06B1C0005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 15:44:01 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZIAqARcK;
+	by imf28.hostedemail.com (Postfix) with ESMTP id ABAC6C000C;
+	Sat, 11 Jul 2026 16:23:47 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oHKCbOs5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783784641;
+	s=arc-20220608; t=1783787028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Hx51w8dFEncFI58huRfM4bO4YcYrbYiW5us+lxhCn0=;
-	b=HdjJoYoqQbDin0UgItcQIyu5i0OeHzpZ8ET1mzeiOmGaWH+mCOF1lalRiSHU4wAsPMA7c0
-	V7fbiG2jax4/Nh5oR0V8ashFdylANoBMHzoApLkuarTfSLbyqrJUf4gcx37qYDV9X6NkA0
-	TILmHF5KXGqZ1OJQ6yKN0PqPetVsN4k=
+	bh=eyGPCpKJAg7fhbXBnd8C7Wrqfsg9VL7dUFWJAu8QPbU=;
+	b=mXc8Q5LgsvC5D9LMq+TJxuJ52qsLNyNRSBzA2JrprSha4QPIRWYqH7q2o0g0gCdd+8DgVP
+	Fsvufw1XBhx8ghUpljwzKs513BPcVAL44g3PmX54pITg4WJZX97P6EGsf2BoA+Pk1X/VFV
+	EJDNGLxS+C3piE09uTEcgYzm5/JxuYI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZIAqARcK;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oHKCbOs5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783784641;
-	b=w931Phq1FS5r1oLD20E8hXQqIqpmYPcwvBb3Jvqe7dAY323JQ99PS4hSs2UVV3wVSlyv4c
-	xPNOZsAW+hWKRHjDnMp1Hm+e/+TjHkeMZfgjmqyRI+dkviTezUtYqtADTjdQ0CDnpfSiiQ
-	Jk+nTsQd0lvBlGjl656LIKVrXzSIOQw=
+	t=1783787028;
+	b=vfM42JCQzcL7l90ibKzFDJPFxxaYvuG0n8ZuHj3Hn/ml9sjPijEUTQEPdPHBqZ2x1lx2+F
+	MkjpCuONMvprHcOeig/TcEsOpnkT1a7FzjTjf8AZX2BcDabaJX+ZXFSmqaPIZpL9JzfMQw
+	LCqeKghHuUAqIqUQjuYyfWLzDbvB9zs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 177CF42DEB;
-	Sat, 11 Jul 2026 15:44:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C6E1F000E9;
-	Sat, 11 Jul 2026 15:43:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2307741729;
+	Sat, 11 Jul 2026 16:23:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7C21F000E9;
+	Sat, 11 Jul 2026 16:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783784639;
-	bh=+Hx51w8dFEncFI58huRfM4bO4YcYrbYiW5us+lxhCn0=;
+	s=k20260515; t=1783787026;
+	bh=eyGPCpKJAg7fhbXBnd8C7Wrqfsg9VL7dUFWJAu8QPbU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZIAqARcKP8hujblE64oSTCkc0UZEMo26D7eVRtr0xDhcXILGxalvRvFmMtdghf/bI
-	 q7qQctgHJCL6WCDEnzfZDVOe0Aectw75OQfsY1G5tto5Q0WSLIy0Frl6snpWxroSwy
-	 Swdl/NBz6s0ZYnNMaB8U5aDNYLrOouKqs+25wP14l7jNzBb3xWc/37FYla9s3u4MAZ
-	 g7PRUdo+J80jx0RVD8zD8zo44CNIR3crgyrCUDjCQsEMxzt/PBhDbBoNShaK1xBH/9
-	 DWdmt+dD+oobnlbRjWzj0rOnAtXSOlOmDsBsDGjFIetPZEjlaem3yegxLO9pjx4qXk
-	 5e/HWkVwggiMg==
-Date: Sat, 11 Jul 2026 17:43:56 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <ehristev@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 25/26] dt-bindings: reserved-memory: Add Google Kinfo
- Pixel reserved memory
-Message-ID: <20260711-tested-elite-dingo-93efc8@quoll>
-References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
- <20260708-meminspect-v3-v3-25-7aa5a0a74d5c@oss.qualcomm.com>
+	b=oHKCbOs50OGhdryTHZVIrJJAH5cNWadJ96vBPL21JseHby43owQLI4TQNXRn8X6gJ
+	 TAnHb0VclvTH/ELo5PXr26ZhLJbSwD3gVlLvJn7Z0/7xX0d8g4qtgVFjgxpWwxbv1a
+	 7r5CcrXGWEbeyhCP39VRFFsSay0aVbIrR1SurkK/zcKs46h1LZbloHKdjmJ9QcIWOB
+	 93pv7I3n5DE5yAji0/HPOsX0hhylbUPeh4N5mBIdjWYLPd6EljlcjYkvh2JpbnVfqK
+	 2Dhr9fLfrHgsT5U9G1HrOgWT69oD72z/B+kQJ6Kj2KlR/byBhBoVckK6V+QXJUFKRE
+	 5uoKO6B92zc7w==
+Date: Sat, 11 Jul 2026 17:23:19 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
+	tsbogend@alpha.franken.de, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, 
+	simona@ffwll.ch, l.stach@pengutronix.de, inki.dae@samsung.com, 
+	sw0312.kim@samsung.com, kyungmin.park@samsung.com, krzk@kernel.org, 
+	peter.griffin@linaro.org, jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com, 
+	rodrigo.vivi@intel.com, tursulin@ursulin.net, robin.clark@oss.qualcomm.com, 
+	lumag@kernel.org, lyude@redhat.com, dakr@kernel.org, 
+	tomi.valkeinen@ideasonboard.com, hjc@rock-chips.com, heiko@sntech.de, andy.yan@rock-chips.com, 
+	thierry.reding@kernel.org, mperttunen@nvidia.com, jonathanh@nvidia.com, kraxel@redhat.com, 
+	dmitry.osipenko@collabora.com, zack.rusin@broadcom.com, matthew.brost@intel.com, 
+	thomas.hellstrom@linux.intel.com, oleksandr_andrushchenko@epam.com, deller@gmx.de, bcrl@kvack.org, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de, 
+	david@kernel.org, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	hughd@google.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, jannh@google.com, pfalcato@suse.de, kees@kernel.org, 
+	perex@perex.cz, tiwai@suse.com, linux-mips@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+	etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
+	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org, 
+	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 10/13] mm/vma: convert miscellaneous uses of VMA flags in
+ core mm
+Message-ID: <alJqjo_MZCFWj3Wt@lucifer>
+References: <1e7d834c887b6a65627d730addcff13d458c6268.1782760670.git.ljs@kernel.org>
+ <20260702131233.59026-1-lance.yang@linux.dev>
+ <akaGxiTaJreEQn8T@lucifer>
+ <DJTNXVOWGWJ4.3MDNLPMY0Y3RF@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708-meminspect-v3-v3-25-7aa5a0a74d5c@oss.qualcomm.com>
-X-Stat-Signature: e7m1exmnwk5ikq69mmkggmu6ws48ermf
-X-Rspamd-Queue-Id: 3A06B1C0005
-X-Rspamd-Server: rspam01
+In-Reply-To: <DJTNXVOWGWJ4.3MDNLPMY0Y3RF@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1783784641-475352
-X-HE-Meta: U2FsdGVkX1/53lhChqmD9WdznwktCKhmQYaj4AMiBT5oy2CPv8ouX/h8IenKyz3V1FWBJBKXGRFNMigQZ/CRp0vnMPLKAbLval8P6WHs5sG8eddR98/AmCbLWS/xDhVrt0ao2fC9g2lm32dHoznSJXmPK6Rh1NzEIqeY2ffxIJI6rDaiMMyIC3P+SLlBfiOXogHBi1tMkM/SKLBU25UZfpgxKOsRVPmMHGurV1Gvn7NtRR/7k2nmuJosgE6OSpRd1CvtN3XaaJdAycw9qMlUShqtv8aaupBu5E8BU4Mc9RbcEoYSLQal51Fa0Qoc/x5QpQqMKUnweh7zLMPIj0eJijFkuXnpU4XYkOxgUyk7Mvn5QvswEHj8VoUHnbKoAv03i7yi1YmPdeA17WHiMKQyiw1AM84GaIe21p8epshFK10j0ox40GCC9Ez1tPkTfov4gkJEIJVg9awXmPnaQvF+P8RDdAsoUrJN9PPJCpSppMAvjPJV8MMEmlO5dKZrxaZot99vbRI/sVKwX/pGo3RG55jdiXAixg0FcWfms93NJqdcfychjt+uONAwI/Uz0PbbMsFfn6JCQ9UzSY5rDVRv4sFS17Vf+CGJsw5VrvFonlnqmiamAzYvNihioS0gtnC1NAm9dFdpIIyZYuppxAsfClvsoFtPvy1S3UOXWsm17VAvrpmKWv+4MtBmEbCoNbRIE1/27SNS8I0/tFQ1XVTNthGKO3z881WrFXlLthjhne3EqLOVi3qB0EsMNgjKL/eaw/MmVSZ8s2PT6pxEkOeMlT5gIotpcmpznR31BT09Y4Lnp1FPeraYBZ3PvnAbR/dBJVTVtBnHSaSW17zo4lAsbuVluC/6cOsJe74twLOyLWSGiNTHQ5xNjxpwvPLSBqIp1io/82xHjxDXNpwICajR7/h8btpsIlwXrCjSKP9m2TskoiZ2q6IaAq8CXIOcTYHd1jbyTHo+UkkTzpDS2TK
- eIx3ufzX
- RoEMyIk/aZq5w7++2Yb6Egk/XF0rygJRO46aSJcaXn2mCuBWJ0V/ZtKlvFEbvGTLMo/9D50/CbvvmFFquhC+/W9ZEza3N/cgGoGr1Hg0uz3CozRGeS5kJGtbSmLR3Ztgto+ypzZWZdRgxjgIB8cuj5rz+99IYAIZ3w/7NUqzMEEGmN7w9X5vBGQTaS5d4ZdHTLGRTne2f1jlxv0LGOusmTBN3R3LSWJ3YwXZNeeuETUc8Isd56vASXl1Nr8ouQZb4n/1ofLeNxmbzdDhLUukxsm8FRo9hja8O9Y40YdZLepLMDIBfP2jx2Tg6HZZyTFBl5nsSZIMEpyyhTVRJJsK8ZYJIEIZXX2UYX9fAwmCvhX94vM7r5ZhnRMDKyXvD3UMFlseHONbL8KMM7zxbNTrhUVuWyOmzJmuIAEaFXamldqKVsADgY/SGT9xQMjxlFkuMsoWq
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ABAC6C000C
+X-Stat-Signature: ym7ttb7mxwhhu5m5t734drg4zxphbk8y
+X-HE-Tag: 1783787027-68977
+X-HE-Meta: U2FsdGVkX1+5vyZ5Ztv/3iiLeJjNFkydQpkEOVsWFOT4ps8TCrGOLot8+1TwknzJnCCsZmflsRwQqMWFe8WQP/wxvdge9g502adNkd33RonM3n38dIrSLFnwH0NjWmUIZYEHT/wfozdpTX7VZQ+c7/wev4/imcowDCJyUxSUPT3nEPpp4AcVUaZSwJ7E2gPSufXIjhVuGAKCFhsH9vtZ2JtdgRWcE7Gr58YdqC75NOm8J38CSgwe+kV/q17BcfApBbSI1AciS2OeZSyHks3Br316RnX31ZD6D3X6BFrQA0lsle041mgebCjQ+wsZN5UHyZfgvfe+N9YyHN+icqJ26SEQ7QcIBJrq0+DJKLbEQldSWw3mQ445SuQq+Qv9riYdLrc/BRGWXBejmG90DGJFV20ylRIzfs8NQWeVG8WaJJdtMCjlTQTLunk55j4YtMF9Mei/JcMUZczanp4mJfQj47PINbTw7JD6duoQu/dWSJPn/ksvj0x2GJK2FSVYSPYy9Ko3KxhL1b0HT1uTag7cyXeQ07GgZdhmDKWw/jzKLh86GqnSZnenENSXLg9MINWQdMYInJfaY2Tz5ORJ1KevOcLTTUhBYx2UCnoIHn/pDQTwpvwH5JOq0jPCB19bUWfK+PQe7cSV0tqc0axu5Z1b0e4msivBdmIqTrPTKQ84FW/S/6cAGMzjiLPvrN6xfpdajy2u9WgoeZtG1RULlF4Nb3m94gUpuha/9V8Fi1fIkw2wUqHjEUDq+PLSXkgPeoo6Z73HdpYx7KVT3Jl9fNYn8LdTuJqMGAEC8jC02QTxWwz18OblOPkStipn/vQIQa5q/W6FWSBW1cE+ywRTjcf8dhBwMPkwqgBM+hxdaig4s8s8VBu5il3AdAAeyjRSL7M/FhEfSfgIDs946HgxGtUZk2HCzhz/IBOpAFAs+b8l8uhY2h1kLY+PpJuKyB9TtHH1rJ2se5HcKIwF89IASjk
+ naMi1SXk
+ Wcq2SuHVhsl2UmmZYFCGAlVcasRnpzla4QBZDHvWm1tCKEJlD9uCYxA+37+kZEFqloK1N3MdPzG4CKavVb2ATf0YlqJK7OidWJbnBWD10HD2+Fmf5mQBpz5PMxy3qW3LAsMLvJC2OIYspO+8pEaBERbQa6nx53Zv7Qkk4+QaeWm+Z8CLgW0r+CAXVuQX1ZZ1LsFH8fYVKFjwsN10/fdO7gINvfY8yoUFhzijxWAn4fuxYGaWL1g/s1iAgVejEjFSkYtBbm4ByWGhyG1k8bD0PlbHWxh2l/ZudKON5O76gK7WiJiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,31 +118,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 11:02:04AM +0530, Mukesh Ojha wrote:
-> +maintainers:
-> +  - Eugen Hristev <eugen.hristev@linaro.org>
-> +  - Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> +
-> +description:
-> +  Reserved memory region for storing kernel debugging information that
-> +  can be read by firmware and bootloader on Google Pixel platforms.
-> +
-> +allOf:
-> +  - $ref: reserved-memory.yaml
-> +
-> +properties:
-> +  compatible:
-> +    const: google,debug-kinfo
+On Wed, Jul 08, 2026 at 09:52:19PM -0400, Zi Yan wrote:
+> On Thu Jul 2, 2026 at 11:46 AM EDT, Lorenzo Stoakes wrote:
+> > On Thu, Jul 02, 2026 at 09:12:33PM +0800, Lance Yang wrote:
+> >>
+> >> On Mon, Jun 29, 2026 at 08:25:33PM +0100, Lorenzo Stoakes wrote:
+> >> >Update various uses of legacy flags in vma.c and mmap.c to the new
+> >> >vma_flags_t type, updating comments alongside them to be consistent.
+> >> >
+> >> >Also update __install_special_mapping() to rearrange things slightly to
+> >> >accommodate the changes.
+> >> >
+> >> >Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> >> >---
+> >> [...]
+> >> >diff --git a/mm/vma.c b/mm/vma.c
+> >> >index b81c05e67a61..ab2ef0f04420 100644
+> >> >--- a/mm/vma.c
+> >> >+++ b/mm/vma.c
+> >> >@@ -3417,23 +3417,27 @@ struct vm_area_struct *__install_special_mapping(
+> >> > 	vm_flags_t vm_flags, void *priv,
+> >> > 	const struct vm_operations_struct *ops)
+> >> > {
+> >> >-	int ret;
+> >> >+	vma_flags_t vma_flags = legacy_to_vma_flags(vm_flags);
+> >> > 	struct vm_area_struct *vma;
+> >> >+	int ret;
+> >> >
+> >> > 	vma = vm_area_alloc(mm);
+> >> >-	if (unlikely(vma == NULL))
+> >> >+	if (unlikely(!vma))
+> >> > 		return ERR_PTR(-ENOMEM);
+> >> >
+> >> >-	vma_set_range(vma, addr, addr + len, 0);
+> >> >-	vm_flags |= vma_flags_to_legacy(mm->def_vma_flags) | VM_DONTEXPAND;
+> >> >+	vma_flags_set_mask(&vma_flags, mm->def_vma_flags);
+> >> >+	vma_flags_set(&vma_flags, VMA_DONTEXPAND_BIT);
+> >> > 	if (pgtable_supports_soft_dirty())
+> >> >-		vm_flags |= VM_SOFTDIRTY;
+> >> >-	vm_flags_init(vma, vm_flags & ~VM_LOCKED_MASK);
+> >> >+		vma_flags_set(&vma_flags, VMA_SOFTDIRTY_BIT);
+> >> >+	vma_flags_clear_mask(&vma_flags, VMA_LOCKED_MASK);
+> >> >+	vma->flags = vma_flags;
+> >>
+> >> Maybe worth a vma_flags_init() helper here to mirror vm_flags_init()?
+> >> With this open-coded, we lose the soft-dirty WARN_ON_ONCE sanity check.
+> >>
+> >> Might be nicer to keep that check in one place ;)
+> >
+> > I really hate all the VMA flag accessors, they conflate things horribly - we
+> > should be explicitly taking VMA write locks when we need to (and often killable
+> > ones actually) not assuming that a VMA flags accessor does (they should at most
+> > assert).
+> >
+> > This case is even more terribly egregious - you are setting flags at an
+> > arbitrary time, why are we asserting something about softdirty?
+> >
+> > You may update them as part of initialisation, maybe not. It's far from a
+> > guarantee and feels like a lazy place to put it.
+> >
+> > BUT obviously it's an oversight not to open code that here, so I'll update the
+> > patch to do that!
+>
+> What do you want to open code here? softdirty WARN_ON_ONCE()?
 
-I guess: google,pixel-debug-kinfo
+As you can tell I said this reflexively without checking the code :)
 
-Or maybe even specific SoC. Both title and description suggest this does
-not apply to other Google devices (makes sense), so compatible should be
-somehow more specific, unless debug-kinfo is already enough to identify
-possible users and there is no conflict with debug-kinfo in Chromebooks,
-for example?
+>
+> vma_flags gets VMA_SOFTDIRTY_BIT just above vma->flags, why do we need a
+> check after that?
 
-Best regards,
-Krzysztof
+And yeah it's completely unnecessary, indeed.
 
+>
+> BTW, if you think the check is needed, patch 9 will need to be updated,
+> since the same pattern appears in create_init_stack_vma().
+
+I'll check to see if it's valid there.
+
+For me it just feels like the most silly place to put that check, a VMA flags
+update should update VMA flags not start randomly asserting silly things :)
+
+>
+> >
+> > I want VMA flags to be a clean stateless thing, other than the flags
+> > themselves. Implicit, unrelated, asserts or lock acquisitions in general should
+> > be done separately IMO.
+> >
+>
+> Anyway,
+>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Thanks!
+
+>
+> --
+> Best Regards,
+> Yan, Zi
+>
+
+Cheers, Lorenzo
 
