@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F430C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41798C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:21:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 235796B0096; Fri, 10 Jul 2026 20:11:49 -0400 (EDT)
+	id 88E116B0092; Fri, 10 Jul 2026 20:21:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E61E6B009B; Fri, 10 Jul 2026 20:11:49 -0400 (EDT)
+	id 865916B0093; Fri, 10 Jul 2026 20:21:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D5386B009D; Fri, 10 Jul 2026 20:11:49 -0400 (EDT)
+	id 77B6E6B0095; Fri, 10 Jul 2026 20:21:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCA146B0096
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:11:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E1188FE5C
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:11:48 +0000 (UTC)
-X-FDA: 84974567496.15.B28C286
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 53EAF6B0092
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:21:39 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B4163C3F5D
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:21:38 +0000 (UTC)
+X-FDA: 84974592276.14.B57BF68
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E0BD71C0005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:11:46 +0000 (UTC)
+	by imf18.hostedemail.com (Postfix) with ESMTP id 214641C000B
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:21:37 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hzhPKIOz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NMvgPx/T";
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783728706;
+	s=arc-20220608; t=1783729297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GyhyGqRQKroxfW64L6xRU5J7B1yOFnOg9sGO4fxh29w=;
-	b=rZj+HedNV7cqlE2p+ZjYHNOrIvGpr2vQQFGyRduyvFFQjUR2C0pF3bbJV7fEn54csf9hE/
-	vZ6/GNJz8Hn+ZU3HlAWtx9KfaqSRTc1vIgpwg3v5Tx9sV7CIlg1nCichX8XpEim+USXA7i
-	7taJCCRfZJmFPl8ff9b1IYtavDJP8nY=
+	bh=qYQiKMWE2mmb3f7us04De1XfSFWoZkhtk35nJAydwh8=;
+	b=EBwCOnhsmEO2oJNAxGBkvRPXGzVGAJuRlM7cjy8b9naL5gowmHDFrHTugh3pFCRrQbTQTo
+	jEsM+fgZ6Ci25+IkXMnV+18cnEC3zzDjUOpACJTJUDK1LamEAhJK2hCqWDCiynX7QQXLWS
+	7wIMV4CcYZwHecrMokh0EPONHIOZ+Us=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hzhPKIOz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NMvgPx/T";
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783728706;
-	b=wyOzT3h+y4p5AFxHwqdUo4OVB5EkkNlmVFSQhti7oZ4Vt/lAp4sJmGJMlm0ccrXvX0+qaF
-	HcN4JV5ScDs9BzlM5FPc7cV/sx4Cs02Gndd9y6HJrbjYtll5pHyuTjtkqq75xH6VR0qCtJ
-	A2tbBDDIj4nvDrqmLtMUici5Rj8+RRY=
+	t=1783729297;
+	b=xWJioEZu2RJgFwwrABGaXq2wggnFD+wQt2+KWlMrTgbusV0siEKMmOll7MQlbhF8nNOF2Y
+	xFOWtuHvyZU0FcJ/JcHM6wbflbFphlKLTP4r20eBgPVWtT5iIIn2BpWfMp2CXNfWM2OWY3
+	AWmdEuXcwd/gzLrBpuvvKpkhN7RnO/g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 42DAD60051;
-	Sat, 11 Jul 2026 00:11:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAD91F000E9;
-	Sat, 11 Jul 2026 00:11:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A255060051;
+	Sat, 11 Jul 2026 00:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DB61F000E9;
+	Sat, 11 Jul 2026 00:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783728705;
-	bh=GyhyGqRQKroxfW64L6xRU5J7B1yOFnOg9sGO4fxh29w=;
+	s=k20260515; t=1783729296;
+	bh=qYQiKMWE2mmb3f7us04De1XfSFWoZkhtk35nJAydwh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hzhPKIOz1/a5ZgRJtwQJsSVMipKqRsxh4xC1SafTDqvlf9fYPhaRnD06UzykQwSmX
-	 drMaevmaL/tyy5aP0YNVEb9iN+0zBuTr7yb9tKCaPKLsbw5K24Uz9m9N0FefCz8mX3
-	 ka+1TM+AVAGCn0E0mHWuHigsuO6qPCocrN58Cdl8lsehK15UwEP32JmCLhdZZFkL3o
-	 QIgo9+NgIbFO4HmGWWGi0y2dh8ZMvV+zcwUL8TVS3+yIkK+p1b4vPl7ExauR9g444Y
-	 xOgMzG+ChBvEg80rzrcQcrzVyTwiv7tLHMDQfdtnlUDg3XtEG3EM3+Ai4uVVHDD6j5
-	 DaMhRZLa6zrMA==
+	b=NMvgPx/TkwCOIr++tPwvI0CK5E/8JaJb/sCrDwY1I1e59hVNcVC3opeHoSr1r16OL
+	 x/lEfLU0OGBCWQRNv6grEMOW6nTr97oPM12vARSoKVuU55utoMo9QIXF29ExTrU+4U
+	 tD5EPWjwihpruiQknt6yh4rERnpCsjmYL048IaUIPBAyMCsASVpWbGR/boEY12ZKNA
+	 cAlQOiDUHPfleNw3cHK/KiZpqp+okxYqOG/sfTarvsU4q+NkIeTCxLvivq0IO1rvgE
+	 7xKwJtVrFuHcYvS+UQzktIFMrPE6HkSt2+5dE7kbtXH0l3bt/3aq4UIcnJbWsO38au
+	 vTzzGpJ1EsrdQ==
 From: SJ Park <sj@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: SJ Park <sj@kernel.org>,
-	willy@infradead.org,
-	jack@suse.cz,
-	akpm@linux-foundation.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm: remove wb_writeout_inc
-Date: Fri, 10 Jul 2026 17:11:38 -0700
-Message-ID: <20260711001138.30784-1-sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Song Hu <husong@kylinos.cn>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] Docs/ABI/damon: fix typo in intervals_goal sysfs path
+Date: Fri, 10 Jul 2026 17:21:25 -0700
+Message-ID: <20260711002127.32005-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260710051052.1839523-1-hch@lst.de>
+In-Reply-To: <20260710141738.24789-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E0BD71C0005
-X-Stat-Signature: dd3da9wmp4fjwfa1jqdatqyuc9dn1u9s
 X-Rspam-User: 
-X-HE-Tag: 1783728706-489426
-X-HE-Meta: U2FsdGVkX19AVODRp43XqgPHUyVnljjJDNDrfZOM7AVzEAJXAY4LMZSj+WUH58D2zcZDmWwVANypoNZ65pIE+Ws+5osquGZTdh02aKHhosvViFyHJ4tDFrgB/BcXZmYC8XV4VT1hbQSOYzdZTMjZXZ3f2L1wZYYPSCbt2cb4UU1ZYkfMXZw8tcCl0CszrLoNfNPMI6YFxqR9zO85iAoN6lHnyCindacTjy6o0nI/Hqn8GNu+K8lImCxbT/XZCmluUYQWaykK9sbkOLyKTbzLDGA9GS2rQ139Pv89GLWIbilbEuRfEw3/p+K0fxjKqnMn0z7ylD11CQVv01l6s4+fS+klFxPnFccnYufek6v47yvsL5reDgxnCIaIo1+r5Qxr1+UH4LvraJJDWNXTlGSZaMO5PFCwH8dj2S8EsIZstm0HCdAQMVmyS98RMjRTegP24A97TH5GupCcZT7EM0dXrW/WJRo5WJlVU3Ct40ZQqi5JUdomGAAsstLJdEYe8FK/mObTTNgQBWJmXJ+nOXv3bHwmdfwXSXqVg11p0E4Qpk52XpMYM606S347F2XZbmrvuyAUAgNXyAvDMxmtyYKw1NW+PQ9OcyobkDms6IcXiZ9pwzQcYtPhMRHn3HeAVoxv/gobOIKWHSlLSE1iS3iF9gLsT6qyum5t9X9+G9juOqzF120pXyh+IF7VcppWvDInM5WmcwBpEOAtIvnLEeAoIjm4OAhPypL6Nf52HAyZ9bC0dE22xbfOG7TCIwkT5XIzmdmNof6FoqG0ryH/++S/YwkfDPUY0UBbpjL9XL2VfXNUygyvyqxMHzX8PY/CvZh388Q+Lx7hLmwJBSLrkbTPlo1/s2aaiwIGU3MOeMpTapMFKgX9KLroL5LhtsxSRF1k2Cl2ww7xxR77pzcLUuII6nAdKJ2si/+wmCi/Dzfb6Xst3LuiEzfa1mPA6VXEOS29K2zkcQQ2B66EdiLUhCE
- 99ytQZve
- LVdkOgYU1ZDup0mSgcXxCQId92x0FNQot1U1DtQPq1exF+ENDDyz2r0gvWMtiHnlB+FkZRzLdRLoGXcdl5uqbUyfRui7Y/14cJYvC7OwU7ts9vEmt5bwko009mBg2FmBZHgnbUvqJiNQv/yQH9rp6EQji9gTxpX17dsJDUAkT2t2h0oJLt9H9x+8yFqcB8nlbxmRCwSHADU1MLx0Gv83aKgJ1mSO/rTtpI5dTu7qVh+8QbVg8MhPsFGnnLuQo4DazMGtWIX/xMsKVUoE4Uiv8Jk426Atcir4zsAFRn0i1NMU/MWw0ohAHyEaNidQOUPmd+2PlHbma1acCyZQ1apqhKoBt5A==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 214641C000B
+X-Stat-Signature: tt3zd558zxwzkw8skw7ij96bdcuf5k9p
+X-HE-Tag: 1783729297-963517
+X-HE-Meta: U2FsdGVkX19svdSnasjWTzH0Jw+OvAdwLOIwIQqm4pGFkfVKXXjEivInbbeNZvcbkbQ59u5o+Dn7AT2jnRZaVPjxBTNUcSbn5ztHU5MNameor5CWi39PySLMHE+ouyzSbpt5+nZOzpuSmhXpwL37yueMZV2tSgu66rAEkHPfzZhEIsEErGr5mQ1TeVkpnL1y7l35CFuOQ9VfJdUqEemUlflNKX9WC9AcOUDTT3/dx7PbQHiu4I13DMv6uX1CYFKd/ZZOERNJJeU0bdyEgRrV3MXb8y3JiTWSVU9TNOEpCVTU3jc3KK0Y6dHYDBHIN5Z7BG22A8ycBwc61HhPDa1uwm2dsbog1f8haBhmCgh+kJBp+007POKdvlMw1O4NuryS8a7YuPdc3/DaF51mBttDHp/Vxe1b4l2RqrMhI0G/QMpsDrXkWzMoYhgmvuws01ZPzbE2tQUftFmuuBFVUajIRSvw/pyicXGwwxsr/7hd/8gqGY84uOttLeWWDDMQf1CVRbidfL+fWI/uMuibHR1/LD7WPvtklrKP1vnpGmk2Egra/Ikuup6Awckqu87np6SwKBb8QioGf+ALfCimZCbLWd/MKELZWh6Tlv3fQSQtwtmNMMgUf634t3ZFTH5SZP+UewNkZy2DxIONXjfQLke2Q7DE20YlU3A8RXrzTvNm0a+ESmqqX3RYsfXhaNh9UhSmy3TRXlDRaTRp5gzDAN0K1OgR3WYeeeZJXGp50iKuMlRoPGXfHiZ4t/DRf3qNgaeHmoi7qBZZyQgaY5mq+ltq889qEoc/M2HHJY03z4EiFXt8KfATLkDT7wgfE41LXbUnwaNakVqeepsYCLLsdoT86SZH2bf6vJszGcotbOsxyp5if6OiZdOIK8iVh7FwUu5TWaplvBQ7QUKGriy3Sy3L8CsWniQGhuMUVFMdBvywWIB4Wbgdqf6yECIBWN5odQHomyh3p1GCy6BN19YhGsb
+ VujXS3Ma
+ eqT92yGYQnyLvxIGH2Sm9G8rJy0RE6T8jjixS9fELaYsOyZNtLi8QAo6TzHB9kMcznHi7+j2ZP+OhUKkxZwDL8DVx/Oyu3nvEhUVrdaSt939WIsdIWnEoOAcOtQVGfGx+xzy6rZpCeV2454C0wNC0p59q1CbGoFFekGrDT4/ywQzA87GI1LgJWoY9GQPBIrOd38Q7XBOeHRUrsrBYhM/KulKiFtG5z/HSTUFX63DcDiyMykkTVQ0wC0AK4qFvK+DEoZ78gt35Uf9suSTFx08ZpxmtFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,13 +94,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 07:10:52 +0200 Christoph Hellwig <hch@lst.de> wrote:
+On Fri, 10 Jul 2026 07:17:37 -0700 SJ Park <sj@kernel.org> wrote:
 
-> Remove this entirely unused but exported function.
+> On Fri, 10 Jul 2026 12:47:34 +0800 Song Hu <husong@kylinos.cn> wrote:
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > The ABI document spells the DAMON sysfs directory as "intrvals_goal"
+> > (missing 'e') in four What: entries, but the kernel creates it as
+> > "intervals_goal" (mm/damon/sysfs.c).  Following the documented path
+> > therefore yields a non-existent directory.
+> 
+> Nice catch!
+> 
+> > 
+> > Fixes: e2b23dc62369 ("Docs/ABI/damon: document intervals auto-tuning ABI")
+> > Cc: stable@vger.kernel.org
 
-Acked-by: SJ Park <sj@kernel.org>
+By the way, hotfixes and non-hotfixes usually take different trains to the
+mainline.  Having those in single series therefore makes maintainer works
+difficult.  I understand this is not a hotfix but just somewhat worthy to
+eventually be backported to stable kernels.  So no problem for this.
+
+But, from the next time, please clarify or use different series for Cc: stable@
+patches.
 
 
 Thanks,
