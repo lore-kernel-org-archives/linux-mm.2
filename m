@@ -4,143 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4266CC44501
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 00:45:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42C99C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 01:55:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1257D6B008A; Fri, 10 Jul 2026 20:45:06 -0400 (EDT)
+	id C28D46B0005; Fri, 10 Jul 2026 21:55:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D6B16B008C; Fri, 10 Jul 2026 20:45:06 -0400 (EDT)
+	id BFFBA6B0088; Fri, 10 Jul 2026 21:55:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F07B66B0092; Fri, 10 Jul 2026 20:45:05 -0400 (EDT)
+	id B15336B008A; Fri, 10 Jul 2026 21:55:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA6016B008A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:45:05 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6785E9029C
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:45:05 +0000 (UTC)
-X-FDA: 84974651370.09.204B979
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7664B10000B
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 00:45:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTpii3ZT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of djbw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djbw@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783730703;
+	by kanga.kvack.org (Postfix) with ESMTP id 79FA06B0005
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:55:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A1EBB140609
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 01:55:11 +0000 (UTC)
+X-FDA: 84974828022.16.EAEB176
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AAE74100005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 01:55:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EZSxRzaK;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783734909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KIlT+GTV4WhhrNy4N/2keFT3wGvoTbsHteN+Z3WZskc=;
-	b=IPXDP7Q1K5rjPsJ0av8wJZRUFBtoo8nbIZdQhx+ldGSsHJXKeiUs/qmLAIXkjTbS8YavpQ
-	90eKyx+ZmaDQh9d7ofN2Ew9oKstGoFWqctaSbd5u6CTiT1QfLZfMeUKHMcI1NLOpAXW39/
-	aXSVynOhayqZEYJKgDoHkYbAw2gHj+s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UTpii3ZT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of djbw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djbw@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783730703;
-	b=p2BBw5aQe3Rd24DGWQyaLTtQevzhDwnhxfVBQH3lEIUseKfQQ+gjqwsA3h1/0bCXbtEuLH
-	t333mVqjkr1U4VrC/JAmYjxioexbu3xHaJoiK/gjmdJJB9DBSg9E25jo8S0dvjzp/ubGEY
-	XCfmzEOSxDuhEVd+C3gpKVj5ViD8P1w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CE13B60EEF;
-	Sat, 11 Jul 2026 00:45:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A141F00A3D;
-	Sat, 11 Jul 2026 00:45:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783730702;
-	bh=KIlT+GTV4WhhrNy4N/2keFT3wGvoTbsHteN+Z3WZskc=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=UTpii3ZTDjIqVdqCN3Y7JfG8857lWe/8ShEDy/EdfU3y/XMnyR+G1cxIkOL4O+39U
-	 DhJyWR41oHjppG+ui0PPQ4f06lLHkzHP5JETmOobXocWuKLRdZ4XRZ2qM01xe6gGFs
-	 TUOBaN/2ZcbgNJ7OdTpd0LDccKTM0pD+uMugDiJmAe5wcEll+CVo8U4xyouB4gbKXR
-	 LJGPccgGwIoMJGU0hcB8CCrfZ/9m3pF5ef46DuTkdn57vH6bhuljSDDgkXng5mlRaX
-	 cqnDsFAKwQajYYT3g8dp1yzEmqxojWvcOBpnPKAKnfVnZVBkblRry+ZIqYqzfiM3al
-	 OyKh72u6/dtUA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C3820F40213;
-	Fri, 10 Jul 2026 20:45:00 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 10 Jul 2026 20:45:00 -0400
-X-ME-Sender: <xms:DJJRahdIAQytT5U6Nr9NADrFKI5X32Ef6eIeXrnSsVS-uAfPEHNo5g>
-    <xme:DJJRaoZlNfqciEJoJGQHyC_74CCjXfgmfHMQpSVehkbOSM9vXB3PzU1_ELaXWb8sN
-    GK26JE0CYKmXxGmjRMt60VU5-M3aMuPIaMO-HagBlwHpJ6hsCEJkQ>
-X-ME-Received: <xmr:DJJRakp_KEuh8p92LpbvK9AG7ALSylMrpwmSY3OqkrCToAG4Er5h-j40BPWEdh-OqqigdjJDXJifaCilJGOAeezcPxJiGZR5B9E>
-X-ME-Proxy-Cause: dmFkZTF2lv/BTmJtmx58UCBnX4LYuS/hSPolWJtMhIC6n0miZhX4RDMWuAT1Cl4GARjHte
-    lqEr6OARdwjx3wovv+JqFFm48+pvz4Zx4EQgeWrHiwpat62fKOUYIDPSrStJXAVJdwqAxx
-    1VEqZJrIf0stTWrfvXtzf0i7jWSJNy8uf/jMXDtx7Ywygxat1p6MeXmPc0lsZiFUkLa3sn
-    qa6w0Xk6djDcgTGYwGlBlj0VErXEEYhYZKCiUyzXOxRQ/T3BtU3+nzlNyVrmTVdMzrm/96
-    wcvb3aTmxG5/VfGOD77r/GAytqa5b3EPaQD9Vf4C29SbV+quV+TOBZUtmCKPnndUNJDSRZ
-    +ToTW+SzNgQPekcbdtuVHSCZJfTWEvui+ohy6FWXQGTH1WxWfOkyT5SfiV0QmnNv9YTVyW
-    Az3C/jQXQ4aeolLcpVA+KSPE8sQ/+V81F48UYQyA6+hB3F5Tcft4haEs5wdocS7yCVLRmM
-    eSiI1bmkYAGgHgFPZbPfSjjX7xTDURKGauaHAqJAUKmeWcQOaIbRLhfpOBpXDtRQUr4SiG
-    51D5Yz83d+midz8y+A0C1ngj1l5eqsImNnder4kQrBTBEBTa0W2jRC0Bk7wTpgyAL8NADc
-    UEb/7ghPKpmuk6TFsfN4MhANBLmxJZlqzMh+KiUGp/hqzMkKRBDuput0FGOQ
-X-ME-Proxy: <xmx:DJJRar0B9iN8wAOFCHuPaFQbJb8V8saeOyXydt1pXldNWq5erw9Yaw>
-    <xmx:DJJRapp1RbqjinFk8me3sngyUaRw2_y5e6QtzTp_k_cSm22LLuphaA>
-    <xmx:DJJRalTyfinINTP6H7IfX-AARPsLe8FiwAF8iHR8kaKh6oW9h24D0g>
-    <xmx:DJJRapoNmiKSZjaNy8ogBdajJy32RFp9tqhPPoJ7V2wugW-DP9cCoQ>
-    <xmx:DJJRarwG0Kc32_-9CRKv0pWv_Eu4zCEifedKZPHpwBNqYnreLAv8agHk>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jul 2026 20:44:59 -0400 (EDT)
-Date: Fri, 10 Jul 2026 17:44:58 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Gregory Price <gourry@gourry.net>, 
- "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: linux-mm@kvack.org, 
- nvdimm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- linux-cxl@vger.kernel.org, 
- driver-core@lists.linux.dev, 
- linux-kselftest@vger.kernel.org, 
- kernel-team@meta.com, 
- david@kernel.org, 
- osalvador@suse.de, 
- gregkh@linuxfoundation.org, 
- rafael@kernel.org, 
- dakr@kernel.org, 
- vishal.l.verma@intel.com, 
- dave.jiang@intel.com, 
- alison.schofield@intel.com, 
- akpm@linux-foundation.org, 
- ljs@kernel.org, 
- liam@infradead.org, 
- vbabka@kernel.org, 
- rppt@kernel.org, 
- surenb@google.com, 
- mhocko@suse.com, 
- shuah@kernel.org, 
- iweiny@kernel.org, 
- Smita.KoralahalliChannabasappa@amd.com, 
- apopple@nvidia.com
-Message-ID: <6a51920acece6_35cf3310061@djbw-dev.notmuch>
-In-Reply-To: <alBLJoM86ujz5Fg1@gourry-fedora-PF4VCD3F>
-References: <20260630211842.2252800-1-gourry@gourry.net>
- <20260630211842.2252800-8-gourry@gourry.net>
- <6a5016bf71df4_3b7ee5100b3@djbw-dev.notmuch>
- <alAb7Q_Ku5dVRKZ7@gourry-fedora-PF4VCD3F>
- <alBLJoM86ujz5Fg1@gourry-fedora-PF4VCD3F>
-Subject: Re: [PATCH v6 07/10] dax: plumb hotplug online_type through dax
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+	bh=h+RWZEwGISLwt7tN7hsUaGDCvVZIkviSEfS2GkcrVCs=;
+	b=1st6rAYH/mQJ80/KhNjmZOHQ/eBZkq3/lnJd92oVeWdBPHfczurfKfLrFkQYK4NQR+5S0l
+	dvCndzQHe3hFIz288OHnz24XNNLEJjDv0wu4VqGB2ZzenLevltPGp6/x7qRG/TEZeVOPlG
+	h8FhoIKyzHbJwHHqUnTd8a+4hWdpU10=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EZSxRzaK;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783734909;
+	b=H5EX6CIQFv++CE7PQHADvrTPOwp5X6YgiGUW1I7HVEWS726ZQdTuTFXosfsAIlU3MSRpAy
+	Zvyg7ui79feCccdX7cOlzvvVN3oM/ubvNKR1q1hYdtQIrAwITPoigq3nrR1QdSZKmnkwng
+	VDIT/AvmEEzTDXiJCY+vT2zFQph3f34=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c15a5b265so104501cf.0
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:55:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783734909; cv=none;
+        d=google.com; s=arc-20260327;
+        b=COgfHVeahzyQLKJpXTUIAvl0wu/ZE1K1QrYa4SP/doD+FJ+SLe+xU+0wcrhR3GsoWN
+         am2b8ipwasARzAmY06cqOVi4cbJ5buXVi8fl9rj6fg/g5kBvizf9Pfd69yCk+LyqeK+w
+         ZmuOFt5iGTMTzYaIb1MBUqyl3VywzZtRpQqetC5te8UJWJVtXVxOhH6UL2gOHN2ixO1S
+         2GJy7/nsjHA6c86bo0ryka7ZW5HtQdyweLf+sqUXP7zVsGO4AnfwlVXf0n/W3Mcqgqxa
+         x/iB/HPrZ4wvspHVZi98K9fB6up4qYKL+xdJtDVH+YKz7bsWXCXqgImXgDrYUrLD78Gr
+         C7vQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=h+RWZEwGISLwt7tN7hsUaGDCvVZIkviSEfS2GkcrVCs=;
+        fh=HSyM39IJfraOUyC0jAH4ILNSQA/ToQhnl93r0+bGVeY=;
+        b=QvaB1ZA6m67IqIR2X3kNPsn7aa9Wxly+8hAlJp7LuQlV8D6GBSKp3hDPK7GNwteyfv
+         zFr9XcKr0smEMzBQrWSGMF6hgnpc+UPWBwHOu+UUK97yCvziF3NN7v0+KhPEDGW2cUap
+         x3EwMQlpD2sy7wzQt+TeNvefPAnvZLCr1tMfGlqOKgbT/Wy/9yWBquL4CtRwnBPNm227
+         rjPXP1DoixAbNJV/tpPxKcY8Qdz1P5FF7N9/pJHH51vJ9BI3T7PZ7712swfCnUIThYWA
+         fi8V5v8HFO92Xu6UpMv3ncpZsCndD4Gn/cgSYrIxR9WRdBTClDA4QBxSxoVWtwtsUNIp
+         f3lg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783734909; x=1784339709; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=h+RWZEwGISLwt7tN7hsUaGDCvVZIkviSEfS2GkcrVCs=;
+        b=EZSxRzaK31x5e0UysEgXW383qccFHFbloBjDQQgMFIzdoMcM+6vb4LBDhdvUFST0pV
+         WPNni7vN6EQMvsNTLuMu8dPV+86GUUJY2WMk4xNP0M3EbNc3xCYvtIOpzoJA65XGwwfU
+         3yBx6BYeh3N1S1HH8vrSTuQ5h0URpl37HJj7iG6MSjFXvUwg0fUxc4WQg7ffYR3Nle2k
+         fxLj4obUqC1fTnX91hoinMA87c5LtORcvIXi3/q9FoJpuQA04lI2pEJufcejpX75GxET
+         meQZc8Uk/4c41SbkVV2Nsc0OkuUOM9EZEzr7qGsp7V6ZzZuyiuBPBLFyS+g5KjQip5N4
+         Xmjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783734909; x=1784339709;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h+RWZEwGISLwt7tN7hsUaGDCvVZIkviSEfS2GkcrVCs=;
+        b=pUU5xHBl7sd3j8CkryljXpduiesMUVQwS6CbP1wKLVBmOHdtGYETfxQUoQfJGqukhZ
+         YaVVz6/Gd33oEDKkK7T8rDH66RAGpmSMpiv0o45rModDyPoNEzBQ5YBwZil+FzLg0EIo
+         ax0J1u6BG6zLsgMF5gtYmdQo8rDO2wd7qdPt+uFGQaIgeMZYS2bjRKbZLefpLg4lFOU5
+         kjBExHrJWXCjcnr0c/7SArYTH/1KO0I8iEOcAXT5IbGCtpLAz5spvEM21oCGwEgj93wx
+         iJrLhNUI5VlHNKRZv/2iMl9sRh3tpqq4bcbKrsAFelkcKmfILIMuW7vcHgdAmdFolRLQ
+         zQCg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrv7DC8MjJAXXUZerbFLhx59MWmVj2V5jrwbRy/sEtoj4hr3bArCb23d4BX5H11aoTzINx7hvc3tA==@kvack.org
+X-Gm-Message-State: AOJu0Yxfw8onUf4jGWjEF5ba4xc9NPHKCuRTSAFLzrfPHNZVninvf6xU
+	W3B+kg4hVMsSccXkyJvQ0pXQvYdPYD4+DOLiOq//LPLlpQCHbHOXnCO9n2PhuFu+BM23G238ZQW
+	w6cRndmKhnnSUXkVgKWfdIs6D9yrzNesc9Mb6r0bi
+X-Gm-Gg: AfdE7clSUKv01vZmlUO/Q8/KOouFmHAUL6cBlyNcm/jjleq/L0feXYdh58UEVKUNLSY
+	nZHcDYZqy7DE+PoXA6/6RdlQR9j4ZloD68wYV5dJ/8PvZt7y1riq/gR7ZYfujnjPDGRL4f2q51S
+	OdjKnPN2ZDbKcvHuYF8FXTzLRSY97tCUGLBHZsq4ojyb+NTffqDDR0SHzc7JoxOpo4/tIbnidmw
+	9c1zvK87cMaJCW+ilFWx6fxE/Xqt4VKvWHgI1GmZJjQNNDXz/dsFzwRzNjNo2xnQizXxCU=
+X-Received: by 2002:a05:622a:418b:b0:51c:d16:b48e with SMTP id
+ d75a77b69052e-51cbe53fc51mr4445171cf.22.1783734908023; Fri, 10 Jul 2026
+ 18:55:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260626075019.1833065-1-zhanghongru@xiaomi.com>
+ <ak0Xl6q52exX9sBH@lucifer> <CAJuCfpFqQc+XbkpOiFb9Xap3VME1BevndWi-XyVAVKAfGMhRNg@mail.gmail.com>
+ <CAGsJ_4y8WH92WMV3V6Yd6+Q2GKYfTyw3PbNdBSQPTj_hcpz93A@mail.gmail.com>
+In-Reply-To: <CAGsJ_4y8WH92WMV3V6Yd6+Q2GKYfTyw3PbNdBSQPTj_hcpz93A@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 10 Jul 2026 18:54:56 -0700
+X-Gm-Features: AUfX_mzrjaqxxkDBO2hXq9Wl5cIMp6N8TMyRSXlfo2l9cUr9dimLMP1eH2sDJCg
+Message-ID: <CAJuCfpEZv3oeGB+5Oh+D0xX1sgEfeyYw_u0GC_apmZQ8ORLpgA@mail.gmail.com>
+Subject: Re: [RFC PATCH v3] mm: retry page faults under per-VMA lock when
+ mmap_lock is not required
+To: Barry Song <baohua@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, mhocko@suse.com, shakeel.butt@linux.dev, 
+	linux-kernel@vger.kernel.org, Hongru Zhang <zhanghongru@xiaomi.com>, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7664B10000B
-X-Stat-Signature: ctdieyphmdwwf9pskf6xhip5sshcwf3n
-X-HE-Tag: 1783730703-819559
-X-HE-Meta: U2FsdGVkX18VYcqbwWKssv5Xaj7/BmlWQpKLpjwjOJODyevrj1vH2No4rCzYyU09y9A4JCp1wmHVBkQFq15jk6BZngvq7Wb3KgR+YhzDDDKX4dcjqQBNpa41xzXLb7sEbLzv0OGT1IBWD7aLrpM+Kd2TT6Wum1AGUrICHfV24qRSRzJUyphYfGG133gIXudvk0sR4oSfKu26RZ9SOUWRE/GUJa7QrTX7YruoZaEOTdZK3nFqXSORPAjkm6aoZGbCPonewsZgOt/xE7SQk4YEITdoSMxXA9olU9xrS8xltuEuBbEb+oLseMnC1FRypjDx4uIU70SPRtJm4WOOLNSazMhv+qKu2ttYPKgcVDkw8DheXARgQ1oYQIvWYu95/fM1RBY3Hn2kj1LYiIr6QGQUVXKsOqaxNoHji9AYaLIWmHZtp6FSPEa5w+RQv5P2weroKePpIaTRMfdrqtwcaQvLPXJdw6MzqpAcTN+G30Hjoy82EUda2ykRkXES6GMo8LU1OFvwBbD/6z3GlwJRkt7DAlTQkM15Y9iQ/R/Fv7PkBCrha/CccStj/Mrr53oYmEWKieXMAJsTqkCA+c0MbTFNUuzefdw9ciTAfoxMuSPs/YfTsXH6F4biB5CG24AWVGEMI72iTUHAklrOHbv86pNqs1wYrMnzTTDYFmj7ZBQfrx+aFy9ayj02ud/GlNaTWxKlBBysTAHtM7FJw9SNhA0zAnTuHR++1NrY1ntcIUTpANBt1R0P0gVKe2kvUdaJPxT0qg8ToJnrGyrb5PCiQpBy1vJzFAhIg5H0ijWgKER7JDrtIJJrtH9SbwZ6ZigttbIA7MY/8hzIOgAGRkRF3oeA7H1TsPMjBsWtEeZq83g9+jImnJ6dHKRvalYXl92CVB6GvR/pcVpzgNek9x85PSRR+GJkMtkzDX4yYEbrGhJQTXwwTbo5Wj3k71hHUH6yovwarcAFJcv19UG2uOjHzjo
- HTODXjtC
- Yf5ng37WJfoedx0NsStRRu686b+48G/v5/vx3IC071DDBKZEei8cHFruanpfY+TY5jDFlyoX/wOxicE2CQpWXuhgYcZ9GrqF6NoV1lY5JA+jeRMTdPwFDrwPqtkRV/yL8uNEbEwgQR/AYrdcf4gOjtJm7AahdPevNge8U8GYb7QUgmscen5uDZy62DcYuSvqymIUW44wrst+nJokVsnLip4UcYewyFin/cI1MAVG3BLHQNeLf6AlTNXGHOS2Kfe3LvY9au4CUPVmZfT2VYVYhqmJY6kV2eD2FXa9vg41QXd9qI+7iFGADF19DCuMybO09mzaFBPGjz/A4eflyQf/WparPvsIfwH10hw94D5yhEqDPXTPCqxGKhFX5/qXNNnBpsw/+2VsEtTzgg0s=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AAE74100005
+X-Stat-Signature: xzq8rzd4rezf5n3wxbfu7atkdci5xrch
+X-HE-Tag: 1783734909-222990
+X-HE-Meta: U2FsdGVkX18qnxUF1qtphUfPwvdqcLuyr1XT7ssDZn7+oQHGbxIjjMrD1lEP8ARP/hRIPQDR+dvkQ6ZQePZm8EASzLovPXS/EYRxyjFJ6mOh3aunEdjTIZ5wNDRq1upmye6CS/A5y4/+sIJ3egRd7LKZrgIxkFS67f/0KdBk6MsSC6uY6B84z8It3zNnaoLeOARyy142KVVQcnF65/EXpmU91yUWfkWVo05yopml3+y/tE1I49NCQoQny7f4A1+FVg0NHUfFgExYqsMbfM1alNh68U3RpA5nGj0iXzpUVydKcXezcpaFhuSgjhAvceKgy/YIemVs8t/mq47y+6DhR4P5GEOLhdhSHfTExQissvl51vWq6xayvB6VhQSFhCMB2zx+qC5hccPK3lJ9NIod8xHXUpItMJGv8WwmonRh4Dw8wCZf5wYDzey/cno4FFg4I2FnHarBAGN/K9sj9KyPxSGroHZqfgyAylZ86sNImHGhJnsynwKsmG1pinuQtFL5KOJWBE4jak3w0BJLNYtzplbLpMCqIg1f0f4lecjwwquFHQRy85p8fMeyjWwEv+Q/5F9+gknpcWZxdnG17RmQEpXKVJSIXKBkC7SHLWUAwRKy6vTq56Fa2FCCz+GCeaL5vfyPje7LRNj18QMsIWKoazJLYNL4NMMD6fHPszzu7S2qFJSk9XH/BUrPyLWIxL611ozPgrYvf6/V1SWlWygg0kkVvDsWcC2PHA8C2fJUVQcUIeC3MntY8UF2BV+FFCfma8IhPydAHyTTREZO3OTZqIx+f0dWao+jnBb7f3FmecAUc2n/VpZ3hSf1SQKw6IUdRJlHLGXCbPn/96vRQmTF6mt573HIQAKtwm6Ffu1oD89gcF+Xv6I7Yol+sqS1Hu629SpBbtPJOvCeifgiGzeNvbJX0zDR5rEWB7aREUb/aNj56XhyGmZAge3upnecUUvgedaUmjYFVRIQkm8XxHI
+ Vlxc58ua
+ Zn15vWNvIb3nzQx1xYOpKytMX1l+VYO+wKHAunBcbQ01OcXdn1aQC+OFG9jdV6IgYZ6+OemXbgO31BT4QJ/AEoCJO1Ive8BEZVQbNEFH3vsnumfUISjwlWj8B75133MWMdeBjKE+kHD1PYOxUgBJJ1H3cHCSiy8VdHiczAXZymZaKpvVrgdDt8EQuGZbFn4dO61g1iyQMui/77tbQuxthkO2iSxU8PbK08HLl2FdX+95pLOty0bkw1oBsBryUNI/ebgykKtInQ2s0XIImXXhK7sLN4/l1equCs0aR2a5lLEDbPWYRGA7izJDs7/3HK+WBFvyo3GohnhSILgYe+KxcHcbTnrkX91yjfR0F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,33 +143,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gregory Price wrote:
-> On Thu, Jul 09, 2026 at 06:08:45PM -0400, Gregory Price wrote:
-> > On Thu, Jul 09, 2026 at 02:46:39PM -0700, Dan Williams (nvidia) wrote:
-> > 
-> > This was more a matter of having the DEFAULT set consistently across
-> > the dax driver variant probe() functions to make the behavior explicit.
-> > I didn't want an un-set value bug to creep in here somehow.
-> > 
-> > Happy to drop them if you think that's unneeded.
-> > 
-> 
-> Ah
-> 
-> Not setting the value in each of those places is equivalent to setting
-> MMOP_OFFLINE (0), so better to just set DEFAULT regardless.
-> 
-> So unless you have strong feelings i will keep them as-is.
+On Fri, Jul 10, 2026 at 4:37=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
+e:
+>
+> On Fri, Jul 10, 2026 at 10:54=E2=80=AFPM Suren Baghdasaryan <surenb@googl=
+e.com> wrote:
+> [...]
+> > > Have you audited every single VM_FAULT_RETRY case? Because getting th=
+is
+> > > wrong could be a serious problem and break things. You should include=
+ a
+> > > list of call sites in your patch and explain why it's fine in each ca=
+se.
+> >
+> > That's my main worry with this patch as well. I think a better
+> > approach would keep VM_FAULT_RETRY as is (falling back to mmap_lock),
+> > introduce VM_FAULT_RETRY_VMA (or whatever is best to indicate a retry
+> > with VMA lock) and then convert individual VM_FAULT_RETRY cases to
+> > VM_FAULT_RETRY_VMA with proper reasoning and explanation why it is
+> > safe. Less churn, gradual conversion, and happy reviewers.
+> >
+>
+> I am not really sure there are any happy reviewers here.
+> VM_FAULT_RETRY_VMA and the gradual migration to per-VMA lock retry
+> are exactly what was done in the previous versions, even since RFC v1[1] =
+:-)
 
-Right, the mild feelings are only coming from the changelog mismatch
-which says "Oh no, device-dax drivers can not specify their online type
-besides the default" and all this series does is keep the status quo.
+Right and the pushback you received was not due to that approach,
+right? So, why change something that nobody complained about? Unless I
+missed another discussion asking to change this approach, in which
+case I would really like to read it and understand the reasons.
 
-That can be had by just having unconditional:
-
-     online_type = mhp_get_default_online_type();
-
-...in dev_dax_kmem_probe() and get rid of dev_dax->online_type until the
-first user arrives. If you are respinning the series and that patch
-drops, yay. If not, oh well.
+>
+> [1] https://lore.kernel.org/all/20251127011438.6918-1-21cnbao@gmail.com/
 
