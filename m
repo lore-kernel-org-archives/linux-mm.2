@@ -4,104 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAC23C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 15:14:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB702C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 15:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E42F6B0005; Sat, 11 Jul 2026 11:14:46 -0400 (EDT)
+	id B48DB6B0005; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66E686B0088; Sat, 11 Jul 2026 11:14:46 -0400 (EDT)
+	id AD8C66B0088; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 534D76B008A; Sat, 11 Jul 2026 11:14:46 -0400 (EDT)
+	id 99C636B008A; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3015D6B0005
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 11:14:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA87BA075F
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 15:14:45 +0000 (UTC)
-X-FDA: 84976842930.19.76D0220
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EC986B0005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 11:44:03 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9083120791
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 15:44:02 +0000 (UTC)
+X-FDA: 84976916724.20.DF8FF36
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EF9E7140008
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 15:14:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mMIBSAEC;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3A06B1C0005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 15:44:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZIAqARcK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783782884;
+	s=arc-20220608; t=1783784641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+i9jhfHQV1VkWghZMio3vOJdKYg4IgTadReMoiZhHKI=;
-	b=28Oj2VdpA6EmCiI10quyFo1HJgZaiAtErbZwJqWYErZl7lPz9MAR1X43JB+Bc8bxBv8j12
-	2G5wxukw4Sm2zNTNxpn+g8iH3ZZn7mF3P6HeValwbk3H9Y5N6tVC542mhdv7JhRqf0VtTG
-	WZuRp2rTCA6s5tzalqB1dp/r89xJcUY=
+	bh=+Hx51w8dFEncFI58huRfM4bO4YcYrbYiW5us+lxhCn0=;
+	b=HdjJoYoqQbDin0UgItcQIyu5i0OeHzpZ8ET1mzeiOmGaWH+mCOF1lalRiSHU4wAsPMA7c0
+	V7fbiG2jax4/Nh5oR0V8ashFdylANoBMHzoApLkuarTfSLbyqrJUf4gcx37qYDV9X6NkA0
+	TILmHF5KXGqZ1OJQ6yKN0PqPetVsN4k=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mMIBSAEC;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZIAqARcK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783782884;
-	b=jAJe4wIPi3BC/3V7Fj3AF4fouXw4Cfl+rXH7hgZjNNwJ5RpI+cX2roedzU/K9h3pemIKbw
-	pTi9IxlfyldHB1JdlAtrT3ViNwgddQgRasQLOrn24MMzrqRIWkuJfB8bDxOI6upaTa5PY6
-	9utuSeSHX0R9MrmTFPHeGFHdEL2RGBM=
+	t=1783784641;
+	b=w931Phq1FS5r1oLD20E8hXQqIqpmYPcwvBb3Jvqe7dAY323JQ99PS4hSs2UVV3wVSlyv4c
+	xPNOZsAW+hWKRHjDnMp1Hm+e/+TjHkeMZfgjmqyRI+dkviTezUtYqtADTjdQ0CDnpfSiiQ
+	Jk+nTsQd0lvBlGjl656LIKVrXzSIOQw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE76A4034E;
-	Sat, 11 Jul 2026 15:14:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDD31F000E9;
-	Sat, 11 Jul 2026 15:14:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 177CF42DEB;
+	Sat, 11 Jul 2026 15:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C6E1F000E9;
+	Sat, 11 Jul 2026 15:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783782882;
-	bh=+i9jhfHQV1VkWghZMio3vOJdKYg4IgTadReMoiZhHKI=;
+	s=k20260515; t=1783784639;
+	bh=+Hx51w8dFEncFI58huRfM4bO4YcYrbYiW5us+lxhCn0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mMIBSAECnhdy980IyBb6poTmknYhaPSfK+ERRvz+wMgwMhwfBBfGPp5OyPotggFer
-	 44sbv97BGTlcIlDx1I6rhtltZ7E6DNeTIiK07sVyDjMrsDoF8s0yfAwRTsknH30Tnt
-	 SZFL7ajAvWYKXpHgRCUgaZGuTbVyQS4bAihgZTW8i26DJiGdrFs9l/XP0rhPNxfosV
-	 IHCM5oTlAifUgFaBvO+VX6JmSegFMXquTJ39DLYNt4u+946/8eQ888SPigdAX2oZAy
-	 M/kypSWCYukINHsPihbEqHqtnHfYsjfQ7c1aoAfwx4w1YEoDCj3qI62hgwFw8ZvrYt
-	 gsSYzcsaeMjcw==
-Date: Sat, 11 Jul 2026 18:14:28 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Alexander Potapenko <glider@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Marco Elver <elver@google.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	kasan-dev@googlegroups.com, kexec@lists.infradead.org,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/3] mm: split out mm_init and memblock declarations
- from internal.h
-Message-ID: <alJd1BLypyK9Mpaw@kernel.org>
-References: <20260709-internal-h-v2-0-695631425968@kernel.org>
- <20260709-internal-h-v2-1-695631425968@kernel.org>
+	b=ZIAqARcKP8hujblE64oSTCkc0UZEMo26D7eVRtr0xDhcXILGxalvRvFmMtdghf/bI
+	 q7qQctgHJCL6WCDEnzfZDVOe0Aectw75OQfsY1G5tto5Q0WSLIy0Frl6snpWxroSwy
+	 Swdl/NBz6s0ZYnNMaB8U5aDNYLrOouKqs+25wP14l7jNzBb3xWc/37FYla9s3u4MAZ
+	 g7PRUdo+J80jx0RVD8zD8zo44CNIR3crgyrCUDjCQsEMxzt/PBhDbBoNShaK1xBH/9
+	 DWdmt+dD+oobnlbRjWzj0rOnAtXSOlOmDsBsDGjFIetPZEjlaem3yegxLO9pjx4qXk
+	 5e/HWkVwggiMg==
+Date: Sat, 11 Jul 2026 17:43:56 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <ehristev@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 25/26] dt-bindings: reserved-memory: Add Google Kinfo
+ Pixel reserved memory
+Message-ID: <20260711-tested-elite-dingo-93efc8@quoll>
+References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+ <20260708-meminspect-v3-v3-25-7aa5a0a74d5c@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260709-internal-h-v2-1-695631425968@kernel.org>
-X-Stat-Signature: ytf3tad6yig1hsnmy5xbicgerzte8pym
-X-Rspamd-Queue-Id: EF9E7140008
+In-Reply-To: <20260708-meminspect-v3-v3-25-7aa5a0a74d5c@oss.qualcomm.com>
+X-Stat-Signature: e7m1exmnwk5ikq69mmkggmu6ws48ermf
+X-Rspamd-Queue-Id: 3A06B1C0005
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783782883-803502
-X-HE-Meta: U2FsdGVkX18uOtjCrVbbwfMhuOLEpTmPa/6dshAwkt8ay4ImALCkGqzSbFeh9iIiJ6dWyGh3gBQDqHVL0XhvaYyG+qAWoh1wymQzUxOFsCfECW0wjblcrrphhdRAAxzYHiHJzxL4y3YczQEZpPYP6LEpOSefX1AknNney8fYzhbg17vd8EKnQ4fWsJmoywDGaG4p5HlVoxrZMofHPsQYIJvhocI6iARuhLQm+AKJPMqY+pM0FQYTnkoV+WdcoS/j7Tnb7IOc+nNePU7TxjS9sSVEzy11+vw+s9u11sosLnx4Jm2JcNQLpThDmj87seP9IG8+f5B9un86p1VOtP7njdRtALFrDI5L0Uh0AhVsMAorVu/EfKfwM+1VBjoar+A35aZ1fDqMzLZmrLw5yuKvIfc0R+Tcod43Z4pAxYj0w/gRGYA4F6cczgEW2lgq4eCBHpC6HB9VHF/Lzvi/N/jMtzESxSVV1xaHDed2FFwaZ6qGmGWxEnl3PfCfP2ygFXqIoA9HQEbSFQSfxkjjKYqXO7ecM+bCc3eSsPE8hd7nX3F/uY/SrDe/AVJTDmGaVVRGKW8i2xGvpjfrDLZf6gya+GJBToBjuYwx/xDR8ZAxCU9HXd6P+HMUfQyI5p1P8kRbjg4sCaLiUnoaq9LID6fst+ArzL+eLF1XQdKztH3wybChV+rKnUSygVmdy6s4svkuEgXn2oOZKxO/WXadMSN5ACLKHjZhzJtJH564hl0D0IysawOyIUC+QmOvkbdCchiJPvpHum2jgrvVnG+Lwc8Vplk+426NwP33HTrxYIS2wwGlZ8qIYNFliexLDSmzwzpCZS+a/oZkaTD/1/s/i2lZEcl7kYw3268BTfve/AKkN7eUm0CULRgcptdTBJzVL1iGOGnH47Wc0w4DLLClTAiXn6sWr7i1vV0744obOts2/rMAX3g5namjrTyB78BNbvxu24RmRC1mBt3aJbseeGs
- 4l0yxBVv
- V9HdRK5FkRdFqtFJqMCt6LIO4QzSy1tgz+Voeah+z8xR65VlEaSDXsvxycb5jxg+BJqoRnA7beMs+X+ONGgfeWdtVEMxqvv7SWrO710FF8qNkCE/yNoRN/TGMMspGeIkyIK+Fq6wV1KSmyP3lVPxfGGyoOkiOlbGiGKCuLIoGKrrE57TrHHnWHmWyv+Wx7stm+VCJATtHzgyzs4QF8j3X2fPL2XekIPh6mYG6zBPfxF1aTsYGw8uGWBu88vS/McYGBmbrRedZtpTrSVoFB0ufj4WYyq7xmNGWBrTvBH8G26BvcxRWhx3V8nGNMPPcnU6vBTMwZuMUh80MJOU=
+X-HE-Tag: 1783784641-475352
+X-HE-Meta: U2FsdGVkX1/53lhChqmD9WdznwktCKhmQYaj4AMiBT5oy2CPv8ouX/h8IenKyz3V1FWBJBKXGRFNMigQZ/CRp0vnMPLKAbLval8P6WHs5sG8eddR98/AmCbLWS/xDhVrt0ao2fC9g2lm32dHoznSJXmPK6Rh1NzEIqeY2ffxIJI6rDaiMMyIC3P+SLlBfiOXogHBi1tMkM/SKLBU25UZfpgxKOsRVPmMHGurV1Gvn7NtRR/7k2nmuJosgE6OSpRd1CvtN3XaaJdAycw9qMlUShqtv8aaupBu5E8BU4Mc9RbcEoYSLQal51Fa0Qoc/x5QpQqMKUnweh7zLMPIj0eJijFkuXnpU4XYkOxgUyk7Mvn5QvswEHj8VoUHnbKoAv03i7yi1YmPdeA17WHiMKQyiw1AM84GaIe21p8epshFK10j0ox40GCC9Ez1tPkTfov4gkJEIJVg9awXmPnaQvF+P8RDdAsoUrJN9PPJCpSppMAvjPJV8MMEmlO5dKZrxaZot99vbRI/sVKwX/pGo3RG55jdiXAixg0FcWfms93NJqdcfychjt+uONAwI/Uz0PbbMsFfn6JCQ9UzSY5rDVRv4sFS17Vf+CGJsw5VrvFonlnqmiamAzYvNihioS0gtnC1NAm9dFdpIIyZYuppxAsfClvsoFtPvy1S3UOXWsm17VAvrpmKWv+4MtBmEbCoNbRIE1/27SNS8I0/tFQ1XVTNthGKO3z881WrFXlLthjhne3EqLOVi3qB0EsMNgjKL/eaw/MmVSZ8s2PT6pxEkOeMlT5gIotpcmpznR31BT09Y4Lnp1FPeraYBZ3PvnAbR/dBJVTVtBnHSaSW17zo4lAsbuVluC/6cOsJe74twLOyLWSGiNTHQ5xNjxpwvPLSBqIp1io/82xHjxDXNpwICajR7/h8btpsIlwXrCjSKP9m2TskoiZ2q6IaAq8CXIOcTYHd1jbyTHo+UkkTzpDS2TK
+ eIx3ufzX
+ RoEMyIk/aZq5w7++2Yb6Egk/XF0rygJRO46aSJcaXn2mCuBWJ0V/ZtKlvFEbvGTLMo/9D50/CbvvmFFquhC+/W9ZEza3N/cgGoGr1Hg0uz3CozRGeS5kJGtbSmLR3Ztgto+ypzZWZdRgxjgIB8cuj5rz+99IYAIZ3w/7NUqzMEEGmN7w9X5vBGQTaS5d4ZdHTLGRTne2f1jlxv0LGOusmTBN3R3LSWJ3YwXZNeeuETUc8Isd56vASXl1Nr8ouQZb4n/1ofLeNxmbzdDhLUukxsm8FRo9hja8O9Y40YdZLepLMDIBfP2jx2Tg6HZZyTFBl5nsSZIMEpyyhTVRJJsK8ZYJIEIZXX2UYX9fAwmCvhX94vM7r5ZhnRMDKyXvD3UMFlseHONbL8KMM7zxbNTrhUVuWyOmzJmuIAEaFXamldqKVsADgY/SGT9xQMjxlFkuMsoWq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,124 +117,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 01:00:03PM +0300, Mike Rapoport (Microsoft) wrote:
-> mm/internal.h becomes more and more bloated.
-> 
-> Move declarations for related to mm/mm_init.c and mm/memblock.c to a new
-> mm/mm_init.h header.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> ---
->  MAINTAINERS                        |   1 +
->  kernel/liveupdate/kexec_handover.c |   1 +
->  mm/cma.c                           |   1 +
->  mm/hugetlb.c                       |   1 +
->  mm/internal.h                      |  91 ----------------------------
->  mm/memblock.c                      |   1 +
->  mm/memory_hotplug.c                |   1 +
->  mm/mm_init.c                       |   1 +
->  mm/mm_init.h                       | 120 +++++++++++++++++++++++++++++++++++++
->  mm/page_alloc.c                    |   1 +
->  mm/sparse-vmemmap.c                |   1 +
->  mm/sparse.c                        |   1 +
->  12 files changed, 130 insertions(+), 91 deletions(-)
+On Wed, Jul 08, 2026 at 11:02:04AM +0530, Mukesh Ojha wrote:
+> +maintainers:
+> +  - Eugen Hristev <eugen.hristev@linaro.org>
+> +  - Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> +
+> +description:
+> +  Reserved memory region for storing kernel debugging information that
+> +  can be read by firmware and bootloader on Google Pixel platforms.
+> +
+> +allOf:
+> +  - $ref: reserved-memory.yaml
+> +
+> +properties:
+> +  compatible:
+> +    const: google,debug-kinfo
 
-As always I forgot to update the memblock tests :(
+I guess: google,pixel-debug-kinfo
 
-Andrew, can you please merge this as a fixup:
+Or maybe even specific SoC. Both title and description suggest this does
+not apply to other Google devices (makes sense), so compatible should be
+somehow more specific, unless debug-kinfo is already enough to identify
+possible users and there is no conflict with debug-kinfo in Chromebooks,
+for example?
 
-From 4724f0868aa5ab6bc1c054d0be1cca2067533c22 Mon Sep 17 00:00:00 2001
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 11 Jul 2026 18:11:13 +0300
-Subject: [PATCH] memblock tests: split stubfs from internal.h to mm_init.h
+Best regards,
+Krzysztof
 
-Following the split of declarations from mm/internal.h to mm/mm_init.h
-update memblock tests to match the kernel core, otherwise they fail to
-build.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- tools/testing/memblock/internal.h | 20 --------------------
- tools/testing/memblock/mm_init.h  | 24 ++++++++++++++++++++++++
- 2 files changed, 24 insertions(+), 20 deletions(-)
- create mode 100644 tools/testing/memblock/mm_init.h
-
-diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
-index b6b1d147fd75..4168e646af09 100644
---- a/tools/testing/memblock/internal.h
-+++ b/tools/testing/memblock/internal.h
-@@ -28,22 +28,6 @@ static inline struct page *virt_to_page(void *virt)
- 	return virt;
- }
- 
--void memblock_free_pages(unsigned long pfn, unsigned int order)
--{
--}
--
--static inline void accept_memory(phys_addr_t start, unsigned long size)
--{
--}
--
--unsigned long free_reserved_area(void *start, void *end, int poison, const char *s);
--void free_reserved_page(struct page *page);
--
--static inline bool deferred_pages_enabled(void)
--{
--	return false;
--}
--
- #define for_each_valid_pfn(pfn, start_pfn, end_pfn)			 \
- 	for ((pfn) = (start_pfn); (pfn) < (end_pfn); (pfn)++)
- 
-@@ -60,10 +44,6 @@ static inline bool __is_kernel(unsigned long addr)
- #define for_each_valid_pfn(pfn, start_pfn, end_pfn)                     \
-        for ((pfn) = (start_pfn); (pfn) < (end_pfn); (pfn)++)
- 
--static inline void init_deferred_page(unsigned long pfn, int nid)
--{
--}
--
- #define __SetPageReserved(p)	((void)(p))
- 
- #endif
-diff --git a/tools/testing/memblock/mm_init.h b/tools/testing/memblock/mm_init.h
-new file mode 100644
-index 000000000000..95bc5f2e8ed8
---- /dev/null
-+++ b/tools/testing/memblock/mm_init.h
-@@ -0,0 +1,24 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef __MM_MM_INIT_H
-+#define __MM_MM_INIT_H
-+
-+void memblock_free_pages(unsigned long pfn, unsigned int order)
-+{
-+}
-+
-+static inline void accept_memory(phys_addr_t start, unsigned long size)
-+{
-+}
-+
-+unsigned long free_reserved_area(void *start, void *end, int poison, const char *s);
-+void free_reserved_page(struct page *page);
-+
-+static inline bool deferred_pages_enabled(void)
-+{
-+	return false;
-+}
-+
-+static inline void init_deferred_page(unsigned long pfn, int nid)
-+{
-+}
-+#endif /* __MM_MM_INIT_H */
--- 
-2.53.0
-
-
--- 
-Sincerely yours,
-Mike.
 
