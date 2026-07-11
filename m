@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D42AC44501
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 08:14:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E441AC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 08:27:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F82C6B0088; Sat, 11 Jul 2026 04:14:01 -0400 (EDT)
+	id B80066B0092; Sat, 11 Jul 2026 04:27:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AB4C6B008A; Sat, 11 Jul 2026 04:14:01 -0400 (EDT)
+	id B30556B0093; Sat, 11 Jul 2026 04:27:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3988C6B008C; Sat, 11 Jul 2026 04:14:01 -0400 (EDT)
+	id A1EBA6B0095; Sat, 11 Jul 2026 04:27:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 130126B0088
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:14:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A5531A06C7
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:14:00 +0000 (UTC)
-X-FDA: 84975782640.25.F149014
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EBABA10000A
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:13:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzsOqxB7;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783757639;
-	b=tp5R07ujpAiNtgtuK5h4k65h//Hx16NEfJeDhjgO32n3hJPckF2xNWwdhjLAp34wSEcGUj
-	fHNvD/F6hBuGIjlN1eTKDsNxOGT/DeKmTLvFd534dr9v3CVAvxVMlDVsJwUWIzCscu4U1k
-	1trODZEe8EUL3EE5GKpkNM0hb8ko7y4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FzsOqxB7;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C8876B0092
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 04:27:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 072A81C8F05
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:27:48 +0000 (UTC)
+X-FDA: 84975817416.24.0E5209E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6D98F120007
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 08:27:46 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZmJcywno;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783757639;
+	s=arc-20220608; t=1783758466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fL+OBgv9MiT2Y8LAZqP3EBv16Se8dNO3kHDIpd+tmoY=;
-	b=OSP6hM3MEjwXyPwZ6qz3hvb2Fu8EinTcC3mkHEVAOu8gKf6vIYLx8YZKAfNBqqMXXRphxL
-	vKFSz6OOwlJRxUMpu95zXX5rYKFRJor9VjLcLeXq3o3PRBAK4kKhXRcdbKdf8kiCOmQI5H
-	ktgKaKTKivfPVM/M2meTA0mNxVoO0s0=
+	bh=o+9YUEALLTL+0259dlnNxroPvNI9JdmPox5B/61vnaM=;
+	b=lPBJcvGw3I8LdIkO6P7mXmypupW7eRyfGSM6W1FNR1nAIDpwoUvhFI8pMLKDoKL33ssqQJ
+	XUlzFGpfziGKsgVKYPflbrv3spQf4waupihGlhRAb8eTV4wjpnPhlTZrYrCKXMJuyJh4aL
+	inDcvh4BeIywpnvuEDrvvpvfXa6n77Q=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZmJcywno;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783758466;
+	b=4re/NW9hT2FUs58d/xvoJFpbUhlBn+7rD0zDhPvFD1lJrHgBLDZxre1WJCNT5Zp+4ixUUc
+	+SCpMQ6PIrueuHtUSnobddG5m2WL8geilMrIFp8oqdqG81U6Wo4edhJxboX7KDnCI/8qwW
+	rGzZkYpPwbMId1/OTqrkrqargFnSjgg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B85AC405A2;
-	Sat, 11 Jul 2026 08:13:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8901F000E9;
-	Sat, 11 Jul 2026 08:13:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 12BBD60051;
+	Sat, 11 Jul 2026 08:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AA81F00A3D;
+	Sat, 11 Jul 2026 08:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783757637;
-	bh=fL+OBgv9MiT2Y8LAZqP3EBv16Se8dNO3kHDIpd+tmoY=;
+	s=k20260515; t=1783758465;
+	bh=o+9YUEALLTL+0259dlnNxroPvNI9JdmPox5B/61vnaM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FzsOqxB7yjmk8r6CDB1CdPdVSUYM1meVTyG+V/ZCtyKyIxP8e+cqryo0Fr21Vhz3f
-	 66ASdWOyx/Ehv096Cid8xYzpM1MdYGKW5fuzjrbhydwKrjLdjaqZDw9vHOM8JXFOfs
-	 rUOUC/QVGHsS23/kpeM0sWl//ckJbBvai8EZtdI0+4DHZ+IG0zxx96PzUqIdqj698B
-	 2dqdoTX2/qf7Ej4kKrxD7mipggBuyjgxRIeyg1015ogfpjPZnoEdMcgkn7A3tZovYc
-	 trvndunLLmVIFkvPHKnMACJkgKn7DEYriLNwEC9kSWhUwV09GEOaDBA6/y86oy5VPK
-	 gSCC9MZQaC7Sw==
-Date: Sat, 11 Jul 2026 09:13:44 +0100
+	b=ZmJcywnoP8pPUDaImC5Qgcr5kg1sl/cTQdYsbPJKkAaHXp6XTAodQLk25zI+RO+E6
+	 vlVmvzA8B51o5fWTM6JdeeUL+Xfa/Pzo8JNGor0Rtswishsat7zGPuRwOM8FBSzsiw
+	 JlqJRXxL6R/nzkixHrrVUf7/Uzkc2Xjw+6JIp7obqP9nVuhOnjahos/YYoSJc6EgU1
+	 k1x1QFlXGk4pOumZZpLv/4Tql4QK4/6sN5TJcXixaLH+zP/PKTf8vKR8bTq2jUU/s9
+	 C5y2Xkvg1AQdWKQLXYIFaHwKaPOFVU8foh2ckIST4j6o+HWI2vh5P/wM+2vdKMVsr7
+	 ToCVy8ckpgvFQ==
+Date: Sat, 11 Jul 2026 09:27:32 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com, lance.yang@linux.dev, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com, aarcange@redhat.com, 
-	shakeel.butt@linux.dev, hannes@cmpxchg.org, riel@surriel.com, kernel-team@meta.com, 
-	sashiko-bot <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] userfaultfd: wait on source PMD during UFFDIO_MOVE
-Message-ID: <alH7Hey7XRiL4dC0@lucifer>
-References: <20260705131231.1499198-1-usama.arif@linux.dev>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Carlier <devnexen@gmail.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, stable@vger.kernel.org, Brendan Jackman <jackmanb@google.com>
+Subject: Re: [PATCH] x86/mm/pat: acquire mmap lock on page table free to
+ avoid ptdump UAF
+Message-ID: <alH8fAnP1JlevCPU@lucifer>
+References: <20260710-fix-cpa-ptdump-race-v1-1-d898699a7417@kernel.org>
+ <529e37eb-ad4c-4b0f-8ba3-c5608aa7a893@intel.com>
+ <alE6fUJZzELlUfxP@lucifer>
+ <f2af8fae-62b8-4c5a-8f8d-594b93912dc0@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260705131231.1499198-1-usama.arif@linux.dev>
+In-Reply-To: <f2af8fae-62b8-4c5a-8f8d-594b93912dc0@intel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EBABA10000A
-X-Stat-Signature: ja1uedb4tbjkckeyxc8bi3rt8uiz8qem
-X-HE-Tag: 1783757638-443390
-X-HE-Meta: U2FsdGVkX19mGXK8XPAsZUvTQYhwEzYpTeii3/qjr6Ds5fZwtjwHz2I4R+ZUNJ6VgA+gQsDtylZ9Q1DlTNYq1VSl4wc5AgJJVHJQE980UxyrkuoD8FZGc5DW0S3PXsreyrOJvDj4Kwq5COslZLC1Iov/PrYjeeX/4dzwFPxmH/cFXrHuDB1GrHsGewOyDWoRC+tgJVblDqMIt4SMuxTBfa6zcLDGddSzNMGpu72tgy5monfyHYW9ypM55gIp1EsjeXpZMFk145+wnYUblcdHfAP6SPa1eoH1K85JWk5Hx2PNyDFY7LPR+qiWZ8SV/KhKcvM0VRMV451zP52bm7OdU8XRUiG+PUIVb3kDlaCHr42VCict9QOVwGLASBYkewM25i/wmsajOpgzA2+T6O1FnauJCaQN30hD76O0avgIfEDBYsYXGzskwRPr7Ttgc9+syKO8M5v+0Tp52Q98KnryItFdbm5PTsZDSUc8qyWIMK3NEXbONgwlRgtAtyJQ65hrvqRYqiv4pJiwpnraos2SH6MleKKxkVzoleXdIQhBUo3udr9fG2lOf2iiPmiSJk5w6yWGnmyY9kKibZNDxBeNkilFVpawodWsNXOF2IXadbs4BkBNgDr2shah3FFV5nv8//P1Jp5+ic1KVb/SkRdgC9LyK0kfNBpWrPNwsPrRfs1/1IwpSD77dD5OhzGaJTOmR3bLd/nrOrYqA4F3Cfl5nWHF7pFYlUR4zMCZ4EkrtXfV/uYfODflpkvu2fRk/m1tH3nDGWTnVEAKF8ITJTdihjsSpfTH9Lhu7HzrBElfFljhsHHjTlpeMf8VGsF0bV7cSB2tAaLUsi+tEhff4h5hiyugms5AsPz1JGDt9WEHS+f2svGRy2cdlcBsnXGPESuCKd8ll/ZJIu8owmVFFuJqDMJCMiH2+Q6MY4L5aUJa0288SWbnNA8MIvLjKGtHFeaZ2G0J17LSLhzEmdCX7AH
- H6RVXox2
- XLdvXfHoPkUDUDcxpiz6b0J7i7Snxfkuyow4caEEXwJjjuMrWvagFWymb07FXRzfmJcRsmPVHZMr8OJ22uk06okEUmARwnVuT774e9G/rVQjpFb9elL2DWJ7Q8rOiqUWoLrEFF2SpbyGFygFOsZcGsCtpsw0XFGgnYZUr+nuuc9qEOguqPm6zGCJ3c578qrZa8kAFO+++aTFtzaIyLl0eqsqU6pcg8CrleJh0Nat43JjRgqael0ByFBbnNxm3RKh7qlB2MvScBwVDqjHKyhshCKbCpVMIYrMHKZr2I7NGUTvV1O2LNsvadSBHsn8+6wZ2TH10sof43Hv5wlmRP1EjVoAzaSKk+1ibO2GNGOwy4apy+ZiZcuz0W3pLzDO5J6b3E0WZ
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6D98F120007
+X-Stat-Signature: 3qia35yr8k6yu11pfmiofkfun7moskoi
+X-HE-Tag: 1783758466-213676
+X-HE-Meta: U2FsdGVkX19hDx8oz5hgWw23FU/DMF9bBkZrNKmOnSvHY0ya9iw7xElCedp6tobVbyEHoGJtdfR6AdXBmifsMEdjVo5GsTy2X4SshkIEgee3fUgFX+pq50w0IOHmQJjkGANkrcVimkUZhcXPGGwrgXhsa0tNLU+FbvXpSSrnH9C3n+5wpcbTSynxtM+ubiihjfGmTsS3XWdEqQauKms7wvJ9l5pDzsWaS9q2MYcbUS8+ynA4+fJlIzE+aXHDPVdeP52F4qniJ2l64CWCwyEQUdFVSFPPUKvPkVwDK8yor3RxqV3BJ81jy4+Kwr6ALtxO0ra1a6R7P7PjOGQF0z7UaVZUx8dZ/8HKbAzbLdvMV+Quy9yFOtVDvKVzurUEy5LiAeMQj0eYOZZtdG7MFca9ERkNDTMriy9Hg7qv4NhXmNXJ9BAgHyKXwbcBhvmfkpR0WV64zSAREX/HjdeaBTFoHqMS8WHNnRzRNsnsoWWb9qyE6Fpk83IrixLxT0jobBvmRJyqIFYOZk0eAmOywpSG2S4C3t6d4xqpWzhdaQI54m+yWs6pXpGosXzG3ragvgROYRb1wBwe3Ky2waH31uJt2II7FZ0ApJGij/OLD9Ozzn8ra+ZKZMd1bDbcGP5XHehh6J1od7VJnW1WZJEC8D8qCr4OyNo52kAjnM2A8a/R+HqTq5PgXGPemBoLsFwjGXgFnp9h6QVekSn13rzfIFWfivYhxCxM0Wms442GTg7r8CFgTsbAZr9ShFnLjPY+a/uLRj4hLz3/bBis7wSaQ7+jULsy3yw+L+aC+zPMNZJUcgqSQY+zuM04DgrFIWhCZ2NLeTWfSQXKggL2oWtgRWXGrYBfs3aShAK0xw/uA0G2eYeQv7Ey3c16T9F1jxoeIxSVofD26hzD1QboqCUW9T+L8xQbDsMKEic7yHdiqAMXPyUAoFqSezI42aq6Ayg85gf8UmPu7P0o4tNXxXnpFLD
+ EmXojL6U
+ Wnz2V7/vG7az522KNIsi7l5o6SLcsWDH4n8iTGn25QeactA8a7TH2GGTsaystvonh3gsDCQBB7b/LaKkjQYYs9bkptqmARev95uGWf5R6pVqmkcWHhQ4R48sO+FDug1M0FnESO3Ck+XhR5cYCAlsK6unGbrZt4BdOxzgO/0veGzAcQpJuZCBki0yDZzJpAE2HzL4zHPbdMsi9CgBBxvDtSkwrPzvUTFvGAJ283kObTHyTkCWHAOd+tb9OqOCbJXNvpJBL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,50 +101,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 05, 2026 at 06:12:31AM -0700, Usama Arif wrote:
-> move_pages_huge_pmd() snapshots src_pmdval under src_ptl, drops the lock,
-> and, for migration entries, waits with pmd_migration_entry_wait().
->
-> Passing &src_pmdval is wrong. pmd_migration_entry_wait() must lock and
-> re-read the real page-table PMD; on split-PMD-lock kernels, a stack
-> address also resolves to the wrong lock. softleaf_entry_wait_on_locked()
-> then waits without a folio reference, which is safe only while serialized
-> against migration-entry removal by the real PT lock.
++cc Brendan for fun's sake ;)
 
-Yikes!
+On Fri, Jul 10, 2026 at 12:50:26PM -0700, Dave Hansen wrote:
+> On 7/10/26 11:53, Lorenzo Stoakes wrote:
+> > On Fri, Jul 10, 2026 at 09:26:48AM -0700, Dave Hansen wrote:
+> >> 1. We could just bite the bullet and have separate ptdump files for the
+> >>    top and bottom of the address space:
+> >> 	current_kernel_top
+> >> 	current_kernel_bottom
+> >> 	current_user_top
+> >> 	current_user_bottom
+> >> 	etc..
+> >>    Then the lock you take is dictated by the file.
+> >
+> > I mean that'd break userspace though wouldn't it?
+>
+> It's debugfs. So, yeah, I can see it breaking things, but it's also way
+> less of a concern. Nobody ever complained about the new PTI file getting
+> added in there.
+
+I wonder how many people use this :P but I expect some do and would moan about a
+_removal_.
+
+I guess we could have a warning if somebody used it.
 
 >
-> Pass src_pmd, matching __handle_mm_fault() and hmm_vma_walk_pmd().
+> >> 2. We could always take both init_mm and current->mm locks. That seems
+> >>    icky.
+> >
+> > It's actually the least awful of all of these I think :) and the one I
+> > implemented ([0]).
 >
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=8
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> Oh, cool, I missed that. That's a good pairing with this one!
 
-LGTM so:
+Yeah, sent it separately as they stand separately and this already addresses the
+init_mm side of it anyway.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
->  mm/huge_memory.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index bdd8635922f9..c0892cc533a9 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2775,7 +2775,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
->  	if (!pmd_trans_huge(src_pmdval)) {
->  		spin_unlock(src_ptl);
->  		if (pmd_is_migration_entry(src_pmdval)) {
-> -			pmd_migration_entry_wait(mm, &src_pmdval);
-> +			pmd_migration_entry_wait(mm, src_pmd);
->  			return -EAGAIN;
->  		}
->  		return -ENOENT;
-> --
-> 2.53.0-Meta
+> >> 3. We could have ptdump_walk_pgd() take a different lock for each
+> >>    'range'. Logically:
+> >>
+> >> 	if (range->start < PAGE_OFFSET)
+> >> 		mmap_write_lock(mm);
+> >> 	else
+> >> 		mmap_write_lock(&init_mm);
+> >
+> > I don't love this. It feels a hack for x86 that's put in the wrong place,
+> > i.e. core code.
+> >
+> > And can you can make this assumption for efi_mm for all arches? Could other
+> > arches might be weird about this?
 >
+> Yeah, it's possible they're weird. But I thought the whole idea of
+> efi_mm was to reuse the non-kernel part of the address space. So oddly
+> enough it kinda makes sense.
+>
+> But, yeah, I totally get the reluctance to do this.
+
+Yeah it's all a bit sucky this :(
+
+>
+> >> I'm kinda leaning toward #3.
+> >
+> > Another way forwards might be simply have the caller _call
+> > ptdump_walk_pgd() twice_ once with the range set to [0, PAGE_OFFSET) passing whatever mm
+> > != init_mm, and again for [PAGE_OFFSET, ~0) passing init_mm?
+>
+> Ahh, yeah, that's a good point. It could be done a layer up too.
+>
+> > Are there cases where you expect to see a delta in the kernel range in x86
+> > for an arbitrary mm?
+>
+> Are you asking if current->mm->pgd[255->511] is always the same as
+> init_mm->pgd[255->511]?
+
+Yes :)
+
+>
+> I think so, except for the LDT PGD when PTI is on. That can be different
+> between mms, and it's a single pgd_t entry. I think Brendan had some
+> grand plans to use this PGD for other things for ASI as well.
+
+Yeah I wondered if PTI or something else funky (Brendan's mermap?) might have
+changed this.
+
+But whether that'd actually be accessible from the debugfs "this mm's "?
+
+>
+> So, yeah, the upper half of the address space is *normally* identical.
+> But PTI plus set_ldt() is abnormal and we have to deal with it. The only
+> times that code frees page tables is at exit time and in an error path.
+>
+> So, how does this interact with mmap_lock? Surely, someone looked at
+> this recently because the comment says:
+>
+>  * Lock order:
+>  *      context.ldt_usr_sem
+>  *        mmap_lock
+>  *          context.lock
+>
+> and not mmap_sem. But, alas, I don't see any mmap_lock anywhere. Someone
+> changed the comment and didn't look at the code.
+
+Was a simple mmap_sem -> mmap_lock change since we renamed the lock right?
+
+>
+> Is there some mmap_lock interaction that I'm missing? I don't see it
+> _anywhere_ in the ldt code.
+
+Presumably dup_mmap() -> arch_dup_mmap() -> ldt_dup_context()?
+
+But I don't think that interacts with the init_mm nested lock stuff we're
+looking at here, as it's not touching init_mm and in any case ptdump is
+unconditionally taking the mm's mmap write lock as-is without issue.
 
 Cheers, Lorenzo
 
