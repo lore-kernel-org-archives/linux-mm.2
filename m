@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD9EC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 07:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 478C1C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Jul 2026 07:57:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29B9A6B008A; Sat, 11 Jul 2026 03:31:32 -0400 (EDT)
+	id 411F16B0005; Sat, 11 Jul 2026 03:57:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2728F6B008C; Sat, 11 Jul 2026 03:31:32 -0400 (EDT)
+	id 3C0686B0088; Sat, 11 Jul 2026 03:57:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 189426B0092; Sat, 11 Jul 2026 03:31:32 -0400 (EDT)
+	id 2D8F76B008A; Sat, 11 Jul 2026 03:57:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E5C8F6B008A
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 03:31:31 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A06814067E
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 07:31:31 +0000 (UTC)
-X-FDA: 84975675582.09.9A8A88F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BBD0418000D
-	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 07:31:29 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KhO/XnPL";
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0AB7F6B0005
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 03:57:28 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A2F390BB0
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 07:57:27 +0000 (UTC)
+X-FDA: 84975740934.05.E9104EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id ED2771C000B
+	for <linux-mm@kvack.org>; Sat, 11 Jul 2026 07:57:25 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cn9iJo9m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783755089;
+	s=arc-20220608; t=1783756646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pXKkMbE8S50fgci7zV//UdWNphx5itNGzvWESRKObgE=;
-	b=pumSyDh2i2QoM9Qc6qUSzyl3JaGuA5p1iPEn0ZTJ5izYErRxvQkTUNKajUBST2s9eokCVs
-	GNB6hFVi79bwgiSgXwL7yYDz4w5elYNVuz2MtjNHDuzULW8heGUDVlY64kUnt+kQM6wkVP
-	N1OZTTf6agWvjDVAmMGtj84n42xUOTk=
+	bh=HGBD6eys3oSJOzBh2wVwyNhlnj3y2BQokjMnJnf2UHY=;
+	b=jUQf/VWkDR8Gu/EhqpjcFWF+C5T2iucMo8WucDBkgqiSBf3RevfjLQlVpFL56OFZN5Ix/w
+	8wOx4T2I/p5Q5mYA8mM/H3lIxsU2eCG4aGx1FqfR+itBHQXgwV1AsysTbKUX5uI7mlypXY
+	laS6y6Dqdq+KHMmedxZ2m2kXCb5BYGs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KhO/XnPL";
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cn9iJo9m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783755089;
-	b=kzNzH8bOBc9n7VEpAyvok07m7MM/8Iy1floecCA6qpcVwa/c9x3VASS8oYjri8K85FINHO
-	bUrxJiP+wMsBps+bXAEZfJQdNiutFYhU1RFD6FdxVqlXufWJ7p+CtMPvuogU6KSIhIahoC
-	fwN+eoianR6sgt5ljjB2MLt7mdrWdCs=
+	t=1783756646;
+	b=KrYlOclyM8vk88x9cT4jkQfrIMRdSJmynFR4RycLn/bCXbtYSTZiO4j3DFl+riPPhqx5Xi
+	Y8VyiNS7Y7OcH4wMIUdcNKhuEId1YKGF/B74oUlZXUqnJMw7zzuGpKLtVSsTrHtHcN0odA
+	zMaZwaI9RRQdByPQHrRVZ6NKMhhzzsE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C838A4178A;
-	Sat, 11 Jul 2026 07:31:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AA91F000E9;
-	Sat, 11 Jul 2026 07:31:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C8F460051;
+	Sat, 11 Jul 2026 07:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0653B1F000E9;
+	Sat, 11 Jul 2026 07:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783755088;
-	bh=pXKkMbE8S50fgci7zV//UdWNphx5itNGzvWESRKObgE=;
+	s=k20260515; t=1783756644;
+	bh=HGBD6eys3oSJOzBh2wVwyNhlnj3y2BQokjMnJnf2UHY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KhO/XnPLypEcN+qXIRTWLzu8O2Y/F16+kdI29zDTSrvLklMfo7TQcpfnonmGvvJG7
-	 pP52IH5+GRUjeVRbg5Yy4rSKY7/AewvEcTgb/jgyIOTouLqc4kxiFUTT56uKE2mmHQ
-	 ItFhV1PI/gf3irZiMqfcv6mG//q1/aSvea078Todvek8GmXbnMs2iJktQkf5aNNVP+
-	 ofJJDnK5Kv2qKXdMj5pPwq6dJeYEhrzbIpFKkwz2zxTb/8vKn1GpPEdiF7H3pOY324
-	 klFrHq8C6cmF7Lh3uFdxDiHR9LbkvO+bcPmUL9IZkzit5qoQogkYEQp4PVfvtmwegY
-	 7SCmG5BTmBNsQ==
-Date: Sat, 11 Jul 2026 08:31:16 +0100
+	b=Cn9iJo9md/MwFYwAzyLoYrqYt5mAoRSggYoNNsTZlt23XN0eBnV+cm5tManxJL5Yu
+	 XX+vyHyocflbtbYRXTsK+6WDr5H73np0gDj9MkiQU/QXD92C+3YiNvXH0cGqGxDrXo
+	 kVMwVCAuww5i4GXFAe3EiBn/N9osMU28Qn7rfllYiF0LBoWPQiOcM8U+joaCuRBN4c
+	 MvnCKEnxeJYNS2rg+y4mLcU9X8dQl43rMmPs1pF+J34LyoIxm+CqfZL6mwNIO7z0E6
+	 LChfII7fP1dBEHIWmV1H8r/NWFOy1WP+sw4B7yp1dyDGIKHlnBn6EJU+KQ6VddPr62
+	 UXIOmHnAh3Asg==
+Date: Sat, 11 Jul 2026 08:57:11 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, 
-	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, hongfu.li@linux.dev
-Subject: Re: [PATCH] selftests/mm: Fix memleak in migration benchmark
-Message-ID: <alHxLNTQFJlb3cLV@lucifer>
-References: <20260708103705.840679-1-lihongfu@kylinos.cn>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Toshi Kani <toshi.kani@hpe.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, David Carlier <devnexen@gmail.com>, Dev Jain <dev.jain@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Will Deacon <will@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH] mm/ptdump: always stabilise against page table freeing
+ using init_mm
+Message-ID: <alH27K6kvUVxJ672@lucifer>
+References: <20260710-b4-fix-non-init_mm-ptdump-v1-1-2d40982c98ec@kernel.org>
+ <20260710132954.49c85be140500c59c1fcb773@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708103705.840679-1-lihongfu@kylinos.cn>
+In-Reply-To: <20260710132954.49c85be140500c59c1fcb773@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BBD0418000D
-X-Stat-Signature: z1ri7n4bu89s91zi1o5hu69uujijwm6c
-X-HE-Tag: 1783755089-366090
-X-HE-Meta: U2FsdGVkX19w8ehBtrfCFHpUktj8pMA5VrQ67nLY+ES2nGt5yzRdslCKAfNl+iSH6sQNsCdU+qoD7lRo1ZxDDBfGwguUHEHtsOVgb89n2VQvApcRwztMvUFORUcRnnydIy9YhM7Lqt4jNQR4QV7DbwBGX++FSlVnN13CMDr76XBSgOAMrnlLa/3JsOVYpcDXja9HrNm3gvtUZPc1w9MTT27QUXDycP7rSOqPU7oSyDn9G9/N1XsoFam2Fw6wP6laYKRUKa/I+v7FUT2iQf5ehQsHYzWfvXixptyU6n5AH7emOuOvV3dKYXMA6u6EOIt+Ny6WjIE9lJdE2kO3hpOdFO5vIYzhcZbty6+3qL0FQSdMrxcVE77BZuFJpMF+ESGmjRgpolzrGYKlNDUQW1bknmNZmr0go/r24nVbxRmUtiZP/sWjT8zwAC5FUc62C8gGY5Ck+phuCX+HSnubL2pNIhRFwFYv0NiagsScTVYPEhohUUzhyi4gIIqLDTvdPdeGAQ2JcKZmB//4N8n1kPFWKDZCAowJ3ZVCdg/maEOYMQUq2e5MYWOP71auQxuizcpdS7i6sUFqEbW1f3SM/6MyekYz4MJI0u+7MENdhv8vBHYoO9MiTH/1sWaEAtFMSRB8juvcOfe7Y2tY3jomfVTZihJDMj6BPPjUCapxfpZXf5k4LdyhfVdjsXbyH2cv9wdUloq32oms5fd8eC6pHLyQInocf8JPr6AeiFCA393pqvCRyIjznXcR83rhsJedYJfQz7Xd49vIsS0hmaPWS/IzSeknO8ENWBC3tGDYqukJ7NKn5n0hHvk/DOeMQAGeDeNyv5eNPaL9xD0Rn3JP02jvogYbx2MyC/1lu+oQd7uI+PoGeIkJp7I1EKit4tcesUtiM3wTGcqJQ9JIXbvayqqKThcFPEjpx4W1lV79aVJUaRgMkZo9PhBr09y6YwZDleMiemqjLQS2/5QJsMUTXHH
- LpvmTnNn
- lbF7dFIcpIIis14vqlCPVO23aKbBZZdCp6celnLy+t+k4ZKC5Lr4qiGZmsvF4AHI/Jol8a8eqEVtfjZYdK2Xx2NMRcMGAqA+c2FWk3z99UPy/CXG3Xzhds4njIOMotvgBmD2U49cD6sZjm3OKHYrea2Omfh3sb+mr3xZR+LqnOTMCD1WWcTejFSfMgQlsZ8CXvg1xcUZx/tbuBpykNFoVe12/2VkUa/8VU7p1JqC+BM92DFFs0IY3HdGxBfJBPZQYXuqcQ7aRz4t0bBdzd9twr1fOkQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ED2771C000B
+X-Stat-Signature: mfpkr7boj55yo3frhx8ijcamkctjmcze
+X-HE-Tag: 1783756645-458012
+X-HE-Meta: U2FsdGVkX1/ZYenTOlYb5Thl0LT5pUdRpOAOckqTlbAK6QE4TecC7y9XaatgrK2OqqaGAt1tPQ9WZpouYKKuiLOSnzJc/vzXNyBF6yFLe3t4KH75IDdXAGQwkZx3JXwK/ZV/L0wPrwuQiwlOwcKmWEziZ2Qeb2CUgZ8jG74pVKZk1V/UTdFJaTgLst4ScXSEa8p8iSyuVoOvGtNvffFOnaudDZjfPJyEJZYbYAbIy/vJiJTx+/ANDY41Fe4/UsJFLZ0MfYy2GMGfzNgKzrZLQiznT8hJnOZpp4FbuCRNn14Oi06W7bQ6/aUY4bRhtOs2WiNh+qPxvyrO92/5tVpbg13bOYzoGn6S9YjHoSCjN4uvNjvOgUKDxQymn2IVoVkh9YpVQzg4uGBYVxEU0o1wLNQ08Od/HNUbAHIvA493d0dQEHnXJ5F3/9AM7FOtFXiwVJLCYWPZbQhJCCdzhJejNNjrPaqeZjSkvj+UbOWxJxe/W1+WentXsGozIOh9ayl5Iwq2LYS6Ye489V4pLvQ4HpQViyxC5fOgR0WPi2XAvnIBzp1gIVnUnHQIwXd5Xpsccv26yK1fwfEGCr6qdFFQbBLx52SfFLVlbSo920jV/Ugxw1S6+MkAzB5dhxnBSLAccMGgXBurO2SzKS/X7KRTM7GSGyj+JQu4l0u0MDPGtQKIS7TPaaZ5T2jaxt38OA1mGKzPPIKfEgm4TsuXdUFOiWxkEIsNd9wdTyiicYktxjgTy28oDmy6XmYAdwpuFIV7Tjr7+clooTAV/4NxDRbdC4hIG1GLVWpQwxPX/b2tGi0geBsvTlDjCjNBMWLKIQmp/g0+SgD7cAau31udwh637BvmnNKNpsz1vzpHschZhRVCq8YZs1zg+XQ9DTHuuiHv31+cTZuHvyRORGRhEnAxG1x+1snjxtuuVnIyammzziMqfofUfDfsjDjGUg15uWsUV7x02a6pFIiMM9Ouq1D
+ bybcNhP6
+ HRjwHvCctR3xOYaShXWElKFWHXgIHC7LnQkAutDhrBs432Gs8rUYUGnl+qzSGsf5F5NJ1wHTlNq+Qp3moxSaYTWGg8C7SjIjCZDiGoSxu7MADRAZKCV4slGd1infdrcFsWZvRn0ooW38QFXUhi3vgzGsnVZjumXkBBq1DEiftFdyixHpxD7k93YXrg/54za/5LGRdguC5ghqS7Ml3PPOID6LPPwHq+12J7f6TlhlLBRtWGki+pdYYOHBaOeglAo2j+JS+pBw+pXwvj1WhI6D/aKhI7W8Xu+Oag4vsPz9jUtAN/XQm34xLWgJ93uD0mE3EIfEL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,93 +98,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 06:37:05PM +0800, Hongfu Li wrote:
-> Several early return paths in run_migration_benchmark() skip
-> hmm_buffer_free(), leaking the buffer. Replace with a single cleanup
-> label.
->
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+(+cc Dave as we were discussing on another thread)
 
-LGTM. With the Fixes tag added as requested by David, feel free to add:
+On Fri, Jul 10, 2026 at 01:29:54PM -0700, Andrew Morton wrote:
+> On Fri, 10 Jul 2026 14:29:21 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+>
+> > x86 and arm64 invokes ptdump_walk_pgd() with non-init_mm mm whilst still
+> > walking kernel page table ranges.
+> >
+> > For x86 this is done in ptdump_curknl_show() and ptdump_efi_show(), the
+> > first passing current->mm, and the second passing efi_mm (we reach kernel
+> > mappings that init_mm protects for current->mm due to x86 cloning shared
+> > kernel page tables for arbitrary mm's).
+> >
+> > arm64 does so via ptdump_debugfs_register(), configured by efi_ptdump_info
+> > for efi ranges against efi_mm.
+> >
+> > The init_mm mmap lock is used to stabilise page table freeing against
+> > ptdump, so take a nested lock on init_mm to ensure that we are correctly
+> > stabilised.
+> >
+> > We take this after mmap write locking the non-init_mm mm. Nothing acquires
+> > the init_mm lock first before locking an arbitrary mm, so no deadlock is
+> > possible.
+> >
+> > Other fixes have been sent which update the two cases which can cause races
+> > with ptdump in init_mm ranges to acquire the init_mm mmap write lock - vmap
+> > and x86 CPA huge page promotion.
+> >
+> > For arm64, commit fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump")
+> > already provides exclusion against init_mm for the vmap case, which this
+> > patch also pairs with.
+> >
+> > The first point at which ptdump can race kernel page table freeing is
+> > commit b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page
+> > table"), so we target this in the Fixes tag.
+>
+> Does this have any known userspace impact?
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Taken in conjunction with the other fixes mentioned it resolves a UAF, so yes :)
 
-> ---
->  tools/testing/selftests/mm/hmm-tests.c | 19 +++++++++++--------
->  1 file changed, 11 insertions(+), 8 deletions(-)
 >
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index e4c49699f3f7..e8046675a0c3 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2828,8 +2828,10 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  	buffer->ptr = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
->  			  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> > Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
 >
-> -	if (buffer->ptr == MAP_FAILED)
-> -		return -1;
-> +	if (buffer->ptr == MAP_FAILED) {
-> +		ret = -1;
-> +		goto cleanup;
-> +	}
+> Since 2018, so I won't make this a hotfix, OK?
 >
->  	/* Apply THP hint if requested */
->  	if (use_thp)
-> @@ -2838,7 +2840,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  		ret = madvise(buffer->ptr, buffer_size, MADV_NOHUGEPAGE);
->
->  	if (ret)
-> -		return ret;
-> +		goto cleanup;
->
->  	/* Initialize memory to make sure pages are allocated */
->  	ptr = (int *)buffer->ptr;
-> @@ -2848,11 +2850,11 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  	/* Warmup iteration */
->  	ret = hmm_migrate_sys_to_dev(fd, buffer, npages);
->  	if (ret)
-> -		return ret;
-> +		goto cleanup;
->
->  	ret = hmm_migrate_dev_to_sys(fd, buffer, npages);
->  	if (ret)
-> -		return ret;
-> +		goto cleanup;
->
->  	/* Benchmark iterations */
->  	for (i = 0; i < iterations; i++) {
-> @@ -2861,7 +2863,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->
->  		ret = hmm_migrate_sys_to_dev(fd, buffer, npages);
->  		if (ret)
-> -			return ret;
-> +			goto cleanup;
->
->  		end = get_time_ms();
->  		s2d_total += (end - start);
-> @@ -2871,7 +2873,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->
->  		ret = hmm_migrate_dev_to_sys(fd, buffer, npages);
->  		if (ret)
-> -			return ret;
-> +			goto cleanup;
->
->  		end = get_time_ms();
->  		d2s_total += (end - start);
-> @@ -2886,8 +2888,9 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  				 (results->dev_to_sys_time / 1000.0);
->
->  	/* Cleanup */
-> +cleanup:
->  	hmm_buffer_free(buffer);
-> -	return 0;
-> +	return ret;
->  }
->
->  /*
-> --
-> 2.25.1
->
+
+No, this has to be a hotfix, it is part of solving a live UAF issue.
 
 Cheers, Lorenzo
 
