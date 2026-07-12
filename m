@@ -4,86 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 544A3C44501
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 16:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC8E4C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 17:03:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 282BA6B008C; Sun, 12 Jul 2026 12:54:46 -0400 (EDT)
+	id EA36E6B008A; Sun, 12 Jul 2026 13:03:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233386B0092; Sun, 12 Jul 2026 12:54:46 -0400 (EDT)
+	id E7B6E6B008C; Sun, 12 Jul 2026 13:03:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 149CE6B0093; Sun, 12 Jul 2026 12:54:46 -0400 (EDT)
+	id DBF916B0093; Sun, 12 Jul 2026 13:03:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E56756B008C
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:54:45 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87BD7A0923
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 16:54:45 +0000 (UTC)
-X-FDA: 84980723730.19.CE05D93
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BC1946B008A
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:03:41 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38D29C417F
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:41 +0000 (UTC)
+X-FDA: 84980746242.26.8C53D03
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 16B80A0009
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 16:54:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YA5LLlgi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id B9886140005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:39 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DPADvE44;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783875284;
-	b=WR032efxU3E1Ut5ZNeV+KhEs3zLo77HbwuhC28+eWd0lr/hotCnkyBBD14Uz4StLgg0N+Y
-	PY/RlXyLkES2Q5IJyVswVSYWVpGq5rX9tFL0SYnA21B6ifgXolKmROT+oFbwkK729DSD4r
-	fa3k6xsYXrDZudMUr3ZaXuAGLQGF4mQ=
+	t=1783875819;
+	b=MfvFQjswUD5Bso8yYrfd432ZR5zILFhoCV/H7yyo/DcLyP4c7BglSVqm1HEjJ+Cgbtpb84
+	tq8bx/NOKuu8+MODhXsn7Bf5QQ1l+gGYhnismU9iw/rlTp1m0icoPAESOiQbpJplwG1CS7
+	8EzA5SchuU4zEf2On05rwZmaHe0cnns=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YA5LLlgi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DPADvE44;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783875284;
+	s=arc-20220608; t=1783875819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=8xnGzHVEhJzHmaj8zqg2Ec1CH067snxS1T5Ejp1k8Wo=;
-	b=R/Ga4QDps286s0q/fK/laTYFQPPXB7jvN6a5LCcTSzPc1xYgxfyVdcT6ZmSJsRSu9Huror
-	S/HiODgVKCJMJ3tvukwcDAtcmJYog0KVf3gCPDHtQ06rUxnbUrFlEhxtg/XxWNQIzRQm/P
-	Ufq/Z8ZJPPhuXdLJD03Nz10eXapYQZU=
+	bh=b6Hje91CDtF95cA1GOS8FiqBgZ9D0LGrk6SOQDgcIRA=;
+	b=UX3Pyn8KYw2edZGg3AsFEh8MrgrGiBbst14mXiZX7Xrl2V6JhXpdaAsOvJ5NP2LOHAd6u3
+	sWxAp12z1B/gznwBfaTgqwshJ0aheXyIE0OlzEF0QsEoMTiG+95JFAL6I0tw73ji16qAaQ
+	XNKA4qSflc3DFsatnnhp6G0JsdTZH1s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 66E396004E;
-	Sun, 12 Jul 2026 16:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8AB1F000E9;
-	Sun, 12 Jul 2026 16:54:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 288BC6004E;
+	Sun, 12 Jul 2026 17:03:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505A81F000E9;
+	Sun, 12 Jul 2026 17:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783875283;
-	bh=8xnGzHVEhJzHmaj8zqg2Ec1CH067snxS1T5Ejp1k8Wo=;
+	s=k20260515; t=1783875818;
+	bh=b6Hje91CDtF95cA1GOS8FiqBgZ9D0LGrk6SOQDgcIRA=;
 	h=From:To:Cc:Subject:Date;
-	b=YA5LLlgiAG2b39oDhfv1a+J8X+VkVbiTa/cHAGwNCuP2QLWhqnoop/z6ghtSG9Iug
-	 p0tu/I0XAT1DnC8BV1uj0hNiQSTnsBqBrZaIR2cqNUlovy/+IiPEEa1866YGFLjTpo
-	 51e8GWlPN5qoaKG4edMAxodxPgM6j7khzSwQpoHq80WbKxItFMVEpY3JA+bIFM2wJh
-	 bKG0N9r8y7IeQNfwjHTDjZr1x9YsPxjJznBRzOPThBmUfHI4hroqMrIaZECwuMJLKr
-	 em3Wd5vANQku8XZ2qCVcJp6OaXMD3qqxxRJoorDmHZGQ4zhEt4brhTSzbXC3uSrXyc
-	 7etC0DI8d4l6Q==
+	b=DPADvE44OdGjcfTQ/fQBi4gUAEwzjHBOqoGlpFqaw13QV/7IKHEMRAwEgDomyjuDN
+	 Yj7OoSXF+QkhqjwJ23cWxn+yMSVUCgvdhO24kOgWUCVRaQLeEA6pE3XAbjYfQmQ5+l
+	 RSRvqAwR0TSRQhXIn1AlmiG54MAOnjGhNmXBQgFNLgrfbEqeF8FHLFLiEL7rZorx8n
+	 otDZkK2LjgPDstNoG0jQGvB5S0XW33BH57GkZicrXvT3HyR+UkTX8cbRDCKU/scJ3q
+	 IQKT7RcEdLS6yMLqpdavfBZ/0U0RubpyKG3Ra88sk3kdVMqT7+K8MVYG5U/cprbNjV
+	 AucIoElM6yn1g==
 From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: 
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Fernand Sieber <sieberf@amazon.com>,
+	Leonard Foerster <foersleo@amazon.de>,
+	SeongJae Park <sjpark@amazon.de>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: skip aging from repeated aggressive merging
-Date: Sun, 12 Jul 2026 09:54:30 -0700
-Message-ID: <20260712165432.87609-1-sj@kernel.org>
+Subject: [RFC PATCH v1.1 0/5] mm/damon: unurgent fixes for infinite loop, NULL de-ref and races
+Date: Sun, 12 Jul 2026 10:03:22 -0700
+Message-ID: <20260712170328.91144-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 16B80A0009
 X-Rspam-User: 
-X-Stat-Signature: eh7mfakzbmaf45dwo698nfh1gc4xswz3
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783875283-879914
-X-HE-Meta: U2FsdGVkX18OQFsPla80tQPRQPSRbx7DdSjuyOXdHKKdRAkN53RRz92XaIoWF3L2REC7L7cY66TmtcuxZWqqSwxblZ2H2FVLKQ6IXmbIiNTEm7gdVBJJ5H6erYfOcqD3Di8Dz6jfUssiemZ9O0KmJiaQ2xlBVTJvTT5V6E3nBzWMbDW7y0CaYBx+I/W1VcrwCkyvSDGHpqqEGGQyXftHAvsgUG/VdvBcwrrWaYuGD/sq5zUYWWPUgTuEukhz0zp3SkKWpMLczQMVTXETZBc9PjWIpnhcEffYMybPDhat/vbq1ZNFLw6hXvfYrgRIg6AZ30ngMZnoDU7iX4g/znWNhvWh6LCcb3eC8sGzIW6eIwK2oe9gHH+M942vDOanoP0hhu+Vv/lQDHXAQ0Uqt5DiT72NfhrOsdMmi6zMBG89yzHcn5GmfYZFGETtPMLF2sYi5H+tqH/vog4s/keCOWB8IkT6fS2/7YoW6jTtWc+xL48bpNhfAybHk/yRnzvYP0iSHjqvDXJOLDNxOUvNR7GqvOcahhKXB0x/+eKJHjhOtRgEbV2VUr4bpRTHkIf+fzqPI2q8sRPhYYkGYU/+gZv/0HKhz2UtTKTZyNT2i/sN7iE/JAtSCskTmU9y+wVjP0/CB4nGwWgfbYIKry/XfUASGK1sfWLsOj6nggfowbcDZHF/hWbLL2xFNHo6wRxIva8R9zDOmJgA8LHJk9qdf5zKyOLo35lXD0I5wZi7FMELFxsT6diZTPUTb73U8BPLh0YsQC8faJtpE3Hl4YlxuVtdmajiEDC7W3iyLLMw07mt6rQ7yn5aj45cx8aX/FBs6SykYMAbsbR4i4fgjEfc+fdjsRWAtbTzcrn5LL4B7e04EWSlF6pNXgfQpLpSxLEXafRgd2xKnIJjNC5YYVwlmJdM3YMED+JZLeWVEezmApK6JJaMiH/UauoSUT1gzRFzXcqU/Fn5CeRsF0Ddhz/X/Mi
- 0LBUKTOG
- AMzY/PaYQmNtea79wg5fxu5y5rM07KQxPoCxCEUNd9wUAwbCc/2TvQ9F0emSpsRgnfOUYpuPB69MopbEKuPSJumC+0cJ5r2DTXUxYc8tTqu+T7usLdKuLKCwrEG6sfqDY3RjVbbyXRr4HagxTfzyXxjWDYmEIxZvlHYcaG5HsCjM/WP1XdUuo1Vn+5EbscL4hcOkusnjikE/0iPowBs/FNMtNW5vFm8dgs7yA0yC/r+nwGGk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B9886140005
+X-Stat-Signature: daueaqou8oxie6jbhn7pumnkubsutkrn
+X-HE-Tag: 1783875819-244512
+X-HE-Meta: U2FsdGVkX19eueisJmpjR4JvQ7+s9hhEdo1Vhwd5gjJNp72OOn5i7KmOc9hKKw+4nmh0RHQWHZxQLXQkN0O4VTT7mPGlmU6fR65AxpPmNOiKjc8t0088mu4cvk6G70FEw5ZQmDFhiDFsZuHtyUuGRTsnTodpDyS/xS1OfmvOJyNnm3OvDaS98UBTh60JDmgmdKoInXig3xunk4TyL8nxzHcRIupP2v17Md7ZtB+Lnj6q5m8XY18V/2wCa/Uqec8c5wSb3/SNmCADVvnt8NbrxL7q9fPpnahUy3bqbAbiI4da4WpCss03LIZzN7B9M/O3Nkh3komNDDMDv6gmVuZpwDRaZlsUjZZ9B1NzgQ8pGsKsAyev457ymNIYwqIjIG3KazuHDcvGZTcFwCev1TKRXZP5uX4D7ktJj4sgX8pR8nyljEFKT93++v8GLL6++SJDemSfu2PVzeFXJ6qd+0KZQkq3kIXPn+HbAZm4lbBnZj4f4yJxJ73pn4dUpd9mSogzrMiSAYI5b/K8hJ8d1CKTTdNCYZ8lJZtLdrt2ksLbSEeBFp7s4O0lytj7LmSLHbJ24ZcnjT5m0aNLC6R1bZReM/mTqfSeqtbf4UguZjnr0x+5dcM1F3enfAaoZ7gg03ls13OHPZzAtW3mBzCRj+irLT76KmV90eotP1heub/SP5tLy5EMuES5b4S8bv/hY+oBJ4yXy0WbHdFLSc6FOsy7VO3jMJv1Q7YyWHr/2qqYk9BCk2vBDURPvPkNUPvcrdkx9mIjyZq0fh6v+lEAdKpp3JpeaqRAwbHooLwgIwhysgS0s6Re4KGLxtZQZrfL1hQUr6DdKyYlkpmXBIIej4JoKXpvX99xTYElJADe003Vx+xFRjlHmxBlSMlT4/Xg/XhBKxVX6TmIGKRJ8z4rhpamd6ZvW7F+w1w7qmL5oCl2RwynrH5S4kJtFvZ6oHBG/cWrSsjsnJsDfRb0Vlq2Cri
+ 48lq/qf5
+ JOSx83jAfx1pDeUrsR0JEnkkQCb0bCL/UqUla4/A32yUgANdPSmPHJ04tzTTF0aVv81yilM+0Z/n3e6s5hC3XyGHYQ4a/rZJzQS1+f8nky8/8d5eK9s8zOX5KhMdavD7/Tyh7gXdQ1mHkRRsd4e6TL06hZ/qeKta8UEHazf84ebVD+WOG25hw4/3y1/E/3xXPgdXpH6UyUrfGiCa31xwYIiieVo9XTxKFSPA4GRuZc+V/OHU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,104 +100,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The number of DAMON regions could temporarily exceed the user-defined
-maximum number of regions limit for corner cases.  For example, users
-could lower the limit via runtime parameters update.  For such a case,
-kdamond_merge_regions() repeats merging regions in the case doubling the
-merge threshold.  The repeated merge operation could update the age of
-regions multiple times.  This corrupts the monitoring results.  Fix the
-issue by asking the merge operation to skip aging for the corner case.
+Sashiko found a few issues in DAMON that could cause infinite loop, NULL
+dereference and monitoring results degradation.  The first two sounds
+scary but the infinite loop happens only under unreasonable user setup.
+The NULL dereference is only in a unit test.  Monitoring results
+degradation is trivial since it is only best-effort, and those happens
+from only unlikely races.  Still those are bugs that better to fix if
+possible. Fix those.
 
-The user impact is degradation of the monitoring quality.  The impact
-should be mild, since the degradation is only temporal, and it is not
-common to happen in realistic setups.
-
-The issue was discovered [1,2] by Sashiko.
-
-[1] https://lore.kernel.org/20260621203548.10718-1-sj@kernel.org
-[2] https://lore.kernel.org/20260709145425.96247-1-sj@kernel.org
-
-Fixes: 310d6c15e910 ("mm/damon/core: merge regions aggressively when max_nr_regions is unmet")
-Cc: <stable@vger.kernel.org> # 6.10
-Signed-off-by: SJ Park <sj@kernel.org>
----
 Changes from RFC
-- RFC: https://lore.kernel.org/20260711171537.75278-1-sj@kernel.org
-- Drop RFC tag.
+- RFC: https://lore.kernel.org/20260711180409.82093-1-sj@kernel.org
+- Rebase to mm-new.
 
- mm/damon/core.c             | 21 +++++++++++++--------
- mm/damon/tests/core-kunit.h |  2 +-
- 2 files changed, 14 insertions(+), 9 deletions(-)
+SJ Park (5):
+  mm/damon/core: avoid infinite kdamond_merge_regions() internal loop
+  mm/damon/tests/core-kunit: catch test failure in
+    test_merge_regions_of()
+  mm/damon/vaddr: drop last same folio access check optimization
+  mm/damon/paddr: drop last same folio access check reuse optimization
+  mm/damon/sysfs: read ops_id only once
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 806a67d02a6e9..6c4215cc809ec 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3308,7 +3308,7 @@ static unsigned int damon_merge_score(struct damon_region *r, bool last,
-  * sz_limit	size upper limit of each region
-  */
- static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
--		unsigned long sz_limit, struct damon_ctx *ctx)
-+		unsigned long sz_limit, struct damon_ctx *ctx, bool count_age)
- {
- 	struct damon_region *r, *prev = NULL, *next;
- 	bool use_probe_hits = damon_has_probe_weights(ctx);
-@@ -3319,12 +3319,14 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
- 		score = damon_merge_score(r, false, ctx, use_probe_hits);
- 		last_score = damon_merge_score(r, true, ctx, use_probe_hits);
- 
--		if (abs_diff(score, last_score) > thres)
--			r->age = 0;
--		else if ((score == 0) != (last_score == 0))
--			r->age = 0;
--		else
--			r->age++;
-+		if (count_age) {
-+			if (abs_diff(score, last_score) > thres)
-+				r->age = 0;
-+			else if ((score == 0) != (last_score == 0))
-+				r->age = 0;
-+			else
-+				r->age++;
-+		}
- 
- 		if (!prev)
- 			goto set_prev_continue;
-@@ -3366,15 +3368,18 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 	struct damon_target *t;
- 	unsigned int nr_regions;
- 	unsigned int max_thres;
-+	bool count_age = true;
- 
- 	max_thres = c->attrs.aggr_interval /
- 		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
- 	do {
- 		nr_regions = 0;
- 		damon_for_each_target(t, c) {
--			damon_merge_regions_of(t, threshold, sz_limit, c);
-+			damon_merge_regions_of(t, threshold, sz_limit, c,
-+					count_age);
- 			nr_regions += damon_nr_regions(t);
- 		}
-+		count_age = false;
- 		threshold = max(1, threshold * 2);
- 	} while (nr_regions > c->attrs.max_nr_regions &&
- 			threshold / 2 < max_thres);
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 6ad73559dd8ea..68d30648c612e 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -257,7 +257,7 @@ static void damon_test_merge_regions_of(struct kunit *test)
- 		damon_add_region(r, t);
- 	}
- 
--	damon_merge_regions_of(t, 9, 9999, ctx);
-+	damon_merge_regions_of(t, 9, 9999, ctx, true);
- 	/* 0-112, 114-130, 130-156, 156-170, 170-230, 230-10170 */
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 6u);
- 	for (i = 0; i < 6; i++) {
+ mm/damon/core.c             | 13 +++++++++----
+ mm/damon/paddr.c            | 20 ++++----------------
+ mm/damon/sysfs.c            |  6 ++++--
+ mm/damon/tests/core-kunit.h |  3 +++
+ mm/damon/vaddr.c            | 26 ++++----------------------
+ 5 files changed, 24 insertions(+), 44 deletions(-)
 
-base-commit: 96e4e82548418bcd5b3518d3b4efed1f5631772e
+
+base-commit: df701015aac3c13b1ecff311fda1a2ada2b9c1b2
 -- 
 2.47.3
 
