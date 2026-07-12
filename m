@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FCDFC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 11:15:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10E38C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 11:16:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F0FA6B0005; Sun, 12 Jul 2026 07:15:19 -0400 (EDT)
+	id DA3B86B008A; Sun, 12 Jul 2026 07:16:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C98C6B0088; Sun, 12 Jul 2026 07:15:19 -0400 (EDT)
+	id D7B516B008C; Sun, 12 Jul 2026 07:16:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 208AF6B008A; Sun, 12 Jul 2026 07:15:19 -0400 (EDT)
+	id C6CC36B0092; Sun, 12 Jul 2026 07:16:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F0F796B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:15:18 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82271169C60
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:15:18 +0000 (UTC)
-X-FDA: 84979868316.06.A06A72B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 95D4E6B008A
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:16:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11CAAA08A5
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:16:49 +0000 (UTC)
+X-FDA: 84979872138.20.0121463
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6B4944000C
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:15:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nNp3n2hP;
-	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id AAD9110000A
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:16:46 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=aizDZIet;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783855007;
+	b=bDD2fWnREkYGF6QbWyCZ+wyEDRAuTwu5UTYFBVjAFa5ggAvkltx/Zq/0bb5ml53z+rnK8p
+	wJ+lVPtF0ZAiuiZ0n81gFtQU58rQ7Fttx67N/KZFHktfKHJ/we1N67eDgILVGYEd5kWMio
+	oMX047n2MErE/yTU8XLNqFH4CaxUDWY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=aizDZIet;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783854916;
+	s=arc-20220608; t=1783855007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8fbs/vqVzKn+85kzPKYeZ1NqmstNGnGRdCkYCUYt2Io=;
-	b=T6JLoqk95zi+yiemO3zkK3glvD9w2Tu6j26UysfHTE9wLq2fKEI/dM4WZDYhBsUBmqtV0h
-	rIzHLfutKNu+HFnpXTkCsz8AR/Ud4sRLMLrtIVqUe/ifksuOORDo+vrab4NQLxD6grfylQ
-	Kx/CFlJeYa48jl7g9d2k/iBx6eLpnUE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nNp3n2hP;
-	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783854916;
-	b=qseDrvsUfAdXToZT/FUIw5wPGta4HrMt8auUEmkYiPDOndQCAQMcQFcs9YSKxSxOu5gRVc
-	g2kYzRSG+z3XVihUAfHxbpG72ed1H3bq3gx0wd75CdrycZAOVsEeSdm6UwQQqqXoVllkGA
-	ONGFimcxPxMUvN+9QP31nntgAselXCY=
+	bh=cDCSe4Ss39LQVe4+ibbsjVG0EUJbnO2iiUzXj+P+BRs=;
+	b=JLwYEaZng49IqHS2egW1exhs1hsCLIjcyc7swYwujp+rxpiOtup6JhYRgDPxUPgSF8rfxi
+	m8PtGifg3L/JRlgzxNDmShhsYQtGI8Pe/kVxDddGQypDt6h5bzn/RmUGJzUzJKw/SQbKtS
+	ztwPQzQzyNbQ8FxlA2nmCjKHhj0OqJU=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEBC31682;
-	Sun, 12 Jul 2026 04:15:10 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 132A81682;
+	Sun, 12 Jul 2026 04:16:41 -0700 (PDT)
 Received: from [10.163.128.224] (unknown [10.163.128.224])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C6C83F85F;
-	Sun, 12 Jul 2026 04:15:08 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9374E3F85F;
+	Sun, 12 Jul 2026 04:16:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783854915; bh=Vcd4S0/n1YBbjJkz56jbHGzwyr7k7DTjasJ05V+hMWw=;
+	t=1783855005; bh=4w2FnFBScyw7YiWU7s5gk5e3O6Mlmlj6IlRNpHN4Kvs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nNp3n2hPRF8jFhWCZX6wCuIbywwiB3hYynuZDcOYT44BI3Z4iB+WamOKaMhu7Ztkm
-	 aoEdfHGxwxX+AoMnBbwN1J2wesaWqnIwAMByMteWUpiVRBSOApwddXXMZIzJyah/iQ
-	 jM7CyliCS7kY/pAOTFvQv0J3UCJFdtZjR+aYOmNU=
-Message-ID: <91dbf255-a549-42e1-846a-a9c4d290fa2c@arm.com>
-Date: Sun, 12 Jul 2026 16:45:06 +0530
+	b=aizDZIetRuhqDZIAblfUpSHmN60c1g6V9Mt4KSqHWNxS7o8f22B5iWg89O/gWEy3U
+	 xlLQsPTatoZxElpkRlPCFNKVpRZ66ca6G7+pNhtMcqsfcCRZ9dRqxOG9MiqH109zRo
+	 TZbIaVaOnhkMQGxIsvq0cW4Q0p459JDKSW3WI/lI=
+Message-ID: <28b7e7d2-62d8-4141-a6e9-7ab1cbb2baa4@arm.com>
+Date: Sun, 12 Jul 2026 16:46:36 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] mm/vmalloc: acquire init_mm read lock on huge vmap
  promotion
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
  <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
@@ -82,21 +81,20 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
  syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
 References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
  <20260710-series-vmap-race-fix-v1-1-5b3794c113fe@kernel.org>
- <d47ac961-4767-4ce4-9c75-f281beb24e42@arm.com>
- <2026071252-sweep-quirk-a068@gregkh>
+ <d47ac961-4767-4ce4-9c75-f281beb24e42@arm.com> <alNM8tIxep2-PHAM@lucifer>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <2026071252-sweep-quirk-a068@gregkh>
+In-Reply-To: <alNM8tIxep2-PHAM@lucifer>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6B4944000C
-X-Stat-Signature: dcgqadyk3fpq76rmo5ijx4yajhar417f
-X-HE-Tag: 1783854916-39404
-X-HE-Meta: U2FsdGVkX1+k4rmOEv9x9GRn1gavLOGZK/mY985Gpu+NfYfaU21QIsw/bIbn3NJ7uIsJ1zlLn31Jb+lMCbLw8UCeRCvsEkOry9Awn+6esJfPm2EfxyGB69OKehtCr4jZNH0OTz8haHnLlkjSWpheH2Pw65bFgma+J88HMSnMDhEGzz3xFsA5hglV4RqGV4E6+6dflzI7STHqLyuUYBD2+Oittzz0DUhNc0+ZWk0rYhOrTAdkHKP0njgOtibm8lNPZPzWByg44w2XwOBLSGencUXzjNZgZqTWHmP9C+e6kvDt/XCIqJtrAvQDxyy8RiwhW03qmta82McLS0SSS3z3IDUr6vQR1uAKO+s9JcN+87CngAXTa+UxPdvcv1nSQ57NbdzP7CY4JKMaonMpUWHi2DuX+5EKaUDFy+YY9ebc6dEitOue0YSWVEBx2yAqblqHrjC6759DcPgcggdFXG+j0JIaUNbxYGaLIylzX1/O6pZe6qCYfGpAJ8cyB32N2HfPkkXqbSznvlpobq1JLR8rIjX2VhUhXnGNt1xDPosm9Jd7hwdrnYvdiZV9cmg323rOtvZTqW0B8PQYJ6blytCw9qeAtkRAgq/stG7y/8kzvmiUMK6glruaW4wC9fBVJSBoTWPSlWk5qJEYCOKEp8W9F9h3IvEqRlOM9aUStXbsnHsyORKmw+7XVUCv1lhmPEH/xy/Qud4BQBhwuAf5W0LRJ8IcMaP+BLVRMGgTs02VL7G447GVPRUE+psvejab7EezPhg2Gp+UvVINJUjbko9u3tpQ1PGrovMAwkjOqYaL5I06/ngz9rouLOEAEuq4TZj4WkU1fl0ZxDC45qISP79ssKIx1uN25/eZNPq4t2jlajPJYWA48v0jhss3f20HVknR5UrJB6kqNyL7Z6+MzTjriHEzXgjfuUwQebwGskJKR4duKebKJcH27Tk4bXZX2/8urXODhrTgjZe1y2f6SKb
- x5b1tRV6
- fNwmmMT/X/gvaxcSldJXUUQCpmZStmu/LOjy6WYthIYr33leaOZ/BPRU/2jN38vbUP2MxmnaacdszyLwIZuqQG/f5rSZJIqyPx3o48DuBn27adSUuJfn/CBegsTjO0O5hn7F3dxQe2Y/b7J4eFWywA/7NR4VEzNfZ/63andTt/xQ/9xaHnMeyfvD31juiIpfn5F7F26bviUkk/Kk6UrTGLQhJas1O8awfO7o+dD1vChe48Cur5/EbUQNiYWLX7b6E/RIoZWPr1ngUqCLNhNcP9Efi02MWa0qljU6H74NabhvKYPvDUEcg5wkd67wT4mF/wMgfWPx8+HFfd0ExrUzPB52BRlntAA0Ts6rBVLRNQH0bJp4H/bLedhg2+DPEzHyDgx0/fYbh6bg0UPbhL89pfxVN06Ruc04vB84j
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AAD9110000A
+X-Stat-Signature: 9das9g9wkyqx4ehqpmuqxncc1j9uoxu5
+X-HE-Tag: 1783855006-575297
+X-HE-Meta: U2FsdGVkX18+jbOA2uzY0hsZxvr0bNoujFh3/TRrMLjSCRwe5WQCJtvFJRnXPzMtYyVvYXaW6RpTfIH9edywl2eDL8bZ+nIXH2315egNrg5ArlcESdgKqPPxYlxKGH3raKDlxwNWLQXC+uIapOvxX6zPhQABb1U81RETZ7srUdiO/Tg6FCpXMt+cuaICibVTyvuzUWKwdNe7uLrgl4IbklAla9scRNpkfghvJwGiSWb1ODgtoZAEc5hwxYUp0bTIpMCPBFLK21AASFaZj1DM9dSXlKRKbwgXdLnxjqD6KCK/5qvEmQlhtCm3R68RLi+WtANVFXMQf0WtvamKctDj+8qertQaga3f1ISdfjYSRCfSmhC1X/fWxzdP4Romj/+iBnACHIiCmD6Mqn5Ksb01qz13kYfkHBtcLSsZWLSRzpefzflGNssAI/DY0sy1s++243Aao7QXmUx1yPPYZQetjxGqTT0BtS/k/QVYUYD2T9Mniss7+iFSqrrHeZeThT63v1SXxuRGCe0x05X1ktUfHP8Q5wSBp/LvROsPLafWTh0WB3mlXVg3jnAwSkmzE9mKHKWR1TOHjcVgqAmjycSlYwkQ3iE06FlMnv3t50dFg20fDrEOF8qHoznven6Ugi0kI4TGArbn5LGbd5VzkPzSDUUbWk5Ffzke1n+v7AMF1z+5UcGF2iCSmqL+VgvagitZZEHtnIR98z7TGg/8Q0tm3MuxW4KdiKEA3YXso64q2iAFOz/8Xlm7nbMRrLT4Gu3Qvg3UpyPCBhIGpjj6F/+fB+R9CCt8UW2Xy16up6FV0qkuMkdd9OoelH7pFsRdv2Tlff3w8jk2IE9kF37tw9yWAeu5qtnNQcIqMHTKbiyJUL9SL/eBc7dfQjOW0q52CLqUC9TcumthlMaAfTzThtPjNCEKYFTu5GQMDkdeMlQglAvcnAA3zvI90/1t/JED2D6yEKGArfAPn6jH86e89ef
+ ci6pe2G0
+ EXGti8ipfmLztv2gSIHOTJ2ZwRNwExkzSfaSOPPFYv1M48sEB471NCsqIsLhJqoDLu7TQx1FYNt49F2KusxTS+LEptD7BCR+2FSZs/k03UTVuVGLO5p3WuTZcVj/j1QHancvCgtmQyzg2Tr0X1Vhxy3Ptll/zHKtxhtM5fhFou2Obx+jo1LxXXBtvymUYe3K7DTBWJ3dEZCoh56Afuru7D/+87Wb6f9eGrOVP5UcWCaGVt9KEl1LohBL3d2QnHVCsMto4tvUpmCcxuyQpms8Sh8Ln8MOMbXV6px7ubZmlY7GjwuCIgISseRReqna9fqxBh5d6ANBZI5UyDEvj7Y6+kppKI0g5F0B/v//TXwyHn8+hbZIWBlpK2uih4bA07hREyh0v3bdtpC9QebGlW5ZNcL+cCA8GweLVdT9S/5I4NW+M5J6+XDtgJClrxrw6TgtrKV65QFdnauUu9w7zGDJrQUSvbfv+2e/rqh7pY42H4CI2xIpME/hiJBtr+T1sOuokjad4bfXMDI6hcJ9/wqclJ2Ta5JKy1sLD02mJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,7 +104,7 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 12/07/26 1:31 pm, Greg KH wrote:
+On 12/07/26 1:52 pm, Lorenzo Stoakes wrote:
 > On Sun, Jul 12, 2026 at 01:13:12PM +0530, Dev Jain wrote:
 >>
 >>
@@ -119,18 +117,181 @@ On 12/07/26 1:31 pm, Greg KH wrote:
 >> Will this cause backport problems, I think this scoped guard thingy is
 >> not that old?
 > 
-> Don't worry about stable issues until after the fact.  Fix things
-> properly in Linus's tree first.
+> I intentionally used it because it's the best way to solve this problem.
 > 
-> And scoped guard has been backported to many of the LTS branches
-> already.
+> If there's any issue I'll fix them up in the stable backports myself.
+> 
+> I will likely resend this as a 4 patch series and just do the stable
+> backports manually anyway.
+> 
+>>
+>>
+>>> One wrinkle here is commit fa93b45fd397 ("arm64: Enable vmalloc-huge with
+>>> ptdump"), which addresses the issue for arm64 only by explicitly acquiring
+>>> the mmap read lock on kernel page table freeing should a concurrent ptdump
+>>> be in progress.
+>>>
+>>> This is problematic as vmap may acquire the mmap read lock prior to ptdump
+>>> attempting to acquire an mmap write lock, leading to a deadlock when the
+>>> mmap read lock is slept upon on page table freeing due to rwsem
+>>> anti-starvation.
+>>>
+>>> We work around this by predicating the mmap lock being taken on
+>>> !CONFIG_ARM64 for the time being.
+>>>
+>>> With this patch applied, a follow up will partially revert commit
+>>> fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump") and at that stage
+>>> remove the arm64 ifdeffery.
+>>>
+>>> We also update walk_page_range_debug() to assert the mmap write lock
+>>> unconditionally and update the comment here to reflect this change.
+>>>
+>>> The issue has existed as long as ptdump was available and vmap freed page
+>>> tables when promoting to a huge leaf entry, that is, since commit
+>>> b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table") for
+>>> huge ioremap, and commit 121e6f3258fe ("mm/vmalloc: hugepage vmalloc
+>>> mappings") for huge vmalloc.
+>>>
+>>> Since the former is the earlier of the two we choose that for our Fixes
+>>> tag.
+>>>
+>>> This patch is based on work by David Carlier (linked), with gratitude!
+>>>
+>>> Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
+>>> Cc: <stable@vger.kernel.org>
+>>> Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+>>> Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
+>>> Link: https://lore.kernel.org/linux-mm/20260706203128.162335-1-devnexen@gmail.com/
+>>> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>>> ---
+>>>  include/linux/mmap_lock.h |  1 +
+>>>  mm/pagewalk.c             | 22 +++++++++++----------
+>>>  mm/vmalloc.c              | 50 ++++++++++++++++++++++++++++++++++++++---------
+>>>  3 files changed, 54 insertions(+), 19 deletions(-)
+>>>
+>>> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+>>> index 04b8f61ece5d..6b5c2390cc30 100644
+>>> --- a/include/linux/mmap_lock.h
+>>> +++ b/include/linux/mmap_lock.h
+>>> @@ -621,6 +621,7 @@ static inline void mmap_read_unlock(struct mm_struct *mm)
+>>>
+>>>  DEFINE_GUARD(mmap_read_lock, struct mm_struct *,
+>>>  	     mmap_read_lock(_T), mmap_read_unlock(_T))
+>>> +DEFINE_GUARD_COND(mmap_read_lock, _try, mmap_read_trylock(_T))
+>>>
+>>>  static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
+>>>  {
+>>> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+>>> index 3ae2586ff45b..bbcfd68d0907 100644
+>>> --- a/mm/pagewalk.c
+>>> +++ b/mm/pagewalk.c
+>>> @@ -678,6 +678,8 @@ int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end
+>>>   * will also not lock the PTEs for the pte_entry() callback.
+>>>   *
+>>>   * This is for debugging purposes ONLY.
+>>> + *
+>>> + * The mmap write lock must be held.
+>>>   */
+>>>  int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+>>>  			  unsigned long end, const struct mm_walk_ops *ops,
+>>> @@ -691,6 +693,16 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+>>>  		.no_vma		= true
+>>>  	};
+>>>
+>>> +	/*
+>>> +	 * When walking userland page tables, an mmap write lock must be held to
+>>> +	 * account for munmap() downgrading to an mmap read lock when tearing
+>>> +	 * down page tables.
+>>> +	 *
+>>> +	 * When walking kernel page tables, an mmap write lock must also be held
+>>> +	 * to account for page table freeing on vmap huge page mapping.
+>>> +	 */
+>>> +	mmap_assert_write_locked(mm);
+>>> +
+>>>  	/* For convenience, we allow traversal of kernel mappings. */
+>>>  	if (mm == &init_mm)
+>>>  		return walk_kernel_page_table_range(start, end, ops,
+>>> @@ -700,16 +712,6 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+>>>  	if (!check_ops_safe(ops))
+>>>  		return -EINVAL;
+>>>
+>>> -	/*
+>>> -	 * The mmap lock protects the page walker from changes to the page
+>>> -	 * tables during the walk.  However a read lock is insufficient to
+>>> -	 * protect those areas which don't have a VMA as munmap() detaches
+>>> -	 * the VMAs before downgrading to a read lock and actually tearing
+>>> -	 * down PTEs/page tables. In which case, the mmap write lock should
+>>> -	 * be held.
+>>> -	 */
+>>> -	mmap_assert_write_locked(mm);
+>>> -
+>>>  	return walk_pgd_range(start, end, &walk);
+>>>  }
+>>>
+>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>> index 1afca3568b9b..9d0f1fdd6af3 100644
+>>> --- a/mm/vmalloc.c
+>>> +++ b/mm/vmalloc.c
+>>> @@ -43,6 +43,7 @@
+>>>  #include <asm/tlbflush.h>
+>>>  #include <asm/shmparam.h>
+>>>  #include <linux/page_owner.h>
+>>> +#include <linux/cleanup.h>
+>>>
+>>>  #define CREATE_TRACE_POINTS
+>>>  #include <trace/events/vmalloc.h>
+>>> @@ -158,10 +159,25 @@ static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+>>>  	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
+>>>  		return 0;
+>>>
+>>> -	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+>>> -		return 0;
+>>> +	if (!pmd_present(*pmd))
+>>> +		return pmd_set_huge(pmd, phys_addr, prot);
+>>>
+>>> -	return pmd_set_huge(pmd, phys_addr, prot);
+>>> +	/*
+>>> +	 * Kernel page table walkers either walk ranges they own exclusively
+>>> +	 * using the mmap lock for mutual exclusion, or hold the mmap write lock
+>>> +	 * on init_mm (ptdump being the motivating case).
+>>> +	 *
+>>> +	 * Therefore, acquire the mmap read lock to prevent use-after-free when
+>>> +	 * freeing page tables.
+>>> +	 */
+>>> +#ifndef CONFIG_ARM64
+>>> +	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
+>>> +#endif
+>>> +	{
+>>> +		if (!pmd_free_pte_page(pmd, addr))
+>>> +			return 0;
+>>> +		return pmd_set_huge(pmd, phys_addr, prot);
+>>> +	}
+>>>  }
+>>>
+>> Note that we do not need to take the lock around pmd_set_huge - we don't
+>> care if ptdump observes a temporarily cleared pmd entry. So how about keeping
+>> this outside the guard block. Otherwise right now we have an inconsistency:
+>> for !pmd_present() we do pmd_set_huge() without locking, but for pmd_present()
+>> we do pmd_set_huge() with locking.
+> 
+> As I said in the commit message I'm intentionally taking the lock around all of
+> it so a concurrent ptdump sees either the leaf entry or the non-leaf entry.
+> 
+> By doing that we can easiliy avoid the situation where a ptdump gives you
+> inconsistent output and it makes more sense logically.
+> 
+> So this is the opposite of inconsistent - if !pmd_present() the ptdump may
+> observe the _genuine_ state of there not being an entry before. With
+> pmd_present() it either observes what was or what became, not something
+> inbetween :)
 
-Nice, thanks.
+Yeah okay fair enough.
 
 
 > 
-> thanks,
+>>
+>>
 > 
-> greg k-h
+> Thanks, Lorenzo
 
 
