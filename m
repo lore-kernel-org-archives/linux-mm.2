@@ -4,124 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E3AFC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 12:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF8DEC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 13:17:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D1CD6B0005; Sun, 12 Jul 2026 08:47:12 -0400 (EDT)
+	id 888A16B0005; Sun, 12 Jul 2026 09:17:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A93D6B0088; Sun, 12 Jul 2026 08:47:12 -0400 (EDT)
+	id 812416B0088; Sun, 12 Jul 2026 09:17:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C2026B008A; Sun, 12 Jul 2026 08:47:12 -0400 (EDT)
+	id 6B60C6B008A; Sun, 12 Jul 2026 09:17:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F26E6B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 08:47:12 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DCC55A0801
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:47:11 +0000 (UTC)
-X-FDA: 84980099862.20.8E33608
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 193A81C0002
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:47:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rb4AEdr9;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 380796B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 09:17:28 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B668A408CE
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:17:27 +0000 (UTC)
+X-FDA: 84980176134.30.A1EAF61
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5410420009
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:17:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jhlBoNmp;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783860430;
+	s=arc-20220608; t=1783862246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pm9nW7teOFNiy7UMYUIullioRRBzDlnrKfEE2/bnUaY=;
-	b=xp8n2zC66+UKXTdXJHAjmrRjEZmzLVBwwvfOIrYsoSnPykWsWQb9nrUKtb26RzjGVLj64o
-	wcX0NTYNOFI/0SJK2BNtsuCktYvrFCOws9WzV2i6FqJwECwNpzLKopjnCkR/b7FqNpdsRO
-	8KYrG++h1GOzW6eoqMB/sEghRtRf11A=
+	bh=StB1vo6al/Tyq7TQoedlIw1VhPuTVWO8F8r6UHW+pPg=;
+	b=D7FD/97jHzgSZvdZzKIwM9Abe7mbiNA/7cFz/T6At82ofNuCszK5nGwJblt5zH+HgwoFKX
+	YrnokmPz64h+Pf0CUMH1r1Lbaq6Zy132HSBDDLdjK3+qhsD7cCoTu53PKFnZBhmzUeVgnA
+	rbTAX8g1sxFwB3lpwIP6WO1INPauOyc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=rb4AEdr9;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jhlBoNmp;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783860430;
-	b=UgcH6zD9RRD3dhaYUgPffJVxxejpCz379cbn6gB+3yQSjfvCr2A1yriFfT0N1ymf9AQ86G
-	YYjwbORal6R6ZmCmTeV4cukNC7Vn8d++VR4+jQKKwjulUjuj87Q8KRvadK3/F4RSxhgCJi
-	TEZvm3yS1O0c6/VLsirsylwS1axhoFk=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92eafc94c9cso133474685a.0
-        for <linux-mm@kvack.org>; Sun, 12 Jul 2026 05:47:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783860429; x=1784465229; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pm9nW7teOFNiy7UMYUIullioRRBzDlnrKfEE2/bnUaY=;
-        b=rb4AEdr9PamP+CwhsrbH9YGe9oMd+fm/wyIb9CoP1oaY/WoPsrB0YBmqQ6777kS/3r
-         YjAwOdKHF3uvlHz902NXR6kNIWH2Jj+YyID8EXMlVFF8GkAhHiM2J0U0pOMaMkTnqBD8
-         icxv09q5HNpUVSuXW7NwXGfF/NZjYRSr0I08ffmMY4V2aJZY1xE9d6BiiVrv3zHrBDJG
-         w0WFkJw/ezcOwflachZ0TwLFkWx04QPqmWRBobdFASIR+4d40bCGsLcY8HxGpgsu5PNP
-         grV5QZRO08HQJMg65TVRA7CLYIhMLYai9r4zOwpIsMM9I0EAz+t8oIroGcrBIgcOxvyr
-         n9iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783860429; x=1784465229;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pm9nW7teOFNiy7UMYUIullioRRBzDlnrKfEE2/bnUaY=;
-        b=JgIi6JFvoyifSLiq63DLMYzvYseLs//mktBI0kAMuWq0mgSn5kun6mlNgNvJG/fmCZ
-         JrcB27Y05IBeRpEngCKbcOw10zHhOo2sbL3r73toElvkMeFiHrlL1r2AlAUSqKLzJoGr
-         IOYi0MTgAWRkxqtoVKD2lhiD2l0qGfKeyGTz3/6lWVGVNdeNMNDQ8/tbE4VS1LeLOWvq
-         p/ESPCP+7ATf5nLXh/TrY13oazjsyJ5b16lxIhyUpm9gI5QdVN27M2QQB2wzsV5KnpRD
-         y/L1WH5IXk92fqXIEzBYvjRHF3jfArLmoC+EY2jjSE/c0eLIQXIO+omTVDQnrxyYkbYT
-         JNXQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoR3tqwl6Fe1qaiuH75pNsoQxvarr9ABCsiY8qp7SF3avhVWSYuma4qJSPgdFjLJ1Dpyk3vMO0BVQ==@kvack.org
-X-Gm-Message-State: AOJu0YyzD/eLZvkEhkjnKkLfiPa00m4vSUF4/7cnQ5GipdOZbQe2v+kc
-	Ef/LCUwXlB5SqnHocnPjaKsJzgSYcMFg/TbAcLUriJKGVkxdiWHYOYvPvd8MBAa93uw=
-X-Gm-Gg: AfdE7ckEGa+jG+VL0R2Vp59tAQ0uoCKoN15CUFZkyk2wTQlt2y16jN6gNzwBctYt0Xf
-	nRm2oAV2d+Z5u6L5cKj9SawjgsPhy6vB67UL/tZ/BECNVpQTpgYYi80C3pvAQqdqVLdW6kVUr+G
-	TsRm2wTkZFW0iXApbW5Sri1+2K/3B6USSWKJ9JogEZyorLXUVwa4zxGblBLTO8OuCXBG44I5oM2
-	0sPQ8RHE7UC48HV95JdPOJ8+gK5MkJ3DUOZRQEMD/aXTyeDYUhJfwUGLufpG40jQ21QOuhtXird
-	bYVqgC4FYi7I7HhEFfVuyaNMYdKi8KR/AP+Hg+VyX06lfTAa01136g38jl5PeIP5lP42hv9V2/Y
-	HzZ2dlTMFRO0y3n+0k5Myv5ggFY9YIxT07kjSCKQO4WzKhHrXW90LvWOc/+KUmgPBNIKxC++2TW
-	RPi8S2jh1ORHW+HLapiErZDLVGYuSi3Ppo5XeUkLQHMv5Dao4Rso7jhxV6RDzXW7PHaGFRDto6C
-	xSNIXY=
-X-Received: by 2002:a05:620a:318f:b0:92e:c117:5edf with SMTP id af79cd13be357-92ef2c40a92mr592338785a.75.1783860428981;
-        Sun, 12 Jul 2026 05:47:08 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5cf9d9bsm833767185a.28.2026.07.12.05.47.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 05:47:08 -0700 (PDT)
-Date: Sun, 12 Jul 2026 08:47:03 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com,
-	balbirs@nvidia.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, david@kernel.org,
-	dev.jain@arm.com, jannh@google.com, joshua.hahnjy@gmail.com,
-	lance.yang@linux.dev, liam@infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
-	matthew.brost@intel.com, npache@redhat.com, rakie.kim@sk.com,
-	ryan.roberts@arm.com, vbabka@kernel.org,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com,
-	shakeel.butt@linux.dev, hannes@cmpxchg.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] mm/huge_memory: skip device-private PMDs in
- madvise_free_huge_pmd
-Message-ID: <alOMx1NkL1jeabg3@gourry-fedora-PF4VCD3F>
-References: <20260710105557.1987433-1-usama.arif@linux.dev>
- <20260710105557.1987433-4-usama.arif@linux.dev>
+	t=1783862246;
+	b=5wExHInMt648OZM/Njc95HoRo0bEccpDU9LaeMqPIWDKdkYbu+6O2EoIe5bb1ga8kH7vyI
+	nNjLLDFGYp69U2iViHsfL1L7hZqR7pXlRrU5SIAzFaywsjlvX2KKsNEZ4ciC2+NmNgQDZO
+	dZk1WdsJYIio6MDbX3WxzzirHxud814=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F7191684;
+	Sun, 12 Jul 2026 06:17:19 -0700 (PDT)
+Received: from [10.163.128.224] (unknown [10.163.128.224])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 296AC3F85F;
+	Sun, 12 Jul 2026 06:17:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783862243; bh=Hcs/GzepDdIetzHjiaaCoZ2JnUmYACvmukBnUhnWH7o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jhlBoNmp4V+xpb5NnhaUMiVCTOtAElGvdQk7fmpFrcS3v0g3VNy1OuWqR8pPZ36kN
+	 Xun5IY8YwezHpllvFoP1/LKdzEH5CvNT0edOT6q7i7+wR+IdF2iMKGDqrG9dMx+IDw
+	 FKr3DEZcQp7SsjUU3ircfCWMmXgwcGC/xv4PruhA=
+Message-ID: <72e034d9-adcd-4302-93eb-96326846199c@arm.com>
+Date: Sun, 12 Jul 2026 18:47:12 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710105557.1987433-4-usama.arif@linux.dev>
-X-Stat-Signature: zz87h3jtmyih7ghzi9ayente76pbi8xd
-X-Rspamd-Queue-Id: 193A81C0002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-hotfixes v2 1/4] mm/vmalloc: acquire init_mm lock on
+ huge vmap to avoid ptdump UAF
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+ syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
+ <20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: t5obb98nz43am35yywtof3bcez61coed
+X-Rspamd-Queue-Id: 5410420009
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783860429-801483
-X-HE-Meta: U2FsdGVkX1/NF0Se9YAQD9kpN0kA0fTWJqHSSd4NHU6wnD4COpY/NUPhq1IHiqO0qgC5uauVwHZaPRLNbe+9uQilwbSAI/w/BjTLnbyyx6/ZID6sBCXmsHLvy/1q5Cty5tmlRI7uxAmPK7tulUAEJcOdJx0cO0Rc4gmzc77KfgPkmwvDNwakxj+sgJ4zfC0NOePuRMkhAvvpeYupbKsw0uYstLpKuhh/PL2oeUq4KCgVaFIc9A9m0WcJlpoZjTLb1CrWkfOqOj8CuxMtipP3/qnQocl4wWDq78JF5ERj/KSpicmdX3348tyWzsfYyqmtpKXXh1GV/WU+opDivs9eHhMGUBtR5n81Tn+aRmpqWLOuvS4pPv3u7rvXp2JtOyA+y2UqiBWZCJws/w8LC2b4VaSlYxEWz2rWrP1alAR7iwthZiG1v1IyLm4zF4BKcJxMnWQhWngfP6BdNtApSeN3iGcWNBhmgNiT0uDYeFthl+xYfS5Nr7mJOxEI69iGR93KjPSqdxv0fqaWSG2zxjTvDkK02oZqN9i+mYeU7L4cjR1O1dSpHGCGUzPtCqWfgPzw1Yybcs1NPrRzCR+gDr7yXKn+HPGouCilwsBv14oktcpxOVOOUMJX/kLbCMCrQ9JDSyuXirhIYLdb38BlMhWxIH7fH5aCvCITdjDnUnr2IuP0k/ydkaQ3tdthhLd1+OH5nKB1iV9KsY4c8oIUGaeWRiTc3Nx71aLwI6cXATvJRDiBRQNbWwYIX32qDRBqTyemBukslJLnu9BfNCe58Fnx+kzLaMjQPb+DiUT38cTOHC9f1k1/uWVzVrX33yKQ4crKhpBkGQcZHLpgW3weabsDTi1toAGpkTni1hU7i6xuBdag0inyrx4ByNYi94vshhvrXbvzmL7MxXLrhyWoNTUPb+qcbfsb6k3ri5/AwE5ktit8Q6c7T5bWrfGJ/rnWJg8oW5bYlIbFSSjQohf9Yyy
- vldvgC3e
- ocCytmN3a4zOEx1pR2knQ91/ZdPzCre44FAmj2CagT9M1P1t01gQFEzWQWevcqwf3DDj/90GlXcpzYZsE1bPq28QA6cAH3zelseIoVvvTQAGrQ7NNuLcdDsNnPpmD6D/I4X5nVvTPcXWgqHMkxk2oBqu+OzEcQHrDW2UxC7rHtlLuOOge8KmJPpxK4UyKk972Srm0RQxuHALapUyhoNOjNt+Z1HyMVeix4hVjszXCCOcIhc9lD0ELlzjPCXPiUIYQA2KB1r/l0xxB6p1IBoAGUO0vWT4zre4UD7WvKv5RHWhMEGZn/UJzFb51XKfcExMc6YHzlJTaKuIJwQ2yYbwGLsN712ltChnLaimC3coSKL+uP2Jjj/lEnnOB0mqp/SGUlsMFacJjbGICd+iwIROBNDmoqpG5qqv/SJKGZcPMAYPXQ4YlNW5+Y0NTNXMr96bd7EK38Um2EA5zzf+Cb09mCajXnOG49flyuG+xRKFOSxl41RlYY6Cf7W7ax5JupSWn46i3SQBap9xkoucp65iyvy/yuXya6GOb7wETc0BwFfRVFCNYHxVW9R3DxgghY4AraCJAZs0RI7Zi+KxL++OmQD0WxR0XC8iG+oAb2X+mhrC9WESRs8TsJH2mZQ==
+X-HE-Tag: 1783862245-379510
+X-HE-Meta: U2FsdGVkX19TzND0VBY3qlwx5im00s9nDky+yvbZcnJQgF5FS9sbeYYhhGv/P++igaCdI0JyqO6Ca8q4YRfpQRDiugvPyYYt8fqj9vyFZh02me4fHH5F/PvaThR92aaW5nBThEyPUYW1bKzo75Az/LEGVg0z1NnZwTHqTXNcrzsSCehywdILpFEK37pfZibO5HJhyPNECXcMK/+bVMelMBfBWJV/T71VEFh/xVdDfmJiHpcSw2Gt2rTmFJleMO0/9IBYJBeuYc3IWnYIZ55OAlkODuPnfjkbXRGUPqDKB54h1Ly1gXdbZeAdM0p5IJX3wZVJHr20HLNVXxyACy94YQ/DqK+UpLV/6nf5n/Xtb+jApBqXnffLqk1/5vh0mvHQD8CxAKV09qHa/pTc0essQFisKqkIYpcbOVeatCbsjj3Zg7YhIZafpIh6R+ScqxmQVEl2MtwR88QPzUABMY/yLUPQVMJpVfc63uRdTYiMBwZrzcGSsgBzCKvjcL8aW2JEXP1Bq4UbuOAzW8psMZspiemGRuHoz10hM8kXbg9jiusQtuR3ghoqvipsZPf3MgxoM/GM9jfYjSSxoPp9Ux3KYKeg61rvjGOJG3UXY2xL4dvO+knXXBYzmsDPJqjUMlzrYAQaSb2uWNnGoQGEV8onWRNbxxdgvmFL1O8KKg6lw8ptptsqGnHTlaUwa8VSB9FuNXzWbNjZw+V0fJVnnkqLllrz4c9xkYAu8rzI2G7mkVgufptvPoYvJE6hMypRx5T0sEeX5NAFQ0DwDLNsRktSMlG8wgHiNodG5j8w5YYyDLA31sIpP0fGM24zVkmr1H9k+elKW1jK5z9kAgb6WWBRtr/kFZx9RNANmgw+7G4pWUGOkYTfYs+bJLxxqX3uZkZW67ija09Om0FOwHsEahwBBVCKVLQmqJeMphVMrHbHi+yBRQ/nWX8MrgRkAVQEWiOesMinWSGXMFQp2ubPwMY
+ IJP2hkSv
+ QcKkA+OJvmxDH2vTz9fgqBpOtptB6FPap0bMUgvkNHjPFSDRNuaxTmyRG60k9Z1dzyfA3xxmrVWj6KgsuSVtznFrPaunOeS1NlFK9krN/VruGAsxHdmSU2eMHUUCCPw/LpZsPH4QTO33TakjDkepdLFQ1X3DrHI1BnEOhdsIhj3Vvoo1ao8+SYHXQ+HLjSfQiy+ZMSwDgiOAtEae+uf0xuME4g3DckhI5RNZ52orJXu1Ha75Gtj7WxTXBAEe+BhdRGASubj39NF3dMz/m2sGkcPXsWTBlAUyci7PBqhQEt0ws1SNmg6QWNjRY12a2guGX03xd7Ig8Jp1dksdjYEAkeGnITOjQE7s7zmpCx96IKri9Vs7nMJvWJuXrWT5PiJi3aF5fHBvRNcP/SFVTeMCRZqJOozS4cQVrs9ZJRhjiiY5w7t5cyVlzKvG4OgnUXjc1inC5+/HIqItav1rFT0zhheptZ3f/1hsqHctEwxyc+4BZ93INj7Yai5dEn5gKy7R4hpAdggmG5+SoPDqxvlOPwcrdYZdL88ygYBfJZXSYALGH9lh47xJcI51yovGzazfu24bEsSTLX8PL3vrOpv9W4JjooQvMlWtDrjV2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,40 +107,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 03:55:23AM -0700, Usama Arif wrote:
+
+
+On 12/07/26 4:12 pm, Lorenzo Stoakes wrote:
+> Currently there is a nasty race between ptdump and vmap when attempting to
+> map a huge P4D, PMD or PUD entry.
 > 
-> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
-> Cc: <stable@vger.kernel.org>
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-
-Reviewed-by: Gregory Price <gourry@gourry.net>
-
+> ptdump is invoked by arch code to walk kernel or EFI page tables, either to
+> output it for debugging purposes, or to assert that there are no
+> W+X (i.e. executable writable pages) exposed in these ranges.
+> 
+> The feature is enabled generally via CONFIG_PTDUMP (whose implementation is
+> in mm/ptdump.c), and expose a debugfs interface for it if
+> CONFIG_PTDUMP_DEBUGFS is defined.
+> 
+> If CONFIG_PTDUMP is enabled, then /sys/kernel/debug/check_wx_pages is
+> enabled which checks kernel ranges to perform the W+X check. If
+> CONFIG_DEBUG_WX is enabled, this is done on boot.
+> 
+> (Note that arm32 implements its own page table walker and uses
+> CONFIG_ARM_DEBUG_WX and CONFIG_ARM_PTDUMP_DEBUGFS for this.)
+> 
+> The EFI implementations vary by architecture, but are not relevant to the
+> bug, as the issue is when kernel page ranges are walked.
+> 
+> ptdump_walk_pgd() holds both the mem hotplug lock and the mmap write lock
+> before invoking walk_page_range_debug(), however this runs into an issue
+> with vmalloc ranges.
+> 
+> When vmap maps a P4D, PUD or a PMD sized range and encounters an existing
+> P4d/PUD/PMD entry pointing to a PUD/PMD/PTE page table, it invokes
+> vmap_try_huge_[p4d,pud,pmd]() to try to convert it to a huge page table
+> mapping if possible.
+> 
+> However, when it does this, it holds no meaningful locks against other
+> kernel page table walkers, invoking [p4d,pud,pmd]_free_[pud,pmd,pte]_page()
+> which calls pagetable_free() and pagetable_free_kernel() in
+> turn (pte_fragment_free() for powerpc).
+> 
+> This means that a use-after-free becomes possible if the ptdump page table
+> walker happens to be walking a PUD, PMD or PTE page table after it has been
+> freed.
+> 
+> Since commit 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page
+> tables"), if CONFIG_ASYNC_KERNEL_PGTABLE_FREE is set,
+> pagetable_free_kernel() will batch the page table freeing operation,
+> otherwise it frees the page table directly.
+> 
+> While the KASAN report that syzbot highlighted indicated that the issue
+> arose in a workqueue introduced by this change, this is coincidental and
+> the commit did not alter the race which has existed for quite some time.
+> 
+> This patch resolves the issue by simply having
+> vmap_try_huge_[p4d,pud,pmd]() hold the mmap read lock on init_mm while
+> invoking [p4d,pud,pmd]_free_[pud,pmd,pte]_page() and
+> [p4d,pud,pmd]_set_huge().
+> 
+> This way, page table walkers either observe a newly promoted huge
+> P4D/PUD/PMD leaf entry or the prior PUD/PMD/PTE entry and never get passed
+> a dangling pointer, whether the page is freed asynchronously or not.
+> 
+> All other kernel page table walkers that touch vmalloc ranges either
+> exclusively own the memory walked or acquire the mmap lock, so this
+> correctly excludes those walkers.
+> 
+> We acquire the mmap read lock as a trylock, as this is an optimisation that
+> is permitted not to succeed, a race is very unlikely, and doing so
+> eliminates latency sleeping on the lock would have otherwise caused.
+> 
+> We also define a guard class for mmap_read_trylock() so we can use
+> cleanup.h to make the scope handling cleaner in the implementation.
+> 
+> One wrinkle here is commit fa93b45fd397 ("arm64: Enable vmalloc-huge with
+> ptdump"), which addresses the issue for arm64 only by explicitly acquiring
+> the mmap read lock on kernel page table freeing should a concurrent ptdump
+> be in progress.
+> 
+> This is problematic as vmap may acquire the mmap read lock prior to ptdump
+> attempting to acquire an mmap write lock, leading to a deadlock when the
+> mmap read lock is slept upon on page table freeing due to rwsem
+> anti-starvation.
+> 
+> We work around this by predicating the mmap lock being taken on
+> !CONFIG_ARM64 for the time being.
+> 
+> With this patch applied, a follow up will partially revert commit
+> fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump") and at that stage
+> remove the arm64 ifdeffery.
+> 
+> We also update walk_page_range_debug() to assert the mmap write lock
+> unconditionally and update the comment here to reflect this change.
+> 
+> The issue has existed as long as ptdump was available and vmap freed page
+> tables when promoting to a huge leaf entry, that is, since commit
+> b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table") for
+> huge ioremap, and commit 121e6f3258fe ("mm/vmalloc: hugepage vmalloc
+> mappings") for huge vmalloc.
+> 
+> Since the former is the earlier of the two we choose that for our Fixes
+> tag.
+> 
+> This patch is based on work by David Carlier (linked), with gratitude!
+> 
+> Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
+> Cc: stable@vger.kernel.org
+> Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
+> Link: https://lore.kernel.org/linux-mm/20260706203128.162335-1-devnexen@gmail.com/
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 > ---
->  mm/huge_memory.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index c0892cc533a9..7ae21b006b68 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2297,8 +2297,8 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  		goto out;
->  
->  	if (unlikely(!pmd_present(orig_pmd))) {
-> -		VM_BUG_ON(thp_migration_supported() &&
-> -				  !pmd_is_migration_entry(orig_pmd));
-> +		VM_WARN_ON_ONCE(!pmd_is_migration_entry(orig_pmd) &&
-> +				!pmd_is_device_private_entry(orig_pmd));
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-I just realized, are there softleaf entries we wouldn't want to WARN on?
-If not, should all three of these patches just be something like
-pmd_is_softleaf()?
 
-x_is_softleaf() does not exist, just curious if it should, and not
-worth holding up the patch.
-
-~Gregory
 
