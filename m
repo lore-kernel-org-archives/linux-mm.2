@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C721DC44501
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 17:03:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F686C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 17:03:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AB046B008C; Sun, 12 Jul 2026 13:03:42 -0400 (EDT)
+	id E54886B0092; Sun, 12 Jul 2026 13:03:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1821F6B0092; Sun, 12 Jul 2026 13:03:42 -0400 (EDT)
+	id E04DE6B0093; Sun, 12 Jul 2026 13:03:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C07B6B0093; Sun, 12 Jul 2026 13:03:42 -0400 (EDT)
+	id CF4706B0095; Sun, 12 Jul 2026 13:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D78496B0092
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:03:41 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F1F91C92DD
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:41 +0000 (UTC)
-X-FDA: 84980746242.10.80D9894
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B01586B0092
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:03:42 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3874F1A09A1
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:42 +0000 (UTC)
+X-FDA: 84980746284.25.6A635F4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DB94980004
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GX/i+5+c";
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id A860D40005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:40 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjT+7kGG;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783875820;
+	b=TU4qMaI2HNvnzdZrSXlZJ+71P5GcYtUNy80GgsxbsxG7MM/GqLHwCY1/poqCa+IIuNK784
+	jMPw8UBR0TUtJ3m1hzQbpsC97SHfZGtUy35VJzcT1/P1QJrGCEN7twzeGUFx6mV3mloNLF
+	jMSYJznBpqLBdFjZyDntNPDD7N8dDYk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjT+7kGG;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783875819;
+	s=arc-20220608; t=1783875820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yFIQucAr4vFmOrW82XY64T561EcF6nkSnWV7DSiSLJg=;
-	b=zLegMdUAdcs45aokipEaS0UBETMslESxYK/fl7cu+dEM72IJoyJZrPlhmX0CwLWfhaCNbZ
-	3iiifb6IPTsfCXc4CI7EMSbIBL6UNEnqu5vKA4d1BXLFukbR8bCqCh3bzRobHV44oJilX9
-	8cfy2iou31noQ2XDiiB21v9uHdg8Jws=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GX/i+5+c";
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783875819;
-	b=QKgTPx++8L4dEsF1uq3zNYv+UQnuykrcnWriKCTPkhpATxxXwyTdkcNSduYRpADatT2am2
-	857aeFxaIJmvxCrzEJGexmOZlpLxxSBWJL9MsDlZ53E1HrmsJOJ8scRGC9dGLahkkjcClY
-	f2pYQMnPicFUCQskhR2IfipB/jIp4VI=
+	bh=SKLq7ZuoHq2BFm176pu4DfNEYfPU8F0EbpgzHa8ZXlA=;
+	b=ZMbjqM8qZSiJ5rNKqiIusTobFzALE3S1H9nDfpEAbUQLuL7TQC/gV9o8hveu1h7XoIlQw4
+	dFbWOANMhZjgbnDdjyZWe49To3AYxeMWCFOCf2caLN/n4KyuNau9za7QARbEEwtEvKcRKl
+	WAguILqoR5KXxAi+5i9/1YcUiW3lMAI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 731A4600AA;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3AB97600AE;
+	Sun, 12 Jul 2026 17:03:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC761F00A3E;
 	Sun, 12 Jul 2026 17:03:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E4E1F00A3D;
-	Sun, 12 Jul 2026 17:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783875819;
-	bh=yFIQucAr4vFmOrW82XY64T561EcF6nkSnWV7DSiSLJg=;
+	bh=SKLq7ZuoHq2BFm176pu4DfNEYfPU8F0EbpgzHa8ZXlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GX/i+5+coUrveNcvaY0xrsZhuVmtLA73CcoyMgGHIOeUe/2ZqEWjBRanPSO0/jWo3
-	 hZXs98sRQ5y6Z/l7LJLzomKm6ll1TUyBUHzWgkM7q14s2RJ6TOP8Q4EBEL8cb44sya
-	 5oDv87oF7WZfwYblAmUApiym4/OeEpy2nrZwVTmJz97NhAF2m7f3AoEvMRKJf87btW
-	 APaptSK4lju2hZNVR2ZfI55SEZ+I7PAGQa4GUS0kiEAifPyUG0gfYefAUsPXNuG5S+
-	 bwIjD6aaNbxBciAczMQ3Uz2wEIn01AmfPXvPT21LRmBoXnc/2Tkv530H41GKV3lo2n
-	 FdNYfWLdVvtbg==
+	b=mjT+7kGGAZYWj8JiuahXfYm2MBh7kCuE9DE+qZXwgVLnf66mD8V7l5743EVqT/ZB+
+	 px2Kktm5XGebVXuPIEqzhuGDyAxeou/Yg5M3DlHa+j3Fh1/kpD0DD6txtSqp5RfQ/y
+	 lcFGHl2+XcewCNUxbjxgMnH9R0lVWko4XgbBORuqZ8AbCbSt3DFRDv8l8RRKBcrZQu
+	 7eMhcaAEkzAYqX+zbo0qSI7Cf9AVEST+FwnpkEYdutt7uaJ2VpVjONtoiPhR2ZeCgT
+	 yXnTXCwj6RviPh1VazChP3DAGy28Q8nkBEV+kuYR+vDUeAfMfNytJrGMvgT14wTs20
+	 D6KhmXJ2YEGMQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	SeongJae Park <sjpark@amazon.de>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 1/5] mm/damon/core: avoid infinite kdamond_merge_regions() internal loop
-Date: Sun, 12 Jul 2026 10:03:23 -0700
-Message-ID: <20260712170328.91144-2-sj@kernel.org>
+Subject: [RFC PATCH v1.1 2/5] mm/damon/tests/core-kunit: catch test failure in test_merge_regions_of()
+Date: Sun, 12 Jul 2026 10:03:24 -0700
+Message-ID: <20260712170328.91144-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260712170328.91144-1-sj@kernel.org>
 References: <20260712170328.91144-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uhpnnotshxe56r57zob8sskhbo4y9xa5
-X-Rspamd-Queue-Id: DB94980004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783875819-841942
-X-HE-Meta: U2FsdGVkX1/bNzmDiEa59306Dr3+jZqHeeeZ+ikHve82bW0YiECMq7Fs6VgjTQ78OeaHA02vgwCk+oLdnbzSywJc/CI3B4ORliLqyl1i4Dv6yEVQvdJJDuEagi3Jnt2d2jsPVQx8MxegVyH4eA65WsvDNyMe7qT9ZJpUd+4GYNHPYaOSCalX+asQnKFBeqJUorezfwRqIg7uJqw46taUUppb+MWagh8eVG1HA5EENfuDtipxEMH28AvcO+l02wnURiZd4Ak8uCkfuylnV7X+3ZFQALiWC+/9HpOdCzSsMnvSUtKU6CvEAHxva+clmBZGxDCTMhNAHd7ZS+UltVfXBHbKDO/Dmpy0Zua7GkWfL6G2BcIrNduoy7AXG/xIjQ7cdoM+JPsRt+nh8yJ0D0sJdsLL5z4Smz0ppp8l0hFu6RZ7vbn6NB0W0qAOtb+CGLvoIY8EQhhmlNPXR5PI2FE3sgLrK722mCFZGJRmA6poDqPo5+lN/YlRQoidNcU1gcIJ2kxpbSidU4gzvAIxn75Hcu5IewsYKjY7jwZsdh8ff3GgZWn4eQtGsthAqeduULCUEtr4OWaLKjUwO3QqpV/2Qlwl3LwdAnPU7LYZWoRUQjHQRUJVY4VtPSFIwX5YaMhAstZi1CdiOSka4Ht1I3rEyn91P+aKzcUScWFM9uoeMpyzqhfeNiZWThl3fanfep5Zb58ysp/5QZUM9rxbOO3y6y6oe+OGmdEMFupgzxSx4xQsbAztbFzdiHYyeD1xP3Mnb/wYIv0CvN8jeJC5CBUM8bsZamV6zLEz/NFj7uRILnzoEIJOEfRBJbNMoQ0ZyABB0zgNhlYAb6e+MiDsk07Pqf7G5IRV1v3SEb3GGU+JOJwGLSQtMQs3bskiZKyrFaC14FghgHVan3Qsr2MufXf2xuo1JhvztsxTt+vpTt3RriCuqDaweD5kLWcUwrMjCScJzDfiGYA1nOZ+2n3ozFY
- xPNC6liA
- U9UO/z6PKsfY/lqcwXpylIW+G6CisEdkdB2vW2HXXPj1MKOPi7F610JxVTCKe2TD++lIZehJCc8U6wlC3J7LsLRUuC71oDvDfTj2vUAgHPTOBzBxK8q/kUPwQ78zc3e8Mkc70mCFCv1cjHcnwPw1rdXvNnseKGA0ekgnK9z1f532YUi7xxICfYAjW76YLzG6p6yqQDFTidqmM8cS2sG5NbVRl8p1uoy4+zpyWllCMwJTtVWxCiT2LeR0gqD4bUkv7SQFoKwsOx9x/gRI/ZeS3qVaiIQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A860D40005
+X-Stat-Signature: wbu9d7n7hd59o5uhqxqzcayu419bj598
+X-HE-Tag: 1783875820-590623
+X-HE-Meta: U2FsdGVkX18ukcPIkbvsObAhD4amuoWlxd/zad4LFaM5xkc0gIQ8KuO6M+KOdWgDC8hPWUJ/gZMf3WdFXcJ4X36AUMArt3ihQPrIR1yQt5A3Ixzo4UO5q0vMUNTs9QqFNWWOjsfaZdaPihiSpk+S38tuXV8Y3TjXe9/2ccut4Ugr/Oi9CnLDRjqMkZgnysxRbeLDxpMf3hswjHkSZFmDkTnO1Lfh815l+agXTBlkzowHLgUpXMoa/D6VTpsji7ve1jVG/layHTlNjMxF0iBf6H9ro0oMCQdH+VAsWRF3fNM+0uTMK2gy7SJnwEV6p6McE4PCz6YqOLxxDRpUW1/A+xW+7xFkp0gm8fal19EW2e50+9fx+vw/+VengOHvMmEuet87OEvWyul0sB5JgPzfU80tTZxxjL3kAvq5mUl6/kCw/6x7RKMxEL5UdUWho9W7Nv8Nn5ki+pnhnpoxmQKOii/+cHcp+7wwbdwO6GL0WOHl/Myy05K5sIKkm1AlFmgcQDArZR1eJF3Uuqc/x37aRKyKNsVDU9ZIuQlsrUVxCxK5BBLLkiiHBNCMtQWDUriIvJtSRSjdngbgK/iXhiHKaIsw2ddM1q8rVpPIHWhNBw0vTpk6R6ZnlEgQ8ZJaV+0BE3cqJxppZ8ZRjlXm1gq5lu8vgtFG5WO0nL4KT8oQCdUQvvrAkQIeIWtGIAP8GUHXs+WMWdtc0Vu5hBg/fZsuHTkikA9q65dlb5NIhnjGHAzCUa/qDIPRHuLZeA/f4Q9gsbi32wnV+rMZjQBuPaEHddIoXPjOxG9HZ+SbwfSbtIQ2XXt22KoyBSoCCXjLN3kiwLw5S6DH6q9NifxFK1KPtNFS7s3cdCijGlgMWe67bcaK4t03f7m7nriF57KC/xuBUIW8xkhZ0pd78hXt/NN+A2t2apzEk6DL0WqabWs0bG1IlIfuPwg1yeQXZ6dZXj/PAX12S3YMzpQCV1GllZV
+ JV2nBgc3
+ nGhsa36KqauaYSInMdFcM/yPcGeha3s7qhakMUYsrHXbKibDWNBty9xK3QFHVKluJsLRyiMk9xcTXk9+fs9KS0kZ/qzK1VUldzSP4In0ul5eH2hqYwnkHzoHmMD6h4yskWX3dO0TQFl0smMT9uA4/wh4vU2Y/ggIqIruotSvWAYrF8klJoeKGrVg+irxJKr1TlxK4wnR9VxlxULh3NiK+Ts8ZEccUC79G3f7dyKqR7mHlLTYQxvJLI87eVn+xtFfXTAmWTt8yNsP+LJrBSNtoXrcXpeVwat924zH+PV0PGdcEZDVcqMKjSmcFVBauzsu03sOl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,72 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Due to online parameter update like events, the number of DAMON regions
-could be higher than the user-set upper limit.  kdamond_merge_regions()
-repeats merge regions until the number meets the limit, while doubling
-the merge threshold up to the theoretical maximum threshold.  It is
-tried only up to the theoretical maximum threshold because even the
-aggressive merging can fail from reducing the number of regions under
-the user-defined upper limit.  For example, there could be many
-user-defined non-contiguous regions that cannot be merged.
+KUNIT_EXPECT_EQ() does not abort the execution of test code when the
+expectation is not met.  But damon_test_merge_regions_of() code after
+its initial KUNIT_EXPECT_EQ() call assumes the expectation is met.  It
+does a per-region test with a hard-coded number of regions that is
+correct only if the expectation was met.  As a result, __nth_region_of()
+could return NULL, and the test code can dereference NULL pointers.  Fix
+the issue by catching the expectation failure and skip the per-region
+tests.
 
-The threshold based loop break condition is evaluated by comparing the
-threshold for the next merging try against the theoretical maximum
-threshold.  If max_thres is larger than UINT_MAX / 2, doubling the
-threshold could make it overflow, and bypass the loop break condition.
-In the case, if the number of regions cannot be reduced under the upper
-limit like explained above, the loop will run infinitely.
-
-Prevent the case by doing the break condition check before doubling the
-threshold.  Also, prevent the threshold exceeding the maximum threshold,
-as it could overflow and apply the wrong merge threshold.
-
-This issue is unlikely to occur in real world, since having the
-max_thres higher than UINT_MAX / 2 require unrealistically large
-aggregation intervals compared to the sampling interval.  Also, it
-requires an unrealistically large number of uncontiguous regions setup.
-Nonetheless, the consequence is bad and the fix is simple.
+The user impact on realistic setups should be negligible, as it is a
+unit test.
 
 The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260709145425.96247-1-sj@kernel.org
+[1] https://lore.kernel.org/20260710144937.26981-1-sj@kernel.org
 
-Fixes: 310d6c15e910 ("mm/damon/core: merge regions aggressively when max_nr_regions is unmet")
-Cc: <stable@vger.kernel.org> # 6.10.x
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ mm/damon/tests/core-kunit.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 806a67d02a6e9..f3b6a46fdaabd 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3369,15 +3369,20 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 
- 	max_thres = c->attrs.aggr_interval /
- 		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
--	do {
-+	while (true) {
- 		nr_regions = 0;
- 		damon_for_each_target(t, c) {
- 			damon_merge_regions_of(t, threshold, sz_limit, c);
- 			nr_regions += damon_nr_regions(t);
- 		}
--		threshold = max(1, threshold * 2);
--	} while (nr_regions > c->attrs.max_nr_regions &&
--			threshold / 2 < max_thres);
-+		if (nr_regions <= c->attrs.max_nr_regions ||
-+				max_thres <= threshold)
-+			break;
-+		if (threshold < max_thres / 2)
-+			threshold = max(1, threshold * 2);
-+		else
-+			threshold = max_thres;
-+	}
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 6ad73559dd8ea..a99363720e677 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -260,11 +260,14 @@ static void damon_test_merge_regions_of(struct kunit *test)
+ 	damon_merge_regions_of(t, 9, 9999, ctx);
+ 	/* 0-112, 114-130, 130-156, 156-170, 170-230, 230-10170 */
+ 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 6u);
++	if (damon_nr_regions(t) != 6)
++		goto out;
+ 	for (i = 0; i < 6; i++) {
+ 		r = __nth_region_of(t, i);
+ 		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
+ 		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
+ 	}
++out:
+ 	damon_free_target(t);
+ 	damon_destroy_ctx(ctx);
  }
- 
- #ifdef CONFIG_DAMON_DEBUG_SANITY
 -- 
 2.47.3
 
