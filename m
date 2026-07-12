@@ -4,121 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB04AC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 16:48:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF90BC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 16:54:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7582B6B0005; Sun, 12 Jul 2026 12:48:58 -0400 (EDT)
+	id 9D4F76B008A; Sun, 12 Jul 2026 12:54:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1ED6B0088; Sun, 12 Jul 2026 12:48:58 -0400 (EDT)
+	id 985E46B008C; Sun, 12 Jul 2026 12:54:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 584F06B008A; Sun, 12 Jul 2026 12:48:58 -0400 (EDT)
+	id 873CA6B0092; Sun, 12 Jul 2026 12:54:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 29E5E6B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:48:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B28CC169C6B
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 16:48:57 +0000 (UTC)
-X-FDA: 84980709114.04.6790DCB
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E8794120008
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 16:48:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Le7KoJp/";
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 57C386B008A
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:54:31 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BDB0C12099E
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 16:54:30 +0000 (UTC)
+X-FDA: 84980723100.22.FF2A863
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 65F9D180004
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 16:54:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=hZd3B02y;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783874936;
+	s=arc-20220608; t=1783875269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jgHRZ2oQs3owZnO2hrgFCKNrpUU4ppVoDgnNpxTspCQ=;
-	b=JKSisWUv9GXUV1uu9+/clG5+ixaZrTzkHtSEt/jN0EP4RBX0WrQTf1A2aNGz9aWbd26ZeF
-	lSBHJMI/ulkGMEIl6c3a7WPltOEpzR386DCvwIxJ7qXxVvT2KzfQxPnBiS41Ba6vxRq0NO
-	6wwerR2GdPYmY3ZHZ5mo1xa3VHBcw7Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783874936;
-	b=MYbacCvhnrNxPqrmEBIv1Rzv4W3sc9OQTj5+PRisNJjBtR2b+Nb8YBwzs/qG2RgG6YFGHM
-	phQuIeS7VmNt02RxgBXCUaxUFfw9bD9NEyGLjD4BHeJivaIsOmb517iMp6c3AZorQFXolq
-	1VDUCJX7BBUhaXCaUsA8wwoqIYcBcOI=
+	bh=y0mSGKSljGbp3wm1OkPuo0d6XMXK1FIsRCwQHXpgKVI=;
+	b=zFKUrYlMt51ZB42+rwN/bpiWKeOcNCluE3/hQyTNkr0/IJE50ubMxwoxmF3p8f02/v61zu
+	v1X4lExIOvv5rsG8xmrZQq1T5w6jMCEcOKN6d3RwgKrhTCxL5tjHF5WAP/CIoogjayrqaD
+	z9JW7urvkAkxIt003yrIEXSieuoPOGo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Le7KoJp/";
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c04bf4711so23135961cf.2
-        for <linux-mm@kvack.org>; Sun, 12 Jul 2026 09:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783874935; x=1784479735; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jgHRZ2oQs3owZnO2hrgFCKNrpUU4ppVoDgnNpxTspCQ=;
-        b=Le7KoJp/LhkmkhNXvwWhZ5JkR+8L1LApa9V7cOpfG1TlnRpBpS5mJ4LdaS22jZ/i60
-         2XpLqftT8KiuWczGuNFBH2PCdJ5IHAi+w5DvJlZpk6oaxuSdS7jUVv5rIzcdY40HNWr8
-         5jr07yYhLFGndztE4GCZkBZyZg4NFDL4l7tR12aTNEEDp6KpIJorPz4CyGUZZ/PjB/I1
-         BL2oZSS7iDKRCCkxU6Ocqrk+gItL7DmP+oITGag67Fe6kEvFaS6h/3QD+jPe7fR2dVTB
-         jbF2i0taG20AowbQUQNKCq9eeGfNDfamik/9PdYH5Zo0QAa+/i29IZEckTBszQ3wc5gj
-         PXNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783874935; x=1784479735;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jgHRZ2oQs3owZnO2hrgFCKNrpUU4ppVoDgnNpxTspCQ=;
-        b=l/9xSRzIrgNdedFAM6nDGDq9FPftWwRQYYNOljlfxjHaEmCTtx7uQYxwg2cNyo9W6L
-         0ZdXXXIjGJ144eWKX5IpMAxP8q8BpCO7gyqd1gF/yhqlGTHfRJRyJKvkbt//6OJPHG4c
-         eGO77RsQTAtnsbYcGlNmVyVETJ96wkgUdmi/aKYNccPbMGarJxMTy2r4UBUn0hOrqsMJ
-         USo1plLGJezYJia7k97avs1mvKW830D8F+GV76tbE3IV9wEJhA5+D6xHUoztXwGeDz9i
-         rxClgsJkPVFRKfH8zjGHl2CDNXhtQ0L0YrCV+WZOZaXZsx2R34TdLVkSNLT27N5bTS3Z
-         uRPg==
-X-Gm-Message-State: AOJu0YxLb/IOs5/3b7b/5sqySKjiub5xIPcBpon7kgLJafEY7tU58GTu
-	ldMmMG5kmz3VdzjPelzmNVAKYDV8+WvJ3lGYebw1MQW1zAwte0+pQggvZqy5+Sg8XXg8lG+VGR1
-	YGYer
-X-Gm-Gg: AfdE7cmwZVXeA03wbrBNkqjosFlnG7HsNAX2ZRVB6MXEwz2UGHYr+S49OzG0LsgSkf7
-	hFPDt0+7H0JiRR44zTXKYLal0bhqk/7sqepPgBk06zdMUzWVQdA1nNWS/2h0fT1j89t3wteAEtx
-	OA1JcMRtbmsw/wUEBbQtkz1jhf0bmsbsETN5o5Zx+tcFfNfxu2Huc24AOWu9ehMQ5CSO+iUF7MU
-	Y8nCj2PSMWZ8iBIUaRfugwzHYXwu5kl5Qb9Y4odQIXcOpBiZXVefrNbJRN9ZjYZ+UmIiMUU9EEC
-	OduQC6kGstVzILBBiGmW8hk/7sWzwlmLM7gxqC6CDqeCKebg5VRpzRXeUuUhLo7jlEcRZbPRTB4
-	fKhI0YHJfc651RWd3eR1+h978hBHbPPKG4ebAa0A+QdmQCS/OGRCzvruVpFEHWk5TFHJ37TYHrc
-	sz7gmTOhV2HTojRqaqQx/DPOmFmUj5NIQR60tHBmh2ku4Zk12IPGrT13qtsW9RvDZxh2WF
-X-Received: by 2002:a05:622a:7281:b0:51b:f98f:ea5e with SMTP id d75a77b69052e-51cc9d5d02amr30044441cf.22.1783874935089;
-        Sun, 12 Jul 2026 09:48:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51caae20a40sm68575071cf.15.2026.07.12.09.48.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 09:48:53 -0700 (PDT)
-Date: Sun, 12 Jul 2026 12:48:49 -0400
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com,
-	david@kernel.org, osalvador@suse.de, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org,
-	vishal.l.verma@intel.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, akpm@linux-foundation.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	shuah@kernel.org
-Subject: Re: [PATCH v7 00/10] dax/kmem: atomic whole-device hotplug via sysfs
-Message-ID: <alPFcfjlzSHYk3jA@gourry-fedora-PF4VCD3F>
-References: <20260712154505.3564379-1-gourry@gourry.net>
+	imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=hZd3B02y;
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783875269;
+	b=n1TFBEkvduOtGjJsQSku6xB/2/pk5KR3AdVSgl9SWYIfHJuWlhLEAcMdpxwoJNN15VqdS5
+	QZFSjbeCxOklSASs3w+Td8uYSx1lAwfxMpGtIRJxeC3bEpyS0Nt1g1Ozr/rs5wgl/r+vqn
+	XUVn7GHL7EMvaiUE0YNJdUv7s66MOqk=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C99240E029F;
+	Sun, 12 Jul 2026 16:54:25 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id srior6ed563w; Sun, 12 Jul 2026 16:54:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1783875255; bh=y0mSGKSljGbp3wm1OkPuo0d6XMXK1FIsRCwQHXpgKVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hZd3B02yURgxnaN2bOuG5eS5BGaZkYAs2AweWjgF8MPvxxPq1Pt2vhEEqnCqz6wWA
+	 8dNkaOdtd19u+IcSBM/HjAx7JcHZLN7A5upeotFOjvVZJuJPXZ2xLlJORfsSwePPkj
+	 s2QScnUZnorDzAAJHT7r+lAsUwSUICK0TK1gzPA+4BNove0iPem796CCGh6+vQ2uTF
+	 IaaWP96Soy2OIRtZQ4wj3sYYMzUU7eb9vJwS5dkoeTmPjJv/vViw09zNDbqo+F8B9q
+	 AyltvY6d3w6OaBCUM9eOqQsnsnrBBcZmFjmra1vn3CEnFOv/wKIU6VNf/oyr4hwPGu
+	 7M7+2UxNFU+pg0Lto33EIt9lKX7i+Z29412SELwxHS1ldaxuC8r38fIiiBJ/60gssa
+	 pi0hvyvsYutR7Ji2QjYroHz3Tz4NoMG/Ar3Egs6W/tT79qOi1QngXwmUMBYQyqPoUH
+	 Ruz1xqCCFqxR3bLPqeiF9m4mB9wan85MmnjIRAYyecU6ELmJSYolJcfG5wxdEz+Bdf
+	 GsCumXAiqGmZg2okklasr3ESHBzuoOl7c9q1iHAJ7QaMfNvEci61R9mQ2/96kYvjQ6
+	 X2EbOcc7yHrtpWfN6qHdZShRWsJAMFRBQB9QrCT/E+9KlUi/jyYAcpQpaMbn/8DBjw
+	 Da+sRgL8/If7qfYW8RZJTeHc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 22D5740E00C3;
+	Sun, 12 Jul 2026 16:53:45 +0000 (UTC)
+Date: Sun, 12 Jul 2026 09:53:41 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Toshi Kani <toshi.kani@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes v2 2/4] x86/mm/pat: acquire mmap lock on page
+ table free to avoid ptdump UAF
+Message-ID: <20260712165341.GAalPGldsKpBs5treJ@fat_crate.local>
+References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
+ <20260712-series-vmap-race-fix-v2-2-ad134cc3a12a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260712154505.3564379-1-gourry@gourry.net>
+In-Reply-To: <20260712-series-vmap-race-fix-v2-2-ad134cc3a12a@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E8794120008
-X-Stat-Signature: xq5uj35u5984adcp5sgug9aant7bcd5h
-X-HE-Tag: 1783874935-800899
-X-HE-Meta: U2FsdGVkX19/Mt/LS/750FmSvWNjVOaIden4+xdY0N58Cskp77M8b3pwhhKm7/eA52dKPOqcdQqROiyKpcOPddcQJmMw7rAT/KiRTXWMm+0diG06WxNaTuczlqI8QFqc2ZFx8p/r9VGKtCWaWB6YEGgOZ7vX8GEOKXogV0yBhzppJFDjfkVsm0cPTGM3S8m9MCei6vq1Zc97Kn5jxU3kjF2I2zbn9CbpFG+e+SruBvnyUpCqCeTfI7Av94DwBZwz1x/V9SOq5CQUvVZj1OTLKLecV9IK3Vju0SFj49Bjnh2Xn6Mmsli4DiLEIfbYrjRTAtHNzNjTLFrNXN7+3AxBv2Cnlv3CyRt6NBP1C0bFC6A6/mFS64MQcm282i0K7ZTPgDhjQCFvJ5e/qvF9/iGvXtntMso+kv111bACzwR/IfoqKRH1gjS7rBtzZGD2K03u6nFSM5xxcLGZOX/s14VgIgsiR+1YlAaruZjw6TtsXW2sGZiaXlfXK8pvvHEWvepTfYbFdQSZqYTDwbL2Kz1gy/6HgQr152ieKMavs69Fl0jegrfrkNVZYUM5QzEiZyttlNPK5ANE610L9LPkE4cCiFgRtd3s1DlzPNPY/vWSRw36S3E2lqlyKQPPMixY3HhipOD1S82Ntm6viltn+SHbd1y6/pJa8rUyNnrtMbTfkUPwn5auxToXZv/lUaGiX0yqtNSAIjxb8xO3VkqEBjNTxcVvuAjktVInrruZ/pYOLGE5K2tWEI1kSkgCTyfhBG3UjeDoTv3kJATCbwEqR+8osEZWJ4ylqyC5LsGwSyWHdkwjdVFBP4aYGqTVKN2MHfjbUEzb3oRM3SKeHznKlUuQT+9lh51FBBrjK5VwwGOBwpMm3MAxEwaFEvVptEUmRawPibIwOXBOwy8Vy7x6Ei42vz8XY6YV7j0dB8xOQ+5+UxtgSp+qlOBUqNKMyGagjX76JX8uFCwtI3ImLMpnLQ+
- pxmn18gQ
- 2k0lCKYV/iHNcZ1T9IREdSF/ksr/nk213HebNTsgNIzt4+MMHkx6vazv/4mLDCo+7s7n3jvTgxIZ5ZK50sSRhBngTFl09sJ1/gRiooD2uAZicdgBun61wpg3HKMX7qQoYatVGCDF0f3O2K58N62dy9bNtNks6vfZltX7VBob2+E2FYFnzJfSRji78qpr72UU8GyR7yVJb7pnL3Pc/fgK8roL/AEANZiK3xKmOgqVb4AQUx8hcNd5Nu2r2nPCDG7myN3RfpaSD9NqnYffGZJVSmrShIn9qqBq2EIm1G6sdvAT0/RwOXntgobsMGIUliI0WXhOPEt6BG8y9TUk=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 65F9D180004
+X-Stat-Signature: rtf4pu99ejbeptbkqxpbs3uw4ixtffy9
+X-HE-Tag: 1783875268-727341
+X-HE-Meta: U2FsdGVkX186QIiuPKC3M04+LREpXJ/3D48ExWYW6gVwcrSvRIKHDLzy/BnlUyrnh2TuWyui71P++3ffoS2h+ouxTIRcx84PEEbK645k9ZV1UAbbnVwstbv7CKswmBWZX/dMJPoYp4H81FjB6UEwsHM8ain3C6HbliiTSaWunRm36MJPsUAzBpwpnJ7Mjd4mtckttL4vFccdDXdTxftEd7hl7PC678++wc3wOy/SP3Ki3FWFhsCTWj6Dg1KxL/C0coLs1Q0BkkVmMMOWimE7ThH1CC4+baZsCHthQmmdVZWeoixoo4fCCOZobcYwdD8uKtehmfrBetfchH75nfmaXzd/F375pvs+otpjHqIZqnX/Ue+r94IYgLJMMvzp4VNMChCfTATbyiGhYARRcxjF55e++sos2z7hoKib+okL7tacJ5BxSMRMUIaTJ0oRRnpXi32krv7Hl+ts6oVPuce6YUMOVU2uhGXmK868h9+3aoboV7UZDDToA4ThKKSQ/xgsfhJYzRSxy5UZON5ONjLuLgoU5sJ2XsfGg+AE5Po8krgm/mu+CLFxrREQaBUl9wezj6Jk9FQzw0AoY45jkjT0IV+KwKcr7iytHfFT4+71o22xhEb06yAEzBV1p/Ra2A5MsOEs4PGA27tdJjKBbpyIUH9J5LmFJjS42iH0b6G19/xCZ3ls1H3X28oCOwRbqDKpP6n7fvsLJlLf8rreSm+EdvP5JbZG26qmIaEt9alM1U+b4uqWAWlQmy5UIMA7CtNU53p2l0m6VKE/2B50Mzza7628gJ+9WM+oDUFzm7Dg+EGOQcIH0Dcsye5YVQUl0EDp6WRDxt165wdG1jBZqey1rPouCwGJKrA3xzi1Ydz2FgwTCMOXwii8I6VcrUCTPgrQz2FRR7uyrNctFS5L2MMiFHRJO3U4AdfOEJ7fCafg8n8Mr2LKR3Ad4GNGPRLjQ7UnLuIlFBW4QvHIELGsIsh
+ ud6qU4ax
+ KBEs/E8Ad0jY+p+FnAUVVDXHqZhT6XJ35vInPvbJ5eF7rv18yvOoQcAXA80GaeFx3mMnZ+YE7AAdJ0sqzBuIqO9eY7P0d6Q7GIekr+bOyKsk5Ot3SXacYfpNzVwhVFv9gAB3iH727ipuI8HEN8lVEQQhwxi864MAhKmdbgTbgOi4XCASAeI29YfPyCPcSmmYwHKCX1FhzrCjQCr4dXCuSQIvgKtz3u2wTFIJOJElwjHiPot6c17a+AsuVDcuHGH1oKt84GKN3l20nJZqhVKJ+k/m6ZCJ8HSKUbuAtePT9yDEpW8s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,19 +123,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 12, 2026 at 11:44:54AM -0400, Gregory Price wrote:
-> The dax kmem driver onlines memory during probe using the system
-> default policy, with no atomic control for the state of an entire
-> region at runtime - only by toggling individual memory blocks.
-> 
+On Sun, Jul 12, 2026 at 11:42:25AM +0100, Lorenzo Stoakes wrote:
+> This patch resolves the issue by acquiring the mmap read lock on init_mm to
 
-Took a look at Sashiko reviews.
+s/This patch resolves/Resolve/
 
-All are either false-positive, pre-existing issues on isolated patches
-that are actually resolved by later patches, or something we previously
-agreed on (WARN/pass in phase 2 of offline_and_remove_memory_ranges).
+> provide mutual exclusion against ptdump, which acquires the init_mm write
+> lock.
 
-So series is clean as-is.
+...
 
-~Gregory
+> We also include cleanup.h in order to use a scoped_guard() to implement
+> this cleanly.
+
+You don't need to explain that.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
