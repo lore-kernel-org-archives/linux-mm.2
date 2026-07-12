@@ -4,102 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55EBFC44501
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 12:32:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4D5CC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 12:39:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 120D06B0005; Sun, 12 Jul 2026 08:32:37 -0400 (EDT)
+	id B90EB6B0005; Sun, 12 Jul 2026 08:39:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D1A56B0088; Sun, 12 Jul 2026 08:32:37 -0400 (EDT)
+	id B41B56B0088; Sun, 12 Jul 2026 08:39:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F05926B008A; Sun, 12 Jul 2026 08:32:36 -0400 (EDT)
+	id A30A36B008A; Sun, 12 Jul 2026 08:39:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BAFCA6B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 08:32:36 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5461A1A0923
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:32:36 +0000 (UTC)
-X-FDA: 84980063112.19.19926BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 822651C0002
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:32:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=geJcKo8l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7F7006B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 08:39:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D26540482
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:39:22 +0000 (UTC)
+X-FDA: 84980080164.11.0FF0B3B
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2C88B40004
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 12:39:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=fTYrJnEQ;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783859960;
+	b=CPenSQagoJGIIzqBmtR2G5d3SLypRERi0D0iR/yWicQMXaeB4e6U2KEMPNuzQfrrJTbSCe
+	VH3pdoyZzAHmBYZ89tYspzzX4wjTl5nrfSstjRulHKgdebppXKWF+mR1g2cdNh+qe4QE5j
+	6uoz5iYFhwhSTwfjXCIYObB1feGPr/M=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=fTYrJnEQ;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783859554;
+	s=arc-20220608; t=1783859960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MtkGjiGoIClKqYf6WbMTADgvs1VSC4RCPwgWlBMIBnc=;
-	b=w5+cGTBT+kVeFkHCAggQfu8vJ/h18Oy/n/ik8h/GWuFYqgQdngo87ZAmrLE3KChBuIDd37
-	D0mvjQwv3A3lGKTB7QwlodvkQle6ztePYKfeu1KkQ2krxCDal6WOYIQA10HxADheMEaOVh
-	2SkwyRLAX56Iuel11BeVqssFU3NMH3o=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=geJcKo8l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783859554;
-	b=zHY2s947YPc8fBG4R1WhaVQLPRyWNVU1FbAlRKacYy9xZQmc8essVg2MhYSQZlRN6StPnL
-	fqyXNtZJ+eEPgp33+spvbBxmjjqI3JIGSbegm8lkVAFJ4HyzB2q0jS2qjGwEZMGbI8lclb
-	HhrhP9XPcm3K027XJLFjnP+9m29Uuj8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7347840E5D;
-	Sun, 12 Jul 2026 12:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625101F000E9;
-	Sun, 12 Jul 2026 12:32:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783859553;
-	bh=MtkGjiGoIClKqYf6WbMTADgvs1VSC4RCPwgWlBMIBnc=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=geJcKo8lmOCwLH8xvS3pjM6MSkf7G28eQyFiSG6nCT2g2bYC/iGbTzTX5BCP6XbKF
-	 8Rf5ExjwECx/W8ibPyCuvsaX6aIkGQeiXyzKVftKkSGaYcFpgb74pWSYDni7dIY711
-	 YwWiczEPH1l/JKVndl2Wd6OPsX5pkefjuJUQ8pQ58zGRZyM7GKVo50Yg5UJNXFZksh
-	 lgbpBhkNVQtqTbIFDCgXAbTjGE8fS3Ko6ejgWF4SOtfEweQ1AuICRDoUYLG8ex795L
-	 Ib/03fjU59OzPmCxaypFwa3282e1OH6uu7kpx0M0YeW+mz2cd0LFmQ3Pnx4DR9/8gE
-	 qc/wwrqo7bpwA==
+	bh=DpBJeAespB/ecG7leQANvH1JBf2dPPB4qbmO+Bd4+ZY=;
+	b=ceKdkwN2p9Oo4+2JDAYd+0KvUzBUQe+/xPAosr2LmS5EU5OozHqGiOPpRwThnCVzS0psQ0
+	YliaJcQSyb5p7psnK+A8/LKcIa4NDdDSwSsekyJa51C4mxNicGq1YDwfx71lF1VE/VGTha
+	6oi8XFCOX00oTjeAhVJ8/k5hMThvetw=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c2a449c57so15488211cf.1
+        for <linux-mm@kvack.org>; Sun, 12 Jul 2026 05:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1783859959; x=1784464759; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DpBJeAespB/ecG7leQANvH1JBf2dPPB4qbmO+Bd4+ZY=;
+        b=fTYrJnEQuemRwLZpyR5ScmK1V69gOo7i2sJEkdj/lbkY/Q+Qo+OgJJ8np6BA9vr8wC
+         PLWTtZkwklzgEoArhpTkA8W1Vj0N2+0vksq7cOllydDZJ8xAyyak5aLqRSAb2HD8ynjF
+         D0eQotCLB0nuGBeumYQF51LSetuUx9IB8jiECR4cX2vC93HI0mBnla770ElO+fWJAXkL
+         E9bxftfnXXCPl3QhbOmeWAUrldW/gaHdTLRsY4xRGJoKfdyWRwagP6++cf/l2wCNrhRJ
+         Jk9T2oftIzR5zjTb6rPJfgvQOqWQv1F5RMwebnBVVmsYQUInwmlqBKXmdn0n//Mlzwnd
+         z4hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783859959; x=1784464759;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DpBJeAespB/ecG7leQANvH1JBf2dPPB4qbmO+Bd4+ZY=;
+        b=OL64SRZM8z7MqrRBQ2esZTtCw+vDyid9fe6o8hVKqJqim08iYPAC1U/YM5DLGswtGU
+         X5t7rD9cWdvQNbYFEPXU93qF/l4fgsjEm1+SIuzqZOoVaJ+MxCQnu0YxkXgm2qRVFQzH
+         GPd5sxULdSU2J3uuisxBV4pHT1lt03OL3U37vvJ8kOGJz9nBkw2R4FyjuD2OmqDBHcUu
+         xDccDK+ur3SfflzUrWcuVP6Bf0Ti7DR9fqOhCVYhPlhz1JDyLA0HNPN4Pylfqz4/hJMm
+         MGsZ3YyXbPfCX38S33McB+0DLlJGFxGDWl7rtCD8zljnpjxCp5fxTBSOPGXnY7n3rred
+         033g==
+X-Forwarded-Encrypted: i=1; AHgh+RoweP6GQT2tAfMF8PSalEC/fspW1VQSCx94rVtw3eGCkOle216glLzVy2acocOHlddlozXKyctAiQ==@kvack.org
+X-Gm-Message-State: AOJu0YymgRU2bs4H7rHrkZ0iEBc9CBugCZC3sjOn5rjbcGvheXFZbh9J
+	7sjvFhp20UnlJIJPcPw/XMoo6uCRl8CectXEMZOiSwFcsr35R39CbHQTg6nLbTJuz/w=
+X-Gm-Gg: AfdE7ck/l4iWIoaiam58fvCNAcVmSkboz44WGhv/RoCjMiLU+ixGMrawbT+WV/SCzxV
+	w3HOvKXrmJ6HI8b36JApsj6g1aCkerPdnHUx3j2bhtcfWM3iuG5u/z94YA7WxBCGwe1c83Lfdd7
+	rukATwWUFT0JlBhzetYILY3UAepFjpP4XMkzPEm+ol9GWgd9PLmSIHRIRsWYLe9Rq87WI5yFOQj
+	7zhZ9aij9GsnoWCOpY+ui+Gr3Ma1XsW2SeqVyaSASbn8UR26b0x2dSA1nOnUX61wgWWZ+iglREa
+	PhZUSo2DMTphKGo6liO/n7ah7FlTeOsn4TfBeCInERsdAFjULMz7vB/1Qy2XX4+Nm68dQgmKJTt
+	Tv8i5LjDhz2b6/uDdIRfo8w/eEUoe1mzEiRr28J68XNBCpCsYt5fTKkAlcywChCJ05/Cb480wHK
+	00vo0/T2YLEVSkrlray3zPdKVrhxHbIeZMjfQQlO/xcRCUR+gtPdnrHVTvCpGcVOVL8bJ+
+X-Received: by 2002:a05:622a:5c13:b0:51c:9b44:c59e with SMTP id d75a77b69052e-51cbf15fd9emr56444801cf.22.1783859959107;
+        Sun, 12 Jul 2026 05:39:19 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd5bbb1e1sm102900876d6.22.2026.07.12.05.39.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2026 05:39:18 -0700 (PDT)
+Date: Sun, 12 Jul 2026 08:39:13 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com,
+	balbirs@nvidia.com, baohua@kernel.org,
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, david@kernel.org,
+	dev.jain@arm.com, jannh@google.com, joshua.hahnjy@gmail.com,
+	lance.yang@linux.dev, liam@infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+	matthew.brost@intel.com, npache@redhat.com, rakie.kim@sk.com,
+	ryan.roberts@arm.com, vbabka@kernel.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com,
+	shakeel.butt@linux.dev, hannes@cmpxchg.org,
+	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] mm/mempolicy: skip non-present PMDs when queueing
+ folios
+Message-ID: <alOK8cVLS8FYFGdE@gourry-fedora-PF4VCD3F>
+References: <20260710105557.1987433-1-usama.arif@linux.dev>
+ <20260710105557.1987433-2-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 0/5] binfmt_misc: bpf-backed binary type handlers
-From: Christian Brauner <brauner@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Shuah Khan <shuah@kernel.org>, 
- Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Jonathan Corbet <corbet@lwn.net>, Jann Horn <jannh@google.com>, 
- John Ericson <mail@johnericson.me>, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-In-Reply-To: <20260711-binfmt-misc-bpf-v2-v2-0-d6591ceaf207@gmail.com>
-References: <20260711-binfmt-misc-bpf-v2-v2-0-d6591ceaf207@gmail.com>
-Date: Sun, 12 Jul 2026 14:32:22 +0200
-Message-Id: <20260712-abluft-brutkasten-aufladen-c8063a4a1a0a@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4203; i=brauner@kernel.org;
- h=from:subject:message-id; bh=VU5CHIyaoqNRjqMq+N8FVvGRvPUNlYegA5+LAVSgSdo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFd8ZM3PJB2fnw3h2pDk1m9m0T/M/E6025wn7fzfpOW
- d7C5AbXjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIkI/GNkeHPQiL3GYesmrc1v
- tSZ2fPxUztu58LPf8We7040t9978e57hr8j8bbGpuRPkD7t/1zq2+011XTWvyL61nwVVJl7m3fb
- NmAMA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 822651C0002
-X-Stat-Signature: iyqrigi7g49omfdnnnq6pbe699p8dfne
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710105557.1987433-2-usama.arif@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1783859554-292857
-X-HE-Meta: U2FsdGVkX1/J22rJb2mgO+UsqCYY2xvLOvA8T9aCMnv3HRZxkJey8pR4VVV3lKwYpAqjAP0BfJBhPDgDbnzaVAtmRiiOQZnxjTvXul6BCx4KNI0cEeR9zi/FXjPxK3wWvQ6rSP5mnqCf91+FeVL1WDzdJagc8sxkHXiJXoIk4Zo5TbxNsjNixWFiZk8nuZITMx2a2WtlGLdA/IGogSj6KztTJv70ffUYhrPotVIsoq4g2YaKXgqSXzL0j328CDchoCgb7bwfjW5lb3ieMRJ0pGq9G8stVnVTGNV5NtbWEib0CslfZoZcCIp2hC5ru3FdzcpQIezX074Y3c7+pfs7eGidq2zNyRhy1kK18dWfRap8dw2Fvcmu72ZHEqbSfd0ppi6xLnMM0XivvRUeALikDQO2UOgyo2/v3G+c1EY8WYNpg301YrOinDPxVGb4tFB2sk7yEqy1DowP3vKgQwfVFTWw1Q02qYNDuO2JlIIxIuF/36UreKwnfgGsfp4sgxgznFVkAjj/uBbX7XCGEhAutfluh9zShO1UQYSD8kuPs/peu9CSdZUe62CarQpiqDywmnj/M2/naYShZRfn8EZzcA6fiym8AqjH6Mkhq34bsB+F7GQPqTAdDndEuzMliGqxrh2KH2rV1jP4dfcYIdmPLHBTawBEssg9JTWaPiXv/asVFYWlYaySEHub3IsenodstMK1OHXDiIDHPzQZyNJcSM09ubBVZTmAq9Z2gpa9KrHqQ5N/F5Ns/sDVX78c1FX5xMzQhTPN7JJfnPfCLNmQ18B3Fkc/GKQiFygSd/4B/56dEuSIIgPTPb+hKCxnLqqoAVbFpE5apD7wVujCI9uNCqSIiJkK46z16W50nggZPID4f4bs3KmRX/hdMxNKMDGUYewjATYsEbRZ1JKJnCq5Wj1WkCVNASREr6KxeiTLjw+VgfdK2rwMARcC9/LDT+mJ4bOJDY73lvgoZlETDJ5
- d7s/dyeI
- 0VkN1GZvL4oaYnJpUehDVzmEb6rEfSbuzKCRXxYYXgCVnU+zX96EM7UpNpu4t95jyX6AVHNBV5bWyr/gTaerRI/+VHwmkg55f+PTwflncNbUMTQA+9a3GQi+ZXk02dT5fNXVGb6BkqNlrzU+JqaJEiAQGn4mHmvnKd1EwlGXKi8LhntvIgfw3ZSFBY2vMd6/y8IaarQ/64fBheMSTkgVMDcRbS1V30hPAwiuDaS++WpzbWx9qONLK4ELgqNWWP1ZikUY5Py2PIGWOMR1DWPstyHt2sU4qpICNqJ8W+iVhNprfahK1JVMbSbVYDJTEheK//vwvT7unqC3C3ap6ytbinIXiqN5trr3iYoMBb88auGGJpk5rasyq3dq3r5T0ylr3ai0sv7vWxa7KUgKnukKMPJZUFxn4upqlmaGA
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2C88B40004
+X-Stat-Signature: 3kydthcys5uc5y7m5kuitnj5cnpoagyg
+X-HE-Tag: 1783859960-506961
+X-HE-Meta: U2FsdGVkX19N4Mp22drMtIvMLJz3tofTaztIANxkVtHalX9iSmCX7aLyIlqnLd+Kroy44qtTjuR4wnUoOstNqJAxGWX6ZqTf2mDlyVgwRYCqRewnfFIRZeUcKSXTtU0VhufNP0xTBBbblNkZnGPp9IPov3U+uAKJFnDFQzV+j8OWTwywiXPCb/dQNDn/HHFWmYFJtFlnJJny/fTMn98JbRYSsGyV5GRrmmCepsCeKxoB+O1JwYgJTPwAmbZuBQF3AyABiH9YOyOtRrzYQCdxJtyy3q8xMmwkzcOhanjEHKw1hibAF3M4fjusbDobyMjMn0feWoHfFvpO+fICgQXkuCxpf1jp5ZXDdN9ADP5+5rZY/uJUGIctwG+1pyVdZGYsnvyn/2Wgk0pQoWbLtu4AbtsHeFSmGcoB7TYbuoC0sn66uflWXBSy5YvsFkS67x8KTmHs9iRy9urlu7Rg7BlKBCZz5pgw2KeazSTXIj/zkRhUEEWBWN7MD44/9ATpSVrHJLptUre7goxceiGsSQtACyQcggiGcjkeGDPrONLHO9UziH0O/KZeL1CCmIU6zay3oS3JxCdMysG+qcs65vay3LCLnM1iYWKoHRh7GicpVneDHOrz4M4NHkc4t+nFm3qffLtXKXsOphTbLZIm34emjAsMMzeOm0E673RFcykvICBIHlRZgUQQtK85MatBNXnmmC/wNRgaMwiqJQgzBjAGHGj3zsX6br34OhCyaxejVe8b1S2DCABC9kBM0+JRnQxfc0wkkqAAY+gLHjg5V5QhBfF9fuUlnqvWAxLOYM2RQJguE8lZHknf8JjazclVe+EOQM2EflO8hpglDmIiujLBDOTmtZ4IuxGdsR1ZZM6g0z3CdKx5QibDM+lzbg4VhCnASQVIGgBfG2/TRBZdJSgINOlgZt5bXUk9cl7QjLai5l0awGYdxekhhZ0GSWf5NPJ/4kNzbaLvX6Ame29zPyn
+ JHs8XQ5W
+ 5QnYAhv+aqp0SmGJK+Lyl8Izvdg7k5cktxwyvCmypkCcC+er79V25CAy0ZNUGLzh+Qzb4fNd7IO9gn+LWCIZg3FjOWdQFlTD/Eq+yHYJWf8vpRhyDtJXQ007kNE28EBKpOajQk1reV8g+3n2z4EKKfXBYs8Jc/BnfnH+zF0EUNCa0ZgEQMvpg02jXC8QEpszSHnKxS+OtiV7wpPyyC/4E60PWwgODeFX43q5UGs6pgu8QQAy39uBh6J7qktDnnW1u5ABZDXH6anQmu8Cv6dZ7U6uMDmIvJRZYre3zdxI8lBxfKzbZ+cPZugQCKuZzmTU+V29lFacWNU7v584IxiK11XVW0WJNY/RXG18Pq01ZqFXPSwhVS6t/sZVp2WREAtukPe7ULq55U4Iln5Soe12z58bo7mUbaJapnrMCPFl/Eh1gh9h8ODNCavcq9uF368WptF935Tpr/ngXfz/GTTD3BIz+eOts6sD4YZxNzeS8dlgpkPuF2BeRdVApDmSTz7waqsibIozoGczCq9aPjIw78kChBsw6hUp9S3rgEUG9FlSp6d7bJFzy9QkPVGGH8qv/oQLx+FxypXhZPiMcgnO75FP3WQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,91 +129,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> This is a continuation of Christian's bpf-backed binfmt_misc POC [1], which he offered
-> to hand off to me. I am carrying it forward. The kernel design is his and is
-> unchanged. This series rebases it onto his binfmt_misc locking/cleanup series [2]
-> and adds selftests (+ fixed from the one's shared), and therefore does
-> not apply to mainline alone.
+On Fri, Jul 10, 2026 at 03:55:21AM -0700, Usama Arif wrote:
+> queue_folios_pmd() is called under pmd_trans_huge_lock(), whose
+> pmd_is_huge() check returns true for any non-present, non-none PMD
+> softleaf. Passing such a PMD to pmd_folio() treats the softleaf encoding
+> as a hardware PFN and can return a bogus folio pointer.
 > 
-> As for motivation for this whole change, Christian did a great VL;MR;
-> write-up [1].
+> Mirror queue_folios_pte_range(): handle non-present entries before
+> looking up a folio. Keep migration entries counted as failures, but skip
+> other non-present PMDs such as device-private entries.
 > 
-> TL;DR: binfmt_misc can match a binary and hand it to a fixed interpreter,
-> but it can't match programmatically or compute the interpreter per binary.
-> The Nix community would love to support relocatable binaries, where the
-> correct loader can only be found relative to the binary itself.
-> This adds a 'B' handler type: a binfmt_misc_ops struct_ops program that
-> inspects the binary and picks the interpreter with one new kfunc,
-> bpf_binprm_set_interp().
+> Potential trigger: an HMM-based GPU driver migrates an anonymous THP
+> folio to device memory via migrate_vma_pages(), leaving a device-private
+> PMD. Userspace then calls mbind(), migrate_pages() or
+> set_mempolicy_home_node() on that range.
 > 
->   bpftool struct_ops register nix_origin.bpf.o /sys/fs/bpf
->   echo ':nix-origin:B:nix_origin::::' > /proc/sys/fs/binfmt_misc/register
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
+> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
+> Cc: <stable@vger.kernel.org>
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Thanks! So I've spent some more time working on this because I had some
-future ideas that I needed to make sure could be accomodated by this
-(currently on vacation but hey...). So the version I have givex this a
-better design and has future extensibility in mind:
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-- The single sleepable load op is split into two ops:
-
-      struct binfmt_misc_ops {
-      	bool (*match)(struct linux_binprm *bprm);
-      	int (*load)(struct linux_binprm *bprm);
-      	char name[BINFMT_MISC_OPS_NAME_MAX];
-      };
-
-  The non-sleepable match program runs from the RCU entry lookup
-  walk itself, exactly like magic and extension matching: same
-  registration order, same first-match-wins semantics, and it can
-  only rely on the prefetched bprm->buf. It must be free of side
-  effects since the walk may be restarted.
-
-  The sleepable load program runs once the walk has committed to the
-  entry and does the file reading and the interpreter selection. Both
-  ops are mandatory, the struct_ops plumbing enforces the sleepability
-  of each, and since bpf_binprm_set_interp() is KF_SLEEPABLE a match
-  program cannot select an interpreter by construction.
-
-- A match is a commitment. A failing load program fails the exec instead
-  of falling through to later entries. -ENOEXEC keeps its usual meaning
-  and hands the binary to the remaining binary formats, for a handler
-  that discovers it cannot serve the binary after all.
-
-  This kills the part of v1 I disliked the most: the skip cursor and the
-  leave-and-rescan loop in load_misc_binary() are gone. The walk is
-  never left and re-entered, and 'B' entries need no special semantics
-  against concurrent (un)registration anymore.
-
-  Your v2 changelog note about keeping the bpf retry loop in the
-  __free() style is moot as a consequence. The loop no longer exists.
-
-- The load return convention flipped: 0 now means success after the
-  program called bpf_binprm_set_interp(). Returning 0 without having
-  selected an interpreter or returning a positive value is treated as
-  -ENOEXEC, other negative errnos fail the exec.
-
-  So the "return bpf_binprm_set_interp(...) ?: 1" idiom from the v1-era
-  programs becomes plain "return bpf_binprm_set_interp(...)".
-
-- The handler name moved from the offset field to the interpreter field
-  that field consistently names whoever supplies the interpreter, a path
-  for static entries, a handler for 'B' entries. Offset, magic, and mask
-  must be empty:
-
-	echo ':nix-origin:B::::nix_origin:' > register
-
-- 'C' is allowed now, v1 rejected it. It behaves exactly as for a static
-   entry. The setuid transition stays gated by vfsuid_has_mapping() in
-   the caller's user namespace. Which makes 'B' handlers usable for a
-   per-binary loader over setuid binaries. 'F' stays rejected as there
-   is no fixed interpreter to pre-open (I have other ideas how we'll do
-   something like it later.).
-
-Nothing changed in the exec patch, the fs kfuncs patch, the kfunc
-itself, or the registry/namespacing model.
-
-I can send v3 in a bit if that's ok.
-
--- 
-Christian Brauner <brauner@kernel.org>
 
