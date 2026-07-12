@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FEB6C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 17:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C747C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 17:23:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 295006B0096; Sun, 12 Jul 2026 13:03:45 -0400 (EDT)
+	id 002666B0005; Sun, 12 Jul 2026 13:23:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26CD26B009B; Sun, 12 Jul 2026 13:03:45 -0400 (EDT)
+	id EFA576B0088; Sun, 12 Jul 2026 13:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A7DD6B0096; Sun, 12 Jul 2026 13:03:45 -0400 (EDT)
+	id E0D286B008A; Sun, 12 Jul 2026 13:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DD11F6B0096
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:03:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53AB91209AA
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:44 +0000 (UTC)
-X-FDA: 84980746368.07.1E33B83
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BAF1780004
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqnAdXsz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B61486B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:23:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D059169E63
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:23:41 +0000 (UTC)
+X-FDA: 84980796642.09.DBC39C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9BFD0C0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:23:39 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VJKVgeN3;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783875822;
+	s=arc-20220608; t=1783877019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
-	b=SHAtEoeXOWBfGHE3O8ViVxr6m1nxQSHv0FBFMZhzcD1ERZQtbupEG+pbAg9Nuoigf1RJYP
-	RQ79cj1t/ana3V97vAn8444m58Nlkxqtpv0gFb6wBmsgBu2/o70DVTtoVIgYD44K1j1z72
-	xivmpv4Q4r54dfYWGTs8sB6hF+mlnMM=
+	bh=erlvsdImMPOzbt0J1t9Lju9UV9yCJY2fVSin6DJP3CM=;
+	b=h8DhNg0XKx2+z1sjZox538MID2r13zJ4BW7wv8Tvop9hplj1S844QN0UihhTO5MaZb84HI
+	m4A6k1P7n6qGq+Tp4dSGi6O934x3VaI3AgdPzko5naDv6ggLl5R5eIvvuIVPFpEgUqpmp3
+	9OxIG5Vr8yBdqPk0t09HqMWYgw7rYhI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqnAdXsz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VJKVgeN3;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783875822;
-	b=O/SjssO+DZz7brPQLA3ZeNrLLTiGZnPelsACTObODxLtsxU84DpK4ivI2mwsVcno3QfESs
-	X4IFGwpD5hA4rMOM4rwu33aU0ONBGF+D/Q4sPHNqW0B2HzqZJJkbT6iU2VcZiKBoWALS3v
-	fJPAZjwnaM+EyRvq19Ctxi8xvST9q5o=
+	t=1783877019;
+	b=T7rF/MxsoULxHQI40g825ALys8vXXoEPogUp3OhP2icpnh0wmIOcQmgc+BzaP8zY/hDvT/
+	odLeyTXmTHNYym8uZAt8AchHhl+RlnmMHFMnWR0bRr93p1kcPu3EFpjzpxMS8dxdTBeqxz
+	7croTN/eX0M+yikpQjp9WUTPEANVHWI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B513543B2B;
-	Sun, 12 Jul 2026 17:03:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A4D1F00A3D;
-	Sun, 12 Jul 2026 17:03:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C3DE6004E;
+	Sun, 12 Jul 2026 17:23:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08B51F000E9;
+	Sun, 12 Jul 2026 17:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783875821;
-	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
+	s=k20260515; t=1783877018;
+	bh=erlvsdImMPOzbt0J1t9Lju9UV9yCJY2fVSin6DJP3CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jqnAdXszxWlkiGPhG+kdzDqhjT1jdYqU0Tnu/kSJ3AMyLxt5ZpLy6QMxsZmv3a5np
-	 N8uVClMafeRShHx+Rw7BP9jddNRBrX9cBzjseNGnUi/MihUGK3Ybddi98rHiCHQXjb
-	 geQFfvghXDWU/d4XOctmwpMMxEhwPMmJ7cRocPSE64rgpaUdzqbfxeECokC1ZlazMQ
-	 bqpm69Gpg0v4AhyX/xxiJ9RNhhppw32Fb+lEvftBArHE3Xi5Hoys88Q/1gnahxHqE6
-	 xv2Yv81igcLUYxhiVAlzno6vOk+XCuzG9SNEw6NqV/wGiKiNXkWhQ/CeYPCjPFwavb
-	 4rA9AUj3dsOVQ==
+	b=VJKVgeN3+Qn9GQFaBZQs61WHX/XKRIQzg+VY+N85N3T4lXGBLDHUw6/kFxaqHeTDt
+	 hSjbJ90rPOVOp/1M/6hIflDQN76PPxSyWqZO26rX6kvVtXrkviX6esW3Ecq/mKDDLn
+	 cak6LKA9nGH4Tv0CmidCuQGTFUSRm9puODoduSJpRCxbrrX+RTjitGDi/WMLLSd1hZ
+	 cGY0KNWr9a1qrorOJixlRykl4c5vVDjPs/yRFLYC8j0M6Nh1eh9HfMllpE2+979jlM
+	 zfRtDJ7ZASjMRh/bLGJyhfboi66TXhAI8LRbPq7B0TJIJ7V6uU+4wbZKE57By28zEr
+	 22ICvS1YigYNw==
 From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	stable@vger.kernel.org,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 5/5] mm/damon/sysfs: read ops_id only once
-Date: Sun, 12 Jul 2026 10:03:27 -0700
-Message-ID: <20260712170328.91144-6-sj@kernel.org>
+Subject: Re: [PATCH] mm/damon/core: skip aging from repeated aggressive merging
+Date: Sun, 12 Jul 2026 10:23:34 -0700
+Message-ID: <20260712172335.92448-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260712170328.91144-1-sj@kernel.org>
-References: <20260712170328.91144-1-sj@kernel.org>
+In-Reply-To: <20260712165432.87609-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BAF1780004
-X-Stat-Signature: bnwjgsxiztwbp5gybhu8naa7w79j1oxo
 X-Rspam-User: 
-X-HE-Tag: 1783875822-271981
-X-HE-Meta: U2FsdGVkX1/ORSuHzRXlsNnzsjDzit0LiKijevRQ90BIhWEVJpOgDcJRjxlrV7bQZqAgQDj2wOjplK76yPs3BLWtWo+oatUPNSqw3bRyoina+gdNj/R+yQHaUN0jvKInQZ4YHsie0pXYrLlFKu6RXehgNURkEspjSdqbLS/CjvDQUjdnTjAUQ7OkXG/XjyaqhoKzZs4+baInoTPd35S0oByVr3lI7bt/zdlSOt1ikoTFm8fPl4E6XLdSgGOp+2bmmHuHjEnh0u3lRryzKEhBY7xphnGLf0m3Q9oW380uwVgXKLpKgNzJvB/GUaYoXUdXoN8eoTw3MNKAS93MaTswLgNtasS1GDOxStwI5YTuOebIxuya5mGsboRiBOjDsyDXcTiJBl455dfqsU3UJXrXBJU0X2znC5nCiFLyYCVqWxj2LhlNA+nVNSLaqcPXuSzmFbojKKgK+dJib7Jp1ChiKq9vdQaZUEuFLCe4EjdXBMClg9Xajsbos1+0iANjyhQU8tHUmFgQXZREf73un4sy1tDuMwhk1My/5dAOte7vCCdymi9yz2nOgL46KenkIM0/Yeu0jIZLPP4zpZnfRWXPUfbZRQ4XcC9lQ5rtSHd1pL0IxxIBRKH5J4rOMz+dqZTtAOoavSGnE1uYrNUH+qX0Wta69iKhDajm+kKf4KLOM4blCWHxajI2MpzoylGyQE0xud888gSC6h7TkQ9qH1l4UcK30M/MuoYVSTUl45xMiPaDBA9IJXXySTfZrjI+5g+/74pWWhVqj68k6viqnM3WzOPlG0/vgBlkiAuXDo69zmdSMyPYZEAwNTyHICjFexUF5YsrPSmmFFED49+h+1VHBSN4oBhp+jws/4E8rxU4HE/WW//bC3Qn3D53XZ9vCVaI+7Zbym1LYnnHPDdBnenffxpB5233uijK/FvUZxqh83CCnwvMRRhxFSV3WOjR9xuWCwyd9X+g8pYMe3NFaZO
- 1rK4LS7m
- AK1/q9bKzNMc2AVdLWFqQH4XAP85NROy0og86oAV9xtq4aUO7GB7UvBicCBsUr5GLylRBB5pALFy3Z9sKgoXpKuRdh+KYv4iavwTVomZ9jrH7vj3N/DKOybJVYQyVQi8lx2QiPyL/9InGJcYlFByhl453fvdkz+ibxE0FYsZqN77cwstOSIJXLWc0PqHKKxfb5hi50qbpP2oC92D3mnP8UyPxYgFiBrwikfA3/0XMjhCs5BgqV0HRjq2lwl7ECJXyGvD1PK7b4eK++mYBKjMvHVXVsw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9BFD0C0005
+X-Stat-Signature: 99h4rq1pu5s14c5tyc6d9hxa8aqsyhn1
+X-HE-Tag: 1783877019-474266
+X-HE-Meta: U2FsdGVkX18SWWR07jpRbUof/8LosBUuzCY9DF54npoYJ6ABHO/lynOB1tVc3SNt8GfoAhovKLBkkH6J3sZ/0ucwaI5Fzl/CN91+aSvDO/fHBLz6xt6af7qWBhwcgrq6qFZ9ur07yK4O1+ziAhEIaP3Ygfmy8aWX7rU1Kf/9IsBVbGywuXbaNWun6kBBws28z4U7/mMbDIk/pN2RPfjPbBdFVVPWkY5LYANMCoCdRVkkdOQD9R31KMgShcQeXWGU2RCnXxqRn7haElJUjpHVyTnIjrcNui6EBQFMSNRnWTdV2yv288keabswfsykUe0XPItibA25VZHtaG/Al8xqF0EHTxibYfZiNb15G7+Nlo3dqxL2yr288+x+FgA/RXQVtwuzFMeClwgocPcCDZMVlE8a/W2o/4ovgt7ShZcpDOINmBt6eNfM8JCX6k0zl7A2dMTYOa6KEvUkrO07h5sEi9LNnRpGBwuhf5htxAMQG8xH6Sg9iNCwjrdLkfKtAg1x9sWCKgeOIzFtq+n3kGkCbyXpNOqF5u5Jn0I+N2WplXXQ0vNj47YwxClC+DJR0kRcDpo2MpHQeS7YNhLxOG72TYttyCissi48aJHPUMemhy9WA+GjIHfP3wzlIl9pIxdo8ltYo6Me2fQSI/dkQBdjSfTbuYjF8SQbd0vADRBPYsitb1weXXFhkHC48YoRtX9bdFdX5HrVESgUTzfSGCEt74vAmnFQEeUSZJCJWJbCfWUAdHP08O6sgu76oYnCMHcBmcEV8l1whk+Py26Tr1dcSi/31fH470TkzESz2fZpnPsKAM57qHmODdOCHlUu/n7/Vtoy8YRonAGbF4pscZxkUZNzbfgTqFMCAO/ZTUyRNbBlb8c/rSxjY0Df0tLnDQuOudp2KBErPnqZQSIeGm3fV0CA3lnMXRjeaJie2WYAGPXFIGzzEKGekhopcSW3DUo1/EP4MXz1N7gf60tTRdu
+ syLEsKyT
+ UMqz6r2O/ulE1EHYKN/ST5Bg4iHZvt1nHHLCq0EFtX7Kk67nv52c33oaPcTSdueYndJQvkIGmQPiOh7QWHdzpnxnW6qALzAHey21kWcA+y7HokdPBsr+e9awykOVoFQCSCrGOyyOM0km4SIF0IUfVUo1TMWuoaYKfbo8vLNuRWX8XciCslyfsxH0gQUFB2lwSswxpfclTPup9vtJav5wI0AgGtdwRg10LvbggHLYgLhK7m6s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,47 +93,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_apply_inputs() reads ops_id twice.  It could race with
-ops_id_store().  As a result, the min_region_sz could wrongly be set up.
-Read it once.
+On Sun, 12 Jul 2026 09:54:30 -0700 SJ Park <sj@kernel.org> wrote:
 
-The user impact is trivial.  Sane users ain't update the parameter in
-parallel.  Even if it happens, only monitoring itself runs differently
-than expected.  No critical consequences like kernel panic or memory
-corruption happen.
+> The number of DAMON regions could temporarily exceed the user-defined
+> maximum number of regions limit for corner cases.  For example, users
+> could lower the limit via runtime parameters update.  For such a case,
+> kdamond_merge_regions() repeats merging regions in the case doubling the
+> merge threshold.  The repeated merge operation could update the age of
+> regions multiple times.  This corrupts the monitoring results.  Fix the
+> issue by asking the merge operation to skip aging for the corner case.
+> 
+> The user impact is degradation of the monitoring quality.  The impact
+> should be mild, since the degradation is only temporal, and it is not
+> common to happen in realistic setups.
 
-The issue was discovered [1] by Sashiko.
+Sashiko found no blocker for this patch.  Sashiko sent findings to damon@
+mailing list [1], and I replied.  Please read those for details.
 
-[1] https://lore.kernel.org/20260703172417.95426-1-sj@kernel.org
+[1] https://lore.kernel.org/damon/
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index b5fe036f78015..60a1a9e4ada34 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2094,14 +2094,16 @@ static inline bool damon_sysfs_kdamond_running(
- static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 		struct damon_sysfs_context *sys_ctx)
- {
-+	enum damon_ops_id ops_id;
- 	int err;
- 
--	err = damon_select_ops(ctx, sys_ctx->ops_id);
-+	ops_id = READ_ONCE(sys_ctx->ops_id);
-+	err = damon_select_ops(ctx, ops_id);
- 	if (err)
- 		return err;
- 	ctx->addr_unit = sys_ctx->addr_unit;
- 	/* addr_unit is respected by only DAMON_OPS_PADDR */
--	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
-+	if (ops_id == DAMON_OPS_PADDR)
- 		ctx->min_region_sz = max(
- 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
- 	ctx->pause = sys_ctx->pause;
--- 
-2.47.3
+Thanks,
+SJ
+
+[...]
 
