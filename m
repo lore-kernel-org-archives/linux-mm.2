@@ -4,95 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A90FC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 07:20:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6E3EC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 07:41:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF16C6B0005; Sun, 12 Jul 2026 03:20:22 -0400 (EDT)
+	id 7AA576B0005; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA2206B0088; Sun, 12 Jul 2026 03:20:22 -0400 (EDT)
+	id 781976B0088; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB636B008A; Sun, 12 Jul 2026 03:20:22 -0400 (EDT)
+	id 670BD6B008A; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BCEC6B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 03:20:22 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 180EA169CE3
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:20:22 +0000 (UTC)
-X-FDA: 84979276284.10.3FE9167
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0F926C0002
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:20:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="P/xcvQTC";
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783840820;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 433876B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3E4AA0856
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:41:02 +0000 (UTC)
+X-FDA: 84979328364.22.6E44361
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010008.outbound.protection.outlook.com [52.101.46.8])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7E83740007
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:40:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="msn/BWK6";
+	spf=pass (imf01.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.8 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783842059;
+	b=7jgZN3gfOuxIXOn21RBDq3QuZo5ZQWCBHY74rkc+A89T30MTuJ25+1isU3X6tZNQMSLGw8
+	LMg8NBYPg3Je8lQ05VrDQodJ/QaW9vyArFh6m3omEgSsA7oNf9pM0Jl2PFVMbsXMOS3Bfj
+	cbZThnsmgWaBiYKfmFP5+jowN9PpWpc=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="msn/BWK6";
+	spf=pass (imf01.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.8 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783842059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=grjb9ebFtPJOuGs5Ha/8LM7ishbheMMgbim5Gam+4Ow=;
-	b=z/vwuKv0q4qKyyu5ZePqXFkYDZbSymUqe3E76SrItKbmPlcYefZRScoNtiWWCP5lsK0QLG
-	16kZ+3EsI5HwjdGeQLRpl6v50xw9/zLo69r59ycrPaywcrS8lA9RE8Wn1/ZZsSc81rVmRy
-	gmgrHC16SSm3T3Y+3yH8TJwRpMmyk2M=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="P/xcvQTC";
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783840820;
-	b=DJDpHRWl5V3/qkpoCPWpVHiapOhakFzb6zFDMp2bQNalBsVP+Y5CNEWhNY3IkOapoxedKX
-	NZu3Or9BRFZBABS0cQ3xACUpxRvTTRcea1xzp1GKi0D/6dMhC/0+2UI+n2f2/50bpat6n1
-	Fmwowal21xoUf3A5VV3armv/eHtkjIQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5DCEA1682;
-	Sun, 12 Jul 2026 00:20:14 -0700 (PDT)
-Received: from [10.163.129.143] (unknown [10.163.129.143])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2294D3F85F;
-	Sun, 12 Jul 2026 00:20:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783840818; bh=twWPQttIw1Mi3lb5FSJdbQL2/I7h0z8qEhsYTcqS75E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P/xcvQTC5mAiu40BmBCx4/5Dhcbd3LRhwZFpTHyQVCTQt5F3q5YIB2yDBqhwKj1lh
-	 OXXHbT7wFB2+0H2Ar929JckO06lkGutqMiIu9b9Dox29S7k1YlCb/b/yCweINlvtNG
-	 FA1DabFpxNOcoSO5ARxfIYrDFPExBt7RjxmLOASU=
-Message-ID: <8e320b30-9658-4e9f-ac4c-f99dcf855944@arm.com>
-Date: Sun, 12 Jul 2026 12:50:08 +0530
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fyz4ctdhor70uMG2b2egvjPOetCEM34n6i2B+bcaLeg=;
+	b=yPWxDI01p2ia5EHY2s7X1Vte5oxt2b7b2j9YahRtIdwwPL7x404mcvcJUJJoNUEaQVTan+
+	mnBYrZCCxuOUSgVN9FUPauxxnN7AO2tBr1ltm27eY+94Vsp1DypPP2ND9oFAdKU3MH1zjf
+	lJll6rKNBepS7LOvZn6Fe6STuVFf7Dg=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JkuYrLFX+3nUZTIGiN1E6kxEc4TbXZbZ/iiIGe0PAHFDkjkclH6yj7w7Z3Q5lBADvjtn25jlZu7yDIqTqWLEP1W7ioNMwv7SB65JSlc7p3KmIQyOOmJIyVh4RxWTlP5AOWXQSc2OTMHgUtKQXsYY528yZLWq7sOIxnu3pBoZip0Ag4Ul4qsgV1QEZxQy+AQPTc6GIsLLsb65hqo0RiP6rQ4fO8fT4nPRYRWVXp6ZweBM3vjKK9zuU7oAZPCaZirxUPYZ0XfLRu3SMWxFg/VSO03DTwQsR9wKC4u/aQft9ysaeVRY44lBcmhiBmTpIroukK/+aeD9SCAYn2BSg69xRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fyz4ctdhor70uMG2b2egvjPOetCEM34n6i2B+bcaLeg=;
+ b=mV7JnTL4jNxvhBBhsYNPA3yYNXNkWdlWvuzyQBWL44MFS55uqkysWWXqVeBmpihcTLrWeW7Ll+6to3RhK1Oouxdn1V85N8tPRmdai+IzGa4aAvdPwjbmpk/1lsFuBsp27C93EUaBR+GVb+EmfmA4Ctha1Cu9swzCSmbecu8QCBUS9eu94l1IufUY5glR0F2QYQV/raW/Lmzlt5hTfUgQeK0lZPx2bKnuIO2JJ+2FKQ9ruFRzLbi7jyYmRIoc8x7DJdTjPAnng/mB1M2mQ+LrLTm6sEmnAp+kJJJmT0F/WbwD/CpcCUdrbl0KgJ0JfqSEC3KsoeAlvMU0300eiLO4dw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fyz4ctdhor70uMG2b2egvjPOetCEM34n6i2B+bcaLeg=;
+ b=msn/BWK6/zai91Hr4oS6r9wVKBOE3pe0VkDrn9XQaHcZVoCKXAyqUnoTTKNcZ9QqrD8JvVFnN7A5GRmmvUEshLx6GY/s7otw54uVldKyrxpL9id80Dv8srV8rBDMOYGVTWXjopIzBgkLLX+Bj8Ri4RHvpnjSp7itNdAIBMMfz28=
+Received: from MN0PR04CA0011.namprd04.prod.outlook.com (2603:10b6:208:52d::7)
+ by DS7PR12MB6119.namprd12.prod.outlook.com (2603:10b6:8:99::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.19; Sun, 12 Jul 2026 07:40:52 +0000
+Received: from BL02EPF0001A108.namprd05.prod.outlook.com
+ (2603:10b6:208:52d:cafe::14) by MN0PR04CA0011.outlook.office365.com
+ (2603:10b6:208:52d::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.18 via Frontend Transport; Sun,
+ 12 Jul 2026 07:40:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF0001A108.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.223.9 via Frontend Transport; Sun, 12 Jul 2026 07:40:51 +0000
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Sun, 12 Jul
+ 2026 02:40:44 -0500
+From: Shivank Garg <shivankg@amd.com>
+Subject: [PATCH 0/6] mm: batch rmap walks during large folio migration
+Date: Sun, 12 Jul 2026 07:38:46 +0000
+Message-ID: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm: fix UAF caused by race between ptdump and vmap
- pgtable freeing
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: David Carlier <devnexen@gmail.com>, Ryan Roberts <ryan.roberts@arm.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAIZEU2oC/y3MwQ6CMBCE4Vche3aTLREFX8VwKGWEPYC4rcaE8
+ O406PGbZP6VIkwR6VasZPho1Oec4U4FhdHPA1j7bCqlvMhVHE86mE9gm/zCnU9h5BohyLmHa6S
+ ifFwMD/0e0Xv7s+H1zu30H7dtB9nNMNN5AAAA
+X-Change-ID: 20260701-migrate-rmap-batch-8ecc04de1905
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel
+	<riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+	<vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Jann Horn
+	<jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>
+CC: Karim Manaouil <kmanaouil.dev@gmail.com>, Frank van der Linden
+	<fvdl@google.com>, Kinsey Ho <kinseyho@google.com>, Wei Xu
+	<weixugc@google.com>, Bharata B Rao <bharata@amd.com>, David Rientjes
+	<rientjes@google.com>, Dev Jain <dev.jain@arm.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
+X-Mailer: b4 0.15-dev-47d62
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783842044; l=3176;
+ i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
+ bh=JaWvTqPDVb50vASsYrb/KTWrSaLeUDGTlaOCse6oj0w=;
+ b=7f+y52xOewLwCYemlCFsPtwxeHTDGiYPaP8RC5UFxeq4+tqH/VwkIiViBzDXo28tokOOhWDZa
+ h2YFWh4hUTpAVxXJMGt1s87tPKGji+2+jqt3tTxK/xXW7+RnGF2JsUb
+X-Developer-Key: i=shivankg@amd.com; a=ed25519;
+ pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A108:EE_|DS7PR12MB6119:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb5e532f-b09e-4e91-9da0-08dedfe8e604
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|36860700016|82310400026|23010399003|921020|13003099007|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	7qIBSmWlCxUE1jXUxbeEDqKqhZMRLkuJGJJTGZ5e9YhTOnxXCePJDNV2zUUarr+XsuqQGgfyzrG1vgKYelMh2r5H8zP8CWoPRbYHVHua5TWai8iOrwcY7+z1XJdLwFJQc4aCa+xDzrVbqYzNXQjPZTKEclynckf+hIw0RDiEgVQI8ZxzXp1YISih2i9XC4sBvjEAAnQpt/6MsZV6qc0uCr+KL8Zpa9HhLTrO2B8315k3a4JYwXimi8o/bzCsk6R5zqdB1WaILDDl/d1mHLMRlm36YUjkesjk7HR8j16jIZAfO4A2MRhCR9mN+KFoLeMlsM+7QDQ/NhfMB6OAbeXbiip2UK64CLU7bgMyl6WTFt0hqtXbO8V8gymXw3K4yOOl2GvcqScMKdIV26SdDdjs0CmAhKWk0iQSQKLSZVU4i3U+Tovm2kLe4TAuEpfMpMI1fVhauRWOSzwHIB6rEPS5JaYDqeW9qEGyG2sKpnp2bcQfdfNJIq+SNYijMLKo61Lo+YokNuuBrERVOOFRMmq+hjnKWn12+yaaZmlccw4Eajd/G6bNGFYH0Ux+NiRF5sC4mALg80CscDadDUk0V/HQAFoLpNacOnihZnxTk6SYS3zaKmGdrU5aU9unUvp+hpmAoBHFx0Qo8mEXrB8Y650m/ALaPuWDfc+XKrtXgcnnlmLYAupMgcUja4/JBXfm2H11r6da6Yg6RfXTyKoieZAR0+Uwg7SV/cXQbsaC6HnD3Q54kZNc1Z3/OXcdLzbBcngX
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(36860700016)(82310400026)(23010399003)(921020)(13003099007)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	brOrSDkyVc0JLjoYHUiVPIZajSCwy62/9WgL8qXvVPJ27BHob9qQBEE5E3waog3N4M+1UlHwIXKIgGBd9DtNUm9MZ8B24VVmj77z6HYlL2VDB1+eoKRH/aFPhbqIxCeMTNlzldXRzQAZsu9vtrARr7Lw3d0o+l1HCSNObLIyEWvdkF5iq7hYhxoIYbP4U3Lexj1Mk3ZehXUYpjgv4QRz1emncIiMdxwyl4MPs5NMYNOenX9vU8PqBYFs9eEtnQtOvchDiMXbYILjywLaOwrbpB7Ny9hJBitN0ZkOsjQx8NqrI91MKDpHlXLOBSPk9jEMIsSqOS3AJPSW69QZUDT84SjthDmU4wB4qZbXIeYPYHrwiCfe1kS016q+PXhhRpDwWxxI11V3b4fsrpM/4Il8xUd4LZC1p+CVDg/IX3cFJnwRIue7qUUrlyky6rDytwJ+
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2026 07:40:51.7237
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb5e532f-b09e-4e91-9da0-08dedfe8e604
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A108.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6119
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0F926C0002
-X-Stat-Signature: oqan5gawja9bkmdnca8bxo18x8hyzys3
-X-HE-Tag: 1783840819-35546
-X-HE-Meta: U2FsdGVkX18Y1ZOlpXenm4Zsa5CWrycOYH4EBRP747mjE9VTQrd4A+6G6h+DdDjLgc3t0SDzHiU2z6gUgd8uWHWXX90K0LFGeBUxyk1Ez6EhIj2QPv7B+AlM7uhbhSXPv9kb7fQ1s4kdFNsJNFUtsLx/SXllj6am75AOJrQ4g+BmwfE2H/602XNeD+xi8eOafoVM84zaNUl9b1F+S6C95tpRHrvhxetxKCk+7osZ4/ZY1ZRkfZYbeIM9td50dRRIeeQ5DXKugK3Xn+LHmAfJw/Y8lZJFNIS4tEz/1jLj1DTrf2FdQ4X0b/14MsTl+LuD/vuvuWH9p5gnNgC4SwVBoCXdBkYEtIyXbp5XDJSxsXqlQOR81qYC19tM6hAStdva//wXQwnDpx8pldCETjqnLU3tD3uu2+bkPk16+yBiIGfrW+o6S3KmZGjNu9dyTNzHL7oqOnjB7MinupYfiWHgwjxnc+xwEsV1fO6JWBFS7gBMB+wYOUs7xNPDOOIPmVtjHaAEaU0FY6Dwb0aEvMAzDGn7b0vhkxNxz6BZG3FHPl53IJcuFjVwazwXAJ/bro8uxXTxWbiS7C/mm1aN37Yz7ignftrpCdZ6KT6Y2pT4gk25KZ+hQhqocRlyRINP3AUtGaCX0BbAXjcLqPASncdUrNAINJAbki979usX9dey5yQaAcPUYfkwXRYQRGFeMI3KO/5W90fE8KP6wxH+WXXKkTDZOvZ+vaPx4Da97m49YSieStCLm4TXuaMJJnSwb+Ugl6K4P4qtkUG199X6cF4a9BmjZOe67Ttiwc8W5IS9cYe6IndCZj9s2BbG1q8XwDzEXLY+w3nkkSBry+qfblqS6Lfg9PfAokv8ezvgghfBYiQQphd4n8uL8UahvPkIb3YqbNwzOXj69GFmR0+fVlZ11C+A0WnDVojqjhr9HFcNSspqUvS3Lpm5+EbZEhkNI8QH3N0XO6KFvWJwszOLFTj
- fyCUvGS/
- 5nS1LvCVoXaCtZRUt7bzFZWeRD00IcYsHUQ8zdnJ3ByReiHb5SuR4r/wkAKlRZKYX9MDbH8Au0+ouYlCDhAyGiKHbghHfZ94psfs7USY3x+koZ3D4guSovcEx2iBxRte8Llfob5CGONQKzPMjMR6ZgGvuAJnaCe7/PkelkR/PvNJPZ34YvpjeHAiMFsIMAaHvfUQd6jBCIHJJ2PInpah5jXOX9gQ1M7zVWB1iOxCPgSLxWPmbxw0mgiFT8CIcXAT0H82JkDIp7uZ189nz6nG/TDocHQFZXKg1QzwMe0zPU37E9VOEo+iIe3F8BHGE0kbGStCA6lIoVP6VJ1RJYprjOYuWE09FRwfcLrqjNIaoTAM6PAAeg4zPssc9SkWCxalcAo6k2XRjBJeSLAM=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7E83740007
+X-Stat-Signature: kbc1egos5tijuzitip6du6yrrm17ri78
+X-HE-Tag: 1783842059-261015
+X-HE-Meta: U2FsdGVkX19cZFD/KaPvnEowE8ntbFrA8xmAHLK6IPFuScV6ngh+ElK2Rz/ZUYdKI0taITmEycE+axbci24BddgqhkzXvzPv8ab05uAST3lOw654GtgeugPbrVieXdFGFQf9ylavGehnhp25NWuvee4EleZRXF9jsiEAgy4ov8vkd0qZVeDZdB4/ina4eNl5FPe0a0r/6JQWM6nNckdgSGWAwi2XQ5mJVX+cbaQgFkVVmQDJQPYHuiTW3n4Vsx/K6x8Nkg8m+CcnaojvE7DduHGHvM3yZ5VSJplS17ee6P/e6RE77zBTDRV3g4zoDWMQxL8tdCMLwjtPJcnwbMjdiAB7egsfa05IzuSARturIqatNbpENs3rkRR3BwMsfNTYWlnMk75VZGICp5+2ROFbvXO2KtKjHDgteCmnQ5dppaLoN20PNo3HmJgtlJsMUKkQ8Mj2bxlrMf7xl959MrRsSTsPCOgY00IeYKrnHkPS3s90wYoE0+U0nkGRTBBnVtKNiPISiS85lY4v1KXsx2/7D9rhHrW3pYAMpLE4zBDY+3RsHUCPawLBysBOYNnaCR3q/gQZKLmmos8swQEOgso5fhTMkF3nqMYxNsUPwRNI+uEK6N+oikUrETLLn0mhbkaIyppETlvNToV4TdHfFfWExQF6h4NKq/xUaUm2RueZ7X6HcvUFzkQxPJKQ9oaGisDW6KJcGk/LDiKpSomnNCs4NcUDOaylBPghk9QG6PW4TdkOA41cQax7DUBF/8sNbAXStmknFceW6LqSDoj8lMuALxFRiWxcxnB/fLFmZ8CxLYE4ZMQ9anHOtSbf0iF7v4hMPa+jiom+Mn7lrQ4wY76PhPZKEnMJxFeZkyypYI9Dbujiab7WQarjOj81jodGrmslAPuArv6tTP/mGobP1y4P39MnZ+iwRlxOEX4WNnGvcSA2GxV2pBI901GIi6laqnHqqe0x5d37b3P3NxQ9L+C
+ 92joMlAI
+ o0iI158e8h/MxDiqb31XyeMORbqbrszFoGnODJYtI74P1JRT9JMwNIZi2pefZNHdFWXegc4GdF5ZuTFYG4wZSBMAvkhDKYd0n8JA1TbrbedNFG9iWujsbfdBKMmf417Wt7OztyCzB9M8Jj0ict20OeYv5DNhW+IPeJEatdf3ZPXkIKO+54Vvj6PZtVwqI+D0D0rIU+jVBhcnDhpDhfIvM1E5khWsKAGCwbtXe7pMmaQRPGOReoWGXjoUodVNMEY3shbb/RVNXClaJBV86s3q02lnY+FnTfUgauLFTrWgVJZkLjLyLGnpio8kjCjK6r7xzmZqxGH4UrJhpvX3twk126o8TGaO9nIOtYXuFdFkNaXKcv5Brm46aMx5W2YmGHDqEYZv5GhwXrP8TFlpXrv4L+x2UUovJgQ09uAvaB5gIo/Y4dXugRW2AHFotCb5hs9zJ79wPdUWwCxpQaZvjhB0KXdjJV4pMWHHyDRBWOvOcceKfCToP4tnyujM18zLHU/lmC7F0+BQNjLPIKnld5lNNku44unxhJYfqisw9V8Qh6IYEmcvtgLcgVE2Br4cjRL7uqYw9gZBoE8sZgA4HHDcz1XYIFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,108 +167,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Migrating a PTE-mapped large folio currently walks the folio's rmap
+one page at a time. It does so twice per migration:
+1. try_to_migrate_one(): Replace present PTEs with migration entries
+2. remove_migration_pte(): Restore migration entries to working PTEs.
 
+For a folio with N contiguous PTEs, each walk repeats page_vma_mapped_walk()
+and the associated operation per subpage of the folio. (256 iterations
+for 1M folio).
 
-On 10/07/26 4:19 pm, Lorenzo Stoakes wrote:
-> Kernel page table walkers fall into two broad categories - those ranges
-> where no exclusion is required via walk_kernel_page_table_range_lockless()
-> and those where exclusion is required via walk_kernel_page_table_range()
-> or walk_page_range_debug().
-> 
-> The former category is used only by arm64 arch code operating on ranges it
-> both wholly owns and does not concurrently write.
-> 
-> The latter category consists of kernel page table walkers operating on
-> ranges that are wholly owned (but which need exclusion against concurrent
-> writers).
-> 
-> The lock used for exclusion is the mmap lock, and for kernel ranges this
-> the mmap lock on init_mm.
-> 
-> ptdump is a special case being both the only user of
-> walk_page_range_debug(), and the only case in which it walks ranges it does
-> not own.
-> 
-> This presents a problem, as page tables may be freed under ptdump. And
-> indeed there is a use-after-free bug in the kernel as a result, which this
-> series addresses.
-> 
-> vmap promotes page tables to huge leaf entries where possible, freeing the
-> lower leaf page table when it does. It does this with no meaningful locks
-> held against concurrent ptdump walks.
-> 
-> As a result, use-after-free can currently occur. This series addresses the
-> issue by having the vmap huge promotion logic acquire the mmap read lock
-> while both setting the huge page table entry and freeing the prior leaf
-> page table.
-> 
-> The ptdump code already acquires the mmap write lock, so by doing so we
-> ensure that the ptdump walker only ever observes either the huge page table
-> entry or the existing page table entry, and nothing is freed underneath it.
-> 
-> A mitigation for this issue was already applied for arm64 in commit
-> a93b45fd397 ("arm64: Enable vmalloc-huge with ptdump"), which this series
-> has to deal with carefully.
-> 
-> This mitigation resolves the issue by acquiring the mmap read lock on
-> init_mm on vmap page table free if a ptdump is in progress.
-> 
-> However the fix in this series would cause a deadlock if we were to simply
-> apply it for arm64 without also reverting the change.
-> 
-> This is because vmap may acquire the read lock before ptdump attempts to
-> acquire the write lock, which then gets queued, and rwsem starvation rules
-> mean that the (unacknowledged) nested mmap read lock in the arm64 code
-> would also block, meaning the original read lock is never released and thus
-> deadlock.
-> 
-> This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
-> lock in vmap logic, then partially reverting commit
-> a93b45fd397 ("arm64: Enable vmalloc-huge with ptdump"), keeping the
-> enablement of huge vmap support, and removing the ifdeffery with the
-> partial revert patch.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
+This series enables both walks to process a batch of consecutive PTEs
+that map the same large folio and do some refactoring and clean up on
+the way.
 
-Will Deacon had pushed back on a similar approach:
-https://lore.kernel.org/all/20250530123527.GA30463@willie-the-truck/
+Performance:
 
-Although now when I read back that thread, it feels more so like my
-incompetency to convince :) because:
+AMD EPYC ZEN 3, 2-socket system (1 node per socket).
+move_pages() migrating 1 GB from node 0 -> node 1, throughput
+in GB/s:
+		         batch-	        batch-restore +
+folio     vanilla        restore        unmap          restore%  restore+unmap%
+4K        2.98±0.09      2.95±0.07      3.06±0.05        -1.0%    +2.6%
+64K       6.16±0.09      6.24±0.08      7.80±0.08        +1.3%   +26.6%
+256K      6.85±0.06      6.85±0.09      9.54±0.19        +0.0%   +39.3%
+1M        7.06±0.09      7.17±0.09      9.89±0.06        +1.5%   +40.1%
+2M       10.97±0.17     10.67±0.13     10.69±0.15        -2.7%    -2.6%
 
-1. I don't think this pmd_free_pte_page() path is a hot path at all
+In plain migration, the folio copy itself dominate the cost, so these rmap walk
+savings are only partly visible end-to-end.
+When the folio copy is batched-copy and offloaded to DMA engine [1], the copy is
+no longer the bottlneck and rmap-walk batching translates into much larger gains:
 
-2. We are doing a try lock which is almost guaranteed to succeed,
-   so it's not like we are losing out on block mappings
+This series + [1], DMA Offload on PTDMA (DCBM), 16 channels:
 
-3. Any overhead from the try lock will get dominated by the pgtable
-   page free/TLB flush
+		     batch-copy
+folio   vanilla      -offload(dcbm)  dcbm+restore   dcbm+restore+unmap
+4K      3.36 ± 0.10   4.16 ± 0.18     4.10 ± 0.14    4.12 ± 0.13
+64K     6.16 ± 0.47   9.63 ± 0.23    10.00 ± 0.33   14.63 ± 0.14
+256K    6.70 ± 0.09  12.98 ± 0.18    13.52 ± 0.15   32.30 ± 0.65    (2.38x)
+1M      6.99 ± 0.02  14.32 ± 0.67    14.84 ± 0.17   38.97 ± 1.03    (2.62x)
+2M     10.74 ± 0.29  64.25 ± 1.48    65.36 ± 1.00   64.97 ± 1.75
 
-I guess you did not take the RCU approach because that would put code
-into the generic kernel pgtable freeing path.
+[1] https://lore.kernel.org/linux-mm/20260630-shivank-batch-migrate-offload-v6-0-da95d7e8b8a2@amd.com
 
-I liked the RCU approach because I hate the fact that ptdump takes
-an mmap_write_lock when it is literally only reading the pgtables.
-But your approach is simpler and fixes the problem at the particular spot
-and not hammers the fix into a generic path. So overall, ACK.
+Applies cleanly on mm-new 10-07-26 (61cccb8363f).
 
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+Dev Jain (1):
+      mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
 
-> Lorenzo Stoakes (2):
->       mm/vmalloc: acquire init_mm read lock on huge vmap promotion
->       Revert "arm64: Enable vmalloc-huge with ptdump"
-> 
->  arch/arm64/include/asm/ptdump.h |  2 --
->  arch/arm64/mm/mmu.c             | 43 ++++-------------------------------------
->  arch/arm64/mm/ptdump.c          | 11 ++---------
->  include/linux/mmap_lock.h       |  1 +
->  mm/pagewalk.c                   | 22 +++++++++++----------
->  mm/vmalloc.c                    | 41 ++++++++++++++++++++++++++++++---------
->  6 files changed, 51 insertions(+), 69 deletions(-)
-> ---
-> base-commit: a635d6748234582ea287c5ffeae28b9b23f91c7e
-> change-id: 20260710-series-vmap-race-fix-2a4cac988938
-> 
-> Cheers,
+Shivank Garg (5):
+      mm: factor out generic PTE batch detection from swap_pte_batch()
+      mm/migrate: split remove_migration_pte_hugetlb() out of remove_migration_pte()
+      mm/migrate: batch the restore-side migration rmap walk
+      mm/rmap: split try_to_migrate_hugetlb_one() out of try_to_migrate_one()
+      mm/rmap: batch the unmap of large folios in try_to_migrate_one()
+
+ include/linux/rmap.h |  52 +++++--
+ mm/internal.h        |  36 +++--
+ mm/migrate.c         | 190 ++++++++++++++++-------
+ mm/rmap.c            | 427 +++++++++++++++++++++++++++++++++------------------
+ 4 files changed, 464 insertions(+), 241 deletions(-)
+---
+base-commit: 61cccb8363fcc282d4ae0555b8739dd227f5ad0b
+change-id: 20260701-migrate-rmap-batch-8ecc04de1905
+
+Best regards,
+-- 
+Shivank Garg <shivankg@amd.com>
 
 
