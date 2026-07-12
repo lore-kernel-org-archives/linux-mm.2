@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D687C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 17:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FEB6C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 17:03:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37FF76B0095; Sun, 12 Jul 2026 13:03:44 -0400 (EDT)
+	id 295006B0096; Sun, 12 Jul 2026 13:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3576A6B0096; Sun, 12 Jul 2026 13:03:44 -0400 (EDT)
+	id 26CD26B009B; Sun, 12 Jul 2026 13:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246606B0098; Sun, 12 Jul 2026 13:03:44 -0400 (EDT)
+	id 1A7DD6B0096; Sun, 12 Jul 2026 13:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F38D86B0095
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:03:43 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7336F1A09A4
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:43 +0000 (UTC)
-X-FDA: 84980746326.20.F092942
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E5F7740008
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJ5SwUQU;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DD11F6B0096
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 13:03:44 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53AB91209AA
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:44 +0000 (UTC)
+X-FDA: 84980746368.07.1E33B83
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BAF1780004
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 17:03:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqnAdXsz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783875821;
+	s=arc-20220608; t=1783875822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MTFa+hpzXfcfyF1zP3rvNz2Fhu2Cffg36gE6sioOaYQ=;
-	b=NsNqPN/BryhuGxKGiyCu42B2CgU40Or5Ix8FbmOTOZUB0hFSuh2GyW22d814rlJdyyKsFA
-	qfseQ1NsqzSMdL8dCZqXhKUbEDh6+tw/lgMmNq/l1w39R2S6z6fNJxH6MHP1Yr1ZOt5jpl
-	QJfd7xiF6+pC3XDho8DF28JBDboSD4E=
+	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
+	b=SHAtEoeXOWBfGHE3O8ViVxr6m1nxQSHv0FBFMZhzcD1ERZQtbupEG+pbAg9Nuoigf1RJYP
+	RQ79cj1t/ana3V97vAn8444m58Nlkxqtpv0gFb6wBmsgBu2/o70DVTtoVIgYD44K1j1z72
+	xivmpv4Q4r54dfYWGTs8sB6hF+mlnMM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJ5SwUQU;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqnAdXsz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783875821;
-	b=v3f7N8S12Bzyi4QB1x4kdv2p3PySj4rgyG8r0rXEKBF78x2D9wi9+8Zpe97MLbpWpLBI1j
-	MVPv4fJMCn+WCyCXSFDHUFbSHgwCfI+kuJhO5N+rB+WCPz2H+kleUVuY3WH/I0aisOfNiu
-	jSoe8rxs9GYXav73+sqzOu3tPPpYUSk=
+	t=1783875822;
+	b=O/SjssO+DZz7brPQLA3ZeNrLLTiGZnPelsACTObODxLtsxU84DpK4ivI2mwsVcno3QfESs
+	X4IFGwpD5hA4rMOM4rwu33aU0ONBGF+D/Q4sPHNqW0B2HzqZJJkbT6iU2VcZiKBoWALS3v
+	fJPAZjwnaM+EyRvq19Ctxi8xvST9q5o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7345F6136B;
+	by sea.source.kernel.org (Postfix) with ESMTP id B513543B2B;
 	Sun, 12 Jul 2026 17:03:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCA91F000E9;
-	Sun, 12 Jul 2026 17:03:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A4D1F00A3D;
+	Sun, 12 Jul 2026 17:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783875821;
-	bh=MTFa+hpzXfcfyF1zP3rvNz2Fhu2Cffg36gE6sioOaYQ=;
+	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EJ5SwUQUrhliTXVTQ0gJzeD61a0JDOTHv2z0xzqoAS/iIA7hQdL75F85oFu1rSFjh
-	 AYPVpug0uM99scxME/UG9d4esLNmi8/IoZ5S6F2kNJpXfQS7w5LXdpbTnyGIVnuJlM
-	 +bRgjKl1KHMomWUhzJRwLtgez/wsaYpw2gppJS2HUB1M1jjEQ6jWDLA8/balgdk8A4
-	 rEXdxh4mvVJRGXDjRKrBWnOVKAay8Qjez3OnN8Xjklw0Ytkj3wPkaR0452C7oymyj9
-	 dBKoZ93RLxUnM7QwPhpx9jXI9Qg+fBEdHHQdAf9P7ve8UARAmyblwkp7IETnAt3h33
-	 BAZoFhohdXLHw==
+	b=jqnAdXszxWlkiGPhG+kdzDqhjT1jdYqU0Tnu/kSJ3AMyLxt5ZpLy6QMxsZmv3a5np
+	 N8uVClMafeRShHx+Rw7BP9jddNRBrX9cBzjseNGnUi/MihUGK3Ybddi98rHiCHQXjb
+	 geQFfvghXDWU/d4XOctmwpMMxEhwPMmJ7cRocPSE64rgpaUdzqbfxeECokC1ZlazMQ
+	 bqpm69Gpg0v4AhyX/xxiJ9RNhhppw32Fb+lEvftBArHE3Xi5Hoys88Q/1gnahxHqE6
+	 xv2Yv81igcLUYxhiVAlzno6vOk+XCuzG9SNEw6NqV/wGiKiNXkWhQ/CeYPCjPFwavb
+	 4rA9AUj3dsOVQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 4/5] mm/damon/paddr: drop last same folio access check reuse optimization
-Date: Sun, 12 Jul 2026 10:03:26 -0700
-Message-ID: <20260712170328.91144-5-sj@kernel.org>
+Subject: [RFC PATCH v1.1 5/5] mm/damon/sysfs: read ops_id only once
+Date: Sun, 12 Jul 2026 10:03:27 -0700
+Message-ID: <20260712170328.91144-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260712170328.91144-1-sj@kernel.org>
 References: <20260712170328.91144-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E5F7740008
-X-Stat-Signature: pjjuqd567axyxkidbgsktsf7ko1tjqi3
+X-Rspamd-Queue-Id: BAF1780004
+X-Stat-Signature: bnwjgsxiztwbp5gybhu8naa7w79j1oxo
 X-Rspam-User: 
-X-HE-Tag: 1783875821-844776
-X-HE-Meta: U2FsdGVkX19i5FN99g5UDxCAWYV7Ax2B4Er5THj5JHBm2Auaf5OeCRQbH2TAXtl0L4oohSP2pcIMoB9EqbX4oJtTpbK06B6fSEmnGl57+gus/cU2g5XvRP3MJn0wtMTsRE75B++GrGM3EGPXY4YOEbek0d+qjtCbfdrviEmli92xUNKaT9htwqgNpyUOaj6qV7tMnCQwGbCtq+tLkYVFOBMcBYTyI4jW1PySsQWTRw8amzyC/7ESRWYVFB8XpnJETuiFNc3dKyg4/QpU3Cs0oGoxoyDXDpTFbARhiw06sZMhLF1U4W7lfgwxAIey50fXPZb00IZEirQQ6Xa1y7N/DiyA2ahna1l4QZcORKVLqjhWQ65BDXHMdldYPj9PtGMJTChZWZ04wOWENZ3KdF3cwaJOfyRx64PVWi079O+5P9SzI5Tj1ZFhEgLzWbDPBOtCykZ4OzFodWkV7gAncoBklvCmv1VqFG73/x5Vj0JBXcFqs4K7V19OwkiyanzRf6sMVm6RzUfkU8TenaHzKF+O6kYcDkuOmZ0GrfOi6LJtknM5hNN5txTTWSD+zY4WRassRLO3mnPVW2R1D7GPEx22nbP2wy1VYEbtwLt5QGdqEQ+n5aQ2lhiF4NO4p6JaqT/eU8jk1Z+0HFtWjV6OTlYtyUJVFml9KzvZsMe4W0gDVX80fdRNL3uLVhx/W3vmjlWMIq+PXgvCdM6pS9L71yLyceWj2ADPgm5QR7bfH2uUPf16iitavX1JF6Zi/zo6gGbS0HQsctEYhzMH116/Wka9VK/Mcd5Ywm2mWcFHwtTZaZe3oFdCZAOyyerP3HNOLZvE41NzbpRv4XkQpmyrV8kQbUiY3H7BelAGDkhtzXJHelmMjezm6gVOxZ2QANv9pjgAhRXo/gNUxpIdpbU2rmhd68FtJcfm0UG3N4/pP2D/+r7CGHnBaDUCq5WcV5jgrWgtGLA6jAw+Obw/e4GFoS0
- sxBPoGcd
- T+x+rNESiDfOUPHhUcYnx6qOCdAVH4NZHrEYW2Jn9H3dKX2RO1IZMA38gtxpSYodgvT9GiiaESh1chmA56GSCYFIN/asdfZZ/jD9hSrfS5cff2K4aBDtZQTRAJokT0f5VgQwRlPG8jjJhFDM5Dcmxg7dhR+xWJMhqPPexegmYZvwdxLjnSziEivEUy3h6NYpHLe9tKe4EaCh734/UbJwfod6VWi65DKcjhGbIcAO+okZ8pW4=
+X-HE-Tag: 1783875822-271981
+X-HE-Meta: U2FsdGVkX1/ORSuHzRXlsNnzsjDzit0LiKijevRQ90BIhWEVJpOgDcJRjxlrV7bQZqAgQDj2wOjplK76yPs3BLWtWo+oatUPNSqw3bRyoina+gdNj/R+yQHaUN0jvKInQZ4YHsie0pXYrLlFKu6RXehgNURkEspjSdqbLS/CjvDQUjdnTjAUQ7OkXG/XjyaqhoKzZs4+baInoTPd35S0oByVr3lI7bt/zdlSOt1ikoTFm8fPl4E6XLdSgGOp+2bmmHuHjEnh0u3lRryzKEhBY7xphnGLf0m3Q9oW380uwVgXKLpKgNzJvB/GUaYoXUdXoN8eoTw3MNKAS93MaTswLgNtasS1GDOxStwI5YTuOebIxuya5mGsboRiBOjDsyDXcTiJBl455dfqsU3UJXrXBJU0X2znC5nCiFLyYCVqWxj2LhlNA+nVNSLaqcPXuSzmFbojKKgK+dJib7Jp1ChiKq9vdQaZUEuFLCe4EjdXBMClg9Xajsbos1+0iANjyhQU8tHUmFgQXZREf73un4sy1tDuMwhk1My/5dAOte7vCCdymi9yz2nOgL46KenkIM0/Yeu0jIZLPP4zpZnfRWXPUfbZRQ4XcC9lQ5rtSHd1pL0IxxIBRKH5J4rOMz+dqZTtAOoavSGnE1uYrNUH+qX0Wta69iKhDajm+kKf4KLOM4blCWHxajI2MpzoylGyQE0xud888gSC6h7TkQ9qH1l4UcK30M/MuoYVSTUl45xMiPaDBA9IJXXySTfZrjI+5g+/74pWWhVqj68k6viqnM3WzOPlG0/vgBlkiAuXDo69zmdSMyPYZEAwNTyHICjFexUF5YsrPSmmFFED49+h+1VHBSN4oBhp+jws/4E8rxU4HE/WW//bC3Qn3D53XZ9vCVaI+7Zbym1LYnnHPDdBnenffxpB5233uijK/FvUZxqh83CCnwvMRRhxFSV3WOjR9xuWCwyd9X+g8pYMe3NFaZO
+ 1rK4LS7m
+ AK1/q9bKzNMc2AVdLWFqQH4XAP85NROy0og86oAV9xtq4aUO7GB7UvBicCBsUr5GLylRBB5pALFy3Z9sKgoXpKuRdh+KYv4iavwTVomZ9jrH7vj3N/DKOybJVYQyVQi8lx2QiPyL/9InGJcYlFByhl453fvdkz+ibxE0FYsZqN77cwstOSIJXLWc0PqHKKxfb5hi50qbpP2oC92D3mnP8UyPxYgFiBrwikfA3/0XMjhCs5BgqV0HRjq2lwl7ECJXyGvD1PK7b4eK++mYBKjMvHVXVsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,75 +93,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It can race when multiple kdamonds are being used.  The problem from the
-race is doubtful, but the gain from the optimization is also doubtful.
-Simply drop the optimization in favor of code simplicity.
+damon_sysfs_apply_inputs() reads ops_id twice.  It could race with
+ops_id_store().  As a result, the min_region_sz could wrongly be set up.
+Read it once.
 
-The user impact is doubtfully trivial.  After all, this kind of
-interference can happen only by intentional user setup.  Even if it
-happens, it will be rare, and the consequence is degradation of the
-best-effort monitoring results.  No critical consequences like kernel
-panic or memory corruption happen.
+The user impact is trivial.  Sane users ain't update the parameter in
+parallel.  Even if it happens, only monitoring itself runs differently
+than expected.  No critical consequences like kernel panic or memory
+corruption happen.
 
-The race was discovered [1] by Sashiko.
+The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260621204050.10993-1-sj@kernel.org
+[1] https://lore.kernel.org/20260703172417.95426-1-sj@kernel.org
 
-Fixes: a28397beb55b ("mm/damon: implement primitives for physical address space monitoring")
-Cc: <stable@vger.kernel.org> # 5.16.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/paddr.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ mm/damon/sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index b85f88a7a38f4..e4f98d67461f5 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -65,7 +65,7 @@ static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
- 	}
- }
- 
--static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
-+static bool damon_pa_young(phys_addr_t paddr)
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index b5fe036f78015..60a1a9e4ada34 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2094,14 +2094,16 @@ static inline bool damon_sysfs_kdamond_running(
+ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+ 		struct damon_sysfs_context *sys_ctx)
  {
- 	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
- 	bool accessed;
-@@ -74,7 +74,6 @@ static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
- 		return false;
++	enum damon_ops_id ops_id;
+ 	int err;
  
- 	accessed = damon_folio_young(folio);
--	*folio_sz = folio_size(folio);
- 	folio_put(folio);
- 	return accessed;
- }
-@@ -82,23 +81,12 @@ static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
- static void __damon_pa_check_access(struct damon_region *r,
- 		unsigned long addr_unit)
- {
--	static phys_addr_t last_addr;
--	static unsigned long last_folio_sz = PAGE_SIZE;
--	static bool last_accessed;
-+	bool accessed;
- 	phys_addr_t sampling_addr = damon_pa_phys_addr(
- 			r->sampling_addr, addr_unit);
- 
--	/* If the region is in the last checked page, reuse the result */
--	if (ALIGN_DOWN(last_addr, last_folio_sz) ==
--				ALIGN_DOWN(sampling_addr, last_folio_sz)) {
--		damon_update_region_access_rate(r, last_accessed);
--		return;
--	}
--
--	last_accessed = damon_pa_young(sampling_addr, &last_folio_sz);
--	damon_update_region_access_rate(r, last_accessed);
--
--	last_addr = sampling_addr;
-+	accessed = damon_pa_young(sampling_addr);
-+	damon_update_region_access_rate(r, accessed);
- }
- 
- static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
+-	err = damon_select_ops(ctx, sys_ctx->ops_id);
++	ops_id = READ_ONCE(sys_ctx->ops_id);
++	err = damon_select_ops(ctx, ops_id);
+ 	if (err)
+ 		return err;
+ 	ctx->addr_unit = sys_ctx->addr_unit;
+ 	/* addr_unit is respected by only DAMON_OPS_PADDR */
+-	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
++	if (ops_id == DAMON_OPS_PADDR)
+ 		ctx->min_region_sz = max(
+ 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
+ 	ctx->pause = sys_ctx->pause;
 -- 
 2.47.3
 
