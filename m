@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BC22C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 08:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59225C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 08:43:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87E426B0095; Sun, 12 Jul 2026 04:28:54 -0400 (EDT)
+	id 4D9536B0005; Sun, 12 Jul 2026 04:43:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8083B6B0096; Sun, 12 Jul 2026 04:28:54 -0400 (EDT)
+	id 4B1236B0088; Sun, 12 Jul 2026 04:43:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D0A96B0098; Sun, 12 Jul 2026 04:28:54 -0400 (EDT)
+	id 3C9C46B008A; Sun, 12 Jul 2026 04:43:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 462626B0095
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 04:28:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DBC104041B
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 08:28:53 +0000 (UTC)
-X-FDA: 84979448946.04.FBA1051
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2A46E40003
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 08:28:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cBBX6CSc;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 1CF6C6B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 04:43:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A5AD01A06C0
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 08:43:34 +0000 (UTC)
+X-FDA: 84979485948.30.5AF9693
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1930320003
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 08:43:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kY6U/KCA";
+	spf=pass (imf13.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783844932;
+	s=arc-20220608; t=1783845813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6pa6hwbA29wf7EPVdRkad1vMRwe+QiPcMMB3ckRWsao=;
-	b=Dz8TSVJ5R4mxpuGk/c4HEUMbPug0F/NgylT4N0VIyr/h9b2mB/9Bq1cnbCPVe3WtW1lp5Q
-	NlKP7etFrKKs/m/QZj4KfxWCTSSTM5b6Swq/ZSY3kDP+xygwOZqan1mKIygMqiXCdSSYDQ
-	mHBCvrKT1WgvLx+AYkVz+CF9s/G5MLM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783844932;
-	b=ilKdu3kLQZPTkdDrrCgGO0k6amEVxKSJEvYRHn78v867HRmG0CL+zI/ivEH94kJtRCeGt8
-	drOf492gWDkbmca/b91RgWv19BNGrOjUwzMdweePrMVmofqkKxjH3uBGf54VLZLHL0OzdW
-	ZBi4uMzwwbEYAQwsY6gu6ghRDNgEUqw=
+	bh=oip8/L74rePX2kCOX9iUEXROqX3ZFpWrMwHT4YHp2mI=;
+	b=ft1KUL/QWOZ+0LhaUTLgIgQcBc8HwgX7lyNsnhtPZe20i9qKtrSjT9sK8aV0B5bZe+GwMB
+	EOk/LixMCOZRuTQwyTYVvhF5IXRceUEz/W44o/v3qsM+xQYrURUMpaLoq2C64pUncZgUgE
+	73e9HLUtlRUuVfcltKPyjGK6M6Ulodc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cBBX6CSc;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kY6U/KCA";
+	spf=pass (imf13.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783845813;
+	b=peJlYhY+mkBMlk/2U/Mfj6C1vykrk1G77OBkhAYXWE8E7ElEhBJYuuWxglNU8s5L30l6fO
+	wSUwHces/bI7MVzrAG+djYsny621e1NHRuK1cA9bwjiJu3FjPlpNyeggCxxUHgQxWTOAGB
+	KWrmthGWEVF4vutprt8qrusZAd+h37c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 088774119E;
-	Sun, 12 Jul 2026 08:28:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2DE1F000E9;
-	Sun, 12 Jul 2026 08:28:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A7A69600AA;
+	Sun, 12 Jul 2026 08:43:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3FD1F000E9;
+	Sun, 12 Jul 2026 08:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783844930;
-	bh=6pa6hwbA29wf7EPVdRkad1vMRwe+QiPcMMB3ckRWsao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cBBX6CScu+D8CwN3HIRkedeEtQ4ReeqByes909YEyDbmV+Lp8LuEGZ0e9cWqAC2El
-	 1xXNLC4MphXiEcPCr5Ti0RULhizDXaqh3ZDFNpSA7hoX79352D1jO2DdcTvOqLrg7F
-	 YOhNcF8CQZvnnkC2vZDdc/CI09zev7bMaLo/GjUfHC7kHz6cpTxHnPtXCJto7LIzSi
-	 AamjDyBsHR9l9vfOblYTjN4eLR1HDgXJHWsPLKaEMVmo5+9tNfTzpQrJL7NAbwUyAm
-	 8q4+WjaBD2CnAD0N9T9Op/uOMPMQsm3IHtb90caefL2yPKObQe4BNCV84K6RrpHsxl
-	 xxrGRqtleW2yg==
-Date: Sun, 12 Jul 2026 09:28:36 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	David Carlier <devnexen@gmail.com>, Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/2] Revert "arm64: Enable vmalloc-huge with ptdump"
-Message-ID: <alNP9NGJzLunBq4_@lucifer>
-References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
- <20260710-series-vmap-race-fix-v1-2-5b3794c113fe@kernel.org>
- <daed9269-b397-4f6b-bfda-6d81e1be2f52@arm.com>
+	s=k20260515; t=1783845812;
+	bh=oip8/L74rePX2kCOX9iUEXROqX3ZFpWrMwHT4YHp2mI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=kY6U/KCAOMBDsMm89Apzuf6levNSIlhw3O32oTCKrYEr63zQ52LCoaTop2h+6CKKc
+	 4SjauLHkova8qYu85Ru55QA6IpQbZ8ripGCMcmbtfG4KlPDm1k2hERb+LZ2Se2mXwf
+	 woLVRZm6b4iY3XkOZBcyt34vZRcZmI7aPCSwGfsjFK3OT6eO6UME/+zxfDU34YP+kz
+	 DQlXlK4KLmzTL8MwbOPhyuzEb9vNrspf3o31zlCmf/YTa4ENgO2DzQlhYxQK++/Mr2
+	 mZGe9VR+gH6IfRKXUddKno3nnnSMgKy9B391cyyNaKK9J30NqFFpheyK2f3QQTvd/f
+	 OwII0S5DYsM1A==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/memory-tiers: cache top tier nodes
+In-Reply-To: <20260706204507.98522-1-joshua.hahnjy@gmail.com>
+References: <20260706204507.98522-1-joshua.hahnjy@gmail.com>
+Date: Sun, 12 Jul 2026 14:13:24 +0530
+Message-ID: <yq5apl0sk383.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <daed9269-b397-4f6b-bfda-6d81e1be2f52@arm.com>
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2A46E40003
-X-Stat-Signature: 64ghfhiixt34epiecppgduxu7xepchjn
-X-HE-Tag: 1783844932-661905
-X-HE-Meta: U2FsdGVkX1/TT9UY49YuuECULesMiLkC1Fjf3Rx9vd+tppuuyQnaN8MJS8YWhISAvaHEWEvfOvb1Sj3zN6sMArWSA+M33E16LD1cSiCCcsIKjXvIJ+MrgK7giwxETDzCbbduEofDl1RDhMon/uNrdrYsIbDr8L1qFNAQGmtAGXm+rERROi1dL/xM3t0+aw2OD1aTeEXkT19AghREM7ccrVXVOgg/Nu1GE6z7dTn1kHTYRDMoDBDeFtf2xKy5e4SoNxInAXYlbwprD81SoF/v2ItaUr0k1JqWpC8rvaLVUwPOHT2ZkTZ/iYqVRH54lpcdemQm0qAE/MhygF4DFjHx69UZEWsyjlB3yiJtqO23dA2dUD+7ebO9AWHHQo9XQbKj0r7J8kuknHIZtHD8Axlxm+NTMvXxCib1yCgHNrDEYq7iXSp55hPIjZfx1gaCPqDIp117ToqNqnLNytl/vicqzvb+RDXOMxi0v+k8Q1/VXqJN5L9BJQMQ8dKa6LwAZUKQ1YG5kDePpmjrt4D/xEYhnOy5MF1uTzb1Z9/8u3CzKLTp4wQ0vIJJtXY29Bwb7YRTOgXscm0+wFSs/PYMXgLLzN2eayEuk/es312OROzlLLI+hvzDGKN1enbXvyE0qp3AG6WFK7PfuvJcyHgsLx8zYaZJ8ju0JHyPgQGX4WrYu6/YDa94HzFjwDQChQqWwdmpeq6NgtetQTGKRtUAXj/sRHyn42bXTJHQREjO7ug4Q9dK8lXWM5HEbWXuIm1y2t92ViKVUa3nDFl0AH40e+v5m0RIVfl+LuYwj1/hFqOL1Zx1Vufhg/x94g1UiQ6pPL1OFobsVrxDyKAxDnnstMwGyIt7uQjiQzQHwoHR5bBfk5Eh/Mo6CUYSWEDtGnCZaF9wOT43hTKBW2msDQLUt3bI/O3McDMNMh6rCOleFXVmkzoUe9VsAPzzKFQcVEuf0sk7XsO3fQVBAAYuMVyVOf3
- f2maV3iJ
- YfqX6haRc9oEVGCQegbN5Ld12/N/YJlwcl/daNg0BQIDnykdiudWxPOAnKv4ULDnZV0SlsMmLEWnpmCIwwfnmBu7aje30YxD7oi6WqiXGMiCBw97eg8o0KVrD6rqSdUuq4IUAXI4CVfpQrAr/VtJlcBr/oBRgZ7yxwPzxRDvNn0psrBtknfE+tOdPzeicAzEqLldexel1Jgb3Y5ZAorDaAFeFJfULcu9h+eAMUcgoC3g6gKTIkU5UCbBkyf21zJCQFzWCtiUtN8nheQgcGoq+BfXMlh3gYGCUidxnF8Iv6eH+im3AcBTmwBVj7cABMFLMTLRBXhvKEAxnbuYCiyjxXrwdwQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1930320003
+X-Stat-Signature: 5yd34y69sw34ue16fyfk1d7ypcwwzir9
+X-HE-Tag: 1783845813-949927
+X-HE-Meta: U2FsdGVkX18terZMCPFG3Ha16wBLc3PtBeu3gAg6p9hdims79c7fcm5T5oHed/Zn4RoHNY9kw7L+Rq8T/aWR0IsKRb1dNh7Wosqv4RYxeMh1AHT0rnjB2MIha/EyT1+4Lo0b8vhJmgFWjzRo7RzHY09eOwMG53v7is8dUR2X60IP/G18mdqf5rEXU4oodRsfBLCVYIGQXDeSPFxblRrIybE7ZHis2YpaWYPP/jTkmLNVxTD/n5ovOO6gth58cW01fAu1SafLbFcWdjt2xQrew/u/ZPc96UIXtv3Z8SuXh+U6MZhS2Rhhgm/lDrwpBciMqr60iOPw5ckD2NMBi6z3vU+aSkJGRB7Bs6RrA7AhUbJTBRTjR7rhQvSib+6Amahzn2lYwmjSmGjEvTtSA99vLy2eRZoMDg/MQRpbd/0/JwVEqRkTxQ67vhRKZ+kw37pVxT7bmo9A01eB/03CIeLSGLm0CK/+fgqjZtSq9Ou3PhrIWUR/oI3AOLPVvFHIDIyKNSWF6yfP8hRD1DpE+Q9ahxVb9Y7pcuWIOwFs9tzRbOV+EbllnRM+zf7CPHC475k4CLzYWrHaIOnuNorl3+oqUrz7yYHtvZ1KWg4mOo6bIOMjueb8wvO5s2tBi0zJuET7wYZfPAY9O5xqCFpkie68ApuwRSSeypLW1drxVoFkRamlp/BWMmIOp8EV0+RYiY3843q2ZlMTfwjftv2t+tu0kMT2wRNOPS+pR+WWPQYekkg9XWBGzMv3Ha68Ou8Ra17k0qQ53eKSKCNYvtiTURjEJzNOXcXBbemTugElzwZGISX7gqbwfZKpmYuESr6vbHe2tfYdhlVFXk9ly+exWgjf4cjn6fhibkzmiQPBISuZv0YA0/q/Q2sUFRrW1TBXKJgl/Sde9jbNhnXeM5NJvHJ9x1G2njzmkkrlNUNqM59V+K5QBvwpbGEebZz4kHexGcJHfleSS1ejmbf9qYTDCJ8
+ X4hJXCgW
+ ZN1+TA2lITpi/3iZeoy6IyL6djHcoiEWroMtbPsDwz8sAIE8hAO6QgmWi+ehtBKDA3DwjuFMO8+2HN9/CyVd0oZoh6xQzvDjpwifp0KfRgXiE5BYsketjd81vz8zEOUgJB6te0g/uPKLJhJgAi9hH0tKWYHlNa2mhfa8xHhMDdWQ5AdRiWu7JVNM9qndmpUzH7rFba+mdY+3p+Y6WS1xuOWHOnUscTiZYgbAN9F7paa1CxQoaGDJACfG3dkuLM8s46hEzNTZaOdjiCcJfU7nzLDdfZ6gHsZx7NwtxIGSgmOyjoqx3Yv1B848XNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,219 +97,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 12, 2026 at 01:16:17PM +0530, Dev Jain wrote:
->
->
-> On 10/07/26 4:19 pm, Lorenzo Stoakes wrote:
-> > This partially reverts commit fa93b45fd397 ("arm64: Enable vmalloc-huge
-> > with ptdump"), retaining vmalloc-huge support but eliminating the now
-> > redundant mitigation against a race between huge vmap page table freeing
-> > and ptdump, as this issue has now been fixed at core.
-> >
-> > We also simultaneously remove the arm64 ifdeffery when acquiring the mmap
-> > read lock upon vmap huge page table promotion as it is no longer required.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
->
-> As pointed out by Mike, the subject line doesn't fit. Perhaps just start with
-> "Partially revert ..."
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-Ack yeah will fix!
-
+> node_is_toptier() is called in a few hot paths: task_numa_fault(),
+> should_numa_migrate_memory(), folio_migrate_flags(), etc. Each call
+> takes an RCU read section and performs the tier distance check again.
 >
+> Tieredness for all nodes only changes on memory node hotplugs. Instead
+> of recomputing toptier nodes inside each of the hot paths above, compute
+> it only on memory node hotplug events and cache the results.
 >
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-
-Thanks!
-
-Cheers, Lorenzo
-
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  mm/memory-tiers.c | 36 ++++++++++--------------------------
+>  1 file changed, 10 insertions(+), 26 deletions(-)
 >
-> >  arch/arm64/include/asm/ptdump.h |  2 --
-> >  arch/arm64/mm/mmu.c             | 43 ++++-------------------------------------
-> >  arch/arm64/mm/ptdump.c          | 11 ++---------
-> >  mm/vmalloc.c                    | 15 +++-----------
-> >  4 files changed, 9 insertions(+), 62 deletions(-)
-> >
-> > diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
-> > index 5b374a6ab34a..50a195eda8ed 100644
-> > --- a/arch/arm64/include/asm/ptdump.h
-> > +++ b/arch/arm64/include/asm/ptdump.h
-> > @@ -7,8 +7,6 @@
-> >
-> >  #include <linux/ptdump.h>
-> >
-> > -DECLARE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
-> > -
-> >  #ifdef CONFIG_PTDUMP
-> >
-> >  #include <linux/mm_types.h>
-> > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> > index f2be501468ce..f723bcf68174 100644
-> > --- a/arch/arm64/mm/mmu.c
-> > +++ b/arch/arm64/mm/mmu.c
-> > @@ -49,8 +49,6 @@
-> >  #define NO_CONT_MAPPINGS	BIT(1)
-> >  #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
-> >
-> > -DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
-> > -
-> >  u64 kimage_voffset __ro_after_init;
-> >  EXPORT_SYMBOL(kimage_voffset);
-> >
-> > @@ -1857,8 +1855,7 @@ int pmd_clear_huge(pmd_t *pmdp)
-> >  	return 1;
-> >  }
-> >
-> > -static int __pmd_free_pte_page(pmd_t *pmdp, unsigned long addr,
-> > -			       bool acquire_mmap_lock)
-> > +int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
-> >  {
-> >  	pte_t *table;
-> >  	pmd_t pmd;
-> > @@ -1870,25 +1867,13 @@ static int __pmd_free_pte_page(pmd_t *pmdp, unsigned long addr,
-> >  		return 1;
-> >  	}
-> >
-> > -	/* See comment in pud_free_pmd_page for static key logic */
-> >  	table = pte_offset_kernel(pmdp, addr);
-> >  	pmd_clear(pmdp);
-> >  	__flush_tlb_kernel_pgtable(addr);
-> > -	if (static_branch_unlikely(&arm64_ptdump_lock_key) && acquire_mmap_lock) {
-> > -		mmap_read_lock(&init_mm);
-> > -		mmap_read_unlock(&init_mm);
-> > -	}
-> > -
-> >  	pte_free_kernel(NULL, table);
-> >  	return 1;
-> >  }
-> >
-> > -int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
-> > -{
-> > -	/* If ptdump is walking the pagetables, acquire init_mm.mmap_lock */
-> > -	return __pmd_free_pte_page(pmdp, addr, /* acquire_mmap_lock = */ true);
-> > -}
-> > -
-> >  int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
-> >  {
-> >  	pmd_t *table;
-> > @@ -1904,36 +1889,16 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
-> >  	}
-> >
-> >  	table = pmd_offset(pudp, addr);
-> > -
-> > -	/*
-> > -	 * Our objective is to prevent ptdump from reading a PMD table which has
-> > -	 * been freed. In this race, if pud_free_pmd_page observes the key on
-> > -	 * (which got flipped by ptdump) then the mmap lock sequence here will,
-> > -	 * as a result of the mmap write lock/unlock sequence in ptdump, give
-> > -	 * us the correct synchronization. If not, this means that ptdump has
-> > -	 * yet not started walking the pagetables - the sequence of barriers
-> > -	 * issued by __flush_tlb_kernel_pgtable() guarantees that ptdump will
-> > -	 * observe an empty PUD.
-> > -	 */
-> > -	pud_clear(pudp);
-> > -	__flush_tlb_kernel_pgtable(addr);
-> > -	if (static_branch_unlikely(&arm64_ptdump_lock_key)) {
-> > -		mmap_read_lock(&init_mm);
-> > -		mmap_read_unlock(&init_mm);
-> > -	}
-> > -
-> >  	pmdp = table;
-> >  	next = addr;
-> >  	end = addr + PUD_SIZE;
-> >  	do {
-> >  		if (pmd_present(pmdp_get(pmdp)))
-> > -			/*
-> > -			 * PMD has been isolated, so ptdump won't see it. No
-> > -			 * need to acquire init_mm.mmap_lock.
-> > -			 */
-> > -			__pmd_free_pte_page(pmdp, next, /* acquire_mmap_lock = */ false);
-> > +			pmd_free_pte_page(pmdp, next);
-> >  	} while (pmdp++, next += PMD_SIZE, next != end);
-> >
-> > +	pud_clear(pudp);
-> > +	__flush_tlb_kernel_pgtable(addr);
-> >  	pmd_free(NULL, table);
-> >  	return 1;
-> >  }
-> > diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
-> > index 1c20144700d7..5a76c59b5ada 100644
-> > --- a/arch/arm64/mm/ptdump.c
-> > +++ b/arch/arm64/mm/ptdump.c
-> > @@ -283,13 +283,6 @@ void note_page_flush(struct ptdump_state *pt_st)
-> >  	note_page(pt_st, 0, -1, pte_val(pte_zero));
-> >  }
-> >
-> > -static void arm64_ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm)
-> > -{
-> > -	static_branch_inc(&arm64_ptdump_lock_key);
-> > -	ptdump_walk_pgd(st, mm, NULL);
-> > -	static_branch_dec(&arm64_ptdump_lock_key);
-> > -}
-> > -
-> >  void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
-> >  {
-> >  	unsigned long end = ~0UL;
-> > @@ -318,7 +311,7 @@ void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
-> >  		}
-> >  	};
-> >
-> > -	arm64_ptdump_walk_pgd(&st.ptdump, info->mm);
-> > +	ptdump_walk_pgd(&st.ptdump, info->mm, NULL);
-> >  }
-> >
-> >  static void __init ptdump_initialize(void)
-> > @@ -360,7 +353,7 @@ bool ptdump_check_wx(void)
-> >  		}
-> >  	};
-> >
-> > -	arm64_ptdump_walk_pgd(&st.ptdump, &init_mm);
-> > +	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
-> >
-> >  	if (st.wx_pages || st.uxn_pages) {
-> >  		pr_warn("Checked W+X mappings: FAILED, %lu W+X pages found, %lu non-UXN pages found\n",
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 9d0f1fdd6af3..537ff7b3c412 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -170,10 +170,7 @@ static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
-> >  	 * Therefore, acquire the mmap read lock to prevent use-after-free when
-> >  	 * freeing page tables.
-> >  	 */
-> > -#ifndef CONFIG_ARM64
-> > -	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
-> > -#endif
-> > -	{
-> > +	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm) {
-> >  		if (!pmd_free_pte_page(pmd, addr))
-> >  			return 0;
-> >  		return pmd_set_huge(pmd, phys_addr, prot);
-> > @@ -230,10 +227,7 @@ static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
-> >  		return pud_set_huge(pud, phys_addr, prot);
-> >
-> >  	/* See comment in vmap_try_huge_pmd(). */
-> > -#ifndef CONFIG_ARM64
-> > -	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
-> > -#endif
-> > -	{
-> > +	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm) {
-> >  		if (!pud_free_pmd_page(pud, addr))
-> >  			return 0;
-> >  		return pud_set_huge(pud, phys_addr, prot);
-> > @@ -290,10 +284,7 @@ static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
-> >  		return p4d_set_huge(p4d, phys_addr, prot);
-> >
-> >  	/* See comment in vmap_try_huge_pmd(). */
-> > -#ifndef CONFIG_ARM64
-> > -	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
-> > -#endif
-> > -	{
-> > +	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm) {
-> >  		if (!p4d_free_pud_page(p4d, addr))
-> >  			return 0;
-> >  		return p4d_set_huge(p4d, phys_addr, prot);
-> >
+> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> index 54851d8a195b0..2e6e02ec1fce4 100644
+> --- a/mm/memory-tiers.c
+> +++ b/mm/memory-tiers.c
+> @@ -71,6 +71,7 @@ bool folio_use_access_time(struct folio *folio)
+>  
+>  #ifdef CONFIG_NUMA_MIGRATION
+>  static int top_tier_adistance;
+> +static nodemask_t toptier_nodes __read_mostly = NODE_MASK_ALL;
+>  /*
+>   * node_demotion[] examples:
+>   *
+> @@ -276,27 +277,7 @@ static struct memory_tier *__node_get_memory_tier(int node)
+>  #ifdef CONFIG_NUMA_MIGRATION
+>  bool node_is_toptier(int node)
+>  {
+> -	bool toptier;
+> -	pg_data_t *pgdat;
+> -	struct memory_tier *memtier;
+> -
+> -	pgdat = NODE_DATA(node);
+> -	if (!pgdat)
+> -		return false;
+> -
+> -	rcu_read_lock();
+> -	memtier = rcu_dereference(pgdat->memtier);
+> -	if (!memtier) {
+> -		toptier = true;
+> -		goto out;
+> -	}
+> -	if (memtier->adistance_start <= top_tier_adistance)
+> -		toptier = true;
+> -	else
+> -		toptier = false;
+> -out:
+> -	rcu_read_unlock();
+> -	return toptier;
+> +	return node_isset(node, toptier_nodes);
+>  }
+>  
+>  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
+> @@ -497,19 +478,22 @@ static void establish_demotion_targets(void)
+>  		}
+>  	}
+>  	/*
+> -	 * Now build the lower_tier mask for each node collecting node mask from
+> -	 * all memory tier below it. This allows us to fallback demotion page
+> -	 * allocation to a set of nodes that is closer the above selected
+> -	 * preferred node.
+> +	 * A node stays toptier unless it belongs to a tier below
+> +	 * top_tier_adistance, while each tier's lower_tier_mask collects the
+> +	 * nodes of every tier below it so demotion page allocation can fall
+> +	 * back to nodes closer to the selected preferred node.
+>  	 */
+> +	toptier_nodes = node_states[N_MEMORY];
 >
+
+Won't this result in a larger window where every node_is_toptier() call
+can return an incorrect result? This change would make every memory node
+a top-tier node until the loop below clears them from the toptier_nodes
+nodemask.
+
+I assume an incorrect result from node_is_toptier() is not too bad, but
+is the performance impact large enough to make this change?
+
+
+
+>  	lower_tier = node_states[N_MEMORY];
+>  	list_for_each_entry(memtier, &memory_tiers, list) {
+> +		tier_nodes = get_memtier_nodemask(memtier);
+> +		if (memtier->adistance_start > top_tier_adistance)
+> +			nodes_andnot(toptier_nodes, toptier_nodes, tier_nodes);
+>  		/*
+>  		 * Keep removing current tier from lower_tier nodes,
+>  		 * This will remove all nodes in current and above
+>  		 * memory tier from the lower_tier mask.
+>  		 */
+> -		tier_nodes = get_memtier_nodemask(memtier);
+>  		nodes_andnot(lower_tier, lower_tier, tier_nodes);
+>  		memtier->lower_tier_mask = lower_tier;
+>  	}
+> -- 
+> 2.53.0-Meta
+
+-aneesh
 
