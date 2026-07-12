@@ -4,162 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58DBDC44501
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 07:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B742C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 07:43:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F0516B0098; Sun, 12 Jul 2026 03:41:46 -0400 (EDT)
+	id 2CF476B00A0; Sun, 12 Jul 2026 03:43:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A10C6B009D; Sun, 12 Jul 2026 03:41:46 -0400 (EDT)
+	id 2A69E6B00A1; Sun, 12 Jul 2026 03:43:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1690D6B009B; Sun, 12 Jul 2026 03:41:46 -0400 (EDT)
+	id 19FBD6B00A2; Sun, 12 Jul 2026 03:43:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1CB46B0096
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 03:41:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A73F40880
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:41:45 +0000 (UTC)
-X-FDA: 84979330170.13.DD377B4
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013019.outbound.protection.outlook.com [40.93.196.19])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 254A040007
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:41:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=krcXOpEK;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.19 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783842102;
-	b=ClqzEcIoNQCjdN4H04SPt8tlnwLzH6okAdKpomSKCCQiQR//rb4tSe32DMnksOTfWKCPPZ
-	u6r1GZVQHYN3ByZ3lrCn5t+k/azIeLxenGxJItGD8/0o67306cMwRO6ATD/eTFZnYwSGj7
-	MAnROlLee3LmyQpI53+5EruZ9rb+WRg=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=krcXOpEK;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf07.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.19 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783842102;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD93A6B00A0
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 03:43:25 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A970140858
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:43:25 +0000 (UTC)
+X-FDA: 84979334370.02.4A1BA84
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 04677140006
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:43:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UM3JYBV9;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783842203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T4/By1nSX/TaUxcLN/jiwd7uO1bHTgeQaXSwpyDwmao=;
-	b=UsaEe8y3t0YhSyIu8MeQbKiP96uzLyB5e06Cngdub1x5wH0HHimJzttf4dixPpc0dR58U2
-	bCRrmb4rI9tTYGUXhBU8e1xKqEbL93FMStjIB8y1VM10LpN9zInIXjp6t8SIIQmnaK+xUA
-	YTRfSwNlS4+FrVpGuvN9PqfBO4K2fqM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XaBSU8sFoFr5qQl+YLaI9r34/ifr+I04384vCh7NdSgXTdTTNny2Tfxs4xOCdNAitNSp3v2yeZ/VzvTHJUt3vg2cZ6p8/Js0XOC2we57zojv+T0Pz8FvZr4ezhZhFz6UqtdqiN/CXm32k039UCSVm1a1BkTOksnnUMi0q8cVP52tqUVHni4qI7KSxWG32u12W04tCXE7evQVXMokGEul2meWTQH/7IoNFumaV6JESnDr7ffDaJbBAvgudKahHqzSEQF0YaBCHlr3ELLM4jFVlX77Y7Zum57lf45lkwjeSnDm/d14bOvI07q+RwIVtzYujcda4flxtxjmaZAABV804A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T4/By1nSX/TaUxcLN/jiwd7uO1bHTgeQaXSwpyDwmao=;
- b=UUbr60gh9uEzrE94ux2AflIR0XT07m9CrvmPIfrp7768IDCC+PYOT1LFLu9Vg0OkmVeNfoaujKL1WEIhwls6qbjTg0iNIaNmWKILI6OVYMtMGWVf4xQ0k2WDyaLX8dHtUXYfvVEMLUOYsZSf0LzNQNDSrX5VRzmpIVWW4OBIhbYp9eLhg1tInLbO0ezQBe6NGmdvU3g8605Ocb4tveglUCeICx63pUQeh5boNGS6kJNd0esfsXwwSeey10hh0K+4+yLffwLWFuIHdBEjTEo94wEIKsHtxuz4aSn3Q0yASqG43zVhG/81bnDeCppOWcmMOeC791+VVjS5P7fVygf/yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T4/By1nSX/TaUxcLN/jiwd7uO1bHTgeQaXSwpyDwmao=;
- b=krcXOpEKDH3Du2lcJUH/7h6ew5o3D5PjeXB9YTa20mE5ezIxJ9vLBJ7KFP7vAL9i65acAqOKXCcvdk1Hhb90vUDsdtBcohijEcR5lIvshG3NiWzxK0Kpd6+3IkOHZDMyLrlSPKCzZaE0uSZVQHvq0yqKdnLmP3zXadhANO0OvWw=
-Received: from MN2PR18CA0003.namprd18.prod.outlook.com (2603:10b6:208:23c::8)
- by DS7PR12MB6118.namprd12.prod.outlook.com (2603:10b6:8:9a::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.22; Sun, 12 Jul 2026 07:41:36 +0000
-Received: from BL02EPF0001A107.namprd05.prod.outlook.com
- (2603:10b6:208:23c:cafe::63) by MN2PR18CA0003.outlook.office365.com
- (2603:10b6:208:23c::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.18 via Frontend Transport; Sun,
- 12 Jul 2026 07:41:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A107.mail.protection.outlook.com (10.167.241.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.202.18 via Frontend Transport; Sun, 12 Jul 2026 07:41:35 +0000
-Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Sun, 12 Jul
- 2026 02:41:28 -0500
-From: Shivank Garg <shivankg@amd.com>
-Date: Sun, 12 Jul 2026 07:38:52 +0000
-Subject: [PATCH 6/6] mm/rmap: batch the unmap of large folios in
- try_to_migrate_one()
+	bh=SN3Eqr9kVT0WJxI1+TbSrfMJ94BdyG0aA1uKrGqGcWc=;
+	b=ph1NBKt/nxeSphlxlrrfQq2jzb3WZ/yKgQAdMi5h+TyYIhOIBCSf1hhxPxaevHchTi3VLP
+	F40Nj3VDHIYVvYAkS8ZJ8Tsa9WJ5De7lVSf5OcDbD5KyjI7pxqT6MjSTXv18bwcSRUZQax
+	co+DiKzM7/kHCWuVPGrUVi/2Myw5htA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UM3JYBV9;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783842203;
+	b=uauPBFc3oL8uUPT+i7rs4+IYO9QKQq7bYf+7F6Mz3wQNXfW9fr3PfENb4Zk1z9wnnpCXVS
+	oGEGzuXOpnLaBhlOwJ7jyrCSOOfms/CZLPNfH075nQjPBFzTq7SNZKhgue8esRTR+w/rGu
+	6e7K8GfcKA1k4LMxissdPDfJd2YS2eA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BDC01682;
+	Sun, 12 Jul 2026 00:43:17 -0700 (PDT)
+Received: from [10.163.129.143] (unknown [10.163.129.143])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8ECF53F85F;
+	Sun, 12 Jul 2026 00:43:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783842201; bh=UYx5fo7e+lxcyM59ISiOU13g5eIgoyjRrIVDtKL9jW0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UM3JYBV9OTPunMhOREV5sC8dPLz7aJpnp0FpbpEaiJeHy/lYgBBaRn2JyJ/+vUS9b
+	 C7yMwQ1qtJP5l8lzEdfU1Sr3He1ud6P8jR573YExHwyIIZQC99cpw/T9zunBGIhJIL
+	 tkpnh2iCeXxOpqU6JlnwaGudOBuSmCDc3g6D2EAM=
+Message-ID: <d47ac961-4767-4ce4-9c75-f281beb24e42@arm.com>
+Date: Sun, 12 Jul 2026 13:13:12 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/vmalloc: acquire init_mm read lock on huge vmap
+ promotion
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: David Carlier <devnexen@gmail.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+ syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
+ <20260710-series-vmap-race-fix-v1-1-5b3794c113fe@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260710-series-vmap-race-fix-v1-1-5b3794c113fe@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260712-migrate-rmap-batch-v1-6-872a734431d1@amd.com>
-References: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
-In-Reply-To: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel
-	<riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
-	<vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Jann Horn
-	<jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
-	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
-	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
-	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>
-CC: Karim Manaouil <kmanaouil.dev@gmail.com>, Frank van der Linden
-	<fvdl@google.com>, Kinsey Ho <kinseyho@google.com>, Wei Xu
-	<weixugc@google.com>, Bharata B Rao <bharata@amd.com>, David Rientjes
-	<rientjes@google.com>, Dev Jain <dev.jain@arm.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
-X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783842044; l=7150;
- i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=DaXaWAks3ni26r5eG7Mgqp8Z7R1+V8py4omKSnb7ukA=;
- b=ptWuqXtlG/w5MOWYfGviPHSj9VRSJnXloZaQ7AmlnebTb5eZBIPSDJfKm0nD+4FpnRYKKBJS5
- gp4GDZBBzEbC2iSijZXydaAPTFBKnO4dcduYaUazT44ap6j7+S7wPEW
-X-Developer-Key: i=shivankg@amd.com; a=ed25519;
- pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A107:EE_|DS7PR12MB6118:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e0ec902-ce60-446f-1ac0-08dedfe90056
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|7416014|36860700016|376014|23010399003|56012099006|11063799006|5023799004|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	BPn8+5xcZ4GnQXoipR4qZCWdppc+TUkZcu0G8/rdnq/bqt1c1bR/UoJStqh22Lk6uj8uA1D+nbKH1Uec7XpqcCXRUR62YnQ3f/GANhUfWh999fgBijHtr8a6JrcWfwDa/g4wR8+E8jkbLc94pwKCJUPq5c5vVSeiEM1hZgprnNtOw1D9wAujfe6M9CEsZAQhiXD0RJ24iLNM01jHurk2HdexAaQacdpf5WnghpSBWiEYxD3JVOK8cqmtHOafaP5aiNGVPK8UkH8sOh98tBPcJqKJo/OHR7h0EAxlJ1GoCbDzvBYn3i6t0JvWm5CAQ4g6zoMrUl8fYHUTHWTJ+r01mRutG9vnLlPM7iN4DjToz+AbPKDLbQGQLAdKdPuOahxQ60Q8nB+jgQHWycy4ABjZposYb/aoZSw9N1eoi741C6ewRaG44CZTyDYJ2EsRNlqNqJ9HkWu66VkGpo3uQHNlGSVq1pDFga/RAEK2WDVJFwlj7ef8KHmwjNOykCeUfHbUwk9G9+OlbaKSxUpAIs2Jc7nKGqmoJ500nF1EsKKyaP7Hm7o4ARBgpY3DFapA+lXUPWqTLAy/l7isgJXeng07IhO8Y5N67VgOwdatn/X1x8DKe/RU5+Ycp5Jv0pxv7x9OVjet5TJeJgcI9q45DrYUP3EcKrXl2q7c7sb2UlLjkMTLxVJ8PVriDGcYXypsvazXeCW9Yo5xL5c8sISn2Zn4+SrJfcdWAa3BBauAeu2Ge+k+AhqIido8/KcmQGp5Baga
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(36860700016)(376014)(23010399003)(56012099006)(11063799006)(5023799004)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	3gYw0DT34VqPFUwl9bANQQRC+tfJNWTOm/ZqT3EwqQbGVT5lvsGNs2wrG/FrLHtus2+hfCowlkin04gl8hTt735ahncwGh6TsDdhkL46P0uRY3o2mYaUIBdnzBOAdCnhHOdpCN/xfS9w0GT90mVHZyzRqasM6mbijmpqNk0fKhPz9MNVknKMa+BcJVq+naQYWbNLozxQacsVLS2sFjeNc0r2m5MJUnbL5XzYpLhRwaU2PNcjrYSQ+xkSgMyR04o2dV84+GvSRNM+baZ2vykJsbcGwbrk+3RKwvJ/EZQrg+BBz9cbJLM1EoyCpCSqS5D3/MtwsP4VoHcdwSnlEebQpUVxIXMvQ5tztPuvjEHqNS++Is6SZrEJbTVin1UZjKf5yF9ZP1IFXlYiAEsa5dQ0rTTLadRA9lEB2dU8X99URP1C908vPiQKE3iXHu0xhBTb
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2026 07:41:35.8768
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e0ec902-ce60-446f-1ac0-08dedfe90056
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A107.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6118
-X-Rspamd-Queue-Id: 254A040007
+X-Rspamd-Queue-Id: 04677140006
+X-Stat-Signature: 9hzq5waf9gmdr7cqnr3n7k4df8ynbe7q
 X-Rspam-User: 
-X-Stat-Signature: fm86w4iu81u9szagnekdozey49uwpoau
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783842102-864998
-X-HE-Meta: U2FsdGVkX19vBAAqru1WArvBOj4lPAZgrAQysnmW7XdV9oHI98qcOX8b69UDm/jvX+poANpxrKgJYqzmcvIcugHbLehP9aYvsh3GeGfdUuj2OiLQIGsUyxDXDiRkMotdDYWGxey2ji5qu9UXRZ9k3gX9TwD4KQAtszOHfYizBIa4pgD+Vk2mTiE5yZi8jSiuXlbcjISDIE2OunY5FzD5STvuatLSjpguajBf7mKIRVY7q6mjNYsZGSgAcxi56Bsd1oI1Wi5yizOG+kc7IOLhORU2e5/3oA3b5o++PrphEJbSxD/CbJPPOuBYV1z6Pe0pQnvuANSx1Q77HXh4SRp8Uw7fn5q6PBIytkR8qp42E0PLO+32WEcsQPiFZKknK0VKC5zlkgTUc0BzuGHxamq+sFBEGYju58Gp9GCg6zbOFagI5yH3TPelq4I91/8rKnYDGOVL1Fkcj3HiLavo7wLJdyw6YvxW36VzLPd/oaSlz3cC2+TOf0tXScYwpq+3JfSnVoJot4t7n28hp9UlgCkOusxeWHOx5uINIULpp7WP614yx4lkwmrXSXbu9IDkCu973i8f1YK8tgvIevgSjnJb/2q74mFV1xxP/1OAMCTS5zOuyzR2ESnbvArJBQO/HAywofmrHO5RNkiAeVHH7VkuI+IoakjMGkG9SCFzS1mZ4Y7Gj/Ifk+RLgpMT66C+WmjHltmBKnWplBONqJitRQ9e+5fxlEmcnGRoNP3QYeIMaA6MrhgRxCkYiuBTaO5r4APGVObwMN7qv/Z/2PoTo3yU8faEy7Wd2ZtjXjVWCZ7QAqul9JlyELwNsiubbm+PCki4R77dLowhURlMp5+0fB9bOodGYl5gM7AUaRfzviXDZ3cBbKoWcEUwrWpFzmCIv4n+SRd3G2ezce8sgmY+B2m+PMgYPuxI+LOtfF5fPeLbrUzoKhgKN9mvuwdSfXCElEizs/eWVXwjoaJfjLDpKVl
- UmFJeUhM
- jNEIaVfr5Ww+1GL4689ebGxu4Obu1mwrTdAYSg/mYq7+TvrHakPApyp7obigFj55DQDAKvslnOCvP/6S3E6F3ivGDp/dRoirFIwpZWP0M6NsfUAdGb7vo7RzqaulRhik8dE5V+D2l/BBkff31goKqVRtDLLPAGt/p+rm4LghEJU2ZH2LDTonxsjCMjaYhcdAqh5738yeGyssDQGtBn/S76aBh/0HiRHOcNaFTE/azf3SAdPw5UgLHUZS3PSspCsSPHVLsgMQBKMxQEh/O0AgLzlcRoxDpOsy7horVvmA+KQhFw+Ni6zP38XEeEUEzMhpm/ZgZW70Iz/oM+2FmVo1b4uzBooyQarnfQzUkpSOCS7xmjxu6LeaI4fq3gttc5bqdG8H3zzHkVnPZFh/nSSmjusaqGKBwa4m4fMTPnXw9c7Gvd+kG90gz/Ou3fukVXfKKtzZ4khsjEcTfOyqlyIX/SgsubD3wbhFtyL7dw3CEH96hHam+Q0OKEFW+8JqI20MYAWtk+kLEvtqDbVeftorkihPRBwkxz1R4ZTml586bfs9bH8RhFbJ0LIaieuUnY2k57HcRWADakB/4z35r7WiRPm6LJA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783842202-385786
+X-HE-Meta: U2FsdGVkX18aipdOoHicdTcLJZUT/S0/wgmdBdhJ6HrwExgnRb04U8L8537IHu76Tn3JzZl2DeZsVhhWcuNfLMEKU4QMM48bQ761xD56rEt/hKEM2/HW5XO7wX6FYUfpWHP/gA4ZhQN+PkMFuVG9Y+Q5D1NY+Eccq+DTYq+DPA4eFE95xs3y8Axqd3DAexFros/HMFot2jjsCLekGWlznTPIzLcyjzm6DQ4i+uvm+J8I7QuFULmwLeuRzSr7ibRG1bvWh7ZwkZdZkPiXY3FRTPxxqRs0gx/BG4FcT2UYpOHa2TLJmJz7fB9aGoRDy7BAQu6Afd1Gp7nQZiryKrSvdGo+khXGz8kKO74GIXOuI54e4QNNSKOk/mytyp8u59NFzS5/xqdUz/9FTjtRAurWYrk2H3d/y201BGC2R8jOdo2pgqYLdVDgA6kNvjnwWmcRJgzWecuHRR8tkeUlrUIjL6heVWGyP5acsxx9P7+uEA8YPrRSc7kPhJmsGZDMOvMGM4QGDIo/24VbFq9ASiUQEBzXZV1sFqX6N7VbHt/eO5lPEfkdiX4F4PEvEZNYpWalsVCnIYohQLtDKYlp17omx9e09AZim97nWOMS06DjW3pX6L9LYdzMQ3SOHGYK0PliHXwqLd/D3L1QmEqhS7NnQkmduMKvfpBA62BaFDag/eZoEom369gdn6FN18fDw7q4KqOYrhb++MMO0sdPREdHzluVBltMnX9GJPcr09C1q9fkhZ7yixlWMHGanK7RgS23YKA+t44DRViGUD2CfsStONTlqLFgAmy7aOcZ8HL/dGl1OtHmyvxGuXBzUHtqBtAJefUztyP8aYGYpkDBub38JoKsNCuCySrKBuzvkGM4SRXkm2YD5hc/Dazx3irbJn7QTPAlY2eAeu4EjCf4u5ZJv2ZcC0OMn0izcmCp3rOQmxx1GEdZ5bLreL8IrkrS7BU2amQmsEZCqguwu1ExF1p
+ zwlKvrX2
+ A4iLrubluMvTUt89J9fhqjtflHgTTuzYgdX5BbFYmOmZZCYlH5kQ9mZmELWJWpdWP8fdvnRT486yYqNNzRL7oeMIlUiCctcGItcZSsWQzHypGPYiY/YuJ/9e/1sQoEAb2N8MMABukxSbWGwMgT25zfuTInBydsEecl2bitsdXDg1fdxAogs0bh+JwtjAYdEBmjF267WTohtXmdx4wYcSZYVpFSAyZBpJQAygOZFmNLGBOV9931Cmr2qoJVAKbZLpfjqRqVKXcqcZBoxBFFKAj/6YdWcmMCY+5kHnI6/FluHiio/PJYVHmDa3ZreArkDJpDXiZMuoc9lbHN54An/Fs6xJIhS0l5D2rBr+Jm/MCO61T+XnfLmqoDSGedcv5NMyfQy8Erh8OvrZQaaSKhg2rkAZHGVG6kLTeFGf5kxWO7D1o7lWHqpKE034yf2/Gch7qSueOtkgzD0tIMq+F5nzv16729Jk1Y+L62zQktDmCBaDM+hkCFGdesV0HXp1Ha15XboorRPCcKxE57quBmpffs89+HNDLrL/H5LI/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,211 +101,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-try_to_migrate_one() converts present PTEs to migration entries one at a
-time. For a PTE-mapped large folio, this repeat calls to ptep clear+flush,
-the migration entry build and set, folio_remove_rmap_pte() and folio_put(),
-each re-entering page_vma_mapped_walk() once per base page (256 times for
-1M folio).
 
-Mirror try_to_unmap_one() to introduce folio_migrate_pte_batch() to detect
-eligible batch for PTEs mapping conseuctive subpages of a large folios,
-and convert the whole batch in one shot using the batched helpers.
 
-A side-effect of this change is trace_set_migration_pte() will record
-one event per batched run instead of earlier behavior of one per base page.
+[-----]
 
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- mm/rmap.c | 110 ++++++++++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 85 insertions(+), 25 deletions(-)
+> We also define a guard class for mmap_read_trylock() so we can use
+> cleanup.h to make the scope handling cleaner in the implementation.
+> 
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index ef68adba89c4..cfac85f6f68a 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2586,6 +2586,48 @@ static bool try_to_migrate_hugetlb_one(struct folio *folio,
- 	return ret;
- }
- 
-+static inline unsigned int folio_migrate_pte_batch(struct folio *folio,
-+		struct page_vma_mapped_walk *pvmw, pte_t pte,
-+		struct page *subpage, bool anon_exclusive)
-+{
-+	unsigned long end_addr, addr = pvmw->address;
-+	struct vm_area_struct *vma = pvmw->vma;
-+	unsigned int max_nr, nr, i;
-+
-+#ifdef __HAVE_ARCH_UNMAP_ONE
-+	/* Cannot batch unmap if arch_unmap_one() is defined. */
-+	return 1;
-+#endif
-+
-+	if (!folio_test_large(folio))
-+		return 1;
-+	if (folio_is_zone_device(folio) || folio_test_has_hwpoisoned(folio))
-+		return 1;
-+	if (pte_unused(pte))
-+		return 1;
-+
-+	/* We may only batch within a single VMA and a single page table. */
-+	end_addr = pmd_addr_end(addr, vma->vm_end);
-+	max_nr = (end_addr - addr) >> PAGE_SHIFT;
-+	/*
-+	 * If unmap fails, we need to restore the ptes. To avoid accidentally
-+	 * upgrading write permissions for ptes that were not originally writable,
-+	 * and to avoid losing the soft-dirty bit, use the appropriate FPB flags.
-+	 */
-+	nr = folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
-+				   FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
-+
-+	/* Limit possible batch count to a uniform PageAnonExclusive value */
-+	if (folio_test_anon(folio)) {
-+		for (i = 1; i < nr; i++)
-+			if (PageAnonExclusive(subpage + i) != anon_exclusive)
-+				break;
-+		nr = i;
-+	}
-+
-+	return nr;
-+}
-+
- /*
-  * @arg: enum ttu_flags will be passed to this argument.
-  *
-@@ -2602,7 +2644,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 	struct page *subpage;
- 	struct mmu_notifier_range range;
- 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
--	unsigned long pfn;
-+	unsigned long pfn, end_addr, nr_pages;
- 
- 	/*
- 	 * When racing against e.g. zap_pte_range() on another cpu,
-@@ -2655,11 +2697,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
- 					!folio_test_pmd_mappable(folio), folio);
- 
--			if (set_pmd_migration_entry(&pvmw, subpage)) {
--				ret = false;
--				page_vma_mapped_walk_done(&pvmw);
--				break;
--			}
-+			if (set_pmd_migration_entry(&pvmw, subpage))
-+				goto walk_abort;
- 			continue;
- #endif
- 		}
-@@ -2685,9 +2724,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 		anon_exclusive = folio_test_anon(folio) &&
- 				 PageAnonExclusive(subpage);
- 
-+		nr_pages = 1;
- 		if (likely(pte_present(pteval))) {
--			flush_cache_page(vma, address, pfn);
--			/* Nuke the page table entry. */
-+			nr_pages = folio_migrate_pte_batch(folio, &pvmw, pteval,
-+							   subpage, anon_exclusive);
-+
-+			end_addr = address + nr_pages * PAGE_SIZE;
-+			flush_cache_range(vma, address, end_addr);
-+
-+			/* Nuke the page table entries. */
-+			pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
- 			if (should_defer_flush(mm, flags)) {
- 				/*
- 				 * We clear the PTE but do not flush so potentially
-@@ -2697,11 +2743,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 				 * transition on a cached TLB entry is written through
- 				 * and traps if the PTE is unmapped.
- 				 */
--				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
--
--				set_tlb_ubc_flush_pending(mm, pteval, address, address + PAGE_SIZE);
-+				set_tlb_ubc_flush_pending(mm, pteval, address, end_addr);
- 			} else {
--				pteval = ptep_clear_flush(vma, address, pvmw.pte);
-+				flush_tlb_range(vma, address, end_addr);
- 			}
- 			if (pte_dirty(pteval))
- 				folio_mark_dirty(folio);
-@@ -2741,6 +2785,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			dec_mm_counter(mm, mm_counter(folio));
- 		} else {
- 			pte_t swp_pte;
-+			unsigned int i;
- 
- 			/*
- 			 * arch_unmap_one() is expected to be a NOP on
-@@ -2748,19 +2793,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			 * so we'll not check/care.
- 			 */
- 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
--				set_pte_at(mm, address, pvmw.pte, pteval);
--				ret = false;
--				page_vma_mapped_walk_done(&pvmw);
--				break;
-+				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
-+				goto walk_abort;
- 			}
- 
--			/* See folio_try_share_anon_rmap_pte(): clear PTE first. */
-+			/* See folio_try_share_anon_rmap_ptes(): clear PTE first. */
- 			if (anon_exclusive &&
--			    folio_try_share_anon_rmap_pte(folio, subpage)) {
--				set_pte_at(mm, address, pvmw.pte, pteval);
--				ret = false;
--				page_vma_mapped_walk_done(&pvmw);
--				break;
-+			    folio_try_share_anon_rmap_ptes(folio, subpage, nr_pages)) {
-+				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
-+				goto walk_abort;
- 			}
- 
- 			/*
-@@ -2770,19 +2811,38 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			 */
- 			swp_pte = make_migration_swp_pte(subpage, pteval,
- 							 writable, anon_exclusive);
--			set_pte_at(mm, address, pvmw.pte, swp_pte);
- 			trace_set_migration_pte(address, pte_val(swp_pte),
- 						folio_order(folio));
-+
-+			/* Set nr_pages migration entries, advancing the PFN. */
-+			for (i = 0; i < nr_pages; i++) {
-+				set_pte_at(mm, address + (unsigned long)i * PAGE_SIZE,
-+					   pvmw.pte + i, swp_pte);
-+				swp_pte = pte_next_swp_offset(swp_pte);
-+			}
- 			/*
- 			 * No need to invalidate here it will synchronize on
- 			 * against the special swap migration pte.
- 			 */
- 		}
- 
--		folio_remove_rmap_pte(folio, subpage, vma);
-+		folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
- 		if (vma->vm_flags & VM_LOCKED)
- 			mlock_drain_local();
--		folio_put(folio);
-+		folio_put_refs(folio, nr_pages);
-+
-+		/*
-+		 * If we batched the entire folio, there is nothing left to
-+		 * walk; stop right here.
-+		 */
-+		if (nr_pages == folio_nr_pages(folio))
-+			goto walk_done;
-+		continue;
-+walk_abort:
-+		ret = false;
-+walk_done:
-+		page_vma_mapped_walk_done(&pvmw);
-+		break;
- 	}
- 
- 	mmu_notifier_invalidate_range_end(&range);
+Will this cause backport problems, I think this scoped guard thingy is
+not that old?
 
--- 
-2.43.0
+
+> One wrinkle here is commit fa93b45fd397 ("arm64: Enable vmalloc-huge with
+> ptdump"), which addresses the issue for arm64 only by explicitly acquiring
+> the mmap read lock on kernel page table freeing should a concurrent ptdump
+> be in progress.
+> 
+> This is problematic as vmap may acquire the mmap read lock prior to ptdump
+> attempting to acquire an mmap write lock, leading to a deadlock when the
+> mmap read lock is slept upon on page table freeing due to rwsem
+> anti-starvation.
+> 
+> We work around this by predicating the mmap lock being taken on
+> !CONFIG_ARM64 for the time being.
+> 
+> With this patch applied, a follow up will partially revert commit
+> fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump") and at that stage
+> remove the arm64 ifdeffery.
+> 
+> We also update walk_page_range_debug() to assert the mmap write lock
+> unconditionally and update the comment here to reflect this change.
+> 
+> The issue has existed as long as ptdump was available and vmap freed page
+> tables when promoting to a huge leaf entry, that is, since commit
+> b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table") for
+> huge ioremap, and commit 121e6f3258fe ("mm/vmalloc: hugepage vmalloc
+> mappings") for huge vmalloc.
+> 
+> Since the former is the earlier of the two we choose that for our Fixes
+> tag.
+> 
+> This patch is based on work by David Carlier (linked), with gratitude!
+> 
+> Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
+> Link: https://lore.kernel.org/linux-mm/20260706203128.162335-1-devnexen@gmail.com/
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>  include/linux/mmap_lock.h |  1 +
+>  mm/pagewalk.c             | 22 +++++++++++----------
+>  mm/vmalloc.c              | 50 ++++++++++++++++++++++++++++++++++++++---------
+>  3 files changed, 54 insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index 04b8f61ece5d..6b5c2390cc30 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -621,6 +621,7 @@ static inline void mmap_read_unlock(struct mm_struct *mm)
+>  
+>  DEFINE_GUARD(mmap_read_lock, struct mm_struct *,
+>  	     mmap_read_lock(_T), mmap_read_unlock(_T))
+> +DEFINE_GUARD_COND(mmap_read_lock, _try, mmap_read_trylock(_T))
+>  
+>  static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
+>  {
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index 3ae2586ff45b..bbcfd68d0907 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -678,6 +678,8 @@ int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end
+>   * will also not lock the PTEs for the pte_entry() callback.
+>   *
+>   * This is for debugging purposes ONLY.
+> + *
+> + * The mmap write lock must be held.
+>   */
+>  int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+>  			  unsigned long end, const struct mm_walk_ops *ops,
+> @@ -691,6 +693,16 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+>  		.no_vma		= true
+>  	};
+>  
+> +	/*
+> +	 * When walking userland page tables, an mmap write lock must be held to
+> +	 * account for munmap() downgrading to an mmap read lock when tearing
+> +	 * down page tables.
+> +	 *
+> +	 * When walking kernel page tables, an mmap write lock must also be held
+> +	 * to account for page table freeing on vmap huge page mapping.
+> +	 */
+> +	mmap_assert_write_locked(mm);
+> +
+>  	/* For convenience, we allow traversal of kernel mappings. */
+>  	if (mm == &init_mm)
+>  		return walk_kernel_page_table_range(start, end, ops,
+> @@ -700,16 +712,6 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+>  	if (!check_ops_safe(ops))
+>  		return -EINVAL;
+>  
+> -	/*
+> -	 * The mmap lock protects the page walker from changes to the page
+> -	 * tables during the walk.  However a read lock is insufficient to
+> -	 * protect those areas which don't have a VMA as munmap() detaches
+> -	 * the VMAs before downgrading to a read lock and actually tearing
+> -	 * down PTEs/page tables. In which case, the mmap write lock should
+> -	 * be held.
+> -	 */
+> -	mmap_assert_write_locked(mm);
+> -
+>  	return walk_pgd_range(start, end, &walk);
+>  }
+>  
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 1afca3568b9b..9d0f1fdd6af3 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -43,6 +43,7 @@
+>  #include <asm/tlbflush.h>
+>  #include <asm/shmparam.h>
+>  #include <linux/page_owner.h>
+> +#include <linux/cleanup.h>
+>  
+>  #define CREATE_TRACE_POINTS
+>  #include <trace/events/vmalloc.h>
+> @@ -158,10 +159,25 @@ static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+>  	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
+>  		return 0;
+>  
+> -	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+> -		return 0;
+> +	if (!pmd_present(*pmd))
+> +		return pmd_set_huge(pmd, phys_addr, prot);
+>  
+> -	return pmd_set_huge(pmd, phys_addr, prot);
+> +	/*
+> +	 * Kernel page table walkers either walk ranges they own exclusively
+> +	 * using the mmap lock for mutual exclusion, or hold the mmap write lock
+> +	 * on init_mm (ptdump being the motivating case).
+> +	 *
+> +	 * Therefore, acquire the mmap read lock to prevent use-after-free when
+> +	 * freeing page tables.
+> +	 */
+> +#ifndef CONFIG_ARM64
+> +	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
+> +#endif
+> +	{
+> +		if (!pmd_free_pte_page(pmd, addr))
+> +			return 0;
+> +		return pmd_set_huge(pmd, phys_addr, prot);
+> +	}
+>  }
+>  
+Note that we do not need to take the lock around pmd_set_huge - we don't
+care if ptdump observes a temporarily cleared pmd entry. So how about keeping
+this outside the guard block. Otherwise right now we have an inconsistency:
+for !pmd_present() we do pmd_set_huge() without locking, but for pmd_present()
+we do pmd_set_huge() with locking.
+
 
 
