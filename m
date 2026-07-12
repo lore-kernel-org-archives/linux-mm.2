@@ -4,96 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36BB7C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 11:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 242CCC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 11:47:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F28FA6B0005; Sun, 12 Jul 2026 07:34:33 -0400 (EDT)
+	id DDD6C6B0005; Sun, 12 Jul 2026 07:47:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED96A6B0088; Sun, 12 Jul 2026 07:34:33 -0400 (EDT)
+	id D8DC66B0088; Sun, 12 Jul 2026 07:47:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA3446B008A; Sun, 12 Jul 2026 07:34:33 -0400 (EDT)
+	id C819B6B008A; Sun, 12 Jul 2026 07:47:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2EE66B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:34:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A3461A0907
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:34:33 +0000 (UTC)
-X-FDA: 84979916826.18.0E3D1E4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6408040003
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:34:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AiUG0i6H;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA8976B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:47:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 103E0169DA9
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:47:15 +0000 (UTC)
+X-FDA: 84979948830.22.442D119
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 45B25140003
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 11:47:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RZn/E58U";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783856071;
+	s=arc-20220608; t=1783856833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v+Aa6jyG0fEkgQTKo5R2R5BGjkiXEItVdvI1P9GpXYo=;
-	b=Xy/YSzYeEVo435AE4EB6pv39RZOtwLm2nGDfpQXMeAWvzH+laVdAzoyePYsgRtTQUH3h2y
-	6kK3Ybfw2jU09xxW348iMYQo3YjZECsc2rvm8js6GqKZ2ZTcj3HfMPOvheyEPbCbnK8y2l
-	FvHyPK+vgJ0z4SKQzLKyLW9yVjSjXtM=
+	bh=eKGRp99JuN0YlUnEBAi7RbagTek3+0cXmUA6oiaBAmw=;
+	b=7oV9BBI3vPHyry4M9f+Sfw0qUgAOSmipKD2hGqBm1YbazAxQ/cC2xxwXc2+kOucFi7dXbT
+	RAL6RzBQERcTjSAEa8yZayIRSQTOKkBUY7SYkNQ5OC8UKC8U50qDsxBK5pFNpIzX0DsP8R
+	gJj2l+9IMo0lPnWx94zAKQSqZ3dqg9g=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AiUG0i6H;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RZn/E58U";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783856071;
-	b=Y0qo2sbBJoebf2k87Nfd8hLKQ4nlBzfW1kO5nPg7ipdJDEueQL34io0uPZtncwY7YmY0/I
-	oTeMFPV/W8cI1pgqSXVdu6rWz3cm+kuUGfoGFcKBb5LM4b80hsJEl+8RfqETfWTZOyFaLN
-	EeHCAGRXsIC/CuMpoqaAj7DApXZtqI0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52D411688;
-	Sun, 12 Jul 2026 04:34:26 -0700 (PDT)
-Received: from [10.163.128.224] (unknown [10.163.128.224])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 63FAC3F85F;
-	Sun, 12 Jul 2026 04:34:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783856070; bh=iQApNrWkND8FDy5QIKIhPDy1QVXCWDK+2ahXRVfNZeQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AiUG0i6HoybQfWvQD5k8wcZYBMuYiE+/LWz2ZFFXWT9FwNzEd3pme6sZ2tyvAD2fw
-	 d2MaY9HG0Ok/VneoWcP0mYNnwIOITPtTxKPHsvan+cxcefm5KWJegnHiv5dkmRsfMX
-	 gSqRoC92a+ZQDjFzLZ2SbgpzR+ZTYy41929BQt4o=
-Message-ID: <8d109bba-4a8b-4d2e-9b3b-7c79441f7a39@arm.com>
-Date: Sun, 12 Jul 2026 17:04:17 +0530
+	t=1783856833;
+	b=xYZkh7agEGBMuJZhBn9E5krXM3rG6K4qMZCKdcdj6vNJzv1SM1FQuvEzPSwtRauB1WaFVa
+	hTx9V92O/Kcdh3OIdpfycWp6SoyFkTmdrHi7tcCoTEhVfq5qjjR4fxJwDRM2vdwNzTiEDY
+	8pkzVaF3k8Rcc46Y+wKxcyj/hjueCRk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 30F2C40756;
+	Sun, 12 Jul 2026 11:47:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342161F000E9;
+	Sun, 12 Jul 2026 11:47:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783856832;
+	bh=eKGRp99JuN0YlUnEBAi7RbagTek3+0cXmUA6oiaBAmw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RZn/E58UhlD/oZinnPytk5XP+7r14jNAjD2+0d8Sl6NYp0V7lw8FqP2JfYAP0T+Bo
+	 zcTenYNzCgr+pB15hbh4qe3eKW+g4xW+Yxx7+uJ8wt87wOTBPkGb6OEeA+ATQMUW6m
+	 d0EL07LaqRbvK19TsxPzhaR1obObU4Vw9lBszR5DoNTmcvsIdLJjc6NmGc1xfs65Rc
+	 0brii0Dzd2/WiVP+znkM5fCmdamhG6D+m+hhk4riuygatVXw+VnxF0br7N1a3r5vwA
+	 Z9G+nOoqTX2UWeQv5uawx/idWpCcy6zavx7fa95zi41atMABTHQyP/UFCiUCWtviv6
+	 qqw3xGIpry4/w==
+Message-ID: <998e71ca-05bc-46a3-853b-2eabc169d909@kernel.org>
+Date: Sun, 12 Jul 2026 13:47:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm: fix UAF caused by race between ptdump and vmap
- pgtable freeing
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- David Carlier <devnexen@gmail.com>, Ryan Roberts <ryan.roberts@arm.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
- <8e320b30-9658-4e9f-ac4c-f99dcf855944@arm.com> <alNQccqtx5-QApup@lucifer>
+Subject: Re: [PATCH v2 5/5] mm/rmap: add anon folio unmap dispatcher
+To: Andrew Morton <akpm@linux-foundation.org>, Dev Jain <dev.jain@arm.com>
+Cc: ljs@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
+ riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
+ jannh@google.com, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260710055915.638659-1-dev.jain@arm.com>
+ <20260710055915.638659-6-dev.jain@arm.com>
+ <00467fbf-0360-47be-94bc-d1456323e5a1@kernel.org>
+ <42300e6c-523b-4f58-98f7-672ce9173fe2@arm.com>
+ <20260710173519.d7659f9705afa37ad62e7bbb@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <alNQccqtx5-QApup@lucifer>
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260710173519.d7659f9705afa37ad62e7bbb@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6408040003
-X-Stat-Signature: pt6d6ppy5g3hm8s9wxj3uij5t3ot8yn7
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783856071-329905
-X-HE-Meta: U2FsdGVkX1/jDmSsrGQ/A391Y4sRMQoPJEk0J+JcqJjVM3gpxHXhonc3iGsDhbDC9uH3hB4QIom3oC4vD0QFG1dJhFNdfNb/5mEWy1jMuo+ig0FOw3fI7SfbkD0EKNQy4HbbPlO4/vp5XixY2h6c87S2/6pJWV9WOEqcfdUamtuGBfplpaPcapcRrhUPgjhn8n1pTgtQK2Q3DZmlCwBT8kydJfgAE+uaTI4JMHDFQrC7nWu8JEpAvIc9sgNmO6I1c9kLsyT0hUokkH/kwadfBXxPYa1lpt3UGkny8nyUjeYe0O2SmSFbHW0+Eb4xfoQhN+UypSi6Et1eC+DxursH/b6IHqggtMsf8bYRrBvPCnMJ4OOy5IZot2ZFR66IT4VSHL+AdNJx6VCwujA6QAtPycY+nDu4D+fmj94h3CZdU1RYR6ZXGrqrbwhSsABWqziMltjQ3rQxvOLA61Nu/aI+ul1bKUwenU7CSdvR+Tg6Kuk9TULq00hsdjuvDXE2z2EIRB7m2xEjBf8fBmYra2cH4fzojL78zNEae2TkoerZDIpa528kktVzhhxy46wDWxuFEvZS5PscLkAaUw9qJ06Dak0RRH3s907CBrVtZsrca9PlspAWfGztpdGrPixWaG/JyR0xwB+gQidx4GMorQbLPWpxakFYUL5J+KVhc+dYNeGKmNA4bhL/W921oMbhB36LrcKbe0wWe3br8ptLecxp+NwXy22ZhcqRw6He98fwSoqOecf60HJYdRwZdVJfgQI9T9r3lkQYyo5c1xyGVaw/iLHovShcGxdS18aN1Kx/Ld/zAnRZMK1rL6C/Vwf0ej9Y87GJkne0hKHWRgcjZcXPQYAv+BoNoxc+ZOfC/J82l/8OtTJUWYzpoHdvxS/2new8/4GTfcN0sBku8IhibWduOZ8eg4lP4VNZUxipEIYq2eMkaQl3IU6jCKx3O2PowSVrR7NX3YYOKJzxUmUlZTY
- 3EHEjBkK
- CkPBtOFVfAi94sCHpODDiJylUiKK3O17aLGyqOfFGP5lBOm5WY/bYlBB4ghC5B6Vh71f9e/qgP32uS1/wIMyptBgLkm0Rh9VDxi2Fr5HAAmlzBTtbw0BV0DDACxVVXeBtYxernZmDS4fTtz9Y6egehQn30GYMhQLjsmw9beDnJddYp7Zjdvwg07PMA1ds+CmS2MQiclNkTgs08hWw7TEksFzLKu1DGDKGX+2QvTTPHI5xA3tiJgPT4JXwWukWulWuID481mMWRPTD3fzNH06r19evh9oiwlf+OqibYUVcVZXoyz3R1q3CJKTatdD87W4tdo3Z30valdX4aDYtr4lJpocYq+ZnW6U9rEVBc38hPLiqUBw3JXkA7JAPs7kOn+jB4WGzgG8LnLYjAXY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 45B25140003
+X-Stat-Signature: 38bskoc8kjwidx5xk98rgst9w3jj8x1t
+X-HE-Tag: 1783856833-190935
+X-HE-Meta: U2FsdGVkX18zM7B1y0Hg3F31w2/ifa3SJs8cvXXZPIv9JqNN86JSxDkcw3xJ9gtz8aADJd99KyXzc5fAAssfYmhuq7NmmMTfHeyxXYsaO6K3PXRKJN6zP33i1PmAuSeRW8O+4l/qMoz7DBovqsAs6Djh/Uof653vwbssX/M34OU/8F2+cb/vNz3Ai+33IsEJLQUdAx2MgwPJJhamn5dTzyQKveODTzYe5TGTuBeABi9xHfDK+aloHwMyWQqJv4Es3rJAmG0/1qJTeF8VBOUuZaMhdYiIUxnJ9sdXj9aKlHqgplaZqZpHZsSPtivHAJWyzfRsW5up/aXdCIRsgIFtBYYpn2x0abmWrd8OX+oVNHkOTtZO7Fb6vvshl+VroeEQyuozc9HgQvn4tUA8cIVWO8loy7LV10SDmZbJyXZyChOW9v7WIxanHT0FlTfFO+m4DlJ0qmjEeqr7PXLGcV+ZziWZZgUiqXDqn2eiHZOnD1nsz6vx26yUja2n4g+HwjXYSz8l+ruNuUDBScoAjQPfKhoEWQmi4/5+m9XuNNzePkztD10s6yDrz21++mPa4vaHZlJUbLPFsxrHNiPY8/CfnfkSmtcGgh4d+Yin+zPQixsQ7Uvd+OVHjc2k4wrc8pfqRPh8BCETIGYjwJ4HepeccBM8vkGU39szmjOgP3fZQJkOexg+Bjt8Ih1sJUkMNV0SmOj37xSIrEWGLsiH1MCdpqYrfYANoOKErEe7+OZ3fNzy74b7tHj4JXRDr+R4jiMDgjLUwqCBri8ky615UkYzuGnGbo/2bJyAEET+2P9RoqETzjJuwathBLFwelKns6uBrHDTcs25sIWi9E/TsZ8oS4Fsb3XCFzu8Nl3jXJ5rsB3hiHyemgQ4pkqKViMEABUamERSV4ubpp6zUsnrMq31wGTiL8GdqipFpTXqgS09Yj0uXLk/rkla5rXXeEtwWSD1K3IPc0QC6Jz8do7zKbU
+ IGwshUM4
+ J1bR+SRsY2RqtfwZnWNM3ThsNPyNPIIbNp/oqN4FBaaKjiljx6qRRUXDLvCNnXRhX5THjzn1ENJbOPcjgpeo8K+0HVxfnebEHgmKk+AF3+1J+Cl42SG4jAx//7Pfp+RngnHEnRDWO8KpqKVIPeumH5OcUjNNEQ9JwL7DOcQl590bLzi2qfNAzNtHmoK47A2G1Kgmo+XFxLE9U2YE4rY6GdQ5t4JZZdGW4hC+X7akAoR4OttequIDByV4Pska3NlCRTTr1OavDfG6fc5FGvHR0pusMcAk+Qr55sRGWOQ56DBswSbRNh/xzZuOKSlu97wybNH7r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,109 +143,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/11/26 02:35, Andrew Morton wrote:
+> On Fri, 10 Jul 2026 18:43:14 +0530 Dev Jain <dev.jain@arm.com> wrote:
+> 
+>> Andrew, could you you squash this diff:
+> 
+> I think I'll await v3, please.  I'm getting a big reject in rmap.c and
+> methinks we're all a bit firehosed at present.
+> 
+> Are we all agreed that we'll be "batching anonymous large folio
+> unmapping to optimize it"?  If not, is this series pointful?
+> 
 
+Yea and yes form my side,
 
-On 12/07/26 2:16 pm, Lorenzo Stoakes wrote:
-> On Sun, Jul 12, 2026 at 12:50:08PM +0530, Dev Jain wrote:
->> Will Deacon had pushed back on a similar approach:
->> https://lore.kernel.org/all/20250530123527.GA30463@willie-the-truck/
->>
->> Although now when I read back that thread, it feels more so like my
->> incompetency to convince :) because:
-> 
-> No haha not so, I think more like this stuff is fiddly.
-> 
->>
->> 1. I don't think this pmd_free_pte_page() path is a hot path at all
-> 
-> Right, and we don't actually alter that path anyway
-> 
->>
->> 2. We are doing a try lock which is almost guaranteed to succeed,
->>    so it's not like we are losing out on block mappings
-> 
-> Also it's specifically only on when vmap tries to make a mapping huge, and
-> this path is being inconsistent with a convention that already existed - if
-> you manipulate kernel page table mappings that can interact with other page
-> table walkers, you have to take the init_mm mmap lock.
-> 
->>
->> 3. Any overhead from the try lock will get dominated by the pgtable
->>    page free/TLB flush
-> 
-> Yup.
-> 
->>
->> I guess you did not take the RCU approach because that would put code
->> into the generic kernel pgtable freeing path.
-> 
-> Well a number of reasons:
-> 
-> * firstly yes it makes the code path always RCU only to suit a specific
->   debug user as you say :)
-> 
-> * Importantly - we risk genuine RCU stall issues, because the ptdump then
->   has to be RCU too over vast ranges.
-> 
->   To work around that you have to shard the ptdump walk, make an assumption
->   all callbacks are RCU-safe, and that the sharding suffices to avoid these
->   stalls.
-> 
->   It's a ton of complexity and assumptions to account for... vmalloc doing
->   the wrong thing.
-> 
-> * It is an established precedent that we mmap lock init_mm for kernel page
->   table walking as per mm/pagewalk.c. It'd require significant rework there
->   and would disallow any future walkers like this if we were to require
->   RCU.
-> 
-> * The mmap lock approach is simple, safe, and as you say is only actually
->   required in code paths that manipulate page tables and thus are already
->   not hotpaths.
-> 
-> * If there's future work to free vmalloc page tables upon vunmap()
->   (currently it does not), we have a stable, established basis for doing so
->   that again puts the weight of the work on the operation being performed
->   rather than anything else.
-> 
->>
->> I liked the RCU approach because I hate the fact that ptdump takes
->> an mmap_write_lock when it is literally only reading the pgtables.
-> 
-> Well you have to do that for the userland side, because there could be a
-> concurrent downgraded mmap read lock during an munmap, and the same goes
-> for non-VMA kernel ranges too, so it would have to keep doing that
-> regardless.
+-- 
+Cheers,
 
-Oh right, I didn't know x86 was using ptdump for user tables too.
-
-
-> 
->> But your approach is simpler and fixes the problem at the particular spot
->> and not hammers the fix into a generic path. So overall, ACK.
-> 
-> Thanks!
-> 
->>
->>
->>> Lorenzo Stoakes (2):
->>>       mm/vmalloc: acquire init_mm read lock on huge vmap promotion
->>>       Revert "arm64: Enable vmalloc-huge with ptdump"
->>>
->>>  arch/arm64/include/asm/ptdump.h |  2 --
->>>  arch/arm64/mm/mmu.c             | 43 ++++-------------------------------------
->>>  arch/arm64/mm/ptdump.c          | 11 ++---------
->>>  include/linux/mmap_lock.h       |  1 +
->>>  mm/pagewalk.c                   | 22 +++++++++++----------
->>>  mm/vmalloc.c                    | 41 ++++++++++++++++++++++++++++++---------
->>>  6 files changed, 51 insertions(+), 69 deletions(-)
->>> ---
->>> base-commit: a635d6748234582ea287c5ffeae28b9b23f91c7e
->>> change-id: 20260710-series-vmap-race-fix-2a4cac988938
->>>
->>> Cheers,
->>
-> 
-> Cheers, Lorenzo
-
+David
 
