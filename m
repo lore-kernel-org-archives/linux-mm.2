@@ -4,76 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6E3EC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 07:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACAC8C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Jul 2026 07:41:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AA576B0005; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
+	id 7358A6B0088; Sun, 12 Jul 2026 03:41:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 781976B0088; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
+	id 70CA36B008A; Sun, 12 Jul 2026 03:41:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670BD6B008A; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
+	id 5FB546B008C; Sun, 12 Jul 2026 03:41:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 433876B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 03:41:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3E4AA0856
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:41:02 +0000 (UTC)
-X-FDA: 84979328364.22.6E44361
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010008.outbound.protection.outlook.com [52.101.46.8])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7E83740007
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:40:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="msn/BWK6";
-	spf=pass (imf01.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.8 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783842059;
-	b=7jgZN3gfOuxIXOn21RBDq3QuZo5ZQWCBHY74rkc+A89T30MTuJ25+1isU3X6tZNQMSLGw8
-	LMg8NBYPg3Je8lQ05VrDQodJ/QaW9vyArFh6m3omEgSsA7oNf9pM0Jl2PFVMbsXMOS3Bfj
-	cbZThnsmgWaBiYKfmFP5+jowN9PpWpc=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="msn/BWK6";
-	spf=pass (imf01.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.8 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3486F6B0088
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 03:41:14 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8E51EC4167
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:41:13 +0000 (UTC)
+X-FDA: 84979328826.25.9DEB298
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013064.outbound.protection.outlook.com [40.93.196.64])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 62E82100003
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 07:41:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=yXilX6+s;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.64 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783842059;
+	s=arc-20220608; t=1783842070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=fyz4ctdhor70uMG2b2egvjPOetCEM34n6i2B+bcaLeg=;
-	b=yPWxDI01p2ia5EHY2s7X1Vte5oxt2b7b2j9YahRtIdwwPL7x404mcvcJUJJoNUEaQVTan+
-	mnBYrZCCxuOUSgVN9FUPauxxnN7AO2tBr1ltm27eY+94Vsp1DypPP2ND9oFAdKU3MH1zjf
-	lJll6rKNBepS7LOvZn6Fe6STuVFf7Dg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+pnx6PsVHcrvSxWAaNCSG/M3DsulMI24w6J6EwBrV9o=;
+	b=FUa/CdYEDSpMcTsKb0rkgIFFY7DcVty6hbKDzfYOKIe6i3qYQDV/CvytWC4zG/MnpzA/kN
+	8A49fIPZOiFu2z2Gjj49iDhOH1XNRmVQ3dJ4TfeyrMmh7MLj1eXxvY3ILizB0mC1KmH44Y
+	NF58ttWKB+TJwlvRHqA5i8ba7qlnjD4=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=yXilX6+s;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.64 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783842070;
+	b=rZHFSRyTBQahmjq7CSH0c8jDS/hD2zydfRglq3vOUpI2CKPSkCOyyr3FriwX8bHRb+ul86
+	iZ1c/S5+V9CEYsZO9Rdwtn0rkR8GOlbuD9669rGzsSzEP4gadQnnHFjVL0vautgnKBtae5
+	UOLB6RLts4k2NjXdnlGzADj5vzDISH4=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JkuYrLFX+3nUZTIGiN1E6kxEc4TbXZbZ/iiIGe0PAHFDkjkclH6yj7w7Z3Q5lBADvjtn25jlZu7yDIqTqWLEP1W7ioNMwv7SB65JSlc7p3KmIQyOOmJIyVh4RxWTlP5AOWXQSc2OTMHgUtKQXsYY528yZLWq7sOIxnu3pBoZip0Ag4Ul4qsgV1QEZxQy+AQPTc6GIsLLsb65hqo0RiP6rQ4fO8fT4nPRYRWVXp6ZweBM3vjKK9zuU7oAZPCaZirxUPYZ0XfLRu3SMWxFg/VSO03DTwQsR9wKC4u/aQft9ysaeVRY44lBcmhiBmTpIroukK/+aeD9SCAYn2BSg69xRw==
+ b=RKhNOd20jRrZjwqUQcabPs4Jp0c4YV7QJkesXM7tf6FKEo4GTutdrQMh21D5vPYYGjDo6YzitTcmx2azB3tQJt8E7j4WoYi7tEHiy7pdZ0sMCq/KjUuuwufnHvO1zAZzkfDpxpQ3RGwb+ZHttyWvJy+ntMUkE3SIY337yHKWghQ904FP2hIMj0Z3BTnLbkyGDI/WXcAqYVU1ZDhnpBQzMNca2fvMhrcOOVzt1jn9OvlREiIlapcpBwgr/U+K6xP/ux72sJJcIjaJpydsXKkL4dd6ZeumarsTxaRONTwig0CvcPjBlJMBnGrr63Jr+rpzBNSAGwZfyZWxcxhj/9oFTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fyz4ctdhor70uMG2b2egvjPOetCEM34n6i2B+bcaLeg=;
- b=mV7JnTL4jNxvhBBhsYNPA3yYNXNkWdlWvuzyQBWL44MFS55uqkysWWXqVeBmpihcTLrWeW7Ll+6to3RhK1Oouxdn1V85N8tPRmdai+IzGa4aAvdPwjbmpk/1lsFuBsp27C93EUaBR+GVb+EmfmA4Ctha1Cu9swzCSmbecu8QCBUS9eu94l1IufUY5glR0F2QYQV/raW/Lmzlt5hTfUgQeK0lZPx2bKnuIO2JJ+2FKQ9ruFRzLbi7jyYmRIoc8x7DJdTjPAnng/mB1M2mQ+LrLTm6sEmnAp+kJJJmT0F/WbwD/CpcCUdrbl0KgJ0JfqSEC3KsoeAlvMU0300eiLO4dw==
+ bh=+pnx6PsVHcrvSxWAaNCSG/M3DsulMI24w6J6EwBrV9o=;
+ b=MgeFI/DR8l0v245pUQFiHDxf2SHnWDwblR9om8qQGi7U5IBrUAXvmlkYMZk3kEnHC6UopB3lG7OPrV2/QjiVVXitPQVmFkutF1IQUuhRISDH2VZ8xMjdPR489oH6hOnt38DBgcnrcVKugYKH1xNFUXMbheck9+UnTyeJwDNeHISONQm00REpC17XGzThhRPF/CNkpTT19eoo/cX5ak5oQwySiCZFJxYFVI3AZS/m4IfH4+olti8oXrONm+WdiK5lZPWhz/c81c9s49Uv32NfY97OR3nmVZ9wTh2241niQFkaCkaW2P9b90z+YJiWsVAj2/zmt/5FG2iwiIqzN5pgsw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fyz4ctdhor70uMG2b2egvjPOetCEM34n6i2B+bcaLeg=;
- b=msn/BWK6/zai91Hr4oS6r9wVKBOE3pe0VkDrn9XQaHcZVoCKXAyqUnoTTKNcZ9QqrD8JvVFnN7A5GRmmvUEshLx6GY/s7otw54uVldKyrxpL9id80Dv8srV8rBDMOYGVTWXjopIzBgkLLX+Bj8Ri4RHvpnjSp7itNdAIBMMfz28=
-Received: from MN0PR04CA0011.namprd04.prod.outlook.com (2603:10b6:208:52d::7)
- by DS7PR12MB6119.namprd12.prod.outlook.com (2603:10b6:8:99::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.19; Sun, 12 Jul 2026 07:40:52 +0000
-Received: from BL02EPF0001A108.namprd05.prod.outlook.com
- (2603:10b6:208:52d:cafe::14) by MN0PR04CA0011.outlook.office365.com
- (2603:10b6:208:52d::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.18 via Frontend Transport; Sun,
- 12 Jul 2026 07:40:51 +0000
+ bh=+pnx6PsVHcrvSxWAaNCSG/M3DsulMI24w6J6EwBrV9o=;
+ b=yXilX6+sCKtSqFgF5iwqJIiozRhLtV2nLwFHNolNY3L7IPia5Ua6Unng90Og40Bihwp1f4rFLfbfvGIsXSO05uRV3SGA4OXRsjP0mvrfYyS4P4yjbkg+wUDxlPBaNVBsmL9ep7VUKrBoFGiPKWE2AKsibNoJ45kQIBHT+Yvt96g=
+Received: from MN0PR03CA0015.namprd03.prod.outlook.com (2603:10b6:208:52f::17)
+ by SJ2PR12MB8717.namprd12.prod.outlook.com (2603:10b6:a03:53d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.19; Sun, 12 Jul
+ 2026 07:41:00 +0000
+Received: from BL02EPF0001A102.namprd05.prod.outlook.com
+ (2603:10b6:208:52f:cafe::65) by MN0PR03CA0015.outlook.office365.com
+ (2603:10b6:208:52f::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.19 via Frontend Transport; Sun,
+ 12 Jul 2026 07:40:59 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -81,24 +83,23 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A108.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ BL02EPF0001A102.mail.protection.outlook.com (10.167.241.134) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.9 via Frontend Transport; Sun, 12 Jul 2026 07:40:51 +0000
+ 15.21.202.18 via Frontend Transport; Sun, 12 Jul 2026 07:40:59 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Sun, 12 Jul
- 2026 02:40:44 -0500
+ 2026 02:40:51 -0500
 From: Shivank Garg <shivankg@amd.com>
-Subject: [PATCH 0/6] mm: batch rmap walks during large folio migration
-Date: Sun, 12 Jul 2026 07:38:46 +0000
-Message-ID: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
+Date: Sun, 12 Jul 2026 07:38:47 +0000
+Subject: [PATCH 1/6] mm/rmap: Add batched version of
+ folio_try_share_anon_rmap_pte
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAIZEU2oC/y3MwQ6CMBCE4Vche3aTLREFX8VwKGWEPYC4rcaE8
- O406PGbZP6VIkwR6VasZPho1Oec4U4FhdHPA1j7bCqlvMhVHE86mE9gm/zCnU9h5BohyLmHa6S
- ifFwMD/0e0Xv7s+H1zu30H7dtB9nNMNN5AAAA
-X-Change-ID: 20260701-migrate-rmap-batch-8ecc04de1905
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260712-migrate-rmap-batch-v1-1-872a734431d1@amd.com>
+References: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
+In-Reply-To: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel
 	<riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
@@ -116,11 +117,11 @@ CC: Karim Manaouil <kmanaouil.dev@gmail.com>, Frank van der Linden
 	<rientjes@google.com>, Dev Jain <dev.jain@arm.com>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783842044; l=3176;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783842044; l=4856;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=JaWvTqPDVb50vASsYrb/KTWrSaLeUDGTlaOCse6oj0w=;
- b=7f+y52xOewLwCYemlCFsPtwxeHTDGiYPaP8RC5UFxeq4+tqH/VwkIiViBzDXo28tokOOhWDZa
- h2YFWh4hUTpAVxXJMGt1s87tPKGji+2+jqt3tTxK/xXW7+RnGF2JsUb
+ bh=g1KssW8+1v2HJaJEhqcOFZIerfOk9z+DUKil2dMLEUk=;
+ b=PdS3GgyyjGtODvWWy5S3bZHiQpJzmSt5Z3pvDHLGpkbfJO6fF0ARPuaiguu4Zb7pKB5EqhIwt
+ f3UF5gyB2T8CUazjdOfaVglvSEKjSmLV2XpYPA7F05LpojSFUyR56V0
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-Originating-IP: [10.180.168.240]
@@ -128,38 +129,38 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A108:EE_|DS7PR12MB6119:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb5e532f-b09e-4e91-9da0-08dedfe8e604
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A102:EE_|SJ2PR12MB8717:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4cb754a3-09c2-4d2c-914c-08dedfe8eabf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|36860700016|82310400026|23010399003|921020|13003099007|18002099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|376014|36860700016|7416014|22082099003|18002099003|11063799006|13003099007|56012099006|921020;
 X-Microsoft-Antispam-Message-Info:
-	7qIBSmWlCxUE1jXUxbeEDqKqhZMRLkuJGJJTGZ5e9YhTOnxXCePJDNV2zUUarr+XsuqQGgfyzrG1vgKYelMh2r5H8zP8CWoPRbYHVHua5TWai8iOrwcY7+z1XJdLwFJQc4aCa+xDzrVbqYzNXQjPZTKEclynckf+hIw0RDiEgVQI8ZxzXp1YISih2i9XC4sBvjEAAnQpt/6MsZV6qc0uCr+KL8Zpa9HhLTrO2B8315k3a4JYwXimi8o/bzCsk6R5zqdB1WaILDDl/d1mHLMRlm36YUjkesjk7HR8j16jIZAfO4A2MRhCR9mN+KFoLeMlsM+7QDQ/NhfMB6OAbeXbiip2UK64CLU7bgMyl6WTFt0hqtXbO8V8gymXw3K4yOOl2GvcqScMKdIV26SdDdjs0CmAhKWk0iQSQKLSZVU4i3U+Tovm2kLe4TAuEpfMpMI1fVhauRWOSzwHIB6rEPS5JaYDqeW9qEGyG2sKpnp2bcQfdfNJIq+SNYijMLKo61Lo+YokNuuBrERVOOFRMmq+hjnKWn12+yaaZmlccw4Eajd/G6bNGFYH0Ux+NiRF5sC4mALg80CscDadDUk0V/HQAFoLpNacOnihZnxTk6SYS3zaKmGdrU5aU9unUvp+hpmAoBHFx0Qo8mEXrB8Y650m/ALaPuWDfc+XKrtXgcnnlmLYAupMgcUja4/JBXfm2H11r6da6Yg6RfXTyKoieZAR0+Uwg7SV/cXQbsaC6HnD3Q54kZNc1Z3/OXcdLzbBcngX
+	MYBliWtnoQEevF9RUtEK+QXzWrlA5bUhC6zjO3xbX0GFR+qqhY9BMs6AglSy/0F0BvpGSAW8GoEGrTwFT+zskJvrlp2iL/MQwVoL6fj8A5d4MG4GIGNTuIeH6yhjCwTxKwwDlGfHwxIOlz+lh2FkoYOSHvHcSxG9mwJsDPYvw6IMieDzIWz1wkbTeosh7C9wGJYsrINtpoek5JAyLMS1Hny5VMiW4XMWsrNtsotGQTWfQQBW9FsaY/N/4iIpL4xXzRfla7WttmJhHod9KcrStypjxdnsRbWs80NSCsj4VZWfIwrHMFXE4KYFE6RobwceAYvZ4N2q3UnCx2zZr0M3vhlV6VlMPDrDrwqOPxDbaJLGnGXl4KB8jFWHOmsSJeJxRljybzO+zU01yGQtTmDapybe91pjLJEP1KgwCdJJ9SDH4px9pmxjfOJX00+Kn1GXmkKmqHvllDW17a7TwxaBWPcTq1P/D2pBiq+AAg5+I3jwEszlgoI252QAFW1kzzyOjYHdNPHhB4KYUZA/1jy6wzIOjTn4sXIP6punfVbXwH7f/LDtfIwwCrbT/VFxRVoyUG07zk9rhVbMhXFInYTb3/sqA+A6aQjOwxo3qoFi+horAFNM6/ELkIB64ckyNN1gOC5W141cSEGyTekuzVXHeNeRScRFz1IX3C2zXnXm32oeZIdyAr5pPXH7UpfRoU5CRrikYtej/8yKIqErIVti49fw41oty1YPkYLSl6v2irflNoyWoSyR3xSOGGfO0YDe
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(36860700016)(82310400026)(23010399003)(921020)(13003099007)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(376014)(36860700016)(7416014)(22082099003)(18002099003)(11063799006)(13003099007)(56012099006)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	brOrSDkyVc0JLjoYHUiVPIZajSCwy62/9WgL8qXvVPJ27BHob9qQBEE5E3waog3N4M+1UlHwIXKIgGBd9DtNUm9MZ8B24VVmj77z6HYlL2VDB1+eoKRH/aFPhbqIxCeMTNlzldXRzQAZsu9vtrARr7Lw3d0o+l1HCSNObLIyEWvdkF5iq7hYhxoIYbP4U3Lexj1Mk3ZehXUYpjgv4QRz1emncIiMdxwyl4MPs5NMYNOenX9vU8PqBYFs9eEtnQtOvchDiMXbYILjywLaOwrbpB7Ny9hJBitN0ZkOsjQx8NqrI91MKDpHlXLOBSPk9jEMIsSqOS3AJPSW69QZUDT84SjthDmU4wB4qZbXIeYPYHrwiCfe1kS016q+PXhhRpDwWxxI11V3b4fsrpM/4Il8xUd4LZC1p+CVDg/IX3cFJnwRIue7qUUrlyky6rDytwJ+
+	hjVD6tketPAgS+PzPhktg9HulDDypzqqvuZr1cPIhgYBiM9lDDf1C9n906WiDmI3JJatgtVJ+/OchlpdbXmFtscKTTrR3h4A4t4yM/mQ/zOCa1/X1GZ2+M4ZbJc+9+H4wuuSuqCouZPaDEg2T+FpZcDsfRGAmSPtNmyb59txnmfQFbDwmoYbgP8G9oZlfpA1JnxxBhgKvJq1DrdnnNbwpo6R8lGypdqEpX/yj/n6rIPm0kIoUsky6P+E5Mba9XdZf+TnyX9WoBkb/c4ND+BoBGOOXOX7tG8se449xZT9bRz56H2r8iHL+SOQqUzWvI8l6gygJA6TDFqo9eCyXhACx+UqJR8p1FZfmf1UlAQukZPnuQYdtIcnXD3jHlLBy4DnqW0e7FBVWW4gVSX4PCiaih2tR+9ha7fBl/4UGCi6Q7QLFmQ5levJKKggfXJsGfsY
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2026 07:40:51.7237
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2026 07:40:59.6571
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb5e532f-b09e-4e91-9da0-08dedfe8e604
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cb754a3-09c2-4d2c-914c-08dedfe8eabf
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A108.namprd05.prod.outlook.com
+	BL02EPF0001A102.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6119
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8717
+X-Stat-Signature: kfsftap63xk3qwq3amw7tc568ukf94ij
+X-Rspamd-Queue-Id: 62E82100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7E83740007
-X-Stat-Signature: kbc1egos5tijuzitip6du6yrrm17ri78
-X-HE-Tag: 1783842059-261015
-X-HE-Meta: U2FsdGVkX19cZFD/KaPvnEowE8ntbFrA8xmAHLK6IPFuScV6ngh+ElK2Rz/ZUYdKI0taITmEycE+axbci24BddgqhkzXvzPv8ab05uAST3lOw654GtgeugPbrVieXdFGFQf9ylavGehnhp25NWuvee4EleZRXF9jsiEAgy4ov8vkd0qZVeDZdB4/ina4eNl5FPe0a0r/6JQWM6nNckdgSGWAwi2XQ5mJVX+cbaQgFkVVmQDJQPYHuiTW3n4Vsx/K6x8Nkg8m+CcnaojvE7DduHGHvM3yZ5VSJplS17ee6P/e6RE77zBTDRV3g4zoDWMQxL8tdCMLwjtPJcnwbMjdiAB7egsfa05IzuSARturIqatNbpENs3rkRR3BwMsfNTYWlnMk75VZGICp5+2ROFbvXO2KtKjHDgteCmnQ5dppaLoN20PNo3HmJgtlJsMUKkQ8Mj2bxlrMf7xl959MrRsSTsPCOgY00IeYKrnHkPS3s90wYoE0+U0nkGRTBBnVtKNiPISiS85lY4v1KXsx2/7D9rhHrW3pYAMpLE4zBDY+3RsHUCPawLBysBOYNnaCR3q/gQZKLmmos8swQEOgso5fhTMkF3nqMYxNsUPwRNI+uEK6N+oikUrETLLn0mhbkaIyppETlvNToV4TdHfFfWExQF6h4NKq/xUaUm2RueZ7X6HcvUFzkQxPJKQ9oaGisDW6KJcGk/LDiKpSomnNCs4NcUDOaylBPghk9QG6PW4TdkOA41cQax7DUBF/8sNbAXStmknFceW6LqSDoj8lMuALxFRiWxcxnB/fLFmZ8CxLYE4ZMQ9anHOtSbf0iF7v4hMPa+jiom+Mn7lrQ4wY76PhPZKEnMJxFeZkyypYI9Dbujiab7WQarjOj81jodGrmslAPuArv6tTP/mGobP1y4P39MnZ+iwRlxOEX4WNnGvcSA2GxV2pBI901GIi6laqnHqqe0x5d37b3P3NxQ9L+C
- 92joMlAI
- o0iI158e8h/MxDiqb31XyeMORbqbrszFoGnODJYtI74P1JRT9JMwNIZi2pefZNHdFWXegc4GdF5ZuTFYG4wZSBMAvkhDKYd0n8JA1TbrbedNFG9iWujsbfdBKMmf417Wt7OztyCzB9M8Jj0ict20OeYv5DNhW+IPeJEatdf3ZPXkIKO+54Vvj6PZtVwqI+D0D0rIU+jVBhcnDhpDhfIvM1E5khWsKAGCwbtXe7pMmaQRPGOReoWGXjoUodVNMEY3shbb/RVNXClaJBV86s3q02lnY+FnTfUgauLFTrWgVJZkLjLyLGnpio8kjCjK6r7xzmZqxGH4UrJhpvX3twk126o8TGaO9nIOtYXuFdFkNaXKcv5Brm46aMx5W2YmGHDqEYZv5GhwXrP8TFlpXrv4L+x2UUovJgQ09uAvaB5gIo/Y4dXugRW2AHFotCb5hs9zJ79wPdUWwCxpQaZvjhB0KXdjJV4pMWHHyDRBWOvOcceKfCToP4tnyujM18zLHU/lmC7F0+BQNjLPIKnld5lNNku44unxhJYfqisw9V8Qh6IYEmcvtgLcgVE2Br4cjRL7uqYw9gZBoE8sZgA4HHDcz1XYIFQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783842070-867640
+X-HE-Meta: U2FsdGVkX18z9wcDWk3kdG6pr3WmlsLibkz726RFkrHL2NhiiyynfzmvSqXZbpuSTi9AvXsvrXdqa0l2RwFBdf8/4yJmHZD54g95JpyL47U/xQoRDRYtuyy00ZDjlPMgaFeJneLQzIfdOeAlYakz35sBRseDTm5FW81nJ4MycLV7YcOramVbLwR3B0pIXnRy0TC8LqNAhyOALoXfLA3cdTYqkH1X3NdPvZWeDcvkWRYCU8iEoGo1wl3qix62xkuVwoXuyu+pmOa8B6CZfTAJnamWjiL76RZq+QTIge0Eb8nU/ysvYK5wwg2XoEsfVbVSkvnNJnqOzM7RO5naZHCtOuURbkFWs5xPn36Z+iZ+if7dgPPYhlXW63jZWw3uhNTfk1xqJ70qu6202fthobJdoSPJmhP+LujmGJ6BkX/8GnZTwkwgI1Dz/ylsHj+HRTmmMi4CFJ6jafaaFoSygSgaWIIYM4xiVurIcZDz9g9Vdz5s0k9pYRZkQWfdc/OjIcfuIoMO2ORc7R6/XAZieuY9zdMXr3mPt+b1B554Bo74rCk7PO66h1Cvol5tfXBwXx5tH8u77QDR0MfpFB4eJMtW+/cXXnYPsicFKgb/ZxuI6s8xXUjGXeqIb8ViX42T1RymzQR46zRfv6j+j0D4sb8EteIoo8pjQU9husAYuUKYmkey5lbesBqwygjeGmnCHVtS2VCOXFH4KxSgJpoiZHnj7+8nJqLw7iMrotRWBJJ01lxBb3BM2G+KFkXqF5xeWlNt46OmvLGqMrh3IetaVQn+fx26EfaMPB9wiSATaEIkEKf80t1ddT1LdS4r6MbM9p9COZlA6owHV0byRUtdvYozM4uLbk5eSOxGeJr9baiNoaQ30RGOsrD1Q1OtZfdFD3XglgLyfhLzft8KQW16wUCJpOGjGt0Sc2cRyhufF3RP0wsx8VcZuyhOe0mt/JIBjO7+05lHbYb5g7pvQhqRL09
+ c+sAT9dj
+ SlrgEWdJM2/gvSyFLYcxDLOZa7qFv+WCuOp4K1ZhjKaqxsEZs+qEjpR2dUyeledY3JMcx5h3j66miq5pl3qf4acirQD16sxB6OISvrh30legiPzQgIEQtljDIP+J1tnRDq/CeBQ48wIp2YNGXsn9fRr7ixgGR5QSET4ewdPx9qDguhvNSqBvH+ONwdgCScChgo/CzFXG1+Pw5/yTYmsDWTJdEm88YPEMTirulrlGuXvMSoEFsU+/Rj3LNpeHR9+39CURrVynwbgPiIiR2i4pnCb9ZTDqZOp6QZvoW4ImthvxmhkIwWgk1VRwHSttQM5R5g40EhPNa+eURe50O1t0kVvFGFnjH1eZqqhHstYITV6msFPJlbh5eg0+qzqEq7mqJa+DXOjKfJev1Nz3g6eCThqSSXSMNqG+OnMhWImbT099m7EIxZG1LRh6UGnVJ2p46m+2+1dIAdCarQgO8LKPefqsbgxAOBL8gMwzk400e9dwXW3hxoEgXYoTEbvzctbJKx/3/P59Ez8/wLodTyuvUagwybepCA4YRAZ9T0f9WgRitfZfX6ggcUA5585XfqQPxOiQ22Zt0ESm6z+9hfV1XxXI4uQ0hxYM2uGrPSWkrOrWUHxWYL4JXPQLP65kkr8/K03HAWTmHW+J/4LoTfcBfnFFAUOI+ZlPZcf5V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,74 +168,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Migrating a PTE-mapped large folio currently walks the folio's rmap
-one page at a time. It does so twice per migration:
-1. try_to_migrate_one(): Replace present PTEs with migration entries
-2. remove_migration_pte(): Restore migration entries to working PTEs.
+From: Dev Jain <dev.jain@arm.com>
 
-For a folio with N contiguous PTEs, each walk repeats page_vma_mapped_walk()
-and the associated operation per subpage of the folio. (256 iterations
-for 1M folio).
+To enable batched unmapping of anonymous folios, we need to handle the
+sharing of exclusive pages. Hence, a batched version of
+folio_try_share_anon_rmap_pte is required.
 
-This series enables both walks to process a batch of consecutive PTEs
-that map the same large folio and do some refactoring and clean up on
-the way.
+Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
+to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on a
+batch of nr_pages. Refactor the function such that the clearing of the bit
+can be done at one place without duplication.
 
-Performance:
+Note that __folio_try_share_anon_rmap can receive nr_pages == HPAGE_PMD_NR
+from the PMD path, but currently we only clear the bit on the head page.
+Retain this behaviour by setting nr_pages = 1 in case the caller is
+folio_try_share_anon_rmap_pmd.
 
-AMD EPYC ZEN 3, 2-socket system (1 node per socket).
-move_pages() migrating 1 GB from node 0 -> node 1, throughput
-in GB/s:
-		         batch-	        batch-restore +
-folio     vanilla        restore        unmap          restore%  restore+unmap%
-4K        2.98±0.09      2.95±0.07      3.06±0.05        -1.0%    +2.6%
-64K       6.16±0.09      6.24±0.08      7.80±0.08        +1.3%   +26.6%
-256K      6.85±0.06      6.85±0.09      9.54±0.19        +0.0%   +39.3%
-1M        7.06±0.09      7.17±0.09      9.89±0.06        +1.5%   +40.1%
-2M       10.97±0.17     10.67±0.13     10.69±0.15        -2.7%    -2.6%
+While at it, convert nr_pages to unsigned long to future-proof from
+overflow in case P4D-huge mappings etc get supported down the road.
+I haven't made such a change in each function receiving nr_pages in
+try_to_unmap_one - perhaps this can be done incrementally.
 
-In plain migration, the folio copy itself dominate the cost, so these rmap walk
-savings are only partly visible end-to-end.
-When the folio copy is batched-copy and offloaded to DMA engine [1], the copy is
-no longer the bottlneck and rmap-walk batching translates into much larger gains:
+Borrrowed from [PATCH v4 00/12] Optimize anonymous large folio unmapping [1],
+will drop and rebase once [1] is merged.
 
-This series + [1], DMA Offload on PTDMA (DCBM), 16 channels:
+[1] https://lore.kernel.org/linux-mm/20260526063635.61721-10-dev.jain@arm.com/
 
-		     batch-copy
-folio   vanilla      -offload(dcbm)  dcbm+restore   dcbm+restore+unmap
-4K      3.36 ± 0.10   4.16 ± 0.18     4.10 ± 0.14    4.12 ± 0.13
-64K     6.16 ± 0.47   9.63 ± 0.23    10.00 ± 0.33   14.63 ± 0.14
-256K    6.70 ± 0.09  12.98 ± 0.18    13.52 ± 0.15   32.30 ± 0.65    (2.38x)
-1M      6.99 ± 0.02  14.32 ± 0.67    14.84 ± 0.17   38.97 ± 1.03    (2.62x)
-2M     10.74 ± 0.29  64.25 ± 1.48    65.36 ± 1.00   64.97 ± 1.75
-
-[1] https://lore.kernel.org/linux-mm/20260630-shivank-batch-migrate-offload-v6-0-da95d7e8b8a2@amd.com
-
-Applies cleanly on mm-new 10-07-26 (61cccb8363f).
-
+Signed-off-by: Dev Jain <dev.jain@arm.com>
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
-Dev Jain (1):
-      mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+ include/linux/rmap.h | 52 +++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 35 insertions(+), 17 deletions(-)
 
-Shivank Garg (5):
-      mm: factor out generic PTE batch detection from swap_pte_batch()
-      mm/migrate: split remove_migration_pte_hugetlb() out of remove_migration_pte()
-      mm/migrate: batch the restore-side migration rmap walk
-      mm/rmap: split try_to_migrate_hugetlb_one() out of try_to_migrate_one()
-      mm/rmap: batch the unmap of large folios in try_to_migrate_one()
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f00..64929490a7cf 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -706,17 +706,18 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
+ }
+ 
+ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+-		struct page *page, int nr_pages, enum pgtable_level level)
++		struct page *page, unsigned long nr_pages, enum pgtable_level level)
+ {
++	/* device private folios cannot get pinned via GUP. */
++	const bool pinnable = likely(!folio_is_device_private(folio));
++
+ 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+ 	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
+ 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+ 
+-	/* device private folios cannot get pinned via GUP. */
+-	if (unlikely(folio_is_device_private(folio))) {
+-		ClearPageAnonExclusive(page);
+-		return 0;
+-	}
++	/* We only clear anon-exclusive from head page of PMD folio */
++	if (level == PGTABLE_LEVEL_PMD)
++		nr_pages = 1;
+ 
+ 	/*
+ 	 * We have to make sure that when we clear PageAnonExclusive, that
+@@ -760,29 +761,38 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+ 	 * so we use explicit ones here.
+ 	 */
+ 
+-	/* Paired with the memory barrier in try_grab_folio(). */
+-	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+-		smp_mb();
++	if (pinnable) {
++		/* Paired with the memory barrier in try_grab_folio(). */
++		if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++			smp_mb();
+ 
+-	if (unlikely(folio_maybe_dma_pinned(folio)))
+-		return -EBUSY;
+-	ClearPageAnonExclusive(page);
++		if (unlikely(folio_maybe_dma_pinned(folio)))
++			return -EBUSY;
++	}
++
++	for (;;) {
++		ClearPageAnonExclusive(page);
++		if (--nr_pages == 0)
++			break;
++		page++;
++	}
+ 
+ 	/*
+ 	 * This is conceptually a smp_wmb() paired with the smp_rmb() in
+ 	 * gup_must_unshare().
+ 	 */
+-	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++	if (pinnable && IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+ 		smp_mb__after_atomic();
+ 	return 0;
+ }
+ 
+ /**
+- * folio_try_share_anon_rmap_pte - try marking an exclusive anonymous page
+- *				   mapped by a PTE possibly shared to prepare
++ * folio_try_share_anon_rmap_ptes - try marking exclusive anonymous pages
++ *				   mapped by PTEs possibly shared to prepare
+  *				   for KSM or temporary unmapping
+  * @folio:	The folio to share a mapping of
+- * @page:	The mapped exclusive page
++ * @page:	The first mapped exclusive page of the batch in the folio
++ * @nr_pages:	The number of pages to share in the folio (batch size)
+  *
+  * The caller needs to hold the page table lock and has to have the page table
+  * entries cleared/invalidated.
+@@ -797,11 +807,19 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+  *
+  * Returns 0 if marking the mapped page possibly shared succeeded. Returns
+  * -EBUSY otherwise.
++ *
++ * The caller needs to hold the page table lock.
+  */
++static inline int folio_try_share_anon_rmap_ptes(struct folio *folio,
++		struct page *page, unsigned long nr_pages)
++{
++	return __folio_try_share_anon_rmap(folio, page, nr_pages, PGTABLE_LEVEL_PTE);
++}
++
+ static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
+ 		struct page *page)
+ {
+-	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
++	return folio_try_share_anon_rmap_ptes(folio, page, 1);
+ }
+ 
+ /**
 
- include/linux/rmap.h |  52 +++++--
- mm/internal.h        |  36 +++--
- mm/migrate.c         | 190 ++++++++++++++++-------
- mm/rmap.c            | 427 +++++++++++++++++++++++++++++++++------------------
- 4 files changed, 464 insertions(+), 241 deletions(-)
----
-base-commit: 61cccb8363fcc282d4ae0555b8739dd227f5ad0b
-change-id: 20260701-migrate-rmap-batch-8ecc04de1905
-
-Best regards,
 -- 
-Shivank Garg <shivankg@amd.com>
+2.43.0
 
 
