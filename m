@@ -4,124 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 035FDC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8535C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:20:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D92F96B00E8; Mon, 13 Jul 2026 13:19:11 -0400 (EDT)
+	id 1144B6B00C1; Mon, 13 Jul 2026 13:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6A036B00E9; Mon, 13 Jul 2026 13:19:11 -0400 (EDT)
+	id 0EB706B0119; Mon, 13 Jul 2026 13:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C82B56B00EA; Mon, 13 Jul 2026 13:19:11 -0400 (EDT)
+	id F1C136B011A; Mon, 13 Jul 2026 13:20:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 979A56B00E8
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:19:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 166C9A013D
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:19:11 +0000 (UTC)
-X-FDA: 84984414102.26.663CA21
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 26C07A000D
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:19:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boJ4VxME;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783963149;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC4D26B00C1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:20:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5BA344013E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:20:58 +0000 (UTC)
+X-FDA: 84984418596.19.72238C8
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4EFD1A0004
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:20:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uX29kEnf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783963256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sT8ncCoskQ+pPBlVmZsj1ldkcql22WoFMry/YNTn7dY=;
-	b=KC2SgOePsHexIPnfrYaesn5bjAUjtWC9ZnDTo4uaTggk+sH6MtejSI64v6e+9EIcGo1t3r
-	2AUt5o1pcnbrJtyCPUif/zei62g07VnlwcJnNzReep6wQxrAuzjpwA8BQjghaTeBpmk3FO
-	VmMGHYzHZt43SbdJV3e4/UTp03MUuqM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boJ4VxME;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783963149;
-	b=pmfrmPP2uCOB9buiwjaIzWxSEone7q2a6M+hwl+92u82cKd8fUyAsGZu7GXOqZyA9eQgAc
-	jyodFJ5CgPqX5RU132yAYxvfmnJj70FOoslYEr7BFWiRaIIHf2Vp34feWXX+wVc83nbrRn
-	btzLbTi+/a7XSqPT20U83LaZMaw9PKE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A2879600D8;
-	Mon, 13 Jul 2026 17:19:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972251F000E9;
-	Mon, 13 Jul 2026 17:19:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783963148;
-	bh=sT8ncCoskQ+pPBlVmZsj1ldkcql22WoFMry/YNTn7dY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=boJ4VxMEmG63STqe+XFCnj16oQ7l+0rEaBTr5BJHY/4QyYwdcOPLk/CHmde/re4iF
-	 fEh0mglmtEmzRuQhUOEqnWlQt0tNYHyA87uDBHT4b4eL/9psB7SXrBl/4bqVXFwHh0
-	 l7qy6tODw0b+aIxGBGn7vD44LU8rX1Zp+c/ToNTc2uPGrxPaPSqjqSs2f5z9OBXHUd
-	 6Ay1qFpyMD142+txfZQ+JBuhv8KK+GOMsU6TVRKs/7SR2+5/454lJUVIwvwoNuuOuL
-	 ASVfuIEZbms/fzPv86YOTlYqCDS7kM8Ui9XQKZ/7H784DFE+qnfoQFLk9EJJ4zKObG
-	 AuoKKLf26ZUYw==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BF36FF4027E;
-	Mon, 13 Jul 2026 13:19:06 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Mon, 13 Jul 2026 13:19:06 -0400
-X-ME-Sender: <xms:Ch5Vapkw_J_hWklNR21wK1KKIBeblcJH9nG69vBtUr8uQjtvdjbPzA>
-    <xme:Ch5VaoEfePqA02oVSHz1UNta3XSzzWuL7PMDrX_CqI7wdD4WRaeY1Lg0laPXMYiCN
-    wCRW_Yo5Hc-hxCmB9N_B7KSofxg-hYvVALdgo1XQkJBX2WtxtdL8H0>
-X-ME-Received: <xmr:Ch5VanIsgv6d1HLy3wvj80hRkRg2wnsowoe86iILxc08bdfEiELSDRpW4Pq-ZQ>
-X-ME-Proxy-Cause: dmFkZTEJ4lXnpy7cJu3kFZKie8XWmk7c16mf9c3dcg0mO/FRWw9JnqjgAXFL0YAMoBP1EJ
-    3xyuhbt9BpRDEzXMxnJfwaKFHYcsya5wGuyrDMTWWxzCkKI4Pv2rog+fL8gPL5WqfWAbUY
-    ICsHYG56N5Gu45mM1QaSisXid9T5TyNpxl5uf69gdMIrqWPh+JXRP5hXTFb/mkMc+UZAKA
-    CjLTsZZCg8zJeTPMIApQmEoo4QI6fow3qIeTeBGGYfSrtF8keWO2+L4+L3246fvQcvYPsD
-    o3OWDXJkLyganHi/46YNGLhBEpkTvo55OAnPmHxwvEvEXua41QXG/KQ5VQtjTJBqbr2LtQ
-    dDHAxskcep2CzldPvnyC0cQU9W5m7ZnNLvHQD32nI/REFI51GAnENKrKi4nGZu44nogMkA
-    M8DvSGtHMwaG3Tq9XiOUMo/oggtZVqfJkJPMieBMIykGMstIdx+hkm4v7j82UolMzsQaKn
-    70uRX+2FasfCx9DVifeP+mFUBYMOEemngKsgGj32mI1qPdvsXdWFgZt7NlfGVd7V1zgeGB
-    DeSZN38Ez3MKW0qgKNsGPX+mFRnIWtMdEJfdqszTSk7PJbHp4kYi0PT6dwN/ZcHV+jX76K
-    2xvLHjPdyR5tLmOwT7JWSXJxl4RH8Aa4m3eU/bqdZeoNZrBgBUfZ+bMC9wNQ
-X-ME-Proxy: <xmx:Ch5VanNriCjfnz8yYshIDIf3p97N9HWCROMmDfgsNcmm-xkWsAc9kw>
-    <xmx:Ch5VapEYQMiAAASjG9sGsIVxLSdOmHJNRPEhZi9iQBk3ZTFu7vi6sw>
-    <xmx:Ch5VaomSoAAa4XNbLcCuZxhmsnahq9uskwAhdsHd75mnMcxahDPxRg>
-    <xmx:Ch5VakcdkwWfOV1Xn37kJWx2WqlIHFcP2GCFH0zriKVprx1VvV2Dow>
-    <xmx:Ch5VaiYvYAoJxn7KpCO1wmZUIlSx6AbdaYmo4o1S8m3emWW2DXghwl4Q>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 13:19:05 -0400 (EDT)
-Date: Mon, 13 Jul 2026 18:19:05 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes v2 3/4] mm/ptdump: always stabilise against
- page table freeing using init_mm
-Message-ID: <alUdUKk0zGmskSib@thinkstation>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <20260712-series-vmap-race-fix-v2-3-ad134cc3a12a@kernel.org>
+	bh=3Up4enbVP5XhzSIUsHA2kSerHZ2dcsLiJ/grrTWqZXk=;
+	b=iKEpTPVqrB05svKjpwvbdofkLWsFCFkm9/QmAE496pFqS5LlfAIYRz+YYxi2lSF15YuQVl
+	6AZq2XLiBHvYy1roVFGptS5d+cdln61sSxvkhMFlzjH21ZROanI80DiWgUOMS/D9xzjUF1
+	NwnzM4XMMLO+jz3tNTLIS/TkQt7sYM8=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uX29kEnf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783963256;
+	b=C1uwgh55uKGydmFG0igkWCsfGOVeAepih8cQ520rr1Wr9VowXDslw6wlbypoLK8Mp2FhbF
+	tFAgcaoHuEnXI9w2WvJdWXOzF4dD1vnejtjSVe/VqTfE2segfe4BJ2zY+LPlnx+MAhzeXA
+	dJe7xhxVnTumtjLvh+eIcUPAY4tvwsc=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cede6375caso9595ad.0
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:20:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783963255; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o1ozfV+l3ho+mX0bf4REHFk+2zNx6vBItJUX7J+qKnfm4Zt7iD82Wu30lYVtI3ALPS
+         kv9V7bQuYhKOgcIzDd8uNKoa1LGd9sgpzqyweDZCCXIJUMHxirBZLu1Knx/S4Bca3b23
+         SWxiZcw96Eo8Rmk9Jc8NTboipyyc114b6DYtsK8aqnDe+EcH6DbD22vVU6+gNIIaYBMU
+         lYwJSmMDYKzld7+y01+/qkn8GuYwpoEFOVMCeVR5uYCJsITHlBKxpiYc0m+w/q7c1X02
+         RGRoFhw4Tkuudq8yPBtEgUVgbH2tu0Ve0Jzt5bjN8CwOqc5kfWp8tfWY6cbJ9cTUKD3T
+         KY2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3Up4enbVP5XhzSIUsHA2kSerHZ2dcsLiJ/grrTWqZXk=;
+        fh=jalEhwSng3xVKBlLzP0dWqrBlGl+JUF35ZArHRt2Kp4=;
+        b=kcgDr7jsJLc6Z6qP9+10z9gAq5TvQIibavoGxjjKCMAm+MbwsoONAG5hmOONtwxnEx
+         Q6aD0w/vFzszAqO1TU2WRKa8yG7NI80QeTHt7wG3b8XbpBAYzkS4LAvJ4bLiOslZeGy4
+         xfTNyXGCYogHvgC2iskhnZEZe3sMLh/KpOotoMC5r257LzMB14ZNXiaWYfU3vmhilgLB
+         LtbX4nxe9vAGO/UhgsH3SGHdIWXC/c9lTcgwSpX5xBLXR3pThzs/tGDoEO1G7pUpZ/C5
+         v7PMCtr7h6ledVdP4ZQQKRHxMh2FgeQqEQeJlbOwN/Uz3WqkX4L/ZIZDvXErFH7wiCfZ
+         9Xdg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783963255; x=1784568055; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3Up4enbVP5XhzSIUsHA2kSerHZ2dcsLiJ/grrTWqZXk=;
+        b=uX29kEnfIQmIQfZwGx2pNFS3ZOL5LhzOFIduarZFEuIc0twFi7yKdXcVkxx+a6ZlAK
+         VRz4sFhoyH/fxYimte3eUURcrJAd2qBDC4Oszv0rP2MHqYrUlNR3soyh7Jbo/VIxuE4E
+         p3JvisRD1J4WjlRywi5PB9xXELY/dgZMBXv8CCv2pnckfWEjrWZ93QiSqnaDCqXn7cUE
+         NEAYBQ1FJ8chn6RMy+5VkQL8Am5D5CrnjIeNMyW6e9fsi+R8wf5nuivGjVvGVtbh0acJ
+         ktCulMA+ECdqWJkyawZE0MYXSikwkvxSKOqrQBTUdUKGsxcCytedvry8UeK6FDHwKB/7
+         0NUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783963255; x=1784568055;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3Up4enbVP5XhzSIUsHA2kSerHZ2dcsLiJ/grrTWqZXk=;
+        b=i/H1tfpcTbvb5qmaSWdR4VrbrQlLZ5SvS/Thl9nSdFqTD+EvnOguYtJBi9LyqZHLYW
+         5jQaXl9UQgb1A+6ATV757jIMY3EnCLFicYDZe6xRkej/YIa82tJAQmJZ5faAdVyREQit
+         J/Xe6rgd2dTxrvbDA290ioXPgEO/8ox2GQQce1/yycINF7FizssEXXotTOXVJPBDAY2K
+         K053uHEscAcPUU0xg7QDXXs5kwpGepwFQW6wfOisEY88JHynKF1OrTbmUJYuP/XAuzSa
+         zptZileflGwvFUTpqKJwOCakw0g4epQ7v/c+E88mojgo4bb7GmS81uIroVTyMHXNmocY
+         Nv9g==
+X-Forwarded-Encrypted: i=1; AHgh+RqQwqRU1OL4xwA0HYraO8eL3SP48KmFXxslmwhCHkaryhz63wyzwaD7XNEkCN3W+vBXFluYkgOd3g==@kvack.org
+X-Gm-Message-State: AOJu0YxiTO8Mh2Xlv7D0iBPj55DnA1oZnmnXb0G33edOCA7rCCjd08Tr
+	w7DLxNA7Jlr0f2txmbG5Nrivg5uzy8or6sHXUBH0TjvRc18M5s/QIaHbGHEDfeFSIw5W52Zjnxd
+	eBJASmRuiTGmKq8LYvhsU86eWmbo6grrUeFsi1jgI
+X-Gm-Gg: AfdE7cl3UCgZTN2MnCbIdCwWuN0uzYt9yWeLhpAec4F2aSjnYy841xgD77q/xorezY7
+	m3TqT0TBNVROaBbRpfLtN8Tjnbn05ZqoNXd2NQvjG+4UvuXaGqAwkEAuctfbERWAnLvjiDguUHG
+	hugiuFCRdrn00Y2ilmY6XoooHNMqqqX5b8leYlSV75rN294N7YxKDE3S+DwvGOsxV9YjQroMka2
+	Hnudx39P6TEU5A7rfRzedw99owZtC2eT/ReYG9efrMdVkumxgk6q7fNAujrPO5Gu+7IDyT+SdYo
+	MI1fKLVYjQoowPDNXfugYQFk
+X-Received: by 2002:a17:903:3850:b0:2c7:a13a:7fe6 with SMTP id
+ d9443c01a7336-2cee1be4f23mr1770825ad.10.1783963254512; Mon, 13 Jul 2026
+ 10:20:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260712-series-vmap-race-fix-v2-3-ad134cc3a12a@kernel.org>
-X-Stat-Signature: ni3skd9ypu3nkom77r5yr48kgw5bzxjx
-X-Rspamd-Queue-Id: 26C07A000D
-X-Rspamd-Server: rspam01
+References: <202607091820.qbjlGhKK-lkp@intel.com> <CAJuCfpHjUij9kkD6QiWxYvsYD3iKga9rzJZWnN9vCf3bhp-dXA@mail.gmail.com>
+ <CAL41Mv6UNWWdv3a2g2+tKuy+EX=8FJZSCcEAyHYyuUybYK4NMg@mail.gmail.com>
+ <CAJuCfpEpFDUNjgsHiETmxTLyVfHdCKEk8sR2fQtixBR8JOYRoA@mail.gmail.com> <CAJuCfpGmHY5_4G01DNodJA8byCkJUET00Lr8Ap0P6+XMV1=7jw@mail.gmail.com>
+In-Reply-To: <CAJuCfpGmHY5_4G01DNodJA8byCkJUET00Lr8Ap0P6+XMV1=7jw@mail.gmail.com>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Mon, 13 Jul 2026 10:20:42 -0700
+X-Gm-Features: AVVi8CdocdmQKkxGo8IOucf6phPMN-TtFmhTpXYtX5usitAxYi5eJViaBHUqH20
+Message-ID: <CAL41Mv5X4tNvRcP1u9kEe6LKMTYpeS93E4oCBE_3N-iUgVLO=Q@mail.gmail.com>
+Subject: Re: [akpm-mm:mm-new 344/369] mm/alloc_tag.c:356:58: error: implicit
+ declaration of function 'compat_ptr'
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1783963148-378745
-X-HE-Meta: U2FsdGVkX1945htg1LFMyMJv9jY1EG3QK70uiksj3IIveEZfHBvjnzRIoag+Lea4eArvVyh5PLF+J3IxYDcWQ7fSUbgPxfYpChI8p49svt4/6GbvAjCLp1nAVa90JmMCGyElVejYms90Gz3Hd/WFNVZ9Ck5yTXrtu3KAhwNxIo3rVpoWqkzbEb9gZeZ+8+0wj+9QYKtH9M+CZlP7A6mzOWz0K+0vdjCFFroguMIHJyI11ezY+NDPn3EkcHGimf24tiP6o6vgINKWY9azy4p31GgS2AR5np/tQK81lD4PkwQT3ZpEFQdUoSkBlq85msxL1lv0FoymR2/Z1mLeR8Fxn4xS05HOLuiTcURyf7plEKHLw31xxvOF6C/P8ny2FfQTOD4WHbsuaBhcEq6Ey8d5t4vpdgF8PBzZk4EgnNbS4qLajWdMC6AXlAPp+hMS6pXN3abPjW9dIPTJxe/ceY1bdvxjooTkh2VqVpZCMra622szKaiq8x/eY5gWXa6SEbflNM975RLu91FSJwJRuRZaz7exP0JyoNMVWV+IkF0ci4FtuiHcu0k1BEmKvx7ES+A5/o9lCvN3+6ncXrhWVKd4NkbLytKEvVMxw+6SUgUCggltn5WRdsn+mSZiVODKZ7FZuL/MyyzWQEZ3BH3nDi21FOmJWlb8RY9se4BrEsV9tW7UuMcUYjmRiz0DVJ6xunHxZhu/+cOsCCzCvj5fptOmDalrNSR/Js2sfh4QqKF09TL6bFyt6PtuDloLEqRopmGT06+713EZuobGeHZ+kjDeEtoxenhuEiH2EELcc/4mjLaAC4Ivqg9vbCYWMBCSEJJyILQ2DvqX/5XqxHfBQ+13xyIdudZvyjzb+A7hCgAmJYk/LVLwgt2fw/YRdARxA2IVPnvMXUik4T4LsnxY7N0GApHEzIwJ99wm9KeLh8phjyFYhMlHLDUdfNUn8SzfV97tsIdULE0l5l9rvrS1913
- fnl/i6w5
- 5qpElJmOv2RBxHE0CAeYn+dfu2hNA+3rrpS3cChtVxfQmywZXwVT7Ekba0492gSs8d6PmLCqDro2wz/ZJ07Unrz0xr8/nKnMWyW4yvJLhOR5g8l2wBDKFJk6KCaSzRXY9KNkMxhaLQ4ixl0yEaDKjoJG4Uz5ijqzS1dtwoZkxVd3NqifngGlwhJMZHj6rijqA4xaSVoz2IZ4AmETtGwnpXv6WeVvrKwebYJh+X0oLS5+fMLN/tvTn9Yoeu8q96kUFQ/AViC99Pnuehk8XqtbrU6i88dSn+8WUGoHPhazpa49Vkqi0137ealR9GW3FbdtWW6zxWx1J5N0EzNSFD4TsIuuQVn8y/L+1hHeI
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4EFD1A0004
+X-Stat-Signature: u4dmg9jsriqd8eqhdd987xwcas96urwj
+X-HE-Tag: 1783963256-935730
+X-HE-Meta: U2FsdGVkX19kFifKmQaqXzYSz6/BaX9oNtLkEpqucDpY5V1J2gjSP0KqHslCjsQIkcdPTDLdnnm+aGgg8EsZqYDJmT43G38kJ7M2Dhod4e2g2BXNENK6r7NTAYmsrz9l+7P8tF4kdN04aaM1DH74Ju0AiU0GVJzQ8eqAf+b0e4zVeVryikleFT3RVnjAmEIDZ7UQpOUGtZdkpc1ywyiBUr4ON+X/mXCQfdOap6GT+CNYvscrxMikNTjHIZMj3OqjzS+EqPIBzF4gD+ZsdGNyrkHEV3wD01/9Z/LP0tGR1q8+1ZWFB52q/brA3gWys2qfjf/sAfqiEX9Pg4ioRfWOv4G0DAM9vtX1VTq8fCsYtz+1fxebeRgGyXTsNpjeiloXecogne3MMO2HDKyN0EwSc+ch6CzIZrIIQEUHHzSTSkzNtak+lHiuRWDnZsOnhrnJ3bjAQJyQrHl8J4ePowlp3/KaoYUaysN+eAb26ybS3gAx5pVVFYm5O5iFC5Ty9FnAS+FaRU7MseTfMuU0my0ehYcQPC7Ss7MIQE7GfRGgCgPoBzah56b2sYCGeYDVzTTOb6K5wy9CFCdp15A+GRbro5LlNnAK8yvJDnPHMa8aMAwF9GurKwKtcOio7glklvvk0jkTUBE/tpUYlA7ydqU7D0e3oMuN82vOwzAKPW4TyGUxkJw07l1erH9nhw7NivN8zTvqsw2M8Sm0v7olpEQ6efZNnoNS6H9LPJyYJdo9rsG5PCCmRL8PG9OKJuPqp1izl35BAlty+rhP34idKGJEppRs4YnTSAKirl/sCp02EnHJsEJJ74UxqG9z9+W70lQWPu2+P8WBKZENnJd42+Id9t9n9B3/PAkwamQqfz7AhO7vxKElpKIVCtIHWV65rjWfJNSa3M7G4aTr3HrRTVXIpyiBCoGhLOq52SReeHuJJTv8gMM7MI2n7VlcJm2mAa9t0dxJw9hLut5cO/TRgOv
+ i6khADF9
+ ClkM53Hy1KsdOxJiEHiTPCm57ysrx3Jp6mjWI4EjNC7g1dBoRUhYYyju7CTt/hCTxWvHTQeexjJPfdgU4r4Ok1Hd8FBRZrt9zPY7whEuknYZQNtTJzJGT4DYsvAZsE+BepGnG0GHA1ZOn1bT4khrhqD5/uJrwCrdfcwScNXA00oTccLLBFzA5USe/4La7cp2J5+mg+un0nlcCLlmCEXiYHVKRZfGKIRw6gDXVU+ka/u+9C1T7SYA4+H+lVhG6SI2Kc+eoTlWeYFHdWxIPwHpPdUIRdykzD8R8OLr26tGaF6cz2qgJ4nySKzrRb146gTIHMnMR+mj/UX4ecavY6KSumPFej7MvBSTMajNkaGgt+gp9y5uuYxgkLTph8ZHEu+s43G2zii+g00EoBwfu2SorFJWEEl+VusnLG+xT70t5ZAVE+Ckpg4iobW/YKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,26 +143,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 12, 2026 at 11:42:26AM +0100, Lorenzo Stoakes wrote:
-> x86 and arm64 invoke ptdump_walk_pgd() with non-init_mm mm whilst still
-> walking kernel page table ranges.
-
-The code looks good to me.
-
-Same comment as on patch 1 about the commit message structure, only
-more so: the race itself is never actually stated -- that these walks
-hold only the walked mm's lock, while the freeing exclusion built by
-patches 1 and 2 hangs off the init_mm lock. The fact that makes it
-possible (x86 shares kernel pgd entries with every mm) is hidden in a
-parenthesis. And the last three paragraphs read like v2 changelog
-rather than commit message material.
-
-> We take this after mmap write locking the non-init_mm mm. Nothing acquires
-> the init_mm lock first before locking an arbitrary mm, so no deadlock is
-> possible.
-
-Do we want to document this locking order somewhere?
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+On Mon, Jul 13, 2026 at 10:15=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
+com> wrote:
+>
+> On Mon, Jul 13, 2026 at 10:13=E2=80=AFAM Suren Baghdasaryan <surenb@googl=
+e.com> wrote:
+> >
+> > On Mon, Jul 13, 2026 at 9:43=E2=80=AFAM Abhishek Bapat <abhishekbapat@g=
+oogle.com> wrote:
+> > >
+> > > Hi everyone,
+> > >
+> > > I can send a fixup patch for this error if needed. Could someone guid=
+e
+> > > me on whether I should amend the original patch-set and send a v9
+> > > patchset or if there's another way to handle this without sending a v=
+9
+> > > patchset?
+> >
+> > I think Andrew already fixed it up (I saw an email flying by but I'll
+> > double-check).
+>
+> Here: https://lore.kernel.org/all/20260709171454.58E851F000E9@smtp.kernel=
+.org/
+>
+Ahh I see. Sounds good, thanks Andrew!
+> >
+> > >
+> > > Thanks,
+> > > Abhishek.
+> > >
+> > > On Thu, Jul 9, 2026 at 7:45=E2=80=AFAM Suren Baghdasaryan <surenb@goo=
+gle.com> wrote:
+> > > >
+> > > > On Thu, Jul 9, 2026 at 3:00=E2=80=AFAM kernel test robot <lkp@intel=
+.com> wrote:
+> > > > >
+> > > > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.g=
+it mm-new
+> > > > > head:   59e34180e138a293260301c139cf7ee800978533
+> > > > > commit: 27ace96bf8195484c9e9e1a08eb5af5a4e81f9f0 [344/369] alloc_=
+tag: add ioctl to /proc/allocinfo
+> > > > > config: sparc64-randconfig-001-20260709 (https://download.01.org/=
+0day-ci/archive/20260709/202607091820.qbjlGhKK-lkp@intel.com/config)
+> > > > > compiler: sparc64-linux-gcc (GCC) 15.2.0
+> > > > > reproduce (this is a W=3D1 build): (https://download.01.org/0day-=
+ci/archive/20260709/202607091820.qbjlGhKK-lkp@intel.com/reproduce)
+> > > > >
+> > > > > If you fix the issue in a separate patch/commit (i.e. not just a =
+new version of
+> > > > > the same patch/commit), kindly add following tags
+> > > > > | Reported-by: kernel test robot <lkp@intel.com>
+> > > > > | Closes: https://lore.kernel.org/oe-kbuild-all/202607091820.qbjl=
+GhKK-lkp@intel.com/
+> > > > >
+> > > > > All errors (new ones prefixed by >>):
+> > > > >
+> > > > >    mm/alloc_tag.c: In function 'allocinfo_compat_ioctl':
+> > > > > >> mm/alloc_tag.c:356:58: error: implicit declaration of function=
+ 'compat_ptr' [-Wimplicit-function-declaration]
+> > > > >      356 |         return allocinfo_ioctl(file, cmd, (unsigned lo=
+ng)compat_ptr(arg));
+> > > > >          |                                                       =
+   ^~~~~~~~~~
+> > > > >
+> > > > >
+> > > > > vim +/compat_ptr +356 mm/alloc_tag.c
+> > > >
+> > > > Missing #include <linux/compat.h>
+> > > > After adding it the error goes away.
+> > > >
+> > > > >
+> > > > >    351
+> > > > >    352  #ifdef CONFIG_COMPAT
+> > > > >    353  static long allocinfo_compat_ioctl(struct file *file, uns=
+igned int cmd,
+> > > > >    354                                     unsigned long arg)
+> > > > >    355  {
+> > > > >  > 356          return allocinfo_ioctl(file, cmd, (unsigned long)=
+compat_ptr(arg));
+> > > > >    357  }
+> > > > >    358  #endif
+> > > > >    359
+> > > > >
+> > > > > --
+> > > > > 0-DAY CI Kernel Test Service
+> > > > > https://github.com/intel/lkp-tests/wiki
 
