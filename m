@@ -4,174 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 973F8C44507
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:26:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B011C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:26:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9FBE6B00FE; Mon, 13 Jul 2026 12:26:23 -0400 (EDT)
+	id 7211F6B0104; Mon, 13 Jul 2026 12:26:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C76CE6B00FF; Mon, 13 Jul 2026 12:26:23 -0400 (EDT)
+	id 683386B0102; Mon, 13 Jul 2026 12:26:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DE786B0100; Mon, 13 Jul 2026 12:26:23 -0400 (EDT)
+	id 599B16B0103; Mon, 13 Jul 2026 12:26:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78A116B00FE
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:26:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C1F08BC13
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:30 +0000 (UTC)
-X-FDA: 84983913420.25.E36C9B9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7D11540010
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pGt+wVwX;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 29C156B00FF
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:26:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2DACA1C12E4
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:50:53 +0000 (UTC)
+X-FDA: 84984191586.10.8B59D3F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5B0A614000F
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:50:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jGYvq+lC;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951228;
+	s=arc-20220608; t=1783957851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pCQv8M7VrBm4TU+MPV6p2csh/ijl3jkmOGWWVQbEQ04=;
-	b=2/mFIXEwpkZ617FKiqKadCnSgod8F8FvumCs/uK6yteYcv4/an077JcZRPgirRp+y98RCl
-	vn1B0AFts1VmR2iXZyX0QmxgD4MHWQTG2/yleCEdoKLf2ZHOBKVQjoFeNn+cS+UC5FcJXw
-	Q+Mt29qEL3KBC3fyb6V+U+S6ADHuxwU=
+	bh=0nEqidDEll0lFKQJRsBXv+q0TtERg9N1HIHV1PMhX58=;
+	b=DcnARUhQBX8KTNVegL4197DrUrF7SKt8S2s39ptYzOzwUwf9J2CXg7yP3ttc9gG6VLj/db
+	QRFe291A2dkXu1KAN2Tt5XyeJRfWhtJnW0aNrJKK5v6o2b2Flll7Nm4ms5N60yKaVple4t
+	+SUcjwpvRiOTyMQSKvurOebmDHt8QoE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pGt+wVwX;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jGYvq+lC;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951228;
-	b=D1BclcWkZQBYaP8mtTo8OAWV6lYC6Wyfn2Emu/gjxYAp+JiTPbFS8aS0U50iSFSaw/xN70
-	gxHyUOdz2Q/FImxwahIwh0tl+J5+ct/G1x1mF6gcVrhYDpPkVxnVZvXtDb6tnqmfECaHnL
-	2dDPbiqCRqDq7XjncMkb1HqbMUm4qHo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F1DC2103;
-	Mon, 13 Jul 2026 07:00:23 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 651783F7B4;
-	Mon, 13 Jul 2026 07:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783951227; bh=LTSOz6r8IXywEsuWgl9722tiR9WcqjiHFXGXDRX3spM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGt+wVwXPP9bqbNiSoGoTQf7vUj9+h+rjcGEu7v6x9h5jUGGL61je/MuOfCB0IGbL
-	 MCwtdgvHi9xbeiGHPrEgzoOWMgwuAwIORymTP+QSMvNXbWLSJ5lnVb/8rcQcLGe2HS
-	 V32gOsFvzZEGe9nESYJjvb3kHILH3HN1uCBfzjGg=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com,
-	linux-csky@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org
-Cc: david@kernel.org,
-	linux@armlinux.org.uk,
-	akpm@linux-foundation.org,
-	ankur.a.arora@oracle.com,
-	rppt@kernel.org,
-	linmag7@gmail.com,
-	chleroy@kernel.org,
-	klarasmodin@gmail.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	kas@kernel.org,
-	zhangtianyang@loongson.cn,
-	wangyuli@aosc.io,
-	tsbogend@alpha.franken.de,
-	ljs@kernel.org,
-	jgg@ziepe.ca,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	arnd@arndb.de,
-	ryan.roberts@arm.com,
-	pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com,
-	baolin.wang@linux.alibaba.com,
-	tj@kernel.org,
-	kevin.brodsky@arm.com,
-	anup@brainfault.org,
-	atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	hpa@zytor.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	anshuman.khandual@arm.com,
-	yang@os.amperecomputing.com,
-	chaitanyas.prakash@arm.com,
-	ardb@kernel.org,
-	guoren@kernel.org,
-	yang.li85200@gmail.com,
-	viro@zeniv.linux.org.uk,
-	dinguyen@kernel.org,
-	schuster.simon@siemens-energy.com,
-	wangruikang@iscas.ac.cn,
-	junhui.liu@pigmoral.tech,
-	muchun.song@linux.dev,
-	vishal.moola@gmail.com,
-	namcao@linutronix.de,
-	pavel@kernel.org,
-	djbw@kernel.org,
-	yu-cheng.yu@intel.com,
-	baolu.lu@linux.intel.com,
-	Jonathan.Cameron@huawei.com,
-	coxu@redhat.com,
-	andreas@gaisler.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	geert@linux-m68k.org,
-	shorne@gmail.com,
-	jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [RFC PATCH 19/34] x86: power: use proper set_pXd() for generic compile-time folded patable in resume_one_md_table_init()
-Date: Mon, 13 Jul 2026 14:55:58 +0100
-Message-ID: <20260713135614.1618183-20-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+	t=1783957851;
+	b=lJESxW6TfHcrFVN98gNkJw8BGIKy1wZuQlGB1t54MhHnMrXJrEozCtul4+p7RkZ1BM91t2
+	rLDFIlfxUgrsWputTVbN0QEG4D5qV7MVeahDfxh0aW53fYNyEuFRgiOCepX+xv9RwA4V+V
+	ECNF9FJIGl9qXgzZ9M6rtNVThkbci4w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DEA360120
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:50:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC1A1F00ACF
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:50:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783957850;
+	bh=0nEqidDEll0lFKQJRsBXv+q0TtERg9N1HIHV1PMhX58=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jGYvq+lC6AlLm5YUKylCcrjuPR192nylqWrEF79DC0BQGB1d5CMzhkZfqOIn5rE4e
+	 DdrSgNZQeQYrzGQYpUaOwiZlBq73sCQapbziXXMo+B8dfiZ3F1t4yfup0C/y/xebTA
+	 akueadAxOnLGfJho/RENMon3ZUhXeZq7SLeuuAl6CPWe+ZqDmFUm8aI6sGk9dWIG/z
+	 eCkEGVqL+U1RpuZ7KtoGDPXpFEDHBWb5ral03WxMz+IPDo6U1lgHCPbLdJ69nNHtN/
+	 ljZdnDGUnxCOBdDDF2ekeNCeDKpQQC4Qbhf2iOgUXppVVlk0HKMXPs+XgLLMhX47Mb
+	 FTvUArODxiFqg==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-69c7ab350e9so2386329a12.0
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:50:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rqh7ZuV7nPwl1GHaIyNLLsCeUIDkjAfzbm6wkRcawf8GF6yK/1rMdHbXPQtZnCECfFcJ5hJjbkJuA==@kvack.org
+X-Gm-Message-State: AOJu0YxQcRNkBfpHtFcgT4n+xyoFeI9BqQvA0gcbuL24z6cg9mnFWTJZ
+	QwvdjUKhMGgxmf/ZGxhDI45eZ0qS7kW0YizA3QuDKKhMDBzERin1M/IUE9KbXrd7u7yxF/+Y9eu
+	usDzekLY20IOO53Ai8aj67Ae62RX+deM=
+X-Received: by 2002:a17:907:3f05:b0:c15:cfd7:fdcf with SMTP id
+ a640c23a62f3a-c161e9d8a53mr349487966b.29.1783957849053; Mon, 13 Jul 2026
+ 08:50:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1ybwbtc7jt4b7ysew7d6nbz1zodmjput
-X-Rspamd-Queue-Id: 7D11540010
-X-Rspamd-Server: rspam01
+References: <20260713025644.170839-1-youngjun.park@lge.com>
+In-Reply-To: <20260713025644.170839-1-youngjun.park@lge.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 13 Jul 2026 08:50:36 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+X-Gm-Features: AVVi8Cdhp3gmWcPxNKGi9xzKpj1txCkZgTK1iUjawQjsfXysMd41K64C1ZX9ciw
+Message-ID: <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
+	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
+	baver.bae@lge.com, her0gyugyu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1783951228-430108
-X-HE-Meta: U2FsdGVkX19u6C+byKY5agrBEgNiCkxrV3GkYx9VJgJ2QXeY2vgmWs3cPymFMjWACWL7AQZtsiGtgxPLn4T9+MfnUKsnJLCupNX5FLvtCK2vJppODFrXI5Is+kxc3H5h2GWK/a9/1qn3Zl0Lvy6KQKErB3xFIUVYMLVqPaqr94dnFwtTySSyF4kkBth7DEZ1AmikHbL/2/OtPuYR4UhueilTdWuWsCfVYycDKaA0HpNRL5dHRex27C+2I47u9VwjCRpToZzAfar50eL2Pz+zjJm2zS9dbox3sTmkt06R2WNEDR3obGBuF+bQkU4fsIf9DipzSNqI5Bs+bZhApCyeeZ9CaMUgxdfMl0UtWxDlDTBHNx/LUqWGr4j0fhSlev/UXLBSzVM9ZltluTHeTIW8zD2v1a7j9H2pgWi7c1M13KAVE7Fb4Hs9vjZVYcobrol8PAXE25p5laPyowUnLq0XeqLPzm86pEOhSjEo8Af8F+6ttcHA4d1mBLbotFUwEp6TmYFgEgOtUCCYb+UaJW0vFOCkAuNASLI1tLzoOge7oJhFWyIjVAXXaExyaMdFWmP7Gutr9Bn23oNP7lXnharnjyqYPXwy/ocmn9Ag1JIZ0saBx8y4LnFPhtYkWWtyRs1NMAcaRDJIErg+7EbC9kFaDsJckTAWe1Odu0ekIgyyKZqiOqTCx/6YHSs7AzbG3OPZEWQD+K4ZGljEAJ57q4d1THt0lameXDo8EAprB10P+IixjxPwgcsJh3qlIjXiBJ0WSJLcKNOYLSlIhA3zdP04jW55fLnFqG4zJWCkjWCrPniwZrIp5UyN2gSwno13P7gsR0owkiIGebPsMtiT1GSw1rPoQ01KqjcbiZ6YAH/qqdRQA5E1UCqISRG4tornR2xSEV/P60cxwy5OZAjccTeIPMK7dJw6Eze3Ts+6ln/thLU2DqIn+oC+YShfj0NlKNr24k3NQ0DCVhRAqhveeuc
- CJdnXBUP
- b1Cj/CcfjZDxhDuTpFoaHBefXhfbJkpjPMX2frknCehqh9k/ubrVpiCUjbxhEgZ6XdG0J4S7IRDTuuIbU5fip7jQqiImN9Tb0cktCdvWXQPxUnAzZCNe/X/oi8McTBIhezQxS8HLGP2Wzl5UrZFRS6B9V/0GGRFfQyWfADFy2ggJbwjyKQuiysRHHjciyJLhhm6uuLXmUfIwCEeACXGinfAP4H6eclj3ftONxo5TkXAYkHZDNhwbKbzPNqh7zR5d9pL2wB1aXfHYoliTGueceC5T+Ac/r+5ML0JrPWjOIrpToEPcHQBM17VT4H1zrD+U/Addi38PuWedfHsXzPRB7sx9EMwAHnn0afKzqHPkmGtZUokE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5B0A614000F
+X-Stat-Signature: xei4h4phy4psuashmz3rwhdi3hkfg7qk
+X-HE-Tag: 1783957851-868402
+X-HE-Meta: U2FsdGVkX1/FvQa0j57AEv493b1dKalEuMYCInpdk996BU2ZWFTbEsgqnNW3j1MYuOn+YIJ9dUxaGaD38xFs+zF9U7YyI1heJs/oyzmntLsfFMtx6dREvolbulLWNHijBuDlbNIrNdhKzYyUD9NurwP0EhvQlD3HM4qZ2c+okY9aStVvg+KI3cHWcMjyYhQFwBQhEXf1puYOHWBF+0XQHyThBrms0ZvAa/7VXL1/06Bgyfetm8MFkIfW8wl4Vm3CjK/s+6IKLL91/y+1QpJPttFDhOvyoO5VmvHOW0vDHNEJAItbPXn+dk3KJ6ELkjMtTJhx8DIjcE+PI5VDVFqP5xglNJFIMYx/IIxgGuowzr7WXkyP4rSU7zQMS9pTSkNypbyhMJuh+bEIEc0HwQFVULoCp2lFLlYjr+3ljYa6g1fMplkPbKj1FiNkDRdbT8v91eCzHikvIdl1bzkUXorV3P8B13vpSfbRpf8awb3m2PV2398eCcxzmSyg86SLvPTzsWPQhhD6gztLpQUH1juEcm6eOyhLymxQ16ypN5a1O+LAgjUGKKPl1TdBr8VK7/V43wByT2FP/Y+ocKyXfvKPkiYPxWiAGj4iHUiyea65P/VIUvlbqCQrLatyvfpL2/KwLufJ1qlgK8+NIODleL+o5yZ0oithEIaGfa9DxM0Yn7y1jq5tmKjY4ngQKrcmixc8z4k+gIzc6fKOze7U/T9Pobfr7gUBQFQXaouENHOwLeiL0Dst9Zc8k14aHjQqdTf/5X3NvVkCmztymicCig8uZpcjYmmRnLkAy6kcD/cE1Oe930Fdx4VPSRJeYw736EGVyXxhjDN9bxnrXrqOnRjqgSF3oU6lV5fh4I5JYZokn2AMVtIC2qYW8zB9aUSXLWE0kpKHG336UI1+rAmjGuKXSK6YKl5BLUPEn65OVzTi0UdYJ7lNgbQyk/iIQUdlrsAE3VQlJSsh5VhD1/Zsq/p
+ 69Xhf9Iz
+ +JZ/8z+SSrPv54isSL+9vq9TKVqqv1xcyLk8quhygNAL4L31O5bOfl8aA292zXmi0e6oYQFKkarb+kIsd2onsvcLEx/VCWdB2AGEPth+I3j3WZi/PhJ1u/RPyZ4Da12xBip2vaeBjBO1LyCz4V6ztXWSPI0hIu0ITklL/0MoeEpWAex+IzypZ2aUlwcwbt/Gw9fZpWrkkeTmJv5bun0TMXD177MWNv8Z02MMBFVPJzcjKuMk9i4YOuiIT6s3V6nZKQCuM/4vBthXHi62xVef5MjhKPElK9j/9ksjVpI5hphv7B+nR/av6WnZzH+auU1DMo+/srgQrlt+bxC1Xvi0W93Kb65K323K0E798wRpOMKnrUsP91PKf6QXi8yNQGilaj2uU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,67 +108,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We want to rework how set_pXd() behaves for generic compile-time folded
-page tables by disallowing its use and triggering a compile-time error
-when it is used improperly, ensuring that the actual first-level set_pXd()
-function is used instead.
+On Sun, Jul 12, 2026 at 7:57=E2=80=AFPM Youngjun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> This is the v10 series of the swap tier patchset.
+>
+> v10 folds in the Sashiko review fixes for the selftests added in v9 and
+> rebases onto the current mm-new. There are no functional changes to the
+> core swap or memcg code since v9; see the changelog for details.
+>
+> For context, the bulk of the series is unchanged since v8, with great tha=
+nks
+> to Shakeel Butt and Yosry for the reviews and discussions [1] that shaped=
+ it.
+> The main change in v8 was the interface change to use memory.swap.tiers.m=
+ax
+> with '0' (disable) and 'max' (enable) values. This mechanism was suggeste=
+d
+> by Shakeel and Yosry.
+>
+> This change allows for future extensions to control swap between tiers an=
+d
+> aligns better with existing memcg interfaces. It is confined to patch #3'=
+s
+> user-facing interface; internally, patch #3 still uses the existing mask
+> processing method, which is implementation-efficient.
+>
+> We also discussed tier extensions. Thanks to Yosry, Nhat and Shakeel for =
+their
+> valuable feedback.
+>
+> Here is a brief summary of our tentative conclusions. Please correct me
+> if anything is misrepresented (details in references):
+>
+> * Zswap tiering [2]:
+>   Zswap can itself be a tier (typically the fastest one). But, until vswa=
+p lands,
+>   zswap cannot be the only allowed tier,
+>   since it still needs a physical device for allocation;
+>   that restriction can be lifted once vswap is supported.
 
-Therefore, replace set_pgd() with set_pud() to setup first-level pgtable
-in case of X86_PAE.
-
-There should be no functional change.
-
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- arch/x86/power/hibernate_32.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
-
-diff --git a/arch/x86/power/hibernate_32.c b/arch/x86/power/hibernate_32.c
-index 223d5bca29b86..ab5a203b45cb3 100644
---- a/arch/x86/power/hibernate_32.c
-+++ b/arch/x86/power/hibernate_32.c
-@@ -29,8 +29,7 @@ pgd_t *resume_pg_dir;
-  */
- static pmd_t *resume_one_md_table_init(pgd_t *pgd)
- {
--	p4d_t *p4d;
--	pud_t *pud;
-+	pud_t *pud = pud_offset(p4d_offset(pgd, 0), 0);
- 	pmd_t *pmd_table;
- 
- #ifdef CONFIG_X86_PAE
-@@ -38,14 +37,10 @@ static pmd_t *resume_one_md_table_init(pgd_t *pgd)
- 	if (!pmd_table)
- 		return NULL;
- 
--	set_pgd(pgd, __pgd(__pa(pmd_table) | _PAGE_PRESENT));
--	p4d = p4d_offset(pgd, 0);
--	pud = pud_offset(p4d, 0);
-+	set_pud(pud, __pud(__pa(pmd_table) | _PAGE_PRESENT));
- 
- 	BUG_ON(pmd_table != pmd_offset(pud, 0));
- #else
--	p4d = p4d_offset(pgd, 0);
--	pud = pud_offset(p4d, 0);
- 	pmd_table = pmd_offset(pud, 0);
- #endif
- 
-@@ -134,11 +129,12 @@ static inline void resume_init_first_level_page_table(pgd_t *pg_dir)
- {
- #ifdef CONFIG_X86_PAE
- 	int i;
-+	pud_t *pud = pud_offset(p4d_offset(pg_dir, 0), 0);
- 
- 	/* Init entries of the first-level page table to the zero page */
- 	for (i = 0; i < PTRS_PER_PGD; i++)
--		set_pgd(pg_dir + i,
--			__pgd(__pa(empty_zero_page) | _PAGE_PRESENT));
-+		set_pud(pud + i,
-+			__pud(__pa(empty_zero_page) | _PAGE_PRESENT));
- #endif
- }
- 
--- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
-
+Does this series support zswap being a tier? I cannot find any mention
+of zswap in the patches.
 
