@@ -4,94 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C100AC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A175C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACECC6B0107; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
+	id E9E796B010C; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAD206B010C; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
+	id E27396B0109; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946646B0108; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
+	id CA05C6B010C; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A49B6B0105
+	by kanga.kvack.org (Postfix) with ESMTP id 96BD26B0109
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 175C9168B98
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:49 +0000 (UTC)
-X-FDA: 84983909178.13.9323F96
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7C75F40005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LQ/zMYiy";
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77BFD168BFF
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:02:10 +0000 (UTC)
+X-FDA: 84983917620.03.4324D66
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CE5C24001E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:02:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ASMMRSEE;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783951329;
+	b=w/RRyih1M8T+XOOqiWtl74WySrZYeGLNOT+/eCiYvC5xD6H2TM+BBnVqZ/7YVinMZ0k+2q
+	/jlBO8ytGILS8jLN9NelcNn6UFs2bORt7hNhLSlwAfPFUaA9AXnVXzHl10hwljcxt+A916
+	biw1zqjWeeKkUrikPywFJNaOgHVx1q8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ASMMRSEE;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951127;
+	s=arc-20220608; t=1783951328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SKLq7ZuoHq2BFm176pu4DfNEYfPU8F0EbpgzHa8ZXlA=;
-	b=WFExV7uRr5IQgrVurptulJeteumIoUr0Z5/QPeTJ316A/wdyJbChMw377PVzjedVSkdQqk
-	aRqB+p9p3tBrWE96uCHFLgkuMFOm0DtdhASry22GM+AeAzn8pqTkXrW5ImqnA4jFnwLtPA
-	ugKMo68x+Ny+7NRS7t5kCWtFjhE/b54=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951127;
-	b=e5LCoaQNiRGqe0v8Ec2lTsudSZ3B3W32oPq+5oInjGyMO5pkc6KiKMcmRxKiuBGgn1lJX/
-	JRzFKpXVoQcDiWPAyqTeM0vokGcSCW74RQh3U8KxvtkFJ4e01OVWomjTTGldq5DPBsAlSf
-	ncwQsz15xYQ7TD1436uqzrpKWVdXWtA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LQ/zMYiy";
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C83FD40978;
-	Mon, 13 Jul 2026 13:58:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5565E1F00A3D;
-	Mon, 13 Jul 2026 13:58:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783951126;
-	bh=SKLq7ZuoHq2BFm176pu4DfNEYfPU8F0EbpgzHa8ZXlA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LQ/zMYiyDc9DBS+2PK4RjZYTpHzO2uSG2unKv5GwCgnDUqdMiXhJTqI0CAFZAa/3P
-	 1VHFTEGSTxLynIIT943yFiCNPlZs2qYLlkPj5Lrfw3eveLRGKadq+v8/xT17JP2OpH
-	 L82xYFFVjkghxdfAMdHlpQzTJEh9RWCz2fVa3BBJsjN/WjDZR49JoYSQ71YyYsSRaF
-	 RDGRPLh6A1tTvWXaOQvf8hecqWIQ21JwhI3GXDDS4vJnPKRN/RLhDiRbTNbz5gq3Eq
-	 nd1bC5m5KLvePmsUtrEd19vJxmscIWClZ9+2ZPN9UuOnMDRbSCD/38I76b4JqnZrzo
-	 bKvk5Ooi9Yn2A==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	SeongJae Park <sjpark@amazon.de>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+	bh=+RCDGrorkyNOOuJOjX5fZBtuLdr9gFJ37Diu3XLCTDo=;
+	b=R+nT+0hDzMAvITfnCXZOBXMNzhzc7Tm3wXWXavSGCbOJIc9bQUWWKDSP8PFV1TldD3Xgsy
+	FFH82kGOPSDkb4Y2lVsO2N+3KVDqEN5t9deWXL1hC2xoKP3rnR4PTXfTIdFzrDp7wnFZx4
+	1Xi0qXA0ANiIo9sfrM9wXOm+uSM4F0I=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B917F2050;
+	Mon, 13 Jul 2026 07:02:03 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CA4093F7B4;
+	Mon, 13 Jul 2026 07:01:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783951328; bh=ROB8+gk0/dcoXkR4gcvO5thlCnhrFywn7RQWaf7FRNk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ASMMRSEElZbqH3kcSv3cgBHwRCD0y7h1wgH3UWFgn/baB5FeIwo7Xk+LbUkFullBo
+	 ek3GdG2jwdbkGcS6tjY0I29itz5ZOSbh5hHu9lh1E6V9LwiKw1W6kVKW+GJRoc6YC2
+	 dPS2W1hLic9wNvgpjDdvMv047vveZPnluRUq3ZWI=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 2/5] mm/damon/tests/core-kunit: catch test failure in test_merge_regions_of()
-Date: Mon, 13 Jul 2026 06:58:33 -0700
-Message-ID: <20260713135838.32730-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260713135838.32730-1-sj@kernel.org>
-References: <20260713135838.32730-1-sj@kernel.org>
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	kasan-dev@googlegroups.com,
+	linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org
+Cc: david@kernel.org,
+	linux@armlinux.org.uk,
+	akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com,
+	rppt@kernel.org,
+	linmag7@gmail.com,
+	chleroy@kernel.org,
+	klarasmodin@gmail.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	kas@kernel.org,
+	zhangtianyang@loongson.cn,
+	wangyuli@aosc.io,
+	tsbogend@alpha.franken.de,
+	ljs@kernel.org,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	arnd@arndb.de,
+	ryan.roberts@arm.com,
+	pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com,
+	baolin.wang@linux.alibaba.com,
+	tj@kernel.org,
+	kevin.brodsky@arm.com,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	hpa@zytor.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com,
+	yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com,
+	ardb@kernel.org,
+	guoren@kernel.org,
+	yang.li85200@gmail.com,
+	viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn,
+	junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev,
+	vishal.moola@gmail.com,
+	namcao@linutronix.de,
+	pavel@kernel.org,
+	djbw@kernel.org,
+	yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com,
+	Jonathan.Cameron@huawei.com,
+	coxu@redhat.com,
+	andreas@gaisler.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	geert@linux-m68k.org,
+	shorne@gmail.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [RFC PATCH 27/34] m68k: mm: remove usage of pgd_page_vaddr() for CONFIG_PGTABLE_LEVELS=3
+Date: Mon, 13 Jul 2026 14:56:06 +0100
+Message-ID: <20260713135614.1618183-28-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7C75F40005
-X-Stat-Signature: qqqsy7834iapfczywitm9dj7rue1977p
-X-HE-Tag: 1783951127-517621
-X-HE-Meta: U2FsdGVkX1+snGw0yKxkQiXUeZLdBDFGkK8IshJFFY8jvpkZPmVHPraov0UqB3VucHZ5oNKMKK3qNQCSxOKKC3+76SoTQRCjsp+KIvjuJRgxfTosG+gRXG+U/AKzXmdN8otH4nScvQqnzgerf2iwt0sH495Ztbelqn4NRBIr6cTELCNi8vPLiymT50poLBWUT+SHWi6k5nrNwreuWBcDVZAlatBMPALHNjxCD1q0fyGQ8jAVoo90gKSIKitaDHHhr1n2B4B3++aQ8tvZc7VO9tJVzj18lEPM9jlcYqOkL/0rljimSp6Temgrk1zhUUppbdNCWapedIotBiZpRMMNS3RFtRyzsVwAdnYDUSYgyLj8xf6XbXAcfG3ujzDvN+l16/si5Dq8z4vpd5Z1CbmODzFXjA+2YjfzVUiZxu52wfEA4BqiBkp8zppKSuaHHfpBrTtngx212goBolnK1RNnw6wAineXRCfLfCu9PVhPCa4CBEN4QMvlpnL8UjZnWHXuMkv/tM5HAkcaFk+H90U1shKDxv4FO4SzPCO2yWHRYlJ615edG+fdRYQIt66G0DRwHRvnH83P/SOEkQOdwPSS6cfrDtKtIAaySf6odkH0VnCmyOdvezOUY0MiLMsgOQ9/Wt3NGrbslZoCEC0Km0ZAk1vSfUyMJTcir3HyOuohgC3vVDrFM+jZntd7Yy9hTwQ7DKTHLqmwRd2CZOZvSGzyLh8en/D90qdaob73Aaowzp0/i7bZxMIEpHwFTZ0fxbYXsE7zaHxe2Ole2Aa1SzqFFgZVQ1hdLNOFij7flqw2O7L6aH6NHAmax9xAJqrSHIbiofo6wfFHyuztKO3OZZ5rUsBCc79HzR3NoKdJogtwhrah8npssIsSUIoAtPFZmMI1+ejv3pp3qGxJcSuDttGRDridNDbjyxdGDepUSgLkXUy6MR8NEzF+hYL+nsQPKgU69ERkfteFeMn/sBjOQwD
- drKSbNtk
- t5zDBrbWEAKqjBZ2BMHTTG1L6vvLGSdoa+BXWlUU9TzSCC2qVaIXD9GKiPUtq2005GJ5B7epmVxn7oweeA94xNMp05wU2bB9ZTo+yQI/I8rXf3+FyybJlbdb2DHte9xL112XRjeo+0bxNWu39cKJmmKw+Q+A21LsKTDppZDoaIhPMS8Jy0c8gwSz7008LApLUpdmJ7C6Jn8/W1YKOMI1VCM4TBHb2omvSX6VFk/Z659Qt/99FzTRAf8s7W27+mgEZS3Jm7zgX135f30c3gkaCTW5als3750CpcuQUJtLntfnps7RvQYiiYru783ISUqAObXXp
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CE5C24001E
+X-Stat-Signature: areaz3jaotyxao8qtjfyfkk5hxnnaypw
+X-HE-Tag: 1783951328-534181
+X-HE-Meta: U2FsdGVkX191w37APmIyIQKbxddp1IDrR3VuPokDc1gRPKpZTPsLb3sDD3H5EkOSDhTE+cAzGx6FBoTOjyKnmrNeDZRaz8XNCWD+E+sw9kopRSlh2yEpdwDQgorzkZb/TJNz7R+TyVz4BE4PN4wt6M2FRsNNcvMtD+G+vRsVwYWixHLdphvmETXSFwZyvZltnR9nYZXk94fUINvT6+ObWXbqSIBT8bhXNIBOfkCd2+b4xf69QwYayuU8NhAcg0vhdbnMKQjN1+Vf7L5pqo75P8ViGQIje4GnEIpMFVP73VdR2ZcotR/LpmR5+tyHaDBJukymDns93a4g+ni2Dx/Zq1b+2GDJ89MwgMDt6qIXQsjtIUmof5SV1SKsaI8sSI7gPeUPmXgtM0vFFw6gdm1+j3CfQ2D74otIKw0YigY7/enmE4YbSPVcbJlojpT0M39zD/hOtyvBZ2TFW0AtqkHsWGoJi8tofruLX9Axbe9XiZAuQY6QWbTz0eSWSuYsWdg3Kq58yM2ImxNyjFj+keeb6qt2OZB71yvbWgtwETzvODnA+GeToaJJzDWlniWVBc2BmBul+4EDwKEwA/jwj4PJ6aUoYZatEC9c814WmwpbZISIlyJF4zW2atoDlYOlZxpNzDciekpvkyHONzg/mQESn5+4L0kxTI94I9DYZjOfYmPb4E8MrBHd5TDw+lC6cZdC5AQJov/amJDOIDmb9ToQYMpNQAMRgxh7W1//oW6j2DWWkllo6ABorCZFzY444J3xS7rRA6bdQJc4q+KHhTQXVFOFbu6UaNStFr1cG1WPwVyPbZAB3xudtBqDSZZpzyRx5itU8suF9B3uTqzWKbtG8nUxPRSRvkvoqTayvMGq05qfmMWa5x2EIvjFoSDA6gJe8GvyDWKJ3d+7cfQQ+YAwL7dFeoj27kM91zkxhpfotqQ+aAXzjE+fvK+ERQINcfnbJX+CJMbxrlE4riotDhw
+ Qp7NXuBy
+ ZlXshuSO5pLvNFqHxE/+S2Tm8G6iZfSdjYhLFMAWUle5wNKWOob9NjslqJ2QXPDYX1jpkwyATWW8eAMHHli9YV12JFFw/dfc5LAFmQIeccoGC7I8puXZp+Hb27AxH8NSIgAbt5kUXA54P20G30hz3NfpBFvnMR+vvGMDOcsEwC0hGqMe+6yDj6crHj09GtSNKXTfaoOhFQFrq0lLkNneyrZBDt++F/LomF8L+75aXQ32Q74qIPdu/zXpMY6zxDqLVuhzA4XCMconLDkFKrjgmmL1v5mEd7N7dNlfK1SPbq+avbspckkgWY1UoIldp9qPiSdnwMwUTpr6/0lPR2UwOAQOMvgJ+BGAmWJ9G/2R7U8q/WNw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +179,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KUNIT_EXPECT_EQ() does not abort the execution of test code when the
-expectation is not met.  But damon_test_merge_regions_of() code after
-its initial KUNIT_EXPECT_EQ() call assumes the expectation is met.  It
-does a per-region test with a hard-coded number of regions that is
-correct only if the expectation was met.  As a result, __nth_region_of()
-could return NULL, and the test code can dereference NULL pointers.  Fix
-the issue by catching the expectation failure and skip the per-region
-tests.
+We want to rework how pgd_page_vaddr() behaves for generic compile-time
+folded page tables by disallowing its use and triggering a compile-time
+error when it is used improperly, ensuring that the actual first-level
+pXd_pgtable() function is used instead.
 
-The user impact on realistic setups should be negligible, as it is a
-unit test.
+For this, change usage of pgd_page_vaddr() to pud_pgtable() for
+the functions used when PGTABLE_LEVELS=3.
 
-The issue was discovered [1] by Sashiko.
+There should be no functional change.
 
-[1] https://lore.kernel.org/20260710144937.26981-1-sj@kernel.org
-
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- mm/damon/tests/core-kunit.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/m68k/mm/init.c     | 2 +-
+ arch/m68k/mm/motorola.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 6ad73559dd8ea..a99363720e677 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -260,11 +260,14 @@ static void damon_test_merge_regions_of(struct kunit *test)
- 	damon_merge_regions_of(t, 9, 9999, ctx);
- 	/* 0-112, 114-130, 130-156, 156-170, 170-230, 230-10170 */
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 6u);
-+	if (damon_nr_regions(t) != 6)
-+		goto out;
- 	for (i = 0; i < 6; i++) {
- 		r = __nth_region_of(t, i);
- 		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
- 		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
- 	}
-+out:
- 	damon_free_target(t);
- 	damon_destroy_ctx(ctx);
- }
+diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
+index 3b88c0dd1616d..d8351c210f58d 100644
+--- a/arch/m68k/mm/init.c
++++ b/arch/m68k/mm/init.c
+@@ -95,7 +95,7 @@ static inline void init_pointer_tables(void)
+ 		if (!pud_present(*pud))
+ 			continue;
+ 
+-		pmd_dir = (pmd_t *)pgd_page_vaddr(kernel_pg_dir[i]);
++		pmd_dir = pud_pgtable(*pud);
+ 		init_pointer_table(pmd_dir, TABLE_PMD);
+ 
+ 		for (j = 0; j < PTRS_PER_PMD; j++) {
+diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
+index b30aa69a73a6a..03235d0618ef0 100644
+--- a/arch/m68k/mm/motorola.c
++++ b/arch/m68k/mm/motorola.c
+@@ -273,7 +273,7 @@ static pmd_t * __init kernel_ptr_table(void)
+ 
+ 			if (!pud_present(*pud))
+ 				continue;
+-			pmd = pgd_page_vaddr(kernel_pg_dir[i]);
++			pmd = (unsigned long)pud_pgtable(*pud);
+ 			if (pmd > last)
+ 				last = pmd;
+ 		}
 -- 
-2.47.3
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+
 
