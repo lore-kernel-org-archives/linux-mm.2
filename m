@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53BB4C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:32:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B08C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:36:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 489D96B0005; Mon, 13 Jul 2026 03:32:05 -0400 (EDT)
+	id E31286B0005; Mon, 13 Jul 2026 03:36:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462606B0088; Mon, 13 Jul 2026 03:32:05 -0400 (EDT)
+	id DE2A66B0088; Mon, 13 Jul 2026 03:36:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 377A06B008A; Mon, 13 Jul 2026 03:32:05 -0400 (EDT)
+	id CD1FB6B008A; Mon, 13 Jul 2026 03:36:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1361F6B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:32:05 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A93B1169841
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:32:04 +0000 (UTC)
-X-FDA: 84982934568.09.E60C6EF
+	by kanga.kvack.org (Postfix) with ESMTP id A75B26B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:36:40 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BE671C3E27
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:36:40 +0000 (UTC)
+X-FDA: 84982946160.15.6FA1963
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E7846140007
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:32:02 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ZyRRVaaN;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=d10LyRPT;
-	spf=pass (imf26.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9929B20005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:36:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=W0U7mlyj;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=SP6eoOrW;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783927923;
+	s=arc-20220608; t=1783928198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eTEFeO/5EIAP2AE6MFktsovFd8RdOZrL0IsFXTdIgCk=;
-	b=ynnjp/pG7SGrvIMfxzDR2BLhZmAdoXn7EQxFcpeSJQnk+u7kn5uugmq0F6zaHbWfhX01/Q
-	odZQ3UFTjd11C3fLlIerLYiawhEbYqtXlJcatBRE4DLK7aXx8STkcNGLPkw8ZNsh4+L7Vt
-	JdocZvwCYTVAtmSTi4UUj6lcrxnwmdI=
+	bh=+oJ+oiAJmm6M2K7Ydw/ek8HK5Sp2SDGAkvAxlUMtUw8=;
+	b=4tZxgL67YoLmLaqfQ8MFI9wdw+idlV1qbeR1fDVaVmddqKEMoQtDZ1pgbFqleLZL8zEIq5
+	XgcyWwEsB+wj3eFG3xUojP7omQfLDHo2SBgAKlPQIYUZtFXyQykAbXuHiNw7thZsNBCAJc
+	2AW1IYBL6DfxWEHj+MFVzMc9ZYCOcyQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ZyRRVaaN;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=d10LyRPT;
-	spf=pass (imf26.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=W0U7mlyj;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=SP6eoOrW;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783927923;
-	b=jfhjkQkpzLSNcxEhhwPGJFv5HoOCrLiHkD2JyAT/x2LQbtnaR5KABngxqI8QxNvbbMPAHW
-	OvmSDzTBBePBDMZNogb0d41fw/pb4QutU/6BVKw1Krh2FM6XIJwQOVjYilRLJZpVj8y3Oa
-	UDh+QJp36PjUZwAqx+p8yGiv7R0IYYI=
-Date: Mon, 13 Jul 2026 09:31:58 +0200
+	t=1783928198;
+	b=N46xinoI5G0pyCITyPTKZW8j7yedPXReDQSi0fOIFbbcal+UTU2ofKUFiywp4FaBWQmaau
+	bhyMzk7OOkAEZ7jKzC83W2UpDrRQsbTIpt5OFW9rhn0Gi42u3Hj6PQRh9m0LxBM09cvYVp
+	VmA3LCcc8zaI8v4JagE0AHVEKDyfVpU=
+Date: Mon, 13 Jul 2026 09:36:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783927920;
+	s=2020; t=1783928197;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eTEFeO/5EIAP2AE6MFktsovFd8RdOZrL0IsFXTdIgCk=;
-	b=ZyRRVaaN/a7Av7n45HMCnrFZ7sdvcF8hzCP7uNhbjBapw+aHEDtJjnEs1CrWFw+3ZF2hIv
-	M3jHDVpzqCTVy5G9o5i9LomO/JobmAY9Pz7BMLALFhrVUWJDzrl6lnP1W5As75Uoio+A5w
-	MfIcfb5hkJuJI5oX6N7sHyWavnOgSsI4N1ZJLcXZrbLDcwxD1dnFZSIRBJqDrLp8YLiJnj
-	XAog1JjTU0XA1iv8403f5UcFofcWj69AZt78QBnKQa89hqhHGZGm8vFUTzlQKlRFYg+XoH
-	2rfRcwR6Jvj2iu3gM56+RHj6Oz3Mvla6+PSMdIiAO+Vfsfn5CgVrCWF8RDyMxQ==
+	bh=+oJ+oiAJmm6M2K7Ydw/ek8HK5Sp2SDGAkvAxlUMtUw8=;
+	b=W0U7mlyjOkyC/qu/kf7Rx/Jyuc+9x1Bjgu+Si4Q/HR8XmxUngDgHeyNGyfbLVKEwQx9Js+
+	TchO0iSQvF6zRyH4qCapFqKVvF4i6a5kiKjoA6OtHPnCdvOjtrGNgIMsHKzNBqKHaQnc/m
+	whwu/Kg6jRa4Ec4PoqjhNVaiHyDF9MkI34iflFI4YvHwk5Qw4ddaxEeHf3nhXSr/51E1dd
+	cW+WLkQG5DuD1uhX3ZCGTkZS/N4hmYTl3n3tTSDBTosSCmCoRBgNk5o6UV/hEKmwvAPYkl
+	NMdrDjyEdLildLm2JagNZdO/2vvZaQ3o3/clC8VBAInNYKWOdCGxZw3wUTf+VQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783927920;
+	s=2020e; t=1783928197;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eTEFeO/5EIAP2AE6MFktsovFd8RdOZrL0IsFXTdIgCk=;
-	b=d10LyRPTmTNrbrJWbIolbyfdJhyGilwIxdwRklGSZNFcKFiW1zxvaina3PckVO0/A6wCzL
-	oy0ppVgdLkkzKUDA==
+	bh=+oJ+oiAJmm6M2K7Ydw/ek8HK5Sp2SDGAkvAxlUMtUw8=;
+	b=SP6eoOrWruZC728Gbiktd+y7UFnGggX0GuRBK1mtb4RABNg/mE/y0Jy9niGxN4YM+I/pVQ
+	m+9W2TOgais4OLDw==
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 To: Leonardo Bras <leobras.c@gmail.com>
 Cc: Jonathan Corbet <corbet@lwn.net>,
@@ -121,24 +121,24 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev,
 	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH v4 3/4] swap: apply new pw_queue_on() interface
-Message-ID: <20260713073158.CHjwei-N@linutronix.de>
+Subject: Re: [PATCH v4 4/4] slub: apply new pw_queue_on() interface
+Message-ID: <20260713073634.3Hrxpfcx@linutronix.de>
 References: <20260519012754.240804-1-leobras.c@gmail.com>
- <20260519012754.240804-4-leobras.c@gmail.com>
- <20260520150736.HZnlFkv7@linutronix.de>
- <alQKlBaKIOAxMzc2@WindFlash>
+ <20260519012754.240804-5-leobras.c@gmail.com>
+ <20260520145308.nay9zt6r@linutronix.de>
+ <alQWr2L_Kn23pxd9@WindFlash>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <alQKlBaKIOAxMzc2@WindFlash>
+In-Reply-To: <alQWr2L_Kn23pxd9@WindFlash>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9929B20005
+X-Stat-Signature: 6bnptijhu831pnoucz6a5tuasd3rg1uj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E7846140007
-X-Stat-Signature: brdqehzmcondy657dfi43zjipxos6zau
-X-HE-Tag: 1783927922-167717
-X-HE-Meta: U2FsdGVkX19+6wRVg/gCaWojogFxHd5OOLNCGpK0mV2R2wjrlMgcseTAc0vxSUxNkoJ3fDT8o3+FC90GcYI8UXO+YyafbbFT725a1NUwuLBPemeEOHyN+ifPJwrK6bss5NXkUJUURoGHBgH5xcY9pt0CsS352eOyxduapK2wgIwIFJ8yIiiDMbzBdXey31dapJUH2l79g/p+KklwqyytAVIyhoO+81rFujRQG5TnBaNah7iL5lhHt7+5rstqTZu55mxAnSRdbXix8zAffEwDOW9ftYiHi87Y2pRpSSUoi2DV4aIy76MlcnIiLoIAkOtguXQngFum962ssQ+xO5y/I3rwp+4tGle2lFfO3KgV1W2T8VeuM1RbKkoRVMNgzF90TVqXHvefjYzFjxiAONOLkbztBrRAxpJNMkWWAxUyDqBFwOkmWICYGxt0khve8iSZIiTJFeMlJHLR6PNl502aW0wibsN93vKgQCrVl12YYvAmacnkKXAVSYM3+nBa7Ja/NiT4Duqj7M29bDhRW1BC+rmmdNvAMD1gUGluwV+wUssLEpCuGVdZwcgBK4LVYoSczgm9RskK56GUCNrm/DgNzK787AlYQS0OoKlarMgSOQBfbpEr624TxRNUDT/WsEbASQJZOnUrV9r7B6hgEfq6aoM66f+vee/RAaICwlTux6gfTgtJQpNSB4NAoQAWc29KFK6AijLhHI2eUJk6IekzG+tBjDn+4RaWR8+J9L85usRmfqZDt6We6rb9HdRM9uLdVXBajtVgiX+DXeRGNYAn/l9cndOoXRxX8QvSMrdUP4CperYBo+T0AN0+mfBAkLPfJBdyq3lDQH3IgPPmyqObCyu+W6Nboz2FpIiXHr1NA64r4cPyTU0FFH2Nm736ot6ihYdngTALUTkmjdex7/N7OJrGfBvoPzIZ7d4GPFfPhKEkqa4IELyxCWe2czZYaTGhLje0FTP1tJXywczm0VW
- pJP1KY+M
- n76qlcInhyKufGe/y5aKUK1R15eWoVhkJSrQuwrZ8zii69rHMYaL4VVNIKFQ+1Ic/2+p05m/UZ++S+o6jZfqm/Kv7Y9f4+gXPyuZxw9WfDjqCJ9XAhi0JK5nLsbzACBFIPs3o7YmDceKrBASHe5Na5W0vtvkh6O9IhWXEjEbQ3qRFbYOvdYV1NYXsgDd/JR4+AzkYPRglmva6sH4YiXZiRyfoAYmmwr/xAbLHEuBcmjTF3RxzR0c4tV884V+MqW+/s/aPeoQdwxCe6ulzKIhn9MH2GI3xtpeXcFUwjNKOggI9cF4ndAgy6h4p8u8VFowFUQv9
+X-HE-Tag: 1783928198-617230
+X-HE-Meta: U2FsdGVkX1/Idg40fPsY8g5d30O41vycTwbFuUjziHUo00vHCQTWVXzfNU+PuOCZLGS6pc7h/yX06wb3uzFa2Jjr7tTBV+hKISTq12zP3tMUiSGUXOQGA/TZYKv787Bd5+L/8FPQiam8kvQhK20FFQkNQ4QDEmI2uGUs0g+WTm9yZOw81MYVJao/9uvg72DNQg+v6bEhDkACwlRpbULINxa2XHq/Qcrj3vBPYa2ptrRi423Akf1qD++675HBDqtn43QCvjKQs+Zj7N+mTYzuzb+g9wjrrjO/XJtjp4DjO8QOmHeFhjfXBADMGcwbPbMYDysXPwAN0O6Vb4GvFu/glP7b02g/4S37Nh453mPCudRZfzy7xaHZKAGs1pv89mTH6HgetxkN6Z6ppJsYIaZaNfC2Pjys7pLp7vEfhSS/xQlyaDa31XNI8QWf9mqPCWnPaTt65xVPydCqGsHJceKjpqd+J6YWrzmUc1RQtHHYjv2sqFaixNXVjAd+mKungYBrAIjrAG23ajU991wmPtH1a0OfV+VVvXDSS+nigEHPiN3ZHcxBNRkj6JLvkmEGZxmXhRm9a8utX7sayCEhVW7BATg0SXulWs/6lbGCDoAfeNKmE43B5COEXWk2lHXHvutkbJC20kEvS3JhZ4ZjMFUOpBinDFZUgKKlpR7n/CKv1ReTDFjrDQQhvSozf04KgX85o7/Hmy5DtnfYCoSMfC8B9Tmg6HO+9nHFcp0ZzUlp2l88Mq73kki7KIt5pRigYGvTsoLtiGbNOEoJ/79XZWHBq2l2awOGK/xsIfXtT1fL+VltnFPY+zCXt1iqmmnDqWeKZpFphVKELQFrZ44kj+EjPNvElRc+HOtkwbc4ByjMVo8Lf7X2kLeIjZC3DbnX/x/TZYn++hbgxltD9MF3YDzY+88MGICumXx8KKADeD4gsmUYzIJ6TMxr/UuH/icRVIRLV+7ILAI9NyjNI5RTjFS
+ CFMFQvi2
+ o7CKDFAfvx2WgDnU4QXDm20K3Jm9+6uVlMGrwN0wyi+91popcSuhVTBmmZ+Tq43iNynlQX3ll4C4YWaLCDHjyFGrZtNyHYs4zMPJ8Zor+nQTKNlz+/Xz0CFUPY6y9nesLZ1KnUUUT5B+2dYMmahkKjjascanLEgIXtjbZk06/IEHws9K0mVLqCLgWOwbUMK4/Tl6Xgay5a2jCsp2TgX86Gb5upoMxQ/PFvaGwIQHx7GB+us2Nqau2OFP2LeUIiyoyZSdOV9ZfHxgyggMjhMY91wZeBMeIhWLfmX0MBpHpFBOLc9JwKHtTm1WrNguql7b91i3H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,21 +146,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-12 18:43:48 [-0300], Leonardo Bras wrote:
-> > I thought that this improved since commit
-> >   ff042f4a9b050 ("mm: lru_cache_disable: replace work queue synchronization with synchronize_rcu")
+On 2026-07-12 19:35:28 [-0300], Leonardo Bras wrote:
+> On Wed, May 20, 2026 at 04:53:08PM +0200, Sebastian Andrzej Siewior wrote:
+> > On 2026-05-18 22:27:50 [-0300], Leonardo Bras wrote:
+> > > @@ -4733,121 +4735,121 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
+> > >  
+> > >  	/*
+> > >  	 * We assume the percpu sheaves contain only local objects although it's
+> > >  	 * not completely guaranteed, so we verify later.
+> > >  	 */
+> > >  	if (unlikely(node_requested && node != numa_mem_id())) {
+> > >  		stat(s, ALLOC_NODE_MISMATCH);
+> > >  		return NULL;
+> > >  	}
+> > >  
+> > > -	if (!local_trylock(&s->cpu_sheaves->lock))
+> > > +	if (!pw_trylock_local(&s->cpu_sheaves->lock))
+> > >  		return NULL;
 > > 
-> > Did it get worse or was it not entirely gone?
-> > 
+> > alloc_from_pcs() can be called from kmalloc_nolock()/ NMI context.
+> > I don't remember why exactly local_trylock_t was introduced here instead
+> > of a per-CPU spinlock_t. 
 > 
-> I worked in this patchset majorly after that commit date, and it was still 
-> an issue up to last time Marcelo tested. Not sure of the impact of above 
-> commit, but I suppose it may have brought some improvements without fully 
-> fixing it.
+> Probably to save the cost of using atomic operations on locking, and having 
+> about the same restrictions that would allow using local_locks
+> 
+> > But there should be nothing wrong with a
+> > trylock on it from NMI as you do here.
+> 
+> Awesome!
 
-It would be good to know what is still missing and maybe it can be
-addressed without introducing this remote locking.
+The problem is always the unlock which requires full locking and is
+usually the problem from NMI.
 
+> > 
+> > One thing worth noting, on !PREEMPT_RT, spin_trylock() always succeeds
+> > on UP. kmalloc_nolock() checks for it, not sure about other callers.
+> 
+> 
+> Sorry, I did not sure I understand that part. 
+> You mean we have since it always returns true, we may be in NMI context, 
+> after it was interrupted holding this lock, and it will return true which 
+> will use the protected area even though the lock should avoid it?
+
+from include/linux/spinlock_api_up.h:
+| static __always_inline int _raw_spin_trylock(raw_spinlock_t *lock)
+|         __cond_acquires(true, lock)
+| {
+|         __LOCK(lock);
+|         return 1;
+| }
+
+on UP a spin_trylock() always succeeds.
+
+> Humm, but if that scenario exist, then is it actually ok to return true on 
+> trylock() in that scenario?
+> 
 > Thanks!
 > Leo
 
