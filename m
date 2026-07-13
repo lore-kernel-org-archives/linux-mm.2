@@ -4,114 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 211DCC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:28:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D90C44501
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:30:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 087F16B008A; Mon, 13 Jul 2026 05:28:31 -0400 (EDT)
+	id 9B4626B0005; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0390E6B008C; Mon, 13 Jul 2026 05:28:30 -0400 (EDT)
+	id 98BD36B0088; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93266B0092; Mon, 13 Jul 2026 05:28:30 -0400 (EDT)
+	id 8C9766B008A; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3F3F6B008A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:28:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 450FC40A7F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:28:30 +0000 (UTC)
-X-FDA: 84983227980.07.A7E6D9C
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 939B140006
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:28:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=H31MrJds;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of injaeryou@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=injaeryou@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 619D06B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C2CE912033C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:30:30 +0000 (UTC)
+X-FDA: 84983233020.30.E8CB4DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F340E80003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:30:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fA9fJoo7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783935029;
+	b=WT373KkMZbPmVh+hIED5tgti+++Et8nrIZDpTe5oMOz6BxN4+mwGKAe6Hl9j080czb2tqQ
+	zOJB9uZIsTS95XoJnv9qaZInVfcOdo+t2eCP2Cg+8/ZVpgu4nMdeyTm/SIu/2N1C2eOyrZ
+	roBzKal7keTGq68e8hVW9wh6fSYuq/A=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fA9fJoo7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783934908;
+	s=arc-20220608; t=1783935029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4623BPbRgjIujmWqWQj6M4QygEbpjJiFDAO4rapy8N4=;
-	b=cDbXPP3WqZPt4fBvZYS1ko8m/Dj/VP+g/2+ROkUb+au3yKkItEwsJh1u9TTbdGBaCXu5zi
-	SkFVjB00txxj8aIeSlYoYNlZad3II9NcAaS1utaxD0AjjzkaubaEYy55l+2SzfwjV/L3et
-	mnkJP3efPgydIyFtF/TmJ5aTqPCnurQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=H31MrJds;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of injaeryou@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=injaeryou@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783934908;
-	b=KBuoCme975mW101LMHIUdFA4RLotvBBJttt2dAT9Xdf/JoM3MTuxMtNJ+5rHEE4m7TDtwD
-	zt5zMfuK9VWbnRFyiTxUqARsDaBlr5rB83XpXbJ29/sUJegM8rvJTadoSjaZyD42V+5msY
-	LWXizs6Hq1Vo9gMhzs9MhlbrxTn1Z0g=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38759bcd877so2339203a91.2
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783934907; x=1784539707; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4623BPbRgjIujmWqWQj6M4QygEbpjJiFDAO4rapy8N4=;
-        b=H31MrJdsyMV44CjhJ34CUJ3CXbRr/Lac1C29zxseNOjOVJhxas7LQAwnzmeiCBf4qd
-         nFyeQP5Y0RSSt4/+ZH9a38OE3pF49G40zPVTKYWTZ/0YvozB8eIjNXktx58dkXet95Pg
-         nPM1e55eqSwRNOExzrR3WyLC6V3D+NuDwutALmVHmZIWzoZyU8hwvK3/l0iTS0jiPgJO
-         SosA3isCwgjq/H3rviQsL06VAG7wyfJJd2ywcxcU5DwdCuh27hAinKSqh6EvfnQR8X7X
-         7Roktd7nXKDu5oq4V+CqQAMMOhYaYgflSlA+7+BobkWMCU0pScux1raeYGITTFDqENMF
-         /4MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783934907; x=1784539707;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4623BPbRgjIujmWqWQj6M4QygEbpjJiFDAO4rapy8N4=;
-        b=COVYKcP12AUj1mlr0prit1Z0/AcnAMRRjIjVWmIXC8IfcbqExZpKOFQayPtebMud5y
-         hR8G/NhGUMN1J9fNeyhA+Ik2LJagcdsRjmEAfu5fMKo0hstMcVKZKShyRMjLLw+aUoWP
-         AFsvrbFzha0o/IhKDVGNGApZ5xSiXrVHoyVnxAbhFEsRuZyZM/Jyra10cNG1/ONKy2PE
-         3MgmPFkBr0R6pHDLgMuq8IGrv1F2pcOQNjbo9LM1YjypBvm/JULdwq2hxpG0piYJOy2D
-         gIa6p2nHE/MeaJ57BKDhRm3yCdeL9gbxpIHEkGPyrhv7mYnr/JoQhfYVu2X8rdBIznYS
-         buxw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpw0Rf9TAKs4+epan9LoXTjFK9guEKnu4BgyWI73yK690hiKvVLDQjJSYo57DvWNK4s05/ilsQhYA==@kvack.org
-X-Gm-Message-State: AOJu0YyBDGKoIQTk1zs8t3OiHiLpzHiYaSX6HQ4otkSZkgfATfuSIvTf
-	If2sBrclBLRd7jiA5EFwLlt/ZM+3JFtIvznGVzKJbVM7REfeIBNe623c
-X-Gm-Gg: AfdE7clN+CMO1VCJBUOkgM7PdD8dfoXoXbaKgeRNFthHWClyzdbtKFxaYkDOnY1h+w6
-	M6rvgS9koi1J7mwm492qKgJxiunVRRwislg9qwY0k5fn3pP7ILv2FCdUA8pYSVuaci8bq+riXv7
-	pLtrmvuVKsv9w9W6ZdYswHZpZQnEu/dVrIJsFf/BojztbUj3YvROPj1eQ1Kvtb+Pdl674MVcFQD
-	ANsdzDbxR6drk053jJSJ4wAz5C0E3m3EUHKNpiO2A66RI7qKAMVOnQV52Kd2cc3es9q9PHZiK4u
-	kQNyC94VUHlKIH5gGYG7cS6Ug6gv4AtHC7WE/7kzPQjxey385XQ0WWZgVPteCteOKvIaQgoEESZ
-	5Th6pVnNVsS0+LFTAZdWDcdivE171OWtrsRSq0h9lspb2PqC+1hxBIK7b0GoWQIYaT87R0/xzBh
-	6hu06WEeQcOrs=
-X-Received: by 2002:a17:90b:1c91:b0:380:534f:58c2 with SMTP id 98e67ed59e1d1-38dc7b81c27mr7444738a91.30.1783934907345;
-        Mon, 13 Jul 2026 02:28:27 -0700 (PDT)
-Received: from lima-kernel ([104.28.160.216])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a5564f58csm6293039a91.8.2026.07.13.02.28.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 02:28:27 -0700 (PDT)
-From: Injae Ryou <injaeryou@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Injae Ryou <injaeryou@gmail.com>,
-	Brendan Jackman <jackmanb@google.com>
-Subject: [PATCH] selftests/mm: fix on-fault-limit false failure under sudo-rs
-Date: Mon, 13 Jul 2026 18:27:00 +0900
-Message-ID: <20260713092700.464376-1-injaeryou@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P+HnwQIMWga6Fivte5SRYooq86xfzTJgE0AFjo4ZSuw=;
+	b=sQW+VYLoPbFKp5RLYTaOb7z1ECMpytgFv14lMpVzXXfQ8AeUs4J5C28Hvo/38kHSqjTR2y
+	6cfbUw/Bc7UttLI/BPA+qAG0VrX26rDEM9oqSE+BsCpInmMHgJ7uQ3M2M1Ufifv284AIEU
+	MnGNuy3xRw4OVOGEsin8gwUTG4quZuU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E9DF941247;
+	Mon, 13 Jul 2026 09:30:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B971F00A3A;
+	Mon, 13 Jul 2026 09:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783935027;
+	bh=P+HnwQIMWga6Fivte5SRYooq86xfzTJgE0AFjo4ZSuw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fA9fJoo7JuzO35KXbjPsYfvmtv5gRBXdH3Z9Tf3oo0BvntiWFSiZp/ea8kZgGQkGG
+	 RzjSUbF3c5ISlhHXDkr/SY4Cq70jmkUITRwkm/r9C+UAtLi+0IWWKrjMHEA4WYOyfw
+	 DEYLaroOLDwtqE1vzwKT1XXXVaaAIVOv17q+kawIlOd3JIAe4QZMcX39aofVTpp3nx
+	 5QmuoMzBxRcSl6XhBsiFVafLxSeJUwrjQVpwEbiIvmSIdbbItCSU2vabaoj+22YTAy
+	 VCqRxXU82jfjyhGn10tGHVZExZMosu5VMnjE7EZysnAKbkP7puGp6R/gN4H+lDbyI4
+	 6RdxZ8yaW8YBA==
+Message-ID: <e0421ba6-82a5-4c88-b5db-23231c265142@kernel.org>
+Date: Mon, 13 Jul 2026 11:30:08 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uh3u6pns94o5k1deo9uzizgd34ppogj9
-X-Rspamd-Queue-Id: 939B140006
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: linux-mm@kvack.org, andriy.shevchenko@linux.intel.com,
+ usama.arif@linux.dev, hughd@google.com, ryan.roberts@arm.com,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
+References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
+ <alHNjbiWFYXSPZtY@casper.infradead.org>
+ <5ee8783e-4deb-48fc-a4c4-96b02d79a6cb@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <5ee8783e-4deb-48fc-a4c4-96b02d79a6cb@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F340E80003
 X-Rspam-User: 
-X-HE-Tag: 1783934908-88260
-X-HE-Meta: U2FsdGVkX19QFA6RsBMWZh6KQND0/eZbNgweYPa2bk1avAXiwWhBM72Tgl47kS229BUuwKqfsJpdCPhWhKADbL/PGIUyHpBzYcxciOUTkBQ2cWB/WF2sPr4FJgNz0J8gd6r8bA0nnVd+LWL9uxKfeuWFVcS8cbF7EhCD1ixhnAGXs3NI6bjn55bKrrWa+t7eBH2sO9d6ukux7HBpawP514fNGvmOa7cGn7Z7XaIdFsyQVLhGqPQu83O4ddZqYtBKjgUWZWPFV1AVqDzG+wC8p7BxcfMxZsC3c32lozaH7YVJsS3u5wY972Yq5GcdYnoATvgki5P+x3EpZ6QaUJBNB/10GljXUDbQC4wM30yYRiXU8/99GpD99azNgwz2TEYBCRDTiB7rCkTO5g9ot+FSqXZSQRLFaa1mdhS5gak1kfK5YA/3dmaLn3jeTT8rWX1PCbBWoiV5sk7Xu/h1i/PjvXj7epU0GugQVZKQnhhZbXmV7WmY4ttC+HYKLXlcX9xeQN4uo2m2YqWCZcyNnffSUUdQMrJ+36VwYvptPKJ+/Pw+XId3pVdZGTzPjFHpo53VgZTKZGJH0BIrePmNJPXO4hLTo2b5LFQhtMEo9h8pwA/++yW7Dyyx4Q+JCbEyHHX08azK09jOSdNsXppXIti7yL8hA4cZck4vVPw0sJUcDdwhBzWZWVMPIL8Dye/3Ed9XwN/SaAOOxBmoqJtmPKNyIAoqomXCVZFAEuv1EyzoAXGp5uNsLa1DBOTupvUaBAzZX16Qmb+eFKwdcUwCXgHxxgnZ2Mf3pfGRAmzm2PEyniWGgzdARtCsjtcGHkgVD3EtCRo7wPwRFjR934kqIvGBz0B6tZTNvM9cqDARsONMr8r8/Kn56nad9PqFRcl7egSEVkMeWG6TferH65mpxo//ReT/+hiqBIT9SunQl9m6Gs0UTsb8IGy6gTGfAl6cYRrZSxM+yP8dzey+m5J0oXl
- GGTtzRut
- hpWSQoAS3CJ8AVn9mYGI06czZiXxSeVONgIxA0brTME8gFcdY4HmgPkWDzIIz6RZfPO/xenCtrRLYQX0pa+1QzQ7MUNCLAGoyU2481/8ucuBU3FC9ZYc6fP6xczSmdpAIXgVRw5fwyoUp9GrbVYfuTTNJEz4QTo8WMQ90R3b497inqKFVqr3nX8cnxE0X0+yyROQ+ud+TBT4tggDC8wZSOvZjkC1EGJZuvP39Mojp3T5Qq3Lru043Mlc0UtI2usU9al9K+opPRCwS3U17q+CQ0w3W2n9N0im/87nffcvlzRjaZM7ZuuDAGkSLK9/kj642AfSsI3qjXwsqcYp9uqnF6UlEfj9n5xN8Ch2yHT6H6/xDD8J5AHvdxmyq0vtIrBo4gOM3Iy84rB6PxIR4vC7yAbKYAyzSCtRsVS6g5zTnedyy1X0KPpCEAaFyLQ==
+X-Stat-Signature: zrmnyosj5jfknnahi1xdnycakh646m8u
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783935028-952494
+X-HE-Meta: U2FsdGVkX19NFuh47palR5eAYLxrcvkCOg78RjUkiTXJpWsaLDqQIRdzX6+4apsBLUo6afHgFaGYMJ/9CEAswJQrFGuVJL4KF6ZK4ph3vuQ+AVBbN8c6SXnAsid3JVMrYM03ib21QVB8MXAv5oYaMnlaEFCTseiFCf/lZlepAFAmAaNiimHQIUg10KMl9GW3PDzGrPTbiTbSlfqExSwhTac0ziRQXA5BZl0kHKX4BjiguVdkp4TwEUWIynl8BqPynxZtnXxIisBQ2thHwj8adFrY1w+4+fbzf/VTvLyV4Tn1LtvSNUsYa2lEOtV2qY7KQ3O7sWTTjQz5zrgU+2J3jyyahjwlOPm9svALb+qBhxcIIwjgKOXngJOrGYQF13OdlGO3cm4zJkT1lfdbzJBGqAn3rmJ+IFiJzXFjTSQT6DmMkpdtjFqtjCNkfNMe/UPwwnsDTxRsIyjMKejth1Qa59RCIBl8kfEaRAbNmJfge8j+Xe2NrYKvh4JbkeQ7cfJ5aysFxcoMz1KCrS92X+Zep5WnIwzIVvKWlQAavcyp6x7DcTtkMZVCc3Pfs0nmgQ/rHfSw2ppQZjWaDrgY54bxRLogZ/cwbGw7Gz2ggWUFdyiKvAdC/QcvrPIhnw0dID935Cpx87Ur0k27C7EoCqA9CPYGuVvvz9XZkXWHXMItN8nP/153WVO+sOGYdRiBE7OwmD8DeReSGqNRy0KfLRWPii5Meav2FbbOtcivpo7+C6WHjTpqbwJC4f6KG/DZaXBgBoBY3F16Ew3wqI+e4NW9hl+G4AjKfV/MY/LEfgZZzGwueYTRrnXpfv1jhKaS8U5RTrID4EAWsF51ERK7oy65COYND0dWK4dB32BeffTFP+8rA/dqs7O/LaH5er4NoYsMl0FXNTreKDoTvc1xqjY3GmFjkQx4kSwbHuDd6Fqxd39/p+HPuGFADMQ8MRQBUqSzzbrm8VA72SAICm1fylW
+ X5Sw/3wS
+ J0SgRPwjX93pWbk5ZQ43xb2AJA6HRBEwGxFmMOrHuPqkqdHefT6SOv8ofIhrysJFk98zw8KwJf6qjM8e/E7fcu8Dul01FM08p/rfAvS6g5ZuAd4JnYBdJ2k1IKPuKnUqjo4wEl2ungz1XkFVU0Cg6bUxTS+AypYW3s9fse969C2M7fsFOAEJdGt96TVRT4IWFNcSX/jAIVOLceI0qLwcUdYGbWJVgq0Er1MF+XtpjPYWB5/ZOYrrnv0a2iXsybk+PTjyy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,57 +141,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-run_vmtests.sh runs on-fault-limit as the nobody user via
-"sudo -u nobody ./on-fault-limit", guarded by a check that nobody
-can access the binary ("sudo -u nobody ls ./on-fault-limit").
+On 7/13/26 04:37, Anshuman Khandual wrote:
+> 
+> 
+> On 11/07/26 10:28 AM, Matthew Wilcox wrote:
+>> On Thu, Jul 09, 2026 at 10:13:34AM +0530, Anshuman Khandual wrote:
+>>> @@ -532,34 +575,34 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>>>  	 * see locking requirements for print_bad_page_map().
+>>>  	 */
+>>>  	pgdp = pgd_offset(mm, addr);
+>>> -	pgdv = pgd_val(*pgdp);
+>>> +	ptval_to_str(pgd_str, pgd_val(*pgdp));
+>>>  
+>>>  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+>>> -		pr_alert("pgd:%08llx\n", pgdv);
+>>> +		pr_alert("pgd:%s\n", pgd_str);
+>>
+>> Why can't we do this as:
+>>
+>> 		pr_alert("pgd:%*phN\n", sizeof(pgdv), &pgdv);
+> 
+> %*phN dumps raw memory bytes and will have different formats on little
+> vs big endian platforms which is not desired here. Debug print here is
+> expected to report pgtable entry canonical value where various platform
+> specific fields can be inspected.
 
-The guard resolves the relative path from the inherited working
-directory, which only requires search permission on the test
-directory itself. Classic sudo passes the relative path through to
-execve() the same way, so the two agree. However, sudo-rs (the
-default sudo implementation since Ubuntu 25.10) canonicalizes the
-command to an absolute path before executing it, which requires
-search permission on every ancestor directory. When the kernel tree
-lives under a private home directory (mode 0750, the Ubuntu default
-for new users since 21.04), the guard passes but the execution fails
-with "command not found", and the test is reported as a false FAIL:
+If we'd want to go that route I guess we'd have to add a new specifier that will
+print the pointed number in the size specified by the second argument. We could
+start by supporting 8/16/32/64/128 bit only, no weird stuff in between.
 
-  # running sudo -u nobody ./on-fault-limit
-  sudo: './on-fault-limit': command not found
-  # [FAIL]
-
-Wrap the command in "sh -c" so that sudo only resolves the shell
-binary, and the relative path is resolved by nobody's shell from the
-inherited working directory, matching what the guard checks. This is
-the only "sudo -u nobody" invocation in the script; uid, cwd,
-rlimits (including RLIMIT_MEMLOCK, which this test exercises) and
-the exit status are unchanged through sh.
-
-Verified on Ubuntu 26.04 (sudo-rs 0.2.13): the test now runs and
-passes instead of failing. Verified on Ubuntu 24.04 (sudo 1.9.15p5):
-behavior is unchanged.
-
-Fixes: 5d2146a3354f ("selftests/mm: skip mlock tests if nobody user can't read it")
-Cc: Brendan Jackman <jackmanb@google.com>
-Signed-off-by: Injae Ryou <injaeryou@gmail.com>
----
- tools/testing/selftests/mm/run_vmtests.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index a60b9f9f16e..687d115e3bd 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -302,7 +302,7 @@ CATEGORY="compaction" run_test ./compaction_test
- 
- if command -v sudo &> /dev/null && sudo -u nobody ls ./on-fault-limit >/dev/null;
- then
--	CATEGORY="mlock" run_test sudo -u nobody ./on-fault-limit
-+	CATEGORY="mlock" run_test sudo -u nobody sh -c ./on-fault-limit
- else
- 	echo "# SKIP ./on-fault-limit"
- fi
 -- 
-2.53.0
+Cheers,
 
+David
 
