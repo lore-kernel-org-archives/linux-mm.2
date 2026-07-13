@@ -4,90 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10070C44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5935EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:43:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E17D36B008A; Mon, 13 Jul 2026 05:43:18 -0400 (EDT)
+	id 5B3FC6B0088; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC8CC6B0092; Mon, 13 Jul 2026 05:43:18 -0400 (EDT)
+	id 58BBF6B0093; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDF196B0093; Mon, 13 Jul 2026 05:43:18 -0400 (EDT)
+	id 4C9456B0095; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A8F6A6B008A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:43:18 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35E8D1A09C9
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:43:18 +0000 (UTC)
-X-FDA: 84983265276.26.FA5E682
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 838C680003
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:43:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="K/tCCsK6";
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf02.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E2496B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6DDD140A85
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:43:34 +0000 (UTC)
+X-FDA: 84983265948.28.16A5A32
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AAA88140008
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:43:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Vpd08eG5;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf09.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783935796;
+	s=arc-20220608; t=1783935813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6yn5uVcVNjsZ0l+352af1mfQvFt8DdikhQFAm/QfWvY=;
-	b=uYUcdjD5iyUBxjFXny34rrR/rVLNP/YVp5RBs08cPlVYVBGzA1dVM9eGoAw89l/Ut+Cvtt
-	uwFUSYFnkBQ24p5kXwmcRelvRe5cAwOXHvpJZ2+M6sSPmDHsUDpJV6odYNi6soq/z5FGIV
-	6tLJTLyVINPj7uYGpTYBB/LPojV30xU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YVmVbtBX3HCj9Ijd0ts5x4Wm1TJDsoimgyijvblmLxM=;
+	b=J1cB4TCtpYDNsP1Pf/GsQj5DXv1CEFVVVbLDLkmaKqfRfrfGYoEd8XNnM2LJ03l/HK2nQ3
+	6hVfNSTEwXEm2hTiNxrxwg9tN8kS5nOTmiL7exXd+QnWzlBky8UJCQZwL7UME9cNtp635z
+	ynb+LfmpIoRitRdMyMyG8/VFSsK7gZk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="K/tCCsK6";
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf02.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Vpd08eG5;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf09.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783935796;
-	b=fkSC97ujoC6WNB4O2KyK30HoN8m+/6xG6/6xsqXORFoSxi9L96UdswzNPIaGnoEkQIpe+B
-	I1JlmRLzjiBVGfdae4Nnu3yNqsDnUYqNkEVBU8/48v4RL64+7xntqO0x28yMaC+rqtA5pD
-	zPnT5PAaWXweIoZsasH97ZnzWc/0N2o=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=6yn5uVcVNjsZ0l+352af1mfQvFt8DdikhQFAm/QfWvY=; b=K/tCCsK6xPg3J8zc1+/qL6L7Pv
-	o473DLr8msXdiYgLUufinukf8JFQgUi5AH1JciZqBI8wFT4cL7bKiVbvj1DwAanDE53iU7A1VmTfz
-	dxltby4C61npIvcM+7Epy6AyRUQ1rC0kSQaqW79Ygkjvk7UMZrlJ1URvP0MRl1xNE42CJ9kQJpNZN
-	hm58wO0rpCZFHkijeSxqF4bCCQax9hglYQEIG17Ly8v0RZo6iCguQ8FSwHNJCwGOdcRt1jfxpRByv
-	eYG9FI96Rs8SfhP9Ux7trtyygugwDVOVQxlRGQrSHErrkII/xdR1a6YulXioZMPhSkY5PVhwRdTVM
-	CnLcLMQQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wjDBu-001PMT-23;
-	Mon, 13 Jul 2026 09:43:10 +0000
-Date: Mon, 13 Jul 2026 02:43:06 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Guillaume Morin <guillaume@morinfr.org>, osalvador@suse.de, 
-	avid@kernel.org
-Cc: linux-mm@kvack.org, riel@surriel.com, 
-	Muchun Song <muchun.song@linux.dev>
-Subject: Re: [BUG] mm/hugetlb: possible temporary resv underflow
-Message-ID: <alSyhslcItgtqSHT@gmail.com>
-References: <alEJkwn5VlTTH_ZX@bender.morinfr.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <alEJkwn5VlTTH_ZX@bender.morinfr.org>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 838C680003
-X-Stat-Signature: x13d7rffgi7ojhaocu9e4wjwaei9jdo5
+	t=1783935813;
+	b=k1ACQpf6pj26BTlL7HB3BxmZnOYBobFbWDOHfedLxtw9GfENfIZnY22Dm3Z40i+IdX6HSK
+	DDwW9UU4nkzmAcU2IU6qLvGyWI+jpF8vQtfacaP6L7uHOWksUUe2xT0J59ox+LeOUh11Zi
+	C9q0qimolHvwbTdwpO8a+vWOoczXcFQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1783935807; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=YVmVbtBX3HCj9Ijd0ts5x4Wm1TJDsoimgyijvblmLxM=;
+ b=Vpd08eG5mYOeAXAMCR/jYa2ZDQrFEU4NmYK1Ty0KaLkUctzIVecmT1z/WSJGRLfqaJ5tFb
+ EwV+5ft8pE8RJ+MbKuDzg9lkJZbHhkYOAv1P+t4KTcGJSG3ORTj1twt710VwuWnqWkSngL
+ 42TKTCFo1BSyyuXzn3Uk9BEk13sIgBePePJhUVx1Ba45Q6opSKX90tFuv5CUOPjisaeweN
+ tZfB3BSSskoneXw7nkthA0vZfychvTObwC2t4QA82eRjfNFTG5nEhsi0KNrNIBB/TUxFaE
+ JJgMpvBPQsuT8+vP59Tsr/NbML+3/V4T25MvXes76ku6rHdOzFL4ceGUBsCBoQ==
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0
+To: <akpm@linux-foundation.org>, <shuah@kernel.org>
+Date: Mon, 13 Jul 2026 17:43:19 +0800
+Content-Type: text/plain; charset=UTF-8
+Subject: [PATCH RESEND v4] selftests: mincore: count file-mmap readahead on both sides
+X-Lms-Return-Path: <lba+26a54b33d+7b1c30+kvack.org+wangyijia.yeah@bytedance.com>
+Cc: <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <muchun.song@linux.dev>, 
+	"Yijia Wang" <wangyijia.yeah@bytedance.com>
+From: =?utf-8?q?=E7=8E=8B=E7=BF=8A=E5=98=89?= <wangyijia.yeah@bytedance.com>
+Message-Id: <20260713094319.771550-1-wangyijia.yeah@bytedance.com>
+Content-Transfer-Encoding: 7bit
+X-Original-From: wangyijia.yeah@bytedance.com
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AAA88140008
+X-Stat-Signature: z8xh9odmageoix7bdxdtk3s81w8hkdxx
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783935796-615603
-X-HE-Meta: U2FsdGVkX1+2vf4uVk+dA9xu3wtwQmiomqiS0H1Vwq3uHjYdXq5pQ3ZzktqxN4mAMXRE7miCasUP/IsAcJIcSoEklsYSn3X7OFlMYV3sTaWPMOf639yLN4+zpQ39gjxtFsHzMgAhjRW3EIlGkYvsvCUxMLhWwumW55cU/2PTylBNcF8/0bRO2Ys0uCUR9gTYx7HJotRGFCWX2l0OBIGawmoUf74R+gh2tgfBO1FySqrMJfEb1UZorp1utx7B3AXVhdoiiRWp6xMd5XAWA4LEhNPZa62ovvNOcAXOcnaxlGi8HMK8AgKcn4qmrKWq82pK3lzTY4PHVXPkg4CqJINVa+bbhxOaaZO7TqyXbfCtssaQ19/q1iwG4+QHul2XOqU/TnRCrUieHQdGY0FIXZQV5715Pd9+sec4PMKcyEbXp7nc9EmhNg0Xi+z8mUQyCh5B4gVwcORfm2jAqnBX51CB3JnkLntDb7ytzKqLLVwAUvxoQ/KrzC1EZ9QQhwMqOWuscMnU7c07pZF1X87qviKlvBHdu6GXaiKqEi4LKGQF9986pZvNECIbXmPH+98zOT5kPqoSuXkWjZZTCKpBEBy9v23JgRV+Kh0+AVOC3DX7i6qh+QNVQOixdpFM05MWXVHq6kO0POy4/q9MDy2G6clQVaHpLiTRpIb4TItKAZzIsvaL8lSfZzS5Ihv2+VUEmbPeseN71bGODGFrCLPJ5+O0RM7ITspaZv1jroM8+69C5IUci4VgZ/UHBc3h3PcmzmGkEqZGk8HYvFerjQSatRPNbrZYGOgufUCKKjLB2p7FE+BPh6KUET/HfOIQPVks5wWuciGY28ZJ7vLo5fE8RZJYrliLcHgvuGwabOg/s99ZfWbdLNaYng8vJBfvSaQCfwVlOVsejkDLgEkcuspewsbb2Z1NRmt/ZPYjHw06oXnW+8glWOjwaWPn1KuR4jpiMLYjtlJhDGxwI1CSKDB8LkW
- /98hWh0C
- m9iCNi1cKJQkYMHfOWhxlqMNcqr9HQ+r7+4x+p6b4kUXIuy/Syf2WiTECgZOgSswhSx4ArhOUvaVDO3+Qx62a0EmDOQVD4n8lltP5cv/mSdiAp8Kl1aYM4W+y53mdoXyzY2/pT8ZIL+epZQInLkg3akyewfNjaoRECIb39j+Fc0sTizNNNA8Cf2jSvbo9Fecw0en7HjFjNUA4Rp245nuPUZuF79xILTRTM9Cd+K0HyW+7unzHTWiSi4rwno8/yrjstG3xePGRwmuEUeUBbtEfm7VOMQ==
+X-HE-Tag: 1783935812-195597
+X-HE-Meta: U2FsdGVkX18NvppfmQ3FeXHbFrzl2upwZtYYxsB67ZprjlG9VjKVMeIuuUd9O78W7+gG9T/fYj9bXiIZHFVq7cZjknmF0EBToq7+VXo4Ibs+wGobrzUJT1b0FCyAMRTq0EmohFetlpSXwgHwbimldv7lH/4QEM1HLT9py9e99qA/WlDGz5o4L84VRAwz+WlH/ionFsaFhu0rZkBtEjw6wWDnjC4B+D3vc+lEByqpMLgyK4Dbyj5wz7rYxZZsXqWCJZ7dzMink6xPh3X7LZeovYaKVyhKg9b8e4eF7PpOeHs/evIqmE7YKaIwVqlffOLhqQexPKpAraHw44J5ylhn9f+GNDz7W9BxekDQPAFFBFN7V8trB1+9PXbfjCJ5H9Rfixa0T5OFyxfURYkmamEt7SKN2kWcpaJbpn5QbVgzQhKuK0UXtztVPPQkhOj53s77nfLVHZ8VoJ1IfPxsRYuC1C1DmMEfIKmFTqmh4jgBwAL7zdcdr1dnBx7vXuv9J39SnYsmhS6EVLiunis+r7zyYPzgxWVgP++D75M8GO1/CWtUliye5eOcqmcwggD+DB0tJwagl44o6vzB8aMpB5bgOt5o/QRPR3Kj9Z/I3PZWXaXlBJZ1//+70R2De78Iq/MYmmOEiBHh/gkVT7+/a0sVjIJDhndrnQeiB1zmC7PWgqx66W2ndo58L4JUIrBy+AH/IkY/FoeWdPGFR+c6gTOAmNf3wBBKyiZ3lQZCY+rt5M4333+SB8kmGhRD+SOrSesdhiVTy+gf2dBle0HhSC05xqSvkR3fmmCx3+jQMiU2bhuI7679Bc2fo1Fst4Fxf1njfnrfb+mz4+IzaRrgjH7Hexo+Wp9TK59aO1LS5l5o6fQoc9pbxO/duk6Y7KmiTgY90rK75YfQYFxyC3j1pY7PCfnTDRHGBMcxs7MMixpTlMsFtoRtLfSZK3BlJf0pQx4M9J3MsvpcEqEX60oQV6d
+ SVnfkmPd
+ EreBEZ/Jj8hLVJCVTIfa462yfju540k7VtYnSVgWSWuPPMoRVhTl9RsSaXKmsXYqMYz6kdx5xsYU8bUptQmpDvsL4RWt2gQvpZEilZ7JPTgTXiBI+dnWI5KAp5a4UyoOoKJtH0IVJqRzS9+aJ5y1l4L5ojjZdcmbmVzFl+HCn1v/B2NL2OkL/65dbhtXIFDugBvogYFdeOTvS8XLBCOzND54+ijrkZIvuWRHsK6vfamwRLlIR0PSXj3gWVZNJlAEISH18P81W//ibO5tiXF9MtStFaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,52 +87,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Guillaume,
+From: Yijia Wang <wangyijia.yeah@bytedance.com>
 
-On Fri, Jul 10, 2026 at 05:02:43PM +0200, Guillaume Morin wrote:
-> Hi,
-> 
-> We've encountered a temporary underflow in the reserved count after a fork when
-> a parent unmaps a faulted hugetlb page before a child process. 
-> 
-> After a reservation is consumed (i.e the page is faulted), if there is a fork()
-> and the parent munmaps the page before the child, the reserved count
-> underflows. The count is restored when the child unmaps the page/exits. I have
-> reproduced the issue in 6.12.95 and 6.18.38. I believe it's still present in
-> 7.2-rc2 but didn't try to reproduce.
+check_file_mmap() faults a page in the middle of a file mapping and
+expects the mmap read-around path to make neighbouring pages resident.
+The test currently counts only pages after the faulted page.
 
-Thanks for the detailed report and the reproducer.
+That misses valid read-around on systems with large base page sizes. On
+arm64 with 64K pages and the default 128K readahead setting, the
+read-around window is two pages wide and centred on the faulting page.
+Faulting page 32 makes pages 31 and 32 resident, so the forward-only
+scan from page 33 reports ra_pages == 0 even though a neighbouring page
+was brought in.
 
-I reproduced the underflow on current linux-next (7.2.0-rc2-next-20260710)
-with your program — it fires on every run. I also confirmed your
-folio_mapcount() == 0 check fixes it: with it applied the underflow is gone
-across many runs, and the existing hugetlb reservation selftests still pass.
+Keep the existing readahead assertion, but count resident neighbouring
+pages on both sides of the faulted page. This fixes the 64K-page false
+failure without teaching the selftest to compute the expected readahead
+window from sysfs or other implementation details.
 
-> The patch that seems to have introduced the issue is df7a6d1f6405, "mm/hugetlb:
-> restore the reservation if needed"
-> 
-> I am not sure what the best fix is but checking folio_mapcount() == 0 
-> in __unmap_hugepage_range() seems to do the trick
-> 
->                 adjust_reservation = false;
->  
->                 spin_lock_irq(&hugetlb_lock);
->                 if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
-> -                   folio_test_anon(folio)) {
-> +                   folio_test_anon(folio) &&
-> +                   folio_mapcount(folio) == 0) {
->                         folio_set_hugetlb_restore_reserve(page_folio(page));
->                         /* Reservation to be adjusted after the spin lock */
->                         adjust_reservation = true;
+Signed-off-by: Yijia Wang <wangyijia.yeah@bytedance.com>
+---
+Changes in v4:
+- Drop the sysfs read_ahead_kb helper and skip logic from v3.
+- Keep the existing ra_pages assertion and count resident readahead
+  pages on both sides of the faulted page.
 
-The fix looks correct to me.
+ tools/testing/selftests/mincore/mincore_selftest.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-> Reproducer (it only works if HugePages_Rsvd is 0 at the beginning of the test)
-
-Would you be up for turning your reproducer into an expansion of the selftest
-I've added a while ago for the fix I've added a while ago:
-
-    tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-
-Your case is a nice complement to it, so it'd be great to have it there.
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index 3182043..ebf2b06 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -243,8 +243,10 @@ TEST(check_file_mmap)
+ 	}
+ 
+ 	/*
+-	 * Touch a page in the middle of the mapping. We expect the next
+-	 * few pages (the readahead window) to be populated too.
++	 * Touch a page in the middle of the mapping. We expect some
++	 * surrounding pages (the readahead window) to be populated too.
++	 * Depending on the page size and readahead setting, the pages may
++	 * land before the faulted page rather than after it.
+ 	 */
+ 	addr[FILE_SIZE / 2] = 1;
+ 	retval = mincore(addr, FILE_SIZE, vec);
+@@ -253,6 +255,12 @@ TEST(check_file_mmap)
+ 		TH_LOG("Page not found in memory after use");
+ 	}
+ 
++	i = FILE_SIZE / 2 / page_size - 1;
++	while (i >= 0 && vec[i]) {
++		ra_pages++;
++		i--;
++	}
++
+ 	i = FILE_SIZE / 2 / page_size + 1;
+ 	while (i < vec_size && vec[i]) {
+ 		ra_pages++;
+-- 
+2.43.0
 
