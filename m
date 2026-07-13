@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20BA8C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 12:31:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0910DC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 12:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04A326B0005; Mon, 13 Jul 2026 08:31:14 -0400 (EDT)
+	id DDF5A6B0088; Mon, 13 Jul 2026 08:31:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3D426B0088; Mon, 13 Jul 2026 08:31:13 -0400 (EDT)
+	id DB6E16B008A; Mon, 13 Jul 2026 08:31:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52D86B008A; Mon, 13 Jul 2026 08:31:13 -0400 (EDT)
+	id CCC5A6B008C; Mon, 13 Jul 2026 08:31:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8C956B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:31:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F1091C58BA
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:31:13 +0000 (UTC)
-X-FDA: 84983688426.06.37BC258
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2B5FBC000F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:31:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="JfRMoYe/";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B2FBD6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:31:26 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 458C640144
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:31:26 +0000 (UTC)
+X-FDA: 84983688972.12.2E5C59B
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6556B1C0007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:31:24 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LEwTWAxR;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783945871;
+	s=arc-20220608; t=1783945884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JI+/o9g62QcrTsdBJA8Y9yefEkfCO4FlJVcAJIAYH+A=;
-	b=XMpCENzhQhWDuOdLE6B7/Yyr17vOSX2/KOEj2bXbOKzhqHBWzFwZAjubAd1JlSZu40JyiE
-	XoLFU6wS3st7fnTzz8ozCEnQ8ia4c8VM+MOD/XAhG/W2sQcCa45OR0h9AtI51AlcJAmkwT
-	u+WjXiARf5w4eoDmCV327CBtHzyfcq4=
+	bh=SFB23UDIkU558vFag9ouVrBUfbEP1y+rl+Xg6XT26so=;
+	b=BgCfhUwvw+IphiYA1dBvtOtkjt8FHvg9P/q6QWZEBrh6RSidnpiOf7xJNJ3/O9wNAvbbAL
+	2bowtMHGc2vt2BlRlSzZN83eK/bQ5YJdpf4ShZCZ/ETGJgEJn2aoH7PaPVwwXm2PTo/LT8
+	YOA3rfP5LsfriedT+9gIrp2WKfh35Hw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="JfRMoYe/";
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LEwTWAxR;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783945871;
-	b=I0SGteb7kGWEQveMXIEzfQBJYW26W4FfZ7HhDUd45E5vJjIwCLi4epKb8URZ/7MwZMDLD+
-	0HEzYcqH9qSJm28K9EdVLW3mCn5Q+hfMYKzTXGi+WvZbZfS8Re0yggeVSJZt7wg2EjCH/3
-	uptpZ4aDWe401wmSlMm50C7VXe8QgmY=
+	t=1783945884;
+	b=SDexocSeYp5HHyLZG2ksN70l78qIM0klqAZhuVALTZtSvzlyxMdZvIg8CWI3w4sCfCkfk1
+	a0gYhh4PmwwolHRmmgAUwqq24Yyuntd74ooE2F1q6t2VMeSvSPooeu6Djon//eTFYRyfjb
+	VYt/TkMje6lrA/qZ5fbAWkdEJfPMubg=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783945869;
+	t=1783945881;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JI+/o9g62QcrTsdBJA8Y9yefEkfCO4FlJVcAJIAYH+A=;
-	b=JfRMoYe/osc67xC5UABSw/Jid07sqLX65BD/x+9RL9hscga8kjPX1PdLGZ8PW0DzBQwJRO
-	pH+MmCQrpYIYZwFKQCfjkAF0s5YR+BnX3cAxQIfMUrcSSoCrV9DdPJpof+re3Sdwlwsxbz
-	NHLsfxHkgMFEqPjPJnO7Ywt7bSI0IBc=
+	bh=SFB23UDIkU558vFag9ouVrBUfbEP1y+rl+Xg6XT26so=;
+	b=LEwTWAxRdzON92cwYpy3JHRbt9SQS+fjRMDclWI5ejveG2sc0X35nsBV+ea++I8UqIr9kV
+	1bqDSd6akUhrhDXJ1uFJnHlQJIfHzmxJyS17qzvSyIfFag5hGTb09wSVQZIbogf6A6pSdT
+	9NxhHMzDxrfVqs2ZbcSTyGWpWMAr4mc=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH] mm: memcg-v1: account vmpressure event allocations
+Subject: Re: [PATCH] mm: memcg-v1: fix wrong linux-mm list address in
+ deprecation warnings
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260713085520.2953121-1-guopeng.zhang@linux.dev>
-Date: Mon, 13 Jul 2026 20:30:31 +0800
+In-Reply-To: <20260713085756.2973549-1-guopeng.zhang@linux.dev>
+Date: Mon, 13 Jul 2026 20:30:48 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Stanislav Fort <stanislav.fort@aisle.com>,
  Johannes Weiner <hannes@cmpxchg.org>,
  Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
  cgroups@vger.kernel.org,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
  Guopeng Zhang <zhangguopeng@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <523274F8-9DE3-406A-80BF-00AF0610D033@linux.dev>
-References: <20260713085520.2953121-1-guopeng.zhang@linux.dev>
+Content-Transfer-Encoding: 7bit
+Message-Id: <3B4076F2-A893-44E4-AC2E-B5451226B618@linux.dev>
+References: <20260713085756.2973549-1-guopeng.zhang@linux.dev>
 To: Guopeng Zhang <guopeng.zhang@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2B5FBC000F
-X-Stat-Signature: kn9odywnbrokizfotnw7am1cg3a5kxnt
+X-Rspamd-Queue-Id: 6556B1C0007
+X-Stat-Signature: sushqaps44tjwaiukhpypf6ibb5ctex5
 X-Rspam-User: 
-X-HE-Tag: 1783945870-151263
-X-HE-Meta: U2FsdGVkX1/gFnCmi7IMXYPdMgu9J/EU+8BFdY8hYBYL56yAntsEtVad4wLePLvOK8BZTuaiur9rxS6edMgtdUF+i4oqNDKLyO+yXrwxcMnYz60Ru+Ft+rHUWntuErEBp7bQmyBmChZ9uNuX6rNVn5qaKL2GcOfvo4JHathhoyH9xN7mLLv8TPZCASwFnjkzgzlMr5TCdV8FgqLcmodt8Up8f7wadPSgKWQSibyt6IBdGgkcn9vJNmTWKftV6amYGLeEni9ETHSrKFstbAkiwp4j1O+/x4deBwIvPonhhijx/a2VaNr+fgfebDxvyf3kZt25Qw/OsjXsOcnAWTe4J+fmKIjzQghTrRt0tyBecLsbVjStyHZhYb8vy0DnIhuf9uZjqyUf40Oh89tCahjm6/uhaTkwbcMx/VRyUOQP/ESvJYbVdZxs0e7WSQYZe97XypCXZFmdWF2XMrjwY6tYP89dBrd35IWdnOnAf4yOZ8TVkTtQLOlZI3a52LFemklV1rbANc7/q7P+8JS7FBwpMN97Jjqku6UZnQW4g+gM7MgSOmLjv6P+bTPOw/pSDXouo5Hps2XGQllNCjvp3GXdA7bysj2msyR4xAf19GbW3X/gIB2qUGFEC42CWleDPBUjue6f+HxehcbjoTAFqXmYT9TsDPdfxvI96VMDX+qdsEz1WNG+517X2gbfE6cOZBaV/GNEOfg8K/MH/Bqk4sVOD4Eynl+ddI4fCa2RqyHln5xTbVMuirVJ0r0H4XrvY4Jaycse1WtQc59RW0L9d0jAeK9+GvJCRZMvGU7VukjD3FNLnCHEIYt1xjY2NtKCpXKHOiQWPai852jaYiK34AZyE8+90K9hIfSeiuj/rcsbxatZvyPpIRhbLDuBVmj3kZ/OBcJS+HefwpHN02N9hU0USXEF6qA5uzUKei/6h7tCb7ecndsxAJ9oEtiV3JEAoaCAfYgHv7t2DH6uWq4KLlK
- XRNvs8TH
- 07ldT14YO6j27I5+urqwnljcgTlwbMDrdbMdPq+jf3RxI41vuJRFTqGR/snieXX3IyrjOh8YIbM4Dp8B/paF9lsAcIYphJP9Ij44TCbKyjdZ2vyrWiu7GLvlJ00BNCN9dZzzToi5wij3XpaBikEL36VS3HLFdkVde4ieBaQuhijLhFwIGESocwvx0F7djjTJbhHFX2y1PRHQKYB7OW/JsQvXk42ifi8Sz9ef9OCGLtkiFAV70TK0Wm6Z7aD0txQbaXnuuZ7vu7Ei+LPk=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783945884-384453
+X-HE-Meta: U2FsdGVkX1+mxR7H64lvM6c/XftNRjnKSYIF92m0XSieL7rMuaaYBmx3AVatFcqG8rQU4HWzDXvyKmciY206y6bqpBRWDWPexCBhZ/qUIQKQrDdi+wPKIJnycIWOblJ0PSJH/XaqRRP8lK80iXrPIDyCwJ3CgZ0dZnOE/xDT8G7ruRIMl7crAEgCR6fJ6SnCqIDQb+I7rBgkPBYXpP7bmHFDRTyv2ol1g5GSi995QNa9oUBkNMuCNKT7QG6uVnFTRRK9CCVRcZTj/L7WrwLkQWUytJmvrl7dygzkxLuRckYC3PTJyrxaA34+ZVcKr+KXcKCiDE194FLC+Nnry01zv15Ai9zxUwmHHKgEPp21DUF3DjLclaQ/L/2E9xGmI6A0q+oPCX41+fUgSjkK9t09Jhgc16CvrUQhcWWZnM98hNzxlQYpwCoSt0Wo0p6BaL0nmnXgfuRIrTuZ6OqGkPxSlZLagIiNBfnF/J1UFtnHEK8o4bKlfS7nHhM+GSsJ7N/2PuF3Ys1TbJwiTPRxCXvvahZmD1w2xwL1glttdVFNd8pdbxIgfudbAurC49/d0rjkZGPAZigDkYscDv4E+oxFGv8J5eeyx8Y7BeK+EkK73o0ZWssC7LSFf5CsBeAp80fZmSTuBxphNVSeRF5DvYPo7PkawI0nhhiPcIQdI66LTycQhai3tgc85YYFFghK9hFhTNitXw0uKcEedrRjKFWjWEaMyEmG8OEdOfZiYyLtJ2INs37SjV+LmU1IQOFOYl9HwRyafdCGdL7NN3AJZGmK+g9n6ih5m7885Utp5yR1JA1cSq1AEtZL8PpsrHWe/fwDE5je+L/AzT4t+2yv5KHb28xK+VBD//SoROpIW+YLPjCkXlhkx+O1qUp2ZQ0jfZT3uMEwZEXY8Oz13jz0uqMqAI/jgUDW/V45tIU1uRf6bgjPqFlHkHdvExvRhI4ucAu6jEpLu+c08sbnfVNmtW1
+ ebHoPzDD
+ 13/shxqKDpecrPFxZalzFngLtZSBfKZR86UawF+99CdnACU4vwghsvwJPQ5HOjXfWZzUGROIMun1VcISg7MD+HpZHD0mkr59ZHdWlqwmlZXIawGGaaxZarXwZ5idygOA8BcW1cTQVcB+5MiIfu22r/aXZvzJ7wyF/dPv31/anWSwNKKmB98M+dqxRICdjawPD9iC5FvIGeybiz3eWry4Z8HncyZ/ujn+qwH9GHUhotNmEH95mk+qmp35qPBielET/+raCkHZTSHCbfnMohktfwbDE00hG9RLFIdV5ncYrQ0d9nekcU8ICM5fgc2IgHI/xo7Wj64z/3T7c8Qc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,21 +99,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jul 13, 2026, at 16:55, Guopeng Zhang <guopeng.zhang@linux.dev> =
-wrote:
->=20
+> On Jul 13, 2026, at 16:57, Guopeng Zhang <guopeng.zhang@linux.dev> wrote:
+> 
 > From: Guopeng Zhang <zhangguopeng@kylinos.cn>
->=20
-> Commit 72797d218b43 ("mm/memcg: v1: account event registrations and =
-drop
-> world-writable cgroup.event_control") accounted cgroup v1 event
-> registration allocations with GFP_KERNEL_ACCOUNT, but missed struct
-> vmpressure_event.
->=20
-> Use GFP_KERNEL_ACCOUNT for this allocation as well.
->=20
-> Fixes: 72797d218b43 ("mm/memcg: v1: account event registrations and =
-drop world-writable cgroup.event_control")
+> 
+> The deprecation warnings for memory.oom_control and
+> memory.pressure_level use linux-mm-@kvack.org instead of the linux-mm
+> mailing list address. Remove the extra hyphen.
+> 
 > Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
 Reviewed-by: Muchun Song <muchun.song@linux.dev>
