@@ -4,123 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB79FC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 04:09:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C278EC44501
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 04:10:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BF116B0005; Mon, 13 Jul 2026 00:09:51 -0400 (EDT)
+	id C65C06B0088; Mon, 13 Jul 2026 00:10:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 670976B0088; Mon, 13 Jul 2026 00:09:51 -0400 (EDT)
+	id C3D7E6B008A; Mon, 13 Jul 2026 00:10:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 538756B008A; Mon, 13 Jul 2026 00:09:51 -0400 (EDT)
+	id B2DA96B008C; Mon, 13 Jul 2026 00:10:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 23C646B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 00:09:51 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F3671C40E5
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:09:50 +0000 (UTC)
-X-FDA: 84982424940.26.2E98B2A
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AF19D120005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:09:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LVADMwIl;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 91A196B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 00:10:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 049C71A0A51
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:10:17 +0000 (UTC)
+X-FDA: 84982426116.05.7A6373D
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 180B4160003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:10:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jekvS33I;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf08.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=jthoughton@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783915788;
+	s=arc-20220608; t=1783915816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SwRmwa12BAzmniM/qfe3fdrZEb8WNeId/0JrKyEwP6k=;
-	b=Xzt9KFTom2P7aFRqF28BDjIG9+lLlwK8peONT3LwRhEJKXy6k7qC3htKGOWpxl8K3Ot1aE
-	grws2oEKXN2gIhRURcBTUZmXY7Ifo3tyfbvrOWQQH4G82MK/DfmRmbOVF0Zet+JJPEMZ1C
-	UZQSlCvAqqvZl+fWmQg7pZPsnsqjuKw=
+	bh=3tD+7MnOoTjJBs3fshzrrIZbo5/nTz8+RZZUhLw+smo=;
+	b=EkmXGjqiQHV+QoXT6pRwkwxLtVR9JMsNCOwmq+mVC7AwzurY+FcuccCSmutZZjMv9e/I6W
+	kYtkaepRDVmuqmC58F1alyO+93O2+DfXAaWp++jaEKkJ65as0IZUKCq0Utc9lshFqF2zep
+	clwQtxcDlT8KOHluRhfvCYp6aExh1Rk=
 ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LVADMwIl;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jekvS33I;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	spf=pass (imf08.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=jthoughton@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783915788;
-	b=n9PEPNcMDhMxuJOD3alSDr2/x5Fo10IBGPLIzDXvdrcim4R2QyEMD4GBIYCQVirKOd5xgW
-	maeb5+O2/Ei27B8sF44bQCc9RDrGKCWBfnQ1Z139/KysDSBa31YPBprnkymc1Th57MX/Py
-	rRoQVOh4a/H7CfLJBPVkia74l1TfG3o=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c15f360851aso374883366b.2
-        for <linux-mm@kvack.org>; Sun, 12 Jul 2026 21:09:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783915787; cv=none;
+	t=1783915816;
+	b=NOLBCpbgz10D6E6Uu37O2X70CB+tbuuTaGUFe3XedtHzUNSoQg3Ah/FcJevwc2l9FCJsRN
+	E2UI6RwzIYfWNwWA1AV6qTovvx0Oe/BIdRfylzLomOEse6J/XM/ch7r+YtSi6NMjD5O8Gk
+	MXiJkqiyIRytc8HzjjYK7jgRo63QY/o=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15f360851aso374915266b.2
+        for <linux-mm@kvack.org>; Sun, 12 Jul 2026 21:10:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783915815; cv=none;
         d=google.com; s=arc-20260327;
-        b=kZHNu86KAJx/DBUhx4PtZBeFOU7Qtmg8xAPRBU5Q9igNuHh7FL5Axk4bkPfMc/EaiY
-         FPx7lOzNiZGuEv+0cbQIp41EvRen816t2r+J/CV1uKabBx6/os1PWu+/hXLAioCtPO3q
-         RMRLJP0CotSSuqNefuVasN/L741uKbZeUeyqL/M+8tnf9CcLERvEka/W+/h/AVf6cIo4
-         MNSGLjkNKV5oItWOEDbMpAfg9U0rKJgN4C+GkwgnaMsF2R+TZAHXXhCd0AakUEyXtTK9
-         C3aa9V0Kch9VvJq/fZ6U755s8oJJE8sAk9KX1I7im51lNhpRmlK6McChIqps0gLVEBHk
-         icrg==
+        b=JozVywdAQMdaccszbU/KTad+GKLTwnPS4x+3WGWjmYos7HWI3qJgT20FOdmnIEr7F4
+         4Ttnin0QMNm3WGkZa2L/gzWhx01KBraF0zZpMS/JjLvGiN8LgNSVfQ9qW2bc8gsw2Bff
+         R3Sn/Bn85wYPw6rz8D+WGihQDlcG8X82pcSPpx9fmN1GczmTqEnxTHpqS5/i0x1wXCYf
+         BYWdZjrxfSExPo/xbdC2d2787ZBVCzZB+7+2MmAmRqGqHuHPdBCH74vXyprVi0DwXq4y
+         CSNZVQHbwafkyRyFBchI/aaopEj8M5EjIx35w3GQa9ZQQR5IUInZT7W7bqPAQC/S7iiR
+         qTCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=SwRmwa12BAzmniM/qfe3fdrZEb8WNeId/0JrKyEwP6k=;
-        fh=d64vLnVizlwL0AVNqHtZKNdCiaxfXF0X9jn1ePPsq1w=;
-        b=f1ssxVClSVJz5gcsXlgYPWZ68DYqSxWukap/slvZnAh1wPDw8Jvm2cAZV7nzXpgIht
-         bH6+4vl/wAcQDfJO3PXFxWWYZyjo/v8/74SXrEoWUfpjgoaPtUfJF/5zmScqR9R/dos7
-         0KjYLJ+HERyx7D5yCkiEVx3ejUiEFbOYBZJcXpsCsQcDZOw6VhYVp4LHDKtfRWLwpfsx
-         /1KBoFZpfUr3FA8BSQJemYlvug/LIR5nRmyie8KQJbAvSK4NcvyAdCR8a7kAies9gSBk
-         tGbC/HVO0CesB2976VdrUJO515AxBGo7AjX1RcfzxwDWCkdIEiIU6uzQjIpIX/IA6KQC
-         LyfA==;
+        bh=3tD+7MnOoTjJBs3fshzrrIZbo5/nTz8+RZZUhLw+smo=;
+        fh=5piJ/yn4B+1lkwB0haQ84JDBmBIoFpCYMfHabqbNPaE=;
+        b=PufXTFcMMMVQ5FTElH0v5ME5M+NjtCqQbVo8qPy83nLRNqXIiVusm11z8FQVq3vDkV
+         vpYLUIQfNMkd2C+0BbdJB1R7MT0ULTKSnOjx2XLURKXBZBnwo+z/9HahipnXwX69djao
+         6LMi0ZtlIRebmHlCiHxstaiEwP6tnW5VY1VrHnYZkjvxAGDDOHQYzzvXIsuSZqP8nwr/
+         LpweNY0EzM2AdKtN2AKIE3MHee/BtVQobz11q5awCrsdld+S2haw4mV5whn7H9Z0ya/D
+         YtR1b+98YrvZTeQKX1maa6vV/x+zJU97M+VL7OPU/PqR7i/carvKDqWaLp/15ScOC3v2
+         zOZw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783915787; x=1784520587; darn=kvack.org;
+        d=google.com; s=20251104; t=1783915815; x=1784520615; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SwRmwa12BAzmniM/qfe3fdrZEb8WNeId/0JrKyEwP6k=;
-        b=LVADMwIl0W2tZa5pGg4vM4fHLCh8MmG0uXDPZehSX1vrCAvw+HxrVAujLlCSEoliUL
-         KcAQ9RuARNYKn3u5IHFTr/RNQJpIWbGRDLtLlns2BaZiptjaPDiFNzfd+r2iBp359pna
-         oRaifMVaqM71haANyqHqeBnFgxW0qL3XG0GsxEdURdn8LVxQtlVrKz9zsi7qhoxDvCq/
-         DAK3JgGvb4mF7mcz6+WFAGIcWIpf1ZX8zWTtABcW7jkNb3TXuBhh9KG1dHE0XhaMgtDd
-         Q9wqpleBShjVlrmuMrEFtPiEt3ySF0WJoSKn5DfcLs8Drks5GSJ/JYH3v4u+gkx2j0e7
-         Isqw==
+        bh=3tD+7MnOoTjJBs3fshzrrIZbo5/nTz8+RZZUhLw+smo=;
+        b=jekvS33IDboRI9MpFFkQrh8+dn4yljO1RueOxAnpZwYxzP6farorfemo9d8/8cw7BX
+         08Rw91p1TnKoxfO9s9RNZZuAaU1I11wR6+jj7RZP2b3iVDyBmMkqx6ejDonssUst1yee
+         RIjPcelirlhmUhkhfVKJOVkteJNodraRsU3J2oojoYMflxFK3VRkzup5kfXRx22B2l2X
+         WqS3B64h4TO/JmRyr3TpR2OVPMmCy/O4wztNX80RVGkR2KChAlYRDWTmJ9jZi0V2LN+d
+         oD90xcTkHW9m+LNCjQhL+v1zrWB0RhGtWePkeWzOUxAPSudoLphDsJ/H2VkxfNCN+0jj
+         Wjdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783915787; x=1784520587;
+        d=1e100.net; s=20251104; t=1783915815; x=1784520615;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SwRmwa12BAzmniM/qfe3fdrZEb8WNeId/0JrKyEwP6k=;
-        b=PVN5k/sXZ+2Ybs8py/jKBBB4w2uAq3JVA4P/EqfvjoviGXoa1i05JlE/asqxFvjk72
-         2x3MO4tOGwzQzol3ZPpjAoEsZKyjEHGnAACPeLaAJaIQykUP2wwBX37GSIEPA5t9iP53
-         W+X1wlC2yRtPzmKfi2xwYUO2IOopda/hAMOx7tusyjBjZz0pTRznPS4tOP6WMnMRdD5J
-         Gp9TfSsD94bNseHDWchwUyMEIYQPpqXIdIEZ8MTw01Qr8dBqapeK0odBwyNrVb8Ljkwg
-         /yhytUWyH/vDr5K/movBxrZDblyBlPMDddWY/6UQXqfmWURAf19f+tXVhR2Q0Noy8ECF
-         VOiw==
-X-Forwarded-Encrypted: i=1; AHgh+RobBMfhTyQGmZSYAQHjLaiSLktmcbeD0noD4JftSyDMl+2g16xfzAoqzvtwkZ3+W/PIkMJiaoqpxw==@kvack.org
-X-Gm-Message-State: AOJu0Yx67j6A2jmyG3vlunMxVQq5YJ1I9EwY3lUXhIKsGcgOQCAPIq/l
-	1zc79/78a/0/+rXls0s80w65sy5d0hZmrMFB/zthJkGxRquogLBSEHArRFjzritq+CXU4AqaC6u
-	Yhw9hFEzaWx4xxqPcSG3u3ZrvJgKZaL6w7tWPemNX
-X-Gm-Gg: AfdE7cnmAvBacZf0NrjF0cVCT6Eq9WkEIt5UEHOybf8quJ3FJR0PrZaOM7ujlX+iMYL
-	CVgIiVw2L18jUHKjsU8RdIGTeNRYrXw/dwnmPuHs5LtsumWf/cuQWnXYJk78oOEjrER4Cz+TttV
-	fdzWmI3A4aypdnuDOUrlooU6mRLTwUY7ao8NC9mM9bNefHFPLb9LyG44iP/3xbMOnfULtb7UFlo
-	vXAhfRoR6yE3SK/gnunM+GOFfTkQdeQAAqlQI3QgVWFTvPGtcJ904SeZNi0IqWhTiLHUt9t+Coi
-	RSSKrVnfRz1408Gg8HckCaCDEgM=
-X-Received: by 2002:a17:907:a01:b0:c12:e4c6:c4d4 with SMTP id
- a640c23a62f3a-c161f4713bemr317449966b.63.1783915786759; Sun, 12 Jul 2026
- 21:09:46 -0700 (PDT)
+        bh=3tD+7MnOoTjJBs3fshzrrIZbo5/nTz8+RZZUhLw+smo=;
+        b=JI71Iu2j0rCba0hl/RK+puCJN3Gp8+Y6/vhg5RuJEzpaXsLqPf1befHYEyXQFOK+Zy
+         CrPkLSfKe+CFxASC1pHilT2Aqz8EUGXSYGjLUGkjSZA24cMwxHgcN4Plx7lJSUpSokYm
+         e5bWLDFH7RlZLlk6kERpCseuQevhcsASxtr8k7kN4tKL5aGh3zklNyvdiRawKFsNPC5O
+         IOqiKLokZHwCh5LR7eby9de+rpWhjrD4jiRue9825ALXXgKWyJdZ+7GcFL9M1taJhyyU
+         tfBEJHHa6zjuEpkgOZdtbU6RJVQEa+njE5ceXeou1abMpA8i53Y2Vn6vON84oKzWbpzo
+         q4hQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqaP0ibRackE5RRFIGT5a0Pjf82tiV6UbKV+n5Wkaiu6h8HFnbdYyo/3QZacrkrwlvhNdgVungC9A==@kvack.org
+X-Gm-Message-State: AOJu0YzwYm4oN/GHycIXWuFRioZ/ELz1DjS83/Q+YLY1fqkTNkztjJ/8
+	vo1+kAqph7gCe3lGEetZnUP2IO+oHYa05XsBmoiZ1xu9N1Zsjll61x8VY58xzx4Dt7fS1eimbYR
+	mL2RbK3pXwMdeQqA19SamBVmLDjxhbKalmvCFBpFD
+X-Gm-Gg: AfdE7clkWqbZkn4O7ESynf0rQsim75ZsqliRJMvr10KZ0Zraq1vR8t5QPqAsk4zP4t0
+	psm7vVbspD9nKyFi7tKSi0bWVwi/QOAiQ4NwKud1v4F8MlufAAvh0oQ8xhskhJrW+zdVhPKzzoj
+	0vCdipqOOAXHmFEqHXytiGYU4d+MGkuibjI4OI2KuJY+2hA7eGull0XYyIsTpYdmAMSrv4xCQfT
+	AsSoUSywHHmBivZPOIFaAQDnt09nZcaOWyErkkty+/ga6J+mtb9MeEH/0pBtEtgJqXFCQKf4cyA
+	PQt7xtAOsWqOBBHU4IGzK3/PVvE=
+X-Received: by 2002:a17:907:a785:b0:bed:9a7:5ed1 with SMTP id
+ a640c23a62f3a-c161e956b92mr277921966b.5.1783915814340; Sun, 12 Jul 2026
+ 21:10:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260708031129.3503195-1-jthoughton@google.com>
  <FC9E78F0-8FF7-44AF-A848-8401B4702488@linux.dev> <CADrL8HVkrojXbBuEX-W=UHBmyyFzqxdGBvtAoPP53SyYa10uag@mail.gmail.com>
  <ABB70C2A-316E-4C19-A855-C9920BE105E1@linux.dev> <CADrL8HUCqrzOQGXRDwnitintQHjHCw10n8wo6gChQ2tWvC2JBQ@mail.gmail.com>
- <F2693104-180B-44CF-9F3D-CBDE26151EA3@linux.dev>
-In-Reply-To: <F2693104-180B-44CF-9F3D-CBDE26151EA3@linux.dev>
+ <674EC6D6-B1F7-447D-B462-861ECA5A99B7@linux.dev>
+In-Reply-To: <674EC6D6-B1F7-447D-B462-861ECA5A99B7@linux.dev>
 From: James Houghton <jthoughton@google.com>
-Date: Sun, 12 Jul 2026 21:09:09 -0700
-X-Gm-Features: AVVi8Cfs1p19kyiJ6G4WadWRtHDTpqre4c38UKODVk6g8mKbqnO6JMtYH9gjlzo
-Message-ID: <CADrL8HXZiHcwYR8Hcoje4c9HZBNSCmQcG-3y2f6AhJksYQRvhg@mail.gmail.com>
+Date: Sun, 12 Jul 2026 21:09:36 -0700
+X-Gm-Features: AVVi8CeIAdsZ8vBj0o0oFzX9SAZHhNmejnZxvQk9nHEtMZWM7457PWKYqV0QjhM
+Message-ID: <CADrL8HXeKSt0fRrevT7cuVJGhmJ=7LCkMnBahf5YLR-_90WePA@mail.gmail.com>
 Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
 To: Muchun Song <muchun.song@linux.dev>
 Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
@@ -133,14 +133,14 @@ Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9uhsi4bspzqo6uxdzzo7jikphspwhint
-X-Rspamd-Queue-Id: AF19D120005
+X-Stat-Signature: bcxxxso3nb9zzbqawud5758z9t5ox9h6
+X-Rspamd-Queue-Id: 180B4160003
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1783915788-383867
-X-HE-Meta: U2FsdGVkX19nOXSy5478grjklUL2CGgl0wr5rSdwAJkHjGz6qinNuEneg3n513yp+gboht0JAbmafv7wtdNKsqTFNzUwYH14mTKUDjWSY3pBn1edkfSobdWwkBxQfxiptdlb0Ajc+hkFAQTc9J9Lzn95zKjxB9k5Xnu7YpOoaxOTFHTnYS1IUK8sHNVW0oBW3OsOwBpn2FwGZgNIC5IYNHJw8/KQ69ap6ISQvJEt5Th1JLw7xfrlGF+3nYX2s9ZJOl468n3yVLCS2zz/KG4akGfMdai5pvXdhDkR3QpkkgTm94CpNIO1aSbOgSYZeMBA5utZBdQC1yWEY3zWrDdtPw6WTB4vqeCcEuDJKCF1dp9ijylvoXVUAET2MFfzj43p+4HbJKQLlu5giuCDPqLp9K1LHZdiLRtyoapVyKo8nKx1JexzmU7m0w/IOR4nW+EGNE2Oe3mpbdVh28DYwdh6cITN0WaqwgnRbbnvY9lWdrVAxl5acp7IRDbTPIhVD8MaIQ8kE/trXT/YQcvqk+autJXll7xEvLbGUXkurSAjnxP5fYIWZsHMVHGFwRKZvdDf4v7O2cmPL3IrbThONlT4A3lz+6V5+yOppU4sTtGAgAzbXIqk7KTgXk0vOSp+/Y7HzYa+ptguQ6fDpvsUYcf/N35NIPf4yHJhaGb2+F9KsPGFsKCWa4tBNbt+KFQe0uvXLi/VQdZluP0frwoJOVrw+kg1y4i0/XlxTvv33CIMw3wrbwPQgAqSpTf/0WC0OBn0Tm77pGyhgi94Pa0OIT0IKukaEQJxgq8H99lZenpJkLtZ+RcIZGvlhO2zuiGTkt7cPTN9aax99cB4x9d9530zcHsEQh4ffcN50juR850zEDke44RZfwSX+rdxeu8PlruZCL6jd7QpxOr6Ghz51SiIJsvrqs1GzL2BL+MmadVC7j6xoOfMkC1YqR/aOJ896Rf5c59I5i6kAXKaHHANr0i
- GzxPQWqC
- fc6zJQxFBXaK8fx08mCTF+ph1k9z+RBtiUU2JnC1d5ijuEhW6mrjlnhQjhgVhdMfN/43d50fmnFwGsjEiGLzrjTxtqLou4eoFejzsYGEYnxe9RskUIIO2Q6bHYoj+V5k0g75bNhYr4DYFLX3pPNvWUoR4U7xP2/ZJCgzxpwe5qt2G+RxBDlN8J/jZO2tIqpyYqiaylKS5o6nvv84NlJa4MPBrhjIv1GAmjwRsQvIomegqwkYo7gzUFpDSQMPdP7ckIN6XpBXf0CHLxtrQ35tayDHLpdvmlByydYlY
+X-HE-Tag: 1783915815-921570
+X-HE-Meta: U2FsdGVkX19VXcpaer0zPRq+olHe7c8w8UnoLL4pkn5mWOkHbRp2TMlPhxOsM873b0pfziw2goIG3kn80ySPj0Tm6Y/qXW5H3ghQIUX0PkOpk4x5Te55ZNvpwttgrB/hB/dEhvdDf31ZzfclLn3Vo4bRzSqvx4fzLPsGhjK63Tqr/L9+FYVTDpFDv+KHQeg4bxKU57NdInXgtCx1t+OfsjlyO3nTg9J98+gph/0KMQZDgaN2qkW3AcPfKW41Wp2PbuN2GQH9COzaH06E4NrnZuFQjQHY4ZpJb12TKrkBkThOCqHcSpAAjSDfoYT4F/LlvvuYcSgAuuPzh3CYJ7hlIEbGpUGDSblPjqLej4jZYcH+V2hTL3YBgnyegGEcaauPYDBzIZp1SlbyC8R3rDHY5X2Xszq3cSPZ7J7xOjZdg41gAKYkUqkMTdFPAEInyHK7OPlDkBiOaqYft6jWUXiXpK/A3IzUQEEPW0hBgogbLfxHp0aJM/F0pvmHiYeogq6lUxWjbB3mzPW6fiaQok17VMKWkjPj+YVlZVZIVQOmIA3ZZwiaHDGIUgl9Tc0ojahO6k2q8zrNSM/MNRWMDrHZHoIV8FZ4oS3AceC0nX69FuS068lInWmQ6jOWj+DjbU6mZed2/uyp24xDCdJCBD541LKuUx2giOi+P+VZcquCandrQwiHm6OXiq4SiUAjOOzvqiLOZtX6FY59wddQ8GeE7GC/N9JgkAErOALV1lo4+Vaz9x7MxEskyQS3CLC3eOID59zozJlMt9bcZsIom6+VSo+U86EN7fyCvwguDsRIKDtpKByjawrEMcU4cxmNQc6n5uXir/lBPp7I/mzZHUDQy0xC76P/sylA8A8H91fzYdRvz2CSAhDHjeu/PvJt40lsuJN+6coRhf/Y7hsZq10Vr9MfftBGCw1saNrIkAN1qopLLsDmZX+UkwbVBQJBbRvGmPEB1Prl9aELGVSv9OO
+ eE5y8hqG
+ Y9PeIB+wURBczYGizLoqQoK3RrcdXT2vSgtlqJx1m5H1WcGq6+6Wszk9v9GNZVjCHlb63HWu+9jKSuYJGMy1AqZdKeDVn+enHk/s55Vs27t1Zt8oiAbzNBfROEB9AG7g8nJsnEl0nafOcVC3KHvILJxwrFpipUtrd/6iOrQ236ep/PKKs1LL5I/+nNa32JJDH+pHjn7bR48UFS/iV46wW2d+ZwNCHmC3NOXyJO1X9UGLkioIt7v1YAU8QFxCD/OgIDl2qJ88nVZ1RacRHK/TX8uH/rOTVWDbZ3lu8l2LHNRW3NkzXnyIz3wfjGcWCy+iS5odAkOGUqm+U3WMP86OaUKpBDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,9 +148,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 9, 2026 at 8:41=E2=80=AFPM Muchun Song <muchun.song@linux.dev> =
-wrote:
->
+On Fri, Jul 10, 2026 at 7:23=E2=80=AFPM Muchun Song <muchun.song@linux.dev>=
+ wrote:
 > > On Jul 10, 2026, at 03:04, James Houghton <jthoughton@google.com> wrote=
 :
 > >
@@ -205,85 +204,52 @@ or.
 > > be required to free the HugeTLB pages later, which we should continue
 > > to support. Pre-HVO (today anyway) happens before all boot CPUs are
 > > onlined. IMO it is not okay to prevent boot CPUs from onlining.
+> >
+> > Let's say for a moment that HVO cannot be toggled at run-time, then
+> > the best we can do is:
+> > - If a user does not specify hugetlb_free_vmemmap=3D1, we can always
+> > allow onlining of late CPUs
+> > - If a user specifies hugetlb_free_vmemmap=3D1 but not all boot CPUs
+> > support HW AF, we can always allow onlining of late CPUs.
+> > - If a user specifies hugetlb_free_vmemmap=3D1 and all boot CPUs suppor=
+t
+> > HW AF, we must not allow onlining incompatible late CPUs.
+> >
+> > HVO compatibility has to be modeled as an Arm system feature. To
+> > support conditional onlining of late CPUs based on whether or not "HVO
+> > is being used", we still need the extra cpufeature.c logic.
+> >
+> > So if HVO cannot be toggled at run-time, we can simplify the
+> > definition of "is HVO being used?" (for the purposes of determining if
+> > late CPUs can be onlined). We can simplify it from what it is now
+> > ("are there any optimized pages?") to
+> > "vmemmap_optimize_enabled=3D=3Dtrue?". That allows us to drop patch 15
 >
-> When the boot CPU starts, it first checks if the hardware (the current
-> boot CPU) supports AF (The selection of the Boot CPU is critical here
-> If the user really wants to enable HVO). If AF is supported and HVO is
-> enabled via cmdline, we perform a Pre-HVO. Subsequently, any CPUs that
-> do not support AF will be prevented from coming online.
-
-I understand. I don't think we should do this. I think it's much
-better to always be able to start all boot CPUs[1] and simply rely on
-"normal" HVO.
-
-[1] Just to be clear on terminology, I'm using "boot CPUs" to refer to
-all CPUs that are onlined at boot-time, not just to *the* boot CPU
-that starts the kernel.
-
+> I believe this conversion logic is sound. If a user proactively enables
+> HVO via the command line, it clearly indicates they intend to use it.
+> Otherwise, there would be no reason for them to enable it and then leave
+> it idle.
 >
-> If the boot CPU does not support AF, enabling HVO is not permitted=E2=80=
-=94neither
-> via cmdline nor sysctl. All CPUs are allowed to be online.
+> > (which then needs a slight change to patch 17), but that's about it.
+> > So this is a slight simplification, which is nice.
+> >
+> > If you (or the Arm folks) feel strongly, I'm happy to write this simpli=
+fication.
 >
-> Once the system has started, there is only one way to enable HVO, and
-> that is through sysctl. 1) If the current system includes any CPUs that d=
-o
-> not support AF, enabling HVO is not permitted (unless the user chooses to
-> take these CPUs that don't support AF offline). 2) If all online CPUs in =
-the
-> current system support AF, then HVO can be enabled. In this case, the
-> system must also block any CPUs that do not support AF from coming online
-> in the future.
+> I really like the simplification here. To keep this series as simple as
+> possible for the first step, we also could focus strictly on bringing HVO
+> support to ARM64 by making it depend entirely on BBML2_NOABORT. This keep=
+s
+> the initial scope highly contained, which should make it much easier to r=
+eview.
 
-An approach similar to this is implemented in this series: if there
-are (or were) any HVOed folios, onlining a CPU without HW AF is not
-allowed. If HW AF is not supported by any onlined CPU, HVO cannot
-proceed (though it will appear to be enabled).
+Okay I'll do this then. I'll probably still include the BBML2_NOABORT
+patches anyway, as I don't have access to any systems that have both
+HW AF and BBML2_NOABORT / BBML3 (even with the expanded list[1]). I'll
+continue to structure it where the series can be partially applied and
+still be useful; i.e., the patches to drop the BBML2_NOABORT
+dependency can be ignored.
 
-I probably should have integrated
-`arch_hugetlb_vmemmap_optimization_supported()` and a `hvo_status`
-check into the sysctl handler for HVO. I'll do this if it is still
-relevant in v2.
-
-> Of course, if a user specifically wants those CPUs to be
-> allowed to come online, they can choose to disable HVO first (At the same=
- time,
-> this means that the HVO-optimized HugeTLB must be freed first as well).
-
-I could make it so that, if there are no HVOed pages anymore, onlining
-incompatible CPUs becomes permitted again. I don't really see the need
-to do this.
-
-> My proposal assumes that even though the system supports different types =
-of
-> CPUs, their support for AF (I suppose this is a very basic feature nowada=
-ys)
-> is generally the same. I believe that for servers (Only servers stand to
-> benefit more from HVO), there shouldn't be a mix of those that support AF
-> and those that don't. At the very least, such a situation would be extrem=
-ely
-> uncommon. I believe this may be acceptable. That said, if we go this rout=
-e,
-> is there a way to simplify the code implementation even further?. Of cour=
-se,
-> this is just my personal speculation. Please let me know if I've missed
-> anything.
-
-I agree that systems where HVO is relevant are very unlikely to have
-mixed support for HW AF.
-
-I don't think the approach you're suggesting in this email (as I've
-understood it) simplifies this series.
-
-I don't want to mess with the arm64 cpufeature bits more than I've
-done here; preventing boot CPUs from onlining will certainly be more
-work. :) And then your other suggestions seem to be quite similar to
-what is already in these patches.
-
-I am happy to get rid of the "disable HVO if it is unused and a CPU
-without support is onlined" part though and replace it with something
-similar (the simplification from the other thread[2]).
-
-[2] https://lore.kernel.org/linux-mm/674EC6D6-B1F7-447D-B462-861ECA5A99B7@l=
-inux.dev/
+[1] https://lore.kernel.org/linux-arm-kernel/20260708144331.679816-4-linu.c=
+herian@arm.com/
 
