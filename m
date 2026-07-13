@@ -4,90 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D20C2C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 845EBC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E7CD6B00AA; Mon, 13 Jul 2026 12:14:41 -0400 (EDT)
+	id 9EEB96B00AF; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 297626B00AF; Mon, 13 Jul 2026 12:14:41 -0400 (EDT)
+	id 99ED46B00B1; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 160716B00B0; Mon, 13 Jul 2026 12:14:41 -0400 (EDT)
+	id 88D906B00B2; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E20B46B00AA
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:14:40 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C8EE31401D4
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:35:02 +0000 (UTC)
-X-FDA: 84984151644.03.AC2423B
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B6588160005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:35:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Wx3B/cbR";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DDCC6B00AF
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECE2C4021C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:15:19 +0000 (UTC)
+X-FDA: 84984253158.07.C482043
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4FD8A2000B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:15:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOMPvtSa;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783959318;
+	b=pBJRUcVBj4KiUV3siqEWkL0lQSYRb0XgTn+QHkVJW0QBzS8Fnjdpk67z1qnH3mnBBDgMte
+	Wr8ew6p5JX21pBjHVK2Valc/ce8VCQsIJwBonTQyd3RlcS/JkvFi+ijLrthzSL5KCOPBX+
+	RRVdLgs709nQkU7EaxhfVP+jnIEHyqo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOMPvtSa;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783956901;
+	s=arc-20220608; t=1783959318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b84zbAj0IOT/rrLgo+xScwsyz3Svgs2ZwEIPB28c6z4=;
-	b=U+J7MUTpYPE8uUkaClmwpHBqf64dBdajr/b9E9LhouJZ0SZBofNIDPW0WE3MHLeCqASuDH
-	BHRbsEO9C3xTRhKcjKubKLPAUznIaLJMwiEuDZAb6BHX/MpoGHL2bSq0SYHHME0HprRRLS
-	yirxw5iZE8xbLtU09/tUbjUy/FC5I1I=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Wx3B/cbR";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783956901;
-	b=KywpISLU45w4uR9ca/vf/uXdYK9MpmB9eeYNwiCGs666JCRi4iAIo3uro3dxIms2Vuk0gI
-	SwosUaRDlGun0akeIXedL4FPcePoxs9D/hBH1usrMFA+gmIee/ntdbBLEwREZ4OSoNV7a7
-	/+kamH7qJioKk8fcCEj2SeKHrxANkdU=
-Message-ID: <a0c0a578-9334-4540-b469-4c368d07953e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783956898;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b84zbAj0IOT/rrLgo+xScwsyz3Svgs2ZwEIPB28c6z4=;
-	b=Wx3B/cbRzN05smJAh6GSYPpBR4jesd05hADHLSXO/xF0g529OR0897flkhNFWq4Y2Vd3av
-	gjh3BfX3OYXR3quWsagN0aQy3VM21xnbUubOHy/lCfIwLxLDA1S5Yl6ng0j9DToARLgiF3
-	Voq/CzzM0ypaW293o8LK/soo29WJzOM=
-Date: Mon, 13 Jul 2026 16:34:52 +0100
+	bh=oNIWkoRxlut88jezsElvPH1wV8FkiiBk36IvzZ2BAwo=;
+	b=G0R5KbwqVqxLnQ0s3P9WJ1OX8MGh7ZacXB/g9UtKBePkGA6Zfns1Ino1zVrQJlrOowPBok
+	e37Z1g6uls9Hs18ESYMerXoj1U/IkcndlCKXoUzrwKEpiq0Qt93s1YxCv3S/oDTjeB+1PU
+	6n94PIgStRNDefW6SIAqEEAR7UwIg6s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CCC31600AE;
+	Mon, 13 Jul 2026 16:15:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3321F000E9;
+	Mon, 13 Jul 2026 16:15:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783959317;
+	bh=oNIWkoRxlut88jezsElvPH1wV8FkiiBk36IvzZ2BAwo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QOMPvtSaMxX9MpsXzTtiH2pWD1W/+0iiLAHU0QOSAyGHZ3amnA/Bu1/A4lKY5tOYJ
+	 Wtiz3ty98R2Fbype7p9a0rxYruVz2pXVagCTCyzX3AKW1F6GKtZhPrOvL4r2TuMu2Y
+	 j/JKvmod6ihm10/0FqARNrS4oLdcQDC2tnMtCiDvjkCaz0pFmRo0GezGCV9mVXbq3N
+	 J2OgXqfodG4emrSkrdUAAiKr0PmbekyjmeRf42NigHAQlyqR6YaLXkU44ql4Hm8tI/
+	 KNUF1VCvsufqBvwNlfGGx7EXWov7p6L/NJ+6NVThcRcO2nSWwZDmQ56sFSRI/2Lu42
+	 XNYFs3mM9vTew==
+Message-ID: <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+Date: Tue, 14 Jul 2026 01:15:08 +0900
 MIME-Version: 1.0
-Subject: Re: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in memcg
- slab shrink
-To: Qi Zheng <qi.zheng@linux.dev>, brauner@kernel.org, jack@suse.cz,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org
-Cc: hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com,
- linux-btrfs@vger.kernel.org, cem@kernel.org, linux-xfs@vger.kernel.org,
- shakeel.butt@linux.dev, hannes@cmpxchg.org, riel@surriel.com,
- kernel-team@meta.com
-References: <20260609123047.1948242-1-usama.arif@linux.dev>
- <4752c658-7b61-4636-ab5b-bd172e11a42c@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+To: Brendan Jackman <brendan.jackman@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
+ stable@vger.kernel.org
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+ <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+ <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+ <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <4752c658-7b61-4636-ab5b-bd172e11a42c@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B6588160005
-X-Stat-Signature: pubff9bsgz38qxxuqbxajb7ohe1nkemj
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------wjfaJTQWd3NhLTT80YxRJH5m"
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783956900-240173
-X-HE-Meta: U2FsdGVkX19oKmq+4qMLTZCg0o41nxEk8Qw1eYd7tFTyeyZGnA8adCdYHwccFAFojIC6fW/UBM3kIXKenZXzFL/Wuaj5Sq6ru5NR/Ige/1LEVBwMhqMuzasztuZkEge7E3yQd7Ci4oVq22ze2a8c8VtbjfeFNJpzeqG7hvY+9VEry8fsLhKUTcGAQCxhagUOsUpWpBZC9TqB9nDyaMoag846U5F/2GricYvrLm75fYbWNs03B5Zyf4vxm5X6r4yvaEOVL2kRBM0rW0u1YQnGXvJGvnZY+iUOKt0UDBlgsBanbtCfWvp5jCNuEAhMGlahdSwdfvkKWgdyR68tNc0he036MlPTIVG6idVp+aUfezSsIDXLv8/N9jm06ZoonOlUIE2Bfx7ng39QxXsrpdWvz2Y5KJu60SMxJ00H1e3iHMEhR83zvOyd6VMUzYiC8JvbDIP2lJSC5/QP3WI9o2C3rEBO2Fpxe/PBA6Y1KD8XpcmHr1QrRb4dqb6hvnB0sjOsitrcQ/RJ6WUnk0/TX8P1jXdPz8b6hcZLv0hmUm1CuAQGUdcLf8mKDVq0mKJtYrRzl1rjxYSpEsY2YYx53M9jPRQf6wqZFlx9Nqqw41+9GR9jUSuZB2i5B8IqQRT/YOFsEshX9D7zoGNMsuxJ/esv59ja2Z3kc03eFcsuTADbFEKa2IL+ZqbzwG16sU6eNdA//hBAQHHivNvbRiLN5TIyWuh1Uz91Rb3lt4xvxQ2Q+ZC8LqYAtsBMTSF+7QiEdo2IgPUPMZ+w3eeprQga89NIF7EX61Kj8fJoNJttFzgVzjmdRk9oWhp8IQ3nc4s4bm4ZA5GhlHFLkqA2UKai8ZlOkCAlnc459ocjm+Hw5Qmb0aWxVNETrKl28HOcz8CzlHQ5uhfljG4dgEyYP71mFjNOxT0B5bGDLLCZkcOFFTY3I5hlRU5H7YKXVk69XCSuIkVUVA2z5+g4Gi11QJhq6fo
- DkjH3l68
- QqeDDGBNGTkdVZ16kJHFMPCzn2lPK7cE3Z7xx0v3NOeHo5s0uJyUuzjgcpw/IHMy76LAdhpiBfY3wyPpGHM/kWaAgDS3qn+YPWlmBiHbmkMcwfDXnxz57gQUUrbYUg9j2sUGdt44fhJxPbILapvXqOBS5Jt5VbgqypsXRyOKnuJ6ohw/76iNAgL3Ma+EHB4D+6NiXGhvIsTsaNAqRQlvQ9uPWAyHk+3PI267off1LK8hvO2qpWCU6mFp5N/Ta+BdkSl5hgzzcIm72/Gv4D2BpGnU6vQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4FD8A2000B
+X-Stat-Signature: 7miz3by6s9rp68wtqt3j7e6phkf8wepw
+X-HE-Tag: 1783959318-906551
+X-HE-Meta: U2FsdGVkX1/DaHIJDQA4ICjEGXN2vfBnc4NL24OEX7XMC1hhF8encQwyBAa1lkRAfCA4c/5rATIUiITzZy91MITWmLVl5gcf3+0hWDYT3WpoApaNx21roeXpm4H31yfnaaUciVg3EI9EADvJXjQtGNhRmErP3euneJeWntkUE8IhIGWo+i3aAJO/pXPUt3AVEN7sYUEtpgUdDxRhqxjUA4c+ytSErKqFE763/J86Maxu15Sk9RtmthpfxUBrNFHc/+PBFiQhhcvW4w3w64xFTLuFI/Lan5N8xLRzy54xau4E6ph1y93ViWFNuhLpBQ5w+HVOzH0cYIZyArB9PpqZdoPvzsE5Gny86wi4U4lsIv33lw7Nuy1stBkohpB0um9kbNe6W5mJA6EEgHlZ3ozWbA5rcAFHu/DoS4cyK7VsWdLWxemSU28P7SGTI+ksZyQWqbFbVSj676Ufsgoql64P1RGSQscwRM9pPUHs659Zji43G5a1yyVc0ukVDlcoY+WChbKmPYKQcM7o5qHDc8vaza7x21tft6//1eggGjtXfftqPEeezQ+LsyXHDfdk6EyKg6d7PRHUXHqt/Rz30a09GD14diWgJSB/YO8/mpVUtUJj5iQ9RXZ2gMU2iJEWM7TjNKLaQM3oOLgypgAlCuU0WJ6nmp0Gm9Kr8pY+hM6y/B+1wNG/4qXacfli0xCzlpllvOswt/ttBA15m4zlWHgO8TTpygsfkdElRVZ3YGrE0PE6oA8ukOmCqw1KZYUoPkpqxy+7F7kBN7xKJpWeJPffOcQqFhA+QYfyHjl2UkMDY8sUfG5qzknzA829UlAbrXjvmBJCubCrTJpH/VqMRE1o8b2M4rlF8j2yrT6OUjOPWsy6+abAMgOeSwJLcJHqzcK/DuZesy5P9zCva01Xf3CmzisimrKsmZFfDE15gcjcLGwBljPusGLxB6LjCSeJ0r4ohQN3S/1x0MX+JqGZgue
+ 0JykJ63s
+ et2MgSv8xrxd1DjZvU9EqODqtTkvkTJJ7M6kap3z/b2cKR01Poa5uH3DW0k5u/mWE8x8sS+Cl74enwtLHmmOPGRw/r8sZRlYIqa4hFCSyaTSYkDAd3OtNIAPzSG/SmvzE//wpDxAOhKq7xaF/iEIs8cUON/UrKx6yo4MFq057HCKyyQrYznDKjK1lAVwT8FytgGeQzUbtqs3sXRrEA+mYVQJKZ/igFu6mhQjCXAzrORH1O2xNatJQbQAxB3ywOQN2NKeuhsneZoAPuf2l6S2KreAlywu0YlVFoTq5eVE0zEBtjgrobgh2MScoPIkvmzZJR229nCZjWiIB6Rm6L8AH/J1d7NpgSR5u2eMpz/OwBiZJMZDJnmGPdoIEwZqWCknk1r8s7FlZPGMtt4my+iMCMBuchAgC4FLNHxrawR4Ge8j/ohKBu8W+NbfhdbycmkAfFjrZ+Kzr1BM92FqOSH3PM3VU0tETmCii9vYdP0A/GBYYLS5eapnTsFsQYnyw1OXFOmVo/H+HGNqU++iwKKc9cMuQsMGwEY0/GXfbT3oWDWbC6706zoaCLAYWXWed+4UmXyDvjseaumD+x/KjupNVJmracNhLVh3a++LQjBoMn1Tgd9w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,43 +105,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------wjfaJTQWd3NhLTT80YxRJH5m
+Content-Type: multipart/mixed; boundary="------------nxjIPOFNtOXUEKiJUGKT1hb6";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
+ stable@vger.kernel.org
+Message-ID: <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+ <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+ <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+ <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+In-Reply-To: <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+
+--------------nxjIPOFNtOXUEKiJUGKT1hb6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-On 13/07/2026 14:12, Qi Zheng wrote:
-> Hi Usama,
-> 
-> On 6/9/26 8:30 PM, Usama Arif wrote:
->> The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
->> dentry and inode LRUs are memcg-aware (via list_lru). But the optional
->> ->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
->> btrfs extent maps and xfs inode reclaim operate on filesystem-global
->> state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
->> None of them filter by sc->memcg.
-> 
-> This makes sense for now, but how should we handle this if these
-> shrinkers are made memcg-aware in the future?
-> 
-> I've recently been working on making the shmem huge shrinker
-> memcg-aware, but noticed my changes broke after rebasing onto the latest
-> tree, which led me to this patch.
-> 
-> As for the shmem huge shrinker, I can work around this limitation by
-> making it a separate shrinker. But this feels more like an overall
-> design decision, effectively meaning that all nr_cached_objects are
-> precluded from being memcg-aware.
-> 
-> Thanks,
-> Qi
-> 
 
+On 7/13/26 11:31 PM, Brendan Jackman wrote:
+> On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
+>> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.co=
+m> wrote:
+>>
+>>> As noted in can_spin_trylock(), using this is unsafe in this context.=
 
-Hi Qi,
+>>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
+>>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc si=
+de
+>>> but missed the free side.
 
-Thanks for raising this. I think the alternative is what I mentioned in
-https://lore.kernel.org/all/cfdb8620-ea55-4226-98bf-d006820e6270@linux.dev/
-move this down to the fs own callbacks instead of here. Would that
-be better?
+Ouch, do we allow alloc_pages() -> free_pages_nolock()?
+Didn't notice.
 
-Thanks,
-Usama
+>>> Reported-by: sashiko-bot@kernel.org
+>>> Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b=
+714e19d3@google.com
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+>>
+>> Is this correct?  I'm not seeing anything in that commit which could
+>> have caused this?
+>=20
+> Oh yeah I guess it should be:
+>=20
+> Fixes: 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+>=20
+> This is confusing coz we have:
+>=20
+> A: commit d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+> B: commit 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+> ...
+> X: commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from alloc_f=
+rozen_pages_nolock() in NMI on UP")=20
+>=20
+> X is marked as Fixing A, but it was an incomplete fix. I just copy
+> pasted the Fixes tag. But actually I'm now changing the free path that
+> was only introduced in B.=20
+>=20
+>>> --- a/mm/page_alloc.c
+>>> +++ b/mm/page_alloc.c
+>>> @@ -2979,8 +2979,7 @@ static void __free_frozen_pages(struct page *pa=
+ge, unsigned int order,
+>>>  		migratetype =3D MIGRATE_MOVABLE;
+>>>  	}
+>>> =20
+>>> -	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT=
+_RT)
+>>> -		     && (in_nmi() || in_hardirq()))) {
+>>> +	if (unlikely((fpi_flags & FPI_TRYLOCK) && !can_spin_trylock())) {
+>>>  		add_page_to_zone_llist(zone, page, order);
+>>>  		return;
+>>>  	}
+>>
+>> It would be nice to include a description of the userspace impact.  I'=
+m
+>> suspecting that's "none known", but some speculation on what might
+>> happen to someone is appropriate.
+>=20
+> Ack. I think if you trigger this bug by accident it will probably crash=
+
+> your machine in extremely confusing ways. If you can trigger it
+> deliberately from unpriv (depends on the rest of the host setup, e.g.
+> what tracing is being used) you can probably use it to get root/ring0.
+> Can mention this in the commit message.
+
+Just noting, it is quite niche because it requires UP, and tracing
+something that can be called in NMI on UP is even nicher.
+
+>> Also, Sashiko might have found yet more pre-existing issues:
+>> 	https://sashiko.dev/#/patchset/20260710-spin-trylock-followup-v1-0-af=
+fb5fe5ed00@google.com
+>=20
+> There are 2 cases here:
+>=20
+> 1: !pcp_allowed_order() -> This is forbidden by alloc_order_allowed(),
+>    quite a bad miss from Sashiko IMO.
+
+Hmm but alloc_order_allowed() would return true for !pcp_allowed_order()
+when spinning is allowed, then pages can be freed via
+free_pages_nolock()?
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------nxjIPOFNtOXUEKiJUGKT1hb6--
+
+--------------wjfaJTQWd3NhLTT80YxRJH5m
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalUPDQAKCRCGXBN6rc5S
+1uORAP95b6ffqA3hjbQbhh4fTA8JO2q/aCxMraAwrw3m7JnqIwEAhA/YJsuRldNh
+eHZVy6QNewHI+2W+paQ1iqEOvb1FuAs=
+=UlbM
+-----END PGP SIGNATURE-----
+
+--------------wjfaJTQWd3NhLTT80YxRJH5m--
 
