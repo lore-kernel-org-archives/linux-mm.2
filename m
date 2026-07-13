@@ -4,100 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E738C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:12:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15A72C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F16F76B008A; Mon, 13 Jul 2026 12:12:26 -0400 (EDT)
+	id 024CC6B0093; Mon, 13 Jul 2026 12:13:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA08E6B008C; Mon, 13 Jul 2026 12:12:26 -0400 (EDT)
+	id F1F0D6B0095; Mon, 13 Jul 2026 12:13:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6AC36B0092; Mon, 13 Jul 2026 12:12:26 -0400 (EDT)
+	id DE17F6B0095; Mon, 13 Jul 2026 12:13:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A04256B008A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:12:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 185E08C60E
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:12:26 +0000 (UTC)
-X-FDA: 84984245892.17.6AE475D
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DA07FA0004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:12:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=S2SDCAzi;
-	dmarc=pass (policy=reject) header.from=xs4all.nl;
-	spf=pass (imf25.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.183 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783959144;
-	b=ddjsryyzS0UOjcPXG+o63sZHqEYCDsGexPm32demqd57On/ocWh6SgJ3UWG6Kx10H7erST
-	HvkWAGE9a3AGLC2lvvZ81xwxCw6nwtFUZb7S81QOh6qpm7CQ+zgLj1REAQPnKX8Ni0g5/1
-	yKAM2YERIp43dq6uAqyvqjZWTMVseQU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=xs4all.nl header.s=xs4all01 header.b=S2SDCAzi;
-	dmarc=pass (policy=reject) header.from=xs4all.nl;
-	spf=pass (imf25.hostedemail.com: domain of jkoolstra@xs4all.nl designates 195.121.94.183 as permitted sender) smtp.mailfrom=jkoolstra@xs4all.nl
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A75A96B0092
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:13:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C23A401EC
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:04:13 +0000 (UTC)
+X-FDA: 84984225186.08.5269DCF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7C58C40007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:04:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fS+exrWX;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783959144;
+	s=arc-20220608; t=1783958651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=uvvy4ZDdcswg3rQnKPRfjVI+F4d66zq2fU5XaCFzDL8=;
-	b=FoMtkkEXzq8DTdkzS+1vvBpYI6IKcHCMB16xRB4KF1wrikpfqtGLNh2q5s71J/5Suh5gyl
-	6lwJpam7hrCan9RSUQrKbZQeHPFWWGZFZDN/DW4WWe9SwKKN3F1PjveWY3Q2WUx8cKloAW
-	VmKpvwFpI4SHn6157iMN9I4TBL0ov6Y=
-X-KPN-MessageId: a14ea19f-7ed5-11f1-8f54-005056992ed3
-Received: from mta.kpnmail.nl (unknown [10.31.161.191])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id a14ea19f-7ed5-11f1-8f54-005056992ed3;
-	Mon, 13 Jul 2026 18:12:22 +0200 (CEST)
-Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
-	by mta.kpnmail.nl (Halon) with ESMTP
-	id a14db61c-7ed5-11f1-91b9-00505699891e;
-	Mon, 13 Jul 2026 18:12:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:subject:message-id:to:from:date;
-	bh=uvvy4ZDdcswg3rQnKPRfjVI+F4d66zq2fU5XaCFzDL8=;
-	b=S2SDCAziLAg9r6MWME/lYJLz90ofesNJ9FnKgoBO2/CqTZYt4c5nkZAYCxhctvAJA2ZNamxuBBY+A
-	 DmSk51UKtdnHH66U+J0aWGPud6BbrxOzutdTC4LaAOL4TY6E3MNKMMwcwCaOVseMNjyM9Bx1XsvWNn
-	 8dawoTp8Tg1NymEB1c2Z7eYh5U9QUJML5jYSFfOa3KDjxbU60dAslnGEvMVeCs2wdO4mcaI4ndP9H2
-	 tT0ua16OY/cTxVEd98XRaJoBhSV9rMhHezzZ1Uc9oVgm/8YuusghZB6zrKqSY+CWF7mz34R/SLI/14
-	 39cDQH+pmq1moOR9HHRVWyVXKuEiNxQ==
-X-KPN-MID: 33|+HnMd0YcGAo43cmLofG/obfA3lAPoEC9NW+TSFQUqLvyN8oiggDPo+ZoHf22YiG
- Fl4H6uCM97Ey8qxMiikQ0cA0MrAW5G0LtF+vrxJSO+Vw=
-X-CMASSUN: 33|4agQlQn9Wb+VDsb/w2xyquW+nvSXN/XdwAQkvHi2aFgNCaKQ6CU4ZtHKcel4PqX
- CZknQFRghithrtUyHbbv3hw==
-X-KPN-VerifiedSender: Yes
-Received: from cpxoxapps-mh08 (cpxoxapps-mh08.personalcloud.so.kpn.org [10.128.135.214])
-	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
-	id a1420070-7ed5-11f1-916a-005056995d6c;
-	Mon, 13 Jul 2026 18:12:22 +0200 (CEST)
-Date: Mon, 13 Jul 2026 18:12:22 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, linux-mm@kvack.org,
-	Farid Zakaria <farid.m.zakaria@gmail.com>, jannh@google.com
-Message-ID: <1234615100.876439.1783959142374@kpc.webmail.kpnmail.nl>
-Subject: Re: [PATCH v3 16/24] binfmt_misc: give the parse_command() results
- names
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ctxaFih00G9qrQW0mFgwMAslrGjZZ5EaDpOAMDEo0jc=;
+	b=gskY9xatZT0TbahvkJVQiwI4YXs9prmKIS80ZZ3luuHKOtvF0i2ncPoa/Cvf7FXOar1bjn
+	AgtgDH1O2TMehbbBjLUUmHbmRlUcTpcRh3+P5HdTB495EP1lb2mJgm/vdJezlIQdgg2Abg
+	/TvzUcsR/uuPMC/X8+GCRoh9NduUkDg=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fS+exrWX;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783958651;
+	b=GVKbZCNOgrFt511INmUZS5Jf3GsIAKku9HVlArHa7kg4VV+Tr4kzLnED8in1TI15Wj9vzG
+	Wavpxa2n0gr4dyj1Fd0gLXDpf6UpbzbubFsQ1xuIqyTYN+4cOJVC/iS45DVWsoQK7RdvHK
+	P40ipSvJteN5PCwbZj0NLd2aMfzGePk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B14A641AC1;
+	Mon, 13 Jul 2026 16:04:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A074C1F00A3D;
+	Mon, 13 Jul 2026 16:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783958650;
+	bh=ctxaFih00G9qrQW0mFgwMAslrGjZZ5EaDpOAMDEo0jc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fS+exrWXCr+L3VLPeSXD+tD3xkU6t9CX/R2wB0P2yv0LiuamHNkl6sKHPr8KBHQ5S
+	 pSs5LTOBX8iA38rGaAqlX+plNEjShJs1m1CQ2GklWuvmaT6Q3Uk0woyNV/BfM5OEgc
+	 aD3PSQMfK9CVsVDevOSlv2Rpmuk0JI+KOC8Ua9XCmEVFbYx4lqcPeXPnpW8oPWI3Ac
+	 o9PX2ee6TYHVb4Nmvef5W6hldsDUQf6Ug36fPE6FSWPuh+OlgmmqOs6FMzBIrg0kHq
+	 hzmN96dmjXhD6qUog9uZ2Y5MTkFB5BxSFhdIj3AHV9UVG/CcpxVv0vVo1XMexigQLD
+	 hbR4uV+Fe+xAA==
+Date: Mon, 13 Jul 2026 17:03:56 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: xu.xin16@zte.com.cn
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, 
+	chengming.zhou@linux.dev, qi.zheng@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	wang.yaxin@zte.com.cn
+Subject: Re: [PATCH v2 1/2] mm/mm_slot.h: add a helper function mm_slot_remove
+Message-ID: <alUMUs7p8irN79gL@lucifer>
+References: <20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn>
+ <20260713143707966lCkTinO0i9zYAc1K2ZmqZ@zte.com.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
-X-Originating-IP: 178.229.242.209
-X-Rspamd-Queue-Id: DA07FA0004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713143707966lCkTinO0i9zYAc1K2ZmqZ@zte.com.cn>
+X-Stat-Signature: twxp3dxs95jwbxsdjum37chkaqtkepzw
+X-Rspamd-Queue-Id: 7C58C40007
 X-Rspam-User: 
-X-Stat-Signature: jdsqwsbo8n7mmk7j3horm8jjih1yekr9
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783959143-951211
-X-HE-Meta: U2FsdGVkX19VPPJbr2NZqZetKoWmaCmTqoH6+g7IEytM7rJ7HrzB3JYa/U0lpDGKTPTONa3PR1hn4xRKuVPmDTmtALzVo3Iw8goxDYwJtgXMvh1hZCMls4ilNGvDacXb9Vf8appnqaoZTUPYFmPwRoFfigFqY+NndkTDsl6+Wz/64vDyebWz+TCz6qyEmLOKbGGyh1i8KlLGPumCa+7eAxZyAm9+KIGtLWnBLFz4ZCqu3LBerfbIkDfhp8oL/mFq+SAvO0NhjHgYugtIont63C3g5d4OHIQNAnrw5biJxTvAjgtl4gneEzpVD0YzSsC3oJ1ZyKVUCCJPR9Te39Lr4wmPhJIWk2WmTF/bnBcuBSKcemolJKjRgdethV6QFGj9Anu/J6jGLxTssNnC0d5HVdsBLJlBhm380Dlxn8WEX8eMekpdUbV5+1q4V+HRAoRijpCbyVAfV4+aoUWtS9T4uFd7QMtm3H8pwp4a3bswLehe0K6e3pBn0zwe+4Qj4audJyuYDB1GePBE9cGrtaa0N1FudQcZGoRzi2pHF0Z57u0UcGBm+nGw8WOugIVk7A2l1zjbgQMTmcl3XunMzaBWqTDBc1Xux+nTW+WPCtHhqdhEuK/MRFEEDL9a1+ynZFQ4sQupkHRKPRShW/rpwjYeOIf+wL4gwJbMFiTZXa4RVyJb0myvimV+zhyMGItMWLm1FtfgayDGIV53zFj3ni3QGIj2Hj0yuyJIxKF0sQsbjfC7xngGI7dLIxm3MBsfMf4TS3jFMYvD2a4xtYXi/VcsZKRrXqw98B9uMrfegZZNLi844tcla38FCwLE93zIQkLR/cz9JMVsTHmMsPdWRWVE3NuLgSx3cApJuT1ORN1FxSIPlcP8HKZUGOZsUGdbUXCdZZQkZ8rkvliA1/e+onIy1uoP0itFyaYBzlUypZTcyI6qOGxIr+D/xJF0kJwBh14jGCC9ILEinFLMwIGRUCe
- 3GIDoTE0
- BzVO28T8v63YKhnU2T+fMYwmyTCBqLZYlrNIWgyqggbjLy1MRIT8V/5US1zvvoE0nSbp8+mf+TCbA4hpIKIW4Z5eZpw+0k41YPh2pWdE6LdUQxkoMkVEvWn9aK/BC66iEnh0qmPH9dKv73DqZ5+kp9krPJLgBMN/O4+sCUviULjxNuIc7/DWuVqO13tS3+WEeA/Cop0YF7/F60424r93wYKp3CfO0FJuIaw/T5ei87UsZkrbjr2TyAOf1OBpPKovoF5DhaD48FEinWsynfBD0aThvcaGvLO2I0p9e9i50baq+HeONoHOyyJPOckCjovsmzMMU9GblbyNxqtIGldeoE/y+qHjYu10dsBKXlBLGTsiInyU2TJQFNN2CB/UaOQTcYXT562Aqn3QdgmaAo5NIhjYDdO7RD7CDWBwlpYQcTB3FOlnL3TnBEX9qdeGEm/An7+Y9qF05hr7KWtta5tflA/JoTJFlFX0FTm1UTslm5eLWitf7UN5xgigjVwK3qSES50fkfZieN26qfOXRh2VeuLRBVDdnJ6DhvWoZBHSGI5eKmAOujCtCatJD7Io6e3LY1GTBXBsToTpa8Cs=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783958651-680741
+X-HE-Meta: U2FsdGVkX184wblwswmxFK2WckHj/MemrjT9UC1vN9OlvtOSXFM1RlZoAFHAINlwmTAnSGDjcdarjxZM2PGaGBsTNZgK9Ge/rXGdqlj4JS9RpH4xtd+d+duglLwLnUtosFDQRuQI2g+MxsQ3MgEev14ssjDyPReTejtUzBvKY3Ij3jg140QRQFNZQPDekhqvfNbrhN2OcX0YebBlI9oRzvR61pLZJ2d91PLJsxLMGKrl6Jc1+MveVeCWAULbsG/x88nRZG1JmW2cHiyKSLLivBEZ2DHnZjhMsQVuFmLefCNK/0ykKM0wU20uN0EZ71zsINJgh8wOBnJoL35lgWsYrZK1rvBZihNf12CbCWXWt6upnxc1aE5x4rj37um+819XMT2BFgXNNxwQ8MXEAA/BQyV63W8iUXfV6oR0lYuYwplaX6akkSDa8b+7iPlj9RDPbfO54YM8pnWIBxpOQmaLHHFhZ3TEL6VGtDMkhjxLcBOh92IIU52ROfUoRrbivYviB612W01A24SOQ6naZAgoneKPMlPFCMIW0CxEqo0f1xydu3hXpPprizxkjFKWnQKnvPSgRIKaqGL/b+9uvRFYNL/bwf+HBe068XPbppoUTREy3p0r2PZpggKc52uySdf7Rx5XkiKmkaPX07WAqxfNM7HukJ20ndquwOVhdysEBOXPLh9l6SkChcLmgx967r92wHoVs0erNlkIodEvakavU0yMZAs33YBGnvaw5/ZRvMfo4oL4uoADfeXi3UzPfxPz0QV/y95rDNvsaCXPQ3CpQRAHuFg2mZrmttkGcmNSCIkKTGGp+h3lHIUOABYrD36bykR8pdGjtTd590Eh7nlzmvTKuhYhz51e0y16KSH6oWyK6P2w2QOB/UfKhX+P7tRoL9OVotSZgnnAzGSRW5ro3mxWWKJHObkvAtJX2qlc2bH5l3w3YONef2ROCxgd+Kua8NEbTR2DvNGiUEU5mKQ
+ vnJrzIE5
+ qOkfXdLYN9OOz7BMp/JfWDAVFoy7i25LGXnbY1lGjVQ4N6ANzNiQZt7h41wATcIFdAwbjgm8fYWehlMdMzqGYrdrFdDkq1VEJ5ZYnvZGUCsBypth3SE+ykCriFtFNORDaRy95l076pgl/2GDJS8tfq8zuf7fM9/vPRFbkmy77GGTx3uNheEy8tVGXJYXw1tUuccqANuVXak2ILls6uxaW+ZI8T3bUxyToQN7WG+L8L/O+vQzxVRXTgpT3I1yjMIz9TAGTQy2SyP7XNZLL5irO791uQlHkElSVv33ydlMPf+zRS3FLbANoFH4fVmPGiPyLoMLbsOYYB6S1x9BG37IXdqDm9bz0xLNbCl5AjtgCJdQT8R0sixuuhJSFZ0ucHzz5M31F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,109 +94,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 11:33:17AM +0200, Christian Brauner wrote:
-> parse_command() maps "0" to 1, "1" to 2 and "-1" to 3 and the write
-> handlers switch on those bare numbers, leaving every reader to redo
-> the mapping in their head. Name the commands and drop the per-case
-> comments that only existed to translate the numbers back.
-> 
-> No functional change.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+On Mon, Jul 13, 2026 at 02:37:07PM +0800, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
+>
+> Both THP and KSM manage per-mm scanning slots using the mm_slot
+> structure. The slot is kept in a hash table and a list, and removal from
+> both containers requires the same two operations: hash_del() and
+> list_del().
+>
+> Introduce mm_slot_remove() to abstract the common hash_del() + list_del()
+> sequence used in both khugepaged and KSM.
+>
+> No functional change is intended.
+>
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+
+LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
->  fs/binfmt_misc.c | 38 ++++++++++++++++++++------------------
->  1 file changed, 20 insertions(+), 18 deletions(-)
-> 
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index 06f4849cf1ad..1f2b1d136819 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -543,9 +543,17 @@ static struct binfmt_misc_entry *create_entry(const char __user *buffer,
->  	return ERR_PTR(-EINVAL);
->  }
->  
-> +/* Commands accepted by the /status and /<entry> files. */
-> +enum bm_command {
-> +	BM_CMD_IGNORE,	/* empty write */
-> +	BM_CMD_DISABLE,	/* "0" */
-> +	BM_CMD_ENABLE,	/* "1" */
-> +	BM_CMD_REMOVE,	/* "-1" */
-> +};
-> +
->  /*
-> - * Set status of entry/binfmt_misc:
-> - * '1' enables, '0' disables and '-1' clears entry/binfmt_misc
-> + * Parse what userspace wrote to /status or an entry file: '1' enables,
-> + * '0' disables and '-1' removes the entry or all entries.
->   */
->  static int parse_command(const char __user *buffer, size_t count)
->  {
-> @@ -556,15 +564,15 @@ static int parse_command(const char __user *buffer, size_t count)
->  	if (copy_from_user(s, buffer, count))
->  		return -EFAULT;
->  	if (!count)
-> -		return 0;
-> +		return BM_CMD_IGNORE;
->  	if (s[count - 1] == '\n')
->  		count--;
->  	if (count == 1 && s[0] == '0')
-> -		return 1;
-> +		return BM_CMD_DISABLE;
->  	if (count == 1 && s[0] == '1')
-> -		return 2;
-> +		return BM_CMD_ENABLE;
->  	if (count == 2 && s[0] == '-' && s[1] == '1')
-> -		return 3;
-> +		return BM_CMD_REMOVE;
->  	return -EINVAL;
->  }
->  
-> @@ -717,16 +725,13 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
->  	int res = parse_command(buffer, count);
->  
->  	switch (res) {
-> -	case 1:
-> -		/* Disable this handler. */
-> +	case BM_CMD_DISABLE:
->  		clear_bit(MISC_FMT_ENABLED_BIT, &e->flags);
->  		break;
-> -	case 2:
-> -		/* Enable this handler. */
-> +	case BM_CMD_ENABLE:
->  		set_bit(MISC_FMT_ENABLED_BIT, &e->flags);
->  		break;
-> -	case 3:
-> -		/* Delete this handler. */
-> +	case BM_CMD_REMOVE:
->  		inode = d_inode(inode->i_sb->s_root);
->  		inode_lock_nested(inode, I_MUTEX_PARENT);
->  
-> @@ -866,16 +871,13 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
->  
->  	misc = i_binfmt_misc(file_inode(file));
->  	switch (res) {
-> -	case 1:
-> -		/* Disable all handlers. */
-> +	case BM_CMD_DISABLE:
->  		WRITE_ONCE(misc->enabled, false);
->  		break;
-> -	case 2:
-> -		/* Enable all handlers. */
-> +	case BM_CMD_ENABLE:
->  		WRITE_ONCE(misc->enabled, true);
->  		break;
-> -	case 3:
-> -		/* Delete all handlers. */
-> +	case BM_CMD_REMOVE:
->  		inode = d_inode(file_inode(file)->i_sb->s_root);
->  		inode_lock_nested(inode, I_MUTEX_PARENT);
->  
-> 
-> -- 
-> 2.53.0
-> 
+>  mm/khugepaged.c | 6 ++----
+>  mm/ksm.c        | 9 +++------
+>  mm/mm_slot.h    | 5 +++++
+>  3 files changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 58e14d1543ec..5f6eb1bd9a67 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -606,8 +606,7 @@ void __khugepaged_exit(struct mm_struct *mm)
+>  	spin_lock(&khugepaged_mm_lock);
+>  	slot = mm_slot_lookup(mm_slots_hash, mm);
+>  	if (slot && khugepaged_scan.mm_slot != slot) {
+> -		hash_del(&slot->hash);
+> -		list_del(&slot->mm_node);
+> +		mm_slot_remove(slot);
+>  		free = 1;
+>  	}
+>  	spin_unlock(&khugepaged_mm_lock);
+> @@ -1802,8 +1801,7 @@ static void collect_mm_slot(struct mm_slot *slot)
+>
+>  	if (collapse_test_exit(mm)) {
+>  		/* free mm_slot */
+> -		hash_del(&slot->hash);
+> -		list_del(&slot->mm_node);
+> +		mm_slot_remove(slot);
+>
+>  		/*
+>  		 * Not strictly needed because the mm exited already.
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 2791ce5bd44b..443dab513da6 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -1257,8 +1257,7 @@ static int unmerge_and_remove_all_rmap_items(void)
+>  				  struct mm_slot, mm_node);
+>  		ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+>  		if (ksm_test_exit(mm)) {
+> -			hash_del(&mm_slot->slot.hash);
+> -			list_del(&mm_slot->slot.mm_node);
+> +			mm_slot_remove(&mm_slot->slot);
+>  			spin_unlock(&ksm_mmlist_lock);
+>
+>  			mm_slot_free(mm_slot_cache, mm_slot);
+> @@ -2772,8 +2771,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  		 * or when all VM_MERGEABLE areas have been unmapped (and
+>  		 * mmap_lock then protects against race with MADV_MERGEABLE).
+>  		 */
+> -		hash_del(&mm_slot->slot.hash);
+> -		list_del(&mm_slot->slot.mm_node);
+> +		mm_slot_remove(&mm_slot->slot);
+>  		spin_unlock(&ksm_mmlist_lock);
+>
+>  		mm_slot_free(mm_slot_cache, mm_slot);
+> @@ -3116,8 +3114,7 @@ void __ksm_exit(struct mm_struct *mm)
+>  	if (ksm_scan.mm_slot == mm_slot)
+>  		goto unlock;
+>  	if (!mm_slot->rmap_list) {
+> -		hash_del(&slot->hash);
+> -		list_del(&slot->mm_node);
+> +		mm_slot_remove(slot);
+>  		easy_to_free = 1;
+>  	} else {
+>  		list_move(&slot->mm_node,
+> diff --git a/mm/mm_slot.h b/mm/mm_slot.h
+> index 83f18ed1c4bd..5de3e91d86b4 100644
+> --- a/mm/mm_slot.h
+> +++ b/mm/mm_slot.h
+> @@ -52,4 +52,9 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
+>  	hash_add(_hashtable, &_mm_slot->hash, (unsigned long)_mm);	       \
+>  })
+>
+> +static inline void mm_slot_remove(struct mm_slot *slot)
+> +{
+> +	hash_del(&slot->hash);
+> +	list_del(&slot->mm_node);
+> +}
+>  #endif /* _LINUX_MM_SLOT_H */
+> --
+> 2.25.1
 
-Good clean-up.
-
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
+Cheers, Lorenzo
 
