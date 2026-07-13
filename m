@@ -4,174 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57451C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 589E8C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3064D6B0111; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id 6402E6B0110; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B7976B0113; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id 5EB1E6B0112; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1584A6B0112; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id 5282A6B0113; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D90F46B0110
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:28:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BED88C019A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:18 +0000 (UTC)
-X-FDA: 84983912916.06.A3F31A4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DE40D18000C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=f7EldcMF;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951217;
-	b=2y5xe6HPLys36x5csfsBuP+B3PfdKdwXXzYv9cLI558WYKa5yQDrNv9212UuoYEUuwtkky
-	Vok81MvYywYzavXefLiWyn56s5Mg/zu2GzaCOEX5yzmH92+4RbfsgM+Dywt1fXVqad5jom
-	Lo8tgIkvkf1507/bN7kudQA0RzdXYv0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=f7EldcMF;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 17A9C6B0110
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86DB4C106B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:08:53 +0000 (UTC)
+X-FDA: 84984085746.10.AE95DAC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A4303C0007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:08:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YLa/b/ra";
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951217;
+	s=arc-20220608; t=1783955331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TXvdvZ2eLoaZIoXA5oMVYOLwDSTuaBij3FbMTbYWE/s=;
-	b=KSWJ3kDP8mV1FPcV5gcxshYt62UIFnOkihHBHGVYklx1zaveaDZuzxmMsreBq9uvXZeUb1
-	0BT/uVHFcM1uMpIIyIZhU2xTjMkPLQA8/oa2UmOMHqHOZzSQGWIAJyBTKRB9wBUqAsfrEy
-	N04xfhpo9cavOFsL1Y8Cis93/E1bfcI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C824B202C;
-	Mon, 13 Jul 2026 07:00:10 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CD5DA3F7B4;
-	Mon, 13 Jul 2026 07:00:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783951215; bh=Paq3n4cO8HdYy4FFfkUp6FGCvWu1boCvdBHEQkzpEzo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7EldcMFAotp2m+ZhFGMuVYzDzUE1W3xYD2M61Z32+4Lp6LM2uG0bFpTaMxAUabky
-	 GXRnAFeDJZQABUA65JAt+2/I+UMycHxGaMD0oKMyNfBY1Wx5aC0cEO7Fj/aGoXMZAY
-	 tYNv5K6voYS794ZDDPyqysxYS3g7IcY1aTIJ4qUY=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com,
-	linux-csky@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org
-Cc: david@kernel.org,
-	linux@armlinux.org.uk,
-	akpm@linux-foundation.org,
-	ankur.a.arora@oracle.com,
-	rppt@kernel.org,
-	linmag7@gmail.com,
-	chleroy@kernel.org,
-	klarasmodin@gmail.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	kas@kernel.org,
-	zhangtianyang@loongson.cn,
-	wangyuli@aosc.io,
-	tsbogend@alpha.franken.de,
-	ljs@kernel.org,
-	jgg@ziepe.ca,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	arnd@arndb.de,
-	ryan.roberts@arm.com,
-	pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com,
-	baolin.wang@linux.alibaba.com,
-	tj@kernel.org,
-	kevin.brodsky@arm.com,
-	anup@brainfault.org,
-	atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	hpa@zytor.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	anshuman.khandual@arm.com,
-	yang@os.amperecomputing.com,
-	chaitanyas.prakash@arm.com,
-	ardb@kernel.org,
-	guoren@kernel.org,
-	yang.li85200@gmail.com,
-	viro@zeniv.linux.org.uk,
-	dinguyen@kernel.org,
-	schuster.simon@siemens-energy.com,
-	wangruikang@iscas.ac.cn,
-	junhui.liu@pigmoral.tech,
-	muchun.song@linux.dev,
-	vishal.moola@gmail.com,
-	namcao@linutronix.de,
-	pavel@kernel.org,
-	djbw@kernel.org,
-	yu-cheng.yu@intel.com,
-	baolu.lu@linux.intel.com,
-	Jonathan.Cameron@huawei.com,
-	coxu@redhat.com,
-	andreas@gaisler.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	geert@linux-m68k.org,
-	shorne@gmail.com,
-	jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [RFC PATCH 18/34] riscv: mm: use proper set_pXd() for generic compile-time folded patable in setup_vm_final()
-Date: Mon, 13 Jul 2026 14:55:57 +0100
-Message-ID: <20260713135614.1618183-19-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+	bh=S2412bZGPWPZN/aE9c6H2BeupCTWZve94f17fgRu1LA=;
+	b=A+TKYySL/VybuPX9QRlMa3GMIm7BRgYB8fB9KkepQ0M+EHhyVyIWzTF//IIbbnvCaGj3Ai
+	osdgfjRXSP6mP3P7YGWL7swNQtyW9b52UFw07I+MWeV2s7mSEnoDai0L4x/gCMAkKhvCR1
+	PJwE2NveNTQakxaWTx8NXrldIi0Cqss=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YLa/b/ra";
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783955331;
+	b=KZFeZ5ihtD73STKPQ32nw68XLakZs3ZcLCmzwd4iBLQGgjmBzJmY8QER0mDumOXsHY+5/B
+	24zpiA5fDLouupl1WEW9JGiZP2JSJbvZnhAEwSdIgPk/v6z81925lKi1NQw4ngEm0btKvp
+	Z37Rizgu4iayXNrE8k/qXFceaOxpZGM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D08BE415F2
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52911F00ADB
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:08:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783955330;
+	bh=S2412bZGPWPZN/aE9c6H2BeupCTWZve94f17fgRu1LA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=YLa/b/raGv92tSdUv9UAWOao6aVFMj30Ug05SffbFSQtkpuRWwsvRajvBd5pu2xy5
+	 WIVDnWlGAl/+hquRbDn5vIMhIPHRRXKZqAen1EhV6YpRGJBWW62T7DmypOZSNv9BBO
+	 kipg7QzfVTX3Tx0np+AycgHjCdfOyP234p67vtwOBowb0bOUwyXvbsNlzVuTwlbj1S
+	 /WMM3bcWWlzBzGLScvaYDdfVWgepFW+ffTKLZntpKQyTIinnig3TPdRVSfWDYVFCvg
+	 V7zTr+v2+Qh9Dr3X1gFv2w6c/1q/wS+CnHZVB8e/JEvgf8Bhi3GnEMjD8NPc9Xej6X
+	 yDnHw83VDkb5A==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92e67555e24so193898985a.3
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:08:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpePN+kTjEoP4OpZNfE41DLWd/WzDZhn9vxvNN6j344OgaanqurGIFu5MkIOgtpVnKR0PjfwjYx4w==@kvack.org
+X-Gm-Message-State: AOJu0YxM4g7SCA2JO9imEeCM4W0jwP5snXHA94Yk0zNNHNlZD2Zr9s/w
+	a7IORGkoG8mr+9LhsWiJ6yLcA/kbBimPLx0XfUSI7AUYU4YX6dTXwE+FSnNvV/x9LyPXbA/v/a/
+	av3L6RC7kg52DlPWwP03XOsyULcBaKCY=
+X-Received: by 2002:a05:620a:1787:b0:92e:c118:18c2 with SMTP id
+ af79cd13be357-92ef2cb6546mr875536485a.77.1783955330036; Mon, 13 Jul 2026
+ 08:08:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DE40D18000C
+References: <20260711091157.306070-1-ridong.chen@linux.dev> <20260711091157.306070-2-ridong.chen@linux.dev>
+In-Reply-To: <20260711091157.306070-2-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 13 Jul 2026 23:08:38 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
+X-Gm-Features: AUfX_mw4Br7J34oOX27RZ7iWI9pqul0zzHhz-BOIuYA7_p2QyaEZNYFv5_TepBo
+Message-ID: <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	David Hildenbrand <david@kernel.org>, Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wgcrue9kb3d3bdds5968s54rbf58185m
+X-Rspamd-Queue-Id: A4303C0007
 X-Rspam-User: 
-X-Stat-Signature: 9t9zbes7a67zwdcrq1ofp7os4fdu3pkd
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783951216-966948
-X-HE-Meta: U2FsdGVkX1/q5XtHo8M7KFSrTOcff+Z29EmyojC5Opgl/RjcoRwK2iClffjWxZ7jextjowqiWosWbXq9KvsgbN+hJwbXJqgGbFJ/nT3PTo72gu2Jh0bY9bIlIfhRz25VO/MVUjC6ztSet668Affy665m9NIbh1PAUjRA9wzSKbcl49Ky/OpDVvr8NmHEVo75EqM9F9m3al2ZJDOoCgJSwJ1Lc2ziTUW5FTxvfxLfJzq/MFd9HchLGWTOE0VZnH4U7sT5RHW2/Ym1zgDA/IhCrEiuwIr5NACebAUW9f8TPTp7OPBaDNf/vxXA1TqpdQaw3nWFLpkcSJdcoqEckIVPm8uTWLnCdEPmTLII+cf+tGB/qN4Kg+oRxhRGVp7zlaVKn35zsl0p0CfFqB12Yh6PYFnNMY87Vtocevuq1yexzsGCknuWuMIqR3R0vdREuqKhfrgH/+R3vR2TkePFymBiPf9T0p9dQqq0tZeQx/RfPThb5mbDcV2WHY1mEoVuITPYgov3xjtpu8TrX34XglPFjVPSAYzt4Se5N0zpNwL11v2fHkduwgRV3K2HXMWTt2+jZzRbRVj3k2FhshF42wkgQ/lyhtv7bPOel+X9h7c7UH4Lgc7hGCYEmBrnsI0I2NSpGCYhyazgaDfQRH5y+SN1Rw41FJcmmabj+oib49I6yCOwCTVMQ1myO7IdOVOv0WYEmscWszvleKhmV4+WVsYWCJMYOhy9x42bDoxQ1EJVu4FCqXavFvM84js3UUGgwrL7LknbLr5P0/Gh92tDYl0wUIhJIp/N+k5laCQttU227Zye1GwRJyLacJJNvWRYBVnvkWEi1yDMDjBH2GN/UvCSLiFmC8hsRv4TSaSMRTX/SelOa3qNs5TDztG+XbHqJ9jHPqbZ2eFXADQecTwWK6LuOm+LtfPMmJ5T3gd4c59CBRJU5sni8iNWG7FimHMTPIGo1CMsXee1+5RcI9BMbc3
- kTokbObr
- edKHEtNwsrCy4OoQK2+x+2/uIbqJ5zDnRP6FO7ycZ3z3LtJMA5f6cyAfpzdnJvXyQj1uAimT/aTob8eSyPEJkGs9ftyqbxpZzL2dq2jG94YnrRNcRAegLepUR/ECpGEXo+sny1vuKmqQcXOPkTmAW9eTzWoPkOAnnIMzfi/m6YBQh/D8cGNAzA6D23Ltn5KelhO7Br1NsnkJzxCqb6pAvELrAMEZlIEzV1SeIYCYjLYTvc/rpVjCYnbFrVADR1XmN/Aci/7CV9aTjAWP8IeiHwbMr0Bpwx9UnKrPhqPvfESDoCa5VkEmufQbXKEMe9UDSyaMgMKQcmBSb9tk6i6eC6FLeksSMDCLw740R3P2xdLclcmk=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783955331-56960
+X-HE-Meta: U2FsdGVkX18oUPxOUXXIYrRo2thnccR/Jwj7QXc3zjTBPJs+GLYR3cS9Si9XEVIJZyt9vD2Z6sJ6NOGZI95bD9S/fxt/NCKF5CXzl4yxcxtNesoIfClH292krJFtFSw8Ad645Rniy3uSaaQYBkMv2PGBqzoyFu7NDUgam4q7TViuCFvaWNFXuFcy9SqlGuhofoWFNPzyjm3ySERcvCSJEv8P4/oQWK/zpoYn/9N5NiyjyETWDzMOzn81MzgvMasgY5Rlic39T+dry1fcLgKHKDM9Co/lx44nPsTyeMu+wDz+ObDqmFqrZW4pNwSqDJaDhNBKy7FwmN36wGtX+bJhtbMa9WGqrTCTRa2hwWa0GNd9ApqBPqrnra9/FP6HUS5utqjO5n4V8+xk2nwAOS7CiVrOBz3qPowTTSESQ369W9nHm+b5wZxKdv8CkTRVQki8rayh8uXdmYS8m/53Qqo0JjoE+MeDRq4PyCkGM0HvGTFtsRmV2XnlVTxyuvEAwWKidYgmCEo3y8q1u8onNuT1pdM+iEcizMsdPO016aKnJDCLqJg0HSDs9b85QKq3sqpXED/HvY7e6o8G6ouX83JjM9dRXGcWUKGEC1XNcko4b01jYjop2Mvc/i58mzCikZVUxQeTYv6sCG6kYoFr/rnDO37KwXUdnqIDPLUphblKEmAAbDJjtr5me17vhKgCcq3F99SWoTPbIXIgOpJjYEv5lDoe3jVnbBo3c9DtI4p6FSdr5xfPuUG/eBew6QPWwMY8arvTEItSaVQHVISBzHyzVhUywQ++mHN7Bh3QQzjb09tjzaasbz3w1EeIES0IxaQzrCmJo4mpGL+Egb+DVaDt6BrECduU+JvI5TAgx/afq//8QTgXV/+yPVFJv7tvKciBAc83Q2t2OoN2Sy+X2gk1LsavlBSYduANT1FFA/bmvJa/X3gZsoH6L2xdEBedX8i5j4iDT0RuoOWl3k1iCax
+ spB3FUPn
+ wE8OUFrGrEpmRRhp4q3sjhwz07ESAHisgT8t9qKJHWhgHqHNwnu+9pvKcCf4fAmdyMMAKeDLWhCM6LYY33W4ZZrrffZIJVkA809JMN3qo0WJ7RtGk3s37tING5flWmR4ieTVlHxM7zAqv8J8Z4RKTwbsg0KCRm8n7lElBYeuro+hWzaNsIVv+XPQS0mOFSkwda0Mo7ch8ZBHF9oT7yGvCejuAx5ELQECb1HKbMqrJ0TAnJl6+gmflSLUoVYwN2DYZ7TN10Y9JuatNkcFbCoobW/66kWUwWw/N+6YCXaVcYs7PlnS/NeLSiMmqf2ATqFe0R6SgGrd/sGBLi2j4yg1EJDHKU45GZmvKWditi+bz47Ae2i0/PUcJmsDRykFh45op7Wm/K4pTdeSqTvCS49mpvozvF38aXVwVu0Rs63azjp6gm9pJHJvdcsH3DKoxXEbpqpCT3RlcBJO+AT3iWtYvEHHXZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,40 +107,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We want to rework how set_pXd() behaves for generic compile-time folded
-page tables by disallowing its use and triggering a compile-time error
-when it is used improperly, ensuring that the actual first-level
-set_pXd() function is used instead.
+On Sat, Jul 11, 2026 at 5:12=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> The per-memcg swappiness knob is v1-only; v2 always uses global
+> vm_swappiness and ignores the per-cgroup field.
+>
+> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
+> to memcontrol.h where it belongs.
+>
+> No functional change for v1; v2-only kernels drop the unused field.
+>
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Therefore, replace set_pgd() with set_pmd() to setup swapper_pg_dir
-in setup_vm_final() since PGTABLE_LEVELS is always 2 in CONFIG_32BIT.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-There should be no functional change.
+With some nits.
 
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- arch/riscv/mm/init.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> ---
+[...]
+>         struct mem_cgroup_per_node *nodeinfo[];
+> @@ -365,6 +366,9 @@ enum objext_flags {
+>
+>  #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
+>
+> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+> +extern int vm_swappiness;
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 5b1b3c88b4d13..78017edf7c343 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1264,7 +1264,12 @@ static void __init setup_vm_final(void)
- 	 */
- 	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
- 
--	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
-+	BUILD_BUG_ON (CONFIG_PGTABLE_LEVELS != 2);
-+
-+	pmd_t *pmdp_s = (void *)&swapper_pg_dir[idx];
-+	pmd_t *pmdp = (void *)&early_pg_dir[idx];
-+
-+	set_pmd(pmdp_s, pmdp_get(pmdp));
- #endif
- 	create_pgd_mapping(swapper_pg_dir, FIXADDR_START,
- 			   __pa_symbol(fixmap_pgd_next),
--- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+This is a bit unusual. I'm not sure whether mm/swap.h would be
+a more appropriate place for this.
 
+Thanks
+Barry
 
