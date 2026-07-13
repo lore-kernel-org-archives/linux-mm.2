@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB58C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C95A2C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:42:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7738A6B0092; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
+	id C0D7D6B008A; Mon, 13 Jul 2026 02:42:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74BBA6B0093; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
+	id BBEBC6B0092; Mon, 13 Jul 2026 02:42:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68B976B0095; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
+	id AD7166B0093; Mon, 13 Jul 2026 02:42:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45EC66B0092
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FB816B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:42:09 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6CB01C96AE
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:39:03 +0000 (UTC)
-X-FDA: 84982800966.26.BCDC463
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6AE4F40004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:39:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1033AA09A4
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:42:09 +0000 (UTC)
+X-FDA: 84982808778.26.9E95AE5
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DBCE680007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:42:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783924741;
-	b=mRlaYWMQbJ6rgauXaPq+jIKFhNosEDWufQXNkl5YjYLwjODKajfS6dgnti7B9d6EUHiMi2
-	Fmc+psIvH2m0nS2eQNWIZZ9k4XDibTfNJlPB1tY0f2NFjYzX5M7dCiZt2XKh0vuxUpcjlp
-	6EBZcykjaf9C6L0VXVqEJnvcLR+ZyVU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
 	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783924741;
+	s=arc-20220608; t=1783924924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FxqtTQL7RKJkz/VNMKj8Wv+Cf6pzRERBjYetc3Pb6ao=;
-	b=yE+9fk/hVSIzpcXkVv1qdJAp4f+GH0dkIIJR+hSlbYPiQpnnlSRA/Q2vdQqvbhHuNDjwU7
-	ap/oiywNg7yXRGw1auMYNzCoUqs3r3Uv53MO4dWyolW5kC/pmRqf4Fv4mK1Vx+CX20D6fF
-	W74lYg+u5P9wrl4S1Fmrha+ckAF3CE4=
+	bh=QPJwp2shjWbBOeD2MRroVQMHgWpHcf/Ngz26LV08aRg=;
+	b=ZBrML7+FPts4vnL+KsDnpX65D5BePPHDlJh+RXuyEp8miqhi9o64ccIB7uqlYs06V4gCVO
+	bOjW/vXGi/EpCqrO/0R3rRjIGG+I41BcW0FoD8eBD762igH4RB0ebNt64YjsNp33HfCS7q
+	mMTTuHVLpxFrBths83ATpvUFcbyqLu8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783924924;
+	b=4K6dQJEDuOLUmostL4NVlRpaioRCeKNOaIO3PTndSeYucxmCC7Dx3Bf8FmMq+QXAExlJ/t
+	1su9wgPHJsICqoPLPInXpg1ogShbPHZw/HxElY8+5JqnuT8NR6uS2PluMT1NSAPmYah7ji
+	nfjG425HEj2Wtv2kxvJOPOQq/KXumWE=
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzCSz1KsXz8Xrrb;
-	Mon, 13 Jul 2026 14:38:59 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl2.zte.com.cn with SMTP id 66D6crWj030739;
-	Mon, 13 Jul 2026 14:38:53 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzCXT5GDhz57DCs;
+	Mon, 13 Jul 2026 14:42:01 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 66D6fpuE035154;
+	Mon, 13 Jul 2026 14:41:51 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
+Received: from mapi (xaxapp04[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Mon, 13 Jul 2026 14:38:54 +0800 (CST)
-X-Zmail-TransId: 2afa6a5487fe820-68812
+	Mon, 13 Jul 2026 14:41:53 +0800 (CST)
+X-Zmail-TransId: 2afb6a5488b1c0b-5ec07
 X-Mailer: Zmail v1.0
-Message-ID: <20260713143854774IDQ756lKhFqhw7CX1qaXc@zte.com.cn>
+Message-ID: <20260713144153556amKkr4s-dWoQu5-ziCfZe@zte.com.cn>
 In-Reply-To: <20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn>
 References: 20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn
-Date: Mon, 13 Jul 2026 14:38:54 +0800 (CST)
+Date: Mon, 13 Jul 2026 14:41:53 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
 To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>
@@ -76,24 +76,24 @@ Cc: <ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <baohua@kernel.org>,
         <linux-kernel@vger.kernel.org>, <npache@redhat.com>,
         <ryan.roberts@arm.com>, <dev.jain@arm.com>, <wang.yaxin@zte.com.cn>,
         <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?bW0vbW1fc2xvdC5oOiBjbGVhbiB1cCBtYWNybyBwYXJhbWV0ZXIgbmFtZXMgaW4gbW1fc2xvdF9sb29rdXAoKSBhbmQgbW1fc2xvdF9pbnNlcnQoKQ==?=
+Subject: =?UTF-8?B?W1BBVENIIHYyIDIvMl0gbW0vbW1fc2xvdC5oOiBjbGVhbiB1cCBtYWNybyBwYXJhbWV0ZXIgbmFtZXMgaW4gbW1fc2xvdF9sb29rdXAoKSBhbmQgbW1fc2xvdF9pbnNlcnQoKQ==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66D6crWj030739
+X-MAIL:mse-fl2.zte.com.cn 66D6fpuE035154
 X-TLS: YES
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Jul 2026 14:38:59 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Jul 2026 14:42:01 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A548803.000/4gzCSz1KsXz8Xrrb
+X-Fangmail-MID-QID: 6A5488B9.001/4gzCXT5GDhz57DCs
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6AE4F40004
-X-Stat-Signature: 5hxaybz66cq4c1a1r73e3dyd8kmrg8rk
-X-HE-Tag: 1783924741-476701
-X-HE-Meta: U2FsdGVkX1+cZlxoTz1D6+8BftNFZVrSi3vsQZhTrEBa9cnaa8JOTszBZlKWc48IF/xQ9e81461kDXTQIJPiZ/1IQiIdy8qojSrS2yiWAnD2XQxYkvAjEaHI153QJsgRIkrD9iKR8i2feQ6mL200oyEgBDr6cv5HSnN+Xnwcc5gkYI/QzDv8VbnK6uwIkMHlO1KddaZYOF/RiLtN+1L9Ue5ftJU/ZxNejBDhNB0XaRA+ZoB6VDyNjO0y7rG8HoO1eVAgnsovch03qeS+RL0vY5oEZ5NPyKURiD58SSJt/NB0LOi5/mBF1gH59AUASk0AezKjSSuzynabmgwlIB4oc30a9MWzHB/+VuRtVD6gDJUFwSmWwGddhQ0i87x93qlHeYMcHNDws0wE9N4+YtPxG3QT4sLhYmuFeetaRqQ4HgiHcQB0DJeIYLyXtXaPkK1PP/CIJDrGT7gj1lpXaV0v0NwoCoYU+IU3VgGBLfEbiFvH/Ko4yHjT3dihcVV39Y/pWgTPBiniE7Q1IoWTtyIsnELLkvvUayyKS+p7FQpBpzYVm/gXrfDV1LAnevLXZf6ZV+R7dnsvon53Y5Q1LIc6f30y1Ygxnttw12qwZSNh7S9mK0eVLaUOEGnuGdIivUlj0dps3647ex32e1H1mCWMceVYwJ6XgPrxR8Kf+ggbuOv393NcwdlJ/o5BNJYk3qkK+LkVf4K4wg0QB17HHQfC9CWFPihbD7sIhWXBJoDNz4A1ZGqlwKiJyuUR69XkzgHOpFuRhOHxtfGL3E1n0UcdvXo50bF4MeazeObYAHnJjyQTUPF/lFyfKsa0UbUvqwtlLHE4GoQ8novoZabXKZwbeIOD3fdxrqkhFDLYB35vgfktLw25FpEcmSpABIxdhdnjxDkaI04ldnV2mL83eAfzm93DwGjGMusFF3bbPxSzKvfitOyMLaLD4z0DbAP+m+73uhXAGOi3Nprf6FtyFWV
- 57WzwXww
- qterPXgOW5imyX42vxOf4YZPVzpehzeC3fTnBK47jW0O4OfwP5/tee3H8RWhqmVtq/l/xhqWpItYID0ClehgPcmQTP7McKFnIairNt20ZSIxV8/Ko7Kov1I2hrKwCGVplwzEEcuGX7iQQkzl2mxFcntsvFMOqG7crtGlZIUau4itjDWvU90iwyx7ZtyoK6JXaP8tGNLtZe662G2KWOEm+jG3qG6+SwST13Ge17fyQaTzmZfswBFTF6dOREPgzd9Lm6pSgT58/JNrAdZKr//t5uaHx4cuVaHMDHeD8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DBCE680007
+X-Stat-Signature: fxd5w7tm1eerzuim15fjm3k54ozm1159
+X-HE-Tag: 1783924923-538642
+X-HE-Meta: U2FsdGVkX18uQApjBRlDvjphn9p742bdDrGO8bqxWfD5lWKv+a292eEXW0Gnh4reETcYBKQqxUEcbE5DiFR2FHM0Kwh6Yay7QFpXq6QmUxaqLmVEVpamEOGSKfAF5PNRCxSVeJU90OzkG37Mw8t7lxFcJTqQFBQiMZgqaDpOq8XJMyIwIps3wwh8tf2joH+43PRliD9ipXUTVEiJ6R9K3D0ukFEBZmoCaYNKY3E5YzaKtrYTzf/KZT747cpE01B/YSlfMTHhTwdz07pg/6aBHQ5+8IsBmAX43MLiqfQG0aLu8Kz6DVtzNerC1z2WlUX5jUex9+yBfOZLElI3tt+rAHzgmtfEBFb2pNOD43ZQMlz7HaqD1ul9RLQ0/YBhRHenkWkjwPapUzqCwxdgpuZWxUgAE0TX5wJiCxfiEbYySml8FfL2YzZ7irt7Hwi+GZhzTwvzCX+6hgv95eTdNCX9PS7jr6xtW2r4B7IzUonjxhH70eIvjtxkuViO8caRi+FGjsKXVJgp6Gm/MJeRhC0k66ROiOhhRfpc1HIyg7wx9PNIE/UZwwhFFHEAJPkEN0Ach7SxUS6l/qK2wJPRaz/QUAG/y1iewokIcVF4U6Dga6ywBSXOfOWegFDHfuuSSsjYJH+cWwGjBi1i56ulpjG+ud55GV9c94MnbaZBmfOkF+P2eO8QU09WUTV8+y8KdnaR8hw7Fvd50HofUQ1/jlCAukRAUVNgbSr3F0Z044XFVeG7uFJSpR6zT0cO1E4Eot9NZVzQAAfHS3JRehAffPkkskth7ixE2jtDxT6lPRM7VBYQAuMcjfhSnOt7whLK8EUOCYB6hvOIOtYAaVhWmXUBeksUzPi2xi5DwUS+Jwm6d+VbKCd4fVFbxg9pJIpgaRWPDBqtBdicWFTDXue50mfirJCycyW8Z1QI4SL/Zv9rljTl6CrG4YGsClzXwNd9Ww0fQP60XCOKBKGy3TzVfoP
+ OXVvRFpn
+ J4vaIG5aHVsO2t7SyNC/3bh7RC+UKzCcnYQLueDS0r9GNZ40yTHCEFcs0Jlzj/UQsbku+bGwhQqVvFLSWERB7yAjeBqTug/KtQsE272HKjZ+MnJax1ZDoH8wH8bIklZnynTB8HvWSPFWxgOvIxsP3IuIlCu6SC1k3RIAGLct3yNIVL+iYQm0elcd38vfIGro7GAXTPzI69EiA3DjTbafSa6T30r4umKulX1/zUJ+GJEgwO9raLm7gxD1YyOvf7tfo1NAHDY2DUSMN1k6PvxFodGVOu5StW7IYPqz+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,9 +102,6 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: xu xin <xu.xin16@zte.com.cn>
-
-Clean up the names by replacing _foo with foo, and document why they
-cannot be static inline.
 
 Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: xu xin <xu.xin16@zte.com.cn>
