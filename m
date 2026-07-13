@@ -4,170 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBED2C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 19:31:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D95FAC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 19:39:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCE726B00AB; Mon, 13 Jul 2026 15:31:48 -0400 (EDT)
+	id B0A3B6B0005; Mon, 13 Jul 2026 15:39:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7F776B00AD; Mon, 13 Jul 2026 15:31:48 -0400 (EDT)
+	id ABB5B6B0088; Mon, 13 Jul 2026 15:39:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B466E6B00AE; Mon, 13 Jul 2026 15:31:48 -0400 (EDT)
+	id 9D3EE6B008A; Mon, 13 Jul 2026 15:39:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EC236B00AB
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:31:48 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 01B6A1C005F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:31:47 +0000 (UTC)
-X-FDA: 84984748296.16.9592BAE
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011021.outbound.protection.outlook.com [40.107.208.21])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3CB4880007
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:31:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dCQ24TTU;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783971105;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 65A496B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:39:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0786140160
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:39:21 +0000 (UTC)
+X-FDA: 84984767322.29.931B28C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D673C1C0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:39:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="g/PuvFj3";
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783971558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4LlBZ+hOq2ookQLP7huBPOSB4LfiyEGfyH7KjIIruhI=;
-	b=qfA9t6q7ZQAhsfEleQFkcPa2vBEyVKiEJkkshj2/+2bXZMH/7lv7ylme4/i4QIYjDzXKfi
-	dRnY4Cs7/lkRujL1266qhK4Y4AWA+rrvFxWZRZ1NT3nBib0YP8NS3GPpgIHOYDWJMDPoSf
-	ZGjKxNmvCdLaOFZKA+42bSRUjaby/EY=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dCQ24TTU;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783971105;
-	b=abmuIjACi3ooa1uw1vPVEqYN4JCbDqhre2HtWY1VQyruZtcF9NQaZyFj/sMJB0FY1JhJLx
-	Urlzpy0x5VKpvlCDNyXRfvmKseNrlNUywZb3ZL55nA4omsnCOeWlFh5tnBwDL1d6dAWPIL
-	R7OG/FYiF4EBpcAAtLwt5te5hJp5tMI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nw5Yh8E3sOmk3h2YxR1oJs/QFgp2DKq6YbBeTYCssJlnxyfeCGqrDlXwm+OBMloL3xRb55ox+QH75Td1cTUyDI2uO4KAMFnvXlFOFPESDoqqHBngKnMyUzjEFDXrbN5VRAoliJO/bCtr6ZezpOx5mRtuVHJBpMv9m9EP1843HMPOrgM8/5mr2cw+Tsbrie6Hd4aIpxSI+Z6enQslPHDCM0FQ6Iwr6u/OBtB/VEWIdsCyzABjCTeOa8PX0ABpZ3m0+2jsyJyYuEeJA0gO7fyJh4XzAVgkiJ1PVy3UYzXC4gVoraqXlEieMr9tjswiUYUCbnUIRSFvLUJcvBIutFbMIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4LlBZ+hOq2ookQLP7huBPOSB4LfiyEGfyH7KjIIruhI=;
- b=PZKcpMSyfv0zwl/vf6nTSeUqQxqSKYJn+YuXsfYasImUmYVImmKWa2RJs2W7T6A8lkH9+lP3XwC8gjSX2s764h+AdU7lH/x6YMr8DSJnt6fmW7Gu8IFco8oRpWn/N2YP+9Odq9xNB2XdHhklk29LHgCJ3Mjb+tHQROrYiZKcnNw53C6q9eANbtVzRmelC4NsEFrvQc5RIaGKGRhBM6hU56CXi1Br1Xr1J0uCH2LpyKk9a72D36ZcKx9HvazXGRHdtnF/RVoLr83V+nb0X65/NK4FUwpSXWIAAFfKUstmcMcKkEcH19q0vUgpcYDtBV5LU9vtwJ7ZHk18lSOycb75+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4LlBZ+hOq2ookQLP7huBPOSB4LfiyEGfyH7KjIIruhI=;
- b=dCQ24TTULhwwyjSWYfvlk+XSDV8qcqjeKtkyvlkn7hUqYOF0T/PR98SWT+lMW5PCy/V9Sce4KF5UDOJHulSzKF5l8vjH7Yj6E91Hy5tX65riDzGGia6wRiDZ0bqfCR18tH95ansrVW2Cc7UL3zqgWCM/JE/LH/gdufu47lXzDCEym1scZVdZRZr6CKWLzx4oHLy/HtADiIZCLJmynrygc4hqPL8u4sveIs6MMXnYxOGqwXG2XOIZr5OsJn3ITt8r1I4dB15Q+/PejHie+6o7U9Bk7nQTH2lO/2E6APAyztALHU0tzSCo6N8pK3xzIb6n2cLwuDPK/5yJpotBgThZBQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by PH7PR12MB7425.namprd12.prod.outlook.com (2603:10b6:510:200::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 13 Jul
- 2026 19:31:34 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.019; Mon, 13 Jul 2026
- 19:31:34 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jul 2026 15:31:32 -0400
-Message-Id: <DJXOZ1TZN3XW.21PDLRBVIED2N@nvidia.com>
-Subject: Re: [PATCH v3 1/1] mm: let node_reclaim() return the number of
- pages reclaimed
-Cc: "Brendan Jackman" <jackmanb@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, <linux-kernel@vger.kernel.org>
-To: "Petr Tesarik" <ptesarik@suse.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Suren Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
- <linux-mm@kvack.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260710152320.2024283-1-ptesarik@suse.com>
-In-Reply-To: <20260710152320.2024283-1-ptesarik@suse.com>
-X-ClientProxiedBy: DS7PR06CA0047.namprd06.prod.outlook.com
- (2603:10b6:8:54::27) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=Qg6ZVGkGjyzsXwLwsor5+2jsXCyFbMN9y/cRQoYhLtY=;
+	b=a9zeRmTOw/V2JN3fgNCINSArzlIcV2TmY3wluI0IJhfCiIydUdOhvaBRLwjGe96SIzqNaK
+	0wYNxDXfrpjnIt3c8Gn6BKd9lieArurnPUwkH9PBv4UF4h8vAw9dHJrJhRvEUuq6kTXKJ8
+	VjQXaWuOp3wb1nSH3mh/PLpjqVCD0tw=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="g/PuvFj3";
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783971558;
+	b=pEjNrbG1VSco7cpYwyNEoi3dK+DtFmsmsbpXg2wKHWNC3pbrf/ZhY5+pKG92psni6tXohe
+	6xbTKxLJAKnmIfDTb49JAT9bEYbz0LhS/xPi0K+5uJAsSnw0OJdjtuJ21c0d7FFKtEp4KF
+	8zRKujCcMskHn7AePZTX1QNdBPh6aq0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 33FBA43779
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:39:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126381F01559
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783971551;
+	bh=Qg6ZVGkGjyzsXwLwsor5+2jsXCyFbMN9y/cRQoYhLtY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=g/PuvFj3WZN7SPxlaHiWKlnfQ34UKeItcZxTaK6qVuNhqKbTNxCBiShOJrEttmUbn
+	 eZxdia9ZVKdnmKze/ul6I59Plp9kOdzkNDOy/wWI92DF+EIrCZC2+hLe+mn3IYQdHp
+	 PdKC/nPNbxt0aQAyMJWLaZi+0WP8+W0B8qbiEqO+5Z7B1JWfBS1Lm9nPfronv6GKDc
+	 dSOX/OqeRhPNiLL3EzGhyL40ZwhMFL/XeZuVDBztrK/+izCcGWzuPCh22uqoOrVp9B
+	 PYihbGK7+x9mC1O+T0pqOYb9s8a9Zz/AZJdHKfhTaEOikT9MiFplOK8ylVtsR9Eqq1
+	 GIZCMAtMr5sRg==
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-664d22d7337so482836d50.1
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:39:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro1zx0vhY3I+X93IOTK5Hz+zrD3ixrddbS3os94C9pcG1E1bOrmHGwH4gumsQ8sFatYpPGP1oCs1Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz2xAqbpWT2s9i2rv90HN1Z/6Wcl2c8au3TjAGIbxJTtezBQXhy
+	1vKusuqODMuNQnkbyQWUUNxqH863K3htNqcWz+PTHkUUA+fPKcpm6RUWlRStXoYu7DpfGthJO8D
+	ilmrG7EdEpqjGYVBeyW3aThzG0XgKVKxpWr8cqXApqg==
+X-Received: by 2002:a05:690e:108a:20b0:667:538a:ddeb with SMTP id
+ 956f58d0204a3-667d98ec4b4mr5287705d50.31.1783971550390; Mon, 13 Jul 2026
+ 12:39:10 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB7425:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea63d0b3-a69a-4847-7fbd-08dee1155944
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|18002099003|22082099003|56012099006|11063799006|921020;
-X-Microsoft-Antispam-Message-Info:
-	WCdR2tpP4tK192arqEr6JxHxO7ookpwrzqaTIh2FdDngvBUyDaw3Sue/vE6k0TXt0gcr0V1FqFgwdAY9vaU7StdIPzIlJKyFjRFiSh0UVAbYT+YRE2hFIQlVlLztEwFwo9gusLew0I32+j0kUiYu9ao8WweI3KMKep2yPe0u4PpK4JKZEUNQKtmYQfBGpSTqZsVHFDd5hjSVlUM9Th29W1wRDtAy3WwvWRz7KXyQEVaa+jq5yxWWBYotU/5b5DDKsOiX7T00euhI7FLQsSccG5F4VR9uj1rCa40J8GSpqY/ANZHgo4X2bTJAz8Y/IxHkGR1MLeCcvLlhjSfMxbF7jNC6r4pwtwUR1r0HxOZffMwbwOfRmIDPaycuxWh8hG/SmrGwqtHhVoZOB6OnSlXDJXtkwq9yjUC5/JW0msstvb2DX6VD0QdNkihCTrxXYlAurReg1o9oXPz4SaGlFUPIE4X40oFAeHOGfN157T6M8ycoGBOAFS4y+O7RAAOWukVFdeGsY2L7cOD+dzjRM2M0j277ouZ3bWSZv2YWWw+YnQ87/Ia7pCKxEyKgrnLKIKlDmvzuOATkACE6iBEj93wj4+7hUzaSAJbNo2z/CfgNA9xQt4XkfbQZdRN3Q0/oXHgC8NW74hjvPFh+cR/YVTHK7KclYkg6G1nB9colxO1YvfoIhiaKD0PMQykifYN2r5+N1my9SbWsQDpVu/es0t2XoQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?alo5ZDMzZTZYVmdrZ2xGaWRVSlFhdnNGOEdGekpTeDVxcVFkek8rdnpuaGZI?=
- =?utf-8?B?Y2NtLzlKcGUyQjNmVjljQUVNa2duSjBoZFp1dzhQalVPS0NsRlZYNVgxY1RC?=
- =?utf-8?B?czNnTTZFRUZFKy80eGhTdm1SYVMvM3lVYWJqUStkbHNKRGg1TWhsQXhEQ2Zj?=
- =?utf-8?B?STQwbFp1Z25EWk1YVGIwWmJsOEc0S2tWMUlZWVROU2V4NER1cE9DTzRpV2Fn?=
- =?utf-8?B?K1ZoeDExOWVXcnFBQ2srNCtkd0MrYldQSDJwbnZjNGlYUHhNY1BCeGpQV3Fh?=
- =?utf-8?B?RkF5MW5pY0JlWU9zbWprQXEyampCSTZPUkpQWms4MFJ6a0hraHpTbnM5WDNs?=
- =?utf-8?B?Tys4ckU4OG5wcHVNeVlGeUlaSmZ4dTc0SDgzdnR3ZS9LQWxPK01ETitMUFdW?=
- =?utf-8?B?Y1JpYXQ1dUc5U2NwYUZFdlRnbkZ5NkNkbTBqK2JOa0l1cy9pb09rcmxZb0lW?=
- =?utf-8?B?aExBMThkNlh3d3pKVll2eENaWnp5aFlWRlg3RjdTb0svWWZSa3RUWGxhRVZI?=
- =?utf-8?B?K2ptWm1JMFdWeXdWMmVzV3VYUUh3dGpFYkxoWWUyV2I5RndQR05tMWYwOVV1?=
- =?utf-8?B?REdySjEwWkl6VXB6OHVHUURhTXZScTJlKzJ2S2lGK2tBaC96MEVITGEvdlJ1?=
- =?utf-8?B?TFE3by83SG8wcFlKR0dVcU9RT29Xbmt4Q25Wc28yeWZKWGhUVHBiRDFsdmFo?=
- =?utf-8?B?NjluRFEvVVdzd2M1bmc2V1ozc2RNRTFlZ254TkFQbVd6d1Budi9CMVdlMERn?=
- =?utf-8?B?UnVSdlJyYjI2ZE94Z2NLd2g1d2NsTnIrK1lmTHBhNHdBQ096M1JqNnlSemV4?=
- =?utf-8?B?MlNuZVJHMmQwVzc4UEg3RmFTRlFiUkNsekFEUnR4MzZEMTdCcGR1ek5WbnRG?=
- =?utf-8?B?U2twSVpZVUt0YWVNTEVrRDhZZ1JwRzRJL0cwRG9FMTlEay9LYjQvdCs2SmNS?=
- =?utf-8?B?Ukd0K0NQTzQ0ZHo2SU5pU1JVVllSZGM1ajNBQXEvd0YxNWJsZFBsblhvbDlD?=
- =?utf-8?B?RzZXQlRtcDJjOUxQRFZBR1pLWjltL3NRSHFQYU83clFCM0hiV0NJb0JnTUxK?=
- =?utf-8?B?QzdIQktWTGc5aitZelMramVON091Ykpkb21wVzFDUlFBcTFhVHdzWlZ1bXRo?=
- =?utf-8?B?eElsTUVsb29sSS9uVkJ2UWMxZmxRZUtONU1Vc1NMaWQ3VXd0QkFNc0ZLYWZK?=
- =?utf-8?B?enB4Rys4RVhDR2VTZ3ArbnlnbHNxUURZZWUwL21NM2w4cjZ6K3ovNlN3cC9u?=
- =?utf-8?B?bEpiK1dSb1dRWm9sL3BNTE1GUGs4eEdpSFZzQmo2K2RWTXBKQlBwN2s3cFNB?=
- =?utf-8?B?ZE9xVy9VRG1peFJaaTVMSEVJM08rcjhlU3JONHp5d1YvS3hVVXVWV1JONXNn?=
- =?utf-8?B?RjVoQ1JWenk5RFNSZ1VrWm9DSEpJREQ0RDY0S0UyL0haMHBvUEMvU3liMmpI?=
- =?utf-8?B?V3FQZzlpOU1SS3NVMWtOTVFHdUFoRmxyWDZpak1rQkNOMElKVU5LVWVJbXVv?=
- =?utf-8?B?NitrSGxmdEdQVEVlTnl3L00yZkt5b1huQnFnR1RCYy9uUVZ6ZkUzSk5pbUVw?=
- =?utf-8?B?ci9zWnV0STJhM3dUSHpZejE3NlhiN0JET1ZjbDBJelhGTWxYeWpWbjduYStQ?=
- =?utf-8?B?dTRuMWU4RE1yMFVVVVorRkRJRXhxZlFlYWNtREJ2S0hFSHZYeVl2NHl4NThY?=
- =?utf-8?B?cnMyUFV3OXNWT1ZFRFhLL1BxZS8rc3J1SlFDRkNoaU51VXZQeTV6ZmtHV0FK?=
- =?utf-8?B?Q1NNYTFocENzOWNnTlJEdWVZUW4vQmZJYk0zTWpkNjBlYzBzWi9VTy9WK0Fw?=
- =?utf-8?B?WHVQMzRaSVFRcGM4MmRxQkgxUnl0R1hUVk1qTDRaQmJpQ3dCaW1MWkhwYkVS?=
- =?utf-8?B?a3dKdCtUQWJhYWVYMEU3L0gxRTFkOE5yZ2w4N0dpOXVMVHFGTXZMRFpMbWdm?=
- =?utf-8?B?V0RXYnNpUGxRTHdIeVkvY3pULzI4eStFSjlaR3hVb0VobS90Ym0yMHBMYnNS?=
- =?utf-8?B?cjlRZGs0ekJONFZ0RTBBenZncVlzY0VaNEl6bllTa05odWt4UzExcUJNcEM4?=
- =?utf-8?B?WVZlVmxkWDBweldFRGE3OURDNFp0bUVVUHdhZ2NBS0tnMWZDVTFkM3pYdTla?=
- =?utf-8?B?VjlCN2U5UHBEbmV0OGFZbVBhWUVIay9jMWp1WjlheTBrVmt4UHFJeFlpUzVV?=
- =?utf-8?B?TjE1M3pMbEFYTVpWSDEzY3VjdFBsbnRzdkl5L2IwNWZERDMvb0pRUFQySDJi?=
- =?utf-8?B?cnhVYTFHTVY2TjU5bE9hQ2NzaWhaUDc4blRBRzNDYStaZnJ6eVZVUjU1cGVo?=
- =?utf-8?Q?1pRKNB9VhqDt9a0+pT?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea63d0b3-a69a-4847-7fbd-08dee1155944
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 19:31:34.2567
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CFffRXeW2fAPABSolptwWyo6Vjw19nxtdBCuD7AHWlxLUjtRQ4Q2GSwwC1dOPZqO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7425
+References: <20260713025644.170839-1-youngjun.park@lge.com>
+ <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+ <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330> <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
+ <CACePvbX1U3pLRqCP-k9x9bvbn+sXCexnbqXjwXcdvwbH+qD6sA@mail.gmail.com>
+ <CAO9r8zPtcne97wQKZFsNoMS-4zpTFvaA3EU8ghnEHPfwD28zoQ@mail.gmail.com>
+ <CACePvbWOm3EL6Ph+A_NgAp80GcQt2N-qW1qbyxOVDL3EZSAh8g@mail.gmail.com> <CAO9r8zO4uW=SX7se154Z6+DrxfawZfAiRO6Ar5rUm3T78x5HUw@mail.gmail.com>
+In-Reply-To: <CAO9r8zO4uW=SX7se154Z6+DrxfawZfAiRO6Ar5rUm3T78x5HUw@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 13 Jul 2026 12:38:57 -0700
+X-Gmail-Original-Message-ID: <CACePvbX5oWcTRpQeBCQsod5C5KEhd-0vA4B1PGYddNfgTW2tvA@mail.gmail.com>
+X-Gm-Features: AVVi8Cfs2jnetf2lNr53IOa2b-MdHz_D4--892kNI-Xqp57Fk6NyE7rf5COXhGg
+Message-ID: <CACePvbX5oWcTRpQeBCQsod5C5KEhd-0vA4B1PGYddNfgTW2tvA@mail.gmail.com>
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
+	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
+	baver.bae@lge.com, her0gyugyu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3CB4880007
-X-Stat-Signature: 1gn583fxgw4ac6psqggosu4q6xe38c1u
-X-HE-Tag: 1783971105-528519
-X-HE-Meta: U2FsdGVkX1/AoIxnQCgHrTkJJeokJ7WSIRCQ1g8pyIlDmAw7pCEq9nzAW5zSbfRF8ERnJhfOm+T7+2LEV5T8S3NTERpLUfZv8ImHTjBanZGsIgZBmpC8dhv94tPc4Btv1yfw3Vq9PAQILE5dESnzfEnQPepoY1dt5lz44n/5QiIhfAzYEzMGF3DJiHv2Vh4vyth6KLkKiJHvRoIqInp4gruTHS5Lk/AjYdR62UVPJyCFx+jSSynInUJLUIBGwWocZlTFRBjajjzqrMGRPzNI6Qi6tbjozua5+ZYx1yKjutC9GVx4yWl4napp81FHqkU3wpxZud/7aDH/VOmPoPA60tq8xKY4I2ioqPUdZROjL2SjLdnkJhBDzJu6Wg9KVzLjY8Y5+dC3ep4lCIswE0L2vwKDrLAiK7I69voAjMFi/KNxNhCl6AGVqbbTYOeuAYTji2UR+La/7O+8ZLXVHAthBM2NvKqEql5zb8QsfdW+ujpms6R7ImxuppYZOFSU9I5DS0txEJ1eZIOhw/m3tbvc8+Ks9rdniKAkpcXMVatkRjYLCciVdE5kZEmPmYTsTjq1WNZe2+PVBHqLXZWMuwgDvUUWsuI08ITXW9iNmN9XxKNvw0M0wgTUhK2YQvmzTiowzJsJY32pmx/2hkuiV2gShIQMd4CjbOTNCQsrSrd7d2bLZQc53wZQ5ZPpbTbpevw/uAwBkc1GlAt5Ak0uVzk/fX3CbPIks4gE2sXl4oopbEZCKb4PoLrkRNUHViB7Dr3WAojvCB8S1eWcjfCD7RcKRonQL6Mw6NtaS08f3ngqNx4XHi0q3IUcXtMCyqgi7Ruk5jPUNPW/pb55EUIt/sKb+i5aTh+N8LZ8W+0qr2bvqVbcIp7APvGAHB9X1SpDzEs8O4x/+hSzbm1qacoTQpyye5+v0s7tvxwXH4iUE2DfRr44QWmv4JUMy2ZLf9D79YsW5mFrEGZFzkk26i+ptpF
- CMDLNG3Y
- 4TA6k2KRqo9I136zaVp09Z4o3riejbY6QNHFrEyNYstYZAfkkkC3piAw/K7WPSKiDLB8o0+gUeZRxiSmCRGd7AL3KQMxX87bzjczoW4ApomVciecIgR29I1TcHUjLrwodiFf5LnWaXaBywFuR4Xxs0iVt1StV19u9CNQIDSqLuSatolPGPBJDyWKeOT75WTsgvxTRBtO/DbDBDAWNydXZhL0X1/sGSC0ME35oXPcIfpLAfZi7o3N5ErPqupE1OPA/ydq/fflvTKEX1RnCOwC/JYfCCn8qAHaTrRH8OYC44F8mRUGTpT11bRpsNtOfQLEShN0J/d5YaxKQfiKPPZB3jH1YI2z4yFT/xXMC9RaxsabogpD82J6ZKHq2Wy15SWM4q65CS7Pe2q6C7+IqEtnG+RzZ9Asy+X7hgV5YR85Ee1Z2SRMzdhBh2OxwklBlY84SISWaN+Lz871uyirTDGC+jqiQ+mXZwP3HkTkIyyDq14q33SrnrrAv3G5Chdyr1q6kkmn9
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D673C1C0005
+X-Stat-Signature: ur4cpzg5brs163cjfns1rrqcde9gi9qz
+X-HE-Tag: 1783971556-536262
+X-HE-Meta: U2FsdGVkX19QLsxeJvtPqnVfw+/SIqQrTW/KZmn3z3QbcxC11p7oGadNv5tByIz8kqrf8UdU0NrRq4e5WHut04A0U9v5jJjNklo70pxfdonT+ENKPxl/H/RZSgg4eWImRDNi55wFLApzVr80y85KoMcp30+mgXhyObEimH3AIIOf1xylLb7J+G65G4M+Yph9BC9rMgLOQ5O4aBzgBtl2U4ke2gmob9yfYl3ggDW0jsobBlAwS+n1FpmeaQthwD/l+aCSK5wPMckPz9SD8BIxsCmsSanAj4d7hc7Pd9ZCOVzDU1wRH7hpnU6mkZ0z4xWqdcik7um6gPlN/qG78uU3XLwYl3Z9UWNvfhzlaMwwFvyoRZQe8ZSidi7EinVTo9hHVqLIcnIiw18asgIA5pu2QQz3BqOgt90G7pLCuilZ+AfalW4qD3noH1aww6gndNR4fpsogZqvGM7mqt9cafguFfn+sLypFVhooe8tleafYPbHxtden3X4qoRqRqcYgzfsrZ7TdY0LnjIeANDKlXXSnmNE7tlUfB66TT6IK9kX70m3gKITKFT65OpHeYBNAMlR8tMOZcaqPxhoxp468/7L8Wb+v7mX1OeFPyHIsSin3k+9Zng59sDQdl/UsNkP+/bpaIanu7UfxYSLt/5/xx0FdALjIa1xg+hUIkAUccheooI3gO6ANi1M3ikJNOGR2s+OJkE32FJVWMeXY77hxDrxfdlwzsoWiaoJ/FId4KGhGUiZviL/LJan1F9ZxuoDY6XvH6LTsmwSFdY46uFcwvakZBy4Jz8UUCuPVIACo4NNeel79NqE33IUH1ef5IZMGvpCc2aScx/gMKKzryq3vwdhbmDUW10ns0O0iXoIHn0XHo1hMWM1jFp+b/P/HMZOJmC7Dpq7+WVYoO9+keEQi3xgABV/ojTkiEA7+CmKmJjCOJc9J+YivHcLep3qLHM3xT8o+HvQixzs+uxULmK45+Z
+ aDofvv1L
+ 4xA+b/DLIPFUz7+EMRTCRFXSdA9v0GvHySak0X2avvGW3RUbJOr0IOivev75tm9M0W1TVZEVGHky6AepNT78fQaixmOROowSEkMgRLq4sIhKom8hZQ0itghVayknahqB91pWsmz1pFUxB3bFNQtOKfzvU40QBS9bTZSSpd6VKz5oHynstI//5EauSbE0Y2cNHu38r4EbrV43/KOZ7L3Ve6L2cBdi0wTu0KSqElgSQEr6g9HLi5PcghNLjum9gSMId9lp0IL/VWyWWWiodmGWw/HNh/faLwnHTZvi5ClyEGgsExjfZjKFrswarnY2/gAtJs69o6pdMMGI/iI6Ulr3li/1UaS6sKv9enaLsQMSsq62poT1XlvJb3/x/nHnC4iEdBV90
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,50 +113,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Jul 10, 2026 at 11:23 AM EDT, Petr Tesarik wrote:
-> There is only one caller, get_page_from_freelist(), and it does not make
-> any use of the reason for skipping the reclaim, nor does it make any
-> distinction between a full and partially successful reclaim.
+On Mon, Jul 13, 2026 at 11:38=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
+te:
 >
-> Therefore, node_reclaim() can simply return the number of pages that have
-> been reclaimed, same as __node_reclaim(), and the NODE_RECLAIM_xxx macros
-> can be removed.
+> > > > Zswap will not be introduced as a tier. The existing user interface
+> > > > makes zswap not exactly compatible with the tier ordering because i=
+t
+> > > > sits in front of every swapfile. If we change that, we break the us=
+er
+> > > > interface. I suggest we keep zswap working as it is now.
+> > >
+> > > The goal from making zswap a swap tier is to have a single framework
+> > > to configure swapping for a cgroup, instead of configuring zswap
+> > > separately. Yes, zswap currently sits in front of all swap
+> > > devices/tiers, but we are heading in the direction of changing that
+> > > such that zswap is standalone, at which point it becomes more
+> > > obviously a swap tier. If you want us to wait until that happens
+> > > before adding zswap as a tier, I don't necessarily object, but I want
+> > > to make sure that nothing will break if we add zswap as a tier later.
+> >
+> > I'm afraid your zswap user interface will have to break. I don't see a
+> > way around breaking your zswap user interface to fit the swap tiering.
+> > Once we move to the swap tier world, I don't think we should continue
+> > using zswap.writeback to control the tier write back behavior. We will
+> > need to rethink this new world.
 >
-> There is one small change of behavior when __node_reclaim() was attempted
-> but returned zero. The allocation now skips the zone immediately; before
-> this patch, the zone watermarks were checked first. I believe it was an
-> oversight rather than intention, because the chances that zone watermark =
-is
-> OK after __node_reclaim() did not reclaim any pages are very close to zer=
-o.
->
-> Originally, I was looking for occurences of NODE_RECLAIM_SOME and
-> NODE_RECLAIM_SUCCESS, but I couldn't find any. That's because they are
-> typecast from the result of a relational operator. This seemed a bit
-> fragile, so I dug a bit deeper and came up with this proposed cleanup.
->
-> Signed-off-by: Petr Tesarik <ptesarik@suse.com>
->
-> --
->
-> Changes from v2:
-> - remove the enum and return the number of pages reclaimed
->
-> Changes from v1:
-> - use an enum instead of a bool
-> ---
->  mm/internal.h   |  9 +++++----
->  mm/page_alloc.c | 19 ++++---------------
->  mm/vmscan.c     | 16 ++++++++--------
->  3 files changed, 17 insertions(+), 27 deletions(-)
->
-With the macro removed, feel free to add
+> I wasn't talking about the existing zswap interfaces. I want to make
+> sure that if we introduce tiering initially without zswap as a tier,
+> then add zswap as a tier, the semantics of tiering and user-visible
+> zswap behavior doesn't break.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+No, the user visible part of zswap must break because zswap currently
+sits in front of every swapfile.
+I don't see any other way around it.
 
+If you do know how zswap can interact with swap.tiers without breaking
+the user interface, make a formal proposal and lay out all the
+details. I did that exercise myself and I my conclusion is that it is
+better to accept zswap is the classic behavior without burdening the
+unified swap tier too much.
 
---=20
-Best Regards,
-Yan, Zi
+> That being said, the existing zswap interfaces don't have to break
+> with tiering, why do they? We may end up with redundant interfaces,
 
+Because zswap does not have its own swap device, it borrows the swap
+slot from the underlying swap device. That behavior is unique to zswap
+and none of the other swap tiers have that.
+
+> which is unfortunate, and we can work to deprecate some of them over
+> time. But I don't see why we have to break them?
+
+I don't want to special case the zswap for from the swap tiers.
+
+> > > An advantage of adding zswap as a tier right away is the proactive
+> > > writeback use case. It naturally fits in the tiering framework as
+> > > proactive demotion between swap tiers, which I expect may be useful i=
+n
+> > > non-zswap use cases as well. Without zswap as a tier, we'll have to
+> > > use a different interface for proactive writeback, and then if/when
+> > > zswap becomes a tier, we'll have multiple ways to do proactive
+> > > writeback which isn't ideal.
+> >
+> > I am looking forward to abstracting a more common write back behavior
+> > in the swap tier world. The classic zswap behavior will be preserved.
+>
+> Right, but this requires zswap being a tier, which you seem to be opposed=
+ to :)
+
+It does not need to as far as I can tell. People who want classic
+zswap can use zswap as it is. I am thinking the swap ops provide some
+interface for classic zswap to use, but zswap itself is not a tier
+because it does not own swap devices.
+
+Chris
 
