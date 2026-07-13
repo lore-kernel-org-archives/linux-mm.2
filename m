@@ -4,104 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBDDC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 08:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AA05C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 08:49:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4819F6B0005; Mon, 13 Jul 2026 04:20:40 -0400 (EDT)
+	id 1B6DB6B0005; Mon, 13 Jul 2026 04:49:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 459896B0088; Mon, 13 Jul 2026 04:20:40 -0400 (EDT)
+	id 168A36B0088; Mon, 13 Jul 2026 04:49:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36FBC6B008A; Mon, 13 Jul 2026 04:20:40 -0400 (EDT)
+	id 0A64C6B008A; Mon, 13 Jul 2026 04:49:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 198726B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:20:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B285A1C43AB
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:20:39 +0000 (UTC)
-X-FDA: 84983056998.15.1E4D322
+	by kanga.kvack.org (Postfix) with ESMTP id DC8DE6B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:49:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D8BE16A0F3
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:49:49 +0000 (UTC)
+X-FDA: 84983130498.08.5DCE94E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E1C3918000D
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:20:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/i7JmHx";
+	by imf21.hostedemail.com (Postfix) with ESMTP id C12BB1C0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:49:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBH5jl25;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783930838;
+	s=arc-20220608; t=1783932587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AVaWRHxuOp1xucpt25y4qXpngLUErNt80kcT84Gj6Ec=;
-	b=WTiZWEMhPy9lg0ZkQAqmIQl5hlj+X1bXQUzDT+D6QdjGjrHCHHgWTbnzdgo5m7mvop6sUw
-	vDPGgiKNW3JJNdHPK6N30e0VlljWuHadZNFnFMILh/UR5h95jv/YusgTlIzmm4ln7eP/4d
-	Uc5FF6sWji77COEjoWKBRS4i56QOjbw=
+	bh=PLDbO2ux1cY+txVE9sdrFeOPn/1RnZEg4d0TU1FyKEA=;
+	b=ojak8FQO4FTaW9F251bZ3pVlSRc0JXLrwqelg6CXfN36Qqsoi66ELb+P05+Rxfkm1NMEQO
+	P0hChXf0I52KblUNZRhA1Qqv4mmMfGZRWdBp9N4yD0K1eDQxveZ2zm6ANVFKzu6r3nHmRs
+	JdmXL5gWK5hafHr7QHrWn+zzlSNbp5k=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/i7JmHx";
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBH5jl25;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783930838;
-	b=6Qk3u0GfjVv+cldSZQV/oYVQkafpZYJTpuyRMUyRTejmTuEWT6gHR14s6ODa5OEql/Dsp6
-	9XMLEHHV1E5Bl8uWIV51QVZTgPHnZJxAytY2AQ+MaH15rzf2Jw0y/jnetlzvIxbeAt2bEZ
-	qfY6xa/N7eBJLjKyu1uWorB7Zx+0sN8=
+	t=1783932587;
+	b=sAPhi0MpcrnR37nTLTbS6Vi3HIko1LU+74ORk7+j2v4syTbHn4oa2Ppe8FgAGSDoGfZzU2
+	ViPiJ+9QYzOlyX5S9u1ROrlUewZjMGPM3D1PNBwyNlnapW8NeMcpn14C3JtR12Q82Bvc9J
+	edIx1pS6w7Mlf+DIshH4YX1JvQwjmDg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1F6964151A;
-	Mon, 13 Jul 2026 08:20:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F210D1F000E9;
-	Mon, 13 Jul 2026 08:20:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DEFFF40491;
+	Mon, 13 Jul 2026 08:49:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19CC1F00A3A;
+	Mon, 13 Jul 2026 08:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783930837;
-	bh=AVaWRHxuOp1xucpt25y4qXpngLUErNt80kcT84Gj6Ec=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=H/i7JmHx+nL/+drkYk9FHiWsCAuDyQ/lPRCv3RvInE9zuSQcynJrwktJsvbx35+ap
-	 7xdiCe1oidtsult+mT39XvQW4KYxQ+8Osc4VpdrsvGZJmnuOCI8RonPzzOpzs1+z/r
-	 9AWTVcc+C97niunSyfVT6zPHFenfQnBoI+oD1diAvgemGBA+RAofP5Dz19+v21kVuw
-	 Wq1dv7fruhvIgzxVcUDpcsJVZHLgQg2AOghsPkd0UUKmMUQDoDAGqHOAMfKvt5keEF
-	 ktEC+w2rFmZmbWPccRFgK+9fCpbErPEvtXykxrLMr22psUB7in+u2srp1/DxPqPgZv
-	 UHbIVXfIH5NKg==
+	s=k20260515; t=1783932586;
+	bh=PLDbO2ux1cY+txVE9sdrFeOPn/1RnZEg4d0TU1FyKEA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PBH5jl25LXJEls7/oarnaC+4/Nf7AQbLZkOleoVwnrhtg0NlFDG2ZMGErzRHwk+VF
+	 uAjlKgiw74t2KkpMB8KphdeDfoFV00Jv3B5+1rqhn2Y7xUjd7K7F9AVLdyzITGzaN6
+	 68w02zxCvfig0Dhlygno3lLVvAAbYNEAzX8Rt71oemrVbYh0/UIdE3QQWgDY//FUFE
+	 t5QsXKUfz2zTXg+iyWDkevNPQRWc0NI5seDggqqk011D+zDKqUL0LE0t9jFOfgXMRn
+	 Qn7qjwrwJwKU1b3vH350lJfGqKo0BFkhMsGk22LooGSKtas2sj0MHK8/ajIsSmxQoN
+	 WYQ4asBUuz3Vg==
+Message-ID: <516b7984-f4c0-4cf0-bd40-104579950b0a@kernel.org>
+Date: Mon, 13 Jul 2026 17:49:29 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 0/5] binfmt_misc: bpf-backed binary type handlers
-From: Christian Brauner <brauner@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Shuah Khan <shuah@kernel.org>, 
- Andrii Nakryiko <andrii@kernel.org>, Kees Cook <kees@kernel.org>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Jonathan Corbet <corbet@lwn.net>, Jann Horn <jannh@google.com>, 
- John Ericson <mail@johnericson.me>, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-In-Reply-To: <DJX4IFO55D9S.3IV3K5XICJAEV@gmail.com>
-References: <20260711-binfmt-misc-bpf-v2-v2-0-d6591ceaf207@gmail.com>
- <20260712-abluft-brutkasten-aufladen-c8063a4a1a0a@brauner>
- <DJX4IFO55D9S.3IV3K5XICJAEV@gmail.com>
-Date: Mon, 13 Jul 2026 10:20:02 +0200
-Message-Id: <20260713-unerlaubt-luftkammer-kosmetik-46532d395f9b@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5642; i=brauner@kernel.org;
- h=from:subject:message-id; bh=/i2syicifZJ3USjcLrnHL97T2+UWubEpCuWxspQutOo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSFzN968Y6VOqPC9JsP9qWHs0noxn0/3R4ZH2xSFH5/T
- +jLjDjmjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlEqjL805+XauBhdHPVDt1v
- W60mzUieca+zv+rN4bQrZutUPzxez8HI0O3Kn/RRkL+DZ7vs7TmH/lrt1betv7l9Ti6nlWDRspV
- /2AE=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: E1C3918000D
-X-Stat-Signature: knna1gybsh8euojbcecq8eq1rjnmckhy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/slub: add comment explaining intentional kobject
+ handling in sysfs_slab_add
+To: Hongling Zeng <zhongling0719@126.com>,
+ Hongling Zeng <zenghongling@kylinos.cn>, vbabka@kernel.org,
+ akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, vdavydov.dev@gmail.com,
+ davej@fedoraproject.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260713070024.153552-1-zenghongling@kylinos.cn>
+ <b42f2b3a-68c9-4e3c-b3b7-d940677b4609@kernel.org> <6A549790.3000203@126.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <6A549790.3000203@126.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------4fA11zKehzKXGsuWEFtyDd9J"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C12BB1C0005
+X-Stat-Signature: 6q73seo5ynaikcomn1ihizq49esyo4zm
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783930837-169082
-X-HE-Meta: U2FsdGVkX1/4+YhTadp1TITAEYeRJQlD5lm8KaYUr+qlcpMvMKfGDtsPF3YeYbBUh35RT6VZL8YY1Z5GTgmOzEp9tIy2VFngLKi9R1HpY/LYGewklNuZGNQULwOaeWVICVFChk+qHYUDlxIBV7l4UhZidFoGOxuZLzfwKr9MLjoHrRz9A8t3NOukZaGNZ8XksT0gG+K2WFoACg/VlQqJMTnmm7lxBGXL3UhAIn6oxr9RuIbdWKlvBmWOYPDeOFtYEASlJ8v1icq3nm7oryw7mYnKsbIJbV+JvXKZEYWM6wMB/gtPrahHOzeSWVDTAgRpAi4IC0PfggxU2/CunuVIWD4il8Drh/ZC8pMMAdQ/zu+juGsL/O0waWLbuqzG3byewh8Gxi8XO9QUVoL3mEhwOVRxmV9LG2/scTbjsZdeDA2BYlSaZbVxY3NHanBEhTiFd1MQWk4Y2PxvCmxcCkoJrbsgCGw5b0tdqLDTBQQbQAKiSUpR21U2Qzzx5925roo4GPeABkBFDoef2/YploKU3Yzh7JoVo7m22Svj7czoeym6EnljUGy5Q+PuTyaDJxr1Ef9k99IdOkHra9IY6OQLMEJ/uD7eV8KXxoBuG0vNJ6QGQyDlYSgdTLl2pXEeg5aAa+T5ggZV4+ctlJNEkZCVpNl3vDDgsQ1ZT1YFRXyyYM2YmJaMKJL7+0F0jlw361TEjX4uVTMmMScW+NaRyuPUzLkWBS6mNJjv9d+MWkYeXhIBhYVahaYvLuA8HP8wVSLLmnmS6lpzsFbsQonyZgH+o5SxzgsOhCrIOUW42d9dmj8V9H60F0/zoTAIosHdVokJ32UrI/HhWEqUyYRm9sQKnh4+hxMLlw1D/FMYY0764IhCfcxCpUNo0HonnNhjaCONxGMWgnh5ykcteRcNdQW1NmgMs68xjNRIa3/CEQJlhUjcaSlRQE9riUJwinsxcOfTwY2LYPXG5+hCWxuo+fs
- YmYYNhXc
- sRKKY2w82ONRIYtYi4KDueL6xKBMRKq7a5A49BhtYHvI46naKC4/UQdGWQsPSKXzGO18U3yYAVOeLV5gX82HaFx7Qmcluk4o5H2x1CwJ8LLMcSTN69iJb3KcKpYVvF54ZpN+jOaxF44pp22tn1DAXL6uw43D5uW5RHKVxaBusyVXNwETYm96APbL771LzI/BtoLkDXugOgZwhkoTUHuuLWXo10Nj0deta0nV4imQOldk0vb9WhaeoXXfbObIlJWy6mgt95aJr4eFKDP5rRqPRzSTuly5Bmc+2mYSCFv23itv6QYozenFwaYcsCi5fyvwGg6FWXE7bBXtqWsSKNZ2B62xqvd7MwY5xSYwWp96ckx/u7jN9NKGmG67eoVNUAE0XeUPQ1cwnhUnxxgI=
+X-HE-Tag: 1783932587-628864
+X-HE-Meta: U2FsdGVkX19PgByiyKu8IQ2P727hzW/uO19zO0zqcvIZaHjknyJzCxugQ+LQJIj6Px4Q3ShIYmEJbJq996x6H4jt0OF0Pi3GdfmM9Y9+w36c9r6mHvtZgpCcYKGe1AB1Nqp+Vd99YSw095XSo51oxKClIHaxYm01wywSHkqqGRSh6jwPvNwj3QBB7Nu8X0mtmw4YL8M1NP9NBC1Z7lG/qXxVVy3SpKk4+IOYuNkZbDzS1x2p8xEG2i7Yd8XqO6Tu5ERSkKTDYzKqzmGiA4ibpoyb0W3ayjMUQvzqqWTlXWv5BcM77sTWMrAyvSN9qnyh/MUGkeMNAjIDxsV0Y2JmSckXgr9i0SeOo7cy/6O4P75/dM6kTm1XTHf7Zm+4SIQ538efk4Yvtt4hSpAA8OOPEk4tSHdskI+i360p9tNk6t2ulwgq/nm2ItPe97NCpzkzteMU97whJLKQdPJ+8vd8dwhyYidiNcjQi/17Ci1AM5AYbfONZdVOiR1abAmW3S+DfDnrh0NdF6mllL1+ULlyZU0iWnqxRm2TyM2tLkVlxdXpwubSa1BLcTHm5N4HqTK6aBM2oCCdQbBVywJfJjvCMpxGT5TLZiQ2v5zBZ3MUJ1qO8pxc8GS20hQbzyHc7Xs4LueQlAx3vvsJjyIqtuhM9srpXaEAUhP+ZF0ySQ7YApPaeQl82yG1bB6SxrYE6X355OvnZmahAK/YGgZBMqbh8tnpLRDokJ2N8CFLxxpiq9XsUF/2/ZJrbnqaksEA9bpoEB/2q21NbKicYKcx79eYaIJYMqrU/ilHRR9b3OGY1b3rpew/YccDPe3Zy68QzDk+ZhhpoA/vettLVDXctBNKCXDRBCmBYdUFTyownvstOMJpnyZrPgcagEy2J7yZJ1HCCgcytYUjbxNTEhSLyDo6SZQmses0SOYR/1scfeSno2wwP7oZ0uQ8kHMIb+/X2wcmSmAFqFr2pLvaKoJ+PtK
+ wFoT/PKZ
+ v6g34IyyDvt4i3Ln7Jn/u2S0rln8vAiWeGMh1DGWvharSmpRMo18j1+7SAICAG7rwVw6p6S0h69z9x55JQaBl+UdFxS2x8caqS5wrnEUjvGzWvob7FNE6DVGHi0+NUsmB+nALPd+2rrYdVGBs5ICKa9m+bqfqsruPcH5lnZ68F9z3dkogFLlAEuqwpuhBJqQfOX/pfQtJ3QiA2LXOHSQDgXfxowocxchRDDS1mOX05MGdndB65tmUeHzrgPRHAIr7cDCT1Qw2ExKyR8/RSGsIp54a1VP1wyHZ2k6VMHcNHASF/u6IzfGlKmZ2Rcc+6ZyESUdhGN4gi86IHwpJtw6hKFchcefTepf+5zwMoRm+UXqd2NjlFbkpBtkBdCd6hjEMGZwzX3ny+qu3+lU1zOuPfkBPj7Y9f7vVvoDvsFvKO3vBDzYtdvE5DCQFj5R7kvFcKCe2v5iu2QwZ6oSwovnnZyUk2w9estpDtksmXuDpbWxUC2xinhOgI06fLysIwUazmAqoui0ZwfIBsAtn9ccic45J6kST79JkhKQOzy+oYEbBbCCXruFPN7zDj291miie399ibRcG7grlCjez3Yml5in1v1mS2wKwSL8uQRQpDgRuX74zXXzq9Tg+5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,120 +98,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > - The single sleepable load op is split into two ops:
-> >
-> >       struct binfmt_misc_ops {
-> >       	bool (*match)(struct linux_binprm *bprm);
-> >       	int (*load)(struct linux_binprm *bprm);
-> >       	char name[BINFMT_MISC_OPS_NAME_MAX];
-> >       };
-> >
-> >   The non-sleepable match program runs from the RCU entry lookup
-> >   walk itself, exactly like magic and extension matching: same
-> >   registration order, same first-match-wins semantics, and it can
-> >   only rely on the prefetched bprm->buf. It must be free of side
-> >   effects since the walk may be restarted.
-> >
-> 
-> Is relying on brpm->buf enough?
-> Right now that's only 256 bytes I think, which is not enough to read
-> segments we might care about. That worked fine when it was just a magic
-> number but the idea with the eBPF program is to make decisions based on
-> more data.
-> 
-> In the selftest I provided, the `PT_INTERP` segment is already at file
-> offset 0x318 (792). I was imaginging NixOS having to support
-> `PT_INTERP_NIX` in order for the produced binaries to be backwards
-> compatible with older kernels.
-> 
-> The other idea would be to make the `match()` broad and select
-> everything but then nearly all ELF64 binaries would match and then pay
-> the price to `load()` and ultimately `-ENOEXEC`. Seems like it would
-> make multiple BPF binfmt programs less useful.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------4fA11zKehzKXGsuWEFtyDd9J
+Content-Type: multipart/mixed; boundary="------------ryp4bYEw4U5j0686JzItSYb1";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Hongling Zeng <zhongling0719@126.com>,
+ Hongling Zeng <zenghongling@kylinos.cn>, vbabka@kernel.org,
+ akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, vdavydov.dev@gmail.com,
+ davej@fedoraproject.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <516b7984-f4c0-4cf0-bd40-104579950b0a@kernel.org>
+Subject: Re: [PATCH v1] mm/slub: add comment explaining intentional kobject
+ handling in sysfs_slab_add
+References: <20260713070024.153552-1-zenghongling@kylinos.cn>
+ <b42f2b3a-68c9-4e3c-b3b7-d940677b4609@kernel.org> <6A549790.3000203@126.com>
+In-Reply-To: <6A549790.3000203@126.com>
 
-Ok, so your idea is to have multiple bpf programs that look for
-different interpreters. Yeah, then you have to be able to sleep because
-you need to be able to fault. It makes the code uglier but I can see how
-that's useful. I'll see how nice I can make that.
+--------------ryp4bYEw4U5j0686JzItSYb1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> >   The sleepable load program runs once the walk has committed to the
-> >   entry and does the file reading and the interpreter selection. Both
-> >   ops are mandatory, the struct_ops plumbing enforces the sleepability
-> >   of each, and since bpf_binprm_set_interp() is KF_SLEEPABLE a match
-> >   program cannot select an interpreter by construction.
-> >
-> > - A match is a commitment. A failing load program fails the exec instead
-> >   of falling through to later entries. -ENOEXEC keeps its usual meaning
-> >   and hands the binary to the remaining binary formats, for a handler
-> >   that discovers it cannot serve the binary after all.
-> >
-> >   This kills the part of v1 I disliked the most: the skip cursor and the
-> >   leave-and-rescan loop in load_misc_binary() are gone. The walk is
-> >   never left and re-entered, and 'B' entries need no special semantics
-> >   against concurrent (un)registration anymore.
-> >
-> >   Your v2 changelog note about keeping the bpf retry loop in the
-> >   __free() style is moot as a consequence. The loop no longer exists.
-> >
-> > - The load return convention flipped: 0 now means success after the
-> >   program called bpf_binprm_set_interp(). Returning 0 without having
-> >   selected an interpreter or returning a positive value is treated as
-> >   -ENOEXEC, other negative errnos fail the exec.
-> >
-> >   So the "return bpf_binprm_set_interp(...) ?: 1" idiom from the v1-era
-> >   programs becomes plain "return bpf_binprm_set_interp(...)".
-> >
-> > - The handler name moved from the offset field to the interpreter field
-> >   that field consistently names whoever supplies the interpreter, a path
-> >   for static entries, a handler for 'B' entries. Offset, magic, and mask
-> >   must be empty:
-> >
-> > 	echo ':nix-origin:B::::nix_origin:' > register
-> >
-> > - 'C' is allowed now, v1 rejected it. It behaves exactly as for a static
-> >    entry. The setuid transition stays gated by vfsuid_has_mapping() in
-> >    the caller's user namespace. Which makes 'B' handlers usable for a
-> >    per-binary loader over setuid binaries. 'F' stays rejected as there
-> >    is no fixed interpreter to pre-open (I have other ideas how we'll do
-> >    something like it later.).
-> >
-> > Nothing changed in the exec patch, the fs kfuncs patch, the kfunc
-> > itself, or the registry/namespacing model.
-> >
-> > I can send v3 in a bit if that's ok.
-> 
-> I don't mind at all you sending v3 and in fact I've been enjoying your
-> involvement. I didn't know what to expect when I offered this idea up to
-> the community. 
-> 
-> I'm happy to keep co-developing this with you within a design you feel
-> acceptable with. Please let me know how I can remain engaged and
-> helpful.
-> 
-> One last thing I was thinking about is that we will also need to support
-> $ORIGIN in the shebang path, however I just tested it and this current broad
-> BPF solution can largely handle it [1], with a small wrinkle.
-> 
->   $ printf '#!$ORIGIN/interp\n' > /opt/app/greet
->   $ cp ./interp /opt/app/interp     # any interpreter/loader
->   $ chmod +x /opt/app/greet /opt/app/interp
-> 
->   # stock kernel: binfmt_script opens the literal "$ORIGIN/interp"
->   $ /opt/app/greet
->   bash: /opt/app/greet: $ORIGIN/interp: bad interpreter: No such file or directory
-> 
->   # with the handler registered, $ORIGIN resolves to the script's dir
->   $ bpftool struct_ops register shebang_origin.bpf.o /sys/fs/bpf
->   $ echo ':shebang-origin:B:shebang_origin::::' > /proc/sys/fs/binfmt_misc/register
->   $ /opt/app/greet
->   <runs /opt/app/interp, the loader found next to the script>
-> 
-> The wrinkle is that it can't express today is the single optional argument.
-> (i.e. `#!interp arg" -> argv[1]=arg`). We might ned a way to express
-> that in the load.
+On 7/13/26 4:45 PM, Hongling Zeng wrote:
+> =E5=9C=A8 2026=E5=B9=B407=E6=9C=8813=E6=97=A5 15:26, Harry Yoo =E5=86=99=
+=E9=81=93:
+>> On 7/13/26 4:00 PM, Hongling Zeng wrote:
+>>> Add a comment to clarify why we don't call kobject_put() when
+>>> kobject_init_and_add() fails in sysfs_slab_add().
+>>>
+>>> Per commit 2420baa8e046 ("mm/slab: Allow cache creation to proceed
+>>> even if sysfs registration fails"), sysfs failures are treated as
+>>> non-fatal and the cache continues to be used. Calling kobject_put()
+>>> would trigger slab_kmem_cache_release() which frees the entire
+>>> cache structure, so we intentionally skip it.
+>>>
+>>> Suggested-by: Harry Yoo <harry@kernel.org>
+>>> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+>>> ---
 
-Ah, fun. binfmt_misc wasn't able to express this at all. It's good to
-close that gap. This can just be done by adding
-bpf_binprm_set_interp_arg().
+FWIW, the patch looks fine to me, so:
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
 
+>>>   Change in v1:
+>>>   -Correct the email
+>>
+>> Hmm, the email "Hyeonggon Kim <pictureone@kakao.com>" came out of
+>> nowhere. Could you please explain why this happened?
+>   My apologies for the confusion.
+>=20
+>   I incorrectly retrieved your email from a signature search =EF=BC=9A=EF=
+=BC=89
+
+You mean retrieved from your local address book?
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------ryp4bYEw4U5j0686JzItSYb1--
+
+--------------4fA11zKehzKXGsuWEFtyDd9J
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalSmmQAKCRCGXBN6rc5S
+1u0GAP41vO5nCpfps7FFbzIRUsDo5ifNrkITLq4kQ1zGVBogqwD5AfGV009Enkzu
+3F7bADT4jGuJitJodPUWDW4f46euCQ0=
+=pPc0
+-----END PGP SIGNATURE-----
+
+--------------4fA11zKehzKXGsuWEFtyDd9J--
 
