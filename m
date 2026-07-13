@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54BACC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:48:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC7DC44501
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:57:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FBD26B00C7; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
+	id 3174F6B00C2; Mon, 13 Jul 2026 13:57:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D2196B00FB; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
+	id 2C7E76B00C4; Mon, 13 Jul 2026 13:57:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59C006B00FC; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
+	id 168FE6B00C5; Mon, 13 Jul 2026 13:57:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 266D96B00C7
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEA62C15E6
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:48:46 +0000 (UTC)
-X-FDA: 84984488652.29.584DDB7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CE72B6B00C2
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:57:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CFB040145
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:57:20 +0000 (UTC)
+X-FDA: 84984510240.10.1C9EAD4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DCB8140002
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:48:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onjxB++n;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 78F21120002
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:57:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1O+yElX;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783965438;
+	b=q8we4ONt/KswK7K42LDdQ0DCMboGL/gZUg6PMCKvwLT6Qlf29neGDU2dO8SQZg61wh71kC
+	PYyMTRA1kiA3j7rB8eXIM4O7oCzSqyf+o3r0Tku7SwmGOah1U7wxTML2p/O5rrJTDwuXQU
+	0oHKntmYoK+bewWmBSIDV+hWFVDAfSE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1O+yElX;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783964925;
+	s=arc-20220608; t=1783965438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eqsaQhz+Tm8HgoxeGaT5sBOLtHmA3ZLHG5CTvOWZ77w=;
-	b=dacPt/G78SQeNQS/ZFWW2aAfx5lKDnvPiW3qsRcp5GRabFhRpYQ/Z9yerOxtq3iJ6+KTdA
-	haWng1SiJiaBPRjuPJTC9I2ix8dAnC0K0/1+Nhwf76w4tcVbELkrVDSXzmAQgkN1kQ5vMC
-	zcTAdbHncxdh8o1XRipjDURITpNe5yg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onjxB++n;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783964925;
-	b=FMsvHgQOfeU3yXF2pXFtlgWxlZeVIZ7IN6szcxX9ZVjtHCT0L6+8N6Gd0/zmbzKiY/GVEF
-	4SqC1vqdwh/qE91NJG7kw/PlxZDdiItWpcu9Qrtz2UoJTaXOyG73mb4ks9T3I9Z/Csc9rL
-	3VoX8CgW5vDkWOABVgvBrLb0xfx53L0=
+	bh=pO9VCK4bbjDr/iFXBBe32IJs4DHT4WfrCqDsR2JO1ds=;
+	b=pjmRJAyoJ2ob4iySSkMxmfiCvB/fMmeMKOmPet9FCBV8vzCeSIZAoXqxXBA2ObnGxPZbqC
+	2GZlACO/qWbqNYp6iX8ywQooZRgoXWcfK+MwazAuPWTE9YY7TYrNEuNDxfhmV1cQ9nC36q
+	aquKGGxoh+bXjZ15KVrbuos8+3/DOjA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CE66041477;
-	Mon, 13 Jul 2026 17:48:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827251F000E9;
-	Mon, 13 Jul 2026 17:48:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 89B1041342;
+	Mon, 13 Jul 2026 17:57:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC8F1F000E9;
+	Mon, 13 Jul 2026 17:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783964923;
-	bh=eqsaQhz+Tm8HgoxeGaT5sBOLtHmA3ZLHG5CTvOWZ77w=;
+	s=k20260515; t=1783965437;
+	bh=pO9VCK4bbjDr/iFXBBe32IJs4DHT4WfrCqDsR2JO1ds=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=onjxB++nlQDm7gMhTfmaNQDGH/rqBSYbLzfVEPq1lS1OhWdb6CrePXw7aLeTLGo0M
-	 pB+hJukV545xwSzfacCs6+xpPSowS++yQcA3kxVja2GEZejGL+Hf0WxMqbxsDeOECk
-	 UdHMAgyb07hAwBRvraqJw/dg9AeSA04LDY2AQwPOWSaAv5NIULkVGuWTgoHQOKjcws
-	 4tB7saNVwm9kU+nEYLQQmup00N7S4iEjniDnAmshu1Fop9Y+D7SzuW9SN/bp2Dc/iR
-	 UQQknMV48nrRokvLe9ipKdqqYp8uAlzqLTw1pQ+E9E6C7IvEIujYOTr3MYFQkIyYDN
-	 RQbf9q/HFuDdg==
-Message-ID: <8f3c1451-1b49-473a-b060-a8b95b2d44b4@kernel.org>
-Date: Mon, 13 Jul 2026 19:48:18 +0200
+	b=X1O+yElX0zld1QItxjIAp/yc7z2vmaIPA/t09/JNbxUWZPTgMzSsQ21a1/R+/3SMp
+	 E9a1CA+/9+umIQL+HO90uHt+NaXZlLspEOXvJQ8wyiiCIJxIy4irZ9MyYK1uzCBoLb
+	 W4WuODTQwX7+Uozt9DisJMQLjV4tz8PgqBbeXTcrCbclLjRaOE02ZcLzHFiSbBhliA
+	 31uPjovjwAbHbumZPx2qDvqNRI9rdc1ZuElMLd8H+2P9+WHvjV1sML74DbwQXnHJ+F
+	 37C8dHi2/yVpLHr4TULJpSm+4QTnCovaX5pw/Sn5C8HjSZphkJCRDvwtRpi1SZp1Jj
+	 l02Cf2xcAprAQ==
+Message-ID: <e08fabfb-f3dc-442a-8491-fe4ab1f33b58@kernel.org>
+Date: Mon, 13 Jul 2026 19:56:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/33] mm/rmap: update mm/interval_tree.c comments
+Subject: Re: [PATCH v2 06/33] mm/rmap: parameterise vma_interval_tree_*() by
+ address_space
 Content-Language: en-US
 To: Lorenzo Stoakes <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -145,7 +146,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
  kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
 References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-5-2a5aa403d977@kernel.org>
+ <20260710-b4-pre-scalable-cow-v2-6-2a5aa403d977@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -186,23 +187,23 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-5-2a5aa403d977@kernel.org>
+In-Reply-To: <20260710-b4-pre-scalable-cow-v2-6-2a5aa403d977@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DCB8140002
-X-Stat-Signature: hx9ucf5fpjmdidar7ownnhus4iibgf88
-X-HE-Tag: 1783964924-293971
-X-HE-Meta: U2FsdGVkX19vbbizasW5gERCkTyGcDrdG9z/lgArSEvnnBbsLTeIwk0OWrT7snosZDby2KimzSRi3UebIFD7uB/4FQwve1BNAB25wl1VuYVZhfSmUPjbbvow6SJ0eIHQddGpuKOJtPO26KqIAobbYTkOm0fIdr6aeCfSlMQNyeb4OpQsoQ8nnIzpj1M7DoDPgG6x2rOgKmhg7vWmv+BoHy3brg6EgRwJGB3eaSIO8a8PWhDCZK/r9ePi86knYGldB5wcljvo2gk38vqUI/dDuHYzc8/5A4TISJdWUiY0r91Zvm2ixquN36l4aMOQynOpNrfGfHpWdWwwhg1OTP2lzfkrOZ0uJTFuREP8Mn/k4J/KygaGfo3fnhDDXNn5/PrxgvPxipOjbqdZ2W9E9Irt5hk+eCfefSGTdxL06vQEPhb6cWg6mFs/pfNZ1C5uA0suLRsAkGPDOiNdYGaar85nJyollKCJYbGziqMq6PMxV3BoRid/WUqbz8j3oJbpT8LiFULJ2OhP57KcW2EEx6LT253YDMbai6axQgSnTJHxUdypok49dc64Ar4U+Xm7VG79e/J2zA5fzEniagGEMCLT0qMWIbWZwMmAJqR06sJjD+nSc+fXOszs7fhg9Xg6PWfHZSMtb0FFsX+naLc8YJT1GC75P6l3NFLKcQirV/KYa+Hs6bVSbwp+uNKKsS7Br8UoIhvoYxkNbAX8k42YKfWuIgthQErat9YCHRhXcJroUFBT59s2MUqDuL45eSxwevspuzhQEGgdrUOmxAkLAuB+M0eQxvs2GyO1uiXahl9hx6js+9nYPjXiv6dd5uNbEzyNsTLisfjPtW0qMi+TAcU0JS8lHC84pXMPKkgzP0Qo6U+6Qzq7ZQHUE7HBhvTfZR9QT7BpgaLaFRJ4bYOdQPGiJb7KQk4fiE917GYqP5tZ8Jvr4ccrazViBeoOzKwpv5E5uISDeldlF3mvuumDjP4
- fdU66i1u
- TgcnRAohHaLTWJJ4bGfjvkQy+fMT5xg8VHssVjLxW8ZEvkOUeULv+wIx5a4Fs3DUENxY3bTNH7iUUuhOPuRU/hGCgFQsmHLNozXMbpJrcqLH+fwI4EElhFH1LgMjWKiP3YQjO5NzoSUq0Thn06YBYxaqPqwV9qFWv3S9ktUy64Y7dlt3ut+txzcTp6GY09YG70+wR6xbnUF1OhPPrYOEwJHCcE5MEl8TOlMseYieJcWGN68lffBqdBVVfc09fZ66050vTvv8SsTbLSVP+R8KZKx010wAeukMiypa4vrrluqKskLa+K+TblRCHA5t6+hCaZ0srmFUQOsqaqdeG6zZPJR93q6VKjr1F5cQ2Rd8XPhED6t05QZizUADQ8r/JgGyTe78mHPMm0Pbjn2S5qIS3lnrGKEHvEfZ4K3dshZCOBXGg+JH3jt368DnioHF/WNxDCxpFIiu0z8kweuGdcwZlQJRm7/2jAqXL+AIc7ByETG1AErLOMNvFz2MD4pU3wCIDPatApC9KaoD+LlnUNh/GrZ4v7TTDrYYunbkCh9Ml60J8J9pV4hx+3EhVDLpaug1niTC7QOEx7XwJskw+YDPx15N9uc6pjgjvZS2Z2t2DSk9mCz/jnIGkrtpTAolLk78U4wjx2KKmTONxNCA4BDQehHX+iLqvNQe9ZzDoYo2U/Y1Lx3wIvMMLQE/Wu1dR/yhnnuEJ6koHgy+P+KAJOzGLkVegW6mHBm1HxIIoil0A0rgxE+vKbQ/6Ujd4/MX1nfWDG1pmW+BuuwkpybSaPXyDbd2VCDA6p7CZ8dzEBnsBvVd+GPLWRAWYAzq82VWzml7hXre01twXSmspLhcy0rox8qQ5deR2vF05iqA+c6DMBbpR0Ds8HQqnhosF5G9Mod1q7amEoJiZb/dhDAITssOJkuJLABPdEZadlWwYWzuS0ycj2EytTNqL5dy9F+fweBNKPudVTx+9AldopRYjKeqRclyy55gl
- sd2o+lqi
- BDQCLfeIH9lIjCVaKzskeCO90pITHBXZJ8XArYOp7qgbsWd2BcFQ55wqKOc36fgOj/apu5cllopZzY9hWITZfahI5TB+9Qh6GJ4620+Nyz9rLzH/BaIKuWHmgOVRf6BKEjiPuXc2UpQDs7yFEOX8XB8tnRBLsdkNVloGxW0FW9qTysZHZw4seLLV1BGSKwsWfOdIB8pxfRVihvm90x3iyjyPWSNcy0vZg02Dgeiu0LbStj6dD9eD0sB35x8kIRuNZB1Bmjwz2GUBSS4eJmkL9lUEwYZFpu5aISzklP30EwPU0vywRTG3RvbTTyAPWjOiytkhUXlHn2YL5Bbsr8xRuJOBrhtjts3Hn1lXCxJxTqRYz6PW+fvRb8PPHbW50RcQilpdXImNSw2PL2Jt6L7QzYK/wWPe1XyWckkIN1RI0loqK7yD/S+KZ/RnY/D7IWbsQV1m+LEPW4LI1IoO9x7PAVmwFV5OkVrFgg7xwuzv4JNepNWVqZMV7VAOc5YtdvXoNdB7BMUqq3p4+09wIMvY3xRRCX6NMWeoT4yrpjViFxlKDmvy2/pchUqOYWf/kdrxueo5LllRTkk4Jltd9u2r/Gs4mZUxhkRXxHc5Ehx/Pt+ShZGMrzVw16Z9W5I5nvdcNxFFTi1umDXAz9GRHaU9zejhx3oPA7Nv3GYZ0XESCkrvhnaX3PiLMYsBY/qhjR9kDS/syRebqXY8ocav9R/z12KPY1YUpCHjF53syPcYvzC7jOVw8Z3pU768NezufTspNHtxNIBCHy6jPEP/MCCnu6ujWl0WPQVwxt+dcGTUpk+Phz/4X7JbU8E8fY16UwVEXRxMfjmxTdgU7ht+x1jo2tgmyf7ne7jtB+4Z2rZSGGCV6sRhqrOv/s9zSNSdJvr2TmhOcEeBGb7GA7vIsfv5+beDCtwdVJr7DYQG+yVBXOy4hPUsu4gsMxHQXOJNcKXIw2afxmlvPMWrMSkpArsY72aHi9Kzq
- WwrZOvWy
- p4gDm3+T5/HhhFzKin/Nrbof3GXrlEncJwwMp7+rqMJBWdakFGk3pQieWsrko/8LJ6BFzd4+/+l7ISm1iSRBofk0NnxxNJgxaP03x60xRcIGj3SXmNz/Yo4unbU5pGQS7HtwDrT5WmLzEimYQ8TS4pTdUQMu8lbzCi9KMAbbjttkIpIfUefI5wdTyTaZRkIiAb8noN8dBN+3+CA3taiMRAdbkoSsWAlKoAgr0N1qFiC6xCcFxjrIG6B1BFD518aP9fWTwNtAx+g1HGmKPz23+BCfBlo9mt3nT04dTw/g7MteNFdWE58FZekZFR+ZUd1I2QIcQ8JfaF6r3LRkaawD4tjE0EOOgq7hSQEUaRWNaDncWu+f4QBcy+CrFaSpmtZXuNp6lmhKN7GBP7YHizSEccNydjRgLmKwWuJOao1Rw/2a7dsKJDIqk08Pve283zQZii0BHSNtwlhEaTbAgjfXNOusjHM8+DVWzAWzl8SxSQ6voGbrv86l1WE5SA5dgrn/kCue0L5hsQ1VW5EsldkdC4R6Y26ZE3FS2VOmlsbZU8BRhsjQYnMrbnf4GzNrSpUeRHdQkzomsRPlPiw0Jgf4ehb5s+XBUm4afxUB9tWwGSlXDOfz69Wlkc+W2yc5nEIjLL8a684sVVhA6xM+zZxeq4v6s55CIx6ry4QxmYWJxOEPMpCu6N1l3NP9E1KqMRZ29Oa+tIi2k6T69DTXNta/4ONgMFzTVjuHOgCGg/Jy0bxkP27z570yXeBrnE5xMMsW97N8ZFey6gS3COh2xgHJKrfxiwECT5zro5VRwwTTnVZ6Joov8Ne9gD0hP107XjaUYJILlpDLN20BbP6INr+ovL964B6iob2FhEEEBTEOVD4rVCASUSdob2LF8BtUrjJz2LZO/FVdyFtL5zllloI5ZjwMV99Yvvge8NJTDAfjjlVoOkY1S+QHOR4s/QimgMzO/akkrpxwJdeRsL1ZLpvmJWpeiHn2l
- xInP5EL9
- wX2DTxbVryJCujU+TIq4BHnQF1OvQPZRbqLVKItI6cJFH1U9hEc+tofdLJa/taUgP7lZLIHiMQVihUWWSuavDRbQXi7ndOcE3/MJNY2Lj/N/f5rGzq7zzwtgAvwyo/LSmwGIwidrd7lpYehJENg1x1X9iHArxJgdXyPLG8djOpm8w2yANEltW0ZBKOtqeE9hbfRuNyQ/OhtlP/aH0XtsAN02QdNnUpklNvEsa0MtSGRYw4MNk8PiIwSBB/cVWAtE8nCVtiaQDjtwNlj+4DONmacOkNZYXbdMCXDEizDovOKdib/RQIjextcG4Y9BJ9262o6HtRLWyWJqKQBHi8Wrz3GHEvS+KnjcLKQL48cwkPaNVK/Sh2BD0/ZG6rnQS/urUonW1e1c71YF3nsuv7oKkL1P8w3UWVsQ8NgQLUNP3QeT4qxoPmHFWltJ2dRUiZsc1krgWD9oIjRoyNo4L7IieFMoyYtPzj15Yo+FzXLAb8VKsbouuVQaM6cFx3xs52bg6s1qrrHwXuKit/IC5rgCpqfYkBOQ/ok0n6/hbZ61ykc/7thhdjPy7cVUArV2V3jpypIJMHrQzbpARvcrnRBJzcpma8zX+RZpj9OisJwQKuWg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 78F21120002
+X-Stat-Signature: us5r9m8m8juhu78tcki653px35mq45ar
+X-HE-Tag: 1783965438-465559
+X-HE-Meta: U2FsdGVkX19nC3VrAE+v+5DT50v7HfejMDkKJGdrVEbVRW6d/Y1vnQ4xAA80fxbO+z2WQIdmFtAtFfkFaSrR8FoDpl6quXnk7PT1h5Aefe8H5hHq48THGXkU4j4Rstfm9mgLCpZ6yfG3ciJHi9zA0P7AzinqzlnybCbfIXfGqecpp3pTl4udqq+T91hD69SiYSew6t2qN+M448mZOmRfxcjB/hteQSQI+7T/Ggoa4kHXsxgUkebaUIlWhOjazFR7fnEN46WC4RgrTIUJ99CXR8YFEB2PLMH0wMq0TRRokVTL3zlE0wOTQnd0oXzD3EZJFJHn+Q0+rkaXSvnSYD8IZPagHFF78+66sPWYl0EaCastAOVyN0Y8MNreQXIImOe+vnJ9dX6uMRM4RT2r9uPi240pUlI3hX4nqT5u2HWOPQMjW4zlnrOsOBEcGvO0V3TV9dd7LAuEEyYsobnE21BVsJvCimNp5qnaoFUTM6DyZByFN3lmo06biRiI2k1Kaa63rg0tsl15pPDx8M0oZw+MW4cPWk57o+i/S67CuCWA9dxVqtytukdLCzv0G/kHjR+X9ZojmBoGS+Vd0fNBZddLuI6Ewis2joIkyOqlTDjWkGaAAvGp/npoXYc6E0t8XOBeLkSpE33DUE4/yk3b7PAobagJeb6pPwD3pIc1YdqBWv72ecAsWEuyc1qHHrAVFFATDp+feAgqLYeYKZxGWXAKqjFMKJ1eNwHKKDCAsIZivwFF3dJz4xrZjoEdD0aEm6ETwnbUUQsN1h+AjylSGa7rWG5o2s8YyzPqu29aI7ANZwLfJ0puc/bBUKMWJq8xry+lKNonrZpJTP5y90JhZAj8K4nNcC+h+XMoztCqt2OCgLVr3ga5d8fDc8nBZtaMiE8XF2wTvXnIOcoEzFiLXjpZa2wPcCxClg6dTxY6vwfYG3USLboviKYGiw3tqkD7xPRvlVrKB0g8cYkUqpzdcs2
+ n7gQgija
+ puf0KLnv6gtTvB9P00fDqkuEsvCHqFF1LqJoAmQNNEQJ34T+LVI056Gf/MyG7cVtNWNmsmAfT/NlBZrtn62xYizmd40gJiKPbV+bNWVf1SjV+c5UV4rSpLi2oj+OHl+szcrpV2ZpFoJ4H78N7m7AV5wMuHbpUC4ZGJ2AeRru2IN/hjxo0Xd4lT6Zl2tqZXu7aU17JLrfJ3cP+GGQW4haWlvvCt9f+JivCqfWTlsItlXL4cg/pFvSnPHvLj0jTAGZ1A2ijWxcrjLTrWBgo82WR/JQf9tF4j39KyHe+NEgDrAp3rGyik9Szo3ksf6j+GDjFRko8LIlVri07MmWNv5I6ZLAlto7WRlPnvqsE1YWh6BLk9cZ8S25Jz0sL5EVkaNbbrfIwdNkgebFhGv+X7NgJg9NRRvccJGyCOjhBF8ZwyBe4feHxqoiRy2vX6Vka1L1hC1jeQEyjtF7CPb7mrxP6iU9a0THwMp1Ol9rxzPabB1421jvK4S1rwyy4c5IVVYjj0ghXbjbQ+CIKkfWYoKX9DqtsvpRF1IfIMGMs9qpk2Bsn/Cw4QoLhCyu7z8fFOM80XHRyI5ie4TBaNzUItlEKlaYXTjihi3GzM5TP7bXvB8R027SZuskCsNdq9jh6lE78j/uLT4omrhWJBs0kgp58/x9P7AyI65LBVxFhjpATRQnMkUkoAEiTjUlfwrIFddPcdJ4Gjv+hRLfJOXFj3V9us83jolY8zRcZNIqDZegAj+bl58uNePRlaIq5P5A5OOeT29jUXWPGCS0kB/MsKNWSu3AZ92cT+ox69JaryvuOZHIu7dvmdOT7sYI1696lENN4eizkEyNbme8WN6o/KWPGLAhoj8weRCItGIMk8IeBaUjFyyhfxKobbqPkpUTGNmgoVaiMt1AU0RHnckqtZNvicYCjsn3pdvae/qsy6dckHtlFJMO5Q0gFPbkadvilITHjMyxlK575Xpn8qq1Z/j9y6Jc5+w6f
+ DiKVpW9J
+ ozAzLV45ImuaLNB6pqo1rkxklSJ5RnU+VnwlWgo9oFPKMAPVBwg8dJi821vpWe50PLCwVe7oX7r0XHWkJCDaqDu0VVs+ubMuNYgf8z4GuFJ96eboN9ofBQLUt/ZMUk8c5Vb9ogu0KgLwG8Wm6kWg5KcfaTOQwcKaXR8AobAcMDnMDyTdUEh1DzAvWbSDCidN6l9nED4wZZj7i6UL2fmCg6z7RpyNLRrSm0WWT2V1lg92jq2i5QmipRFFswgVszI93B2YnIsUGt3+7mcWaVtp4hITen76wn6o8Ca0dz2aqnBC7jgI2GiP+n/X595nbRM1RjKeP21v37+VJgkaIrQdAI+kvKdo0/SwudjDjvf8DoP1cWa+nmR8JjXOJTMzDT48e6mxuBbhc8v/ww1kM1v7Ww45Ti6RYKjJuMzYVbWkXYQwWBYgGS6BA+pC4MeP4bVoF92ekeZlH3y0+BNIkADXoIDfLoechyT2sgG/9Fc3e5cgZWo4itKWalFnt1bnwNGHP2KCewdFls236hOA0TEsjMZdf1GZNQlYDZouU5unFC8LiY0la1UbLMwo35YdbAUtGsn3TpyzBOxFAFMHVsCaKiXEZq86iVVlSHxiZrVxKnGjLq16XPoUukc0FazQGbbXMf57BmIWXOevtPWBmHYMliOkQC6qVH39/6TcpWRUiwed/IxCr3vrB127FsflKh59BTKRmOMA0scxpWN07HUyzjbSVuIeUuZhUEK0+31O8i55/69ckUkm2Bqmv5TLj3JcRg7yoUpggiEDtY/QHmru27m/AIdBGarWPYDbADPWjpKSPmUg9KkjvVC8W9eGixgY9sySKMVuIqGMzWQsjs16e1IRKCLgMKvSB9FcJCzB5A10mEk4m1xKduJ0nUduE9dzbjZmkyD2aELqxAhMJfMnDFg37inH8NRsDJakOs/4ZAs40r1ZoGMDiaB67ShtNa12KzoZrmjlm/r9eJp75yphTIFtkCN70
+ PtRI4sCP
+ O401b21XTX1kAeUIEqsbwoTuLpk9ec6egnCsLgnHHDIUVtsPKHSMavvXCO05IvMkUTANmN8SJFlIld/gfaMN4O3Y0rb89B7SDrKwDEkg6JgURsAXAsXCEzxvU8kRLK8w92+NEsTWIZP5uQDPpk4YyohTdGPyimJr+hoWVAxw9Vf+ccrHfN42U+fvz8TbIYzoxpO8Sb+AtIGjWFi2OFlvcFtouE/ktDVw+O0nwIHrTJig6SXCjHCRkBH0S7D/esG4lBmp34uzos+LYtxhFCn7+3Ge2VoqHZ0IKZCK1RKUmC5NljT5RGWHYHNZOfoaiKOnaPUM/rHCCWeFLEsM2CwZQqz3FIbavXecOU4aKCvtRPYMzR6EnY9EMXX2tbD1PPU7k1WA8dTvQ1y+NeadQdTwqDCKEbEthiKiO0R/REfN5ZNRaEabGuEYpw7HjEtzeGMeL6KVFx2SwnUII/0vZc3U/VD2YqUyTVUqONqDX66gGNBEbhvHRnYWVUTh+vg+4FChTEFLcVgttSIafWE326iOLzN9Lm3L029+ecRE9qLwn3w6JtOC7BFR1A1gyqEmhTxRJyNykTbLacn/ll5/rP1nk41WLo1owf35fyWJJaDkn4IQmnBZNVr1eTXmsToEQkBKSGZK66sDfiPXiyW2IT9IZQuLu6fBceik2SJahSjOwKqbwu4ITpQOK7bd7k7EIgOBhBpvyKDJM0SMwGpDQiSs69ZsaEu8lDlGeoPVGG+dLmykgSP37QbkdV2E23IBgjr4uwXaNZqUUAFVuFbyXuLVQQDhv7LoGRzzgU3Hy25a2dIgvoFYLilM3/5RQltSi4taRu3K1QeNzvZs84qtcEE5ICY69VCa/RLYt72llWaKTt2nJLwCPZKw2SPIVjDNwmazaUj41yJMXzbnbiU1nUS+wCSjw0a4PiOwQHsX3TXu9l22vFbSOj/FAwaAmc67vXnejfkQglc6XcAs+RGxrtvvzDYNZ74H1
+ NJif7Li1
+ rpo/9NYW2CZ23OHLY5w8EsT8nAiEPC+ForVxHZZGmiGGlKBwUwyUcqBYtM4176tM4EOkjYKyLHS3BT7s4O1ByPd4GQMyVP3/ljCp4WefnnDzA3dMZ5MbxEK09p0clZqeUVQfvF8SgsmCgnA5u/eXRA3dHDEGIXF1WnN20y+2Dti5aVPljGcG8hvWWGKE22oZKFsp87CCJJWr9jOU1M4ekDA9IEa9qNJV3R9eY1s8cFh6cJw8d2EpG+uGXCbjDfIC2xND5SblnUinF7RD3u1Cjt/ICg7AlAJGDLtZPDnwQ79YFvI/ECWlSe8PUvGOCs/II50VuGIb6sUM1CdhNK01CEUben1OrUwFeXw4SmpJAJBuadX6rzsMbE7069fyhOoRHVFmNIuPy5ApvaN6okc31oWPz7Ybr8xFXqU2OZZYfKub7I5Bg7qsXS/qZh3vI7B3CAb2pRMViJMJ3rCdhLu6zph8KF6QUd2vCtUzffLiUD6A6zpPk/Z/zWgOFjMnSkURzZZAzs3Bo0/Usa/jg6JPHeZsgGwXU53e6/jocfUEhJbW+DIGnL4eF8PS9iEAqhwduCwgOV567UQRGrlteFKyTu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -211,64 +212,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/10/26 22:16, Lorenzo Stoakes wrote:
-> Update the file comment to clarify that both file-backed and anonymous
-> interval trees are provided, referencing the relevant data types for
-> clarity.
+> The file-backed mapping interval tree functions vma_interval_tree_*()
+> accept a raw rb_root_cached pointer to determine the tree in which they are
+> operating.
 > 
-> Also add comments to indicate which parts of the file apply to each.
+> However, in each case, this is always associated with an address_space data
+> type.
 > 
-> While we're here, convert the VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA().
+> So simply pass a pointer to that instead to simplify the code, and more
+> clearly differentiate between these operations and those concerning
+> anonymous mappings.
+> 
+> While we're here, make the generated interval tree functions static as they
+> do not need to be used externally (any previously existing external users
+> have now been removed).
+> 
+> We also rename VMA parameters from 'node' to 'vma' as calling this a node
+> is simply confusing, update the input index types to pgoff_t since they
+> reference page offsets and rename the parameters to pgoff_start and
+> pgoff_last.
+> 
+> No functional change intended.
 > 
 > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 > Reviewed-by: Gregory Price <gourry@gourry.net>
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
+Nice.
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-> ---
->  mm/interval_tree.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/interval_tree.c b/mm/interval_tree.c
-> index 344d1f5946c7..2d50bc6228c4 100644
-> --- a/mm/interval_tree.c
-> +++ b/mm/interval_tree.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /*
-> - * mm/interval_tree.c - interval tree for mapping->i_mmap
-> + * mm/interval_tree.c - interval tree for address_space->i_mmap and
-> + * anon_vma->rb_root
->   *
->   * Copyright (C) 2012, Michel Lespinasse <walken@google.com>
->   */
-> @@ -10,6 +11,8 @@
->  #include <linux/rmap.h>
->  #include <linux/interval_tree_generic.h>
->  
-> +/* File-backed interval tree (address_space->i_mmap) */
-> +
->  INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
->  		     unsigned long, shared.rb_subtree_last,
->  		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
-> @@ -23,7 +26,7 @@ void vma_interval_tree_insert_after(struct vm_area_struct *node,
->  	struct vm_area_struct *parent;
->  	unsigned long last = vma_last_pgoff(node);
->  
-> -	VM_BUG_ON_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
-> +	VM_WARN_ON_ONCE_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
->  
->  	if (!prev->shared.rb.rb_right) {
->  		parent = prev;
-> @@ -48,6 +51,8 @@ void vma_interval_tree_insert_after(struct vm_area_struct *node,
->  			    &vma_interval_tree_augment);
->  }
->  
-> +/* Anonymous interval tree (anon_vma->rb_root) */
-> +
->  static inline unsigned long avc_start_pgoff(struct anon_vma_chain *avc)
->  {
->  	return vma_start_pgoff(avc->vma);
-> 
 
 
