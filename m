@@ -4,199 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA638C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:30:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A21C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:30:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 185FA6B00AC; Mon, 13 Jul 2026 12:30:52 -0400 (EDT)
+	id F1B4D6B00B2; Mon, 13 Jul 2026 12:30:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139006B00B2; Mon, 13 Jul 2026 12:30:52 -0400 (EDT)
+	id ECC3F6B00C4; Mon, 13 Jul 2026 12:30:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 026996B00C4; Mon, 13 Jul 2026 12:30:51 -0400 (EDT)
+	id D94AB6B012B; Mon, 13 Jul 2026 12:30:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CA2406B00AC
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:30:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C64C1A0211
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:30:50 +0000 (UTC)
-X-FDA: 84984292260.27.1DDC65A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 59EE740002
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:30:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LFTGJLmh;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf04.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783960247;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A51FB6B00B2
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:30:57 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A972120113
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:30:57 +0000 (UTC)
+X-FDA: 84984292554.09.4E457FB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6BB7612000C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:30:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9AjbsfH;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783960255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=shJFAyHrud5YcV5uquL8TTVZ94XzsbEgXibQPpr2JOQ=;
-	b=0noYkAkUnZAu2fMU9JngpEuZhl2unYkB3ZHCZ4aKdsY1tBwt1LA07nJtdXnTeOvcl6KkLf
-	0elChjJNriU8mC2lKjsV2PFLquEk3Dpl+yZ0zhjvC7uUNvagphiAdVt+6b772YB2zTaKIU
-	MjbM/+hEtAGTNSwzEdnn9yxG7vqKjj4=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LFTGJLmh;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf04.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1783960247;
-	b=cdfGgqUTzmNwu249FmEXAp+OZ4UtwOarrMk5uTv+BVYI+zD/vWmiR+8YIMu/BYWIeeRGGo
-	gHEVAtUyIGSJMsP1/fskMCJWiz6jFBDOQNXcbCsjOd9NQTLGHRxLWRy9PcnWqdkJxIq3D1
-	3cgNFPNmMgIBzGJC+LdUq26cPl8rDCU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783960247; x=1815496247;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=+iM7UMlTI5Awm5KGCZHGksDQhUXyXkHsyWUwQTroEf0=;
-  b=LFTGJLmh7fQ7MIhXkWdnOH1qgip4DE3O/MXY9dH8WBcOsAveiaNA6ema
-   qc7teJK2eUqHy2YQ8aTpMyX61h+02wKHGRDbo7PDKoVROHFkDuryjuz9C
-   1cTCT5yTj/vVymSkYYZQCDIUgQBax4DYy4AB9Yg/N6xQY+9Lfr7SQ5YTi
-   +sgtLPLYqpcRvx3fCFPc0DeYkPmNbFvZtnMWyCGVD6YaSbTJmKqcdabUy
-   +2EZNg9myGjhwKXZI+gJOU0ClmxffMRDb6v5rjoJNX4Ym24zFCCoeSgUM
-   2jXVd01eMtYnQkju4j3mkmATbG+cYGU7S1vEAPK7xE2YQbCeJm3aVqeNO
-   A==;
-X-CSE-ConnectionGUID: jIaBXdYuTDGJxwS0PEakcA==
-X-CSE-MsgGUID: YGo5YqGCQMO19p8K45ricg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84430193"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84430193"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 09:30:45 -0700
-X-CSE-ConnectionGUID: Q9j7w+qrTO28zp7CylLXDw==
-X-CSE-MsgGUID: MXcEJyz4T/2oo2OJ9YDiuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="280011461"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 09:30:44 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 13 Jul 2026 09:30:43 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 13 Jul 2026 09:30:43 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.11) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 13 Jul 2026 09:30:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dO+Df+r51vSGgJY4q24+uharpanMnAallz2mI3Wv9zfG5PtxO60Bt8csozdhkeaoDqyqcA2bYPTDm8kh1lPmCrAfKswqdgrMh6NbNGWsH2KKM41xkcVMUsOPpxwkQzuGgAKl0/67xL+CwJwxc2fZAEWwjZR6g0fSYx9vYjaul9ourHKj6LIDegLgIxAXT6M7nn3UnQtXpniIak5Oi0ojCxbahht9qBdhejfvYX043jxmK8IThuhX+mA9bSXTSDf7BI6pialtvhX3Tj7IkJfbsDzoF/d1dRg6x/heHBiA7dHl5vX9NobCowNEEdT2p6n1nrmNKC1Zj8lI2vVWsMjPVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=shJFAyHrud5YcV5uquL8TTVZ94XzsbEgXibQPpr2JOQ=;
- b=KiHV29us3ehwfKhFbqTR4jLDuqIRcBb1zdwKy2NrLh6jsYNcT22vlPjreBKR8HrtxSZUOUPAVYd7r7q2Kdqw/Lxjv2LCk7HQcc3Yxzh8ZBkPWKc7iQSB4OM5ynTjLzFk2Wn80ppvNmb2FzQOX8Mv/FllXmSzwzQY6KxG5A3kh5JobhiZbkVfPv7zrOYOa3EVKcIFPJZg5QaQRaTz8y7DpDu0eum3/+KXnanhEaqU8URb3CoaGpvFgneiaDQqlLm5b1sxD1xVS8tT2s9u1RTpjFGtvINDU2rLYlQLk1dEfHuwdzLE9VJpRx7lU314RbVe/09B3kvhg5QI+NG6VEZ8Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by DM6PR11MB4531.namprd11.prod.outlook.com (2603:10b6:5:2a5::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 16:30:40 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.21.0202.014; Mon, 13 Jul 2026
- 16:30:40 +0000
-Date: Mon, 13 Jul 2026 09:30:35 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>
-CC: <airlied@gmail.com>, <akhilesh@ee.iitb.ac.in>,
-	<akpm@linux-foundation.org>, <corbet@lwn.net>, <dakr@kernel.org>,
-	<david@kernel.org>, <decui@microsoft.com>, <haiyangz@microsoft.com>,
-	<jgg@ziepe.ca>, <kees@kernel.org>, <kys@microsoft.com>, <leon@kernel.org>,
-	<liam@infradead.org>, <lizhi.hou@amd.com>, <ljs@kernel.org>,
-	<longli@microsoft.com>, <lyude@redhat.com>,
-	<maarten.lankhorst@linux.intel.com>, <mamin506@gmail.com>, <mhocko@suse.com>,
-	<mripard@kernel.org>, <nouveau@lists.freedesktop.org>, <ogabbay@kernel.org>,
-	<oleg@redhat.com>, <rppt@kernel.org>, <shuah@kernel.org>, <simona@ffwll.ch>,
-	<skhan@linuxfoundation.org>, <surenb@google.com>, <tzimmermann@suse.de>,
-	<vbabka@kernel.org>, <wei.liu@kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-	<linux-hyperv@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-rdma@vger.kernel.org>
-Subject: Re: [PATCH v8 8/8] drm/gpusvm: Use
- hmm_range_fault_unlocked_timeout() for range faults
-Message-ID: <alUSq0o7CC2Pnr+H@gsse-cloud1.jf.intel.com>
-References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
- <178371883977.900500.2198446134676328631.stgit@skinsburskii>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <178371883977.900500.2198446134676328631.stgit@skinsburskii>
-X-ClientProxiedBy: MW4PR02CA0002.namprd02.prod.outlook.com
- (2603:10b6:303:16d::10) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=PMyE14iizY5E2lFXOalrRCdzTIzlOnvgtBrcDbYeja0=;
+	b=nGdn4ooHB7pH34Y9MoBULsELizFSGth2lc3m1jkkh6aR3koRC2JP5tLjli/kVAZIImXtkh
+	gP7rdKhPcHwItJjuCP1pRzyqqicc+JCjdis4pAll/OTlaksJAJZ9UHrszXqXgKlOXmP+KA
+	UESlbqqsIedaU2AeK1P+ZQtNxsS0fgo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9AjbsfH;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783960255;
+	b=fkcrbst6VKGECNRmik6F4WgZdVaM5/EP4Ilnb6oK8K9Dvnvvwvyi949GfR91S6aOuzBj/d
+	l13f3m0DsNlPDkw87FoPegMAe9+z7ZEIw4s++SxBP48GFV9XNbrPwT2WqQdI3WWIrNNCBF
+	+6HA6hJ1lw6iyQBxxzDI8Yr/RR5xxwU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E8CB66013A;
+	Mon, 13 Jul 2026 16:30:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E541F000E9;
+	Mon, 13 Jul 2026 16:30:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783960254;
+	bh=PMyE14iizY5E2lFXOalrRCdzTIzlOnvgtBrcDbYeja0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=N9AjbsfHTJXoFHnSBGJkPeYeWmKCNZDfuT0DOOPJetqIJEOAhDeeJGyh1edKit18Q
+	 W+B3YaBZZqjo/WPcS02OFCCvb4nzgLBg+WcbRjgaUY8ARbI4WSjUWqzTTTdrOKvhl2
+	 yrGVc2FWkptlj+uMGaHZqGsjJUeth/zHoY7bjpczYrkIvkEVNZ8Hj+LhZbsNjC8+Rt
+	 DoSQ1nD6MwAM41sYWMG2sk64cIOx4A9tOkrRmdckunZdZRZBIcppKnsIJZg5FblI7z
+	 FIhv7+3d/fxT6MniDEd3zWnVSx6kEHLQuPwaxGpeeUnx/yMw5UnC8GyI9OJ3zqOjAz
+	 SJHjD+q1JOjOg==
+Message-ID: <324a1790-ab9f-41fd-8671-dcb2875b9bde@kernel.org>
+Date: Mon, 13 Jul 2026 18:30:46 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DM6PR11MB4531:EE_
-X-MS-Office365-Filtering-Correlation-Id: 038359bf-0ffe-445b-af99-08dee0fc1388
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|18002099003|22082099003|6133799003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info: Uy1x/Y56yo0/5EKDU1d1nqG2fXHZ0QxWg6ItuwcJWEZMCPGFdxzVq4IVduoQ43AyvoEOXSf0MAcFVyehjDfhkCX0i7su/IPvsXyoiHoQZqQ8Dv2HP8AEikASNYLZS+IuysMzzEby6H35hsrYGzZLxH+b8fAOBaN8VtmfSXIA6G1UokKRJ4rzfBOpOvr1dw4ywMjWl+i08Z89lVK1z0pfygG/OyHAKRFGOoUvyGmmxyEd8zxEhs0R8SB9NuGcKp9f5i4obyAPiH9u8WtVWATwiDNkrBwI+zXe3P8IuMu7Z9XoKKaNxeDIHll/QX9KEiK8xALVEGWp2ell5clgbouxHPpS0+ycPFLOF/nqM5StqsL60slg18SnrJW6BRm3ht28ANMjSeYSo97dcbKxl8eMrqC0mUMPRlieyOUGiWtdASg9JNBjHSn9GzJhDLNWA+6wqL13Mh/Aqe2mkEWJiCd/tm8c/QZkNvR/jO1b766NF2WVIrlOw1+ubQcf/durbzxLQWlF18fUwvH1j7Mt7Tf3uTDcLhh7YaDZzgg5zrUkmdGdS7ChUbxAQEnuIR0sUqUjuq/zsmNaWzQKom+tBJ06fWfIxcBVku67npUvTgbFYe6nnYlmt2PK7pRzk3mfraIavKfx33wP3+/HKfJLkx7dsT58fS7ierfERQMCOaQcVxM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(6133799003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?i35I8h1Qg41m/1i0+vp/K+Ws0I4HcXNsWMXEyeFo6j+ErcwN0vF89z7MxUJO?=
- =?us-ascii?Q?TfrEy1OS6JEn/HioGZBFBHqMvUpvftIHdDiwUwYTV8gF9b+PKGfNT9EofcIF?=
- =?us-ascii?Q?kxAr+JW68gMrgQmIG7HGYwrZtoFOxmxdXddl52+WqInjBuYKtuSVn+xrhh6w?=
- =?us-ascii?Q?ofmp/i+zvbrO5mMH8TbO5lA/XclWWPhlvRpDyywFuaR+h7HwimenEK/D4r2J?=
- =?us-ascii?Q?SRzl2LfbTeWNRDpQ3FvBE7RIql/eo0ErFk6cNc+ust6Agl71ywqyJ8AjQVSJ?=
- =?us-ascii?Q?GFNh7foo9S5O6TW/LDRUbbJPdkK12+mgZhYC2JvHVfZfuaOarttpXlX9pAs2?=
- =?us-ascii?Q?ZY0RbdAJzuD9/zud/bepmkd2hqWGAqKcfSJqTLStvlNFxZzZEWeQ4pja8BAo?=
- =?us-ascii?Q?KBJ4uudo8rNms//io9vUACgyxAWNop61RknymYk+8rHpcJ8IuvSNN5T0Z+Qq?=
- =?us-ascii?Q?NOWMy1oe5MiNIf4vW4pSQggeqUhhnQ74AMRj7d4UMa8dfxvHMTlhIawvp6t8?=
- =?us-ascii?Q?FllhpTRohH/fP8ggN0VbLme0iut14hrCXuWQRSv+4MqAAK4RVkknbHfDwobo?=
- =?us-ascii?Q?ZbB2E9d3YSyhUfeU6EIelh9y7VVKLkYFL73qOpjG3LkgjSkTWCBfZ5xeebLi?=
- =?us-ascii?Q?rdjXqwQxrU+0Kx50KRPDX+Ic2muPtZX+70IgW1PeXxScdKKd22nE0RxH6tbE?=
- =?us-ascii?Q?ccvGnfi2tMMGCqimetFGFAYHnnIqiWUH7UNK14z4eHXbW7nrAUyuRJ/e2Dau?=
- =?us-ascii?Q?krf4cONY2ro48k3e+4KAgV10esntGIZK7YrKfUW0ndihJSECe8lScTpfMYs7?=
- =?us-ascii?Q?5QL3Ce8S05doBSHzVOyCbTsfcX71a76H+0LkSO3WiKbCSx27kgpsxGk2FFh4?=
- =?us-ascii?Q?6X3buTsP4ZcSHsditXTWXjRjJ/0peZJwQ0p07Rbr3SCIdPcbpKeKpLBCD2Zv?=
- =?us-ascii?Q?M4HUcgwcHL4iOk331/rTlkyYl53Lj0OgM7WXXrYNKL5TUdmvEYmYEXnwxchg?=
- =?us-ascii?Q?YA+jQnptLkAm2bTb40fXKDZPD/TjejuZnk6j0LrsilzT0xK6xCRaP/rCLIMC?=
- =?us-ascii?Q?Ugt3jdORZKcHh5Kkc+raIpySlobyBJC+spPx8stKH5WprR41XpdxtQnIn3P8?=
- =?us-ascii?Q?XjTwnInZjmp11425f6WoOnN5XDuXOMnHiuHBVZ10ps6eUmOkH9Tp+eJc02js?=
- =?us-ascii?Q?XS69z9Qah0onHgzrz3hDooM3ohrBxwqoWZ7F0zK4pVJ6NZ1FKX4k6J47Fi3k?=
- =?us-ascii?Q?0TbNI7QzwU+zR68mhTg4iskc6DAz2O+Mkkhsph0IbOgPVpnAuNrZjw3Br/4G?=
- =?us-ascii?Q?qW4JpJ7skduIky6+IyaggiX8k9f2KZaAdE33Lg1rdngaAMzr5WjjHYjpgE7q?=
- =?us-ascii?Q?SNupJpp8Gt4mFJp3Ey39m0I83Bffw934wPJhgPyz6ate9+aub8ag+I/0Gt+o?=
- =?us-ascii?Q?sL1d18Ctv7dN0+jGMwVx6CQigMJJ6xLmL+rhCEerZv/q3dwvSYbfIwG1p9R2?=
- =?us-ascii?Q?ckZe1xvps6VZdexAYiiiTE2ROsZhB2XwF4iaXOQF89ZfatOqLED2zAm7fwdb?=
- =?us-ascii?Q?CuFmgwpL+8qGaEoimLEpYnk/huUgRlojFELYMCNs+bbHslcQUH45PsQnX70y?=
- =?us-ascii?Q?Z1cMiwmWGmULvi4pz2yFdwMVfwCnXsLoRPAEsLMDR8yuNQ4FHHoiHyRLVZae?=
- =?us-ascii?Q?GFBYFLNY6D351FPQrgLPoyvjLLUtTEIR7Wf62GeS17rEC8cADr5RfiKfC19L?=
- =?us-ascii?Q?7oeKnjo1Ew=3D=3D?=
-X-Exchange-RoutingPolicyChecked: Uz3sd0ycUUqWQ5KTeaItux2tw84wrnYOP/bPowPxlfT6bc/PeHAaQiNH4SatJw6zGNjbWxRnP5sD5JjkASnq7ZMGn/4YlbOnQYuGzic2xwaJZ73QxlElHrcDQBw8eAaZjL9SgTgFJ3rLUvjdmcOoChpa0KJklBkDflFuClCRUoCNB7RnhiFzkmQ7SvDPPF+w8QBcWMHRJ4YVSLJ02I/bEYNvDvdqySeTHOyFIIUIKnF/Wp0fLaOLMOSSzKX+CQEOwaYg82YvkfeZzSg8ovKmw/Wfty+H2Psxbf+dXGJUkjHBurstLpZj+xGLusUaHP1JVgBzVFMsrRsTRvrW7Pd2lg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 038359bf-0ffe-445b-af99-08dee0fc1388
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 16:30:40.0039
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qIzXeIH+EO/jPACPKgGCD2jncJwlH1gYdiRQ0zxBrmUz9WUoPq6pex720qNzBuYNYpO3uOuOpkf1T8bNrQpbpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4531
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 13/18] mm: Remove __alloc_pages_node()
+Content-Language: en-US
+To: Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
+ Yosry Ahmed <yosry@kernel.org>
+References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+ <20260703-alloc-trylock-v5-13-c87b714e19d3@google.com>
+ <DJP0VKJLE8TE.6EDLC2BFI1SG@nvidia.com> <DJXJRNZFBPQ2.2S6CM4YAKHVQ5@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <DJXJRNZFBPQ2.2S6CM4YAKHVQ5@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 59EE740002
-X-Stat-Signature: xf81poo4fhp5oatf8zwts8s3ueasp5ey
-X-HE-Tag: 1783960246-539092
-X-HE-Meta: U2FsdGVkX1/S0CLJteg7S4h/rXDGcKux9WlPBpxGJmVadYf+hfCqFXCYt6m4VLnnYAYdHkHCmVymLzzdrH//+0qcbIRAz2DemU5n6tTjnLApTClS76Pqq6pOCuEacut1RT0WzQE65b1vhK77pz228jn1cBZMcHsupLKXjpVLoVwHxp3dd7T2pg6RSyCGhPrLoBTpfxrt52a+3Prwzi0az09MSFBO41ia7ODihrE0KKNJv0mUCJX/WRHfEdFLatnD9gfHyp+m66OawBK6ByDMzm8yD2Qg+jL9sEmEL95hS+8XChTTCspDURNxs6vD4izFjRosp9rkFVoFd4poy+Bk1dSMP+TDziKHrpbesIzZ9Nxu6s/5CxFa7NCTsV0ZdtbFpVVqxlO7PQOGZtUIQVbY72FiYiPzcDuBIKgGDXrcR16teISKWx0Ygb/eJtIqQm3v/hvq5uEow7oSYUvROPS4v/oId6O36f6ndGwTLXLQ2Cw7avbGr6yyidfCJ1DQq62UzqTvyA2cqI/QmSZRN92AJmXrvByDSkAmVtz7bz5u8HO2AW9nf9nCDhwGzK7+9VP9N1LlVZZwxqWnJ1gEcahN7acNKjngExA4BJKAJ1zZner+svCdB24rqjqq0sZmo1IKvjF8dpO5fQ0nhD9hGcZyggMTceAUJhQu7f1hMtwi1XoMOhxOaRSoFDGzg0OsVEk9JGMYDH6peZJEHDVcYLv8FTqha4MbIuXxM3WAlxX2+uMYNA9v+0H1Yjh5NRtc3G9S3FY0nHPsXfCzmt7R6Jat/pJNHtuIvjs798TIFCz4Dt3WjNHdhOulpWxzpTpHZEf9V4GAGkFcFOwiMcV28oz0BuWTyiNXLGhR0prfz9sUQS1FZ1DD8dpM5NqanMaMI18yKgOJLgd4xqD05auPGTIXhx0HnK/KVrbkR8PK9SC5K61i1XwnfSZDjet/ins54aAf5Rh4ioUy3VGPggmmNef
- YSyZl8YZ
- WrPk//atYWDoqOMvAL68DZ4gmLY67sjQezVI/GJv0utfUSglpShRSOMEDXuIW+cZi3NG2H+UuSVqoV6rIQZ0Go8C2SEXkAncYjL/G1f09/pCPCeA5YP2rtOIMnRMe2APrF9kDRYSKXGLNj2zTgdK77FNCawmciE8pxrxX1NqnEOhJNJzVauvm831AvCX1ga5CvSHSO/2Xoylgw/ZSunzUaSRZ/agZ7i5vmtwcKI4vglRobVuNscKrTKS3JPrwL3CE+wQ50Pm0JzRG+uEWcNnsHGCeXhKina8y/xuMabypMcGfS68yR327pUkswhT5rPafJXuG9nPUCt2v513IuSM5E0aSD8pe/AhU45Hmrpeq/8zeuMhsk0NnTawcm/U4uMjGFZ3oRAWiQKUGPr8Ol5+w9iPrFeoTQMS0mdBdQ6UQgiqAOh0xtwu5DfXkcs7Tu37icqrD+Vz8jsKP017jK0q01ZxdqHErDVY1pCYK1AzLtxzDxadsFZDVCO1z1eRpUPrtX11ewPu1Y15kX3M1orz19xBL8SyYP42dZvae8ZtocT9s8CA4bOBFk/eczmqvdaPDqfvAa40j7RSbDzL5wHAdUmXM0QwTolZV/ubyOlxjyhkBqXRfnhdC4RL6Qx7H3ko1hixG
+X-Rspamd-Queue-Id: 6BB7612000C
+X-Stat-Signature: tmqio4q8h4fup9tsgiqkfq6x4nuajiau
+X-HE-Tag: 1783960255-951379
+X-HE-Meta: U2FsdGVkX1+yxHRewPP1HfgdgYRjTvE3cYvrm6RYfkHhdjXUMAkwmyi46XWTNSEaNl+4uFhCz1TQerpfYt1LvcgeRPmyKvYrCKJb6aVeaeRaULb8T/KVi1s22Wf7iKEvQYR27b1YsgzAUXyaOnaDyoCPEjfzY/qjr4iO+mZgbM77xu+TyLAZ1H7lcGRF72JP8HNIJ7AGIsyKwjEo4CFHj0ST9vgYktnAkh9CLxrFxE1Z/3VsFe726wjnKSIYVX9ZaPo0zxMKI4APE/Fw94DV/DSu2v3n+IQ7TqyPaz0daxJ0pfvUWIKKlBTdJOgBG9HdVr3uJR60envioyN+cRyhpyvjbf38BVNR5lSdzg6bNwuowwN7hjmr8eEZaFiivqDocK2MJ/O8SikbrQd6d9UePlFpmhgPIYhesCP6lK1OofXC01Q9aF15byTV0lgCN2noSGDqao2dJjyjHwfH7PsHwiXm3vqMXKfapY1t980lGY5ITudkova3ceReIHmv4nYU3sQZOotc9tXQVffvFjQkxDJFFeUoNixQ7xQdP5gy4QXqYBHYkfOEfBpA6v0+AblMiDB2EZOe1ZD3Lc4C+6tob9wIod4PFHJSezt2iUYdoJ4ahLF1EAtNNnEqzPL5zb/djpczYU94dalA4Iq1PA7OLAwzfpwpaIBP7+TWljV/GePYOHB29cXZMVT3f0DLypU2bODO2mCqfLyAzJChkPljupjvxoCrdKPIs9kDGiw3UXZ37CpklGK+EgfiQYO+C8qn3w6F3MNQwJszb7vY4d2bovmVpwzylgxLrZrIImw3rjYr+ktTjporqbkOvI9w5iYmPmH+fCOUchmL/4nM2iYqB86mAF+KN55ukEfoMTcsA3pF5FLqHqEwAmk8SOMMG4gxwzxkHa5z4f3ZJJcGYRSb/3wfPQP2Cm3ccETnjP66mAflNga0ailHe9z+oHLjKnbydSW6YWmiZrrRxO411Wx
+ LNIBWIC0
+ oGFctZjE/V6R543N1dHM2R6HP22pwxBt/w+ftotgb8n5/P26PiCtIfI9Jv3dIIvwWgL30m5Le6Py9fM4y7M3oVBGZEIQJdx9375ZrPNdzs8zlRgVkOTJ6lYaAbvGvEcE/yapJ5ikTavFvGuOGEffrsqoqtVpwsXpklUtWaPnuvJdWfr6UejgqN+adZW5Zp8G9sJH2balXqIHnrX1kLINczJq60EZpjfB+62g/laJeynLxVT3XMzaiMqDXnOPKiew6k8fICd/w9LJk6E/4xNZjwJGdKPBTiKpDUCRcfW7LuYFQJAOrU9RSEgN975kWUhGTwFkIiNmMWO9jdaMFRIbcfHSEaMGsaZWFybdd5I+dUsCzG1pRqTsSET30IkYqkVhmuiY++mgi/8J1ftMmM57M2bIQOv/nUFwVdcWDqVYsjfTTSs0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -204,128 +153,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 02:27:19PM -0700, Stanislav Kinsburskii wrote:
-
-Please send series like this to intel-xe@lists.freedesktop.org list too
-as this will trigger our CI which expercises the change paths changed in
-this series.
-
-> Several GPU SVM paths take mmap_read_lock() only to call hmm_range_fault(),
-> then retry -EBUSY until HMM_RANGE_DEFAULT_TIMEOUT expires. Those paths use
-> MMU interval notifiers whose mm matches the mm that was locked for the HMM
-> fault.
+On 7/13/26 17:26, Brendan Jackman wrote:
+> On Fri Jul 3, 2026 at 2:57 PM UTC, Zi Yan wrote:
+>> On Fri Jul 3, 2026 at 8:31 AM EDT, Brendan Jackman wrote:
+>>> There were only a few users, which have been removed. The only advantage
+>>> of this API over alloc_pages_node() is avoiding a single conditional
+>>> branch. The disadvantages are:
+>>>
+>>> 1. More API surface, more sources of confusion, more maintenance.
+>>>
+>>> 2. Worse impact of CPU hotplug bugs: most users of __alloc_pages_node()
+>>>    were using the result of cpu_to_node(); if the CPU gets hotplugged
+>>>    out this will return NUMA_NO_NODE. If one of these paths fails to
+>>>    protect against a concurrent hotplug then page_alloc.c will use
+>>>    NUMA_NO_NODE as an index into NODE_DATA() and cause some horrible
+>>>    memory corruption or other. With alloc_pages_node(), the code might
+>>>    just work fine.
+>>>
+>>> Ulterior motive: this frees up the __* variants of the allocator APIs to
+>>> serve specifically for use as mm-internal API.
+>>>
+>>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>>> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>>> ---
+>>>  include/linux/gfp.h | 20 ++++----------------
+>>>  1 file changed, 4 insertions(+), 16 deletions(-)
+>>>
+>>> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+>>> index 01d6d2591f49e..3bf55a5f9143e 100644
+>>> --- a/include/linux/gfp.h
+>>> +++ b/include/linux/gfp.h
+>>> @@ -256,21 +256,6 @@ static inline void warn_if_node_offline(int this_node, gfp_t gfp_mask)
+>>>  	dump_stack();
+>>>  }
+>>>  
+>>> -/*
+>>> - * Allocate pages, preferring the node given as nid. The node must be valid and
+>>> - * online. For more general interface, see alloc_pages_node().
+>>> - */
+>>> -static inline struct page *
+>>> -__alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order)
+>>> -{
+>>> -	VM_BUG_ON(nid < 0 || nid >= MAX_NUMNODES);
+>>> -	warn_if_node_offline(nid, gfp_mask);
+>>> -
+>>> -	return __alloc_pages_noprof(gfp_mask, order, nid, NULL);
+>>> -}
+>>> -
+>>> -#define  __alloc_pages_node(...)		alloc_hooks(__alloc_pages_node_noprof(__VA_ARGS__))
+>>> -
+>>>  static inline
+>>>  struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+>>>  {
+>>> @@ -293,7 +278,10 @@ static inline struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask,
+>>>  	if (nid == NUMA_NO_NODE)
+>>>  		nid = numa_mem_id();
+>>>  
+>>> -	return __alloc_pages_node_noprof(nid, gfp_mask, order);
+>>> +	VM_BUG_ON(nid < 0 || nid >= MAX_NUMNODES);
+>>
+>> Could this become a VM_WARN_ON?
 > 
-> Use hmm_range_fault_unlocked_timeout() for those faults and pass the
-> remaining retry budget to HMM. The helper owns mmap_lock acquisition and
-> refreshes range->notifier_seq internally for each retry, while GPU SVM
-> keeps its existing driver-lock validation with mmu_interval_read_retry()
-> after a successful fault.
+> Er, it will almost certainly crash later if this is violated. Personally
+
+Agreed.
+
+> if I'm enabling DEBUG_VM I'd rather it crashes with a helpful stacktrace
+> instead of chasing random poihnters, likely corrupting memory, and then
+> crashing later in a completely undebuggable way instead.
 > 
-> Leave drm_gpusvm_check_pages() on hmm_range_fault() because that path is
-> called with the mmap lock already held by its caller.
-> 
-> Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  drivers/gpu/drm/drm_gpusvm.c |   52 ++++++------------------------------------
->  1 file changed, 7 insertions(+), 45 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
-> index 958cb605aedd..6b7a6eaebcd9 100644
-> --- a/drivers/gpu/drm/drm_gpusvm.c
-> +++ b/drivers/gpu/drm/drm_gpusvm.c
-> @@ -788,22 +788,8 @@ enum drm_gpusvm_scan_result drm_gpusvm_scan_mm(struct drm_gpusvm_range *range,
->  	hmm_range.hmm_pfns = pfns;
->  
->  retry:
-> -	hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
-> -	mmap_read_lock(range->gpusvm->mm);
-> -
-> -	while (true) {
-> -		err = hmm_range_fault(&hmm_range);
-> -		if (err == -EBUSY) {
-> -			if (time_after(jiffies, timeout))
-> -				break;
-> -
-> -			hmm_range.notifier_seq =
-> -				mmu_interval_read_begin(notifier);
-> -			continue;
-> -		}
-> -		break;
-> -	}
-> -	mmap_read_unlock(range->gpusvm->mm);
-> +	err = hmm_range_fault_unlocked_timeout(&hmm_range,
-> +					       max(timeout - jiffies, 1L));
->  	if (err)
->  		goto err_free;
->  
-> @@ -1439,21 +1425,8 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
->  	}
->  
->  	hmm_range.hmm_pfns = pfns;
-> -	while (true) {
-> -		mmap_read_lock(mm);
-> -		err = hmm_range_fault(&hmm_range);
-> -		mmap_read_unlock(mm);
-> -
-> -		if (err == -EBUSY) {
-> -			if (time_after(jiffies, timeout))
-> -				break;
-> -
-> -			hmm_range.notifier_seq =
-> -				mmu_interval_read_begin(notifier);
-> -			continue;
-> -		}
-> -		break;
-> -	}
-> +	err = hmm_range_fault_unlocked_timeout(&hmm_range,
-> +				max_t(long, timeout - jiffies, 1));
+> TBH I don't really understand the "don't BUG" culture we have in Linux.
 
-Unaligned indentation.
+It comes from Linus. The main motivation AFAIU are cases that would be
+recoverable otherwise. This is almost certainly not the one, but it's hard
+sell anyway.
+I think he would also argue that the "almost certainly crash" you argue
+about above should give you enough info for you to debug it :)
+It's likely not the case that would silently corrupt something and then you
+crash in completely different context.
 
-So I'd write this like this to avoid weird wraps:
+> I usually just go along with it coz it doesn't seem important enough to
+> argue about. But now I'm wondering: if we really don't like VM_BUG_ON()
+> why not get rid of it completely? I wonder if there's some case-by-case
+> difference that I'm not picking up on.
 
-ctimeout = max_t(long, timeout - jiffies, 1));
-err = hmm_range_fault_unlocked_timeout(&hmm_range, ctimeout);
+IIRC we did agree on getting rid of it, but there was no concerted effort
+yet. So we're in this "if you touch something, remove it" mode for a while.
 
->  	mmput(mm);
->  	if (err)
->  		goto err_free;
-> @@ -1736,24 +1709,13 @@ int drm_gpusvm_range_evict(struct drm_gpusvm *gpusvm,
->  		return -ENOMEM;
->  
->  	hmm_range.hmm_pfns = pfns;
-> -	while (!time_after(jiffies, timeout)) {
-> -		hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
-> -		if (time_after(jiffies, timeout)) {
-> -			err = -ETIME;
-> -			break;
-> -		}
-> -
-> -		mmap_read_lock(mm);
-> -		err = hmm_range_fault(&hmm_range);
-> -		mmap_read_unlock(mm);
-> -		if (err != -EBUSY)
-> -			break;
-> -	}
-> +	err = hmm_range_fault_unlocked_timeout(&hmm_range,
-> +				max_t(long, timeout - jiffies, 1));
->  
-
-Same here.
-
-Nits, aside LGTM.
-
-Matt
-
->  	kvfree(pfns);
->  	mmput(mm);
->  
-> -	return err;
-> +	return err == -EBUSY ? -ETIME : err;
->  }
->  EXPORT_SYMBOL_GPL(drm_gpusvm_range_evict);
->  
-> 
-> 
+Here I think you can just remove it here completely, and not replace it with
+a warn. Realistically it was only potentially useful for an unexpected
+NUMA_NO_NODE passed to __alloc_pages_node_noprof() and that's gone with your
+patch. So keeping that check would be an arbitrary paranoia at this point.
 
