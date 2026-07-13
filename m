@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98CA4C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:34:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E217C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:34:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BE1C6B0096; Mon, 13 Jul 2026 05:34:27 -0400 (EDT)
+	id 8FB406B009B; Mon, 13 Jul 2026 05:34:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96E806B0098; Mon, 13 Jul 2026 05:34:27 -0400 (EDT)
+	id 884EF6B009D; Mon, 13 Jul 2026 05:34:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8368A6B009B; Mon, 13 Jul 2026 05:34:27 -0400 (EDT)
+	id 74E9D6B009E; Mon, 13 Jul 2026 05:34:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CE876B0096
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:34:27 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DAA211C9761
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:26 +0000 (UTC)
-X-FDA: 84983242932.02.3FD6316
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FB246B009B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:34:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D67AC40A77
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:32 +0000 (UTC)
+X-FDA: 84983243184.21.6B5DA05
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 85BCE1C0006
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=B0sfq3Zu;
-	spf=none (imf18.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id EC54C40003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tiAaKL4z;
+	spf=none (imf11.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783935265;
+	s=arc-20220608; t=1783935271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dW7Vq6cjkTCrvcbEIQR0PCHXxThpm1Ug/sJnXEUfJ58=;
-	b=A+Wucm8sPkfkpfoo0P48jJkvPQ4cmDY80pp7shdK/+Cu+E9VF9eJCIxBfcA20AzyY5gVtz
-	SGF+wpjZTBga30ZCkn8jonUqSmyALbOPg7w0ku+pAFRYDM6aYZsl+ozRVSvRPTiSlaetcm
-	7+Q7a66/UHsFdIj5Rto4nxxCIu5TIuo=
+	bh=QDYSbwXCG45/hB8ZWhmC/5VqigWfmB492AjS1oslv7k=;
+	b=TcgDuM8jauIkWKxXoR9J3wKFyFODiXCMCdmCTNs8/ZWlbqyYBnCV/1Zf9GQHYgkzO7PLsb
+	ZNdY7hn7kDIbeEuJpjisXj0pxP8BcEvGxe1V0HRxEXfDm7rt3tzkXBehPzLH2ADBYESPUM
+	QlEhsgDA+lYYHb/0a+vxqe+Uve9wyXM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=B0sfq3Zu;
-	spf=none (imf18.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tiAaKL4z;
+	spf=none (imf11.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783935265;
-	b=jz0myP1ZismQcQQ2oLiLKXTTvjUiyIleDOpv/TF1wwnXOctEToB0ct3sCyiDniEd6YLmwk
-	adyoC9lIoi3tq2xVT3Ornkj5fkqgoHS5Efd/rSekKlRvn3QBTAI34toJtm8HPp9XCd8e7i
-	SSO3aY3bT08o1Zby7nTngmC7hvtLl1M=
+	t=1783935271;
+	b=kVwpnZSjOShCl5lERx+HaMP9b8nyMmTB3TDJT8UhrPWFSb8IothuIeZukm2AI8mtgPJcug
+	tjMdKoS4uw8pbF1lsX9NZzJIOjXfMXb35vZuZwzgI5OHM5FgzVEG9IR5Gc0nh0z8rWYpUK
+	PSRtJSKfmY3WKbfLrYSXV6iX3eFny7s=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=dW7Vq6cjkTCrvcbEIQR0PCHXxThpm1Ug/sJnXEUfJ58=; b=B0sfq3ZuO6mzddV+0KoWeWncDB
-	PzssS3f19CaSveis6YjglUYVJX6EGH/Gz7bP6fTko7JsBjCr7SmmJ0R90E6dz8xQSQad0tpQ5s3d7
-	0VdWrCkeZ3NELLpnf3+zLMFwovJo9lF25TQc4i5M8Zd3S/MNRXf5DZ5FHGi4V4r/icf2WKRe7hp03
-	I6G22zzDvmsHaxXPidABETSfoXVnDc0gqFTuFZ7Fsho/seaWjRv/w411BXYJ1FJW7f3ebrVjwEjrB
-	d7gYTUB2pfk8wSy9G9xPJ/8mTDqZqmxKRic3bEVOzA5d7lmSMGM8nWiNGayDU8dkkYzuhJPZcLDSI
-	+7rHtqPw==;
+	bh=QDYSbwXCG45/hB8ZWhmC/5VqigWfmB492AjS1oslv7k=; b=tiAaKL4z0cH5QQBP28tavMXFkg
+	fFoEpOCthjq9PhYEl6qQWaqH9d8alem8XOP2QWaLCirLgT6440HzAsbZTNJfB+A9S7dM/jauWNanP
+	/KNOb8PtrTJYDYhq6r5poI/4JrRcuZaSW1WcnJWY3BiBIKpVccieoibfGg5aQqX8O3JiVtldxVgEH
+	K50PNkFQ4Fr9rFrlAPw9+pi8NFIQTfcn5ZiR9PUYVVFmNF4UYLInb4z23O2K8TH85U7kKxkE2+zWP
+	Y7QhrOSN1QrIaL1PWMn4z9VDXHytOiVNbdPsBnAJWBM/8Dp/uSvWZuwvBeNRUkQPZVtexQPpNDlYJ
+	+6CF/YQg==;
 Received: from [2001:4bb8:2c2:7dc3:4a7a:b4de:3d88:bc44] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wjD3J-00000008kh6-08Yg;
-	Mon, 13 Jul 2026 09:34:17 +0000
+	id 1wjD3P-00000008kjI-0f2l;
+	Mon, 13 Jul 2026 09:34:23 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: 
 Cc: baoquan.he@linux.dev,
@@ -73,23 +73,23 @@ Cc: baoquan.he@linux.dev,
 	shikemeng@huaweicloud.com,
 	youngjun.park@lge.com,
 	linux-mm@kvack.org
-Subject: [PATCH 3/7] mm/swap: also use struct swap_iocb for block I/O
-Date: Mon, 13 Jul 2026 11:33:40 +0200
-Message-ID: <20260713093350.2154226-4-hch@lst.de>
+Subject: [PATCH 4/7] mm/swap: remove count_swpout_vm_event
+Date: Mon, 13 Jul 2026 11:33:41 +0200
+Message-ID: <20260713093350.2154226-5-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260713093350.2154226-1-hch@lst.de>
 References: <20260713093350.2154226-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: 6bk9xtyfya1sjr15ucbdbiksg4d1tu1j
-X-Rspamd-Queue-Id: 85BCE1C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783935264-556419
-X-HE-Meta: U2FsdGVkX1+Xtntiz92PW9EAmwSNom97rT69qumXnqAEX/hTPBNz1VgRKVxL+z2Fmas4RbLWNhuk+VQ6Jks+oX6cnLkj6MNrijRFNiVG8SoXg33xDt2MKdwd842rCq13fTH1+wldJ9zOHSt4k+88dsffqxYMXBD8exC676N0Lf/YDZY9f6p6DX3xZgWmicJrPaUpF/PUGJo7S7BVU5K5HznxvaUe575fRY/IpcghVGeD4Jz82dYOVLAT2RMGxNw2eluHPVM67J9YW86sufvlMOk9A4ybDBJANsUDIaJYtk5ADW0y/KLs3CYJ9vJuXqtJZ8b6AcdpzbK+SB92oEcnbzcHlhItpkVJw/d4Tm6hr4I7EN3zvhBi0Nph3XwwbeAhvLxyUrqizDujyUqo2bqZ/1tQpThkbZzH2RUN2+G/80vaQQUtHVmAkRVyqLE8KNPrCqSdA2+V6JqrLLimFmhfmzdAju8mEH9LBy5L8t1sov85hD/vxl01R2b5p9Asiq/DZRg+nNCUen3quxyb5tlZLWga9kxSl7/TjsrMsPNKlQeQ0aliPoJvW70o7fEG6VZ73G+RUktIaE3AbBTLvvedxtlq8l8XvULoaHPbrdw8HmqYj3CGq25cS+JPoJlMPl4oLFQFFp19ajs8vozAMkfFlooJFCNlyjRtzNkuR8CfGrq7ogKGyyLwFCZmS96raD0zaS2DrkaVdHmGu/WwUxUVyXwK1NqI/oLDcje6zT9VBVEnP7jtmVh3WqCFuN9ewV0Cjx/WOS1e626fIqSZzWE6RM1ae+zWEH3zwTn7RFOjNHNo3ngz6V5bvdJ8xQPYWSW2WwORrC1fcmd2p/8rZtX4zLvvakZBc/wGransFmrMWTMkGHxBi4HMeaJ+fHht2iKhQAde2xSZ1dSgKzzTjCjqg+670uYDUmtlNxUo3uvz7xmGZMxTTZwyNiTQ3hx9sBMxPnm+RjeF2imVbtX5qMr
- dtDRL0bS
- 9RWZndlcle5NoaJ4QXr3OrxKYi2TLJWb94WTGS7quMQDk9A0yuDjlMNv8sQEJDLbrbeio2qzI/CVUHKSYuFmpGLxZG/Ezllaw4BhKkD4OCWbk0pC0Pi0++2mAGhfdRaGEDYgntyU6xhgzHOB1zh6GYB520A6LOlbscvXKIIRvoVB3cKg3KnTAVoizdXf6xFNuNV8eZUqyIamYqxkb2PNuuEYJ4w1PizOT5FETm9W3tFtZU27H6YJMzv94Wj5CAOrFkFHfBUh/JvpdzVl+Bi/A4evZULer1LnGphZlHHZ78AoLU6l3+woaw/rDWb9YXBtiNl58Lr4poSkBgbGcm3l6K79yVRmmm/dV8gQ1qtvXoBNFT8nZi329PcULSoTCgTluaW+s+H8aAujDj7ZDpnyaTSzeMOo+ugrf1Blt240b+8UgZnbGFp1agmtzd9LQzsF39/g4mm2mbWEHmJT6CSL9sh1wGm36wdV8YXvJxxWj6+9NM+ehSvuqFoy/DWd9XUOOr7b/MzdIwr4+WzVNObdARKXG7eGPHoKha3LhuGtCepXPzbnVU0qFESfV0dtLDTbqZkaGBDQKX9dD7shFshlHDJV5qaEVdIFAjANAfrbAcrxP6TuyhnWOHqL2nW+cu/ntrEIA
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EC54C40003
+X-Stat-Signature: e5r8s9dypx7q8sp8tch6t6agcy3nqjce
+X-HE-Tag: 1783935270-619926
+X-HE-Meta: U2FsdGVkX1/2yz27biIZ4ykWMX45ALQ5iz2+SG0Em8n4YdMTVV3e3VJbnW7NxytiLr7Tucvq+TLXxs5Y5a4soY6RJ1HgMDBC8HYXq1pXYZi097mzUi6yf+rjQ7Wh0kPajSTYubHYlvnDgEBuXzGzw4IqOpx1Su7B1R9tngqdP0xWPTBaZhgWHqWAxRaYoaRZAhECjcazcuq3/ft3iPI6WVfs+pAHXmLLGboONyVVoR0ix9ooMuC29I267RunjvyOGmYx3RLppJ1ZbqzzZk8/fb36Nq9tTfC002PBE+Qven5Lvo/kgiXvfZIZfRPcaVf7V6/4YJXQzW64D2ecncFl3S7ay9FrL14JIRhk2SE9BzqZmFuzqacAG11GV3riKmU2vwiu/+4oW6305+fRVm2BpQdhS1NyImf1QXS0kE0VSc1UgN6PF/1uq6+cELWp2jwdqV8mJBs4Eg6t6VglSCrbF/OaaG1/WMsD6eztIVdjcX4Uu726KknEIAjGPmJGrL/ugZx4tULtcjTk+tBPX1E+iJ83lag+IKumeNo1UrQyqCL3aKmIb6WRhPwdYuXKxWyOL5SgxWZ2r5rtl6tG7CcbAI9GguH+qtgOR6BlScGQWQESXtCqo4i7oelosLW89WmdTny4TdR1yIlaMdk8aF6l8W3rSvqxjHq3t0iOCqUG3F/w671dV31SmaacFY9ziafBCS+V20TXW+IWoJi1pYygrwL+WO3mILTzAcWW5uLLN98QuxaDmmwr7tRm13cQI2Flps6HAZ1kKYgo9xVG+S6JWwjo+OVfQgFGhdXB1WkJ6Efg6lVrrh3xCPKL/vT9YFyj6UWLbphEn7VNHM22J9+LglH+Ci6Fh1PWxFcTOZPLn+EbpQ1ExroZHe5o3KAknJ+2bShN2x2y7olDlH+SVWejCY5dVATHBWfhCJiD09shhDIdlSdaenEUgUj7bebX+TM1K8GH98S6nti7lEDM3eT
+ LCnVSRwa
+ CBwaEqXmRSPXtL8wirwNGHy8OZuIsQH2SA3YItO8pFgYk+hW4LTiDC3e5C0GObowwOHg4oEbNo12/QODXz8ctFORQPU/ecDoqLqWtTKSsXVn1nqA3/aEbXRo2M0oI0dSSuBM3BwXIfh5heNzDw36CqybGHIx38/Gro7wny2Zo3jcXn+c7pfm+BudP8Ybk4xPe05f5+95xvgy9t/XPpruJslJRqSaxK8qn3qv5GPHx0SYv61Jvn9/jAL+6zvLtq386qe0YocNH2XAerbDs4OHVyJ3yERoFjsqdJx5pMjEaCfocUzy6IVlD40GGAvmuGLLeFuGDiC5LT9kZwbvMGxwBk0wC7GFI/ejsp0d0yV6sAbc5Sxns2SnjRG6Jgw6VdpXvFI7ZFWZBEh8xpi9gEeUms2je4BlQG+izGF/S7CW5kJsQLFEARPT/AFk2hnIWFnZQboJbpufZrWQL4oezIgmuqUU6AcEdhJAR/4J3f5XsefZAgxuX/i6KvrJiBmtXxHKquCrbrX/zLg4VgeFy8y9fNEMtUuQ6sAb1w1cks0bPFQt38JKvElZqOWNmhO8NmZgITwN4fWd8GvMipI8vQAAnXtfWPC/cb5NZkEvCpLVgdmnHe5sWNV90VtFcNcIx3MiNLVqwWHMAhv92+XuE7shlJBMQzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,688 +97,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Block I/O benefits from batching just as much as remote file systems.
-Extend struct swap_iocb to support building a bio on the fly as well,
-and rewrite the block based swap code for it.  This especially benefits
-submit_bio based drivers that do not have the block plugging available,
-but also saves allocating extra bios for blk-mq drivers.
-
-Add a pre-allocated bio to struct swap_iocb in a union with kiocb
-used for file system based swap so that struct swap_iocb can be used
-for all swap I/O, and initialize the pool for it unconditionally.
-
-Various low-level bdev and fs functions are now replaced with a unified
-can_merge/add/submit scheme.
-
-Note that the block based swap code now uses the same memcg-based
-check previously added for file system based swap as well.
+There is only one caller left, so merge it into that.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 ---
- mm/page_io.c  | 526 ++++++++++++++++++++++++--------------------------
- mm/swap.h     |   1 +
- mm/swapfile.c |   9 +-
- 3 files changed, 254 insertions(+), 282 deletions(-)
+ mm/page_io.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
 diff --git a/mm/page_io.c b/mm/page_io.c
-index fe24a49e034c..0195c25a77eb 100644
+index 0195c25a77eb..56f21e49572e 100644
 --- a/mm/page_io.c
 +++ b/mm/page_io.c
-@@ -28,54 +28,6 @@
- #include "swap.h"
- #include "swap_table.h"
- 
--static void __end_swap_bio_write(struct bio *bio)
--{
--	struct folio *folio = bio_first_folio_all(bio);
--
--	if (bio->bi_status) {
--		/*
--		 * We failed to write the page out to swap-space.
--		 * Re-dirty the page in order to avoid it being reclaimed.
--		 * Also print a dire warning that things will go BAD (tm)
--		 * very quickly.
--		 *
--		 * Also clear PG_reclaim to avoid folio_rotate_reclaimable()
--		 */
--		folio_mark_dirty(folio);
--		pr_alert_ratelimited("Write-error on swap-device (%u:%u:%llu)\n",
--				     MAJOR(bio_dev(bio)), MINOR(bio_dev(bio)),
--				     (unsigned long long)bio->bi_iter.bi_sector);
--		folio_clear_reclaim(folio);
--	}
--	folio_end_writeback(folio);
--}
--
--static void end_swap_bio_write(struct bio *bio)
--{
--	__end_swap_bio_write(bio);
--	bio_put(bio);
--}
--
--static void __end_swap_bio_read(struct bio *bio)
--{
--	struct folio *folio = bio_first_folio_all(bio);
--
--	if (bio->bi_status) {
--		pr_alert_ratelimited("Read-error on swap-device (%u:%u:%llu)\n",
--				     MAJOR(bio_dev(bio)), MINOR(bio_dev(bio)),
--				     (unsigned long long)bio->bi_iter.bi_sector);
--	} else {
--		folio_mark_uptodate(folio);
--	}
--	folio_unlock(folio);
--}
--
--static void end_swap_bio_read(struct bio *bio)
--{
--	__end_swap_bio_read(bio);
--	bio_put(bio);
--}
--
- int generic_swapfile_activate(struct swap_info_struct *sis,
- 				struct file *swap_file,
- 				sector_t *span)
-@@ -316,18 +268,36 @@ static inline void count_swpout_vm_event(struct folio *folio)
+@@ -254,19 +254,6 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ 	return ret;
  }
  
+-static inline void count_swpout_vm_event(struct folio *folio)
+-{
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (unlikely(folio_test_pmd_mappable(folio))) {
+-		count_memcg_folio_events(folio, THP_SWPOUT, 1);
+-		count_vm_event(THP_SWPOUT);
+-	}
+-#endif
+-	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT);
+-	count_memcg_folio_events(folio, PSWPOUT, folio_nr_pages(folio));
+-	count_vm_events(PSWPOUT, folio_nr_pages(folio));
+-}
+-
  #if defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
-+static struct cgroup_subsys_state *folio_memcg_blkg_css(struct folio *folio)
-+{
-+	return cgroup_e_css(folio_memcg(folio)->css.cgroup, &io_cgrp_subsys);
-+}
-+
-+static bool folio_blkg_can_merge(struct folio *folio, struct folio *prev_folio)
-+{
-+	bool can_merge = true;
-+
-+	if (folio_memcg_charged(folio) != folio_memcg_charged(prev_folio))
-+		return false;
-+	if (folio_memcg_charged(folio)) {
-+		rcu_read_lock();
-+		if (folio_memcg_blkg_css(folio) !=
-+		    folio_memcg_blkg_css(prev_folio))
-+			can_merge = false;
-+		rcu_read_unlock();
-+	}
-+	return can_merge;
-+}
-+
- static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
+ static struct cgroup_subsys_state *folio_memcg_blkg_css(struct folio *folio)
  {
- 	struct cgroup_subsys_state *css;
--	struct mem_cgroup *memcg;
- 
- 	if (!folio_memcg_charged(folio))
- 		return;
--
- 	rcu_read_lock();
--	memcg = folio_memcg(folio);
--	css = cgroup_e_css(memcg->css.cgroup, &io_cgrp_subsys);
--	if (!css || !css_tryget(css))
-+	css = folio_memcg_blkg_css(folio);
-+	if (css && !css_tryget(css))
- 		css = NULL;
- 	rcu_read_unlock();
- 
-@@ -336,11 +306,18 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
- 		css_put(css);
- }
- #else
-+static bool folio_blkg_can_merge(struct folio *folio, struct folio *prev_folio)
-+{
-+	return true;
-+}
- #define bio_associate_blkg_from_page(bio, folio)		do { } while (0)
- #endif /* CONFIG_MEMCG && CONFIG_BLK_CGROUP */
- 
- struct swap_iocb {
--	struct kiocb		iocb;
-+	union {
-+		struct kiocb	iocb;
-+		struct bio	bio;
-+	};
- 	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
- 	int			nr_bvecs;
- 	int			len;
-@@ -360,171 +337,70 @@ int sio_pool_init(void)
- 	return 0;
- }
- 
--static void sio_write_complete(struct kiocb *iocb, long ret)
-+static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
-+		int rw)
+@@ -397,7 +384,16 @@ void __swap_writepage(struct swap_io_ctx *ctx, struct folio *folio)
  {
--	struct swap_iocb *sio = container_of(iocb, struct swap_iocb, iocb);
--	struct page *page = sio->bvecs[0].bv_page;
--	int p;
-+	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-+	struct bio_vec *last_bv = &ctx->sio->bvecs[ctx->sio->nr_bvecs - 1];
-+	struct folio *prev_folio = bvec_folio(last_bv);
-+	size_t prev_folio_size = folio_size(prev_folio);
- 
--	if (ret != sio->len) {
--		/*
--		 * In the case of swap-over-nfs, this can be a
--		 * temporary failure if the system has limited
--		 * memory for allocating transmit buffers.
--		 * Mark the page dirty and avoid
--		 * folio_rotate_reclaimable but rate-limit the
--		 * messages.
--		 */
--		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
--				   ret, swap_dev_pos(page_swap_entry(page)));
--		for (p = 0; p < sio->nr_bvecs; p++) {
--			page = sio->bvecs[p].bv_page;
--			set_page_dirty(page);
--			ClearPageReclaim(page);
--		}
--	}
-+	if (ctx->sis != sis)
-+		return false;
- 
--	for (p = 0; p < sio->nr_bvecs; p++)
--		end_page_writeback(sio->bvecs[p].bv_page);
-+	if (sis->flags & SWP_FS_OPS) {
-+		if (swap_dev_pos(folio->swap) !=
-+		    swap_dev_pos(prev_folio->swap) + prev_folio_size)
-+			return false;
-+	} else {
-+		if (swap_folio_sector(folio) !=
-+		    swap_folio_sector(prev_folio) +
-+		    (prev_folio_size >> SECTOR_SHIFT))
-+			return false;
-+		if (rw == WRITE && !folio_blkg_can_merge(folio, prev_folio))
-+			return false;
-+	}
- 
--	mempool_free(sio, sio_pool);
-+	return true;
- }
- 
--static void swap_writepage_fs(struct swap_io_ctx *ctx, struct folio *folio)
-+static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
- {
--	struct swap_iocb *sio = ctx->sio;
- 	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
--	struct file *swap_file = sis->swap_file;
--	loff_t pos = swap_dev_pos(folio->swap);
-+	struct swap_iocb *sio = ctx->sio;
+ 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
  
 -	count_swpout_vm_event(folio);
--	folio_start_writeback(folio);
--	folio_unlock(folio);
--	if (sio) {
--		if (sio->iocb.ki_filp != swap_file ||
--		    sio->iocb.ki_pos + sio->len != pos) {
-+	if (sio && !swap_can_merge(ctx, folio, rw)) {
-+		if (rw == WRITE)
- 			swap_write_submit(ctx);
--			sio = NULL;
--		}
-+		else
-+			swap_read_submit(ctx);
-+		sio = ctx->sio;
- 	}
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	if (unlikely(folio_test_pmd_mappable(folio))) {
++		count_memcg_folio_events(folio, THP_SWPOUT, 1);
++		count_vm_event(THP_SWPOUT);
++	}
++#endif
++	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT);
++	count_memcg_folio_events(folio, PSWPOUT, folio_nr_pages(folio));
++	count_vm_events(PSWPOUT, folio_nr_pages(folio));
 +
- 	if (!sio) {
--		sio = mempool_alloc(sio_pool, GFP_NOIO);
--		init_sync_kiocb(&sio->iocb, swap_file);
--		sio->iocb.ki_complete = sio_write_complete;
--		sio->iocb.ki_pos = pos;
-+		ctx->sis = sis;
-+		ctx->sio = sio = mempool_alloc(sio_pool, GFP_NOIO);
- 		sio->nr_bvecs = 0;
- 		sio->len = 0;
- 	}
- 	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
- 	sio->len += folio_size(folio);
--	sio->nr_bvecs += 1;
--	if (sio->nr_bvecs == ARRAY_SIZE(sio->bvecs)) {
--		swap_write_submit(ctx);
--		sio = NULL;
-+	if (++sio->nr_bvecs == ARRAY_SIZE(sio->bvecs)) {
-+		if (rw == WRITE)
-+			swap_write_submit(ctx);
-+		else
-+			swap_read_submit(ctx);
- 	}
--	ctx->sio = sio;
- }
- 
--static void swap_writepage_bdev_sync(struct folio *folio,
--		struct swap_info_struct *sis)
--{
--	struct bio_vec bv;
--	struct bio bio;
--
--	bio_init(&bio, sis->bdev, &bv, 1, REQ_OP_WRITE | REQ_SWAP);
--	bio.bi_iter.bi_sector = swap_folio_sector(folio);
--	bio_add_folio_nofail(&bio, folio, folio_size(folio), 0);
--
--	bio_associate_blkg_from_page(&bio, folio);
--	count_swpout_vm_event(folio);
--
--	folio_start_writeback(folio);
--	folio_unlock(folio);
--
--	submit_bio_wait(&bio);
--	__end_swap_bio_write(&bio);
--}
--
--static void swap_writepage_bdev_async(struct folio *folio,
--		struct swap_info_struct *sis)
-+void __swap_writepage(struct swap_io_ctx *ctx, struct folio *folio)
- {
--	struct bio *bio;
--
--	bio = bio_alloc(sis->bdev, 1, REQ_OP_WRITE | REQ_SWAP, GFP_NOIO);
--	bio->bi_iter.bi_sector = swap_folio_sector(folio);
--	bio->bi_end_io = end_swap_bio_write;
--	bio_add_folio_nofail(bio, folio, folio_size(folio), 0);
-+	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
- 
--	bio_associate_blkg_from_page(bio, folio);
- 	count_swpout_vm_event(folio);
  	folio_start_writeback(folio);
  	folio_unlock(folio);
--	submit_bio(bio);
--}
--
--void __swap_writepage(struct swap_io_ctx *ctx, struct folio *folio)
--{
--	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
--
--	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
--	/*
--	 * ->flags can be updated non-atomically,
--	 * but that will never affect SWP_FS_OPS, so the data_race
--	 * is safe.
--	 */
--	if (data_race(sis->flags & SWP_FS_OPS))
--		swap_writepage_fs(ctx, folio);
--	/*
--	 * ->flags can be updated non-atomically,
--	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
--	 * is safe.
--	 */
--	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
--		swap_writepage_bdev_sync(folio, sis);
--	else
--		swap_writepage_bdev_async(folio, sis);
--}
--
--void swap_write_submit(struct swap_io_ctx *ctx)
--{
--	struct swap_iocb *sio = ctx->sio;
--	struct iov_iter from;
--	int ret;
--
--	if (!sio)
--		return;
--
--	iov_iter_bvec(&from, ITER_SOURCE, sio->bvecs, sio->nr_bvecs, sio->len);
--	ret = sio->iocb.ki_filp->f_mapping->a_ops->swap_rw(&sio->iocb, &from);
--	if (ret != -EIOCBQUEUED)
--		sio_write_complete(&sio->iocb, ret);
--	ctx->sio = NULL;
--}
--
--static void sio_read_complete(struct kiocb *iocb, long ret)
--{
--	struct swap_iocb *sio = container_of(iocb, struct swap_iocb, iocb);
--	int p;
--
--	if (ret == sio->len) {
--		for (p = 0; p < sio->nr_bvecs; p++) {
--			struct folio *folio = bvec_folio(&sio->bvecs[p]);
--
--			count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
--			count_memcg_folio_events(folio, PSWPIN, folio_nr_pages(folio));
--			folio_mark_uptodate(folio);
--			folio_unlock(folio);
--		}
--		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
--	} else {
--		for (p = 0; p < sio->nr_bvecs; p++) {
--			struct folio *folio = bvec_folio(&sio->bvecs[p]);
--
--			folio_unlock(folio);
--		}
--		pr_alert_ratelimited("Read-error on swap-device\n");
--	}
--	mempool_free(sio, sio_pool);
-+	swap_add_folio(ctx, folio, WRITE);
- }
- 
- /*
-@@ -590,74 +466,6 @@ static bool swap_read_folio_zeromap(struct folio *folio)
- 	return true;
- }
- 
--static void swap_read_folio_fs(struct swap_io_ctx *ctx, struct folio *folio)
--{
--	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
--	struct swap_iocb *sio = ctx->sio;
--	loff_t pos = swap_dev_pos(folio->swap);
--
--	if (sio) {
--		if (sio->iocb.ki_filp != sis->swap_file ||
--		    sio->iocb.ki_pos + sio->len != pos) {
--			swap_read_submit(ctx);
--			sio = NULL;
--		}
--	}
--	if (!sio) {
--		sio = mempool_alloc(sio_pool, GFP_KERNEL);
--		init_sync_kiocb(&sio->iocb, sis->swap_file);
--		sio->iocb.ki_pos = pos;
--		sio->iocb.ki_complete = sio_read_complete;
--		sio->nr_bvecs = 0;
--		sio->len = 0;
--	}
--	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
--	sio->len += folio_size(folio);
--	sio->nr_bvecs += 1;
--	if (sio->nr_bvecs == ARRAY_SIZE(sio->bvecs)) {
--		swap_read_submit(ctx);
--		sio = NULL;
--	}
--	ctx->sio = sio;
--}
--
--static void swap_read_folio_bdev_sync(struct folio *folio,
--		struct swap_info_struct *sis)
--{
--	struct bio_vec bv;
--	struct bio bio;
--
--	bio_init(&bio, sis->bdev, &bv, 1, REQ_OP_READ);
--	bio.bi_iter.bi_sector = swap_folio_sector(folio);
--	bio_add_folio_nofail(&bio, folio, folio_size(folio), 0);
--	/*
--	 * Keep this task valid during swap readpage because the oom killer may
--	 * attempt to access it in the page fault retry time check.
--	 */
--	get_task_struct(current);
--	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
--	count_memcg_folio_events(folio, PSWPIN, folio_nr_pages(folio));
--	count_vm_events(PSWPIN, folio_nr_pages(folio));
--	submit_bio_wait(&bio);
--	__end_swap_bio_read(&bio);
--	put_task_struct(current);
--}
--
--static void swap_read_folio_bdev_async(struct folio *folio,
--		struct swap_info_struct *sis)
--{
--	struct bio *bio;
--
--	bio = bio_alloc(sis->bdev, 1, REQ_OP_READ, GFP_KERNEL);
--	bio->bi_iter.bi_sector = swap_folio_sector(folio);
--	bio->bi_end_io = end_swap_bio_read;
--	bio_add_folio_nofail(bio, folio, folio_size(folio), 0);
--	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
--	count_memcg_folio_events(folio, PSWPIN, folio_nr_pages(folio));
--	count_vm_events(PSWPIN, folio_nr_pages(folio));
--	submit_bio(bio);
--}
--
- void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
- {
- 	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-@@ -691,14 +499,7 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
- 
- 	/* We have to read from slower devices. Increase zswap protection. */
- 	zswap_folio_swapin(folio);
--
--	if (data_race(sis->flags & SWP_FS_OPS)) {
--		swap_read_folio_fs(ctx, folio);
--	} else if (synchronous) {
--		swap_read_folio_bdev_sync(folio, sis);
--	} else {
--		swap_read_folio_bdev_async(folio, sis);
--	}
-+	swap_add_folio(ctx, folio, READ);
- 
- finish:
- 	if (workingset) {
-@@ -708,18 +509,189 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
- 	delayacct_swapin_end();
- }
- 
--void swap_read_submit(struct swap_io_ctx *ctx)
-+static void swap_write_end(struct swap_iocb *sio, bool failed)
-+{
-+	int p;
-+
-+	for (p = 0; p < sio->nr_bvecs; p++) {
-+		struct page *page = sio->bvecs[p].bv_page;
-+
-+		if (failed) {
-+			set_page_dirty(page);
-+			ClearPageReclaim(page);
-+		}
-+		end_page_writeback(page);
-+	}
-+	mempool_free(sio, sio_pool);
-+}
-+
-+static void swap_fs_write_complete(struct kiocb *iocb, long ret)
-+{
-+	struct swap_iocb *sio = container_of(iocb, struct swap_iocb, iocb);
-+	bool failed = ret != sio->len;
-+
-+	if (failed) {
-+		struct page *page = sio->bvecs[0].bv_page;
-+
-+		/*
-+		 * In the case of swap-over-nfs, this can be a temporary failure
-+		 * if the system has limited memory for allocating transmit
-+		 * buffers.  Mark the page dirty and avoid
-+		 * folio_rotate_reclaimable but rate-limit the messages.
-+		 */
-+		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
-+				   ret, swap_dev_pos(page_swap_entry(page)));
-+	}
-+
-+	swap_write_end(sio, failed);
-+}
-+
-+static void end_swap_bio_write(struct bio *bio)
-+{
-+	struct swap_iocb *sio = container_of(bio, struct swap_iocb, bio);
-+	bool failed = !!bio->bi_status;
-+
-+	if (failed)
-+		pr_alert_ratelimited("Write-error on swap-device (%u:%u:%llu)\n",
-+				     MAJOR(bio_dev(bio)), MINOR(bio_dev(bio)),
-+				     (unsigned long long)bio->bi_iter.bi_sector);
-+	bio_uninit(bio);
-+	swap_write_end(sio, failed);
-+}
-+
-+static void swap_read_end(struct swap_iocb *sio, bool failed)
-+{
-+	int p;
-+
-+	for (p = 0; p < sio->nr_bvecs; p++) {
-+		struct folio *folio = bvec_folio(&sio->bvecs[p]);
-+
-+		if (!failed) {
-+			count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
-+			count_memcg_folio_events(folio, PSWPIN,
-+					folio_nr_pages(folio));
-+			folio_mark_uptodate(folio);
-+		}
-+		folio_unlock(folio);
-+	}
-+
-+	if (!failed)
-+		count_vm_events(PSWPIN, sio->len >> PAGE_SHIFT);
-+
-+	mempool_free(sio, sio_pool);
-+}
-+
-+static void swap_fs_read_complete(struct kiocb *iocb, long ret)
-+{
-+	struct swap_iocb *sio = container_of(iocb, struct swap_iocb, iocb);
-+	bool failed = ret != sio->len;
-+
-+	if (failed)
-+		pr_alert_ratelimited("Read-error on swap-device\n");
-+	swap_read_end(sio, failed);
-+}
-+
-+static void swap_bio_read_end_io(struct bio *bio)
-+{
-+	struct swap_iocb *sio = container_of(bio, struct swap_iocb, bio);
-+	bool failed = !!bio->bi_status;
-+
-+	if (failed)
-+		pr_alert_ratelimited("Read-error on swap-device (%u:%u:%llu)\n",
-+				     MAJOR(bio_dev(bio)), MINOR(bio_dev(bio)),
-+				     (unsigned long long)bio->bi_iter.bi_sector);
-+	bio_uninit(bio);
-+	swap_read_end(sio, failed);
-+}
-+
-+static void swap_bdev_submit_write(struct swap_io_ctx *ctx)
- {
- 	struct swap_iocb *sio = ctx->sio;
--	struct iov_iter from;
-+	struct bio *bio = &sio->bio;
-+
-+	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
-+			REQ_OP_WRITE | REQ_SWAP);
-+	bio->bi_iter.bi_size = sio->len;
-+	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
-+	bio_associate_blkg_from_page(bio, bio_first_folio_all(bio));
-+
-+	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
-+		submit_bio_wait(bio);
-+		end_swap_bio_write(bio);
-+	} else {
-+		bio->bi_end_io = end_swap_bio_write;
-+		submit_bio(bio);
-+	}
-+}
-+
-+static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
-+{
-+	struct swap_iocb *sio = ctx->sio;
-+	struct bio *bio = &sio->bio;
-+
-+	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
-+			REQ_OP_READ);
-+	bio->bi_iter.bi_size = sio->len;
-+	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
-+
-+	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
-+		/*
-+		 * Keep this task valid during swap readpage because the oom
-+		 * killer may attempt to access it in the page fault retry
-+		 * time check.
-+		 */
-+		get_task_struct(current);
-+		submit_bio_wait(bio);
-+		swap_bio_read_end_io(bio);
-+		put_task_struct(current);
-+	} else {
-+		bio->bi_end_io = swap_bio_read_end_io;
-+		submit_bio(bio);
-+	}
-+}
-+
-+static void swap_fs_submit(struct swap_io_ctx *ctx, int rw)
-+{
-+	struct swap_iocb *sio = ctx->sio;
-+	struct iov_iter iter;
- 	int ret;
- 
--	if (!sio)
--		return;
-+	init_sync_kiocb(&sio->iocb, ctx->sis->swap_file);
-+	sio->iocb.ki_pos = swap_dev_pos(bvec_folio(&sio->bvecs[0])->swap);
-+	if (rw == WRITE)
-+		sio->iocb.ki_complete = swap_fs_write_complete;
-+	else
-+		sio->iocb.ki_complete = swap_fs_read_complete;
- 
--	iov_iter_bvec(&from, ITER_DEST, sio->bvecs, sio->nr_bvecs, sio->len);
--	ret = sio->iocb.ki_filp->f_mapping->a_ops->swap_rw(&sio->iocb, &from);
-+	iov_iter_bvec(&iter, rw == WRITE ? ITER_SOURCE : ITER_DEST,
-+			sio->bvecs, sio->nr_bvecs, sio->len);
-+	ret = sio->iocb.ki_filp->f_mapping->a_ops->swap_rw(&sio->iocb, &iter);
- 	if (ret != -EIOCBQUEUED)
--		sio_read_complete(&sio->iocb, ret);
-+		sio->iocb.ki_complete(&sio->iocb, ret);
-+}
-+
-+void swap_write_submit(struct swap_io_ctx *ctx)
-+{
-+	if (!ctx->sio)
-+		return;
-+
-+	if (ctx->sis->flags & SWP_FS_OPS)
-+		swap_fs_submit(ctx, WRITE);
-+	else
-+		swap_bdev_submit_write(ctx);
-+	ctx->sio = NULL;
-+	ctx->sis = NULL;
-+}
-+
-+void swap_read_submit(struct swap_io_ctx *ctx)
-+{
-+	if (!ctx->sio)
-+		return;
-+
-+	if (ctx->sis->flags & SWP_FS_OPS)
-+		swap_fs_submit(ctx, READ);
-+	else
-+		swap_bdev_submit_read(ctx);
- 	ctx->sio = NULL;
-+	ctx->sis = NULL;
- }
-diff --git a/mm/swap.h b/mm/swap.h
-index e4b6ff3eeacc..1d169bf96d1d 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -79,6 +79,7 @@ enum swap_cluster_flags {
- 
- struct swap_io_ctx {
- 	struct swap_iocb	*sio;
-+	struct swap_info_struct	*sis;
- };
- 
- #ifdef CONFIG_SWAP
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 775c385490a5..881511fb7a46 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2946,6 +2946,10 @@ static int setup_swap_extents(struct swap_info_struct *sis,
- 	struct inode *inode = mapping->host;
- 	int ret;
- 
-+	ret = sio_pool_init();
-+	if (ret)
-+		return ret;
-+
- 	if (S_ISBLK(inode->i_mode)) {
- 		ret = add_swap_extent(sis, 0, sis->max, 0);
- 		*span = sis->pages;
-@@ -2957,11 +2961,6 @@ static int setup_swap_extents(struct swap_info_struct *sis,
- 		if (ret < 0)
- 			return ret;
- 		sis->flags |= SWP_ACTIVATED;
--		if ((sis->flags & SWP_FS_OPS) &&
--		    sio_pool_init() != 0) {
--			destroy_swap_extents(sis, swap_file);
--			return -ENOMEM;
--		}
- 		return ret;
- 	}
- 
+ 	swap_add_folio(ctx, folio, WRITE);
 -- 
 2.53.0
 
