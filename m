@@ -4,100 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 845EBC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7A6C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:15:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EEB96B00AF; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
+	id 72DD06B00B1; Mon, 13 Jul 2026 12:15:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99ED46B00B1; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
+	id 6B9176B00B3; Mon, 13 Jul 2026 12:15:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88D906B00B2; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
+	id 5CD1D6B00B4; Mon, 13 Jul 2026 12:15:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DDCC6B00AF
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:15:20 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECE2C4021C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:15:19 +0000 (UTC)
-X-FDA: 84984253158.07.C482043
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4FD8A2000B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:15:18 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOMPvtSa;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783959318;
-	b=pBJRUcVBj4KiUV3siqEWkL0lQSYRb0XgTn+QHkVJW0QBzS8Fnjdpk67z1qnH3mnBBDgMte
-	Wr8ew6p5JX21pBjHVK2Valc/ce8VCQsIJwBonTQyd3RlcS/JkvFi+ijLrthzSL5KCOPBX+
-	RRVdLgs709nQkU7EaxhfVP+jnIEHyqo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOMPvtSa;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 169276B00B1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:15:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFF5D1C874C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:15:22 +0000 (UTC)
+X-FDA: 84984253284.17.535125A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EC5DEA0004
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:15:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kzGlsZ39;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783959318;
+	s=arc-20220608; t=1783959321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oNIWkoRxlut88jezsElvPH1wV8FkiiBk36IvzZ2BAwo=;
-	b=G0R5KbwqVqxLnQ0s3P9WJ1OX8MGh7ZacXB/g9UtKBePkGA6Zfns1Ino1zVrQJlrOowPBok
-	e37Z1g6uls9Hs18ESYMerXoj1U/IkcndlCKXoUzrwKEpiq0Qt93s1YxCv3S/oDTjeB+1PU
-	6n94PIgStRNDefW6SIAqEEAR7UwIg6s=
+	bh=np7zQ9bu2/JDKdPyXVQqTGzye3HRFWjrv+s0jMcq6z8=;
+	b=2B0PeB5DRv/i9qRgt5WqYsAPTuPyAg+tSjS+fmkIhW0Al5VQ8oD5YzbK5TPRTsfapyGVyL
+	U+2M7uprvPb9phwMSRjOAB2dbtvZnKL/YDE6vANxgo+XTu6fFxaKMFTf+EINyHA4Jqgxoj
+	nNgauH+XNijJeXbBy5TY0tSiAOu2jbY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kzGlsZ39;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783959321;
+	b=SpsYRX9FZMxIG6owzzysjC0ZVeNfsX7e4Touw796eTi4R/095FMoEYPwcra0JbU+ww8XV4
+	uGDymcAZkbmlkcHL46fcokmL0PqyEzbw6x40XONQUMe4Y6jIDUaulGvrGwVV0huHhie0tL
+	dESknn74ubZXOCxRaDKbGWs7G35XwWY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCC31600AE;
-	Mon, 13 Jul 2026 16:15:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3321F000E9;
-	Mon, 13 Jul 2026 16:15:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B687404BE;
+	Mon, 13 Jul 2026 16:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC231F00A3A;
+	Mon, 13 Jul 2026 16:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783959317;
-	bh=oNIWkoRxlut88jezsElvPH1wV8FkiiBk36IvzZ2BAwo=;
+	s=k20260515; t=1783959319;
+	bh=np7zQ9bu2/JDKdPyXVQqTGzye3HRFWjrv+s0jMcq6z8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QOMPvtSaMxX9MpsXzTtiH2pWD1W/+0iiLAHU0QOSAyGHZ3amnA/Bu1/A4lKY5tOYJ
-	 Wtiz3ty98R2Fbype7p9a0rxYruVz2pXVagCTCyzX3AKW1F6GKtZhPrOvL4r2TuMu2Y
-	 j/JKvmod6ihm10/0FqARNrS4oLdcQDC2tnMtCiDvjkCaz0pFmRo0GezGCV9mVXbq3N
-	 J2OgXqfodG4emrSkrdUAAiKr0PmbekyjmeRf42NigHAQlyqR6YaLXkU44ql4Hm8tI/
-	 KNUF1VCvsufqBvwNlfGGx7EXWov7p6L/NJ+6NVThcRcO2nSWwZDmQ56sFSRI/2Lu42
-	 XNYFs3mM9vTew==
-Message-ID: <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
-Date: Tue, 14 Jul 2026 01:15:08 +0900
+	b=kzGlsZ39c3B2NKOwq8BPMqEwUB0Bq++llL3jpdorCWTDURtyiigecMD2B9RtgQzFB
+	 6Ox8knw7gQYvkKRgC3yC758gkwHEt/SYQrzmAKc6/K2dbVDB9NsW/EdXSEDEPEH/mU
+	 NcnqWtHaYxxa4MiwClbaIL3aFqYKNCyjLXAoDva7tBmzztvldUbmNH5wAU//3pYVNy
+	 a2NqaFPAHoOprp1LMsAA8etSEIbHEUJSTYFlyxapYd4DW+eOeU8FDGgpT3z7LNBynJ
+	 DDGdg1QtL08wMw5B9iwTywEiYChEkHGWAQLJyZcMCh81g0F5Hr7/89K7xEENP76+3j
+	 lQcdDu1tCabhw==
+Message-ID: <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org>
+Date: Mon, 13 Jul 2026 18:15:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
-To: Brendan Jackman <brendan.jackman@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
- stable@vger.kernel.org
-References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
- <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
- <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
- <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+Subject: Re: [PATCH slab/for-next-fixes v3 3/4] lib/alloc_tag: introduce
+ mem_alloc_profiling_permanently_disabled()
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------wjfaJTQWd3NhLTT80YxRJH5m"
+To: Suren Baghdasaryan <surenb@google.com>,
+ "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org>
+ <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EC5DEA0004
+X-Stat-Signature: anq4rooyprq7mha3psiu7hc4mzmpjsrf
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4FD8A2000B
-X-Stat-Signature: 7miz3by6s9rp68wtqt3j7e6phkf8wepw
-X-HE-Tag: 1783959318-906551
-X-HE-Meta: U2FsdGVkX1/DaHIJDQA4ICjEGXN2vfBnc4NL24OEX7XMC1hhF8encQwyBAa1lkRAfCA4c/5rATIUiITzZy91MITWmLVl5gcf3+0hWDYT3WpoApaNx21roeXpm4H31yfnaaUciVg3EI9EADvJXjQtGNhRmErP3euneJeWntkUE8IhIGWo+i3aAJO/pXPUt3AVEN7sYUEtpgUdDxRhqxjUA4c+ytSErKqFE763/J86Maxu15Sk9RtmthpfxUBrNFHc/+PBFiQhhcvW4w3w64xFTLuFI/Lan5N8xLRzy54xau4E6ph1y93ViWFNuhLpBQ5w+HVOzH0cYIZyArB9PpqZdoPvzsE5Gny86wi4U4lsIv33lw7Nuy1stBkohpB0um9kbNe6W5mJA6EEgHlZ3ozWbA5rcAFHu/DoS4cyK7VsWdLWxemSU28P7SGTI+ksZyQWqbFbVSj676Ufsgoql64P1RGSQscwRM9pPUHs659Zji43G5a1yyVc0ukVDlcoY+WChbKmPYKQcM7o5qHDc8vaza7x21tft6//1eggGjtXfftqPEeezQ+LsyXHDfdk6EyKg6d7PRHUXHqt/Rz30a09GD14diWgJSB/YO8/mpVUtUJj5iQ9RXZ2gMU2iJEWM7TjNKLaQM3oOLgypgAlCuU0WJ6nmp0Gm9Kr8pY+hM6y/B+1wNG/4qXacfli0xCzlpllvOswt/ttBA15m4zlWHgO8TTpygsfkdElRVZ3YGrE0PE6oA8ukOmCqw1KZYUoPkpqxy+7F7kBN7xKJpWeJPffOcQqFhA+QYfyHjl2UkMDY8sUfG5qzknzA829UlAbrXjvmBJCubCrTJpH/VqMRE1o8b2M4rlF8j2yrT6OUjOPWsy6+abAMgOeSwJLcJHqzcK/DuZesy5P9zCva01Xf3CmzisimrKsmZFfDE15gcjcLGwBljPusGLxB6LjCSeJ0r4ohQN3S/1x0MX+JqGZgue
- 0JykJ63s
- et2MgSv8xrxd1DjZvU9EqODqtTkvkTJJ7M6kap3z/b2cKR01Poa5uH3DW0k5u/mWE8x8sS+Cl74enwtLHmmOPGRw/r8sZRlYIqa4hFCSyaTSYkDAd3OtNIAPzSG/SmvzE//wpDxAOhKq7xaF/iEIs8cUON/UrKx6yo4MFq057HCKyyQrYznDKjK1lAVwT8FytgGeQzUbtqs3sXRrEA+mYVQJKZ/igFu6mhQjCXAzrORH1O2xNatJQbQAxB3ywOQN2NKeuhsneZoAPuf2l6S2KreAlywu0YlVFoTq5eVE0zEBtjgrobgh2MScoPIkvmzZJR229nCZjWiIB6Rm6L8AH/J1d7NpgSR5u2eMpz/OwBiZJMZDJnmGPdoIEwZqWCknk1r8s7FlZPGMtt4my+iMCMBuchAgC4FLNHxrawR4Ge8j/ohKBu8W+NbfhdbycmkAfFjrZ+Kzr1BM92FqOSH3PM3VU0tETmCii9vYdP0A/GBYYLS5eapnTsFsQYnyw1OXFOmVo/H+HGNqU++iwKKc9cMuQsMGwEY0/GXfbT3oWDWbC6706zoaCLAYWXWed+4UmXyDvjseaumD+x/KjupNVJmracNhLVh3a++LQjBoMn1Tgd9w=
+X-HE-Tag: 1783959320-819693
+X-HE-Meta: U2FsdGVkX1+2AJhcstMeZ9RDqOo6aXW2AlP+3YUyE4t8QV4GAVTlfUEopaP/hW/7yHtaIq0vOj0YYwhtVYdX8i8GAQpBouknXyxGq/1BZJluCg8IpchPk6LvSdz48XUYW9/0pnR0v49pxpAVWlBOyhbzQsa5AGYWpRs8YfwcOznPOfsEJ27WSzaE4iGJpq9oVnuZTBjr19vefpwWx9HRhRE8foUz1hwF/QucUGrE+DYcCx/8mFLpVy+QyKpdt6h2WZa8H+LZ90vZ7zNI52oInC9/zPkJlRlLQXzvB/kGvCSdQIvk8tEC+jFm9yJUpU44XaBHPhHv59bATkWL1QdLXX69EMb15VraUxBp8gQPICl7gP9RcY9wiFKESgXzhpr3jsw9iPKJpvd67Jo9RID6MahA/qS9FrZ+flOiW9Gr+N3Tuq19ThyzZ4NY8CTCZ+4AliNfZG0ikyy6YJUgGC3pr2hWvcV06Ncnm53hAJOx0S53MoTr18L3ddOmPyKPecJhx46o+Ng2/L/zJXRANHcUybecB8RH7mV9CUSE3YX0HVyTQJamUOtwAbw4KNXmQWY462dsavtLri3bqWU3ZmN2sbxdq3UtZ6gkdco08/dl/OGqMkijXJJiNTucR0j4eK0j8efrwkWAvNzUXMXGdOKteg/MFsTZC4+HTIL3HgafJ4mulk09Uqq+yZ60/pC+/FX+CRPTtYK8corDCSMdKAGyMYMWH00H1BQOWen+hmd223PnRB8PgS8Jo8XjTkVhCqGkLuHNBujM365n9f5CbRQNAzMOPDCt+vNeKBEWeTrISryuM42KcGrY2x/EStiPFxkr/3UWDpZCOOWMvo7PNGbz6ln0/AtRc7yJa5E3z2SrIo1isQCZRcxYsz+xFOQMeOsdoX2Z2bpOnJH3xDRNBOHXJjWDeydg1DAjtr550f5fu+yKnc10e0spO5BthzwPNsLBXX34yx682yW/E+3OUqg
+ e7eIzEER
+ KDEHqRLiZD6cfhpTZck/Xqcr5TOY2ubq1D8bVy8AMCnYhO7crpijyuAWZ9aN0IkkFkfAa3HPuT6hw7wEnuoQD18PVaGruUbAa3PBrmVyeLxdd8xgcQZb+7280aaTdk03hdJnAZsDTK8Q9ffsCkwOV9xdKq5GITmz9zvd2h9LvLATzZuaHML1Ml6Qf6VszMgcBRYifcIzWdeKpjhI4fTM/5J4p7zd2Gj7fKSJtA2LiYGJaAN+R9bjK2uiykB/NRLOKz1FXN6f39MEeRqhNQjdfurd9j38RBk/alKOqVr/y/bz+VOEEKoSVQOzyn1qpQh3FCBwFnzKelv/Ey0L64yQFzrd0zx9ih0Q78bzWCuzuZYgWvRNzD4fBBe+s/XpF9hwa1/d4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,138 +142,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------wjfaJTQWd3NhLTT80YxRJH5m
-Content-Type: multipart/mixed; boundary="------------nxjIPOFNtOXUEKiJUGKT1hb6";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Brendan Jackman <brendan.jackman@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
- stable@vger.kernel.org
-Message-ID: <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
-Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
-References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
- <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
- <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
- <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
-In-Reply-To: <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
-
---------------nxjIPOFNtOXUEKiJUGKT1hb6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-
-
-On 7/13/26 11:31 PM, Brendan Jackman wrote:
-> On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
->> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.co=
-m> wrote:
+On 7/13/26 17:43, Suren Baghdasaryan wrote:
+> On Mon, Jul 13, 2026 at 7:29 AM Harry Yoo (Oracle) <harry@kernel.org> wrote:
 >>
->>> As noted in can_spin_trylock(), using this is unsafe in this context.=
-
->>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
->>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc si=
-de
->>> but missed the free side.
-
-Ouch, do we allow alloc_pages() -> free_pages_nolock()?
-Didn't notice.
-
->>> Reported-by: sashiko-bot@kernel.org
->>> Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b=
-714e19d3@google.com
->>> Cc: stable@vger.kernel.org
->>> Fixes: d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+>> mem_alloc_profiling_enabled() tells whether memalloc profiling is
+>> currently enabled. However, even when this function returns false,
+>> it can be enabled later.
 >>
->> Is this correct?  I'm not seeing anything in that commit which could
->> have caused this?
->=20
-> Oh yeah I guess it should be:
->=20
-> Fixes: 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
->=20
-> This is confusing coz we have:
->=20
-> A: commit d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
-> B: commit 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
-> ...
-> X: commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from alloc_f=
-rozen_pages_nolock() in NMI on UP")=20
->=20
-> X is marked as Fixing A, but it was an incomplete fix. I just copy
-> pasted the Fixes tag. But actually I'm now changing the free path that
-> was only introduced in B.=20
->=20
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -2979,8 +2979,7 @@ static void __free_frozen_pages(struct page *pa=
-ge, unsigned int order,
->>>  		migratetype =3D MIGRATE_MOVABLE;
->>>  	}
->>> =20
->>> -	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT=
-_RT)
->>> -		     && (in_nmi() || in_hardirq()))) {
->>> +	if (unlikely((fpi_flags & FPI_TRYLOCK) && !can_spin_trylock())) {
->>>  		add_page_to_zone_llist(zone, page, order);
->>>  		return;
->>>  	}
+>> However, this is not enough. Some optimizations can be applied only when
+>> memalloc profiling is permanently disabled. For example, to skip the
+>> creation of KMALLOC_NO_OBJ_EXT caches at boot time, mem_profiling must
+>> be set to "never", "0" w/ debugging on, or have been shutdown so that
+>> it can no longer be enabled.
 >>
->> It would be nice to include a description of the userspace impact.  I'=
-m
->> suspecting that's "none known", but some speculation on what might
->> happen to someone is appropriate.
->=20
-> Ack. I think if you trigger this bug by accident it will probably crash=
+>> Introduce mem_alloc_profiling_permanently_disabled() for this purpose.
+> 
+> nit: I would call it mem_alloc_profiling_supported() but this name would do.
 
-> your machine in extremely confusing ways. If you can trigger it
-> deliberately from unpriv (depends on the rest of the host setup, e.g.
-> what tracing is being used) you can probably use it to get root/ring0.
-> Can mention this in the commit message.
+I wouldn't like that name, because _supported to me sounds like those
+CONFIG_ARCH_SUPPORTS... things and not something that was just disabled.
+I suggested mem_alloc_profiling_unavailable(), but it's not ideal either,
+naming is hard.
 
-Just noting, it is quite niche because it requires UP, and tracing
-something that can be called in NMI on UP is even nicher.
+>>
+>> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> 
+> Acked-by: Suren Baghdasaryan <surenb@google.com>
+> 
+>> ---
+>>  include/linux/alloc_tag.h | 3 +++
+>>  lib/alloc_tag.c           | 9 +++++++++
+>>  2 files changed, 12 insertions(+)
+>>
+>> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+>> index 068ba2e77c5d..6ed9f82e639f 100644
+>> --- a/include/linux/alloc_tag.h
+>> +++ b/include/linux/alloc_tag.h
+>> @@ -134,6 +134,8 @@ static inline bool mem_alloc_profiling_enabled(void)
+>>                                    &mem_alloc_profiling_key);
+>>  }
+>>
+>> +bool mem_alloc_profiling_permanently_disabled(void);
+>> +
+>>  static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
+>>  {
+>>         struct alloc_tag_counters v = { 0, 0 };
+>> @@ -239,6 +241,7 @@ static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
+>>
+>>  #define DEFINE_ALLOC_TAG(_alloc_tag)
+>>  static inline bool mem_alloc_profiling_enabled(void) { return false; }
+>> +static inline bool mem_alloc_profiling_permanently_disabled(void) { return true; }
+>>  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag,
+>>                                  size_t bytes) {}
+>>  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
+>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+>> index d9be1cf5187d..e5b218176c5a 100644
+>> --- a/lib/alloc_tag.c
+>> +++ b/lib/alloc_tag.c
+>> @@ -26,6 +26,15 @@ static bool mem_profiling_support = true;
+>>  static bool mem_profiling_support;
+>>  #endif
+>>
+>> +/*
+>> + * Memory allocation profiling is permanently disabled and cannot be enabled.
+>> + * Must be called after setup_early_mem_profiling().
+>> + */
+>> +bool mem_alloc_profiling_permanently_disabled(void)
+>> +{
+>> +       return !mem_profiling_support;
+>> +}
+>> +
+>>  static struct codetag_type *alloc_tag_cttype;
+>>
+>>  #ifdef CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU
+>>
+>> --
+>> 2.53.0
+>>
 
->> Also, Sashiko might have found yet more pre-existing issues:
->> 	https://sashiko.dev/#/patchset/20260710-spin-trylock-followup-v1-0-af=
-fb5fe5ed00@google.com
->=20
-> There are 2 cases here:
->=20
-> 1: !pcp_allowed_order() -> This is forbidden by alloc_order_allowed(),
->    quite a bad miss from Sashiko IMO.
-
-Hmm but alloc_order_allowed() would return true for !pcp_allowed_order()
-when spinning is allowed, then pages can be freed via
-free_pages_nolock()?
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------nxjIPOFNtOXUEKiJUGKT1hb6--
-
---------------wjfaJTQWd3NhLTT80YxRJH5m
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalUPDQAKCRCGXBN6rc5S
-1uORAP95b6ffqA3hjbQbhh4fTA8JO2q/aCxMraAwrw3m7JnqIwEAhA/YJsuRldNh
-eHZVy6QNewHI+2W+paQ1iqEOvb1FuAs=
-=UlbM
------END PGP SIGNATURE-----
-
---------------wjfaJTQWd3NhLTT80YxRJH5m--
 
