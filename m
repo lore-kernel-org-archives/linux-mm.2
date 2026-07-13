@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3397BC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 772FCC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:18:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C7AB6B00C0; Mon, 13 Jul 2026 12:18:08 -0400 (EDT)
+	id 7AA4C6B0088; Mon, 13 Jul 2026 12:18:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29F346B00C1; Mon, 13 Jul 2026 12:18:08 -0400 (EDT)
+	id 781A26B00C1; Mon, 13 Jul 2026 12:18:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DCF56B00C2; Mon, 13 Jul 2026 12:18:08 -0400 (EDT)
+	id 6BEB46B00C2; Mon, 13 Jul 2026 12:18:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DD27F6B00C0
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:18:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2CDF4C0A24
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:49:23 +0000 (UTC)
-X-FDA: 84983885406.18.1F169E7
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F131FA0009
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:49:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=fEhipLwP;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 310346B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:18:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF1B5401F5
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:18:15 +0000 (UTC)
+X-FDA: 84984260550.24.E7A59B7
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 87E6E80009
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:18:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ia1C88PO;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783950561;
-	b=JFIln3QcyF2ArS62jA9zIXfgfeZ5I7cq8ktVRB0f40x0ocwRTlcEDT3btwpBv/5R1Fd9yV
-	ZlW+k27YfKwS1ffMIzY/CqebG+aDh5Vkq4+xPrJkOEjXV9NlR6DJ25C4QvYLeNUJ4p5C4m
-	tEyWXrk1zYQLucXUmMS0wT6BthsflBA=
+	t=1783959494;
+	b=4FFl3vPviZc7HdcUqIn0zhKuF/kE0rhIqbKLHcfLVZ3rRvb+TyHuTzA+P5FUNMo5xX4WGC
+	PymgpP86eZWAu0cyubI0Y9J1gfJmAr+ECUVlxFNI9PaCzLb7ZdmmiCP+TT8+Yr3tExInet
+	YuTVGV64gmUIb7x1IxgH8/PbZ0p1MqA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=fEhipLwP;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ia1C88PO;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783950561;
+	s=arc-20220608; t=1783959494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dL2VKym1UnhltwnaYtOpqLzEe9LSm4JI0ZNKENT3yQo=;
-	b=W/TumgkborufYlpaVT/rbvfm4DPvOGngs2sw7IKaoe3zRBqy74guAmtoKfNJodz2bBL0IF
-	t3MWI/wh+u7poChpBXD4a0qCGzTH8kGK64W04XS+dGmGu30svh0ASc3DjzHxkr+busYQgf
-	+alnG3eJZ+qv1u0mC9ennZX7KNCaX/U=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87D6D1576;
-	Mon, 13 Jul 2026 06:49:15 -0700 (PDT)
-Received: from [10.164.19.52] (unknown [10.164.19.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 74E3E3F7B4;
-	Mon, 13 Jul 2026 06:49:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783950559; bh=hpF+B5I89ietP3twgkdOdoYxWCsb5V0kGzBiAvX1wgs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fEhipLwPpaOlZwwA7uusgOWXnDcZ6crqM6UwSs112vVuANbuv+f94pDG8HL8QZrDM
-	 WpoBaqlEh4OT/1Fge7tlsYYRY6DGGBDSouZT32UoHBd6nOSc8LQjA2nlUn7dLwmH2q
-	 TTbelgOntgP3R1jjsxOoO4tNvFKkvqY6SsVCHvVE=
-Message-ID: <85a3a79a-2a78-47ed-bd93-48e8f1967551@arm.com>
-Date: Mon, 13 Jul 2026 19:19:12 +0530
+	bh=NE/5A5qkR6uAqQiCbOoPzdzcNr6Exfk7cAXEitmmrI0=;
+	b=NVgByK7IgX3Pw7djUsPCAAhtEaPSrv+NoXe2IPrPcEx2FNU/Ik/FTcKvQUOqDG9G6pNl+1
+	HIAQhKSthvYKnQCbnvAQfp2oxlWmhv9hMkpQyho4Z/vvzBlJkCQToA6YBjHHDg8GREbvfW
+	ntJ5jB2HBReQTEGWOxg0kmkILDqTDnQ=
+Message-ID: <03a20b9a-2984-4666-832d-0e35df919a7d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783959488;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NE/5A5qkR6uAqQiCbOoPzdzcNr6Exfk7cAXEitmmrI0=;
+	b=Ia1C88POnfJWrehgtJH6hSDce7pnx2cVNEFya3NdYsLuxozRTM1E5DnT5nWldTjrWQZkM1
+	hF2ehYIrLZzj7kDXyGBtwMsDXrPznZLRKyz37HLJbu7psPRzQhgtQiQhqMmF8sT2Q1V6qI
+	4dOJKPLlVONdcPX4+8y6ZtfcRoAc+FU=
+Date: Mon, 13 Jul 2026 17:17:57 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/6] mm/vmalloc: Extend page table walk to support
- larger page_shift sizes and eliminate page table rewalk
-To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
- will@kernel.org
-Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com,
- david@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com,
- "Barry Song (Xiaomi)" <baohua@kernel.org>, Wen Jiang <jiangwen6@xiaomi.com>,
- Leo Yan <leo.yan@arm.com>
-References: <20260709073823.6643-1-jiangwen6@xiaomi.com>
- <20260709073823.6643-5-jiangwen6@xiaomi.com>
+Subject: Re: [PATCH v4 00/11] mm: PMD-level swap entries for anonymous THPs
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com
+References: <20260713133613.2707815-1-usama.arif@linux.dev>
+ <CAO9r8zP586AFSeNKuaUVZgkPb-mKuLGbQ8m5_od_-GLg7bu90w@mail.gmail.com>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260709073823.6643-5-jiangwen6@xiaomi.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAO9r8zP586AFSeNKuaUVZgkPb-mKuLGbQ8m5_od_-GLg7bu90w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F131FA0009
-X-Stat-Signature: mxo65c3cguoukhxnyd5jrypsi5nrjbjd
-X-HE-Tag: 1783950560-607334
-X-HE-Meta: U2FsdGVkX1/Pykaufj8/eyfkb2VjYFCQ0aME3rX3373WMt+/w4oblexAAqFtm3aH5H1WovtNF7CqEXfxVRiNbxH+k9dLiJHT9e+tJqirIKx+tpDaMA3pIIGwpIesnNZdTY1u0FDZ1ilsZpVEczsgFDVhm02fOK6xwnsPZLk9C6bGzLXXpm0qod0/uYQw9fIFLyu2oTvGlGelE00CX43/6U1zSbfh4y1h32++sW9THc2hAbGCHmTfKt8I7TnMyb0KXBl8dF+ak5Z0Gihx2V78JQYm8mhpSCaqwFbGe1Wu4yZKx2tK2TthU7Z5ljs+hFq9ihDCugmurBUD/4l43gUjkV+Q7/eXKnuzrMyCt5NANQod5v7wN1DG0mpAxoNLpmnYBAW3TPA8ePI42gHcSgLZ+mcH8lIBAVnGQz5vP5Wqgd4GdR55kQnTU7ZL4aCdWw4sOmorOxmqjhWGBGbLLP6rbqVPAbfkGkesEpF+lKonXPwQnQa8i970oEbpl8qUDdqZ75ykv2iFYLQtfk9iBzXH+BMmupVlkMyrC3vCPsAzf05EYQA7ThlmivMml+RA1P0V8VI1nliHK3HK/w9hjsi9ULjJ8yQidqup7s3FMLaw+K7Zd8TK0+OFiaQJqxFE+ifkggPliBd4cFKplfJUotTF+je6FpdYVmEZz+f8zB98eIyLeTaIvnKiEo2hbEqd7imUPS1OqSFYB0j0tvrrgZP2/lhOybnem0qDomkNDqq76ty+ai/Jh77p+7V+6l7A5LhIRgMowZgyaGFnze7KOHq5LqjfORijY+9wGIrbJyMxx14r7+tIZCmUAAKUDsLAc2FIoCbj+W0Mvs6VXYfYj0aFYkCqeOT48KFROhPFRbuaoDYQV/kaQpgSKz5n8w6FhCqwyvPYNymCQkrwRdlybWzvuS+xYrnaUCqgBXKsoV4CFLrAjOWUxIOrzRD5Bap0Wl9RBIjJaaThvxurqyyStSr
- PppVSJkC
- SJrimt2YvWho8jHC7cfsxnzyh6F3CBAlkOPugkHAjjV/s+g4jcUIVjMW00nD6QkGG3LVYicVldJv+uZfqoPuysCiJQlbePFBkj6gMTo3wm2ZNOZT8yXzJmjbENHGKEDUF8KnXmB+GhtPOgLzPVsyNLlv3BUXIffj1wWC8ftEK2qAZz1CLHzLpZ8pCCMiYuSj/jdyyyXl9RIZTPP14D3WAlTkaoC74/U4dmm4S2bwVE8BEcGJOYOr3tonO8Ccre8IJhPN3an3m7s9qz0JAX/zTaVYERKs/hS2/5TalKHPhRvJcoZeDWRNgeXPk32W4LGFOwPqWjJ37FIuKqlekcr9HbJgPrIHKqCyIYQabElSeawZA+Ts7gV6lvlCjGgaD52V0YkKgEt8NdCW1ccIEtz7eOZO1i470efeFVjx1lYJGVxk6KCmWIhTaMoNWryuRYKvpxnxJOCEljU0DVsY3MF25oRFJhOTa0e1fsWe8dbz92+wSjZQ=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 87E6E80009
+X-Stat-Signature: 37fy6p31k4icaz1q7rehz1r1knpue39s
+X-HE-Tag: 1783959490-191028
+X-HE-Meta: U2FsdGVkX1+WbdqG/PwSsAHllwWOlXEQUQ0zNd51PKcX0I6HlhnpWQRz3M41s/s8Nc5osPvf0o1uGQFeJYE+Vr5L3jJ8ClOgWqzFpgm4joBxgzRXHZgF60EfKdRmyjgOMszS6wGjuoR0xD3Q6HjrazXCd8gs59IsTJNH6Igo4DWb2jo/zroXWUIsstkQKdKeS7YknHrZKk54grXp8UmcUyZy+ILaMOo9DeXppIeD50debi7YHWB9iT5Q/3uax31M36aQDhyaOkW4NPpYNMZTnP2KesnSftordqr2FuqkfEo1R8coQvSYvFeg2Yo+mg/Q61zSuEMXL4iR4ns5Htkv2tXqqozO9fxSwLRYPlTeflRabYi7WWAP04qYd4gUkPitVCTeQy8ESW1tspVXCr383sXiGdIYfWyIJlGVHFg4PDoU9mKxYDGYESdR1hwzPQOFlQMRjHd5rUdE6stjAqifBL7IFnnEPZWcx5gCFH0f5b4QQV31+CTtv6a/1e49dJ+K16wQyuEGgFkMD1eDDz9fqky753VIaLJFo50P6L8NE50UayIv+/HFBJV0zni6SdU30wAULv1/N3f9frwbJovZzwtutFuto0W846cnXFCXJ0RtYx3vMJrhSYN/Q4qHfQQ5ae5fgekh+xIckzK+vXt/cmQ/+duphZ/3CCeM68hJkkNp4onwwNWEWn6RXeeC+7qtVQl9M/JNxo0cb2BEGsESIk/+ruWvWeOFtn9SJv9JfgYFL/20HtpTMnKxBkNXZ+5K9n9SCr8GSWCMDnY/YxkdnapL8VUcvf3W01vCSWuesM8qOHFTlGD9Yx8dHjkbO/7FkiRScFcoU2LT1VRhAg5fuIB3vSQgOI0hXFvIOrqjItW50pyZ3dH9YdYs5B8a4rlNK3WKgWA9x47uSedN2xd3h7jKPEdhswY/eQcCAHdG2rF6lyRUfMN/SUq7CyH3eBjnGhczUc17hnor5Od4PlV
+ Y7JGWwZg
+ yY1mbbwHiPON6PvBH0cxZiAX9Ztkt3dDuCCmcjdorecbYmXAOJncYSxXZDXnIaNjkYyU4yKg5wTFiiz1ONNxIj5/a9WWA6N+W9HmNoE0r9PQ+wKe4lc4UtG3pRvBblKor7HgN0SLsz3pi1diKRgMf7AgNW4qZPihetcWCdA8bVpI+hZHq0zwMuS6rZbMUZgZYjT3hI6Q+8/jF0J7j4Vob3g/IsHpkPtXxinmzNn4vczl1zx0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,213 +101,121 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 09/07/26 1:08 pm, Wen Jiang wrote:
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On 13/07/2026 16:56, Yosry Ahmed wrote:
+> On Mon, Jul 13, 2026 at 6:36 AM Usama Arif <usama.arif@linux.dev> wrote:
+>>
+>> This is the PMD swap entry core series. The preparatory PMD softleaf [1]
+>> cleanup series has been merged in akpm/mm-new, so this series is now
+>> based directly on akpm/mm-new.
+>>
+>> When reclaim swaps out a PMD-mapped anonymous THP today, the PMD is
+>> split into HPAGE_PMD_NR PTE-level swap entries via TTU_SPLIT_HUGE_PMD
+>> before unmap.  This series introduces a PMD-level swap entry so the
+>> huge mapping can survive the swap round-trip and do_huge_pmd_swap_page()
+>> can restore the PMD mapping directly on swap-in, without waiting for
+>> khugepaged to collapse the range later.
+>>
+>> The PMD swap entry is a compact page-table encoding for HPAGE_PMD_NR
+>> consecutive swap slots.  swap_map accounting remains per-slot and is
+>> unchanged.  Importantly, a PMD swap entry does not promise that the swap
+>> cache always contains one PMD-sized folio.  While the cache is empty or
+>> contains one PMD-sized folio, PMD-level handling can proceed.  Once the
+>> cache has split/per-slot state, users either inspect the individual
+>> slots directly (mincore) or split the PMD swap entry and retry through
+>> the PTE path (fault, swapoff, MADV_WILLNEED, UFFDIO_MOVE).  Likewise,
+>> if any slot is still backed by zswap's per-page store, PMD-order
+>> swap-in consumers split and let the PTE path load the range page by page;
+>> an all-on-disk range can still be read back as one PMD-sized folio.
+>>
+>> The series is ordered so every consumer can handle PMD swap entries
+>> before the swap-out producer starts installing them.  The swap-out patch
+>> is the last functional change.
+>>
+>> Patch breakdown:
+>>
+>>   1. mm: add PMD swap entry detection support
+>>      Add pmd_is_swap_entry(), teach the softleaf layer that PMD swap
+>>      entries are valid PMD softleaf entries, and add per-arch
+>>      pmd_swp_*exclusive helpers.
+>>
+>>   2. mm: add PMD swap entry splitting support
+>>      Teach __split_huge_pmd_locked() to split a PMD swap entry into
+>>      HPAGE_PMD_NR PTE swap entries.  This is the common fallback path
+>>      whenever PMD-level handling is unsafe or unavailable.
+>>
+>>   3. mm: handle PMD swap entries in fork path
+>>      Copy a PMD swap entry in fork via one
+>>      swap_dup_entries_direct(HPAGE_PMD_NR) operation, with the same
+>>      swapoff/mmlist preparation rules used by PTE entries.
+>>
+>>   4. mm: zswap: add range lookup for large-folio swapin
+>>      Teach zswap_load() to let all-on-disk large folio reads proceed to
+>>      the backing swap device, and add zswap_range_has_entry() so PMD
+>>      swap-entry consumers can split only when a specific range has
+>>      per-page zswap state.
+>>
+>>   5. mm: swap in PMD swap entries as whole THPs during swapoff
+>>      Add swap_pmd_cache_lookup() and use it from swapoff.  Empty cache
+>>      and PMD-sized cache state can be handled at PMD order; split cache
+>>      state, zswap-backed slots, allocation/read failure, or non-uptodate
+>>      folios split the PMD and fall back to unuse_pte_range().
+>>
+>>   6. mm: handle PMD swap entries in non-present PMD walkers
+>>      Teach zap, mprotect, soft-dirty, uffd-wp, smaps, mincore,
+>>      mempolicy, khugepaged, HMM, and madvise walkers about PMD swap
+>>      entries.  mincore reports PMD-sized cache state directly and checks
+>>      per-page slots after the cache has split.
+>>
+>>   7. mm: handle PMD swap entries in MADV_WILLNEED
+>>      Let MADV_WILLNEED prefetch a PMD swap entry at PMD order when safe,
+>>      treat an already cached PMD-sized folio as complete, and split/retry
+>>      through PTEs for split cache state, zswap-backed slots, or races
+>>      with per-slot cache population.
+>>
+>>   8. mm: handle PMD swap entries in UFFDIO_MOVE
+>>      Move PMD swap entries whole when the covered range is empty or
+>>      backed by one PMD-sized folio.  Split/per-slot cache state returns
+>>      -EAGAIN after splitting so retry can use the PTE move path and
+>>      update per-page rmap metadata.
+>>
+>>   9. mm: handle PMD swap entry faults on swap-in
+>>      Add do_huge_pmd_swap_page().  It maps a PMD-sized cached folio
+>>      directly, or allocates/reads at PMD order when the cache is empty
+>>      and the range has no zswap entries.  Split cache state, zswap-backed
+>>      slots, and PMD-order resource failures fall back to the PTE path.
+>>
+>>  10. mm: install PMD swap entries on swap-out
+>>      Stop forcing TTU_SPLIT_HUGE_PMD for PMD-mappable swapcache folios
+>>      and install one PMD swap entry instead.  Zswap still stores the THP
+>>      as per-page compressed entries; PMD-order swap-in consumers preserve
+>>      a PMD-sized cached folio or read an all-on-disk range as a whole THP,
+>>      and split before reading per-page zswap state.
+>>
+>>  11. selftests/mm: add PMD swap entry tests
+>>      Add pmd_swap selftests covering swap-out/in, fork, fork+COW,
+>>      repeated cycles, write fault, munmap, mprotect, mremap, pagemap,
+>>      mincore, MADV_FREE, MADV_WILLNEED, UFFDIO_MOVE, and swapoff.
+>>
+>> Notes on zswap:
+>>
+>>   Native PMD-order zswap load/store is intentionally left for a follow-up.
+>>   Alexandre Ghiti is currently working this.
+>>   This series can still preserve PMD swap entries while zswap is enabled:
+>>   zswap stores the THP as order-0 entries, and PMD-order swap-in
+>>   consumers split any range that has zswap entries before reading it.  If
+>>   zswap has written the whole range back to disk, or the swap cache still
+>>   contains one PMD-sized folio, PMD-level handling can proceed.
 > 
-> vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
-> provides a clean interface by taking struct page **pages and mapping them
-> via direct PTE iteration. This avoids the page table rewalk seen when
-> using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
-> 
-> Extend it to support larger page_shift values, and add PMD- and
-> contiguous-PTE mappings as well. Rename it to vmap_pages_range_noflush_walk()
-> since it now handles more than just small pages.
-> 
-> For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
-> iterate over pages one by one via vmap_range_noflush(), which would
-> otherwise lead to page table rewalk. The code is now unified with the
-> PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
-> 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Tested-by: Leo Yan <leo.yan@arm.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> ---
->  mm/vmalloc.c | 81 ++++++++++++++++++++++++++++++----------------------
->  1 file changed, 47 insertions(+), 34 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index d7fef85b241c4..d2a4d649af549 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -125,7 +125,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  	pte_t *pte;
->  	u64 pfn;
->  	struct page *page;
-> -	unsigned long size = PAGE_SIZE;
-> +	unsigned long size;
-> +	unsigned int steps;
->  
->  	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
->  		return -EINVAL;
-> @@ -147,8 +148,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  		}
->  
->  		size = vmap_set_ptes(pte, addr, end, pfn, prot, max_page_shift);
-> -		pfn += PFN_DOWN(size);
-> -	} while (pte += PFN_DOWN(size), addr += size, addr != end);
-> +		steps = PFN_DOWN(size);
-> +	} while (pte += steps, pfn += steps, addr += size, addr != end);
+> So in the swapout path, a single PMD swap entry is created, but
+> order-0 pages are compressed and stored independently in zswap? Just
+> checking I understood this correctly.
 
-I think I had also recommended to put these vmap_pte_range() changes
-into the previous patch.
-
->  
->  	lazy_mmu_mode_disable();
->  	*mask |= PGTBL_PTE_MODIFIED;
-> @@ -540,8 +541,10 @@ void vunmap_range(unsigned long addr, unsigned long end)
->  
->  static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
-> +	unsigned long pfn, size;
-> +	unsigned int steps;
->  	int err = 0;
->  	pte_t *pte;
->  
-> @@ -572,9 +575,10 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
->  			break;
->  		}
->  
-> -		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
-> -		(*nr)++;
-> -	} while (pte++, addr += PAGE_SIZE, addr != end);
-> +		pfn = page_to_pfn(page);
-> +		size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
-> +		steps = PFN_DOWN(size);
-> +	} while (pte += steps, *nr += steps, addr += size, addr != end);
->  
->  	lazy_mmu_mode_disable();
->  	*mask |= PGTBL_PTE_MODIFIED;
-> @@ -584,7 +588,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
->  
->  static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
->  	pmd_t *pmd;
->  	unsigned long next;
-> @@ -594,7 +598,27 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
->  		return -ENOMEM;
->  	do {
->  		next = pmd_addr_end(addr, end);
-> -		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
-> +
-> +		if (shift >= PMD_SHIFT) {
-> +			struct page *page = pages[*nr];
-> +			phys_addr_t phys_addr;
-> +
-> +			if (WARN_ON(!page))
-> +				return -ENOMEM;
-> +			if (WARN_ON(!pfn_valid(page_to_pfn(page))))
-> +				return -EINVAL;
-> +
-> +			phys_addr = page_to_phys(page);
-> +
-> +			if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
-> +						shift)) {
-> +				*mask |= PGTBL_PMD_MODIFIED;
-> +				*nr += 1 << (PMD_SHIFT - PAGE_SHIFT);
-> +				continue;
-> +			}
-> +		}
-> +
-> +		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask, shift))
->  			return -ENOMEM;
->  	} while (pmd++, addr = next, addr != end);
->  	return 0;
-> @@ -602,7 +626,7 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
->  
->  static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
->  	pud_t *pud;
->  	unsigned long next;
-> @@ -612,7 +636,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
->  		return -ENOMEM;
->  	do {
->  		next = pud_addr_end(addr, end);
-> -		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
-> +		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask, shift))
->  			return -ENOMEM;
->  	} while (pud++, addr = next, addr != end);
->  	return 0;
-> @@ -620,7 +644,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
->  
->  static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
->  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
-> -		pgtbl_mod_mask *mask)
-> +		pgtbl_mod_mask *mask, unsigned int shift)
->  {
->  	p4d_t *p4d;
->  	unsigned long next;
-> @@ -630,14 +654,18 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
->  		return -ENOMEM;
->  	do {
->  		next = p4d_addr_end(addr, end);
-> -		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
-> +		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask, shift))
->  			return -ENOMEM;
->  	} while (p4d++, addr = next, addr != end);
->  	return 0;
->  }
->  
-> -static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
-> -		pgprot_t prot, struct page **pages)
-> +/*
-> + * It can take an array of pages which are not all contiguous, but it
-> + * may have contiguous chunks, as hinted by @shift.
-> + */
-> +static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages, unsigned int shift)
->  {
->  	unsigned long start = addr;
->  	pgd_t *pgd;
-> @@ -652,7 +680,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->  		next = pgd_addr_end(addr, end);
->  		if (pgd_bad(*pgd))
->  			mask |= PGTBL_PGD_MODIFIED;
-> -		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
-> +		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask, shift);
->  		if (err)
->  			break;
->  	} while (pgd++, addr = next, addr != end);
-> @@ -675,27 +703,12 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
->  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
->  		pgprot_t prot, struct page **pages, unsigned int page_shift)
->  {
-> -	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
-> -
->  	WARN_ON(page_shift < PAGE_SHIFT);
->  
-> -	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
-> -			page_shift == PAGE_SHIFT)
-> -		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-> -
-> -	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
-> -		int err;
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
-> +		page_shift = PAGE_SHIFT;
->  
-> -		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
-> -					page_to_phys(pages[i]), prot,
-> -					page_shift);
-> -		if (err)
-> -			return err;
-> -
-> -		addr += 1UL << page_shift;
-> -	}
-> -
-> -	return 0;
-> +	return vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift);
->  }
->  
->  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+Yes that is correct, swapout installs PMD swap entry in try_to_unmap_one().
+When the swapped-out THP reaches zswap, current zswap still stores it as
+independent order-0 entries keyed by the individual swap slots. On
+PMD-order swap-in, we only proceed as a THP if the swap cache still has
+one PMD-sized folio, or if none of the covered slots is present in zswap
+and the whole range can be read from disk. If any slot is still backed by
+zswap, we split the PMD swap entry and retry through the normal PTE path.
 
 
