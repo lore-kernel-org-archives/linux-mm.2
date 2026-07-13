@@ -4,185 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 646BDC44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1C8DC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:14:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0288E6B00A9; Mon, 13 Jul 2026 12:14:37 -0400 (EDT)
+	id 3658C6B00AD; Mon, 13 Jul 2026 12:14:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF3F26B00AB; Mon, 13 Jul 2026 12:14:36 -0400 (EDT)
+	id 26FBE6B00AB; Mon, 13 Jul 2026 12:14:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D74476B00AC; Mon, 13 Jul 2026 12:14:36 -0400 (EDT)
+	id 026D16B00A6; Mon, 13 Jul 2026 12:14:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DE1E6B00A6
+	by kanga.kvack.org (Postfix) with ESMTP id B08956B00A9
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:14:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E91BDA01F0
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:55:10 +0000 (UTC)
-X-FDA: 84984202380.11.6907547
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011028.outbound.protection.outlook.com [40.107.208.28])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0180A180010
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:55:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SYiJC67D;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783958108;
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D84FA0209
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:56:23 +0000 (UTC)
+X-FDA: 84984205446.02.7882A40
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 966E140007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:56:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XVNKvtbY;
+	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783958181;
+	b=mAQUtNF5qX5KmTkMr+xfbfbYnj6AwNtQeI5NDHoHbntPbuOiUx1rJ/KWURTuVZLckajhXB
+	mr1a8DNgw02W89Yw4USV6LcieXJbLksnomEIAdD3fABLPEGc+mlOTCJPnE/MmZOr9/Rdxi
+	fj2IG+JPp3yRrp87S+ng2TmMhVZIz0E=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XVNKvtbY;
+	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783958181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Exdk7tlrGUwmChLhYeDN8TQaZLX+aAssYf55GvlhiLw=;
-	b=yjVDLKdcqZ5GTlPh4WbdtzPp37DKbfWaNlRMmoQn8GCdARi+p5355DQlJTpwT8PbFNyETY
-	aPBRVkRppB2TQwKHBXv/ywqAfQkjiRZX0rF0VQE7nhj0XUmNC9Zmqu41C6AKq2us/d0UWO
-	SyKgEuuxh8p9vHlkAP8qIH3NuYhwbu8=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SYiJC67D;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783958108;
-	b=f8LBpHWf4reKs8Qjh1hpvXdGjljNOv1zSDXZuQRYdAnj/LBz+VyzUL7hL9L9WcL76e/4kt
-	/Xxorux5YwlWBrSjsbwELoaPk92QQu9LlaxvKgFB8wdOceL8AMzjFDn7L8y8Q+eKA1z8Zg
-	VfVQJ8mJqUg9Dpz/6jm0sD2v4XBpdtg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LivAzmCC5jcKyieXOfiSTJES+uCcnAvglTlXtO03px/e7oi1T/FD3ZQT2a0t1GS/xI2s/986rM0BZPiX2kHmZ+U1BoUcq1A/WtLn+1bnwwY7tHqNDf0vPTVtJU9+Ejq2ZZ8X7jjwM+H1p50Qp9EmKlEXJEHNgxzKVNLr51w7qHc9BhVCfxWNxtldok8TFZZxVDyxRdRXo/ZrrDos0wPRliz2oHQP6792BbPE6g/EdfVzlJzeGG0mtS4VfoXRf0Xxl07845SFW0nEmN/RFeKgI74g08dtQa3beJTu5koaC7MDqnjEqn+NSo9CAPwtQwh0jwMd6jinMzs+nfw1cK8sfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Exdk7tlrGUwmChLhYeDN8TQaZLX+aAssYf55GvlhiLw=;
- b=fyMDhvQ9wq/Mys9Sv9qnG4Iuea+VFUeHFVXAaFCbGXM26raaa3U5Ff+w3F0yPQpFy3UUP9/sNbz5LuB+K4FCF6PcEDWMXf83sxmzdAQ6RDGjYGCA27fjBKUuJE2fzY1zMe7bOnuUUBC7p/OydWrsk1S2kCggJYUqL4YpJGjBl2RY8e1KnXmzK+/o/c5x6cai2tKFoAyP0IfvUYOJ0PngAInyRTXdqxMzGMscrORzxaEQICaHATiYwNiodncpBRHeJxeAI9SHIt43SveqV2yhmgD9Xmdh7gDV7zjeRE4mIeKBS7IHf5ZZ1FYxmTdzgE8yJH5FhWVOqxfbeZcI2gUXbg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Exdk7tlrGUwmChLhYeDN8TQaZLX+aAssYf55GvlhiLw=;
- b=SYiJC67DXIrutVTIR92UMue8HDULOmtwwvM/GMGTAIjdQtMPM1fzHsAJRAdUGIi5ftvyhDAb6KUO+8oVEKlf9qrSP/ZnbNI9gJKz0HpNox97EsmuhNPIL67w4KrvDNTeKrpDsXOU/RoSKS3cpT+9ce3CrVxb9trTcOUZePgpgeJUt/N/hFeu8aShThHdft8YMv2gHDzIJE9pFbWnP+hJPJtbMVg672wqAHu/DMR8lJSMgJMkkHt2JD25iRF+rgkRYOB0q5zAVr5BKAIokYuhp/U3OLq7i41ppCKD3IKjikcDshbTJRAKUZtwroAtXVUiBIgeVCU0vPLgQh4Soj9OeQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS0PR12MB6487.namprd12.prod.outlook.com (2603:10b6:8:c4::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 15:54:58 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.019; Mon, 13 Jul 2026
- 15:54:58 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>,
- Alexei Starovoitov <ast@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Hao Ge <hao.ge@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
- Yosry Ahmed <yosry@kernel.org>
-Subject: Re: [PATCH v5 13/18] mm: Remove __alloc_pages_node()
-Date: Mon, 13 Jul 2026 11:54:56 -0400
-X-Mailer: MailMate (3.0r7017)
-Message-ID: <399958F1-544F-4826-90E5-B471E2231375@nvidia.com>
-In-Reply-To: <DJXJRNZFBPQ2.2S6CM4YAKHVQ5@linux.dev>
-References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
- <20260703-alloc-trylock-v5-13-c87b714e19d3@google.com>
- <DJP0VKJLE8TE.6EDLC2BFI1SG@nvidia.com> <DJXJRNZFBPQ2.2S6CM4YAKHVQ5@linux.dev>
+	bh=2hRNlK5GbUM2BXSOT1bCJlv6QwIluqoBZWiGq7IjONk=;
+	b=tK6N7WaM8TN8+T2iiYPK/RuQG5DTmkmXUdUvyVaq7XSAJ+SP6FsR83EWPNoJ6HM8/w+f+s
+	dftoBh41ERvD2+uXHVvfGPvdCNPqgl462mDcjWx8KJQtPtvxS4g9RZT5dN04YUH+SEl13N
+	fxSx4kbD8NQDF0R/c5RgGqOG9HTi8q0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 781E142AEE
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:56:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A9D1F0155C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783958180;
+	bh=2hRNlK5GbUM2BXSOT1bCJlv6QwIluqoBZWiGq7IjONk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=XVNKvtbYKpLzG0Yhbbo1cnBXgL5L9iTHLGaCqc6pZI+1sqiaFApbXbn6ETZ44NhgI
+	 P432eE82xvzyRpUasUiI0L2K7cHbD2oFQOqg5vjCjecIPRQLr90eY5eM96c8LcIIwn
+	 X1QKiKltFL5339Wq9d1XSPgNE5hFnjE+nMDPum9MviD55JeGztrCfmN30eG+U184rr
+	 Si5OYhIL0oAxQWwZPOmyfdJghJzVN40jZU8uZCU8g4BrbuSOzKqIkTb7ilgpsTZ4UC
+	 8FDUL7Qbf+Jv3piCDXqZdcEz08CAgvCjYR2BtUrJ58ihiR+jdDWRH4nI4g3hdbND9e
+	 aQSt3l1+E1HpA==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-697564cb69eso26074a12.0
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:56:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RodfQ9AScUTqh6nOGMTqEbtWtjSjy/b6VNVPzCHjm5pmpiEm87OYj2NigZ0Dhjxt7AZZqbUJcY8CA==@kvack.org
+X-Gm-Message-State: AOJu0YzLop/tClwR6y/zDBJ07guR6ktAKvqQJWUNoxJ9qTRT5xkZYeXr
+	DIgqQap4e+SNJItElpxqFy039cuZY5qQ7JFZQ/K5Dgm4nfSkPoVU3Tfen+SLORK4i32KYgjXu4X
+	z02zWa7MyJiYiL6z+81pV+pQ/7Vk3IQ4=
+X-Received: by 2002:a17:907:cf87:b0:c15:e614:7042 with SMTP id
+ a640c23a62f3a-c161e9a840cmr416947166b.25.1783958179115; Mon, 13 Jul 2026
+ 08:56:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260713133613.2707815-1-usama.arif@linux.dev>
+In-Reply-To: <20260713133613.2707815-1-usama.arif@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 13 Jul 2026 08:56:07 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zP586AFSeNKuaUVZgkPb-mKuLGbQ8m5_od_-GLg7bu90w@mail.gmail.com>
+X-Gm-Features: AVVi8Cc8w2GyfUCat11G_elbDa74woQHSvrz6tR62KY3kcf0DOpn_B4GiDBiiV4
+Message-ID: <CAO9r8zP586AFSeNKuaUVZgkPb-mKuLGbQ8m5_od_-GLg7bu90w@mail.gmail.com>
+Subject: Re: [PATCH v4 00/11] mm: PMD-level swap entries for anonymous THPs
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
+	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-MS-Reactions: disallow
-X-ClientProxiedBy: MN0P220CA0020.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:52e::17) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB6487:EE_
-X-MS-Office365-Filtering-Correlation-Id: d793f495-9e14-479b-96e1-08dee0f716d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|23010399003|22082099003|18002099003|11063799006|4143699003|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	9MnzovuPHExgrgk/+jCqJ2Iuf58v+P37Sgb2b74xwVb0QPVi5b6xVVkYCi/IYsS8CO6RshS6FpE9UHRmLPTkCpqvPZvMPQIjxpp+vLpER/cHqFiNgvDpqlBkjDoPhqHHmuWD6FnguIhzw/XaH/6Kvy46wm3TvlypkLxDDAwb/c3wS5ubgad6ISBBnANQl7W7o4+aLp6X6J81ewAlsdd7ecPv4Oczx2kw7tR15xtG9RBIJplYHevcD5dk0fTqHRfwLdrelCbhmUUgkRrkfk+tcO8tjRTTbnRoip86CSNn74/rwJgOb3OVukOsvD8RQXjaFKP1r8+5O3O7ucpRv9iWZEIIfHDYy2oKU1WYBFNtEeGs3K1YTOVGaVz02ez+6SC1JGo3WM6YcDUhA65QE21kOKwm9H4hRz9sBmjEhE+P0P1LaBOLj0MvmSTKGwoVB3fu2VGc/eCj4L6e/AVO+KRsCO9ScF+SbveozLU6djnXKHrrmTivhfI4vbDrlgFoDIve4jGO1frsUcSCl3U4rCShAV0qxaa8khYJNL1JWSqyKFR4f4m/Af3qge97sEuBedjGOyctOV/ack+NSPfnpuhaxMqCNhV7JYJKhOaHE/89b8y39TEFNp6y5Yd0jQnpz540B4R2Nazu7O820nZ5Iu+/v5peADMZ+xc66Sgq5ttOQtY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(23010399003)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVBwRUF4SHpPcGQ3VkRTdzQwTzQrN2ZmR0VkN0VNVUlWYi84d3NPcjgyN1JF?=
- =?utf-8?B?UDBGWGhlemhURDhhYnV3RjlRV3UzM3pMaTYyMGFwWFJDNjcwV0pzaTRRbnQz?=
- =?utf-8?B?SUtsNFAzSzZ2NkRtZVBBN0NHV2pVanoySTJ2NC9GN3RHQTU0Ym1lc0VpRHV4?=
- =?utf-8?B?TzhVd1Y2d2R5dkhLaDJHWHQvdnZ6bjF6R3RmZGtzYmljem1mTnVFYUd1YXBK?=
- =?utf-8?B?RXlhNEdyWDBsakh5bEtJQ0Q4Q2U2UTlRdUpna2RqNnZmYUpSWEFVZVlEdUdF?=
- =?utf-8?B?akpXK1BLL1hiTzVFbHUwazVhQWh5K1Iva2YvY0VabGp6RkJ1WmM5NkwwTnBq?=
- =?utf-8?B?bTh6bFE3WDN5RlBsQUV4WFIyZi93dTJ3Z3dOTVJXUjBueE56MXBxaDRQZUFH?=
- =?utf-8?B?WlJMMFp2S1JRRmlzbmZ0VjQ2citxb1pCUDNuYStTMzMzQlptTUl4L3pVV1ZE?=
- =?utf-8?B?N2FhYWdyYzdLWVBVTzVuZVljV1RZdXllVFFrVG1JS0k3Zzh3MkJDSS9TcEdS?=
- =?utf-8?B?a0Fxcm1MMmZyRWR2cXpPL2daQkpLbzArdDVUYUtWVTJDbHRIUnl5N2FpK1l2?=
- =?utf-8?B?TmdVQVA5SGhJTE5hVmJ4dG1pTEtkSUt1YlFyanFMK0t4ZUNDMVQvMVplTVE1?=
- =?utf-8?B?WmRyTDdMNGJ3ajdlS1BMNU1aNURBOEMxL3pKV3lpMC9DNWVLTGNTUW1IRldn?=
- =?utf-8?B?SnpmY0N5NjhtSXJKTnAyR1FlbnptZlZqMHJhak1HUGk2d3hwa3F2V01TQmpq?=
- =?utf-8?B?NmRaYTQxZVB0VUZzRDZWcDdvNlJwOTVteGZoTldFcU9MVGxITXZ3OFZaQll0?=
- =?utf-8?B?TWlnM2J6Y3lBYXYwSVd1ZFBLMEVuNlZyUnZVNm51ZXhsWXlGYi9DS2FjTk9I?=
- =?utf-8?B?cVVtdHpaSkdxTW1LdUtFL21MbWx3N25GZzlCNnVobW9Hek5KS1U0VkJDc3Jo?=
- =?utf-8?B?Z3F3V09VNCtHTkpYRHloMnJJbHdjQmtPdjdEcEdieUY2RGF1aDJjL0hhRmd0?=
- =?utf-8?B?OHNNRGo3MzdPSjBQRjVWbVVlTmFaRmNzd2RSQUxqdExaSytGeUt0L3JySnB0?=
- =?utf-8?B?ZFRKd01KSi9XRWJhbmdKOHVBOHlkWFlKSHdOTUpEa3VoS2J2ay9jUjlrcHQz?=
- =?utf-8?B?NlNIbE13RVFxSWo4d1djLzdSRy9MK29RN0I0bFdreTlDZUF5RUl4d0EyemVD?=
- =?utf-8?B?UmZ5ODJTZmNwSCtGanNxY3N2VlA2cVhGNzlGTmZLbTY0bEZBc3R3SlNzOFRR?=
- =?utf-8?B?c2d3bERXNFh4WmgwYnhzWmQ0RkxybEcvdnR3aUc5eURBeGJyWDFWaFZsZFFK?=
- =?utf-8?B?VkNlMDdXbnNHcFUyMFhyK0lia3IxSUlLWXFoTUg3NGVhV0VzQWRxbE1ick1a?=
- =?utf-8?B?aWdZbTRRU1ZxQnNSemtxUXFic2xweWhkMExMY3h3RWdkMjRlcjV0VU1DeERS?=
- =?utf-8?B?RlZjMjY1OC85RDJnU0N2MWl1V3RLUkorUjJ5b2xlcTdJTDFDaWoyYTdTOWlD?=
- =?utf-8?B?ODYxOFNiaElOcFloNVpGTEltTnJPUExhV1daZmZ0TVYrTHpXTUVPcXJaSURu?=
- =?utf-8?B?aXFKVG90VXRuNmxScWcxTVlsR1o1QWs5TmZFZ2hTazNxeUhEZ2tGUnQ2NGFX?=
- =?utf-8?B?SGsxVEdTQ3JvMUErMyt2R1p3M0thWmE2aXYrdUMxQ0p4UnUvT0N0ZmJxR3JG?=
- =?utf-8?B?YmZEQTR0L0lIZmNQbzY5RmZBcEdPR2ZVdzAwUkd0TDZwc29KOEh5WkE3bzN1?=
- =?utf-8?B?M0FsaFMyanpZUVNsVGFFSTlFbEhnNUUxRXl6Mk5OaFZxRWhDWWdDaHRKOFN2?=
- =?utf-8?B?QThyVG1MQi9KZmV0VlltY3p4TnpvZURNWGg3Q005MjhIU2kxcXJIK25XUXRX?=
- =?utf-8?B?MGFORVltOXN4UkUwUkY0YW1kdjdobFBqc0o4SVlqVVVCVzFOWEF2U3NmMXZT?=
- =?utf-8?B?WFNKTXpOdW9nemhsZWxTRU52NFZQTWdCbEtVcEJPK1VQMU1vMzNxRkVaZXhS?=
- =?utf-8?B?bjhLRVN6ZVhLYzEyczdtMW50cWJzMm4xcDZlQTE4Z0FGQnBaNCtra2R1bGE1?=
- =?utf-8?B?SCtHUTVOdEp2MUk4QXJtN3RtRTM1azRHNDFtYS9IQXZKWUczNmdyMDZnZW9k?=
- =?utf-8?B?TTdhYUtNZWE3MTUraVNrZzQ2RmVCUWwxVDE0VzQyZXpPOFRzcXBGNy8xMjZn?=
- =?utf-8?B?aW1BaStRWEk3K0l5T1AwUWJRS3EyT2I1cXN2dFRVM3g0eG5qNUthL0VWaEM0?=
- =?utf-8?B?bXhJQ3kvSHFYdENacXNIOEh0NlcwK3U4QThjM3cvNDV5Y09JL254LzF2ODZu?=
- =?utf-8?Q?86GitWKNqHhSwlC3+V?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d793f495-9e14-479b-96e1-08dee0f716d5
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 15:54:57.9381
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S85TKTr2C5JWNAt/NKDXiUIAkRohpeq5NlscZckrakAc6eYD7YYa3JsPeB/wkWkc
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6487
-X-Rspamd-Queue-Id: 0180A180010
-X-Stat-Signature: 9cxrj1atrgd3r6hetp8rfz4xiuipw7z5
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783958107-658999
-X-HE-Meta: U2FsdGVkX18vgGo7gtA9ibbesNsKNffIx1tuGZ5jsjgWIae8xj+IyW6rl8Skf87X7Joz/z5MLEGX10Co9NJMTEhjsngtllnuIRvP1CRzXvon8IkdYCDdfBxE8n7kEpZebsLZeDflm9sJkDlM6Hu1qIy70Ral2FLucMfu6mMdw6rXVKU8ZL8+/68jXGHLoGFNXWlEBKZo+2VGYtY7OkJ4dPXxRHCY70tFLMSAUZ2VXCxj3t8le8m/ElvkEYzReSjrkTb43HNHwM5QoJXPtwsyCPgT0+zxuSLTva0+08XBx9Tp2+iGOg8LN6RSpPhQtfvcggtM+t/YlqmBWcZjW4fzK8GPECj1UVwd0EePkj+dA8+YfADVZ99pMJtvdLZb7QvdM1nBba3yCNgiWSQEVGwXCHcrQ2XexfSvtJ6lv5ENzgoc2Wtk7/hKWoMUAugN/3QNu24Z1+/JHBrKhPxSFsB0lWeiu/cYo4RRzIa+UxPQPsjVkBO1cGqIuGQXbUEMJW4Ffo5DuBZa1bQu44Glx0Nz39stWYJTv4zDefzznWxx3KE2DQEt0z3unYARer8UG28K5g3zYP82nxlXnNTf1/xPKnNYqLJPPv0CbdnACGizvH1O+mjzVcGErgtf1XtBjIlbtB+ioe6Ruvkmod9kBqRgRmUoS2qvCc506fzpoCllxDNNd48n+BP6HjUGE42s5E6xC1XV6WfQs4ko1V9ZUSxIfBs9awLvvsQuuPHeK/Fofni+Anf7kXo4WYNgCP5xguB546bAs/vM6wAw0QqAql6FYc4E01rZoIzP/sHcAASnArMbYbTBrHkSxp9XkWd+b//B2gw3FYEScH7TO6HDHWk2ecKFEwmKQRK6f40RPm9uDPnaOSNZkWUAe2IrM46xCu2K17RC8iIOjfnz01rXTTNlBCNgU4MBPpDUPtnkDBV04XLTBc/dvEuhhpKspW04ywAWK1qU62WbRHNaluit++S
- RAvemRyo
- LVYsxgWLzZNH0HilW+OTqvXYByATUyirjhNyQGk82nJEYG9ZZIV5hq4goiUqdniGtcQ6Oni4HKjft7W10/Pb8xW3qvMHXu3HmpraivGUYiGJAsl0KQyqzWjdr7V11kc0CbPPJzBJoesDD9sTC4fm+9pzifY8jl7MsHXk8c19dELZ0fw0xahM4KrRSsIpKkCvNrxYJcUxmGYvymc0cdvOAj3Ht1+o6Q0Rxnx2pbiR/GfinEu0fXlAuVKaeifqMEM6BnnfOjwquOSgDmuw5s0YXpwYEBz4WwNUTvJfk43UaX0RHBG9pBDYQ+Z1K2B1YcSdDYSCmrBnO3brs3ACu8eTG6OYZsRg+K0wyaOWbQ21f3oTeirWmPfwHmyOGLxgpdqNgnujkXgOqg6+zO4UjtxTjcmdtht44+Zf1Q4qT8tOre/1mCw6Cl45CWSh2JO9zn1ffhE5PkNCHluMzR4SfpBBh8JrwWO+ottEwsR1QO/c0a4sYxqCwH8I5xjfNIFrZVLi+B1KEKqk/ezPYBh1chnf5YfEuaNh70bK/FUwKERld917m9EI=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 966E140007
+X-Stat-Signature: c5r9i7tpxsbnudpzm7dwid3xhcrproak
+X-HE-Tag: 1783958181-529704
+X-HE-Meta: U2FsdGVkX1/A6yA0X85LmXc0PcCY332eM9a/pOIM4heQom/5gjNwgGRR5kasziMkSqmWcieBgUVuGlnfstezQnbCxQGQu6YTRHxoP7uF5NdXCoX8D4MaiJmbqKpy4g9z04DFDnCjbw025+cmQFvLq8G8juzvxrwmAxGds5xEB+tbSmR44mPRnjEHtLxJmj0nWT7O4sQaIKpzwAI6iUFnP4fp5LMHqJWJfcmP5KgSp6WHEum0fNPQlzpznXxUiTHayNSE4MlB9gYj+sheQDayScDzrGmsLP6ZFFms1+lQ0DtSd5YeXeauf2IO6GfPvFj1nRMgDv3kLKu8eZXMaW52KwX+Y4Cf5532XJ/MNejRi2vsBVZeqAITLQtcF4gPWjMREWZ7c/8RI9wLi3BtnifLE/HR/yE/oy/E0LrSEncuXmHGwSPWtlYAI4ByivsaCHfmvS4CFFIJSsZdm3VXJJ5Ix6LRD4Y5TPmIWZmK4N0xZnNj9j9Uu1kYLyq8HRT9mJReKPgbfSrXedxT77JkKHDhndMfLY3cRcGXBrqtj6Cba8FS5Uub/IiixKyQTGdUPDOT8OPgSy8367hadJUKlrJYs553NpswM9FMuy7XQZvWyUc9JImd3i8xj7Z2dsxqEI3dBLGmhoLoeABYiWpgK7L5qlk+QI6zIicz1jrim6S3GJRe+9pgvt2/wS1EErqf5IA5bLqlJ/tgd1C4gx9aj1XTsVGZfUr3v6zKsOaV3UxZSBCr1OOAe+i/Q5wbdArBNKON8CDxileZ+vTEXRNOBNZt/qu1gGfEXreDvyAtzoP+fBONW8az4ubliV/5H72w+09hdXGasBnTjcmwi80FRxuyWzEKYRSvdzqDiFmUUbovHKLi+MmI4F0LT5icNM+bYjRm671mPBihCP5Ts9xNhtlwLnI7GaeygmsBkXHQQmHGpfj7n385E5I6yZN4IwQ6QWZPRyFCZkEkHiG9ZfQ7Vdf
+ jvxYS96C
+ we2RxWIHeIskIFGkyCRzmcPjt3soSx1CEIYTJw9Dtua9uyjM4CYl4ZxM3QNO0cnr/qZLodv/M1+0oFhruvXOc7NYCQan59WsTQLFW8ZKGLEV2CpVA+4HHHThGq0QE/vyL/GEcKGQRJbySW+A/05x5OH9XCWdYf9LEjKpdDPDfRfu6550UetSlSIWV1cpKY14o/vxFQUlNVFznxowlRQWvLDsW++ItFwui8i0hVkaUBa0lXMpJF1QC5N4gqW5JJ6zxUe2qmh5pjO1ifb157HaHDp+/gvvYnMaOsSTf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -190,103 +109,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13 Jul 2026, at 11:26, Brendan Jackman wrote:
-
-> On Fri Jul 3, 2026 at 2:57 PM UTC, Zi Yan wrote:
->> On Fri Jul 3, 2026 at 8:31 AM EDT, Brendan Jackman wrote:
->>> There were only a few users, which have been removed. The only advantag=
-e
->>> of this API over alloc_pages_node() is avoiding a single conditional
->>> branch. The disadvantages are:
->>>
->>> 1. More API surface, more sources of confusion, more maintenance.
->>>
->>> 2. Worse impact of CPU hotplug bugs: most users of __alloc_pages_node()
->>>    were using the result of cpu_to_node(); if the CPU gets hotplugged
->>>    out this will return NUMA_NO_NODE. If one of these paths fails to
->>>    protect against a concurrent hotplug then page_alloc.c will use
->>>    NUMA_NO_NODE as an index into NODE_DATA() and cause some horrible
->>>    memory corruption or other. With alloc_pages_node(), the code might
->>>    just work fine.
->>>
->>> Ulterior motive: this frees up the __* variants of the allocator APIs t=
-o
->>> serve specifically for use as mm-internal API.
->>>
->>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->>> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->>> ---
->>>  include/linux/gfp.h | 20 ++++----------------
->>>  1 file changed, 4 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
->>> index 01d6d2591f49e..3bf55a5f9143e 100644
->>> --- a/include/linux/gfp.h
->>> +++ b/include/linux/gfp.h
->>> @@ -256,21 +256,6 @@ static inline void warn_if_node_offline(int this_n=
-ode, gfp_t gfp_mask)
->>>  	dump_stack();
->>>  }
->>>
->>> -/*
->>> - * Allocate pages, preferring the node given as nid. The node must be =
-valid and
->>> - * online. For more general interface, see alloc_pages_node().
->>> - */
->>> -static inline struct page *
->>> -__alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order)
->>> -{
->>> -	VM_BUG_ON(nid < 0 || nid >=3D MAX_NUMNODES);
->>> -	warn_if_node_offline(nid, gfp_mask);
->>> -
->>> -	return __alloc_pages_noprof(gfp_mask, order, nid, NULL);
->>> -}
->>> -
->>> -#define  __alloc_pages_node(...)		alloc_hooks(__alloc_pages_node_nopro=
-f(__VA_ARGS__))
->>> -
->>>  static inline
->>>  struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order,=
- int nid)
->>>  {
->>> @@ -293,7 +278,10 @@ static inline struct page *alloc_pages_node_noprof=
-(int nid, gfp_t gfp_mask,
->>>  	if (nid =3D=3D NUMA_NO_NODE)
->>>  		nid =3D numa_mem_id();
->>>
->>> -	return __alloc_pages_node_noprof(nid, gfp_mask, order);
->>> +	VM_BUG_ON(nid < 0 || nid >=3D MAX_NUMNODES);
->>
->> Could this become a VM_WARN_ON?
+On Mon, Jul 13, 2026 at 6:36=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
+rote:
 >
-> Er, it will almost certainly crash later if this is violated. Personally
-
-You mean in warn_if_node_offline() when accessing the nodemask?
-
-> if I'm enabling DEBUG_VM I'd rather it crashes with a helpful stacktrace
-> instead of chasing random poihnters, likely corrupting memory, and then
-> crashing later in a completely undebuggable way instead.
-
-In this case, VM_WARN_ON + return NULL could work, right?
-
+> This is the PMD swap entry core series. The preparatory PMD softleaf [1]
+> cleanup series has been merged in akpm/mm-new, so this series is now
+> based directly on akpm/mm-new.
 >
-> TBH I don't really understand the "don't BUG" culture we have in Linux.
-> I usually just go along with it coz it doesn't seem important enough to
-> argue about. But now I'm wondering: if we really don't like VM_BUG_ON()
-> why not get rid of it completely? I wonder if there's some case-by-case
-> difference that I'm not picking up on.
+> When reclaim swaps out a PMD-mapped anonymous THP today, the PMD is
+> split into HPAGE_PMD_NR PTE-level swap entries via TTU_SPLIT_HUGE_PMD
+> before unmap.  This series introduces a PMD-level swap entry so the
+> huge mapping can survive the swap round-trip and do_huge_pmd_swap_page()
+> can restore the PMD mapping directly on swap-in, without waiting for
+> khugepaged to collapse the range later.
+>
+> The PMD swap entry is a compact page-table encoding for HPAGE_PMD_NR
+> consecutive swap slots.  swap_map accounting remains per-slot and is
+> unchanged.  Importantly, a PMD swap entry does not promise that the swap
+> cache always contains one PMD-sized folio.  While the cache is empty or
+> contains one PMD-sized folio, PMD-level handling can proceed.  Once the
+> cache has split/per-slot state, users either inspect the individual
+> slots directly (mincore) or split the PMD swap entry and retry through
+> the PTE path (fault, swapoff, MADV_WILLNEED, UFFDIO_MOVE).  Likewise,
+> if any slot is still backed by zswap's per-page store, PMD-order
+> swap-in consumers split and let the PTE path load the range page by page;
+> an all-on-disk range can still be read back as one PMD-sized folio.
+>
+> The series is ordered so every consumer can handle PMD swap entries
+> before the swap-out producer starts installing them.  The swap-out patch
+> is the last functional change.
+>
+> Patch breakdown:
+>
+>   1. mm: add PMD swap entry detection support
+>      Add pmd_is_swap_entry(), teach the softleaf layer that PMD swap
+>      entries are valid PMD softleaf entries, and add per-arch
+>      pmd_swp_*exclusive helpers.
+>
+>   2. mm: add PMD swap entry splitting support
+>      Teach __split_huge_pmd_locked() to split a PMD swap entry into
+>      HPAGE_PMD_NR PTE swap entries.  This is the common fallback path
+>      whenever PMD-level handling is unsafe or unavailable.
+>
+>   3. mm: handle PMD swap entries in fork path
+>      Copy a PMD swap entry in fork via one
+>      swap_dup_entries_direct(HPAGE_PMD_NR) operation, with the same
+>      swapoff/mmlist preparation rules used by PTE entries.
+>
+>   4. mm: zswap: add range lookup for large-folio swapin
+>      Teach zswap_load() to let all-on-disk large folio reads proceed to
+>      the backing swap device, and add zswap_range_has_entry() so PMD
+>      swap-entry consumers can split only when a specific range has
+>      per-page zswap state.
+>
+>   5. mm: swap in PMD swap entries as whole THPs during swapoff
+>      Add swap_pmd_cache_lookup() and use it from swapoff.  Empty cache
+>      and PMD-sized cache state can be handled at PMD order; split cache
+>      state, zswap-backed slots, allocation/read failure, or non-uptodate
+>      folios split the PMD and fall back to unuse_pte_range().
+>
+>   6. mm: handle PMD swap entries in non-present PMD walkers
+>      Teach zap, mprotect, soft-dirty, uffd-wp, smaps, mincore,
+>      mempolicy, khugepaged, HMM, and madvise walkers about PMD swap
+>      entries.  mincore reports PMD-sized cache state directly and checks
+>      per-page slots after the cache has split.
+>
+>   7. mm: handle PMD swap entries in MADV_WILLNEED
+>      Let MADV_WILLNEED prefetch a PMD swap entry at PMD order when safe,
+>      treat an already cached PMD-sized folio as complete, and split/retry
+>      through PTEs for split cache state, zswap-backed slots, or races
+>      with per-slot cache population.
+>
+>   8. mm: handle PMD swap entries in UFFDIO_MOVE
+>      Move PMD swap entries whole when the covered range is empty or
+>      backed by one PMD-sized folio.  Split/per-slot cache state returns
+>      -EAGAIN after splitting so retry can use the PTE move path and
+>      update per-page rmap metadata.
+>
+>   9. mm: handle PMD swap entry faults on swap-in
+>      Add do_huge_pmd_swap_page().  It maps a PMD-sized cached folio
+>      directly, or allocates/reads at PMD order when the cache is empty
+>      and the range has no zswap entries.  Split cache state, zswap-backed
+>      slots, and PMD-order resource failures fall back to the PTE path.
+>
+>  10. mm: install PMD swap entries on swap-out
+>      Stop forcing TTU_SPLIT_HUGE_PMD for PMD-mappable swapcache folios
+>      and install one PMD swap entry instead.  Zswap still stores the THP
+>      as per-page compressed entries; PMD-order swap-in consumers preserve
+>      a PMD-sized cached folio or read an all-on-disk range as a whole THP=
+,
+>      and split before reading per-page zswap state.
+>
+>  11. selftests/mm: add PMD swap entry tests
+>      Add pmd_swap selftests covering swap-out/in, fork, fork+COW,
+>      repeated cycles, write fault, munmap, mprotect, mremap, pagemap,
+>      mincore, MADV_FREE, MADV_WILLNEED, UFFDIO_MOVE, and swapoff.
+>
+> Notes on zswap:
+>
+>   Native PMD-order zswap load/store is intentionally left for a follow-up=
+.
+>   Alexandre Ghiti is currently working this.
+>   This series can still preserve PMD swap entries while zswap is enabled:
+>   zswap stores the THP as order-0 entries, and PMD-order swap-in
+>   consumers split any range that has zswap entries before reading it.  If
+>   zswap has written the whole range back to disk, or the swap cache still
+>   contains one PMD-sized folio, PMD-level handling can proceed.
 
-My understanding is that issues like the above one should be caught
-at development phase, so VM_WARN_ON() is sufficient.
-
-The source of =E2=80=9Cdon=E2=80=99t BUG=E2=80=9D: https://git.kernel.org/p=
-ub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3D1cfd9d7e43d5a1cf739=
-d1420b10b1e65feb02f88
-You can read the commit message to know when BUG_ON() can be used.
-
-
-
-Best Regards,
-Yan, Zi
+So in the swapout path, a single PMD swap entry is created, but
+order-0 pages are compressed and stored independently in zswap? Just
+checking I understood this correctly.
 
