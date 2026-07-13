@@ -4,96 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A78AC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 12:52:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A627C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 12:55:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92E836B0005; Mon, 13 Jul 2026 08:52:46 -0400 (EDT)
+	id D55866B0088; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DF326B0088; Mon, 13 Jul 2026 08:52:46 -0400 (EDT)
+	id D05756B008A; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F8766B008A; Mon, 13 Jul 2026 08:52:46 -0400 (EDT)
+	id BF50F6B008C; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C97D6B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:52:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA2E78AFF8
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:52:45 +0000 (UTC)
-X-FDA: 84983742690.14.27068B0
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 55DAC1C0003
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:52:44 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Qk7WOcen;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9760E6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0953E1A0149
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:55:52 +0000 (UTC)
+X-FDA: 84983750544.24.0876B90
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1FC3918000A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:55:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Vy6rOfQ3;
+	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783947164;
+	s=arc-20220608; t=1783947350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KrzBFQL/kup5HSstLlQrUOdaDnkU3DG0GMPE0mQF9Ek=;
-	b=uBsI3zx1wS2IYVuzPcYPTq8AxCyea/hzQ0sA/nSyzaVObZKJhPrCajW2LP+VGIbG3ugCjF
-	uICSt20M773JDSjO5JfoHCoj/4c18yNV/eKvg7R5CNJSlgsekYYOQsc2e5ZXgueDCKgjBC
-	BTNVQ/qPlyqGB4tMH947vIunu8Qo9X4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783947164;
-	b=JIAMr4daiQdBBdN5xEseHIi60Ym+uTE3yTJDgdy0atRCA66a8+EUkple58oHyj+3V8PAgZ
-	dobsNvVb63q9sHyLYY5Z19ZLdVUW8lHIDOEgKiMzu/EwlQzEjnoNTH1M8xaU61E5su0py/
-	hCjkk/u8tVlgovepCoubU1ywEUi3Po4=
+	bh=bY380AWNQSlOibS/srY3yyaxsq2HvIperV8l0Vu7xhw=;
+	b=ImZNpcgM/PcAgzlS0EKVhuMGy5bksXh6zGYeu7+g/qZG3u5ulz4t4yA6qyKiawylZQmM2n
+	X0H32fuJ+hsYuhnIzZq4rRuUq9kX/MrO2oidUfkBJsMOwJMWtXBAJ8YeYkCW8evIUfOf6z
+	CUcQVONX4RjPV/7YmP97MLwqRcvLMuw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Qk7WOcen;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KrzBFQL/kup5HSstLlQrUOdaDnkU3DG0GMPE0mQF9Ek=; b=Qk7WOcenP8TnPsWFDAQmOgcZLQ
-	20+qqf/63rlyGlpxez39tkeLyKC8Z+wQFtQiXEQZPjL1rEXLLanNK9TMtv7ZiUK46cLKfaWa7NoUm
-	SxITnK2q6daJpcsN2uzpU8OxbcXz+Y8Csn+011MGei1PKdpc9it+eUuDpGvR3sN7M7CtejltAvEPs
-	DyF+KzSI2FzcXaqc+rwqn0gOeabrl2YDKSjru0ZK6lbxbb5TN1DWqZf+o0fheBDTzlGCeNb5MI+sC
-	CiNtpB1cCDH4UAmBtiUTtMEzCwNdsamqcdY1C/Qj3r409qPnFITZujeIMHbQVLmivixjNdtiKK8ye
-	X5RPWREQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wjG99-001VpD-2l;
-	Mon, 13 Jul 2026 12:52:32 +0000
-Date: Mon, 13 Jul 2026 05:52:26 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/4] mm: kmemleak: confirm suspected leaks with a second
- scan
-Message-ID: <alTeK7ffI8_Yy_Dp@gmail.com>
-References: <20260713-catalin_pto-v1-0-5b93b1131089@debian.org>
- <20260713-catalin_pto-v1-1-5b93b1131089@debian.org>
- <CAMuHMdWBQ-Vn4XzbrfV31adY7cEjLvmGuwu5_x7rn1NBkEC5mA@mail.gmail.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Vy6rOfQ3;
+	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783947350;
+	b=7g3lPuIIjvewGVADjLoX/sCNwRXQl59k0M88GzXbmIjYa//4tGjEikeLIi+VXl5CWyt3eH
+	1fCQGH19VXBJkPkvYdTUAMoK3g9rWn6h+SaTqHHrsAwHdqiJoiMANUSu+R6mL6gDL0nUAe
+	z34RS/vGW5xB7gdgQ0B+EFDmP1OJsnI=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493c564ed4dso2115095e9.3
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783947349; x=1784552149; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bY380AWNQSlOibS/srY3yyaxsq2HvIperV8l0Vu7xhw=;
+        b=Vy6rOfQ3ATXsu2JZ7NA06Lw9hn3omVDKJ/4VWHgBmLqtdIKnx7LKB7t3kCnvQWc6hX
+         dAnqkNGytWZ1GJaXa+zjPQLTxVwh3rzokSkpf4n6gKUyBeiBM0SXnDHkO/b9pXY/jT+u
+         5PVng5uuPHVRcqY4uVvvMCfHVVEjDGZoiHn4MLTd4Ej153JtJhDTA/mkEkHu5WfUtLn0
+         X0Sj/MPhM7hPqi4YHWEeuPP2kGYozbJ3L5NypxoNw0BxlYhCCksfo+JUaZLNaeLARYar
+         RzZlGeWiEaQ1myFd8f3kj4Sp6IAMD5m2mSeDhTJhkHxUrNOTghlX2t3A64amIU484qwE
+         HBgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783947349; x=1784552149;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bY380AWNQSlOibS/srY3yyaxsq2HvIperV8l0Vu7xhw=;
+        b=LgsTMqmJ+Jez2C5e6q+4WWPXhvbxcwH43pBwRVCAK/sQ3WnLQSJwXjWCieyC+KI78S
+         5csv+fzyknI1WckkFylOeC4GfmCXT76QhGps/Rz0IqOxoanXTa4UPtqx/Lcoeo7zHBbM
+         lc4AwnnCsx9e7SAPCxqpDpSNxnUjJzJ1g+Ce7+asAW71BhOyQfgGc4zi4otgXw4En28o
+         mQrnssQZnesGmGXwf8frML7bD5kOFm7kFKJR3KjMkl2aiphjJbqEhp1vFPsXAm++RGBR
+         QEIAwUuBtjUbuQTXvzVAoebyyJqBpPyGCCVhbRR4+xKtDdvni7DOVhf6/fTrMiLtqKYI
+         ELaA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro2t3WXImRTZJY5oZxbbSXO4qO/D1OadYD/JpMC2utqGfRdceAth+ootp36k7yrOu7bTk9rGOOawg==@kvack.org
+X-Gm-Message-State: AOJu0YxGZ18eiQbNQmPMxS8HQONcwsJO2CkTcCCwL3eAPwV5rqaNSGvz
+	GTdsVrl6pznEsFz58QHQjVFoZ9NHcPTbOemDg7Hz8HI4zTF316T5H8sft5PFjyxtHyI=
+X-Gm-Gg: AfdE7clZUNvoDjdv6uobAMG+ZdgPEkNEwmmIncLAWKqSEgnXVQE9alWjRCKbrakWqVN
+	2RPrsosfaymmHKaJ2U4tr4Lsme+tiYVfkNqwuJeIlvi9rOM1hfWXtiExFNBdRNwXZ2bX0l7mSLY
+	ZKqAjsOP2qPdf5JdSFF5AgurfeDd9KydJB8W6AGmxn4XJ/OrtuslFXZ0KA/RQTmGtxeYMP/uZdU
+	0RqGTlOCVeMHtCiAtM0x9dDtTp5hcFTYf0aoTj/MqDqNp8TGcfsL1Lwf1IAQFkXYCNJgL+grogz
+	JQapbEy04nH0wZg6Wl8vmSQddm/4X0GsBbxEyIiXoavrr8WBEEFf6l39xgTA2fhihOAXeIpexwX
+	4wT4HfOO6KsmSEwNE3J/qa728CND0lpWuDM6SlDsN6+Ju28kqplrmRC5jYJ3UttyJVvKXCNYzYm
+	DLhuoG9YtBUQLDF0flE7d/75XCdOhBJRsJ88b4Lkotieb7qJ8EtbX2QT2Myt3O6DgvDI2PprBIH
+	S/Wpg==
+X-Received: by 2002:a05:600c:3e1b:b0:493:bd67:315 with SMTP id 5b1f17b1804b1-493f882fb12mr60707365e9.5.1783947348558;
+        Mon, 13 Jul 2026 05:55:48 -0700 (PDT)
+Received: from mordecai (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz. [2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6ff6casm431976995e9.5.2026.07.13.05.55.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 05:55:48 -0700 (PDT)
+Date: Mon, 13 Jul 2026 14:55:45 +0200
+From: Petr Tesarik <ptesarik@suse.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, linux-mm@kvack.org, Brendan Jackman
+ <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] mm: let node_reclaim() return the number of
+ pages reclaimed
+Message-ID: <20260713145545.1ff1136b@mordecai>
+In-Reply-To: <20260713110443.GD276793@cmpxchg.org>
+References: <20260710152320.2024283-1-ptesarik@suse.com>
+	<20260713110443.GD276793@cmpxchg.org>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWBQ-Vn4XzbrfV31adY7cEjLvmGuwu5_x7rn1NBkEC5mA@mail.gmail.com>
-X-Debian-User: leitao
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 55DAC1C0003
-X-Stat-Signature: ruuyrtmp69i6zq7rrjrjm1jki9rosafo
-X-HE-Tag: 1783947164-831754
-X-HE-Meta: U2FsdGVkX19q5KyDBGngtNmwUbRsLxUVZ0TRIzVnqkxOcWWN5tGHSbt9VWEohmE+pnVK+VIT9g02CG4uJ7cC6GgvIHnctmYKW4kSo8QLrI5NL60Hz5tv/YMfcrs1qNwaet+7ZsTgo3zmwbAYgJGUgv8OOqoAdF4YVA8IM1ZyU1HtDYNvo2cHyq7HJH8pENBok9MEQB1MOJt0b5xxkEXG1BZAIhg2JxkgBzp6nJGl40w/Dgo9hwgUHupO/0MCK1sqm76XXob9rEI0d/mAMxm5C7YMVOT3yxM9l8Oe2eoShrfBxkVb/Qzh0zL64zD3kwwPs+rR4kQlZc5Oopi5dFMQcxHky1l4S+DE1fq/evt5PLMS4e8hBUWU47oboxuwQcu4Lnyly1xNWBWIRZLfVGgH3Hzb5DsLxI3xO8TVAvwMdF9+c/4mKB1Dv9hWFVCazkOX/XSsm0ux0ngSMFHKqzhVbKA9tkLI5Iql3+Nf1QkbcBt+sZUzsmC+e42RSWNNgVHpUHI06FSL9nphNuHDIio0NSW5QR7rmJmkzzDJ3OXgnyp0h8+0QFyUDt3A9HrfMNEFK+PRJfCpeswXMCya3AsJYz8WASALN6txb+jZkT9SeDs3dmmkSz8tFDQvOidhuTm71tEDz9vJBNpHMqazkfN8BdWDaQHAvU/LOjG34OrDR09SGGt8nKPdEn7y/VUldy1XNn9zDjkqCk4gAq4plAmlitRA9tMZKS3C3XDGP8H/FGQkEydWfEgURicl6FIrNUotT43LYmwm3kGS0k/T0BlHscCoFT6gabDx1Zy0AS65mhSaatuErGbLnVu7EXuiubaNpbsl5VI2QIMBHM2Qjb2a5EV7CKnBRbZqD++EMdNjRWbgaqpwBR0I5E2QcC9mfT5J08EEcf3V/o8wGWtST1rXzujPK6G7eBEnS/mPiK2azLlTwBAe+fcvFRWSWK83bYR/Cf8gqiepzlwyYWkdShg
- E4Qx2YQO
- 5PF9adfbV8bHxzFzwvVmGh0VhOBext2Smz/78jmMtzfGsziR3BxFVfES/GTH7VLJpJ0iStGPH1KCGLjMLn7tFpKcHy+cqkchwX53goLzFBBEubjSUOBF3iCZblwGmC8MgDeNfqamNlJrQVg4zLZj9pnAHrwgBk9hW+ITbsWmuCtWQ0tBVmCXVGymA6500v/AulODXhkUfP0kBceMWItotujpbX7B/A0gLBOoRz6O+azZxFoFJutHfqXCbRk10P/aw/SHiZ3aIBNutcSDU2GZ5gCmULr0/hpJPSI0C+lhhxGwrzDO1J0Xo8fjXPkHnWD7Gath1EomTkUXnhh4O/TMJrb18JnBw89fjlqbJiwYsvWNjv5tHZAJF8w1ShlkwF7mTnW41w5f3+8MXaXU=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1FC3918000A
+X-Stat-Signature: q4u613yeyap4hyxumo1fj5ix1uk51jeq
+X-HE-Tag: 1783947349-589898
+X-HE-Meta: U2FsdGVkX1/p0uwoWlbaY0Xwrpy2T+M87gC1+WL0jR4DKpDeQdflRc2s6KSl5UvM5Ja0yOcSF391iHnX4ZK30yjGEF85MpqvEeMYcDZ8xXUFdUczz02lTLSkvMnrz0JmoY34+yshsQSP3s4dj1ErM+1TeYHj2k+CzFw+UJAT9eV52GtfKz25ybE67FafUJak+hTKrIngGlE5p3XZWpCq38Y+XvyujtmZpVZaBcivo71253oGYM5fB0Jna2zKNn6KcqIy4R+tiNaOymyzTSt4hEQ0A5g4Ii72knPoPZtpt2n1rqSVZEtfbXYodrHhl8uuYgUjMnOsI1PxzM+Dih05xBSmNrxHGT3mFQxEkTOzujUECN0pAC060gJ53GBtAuoqnC9UWJTV99eZqaIqb0aSmU+0Tick6pWYTDh26VVlZPVd654xU5QgYRdKDiOWq1DYaRDkYm6qI8mUocUkcKHLreTKn0QE/GsxV3PBzMGWKlzReLxVVo+U78o9vLg3IfabI5M0jehLmwM9pPpbXRYrHW0albJhU+CxjSsZ+6X9oRuXdq6ga+TTTDub4t4qR7mSyqU9o1vpiYyyuHOhmTfxK87R5AwRG71Yw4n8vJucc+gVln98c3s7yq4Rx8K7xQ/oQ2XN4dDA9UMig7gySyTtaFqtYsTyjiICWNIPEUE0JOw7YGtnCLZ1QhkWx7dLOopxKR363mzz3IAAWp2updVHRU7RYvPm0z7fMqNYt+T02ZxmfeTOWposBQmSW/bS6oNG9eDcathi7KnFR8BS0NrMhqBkXD2PzSBVtkTidgp0F1rChuv5GQsolU3V42iNZo2vwoKuft5dAtdAUAKx8yUoyHrSF212s+hzj60fEMFGbXOaZeOWdvze4yWGNFqN2Hr42xg3YBv2NS1vE1TT/tb9KPc5C/XSxv4hXvHI0DMvqeNfwqDvGDtVem16eXlVLCOZ5H1TUvlbIOBj6gMvJOI
+ 0p3+1xRJ
+ kVcffBXxbVW5VVqo37a3kK8jSKKLMQ5MjVzIZFViyWMWL1E7TPXrbb4LnmqUdVJUPMZtUY0SOqqfnebDeutTOKZYwaOaKDIX2pd0QGldfHD3CIU1fQP8Z5ctBZsiFiy6t+Wog3YkIPiUndeM92nxaTdXbwkxs1r76CQJgc6I2fU7l1YZMx8mV4XX2XgBWd4BkXHYxf+SxDi1SEKHsX0Jcmy6dhv+vNX0zyUVqotddpG8PTeiHj+tC1+JZzCeHmFBfW2V6jjYcK+iVsFXONhN+BDZQJOPiLHA0J7XIfx8EgopcAPNcUBoxslkh31DWxI3wbQIOkYGV74YN9bo/+whLCEiiSCcZUqoB7qSiiqG6A05GbWsriJK9PCctMK2OMjmH1ag0zGtxwTzXPHdW+Pzqn8qs49BQe7YT7nwz5nFXqrpPP7FmpMks7jdwv3WgQJZPeZRU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,52 +128,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hello Geert,
+V Mon, 13 Jul 2026 07:04:43 -0400
+Johannes Weiner <hannes@cmpxchg.org> naps=C3=A1no:
 
-On Mon, Jul 13, 2026 at 02:36:30PM +0200, Geert Uytterhoeven wrote:
-> On Mon, 13 Jul 2026 at 13:48, Breno Leitao <leitao@debian.org> wrote:
-> > From: Catalin Marinas <catalin.marinas@arm.com>
-> >
-> > The kmemleak marking phase is not atomic. While the object graph is
-> > traversed, the kernel can modify pointers, free objects or allocate new
-> > ones. If a reference to an object is moved from one location to another,
-> > kmemleak scanning may miss it. We have explicit annotations like
-> > kmemleak_transient_leak() but identifying and maintaining them is not
-> > trivial.
-> >
-> > Given that such transient leaks are short-lived, rather than just
-> > reporting such objects as leaks, do another scan to confirm the
-> > suspected objects. If no new leaks are found during the first scan, skip
-> > the confirmation one.
-> >
-> > Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> > Assisted-by: Claude:claude-opus-4-8
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> 
-> Thanks for your patch!
-> 
-> For how long does this postpone the reporting of a real leak?
+> On Fri, Jul 10, 2026 at 05:23:20PM +0200, Petr Tesarik wrote:
+> > There is only one caller, get_page_from_freelist(), and it does not make
+> > any use of the reason for skipping the reclaim, nor does it make any
+> > distinction between a full and partially successful reclaim.
+> >=20
+> > Therefore, node_reclaim() can simply return the number of pages that ha=
+ve
+> > been reclaimed, same as __node_reclaim(), and the NODE_RECLAIM_xxx macr=
+os
+> > can be removed.
+> >=20
+> > There is one small change of behavior when __node_reclaim() was attempt=
+ed
+> > but returned zero. The allocation now skips the zone immediately; before
+> > this patch, the zone watermarks were checked first. I believe it was an
+> > oversight rather than intention, because the chances that zone watermar=
+k is
+> > OK after __node_reclaim() did not reclaim any pages are very close to z=
+ero.
+> >=20
+> > Originally, I was looking for occurences of NODE_RECLAIM_SOME and
+> > NODE_RECLAIM_SUCCESS, but I couldn't find any. That's because they are
+> > typecast from the result of a relational operator. This seemed a bit
+> > fragile, so I dug a bit deeper and came up with this proposed cleanup.
+> >=20
+> > Signed-off-by: Petr Tesarik <ptesarik@suse.com> =20
+>=20
+> Looks good to me, and agree with the minor change in behavior being
+> acceptable. With the macros actually removed,
 
-No, it doesn't postpone leak reporting by default. The default behavior
-remains unchanged.
+Uh-oh, I missed that hunk when rebasing, and of course, there's no
+compiler warning about unused macros. :-(
 
-This patchset introduces two features. The first (patch 1) performs an
-immediate rescan within each scan cycle when potential leaks are
-detected, filtering out transient leaks.
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Each scan takes slightly longer, but a single scan cycle now detects and
-reports leaks with fewer false positives.
+Thank you. Shall I resubmit once more to include the hunk that removes
+the macros from mm/internal.h?
 
-The second feature adds 'min_unref_scans' (defaulting to 1), which only
-reports a leak after it appears unreferenced across min_unref_scans
-consecutive scans.
-
-With the default configuration (min_unref_scans=1), a single scan will
-still report your leak.
-
-if you change it to 2, then, the leak will only be reported if the
-leak is detected by two scans
-
---breno
+Petr T
 
