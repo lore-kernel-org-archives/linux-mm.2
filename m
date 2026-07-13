@@ -4,156 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03BCBC44507
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42FACC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:20:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C92066B00CD; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
+	id DCE6C6B00C8; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C42A76B00C8; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
+	id D55026B00CC; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A95EB6B00CD; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
+	id BCD616B00CA; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 63A5F6B00C8
+	by kanga.kvack.org (Postfix) with ESMTP id 718A46B00C9
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F2A21C6F37
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:51:55 +0000 (UTC)
-X-FDA: 84983891790.28.F401260
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011011.outbound.protection.outlook.com [40.93.194.11])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BFB4340004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:51:52 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=r9vHA4Xg;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783950713;
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE3791C81D2
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:01:49 +0000 (UTC)
+X-FDA: 84984067938.06.DF883A3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AFFFB80003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:01:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="W5eOVh/z";
+	spf=pass (imf30.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783954908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xkaZn802kLTJMYpAzoQptQF8VAnYlBA6ckoRN95yfEM=;
-	b=eS8A+xgJGjIE8HO5RM2ZL6xEUKCizLAjG7hbWgpF3hkl1su3czuNR8ykBu49gze5TUjryP
-	0l7qHAh+AxqRvqmCtKbVAF0668Elbbm7JGiVyl3PYyHowZyagYLCFLSb/H368fTiOQcojq
-	RaQ/lYiopR9fNKaKCHmIFq2dhPtZ8NU=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=r9vHA4Xg;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783950713;
-	b=DtqrE2T24hl0ZpyhAKy/sc3ZdaUOYUH/9JlOWe7oSSgQt5rB0bm1YNR7WeBxRwAA4EuBf7
-	qP6vxtdv9500Nc9kzJSeGwry8LchDxEnySluOah8fV4YHYEBFCueMu4fhj8UCqGOFS6SmY
-	1Jw7ChMDiSdvvKdF97d6RVn4F75YezA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ib18bD/+j3fNovSxT93+me5uX8PiLNakQckWWhzhILYPgL0Sywy5GanJotPBzfqQz58psMBiwHASiQLANXB1vDCyrivcjQPLbAdCdc7WLx7QY/m1COe+jspcAkahfl4vh5b9UrTLOSryCrVngufWrhw/QcwKWsQm+W6wfp+KHtVN4si3TuE/KZRKmJGARDnWrZJrIgqVFYEa8ET4N9jl5HSK+Hx+1+SABKgncGywmGM5d3+TZDzBNNjiApbzX7nIBvsPNwaFvvp4izzkWLf3DGzmktNt379KpgpJIET7xvsONIzMqdlxjjX6P6lQ0PriUnBHVQN84Odi4rUS2IU9RQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xkaZn802kLTJMYpAzoQptQF8VAnYlBA6ckoRN95yfEM=;
- b=p04GuttwauHntrYSg0IKYwoHQBWKPRZYvhpYnEYJ+ZhCCOax/kX8EKwJDpwieV8x3cZCUV/qDqR1hEAPVxVVBD7i74tJrTGotfU0R7PoNSWYLU56zGIxlzQFZDlKVxHJeGNGtR8tEPVQPD13dfU2n5M0YgUan5X0TvXIpl21jkY8yCjIwRfU6TalEWaDNO1coa94MeeA1+lzU8ZDiUMmSHV/5AQzR4VeWYO0MZbrzs8CDIaQpYScaURbIaSVCqZI3ZXzsox2XQAT13RTmMVV20jdckc3rGLH7X7lHeHqusitvcdrqRwwdvM9/7B9VQdJPesj6QBH99AZm0iR636iIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xkaZn802kLTJMYpAzoQptQF8VAnYlBA6ckoRN95yfEM=;
- b=r9vHA4Xgl2NGxXmsq1DyrwwPReTIoJUDrLgTkJvTPRMh+hWztmzGGnrMKIqwvDn/1WO2cW2SvR/p3CSzZAEnqY0EyXhQ0IroNMDLCImYR9m9AdRBWry9qWKiTaznjCLCvY97i+faKG7FiqQryY+A8PgMFJofA47y//GRKkpA0Z1BxI0ENHm4wk7bFLZRf/oF0MLpULrWOFrDKyA36bgNhqgkhKbGlSVD1PXSgYF/2UrZo3Y/h5HpJaokpJqggoYqLx/MLjTOR7Aok8zUko2nc8Jat0tVI6yzklB2eTJhF3VRfr9ygIpj3hpYJJqi0lYgApjaA6My/2DeZs67J5Or5w==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by MW4PR12MB6756.namprd12.prod.outlook.com (2603:10b6:303:1e9::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 13:51:43 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.019; Mon, 13 Jul 2026
- 13:51:43 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- baolin.wang@linux.alibaba.com, baohua@kernel.org, lance.yang@linux.dev,
- usama.arif@linux.dev, chengming.zhou@linux.dev, qi.zheng@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, wang.yaxin@zte.com.cn
-Subject: Re: [PATCH v2 1/2] mm/mm_slot.h: add a helper function mm_slot_remove
-Date: Mon, 13 Jul 2026 09:51:41 -0400
-X-Mailer: MailMate (3.0r7017)
-Message-ID: <2C5D080C-4621-446F-A90B-03E729865C5D@nvidia.com>
-In-Reply-To: <20260713143707966lCkTinO0i9zYAc1K2ZmqZ@zte.com.cn>
-References: <20260713143707966lCkTinO0i9zYAc1K2ZmqZ@zte.com.cn>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: MN0PR03CA0009.namprd03.prod.outlook.com
- (2603:10b6:208:52f::14) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=T9wlJNyXrR8GTVkkRjtiW/9U1+QEO/QSF6SVmBxc19k=;
+	b=xfMvDfO02YPOipuco/MlU3Iyr0bSiHsojt4GCjyXjeEcv8popuXfoWFU+++vVRcpxUDRAd
+	w7ynrch95udj+96SyQP9src/GbavxfPmCwOBVrN5s++Pikddy48bgqI6UeH2WyzUOyUF9j
+	f4N2Eotxp63YmnASTLLVj/RUza/tHl0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="W5eOVh/z";
+	spf=pass (imf30.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783954908;
+	b=C09sWzj00TMZoQHcLBKcMkFyX5gspuoxGUGAPLeYwT3AXQ6m6RPHhuZd85ojXHFGDrtVFG
+	87njdzv1LAAihTj+DDgvop1F5dYhzo5/jdd52bPhbr1+FW5E13NbQKisi6pLxAYMtfey5j
+	ohtsfGt7OIAGb3w69KZVWsLkwiqXuoE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A67B1576;
+	Mon, 13 Jul 2026 08:01:42 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 161493F7B4;
+	Mon, 13 Jul 2026 08:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783954906; bh=9w80m56EnZdV2ckCQq9WOh+dgxbLKrdljH3QH/Zl0XA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W5eOVh/zOqm17OUoBLtYwVfeD63WSFSCtTMrWpLtRFIn78Q4rc+1NKCnG4FVAdhdB
+	 /ca8if0c03QwXj0RcqJO2zYZXUUTyt5Zzn3asCiVnRZHfwC3awBIneOdO0AiWLfqtf
+	 i8rHL6kn8R+poGRr0mrVPUMuZFgH8TTvhOQBLcCk=
+Date: Mon, 13 Jul 2026 16:01:31 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-arch@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	x86@kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com,
+	linux-csky@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org, david@kernel.org,
+	linux@armlinux.org.uk, akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
+	chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
+	kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
+	wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org,
+	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org,
+	arnd@arndb.de, ryan.roberts@arm.com, pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com, baolin.wang@linux.alibaba.com, tj@kernel.org,
+	kevin.brodsky@arm.com, anup@brainfault.org, atish.patra@linux.dev,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	alex@ghiti.fr, dave.hansen@linux.intel.com, luto@kernel.org,
+	peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, kasong@tencent.com,
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, ryabinin.a.a@gmail.com, glider@google.com,
+	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com, yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com, ardb@kernel.org, guoren@kernel.org,
+	yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org, schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev, vishal.moola@gmail.com, namcao@linutronix.de,
+	pavel@kernel.org, djbw@kernel.org, yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com, Jonathan.Cameron@huawei.com,
+	coxu@redhat.com, andreas@gaisler.com, liam@infradead.org,
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+	geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi
+Subject: Re: [RFC PATCH 19/34] x86: power: use proper set_pXd() for generic
+ compile-time folded patable in resume_one_md_table_init()
+Message-ID: <alT9y_JRznnBq8sQ@e129823.arm.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+ <20260713135614.1618183-20-yeoreum.yun@arm.com>
+ <595e5ba5-0bc4-4630-b8f0-8637298076ce@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MW4PR12MB6756:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91ab22a5-2e15-426d-ce07-08dee0e5df68
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|18002099003|22082099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	KbEIc3GNXe9u2/Vg2ENdvO+z1MC2DdDOEFECZXJWpZemZrzq6iOSO66GlyR5BxsWR2MV2/QrpGsB7Gn1KkvNTecWyoUjSXPOBBXPc8rbfDiEZ0TQOys2or/6VZKWc6tHpNp9xtSvAWSzQENE3Oeu8QQdC1hNEqEWyhX3Vgz01QX3SKVoVyBwBVF+RNoy2sJ0PbwkXAwF5XN20U1NrdzBtBMpSaVUBrDR8fXn1BLFCf166aLLDWU9bu2yMfuuD+5tAJjuHQmYrV7SlIyi8bsyWQpgEVNyOkoJWxMOFT1jA+ExOTP7Hoi9MyBztA4Nq0qhhs/BlVSK17h1o5f00SkX0Xt0BgYZ1Z+TUMac3Y38UcKYXSq1I79p/0OIGZbRqPVBFUHJmTvB1g+ESGWjmDanVlH+iz45scqs+xHSka1y1zf/nNJyAqVA10D3tBeYRY691wxP4VEXzu7Ucs6tkGYMqBd1+Tw8TRz6SoOsEolI2Lm7DmEUcDr7VWPXgPqi2ktT1w7pq0Q8l+HXHmAHDEXsjAdO5zDd5EbrOrByilFR0l9fhRoMRx9mw0Sfauj2xqItHkt9atqzLba9VJzgkbFbXSnYYWepvR+VJexSDZCfMsm9ZVlWYgOfCT1wBkkl4/EIonUaPUSQ3h9hte2OSFUUHv4xaKT/ULe/ugyzuwhMYSc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?J1gBMBq2Dz+clFvsiSMS7tBaEuALb2CJ5ooegq5Zrb8XSOeDddUXo1a3YM9S?=
- =?us-ascii?Q?kwBTJ+bvmUrTWoiDMB7P91f4sLP/TU/bvbCzphGAAi85oheT4kZnTq2c67yJ?=
- =?us-ascii?Q?psopl692wAWWkM9SQ2ZaggeuVlraqOJzod0WSkabLuNKbWVgZ6HtD+n+Tz6W?=
- =?us-ascii?Q?clMV/ClLDmKQk4rXIJTCBoWGb7SU2Mu0mrRWSO6Qy+GwgmvOCgxPw7T+tz+j?=
- =?us-ascii?Q?J+bOswt2b18tm8hRG0+AC+z2ZDh1jxQXizfQAfaq7Ws49tRFqnkTrJrqVOJE?=
- =?us-ascii?Q?P5Vv3v1Z1rzUoJjwggM2UBfux69q/F9wyGkv5hKQPxkIG0NJnKb2aRURrHqh?=
- =?us-ascii?Q?SXCyMD4DrGVhLGm90f0N0p/l2ZtHgemmZqPnMfyF5th5241qC5+glNedK/J6?=
- =?us-ascii?Q?EFQekvOf8EzR21Q9zGePtRkRrTxGj6MqmLK098Kuox6bXVJz2u9zxxJ4Yiu0?=
- =?us-ascii?Q?Ho27vxJYhj/HQu/mQt7Zi6xAgLea7TnemiECdwVVg/ovM3vJBg9wtDf8pf/0?=
- =?us-ascii?Q?E7B6fcVgiiPX5tDv4jaHQEqxPtmGE5kn43X6UiWIoAMPFtvfJwXExYooC4VU?=
- =?us-ascii?Q?I+UCm/DnBurmqIr0RTNjMgICmAum8tpZb9dvxhlZcuAljWNYzksffSzy7Vai?=
- =?us-ascii?Q?hrITLqnqOMbFMwtvk07lnOo/VoRoaePGsA2vWyWh8Q5m9JUx/nWL5Wu2h4iD?=
- =?us-ascii?Q?+Gr5y7XtvLyy/+uXzEmHbAiHdV67CnRXH/HlXpSKtDCulpW5wR40tytwAyv8?=
- =?us-ascii?Q?cxKPuSeXzJm8t3Vj30uqclfxIbyqaD/QDIgKP/PUeTyCC8TSzsLgoD+hfNSn?=
- =?us-ascii?Q?rOHpEm41amLpPU3GdGZToini/0H38qK0grTvDA7j6WiHldPJCKN56ushH3dj?=
- =?us-ascii?Q?rwC4T+/KPilJWADBHcWW7TeAF1i5S9UCd4ryqcB9L43KTXzBRHIMjbP589LV?=
- =?us-ascii?Q?Ad6gtHJ4lOBVxApwAAobDhtTsOQVHq5U4dD/fxpiZFjbUn9c2YqysW5IrjNk?=
- =?us-ascii?Q?tGKmY/Gvet0uLqernaModyPlypyLvbXTj00SfpINRyDRO79IGcE9AGv8bdBJ?=
- =?us-ascii?Q?VkJfyXf/AHW0HkCf9WO8l1g3lpi6zZ1s4ut72UDohqjXlBdl37327fMBOERS?=
- =?us-ascii?Q?sVE6vJpV1s6Hdn5lPFhZkN3IzR8lAAOhI6Qk2m5mqnXyYtnmvw0rQlUjWV95?=
- =?us-ascii?Q?4n46ScOucZ2Dv09tcAgFyf5ueFgm3eT4SOKC/ko+LBfAIP78+j90yLRXT83n?=
- =?us-ascii?Q?vOc9lsJwweu2CSU5loFZ3V5iLLOH5NcO+DjEHkZTBkZz4fhjaFSAV5BXy5sX?=
- =?us-ascii?Q?ubD6ALMhvqvO++78rCmYTlGUANtA7SqU9xKjT6KVLc6koIwv2Zs76Omo8cpZ?=
- =?us-ascii?Q?jrUSCEU+ZcStRJs0DzVzgFqaeCigjbeqIY1l4VgwMUcio3YQqk7VQikO3SoG?=
- =?us-ascii?Q?+C7UiwycgPzwlN3h04K2wPzU1YaFmFJ73Q2W4bikh/TFWiEvjMVq+yOIjUgF?=
- =?us-ascii?Q?u3at8GuQVr5fjGBz5XatWNqKbsiPv3uRLxjyRNGtiuEBCZKI/+jc9pUSOXFQ?=
- =?us-ascii?Q?25zbavLqnejGedYGjCdC/JGqXgbv5oPuAdunQKIa25N3Eaw/COFd7kMd6FKC?=
- =?us-ascii?Q?4R/T6VzspJd1pJIfJ0yy12yfPb9wJzmH4UbG8dPwDIIlniHdMpjjCRm+iKK5?=
- =?us-ascii?Q?1oUNTZLXM8f8ZYwReI80V4/S3bMH5Esv2BLQArXcM/KUkoIc?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91ab22a5-2e15-426d-ce07-08dee0e5df68
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 13:51:43.5024
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 18rfplayT2VwSxZC3VlKB6vem4OMpcsoWp+xraCaNx0bjoVvaIjr2qzYXB6EIb6G
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6756
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <595e5ba5-0bc4-4630-b8f0-8637298076ce@intel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BFB4340004
-X-Stat-Signature: 837i3d93ti5eidjrcdb8joe6p5kb45zf
-X-HE-Tag: 1783950712-965853
-X-HE-Meta: U2FsdGVkX18tUu7DiD6tXXdKrsIA8NMAf7/ST0okS7gWgCz3As54PXaEYXzwxPG2Z5rn+PV/De/h+3w0AUyQ3Vyi4TuEvq6jhVRKODVHYJ2xOj4AAXFeJ8C81LZJfYQsCviGdcXVS0LG1kt2hIEgi85npThsfwAgLljkQkP6Ra4CgK7s/NvSk6DjbB3jg37pqS2akNFSJ2p+ggFP58P/FC6syLc+dCseJUtSPS/jaaI8gipUxN69/6Hrg63MvGdodf1MV/xw92zycY3+UoR3revMUOSE9KcHasnGEMl2gQwaj4VdBzaoVceU786KONzwdO+37KtdNbjET/1tpvvaMYrMQa56KCoaQmtoes/dEfzqW6pYy/6D1JaysVxqBGDhUDXkbL+93Zb1ELVq5DcC5BIN0dfP+ZnuV3tKyWmwYUPvxAl/Ja2H3S95TWhQPyVZa8yy9PgS1COd+M5lMpW867mRMUsMPD8JF5frWWzqn8ZA0sJFQacX4x/emBI1ocDcSa9mHFhtryGA1TQqVu3+M7uJGHXL8f/dU8F/twbtxTz5nAiTI/T0PURDUQg9+ev6qwDLMWaUOV9e+IjOg2tBYbrpe0x0mcWTgaoYLtDc+e6izrHR6F1RteOM9WE5hFYht2SoLpuGJ3FTv+z4vxFD4AJQAQeRE2HsJ5nNgDg6bjD+Ds/TXw37X8W94vbz3M1TFG8uVF4bmYc3ULvg7nKxydHIvp1/vMjzexdBuGXPyZ7OLxtrjJ7f6hWMHwArPwISsxtUAKPXOHQLlafXCRKjOaOESmgFXLa0uzk3YMu3YE7rkZDSTL3JsxQ9Sv+yuxwPPsWZkadF4DKYfUp29SW3/ZIr7ru0zT3Wxf+yi3Z5Bs6Dk9be2LTIp25mXGdEVZqxFhroML5whosDcM8pT2/Ik85anlwwZ77EbmEkr98WSWjagesdS/fLsG5nLrBnuPExnd2PMIFBCUUDClV2E8/
- bKd9tdqK
- nqGqLyrUe1znKJCPAU69FKlRAyoUG1PXVIaVDqDorOYwkcHqVAdRf6b7SC1xqbI34C+aC1yO9HgQxkZ/FQZGLi22PYC67kgDHe7av6RulyVz0JhwJ18xwUgbsB8c0xJqui+7eY+5Lv1ryCMwU02H+oI45k4C7ZisRHaEq5xmyqR7FQfZDrlFPgE7AVvtG/CIoHAozo9zq+rp+GTX6Fp3w4QyCkxh52s+LVOVKsWjOTMrNlOPEHeLmHxoAUIFIkUIqA/lZXb6CopD2tV3Iob8BkJc8ECBbVzVC//I7Ly6fR6QsT9Ud3GN9omSgaekVdR9jc7O1o0ciUSa38P5/52z8Ot1LgEaWiS4MzwibaQ2lyiPh1ML1D877JPD/NkdTzYHBNr6UkooDYonz+l4GDX9GoEUH1cczkV1YUkyGUwC5yCdBuAhgAxz3VG9fmcEmeR01OxAqd0iH/xBynlwyi/n3UyVJqDYVJ322bQ0nqdbPg9plLQeinn+mRewdSw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AFFFB80003
+X-Stat-Signature: xudpy7jjumkhjcsqj353nk9t5pbw3o9x
+X-HE-Tag: 1783954907-977691
+X-HE-Meta: U2FsdGVkX1/izRvxzWAwwrEgLDrE3wBIq8qZ1Co9xL/NzgaZBflLxAyUBshaZblfW460DzUK7JaIMRHQ1qwH80uzo83g+VsD7aOH77eAwjHQhj0pidOTYR+CQtMTwlN/tHCGDRt81qGt11C+6FkA8nVYrrdOq29CK8SyIIcM5eHKc/ox++Lur2STWZLJk11HHnaLN66Wz/krra3KSPZSwDmJqE3OVs0c5cr9ITx3Yy6tvPhf/mTUdwFCCXu06Ta0cf6J6iPj4/e8QDpkbSOwbT9qKezy07SlTSgyPJbBsmB+c4uMpeHymVlO2F3B0FWKVJTVLUu+7HYu7h6UK9hdqdhr5tUt2wt1s8RRK8MiA+3tm4wwKNDdsZZRNLYOcdJJvwnS5G06AI+cqapI6EWDzLGTJ5CcF7RC8Y/kRsI5mduzKohN3JOydHPfwe9vBmzflyGQVZJahvpOea5g+SE26ABnn//23ZXVKRF4AOc17jA+yQmHWXoQaaAyop1qiUryyixnJ7Ea0CocSVe8DNCQzvdksoAWOkzMYZGPwEFgH0UzOxIup2V2uwOX6FU5K3YecXcSrUpkSiNSa9dr/EuJBJf+BuasPzHTNqOudyz6tauXFGKL+90pdO9i1wF8gv9NboBuaUSQOk75LfTeGQh4/RuO7KGe0essjh7/5TEgIogw3FRnbds/axWWARmoj9oEvhbKooJ9FJaFUCI3i18Ja32V53zP7bjOf/N6Y0dQJaRap2vEXGVZjeU5sWgFoqngFPCmav6WMkVsZnOfDnpmKWfEmh8LLoEFnnPcbM81VwDkRW9ObkPxRL2GSlc/zAHGUs5R82Q4EaYRwqSgxDrNzklyKV+JPcWyhbgDEyag0V/AR8JBpU5ruiblBrtbpUbjhTZyMH1tKK0c6VdeU6wkkC+ub+MV1xzVJmOaGI03A9to7IFdwSnRnpIVMAR+BClKZUWDevvOV7qbFI6rRR5
+ vyFmvRcM
+ YmrmBKngzaUhEge/meBE2ir2Rxvovr/Q7aJXAtb4eh8YLdmjc+FWpspvGgRS/7B5KuUwGMLTgu1q8G1njtvTaKpNs3P3k5d+1fzhjB3sSmHTuFN1Vt9SBIH+3quCAKoBGs0dDcV1m4m44vf3YaCCU2YTvpcjVne4DG4JR11hx2cDvrX3kX/6gycXCQlgbMB00wnIlAy7jz6S1719zc88oYlceDzeurD0ez/iJRKSLj1J+NLXdsXQY1px5VQU97HElU5sQ1W2wiVZ9VWaIpYC3SB+fiRT2rD4u2Y6Bfp7cw6bK7QloXZuR0utRGN1Z8UlPEvv8hKnJXFUTQCNNkoOQzfOKLe1Ac5qO9pJe3muxWJ2KzF8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,31 +124,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13 Jul 2026, at 2:37, xu.xin16@zte.com.cn wrote:
+> On 7/13/26 06:55, Yeoreum Yun wrote:
+> > @@ -134,11 +129,12 @@ static inline void resume_init_first_level_page_table(pgd_t *pg_dir)
+> >  {
+> >  #ifdef CONFIG_X86_PAE
+> >  	int i;
+> > +	pud_t *pud = pud_offset(p4d_offset(pg_dir, 0), 0);
+> >  
+> >  	/* Init entries of the first-level page table to the zero page */
+> >  	for (i = 0; i < PTRS_PER_PGD; i++)
+> > -		set_pgd(pg_dir + i,
+> > -			__pgd(__pa(empty_zero_page) | _PAGE_PRESENT));
+> > +		set_pud(pud + i,
+> > +			__pud(__pa(empty_zero_page) | _PAGE_PRESENT));
+> >  #endif
+> >  }
+> 
+> If this is the way forward, it's going to require the retraining of some
+> awfully old brain cells.
+> 
+> It also doesn't really read correctly. Loop over each PGD entry:
+> 
+> 	for (i = 0; i < PTRS_PER_PGD; i++)
+> 
+> ... and set a pud?
+> 
+> 		set_pud(...)
+> 
+> I'm not sure how I'd ever learn the rules to write this code from
+> scratch. Right now, the code says: "The pgd_t is the top level of the
+> page tables. I know there are PTRS_PER_PGD of those top level entries
+> entries I need to 'zero'."
+> 
+> You don't have to know what is folded, just that you're dealing with the
+> top level.
+> 
+> But *this* code says:
+> 
+> 1. The pgd_t is the top level of the page tables. Start there.
+> 2. "Walk" down *two* (folded) levels
+> 3. Set the third-level (pud) entries to 'zero'
+> 
+> So the code now *has* to know how the folding occurs.
+> 
+> This seems really hard to work with to me.
 
-> From: xu xin <xu.xin16@zte.com.cn>
->
-> Both THP and KSM manage per-mm scanning slots using the mm_slot
-> structure. The slot is kept in a hash table and a list, and removal from
-> both containers requires the same two operations: hash_del() and
-> list_del().
->
-> Introduce mm_slot_remove() to abstract the common hash_del() + list_del()
-> sequence used in both khugepaged and KSM.
->
-> No functional change is intended.
->
-> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-> ---
->  mm/khugepaged.c | 6 ++----
->  mm/ksm.c        | 9 +++------
->  mm/mm_slot.h    | 5 +++++
->  3 files changed, 10 insertions(+), 10 deletions(-)
->
-LGTM.
+Actually, This is what the patch series want.
+IOW, the "code" need to consider the folded pgtable level and
+use a proper APIs.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Might for the clarification, change a PTRS_PER_PGD to PTRS_PER_PUD
+seems better. but the using set_pgd() seems much more worse since
+second argument type is p4d_t which doesn't exist in the p4d folded case.
 
-Best Regards,
-Yan, Zi
+IOW, this patch wants to use proper API for the real first page table
+level. for example, X86_PAE's pgtable level is 3 so not use pgd friends function
+but use a pud to setup first page table entries.
+
+-- 
+Sincerely,
+Yeoreum Yun
 
