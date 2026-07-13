@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D35D7C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:38:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52806C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C88416B0005; Mon, 13 Jul 2026 03:38:55 -0400 (EDT)
+	id 082D96B0005; Mon, 13 Jul 2026 03:42:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C12506B0088; Mon, 13 Jul 2026 03:38:55 -0400 (EDT)
+	id 05AFF6B0088; Mon, 13 Jul 2026 03:42:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B30066B008A; Mon, 13 Jul 2026 03:38:55 -0400 (EDT)
+	id EB24F6B008A; Mon, 13 Jul 2026 03:42:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7E76B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:38:55 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BE9E1A0ABA
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:38:55 +0000 (UTC)
-X-FDA: 84982951830.19.7C97E8A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8508CC0006
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:38:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=irkwxYLp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C1A586B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:42:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4BF0040A57
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:42:25 +0000 (UTC)
+X-FDA: 84982960650.11.A8BD3DB
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A128AC0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:42:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ufoX6hFM;
+	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783928333;
+	s=arc-20220608; t=1783928543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9eGByJuvHEB+z2eH8QThZCFnk+Hl3GeYnz64gEkwk2c=;
-	b=CLs7irGRBfiJ5SV5aqt5hH4wA3M137YglX+dQjCJCV4aEyC0t8N+NaVA4+AHWijwTjNB41
-	Op3jz5yzxAOb9zT0h5V6EWPLQ8FkbHdXOAC0E4JwWJnFoEUpO1HPmbmBSNIKG2Pf4Jdm0t
-	fpentkztH7Xq/YsJ6BHwysJ3TIPZNf4=
+	bh=6yoLIAxyc2K4qHLq/6jmB6EcYdYLRcJ9qmXi423/+Yo=;
+	b=IxmvRIOkVnzeDy1aMiadgEtsVGABpsF2zQ0una7nweD6tZutXUdXwgS1Pv1/5H/iO38jZu
+	08yq6nJ+BiKsVJLammf33keVZ/ijUw/HAxA2QCcWnJuv0Y7Zz7qHJJ57Y2ftqcJYmOzUKX
+	KgZKAVajGzPAkHE682/JSxHv//pfnhk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=irkwxYLp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ufoX6hFM;
+	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783928333;
-	b=tDhV9zWfnx83s301zhVkEDoE7Bo3GZvILOCLKyL6KQjakE3/tkFFIqOFtXpPQK/w4/7VWf
-	RS1zjMV0tUdQU3eKNmj8o0DDq/ew2nTZxyCoyRgfHtUGgpF2wDg7t7ymKDafMG9SZmpRdO
-	zidsDV8nsyrBzt7QwXDXGD/+RT+Hk3Y=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EC75860018;
-	Mon, 13 Jul 2026 07:38:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021531F000E9;
-	Mon, 13 Jul 2026 07:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783928332;
-	bh=9eGByJuvHEB+z2eH8QThZCFnk+Hl3GeYnz64gEkwk2c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=irkwxYLpo/4GSlq8ZgR+kxtCtChgHXEvZCGUUsXjdcJJfJtdQzhs7GCTYNCMyNALI
-	 8b134LpRmIPk0m5eKgadSrX80W13Zgwaf63Q83uB5upLUalokqeV0UQDC7BleA3LQj
-	 JxV1nPyg4BQfta4EeMDz7MiwEeut8oPvc4NWxz1uNy+xBZzW1SiLI/Qcpjae9g4Ge9
-	 0wTOqRV/F7FTZJNUVDJ5R1vr1nwuKeH23wHF9pRh66jxC8zf26J5dGw3ivs3ZxvA/k
-	 ChA1qeKGTqeyQBGMP3Nw0fGhE7GTSWA6F71UXfSwT9iTJg5Khvoze2qxeDN6WuhmP+
-	 MnrC7bA5Dm8WA==
-Date: Mon, 13 Jul 2026 08:38:38 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, 
-	chengming.zhou@linux.dev, qi.zheng@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	wang.yaxin@zte.com.cn
-Subject: Re: [PATCH] mm/mm_slot.h: add a helper function mm_slot_remove
-Message-ID: <alST91EgYhtjkaAY@lucifer>
-References: <178368585772.363984.12871786869575753171.b4-review@b4>
- <202607131344540423N-vjn1y68X614fkeZemP@zte.com.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <202607131344540423N-vjn1y68X614fkeZemP@zte.com.cn>
-X-Rspamd-Queue-Id: 8508CC0006
-X-Stat-Signature: uxdq1kp3o9cu5p5coou6zrmf4rxkkgtu
+	t=1783928543;
+	b=Ct9SzD6PiLSwmalLvefuOi0ggnpKWEXCGGUMCg5FMJenjkr+AJfkIebGwqNlU6nvr9TF2p
+	SFh3omoSaIJEgNdxkkbtaRZSBw6ld+vgmTBXEusAfb0UcyBSMmz+gN0C2TpX55mokOuNAi
+	1Oq1pHqWzlHEkHdWbgDxafA8b3jdDRo=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783928536;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6yoLIAxyc2K4qHLq/6jmB6EcYdYLRcJ9qmXi423/+Yo=;
+	b=ufoX6hFMdIyLPO8Bw5rY8zTYrpNA07qYpWVfVGzOWth22H/31rETGvgoTniThRqaviyYjp
+	htnItLldN4JOMquRcrdmPsuHj2DOHOcAm0DNHDeMEhGdqp39vxpUiAkeDe6HylLlexVVjw
+	HCSJeSNqf3qY+mgdiIs8xFbCmBLuGPs=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <CADrL8HXNoRA_cnR7KVPwN6zA32E744OKOfTmDMReoykzR39H8Q@mail.gmail.com>
+Date: Mon, 13 Jul 2026 15:41:35 +0800
+Cc: Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Nikos Nikoleris <nikos.nikoleris@arm.com>,
+ Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9C56FB0F-AE0E-4975-9D89-AFF110433C49@linux.dev>
+References: <20260708031129.3503195-1-jthoughton@google.com>
+ <3B2B37B5-16DE-4DB0-8A78-4CB8636C1A86@linux.dev>
+ <CADrL8HXNoRA_cnR7KVPwN6zA32E744OKOfTmDMReoykzR39H8Q@mail.gmail.com>
+To: James Houghton <jthoughton@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783928333-39547
-X-HE-Meta: U2FsdGVkX19eg8AIgAXKyIKOTCerVp2oYfJqYhj/SQypvHkc8dpR8F/plK0GhT/Han9FtoqIs9h5nOrpqrKfF8FHmdirdsXIaN4cdf+FC8NJLmxAe548ss0s3aTzIp3SoMNLTD28OLNjXG6SNWOy9GRZwZMIHTCBNnWNtj6UE2zpcI57/Z2SaMK2gJHmtRfay6N0cMn+Bou63YVtSboJ3/bA9XRC35w5cDEzLy/o+FAvaLjLZcJ3HbOI83/O7s2TC6olh8jVzzAAu25Mmrq4hzpCWRonmbDEjVqKnvnbqF1AnkDyYRbacpcbrLzB4/vzRiGWihpVWZJrCwbWeS9P0MDg3C7fU/mGdVhwz4dY5nhoW3myvntJIIP21jxMZP1GR0VsgusCqC5U+VZ4lXNbM9qwogM7W4pgZMr9nmYZaewXYHIXqRfrvJDKcAKk5Dm97JvRexQOfbKFLkN0K0yVMczTIfAMA7bL/rFs0JdmxLbYfwmZ/OCv3lEsMMIDdBhuQafXwqxu6pEehlWawJquWmze1HLPRNxYYDdTupGwEfbEIEUIjq2In33e4aK3uoAsFT3IeBYtrKdmNM23vlF0BfSJVHS7+3/8jcG2aKua8HiHpcFQkhQyoPE1CGohwqW9/VovTo+aXFwOBbV/HTrDwrxlbn0bB6j6euTgM0LHTsqxdkJLfqsNBcVRyjvcp5BGBXqBrsWuhpjIww+bgzsyjBLiEAwKB+NpF+TkRdcdn5L6sg4zn+p93bbX0aIhzcBFYnZcUtHeabnZNY7Yoy4EU8pYcIEKiR0PDmgLLyPYfJi1W8map49Uu49bMbQgMmLkQCF17Y/5D7m/50PTm5NesYiEEcx61f+jX50fsKce16eouihi7QeGqbUkFU3JXA90Mv+gtmtbnu3iKU7PHqKypEBLY89jQ6ht7Oi0UySPMcXAJlVe5zZ11nDBkRoGdKxHvFgKt9smXNrCkp1j488
- sCIykcLl
- cLN00OCUh82l8c001dSx4+b4J5S48z/tmiJd9eHFG8SiOCgVJ1rCbAEGto0x36U1Q4glUOf1D4hDiqKanthlUwo3nH6X1OSSvBVXireGfsuab6o/UvaOTdW31XXGDaEH78jl3tAkncm+ZSkKElsOh1U6Po6JASjBRGcC7fS/aNJ4rIGikTHyCUXHTPA+hDBPFNdLB507s8wy9Er4k936bgFAcqCT9wDeGA1UqW018sFA/X805OXLdWOy7w1M3Z897r4euStqL5mIOPjxJIfh33miPujT6zLz2Pi1rVCznO0IfalzDvGG4UMrhZ0PH63BvHYRoB+KH13i6htZuRezGhwx/pVvAdaKFJEbv3T5Aw8tQIiBuCCSDxTrdAKADd5uOloZ6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A128AC0005
+X-Stat-Signature: o6ssrzjan75fod6jb9tpohd93ykt6yhr
+X-HE-Tag: 1783928541-446082
+X-HE-Meta: U2FsdGVkX1/fVz8QdArC95QcKuwDBiVf71uKK9o8n8NR1OHGWePH33UZu+y8XlzAd8rcvOtEGOENNmVbFUggyU5G+/qg40wh0nny/Syp+LT9GmZR/b+V6xYYqWaww5mslxWvg1lZA8GHhlMXRqezCYrfb6P0JV0Huv0v/GNC+HkK32S+hCeWXZBLqEctiDQJHgBpIpjAjYL4UZ/vC1/vaoJW83az9RCsNbX7U2H+0LCwbd3RUrmWrLp8iLxYDZ9eiqsgRnYnJ1WeHKTioQmX5stMS7DHBk/aLy53CHka/3iokiksZcu9mF/bsf9qKgVDCCCvoRSiITmAeDLOP3Dw3LZNXWVVuZsTI/C3eER9Oo446quFJA3KUM3p/ixC8MKBDakLHd4mNZzDNKPbt97/lkvDUP7X+klPQxduI8JLaO6eCxhXbzZUirX51B9mfqkNg0REAa34hmdBdCRhPCjAFhZjzYpznugYoNfSG1sx+Hdv+3g3tsay8bK5JejhgB3LtAfevBuPoGAH4Wbjh/MKj4yuU9+6feGMoXhDmkRZVcBDPhYy2PHhvTVaWOPh8feVwc3d15uRU6WHfq7FBzsGVWGuceM2/1yn+L9zesR8ffYt2F7qZchio+34WkU9iBpYCltEZ2OUqUKzyfwu+T/DuTbYAMIHPoQkUrfemGkbzstkSDa1roZsOg5QP2WAoatl+PZu/uKqCePxf8VU6uCwgAJpJYXkqzUZTgg2CoMCSpmJc9CRcaVs0SC1ZDD6EE1WVVGuyZS6KsJlP/HEOX4OFn8mHEKpPSR+XJvhfTL+RDwa4V5StCUDdQqQIHYqoNpoQIpt1J2437XsRgFJJPX7ANRzj+ZPnr4v4FXB6irC0exbTvf8Twf/opSfEX4lN5hrw/6Cwxp5EjaLR4jNYNm4lf2vAfEUv+yw2vkuwvNvV59cafNLRN8J3MsFyuqJrFgs7cI31fdWSbfm5vA8A7R
+ MEpPlRwm
+ M25gtQ/LiUxEjv/1ehPFUGQkyjy7BAX5EmbX1QjbYPuRQrIbtwqSUj2Jz/t1NBIetrLnvdr2UACNoTYRw5yybxvC6jDHRW1y6JL+FU1xAYh0zZ+j3AeN21HCSahRsv+uZzyWF9M5f+K0giwCdFfu2Skwg5KyQrW0RhNfuq+hJf3fXwb03G2WpNfU1rukYeQ9DkZZUpV8PN2kgKQkQWmDZZi/eKeujompjgiW1DGXnmVWsywXi7obxFRUW9fIsHCm2VpOreZ7kQ82viao=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,65 +105,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 01:44:54PM +0800, xu.xin16@zte.com.cn wrote:
-> > > No functional change is intended.
-> > >
-> > > Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-> >
-> > In general it's fine but I want more :) see below.
-> >
-> > >
-> > >
-> > > diff --git a/mm/mm_slot.h b/mm/mm_slot.h
-> > > index 83f18ed1c4bd..bc3b9ae8fdbc 100644
-> > > --- a/mm/mm_slot.h
-> > > +++ b/mm/mm_slot.h
-> > > @@ -52,4 +52,11 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
-> > >  	hash_add(_hashtable, &_mm_slot->hash, (unsigned long)_mm);	       \
-> > >  })
-> > >
-> >
-> > mm_slot.h also inexplicably implements mm_slot_lookup() and mm_slot_insert() as
-> > macros. Can you change these to static inline functions in the respin?
->
-> Sorry, I looked into turning mm_slot_lookup() and mm_slot_insert() into
-> static inline functions, but unfortunately it’s not possible because
-> they rely on hash_for_each_possible() and hash_add(), which expect an
-> actual array instead of pointer so that sizeof() can determine the
-> hash table size. Passing a struct hlist_head * would make sizeof() return
-> the pointer size instead of the array size, leading to incorrect bucket
-> indexing and memory corruption.
-
-Ah that's fair enough then, explains why they're macros there :)
 
 
->
-> >
-> > Also rename the horrible names from _foo -> foo too please.
-> >
-> > And we don't really need 'mm_slot' in the var name for a slot just 'slot' works
-> > fine.
->
-> Ok, I can clean up these stuff.
+> On Jul 13, 2026, at 12:59, James Houghton <jthoughton@google.com> =
+wrote:
+>=20
+> On Thu, Jul 9, 2026 at 9:59=E2=80=AFPM Muchun Song =
+<muchun.song@linux.dev> wrote:
+>>> On Jul 8, 2026, at 11:11, James Houghton <jthoughton@google.com> =
+wrote:
+>>>=20
+>>> Hi everyone,
+>>>=20
+>>> This patch series uses a trick with the Access Flag on CPUs that =
+support
+>>> hardware update of the AF to update vmemmap page table entries =
+without
+>>> introducing a time window where CPUs accessing the vmemmap might =
+fault.
+>>=20
+>> Hi James,
+>>=20
+>> I was just looking into the Arm ARM specification regarding the TLB =
+caching
+>> behavior to better understand the "AF trick" used here, and came =
+across a few
+>> sections that got me a bit confused.
+>>=20
+>> Specifically, Section D8.5.1 [1] states Rule RDWZCQ:
+>>=20
+>>        "Descriptors with AF set to zero can never be cached in a TLB. =
+For more
+>>         information about when translation table entries are =
+permitted to be
+>>         cached in a TLB, see Translation Lookaside Buffers."
+>>=20
+>> This indeed seems to support the core assumption of the AF trick. =
+However, when
+>> following the reference to Section D8.16 "Translation Lookaside =
+Buffers" [2], it
+>> defines the following rule for permitted caching (RSQBCS):
+>>=20
+>>        "When address translation is enabled, a translation table =
+entry for an
+>>         in-context translation regime that does not cause a =
+Translation fault,
+>>         an Address size fault, or an Access flag fault is permitted =
+to be cached
+>>         in a TLB or intermediate TLB caching structure as the result =
+of an
+>>         explicit or speculative access."
+>>=20
+>> This is exactly where my confusion lies, as these two descriptions in =
+the spec
+>> feel directly contradictory when FEAT_HAF(hardware management of the =
+Access flag)
+>> is enabled.
+>=20
+> I don't think it intends to say that "translation table entries with
+> AF=3D0 may be cached" just because they don't cause Access flag =
+faults.
+>=20
+> It is likely that this clause was written before FEAT_HAFDBS/FEAT_HAF
+> existed. Re-reading it with that in mind makes the meaning clearer:
+> PTEs with AF=3D1 may be cached if the architecture otherwise allows =
+it.
+>=20
+> There is another clause, in D8.5 "Hardware updates of the translation
+> tables", I_RGQLZ: "If hardware does not update the AF from 0 to 1,
+> then the descriptor is not permitted to be cached in a TLB." I think
+> this supports my interpretation.
+>=20
+> I am convinced that it is impossible for an implementation not to
+> conform to Rule R_DWZCQ (PTEs with AF=3D0 cannot be cached) while
+> supporting HW AF correctly. Let me try to explain why.
+>=20
+> For HW AF to function correctly:
+> 1. Setting AF=3D1 must be done atomically, otherwise hardware could =
+set
+> a bit in an invalid PTE. (This would break Linux swp_entrys.)
+> 2. The AF=3D0 translation cannot be used, otherwise we could
+> potentially drop AF updates.
+>=20
+> If an implementation used the translation before coherently setting
+> AF=3D1 to perform an architectural memory access, then it must choose
+> either to set AF=3D1 on a PTE that may have since changed (perhaps to =
+an
+> invalid PTE) or drop the AF update entirely. Either way HW AF is
+> broken.
+>=20
+> Please also see I_GXGPN: "When the translation of an architecturally
+> executed memory access occurs, the architecture requires that AF is
+> set to 1."
 
-Thanks!
+Thanks for your excellent explanation.
 
->
-> >
-> > > +static inline void mm_slot_remove(struct mm_slot *_mm_slot)
-> >
-> > Yeah this name is gross just 'slot' please.
-> >
-> > > +{
-> > > +	hash_del(&_mm_slot->hash);
-> > > +	list_del(&_mm_slot->mm_node);
-> > > +}
-> > > +
-> > > +
-> > >  #endif /* _LINUX_MM_SLOT_H */
-> >
-> > Thanks, Lorenzo
-> >
+>=20
+>> On one hand, Section D8.5.1 [1] explicitly uses the word "never" for =
+AF=3D0
+>> descriptors. On the other hand, under FEAT_HAF, an entry with AF=3D0 =
+does not cause
+>> an Access flag fault anymore, because the hardware is capable of =
+updating the AF
+>> automatically. This technically makes it eligible for speculative =
+caching under
+>> Rule RSQBCS in Section D8.16 [2].
+>>=20
+>> My question is: which part of the spec reflects the actual =
+architectural intent
+>> when FEAT_HAF is enabled? Is an entry with AF=3D0 permitted to be =
+speculatively
+>> cached in the TLB by the hardware under FEAT_HAF, or does the "never" =
+in RDWZCQ
+>> still hold absolute priority?
+>>=20
+>> Please let me know if I have misread the specification or missed some =
+overriding
+>> constraints here.
+>=20
+> Thanks for making me look a little harder into this; it's a good
+> question. I hope my reply above makes you more comfortable with the AF
 
-Cheers, Lorenzo
+At least to me, what you're saying makes sense.
+
+> trick. I also hope to hear more from the Arm folks as well.
+
+Yes, it would be best to have an ARM expert here to confirm that our
+understanding of the manual is completely accurate.
+
+Thanks.
+
+>=20
+> Thanks Muchun!
+
+
 
