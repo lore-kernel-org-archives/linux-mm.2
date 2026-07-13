@@ -4,127 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01EBCC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:29:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C7DC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:30:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 127096B00D5; Mon, 13 Jul 2026 13:29:19 -0400 (EDT)
+	id D39566B010E; Mon, 13 Jul 2026 13:30:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08BA16B00FB; Mon, 13 Jul 2026 13:29:19 -0400 (EDT)
+	id CE8F76B0114; Mon, 13 Jul 2026 13:30:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93CE6B00FD; Mon, 13 Jul 2026 13:29:18 -0400 (EDT)
+	id BB3A16B0115; Mon, 13 Jul 2026 13:30:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BEF7D6B00D5
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:29:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E375A0142
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:29:18 +0000 (UTC)
-X-FDA: 84984439596.17.2758D23
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B9E8B18000A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:29:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V2ht2vVF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 857606B010E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:30:47 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C9DA1A0134
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:30:47 +0000 (UTC)
+X-FDA: 84984443334.09.6EC3D8A
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 432774000F
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:30:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IGhRs+ue;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783963756;
+	s=arc-20220608; t=1783963845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CQCu3DCXkh2E8vskCgULolMkoi8dFixsDbgG1aVFXB0=;
-	b=4ksq0uHPC+YhM7dvSdUi/+hkkmaqIbqqkPDzGQAy5tlJuH03DryX59hO2IiruDxqxohQxS
-	ldRnG4tAJ6+KBzUnFF60xt+h4FGClWre94xBOqoArsx18X0zL3+UUuLGLlM/eDCnZk/P3s
-	HA4RdbWZI9HbmteMMC3bTkJnS4lA/4I=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=51jkDGqcYSlWtUq0/oF4m7PdKEgEv1ezQg2syRvYV9I=;
+	b=ZtDsptrZPVqdGduNMqIQLn/UrTgYPlRy5Sg3A6lMHAyn8zjGLPGq5RSWirBdA3jLKXXhic
+	7y/uDOUmmpV8ONEmil/znDIMkN9iz4fGrd+J+ybh0wmX7xoQlOAK5l8RooTAcj/xgUFKN4
+	H7iyHBm9twOC5AnAmWvOlLewmfamoTw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V2ht2vVF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IGhRs+ue;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783963756;
-	b=cxAwywX9OzrOCfSQiuf7aj731+ptG8ONthks4i9rvWejYnKR0iG56yS1g4nzlEwvkELS7j
-	65Vx6Q7HFm4wJEcd1T9pwmb++ER8kVI+DsQanF7vbgHZT9l5cBvDqtl05/mNQJA/a0EJuP
-	pdVSMlIpLGos3dwfH2ex/sfTL0YgPkg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E09E60008;
-	Mon, 13 Jul 2026 17:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C891F00A3A;
-	Mon, 13 Jul 2026 17:29:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783963755;
-	bh=CQCu3DCXkh2E8vskCgULolMkoi8dFixsDbgG1aVFXB0=;
-	h=Date:From:Subject:To;
-	b=V2ht2vVFbfFjbRdugHr18TSODgco0uJFeYKWhLEg4SFlTETu/jQcR8qQzhZeYuRag
-	 4FlzDrT07LzgmlETsxYnuSckY61OP7GTcNzMwhbO6hw376HdDoZFibW6euapxtTVOf
-	 HBSKY39T9hPXhA15xdHnH5V2YgXlj5XR6X/aAKA0NgUzAD/kPwxdWNYIS6bArLdNX7
-	 4Lz5J5+bitv7pDVXabeu1TKGyDK9/r6sYeaOKONqI0WuRghePNqW5HyTS3zJFW2wSX
-	 XdNXANpfL4830KXsGnC/KlAYwpxvOKnttXkPyWn4mBuu1eGUA8pexpxNFbH79B7pVj
-	 FMncR/WPNyF/Q==
-Message-ID: <bed81e01-7303-4957-bd7d-38e3a094e96f@kernel.org>
-Date: Mon, 13 Jul 2026 19:29:11 +0200
+	t=1783963845;
+	b=jCOUieol2+RFY+Nf55MQRLbl0Pi1VuimJTIE5lLRPKe+CUdVIGjiBiG6sQ/7vM2jg55kuo
+	jQN+09SBEs2J5k16p0rHTPzf/Xn/d7ep7NLUj0qwxlCQ8TBdloP/rmUU57QzAEzPGbxw5o
+	vr+qUwILAoYms/X40DdJDCIGXGzfPXI=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b015532f7bso4010951e87.0
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:30:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783963843; x=1784568643; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=51jkDGqcYSlWtUq0/oF4m7PdKEgEv1ezQg2syRvYV9I=;
+        b=IGhRs+ueXDzBwML45i059CN9vMZ8WbeMIVSyK46C40pq30BuJDCc7VAVvPCQIZQn3S
+         Z0F6jK8z9kQT8WV1CwktiKy3yNRpiVlkp/PLgXpWZDhrO0xX1nmP/iRn3aL/jjvasiUw
+         MS4+sJMOkPUU74GdTJb+c8vzRJd8aqOk5CflsLn0rAeYna9aPVQGiVF/Lj5KL5TPqHJi
+         aNTFkDBKiE7dLEuu0mT0BA4ipbofnl4neRQC7YgM53+8VWSGDG5CRBXKNmw5U9hO2mZi
+         XDsvGRh6r9qOD0dlWPcfMyzG+roNTENWMrb/tyKdfaOjeaav8Sdxp0mtOcT7HOd1JLv7
+         aV0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783963843; x=1784568643;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=51jkDGqcYSlWtUq0/oF4m7PdKEgEv1ezQg2syRvYV9I=;
+        b=Oe2HD85xEQ4t7YNSnErU7vgd+WCapThPrUKA8A6L80C17IVZYimso6FIWkSn+H8NHw
+         NdXl1gZCzaf8fZdQJuO7xUWOe9B4opJXbL5EfTSaabCTGmJKVGC2FB+BBsY7rULaN9k3
+         XPTaOt77Pv5Pq6N3llogto1bRmjidwkxy9wWu9ZRD5sYxH6ZUxZPpIiFUMH7Tn5m618X
+         ow8rj9oglw6d7VRmrsMEl88A2BTDZzgRQb8HBcGqQogvwJTOoH/8cjDBwBp98E2kROmN
+         NDqHYQOBHPBHDIO0E5iSJ33G6OpbmSFdVcxXtLjTiIMAOnvKN1PhSCp76zSDg+ns28mH
+         re9A==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7xDsnsiGHaRTJ38pFkIhCIn5Vf3zSPVzEQEtCKrt08Fy+ShsDxNrx0pwT8PTF3Q3CXUIJ22Cghw==@kvack.org
+X-Gm-Message-State: AOJu0YyKL4/XslQeA93L3THPke0rhHSFyqnaqQ+h04tFfRMaedwDw9kY
+	XifGb2XHC4XkWHDcZ5S1O1YaBJjHueY/UWsWEq1Ms5fKBTPtCQP+7Ntb
+X-Gm-Gg: AfdE7ckZ/AdSZB3SfgiDXsncxpnshyftkCdTKjm31MF0UR4IbvTElYfQvsJv4l81Kqc
+	wsl2n8tgYA9iOVkBAGdBVnV2cR02/0O0NY/vFmEphekPuFCgP2u5WGlW3m/O+gaAdDIZSAQnoLw
+	ltG0RhrqJSl29R75cGlHn4aJaLJFKSZQauC4HFkB6CauuQiJHn1St4nWkNA+yQoUfQyQolyTITf
+	baJM6M7cMJlyjm8OTG7K90EpG6iSdJIU+j87nAPCkF5Ssx7ZZD2Y/oe3INFw0TDf1x0PpW9vOHr
+	tGlrdWeRwnTPz7KErvFchx0b8u76BTvrTcOVtQtGIVgfE7N5nC1zATUhKk0k70hfcZUXaka+2jD
+	d97Tc0NFSk2iernYWi8YgZOf8YOF5JztBOdEt1phB6NHrJNg5Ze+v+0ydgiojNPHR
+X-Received: by 2002:a05:6512:3353:b0:5b0:ceb2:1974 with SMTP id 2adb3069b0e04-5b0ceb21b1dmr2073653e87.14.1783963843127;
+        Mon, 13 Jul 2026 10:30:43 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b01ca5559csm2984970e87.36.2026.07.13.10.30.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 10:30:42 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 13 Jul 2026 19:30:40 +0200
+To: Dev Jain <dev.jain@arm.com>
+Cc: Wen Jiang <jiangwenxiaomi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, catalin.marinas@arm.com,
+	linux-mm@kvack.org, urezki@gmail.com, will@kernel.org,
+	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
+	anshuman.khandual@arm.com, david@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	rppt@kernel.org, ryan.roberts@arm.com,
+	Wen Jiang <jiangwen6@xiaomi.com>
+Subject: Re: [PATCH v6 0/6] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+Message-ID: <alUgwPT9uh_EWItt@milan>
+References: <20260709073823.6643-1-jiangwen6@xiaomi.com>
+ <20260709160805.26e63bae89dd03cf2951104e@linux-foundation.org>
+ <CAHKocdH5kp5kTtZht+v5j-4-Thh40TGvif3=kRMgErRXr+Q+RQ@mail.gmail.com>
+ <54434a84-51b3-4e3f-988b-6bcbac5a2f42@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Subject: [Update] mm-next status 2026/07/13
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-To: "linux-mm@kvack.org" <linux-mm@kvack.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ub6rpo1ksu4hp9o8pjqh6k8t1196qq6j
-X-Rspamd-Queue-Id: B9E8B18000A
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54434a84-51b3-4e3f-988b-6bcbac5a2f42@arm.com>
+X-Rspamd-Queue-Id: 432774000F
+X-Stat-Signature: dk848j5w1xijtfwj8p95gdehzhi6n66k
 X-Rspam-User: 
-X-HE-Tag: 1783963756-427429
-X-HE-Meta: U2FsdGVkX19BL8vJtdENfasSOH6JDRHV3wcWGBSK6qpCv2w7Tq59p7AE9JlpcCQqqZVK5wM5BTl2zYjxiONo6lj9jYOKv1QrCVakbtELTcEcQO6vz1wtZceDBmLtBFfjrwE8YJY7R+XtJF0pBOOxGVetKX/SmkiZQvVp7TuwCVU/DVnV3HjKqrL5KFOQCUd0FzOJ+gk2YFDvONwaVkSEMZk16OVOoxTnGceuGSknvtyTPaA5oszhtggl5cT6o7z/kYN5CXft0e813A8st7PI/Xtj1+RA533o6u7c1dqbg+dhuRqx9Anc+KpTfWDMiCcrm9PinDC1C/281dbAx/YyMvQxrFQZ0w5mJEBgQBf1t8TM1/V2blgbAT1yBtSrfc69B/p+uK6NslAj+FH+jHRH+gY08ll5r283owgpe/rho0t0FcXf6wx1+Gi3IiCBhxFcIsqptydGHn/R2O0PAeIzeiz04UdZCl+GmBUKbmQPaoEq838qpT+mQhM+Fb5IyzdjnoJ/a3QyEkwApDyE1Vt8Ee9s1y6PfngvBCG1tmMVMQyAQdVdbyNg/TYkQOiMz2n7r0/2G0hI4okQE0/gS/cHehkqwP+4+DoDyJvzHV99CtDHsFL6eSD/y3F+USrLS6/CbQ8liiUfzyORcxN4a64PBv0D/5TLUuMYfocVDVkBFA9EItEYHDhkY2XpNJBaSf08O8Y5XdTjCUWa2oEcHFoUQwiuHQuuAoGYUJE9NCrIOsd2WdpibScmPnpWLkhIZA6gzJAcK2Fd5BrnJw8RYZqccCHONFAvjlMgl/GKnvsWygwZIlyK26GiqjXF1GoxWZrztu5yyU6Ng4khGpdKBSTmz61sFjgixR1vpMGkaG6lZJ3LgNNrJmUj6BU0ikzLajyUmcmGHDlU0c7mNlrVBOz319RbsNtQtPmpHAVE+WOdMhGAwYJ3xMJIT6iSjiIdnSWnHd/lhEDyZkJjmRz+ABd
- K270rhwY
- FoBJhXcKiAJLRaYyySwm/zLwZFW4x/rm3roED7p1fvz0PibCFx8RG+CqG60w9HhPDEkrlRorGZE62U0HEEjFwE0Nr9RFIp7koVapn/EeMG05R1utEo2/wLiAtDVMa9PzfFsdzEDDMxmfIW0lZ5zVot4R94o8HGsiu9b5XGBBAzjalyu2vPwlvTMoWrXbNmH6A192PRYyX2Pl6jIwA3MvOLd6kBOth1+9oJhkkh3UITeR4s70sV2e08jDMIESvOZ2pIlTB6HiJ6QW/1hSMeDtiRoAoPGv/gPLLMp66bkvOked89yccDlUetojOlA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783963845-742323
+X-HE-Meta: U2FsdGVkX1/YYqrnelbDfrBnw/5i8rd0oPitZpZEXwBYt9HCOXRhliiMSBOZ1VeWvYswEj1twUAyIOTRL+MkAlK0PpPkWyC7e0qPy23qP7+n/qre0Mpk0m0Oe88xAUcL8l7PhFRf7jA5blMLzP6VTejr5F2uk7klZd2qsysczD2enM9264XeKUtZUJE9n4s0fpFpDq51ZheROP3kAr+gDLdkZ2acjza2jqoqAkwCTsb6ZKgwBG+v9nbStiI+rrGzTTPk6yVcwCqO9x4UttZI7WpUnjTqFRTDroGdAYMQ8IuBSMYApZulgpGE+qrBc0uR3MwCujWfq/J0UuqT4ER1vie3YwtvBBy5i73bK3okw1LO5YG2SgtaULc10oZ/CzI1+wMQUDoj1hdd9edBx+sypQhkzyWQBzMP956aZ/vCdK2uqAXqB6a88hcj+9JI7nw/rC7ktldKkMfxGIAKZwxYgRAYgUfU4/6zj/J2iTd+4f1TS7kIczh3Z62vFHtmoSrqEvSf3Q+jYdFzxbguRjJ1iY6XwEByyftdRQUaHLLW/Hj8GYMncdSxv8HqpRMmR9TR83XDAbGPxy/rinkH+EX7E45kqRaFAVOALZFK/Mzp9r954I1YXHxXiSuhTobFutexWmctHAtdNjtk+7xTzO0x2pUfyd/vGfUFSZCtsMHBLe81qPJUNNx0wByR4oCOrN09vgZSCqh/1bbT+/MB9V5qEnk9zr7zMCUAwXGcgkyA0SA+pc4gznvvoaQSFr5NRQhovJcB2yh9yzcsaMyVc52YfSTTZt46c1S/8jfmWArc2GGIAfhU4WF24A0dsX+FS4KSHzOrf9cauaAnWjNUdTUGoZi+QlLEGAkdb75q6Z0027gXPexoz6B107R3vWEB3XqksmJEwAs4WAdQ1gSy3ZMzt/5GRN8DlsoOk9iqjPI06Dus0jTJQtRlYK6hXK0fITEK8rVIZY97daIcgLOrFvi
+ t+QXXXRB
+ nAi9FQmm9asiVKw0fXOeW6mkUn0oRV0F8OhvYNxyXAKWq30MV4DeJNcwJXVN1D+A9pq89YFL0/IHDfJRcRTg05LteEl0SOxU6k0Q+WSIG3jl3bkguweolZQctlfwa83xOqb5GnScGRoThMp5Ef1IRZzTHd7TlRp5O9re2rkjMMJm80ZMT0MQeS+wLo0AzuQ28j/skFmUvTB0vTRnPoa7rgIxgK20dSizWMTks8x0qU1lGAKca5ZxTdzjBzcDt03aReNWuvU1XtaZkMjFoTwpCzQP4qcxFi2cWz9YD+0xcHArvLI5WQQPkJ+d/SoDmZGaQViRiJWPaftIKkzAMWJm6PMb4qH0KbFoBlNBiC5o5sibf5wBjCz4dGbE94dUmzKmZ+ysA8f1AiiuVT1I+DA9smSoiDTKSw2YHfEpPHWaZwdxGHQyX8V0gF7kgNIDh0ZFlksWGZgl4FcK6Jier8chxxEDV7I0Vm/+P4sgSbMfq1Rlx4vzBZ1dzu9Xt+Z70Qkd57mUB73AohqWxAo+oZEAdXKjZINXOxbnbOeuWgKBIHJis4QIhzHYGWAnPCydIiNjaO3M7nmq3Sx5OQ1HUUC+YNWl8UXJEwL/03Wma4Nn6gcmvAvRMbfO49OzuzDlPSVNyCoy+lma3vE7vw6EoibEkeoca+q7bBN+jkAr5CcV35A79ZXn3EW88J0whKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,203 +128,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-a status update about the MM transition [1] after we had two bi-weekly mm-next
-calls.
-
-I'm sure I'll mess something up, so hopefully people will correct me where I'm
-wrong or when I am missing something important.
-
-
-1) Tree/branch Locations
-------------------------
-
-We discussed which tress we'll have and where they will be located. Tress will
-be listed in the MAINTAINERS file. After some discussions, we agreed on the
-following:
-
-The mm-next tree for the mm-next maintainer(s)/backups will be located at:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/mm/linux.git/
-
-For all components that we separate out and let component owners take care of
-picking patches (initially memblock and slab), the trees will be located at /
-moved to:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/mm/$component.git/
-
-Component maintainers will not have write access to other component trees /
-mm-next tree.
-
-
-2) mm/linux.git ("mm-next") Branches
-------------------------------------
-
-We discussed which branches the mm-next tree will need, and decided on the
-following for now:
-
-for-next-fixes:
- -> Integrates all component “for-next-fixes” branches
- -> Goes to linux-next.git pending-fixes
-
-for-next:
- -> Integrates all component “for-next-fixes” + “for-next” branches
- -> Goes to linux-next.git master
-
-for-test: (TBD, deferred for now)
- -> Similar to current mm-new, will not go to linux-next.git
- -> TBD if and how we'll use it.
-
-for-linus: (TBD)
- -> Only used for building PULL requests.
- -> Might not really be required.
-
-$component/*
- -> Patch management for branches while maintained by mm-next maintainer(s)
- -> Will be moved out once dedicated component maintainers take over
-
-
-All integration trees are rebuild constantly by merging other branches, similar
-to -next. Commit IDs will be stable as long as they remain stable from the
-source branch they are getting merged from.
-
-
-3) mm/$component.git Branches
------------------------------
-
-We discussed which branches component trees will need for integration into
-mm-next, and how the branches will be managed,  and decided on the following for
-now:
-
-Similar structure as mm-next:
-
-for-next-fixes:
- -> Integrated into mm/linux.git for-next-fixes
-
-for-next:
- -> Integrated into mm/linux.git for-next
-
-for-test: (TBD, deferred for now)
- -> Integrated into mm/linux.git for-test
-
-+ other topic branches as required
-
-
-These branches are not necessarily used for creating PULL requests. Commits that
-will go upstream need a stable commit ID in the for-next* branches for some time
-(e.g., fixes 1 week, features > 2 weeks).
-
-How these branches are managed is up to component maintainers. There are various
-options:
-
-a) Have the branches with stable followed by unstable commits. Never rebase such
-   that stable commits would change. Good enough for very little activity.
-
-b) Have stable+unstable branches that are integrated (i.e., merged) into the
-   for-next* branches.
-
-c) Use actual topic branches that are integrated (i.e., merged) into the for-
-   next* branches.
-
-d) Do something like VFS with versioned branch names ... that are integrated
-   (i.e., merged) into the for-next* branches.
-
-
-5) AKPM integration
--------------------
-
-We discussed how we will integrate Andrews trees during the transition.
-
-mm-hotfixes-unstable (which includes mm-hotfixes-stable) will be integrated into
-mm/linux.git for-next-fixes.
-
-mm-stable + mm-unstable + mm-hotfixes-unstable will be integrated into
-mm/linux.git for-next: similar to how linux-next.git integrates it today.
-
-The expectation is, that once more components are maintained in
-https://git.kernel.org/pub/scm/linux/kernel/git/mm/*, the smaller Andrews MM
-tree will get.
-
-Conflict management TBD, and to be learned as we move forward.
-
-
-5) PULL Request Handling
-------------------------
-
-So far we touched on that topic a couple of times, but did not decide on it finally.
-
-At this point, it seems like something similar to the KVM model (components
-sending PULL requests to mm-next maintainer, which bundles (selected) PULL
-requests and sends the to Linus) might make most sense.
-
-
-6) MM CI
---------
-
-Mike presented the current github-based CI that is based on the BPF workflow:
-* A bot grabs new submissions from patchwork (IIUC) and tries to apply it on top
-  of selected known branches (e.g., mm-unstable)
-* Creates a github MR for that submission and triggers the CI ...
-* ... which compiles a kernel, to boot it in a VM and runs MM selftests +
-  memblock, vma, xarray, mable tree etc. tests
-* Reflects the status in patchwork
-
-We discussed that we need more CI runners. So far we primarily have x86-64-based
-ones. David tries to get some arm64 runners, maybe some other companies can jump
-in as well. There was the idea of using some of BPFs infrastructure, as BPF does
-not fully exhaust their capacity.
-
-We also discussed that the selftests need more care (e.g., stability, test
-coverage), and that performance tests are out of scope for now. Arm has likely
-some capacity to work on improving selftests.
-
-We also talked about advanced tests, in particular performance tests, and agreed
-that we'll likely need a separate test project that bundles performance tests in
-the future.
-
-The primary motivation for the CI is to make it easier to judge whether a patch
-set is worth applying, reducing manual build+tests for component maintainers.
-
-So far, no CI mails are sent out yet, but we might decide to change that in the
-future.
-
-
-7) Next Steps
--------------
-
-* Start setting up mm-next branches and get the merge process flowing.
-* Exercise the model with memblock and slab.
-* Once working reliably, ask for a -next integration change, dropping Andrew's
-  MM tress + slab and memblock trees.
-* Start picking patches for smaller, well-isolated components into the mm-next
-  tree and see how that integrates.
-
-
-8) Topics to Discuss Next
--------------------------
-
-What we'll cover in the next session will likely be around:
-
-* PULL request handling
-* Component branch handling rules
-* Hotfixes process
-* Against which branches to submit patches
-
-Further, we'll also talk, more generally, about AI review in the context of mm-next.
-
-
-There are still plenty of things to figure out. If you feel like you should be
-part of the discussions and were missed so far, please let me known and I can
-add you to the meeting invitation.
-
-
-[1]
-https://lore.kernel.org/linux-mm/3166fcdd-5f08-4f7c-a743-192d0e0207d1@kernel.org/
-
--- 
-Cheers,
-
-David
-
+On Mon, Jul 13, 2026 at 08:43:14PM +0530, Dev Jain wrote:
+> 
+> 
+> On 10/07/26 2:24 pm, Wen Jiang wrote:
+> > On Fri, 10 Jul 2026 at 07:08, Andrew Morton <akpm@linux-foundation.org> wrote:
+> >>
+> >> On Thu,  9 Jul 2026 15:38:17 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
+> >>
+> >>> This patchset accelerates ioremap, vmalloc, and vmap when the memory
+> >>> is physically fully or partially contiguous.
+> >>
+> >> Thanks, I added this to mm.git's mm-new branch for wider testing.
+> >>
+> >> AI review asked some questions, and some of them are new since the v5
+> >> series:
+> >>         https://sashiko.dev/#/patchset/20260709073823.6643-1-jiangwen6@xiaomi.com
+> > 
+> > Hi Andrew,
+> > 
+> > I've gone through the Sashiko findings:
+> > 
+> > - Patch 1 (find_num_contig): Over-interpretation. No new hugetlbfs hstate
+> >   is added. The extra sizes are only used by init_mm kernel mappings via.
+> > 
+> > - Patch 5/6 (NULL page): Invalid input. vmap() expects a fully populated
+> >     array of valid struct page pointers.
+> 
+> Correct, but vmap_pages_pte_range has !page and !pfn_valid checks.
+> 
+> I really hate those checks - if those checks have any remote possibility of
+> firing, then we already have a bug at
+> 
+> vm_map_ram -> vmap_pages_range -> vmap_pages_range_noflush -> kmsan_vmap_pages_range_noflush
+> 
+> because the last function dereferences the struct page pointers.
+> 
+> It is painful to do the page array sanity check deep into vmap - it implies
+> we simply cannot play with the page array before that.
+> 
+> But since vmap is an exported function, doing a sanity check for the page array
+> in the vmap code makes sense.
+> 
+> So how about the following:
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index afaa14ebf17bb..0c44bb7a45b5d 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -566,14 +566,6 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>  			err = -EBUSY;
+>  			break;
+>  		}
+> -		if (WARN_ON(!page)) {
+> -			err = -ENOMEM;
+> -			break;
+> -		}
+> -		if (WARN_ON(!pfn_valid(page_to_pfn(page)))) {
+> -			err = -EINVAL;
+> -			break;
+> -		}
+> 
+>  		pfn = page_to_pfn(page);
+>  		size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
+> @@ -603,11 +595,6 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+>  			struct page *page = pages[*nr];
+>  			phys_addr_t phys_addr;
+> 
+> -			if (WARN_ON(!page))
+> -				return -ENOMEM;
+> -			if (WARN_ON(!pfn_valid(page_to_pfn(page))))
+> -				return -EINVAL;
+> -
+>  			phys_addr = page_to_phys(page);
+> 
+>  			if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
+> @@ -3663,6 +3650,19 @@ static struct vm_struct *vmap_get_aligned_vm_area(unsigned long size,
+>  	return __get_vm_area_node_aligned_caller(size, PAGE_SIZE, flags, caller);
+>  }
+> 
+> +static inline bool vmap_page_sanity_checks(struct page **pages, unsigned int count)
+> +{
+> +	for (int i = 0; i < count; ++i) {
+> +		if (WARN_ON(!pages[i]))
+> +			return true;
+> +
+> +		if (WARN_ON(!pfn_valid(page_to_pfn(pages[i]))))
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  /**
+>   * vmap - map an array of pages into virtually contiguous space
+>   * @pages: array of page pointers
+> @@ -3706,6 +3706,9 @@ void *vmap(struct page **pages, unsigned int count,
+>  	if (!area)
+>  		return NULL;
+> 
+> +	if (unlikely(vmap_page_sanity_checks(pages, count)))
+> +		return NULL;
+> +
+>  	addr = (unsigned long)area->addr;
+>  	if (vmap_pages_range_batched(addr, addr + size, pgprot_nx(prot),
+>  				pages) < 0) {
+> 
+> 
+> 
+> Reasoning for calling vmap_page_sanity_checks() before vmap_pages_range_batched,
+> and not at the start of vmap: I am worried that since vmap() is already very
+> fast, we may cause a regression:
+> 
+> vmap() -> scan page array with linear map pointers -> vmap_get_aligned_vm_area (does
+> memory allocation, throwing out the linear map VAs from cache and TLB) -> walk
+> the pgtables and again access cold page array.
+> 
+> Perhaps I am being very pedantic here. What do you think?
+> 
+Sanity check adds extra CPU cycles and it adds overhead. The concern about cache
+to be cold on second iteration looks valid. You can get some perf figures to see
+the cost.
+
+I would just keep the original approach. But no strong opinion here.
+
+--
+Uladzislau Rezki
 
