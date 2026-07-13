@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42138C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:17:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D86AC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E3C76B0093; Mon, 13 Jul 2026 03:17:36 -0400 (EDT)
+	id 6B34D6B0095; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292EE6B0095; Mon, 13 Jul 2026 03:17:36 -0400 (EDT)
+	id 63D646B0096; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10D9F6B0096; Mon, 13 Jul 2026 03:17:36 -0400 (EDT)
+	id 504BB6B0098; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E76106B0093
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:17:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C5D693E34
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:35 +0000 (UTC)
-X-FDA: 84982898070.27.3072C08
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C306B0095
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BC56A12052E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:37 +0000 (UTC)
+X-FDA: 84982898154.28.1D91686
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E612414000B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVklzPwn;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 203CEC0007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IEu/n99Q";
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783927054;
+	s=arc-20220608; t=1783927056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N1GD0Oj81wk33gSXNYFk26bc8DHHpPqcq8HMI+cgJUQ=;
-	b=s/UwkyRmEuEm/a3gxgy8TGg77BNT7vqi4dbOQI+cXwPJO/08qm9Vj4bbzK8whf0OPBoTCn
-	lwTCxw+Chrxg86m3GbUuLMNWWZWkCuoNngetC0XS6Tulg6a+KDjHWdsH9Am0Q9Hx4+GyFp
-	2hty10v9QmumbzFnibdHULIrF5o7Yd8=
+	bh=KFYeKargova8Ud8wjAeX+s1i+b6lKR01HyMHcvbV2VQ=;
+	b=lrHvtawEZBekwdlXyFMOMV8FS7RGQjapw7+WMAZivAKjr+82QOUwJHV56kYqfztCij++aB
+	DP361HwJgjjI2J8t1jzxn6idhCyX5D6hRAKYuZ/6MOxCDhKADcg63Lk6vEkHVGzs+8q+Pf
+	H2HMDoPUBSl3Qtu806wrABu15x+s4EE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVklzPwn;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IEu/n99Q";
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783927054;
-	b=SbhNaQTf2WlaKIpHDlRA1b9NHptLjXFj/kaVECwdKxwqO3JfgJrUSpf7ze72t6qfbJJFwI
-	7N+BW50rA1y6pDisK3YYjcX525zDxXOuLrmzNc/DIZgEAO4nHPzH7+w3m9bxzMo8tIjvQe
-	6XidGIebNaBzF0QOqHgPOIkiQG4wxd8=
+	t=1783927056;
+	b=Ydst49eCD5yzfJ+zDrz3NjpMidKN8Akz0QaviWuyNJBqNbWDn1ajWDnGZht3/A3Y2iII5E
+	vFIhapAUqGZxvF/Ua0iH7FEKwgRdUnuzfktDGps7PcdNb4Pji5daj5CPVGRpHRMuAFzYv1
+	KG1Clb/sySlA9K/xE9RG729S/7nkOQo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4661043B11;
+	by sea.source.kernel.org (Postfix) with ESMTP id 665A0437D5;
+	Mon, 13 Jul 2026 07:17:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64671F00A3D;
 	Mon, 13 Jul 2026 07:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864261F00A3A;
-	Mon, 13 Jul 2026 07:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783927053;
-	bh=N1GD0Oj81wk33gSXNYFk26bc8DHHpPqcq8HMI+cgJUQ=;
+	s=k20260515; t=1783927055;
+	bh=KFYeKargova8Ud8wjAeX+s1i+b6lKR01HyMHcvbV2VQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mVklzPwnjtBYd+N3Q1NTXm8l+G32kSV0uADFNMVZ8zoEX2vISW7RRd4d/NPd12JOh
-	 DzxIKDw/Yt++8V/vrQHUfVzIi6FQ5tiWtLY0oMeG9eE25+rSnBmB6k1lqEcHp3Ko+M
-	 SDTuufoH7QqmiMlseyEIUUScT72Gq+35ghE6HXuXL0Y8HPFf0//qsgaGGQ5PsrymfU
-	 RkhBMQlqCLUqscttXvtCJU/wbAbnoqr29BiiAi1Q53EE56nvDVnArYJIWay2NOIyLo
-	 Y5h+aMGGNZPCE5Q1kaPFlT+G2B17cd8C2zP+4/u0Q7m3D7ITJXHilhhJh96jwlzB/g
-	 qT0T1CnxHBwHg==
+	b=IEu/n99QuYXkErMNPS34wGG3wPAoz82f+IKjx411LSqg1hg5PAvx1ZTiomc+LcMEa
+	 0mLgjz4z8EU3xipYaZCuZ7XzAsbHNzfCpwM9Y9UA/WuFfE/uemo+5ng3eVB31CHKPE
+	 INQF5CBkEc0Sqq/F/wtcEU3xoJp5eCIypyNFGX0u+b2QPeBVQ1pttYlvIMwS5cz3DP
+	 0A7IEOLI6EfULdREoJj4q33cmplEHixakuAkPYaRsrViOhQxf99BE+Y1NFufAZQAfI
+	 NjldmWm1CyhuI4njvRw1N1JSf9S8OcrwlTcqcoO+XkiksVyvUi7zuykHoajCIvxTBJ
+	 8UXFi9SMQftrw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Mon, 13 Jul 2026 10:17:24 +0300
-Subject: [PATCH v2 3/5] IB/mthca: mthca_reg_user_mr(): use kmalloc() to
- allocate addresses array
+Date: Mon, 13 Jul 2026 10:17:25 +0300
+Subject: [PATCH v2 4/5] IB/mthca: allocate mthca_array memory with
+ kzalloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-b4-rdma-v2-3-65d2a1a5180c@kernel.org>
+Message-Id: <20260713-b4-rdma-v2-4-65d2a1a5180c@kernel.org>
 References: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
 In-Reply-To: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
 To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
@@ -79,14 +79,14 @@ Cc: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
  Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-rdma@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Stat-Signature: 5xorxebbjcsyectxuegmn8r9bbqrmtih
-X-Rspamd-Queue-Id: E612414000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783927053-371291
-X-HE-Meta: U2FsdGVkX1/8bPp4Ibgioa7zI4VFpQLCSaVNCRLDN8NS9FTeglxKLjzbPxnDU5+WuohDha2HA1BVz2WcOWLTQ/zGlfen3kQU4KB28ln4I6rLUJvcdJU0NoKYAu1P1WViJuKAaa7RaWp7Z6BWMWNz24jrGiYuNcokfepjVVkfF9LIfRHbEGuF02pqpI6HB9dsuSgYQk49ZeSGiO8hOiycgSd9xsMlgEI0yohn/r1whzpNAcLPcFCwYWO2CotS+opbp7bThYNw66swuDgVvUR6zWQoK/hJ547PbqOR57kgWvHQpqxz+Vqf0mU5bTEZrgo4jmxfP6+GsWzfY1vH4V725OlZaqUB78drLVt+KhL9iXzY6A+bHG7cLX4v0xIvrBN3mvy9uLgucIVWFjJoshtkOCeqdDNH8Q05JJvtA/acy4Wm7ou7VEqTshYml74Qx+EiMqjWAgkK38bxvh+r4BAII4MsrPhTAwLQMOnP31iJTW1QOWYrBMOjuuWLJGJYvhX5aVfkZOOCk8/M/5zEHsqVkj/koA0J8dAzm1B91vx3l2zbBkAcffZW1/hJiikzhH/D3bwyJMRYgSQhYlufQ/Vfs4OiYheA3ZdG3flYDnhtpAfDsBnePa0EF/Ey1b67EpGzussslJqCVLxT+oN4sHR/dDcdwjkMBsl3rtLHa9DIfTubO6FqJJPXnguMpVsISoh0dz37voMT4cXZMKMmroHrIOCMKVH1nPR8sAmlNXedCEOCDq+MmoCq2qlq4XFBF7eUs9QDISZxb9qoz5aYUDywURDHxLWTGOomFI34+nKXsgmbmjPEUdFv6VioOEBvy/+8enZO1q08XWHtAqLT4TsasnUuvOAbBUHIUH8boFkRRkFLtcGRI2hGAUOt1JhZKxZYcZDLBkkmr/GQL8lTNhCsoH32eKHIdj6h9IyYJp0JFPdXBw1JVA0rDrlhni228dizu7N7OGdE4qUP5ivtQiU
- ip/H/Bca
- TAtKyfBiholy4HAnvoB8xrC4pv4raDZ7MMlQx5PwauApFSXRFc9A4MkJo2hK0xQBz0U/8S8s3Qs9UxZpCr9lDqQ5QsgUpSSXT3m7qBe7hSskXDNh9MwAuEqZbotehxuuVJNXDqPdqO0ZSd8t21nVwssAxi2naAEvk8eG9iT8Uody+qwqXHcLmatEwL4quaL7HtZKKgqh+qUvoJ6HugoqAJuCjq80uzrPGtIjVPw6G51gQLvYBEHcE3+IGfoRHqKMNel1VxBFR/3KAIKbRWIOngU9sCTdF6RPMM2YXoZzbIJ+Ekiv1viscCYnf8g==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 203CEC0007
+X-Stat-Signature: eeaoewnq7zehrm9fxe4pnygpc1dh4j9k
+X-HE-Tag: 1783927055-806943
+X-HE-Meta: U2FsdGVkX1+GMRV9oTz9kycyQVr3Sr4b9Ep68GRxnuWMI+9loUOki+lm/foWuRY3fGSNuKDQpHogBs+FRgcGNGKccNUPw5/WNIrXNkKWcp5RPTbIjT/sURh0F1+4L0w5Yf8JX8vXGBrZlSfRntQsUKirhJ8cI3ZmHn8ruLArFeGA7f1m/nLvcdcLPHFie2U0qp1mMllLvOvAiXl6IG+Kwx5zH/F67bWYyYWLjegbyK8iDrq9bnDnqvucp3a6REngmEizHJmFfvQY7qLKnPl6Vf1OiKBUH0sKwlmKGuI5aNy/S8l7tCKV+yG36zm0o1iYNyluCX9shqB3B6Xc90utQppgbqtebrCB+eYTcghG5NlO84D+YYMdxf324JqgErOPvxumylp2LMmVtlPFUo9pelv8dyWc9yvLVoJPbvX+649PH1H4j8vp7TXxIk/ytIhty3WD+a2pCfp7LF2/n7RwrWqIFNMjvoW20VTLtTkJVaqMi/2hIfM4z65uSoyD+VojtiBL/or/bmdsnimfLwjUd8VH9+k0qQ2uBYL/0FLOESGa0dqRafoJG7KiVIjVb7xtHDCjNzAI0zaa4lXR7fNJqrp5rRD4wb8zl/ZicE3yRYqDSVN80n23sJ6YOhGMJ45Imnz6CLwgm6dKS3iv7IRTL3kHBPnLRGmFqF9vvfNxUorP0hWAa041H7gZTTpn/wfzl0daqYIzyYbYXLF22Hi2lBmWwqSUKRDlYt9KEYM9L5f3mZbfxjs8EiGHTWL5qVjaoFCox9hi9Lzj+eNm8E7pH0W3AklDceDWLYJkY1XGw5PHCkjQr5KJfpersDEjGg2507+oOaUiCG5u/w9B4gDD9zGSJRA/rfhQvBtlxQOYGljkZlZoL1HVpZ6h33xFTbp9c+S/aJqrhkU1OJPNRNuIX4onumcL2XVYS9aMa2Z9cG3D0VJPetIzmL6z7IveFnIPh9jBiq2tDnnQB+/X3xu
+ bBfY78e4
+ dBAA1fVHvR8oBl8jfAzUGg4RiwMVgkJ3oLJPDmuejKYfD7F6+cepMd/9mJr8NisyDF64YwU5GdKCojQiQDmldC3QmueacC8BlSI5Rudkgn6pES1jf1d+qsYEVQHT3k+5sHFXtP5EjvZ3NcSRS0FE0azzX2ffZpfDwyZUsg8rys6WReEg0c6u/XuUSX+Tf0NZ+4hrczThGKyW27sxFSJhWPmPzS8fCWF/YPdwoJH84esfNLPhP+w8Zal5YnWdnB+I/2EC4MEHEON5Vl0fiEvyrbbkmWdv95YNhtic+uTOrLIpqAOtKI7Nx6XT0yg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,11 +94,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mthca_reg_user_mr() allocates an array of DMA addresses during memory
-registration.
-
-This buffer can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+mthca_array is essentially a sparse array of pointers and there is no
+need to allocate its memory using page allocator.
 
 kmalloc() provides a better API that does not require ugly casts and
 kfree() does not need to know the size of the freed object.
@@ -110,38 +107,46 @@ fast path allocations.
 For the slow path the performance is anyway determined by the amount of
 reclaim involved rather than by what allocator is used.
 
-Replace use of __get_free_page() with kmalloc() and free_page() with
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
 kfree().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/infiniband/hw/mthca/mthca_provider.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mthca/mthca_allocator.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mthca/mthca_provider.c b/drivers/infiniband/hw/mthca/mthca_provider.c
-index f90f67afc8fa..9940165781e1 100644
---- a/drivers/infiniband/hw/mthca/mthca_provider.c
-+++ b/drivers/infiniband/hw/mthca/mthca_provider.c
-@@ -895,7 +895,8 @@ static struct ib_mr *mthca_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
- 		goto err_umem;
- 	}
+diff --git a/drivers/infiniband/hw/mthca/mthca_allocator.c b/drivers/infiniband/hw/mthca/mthca_allocator.c
+index dedc301235a0..117a070e784e 100644
+--- a/drivers/infiniband/hw/mthca/mthca_allocator.c
++++ b/drivers/infiniband/hw/mthca/mthca_allocator.c
+@@ -126,7 +126,7 @@ int mthca_array_set(struct mthca_array *array, int index, void *value)
  
--	pages = (u64 *) __get_free_page(GFP_KERNEL);
-+	/* TODO: switch to "fast and as large as possible" allocation helper */
-+	pages = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!pages) {
- 		err = -ENOMEM;
- 		goto err_mtt;
-@@ -924,7 +925,7 @@ static struct ib_mr *mthca_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
- 	if (i)
- 		err = mthca_write_mtt(dev, mr->mtt, n, pages, i);
- mtt_done:
--	free_page((unsigned long) pages);
-+	kfree(pages);
- 	if (err)
- 		goto err_mtt;
+ 	/* Allocate with GFP_ATOMIC because we'll be called with locks held. */
+ 	if (!array->page_list[p].page)
+-		array->page_list[p].page = (void **) get_zeroed_page(GFP_ATOMIC);
++		array->page_list[p].page = kzalloc(PAGE_SIZE, GFP_ATOMIC);
  
+ 	if (!array->page_list[p].page)
+ 		return -ENOMEM;
+@@ -142,7 +142,7 @@ void mthca_array_clear(struct mthca_array *array, int index)
+ 	int p = (index * sizeof (void *)) >> PAGE_SHIFT;
+ 
+ 	if (--array->page_list[p].used == 0) {
+-		free_page((unsigned long) array->page_list[p].page);
++		kfree(array->page_list[p].page);
+ 		array->page_list[p].page = NULL;
+ 	} else
+ 		array->page_list[p].page[index & MTHCA_ARRAY_MASK] = NULL;
+@@ -174,7 +174,7 @@ void mthca_array_cleanup(struct mthca_array *array, int nent)
+ 	int i;
+ 
+ 	for (i = 0; i < (nent * sizeof (void *) + PAGE_SIZE - 1) / PAGE_SIZE; ++i)
+-		free_page((unsigned long) array->page_list[i].page);
++		kfree(array->page_list[i].page);
+ 
+ 	kfree(array->page_list);
+ }
 
 -- 
 2.53.0
