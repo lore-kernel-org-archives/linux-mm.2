@@ -4,88 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96632C44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:27:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CCBEC44507
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2971C6B0105; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
+	id B43226B010A; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2675D6B010D; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
+	id A08D16B010B; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9C946B0105; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
+	id 87FD06B010D; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A65C56B010B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A0AC168B94
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:50 +0000 (UTC)
-X-FDA: 84983909220.22.65C052C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7C114140009
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="euZHtD/a";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 344976B010A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07F8C168BA1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:05 +0000 (UTC)
+X-FDA: 84983912370.26.2EAB77C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4391040014
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UsEqtk+c;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783951203;
+	b=kI0z1rLZlCpnhQWkJmuAjmJiBsjjwhG1lRYgZ8MBetChI22GcSxtM3p60eKP43EXBlSu3n
+	o63z1npQJ6XZbgjL0xRewG45r5c6Ip3CAhftPrZKusOfCtaUNA+KZDxBgi2vvijiTb0B9x
+	dyQv7U9R0/YHToJxrieyiRJcYNJeO3c=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UsEqtk+c;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951128;
+	s=arc-20220608; t=1783951203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
-	b=Ee9YA/Edd38+yoeLjwChIk1zmylAcvBDYQYxr6c4vdgw3kuzYQJDFwzvtfNgesOZUYLgEC
-	r2sQx3HZ27onVgOkPMrofPuzDnZToEWrVTl3ZpWctQLpCs5hVt4vqEtsNC8p7lF+db6FJj
-	ylfseyeoRJ8854kcoC86Mz4CuX8lcm8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="euZHtD/a";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951128;
-	b=TyBTIL6n6wBxdIuOTd8KB0/O5RjOOlPolsc97pBMNd2MQ5XhDPXX4QOcdRbxRuPVAmG+Od
-	emB6MqsPyGdFEFgnuYMGl+z56AMwYinKThRmVyQ1IggUSMn7EZrzAryp3AOWo4k6VGP4k6
-	tAgnoKwGk3HwUdeTfPPlohktTwxQMZo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1F1B46132C;
-	Mon, 13 Jul 2026 13:58:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A566E1F00AC4;
-	Mon, 13 Jul 2026 13:58:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783951127;
-	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=euZHtD/aDvIZBDQjpyKLp0lEEVw3YHagyScpG6RM09WNsMcQ/ypT/C9GcVouODud+
-	 8p5nPr2a84cQB1FrIzkdjnfj1SNgF6FfBFCRN/6/DUUCJcZqg06eeKx0pgLwhVFsAr
-	 dXkjFMa3AYDXtLwtk0Ryh6Dvfw1KtBQcIzXUiEedRoAInwPVDYv+U+bsyRJUbX2rzc
-	 t4aIw4thGprKvXHV/Wz+NL9338m7P/vHz7Q9nFG2eVUctNjPMVqjMkKvAbsp8aPn1a
-	 93oyYPQkCN2QrwjSBR6/heoQ+mS1s0LprpOUeKW4L/tqjCvl731WSr0tEXZHCww9ju
-	 METmJcFrUwk5g==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+	bh=NDWRchD8KH2V8mQ3WY1eSB0xORjOK5H1qArLOwkvuxQ=;
+	b=iJRV6EZCk8KJ1HFwW0in3pW03cnnQ7FViWQ/WwGfS5OcAM7aFVKTpeMSsJyJKESNpnVZu6
+	pI8HgmMSzujUBvZ2FgMB7RDJVkvi+gZAEwmUqJNS8dxADpSMlp5xijuhpy0qPPlcXH+bzU
+	XWaZLTqTxuTS/O8Ti9V5vGx4p97vWbs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3D0A31DB5;
+	Mon, 13 Jul 2026 06:59:58 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4A0423FAF5;
+	Mon, 13 Jul 2026 06:59:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783951202; bh=I+65AZJkoRfhn+GH9etZuRk4CHGiXZnzyww6oyVz7W8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UsEqtk+cAiZUuP+IzC4OG1/Ln0mLQPLm/q4Thfr0WHRuhRzJNhwQgtN7OgYB6+En5
+	 OxXqwraGDtjNOVUGIHJ+49g4invce9r8+4VW0pP8v/nCti7UMCeXZfkI0i3vs2IP0x
+	 plyrJLt2mE2WdkAZSRxt+tLzwLJRcRjkF9DRii3g=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 5/5] mm/damon/sysfs: read ops_id only once
-Date: Mon, 13 Jul 2026 06:58:36 -0700
-Message-ID: <20260713135838.32730-6-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260713135838.32730-1-sj@kernel.org>
-References: <20260713135838.32730-1-sj@kernel.org>
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	kasan-dev@googlegroups.com,
+	linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org
+Cc: david@kernel.org,
+	linux@armlinux.org.uk,
+	akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com,
+	rppt@kernel.org,
+	linmag7@gmail.com,
+	chleroy@kernel.org,
+	klarasmodin@gmail.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	kas@kernel.org,
+	zhangtianyang@loongson.cn,
+	wangyuli@aosc.io,
+	tsbogend@alpha.franken.de,
+	ljs@kernel.org,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	arnd@arndb.de,
+	ryan.roberts@arm.com,
+	pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com,
+	baolin.wang@linux.alibaba.com,
+	tj@kernel.org,
+	kevin.brodsky@arm.com,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	hpa@zytor.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com,
+	yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com,
+	ardb@kernel.org,
+	guoren@kernel.org,
+	yang.li85200@gmail.com,
+	viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn,
+	junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev,
+	vishal.moola@gmail.com,
+	namcao@linutronix.de,
+	pavel@kernel.org,
+	djbw@kernel.org,
+	yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com,
+	Jonathan.Cameron@huawei.com,
+	coxu@redhat.com,
+	andreas@gaisler.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	geert@linux-m68k.org,
+	shorne@gmail.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [RFC PATCH 17/34] riscv: mm: use proper set_pXd() for generic compile-time folded patable in vmalloc_fault()
+Date: Mon, 13 Jul 2026 14:55:56 +0100
+Message-ID: <20260713135614.1618183-18-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7C114140009
-X-Stat-Signature: mr99sixo1isqanibp88d5bm8w353i4gy
+X-Rspamd-Queue-Id: 4391040014
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783951128-836417
-X-HE-Meta: U2FsdGVkX18I16JDLy5DeQN36BskGcBzJC5M20UfxBpzluUJ78T5rSIFnvTQ8hWkOW1nL0QLQ0/vxeN4MwX2xaHaoIUiFtxX4yQ2q9/UuiWqx02JyE+IIwK6XEMrEvj2DZt5bwuju9y86VzkNl0n9tROJyUQjEulW/mby4Op91qwX8Ic0agLMBD8+kHmWiCyrW/AY1SQWfd9oqR6bM2x4TGIqQ93Oj2ltK44+nYraiGyYk7vRRJUB6ZrpWF3mc5G/BGkjx6RMl9CZnUIIPTM33KjYmHpgTz7/M2lV2+iA7WM3OOw5HP4upBkbKIu52q8d3M/sEIwp2Cq0xvcNc2x6brQ/2mKs6Qwt9XTjEFfjBfBXQM+OiMEnaQdV1FH/ZGnodLTYa3Uty9igVzg3AzACub8gBeoZnpDdyIhOPuCdQZvqTXMWzf942oNlm4s/piQJjDYUi1RFI3HHSfGzAAbvZESg+m0ipBcMq2SSen6wo3luToOGnDoj8Ora8TBSlDj9YN2EuU2wAe/C3xuwo/sKURXwjrysvdilbQV8oxamtmhTvUImgPE+SZ8eNNw7yUwrGyJ/f2udtftblSvRO0Y9AP5A0RLO/r2rjoT1NqlKntnq2W7T/t52fSLxtveOVrSHbG6Ajmx7WMu/0n14MJGkwy53sImaLbvFACyoRSaagmOJX270I+Qetr2tliQ2g2JA4ATxUzN+pgFBqV5OOAWwFq1x99m4UaiPRS0HEETTPa3gxbg6GPmETpflz+V2HDLxfK4+kVjuAZXA3NlT7nW7jhclT2jaGnTxubCY+6k19w9Rwy6R1qXMl7V2Ij4YQNfAs0d0KD0i3saOqrQb6tOO+srh4RqY3VhfsdG/tuNykDEIMroY5m1hdDi4RcZO3wcwR+QAp7Ktrd5ZUw34zHbY8gzKcroWN6qFvp4JiviMoxAtRrmL2tg4W6tU5VyeTpUvoRv+iDEZhUyYkt7Jti
- RSG1C1s6
- Z29VoZkT2jBvDOfGDHmAK4exROmlX7f2ZaG4cKlWIkEsCOUuB0ISx1j6nmASghWCR+99wvLfFocfc5oBX7RNSMZ93klC1H2TCYrxCZti+zIZip8uS4630qQ3Yj1MyKxwzMIclI3d2INDTkt0/TyV3Xy4hqRkKKWNXvDzjDzstmY7yzN7oe4hHYqlnMr0cesHX7CMyKE+8F5pJva7PXXz73x33MmFWDgIkTcAWS2hSaUy8iyFTWLoncIC5CZCjJ69k9yLQYnGXW1uPp2LFTCwAbjYKdw==
+X-Stat-Signature: 7h6ybk1tqtze5udz3fbna7gtxt8is9km
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783951203-247447
+X-HE-Meta: U2FsdGVkX1+qu3ocn+evmViQVHbGxtwVt/PmBIwCYNwutVFrOF6Fo1U53JPh3M315kjGvaWfTm466a4OrQHMUXDTkUTxDMyuO5Om/Ma1YMfnpfYhBScv7UsrR+1L/0/ZChH+KrqzSK8Vpbo7cocP609R5t7XD2znqG/RMf0ydC7zmpVV69Q/OBYMefTlCliaVx/6nMl6AwwVKukk08hg9pVqCcpIOQKuQvxMvdz1cHzkTH+Xs7AuwaG8xxZMkkEKtXV20xbgMIc2MZ/wDkL5xeaYKAXUP8dlI8Kp6yfH8aU8eUTv3zPeaNsCf3QD9bJjwXtXa2Tz+FRQL4E5Xjcj9TDwcPkv/u0cnt3Tmmcd7l3ah7pU4YLwuYZxZzhTWwTkcAJv2WKXqJGJukYLQtJx7VpEqNHldaZOK6VOBalUHtiLxDjImrKahYeOO/elhpZ2jhVB8hKU0+CjwgHg/n/BRnVAmsqPLDNj2DAfCgHeZ/ZeJT615yCtWIZNY3dLLnVdpQzRdMYXVkAiuT9bkxobDxhyzkqWRQpycfEk0lzmqEAl+cWsYTgc9axzblG3m/AdujKGANw6MGyGEDxzaQ4c53GNJ4bI5qdBIEMCae9GDbwHpJNyJ+KmNQOi+Sn/+dwo2mcI6IrD50ouyBtVGs/ESYjMqrF/JexBJtVGK+GsSQgnXL2M9PQPHTAy5mZrAplS6nbaPTSrClB+8Vx794X4IDK/E1QwJyCiS+UOQoQsZ75Y8cLGEHfmHWvU1SItasSF9RFJU+MCQx+WS8wcQvriU6CW8cYzB52b7Po4Myeqd7I5zuD6lX7CHudJN2qb6qTht98noZroaT04HWKN+StOzMXSPZ9mGh+Q90hmOz4BGKS4cbT2kMExldzwAaxMxU+KQ75Wpx6C4TcKIntsSYrmrpaRrGAXf5M5XBzctfdRuQyj+rdOKC44H40Lp1BVxow8Wks7qA8L/VzUJSQSaYy
+ xBdzrJgU
+ ab2kO5w/z8ll/oavUpgdCJNaWCad+n1CdK3HIJtE0KKpsp1VqMEmI5H9HbWj4/5EIcwcPEW2mjPyJWBWw4UtXX+MyYlj5ak2TVIzllOv2VNsvGcEVRjail6nxOqvO01RVGLVD3Bleo9KUSs+Ip69A3OnnBIf4x4tOT9w3Nrq6Nq7BOZqETwMhoVvFWgfgceK6Mzf5huRv1X45XBSR3ciUX7wfY64RC9aDje02/Hsilxk2mKpByueqNt59rx5nHA3o7VxHk8jOzgcvt3O0Ueh1ytWABgfp7XgdQW/UKbR4+o5GBHrTJZLAsswgYYkPkygMWzlzzH27Ya/9KKjgufUY7qf153HKbQcqYZgMh80lpx952ww=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,47 +179,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_apply_inputs() reads ops_id twice.  It could race with
-ops_id_store().  As a result, the min_region_sz could wrongly be set up.
-Read it once.
+We want to rework how set_pXd() behaves for generic compile-time
+folded page tables by disallowing its use and triggering a compile-time
+error when it is used improperly, ensuring that the actual first-level
+set_pXd() function is used instead.
 
-The user impact is trivial.  Sane users ain't update the parameter in
-parallel.  Even if it happens, only monitoring itself runs differently
-than expected.  No critical consequences like kernel panic or memory
-corruption happen.
+Therefore, call the proper set_pXd() in case of generic compile-time
+folded pgtable to handle vmalloc_fault() with pXd_present().
 
-The issue was discovered [1] by Sashiko.
+There should be no functional change.
 
-[1] https://lore.kernel.org/20260703172417.95426-1-sj@kernel.org
-
-Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- mm/damon/sysfs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/riscv/mm/fault.c | 52 +++++++++++++++++++++++++++----------------
+ 1 file changed, 33 insertions(+), 19 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index b5fe036f78015..60a1a9e4ada34 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2094,14 +2094,16 @@ static inline bool damon_sysfs_kdamond_running(
- static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 		struct damon_sysfs_context *sys_ctx)
- {
-+	enum damon_ops_id ops_id;
- 	int err;
+diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+index 04ed6f8acae4f..b2bcaf10d13f1 100644
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -167,14 +167,16 @@ bad_area(struct pt_regs *regs, struct mm_struct *mm, int code,
  
--	err = damon_select_ops(ctx, sys_ctx->ops_id);
-+	ops_id = READ_ONCE(sys_ctx->ops_id);
-+	err = damon_select_ops(ctx, ops_id);
- 	if (err)
- 		return err;
- 	ctx->addr_unit = sys_ctx->addr_unit;
- 	/* addr_unit is respected by only DAMON_OPS_PADDR */
--	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
-+	if (ops_id == DAMON_OPS_PADDR)
- 		ctx->min_region_sz = max(
- 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
- 	ctx->pause = sys_ctx->pause;
+ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long addr)
+ {
+-	pgd_t *pgd, *pgd_k;
+-	pud_t *pud_k;
+-	p4d_t *p4d_k;
+-	pmd_t *pmd_k;
+-	pte_t *pte_k;
++	pgd_t *pgdp_k, *pgdp, pgd_k;
++	p4d_t *p4dp_k, *p4dp;
++	pud_t *pudp_k, *pudp, pud_k;
++	pmd_t *pmdp_k, *pmdp, pmd_k;
++	pte_t *ptep_k;
+ 	int index;
+ 	unsigned long pfn;
+ 
++	BUILD_BUG_ON(CONFIG_PGTABLE_LEVELS != 5 && CONFIG_PGTABLE_LEVELS != 2);
++
+ 	/* User mode accesses just cause a SIGSEGV */
+ 	if (user_mode(regs))
+ 		return do_trap(regs, SIGSEGV, code, addr);
+@@ -189,39 +191,51 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
+ 	 */
+ 	index = pgd_index(addr);
+ 	pfn = csr_read(CSR_SATP) & SATP_PPN;
+-	pgd = (pgd_t *)pfn_to_virt(pfn) + index;
+-	pgd_k = init_mm.pgd + index;
+ 
+-	if (!pgd_present(pgdp_get(pgd_k))) {
++	pgdp = (pgd_t *)pfn_to_virt(pfn) + index;
++	pgdp_k = init_mm.pgd + index;
++
++	pgd_k = pgdp_get(pgdp_k);
++	if (!pgd_present(pgd_k)) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+-	set_pgd(pgd, pgdp_get(pgd_k));
++	if (CONFIG_PGTABLE_LEVELS == 5)
++		set_pgd(pgdp, pgd_k);
+ 
+-	p4d_k = p4d_offset(pgd_k, addr);
+-	if (!p4d_present(p4dp_get(p4d_k))) {
++	p4dp = p4d_offset(pgdp, addr);
++	p4dp_k = p4d_offset(pgdp_k, addr);
++	if (!p4d_present(p4dp_get(p4dp_k))) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+ 
+-	pud_k = pud_offset(p4d_k, addr);
+-	if (!pud_present(pudp_get(pud_k))) {
++	pudp = pud_offset(p4dp, addr);
++	pudp_k = pud_offset(p4dp_k, addr);
++
++	pud_k = pudp_get(pudp_k);
++	if (!pud_present(pud_k)) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+-	if (pud_leaf(pudp_get(pud_k)))
++	if (pud_leaf(pud_k))
+ 		goto flush_tlb;
+ 
+ 	/*
+ 	 * Since the vmalloc area is global, it is unnecessary
+ 	 * to copy individual PTEs
+ 	 */
+-	pmd_k = pmd_offset(pud_k, addr);
+-	if (!pmd_present(pmdp_get(pmd_k))) {
++	pmdp = pmd_offset(pudp, addr);
++	pmdp_k = pmd_offset(pudp_k, addr);
++
++	pmd_k = pmdp_get(pmdp_k);
++	if (!pmd_present(pmd_k)) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+-	if (pmd_leaf(pmdp_get(pmd_k)))
++	if (CONFIG_PGTABLE_LEVELS == 2)
++		set_pmd(pmdp, pmd_k);
++	if (pmd_leaf(pmd_k))
+ 		goto flush_tlb;
+ 
+ 	/*
+@@ -230,8 +244,8 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
+ 	 * addresses. If we don't do this, this will just
+ 	 * silently loop forever.
+ 	 */
+-	pte_k = pte_offset_kernel(pmd_k, addr);
+-	if (!pte_present(ptep_get(pte_k))) {
++	ptep_k = pte_offset_kernel(pmdp_k, addr);
++	if (!pte_present(ptep_get(ptep_k))) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
 -- 
-2.47.3
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+
 
