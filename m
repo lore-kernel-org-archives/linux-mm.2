@@ -4,100 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D3EC44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 22:45:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C400C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 23:13:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE6276B0005; Mon, 13 Jul 2026 18:45:40 -0400 (EDT)
+	id 8A3756B0005; Mon, 13 Jul 2026 19:13:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B975F6B0088; Mon, 13 Jul 2026 18:45:40 -0400 (EDT)
+	id 854FB6B0088; Mon, 13 Jul 2026 19:13:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AADF76B008A; Mon, 13 Jul 2026 18:45:40 -0400 (EDT)
+	id 7701D6B008A; Mon, 13 Jul 2026 19:13:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3F66B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 18:45:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF9B2A021A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:45:39 +0000 (UTC)
-X-FDA: 84985236798.06.4B5E34C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2AD981C0003
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:45:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DjnhDYqH;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 460496B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:13:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 93C091401C7
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:13:46 +0000 (UTC)
+X-FDA: 84985307652.03.9BC606A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 83D5B40009
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:13:44 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mjMeZom2;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783982738;
+	s=arc-20220608; t=1783984425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=adnYTFi3hoT5aFMOesERJpy3+zRYVUFF+RkxLaSOV5A=;
-	b=mveGfwbAjZpMeiSE/rBf8rD+JZqgcgkdxC4wRslpzNnJRIgyhwssViJXqmE73uIYGZX950
-	vsLUvpiq2tNK2SywApHvMo5I6HWJSS6+J+B/m67EitGnu6ytd5t1wm2ABYdDwQVaoUsbeZ
-	UtsckxqUQjl8aJoMM8Yd+pXryy5C7K8=
+	bh=W9YdPO3HvLe66KxCbO2DRSUYhRq6Dwyw8iqLclB4nIk=;
+	b=UzGvEf+ScZUErgdOdxQvnZKYdjzEcpBTWEPngHvMzBWR2a/DRTfPemwYT5h4V2pbi7JbEU
+	BsmCSGGzzohVzoxhLuPQ0+hwJQtwoc8MkojXVsR7zyrZl7EvNHiUlWObM6pJ6InfnqeKQE
+	5jtthLjw7d2Zdgfitrsr0ZR5x0eVFYY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DjnhDYqH;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mjMeZom2;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783982738;
-	b=4xJPIZLojR+9TpIbSER/xhVF3+i5UqzWU/FPnATZl4KNhz/XYkRWmPRm4ICNsf1+TzXxnM
-	UUG+tGgiXiKdK0YvGu9Vex/f2G+8WAWBzn2jlXARuvVVUScQ3RdyEDLH1R/AabzckQumVM
-	IHZObKxFai2g5/P5kHG0JGNYGpGXD0A=
+	t=1783984425;
+	b=1OnBps0wuj2PSd9mzak1X/RmsGAyC5pXRUNE8t4CwXZugzi4Tdm/csvdcTDeDWD9C7fBE/
+	Swwd07IeRzumk1zFUU68vhl2zd33Pyuo/UEQnrQojYn6j1QNbRZylrJHVbM5yWl/UUvLDa
+	YLtoyVsYbe/pSi386oPwFN+OwYzOxxU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D40B60120;
-	Mon, 13 Jul 2026 22:45:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21771F000E9;
-	Mon, 13 Jul 2026 22:45:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BE33943BE2;
+	Mon, 13 Jul 2026 23:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1821F000E9;
+	Mon, 13 Jul 2026 23:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783982737;
-	bh=adnYTFi3hoT5aFMOesERJpy3+zRYVUFF+RkxLaSOV5A=;
+	d=linux-foundation.org; s=korg; t=1783984422;
+	bh=W9YdPO3HvLe66KxCbO2DRSUYhRq6Dwyw8iqLclB4nIk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DjnhDYqH05eQ/7HFowjW8Rg67YLnpNK8S5WnhB/Caim8Ni6IKziN7IvqqsTpwVRXT
-	 PMtPLLU/mEWJPiMd3fD7JuVerRhg9R6QFlBw+PJJKVNUtuSM691nugGB6JmjFy2ka6
-	 croIvxMU+tK89yt+R7GdUBAIMoJ1m8j6C4g4WY/c=
-Date: Mon, 13 Jul 2026 15:45:35 -0700
+	b=mjMeZom2YzBMQy3ABxE8GHcjGhlbUGC/7tDPgykX6NKNCQBeVVXAdy3Ra2Rofkbig
+	 MH3s+iVevlnqMBa9adHSAhSCF5YgHmXwx1+ScHoS6nx/j1bXKLk8+L6QL2y+BhRu1Y
+	 rSqhbb15zEhABqkUEyjhA3tSAriiP9pjkfQUbeRM=
+Date: Mon, 13 Jul 2026 16:13:41 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>
-Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, corbet@lwn.net,
- dakr@kernel.org, david@kernel.org, decui@microsoft.com,
- haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org, kys@microsoft.com,
- leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
- longli@microsoft.com, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
- mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
- nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
- rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
- skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
- vbabka@kernel.org, wei.liu@kernel.org, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v8 0/8] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
-Message-Id: <20260713154535.7656b3a630e2f6f076b4e76e@linux-foundation.org>
-In-Reply-To: <alVRU38lMfvmUFqJ@skinsburskii>
-References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
-	<20260710151151.1e193eedd0cf2591ae392f76@linux-foundation.org>
-	<alG2-RSitzPWClAX@skinsburskii>
-	<20260710224950.53bcb43ce7e564f07a1f6a8c@linux-foundation.org>
-	<alVRU38lMfvmUFqJ@skinsburskii>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
+ Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Hao Zhang
+ <hao_zhang_kdev@163.com>, Hao Zhang <zhanghao1@kylinos.cn>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: thp: pin the inode across a file folio split
+Message-Id: <20260713161341.eefb7ad32bca25ffc8f3390a@linux-foundation.org>
+In-Reply-To: <20260713170915.239819-1-kirill@shutemov.name>
+References: <20260713170915.239819-1-kirill@shutemov.name>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: a191iciku9iu89egkzj6oo8xyh3tmmb6
-X-Rspamd-Queue-Id: 2AD981C0003
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1783982738-104107
-X-HE-Meta: U2FsdGVkX19e4+yqwDVGG02lGlKvV3C6llAOJoQSO+gvnRHWH/XV0Rat+DYqh49zx+0maiIOx0mhErEVtwQnqyynedaW6XwnRc2hPI8fb9bNNx2QB4hOT0iamdZ7+CAjnEZGjuslINPfiR50qIKEplQu6z+7nNqm3HQ8Th5/ZIpF8TI+HxwP53y2I92ZQY2K2tFFRzOUF05okJdcLguQL5bAvSIyRQnXtpB6AkGbDod/h4Nx5pPOoJEA7cbDVY0rbRyZZ4/LWuAAt+8RwAz3JVjCcdbSAiFB4wquDUELfoJrxcjsjx9AtSkmYTeaj3TRqstriyzwE23pAWNrlEvxVJx6Qpx3+eq7tDjllkgHgbRM3gZqspFf5guyDl4h3NgY1NeDoAs79L5SOHPJlNv4S+a5Do87mdLmm36X1XtTgIDSbak2PaZq4gIlP7P4sFz43pVRhuG5UgiFWMg7S46mb0LtDh4gb23WvHiX4j42dOmlVp6GAfCOeEXdOCBiHKorGWp4LRBD9r+991E1zSGhKMjrKtI6yIOUX29Yo/bTDsGWuA2MzDjmFde8OmxYMnS468goFxG1PGvdTO9zbBCrfYJoYGIo0vR1XH1Q6wL30mogU5IUYoZ3h0aA4J1s2y0i/4+rUaqr3O/cPyKwDEBzOMNF9ZA7rBFzXg02lsZPz1IuPelv7/bAkDam5aiExZGnDGCkVMkCdpFtPRCn4ZDsQKIY2bNfb8UDZUWptaIPkczy9Fw8hEu+9yqzNUDx/dGpgSJJkYpVG8Z0VnXcx8ZdXotbEbJ5AxZxrZ0/gamAq6xDu5nj1CCKR8hOmJCoQjJ+PFtet05RySxrJyRwQq1IMvttsxiTw93LYzeuuJYuqbxtY+u2rfylhqsoQWGgyI2zcPH7VYhEdE/EmPuydlOoNT1HRk4HilNu4n9xQkVnrnL79ou4gcZpMfsrnGZ3ZrYgdNPnIpNhPyIhugBcVQz
- hql13veP
- UjsFlazne6IV2a7O1AvFFDOSS7lcFHMo0UAhvYY28Nrn6op+KcwgTERadHfGTJ5GdkWa9XCP5m8lUbdV1rpCnKw6NLc7unHkRkQKDpphQ/IzVnGB7Awosp7CKpBDzBuzA/N/odHXxRQp6Y8pCW+JYYANb7lsysYQygbjERqOgGI5Q9YsHiNeVmhszlHsbjllU9spH0IuhyeZ3IR7gFlsie/E3x7Ep84WQddrJxVQBdxl5+K98f6KIgP7zxk6pgwD6/uprKL0/KUmUEnxbBvcKWEH0FxBgR6vgUdG59kYV8C3uPFA=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 83D5B40009
+X-Stat-Signature: zowu7tjyqteoymuz5exdje9jfjaqfs7m
+X-HE-Tag: 1783984424-48672
+X-HE-Meta: U2FsdGVkX1/wuE5q95cze4+vfF/81kTjXnwxZ/f93ywNA5W+GVQPiS08L8V/YVpJ0GPq9ORuUBmTDuWtckzVdWnUrOTmElD4+tPByN8YMAuykUEBoQKL+Ef9Hj/Tp8x5/cd47TBEc8k4zwTE0edrbkJhnM8PlTVgiYdwU6uBwh7HDdAZrUpTxjsObkDmqmvNCoElkU6Y4nvQk57obU+tID85em4TX9s68ok6IQ8Ap+rxGWsySDT5Xc9c9Gkwk1P7XZ/dmfhhfWdDw7HWhyizzXMd+bhOBmYa17JT67kdavFcV6g+eCji7mdV8MQGGus5pNAVAAmfizM6hQ6PIdUHX6pb5ckPi8ZMK3WuTqJQZTzDp0YjNEOypXT9F+9h0TpnnKmO3rtzvNRUN4YHPu1eLcA/owoFqjSDEo/w6CnYFO2ONnSHfy4GRFxK+/5ArYDXk4bfY+hI3f4BHXFKQx0MlnJddXEKVkY2xbCmp+D+rPZY6JM9H5gxBXvv2PcBH4oz1lE87KPP1UwInw9ECeJpzsLMoEIEWbychtZUA3mGGniuGH6umk4EBEgAjg8X88JrxMi0DZlG7p8rBNLUx1TSTaJxBdYGJYL7xC+EgsXFuih0hnKa9JRQePxPj6mHyQ+c0cDFkRRERo/CvS92qU+GDAQcf/wwnMGttW/I/lv0Q2/KzZP2hv4vaAt1HnFvimmGXZ9hZso8WBFyTW/X4d7nVL41P/WIZyf+X0scZGZn5I/pHQ86PDRw9vq7sUxHqw7BX0Hb2ZMPb9W4wDv4DiN9JJXtLTCFa0CQ6l2Raw0wnKj8ynMhDzLikfjSVlNq+TL2Hfv6fB41qklPWSSo6ekms/LK9ngorRUPefju7eZNAntYmRVt7gpQkEkpOYz6KUdeO8+/5H9JHZgcIn09aYB+bv+wydhd3JIewDwvD4jFmGvfvyFN/rHV/7/lDg4gZ1D85Ud++tGXWJL1Ol+OVA2
+ olK4ljlI
+ dYXLlWFG+JismIJYR9K3xOXpZa6R/yemnkuMignWIKrodAslLc9r3hJUr6NhjJ+r9Z43aU2d4qe3hu+2/ptIPQUjwmVf7m90OapD8btkBf+/TN0xoPmjqrMhHjPXAF4OkRAMe2odttKFw0MZ6z321wRZ0NmYRzSPXIvr4yDTjbUyiMwmDdhA1EWfV2vl3aPFMazUju+5YH8KLYSW0YZM7642ED7AYp8pOLjC3lCve94JQJlPk8d0AZKpzY4BvdTZ9g5dEJuFHr34E78LAStHDzpEAg73IotWlgcSmOoDBFoYXNTOyUsjsdjjk/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,25 +94,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Jul 2026 13:57:55 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+On Mon, 13 Jul 2026 18:09:15 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-> > > I rebased this series on top of mm-new right before sending it out.
-> > > Should I have used a different branch?
-> > 
-> > mm-new is good - Sashiko attempts that.  But it's changing rapidly at
-> > this point in the development cycle.
-> > 
+> From: "Kiryl Shutsemau (Meta)" <kirill@shutemov.name>
 > 
-> I’d like to send another revision addressing a few comments and also
-> replace the `max/max_t` check with something simpler.
+> __folio_split() looks up mapping = folio->mapping for a file-backed
+> folio and keeps dereferencing it after the split completes:
+> shmem_uncharge(mapping->host) for folios dropped beyond EOF and
+> i_mmap_unlock_read(mapping) on the way out.
 > 
-> Which branch should I base it on so that Sashiko can apply it
-> successfully?
+> Nothing holds an inode reference for that duration. The split relies on
+> the folio the caller keeps locked (@lock_at) to pin the inode through
+> the page cache: while it is locked and present,
+> truncate_inode_pages_final() in evict() cannot make progress. But the
+> split drops @lock_at from the page cache when it falls beyond EOF (the
+> @end handling in __folio_freeze_and_split_unmapped()), while keeping it
+> locked for the caller. That removes the last pin, and a concurrent final
+> iput() can then evict and RCU-free the inode before __folio_split() is
+> done touching mapping.
+> 
+> This is reachable from memory_failure(): poisoning a tail page of a
+> shmem THP that straddles EOF makes try_to_split_thp_page() split at that
+> page, so the dropped @lock_at is the folio returned locked. The result
+> is a use-after-free, e.g.:
+> 
+>   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
+>    i_mmap_unlock_read include/linux/fs.h:537 [inline]
+>    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
+>    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
+>    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
+> 
+>   Freed by task 4601:
+>    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
+>    i_callback+0x4c/0xa0 fs/inode.c:326
+>    destroy_inode+0x144/0x1e0 fs/inode.c:402
+>    evict+0x57f/0xac0 fs/inode.c:870
+> 
+> Pin the inode with igrab() before the split and drop the reference with
+> iput() after the last mapping dereference. igrab() returns NULL only if
+> the inode is already being evicted (i_count 0 and I_FREEING set), which
+> a split racing eviction can observe; there is nothing safe to split
+> then, so return -EBUSY, which callers already handle.
 
-mainline Linus would be safest.
+Sashiko is worried about iput() while holding folio_lock():
 
-> Or would it be better to send fixups against `mm-new`?
+	https://sashiko.dev/#/patchset/20260713170915.239819-1-kirill@shutemov.name
 
-That should work as well, but it doesn't give us a Sashiko scan of the
-whole patchset.
+
 
