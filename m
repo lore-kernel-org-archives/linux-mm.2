@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E7DC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E13C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C72BD6B0005; Mon, 13 Jul 2026 02:33:51 -0400 (EDT)
+	id A04CC6B008A; Mon, 13 Jul 2026 02:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C49CF6B0088; Mon, 13 Jul 2026 02:33:51 -0400 (EDT)
+	id 9B4F76B008C; Mon, 13 Jul 2026 02:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B62566B008A; Mon, 13 Jul 2026 02:33:51 -0400 (EDT)
+	id 8A6FA6B0092; Mon, 13 Jul 2026 02:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87F156B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:33:51 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D6DA81C965B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:33:50 +0000 (UTC)
-X-FDA: 84982787820.12.4D6BF5E
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 76CFB1C0002
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:33:48 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kU9MgPsy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783924429;
-	b=wY7TqV00gJr/+T9E36wTJHp9NhrRPMozvJCYXCS0zJuhbIzpHcVUsg/iwh2pLW4AmAnRjH
-	7cViA0qB8n1CbmgDOL3kGZfzDRqJE5TPCnMHd6/KbOBsi+kurhSTlPxKPpx/dfG/q4Y75q
-	3PlBMXnbDJhZfx5fV63kXwTt2ngdyOE=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kU9MgPsy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 63F626B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:35:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF35C1C911F
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:35:51 +0000 (UTC)
+X-FDA: 84982792902.26.7955ACC
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 682541A0002
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:35:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf19.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783924429;
+	s=arc-20220608; t=1783924549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5B4GwQlb1UCHxXqUPHn4E4HBJOLkT7O9MFp4rT7+++w=;
-	b=fDhoXCsILztgibCccguPa2OBN4LHXIMO8vQDVOGpEiiOAqi7wmfy0ILHDsu/EkXJtsWiP/
-	YlHiG2mhYIJNwjwUckIMqM0nuMz1UJMPhqdLTxTvQQWJp5V/I9enQokb6XW0UXJDRv896b
-	LlcL9Wt6rryuc9RQdYql0FZzUMXWc/0=
-Date: Mon, 13 Jul 2026 14:33:39 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783924425;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5B4GwQlb1UCHxXqUPHn4E4HBJOLkT7O9MFp4rT7+++w=;
-	b=kU9MgPsyCLXTUKDnaa/fcQ9ypy/vnLOLjyPj2u90dFeAKLeZzNwVtz5xJVoI12owhHuy5v
-	eXew6Q9WS7iJFGGKBXXio1OnFlnqlPYqcHQUPWAH1p7YZExStXbU1Qt7n6gRLxMwDtpAEI
-	rOt5LaLAPNnecLZcMlPnY4EAxPL8z/Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shengming Hu <hu.shengming@zte.com.cn>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH slab/for-next] mm/slab: simplify freeing remote objects
- in free_to_pcs_bulk()
-Message-ID: <alSGbJulu_pHk9dz@fedora>
-References: <20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 76CFB1C0002
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=Dy/qWfq+XSzexKHVrGW753jZFixY081zkXBKLmWUP4Y=;
+	b=Dz3IJgVSknfVrjwAfb4aTtb12v2iS8My36tCQ5WJnPNUdNduSpGb/IT/+bBmKjY3r/OQ4q
+	cqw1evS8Ms8sFAqpKYn+0vKco6aotkwnzKbi2K8q2i/UIKSZ47nqGnGWup2sIjMDU8nDbS
+	pACEmhQvT5cQiLRB+T6vPEg7YCCVmUg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf19.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783924549;
+	b=UI++FAOCEOqNcqgHN7NjgM+BhShmpvlSHEh4nhsy6nDZq+LB9IBIqdgvEjbx3PLw44ZCiF
+	eBKtlTS8bnsTiEdsThYXg1UyBT91N8ntPGjhOqwJx+hU1Iax9P9lg+0m7/ziIFZD5DMdgp
+	PTsJ4u6JdyltxmYfQRx1meamsJEHRq8=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzCPC3JWkz8XrrJ;
+	Mon, 13 Jul 2026 14:35:43 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 66D6ZXuZ070014;
+	Mon, 13 Jul 2026 14:35:33 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Mon, 13 Jul 2026 14:35:34 +0800 (CST)
+X-Zmail-TransId: 2afb6a548736e3f-52e47
+X-Mailer: Zmail v1.0
+Message-ID: <20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn>
+Date: Mon, 13 Jul 2026 14:35:34 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>
+Cc: <xu.xin16@zte.com.cn>, <ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>,
+        <baohua@kernel.org>, <lance.yang@linux.dev>, <usama.arif@linux.dev>,
+        <chengming.zhou@linux.dev>, <qi.zheng@linux.dev>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <npache@redhat.com>,
+        <ryan.roberts@arm.com>, <dev.jain@arm.com>, <wang.yaxin@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHYyIDAvMl0gVHdvIHNtYWxsIHBhdGNoZXMgdG8gY2xlYW4gdXAgbW0vbW1fc2xvdC5o?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 66D6ZXuZ070014
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Mon, 13 Jul 2026 14:35:43 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A54873F.000/4gzCPC3JWkz8XrrJ
+X-Rspamd-Queue-Id: 682541A0002
+X-Stat-Signature: sn3obubxyt4nmyqmtjijuzk6psitizxb
 X-Rspam-User: 
-X-Stat-Signature: 7aphu5kqtmxz56eh4pnufsf8uzqni81a
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783924428-460437
-X-HE-Meta: U2FsdGVkX18pmh+ZiUVnKrNZQhzWRrW5oNbrF9i5PE2u649ichMl/UdVu01DfwsJ+UHRwLkdrlRg8C/Wv5taMIyiIpDx6lKAAIJUmkyqdMqwBSJVmSCGr3djL1vmfD+MoCdBM6YS3YKSv+DvjYQ5IVgDL4cdmo8HM0TdY7Tp+L4AMP2TWDkh8x3gycOypHY5SF9w6TyoMd1aKxBNqXnphrGrupUJyMfW8KMK6SKio8HsVe0y+GKLr/y8LitpUAo/0x7J9iypsXmRqa589tPs1g+4I3ZEzZm6z6LKzAYj7V46xVvKiWjhbc7ed0UnrG5F4yLogjCFcROegV3aflvOCB9N4/hUJH0lF6t5Ob5o/nJFiWhstOIhd2sAxBwjb6Sfsjz8FBaOb8sVGvWXkUqyNqHhS2y4kCJqJwxZ/iIJjcEfTYAV2A2Uq+C1aKM/TYpTQtOlD9f4StRVt2k763Y6+4GFzthYZTsUixTVYSGQz9OXFhvUOr0f1S6N7k4LanL/iar0mo88zRzzLsh7G1RE6PMGxErLV9kEsvqCcnz5z/u+O6X85YCl3PYQaB0cwTMrHDOjl52ptUDzKf9Y0b3VGu1omyrwIpPiBzKzV12oRDMIGOSgSU4ldTaP7VdiWySNWyyJcYWL1JMy7ahcdkEIfvkXIeUYyANseakHU7h/IOfuJSCWyk3jTrBmgkUVGO7zxUH8m/tn6fxOcEWQy8eSEydoRiWp5G6m6NAi1GlX2XHoHGugLAPTfFiYyMomkvMhS9f4CGBllV2NRkDKkPK5aO6m1df0/ph1QTsbuGg35qxFt9aqlSNh+LRJTUtU6nCJfEEhWgy570XeZLmJKcIJ1J8oRhufHtD7PCjGx0zCNrQp7a/+UoDIF5BmKbRjH23IXiNnj/9Ywe6FwPcI9y25ID0kB5MnrXF7G3e1QdxRbT6qJ97rlxTnMFFGw+OUQCeckTpYLe3IzpVj4CrV9RJ
- ZPzmgO7r
- 2jMEiIMtEkkRNPY9O//gHZ+bhYbwd+29cNqpAl87GaMmrPZIq/6tRrZZxX2xn+duM0HYR9dHhKQdhs0xQgcOCjFQnFFb7T5QB4wc7nfVeAmYTr+rlxkQte0RnpPysmb0W5agKTWFjAwvLpzehhZFKC415RU/joCZHjMrwo1hechVbjWCKivzQtNIzHczR2fs3cMEEEep5iFkgdAEwArsn5eKKdDHIr4f1i0izGQi8+WG4kmaSFr/pxw3zKI11vsyqW6dexP5FYrdJ3ItMw5f3oald/g==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783924549-687741
+X-HE-Meta: U2FsdGVkX1832AHmuOfFzxVkFyay5TFa7i40oyODO1g+VYhQElgf7LChJ+PeWxWBTIcm3sXKX9UGRKlauVFcuBF39Of5KJ8WrH8uvVJwwIrv0gKWgU4YSBDkohMDf7ku9L3wio+eL6rjbhDX6Y3x2ipBy3tMJJihSdTBFqCV0qlohvpXrzgyRRP4pwhsciY0hWutgaxMi3RTmdRZUB+p+O4tHMiHMigWbFj91ASEOj0v2iqm3Q2lA2ZQ0Qu/dVJJhYkwchtI6Scbph/m24H5rj68T82YbKF+uzKBiEvLgyxpolwmUk4MHtVfhQFyjhBrVFouTU83GhGQvP3o86wJVXPoSqRlbIvVcX2JeghM3AgKSVV04NWU1jnvOmNVH1cqdsTM3losUUlkBXxGeHUGz+tF4Yp5bgFJqTI/DnBgE9nbPOMZdiyz/JF13PuyUjTXyVrz0R8ps8GaCmj2f620N1wep2CwkKAHD79goMZRRTRIfMhBprQZFYvojtwcgcoHxeV28xUT7Ep3ceA4jUuKhs1DNNpJrDtWlO/MDlegTiV9KSVXpv/yYfuJgqNP0BBUpwV1CvjnyHLO6B4iqch190GkFyZiYnJ/e4Xops3BepSyxuclVjFZDc3mkbpVokHu2t0J4fqms2NItXyAFBLYeffPZWJ2Mk9P6FArjxm8983ZxCXt7f1qe5r/k2Y6+FFDh1e4lceTYJKV8M1/yeWCRvNEMIrRuo1Ga0KPSX7ic5xPv7U3a1Ajbg4YvsCNZlAUaqG8IWQheHyFhQzWIYLpxiLHbqU0aqf21b+0SyMm5zrn2eIwWNXR1qGRCdq51lKQaXw0CEXD+eHTKVMIYQa61NZANbM4LLuh/D3Ux0HYIq9DqBPaANluUH+cFm2AumXucBZ+McP3FRbUJFw8kXi/DygF67qjJ1eoUSQBInLe3UegSf7GHIyOLHD9gtDsI2aWwYMVwf95nHOOYbE7gYQ
+ 9XDlamHl
+ 7949qp9ySlbzsYFjxE0KIbkJKmoj4ii785kg7E2JhiLpVCldZNxHSjV6JndRZXXZ2x08XdkfSNp1Nb7XfoXnrFv7OHEt095HyIcaXXIkyniHkPRcvUo28qlT0Iu8dCKCfmfBTta1x1iHquB29bstHz1+8wA49ugqUrmNOy61RmHwihW5WrVYHn+zPGbdbQMJr2htgklqak9ILz3FV8acibXb0Su0c3+r6Nva6K0acOZbAnouJKhp66PK2iI2N12DM15fEWCG1Q+pAd34=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,28 +97,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 02:04:58PM +0200, Vlastimil Babka (SUSE) wrote:
-> We have been moving remote objects to an on-stack array and flushing it
-> when full. Instead, we can swap them towards the beginning of the
-> supplied array and bulk-free it just once.
-> 
-> Also add a comment to explain the rationale of freeing remote objects
-> last, because now it would appear to be simpler to free them first.
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
-> One more cleanup I realized it's possible when processing feedback to
-> the previous one [1]
-> 
-> [1] https://lore.kernel.org/all/20260707-slab-simplify-bulk-pcs-v1-1-4850dbe0d904@kernel.org/
-> ---
->  mm/slub.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
+From: xu xin <xu.xin16@zte.com.cn>
 
-Nice idea!
-Reviewed-by: Hao Li <hao.li@linux.dev>
+mm_slot.h is mainly used by THP and KSM.
+
+Patch 1 introduces mm_slot_remove() to abstract the common
+hash_del() + list_del() sequence used in both khugepaged and KSM.
+
+Patch 2 cleans up the macro parameter names in mm_slot_lookup() and
+mm_slot_insert() by removing the leading underscores, and adds a
+comment explaining why they cannot be converted to static inline
+functions (they rely on sizeof() on the actual array argument).
+
+xu xin (2):
+  mm/mm_slot.h: add a helper function mm_slot_remove
+  mm/mm_slot.h: clean up macro parameter names in mm_slot_lookup() and
+    mm_slot_insert()
+
+ mm/khugepaged.c |  6 ++----
+ mm/ksm.c        |  9 +++------
+ mm/mm_slot.h    | 22 ++++++++++++++++------
+ 3 files changed, 21 insertions(+), 16 deletions(-)
 
 -- 
-Thanks,
-Hao
+2.25.1
 
