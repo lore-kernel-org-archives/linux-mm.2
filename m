@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 096C2C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 05:58:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA466C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:08:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4C2D6B0088; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
+	id CD7306B0005; Mon, 13 Jul 2026 02:08:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFD266B008A; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
+	id C87DF6B0088; Mon, 13 Jul 2026 02:08:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B13826B008C; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
+	id B9FD86B008A; Mon, 13 Jul 2026 02:08:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 876276B0088
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAF6C1A0A91
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:58:44 +0000 (UTC)
-X-FDA: 84982699368.20.C8FDBBF
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6CEA0180004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:58:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 93CB86B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:08:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F4140A0A2D
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:08:03 +0000 (UTC)
+X-FDA: 84982722846.22.5A2D082
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4A36120007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:08:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WLF9tnBC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783922323;
+	s=arc-20220608; t=1783922882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=xnxJgjxrvNbsF6iBdyiFrWLxVV/PluRQC3CvJ04wpeE=;
-	b=GEoN97cnWJTssWpxsLGZwG9S+jtkUBIg4yIT+wJLwBti+SsBqcOJzLiyH4UR0jHsEubIml
-	GUqibwfLdwm2c8mVTMPdbxKQtCwjrtnGUx2BVwbH/NrT/haGzeBunF2OsTDr+ytKiyZsv6
-	lMaOEq5W6dOctajSOa/auSCd2aRHNIM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=H1des+LVbw6lhuT1ysuivk1WMn5ZEGWn284WG3CxnpU=;
+	b=tqaPCDpmbyhERtHzFVRqwlnniKHVh41rdhHCc6XexZ7Sfu1oRemQ3vswB6Amg/TS/4LFax
+	wbEC6ldvOSZBMjpEd2tADt3U/sslQjM0JhTmk8W8Wus2dOhyycuBN6TGaxc5F6O+MzeE1g
+	Pb4xVy9u14mltHaj8VBb/oS5ejKlTDY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WLF9tnBC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783922323;
-	b=XEPkemjAKW588eN8dwNz4fjkuljplpat4q0vFadY+4E0NTBMkXJPG02TTwGb5CQWGm8+dn
-	2bKO3s9Vqtqpl70wf3tH/UphqmqTyfmond9RrRfPQz8fFAQVfTIoGIkDk+VDmft12JOjyj
-	fCFH9/JDHg7k7D62Ie3AIG1EFrR9VPw=
-X-UUID: e19d9ac27e7f11f1aa26b74ffac11d73-20260713
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:1f8b2aec-638a-472a-8172-120feae4a683,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:09047162c704750643ea2dea6117a374,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
-	50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
-	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: e19d9ac27e7f11f1aa26b74ffac11d73-20260713
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1830885440; Mon, 13 Jul 2026 13:58:33 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org,
-	hao.li@linux.dev,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	vdavydov.dev@gmail.com,
-	davej@fedoraproject.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>
-Subject: [PATCH] mm/slub: fix kobject leak in sysfs_slab_add error path
-Date: Mon, 13 Jul 2026 13:58:29 +0800
-Message-Id: <20260713055829.127864-1-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	t=1783922882;
+	b=ud59v9kwCIOzBc1gj+KW5b5fsq2TnQOIKw+1MKoMIYPip/WNRnx9W9sSRMaDg7pyGBCFf4
+	CdLFgP1luu/tboUexZbddGMrDztQHuJNWjAUfv2zC7DtYWPoTmkrdkHY+iEa+uelUUhDc+
+	xKxxm33qsgIMawW8CHR8UETXhY2Pia0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 281F841735;
+	Mon, 13 Jul 2026 06:08:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1837B1F000E9;
+	Mon, 13 Jul 2026 06:07:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783922881;
+	bh=H1des+LVbw6lhuT1ysuivk1WMn5ZEGWn284WG3CxnpU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WLF9tnBCCCfwUF7aH1Q2bSfpGAqsSh+zRoPizUboAXBmnb7QUnXgEit58Vgbbu+HT
+	 30y4lkAE1wz6YsOqSmc89o3OcKScHH5/z+VTFxlwLxzgNUxs0kNaOJcQRYaY4jqmnA
+	 e732PpDnvKf6zV93ZT4nocT9srZQXcNpvS0vUX9FDxDp+X0RT9GFxJbI1UeN4Wpe8/
+	 8wGllpXvHSpt8/W+bC7KJLrjm94LZTp1zriPusCxWI8E+bFa3bHQJgw5b5FqugldfQ
+	 BM6CD43o9tce1SdpIDS2bvi10Yagufv65Y2YJvrVCn9sYtGw/GQg8cj3tSYQp6m82l
+	 AVmwDUFni1RJw==
+Message-ID: <bbadc488-e5b1-4868-9da8-26e2cecd93b2@kernel.org>
+Date: Mon, 13 Jul 2026 15:07:54 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6CEA0180004
-X-Stat-Signature: dkpzghngow3oacui4youtk6qdydpcxrr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slub: fix kobject leak in sysfs_slab_add error path
+To: Hongling Zeng <zenghongling@kylinos.cn>, vbabka@kernel.org,
+ akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, vdavydov.dev@gmail.com,
+ davej@fedoraproject.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhongling0719@126.com
+References: <20260713055829.127864-1-zenghongling@kylinos.cn>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260713055829.127864-1-zenghongling@kylinos.cn>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------QkD6sNHryRPp7GhYmc0ogbyC"
+X-Rspamd-Queue-Id: 4A36120007
+X-Stat-Signature: z34pbsamsbt8mw4fjk9xigbrxrxz5ndm
 X-Rspam-User: 
-X-HE-Tag: 1783922321-603084
-X-HE-Meta: U2FsdGVkX18FIf76ZyiLzB7+XPQI0jkRdyQbRfneqnfHAriWVrNBs5Xg8EScjumt+33SqAeNU7ZOeeQPTMBzQ1Jkr5shp4JrOjE/8PMrO2deAfJImKLauhqUxmBii7CxtLbVRYYT6qQK1K92h9E91DYrmG98eCCXfX9tTPyWaEFP1VwpDhbVuExA+xMTULlDjRFrE6o0OgLgnp4ZRm/PtucYCsBs6itUfcPJ2A1eE2nyAQT78eC/MbyVk/AHLsPZg/fah4onIP562swaI9iWYqb0QQJqazf/fEFcFcBy7Xq2q6rdneMrGXs61llge4SYA7D+nn6qNj+GImml7DecxDnUg9hVjkMYedFpscrH66t+ksxrgb4ofY13neU6gf5Z9nAuDwtIZMujq7gY+ez5HjiSUsdCFMY/+omYnKlUiqCK4H+dGhof6LkLmfB5VRJocyc8PLmfnLDCOhGjFCq+UzpAQbawYRoW66M5cqin5kn6OahdHUDiJTKAKxfWwcHmmnRUBQsxnkOQZH1phjnmcdE5zONkB1aaMGzjyrbNfSPI5EGK9VMisja04wnpbKgGpKD3kCs2HGG61uHER2/kJg5QHDjIcKvclD72K/S7Rt/3L87dcsCUxYHr3zD5zwstkLHn9HK63L4lxji10PK9hyUH5fm3xJaOr9cFyAynwAbGiyweu4WYGxmt07EEv72TzF7uRTCyOLxWPu6vvYBS9PRg9osa2xTdJ1FgmnlNferZ6BC5BEMkYUySc83oTqy3wK7MCeYleGSAsZXOV/yPiOPSSzEV7wun97QMkmDydJ/M6y2xhcUolD207GYLKjncR69wUHATdQ03eU5xu5wyS8dIjCc9k+MpnMMcIfBGWamgG5BMSVSXt5/lYta2jKZuPEUWQsoo4uisR7cU3oD32sMyAkmqNQy6yVaV8amgP/mBo0P+Iix8daOw5QyXg4mNiejZx4WzUvl48QG3gAf
- kRBw7Yfq
- bpRh8B5ZW1FMcQiiWIylWpVZkEqW7B+kJyEATvP9vXgfVAjyYSc+i2NJEQCZqPUgI1KV+ugAFOH1TjRETUwCLdb780ufGbx4FGQ+3RFv3M7hXZHxTFCp5+7lMjM5knLUxoBFv
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783922882-659342
+X-HE-Meta: U2FsdGVkX18BwCAvkopy8ABL58Jgc6PnDWOz/DS5P5vc602vNGj2wcSQLu2tHj3TX3pqPrYipaqnh6G7SydehJLIxFBcy82qf60Wm4vmfenGaGLV4GUoY9Os/X6C42knuSeRuKqETMPdyTuehQAo0P7zdXxVD26QuGNZvMYoDWxeC4A34okOGZBwQZn4USaH6ReUb9KTZ75IPnAhO5QPZkar1Q7gn0hfL34HpPD5ZoixjAfgukFdKLCZglbVc5HLC/aqr6VYeSSOe8BOvqANqROsQl+8a1+lXkgFmdv+ctCErOy+OLOVSw6kfXkkJQoCY2PSnI0guR+b6WFP6V2ch7eFZqyjbyxI32o8qTEcq2eOGpNsFr7uwsofExC2qWerYmJZ8wkcjPb9iFezFYptiRs5YCmlA251G+cFm2c9l/1ZrS8OV5hzrxjWluJ+JlXV58EaBZcPo4JDJKVsa35tNwW++4lENO9RDUPA51V6OKzkMePMF6J3kGgUdNf8z2f1cYonH2kprXu/kNKt/suZOegABdCc9oc0pgUbDS0wDrCoqcD50a5P2RiBsaFsG38TyL8U7A4//xI//RlkTC/QVXHv6YVmAzQowF9UqI9Mk6P3KzN9463p4+bL/8rGxX6JQYzYIw86Oi/ne4h0HRpiQ8Xf1/WgjJkiuVi84EwV5EconkyZu4neyFuZE2FMC2LbAvwFLF0D9zdhljsoN7llieQ8n4Lcb2wYGtsL7FqTcjSSYaZSIcszKHEoH9kYrtxkiNLhaAOf9WAc7naDwzFb0eCSAREmYHyTfuhEh8cnUw51VB7hBTH2Bbxj3P8XuMin+fGri7E+a3w+cQEMVrZFZpJkZSYhw9y4kz9UoP5iTiOJMoUnQY10usu+IZz1UHHlf8qljvTe8xE9LWAl3K3o7PI5Q+sf0E4LVG4dysxb0MovR9wMpwQTFc7SH/8vNbobWRe0WNCXfXdVA+bdgWK
+ BPBI+5XS
+ +aPgBL/sVqPgYhL3yM7Wbrr//arCZRWqvFcgmO8mloBhiS3sKLRwvdY4LxIiyHLykuNbStdz7DBvzABkg/by9iikCVmhlkpHpjawqk6+Qjksvste+OAlNwtaKRlHYN0YZG+yjMdi7F+A41mWG6Ap/oPXPDmm/ZJupYS+BXPqF2az1FQKru916ed5qCyQtPUjguE8mBQnOAzq6NtzkA1txbpseldWU761Lxb24RzXsuhu0UOV13AB3hYaiF/jy4OznqPwfk6hTe2wNuEzIx07U9veHb4z6qd7JTDDBXhSFvRpwQO8QAAWnXv+xqEwEl2f+m+THm+CrkZS4zp6V9fbQ+dlwInpcvb8yKlnXR8mQ2/1c3UzK+d48EkJEKO9omTxHasz88q7UJQk4o420Ug4oiO4I/ZKj0ofviMrtV/nhN9KDNtphyBG8K5dHIJCB0qB6wBmG5s7ctCjiURSNoa5onZpHje+Yj/rPhKpDKv7lUctoYdbA3oQyEN7/pvTov9WsvbtyxA3ZTAPERkZXXZxof4oJt4vINhqS7bXgWRPbeF3WexaHSh59Vz3VAtGP7RIzgwUlau6+gIKyLDQnfJfr7V5NDCqa2eqajYwJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,39 +95,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When kobject_init_and_add() fails in sysfs_slab_add(), the kobject
-is not properly cleaned up, causing a memory leak.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------QkD6sNHryRPp7GhYmc0ogbyC
+Content-Type: multipart/mixed; boundary="------------hgucM73EFMWBf00Sp10C1CQm";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Hongling Zeng <zenghongling@kylinos.cn>, vbabka@kernel.org,
+ akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, vdavydov.dev@gmail.com,
+ davej@fedoraproject.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhongling0719@126.com
+Message-ID: <bbadc488-e5b1-4868-9da8-26e2cecd93b2@kernel.org>
+Subject: Re: [PATCH] mm/slub: fix kobject leak in sysfs_slab_add error path
+References: <20260713055829.127864-1-zenghongling@kylinos.cn>
+In-Reply-To: <20260713055829.127864-1-zenghongling@kylinos.cn>
 
-According to the kobject API documentation, when kobject_init_and_add()
-returns an error, the caller must call kobject_put() to properly clean
-up the memory associated with the object. The current code only frees
-the 'name' string but forgets to release the kobject reference.
+--------------hgucM73EFMWBf00Sp10C1CQm
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Fix this by calling kobject_put() before jumping to the error label.
 
-Fixes: 54b6a731025f ("slub: fix leak of 'name' in sysfs_slab_add")
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
----
- mm/slub.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 9ec774dc7009..fec2cd08d129 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -9690,8 +9690,10 @@ static int sysfs_slab_add(struct kmem_cache *s)
- 
- 	s->kobj.kset = kset;
- 	err = kobject_init_and_add(&s->kobj, &slab_ktype, NULL, "%s", name);
--	if (err)
-+	if (err) {
-+		kobject_put(&s->kobj);
- 		goto out;
-+	}
- 
- 	if (!unmergeable) {
- 		/* Setup first alias */
--- 
-2.25.1
+On 7/13/26 2:58 PM, Hongling Zeng wrote:
+> When kobject_init_and_add() fails in sysfs_slab_add(), the kobject
+> is not properly cleaned up, causing a memory leak.
+>=20
+> According to the kobject API documentation, when kobject_init_and_add()=
 
+> returns an error, the caller must call kobject_put() to properly clean
+> up the memory associated with the object. The current code only frees
+> the 'name' string but forgets to release the kobject reference.
+
+This was intentional, please see commit 2420baa8e046 ("mm/slab: Allow
+cache creation to proceed even if sysfs registration fails").
+> Fix this by calling kobject_put() before jumping to the error label.
+>=20
+> Fixes: 54b6a731025f ("slub: fix leak of 'name' in sysfs_slab_add")
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+> ---
+
+
+Uh, there was a similar attempt recently...
+
+https://lore.kernel.org/linux-mm/gimwkjjpvwu2sg5625b3eeatw2vhv7rs6enm3vep=
+dduhcefbf5@xen5iec7sn3z
+
+Sounds like we need a comment saying it is intentional!
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------hgucM73EFMWBf00Sp10C1CQm--
+
+--------------QkD6sNHryRPp7GhYmc0ogbyC
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalSAuwAKCRCGXBN6rc5S
+1vsbAQDs4Lw4Ek8Gn4jlJt8wBRwcRV7RGW3vinWpQ3r41+qVOgEAl98i7EfRDvbp
+Jr6Y3PPHuaApvEw85RpyULz+SElaPwo=
+=0KHw
+-----END PGP SIGNATURE-----
+
+--------------QkD6sNHryRPp7GhYmc0ogbyC--
 
