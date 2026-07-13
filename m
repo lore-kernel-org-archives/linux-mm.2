@@ -4,124 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A53C44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:21:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ADB9C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:26:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E2086B00B9; Mon, 13 Jul 2026 13:21:53 -0400 (EDT)
+	id 602F46B011B; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 692AF6B00C2; Mon, 13 Jul 2026 13:21:53 -0400 (EDT)
+	id 5B42B6B011D; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A8796B00BF; Mon, 13 Jul 2026 13:21:53 -0400 (EDT)
+	id 453C46B011B; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 368C66B00B9
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:21:53 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9B51120138
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:21:52 +0000 (UTC)
-X-FDA: 84984420864.08.CAF04B8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A720280006
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:21:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RbA1rChv;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 238066B00EC
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A38961C0038
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:26:57 +0000 (UTC)
+X-FDA: 84984433674.01.64FB76B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B2C2D1C0002
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u3e1SH0h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783963310;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1783963615;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BZOphvSkd23b/TrtduYCguYGvr5EK1HZzl/qohcfY7U=;
-	b=n+C57jibBQnMQ3dNK2d6uLFOZxjdfEy4vGYfh65I14ka93oaQpJDETOi4do+bLT818AmQn
-	XVmhL1Yzi84WSS7dyr3zUCGYpaIPSU6oJD4ziICZiEfY9o8suyixA8044vrRm4EEN85bxn
-	ucre0t+cZZbjcp26JGccSNwPZyKa9Ko=
+	bh=p9glXzm8ERIX6U5Yg/nVagz5A3GtccxvFxTu1uttHaI=;
+	b=rzezGqoKR2f+zUXIffdf0ArqRcpEPvASgqoK1Oi06xzMHTD1kb4HjYwUTJ3d/hNeBVrFfW
+	fsUzJonC80jsz78yzk3o8XIGCSojEPrxNG6lYgiSyjx6f6jRliiZDyMxikB9uU6AkL//ab
+	kio9hJUFLbwjKiQrqnCtpIWMCswb7X4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RbA1rChv;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u3e1SH0h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783963310;
-	b=JzuTYxcpmaWtc+++HNCSDNshnCJFvb+14KJ62HARFhGIyTBftButIKzmnQouiPQamWAss8
-	3zSrbTkdHJry4etM68kvsp4EATTG2rqY92mXuUNXq7FCC8HRSPPe9Xo0U1uu+K6VS9JBqA
-	UxKizIgnUPqFSGiIh9rlH2HBaDeHAFg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CEDAA40F32;
-	Mon, 13 Jul 2026 17:21:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9451F00A3A;
-	Mon, 13 Jul 2026 17:21:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783963309;
-	bh=BZOphvSkd23b/TrtduYCguYGvr5EK1HZzl/qohcfY7U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RbA1rChvxuFHpvQpDnMIbOC1D3+A+tbEwrNL6FcFMyHTv2MI7ERRrcjFRMIC41MMV
-	 zEL6U0d7MDA65bCG2d3MXuGmAtBm57rcO1TmCOHrnU3cehgaHcdDSc79gsx63By+PK
-	 UlSJhNlEFH2DfZ9kWrnUBoQwtzYZHb6ZXfqqNrRNq7qzhKRG/YSt/BfSKLJSBl9AFF
-	 r0DF7trd+SNJRGpmtTwlsDn3a33tCGIxvmWxMGLraW+c12l9akDzYp1h4QVH95WRAN
-	 YISJI8elk1Sn0+Kk5cubL6WxzT9XcyLW1zHetzzYJZeA1u4BkD5g5bgad9qZauwwQW
-	 RS8GWg+1RL2dg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 598A2F40264;
-	Mon, 13 Jul 2026 13:21:48 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 13 Jul 2026 13:21:48 -0400
-X-ME-Sender: <xms:rB5VapuBuKvmIc8h0A0ZvoIBDABQaLm8a1-zwkAo_KS2Vst9rHqLkw>
-    <xme:rB5ValtpRpThec3oyqDt1PihMsX3d7FvYGfhdfyax0gJncXqGyrzniaXTIbNNodOS
-    y4LrnM542IJs8Z425sE0fD6mT7AqVuiL646qs6YryElQ8P6EmWI7ygg>
-X-ME-Received: <xmr:rB5VakR6qfI90gNefqHgPJZUDIMGIF5b9qmTxw7rokqcgWzfUByGk8D3DawaSw>
-X-ME-Proxy-Cause: dmFkZTE8vFJ9v3UZX0gql0WylFpu+0srIJpxxoXkBc60QmD6KjWRUGese9oi8JR+h7CtdO
-    c5j/pE8W9f0Ds7zY0ofw7mKJEkPXT93kMsaRFp1A73bzp3g4oRGNfknkoKqHDrUJpcUDKe
-    4S1qNW0VgsVyeO808aKfKoIkUyhtSmuQaEGoQPTZyPI8Ueh+5TQu7172ohN3cwuOIrThbI
-    00w/uyeFrYmAMXYbrVagav1Avz5eB+onspWC2LgrR4amVPrKdwPc0R/NG0aeJmzmGACiYs
-    gp/aKmPli6E5v6qzU3vrmb/NihRmn+O4LeV8cB1+umyMkp4jsNMhljH+KgvsWWBCjrVNq9
-    mbUSM8sQzHH9TOl8eFIHcOozSUAnDSSXN9bgrjX/5U/l1UwIp73uXZdKre2K5WQxgSUL8L
-    RIC+leW0C/NHDT678RvEBLQ/dHcGbwIW55LUhvhKfzX+lRH1V+W21jLvAAJjih/0wmho/K
-    FoOIbOPf2E1zSRxbVeR/O0cj5otNJWDxiH7Z4Jz+1nFZRBP7l5mpUHDlUd6ejXuxPJ2OQu
-    s6hzlmgL2u3nG/hQeXmAKQfMEuq//TVwdJV2NVbK+3IlDFIPmiOpeLmfn6Jl+7jfOwIvV5
-    cSiQqtt28gaqgkV2dN5grNPpHxLfTueZELQCBJkzu9mxD3FKd3T7INWTKcCg
-X-ME-Proxy: <xmx:rB5Vat05x0a8gVWVxI6YmJys8iMmvwxFhNIuTgjV1Py0XSlAzS0ozg>
-    <xmx:rB5VarM3KUwYdO_HA_sYP81gL3qE-4wI9IRw9ypAEsdzSAxG6Wn85w>
-    <xmx:rB5VagNgM8xVjeceZnL-PNUJU1zvieklfuMzjnaQQcDNBuSusEZNfg>
-    <xmx:rB5Vajk2KNAct6hG-Xe9MnFUrFkQBrNby_FhWp_imlHtgd-0i_CAsw>
-    <xmx:rB5VajA6XRsGOWHYpPY90PInCzmigjdjhLhmL_0cF77v4O-W8LriS9tJ>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 13:21:47 -0400 (EDT)
-Date: Mon, 13 Jul 2026 18:21:46 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes v2 4/4] arm64: remove redundant concurrent
- ptdump UAF mitigation
-Message-ID: <alUeafMBZtSp8XTd@thinkstation>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <20260712-series-vmap-race-fix-v2-4-ad134cc3a12a@kernel.org>
+	t=1783963615;
+	b=KA4L8paOco2Y2pqtnw7UN5DJSgMAZoPtDiyrtf7FytdoaHz8nVLgYdIV/WZEAL2iUhpTlW
+	IQOWkDpWEggdmkK5lBds0DsQNK11UDdOnLlmAiPsHH5x48EX8dxjXTtCiYu93AqmWNiuVN
+	igmz5NCTs4A4GxK2dDXW7CvOWTbsO0s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1B0CA60103;
+	Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B6C77C2BCC7;
+	Mon, 13 Jul 2026 17:26:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783963614;
+	bh=YexIlLH/xRiAaDy9nQacZ186o1VJKSRYwoHVeIPJ4Ns=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=u3e1SH0hqe/5kl0XulTnJH9WZ3RvKGZNn0WpqzWpAhJrM8RDHshEdhvV7R1JKhnIx
+	 BpxN4H51r7QjcuutergmLfB/mLmz3Kvp1dDfNridAs2kv8WZ5EOKGzIXymhgqlOhAR
+	 rB2SN3u3D3zjv8mJ/WK9aG7UnKa3jMvoEvEShstJupBCXV3dwxdC7aRY2ZLKArIh59
+	 oMApZ5mYkaYwpNGwj8AVwDkC66CDIqO5o3iPbPhFAuC1V9Wbv9U/HaPepKAz4UMzkq
+	 DyAXBBUga1ijHz1arEFZfDPE+MTFupfEsg46R1aJLcjU8pBWFTuE43iLVXhNjyXTB6
+	 GGEmNhI7TEhdw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96743C44507;
+	Mon, 13 Jul 2026 17:26:54 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Tue, 14 Jul 2026 01:25:39 +0800
+Subject: [PATCH RFC 01/13] mm/swap: remove unused parameter for reading
+ swap header
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260712-series-vmap-race-fix-v2-4-ad134cc3a12a@kernel.org>
-X-Stat-Signature: cxka9t4gpj97pq35tkkjsdnpkrbf9ebi
-X-Rspamd-Queue-Id: A720280006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260714-swap-pcp-priq-v1-1-de9b164ed419@tencent.com>
+References: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
+In-Reply-To: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+ Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Youngjun Park <youngjun.park@lge.com>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783963612; l=1063;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=XGt445t9iTFErCSJfFQu9ZkczDPJlNnc2UbKTqyWoyw=;
+ b=I6cvsoytYxfN/+g7A51gAi/oEuel7bBFBZKk7mBWokMWtK3MDyq3dZwzoZvdNMdR2CszDgzzx
+ O7p41Lhx6OWDhpDASgLP489tK1HfPfBsf46BX1pG56SPdIa2UOxHwl/
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
+X-Rspamd-Queue-Id: B2C2D1C0002
+X-Stat-Signature: tqttuy8iqoudz4m83xwk76yq94rmiatp
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783963310-872650
-X-HE-Meta: U2FsdGVkX18chBitMhW7YJpRWjFL9A0S8VfzrS4f1DS8QkFf6NfNs+V4vb4/xUjeRxmPgA2qF5gS3MC5xCIMxwK9ZlTHqVTMr6rYn0yRrpWUnXMVYUWQmxESlXJ492SW2D9jvrVBkwhmssA4xIg3ZOWhgGsqrdaQNOsrk4xHO2RslqzvTrjbnbRewba0A2+B86N5TeD/hoMX+1LJfgXmf2HzgeAoVGiLX8NCn41iBNV9eFeqzFIP7FLRFYyjsxmohIdODfLLbRLYAGrXnKWHKrUgCvJFFL5g4Eq3zqdGpQwBYGZ40LGsYHyFj8HHjJ3WF24xkWZKIr12J0YiK6MQfSdxYBjB6gaaM75iosCELgOiHwXef6zA27KdLGbTPOEohm27HlnuMOwWMI1l1/tpOUXANvMopgQZzcFxZ2P2ulCZjkvYbtCdR6GiHRoPJbaQc9gLbCEbEiXqF6CZBIwVOAKuwREqZaCCy0xKMctYkKOGxvjtHCNwbVW9JnKIP4y4arAznCk0f6t93S05MfUETQBkG886hOGIvVmJizoKVNTJ+s1v2Z6ap0IUDNKDF0ANKn7HcLl+Gk/fr5I8L/DMda91/yi8iU1ozhBbMv2A5kYNerf7lM8OLiBGPcvxlU6uXEGYSrpowDvZ+N1HfCVer29Ml01T+VB8d1Oh+tede8joQzE+wTZZcInXiBvwjw6AP+KTRId+nEboivX9/7CpZdGBlaDPGeWbjhRQ+IPmqWbXpr2oRTTkOYs57WkT3AY+QDH7Bjru+OyCNbKK1dnrM3ipTPH1XIu0AcC+VQzN7V6ofGtmSSKqDVrf3zBBMlEM/DihIHLvsDi7i+FnE1nok+NxQRDi93mbRJe9jZDQ6RJiHOWENTg2BxwPcI2l6I3nyshIUgV0hZ5o5yuMrAruZwnVnrgjOq4fjBgJgLAkZK1EfII0PNBV6uXujd6FrJmqhCgjPqDODDdrGY42Lj2
- 3Xa/UsRZ
- EwAVD16fPntjmUIC9nLSkexDtqXArwGPRiDKGUwDE5l6NKoQ2RALYVtpciFWZFPIuZPht/JSLEKTFnRSQH+enjhdh3NWtLnWWLSgOvT9bGPH3qOC3/gdamyi7AGyKa5z7IrDVCP1i8gyZhOdtT6ihCMsdbuK8Z3mrGaZ3NKa4/rdFX7BILQkghH1ZaGLkXnB9vkWGx/1r6iiy2aAIMhhk9tBwju+FmPzY/uzfMsMggspO/vwga3CwVQXAXy2nE15Jlg56IpyVRA8Y2JgjG0WbmFqwBRR8sAr3ZkucEyR7a9PQLAU/g1qiiSF9+LUJdPnFBdPs0fuLVmSTH4IZ6rV1Ja5pW1S1OHsOFH2vA2Wzqt2bi0Y=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783963615-921684
+X-HE-Meta: U2FsdGVkX1+YO+8IJ5j1+qdKAlsuFGgnaji6gkoHLfTX1PNzueSL6bc51KVc4EfLYQAQg+4bpBZz6X7XJE3GRBroovwBXHZfHxdS0bw2t+W9oM51PbLNyqMtdAYLuYILR/yffuXR2SWwAYqGVv/Jjv0/y7f9kLSDyCRIyUnbOlpxizD7m/wVMRb8dYMzxtoYP81s8dEoh8/LS4jjV/Zqn9Fd80Ef1E7McjV5Rl9Vff/VyMzQet8EYuujlk8zr8ojNTC3q8V4FtuhYOlrEYIkumT4ySNTWBsbRaPezcZmRc3uusWy7/lfW7/AJXxvRiVHh+6EscfRwpEeOL4xI8XqGe2K+BA3mJT9SmUUhv8AdSlmdNH5pAenEhYsV2PhsHNYUW5cWht9q05sePzy/1BF9b3tu2YwizeCKqBgh0LdMUPg1SL1HmxNEDI/Gv6q4GkelGEWE5FHP1zRkOIJcmD/i+qYkRjBEYNu82Z7jAtM3wAIFrnVloK0pfMn5gW5A0Ti1opLcBqvheWAn+a7t8/c9zKy9bFRrFt7oolF9r9D13DJvunJNWXaY/LRd+24GRzMzXb7AsStuAd3YUU7jt9b3qO/pZ653BHQzO7VTcoxTkF2Nuaq/8jrMki9PboAQgeZEQDj+AezTsSVHpnJyPIfmgYTu21Oyf6F0G4NArTIe5AOuOGbmUsKxeCFlVe9yVLfAa11AWaHZcoAdZe1Dydfj4ye+XhMtTM/HpIFennNnamrSDMUKp36ZqG+dE8MUClW9C7fXSZz3oa7VLW8t36mJwgSE/B0s1UpOVqWDzguHbUN+PNh5Hqt88jY5Nr7tXimhGi/fboQfe/ECw3QKU0ulb2j/yYTWGkccg+ljgyEO7w3deSjAtRhxCkcBEzpkgFs3h8S3RTNJuUnpEdrAx3WWf2nHSHZvE/Bnbu1PCld/5VNg9R8uYpHNssWl0HZN9cmzj7YZjuyyFH/9GMNt4A
+ uKkehef4
+ 3z0cqDWBTLhn6G8k3x1bTOkbggD/FGWj2G7KMg5zgEhWW1Y6py5wb7WLuXUm75dFwQ54r/SH4FdajKxcmnn7ia9H0U4hchgSP1VmxhEeYck2o/HsMsa2n7XxGh4jTwdOyoXzOLKacBKvxqrY+DSUe54I0EiYgOvBEt4QA6FwsJOqtsrA4cdaWUyBmMU+hjor58mNWSydKgYWxCaR9xZvL0iSZt82vzGwt/k/UELnFwUDXl5c973czhpUt28SJ2Prm4d/bhU1MwsOrdi4gInorSNtnI1uVFL9F3o29HueZUvSE/hrFcCh4HvdPwhmtNnQ8I6153Cffp3SKfRqtbPO/dbtZXJySNFctnBDqbO347U06EsHrC5L16fSI4hn5FPJlAySYci1ddWPYDh4KQNo2rgKnRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,26 +110,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 12, 2026 at 11:42:27AM +0100, Lorenzo Stoakes wrote:
-> This partially reverts commit fa93b45fd397 ("arm64: Enable vmalloc-huge
-> with ptdump"), retaining vmalloc-huge support but eliminating the now
-> redundant mitigation against a race between huge vmap page table freeing
-> and ptdump, as this issue has now been fixed at core.
-> 
-> We also simultaneously remove the arm64 if-deffery when acquiring the mmap
-> read lock upon vmap huge page table promotion as it is no longer required.
-> 
-> Note that this patch relies on the preceding vmalloc patch, and should not
-> be backported alone.
-> 
-> Fixes: fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+From: Kairui Song <kasong@tencent.com>
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+No feature change, just a minor cleanup.
+
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/swapfile.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 775c385490a5..27b4d11125d6 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3453,9 +3453,8 @@ __weak unsigned long arch_max_swapfile_size(void)
+ 	return generic_max_swapfile_size();
+ }
+ 
+-static unsigned long read_swap_header(struct swap_info_struct *si,
+-					union swap_header *swap_header,
+-					struct inode *inode)
++static unsigned long read_swap_header(union swap_header *swap_header,
++				      struct inode *inode)
+ {
+ 	int i;
+ 	unsigned long maxpages;
+@@ -3679,7 +3678,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	}
+ 	swap_header = kmap_local_folio(folio, 0);
+ 
+-	maxpages = read_swap_header(si, swap_header, inode);
++	maxpages = read_swap_header(swap_header, inode);
+ 	if (unlikely(!maxpages)) {
+ 		error = -EINVAL;
+ 		goto bad_swap_unlock_inode;
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.55.0
+
+
 
