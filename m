@@ -4,128 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3ADCC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 23:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9510C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 23:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1463C6B0005; Mon, 13 Jul 2026 19:45:45 -0400 (EDT)
+	id 91AF06B0005; Mon, 13 Jul 2026 19:51:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F75C6B0088; Mon, 13 Jul 2026 19:45:45 -0400 (EDT)
+	id 8CE9D6B0088; Mon, 13 Jul 2026 19:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F03D26B008A; Mon, 13 Jul 2026 19:45:44 -0400 (EDT)
+	id 795D46B008A; Mon, 13 Jul 2026 19:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B90EA6B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:45:44 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E0CBA0195
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:45:44 +0000 (UTC)
-X-FDA: 84985388208.20.9F3620A
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 43B3A40009
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:45:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j frxqIh";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=FzgXiVZe;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783986342;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 424D66B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:51:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A6E5F120201
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:51:14 +0000 (UTC)
+X-FDA: 84985402068.30.17D44F6
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B9D48140005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:51:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vkSKXezc;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783986672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VrQ+955Mhao6xQZoL6uljG/95v6TMiuQHwTATw9a67A=;
-	b=iocfeKCWBUAIx6S5TQrm+Oavy9GSDFUZFgvtkVSu+6atHETlf3aoP2HCirIvDoJcbKYHEc
-	xvYh7qlfV4WCp9FNCV2HOxpq1V+VrLaW2Lt/AqBqGmUwPfbSO2w+4Bum+g5ncBkmA2O+2j
-	wsskVjyAIhDhk+H5D5jztIhRx/vH/cQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j frxqIh";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=FzgXiVZe;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783986342;
-	b=R1wNK5K2z17fcSMNIQgVJK41IcioXliUQl8N30G0DkANBBwfCsdE+nM/pF7BT2/MTZfehw
-	k/Vy1KC+prV8GD7jZYeoLvAOk3uuUUK+SY6PXJMAajr+qxhFiHwfz/DpDsy15dn6B2e02T
-	duTjFIRBvVj+BTVjrADCLyIo7o1/1mY=
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id BA2077A00EE;
-	Mon, 13 Jul 2026 19:45:40 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 13 Jul 2026 19:45:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783986340; x=
-	1784072740; bh=VrQ+955Mhao6xQZoL6uljG/95v6TMiuQHwTATw9a67A=; b=j
-	frxqIhbjwK3BfoLSXujJBE6K8kMuqrBzd08zOSlwiSLPIrjhRm95J8KNzqh0Jmwi
-	CZ7qwJrMib96bL76SAQb6BaL0s0lbWX7sbSciwEpU8vfVbIz6cyY7k/BAE7ylRVa
-	Io+hQLuwV63LD7rqPQZR4Pvj0AfAKZKqF8aNgFCU88Ui0UrEG2homUhJnMqi9q4M
-	wJLtyiBL3nI5s5ZMt981jT1yBu1fcBVnXEtNSrPpZNF+O9pZ1evqxuFRMCL06sp7
-	U51lWGULXKuN94yF116GzunF7tDhS72Wd1VaEwawRsRSrfJiquo4i5f82KER7v50
-	dV8dv9YcGFc9IX+6uyHhA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783986340; x=1784072740; bh=VrQ+955Mhao6xQZoL6uljG/95v6TMiuQHwT
-	ATw9a67A=; b=FzgXiVZeQBltyfp6nso/GKvXzGuPfo6S0L6TiOmBZ2pktXJ0dGL
-	mS4t7C4877NF0SpSVvBf6PvOqfktudesZxEGqOqWmORCDss62t0t/dMak4EtkyXq
-	ntHDkYcoJfs7+N1ubk3jNSIhWdZuS8wSl6QhHGY24So94Tv6XxN9g+Gkd7jLtPub
-	il4sfbEDTkZyWIvIFdn5jND93KfXcbYZAFkZzJ0FcZnpsBEoz/PDC2bNwYo1bDAJ
-	OPH/cyl2uoYyrJNdWs8LHpt5qVJlZOFsror6fH4ZTJl0jjbDTRsprDItVUQCO6U2
-	h95STcDAQc8VeNz899dwVKC0utt1Mfri87A==
-X-ME-Sender: <xms:onhVavHzUhTCIV5GMP_OVvsWml5qo8uv9TXW10sq3ByZ17mOuwCfLQ>
-    <xme:onhVauoHoqsggGB7U-cm-ONdyrOFiZ5I5uDv7O8zqlaDDRlwfwJctTH80Z3U9QvCe
-    oQZ8eYdg_1TEhl-5N1XXeHPiLZ25J6FgkwhV9Wrolgq-gVx0HhaU5U>
-X-ME-Received: <xmr:onhVav33pPscabYLF4rLUyV1nS0w3T0WRRGu2w7bb5yZZmAW1SHU-udPYfgBiQ>
-X-ME-Proxy-Cause: dmFkZTGzcd7fELHA1Uwd4cZ6HoYyqGLPRUT63qXpsTSJ0yrBG7mPaQ3t9ryEFvgsjbwBuk
-    h0ux5BqP/B3LH4CEFgsJ44aHyJew1sL/dBmL73bi6vZ0KIwGRS/JCYLLzi2CGOE0P70lzQ
-    i269kHR4HI0qjMwI27+kygv3dzGtubLKJEqLIh7aqmab4Hh2iUT1cK2horAL/YZCQkaGnR
-    H1DMPyAJUS0uF0dVWgXRUiwTZZvkU30yh5oWDsfb/Om4HIFSbGB96AODhwyrS5EMmVA0xB
-    t0NePZ5mXrkd8c/zqpm9JJaTlnvmmj+oDnKlb4rqhk2BFkZ9UmvuOr7bbhcd9SGBS/UQZX
-    9lwjqa7IJ5pOTY+eRuRJBbG3n33wyYJEHFuJTMR+HA6DiFKh75vKL2iFgBhDJd8J2aww2G
-    83pZ11CTYMXizdt/7QB3w9cw0Qek/OhZqvPQRVptHvKtPSQQikCWzCwplWlap1QGqFtZd5
-    xaP7uMGlgIGFY+y6aomC/2C96fEwHxlDtHBZITCsuohCLanyRrpp5O1A1yoGMBkwWfDuaE
-    +qzlI1QrcqN9c9I5fQLuvEeLmCdmaQRJREw1eWElod9JetFGBV7lN963Ko+TYkGbvAOAwY
-    4taMPCXUW3a4PBy0/98L7KmusyIrG9V9Miwuj4Y9GF78Um49P+ivwA2ltgVg
-X-ME-Proxy: <xmx:onhVaqD6c9gf5inmPwBNVa6OdROhn2pLoBPB2uXI5UVrXjK5djyrRA>
-    <xmx:onhVai-TnsU_lUoTs2SSZ45KtGZYWrW_uwS_RTUazvli8vxsJUUS6w>
-    <xmx:onhVagOV5D3KtiZsmT56IILzBGsuZRyTv6tiionjc8hGHwS5feRcgA>
-    <xmx:onhVakE6bbvczHlErUQDa8KRjkErDcAOjF4r2iiYbdm-4UvH5mBXSg>
-    <xmx:pHhVahB1TCboJNlWMaQmHOs4yZkaQNyrGSANpi6CJ8pVqTIUto7j0fas>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 19:45:38 -0400 (EDT)
-Date: Tue, 14 Jul 2026 00:45:36 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hao Zhang <hao_zhang_kdev@163.com>, 
-	Hao Zhang <zhanghao1@kylinos.cn>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: thp: pin the inode across a file folio split
-Message-ID: <alV3oLwvbeQsagsA@thinkstation>
-References: <20260713170915.239819-1-kirill@shutemov.name>
- <20260713161341.eefb7ad32bca25ffc8f3390a@linux-foundation.org>
+	bh=ivaQUJu/mRyfMnuwfBNsGTkWkGDvNgiNwDOd9icGQ3M=;
+	b=iABRjT60zHcfdKrLRlh/6MFUdXwlWQjiZqSLsb21xEopcS4960g3qgXfovMhNDEkPXdarv
+	+YEVVE4u2nPYPrVdZphpMK0z9sCQJX0O6vdzO+xWN8HUFD1GK4v/nzj03lE77GNvWvgY0H
+	j3TD05i+263897Xw0pl81qJt+C0smLw=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vkSKXezc;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783986672;
+	b=3GRVoqz8/eMSuVgZCjhL7cPoDNW299tpbiAzJKM3kcQR/0WAZD/IO9nlWmqcuJXG7Pos7U
+	cIpSKlz3DkkmJbCENaFWkqNZCfbLOmyaZ4Ku6wCnGXPcNEFndyX+oSvjNkPP0IL+o5KxN4
+	zts7HJK9CusKZXBXsZExLp+3xHwqu3U=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2caced6038eso5394415ad.0
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:51:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783986672; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UzBTiVMeLAq6QhivI+NyIJnhCsLFsL+wEBFEE5Kwk3pchYjwTpB4CtC/Qomdr100RK
+         jvxvfi2OOLTmbsIMQBoWTG4syf4dhgcgSvVq8IbwSqOVYzDTOrJv+mkEkFV+1pM45wk1
+         9ffSlJHgrfTl+qqqkB/Hz5JTJKSk/V7KQXoi0vh1cspAT+emWTGve2U92WNWvjmNF/VZ
+         EH7NIgsxR08zZ2+IUnQpt7hmG79BQOWdLv8tJ/TRmdq7eUJwdOPnGIKzP25Nr/y8MlSG
+         tu+QqBtDb7B8KeanN2yy0lcUwk52d+8gcW37jdSiAPVGq3tOHzLCcKV9po9H0GSl9yk4
+         9+/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ivaQUJu/mRyfMnuwfBNsGTkWkGDvNgiNwDOd9icGQ3M=;
+        fh=Jx2QIz9jO1XWZnr7VhhWp0SQzLv4gQLNXXfQyhn1vZk=;
+        b=JstXL6+M69nkuXZr9OHpLO43cXmF5cDIrWTIJEmg556nhvQhf+f/9QFb2j8eRhmStM
+         fFjmOgCGTp4D9UBFjY4TVfQaOngejcyBzU8QZevl86gSEYLbUI3oR9U3ToDvAx7y/D7L
+         iy0vdEcC6JF1poCMn8zbLQwuhtg7InQPvz1e1ENvMD4lS/cugcxs9zYfv0DR7SedXVw1
+         aSs0hVwBir5f/AeSJO/knQ+Zl01nANIM68Fuv97WASOmkY4LZfswGPY8pQHt8ROAyhAx
+         fhdg2mB8/OokM7FaYDNY4cZ0xWzNTIxtaw2XekxJgKUh/MXuAQxYev0OqYT/NWtBeOT2
+         2B+Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783986672; x=1784591472; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ivaQUJu/mRyfMnuwfBNsGTkWkGDvNgiNwDOd9icGQ3M=;
+        b=vkSKXezcEPrJBI+yJ5qZY5gE3ATQpHcYDsHHRlJiuk8mQVnt3YuwwBmZJAOWoAv1Hm
+         6P3dvFsJbo6XOxRIYQQuay1R/pRJsK6QYxDd7+J1PA2UD9RUICAo6pxEgWn5xVh+y8Pg
+         7fUt/+Nmuaf1d7N/xrAOyNR0FDjPYgd/up7uY44lAB0vqx6UHyVUF/tGbHo0tLYcopST
+         1v2kuTXzuxdBGrXFU6ankyhzpcxd4O8tAwARtEGWIAChaFyrKxuwn8hXsMHGNP5Syot0
+         HEHWD8PKjyjD/kz+EcJpm2WLDFQexLx2PCqBHWaXtUK/Z3SBj5FuxhTwjscu94MEeb3O
+         0qAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783986672; x=1784591472;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ivaQUJu/mRyfMnuwfBNsGTkWkGDvNgiNwDOd9icGQ3M=;
+        b=cY6ro3/10Y5e98xU2uXy7N1Jvg2jSL4QZ/vyvHndhXVjK19IRjwp+hN16Sqm+5wmcM
+         3qFWUWfUv8CRBBYh0fFSeUEL4u5GZc0YIWm1ixcqz8EGeSr0/0UJofi0efyBPa9Noe0C
+         HKEdLfV5kSZrS5d7Z9lRedBkblrP9x5iLWUglgwVjJ+oSDdA4ny7qvVvpkDfKxhYYpYk
+         mnKa05pFIXuJBPYrHW2NdVyuDC/cvcTOhuFBSfkv5FiuLrMCM2GfTaeKv4Vj5Ae+8+1x
+         KO8FLxXvG7ix/8Al2Cs9D+p2swDRMXi9CwTYckR21lk29dt17cxj9dyU2mpTGVZc35Hn
+         20bg==
+X-Forwarded-Encrypted: i=1; AHgh+RrKtrXV2U3UL/eMBiG/O/sXu7nat/GOSheHRF8ZpgPdLjxvQ2UIJm2m8ZLeW8WB5bx2kojCS6gnNA==@kvack.org
+X-Gm-Message-State: AOJu0Yw/2CH3arZoTYc64Vt91JcjpPnYz8nbgkQciXIrCSdPXYm35D+h
+	3wU0lLfWeHuHPMowh/9QqwUBuypaM7ccgTFMwbET7Od8B/dkSt9nOxsuEr226g6pWhGhj5cWJi/
+	6LeKvZz/1vbPCNGplbnjLtInOxYZmW6om/xpmClNp
+X-Gm-Gg: AfdE7clfZS5x+P3jwm8D2ESAXVLmYFbmQPROzVFkAZshiR80px4Gb/8DtLZoYk1nzTp
+	lh8WsG9T6QmY325yuVS1quyR45Qc6TOavr3Pzz3JKivbaUXrx6keoE0ZM3+03pUUlW3X8L+GMAj
+	b6jDvdSihcDN9yfw2YWDI3SJHdPvtDVccO068hz+QDHg1L3N3FIQjaCXhDZnXqQJadIGn/3IA3e
+	Q+HtLktWjbAU6RMUHpc4b77EANbGOLgiHhNRL2H5T2kuy3RD9R9BbhbAizbPzGewGEc1qTc
+X-Received: by 2002:a17:903:4b2b:b0:2cc:db7a:251 with SMTP id
+ d9443c01a7336-2ce8285a73bmr140395465ad.2.1783986671057; Mon, 13 Jul 2026
+ 16:51:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713161341.eefb7ad32bca25ffc8f3390a@linux-foundation.org>
-X-Stat-Signature: 5gt69x33rwhnj54ptku5idb3pyqmm3xk
-X-Rspamd-Queue-Id: 43B3A40009
-X-Rspamd-Server: rspam01
+References: <20260702174033.32116-1-sakacpav@amazon.de> <2026071004-strum-perkiness-5d9b@gregkh>
+In-Reply-To: <2026071004-strum-perkiness-5d9b@gregkh>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 13 Jul 2026 16:50:44 -0700
+X-Gm-Features: AVVi8CcmTY0c0Vp441sR3RbEM49xvL1OMRcgoloehgq4aoKMDkzxTiu2LMLBmtw
+Message-ID: <CALzav=eCzxZ5980kazjSUDFn1d4Dz+cWbyZyg-MVMca9jntn4Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/14] driver core: defer per-VF sysfs creation for
+ fast SR-IOV bring-up
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pavol Sakac <sakacpav@amazon.de>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, David Woodhouse <dwmw@amazon.co.uk>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Samiullah Khawaja <skhawaja@google.com>, 
+	Alexander Graf <graf@amazon.com>, linux-mm@kvack.org, kexec@lists.infradead.org, 
+	nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B9D48140005
+X-Stat-Signature: j18yfmtzsmy8wgxemwk79e8c9gtfejua
 X-Rspam-User: 
-X-HE-Tag: 1783986342-734710
-X-HE-Meta: U2FsdGVkX19F5R+CBNwZLDMWH2ZJkkE1m3VCBWT3WMgdEv+gM59QpGf1OKtBLX3lhdprvQiIoG8hWKu0phsT+66MCrP9nECorwKaOTR11Uxu8dD2ZFRMy36yfuWEL1wwRj6+Xyre9BZXU/PvIy0sHLFCz9yDKIp2JjSQ6bNyXX3N3UL9QEpzhX38csdU9mXd2VXOFu1Do6Z2JPjIlErWab5ETJXLnC/hgBSXeXvlDZr5nAhz5RWQ/oDN5VtFNRTAf3A1GmE+GYelJhvZe4HTfduouB+Tj19/Xy0mDUKaLEPcT7hrJdrdEo4jMNrEINs5kj7MFMTT+L6Ya7R39DmtKZyZNgVQjLApHSzr/IUT2jUHyTH+y/4FwCt8r8eiEOrxi3koCr5+MB81Zn6/MlullaFSqItCPkz/WpuHxkprrdHolK4kGNF0E8xvt1AB0lg3q0p7VTBg1eI9lPwgEiYVO82Kt4jtZN4gOXjrCLz+Kx3IZjx6ChVNn1Z80NzSAFW46uy7Q8l/gZF5mxk3PSC1PeNxcNtu+FhfM4qyYTKcNrpZYJbpisB8IEhnmlKw1XvovVv5+Hg+4IKkHaGL7JVVW4m/97HganN9DBSV0Ow//UgzLQgXMYHAqZuX5jF3+VvAIh5c78HxqVTwRMR10ip/K5w6I/9kxKvmwt4A/BS6IY+5SC8jzXozUTh4Sn3dB4Nra5ZUk5yoieB0dYKQFoYlLyLfe6LqiszGo98i/VW1Ipqs0BVuTTVysqrob8c66BZFS63oUrbud02Bk5W/fALEKnolsNOne33mtkimFvTo/24Qj6deBILnkQZpD+VXnTRKwRhPxNcfhPUmIY0kqFAu7lY7swT7Schm9Dk/bHD88KOkRxuNKP04/zs/FK7KVFwdnnckX5kNMPKuYuHgpVgREuUVF0SMCwfl28Yskjx0hMdO+jbdJR21qqPb9X3m4VGQhAFhHh93Mybl0J01w/2
- 4Jhn+1+m
- UsZMHgkvFV1+kC9B3zUVOeg7uB8N7zep6nbA1woGth9dn58qUZKW2lolZebVgxpS1hVQfXqQMHH8ZPpbsr8DDStwYbGy7x6X8a8zZ/VT6SX/nOfkUh+IGjyl+mCF69+yGLOuxM7JYJdsY0nxilJtNJA2GUOwI8OGwn8tM/LlW8cwYGHEyhsTAVzhYFvuAkCBzfnPSzuFJofKBSMAnrNkw7frLVaoLsbJw9gLwoAnRsU4r523PitiKdxiuT1HXo5SgIKjks2QWK3irI3APG7QTBTiJCjvK55N9+gCWmctFAc4CtaH9chbvLwKUF9AfsxhzU0LA2vKvSeZ5vSPeO5cxaehbZ0NTCKAzF94uThKNkzPwYjhxvhDGJS6cH0I4SXKO6kb26i+41LQqRBSRjL/IlCKcW190eLhwJXQQNdi6Dqk34nlCqvGF81tVWyx74dgJo/nBcckcgiV3FcZkFkX0DkbahE3szl1yg9mbFJlg+q2UotqorA3lilg4Zw==
+X-HE-Tag: 1783986672-314550
+X-HE-Meta: U2FsdGVkX1/dCrfwZ9kX8o6FcmaHZ3xeffF1CoMedJkMCjp2mAnFW+S3NalX2fp9DmzHUIrfE+uzBOjSyhFe3SU3vWiyBRAnjAktlVKaZ+pjNr6cU/LUuImcjUvt7zwzlZPPuUAc+bHFpYqQWfRE7HaWUdTnUiOTWOJgtBKLXn4Qjbf+UDPh0DGJm/VKgawpE/vS+3XG/a9Bj6II8X+JDbEU/YVtYSCBXL2VqkoCIgLfCZSjwx+2UjOTHUrIl4GKuxeduUhxJF/P+j7zb5G21VoEhHXJ26oKT4m+27SYhrDFFcra5vJ0K4yMkcQ7N00xW/b0XbLfV6s5M25DX38o44xPG3Q2U9AVlSt6S6kS/FMPyZjfWds48lQ5Eu2RfPZz5FQwn0qN4q4WlzLTD3TjpJSxpzXdk96dxGHkp41LpUT6bbhpMNZwv4K/SBWWG1j2rMDq+6xWaYa2+NLV7PusfrSnuHyfbaidIUZJ3NJX2nXnsIBP/NrZYtgBsRyxMXxuUvYqZrwPiMlgmbkvp3fsZkluLYrlMn+0ixsy5gOazqzae7lCsV+36Rf9G6YqhBhz+qcAOrkOhFfuTy27SaWh3kpKIgy/8XNDRvO90fjXn1p+6gfxx249KQW0BnvsmJ6L6UXeRzSV/GQ4o9DHtGHzu5tgd43DAKQw7QmmG86b3cPDBFu1vk7nw4QmSTyDCtpvJ2lOCjMmMayFrypww8Iud1NyWtVqyXAisGKUrBHgdbfxyH5Gy2nV5Kx0HUPi8W7rphvGnX1Ot+XX7nruu9EiKbDv818vV0cFs/ZWLCRssDDEMzh3DRkaLRu1/G3lPCmKNqDrWc3zPVgz5CpKwIMEbUsjdwKN62qUje5XpDRxsql+ZOJm/wlHrvQQwkTY6iKaMFQnv//xvARhP3MkTs5YHxgkNnba201GdkbSoabqoriHGr2iHjS3A5BdCDPpb9M37unXE9QxI7fNp5jInG5
+ s5hq7+Fo
+ GPIMPCMQoKuvEJ7gSb4I6S+MZhxNdUiglKuUhgFxuOTJqTD9E2zD0/a70EfMR1kK1mD3KYbIFxwTJ3j4q3uUyoIk5XF7SseLON5WRRvrdwALCxDMhOpM3Q5zssfnllIETVpmXVkw8m9fQQZNxFKXgOtoRXe/Ndk9kcfBXykviQDrnq8fgC+Wk5/n43HQNCQaE+ypteTi6S8cGaMqYqVsZjSl9lwzj7o6X0wTsyf4rZeMgWWnAIDL3vfR0I1fOghj7C3ICFW2AeBhpg98/jK912edTr0CNjEGjNEkwo0O+m5drCRA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,58 +144,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 04:13:41PM -0700, Andrew Morton wrote:
-> On Mon, 13 Jul 2026 18:09:15 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> 
-> > From: "Kiryl Shutsemau (Meta)" <kirill@shutemov.name>
-> > 
-> > __folio_split() looks up mapping = folio->mapping for a file-backed
-> > folio and keeps dereferencing it after the split completes:
-> > shmem_uncharge(mapping->host) for folios dropped beyond EOF and
-> > i_mmap_unlock_read(mapping) on the way out.
-> > 
-> > Nothing holds an inode reference for that duration. The split relies on
-> > the folio the caller keeps locked (@lock_at) to pin the inode through
-> > the page cache: while it is locked and present,
-> > truncate_inode_pages_final() in evict() cannot make progress. But the
-> > split drops @lock_at from the page cache when it falls beyond EOF (the
-> > @end handling in __folio_freeze_and_split_unmapped()), while keeping it
-> > locked for the caller. That removes the last pin, and a concurrent final
-> > iput() can then evict and RCU-free the inode before __folio_split() is
-> > done touching mapping.
-> > 
-> > This is reachable from memory_failure(): poisoning a tail page of a
-> > shmem THP that straddles EOF makes try_to_split_thp_page() split at that
-> > page, so the dropped @lock_at is the folio returned locked. The result
-> > is a use-after-free, e.g.:
-> > 
-> >   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
-> >    i_mmap_unlock_read include/linux/fs.h:537 [inline]
-> >    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
-> >    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
-> >    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
-> > 
-> >   Freed by task 4601:
-> >    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
-> >    i_callback+0x4c/0xa0 fs/inode.c:326
-> >    destroy_inode+0x144/0x1e0 fs/inode.c:402
-> >    evict+0x57f/0xac0 fs/inode.c:870
-> > 
-> > Pin the inode with igrab() before the split and drop the reference with
-> > iput() after the last mapping dereference. igrab() returns NULL only if
-> > the inode is already being evicted (i_count 0 and I_FREEING set), which
-> > a split racing eviction can observe; there is nothing safe to split
-> > then, so return -EBUSY, which callers already handle.
-> 
-> Sashiko is worried about iput() while holding folio_lock():
-> 
-> 	https://sashiko.dev/#/patchset/20260713170915.239819-1-kirill@shutemov.name
+On Fri, Jul 10, 2026 at 7:16=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Jul 02, 2026 at 07:40:19PM +0200, Pavol Sakac wrote:
+> > Virtualization hardware keeps increasing in CPU-core and VF density.
+> > Kernel is trending towards preserving VFs using LUO across a kexec
+> > which will put SR-IOV in live-update hotpath. VFs must be re-added to
+> > the sysfs tree, along with its supporting devices (e.g. vfio,
+> > iommu_groups). On production hardware a single VF can consume ~80 kernf=
+s
+> > nodes. With thousands of VFs on modern hardware, hundreds of thousands
+> > of kernfs nodes need to be created, which can add 100ms+ to the boot
+> > time and to guest downtime.
+>
+> Hundreds of thousands?  You have a hundred sysfs files per device?
+>
+> > Proposed here is a PoC of deferred materialization of sysfs files until
+> > first access to avoid cost of kernfs node creation in hot path. In the
+> > reproducer below using a synthetic VF to isolate the sysfs overhead,
+> > the per-device sysfs-creation time is reduced by ~74%. It exploits the
+> > expected access pattern of hypervisors, where only a subset of device
+> > files need to be accessed to attach a VF to a VM on the hot path.
+>
+> Ick, that access pattern could change with other users, this feels very
+> fragile.
+>
+> > To allow lazy init scheme, a minimal set of files and directories is
+> > built per device: a device directory resolves directly to the device's
+> > kobject and is used to materialize attributes at access time. The
+> > access is trapped in kernfs at the dir-read or path-walk stage and
+> > depending on the trigger, either the full directory or a single file is
+> > materialized.
+> >
+> > The changes are two logically distinct parts:
+> >
+> >   1. Refactor of hardcoded device_add / iommu_group sysfs attribute
+> >      creation to a table-driven form to allow walkability of all
+> >      attributes and single point of definition for attributes
+> >      regardless of lazy opt-in to avoid duplicate definitions and
+> >      associated maintainability issues with it.
+>
+> This is probably a good idea anyway.  Want to just send this as a series
+> to start with, so we can take that?
+>
+> >   2. Lazy-init infra to front-run access to device files at lookup/
+> >      readdir time to trigger materialization. Opt-in per device: PCI VF=
+s
+> >      and VFIO devices opt in via device_set_sysfs_lazy(); iommu_group
+> >      opts in at the kobject level.
+>
+> This is going to get complex.  Where exactly is the bottleneck?  I'm
+> guessing that systems with that many devices also have many hundreds of
+> CPUs, right?  Are we hitting a single lock somewhere?  There have been
+> changes in kernfs in the past to split up the locks to be more
+> fine-grained, perhaps that needs to continue to solve this?
 
-Sashiko is right. If iput() drops the last reference and
-@lock_at is still in page cache we would self-deadlock.
++1 I also am wondering if the time can be eliminated entirely instead
+of deferred.
 
-I don't see an obvious solution. Will think more tomorrow.
+It would be nice to have a section of the cover letter that explains
+where the time is being spent and why lazy initialization was chosen
+over alternative approaches.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>
+> > As a PoC, the code does not yet follow this logical structure in the
+> > commit sequence and likely does not yet cover all corner cases.
+> >
+> > Synthetic reproducer measurements
+> > ---------------------------------
+> >   devices   per-dev time   total time       kernfs nodes (base -> lazy)
+> >   -------   ------------   --------------   ---------------------------=
+-
+> >      500    31.8->8.3 us    15.9-> 4.1 ms     36,417 ->  3,922  (72.8->=
+7.8/dev)
+> >     1000    33.2->8.7 us    33.2-> 8.7 ms     73,427 ->  8,432  (73.4->=
+8.4/dev)
+> >     2500    32.8->9.1 us    82.0->22.7 ms    184,421 -> 21,925  (73.8->=
+8.8/dev)
+> >     5000    33.0->8.7 us   165.1->43.5 ms    369,401 -> 44,406  (73.9->=
+8.9/dev)
+> >
+> > The reproducer is synthetic: an in-kernel module registers N unbound
+> > platform devices (60 attributes / 4 groups, ~74 kernfs nodes each; no
+> > config space, BARs, or probe) in one timed burst that models SR-IOV
+> > enablement. It runs as a two-kernel A/B from one vanilla 7.1-rc2 tree
+> > (eager baseline vs patched, plus a patched/opt-in-OFF arm), 20 runs per
+> > point. Measures only sysfs-creation slice.
+>
+> I sure hope sr-iov devices are NOT platform devices.  If so, please go
+> fix that up first :)
+>
+> > Deferral removes ~74% of the sysfs-creation time and ~88% of the kernfs
+> > nodes. At 5000 devices that is 121.6 ms removed (165.1 -> 43.5 ms) and
+> > ~325,000 fewer kernfs nodes (369,401 -> 44,406). The table-driven rewor=
+k
+> > adds a +7..+11% eager-path time overhead to non-opted devices.
+>
+> You're just deferring this work to happen later, so when is that
+> "later"?  And what about multi-threaded probing of the bus, doesn't that
+> speed stuff up too?
+>
+> > Available as a docker image that orchestrates builds in qemu guest and
+> > prints results as a table (x86_64 Linux host with /dev/kvm assumed):
+> >
+> >    docker run --device /dev/kvm ghcr.io/pavsa/linux-lazy-sysfs-vf-bench=
+:7.1-rc2
+> >
+> > Assumptions / Trade-offs
+> > ------------------------
+> > The saving depends on the access pattern of hypervisors, and on no
+> > component walking the whole device tree on the hot path to avoid full
+> > materialization. Both are expected to hold on optimized hypervisors.
+>
+> Hah, as if.  Many userspace tools, once a device is notified, walk the
+> whole tree of it to read the attributes.  You are going to be fighting
+> that problem constantly...
+
+This series could still benefit Live Update scenarios where the
+initial userspace stack is small and tightly controlled to resume VMs
+as quickly as possible after kexec-ing into the new kernel. It enables
+userspace to decide when to incur the cost of creating these files (or
+never create them).
+
+But I agree that eliminating the time entirely would be better.
+
+>
+> > An actual production hypervisor was observed in local testing to
+> > materialize an additional 5-10% of total nodes on average on the hot
+> > path.
+> >
+> > Overhead: +7..+11% eager-path time overhead applies to every non-opted
+> > device going through device_add() as all struct devices traverse the
+> > walker and can't be gated under a config option.
+> > The lazy opt-in infra can be gated under config option to have zero
+> > impact if disabled.
+>
+> Again, where exactly is the time being spent?  What lock is "hot"?
+>
+> > Final words
+> > -----------
+> > This is an RFC to first get feedback on the decisions taken at driver
+> > core + kernfs level before engaging maintainers of other subsystems
+> > if we want to pursue this further or pivot to something else.
+> >
+> > The code is at a proof-of-concept quality written with AI assistance
+> > with some known limitations with main target to gather potential
+> > savings and initiate conversation.
+> >
+> > Feedback appreciated for:
+> > - table-driven attribute refactor targeting common device add path /
+> >   suggestions for more efficient/less invasive approach
+>
+> What's wrong with the normal way attributes are defined and allocated?
+> They should all be tables today, and the driver core creating them when
+> needed, no individual driver should ever be doing that on its own.
+>
+> thanks,
+>
+> greg k-h
 
