@@ -4,178 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78931C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 21:17:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3DC4C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 21:18:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A5A96B0005; Mon, 13 Jul 2026 17:17:33 -0400 (EDT)
+	id C84C76B0088; Mon, 13 Jul 2026 17:18:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 556916B0088; Mon, 13 Jul 2026 17:17:33 -0400 (EDT)
+	id C366B6B008A; Mon, 13 Jul 2026 17:18:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41ED76B008A; Mon, 13 Jul 2026 17:17:33 -0400 (EDT)
+	id AD6DD6B008C; Mon, 13 Jul 2026 17:18:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 11BD56B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:17:33 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 824D4140198
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:17:32 +0000 (UTC)
-X-FDA: 84985014744.25.AC4C840
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A255516000D
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:17:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ad0XYLOX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=leobras.c@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D706B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:18:08 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 03A98A00B7
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:18:07 +0000 (UTC)
+X-FDA: 84985016256.02.0228923
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 270C7C0007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:18:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NvF2YMXG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783977450;
+	s=arc-20220608; t=1783977486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=npiX22YSguzWJpXGx2hHTXeW3ywrBRl4LUKqa1yh85s=;
-	b=RxhLdRSSupi7rFsoIHGTHt+8QG/2rMKt7pAIYRRw0tnxfciRiAsmhMl7nyNcF2t9fvv3aW
-	JAYH2QTzAapax8C91TES7yIy1IRJFeGGIfpZea99rwzyg1fDLwdfJNW6CLY8zcZMlbJi0J
-	uPEW0VMt5ttFslX/XnE1I5dgAcj68Hk=
+	bh=7AP6vL/IknWnMrMEhy8oZzGqoRe/qZtcpIw0uJFVyX8=;
+	b=EYSgROwnMB3ZHOBNGUTjnf0rJr+fXyWSlKuE0E7DrdyIn2uglWQb5FAXRt1XLR1wUOMu2G
+	uH/Wom812/PHrhhAjjLj2EgQI7+XUjU3+Qz1NtCR4Y4Nd+/nJcegPqyKCBPrGS66muu4XK
+	3d7t2SrRkx6AEBfovXHi7NePIZ9uANQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ad0XYLOX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=leobras.c@gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NvF2YMXG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783977450;
-	b=rL9BTv7GTCVuxyBoGf68gPMqFcRRWMKx0cWheRoc2AhfQQY/qFRZ6ROMsA1cKrbYluajk3
-	MpvE+uHGAQio2n3pyS6hImIyrj5S4Z4FDm35hVgdpE/rbxTMJd0zkUJx6QcGZh8lXc7iRE
-	EvmJLrZ5RyDxNxKOy3zHgoU1/9eC64o=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-698a9f11776so500657a12.1
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:17:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783977449; x=1784582249; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=npiX22YSguzWJpXGx2hHTXeW3ywrBRl4LUKqa1yh85s=;
-        b=ad0XYLOX91ddENQULLb5qI+mgPjlBzWFTWwF4XEDwIIEaZX1AnNZzCgLp4gmz9bObr
-         zPHxUn7xy7Whr0V+gbl8gFXtWRdXbqDyj4IElcKmA9bJUfPabWzDi+X22ZHpAkMk4XSa
-         CWIpSWslvB9yFGr/h+Ns8+8auQv5Bud3XqzkcKycgPPbTusOiQLX3JwxhwS8e+NdKJgC
-         dzY//2wbDAH/+5HByng7Tf7xeF4LWmLWJSrinLH3P6inEWaJz7T3j5Goh/+CUUhPceuB
-         RAqTZRKVXCZABjWZDA5ypx6OJOuEcoSLcAU+DXjYImXyyf7rK6nxkcGfSNG++LSfVFdK
-         j53g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783977449; x=1784582249;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=npiX22YSguzWJpXGx2hHTXeW3ywrBRl4LUKqa1yh85s=;
-        b=TZxZYs+YEiFVntovMJxcvOQKht6rf/E54giciJmpeLV0zw0+6QG5VIj5eoL3j37YGC
-         FEf9ZYWleNC4L//qk3cjq32Po5OTT8jT6zf3h/39xQmcT+FyPhgEW7KC5o5uz/Ek49+l
-         DPIAyIwKu7GQ+kGYLYdGe4qfAUt1fjD9BlTr9j2BmAJfthfW+HniNMQKL2fC0ujSyz6G
-         cNw7NvxbhkJLCvG96R34NUbF/TeA8/g5AL7iGkRu3O0hljfZkTE2D7XV0biq3mxo2tku
-         bi9zChHzct3TonfqLi4HjMtmtgGADaEF6I4yZgq9VGo9NQvladTOf+1R2zXxqnig/enq
-         1REg==
-X-Forwarded-Encrypted: i=1; AHgh+RqYDaNMd8CUNlgNHQbCtyreQ+ueafM0tY7HgEHj6frp8QLVpuxjSmH3ToK8sU/6uUVg5JsQT2l1zw==@kvack.org
-X-Gm-Message-State: AOJu0Yy6MU/MsFmV/HrzWrE9Ofmg5O5319FytfNjwtQt9MI2eka1IbVf
-	R9KcaSi1JZyQf5vf6oNeVtzpzQqG3OUWUk58wC/9MWCfRFNL5MrJd7Yj
-X-Gm-Gg: AfdE7clYJlNclFa/VkAcBEr1TpHiKJUmSxz40i7ijjttclpRZgcYY/pzSJoIBI7JsIM
-	hrvjgXdtfKEnnebMhlhi6JwtdqdI13/FDR2tcSU21JS9pDu8NASqxxV5NXwAkduLyS3LcJLt/F2
-	DcqMI7C1LBrseLm1leUyt5A0eFmENl+tPNgbL+wa2quzJiJFC3w+j0UMdR3zjzDivc9fp0kKGBT
-	ntFmJNq0UMs3kr2xqsOOqFWuwiWp5Ib0oEECo1sZyZ1YVCChX5a4OrVXCBOWw798DFnSm7mlYj8
-	WY9S2cnegw5YtLp0QIB1Kpbi5Y2X8Rr5h2kZk6Y95f2pDDU6y9L1FQZCsYbN2eawwTkSO9s/T5k
-	wIK8kmYR4uNASOCwp7xmid7s1a2kCsC6o/Ofx8KKUWwoI2E8rxF1chdaOjSPBEzxSaHCHhCgXhb
-	YOJwLMgkyjXtwNOf/MnmcSRIgdUIJI3tno
-X-Received: by 2002:a05:6402:3220:b0:698:ad7f:9383 with SMTP id 4fb4d7f45d1cf-69c5f0c3130mr4880740a12.14.1783977448821;
-        Mon, 13 Jul 2026 14:17:28 -0700 (PDT)
-Received: from WindFlash.powerhub ([2a0a:ef40:f61:3b01:d08a:833b:756:8fce])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69cd2952836sm386903a12.27.2026.07.13.14.17.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 14:17:27 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Harry Yoo <harry@kernel.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Li RongQing <lirongqing@baidu.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-	Douglas Anderson <dianders@chromium.org>,
-	Gary Guo <gary@garyguo.net>,
-	Christian Brauner <brauner@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Coiby Xu <coxu@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v4 0/4] Introduce Per-CPU Work helpers (was QPW)
-Date: Mon, 13 Jul 2026 18:17:23 -0300
-Message-ID: <alVV44RO_SolaqMW@WindFlash>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260713080723.XOTiibfG@linutronix.de>
-References: <20260519012754.240804-1-leobras.c@gmail.com> <20260520130903.Ebsd4aUa@linutronix.de> <alP58SgTc2_8OFPc@WindFlash> <20260713080723.XOTiibfG@linutronix.de>
+	t=1783977486;
+	b=vkkbVj40jaMjv9uFOGT7HTmq7Xn/lFuJfC/bQrST4mR7d5lMsfIBRWrA8qZt/GwDNfoVxJ
+	zq3sNbYKuL0BEyAZCu+kKEvyV4Fe3Ve211mI4o96ZL0RMsmUPuxm1nhXPbby8vtjECKnIe
+	rs/zWqjq1SNqtPVCSvBexhG/tIAf93M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9406B40657;
+	Mon, 13 Jul 2026 21:18:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC2B1F000E9;
+	Mon, 13 Jul 2026 21:17:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783977484;
+	bh=7AP6vL/IknWnMrMEhy8oZzGqoRe/qZtcpIw0uJFVyX8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NvF2YMXGsrh91m0Utx3mep+raAJ6w2eAV20dIZ2Vceh1KtH0lLgRsZPiRwnxy3ziE
+	 EhHLOxDlPyLPcRkEsCFjqbxTQoOJlyTG5u8omN4r7c2/S/zFQ7tv7gpyEb2CF4M7JR
+	 6ipE7uR1d94f42i6B+jK76nR4i9J2CFgqVPOzc+lR2jFGfZVbKxZDiMN0XA0k1Jc/O
+	 2Lv5a9w4YUeFP1Lqm5Ult/7gJZrmH/pN8DncPc3gl1kQwfVnFrjZQcYcx2fK0DCDLr
+	 DGwppflzLVmoQ2RgRZuksFfztRqvsQ6RK3KDcFAX//ZN1J4BuvAEHDd0MqBIrxE9Pu
+	 INPh4wS7oJaUA==
+Message-ID: <31988089-095a-4eed-b5e2-c677c70f79f6@kernel.org>
+Date: Mon, 13 Jul 2026 23:17:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A255516000D
-X-Stat-Signature: is8o7f4aiqj1pp6rh7rj4pxtbncetibm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
+ folded pgtable case in effective_prot()
+To: Dave Hansen <dave.hansen@intel.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+ kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org
+Cc: linux@armlinux.org.uk, akpm@linux-foundation.org,
+ ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
+ chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
+ kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
+ wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org, jgg@ziepe.ca,
+ catalin.marinas@arm.com, will@kernel.org, arnd@arndb.de,
+ ryan.roberts@arm.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+ baolin.wang@linux.alibaba.com, tj@kernel.org, kevin.brodsky@arm.com,
+ anup@brainfault.org, atish.patra@linux.dev, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, kasong@tencent.com, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, anshuman.khandual@arm.com,
+ yang@os.amperecomputing.com, chaitanyas.prakash@arm.com, ardb@kernel.org,
+ guoren@kernel.org, yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
+ dinguyen@kernel.org, schuster.simon@siemens-energy.com,
+ wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech, muchun.song@linux.dev,
+ vishal.moola@gmail.com, namcao@linutronix.de, pavel@kernel.org,
+ djbw@kernel.org, yu-cheng.yu@intel.com, baolu.lu@linux.intel.com,
+ Jonathan.Cameron@huawei.com, coxu@redhat.com, andreas@gaisler.com,
+ liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
+ stefan.kristiansson@saunalahti.fi
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+ <20260713135614.1618183-11-yeoreum.yun@arm.com>
+ <c3edfb13-08ec-419c-bc05-8f3f64186b24@intel.com>
+ <ac365196-8ccc-4d8b-83d7-28fec763e75c@kernel.org>
+ <710b7eb0-8e0c-4f07-991c-2285c77e1beb@intel.com>
+ <6007625e-c3f9-4ad6-99a8-61396bccbcec@kernel.org>
+ <32d459d1-ad19-4baf-bbb1-0565458001d2@intel.com>
+ <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
+ <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 270C7C0007
+X-Stat-Signature: 6tzh6uae1bor7aremufh8nbi9ch8mwbu
 X-Rspam-User: 
-X-HE-Tag: 1783977450-506947
-X-HE-Meta: U2FsdGVkX19VTUCPWbkmZJNgrs5piDZtm3qTnjLpyNzdoQOJzXS2rDsv57eNNyaczfQtIxRENNr47br5IQo0yOoFiQndhizl1Pm3Dklx7yPDqveMBtUAy4bhfiltI3IWgonK8JbUPolazUYQ5oXGxFVEJyZNTCNfGt7mMLL/h7aJEg7GUSbXIK/DFfRUXFKtLTEun/ELVkdlzOLapUoRvYiUpim8YEY2T1mdag7lrofj2m5lS3NV28legYQiqrQQZ+CTd+sriERbMAhXlSIJ9wE4cpai2iBBtpQDc/Z5noudo3kKB6w9DJ4TQon+9t8I7YO0Wa9QVO6cEXcv57Wl+41KwJTC8RPXyRdNrAdRDhmDqIVzijhiK+6rGLpxMpaVzJ23Pv0PtCdXBKx+5U6HA/dqqoTwLpy1aCwwSIX44HH4MBq72PaBZF1S7Xj1jVsH69o9mNEfeCpgEmoYN69k874a8C+f+i9KosUhamtXg2hxar7S80N2xkYVSI1f4qiK7unFrzy4eouLdG1t2PswpXkTS9ea8KqcMcxt18u9LpjiNeLERjupZ+d2Z9565CjIhRr2NZpo3ti8B/+Xd++3X9jm2ct2M6JqDtWcKqsgMN1C2tbNCY4fDcOjessgiERUvK8sD4JIwLPXfHozUMzNdQvxHR251dP22YFIAL53v7EhK8rCURXt/tZfi5ixbgYRr0RvMz+cJAXGT9qsUpQIB5uRsiub8TLI8+1OqOLpZMxlQ9LhEKwBf7giLFmWk5fuP+WgIkAcRBR9+tdW1VIckOA9t/48AlV+z9MLpGeito9rq84SQdg2HYArL+IMMogltbUm7bEUVVIF5SunNW2KmC82Zr1PHUShmHc1xPkqgyw+USP0Zbg8oxrG08GS//BS2mKh58h6fxKPpBXLYZAv7v15WGTRG+ka1fANabigNvD73YvC+eDWX2DyYeV8wZ3QJPnkdr4NMBCCenD5WMC
- ff75h3a/
- xwZ3X4Y/lBcT0EPm1A4UGjzeLY+vKtloI+ubt7zmtY/z8NYGxr47AdACZOSi4zGjLMzTcNVuXPKQLho8QuUF5FRapFC7XHAFtuCXxQAtOeXB2mJIk3f2vP0rnQzgC8G3jKYpT8zrS7sIWPovBNtoS+CR+Wgi9EqKv13VcdUGuGIgzJiWZUq8jwWIx3xqh/gCysZpFaDdSHwJJSW6zsbS3syppLlGXITkBNCEDduaGUPT29Qbz/Hcelwnahx2hHOELPyrbzgvBk+ssdAP6mrP2GIXkDLwzMq5nHqDoUsgF2ay6OwWMx15rMVSwfWVjKmAjYK6MlBbr3051Z+wUFtuzgFcNkAnq48Lh8clWwLnZfHhnuHTWP/XsMLU4sg1Jp3pHO+EHwhQDvC1PU1pzz7vFOT0wXGM1zl8AMFItQmyrVFzMCxkQZ2HAf7xgtpuARGI14tHpFycJcg+qmZLpuy7CczsLtQmdIxiJqQOsVFkT7FHNCzHMfM2xlh+DsOUSOL1VP8xIHSMnqk5bJR4pce+KqqeRkNQc0N1PhBdm0H1zSIPAydsDXggGM9efCg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783977486-164927
+X-HE-Meta: U2FsdGVkX1/LRaaiUN2Hgwsn7SjwrH49fSaj/SHCe4ETKdysV40lzNAvneGKip+HhAa0O9Kq3aRh/ieJy8L8UNzTW61VvBL1lLH58Fp8fiJS9el8niDjuBwdUKfY1Iw6ZTPvZeT53p742l8E0xk/c/0jMkG27CFfQzahAgmTCJfSIT/91OxQEJaN0zTDdFlXSJHrCf2bfWrsrAO2k6FyWVrF4QJd0KqpD7m6WTnjilikf36QKT1UNsfsRhcxnXJZKBl1BvPyE74sVoclqTFdrSo8dxKUBemPuYnQ3dc2ky6ZM3hWGgghwqmwnnPp0WpZbbyFskB6+o7fE+qE75gMW4yHkwzcxcPq+tdyqLxk8Gl6uQVDIGRwqadxtw45C8OyKymthbwcT32WgmEd8iBRsOn1Z8tkgZgspt6+aoMsCj23iELg4OAQvyCOYok+TWhESr0pS579Zs1x3QENBReMCumT8b35r4oNNEMSFjzzlqlc52Cyz8NTHX01gIsiUTMRYxz0NSIAM2H7JLMwLnqzgsycvxg0BMQvSbKMx33fkeuhg13UgkzpKtCwzaIzylrjhy40h5n0F0JW1EYnbmqxGeLKZPiKMkb6eDrL/A8AJwgNZTNeWsdwyGsdnlj+4IkU3FMNrn9eOJvzEyDzNEMsq97OEdb5YWIIX7H53Asn30TQWosbxpZAtUPQgjMhZ/lGGdVfuue1NhV+e9JX3uVOp/E8zqo2R4LDcpXFsKEUO/IsTspqafPLCY5f5bY/n/IODuyaWAcQ2y2MaQrzcdin+WMS3/PAD4ZtHnsUdjNtzM0hd2el9YYdBMD+kXJ1WOMRmhPfcoaNi7M6o9jg2CLiLOVuHhIJsaCItDffDtRHSQGozJRmCmDgw8s3nvGYGTwQUQOA0T358wgbj8LQj+Vf0Qfg1VyWQglPWkKr0NHuYhSux9BQh0wh/jPft3TQoAZDsrTq766H+Sq+a72TTKe
+ mbp6q8TK
+ LSyW9fJHfzWoQSEQri4VnadEKz8buM/GvZqCmHNV+xSJJtY/qoo5BYVF4d9RhbhBnluYpP2cZ82OJv+lrHkRrmuEwGW+NYItFmfad+7MqyPeiNC4UlFunZ1FzGmsKraLsEhngG2Yu+NJk1TDEvfvJCXCKBCwyQj/qzaAvTThLEfuaNx74PXIkAt0F3sp4jobnBTfWzI5TzZmlXZ2KxK+Mbcj8+bfOpk+48evq7e3OkiFwL2LF1TbzwKgxqbU5uc3JHLaR8Sf6LVNNRHpmLEu5XIoeCCxONmvhlurznNM1PlV67HCShubL0cwKA1HITQ798nWL+v7UhpNQxd1QTZH6QnULA2XTdhIbGgRxuGH5TbXL6zatUgooZsYb4aB97O/ZOaAI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,78 +177,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 10:07:23AM +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-07-12 17:32:49 [-0300], Leonardo Bras wrote:
-> > > > The idea:
-> > > > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
-> > 
-> > Hi Sebastian, thank you for reviewing!
-> > (Sorry for the delay)
-> > 
-> > > It does not become a _spin_lock because it does not spin. It sleeps.
-> > 
-> > Right, it's a per-cpu mutex. 
-> > My point is that it's a full lock, and we could use it instead of doing the 
-> > whole scheduling thing, since we are already paying the 'atomic overhead' 
-> > to get the lock here.
+On 7/13/26 22:27, Dave Hansen wrote:
+> On 7/13/26 12:49, David Hildenbrand (Arm) wrote:
+>>> I really do think this series is changing things, not keeping them the same.
+>> Looking at it from that angle, I tend do agree: it further moves into the
+>> direction that actually the p4d_present() carries value, and the previous
+>> pgd_present() is just a dummy.
+>>
+>> I can see that some more work is required to untangle the mess we already have.
+>>
+>> I don't know why pgd_present() was made a dummy function and not p4d_present(),
+>> but I'm sure there is a good reason to it. Changing that now ... omg.
 > 
-> The whole lock is a spinlock_t. There is also raw_spinlock_t and
-> bit_spin_lock(). All three are considered spinlocks.
+> Yeah, the p4d addition added even more wrinkles because it was the first
+> time we tried runtime folding in addition to the historical compile-time
+> folding.
 > 
-> > > > In this case, instead of scheduling work on a remote cpu, it should
-> > > > be safe to grab that remote cpu's per-cpu spinlock and run the required
-> > > > work locally. That major cost, which is un/locking in every local function,
-> > > > already happens in PREEMPT_RT.
-> > > 
-> > > We did have this before but only in the RT tree. It was a bit messy from
-> > > the naming because it started with local_ but then it was a remote CPU.
-> > 
-> > Had the same naming issue here. This idea was initially a expansion to 
-> > local_lock() mechanism, about the same way you were planning in the past.
-> > 
-> > > The main issue was the different code path which led to a few deadlocks
-> > > back then.
-> > > By the time local_lock_t went upstream, the cross-CPU locking was
-> > > removed. As far as I remember, the cross-CPU user which did schedule
-> > > work on a remote CPU and annoyed NOHZ folks were replaced.
-> > 
-> > I understand this could be a big issue if used in a generic way.
-> > 
-> > What I am proposing here a mechanism that standardizes those 
-> > local_lock()+IPI strategies based on how they are done today, so we are 
-> > only explected to get 'remote-cpu' pwlocks in the 'IPI replacement' 
-> > operations.
-> > 
-> > The idea is pwlock_local* in every local function, and pwlock*(,cpu) in 
-> > operations that can be remote. 
-> > 
-> > Maybe being used in a more constrained way, it has less chance of being an 
-> > issue. Also, the whole idea is to improve CPU isolation numbers by 
-> > reducing IPIs, so maybe NOHZ people will be happier with that :)
+> There were certainly some ugly corners of it that we never found a nice
+> way to fix. I know Kiryl tried pretty hard.
 > 
-> I get that part. The local_lock_t part is cheap on !RT and becomes a
-> full lock on RT. While the lock details change the overall expectation
-> remain the same. With this change it is possible to acquire the lock
-> cross-CPU but this depends on the config/ setup. This might not be easy
-> in terms of testing and maintenance.
-> The more potential users you have, the better it might become in terms
-> of a selling argument. If you have just (say) two users it might be
-> simpler to address just those.
+> But, zooming back out... I don't think this diffstat:
 > 
+>  31 files changed, 329 insertions(+), 206 deletions(-)
+> 
+> is nearly justified to eliminate one virtually guaranteed cached memory
+> read instruction. "Unnecessary", sure. But, worth the diffstat? I'm not
+> quite there.
 
-IIRC there are multiple users of this mechanism around the kernel. I 
-remember picking the first three (swap, slub and memcontrol) as examples of 
-how to use pwlocks (QPW at the time). With the concept proven, I could then 
-proceed to work with other potential users to replace it. (We ended up 
-dropping memcontrol in the process)
+Just to emphasize, this prevents common code from being converted to pgdp_get()
+and friends, as it would make folded page tables more expensive in other page
+table walkers, and other arch maintainers rightfully complained about that.
 
-The main idea is to replace as many potential users as possible to reduce 
-as much as possible the amount of IPIs in isolated cpus, and allow Linux 
-to run workloads which require much lower latency.
+I don't want to be stuck with this inconsistent mess of some common code page
+walkers using pgp_get(), while others are stopped from being converted due to
+inefficiency concerns.
 
-This idea came as a general solution to a bunch of latency violations  
-Marcelo and I were coming across.
+*that* makes our common MM code worse, and it grinds my gears.
 
-Thanks!
-Leo
+And I really care more about common MM code being clean and consistent than some
+rusty old 32bit code being slightly worse.
+
+As discussed, we can keep the set_pgd() monstrosity from working in all places
+that don't use something like set_pgd(pgp_get()), bust as I raised off-list,
+setting something that is unconditionally pgd_present() -- a dummy -- is just
+extremely ugly. But ugly seems to be the theme in folded page table land.
+
+That would certainly be less churn, while leaving this questionable code in
+place, I'm fine with that as long as we don't add silent bugs when some arch
+start doing e.g., set_pgd(pgp_get()).
+
+> 
+> Also, I think a series that adds code like this:
+> 
+>> -	if (level > 0) {
+>> +	/* Ignore folded levels ... */
+>> +	if (((level == 0) && mm_p4d_folded(st->mm)) ||
+>> +	    ((level == 1) && mm_pud_folded(st->mm)) ||
+>> +	    ((level == 2) && mm_pmd_folded(st->mm)))
+>> +		return;
+>> +
+>> +	/* ... and make the actual first level remember the protection. */
+>> +	if (((level == 0)) ||
+>> +	    ((level == 1) && mm_p4d_folded(st->mm)) ||
+>> +	    ((level == 2) && mm_pud_folded(st->mm)) ||
+>> +	    ((level == 3) && mm_pmd_folded(st->mm)))
+>> +		first_level = true;
+> 
+> fails the sniff test of being an effective refactor. It unquestionably
+> makes _that_ code worse, not better.
+
+As I said, we can improve that part. But we'll have to stop faking that each
+level exist, when it's really folded.
+
+That's all this code does, and the first part of this logic could be had in
+common code easily (just don't call on folded page tables).
+
+> 
+> If the series was:
+> 
+> 	Subject: Refactor page table folding in all architectures
+> 
+> and we had a discussion about what the best overall thing to do for all
+> architectures is, I think we might have a better path forward. It would
+> also be a smaller series.
+
+It took me too long to understand why a "nop4d.h" file defines PGD functions to
+be dummies and assumes an arch to implement p4d functions.
+
+So yes, in a perfect world we'd rewrite folded page table handling entirely.
+
+BUT
+
+Let's focus on the real problem:
+
+Common code cannot consistently use pgdp_get() etc. as it harms configs with
+folded page tables.
+
+And that problem shouldn't require refactoring/rewriting all of page table
+folding at this point.
+
+> 
+> To me, the double READ_ONCE() is a non-issue.
+
+To other arch maintainers, it is!
+
+> Having a nice, coherent
+> page table API in the kernel is much more important to talk about.
+
+While I agree, we are talking about avoiding degrading folded page table configs
+as we make common code more consistent.
+
+I hate our folded page table code when looking it from an arch perspective
+(common code walking just works), and I agree that it should be improved. But I
+disagree that it should be blocking of core-mm using page table getters
+consistently.
+
+-- 
+Cheers,
+
+David
 
