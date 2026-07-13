@@ -4,85 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B182C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B443BC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:00:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0989A6B008C; Mon, 13 Jul 2026 05:00:41 -0400 (EDT)
+	id 999AA6B0092; Mon, 13 Jul 2026 05:00:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 048AA6B0092; Mon, 13 Jul 2026 05:00:41 -0400 (EDT)
+	id 94A216B0093; Mon, 13 Jul 2026 05:00:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA1016B0093; Mon, 13 Jul 2026 05:00:40 -0400 (EDT)
+	id 887336B0095; Mon, 13 Jul 2026 05:00:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C94416B008C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:00:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 50B911C43BF
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:00:40 +0000 (UTC)
-X-FDA: 84983157840.11.D13D41E
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 87EED140006
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:00:38 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wLpg6rxP;
-	spf=pass (imf23.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C3B36B0092
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:00:56 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC57CC8437
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:00:55 +0000 (UTC)
+X-FDA: 84983158470.07.5558ED8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BD65020007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:00:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZjVUbm1i;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783933238;
+	s=arc-20220608; t=1783933254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ioPagpwFTzNhXNYobwbUxjWhxbMrCA+AnLrRpW24boU=;
-	b=DEJQ8EWr7IyMPsiuJlG7JS6el/LR2CjIVGMcpJ5Gg9epsEb4ksAMH/l3gnvbKsxZBPifuX
-	Hdb4IGv9tUQsFGp1UMTuDk2MqCdDjuqRhiPLrwi5G5lHA1fCXHCAbc6F3Dhy7wdPmyTtUy
-	I1JXdbGTyKGR0huAZc26jc7/WndIppA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Uhbqrza6JOxR/o0Mw7vTWiNnn86olZ/B/sZ9t0yhQpU=;
+	b=jKHSJEkMBJ5npwNyBd1bd2DJ6liNeCWNVUrhcVnN5/WducpDU3U1dKULh6E9z6dTvWoYf+
+	xLfidcmKuKqb4OwU0V01QhyHQNsHqpXp/3xnHaCNcz6HhXQTtEC/XWh4v9/lZMXQ9bbta4
+	r6t0ipePZL5C5SInBT5TLFXkktjVh2E=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wLpg6rxP;
-	spf=pass (imf23.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZjVUbm1i;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783933238;
-	b=Fx4Od7hwV7wlN4I2+CyX4U76OOetg1He7oH5xMQJEcm0zv+LMZ0q3ik1VHtuLh2PHrVwl1
-	BeNdnXu2DGrcEH8sRG0ZZUI5f3GmOv8/IW5FJ7B+2F8PRvoaxnidIFclBuzDLcdI5PZZWO
-	yaMc2qCtREGoV/oxGMqXOg4B1xM2PVE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783933237;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ioPagpwFTzNhXNYobwbUxjWhxbMrCA+AnLrRpW24boU=;
-	b=wLpg6rxPUtfwOyQVfL2Js9q33etD4FyUadaKjSztAoGnsIdTn4pC0n1JcIqDuc+pj97Am9
-	T2IicbGvIvptI1eR2hi+k4KtVZRKqplZG2+h5QqWOYGfoUScieHCo0trS8+v1e9M3qlm5t
-	zosLKgCrRF+HDHSGNm9pb9p1hq7cdjE=
-From: Guopeng Zhang <guopeng.zhang@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: [PATCH] mm: memcontrol: drop unused cpu argument from flush_nmi_stats
-Date: Mon, 13 Jul 2026 17:00:10 +0800
-Message-ID: <20260713090010.2991906-1-guopeng.zhang@linux.dev>
+	t=1783933254;
+	b=GV4uPA6bfAqd+YZpnJl6dIi+kcW7/Oui7xo6UnHZym4hB5maUHJ55gg4LVhhYxjEuHsSyr
+	D1A5IMbiocYLgFV6JCwyIb7dv0+Tv2d0QdJ94pbRb7zikh3+c+0Igxh59GNigOoyw+BnOP
+	5xJGoswU6JfVBV4tnZ7/4LTCb/MGGYo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BB741576;
+	Mon, 13 Jul 2026 02:00:48 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 919C93F93E;
+	Mon, 13 Jul 2026 02:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783933252; bh=t9O/1hD3qn8hp9fPVidp6LNF4W82iFP7Kx9rmmWgG7w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZjVUbm1i0r7id0oXgnlEVsYHjjTTsjagynsDqwUq4JWQboX2Ta+P0jQIneVqXglDF
+	 Y0iOs637bqapD1xlzQM3YZPtUEaAwFrKBHTwUhWke7Ow02jmtEmAo0gbD34MtSDSHl
+	 bRQtizh+12rSoMMLXxrwY+KFMReQSmAN745ISqtk=
+Date: Mon, 13 Jul 2026 10:00:39 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm: kmemleak: confirm suspected leaks with a second scan
+Message-ID: <alSpN_sTpUkjDFxh@arm.com>
+References: <20260709173347.689607-1-catalin.marinas@arm.com>
+ <alCxkNBvoDGRG2ee@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alCxkNBvoDGRG2ee@gmail.com>
+X-Rspamd-Queue-Id: BD65020007
+X-Stat-Signature: zcdaaoy4uhw1ydarin7ndrajcge566zo
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 87EED140006
-X-Stat-Signature: gokrz8xwo9pj7sneoihzjaig4b6qdkkr
-X-HE-Tag: 1783933238-645836
-X-HE-Meta: U2FsdGVkX1/cE49uBpVQwHpkeeKGKkGhHTrkG4Qtz9PaEuZah7djPZvD5MluNSCQAy6KS4R2Arun3gRkysiDI789WHe1NsjM9aZD8jw2KstleRc14MyoCALczf4TtTAIcllkuTqWIEQdpU/vKclpYVDoo4fnWEEEdp11f6zLANZDBYlCppQs4XSN8pHbDd0Av5C7A4wjKuqDBRK00tTTBBunVKe+dep6L5dxxEBM6mxvx3ZC942YJO3rFbnUhiyKzjJfVUQBGboCufhQiPk3cB6OZFVJMvckdGmLBUIDfgXNj+4El6dOOOrppf2ZMh5InGLOgVzqT+NoibuleEg554Ak9bhTLk1MaiMhczw/BbayMPLhd6ZfEZVH6Ow19L2pbNO7bT2HwyPSenqNRiatM5Q8mJzCfZLu10cWxeIHXnc6pnLkt6hBSXX5d9MKx2u+d+nfjJ7FBSdj+Vc7CAmCu2GtKu+Hy6RbMbCAOG2btJGgVHPNP5Fn1TgYpq8a4Suo8WXPX47P3zd0XdLwMVY3ByvpFEksdhJx1PA/xa+PUc9cT/XhVBztHV864JuUC5T9vXS60TnZptgBsB/u9CNC3zAeCfd+2pEtjNauP9KL1VGYn2IT1VSvweoF9cIVT74WB/jugigOgH7ZfPgJleRy9Sae8z4ONeV8FTq7S8qCzAP/1mrDE7sQPuqbfmEggCZ/vBFtiB/uSjUm4cSGDxqjy0NPbHBrJMId+woSX8P40YbSZqg5cwHoIDYwZEEzL4OpZvRElqAMUwEbsaq2SZX3qQ2TePW3hXYSAKX+qMQh2nriZIhUwjCGfm0Fn+JWJupxiLmv4Y7dqs8bcQEu9nwX/v1EtWQeiBxT3n/V/P2iVMkPO/9p9XpfwtL4u11qnq2r9q/qX+jALP24CbNlaUNA2kWFg1ZjczsdOpKMyjdUoWgmlyYZBtMKHiW/sz4BaxyOgJotvWjHsUfypWynxEr
- ZsunNAy+
- E5E1APt6Nwm+NiZKyqAuDtR6v9/p1/g9Ox12aM6u2diibe9qVTf2HV3h5NMs1C2RXAvndenSUMFw52rqKrBehyu+ENidxSjM0HCiTxLcd9eh/tvP56qnz3V9HNuD1JHwQkhb2WYuktaXyjCcQBtxX3MmqLUOydEtxeE4//LAvI6VtLyxJpLMBfK5bS/dReqHvRyBXf02TGPujv1YUvGkQhDc9mQW2Pkr2O6s9o7UVWJlLn/bEiIfyRd+1bg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783933253-284607
+X-HE-Meta: U2FsdGVkX1/Dncy6UN84hBDKbzBUxMpzxgtpkgjcAP7ANsSg1I4LyUp4mjV301k1W3qP8A+jbXX2NLa+nf4Qe1XaZ9xhPL5AFkdm0tdDMTm2cgNT+zXqyGFWEkhmEZEqI/TmThfA5Lba5M1Ep86wtNcfBQVFjnfUG/A8czW1ELdPDrDsivntGtg79gtrLOLXPnf7If9xfwDGoO78I9SnLYl5sAqFA5Qzrys9kh0V8/CCMRq+mY6qP834tJdSM8AVjQOp3/1Pcx3bPg6RR54H/L6/WRl34aoHpRZMTnQFh2yGkw8JF2FG/0XeWh2zMRy5bFeHa0dfwXUgijzd1zP/Pn4qLiL4cdYX2fWKOoQ6jAo7Jd7YJUFTFPUkfe4JH/Q1h4qpfLiQIbAMUAivGfRo7p46tWnZHp6rKZMcG9egi4H2e+hqWYbve4itVmYGMA1pSgNjLpoQEE4JUPghnYP7qch9YBW1Ig9RgkKz8ea8RMLZ7YmXKH+P858dGQZK0hd6ECAGZQ9BSCS8VksERaNH+JGrn4kwkt/GuZvQ2u35izky1+E2aYCKsvkJcA9eA4yEKQcu3x7khLWKoBVB1TKUKkHwI7ihpiUYl05y1j5VYNJEJnjNmgzeWjV+p3DhxUC+3ffGaaUmt3zEcW3QiP+WSYOb8BJ+W+ztELI3rCtBM9YChYFTKHi0azLsA3XiVsYuqALWbZEW6dHR4OMw7l4dUM5iB0kzpWPjfDxsauJdSJlL3N0D/lHkkTS1mO0zxVXpZ4DbRoQ5C9bYwGt2y5U28r1K6qXbF3e2hZStyWydpTZtJEYq5zxrF9pPLEpQxMnab7zmq5xEqq3zu97RGGQHGyBtyKhRAQzxSjLa9GmpStMBPIaFrISCintt7Ihyrvp5Fs10BJe29WZy2mC9Ft/F5a6KCK9m3Tc79+p528LRH+ELVbfvJPQqEIa3vFLLLUgwgdjslNrLqkJocVs2bSk
+ aZjJTCxm
+ hrUTxhiRc3wT+qp62alEIysK8b/CFJofSu7ExLucgNyOe3eeH43LXWvLRKf/oHnVncnnophkGMJV4QqdKqSlQ8ulxuq3GNH6YAUCdXkey4qoj6DOOiSxLCZ26I3YZjBXpbdVG438pArGT2MbRdy/r0BD6CVEumcfil1VQJV/gYJmwoQiw9VEpL6KvMlLw/kg3/zyuXc4FC/N8jQB9RkbO5L5r4z/gGKaO/WsXMWr/fpauvM/xzU7c8eObH93FmXX4hkrz33AJF2bIMay9r2JVH6M4GaTTdedAQ8N1DsJASQy0umUvqHqh6eQbJvOdyBhEqIs6e2uxU2q9+YhjLZ/RxH5JxXYh5gJCse1Gp5MrJDcdZNkSPK84N5SS/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,53 +88,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+On Fri, Jul 10, 2026 at 01:51:40AM -0700, Breno Leitao wrote:
+> On Thu, Jul 09, 2026 at 06:24:47PM +0100, Catalin Marinas wrote:
+> > The kmemleak marking phase is not atomic. While the object graph is
+> > traversed, the kernel can modify pointers, free objects or allocate new
+> > ones. If a reference to an object is moved from one location to another,
+> > kmemleak scanning may miss it. We have explicit annotations like
+> > kmemleak_transient_leak() but identifying and maintaining them is not
+> > trivial.
+> > 
+> > Given that such transient leaks are short-lived, rather than just
+> > reporting such objects as leaks, do another scan to confirm the
+> > suspected objects. If no new leaks are found during the first scan, skip
+> > the confirmation one.
+> > 
+> > Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> > Assisted-by: Claude:claude-opus-4-8
+> > Cc: Breno Leitao <leitao@debian.org>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> 
+> Tested-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Breno Leitao <leitao@debian.org>
 
-flush_nmi_stats() does not use its cpu argument. Remove it from the
-function and its !CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC stub. The
-caller still uses cpu for the subsequent per-CPU rstat flush.
+Thanks!
 
-No functional change.
+> PS: This is now conflicting with commit 946935b07cc94 ("mm/kmemleak:
+> skip the remaining scan phases when interrupted"), which has just showed
+> up in linux-next. So, a respin might be required.
+> 
+> > BTW, I'll be away from Saturday for three weeks. I may reply
+> > occasionally but won't be able to test anything.
+> 
+> Let me know if you want me to respin it based on linux-next.
 
-Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
----
- mm/memcontrol.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Yes, please, you have time. Thank you!
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 22f55aeb94f3..86ed741cc5cd 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4433,8 +4433,7 @@ static void mem_cgroup_stat_aggregate(struct aggregate_control *ac)
- }
- 
- #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
--static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
--			    int cpu)
-+static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent)
- {
- 	int nid;
- 
-@@ -4480,8 +4479,7 @@ static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
- 	}
- }
- #else
--static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
--			    int cpu)
-+static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent)
- {}
- #endif
- 
-@@ -4493,7 +4491,7 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
- 	struct aggregate_control ac;
- 	int nid;
- 
--	flush_nmi_stats(memcg, parent, cpu);
-+	flush_nmi_stats(memcg, parent);
- 
- 	statc = per_cpu_ptr(memcg->vmstats_percpu, cpu);
- 
 -- 
-2.43.0
-
+Catalin
 
