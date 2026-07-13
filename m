@@ -4,127 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A63BBC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 11:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63042C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 11:26:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8872B6B008A; Mon, 13 Jul 2026 07:20:12 -0400 (EDT)
+	id 11ABB6B008A; Mon, 13 Jul 2026 07:26:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 837526B008C; Mon, 13 Jul 2026 07:20:12 -0400 (EDT)
+	id 0F2C16B008C; Mon, 13 Jul 2026 07:26:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 727B06B0092; Mon, 13 Jul 2026 07:20:12 -0400 (EDT)
+	id 007906B0092; Mon, 13 Jul 2026 07:26:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CD6C6B008A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:20:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90087165AD3
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:20:11 +0000 (UTC)
-X-FDA: 84983509422.07.7A70737
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 68AE71C0004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:20:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=rhV8dP6u;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783941609;
-	b=p8Jn4RVpBViPbGngtZIbRvjQJZWTQWU0LTE9hmwewJBpPUXuZBUklQc14zO8zDQw4uFtvg
-	Pt+hqaK1jb2MIhp/xLhklVFxFaUaBCqj25GBiYSQedqldwFWga+Uh6+R7mFe+PrGsNT0sc
-	OPpxQVbhQmF6GolMXClrerPNLD87yo4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=rhV8dP6u;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.41 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C6B156B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:26:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4BA76400FD
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:26:35 +0000 (UTC)
+X-FDA: 84983525550.22.37CB283
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 41783C0004
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:26:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=E8dmUmz5;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783941609;
+	s=arc-20220608; t=1783941993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YvoD80vsybxHSm652w/hIfqV9kviycKG1qubWHSi0IA=;
-	b=RKwXoEnuN2WCq5sfbi6qN0Vo0iZ64TrdFPTdtjn/uexc/bKdnsmtGXjF3vnQuTOrfFrF0s
-	KvNc7BfbhNsTpBRfsrck87u2ieGmwMOSlOWZW8YY+aHuPZq5PQfKw07+kpW+XTwqm9Go8r
-	DXsIP7IJaLKjKoNsK062yAEdK/2hd0k=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493b7612475so23874355e9.3
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:20:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1783941608; x=1784546408; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YvoD80vsybxHSm652w/hIfqV9kviycKG1qubWHSi0IA=;
-        b=rhV8dP6uMIBgsmRn5m50yPHXL0HupNTSxCk06xuEMhNmmn7Fv49HdrV+H1gjsfDkCF
-         tB9v1rEGUGzY38GO0ozjn8dW38tRU8tFdTRYPrjYV46oTU/eHRwxRhc6zqZaHoueUz+1
-         dCOUR7+VFe2fFPV35ETBylAUgVhUwBFSsucceNvs4pf53fbPTGUrj65a/Ww5Pb3zMMsY
-         XcWA65a1JtYfEw+JlgeWlIafHxXov47h9EU+CqOtJvsltnYoj3Y9XwoPPoFQOsJtox6i
-         1gL3u9e/4sEePsCa8IzUDO1+Y1+WeMXXuwIqyOTqCU7pPPYKIYLKPiS05xbsIQMWzrKG
-         j45Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783941608; x=1784546408;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YvoD80vsybxHSm652w/hIfqV9kviycKG1qubWHSi0IA=;
-        b=SadFIheSOBAg3sq1svnRYudBZLhpRG55bYJj8rn4wjN6mPvYqJxwnMBLBh6AS3AldR
-         H59FoD6tUdhk48knb4gWEyaVmysDxIKsy5bYPGDRxA5x52LQP+7u9uR+b47mqqIdTyjh
-         CjZF+c2ZonivvsmVSCcysG8b1rEyTh+xYX/TZCvZEpHmws88gRRr4kC5ZQiu5UlsKDdR
-         BZo64UVNYnguu8d9Aq84FpnFILiFSCPpKn+hIMFBWGQcazQXyQ7zTdgofrdu1Ih/aWUj
-         JhMEjdAQpSoZ7vN2AOPEw+fpXhI99eszqTmMzEKhqgYAUFMfE6yQuS7VFExh3a7K/9/7
-         diqQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr51Ixn3lbm0cv9mlJ5DoxUFjgoVkn3w/R0kW19tC7ve6ncQNOvgRYQlAID+zr5USxBEnTGsxqT9A==@kvack.org
-X-Gm-Message-State: AOJu0YwWIUgXKSF4WvB4h5uvu+lrHblwAA0X/tOUXXLYLGVEKHWRo2+0
-	LFnTHdUYT26cNFwTckKi/0iamLqyBiLoEHA2lM+PaSTAB/WSRV1i1q8zp72NyYEBPI4=
-X-Gm-Gg: AfdE7ckcNMMuvYg0yxbokMOFn+4j59meU9DCbtgaxhirnHQGgyXqMx+MulUK8R3YIIZ
-	+Weh/06F96P3uby970c3MwNiKzKAgIZ7N50Bcukl8Nj9onUSJuGLHfznVqpeM3dHY1YSldfLAIn
-	YoniCZEOj1+YnbDlFlN1z4QP8bYyYhgsPO1qSuW1/3tka5HGTtOcHVgPc39VoN+Rr1heZ+LH2ZP
-	fo73DroqiutaqDYIwGPhd7f1Kh6PIrHakdrrxs1udccqBP4GRJrizG5E+tNuLvALIsXrvwkGBbM
-	ha1Wfv5Omq9eOuI39N+pjHl0h0cf5wCULrr5FwHEKn28nrkuOIug1LLva85+pAH75fwmfiCAelp
-	R+u1fsFjizeUDKn1qJCPdymTrDNFNDr7AKc11dyp4uwTdAlmakvw3t7GlhF8eygh5wysg8fCMEo
-	hrErPXJOGV4JSnMLAQ8xkV
-X-Received: by 2002:a05:600c:628b:b0:493:cbdc:7cd6 with SMTP id 5b1f17b1804b1-49400dc175fmr46864315e9.7.1783941606886;
-        Mon, 13 Jul 2026 04:20:06 -0700 (PDT)
-Received: from localhost ([2a02:8071:6401:180:d892:bf43:a0b4:83b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6ff6casm425641675e9.5.2026.07.13.04.20.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 04:20:06 -0700 (PDT)
-Date: Mon, 13 Jul 2026 07:20:01 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Altan Hacigumus <ahacigu.linux@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/vmscan: clear hopeless kswapd when global direct
- reclaim makes progress
-Message-ID: <20260713112001.GE276793@cmpxchg.org>
-References: <20260711043946.68421-1-ahacigu.linux@gmail.com>
+	bh=nIFwBP0EGBHbhEwfwr9wVs5Q6iERo5W49/G1BVK7cj4=;
+	b=1Klu9fGA7gS8abwR1B6I0FI3y2orYo4oggJA0ow4XpjI/OI4RFVfyI6jxGFyITUFhuTonc
+	ktU6cKg9Qe8VYiweC4g8dimLwtpCFGvLv/pzNM94qfJVXwHZ2hDIXazLkcGrtEnFjSohMA
+	KRD4peSWzJoSM6JmyA22AmmKBAwseHk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=E8dmUmz5;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783941993;
+	b=X7Mg4wwjfgVaJiNazBTC0PZxrzBDOLwQoapstDSEj6VfW3bT32m1SEPw8XozZiZh6z+4le
+	Lk4CL3vRhyWFhwwNaiodmmY6jDAJHh7CfbQv9ozmgVoHpbiK0Fauk9gDRxdAVgZcrphqfS
+	BcQDa/CQ6KAB3316/34HUE+X6LAsGIE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E5DA01595;
+	Mon, 13 Jul 2026 04:26:27 -0700 (PDT)
+Received: from [10.164.19.52] (unknown [10.164.19.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D7B73F7B4;
+	Mon, 13 Jul 2026 04:26:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783941992; bh=f/PVrQHdYmF9OX02pU+HEQKlDzEU/kXbQDeJccOAV1w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=E8dmUmz5e6yop5fx3q/yDRatsJkKhD0pdOQM9+NUn1fjHGce7uXl6uz8hrr0yARqt
+	 qbLyJloGggcsmfHO7TYN7+uemrN+3Acv4xOoYfsM/kpB1MgZE2fxd9i7Zd0NHzAomY
+	 b9coHr7ycbD48LA0qmjoi28KLHR0KFJsYLGx21Dc=
+Message-ID: <566226b9-db1d-41a2-aab2-4c4f0e0e1fe6@arm.com>
+Date: Mon, 13 Jul 2026 16:56:24 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260711043946.68421-1-ahacigu.linux@gmail.com>
-X-Rspamd-Queue-Id: 68AE71C0004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
+To: Muchun Song <muchun.song@linux.dev>,
+ James Houghton <jthoughton@google.com>
+Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris
+ <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+References: <20260708031129.3503195-1-jthoughton@google.com>
+ <3B2B37B5-16DE-4DB0-8A78-4CB8636C1A86@linux.dev>
+ <CADrL8HXNoRA_cnR7KVPwN6zA32E744OKOfTmDMReoykzR39H8Q@mail.gmail.com>
+ <9C56FB0F-AE0E-4975-9D89-AFF110433C49@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <9C56FB0F-AE0E-4975-9D89-AFF110433C49@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 14cd81pzo648dgg14gkb7mtc1exu3xoh
+X-Rspamd-Queue-Id: 41783C0004
 X-Rspam-User: 
-X-Stat-Signature: zjejjjsri4ox37dfgwe87pgxtakag97w
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783941609-595185
-X-HE-Meta: U2FsdGVkX18E7fLb18JZ8KvmQcoMc7eY9EBk9CDDawmXSzLL8fdESlLoLPWe6eJl0pMrg42eZ/uca/Gv61ujb/7jS17jLinCI7Hb1+RB1LKcWY+XIrNIJu5+OJVk7RhIB1uBsj7eB2VINvE8MXVjxV1VHzSs6AyzgT2SBvu0sf/t7ZG1QOSo/JCCrXTt4lN3IvL3ZkzDZkgghgo59exg7yK+JBcy4P9kqg0LR0L5Q671ktlqST4luNJC46Oj44WicVruZ9aiavYjrgZOenIvKPcxiQyCJIqGm+51/V+cX6Q1juK8DFqnEwYJAn8sDhUi+fDP7d6C7k2SXilPOh7mgXPJOfqQcuMqKkFPySHP+rj0WwRorKK/pjIb+3fGfnn2vQGy4OwVQzsZiq01qJcziwYPAQKNBfzpNCu65pUuOXIDsTVGpe0wC7QYtkY9VCc25FmDxJSCU5lbfFIfo36/tfW6px9hwf2J1XIFVBYeR1ORAbYdiEOdDXMoKxPBiodKMXC+kT6H/UgmsnoyRYW1eQAgy+pXep3gPeXxa4AATlkNeW4XBEZZusIywZzMizhu0LRkfhpHEq87+atnNmgpFkZvqm+VOxx5ueLeesxbcuOSfSEfKpgQ09jZ9ywDtZI5QbNUiIJd1apr8BvVdopfnZejDwJarRIBVJ1xRqAzvgUGQ+HCY5UrYInUJKuXWn2fFTC5iTsAGJpP+715yRYMwQeteankIHBPppW40V8aZo+CXRq36l5Boh9sWX50n2evgdHl2QvHk9VkV5vjS7E5gnZJr3usbqEtVdVbVcRC35YwNkZxZQndlgsn0hsP57J3uIlOvFNpjhRBBMc4S4pJpYRRZfsl6S8LSkRsRMCizMwwKhfen3P0DceBThDnQgTirDlIGCv+vESFwOSDguIRSCRARb2MzlbZqic6pquPPbfKyOgqkS2FwmZGcjMFyWSRidUW4j0QkIWNpNjwIc5
- 4GJXh5Gr
- B2QSAP1lElhnpItPBVor3BlYP5j6Db1K55Bo+MqzSepjTUc9OK6M+lJah0T04snBKKhEDWkE4avwUbPjhWkNV7APfw+7J2XVK0wlD55bGUtYgsw2V6lnE6tdMuPtJqUPOF7iZmuJN07QyVgUJMPZaguASPPOBqsMkDxt3TwtWbDXdaorZBI+jVnJzIsFjBgZWNmHQVD/j+71vSwXhsWtPVmq/l2akdeV6S5U/k+2Eg3Lhgc2yNN3FQ6IgRh5vofN4klbPg1PxhsRunVWmOXhbAuNXAB3nQYSQtfIaNsq2w1wWXFQeSBvSB2B0Oruy2hUh2hABacV6QXxx7FYc1n1kh0Rbs920pqYkypx/cVMdc/dFfOHHz39VdgFVtL7cfiqbn4/UKnYdQZ7MzRkdqkPlRDqqFWOYHRTTU1Ye4Kfu8Zo2t+emEqc2mib4bzHH3CQPhXUFKa18FQhIzk88JXuRRBRoPIr2CpgnOCPA
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783941993-168901
+X-HE-Meta: U2FsdGVkX194s/MDe8ImfEai3HfAIR84kHkEg5oCQtT5bMRtwjbdH5FFd8+UvAXJxucvxNVt6IjVJoNnJ6MdCE8QnNQnlL3LuaTG9NSyHA0bJcIzEtwAo6hNtncyFHYljm5Olhg9h5RcaGW9EdVN1F6b3wwsnDHURyQimkYF8jLhsQ+uZW2wG89U5D2GZkNCekCytExRn0d3GWWtbf8D+riaK9VXiFJS2yHP6pXL70pRpBeZGXRD6yYfcMFx5tEgzcYuv9x7grA0IR85IGv3w+gTEnHB9jYlJv5sb+QN0AfLpqAM0yPsuko80R+VfX5k9XXAKSPVfyhv/GknJvWpHPPKJOzQx11KlWlVhhlJ12T1oUs2X1xPrw0SdtOpEV2aXkDiWaxfzruBenLitIZNkABJ7WXuaSrNb9yaVS+QXnGYmJlcRV8xpjriynryQIqvd5UFjeDOFWKAVHjs91vBRN/CTBzhx6mjIZSq/WdLUIcjYDn/fJFOIVnqRxsSeCySfKD29Fq1VWiQZrFs4Um4ItPZTT3NjJKg7zcc5rmFqDHdaRDh9eZOGhmYa8fXErpbfat+jGRp99hjmRBJIkXeRhU66zPIBZyo4VmtkbgRDpgmc4HxW+ejaDSJhzXASfAjEkGNchduK57QKN07WMtSG7bq7U0gTTZCboeLoCSkhpNOoTsYaGMfDffnOHaz7q7Z1I3A6/qi05OkF+iFpXFzvlautZJVB99mxqpHlT7isvWWwwIKdr+k5NxpD5u85CIKFreaVxOWheYNLFJI5rfICAKODqjkX72PLqLV3FzusbIrTLPQnhSVCSTkqMfizVbs4MlWC+1VoT78uTo8eEWOF6Sonupc7hQ0/zgDYeMB0siW6cykpykHqrqJ7/TKw03cHVmU/8vGP3PUjE0Guw+61Yaam3aQmnA+lIrrkizA67D9yQhPlUzv/L/2WyrR+ZWZOB25jZHd5CxbITmo0IF
+ zw8qoNJH
+ GLF50aSa1cd4RZn/TOZDp0c3JpUoAZwiMv42yzJoAHpsnI6P/dB8iEsFSdWbQmP4EIeyRraVcrs9Lpd2s/hHLHctgP1I0NiZ+k/VgN5kImAF9TsZHS5YUlqOzQ1k0K4bXPqAJk1BqE9JyQas1tDeMyCg2YzBG1/CGJp+BBsFsDAoSyPsFC0GxwBZ2xP+7YD51s6CgDK3t3enIe6HmdAvto4l5lVzWBJxjTH1RoIm89w/Fg3pQBM1uGi2KyGI8q5GqPmifoN8DyC26RTMnkT6tFcrJRMWbYzPchJFG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,48 +101,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 09:39:46PM -0700, Altan Hacigumus wrote:
-> Direct reclaim clears the hopeless kswapd state only once the node
-> becomes balanced - added by commit dc9fe9b7056a ("mm/vmscan: mitigate
-> spurious kswapd_failures reset from direct reclaim") so that cgroup
-> memory.high reclaim cannot repeatedly revive a kswapd that is unable to
-> balance the node. Before it, any reclaim progress revived kswapd.
-> 
-> However, this restriction also prevents global direct reclaim from
-> reviving kswapd. Under sustained memory pressure, global direct reclaim
-> may continue making progress without the node ever reaching the high
-> watermark, leaving reclaim to allocating tasks.
-> 
-> The effect is visible on systems where a database workload mlocks most
-> of memory and the remainder is under continuous pressure: allocations
-> stall long enough that ordinary tasks (e.g. ssh) become slow or
-> unresponsive, while kswapd sits idle.
-> 
-> Unlike memcg reclaim, global direct reclaim follows the same node-wide
-> reclaim path as kswapd. Clear the hopeless state when global direct
-> reclaim makes progress, while continuing to require a balanced node for
-> memcg reclaim. kswapd_try_clear_hopeless() becomes static since struct
-> scan_control is private to vmscan.c.
-> 
-> On a workload with most memory mlocked and the remainder under sustained
-> churn, with swap enabled, comparing the same 60s window:
->                               base       patched
->   allocstall (all zones)    413441          6532
->   pgsteal_direct          15889552        255619
->   pgsteal_kswapd                 0      26079382
->   PSI memory full avg60     13.10%         9.37%
-> 
-> Direct reclaim was already reclaiming many pages in the baseline;
-> this change lets kswapd resume doing that work asynchronously.
 
-But does kswapd actually stop?
 
-I don't see how you avoid re-introducing the issue described in
-dc9fe9b7056a. Direct reclaim picking up a few pages is no guarantee
-that kswapd is able to restore the watermarks and stop running.
+On 13/07/26 1:11 pm, Muchun Song wrote:
+> 
+> 
+>> On Jul 13, 2026, at 12:59, James Houghton <jthoughton@google.com> wrote:
+>>
+>> On Thu, Jul 9, 2026 at 9:59 PM Muchun Song <muchun.song@linux.dev> wrote:
+>>>> On Jul 8, 2026, at 11:11, James Houghton <jthoughton@google.com> wrote:
+>>>>
+>>>> Hi everyone,
+>>>>
+>>>> This patch series uses a trick with the Access Flag on CPUs that support
+>>>> hardware update of the AF to update vmemmap page table entries without
+>>>> introducing a time window where CPUs accessing the vmemmap might fault.
+>>>
+>>> Hi James,
+>>>
+>>> I was just looking into the Arm ARM specification regarding the TLB caching
+>>> behavior to better understand the "AF trick" used here, and came across a few
+>>> sections that got me a bit confused.
+>>>
+>>> Specifically, Section D8.5.1 [1] states Rule RDWZCQ:
+>>>
+>>>        "Descriptors with AF set to zero can never be cached in a TLB. For more
+>>>         information about when translation table entries are permitted to be
+>>>         cached in a TLB, see Translation Lookaside Buffers."
+>>>
+>>> This indeed seems to support the core assumption of the AF trick. However, when
+>>> following the reference to Section D8.16 "Translation Lookaside Buffers" [2], it
+>>> defines the following rule for permitted caching (RSQBCS):
+>>>
+>>>        "When address translation is enabled, a translation table entry for an
+>>>         in-context translation regime that does not cause a Translation fault,
+>>>         an Address size fault, or an Access flag fault is permitted to be cached
+>>>         in a TLB or intermediate TLB caching structure as the result of an
+>>>         explicit or speculative access."
+>>>
+>>> This is exactly where my confusion lies, as these two descriptions in the spec
+>>> feel directly contradictory when FEAT_HAF(hardware management of the Access flag)
+>>> is enabled.
+>>
+>> I don't think it intends to say that "translation table entries with
+>> AF=0 may be cached" just because they don't cause Access flag faults.
+>>
+>> It is likely that this clause was written before FEAT_HAFDBS/FEAT_HAF
+>> existed. Re-reading it with that in mind makes the meaning clearer:
+>> PTEs with AF=1 may be cached if the architecture otherwise allows it.
+>>
+>> There is another clause, in D8.5 "Hardware updates of the translation
+>> tables", I_RGQLZ: "If hardware does not update the AF from 0 to 1,
+>> then the descriptor is not permitted to be cached in a TLB." I think
+>> this supports my interpretation.
+>>
+>> I am convinced that it is impossible for an implementation not to
+>> conform to Rule R_DWZCQ (PTEs with AF=0 cannot be cached) while
+>> supporting HW AF correctly. Let me try to explain why.
+>>
+>> For HW AF to function correctly:
+>> 1. Setting AF=1 must be done atomically, otherwise hardware could set
+>> a bit in an invalid PTE. (This would break Linux swp_entrys.)
+>> 2. The AF=0 translation cannot be used, otherwise we could
+>> potentially drop AF updates.
+>>
+>> If an implementation used the translation before coherently setting
+>> AF=1 to perform an architectural memory access, then it must choose
+>> either to set AF=1 on a PTE that may have since changed (perhaps to an
+>> invalid PTE) or drop the AF update entirely. Either way HW AF is
+>> broken.
+>>
+>> Please also see I_GXGPN: "When the translation of an architecturally
+>> executed memory access occurs, the architecture requires that AF is
+>> set to 1."
+> 
+> Thanks for your excellent explanation.
+> 
+>>
+>>> On one hand, Section D8.5.1 [1] explicitly uses the word "never" for AF=0
+>>> descriptors. On the other hand, under FEAT_HAF, an entry with AF=0 does not cause
+>>> an Access flag fault anymore, because the hardware is capable of updating the AF
+>>> automatically. This technically makes it eligible for speculative caching under
+>>> Rule RSQBCS in Section D8.16 [2].
+>>>
+>>> My question is: which part of the spec reflects the actual architectural intent
+>>> when FEAT_HAF is enabled? Is an entry with AF=0 permitted to be speculatively
+>>> cached in the TLB by the hardware under FEAT_HAF, or does the "never" in RDWZCQ
+>>> still hold absolute priority?
+>>>
+>>> Please let me know if I have misread the specification or missed some overriding
+>>> constraints here.
+>>
+>> Thanks for making me look a little harder into this; it's a good
+>> question. I hope my reply above makes you more comfortable with the AF
+> 
+> At least to me, what you're saying makes sense.
+> 
+>> trick. I also hope to hear more from the Arm folks as well.
+> 
+> Yes, it would be best to have an ARM expert here to confirm that our
+> understanding of the manual is completely accurate.
+> 
+> Thanks.
+> 
+>>
+>> Thanks Muchun!
+> 
 
-The distinction between global reclaim and memcg reclaim seems
-handwavy to me. Either can free a couple of pages on the node. Who is
-doing it has little bearing on the question whether kswapd can balance
-the node and go to sleep?
+Disclaimer: *NOT* an Arm expert, but it would also be good to prove the conjecture:
+
+"If we guarantee that there is no caching structure holding a stale translation, then
+we do not require BBM". Meaning, the only reason we do BBM is to prevent two execution
+contexts from seeing two different translations, and such a situation can *only* happen
+via TLB or intermediate caching structures.
+
+D8.17.1, rule I_THWDH says:
+
+"Use of a break-before-make sequence to ensure that old and new translation table entries
+are never simultaneously visible to different execution threads is guaranteed to prevent
+all of the following problems:
+
+Creating multiple TLB entries that apply to the same address.
+
+The effects of TLB caching breaking coherency.
+
+The effects of TLB caching breaking single-copy atomicity properties.
+
+The effects of TLB caching breaking ordering guarantees or uniprocessor semantics.
+
+The effects of TLB caching causing a failure to clear the Exclusives monitors."
+
+
+All these problems are derived from "TLB caching", so the conjecture seems to be true.
+
+> 
+> 
+
 
