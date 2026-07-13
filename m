@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C3BC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 02:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6524EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 02:41:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EE616B0005; Sun, 12 Jul 2026 22:38:57 -0400 (EDT)
+	id 5353E6B0005; Sun, 12 Jul 2026 22:41:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6736B0088; Sun, 12 Jul 2026 22:38:57 -0400 (EDT)
+	id 4E6686B0088; Sun, 12 Jul 2026 22:41:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD866B008A; Sun, 12 Jul 2026 22:38:57 -0400 (EDT)
+	id 423686B008A; Sun, 12 Jul 2026 22:41:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A54E6B0005
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 22:38:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE2449366B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:38:56 +0000 (UTC)
-X-FDA: 84982195872.18.62C039F
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E783F1C0004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:38:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 19A436B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 22:41:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 936B11C951B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:41:25 +0000 (UTC)
+X-FDA: 84982202130.11.4007F1F
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 21CF7100005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:41:22 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FryoO8/F";
+	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783910334;
-	b=xlBMbQFBMj9mjdAeNlXt0AT7KYGOZJKazUpUps92ppDcK48Mm1DD2E2WUvcmvitOplkD+p
-	/NOiuUX+xY3p00V1zUFPin58nHFgMjrHsOIC/blv/ji5wBCyJ1fi8BNLqZs4b8ZPpta23d
-	lrwbenyFZii8cjX5qZPfnKrg3HxCDzA=
+	t=1783910484;
+	b=u3/tKZ/oOoRVNa2azIlkeSKRSYYrR+SWL0jkZxgrQW5SwWfS5/uyefEWCbpoMimYIIu80z
+	rVkdiZhy1EG4neLzP0RD4PnwDwL/B95KjjgOSxmnoaY8rosYsV26vh19mYgeV+3Ecz2kV8
+	fDlUoKRbOfEMclYHQTY8WZ7613aFDw8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FryoO8/F";
+	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783910334;
+	s=arc-20220608; t=1783910484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2B/xG+qu8furtxmJkYMRRCvbVRz6ayW5kKLZ2HvMBhQ=;
+	b=BvKL6zeA+B/HRr1buQ9Y4DC5vZfjKguUvNcscZI92F9Rn3DCW5E0O8lWoiLIJkmwycukI9
+	fP74vfgpeBVgDpgFg0l7IFFTTFIB8UtNTRZt+XWckc1l0Q0IfK62t/VbnAp+kK8hBW+/Ca
+	Fnq8C6wzrqdQMHyjRSHR/FZJ+AlXgro=
+Message-ID: <4762af9c-e9ac-4162-a407-84d335325dac@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783910480;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=reGdW4GIsMG3hXOZXCkiZVvgj8dwSNlnJOL8jlW/q9k=;
-	b=6rNw3JQDoIla3yQGykyxJBWaz/z+2pzmYUtEj8UdfGMpgzvF90iJPD0j5ByY4sepRh8bax
-	/hCsE4H6RnF+5g9sHnqrw67/C2CmMQkHh/4/JHt4nzGohfYSKH+LcqUlz5njwQJe+Vh/LD
-	2vB4EXDMuZXHulGDGYXtIUkHnUDuZDE=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gz67t6B6Fz5B12j;
-	Mon, 13 Jul 2026 10:38:50 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl2.zte.com.cn with SMTP id 66D2chC1064193;
-	Mon, 13 Jul 2026 10:38:43 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 13 Jul 2026 10:38:44 +0800 (CST)
-X-Zmail-TransId: 2af96a544fb4856-fd9b1
-X-Mailer: Zmail v1.0
-Message-ID: <202607131038442429GlPO4g2vt4skkmMC6RNn@zte.com.cn>
-In-Reply-To: <20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org>
-References: 20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org
-Date: Mon, 13 Jul 2026 10:38:44 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <vbabka@kernel.org>, <pfalcato@suse.de>
-Cc: <harry@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <vbabka@kernel.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBzbGFiL2Zvci1uZXh0XSBtbS9zbGFiOiBzaW1wbGlmeSBmcmVlaW5nIHJlbW90ZSBvYmplY3RzIGluIGZyZWVfdG9fcGNzX2J1bGsoKQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66D2chC1064193
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Jul 2026 10:38:50 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A544FBA.002/4gz67t6B6Fz5B12j
+	bh=2B/xG+qu8furtxmJkYMRRCvbVRz6ayW5kKLZ2HvMBhQ=;
+	b=FryoO8/F6TmYq7NE1embuxGnzVod2pqWmEsa1T0lBvGOnvphTZlNlvZLciBNwUd7hGS2zI
+	/wtvuI7RZYd4dIViTGLaizNgfrmQtQCPTe2kOadIymXh0LQBIv2EUzRby8CQA6QoBLlpCx
+	x4B4xedJDrW/BcH4esObwep8iMEEyec=
+Date: Mon, 13 Jul 2026 10:40:52 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v5 9/9] mm/page_owner: use memcg_data snapshot instead of
+ PageMemcgKmem() to avoid TOCTOU VM_BUG_ON
+To: Zi Yan <ziy@nvidia.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260701061101.344679-1-ye.liu@linux.dev>
+ <20260701061101.344679-10-ye.liu@linux.dev>
+ <0E890CCC-818A-47DE-9D1C-9EEF98CC758D@nvidia.com>
+ <4d8e0125-0630-4070-95cd-acec3d626329@linux.dev>
+ <622D6E1C-6E27-4912-A1A8-E5110A4581BB@nvidia.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <622D6E1C-6E27-4912-A1A8-E5110A4581BB@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E783F1C0004
-X-Stat-Signature: iz8gjd1p9jmbztpnyjsgj6fpp8k6qj1w
-X-HE-Tag: 1783910333-293441
-X-HE-Meta: U2FsdGVkX1+wZ/8jUPi4IQsqjEpm6ISQuyh0x/+ZhU1v4RWlePApkT6amGASAAX4doWDI1/GISmPNJPUL52ektNW+LNy+SmL5qcuk+SkG8fxndHxbRbt4zLslG3nGB0F+vhOsDWTMLobZVNCaAVsSEAaGUhtRstE2UqGSz8a3QO4OuAG1spQeiyqbjpCN65IZN8aoYyvH+wQFwhVX4N1kjvKEqqRmt85ZmuRBkBH+z7/sS45W7hFOYrRsc4y1ZPHuSmaiR2UNlehWLnr+nbxgN/ff2X6SDUL5mTZQmLFrmN8CQuEsusAaNwGa54cxJE0BP0qfHAxH9pJRdJfC/KQbLkwqgl2MJA3Cj46EaNLYrgbsfwRFbqgE4IHUDrB2nL9lsCxZquYqOp5vPF9w+EfcLhQ81jplMlwYPWU58BdnIv5twD3UgUvpG8u5rDt2khbLngjRw0AWKhf/RvSftPtvo2FVC7+sEsXRkcD18Ghk91havTbRv8Yqz5XSynxDX9w03apHrmrD7wwqDtzaxz0lmJ2VecNLJt/Mj0FDzr989m9BOqfE5UHithvlVJrtEfLyaAbRln1F+ad4KSoWhmq2EOkfKPNaERVrlOdsc7krevStXxAM3+Ur1SYSnQx53MAM9+xw2mTAjS4Ku/9huxkskaml4AsMBRKFTHX38oHfgGXZG6pofWpZuPdr3eC06gNonEW+YCH7B0ahAeyUbM1fHUOSz4bzD8p3WeRxdjRVYqtI2Ddi8kvZHR+4frg0m7QAXp2rlVpKmGuyQUtYzCOAr/KG+gsY6+BDpq/IYzWbFYctssAPr+3zBdSyBs9ObPd0RG8dNlSyRh624XEA6xoyrxss4Jb0IjJCcwveRRxgUD3epumEUUh680OAZQl5Kg3bHRFJIAXkc+k/wzrARs3JQJFdIY76VxK3Ff+5BECIYCQQ1qro6NbmP3bMINRoWKOHHna6agjA/PWNggktXU
- 9FnFHH9H
- NHX0r9/4MWBvW6cgYjZN0c/Pbtv9yWmRhOBc/hS8Od8wDY3akrM7DMAprBKqbOiy5rBYG7dmsUub8pBThhrhztcwlnCYCObJQBnaQ9DYc1iSNdYDVz0l6dFyMUeM4Gqcz0FWxJkAM4OZ6ZUWC9atjvz+8O5+NdR7E8Ye/UCyl3S09gGAV9I2tc3Lu1hKJFVHXb7SAU0TWsbZFEgxtxlQXTyDFIahKx0iU64UmC9kJZcYjds8/SRz4x2YLzGdXTJlRX3xXnZFWZ7GwNDBoca0+d7WDRpBg/K/5SeYt
+X-Rspamd-Queue-Id: 21CF7100005
+X-Stat-Signature: t3qegbdeq64onjosimta3kdbzzzjkh5x
+X-HE-Tag: 1783910482-101007
+X-HE-Meta: U2FsdGVkX1/bVOHtsl+XXWE6ogcWysPQonm0e+VgIraPCxxZFtsIV8jLQaCRWTKK6H1Lws/wGQqeBa5VnOKYb3x4DoiL1zX2fLlBb58Jo0WtNwF+PYzwNN0VYyqSr/a6cN/KYvERAuMPjURHPJoaVmPXS6xWeA3+WcQTSFjZwjVOOD56mlu0cplfrHhZYnxKf7sCEUXIDiZx/H5YuY0gG5CG6gCz4aXaTi6bxbXvUxKYk0jJUypDkH0brQVaNEHDNxndBCtZaG5zIAwBhiblJqgb0XISnOjiDdDc7x0DlAUTB1pOuOows6CRgnzuv8hije9JD1+1fGB2GppEKNhSa/FUX3inHkiYXDamGBgM0WGJPg5wVm0yHrR1kPCx5lL33mF9XhAYfj96qRzFIADiIoag1gzzDdV+jqXzj/Vh2jouc8WINqhQwB9n2lclwyynpwO2Ip8/D/p4WPXcfo1wUNuxkscDk6/okP9VYvv2WxCM7y4/jhcgwdBFvUKB2Hg245U1QTUPvZQSvNzVl+M2dLObEIhIHrkozQR4/DCioqjTpEHFYgx3HFccHH3aePfm17vQLSgHCeWkJXPYnz9FsntD/sOlMbYFM0LFPNgSzeLqaCPKQH0nInJp9lp36BlJHalBoNx27FYC5WkErkDT8bz4Q6zYPbOKA9BRsOnMsUPz4PpnXXC2FrlU4oveP4jNwdZlBQJLxM4jsBrks0wIiaL440NAAPR9m+PDbcEBCh+GY1izB/sCjj29PZ1GpnuxgfzuaBkUq6spNYvZeMP97TAYZgeUJdH3a2/yJGrKkSr95+SoocGbr0Mc4/iNocMM6aRuEQwT2byaLb2pKBvrSUUqUQr5wGUoiktjmmJOK6DAZUuUOMOk3SMeZJpwJ466z7Svbq3AEVacR6mq25IU/aeq0g+yLNoN29+sEi+OUSjCUGFVDmP6Xv/jJKEFszp9eSoWTVW2Zc3KWtqnpOX
+ Nw2uz5OU
+ JTplNU5INNhEqh5c7KWM5ye/W1cybDha1bmCpfOyU2BGchhZqBXgjf7BBgjDtqv1aZ1Gz2+7tv9x8VN1mi23REuJ7nrE3w5xfmdZsyaB8Bwkp1qCuEHGe4JynL5KSUIHvP36ZJR/VMe9c/fMZlz5oV/c5wKUVS20nho5JwF8ZoTGmuVXcEd+8YPLU9MmJU2FrG1VNlg7Wz5JbQjXSdYPz+qclZtXFRjZQ+eMMNkaFxCXZykhKrnliOsjsMx0PdxPXL1EI++IZcM8nsWIVskvyYcFv9e9GmDASm1O94OkLR7gaXSmDAtS4h6KC/NHqGiz0g2KRLVKdQuV38TyVSUQ2VxVwav6WfFhgvpUqFdGSAZdnKYs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,106 +97,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Vlastimil wrote:
-> We have been moving remote objects to an on-stack array and flushing it
-> when full. Instead, we can swap them towards the beginning of the
-> supplied array and bulk-free it just once.
+
+
+在 2026/7/10 23:56, Zi Yan 写道:
+> On 10 Jul 2026, at 2:51, Ye Liu wrote:
 > 
-> Also add a comment to explain the rationale of freeing remote objects
-> last, because now it would appear to be simpler to free them first.
+>> 在 2026/7/2 10:02, Zi Yan 写道:
+>>> On 1 Jul 2026, at 2:10, Ye Liu wrote:
+>>>
+>>>> print_page_owner_memcg() takes a snapshot of page->memcg_data via
+>>>> READ_ONCE at the top of the function and guards against tail pages
+>>>> and NULL memcg_data.  However, at the end it calls PageMemcgKmem(page)
+>>>> which internally calls folio_memcg_kmem() — and that function re-reads
+>>>> folio->memcg_data and page->compound_head locklessly, wrapping both
+>>>> in VM_BUG_ON assertions:
+>>>>
+>>>>     VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
+>>>>     VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
+>>>>
+>>>> If the page is concurrently freed and reallocated as a THP tail page
+>>>> or a slab page between the initial guards and this final call, the
+>>>> VM_BUG_ON assertions can fire on debug builds (CONFIG_DEBUG_VM=y),
+>>>> causing a kernel panic.
+>>>>
+>>>> Fix by reusing the memcg_data snapshot already taken at function entry
+>>>> instead of calling PageMemcgKmem(), which is semantically equivalent:
+>>>> PageMemcgKmem()->folio_memcg_kmem()->folio->memcg_data & MEMCG_DATA_KMEM.
+>>>> This avoids both the TOCTOU window and the assertions entirely.
+>>>>
+>>>> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+>>>> ---
+>>>>  mm/page_owner.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>> LGTM.
+>>>
+>>> Reviewed-by: Zi Yan <ziy@nvidia.com>Hi,Zi,Vlastimil
+>>
+>> This patch still has warnings (see sashiko link[1]).
+>> I've made the following modifications, or do you have any better suggestions?
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-Good idea!
-
-> ---
-> One more cleanup I realized it's possible when processing feedback to
-> the previous one [1]
+> Maybe use snapshot_page() from mm/debug.c, so that you do not need to replicate
+> the code from folio_memcg_check(). You probably still need the rcu_read_lock()
+> when reading memcg_data from the snapshot to prevent memcg going away.
 > 
-> [1] https://lore.kernel.org/all/20260707-slab-simplify-bulk-pcs-v1-1-4850dbe0d904@kernel.org/
-> ---
->  mm/slub.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
+But it does a full struct page + struct folio memcpy with retry loops,        
+which is more than what we need here -- we only care about memcg_data.        
+The READ_ONCE() snapshot is sufficient since the function already             
+holds rcu_read_lock() to keep the memcg alive once resolved.                  
+                                                                              
+The two-line inline of folio_memcg_check() logic is minimal, and we need      
+the OBJEXTS check to be explicit anyway (to print "Slab cache page\n"         
+ -- page_memcg_check() just returns NULL silently for slab pages).            
+                                                                              
+Therefore, I don't recommend using snaps_page. Are there any better solutions?
+
+>>
+>> [1]:https://sashiko.dev/#/patchset/20260701061101.344679-1-ye.liu@linux.dev
+>>
+>> diff --git a/mm/page_owner.c b/mm/page_owner.c
+>> index 2e3880053a34..e18512a49e38 100644
+>> --- a/mm/page_owner.c
+>> +++ b/mm/page_owner.c
+>> @@ -540,6 +540,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+>>                                          struct page *page)
+>>  {
+>>         unsigned long memcg_data;
+>> +       struct obj_cgroup *objcg;
+>>         struct mem_cgroup *memcg;
+>>         bool online;
+>>         char name[80];
+>> @@ -549,11 +550,14 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+>>         if (!memcg_data || PageTail(page))
+>>                 goto out_unlock;
+>>
+>> -       if (memcg_data & MEMCG_DATA_OBJEXTS)
+>> +       if (memcg_data & MEMCG_DATA_OBJEXTS) {
+>>                 ret += scnprintf(kbuf + ret, count - ret,
+>>                                 "Slab cache page\n");
+>> +               goto out_unlock;
+>> +       }
+>>
+>> -       memcg = page_memcg_check(page);
+>> +       objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
+>> +       memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;
+>>         if (!memcg)
+>>                 goto out_unlock;
+>>
+>> @@ -561,7 +565,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+>>         cgroup_name(memcg->css.cgroup, name, sizeof(name));
+>>         ret += scnprintf(kbuf + ret, count - ret,
+>>                         "Charged %sto %smemcg %s\n",
+>> -                       PageMemcgKmem(page) ? "(via objcg) " : "",
+>> +                       (memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",
+>>                         online ? "" : "offline ",
+>>                         name);
+>>  out_unlock:
+>>
+>>>
+>>> Best Regards,
+>>> Yan, Zi
+>>
+>> -- 
+>> Thanks,
+>> Ye Liu
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 22045dc919ef..966d2fb114e8 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6255,7 +6255,7 @@ static unsigned int __free_to_pcs_batch(struct kmem_cache *s, size_t size, void
->  static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->  {
->      bool init = slab_want_init_on_free(s);
-> -    void *remote_objects[PCS_BATCH_MAX];
-> +    void **remote_objects = p;
->      unsigned int remote_nr = 0;
->  
->      for (unsigned int i = 0; i < size;) {
-> @@ -6270,19 +6270,17 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->          }
->  
->          if (unlikely(!can_free_to_pcs(slab))) {
-> -            remote_objects[remote_nr] = p[i];
-> -            p[i] = p[--size];
-> -            if (++remote_nr >= PCS_BATCH_MAX) {
-> -                __kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
-> -                stat_add(s, FREE_SLOWPATH, remote_nr);
-> -                remote_nr = 0;
-> -            }
-> -            continue;
-> +            if (i != remote_nr)
-> +                swap(remote_objects[remote_nr], p[i]);
-> +            remote_nr++;
->          }
->  
-
-I had the same thought as Pedro: the in-place partitioning is correct, but
-the partitioning logic is not immediately obvious. A short comment documenting
-the layout would make the code easier to understand and maintain, for example:
-
-/*
- * Partition the array in place:
- * [0, remote_nr) contains processed non-PCS objects,
- * [remote_nr, i) contains processed PCS candidates, and
- * [i, size) contains unprocessed objects.
- */
-
-With that tiny nit, the patch looks good to me.
-Reviewed-by: Shengming Hu <hu.shengming@zte.com.cn>
-
---
-With Best Regards,
-Shengming
-
->          i++;
->      }
->  
-> +    p += remote_nr;
-> +    size -= remote_nr;
-> +
->      while (size) {
->          unsigned int batch_freed = __free_to_pcs_batch(s, size, p);
->  
-> @@ -6296,8 +6294,12 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
->          size -= batch_freed;
->      }
->  
-> +    /*
-> +     * Processing remote objects last decreases the chances of cpu migration
-> +     * while freeing to sheaves and compromising object locality
-> +     */
->      if (remote_nr) {
-> -        __kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
-> +        __kmem_cache_free_bulk(s, remote_nr, remote_objects);
->          stat_add(s, FREE_SLOWPATH, remote_nr);
->      }
->  }
 > 
-> ---
-> base-commit: e1fa26489025d6deac76d1dbfe2e0720a3ad84b1
-> change-id: 20260710-bulk_free_remote-7fbe6f3abf5d
-> 
-> Best regards to everyone but Pedro (btw this is not hard-coded,
-> there's a config option for this),
-> --
-> Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Best Regards,
+> Yan, Zi
+
+-- 
+Thanks,
+Ye Liu
+
 
