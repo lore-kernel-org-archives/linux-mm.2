@@ -4,95 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06023C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:58:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB484C44507
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CAA76B016B; Mon, 13 Jul 2026 12:58:08 -0400 (EDT)
+	id E74876B016D; Mon, 13 Jul 2026 12:59:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0366B016D; Mon, 13 Jul 2026 12:58:08 -0400 (EDT)
+	id E26BB6B016F; Mon, 13 Jul 2026 12:59:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CE056B016E; Mon, 13 Jul 2026 12:58:08 -0400 (EDT)
+	id CEBE16B0170; Mon, 13 Jul 2026 12:59:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BC7F6B016B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:58:08 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61A1DC0DA6
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:29:13 +0000 (UTC)
-X-FDA: 84983985786.24.BE2C266
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B13474000D
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:29:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQJ58xVv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 99D3A6B016D
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:59:23 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C379400FE
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:59:23 +0000 (UTC)
+X-FDA: 84984364206.25.E9C73D1
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4AA25C0003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:59:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GBf2BqjP;
+	spf=pass (imf22.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783952951;
+	s=arc-20220608; t=1783961961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vDVLveXJA8tyZM5x+2AUKuT7u3jiA9Hoaj06+pMMJeE=;
-	b=36U36rzvjIHjIIbwS4ANQfE4F4OTpVDhgRbCL63L5EhzC/zS0M28/fZ6nv6Gss/9V05Wb+
-	e2cOC064IZYjUXJuNhpfemoVjHSKOMUMza8Xw++OA6ppmMjj8uLxCg01pvsYIu9VLb0lNZ
-	9HerYwiLicdi0cnHBQgrr/LR8lQWOzM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQJ58xVv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	bh=ntUweueTN5fRqaQOoy5Hqmcgc1LaFPt81cAcvUtqRRA=;
+	b=5jRkHiV9Y4ko5INAijZRMHXf6FdzTMWA9uoXY5XRRHvtuAh4yUlc4VKov8rmej8xs/Wq4+
+	lS/PJfuzh24+3laXwuoDrbVKM+QZRFA/7rOskJ0V/W+pVthrRecTj3cAzB9D0Cdm6xieyF
+	2av12LMCP2vZcm5MfvRvSxGcM/77VJQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783952951;
-	b=7T/YoDmhkfftz3zbpmxTrbxvv0EZxusFpNZ+FV3yjSakYxNKTc6kBcuzqOxtLxSNW3gw7C
-	jkXcTwEaoVAPrPmT6EC5kFiNDU7RT67b7MyfsrkLrWkGrFHcsHciQoq+KTZzVkvPEQSjEu
-	AoF7op/Kc6Tfw09UsndR0sJI74Vl57Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 57078601D9;
-	Mon, 13 Jul 2026 14:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86C21F000E9;
-	Mon, 13 Jul 2026 14:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783952951;
-	bh=vDVLveXJA8tyZM5x+2AUKuT7u3jiA9Hoaj06+pMMJeE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZQJ58xVvCyDtYjqCq2vQ9fn6eA8hROHL62vQG/NKYOJtBYpofOJt8rhG1UdEODJrg
-	 VCgH+2ZXab3dlhStSwalPlGfgkt6JQxjYXh0UFNVHFZIkPKNwVXvXzXDjXk1q2VuTV
-	 YjsYPHrA/RZx7+Mcf0sCZda3bytbJ/Hv8MEd0Y17YF5bTTs4Y8HcJTB4lpvY65t4lu
-	 uU+w8DsylDL7x2YjVkF/BDdrfEec8Nq4f5agwpvyK4/hqITgAMQQhRof42QzyPmTvk
-	 f2I/M+6BHWZtIFtutnxcFK7pYzy+Ca7guzfr9YUmk0/WqCw4JOi/0O0PO9ci7tCtZr
-	 Du4K/95AV7g+w==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Mon, 13 Jul 2026 23:28:50 +0900
-Subject: [PATCH slab/for-next-fixes v3 2/4] mm/slab: decouple
- SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT
+	t=1783961961;
+	b=iER5Q0IlWw+z7QeDeYGLXj0FQrix9niR/pvMLEM4+tAZ6kEFBcQG/vCo+faYFl6mQ9rcQc
+	m3bm0/tHQZvB4UUZnHqkt3MlIdigyvjWaL9wRQ4aCbI5Ql2Ju6IG138B5GRcawXtJgTMOk
+	G33bpRJK1fr5Ic5XA6TLsVY+ccyzNyc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GBf2BqjP;
+	spf=pass (imf22.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ca88130e09aso2286266a12.3
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:59:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783961960; x=1784566760; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ntUweueTN5fRqaQOoy5Hqmcgc1LaFPt81cAcvUtqRRA=;
+        b=GBf2BqjPsq167cJ++6S3Nf1NcQ91Lmi1TYfX/YfNTg3RjL4TMfpKTP+rXGEjt51ltt
+         sQTyXlnQbl3y0e2THD0J0PNkNqOC7G5VLi4BaT37aboGnOt1ccmfis+mqyiw0d5EBd2h
+         DlNP8+xh1UaT9Vc3LmT8l+dV/ZL6mEgc+pWkVEP3MUAzHumlIs4VHh/Jukh+iwy2ZqJd
+         3tfPzhCuaP5wPsylAXbfcJiFUg2rTv3cz//sHPTjVHitEmFXvxi7z2CTnHj5TyGITD6A
+         B07pdcMfcwJkpRUn0HHxgJlgvsnYZZvaeRUCUPdcO1AL7fCHyFLRGPV7H6rX4g3GrHB0
+         EZzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783961960; x=1784566760;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ntUweueTN5fRqaQOoy5Hqmcgc1LaFPt81cAcvUtqRRA=;
+        b=oOYCzMT1Tut0VGlV3UPdZ3T664HWI9KXTE/bBWu75F4TRWz7PP4xq1vQ39rkIsmGWG
+         Qg6xXmcEbx70cTREnPkSr+4tCHVK/VffHMVwrtVk9nm84dn2v/+Zu/TFkissNW0vSdAN
+         F6cHbRYPp/MBdLThACQGaxTlK30snGZALS6DZkpxOcV9lWMW2V7ZmJ3ePsSB0Bds58M/
+         bIVVrW3WKMPjWW117HL73Z3vGivq3J+I5juA/6BE6OKuBjcYV0qISifhJCT1p80/yzs0
+         WKau8DC6fa9ISMPbJI3iZUh6A6A22eKh/l2jVXxd0YW78VKJOeuFYLlZRdrpU5DSNH1M
+         2jCg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7qQuWtjp9iHYaGPT7toqhHsuFoknJf4UvkgpJpwGeLZS984WpDvOq7fbuhB+x9/w9nPc7YUWYpQ==@kvack.org
+X-Gm-Message-State: AOJu0YwYWNQvK7GjtUpXFFIroXlrip0CwubxNLv6YrCRMMwooawjEoEw
+	BrqO7YHUIQdMWyemTLoTFYFivvTLfKgIfzp9DDAat6vFilkWL8SWzqFH
+X-Gm-Gg: AfdE7cn8lpZvogIQpuisQs1C4jxIIdDUUPQS3ZbJb2LR9nMfw80vWtiyehwIMVAT4mL
+	2YZ98ox4XWghBSVQeZ9P4hjnZ5AluQyE+TPLkUrVcWggivo0T5FGaxZ7qQaWxnhkbT88If+uayI
+	MRBizF7XIk9K2DBAdwbpZf2ulwfAVOVLyahP8DHPrOGjhwUxPhob6FVQR2OOkRGjvjFiHIA6aVk
+	AnU7BcNdqAEERT+dhNwNlFi8wFlKn44UybSx2gCvQ1rmf9yR8z/GZAx3nmHQodU3/5jlGposmtd
+	AIfl6YGUR4ah8pBnvszUWYHOKdmeirCxh+0GBSeUeyRcP0hps7I4PlGsP/6RZZ5fYUBeS/Ncq3d
+	FsPMhy6XEAclouIMPinnVP0uAw8wA04oYR/Ilimy+fS3APwnxd8iHruIuR93bba//VkjrQ7ZZf7
+	VHaZGQWvnv9QDz4X+joTX+jagLPM1or5+Glhm5NjP01Wg5lKMsq6yUwdo=
+X-Received: by 2002:a05:6a20:c907:b0:3bf:a1e5:ff62 with SMTP id adf61e73a8af0-3c110cdb078mr12110955637.47.1783961960162;
+        Mon, 13 Jul 2026 09:59:20 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5afbc1208sm8643053a12.9.2026.07.13.09.59.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 09:59:19 -0700 (PDT)
+Date: Mon, 13 Jul 2026 09:59:17 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, corbet@lwn.net,
+	dakr@kernel.org, david@kernel.org, decui@microsoft.com,
+	haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org,
+	kys@microsoft.com, leon@kernel.org, liam@infradead.org,
+	lizhi.hou@amd.com, ljs@kernel.org, longli@microsoft.com,
+	lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+	mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+	nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+	rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+	skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
+	vbabka@kernel.org, wei.liu@kernel.org,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v8 5/8] drm/nouveau: Use
+ hmm_range_fault_unlocked_timeout() for SVM faults
+Message-ID: <alUZZYIPY-UkhpY4@skinsburskii>
+References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
+ <178371881847.900500.8789369230260725500.stgit@skinsburskii>
+ <20260710151222.ddb35eab9c81a8720491464a@linux-foundation.org>
+ <alG1k3JsoywE2CBM@skinsburskii>
+ <20260710224833.9caf2a0a9906f0515e326a45@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-kmalloc-no-objext-v3-2-47c7bd138de7@kernel.org>
-References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
-In-Reply-To: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- "Liam R. Howlett" <liam@infradead.org>, 
- Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
- Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Danielle Constantino <dcostantino@meta.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260710224833.9caf2a0a9906f0515e326a45@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B13474000D
-X-Stat-Signature: p8zctwpd1es8rjf3di3wwocdimipjqgw
-X-HE-Tag: 1783952951-483583
-X-HE-Meta: U2FsdGVkX19nSKbvDpjZh4D7sVxfJxpYemOJBHtgpC5QdSe0nMZb4i4fwbRU7AI2KospVaRJQUX67HlDN+0DBppud0l46GLoaM8OmhdzaQNDiWw4VRu5wpRRLM8IvbIYy21/1nr7BPg++ZdBpy7W878WSnUXuMkV8F7DIagFJLU3iLl1U2FqOm5jSL/EjMbvVTW8+AW4y0/a9wDhsQNbmiqIwy9I1XWvxxJIEaAHHiltFgaqz+nuWeEcLsWNmlRr3+nvsP2njwzd06DeyHQcj7dqKoAb+iPsn5UltIU4TRxvBF0CtQUtMLbMMDvNM2xTM4PXvjrNWE/Cm1s1U9UErnSo7XTxGhTPH7pjiIXay4BcR2mZTtHRrYICk+/YPYAogniJAu/XOvo0VBGrfRGrAn8HlJF72NcKiiERUFF2PmwNYHUJxZ0dbQ1qKLZwsR6nqGz4evw0cwiJG2j1urcSRWh0/D5YNyoy8L+N3kIo6c7ysUekGjLuvMaRFWGi8Rn3UFgjZlVpl4TpVfCT2oqrykxEn6BrOxRoCIXtRfh1rEhsTmIjUhS+1U6xhoNDNhBxO/ne/+XK3vYjKSKeU6q9xsvXx3PqmEz3os4qVZLc99aJT7BHbCmTQDRbsCnktclxyu4X4qf/HJqUM6udZp9AbHaOv6iyJWGZyq5oEDimTxQV2C7HltwD8lzvaUqCWgkP5Tpk5k5wE4KDlafFfcFZPsCwFvIO/K+4IVvHUyp8keV3SIoJKm4RSNa+wJqSq78mAN2NafIvWgUMPQvmVXoJ3ReEjX4mFVlRRBmRjOQZQW9r1G2O/ro4t2NTBNce63iEhdhAiV7KJ74XU/IQzsy/GgrIw/T8Y3K+863KMxzVlxOTHFCLB2IxLeOub7votAc4EXGoQcA3aLia4aBkHjvQ/jKRy8hYH/MitoPrs4jrCITVQO99XHM4dSUqVnNuzKgzHXdUAhXQUUXkwJsFpfk
- stpw4zY2
- GAO/Ju5lpurxWTc6r4kaT+6Dhp3ZHtEakqjo+ATjkkDudzcDtMurgPxJnYQ4fKBlMrTbM04eeOILnRBU9CWBKvAYLWL6qvx/H4qtFcs8hZlOs6fldXvlAfPvhGMypOwM91c2QdlIrOkZVtNLyD3cSQ44qIe/OX5AVrc24APhymS8A8JXNmCRkIGkIG2rL2tuco1AIJk3KySieOtD7pDYLEN0OU2+r1WAhe3D5FTax6yezykYCNQUP5VXSuwccudXfSwAp6uTa6puAk+Wd3qGI6obCLPOU5dxlyeUD
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4AA25C0003
+X-Stat-Signature: h1n5xxoypw1jcwpt9ueg6gudmrx7caii
+X-HE-Tag: 1783961961-75652
+X-HE-Meta: U2FsdGVkX18xGt6Yk53YD2DmSQKcX4WEzY+TeyxsPy2SzoTQ89PRJz45Hk9QHgZ+9r6NnQ/OeVlXp/0D/LxW5kRp/ZHZ17iZZrkGyXAV17sC3Ibo7FK9dD8B3cVAahANdiporI5XUZzEVCCyd8xIYP0AFCtcGh58s+jmU6DHqIQmkOQM7OXxCH4rG9djNOngqGYdc+2JGVkjS22SGBrWffWZgIg0Jk5C6L5xV9Zg136WMaK6BHgt7k5iz5BgGB4jtIJgbLataRkFJj+j+DfaKxcv8YppCrKWoW3Fo/cLIIufLfH7Ox7R4TxXfbk3TuF59PkEbnSpTVkpkiaRZ4x66xWiexbvRCLHStL465ocQrzB+qkiR1VlBzrX6QD8hMI5UBSWiGkOPeI2MY6dnROyVMH8kIKitIWz/+KfFuD84Hu/5G0FHKSG9jKhLPtg2alo9aIZtCjUnJZ0qgTSnfJnez4xJ31tY0TNHVKF+qPLfanR2VOO9HlhFACvQK9xmgT8DafI7LSvifwel+CZkK294fPIxfAs9vr8QUdorWiHzNZBQzfJez4aZMykE/17mpKOuLflea8O7IozgxdpYbAmDSZSQZVs9q4ZXA+okcpjZHY21SizrWAtR/ZFregJ6O44YBzZX0yjOyDBiekPQdIM2Z2E46bvvY8Gfbw/crtu6OjbhCLvJ0z5/GLJ2jUfBQ7jHsTlLmeJ4WJnAXnYlv1GaNTNWFSVQbl4QDg+44t0MmzyBCtlxnfaLCWsKF0qNdehyFl0HSTvFtO6Mol9qJKyt6BhFqQVINBqDFO7MK5JxpHUi7SJWuy+ykoU1QfqgJwi2DWzGsYbWtMSwC9kyg6pYR0r2/Z7HLActWoFPKV5Jw7QeQfUMq0dOcdDtWFbVA7vsYnLz41ErZYMNLIrh3gez1b1/geupDr31Ikd7UBoNVtsxpuJV6TcMwq1GT5SnXh2hOKGLUI0wtagHQNv3Sy
+ CAZamJYL
+ LDulz0ZaPfk/nMC+KMts/xfpoVP54UwBj36erKnv8+wLTlFWu5V7sJmSzTGiuJTpRs1KG7LsgCRwS5kZck1XliLHxnYpQlcsA+Vn6xsXtxo0fBZ9g4OQiyzvzebOWJzYUfXNHO724WxQOnNk1w0gPjc73lVvRGJ/49K6fpiuTlSdH38Bm419rgwqVUNDlT8ulx7thqGjgJ4U0kCWisAL+wUPQm6JacKVudCiIb2DzFlFacboezf/OFx5UyEj5n7MG8KoKysR9eKd4LHffbzI4K4PMIbatRKTb0ytCHGDgV46aZ+NA8/DZnkP1UwEjB4SHCrGu0vlZh7Y5p2hHziycsOl/4KBFv5MYPTSsRZdEplib+TRcvkGXqBYPn5eg4Y8lLe0TYCcuk8uCHCkD5SKYZH5vsygR+7Zfzzgyf/39KoUXZC/2audvQt3t0yejX6ut24pbulzaOojyax2ksxHVHhFURd1/n3S7f6C/UQQg8w5bPfrGEcopdJCEGqcoPNEeUVzm1slGDP2pgQEkNWy8NAKbIEVVoir2B8+VtmzKZ0LZeTFXKo4JfxjQ/HdY3Is6+2wQRAfvrKnVGwg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,100 +138,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Bootstrap caches are created with SLAB_NO_OBJ_EXT to disallow sheaves
-and obj_exts.
+On Fri, Jul 10, 2026 at 10:48:33PM -0700, Andrew Morton wrote:
+> On Fri, 10 Jul 2026 20:16:35 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+> 
+> > On Fri, Jul 10, 2026 at 03:12:22PM -0700, Andrew Morton wrote:
+> > > On Fri, 10 Jul 2026 14:26:58 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+> > > 
+> > > > @@ -683,15 +683,11 @@ static int nouveau_range_fault(struct nouveau_svmm *svmm,
+> > > >  			goto out;
+> > > >  		}
+> > > >  
+> > > > -		range.notifier_seq = mmu_interval_read_begin(range.notifier);
+> > > > -		mmap_read_lock(mm);
+> > > > -		ret = hmm_range_fault(&range);
+> > > > -		mmap_read_unlock(mm);
+> > > > -		if (ret) {
+> > > > -			if (ret == -EBUSY)
+> > > > -				continue;
+> > > > +		ret = hmm_range_fault_unlocked_timeout(&range,
+> > > > +						       max(timeout - jiffies,
+> > > > +							   1L));
+> > > 
+> > > "1UL" here?  I'd have expected min() to warn, as it likes to do.
+> > 
+> > I'm not sure... The "timeout - jiffies" can become negative.
+> > Won't 1UL convert both of them to "UL" and thus make the comparison
+> > overflow?
+> 
+> `timeout' and `jiffies' are both unsigned long.
 
-To allow disabling obj_exts while allowing sheaves, decouple
-SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT. Bootstrap caches now have both
-SLAB_NO_SHEAVES and SLAB_NO_OBJ_EXT.
+Yeah, I’m sorry for the sloppy wording.
 
-No functional change intended.
+What I meant was: will "max(timeout - jiffies, 1UL)" correctly handle
+the case where jiffies < timeout?
 
-Cc: stable@vger.kernel.org
-Fixes: e47c897a2949 ("slab: add sheaves to most caches")
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- include/linux/slab.h | 13 +++++++++++--
- mm/slub.c            | 10 ++++++----
- 2 files changed, 17 insertions(+), 6 deletions(-)
-
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 51f03f18c9a7..08d7b6c9c4d6 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -58,10 +58,13 @@ enum _slab_flag_bits {
- #endif
- 	_SLAB_OBJECT_POISON,
- 	_SLAB_CMPXCHG_DOUBLE,
-+#ifdef CONFIG_SLAB_OBJ_EXT
- 	_SLAB_NO_OBJ_EXT,
--#if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
-+#ifdef CONFIG_64BIT
- 	_SLAB_OBJ_EXT_IN_OBJ,
- #endif
-+#endif
-+	_SLAB_NO_SHEAVES,
- 	_SLAB_FLAGS_LAST_BIT
- };
- 
-@@ -239,8 +242,14 @@ enum _slab_flag_bits {
- #endif
- #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
- 
--/* Slab created using create_boot_cache */
-+/* Slab caches without obj_exts array */
-+#ifdef CONFIG_SLAB_OBJ_EXT
- #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
-+#else
-+#define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
-+#endif
-+
-+#define SLAB_NO_SHEAVES		__SLAB_FLAG_BIT(_SLAB_NO_SHEAVES)
- 
- #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
- #define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_BIT(_SLAB_OBJ_EXT_IN_OBJ)
-diff --git a/mm/slub.c b/mm/slub.c
-index f9461a0c47d3..abe748b7dddb 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7799,12 +7799,12 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
- 		return 0;
- 
- 	/*
--	 * Bootstrap caches can't have sheaves for now (SLAB_NO_OBJ_EXT).
-+	 * Bootstrap caches can't have sheaves for now (SLAB_NO_SHEAVES).
- 	 * SLAB_NOLEAKTRACE caches (e.g., kmemleak's object_cache) must not
- 	 * have sheaves to avoid recursion when sheaf allocation triggers
- 	 * kmemleak tracking.
- 	 */
--	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
-+	if (s->flags & (SLAB_NO_SHEAVES | SLAB_NOLEAKTRACE))
- 		return 0;
- 
- 	/*
-@@ -8586,7 +8586,8 @@ void __init kmem_cache_init(void)
- 
- 	create_boot_cache(kmem_cache_node, "kmem_cache_node",
- 			sizeof(struct kmem_cache_node),
--			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
-+			SLAB_HWCACHE_ALIGN | SLAB_NO_SHEAVES | SLAB_NO_OBJ_EXT,
-+			0, 0);
- 
- 	hotplug_node_notifier(slab_memory_callback, SLAB_CALLBACK_PRI);
- 
-@@ -8596,7 +8597,8 @@ void __init kmem_cache_init(void)
- 	create_boot_cache(kmem_cache, "kmem_cache",
- 			offsetof(struct kmem_cache, per_node) +
- 				nr_node_ids * sizeof(struct kmem_cache_per_node_ptrs),
--			SLAB_HWCACHE_ALIGN | SLAB_NO_OBJ_EXT, 0, 0);
-+			SLAB_HWCACHE_ALIGN | SLAB_NO_SHEAVES | SLAB_NO_OBJ_EXT,
-+			0, 0);
- 
- 	kmem_cache = bootstrap(&boot_kmem_cache);
- 	kmem_cache_node = bootstrap(&boot_kmem_cache_node);
-
--- 
-2.53.0
-
+Thanks,
+Stanislav
 
