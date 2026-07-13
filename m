@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DE50C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 10:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF6EC44507
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 10:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34AA76B0005; Mon, 13 Jul 2026 06:22:47 -0400 (EDT)
+	id 6D0896B008A; Mon, 13 Jul 2026 06:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FB706B0088; Mon, 13 Jul 2026 06:22:47 -0400 (EDT)
+	id 681CE6B008C; Mon, 13 Jul 2026 06:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 212056B008A; Mon, 13 Jul 2026 06:22:47 -0400 (EDT)
+	id 597C46B0092; Mon, 13 Jul 2026 06:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F07E96B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:22:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 80F1C94107
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:22:46 +0000 (UTC)
-X-FDA: 84983364732.16.5EB91B2
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 415A7C0009
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:22:42 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h9p5lrWo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 357DF6B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:24:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ADADEC7458
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:24:31 +0000 (UTC)
+X-FDA: 84983369142.29.A5A31A4
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 329FB160006
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:24:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uvMmJ6cU;
+	spf=pass (imf08.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783938270;
+	b=VDm8GcjTVajDrsUXSVcuqIDvRQrGNZfKfqZs/QzAC4TOx51eZZlYfDzZAAPvtc6/Lzj2wE
+	Oyh5CuQ+J8WFn9UqTvi1WKQJjCF9+t8O4BjUy1igakcfE/Vr6odasQPQgeWf90lu6moMgT
+	aADNlzJyUsFitjNiKFntEYa/Zq0kygQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uvMmJ6cU;
+	spf=pass (imf08.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783938165;
+	s=arc-20220608; t=1783938270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hRcZAfhs+kHcVySJuPzxTTfP2MnAcNBGTb9R86cF3qs=;
-	b=oiLsxuVPxrmDjENHchHsVXovdtxWZPPdutHk+yegAVS+9zAGn2oSh+4q4Ahl1CQQR2S66J
-	clTRz38IeWJftpmj+9I3L1xZDUHdHFHrJxp4aa3gjddbygUCO/HKeSXqOBOMcg6YApQj2y
-	+di/kGabsN1doSK1d8EyhiJuH6BSGcU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=h9p5lrWo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783938165;
-	b=rhyTvHWu964jDn36jG2HQdvSsA4K+YsO17MgLuumnIllIIVaMi9NrdU+4Rb54RSo/hZhD9
-	nY6cCEnDDBBmeCqVDnV06O1j9x2bEedSAzzF5rqY2DLdTTyuYM7esU15pIqjHVrjCfMVKm
-	SIEbEAm3BcjVF+yC0BGtPX0Njux6D/0=
-Message-ID: <99977527-c2d7-4c70-8d92-03c306d3ec36@linux.dev>
+	bh=Nlpe1/nwJgVHs+1CgELsGk74K3Ki4WuxEiQer53NK8w=;
+	b=YQU7Ox8IBa8MBvVaj4InbUqGeNJ/D1ZD2P/aS5SO+Ln4+CKKEwokOOHZoajUeEV6bdtmO2
+	1FOkngmNsNDQ8e7FCSPtjcYMRZrFB/tMO0yBSOl24ivRrA5g5T79UZsuq6ZJdss14gm4dR
+	N70qE1dE4jW7j4wEArsYgiS4HBvnOAw=
+Message-ID: <1bd1dd99-4db0-4120-bebf-b1da42977778@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783938158;
+	t=1783938267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hRcZAfhs+kHcVySJuPzxTTfP2MnAcNBGTb9R86cF3qs=;
-	b=h9p5lrWoV13zy8DGeLR6b7gi3acso++iVPQs8D7wNMi/Ih6KYYfFJUmgfgkfEv8+XFNcc1
-	OZcCWSmr4yLy1eth1NIjkqg0xOwrOFEP2ALqZBlkt2ef+WIhGVktu0vDSCRWZIfGJhWt9F
-	7txsaIItmeJFSUeYUgQWdBIa6aEa09k=
-Date: Mon, 13 Jul 2026 18:22:28 +0800
+	bh=Nlpe1/nwJgVHs+1CgELsGk74K3Ki4WuxEiQer53NK8w=;
+	b=uvMmJ6cUAyBsmzFEXhT9EaxuwrEH+WOZ9I2vr8S7uIrGuNyoIhqebiAcV8/uYTDFI52Mop
+	rtyUJEmCxdapuezObmHKvTA8N7XA0oUHZ5RTvMJX3BMHFgoH0swoYx44FF89YtuVo3kVxh
+	zW3velkdD7gVnpzhzlfybnpoaCRkLyg=
+Date: Mon, 13 Jul 2026 18:24:14 +0800
 MIME-Version: 1.0
-Cc: cui.tao@linux.dev, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+Cc: cui.tao@linux.dev, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: Re: [PATCH] mm: memcontrol: update state_local when flushing NMI
- stats
+Subject: Re: [PATCH] mm: memcontrol: factor out memcg kmem uncharge sequence
 To: Guopeng Zhang <guopeng.zhang@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
-References: <20260713085053.2916813-1-guopeng.zhang@linux.dev>
+ Roman Gushchin <roman.gushchin@linux.dev>
+References: <20260713090304.3015329-1-guopeng.zhang@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20260713085053.2916813-1-guopeng.zhang@linux.dev>
+In-Reply-To: <20260713090304.3015329-1-guopeng.zhang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 415A7C0009
-X-Stat-Signature: 3asm8g65fkyk91use3qmtsi1kaiec4ab
-X-HE-Tag: 1783938162-972598
-X-HE-Meta: U2FsdGVkX18fbo4QbsyN6eJfuuQ9RLxwUeiGdSK/8F1P8pXKDEDqSQ0isLjQhucyHOmcetJ+cPnuBkXv1HDQA7SmGPmXpHMzRFvo6ciwL7xVbkOni1b9g22+if9ldh4e9s1CGfU/lgLFL8aLgDbmKbZ3aOli6yMU4MNi9Kb5rG6epk0XQhKN9UHfzSefX2b6IKDrrFagAR6du09M5AgktL4I4zDZln0KT0AV9w6k15Q+MYLQMJlZ1M2nL+0c1psHz6zNnFue5fklpa4HL1ep488tWlvo0LxMwKGaewGNUxHakV0HQ68IVw0X+Bk0vHmmeCWUWAvMpjYDUxF7gbUWq29dmGk44Dz20NjWlEcMvJRIC0z4EZVucpPgSUFk7RwMdFcFA6EUhKSgLHTrFPd/Z3hKWvsQufa2MlzYNyx6mqbKrHBSG3n5rJ8WD7bvh9cb8o59G2//eNfsqY6ymV8AsqfH/1rtgjJlCykvR3NLtCSPE7JL9dHvtF5Wiquk1eBAgEmr6XUTracu0Z+J1dcRGrj5/QFoMAyCFfYUAJajwFyjZOBbX/4uKQqd0W89JmoDhuNCSwLFKUlLq8ujNYjGp7euab+9QhoFoeCWMP65zL1EdSTiGz0BsRcSPkAyhSqAf/qIGN360IGeoRyCIOa7zdUFKv9Z2a681T4otL7GX0Wiw8PO3Sft4FMS2n06xZNObhFoRamidjUCronQAlyjOYEc8K2nXeOiaL8LKWOfUSt8QGTJY7K8sPgOdkGU4+WQP1Wdw4BNEq9aC88qbsVHlMZKkERsQKy9RzRpsXQKP5T2QsECK3e8JVeo9jjLcEFUnXh2PGWlm2e9iF7xEZqoxY7eJy0Glf/Y8Bil7PSrhK4+bFbe9lm4HqWEYATOFs57oIKICZGtdNT91Z3RkiuE2AGJ6grQSxvzQzPgoZyQTU0mceYnIrny/w+Is2eXzDWw9qltpZoquK8RRxraGoB
- Mfe428UX
- +UZrt7TyZ02Xcjm4/tnY1O4gdA6Jjbpz3W3Swft73E9pHvAPAklajE1/OOvxODrdX5wW75Sf3dMzyNn8uMWoYM3KfXNfX25uAF0CXURh4nTQs8YFQ1mbFmciE8kpkrlVxgX7WZGasIc0xwEqYMfWwPRHGw6lT/Uyz83QC3Mz4aULZcJRE71m5FLb4z5nJeg6SYa3R2F/7oIyYjwZVSLjwioO67jz2Ng2QJ/RgRJ0GH+wCNchJGAaVCtLCh0ASFVz6geacJ4qedFC0u8imigAfAMWVgg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 329FB160006
+X-Stat-Signature: gded8tkbhgzykmccz43tqdr43qo95yyu
+X-HE-Tag: 1783938269-215296
+X-HE-Meta: U2FsdGVkX1/i1oW5XL1+esEY0c6RhEWc9xGuCY+M4YieY36IqkrakNBRxe+949BUIkbR5T3f3/HNqFy9SLZikec4idT5CqDlKZLlQ+nqBvq4WsHI2HpSb5Bn1Mwy6GyK6+iZQO2SCzZeQOngRbgyA8mSUCZ29/bGnk0HnCSlYG70+UBg7UvKyksAClbF66jsOWX23AItLAaiSqd8SUTHAeWLwfVGeEr+R0geTwnYjw2BqP6MiiBhAFGK7hp2ej63v1XoBMKj/og8/Tc28+Ru1z+khPHtImbjjXe5iKYzMITvmv6ndwaWeDZBH9qUC/pBFO0mJ+GMgubTNjXtNpp+bHwo/dEkqkHDXEECcUys7oDg6zrbqDPF19nJccHSfg5vRT0t9IsPwRJnuaC4KTTexrU81Se2Ux6d54OvlNN18KjX5jN8vdlLz9x2x5RiUd5W1zEWMkvLx9HUcRx9zCx+yOfprD4C9vMBzAms/MFC/yFQyGCDroKwv6tGmLr4El1VGr68DM0ufZufSGIgMQkYXT5Vx7hEgZo6Jd3l/LlM5Tq58U/5/EaJi3WeHjItQP+shFGLwSjyFEP0PkqRlWbLiU6UCJoI/wFQWlyIqIPRjGencejDbBBAfytUAm4I5qnhrcIq/d8qaKIq5tjvSKyPL94mVqQg/yUgakznQBURc9FgvgKalObC9SOH+ewq6c6NEllXZC3V+7SYE5wWdLD0mHyad0lVMOXzlCjqWZrfhvq+yu5esvoewL/hgtrcoUYO3dTvceMiIsN0DaWl5IWnTdwnktocsefJR3Yje2QFr3O7N9xAMUG7zuw2mzY7ChGnPcgjIJuQdY4xGlnUiogjKsA7DJ4srmTAsWSlVbAy9B9KSfYG6pPs9T6pAPdg3bEgOndWHXtGnseb/+qSiwCOmP3cOwPeH+g5YQf0Umj76NMeUqilPuJk+LpmYjs7eSuyyoIaoo/s/s5nS47qIWc
+ 0hYLej6X
+ vZUSqiuVZcne4DVdFGf1addEYdQIFwQbqbuYd/NJH4dcbGja7ZxyA9gLwmD8hR/uDQ6Dc8s53/cIexAxbjW5EAxT8Z/B11ZiEM076OidiMwnIYTcVsLfS0A5WiOpwNCgjyOEQvCDgYrCdQlxlf3TXGMMxlsHZOMRpMhHcpCU4qK61sg3Aedvc3UagNoP5PuYVXnITQIE8X9YWcbSIRE/TsTP3+wNBnWXwzP1zzeV+TxmJv1k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,60 +95,67 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2026/7/13 16:50, Guopeng Zhang 写道:
+在 2026/7/13 17:03, Guopeng Zhang 写道:
 > From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > 
-> flush_nmi_stats() updates state[] for kmem and slab counters but leaves
-> the corresponding state_local[] counters unchanged. Local kmem and
-> slab statistics therefore miss updates collected through the NMI-safe
-> atomic path.
+> The kmem-uncharge sequence (mod_memcg_state(MEMCG_KMEM) +
+> memcg1_account_kmem + conditional memcg_uncharge) is duplicated verbatim
+> in obj_cgroup_release() and drain_obj_stock_slot(). Factor it into a
+> small memcg_uncharge_kmem() helper. The reference get/put stays at the
+> call sites, as they differ.
 > 
-> Update state_local[] together with state[].
-> 
-> Fixes: 940b01fc8dc1 ("memcg: nmi safe memcg stats for specific archs")
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> ---
->  mm/memcontrol.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 22f55aeb94f3..02599b8b6bd5 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -4443,6 +4443,7 @@ static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
->  		int index = memcg_stats_index(MEMCG_KMEM);
->  
->  		memcg->vmstats->state[index] += kmem;
-> +		memcg->vmstats->state_local[index] += kmem;
->  		if (parent)
->  			parent->vmstats->state_pending[index] += kmem;
->  	}
-> @@ -4460,9 +4461,11 @@ static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
->  			int index = memcg_stats_index(NR_SLAB_RECLAIMABLE_B);
->  
->  			lstats->state[index] += slab;
-> +			lstats->state_local[index] += slab;
->  			if (plstats)
->  				plstats->state_pending[index] += slab;
->  			memcg->vmstats->state[index] += slab;
-> +			memcg->vmstats->state_local[index] += slab;
->  			if (parent)
->  				parent->vmstats->state_pending[index] += slab;
->  		}
-> @@ -4471,9 +4474,11 @@ static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
->  			int index = memcg_stats_index(NR_SLAB_UNRECLAIMABLE_B);
->  
->  			lstats->state[index] += slab;
-> +			lstats->state_local[index] += slab;
->  			if (plstats)
->  				plstats->state_pending[index] += slab;
->  			memcg->vmstats->state[index] += slab;
-> +			memcg->vmstats->state_local[index] += slab;
->  			if (parent)
->  				parent->vmstats->state_pending[index] += slab;
->  		}
-
-Looks correct — state_local[] mirrors state[] for this cgroup's own NMI-accounted kmem/slab charges, and pending→local is properly left untouched.
+> No functional change.
 
 Acked-by: Tao Cui <cuitao@kylinos.cn>
+
+> 
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> ---
+>  mm/memcontrol.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 22f55aeb94f3..86acfe55a201 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -137,6 +137,14 @@ bool mem_cgroup_kmem_disabled(void)
+>  
+>  static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages);
+>  
+> +static void memcg_uncharge_kmem(struct mem_cgroup *memcg, unsigned int nr_pages)
+> +{
+> +	mod_memcg_state(memcg, MEMCG_KMEM, -nr_pages);
+> +	memcg1_account_kmem(memcg, -nr_pages);
+> +	if (!mem_cgroup_is_root(memcg))
+> +		memcg_uncharge(memcg, nr_pages);
+> +}
+> +
+>  static void obj_cgroup_release(struct percpu_ref *ref)
+>  {
+>  	struct obj_cgroup *objcg = container_of(ref, struct obj_cgroup, refcnt);
+> @@ -172,10 +180,7 @@ static void obj_cgroup_release(struct percpu_ref *ref)
+>  		struct mem_cgroup *memcg;
+>  
+>  		memcg = get_mem_cgroup_from_objcg(objcg);
+> -		mod_memcg_state(memcg, MEMCG_KMEM, -nr_pages);
+> -		memcg1_account_kmem(memcg, -nr_pages);
+> -		if (!mem_cgroup_is_root(memcg))
+> -			memcg_uncharge(memcg, nr_pages);
+> +		memcg_uncharge_kmem(memcg, nr_pages);
+>  		mem_cgroup_put(memcg);
+>  	}
+>  
+> @@ -3329,10 +3334,7 @@ static void drain_obj_stock_slot(struct obj_stock_pcp *stock, int i)
+>  
+>  			memcg = get_mem_cgroup_from_objcg(old);
+>  
+> -			mod_memcg_state(memcg, MEMCG_KMEM, -nr_pages);
+> -			memcg1_account_kmem(memcg, -nr_pages);
+> -			if (!mem_cgroup_is_root(memcg))
+> -				memcg_uncharge(memcg, nr_pages);
+> +			memcg_uncharge_kmem(memcg, nr_pages);
+>  
+>  			css_put(&memcg->css);
+>  		}
+
 
