@@ -4,76 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2571C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06337C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:27:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB5E76B011E; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
+	id 0847A6B00ED; Mon, 13 Jul 2026 13:26:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E15706B00ED; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
+	id EB43E6B00EC; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B59126B011E; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
+	id C43566B0128; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 534406B00EA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 69C316B0119
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC1FF8BA32
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F1B5640131
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:26:57 +0000 (UTC)
-X-FDA: 84984433674.20.1AF7394
+X-FDA: 84984433674.26.3A572FB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D07F380007
+	by imf03.hostedemail.com (Postfix) with ESMTP id 000E72000A
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owDRiqNh;
-	spf=pass (imf30.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RO0uB8Ak;
+	spf=pass (imf03.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783963616;
+	b=cpfZSvxsB+KG8ZVXK0p6Tb7x7c9/xVHSiUn1eJvLsL3Tgp/YSEG3RCEEri3DkGmHZzkssK
+	8TYGe6BkHv8Ia+NaKRtIma8Jv9DVYvGC7ooA1w3A/OXVrHsJPdXMpuvTcTLp0Qy4KKNQgL
+	PPp5rbesIWTZl+cBt1LVtTFYzVLyT3A=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RO0uB8Ak;
+	spf=pass (imf03.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783963615;
+	s=arc-20220608; t=1783963616;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=te/MxBsdveVICgVtw2+ImFjYxXCxPKMmOLqsIzyDMiY=;
-	b=a3oAfGy3CytWo5+H1ije0wNBrWmOwZiEKI3VZLR+SHX2G2NIl63XQEyciMh2sRLtZKxsMF
-	FH5/oJG7glvq50b3ENlEJBoXg7fG7yUBhI00bviCsWDkGZuSFpiEwYQKiuq84plg/G9dLx
-	jM7KVYsLHQzMtZPpB773/O+R6kIDiHQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783963615;
-	b=fRflz9Id8+hsDBCl40Y/1O9fFkG7eZOOWx0pn+4Qeyi1XwjQzBItdkxjj5hPu43zKGtUko
-	FEP7WHAmAG3x8SVjVGKpdW9MdrpfFgxUpYQydL5a+ZpI2addkjXoqrrApmXV0xKq35dtuQ
-	lZtMmlPiH5E34Iv4+RB2QP+s8yMpD1w=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=owDRiqNh;
-	spf=pass (imf30.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=10N/ACSs+C2O6d+64axsEd5c0UwGUSRdnJD6eHo/knA=;
+	b=ZadpJbsWfVp7IuBQ8zdHUIREY6qB94wf0NnjnLOQlWtBqdYSly6FI2GPrPuxrgityS2Z4L
+	tvH6+CBrVcOSbaL5ZnpSHI4LRHPviyA48KatP8eWpDkGq+/JVQC6FsoahK3ypaQUxZ9eQT
+	g249IjS9I7hdQko4EB9sjOJwJhSnCGQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 15FDB43ABF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 262B943ACC;
 	Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D63BFC2BCFC;
-	Mon, 13 Jul 2026 17:26:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 00E63C2BD05;
+	Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783963614;
-	bh=Alfa5R7cuPoITFX+rbarbwLG1+I6hT50bFmqlnb/xXI=;
+	s=k20201202; t=1783963615;
+	bh=aRYM02wEbr/o6bgrCnlzBlc0T+QJvdAK2GhDQkdgStM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=owDRiqNhkPISIr/+9c3MPxYnCxFfajBExfW0QFiJLtSuVw/7lCfhn5bLJ5Q4nfiXM
-	 16ev8ogax2mMrmepZQQm5LmAEsyM4lt0wxr58v5dmsA50BRiLF2mM4C7eGkPf5uMGQ
-	 hgs8gYzGGaYRwHDfb5c+6dVpEcr6tG5DosMhwy2ko8LkE207qJiaZhbYNVodyQ7Rvr
-	 5MRDMJNs1UNhtla9pTwBshAwsITTdujxoB1VLZ4JsFyrNe59IwntF196FXqiXlKLHd
-	 YG4ke/NC/ekRz7nHvQKBCEnQq0bs9ykfQB9wkUow46v16huSeuBNFjBmbEOg09Amrl
-	 ZRXufPtERmqGA==
+	b=RO0uB8AkoELV2kiI6BadjvnOQXoW2C+tf/R+j6wi3OSQR4O1QZGbqlYSlooPGFZRY
+	 ZDVDAGQ5/M0v20oHj1B8eoBwj3+FS2g95ep05fMlwi9bFT5+VWa/2/R3FMJus5Y3Jy
+	 +pEV63YPcxiD8ViklpWckWAM0bH/TYBDqrNXO9xpv9T+yQ22XrJlI9G4MqEDyVg1iu
+	 tdfXzMwSd8zKkhF4MjIqJmjNv7IbWqdwNjQb70PG8ZQDnyMHcqjeYv54sP/3+HsEdq
+	 sJXUgPFFy/m4sIbRtBqvNwHhrrEHDhA0oOmGFcUduYfeqdJiZ7VAh/Fd3AkmBZE20d
+	 vJ1l1rnyrST8w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C33FEC4450A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E24F0C44509;
 	Mon, 13 Jul 2026 17:26:54 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 14 Jul 2026 01:25:42 +0800
-Subject: [PATCH RFC 04/13] mm/swap: introduce swap device iteration helper
+Date: Tue, 14 Jul 2026 01:25:44 +0800
+Subject: [PATCH RFC 06/13] mm/swap: remove swapon mutex and update proc
+ reader
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-swap-pcp-priq-v1-4-de9b164ed419@tencent.com>
+Message-Id: <20260714-swap-pcp-priq-v1-6-de9b164ed419@tencent.com>
 References: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
 In-Reply-To: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
 To: linux-mm@kvack.org
@@ -83,11 +84,11 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Youngjun Park <youngjun.park@lge.com>, 
  Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783963612; l=5272;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783963612; l=3465;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=ypbKQldXEjwRE9cbv1ZROZRw4f0vEb/XoGPlY7YD2wA=;
- b=Uvd2+nXpHDCFssiQ4RQhSvh6jVc3zRB9V+1OBBAkp00UiXNZVUy6wcAZNAxW1K8zUWd2HjZH/
- O2m747SWr55BHSHZYq6lR93oeK05RAcG4eOeEF5viKvmRqRce6bESNv
+ bh=j1za3Qxt32KGithzma37GogOBsyq+U5KkuqTTp+siv0=;
+ b=wBkRluP9NMxSP0zuqKH8cLiWSuMS6fkcqfGHdt2jZ/pxZPZ6RGda/q03nFgRLUVaj+2Z9sKKn
+ QtVt3wfBTDqDBlDPBmqPdBWzZy0yFqPYxzgd2KLccMc/PEZpPkWAGkI
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
@@ -95,13 +96,13 @@ X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D07F380007
-X-Stat-Signature: kyaoxhsseeq48tx1y1w3zd51skmtmywn
-X-HE-Tag: 1783963615-515115
-X-HE-Meta: U2FsdGVkX19iqrubJy4f8++IBoByNY7xjA67bXGxd/oNx6KNJ2IVWL/TvFdR7KPy2h6hOvQgyhrViOZsLiXPbjex9C+0Rsv5AQkpVqjWiZlqehyRCkNNmnUump3Btdy3TeU6HzLwMRClHnJ6zHbcyZCRAWek9LxoxjzQQYcQ/i204qc1Z4aEDg0Igm3aYBYSr6TcBU/fdPUQJ8uOnrOb8yZ6aqze6wccRQcdcFLyLYuLQPGuVZRPN4GYcm7xOIpVs7VstzUjxTw4AfCsL3xWPF6FfZzKJl00aITzUkuh8AJ39A7i5c3y2rMoH5cluk6gckmjwiWnMdDACabTl6io2La9s+CsA4JrwN9ZPHVAsXVufhQ9pmDR9+6vzS5BB8C/zacQY7cJMHQa/8QwLiFiYA9mRy4TR8Kp+4xCL7XPRtgw8mLbZrzxuYhWi4ktf0Yw1oGHQlPZGJaANaBV4AQPYo6z59MXWOnsa8f1GiYCMHgdlcIRFpDglmpOCTH9nObDEivhnFz0p+YACGbcgdA8RQwyvlqY468qXdgZwx2QHzjimz5ZMWfIki66UX2IhZ7IyAS9bfbHFKcKTCAuC3eHDSUs8fje0SuIUYJvE/MrSdQlN6n6bv3oPyAU4JDiVtiT/7V9k64m/WPTGTXbyILi3aTmVXAjhnbf7eFYC83srnWfBvo1cvZp6u6/Kn5m9RG1dmlFQ1bHtlmmMx9rLKv9NrhqFX3F1ozmOpLHwsajXOuQlUWEgHp2plDEqPl7wHIIzh6ezekkeuQigPeHZkqLsLKSzcNXKnIU9JkPRuAoPmXBggwk+0ql+diqD2oAHlpRRG5qUjHzYzdytvEfehPCXAQDvy81eVlKrhcuyj3xFssAMpo92hcUOH0o4tpZWN6MmUjGGgGktDrZZnmI5bySuALjZiS+Bu8Ko/kCckds3nrZl9gu1KCLRQwtAGqHSE+UtZkO2yhKO7yU40OjAgo
- EFo9cqth
- IiTtjQBfhgNcV4a/f7mhrTDFsJxq9jA8CV40H4FBpjFBi8IX3SFKehv7nbZ4z1H2Am9lIm6sPVpHZ8mcy+D1k1svMivZc27PPW/+PeaL4ZYnekOvZ+jL21f/oxhNkHSxs1zICn5Tol5UaW+dMNJjdd0hJB47ih62shVI5oAZ8pbYRM8Ebda48Y1MS8cP2qIRp6f+mhI7AV57s4kd8JlpTwnbZbT9QbLRdylHkAJJmNjr5ToXx+qGyW2c9NiSi7yTK6D+YspikLIqFBo7RwBMYQAwiGeL8i8MvsPlUTjVWxATsxW1Git2INDstkbzOg84UUL/KPS7uCWiUVj+n7o18CNiPzd6cQF1vCCE2DSuC7B4kJtp/EJ+abUjgBxNiXmmtyqfVhJjekLevdHvDK7ABVPH7KQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 000E72000A
+X-Stat-Signature: 1jx34tig89psd1g7wdn6oe6tysg6d35o
+X-HE-Tag: 1783963615-585334
+X-HE-Meta: U2FsdGVkX19VayFDH18cfuUuwr++8yRM8byiTWqaCC6OD6VZ1cF8VdhbUyPPjoGcYwW5OJMIF89UU1RJ4Kq7HqLxKKFPdISAFj/evkSSFdOFupAaX4NIFTIVIu83OfR/Clvptll+nHbzUVuRy2GHQnfB3FGXcg9Bp18L6MS0PwMZmCi6jhdWwDlbTpsdpUyGUzJHhoyWh3Pf6WO9Way7htTbMGZubBkD5obDlkgh1Kunzj6RyutYZNlaKG712T8+LiYQyLNyu0+q1uIYPcH2UFH0///0E8/IiWITBxnaKI/wvRd3/OMmsc+O68MBhFqv+pJviF+xvnzqFcFUPOPdXzQU4mkmyup4hQPlWqs5tZ6HxByMH8JJq5GOIY4e32m7lyAlf1WomLBNDLcfLFkuYM5+XryDPZoofJwGa7W8SUuXv6jhrF2m3MD1X4n5wEKbEya2QWn3Puvh6pfkMpaAOB+h7+4oTC3XPw68LPbpdK7yIvNEdGm+q7h721y/ijCkHzcoCKREBsqgAVNRriwH5gtavgYcsmPEIYg0FGPhS/gbTKSdCIxpp9Ko0oB9mEknbU+56Bhua0H2lxKrF+I6FQkuzvttQESuyCgewJipfxkuwnwibkmrlbDYeveM6D/aCgG9AO94J0YOefjCX45y4ta9ox6KdDYPW2j5J+mfbvFVCU/jgi06uwzocYywvzoO2EDqSIk22oBBV8QYA2cOm4y+YtNhndmru/2/8HzlstFdbVyN8+oMET3WJ0e8scUkosqkQMzZG7ToeYCrgEXsLZXHC6lKxv4IJIf3/kj0Gic0VtaWpIOCpS/k1OE2rHJ0aHxb04UKWKdzTTGXodoB2jr2Ym+VhkSz1XDlYNPAX5h1IWq24fBgDjCJ/WKed0lxqw7OC3hZsxLRCNYCklABJeZkSkd+AbZ91RR4ppkjGAydK6AGCRboyNHOeSGQryaMTiyRMye92JOHnOXR7FC
+ NvZTnKOG
+ bgKT44kVUK9tRt8k6N4JHo5bE9qYjwPlQlL9bCM58rWn45FUKkmPKGaTmEUpmpSiTSVIlHx7K5bSMAf2mPJd3iK1/rsCm+MNfGlbY5+RtlqPAwjuzmzx8fJ9ToCvxCRSiXbKSvw6iAMGR4PpqEo3gG4On4AYNomBTNzNvBRFu/25pzD/JcQwLfy9ynCo901TT/+xcou3QOQfxe6pIyRWNdquB18+SKf1UobL71v4DaHtEgSFY486ZF0cQs1TUE1Dfg+fZRKwFMl7BYwMgo/uQkzSdlDRePOYTEJ+4q97oAiNG3MhZK1Lvn8XCLXsaMr0sEiiUFYvsN8Z/sjRVZKAC+nLhtWBYDvcqcs91t8FAmgB10hjMRvY76V+rMEFbupl1jDicQEzGTAXQtYNBQ2ACCPCi3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,178 +112,108 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-There are many users that access the swap info array just to iterate
-through the swap devices to find usable ones. Introduce a generic helper
-for this to prepare for dropping the lock convention.
+Now that swapon_rwsem protects all swapon/swapoff-sensitive data,
+the old swapon_mutex is redundant.  Remove it and convert the
+/proc/swaps seq_file reader to use the rwsem instead.  Also convert
+the swap_start iterator to use for_each_swap() for consistency.
 
-Also slightly adjust __swap_type_to_info to allow access of swapped off
-devices by moving the sanity check into its only current caller, and this
-way makes more sense too: the only caller is __swap_entry_to_info, where
-we should never see an entry referring to a dead device.
+Also adapt swap_next, it needs an explicit SWP_USED check. swap_file is
+not reliably protected by swapon_rwsem, so checking SWP_USED is more
+accurate and stable for filtering in-use devices.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swap.h     | 12 +++++-----
- mm/swapfile.c | 77 ++++++++++++++++++++++++++++++++++++-----------------------
- 2 files changed, 53 insertions(+), 36 deletions(-)
+ mm/swapfile.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/mm/swap.h b/mm/swap.h
-index b51ad3071a73..08a782f3d5ac 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -91,16 +91,16 @@ static inline unsigned int swp_cluster_offset(swp_entry_t entry)
-  */
- static inline struct swap_info_struct *__swap_type_to_info(int type)
- {
--	struct swap_info_struct *si;
--
--	si = READ_ONCE(swap_info[type]); /* rcu_dereference() */
--	VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swapoff */
--	return si;
-+	return READ_ONCE(swap_info[type]); /* rcu_dereference() */
- }
- 
- static inline struct swap_info_struct *__swap_entry_to_info(swp_entry_t entry)
- {
--	return __swap_type_to_info(swp_type(entry));
-+	struct swap_info_struct *si;
-+
-+	si = __swap_type_to_info(swp_type(entry)); /* rcu_dereference() */
-+	VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swapoff */
-+	return si;
- }
- 
- static inline struct swap_cluster_info *__swap_offset_to_cluster(
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index a4701692d330..8faa4e7c32bf 100644
+index d75fad161ba5..8b073569d1d9 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -106,6 +106,34 @@ static DEFINE_SPINLOCK(swap_avail_lock);
+@@ -140,9 +140,6 @@ static inline struct swap_info_struct *__swap_iter(int *i, unsigned long flag)
  
- struct swap_info_struct *swap_info[MAX_SWAPFILES];
- 
-+static inline struct swap_info_struct *__swap_iter(int *i, unsigned long flag)
-+{
-+	lockdep_assert_held(&swap_lock);
-+	while (*i < nr_swapfiles) {
-+		struct swap_info_struct *si = __swap_type_to_info(*i);
-+
-+		VM_WARN_ON(!si);
-+		(*i)++;
-+		if (flag && !((si->flags & flag) == flag))
-+			continue;
-+		return si;
-+	}
-+	return NULL;
-+}
-+
-+#define __for_each_swap(si, flag)			\
-+	for (int __i = 0; ((si) = __swap_iter(&__i, flag));)
-+
-+/*
-+ * for_each_swap - iterate through all allocated and inuse swap devices
-+ * @si: the iterator
-+ *
-+ * Context: The caller must hold swap_lock. The lock may be dropped during
-+ * the loop body but must be re-acquired before the next iteration.
-+ */
-+#define for_each_swap(si) __for_each_swap(si, SWP_USED)
-+#define for_each_avail_swap(si) __for_each_swap(si, SWP_USED | SWP_WRITEOK)
-+
  static struct kmem_cache *swap_table_cachep;
  
- /* Protects si->swap_file for /proc/swaps usage */
-@@ -2197,26 +2225,18 @@ void swap_free_hibernation_slot(swp_entry_t entry)
+-/* Protects si->swap_file for /proc/swaps usage */
+-static DEFINE_MUTEX(swapon_mutex);
+-
+ static DECLARE_WAIT_QUEUE_HEAD(proc_poll_wait);
+ /* Activity counter to indicate that a swapon or swapoff has occurred */
+ static atomic_t proc_poll_event = ATOMIC_INIT(0);
+@@ -3156,7 +3153,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	if (!(p->flags & SWP_SOLIDSTATE))
+ 		atomic_dec(&nr_rotate_swap);
  
- static int __find_hibernation_swap_type(dev_t device, sector_t offset)
- {
--	int type;
--
--	lockdep_assert_held(&swap_lock);
-+	struct swap_info_struct *si;
- 
- 	if (!device)
- 		return -EINVAL;
- 
--	for (type = 0; type < nr_swapfiles; type++) {
--		struct swap_info_struct *sis = swap_info[type];
--
--		if (!(sis->flags & SWP_WRITEOK))
--			continue;
--
--		if (device == sis->bdev->bd_dev) {
--			struct swap_extent *se = first_se(sis);
--
--			if (se->start_block == offset)
--				return type;
-+	for_each_avail_swap(si) {
-+		if (device == si->bdev->bd_dev) {
-+			if (first_se(si)->start_block == offset)
-+				return si->type;
- 		}
- 	}
-+
- 	return -ENODEV;
+-	mutex_lock(&swapon_mutex);
+ 	percpu_down_write(&swapon_rwsem);
+ 	spin_lock(&p->lock);
+ 	drain_mmlist();
+@@ -3171,7 +3167,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	percpu_up_write(&swapon_rwsem);
+ 	arch_swap_invalidate_area(p->type);
+ 	zswap_swapoff(p->type);
+-	mutex_unlock(&swapon_mutex);
+ 	kfree(p->global_cluster);
+ 	p->global_cluster = NULL;
+ 	free_swap_cluster_info(cluster_info, maxpages);
+@@ -3217,20 +3212,18 @@ static __poll_t swaps_poll(struct file *file, poll_table *wait)
+ 	return EPOLLIN | EPOLLRDNORM;
  }
  
-@@ -2322,16 +2342,13 @@ int find_hibernation_swap_type(dev_t device, sector_t offset)
- 
- int find_first_swap(dev_t *device)
+-/* iterator */
+ static void *swap_start(struct seq_file *swap, loff_t *pos)
  {
--	int type, ret = -ENODEV;
-+	int ret = -ENODEV;
-+	struct swap_info_struct *si;
+ 	struct swap_info_struct *si;
+-	int type;
+ 	loff_t l = *pos;
  
- 	spin_lock(&swap_lock);
--	for (type = 0; type < nr_swapfiles; type++) {
--		struct swap_info_struct *sis = swap_info[type];
--
--		if (!(sis->flags & SWP_WRITEOK))
--			continue;
--		*device = sis->bdev->bd_dev;
--		ret = type;
-+	for_each_avail_swap(si) {
-+		*device = si->bdev->bd_dev;
-+		ret = si->type;
- 		break;
- 	}
- 	spin_unlock(&swap_lock);
-@@ -2817,12 +2834,14 @@ static int try_to_unuse(unsigned int type)
-  */
- static void drain_mmlist(void)
- {
-+	struct swap_info_struct *si;
- 	struct list_head *p, *next;
--	unsigned int type;
+-	mutex_lock(&swapon_mutex);
++	percpu_down_read(&swapon_rwsem);
  
--	for (type = 0; type < nr_swapfiles; type++)
--		if (swap_usage_in_pages(swap_info[type]))
+ 	if (!l)
+ 		return SEQ_START_TOKEN;
+ 
+-	for (type = 0; (si = swap_type_to_info(type)); type++) {
+-		if (!(si->swap_file))
 +	for_each_swap(si) {
-+		if (swap_usage_in_pages(si))
- 			return;
-+	}
-+
- 	spin_lock(&mmlist_lock);
- 	list_for_each_safe(p, next, &init_mm.mmlist)
- 		list_del_init(p);
-@@ -3802,14 +3821,12 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
++		if (!si->swap_file)
+ 			continue;
+ 		if (!--l)
+ 			return si;
+@@ -3251,7 +3244,7 @@ static void *swap_next(struct seq_file *swap, void *v, loff_t *pos)
  
- void si_swapinfo(struct sysinfo *val)
- {
--	unsigned int type;
-+	struct swap_info_struct *si;
- 	unsigned long nr_to_be_unused = 0;
- 
- 	spin_lock(&swap_lock);
--	for (type = 0; type < nr_swapfiles; type++) {
--		struct swap_info_struct *si = swap_info[type];
--
--		if ((si->flags & SWP_USED) && !(si->flags & SWP_WRITEOK))
-+	for_each_swap(si) {
-+		if (!(si->flags & SWP_WRITEOK))
- 			nr_to_be_unused += swap_usage_in_pages(si);
+ 	++(*pos);
+ 	for (; (si = swap_type_to_info(type)); type++) {
+-		if (!(si->swap_file))
++		if (!(si->flags & SWP_USED) || !(si->swap_file))
+ 			continue;
+ 		return si;
  	}
- 	val->freeswap = atomic_long_read(&nr_swap_pages) + nr_to_be_unused;
+@@ -3261,7 +3254,7 @@ static void *swap_next(struct seq_file *swap, void *v, loff_t *pos)
+ 
+ static void swap_stop(struct seq_file *swap, void *v)
+ {
+-	mutex_unlock(&swapon_mutex);
++	percpu_up_read(&swapon_rwsem);
+ }
+ 
+ static int swap_show(struct seq_file *swap, void *v)
+@@ -3764,7 +3757,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto free_swap_zswap;
+ 	}
+ 
+-	mutex_lock(&swapon_mutex);
+ 	prio = DEF_SWAP_PRIO;
+ 	if (swap_flags & SWAP_FLAG_PREFER)
+ 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
+@@ -3790,7 +3782,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		(si->flags & SWP_AREA_DISCARD) ? "s" : "",
+ 		(si->flags & SWP_PAGE_DISCARD) ? "c" : "");
+ 
+-	mutex_unlock(&swapon_mutex);
+ 	atomic_inc(&proc_poll_event);
+ 	wake_up_interruptible(&proc_poll_wait);
+ 
 
 -- 
 2.55.0
