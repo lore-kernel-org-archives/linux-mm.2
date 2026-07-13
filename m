@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F6BBC44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 05:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 096C2C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 05:58:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E91606B0005; Mon, 13 Jul 2026 01:56:17 -0400 (EDT)
+	id C4C2D6B0088; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E41C06B0088; Mon, 13 Jul 2026 01:56:17 -0400 (EDT)
+	id BFD266B008A; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D30B06B008A; Mon, 13 Jul 2026 01:56:17 -0400 (EDT)
+	id B13826B008C; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2BC56B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 01:56:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4781D1A0A91
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:56:17 +0000 (UTC)
-X-FDA: 84982693194.26.655A3B7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A112240004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:56:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uqccgc64;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 876276B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 01:58:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAF6C1A0A91
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:58:44 +0000 (UTC)
+X-FDA: 84982699368.20.C8FDBBF
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6CEA0180004
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:58:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783922175;
+	s=arc-20220608; t=1783922323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2NP1mgJ6gW2yYD/7AR0cJfOoVZuhCYDVNcPcy+76LJI=;
-	b=Z9y5jNXE8+S3wODAhDSpHTpAhovZBIRlM2c0iujY/wgd+uHGz/SiUGjxZkfU3lyVtXp9KK
-	XW0B2BbAixs1b3RtkpPFDi5F5d0pkRf28CfwhOQXF/4RyY0YhDDhG0kJO2v460lYDSYiEx
-	rJk3ftySXXjlkmAd3lgEmZ2/D1Lt0yI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=xnxJgjxrvNbsF6iBdyiFrWLxVV/PluRQC3CvJ04wpeE=;
+	b=GEoN97cnWJTssWpxsLGZwG9S+jtkUBIg4yIT+wJLwBti+SsBqcOJzLiyH4UR0jHsEubIml
+	GUqibwfLdwm2c8mVTMPdbxKQtCwjrtnGUx2BVwbH/NrT/haGzeBunF2OsTDr+ytKiyZsv6
+	lMaOEq5W6dOctajSOa/auSCd2aRHNIM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uqccgc64;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783922175;
-	b=Xqadj6KoTzSCzVoOH1LnQJWr0UE6iejZHB0g9CL46IOMOdOJ+pkTdk+mNupGg5lo90/IbS
-	o8SSA7VDW2wT6XHgneyAO1UeBWoCK2Q33GUnA5X+fB5R72lHPlPjsNINaOfpIeknDJLxmb
-	9ClKGPNcR7C7NXu7NqjTdQ/MA4QSrv4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 275CF600AA;
-	Mon, 13 Jul 2026 05:56:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FFE1F00A3A;
-	Mon, 13 Jul 2026 05:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783922174;
-	bh=2NP1mgJ6gW2yYD/7AR0cJfOoVZuhCYDVNcPcy+76LJI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Uqccgc64fn4QLCQzJ1v9RJDMlLbuHIuIdgmWEd7HkQnkNafLMnM5fxkRFUMhwQNQU
-	 pj6r+OEN9TRpDV9FwyOnMMxLEtrjNT92OkUIjXshJrTM/OQQMJ6nsLuCAmcJ8nNFWe
-	 T4Yarxbq1ig9j/83aEBLOYm06qAPCPLJUw22JR16nVwOi0rN3HLsmrdFBe74Y2qLhq
-	 tJV+xBHAtIPesT4zzr+4yHTjZ42UcLueh0sJ6kM4iwlfzrfK8fud+5KoSeduBdNgwO
-	 jt5ienjvi0O61gEsygovqOYEiREg1QfiOX7BJCD8jBaqEVIPXNNVZvcLvvi6NUn/q5
-	 1bdcclEC9A8ZA==
-Message-ID: <545f4900-5239-43df-b734-a811baeab35c@kernel.org>
-Date: Mon, 13 Jul 2026 14:56:09 +0900
+	t=1783922323;
+	b=XEPkemjAKW588eN8dwNz4fjkuljplpat4q0vFadY+4E0NTBMkXJPG02TTwGb5CQWGm8+dn
+	2bKO3s9Vqtqpl70wf3tH/UphqmqTyfmond9RrRfPQz8fFAQVfTIoGIkDk+VDmft12JOjyj
+	fCFH9/JDHg7k7D62Ie3AIG1EFrR9VPw=
+X-UUID: e19d9ac27e7f11f1aa26b74ffac11d73-20260713
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:1f8b2aec-638a-472a-8172-120feae4a683,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:09047162c704750643ea2dea6117a374,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|850|865|898,TC:nil,Content:0|15|
+	50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e19d9ac27e7f11f1aa26b74ffac11d73-20260713
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1830885440; Mon, 13 Jul 2026 13:58:33 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: vbabka@kernel.org,
+	harry@kernel.org,
+	akpm@linux-foundation.org,
+	hao.li@linux.dev,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	vdavydov.dev@gmail.com,
+	davej@fedoraproject.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>
+Subject: [PATCH] mm/slub: fix kobject leak in sysfs_slab_add error path
+Date: Mon, 13 Jul 2026 13:58:29 +0800
+Message-Id: <20260713055829.127864-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab/for-next] mm/slab: simplify freeing remote objects in
- free_to_pcs_bulk()
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Shengming Hu <hu.shengming@zte.com.cn>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------TZGeQp05ZGDyRdPslg7ngHXI"
-X-Stat-Signature: r3qps3ftbi68q8a3rx66bkhuexjcrmku
-X-Rspamd-Queue-Id: A112240004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6CEA0180004
+X-Stat-Signature: dkpzghngow3oacui4youtk6qdydpcxrr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783922175-312653
-X-HE-Meta: U2FsdGVkX19BCaTvAI/G6KjWsTfahZvXRoaBheX0YIxkd2H6aJEUUWL1qM4/ZB6u43AXQ991XfmA/vLzvc1mLFK/Z8Zo5+lINeV9h/ffnAhtS+4tk+SFRhPFnxBZ1bgH8T0KeOu5mXqk1ClvPnF4CSFnFLMoB/DbuqejmGsroNpwM7d1vcf5ZY3viF85J4bRt6Fh+hQL3EseNQ1eqUsxOYv0b2sH7HkMI47mrX2abs/9IwncVOPH3Yf8AFFU6UVa7iL+CeOJrU+lCCkBCke8X4lgzlwqsfuKIq5CKIwGLF9PftolrZItQCeB0iYUUnqcutdv67qiO1f8wMD0ODVN+hHXMYdE+DNJSSN7El5KiobCGf4UB6krOCpR6PpMkCODo/BYypLvPm82nyL8YQYhuEUX9KozxwbLSEQylmLKlFQTcSUTa8LO2acwtwXiHOp0TG98tDLp+CIUGlsW4/RKgcaBH45XBhBr1Ulx48bfaziTb8R8FiaWLbNLstg7o+Bg/iJXU38HIc+Tjx6qrVQn4ZiEqilewd4Sr91rlqVz365ncf1ddjMCRR9JiNKSYEHEmTPl4XJzm/ZBdDfRrnan6Qq/vfRpueJM8dxdmXnMf1uEPwC212OP3MOWppesBQMwL28MZmZKx1CzyZFxLGuxzSpWWBq661eHdm9D+Gnm5kloMeps6HVLW9fvPcNV05PkEr0qEPYzLP4Y5QMxlhwnSLbQNeGn/4hF+Yypp082UyjgDEmWOcFbJfs+7n3sMjOpYrjGTVgSGnO2kI3xt0taq45U2926oIY1W8cjSk44nEXFgB1dWc8F6bOpl11zSMAgzbPPjv0GcSmnB1b5EkFf3zSexMyWHMfG/BQfsp6URoC3UK3o4ss+0YC4gCR0OVlXOll5BLgmK5nT0ao1lZMaD8y7JhflT+TR9N1MfolCA/4tbiNrT4ezUoRMleqYHJFl4eeXXfLjWCQ2UTGUEj1
- YDolymTe
- m97VAaJl6v6xBZzTx4XNy7ReVUR6XJ74V9GzfOml9fkYngpacfoqeR8tzkjVR1Bqds2jYYuRP9eZrB9CkMqyIOXaQqxwcUVqH8dCsbtRxfhlK7tWuJJAmW8nmMdQ++Q3XgfHWqldYaqXiIpnBZ1ztPYwc33nWcJK71w07w5HMI8lI30WBf59CVS0t+DaFzvA82UAyoGwWdLjm1b3eJqYoPndluURiKEG3nyP3icShHtOj1MHqXf1Jm0NDh8dYw/aA+gKAXDu60BrXhoxMRluKY0KfqqUQCHRr4aJDJRNMjOGPNnVXC6J+zzzzdZQJxz7dU8DcrLp2V3AL7zJFTsqJi0aneDwrytagJly2r476NLl7lwS1OKSxizjyNe0WuCBSkqUEK6mP9h+nKJcQhNExFxDszxbaPvI8w/jL+EZqPTFV6uf3eaUSyteAs2iT5A9jHIdTuEbanjsHAa2YTMsBUTl2sKWCm6BGKJF4N+S3m8anChdIsqY1VFRrEef8dyRBS0HVlJ+qT8NaGo8=
+X-HE-Tag: 1783922321-603084
+X-HE-Meta: U2FsdGVkX18FIf76ZyiLzB7+XPQI0jkRdyQbRfneqnfHAriWVrNBs5Xg8EScjumt+33SqAeNU7ZOeeQPTMBzQ1Jkr5shp4JrOjE/8PMrO2deAfJImKLauhqUxmBii7CxtLbVRYYT6qQK1K92h9E91DYrmG98eCCXfX9tTPyWaEFP1VwpDhbVuExA+xMTULlDjRFrE6o0OgLgnp4ZRm/PtucYCsBs6itUfcPJ2A1eE2nyAQT78eC/MbyVk/AHLsPZg/fah4onIP562swaI9iWYqb0QQJqazf/fEFcFcBy7Xq2q6rdneMrGXs61llge4SYA7D+nn6qNj+GImml7DecxDnUg9hVjkMYedFpscrH66t+ksxrgb4ofY13neU6gf5Z9nAuDwtIZMujq7gY+ez5HjiSUsdCFMY/+omYnKlUiqCK4H+dGhof6LkLmfB5VRJocyc8PLmfnLDCOhGjFCq+UzpAQbawYRoW66M5cqin5kn6OahdHUDiJTKAKxfWwcHmmnRUBQsxnkOQZH1phjnmcdE5zONkB1aaMGzjyrbNfSPI5EGK9VMisja04wnpbKgGpKD3kCs2HGG61uHER2/kJg5QHDjIcKvclD72K/S7Rt/3L87dcsCUxYHr3zD5zwstkLHn9HK63L4lxji10PK9hyUH5fm3xJaOr9cFyAynwAbGiyweu4WYGxmt07EEv72TzF7uRTCyOLxWPu6vvYBS9PRg9osa2xTdJ1FgmnlNferZ6BC5BEMkYUySc83oTqy3wK7MCeYleGSAsZXOV/yPiOPSSzEV7wun97QMkmDydJ/M6y2xhcUolD207GYLKjncR69wUHATdQ03eU5xu5wyS8dIjCc9k+MpnMMcIfBGWamgG5BMSVSXt5/lYta2jKZuPEUWQsoo4uisR7cU3oD32sMyAkmqNQy6yVaV8amgP/mBo0P+Iix8daOw5QyXg4mNiejZx4WzUvl48QG3gAf
+ kRBw7Yfq
+ bpRh8B5ZW1FMcQiiWIylWpVZkEqW7B+kJyEATvP9vXgfVAjyYSc+i2NJEQCZqPUgI1KV+ugAFOH1TjRETUwCLdb780ufGbx4FGQ+3RFv3M7hXZHxTFCp5+7lMjM5knLUxoBFv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,63 +99,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------TZGeQp05ZGDyRdPslg7ngHXI
-Content-Type: multipart/mixed; boundary="------------wEKCzCaCMHING848bVdGe6DS";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>, Shengming Hu <hu.shengming@zte.com.cn>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-ID: <545f4900-5239-43df-b734-a811baeab35c@kernel.org>
-Subject: Re: [PATCH slab/for-next] mm/slab: simplify freeing remote objects in
- free_to_pcs_bulk()
-References: <20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org>
-In-Reply-To: <20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org>
+When kobject_init_and_add() fails in sysfs_slab_add(), the kobject
+is not properly cleaned up, causing a memory leak.
 
---------------wEKCzCaCMHING848bVdGe6DS
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+According to the kobject API documentation, when kobject_init_and_add()
+returns an error, the caller must call kobject_put() to properly clean
+up the memory associated with the object. The current code only frees
+the 'name' string but forgets to release the kobject reference.
 
+Fix this by calling kobject_put() before jumping to the error label.
 
+Fixes: 54b6a731025f ("slub: fix leak of 'name' in sysfs_slab_add")
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+---
+ mm/slub.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 7/10/26 9:04 PM, Vlastimil Babka (SUSE) wrote:
-> We have been moving remote objects to an on-stack array and flushing it=
+diff --git a/mm/slub.c b/mm/slub.c
+index 9ec774dc7009..fec2cd08d129 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -9690,8 +9690,10 @@ static int sysfs_slab_add(struct kmem_cache *s)
+ 
+ 	s->kobj.kset = kset;
+ 	err = kobject_init_and_add(&s->kobj, &slab_ktype, NULL, "%s", name);
+-	if (err)
++	if (err) {
++		kobject_put(&s->kobj);
+ 		goto out;
++	}
+ 
+ 	if (!unmergeable) {
+ 		/* Setup first alias */
+-- 
+2.25.1
 
-> when full. Instead, we can swap them towards the beginning of the
-> supplied array and bulk-free it just once.
-
-Nice!
-
-> Also add a comment to explain the rationale of freeing remote objects
-> last, because now it would appear to be simpler to free them first.
->=20
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
-
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------wEKCzCaCMHING848bVdGe6DS--
-
---------------TZGeQp05ZGDyRdPslg7ngHXI
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalR9+QAKCRCGXBN6rc5S
-1vW8APwKPB+4FIkxD+xhgGlshd+TT64FX5Ii0Jo4oJfQnO34MQEAx69a+xfY61Bq
-ro7wN/f2jDyFdUD3c61TgQ2pUyTT2AI=
-=1QnJ
------END PGP SIGNATURE-----
-
---------------TZGeQp05ZGDyRdPslg7ngHXI--
 
