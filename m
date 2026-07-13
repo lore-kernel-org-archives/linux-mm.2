@@ -4,136 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F19B6C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F49CC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:44:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2423E6B0150; Mon, 13 Jul 2026 12:43:37 -0400 (EDT)
+	id 5C5B26B00BE; Mon, 13 Jul 2026 12:44:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2188C6B0153; Mon, 13 Jul 2026 12:43:37 -0400 (EDT)
+	id 59D4E6B00BF; Mon, 13 Jul 2026 12:44:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 107026B0154; Mon, 13 Jul 2026 12:43:37 -0400 (EDT)
+	id 4B3916B0153; Mon, 13 Jul 2026 12:44:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D64D76B0150
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:43:36 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 71D051C001F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:43:36 +0000 (UTC)
-X-FDA: 84984324432.06.9D44FA5
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 84F0180008
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:43:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Bj8rpjhU;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783961014;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DD586B00BE
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:44:41 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4FA0B140199
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:18:42 +0000 (UTC)
+X-FDA: 84983959284.24.5918ACD
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DF5BF120008
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:18:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=HKJKa+3s;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783952320;
+	b=2YJT1s0NCZsArFTB5dbaAZo6AgDwNgUgtQt1/aXwmFSFJwp/1LKfkEfK1BOsNQs7ZMNztX
+	LnT9LtgyLyjZ13OtwLSdp5MOVu0o48pzZd4B24BYRXVV5rH3nKNUzCf6eSzdCeGzf2nsMw
+	qDWSmatl72EwIrtGGj/4lwGs1w+kUOI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=HKJKa+3s;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf29.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783952320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g7RBjI+3c4wbCLyC30m5N44VxvHGqMYoVlsOrdbCo2A=;
-	b=BlokV6Gv+HLgEthvAySPIBd4cUrHRAG2u6lJ0RmtOApCcl7lGDGgT11hYDTmdeKTX5h/ie
-	WhEe5amdZvlaoEPnC1H8eXSL3F3d6QJhvk/upgGIJu0i5i3Jla+Swl8hWMQeXWN3c6rR32
-	2QQ8CxHUtDfmbbZjHGChNZ4jOMRrCi0=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Bj8rpjhU;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783961014;
-	b=WbKKeaFoQ4tQ51lH0jXsjH90U6e/zrj4SNQ76ZUiyO++7TsH2ZDrTts2saCnLG9K8f/F/a
-	1BGw6NEQmviKyXjphCIyKDAKEhc20PwkH3McwKYNmBzh9VF4fi2nS466dCEShUEs7wcas4
-	dzA5e1If4L9rU7kaEBJsDDy5QhY3V3E=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cacef7d299so192285ad.1
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:43:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783961013; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GmKvZx1LLfzRiMgdHH1YkzpwUqyHSH6WdiRS01xcRLoYgzLv6l4QH7+FB7QUZsEvWF
-         6K+7P8pJvXtzCa6YIwkCqULVxFFi7AvCsBrzSrN2Uz0TLK1D6CHx16WKmMVlgbnVYR2+
-         +msVFgrp4JtN7GRAEh+r/C3yQhAMbu5IluAS6W7pja413/xixJq/vTRs/y4sJGFxz19v
-         BD9cgHk5Fc2TLeRhKwA6DQ/rMSwMFOpXXu/f92B1j9sZSFV58yPZ2HHXs/KypEOLxwhZ
-         We2SYCsCSW/Bnwuv9KlS5l5jOGk+ACZ5AJVF8GiPWn4pcMFHBBzAysvrkSdZftKOnv8F
-         3Obw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g7RBjI+3c4wbCLyC30m5N44VxvHGqMYoVlsOrdbCo2A=;
-        fh=FcS8ahLiHClVs3bdG3EDjBb20PodD8THD0nbCM+z1Ms=;
-        b=XMRLgT7iSNf59RmeFXV2JPStJUSboV/hIjdmstcHBchm4kHer0Hr8XNtgsPKHWIjPi
-         zd2tTcfSIMuGxReuteZBUT/P33CtbSdTCtV4NbaInMlDp3LwGcg2xe0Cc/i/lFQYa2hz
-         GDViWJPn3gTd69ASE9006NbOVHRqNzQC6i1lWmcDwVdXrTSRvZDcqIYNMUAajqTV9LfF
-         wqzjF603qJIIk4avLyxDaoWrRQUpjzVaMH3ioeHMp9EM9roDRqy35Z4tY5aUmE/v0tul
-         Cihv/Nc0PM8npgfUOQphPF/m8HB3yromVHaAAwWK6I7EC3/m2oqK2HLNdgTfSlB7CUa5
-         Rcew==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783961013; x=1784565813; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=g7RBjI+3c4wbCLyC30m5N44VxvHGqMYoVlsOrdbCo2A=;
-        b=Bj8rpjhU7MPAlHRgYZypmCRg7Pzl+4nvtKx8F+GKfxuszSzAxDv12Fr+XNI8pmacz3
-         ZLOMJduT2ghaeQ17STLGjZ3zfWvH6wk7Mop++XjtnfMKmxnkvR2HuQLTXt1lasbRQJIC
-         T7H5X0aen6CnIIBQh7BdgXR5tgY/8mZrQjsJfH5Er8MK9pLALxbBNfSXmeWe6G6hcuf2
-         WuZ2l0aUrbRYMyu2qQNpd3yK5TlqCjKsoGIPjbhLGhcPJwaiIMDjpJn/5ktTjgTt640V
-         3W3oKF60fDjNx2vm52dig+drQthmkn+/idGTasmYM0MbCeVEHoyItGiDpnKyP3Xjpbpb
-         893g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783961013; x=1784565813;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g7RBjI+3c4wbCLyC30m5N44VxvHGqMYoVlsOrdbCo2A=;
-        b=ZQJwXovC8jOzh3fX31+BQsPnX/j9JzBK3DP5tMsq8eJkm5sOf85sjHn/3nJHO6JFX8
-         6QeHcHydOg742X4s6BBSDf5hgvHE0v1tFbmOvnKL6md9Rv+nx1q4GcTStIjaC3VG/lCu
-         eVGfhHN5nWp0PGNyPqWcbPV1xNAXSKPStSMzKFZtJNVxB8sS78YImNdbX93jJJRfPdJv
-         loIr8dAgL0B7DLThEcTMKzdTHI3ZzYY58gagf5tA+CJ6OWavcGA70JDCaFlzYI4p0Tn7
-         ZPz132Rv14oDMjUPtR29q8buj++QMyJ7hejmSTumgURCqfQqFGbFhZ6aBwY3lFKwQoYH
-         A46g==
-X-Forwarded-Encrypted: i=1; AHgh+RoHN0UBMSTc9n6BsTLHNbgVOw07ceDtWCd1+M2T6GRCBb9K6tW/oFnjMSLyJr7PIricwKgHwf2EjQ==@kvack.org
-X-Gm-Message-State: AOJu0YySQ9RHjMgQGhQezWdlxuwDMOdkCAuKfSWap6co3oGaj/eI2tc7
-	GGH8He2gPIWltiO56si6nLIGM4qf+foDcDuPC41F4ZGgN5hkllznY+JROmgQBXUoOWSyEUVHD5p
-	38FEtH9ribywJd3lOpO0Rgsqt8i5NkKdjIFzOZR8LgE3+k1jm1kFzN8Vu
-X-Gm-Gg: AfdE7cl34LD6WacBcFumZWTPA/3pfejhBUgyz1Hn1fQH34rkq8fmGwyk5aSRpsVJo06
-	6I4GxuCWD7l27eV8NHGS7UJXQfm/YZr694G8MfJNNtOj/X7kYFz8qW6kx5uILlepG/oMls1BDs6
-	elks57+zsTdiA4MBS9eoSUHxAsTa3l1Fo5KEhGqB4u0G0Os6Tab1EXW4JzMryNtc3bH3DWvprXo
-	M6+bs9hYeHVg2/2vLF0edD0IFVMfVHUBtn2zYUnouYQUdYSzK326Taw7eNmRpaFa7mAk8kqdmsY
-	jQpdBZAKMzWiRuwOO3iaoyNlz26FrzLp3Q5jzQ==
-X-Received: by 2002:a17:903:3884:b0:2c7:df7a:859a with SMTP id
- d9443c01a7336-2cee1c0873emr1602925ad.15.1783961012878; Mon, 13 Jul 2026
- 09:43:32 -0700 (PDT)
+	bh=pDZ/IcHYMn20WyBXPqVl9fp/FWltDktN8L55+mUzKok=;
+	b=T5oArFCgzJHXNXyHnd0ApqFWEzLVrYGIrGXKoMzP2BiWSIpRleo+hAlYL9BHCr8n1bRvqB
+	RkKbWGW7fO75xOM2GAbtRLFMSM148UiNQTLRUJIHMbxc3ATs2boMvXBWy62lvAUOZBmog9
+	hUBwzCOQElGzQ/jWjZWYS9B9zThVVH4=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66DCCuNx2436841;
+	Mon, 13 Jul 2026 14:18:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=pDZ/IcHYMn20WyBXP
+	qVl9fp/FWltDktN8L55+mUzKok=; b=HKJKa+3spMIxI9+GZgOFvYDJmjXV7iB7i
+	sQBhoQmqJgAOhD0+LvlNhAJdPDKbvEcYsHF2KUIlgcz2RmOBd21erqFLdrRypC6c
+	ZM1GjdS6buT03+6RMRBEtHrCFLybwcT/XCOkspTJTgE2vNdGwWejssSevy3QrRtU
+	3GO5+UPKNzb370Ik+Ex6quh1hwRkRRoXGg3MddtoCK+wHCXrWoGQRO/XT9YhM6tl
+	gS+d+M29bSM4MQWQLQr0neu2Ac3hfcJGIPDHVUayOe76T5VLDtWWlonXIvuvRzjJ
+	AD8bRqUlrRfaKAHwKYppSYIbbuLtxgn+PCBi5zkpmeMmurl4X4dhA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbepx92f6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 14:18:33 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66DE4dnX027039;
+	Mon, 13 Jul 2026 14:18:32 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc0hvx4te-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 14:18:32 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66DEISee29164032
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Jul 2026 14:18:28 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3C1292004E;
+	Mon, 13 Jul 2026 14:18:28 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 165772004B;
+	Mon, 13 Jul 2026 14:18:28 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 13 Jul 2026 14:18:28 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 00C3D162533; Mon, 13 Jul 2026 16:18:28 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>
+Subject: [PATCH v5 4/4] s390/mm: Lazy MMU mode sanitizer
+Date: Mon, 13 Jul 2026 16:18:27 +0200
+Message-ID: <7a4eea996903a1d0e94c81a3ea09ce361ac7b7e0.1783945507.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1783945507.git.agordeev@linux.ibm.com>
+References: <cover.1783945507.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-References: <202607091820.qbjlGhKK-lkp@intel.com> <CAJuCfpHjUij9kkD6QiWxYvsYD3iKga9rzJZWnN9vCf3bhp-dXA@mail.gmail.com>
-In-Reply-To: <CAJuCfpHjUij9kkD6QiWxYvsYD3iKga9rzJZWnN9vCf3bhp-dXA@mail.gmail.com>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Mon, 13 Jul 2026 09:43:18 -0700
-X-Gm-Features: AVVi8Cdf0fJO40B3Qj_RdzqPZ1-qc6aBPc0lKEpRA9NJUP0hxR9kO-yh2KYqMwk
-Message-ID: <CAL41Mv6UNWWdv3a2g2+tKuy+EX=8FJZSCcEAyHYyuUybYK4NMg@mail.gmail.com>
-Subject: Re: [akpm-mm:mm-new 344/369] mm/alloc_tag.c:356:58: error: implicit
- declaration of function 'compat_ptr'
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 633p1VA7coOOqTUUask6iYHUstJbU1_D
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDE0OCBTYWx0ZWRfX43d7QLE8fPi3
+ zhv3Zz9/HGflsMaoO067z5mvTuQw0khh5BIgUoW9Jt0yu2ZTdutBRythBdBVH1Z3rqyH38GeVqP
+ n/W1VW9xGiJzwbArOKFJpCTknLiKjhI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDE0OCBTYWx0ZWRfXxIRttI6sbL7b
+ ignxajvNQRWzT3vbz+whUvPbasEmCSDCmb6gL3bjqnCg4SqmT3Ih5etzMWfHcWQOzT8wZ55L+Ql
+ sSeYHJ3tTy/VPVyL65CBNhfNDxM+AlE32zoOrWVJcaIlTapI/omXAH7sJ3FTC1UBx/NFawQIjNd
+ 20biXa6FtxjWBlKlPuPKdPbRlmy4Gpw8+3HK1Zzn43ZfXMcbQGfSKF7vdCe1A0i5VFWF/A9KeAu
+ npFhkmncG8uwy7KBLNfzdCvOp1aYPwudHJjCXY4F7S64YFaYYxMYD4Rbmsmz0M3kXS+/8FOZh+5
+ eGem2GayzSsUkoqjxtfyOZdbjzT2qZzOcwmNpnjb2BDTCg4l5glgawg8L//+fK/x5mmsnkDJ8X5
+ eJXeXvxDT8ytu6tuhF4xn0diiCwzySz6ENn9AZ5GoZj1kJkKLjXMENpk0Np6xXung1NDWWufk7x
+ kyydm6DZ5v4YloS/qcQ==
+X-Authority-Analysis: v=2.4 cv=XbS5Co55 c=1 sm=1 tr=0 ts=6a54f3b9 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=DuHJb5c9rUSq-GGRdagA:9
+X-Proofpoint-ORIG-GUID: YKOXfjdNcAVcGH6vFzn23ijE2euu_JXk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-13_03,2026-07-10_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130148
+X-Rspamd-Queue-Id: DF5BF120008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 84F0180008
-X-Stat-Signature: xnno8jza7qc9ymopxqbypkjkiwoo4i6e
-X-HE-Tag: 1783961014-984466
-X-HE-Meta: U2FsdGVkX1+iY8EaJuOM9di2/oGU4ZioX2W7Cyc8jt6do2uPaSb4LSiwbeXUtgBvOyJwVU+vrLtJm1ZTqszQ2ycMhedIWXvwqrFNgXVWdmfEaC8jtjHcCkiKpM1Odo6FMY2WXpgUA7pnZJJ33mZe64IV6xSNFHNd+Mt4brmxh4LvK6RHpN2gvsc9cu8AoOP5OIG76FHUjyagM+PZONoTL84FiqDLmreiO0ZcxMWR/LHfj+y1/C170o2IS7y13eJVi1SLZSkSzCd7uCRUToV9KL4I7eBzrtBm+xFLvpOEuG0WsuCfMG05qdxRdYKNblhGTWW3PYWi+RLzz2KYXFwZzDvKbGFM+8LUzT73JiLCMwdzG1d+lVg0mObY7FJpdUtLzk/T2Lrfb0BWONy7JPRGLsQxkL5qrKNMEZSM1+45cLTjmwNrmqpody2dTphm58HrTQyedzrIhAROavfRO3fUd20JP75quPHJGJ/on8e4d2mHFFJgFkjd7zZJJJo4MdAoB90oFjmbKJVDgKtkBEv+poMFbhBXylsh8W/DQaa7l/7uGarknH43RlRopXICAL24Q+KjkrH1NPGtBb5TKLjB0RrCosl/GPnk01nMyLcwM5IokDpsB8YUpzLp22Y9eYKe8pb8A3groo/+YFELE5iKvRX970J9tzwfQzUIIonAm8cVpQlFq40AG8wtY6IwRl+/KyRd1cjyP2XeE8OSAVUvEZDlvFQzrLGCUkqxEiw3ogQaQc9WxSx3985+5hVdsDbfLP38RDoFwBo4iiNQtnzTGlgZAgqYdc+ielxqVtKLWRbTHk2RN19wIaPTIx81O8D4LYQkP+5zVjBxvm4LN2I3uDeT7LwcAm6gutvsmu/FP9RXsR50/rmUC0FLrLs9m5MaUMRLRN2B+bh/TuFBRGFecqyaHDJEKOAQ6hlZJSgLC5IkfSnsYLXDt6mYvDcbxjmIoxwPMIvxSXUFKWwGc1m
- 7OvsCYKe
- IkIrdJlcCzHAde+nePJ8ANAAGWIjviC1A71q4biEEJJfFK29vOfGm96cPFJ9i9JWam383WpPXwu4JgpABRQ5ipBhrpH3j4yIr3YlwB5oayhDJk4aRTiEMQm/0uKFaD3tYGD/OodPTO6G6CwV/Fi02MfJk7D2oeOJFJFgGnxFVzmEQlNmfi7GdMkUdkg2C53pAcpRtQriKks3iGLfAMMS4aBWl9f2tyA+UY3+DphNg28CG/0acythXmexCDhNsvFRkhcMu+LyP8E/IgzKwC1G5M00RK8MEvjAbe7jXnOpBzxRl7ufJchtdZ86e5R0/n79LbRV3X6qSF42DdyBsfAUK1wFGb6roMI7hzTX2X1zSh13+BayXNRYLVLvinpjnDavDJAViVR6VjVCothOWCizLvPSnQYHCy1BwK0bZQH3e1mS0LyxLZS2W+JOHtw==
+X-Stat-Signature: 4t7mxcpq9q7odb9sgbxcchmhjranep7t
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783952319-446364
+X-HE-Meta: U2FsdGVkX1+3UxazNAjEnlRw54bbKaQb261laR61qp8v6YmN552Wi2lXCyL/dwlnAjDe9BPFzEVfFe1jmT6zItJOh33tYM1jn2+LEOUinPNUzoi5fxC9o8gCr5HcICT6YrvAQLQclMbA5QBseEV+RD7Dvu6+o/MjQHbJ2mhTkvkGFM0linedQKEl9eQXlojIwXTM/6n50bBoEoJ5KBMMZzeFmUZGqKoGp5BbeyAJ2K2l29Rn3jKoufTt1k/gRCZBF3ceYaa7tUnRq2MF7eHQbfjoK58N1tf7aPEbQds48lNnfhNVXte1ZcudPX9tt+DNQLDnEM+HGHgyjmSd/Z9bE5CdK6MFskue/gSu5cVbVYJ9xypFg1xNAF6fU/EWQr6bHgXFo9oZ+OuwR/zJpSJ7N+XvFoo4LV29WgGCHpyY84AjNMVaAb/5lFCwBiy5HLnk7sC+P/QkBbDjFb4mn4c/RPOSTK2ZCaU8J4An0fyFm3T1bjtHFD//uTLZTRCYH6pzfeIu/T2Fkv96EZf12nCVMDroDWigTVn6NZqMXYcLEitTuSmyu7tWupycKqOANl98qiLGnlGNbgFykMG2NQOSOnWyoZPWLTKJcL0Sa47gog4/uMHEm50mOD/tjxjbUbrjimMVyRqia5nHUOpkCjloOhBSbRDVNymk53nKBDwRcVgYEHcqdC9XVQMlS5vrSfk/gb64Tf8YdD1367z+ylxnTr0M32LbiGt1c1OZKkFQDwgHFX7RtQqQZceqj/bk4WA9GlSY8JZCSoaNJca9yuQB/7jiK4WOwmE/PpN1isPEINl1/bcZSsGItyO9+khiZ2l8To2Wr4AgWcyTqJvkq0/DgcZUQrc0T8fs366D2lBYt7O+FBlkHHC2vO8l5P9JCaJIK5yszPTMdq5htXreyJy8u0/chKlkvZrBiBo+cIYsPNFNtGsL4CQ4jO55jkUGIfFHLX5G8f5RQgbDpSTF2tM
+ 5sKSIzKa
+ nu4qtTuj069zNkLSvgH/H9NeTAC6LgQAhOLPpsRPL1Yj+rkAcTh6lFtfv3Dg/yysVVEs5aceu5VbjhP2ukyeLpBQBkeYt160UM/cgkGzTkNlw1Gr072ztmUCHz2ET2NvIL+0CtL/oJUCCr2GSaLNVXi8yzu7UFp7kAURU/HLnKbqh+NMd01I742sw2KW4ys6t2G/h+B/WM3XkqPN8k36jsdlkgzDDUIgk+IlA4IZ3gW+MQ+I6K+seYwbIe/12R1fxBBijQ7B2B1iFPQj35pmUsEIRVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,70 +147,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everyone,
+Detect PTE entries access in lazy MMU mode by means other
+than set_pte() and ptep_get() primitives, which would be
+a read hazard.
 
-I can send a fixup patch for this error if needed. Could someone guide
-me on whether I should amend the original patch-set and send a v9
-patchset or if there's another way to handle this without sending a v9
-patchset?
+The access to kasan shadow memory from ptep_get_lockless()
+mistakenly hits invalid access in case a concurrent lazy
+MMU access to the same PTE is happening. To avoid that
+disable instrumentation for ptep_get_lockless() altogether.
 
-Thanks,
-Abhishek.
+Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ arch/s390/include/asm/pgtable.h |  6 ++++++
+ arch/s390/mm/lazy_mmu.c         | 27 +++++++++++++++++++++++----
+ 2 files changed, 29 insertions(+), 4 deletions(-)
 
-On Thu, Jul 9, 2026 at 7:45=E2=80=AFAM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
->
-> On Thu, Jul 9, 2026 at 3:00=E2=80=AFAM kernel test robot <lkp@intel.com> =
-wrote:
-> >
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-=
-new
-> > head:   59e34180e138a293260301c139cf7ee800978533
-> > commit: 27ace96bf8195484c9e9e1a08eb5af5a4e81f9f0 [344/369] alloc_tag: a=
-dd ioctl to /proc/allocinfo
-> > config: sparc64-randconfig-001-20260709 (https://download.01.org/0day-c=
-i/archive/20260709/202607091820.qbjlGhKK-lkp@intel.com/config)
-> > compiler: sparc64-linux-gcc (GCC) 15.2.0
-> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
-hive/20260709/202607091820.qbjlGhKK-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
-rsion of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202607091820.qbjlGhKK-l=
-kp@intel.com/
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    mm/alloc_tag.c: In function 'allocinfo_compat_ioctl':
-> > >> mm/alloc_tag.c:356:58: error: implicit declaration of function 'comp=
-at_ptr' [-Wimplicit-function-declaration]
-> >      356 |         return allocinfo_ioctl(file, cmd, (unsigned long)com=
-pat_ptr(arg));
-> >          |                                                          ^~~=
-~~~~~~~
-> >
-> >
-> > vim +/compat_ptr +356 mm/alloc_tag.c
->
-> Missing #include <linux/compat.h>
-> After adding it the error goes away.
->
-> >
-> >    351
-> >    352  #ifdef CONFIG_COMPAT
-> >    353  static long allocinfo_compat_ioctl(struct file *file, unsigned =
-int cmd,
-> >    354                                     unsigned long arg)
-> >    355  {
-> >  > 356          return allocinfo_ioctl(file, cmd, (unsigned long)compat=
-_ptr(arg));
-> >    357  }
-> >    358  #endif
-> >    359
-> >
-> > --
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgta=
+ble.h
+index 9c8ff55cb535..19b5b4277efc 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1049,6 +1049,12 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
+ 		__set_pte(ptep, pte);
+ }
+=20
++#define ptep_get_lockless ptep_get_lockless
++static inline __no_sanitize_address pte_t ptep_get_lockless(pte_t *ptep)
++{
++	return READ_ONCE(*ptep);
++}
++
+ static inline pte_t __ptep_get(pte_t *ptep)
+ {
+ 	return READ_ONCE(*ptep);
+diff --git a/arch/s390/mm/lazy_mmu.c b/arch/s390/mm/lazy_mmu.c
+index d75b93d9b0de..ee2385897bc7 100644
+--- a/arch/s390/mm/lazy_mmu.c
++++ b/arch/s390/mm/lazy_mmu.c
+@@ -63,10 +63,13 @@ static int invalidate_pte_range(struct mm_struct *mm,=
+ unsigned long addr,
+ }
+=20
+ static void set_pte_range(struct mm_struct *mm, unsigned long addr,
+-			  pte_t *ptep, pte_t *end, pte_t *cache)
++			  pte_t *start, pte_t *end, pte_t *cache)
+ {
+-	int i, nr_ptes;
++	int nr_ptes, nr_total =3D end - start;
++	pte_t *ptep =3D start;
++	int i;
+=20
++	kasan_unpoison_pte(start, nr_total);
+ 	while (ptep < end) {
+ 		nr_ptes =3D invalidate_pte_range(mm, addr, ptep, end);
+=20
+@@ -77,6 +80,7 @@ static void set_pte_range(struct mm_struct *mm, unsigne=
+d long addr,
+=20
+ 		addr +=3D nr_ptes * PAGE_SIZE;
+ 	}
++	kasan_poison_pte(start, nr_total);
+ }
+=20
+ static void enter_ipte_norange(void)
+@@ -94,6 +98,7 @@ static void enter_ipte_range(struct mm_struct *mm,
+ 			     unsigned long addr, unsigned long end, pte_t *pte)
+ {
+ 	struct ipte_range *range;
++	unsigned int nr_ptes;
+=20
+ 	if (!test_facility(13))
+ 		return;
+@@ -105,6 +110,9 @@ static void enter_ipte_range(struct mm_struct *mm,
+ 	range->base_addr =3D addr;
+ 	range->base_end =3D end;
+ 	range->base_pte =3D pte;
++
++	nr_ptes =3D (range->base_end - range->base_addr) / PAGE_SIZE;
++	kasan_poison_pte(range->base_pte, nr_ptes);
+ }
+=20
+ static void leave_ipte_range(void)
+@@ -112,6 +120,7 @@ static void leave_ipte_range(void)
+ 	pte_t *ptep, *start, *start_cache, *cache;
+ 	unsigned long start_addr, addr;
+ 	struct ipte_range *range;
++	unsigned int nr_ptes;
+ 	int start_idx;
+=20
+ 	if (!test_facility(13))
+@@ -148,6 +157,9 @@ static void leave_ipte_range(void)
+ 	range->end_pte =3D NULL;
+=20
+ done:
++	nr_ptes =3D (range->base_end - range->base_addr) / PAGE_SIZE;
++	kasan_unpoison_pte(range->base_pte, nr_ptes);
++
+ 	range->mm =3D NULL;
+ 	range->base_addr =3D 0;
+ 	range->base_end =3D 0;
+@@ -227,10 +239,17 @@ static void __ipte_range_set_pte(struct ipte_range =
+*range, pte_t *ptep, pte_t pt
+ static pte_t __ipte_range_ptep_get(struct ipte_range *range, pte_t *ptep=
+)
+ {
+ 	unsigned int idx =3D ptep - range->base_pte;
++	pte_t pte;
+=20
+ 	lockdep_assert_preemption_disabled();
+-	if (pte_val(range->cache[idx]) =3D=3D PTE_POISON)
+-		return __ptep_get(ptep);
++	if (pte_val(range->cache[idx]) =3D=3D PTE_POISON) {
++		kasan_unpoison_pte(ptep, 1);
++		pte =3D __ptep_get(ptep);
++		kasan_poison_pte(ptep, 1);
++
++		return pte;
++	}
++
+ 	return range->cache[idx];
+ }
+=20
+--=20
+2.53.0
+
 
