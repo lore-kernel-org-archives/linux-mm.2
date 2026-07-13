@@ -4,90 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A5AC44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:04:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C827EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:06:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5DD16B0152; Mon, 13 Jul 2026 13:04:41 -0400 (EDT)
+	id C3A9D6B013F; Mon, 13 Jul 2026 13:06:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0E1C6B015D; Mon, 13 Jul 2026 13:04:41 -0400 (EDT)
+	id BEA986B0142; Mon, 13 Jul 2026 13:06:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFDFA6B0174; Mon, 13 Jul 2026 13:04:41 -0400 (EDT)
+	id AD8876B0153; Mon, 13 Jul 2026 13:06:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 72E536B0152
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:04:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4DD57140174
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:28:24 +0000 (UTC)
-X-FDA: 84983832528.15.9E0E1F2
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 622C02000E
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:28:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IbpaFlKp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 82CB26B013F
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:06:11 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09A15A0120
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:06:11 +0000 (UTC)
+X-FDA: 84984381342.21.4F5FF8C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 26591140019
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:06:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kVUJIOBx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783949302;
-	b=W/M4l0RQ/f8CswzdmACAcaH9RNlB6nCB1ksHzf53c3yGhWkTmSobNo1OKotGhNJQJieAUx
-	qFjuG80QggQPQ5n62NhyroWZSrT3MLSjfBxqK92+cR6VaL7bRQuQDarugb2fm5Mgt9+n9j
-	yuV8UrOtn5u9FtYbGTFl8vggfFz5oAM=
+	t=1783962369;
+	b=XI/lXP8Lkh8Qfd9EB21JasVMR7LUEIDxvVvq75ru/USyJ3qaOKF7k9UqMDq1AlFEGre+X6
+	xirx0DDgPfcQDLSb8Qz4Ju0K/eR6Byzo2RYM7QUWisoZCQUIoxkV1CPBaFfz6+jtRU5oJr
+	TVpige7sJqtIIM1K2pUzSs+QHhKktps=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IbpaFlKp;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kVUJIOBx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783949302;
+	s=arc-20220608; t=1783962369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hCZwaMJokj8MvB23i+KgfL9s2fF07ZtloHz25nGxCcw=;
-	b=iw9X+K3lTUq4KyeHB943rOttI1udkZ7x9KylkMkmdqLmcSQnSK+KIisu7U0/zEjEJuR43B
-	GqSipiodYag9khPWaVLRTH2SwAgXyzbqn/nOZpwGvdBTy+PTzT6xMSWAkRscSZtxMfbSKy
-	u3P+gZNLKKtRe/+39F0bUETtOzeO9zI=
-Message-ID: <03158ab2-94e0-4a48-94d1-df2eedbc5545@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783949300;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hCZwaMJokj8MvB23i+KgfL9s2fF07ZtloHz25nGxCcw=;
-	b=IbpaFlKpeA4JFZRTs7k4EM9meHM8rqNlkc7853eC6eHUK3DbIhaVDMxQ+fem+c4f+dtDuE
-	y6OhZo3KMkn3mClYnfAZ9QXDmpNSTEDhd/MA7LJ4NycFEh2iQTAefbclmy+AYROQyxRBxf
-	ornndC/2/V47wWEUo6ZTo1CKDrkwRGA=
-Date: Mon, 13 Jul 2026 21:28:10 +0800
+	bh=PCg0ezVsWUDFwNJ5eXVgcKlvju87Zi05OO8sX5KoW+E=;
+	b=ryYxwjrgRlKD9MfEW/3p6TBZ6T/rlos6WK5E1bEsYzkcLcdgP0W5lN8MO6mVte7jyCGBAU
+	mbPJ0LARb+9fRhBky5uLY/m9p9LZB4gb/HSJzhGXVFZhOQ8yooTj6y0bZ/dOcQ6/CwCUhB
+	l1mm/fU8sXld6/m1OvY17RciXPYkoZA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F3076132C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:06:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E391F00ACF
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:06:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783962368;
+	bh=PCg0ezVsWUDFwNJ5eXVgcKlvju87Zi05OO8sX5KoW+E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kVUJIOBx8nWiyS5mBoa4y043g2Sakko4l0KdubLWqXmAzxfnju2HXHT9WLNNTnCNE
+	 Sq5sBGovGV2/K7lLbq8b+pHs8pC/10PgHp9jQe7/CRR9cXyMwIiBcdAnF8NMHOWAig
+	 YTqCQzYPE+nfs28gZTxsf+RlFT/GTHeayK2EN/WDxV1T06roXBvcM5odSImIm2tUoN
+	 ZROhTWKr7tCiKuYkmX8DeNQqyCxhec3oJdsrtkzQFlylluLe+GmvjijgjDrigV0SRx
+	 OoqsnNt5vnQd4+jJ/OjIJASM7ndPu16pWvkt3l4bxX0XGcWUu9GfDxIvLTQ+jqupge
+	 GMcarSagf9WNQ==
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6679d88abdcso155277d50.2
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:06:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rpv6JsfA3JYTea5mpZwXTXUE3PgwGQkA24kbx4qhuCZyXp9DpbJKZoWjje07Hl3pW0v8OSC9MzQ/w==@kvack.org
+X-Gm-Message-State: AOJu0Yxpi2Ah/F9ZjbMmMPYpm2cwzYclTHmCJxTIRP63APG9trtMn1jo
+	ceyyyJNhx1dxeeN8SjnEQAxMsJ2RiAjaF128Dj8yYm3p40UPyoMpojt85cGnEfzTaZVEMbxhwrK
+	NDjJu2UsnAb+DGi9R9lLGAgY+WykIu2g8MlfkylBaRg==
+X-Received: by 2002:a53:e850:0:b0:667:a303:cd69 with SMTP id
+ 956f58d0204a3-667d7c2abe8mr4777415d50.76.1783962367515; Mon, 13 Jul 2026
+ 10:06:07 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 4/8] mm: add a template-based fast path for zone-device
- page init
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
- balbirs@nvidia.com, bp@alien8.de, dave.hansen@linux.intel.com,
- david@kernel.org, kees@kernel.org, mingo@redhat.com, rppt@kernel.org,
- tglx@kernel.org
-References: <20260709112520.24857-1-lizhe.67@bytedance.com>
- <20260709112520.24857-5-lizhe.67@bytedance.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260709112520.24857-5-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 622C02000E
+References: <20260713025644.170839-1-youngjun.park@lge.com> <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+In-Reply-To: <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 13 Jul 2026 10:05:55 -0700
+X-Gmail-Original-Message-ID: <CACePvbUC60sOEwAV6bbBowYe4J8Z9fDc8M=aRXSsXfKNJ5CYBw@mail.gmail.com>
+X-Gm-Features: AVVi8Cea804-R-wCPM6hsanlgOS7u2XI_gmRPvx4pPBWwkOlZ6UvNGiEZK7yGZE
+Message-ID: <CACePvbUC60sOEwAV6bbBowYe4J8Z9fDc8M=aRXSsXfKNJ5CYBw@mail.gmail.com>
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
+	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
+	baver.bae@lge.com, her0gyugyu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 26591140019
 X-Rspam-User: 
-X-Stat-Signature: 17ee4uqxnzemtqtfoygkm8reepqj8ady
+X-Stat-Signature: 8x8qf4c6pq6qbqo9w9w6y6zcp47fi9af
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1783949302-773091
-X-HE-Meta: U2FsdGVkX19dvsm5BTNCUyYaNGsRcr1taIY0TT7V5lspTn8oHEN4Zf/2xS4NLqEwfBdH07T1ioAIz1zckpq63XCxgqSuaHxjnJ5JZae0zPDdRqrQLW4SMF93Ecane7dZ7J69as0MxLffs9D6Hmcdm0Ae6LyGNYnHTh47KNJG1BOxwWCB3xoeOpnLSglD04YQuMFEKMzlqjakZ8wgWVLtmk5dMijOFjiobzBXTA73PBWIa4WhKlJzyK/E1+3TpV0Nnc46QljElRrX0nyWul3J406F49sxClnkpXV2+XA1ZTsDMZ7KrAvQsr6Z3raHQQeEIVeuzK6L6IFNaY/WKF7T6VYGiH1uy+CaNgBxx41z+iyIxYJqfFfiXlnUArhZUmvP0JMfDPt6l3Xl6ZI2KIz4D6ROz+MZ9QeZtJnhsyyiE1jp+DEnLYZxgzPeyE6Hfb2wHrpG21FvgyUxeKCYL6vTs/ScPD9zsiGXPaX+A7Sr4iWiIWLoizTzG7KPotqTBXnGhylI4YQEO4KxNC+LuaBZoNE69SvJAMi4+9Hf714Kix7MRE10pBb4ZwMJTjzGKYBatJsQgNVvauxZ9czArC/Xgdq72EVFkqtXj0tnihpvXgkXy2NnZQJIYnuSqbuvxDrMYI0xr5iMcWxoBZF11m357bFAfz7BhwYtuAA6W83EgaXScb6+yNF4bD3EuM3MWx6oWQfGOvh3Rlyu/JutpbYeh8Zw3JWeYHePt+dHLvXfCuDHDfPb3FcKGz98NJYERbATYiWF6XPDHKnP/0eY3mq5FeO4ApEUwlRfHWaHfVfXPZShaC/d/3lSaNSqrzKu1x9GKbzopcpR5fqR7y4mSU4/YnbW4salsNavE+mKAoErIl3uYKO9u0ITyzS1jsBjJkUsnd8j4Otsm0zMAUxxH5P3lNH4TGwbX43QAiTjVSCL8zMprPijFQM3Hs7W7gLhKNFhRRInp5L4NFY9jA4aIhU
- Ce/FQOXF
- AEv1M2537THdr2mA2D2vNBvBRwQSFX4PnaOwvCSBTD//vHWYv8y7wl/hZBsnx6CDuFAWNL0CRjXRgMssgi6vWH9fBXRLDH3BCNnTWfMcs44akXuZorwSwOrTyX9A3tg+izaYoIqLQWhKqZjYcUqClDpFaCu2gJvbubFDUqiQQnv148de4YEav/lrIxrNVQPF5XctwPc7nd92VS2ZIqDWJ/Y28rI9uS6Eszl0E9gNzv+ywboPY/l/wErfI8ZWPK0S9N031PZz7qR07dxs=
+X-HE-Tag: 1783962368-953949
+X-HE-Meta: U2FsdGVkX18BoVh0k1TMnWKjd/yTCryW6BcTMLt78DVp8o6b93kET9Bzj1vPd7xqNAaqpZoXFeIQmYBhZZoej0x/FbAFwXi7TwG+jK4a6IEVNKW225vW/P2AvWmne/V+JnObBnqbTt2s3MIt6ER+GsAG5CPZ5F154zvnZ6ccguU/w/9Y813iDrTaVk3HouVUIAQPd+QX7jtVVg6UIxFd4G/Vxuoo6q2+Qbd9+wdZf5DEHEdrKvuo7D2MDAXK/SOeMgEnyzCWaLTWDxFj0MRjHS7EQj3ydU9BidiQCvkTWz0w8DCttJ1Kv0NrbQRfKchUCa24XjEIfNrVMpRyQ26+FYdrxXYdp4sQuhuhHqm5IpwXnTdBrOYqQ6unxNy/7cxbYT9S9l3CYIY210Irh486ijHF0wHU1aQIkpjje7VDa1xXpI05m/u5ph5JvAljAMNVo6CRqDeOJbfTvCpgLmt+jIKUeEDbHb4OtaBLjk1pVbybVWmF2cTC9TMhZPMHHEF6Vj4lkVXCDTskO2+qKGNXMIY/xIjVLrMloKEeQh9cbZPLc1zCg/jkY4eB38jJNqc3pRpRtHGI7Oxo3gVJYb+qg5/dFRl/2oU6Fe4vXt5Z0Ke+tP543tmx8R3j3xxsNUGZmtIvgXk4L3P4O/wHx4pb5A+4B5DBTUxnmC1hsoQYet37Zan1FVdxSNn3eKxs01tO76/wUbZNUUZZDpkYDCUGVXSvzNx5OhhZ1XzNrroDDPDDbGwW6x1tRacAypd/1nWWMl+LZPlxS3H8WElc88AXR+ZofqUftW1/shUJJul3+gmdYq1treVlyDWMNFQZ29GkFBRfQY/RLfr1qaIHeiB36vDyJSsbRetMg5dTzUn5urWcpYTKltNowap1iFRHSDC/BQA0+0wfhgPGAdV5pI3OX+SB4317OvH1gTd919Mh7BT3TnIeIkIFHETm4Z6qjOw6YJwdHND4qsCz+7zULwK
+ h0dX1T0Z
+ nAQIxLqC/Snwg/37wF+LSgCs8eEWi3cF9glljA1dUYIw1Lp2spzkFG+6rUO+5Hdeb0ebdb19jPkAxAfPubtEbXBe4dNwOptL9buigkSGum0qK0IcY0jObUpq9XaXUtRmnJweGaNdKaxOmGKJthUrckUo9NnEOjtD4PtG2L0CuJCs7kdgGh61PuOWvA0w5t1GM78OhRerjLgVAxK4chCkDoSEAWdgdSe2tOlt6aMSquqcomU7H4WAgLVcGNCjK7ULAZ76GClvYDmSJvoOKL3Q6qiGr9Lni66CgExC1+H3T/UcqVpvXogFkCgHH1PaAAFf27X7tp6gKfizcT69VRZkQr3QYvvXRx+j+zvWTBZLktaDbTIfOeEijv+IE1J9E/AUHl/4D9NqynQvksjnVLXkCSRXJAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,149 +108,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jul 13, 2026 at 8:50=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Sun, Jul 12, 2026 at 7:57=E2=80=AFPM Youngjun Park <youngjun.park@lge.=
+com> wrote:
+> >
+> > This is the v10 series of the swap tier patchset.
+> >
+> > v10 folds in the Sashiko review fixes for the selftests added in v9 and
+> > rebases onto the current mm-new. There are no functional changes to the
+> > core swap or memcg code since v9; see the changelog for details.
+> >
+> > For context, the bulk of the series is unchanged since v8, with great t=
+hanks
+> > to Shakeel Butt and Yosry for the reviews and discussions [1] that shap=
+ed it.
+> > The main change in v8 was the interface change to use memory.swap.tiers=
+.max
+> > with '0' (disable) and 'max' (enable) values. This mechanism was sugges=
+ted
+> > by Shakeel and Yosry.
+> >
+> > This change allows for future extensions to control swap between tiers =
+and
+> > aligns better with existing memcg interfaces. It is confined to patch #=
+3's
+> > user-facing interface; internally, patch #3 still uses the existing mas=
+k
+> > processing method, which is implementation-efficient.
+> >
+> > We also discussed tier extensions. Thanks to Yosry, Nhat and Shakeel fo=
+r their
+> > valuable feedback.
+> >
+> > Here is a brief summary of our tentative conclusions. Please correct me
+> > if anything is misrepresented (details in references):
+> >
+> > * Zswap tiering [2]:
+> >   Zswap can itself be a tier (typically the fastest one). But, until vs=
+wap lands,
+> >   zswap cannot be the only allowed tier,
+> >   since it still needs a physical device for allocation;
+> >   that restriction can be lifted once vswap is supported.
+>
+> Does this series support zswap being a tier? I cannot find any mention
+> of zswap in the patches.
 
+In case I wasn't clear. As it is, zswap is not part of the tier and will no=
+t be.
 
-On 2026/7/9 19:25, Li Zhe wrote:
-> memmap_init_zone_device() repeats nearly identical head-page
-> initialization for each PFN. Prepare one reusable ZONE_DEVICE head-page
-> template through the existing slow path, refresh the PFN-dependent
-> fields in that template before each copy, and memcpy it into each
-> destination page.
->
-> The optimized path assigns _refcount through the copied template, so
-> keep it disabled when the page_ref_set tracepoint is enabled.
->
-> This patch accelerates head-page initialization. The pfns_per_compound
-> == 1 case gets the full benefit here, compound tails are handled in the
-> next patch.
->
-> Tested in a VM with a 100 GB fsdax namespace device configured with
-> map=dev on Intel Ice Lake server. This test exercises the nd_pmem rebind
-> path (pfns_per_compound == 1).
->
-> Test procedure:
-> Rebind the nd_pmem driver 30 times and collect the memmap initialization
-> time from the pr_debug() output of memmap_init_zone_device().
->
-> Base(v7.2-rc1):
->    First binding: 1456 ms
->    Average of subsequent rebinds: 244.28 ms
->
-> With this patch and its prerequisites applied:
->    First binding: 1440 ms
->    Average of subsequent rebinds: 217.19 ms
->
-> This reduces the average rebind time from 244.28 ms to 217.19 ms, or
-> about 11%.
-
-An 11% reduction is definitely a solid achievement. While the
-absolute gain is in the range of a few dozen milliseconds, I’d
-love to better understand the compounding impact. In which
-specific latency-sensitive scenarios or workloads does saving
-these few dozen milliseconds translate into a major breakthrough
-for the user experience?
-
-Muchun,
-Thanks.
-
->
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->   mm/mm_init.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 58 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 5fccfbacf855..170021e182e0 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1065,6 +1065,44 @@ static void __ref zone_device_page_init_slow(struct page *page,
->   		set_page_count(page, 0);
->   }
->   
-> +static inline bool zone_device_page_init_optimization_enabled(void)
-> +{
-> +	/*
-> +	 * The template fast path copies a preinitialized struct page image.
-> +	 * Skip it when the page_ref_set tracepoint is enabled.
-> +	 */
-> +	return !page_ref_tracepoint_active(page_ref_set);
-> +}
-> +
-> +/*
-> + * 'template' is a reusable page prototype rather than a strictly immutable
-> + * object. Most ZONE_DEVICE fields stay constant across the pages covered by
-> + * the current template, but section bits and page->virtual may still depend
-> + * on the PFN. Refresh those PFN-dependent fields in the template before
-> + * copying it into @page.
-> + */
-> +static inline void zone_device_page_update_template(struct page *template,
-> +		unsigned long pfn)
-> +{
-> +	set_page_section_from_pfn(template, pfn);
-> +#ifdef WANT_PAGE_VIRTUAL
-> +	if (!is_highmem_idx(ZONE_DEVICE))
-> +		set_page_address(template, __va(pfn << PAGE_SHIFT));
-> +#endif
-> +}
-> +
-> +static void zone_device_page_init_from_template(struct page *page,
-> +		unsigned long pfn, struct page *template)
-> +{
-> +	/*
-> +	 * 'template' carries the invariant portion of a ZONE_DEVICE struct
-> +	 * page. Update the PFN-dependent fields in place before copying it
-> +	 * to the destination page.
-> +	 */
-> +	zone_device_page_update_template(template, pfn);
-> +	memcpy(page, template, sizeof(*page));
-> +}
-> +
->   /*
->    * With compound page geometry and when struct pages are stored in ram most
->    * tail pages are reused. Consequently, the amount of unique struct pages to
-> @@ -1120,6 +1158,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->   				   unsigned long nr_pages,
->   				   struct dev_pagemap *pgmap)
->   {
-> +	bool use_template = zone_device_page_init_optimization_enabled();
->   	unsigned long pfn, end_pfn = start_pfn + nr_pages;
->   	struct pglist_data *pgdat = zone->zone_pgdat;
->   	struct vmem_altmap *altmap = pgmap_altmap(pgmap);
-> @@ -1127,6 +1166,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->   	unsigned long zone_idx = zone_idx(zone);
->   	unsigned long start = jiffies;
->   	int nid = pgdat->node_id;
-> +	struct page template;
->   
->   	if (WARN_ON_ONCE(!pgmap || zone_idx != ZONE_DEVICE))
->   		return;
-> @@ -1144,7 +1184,24 @@ void __ref memmap_init_zone_device(struct zone *zone,
->   	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
->   		struct page *page = pfn_to_page(pfn);
->   
-> -		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
-> +		if (!use_template) {
-> +			zone_device_page_init_slow(page, pfn, zone_idx,
-> +						   nid, pgmap);
-> +		} else if (pfn == start_pfn) {
-> +			/*
-> +			 * Seed the reusable head-page template from the
-> +			 * first real struct page, because the existing
-> +			 * page-init and pageblock helpers expect a real
-> +			 * memmap entry rather than a stack object.
-> +			 */
-> +			zone_device_page_init_slow(page, pfn, zone_idx,
-> +						   nid, pgmap);
-> +			/* init template page */
-> +			memcpy(&template, page, sizeof(*page));
-> +		} else {
-> +			zone_device_page_init_from_template(page, pfn,
-> +							    &template);
-> +		}
->
->   		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
->   			cond_resched();
-> --
-> 2.20.1
-
+Chris
 
