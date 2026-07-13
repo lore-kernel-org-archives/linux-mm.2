@@ -4,95 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09EAAC44506
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 02:57:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEADEC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 03:10:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07D656B0095; Sun, 12 Jul 2026 22:57:01 -0400 (EDT)
+	id 59E406B0005; Sun, 12 Jul 2026 23:10:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1B6C6B0098; Sun, 12 Jul 2026 22:57:00 -0400 (EDT)
+	id 54E456B0088; Sun, 12 Jul 2026 23:10:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9896B0095; Sun, 12 Jul 2026 22:57:00 -0400 (EDT)
+	id 4671A6B008A; Sun, 12 Jul 2026 23:10:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 74CC16B0093
-	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 22:57:00 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A34D93446
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:56:56 +0000 (UTC)
-X-FDA: 84982241232.24.B1BC761
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C9C34180005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:56:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 19B9F6B0005
+	for <linux-mm@kvack.org>; Sun, 12 Jul 2026 23:10:21 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7CCA91C42EA
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:10:20 +0000 (UTC)
+X-FDA: 84982275000.03.27E12FA
+Received: from outbound.baidu.com (mx20.baidu.com [111.202.115.85])
+	by imf09.hostedemail.com (Postfix) with SMTP id 13F39140006
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:10:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=b+0nUvHu;
+	dmarc=pass (policy=quarantine) header.from=baidu.com;
+	spf=pass (imf09.hostedemail.com: domain of "prvs=md164857AA33=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md164857AA33=lirongqing@baidu.com"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783912218;
+	b=aqrsK/0IRt2faMQRMjQHQHPAITdbDlkaIdfMAuH9um10+JOlvXo/kqulj8EpVJpGSByu8z
+	Vcl/hasCPa1HlTsgjjEGvTviUyhJk7qKMPCBNKPwTSbOaMhIfjM7H9qkKThVNUE1w5GBxB
+	NsgmCt4Kjt2iEX5tvAscFDMtH0gUdis=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=b+0nUvHu;
+	dmarc=pass (policy=quarantine) header.from=baidu.com;
+	spf=pass (imf09.hostedemail.com: domain of "prvs=md164857AA33=lirongqing@baidu.com" designates 111.202.115.85 as permitted sender) smtp.mailfrom="prvs=md164857AA33=lirongqing@baidu.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783911414;
+	s=arc-20220608; t=1783912218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZHoco/5DHyzU1hcvdiBc5kGTpB+eTRBWApb3BAoNr5E=;
-	b=NOaVGsEKspFO4CPOc7nlSZmRr7e1D6S/+V6FcHHEthEtgAXB4HPOj94IemjFEtZYz8qV0B
-	bm94aCTKlfbR+LABcPXRZYIHGI6KoCXEixSAVKTqHcTH1fohA/LPKd/rDyMGh+gXGVzLll
-	DJsPIxFP1eVdQnvVAGH2vX+l7h7x4sw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783911414;
-	b=KkaUFyeJV60AmxPr4nQSQp1JRLqNeloZ6r7zz9beZxCL0RGxlDDUHAguSs0Ped9xI38i14
-	EjwiCu8RIDdZFNmx+nUHzhESiLssTTR5Wyl8LtONlAMhY6rzxS3ltj3cxoX+qnror2gpcs
-	ekXLS1YGKVAfwRhm0GTO/rA3JNjSdiE=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 13 Jul 2026 11:56:50 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: akpm@linux-foundation.org
-Cc: chrisl@kernel.org,
-	youngjun.park@lge.com,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kasong@tencent.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	yosry@kernel.org,
-	joshua.hahnjy@gmail.com,
-	gunho.lee@lge.com,
-	taejoon.song@lge.com,
-	hyungjun.cho@lge.com,
-	baver.bae@lge.com,
-	her0gyugyu@gmail.com
-Subject: [PATCH v10 2/6] mm: swap: associate swap devices with tiers
-Date: Mon, 13 Jul 2026 11:56:40 +0900
-Message-Id: <20260713025644.170839-3-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260713025644.170839-1-youngjun.park@lge.com>
-References: <20260713025644.170839-1-youngjun.park@lge.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Y0qpqFnpdO4THFAFPZzHOooCY3uS7PWUIJUz/0gloes=;
+	b=UTBFURtlV2wcZtX4Lo93U/TjZwUnzQkH48IlseYZM0NzsqAFY15xz6BvQPda3EK5jr3aHK
+	yrG7GyNLpYXQz0gB7oV1APVT8qG9/bQt+4SBjaVnPvR+iGfdqCVsW0pgKn3B/IHTinauhq
+	n2CzrLomz+IaxMqQ21OuT9f/Uu3gyWk=
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.46
+From: "Li,Rongqing" <lirongqing@baidu.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: =?gb2312?B?tPC4tDogWz8/Pz9dIFJlOiBbUEFUQ0hdIG5vZGVtYXNrOiB1c2UgbnJfbm9k?=
+ =?gb2312?B?ZV9pZHMgaW5zdGVhZCBvZiBNQVhfTlVNTk9ERVMgaW4gX19ub2RlbWFza19w?=
+ =?gb2312?Q?r=5Fnumnodes()?=
+Thread-Topic: [????] Re: [PATCH] nodemask: use nr_node_ids instead of
+ MAX_NUMNODES in __nodemask_pr_numnodes()
+Thread-Index: AQHdD3MKs5fBK4e+NUaHhHHa3NakYrZlVkIAgACU7dCABN+yAA==
+Date: Mon, 13 Jul 2026 03:10:09 +0000
+Message-ID: <b7d7d9321d544b13843f62c971a972cf@baidu.com>
+References: <20260709071739.2408-1-lirongqing@baidu.com>
+ <20260709164952.6630ce13f63a3104c2c53572@linux-foundation.org>
+ <e86f64e7da3849e8b1be762f1ea14f3f@baidu.com>
+In-Reply-To: <e86f64e7da3849e8b1be762f1ea14f3f@baidu.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.31.62.14]
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C9C34180005
-X-Stat-Signature: pnkr8st7ooo8joyso8bdr1ua136c97t9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1783912211;
+	bh=Y0qpqFnpdO4THFAFPZzHOooCY3uS7PWUIJUz/0gloes=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=b+0nUvHup7BRSbpSqdEMND422An7tOTJptdEe9os7fbPEXhqM/FINcb54xxt199r2
+	 ikogotfAmzYSWOIsjFlhUfWe5FHgl+M7+1fKrRkGqBNrrBLs3DuOnTmcCPgwir/kNN
+	 hQkG27iqqm/1MMlSZAC+h/ui0fskLm6GT3Jxkm5dEfr0gi8qSQCDf6uOlDyh3SML/e
+	 UxxBfYwK1Ymf7tdz58l8eaSqmr1RHFoqzBma7s2jY7sIC6ywc52PUB0L0nnAzVRVJ4
+	 M66MQy/UX18ccMe+FnbDNOHLWcIyPt/2HlVOV+QHrkPtyJThHeLDy32HRZ1Qf1rCDc
+	 EfpiUimHFBAUg==
+X-Rspamd-Queue-Id: 13F39140006
 X-Rspam-User: 
-X-HE-Tag: 1783911413-220598
-X-HE-Meta: U2FsdGVkX1+/B7HOK1TS57kpy7DUJIco6B9fwot5z+vSXUVYIDHLesylqx7dWvtVX/dhEuMlonKrgSgJFqXWcntjzczZ8oZKuBahV5oZyXES/Gt8uU3EOhGAYIX8NS8T2qo1oIYsp+UUBYYyCa+eVG5DiXs3w8sbj7b8UVRViXSMTrgTK6exQNttbI7zljbBm42gMpRQ3YdrEt5Fz0SfG1QeV2SF87H8Pj6PSSJXjHeSsy8lnr6cl1ptEr8K13UYr5AIDW46Mtnpk0sM4nqglYHVSF3TbAgdZ/0epbH7Uo/xroAD/gKPSebYkk2IV/nhJhfjmo+c9RJlLMCmZ6LzEpNZZaGyzAcTFU85ouf9XCk3cDzmZ/lTYVOZIs47cFGn6urQJnE4KJ2QsiJW7d28/mFP+8lrOfZ8+C+FPRsyLeEr0G6wqzomAAhqJheeWC/YXFOBwp6Ed4sR23U1wnAga6hLQa8iLuwTJXjo9Dgqc5XUzu33xPg07Y0YyZsEakA0VdRe58CcWLHl2UcpzB2iy41KkVb/leOeykwNUzQl67kaTtfsqSx6yl0inT2xzUG5tXvKMfTtfiMg+Yt+GUwZDzO2clUM0UFvC/CYv6iB3BcUCkk4703QGeYaYt5etsvmFN/fIzcT7pCKRBJqJb1FvunbnmfYUirPFMjXcJ8wLeBMew8dkvWlbr9wZ/+85iZ7PI9c3bipxjmytaMwT845qPv5El/K7Lfu0ocrZCIhIE4kdDLEZ7Hw4RekmI+JOnkkniRYsiw9I7Z2uuWUiHdRPhnWSgDOW5YS5XXrMUzSwq+BIqo5RGOjQBSEZzk2Clp3dyazDOAFPVUA1PbE+sBfLtRJF9uwCwNYYox3cgr05xdtXMlh12zZ8NLRSuu1LxGwZpviXxVTjwDWSgEfB0Gu3grQztl+4ZDIIPZp+kn3GjwrWzXZSxAkaSINP/JcSP0pGTtXrtsjOXMsgcHpmkU
- Azi/Bx3L
- JqX5KKxasrB24EthwPtTt3lL07p0+ze/W5NxjpvZPTgyVv8rYVyzNTOyL9UnCQNCj3Xn18ody5AV6yjGe2AorVpYXFaAjToegjZfMu1lC4Ms7jknY6eydJclEyB3bw51yF08hDriCRAriYlA5gfDpqdIhluCMi/kNQCpavt8lZBm889jolgcjTWi+rd52w5v10fvTX48WUCv/v4CPlJKSEj0Buc7l7rNHGVrNiFeSZyG58efianrh2oUdFw3uK3L5FwJn6zhpVJyS3jX6clQH3aDsK9Bn8PWt/egQpOnsrr2PAnWAkfh72A/4pnlcKhl2hhTCnEPuagZ4/U1Kkmzl/JccbDg5UW3bYFFT
+X-Stat-Signature: ub8o1g6hsqxudk1xh4jpee73r691xycd
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783912214-951433
+X-HE-Meta: U2FsdGVkX1/GOau1ryCjHKSaR/wqLVIvnmIBVvATUB9drrhmcljhxulwZQKhe1UrHqF3fiYj9CcbSULRMkDmoEImiiF5ETlrwF+40H/DlFIn+gtL8CIHqDYgGmeQn+g6n09ID4JboKjdxWEl/Rm5Cpmf15AwHOnDJaMueJkVXcHThQZ62jbJJ+Cwdg0r2QIQRzslcd80LVpyDxxiGM7xdNhDp8eYmGULqsGXJ2/mnz/OjnsQWAtYe8o3v8OpnAzUMIVX7QEcMBgLz0q3zLB0pxZa9XFCuyxPYNLtpzB3VTmZbso77me5czlNsIucbM6vi12G+Czo0+KITes2108YIwZv5Cj8aJCklKYU8xT/Z4xX4sAhj/huadppNMi0elZJV0foKGjlMEU6wvi1oL4OO/uBA69+psALtCuFPhVAl3qw2aZwaw0wbEJ+Klzf6WTqakJEpqTCKyf4Gbld2JAYD2+s/gnFygFKeSo0mN4NUAfVd+grEGoPam1M0rDL+i1Q3G/+bjOwA1iDJ/9IzT3yO1zAxVNwNxcQVO6DyzVeqQd4pYEF3REVXbhmlnPbmYt3BmWXI64c1sOZlwnZAY6NoneeabB6moImvcuP6Zo1sY9q7icVjF5tse6osF5Dk+qiDQRf2gTf4gY5EGhgjrjthIeSdzpiB/wFth5j+qfobCyXjDvltDGhk9aUbNxx27+tYVPGPOJvtx379AUHRbVx/qrE2HGfSCwvkagGTmsuLCeckl6AwITG5JbDqaILS97ha3CifrjxH0YfFCZ/94yBbu9yvtDEx2dHmkhqm/U8b6jckeqd3DdlImQ4R+jGPgJAE1hiKjejRBLq0H3nTdMMtivSDFeQsvn0VH1M3dEP5tsuypsV7SKTSGOHYnxPeTDJR9CdNKbvOlDLyOCjUh0JcXB7LqnrDhpwlk+W3PKUU9e0MJQTiHWroIN+6HeohH+auq1v1uKy6zWZGDqx761
+ vOYE12c5
+ obo13EJ0qjqlNOn4Iw/r06ZLetMurvSPNTcv31AKWIIORe1YvcZIZzH7EcgVqj7nefmpXx+P8hHnB4ePut+Q2X9+ivg7eyyFDCQIdryrWBmsaQB7Jpk9A00M+96car152oUi2TTrq8WLmwvin+gqG9ZYh3BDTjsG4VWjCnFdyhomHFlp+H8SlFgk5difCKS1cibdujhPo7CWXYpDH3zvgCIBOT+ZPiYbub49TzFuzcqbm/nKv6ZtJ3boIwNxBqiMGOhGbwzKnRzLXkcCR0IrlNXJu5QZSufto5QBfL3347gi6st3X+A1SsMOwnQiqyeP3GSqBpSheeWWpLczAcMynmcm2+gKfnWugPbWcFzR69WrrIPrlUyE8UFwR66JWKRKX9SOZqVlZvk+eS4dbCLGg6On0H2RL0rpVMuzPv4GC9NENSDnxUg+vnEcEH6HgjL99U4SoF0SvzWObPCbAaw4PwEuvUpTEGmYQJP7iuqF1B4KRMS9SeoyHXmiebl8O3rjPSXoMnZ8ErUIhHqasXwEOWYaKpIJPlqVHjSaZ6m/hXYB9Fkyz8je+DQLNbMi5IWB3kxkaILu4HzAQYo0PFxgJMLl6btbgq+LOFwymL5hUdAoyXwDdQFVJKAQMrfq/xF+13UQJCB8jFlfZyl9NEXig0kQF1O8+xKaH8WSpVN8kNIXWP0S7tI1L6VV8HosbmGi7Pkhs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,467 +101,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch connects swap devices to the swap tier infrastructure,
-ensuring that devices are correctly assigned to tiers based on their
-priority.
-
-A `tier_mask` is added to identify the tier membership of swap devices.
-Although tier-based allocation logic is not yet implemented, this
-mapping is necessary to track which tier a device belongs to. Upon
-activation, the device is assigned to a tier by matching its priority
-against the configured tier ranges.
-
-The infrastructure allows dynamic modification of tiers, such as
-splitting or merging ranges. These operations are permitted provided
-that the tier assignment of already configured swap devices remains
-unchanged.
-
-This patch also adds the documentation for the swap tier feature,
-covering the core concepts, sysfs interface usage, and configuration
-details.
-
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- Documentation/mm/index.rst     |   1 +
- Documentation/mm/swap-tier.rst | 150 +++++++++++++++++++++++++++++++++
- MAINTAINERS                    |   1 +
- include/linux/swap.h           |   1 +
- mm/swap_state.c                |   2 +-
- mm/swap_tier.c                 | 101 +++++++++++++++++++---
- mm/swap_tier.h                 |  13 ++-
- mm/swapfile.c                  |   2 +
- 8 files changed, 257 insertions(+), 14 deletions(-)
- create mode 100644 Documentation/mm/swap-tier.rst
-
-diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-index 13a79f5d092c..6afc45cd4b3d 100644
---- a/Documentation/mm/index.rst
-+++ b/Documentation/mm/index.rst
-@@ -34,6 +34,7 @@ see the :doc:`admin guide <../admin-guide/mm/index>`.
-    page_reclaim
-    swap
-    swap-table
-+   swap-tier
-    page_cache
-    shmfs
-    oom
-diff --git a/Documentation/mm/swap-tier.rst b/Documentation/mm/swap-tier.rst
-new file mode 100644
-index 000000000000..0fb4a1153a67
---- /dev/null
-+++ b/Documentation/mm/swap-tier.rst
-@@ -0,0 +1,150 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+:Author: Chris Li <chrisl@kernel.org> Youngjun Park <youngjun.park@lge.com>
-+
-+==========
-+Swap Tier
-+==========
-+
-+Swap tier is a collection of user-named groups classified by priority ranges.
-+It acts as a facilitation layer, allowing users to manage swap devices based
-+on their speeds.
-+
-+Users are encouraged to assign swap device priorities according to device
-+speed to fully utilize this feature. While the current implementation is
-+integrated with cgroups, the concept is designed to be extensible for other
-+subsystems in the future.
-+
-+Priority Range
-+--------------
-+
-+The specified tiers must cover the entire priority range from -1
-+(DEF_SWAP_PRIO) to SHRT_MAX.
-+
-+Consistency
-+-----------
-+
-+Tier consistency is guaranteed with a focus on maximizing flexibility. When a
-+swap device is activated within a tier range, the tier covering that device's
-+priority is guaranteed not to disappear or change while the device remains
-+active. Adding a new tier may split the range of an existing tier, but the
-+active device's tier assignment remains unchanged.
-+
-+However, specifying a tier in a cgroup does not guarantee the tier's existence.
-+Consequently, the corresponding tier can disappear at any time.
-+
-+Configuration Interface
-+-----------------------
-+
-+The swap tiers can be configured via the following interface:
-+
-+/sys/kernel/mm/swap/tiers
-+
-+Operations can be performed using the following syntax:
-+
-+* Add:    ``+"<tiername>":"<start_priority>"``
-+* Remove: ``-"<tiername>"``
-+
-+Tier names must consist of alphanumeric characters and underscores. Multiple
-+operations can be provided in a single write, separated by commas (",") or
-+whitespace (spaces, tabs, newlines).
-+
-+When configuring tiers, the specified value represents the **start priority**
-+of that tier. The end priority is automatically determined by the start
-+priority of the next higher tier. Consequently, adding a tier
-+automatically adjusts the ranges of adjacent tiers to ensure continuity.
-+
-+Examples
-+--------
-+
-+**1. Initialization**
-+
-+A tier starting at -1 is mandatory to cover the entire priority range up to
-+SHRT_MAX. In this example, 'HDD' starts at 50, and 'NET' covers the remaining
-+lower range starting from -1.
-+
-+::
-+
-+    # echo "+HDD:50, +NET:-1" > /sys/kernel/mm/swap/tiers
-+    # cat /sys/kernel/mm/swap/tiers
-+    Name             Idx   PrioStart   PrioEnd
-+    HDD              0     50          32767
-+    NET              1     -1          49
-+
-+**2. Adding a New Tier (split)**
-+
-+A new tier 'SSD' is added at priority 100, splitting the existing 'HDD' tier.
-+The ranges are automatically recalculated:
-+
-+* 'SSD' takes the top range (100 to SHRT_MAX).
-+* 'HDD' is adjusted to the range between 'NET' and 'SSD' (50 to 99).
-+* 'NET' remains unchanged (-1 to 49).
-+
-+::
-+
-+    # echo "+SSD:100" > /sys/kernel/mm/swap/tiers
-+    # cat /sys/kernel/mm/swap/tiers
-+    Name             Idx   PrioStart   PrioEnd
-+    SSD              2     100         32767
-+    HDD              0     50          99
-+    NET              1     -1          49
-+
-+**3. Removal (merge)**
-+
-+Tiers can be removed using the '-' prefix.
-+::
-+
-+    # echo "-SSD" > /sys/kernel/mm/swap/tiers
-+
-+When a tier is removed, its priority range is merged into the adjacent
-+tier. The merge direction is always upward (the tier below expands),
-+except when the lowest tier is removed — in that case the tier above
-+shifts its starting priority down to -1 to maintain full range coverage.
-+
-+::
-+
-+    Initial state:
-+    Name             Idx   PrioStart   PrioEnd
-+    SSD              2     100         32767
-+    HDD              1     50          99
-+    NET              0     -1          49
-+
-+    # echo "-SSD" > /sys/kernel/mm/swap/tiers
-+
-+    Name             Idx   PrioStart   PrioEnd
-+    HDD              1     50          32767       <- merged with SSD's range
-+    NET              0     -1          49
-+
-+    # echo "-NET" > /sys/kernel/mm/swap/tiers
-+
-+    Name             Idx   PrioStart   PrioEnd
-+    HDD              1     -1          32767       <- shifted down to -1
-+
-+**4. Interaction with Active Swap Devices**
-+
-+If a swap device is active (swapon), the tier covering that device's
-+priority cannot be removed. Splitting the active tier's range is only
-+allowed above the device's priority.
-+
-+Assume a swap device is active at priority 60 (inside 'HDD' tier).
-+
-+::
-+
-+    # swapon -p 60 /dev/zram0
-+
-+    Name             Idx   PrioStart   PrioEnd
-+    HDD              0     50          32767
-+    NET              1     -1          49
-+
-+    # echo "-HDD" > /sys/kernel/mm/swap/tiers
-+    -bash: echo: write error: Device or resource busy
-+
-+    # echo "+SSD:60" > /sys/kernel/mm/swap/tiers
-+    -bash: echo: write error: Device or resource busy
-+
-+    # echo "+SSD:100" > /sys/kernel/mm/swap/tiers
-+
-+    Name             Idx   PrioStart   PrioEnd
-+    SSD              2     100         32767
-+    HDD              0     50          99          <- device (prio 60) stays here
-+    NET              1     -1          49
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e94d1af17c39..4485a0650984 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17237,6 +17237,7 @@ L:	linux-mm@kvack.org
- S:	Maintained
- F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
- F:	Documentation/mm/swap-table.rst
-+F:	Documentation/mm/swap-tier.rst
- F:	include/linux/swap.h
- F:	include/linux/swapfile.h
- F:	include/linux/swapops.h
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 4427c7aa16dc..2d647a8fa60f 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -244,6 +244,7 @@ struct swap_info_struct {
- 	struct percpu_ref users;	/* indicate and keep swap device valid. */
- 	unsigned long	flags;		/* SWP_USED etc: see above */
- 	signed short	prio;		/* swap priority of this type */
-+	int tier_mask;			/* swap tier mask */
- 	struct plist_node list;		/* entry in swap_active_head */
- 	signed char	type;		/* strange name for an index */
- 	unsigned int	max;		/* size of this swap device */
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index c18ff741f2e0..dcec1a6c92bd 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -1095,7 +1095,7 @@ static ssize_t tiers_store(struct kobject *kobj,
- 		}
- 	}
- 
--	if (!swap_tiers_validate()) {
-+	if (!swap_tiers_update()) {
- 		ret = -EINVAL;
- 		goto restore;
- 	}
-diff --git a/mm/swap_tier.c b/mm/swap_tier.c
-index ac7a3c2a48cb..6b57cadb3e95 100644
---- a/mm/swap_tier.c
-+++ b/mm/swap_tier.c
-@@ -38,6 +38,8 @@ static LIST_HEAD(swap_tier_inactive_list);
- 	(!list_is_first(&(tier)->list, &swap_tier_active_list) ? \
- 	list_prev_entry((tier), list)->prio - 1 : SHRT_MAX)
- 
-+#define MASK_TO_TIER(mask) (&swap_tiers[__ffs((mask))])
-+
- #define for_each_tier(tier, idx) \
- 	for (idx = 0, tier = &swap_tiers[0]; idx < MAX_SWAPTIER; \
- 		idx++, tier = &swap_tiers[idx])
-@@ -59,6 +61,26 @@ static bool swap_tier_is_active(void)
- 	return !list_empty(&swap_tier_active_list);
- }
- 
-+static bool swap_tier_prio_in_range(struct swap_tier *tier, short prio)
-+{
-+	if (tier->prio <= prio && TIER_END_PRIO(tier) >= prio)
-+		return true;
-+
-+	return false;
-+}
-+
-+static bool swap_tier_prio_is_used(short prio)
-+{
-+	struct swap_tier *tier;
-+
-+	for_each_active_tier(tier) {
-+		if (tier->prio == prio)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static struct swap_tier *swap_tier_lookup(const char *name)
- {
- 	struct swap_tier *tier;
-@@ -99,6 +121,7 @@ void swap_tiers_init(void)
- 	int idx;
- 
- 	BUILD_BUG_ON(BITS_PER_TYPE(int) < MAX_SWAPTIER);
-+	BUILD_BUG_ON(MAX_SWAPTIER > TIER_DEFAULT_IDX);
- 
- 	for_each_tier(tier, idx) {
- 		INIT_LIST_HEAD(&tier->list);
-@@ -149,17 +172,29 @@ static struct swap_tier *swap_tier_prepare(const char *name, short prio)
- 	return tier;
- }
- 
--static int swap_tier_check_range(short prio)
-+static int swap_tier_can_split_range(short new_prio)
- {
-+	struct swap_info_struct *p;
- 	struct swap_tier *tier;
- 
- 	lockdep_assert_held(&swap_lock);
- 	lockdep_assert_held(&swap_tier_lock);
- 
--	for_each_active_tier(tier) {
--		/* No overwrite */
--		if (tier->prio == prio)
--			return -EINVAL;
-+	plist_for_each_entry(p, &swap_active_head, list) {
-+		if (p->tier_mask == TIER_DEFAULT_MASK)
-+			continue;
-+
-+		tier = MASK_TO_TIER(p->tier_mask);
-+		if (!swap_tier_prio_in_range(tier, new_prio))
-+			continue;
-+
-+		/*
-+		 * Device sits in a tier that spans new_prio;
-+		 * splitting here would reassign it to a
-+		 * different tier.
-+		 */
-+		if (p->prio >= new_prio)
-+			return -EBUSY;
- 	}
- 
- 	return 0;
-@@ -199,7 +234,11 @@ int swap_tiers_add(const char *name, int prio)
- 	if (!swap_tier_validate_name(name))
- 		return -EINVAL;
- 
--	ret = swap_tier_check_range(prio);
-+	/* No overwrite */
-+	if (swap_tier_prio_is_used(prio))
-+		return -EBUSY;
-+
-+	ret = swap_tier_can_split_range(prio);
- 	if (ret)
- 		return ret;
- 
-@@ -226,6 +265,11 @@ int swap_tiers_remove(const char *name)
- 	if (!tier)
- 		return -EINVAL;
- 
-+	/* Simulate adding a tier to check for conflicts */
-+	ret = swap_tier_can_split_range(tier->prio);
-+	if (ret)
-+		return ret;
-+
- 	/* Removing DEF_SWAP_PRIO merges into the higher tier. */
- 	if (!list_is_singular(&swap_tier_active_list)
- 		&& tier->prio == DEF_SWAP_PRIO)
-@@ -236,13 +280,15 @@ int swap_tiers_remove(const char *name)
- 	return ret;
- }
- 
--static struct swap_tier swap_tiers_snap[MAX_SWAPTIER];
- /*
-- * XXX: When multiple operations (adds and removes) are submitted in a
-- * single write, reverting each individually on failure is complex and
-- * error-prone. Instead, snapshot the entire state beforehand and
-- * restore it wholesale if any operation fails.
-+ * XXX: Static global snapshot buffer for batch operations. Small
-+ * and used once per write, so a static global is not bad.
-+ * When multiple adds/removes are submitted in a single write,
-+ * reverting each individually on failure is error-prone. Instead,
-+ * snapshot beforehand and restore wholesale if any operation fails.
-  */
-+static struct swap_tier swap_tiers_snap[MAX_SWAPTIER];
-+
- void swap_tiers_snapshot(void)
- {
- 	BUILD_BUG_ON(sizeof(swap_tiers_snap) != sizeof(swap_tiers));
-@@ -282,10 +328,30 @@ void swap_tiers_snapshot_restore(void)
- 	}
- }
- 
--bool swap_tiers_validate(void)
-+void swap_tiers_assign_dev(struct swap_info_struct *swp)
- {
- 	struct swap_tier *tier;
- 
-+	lockdep_assert_held(&swap_lock);
-+
-+	for_each_active_tier(tier) {
-+		if (swap_tier_prio_in_range(tier, swp->prio)) {
-+			swp->tier_mask = TIER_MASK(tier);
-+			return;
-+		}
-+	}
-+
-+	swp->tier_mask = TIER_DEFAULT_MASK;
-+}
-+
-+bool swap_tiers_update(void)
-+{
-+	struct swap_tier *tier;
-+	struct swap_info_struct *swp;
-+
-+	lockdep_assert_held(&swap_lock);
-+	lockdep_assert_held(&swap_tier_lock);
-+
- 	/*
- 	 * Initial setting might not cover DEF_SWAP_PRIO.
- 	 * Swap tier must cover the full range (DEF_SWAP_PRIO to SHRT_MAX).
-@@ -298,5 +364,16 @@ bool swap_tiers_validate(void)
- 			return false;
- 	}
- 
-+	/*
-+	 * If applied initially, the swap tier_mask may change
-+	 * from the default value.
-+	 */
-+	plist_for_each_entry(swp, &swap_active_head, list) {
-+		/* Tier is already configured */
-+		if (swp->tier_mask != TIER_DEFAULT_MASK)
-+			break;
-+		swap_tiers_assign_dev(swp);
-+	}
-+
- 	return true;
- }
-diff --git a/mm/swap_tier.h b/mm/swap_tier.h
-index a1395ec02c24..3e355f857363 100644
---- a/mm/swap_tier.h
-+++ b/mm/swap_tier.h
-@@ -5,8 +5,15 @@
- #include <linux/types.h>
- #include <linux/spinlock.h>
- 
-+/* Forward declarations */
-+struct swap_info_struct;
-+
- extern spinlock_t swap_tier_lock;
- 
-+#define TIER_ALL_MASK		(~0)
-+#define TIER_DEFAULT_IDX	(31)
-+#define TIER_DEFAULT_MASK	(1U << TIER_DEFAULT_IDX)
-+
- /* Initialization and application */
- void swap_tiers_init(void);
- ssize_t swap_tiers_sysfs_show(char *buf);
-@@ -16,5 +23,9 @@ int swap_tiers_remove(const char *name);
- 
- void swap_tiers_snapshot(void);
- void swap_tiers_snapshot_restore(void);
--bool swap_tiers_validate(void);
-+bool swap_tiers_update(void);
-+
-+/* Tier assignment */
-+void swap_tiers_assign_dev(struct swap_info_struct *swp);
-+
- #endif /* _SWAP_TIER_H */
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index ff567ad893a4..f3cff586cf30 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3041,6 +3041,8 @@ static void _enable_swap_info(struct swap_info_struct *si)
- 
- 	/* Add back to available list */
- 	add_to_avail_list(si, true);
-+
-+	swap_tiers_assign_dev(si);
- }
- 
- /*
--- 
-2.34.1
-
+PiA+IE9uIFRodSwgOSBKdWwgMjAyNiAxNToxNzozOSArMDgwMCBsaXJvbmdxaW5nIDxsaXJvbmdx
+aW5nQGJhaWR1LmNvbT4NCj4gPiB3cm90ZToNCj4gPg0KPiA+ID4gRnJvbTogTGkgUm9uZ1Fpbmcg
+PGxpcm9uZ3FpbmdAYmFpZHUuY29tPg0KPiA+ID4NCj4gPiA+IF9fbm9kZW1hc2tfcHJfbnVtbm9k
+ZXMoKSByZXR1cm5zIE1BWF9OVU1OT0RFUywgYSBjb21waWxlLXRpbWUNCj4gPiA+IGNvbnN0YW50
+LCBhcyB0aGUgd2lkdGggZm9yICclKnBiW2xdJyBub2RlbWFzayBwcmludGluZy4gT24gc3lzdGVt
+cw0KPiA+ID4gd2l0aCBmZXcgTlVNQSBub2RlcyB0aGlzIHByb2R1Y2VzIGV4Y2Vzc2l2ZSB6ZXJv
+LXBhZGRpbmcsIGUuZy4gd2l0aA0KPiA+ID4gTUFYX05VTU5PREVTPTEwMjQgYnV0IG9ubHkgMiBu
+b2RlczoNCj4gPiA+DQo+ID4gPiAgIE1lbXNfYWxsb3dlZDogMDAwMDAwMDAsMDAwMDAwMDAsLi4u
+LDAwMDAwMDAzICAoMzIgZ3JvdXBzKQ0KPiA+DQo+ID4gUGxlYXNlIGxldCdzIGNvbXBsZXRlbHkg
+ZGVzY3JpYmUgdGhlIGVmZmVjdHMgb2YgdGhpcy4NCj4gPiBub2RlbWFza19wcl9hcmdzKCkgaXMg
+dXNlZCBpbiBzZXZlcmFsIHBsYWNlcyBzbyBJIGJlbGlldmUgdGhhdCBhDQo+ID4gbnVtYmVyIG9m
+IHVzZXJzcGFjZS1mYWNpbmcgc3RyaW5ncyB3aWxsIG5vdyBhcHBlYXIgZGlmZmVyZW50bHk/ICBM
+ZXQncw0KPiA+IHNwZWxsIG91dCB3aGljaCB1c2Vyc3BhY2UgaW50ZXJmYWNlcyBhcmUgYWZmZWN0
+ZWQsIGFuZCBob3cuDQo+ID4NCj4gDQo+IFRoaXMgYWZmZWN0cyBldmVyeSBub2RlbWFza19wcl9h
+cmdzKCkgdXNlci4gIFVzZXJzcGFjZS12aXNpYmxlIG91dHB1dA0KPiBpbmNsdWRlcyBub2RlIHN0
+YXRlIHN5c2ZzIGZpbGVzIHVuZGVyIC9zeXMvZGV2aWNlcy9zeXN0ZW0vbm9kZS8sIE5WTWUNCj4g
+bXVsdGlwYXRoIG51bWFfbm9kZXMsIG1lbW9yeSB0aWVyIG5vZGVsaXN0LCBjcHVzZXQgbWVtcy9l
+ZmZlY3RpdmVfbWVtcw0KPiBmaWxlcywgL3Byb2MvPHBpZD4vc3RhdHVzIE1lbXNfYWxsb3dlZCos
+IG1lbXBvbGljeSBzdHJpbmdzIHN1Y2ggYXMgdGhvc2UNCj4gc2hvd24gaW4gL3Byb2MvPHBpZD4v
+bnVtYV9tYXBzLCBhbmQgc2x1YiBkZWJ1Z2ZzICJub2Rlcz0iIG91dHB1dC4NCj4gS2VybmVsIGxv
+ZyBtZXNzYWdlcyB0aGF0IHByaW50IG5vZGVtYXNrcywgc3VjaCBhcyBjcHVzZXQgd2FybmluZ3Ms
+DQo+IGFsbG9jYXRpb24gZmFpbHVyZSB3YXJuaW5ncyBhbmQgT09NIGRpYWdub3N0aWNzLCBhcmUg
+YWZmZWN0ZWQgYXMgd2VsbC4NCj4gDQo+IFRoZSBzZW1hbnRpYyB2YWx1ZSBpcyB1bmNoYW5nZWQu
+ICBPbmx5IHRoZSBwcmludGVkIHdpZHRoIGNoYW5nZXMgZnJvbQ0KPiBNQVhfTlVNTk9ERVMgYml0
+cyB0byBucl9ub2RlX2lkcyBiaXRzLCByZW1vdmluZyB0cmFpbGluZyB6ZXJvIHdvcmRzIG9uDQo+
+IHN5c3RlbXMgYnVpbHQgd2l0aCBhIGxhcmdlIE1BWF9OVU1OT0RFUyBidXQgYm9vdGVkIHdpdGgg
+YSBzbWFsbGVyDQo+IHBvc3NpYmxlLW5vZGUgcmFuZ2UuICBMaXN0IG91dHB1dHMgKCUqcGJsKSBy
+ZW1haW4gdW5jaGFuZ2VkIGZvciBjb21tb24NCj4gY29udGlndW91cyBub2RlIHJhbmdlcyBzdWNo
+IGFzICIwLTEiOyBiaXRtYXAgb3V0cHV0cyAoJSpwYiksIHN1Y2ggYXMNCj4gL3Byb2MvPHBpZD4v
+c3RhdHVzIE1lbXNfYWxsb3dlZCwgYmVjb21lIHNob3J0ZXIuDQo+IA0KDQpTb3JyeSwgVGhlIHVw
+cGVyIHJlcGx5IGlzIHdyb25nLg0KDQpBZnRlciBjaGVja2luZyBhbGwgY2FsbCBzaXRlcyBvZiBu
+b2RlbWFza19wcl9hcmdzKCksIEkgY29uZmlybSB0aGF0IHRoZSBleGNlc3NpdmUgemVyby1wYWRk
+aW5nIG9ubHkgYWZmZWN0cyB0aGUgTWVtc19hbGxvd2VkOiBsaW5lIGluIC9wcm9jLzxwaWQ+L3N0
+YXR1cy4NCg0KVGhlIHJlYXNvbiBpcyB0aGF0IG5vZGVtYXNrX3ByX2FyZ3MoKSBpcyB1c2VkIHdp
+dGggdHdvIGRpZmZlcmVudCBmb3JtYXQgc3BlY2lmaWVyczoNCg0KJSpwYmwgKGxpc3QgZm9ybWF0
+LCA5IG91dCBvZiAxMCBjYWxsZXJzKSChqiBwcmludHMgbm9kZW1hc2sgYXMgY29tcGFjdCByYW5n
+ZXMgbGlrZSAwLTEuIFRoZSB3aWR0aCBmcm9tIF9fbm9kZW1hc2tfcHJfbnVtbm9kZXMoKSBpcyBl
+ZmZlY3RpdmVseSBpZ25vcmVkIGJ5IGJpdG1hcF9saXN0X3N0cmluZygpLCBzbyB0aGVzZSBhcmUg
+dW5hZmZlY3RlZC4NCiUqcGIgKGJpdG1hcCBmb3JtYXQsIDEgY2FsbGVyKSChqiBwcmludHMgbm9k
+ZW1hc2sgYXMgYSBoZXggYml0bWFwLiBUaGUgd2lkdGggZGlyZWN0bHkgY29udHJvbHMgdGhlIG51
+bWJlciBvZiBoZXggZ3JvdXBzIG91dHB1dC4gVGhpcyBpcyBvbmx5IHVzZWQgaW4gY3B1c2V0X3Rh
+c2tfc3RhdHVzX2FsbG93ZWQoKSBmb3IgdGhlIE1lbXNfYWxsb3dlZDogZmllbGQgaW4gL3Byb2Mv
+PHBpZD4vc3RhdHVzLg0KU28gdGhlIHZpc2libGUgY2hhbmdlIGlzIGxpbWl0ZWQgdG8gZ3JlcCBN
+ZW1zX2FsbG93ZWQgL3Byb2MvMS9zdGF0dXMgKGFuZCBlcXVpdmFsZW50IGZvciBvdGhlciBQSURz
+KS4gTm8gb3RoZXIgdXNlcnNwYWNlLWZhY2luZyBzdHJpbmdzIGFyZSBhZmZlY3RlZC4gDQoNClRo
+YW5rcw0KDQoNCltMaSxSb25ncWluZ10gDQoNCg0KDQo+IA0KPiA+ID4gVXNlIG5yX25vZGVfaWRz
+ICh0aGUgcnVudGltZSBoaWdoZXN0LW5vZGUtaWQgKyAxKSBpbnN0ZWFkLCBtYXRjaGluZw0KPiA+
+ID4gdGhlIGJlaGF2aW9yIG9mIGNwdW1hc2tfcHJfYXJncygpIHdoaWNoIHVzZXMgbnJfY3B1X2lk
+czoNCj4gPiA+DQo+ID4gPiAgIE1lbXNfYWxsb3dlZDogMDAwMDAwMDMNCj4gPiA+DQo+ID4gPiBN
+b3ZlIHRoZSBucl9ub2RlX2lkcyBkZWNsYXJhdGlvbiBlYXJsaWVyIGluIHRoZSBmaWxlIChndWFy
+ZGVkIGJ5DQo+ID4gPiBfX25vZGVtYXNrX3ByX251bW5vZGVzKCksIGFuZCByZW1vdmUgdGhlIG5v
+dy1kdXBsaWNhdGUNCj4gZGVjbGFyYXRpb25zLg0KPiA+ID4NCj4gPiA+IC4uLg0KPiA+ID4NCj4g
+PiA+IC0tLSBhL2luY2x1ZGUvbGludXgvbm9kZW1hc2suaA0KPiA+ID4gKysrIGIvaW5jbHVkZS9s
+aW51eC9ub2RlbWFzay5oDQo+ID4gPiBAQCAtOTUsNiArOTUsMTIgQEANCj4gPiA+DQo+ID4gPiAg
+ZXh0ZXJuIG5vZGVtYXNrX3QgX3VudXNlZF9ub2RlbWFza19hcmdfOw0KPiA+ID4NCj4gPiA+ICsj
+aWYgTUFYX05VTU5PREVTID4gMQ0KPiA+ID4gK2V4dGVybiB1bnNpZ25lZCBpbnQgbnJfbm9kZV9p
+ZHM7DQo+ID4gPiArI2Vsc2UNCj4gPiA+ICsjZGVmaW5lIG5yX25vZGVfaWRzCQkxVQ0KPiA+ID4g
+KyNlbmRpZg0KPiA+ID4gKw0KPiA+ID4gIC8qKg0KPiA+ID4gICAqIG5vZGVtYXNrX3ByX2FyZ3Mg
+LSBwcmludGYgYXJncyB0byBvdXRwdXQgYSBub2RlbWFzaw0KPiA+ID4gICAqIEBtYXNrcDogbm9k
+ZW1hc2sgdG8gYmUgcHJpbnRlZA0KPiA+ID4gQEAgLTEwNSw3ICsxMTEsNyBAQCBleHRlcm4gbm9k
+ZW1hc2tfdCBfdW51c2VkX25vZGVtYXNrX2FyZ187DQo+ID4gPiAgCQkJCV9fbm9kZW1hc2tfcHJf
+Yml0cyhtYXNrcCkNCj4gPiA+ICBzdGF0aWMgX19hbHdheXNfaW5saW5lIHVuc2lnbmVkIGludCBf
+X25vZGVtYXNrX3ByX251bW5vZGVzKGNvbnN0DQo+ID4gPiBub2RlbWFza190ICptKSAgew0KPiA+
+ID4gLQlyZXR1cm4gbSA/IE1BWF9OVU1OT0RFUyA6IDA7DQo+ID4gPiArCXJldHVybiBtID8gbnJf
+bm9kZV9pZHMgOiAwOw0KPiA+ID4gIH0NCj4gPiA+ICBzdGF0aWMgX19hbHdheXNfaW5saW5lIGNv
+bnN0IHVuc2lnbmVkIGxvbmcNCj4gPiA+ICpfX25vZGVtYXNrX3ByX2JpdHMoY29uc3Qgbm9kZW1h
+c2tfdCAqbSkgIHsgQEAgLTQzOCw3ICs0NDQsNiBAQA0KPiA+ID4gc3RhdGljIF9fYWx3YXlzX2lu
+bGluZQ0KPiA+IHVuc2lnbmVkDQo+ID4gPiBpbnQgbmV4dF9tZW1vcnlfbm9kZShpbnQgbmlkKQ0K
+PiA+ID4gIAlyZXR1cm4gbmV4dF9ub2RlKG5pZCwgbm9kZV9zdGF0ZXNbTl9NRU1PUlldKTsgIH0N
+Cj4gPiA+DQo+ID4gPiAtZXh0ZXJuIHVuc2lnbmVkIGludCBucl9ub2RlX2lkczsNCj4gPiA+ICBl
+eHRlcm4gdW5zaWduZWQgaW50IG5yX29ubGluZV9ub2RlczsNCj4gPg0KPiA+IExldCdzIHJlbG9j
+YXRlIG5yX29ubGluZV9ub2RlcyBhbHNvPyAgVG8ga2VlcCB0aGVtIHRvZ2V0aGVyLg0KPiANCj4g
+DQo+IEkgd2lsbCByZWxvY2F0ZSBpdCBpbiBWMg0KPiANCj4gVGhhbmtzDQo+IA0KPiBbTGksUm9u
+Z3FpbmddDQo+IA0KPiANCj4gDQo+ID4NCj4gPiA+ICBzdGF0aWMgX19hbHdheXNfaW5saW5lIHZv
+aWQgbm9kZV9zZXRfb25saW5lKGludCBuaWQpIEBAIC00ODAsNw0KPiA+ID4gKzQ4NSw2IEBAIHN0
+YXRpYyBfX2Fsd2F5c19pbmxpbmUgaW50IG51bV9ub2RlX3N0YXRlKGVudW0gbm9kZV9zdGF0ZXMN
+Cj4gc3RhdGUpDQo+ID4gPiAgI2RlZmluZSBmaXJzdF9tZW1vcnlfbm9kZQkwDQo+ID4gPiAgI2Rl
+ZmluZSBuZXh0X29ubGluZV9ub2RlKG5pZCkJKE1BWF9OVU1OT0RFUykNCj4gPiA+ICAjZGVmaW5l
+IG5leHRfbWVtb3J5X25vZGUobmlkKQkoTUFYX05VTU5PREVTKQ0KPiA+ID4gLSNkZWZpbmUgbnJf
+bm9kZV9pZHMJCTFVDQo+ID4gPiAgI2RlZmluZSBucl9vbmxpbmVfbm9kZXMJCTFVDQo+ID4gPg0K
+PiA+ID4gICNkZWZpbmUgbm9kZV9zZXRfb25saW5lKG5vZGUpCSAgIG5vZGVfc2V0X3N0YXRlKChu
+b2RlKSwgTl9PTkxJTkUpDQo+ID4gPiAtLQ0KPiA+ID4gMi45LjQNCg0K
 
