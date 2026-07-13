@@ -4,137 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74B96C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 10:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC7EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 10:41:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AC3A6B0005; Mon, 13 Jul 2026 06:34:59 -0400 (EDT)
+	id E23B16B008A; Mon, 13 Jul 2026 06:41:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 784496B0088; Mon, 13 Jul 2026 06:34:59 -0400 (EDT)
+	id DD43F6B008C; Mon, 13 Jul 2026 06:41:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6731F6B008A; Mon, 13 Jul 2026 06:34:59 -0400 (EDT)
+	id CC61D6B0092; Mon, 13 Jul 2026 06:41:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B11D6B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:34:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5018140A7B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:34:58 +0000 (UTC)
-X-FDA: 84983395476.27.5655902
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 13843C0004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:34:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hsRXNUQK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AD7C16B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:41:43 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48589120718
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:41:43 +0000 (UTC)
+X-FDA: 84983412486.16.6692D77
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 380EF120007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:41:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Q10KK+fs;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783938897;
+	s=arc-20220608; t=1783939301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Gg6zcvzOEOlwfKtfjKwTjYa7q99CzNlGtktYSfy79w=;
-	b=wYUUGELd9CuUV9j94MJPM8UDWEX7R3gI1BR6ohXQF5+yObizj0ybYwO6jzXP1nsavbHMHp
-	YcgNJzpA8BDfbCxQos+7xXvsPqZNdVwT+mQ3N8g108waYFqGK7RJAUvPtF2wFhacvCrNiI
-	2H7Pj8H54W3hUfn/NwDKzh7Nl1fIn28=
+	bh=GYEvHk/YQwaSKZb15XTEhRLqDQdjnw2zpv1OC/g28DM=;
+	b=Lzvindq81BBQ5GrjVtl8+4GrPtYySXoewTkXR5fAcES8EpgtIhlGFMox1QOKM1HzThoOJY
+	5sUUNXhc0w0hvmHyRneSbxD0yWvjirzQzABQqJFcQa41Bt+zSLuBVelEUo1UNNIgb0L9mP
+	ttuBgLtnMH2R3LgkCsu+oHQp70iXaXk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hsRXNUQK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Q10KK+fs;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783938897;
-	b=wkDPlkPt8HD3RD7jR+Xk55q6Rp8NIGg/+2IH+mSkeqigY7cpsgCey4c0jh8hYZjN/v8UOB
-	6qufAzeTb1SIEj7DKkmCXpgtCK5qeOTGxMZdmLe1ICvCM/1NF7JVMK4PkcA+me5U7oc9pU
-	MYFxiecCLGyiV0MqWQ52KwBAvlCW1L0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 058F7413FF;
-	Mon, 13 Jul 2026 10:34:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04371F000E9;
-	Mon, 13 Jul 2026 10:34:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783938895;
-	bh=8Gg6zcvzOEOlwfKtfjKwTjYa7q99CzNlGtktYSfy79w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hsRXNUQKVx+rEC++ym4RrSK7/O9TMsKUyCkHp2Fg5BaNtVwEVYxvkkmgaR+Wguu09
-	 AJ5HFafZ1LjP7/u3Fgc8gxcHzxLjfx4zXcIRFIYi6BvOLgrr07hM+Ta+QWh6fjcb+l
-	 wve84ooRTdU7Qzf6CjmIrgUpzVfPSdQlFAmkalqu1snmaYobmTcGZX9jmYQnjMRlTB
-	 1E/twWmbcCOvsOE9bVKwCXN/0nk5W7IoMpjbhNabWDtFckxXER+Sjc9oGXAE2tnDWp
-	 5Xm3brj5LRdA0NE1lkvKXyTB6+5JUsiNhwRkti1osmsmy3Plx6bClzAdgcXJdUtdTP
-	 zyQheO9XMUW3Q==
-Message-ID: <db3c6f52-7a82-4afa-9720-1edf2f5c855d@kernel.org>
-Date: Mon, 13 Jul 2026 12:34:52 +0200
+	t=1783939301;
+	b=j0hCT3hJdOvj1qGL4jMYANP5E5IURpNky30k9WFhIgbcfxpbk5nURykuJ1e414Z+c1IGzx
+	9m9vt2x+iljQ2gbn1Tm0XRhYarFvNExcT4UxwdXQU3w3wJSbyqGw/J+uYKT+EJp69fFZce
+	qz+W2wu5Ew+3zE/GGxAItUTCEOgLPNQ=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4758b2a9e2aso1748130f8f.2
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:41:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1783939300; x=1784544100; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GYEvHk/YQwaSKZb15XTEhRLqDQdjnw2zpv1OC/g28DM=;
+        b=Q10KK+fseF6b7cmbXcM3MclTqwi0Dmp5x4pFwFWkRlyDQbW5FbHbWAkgH6eupgjbVL
+         VmV9pAvDAOMcT4N/vZRbKFux+srz6WKlr5VGy5/SA0sg/2+sHOsM1o/5G5JUKGzrSHoA
+         X6cq3StUzOiuE/AvmBfDnAHVkSiPi7L7qdraGI3F+2WPtRKffUb9tJsJbJxG1Z+D/NtT
+         N5BBjdor90j3nIP0jsuzD2eJ1dxSw/rsAOuD5pwT2w7gYrPA2E4grIJ2aL7AVALxpayl
+         8HMZJcSAZlWXqOZLdjorYOvfWZmcID5DrCw4fqybLSj8Bs7Bzp2uM/smeeIkG/RkreFa
+         lKkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783939300; x=1784544100;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GYEvHk/YQwaSKZb15XTEhRLqDQdjnw2zpv1OC/g28DM=;
+        b=nX1uEfNg71C6Ojss/+khCGGPnMIC6Hu7+4zf12t37TZ4k3EuDo5EOPhg2Wt2Pq6Ndb
+         uaKUwP3iaUoWTn7JenkBpGAVOMaPKHUCla5SaxGF2nPUJUEuuAGilcYI7axk5MkES7zz
+         v8wTE9juCTKVl9v6BikN2U5Bi1QLeMadV/NiuZkGWY2yOY7U9cSibNHQeNOw3JE/cSWX
+         SBzGXzlZZMm5tMbLQY0bKdfYDNkviZXOQTGQmUmi5A87T+8wzZMy/v59Fnavt59w6krC
+         UuF+ov7RQC2v2WN2YKmC89rP1gsjPxsloPexnS3A4UvdpAZXKU32DgiXQnxdrqCuPQ8q
+         dYkg==
+X-Forwarded-Encrypted: i=1; AHgh+RrJmUuygZigVHgHQzLKUQrfTAYT7c+r7K1EJT/hZ5/2JqGjqBmSHriPcW2zOfEvopJG0eM/DX8XuA==@kvack.org
+X-Gm-Message-State: AOJu0Yx06n+QvlTEK66kY9lPxvbCjpvUheIEQyA2tAtpZXLWphIxPOSO
+	+GvJELVkntX+BoSTM5R8OnAMIoJHX3+JogRsTaRaz2p28jvGMjXgKmMqmsx2jF69Yww=
+X-Gm-Gg: AfdE7ckHLrEHbIEaUUDCl9697KrCLPs0/qY/HKDAdjwncHlmvADr9Md12iThS+xAMk4
+	kQsqpxkudRM9HIx1CmavrU2g/vXNRZ6TW/1VDuDv7Sau122AfPGt2CEP/11i6dVMG4JMzoVnDnB
+	pf+usRr+nWXOuAOP4x1wC099blqviq6rPVgGuizUnMjLa1T5/Wc/MYmLfdm3AiLPyrc8SfbO5CR
+	5oZAOGWPVSW47rmcdPnAUyJ/BP9mGECP3EGJv4r4A+eg2nvo3wTAfGHZewUt4g7Hqb+oOyg/q3Z
+	I2DXH+yl1vGDiMRct3WDpfhdR7Aehb4OjZzVZ5ojRUDTLzMGpc4/gPU2AzTCMDZTjnAeUzUGkn7
+	GVLD2XaaEXndjGANpCwTZ7F0yOQZL1Mqhbb9HjrsjuRrSdOBnlqVFhwNAdGfWiKwWeduhKIYnjJ
+	Ko3tHU6dZvOw==
+X-Received: by 2002:a5d:64e7:0:b0:472:aaba:faed with SMTP id ffacd0b85a97d-47f2dcc6bd5mr9999848f8f.31.1783939299409;
+        Mon, 13 Jul 2026 03:41:39 -0700 (PDT)
+Received: from localhost ([2a02:8071:6401:180:d892:bf43:a0b4:83b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039af67sm95258224f8f.17.2026.07.13.03.41.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 03:41:38 -0700 (PDT)
+Date: Mon, 13 Jul 2026 06:41:34 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, harry@kernel.org,
+	muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn,
+	mhocko@kernel.org, roman.gushchin@linux.dev, ljs@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v5] mm: mglru: fix stale batch updates after memcg
+ reparenting
+Message-ID: <20260713104134.GA276793@cmpxchg.org>
+References: <20260710154318.75388-1-qi.zheng@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] mm/rmap: Add try_to_unmap_hugetlb_one
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
- muchun.song@linux.dev, osalvador@suse.de
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260710055915.638659-1-dev.jain@arm.com>
- <20260710055915.638659-3-dev.jain@arm.com>
- <49b408b9-6d10-4892-916f-ad8e7ef875e5@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <49b408b9-6d10-4892-916f-ad8e7ef875e5@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: g11pktk71g4gdodx5ccemb4gok59gfff
-X-Rspamd-Queue-Id: 13843C0004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710154318.75388-1-qi.zheng@linux.dev>
+X-Stat-Signature: 3a8bn9fzoz6dueouqjafb5d8713pqfng
+X-Rspamd-Queue-Id: 380EF120007
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783938896-668314
-X-HE-Meta: U2FsdGVkX18IxWm/8UxUsRvUqTdvne9MQzsMwuYFeFAm1BguaVig6n4xlywVJHZC9I5TbvlDvL0ZIVOFsnLjotf2qP//4w2PTiOQ16t5Fs3K66BA/Plkn9vVu1c7p8wFi5kzwVa0rA0bbok+N7cip+NLrSII0Aq9GsRHfr11WJZfEyNGrrU9DFZ7ZFPCwasvkOAgzlsOBTsEMgRGe4kk251/Gn5VwOJeeI1nKW0ssBZ9/EE6bT5094wY6u83UDb9HwcKeCSvA6/A7Tt3L3zFMW+Yguypq2AWy+XHlp/AKcQR/AVohR/YXiNT2tBqDvHfUCNdQlGJaC8L/pwbvdF0SqiAkPcN6d0NYeo8fA6WAtZEmmDfbmVbsE4MDjAWSuBB0tKFz78qKYyhEVq/ibEQ/jQIBKbAIXWL3yUiMhMT3hH97tBOhicdkFoD1RifitwWGRtEaF/Lt1Etp4R74HjogH/Q0zHOohrwv1kGPezDqYmOrfOKiju3+1t3A59vn7qQ0D5C0NBhcef0j79WFKuH8uErHXHOBEHCEVnIaTql00m9gew+Aq7OW4GpTsc6m7bxt0jyqGhIfMvsQ0Le09vmhEakigKnN1NGMDJtSVNk5qGOOXlwczV08aIuvY4uwpabSMvAcIehLnDDuZCA3VLRkAcV3VtgCFjBRSTlCKAEM96CNEFKXS83Kc5dFrqMv/tON1IjbY+u6iA2bb2/Ii1Q5jM8K9eOWUUQUN+IC0tDwNbC6tpiLqjb5acCvk5+wxtdv2qN1dDHHVmQ3q0+rDQ0PFEnRRFj50Vis4H0ePt+vXU+0fxgFagJd+zLs+xGzcF7iKj4kgEvHX9lQ5QWiO3Z0koXZmTU/41coL2DFd6vwOoj2fy4feHdNMos7rucoa9QO6QP3H11C/FzaKPronjh/re/S0Q900RYkkwZPlieN3NaeMzI1ObWtyN9cNQsxz47SWJFLbI3tJk7JxGnS+P
- Ey9Grtsd
- 9cm9woT4Rc9EG2hoeQVib7Pj9zBKPWnaP4Bvwy8Zb0edVp96aLaZgBdedd94ugk1hEFP44M3QoXTOjWaJ3egkSgadynjmi9cm0Ay0zgED5BqACNlMeX3wS8CZUxujO8xm+sXQ5FmZDF2ysOXAVXzmZ6w6RMJTF01wiY1IuqWIWhzroR2LXa6sr4qC79Ao1WjJbLwbnsF4IPjrM8iPbsBWKp0dg5zd2PIPbuu0sb5mkXyCn6qBAZSmTKQCsmjHyQjXUw0VuH4zYsiQIViK+U7NE0UUaFj77oNebMye5D7XVud+s+SmfBJ6te4CRyn+/IWhqmlloTaScRjQN882KitbUqZx23m59qFD+o+NLf+7sGTphFSm2ApTBS7xPlrjH4UI7Q6vo2pDsl+6XKI=
+X-HE-Tag: 1783939301-853621
+X-HE-Meta: U2FsdGVkX1/ayvotTb/bL/Aste/W5zYSKVF2QlYM3wXY3XaXJ/vyaT2oCDgZbK3V5Z9lBCiWoh/e+/mfoQdFZIIaclU+P7iAmPtDn4RpC0KqKkd+5sa5n6BsXlw89XAq88uChRvhIoe4sJRkHTflnnwnNIFpBLaeqOIAe3nnZnWJgerrvyrnQv6Sv4GY1OChE9ewydtQLB+gLiHwMelftFC1bCwaSq9pSfgy3ri4zhD1kTU/3STW2VLbg50O70SpCvcmAjJ9i58H3x104L0B7OPt3vrQb+oTBjgVy+sambalw91rtC9eUjNoFw/p5tYjt4Dc96ZeOM9atXrY/N8VQxWNpyHUXi4z6aJ1z/XPKVzir6t1r098exgEZnQjkcj1KrYp2Fb6HYdY3ucTVAaS2C0VlwLmLpdjqbIChLGiAX/pC+0CFAJRsQUQhcRPLYuxp3kDm8xS6tKDKYerejez+2O7nDd5zu7Erpn0opzbwM3YBgU5b85+ChqPmbcNAwJ4Me3nHKEG8CpB/ft08HChbxVM3cGs+Ek+HxJQWhghS/ANDhnHPp9DuCZB1Qx5+ovx6JFFmZU35OxPGd1BC22MXZ7RXha8FHgxQwUgA+Q8iAlBcSEV2UkXfgY1yxY5KjbUuAONK/ZglTVjsNzqJfM/v9DyhY5MGHLxSz9s9A+LQL3OmZjQiHnyaa4kK9aVk/ayWGwLWqQ9HMzixo13AE/oRXNWmIBleRONplM3QDlgUJjNzrw8Fs5xGimT2QCBmMjJz4/Broe0JjOvHlT3LUTZXuX//Qhj8w9Bhz58Jo4tCGbDAcdSlLXn+CFW34927MqNo1+0zbj/x/WK2ISYKPelIBWOvSZglQG69YKljoMoc1qFvD4WS9zKvu88E0ebPrh4hDKKqTB+NpCT2xHtIvtUAc/LfJAcHwY2FglmS4u7KgYdBHSQhyw0+Aw2VdIwM88rTRRmNl1Svd6Sflx2z9W
+ Fqxp0/Lm
+ r+49/jNq5QI4Jx95kEWVZdctjf9K3ZHMGs4GWBEIBL88fvMiBUI1+1e1cvMDAGCOXKZTx+3u4nlVNj9RMc8pNm32o8V1Y+HZugk1dXItP2rQeZ+2w3Nt4zRrueNU4Wpp/eL2IKaWQl9hrZRJ7S5yzwNUnNIcrEjd/HvGF+Z9pYKWdKcNTe1x8K7/OXccIYKCsUbQPqhZmb1pxKULoAxhDPsFJ9jeKX8zfdqHVBdRMqNk8qb3h4B0PV6E7sha66gD4jclv53PUnsSrMR1Dm1IVur6idXzdscjOBC5AaTMi1a1Axe43jIbiYS79qmWeyoKhGyykjaNyhIGkVJ3wMDWF6iKSn1EhQ5W0qh812RbjBeoNbpvI8PXp8GEW1CRQHXcWMpCsDYqL59y9qISN4OAaoay+3uv1o1LhR4/uVzIU5WhTim8jucdEAM69gaPubCFBz/8OXQY3KL0Fm4iJkdw+u+US1jSgnJxj+n2X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,78 +124,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/10/26 15:16, Dev Jain wrote:
+On Fri, Jul 10, 2026 at 11:43:18PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
+> The mglru page table walker batches per-generation size deltas in
+> walk->nr_pages while walking page tables without holding the lruvec lock.
+> The reset_batch_size() later folds those deltas into walk->lruvec under
+> the lruvec lock.
 > 
-> On 10/07/26 11:29 am, Dev Jain wrote:
->> Simplify try_to_unmap_one() by separating the hugetlb parts into
->> try_to_unmap_hugetlb_one().
->>
->> To understand the correctness of the refactoring, the following points
->> are noted:
->>
->> 1. try_to_unmap() is called for hugetlb folios only when they are
->>    hwpoisoned.
->>
->> 2. A hugetlb VMA cannot be mlocked.
->>
->> 3. page_vma_mapped_walk() returns at most one hugetlb mapping in a VMA,
->>    and that mapping points at the head PFN.
->>
->> 4. We won't ever process a softleaf entry that encodes a hugetlb folio;
->>    hugetlb folios are never swapped out, migration entries will be
->>    skipped (PVMW_MIGRATION not passed), and device-exclusive does not
->>    work for hugetlb.
->>
->> 5. The hwpoison entry is constructed from the poisoned folio, just as in
->>    the pre-refactor code. Any previous uffd-wp state is deliberately not
->>    preserved for the hwpoison entry.
->>
->> 6. TTU_HWPOISON is always present; for it to not be present, either the
->>    folio has to be in swapcache, or mapping_can_writeback() is true (see
->>    unmap_poisoned_folio), none of which is true for hugetlb folios.
->>
->> 7. Hugetlb uses separate counters from normal rss counters, therefore
->>    update_highwater_rss() need not be called.
->>
->> While at it:
->>
->>  - Change VM_BUG_* to VM_WARN_*.
->>
->>  - Do not declare variables which are only used once.
->>
->>  - Constify some variables.
->>
->>  - Add some more VM_WARN_* to assert some invariants.
->>
->> Except the above 4 points, no functional change intended.
->>
->> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
+> The page table walker can run concurrently with the memcg reparenting path
+> as follows:
 > 
-> Andrew, could you squash the following diff:
+> CPU0                           CPU1
+> ====                           ====
 > 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index cf02b315a2ead..b61051b879c4c 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2229,8 +2229,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->                 update_hiwater_rss(mm);
+> walk_mm
+> --> walk_page_range
+>     --> update_batch_size
+>         --> walk->nr_pages += delta
 > 
->                 /*
-> -                * With TTU_HWPOISON, we only expect small folios or hugetlb
-> -                * folios here for now.
-> +                * With TTU_HWPOISON, we only expect small folios here.
->                  */
->                 if (folio_test_hwpoison(folio) && (flags & TTU_HWPOISON)) {
->                         pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+>                               mem_cgroup_css_offline
+>                               --> memcg_reparent_objcgs
+>                                   --> lock lruvec
+>                                       lru_gen_reparent_memcg
+>                                       --> reparent child folios to parent
+>                                       unlock lruvec
+> 
+>     lock lruvec
+>     reset_batch_size
+>     --> child lrugen->nr_pages += delta
+> 
+> This will trigger the following warning in lru_gen_exit_memcg():
+> 
+> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+> 				   sizeof(lruvec->lrugen.nr_pages)));
+> 
+> And the user-visible impact of underestimated nr_pages in MGLRU was
+> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
+> reaches zero, but there are still more pages.
+> 
+> To fix it, make reset_batch_size() check CSS_DYING under RCU before
+> flushing the pending batch. A non-dying memcg keeps the original lruvec
+> stable against RCU-delayed offlining; a dying memcg redirects the deltas
+> to the first non-dying ancestor.
+> 
+> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-Note that the comment likely fits into a single line now.
-
--- 
-Cheers,
-
-David
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
