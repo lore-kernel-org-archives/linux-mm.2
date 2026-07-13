@@ -4,62 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E9FC44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52D24C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:15:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D83FC6B008C; Mon, 13 Jul 2026 02:15:45 -0400 (EDT)
+	id F31AE6B008A; Mon, 13 Jul 2026 02:15:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5B7A6B0095; Mon, 13 Jul 2026 02:15:45 -0400 (EDT)
+	id F08C96B0095; Mon, 13 Jul 2026 02:15:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BADA86B0093; Mon, 13 Jul 2026 02:15:45 -0400 (EDT)
+	id C71AB6B008A; Mon, 13 Jul 2026 02:15:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D8FD6B008C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 938226B0092
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:15:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13337120AB4
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20B22140A28
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:15:45 +0000 (UTC)
-X-FDA: 84982742250.03.B0C2BED
+X-FDA: 84982742250.02.A95F6AA
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AC956A0008
+	by imf27.hostedemail.com (Postfix) with ESMTP id C9BF740003
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:15:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783923343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AzrTwFBQUWpvWum0a0KVR/zAHyBFHAFaO/wPFiBOklk=;
-	b=K7HBSov36o2FRY869FmpXR4BjonFSo5R/NvzQtak4kq6LoviJhWYo0iEP7b5tTtle7sETd
-	SaMK5QbvD5GCDanHO2jXYXLlNzKjmKoJVy3dv1yZl2oL8wPhjrEk83Q+uyZqLmyTl1wsEa
-	owjyQ8EZ3Vrbg+tpriEdvDvA4kXodFI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=9FvxE1DVaEotnAgJAkeGxoVFC2hQSrErtAzSyqqZTJM=;
+	b=cke1wpSbXLk61yP44XpCingqwkqNxRIpPHPq7sBMAZw2BxEpRjlvK0Ap+CDy+BXOC+POyq
+	uUfX/tOOxovePjv1r0w4Z3KzVbzs5CrlptpsCMK4VnIpGQ0JQyfUsqZQnbugvb3NLZauZ2
+	LBBYjLsEu0Fq2NWISs1V9fsuOvkQf9s=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
+	imf27.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+	spf=pass (imf27.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783923343;
-	b=XS/pXV1j6fyQczB+b6stv1rAG4Ew4+478r8YzL2Hq8IIsoy9q5qPoKIdkN1njGk53YgMUM
-	K+5TBzLQAgqXvak/Cf42Vxl/qnj6J3EAGjA5IWU9uTfFSF7N1TXPvhaZhE/AW8FQYngvxf
-	EhDSSN1mGw62+ZKUnFrwurQc8zs6eyw=
+	b=1V3gj86zifpQFpY9VRWfopRXj0WK3QU5W20BQAIqc9LrwBdXtXHZl1zgNenAu6SU9i7yE0
+	w98srutxxzKjmWtzOa2Xi6O2rpEJ9OSPWCgI7lplKNWStTdaYhWnz73EDtqEbe6fu4saLo
+	WvaAhhIRWqKib1NMypBSMWvH74h+Jac=
 Received: from [127.0.0.2] (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAAHF86CglRqddeRFw--.29971S4;
-	Mon, 13 Jul 2026 14:15:31 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAAHF86CglRqddeRFw--.29971S2;
+	Mon, 13 Jul 2026 14:15:30 +0800 (CST)
 From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Mon, 13 Jul 2026 14:15:21 +0800
-Subject: [PATCH v6 2/2] mm/sparse-vmemmap: flush_cache_vmap() after
+Subject: [PATCH v6 0/2] mm/sparse-vmemmap: flush_cache_vmap() after
  hotplugging vmemmap
+Date: Mon, 13 Jul 2026 14:15:19 +0800
+Message-Id: <20260713-mark-after-vmemmap-populate-v6-0-b945ceba29d4@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-mark-after-vmemmap-populate-v6-2-b945ceba29d4@iscas.ac.cn>
-References: <20260713-mark-after-vmemmap-populate-v6-0-b945ceba29d4@iscas.ac.cn>
-In-Reply-To: <20260713-mark-after-vmemmap-populate-v6-0-b945ceba29d4@iscas.ac.cn>
+X-B4-Tracking: v=1; b=H4sIAHeCVGoC/43Oy07DMBQE0F+pvMaVH7Edd8V/IBbX9g01kIfs1
+ AJV+XecsmhRUWA50ujMnEnGFDGTw+5MEpaY4zjUoB92xB9heEEaQ81EMKGZEor2kN4odDMmWnr
+ se5joNE6nd5iR6tYFY1krrbekClPCLn5c9Kfn75xP7hX9vJJr4xjzPKbPy3zha+9/S4VTTlHbN
+ rTKOuD6MWYPeQ9+7weybhVx1TRrtjVBGQWnwQQmXSObe03ean98k/Ub1Brj4K3Qv2jNjSbZttZ
+ UrUPnPFcBmGjvNXXVDDPbmqqaMYEHDNIDyp/asixf2vypQBICAAA=
+X-Change-ID: 20260525-mark-after-vmemmap-populate-68bd790839c9
 To: Alexandre Ghiti <alex@ghiti.fr>, 
  Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, 
@@ -68,37 +71,36 @@ To: Alexandre Ghiti <alex@ghiti.fr>,
  Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
  Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-riscv@lists.infradead.org, Muchun Song <muchun.song@linux.dev>, 
- Vivian Wang <wangruikang@iscas.ac.cn>
+ linux-riscv@lists.infradead.org, Vivian Wang <wangruikang@iscas.ac.cn>, 
+ Muchun Song <muchun.song@linux.dev>
 X-Mailer: b4 0.15.2
-X-CM-TRANSID:rQCowAAHF86CglRqddeRFw--.29971S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw15urWxZFW5AF4UJr18Krg_yoW8tFy3pF
-	ZrCwn5trZ5WFyxW34UA3W2gr1Fg3sIga48G3WrA34UAwn8XFyUWr98Kay0kryUXFWrXayx
-	Crs0kry5WFyDZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
-	8EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
-	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
-	IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
-	IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
-	KfnxnUUI43ZEXa7VUb_HUDUUUUU==
+X-CM-TRANSID:rQCowAAHF86CglRqddeRFw--.29971S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WFWfWw1Dtr1xCrWUCF45Wrg_yoW8CrykpF
+	WY9a98ArW5ArykuFsFvw1xZr1xGF1FgryfKas0kw13Zw15tF17Jr1rK3y8uF9xJFZxX34D
+	CF15ua4ru347Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VU11rW7UUUUU==
 X-Originating-IP: [36.110.52.2]
 X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
-X-Stat-Signature: hhbgadkjr1up1f1q3jyrwfkmc69stbwr
-X-Rspamd-Queue-Id: AC956A0008
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783923341-247403
-X-HE-Meta: U2FsdGVkX1/7oQ+eIxoQ7nl+Q+Pxeomb2PiZnTbxxDuP5AqHhhbGB7uzbMgzcCybYMnFdQU5kYUzcEMk5Sw88j1ayN6lGJqf6Bxvv3k8GXogDmiOJJl3/c+HtthR0ShZHQWY332ut2CNgal52geR07ljTc+CVkv9TFXFKIalTjeLIW1D/+mArBxzVMx6nfTPWXtT9OYN81DpXqQRtMemwDIWN1lFESsnj48WvXuS+LwqEFr+WSQXlOEtetF26rKcAi42SQsXAnZkhx8apQrwlDGcQRC3MPlZTigZsojL9eoVVFdZHTgc3mcvvhJOZIB+gOowEXnxp7SfaPhhnDsCM7+vTxUMCt0Dx3B8hMYmJJ6uvvwDLlACi+d8X8nrpPHKqyPzae5cY17qAuvbX2UzGZ7N4HKYgYcO1YmFdWqc7eExPDmRFxLgIHLqxU12075hm88nQISXvLhv0zeBq+oA1FEvvidB/kSFBn39Zit6GbL+ttAPEWIAuv/EHRhDHdlXQd5WZ5EgLUIFk6+AIi1pDA8LWlIb7lvfJ06noLX4kOxEahg/2Kx2WVG71QhFWZ9VF5R2bLEeu2CK2KQXc+hUhEfjDXmNnpiV927I0/3rKAp2wMPz9BWhWKqSvug6QFJhEQShIxdN2/nMZjiXFTHGr8Gz77oX91CDz8vTlDmSzBLYrlk/sl1CNLFbl2Szv4UyqOB7kjwqOOnfqwzkfkvg+/HSM3JoOb1kJcXSalQPomNk+qCjQNYoWZThaANsBhJnI/MpH7uHsVLLq4yyS9pBFH4ZeZ6DGx93rm6Q1KacGcYIToDKPEkVMkYSwh9zJzFUCoGoK6T1Bq7eLALWD3ycOca2UoW16skcMI7Ob2mlrUp6I95M/s5NJvb5x0J4v1r0Lf3Nm4hQFC4VaXHIcg7EsNTT/LGj5avPE2O7jfLK4T32M5uht5LVXKhpigi4LqpHZFiW4jmb1oNt+DcnA69
- nLtiCMiL
- vbEdnGnS2O9Uj/WQ3p9wh6+aXVfkUu60tGEyuaLV7B7XiuPKvwrnnGigECG5w6BA79q7VcnwfIm5H/miMbBXomZkxfcj/lVvZkWgnPXHn99oyNNUJ4+auSzs0yMTa1HdH5nDB+y1QWhJhFZWeqM9fT9o+XVvFNZx7EUAFBIXFJnZeVRcyLO46uTQfHC62haIhCTmuAab3kaNNAVoFxPzTRKUl8hjwy0oO8/hy
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C9BF740003
+X-Stat-Signature: w96835imjpprftt64n6pmojofp96x7nn
+X-HE-Tag: 1783923341-81028
+X-HE-Meta: U2FsdGVkX19FU7LidmnfTBSNdAEulCfQ2KciJ9ZAaGDIXbAwd+pJoRPks5/YaGK7LWU3NHdbe48WLIwwnFBuAcd0OmAeGKEm43LEh15po4TEqUpCnc5vo09eegPxI/qaaEe/IvrmrH8umzg4SQ31I4GjHyy9aDMakjN6LyOBbG0/5idJZDJlRPkoc59zkm6cOiyDnDjTSw2Z/RsJZmuiCIqRn7E5sgRWF6qQHJxPfuF1c9SopSrEVUe2sSHv99EH7UXTu6wxXO5fj5CrhMrTbo6xhPGLzlmpaKnv6HC6CUSOg2hF2sUxoZHJMWd0DS53YG3A9RItdXEb6acmUXSLqFqKWjaCPEl2jF9D6Ql2xaMfHb2arUQUBNfkUDkpgZOWNreAYHy63IptLM9OfUnuZKsUc+ivzCle5NA7nFTabktds46yvpfRXsfPlobknGZARdheZHe2iqGx+1Wd3SkQkHDpFoaKRj+MHBEB+qd/JhUBU85Q1ZmZy1DNYRi6af5uGx1tD+v9r7tMBd0MNq4A0kp77i++UqltBvUyo5yXTLv1up94PCkftmvUFI1tzl5cgKzA11tPhZ0C/AcY/QRS5FdDLGZrzL+e/XiCT0hY1KQNQZh/ui5YsAU/mjlYwOzUQRpqNaT84/R1Xm0QVFn9NIic4VtvLcIwONhNDIpQLAwm4QEjUr3aWoqG2Q9faCZpqBhml1gp55brbjsLnovYT3FZ/MPyvLue1V/s6oyb3Q2Jkyv+vxCiOT7THlWIFaYdBkctJ1iDpWYJfZtCeFF3nDnZwcAgtpjDQMDcDa1w5+sn4cBu5JI6njHlSc3QTYZZaRFnkYtQommcquFQvHMLagWFhLPRBMEEXAdc3nBDN1AxkT8FeG/36EOSCFUZz+a2YW94yzt9DPKPFzuJj89k69DDo5x7700CRsSY0rCqkAcURxgHtJsd1rByvkvbVphro3s9G3884qwOc0paVVy
+ rDPTGWvC
+ UNf7+CAb//9SxGKpPCcDdzlwgPFaj81ZUjyxa2Q4azFT8xZA+Dv8b9NIiR8PwGYedrwLe6mks2ZbTTCbqi1v+LGYLs3xmi8pPgQlzY/NDBMv4Nd/ndOl81QBIQ1s1R1D8HLvYXOwRml5m+5PMrLLAJR1OhAYdUAdP3tmzemjiNEXC1Ga/4MG6lqrW8vXQXD3SQdTD6AgAEyxBGl1YMYIgXvLX+0y6tAmDBOAOOfox5RBp/MYDHDjkbmqK8Avw1AZsXwOc+RpsUvrN9tJ3Xuh7clRpar8rtgb2/Jl378YjlnK/4aUQCYUPRc0z1++pCJRJB89w9ySdRHLWQqU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,61 +108,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-section_activate() does not flush TLB after populating new vmemmap
-pages. On most architectures, this is okay. However it is a problem on
-RISC-V since there the TLB caching non-present entries is permitted,
-which causes spurious faults on some hardwares.
+Patch 1 is a bit of clean up that fixes the compilation error with patch
+2, since VMEMMAP_{START,END} is not defined when MMU=n.
 
-This seems to be most easily reproduced with DEBUG_VM=y and
-PAGE_POISONING=y, which causes these newly mapped struct pages to be
-poisoned i.e. written to immediately after mapping.
+The mark_new_valid_map() thing doesn't do anything useful on MMU=n
+anyway, and the new_valid_maps_cpus_check code is only used on 64BIT, so
+I just made it all of it conditional on 64BIT && MMU. I hope this is
+acceptable.
 
-Extend the RISC-V flush_cache_vmap() to also handle the vmemmap range,
-and call it after hotplugging vmemmap, which gets the possible spurious
-fault handled in the exception handler.
-
-At least for now, the only other architecture with both
-SPARSEMEM_VMEMMAP and flush_cache_vmap() is PowerPC, which has a similar
-problem with newly valid PTEs. But there flush_cache_vmap() is just a
-ptesync. So it should be safe to do this for generic code while having
-minimal performance impact.
-
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 ---
- arch/riscv/include/asm/cacheflush.h | 3 ++-
+Changes in v6:
+- New patch 1, make all mark_new_valid_map() stuff depend on 64BIT &&
+  MMU. Both cleanup and fixes build error with MMU=n. (Muchun)
+- Remove extraneous change to arch/riscv/mm/init.c
+- Link to v5: https://patch.msgid.link/20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3@iscas.ac.cn
+
+Changes in v5:
+- Remove hook, use existing flush_cache_vmap() (Muchun)
+- Link to v4: https://patch.msgid.link/20260630-mark-after-vmemmap-populate-v4-1-febbc15da028@iscas.ac.cn
+
+Changes in v4:
+- Rebase on v7.2-rc1, drop dependencies
+- (No code changes otherwise)
+- (A concurrency fix for mark_new_valid_map was sent independently)
+  https://lore.kernel.org/linux-riscv/20260629-riscv-mm-new-valid-map-ordering-v1-1-60d8c10c6292@iscas.ac.cn/
+- Link to v3: https://patch.msgid.link/20260605-mark-after-vmemmap-populate-v3-1-a06001ac9264@iscas.ac.cn
+
+(See v3 link for older changes)
+
+---
+Vivian Wang (2):
+      riscv: mm: Make mark_new_valid_map() stuff depend on 64BIT && MMU
+      mm/sparse-vmemmap: flush_cache_vmap() after hotplugging vmemmap
+
+ arch/riscv/include/asm/cacheflush.h | 5 +++--
+ arch/riscv/kernel/entry.S           | 2 +-
+ arch/riscv/mm/init.c                | 2 ++
  mm/sparse-vmemmap.c                 | 2 ++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ 4 files changed, 8 insertions(+), 3 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260525-mark-after-vmemmap-populate-68bd790839c9
 
-diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
-index 58e787fad029..c2b0a2928f06 100644
---- a/arch/riscv/include/asm/cacheflush.h
-+++ b/arch/riscv/include/asm/cacheflush.h
-@@ -56,7 +56,8 @@ static inline void mark_new_valid_map(void)
- #define flush_cache_vmap flush_cache_vmap
- static inline void flush_cache_vmap(unsigned long start, unsigned long end)
- {
--	if (is_vmalloc_or_module_addr((void *)start))
-+	if (is_vmalloc_or_module_addr((void *)start) ||
-+	    (start >= VMEMMAP_START && end <= VMEMMAP_END))
- 		mark_new_valid_map();
- }
- #define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 99e2be39671b..ebd3ac997f64 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -564,6 +564,8 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
- 	if (r < 0)
- 		return NULL;
- 
-+	flush_cache_vmap(start, end);
-+
- 	return pfn_to_page(pfn);
- }
- 
-
--- 
-2.54.0
+Best regards,
+--  
+Vivian "dramforever" Wang
 
 
