@@ -4,122 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0507CC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 11:04:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7880AC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 11:11:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B49FF6B0005; Mon, 13 Jul 2026 07:04:49 -0400 (EDT)
+	id 788896B0005; Mon, 13 Jul 2026 07:11:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFA2E6B0088; Mon, 13 Jul 2026 07:04:49 -0400 (EDT)
+	id 760AF6B0088; Mon, 13 Jul 2026 07:11:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EC1A6B008A; Mon, 13 Jul 2026 07:04:49 -0400 (EDT)
+	id 6765C6B008A; Mon, 13 Jul 2026 07:11:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 797376B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:04:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 079DEC811E
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:04:49 +0000 (UTC)
-X-FDA: 84983470698.09.90C5BAB
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DDCF4A000E
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:04:46 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=jXGqOmKp;
-	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4951D6B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:11:42 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCF3816A175
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:11:41 +0000 (UTC)
+X-FDA: 84983488002.28.151B242
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1703F40005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:11:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uirGvzJa;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783940687;
+	s=arc-20220608; t=1783941100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cojcc5VUT628xzASOMK5s3Jnv6iTJKrLxDZeFtLk3P4=;
-	b=x/QBE12CD3TXdv07hYhmoG+NtmR2jY5Pl85/229klZqK/KO3tLKx5/OBCtSETyLeyp8BY9
-	053qWe/mQl+jVJwId0SIPhFZXssF/q7zcVYmgYMjD2pTq3ctd8VF9jZvzGwbo4rGahg0LR
-	5ye+pY0+4HREJ4J5XEQNUsCxEJfk96w=
+	bh=W+vXYTjP4H8eRjjP/emOufHi0JWx5TVft1dc44xReZw=;
+	b=n8SicNd6I4x9uoQanKlVvqkUc7+RHaHJgGp64fRgbAtOFBTMkIHpp5Ip+AbXj710u9Wlnt
+	g09aqLPnfK/Bph3cUH0JFWMkXn1kEjgWE9ypBIBqDqoFjOmZlEm+tdWqFgTwhs0rDvm00n
+	8lgz/IoAunLv4xf6P1Is8hF5wXcAfDY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=jXGqOmKp;
-	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uirGvzJa;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783940687;
-	b=0jdbEqNM4ytF1LQm1NiHTcaaFZFjUUzAuBuLEeIKkU7ukumpZ1cXw5jtNTwWl83Gxh7cAN
-	uNhydwJMG0xqa/8lvbbhHEK9bezEodJAh8Rocm6bFRVZe0YjOidkhA98VlurGYk4UKCDMT
-	frJC6nTGGPjLJU/SPd6o8Q5sbr3pBTU=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493ec555a26so19609975e9.0
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1783940685; x=1784545485; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cojcc5VUT628xzASOMK5s3Jnv6iTJKrLxDZeFtLk3P4=;
-        b=jXGqOmKp72+4Mnc4ob59It3MqNt+XpNFBytSHoxBLHF8HvH+REJ9eo0YefIba7SP6X
-         AOdwZBqBYsRWA6H3S3yQRtQ1+Tb1sf+8yyMlIEMshedTyDMafG5feJhVolgOLnSwH94G
-         c7NOA0DiZDovNdwwzcdj0vaERB3nrF3ZTtTW+wqRvWdCbZ4F23+sEJik+jg2/rDB3mpE
-         yFu3z9GYm4bJznZ6KiheW7Vk2M/uKc9OBzDEETH16yTXP6H2WYWELJ7yw8yls9G+b+9c
-         hbV/fibj8rJtfydnX3uCzlca8s6fVME9JK7ZAljlEjQS2VnPh0orL4sgAedZmI6Q17VO
-         Q3eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783940685; x=1784545485;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cojcc5VUT628xzASOMK5s3Jnv6iTJKrLxDZeFtLk3P4=;
-        b=TVGRyhJEsqViJVFgjBshYztZqnmBA4+xjSGEllI0NmaFApqcytH53UNjpyFt+MFMEC
-         0m/sEOY5Qc+QE3Oinp+YBxXqWqNFRLyEPANmEFCyjGh9VjSikeqfgaz+MEcwS725Q8k8
-         pf/vy8m1m6QY7vN0xXqra86Ab7UssfFqqp3C9MiQKp7BBwtv/hJBOztDCkHcClIryf36
-         2AOXT//tg4yNHnF2Ur+H6dpJURj057UseY+wkJKS+W72EGtWqsY16zfNUoT5Equ5PUC5
-         CIjsMCdiHMYur66iipsL0V5KD29rPdHNTWX6+aQgEwDLOSTgU4Byk5ZiPT6j9oo2gf64
-         q44w==
-X-Forwarded-Encrypted: i=1; AHgh+RrHG1Z7Yp9WyKCuPgF7k71N7PbLYUS+qNLz5KD6uF+hSVowD1r3XA3ckIwIle6FygQNwCi7hXaU0A==@kvack.org
-X-Gm-Message-State: AOJu0Yy/tmwKGgOy/jCR1SNWgRQhW72yRGfN+kJ7FNo5g8Z52cVx3F9/
-	6SQg78XpatQbgZnQWRgC8JjUt3Z6sJ9VXFiVsfcXFpA47RQyXNbAsEnBeAZbJFU0Ibo=
-X-Gm-Gg: AfdE7ckTsr6A6ShUNbixmmzuZflhGybS72ehM19cL1TQR734vGa5c9jq96UjZ3UC+wM
-	GNDXxz0BAjBH18xk9QOpcIRVVKCNRW1aZi3KHlOzehlwTNT9phYH5lxpEqvwzByhDU0Vwjqkbyo
-	kizDdnTlHWkjjwoU0rr1p2Yn663zMz3nn77RDR8opZGSbloS/5SZ6NFwZfkRHrXaNBqKlVkikJI
-	N/xDbwc5oWuRsynUVq1AZUkscej8nfBSjpnmZFm5KvyIY9grjUTX7sPvgI7+TfwAom1qMmxeFVc
-	oi+WHpPBHZAmPW6MZa3LITeJVw8vWgOkJlNFQp+15wxZqmJVqVXhj5ZdwWs6WhrfCbo7Ln+LZ5m
-	gA4+5v4/sK1x9QDgE3ikVTsuH4aJ1y4sbJh3D6RgV/9kBIpUMPfpvKqH+2eaKKaqmV571kgAq1A
-	emKnLf/nQVAw==
-X-Received: by 2002:a05:600c:8285:b0:492:41c9:886b with SMTP id 5b1f17b1804b1-493f87e5a53mr89975585e9.14.1783940685235;
-        Mon, 13 Jul 2026 04:04:45 -0700 (PDT)
-Received: from localhost ([2a02:8071:6401:180:d892:bf43:a0b4:83b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6d4f9fsm364070595e9.4.2026.07.13.04.04.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 04:04:44 -0700 (PDT)
-Date: Mon, 13 Jul 2026 07:04:43 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Petr Tesarik <ptesarik@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] mm: let node_reclaim() return the number of pages
- reclaimed
-Message-ID: <20260713110443.GD276793@cmpxchg.org>
-References: <20260710152320.2024283-1-ptesarik@suse.com>
+	t=1783941100;
+	b=O5oaKoLjxJawnJB2DWwSOlfDp743OFZPHGoumulwJu2gTjR3k+BNAtRNsLhErGRYb97KZ/
+	QleatLICPJk1PbuG2VoPpama918K9AHGl92y685O4/63ABecf9PREuObgjHmWBMDElKrZ4
+	Q3NeD4e2cwz1FjYwOXkVAnscwpy/s/M=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783941094; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=W+vXYTjP4H8eRjjP/emOufHi0JWx5TVft1dc44xReZw=;
+	b=uirGvzJayhPLcHRXlYccCU6wzrqEY6h6h+rLCUJd1hTM+mzQCbaMsao09DqEHf6D4PzEcyNl+8hG9e0K4oOR5x1LpRVYjzj/o0gA6cm+N04wkWzJXbT7XstDvo+40y3QlR7/aPq+iSUdBUAOc5VIjntbXVynKNadnDpQrPi3haU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X6ygMa9_1783941063;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X6ygMa9_1783941063 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 13 Jul 2026 19:11:32 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  linux-fsdevel@vger.kernel.org,  kernel-team@meta.com,
+  willy@infradead.org,  jack@suse.cz,  akpm@linux-foundation.org,
+  david@kernel.org,  ziy@nvidia.com,  matthew.brost@intel.com,
+  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,  byungchul@sk.com,
+  apopple@nvidia.com,  Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH 0/2] mm: don't apply task mempolicy to unmovable kernel
+ allocations
+In-Reply-To: <ak_bIlYWJsEWx1P1@gourry-fedora-PF4VCD3F> (Gregory Price's
+	message of "Thu, 9 Jul 2026 13:32:18 -0400")
+References: <20260701222112.2820098-1-gourry@gourry.net>
+	<87echco1w6.fsf@DESKTOP-5N7EMDA>
+	<ak_bIlYWJsEWx1P1@gourry-fedora-PF4VCD3F>
+Date: Mon, 13 Jul 2026 19:11:02 +0800
+Message-ID: <874ii36t6h.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710152320.2024283-1-ptesarik@suse.com>
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DDCF4A000E
-X-Stat-Signature: pqbgdjb5wc41tknac95apqu5armbcnb9
-X-HE-Tag: 1783940686-257592
-X-HE-Meta: U2FsdGVkX19CUCWz22M9EGBhs3go2/bh1TIglXM3a6JO7YKzBmR4uD2O1fzV4pF9yEF6uHif1a37+ODzI5hW6WE/4pCDZmY+I7m9qdM+g2XqLcwAd4XI55ItOZz3U2nLHE/qPQlzVG86VB6gSA+w6mvpr4Dz5tGf676Q1A34bZtP/PiFKH6DVzkX4c3X1Xem0jfhdrZsckjoT9QNgCOTPc4VoMz397G+BvavRop8X0hoGeXDGztUIZOt5Uxaj6t/H8Wu0BqPppDWzCgBDVyaG/8TlqQT3U40PcNYSQk6tunt9+lzIDpOHrR+XoISj8tHI/NgS34StmUB9obmoys1yEgcfxP50Prlvtn47855zmNleI2renWRacK5depouko83xfS7hKnIn4tnP2w0fh/Nr3hpcDOWbRBmVVM/p8uDVG8l3aVLrcI8KTa6YAB/Gn1HpSKRuXZ9eZ8YwZsQ4upKU6wa6+QJ44NmRqD4A6ITNw4WX1AqEXWhoH1uds5rWyztQdU3McOr9dkHK1Z0ReSTEhAJ12NOFLdy7yrdxYsYGoh1NanbAHZxFTQc42x7l5sEdgAsDaK6jlp3/68aXa56H0j6j3ygrcDhiFSvKHFY5UnsyIBkLlu6U0eR0rZF7pci4ncxbB/zGm1b2o1oaIURfpfRFlfPp0o3Qr+Bc2nnPhVEf5e4ZoxjScJZIuzq9Y8ubeMQiIS9uKHtpGDsgbjgpt+L+hgOo5tJzePC/nyvHT0m6X7Y37Nf3GsPVxlcazVwxC4ik1L6+BAtDs9ddYtfXzlFBg0/lmWBGWiSFV0CLhNemsunLCC41nHmScbDyEAn/Zh9yUWrGjcvB32dDltBj3aqIG47lllweRpHwdyOpU59opSAqbxjwbhV1t7DD5fp1OcPyRKuLpQuaQ294mVBF7hpknINtngHsrr84FwsOb894rkFTXrrpG+PNxQneqcLt8DifF2t3Aur6NlcwJ
- 7YTk3BrO
- TJC2etiW2USG4cDtei4UBiAOAR7FJGUxrdneBswJPUe9tLW40237/yI617nMEqh5IAvNZ64Lt5A2KfgRELlJ/Hs/pEWwXEXW4FVCltmhxNR/TDp8Sv2FMKqg7yEEq4KAC22y4+HJHgpkvMKTR9dBc2FXKqqeANG63nk4cRapbdN7vBRs4sK5GR8pCPhIbyTJ5To+XeFZniwhK19lMWPPN1C9eBPqXVKHy2hzMpysNJ0WBDdBwFqJ8FIEndoARKWQXZsrnQJpwYkxp0foJnq/iwtm/v8LXyyszf4Gxnqq7PJvwyGJcUOOF1jK/t5yyVxZ7DV2t+OCBMGcGQIQcxuOjKTL2dyddGTCm8UhT1duyV81iaTzqzaYOvK95px8vYDFD2pfnTF5b0CwIJ3P9yozj/Dt+G7+I6BRmSE1/KS3/q8MbPa0q0vphNv+BEZEBoAHhMVukJuUOUCurcXn/0jZKwUW2lwqDe8DGKHPvICfu9UJcfWvQutY+iT1a9PfKPSlWSZXPLG6SxIiedvKqdQ89B/EJrf+c1RaHQT6J
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1703F40005
+X-Stat-Signature: 1wbe4aefmgw8wmusqxyes1x7w576kqcp
+X-HE-Tag: 1783941097-199926
+X-HE-Meta: U2FsdGVkX18XeD3e0a0jr+ybGHIaD1wRQwaaqzjGGEvrJ+yAEOSGyS9D+XeKMdKlXGCmbstKbGP2NrSuMv1dW4GDaWgFpzfB6gk7KvvVFnDLlTao7J1vvVMQ6guOR50xem+t77HdQB0uSYezeLiDHRty26DasSdmihCWuvLmuwfm2qsWyChtF1kh4FjMpkSpRguSpaHyF9uWRqWwbHgWkZ5/Nxl/7lT8o67nGG/G3iJIsAlokS1COvNRR0jXY664wIOLYwGpF2oU7hVhCRUhcYYRf4oq0B3HveW5GTt70n3OrAhZAvmAii9FOLA+XpXQfiWQuG0HHAoiU7hsqCYuMJfq62TvnrFHJonwqheH1pluxGUzLJCtcCTGH9pqC7Mu2JJB7HzUMrBSXlpoQHlEcwuMvhRZwx1DyE938LcApBfobTnNfCIbXHJXIvsuNmGw85HJXHZe+bybsm2wmasKHeUUn/pm7BGbOtdx3Krmt3T0hokIy6MA+SJ8XGnYupxS9kLfXP55g++t3ngcUQwiHeLMa3gAx4DWUzsJto4tOq4OlF3n/koVbu1uTIh1g7dt3tj79JCHExt3HOdzcDuWC/5FPbTULlTLKjKNVkbCkO5k4rFafQh+OYhhynPBuJoABH4yLCaTS2hE0XTymanQNH+TeQFTX8VWd1hTzFNU1Lh1scvUGVrMkZeWOWtvfbnaSEPPvUy4rM0vvTgCcfEUGnQUH6Ihv+8L2TSndrvAuSViU6yk7jOQnJoO5Bm18MpgzeY3AWUasOgILze8MKwNflcvgnLoVDdLS/exs1qXSEu8227ioUZ4WoMA4QqYBzIXl+Aqlm+XMzZ4OoLPqHdbsi5n/lHRAKaGuQhFE97kAi3hLcMtrURXHl/A+6oSCJxc6h+bYTJGzA2zJyTSAa21qqVRBGFAvDqnl2+xeBNKhY7FPPo28GZld08Smd3m17r6Cunj2Ji9pmWKUTd2hx7
+ ds8MC6eQ
+ X1kVfJttIE8VAJToXnRKhTQQlLwVARW/DE4U5olS14AoLUZQTysNNjMnnOWiz+WZMLpfdLtgMVk7yznrwJXa8EHMoq7N2afNlORqrolcMpdPkE0EEQmRtIr8wOUbunnXVdGQ56nbDsVNV9aNaaMdpBCl90lrxiwl9ssppkyVWAIbEd9U8jrUvr93bzRhhh6317Trk7gi2FBD+dK1v2jjSaarfEdK8FdwG4gyvPHd9sKlCHcpTT3EjmjOyoxWAMcVeKMUTZqOnL/YrWuoGYsoF1b6Nd8C8i60dBMT1A3Rfjx3JtM6K1wqaroQjOoo5AiKyqM9A0m/xFKD6leMA4jJ7jTpR2jAKlmJPvTobZe/rrhFq+0kQVeZV5BXPkba5Ycb0TsBjSdSkd505WE2WzmJKQs7iHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,30 +92,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 05:23:20PM +0200, Petr Tesarik wrote:
-> There is only one caller, get_page_from_freelist(), and it does not make
-> any use of the reason for skipping the reclaim, nor does it make any
-> distinction between a full and partially successful reclaim.
-> 
-> Therefore, node_reclaim() can simply return the number of pages that have
-> been reclaimed, same as __node_reclaim(), and the NODE_RECLAIM_xxx macros
-> can be removed.
-> 
-> There is one small change of behavior when __node_reclaim() was attempted
-> but returned zero. The allocation now skips the zone immediately; before
-> this patch, the zone watermarks were checked first. I believe it was an
-> oversight rather than intention, because the chances that zone watermark is
-> OK after __node_reclaim() did not reclaim any pages are very close to zero.
-> 
-> Originally, I was looking for occurences of NODE_RECLAIM_SOME and
-> NODE_RECLAIM_SUCCESS, but I couldn't find any. That's because they are
-> typecast from the result of a relational operator. This seemed a bit
-> fragile, so I dug a bit deeper and came up with this proposed cleanup.
-> 
-> Signed-off-by: Petr Tesarik <ptesarik@suse.com>
+Gregory Price <gourry@gourry.net> writes:
 
-Looks good to me, and agree with the minor change in behavior being
-acceptable. With the macros actually removed,
+> On Thu, Jul 09, 2026 at 07:09:29PM +0800, Huang, Ying wrote:
+>> Gregory Price <gourry@gourry.net> writes:
+>> 
+>> > The unmovable unaccounted kernel allocations stop following the
+>> > task policy and place node-local. With no policy set, both place
+>> > node-local as before.
+>> 
+>> Personally, I think this should be the right thing to do theoretically.
+>> However, you may need to find some practical issues that this resolves.
+>> 
+>
+> I don't entirely disagree, but there is at least one scenario where this
+> is an obvious improvement:
+>
+>   BIOS-configured CXL memory brought up in ZONE_NORMAL. 
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Per my understanding, kernel configured CXL memory can be in ZONE_NORMAL
+and BIOS-configured one can be in ZONE_MOVABLE.  Right?
+
+> An task interleave policy on such a system will end up with unaccounted
+> kernel allocations landing on the remote node, which is just not
+> preferable at all (and uncorrectable).
+
+Anyway, some number will be good IMHO.
+
+> It's not a complete fix (fallbacks can still occur under pressure), but
+> it's one piece of the puzzle.
+>
+> Forward looking:  This patch makes private-node's with ZONE_NORMAL
+> reliably hot-un-pluggable.  But that improvement is obviously predicated
+> on work that isn't upstream (yet :] ).
+>
+> I need to send a v2 of this with SLAB_ACCOUNT fixed up, and some numbers
+> to justify dropping the pagecache fix.  But I will probably sandbag this
+> a bit until i finally send out v5 of private nodes.
+
+---
+Best Regards,
+Huang, Ying
 
