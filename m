@@ -4,174 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8442C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F11EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:24:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F33F46B00DE; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
+	id AC6AF6B00DF; Mon, 13 Jul 2026 12:24:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4566B00DF; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
+	id A9DE06B00E1; Mon, 13 Jul 2026 12:24:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAD546B00E1; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
+	id 965446B00E3; Mon, 13 Jul 2026 12:24:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B44196B00DE
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1A8FA0181
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:56:44 +0000 (UTC)
-X-FDA: 84983903928.13.2430684
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D2E4BC0002
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:56:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NtKweSPB;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EB6A6B00E1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:24:40 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98E6914015C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:55:03 +0000 (UTC)
+X-FDA: 84983899686.15.2409648
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id DEC6A180005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:55:01 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9w9rBXO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951003;
+	s=arc-20220608; t=1783950901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qz+pbAUHTE5qkzjllCGGQn3S8bfWwsMlfKBN2epVohk=;
-	b=zbj91d5SQ8Ukq8M2yyKOgjFK+bg9CZrAtNxii8Ua/N/NPiIl92p6TgcoE3yCX1EfXJKQC3
-	HPFsl71VLRE/xrgaC5mDy0pIv5HahcXyYMU+R0IgMStLdHzBT1cSvWHp2HQ2nVQyGHoqRi
-	2ierdW9AJlwi9gllibb5SxMJ6SQxvNQ=
+	bh=xzRBgncFk7244VmHF9tKjOq5GKtMKBEExPzmIhMTCIU=;
+	b=DJ5chamXyzxtn+cLfrItkTNJXMTOvHSuyo/yBIs8ke6va2lfjVOuRpXvz8wOqsf+5/fY8g
+	6Mzla2OdkPUcB4EOKEk+E0EEaqi8iNKwbeYdwFJGoBVvdK8mKeW27UUQYbTX/KwLnvEcuW
+	RqvR/NYn2H2Kc78+QO5uFU/7B6jx05s=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NtKweSPB;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9w9rBXO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951003;
-	b=j+cdoWrf0WAgiHN6jhRShQ/91bn+0JJk7gAi9irSusU68fABkzNsrmsGqs+HEn4p8UVd1x
-	lP+37pCUGP3UuZp2QjN6QNTHC1R0Mpv6mZWaOzW5I3v5w0FEKVXK9/pGsfGx+Niw2HSjVY
-	l1uBUftQ+UlWcarEsjyyw9Jmy/78a0g=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 748D31595;
-	Mon, 13 Jul 2026 06:56:37 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 821263F7B4;
-	Mon, 13 Jul 2026 06:56:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783951001; bh=fhtk2Xbf5M20Fxp59EylK3EnVtDC1Q/eeV1ASjlJfRc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtKweSPBJrXSpruqKL8D3x+JeiFzhsYRAqoppMDvPH1+z+gBaMYJrhxqE2/Axq7Hj
-	 B2j/+nweOkOaE5PxSeWVRUeh4V8VRfIU8trmx3TCZAiPfWyIc/PW5GR+ysVbs5MA5r
-	 LFYf1KUJXku0EHVhXV74N8EhZamEA79TBKfQ11+4=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com,
-	linux-csky@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org
-Cc: david@kernel.org,
-	linux@armlinux.org.uk,
-	akpm@linux-foundation.org,
-	ankur.a.arora@oracle.com,
-	rppt@kernel.org,
-	linmag7@gmail.com,
-	chleroy@kernel.org,
-	klarasmodin@gmail.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	kas@kernel.org,
-	zhangtianyang@loongson.cn,
-	wangyuli@aosc.io,
-	tsbogend@alpha.franken.de,
-	ljs@kernel.org,
-	jgg@ziepe.ca,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	arnd@arndb.de,
-	ryan.roberts@arm.com,
-	pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com,
-	baolin.wang@linux.alibaba.com,
-	tj@kernel.org,
-	kevin.brodsky@arm.com,
-	anup@brainfault.org,
-	atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	hpa@zytor.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	anshuman.khandual@arm.com,
-	yang@os.amperecomputing.com,
-	chaitanyas.prakash@arm.com,
-	ardb@kernel.org,
-	guoren@kernel.org,
-	yang.li85200@gmail.com,
-	viro@zeniv.linux.org.uk,
-	dinguyen@kernel.org,
-	schuster.simon@siemens-energy.com,
-	wangruikang@iscas.ac.cn,
-	junhui.liu@pigmoral.tech,
-	muchun.song@linux.dev,
-	vishal.moola@gmail.com,
-	namcao@linutronix.de,
-	pavel@kernel.org,
-	djbw@kernel.org,
-	yu-cheng.yu@intel.com,
-	baolu.lu@linux.intel.com,
-	Jonathan.Cameron@huawei.com,
-	coxu@redhat.com,
-	andreas@gaisler.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	geert@linux-m68k.org,
-	shorne@gmail.com,
-	jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [RFC PATCH 01/34] ARM: mm: make nommu pgd_t a scalar
-Date: Mon, 13 Jul 2026 14:55:40 +0100
-Message-ID: <20260713135614.1618183-2-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+	t=1783950901;
+	b=WVcY4h9uFj/ZLhfOIpTn0W6yWEz0F7OD3B9KNF0B56dKuWTTznW3tZ7u/zLuiU3BGWBsAI
+	2xBke7hJ2eih0u02AHyqS4HOq6J+X0KwTyF1aKS/hhUh/IBitdqKm3dzwYqEtGumodtQEH
+	yquMIt7j+zyBb1yPzVQetFwAHxlpJhE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B5E760120;
+	Mon, 13 Jul 2026 13:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18831F000E9;
+	Mon, 13 Jul 2026 13:54:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783950901;
+	bh=xzRBgncFk7244VmHF9tKjOq5GKtMKBEExPzmIhMTCIU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=j9w9rBXOsZ+0dL0dqPx1BbdBzQYaSRiA68YSdY3vmi05moH1Nx2oLkXi9Y//k9Dku
+	 a30n3oyKZPFpFSWrp/jzRuBm9AWERDzTtAreSu54sy/RxnaSqHdbxGmo5iH4wQ15gl
+	 mw95toW6/uDvwivt4nVQ8RtDyL0BCkHRT6opUrixHNyjgl+zj6EM3TZSUTCbygh+1Z
+	 V708X5v7pPu9YOf/3oZCxqLNsqzabEz6SMehmobPeBB0ndhI5sbjmbGLqnA5Spizt3
+	 CyOQEMy4pU75d3EYowTRqBvnHwXTkDfHxIeCUfTzcE9yLxkbZqWdzIoblJYmm/S/jb
+	 wn4U5ynZVQFzg==
+Message-ID: <1b1d0523-6eda-4fd8-9e22-a4a14c869bb0@kernel.org>
+Date: Mon, 13 Jul 2026 15:54:57 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/slub: add comment explaining intentional kobject
+ handling in sysfs_slab_add
+Content-Language: en-US
+To: Hongling Zeng <zenghongling@kylinos.cn>, harry@kernel.org,
+ akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, vdavydov.dev@gmail.com,
+ davej@fedoraproject.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhongling0719@126.com
+References: <20260713070024.153552-1-zenghongling@kylinos.cn>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260713070024.153552-1-zenghongling@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D2E4BC0002
-X-Stat-Signature: rrotnc5ujgnqkfmjm11b14yc8gxmodgz
+X-Rspamd-Queue-Id: DEC6A180005
+X-Stat-Signature: zpxgmpqwprifshq5zmk6nw35x3f6khxj
 X-Rspam-User: 
-X-HE-Tag: 1783951002-921819
-X-HE-Meta: U2FsdGVkX1/xcCxPdcQswcS2A7oJ3/pcVHrQF6Sl1nH3onDcidEyBcVh2g7jbLIMBvS3oEafBPW4vSQ+o10sejzIgfqbzNoAJnMDygc2+H/kVRsMSNUhUxgkUdU5J3Dpz/8X4Aia0osNER1CTJZG+cCw+TYuVEIeLk82WiW3Gxt78YOrEHIhhzgZ/RUiR+fGLsWn9ukIQhqqf5nbYOjgxTVs1pKAzOS8wwZmTIpCfOsVXZPldBqLlykomizBeTTN+EGYImleXXyBEX9wVRv8oldxCTOKuOP3wMooB27LPbbYbkccA+ruQipg66jz6swPswQF0f2IteOqwUDpFqjuNWimI2af7s3fugZ99uO6h3lA+qcRLFbGQyOQedwqqzOUbhTKF0PV49Ri49e3hKd72zEyVws0HqmMCDzRx3JRFj4YSEKcE92n40DivHFxg5HCW/yyAutVPYPHOIsriWMvvGuLcc77B3SMXq4tXnv/1G/Rp9baw/84nKGye2sVpcdBvqV5cxDpeZe8HC1jWz3bRHGiWsTumjB5ygYUvw1dw4L6kfsAK95Hu0IIjIOZsP+2U+jdRgwyjkuBjkNRwDvvEqmiywQfTE4Ojr5vemD1YpzHkbPukHwN1Q1gV+7SwA8zA/chqoWsLBcA4r8cQda2MpYB13gHk9J7+ee23pYlgW9XT3FvXGLh3H34qlbW7gKRlyXQxGhi5p+ntSkoTTESp4F2QY7CsIwilHVaywt96IwmlL0wZBq9pTVOdB3DLQtbFG184oFZzuRilJSMQ8AGR5GeJWQqmNH3fIO6pd+4zQY6OM6NOjQOo34e8kploGj3647p2Ciqu1ib+tS/4TAlGe25F2OCqJH/VIk8RdE55LTDPWvkmxWV+gQ+AmzeaZSQ4CCKFxlPLoMa8dgijgmz2KnJdRyaHRmSj//ifeeY6LKUZzV7K1jjawiKirjnOf+vJ+IWp3If2zpaLw+DwsW
- k5655x6V
- NypmjfGZKq1Fmj6aho2iXOXD7wqBTt7Dj2t7iko4b4TZxRUo5+Rv9OFUplY7JBLozotes3Gl6Z+YZhU+OhRi6pqWA2r9FtzmmqsPvTNtmw7+RIiJokPUW2K6ufduYBFVkKnpWsel3jG7nAR8fTlg+XCOBobtcohSwjNqOFrH4kc2eAZhs1ByFfb6TUGZUdClnbEDNHJdA2aH96Vlt5hxyxnILmuRSFx0WZt1FDCwy7iSd29sgZChsYOXwRRQXmtqTLdj9MlCR828beOxsEM3PZah7e+HqoD0Br8DoQGSRKlQmJGpA4054utCjCmvuIIErqnKc7L1ZQUX76WUbHeZ2BGw1knrm8YBSN5Q7pwPtAD/1tkqtvLwZntFVCpUP0hyC+M3Z
+X-HE-Tag: 1783950901-830154
+X-HE-Meta: U2FsdGVkX1+sgVijVv5aUShVweA38kFqVA1MThJ4ceaL+/JSpziegsPHQcy/81VVNVMMxpauVTo859hNdu0sEi1SJf8d5IfHMtFAo9/P1A9bhaJnF0Jerq4eaRnfqiMv3IgK+akTPEFa7jK8z1asVLjQ6Y8n88pBhffk/qO3kkb1lUZgS2tK2amHoDM29BI8ChIV6L+CF0ewsJ4E2D7oGgzxA6zsKC5chL18Oe0kw1l71Cm4bRxLHdpxTQJe1Uvrlr41R2ozQwUJ6eRgNBRVZAJL6xXFZ0ltirH/UkG8RHozDqYY4kro3elmaVmtnSLOowCz0+Qz5ukkRxY6L/gfRMbOj7AOCj4tX+GAB0BFK1WBWX21jHVD1Jk6IbHbHGykhoeE0SPLmyZaY7CRdtPCR17jdimwDvxxIueN9ZirtFa2aaAWgrnF1L4TWb5G8xyH4EWQwxDvQg7d7lBily/vh+rtICUGN1LAImzEW6DiiKuUUEOvPLGYeAfeHfSg1Fyb/u3ht1FlQeW/Fgj6xVoNwwLk8GwM03BYNTFg28OGg3aU6hRM+AHMKZzClZqPepuwfHTK8sUGAypGy3dG0+h4u3SLe98eZC0EzE3j6tdOMrKDbfA/88M5//arauuzbi6RKvNgLJgYqJHu5hNJMisx0XBcdwrQ8wjX0DYLPRvV9oyGZ7Ot4RGoPfzI8c64ttATHNUijacSJ8ps5LKMsahMZDuY33vFaQs/VVVempBgxb9iQBzgw5F/rqJ0VzXJrf4Qm1kQK92KHCO+ADBUH9LCLvhwlu2BOhcMAND15MQ5gnR19vwXemuzjqeCnsPdEqEhB3mbj51Qwk9Am7cSSGPM7RWthofZnwf8zmF1f5iJP/HhuyjRoIkbZCgGB/mzVwQMnBwocdvjjaGZhpfLk+WEZV9L1O/NO832waZ0gJRC8dCqgN8bDnmMb+IowQ4ig20krKoFwKr/XuHxKwKwrDm
+ c/Y0Vd8t
+ O9Rh1VMiMHKYVLNRJE372TQ/m5etDS5q/7ThUnWKgFZbAA9Wcc/Z/Angipxxlz5SpPfFnEjS2U4MUSwLKNuUMAjt8M7V5I/llCip52Z42ikVtEx60KllbgDV37hZc/XBxskWQUG+tR2m5wcI3HTQZkw7QtYXVh9fitD5SQI8hxrDhZPkp5+qd0Y0yDgMh/n5y7OFuzMEV/tlP6ZcwJwkoZv3obICwRel1Yed1yomaJn7L0Xsbh0Xbl8Vgb+5YP3sHIKhwicyi4lV+72zom6ZgzB39A9E+z/kCEy/W2bdtloyUmImcoJNUUatvM/nrr2hXtLPiBhnqIFLCRBnQJmwdNT0JhTvZJrOSUYb1a3vQMrLQch9ccVx9hkh6bDCIDQsnA4t4Z0KZRNJMCDx1iIPdSxht8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,43 +135,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+On 7/13/26 09:00, Hongling Zeng wrote:
+> Add a comment to clarify why we don't call kobject_put() when
+> kobject_init_and_add() fails in sysfs_slab_add().
+> 
+> Per commit 2420baa8e046 ("mm/slab: Allow cache creation to proceed
+> even if sysfs registration fails"), sysfs failures are treated as
+> non-fatal and the cache continues to be used. Calling kobject_put()
+> would trigger slab_kmem_cache_release() which frees the entire
+> cache structure, so we intentionally skip it.
+> 
+> Suggested-by: Harry Yoo <harry@kernel.org>
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 
-We don't want pgd_t to be an array, as it prohibits returning it from a
-function, like ptep_get().
+Thanks, added to slab/for-next
 
-There is no need to match the actual arm page tables, because with nommu
-there are no page tables. It's all just in place to make the compiler
-happy. Making it a scalar will make the compiler happy.
-
-So let's just use an u32.
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- arch/arm/include/asm/page-nommu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/include/asm/page-nommu.h b/arch/arm/include/asm/page-nommu.h
-index e74415c959bea..88659b38e2364 100644
---- a/arch/arm/include/asm/page-nommu.h
-+++ b/arch/arm/include/asm/page-nommu.h
-@@ -18,12 +18,12 @@
-  */
- typedef unsigned long pte_t;
- typedef unsigned long pmd_t;
--typedef unsigned long pgd_t[2];
-+typedef unsigned long pgd_t;
- typedef unsigned long pgprot_t;
- 
- #define pte_val(x)      (x)
- #define pmd_val(x)      (x)
--#define pgd_val(x)	((x)[0])
-+#define pgd_val(x)      (x)
- #define pgprot_val(x)   (x)
- 
- #define __pte(x)        (x)
--- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+> ---
+>  Change in v1:
+>  -Correct the email
+> ---
+>  mm/slub.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 9ec774dc7009..edc822d7d9ea 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -9690,6 +9690,11 @@ static int sysfs_slab_add(struct kmem_cache *s)
+>  
+>  	s->kobj.kset = kset;
+>  	err = kobject_init_and_add(&s->kobj, &slab_ktype, NULL, "%s", name);
+> +	/*
+> +	 * Intentionally skip kobject_put(). See commit 2420baa8e046
+> +	 * ("mm/slab: Allow cache creation to proceed even if sysfs
+> +	 * registration fails")
+> +	 */
+>  	if (err)
+>  		goto out;
+>  
 
 
