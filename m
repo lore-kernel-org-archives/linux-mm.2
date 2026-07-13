@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2145DC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 11:51:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E009EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 11:55:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14F916B0088; Mon, 13 Jul 2026 07:50:59 -0400 (EDT)
+	id DB5576B008C; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1267F6B008A; Mon, 13 Jul 2026 07:50:59 -0400 (EDT)
+	id D66256B0095; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 015586B0093; Mon, 13 Jul 2026 07:50:58 -0400 (EDT)
+	id C7D146B0098; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D39276B0088
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:50:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FAEDC024F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:50:58 +0000 (UTC)
-X-FDA: 84983586996.07.E478071
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8326D100003
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:50:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783943456;
-	b=bbl5l5DfE5fAlINVgH00JHbTU7UoyL2GvnY1HQ6fUBYIofDH01UAHSuye6v1ZrMGLRaM+8
-	IZCz02kK3zkwFKMJ/PGVK2zn2AopQjFkh0xVguCnoKhqCxw0USSlvQSRXRAJaQhjff91jd
-	GbIpXc+SEkCvLNYYuh3nWyNzUrYRGUE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A125A6B008C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 29423120124
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:55:33 +0000 (UTC)
+X-FDA: 84983598546.21.757D8ED
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BF03616000B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:55:28 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf08.hostedemail.com: domain of machao26@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=machao26@xiaomi.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783943456;
+	s=arc-20220608; t=1783943731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=9pUsRzMT2bcg3WK7LBrHMQK9LV2tMjfzgkZJ9jnuMIk=;
-	b=w5w9p1YMrKGdYmX90i9P3vDRS5Oa107FB67o8dZ19R+EtO7hROFKpOUMazhPZdiipYbTpd
-	HwagynZXyvjggB8tuep9KPKTavEtxX70P20qXMbJ0SLmYOYFz+SX+Oz6nFvpoxagNNDPBw
-	0z5LSfK6YdCqvxgHM1CRL/dJbqs6MzA=
-X-UUID: 14a764c67eb111f1aa26b74ffac11d73-20260713
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_UNTRUSTED
-	SN_LOWREP, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:5e2ff409-49b6-4a6e-ad9b-29162985b8f9,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:5e2ff409-49b6-4a6e-ad9b-29162985b8f9,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:d130ebfbf25e73115cc0a35aa7111af6,BulkI
-	D:260713195045ABOGV230,BulkQuantity:0,Recheck:0,SF:17|19|66|78|102|127|136
-	|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:ni
-	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
-	:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 14a764c67eb111f1aa26b74ffac11d73-20260713
-X-User: husong@kylinos.cn
-Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 672932306; Mon, 13 Jul 2026 19:50:44 +0800
-From: Song Hu <husong@kylinos.cn>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Song Hu <husong@kylinos.cn>
-Subject: [PATCH] mm/hugetlb: restore failed global reservations to subpool in alloc_hugetlb_folio
-Date: Mon, 13 Jul 2026 19:50:08 +0800
-Message-ID: <20260713115008.937175-1-husong@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xtymU8NG0eH+GCXITTY2h0ndNB4TG5LSUGP+14PbmRc=;
+	b=xPlBeKnhIdBfHbGoyae9n18j8MjBXV7/BjufL2iqqgcbnUuQSRqpsp71pWH9Kua+aC4Yin
+	CBJYDXV4v50yLQ1XXQdGeE4DwsDbfUFWzxQSbT+bEDvm8/T4goUn42+o/ZX+9K2X831VTK
+	dEO3mvRtJnnWqmBbYvPjucs2ZKcUfdE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf08.hostedemail.com: domain of machao26@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=machao26@xiaomi.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783943731;
+	b=yu6y8mYMl2c/1QK/v893Sf+PoI9NloZmOTH0ZBLjsh8vSPlCXTK2E+aGcfBFK6VK96hG0g
+	ky9tGldUdTEaJGkYfnp4iHuIyUHEAaO3ajrB28s2uYD5tVEMgX5RNw9FcuIc6TJYrJNZaZ
+	qGSR2CapOBtBwHESltKydl5pxSQgXHo=
+X-CSE-ConnectionGUID: k57qhnG0TPi1BsHXpg8drg==
+X-CSE-MsgGUID: sRJmSz8LS+WD8X26Nu4CRg==
+X-IronPort-AV: E=Sophos;i="6.25,154,1779120000"; 
+   d="scan'208";a="182163904"
+From: =?gb2312?B?wu2zrA==?= <machao26@xiaomi.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "hughd@google.com" <hughd@google.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: "kasong@tencent.com" <kasong@tencent.com>, "baohua@kernel.org"
+	<baohua@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	=?gb2312?B?zO/QorHz?= <tianxiaobin@xiaomi.com>, =?gb2312?B?0+G2q7Hz?=
+	<yudongbin@xiaomi.com>, =?gb2312?B?wO7F9LPM?= <xiaoyaoli@xiaomi.com>
+Subject: =?gb2312?B?u9i4tDogW0V4dGVybmFsIE1haWxdW1BBVENIIDYuMTgueSB2Ml0gbW06IHNo?=
+ =?gb2312?B?bWVtOiBmaXggcG90ZW50aWFsIGxpdmVsb2NrIGlzc3VlIGZvciBzaG1lbSBk?=
+ =?gb2312?Q?irect_swapin?=
+Thread-Topic: [External Mail][PATCH 6.18.y v2] mm: shmem: fix potential
+ livelock issue for shmem direct swapin
+Thread-Index: AQHdEBErMsmrE+zz7EKRA3z2tbO3PLZrXI5Q
+Date: Mon, 13 Jul 2026 11:55:24 +0000
+Message-ID: <636829064b674f71a11095603edcb20a@xiaomi.com>
+References: <c0b158fe3f25709543b48a9d81b1933120a9e2ba.1783648317.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <c0b158fe3f25709543b48a9d81b1933120a9e2ba.1783648317.git.baolin.wang@linux.alibaba.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.237.8.165]
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8326D100003
 X-Rspam-User: 
-X-Stat-Signature: 6bfbqaj44994ozsfdnfgag67spoi4aj8
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783943452-668776
-X-HE-Meta: U2FsdGVkX1+OSvxR+mlsu0kGnztZ9nrvNv4181rO8VVmlOlx2K/G6c73Al6mEXC3EYwUrJTimm1/kudWTHO6QagAv+zkdfaDQGDmG0SMVZpTWP15HeygPBWb0IZ942FmvIeSCL7cr5SANjDRo7H76PStH7acI4ZYfOMqdfx90VOgsjO7JPjZvpM46OwwaEGl+cVJ7wjXUU1TY+U4g4mc8A66KYKzMZVDNjcT016tCMdt6L0sZp+8lU1I0Vo8A+rHJa73EMwYjWjWZhSglFQa0fkHBvD22Wx+AUjD88VdglkywnLAuaz/kdVxr7LNYOCLu3Smgo01xKMIbV8zHl4sZ4e0HY7b9xmDg8OAdPTDfosikAetGd3z0AxEfz4nWJ0vj8QIqS2c5b8+cqDUYpAc1a2S6HvXgywWDpNVXP46KBTqunFhfrwR7BB/DB2I+OK4bn/Gz6QSdwbrYv6QSSB/brT52gVXoXankheXEJ8fxlNNsgl307+NpNnWVYh8aHQtJ2MSp3kdsilGInZu/0wayrLZ4C+j23aS3eejqvrRqtNQPrY87Aa1aDKn0HG4of+CxjBmYOFNEosfnoJGw+NejJilA+pYPN6zz2acg/vzTIQUko6akawVpVtPQh5buR6NMvlB68E/5FfSGyBVaSD0/dtTMbjAw3xQbVF1UZ1fx31V1o8aPhyZCjamfHs9kHaNXg9G3AfbP3h0OeppbOeh43ktYJpquvof2hSnzlL2WyOxzHs9Gd8m8UPquQccIaUOigEfqLyCr+WaoL6TtEqRQr5BqTlXoPTBAuoK86S+WNs90OXGOgdABu+W5YqxyLf5CjZDpi5SA+381OKqhhOY//5Htc2o8FnSSiaNlnWEzIIqRLujIQOsx7d1h8ZPQK5GK5oRhMveUcbb6n6dzQJmkUmfGFcIp6r0nMioVWYm0YYrJbIYef/dUzdI8qS+z0GaAxi4JZUzATgQM2FdZn2
- GNuLPVWg
- rDBdgWB4nXPMEry37GNupQYt4L/IlXziHo5lRKHgpN9KRQUJvP8KZwXDYdKTB0jWJ1B+LV6JREa96StDAyqp5jH7PD5cGgCfTa9xsL+utzjKTJTVuK5bk4V0s5S54KUYU3yZY
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BF03616000B
+X-Stat-Signature: 5ae6dftb136x5ctw4esupprda4u3wsoh
+X-HE-Tag: 1783943728-878329
+X-HE-Meta: U2FsdGVkX19LpW99LI/uL1qCtxEflHy7kL81I9vCLyqR4VvnRPCQHLLnK4xE1thX/sJD8YA2/tlHYBhuDlb5B+MdfEM6lCatE3KuW7cp5VA+F1LIzuq6kZseZmz6SzeRMvq0ZCVuoD+9X0H7DKhJG4Mxr74AcK7HjIyxg4tyh5qMUSOK27xj8D9t7qYaQu8GDCOXE5BZFi/d57f09JX2YfMVACEn76cDa05tyMV6dMPljTKFpcYsPdyIlNwVJCu5t2Ed/H1KWF+d5P75IyHOARzRycNl5WjRX8Xs6ORRx6JHeuMLNuKuNnCewHs205LX/hHczTX1sonsagAe+TXfSTlXXvptmw167zTwz4EAAKfC+7XiGZ131z+VoMW19N/nfCD+9EuyMQTbeGXKT4X7QDHOKjbf2blFgNdE/74pyEYXMZdjF/9P5goLbnDkqyr37QJMfDAFg1YOWeATBysPKWLQuAcXwwJke2sOT7ZVGXehi3rFja+tPWxTiZmBM1bqn5PB2w+Ogk2x79ybaw/RLE6yED5uhAz29sNt8BB4TW7oej9/qgsJWIVm4Sn3otpytaP+qJ7PjUy9kLLnm+8eEIxewZLW9oJ5LuLrqtndZhRzgLZ6gzMNf8z53pyQzeK212YBxe70W1+ssp88W95KIcvEBgegI06vTM0MgPkfNdYAZrEdOPsIAT64v4IZwGt2Q2usj3EiP7Sqp1Wy2LgMd8y/clI8n40lR+4g8XDjScz6JT6lyX8ox7iMjQvE4jWK93w5CYN5KYHOlKiMPVM/ksGlxqe7t1fMyXMxJwkK7Qg3nzTCXK85Mc7GIwyxaCzWeSyJP0dB1DRRrQYIu3r/6PyQfpo2oYiV+2YwuNYWMh2F/EhfHcXfgSJFwZ9H0zupfnVPbKx9N+TYsr3okrvaSJUdZ0stYwLaX/LC06Uu4LUiArOLgAUVnVpkjtzONu7XFoVguBDwdURBq85C8tI
+ YkFEqLUi
+ Vfqw2mxlSpveZFYzNWRGfSpjqEfazSrPk2UW2j/xHfYgoR8EWmF9/tLaAMXnDZBLj36fNb+h0edUrKU/AhdqWUJfnFL4eWhUfskYSMhWxrlpcfPAJGDsw8eTgc9rukSSCHe7mJWPsm29fI2rOZqzdrRy+uC4S7JiWvN/wC2cn3USLe9aK6txQs7P/OxYoVS9tjNT6cWbAGq0g4G+JL5vZirZx2+izoIcde8FW1WuV0X9mgVvtjbBxDqkm8jx4TXOe3w6QPa9Ygy/wXueTJZ2fh7kEc4GdJP4bYvbmI2+O9+nxxWjXBpCrOCV+PCwd6r9zkEnlUU21tsJMtNkKidLyzciz9UnUONrRv4DiAhWqnIRzY+o63xPnYKN4ow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,47 +95,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When hugetlb_alloc_folio() fails, alloc_hugetlb_folio() only rolls back
-spool->used_hpages in the out_subpool_put path when gbl_chg == 0. For
-gbl_chg > 0 (e.g. a size= hugetlbfs mount), hugepage_subpool_get_pages()
-has already incremented used_hpages, but the error path skips the
-rollback, so each failed fault permanently leaks one used_hpage until
-the subpool is exhausted and hugepage_subpool_get_pages() itself fails.
-
-Decrement used_hpages for the gbl_chg > 0 case too, mirroring the
-hugetlb_reserve_pages() fix.
-
-Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-Signed-off-by: Song Hu <husong@kylinos.cn>
----
- mm/hugetlb.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index d6c812d1857b..8413ec92d836 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3073,6 +3073,19 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	if (map_chg && !gbl_chg) {
- 		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
- 		hugetlb_acct_memory(h, -gbl_reserve);
-+	} else if (map_chg && gbl_chg > 0 && spool) {
-+		/*
-+		 * Restore used_hpages for the globally-requested page that
-+		 * hugepage_subpool_get_pages() counted against the subpool's
-+		 * maximum, but which we failed to back from the global pool.
-+		 * Mirrors the fix in hugetlb_reserve_pages() (1d3f9bb4c8af).
-+		 */
-+		unsigned long flags;
-+
-+		spin_lock_irqsave(&spool->lock, flags);
-+		if (spool->max_hpages != -1)
-+			spool->used_hpages -= gbl_chg;
-+		unlock_or_release_subpool(spool, flags);
- 	}
- 
- out_end_reservation:
--- 
-2.43.0
-
+PldoZW4gc2tpcHBpbmcgc3dhcGNhY2hlIGZvciBzeW5jaHJvbm91cyBJTyBzd2FwIGRldmljZXMs
+IHN3YXBjYWNoZV9wcmVwYXJlKCkgaXMgdXNlZCB0byBwcmV2ZW50IHBhcmFsbGVsIHN3YXBpbiBm
+cm9tIHByb2NlZWRpbmcgd2l0aCB0aGUgc3dhcCBjYWNoZSBmbGFnLg0KPkhvd2V2ZXIsIG9uIFBS
+RUVNUFQga2VybmVscyB0aGlzIGNhbiBsZWFkIHRvIGEgbGl2ZWxvY2ssIGFzIHJlcG9ydGVkIGJ5
+IENoYW9bMV06DQo+DQo+VGhyZWFkIEEgc3RhcnRzIGRpcmVjdCBzd2FwaW4gb2YgYSBzaG1lbSBm
+b2xpbyBhbmQgY2FsbHMgc3dhcGNhY2hlX3ByZXBhcmUoKSB0byBzZXQgU1dBUF9IQVNfQ0FDSEUu
+IEl0IG1heSB0aGVuIGJlIHByZWVtcHRlZCBpbnNpZGUgd29ya2luZ3NldF9yZWZhdWx0KCkuDQo+
+TWVhbndoaWxlLCBhIGhpZ2hlciBwcmlvcml0eSB0aHJlYWQgQiBhbHNvIGF0dGVtcHRzIGRpcmVj
+dCBzd2FwaW4gb2YgdGhlIHNhbWUgc2htZW0gc3dhcCBlbnRyeS4gU2luY2Ugc3dhcGNhY2hlX3By
+ZXBhcmUoKSBhbHJlYWR5IG1hcmtzIHRoZSBlbnRyeSwgdGhyZWFkIEIgcmVwZWF0ZWRseSBnZXRz
+IC1FRVhJU1QgYW5kIGJ1c3ktbG9vcHMgd2FpdGluZyBmb3IgdGhyZWFkIEEgdG8gZmluaXNoLiBC
+dXQgYXMgdGhyZWFkIEIgcnVucyBhdCBoaWdoZXIgcHJpb3JpdHksIHRocmVhZCBBIGNhbm5vdCBw
+cmVlbXB0IGl0LCByZXN1bHRpbmcgaW4gc3RhcnZhdGlvbiBhbmQgYSBsaXZlbG9jay4NCj4NCj5G
+aXggaXQgYnkgeWllbGRpbmcgdGhlIENQVSB3aXRoIHNjaGVkdWxlX3RpbWVvdXRfdW5pbnRlcnJ1
+cHRpYmxlKDEpIHdoZW4NCj5zd2FwY2FjaGVfcHJlcGFyZSgpIGZhaWxzLCBmb2xsb3dpbmcgdGhl
+IHNhbWUgYXBwcm9hY2ggdXNlZCBpbiBjb21taXQgMDI5YzQ2MjhiMmViICgibW06IHN3YXA6IGdl
+dCByaWQgb2YgbGl2ZWxvY2sgaW4gc3dhcGluIHJlYWRhaGVhZCIpIGFuZCBjb21taXQgMTNkZGFm
+MjZiZTMyICgibW0vc3dhcDogZml4IHJhY2Ugd2hlbiBza2lwcGluZyBzd2FwY2FjaGUiKS4NCj4N
+Cj5Ib3dldmVyLCBjb21taXQgMDE2MjZhMTgyMyAoIm1tOiBhdm9pZCB1bmNvbmRpdGlvbmFsIG9u
+ZS10aWNrIHNsZWVwIHdoZW4gc3dhcGNhY2hlX3ByZXBhcmUgZmFpbHMiKSBmb3VuZCB0aGF0IHRo
+ZSB1bmNvbmRpdGlvbmFsIG9uZS10aWNrIHNsZWVwIGNhbiBjYXVzZSBVSSBzdHV0dGVyaW5nIG9u
+IGxhdGVuY3ktc2Vuc2l0aXZlIEFuZHJvaWQgZGV2aWNlcy4gU28gd2UgY2FuIGZvbGxvdyB0aGUg
+c2FtZSBhcHByb2FjaCBieSBhZGRpbmcgYSB3YWl0cXVldWUgdG8gd2FrZSB1cCB0YXNrcyB3aGVu
+IG5lZWRlZCwgaW5zdGVhZCBvZiBhbHdheXMgc2xlZXBpbmcgZm9yIGEgZnVsbCB0aWNrLg0KPg0K
+Pk5vdGUgdGhhdCBtYWlubGluZSBkb2VzIG5vdCBoYXZlIHRoaXMgcG90ZW50aWFsIGlzc3VlLCB3
+aGljaCBoYXMgYWxyZWFkeSBiZWVuIHJlc29sdmVkIGJ5IEthaXJ1aSdzIHN3YXAgcmVmYWN0b3Jp
+bmcgd29ya1syXS4NCj4NCj5bMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzcwMGEyY2Jm
+OTBhMjQ4NGY5NzlhYWM4NThmMDhmNWQ0QHhpYW9taS5jb20vDQo+WzJdIGh0dHBzOi8vbG9yZS5r
+ZXJuZWwub3JnL2FsbC8yMDI2MDUxNy1zd2FwLXRhYmxlLXA0LXY1LTAtODhhZTQzZTA2NGM3QHRl
+bmNlbnQuY29tLw0KPkZpeGVzOiAxZGQ0NGMwYWY0ZmEgKCJtbTogc2htZW06IHNraXAgc3dhcGNh
+Y2hlIGZvciBzd2FwaW4gb2Ygc3luY2hyb25vdXMgc3dhcCBkZXZpY2UiKQ0KPlJlcG9ydGVkLWJ5
+OiBNYSBDaGFvIDxtYWNoYW8yNkB4aWFvbWkuY29tPg0KPkNsb3NlczogaHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvYWxsLzcwMGEyY2JmOTBhMjQ4NGY5NzlhYWM4NThmMDhmNWQ0QHhpYW9taS5jb20v
+DQo+U2lnbmVkLW9mZi1ieTogQmFvbGluIFdhbmcgPGJhb2xpbi53YW5nQGxpbnV4LmFsaWJhYmEu
+Y29tPg0KPi0tLQ0KPkNoYW5nZXMgZnJvbSB2MToNCj4gLSBBZGQgYSB3YWl0cXVldWUgdG8gd2Fr
+ZSB1cCB0YXNrcyB3aGVuIG5lZWRlZC4NCj4NCj5IaSBDaGFvLCBjb3VsZCB5b3UgdHJ5IHRoaXMg
+cGF0Y2ggdG8gY2hlY2sgaWYgZml4IHlvdXIgaXNzdWU/IFRoYW5rcy4NCj4tLS0NCj4gbW0vc2ht
+ZW0uYyB8IDE0ICsrKysrKysrKysrKystDQo+IDEgZmlsZSBjaGFuZ2VkLCAxMyBpbnNlcnRpb25z
+KCspLCAxIGRlbGV0aW9uKC0pDQo+DQo+ZGlmZiAtLWdpdCBhL21tL3NobWVtLmMgYi9tbS9zaG1l
+bS5jDQo+aW5kZXggOTRjNWIwZDc4YWMzLi4zYzMyOWI3OTRhZTQgMTAwNjQ0DQo+LS0tIGEvbW0v
+c2htZW0uYw0KPisrKyBiL21tL3NobWVtLmMNCj5AQCAtMjAwNSwxMSArMjAwNSwxNCBAQCBzdGF0
+aWMgc3RydWN0IGZvbGlvICpzaG1lbV9hbGxvY19hbmRfYWRkX2ZvbGlvKHN0cnVjdCB2bV9mYXVs
+dCAqdm1mLA0KPiAgICAgICAgcmV0dXJuIEVSUl9QVFIoZXJyb3IpOw0KPiB9DQo+DQo+K3N0YXRp
+YyBERUNMQVJFX1dBSVRfUVVFVUVfSEVBRChzaG1lbV9zd2FwY2FjaGVfd3EpOw0KPisNCj4gc3Rh
+dGljIHN0cnVjdCBmb2xpbyAqc2htZW1fc3dhcF9hbGxvY19mb2xpbyhzdHJ1Y3QgaW5vZGUgKmlu
+b2RlLA0KPiAgICAgICAgICAgICAgICBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSwgcGdvZmZf
+dCBpbmRleCwNCj4gICAgICAgICAgICAgICAgc3dwX2VudHJ5X3QgZW50cnksIGludCBvcmRlciwg
+Z2ZwX3QgZ2ZwKSAgew0KPiAgICAgICAgc3RydWN0IHNobWVtX2lub2RlX2luZm8gKmluZm8gPSBT
+SE1FTV9JKGlub2RlKTsNCj4rICAgICAgIERFQ0xBUkVfV0FJVFFVRVVFKHdhaXQsIGN1cnJlbnQp
+Ow0KPiAgICAgICAgaW50IG5yX3BhZ2VzID0gMSA8PCBvcmRlcjsNCj4gICAgICAgIHN0cnVjdCBm
+b2xpbyAqbmV3Ow0KPiAgICAgICAgZ2ZwX3QgYWxsb2NfZ2ZwOw0KPkBAIC0yMDY2LDYgKzIwNjks
+MTAgQEAgc3RhdGljIHN0cnVjdCBmb2xpbyAqc2htZW1fc3dhcF9hbGxvY19mb2xpbyhzdHJ1Y3Qg
+aW5vZGUgKmlub2RlLA0KPiAgICAgICAgaWYgKHN3YXBjYWNoZV9wcmVwYXJlKGVudHJ5LCBucl9w
+YWdlcykpIHsNCj4gICAgICAgICAgICAgICAgZm9saW9fcHV0KG5ldyk7DQo+ICAgICAgICAgICAg
+ICAgIG5ldyA9IEVSUl9QVFIoLUVFWElTVCk7DQo+KyAgICAgICAgICAgICAgIC8qIFJlbGF4IGEg
+Yml0IHRvIHByZXZlbnQgcmFwaWQgcmVwZWF0ZWQgcGFnZSBmYXVsdHMgKi8NCj4rICAgICAgICAg
+ICAgICAgYWRkX3dhaXRfcXVldWUoJnNobWVtX3N3YXBjYWNoZV93cSwgJndhaXQpOw0KPisgICAg
+ICAgICAgICAgICBzY2hlZHVsZV90aW1lb3V0X3VuaW50ZXJydXB0aWJsZSgxKTsNCj4rICAgICAg
+ICAgICAgICAgcmVtb3ZlX3dhaXRfcXVldWUoJnNobWVtX3N3YXBjYWNoZV93cSwgJndhaXQpOw0K
+PiAgICAgICAgICAgICAgICAvKiBUcnkgc21hbGxlciBmb2xpbyB0byBhdm9pZCBjYWNoZSBjb25m
+bGljdCAqLw0KPiAgICAgICAgICAgICAgICBnb3RvIGZhbGxiYWNrOw0KPiAgICAgICAgfQ0KPkBA
+IC0yNDIzLDYgKzI0MzAsOCBAQCBzdGF0aWMgaW50IHNobWVtX3N3YXBpbl9mb2xpbyhzdHJ1Y3Qg
+aW5vZGUgKmlub2RlLCBwZ29mZl90IGluZGV4LA0KPiAgICAgICAgaWYgKHNraXBfc3dhcGNhY2hl
+KSB7DQo+ICAgICAgICAgICAgICAgIGZvbGlvLT5zd2FwLnZhbCA9IDA7DQo+ICAgICAgICAgICAg
+ICAgIHN3YXBjYWNoZV9jbGVhcihzaSwgc3dhcCwgbnJfcGFnZXMpOw0KPisgICAgICAgICAgICAg
+ICBpZiAod2FpdHF1ZXVlX2FjdGl2ZSgmc2htZW1fc3dhcGNhY2hlX3dxKSkNCj4rICAgICAgICAg
+ICAgICAgICAgICAgICB3YWtlX3VwKCZzaG1lbV9zd2FwY2FjaGVfd3EpOw0KPiAgICAgICAgfSBl
+bHNlIHsNCj4gICAgICAgICAgICAgICAgc3dhcF9jYWNoZV9kZWxfZm9saW8oZm9saW8pOw0KPiAg
+ICAgICAgfQ0KPkBAIC0yNDQyLDggKzI0NTEsMTEgQEAgc3RhdGljIGludCBzaG1lbV9zd2FwaW5f
+Zm9saW8oc3RydWN0IGlub2RlICppbm9kZSwgcGdvZmZfdCBpbmRleCwNCj4gICAgICAgIGlmIChm
+b2xpbykNCj4gICAgICAgICAgICAgICAgZm9saW9fdW5sb2NrKGZvbGlvKTsNCj4gZmFpbGVkX25v
+bG9jazoNCj4tICAgICAgIGlmIChza2lwX3N3YXBjYWNoZSkNCj4rICAgICAgIGlmIChza2lwX3N3
+YXBjYWNoZSkgew0KPiAgICAgICAgICAgICAgICBzd2FwY2FjaGVfY2xlYXIoc2ksIGZvbGlvLT5z
+d2FwLCBmb2xpb19ucl9wYWdlcyhmb2xpbykpOw0KPisgICAgICAgICAgICAgICBpZiAod2FpdHF1
+ZXVlX2FjdGl2ZSgmc2htZW1fc3dhcGNhY2hlX3dxKSkNCj4rICAgICAgICAgICAgICAgICAgICAg
+ICB3YWtlX3VwKCZzaG1lbV9zd2FwY2FjaGVfd3EpOw0KPisgICAgICAgfQ0KPiAgICAgICAgaWYg
+KGZvbGlvKQ0KPiAgICAgICAgICAgICAgICBmb2xpb19wdXQoZm9saW8pOw0KPiAgICAgICAgcHV0
+X3N3YXBfZGV2aWNlKHNpKTsNCj4tLQ0KPjIuNDcuMw0KDQpXZSBoYXZlIGNvbmR1Y3RlZCBzdHJl
+c3MgdGVzdHMgb24gb3ZlciAxMCBwY3MgZm9yIDQwIGhvdXJzIGVhY2gsIGFuZCBubyByZWxldmFu
+dCBpc3N1ZXMgaGF2ZSBiZWVuIHJlcHJvZHVjZWQuDQojLyoqKioqKrG+08q8/rywxuS4vbz+uqzT
+0NChw9e5q8u+tcSxo8Pc0MXPoqOsvfbP3tPat6LLzbj4yc/D5rXY1rfW0MHQs/a1xLj2yMu78si6
+1+mho7371rnIzrrOxuTL+8jL0tTIzrrO0M7Kvcq508OjqLD8wKi1q7K7z97T2sirsr+78rK/t9a1
+2NC5wrahori01sahorvyyaK3oqOpsb7Tyrz+1tC1xNDFz6Kho8jnufvE+rTtytXBy7G+08q8/qOs
+x+vE+sGivLS157uwu/LTyrz+zajWqreivP7Iy7Kiyb6z/bG+08q8/qOhIFRoaXMgZS1tYWlsIGFu
+ZCBpdHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gZnJvbSBY
+SUFPTUksIHdoaWNoIGlzIGludGVuZGVkIG9ubHkgZm9yIHRoZSBwZXJzb24gb3IgZW50aXR5IHdo
+b3NlIGFkZHJlc3MgaXMgbGlzdGVkIGFib3ZlLiBBbnkgdXNlIG9mIHRoZSBpbmZvcm1hdGlvbiBj
+b250YWluZWQgaGVyZWluIGluIGFueSB3YXkgKGluY2x1ZGluZywgYnV0IG5vdCBsaW1pdGVkIHRv
+LCB0b3RhbCBvciBwYXJ0aWFsIGRpc2Nsb3N1cmUsIHJlcHJvZHVjdGlvbiwgb3IgZGlzc2VtaW5h
+dGlvbikgYnkgcGVyc29ucyBvdGhlciB0aGFuIHRoZSBpbnRlbmRlZCByZWNpcGllbnQocykgaXMg
+cHJvaGliaXRlZC4gSWYgeW91IHJlY2VpdmUgdGhpcyBlLW1haWwgaW4gZXJyb3IsIHBsZWFzZSBu
+b3RpZnkgdGhlIHNlbmRlciBieSBwaG9uZSBvciBlbWFpbCBpbW1lZGlhdGVseSBhbmQgZGVsZXRl
+IGl0ISoqKioqKi8jDQo=
 
