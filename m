@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AA05C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 08:49:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13864C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 08:51:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B6DB6B0005; Mon, 13 Jul 2026 04:49:50 -0400 (EDT)
+	id EDA0E6B008A; Mon, 13 Jul 2026 04:51:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 168A36B0088; Mon, 13 Jul 2026 04:49:50 -0400 (EDT)
+	id E64656B008C; Mon, 13 Jul 2026 04:51:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A64C6B008A; Mon, 13 Jul 2026 04:49:50 -0400 (EDT)
+	id D54856B0092; Mon, 13 Jul 2026 04:51:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DC8DE6B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:49:49 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D8BE16A0F3
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:49:49 +0000 (UTC)
-X-FDA: 84983130498.08.5DCE94E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C12BB1C0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:49:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBH5jl25;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE0A36B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:51:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23910C8217
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:51:16 +0000 (UTC)
+X-FDA: 84983134152.13.8873728
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5DB3A40003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:51:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YFbttWYz;
+	spf=pass (imf07.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783932674;
+	b=7vD3ppq8lY6gF2u0fKDLAbc/c618MQCFDQDLXvBoINtlkJ48WINOwlaQPsrCO5TkCfcEzX
+	VR/5mDSFwxGQdpmYDgZCZ8yNu0T05Taj08dIL6qosPn4Aq/PE6TYoWo5+1kfOep3t+MaI1
+	BpfPNbbodkBtqFTGcs0yEPLW+DUbj5c=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YFbttWYz;
+	spf=pass (imf07.hostedemail.com: domain of guopeng.zhang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=guopeng.zhang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783932587;
+	s=arc-20220608; t=1783932674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PLDbO2ux1cY+txVE9sdrFeOPn/1RnZEg4d0TU1FyKEA=;
-	b=ojak8FQO4FTaW9F251bZ3pVlSRc0JXLrwqelg6CXfN36Qqsoi66ELb+P05+Rxfkm1NMEQO
-	P0hChXf0I52KblUNZRhA1Qqv4mmMfGZRWdBp9N4yD0K1eDQxveZ2zm6ANVFKzu6r3nHmRs
-	JdmXL5gWK5hafHr7QHrWn+zzlSNbp5k=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBH5jl25;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783932587;
-	b=sAPhi0MpcrnR37nTLTbS6Vi3HIko1LU+74ORk7+j2v4syTbHn4oa2Ppe8FgAGSDoGfZzU2
-	ViPiJ+9QYzOlyX5S9u1ROrlUewZjMGPM3D1PNBwyNlnapW8NeMcpn14C3JtR12Q82Bvc9J
-	edIx1pS6w7Mlf+DIshH4YX1JvQwjmDg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DEFFF40491;
-	Mon, 13 Jul 2026 08:49:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19CC1F00A3A;
-	Mon, 13 Jul 2026 08:49:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783932586;
-	bh=PLDbO2ux1cY+txVE9sdrFeOPn/1RnZEg4d0TU1FyKEA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PBH5jl25LXJEls7/oarnaC+4/Nf7AQbLZkOleoVwnrhtg0NlFDG2ZMGErzRHwk+VF
-	 uAjlKgiw74t2KkpMB8KphdeDfoFV00Jv3B5+1rqhn2Y7xUjd7K7F9AVLdyzITGzaN6
-	 68w02zxCvfig0Dhlygno3lLVvAAbYNEAzX8Rt71oemrVbYh0/UIdE3QQWgDY//FUFE
-	 t5QsXKUfz2zTXg+iyWDkevNPQRWc0NI5seDggqqk011D+zDKqUL0LE0t9jFOfgXMRn
-	 Qn7qjwrwJwKU1b3vH350lJfGqKo0BFkhMsGk22LooGSKtas2sj0MHK8/ajIsSmxQoN
-	 WYQ4asBUuz3Vg==
-Message-ID: <516b7984-f4c0-4cf0-bd40-104579950b0a@kernel.org>
-Date: Mon, 13 Jul 2026 17:49:29 +0900
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6M0rnHHSOu73KIHVgHsaucxNbMa7/bd9HvhJ1ASs3fI=;
+	b=xSLep8PLOL4XKKluAEjLS6znD/weo47FzRxdHiVP4EvrqE9LPPMtvp1SXFuR7uH6fwn70Y
+	pW8LULXc+SPvulI7pAlbs8Z94AVJOQjlnVd214SVms4+2g7itD7Zo2xdIexnY1KmFYKITv
+	QMZ/fRYh6+4qIwrp57kWG53rh5kL7JM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783932672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6M0rnHHSOu73KIHVgHsaucxNbMa7/bd9HvhJ1ASs3fI=;
+	b=YFbttWYzCN6AS81vKL8HDEaktJR5eLQ01C5Tt79DZbw9nxJvTlyfzrvLOZlLRvgBRBQpUW
+	xkCoAT/Vt2Lw+A/ZlhsZq1e9Aou7lN7TDCSa508sU4LKhFdIWbPJV4j8V5PH8THv5gqFs9
+	c/tb3vqRNNWVH+sMh5Qb6szf4W5ZDj8=
+From: Guopeng Zhang <guopeng.zhang@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>
+Subject: [PATCH] mm: memcontrol: update state_local when flushing NMI stats
+Date: Mon, 13 Jul 2026 16:50:53 +0800
+Message-ID: <20260713085053.2916813-1-guopeng.zhang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/slub: add comment explaining intentional kobject
- handling in sysfs_slab_add
-To: Hongling Zeng <zhongling0719@126.com>,
- Hongling Zeng <zenghongling@kylinos.cn>, vbabka@kernel.org,
- akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, vdavydov.dev@gmail.com,
- davej@fedoraproject.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260713070024.153552-1-zenghongling@kylinos.cn>
- <b42f2b3a-68c9-4e3c-b3b7-d940677b4609@kernel.org> <6A549790.3000203@126.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <6A549790.3000203@126.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------4fA11zKehzKXGsuWEFtyDd9J"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C12BB1C0005
-X-Stat-Signature: 6q73seo5ynaikcomn1ihizq49esyo4zm
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1783932587-628864
-X-HE-Meta: U2FsdGVkX19PgByiyKu8IQ2P727hzW/uO19zO0zqcvIZaHjknyJzCxugQ+LQJIj6Px4Q3ShIYmEJbJq996x6H4jt0OF0Pi3GdfmM9Y9+w36c9r6mHvtZgpCcYKGe1AB1Nqp+Vd99YSw095XSo51oxKClIHaxYm01wywSHkqqGRSh6jwPvNwj3QBB7Nu8X0mtmw4YL8M1NP9NBC1Z7lG/qXxVVy3SpKk4+IOYuNkZbDzS1x2p8xEG2i7Yd8XqO6Tu5ERSkKTDYzKqzmGiA4ibpoyb0W3ayjMUQvzqqWTlXWv5BcM77sTWMrAyvSN9qnyh/MUGkeMNAjIDxsV0Y2JmSckXgr9i0SeOo7cy/6O4P75/dM6kTm1XTHf7Zm+4SIQ538efk4Yvtt4hSpAA8OOPEk4tSHdskI+i360p9tNk6t2ulwgq/nm2ItPe97NCpzkzteMU97whJLKQdPJ+8vd8dwhyYidiNcjQi/17Ci1AM5AYbfONZdVOiR1abAmW3S+DfDnrh0NdF6mllL1+ULlyZU0iWnqxRm2TyM2tLkVlxdXpwubSa1BLcTHm5N4HqTK6aBM2oCCdQbBVywJfJjvCMpxGT5TLZiQ2v5zBZ3MUJ1qO8pxc8GS20hQbzyHc7Xs4LueQlAx3vvsJjyIqtuhM9srpXaEAUhP+ZF0ySQ7YApPaeQl82yG1bB6SxrYE6X355OvnZmahAK/YGgZBMqbh8tnpLRDokJ2N8CFLxxpiq9XsUF/2/ZJrbnqaksEA9bpoEB/2q21NbKicYKcx79eYaIJYMqrU/ilHRR9b3OGY1b3rpew/YccDPe3Zy68QzDk+ZhhpoA/vettLVDXctBNKCXDRBCmBYdUFTyownvstOMJpnyZrPgcagEy2J7yZJ1HCCgcytYUjbxNTEhSLyDo6SZQmses0SOYR/1scfeSno2wwP7oZ0uQ8kHMIb+/X2wcmSmAFqFr2pLvaKoJ+PtK
- wFoT/PKZ
- v6g34IyyDvt4i3Ln7Jn/u2S0rln8vAiWeGMh1DGWvharSmpRMo18j1+7SAICAG7rwVw6p6S0h69z9x55JQaBl+UdFxS2x8caqS5wrnEUjvGzWvob7FNE6DVGHi0+NUsmB+nALPd+2rrYdVGBs5ICKa9m+bqfqsruPcH5lnZ68F9z3dkogFLlAEuqwpuhBJqQfOX/pfQtJ3QiA2LXOHSQDgXfxowocxchRDDS1mOX05MGdndB65tmUeHzrgPRHAIr7cDCT1Qw2ExKyR8/RSGsIp54a1VP1wyHZ2k6VMHcNHASF/u6IzfGlKmZ2Rcc+6ZyESUdhGN4gi86IHwpJtw6hKFchcefTepf+5zwMoRm+UXqd2NjlFbkpBtkBdCd6hjEMGZwzX3ny+qu3+lU1zOuPfkBPj7Y9f7vVvoDvsFvKO3vBDzYtdvE5DCQFj5R7kvFcKCe2v5iu2QwZ6oSwovnnZyUk2w9estpDtksmXuDpbWxUC2xinhOgI06fLysIwUazmAqoui0ZwfIBsAtn9ccic45J6kST79JkhKQOzy+oYEbBbCCXruFPN7zDj291miie399ibRcG7grlCjez3Yml5in1v1mS2wKwSL8uQRQpDgRuX74zXXzq9Tg+5A==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5DB3A40003
+X-Stat-Signature: k1c7hjms4joiu1bburhmewnzx7oshd8s
+X-HE-Tag: 1783932674-130845
+X-HE-Meta: U2FsdGVkX1+yffmp0sCoJvKFomI6KjDnq0ypX9W4toWPmcAmcCbbINPlFz0iZupgHQaGmbImFYv9h1W21ff2A/ZABVdXBU1ycPhy+7AKKO+8BMCeWNWOzicP/AyeUT5/3CM3TnqNqL0bqkWQfNLZfKp8pkt2k/ymdxxEoyIli4BrUl1TMrSvqq8xCPoklqEKUhXGVb67wRUl+FHytS8VAKTLb9rD2qz7F9Kj6KizlwsVnF8pPzhbfGYmnvu9Yr8MpE2vLI0kqIlNiVgBh/RKNSn9gVxT3F/eMZkDmQ/F8twqnSIvUE0FPw7f3t70dhx0obefVGYxRUeH0AVy9GAhaUFsYAqbgEfBtmKUYW6zATaNxXHjLOgoyV7t6vg36EU4e/JJWws2gJ6YiXY815p39zGDH4NkUNkz77ugQhECF47kn4vIvY79ZMXdjuUW3E4/KxASv2jTSRT719QtbG60yX8DK55rhBIai/mSPTsFH1WKOSyMMQKUq2DwR2XxMgZRM1Lx8QNRL4MBVe1V9xogdp5YBdlKWbYZoJjsbfJqxib/Ym7n9pAzufbShGwGMPmLqgzjvqPAeZTLHQl6s2dd8nflzSh1C7DM6DKTceRoywS31Q5zTlWU8+E4gS/c2aY7B/Se1Cnw+u6vsBskR7f1EEgNuctp6ll7bsW43ubdvlS+XlGxf9F1LE4T5o7ND/Aqx0rk5jQsWp5UjxfVIm86+6iYqLjmJRu0RUvQ/qiEVRE9nK6PvGVGtn4xmqyqlgnQW3xQ/rhOuzkYqUkmrzUinXTD3y5brJJ+X4zhOz/gZNDyEzDktLdfYKCWSTnxBHez9mU6+uSr3a6PyqDJtmgp+y6Sxw2CJs3qDbWk85r3iva6rggCc8dHi7SmBJCHkaLZXSYGB0WF5U2L/soZXoa80NFJLG6URMNIUz59flgAfSaQZsP7p/+T69n0/ptTl4lrMUqhMmkRjxx+wr/uTaN
+ phOjJKTV
+ RsQLsEXxVDgXsh259RWuU/1kz7rhXtzLjFD0PLJbdREeeCz9UbWCu6EOSMOcygVnNMiazle6HupYwSIMWxC/7W0Nr0uyQkGmgAmFQ8RpjERM6h2cFrnzZLYBir73MRybyPVR4KujpTdtjyAQ2i1BBxqHKWWzyxNvJYMzEeLqj+hO87Gh+fqrCZBFPuuA6PENgU2+/oCF8LC8MbwBJ/py4WZ6Y3kCbgqYWlVA1jFGOCayb2expDiCdBZ4PHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,78 +93,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------4fA11zKehzKXGsuWEFtyDd9J
-Content-Type: multipart/mixed; boundary="------------ryp4bYEw4U5j0686JzItSYb1";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Hongling Zeng <zhongling0719@126.com>,
- Hongling Zeng <zenghongling@kylinos.cn>, vbabka@kernel.org,
- akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, vdavydov.dev@gmail.com,
- davej@fedoraproject.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <516b7984-f4c0-4cf0-bd40-104579950b0a@kernel.org>
-Subject: Re: [PATCH v1] mm/slub: add comment explaining intentional kobject
- handling in sysfs_slab_add
-References: <20260713070024.153552-1-zenghongling@kylinos.cn>
- <b42f2b3a-68c9-4e3c-b3b7-d940677b4609@kernel.org> <6A549790.3000203@126.com>
-In-Reply-To: <6A549790.3000203@126.com>
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
---------------ryp4bYEw4U5j0686JzItSYb1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+flush_nmi_stats() updates state[] for kmem and slab counters but leaves
+the corresponding state_local[] counters unchanged. Local kmem and
+slab statistics therefore miss updates collected through the NMI-safe
+atomic path.
 
-On 7/13/26 4:45 PM, Hongling Zeng wrote:
-> =E5=9C=A8 2026=E5=B9=B407=E6=9C=8813=E6=97=A5 15:26, Harry Yoo =E5=86=99=
-=E9=81=93:
->> On 7/13/26 4:00 PM, Hongling Zeng wrote:
->>> Add a comment to clarify why we don't call kobject_put() when
->>> kobject_init_and_add() fails in sysfs_slab_add().
->>>
->>> Per commit 2420baa8e046 ("mm/slab: Allow cache creation to proceed
->>> even if sysfs registration fails"), sysfs failures are treated as
->>> non-fatal and the cache continues to be used. Calling kobject_put()
->>> would trigger slab_kmem_cache_release() which frees the entire
->>> cache structure, so we intentionally skip it.
->>>
->>> Suggested-by: Harry Yoo <harry@kernel.org>
->>> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
->>> ---
+Update state_local[] together with state[].
 
-FWIW, the patch looks fine to me, so:
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+Fixes: 940b01fc8dc1 ("memcg: nmi safe memcg stats for specific archs")
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+---
+ mm/memcontrol.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->>>   Change in v1:
->>>   -Correct the email
->>
->> Hmm, the email "Hyeonggon Kim <pictureone@kakao.com>" came out of
->> nowhere. Could you please explain why this happened?
->   My apologies for the confusion.
->=20
->   I incorrectly retrieved your email from a signature search =EF=BC=9A=EF=
-=BC=89
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 22f55aeb94f3..02599b8b6bd5 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4443,6 +4443,7 @@ static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
+ 		int index = memcg_stats_index(MEMCG_KMEM);
+ 
+ 		memcg->vmstats->state[index] += kmem;
++		memcg->vmstats->state_local[index] += kmem;
+ 		if (parent)
+ 			parent->vmstats->state_pending[index] += kmem;
+ 	}
+@@ -4460,9 +4461,11 @@ static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
+ 			int index = memcg_stats_index(NR_SLAB_RECLAIMABLE_B);
+ 
+ 			lstats->state[index] += slab;
++			lstats->state_local[index] += slab;
+ 			if (plstats)
+ 				plstats->state_pending[index] += slab;
+ 			memcg->vmstats->state[index] += slab;
++			memcg->vmstats->state_local[index] += slab;
+ 			if (parent)
+ 				parent->vmstats->state_pending[index] += slab;
+ 		}
+@@ -4471,9 +4474,11 @@ static void flush_nmi_stats(struct mem_cgroup *memcg, struct mem_cgroup *parent,
+ 			int index = memcg_stats_index(NR_SLAB_UNRECLAIMABLE_B);
+ 
+ 			lstats->state[index] += slab;
++			lstats->state_local[index] += slab;
+ 			if (plstats)
+ 				plstats->state_pending[index] += slab;
+ 			memcg->vmstats->state[index] += slab;
++			memcg->vmstats->state_local[index] += slab;
+ 			if (parent)
+ 				parent->vmstats->state_pending[index] += slab;
+ 		}
+-- 
+2.43.0
 
-You mean retrieved from your local address book?
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------ryp4bYEw4U5j0686JzItSYb1--
-
---------------4fA11zKehzKXGsuWEFtyDd9J
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalSmmQAKCRCGXBN6rc5S
-1u0GAP41vO5nCpfps7FFbzIRUsDo5ifNrkITLq4kQ1zGVBogqwD5AfGV009Enkzu
-3F7bADT4jGuJitJodPUWDW4f46euCQ0=
-=pPc0
------END PGP SIGNATURE-----
-
---------------4fA11zKehzKXGsuWEFtyDd9J--
 
