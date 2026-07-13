@@ -4,101 +4,205 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E667C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:47:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54BACC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:48:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D1DC6B00E9; Mon, 13 Jul 2026 13:47:54 -0400 (EDT)
+	id 6FBD26B00C7; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A9E56B010D; Mon, 13 Jul 2026 13:47:54 -0400 (EDT)
+	id 6D2196B00FB; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BF0B6B0113; Mon, 13 Jul 2026 13:47:54 -0400 (EDT)
+	id 59C006B00FC; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 29FF26B00E9
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:47:54 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3274160118
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:47:53 +0000 (UTC)
-X-FDA: 84984486426.24.BE405E5
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 266D96B00C7
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:48:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEA62C15E6
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:48:46 +0000 (UTC)
+X-FDA: 84984488652.29.584DDB7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 839AB4000A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:47:51 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qp+N1U6/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783964871;
-	b=WTiZe1bx2Xpy0CbGYXPKZmmtwzOAu3GGt5PiUxBxm0I5tWY4RUr77z7axCaaqeJzOD+cJA
-	Job71jyhpDtUtd/m0aMZELC7KpNFO5N+YqT/UYJenFSc98EKeZrClup37DyWRcE9nNQd3m
-	DjpQ/vvTNvI6+AzEz3TlaWc9Og1Vp8I=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qp+N1U6/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id DCB8140002
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:48:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onjxB++n;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783964871;
+	s=arc-20220608; t=1783964925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7U/Ji4WSzIKjRcqrxpbhQJCKg/0RmyqfQoTtNPOQdWk=;
-	b=JZb16jy+UFv6wnvIb+njCIDi6N4TCesNCnWhOCU5yGFFY0a4h/4qFs+HtDc/yy/V51hKGo
-	+CTo+v2ykpO+pIhAdIwk2HIO6YLI4lgU0Sn6hV2O5nxskUJj+pvMLadNS1EpnyoajQ6Yfe
-	WWEJZUgXaxu1Cu0dJ7vebQ5SyJHFnYU=
+	bh=eqsaQhz+Tm8HgoxeGaT5sBOLtHmA3ZLHG5CTvOWZ77w=;
+	b=dacPt/G78SQeNQS/ZFWW2aAfx5lKDnvPiW3qsRcp5GRabFhRpYQ/Z9yerOxtq3iJ6+KTdA
+	haWng1SiJiaBPRjuPJTC9I2ix8dAnC0K0/1+Nhwf76w4tcVbELkrVDSXzmAQgkN1kQ5vMC
+	zcTAdbHncxdh8o1XRipjDURITpNe5yg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onjxB++n;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783964925;
+	b=FMsvHgQOfeU3yXF2pXFtlgWxlZeVIZ7IN6szcxX9ZVjtHCT0L6+8N6Gd0/zmbzKiY/GVEF
+	4SqC1vqdwh/qE91NJG7kw/PlxZDdiItWpcu9Qrtz2UoJTaXOyG73mb4ks9T3I9Z/Csc9rL
+	3VoX8CgW5vDkWOABVgvBrLb0xfx53L0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D917412CF
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:47:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B01F1F000E9
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:47:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CE66041477;
+	Mon, 13 Jul 2026 17:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827251F000E9;
+	Mon, 13 Jul 2026 17:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783964870;
-	bh=7U/Ji4WSzIKjRcqrxpbhQJCKg/0RmyqfQoTtNPOQdWk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Qp+N1U6/NkvZbgpQxUGeImC1derPQ1R2CoApvX/1On/nm8tb0RAR03ZfJ2Zx9s9G8
-	 7JnMxxDlJAF+TfBrvSmfZyYPFanAqWB9XQru3HqrKHuVyVAY8EXsPIxBX/JIjUkuRZ
-	 Qya5SeM/b/VvO7pbyHzMwNoaK4jcGYLCZNPEeQpvhss8zBEZFWxohYVG0IjhWdjoj6
-	 hJQEaUAbXzAyY8MTKjhWZHsHn1yyD4NaZBxoY6zABAJgiY5+N5Qs6HRGSQeeLftqid
-	 JfgfmBGD2Lp3lWQmsGGnPzZLdqKY+iEcg+fRk9jrNMQFryq323jwaKQyQrg99PpnCm
-	 BBuwPthLSeCgA==
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-667f29dc8a4so184684d50.3
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 10:47:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rqqt4ABejStqd1my934HJThoK0/InBDK/owZ5uOZ3fCfGJaDPNFn3ALYuGUAtBp1eKwoeNissOiEg==@kvack.org
-X-Gm-Message-State: AOJu0Yw+tgYxObeyY+RsCmQYoSt8byiHaJoastdb8LwBe40xQDCcrxME
-	VdrJnj1RfcseRTpbofaS7gSlu7/V4lxdeNNLEaVImAxwz57131+Eoql8yN5VRciB0QiBS3bH9xl
-	UUk3RXpPKsxFhV/4L72UDRVAKPNxE0vv9Rxe8x90R6A==
-X-Received: by 2002:a05:690e:488e:20b0:668:195:9983 with SMTP id
- 956f58d0204a3-66801959d49mr615579d50.103.1783964869754; Mon, 13 Jul 2026
- 10:47:49 -0700 (PDT)
+	s=k20260515; t=1783964923;
+	bh=eqsaQhz+Tm8HgoxeGaT5sBOLtHmA3ZLHG5CTvOWZ77w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=onjxB++nlQDm7gMhTfmaNQDGH/rqBSYbLzfVEPq1lS1OhWdb6CrePXw7aLeTLGo0M
+	 pB+hJukV545xwSzfacCs6+xpPSowS++yQcA3kxVja2GEZejGL+Hf0WxMqbxsDeOECk
+	 UdHMAgyb07hAwBRvraqJw/dg9AeSA04LDY2AQwPOWSaAv5NIULkVGuWTgoHQOKjcws
+	 4tB7saNVwm9kU+nEYLQQmup00N7S4iEjniDnAmshu1Fop9Y+D7SzuW9SN/bp2Dc/iR
+	 UQQknMV48nrRokvLe9ipKdqqYp8uAlzqLTw1pQ+E9E6C7IvEIujYOTr3MYFQkIyYDN
+	 RQbf9q/HFuDdg==
+Message-ID: <8f3c1451-1b49-473a-b060-a8b95b2d44b4@kernel.org>
+Date: Mon, 13 Jul 2026 19:48:18 +0200
 MIME-Version: 1.0
-References: <20260707082614.95030-1-baoquan.he@linux.dev> <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
- <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv> <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
-In-Reply-To: <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 13 Jul 2026 10:47:37 -0700
-X-Gmail-Original-Message-ID: <CACePvbUQGMuNvr613TFUN4ttjDXy56jWDJ7MBD1RXtxMzuA=wg@mail.gmail.com>
-X-Gm-Features: AVVi8CfzCRfcFcUqgx66_sai_7R1wYEDBXHbyrwMnhxeYCYHS6jp-LL3rG4OeZU
-Message-ID: <CACePvbUQGMuNvr613TFUN4ttjDXy56jWDJ7MBD1RXtxMzuA=wg@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
- via Redirect entries
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
-	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org, 
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 839AB4000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/33] mm/rmap: update mm/interval_tree.c comments
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ Simon Schuster <schuster.simon@siemens-energy.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, SJ Park <sj@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>,
+ Peter Xu <peterx@redhat.com>, Kees Cook <kees@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov
+ <andreyknvl@gmail.com>, Alexander Potapenko <glider@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
+ <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
+ <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ damon@lists.linux.dev, iommu@lists.linux.dev, kasan-dev@googlegroups.com,
+ linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+ kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
+References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
+ <20260710-b4-pre-scalable-cow-v2-5-2a5aa403d977@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260710-b4-pre-scalable-cow-v2-5-2a5aa403d977@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: a9ppk1ogg8mdgn98zrgjn3z4mn4sg8to
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783964871-645319
-X-HE-Meta: U2FsdGVkX19+Nrxfk7ztopv5gSmskAYTyenzccwQQq9UYB/9NhDmOJLWKQHW7bAYEa0jsg82xgMCH65JaS26nsRXbfiwzp3yh5CkkF9VjSEJhr8gXg1ru2KhCO84uADAckQpbT/XHEZdQdpxDUFtbSrVdVnE8tZwnYGJXAJv/uS2vkMQC83odJSTfYXcQkXtFGjPabZYyGo50du7YPk0ghavPskXlaUpt7i8vY8xq6rweRDoS1qzNLxAxRhYDEUbTrNrzFonJy+m2RLr9fCTgLrSlI4hbmfqA7IUzIGK1o0RwVx+yWGn9eTrvXQh8Px2yltJQc9nFbWwB0I6HFPJ4CLtrBKuj2CjhDT5ING8GZDPDnLA1JpjRAPAUeoh4JzI2rT5sK9HcjDdH+sFGjqAgEkny0cu3gKU+4K3HpYFPwZlCulpkHdp/NrQmqgetFc+JlKqgj4q9i3/to1cfrMbPJROJNMH0eu/GyNqGObN/eRR+c8FaSw6I/dPbeKEcHKOncfBfk4tu7LUwIOdSsUYpL3hKZPTof0vn9xNr0Vj8pxmevcjkxHUJIv/r06XoPZieBJJ80HrcWXMfXAGmi3rnjdJiodINT2haETvkmKfYoUsUkilDCL3sUpJ0oxR/zk6TkfrVb0MlQHO0Vi4J9AERCg4SE7m6TSyDVIU1NwU9OkfuyUd3OLj/O0tDVnwN5fUq3X/or0kftPDPl7xfzr0IARdgPmQGIYSXoaoEkzqzuD6NmMdlWLv1TNO9Y2GnPXtQuMAqKlJGq9gfvYc+2tnSjXzWxSQ4x8bRXEIatEIVjunNLc2XDgF24sD2C7dC3bQM1OXd00wS2IWnKfKUFPxBNMzt4bP2WysYpP01yjOPMI/Oa0Y4uay/KuAmxmwKKPVlDe5bq3rop+khSmhO3bkNxsimL1rmp3auXC8xkqRtivsR0SNxyapwCyyr3RAcIQHI/0dqi3QBKV0Lblpac9
- HXYSwq46
- VzhQtzHEOQ5yO2vP5b6rY+tI5dEZR01epzyatLmC9+CUCG+VJg6WNrvk/6BgVhx8iWHwl9mjP/q5RUG4HxsJaAj7ptnhV5QJL5kuLU+BgCMv1nSv6LxlZrDwIPC+IOH0Y0cvMx5s5fneSOoh7V9U+FoithXPZlwFeXo34Lfwv5jEVEd3At+bxA6sYe5D5BdA9jPHYAS1bZoM2j9jeXFfYpkE23HIUCRj0abvMJlAppGczbv7tvbMTfeivdJQZzOVvpVgDRA2MFBPqWt811/NI/azEtn6pf2VMqnw5M7gUpsZdDP3I0H7eC3H1eA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DCB8140002
+X-Stat-Signature: hx9ucf5fpjmdidar7ownnhus4iibgf88
+X-HE-Tag: 1783964924-293971
+X-HE-Meta: U2FsdGVkX19vbbizasW5gERCkTyGcDrdG9z/lgArSEvnnBbsLTeIwk0OWrT7snosZDby2KimzSRi3UebIFD7uB/4FQwve1BNAB25wl1VuYVZhfSmUPjbbvow6SJ0eIHQddGpuKOJtPO26KqIAobbYTkOm0fIdr6aeCfSlMQNyeb4OpQsoQ8nnIzpj1M7DoDPgG6x2rOgKmhg7vWmv+BoHy3brg6EgRwJGB3eaSIO8a8PWhDCZK/r9ePi86knYGldB5wcljvo2gk38vqUI/dDuHYzc8/5A4TISJdWUiY0r91Zvm2ixquN36l4aMOQynOpNrfGfHpWdWwwhg1OTP2lzfkrOZ0uJTFuREP8Mn/k4J/KygaGfo3fnhDDXNn5/PrxgvPxipOjbqdZ2W9E9Irt5hk+eCfefSGTdxL06vQEPhb6cWg6mFs/pfNZ1C5uA0suLRsAkGPDOiNdYGaar85nJyollKCJYbGziqMq6PMxV3BoRid/WUqbz8j3oJbpT8LiFULJ2OhP57KcW2EEx6LT253YDMbai6axQgSnTJHxUdypok49dc64Ar4U+Xm7VG79e/J2zA5fzEniagGEMCLT0qMWIbWZwMmAJqR06sJjD+nSc+fXOszs7fhg9Xg6PWfHZSMtb0FFsX+naLc8YJT1GC75P6l3NFLKcQirV/KYa+Hs6bVSbwp+uNKKsS7Br8UoIhvoYxkNbAX8k42YKfWuIgthQErat9YCHRhXcJroUFBT59s2MUqDuL45eSxwevspuzhQEGgdrUOmxAkLAuB+M0eQxvs2GyO1uiXahl9hx6js+9nYPjXiv6dd5uNbEzyNsTLisfjPtW0qMi+TAcU0JS8lHC84pXMPKkgzP0Qo6U+6Qzq7ZQHUE7HBhvTfZR9QT7BpgaLaFRJ4bYOdQPGiJb7KQk4fiE917GYqP5tZ8Jvr4ccrazViBeoOzKwpv5E5uISDeldlF3mvuumDjP4
+ fdU66i1u
+ TgcnRAohHaLTWJJ4bGfjvkQy+fMT5xg8VHssVjLxW8ZEvkOUeULv+wIx5a4Fs3DUENxY3bTNH7iUUuhOPuRU/hGCgFQsmHLNozXMbpJrcqLH+fwI4EElhFH1LgMjWKiP3YQjO5NzoSUq0Thn06YBYxaqPqwV9qFWv3S9ktUy64Y7dlt3ut+txzcTp6GY09YG70+wR6xbnUF1OhPPrYOEwJHCcE5MEl8TOlMseYieJcWGN68lffBqdBVVfc09fZ66050vTvv8SsTbLSVP+R8KZKx010wAeukMiypa4vrrluqKskLa+K+TblRCHA5t6+hCaZ0srmFUQOsqaqdeG6zZPJR93q6VKjr1F5cQ2Rd8XPhED6t05QZizUADQ8r/JgGyTe78mHPMm0Pbjn2S5qIS3lnrGKEHvEfZ4K3dshZCOBXGg+JH3jt368DnioHF/WNxDCxpFIiu0z8kweuGdcwZlQJRm7/2jAqXL+AIc7ByETG1AErLOMNvFz2MD4pU3wCIDPatApC9KaoD+LlnUNh/GrZ4v7TTDrYYunbkCh9Ml60J8J9pV4hx+3EhVDLpaug1niTC7QOEx7XwJskw+YDPx15N9uc6pjgjvZS2Z2t2DSk9mCz/jnIGkrtpTAolLk78U4wjx2KKmTONxNCA4BDQehHX+iLqvNQe9ZzDoYo2U/Y1Lx3wIvMMLQE/Wu1dR/yhnnuEJ6koHgy+P+KAJOzGLkVegW6mHBm1HxIIoil0A0rgxE+vKbQ/6Ujd4/MX1nfWDG1pmW+BuuwkpybSaPXyDbd2VCDA6p7CZ8dzEBnsBvVd+GPLWRAWYAzq82VWzml7hXre01twXSmspLhcy0rox8qQ5deR2vF05iqA+c6DMBbpR0Ds8HQqnhosF5G9Mod1q7amEoJiZb/dhDAITssOJkuJLABPdEZadlWwYWzuS0ycj2EytTNqL5dy9F+fweBNKPudVTx+9AldopRYjKeqRclyy55gl
+ sd2o+lqi
+ BDQCLfeIH9lIjCVaKzskeCO90pITHBXZJ8XArYOp7qgbsWd2BcFQ55wqKOc36fgOj/apu5cllopZzY9hWITZfahI5TB+9Qh6GJ4620+Nyz9rLzH/BaIKuWHmgOVRf6BKEjiPuXc2UpQDs7yFEOX8XB8tnRBLsdkNVloGxW0FW9qTysZHZw4seLLV1BGSKwsWfOdIB8pxfRVihvm90x3iyjyPWSNcy0vZg02Dgeiu0LbStj6dD9eD0sB35x8kIRuNZB1Bmjwz2GUBSS4eJmkL9lUEwYZFpu5aISzklP30EwPU0vywRTG3RvbTTyAPWjOiytkhUXlHn2YL5Bbsr8xRuJOBrhtjts3Hn1lXCxJxTqRYz6PW+fvRb8PPHbW50RcQilpdXImNSw2PL2Jt6L7QzYK/wWPe1XyWckkIN1RI0loqK7yD/S+KZ/RnY/D7IWbsQV1m+LEPW4LI1IoO9x7PAVmwFV5OkVrFgg7xwuzv4JNepNWVqZMV7VAOc5YtdvXoNdB7BMUqq3p4+09wIMvY3xRRCX6NMWeoT4yrpjViFxlKDmvy2/pchUqOYWf/kdrxueo5LllRTkk4Jltd9u2r/Gs4mZUxhkRXxHc5Ehx/Pt+ShZGMrzVw16Z9W5I5nvdcNxFFTi1umDXAz9GRHaU9zejhx3oPA7Nv3GYZ0XESCkrvhnaX3PiLMYsBY/qhjR9kDS/syRebqXY8ocav9R/z12KPY1YUpCHjF53syPcYvzC7jOVw8Z3pU768NezufTspNHtxNIBCHy6jPEP/MCCnu6ujWl0WPQVwxt+dcGTUpk+Phz/4X7JbU8E8fY16UwVEXRxMfjmxTdgU7ht+x1jo2tgmyf7ne7jtB+4Z2rZSGGCV6sRhqrOv/s9zSNSdJvr2TmhOcEeBGb7GA7vIsfv5+beDCtwdVJr7DYQG+yVBXOy4hPUsu4gsMxHQXOJNcKXIw2afxmlvPMWrMSkpArsY72aHi9Kzq
+ WwrZOvWy
+ p4gDm3+T5/HhhFzKin/Nrbof3GXrlEncJwwMp7+rqMJBWdakFGk3pQieWsrko/8LJ6BFzd4+/+l7ISm1iSRBofk0NnxxNJgxaP03x60xRcIGj3SXmNz/Yo4unbU5pGQS7HtwDrT5WmLzEimYQ8TS4pTdUQMu8lbzCi9KMAbbjttkIpIfUefI5wdTyTaZRkIiAb8noN8dBN+3+CA3taiMRAdbkoSsWAlKoAgr0N1qFiC6xCcFxjrIG6B1BFD518aP9fWTwNtAx+g1HGmKPz23+BCfBlo9mt3nT04dTw/g7MteNFdWE58FZekZFR+ZUd1I2QIcQ8JfaF6r3LRkaawD4tjE0EOOgq7hSQEUaRWNaDncWu+f4QBcy+CrFaSpmtZXuNp6lmhKN7GBP7YHizSEccNydjRgLmKwWuJOao1Rw/2a7dsKJDIqk08Pve283zQZii0BHSNtwlhEaTbAgjfXNOusjHM8+DVWzAWzl8SxSQ6voGbrv86l1WE5SA5dgrn/kCue0L5hsQ1VW5EsldkdC4R6Y26ZE3FS2VOmlsbZU8BRhsjQYnMrbnf4GzNrSpUeRHdQkzomsRPlPiw0Jgf4ehb5s+XBUm4afxUB9tWwGSlXDOfz69Wlkc+W2yc5nEIjLL8a684sVVhA6xM+zZxeq4v6s55CIx6ry4QxmYWJxOEPMpCu6N1l3NP9E1KqMRZ29Oa+tIi2k6T69DTXNta/4ONgMFzTVjuHOgCGg/Jy0bxkP27z570yXeBrnE5xMMsW97N8ZFey6gS3COh2xgHJKrfxiwECT5zro5VRwwTTnVZ6Joov8Ne9gD0hP107XjaUYJILlpDLN20BbP6INr+ovL964B6iob2FhEEEBTEOVD4rVCASUSdob2LF8BtUrjJz2LZO/FVdyFtL5zllloI5ZjwMV99Yvvge8NJTDAfjjlVoOkY1S+QHOR4s/QimgMzO/akkrpxwJdeRsL1ZLpvmJWpeiHn2l
+ xInP5EL9
+ wX2DTxbVryJCujU+TIq4BHnQF1OvQPZRbqLVKItI6cJFH1U9hEc+tofdLJa/taUgP7lZLIHiMQVihUWWSuavDRbQXi7ndOcE3/MJNY2Lj/N/f5rGzq7zzwtgAvwyo/LSmwGIwidrd7lpYehJENg1x1X9iHArxJgdXyPLG8djOpm8w2yANEltW0ZBKOtqeE9hbfRuNyQ/OhtlP/aH0XtsAN02QdNnUpklNvEsa0MtSGRYw4MNk8PiIwSBB/cVWAtE8nCVtiaQDjtwNlj+4DONmacOkNZYXbdMCXDEizDovOKdib/RQIjextcG4Y9BJ9262o6HtRLWyWJqKQBHi8Wrz3GHEvS+KnjcLKQL48cwkPaNVK/Sh2BD0/ZG6rnQS/urUonW1e1c71YF3nsuv7oKkL1P8w3UWVsQ8NgQLUNP3QeT4qxoPmHFWltJ2dRUiZsc1krgWD9oIjRoyNo4L7IieFMoyYtPzj15Yo+FzXLAb8VKsbouuVQaM6cFx3xs52bg6s1qrrHwXuKit/IC5rgCpqfYkBOQ/ok0n6/hbZ61ykc/7thhdjPy7cVUArV2V3jpypIJMHrQzbpARvcrnRBJzcpma8zX+RZpj9OisJwQKuWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,481 +210,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 12, 2026 at 5:02=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> On Thu, Jul 9, 2026 at 4:39=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> =
-wrote:
-> >
-> >
-> > Thanks for the thorough review, Nhat.
-> > >
-> > > We don't want to put additional operational burden on users. Besides,
-> > > expecting userspace to react to swap space being filled, especially
-> > > under memory pressure (at which point userspace processes might be
-> > > stalling already), is tricky.
-> >
-> > The manual sysfs extension is the minimal viable interface for the RFC,
-> > not the final choice. But even in its current form, it is a dramatic
-> > improvement over the status quo.
-> >
-> > Today, to use zswap you MUST provision a physical swap device of the
-> > same size as the swap capacity wanted =E2=80=94 even though most of tha=
-t disk
-> > space will never be touched.  With ghost swap, you swapon a ghost
-> > device at whatever size you expect to need (e.g. 64 GB), and if your
-> > workload grows, you grow it via sysfs.  That is already a step
-> > change in operational simplicity: no disk pre-provisioning, no wasted
-> > storage, and a one-line resize when needed.
->
-> If these are the only three requirements you have, in fact, you can
-> already achieve something equivalent to a ghost swapfile: just put
-> zswap on top of any of the in-memory swapfile (and perhaps disable
-> writeback, although with careful limit setting it's almost impossible
-> to trigger writeback with zswap in newer kernels anyway).  I know this
-> works, because I even run tests with zswap-on-top of zram :) You can
-> swapon new swapfiles to support your "userspace-triggered" growth
-> strategy.
->
-> >
-> > Automatic growth can be considered later if it's really demanded.
->
-> It is really, really necessary. Please read my older virtual swap
-> space patch series for why it's necessary (see [5]).
->
-> >
-> > >
-> > > This is especially bad when redirection entry still eats up space in
-> > > the upper level (ghost zswap) swapfile. You will run out of zswap
-> > > space really fast under concurrent zswap store and zswap writeback.
-> >
-> > I think there is a misunderstanding here.  A Redirect entry does not
-> > consume an *additional* ghost slot.  Before writeback, the ghost slot
-> > held a Pointer entry (zswap).  After writeback, that same slot holds a
-> > Redirect entry (pointing to the physical device).  It's a state
-> > transition =E2=80=94 one slot, one entry =E2=80=94 not an extra allocat=
-ion.  The ghost
-> > device's total capacity is unchanged by writeback activity.
->
-> No, what I meant is, after writeback, you still hold on to the old
-> slot on the ghost device, AND a new slot on the physical device,
-> correct?
->
-> >
-> > >
-> > > >   sysfs, up to a current maximum of 1TB.  This is implemented throu=
-gh
-> > > >   lazy vmalloc: a sparse 64MB virtual address space is reserved at
-> > > >   swapon time to cover the full 1TB range, but physical pages for
-> > >
-> > > This range seems a bit small, especially from something essentially f=
-ixed.
-> >
-> > The 1TB limit comes from a conservative 64 MB sparse vmalloc reservatio=
-n
-> > in RFC. It certainly can be redefined as a bigger one which is more
-> > reasonable in reality. For most real-world deployments today, 1 TB per
-> > ghost device =E2=80=94 with support for multiple ghost devices =E2=80=
-=94 is more than
-> > sufficient.
->
-> I beg to differ. We already have multi-terrabyte scale machines in
-> production in multiple places, and more and more overcommitting. At
-> least make this configurable.
->
-> >
-> > >
-> > > >   cluster_info[] structures are allocated only on demand as the dev=
-ice
-> > > >   grows.  The cluster_info pointer never changes, so all existing
-> > > >   accessors (__swap_offset_to_cluster, cluster_index) work unchange=
-d.
-> > > >
-> > > > - sysfs control.  Each ghost device exposes attributes under
-> > > >   /sys/kernel/mm/ghost_swap/ghost_<N>/:
-> > > >     path (RO) =E2=80=94 backing device name
-> > > >     max  (RW) =E2=80=94 current max pages; writing a larger value t=
-riggers
-> > > >                 swap_ghost_extend_max()
-> > > >
-> > > > Design overview
-> > > > ---------------
-> > > > A swap table slot can now hold a Redirect entry:
-> > > >
-> > > >   Redirect: |----- physical swp_entry_t -----|101|
-> > > >
-> > > > This stores a plain swp_entry_t pointing to a slot on a real (physi=
-cal)
-> > > > swap device.  The low 3-bit mark (0b101) distinguishes it from Poin=
-ter
-> > > > (0b100), PFN (0b10), Shadow (0b1), and NULL (0) entries.
-> > > >
-> > > > The lifecycle is:
-> > > >
-> > > > 1. swapon a ghost device =E2=80=94 reserves sparse vmalloc area (64=
-MB virtual)
-> > > >    and physically backs only the initial range.  The device starts =
-with
-> > > >    no physical backing store: pages swapped out go to zswap, and zs=
-wap
-> > > >    pool evictions go to any concurrently attached physical device.
-> > >
-> > > If you think this data structure is superior to the xarray for dynami=
-c
-> > > swap address, it's a fairly simple change on top of what I had in the
-> > > virtual swap RFC, no?
-> >
-> > I appreciate the suggestion. However, the difference between the two
-> > approaches goes beyond the cluster allocation strategy =E2=80=94 it's
-> > the overall architecture:
-> >
-> > - Virtual swap introduces a mandatory, always-on vswap device (CONFIG_V=
-SWAP).
-> >   with per-cluster virtual_table arrays, xarray-backed dynamic clusters=
-.
-> >   per-CPU allocation caching.
-> >
-> > - Ghost swap extends the existing swap device model with one new entry
-> >   type (Redirect, 0b101) and one new flag (SWP_GHOST).  It reuses
-> >   swapon/swapoff, the existing allocator, and the swap cache
-> >   essentially unchanged.  No Kconfig option is needed.
-> >
-> > These are two explorations of the same problem, while virtual swap goes
-> > far beyond the problem itself, the decoupling of physical swap and
-> > virtal zswap. We can discuss and choose one approach.
->
-> If my problems are real, why do we have to choose? If we go with my
-> approach, all of our problems are solved. If we go with your approach,
-> then your problem is solved, with a promise that my problems will be
-> tackled in the future.
->
-> >
-> > >
-> > > It can be grafted on top of what I had in a subsequent patch, or
-> > > squashed into my first patch. If you have concerns with me
-> > > implementing your idea here, I'd take your code if it proves to be
-> > > superior.
-> > >
-> > > >
-> > > > 2. zswap writeback from ghost: when the zswap pool needs to evict,
-> > > >    zswap_writeback_ghost() allocates a physical slot from any real
-> > > >    swap device, writes the data there, and plants a Redirect entry
-> > > >    in the ghost's swap table pointing to the physical slot.
-> > >
-> > > What if user swapoff the physical swapfile, whose slot is backing a
-> > > redirection entry of a ghost swapfile, rather than a PTE. Has this
-> > > been handled yet?
-> >
-> >
-> > This is a gap in the current RFC.  Both swapoff and physical-slot
-> > reclaim would need a reverse mappingfrom the physical slot back to the
-> > ghost entry to be handled robustly. This can be added in a future versi=
-on
->
-> To be clear, this is not a feature gap. In the current form of your
-> RFC, it is an actual bug: it breaks writeback *completely*. Swapoff
-> (and reclaim of swap-cache-only physical slots) leaks ghost zswap
-> swapfile slots that are still backed by these reclaimed slots.
->
-> I understand that this is just an RFC, or rather a proof-of-concept of
-> what you want to propose. But you can't claim it both way. It is only
-> simpler if you're dropping writeback altogether.
->
-> > if there is consensus that writeback-to-physical is a necessary part of
-> > the design.
->
-> I'll not spend my time argue for the necessity of  writeback. I've
-> already written essays about it, but the fact that we're implementing
-> new mechanism to trigger writeback (see [4]), optimization on the
-> writeback path (see [1]), and the fact that even ZRAM has some
-> writeback mechanism, mean multiple parties are interested. We need to
-> make it better, not digging ourselves into a hole that prevent it from
-> moving forwards.
->
-> >
-> > I think the primary motivation for ghost swap is to enable zswap
-> > usage *without* a backing physical swap device at all =E2=80=94 the "No=
- backing
-> > store required" mode described in the cover letter.   In that mode,
-> > writeback never happens (there is no physical device to write to), so
-> > the swapoff and reclaim questions do not arise. Ghost writeback to a
-> > physical device is an optional extension for users who want the safety
-> > net of disk-backed swap. Surely we can discuss and decide if we need
-> > add it or not.
-> > >
-> > > Similarly, say the physical swapfile is full, and you attempt to
-> > > reclaim a physical swap slot that is swap-cache-only (swap count =3D =
-0).
-> > > Say this physical swap slot was allocated from a previous zswap
-> > > writeback attempt, i.e it has a redirection entry in the ghost zswap
-> > > swapfile associated with it. Did we handle it somehow?
-> > >
-> > > My apologies if I missed it somehow.
-> > >
-> > > >
-> > > > 3. Swap-in from ghost: swap_read_folio() detects the ghost device
-> > > >    (SWP_GHOST), resolves the Redirect to the physical swp_entry_t,
-> > > >    and forwards the read I/O to the physical device.
-> > > >
-> > > > 4. When the swap cache folio is removed, the Redirect entry is rest=
-ored
-> > > >    from an xarray (redirect_xa) that persists the mapping, so
-> > > >    subsequent reads still find the physical backing.
-> > > >
-> > > > 5. When the physical slot is freed, the ghost slot is also freed,
-> > > >    cascading through swap_range_free().
-> > >
-> > > I don't get how *any* of this is simpler from what I had. If anything=
-,
-> > > it's more complicated. With a vswap device, you just allocate a
-> > > physical swap slot (which you also did), change the backend, submit
-> > > the IO (which you also did), and that's it. No need to juggle this
-> > > redirect_xa entry. What does this redirect_xa buy us?
-> >
-> > The redirect_xa persists the ghost=E2=86=92physical mapping across swap=
--cache
-> > folio teardown.
-> >
-> > Ghost: redirect_xa[offset] =3D phys  (only allocated when Redirect
-> >        is active) + swap_table[slot] =3D Redirect(phys) once the
-> >        swap cache folio is removed
->
-> So it's basically the same thing as vswap's vtable, which houses the
-> redirection, except:
->
-> 1. It's not cluster-partitioned, so more lock contention.
->
-> 2. It only holds the redirection temporarily. Which complicates the
-> logic, because now you have to add more logic to handle the transition
-> of the redirection entry to the ghost swapfile's swap table?
->
-> So it's potentially less efficient, and logic-wise, just as if not
-> more complicated?
->
-> >
-> > >
-> > > Not to mention now it entagles generic swap logic into
-> > > backend-specific code, unnecessarily. And we have more state in the
-> > > state machine to consider: With a generic vswap device, vswap -> disk
-> > > swap directly is the same state as vswap -> written back zswap entry.
-> > > With this zswap ghost swapfile design, you have to treat the latter
-> > > separately, as there is a redirection entry involved, which means
-> > > concurrent swap operations interact with it.
-> >
-> > I'd argue the opposite.  Ghost swap touches the generic swap paths in
-> > very few places:
-> >
-> >   - swap_read_folio:    one SWP_GHOST branch =E2=86=92 resolve Redirect
-> >   - __swap_cluster_free_entries: one Redirect check =E2=86=92 cascade f=
-ree
-> >   - __swap_cache_do_del_folio:   one redirect_xa lookup =E2=86=92 resto=
-re
-> >   - zswap_writeback_entry:       one SWP_GHOST branch =E2=86=92 ghost w=
-riteback
->
-> That's because you just don't handle all the cases required to make it
-> correct (rmap) and efficient (per-device per-CPU allocation caching)
-> :)
->
-> >
-> > Ghost swap only affects behavior when a ghost device has been
-> > explicitly swapon'd, and even then only on the paths listed above.
-> >
-> > This is different than virtual swap which is more ambitious. As I said,
-> > ghost swapfile focuses on the problem itself, and based on the swap
-> > table.
->
-> I'm considering adding a sysctl knob to enable/disable vswap at
-> runtime in the next version of my patch series. This is trivial, as
-> even with CONFIG_VSWAP, both the new and the old code paths already
-> co-exist (as I still keep the old code path as a potential fallback
-> for the cases when vswap slot allocation fails for whatever reason).
->
-> That means that you can get functionally the same thing here if you
-> want - the old behavior, even with CONFIG_VSWAP.
->
-> >
-> > >
-> > > 2. No reverse mapping, or at least some mechanisms to handle the case
-> > > where you have to go from physical swap slots to the upper layer.
-> >
-> > Acknowledged =E2=80=94 a reverse mapping can be added in a future versi=
-on if
-> > writeback-to-physical becomes a priority.
->
-> More like, if you want writeback-to-physical *correct* at all.
->
-> > >
-> > > 3. Charging behavior difference, and deduplication of metadata when w=
-e
-> > > have multiple swap levels. (In fact, you seem to be double charging a
-> > > writtenback entry here towards the swap counter, not just duplicating
-> > > the metadata space)
-> >
-> > >
-> > > 4. Infrastructure to make sure allocation from this swap device and
-> > > allocation from the backing swap device does not invalidate each
-> > > other's per-cpu allocation cache. You seem to just go for the slow
-> > > path with alloc_phys_swap_slot() for zswap writeback?
-> >
-> > Yes, alloc_phys_swap_slot() uses the slow-path allocator
-> > (cluster_alloc_swap_entry), which is correct for this low-frequency
-> > operation.  zswap writeback is not a hot allocation path =E2=80=94 it r=
-uns
-> > from the zswap shrinker under memory pressure, typically hundreds to
-> > thousands of operations per second at most.  The fast-path per-CPU
-> > caches remain dedicated to folio_alloc_swap(), which handles the
-> > high-frequency swapout path.  There is no cache invalidation problem
-> > because the two paths use different allocation mechanisms on different
-> > devices.
->
-> I'm nooot entirely sure about this. Zswap writeback can be quite a hot
-> path - there is work on optimizing it (see [1] for a recent attempt to
-> limit the expensive rstat flushing here - and this flushing is *per
-> shrinker iteration*, whereas the physical device allocation will be
-> *per writeback*, which is much, much more frequent).
->
-> > >
-> > > It's fine to disagree with any or all of these design choices of mine
-> > > - I'm receptive to discussion. But it's misleading to say you have a
-> > > simpler design here, IMHO. My design choices resulted from multiple
-> > > thoughtful iterations (a lot of them could be found in my
-> > > pre-swap-table version of vswap) and real production pains.
-> >
-> > You're right that "simpler" needs qualification, and I'll update the
-> > cover letter accordingly.  What I meant =E2=80=94 and what I should hav=
-e stated
-> > explicitly =E2=80=94 is that ghost swap is less invasive to the existin=
-g swap
-> > infrastructure:
-> >
-> >   - It does not require a Kconfig option.
-> >   - It does not create a boot-time device that lives for the kernel's
-> >     lifetime.
->
-> I don't think these 2 are significant.
->
-> >   - It does not introduce a new per-cluster data structure
-> >     (swap_cluster_info_dynamic / virtual_table).
->
-> Instead, you add a redirect_xa xarray, which, as I noted above, plays
-> a *very* similar role (store the redirection), except a bit worse
-> performance-wise and more complicated.
->
-> Again, unless you're willing to drop writeback :)
->
-> >   - It does not add a separate per-CPU allocation cache.
->
-> This is *by design*, because I want to avoid writeback invalidating
-> the main allocation path.
->
-> If the argument is that it is not a problem, then I'm happy to drop
-> it. But I don't think that's the case - in fact, as Kairui have
-> pointed out, what we're moving towards is *every* swap device having
-> its own per-CPU allocation cache (see [2]). It's really necessary, not
-> just for vswap, but also for swap tiering (see [3]). So i don't think
-> the argument (that we don't need separate caching) here is correct,
-> and it's also immaterial soon enough (once we have generic per-device
-> per-CPU allocation cache I'll drop the vswap-specific one).
->
-> >   - It does not split the swap entry namespace into "vswap" vs
-> >     "physical" =E2=80=94 a ghost device is just another swap device wit=
-h one
-> >     extra flag and one extra swap-table entry type.
->
-> Actually, if we're to take in your full design, it's *two* entry
-> types. It's the redirection entry (if you want to support writeback) +
-> the Pointer entry (for your zswap "optimization").
->
-> >
-> > I think VSS goes beyond solving the "zswap without backing store"
-> > problem =E2=80=94 it is fundamentally an architectural restructuring of=
- the
-> > swap subsystem, with virtual swap as a first-class abstraction layered
-> > above physical devices.  That is both its strength (comprehensive,
-> > future-proof) and its trade-off (more invasive to existing paths).
-> > I respect that.
-> >
-> > My goal with ghost swap is different: address the immediate pain point
-> > with the smallest possible change to the existing infrastructure.  Both
-> > approaches have value, and I hope the community discussion will help
-> > identify the right balance.
->
-> That's because I believe "zswap without backing store" just by itself
-> is a bit narrow of a problem. It's certainly nice to fix, but it's
-> more of a nuisance - you already have userspace hacks for it (as I
-> mentioned above).
->
-> The problem I'm trying to solve is to support:
->
-> 1. Writeback.
->
-> 2. Dynamicity.
->
-> 3. Decoupled backends.
->
-> all of which are motivated by real production issues, not some
-> theoretical problems. I'm concerned that if we only focus on the third
-> goal, we'll dig ourself into a hole that prevents us from solving 1
-> and 2 efficiently down the line.
->
-> >
-> > Thank you again for the detailed review =E2=80=94 it has already clarif=
-ied
-> > which parts of the design need more thought and documentation, and will
-> > make the next version stronger.
->
-> I really don't want to be antagonistic, but I hope you'd take the real
-> production pains that we've had (and have tried to communicate in
-> multiple mailing threads, across a timeline of almost 2 years at this
-> point) seriously.
->
-> Collaborations should go both ways. I've gone out of my way to try to
-> address the concerns of various parties, from spending *multiple
-> weeks* testing and investigating performance regression on zram
-> backend (which my company does not use), to a rewrite/re-design of
-> virtual swap to accommodate parties who wished to opt out of virtual
-> swap for now.
->
-> I hope you can extend the same good will to our needs :) I've included
-> you (and other swap folks such as Chris and Kairui) in my cc-lists. If
-> you have concerns, you could have commented. Instead, you decided to
-> send a patch series, which is basically just the ghost swapfile, with
-> a bit of afterthought to handle writeback and dynamicity, rather
-> inefficiently (no dedicated per-CPU caching), and not even correctly
-> (the lack of rmap means swapoff / swap-cache-only physical swap slot
-> reclaim is broken).
->
-> I respect you and Chris very much to assume bad faith, but please work
-> with me rather than against me.
+On 7/10/26 22:16, Lorenzo Stoakes wrote:
+> Update the file comment to clarify that both file-backed and anonymous
+> interval trees are provided, referencing the relevant data types for
+> clarity.
+> 
+> Also add comments to indicate which parts of the file apply to each.
+> 
+> While we're here, convert the VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA().
+> 
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Hi Nhat,
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Please read my above email. I agree with you that the ghost swapfile
-writeback feature seems a bit premature. I suggested dropping the
-ghost swapfile writeback from this series and focusing on generic
-swapfile growing, because the swap device can actually grow outside of
-the virtual context as well.
+> ---
+>  mm/interval_tree.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+> index 344d1f5946c7..2d50bc6228c4 100644
+> --- a/mm/interval_tree.c
+> +++ b/mm/interval_tree.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+> - * mm/interval_tree.c - interval tree for mapping->i_mmap
+> + * mm/interval_tree.c - interval tree for address_space->i_mmap and
+> + * anon_vma->rb_root
+>   *
+>   * Copyright (C) 2012, Michel Lespinasse <walken@google.com>
+>   */
+> @@ -10,6 +11,8 @@
+>  #include <linux/rmap.h>
+>  #include <linux/interval_tree_generic.h>
+>  
+> +/* File-backed interval tree (address_space->i_mmap) */
+> +
+>  INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
+>  		     unsigned long, shared.rb_subtree_last,
+>  		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
+> @@ -23,7 +26,7 @@ void vma_interval_tree_insert_after(struct vm_area_struct *node,
+>  	struct vm_area_struct *parent;
+>  	unsigned long last = vma_last_pgoff(node);
+>  
+> -	VM_BUG_ON_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
+> +	VM_WARN_ON_ONCE_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
+>  
+>  	if (!prev->shared.rb.rb_right) {
+>  		parent = prev;
+> @@ -48,6 +51,8 @@ void vma_interval_tree_insert_after(struct vm_area_struct *node,
+>  			    &vma_interval_tree_augment);
+>  }
+>  
+> +/* Anonymous interval tree (anon_vma->rb_root) */
+> +
+>  static inline unsigned long avc_start_pgoff(struct anon_vma_chain *avc)
+>  {
+>  	return vma_start_pgoff(avc->vma);
+> 
 
-Growing a swap device does not mean it has to have another xarray or
-indirection sitting in front of it. That is what I want to see
-happening. It is actually more efficient without it.
-
-As to your VS series, I have already made my comments on earlier
-series and I am not going to repeat myself too much. I suggest taking
-a more incremental approach rather than trying to solve all the
-problems at once. Another thing is that, is there any reason the VS
-can't be done on a per swap file using the swap ops approach? Assume
-you can modify the swap ops to fit your need. That way you don't force
-zram to take your VS layer as an additional penalty.
-
-Given the choice between two approaches, if everything else is equal,
-one forces an extra layer while the other does not. I would pick the
-later one any time. Again if one extra layer is compile time, the
-other one extra layer is run time. If everything else is equal, I
-would prefer the runtime layer.
-
-Thanks
-
-Chris
 
