@@ -4,170 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C7BC44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 19:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ACCFC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 19:57:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B1EA6B0005; Mon, 13 Jul 2026 15:49:59 -0400 (EDT)
+	id D7FE36B008A; Mon, 13 Jul 2026 15:57:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83B906B0088; Mon, 13 Jul 2026 15:49:59 -0400 (EDT)
+	id D57F76B008C; Mon, 13 Jul 2026 15:57:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DEDA6B008A; Mon, 13 Jul 2026 15:49:59 -0400 (EDT)
+	id C70196B0092; Mon, 13 Jul 2026 15:57:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 273436B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:49:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E733140160
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:49:58 +0000 (UTC)
-X-FDA: 84984794076.16.A3E1860
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AA4DFC0007
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:49:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LvSI84Kp;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D2BE6B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:57:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 208791A01AB
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:57:51 +0000 (UTC)
+X-FDA: 84984813942.18.7A202E2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1EBE11C000A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:57:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CZIKYpWk;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783972669;
+	b=mm9jydWt87ze1MOpn96E/IKtU9uPM85l9B0uAQoznnefX2EytfJnGlj9JlWRkOTO52x/aq
+	dEZ93RUNDCrLR0EoIS4sKLnIAjeyFX4iPEvN1CGaiPa+prqM2+n/I1czhd/LY94K2sHfj/
+	K65akWSrFqrVFZb7LR1Za4h8o+3d7/4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CZIKYpWk;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783972196;
+	s=arc-20220608; t=1783972669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZe9zYBUgL5Fku0tOf4jGfW4HRaI0/J5FQVtBy0Ve6I=;
-	b=Ob87qK2am2+vLivuAbY2s5EFn8J38Qdtidpv4hNXzS9fAMMPturLrtn9/LslSFzOUXi0wV
-	g0xEF0uWhSctGX/hpAK7o3ckVqS50DpX5s62XbOFK2HSYRafPU48FZgnSgFe2giCia+j+m
-	FBAtpchQL83PGT5S+EGISTE4P2KDwr4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LvSI84Kp;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783972196;
-	b=KF5OVGbAl6gEh31m9zdKZYVN5OuoJiDKSgyTuwjC/T68+C2tvQ96MQKH9s7rQ7UDsgDCly
-	x+wd3QYa00DNQ3SpNzmTCiR1/d8s8gUmp11tJBAzB6WuTIUGb67W5MeOgH0mZNrGroTxiL
-	ZjjlVASvaYC/4VXAlbJjXePRHnyuweE=
+	bh=Lb0u9083uAGrWjVRQ9Qk+A8Z+iONhqOvEGQOCQR578I=;
+	b=jE3j/F9yjeA9HixjScDwMJ7qZQEQ4rDGShJ0Av48CGNs7Ma8bef0qxpVID2Q2EkOEg/Re6
+	Vx21cLKSF22Kt4r0P+DswsIm7vLAU5tXctV4I7SSBfVT4HkBuenOzB2Z3+1PebCma62X3z
+	5Dxq2vN1ID7bTGrspvmGWjpULmDFKp4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E94060103;
-	Mon, 13 Jul 2026 19:49:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C921F000E9;
-	Mon, 13 Jul 2026 19:49:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B23B4384C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38581F00A3E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 19:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783972195;
-	bh=IZe9zYBUgL5Fku0tOf4jGfW4HRaI0/J5FQVtBy0Ve6I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LvSI84KpyEW4PF6a7LNDng1GF+rwXXsJKi7/6liu+LAH2SvyPUp3Y3dazy85hfiJ2
-	 8wmORaiWbxnT9QD4Gktp63fmyZHYGlJwN0LNqE9aW/GK3kqC9X/vUDxMT2Dh2t1JkM
-	 YdU53xX2zJldz/W8YkvqFYp3XZ6jIqIACguCJ9Paeh/RuCinRwhFichfxdD0IQw8AI
-	 uzF+0XEdW14nQUGG2j3iuaQeox3i/AnIlQp+tfHaGhsUjH1ROQ6M8kUvkdg6XHz0xG
-	 0JTaMX5GR3Vnw/gkw8JisANxpqabirohlF5apD06wIS/ws1h48ypbW2+WJUaYP+JQn
-	 0DyzG/pm3fC1Q==
-Message-ID: <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
-Date: Mon, 13 Jul 2026 21:49:34 +0200
+	s=k20260515; t=1783972668;
+	bh=Lb0u9083uAGrWjVRQ9Qk+A8Z+iONhqOvEGQOCQR578I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=CZIKYpWkmwL7fBz0EYJI/nWVVRo8dIncc2EbkWJWCc7zPOWJBom6lr6vTsp2/8ZUf
+	 WgtN82SoNrktYL/1fB3AW7AHfMED2SaWAWCOIJEZrY07ECr+wCuAd/QppjxLTCHEYt
+	 /LTBWOE4ToV+91i3OPXdPhbPtEBUoFLuSJtl5nhV2oM9FQxYyL+lY35V2vHIpvXhzy
+	 CdrK78U4870HwGn/Xb6Qw7bQOA3xOt5Zc7sF279cEpHvcisS1RvvqCX70/G5dlEvHX
+	 MlrqgRtohaaiyj0G8a8eg4HZa4GqlaE/3kfYVnX53IFMfvq5FhnR1f5yYbIR2qIQhH
+	 wb1AJLzkcB2HA==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c15ea93028dso389796766b.3
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:57:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Roy4YvGQb22R7+0WvjLT36bz0cvqkspEW+N94tha4oXP28XI7Bocn0z1YXVim7nsxWBwzBsiHuhlg==@kvack.org
+X-Gm-Message-State: AOJu0YzAGzZd49tb4uTkPtC6cu92IlaeWa3YdNYYd8TMV78FOH/86gVi
+	pvMzwhjeDTv5px1mn6ffY+Qy3bU4AzryfhHzTHA+/pPiGv98K6VYWfAmK28YtHp2QUNt98Xi3TZ
+	eGnumwsldcgc+URcU3FctMsm7uHY3S/g=
+X-Received: by 2002:a17:907:c80f:b0:c16:f32:6ca3 with SMTP id
+ a640c23a62f3a-c161f36ebb3mr490349366b.46.1783972666876; Mon, 13 Jul 2026
+ 12:57:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
-To: Dave Hansen <dave.hansen@intel.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
- kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org
-Cc: linux@armlinux.org.uk, akpm@linux-foundation.org,
- ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
- chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
- kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
- wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org, jgg@ziepe.ca,
- catalin.marinas@arm.com, will@kernel.org, arnd@arndb.de,
- ryan.roberts@arm.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
- baolin.wang@linux.alibaba.com, tj@kernel.org, kevin.brodsky@arm.com,
- anup@brainfault.org, atish.patra@linux.dev, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
- hannes@cmpxchg.org, mhocko@kernel.org, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, kasong@tencent.com, baohua@kernel.org,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
- dvyukov@google.com, vincenzo.frascino@arm.com, anshuman.khandual@arm.com,
- yang@os.amperecomputing.com, chaitanyas.prakash@arm.com, ardb@kernel.org,
- guoren@kernel.org, yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
- dinguyen@kernel.org, schuster.simon@siemens-energy.com,
- wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech, muchun.song@linux.dev,
- vishal.moola@gmail.com, namcao@linutronix.de, pavel@kernel.org,
- djbw@kernel.org, yu-cheng.yu@intel.com, baolu.lu@linux.intel.com,
- Jonathan.Cameron@huawei.com, coxu@redhat.com, andreas@gaisler.com,
- liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
- stefan.kristiansson@saunalahti.fi
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
- <20260713135614.1618183-11-yeoreum.yun@arm.com>
- <c3edfb13-08ec-419c-bc05-8f3f64186b24@intel.com>
- <ac365196-8ccc-4d8b-83d7-28fec763e75c@kernel.org>
- <710b7eb0-8e0c-4f07-991c-2285c77e1beb@intel.com>
- <6007625e-c3f9-4ad6-99a8-61396bccbcec@kernel.org>
- <32d459d1-ad19-4baf-bbb1-0565458001d2@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <32d459d1-ad19-4baf-bbb1-0565458001d2@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260713025644.170839-1-youngjun.park@lge.com>
+ <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+ <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330> <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
+ <CACePvbX1U3pLRqCP-k9x9bvbn+sXCexnbqXjwXcdvwbH+qD6sA@mail.gmail.com>
+ <CAO9r8zPtcne97wQKZFsNoMS-4zpTFvaA3EU8ghnEHPfwD28zoQ@mail.gmail.com>
+ <CACePvbWOm3EL6Ph+A_NgAp80GcQt2N-qW1qbyxOVDL3EZSAh8g@mail.gmail.com>
+ <CAO9r8zO4uW=SX7se154Z6+DrxfawZfAiRO6Ar5rUm3T78x5HUw@mail.gmail.com> <CACePvbX5oWcTRpQeBCQsod5C5KEhd-0vA4B1PGYddNfgTW2tvA@mail.gmail.com>
+In-Reply-To: <CACePvbX5oWcTRpQeBCQsod5C5KEhd-0vA4B1PGYddNfgTW2tvA@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 13 Jul 2026 12:57:35 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNjouSvVABM4WhsXu8Uzcbd53gLEK0SXLeDMKJm1PeLJQ@mail.gmail.com>
+X-Gm-Features: AVVi8Cc2d5Jy4K-zB3uOZEByCUGAsFCJAB8Scukxi2qhgJNF_HV08DJxXMaC9aw
+Message-ID: <CAO9r8zNjouSvVABM4WhsXu8Uzcbd53gLEK0SXLeDMKJm1PeLJQ@mail.gmail.com>
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+To: Chris Li <chrisl@kernel.org>
+Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
+	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
+	baver.bae@lge.com, her0gyugyu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AA4DFC0007
-X-Stat-Signature: w4beauts9pqwcuba8n99i6bmth61kumf
-X-HE-Tag: 1783972196-417518
-X-HE-Meta: U2FsdGVkX19oYPX/nBYLIJuH8st8mlDIceGcDt5SISw5KtEar6kb5DVY/Tpp1T0c4VcIqDsM7i33YUqkMWIJB0LZSW59nk1clahZolwS16U4d2gX1K1fFGWBRb+55rfxThCxuOebvR8/5Ov22pOw3xcV6KCoVPlBrAmmAXHM5Xb8gY/+fHxONyQZMb6jaFA1Sd73nisOZxLFSAh2SbY1mH2LtS5gYre9IkISUnbb9ZMtNpYN4X53lfRqL2YY96Yds5ZGseblE2hqBNVBm8BFwXrex/t3ts7JSYlZ+aPsBPJb8xnq5xBI6TAD2V8BfQvyQGf6cdjaY+chJWbNLug0nNC3YGOFgmP1ZH6x4MNCFfG3YUKl9RkAw5vd5OyUDqb3NSPYl7yCu6r851WDxv5XoZ5DKLFdx1kgpYkmEzyY48cKPI4POIn0RkHx/znwFF76tmr2LlVzMzLU8uaQNYnP32ZxKeZyROU4BYGWJSnjkmJDXvfk8LbdwHx94veZj5CNx7YyoITJ0i2Z3zI75Iv7jEEHhZ8Gs5qAuHkv43f9dj3rtC9cSZFdsF4mEcA+3fkmWytpZazOz7NRNAzKM/aRytIGddPF7sv89lbA8IEXaJtwssCQD3mIAVovT+fQ8t983iuEH64uYW0umPLy3U6pQTWikM/i4elFcdgEkYpgvo0oYzu+ndRoIzJMeAzmv4iPaMxOZ+t+NDJATy9sBWl4X+Tx20AknjqLVg2CcBhsVmUbGHmhiVWw9hRqVHrCzHlmSmSh+WWwvZvz2bgI0SEpBS6uVm97vwpSB3pkCGWabZH5PY3BxPoaWk41+BGl8wmISEvEFB+/OcCUCR4FTtqLvDLDAXnLjzDTaWbRm3FSJoJ6Mka0teziaoGiwt7zfKRv9sHXsTx5Swl7MUtlaL82P6M8fw73vxniBKU/cqLCRBlX6OY2uHJ8NMySSo/xOD7yqpdz4/RUJ1ZC8SYlm0m
- qycZLoaN
- ql6ueDl6sjjdTjtR+Gp3+pOob2Y56EOjiVpA0ljv7kbMIpYBV7DD7HTnRvPHysDtUlAPEyM8BpGnLUFsJZOmNJFS3Qs1QfjvPg98S3WxJNgBDfYz/Meex/+E+K0Jj/XbhQuuzY3Kp2BQ6/fqwCNZplNcrEI3SIRWtu8HOM/J9XMm3/KI549DBDRCwe7S5ecXg+Q/q2CKLloN/rkYCRF4hpqNjfloQuXXoOiPzYd5LuUk1ekyuQeOCRFFWUEr1yR6lrdk34GS/P+50m/MyyepoiwfknT3+jy2CSEvSRB/tuREA3mWoybt3+B3HJnV6ANhxWgj3O25d/MNFUiLNJR1NgNbFXIfY4Ks92iKhcnJ1JzVg2n2MSjG1xpd6fcLEx1FhlRtS
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1EBE11C000A
+X-Stat-Signature: 98w3ikojgxen1gdbhjdt59b58e4nsgkw
+X-HE-Tag: 1783972668-833401
+X-HE-Meta: U2FsdGVkX18G91tlWuvtxZmOtVw+XzkCDc5kf5lhflo9HSgjXSOWLvy5YKskjD6Jkt9vCvRYF2h582s6wW9FZNew6nRXkkQprLaYatT/Ddq2hCUKw9m+mGpPbYqh7IURfwE3gknDcMbO/k+0pZYVhb7InldquBXe4oFZq4JrE9OU3p8GvCmEDLRpE30IJk/ogSlPfqU1ZSQDpS8smcIwazUyY6I1Xc8UmKyzgX8P+bwbDnOA3M3/BzBzdkDt0JE8zvGfQYdZg2QvG4Zh1hCf8cCmME4SPyDUYhZCDQLqQRb44JNJsuasQTZiu9maYyMngZwm6RyqWS+HpV2WiAUZusirnkrlju3G1Y8kbbWAuJV4GCPyPUozI3CVvt8dnTYq3Dr5WNLmg26JgUWgXrAOQuEEytNBcF/Oy0xjdMRPK8eRhZWarADMp7GKvYHP4TxgwtsPlrDDCs7r4WiebQJzXy1sCk/2QqbC21TNx5uxR598Tp+7syV1AYkO3lXtif4Ej6Y5n5u8PszDVR3EH9fwFhaPhVa2L2X3me0rcpg9qSn5gnlETActDLcidwOPGrI5Q/XigPIW4e44lDSsVaz0hXPLtCqTN7eH9C6o7dL6wi75ePrj8vrctLI/qjiTkYFSiy974Fo/jYc768FV95guCUUH6Fbsmg99qHLA/uBc4iT1dUsk9/wfMuQmfZ5tVwS4nZ1fdubadvxAhY1WxKaAOLRRGkqWOwY5fECX4ShM+NrXj+urbCprPLiR+vCl+Gy0emAjI0FWOLbaiK3DvmoPT9GM6iNCzPuR+j7dvn5BBibcriUjJdcPgV5TbXvvjztlOEH0lxa/4MM7CmCvXh2qi7Sd3J920cjzQ+XZ/R1cOCtOd7O7jSaHV/Hht1+/yrt5uHmd2VNq+0+aD5geHg1Mq9c0hpyP7M8WSlgcfVd2vkYW1MbKvxt6WpEtRIU2eUyRpZlVH+P+S1/aeCyff4C
+ 4UqAkXoN
+ 2Sh1bHU8QkExorNSKGIpZpH5gabr82MU18QcgwETjTQsNlpspy7lqvIlsGR/BboJS0Ahn+vqbEmMha8+3duPxdsHzltbvioqQBJNj/bd/kP63PsdOMaL6UJNHFu6Cc4tYHRyeuyDOa3vhH6DEjNXFEmZ7GSv7GIR/LToux92mCIgF+BaaV5FNUw1+ZfSfklGz7xCHoc2/cj3JUNvj/Q4NOC4A6PtKd66oZRqwJULHtBcZ1R7NvnJEIP5KZ9ReBgbRMm6jK5qoI3/AtbY/fcrtkLUBbxS33ldR5XGneuk/r+ey//zXE5oOMaXUa4gZ98EPph6UhBkcJXvNeCSLM7uqnthU8Ayez4hm+y6IhMTMTV+3qI44m/i6D0o06k+i8Rr0y+2x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,67 +114,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/13/26 19:57, Dave Hansen wrote:
-> On 7/13/26 08:02, David Hildenbrand (Arm) wrote:
->> It's always been the latter:
->>
->> 	...folding => PUD => PMD => PTE
-> 
-> This is kinda arguing semantics, and there are different ways to look at
-> it. But I'd argue it couldn't *possibly* have always been this way.
-> Linux hasn't always had a PUD or a PMD for that matter. The i386 only
-> had two levels. PAE support was added later.
-> 
-> I think the pmd_t came with Alpha support (before my time) and pud_t
-> came later IIRC. I'm pretty sure Linux didn't have a pud_t when I first
-> started hacking on it circa 2001.
+On Mon, Jul 13, 2026 at 12:39=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
+:
+>
+> On Mon, Jul 13, 2026 at 11:38=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> >
+> > > > > Zswap will not be introduced as a tier. The existing user interfa=
+ce
+> > > > > makes zswap not exactly compatible with the tier ordering because=
+ it
+> > > > > sits in front of every swapfile. If we change that, we break the =
+user
+> > > > > interface. I suggest we keep zswap working as it is now.
+> > > >
+> > > > The goal from making zswap a swap tier is to have a single framewor=
+k
+> > > > to configure swapping for a cgroup, instead of configuring zswap
+> > > > separately. Yes, zswap currently sits in front of all swap
+> > > > devices/tiers, but we are heading in the direction of changing that
+> > > > such that zswap is standalone, at which point it becomes more
+> > > > obviously a swap tier. If you want us to wait until that happens
+> > > > before adding zswap as a tier, I don't necessarily object, but I wa=
+nt
+> > > > to make sure that nothing will break if we add zswap as a tier late=
+r.
+> > >
+> > > I'm afraid your zswap user interface will have to break. I don't see =
+a
+> > > way around breaking your zswap user interface to fit the swap tiering=
+.
+> > > Once we move to the swap tier world, I don't think we should continue
+> > > using zswap.writeback to control the tier write back behavior. We wil=
+l
+> > > need to rethink this new world.
+> >
+> > I wasn't talking about the existing zswap interfaces. I want to make
+> > sure that if we introduce tiering initially without zswap as a tier,
+> > then add zswap as a tier, the semantics of tiering and user-visible
+> > zswap behavior doesn't break.
+>
+> No, the user visible part of zswap must break because zswap currently
+> sits in front of every swapfile.
+> I don't see any other way around it.
 
-Yes, I'm sure there is some horrible, horrible history to how we came to what we
-have today :)
+If zswap becomes usable independent from a swapfile, it's mostly
+transparent to current users.
 
-> 
-> Second (and again this is my subjective opinion) a pgd_t* has always
-> been the "top" or "base" of the page tables. This is why there's an
-> mm->pgd and not an mm->pud. We've also talked *forever* about things
-> like a "special pgd" for the LDT remap. Or having two pgd pages for KPTI.
+> If you do know how zswap can interact with swap.tiers without breaking
+> the user interface, make a formal proposal and lay out all the
+> details. I did that exercise myself and I my conclusion is that it is
+> better to accept zswap is the classic behavior without burdening the
+> unified swap tier too much.
 
-Agreed. We always called it pgd, which is just an alias to p4d/pud etc really.
+Today pages go to zswap, and when the limit is hit they get written
+back to a swap device. If zswap is a separate tier, pages will still
+go to zswap and then when the limit is hit they get written back to a
+swap device. In both cases, zswap writeback can be disabled.
 
-> 
-> My point is that the PGD hasn't itself ever been folded. It's the top
-> hardware level of the page tables and always has been.
+Can you share the findings from your exercise, and why zswap being a
+tier is a burden? Any specific examples?
 
-With the history in mind, yes.
+>
+> > That being said, the existing zswap interfaces don't have to break
+> > with tiering, why do they? We may end up with redundant interfaces,
+>
+> Because zswap does not have its own swap device, it borrows the swap
+> slot from the underlying swap device. That behavior is unique to zswap
+> and none of the other swap tiers have that.
 
-Looking at the current state it's more complicated.
+Yes, but we are heading in the direction of removing that restriction.
+But I also don't see the connection between that and the current
+interfaces breaking. Do you have any concrete examples?
 
-Because pgd_present() are really just dummy functions. And this series proposes
-to let also pgdp_get() be a dummy function and disallow something like
+>
+> > which is unfortunate, and we can work to deprecate some of them over
+> > time. But I don't see why we have to break them?
+>
+> I don't want to special case the zswap for from the swap tiers.
 
-	set_pgd(pgdp_get())
+Neither do I, but I fail to see where the special casing is, beyond
+the fact that zswap is not a swapfile but an in-memory swap.
 
-Which is just asking for trouble. Similar with using pgd_page(pgdp_get()) on
+> > > > An advantage of adding zswap as a tier right away is the proactive
+> > > > writeback use case. It naturally fits in the tiering framework as
+> > > > proactive demotion between swap tiers, which I expect may be useful=
+ in
+> > > > non-zswap use cases as well. Without zswap as a tier, we'll have to
+> > > > use a different interface for proactive writeback, and then if/when
+> > > > zswap becomes a tier, we'll have multiple ways to do proactive
+> > > > writeback which isn't ideal.
+> > >
+> > > I am looking forward to abstracting a more common write back behavior
+> > > in the swap tier world. The classic zswap behavior will be preserved.
+> >
+> > Right, but this requires zswap being a tier, which you seem to be oppos=
+ed to :)
+>
+> It does not need to as far as I can tell. People who want classic
+> zswap can use zswap as it is. I am thinking the swap ops provide some
+> interface for classic zswap to use, but zswap itself is not a tier
+> because it does not own swap devices.
 
-We could get away with catching that case similar to how we catch pgd_offset()
-abuse, but I'd rather try get rid of the wrapper functions set_pgd() /
-pgd_page() entirely.
-
-But if we feel like that is too much, we can look into that direction.
-
-> 
-> I really do think this series is changing things, not keeping them the same.
-
-Looking at it from that angle, I tend do agree: it further moves into the
-direction that actually the p4d_present() carries value, and the previous
-pgd_present() is just a dummy.
-
-I can see that some more work is required to untangle the mess we already have.
-
-I don't know why pgd_present() was made a dummy function and not p4d_present(),
-but I'm sure there is a good reason to it. Changing that now ... omg.
-
--- 
-Cheers,
-
-David
+A swap tier represents a class of swap devices or swap files with
+specific characteristics. Zswap satisfies that, although it's not
+really a swap device/file.
 
