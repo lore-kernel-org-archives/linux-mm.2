@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EED2C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:37:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB58C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 06:39:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11F406B008C; Mon, 13 Jul 2026 02:37:25 -0400 (EDT)
+	id 7738A6B0092; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8F16B0092; Mon, 13 Jul 2026 02:37:25 -0400 (EDT)
+	id 74BBA6B0093; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F10B56B0093; Mon, 13 Jul 2026 02:37:24 -0400 (EDT)
+	id 68B976B0095; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D32886B008C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:37:24 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 45EC66B0092
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 02:39:04 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57C8DC7F26
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:37:24 +0000 (UTC)
-X-FDA: 84982796808.26.8B81C90
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6CB01C96AE
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:39:03 +0000 (UTC)
+X-FDA: 84982800966.26.BCDC463
 Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 37CEE100009
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:37:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6AE4F40004
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:39:01 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783924741;
+	b=mRlaYWMQbJ6rgauXaPq+jIKFhNosEDWufQXNkl5YjYLwjODKajfS6dgnti7B9d6EUHiMi2
+	Fmc+psIvH2m0nS2eQNWIZZ9k4XDibTfNJlPB1tY0f2NFjYzX5M7dCiZt2XKh0vuxUpcjlp
+	6EBZcykjaf9C6L0VXVqEJnvcLR+ZyVU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
 	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783924641;
+	s=arc-20220608; t=1783924741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ORqzhcILSzb0WYeG3AM4HeiE3bl2KpgokyMuxmxkFRs=;
-	b=HYxGaC2jOfGGG7Na+JJ3YPLU+lt7GQYQe0UucDa53JYHS2K+ifj4mot7Xz+GbclN3ejnSM
-	4eVpN6mUURohtX4cFG0Ae61bWvz/hK9JJJclk22geidooE0SvAHf1IfHt1i2m4xRimgUlr
-	IEbwU50UWLKtvdSFo2naesvZawYC9h4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783924641;
-	b=RrxwmHTHoyTNVJL0b7lY5ErhMr7zkoSDxwgbWL+z1xVFMfkSfXP3oh/1zt4OSi1dnQ+ilp
-	07R2X1jwQIhn8VtfzxgxzavXVM1YFu+oG6CcXGuEIfY1np5BludN/jCV3tWHrpzua0o+EC
-	RFXIu7fG4+4fH/pxcf50Yih4NFRdXDw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	bh=FxqtTQL7RKJkz/VNMKj8Wv+Cf6pzRERBjYetc3Pb6ao=;
+	b=yE+9fk/hVSIzpcXkVv1qdJAp4f+GH0dkIIJR+hSlbYPiQpnnlSRA/Q2vdQqvbhHuNDjwU7
+	ap/oiywNg7yXRGw1auMYNzCoUqs3r3Uv53MO4dWyolW5kC/pmRqf4Fv4mK1Vx+CX20D6fF
+	W74lYg+u5P9wrl4S1Fmrha+ckAF3CE4=
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzCR12mYzz8Xrrd;
-	Mon, 13 Jul 2026 14:37:17 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl2.zte.com.cn with SMTP id 66D6b6Sd028040;
-	Mon, 13 Jul 2026 14:37:06 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzCSz1KsXz8Xrrb;
+	Mon, 13 Jul 2026 14:38:59 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl2.zte.com.cn with SMTP id 66D6crWj030739;
+	Mon, 13 Jul 2026 14:38:53 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
 Received: from mapi (xaxapp02[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Mon, 13 Jul 2026 14:37:07 +0800 (CST)
-X-Zmail-TransId: 2afa6a5487932ca-652bf
+	Mon, 13 Jul 2026 14:38:54 +0800 (CST)
+X-Zmail-TransId: 2afa6a5487fe820-68812
 X-Mailer: Zmail v1.0
-Message-ID: <20260713143707966lCkTinO0i9zYAc1K2ZmqZ@zte.com.cn>
+Message-ID: <20260713143854774IDQ756lKhFqhw7CX1qaXc@zte.com.cn>
 In-Reply-To: <20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn>
 References: 20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn
-Date: Mon, 13 Jul 2026 14:37:07 +0800 (CST)
+Date: Mon, 13 Jul 2026 14:38:54 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
 To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-        <ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <baohua@kernel.org>,
+Cc: <ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <baohua@kernel.org>,
         <lance.yang@linux.dev>, <usama.arif@linux.dev>,
         <chengming.zhou@linux.dev>, <qi.zheng@linux.dev>, <linux-mm@kvack.org>,
         <linux-kernel@vger.kernel.org>, <npache@redhat.com>,
         <ryan.roberts@arm.com>, <dev.jain@arm.com>, <wang.yaxin@zte.com.cn>,
         <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHYyIDEvMl0gbW0vbW1fc2xvdC5oOiBhZGQgYSBoZWxwZXIgZnVuY3Rpb24gbW1fc2xvdF9yZW1vdmU=?=
+Subject: =?UTF-8?B?bW0vbW1fc2xvdC5oOiBjbGVhbiB1cCBtYWNybyBwYXJhbWV0ZXIgbmFtZXMgaW4gbW1fc2xvdF9sb29rdXAoKSBhbmQgbW1fc2xvdF9pbnNlcnQoKQ==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66D6b6Sd028040
+X-MAIL:mse-fl2.zte.com.cn 66D6crWj030739
 X-TLS: YES
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Jul 2026 14:37:17 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Jul 2026 14:38:59 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A54879D.000/4gzCR12mYzz8Xrrd
+X-Fangmail-MID-QID: 6A548803.000/4gzCSz1KsXz8Xrrb
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 37CEE100009
-X-Stat-Signature: bu8mt3wb7ugs7wg9bi6a9x3g4uo5eeni
-X-HE-Tag: 1783924641-1494
-X-HE-Meta: U2FsdGVkX18N5dtPbUSejcUQDluSJIyGvzeBtRnC60z5QM+iEIRagYp93GNJ4d6SUxLzHSkx6W8S02KiG0BWxsmdSOrwYj/DGWnMOq2NbTfTZi/IxqA8N7Y4bsX8zGjG+x2N/MDhgW5dHb2bx1OYTZcgAyzbmLCu5RZv/mVwQAvHl+hZQfEVW0Rf/5XnupxxD8rZBaqZL3MgL+595Sle1KLvNwxV8w7POBKbNuT8epRdzMg+pN9iPdNmpgeOGKKTNBclly+FZq+iNYJ36eZKdXZBauUCnLFAB2uYA8k6w52LOOb9+dzKxk2/g+qfdaLYsIVQ/qtE5XPBA2UlvYfti1FwUqABQ8gGB9FcjbxvPW14zREhlpc5p69J6gRbG82H9bcrIo/PAEhUFmc4whU6zJBR/k27/jp1RDzcxoXQRrnwByMgJQoxqSxD8pektXxsQezDSWodDHifnNVC6hAP5FFBZ2CBlmyJcJytz25G38BXAzRvXVcPp2lGn15BUe7YFbhlg7E8vU13GurCxZDNPz49snAJSy0y2GyCH+6SqQ6BqyvqKQpIPiOkB9t4t6q0iVtrgiotQwVsOwtm1AZXFAMu9YrfhsPJ44yRVJ8Ax42iK6yxEG/lHmBRxS+Y+gcvADoedWDgt7+WDDK1wY89BXDezyWeXNWuQH/y6z3PgxZMNBoMa1HRz5QNAX+OU1SBrUhWu2ITFNafUXgHQRrS04OMJN6yJTY6JWhYP/q3KMNv6NBJQNkEuR3307KyUAGTHHPaMFz1SBA1/lF+cybwrG4GgXhYBGKjS4fhjFy2mOjSVScdTYf4dzOTjU1awBUpXXFwCbLhU8Lrl1+tQlclNvn4ZoTzR4qNdzLEdogy6A8iIPat4y6C0BNLSgQ4Q7Sl5InMrqrFJPETBamJ2m8JeOkmE/01QGNBzPOuQ3ux8fQttv5FCOGniO0RlBOPhR7fnDD1qsk7lqJ7Qd4d9uJ
- ymDsLDkP
- sjnbSBe72Tb3PupUqKZ2ihnmYNW4ixpqW6guobFjiJ8ztcVHk+7RZ2XXzP8C9KEfVMu8chs3k9HYs1RPsqxuc3s5on/jL/rkN9nq5Jq5Dvkg7P1W7oUlAtrS4Zj0Gax1MtQXDJIzFI/OCRVTPUPexhiuCqyRlXwi2MY9Un4oN/e/SsQJzmIihXd5Pq+ingenjBXM0w2W6kp/lo++TzcALuFYcgY/wmD0dsfqBZD74nHxNNFMFTfSDbKe2DpufZtMEsNsU8m9Z6jMX4UM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6AE4F40004
+X-Stat-Signature: 5hxaybz66cq4c1a1r73e3dyd8kmrg8rk
+X-HE-Tag: 1783924741-476701
+X-HE-Meta: U2FsdGVkX1+cZlxoTz1D6+8BftNFZVrSi3vsQZhTrEBa9cnaa8JOTszBZlKWc48IF/xQ9e81461kDXTQIJPiZ/1IQiIdy8qojSrS2yiWAnD2XQxYkvAjEaHI153QJsgRIkrD9iKR8i2feQ6mL200oyEgBDr6cv5HSnN+Xnwcc5gkYI/QzDv8VbnK6uwIkMHlO1KddaZYOF/RiLtN+1L9Ue5ftJU/ZxNejBDhNB0XaRA+ZoB6VDyNjO0y7rG8HoO1eVAgnsovch03qeS+RL0vY5oEZ5NPyKURiD58SSJt/NB0LOi5/mBF1gH59AUASk0AezKjSSuzynabmgwlIB4oc30a9MWzHB/+VuRtVD6gDJUFwSmWwGddhQ0i87x93qlHeYMcHNDws0wE9N4+YtPxG3QT4sLhYmuFeetaRqQ4HgiHcQB0DJeIYLyXtXaPkK1PP/CIJDrGT7gj1lpXaV0v0NwoCoYU+IU3VgGBLfEbiFvH/Ko4yHjT3dihcVV39Y/pWgTPBiniE7Q1IoWTtyIsnELLkvvUayyKS+p7FQpBpzYVm/gXrfDV1LAnevLXZf6ZV+R7dnsvon53Y5Q1LIc6f30y1Ygxnttw12qwZSNh7S9mK0eVLaUOEGnuGdIivUlj0dps3647ex32e1H1mCWMceVYwJ6XgPrxR8Kf+ggbuOv393NcwdlJ/o5BNJYk3qkK+LkVf4K4wg0QB17HHQfC9CWFPihbD7sIhWXBJoDNz4A1ZGqlwKiJyuUR69XkzgHOpFuRhOHxtfGL3E1n0UcdvXo50bF4MeazeObYAHnJjyQTUPF/lFyfKsa0UbUvqwtlLHE4GoQ8novoZabXKZwbeIOD3fdxrqkhFDLYB35vgfktLw25FpEcmSpABIxdhdnjxDkaI04ldnV2mL83eAfzm93DwGjGMusFF3bbPxSzKvfitOyMLaLD4z0DbAP+m+73uhXAGOi3Nprf6FtyFWV
+ 57WzwXww
+ qterPXgOW5imyX42vxOf4YZPVzpehzeC3fTnBK47jW0O4OfwP5/tee3H8RWhqmVtq/l/xhqWpItYID0ClehgPcmQTP7McKFnIairNt20ZSIxV8/Ko7Kov1I2hrKwCGVplwzEEcuGX7iQQkzl2mxFcntsvFMOqG7crtGlZIUau4itjDWvU90iwyx7ZtyoK6JXaP8tGNLtZe662G2KWOEm+jG3qG6+SwST13Ge17fyQaTzmZfswBFTF6dOREPgzd9Lm6pSgT58/JNrAdZKr//t5uaHx4cuVaHMDHeD8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,95 +103,54 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: xu xin <xu.xin16@zte.com.cn>
 
-Both THP and KSM manage per-mm scanning slots using the mm_slot
-structure. The slot is kept in a hash table and a list, and removal from
-both containers requires the same two operations: hash_del() and
-list_del().
+Clean up the names by replacing _foo with foo, and document why they
+cannot be static inline.
 
-Introduce mm_slot_remove() to abstract the common hash_del() + list_del()
-sequence used in both khugepaged and KSM.
-
-No functional change is intended.
-
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: xu xin <xu.xin16@zte.com.cn>
 ---
- mm/khugepaged.c | 6 ++----
- mm/ksm.c        | 9 +++------
- mm/mm_slot.h    | 5 +++++
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ mm/mm_slot.h | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 58e14d1543ec..5f6eb1bd9a67 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -606,8 +606,7 @@ void __khugepaged_exit(struct mm_struct *mm)
- 	spin_lock(&khugepaged_mm_lock);
- 	slot = mm_slot_lookup(mm_slots_hash, mm);
- 	if (slot && khugepaged_scan.mm_slot != slot) {
--		hash_del(&slot->hash);
--		list_del(&slot->mm_node);
-+		mm_slot_remove(slot);
- 		free = 1;
- 	}
- 	spin_unlock(&khugepaged_mm_lock);
-@@ -1802,8 +1801,7 @@ static void collect_mm_slot(struct mm_slot *slot)
-
- 	if (collapse_test_exit(mm)) {
- 		/* free mm_slot */
--		hash_del(&slot->hash);
--		list_del(&slot->mm_node);
-+		mm_slot_remove(slot);
-
- 		/*
- 		 * Not strictly needed because the mm exited already.
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 2791ce5bd44b..443dab513da6 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1257,8 +1257,7 @@ static int unmerge_and_remove_all_rmap_items(void)
- 				  struct mm_slot, mm_node);
- 		ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
- 		if (ksm_test_exit(mm)) {
--			hash_del(&mm_slot->slot.hash);
--			list_del(&mm_slot->slot.mm_node);
-+			mm_slot_remove(&mm_slot->slot);
- 			spin_unlock(&ksm_mmlist_lock);
-
- 			mm_slot_free(mm_slot_cache, mm_slot);
-@@ -2772,8 +2771,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 		 * or when all VM_MERGEABLE areas have been unmapped (and
- 		 * mmap_lock then protects against race with MADV_MERGEABLE).
- 		 */
--		hash_del(&mm_slot->slot.hash);
--		list_del(&mm_slot->slot.mm_node);
-+		mm_slot_remove(&mm_slot->slot);
- 		spin_unlock(&ksm_mmlist_lock);
-
- 		mm_slot_free(mm_slot_cache, mm_slot);
-@@ -3116,8 +3114,7 @@ void __ksm_exit(struct mm_struct *mm)
- 	if (ksm_scan.mm_slot == mm_slot)
- 		goto unlock;
- 	if (!mm_slot->rmap_list) {
--		hash_del(&slot->hash);
--		list_del(&slot->mm_node);
-+		mm_slot_remove(slot);
- 		easy_to_free = 1;
- 	} else {
- 		list_move(&slot->mm_node,
 diff --git a/mm/mm_slot.h b/mm/mm_slot.h
-index 83f18ed1c4bd..5de3e91d86b4 100644
+index 5de3e91d86b4..710c70166c79 100644
 --- a/mm/mm_slot.h
 +++ b/mm/mm_slot.h
-@@ -52,4 +52,9 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
- 	hash_add(_hashtable, &_mm_slot->hash, (unsigned long)_mm);	       \
+@@ -33,12 +33,17 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
+ 	kmem_cache_free(cache, objp);
+ }
+
+-#define mm_slot_lookup(_hashtable, _mm) 				       \
++/*
++ * Note: mm_slot_lookup and mm_slot_insert cannot be converted to static inline
++ * functions because hash_for_each_possible relys on the actual array argument
++ * 'hashtable' for sizeof() instead of pointers.
++ */
++#define mm_slot_lookup(hashtable, mm)					       \
+ ({									       \
+ 	struct mm_slot *tmp_slot, *mm_slot = NULL;			       \
+ 									       \
+-	hash_for_each_possible(_hashtable, tmp_slot, hash, (unsigned long)_mm) \
+-		if (_mm == tmp_slot->mm) {				       \
++	hash_for_each_possible(hashtable, tmp_slot, hash, (unsigned long)mm)   \
++		if (mm == tmp_slot->mm) {				       \
+ 			mm_slot = tmp_slot;				       \
+ 			break;						       \
+ 		}							       \
+@@ -46,10 +51,10 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
+ 	mm_slot;							       \
  })
 
-+static inline void mm_slot_remove(struct mm_slot *slot)
-+{
-+	hash_del(&slot->hash);
-+	list_del(&slot->mm_node);
-+}
- #endif /* _LINUX_MM_SLOT_H */
+-#define mm_slot_insert(_hashtable, _mm, _mm_slot)			       \
++#define mm_slot_insert(hashtable, mm, mm_slot)				       \
+ ({									       \
+-	_mm_slot->mm = _mm;						       \
+-	hash_add(_hashtable, &_mm_slot->hash, (unsigned long)_mm);	       \
++	mm_slot->mm = mm;						       \
++	hash_add(hashtable, &mm_slot->hash, (unsigned long)mm);		       \
+ })
+
+ static inline void mm_slot_remove(struct mm_slot *slot)
 -- 
 2.25.1
 
