@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 477B5C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0308EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB8E36B0112; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id 06E816B0113; Mon, 13 Jul 2026 12:28:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B90056B0113; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id 01E2C6B0114; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A08EE6B0115; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id D8C386B0115; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7075B6B0113
+	by kanga.kvack.org (Postfix) with ESMTP id 9C4646B0114
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A30AFC0632
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:49 +0000 (UTC)
-X-FDA: 84983909178.22.B8E5D2F
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73058C05D7
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:52 +0000 (UTC)
+X-FDA: 84983911824.17.ABF3313
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 104EF2000D
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YkNMk2du;
-	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf15.hostedemail.com (Postfix) with ESMTP id C7C33A0003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZPr6uIZS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951128;
+	s=arc-20220608; t=1783951190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Knn/IlgpbZTFm0uPlrSK4RQsRgPGqFz5Of3Db38ttBU=;
-	b=Nc7lniWYqMac6kmD9/IkHnn4HjO/SMQcTewFQf9H1dSFnpTVmgz71iBJpcUOVfA6aYXhFv
-	tQ5fLsEdrXvuEjbbLDcQFS8U82yjKB7cfHzf5nWaL/SwitXHSgdT62ltcnwCG0pzklmV+b
-	T1m5quNzx81M65aVX86JOhXgrwciPxo=
+	bh=kYKqDC64EtdDPB+h/buce3AiHZeNWwTAXVj0booe4O0=;
+	b=VMsxecrXABr4EXaCXamHQIjoL0vd1aYmU0ql82MYTQtoTWmmECvJnGVbovsg2oyrVfRiRs
+	EJ4mRQZnkjJdcs1n6zJ52xkUU8LrbGg40GWGTgPONvYSK+hz/l519Pgf/fC/Z5uh/iMj3V
+	l5It/iKwd9OFaERCO2gpNf2O6pmHZM8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YkNMk2du;
-	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZPr6uIZS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951128;
-	b=UyyKDlRRhYPhdyl5qw3/giR/McikXF2Sd8rWvYYFpngnChBcYxhRMH8+oZg9ebXBY/0nub
-	QaHjVyUkvZax92l3swkH8SaBGpxbFNzmWXThYXh2cFcAZkospnfslwKQMB1plBUZEE25QD
-	WGjzIiKrYyeq/UUnmVUab0UobVoO9Mk=
+	t=1783951190;
+	b=tTsVR79O3ntlz498fg+abBXzt2pFQtZli9HQvx5rM1EdR1c+a5jDiMbhBqwJo83n/nRVqg
+	JHTOh6oYBsXjmAxJIXBNiZZQiSLL5EtDhTQjqBeveOtAk5bc1h18s9EgW1rcyeCh16NkKk
+	xKQPBChnZr8vfH4WRJVtFnksnEJwaXQ=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EBC211AC1;
-	Mon, 13 Jul 2026 06:58:42 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB7A01DB5;
+	Mon, 13 Jul 2026 06:59:45 -0700 (PDT)
 Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F144A3F7B4;
-	Mon, 13 Jul 2026 06:58:34 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B08443F7B4;
+	Mon, 13 Jul 2026 06:59:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783951127; bh=uqt0YCzTdiYk9CWaJTOcbu4/zhkZINw0+fy6QeqfMrM=;
+	t=1783951189; bh=YqnJQyc9CrzYpyp6gWjknvIiJBuEo4b4nmLN5r/zhR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YkNMk2duo++wV39RQ3zQsSkBtiXGMU8KXH8jVFl7fKMdTT/xjjvp60qA2AMoxmk68
-	 Eg4fUEaPBaK2tL00GYQTBSmmhplTwjTD2k3y608RG1C/j/Fh8LekoiysZImaxes3aD
-	 i+drxBJLKGmYBW0HKqOEYeyxcBZniTS0k9lWnbXQ=
+	b=ZPr6uIZSUfuQyR/dBUHjcIk7LcANOKrIDpUnnXvitbMXbT2PO3nSzM8sPM+AmgFSh
+	 oEYY6m6leU6Z90DVlRyAPnZWbTAQdvt43qG1RNc/JG10d4j0cTl4zhpHBmeYz/DeiC
+	 gY5pxSreFEjqd85ky2RlKPv4w2j6RM2bSTCQi2Ho=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -156,22 +156,22 @@ Cc: david@kernel.org,
 	jonas@southpole.se,
 	stefan.kristiansson@saunalahti.fi,
 	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [RFC PATCH 11/34] mm: vmscan: remove stack copy address of pud pass in wallk_pud_range()
-Date: Mon, 13 Jul 2026 14:55:50 +0100
-Message-ID: <20260713135614.1618183-12-yeoreum.yun@arm.com>
+Subject: [RFC PATCH 16/34] nios2: mm: use proper set_pXd() for generic compile-time folded patable in vmalloc_fault path
+Date: Mon, 13 Jul 2026 14:55:55 +0100
+Message-ID: <20260713135614.1618183-17-yeoreum.yun@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C7C33A0003
+X-Stat-Signature: kh7z8iq5ahwa7jdunh3fpd655uc1pit9
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 104EF2000D
-X-Stat-Signature: haiitziuzmrnipuf84yrbaxymcstk6yp
-X-HE-Tag: 1783951127-215751
-X-HE-Meta: U2FsdGVkX1+BunRXFbUkh1aRmPZdCh0g7WPxA+nfE/N4gKC5cNCP9vaDOM4Pi6oG6me6+LrWzhHhXLKSfvZBuv9R3WEKf5M/jIKORzVO0jYEgRa2lhCKGAAXbHTYotwkOAdNp4OooXce4h3McaJ6XDT0yMxYgbKmJ6Ocs0MfV5tTIlrVUuZzkbFf/5YI/3CuULW0j+g04vNQCtjMIgYurMe3bVjlcqcxFk08ficfu1FxeJC/+7FCdNviZPCqbpURRS0XOi22TKBllBwgmgMOEDMMtAtTNWOQ9iPYylVcorLmhRVahU9nEFDti7AGuybXxKjE3xGQcZoeYWv+jJSG4z5nUPxh4QTtLhh60KEJ4Dm+n1362kF9B31s7Ro9Rf8an46wDLVOEoeRyqR3liURHVbSK+JdQSoGq1CtPzEGcvuoWKBbg7Jd34vsg0rf7QTZkxGiagKV+yXsgbKgdxV9aEdUPQ2jcd2TinatqdzVfMvnbmWSi2RHXYsB9RqS3bUMjaVPRvpDd05bW8hWgus9R4im+AVUo97hnQgMgY/NFtzdXLyADISFMYoPw9CK4DgWkYwBupHFodLgR9MHw7NEhporv4dgE/zAKwaO6QhPR7Vkn+Beh0FqoF7Bqpl61DaOEmEYPmZ2R5hvqOASJf7VicKp4+rzfsDvdlv5vZJwCECLT+X9Ba1hgJiAdvpy3jh5BHrM6UXLuqc6uiFptYvi2g8f7mH8hBUTt+ktLdaM+su3Qkrw9dc8+c+3VFt2xih6ytmoeuP8NPsHmYlJZ+mtLDVrVw2Afh1XnYLhWKzIXHAy0ZSqwrbVUyNNjkyJOYdT2wFD1e8b9USFta5zfjmR0mKp+FxNQVddtZCboyyo3Qu4eTG3N3o3kwksFAw4pwIRKG8UklDjZVWNN07dsSAkBHhCDHZeuwukp2i8SVmlxpVgvxH+W/HF92xS2ZhZy3+1E0knbYyah9bgGseVSqD
- aN0m1Fxy
- EibEY6xWXD65xAOz1WaY2U2jTZk88g8Ba/5eRanDZvmEbwOAXo7fLMC+dTs5AduRUfYqdLzkip2IeVJXA4d/32UAafFX3m8KRuE/XluTaMn42Q63yXej1cxZFwLDu7CuaIq8nhUk2zIo6R++SpNohTOMVoM2lVrbAncjFl1TB5yOQIPdjAumqSZDZ+WR5pqqiUn3+43MNCdKqtwTBynE9u0gi1dHzJhcK/Cs7txF7sH6hncaQ1yD6dgggIWrsIaUREQeNdRPMcDq8Q8EmKXA/+b1V/8XLfNweOSRbO0PdDbprE3wYBlCtfTP86JJN0Yt4/vIq2IvR7fepkvbswc1px76oCCdr2e84JeMSNjAwZZbib2U=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783951190-584798
+X-HE-Meta: U2FsdGVkX18u/DqYkdwXbWa0Zowck9Wm6ZcAtrtj44ApZrSdrUMOLlMv+XjHqAumAzfFmTKtLCIoZEB42ZaZCVeueA58s45zi/tg0IeFYYbr+D6OLugRtUYdTZ5+t62k3pskBmkv++eP+2ZCFT0vQz4ChFb1nLjCLh1mrw5DlNHjkdjlks9L20vhWg0gMtjcV/WyJPK6S7c1ET7liHKV+ZcDYtsZ2HJsF6zSwUweBkJeQTbL2gKV+GlyDCQKGIl3D4e2tfw51gWzc/C9E+0FaYwK+Zehn+4/e8FA5u+Q/VqYTl5JsFrDShYjPcTGJmiq+YoiwE1dKA+DZGXXWdqY2OUX4puluEP2JPBsDZYlpRc+H3CNuEYhJe8AfPob8KRnUIuEXptp/1PQh8eEgRo5tGn8qbJ54Sb6OkpKvZ8KnRjNIXNdPU/khDCYjdfXyXI31SR9a+y4RkTJn6jmPyiylJcGFc4ge2MUeTsiDPT+HJt6H/DnqRK5qA9/0NxZ6QBjf9meVnW04kPIE6bzb5nT1yIKZ3ubU0C9GUl2KWUMtFg2Ot2InkvSvcPbuwsimkIWsJlSxkhRpYGp6/AiPqvY+sKzRGa2TgPs6yEPnMrWma4q9ctSPdCMGF1QMriiDUPcaMCXVpA6kJw/R3KjJfMUiqlRDNNkGj9gtWEaT/7sEEs2YI+YtXO4FujK4DqYeZcj+o1Zkw/nZtd2dbL3sM60yEj0MrlQgEkbUn+5d/G55U4dZOGf3esFC0IpqZ4xwyp83Akul96U4WX1xkZDxtxQn1M2W/mwCMZuPRRmzIAN9iGG5c6IWEySX79zIj1JykN7DwU8L+rR8qrsL8yPAAGoRof2VrMDA99TJHAPXNaM+6kFfvjIAosyFGIN/6Pn1fa6/Si7qLIrtX/jJGHdypVGNBkHKSFGuKr+cL7Eu+RKpIniK/PYlUFZ85pL9ElT3ahW1RIquyngjIBw/6W1wZr
+ GPKPMxY2
+ p+WvMXKIUP8C5rGAF7+pA74f8UEr0jQeYJnJf/eHC+7bGFikl9YWiilIaSAdOEEljPAUtKDEcTH1tISuSEhE3JHbcGuxugQuhkgSkHQd7V9NNT1W/KLt7Yrond1pII+tb+4JrloG7up0r1aKOT7o5y3LECxa7SbdMyxQpuXW3lTJgSOfQO1znKoZEuEIErzFBtEswnAEFmVX/JcH3Uok8ObogX5301+o1JhDtrbBkkvhezBq/iUA2iJ/3tNafda8wvh7sYwmxo6RyeMHeRp0XcXOb4wfO2bI18l7HKtmmkiucPtQnDWrM0OcOoFrF/brqPy2dZZb4xeeXC/zCzzqV5XPmU+ogHpBAi7gaYpnViHVoXvc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,31 +179,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We want to change how pXdp_get() works with generic compile-time folded
-page tables. To prepare for that, replace passing the address of a stack
-copy of a pXd to walk_pmd_range() with pud pointer directly so that
-the ignoring the value of folded entries.
+We want to rework how set_pXd() behaves for generic compile-time folded
+page tables by disallowing its use and triggering a compile-time error
+when it is used improperly, ensuring that the actual first-level set_pXd()
+function is used instead.
+
+Since nios2's PGTABLE_LEVELS is 2 always, usage set_pmd() instead of
+set_pgd() to handle vmalloc_fault case.
 
 There should be no functional change.
 
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/nios2/mm/fault.c | 36 ++++++++++++------------------------
+ 1 file changed, 12 insertions(+), 24 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 986dde8e7429f..61470223d8213 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3725,7 +3725,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
- 		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
- 			continue;
+diff --git a/arch/nios2/mm/fault.c b/arch/nios2/mm/fault.c
+index e3fa9c15181df..f67d599115e9e 100644
+--- a/arch/nios2/mm/fault.c
++++ b/arch/nios2/mm/fault.c
+@@ -227,35 +227,23 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long cause,
+ 		 * an interrupt in the middle of a task switch..
+ 		 */
+ 		int offset = pgd_index(address);
+-		pgd_t *pgd, *pgd_k;
+-		p4d_t *p4d, *p4d_k;
+-		pud_t *pud, *pud_k;
+-		pmd_t *pmd, *pmd_k;
+-		pte_t *pte_k;
  
--		walk_pmd_range(&val, addr, next, args);
-+		walk_pmd_range(pud + i, addr, next, args);
+-		pgd = pgd_current + offset;
+-		pgd_k = init_mm.pgd + offset;
++		BUILD_BUG_ON(CONFIG_PGTABLE_LEVELS != 2);
  
- 		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
- 			end = (addr | ~PUD_MASK) + 1;
+-		if (!pgd_present(*pgd_k))
+-			goto no_context;
+-		set_pgd(pgd, *pgd_k);
++		pmd_t *pmdp, *pmdp_k, pmd_k;
++		pte_t *ptep_k;
+ 
+-		p4d = p4d_offset(pgd, address);
+-		p4d_k = p4d_offset(pgd_k, address);
+-		if (!p4d_present(*p4d_k))
+-			goto no_context;
+-		pud = pud_offset(p4d, address);
+-		pud_k = pud_offset(p4d_k, address);
+-		if (!pud_present(*pud_k))
+-			goto no_context;
+-		pmd = pmd_offset(pud, address);
+-		pmd_k = pmd_offset(pud_k, address);
+-		if (!pmd_present(*pmd_k))
++		pmdp = (pmd_t *)(pgd_current + offset);
++		pmdp_k = (pmd_t *)(init_mm.pgd + offset);
++		pmd_k = *pmdp_k;
++
++		if (!pmd_present(pmd_k))
+ 			goto no_context;
+-		set_pmd(pmd, *pmd_k);
+ 
+-		pte_k = pte_offset_kernel(pmd_k, address);
+-		if (!pte_present(*pte_k))
++		set_pmd(pmdp, pmd_k);
++
++		ptep_k = pte_offset_kernel(pmdp_k, address);
++		if (!pte_present(*ptep_k))
+ 			goto no_context;
+ 
+ 		flush_tlb_kernel_page(address);
 -- 
 LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
