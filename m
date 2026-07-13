@@ -4,82 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5935EC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:43:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E46C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B3FC6B0088; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
+	id 82D8B6B0095; Mon, 13 Jul 2026 05:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58BBF6B0093; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
+	id 7E3F16B0098; Mon, 13 Jul 2026 05:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9456B0095; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
+	id 6F61D6B009B; Mon, 13 Jul 2026 05:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E2496B0088
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:43:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6DDD140A85
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:43:34 +0000 (UTC)
-X-FDA: 84983265948.28.16A5A32
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AAA88140008
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:43:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Vpd08eG5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf09.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45AA36B0095
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:47:14 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D2D081A043E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:47:13 +0000 (UTC)
+X-FDA: 84983275146.10.5406B54
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D8AF7C0006
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:47:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783935813;
+	s=arc-20220608; t=1783936031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YVmVbtBX3HCj9Ijd0ts5x4Wm1TJDsoimgyijvblmLxM=;
-	b=J1cB4TCtpYDNsP1Pf/GsQj5DXv1CEFVVVbLDLkmaKqfRfrfGYoEd8XNnM2LJ03l/HK2nQ3
-	6hVfNSTEwXEm2hTiNxrxwg9tN8kS5nOTmiL7exXd+QnWzlBky8UJCQZwL7UME9cNtp635z
-	ynb+LfmpIoRitRdMyMyG8/VFSsK7gZk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=PevrcelE81NNGM+FN+mjDMHyBEWX4U4DKuxIUeoVbRk=;
+	b=IugHphDXxa+LJ+bK77UNK3P8SAmVmfbB01S3C2/uBLG5R2DE7PfX56ceJfWWxZ7rJ13w+j
+	gP9p3AD3IOzUmXoDh+p7Xh8m7U2Sw1HJ0Gdo1Q9b0yv0gpCubU3u9gdygAlMV6bRu2D4bD
+	kfsNpXp16/3x6ussH46pmjRlWF/rwBk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Vpd08eG5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf09.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783935813;
-	b=k1ACQpf6pj26BTlL7HB3BxmZnOYBobFbWDOHfedLxtw9GfENfIZnY22Dm3Z40i+IdX6HSK
-	DDwW9UU4nkzmAcU2IU6qLvGyWI+jpF8vQtfacaP6L7uHOWksUUe2xT0J59ox+LeOUh11Zi
-	C9q0qimolHvwbTdwpO8a+vWOoczXcFQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1783935807; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=YVmVbtBX3HCj9Ijd0ts5x4Wm1TJDsoimgyijvblmLxM=;
- b=Vpd08eG5mYOeAXAMCR/jYa2ZDQrFEU4NmYK1Ty0KaLkUctzIVecmT1z/WSJGRLfqaJ5tFb
- EwV+5ft8pE8RJ+MbKuDzg9lkJZbHhkYOAv1P+t4KTcGJSG3ORTj1twt710VwuWnqWkSngL
- 42TKTCFo1BSyyuXzn3Uk9BEk13sIgBePePJhUVx1Ba45Q6opSKX90tFuv5CUOPjisaeweN
- tZfB3BSSskoneXw7nkthA0vZfychvTObwC2t4QA82eRjfNFTG5nEhsi0KNrNIBB/TUxFaE
- JJgMpvBPQsuT8+vP59Tsr/NbML+3/V4T25MvXes76ku6rHdOzFL4ceGUBsCBoQ==
-Mime-Version: 1.0
+	t=1783936031;
+	b=VsrRagfBQ6hScosk0a+UCrVknQMNxRXrIUtwxq9pJUQWuL09LGrYYdzmxMsbA8Ktw+hmNJ
+	K11Lhy47mjWwFGyXCq4Hcp5ujT/+QQr5+hQ1vvXDPI32eZeRCk1UbfuUK1b0+fjk2PUb2a
+	Id8IzddkmOaLIRrdpx5dBzBjLt/0Pn4=
+X-UUID: cc00c1f67e9f11f1aa26b74ffac11d73-20260713
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
+	SN_UNTRUSTED, SN_LOWREP, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
+	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:707452e3-6bdc-42b7-a307-f99e573fba5c,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:35
+X-CID-INFO: VERSION:1.3.12,REQID:707452e3-6bdc-42b7-a307-f99e573fba5c,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:35
+X-CID-META: VersionHash:e7bac3a,CLOUDID:45f03bc318b5c2a89ee2ca66b1a07fef,BulkI
+	D:260713174704KM5LZ185,BulkQuantity:0,Recheck:0,SF:17|19|66|78|102|127|865
+	|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
+	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
+	C:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: cc00c1f67e9f11f1aa26b74ffac11d73-20260713
+X-User: husong@kylinos.cn
+Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 85431330; Mon, 13 Jul 2026 17:47:01 +0800
+From: Song Hu <husong@kylinos.cn>
+To: sj@kernel.org
+Cc: akpm@linux-foundation.org,
+	shu17az@gmail.com,
+	jiayuan.chen@shopee.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Song Hu <husong@kylinos.cn>
+Subject: [PATCH v2] mm/damon/tests/core-kunit: test damon_nr_accesses_mvsum()
+Date: Mon, 13 Jul 2026 17:46:48 +0800
+Message-ID: <20260713094648.897239-1-husong@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
-To: <akpm@linux-foundation.org>, <shuah@kernel.org>
-Date: Mon, 13 Jul 2026 17:43:19 +0800
-Content-Type: text/plain; charset=UTF-8
-Subject: [PATCH RESEND v4] selftests: mincore: count file-mmap readahead on both sides
-X-Lms-Return-Path: <lba+26a54b33d+7b1c30+kvack.org+wangyijia.yeah@bytedance.com>
-Cc: <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <muchun.song@linux.dev>, 
-	"Yijia Wang" <wangyijia.yeah@bytedance.com>
-From: =?utf-8?q?=E7=8E=8B=E7=BF=8A=E5=98=89?= <wangyijia.yeah@bytedance.com>
-Message-Id: <20260713094319.771550-1-wangyijia.yeah@bytedance.com>
-Content-Transfer-Encoding: 7bit
-X-Original-From: wangyijia.yeah@bytedance.com
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AAA88140008
-X-Stat-Signature: z8xh9odmageoix7bdxdtk3s81w8hkdxx
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1783935812-195597
-X-HE-Meta: U2FsdGVkX18NvppfmQ3FeXHbFrzl2upwZtYYxsB67ZprjlG9VjKVMeIuuUd9O78W7+gG9T/fYj9bXiIZHFVq7cZjknmF0EBToq7+VXo4Ibs+wGobrzUJT1b0FCyAMRTq0EmohFetlpSXwgHwbimldv7lH/4QEM1HLT9py9e99qA/WlDGz5o4L84VRAwz+WlH/ionFsaFhu0rZkBtEjw6wWDnjC4B+D3vc+lEByqpMLgyK4Dbyj5wz7rYxZZsXqWCJZ7dzMink6xPh3X7LZeovYaKVyhKg9b8e4eF7PpOeHs/evIqmE7YKaIwVqlffOLhqQexPKpAraHw44J5ylhn9f+GNDz7W9BxekDQPAFFBFN7V8trB1+9PXbfjCJ5H9Rfixa0T5OFyxfURYkmamEt7SKN2kWcpaJbpn5QbVgzQhKuK0UXtztVPPQkhOj53s77nfLVHZ8VoJ1IfPxsRYuC1C1DmMEfIKmFTqmh4jgBwAL7zdcdr1dnBx7vXuv9J39SnYsmhS6EVLiunis+r7zyYPzgxWVgP++D75M8GO1/CWtUliye5eOcqmcwggD+DB0tJwagl44o6vzB8aMpB5bgOt5o/QRPR3Kj9Z/I3PZWXaXlBJZ1//+70R2De78Iq/MYmmOEiBHh/gkVT7+/a0sVjIJDhndrnQeiB1zmC7PWgqx66W2ndo58L4JUIrBy+AH/IkY/FoeWdPGFR+c6gTOAmNf3wBBKyiZ3lQZCY+rt5M4333+SB8kmGhRD+SOrSesdhiVTy+gf2dBle0HhSC05xqSvkR3fmmCx3+jQMiU2bhuI7679Bc2fo1Fst4Fxf1njfnrfb+mz4+IzaRrgjH7Hexo+Wp9TK59aO1LS5l5o6fQoc9pbxO/duk6Y7KmiTgY90rK75YfQYFxyC3j1pY7PCfnTDRHGBMcxs7MMixpTlMsFtoRtLfSZK3BlJf0pQx4M9J3MsvpcEqEX60oQV6d
- SVnfkmPd
- EreBEZ/Jj8hLVJCVTIfa462yfju540k7VtYnSVgWSWuPPMoRVhTl9RsSaXKmsXYqMYz6kdx5xsYU8bUptQmpDvsL4RWt2gQvpZEilZ7JPTgTXiBI+dnWI5KAp5a4UyoOoKJtH0IVJqRzS9+aJ5y1l4L5ojjZdcmbmVzFl+HCn1v/B2NL2OkL/65dbhtXIFDugBvogYFdeOTvS8XLBCOzND54+ijrkZIvuWRHsK6vfamwRLlIR0PSXj3gWVZNJlAEISH18P81W//ibO5tiXF9MtStFaQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D8AF7C0006
+X-Stat-Signature: kar9s8oaidz963mwt9xqc564p98xc9rr
+X-HE-Tag: 1783936029-511698
+X-HE-Meta: U2FsdGVkX19CpbxXQBud+1kj4KdIkKM5al9UfjecS19RnGswFP4SwJpL3w+lFWWMrvYiLeUrsPacuKncDHtnEeWSovAfl54sfh2cXVaKifINN8LV0almXnjhX8JjXpTkMM0d6SIONfeltc0p+ub3rjN7USLHG+oVqSA4o+Tcdl7o4IYmpViXfgxWqtf7OU8ItB3cH2XP1+kv7khHaCckOjFoTBcP0d0J8bFXdWlm4P/PDBJ51S8tEOVHt3ApXYjy78T8GY+BTaiUiSknAKJATKTPL31dUtC6u35COpuHF7KzOYam8Q/XqIL4dbF0tPbsog8medU/kEDR2qYPt0MBLTSQ2RQ/hvqoHeqx9q0CjGCljXriV82ZcENFAOn8D+KjiWUNIVTpY4xae2fL+9N8xB0hCMkQCJqutkh7h0vO/1iipfulTMiXXhD+aSVLmbbbBSBrtq7iFNsTJ09p02F/IxueTh7htJRlYlwZ/aGouCBSn1qaSkIzqXSyzgbuNlFErjnPhV0tTGbq1aOGUhDp4wioYkajPlpLCIGIOw2HLx7pbbL0VkhVPB5njQDxPEEIuFQhUd8st4+wPO4YrJqZXO/N4C9G40Nwav3yUqGd7RmW3ozYAeiCqVea+xqiGt6cKzPV//3TvPGimQBPzUYYvzM2NTTitxO0isPWepMaN7NdEoBLCphsnYiQdwVyH7TB1cSftNovF9IxKIPopU8m/gR5XH3yspSC5jIBs7i61gAmUnYkta0p8TJIGdy7OMIzPf2kasgA2xKf4gAuAVVlgKywfhuFPAcet7WGkH38nm1NaihCfpvpS5XYXMXkQVueY+yF4DxR7jHBkvfx0+qo3w5wwkbfnTjgJKIclft5R8Xw952r/MmdSEqeoQSPdPcO5zVbgzSIwpDGQFD68OLOInZvlk84t0rO0GO7NBlrbUwIzkLajRRwQkltZsrV6T3ROCqQIfccagYAyeqjco+
+ KyWxNSsP
+ Qg0RMzV6kl8ht2nf5gRo9gx27xkxWgjRY+Zf+DfNwdPRNMR4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,64 +107,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yijia Wang <wangyijia.yeah@bytedance.com>
+damon_nr_accesses_mvsum() wraps damon_mvsum() with the monitoring
+intervals of the context to compute the pseudo moving sum of a region's
+access frequency, with a special case for when the whole aggregation
+window remains. damon_mvsum() itself is already covered by
+damon_test_mvsum(), but the wrapper is not.
 
-check_file_mmap() faults a page in the middle of a file mapping and
-expects the mmap read-around path to make neighbouring pages resident.
-The test currently counts only pages after the faulted page.
+Add a table-driven KUnit test that exercises the full-window-remaining
+boundary (with both reset and not-yet-reset nr_accesses), partially
+elapsed windows, and the no-window-remaining case.
 
-That misses valid read-around on systems with large base page sizes. On
-arm64 with 64K pages and the default 128K readahead setting, the
-read-around window is two pages wide and centred on the faulting page.
-Faulting page 32 makes pages 31 and 32 resident, so the forward-only
-scan from page 33 reports ra_pages == 0 even though a neighbouring page
-was brought in.
-
-Keep the existing readahead assertion, but count resident neighbouring
-pages on both sides of the faulted page. This fixes the 64K-page false
-failure without teaching the selftest to compute the expected readahead
-window from sysfs or other implementation details.
-
-Signed-off-by: Yijia Wang <wangyijia.yeah@bytedance.com>
+Signed-off-by: Song Hu <husong@kylinos.cn>
 ---
-Changes in v4:
-- Drop the sysfs read_ahead_kb helper and skip logic from v3.
-- Keep the existing ra_pages assertion and count resident readahead
-  pages on both sides of the faulted page.
+Changes in v2:
+- Drop the confusing 'bp=...:' annotation from each test-case comment.
+- Wrap the function documentation comment to the 80-column limit.
+---
+ mm/damon/tests/core-kunit.h | 49 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
- tools/testing/selftests/mincore/mincore_selftest.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
-index 3182043..ebf2b06 100644
---- a/tools/testing/selftests/mincore/mincore_selftest.c
-+++ b/tools/testing/selftests/mincore/mincore_selftest.c
-@@ -243,8 +243,10 @@ TEST(check_file_mmap)
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 0124f83b39b8..d085c90484d3 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -683,6 +683,54 @@ static void damon_test_mvsum(struct kunit *test)
  	}
+ }
  
- 	/*
--	 * Touch a page in the middle of the mapping. We expect the next
--	 * few pages (the readahead window) to be populated too.
-+	 * Touch a page in the middle of the mapping. We expect some
-+	 * surrounding pages (the readahead window) to be populated too.
-+	 * Depending on the page size and readahead setting, the pages may
-+	 * land before the faulted page rather than after it.
- 	 */
- 	addr[FILE_SIZE / 2] = 1;
- 	retval = mincore(addr, FILE_SIZE, vec);
-@@ -253,6 +255,12 @@ TEST(check_file_mmap)
- 		TH_LOG("Page not found in memory after use");
- 	}
- 
-+	i = FILE_SIZE / 2 / page_size - 1;
-+	while (i >= 0 && vec[i]) {
-+		ra_pages++;
-+		i--;
++/*
++ * Test damon_nr_accesses_mvsum(), which wraps damon_mvsum() with the
++ * monitoring intervals of the context.  With a sample interval of 1 and an
++ * aggregation interval of 10, an aggregation window is 10 sample intervals
++ * long.  Each row below specifies the passed sample intervals, the next
++ * aggregation time in sample intervals, the current and last nr_accesses of a
++ * region, and the expected return value.
++ */
++static void damon_test_nr_accesses_mvsum(struct kunit *test)
++{
++	unsigned long input_expects[] = {
++		/* passed, next_aggr, nr_accesses, last_nr_accesses, expect */
++		0, 10, 5, 3, 3,		/* full window left, unreset */
++		0, 10, 0, 7, 7,		/* full window left, reset */
++		5, 10, 3, 10, 8,	/* half window left */
++		8, 10, 3, 10, 5,	/* 20% window left */
++		10, 10, 42, 49, 42,	/* no window left */
++	};
++	struct damon_ctx *c = damon_new_ctx();
++	struct damon_region *r;
++	int i;
++
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
++
++	r = damon_new_region(0, 4096);
++	if (!r) {
++		damon_destroy_ctx(c);
++		kunit_skip(test, "region alloc fail");
 +	}
 +
- 	i = FILE_SIZE / 2 / page_size + 1;
- 	while (i < vec_size && vec[i]) {
- 		ra_pages++;
++	c->attrs.sample_interval = 1;
++	c->attrs.aggr_interval = 10;
++
++	for (i = 0; i < ARRAY_SIZE(input_expects); i += 5) {
++		c->passed_sample_intervals = input_expects[i];
++		c->next_aggregation_sis = input_expects[i + 1];
++		r->nr_accesses = input_expects[i + 2];
++		r->last_nr_accesses = input_expects[i + 3];
++
++		KUNIT_EXPECT_EQ(test, (unsigned int)input_expects[i + 4],
++				damon_nr_accesses_mvsum(r, c));
++	}
++
++	damon_free_region(r);
++	damon_destroy_ctx(c);
++}
++
+ static void damos_test_new_filter(struct kunit *test)
+ {
+ 	struct damos_filter *filter;
+@@ -1576,6 +1624,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_update_monitoring_result),
+ 	KUNIT_CASE(damon_test_set_attrs),
+ 	KUNIT_CASE(damon_test_mvsum),
++	KUNIT_CASE(damon_test_nr_accesses_mvsum),
+ 	KUNIT_CASE(damos_test_new_filter),
+ 	KUNIT_CASE(damos_test_commit_quota_goal),
+ 	KUNIT_CASE(damos_test_commit_quota_goals),
 -- 
 2.43.0
+
 
