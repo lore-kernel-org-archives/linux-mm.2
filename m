@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D90C44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:30:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC821C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:32:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B4626B0005; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
+	id 991816B0005; Mon, 13 Jul 2026 05:32:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98BD36B0088; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
+	id 968BC6B0088; Mon, 13 Jul 2026 05:32:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C9766B008A; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
+	id 831096B008A; Mon, 13 Jul 2026 05:32:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 619D06B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:30:31 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C2CE912033C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:30:30 +0000 (UTC)
-X-FDA: 84983233020.30.E8CB4DB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66DD46B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:32:08 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 00C6A1C96EF
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:32:07 +0000 (UTC)
+X-FDA: 84983237136.04.71035C3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F340E80003
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:30:28 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fA9fJoo7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783935029;
-	b=WT373KkMZbPmVh+hIED5tgti+++Et8nrIZDpTe5oMOz6BxN4+mwGKAe6Hl9j080czb2tqQ
-	zOJB9uZIsTS95XoJnv9qaZInVfcOdo+t2eCP2Cg+8/ZVpgu4nMdeyTm/SIu/2N1C2eOyrZ
-	roBzKal7keTGq68e8hVW9wh6fSYuq/A=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fA9fJoo7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 344A640007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:32:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d4pW/fYB";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783935029;
+	s=arc-20220608; t=1783935126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P+HnwQIMWga6Fivte5SRYooq86xfzTJgE0AFjo4ZSuw=;
-	b=sQW+VYLoPbFKp5RLYTaOb7z1ECMpytgFv14lMpVzXXfQ8AeUs4J5C28Hvo/38kHSqjTR2y
-	6cfbUw/Bc7UttLI/BPA+qAG0VrX26rDEM9oqSE+BsCpInmMHgJ7uQ3M2M1Ufifv284AIEU
-	MnGNuy3xRw4OVOGEsin8gwUTG4quZuU=
+	bh=8lhwsqOR9OYufkP9Jb1Vo4afPwabERH4nWOwiGvWRp8=;
+	b=Eua2/HvVoiAjphx1xj+8ffF1DU01z/JT6KX/yCobovYGxCdbpnh/6o7Rt+zIlUqiJpI8gJ
+	Zr1Jg3tiCIAEy1NLKtJIssAPT5hZvCVhgF+e1PlwKcyraNR2J9Yr/tDNxHgF9peuNDAJv5
+	7U/CNrDDDbkM5TciMHq3g/ydY7GIh8I=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d4pW/fYB";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783935126;
+	b=TJ8McA+DAe2cXr8HNCokjl2okgTtAWalPSb4Kn1DXX46OtrMA+DsWUAnywh7we0O8eTul6
+	y1hhkhIjjbkKfXtXR0UlskkhPxZpXapo+0kZRgc/GR526dZFbCVxQ19aEeiFqwSCYuDLN3
+	edYnjfY3UA5FJ3aLCOz01LIBAFQzTyM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E9DF941247;
-	Mon, 13 Jul 2026 09:30:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B971F00A3A;
-	Mon, 13 Jul 2026 09:30:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6BDED43B55;
+	Mon, 13 Jul 2026 09:32:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E911F000E9;
+	Mon, 13 Jul 2026 09:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783935027;
-	bh=P+HnwQIMWga6Fivte5SRYooq86xfzTJgE0AFjo4ZSuw=;
+	s=k20260515; t=1783935125;
+	bh=8lhwsqOR9OYufkP9Jb1Vo4afPwabERH4nWOwiGvWRp8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fA9fJoo7JuzO35KXbjPsYfvmtv5gRBXdH3Z9Tf3oo0BvntiWFSiZp/ea8kZgGQkGG
-	 RzjSUbF3c5ISlhHXDkr/SY4Cq70jmkUITRwkm/r9C+UAtLi+0IWWKrjMHEA4WYOyfw
-	 DEYLaroOLDwtqE1vzwKT1XXXVaaAIVOv17q+kawIlOd3JIAe4QZMcX39aofVTpp3nx
-	 5QmuoMzBxRcSl6XhBsiFVafLxSeJUwrjQVpwEbiIvmSIdbbItCSU2vabaoj+22YTAy
-	 VCqRxXU82jfjyhGn10tGHVZExZMosu5VMnjE7EZysnAKbkP7puGp6R/gN4H+lDbyI4
-	 6RdxZ8yaW8YBA==
-Message-ID: <e0421ba6-82a5-4c88-b5db-23231c265142@kernel.org>
-Date: Mon, 13 Jul 2026 11:30:08 +0200
+	b=d4pW/fYBkfgMCUljrGQAVHeKqZQBN0BBW6VRizcv2ahprCpKY8bmwK9c1ws/meNO0
+	 yf3fDImFbMOL8rKkO4VQ7nccY/p8J+EWvEBRlkAaouQ/j4zuuiiWrEdiDwy23eofRK
+	 98oU5N71VFEjrW6wbLZfxZFfh18hZqUFkwB22RY20j2K8uVZUsArXyCFtxqJaN6NMY
+	 KHaIuSkdQbVoV+8BVS1ccc5MKPknsIVm46iZGEf9IkuZK1TsE4O95aH0J5foydJcDx
+	 CIapPev3EIdba+E8RKdrnD1mDLFf3xpGZIfAhXpPyJ+L+FoFh4DhiJG4eB4ZluCdVv
+	 9ugNcRnYc4XDw==
+Message-ID: <e0dafac1-739b-495e-880d-879bdd984fcb@kernel.org>
+Date: Mon, 13 Jul 2026 11:31:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, andriy.shevchenko@linux.intel.com,
- usama.arif@linux.dev, hughd@google.com, ryan.roberts@arm.com,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
- <alHNjbiWFYXSPZtY@casper.infradead.org>
- <5ee8783e-4deb-48fc-a4c4-96b02d79a6cb@arm.com>
+Subject: Re: [PATCH 2/2] fs: stable_page_flags(): use folio_test_*() helpers
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ ziy@nvidia.com, luizcap@redhat.com, willy@infradead.org,
+ linmiaohe@huawei.com, svetly.todorov@memverge.com, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20260702110614.2176986-1-tujinjiang@huawei.com>
+ <20260702110614.2176986-3-tujinjiang@huawei.com>
+ <905c7dc9-a0d5-4b28-a899-53798fc4628e@kernel.org>
+ <8b51832b-391d-4497-8135-8a3cdd4e4f57@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5ee8783e-4deb-48fc-a4c4-96b02d79a6cb@arm.com>
+In-Reply-To: <8b51832b-391d-4497-8135-8a3cdd4e4f57@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F340E80003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: zrmnyosj5jfknnahi1xdnycakh646m8u
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783935028-952494
-X-HE-Meta: U2FsdGVkX19NFuh47palR5eAYLxrcvkCOg78RjUkiTXJpWsaLDqQIRdzX6+4apsBLUo6afHgFaGYMJ/9CEAswJQrFGuVJL4KF6ZK4ph3vuQ+AVBbN8c6SXnAsid3JVMrYM03ib21QVB8MXAv5oYaMnlaEFCTseiFCf/lZlepAFAmAaNiimHQIUg10KMl9GW3PDzGrPTbiTbSlfqExSwhTac0ziRQXA5BZl0kHKX4BjiguVdkp4TwEUWIynl8BqPynxZtnXxIisBQ2thHwj8adFrY1w+4+fbzf/VTvLyV4Tn1LtvSNUsYa2lEOtV2qY7KQ3O7sWTTjQz5zrgU+2J3jyyahjwlOPm9svALb+qBhxcIIwjgKOXngJOrGYQF13OdlGO3cm4zJkT1lfdbzJBGqAn3rmJ+IFiJzXFjTSQT6DmMkpdtjFqtjCNkfNMe/UPwwnsDTxRsIyjMKejth1Qa59RCIBl8kfEaRAbNmJfge8j+Xe2NrYKvh4JbkeQ7cfJ5aysFxcoMz1KCrS92X+Zep5WnIwzIVvKWlQAavcyp6x7DcTtkMZVCc3Pfs0nmgQ/rHfSw2ppQZjWaDrgY54bxRLogZ/cwbGw7Gz2ggWUFdyiKvAdC/QcvrPIhnw0dID935Cpx87Ur0k27C7EoCqA9CPYGuVvvz9XZkXWHXMItN8nP/153WVO+sOGYdRiBE7OwmD8DeReSGqNRy0KfLRWPii5Meav2FbbOtcivpo7+C6WHjTpqbwJC4f6KG/DZaXBgBoBY3F16Ew3wqI+e4NW9hl+G4AjKfV/MY/LEfgZZzGwueYTRrnXpfv1jhKaS8U5RTrID4EAWsF51ERK7oy65COYND0dWK4dB32BeffTFP+8rA/dqs7O/LaH5er4NoYsMl0FXNTreKDoTvc1xqjY3GmFjkQx4kSwbHuDd6Fqxd39/p+HPuGFADMQ8MRQBUqSzzbrm8VA72SAICm1fylW
- X5Sw/3wS
- J0SgRPwjX93pWbk5ZQ43xb2AJA6HRBEwGxFmMOrHuPqkqdHefT6SOv8ofIhrysJFk98zw8KwJf6qjM8e/E7fcu8Dul01FM08p/rfAvS6g5ZuAd4JnYBdJ2k1IKPuKnUqjo4wEl2ungz1XkFVU0Cg6bUxTS+AypYW3s9fse969C2M7fsFOAEJdGt96TVRT4IWFNcSX/jAIVOLceI0qLwcUdYGbWJVgq0Er1MF+XtpjPYWB5/ZOYrrnv0a2iXsybk+PTjyy
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 344A640007
+X-Stat-Signature: 18h5w634i9sgmqrn8r44u9oqgdgjdgj5
+X-HE-Tag: 1783935126-45571
+X-HE-Meta: U2FsdGVkX19ONdN/NF2Xjj6T+8P2QwbJrYOTrg+pzKnNXzIymdG1G0YkDdcyPG7nXAZwd/7iUIjU+V4fCfcitS1aEx6W30qmQm4d3/xg+KmwB1s8vHKK6UIPqSPJURxqREYcKY+nsWhugUbfcY/gmaRC5EzUvtXgbBLhdMbheW/pGnyDob1exHEEpQ/q6nJGXlZDdH758enWOR/LxkCgJ4lqZIV3eEDN+sfjabe4ZMcZF9EClyMa3Sv3YnWLB71M2zDwhrKbsDuHa933CmuA9SI/P4seLjfihoD1Ls5mdZDOPcDMDBW1tS/DnUDLVce+Rle6Ag5lzYYMJHd38bCYekH+jxX/KVI5hX+L5reVrzjQCVv6+FmjYBcAF7EZi/+hF2uXIuUpDrNi+uckCs7hf1JIeFkEJDq6lQvMLFomBYn2jUgNr0qjXe0vHsXATD1aXh3hT+zRsTvyFhw2G22JLY9t+KOrZqMALTFHvpQXzZlXSynIwC+HpfDxYcNCTp4idjoXdP+RYrbryuletK/kvjnEg0fWKuelJf9rBo737LoVNEAsS3CqAfkfLykK+KLA9oLGDLuHCFioc8+JNAzwlIwqdYgb8Lz5aVMfCqyQcqOpG8tiN9g54uFATvRkhbu+m1rHG43Z7N2ceXdFP032eFELTeosThklAsZqAi8Z5FVmktvpAD0C6qPfNBCM+MT5gxg/qmHWvtLHarmjkeF9y5hzx2X1b8ICwwaI+VIN86hVtB3KhmH+EcRPmfUikDFHq+wVuCAGjMnLPujE6xOgu9PvS8Dg8wdi7iZ3s95eRBeNz7kB2xK3mrXUu3x8b2TNd2wV7JDZ1uLP8mpvozgx0mhowVoE9Rh9U1pCAGBsk+8F/BHccDHJp626dM7GfE1I5cbdnShN1KtbwHwlY3QKmche9GVDgOiB673lmsb05+6ENihxFGPp4nUPEVS0mVjflF8qc4SX2kL6JAzOQ4Q
+ lYWX2jY+
+ D2ZN8qT7A5uIFpB3aiBcEjgaJx8jDkt3/obUeaHgiL1Kn1kwGeC+QYsxrgU+FOkThv+gw3XdiGgMPV4TVZ9W8fkh+WqhDjdBPJaCNSoZeNNhy3OQCwVQ5Gv8JBUxT/FcvyKdjTgzvTszlOI5HBs8ljx4NIIK+3swWyW/b+9Ypnvkn+inwxKWIoldosjNpxLWJv9yUGcCIWTIIz8FfPTk+EuqrscD0Lmu19qhgofl0uhQ9cVuZ2UyTmkOyoO+cnQ+T2meWj8BA+r6ZwZZmvDW2w40oMoOLkFBPQm6qpsHo+k/BmT+ILluvv4CxW2UoP3LR5MnZZ9fpWe1M8l/qtT5az3Vb4wCbySk8InfE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,34 +142,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/13/26 04:37, Anshuman Khandual wrote:
+On 7/13/26 08:58, Jinjiang Tu wrote:
 > 
-> 
-> On 11/07/26 10:28 AM, Matthew Wilcox wrote:
->> On Thu, Jul 09, 2026 at 10:13:34AM +0530, Anshuman Khandual wrote:
->>> @@ -532,34 +575,34 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->>>  	 * see locking requirements for print_bad_page_map().
->>>  	 */
->>>  	pgdp = pgd_offset(mm, addr);
->>> -	pgdv = pgd_val(*pgdp);
->>> +	ptval_to_str(pgd_str, pgd_val(*pgdp));
->>>  
->>>  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
->>> -		pr_alert("pgd:%08llx\n", pgdv);
->>> +		pr_alert("pgd:%s\n", pgd_str);
+> 在 2026/7/10 19:29, David Hildenbrand (Arm) 写道:
+>> On 7/2/26 13:06, Jinjiang Tu wrote:
+>>> stable_page_flags() currently accesses folio->flags.f directly. Since
+>>> commit 476d87d6a061 ("fs: stable_page_flags(): use snapshot_page()"), we
+>>> can replace these raw flag accesses with the existing folio_test_*()
+>>> helpers, thereby cleaning up the open‑coded flag handling.
+>>>
+>>> For KPF_IDLE, set_ps_flags() already handles both 64‑bit and 32‑bit
+>>> cases, so the duplicate code in stable_page_flags() that deals with
+>>> CONFIG_PAGE_IDLE_FLAG for the 64‑bit case is removed.
+>>>
+>>> The flag bits that has no folio_test_*() helpers are left unchanged,
+>>> including PG_owner_priv_1, PG_arch_*.
+>>>
+>>> No functional change is intended.
+>>>
+>>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>>> ---
+>>>   fs/proc/page.c | 94 ++++++++++++++++++++++++++------------------------
+>>>   1 file changed, 49 insertions(+), 45 deletions(-)
+>>>
+>>> diff --git a/fs/proc/page.c b/fs/proc/page.c
+>>> index 2717dbb0431b..0dbd46fa84ea 100644
+>>> --- a/fs/proc/page.c
+>>> +++ b/fs/proc/page.c
+>>> @@ -148,8 +148,6 @@ u64 stable_page_flags(const struct page *page)
+>>>       const struct folio *folio;
+>>>       struct page_snapshot ps;
+>>>       unsigned long k;
+>>> -    unsigned long mapping;
+>>> -    bool is_anon;
+>>>       u64 u = 0;
+>>>         /*
+>>> @@ -163,17 +161,14 @@ u64 stable_page_flags(const struct page *page)
+>>>       folio = &ps.folio_snapshot;
+>>>         k = folio->flags.f;
+>>> -    mapping = (unsigned long)folio->mapping;
+>>> -    is_anon = mapping & FOLIO_MAPPING_ANON;
+>>> -
+>>>       /*
+>>>        * pseudo flags for the well known (anonymous) memory mapped pages
+>>>        */
+>>>       if (folio_mapped(folio))
+>>>           u |= BIT_ULL(KPF_MMAP);
+>>> -    if (is_anon) {
+>>> +    if (folio_test_anon(folio)) {
+>>>           u |= BIT_ULL(KPF_ANON);
+>>> -        if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+>>> +        if (folio_test_ksm(folio))
+>>>               u |= BIT_ULL(KPF_KSM);
+>>>       }
+>> These make sense.
 >>
->> Why can't we do this as:
+>>>   @@ -181,10 +176,12 @@ u64 stable_page_flags(const struct page *page)
+>>>        * compound pages: export both head/tail info
+>>>        * they together define a compound page's start/end pos and order
+>>>        */
+>>> -    if (ps.idx == 0)
+>>> -        u |= kpf_copy_bit(k, KPF_COMPOUND_HEAD, PG_head);
+>>> -    else
+>>> +    if (ps.idx == 0) {
+>>> +        if (folio_test_head(folio))
+>>> +            u |= BIT_ULL(KPF_COMPOUND_HEAD);
 >>
->> 		pr_alert("pgd:%*phN\n", sizeof(pgdv), &pgdv);
+>> Once we decouple folios from pages, we will have compound pages that are not
+>> folios. PG_head is not folio specific.
+>>
+>> But then, some of the flags below are used in other context outside of folios.
+>>
+>> I would focus here only on converting things to use folios that will actually be
+>> folio-specific: like the folio_test_anon() above.
 > 
-> %*phN dumps raw memory bytes and will have different formats on little
-> vs big endian platforms which is not desired here. Debug print here is
-> expected to report pgtable entry canonical value where various platform
-> specific fields can be inspected.
+> Understood, thanks.
+> 
+> In addition to anon, ksm check, The swapcache check is also folio-specific.
+> 
+> #define SWAPCACHE ((1 << PG_swapbacked) | (1 << PG_swapcache))
+>     if ((k & SWAPCACHE) == SWAPCACHE)
+>         u |= 1 << KPF_SWAPCACHE;
 
-If we'd want to go that route I guess we'd have to add a new specifier that will
-print the pointed number in the size specified by the second argument. We could
-start by supporting 8/16/32/64/128 bit only, no weird stuff in between.
+Indeed. that better also gets cleaned up.
 
 -- 
 Cheers,
