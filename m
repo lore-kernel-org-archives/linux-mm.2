@@ -4,106 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 018DCC44501
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 20:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C3BCC44501
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 20:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B1066B008A; Mon, 13 Jul 2026 16:49:46 -0400 (EDT)
+	id BBB896B0005; Mon, 13 Jul 2026 16:58:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73C6D6B008C; Mon, 13 Jul 2026 16:49:46 -0400 (EDT)
+	id B6CC96B0093; Mon, 13 Jul 2026 16:58:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62BCF6B0092; Mon, 13 Jul 2026 16:49:46 -0400 (EDT)
+	id A34C86B0095; Mon, 13 Jul 2026 16:58:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CCF66B008A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:49:46 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B103A401A0
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:49:45 +0000 (UTC)
-X-FDA: 84984944730.02.42E2AB0
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0AC1E100005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:49:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KQd0d8kI;
-	spf=pass (imf05.hostedemail.com: domain of 3Zk9VagUKCLMikTTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--praan.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Zk9VagUKCLMikTTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 780F26B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:58:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 084AD1201A7
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:58:02 +0000 (UTC)
+X-FDA: 84984965604.11.0F7CA00
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 32F171C0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:58:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nvLUzCTP;
+	spf=pass (imf21.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783975784;
+	s=arc-20220608; t=1783976280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xzJzBgZ7BaDqZpOvHA29oVPMSyBnofRxze7m51B0LYQ=;
-	b=JVvwR3Mad7MeAq3QUVkOyIsJ3IYNBJ8zdoIXWzo6eFdiwm/1IezwnHpw6f5QiIR7waJJgD
-	rmJpzZWtYAxLQwBnR6Hh86+I199UblFmnyS6HdBYVxgtKp4BgCPeeJgfQsmH2K5FWiv4nW
-	bLZmiKOx6nTfyr8gg7mFo67I70m1ukQ=
+	bh=oNqruOZIzwruIpGvkzB4DJORZxeTGWU0clCn+vXfCzI=;
+	b=HMbyz8+LgpVyvb5PDTkRqltHY15gMohmHoOlFQ15QXRc0jgOqY0gxAlQJkl8phebfY8q7A
+	7rPAROYU6TYhRuQgXBZvZHtNhWm14uEC8R/I0hspYUNdr5IBFe0Ud5Px/+7DNjR1URG/Qv
+	J+8Yem48pdf6QkyRQ2/jBxbAnNFbEsg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KQd0d8kI;
-	spf=pass (imf05.hostedemail.com: domain of 3Zk9VagUKCLMikTTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--praan.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Zk9VagUKCLMikTTgZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nvLUzCTP;
+	spf=pass (imf21.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783975784;
-	b=Tfya1dmHJIDgsUn8XmLdvyF4yrdUkdIOpUpK9/17eTNXzZYEll1MRlVyRsSsTiHhFQ/pIl
-	xnzfCRhYjsIx0A/Oi2/ethCbJhGoXduugA4/mWt+ir4DKSwPbGgZd7gbRT//d4JhM8BTdb
-	0WbUKJj0/yANqF/ghbxPfecxbOS+BbM=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-cab048cdb3eso3273056a12.0
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:49:43 -0700 (PDT)
+	t=1783976280;
+	b=r2KRpMj2UJiG8DQIC29iadYe2p85m5NsA6/lvKEhFsTN3Zq3tAvpokc0GMr0hobUVpJUON
+	Dir+VVFUCmNST1Qo6pLyhglRwVshuV8X7Gaf3jTOZzpQiV9glgfcMmTDoE/bwpmJ+wWe/w
+	2wFV1VhajOBJbK0TQALM0BfmSjKoA10=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so242065a91.1
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:57:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783975783; x=1784580583; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xzJzBgZ7BaDqZpOvHA29oVPMSyBnofRxze7m51B0LYQ=;
-        b=KQd0d8kIX3bVciFoN/kYP1g15HLNhf0aQ3+FA8uCWhAXtEdUIF/lejLQnVahSEvIuR
-         gcl4VLX3FQ0QnS7NwkvBkUTzx1JymOmULjySMdCIuEQfbGG0B91Rrs6XbQEolBy+zdyR
-         dmeOBbR6cqyIDWtkj3d9A1lqEZIExFMnPjcddW6iWlHxiA0hnQizQQliJgGdPyAcs2k+
-         yrvwELn8nuWjbkamYd1U/sNDmntvYkClsquG6Sd5lJssv/VrGlcoFRBAturmDgVNwvQp
-         SM5s+cnY95UQFkQJq2SCnvgAw6Mpwr/JiGCNJI+jZ+ztRjKkTTr191lDpp6F2rFXd5RT
-         ktdA==
+        d=gmail.com; s=20251104; t=1783976279; x=1784581079; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oNqruOZIzwruIpGvkzB4DJORZxeTGWU0clCn+vXfCzI=;
+        b=nvLUzCTPGrPD/wGFJesHW8XnVugBsEBVGhVblvsNF7ruvDkFDcvfRztHNvarK9+afK
+         lLLTwxy2tMkgDLkUPMrRDq2ZZvIXUIW9gE2Axo0ZLSQYBGCO82mCM+m6J78P40hsqDss
+         p4vO2O67uBS6RI1ORuD+Hpy6k+HCA4qODKCncxac44KJUumntmhPr1JpXTeg85SP0vsl
+         +FeCcLJ8w42Y44IUur78mK6H/tgWkSaLVO/S+ubANNpqc2/R9gZgQtPhe5BcRyhKsJtV
+         ak1n/gBlVM+x/+ThWJvzkxPtyiFndfpYsJmqo75KWVJiKRy4lfvaor5fIri7x7v5WYUB
+         DztQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783975783; x=1784580583;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xzJzBgZ7BaDqZpOvHA29oVPMSyBnofRxze7m51B0LYQ=;
-        b=WL7WvkvWUS8WnTy9gYyIsx9wqhoKff3QAM/HK7SAvqTkdQ3Uoo/67KyBFDYKnIKqgW
-         aX0BseUJnUFd7ZflnlKzAFuP/44hKQh/h6ofB/yh0zLT7x7oA6tBu083jn8VCX4lLOkJ
-         ywJXlUeom6G6DKxclLAOSdVd4PBI1y13kbLMFgnYF5FNy8j/OWM6Kje9N0tO/QVcU1hL
-         Ir7QuuflRWygFqQL0323IzNC/FISmXKaq7Dq/zSN2PsKZXXWgl2ZHgt6GL5B446FKySl
-         VMtiRPwPQDRBnBDixJ5zjh2i85SGC/NCyIVyNqzlv3TCn3qoIrqkbDHar6U7WSJbc3Tm
-         eg/g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8yMl4Wj5HW2qt113bKFClgrI3XICN92UhDGFvNgpPIinU7NQMNnU6RmkV4RHJic32If88J66aHg==@kvack.org
-X-Gm-Message-State: AOJu0YzhUy83jvdfe6B4wzFqNpKAGuE3P8ZHu5IcfeSCIBmpJo6uOCzO
-	KYVNWoL2CrjmrpV+QYSauuZq54VL9qSgsaQyfRrogsjaJCIUrw5yzRVNkwpI6mHF/tWKu9JLQM6
-	OmA==
-X-Received: from pgh2.prod.google.com ([2002:a05:6a02:4e02:b0:c86:2164:9671])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c6cb:b0:3aa:c964:3c27
- with SMTP id adf61e73a8af0-3c34d719d0bmr820808637.46.1783975782789; Mon, 13
- Jul 2026 13:49:42 -0700 (PDT)
-Date: Mon, 13 Jul 2026 20:49:35 +0000
-In-Reply-To: <20260713204935.3069000-1-praan@google.com>
-Mime-Version: 1.0
-References: <20260713204935.3069000-1-praan@google.com>
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <20260713204935.3069000-3-praan@google.com>
-Subject: [RFC PATCH v2 2/2] kho: Introduce preserve/restore APIs for unsplit pages
-From: Pranjal Shrivastava <praan@google.com>
-To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Pranjal Shrivastava <praan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ugkm5pkdp73ou7xuxrnjztpcjfkjk5t9
-X-Rspamd-Queue-Id: 0AC1E100005
+        d=1e100.net; s=20251104; t=1783976279; x=1784581079;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=oNqruOZIzwruIpGvkzB4DJORZxeTGWU0clCn+vXfCzI=;
+        b=CIy46c40lGaF7oIfyQCAt5QTwvBpJ3EQbP2v4pOMkgYpLgWdCPnJLpNePR01dfKUk2
+         CF8D7gOU+NRKTf2lodQK5lrIUGyTdG/JIvIE/GpERZA89RGdsBlGPbifPe610LPMv11X
+         1ZKI5W1nv9Lp9o2RURpCIaomvdeZwa9vKeBVNEVx+5Z7+L+KRhk5CuHTaeJOryB+3HE2
+         dt6hIqa/PHiJDuIn00nHDEOU8mRy/lv3D5U4nEsUbzt0Ft2MElKSSccXYjq8miK1rXD9
+         y+jNiEZ6yENcxd2HBDx1FFL4HxDNgShifG6tbU08IkKlh2VaMa8EOXonvCo6M3x7Opjz
+         LoNw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqm6opOjZOM30EM16Fk6dTbgCS+7DRztm1pd1ocpbk+3j+cEytHTt6xI/odowe0B+8K96Am0iw0/g==@kvack.org
+X-Gm-Message-State: AOJu0YydPhSSmv/RUhrHCGu/hh20mJS1WsxKjp/KXQ1dHfmDaN0KISVW
+	K0OarP1HkKsJfr+8xsRydDVj+ZZQ/DYok2Fa1jXXQ2ur7vRwuMVwbIvS
+X-Gm-Gg: AfdE7cnk/J2r+55ddmYrCTzw1Vx1HYPey7keVDzxmksdWcdp+3WsWdsqkMoDItpj5yH
+	/D76PYutEAXKHUWxlbhV0piAOdcUW3VJkhFLcYymFUKIdCG6bCoUA8QzPC8H7Z9RegyFWH5mn7B
+	colmQA4hfEk0POFdXqlWdPn+vsE22JDAHZXdcyRAsgZbzdmJ7HzLNKqphsTAI4DSxNtnl+yBjR9
+	86iKX67jTOqNy3/XJPS9e6hxD9TUk4+ELbhI8C3yF5ijVG0c+DZ9t7ns321Zw5AmAWF2VRl6vLb
+	mRHh7RU7k8TLFD4uEk4XQQDbLrqxa/llkLoBDm1txk8fXWnAeUu9uCeievbGfuDXBAj8JbhXPPw
+	1rkkAy4f/HPbcPE7hMSQFhf6j8Rx7FBC057YpVdcY8OaC4+hITWPbAiQydvnjYStYmME0bLlnok
+	6FLGj+dUW/O8imBan23TtAfxUBAqVEFZTUinXO2E7BRngV1fU76SLddZep2C81m1rTQw==
+X-Received: by 2002:a17:90a:d88b:b0:381:528a:808c with SMTP id 98e67ed59e1d1-38dc75e3d4fmr9572711a91.12.1783976279067;
+        Mon, 13 Jul 2026 13:57:59 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e172b6ce6sm403816a91.1.2026.07.13.13.57.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 13:57:58 -0700 (PDT)
+Date: Mon, 13 Jul 2026 13:57:55 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, corbet@lwn.net,
+	dakr@kernel.org, david@kernel.org, decui@microsoft.com,
+	haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org,
+	kys@microsoft.com, leon@kernel.org, liam@infradead.org,
+	lizhi.hou@amd.com, ljs@kernel.org, longli@microsoft.com,
+	lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+	mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+	nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+	rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+	skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
+	vbabka@kernel.org, wei.liu@kernel.org,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v8 0/8] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+Message-ID: <alVRU38lMfvmUFqJ@skinsburskii>
+References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
+ <20260710151151.1e193eedd0cf2591ae392f76@linux-foundation.org>
+ <alG2-RSitzPWClAX@skinsburskii>
+ <20260710224950.53bcb43ce7e564f07a1f6a8c@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260710224950.53bcb43ce7e564f07a1f6a8c@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783975783-303559
-X-HE-Meta: U2FsdGVkX19V6XQ7gkMtIHjEnATjfukCPbJNX2p4ssS/urXss+k6CWL/zK3q6NH/5ZwEMrNB2xRh4ikx0zd4t4Lt//tZreR5FlpfBvlq/sk3V6o/8wL2PHMj2QkUyreuYPUiS3pkqPc5J8hLxwQ1sGuCnvnZoLrNjjejqog6W932iENLTgQO4wwt+gcJfNanvcB3edbY1gCivwK2/+IsX1x1DnqPVASe5haqnCCHC8TkAJzHWu3/IC6PPWmpo9SSZx+ZqrsdkHVmvpmw+6JCKg/q01G9CLjySKtj+1SuEoRALUbAfp8CjPWHruBe87/+sUsnXthRpY1ExS7p4K1WhbJPfotYH5PnRsxszXIlATpzPF3bKIKZ3fm4+4zFEoo+BIdsI4JzhVjbgTPTC7reRtGnAKkCiZsUnzkqQ66KvLq2EL/yoAyBfKxzXFBglKXCBVetMUXSUbn24h4bZxQUJzKyLOlPEv+lOSF/SYu6/Nd2ww/g3KJb+ijMTqepLA/8+PRl6cp9YhJVATl39v8cFd3p/k+A42UKEvKSw+TPKOz7MbV42FvcDivVqwJ55mpobY2/mNq3Q9F2PJQwVPJlI3U1XZFtvBNhOTaS5ttbeXOvnI9NOB/qnmmUtVNmbC3Bk8SvJIDyxxv939uISjNTHyfN6m+bYn6HJRuy1Wx1PvthkX70InWhKkYe8YhKwPbcsFtel9ZHyLZJRfl/5UbhotVzPu99iQPcWJrLOeEdwxfHF6fGFutSOEUGQt78FUzK2n1+L+3oZq3/wAzFwaMNscKFY/lhslqlceOQoqEllulgMV3t76DooySeBqXUgvGo03EZnocZtgWs7KikK/JxBX/Haoq/EkzCKOCtKfiGDZBXReGO4WAOLEq6esA8Omuf+h4vI6NhzKxl3pyafHShFhwi8HQqSgaa4wn8PEVWeK9bpwQwOWTrGtoYchthbEhioGMFpSM/xPxa7uQTdlD
- 6KJR/57n
- epGUZXHPCF+xBaPdknBanRxJ+A4bEsmaqEjjAYLwotddPJprW80mnT8OIaWpHK5FtQpcfszelWeGr+vmd2gItb6FBnlp5ceNEuaBGfG8eBy56sDd79pJ0bFV00pMUoCS2fBXSAEliTHrO+TDbhOEXdR5ZvBs9TT5UkEm5LTf5VV2TFo5yv/XZc+vs50hM3GKj7+wvRHb3YhHdFezAMGVE66007ZOabLlIqptfHQy/dGC2JRX+OHqbKDRIkOX8aGi8AlvgJEZUbkhy2KFySGXbBn4W7fS0DbRfMjwGKOw0ZvoQC8+VdCOl+N/yUEhy65jVPq9VVbwBF4szeY9e8TaBd++BHbKoN7RcdCsU8Hbc70u5jfbwHmQhMV/T2BMrzkCHQso3SQ/DZoUcHtSnJBDii7YVgVRfIAEuwyzJCcyQhjZVxEhDAi4H/v26MsTF76GOqgKwcXxFXAMlByrEpeQR2UnaZayAC8/Cl+Vu62Zr2KvCYjNb7/Xh5ZsnBy3Lbv7hMRsiwsRGJTmM9DHEs5X/PF+uIZTAHjJo2cvxDkrqWHx/8uoN7cCCK0Ol4IzGv7syM/Qd
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 32F171C0005
+X-Stat-Signature: rs8qdoocgzc43xua7ugxzgg57toiazkm
+X-HE-Tag: 1783976280-632255
+X-HE-Meta: U2FsdGVkX1+JFmKXWertZWaMt4aahvDLH6HFmSmXA2RxWDC79d0BTKT74IL5+Wufzzh736k3JRVRaTFFb0X4Xni+JCgibRA+oMsDhNcjL5IlDdqzB1pNkoryqGy02vYI/Ty8Wd7HGUlhBMIVug5cK9/q912hqLyudq3t4sue22GPju94hhfm8MOJvmgdSzUyOMjRa+cPsC07jVypzB4FnMVbUlu1dFceYTzP89qujuClcdEbG+BsC+xmmQmynZK1F5Ln3/YNwMmw00QYH5EpFFjV9Vqomd7qKfe94XK1Om6vXGoE9M7XZZIPWJxnPqT5O1P8/qj00uDeTd/YoAl/VL23rpJ1DaLE/roawBoAaSgr/PkjRFpVt2gK1f2GbU064IlafTCUZ2fcVsLagV+k0fpSduXOOLB9JG5iAVVsddFmSLLDwikGRHVeYzxh5+ioPX/xmQrk05cL5tVrAq4XNZ4Ge+iD71BNmcmRiX5+Pc/51TfEskiwG+lzKZjotHRKffu3zbWX9Q0ItBJCYj276SJxlwrzQwiphrTp+7r6SLp1ZgCtdLDrw+NnJCei/leYK3uJ7MPeI1IQllozp3Ylj5FYeE+4NLcAY/te8s0ihv4uF/Lpm8NGcvFgtmpZd6F4zq9hjOFWgVzB96p7ubfHY92hzGHIoPR+rShDTaaaN1P9vM2FL3hlKJ4IgqZi+M4yvoDoSDMn7nMwBIacJNoX14RI9Kw+zeAUZjlmckaVZxm1RwySORomvXvmD4DPAp4ZDA+S0p+iHUYvpJtLK9KYYwkmFgRUV/hAqUi5hcYIRe1qQQ/RXYK8F5FLJXYOh+eWkTFvHZ67ClM2UwfIxI4opVZUMYfmUKjDXvy/yvYgpGUNbH7xIc0jxRgC3wagwJHnFswyC7gvZJEheY7Fl5aoYEm8jGrSFsCWxxUpIZRrv49285m6GPRiYTJpO29XGc/UBy5B8h4Kken2tGpVhdd
+ SdW2p2Q7
+ 13zS61agc8LzMmsOADJEjTMPMObU6Vw18UV6ikgpF6eMgoJ7yugT1yxab+UGwUq/iSYTDf143RQJyA8EbOGcvbZ83sYbLDh5Ej6r3FJaDLJklECvkrv9UegkayLQRPgrPDKDWaSDNYdkT6bcb3gq7VFgaO2Ley3c1LOsBnF16k50ietv+2e4FjUtzjPwQxdpMm3V/Ta63dqEk/33rz+dHVcWRqUz//L68SY4nhEeYcf88C77o1lLCjJB5EwWuMfbhAd9WSTs5PFdIhj3uCoAjXE1iwX0Y9v9JIEBowouSIqXtZ4wn572VZTz4WNNL3cX0l5dvePvl40e7zQtEBYA9CDiDHHsUWxSVCaB4jbDm3bt5BQMV1F/dt0x6wClZVT9ScWJHmgU367gzFZzzHRCEBD+YEPjZ96Hr1yh6JkjxwHWiZOZdtx/2vUwspKixIjjbd4SKGmCk0YHw+eURd3lAX/s/WUCw6yK8srBZcbNge2PET/L9UuOBr0BnoZqRkKuqk+Xj5O4T+c/f0tA+K5r5fRE+FQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,189 +137,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current KHO page preservation APIs (e.g. kho_preserve_pages) assume
-that multi-page blocks are split into independent 4KB pages during
-restoration. This is incompatible with high-order non-compound pages,
-such as DMA buffers, which must be restored with tail pages having a
-zero reference count.
+On Fri, Jul 10, 2026 at 10:49:50PM -0700, Andrew Morton wrote:
+> On Fri, 10 Jul 2026 20:22:33 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+> 
+> > On Fri, Jul 10, 2026 at 03:11:51PM -0700, Andrew Morton wrote:
+> > > On Fri, 10 Jul 2026 14:26:20 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+> > > 
+> > > > This series extends the HMM framework to support userfaultfd-backed memory
+> > > > by allowing the mmap read lock to be dropped during hmm_range_fault().
+> > > 
+> > > Thanks.  This seems fairly mature and mostly-reviewed so I'll give it a
+> > > spin in mm.git's mm-new branch.
+> > > 
+> > > Unfortunately Sashiko wasn't able to apply this or v7.  I'm not sure
+> > > what base you were using.  Hopefully there's a reason for a v9 so we
+> > > can retry this.
+> > > 
+> > 
+> > I rebased this series on top of mm-new right before sending it out.
+> > Should I have used a different branch?
+> 
+> mm-new is good - Sashiko attempts that.  But it's changing rapidly at
+> this point in the development cycle.
+> 
 
-Introduce explicit preserve and restore APIs for unsplit pages,
-which preserve and restore a high-order page block as a single unit,
-applying a refcount of 1 to the head page while leaving tail pages at 0.
-Rename the existing internal helper to __kho_restore_page().
+I’d like to send another revision addressing a few comments and also
+replace the `max/max_t` check with something simpler.
 
-Signed-off-by: Pranjal Shrivastava <praan@google.com>
----
- include/linux/kexec_handover.h     | 10 ++++
- kernel/liveupdate/kexec_handover.c | 86 ++++++++++++++++++++++++++++--
- 2 files changed, 92 insertions(+), 4 deletions(-)
+Which branch should I base it on so that Sashiko can apply it
+successfully?
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 8968c56d2d73..6e2c75b16209 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -22,6 +22,8 @@ bool is_kho_boot(void);
- 
- int kho_preserve_folio(struct folio *folio);
- void kho_unpreserve_folio(struct folio *folio);
-+int kho_preserve_page(struct page *page, unsigned int order);
-+void kho_unpreserve_page(struct page *page, unsigned int order);
- int kho_preserve_pages(struct page *page, unsigned long nr_pages);
- void kho_unpreserve_pages(struct page *page, unsigned long nr_pages);
- int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
-@@ -30,6 +32,7 @@ void *kho_alloc_preserve(size_t size);
- void kho_unpreserve_free(void *mem);
- void kho_restore_free(void *mem);
- struct folio *kho_restore_folio(phys_addr_t phys);
-+struct page *kho_restore_page(phys_addr_t phys);
- struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
- void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
- int kho_add_subtree(const char *name, void *blob, size_t size);
-@@ -65,6 +68,13 @@ static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
- 
- static inline void kho_unpreserve_pages(struct page *page, unsigned int nr_pages) { }
- 
-+static inline int kho_preserve_page(struct page *page, unsigned int order)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline void kho_unpreserve_page(struct page *page, unsigned int order) { }
-+
- static inline int kho_preserve_vmalloc(void *ptr,
- 				       struct kho_vmalloc *preservation)
- {
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 07f6f453cd69..43ae3e2de5da 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -393,7 +393,7 @@ static void kho_init_folio(struct page *page, unsigned int order)
- 		prep_compound_page(page, order);
- }
- 
--static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
-+static struct page *__kho_restore_page(phys_addr_t phys, bool is_folio)
- {
- 	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
- 	unsigned long nr_pages;
-@@ -432,12 +432,44 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
-  */
- struct folio *kho_restore_folio(phys_addr_t phys)
- {
--	struct page *page = kho_restore_page(phys, true);
-+	struct page *page = __kho_restore_page(phys, true);
- 
- 	return page ? page_folio(page) : NULL;
- }
- EXPORT_SYMBOL_GPL(kho_restore_folio);
- 
-+/**
-+ * kho_restore_page - restore a higher-order unsplit page block.
-+ * @phys: physical address of the first page.
-+ *
-+ * Restore a higher-order unsplit page block that was preserved with
-+ * kho_preserve_page().
-+ *
-+ * Return: the head page on success, NULL on failure.
-+ */
-+struct page *kho_restore_page(phys_addr_t phys)
-+{
-+	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
-+	unsigned long nr_pages;
-+	union kho_page_info info;
-+
-+	if (!page)
-+		return NULL;
-+
-+	info.page_private = page->private;
-+	if (WARN_ON_ONCE(info.magic != KHO_PAGE_MAGIC))
-+		return NULL;
-+
-+	nr_pages = (1UL << info.order);
-+	page->private = 0;
-+
-+	kho_init_unsplit_pages(page, info.order);
-+	adjust_managed_page_count(page, nr_pages);
-+
-+	return page;
-+}
-+EXPORT_SYMBOL_GPL(kho_restore_page);
-+
- /**
-  * kho_restore_pages - restore list of contiguous order 0 pages.
-  * @phys: physical address of the first page.
-@@ -457,7 +489,7 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
- 	while (pfn < end_pfn) {
- 		const unsigned int order =
- 			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
--		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
-+		struct page *page = __kho_restore_page(PFN_PHYS(pfn), false);
- 
- 		if (!page)
- 			return NULL;
-@@ -890,6 +922,51 @@ void kho_unpreserve_folio(struct folio *folio)
- }
- EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
- 
-+/**
-+ * kho_preserve_page - preserve a higher-order "unsplit" page block.
-+ * @page: head page of the block.
-+ * @order: order of the allocation.
-+ *
-+ * Instructs KHO to preserve a higher-order contiguous allocation (like a DMA
-+ * buffer) as a single unit. It must be restored using kho_restore_page() to
-+ * ensure the tail pages are correctly initialized with a zero refcount.
-+ *
-+ * If a driver needs to split a block that has been preserved with this
-+ * function, it must first unpreserve the block using kho_unpreserve_page(),
-+ * perform the split, and then re-preserve the individual pages using
-+ * kho_preserve_pages().
-+ *
-+ * Return: 0 on success, error code on failure
-+ */
-+int kho_preserve_page(struct page *page, unsigned int order)
-+{
-+	struct kho_radix_tree *tree = &kho_out.radix_tree;
-+	const unsigned long pfn = page_to_pfn(page);
-+
-+	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
-+		return -EINVAL;
-+
-+	return kho_radix_add_page(tree, pfn, order);
-+}
-+EXPORT_SYMBOL_GPL(kho_preserve_page);
-+
-+/**
-+ * kho_unpreserve_page - unpreserve a higher-order "unsplit" page block.
-+ * @page: head page of the block.
-+ * @order: order of the allocation.
-+ *
-+ * Instructs KHO to unpreserve a high-order block that was preserved by
-+ * kho_preserve_page() before.
-+ */
-+void kho_unpreserve_page(struct page *page, unsigned int order)
-+{
-+	struct kho_radix_tree *tree = &kho_out.radix_tree;
-+	const unsigned long pfn = page_to_pfn(page);
-+
-+	kho_radix_del_page(tree, pfn, order);
-+}
-+EXPORT_SYMBOL_GPL(kho_unpreserve_page);
-+
- static unsigned int __kho_preserve_pages_order(unsigned long start_pfn,
- 					       unsigned long end_pfn)
- {
-@@ -927,7 +1004,8 @@ static void __kho_unpreserve(struct kho_radix_tree *tree,
-  * @nr_pages: number of pages.
-  *
-  * Preserve a contiguous list of order 0 pages. Must be restored using
-- * kho_restore_pages() to ensure the pages are restored properly as order 0.
-+ * kho_restore_pages() to ensure the pages are restored properly as order 0
-+ * with each page having a reference count of 1 (split).
-  *
-  * Return: 0 on success, error code on failure
-  */
--- 
-2.55.0.141.g00534a21ce-goog
+Or would it be better to send fixups against `mm-new`?
 
+Thanks, Stanislav
 
