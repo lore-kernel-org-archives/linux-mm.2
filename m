@@ -4,104 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81603C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACDEDC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:20:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AE256B00C5; Mon, 13 Jul 2026 12:19:41 -0400 (EDT)
+	id 985E16B00C6; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 785E86B00C6; Mon, 13 Jul 2026 12:19:41 -0400 (EDT)
+	id 8E7CC6B00CA; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69BA36B00C7; Mon, 13 Jul 2026 12:19:41 -0400 (EDT)
+	id 7AFAA6B00CB; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2966F6B00C5
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:19:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFF701401F2
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:40:17 +0000 (UTC)
-X-FDA: 84984164874.06.118B609
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C826AC0008
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:40:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VpL91rYo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 45AA86B00C6
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:20:44 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0DF271C873C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:02:39 +0000 (UTC)
+X-FDA: 84984221238.07.22FE24A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 052D540006
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:02:36 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQehlpuD;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783957216;
+	s=arc-20220608; t=1783958557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zlkLaHtRYAVpE4WxTmCUGpkNu8tzK1MssH3C9d4Lj50=;
-	b=FCI6cLW78PkT+Ut+dvq9tns8t6HJX5gduM8oaSgc1rlPlr8JMwuei7zE1iTXPJnJoQZaXd
-	19Ad79DM88ZcWrvHcR2HtoIEGcT/tAuV5kMxy2Pl5Sm7NK+acK2vUDqFaAA8C9X/RRQtyw
-	jxYi3ChQNCRRR8hXHSrclQB7qon1B2k=
+	bh=mnF2rMmUGV8L7v1RF+1L1vkaGxUAXkUdqFeLWeibpDI=;
+	b=ntVpOu1qLlGt01Jx+r6VU1KArgmau2iDwshe5KSC1OUEd425qd06kZg5KVM34V4qBvITVJ
+	IeRPbr+tvXwkf2ItN2FKkaOvc5MUY9EHbfDDqmkqkICpDpU7+14tFVGvMMQ3K7AgY1vp5T
+	UOFU3D0srfvlYNG1eaAIQv/+zTtDpfI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VpL91rYo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQehlpuD;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783957216;
-	b=M9NcXmEALVw5nv7Bf6OnW9Fjqi4OizLvMOUtUjWfkEyuznZgEvsfAO0jyo8Yz/HfCRspbO
-	mZwlHUHQz2BM+y+R4ETfG2O9IMnSWJBh9cjrD6yXYl2rO68cRreDRsHgEYsXSJiHOM7Zd4
-	8B39epkRcmcMCxPDHNDicK9ZOkoT1lw=
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783957211;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zlkLaHtRYAVpE4WxTmCUGpkNu8tzK1MssH3C9d4Lj50=;
-	b=VpL91rYo+y2+CR011e23Uc5ksnQ1xmwHVNTLJQsVl2f8ubPHy06muUywGP3MBmv+brEROf
-	6VBVC24s3DS0AzmDgQXa/wuLOylma8BfZMphJzNJtlzl9RDPya6gy9aJSHUbOGK9y+mMQm
-	7swMY0r9LyNXKHeqJelB7hXkbqwa0xA=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jul 2026 15:40:04 +0000
-Message-Id: <DJXK1TXBDIVC.18M4LNRSJPFWV@linux.dev>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
- <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>, "Matthew
- Wilcox" <willy@infradead.org>, "Hao Ge" <hao.ge@linux.dev>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-rt-devel@lists.linux.dev>, <derkling@google.com>,
- <reijiw@google.com>, "Yosry Ahmed" <yosry@kernel.org>
-Subject: Re: [PATCH v5 05/18] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Zi Yan" <ziy@nvidia.com>, "Brendan Jackman" <jackmanb@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Muchun
- Song" <muchun.song@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
- <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
- <byungchul@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Hao Li" <hao.li@linux.dev>, "Christoph
- Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>
-References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
- <20260703-alloc-trylock-v5-5-c87b714e19d3@google.com>
- <DJP0KNE4S3WN.209EE744YM0YT@nvidia.com>
-In-Reply-To: <DJP0KNE4S3WN.209EE744YM0YT@nvidia.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C826AC0008
-X-Stat-Signature: rg1zewc75b8aecoe9puqz8geknarwiqb
+	t=1783958557;
+	b=XAVbUcQLm/kKCfAXyqFDoe9rAPnvt+DDjar8gRDN6ei/X2ZOzZ2BJhw5Qy62H0DOevUmoI
+	8E7OrhpSvecL3bksSkefhQvCgRSSczTqv32RqSMSM7ZOWuNyHJsRRr0WIHtcZfaVayMbAl
+	La71W/5JLM2/8HUxeKydm98II9z0dE0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B74842B6B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:02:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8A51F0155C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:02:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783958556;
+	bh=mnF2rMmUGV8L7v1RF+1L1vkaGxUAXkUdqFeLWeibpDI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bQehlpuD9RuPrcFuDeopOVnFYEh6hRnI2CILKAFvvQ7RV1qEXEtbrkIZoyV2ft2rH
+	 E/Wqw2G4i7mej+8uW53eg8v+OQeMbeqz3XlLDGJ1eRDBIcu+EfaJE0/LHSX+Y16etO
+	 +9S3kcXLXiRrEzYmMTxRUicnoW6pS33H/Cio4ywQCbiiKQzZ7OZMk0lsMzXim0PUUX
+	 g9LeMsLpkbU6aiMzheXadOvTQjiI9ZAH2UXAydKSJXB+eFYgP1bbWQXHYro6QlpPLd
+	 +79W1PTss5d28E2kDcycGoozH2edn8QshbVdsun1fdU13v3O5s1sECuu997537r+BX
+	 GnNuSZtFSYrgg==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15ea93028dso365700466b.3
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:02:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqEB8f2WK6f5ee1/7OJJvA8xw60XRZdJHbQgDrpagY5ztub5LMw7yhqDHXUlxR4gQ6Um8AmhQ1uKw==@kvack.org
+X-Gm-Message-State: AOJu0Yw8LZiSzYnp7RfCnL144xJH0SDBXRSnAGizS9q2g+obyd9hRwUb
+	S1EKXLdH6ZkcsbuETliCGHykK+ZBbfVUq851G/g4veMjB/yq5+x9SUqjcVjmeA3Zn8oF3Ta7zG1
+	gO/O8LFzHAR/QYThBIkY2/P5okR1BhOY=
+X-Received: by 2002:a17:907:f504:b0:c12:5e26:da50 with SMTP id
+ a640c23a62f3a-c161f42bca2mr349764466b.65.1783958554928; Mon, 13 Jul 2026
+ 09:02:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260713133613.2707815-1-usama.arif@linux.dev> <20260713133613.2707815-5-usama.arif@linux.dev>
+In-Reply-To: <20260713133613.2707815-5-usama.arif@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 13 Jul 2026 09:02:22 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNVnwAS-6jOQtGrcN_fq8C+6kRiiRX4=kp9h=fTC+XYNQ@mail.gmail.com>
+X-Gm-Features: AVVi8CekHbp6MOwyNxSSAddXdK1LB04o7z4cKo3GHaSl4qxVUPWRBR6Wr6YS36Y
+Message-ID: <CAO9r8zNVnwAS-6jOQtGrcN_fq8C+6kRiiRX4=kp9h=fTC+XYNQ@mail.gmail.com>
+Subject: Re: [PATCH v4 04/11] mm: zswap: add range lookup for large-folio swapin
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
+	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com, 
+	Alexandre Ghiti <alexghiti@fb.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1783957213-715995
-X-HE-Meta: U2FsdGVkX18qyd9Q80g37U01J+9QLij/v5eY8rGna/7jQe8h7Iy/QOAgeOjBK5yr9805Rt60OeNxsPn/5vDjH1MBvOBw1uECRhckkQkQZNOZ4Uu4TNNvqXviMkIxIMM88Ji9g4jZK5Pe1q/1RTMqjq/iaqyrzKXuWaMwdD5wFi/ZrgzAWseP/yuVwdaBNsJeJwlh7qm83vae1OrEVz47I31v5KDkKNH7MyaEZSIpBGYWFUqVMUnUaDD4JJtKKua6nXjap/K26pW+aAlV9U5llMF6XFYGg0vXfgIWiqAAnFGBpgNJea8zoly8rieKbQAm0y5SG9X9oQ8mdCDw/JoaMlzGMLtcUGWmZ/HCd3g6cDNX69vuCBvPoEdenL2KkGusZTCRHWsTKIOBQ9Rhpbzfbl1vpai+KX6AIUqCrSp8TL2RYqRSCMCdWWZx52Jj4HWhF1zK5r6a9vB1E0KS0GpBnwx4buBWhFOzpPGzaSGuGbUYJChzZ4oFuvaIgQo22scIero0Sb8J5l59i8If5iT0JpEXV8QZr+6UfQQmRDqU5WfRvnUrqVRZiocQfDYM14uirH3VUfzwfZupY2ciPDJh3dOX3fEQOYkj1FEzTJa7m/+iN7UkVKgTWPeA/gM+IT8bqj1SXJ0XLomgwoVwKWYzY45euz9pdeEDq6XVo3H3LqiqAs9JgqH3fPGLM23DtdGCZH12E1zWzklQ+eZpK12dToqk2j/Iz7mCp8n7a03TbJBO9N8Chij+7cpHyGFMJanJJcvX5hWDTyydg49lDgOb1AdNL/fLxCmuqBfA2Krl+HXkrV4N4Qt9l9KC72eeiytALeZMvMP3sACSSirPg6UK3XQ7KtKSXyr3/gq6tjALVFLw5C08JYbTeB2QvK1iL25UylhFWb36+ISzDQVfTWXvtNfVUjRcQQbK8XdxxnS8bMsTf9mT2IXVri7fj+HlF8sgYY42y4/9xu84NfsKQq/
- L+tf08mk
- iIDuyzf/Tiq1IOrDfFuUe1jiRXEZ5L+FMSj+gj+17ETrfGAyloy6VzC4lrB2gKniwqGyToG0syceNzqddEfq8WCA0KC/lXa0yqNu8b+gEap2DxFgZEWYGnb4FnGeEICYMxD069NhFvefw7GCzFlTGbtdSuT9JCoudyXsXEoLYjXDsy6UqcdJI7HMdtX7mo+rKZ9mT+5ZuIIZnge5RyUTPAVqwa/HAHYmK2weAMApVyihauWj6nafPrx0QkVWcntPKwgKkz91/5xHapBtIHVJeIgr8DnqT/dlktDIf4tqZzOvkq28XqugSbckudUhnyUjHAZdR+tuUVyLRrLr67hisdfxhN7akHYz+jm4Ha/BjMeQs5Aw49YAFS+qEopbtu5s2XlKjXSJeOTqhTyve+yPKHLBmiQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 052D540006
+X-Stat-Signature: 39ppc6towfnzch8ukhdssejqh7wxo98x
+X-HE-Tag: 1783958556-471188
+X-HE-Meta: U2FsdGVkX19/uyz4hxVQkayzaJeV1s8jLe/LTGXYOwm65i/Q4FSwcOiduFgDhVDEaNPGssicwv5SWoeWYUzxBWuJBGUYPKA2Th+OVXgjq5vH1QOkTyaZuAY0CqbnoujmazGZ9ywU6v+b9XBvUD+BG8SFyk6cyFOuecitRE4yixJXFtXxxbn3QFN9hY9UibfyUYGnTFY69w3IurvvYxYwKVzghhthy4ggitIwqduyuAGvJsuLGlfY+BAnYFTtOu3jnqKPDQYMNApHgeUhb0WdAWA+bYUhFG7CJA3I9oO4cwV64WGdsbRN0TjWGMaHBYIlfBUqNODlas5sSu0+1I5uaLLBPUyRt6ElIx0IOc+jsXGgWy+ECnSdliuEAI8oK9yMzaiIx+I54QbzmssGOYys7jdUoLmhBjMBtpo/sCuarIgeinDlSlmXYz8rgc1hgBR8xmP9I1HzunzBft4QiYtkxYXk3KkWJ8ssRrKoBOAOrMdsvjpUUm86sN7t0WpfEmIyDSt9YXOieCRqMcRdLnU7ZGNXJ4rv7+687HqpMwmZsEk11WBGpqDbtBOqFv2MyeldCzaETIKZ2JRQ3QQ24fi7QZ+NE+ylF9hUfBC4qlfy2rqMNHFFXaKidNkcxPZ0qicv5vTm/sqYY6SxqoUKLbOQ6qDDP8gscvTltMK7UQMXyn6AqnaSSUtfv+kJzZK0wbID/PlC8hbFmFzW+gZGqOuHxohrpRFJ4MSz3Qb71VPNUtX/wK0WmtgvYRqas6MYkuCU2PhxL/F6CYEtICMaqXwl0xJtu1yvInEXEWlXfkozKkWDID55f50Hj+UM3gXlW4/KKSEkCSk1/6+hIYFgcRhEnt0z4Ll+uuxiwDpp6hdx52HTLxNMOlHen6g4C0n/wx2pn2TkY4AfTL0zu/QBeBirypgj/qAw4bZ+aV5nvYcx8EgMqivx85PDzJRXXIsLCDabvbGNmlLnc175X1fOxen
+ IuzHMMUO
+ t5Yn4jBsimE/Xu/bTv2CjQFRNiW5oXlP+a9o0u+HD+CxaxkBOdOBMWBPnWLC+nrAZiWq74HgYdwuJ/1m7j2PYthxZItUMTZQoDrepThhzOu0rovgWeh+yhc6DBArLz6n7XPQ4CaDTiUI94M760yfOJhw/i8LT8WBC3kuyGKptY9nba5PvwqIpmOJBeEyE06XWaVjrwhOjUiDeo+L5ogvQ17lME1XPQBdGalz+cW/2LHCvibvz99mrm4yPcR+lOnL6xqfNw2WBnUQYtiyjFQKH7ZDUXUCQy4SBLffV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,117 +108,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Jul 3, 2026 at 2:42 PM UTC, Zi Yan wrote:
-> On Fri Jul 3, 2026 at 8:31 AM EDT, Brendan Jackman wrote:
->> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
->> main entry point function is significantly different from the normal
->> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
->>
->> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
->> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
->> exposed to mm/) and then turn the nolock variant into a thin wrapper
->> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
->> how some of the wrappers in gfp.h do).
->>
->> For consistency, set ALLOC_WMARK_MIN explicitly in fastpath_alloc_flags
->> for the new ALLOC_NOLOCK path. This was already "done" silently in
->> __alloc_frozen_pages_nolock_noprof(): ALLOC_WMARK_MIN is 0.
->>
->> Rationale that this doesn't change anything:
->>
->> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
->>    the new alloc_order_allowed(), alloc_nolock_allowed() and
->>    gfp_nolock.
->>
->> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
->>    previously in the nolock variant:
->>
->>    a. Application of gfp_allowed_mask; this only affects early boot,
->>       only flags that affect the slowpath get changed here, and the
->>       nolock allocation path isn't allowed to the GFP_BOOT_MASK flags.
->>
->>    b. Application of current_gfp_context() - also only affects the
->>       slowpath
->>
->> 3. The slowpath itself: this is now just explicitly skipped under
->>    !ALLOC_TRYLOCK.
->
-> s/TRYLOCK/NOLOCK
+>  /**
+>   * zswap_load() - load a folio from zswap
+>   * @folio: folio to load
+> @@ -1571,10 +1588,9 @@ bool zswap_store(struct folio *folio)
+>   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
+>   *  will SIGBUS).
+>   *
+> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
+> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
+> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+> - *  do_swap_page() will SIGBUS).
+> + *  -EIO: if a slot in a large-folio range is unexpectedly still in zswap.
+> + *  The folio is unlocked, but NOT marked up-to-date, so that an IO
+> + *  error is emitted (e.g. do_swap_page() will SIGBUS).
 
-Thanks - Andrew would you mind fixing this up in mm-new?
+Just curious, why the change from -EINVAL to -EIO here? Does it matter
+in practice or is it just a matter of personal taste? :)
 
->>
->> Ulterior motive: adding an alloc_flags arg to the allocator's
->> mm-internal entrypoint can later be used to do more allocation
->> customisation without needing to create new GFP flags.
->>
->> No functional change intended.
->>
->> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->> ---
->>  mm/hugetlb.c    |   3 +-
->>  mm/mempolicy.c  |  10 +--
->>  mm/page_alloc.c | 192 +++++++++++++++++++++++++++++--------------------=
--------
->>  mm/page_alloc.h |   6 +-
->>  mm/slub.c       |   6 +-
->>  5 files changed, 117 insertions(+), 100 deletions(-)
->>
+>   *
+>   *  -ENOENT: if the swapped out content was not in zswap. The folio remains
+>   *  locked on return.
+> @@ -1593,13 +1609,19 @@ int zswap_load(struct folio *folio)
+>                 return -ENOENT;
 >
-> <snip>
+>         /*
+> -        * Large folios should not be swapped in while zswap is being used, as
+> -        * they are not properly handled. Zswap does not properly load large
+> -        * folios, and a large folio may only be partially in zswap.
+> +        * A large folio reaches zswap_load() only when its whole range is
+> +        * expected to be on disk: PMD swap-entry consumers split before
+> +        * calling into PMD-order swapin whenever any slot is still in zswap.
+> +        * Confirm the range is entirely absent from zswap and return -ENOENT
+> +        * so the caller reads it from disk; if a slot is unexpectedly still in
+> +        * zswap, fail the read rather than return partially-initialized data.
+>          */
+> -       if (WARN_ON_ONCE(folio_test_large(folio))) {
+> -               folio_unlock(folio);
+> -               return -EINVAL;
+> +       if (folio_test_large(folio)) {
+> +               if (zswap_is_present(swp, folio_nr_pages(folio))) {
+> +                       folio_unlock(folio);
+> +                       return -EIO;
+> +               }
+> +               return -ENOENT;
+>         }
 >
->> +/*
->> + * This is the 'heart' of the zoned buddy allocator.
->> + */
->> +struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
->> +		int preferred_nid, nodemask_t *nodemask, unsigned int alloc_flags)
->> +{
->> +	struct page *page;
->> +	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
->> +	struct alloc_context ac =3D { };
->> +	unsigned int fastpath_alloc_flags =3D alloc_flags;
->> +
->> +	/* Other flags could be supported later if needed. */
->> +	if (WARN_ON(alloc_flags & ~ALLOC_NOLOCK))
->>  		return NULL;
->> =20
->> +	if (!alloc_order_allowed(gfp, order, alloc_flags))
->> +		return NULL;
->> +
->> +	if (alloc_flags & ALLOC_NOLOCK) {
->> +		VM_WARN_ON_ONCE(gfp & ~__GFP_ACCOUNT);
->> +		if (!alloc_nolock_allowed())
->> +			return NULL;
+>         entry = xa_load(tree, offset);
+> --
+> 2.53.0-Meta
 >
-> At first look, I wonder why __alloc_frozen_pages_noprof() needs to care
-> about alloc_nolock_allowed(). But the patch's idea is to centralize all
-> allocation policies, so it makes sense.
->
-> Ideally, I would want alloc_frozen_pages_nolock_noprof() to filter as
-> much as possible, so that __alloc_frozen_pages_noprof() has minimal/no
-> awareness of ALLOC_NOLOCK. But ALLOC_NOLOCK has different preferences
-> compared to the default __alloc_frozen_pages_noprof() policy like
-> ALLOC_WMARK_MIN vs ALLOC_WMARK_LOW, skip slowpath, and more. Maybe we
-> could do something like:
->
-> __alloc_frozen_pages_noprof()
-> {
->      alloc_fastpath();
->      alloc_slowpath();
-> }
->
-> alloc_frozen_pages_nolock_noprof()
-> {
->     alloc_order_allowed();
->     alloc_nolock_allow();
->     alloc_fastpath();
-> }
->
-> But it still cannot remove ALLOC_NOLOCK completely from
-> __alloc_frozen_pages_noprof(), like the nofragment skip. Anyway, this
-> patch is a reasonable cleanup. Thanks.
-
-Yeah, thanks this does look sensible but I think it's a separate
-cleanup.
 
