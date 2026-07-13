@@ -4,89 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E69DC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF1CFC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:24:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5955C6B00E1; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
+	id A02906B00E3; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 546826B00E4; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
+	id 98D396B00E5; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E6E76B00E3; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
+	id 87B486B00E4; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 19CF36B00E1
+	by kanga.kvack.org (Postfix) with ESMTP id 4F9806B00E2
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4341140131
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:48 +0000 (UTC)
-X-FDA: 84983909136.19.3C9D824
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1CD2D18000C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:46 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEkO4cOG;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 726FA140180
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:57:02 +0000 (UTC)
+X-FDA: 84983904684.29.E7B189E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 784B014000E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:56:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U0QDSdrL;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951127;
+	s=arc-20220608; t=1783951020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yFIQucAr4vFmOrW82XY64T561EcF6nkSnWV7DSiSLJg=;
-	b=3Wzx/VeYxLjRmwIRubVyFGqnShJNheSwtiDgjTmZoO+NShCgBDEV7uSMoXaRyEyn6bK/2q
-	5QVqbwfz0pyyK+7tLhkHCn+d+mT7vON9WHDRJAdOyHsGJTYleEWd7Ry+zIsBO3VG3n1h6x
-	W8n8POpglXPaOOLPnwpCArqLNCmun3A=
+	bh=p7N6PlllbTvHO1g5IuTvCxlOA3ejXDi65k+Qzdhwvco=;
+	b=bOjS5QSNaVpgOc0UvzeUdz+9WDQ78Ibc9RFxfA7k6gamsXszw8om8zUN0ql9+pg+uh7ode
+	baSUlD2Lv1jEm3wFllOZBvIqWvimowriVw4+mLFuxWVLuHByirbV4IERM5BW/G9M9trXdm
+	V8GgObf72+uf3v6QR2HQlhAWIufSi9I=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEkO4cOG;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U0QDSdrL;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951127;
-	b=LPdL76IPT84071pUvGb39RWwCKbcP/wFxVTE8U9b4VXXGB+9rSXwYj5+ELs9gRAo+rT6Z5
-	BZBlA7iadZVdxZkwJdcaHQoZFpXZr5edUiH+bJRK0LVYfDMUtrKc4akCtyPEDjyqbmG7I2
-	+67EGD6n348pgFrcmLVJguBA7kilVuE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 497A5402A7;
-	Mon, 13 Jul 2026 13:58:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C461F00A3E;
-	Mon, 13 Jul 2026 13:58:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783951126;
-	bh=yFIQucAr4vFmOrW82XY64T561EcF6nkSnWV7DSiSLJg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MEkO4cOG07NJ7HKPJXu62PXT/o98eeK7TbKkTVT+LMqWbUKy8aZygB2ygoNst2sRj
-	 gzXjIFlJyFrWDM6dButP2m/w78beObSMeuDCcC6XBQN+wMUof0NDeVOkmTzOIjVsvX
-	 vda83iP5GNBiHr2EWkKqMacRAYB3/h7Skld5ia18TmOZJHI90UFAaZW8mFaQN1STnB
-	 Oh6nZjIWOrghkf2//6kGQBmZUUIjmUhpBCDv8RxOqziLQlsy0jcZN+1q2uTQorM0z1
-	 hBb6oEjPFxvqOmnAsUZrNGVkxxl9jp56aoWwMgfZnCkNkSye/bJUUzrFwapcTh/0w+
-	 /p3IkKRDDSeyA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 1/5] mm/damon/core: avoid infinite kdamond_merge_regions() internal loop
-Date: Mon, 13 Jul 2026 06:58:32 -0700
-Message-ID: <20260713135838.32730-2-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260713135838.32730-1-sj@kernel.org>
-References: <20260713135838.32730-1-sj@kernel.org>
+	t=1783951020;
+	b=FZwujmxv0j0+1fRc5cXjeSJHv8HmGnoxwn9CbNGc9oNzzqvtjSjxJSkqE8LqTc40pxkr8m
+	vfvLKynC+i+vWC1lN3AFNzn0cn8G0JOBWI/VQYWJUsWCULjV1vOLr7f+OGAuChBOFKoPqC
+	0tNCNj5ighLbCYJyorwxup1W5zAuZkU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783951018;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p7N6PlllbTvHO1g5IuTvCxlOA3ejXDi65k+Qzdhwvco=;
+	b=U0QDSdrLVp5okIL1Po2BiIPjhAzZrbKtypru+CEeWYbiuCIoyzSDuRbVn6SJ2Vrxu3EFxy
+	FHXzn54hv0wBHttUqWjyb4WUhSmnoI51pCujDgn9b02Yyj0/O84PFKQI7W8ozcO0AwFSw7
+	dAUiJ0m7GWRjHy2DvxgrMBVFstVFOrc=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-6-fW4FkA7XOtm0E-_IHlKfrg-1; Mon, 13 Jul 2026 09:56:56 -0400
+X-MC-Unique: fW4FkA7XOtm0E-_IHlKfrg-1
+X-Mimecast-MFC-AGG-ID: fW4FkA7XOtm0E-_IHlKfrg_1783951015
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-39ad42eaf7cso16237541fa.2
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:56:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783951015; x=1784555815;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p7N6PlllbTvHO1g5IuTvCxlOA3ejXDi65k+Qzdhwvco=;
+        b=dLMbOY39wzX4mgE1UcQfAUcxyk+kdHZkUBI51RKsKuIJSbLkrUeYmTYvM3CrTX2tdk
+         6smsVNx5Y19U7OaCHI9jv/yhxfxkeZ8u2M78oeHIPIm+YAXZFi0Kc/tLKHCsKdu94N1i
+         3sQo7VKdqo9ImQwIkwRsgJPS+oKo3cY4odaVygDJhsx9t6MIt8FS7PO+cEDDvpkT0Qr/
+         2vPBd9zedq1pUx5VjVqUHQ0VPBDnUf2APsZ4bRGfkcAJdUK7/R1IJVgJ1e8+Uix8RYwH
+         84Hq8CjuGV1wr+dEr2jf/nO/4lG1MxrC91FErTXzLH7W9w/yhECnqg87TSyrxetrOb2M
+         tlhw==
+X-Forwarded-Encrypted: i=1; AHgh+RqQO6PZOS+GjZXPh5ILfu2VP3XRc5TaBB14al3+QEW/STmnURNh15y2NfjxMKGrCrmozbXm2oOTbQ==@kvack.org
+X-Gm-Message-State: AOJu0YxbySZwAoFJ3c9cT62jepeIJasaAdpKmeSZDeeob59QQqD16YIR
+	00c5d/08qhkpq0LnDC/UC1dQKQIbsWUoeGTB7mf06F50bZcbgL6s4bV3Xbh27E306pwA7mV5AsU
+	XtvlZRu4HQED1ZCUP9EyyK5nT+lImDCgnxBuI2x+X3wlfeVAZE/YG9AhTxK4v3cPFI/UD7xIImt
+	iVgtOvZQbjr4HsDF6HZs99N1+bvt2rsgKDT+w=
+X-Gm-Gg: AfdE7cmMspspQQ0s/tjHgsty2gHSnhPB2AE92XUQMrWIz/OV9YhFLh7SndzQ+AWjbZF
+	Km9Stu5rI3twfkYaR+zqpS5f8FmmioLu4BOYQxU+wbhqxJyr4OWUz4Vq5lJV+skooTaTzi2VIP+
+	VG4UGGn8mBxVmIRScqJIzHIAZobjS5EetdAEl8+SAYXtul9YlbLcvES49ivvnZh6Cs
+X-Received: by 2002:a2e:a5c1:0:b0:39c:9452:15e6 with SMTP id 38308e7fff4ca-39cae8a9999mr21110441fa.33.1783951014731;
+        Mon, 13 Jul 2026 06:56:54 -0700 (PDT)
+X-Received: by 2002:a2e:a5c1:0:b0:39c:9452:15e6 with SMTP id
+ 38308e7fff4ca-39cae8a9999mr21110261fa.33.1783951014291; Mon, 13 Jul 2026
+ 06:56:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260706154500.39178-8-npache@redhat.com> <20260706193556.876676-1-usama.arif@linux.dev>
+In-Reply-To: <20260706193556.876676-1-usama.arif@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Mon, 13 Jul 2026 07:58:10 -0600
+X-Gm-Features: AUfX_mzCabUIlX9TQ3gRocALmiHePfG2uYgZVzFveFv553hugDtYsgls4Kx902g
+Message-ID: <CAA1CXcDjNnPuensEftae0mVNPxgpt2xeMNZPYyb2HU_bOp5Xdw@mail.gmail.com>
+Subject: Re: [PATCH 7/8] mm/khugepaged: clarify a comment regarding
+ max_ptes_none check
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Sbi6iliq6b6DF2YnTGAjLaLEZvBMe4JlRZgojcqpCck_1783951015
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 558dst8k68i75t19xpsf3d6nith9djzb
+X-Rspamd-Queue-Id: 784B014000E
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1CD2D18000C
-X-Stat-Signature: kbpb8f1hxfsc6f5134edehrgtcigxk9b
-X-HE-Tag: 1783951126-999954
-X-HE-Meta: U2FsdGVkX1/YBKtMoOwe3lE9RpN+C5r0ApS5cuk+G6wHz9F0+EMn19Jfr2bKRVyWzGvDutTZyLClpwu1ywdoRY8J3YNG68hoKiBrL4/hRaSBwcO0Fcsm73bSEJnba/X35Kff/NON0ORWN0xsuKJILGMADc80Ew2gZEqbUcdsfVbHWAoWLua7NP8bGYfk/57NtWDzyqo056xzhk8Er/Ry1Xb6NIX6e0ipdyOYz9dTYntuQL75yUgs9FXO4g0qAdIpWIa738/AvGlg4LXkklAZig8/M9WC1vpEx+rH5lJ4v/0dqMxdTzMXzoRo6I/ICPiEeZ9bdEhFKIgBc0+FsrpSNdBRcwwc/JiRV5mokfhJTrq41mucp/wi/+jfxxpIRuvYrz8wUGeLEoB7JZoXTNv54fAHkfvCCKtIfO27rNlC1eiYUXf008FbHacAZjnYuP59gX5IOzK5A5JBLvXvF0k1n2KEaidx8CAOCO4tLOqKfu3SSZx2UBDzOxmQWC6snlh3k7e+HQm7z6Ey3CJA/tufLE7x+e41rJFJeUR7Fy/eY/OVj3DSE1g3/LRpoE+fO/Cj70igKtM4EF4uM5b8EROlqrePTi3t7oeJa/09LL5d+/SJy7bJ0JNeuoARSnITtgETPpZsU+vwyv1BSSEu51rVAHwIyDxiV0F8ZzsICYAv/6Ko9gUD2dtCi9C0DJe1rth/A3dmDhGMlDZHK5Qh9CZ3tqBAdVHTyfT2+v4Si9VcByknmW1wGeXcjSztzO+c8XLqsFmxPGSHlT1lQUDsPJS1xYBRazAan3rsZIUPATydAZyxopKtUac8HTJTe9IvJea4xhfLdhQ7/2rFxEOPWJJWDxZHCpmPPHplWMnzyxwPriA5G1CbR5GZGOTma0Fqhx5mKsS2qapKyTJjw5ThNdUYjVQT627q0zmJkHndMRqphzhCXnNHUP1whUqbr2CYJWLeE46zQN1Jm1xWTZxc+dx
- /dtsbjtn
- MNXr1Jxz2YPHW+BWBdRu2j8+tMFuaDiRHLcX1VNhUmHVgcK4F79mWCbqiC6JYCHPvplz+3826xt3z5Frp2EsX8JAdBshRcWPSZIagL4POPqC8CNw9UMC6gvkrGYPuHHkA1F+yxhJnvxlKU/F1xvR7azGpcT7Z6p+uaeiG6nagB1Yi6SqNFiSZEm5TWlwPpeDRoNyhEWu5vMi+GptP8gBy8gVJL+Ylr/9XtkwxWV3icA8t2C2Fti5cY9U8PsZllaqkDF6K3Dnkmuzduc7wW9eYlG1whQ==
+X-HE-Tag: 1783951019-339327
+X-HE-Meta: U2FsdGVkX18GDHi4pAhjqqAy66B9ce/gYPqoTR2NsxRkD8MAbl4s5ZJk2XdEdxAKTTgxLR+wvoD3NyOBCGHHWU7UP0ySWX+xVVAnplrccT0CpKWDhzcvnoRsEmErq2L0488qN706LF1h1yerrcBHFmlmciPJ9+D95r3gi6moaFurtEdIXECyx7CE6xa7owii2Jx1Ap398OADaW5OmsoNB+qCMhA6++PAV0myDV54di2Cjg3St/2MWraAnS9Vrfdq1Rm3XB4Mme/hKYtVHl3jEo+MrU1FUtrTgr5hy6pD9OvOKAxOJ60t23j3Z45oZIZxhUY5fQ+3YkrJLh0jCrkOQBLkNteQ6wMduIbgFl+e+Qc5tMhICS7UJKVFB9/jHnHSIhmG5SEUicrCZ3iwV7N6HSvdqmppS29lVxupyunylIpxV3jLn/v4eovTYLwNYBHC88D09Uyhj6xas9JLlIqDSwQQu29oNyAKG3jAoQk1qn0fN4QMiSWjBS1eNjhQn7ZGhrSG+QkvU5GaY+xTVyBxVYHiWAfR6jf7QfKHeWoKvg+cVUZgIzk1rll67TseMiI4ouYbhQNx1z6HG2xDSPGHsFTYTHsHfLeK7XPHXuQddJLefsSvQap/hPSLCCyV+vgQUZ5Lyctxic7WRBsCW++FdNNNw48unk8av8rAQIJG2UAi6MMv9cNLvmTvhwK53k7ZxG5gRxoxAwdq5CC+qu6cT/MVqUUzSY9doJbZsEt5qKMT67gpBpAiv/jE3b277LXz23pRpRoRHmY+l068IYeQrYwx0wjrMBiQKw0xx+/O67sZPjg1StZmgcBE86xvWIUEfoEFPzoHPgCoqL3rn76/rZE3RnXD6F433+2Vmoe1wJRZu/v1mTClO29uIkAgqLApQRqr42rBIsKHYn1Rm3gNzsNIqoR4jVy8UN+ysUPuQVF1mLbdaycCaGD1few8tHlxo7htDCQ4ung14B3EF5n
+ VbqTmFNI
+ 9I6prDHUa+Rp9yon1ZlNRWk5FayqmV1+agrMEA4ZVXg0/cyqX+TjOUfO51YU7544x+2Qwl5OaE+TXHtg/qeYjjO3m2rq+9bE/rypfF+8s8Vae+TjklYandd8UUwtz9+81G6FZT1TWR1dIyh5KaBan+LoN3TN3QogJeUaGpx0BIDPccF3XllSPSaucLwycOrU1cvFKlimF8HHOyz8UunbRMij2l4HyU3hDdZE6g0GQMCCiwgTLyGMaA8ykRrjKC1j4DV4CBipijtIYoZcc2PdfRn86q5hMN2KqVUj3oYWM74f0TsaWZzlnPgdGww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,72 +131,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Due to online parameter update like events, the number of DAMON regions
-could be higher than the user-set upper limit.  kdamond_merge_regions()
-repeats merge regions until the number meets the limit, while doubling
-the merge threshold up to the theoretical maximum threshold.  It is
-tried only up to the theoretical maximum threshold because even the
-aggressive merging can fail from reducing the number of regions under
-the user-defined upper limit.  For example, there could be many
-user-defined non-contiguous regions that cannot be merged.
+On Mon, Jul 6, 2026 at 1:36=E2=80=AFPM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+> On Mon,  6 Jul 2026 09:44:54 -0600 Nico Pache <npache@redhat.com> wrote:
+>
+> > While reading collapse_scan_pmd, one may be confused on where the defer=
+red
+> > max_ptes_none check is done. Expand on this current comment by explaini=
+ng
+> > which function the max_ptes_none check is now done.
+> >
+> > Suggested-by: David Hildenbrand <david@kernel.org>
+> > Signed-off-by: Nico Pache <npache@redhat.com>
+> > ---
+> >  mm/khugepaged.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 3c6f1254deca..388045a524a3 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -1728,7 +1728,8 @@ static enum scan_result collapse_scan_pmd(struct =
+mm_struct *mm,
+> >
+> >       /*
+> >        * If PMD is the only enabled order, enforce max_ptes_none, other=
+wise
+> > -      * scan all pages to populate the bitmap for mTHP collapse.
+> > +      * scan all pages to populate the bitmap for mTHP collapse. The b=
+itmap
+> > +      * is then checked again in mthp_collapse() for each attempted or=
+der.
+>
+> Could be combined with patch 4?
 
-The threshold based loop break condition is evaluated by comparing the
-threshold for the next merging try against the theoretical maximum
-threshold.  If max_thres is larger than UINT_MAX / 2, doubling the
-threshold could make it overflow, and bypass the loop break condition.
-In the case, if the number of regions cannot be reduced under the upper
-limit like explained above, the loop will run infinitely.
+Yeah, sure :)
 
-Prevent the case by doing the break condition check before doubling the
-threshold.  Also, prevent the threshold exceeding the maximum threshold,
-as it could overflow and apply the wrong merge threshold.
+Thanks
+-- Nico
 
-This issue is unlikely to occur in real world, since having the
-max_thres higher than UINT_MAX / 2 require unrealistically large
-aggregation intervals compared to the sampling interval.  Also, it
-requires an unrealistically large number of uncontiguous regions setup.
-Nonetheless, the consequence is bad and the fix is simple.
+>
+>          */
+> >       if (enabled_orders !=3D BIT(HPAGE_PMD_ORDER))
+> >               ctx.max_ptes_none =3D KHUGEPAGED_MAX_PTES_LIMIT;
+> > --
+> > 2.54.0
+> >
+> >
+>
 
-The issue was discovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260709145425.96247-1-sj@kernel.org
-
-Fixes: 310d6c15e910 ("mm/damon/core: merge regions aggressively when max_nr_regions is unmet")
-Cc: <stable@vger.kernel.org> # 6.10.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 806a67d02a6e9..f3b6a46fdaabd 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3369,15 +3369,20 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 
- 	max_thres = c->attrs.aggr_interval /
- 		(c->attrs.sample_interval ?  c->attrs.sample_interval : 1);
--	do {
-+	while (true) {
- 		nr_regions = 0;
- 		damon_for_each_target(t, c) {
- 			damon_merge_regions_of(t, threshold, sz_limit, c);
- 			nr_regions += damon_nr_regions(t);
- 		}
--		threshold = max(1, threshold * 2);
--	} while (nr_regions > c->attrs.max_nr_regions &&
--			threshold / 2 < max_thres);
-+		if (nr_regions <= c->attrs.max_nr_regions ||
-+				max_thres <= threshold)
-+			break;
-+		if (threshold < max_thres / 2)
-+			threshold = max(1, threshold * 2);
-+		else
-+			threshold = max_thres;
-+	}
- }
- 
- #ifdef CONFIG_DAMON_DEBUG_SANITY
--- 
-2.47.3
 
