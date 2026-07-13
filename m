@@ -4,96 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F2DBC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AAE2C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:30:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FA0C6B0129; Mon, 13 Jul 2026 12:29:50 -0400 (EDT)
+	id 3F7166B009B; Mon, 13 Jul 2026 12:30:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1827B6B012B; Mon, 13 Jul 2026 12:29:50 -0400 (EDT)
+	id 3CE696B00A1; Mon, 13 Jul 2026 12:30:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 071546B012C; Mon, 13 Jul 2026 12:29:50 -0400 (EDT)
+	id 2E6E16B00A3; Mon, 13 Jul 2026 12:30:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C7C0B6B0129
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:29:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4AE15A0208
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:29:49 +0000 (UTC)
-X-FDA: 84984289698.09.BF0699A
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0767A80004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:29:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KcUhILSb;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BB336B009B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:30:44 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 798CA1C7F1A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:01:20 +0000 (UTC)
+X-FDA: 84983915520.10.CF906CC
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AEA8F40018
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:01:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GAoyiDy3;
+	spf=pass (imf07.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783960187;
+	s=arc-20220608; t=1783951278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nIFCVDCks2Nl8QDC7s+Gse3mXfhj0M04OqJMclW1HMA=;
-	b=ZRJR7cbJtHp0e91Y953upQluX2zqWDpSXHJre/aErV/UfWGKpWUBxfQSxKmDbOPQmNDlLp
-	NwSyK4kO7YEGC9OcFIhjXECLTh6w6SHl7PKB7Cg73hfXI8rFV7pvd6uatLqY4SZDqc2JNP
-	2Tlm9R5vBrt+4Y3RC4SpO2QM0SGmvPA=
+	bh=Mgg4AxTbIvWGpBzw8PA5RCq5W28aRH0DxqHB/NvCldY=;
+	b=ZFiJ14Jvea9On2G0mEbir5MV3TT5uDHv5RsWpNUJ4p21OAq5JHuSfvQ61VFFxLWcwwmNnp
+	LCrXMkSyTXIQyEjOoZ5+dx3uNdOzRnOXedJLO6cueSb2fY5pRL5B+t9H+qyYmoh5cFuu8F
+	GthXI/aCK19xwPu2IOnsfDTiw9DKTn8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KcUhILSb;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GAoyiDy3;
+	spf=pass (imf07.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783960187;
-	b=bEDPqISNvWkoi26SvgDGfUS8GRtHjWk2twiyB9O4xjDRj7IhoS0OSgdXHqo7BH/zRS6NmD
-	W/jj3qKXJxoQrBIyaWBkV9zIz0pP8/Iphse7N6b2ZzZweVHddhSSqwqkfpS789Vw7UKkOO
-	yUuxpZkkFpEUbzCNBqhZfvWB+jHfbHw=
-Message-ID: <da9458cd-f039-4c7b-9e00-a473b05aa3b2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783960181;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nIFCVDCks2Nl8QDC7s+Gse3mXfhj0M04OqJMclW1HMA=;
-	b=KcUhILSbXhnltRbBUyt6mFW8wzTQFpnuIrLLrSbBc8yijyOJmwSXHR1AHSdCVmkZUhzmBo
-	OlgsRuZF+Z7n2ktmf9P4k5Qvcy1YHRXjCI8ld47VLus38w/oR8a14Xpc7vfoks7Pf/BrBB
-	EjMLWhX7MGumc0j/aJ6zH5H++O0YpAE=
-Date: Mon, 13 Jul 2026 17:29:36 +0100
+	t=1783951278;
+	b=w3XZLHldcYRYIpTDFYSlRCLYKmHdBoJi58XtCG3dj1BlTgUAMhQvt6W/q2kJKJ2YjmFG/W
+	qu+1lhE9gr29RYjLktTW3/XSnPjj9p5ewIJuOu/mKeTucdEbmpZilIsPwExuKNT+eeUWih
+	MFjAvCvgMS4jvQd8UzNEzU2My9MF5CE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 870EA2050;
+	Mon, 13 Jul 2026 07:01:13 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9427A3F7B4;
+	Mon, 13 Jul 2026 07:01:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783951277; bh=fo69NRGTbHPdRvMyzMnGDIUWtNXuhxqOSbA3GBc5Vfk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GAoyiDy3vQ1X7bdgWU7XAqeF1NKi8cZXbh0Pcm7PEb8ix60O+FJhN+xRdssvSqs1z
+	 QUdqoUMHf+/1uEN0SYPKe9v1SzW67hzTIIH7Bt1jnn7qbYXsKmfGK0AWyBU4GfbNGV
+	 9+KtfQlIc1qITAsw0F6XCnotwh3TKW8ydrkXRCY0=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	kasan-dev@googlegroups.com,
+	linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org
+Cc: david@kernel.org,
+	linux@armlinux.org.uk,
+	akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com,
+	rppt@kernel.org,
+	linmag7@gmail.com,
+	chleroy@kernel.org,
+	klarasmodin@gmail.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	kas@kernel.org,
+	zhangtianyang@loongson.cn,
+	wangyuli@aosc.io,
+	tsbogend@alpha.franken.de,
+	ljs@kernel.org,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	arnd@arndb.de,
+	ryan.roberts@arm.com,
+	pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com,
+	baolin.wang@linux.alibaba.com,
+	tj@kernel.org,
+	kevin.brodsky@arm.com,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	hpa@zytor.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com,
+	yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com,
+	ardb@kernel.org,
+	guoren@kernel.org,
+	yang.li85200@gmail.com,
+	viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn,
+	junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev,
+	vishal.moola@gmail.com,
+	namcao@linutronix.de,
+	pavel@kernel.org,
+	djbw@kernel.org,
+	yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com,
+	Jonathan.Cameron@huawei.com,
+	coxu@redhat.com,
+	andreas@gaisler.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	geert@linux-m68k.org,
+	shorne@gmail.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [RFC PATCH 23/34] x86: mm: skip pud setup when using generic compile-time folded pagetable
+Date: Mon, 13 Jul 2026 14:56:02 +0100
+Message-ID: <20260713135614.1618183-24-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 04/11] mm: zswap: add range lookup for large-folio
- swapin
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org, ying.huang@linux.alibaba.com,
- Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
- youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
- dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
- "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
- Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
- kernel-team@meta.com, Alexandre Ghiti <alexghiti@fb.com>
-References: <20260713133613.2707815-1-usama.arif@linux.dev>
- <20260713133613.2707815-5-usama.arif@linux.dev>
- <CAO9r8zNVnwAS-6jOQtGrcN_fq8C+6kRiiRX4=kp9h=fTC+XYNQ@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <CAO9r8zNVnwAS-6jOQtGrcN_fq8C+6kRiiRX4=kp9h=fTC+XYNQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zh7tmniyqnprheg19fsbtu9pcdk8sd4i
+X-Rspamd-Queue-Id: AEA8F40018
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0767A80004
-X-Stat-Signature: njptiijctku3wdj68j1oiztqhwj9r3z8
-X-HE-Tag: 1783960185-886341
-X-HE-Meta: U2FsdGVkX18L008i6cQEbqCJKp7eJZz/k2mzP1v2GxWyRRgTJZAtprfX1CakcRU4NFYN0cMCoz2HTOWQDRs+dimXMaMCLU4Aa9p8556hYrNZKTGoR+jP5f4SgU4c4L4z0280keeLIAR3+9ThkW553W6hyeyafKg/qHaCV/lVWwelWew+GW3ofiggeMdeEh3zu478PR1Qz8N7f1X1kyYK/JIullCz+qVHn7JqYrg+alo+X/bDkWA/ZqYkyv1mDFps1a+6rE4373bOiHwcWcNmHBmRAoxFDbGGPMu/xbEXWmJibuCav/qLpMauwOCR8o4omlawQZGCoXCL+byy8nUOXGztVqkIrKNvF07jIodbdAGowny5eRPZj9RGpzN2MpT7myW7UsGE8SDx6jEeVQoFsjzNn8aX4EoH9LBLJx8mpZyhZdVO+bwv7Bh5REd5nvXN2fap0zDdl8x32uJzKoqPMHARnAMGuABvh74vZgucrwoSxXPzASyb6ukxJGsSp2eWJZkdCXUaN2dvihj0I6CeM/5LO2npHhXZ9FmJTzW6+xgyBH1XTV8VKrGyl74Hv7PqHpwvT/oAIbFchJXE5EbvIfGTAo0CAU7YPiAIywHfU87HB+qFEWI3XrcUq1pglnB4SddTMqYSqsxjgZv11QAApTbpvc36cJhPOzMN4vN3s6kLODrVOynB3kcpan722V/B9HdfxZi6REUzgKdA9/AmCSswkTIUWh4iyJQ3cFJm8nJ0DwRjclMijaljkvq5Epnebtw+r31JdRtvxyveBs8AXLCa8GMPA/jAVy31QyuYHtgyHPDRBt/nrOSqwGv0NM+uC1MyKzhfWwxhEngVvowado/BxXjln27HPZ8QppKqJ68Wd/Ei+By/IcbdjujHiCaZZevQ5ATjW02XgKxuFyZ5G+cAk4IhnhRpcg5IbXH5hg9ErspuOVlF2j8/lm2II1FMlzkp7Mz0tJwqSipUZsM
- 4jYSmix3
- 1f+9Is5LjqumYpNctCOyF5LcyJ5lxqJlqLL74dj6eZ9LOc+EW0kqKIf3L/UNWnIW/ahAUdSA5djfItUT0uRvISJKCt55tai181MpMQtX3XhQqzongVy6D3WDjByGcnqn5jo5R6EzB+XiVtXK1l2/ht4Y78KtYEDhiam3/MChK74mjd2UnXStiZLPX1k0TYlsZ8LjtrZUuAjKzt4fNjrGDCm28Kw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783951278-240880
+X-HE-Meta: U2FsdGVkX18gaanFuSzpW9aibRuJ2xg31UKU/UW9Z0sTpjvOTolcd+IzqEnnYd8zP+4Ghtp2d8AeolOSdt2Uj1GjymC5Hxg/QppjiCmifyiP76FFQ1Mnkx51Bxk0kxm76bWP6y07XCGBMjUw4K3kbp2dBj3DrX2mWkvmtFbxEDeKGSxhJJF6N5JbB5FbbqLdmTk/Ci9QJzVkPwwRsl6y/wD3XR8io0rrbaCaUMl31nxCklYh142mK4A4MQDuEDxPGAWu/NIA77Mhw3C+dQ2ufGM5J8hgTxjnTNpl2D92enFnSjCyxPPtbjuJF5QpIZMuxw6tb4UhPqvy/DHonUKjlxC9hyuDrjjhC/itUzGjKcn20C6f6EieiCsKl+k3Q8Hxo4s95T6fhcZlmj0erRqtp7baaUhKi8XOtcagHaTOBAkpx+3N+duzP4dOjt+duS/wUPkXIpoC/AUr5/uZtzdbU5G75o3eEoZKcZwNqA4VlXSNe+eoTncuqOfMW9f5ocUISdgXcGvxGd/172v9+1/TpXktzoWz3OOwkW19waZNGu9w8L5pG79DQEQ0exXU/fFD+vSyTNOSBeSZi4xdzA5ghQNbqxZecYWMd8OurRRvCCjTKr9OTVULTkUgQzBwmvfXnGyDgU8O6dj7Iciarwze94d8xlBk84bX4s1HMV4552q2byifjj7tnq7kOiVzU4ettEJOBDOb0pZYnWT30lGByGwpQkRtYBEBjQtV5DwGnre46A0C7oN7R/CT1b7FsI2eMYUYC33FKQSENspfk7JiSjqqYCOABl3rehnUnB6cgl7tcS66sv3E6oE0N6YGPPhQ29bGNybua6AjBCZ7ROmBEg1nRarVcFZ5sAijLEisObt4eBj4CZWqP8PFRhxb8xkPfZknEKC8Uu5F7qhHlujzOVkE6JGP8FwWB6/t1XbIBtqPb737Tk4D2sgMdbJ71XT50LqGAm/jpmPYtsQCopw
+ a7uPpZZf
+ c3+0jrEA+DXNCXr6Uyl3B6mQpT+5/2/vq0ltPBRel1g9JcKsLBu/COoaZ92IkFWirDmJ0X5zCGyw3IcbeU+HhCd7hliXeH4Zr4Ypidrp4hz48IaS9cWIjBa4CmRFJaKWWFKtSjnfw1RTMvpbdQlPge0MwuYsX9s5HnOD9fMl8elZK/V+xPhKRMcjztY+VStbKq7vHuN0VhvxjWYViLidkK6bXLmi6eTr4zZCA8zBYWgrcmK1tHz72KDw7tQdr4GnIDxCKQYIolLjzSA79cUeVT4+6VnsJ8OIs/CW2pIS5M6NmP5EmuQSWshRS7Qw8NQI5gbjN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,67 +179,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+We want to rework how set_pXd() behaves for generic compile-time folded
+page tables by disallowing its use and triggering a compile-time error
+when it is used improperly, ensuring that the actual first-level set_pXd()
+function is used instead.
 
+Therefore, skip collapse_pud_page() and populate_pud() according to
+CONFIG_PGTABLE_LEVELS.
 
-On 13/07/2026 17:02, Yosry Ahmed wrote:
->>  /**
->>   * zswap_load() - load a folio from zswap
->>   * @folio: folio to load
->> @@ -1571,10 +1588,9 @@ bool zswap_store(struct folio *folio)
->>   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
->>   *  will SIGBUS).
->>   *
->> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
->> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
->> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
->> - *  do_swap_page() will SIGBUS).
->> + *  -EIO: if a slot in a large-folio range is unexpectedly still in zswap.
->> + *  The folio is unlocked, but NOT marked up-to-date, so that an IO
->> + *  error is emitted (e.g. do_swap_page() will SIGBUS).
-> 
-> Just curious, why the change from -EINVAL to -EIO here? Does it matter
-> in practice or is it just a matter of personal taste? :)
+There should be no functional change.
 
-The caller only checks for != -ENOENT so no functional difference here. I viewed
-it as a change in semantic, -EINVAL meant that you passed a large folio, which
-wasn't supported to -EIO meaning the request is valid but zswap cannot safely
-complete a PMD-sized read from per-page compressed state.
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ arch/x86/mm/pat/set_memory.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I dont want to speak for Alexandre, will let him comment on this properly :)
-But above is what I thought of when I got the patch from Alex.
-
-> 
->>   *
->>   *  -ENOENT: if the swapped out content was not in zswap. The folio remains
->>   *  locked on return.
->> @@ -1593,13 +1609,19 @@ int zswap_load(struct folio *folio)
->>                 return -ENOENT;
->>
->>         /*
->> -        * Large folios should not be swapped in while zswap is being used, as
->> -        * they are not properly handled. Zswap does not properly load large
->> -        * folios, and a large folio may only be partially in zswap.
->> +        * A large folio reaches zswap_load() only when its whole range is
->> +        * expected to be on disk: PMD swap-entry consumers split before
->> +        * calling into PMD-order swapin whenever any slot is still in zswap.
->> +        * Confirm the range is entirely absent from zswap and return -ENOENT
->> +        * so the caller reads it from disk; if a slot is unexpectedly still in
->> +        * zswap, fail the read rather than return partially-initialized data.
->>          */
->> -       if (WARN_ON_ONCE(folio_test_large(folio))) {
->> -               folio_unlock(folio);
->> -               return -EINVAL;
->> +       if (folio_test_large(folio)) {
->> +               if (zswap_is_present(swp, folio_nr_pages(folio))) {
->> +                       folio_unlock(folio);
->> +                       return -EIO;
->> +               }
->> +               return -ENOENT;
->>         }
->>
->>         entry = xa_load(tree, offset);
->> --
->> 2.53.0-Meta
->>
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index d023a40a1e034..cffb1cef869cc 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -1326,7 +1326,7 @@ static int collapse_pud_page(pud_t *pud, unsigned long addr,
+ 	pmd_t *pmd, first;
+ 	int i;
+ 
+-	if (!direct_gbpages)
++	if (CONFIG_PGTABLE_LEVELS == 2 || !direct_gbpages)
+ 		return 0;
+ 
+ 	addr &= PUD_MASK;
+@@ -1710,7 +1710,8 @@ static int populate_pud(struct cpa_data *cpa, unsigned long start, p4d_t *p4d,
+ 	/*
+ 	 * Map everything starting from the Gb boundary, possibly with 1G pages
+ 	 */
+-	while (boot_cpu_has(X86_FEATURE_GBPAGES) && end - start >= PUD_SIZE) {
++	while (CONFIG_PGTABLE_LEVELS > 3 && boot_cpu_has(X86_FEATURE_GBPAGES) &&
++	       end - start >= PUD_SIZE) {
+ 		set_pud(pud, pud_mkhuge(pfn_pud(cpa->pfn,
+ 				   canon_pgprot(pud_pgprot))));
+ 
+-- 
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
