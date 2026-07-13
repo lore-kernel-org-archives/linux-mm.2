@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81037C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57451C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0A6A6B010F; Mon, 13 Jul 2026 12:28:04 -0400 (EDT)
+	id 3064D6B0111; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3646B0110; Mon, 13 Jul 2026 12:28:04 -0400 (EDT)
+	id 2B7976B0113; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D0B46B0111; Mon, 13 Jul 2026 12:28:04 -0400 (EDT)
+	id 1584A6B0112; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DCEA6B010F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:28:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FC1E40175
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:37 +0000 (UTC)
-X-FDA: 84983908674.16.88AB316
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D90F46B0110
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:28:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BED88C019A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:18 +0000 (UTC)
+X-FDA: 84983912916.06.A3F31A4
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6990040002
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:58:35 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CHlkydzV;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf16.hostedemail.com (Postfix) with ESMTP id DE40D18000C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:00:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=f7EldcMF;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951115;
-	b=5exSuj3Txvz+eHhhk0KsBDVp9aTizkOv1Qxe0dL0/HkeEpNf5taRw3EubYfne+GTSq/Lhp
-	rHms/hUS7rVLodrwg+swX7oBkfaoRhJztJZtR238FgljWGrtcS6QZ9mZnCaU2nF/cfY60n
-	UgOw+fwipJ6WhUL2vW/WSQOvXV5f+1c=
+	t=1783951217;
+	b=2y5xe6HPLys36x5csfsBuP+B3PfdKdwXXzYv9cLI558WYKa5yQDrNv9212UuoYEUuwtkky
+	Vok81MvYywYzavXefLiWyn56s5Mg/zu2GzaCOEX5yzmH92+4RbfsgM+Dywt1fXVqad5jom
+	Lo8tgIkvkf1507/bN7kudQA0RzdXYv0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CHlkydzV;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=f7EldcMF;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951115;
+	s=arc-20220608; t=1783951217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xpXZhmbiVuKVrLvZ80LTV1Vrpobd07xhsGjtQDwZJbs=;
-	b=ixz+kiQzs9KoWuW6QkzvDllwP/IQOEEC9fCUKVLFueCmEQYccauQVzKGny0PTpJ+aj5wuW
-	8OEXPR67LK4ESxuM6jEtwKoz/D9R1QZyfaWehuE+BH4Yzo7if9sbrfQtNcUodr+hU8dQEc
-	+JUMso1Nl54HFaEG8RNL4Ku2MjBJYbs=
+	bh=TXvdvZ2eLoaZIoXA5oMVYOLwDSTuaBij3FbMTbYWE/s=;
+	b=KSWJ3kDP8mV1FPcV5gcxshYt62UIFnOkihHBHGVYklx1zaveaDZuzxmMsreBq9uvXZeUb1
+	0BT/uVHFcM1uMpIIyIZhU2xTjMkPLQA8/oa2UmOMHqHOZzSQGWIAJyBTKRB9wBUqAsfrEy
+	N04xfhpo9cavOFsL1Y8Cis93/E1bfcI=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 626221AC1;
-	Mon, 13 Jul 2026 06:58:30 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C824B202C;
+	Mon, 13 Jul 2026 07:00:10 -0700 (PDT)
 Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 722843F7B4;
-	Mon, 13 Jul 2026 06:58:22 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CD5DA3F7B4;
+	Mon, 13 Jul 2026 07:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783951114; bh=ijbMFumg8P8gGkdSIJoBYbLSyYeD/Vjhz9UbWDLoy8k=;
+	t=1783951215; bh=Paq3n4cO8HdYy4FFfkUp6FGCvWu1boCvdBHEQkzpEzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHlkydzVCllPoGxzxcQSUErvYXIAGBQ595+NL7G7e1sqPROHhsxJ8MBiTiSYo8eIB
-	 Mu0LCgbjUkOW4pofPbQVpr3Y0M6KWgdVpaR90WouabYCqysQ0cuW4q7ADzrIlktriy
-	 gEX7NRAFqIzU5fkSuMPNTtCBJn75XvGeTJjmc76Q=
+	b=f7EldcMFAotp2m+ZhFGMuVYzDzUE1W3xYD2M61Z32+4Lp6LM2uG0bFpTaMxAUabky
+	 GXRnAFeDJZQABUA65JAt+2/I+UMycHxGaMD0oKMyNfBY1Wx5aC0cEO7Fj/aGoXMZAY
+	 tYNv5K6voYS794ZDDPyqysxYS3g7IcY1aTIJ4qUY=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -156,22 +156,22 @@ Cc: david@kernel.org,
 	jonas@southpole.se,
 	stefan.kristiansson@saunalahti.fi,
 	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time folded pgtable case in effective_prot()
-Date: Mon, 13 Jul 2026 14:55:49 +0100
-Message-ID: <20260713135614.1618183-11-yeoreum.yun@arm.com>
+Subject: [RFC PATCH 18/34] riscv: mm: use proper set_pXd() for generic compile-time folded patable in setup_vm_final()
+Date: Mon, 13 Jul 2026 14:55:57 +0100
+Message-ID: <20260713135614.1618183-19-yeoreum.yun@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DE40D18000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6990040002
-X-Stat-Signature: dc5qcr4wuahz9b8ja48fccz17ajgyhtw
-X-HE-Tag: 1783951115-691738
-X-HE-Meta: U2FsdGVkX1/l26knxXCJndadQAjKuk6Nck7jJAymgmkNZ0gD1G2mrs3lXeuj0jwPdeAzI9OsPxr5wUTwM2wXcjT1uUXhBg3TFBZHQtKDW6Je7jSAjEKhAVVe3S0km1QbM1uLyfNbb8wlzZ50+laUU+x6wyB70iwceOHSoNeD/9uwLllX4wBsSiLnMXib6ldmOh6AfkUylxEmJg6kA3oVbWg5H7J+Oo1RALZ4AwJOm/Rg8Oc3RbLaRFLP4C1mINR4XPvsDJkgrKS+bu3soQf66jmFT0ycZVBpXjssumUbq7IJKoxCdIHJihU4h8Ze7ErlsJ3mKLm+dygaRQa14DMMjfd9pBVypukMbiy31rIsqs/ABphfUFhKY6UQ76Dn/PvZePA5o5If8D3Nk0TzWmPY3IswdsxvEsXaysDGo87dbAJNJ4nXF0B6BEAozrygboAHXjdsa7lcWsGPQq4Mzh3j0n1nGjcV31Mpbf2dUlnhxklwwGUuVXkZlVuWK1jHs7x+9tgwvSRhf4KaimjKyFh/lsqpLDjE5Ql/0yfAmjCyQt7Ava1jeeRPnJJSyEyGm06XEXVEAwR1qzelFARNc0xq7viv9QLiNsh9r/erac9xEfnZXglKoVD1Mohx4LeDHsX8QRdhg0P0tN1Qw56XA0+TAiB6NGmkT8fRHcNZkxCjjwPv1Pd5tNop+Gsj9mR9/OhOt6bla6XYVz78xH+ix0eCqI0BFaIJOXSinX3JKI+wOFQq2hMuQGL9xSiT1iS2CoHDeRvVdv0qcp6IezSfZo00pVkAMqB/NhHm0yH49shh0N7LsaGQL82CdaQxXCGBQJhzODr7Ut1PhHST3zRAPrako9kdd4kyuMyE5Wn9gavPkiDPEpDw6wlH+o9ehn6aHmZbCx3EFK+ggxehtONI87ZlYMT+93GQfvoeIUti3xjMDUG/Qrw1OunjwI4Lps2IREiUWgKa1xMAkVwFptP3r9m
- Z8fftwDm
- q+r3MlpzrXj5dt6YOlPbBZWsYQbOQQ2YnHQVZbRY5kmTEFeHLKzZJgPq7Kq2fbld2ARAnhh/SAsulbdsOhBdtmYxOvN2Rg6u0NnRTk4OnY3GQ+sfyeiOWawnsDD8Jp1ek8HGkQyWZakQKwlVaqmSs4PzAhtjHRrhkcTN6/ynu+YPDYyOvSTlwNlnm4LT0walt+2gLzmXJjQqvGBexy/N1Eoevusv4k+BzfH8CZqxrvF+kVRQvl3VtfrEEw+3FNOMoZHLRCQBxH6kVCjFCJwhqr50lIKNEo4LKC1+PJ4p75k7arCwozuPvmUcPTL4O6xltltjaWbA/mJKrGZGirlF2JF1UkiUpZSDRklFCU2xDB6nHBvGI+cxW7QZXrXWXJy1Yo1hN
+X-Stat-Signature: 9t9zbes7a67zwdcrq1ofp7os4fdu3pkd
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783951216-966948
+X-HE-Meta: U2FsdGVkX1/q5XtHo8M7KFSrTOcff+Z29EmyojC5Opgl/RjcoRwK2iClffjWxZ7jextjowqiWosWbXq9KvsgbN+hJwbXJqgGbFJ/nT3PTo72gu2Jh0bY9bIlIfhRz25VO/MVUjC6ztSet668Affy665m9NIbh1PAUjRA9wzSKbcl49Ky/OpDVvr8NmHEVo75EqM9F9m3al2ZJDOoCgJSwJ1Lc2ziTUW5FTxvfxLfJzq/MFd9HchLGWTOE0VZnH4U7sT5RHW2/Ym1zgDA/IhCrEiuwIr5NACebAUW9f8TPTp7OPBaDNf/vxXA1TqpdQaw3nWFLpkcSJdcoqEckIVPm8uTWLnCdEPmTLII+cf+tGB/qN4Kg+oRxhRGVp7zlaVKn35zsl0p0CfFqB12Yh6PYFnNMY87Vtocevuq1yexzsGCknuWuMIqR3R0vdREuqKhfrgH/+R3vR2TkePFymBiPf9T0p9dQqq0tZeQx/RfPThb5mbDcV2WHY1mEoVuITPYgov3xjtpu8TrX34XglPFjVPSAYzt4Se5N0zpNwL11v2fHkduwgRV3K2HXMWTt2+jZzRbRVj3k2FhshF42wkgQ/lyhtv7bPOel+X9h7c7UH4Lgc7hGCYEmBrnsI0I2NSpGCYhyazgaDfQRH5y+SN1Rw41FJcmmabj+oib49I6yCOwCTVMQ1myO7IdOVOv0WYEmscWszvleKhmV4+WVsYWCJMYOhy9x42bDoxQ1EJVu4FCqXavFvM84js3UUGgwrL7LknbLr5P0/Gh92tDYl0wUIhJIp/N+k5laCQttU227Zye1GwRJyLacJJNvWRYBVnvkWEi1yDMDjBH2GN/UvCSLiFmC8hsRv4TSaSMRTX/SelOa3qNs5TDztG+XbHqJ9jHPqbZ2eFXADQecTwWK6LuOm+LtfPMmJ5T3gd4c59CBRJU5sni8iNWG7FimHMTPIGo1CMsXee1+5RcI9BMbc3
+ kTokbObr
+ edKHEtNwsrCy4OoQK2+x+2/uIbqJ5zDnRP6FO7ycZ3z3LtJMA5f6cyAfpzdnJvXyQj1uAimT/aTob8eSyPEJkGs9ftyqbxpZzL2dq2jG94YnrRNcRAegLepUR/ECpGEXo+sny1vuKmqQcXOPkTmAW9eTzWoPkOAnnIMzfi/m6YBQh/D8cGNAzA6D23Ltn5KelhO7Br1NsnkJzxCqb6pAvELrAMEZlIEzV1SeIYCYjLYTvc/rpVjCYnbFrVADR1XmN/Aci/7CV9aTjAWP8IeiHwbMr0Bpwx9UnKrPhqPvfESDoCa5VkEmufQbXKEMe9UDSyaMgMKQcmBSb9tk6i6eC6FLeksSMDCLw740R3P2xdLclcmk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,68 +179,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+We want to rework how set_pXd() behaves for generic compile-time folded
+page tables by disallowing its use and triggering a compile-time error
+when it is used improperly, ensuring that the actual first-level
+set_pXd() function is used instead.
 
-We want to change how pXdp_get() works with generic compile-time folded
-page tables. To prepare for that, rework effective_prot() to ignore any
-folded page tables entries, as it will unconditionally get called by
-ptdump core with pXd_val(pXdp_get()), and we really should be ignoring
-that value for folded entries.
-
-For this, identify the first real page-table level and
-update effective_prot only when the current entry is not folded.
+Therefore, replace set_pgd() with set_pmd() to setup swapper_pg_dir
+in setup_vm_final() since PGTABLE_LEVELS is always 2 in CONFIG_32BIT.
 
 There should be no functional change.
 
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- arch/x86/mm/dump_pagetables.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/riscv/mm/init.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
-index 2afa7a23340e9..e32848c7f26d4 100644
---- a/arch/x86/mm/dump_pagetables.c
-+++ b/arch/x86/mm/dump_pagetables.c
-@@ -27,6 +27,7 @@
-  */
- struct pg_state {
- 	struct ptdump_state ptdump;
-+	struct mm_struct *mm;
- 	int level;
- 	pgprotval_t current_prot;
- 	pgprotval_t effective_prot;
-@@ -253,8 +254,22 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
- 	struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
- 	pgprotval_t prot = val & PTE_FLAGS_MASK;
- 	pgprotval_t effective;
-+	bool first_level = false;
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 5b1b3c88b4d13..78017edf7c343 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -1264,7 +1264,12 @@ static void __init setup_vm_final(void)
+ 	 */
+ 	unsigned long idx = pgd_index(__fix_to_virt(FIX_FDT));
  
--	if (level > 0) {
-+	/* Ignore folded levels ... */
-+	if (((level == 0) && mm_p4d_folded(st->mm)) ||
-+	    ((level == 1) && mm_pud_folded(st->mm)) ||
-+	    ((level == 2) && mm_pmd_folded(st->mm)))
-+		return;
+-	set_pgd(&swapper_pg_dir[idx], early_pg_dir[idx]);
++	BUILD_BUG_ON (CONFIG_PGTABLE_LEVELS != 2);
 +
-+	/* ... and make the actual first level remember the protection. */
-+	if (((level == 0)) ||
-+	    ((level == 1) && mm_p4d_folded(st->mm)) ||
-+	    ((level == 2) && mm_pud_folded(st->mm)) ||
-+	    ((level == 3) && mm_pmd_folded(st->mm)))
-+		first_level = true;
++	pmd_t *pmdp_s = (void *)&swapper_pg_dir[idx];
++	pmd_t *pmdp = (void *)&early_pg_dir[idx];
 +
-+	if (!first_level) {
- 		pgprotval_t higher_prot = st->prot_levels[level - 1];
- 
- 		effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
-@@ -449,6 +464,7 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
- 			.effective_prot_pgd = effective_prot_pgd,
- 			.range		= ptdump_ranges
- 		},
-+		.mm		= mm,
- 		.level = -1,
- 		.to_dmesg	= dmesg,
- 		.check_wx	= checkwx,
++	set_pmd(pmdp_s, pmdp_get(pmdp));
+ #endif
+ 	create_pgd_mapping(swapper_pg_dir, FIXADDR_START,
+ 			   __pa_symbol(fixmap_pgd_next),
 -- 
 LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
