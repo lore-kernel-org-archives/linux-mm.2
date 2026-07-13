@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95F0AC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:27:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37709C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 094C46B0108; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
+	id 193956B0109; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01D546B010D; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
+	id 1587F6B010B; Mon, 13 Jul 2026 12:27:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D15E86B0108; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
+	id DCE776B010A; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98A226B010A
+	by kanga.kvack.org (Postfix) with ESMTP id 94A436B0105
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:27:41 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5EA78166158
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:40 +0000 (UTC)
-X-FDA: 84983911320.04.5769143
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 857EB168BB1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:02:35 +0000 (UTC)
+X-FDA: 84983918670.27.DE8733E
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 75DED100005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=hFiwKMoL;
-	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id DD2F41C000F
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 14:02:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kQi5KYkL;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951178;
+	s=arc-20220608; t=1783951354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qwLeq0PkyIvlTlg7ku38Xfln0x8pSkKwvMyihtYc5r8=;
-	b=F6JoCZum3MlGjfb/iOHT0Yc3wXk8/y93a5DYXAU8FpWr5j4SqqIviBHVF36Cvd8Va2hG5G
-	32SMpVoX2tPYvcJaXD2L8GS7JlBZR377C4HjpU5PlnXOIwTciVuQkLsYjyxZvVHQtBfk71
-	LB2oGlVbyDp+YOfhtfvALuRBBUX30as=
+	bh=A7ONkW6MIPHl3djkHN6197TlCJ1WOxcpYlUNKhpTqHA=;
+	b=pTH3mIIJZIisuBKEZ3xKwqr/GOhSr13AvBbbP3ox+nfGpoZj/v4PqMMtaslvMJPx5BQE53
+	hxvN7yeoFxVsXiIwshe+DowM+nznL2f1ZjtBfNwEDKU1YCJ1Q4gjA5ut+TLiXkvmd4rSoL
+	6sX9tdfhWFLNxtQSgQ3gxR6YLqpevsk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=hFiwKMoL;
-	spf=pass (imf14.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kQi5KYkL;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951178;
-	b=fkXhxvsuy0kbwDx2LJ+E8PTq8KcoLVAdzYmG87aWw44c/bL5KCWMypnzH8+qZGpsHKRl2k
-	ksSAbE6eJT1Fed+HCOQoZCUXvsVewXZ0NvRaQo4WeRkoyWolnDHmlO1AGDyQlibV3ZsHvU
-	dmFRXNyBsqowcfbtF/LHfkNKBTHU9GQ=
+	t=1783951354;
+	b=ftBRAcUxVF7zrqyCOFxJBW8G3mifmc73H8bEEsW7PLdLD5OEeuT1gNs4Q3QLlHUFhd69nb
+	tbKxQGGuH0eYwmy2kR6uTkVcNVbaJin/5Z4LtVrz6gdXnQtPDpB8PzCvhk7GndB33Uxpjh
+	4X3inV/MYs5J41t0KSAIVYCYo25DxX8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F7D41DB5;
-	Mon, 13 Jul 2026 06:59:33 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D18E822FA;
+	Mon, 13 Jul 2026 07:02:28 -0700 (PDT)
 Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2DF8B3F7B4;
-	Mon, 13 Jul 2026 06:59:25 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DCD6F3F7B4;
+	Mon, 13 Jul 2026 07:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783951177; bh=gV2pTsCUztgOvGxrgAt605ARjz7dmzmHzQM9Otey+5U=;
+	t=1783951353; bh=+NT3cTeI21UAw19SApYQa9wvOem7QSZHxFow4rdsqrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFiwKMoLlCD3BN8OR1BVTk7TGKyMljN5sZjMGiN8FhmafTvDOgG4tq4iifBz0LBGe
-	 TEPym80+aPKYKhJUwzOJNb9VKhhRTPH621Ljc/q0DnJmnSnhinhKUbtdb6iKpO4mVN
-	 n11BCRxPznqUlnDr4I57hyRYBDnCMWFwyszMYrfQ=
+	b=kQi5KYkL3fHUQ5wzM7nbpmj1EtHhLRPjBJnrkYS9Zzqf0kFPLCsSqU6cUypYE4xrs
+	 aDmelYX1ib2gx0LZfNu8Ej1VKfxxq7gw6N5EX8GpuqZWWWG/hmARmOMI4JXrGrMdBC
+	 xRXONdbm0dRfh+5IGK2weG5JUL+Uqhwoup6EF75g=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -156,22 +156,22 @@ Cc: david@kernel.org,
 	jonas@southpole.se,
 	stefan.kristiansson@saunalahti.fi,
 	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [RFC PATCH 15/34] mips: mm: use proper set_pXd() for generic compile-time folded patable in vmalloc_fault path
-Date: Mon, 13 Jul 2026 14:55:54 +0100
-Message-ID: <20260713135614.1618183-16-yeoreum.yun@arm.com>
+Subject: [RFC PATCH 29/34] mm/pgtable: disallow calling folded set_pgd/set_p4d/set_pud
+Date: Mon, 13 Jul 2026 14:56:08 +0100
+Message-ID: <20260713135614.1618183-30-yeoreum.yun@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d1xytfmbkoerjkr1ehe75tr6dpg8577r
+X-Rspamd-Queue-Id: DD2F41C000F
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 75DED100005
-X-Stat-Signature: 4o88qe45n7fq7qdphb3b97f1ann75tra
-X-HE-Tag: 1783951178-195816
-X-HE-Meta: U2FsdGVkX186/7af3iNF7ViB02+q8d9t27I/ch0eV5ADyfNPEpHc39OM6SYqD4R3I04i0DBqK3gVso6eB4djRzsPmmj3drbs0KB7tYcCWdzkSB+tEZPawunQXLL8OL0OoSFbMxann27hE6nPhnpydH7R14U7ulFYRTtjo1DuGZull2lPVrHmzXPAlN9T6/Kho8u4yJFvJhkz0fvaotSLglVggT44CUKzvTmGTNdQL7nWyPwclLdbKxXHRfCghii6OMhqwgdv0Zm1U1jiSQA5NL+nV5KRof4A8L3LimRBrZ9Dz3hLjiQkq/GpOWoQGrvdYIQnTrfjtHrFM8gum+BMwmsakGPysRbJc/pOmxogXlkL140m/NK9ASpze9OqD1k1VP5d6c9+PXxWOsmvGZ3rdTkdcaUVXWUdFWEqhxe+aCqizrXerojTDVI+4z/MaR7e/CYdaaMrEkHEHxx/YmWJgYv9CzRJfAQscbDQF7SSfda95x8lhEhCDqoR3xb1vRdQkLd450zDvL7wP/ujrNOQNuiPc5MHHuxlmUrMHxj+r7qiM85oRubbmSGnHp100kSeCDd1Q8/3j0Tx1D7lVwiV8eIs65Pc8eFbl4flaRyIVlKtiQ0C5R/sPaikMEOO73D5wA0GO0HucVYv1OjNK4mDpqWTtK/ypy1BydivDQpORrHzZObLRYqe8Esz6/D5nYF/az3qExeNrS9FuWejIw6CyuyJCg0zX0cqElkQHCbUU+FpMnEdRqPuRqNPcg1m/mfIxZlRQAIcRdSdOWckjAYA7Ih5c/GmLJN2Z9XT5czMqaw6riUb3UvPmRuQhF4ouPwegPZMIg79kP70j1NPy7iRe5Ib+xTwgAW7yZjXqjFTY0XswZfnaY2CHAEOopf4efVhlskSr8cRM03ytbnKj6/5BgvzvRDLdk1kg8A7WmxdlzQjOQ4Ernw5LJ31TCsazrF+AuiL0wXBxZXRRqRDyl8
- hp4kZcNH
- NBxWTwhJichY7HPAvWpJ0avo7jGxAgoYSX6gPs4nTMCu0oAk3v7VXSl3mFqjyFIPorhUcg26hDDUfKoQK4mIi0icM5pKCOeklfOwt/ng45p0pcQfnJ3qknTC6BBtSMCJBM/NySCCIqNohNk8IsRo7HBwWxOeDAVK5eVWEBX5zMlotp81PGjZcDgua121eda9FI5s1WxbPnkyL6UhxAdvC7RVG9SvWmBx2trn5qKNIl6L+ko7a6R5RLjQaCIHHog42lEbC+t1lYJ8gl0c+cbUTSjUKGfTjSMiQGOuqXWeBipwEb+fBcZKGpVDxn5nrrVPjlT2Fbhzy1v20NSmBp0jjb3/1+EfNTe8m3Q2Lzt62J7RMBSs=
+X-HE-Tag: 1783951353-418446
+X-HE-Meta: U2FsdGVkX1/V7BDoIfdoYcGPU1MCDLCSmnW6968Mx9WFZeUHlYuqzcxt0OuWg5a9zWnVTwEuGm7p6Wey47ObZN5az8QEGz3imtDRva2gCrZWWdp0bnD47kWJ1/bUQibJgttJUEiVhj2EZKqyDhy6q7Daojt5CwFFqHOLOuKjyEc0Ft2MzSThKypPDnY6gtQJqgknbJBqs5ghgUqcbl7JtLa2lifRvqtuc2k1oVCotixBrs+lHUe4L9GLXGdsUBEblatfXaF4XMRDvbbFglt0ckiYF5Q33569RaIHfYMTMs/Cw9JY08GO7Y/Bt2j8+7DjpcQVYee0+AuuOJIv+ziG+PZ63DGEIr+hvBnkXWQfFottshUND11+jnIhgAMHCWzyh+wItIjFkJT32bgK3xIe6MbOrMNsFx8r2GvXdlp7NngWWI/hRbrtczCsHlHCqyRDULtx7254BK3aJodbmlsh8fgQBqcttz+DCbCI++Ztswcv5KNopWaLK9ccOHRZmP9OntM5VAgyASDScxW1w7VnWmyO1GbiDlJlit/tjHEfs62paQAbGK9wQF/4TZZYVmgYN+mWFE1FZE5NOvXWCfFKRsas1mzPyIu+LMBIzj8/oVIjCSzDyUK3b2bp7eCVm8kueNEeVBu3vYidLbFWoI2J5Qvb+JwYJ2MIxtC29QqsF9Jo9OvvvoQRYwmQpJL4yRVXRAfabbUrEUnwXDhUtDqOs7kAS0dO9H6DczaW6vp7jDl/7oSNqAqlBBoPYM2syXHeWDgyz2HudkfUjTFm3w0ZJ2aMyQhMY4sryJXKm6Df9Fc6OVygsNlRTlS3IN0zk2n5dEgvbKKw9eHkLzCs7+yTmi7MbmSljwDizluunyW/xVJRNuF4zyQsh1CjdoNUIjGh5heGK6tWwxLyv1K9lMwftIYJmgQ/mJ2r/Im+o5Um4K16/LsodDbrQ2Q838nzU8qtet4bXyZ4TVGSIFk6RMn
+ NKTvkLAG
+ OElKM3lmD5oUoVlXLOm0zCryQutb09Plf4tO3mIKJyeTK81rQDGbAo5bJNHA1z65PeNAycDQpfoDcscBhQjhnbqnc9pmOQ7kjaI1OGn64MUU4d7ApkwdD9nJmhLecGIY8YIenGKY6zPEd9tRQ7eqr6HE908LF7DwCNkIovyxQzJMiNrKw1sfEvaYgyILxZZ9vqvsHkQEt+7CqnXBUPO5XchCTCOjiActuF9KMfcd8PDuLPaAGBhBkSDGzm6RW/8YmhIfjtqjJBNnNbheXlQytSQVHe1ind2zZ5q/1ebLtkGavl1QzFXxiQRW9nymHf1ACjldFV7h+HzUm0WPn/QqTT24e+C1lvwj+ARm7grnssPreoiVp/ZvLQ9tX4yPpVb7yw5ig
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,64 +179,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We want to rework how set_pXd() behaves for generic comiple-time folded
-page tables by disallowing its use and triggering a compile-time error
-when it is used improperly, ensuring that the actual first-level
-set_pXd() function is used instead.
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-Therefore, call the proper set_pXd() in case of generic compile-time
-folded pgtable to handle vmalloc_fault case with pXd_present() and
-drop pgd_present() and set_pgd() usage since mips doesn't support
-5 page-table levels.
+The stubs are documented to "doesn't get actually called", which was
+false for a couple of instances.
 
-There should be no functional change.
+The helpers are dangerous, especially with some upcoming changes.
 
+We made all code compile-out any calls to set_pgd/set_p4d/set_pud for
+folded page tables. So let's make the compiler complain if these helpers
+are abused in wrong context.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- arch/mips/mm/fault.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ include/asm-generic/pgtable-nop4d.h | 7 ++-----
+ include/asm-generic/pgtable-nopmd.h | 6 +-----
+ include/asm-generic/pgtable-nopud.h | 7 ++-----
+ 3 files changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
-index 37fedeaca2e9a..4ad281a3bf97a 100644
---- a/arch/mips/mm/fault.c
-+++ b/arch/mips/mm/fault.c
-@@ -289,28 +289,31 @@ static void __do_page_fault(struct pt_regs *regs, unsigned long write,
- 		pmd_t *pmd, *pmd_k;
- 		pte_t *pte_k;
+diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pgtable-nop4d.h
+index 019c3f074b771..0f3b56deaa165 100644
+--- a/include/asm-generic/pgtable-nop4d.h
++++ b/include/asm-generic/pgtable-nop4d.h
+@@ -28,11 +28,8 @@ static inline bool pgd_leaf(pgd_t pgd)		{ return false; }
  
-+		BUILD_BUG_ON(CONFIG_PGTABLE_LEVELS > 4);
+ #define pgd_populate(mm, pgd, p4d)		do { } while (0)
+ #define pgd_populate_safe(mm, pgd, p4d)		do { } while (0)
+-/*
+- * (p4ds are folded into pgds so this doesn't get actually called,
+- * but the define is needed for a generic inline function.)
+- */
+-#define set_pgd(pgdptr, pgdval)	set_p4d((p4d_t *)(pgdptr), (p4d_t) { pgdval })
 +
- 		pgd = (pgd_t *) pgd_current[raw_smp_processor_id()] + offset;
- 		pgd_k = init_mm.pgd + offset;
++#define set_pgd(pgdptr, pgdval)			BUILD_BUG()
  
--		if (!pgd_present(*pgd_k))
--			goto no_context;
--		set_pgd(pgd, *pgd_k);
--
- 		p4d = p4d_offset(pgd, address);
- 		p4d_k = p4d_offset(pgd_k, address);
- 		if (!p4d_present(*p4d_k))
- 			goto no_context;
-+		if (CONFIG_PGTABLE_LEVELS == 4)
-+			set_p4d(p4d, *p4d_k);
+ static inline p4d_t *p4d_offset(pgd_t *pgd, unsigned long address)
+ {
+diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
+index ae2eff44889ac..9d854211a55a5 100644
+--- a/include/asm-generic/pgtable-nopmd.h
++++ b/include/asm-generic/pgtable-nopmd.h
+@@ -38,11 +38,7 @@ static inline void pud_clear(pud_t *pud)	{ }
  
- 		pud = pud_offset(p4d, address);
- 		pud_k = pud_offset(p4d_k, address);
- 		if (!pud_present(*pud_k))
- 			goto no_context;
-+		if (CONFIG_PGTABLE_LEVELS == 3)
-+			set_pud(pud, *pud_k);
+ #define pud_populate(mm, pmd, pte)		do { } while (0)
  
- 		pmd = pmd_offset(pud, address);
- 		pmd_k = pmd_offset(pud_k, address);
- 		if (!pmd_present(*pmd_k))
- 			goto no_context;
--		set_pmd(pmd, *pmd_k);
-+		if (CONFIG_PGTABLE_LEVELS == 2)
-+			set_pmd(pmd, *pmd_k);
+-/*
+- * (pmds are folded into puds so this doesn't get actually called,
+- * but the define is needed for a generic inline function.)
+- */
+-#define set_pud(pudptr, pudval)			set_pmd((pmd_t *)(pudptr), (pmd_t) { pudval })
++#define set_pud(pudptr, pudval)			BUILD_BUG()
  
- 		pte_k = pte_offset_kernel(pmd_k, address);
- 		if (!pte_present(*pte_k))
+ static inline pmd_t * pmd_offset(pud_t * pud, unsigned long address)
+ {
+diff --git a/include/asm-generic/pgtable-nopud.h b/include/asm-generic/pgtable-nopud.h
+index 5a2b0a81ae197..aa8a6ce139e47 100644
+--- a/include/asm-generic/pgtable-nopud.h
++++ b/include/asm-generic/pgtable-nopud.h
+@@ -35,11 +35,8 @@ static inline bool p4d_leaf(p4d_t p4d)		{ return false; }
+ 
+ #define p4d_populate(mm, p4d, pud)		do { } while (0)
+ #define p4d_populate_safe(mm, p4d, pud)		do { } while (0)
+-/*
+- * (puds are folded into p4ds so this doesn't get actually called,
+- * but the define is needed for a generic inline function.)
+- */
+-#define set_p4d(p4dptr, p4dval)	set_pud((pud_t *)(p4dptr), (pud_t) { p4dval })
++
++#define set_p4d(p4dptr, p4dval)			BUILD_BUG()
+ 
+ static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
+ {
 -- 
 LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
