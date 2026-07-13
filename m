@@ -4,97 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4412CC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8442C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:24:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9637C6B00DC; Mon, 13 Jul 2026 12:23:16 -0400 (EDT)
+	id F33F46B00DE; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 913F26B00DF; Mon, 13 Jul 2026 12:23:16 -0400 (EDT)
+	id EE4566B00DF; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8510E6B00E0; Mon, 13 Jul 2026 12:23:16 -0400 (EDT)
+	id DAD546B00E1; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B536B00DC
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:23:16 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3CC5BC088B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:23:15 +0000 (UTC)
-X-FDA: 84984273150.21.E970646
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A4F09120005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:23:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m5tpxXrO;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783959793;
-	b=nuTMJsNbzhoUWIiDLkcyZsLXxTPzc/8zLAZ+38I4EBaa6Jpx1KNVCaydSes8nIcGH4l2V2
-	d5mCYPyt6j4vUy2JyH4fP8Ddr2n6CBCypuHPbaNHJZxdYddzRVRqLxtkeZl89TgxEg57Lc
-	ruQfhakhjsrvsTiG+ukkKuh+TomLlZM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m5tpxXrO;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B44196B00DE
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:24:34 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1A8FA0181
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:56:44 +0000 (UTC)
+X-FDA: 84983903928.13.2430684
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D2E4BC0002
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:56:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NtKweSPB;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783959793;
+	s=arc-20220608; t=1783951003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LGaqXmco4Nvf28C1PHC6jBPldtjIjC782IMn5cORV60=;
-	b=bSdOmf8cOTW8sozdRHQk8n5VxyQV/NrKArmlNvpTcVMeoEQk0TwPvvnnqFU4GwrFGWaan1
-	BM6zHoMmIS5pEC4uCKUYskc+fucWJ24m6pdqXSbFfDgqMH9xITCh/qWQqoW+I+IqNH37zH
-	ftx4mh8GRF4QjF9myRkOFH2cNkeGlA4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4246860120;
-	Mon, 13 Jul 2026 16:23:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA3F1F000E9;
-	Mon, 13 Jul 2026 16:23:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783959793;
-	bh=LGaqXmco4Nvf28C1PHC6jBPldtjIjC782IMn5cORV60=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m5tpxXrOWnJFtjzJC6UWXb9uBYPk1xIJ3t3U4btW7ka0F0+IeC/Io06pDWQNc7C14
-	 uUx+fKcEDYkAh7cGZRWDlaaBufum4Box+EFg7TOASF266NHoE3EVpfoENrLV/4u6Eu
-	 MOGgLJKgETuvdBmUPcH/JYosLxwK9mmggugtjSdndOLHGAOfoFUgZa/U2sSV9gIk0n
-	 VMNI/2hfKPqPSHyL1pbF3ymYn8VDl+Prz9VEX6rKZyqZCG5qcKcYnTYPxmTaHwiofQ
-	 BsWV87bUWVo9apedriWlAx0I4H8kIGgg4DlkKV0tSenSU6QBL9HbWlnlk0Ra32eY3F
-	 pdEKtZ7SWeV7w==
-Date: Mon, 13 Jul 2026 17:22:58 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Toshi Kani <toshi.kani@hpe.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	David Carlier <devnexen@gmail.com>, Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCH 0/2] mm: fix UAF caused by race between ptdump and vmap
- pgtable freeing
-Message-ID: <alUPbRx3_neT5ioO@lucifer>
-References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
- <8e320b30-9658-4e9f-ac4c-f99dcf855944@arm.com>
- <alNQccqtx5-QApup@lucifer>
- <alTOCtzQh9RMfWbc@willie-the-truck>
- <alTxUwrkzEx-FEOP@kernel.org>
+	bh=Qz+pbAUHTE5qkzjllCGGQn3S8bfWwsMlfKBN2epVohk=;
+	b=zbj91d5SQ8Ukq8M2yyKOgjFK+bg9CZrAtNxii8Ua/N/NPiIl92p6TgcoE3yCX1EfXJKQC3
+	HPFsl71VLRE/xrgaC5mDy0pIv5HahcXyYMU+R0IgMStLdHzBT1cSvWHp2HQ2nVQyGHoqRi
+	2ierdW9AJlwi9gllibb5SxMJ6SQxvNQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NtKweSPB;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783951003;
+	b=j+cdoWrf0WAgiHN6jhRShQ/91bn+0JJk7gAi9irSusU68fABkzNsrmsGqs+HEn4p8UVd1x
+	lP+37pCUGP3UuZp2QjN6QNTHC1R0Mpv6mZWaOzW5I3v5w0FEKVXK9/pGsfGx+Niw2HSjVY
+	l1uBUftQ+UlWcarEsjyyw9Jmy/78a0g=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 748D31595;
+	Mon, 13 Jul 2026 06:56:37 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 821263F7B4;
+	Mon, 13 Jul 2026 06:56:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783951001; bh=fhtk2Xbf5M20Fxp59EylK3EnVtDC1Q/eeV1ASjlJfRc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NtKweSPBJrXSpruqKL8D3x+JeiFzhsYRAqoppMDvPH1+z+gBaMYJrhxqE2/Axq7Hj
+	 B2j/+nweOkOaE5PxSeWVRUeh4V8VRfIU8trmx3TCZAiPfWyIc/PW5GR+ysVbs5MA5r
+	 LFYf1KUJXku0EHVhXV74N8EhZamEA79TBKfQ11+4=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	kasan-dev@googlegroups.com,
+	linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org
+Cc: david@kernel.org,
+	linux@armlinux.org.uk,
+	akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com,
+	rppt@kernel.org,
+	linmag7@gmail.com,
+	chleroy@kernel.org,
+	klarasmodin@gmail.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	kas@kernel.org,
+	zhangtianyang@loongson.cn,
+	wangyuli@aosc.io,
+	tsbogend@alpha.franken.de,
+	ljs@kernel.org,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	arnd@arndb.de,
+	ryan.roberts@arm.com,
+	pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com,
+	baolin.wang@linux.alibaba.com,
+	tj@kernel.org,
+	kevin.brodsky@arm.com,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	hpa@zytor.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com,
+	yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com,
+	ardb@kernel.org,
+	guoren@kernel.org,
+	yang.li85200@gmail.com,
+	viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn,
+	junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev,
+	vishal.moola@gmail.com,
+	namcao@linutronix.de,
+	pavel@kernel.org,
+	djbw@kernel.org,
+	yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com,
+	Jonathan.Cameron@huawei.com,
+	coxu@redhat.com,
+	andreas@gaisler.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	geert@linux-m68k.org,
+	shorne@gmail.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [RFC PATCH 01/34] ARM: mm: make nommu pgd_t a scalar
+Date: Mon, 13 Jul 2026 14:55:40 +0100
+Message-ID: <20260713135614.1618183-2-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alTxUwrkzEx-FEOP@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D2E4BC0002
+X-Stat-Signature: rrotnc5ujgnqkfmjm11b14yc8gxmodgz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A4F09120005
-X-Stat-Signature: 51566mccxfnmauwx7ds1hhgqhnxsh6h7
-X-HE-Tag: 1783959793-955283
-X-HE-Meta: U2FsdGVkX18HIV5XI94axFCz5zx0hKbXjZYl+vohj1ZjhGoTJf8vi4P5sULAxbM4Eg3CKlVBtbIL1pSdQWMzGGFiK4RmN+W7h4cL5wTj0Oi47vnn+nAReP6F2bydrsy9xzfc9oPIDKvjjOINTGxg0ABNpB3SHCzaDu6saEKYSt1d6/KOfSH5Emc0egIErnJ1Aug6377ZaGbXdu/ImRNNyEzCRWPMDADx+tFViUwHQ46091tT9LQ9qswgOQiZ1QkX7n6C+vZiqnBk/u77E1pe3CKN0bWGqTE4CFgmhO2c+ZMLZosUxGO5Zr4fNgfj2MYOpdk6hCgh0AiIe6LFZLnIgzpZJLahdTb/USU0kYV16lj1oKdSaiQo4ZnE8Wi3YBkGzbpz6NhYycbxY6JJBY8+Y1duB+Sa5GyO6Ebf00zcSgmuXeX7GFb3ZSAD/4THFI7w0NI6P693dTNvXr5nfCy4dOjR7bKqNEu/dv72TPqH2xYMz99Xb22M3uV4dnX7iQAMztgiZ6hJ3HJXDvAmUiKDLax+wxn4DsGPB7T3bQqlJZR36Bkr2vf3zDFmFclSmyih4Db4gk0e/mK14OqCF48CY/SMizr+ZfKKjgzJivvdxZrFU6Sox6cnwmxdFqAQpt9cDOkRg1BUkpxrtUQV/t9nh/hat0bQWXckNSzDxCrTZz/6iFN6Kfpda47y5bv5HUHHlBkP6Dj8zGYtKOdQX2KdcIrYsVSEglWdc8VfbQDfxkeW391hyJ6NkMV1uUeCRfr788zPWKBSzLsXTTb6TBoLzvzIJ7FzIcX4mtKN7fk3wpeQqtq+CmXCAqWfMY2aAPv0fdyjHy8MWOr3W5n/9vewi7Le/gcJ/OSjXK//F5KcnvjZRFwZw/0cdU2AkrdtImfVhWGKpbHbFF4cbvcrnRsZW1QYFKP9o1zi2cvU1vG7LnZZOwFa2Zwu4tkKYMVnPLSXMD7oub9+v9QoDZcEoM3
- vAc4f+8/
- 3J08jjqQaHG5YlDYQ9TePqryMkEUmNqhGHwbkOL1LErArWwfd6EM1H8dQ+1OIWOV4lVieiLTH1edRAAYS+AEs9isQK/pJ+JfOVVxfwIp36ImecYEJQT0OMzoo6/aWJIkJV9RSKFB+46hvrmLzSOLBvW0KVqTEkqx7sXo+hkYv+N9xKRTnG5hulxYNLE6XYY/jN2ExZR1nndhx45SocznQEPnQPHAp8bwAd+rulCTw0zh8zvwmzqVxNqZkqxn/MjpuuA+xAMf8DLvNczC/Pr3P2EZrVCqpC4Pvtf8OmDk4v9hqPb6gagNg+9Qu2cGtAA8acSVVHwAtOlNOHv7T9OGFRoNGQYCkAj60YBM6SULsTp29LIk6R2L7Ex6hcOpGiDoXx8JIfwNtH6c5RthpaSdf6ea/pspLd1gCapeA/NY+iyZmMXsRmfi6SdX+wnoy9N7w6MS4heScCz9Iz3/ouvPrBl5WOw==
+X-HE-Tag: 1783951002-921819
+X-HE-Meta: U2FsdGVkX1/xcCxPdcQswcS2A7oJ3/pcVHrQF6Sl1nH3onDcidEyBcVh2g7jbLIMBvS3oEafBPW4vSQ+o10sejzIgfqbzNoAJnMDygc2+H/kVRsMSNUhUxgkUdU5J3Dpz/8X4Aia0osNER1CTJZG+cCw+TYuVEIeLk82WiW3Gxt78YOrEHIhhzgZ/RUiR+fGLsWn9ukIQhqqf5nbYOjgxTVs1pKAzOS8wwZmTIpCfOsVXZPldBqLlykomizBeTTN+EGYImleXXyBEX9wVRv8oldxCTOKuOP3wMooB27LPbbYbkccA+ruQipg66jz6swPswQF0f2IteOqwUDpFqjuNWimI2af7s3fugZ99uO6h3lA+qcRLFbGQyOQedwqqzOUbhTKF0PV49Ri49e3hKd72zEyVws0HqmMCDzRx3JRFj4YSEKcE92n40DivHFxg5HCW/yyAutVPYPHOIsriWMvvGuLcc77B3SMXq4tXnv/1G/Rp9baw/84nKGye2sVpcdBvqV5cxDpeZe8HC1jWz3bRHGiWsTumjB5ygYUvw1dw4L6kfsAK95Hu0IIjIOZsP+2U+jdRgwyjkuBjkNRwDvvEqmiywQfTE4Ojr5vemD1YpzHkbPukHwN1Q1gV+7SwA8zA/chqoWsLBcA4r8cQda2MpYB13gHk9J7+ee23pYlgW9XT3FvXGLh3H34qlbW7gKRlyXQxGhi5p+ntSkoTTESp4F2QY7CsIwilHVaywt96IwmlL0wZBq9pTVOdB3DLQtbFG184oFZzuRilJSMQ8AGR5GeJWQqmNH3fIO6pd+4zQY6OM6NOjQOo34e8kploGj3647p2Ciqu1ib+tS/4TAlGe25F2OCqJH/VIk8RdE55LTDPWvkmxWV+gQ+AmzeaZSQ4CCKFxlPLoMa8dgijgmz2KnJdRyaHRmSj//ifeeY6LKUZzV7K1jjawiKirjnOf+vJ+IWp3If2zpaLw+DwsW
+ k5655x6V
+ NypmjfGZKq1Fmj6aho2iXOXD7wqBTt7Dj2t7iko4b4TZxRUo5+Rv9OFUplY7JBLozotes3Gl6Z+YZhU+OhRi6pqWA2r9FtzmmqsPvTNtmw7+RIiJokPUW2K6ufduYBFVkKnpWsel3jG7nAR8fTlg+XCOBobtcohSwjNqOFrH4kc2eAZhs1ByFfb6TUGZUdClnbEDNHJdA2aH96Vlt5hxyxnILmuRSFx0WZt1FDCwy7iSd29sgZChsYOXwRRQXmtqTLdj9MlCR828beOxsEM3PZah7e+HqoD0Br8DoQGSRKlQmJGpA4054utCjCmvuIIErqnKc7L1ZQUX76WUbHeZ2BGw1knrm8YBSN5Q7pwPtAD/1tkqtvLwZntFVCpUP0hyC+M3Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,66 +179,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Kiryl as ref'd below.
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-On Mon, Jul 13, 2026 at 05:08:19PM +0300, Mike Rapoport wrote:
-> On Mon, Jul 13, 2026 at 12:37:46PM +0100, Will Deacon wrote:
-> > On Sun, Jul 12, 2026 at 09:46:46AM +0100, Lorenzo Stoakes wrote:
-> > > On Sun, Jul 12, 2026 at 12:50:08PM +0530, Dev Jain wrote:
-> > > > Will Deacon had pushed back on a similar approach:
-> > > > https://lore.kernel.org/all/20250530123527.GA30463@willie-the-truck/
-> > > >
-> > > > Although now when I read back that thread, it feels more so like my
-> > > > incompetency to convince :) because:
-> > >
-> > > No haha not so, I think more like this stuff is fiddly.
-> >
-> > Yup, not disputing that this is hard to get right.
-> >
-> > Conceptually, adding locking purely to deal with a vanishingly rare,
-> > debug reader does turn my head but I'm _far_ less concerned about it if
-> > it's done in the core code, as is the case here. x86 needs it and we're
-> > recently running into related locking issues with the set_memory_*()
-> > APIs if we want to collapse the page-table on arm64 [1]. If the overhead
-> > is flagged as an issue, we can see if it's worth generalising the static
-> > key trick that the second patch reverts but I definitely wouldn't start
-> > from that position.
+We don't want pgd_t to be an array, as it prohibits returning it from a
+function, like ptep_get().
 
-Yeah I think my solution is not exactly pretty but it's the best fix as a hotfix
-thing _right now_.
+There is no need to match the actual arm page tables, because with nommu
+there are no page tables. It's all just in place to make the compiler
+happy. Making it a scalar will make the compiler happy.
 
-As Kiryl points out the nicer long-term solution would be RCU freeing, but I
-think that's the wrong solution for a _fix_ right now, rather something to look
-at as a larger structural change in the future.
+So let's just use an u32.
 
->
-> I'd say it's worth generalizing the set_memory APIs ;-)
->
-> Since it's de-facto machinery for manipulation of the kernel page tables it
-> makes sense to have a common code for page table walks with hooks to
-> architectures for checking/setting/clearing protection bits.
->
-> Coincidentally, I'm working on a POC that lifts x86's CPA into mm/ with
-> the intention to later use it on other architectures.
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ arch/arm/include/asm/page-nommu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Lovely :)
+diff --git a/arch/arm/include/asm/page-nommu.h b/arch/arm/include/asm/page-nommu.h
+index e74415c959bea..88659b38e2364 100644
+--- a/arch/arm/include/asm/page-nommu.h
++++ b/arch/arm/include/asm/page-nommu.h
+@@ -18,12 +18,12 @@
+  */
+ typedef unsigned long pte_t;
+ typedef unsigned long pmd_t;
+-typedef unsigned long pgd_t[2];
++typedef unsigned long pgd_t;
+ typedef unsigned long pgprot_t;
+ 
+ #define pte_val(x)      (x)
+ #define pmd_val(x)      (x)
+-#define pgd_val(x)	((x)[0])
++#define pgd_val(x)      (x)
+ #define pgprot_val(x)   (x)
+ 
+ #define __pte(x)        (x)
+-- 
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
-There's another issue with CPA too (planned to raise this separately already but
-been super busy/distracted lately :) - it doesn't actually mark its page tables
-as kernel page tables so we actually have a gap if an IOMMU happens to map that.
-
-I am planning to send a patch for that anyway but it's indicative of this
-needing to be shared code, and lifting stuff up to be shared is good in general
-:)
-
->
-> > Will
-> >
-> > [1] https://lore.kernel.org/linux-arm-kernel/799181c3-a1a1-4de7-bc6a-576d3282efb0@arm.com/
->
-> --
-> Sincerely yours,
-> Mike.
-
-Cheers, Lorenzo
 
