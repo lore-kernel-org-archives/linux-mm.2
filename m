@@ -4,126 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF1CFC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:24:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD0D6C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A02906B00E3; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
+	id D37066B00E2; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98D396B00E5; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
+	id CE7A16B00E4; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87B486B00E4; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
+	id BB0636B00E5; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F9806B00E2
+	by kanga.kvack.org (Postfix) with ESMTP id 8EDDE6B00E2
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:24:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 726FA140180
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:57:02 +0000 (UTC)
-X-FDA: 84983904684.29.E7B189E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 784B014000E
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:56:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U0QDSdrL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2B3D140119
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:14 +0000 (UTC)
+X-FDA: 84983910228.17.08E88C7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2960940006
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gePevjeD;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951020;
+	s=arc-20220608; t=1783951153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p7N6PlllbTvHO1g5IuTvCxlOA3ejXDi65k+Qzdhwvco=;
-	b=bOjS5QSNaVpgOc0UvzeUdz+9WDQ78Ibc9RFxfA7k6gamsXszw8om8zUN0ql9+pg+uh7ode
-	baSUlD2Lv1jEm3wFllOZBvIqWvimowriVw4+mLFuxWVLuHByirbV4IERM5BW/G9M9trXdm
-	V8GgObf72+uf3v6QR2HQlhAWIufSi9I=
+	bh=alvRB/kEf5KBnIq6vBb2HIbmo6kikR2ueqiQiaekOUs=;
+	b=4qAEvwJ443YH1v0l2Ir30SZOA5NJ+aD9fkDmiVGFA0AnHEbM+l6Vbdo0pqU/1GjwzwAPXY
+	opH5DeuzmIF/POXrBMCMKmObbCBPdyzk0BatGLuj6zsDiLJVNAfwz+O89EJJ3JH9H5T6y/
+	ZZZw7QBTcm9uYN507DT863BaevNmtxc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U0QDSdrL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gePevjeD;
+	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951020;
-	b=FZwujmxv0j0+1fRc5cXjeSJHv8HmGnoxwn9CbNGc9oNzzqvtjSjxJSkqE8LqTc40pxkr8m
-	vfvLKynC+i+vWC1lN3AFNzn0cn8G0JOBWI/VQYWJUsWCULjV1vOLr7f+OGAuChBOFKoPqC
-	0tNCNj5ighLbCYJyorwxup1W5zAuZkU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783951018;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p7N6PlllbTvHO1g5IuTvCxlOA3ejXDi65k+Qzdhwvco=;
-	b=U0QDSdrLVp5okIL1Po2BiIPjhAzZrbKtypru+CEeWYbiuCIoyzSDuRbVn6SJ2Vrxu3EFxy
-	FHXzn54hv0wBHttUqWjyb4WUhSmnoI51pCujDgn9b02Yyj0/O84PFKQI7W8ozcO0AwFSw7
-	dAUiJ0m7GWRjHy2DvxgrMBVFstVFOrc=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-fW4FkA7XOtm0E-_IHlKfrg-1; Mon, 13 Jul 2026 09:56:56 -0400
-X-MC-Unique: fW4FkA7XOtm0E-_IHlKfrg-1
-X-Mimecast-MFC-AGG-ID: fW4FkA7XOtm0E-_IHlKfrg_1783951015
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-39ad42eaf7cso16237541fa.2
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 06:56:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783951015; x=1784555815;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p7N6PlllbTvHO1g5IuTvCxlOA3ejXDi65k+Qzdhwvco=;
-        b=dLMbOY39wzX4mgE1UcQfAUcxyk+kdHZkUBI51RKsKuIJSbLkrUeYmTYvM3CrTX2tdk
-         6smsVNx5Y19U7OaCHI9jv/yhxfxkeZ8u2M78oeHIPIm+YAXZFi0Kc/tLKHCsKdu94N1i
-         3sQo7VKdqo9ImQwIkwRsgJPS+oKo3cY4odaVygDJhsx9t6MIt8FS7PO+cEDDvpkT0Qr/
-         2vPBd9zedq1pUx5VjVqUHQ0VPBDnUf2APsZ4bRGfkcAJdUK7/R1IJVgJ1e8+Uix8RYwH
-         84Hq8CjuGV1wr+dEr2jf/nO/4lG1MxrC91FErTXzLH7W9w/yhECnqg87TSyrxetrOb2M
-         tlhw==
-X-Forwarded-Encrypted: i=1; AHgh+RqQO6PZOS+GjZXPh5ILfu2VP3XRc5TaBB14al3+QEW/STmnURNh15y2NfjxMKGrCrmozbXm2oOTbQ==@kvack.org
-X-Gm-Message-State: AOJu0YxbySZwAoFJ3c9cT62jepeIJasaAdpKmeSZDeeob59QQqD16YIR
-	00c5d/08qhkpq0LnDC/UC1dQKQIbsWUoeGTB7mf06F50bZcbgL6s4bV3Xbh27E306pwA7mV5AsU
-	XtvlZRu4HQED1ZCUP9EyyK5nT+lImDCgnxBuI2x+X3wlfeVAZE/YG9AhTxK4v3cPFI/UD7xIImt
-	iVgtOvZQbjr4HsDF6HZs99N1+bvt2rsgKDT+w=
-X-Gm-Gg: AfdE7cmMspspQQ0s/tjHgsty2gHSnhPB2AE92XUQMrWIz/OV9YhFLh7SndzQ+AWjbZF
-	Km9Stu5rI3twfkYaR+zqpS5f8FmmioLu4BOYQxU+wbhqxJyr4OWUz4Vq5lJV+skooTaTzi2VIP+
-	VG4UGGn8mBxVmIRScqJIzHIAZobjS5EetdAEl8+SAYXtul9YlbLcvES49ivvnZh6Cs
-X-Received: by 2002:a2e:a5c1:0:b0:39c:9452:15e6 with SMTP id 38308e7fff4ca-39cae8a9999mr21110441fa.33.1783951014731;
-        Mon, 13 Jul 2026 06:56:54 -0700 (PDT)
-X-Received: by 2002:a2e:a5c1:0:b0:39c:9452:15e6 with SMTP id
- 38308e7fff4ca-39cae8a9999mr21110261fa.33.1783951014291; Mon, 13 Jul 2026
- 06:56:54 -0700 (PDT)
+	t=1783951153;
+	b=7Ib21jfOnWeF14NUCyTFG5NVb2Sp6UTT8/8dd35xqoMdYzIDbnYL4n+SWPpQAYMJvrEPqN
+	Q4nBcdBeBkX1ofhRW+nRvk0yNCPV9s7Whk2rVaZNx0t1Z1UWKg8CMB7JYCquvv9ECmUgio
+	zw7bh9oMVawgyKBZsAqmiLKJH296uHw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0C33E1C01;
+	Mon, 13 Jul 2026 06:59:08 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1A7FD3F7B4;
+	Mon, 13 Jul 2026 06:58:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783951152; bh=+q1+jVG4qiXP8+QAW/pUXiKb/SEJWzXOaTflpzs0DZc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gePevjeDuKLoRMZmfzHjYkzWSKoEGuVpmgjzflwig2lWsm15B2lGzrzuukWVG7sID
+	 cbx3Drp/v+dDpqd8T5PLNJBiZyLiQAZB9lO2Q7lXawJekgjfljVLChVm5B9o+4Of6+
+	 29N01/WeRa4WzJeB2s2Oht7oYvLM1S/H6/T24fIo=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	kasan-dev@googlegroups.com,
+	linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org
+Cc: david@kernel.org,
+	linux@armlinux.org.uk,
+	akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com,
+	rppt@kernel.org,
+	linmag7@gmail.com,
+	chleroy@kernel.org,
+	klarasmodin@gmail.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	kas@kernel.org,
+	zhangtianyang@loongson.cn,
+	wangyuli@aosc.io,
+	tsbogend@alpha.franken.de,
+	ljs@kernel.org,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	arnd@arndb.de,
+	ryan.roberts@arm.com,
+	pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com,
+	baolin.wang@linux.alibaba.com,
+	tj@kernel.org,
+	kevin.brodsky@arm.com,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	hpa@zytor.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com,
+	yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com,
+	ardb@kernel.org,
+	guoren@kernel.org,
+	yang.li85200@gmail.com,
+	viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn,
+	junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev,
+	vishal.moola@gmail.com,
+	namcao@linutronix.de,
+	pavel@kernel.org,
+	djbw@kernel.org,
+	yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com,
+	Jonathan.Cameron@huawei.com,
+	coxu@redhat.com,
+	andreas@gaisler.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	geert@linux-m68k.org,
+	shorne@gmail.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [RFC PATCH 13/34] arm64: mm: define pud_set_huge() when __PGTABLE_PMD_FOLDED not defined
+Date: Mon, 13 Jul 2026 14:55:52 +0100
+Message-ID: <20260713135614.1618183-14-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-References: <20260706154500.39178-8-npache@redhat.com> <20260706193556.876676-1-usama.arif@linux.dev>
-In-Reply-To: <20260706193556.876676-1-usama.arif@linux.dev>
-From: Nico Pache <npache@redhat.com>
-Date: Mon, 13 Jul 2026 07:58:10 -0600
-X-Gm-Features: AUfX_mzCabUIlX9TQ3gRocALmiHePfG2uYgZVzFveFv553hugDtYsgls4Kx902g
-Message-ID: <CAA1CXcDjNnPuensEftae0mVNPxgpt2xeMNZPYyb2HU_bOp5Xdw@mail.gmail.com>
-Subject: Re: [PATCH 7/8] mm/khugepaged: clarify a comment regarding
- max_ptes_none check
-To: Usama Arif <usama.arif@linux.dev>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Sbi6iliq6b6DF2YnTGAjLaLEZvBMe4JlRZgojcqpCck_1783951015
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 558dst8k68i75t19xpsf3d6nith9djzb
-X-Rspamd-Queue-Id: 784B014000E
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pw3mcyd1y4ycjyka7pdnso5tp1qspm5z
+X-Rspamd-Queue-Id: 2960940006
 X-Rspam-User: 
-X-HE-Tag: 1783951019-339327
-X-HE-Meta: U2FsdGVkX18GDHi4pAhjqqAy66B9ce/gYPqoTR2NsxRkD8MAbl4s5ZJk2XdEdxAKTTgxLR+wvoD3NyOBCGHHWU7UP0ySWX+xVVAnplrccT0CpKWDhzcvnoRsEmErq2L0488qN706LF1h1yerrcBHFmlmciPJ9+D95r3gi6moaFurtEdIXECyx7CE6xa7owii2Jx1Ap398OADaW5OmsoNB+qCMhA6++PAV0myDV54di2Cjg3St/2MWraAnS9Vrfdq1Rm3XB4Mme/hKYtVHl3jEo+MrU1FUtrTgr5hy6pD9OvOKAxOJ60t23j3Z45oZIZxhUY5fQ+3YkrJLh0jCrkOQBLkNteQ6wMduIbgFl+e+Qc5tMhICS7UJKVFB9/jHnHSIhmG5SEUicrCZ3iwV7N6HSvdqmppS29lVxupyunylIpxV3jLn/v4eovTYLwNYBHC88D09Uyhj6xas9JLlIqDSwQQu29oNyAKG3jAoQk1qn0fN4QMiSWjBS1eNjhQn7ZGhrSG+QkvU5GaY+xTVyBxVYHiWAfR6jf7QfKHeWoKvg+cVUZgIzk1rll67TseMiI4ouYbhQNx1z6HG2xDSPGHsFTYTHsHfLeK7XPHXuQddJLefsSvQap/hPSLCCyV+vgQUZ5Lyctxic7WRBsCW++FdNNNw48unk8av8rAQIJG2UAi6MMv9cNLvmTvhwK53k7ZxG5gRxoxAwdq5CC+qu6cT/MVqUUzSY9doJbZsEt5qKMT67gpBpAiv/jE3b277LXz23pRpRoRHmY+l068IYeQrYwx0wjrMBiQKw0xx+/O67sZPjg1StZmgcBE86xvWIUEfoEFPzoHPgCoqL3rn76/rZE3RnXD6F433+2Vmoe1wJRZu/v1mTClO29uIkAgqLApQRqr42rBIsKHYn1Rm3gNzsNIqoR4jVy8UN+ysUPuQVF1mLbdaycCaGD1few8tHlxo7htDCQ4ung14B3EF5n
- VbqTmFNI
- 9I6prDHUa+Rp9yon1ZlNRWk5FayqmV1+agrMEA4ZVXg0/cyqX+TjOUfO51YU7544x+2Qwl5OaE+TXHtg/qeYjjO3m2rq+9bE/rypfF+8s8Vae+TjklYandd8UUwtz9+81G6FZT1TWR1dIyh5KaBan+LoN3TN3QogJeUaGpx0BIDPccF3XllSPSaucLwycOrU1cvFKlimF8HHOyz8UunbRMij2l4HyU3hDdZE6g0GQMCCiwgTLyGMaA8ykRrjKC1j4DV4CBipijtIYoZcc2PdfRn86q5hMN2KqVUj3oYWM74f0TsaWZzlnPgdGww==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783951153-74347
+X-HE-Meta: U2FsdGVkX18sQvjvXdPwbSu4mQMC4jKk6HurwvzIy/m9VO8cAI5pglVN7G3ytpNGY1xy8sMaSidZweUEaMPTbk0XVnDKACXWEp5G3DGeSsN2/ik41SlZ7+yOe3j7+Pz/G9JC7v6Yo8pq3JSiIVklGBlDwgww+KRKYLMMf36MAEerxQalqICUHP5Opfn292vY+ILMsXjyXEmYjbTAo+2/FIFmSNdMh15IHetH8HIwfZ0zC1gXABdykuwaODSKxG1C1TJbl/a1+eEN+wXVcnC8XZT93Lto9n1wcUXhI0T+n2VBC70mL7xFTR2nqJMPoW4ol3bRibeUoEl57/H/o84R9jIgu8K4Ho/noNFero8XLrCcQqsaaKWs79CiC7onofcf29WsC7pmf1dMaMQbVIiE1QbpPbA5/Ur7Z6kBHtcAyKnxCKiLIlFE9GpYPkVoQVoEYqJjBN1ZSyZ83XhwuJ8kUkeh+xTWAiRw2FQJ9l2jlfG649Wtbf8RYocHJuzWwTrCFOd5hGs5Mx9InNGQYbc0IZJ60cllEOwgcAcEGpy21k21Gf1C2X7xzJWFGCzNjMKYRZy8jGiphDBETlC86bfrG7YppE5UGJGmgsRN1lg4HNjNGfLP9sxCV3AhnnDWAuUzStr06s4xmJOakTKnp7GBP63pr+70+TQHvjXkl/OgfZrUzJR3nudjkU0LmIiWn5VPoZU1NbYwGXerd17sZ7mnaBecH6jk9w6OXfDcYvPYqSx56ZW3fkGwcZCwlOQHMfhqvP4oz7lIzpY0VirR6+/bKmo+cC4z43rrfnKi7oojg99MmAmWX3bumcKaQH1Kbe9SgzvUJqVUJlG6kZ7msRCm2nShLs5pDRZ7ka3rhpBO/NEq8WVjGikftI0yelN9u5khZPpTXcMDggw290QkVdHo+4hjp9Yv/fpnpz3E1UbiZRpTkVePUkbf63yV/TLIDRYs6BMqGRAYCLBld3mJqct
+ 1cOHqHXs
+ kSLGqcgRrLnaEZHIo6lSsgIPDLEGgQlNkja1WoBiouXGxY5LgS/BqxMxgl3e8IUi9dtGtNeP/ESz8OcZCI8O1dgMRh/Ty2qGLxEImvt4Q1DpbzyHJ72FJedy75e5Oin3x7C7hUYHLYuIHP0qv8se/KLGUDTePVy8fe5Ym9ftwelYCgSCaKiFBWAhaKpvX3oDc4WhkREEoTPRZriE8pWhcKouMlnPQPCijsn/H/j1fis5iJUqFsBLmO1Pc1F1Ijiiv3GUle95FQ2MM15LfGFNnrQ3Bh31+A8YXXgjAohi5CPmVWyT4RW6yMxXwTeFAnfGpEP9BCYanD0oy2fae3LpU2lx108wTa2DYk0j1VLivAnw7yPs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,54 +179,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 6, 2026 at 1:36=E2=80=AFPM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
-> On Mon,  6 Jul 2026 09:44:54 -0600 Nico Pache <npache@redhat.com> wrote:
->
-> > While reading collapse_scan_pmd, one may be confused on where the defer=
-red
-> > max_ptes_none check is done. Expand on this current comment by explaini=
-ng
-> > which function the max_ptes_none check is now done.
-> >
-> > Suggested-by: David Hildenbrand <david@kernel.org>
-> > Signed-off-by: Nico Pache <npache@redhat.com>
-> > ---
-> >  mm/khugepaged.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 3c6f1254deca..388045a524a3 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -1728,7 +1728,8 @@ static enum scan_result collapse_scan_pmd(struct =
-mm_struct *mm,
-> >
-> >       /*
-> >        * If PMD is the only enabled order, enforce max_ptes_none, other=
-wise
-> > -      * scan all pages to populate the bitmap for mTHP collapse.
-> > +      * scan all pages to populate the bitmap for mTHP collapse. The b=
-itmap
-> > +      * is then checked again in mthp_collapse() for each attempted or=
-der.
->
-> Could be combined with patch 4?
+We want to rework how set_pXd() behaves for generic compile-time folded
+page tables by disallowing its use and triggering a compile-time error
+when it is used improperly, ensuring that the actual first-level set_pXd()
+function is used instead.
 
-Yeah, sure :)
+As using set_pud() is invalid when __PGTABLE_PMD_FOLDED,
+pud_set_huge() is also invalid. Therefore, define it when
+__PGTABLE_PMD_FOLDED is not defined.
 
-Thanks
--- Nico
+There should be no functional change.
 
->
->          */
-> >       if (enabled_orders !=3D BIT(HPAGE_PMD_ORDER))
-> >               ctx.max_ptes_none =3D KHUGEPAGED_MAX_PTES_LIMIT;
-> > --
-> > 2.54.0
-> >
-> >
->
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ arch/arm64/mm/mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index f2be501468ce5..194b62c528de9 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1807,6 +1807,7 @@ void vmemmap_free(unsigned long start, unsigned long end,
+ }
+ #endif /* CONFIG_MEMORY_HOTPLUG */
+ 
++#ifndef __PAGETABLE_PMD_FOLDED
+ int pud_set_huge(pud_t *pudp, phys_addr_t phys, pgprot_t prot)
+ {
+ 	pud_t new_pud = pfn_pud(__phys_to_pfn(phys), mk_pud_sect_prot(prot));
+@@ -1820,6 +1821,7 @@ int pud_set_huge(pud_t *pudp, phys_addr_t phys, pgprot_t prot)
+ 	set_pud(pudp, new_pud);
+ 	return 1;
+ }
++#endif
+ 
+ int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
+ {
+-- 
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
