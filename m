@@ -4,132 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B2BC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:42:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92AD3C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 573AA6B013C; Mon, 13 Jul 2026 12:42:29 -0400 (EDT)
+	id B8E1B6B014B; Mon, 13 Jul 2026 12:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 522E66B014B; Mon, 13 Jul 2026 12:42:29 -0400 (EDT)
+	id B3E9A6B0150; Mon, 13 Jul 2026 12:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ECAD6B014F; Mon, 13 Jul 2026 12:42:29 -0400 (EDT)
+	id A2E5B6B0152; Mon, 13 Jul 2026 12:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0663C6B013C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:42:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 733311690B7
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:42:28 +0000 (UTC)
-X-FDA: 84984321576.21.0F2E545
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6A3974000C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:42:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YMD95T5g;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783960946;
-	b=wxFmkRFbRtgl6TIvG292cXUXAUemoyTE8PVhf5ioZMGsHsMqT7BWLEbI1y5wakfb8UFzeQ
-	JjMrNHEYvzEWyO99bg7lDHSGUHxGm2DQEzpdkOfj8pfrpT3Usoyx8rwzktO3ty8x7OKMT/
-	y9k8pTGKNtttHLEe4q24rFwU52hR5Dg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YMD95T5g;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D25F6B014B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:43:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C316C11B1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:27:21 +0000 (UTC)
+X-FDA: 84984132282.23.E46E888
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5275214000C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:27:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=alh2lfRH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783960946;
+	s=arc-20220608; t=1783956439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zltyqt7dF1hkJN/jP/CdnhprTdfvpBe1oag9qSSox24=;
-	b=E26q5KCBI2l8O9vfKQSM2IWOW/azzVdl64ukegvLZ1qAywGXq7U6bZgRo0PDZU5tYPr0Yw
-	w0jjtjC3lE/YTczT3Ege9yZVWM3rWSZcGyz17rAwNIBQ7VjCp/6lAVtD7z0b95VlQMSfLn
-	7ih9HbjtdSP6JvWB9Mzsx5q2xSFrH+E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9CF1040D42;
-	Mon, 13 Jul 2026 16:42:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10EE1F000E9;
-	Mon, 13 Jul 2026 16:42:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783960945;
-	bh=Zltyqt7dF1hkJN/jP/CdnhprTdfvpBe1oag9qSSox24=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YMD95T5gB5V6T1KmPKUt3jBxes75nLN+JrX7ufd6wzFcjrcdf4OPFO5O/6KEGbI4p
-	 /qPsJdKgM1VcjGX+E9RJOqAdM796/JvnoQaOR0QS92oa5R1put/ZxPUddbroI2Tu71
-	 FefurKURKfoiisCy/CjS7hvxUrfgD1Ex8u47gMffmBu9NPWCSru1kAE1rx7Y29oejY
-	 7i1zDqIEnOgFDcMGP2JEkipfRSoxeoDToKGDEsej2BP1w2RYFvievCeyzKg1L1xlH/
-	 YKrYIjUxFoY2yWG5K3uqnUsZ7F3Xt7FFGhZzEg5MwswwfwagH1A1r0Bqd8ZvZEmx63
-	 Lmwi+0z29/2Zw==
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2C724F40209;
-	Mon, 13 Jul 2026 12:42:24 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Mon, 13 Jul 2026 12:42:24 -0400
-X-ME-Sender: <xms:cBVVaunnabxwFOWElc-2hiBfATA0yTqjWE3aMVTIQndTuJglQjbcMA>
-    <xme:cBVVaoKqoeQWkiAxePVsb5xWtY9UPuGCuRv4lu1mcCUm8WG1U-9bL-DnSuJHayltB
-    kbDhU-jlolP3PSyv8edC4uYgNZkwxEWwbaV4_70CFloi6rugs7NFZC4>
-X-ME-Received: <xmr:cBVVaraMibBRTCi72ti4GcRWQ5JyV8HJ7ZlaaQ-tw8zj4r8k8gVN2Tc0ga1NXA>
-X-ME-Proxy-Cause: dmFkZTGMoWnWRGMKpgIRcZga9S7P7sHAGK5d+gFuMURcEOT0aJUrqozEaYj6fAMVLY196L
-    c7Q9Qx95Y6WcY327qRelJqkKmKiY8PyHcdZc3JZu/hVxbAUCmEOUcUUvGZPJlzK+Zg1A7p
-    E1M4Hr0gckN5dJRqg90LQ0EHm2k1fI/i+fUhPF+S0gisFoPy96WSVpdPglvA43z/98UfZS
-    77zo20OTGrNknxecuDjYSkHGwSxjzQ1LYlvgazPzK8oFp3YKDb/rYy0YfHXnH6tiE3ZJF7
-    ZokTq2XxIK+Yzvex9+lS2uKqt+BJb+586vgE/3bYp3UeKEBWyikgLa9l9cHHjIxzYEIHil
-    oF2jNkQA3L0opoOSBPQ21b1KwnAtX+7mm1hI1VkIvCQ4Sd8xTjNlbp2bhYvHJ2okcMR4ns
-    hsRCs5wvczPDK1sHUQYigsqKB7ZtUPERQqVE+pr7t0diJqU2CJ0D6rKy0JLWAbPnh0PP+w
-    GMO82NWmJpzPCDTYl7tKUndgaEXCJlprGOkG6oO+jiyNiJ6ompZ9Gl/0s/kkHRKHMwro8s
-    R9WYSyj47gkweDae0dm64/jnpgoYlfQRkSg8eWsf6jTGBGtei9aL7PRaOPj+mFaLXnfhGc
-    FUKxgsObsfGFTX1wCE5bSoek7+u19U/q8fwZmEcgbsplA5BpMngGDPZ0RlYA
-X-ME-Proxy: <xmx:cBVVaszZU1TD3CD3AsVnwyX518CY3FWJekcfZ1uGZO0tyLXOt_73IQ>
-    <xmx:cBVVavY-_LVEzdVDUJGtqVbrXGgvLeKIZpGs4SCglyb0k4KXp2XSCw>
-    <xmx:cBVVajXlPXaX2BcJ5bBNoWT8IgmSVzr_trhD-_ioOaq5hELW3DCn8g>
-    <xmx:cBVVaqFIKNFRiu1WcDspECKkHRpK8vBhy5plkTOPM4mCrQJ8NdAXpA>
-    <xmx:cBVVamEIjRt3MpSq9SGrtev-xed03Gb6y-njY6BZpA-E3wjOpAI01VIx>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 12:42:22 -0400 (EDT)
-Date: Mon, 13 Jul 2026 17:42:21 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- 	Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- 	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, 	Uladzislau Rezki <urezki@gmail.com>,
- Toshi Kani <toshi.kani@hpe.com>,
- 	Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>,
- 	Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, 	Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- 	"H. Peter Anvin" <hpa@zytor.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- 	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Ryan Roberts <ryan.roberts@arm.com>, 	David Carlier <devnexen@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 	bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- 	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH mm-hotfixes v2 1/4] mm/vmalloc: acquire init_mm lock on
- huge vmap to avoid ptdump UAF
-Message-ID: <alUUfGnM_vbhOTVK@thinkstation>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org>
+	bh=BGM+htLZdutLBDNc5mxxfxxEn2ZysJrfQe8Dn9wLtck=;
+	b=NxnU2tQ/TRDq83EGY27alM0FbqdHK5fHZzCB2dR7EpCXAxV6F+WsN1+z2DgP/PTyyEHq9Z
+	XVx2eXO6QoEShRGMpFWFKy8mhiPKqoDRCY89XnFwfCqSNmTUVyUmdq4LDFrI+XkqNsYLIf
+	IzoNtVu/B/cqw1GmoliTM3YUceKUw48=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=alh2lfRH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783956439;
+	b=KDNe9T5BHFMlmdc0BK7uW48FaPaWTLLG/cUBhDyfhS3DbVhbomg/11I+OGpZ70o22wQt9S
+	b/KXr4hbnYMc8wjkYsOhYcBHxhDyVHCHB4hBTqEGbVL5o8qYerXi3AOp+iHzVYBQ26EhdS
+	D/XiYeZbgVa8tbjwJpovwWUWsbbN/kM=
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783956435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BGM+htLZdutLBDNc5mxxfxxEn2ZysJrfQe8Dn9wLtck=;
+	b=alh2lfRHVG8G8NevS66Gh7NDLWFYdbGR4+mqA2vynLl4THE6uFGrwsXygsFfBygmV6YUXa
+	WUoAq/SHdFGJORCQFJtr6nL06Pee0SemWQfYZSu5viQC6QK9WygW+I48pL+STkIv8o2X2U
+	v/8WZw4g2hHSZMLlGjkFe0nEJNtqdw4=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Jul 2026 15:26:48 +0000
+Message-Id: <DJXJRNZFBPQ2.2S6CM4YAKHVQ5@linux.dev>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
+ <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>, "Matthew
+ Wilcox" <willy@infradead.org>, "Hao Ge" <hao.ge@linux.dev>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-rt-devel@lists.linux.dev>, <derkling@google.com>,
+ <reijiw@google.com>, "Yosry Ahmed" <yosry@kernel.org>
+Subject: Re: [PATCH v5 13/18] mm: Remove __alloc_pages_node()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Zi Yan" <ziy@nvidia.com>, "Brendan Jackman" <jackmanb@google.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Muchun
+ Song" <muchun.song@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
+ <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
+ <byungchul@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Hao Li" <hao.li@linux.dev>, "Christoph
+ Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
+ <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
+ Rostedt" <rostedt@goodmis.org>
+References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+ <20260703-alloc-trylock-v5-13-c87b714e19d3@google.com>
+ <DJP0VKJLE8TE.6EDLC2BFI1SG@nvidia.com>
+In-Reply-To: <DJP0VKJLE8TE.6EDLC2BFI1SG@nvidia.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 3geh4138xkuc73uyuiiyydftm3jz8bzf
+X-Rspamd-Queue-Id: 5275214000C
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6A3974000C
-X-Stat-Signature: kiz8nq48rck73tqhe4uygi93zbycxwxf
-X-HE-Tag: 1783960946-520727
-X-HE-Meta: U2FsdGVkX1/PYiLyGJfcmNzJ9WnIfFkjWP+5wDkcgzHqNQqgSW5eQ6waJIL+tz3PE0w9QkaOHlmgirixNU3A1qAJhqHuc17D59RIqLCJ6Y/aFM44WK4FwDqZJ8A4Fku8YNjOn87ezzHJGUzDySpRekCuOlCwZTP+Ex7OacqldE3r3VM7ED4fsGc9e12rIHovmEvILDKZguazEPUk5bxrSAtJp5S+BJ52wYBV5+7QhEMIN4BZizwLWDWD1AYcUfG+uBBVg8aYhU32Nr980q9ZbMk8mlnRykn+z3EAR5Jgl2zb3PzLtDdd51Gl0WXGTuDy0SSTtonhST5yMMLXohXq2SATN64n089FxN4usipzHajjlVUtHyOWa4E4i4Fb5gY18+ZCTfPV3UcQYA0PzdYdkBcTp5q47GQautKbfeUhDtxhlyQb0AHcsdzzRuz7GLoEJb5gX2oNv+ZvgjpSr+nKd9mQPUul6bEyS6K4J4R+kuWO6Oh/cI/sA2Hq7FQox+5vuGdaNJ/RL9inKKh0RKKjaQ9nkZKPjjYeC7oGmRvgJr6NbcjBs7aLS96QqPmCl1faqvfYLZu7vyNiCUpa/3HL17aUzLdAFIALfThRnb1vMk3HpdsWxd+RywSQrFLbmTljaonPAD1yOtN4H5kgDlhKsAyM6fgu0bqhXx5e+pNIrxklv7rZ4/bQFHtIeas7I40aguwb9Fjzlt0sireesSPr2+Fm5G0aG+Mdby+ESbM0HDImn0VLEeU4+WGZlm8h30/BbLIZWUdDcJ+cpyK9kLoLxzoizsXXspSFtY8sevVcsus6yOuvghy6U3XBZwoo2pUg7FiIfqB7UYPqXbgLVgw1DwzIZZjRWYFir37fmt0TNJtxwoiMJ1ekZPi0/jXSellukQTZ5RDEy6sv+t/q97895CXNOrt1R0eZZTsAhuNgV0t1aJ7t179svJZx65yNlAVoGtiKXMJWbxd2jBZksfi
- 5un4ylWh
- 38prBy5CYaHa/1oEplSYWPzFD0+69na/kdh1n9YTZiNnnpuoi69dU5ld2cCi0SlyDKiK5fOpWooetjqvvP/a1SWAiMhNYpFhzkKBBAibAntqRxzwci9G48oB8zS9/VFKQ1ihlHXvI2goECfr/EvXpGvCpcwYkIxzy7J/RCvJVCtTBsbCd5kPJmVycXpqUXGjBRsYsOgcKOV0ge9kz7MwMeFRBUz7XYKj6fgEEQ91+/X6bv5T7rUzCiodBkpkOQk7KZCNlIH/5u30AyCGklxsWUSawr8yMJz402aVOgvakNFHVrmghS8N0aVRSl6eTJdS95ztDgbslF4dCd20T9RRtKUfQCx3ncU7+GDin8NzHtPTKlkMrbtIf2N99i4J2aHBofhNMLIb4TRZlNfQZnGkNCBayA5K89xRj7lxedh3tQTK96LOGemtnf0MG5V7NnqVmWuUHWElBjU7DG5k=
+X-HE-Tag: 1783956439-205751
+X-HE-Meta: U2FsdGVkX1+EhKws8yWMoXkniyTSdM4YuSwF5e1nJXoINnsG3FiWBrIz0bmvTU77J6RhWHqRBt7zeUHqCCIaQQyolgD8TYxZUqLVfWsfmGDDKm4uUmPgVLFFzFscu7JTJO+SIE+hqeVj/AbDDl7RxaiXmpvYhnN6nymrxcpur1GHDCP081WNTuMT3HEc7yUWJgCp/l//9ZPCNlid3EToaKmqmP0lwUcb/0V2TupwsEeKighhQ1tlzUkW0ZnWIvx3LeyZljioa+MdxClqOXXa9aR0cZ4xedx7OHPpStoPxTvKh8TVi7SYQaSKv9ZbXfOQJPP0z6LSgHUmkbeoAUR6oTAMa9Tfahk/zVkqDajWpw8g92WZN5dZ2cXoIqCqCKCWlNbE9sWnUk/k/hsRQXxN0YYl7cdk2jhP6vMbac4qTPZZ3wilqqUbqb98wjWsWxoSlaZhCOAziCBfYoC38CKV02e8Yrp3QNMDDTT5aBUkV0tW5ze/06VrNfpB4idcCLubLpBph1tqdlfT+XZWbkUKP+g/yZAJAhFN0HqIgMl7XC67rOl+OW5OwRiWrSlWm8YvPhIAXHIZmTVirUY0xt2uSstJT5EggtG84g3N9snQ4zj1wl4sZUS7L9J5FBR8qnvcmStu8u0M+4ccIcBVgde8Mmv2gV+xUwvkOhZotK9InfecHtzUiETZgDmt8xybkqmbX6MGkTVIsOFKR6gX7fip6klgb/FtU8Uf8D5PjcK5aLmv2TLMlJfGik4f+gkN2/AVxBAt2L/ML/7fzhZIfsocZN/T1SgacBClRFBm1Nuko3Du2At5fzdSdoVnthSwoh+sx/jRBTLg2tVTgCnz9utwClLem6cHC1Zi9MMpU3dzrM/GZHsGuIK8dtceA73Ild5Y3209Faht3Qnt2v/rqCT2arFa5UeepOYqZ3CSetWVR0p5sfd1mTYRga761aCs5EOFQJQlhCpp6jy6GNBnZZo
+ SRoE9NIZ
+ 5bscfthmgqgGqNzTLek4SCaQHxqNI8++Sf4y9L0uP4ZZ954FsL5Lm4RsiCXD+ELzAXuFSsBRDt61XFE/5EkREVJIdzi20TFhV+BVwclTDFmDeZWQxh68wvq2p20wXG9JTMUFI2RvxT3MLXgkvmMc1Ftub0M/cESWnOk08ONQlatW7q1xTKNJHP8ZTLtuF3K2l0H55wplLxnmCj9yHv7a1Pk/GjAgTsKF2fRyywljTuA6skxIuyXHTMR3vmqS6dHCSHt9a6M9fyPS8eaV3sMievj0Lzj0NTfFTMSlIjpHPUTbcVlVBdDA8Cgt9oU876YVci1Jzh7bUts8Oy05mhT+v54u0m9/etosVI8rvIfftWSc4l0qLFXbUTSYc64+GD886GiEtJaTdDIIIK75RWBy13F8xdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,32 +108,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 12, 2026 at 11:42:24AM +0100, Lorenzo Stoakes wrote:
-> Currently there is a nasty race between ptdump and vmap when attempting to
-> map a huge P4D, PMD or PUD entry.
+On Fri Jul 3, 2026 at 2:57 PM UTC, Zi Yan wrote:
+> On Fri Jul 3, 2026 at 8:31 AM EDT, Brendan Jackman wrote:
+>> There were only a few users, which have been removed. The only advantage
+>> of this API over alloc_pages_node() is avoiding a single conditional
+>> branch. The disadvantages are:
+>>
+>> 1. More API surface, more sources of confusion, more maintenance.
+>>
+>> 2. Worse impact of CPU hotplug bugs: most users of __alloc_pages_node()
+>>    were using the result of cpu_to_node(); if the CPU gets hotplugged
+>>    out this will return NUMA_NO_NODE. If one of these paths fails to
+>>    protect against a concurrent hotplug then page_alloc.c will use
+>>    NUMA_NO_NODE as an index into NODE_DATA() and cause some horrible
+>>    memory corruption or other. With alloc_pages_node(), the code might
+>>    just work fine.
+>>
+>> Ulterior motive: this frees up the __* variants of the allocator APIs to
+>> serve specifically for use as mm-internal API.
+>>
+>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>> ---
+>>  include/linux/gfp.h | 20 ++++----------------
+>>  1 file changed, 4 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+>> index 01d6d2591f49e..3bf55a5f9143e 100644
+>> --- a/include/linux/gfp.h
+>> +++ b/include/linux/gfp.h
+>> @@ -256,21 +256,6 @@ static inline void warn_if_node_offline(int this_no=
+de, gfp_t gfp_mask)
+>>  	dump_stack();
+>>  }
+>> =20
+>> -/*
+>> - * Allocate pages, preferring the node given as nid. The node must be v=
+alid and
+>> - * online. For more general interface, see alloc_pages_node().
+>> - */
+>> -static inline struct page *
+>> -__alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order)
+>> -{
+>> -	VM_BUG_ON(nid < 0 || nid >=3D MAX_NUMNODES);
+>> -	warn_if_node_offline(nid, gfp_mask);
+>> -
+>> -	return __alloc_pages_noprof(gfp_mask, order, nid, NULL);
+>> -}
+>> -
+>> -#define  __alloc_pages_node(...)		alloc_hooks(__alloc_pages_node_noprof=
+(__VA_ARGS__))
+>> -
+>>  static inline
+>>  struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, =
+int nid)
+>>  {
+>> @@ -293,7 +278,10 @@ static inline struct page *alloc_pages_node_noprof(=
+int nid, gfp_t gfp_mask,
+>>  	if (nid =3D=3D NUMA_NO_NODE)
+>>  		nid =3D numa_mem_id();
+>> =20
+>> -	return __alloc_pages_node_noprof(nid, gfp_mask, order);
+>> +	VM_BUG_ON(nid < 0 || nid >=3D MAX_NUMNODES);
+>
+> Could this become a VM_WARN_ON?
 
-<... skip 145 lines of commit message :P >
+Er, it will almost certainly crash later if this is violated. Personally
+if I'm enabling DEBUG_VM I'd rather it crashes with a helpful stacktrace
+instead of chasing random poihnters, likely corrupting memory, and then
+crashing later in a completely undebuggable way instead.
 
-The code looks good to me, but I think the commit message needs some
-love. It is long, and the pieces of the story are scattered: the race
-itself only shows up around the middle, after several paragraphs of
-ptdump background (including the arm32 and EFI notes that the text
-itself says are not relevant to the bug), and the one genuinely subtle
-part -- why the read lock is sufficient -- is not spelled out at all.
-
-Something along these lines would be much easier to follow:
-
-1. The race, up front. Diagram, if we you feel like it;
-2. The fix, and why the read lock is enough;
-3. Why a trylock;
-4. The arm64 wrinkle and the temporary ifdeffery patch 4 removes;
-5. Secondary changes (guard class, walk_page_range_debug() assert);
-6. History, if you feel like it.
-
-Point 2 is the one I care about most -- the same reasoning would also
-help in the comment in vmap_try_huge_pmd(), where "Therefore, acquire
-the mmap read lock" is doing a lot of unexplained work.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+TBH I don't really understand the "don't BUG" culture we have in Linux.
+I usually just go along with it coz it doesn't seem important enough to
+argue about. But now I'm wondering: if we really don't like VM_BUG_ON()
+why not get rid of it completely? I wonder if there's some case-by-case
+difference that I'm not picking up on.
 
