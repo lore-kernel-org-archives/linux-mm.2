@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E009EC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 11:55:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B2E0C44501
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 12:12:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB5576B008C; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
+	id EED0D6B0005; Mon, 13 Jul 2026 08:12:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D66256B0095; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
+	id E75EB6B0088; Mon, 13 Jul 2026 08:12:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7D146B0098; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
+	id D18006B008A; Mon, 13 Jul 2026 08:12:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A125A6B008C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:55:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 29423120124
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:55:33 +0000 (UTC)
-X-FDA: 84983598546.21.757D8ED
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BF03616000B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 11:55:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf08.hostedemail.com: domain of machao26@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=machao26@xiaomi.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB9576B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:12:07 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 313D8140121
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:12:07 +0000 (UTC)
+X-FDA: 84983640294.13.28C5391
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F290B1C0003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:12:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=I4r31t5F;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783944725;
+	b=YXAisUCDh2gTDu3vbefrWLChJRE0hId9pM5In1bx7MsIz9QabNqd8R5y7jPmQEk8VvIiQQ
+	xBYEF1EoQ9cL2TNAkVmVpDVkmhnihOHQyArHtCYCJycej+0ScOYHP9MPDPgPeTGi27elEX
+	z7j0gAYonlVrbUcWI0rhse52xTE2vmE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=I4r31t5F;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783943731;
+	s=arc-20220608; t=1783944725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xtymU8NG0eH+GCXITTY2h0ndNB4TG5LSUGP+14PbmRc=;
-	b=xPlBeKnhIdBfHbGoyae9n18j8MjBXV7/BjufL2iqqgcbnUuQSRqpsp71pWH9Kua+aC4Yin
-	CBJYDXV4v50yLQ1XXQdGeE4DwsDbfUFWzxQSbT+bEDvm8/T4goUn42+o/ZX+9K2X831VTK
-	dEO3mvRtJnnWqmBbYvPjucs2ZKcUfdE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf08.hostedemail.com: domain of machao26@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=machao26@xiaomi.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783943731;
-	b=yu6y8mYMl2c/1QK/v893Sf+PoI9NloZmOTH0ZBLjsh8vSPlCXTK2E+aGcfBFK6VK96hG0g
-	ky9tGldUdTEaJGkYfnp4iHuIyUHEAaO3ajrB28s2uYD5tVEMgX5RNw9FcuIc6TJYrJNZaZ
-	qGSR2CapOBtBwHESltKydl5pxSQgXHo=
-X-CSE-ConnectionGUID: k57qhnG0TPi1BsHXpg8drg==
-X-CSE-MsgGUID: sRJmSz8LS+WD8X26Nu4CRg==
-X-IronPort-AV: E=Sophos;i="6.25,154,1779120000"; 
-   d="scan'208";a="182163904"
-From: =?gb2312?B?wu2zrA==?= <machao26@xiaomi.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "hughd@google.com" <hughd@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "kasong@tencent.com" <kasong@tencent.com>, "baohua@kernel.org"
-	<baohua@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	=?gb2312?B?zO/QorHz?= <tianxiaobin@xiaomi.com>, =?gb2312?B?0+G2q7Hz?=
-	<yudongbin@xiaomi.com>, =?gb2312?B?wO7F9LPM?= <xiaoyaoli@xiaomi.com>
-Subject: =?gb2312?B?u9i4tDogW0V4dGVybmFsIE1haWxdW1BBVENIIDYuMTgueSB2Ml0gbW06IHNo?=
- =?gb2312?B?bWVtOiBmaXggcG90ZW50aWFsIGxpdmVsb2NrIGlzc3VlIGZvciBzaG1lbSBk?=
- =?gb2312?Q?irect_swapin?=
-Thread-Topic: [External Mail][PATCH 6.18.y v2] mm: shmem: fix potential
- livelock issue for shmem direct swapin
-Thread-Index: AQHdEBErMsmrE+zz7EKRA3z2tbO3PLZrXI5Q
-Date: Mon, 13 Jul 2026 11:55:24 +0000
-Message-ID: <636829064b674f71a11095603edcb20a@xiaomi.com>
-References: <c0b158fe3f25709543b48a9d81b1933120a9e2ba.1783648317.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <c0b158fe3f25709543b48a9d81b1933120a9e2ba.1783648317.git.baolin.wang@linux.alibaba.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.237.8.165]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oLc0zX/jtJo4npYIZG87HtU2Q1QEGTOR7NdZBK0Cjds=;
+	b=L3wwIs8FAqXMasP+uFhhkVOV4cC6ZEirLAqMR63L6SHPVR6QLjaFw3wmm8oDKvzUy6Yldt
+	A1bVsGZ2RhBUoLUzI5zhkD8ot6g/h4BpMcHHr9QOrAmvKGj0PDx0hdGR5KnOn2ky+6v6iN
+	4wyqERJ9+f/FATaEhsLogP9cFO8dyH4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC7AA1576;
+	Mon, 13 Jul 2026 05:11:59 -0700 (PDT)
+Received: from [10.164.19.52] (unknown [10.164.19.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2ED133F93E;
+	Mon, 13 Jul 2026 05:11:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783944724; bh=XybwoLlYtcu13ujCRHeQdo4p5ZZ7uLYbhY79oGKMjBM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=I4r31t5FDkY2Ahd5+cnL3anhmAw4hSrrFiuA00uPSP3uMe14XaFKKAu3bMN0+22ox
+	 QcJ2h3zFqhmePduDEtgmoY2An4UNohHvjD2Ag5kyl54FgvTOtBFYddEQ1WneVu6G4q
+	 SPOck9PQRA68LO772OTnP4LXJ13OYkeXzCk6GdZw=
+Message-ID: <de714ba1-2d97-4403-bd80-6de914500461@arm.com>
+Date: Mon, 13 Jul 2026 17:41:57 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] mm/rmap: Add try_to_unmap_hugetlb_one
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org, muchun.song@linux.dev, osalvador@suse.de
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260710055915.638659-1-dev.jain@arm.com>
+ <20260710055915.638659-3-dev.jain@arm.com>
+ <49b408b9-6d10-4892-916f-ad8e7ef875e5@arm.com>
+ <db3c6f52-7a82-4afa-9720-1edf2f5c855d@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <db3c6f52-7a82-4afa-9720-1edf2f5c855d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F290B1C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BF03616000B
-X-Stat-Signature: 5ae6dftb136x5ctw4esupprda4u3wsoh
-X-HE-Tag: 1783943728-878329
-X-HE-Meta: U2FsdGVkX19LpW99LI/uL1qCtxEflHy7kL81I9vCLyqR4VvnRPCQHLLnK4xE1thX/sJD8YA2/tlHYBhuDlb5B+MdfEM6lCatE3KuW7cp5VA+F1LIzuq6kZseZmz6SzeRMvq0ZCVuoD+9X0H7DKhJG4Mxr74AcK7HjIyxg4tyh5qMUSOK27xj8D9t7qYaQu8GDCOXE5BZFi/d57f09JX2YfMVACEn76cDa05tyMV6dMPljTKFpcYsPdyIlNwVJCu5t2Ed/H1KWF+d5P75IyHOARzRycNl5WjRX8Xs6ORRx6JHeuMLNuKuNnCewHs205LX/hHczTX1sonsagAe+TXfSTlXXvptmw167zTwz4EAAKfC+7XiGZ131z+VoMW19N/nfCD+9EuyMQTbeGXKT4X7QDHOKjbf2blFgNdE/74pyEYXMZdjF/9P5goLbnDkqyr37QJMfDAFg1YOWeATBysPKWLQuAcXwwJke2sOT7ZVGXehi3rFja+tPWxTiZmBM1bqn5PB2w+Ogk2x79ybaw/RLE6yED5uhAz29sNt8BB4TW7oej9/qgsJWIVm4Sn3otpytaP+qJ7PjUy9kLLnm+8eEIxewZLW9oJ5LuLrqtndZhRzgLZ6gzMNf8z53pyQzeK212YBxe70W1+ssp88W95KIcvEBgegI06vTM0MgPkfNdYAZrEdOPsIAT64v4IZwGt2Q2usj3EiP7Sqp1Wy2LgMd8y/clI8n40lR+4g8XDjScz6JT6lyX8ox7iMjQvE4jWK93w5CYN5KYHOlKiMPVM/ksGlxqe7t1fMyXMxJwkK7Qg3nzTCXK85Mc7GIwyxaCzWeSyJP0dB1DRRrQYIu3r/6PyQfpo2oYiV+2YwuNYWMh2F/EhfHcXfgSJFwZ9H0zupfnVPbKx9N+TYsr3okrvaSJUdZ0stYwLaX/LC06Uu4LUiArOLgAUVnVpkjtzONu7XFoVguBDwdURBq85C8tI
- YkFEqLUi
- Vfqw2mxlSpveZFYzNWRGfSpjqEfazSrPk2UW2j/xHfYgoR8EWmF9/tLaAMXnDZBLj36fNb+h0edUrKU/AhdqWUJfnFL4eWhUfskYSMhWxrlpcfPAJGDsw8eTgc9rukSSCHe7mJWPsm29fI2rOZqzdrRy+uC4S7JiWvN/wC2cn3USLe9aK6txQs7P/OxYoVS9tjNT6cWbAGq0g4G+JL5vZirZx2+izoIcde8FW1WuV0X9mgVvtjbBxDqkm8jx4TXOe3w6QPa9Ygy/wXueTJZ2fh7kEc4GdJP4bYvbmI2+O9+nxxWjXBpCrOCV+PCwd6r9zkEnlUU21tsJMtNkKidLyzciz9UnUONrRv4DiAhWqnIRzY+o63xPnYKN4ow==
+X-Stat-Signature: xqdbqs8yeh75axaowf4npnpwonqwwe93
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783944724-720744
+X-HE-Meta: U2FsdGVkX1++ZE7yf5g15jriT0IR64oLRxjJa5sDFXUSs/mAuDb3x7scWGQWwsYReVbMhvUm710oNyO59lgRnbo4Rq9bWiJsrX7bsv1wlGFk8STHkHAEORa8GonEJtcLaLQ2EQmIsOv255jEGtMHkynNHVGzeA6EEC4Y4pU/1a3s6KQGn1fEAbtTKapTONYNTGuE9EB318QVw66Pde6HEm+9R2G/1eF5qNXzigYtMTXMvtDJvOkfHdTNHMHM6i2ozIM70Lp7PPmj8QltFaz8ClXfBAV1dFoK3Ga64vdooa3UOm1zf9Vx0fYsrqUxXNiPZM5Y7b0xM+IgBrWCuCn238e9bE7hFby+gJccE1f0MRh//zuyZSJS0eDtmiEwAOL/QvcZ4JEfCRf8CroDH8dL5lxmY823Xt4cq/zhx3NFqJbN+IjfMLrz+sP/lGhaAUIKCbrd0D0bBH7fNJjrfxShBP962XT1KgIoQeEvvsC4auy8m+fPzVsgu56UGYVfeKgeuhhPxkUSbTyF2q2bl4emC+uUZZ1wce4a6OLXyhpTY8WYijMCXvRXQDvE0nEev3o5IBd7q10QOd3ESRkyMutBFgQtYSu4yS6HqNuXv0eBd1ykevLrhuCDq9zYLl7lzWBBoh8Riw3jChikG1KfNNu8082Xtkh3ypN1eh9kqig6w2TtwrlLY2rJfNfCntnakx+DdUL08dxB8MZ2S4c2tWquNDikg64sbyLVQql//II1rkaFLIVI8hLvI2qHxI7VeYcFUP3PuZA77EJksp/MZSIUibfkwTklcuPXBFcVCw8vFvj8ckmRFsHszmzXdMkWsC6vOMRMIWW/bPcSqOVU7gstacrivsXrRfgEO/htHC8RstHyFA+bR2JlN0AXDxKX15A/LSr5hlDB34BwdhW5U9qYQunI63myBv8kUvqSDrPrciTB29g2jMPLUJh9aCJbJfZ/KkGbLsx1CvlFPPxWmz9
+ iCUffntt
+ h4cG1hojkZryVho25PDTb3ydg0Q5+BeTmd1k7FqpuSw8rX9bbE5uxBAhIWv7d9nX5/tTyF0/oC5FwXNDtRACCuJmmZec+rFrSZb897m0aEIwcMRGkIkDAUY03f5jodwWs8+Fm3e5QEf89S2sYnpNf3hhbkn2oFR3nkkRCf99BfUXuaylP0nTe8E4g/O1xyme3vX+3A/Gcmt5JVTxd3vj6B0LdJIfXhNP2wru6SyuKPZ39qt4tk240nxZ/IyTZRJ+R5S2LlYDu1wwfWHP/5cB70bfTy2q3LGbmdXMU123NfgI9GMbbE0Z+RZxBqeNkH2vQwBbAeK22LjQv19kkBnfhkFSgjaLecidxNveE9Fv6KCnbzYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,97 +96,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PldoZW4gc2tpcHBpbmcgc3dhcGNhY2hlIGZvciBzeW5jaHJvbm91cyBJTyBzd2FwIGRldmljZXMs
-IHN3YXBjYWNoZV9wcmVwYXJlKCkgaXMgdXNlZCB0byBwcmV2ZW50IHBhcmFsbGVsIHN3YXBpbiBm
-cm9tIHByb2NlZWRpbmcgd2l0aCB0aGUgc3dhcCBjYWNoZSBmbGFnLg0KPkhvd2V2ZXIsIG9uIFBS
-RUVNUFQga2VybmVscyB0aGlzIGNhbiBsZWFkIHRvIGEgbGl2ZWxvY2ssIGFzIHJlcG9ydGVkIGJ5
-IENoYW9bMV06DQo+DQo+VGhyZWFkIEEgc3RhcnRzIGRpcmVjdCBzd2FwaW4gb2YgYSBzaG1lbSBm
-b2xpbyBhbmQgY2FsbHMgc3dhcGNhY2hlX3ByZXBhcmUoKSB0byBzZXQgU1dBUF9IQVNfQ0FDSEUu
-IEl0IG1heSB0aGVuIGJlIHByZWVtcHRlZCBpbnNpZGUgd29ya2luZ3NldF9yZWZhdWx0KCkuDQo+
-TWVhbndoaWxlLCBhIGhpZ2hlciBwcmlvcml0eSB0aHJlYWQgQiBhbHNvIGF0dGVtcHRzIGRpcmVj
-dCBzd2FwaW4gb2YgdGhlIHNhbWUgc2htZW0gc3dhcCBlbnRyeS4gU2luY2Ugc3dhcGNhY2hlX3By
-ZXBhcmUoKSBhbHJlYWR5IG1hcmtzIHRoZSBlbnRyeSwgdGhyZWFkIEIgcmVwZWF0ZWRseSBnZXRz
-IC1FRVhJU1QgYW5kIGJ1c3ktbG9vcHMgd2FpdGluZyBmb3IgdGhyZWFkIEEgdG8gZmluaXNoLiBC
-dXQgYXMgdGhyZWFkIEIgcnVucyBhdCBoaWdoZXIgcHJpb3JpdHksIHRocmVhZCBBIGNhbm5vdCBw
-cmVlbXB0IGl0LCByZXN1bHRpbmcgaW4gc3RhcnZhdGlvbiBhbmQgYSBsaXZlbG9jay4NCj4NCj5G
-aXggaXQgYnkgeWllbGRpbmcgdGhlIENQVSB3aXRoIHNjaGVkdWxlX3RpbWVvdXRfdW5pbnRlcnJ1
-cHRpYmxlKDEpIHdoZW4NCj5zd2FwY2FjaGVfcHJlcGFyZSgpIGZhaWxzLCBmb2xsb3dpbmcgdGhl
-IHNhbWUgYXBwcm9hY2ggdXNlZCBpbiBjb21taXQgMDI5YzQ2MjhiMmViICgibW06IHN3YXA6IGdl
-dCByaWQgb2YgbGl2ZWxvY2sgaW4gc3dhcGluIHJlYWRhaGVhZCIpIGFuZCBjb21taXQgMTNkZGFm
-MjZiZTMyICgibW0vc3dhcDogZml4IHJhY2Ugd2hlbiBza2lwcGluZyBzd2FwY2FjaGUiKS4NCj4N
-Cj5Ib3dldmVyLCBjb21taXQgMDE2MjZhMTgyMyAoIm1tOiBhdm9pZCB1bmNvbmRpdGlvbmFsIG9u
-ZS10aWNrIHNsZWVwIHdoZW4gc3dhcGNhY2hlX3ByZXBhcmUgZmFpbHMiKSBmb3VuZCB0aGF0IHRo
-ZSB1bmNvbmRpdGlvbmFsIG9uZS10aWNrIHNsZWVwIGNhbiBjYXVzZSBVSSBzdHV0dGVyaW5nIG9u
-IGxhdGVuY3ktc2Vuc2l0aXZlIEFuZHJvaWQgZGV2aWNlcy4gU28gd2UgY2FuIGZvbGxvdyB0aGUg
-c2FtZSBhcHByb2FjaCBieSBhZGRpbmcgYSB3YWl0cXVldWUgdG8gd2FrZSB1cCB0YXNrcyB3aGVu
-IG5lZWRlZCwgaW5zdGVhZCBvZiBhbHdheXMgc2xlZXBpbmcgZm9yIGEgZnVsbCB0aWNrLg0KPg0K
-Pk5vdGUgdGhhdCBtYWlubGluZSBkb2VzIG5vdCBoYXZlIHRoaXMgcG90ZW50aWFsIGlzc3VlLCB3
-aGljaCBoYXMgYWxyZWFkeSBiZWVuIHJlc29sdmVkIGJ5IEthaXJ1aSdzIHN3YXAgcmVmYWN0b3Jp
-bmcgd29ya1syXS4NCj4NCj5bMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzcwMGEyY2Jm
-OTBhMjQ4NGY5NzlhYWM4NThmMDhmNWQ0QHhpYW9taS5jb20vDQo+WzJdIGh0dHBzOi8vbG9yZS5r
-ZXJuZWwub3JnL2FsbC8yMDI2MDUxNy1zd2FwLXRhYmxlLXA0LXY1LTAtODhhZTQzZTA2NGM3QHRl
-bmNlbnQuY29tLw0KPkZpeGVzOiAxZGQ0NGMwYWY0ZmEgKCJtbTogc2htZW06IHNraXAgc3dhcGNh
-Y2hlIGZvciBzd2FwaW4gb2Ygc3luY2hyb25vdXMgc3dhcCBkZXZpY2UiKQ0KPlJlcG9ydGVkLWJ5
-OiBNYSBDaGFvIDxtYWNoYW8yNkB4aWFvbWkuY29tPg0KPkNsb3NlczogaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvYWxsLzcwMGEyY2JmOTBhMjQ4NGY5NzlhYWM4NThmMDhmNWQ0QHhpYW9taS5jb20v
-DQo+U2lnbmVkLW9mZi1ieTogQmFvbGluIFdhbmcgPGJhb2xpbi53YW5nQGxpbnV4LmFsaWJhYmEu
-Y29tPg0KPi0tLQ0KPkNoYW5nZXMgZnJvbSB2MToNCj4gLSBBZGQgYSB3YWl0cXVldWUgdG8gd2Fr
-ZSB1cCB0YXNrcyB3aGVuIG5lZWRlZC4NCj4NCj5IaSBDaGFvLCBjb3VsZCB5b3UgdHJ5IHRoaXMg
-cGF0Y2ggdG8gY2hlY2sgaWYgZml4IHlvdXIgaXNzdWU/IFRoYW5rcy4NCj4tLS0NCj4gbW0vc2ht
-ZW0uYyB8IDE0ICsrKysrKysrKysrKystDQo+IDEgZmlsZSBjaGFuZ2VkLCAxMyBpbnNlcnRpb25z
-KCspLCAxIGRlbGV0aW9uKC0pDQo+DQo+ZGlmZiAtLWdpdCBhL21tL3NobWVtLmMgYi9tbS9zaG1l
-bS5jDQo+aW5kZXggOTRjNWIwZDc4YWMzLi4zYzMyOWI3OTRhZTQgMTAwNjQ0DQo+LS0tIGEvbW0v
-c2htZW0uYw0KPisrKyBiL21tL3NobWVtLmMNCj5AQCAtMjAwNSwxMSArMjAwNSwxNCBAQCBzdGF0
-aWMgc3RydWN0IGZvbGlvICpzaG1lbV9hbGxvY19hbmRfYWRkX2ZvbGlvKHN0cnVjdCB2bV9mYXVs
-dCAqdm1mLA0KPiAgICAgICAgcmV0dXJuIEVSUl9QVFIoZXJyb3IpOw0KPiB9DQo+DQo+K3N0YXRp
-YyBERUNMQVJFX1dBSVRfUVVFVUVfSEVBRChzaG1lbV9zd2FwY2FjaGVfd3EpOw0KPisNCj4gc3Rh
-dGljIHN0cnVjdCBmb2xpbyAqc2htZW1fc3dhcF9hbGxvY19mb2xpbyhzdHJ1Y3QgaW5vZGUgKmlu
-b2RlLA0KPiAgICAgICAgICAgICAgICBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSwgcGdvZmZf
-dCBpbmRleCwNCj4gICAgICAgICAgICAgICAgc3dwX2VudHJ5X3QgZW50cnksIGludCBvcmRlciwg
-Z2ZwX3QgZ2ZwKSAgew0KPiAgICAgICAgc3RydWN0IHNobWVtX2lub2RlX2luZm8gKmluZm8gPSBT
-SE1FTV9JKGlub2RlKTsNCj4rICAgICAgIERFQ0xBUkVfV0FJVFFVRVVFKHdhaXQsIGN1cnJlbnQp
-Ow0KPiAgICAgICAgaW50IG5yX3BhZ2VzID0gMSA8PCBvcmRlcjsNCj4gICAgICAgIHN0cnVjdCBm
-b2xpbyAqbmV3Ow0KPiAgICAgICAgZ2ZwX3QgYWxsb2NfZ2ZwOw0KPkBAIC0yMDY2LDYgKzIwNjks
-MTAgQEAgc3RhdGljIHN0cnVjdCBmb2xpbyAqc2htZW1fc3dhcF9hbGxvY19mb2xpbyhzdHJ1Y3Qg
-aW5vZGUgKmlub2RlLA0KPiAgICAgICAgaWYgKHN3YXBjYWNoZV9wcmVwYXJlKGVudHJ5LCBucl9w
-YWdlcykpIHsNCj4gICAgICAgICAgICAgICAgZm9saW9fcHV0KG5ldyk7DQo+ICAgICAgICAgICAg
-ICAgIG5ldyA9IEVSUl9QVFIoLUVFWElTVCk7DQo+KyAgICAgICAgICAgICAgIC8qIFJlbGF4IGEg
-Yml0IHRvIHByZXZlbnQgcmFwaWQgcmVwZWF0ZWQgcGFnZSBmYXVsdHMgKi8NCj4rICAgICAgICAg
-ICAgICAgYWRkX3dhaXRfcXVldWUoJnNobWVtX3N3YXBjYWNoZV93cSwgJndhaXQpOw0KPisgICAg
-ICAgICAgICAgICBzY2hlZHVsZV90aW1lb3V0X3VuaW50ZXJydXB0aWJsZSgxKTsNCj4rICAgICAg
-ICAgICAgICAgcmVtb3ZlX3dhaXRfcXVldWUoJnNobWVtX3N3YXBjYWNoZV93cSwgJndhaXQpOw0K
-PiAgICAgICAgICAgICAgICAvKiBUcnkgc21hbGxlciBmb2xpbyB0byBhdm9pZCBjYWNoZSBjb25m
-bGljdCAqLw0KPiAgICAgICAgICAgICAgICBnb3RvIGZhbGxiYWNrOw0KPiAgICAgICAgfQ0KPkBA
-IC0yNDIzLDYgKzI0MzAsOCBAQCBzdGF0aWMgaW50IHNobWVtX3N3YXBpbl9mb2xpbyhzdHJ1Y3Qg
-aW5vZGUgKmlub2RlLCBwZ29mZl90IGluZGV4LA0KPiAgICAgICAgaWYgKHNraXBfc3dhcGNhY2hl
-KSB7DQo+ICAgICAgICAgICAgICAgIGZvbGlvLT5zd2FwLnZhbCA9IDA7DQo+ICAgICAgICAgICAg
-ICAgIHN3YXBjYWNoZV9jbGVhcihzaSwgc3dhcCwgbnJfcGFnZXMpOw0KPisgICAgICAgICAgICAg
-ICBpZiAod2FpdHF1ZXVlX2FjdGl2ZSgmc2htZW1fc3dhcGNhY2hlX3dxKSkNCj4rICAgICAgICAg
-ICAgICAgICAgICAgICB3YWtlX3VwKCZzaG1lbV9zd2FwY2FjaGVfd3EpOw0KPiAgICAgICAgfSBl
-bHNlIHsNCj4gICAgICAgICAgICAgICAgc3dhcF9jYWNoZV9kZWxfZm9saW8oZm9saW8pOw0KPiAg
-ICAgICAgfQ0KPkBAIC0yNDQyLDggKzI0NTEsMTEgQEAgc3RhdGljIGludCBzaG1lbV9zd2FwaW5f
-Zm9saW8oc3RydWN0IGlub2RlICppbm9kZSwgcGdvZmZfdCBpbmRleCwNCj4gICAgICAgIGlmIChm
-b2xpbykNCj4gICAgICAgICAgICAgICAgZm9saW9fdW5sb2NrKGZvbGlvKTsNCj4gZmFpbGVkX25v
-bG9jazoNCj4tICAgICAgIGlmIChza2lwX3N3YXBjYWNoZSkNCj4rICAgICAgIGlmIChza2lwX3N3
-YXBjYWNoZSkgew0KPiAgICAgICAgICAgICAgICBzd2FwY2FjaGVfY2xlYXIoc2ksIGZvbGlvLT5z
-d2FwLCBmb2xpb19ucl9wYWdlcyhmb2xpbykpOw0KPisgICAgICAgICAgICAgICBpZiAod2FpdHF1
-ZXVlX2FjdGl2ZSgmc2htZW1fc3dhcGNhY2hlX3dxKSkNCj4rICAgICAgICAgICAgICAgICAgICAg
-ICB3YWtlX3VwKCZzaG1lbV9zd2FwY2FjaGVfd3EpOw0KPisgICAgICAgfQ0KPiAgICAgICAgaWYg
-KGZvbGlvKQ0KPiAgICAgICAgICAgICAgICBmb2xpb19wdXQoZm9saW8pOw0KPiAgICAgICAgcHV0
-X3N3YXBfZGV2aWNlKHNpKTsNCj4tLQ0KPjIuNDcuMw0KDQpXZSBoYXZlIGNvbmR1Y3RlZCBzdHJl
-c3MgdGVzdHMgb24gb3ZlciAxMCBwY3MgZm9yIDQwIGhvdXJzIGVhY2gsIGFuZCBubyByZWxldmFu
-dCBpc3N1ZXMgaGF2ZSBiZWVuIHJlcHJvZHVjZWQuDQojLyoqKioqKrG+08q8/rywxuS4vbz+uqzT
-0NChw9e5q8u+tcSxo8Pc0MXPoqOsvfbP3tPat6LLzbj4yc/D5rXY1rfW0MHQs/a1xLj2yMu78si6
-1+mho7371rnIzrrOxuTL+8jL0tTIzrrO0M7Kvcq508OjqLD8wKi1q7K7z97T2sirsr+78rK/t9a1
-2NC5wrahori01sahorvyyaK3oqOpsb7Tyrz+1tC1xNDFz6Kho8jnufvE+rTtytXBy7G+08q8/qOs
-x+vE+sGivLS157uwu/LTyrz+zajWqreivP7Iy7Kiyb6z/bG+08q8/qOhIFRoaXMgZS1tYWlsIGFu
-ZCBpdHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gZnJvbSBY
-SUFPTUksIHdoaWNoIGlzIGludGVuZGVkIG9ubHkgZm9yIHRoZSBwZXJzb24gb3IgZW50aXR5IHdo
-b3NlIGFkZHJlc3MgaXMgbGlzdGVkIGFib3ZlLiBBbnkgdXNlIG9mIHRoZSBpbmZvcm1hdGlvbiBj
-b250YWluZWQgaGVyZWluIGluIGFueSB3YXkgKGluY2x1ZGluZywgYnV0IG5vdCBsaW1pdGVkIHRv
-LCB0b3RhbCBvciBwYXJ0aWFsIGRpc2Nsb3N1cmUsIHJlcHJvZHVjdGlvbiwgb3IgZGlzc2VtaW5h
-dGlvbikgYnkgcGVyc29ucyBvdGhlciB0aGFuIHRoZSBpbnRlbmRlZCByZWNpcGllbnQocykgaXMg
-cHJvaGliaXRlZC4gSWYgeW91IHJlY2VpdmUgdGhpcyBlLW1haWwgaW4gZXJyb3IsIHBsZWFzZSBu
-b3RpZnkgdGhlIHNlbmRlciBieSBwaG9uZSBvciBlbWFpbCBpbW1lZGlhdGVseSBhbmQgZGVsZXRl
-IGl0ISoqKioqKi8jDQo=
+
+
+On 13/07/26 4:04 pm, David Hildenbrand (Arm) wrote:
+> On 7/10/26 15:16, Dev Jain wrote:
+>>
+>>
+>> On 10/07/26 11:29 am, Dev Jain wrote:
+>>> Simplify try_to_unmap_one() by separating the hugetlb parts into
+>>> try_to_unmap_hugetlb_one().
+>>>
+>>> To understand the correctness of the refactoring, the following points
+>>> are noted:
+>>>
+>>> 1. try_to_unmap() is called for hugetlb folios only when they are
+>>>    hwpoisoned.
+>>>
+>>> 2. A hugetlb VMA cannot be mlocked.
+>>>
+>>> 3. page_vma_mapped_walk() returns at most one hugetlb mapping in a VMA,
+>>>    and that mapping points at the head PFN.
+>>>
+>>> 4. We won't ever process a softleaf entry that encodes a hugetlb folio;
+>>>    hugetlb folios are never swapped out, migration entries will be
+>>>    skipped (PVMW_MIGRATION not passed), and device-exclusive does not
+>>>    work for hugetlb.
+>>>
+>>> 5. The hwpoison entry is constructed from the poisoned folio, just as in
+>>>    the pre-refactor code. Any previous uffd-wp state is deliberately not
+>>>    preserved for the hwpoison entry.
+>>>
+>>> 6. TTU_HWPOISON is always present; for it to not be present, either the
+>>>    folio has to be in swapcache, or mapping_can_writeback() is true (see
+>>>    unmap_poisoned_folio), none of which is true for hugetlb folios.
+>>>
+>>> 7. Hugetlb uses separate counters from normal rss counters, therefore
+>>>    update_highwater_rss() need not be called.
+>>>
+>>> While at it:
+>>>
+>>>  - Change VM_BUG_* to VM_WARN_*.
+>>>
+>>>  - Do not declare variables which are only used once.
+>>>
+>>>  - Constify some variables.
+>>>
+>>>  - Add some more VM_WARN_* to assert some invariants.
+>>>
+>>> Except the above 4 points, no functional change intended.
+>>>
+>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>
+>> Andrew, could you squash the following diff:
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index cf02b315a2ead..b61051b879c4c 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2229,8 +2229,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>                 update_hiwater_rss(mm);
+>>
+>>                 /*
+>> -                * With TTU_HWPOISON, we only expect small folios or hugetlb
+>> -                * folios here for now.
+>> +                * With TTU_HWPOISON, we only expect small folios here.
+>>                  */
+>>                 if (folio_test_hwpoison(folio) && (flags & TTU_HWPOISON)) {
+>>                         pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+> 
+> Note that the comment likely fits into a single line now.
+
+Yes, took care of that in v3 :)
+
+
+> 
+
 
