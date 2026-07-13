@@ -4,174 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0308EC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4DDCC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:28:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06E816B0113; Mon, 13 Jul 2026 12:28:08 -0400 (EDT)
+	id E51AC6B0118; Mon, 13 Jul 2026 12:28:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01E2C6B0114; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id E02336B0119; Mon, 13 Jul 2026 12:28:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8C386B0115; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
+	id CCA0B6B011A; Mon, 13 Jul 2026 12:28:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4646B0114
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:28:07 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73058C05D7
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:52 +0000 (UTC)
-X-FDA: 84983911824.17.ABF3313
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C7C33A0003
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:59:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZPr6uIZS;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8EDD6B0118
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:28:21 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 340658C607
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:28:21 +0000 (UTC)
+X-FDA: 84984286002.22.CD73342
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 71E5140010
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 16:28:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGZH6yji;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783951190;
+	s=arc-20220608; t=1783960099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kYKqDC64EtdDPB+h/buce3AiHZeNWwTAXVj0booe4O0=;
-	b=VMsxecrXABr4EXaCXamHQIjoL0vd1aYmU0ql82MYTQtoTWmmECvJnGVbovsg2oyrVfRiRs
-	EJ4mRQZnkjJdcs1n6zJ52xkUU8LrbGg40GWGTgPONvYSK+hz/l519Pgf/fC/Z5uh/iMj3V
-	l5It/iKwd9OFaERCO2gpNf2O6pmHZM8=
+	bh=Bzru6MD6tMP5Zrs5sR9HSGqg0+r+/7ONX3ynlP+FaEw=;
+	b=7ajiN8g8weCqm5aESV02OUOdEcva6kbBX6AyeRJZs3EkXEUATRKzwJvshZ9O8FW9O8V6em
+	p31iR1Io7bl8oOCeTNJn6yAvx0IX0AezdDE+Es4xOVlPrVWbczIMJO59IxEuQieufXlbUh
+	NfRlNSbZcfE3YWkd/HL3olaukYcNqFk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZPr6uIZS;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGZH6yji;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783951190;
-	b=tTsVR79O3ntlz498fg+abBXzt2pFQtZli9HQvx5rM1EdR1c+a5jDiMbhBqwJo83n/nRVqg
-	JHTOh6oYBsXjmAxJIXBNiZZQiSLL5EtDhTQjqBeveOtAk5bc1h18s9EgW1rcyeCh16NkKk
-	xKQPBChnZr8vfH4WRJVtFnksnEJwaXQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB7A01DB5;
-	Mon, 13 Jul 2026 06:59:45 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B08443F7B4;
-	Mon, 13 Jul 2026 06:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783951189; bh=YqnJQyc9CrzYpyp6gWjknvIiJBuEo4b4nmLN5r/zhR4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPr6uIZSUfuQyR/dBUHjcIk7LcANOKrIDpUnnXvitbMXbT2PO3nSzM8sPM+AmgFSh
-	 oEYY6m6leU6Z90DVlRyAPnZWbTAQdvt43qG1RNc/JG10d4j0cTl4zhpHBmeYz/DeiC
-	 gY5pxSreFEjqd85ky2RlKPv4w2j6RM2bSTCQi2Ho=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com,
-	linux-csky@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org
-Cc: david@kernel.org,
-	linux@armlinux.org.uk,
-	akpm@linux-foundation.org,
-	ankur.a.arora@oracle.com,
-	rppt@kernel.org,
-	linmag7@gmail.com,
-	chleroy@kernel.org,
-	klarasmodin@gmail.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	kas@kernel.org,
-	zhangtianyang@loongson.cn,
-	wangyuli@aosc.io,
-	tsbogend@alpha.franken.de,
-	ljs@kernel.org,
-	jgg@ziepe.ca,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	arnd@arndb.de,
-	ryan.roberts@arm.com,
-	pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com,
-	baolin.wang@linux.alibaba.com,
-	tj@kernel.org,
-	kevin.brodsky@arm.com,
-	anup@brainfault.org,
-	atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	hpa@zytor.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	anshuman.khandual@arm.com,
-	yang@os.amperecomputing.com,
-	chaitanyas.prakash@arm.com,
-	ardb@kernel.org,
-	guoren@kernel.org,
-	yang.li85200@gmail.com,
-	viro@zeniv.linux.org.uk,
-	dinguyen@kernel.org,
-	schuster.simon@siemens-energy.com,
-	wangruikang@iscas.ac.cn,
-	junhui.liu@pigmoral.tech,
-	muchun.song@linux.dev,
-	vishal.moola@gmail.com,
-	namcao@linutronix.de,
-	pavel@kernel.org,
-	djbw@kernel.org,
-	yu-cheng.yu@intel.com,
-	baolu.lu@linux.intel.com,
-	Jonathan.Cameron@huawei.com,
-	coxu@redhat.com,
-	andreas@gaisler.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	geert@linux-m68k.org,
-	shorne@gmail.com,
-	jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [RFC PATCH 16/34] nios2: mm: use proper set_pXd() for generic compile-time folded patable in vmalloc_fault path
-Date: Mon, 13 Jul 2026 14:55:55 +0100
-Message-ID: <20260713135614.1618183-17-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260713135614.1618183-1-yeoreum.yun@arm.com>
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+	t=1783960099;
+	b=uHii/OmXG/zSqM3veWLNanW9M0uTXO31X7wMu48DaMoSn38DboAqRYPk4Y0KeD/0rOhkBW
+	LD8ThazR77jHyRJYzXb6On1v7GmwCEl9MhtM3qNERFUPQCjb8985RqVQNMXMqxhwJej0gj
+	pmjdYjlPFvDniUULhJYuRkhZFcyb+kE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D03A417C2;
+	Mon, 13 Jul 2026 16:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61AA1F000E9;
+	Mon, 13 Jul 2026 16:28:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783960098;
+	bh=Bzru6MD6tMP5Zrs5sR9HSGqg0+r+/7ONX3ynlP+FaEw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JGZH6yjiLr8UV0qa+IbknDrUCBr5K3XXUxhsUmjRRleb9MIQxzD0KZZ0kK6qCvwLB
+	 g/+YMq6rxwFrLH0O4wCPZqqoOkBTCOOv6/i+PawUBS2vRLTfTfIWQM5gZxXEWDhF0y
+	 Xk7JQ3ghv/q4pekTY2PAz1ULG6bF2rXKnm5A3ZDbVSkOUSiO7oGKHHvPfea+mDcbEn
+	 IfbxP/1y01/1i+IFnbvG3lDOQxkFw+KDQHMkH1azy3VRCjMNEf/AdfwKQlRJI6Wcme
+	 z8FYgnZbFQJQ3n9IXyUBjyHtd2q6D4JdFX/k9+As3n109jNabREf3ofTHjXLkfdM5n
+	 tKs11qf1UugcA==
+Message-ID: <34af7126-0a19-4da7-a3dc-4e6e0ae01ca7@kernel.org>
+Date: Tue, 14 Jul 2026 01:28:09 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C7C33A0003
-X-Stat-Signature: kh7z8iq5ahwa7jdunh3fpd655uc1pit9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab/for-next-fixes v3 3/4] lib/alloc_tag: introduce
+ mem_alloc_profiling_permanently_disabled()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org>
+ <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
+ <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------yM11ege9wS0qxduGjNyxQyUV"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 71E5140010
+X-Stat-Signature: hw4rhdn8qc61qf9kaqkwpzkytiq5inct
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783951190-584798
-X-HE-Meta: U2FsdGVkX18u/DqYkdwXbWa0Zowck9Wm6ZcAtrtj44ApZrSdrUMOLlMv+XjHqAumAzfFmTKtLCIoZEB42ZaZCVeueA58s45zi/tg0IeFYYbr+D6OLugRtUYdTZ5+t62k3pskBmkv++eP+2ZCFT0vQz4ChFb1nLjCLh1mrw5DlNHjkdjlks9L20vhWg0gMtjcV/WyJPK6S7c1ET7liHKV+ZcDYtsZ2HJsF6zSwUweBkJeQTbL2gKV+GlyDCQKGIl3D4e2tfw51gWzc/C9E+0FaYwK+Zehn+4/e8FA5u+Q/VqYTl5JsFrDShYjPcTGJmiq+YoiwE1dKA+DZGXXWdqY2OUX4puluEP2JPBsDZYlpRc+H3CNuEYhJe8AfPob8KRnUIuEXptp/1PQh8eEgRo5tGn8qbJ54Sb6OkpKvZ8KnRjNIXNdPU/khDCYjdfXyXI31SR9a+y4RkTJn6jmPyiylJcGFc4ge2MUeTsiDPT+HJt6H/DnqRK5qA9/0NxZ6QBjf9meVnW04kPIE6bzb5nT1yIKZ3ubU0C9GUl2KWUMtFg2Ot2InkvSvcPbuwsimkIWsJlSxkhRpYGp6/AiPqvY+sKzRGa2TgPs6yEPnMrWma4q9ctSPdCMGF1QMriiDUPcaMCXVpA6kJw/R3KjJfMUiqlRDNNkGj9gtWEaT/7sEEs2YI+YtXO4FujK4DqYeZcj+o1Zkw/nZtd2dbL3sM60yEj0MrlQgEkbUn+5d/G55U4dZOGf3esFC0IpqZ4xwyp83Akul96U4WX1xkZDxtxQn1M2W/mwCMZuPRRmzIAN9iGG5c6IWEySX79zIj1JykN7DwU8L+rR8qrsL8yPAAGoRof2VrMDA99TJHAPXNaM+6kFfvjIAosyFGIN/6Pn1fa6/Si7qLIrtX/jJGHdypVGNBkHKSFGuKr+cL7Eu+RKpIniK/PYlUFZ85pL9ElT3ahW1RIquyngjIBw/6W1wZr
- GPKPMxY2
- p+WvMXKIUP8C5rGAF7+pA74f8UEr0jQeYJnJf/eHC+7bGFikl9YWiilIaSAdOEEljPAUtKDEcTH1tISuSEhE3JHbcGuxugQuhkgSkHQd7V9NNT1W/KLt7Yrond1pII+tb+4JrloG7up0r1aKOT7o5y3LECxa7SbdMyxQpuXW3lTJgSOfQO1znKoZEuEIErzFBtEswnAEFmVX/JcH3Uok8ObogX5301+o1JhDtrbBkkvhezBq/iUA2iJ/3tNafda8wvh7sYwmxo6RyeMHeRp0XcXOb4wfO2bI18l7HKtmmkiucPtQnDWrM0OcOoFrF/brqPy2dZZb4xeeXC/zCzzqV5XPmU+ogHpBAi7gaYpnViHVoXvc=
+X-HE-Tag: 1783960099-838027
+X-HE-Meta: U2FsdGVkX1/AneRUKvrZEUUv9QDvaGItiinAkLVq80yrgIYTNCiExcqiipLy22i5wnGPFeTyaSaZW9Rj+fTCHqi4hsWloyMFCEUSzLbWHxdAny9M86LEF8PYceQ1JO8WM0/Kn0LlrY9q1FSNCJmfqGQsKnYoh858D0EVF68+dUPV4H+TdS9Aly9UAxAxBnG5JoYsqP8x81kRRQvjbUXKw51lAlK4naBnFETrCJmwnUKhqK7FBeJDm9ADIOACjIT5iHOplkl99Ef1GhssjA4WLVIx7q0ifvb9cbD6nvVNEtyE8fzp2GKH9o3dR1Oj4jZI5gv0RqghJeKBivdXA0ITrJ8wS7qzHh3hJ4SOaPsgoSkRzOO7ySIUo0WraHr1RckmocVFfzXPrk4UNJdX9LS2BNNXw3aHeSDqoYzJJk2BLO8+F/kkII2yKT5bXjI4MbKDNwmSX5OuZGoDfF3aW4GgWi3qD7VU04ap5Byu+hwTklYmAj4sThlCjd1gX/0gXcEx5i+Qmm54ATQitIfugXpJPESoOiOdB8n5QEe2tZrHeyoEfxjzZyn83lwiZFh8sx0phIZf6V2dSS0Ilx/vT/6ariIguqNPkcfhXYD3vydi8toNXibxgFx1etQpl1UMSlpYKmA0Hkrt++PNkjgKzZ3GjZkNdRIT8prba3BAYhMQi6gSsUMXx27KO47D6BXt4IoarhWYmeED8KyoZVOIqifVxGaXUoClcarR8pCe2+PZVBy/cA//38sOLYF6De1BXmm5gCmhF0C/ik/xpzpVBu+zEPVjFc+fNDRJbjdNqdHJXrC8OaIzXGNrEorHJRF46d2sS8KK+M81ZLPhfC8C1EvzUM5+OU1o8TnbeJcDZvlip80MzOyPhaErtdSO/mMyI3LE/IWLoh2Tdha1C9YW0Y/WQ/A0nEGvQGwViPuA+s1v6H0gRWpx84a3z3ehs8wB3cF7AGYlYC4xKFwdSNCsH/6
+ h9ypOUZM
+ mXeItb2heYpCaG29miFEt8haWhYuOK1YmUZFJx7bY0ceYt3sNDrk/NimlTFknIRvDNq1uSNiyL2soINuNa8zjVSiat818CYqAgf4vBJzJX6xXZcygdRjNgD/faP07kD6kJ15o4aVMzgAqAvaQVKjZuaG1Zk3oRIKlV8uC3zbQcb4FscXmDbDKwcEGOWPnzpwdHAN9ArxAa7fJMtIxp20i/1XZgXXPsIhM0zwSTHceyaEkVCGPH6L3uEyWD787evTD9HwXDXxcjHUa0MUpGMDmjlb+LFrjk8aYvCLYrcUl54z5mEDxDfXJU5ou9oj3qrCxueqH2CSYQ+ysxVYmB2fJkf5FG67njzwK3pyRECxzd2xGYlFCuaO17WsLlFcf4DgA6nEqP7wrnKf2VDDtqtxjtYol1jDo9+vk9sASso117BVh0Np1+JTCMPRBmr6tNn07XZWCZk+cv6/emLH4stp8ONS2JslTi6XF52xAuaVv3sB6DDUiFgH1hVdDRpH+Km4DNw12zeJEQHZNvN/ECcCIzwfjgoB4uyfqaZreIQSLh99lq6Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,74 +104,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We want to rework how set_pXd() behaves for generic compile-time folded
-page tables by disallowing its use and triggering a compile-time error
-when it is used improperly, ensuring that the actual first-level set_pXd()
-function is used instead.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------yM11ege9wS0qxduGjNyxQyUV
+Content-Type: multipart/mixed; boundary="------------QPtYmvYQljrwPUH3mcfP0W4m";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <34af7126-0a19-4da7-a3dc-4e6e0ae01ca7@kernel.org>
+Subject: Re: [PATCH slab/for-next-fixes v3 3/4] lib/alloc_tag: introduce
+ mem_alloc_profiling_permanently_disabled()
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org>
+ <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
+ <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org>
+In-Reply-To: <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org>
 
-Since nios2's PGTABLE_LEVELS is 2 always, usage set_pmd() instead of
-set_pgd() to handle vmalloc_fault case.
+--------------QPtYmvYQljrwPUH3mcfP0W4m
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-There should be no functional change.
 
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- arch/nios2/mm/fault.c | 36 ++++++++++++------------------------
- 1 file changed, 12 insertions(+), 24 deletions(-)
 
-diff --git a/arch/nios2/mm/fault.c b/arch/nios2/mm/fault.c
-index e3fa9c15181df..f67d599115e9e 100644
---- a/arch/nios2/mm/fault.c
-+++ b/arch/nios2/mm/fault.c
-@@ -227,35 +227,23 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long cause,
- 		 * an interrupt in the middle of a task switch..
- 		 */
- 		int offset = pgd_index(address);
--		pgd_t *pgd, *pgd_k;
--		p4d_t *p4d, *p4d_k;
--		pud_t *pud, *pud_k;
--		pmd_t *pmd, *pmd_k;
--		pte_t *pte_k;
- 
--		pgd = pgd_current + offset;
--		pgd_k = init_mm.pgd + offset;
-+		BUILD_BUG_ON(CONFIG_PGTABLE_LEVELS != 2);
- 
--		if (!pgd_present(*pgd_k))
--			goto no_context;
--		set_pgd(pgd, *pgd_k);
-+		pmd_t *pmdp, *pmdp_k, pmd_k;
-+		pte_t *ptep_k;
- 
--		p4d = p4d_offset(pgd, address);
--		p4d_k = p4d_offset(pgd_k, address);
--		if (!p4d_present(*p4d_k))
--			goto no_context;
--		pud = pud_offset(p4d, address);
--		pud_k = pud_offset(p4d_k, address);
--		if (!pud_present(*pud_k))
--			goto no_context;
--		pmd = pmd_offset(pud, address);
--		pmd_k = pmd_offset(pud_k, address);
--		if (!pmd_present(*pmd_k))
-+		pmdp = (pmd_t *)(pgd_current + offset);
-+		pmdp_k = (pmd_t *)(init_mm.pgd + offset);
-+		pmd_k = *pmdp_k;
-+
-+		if (!pmd_present(pmd_k))
- 			goto no_context;
--		set_pmd(pmd, *pmd_k);
- 
--		pte_k = pte_offset_kernel(pmd_k, address);
--		if (!pte_present(*pte_k))
-+		set_pmd(pmdp, pmd_k);
-+
-+		ptep_k = pte_offset_kernel(pmdp_k, address);
-+		if (!pte_present(*ptep_k))
- 			goto no_context;
- 
- 		flush_tlb_kernel_page(address);
--- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+On 7/14/26 1:15 AM, Vlastimil Babka (SUSE) wrote:
+> On 7/13/26 17:43, Suren Baghdasaryan wrote:
+>> On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@kern=
+el.org> wrote:
+>>>
+>>> mem_alloc_profiling_enabled() tells whether memalloc profiling is
+>>> currently enabled. However, even when this function returns false,
+>>> it can be enabled later.
+>>>
+>>> However, this is not enough. Some optimizations can be applied only w=
+hen
+>>> memalloc profiling is permanently disabled. For example, to skip the
+>>> creation of KMALLOC_NO_OBJ_EXT caches at boot time, mem_profiling mus=
+t
+>>> be set to "never", "0" w/ debugging on, or have been shutdown so that=
 
+>>> it can no longer be enabled.
+>>>
+>>> Introduce mem_alloc_profiling_permanently_disabled() for this purpose=
+=2E
+>>
+>> nit: I would call it mem_alloc_profiling_supported() but this name wou=
+ld do.
+>=20
+> I wouldn't like that name, because _supported to me sounds like those
+> CONFIG_ARCH_SUPPORTS... things and not something that was just disabled=
+=2E
+
+Agreed!
+
+Actually, last year I wasn't sure what "_support" in
+mem_profiling_support means and had to look at the code while fixing a
+bug [1].
+
+This year I forgot what it meant and had to look at the code again :)
+
+> I suggested mem_alloc_profiling_unavailable(), but it's not ideal eithe=
+r,
+
+Hehe, in terms of 'the meaning is obvious without reading the code',
+it's not very straightforward...
+
+> naming is hard.
+
+Agreed!
+
+[1]
+https://lore.kernel.org/linux-mm/20250624072513.84219-1-harry.yoo@oracle.=
+com
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------QPtYmvYQljrwPUH3mcfP0W4m--
+
+--------------yM11ege9wS0qxduGjNyxQyUV
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalUSGgAKCRCGXBN6rc5S
+1ixCAP9FE8TE8I5tHLN3kWxg6Nty1cqIAwla2PwkZKSDiqRyUgD/Yf2lKeJObRfT
+RQjKVDRu4qpO1fv4/JCjlt89DtQdCwA=
+=jIHI
+-----END PGP SIGNATURE-----
+
+--------------yM11ege9wS0qxduGjNyxQyUV--
 
