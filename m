@@ -4,93 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E7F4C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77316C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 08:07:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72A376B0005; Mon, 13 Jul 2026 03:52:43 -0400 (EDT)
+	id 527326B0005; Mon, 13 Jul 2026 04:07:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7014C6B008A; Mon, 13 Jul 2026 03:52:43 -0400 (EDT)
+	id 4D86A6B0088; Mon, 13 Jul 2026 04:07:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F06E6B008C; Mon, 13 Jul 2026 03:52:43 -0400 (EDT)
+	id 3C6E16B008A; Mon, 13 Jul 2026 04:07:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DD936B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:52:43 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC552140307
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:52:41 +0000 (UTC)
-X-FDA: 84982986522.30.E5E25C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0688F120005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:52:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KjoePid7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 192416B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:07:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9ACA1A0A94
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:07:29 +0000 (UTC)
+X-FDA: 84983023818.06.483AF7A
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1276318000A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:07:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=qsxJhDXK;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=1Ils9B7r;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783929160;
+	s=arc-20220608; t=1783930048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JG3wfdlgkpMM8tt+kWWFpTDhSu/cA7QAayvWlQD2jTA=;
-	b=oTZLlXjNNLX3bQyHE4FVUl0RPP3drygtOxLrjKXQUTQ+gYen3aN1KUnslfJRTYQeEEYa5T
-	UENgxjSHgeNx9RhJLMGO4z7jyJ42+aDKQ4cb4Eu7yfwFuXF4kP59MNzKuazCMWH5dmdb7e
-	C/OxIuf1Gcb0Bu3kxTj9eBxBfmLgy4I=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+Q84cQF/9BVMsiNBoLtWw7XAwZ26UdZlfjYA2oOWNSc=;
+	b=zvnwg8WYuhi9Nwi88X+l0R/M8WiEvcV1Lbt5Ln2DsTXTsU1xj5qQG2P2UUzjqsY94NXN1X
+	uoBiIKE+S2DGDTWqNm0B7Pufh2FL724SKbXVo6VNaHKSvjTfHCI+hRxwKHK6iUS/jdY/JH
+	G5ZMMVXuS4Rml+DWF1POrC2XL8gEJao=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KjoePid7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=qsxJhDXK;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=1Ils9B7r;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783929160;
-	b=47PelRSR1AItpHNKyUwbCzPS6u5OGbt+Ocilqa4o+4zemeDCJ+qPVInoP9tC/qwZLHpsNg
-	e9Lqib6DLN7IUPh1Mvk/UlM0nVO04BHJ6kH+tdwiyUe+PryuQDB0k5W+JBuSHm4zHhxByg
-	179YFF8BAcB6tFinempcVYaU3856lwU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D330640308;
-	Mon, 13 Jul 2026 07:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815E61F000E9;
-	Mon, 13 Jul 2026 07:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783929158;
-	bh=JG3wfdlgkpMM8tt+kWWFpTDhSu/cA7QAayvWlQD2jTA=;
-	h=From:Date:Subject:To:Cc;
-	b=KjoePid7SP2n4JqJFiVvkr4H36woTeOhh8kIVatO6/xv9frgAc82eUYEkKRqi1nDX
-	 ccMp81BMtkGx3pGKkCVBPHd1a2ZsKhdckbWxNzbn2mOR94fJhuLTpYjB1A6OXOYH0y
-	 FurC9mjUd+VPWSzHPe8Tgl8E65Q3m2zxlO2f1oanVOCRL7TOM/t1BKe7Qk0jPaXRpB
-	 HORtQSUDGJRqmDdHdGt42GOKeqoMdXj0zQDx0dbSkCv2goR5uaM02RRBGnicEjIkiQ
-	 IF/1UFFA9eSnBTCM3lAYJWYvsOIjfPijxzrF7/mjtQIJ+IBMvowynidGLhg+eHUJOp
-	 Mkinh9rrbszXQ==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 13 Jul 2026 09:52:30 +0200
-Subject: [PATCH slab/for-next v2] mm/slab: simplify freeing remote objects
- in free_to_pcs_bulk()
+	t=1783930048;
+	b=4KTZOW+NEJE+9k7gak6M8kkgzmc7J8XEaxd+VWfXC8zI05nlqVTQ3PS9FycLyOeDN9Mq1g
+	cecHxv23uouoM5CP8GjF/ML8KZnJaPSetoK7Z9dKItwRuhlKzTSGGAm66WRHCcBg/3KtpM
+	DLfww41Wh/7QY4/2bYyW4G7ta/6sjic=
+Date: Mon, 13 Jul 2026 10:07:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783930046;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Q84cQF/9BVMsiNBoLtWw7XAwZ26UdZlfjYA2oOWNSc=;
+	b=qsxJhDXKQ4hpymg/q+SxwgwbmubBtDpjqi0c2KuDavullwomp1Cy7Ytcpwn+N7UAvuZun8
+	3VVx1YCRaBvQ4mSUfKB5jAzS7/E2hJhZGyOL7F6mBE2IeIyDGKELvfdbabJn49jqSEOBDR
+	erZut1M4VC3zO2jeI9OsX9EurX2Ri51l5PtcepAqvUJG5IY6DvyvZ40lZBQAcuEHvmtzAq
+	gyR44JwB2PWdX7bWdYD8KOTPplfZZpuRZXXGQlT4IP9gnuOk26RdhhqtjeYlu7ansQLY01
+	senVn+OVhcfNe/lSupAp/rgE7UX937RSsa7nWQTn92v0Y312JDrVSaX5xJOOxA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783930046;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Q84cQF/9BVMsiNBoLtWw7XAwZ26UdZlfjYA2oOWNSc=;
+	b=1Ils9B7rKdgiHAW0BuuWKJgHBjbLhi0i/wv+n2YJ575Xl79HCES+SvSQw82t3EI60Pn84l
+	SbZHVtB0fgwG37Aw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>,
+	Marco Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Li RongQing <lirongqing@baidu.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Douglas Anderson <dianders@chromium.org>,
+	Gary Guo <gary@garyguo.net>, Christian Brauner <brauner@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Masahiro Yamada <masahiroy@kernel.org>, Coiby Xu <coxu@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v4 0/4] Introduce Per-CPU Work helpers (was QPW)
+Message-ID: <20260713080723.XOTiibfG@linutronix.de>
+References: <20260519012754.240804-1-leobras.c@gmail.com>
+ <20260520130903.Ebsd4aUa@linutronix.de>
+ <alP58SgTc2_8OFPc@WindFlash>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-bulk_free_remote-v2-1-24ee24771c2f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAD2ZVGoC/3WOyw6CMBREf4XctVVawyOu/A9DSEtvoYKtuS0EQ
- /h3AdcuJ5NzZhYISBYD3JIFCCcbrHdbEKcEmk66FpnVWwaRijwteMrUOPS1IcSa8OUjssIozM1
- VKpNp2LA3obHzoXxAGKS6GE/M4Ryh+tVhVE9s4q7dgc6G6OlzXJj4gf1fmzjjTJZFqXPdZEJn9
- x7J4XD21EK1rusXQm/HgdIAAAA=
-X-Change-ID: 20260710-bulk_free_remote-7fbe6f3abf5d
-To: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, Hao Li <hao.li@linux.dev>, 
- Shengming Hu <hu.shengming@zte.com.cn>, Christoph Lameter <cl@gentwo.org>, 
- David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <alP58SgTc2_8OFPc@WindFlash>
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0688F120005
-X-Stat-Signature: t3ewrh87imph43s1xq33wdiwgi8i57gy
+X-Rspamd-Queue-Id: 1276318000A
+X-Stat-Signature: zooyhh3shr8fnmajt8qbnwgpn178m3sc
 X-Rspam-User: 
-X-HE-Tag: 1783929159-632737
-X-HE-Meta: U2FsdGVkX1+u61vCJIMnGaPytpJT9DnRkgxctNzDv9LxhYOaKfQZBS7Hi368+ZbTCLidwrSi+3njwfUppBTk1gIaIFH6b7O4NI0JU3FB+shdpuZib5AX3GHXhVpLQmAXqTgZYfo9kDlaVEikCq4ZFO5vP9qCtk9YHcKN6msg2AqYYznhzb745jlj5NZTxu8JM3VndTr6+9hHULY6+Wubc1TgqyYvjBjLVFHcjQuaDIe/58hAjbxkJX9hxHEls6LUm85hP+uOHJdwxs9fFK5Wdx3WEQmBPN9K9ShdobNauKwWCCGZ5g/WE8EuURDoVBa8cn0HvPlqIeV+vKLcP7evrZrhkApSoaguHhBvfGgZ/PA2WkVSgmwSq4TC/Kh5E5sNabkDNfaekqLSnL5LL3cpkh6DtMKFL0Au8GHrmWDeEeKYZuS/9Pz/2KSDSQpN5ZT9pShIkWRfZz+9mAEnbuZHd9o0Jsfe4eGOv713A+UU3/ME1OEj1k6bE13Y3/2m5C/UeeWJVxwDRxW6gJ5LLlc4U85z9+/w6z04zNQbyzr/2yxEgXKwkyTrTAQgUQBYyWVovjst800oRQYJRUqWmfpFbtUOKL6SXuLDjCqi9pHNKoIEZ9/CvNRzT+oW2GGdmUNi+x5WVErqQg+UjTu7hxztAD6cIDsPIX5OaV7Y180P+XWw9wNRe+JsY4KvynQ49cEou+bBZcHE7ksPeDLeGC1g8WCYp03bjx4GKNsmKsUiFbJg95oQmrs5IiujmFhUTHZUJ1apqHCExrfB6xvrmGMyMVAXsGHzMBubOg7Uv/OYN8uuTlnCdzMTlqmazAefg+2bYYsnLBqXKQ+NeDSJ2NQ/7/QakKAE1KvysbQf9mFz64IEwmivN8+cGrm7SaCmOWh6zBS2x4YT5RiAc9CM2CfFCX4rXvGTxQD7CW2+xkGfTzlpm8D7DwSW9e1PIGjxb2KjTh8Blj+LFc8BzWO/iEz
- wve1osFa
- ks9QQdDo/TRkiGvZgi0criZYOPpnOUF9R1GW2urk8HHoPrRLgyQwgC+J+SiYGjo0yJ8rRbMwYO7pxg0wo+Q+KTD7YQFunODQNCmWTrLcQffnZrM+94vseTGC1YZ9wqIfOkiky0Dg8ZEgkjJvPCGSWsaqzqzQPSernTaeiizGMHxLNgdpXxTBFT+zh6tesi40foYOR4SGW41D9+uZj4L+YT78qUjbygmM8OoCUMf80ln3HiUcWexa4Xeop/b3hQJiUP7m51fKAOGgBzV8fSwnvhiljrhjyyJAQtLm7XaTo+4yIScfM1vtEIyq1EY8rbahf+bd8Wv7ceipx/p7PCaKXo+d8zuIAEvtlMdQ2LNUcFVqZNN6qbk+EYm0LNJIYkXLG2wdDJaKFt+8A9tra3uUrvilBWld2cwpKO1N3/HXFT5W948VJDAn8DL/qTw==
+X-HE-Tag: 1783930047-829601
+X-HE-Meta: U2FsdGVkX18V+oXovAYEdQUCNmiZezIKtGyXl7Le9LBuQfWUN/eMP2ms58cRH0dNwT4hMjRJzfwH2cy8HtRGbe2EB0N84AcmmciccaMhlRyZ00edAKKN3+EBjbKcCTz2/MAxYZ9GEpT+9dXVCr7EeZNMbzweWdVPYmSsvY0txDa9tU7U3D3Jo4UT2/dZHiJCzH/zlVUa9NpCzfDsM5nZADGERlaqWig49T2In4TXDNftLZzJhQ320HY5ZR7+6N6neW/8k4lBwqwRW4Q7ySsfwr9i+EIOabKXU0TU8FUJ6JjB57XTSd8bJf9vnv5HV8U4g4Z3d/Rzhrp+yqx3eIHb4jAlcUXRGIR/u9GPrNr8wuKw0+Pn3W4pl9tKuFCiwLYA/XL+so45LtqBn5CYZ1c+tpMuEUyOqWUq8eTacP3Ys/sfQtSNEJtntHSO58e0zkLXIvShOQnppJjgnEhG+vTlViOoysct+92jOO8L7vJSXe0N8t4MQX0q/+f/BR/UEbzJvk7g1C9aa8kPddCcV+zXaNe6nnxQWHUK3VmYeLNPVBT5Uwif98aMU8wYgVySoMyWAGDGWtgHL27LCZg8628Vw7A1SlKDSyhspUxeoBa0RU9GUnu9evekx0kGaYnCcV3x+rjCU/34PzlY19llTr6R6tUHCHgtf+WlyulgZioRIPN4CsycTOXnejieD6nI9/CFrYKXpHJw8dGKax9qh1IbghqDyOkZG6N+EI7ZE95Z18TpoKg6g7WvypHt/vGjtR8PQ68qC9h7QXwp7Ui1FTQoVuEAY4MARlBC/rLLTnmLB0fjTDJ9w1DDD7LsWqtFeCR+LYE6ofBivbBJEDex88DAvqPMUlEmh1c++NrAQH1Q4HJPn6kuGmZCPorA/QACTZYedWkBfVKn2oJPzMP0jpAkLCzU4x4d4q24+lmMNy1DWdKj3TO4foFWUvl4WUqMvf7Mt7iy4nuRy5NVna0cuXq
+ d/Na3M0e
+ gNxAZT0KfTv8DQk3liENmTy4Q8TKSvLVL/xs6rEokvI+V7PlOqppoi6gIHC23EVKat7fada/pzCiB24MmRLV6oQm26q76SHE6FhIqTa4jWuv3YhO2fRzFSEH5x1H3NkdNOEEGEhPm2g37VDS5NBfN7aBSZkWgYf43zbuzX40uP5QaUu6QFghVyiSmBk+0P7gqg97ucaUeFhY83tQgjOOg0jSNxpnkB/9Wq9HqTq8JUn4qQxPAvORTbRlyaRwDlbr3XXKvy30fjKUN27g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,101 +144,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We have been moving remote objects to an on-stack array and flushing it
-when full. Instead, we can swap them towards the beginning of the
-supplied array and bulk-free it just once.
+On 2026-07-12 17:32:49 [-0300], Leonardo Bras wrote:
+> > > The idea:
+> > > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+> 
+> Hi Sebastian, thank you for reviewing!
+> (Sorry for the delay)
+> 
+> > It does not become a _spin_lock because it does not spin. It sleeps.
+> 
+> Right, it's a per-cpu mutex. 
+> My point is that it's a full lock, and we could use it instead of doing the 
+> whole scheduling thing, since we are already paying the 'atomic overhead' 
+> to get the lock here.
 
-Also add a comment to explain the rationale of freeing remote objects
-last, because now it would appear to be simpler to free them first.
+The whole lock is a spinlock_t. There is also raw_spinlock_t and
+bit_spin_lock(). All three are considered spinlocks.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Shengming Hu <hu.shengming@zte.com.cn>
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Hao Li <hao.li@linux.dev>
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
-Here's v2 with updated comment, will add to slab/for-next right away.
-Thanks all!
+> > > In this case, instead of scheduling work on a remote cpu, it should
+> > > be safe to grab that remote cpu's per-cpu spinlock and run the required
+> > > work locally. That major cost, which is un/locking in every local function,
+> > > already happens in PREEMPT_RT.
+> > 
+> > We did have this before but only in the RT tree. It was a bit messy from
+> > the naming because it started with local_ but then it was a remote CPU.
+> 
+> Had the same naming issue here. This idea was initially a expansion to 
+> local_lock() mechanism, about the same way you were planning in the past.
+> 
+> > The main issue was the different code path which led to a few deadlocks
+> > back then.
+> > By the time local_lock_t went upstream, the cross-CPU locking was
+> > removed. As far as I remember, the cross-CPU user which did schedule
+> > work on a remote CPU and annoyed NOHZ folks were replaced.
+> 
+> I understand this could be a big issue if used in a generic way.
+> 
+> What I am proposing here a mechanism that standardizes those 
+> local_lock()+IPI strategies based on how they are done today, so we are 
+> only explected to get 'remote-cpu' pwlocks in the 'IPI replacement' 
+> operations.
+> 
+> The idea is pwlock_local* in every local function, and pwlock*(,cpu) in 
+> operations that can be remote. 
+> 
+> Maybe being used in a more constrained way, it has less chance of being an 
+> issue. Also, the whole idea is to improve CPU isolation numbers by 
+> reducing IPIs, so maybe NOHZ people will be happier with that :)
 
-One more cleanup I realized it's possible when processing feedback to
-the previous one [1]
+I get that part. The local_lock_t part is cheap on !RT and becomes a
+full lock on RT. While the lock details change the overall expectation
+remain the same. With this change it is possible to acquire the lock
+cross-CPU but this depends on the config/ setup. This might not be easy
+in terms of testing and maintenance.
+The more potential users you have, the better it might become in terms
+of a selling argument. If you have just (say) two users it might be
+simpler to address just those.
 
-[1] https://lore.kernel.org/all/20260707-slab-simplify-bulk-pcs-v1-1-4850dbe0d904@kernel.org/
----
-Changes in v2:
-- Add comment about the partitioning, based on Shengming's suggestion.
-- Add R-b tags, thanks!
-- Link to v1: https://patch.msgid.link/20260710-bulk_free_remote-v1-1-a878d6dc52d5@kernel.org
----
- mm/slub.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+> Thanks again!
+> Leo
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 22045dc919ef..b650c1729437 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6255,9 +6255,17 @@ static unsigned int __free_to_pcs_batch(struct kmem_cache *s, size_t size, void
- static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- {
- 	bool init = slab_want_init_on_free(s);
--	void *remote_objects[PCS_BATCH_MAX];
-+	void **remote_objects = p;
- 	unsigned int remote_nr = 0;
- 
-+	/*
-+	 * Process the free hooks and separate out remote objects by
-+	 * partitioning the 'p' array in place:
-+	 *
-+	 * [0, remote_nr) - processed remote objects
-+	 * [remote_nr, i) - processed local objects
-+	 * [i, size)      - unprocessed objects
-+	 */
- 	for (unsigned int i = 0; i < size;) {
- 		struct slab *slab = virt_to_slab(p[i]);
- 
-@@ -6270,19 +6278,17 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		}
- 
- 		if (unlikely(!can_free_to_pcs(slab))) {
--			remote_objects[remote_nr] = p[i];
--			p[i] = p[--size];
--			if (++remote_nr >= PCS_BATCH_MAX) {
--				__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
--				stat_add(s, FREE_SLOWPATH, remote_nr);
--				remote_nr = 0;
--			}
--			continue;
-+			if (i != remote_nr)
-+				swap(remote_objects[remote_nr], p[i]);
-+			remote_nr++;
- 		}
- 
- 		i++;
- 	}
- 
-+	p += remote_nr;
-+	size -= remote_nr;
-+
- 	while (size) {
- 		unsigned int batch_freed = __free_to_pcs_batch(s, size, p);
- 
-@@ -6296,8 +6302,12 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		size -= batch_freed;
- 	}
- 
-+	/*
-+	 * Processing remote objects last decreases the chances of cpu migration
-+	 * while freeing to sheaves and compromising object locality
-+	 */
- 	if (remote_nr) {
--		__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
-+		__kmem_cache_free_bulk(s, remote_nr, remote_objects);
- 		stat_add(s, FREE_SLOWPATH, remote_nr);
- 	}
- }
-
----
-base-commit: e1fa26489025d6deac76d1dbfe2e0720a3ad84b1
-change-id: 20260710-bulk_free_remote-7fbe6f3abf5d
-
+Sebastian
 
