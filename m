@@ -4,137 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85E9CC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E76FAC44501
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 16:21:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9118C6B00D0; Mon, 13 Jul 2026 12:21:23 -0400 (EDT)
+	id D088F6B00D1; Mon, 13 Jul 2026 12:21:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E8B26B00D1; Mon, 13 Jul 2026 12:21:23 -0400 (EDT)
+	id C6AC16B00D2; Mon, 13 Jul 2026 12:21:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FF726B00D2; Mon, 13 Jul 2026 12:21:23 -0400 (EDT)
+	id ABE7E6B00D3; Mon, 13 Jul 2026 12:21:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 52C556B00D0
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:21:23 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D43D8C7AD
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:43:54 +0000 (UTC)
-X-FDA: 84984173988.14.11CEDC1
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 77D3080005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 15:43:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fcBkaZw+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783957432;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 616FF6B00D1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:21:24 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 27BEE1C0F88
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:53:24 +0000 (UTC)
+X-FDA: 84983895528.28.632A8D6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 87F372000A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:53:22 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MyCiIiJ4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783950802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QtnS5j73Md2b+CYCqhf1RAJWb4uYUtGnxE+42jWpObQ=;
-	b=cTqdEPVRwtlZ09UjFOFSzad5onlJNWpTSyoXaFld7CTIUz8VDqHotYBiQj2/5cHk+jTKQQ
-	I8IZ5XuIgM4NK8F0p887XqPXzmHgnzEUSKnIa37y7JSDx+Ti9mpmNmMOatoBf7HIgD9Y/D
-	IPj3b/aRMb3Ldbx5E0OWkg3zDM8905M=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fcBkaZw+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783957432;
-	b=gkV3xoUzKMZLqfyEWSW7qMny+Cylswq1I5SD83y2ok23AjnjRci9fs/ZTS+m3o47IREzvk
-	5QuTF6Wcjuq2ywMg8XIQBdmy5Kmwl4rJzPbEpClJhy31vOGlBIEMVm6PokRfjV6jfXtQYE
-	3BWH8QlAw8tcvuIHQEdo/SW3mWf88Eg=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c01c79467so540501cf.0
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:43:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783957431; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gACnSNLjDMpfiiuyStAFSU6yB0r7dzql/QnIGddmylQlEAKNM8arjGxVk4crKNWHKE
-         0sliwxudxxdz7iDeTUXv5QXP5ZzoOpHR6OwJTEjBheKXnw5sPkz2/kQaY8/RgcAsRlIQ
-         BFwQ1vXWWb84yJsDmIIRVwjk4bo5Uy3gyGgIWx3Bwl3m/zzr5ZUwC7KASXUwTVmJ/U0E
-         JLtFyQm/Fz8YomJLko2VbVLgAnlOWLXa25fIFFOSasJs9b5UbxoDTwapSST5+o/kkEnD
-         Fk1OR/hk1RWMLm70IC6V+RN4n9q2mp+/7/vnpVnGR1RNYDsZv0lmfP6Uuz3WoN1fp4Io
-         0J7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QtnS5j73Md2b+CYCqhf1RAJWb4uYUtGnxE+42jWpObQ=;
-        fh=CTHWJLhoLEJE2B7xEfYYmnQ5jvu3KXcbBAmG5kQQKDI=;
-        b=NTwd18anM7hsxHOUMbLeOl2nqIAxyYMPD6fUBZCnGJidbML8bQCzHh4Pzbc/VY3fXE
-         zZ6M8q3mKdcEgNSJhmMwQ1HR1dNUiUJsnCVHq+2ASc61e9DfHB4TxzX0FhOCyTP+sBQs
-         RB0MCbpRWWD4R5ANK+FhMfVdXSBJjUBTM+idmGxim6jlh+sMJ7+km8EWqvocdpGVX63Q
-         to56EiuHKln7L4iiBkzGdRvzgis3OkQgjR8nlQ0FIq36rZ91JjTC0LFdvT2/ip1wA4Hb
-         lb0d1nETm9jATKhIUALzcW/bDa2HfF16Q+pQIWZbC1IYILY7dVA3wzKr9nEc41ACn/OT
-         jYYg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783957431; x=1784562231; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QtnS5j73Md2b+CYCqhf1RAJWb4uYUtGnxE+42jWpObQ=;
-        b=fcBkaZw+rRA22WOSu5Bk9JC2m3/ZX7Jd2gQCwldxNKKB0DyBwZevXXSiq7rbxWDxWn
-         xflwKaNp+ntb+SavgsdrjD+UMtp6Uhcxd7CjGBGHdtGdiyhaEGtBNxw6U16K3HFmjX06
-         lJjaWbeZZ1/9qegdyeevzswo6Jw0YpzLeev40OUMTzK3UwdpV+9o1HV1KLHCeJVF1wc9
-         IN5ZoOmMbdB+yVhnhwBnM7k5Q7OaNjC/VJQteuQWFawo7Abl1B0GvjvqBQIl/WB6qErU
-         LzRlzff3RiSnPMaCvqMhMSZqVkqFRmX7QN56zjfUimMdH2/czep7eBBNkYZRGAVWCvZp
-         dJXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783957431; x=1784562231;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QtnS5j73Md2b+CYCqhf1RAJWb4uYUtGnxE+42jWpObQ=;
-        b=fQ6WY6fHlUSDHMgX/qG3B4ebCLQBKowRQv0N2sVj09Qv1Ctz1NQKI7xHg7oJj2tvD3
-         csUOr41RXhRLCok+A3YtIZQ18+Fij5gt1p4f5wbPPnAwWaej7IU+UHU/kae1Gui86Of7
-         LTkmGoHr0LqqVbtJeZSug+QPFZ2i53/LyJM/vPtBh1g8/WrujbxRr3w1Llns0YbnZnx4
-         XbD8opdBPIErsMpwadqV4CLyvEKvg+QDlsqDfng4uE/3PnTOaSTUYv9vF3dClHP8F/Io
-         EvRwYevWhMtCFTKdAF9fItTe49q/klQNHJKozmhWKNJDIRTtK78ChdItRNiapF5izcWX
-         Pwfw==
-X-Forwarded-Encrypted: i=1; AHgh+RonSjXznrikXqk7R6gGU3pQE2vNXsle4EGth1qhe8VZ8QDPSoz5CpA0YqvkKSJf8l8LM36ShXYY+w==@kvack.org
-X-Gm-Message-State: AOJu0YwUzZIqsj4IRUxXnIOwCH75O50LQJOLnq/It5BLURhR2HdcDAR8
-	mBAROsFgbF+h1Q7OHK8wxf3PfoaVgpTfMT6N+b6qs2X+OT0exazPloXYul2ZKhScitoTzsoAEwQ
-	I5YRtil0daMu2dxczJ/kkYiNtsCu0RJdhBijxkYuI
-X-Gm-Gg: AfdE7cm/C7fyEfxNUMR859xpNP6owli0taoaH7s7hLdNZ9R+7NdQse7gcgPfOyh6Pt1
-	D/1uSVuLlc4qRKWQFdL/bkHeHV9kX31jCS6+a3IszEIDgdftNEMv1In9id6DYArBLc0Uc6q/x+R
-	2AMue1A3okBneyDRuvH8OiHOoiMX158fuCBMtAu2iE5c50rDNz+mUem0RwQuAmLVHdqnFvig244
-	GcPAGSxxNeqRXZCnEFUM9bKoYZFSfqDCJdAUzk0y8TPBp7S+PSImsLM3o2GeWQA5Fi16ok=
-X-Received: by 2002:ac8:7d03:0:b0:51c:104c:100c with SMTP id
- d75a77b69052e-51d71546a1cmr3911151cf.2.1783957430248; Mon, 13 Jul 2026
- 08:43:50 -0700 (PDT)
+	bh=1JZ+jUbgiNbISG81jCDR/cTHkAMPJnKZyn2UCpJwgV4=;
+	b=Xc+CoSq7swm1MFJQitHMwZKpBZ+uMMex2ANDA+8t2LtZOohTkj9VaPkRjZi7GfGOWrYQXc
+	SOww/E/LRmCBbeTcUV9HtWIJbBEitJXbMlYy4GfD387saS9LsOoDCVKg6fVulsJ7zUddL3
+	uN4xSvd94O4CEKKlz8Zma4wMvnlqJB0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MyCiIiJ4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783950802;
+	b=wD0F2Ppu8MsSVS7EhSdwxmu45Z4EjSOVF0ck79vv2+NcOdT1OvnZoSMHcmJ5pDYkSD5/at
+	XMieIQhcdMC4EesMOaP/jDG3firx0AeOw+l/r00B7Rtz0EZXzSiSW01AhXgzq4GqCisB4c
+	4rCgy5D2fLAMoM97DZAqK7H/jZJbxW4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id ECFD2600D8;
+	Mon, 13 Jul 2026 13:53:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 355461F000E9;
+	Mon, 13 Jul 2026 13:53:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783950801;
+	bh=1JZ+jUbgiNbISG81jCDR/cTHkAMPJnKZyn2UCpJwgV4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=MyCiIiJ4Z9PQMTe3vSTzQZjL3wKH3oq36AhbOGoKljo9Op8Y16arXocVLbzr5h8ss
+	 u/Mp9/VNgcEY1+mLXvifJSjxQ7PlWOTiqsQaWARzohogCB2BMxl52A4LcnmuRENFy9
+	 RnXgdT3fd7JOWjV0MPZI/0g4tCdPS3qaeQ3DuPdcRZIk2nqi6GS0f9GY5Ans2xY/1/
+	 lcD5BVKPLq5vMStTF5bcK9GDjT6+XJYclDUKo6FcZpHlNoBOf3+Bzu+gEV0k/08+PV
+	 KBDTWYDnUOJF2vfuHAczxsTQNf3Nf7UWXNhNLu7fu5RY+K+kdTNQRs8aUJUkVdzojM
+	 7DOEsnr+LAerA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: George Guo <dongtai.guo@linux.dev>
+Cc: Huacai Chen <chenhuacai@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Shuah Khan <shuah@kernel.org>,  George Guo
+ <guodongtai@kylinos.cn>,  WANG Xuerui <kernel@xen0n.name>,  Alexander Graf
+ <graf@amazon.com>,  loongarch@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kselftest@vger.kernel.org,  Kexin Liu
+ <liukexin@kylinos.cn>
+Subject: Re: [PATCH v3 1/3] LoongArch: kexec: add KHO support for FDT-based
+In-Reply-To: <20260601093930.112758-1-dongtai.guo@linux.dev> (George Guo's
+	message of "Mon, 1 Jun 2026 17:39:28 +0800")
+References: <20260601092823.110362-1-dongtai.guo@linux.dev>
+	<20260601093930.112758-1-dongtai.guo@linux.dev>
+Date: Mon, 13 Jul 2026 15:53:17 +0200
+Message-ID: <2vxzjyqzj8s2.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org> <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org>
-In-Reply-To: <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 13 Jul 2026 08:43:39 -0700
-X-Gm-Features: AUfX_mzLEB8NfNv7Xm4uLeWvdWRunvEZ_3v9jckuPa5s8f10ZJE04qNWAFqK6Gw
-Message-ID: <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
-Subject: Re: [PATCH slab/for-next-fixes v3 3/4] lib/alloc_tag: introduce mem_alloc_profiling_permanently_disabled()
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>, 
-	Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 77D3080005
-X-Stat-Signature: fz5weh75i8if8uyhw386nzaqho49ia4o
+Content-Type: text/plain
+X-Stat-Signature: byuqq37pddb91atu3f5fjt3i7yjjg973
+X-Rspamd-Queue-Id: 87F372000A
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783957432-834920
-X-HE-Meta: U2FsdGVkX1+6pGHZYRDX/ZloK95g/d8h5n4dku1zr5e++FokAETrm1A2akryGW/nmCRbKj6lloskMuCwjAw79RZnF2h+osDMuovwmg9cbb+JHYY9265zmxpjY2R3zE+CvJy5k5zhGpliLSpWa8ro2VyDmv/+bGGM1s5V/oPQMtDmzICvh7gj8JnaDUE7rAIQu+n8KWpg8afZ/GPzdwrAuhcuCxlMddCm21aO886naM7gPwxOzTA3P+/50+FOLzmU5Oq/uwPlFaOpW7jIRvOyF1JMlhQWljB+CvsMT7UM1J139rM1e6YRHT2G0qgPqOPDaNS4iTMNmIygMbIzlk0YCvR6KcmIvYyzlBsAT9THoV5Ym54NJv7xACtQfRvm5uDGAzNyObNse5cybtCiz3JEraeBkG+ymy3aP68/4AQkxxTGXfs95SbKKTcYay78dwd6gEBitw9QQVW+xtdZd+cPIcO7ZIuwBaDHvmDtYuXxYv1LhXekfaT05PSR389MrP+lTewbtpSlBes2Qg1mm/++rjVoYSjUHVvXNhfXWRZtgpm9tnFq6hSo16SgdVhIZRM+x1hOWxso3ZiSu3z3G8KUTgF0OteyU6xpVpyDcP6hm/vCu02rXLLC00hfvOTcjWKu0BjEbI9NcDxRSckL3HuWFJg93zJu00cj8lRctFHcuwKlp/K8/ikCl+xoPgHtPRMA2M7CIYmO/PCWBVHiw6Qlb35Vla1Lrnwbvp5tL5Tk6ewaK9xDNc47v9Zk2kAwp6JhWhaN13K4qjgSHgplZN4demnIY0iJxzwOkRd4zMYDkaSxhmqEeEuoJHo7zbD3s6QSs4UfD2SpX45qPx68dt4X6KPr8ic6SdIzC4YRkFbWZt1BnOsxLV95d2fZsCjSt0eHgiFlvMsB5aiowyAVMNSH2xP9FZ35YHR3kO856Iyl+VQbAYvoTjDC8/l2kGScabVTVgYxjZ5qF9rqLDbeyIx
- JsIUwyHY
- cqyyOEvjj28RoiBF0Hb6jCmfsgXgB0r1uWwszUWGgtUirXoZNhLLpWIQCGgVNsSE6ASZ38h0S+BR5bgXdyXiNRe56thgb0HQlPUIO/kTJtjk0UKvA/af2eUWVhTaqOOR/DBS3e8QV+NlExg/4IzLdFzbwC4uiyaIerGmoGNlmX7DUzYgokIQWVkwnc8dEJou5MaLWoevqMji8TDR2y+FpfD/QGfsIylz1Dt7VQekMz96j5ue8QtJAuQgYyYL8L9knKjhmX626+Uq39OzXyAs3zBl2/Bzz0zQbX8IhfGm3GwYMxCmGKPJOBoOf5hJy172zAS3diAabc/A8bEo=
+X-HE-Tag: 1783950802-704618
+X-HE-Meta: U2FsdGVkX19pX1R3PVg8RTs8xshJbB3DEon7+ocAAQsrGWvv8R965CFGDWM+VkvT9LG5aeNBDlXvE9yggB+lKj6ppQ1oEV4Ov1gW9NpSaaf+t1hiBwNuQpmwbjKW8urXTRW26UbhG3n+4IUW4F52xggTTgbcwoLT3elVhnfm+ld7jP+b9lTpNEQGLfxqWn2itBscoD587i9LNf8q54ZpZchNTXi96ppzAl6PL6LwAk86DSbte4uxZYygQ1HQdkricydjXfhBcatvJG6Mg+FuhRRQrrl85+myTc4OJMoHM7j8ic7CSAGLvnTs4YGjy3/FmX/Z+XY03qZtx2sCdZcht2agIeNN6ssso3uzyAdDlOcNNXH9yXWhI3KExeX4Ps9F88Bo8m/LIkAi/nnq7A+ZO8RI+j3J3Bqe7nwqrLHaDaQSv0O5H2Be7HHxQZfKbjImBgxqagmPl6eAlegj4tTpV8ZgjQ1jOk4RoMH/lhL1mLbkhtCdX6+KengGiqRgdB2cH1zKEBFR8vf1f7njGfGXW1VvhSrk39siSRGmEyF5VQwor0tz20gHzxSu+1wTMjPEgN2hJTyGrxfFBcQaC+0Y6Uej9XKuTQyPeTsM50BX1k+gOnvj1c7lAx7g0j6arfTRfQTD8FhrUezPpcxIMn8X0POqgxM8mGQ2IS/2YuGDMm1RrraMmPDHDBp+9tzZHDtamU8PHdDqplVbofElO3qFlrePaNuTdP/eGoOKbt40XTfVkSeJ9nMJuVEsOEm7FG0LGnELUoQ0antpdEMJ1myKi96wN1Sw3T6rVs2kVIPio8CFbqrjX6kgiehaqcLKayy6eSsKtvEsl9Q2uWzwedGIDLgxueyQXtGlYFCPVZ5EwYssQyuxDHyaGBTLuXPa5ydxBdAVzeZ3CWxf1dCXztSKXUhJX0GTKFFtY71O1hQxyLUNE9mQSovnBbvJwX1r0L/BDrTjhXU0y6x5geXEoPI
+ kZQo6JVu
+ L0rK3jfJ90kJVMe/lnwJeSFJGUMn43bftzdcZE/XQuh18tpvwjcOQVy5jWTfrA/mnPfpA5fdPzmwbcOy6MyH9fQqDfHOI/5rVo8BhmaMB0JubWq5dSXDW2gUW6PIxfDV1lnli3zU95B+vfK+G74n1HFsfF2qGqWLD/tct5o4Wfmnlof866W3s9N+ofUOtAc0pRJ1z08orChPIzoVPuALJ6XsuJ5R0goZLaI5VDQzlmwkiGWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,86 +98,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@kernel.or=
-g> wrote:
->
-> mem_alloc_profiling_enabled() tells whether memalloc profiling is
-> currently enabled. However, even when this function returns false,
-> it can be enabled later.
->
-> However, this is not enough. Some optimizations can be applied only when
-> memalloc profiling is permanently disabled. For example, to skip the
-> creation of KMALLOC_NO_OBJ_EXT caches at boot time, mem_profiling must
-> be set to "never", "0" w/ debugging on, or have been shutdown so that
-> it can no longer be enabled.
->
-> Introduce mem_alloc_profiling_permanently_disabled() for this purpose.
+On Mon, Jun 01 2026, George Guo wrote:
 
-nit: I would call it mem_alloc_profiling_supported() but this name would do=
-.
-
+> From: George Guo <guodongtai@kylinos.cn>
 >
-> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab alloca=
-tion and free paths")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-
+> Enable Kexec Handover (KHO) on LoongArch64 for FDT-based systems.
+>
+> - Kconfig: select ARCH_SUPPORTS_KEXEC_HANDOVER for CONFIG_64BIT
+> - kexec.h: add fdt/fdt_mem fields to kimage_arch to hold the KHO FDT
+>   kexec segment virtual and physical addresses
+> - machine_kexec_file.c: add kho_load_fdt() which copies the running
+>   kernel's FDT (initial_boot_params), appends linux,kho-fdt and
+>   linux,kho-scratch properties to /chosen, and loads the result as a
+>   kexec segment; called from load_other_segments().  Returns -EINVAL
+>   when initial_boot_params is NULL (ACPI-only boot) since that path
+>   requires separate handling.
+> - machine_kexec.c: before jumping to the new kernel, update the
+>   DEVICE_TREE_GUID entry in the EFI config table to point to the KHO
+>   FDT segment so the second kernel finds it via efi_fdt_pointer() and
+>   early_init_dt_check_kho() calls kho_populate()
+>
+> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
 > ---
->  include/linux/alloc_tag.h | 3 +++
->  lib/alloc_tag.c           | 9 +++++++++
->  2 files changed, 12 insertions(+)
+>  arch/loongarch/Kconfig                     |   3 +
+>  arch/loongarch/include/asm/kexec.h         |   4 +
+>  arch/loongarch/kernel/machine_kexec.c      |  27 +++++
+>  arch/loongarch/kernel/machine_kexec_file.c | 118 +++++++++++++++++++++
+>  4 files changed, 152 insertions(+)
 >
-> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-> index 068ba2e77c5d..6ed9f82e639f 100644
-> --- a/include/linux/alloc_tag.h
-> +++ b/include/linux/alloc_tag.h
-> @@ -134,6 +134,8 @@ static inline bool mem_alloc_profiling_enabled(void)
->                                    &mem_alloc_profiling_key);
->  }
->
-> +bool mem_alloc_profiling_permanently_disabled(void);
+> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> index 606597da46b8..d494418545f5 100644
+> --- a/arch/loongarch/Kconfig
+> +++ b/arch/loongarch/Kconfig
+> @@ -684,6 +684,9 @@ config ARCH_SUPPORTS_KEXEC
+>  config ARCH_SUPPORTS_KEXEC_FILE
+>  	def_bool 64BIT
+>  
+> +config ARCH_SUPPORTS_KEXEC_HANDOVER
+> +	def_bool 64BIT
 > +
->  static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag =
-*tag)
->  {
->         struct alloc_tag_counters v =3D { 0, 0 };
-> @@ -239,6 +241,7 @@ static inline bool alloc_tag_is_inaccurate(struct all=
-oc_tag *tag)
->
->  #define DEFINE_ALLOC_TAG(_alloc_tag)
->  static inline bool mem_alloc_profiling_enabled(void) { return false; }
-> +static inline bool mem_alloc_profiling_permanently_disabled(void) { retu=
-rn true; }
->  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_ta=
-g *tag,
->                                  size_t bytes) {}
->  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {=
-}
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index d9be1cf5187d..e5b218176c5a 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -26,6 +26,15 @@ static bool mem_profiling_support =3D true;
->  static bool mem_profiling_support;
->  #endif
->
-> +/*
-> + * Memory allocation profiling is permanently disabled and cannot be ena=
-bled.
-> + * Must be called after setup_early_mem_profiling().
-> + */
-> +bool mem_alloc_profiling_permanently_disabled(void)
-> +{
-> +       return !mem_profiling_support;
-> +}
+>  config ARCH_SELECTS_KEXEC_FILE
+>  	def_bool 64BIT
+>  	depends on KEXEC_FILE
+> diff --git a/arch/loongarch/include/asm/kexec.h b/arch/loongarch/include/asm/kexec.h
+> index 209fa43222e1..adf54bfcdd49 100644
+> --- a/arch/loongarch/include/asm/kexec.h
+> +++ b/arch/loongarch/include/asm/kexec.h
+> @@ -39,6 +39,10 @@ struct kimage_arch {
+>  	unsigned long efi_boot;
+>  	unsigned long cmdline_ptr;
+>  	unsigned long systable_ptr;
+> +#ifdef CONFIG_KEXEC_HANDOVER
+> +	void *fdt;		/* virtual address of KHO FDT segment buffer */
+> +	unsigned long fdt_mem;	/* physical address of KHO FDT segment */
+> +#endif
+>  };
+>  
+>  #ifdef CONFIG_KEXEC_FILE
+> diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
+> index ad27fef098f1..98529c71d001 100644
+> --- a/arch/loongarch/kernel/machine_kexec.c
+> +++ b/arch/loongarch/kernel/machine_kexec.c
+> @@ -6,6 +6,7 @@
+>   */
+>  #include <linux/compiler.h>
+>  #include <linux/cpu.h>
+> +#include <linux/efi.h>
+>  #include <linux/kexec.h>
+>  #include <linux/crash_dump.h>
+>  #include <linux/delay.h>
+> @@ -289,6 +290,32 @@ void machine_kexec(struct kimage *image)
+>  	pr_notice("We will call new kernel at 0x%lx\n", start_addr);
+>  	pr_notice("Bye ...\n");
+>  
+> +#ifdef CONFIG_KEXEC_HANDOVER
+> +	/*
+> +	 * Point the EFI FDTPTR config table entry at the modified FDT so the
+> +	 * second kernel picks up the linux,kho-fdt and linux,kho-scratch
+> +	 * properties via early_init_dt_check_kho().
+> +	 */
+> +	if (internal->fdt_mem) {
+> +		/*
+> +		 * FDT-based system: DEVICE_TREE_GUID already exists in the EFI
+> +		 * config table; just update its pointer to our KHO FDT.
+> +		 */
+> +		efi_system_table_t *st =
+> +			(efi_system_table_t *)TO_CACHE(systable_ptr);
+> +		efi_config_table_t *ct =
+> +			(efi_config_table_t *)TO_CACHE((unsigned long)st->tables);
+> +		unsigned long i;
 > +
->  static struct codetag_type *alloc_tag_cttype;
->
->  #ifdef CONFIG_ARCH_MODULE_NEEDS_WEAK_PER_CPU
->
-> --
-> 2.53.0
->
+> +		for (i = 0; i < st->nr_tables; i++) {
+> +			if (!efi_guidcmp(ct[i].guid, DEVICE_TREE_GUID)) {
+> +				ct[i].table = (void *)internal->fdt_mem;
+> +				break;
+> +			}
+> +		}
+> +	}
+> +#endif
+
+Honestly this and the ACPI stuff looks worse to me than what your
+previous version did. Now I am not an expert on EFI and architecture
+stuff, and know nothing about Loongarch, but to me this looks hacky and
+I am not sure if it is doing the right thing.
+
+I think you should get some alignment with Loongarch maintainers on what
+the kexec boot protocol looks like. It looked odd to me, but if the
+Loongarch maintainers are fine with using the kernel cmdline for
+bootloader to pass data to the kernel, then I think we should go back to
+that.
+
+Huacai, do you have any thoughts? For KHO we essentially need a way for
+the pre-kexec kernel to tell the post-kexec kernel about a blob of
+memory that has some information it can use. For x86, we do that via
+setup data. See arch/x86/include/uapi/asm/setup_data.h and struct
+kho_data for example. On arm64, we use the boot FDT's /chosen node. See
+kho_add_chosen() in drivers/of/kexec.c.
+
+Ideally, all device tree platforms should use the FDT path. But
+Loongarch also has ACPI only and I don't know what a good idea for that
+is.
+
+So, do you have any suggestions on where to best place a pointer to this
+blob of data on Loongarch? v1 of this series put it in the kernel
+commandline, but I found that odd and asked if it can be done via DT
+instead. But to me, this code looks even more hacky.
+
+> +
+>  	/* Make reboot code buffer available to the boot CPU. */
+>  	flush_cache_all();
+>  
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
