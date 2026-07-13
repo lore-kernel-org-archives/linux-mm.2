@@ -4,107 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 970E0C44507
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A39C1C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:27:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724126B011D; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
+	id A4BE86B011F; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 651866B011F; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
+	id A20106B011E; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EFCA6B0119; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
+	id 6EC9E6B011E; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E1AA6B00EA
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 38D766B00ED
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:26:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 96AB31A004B
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C54AF120138
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:26:57 +0000 (UTC)
-X-FDA: 84984433674.30.A7244C3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B005E1C0007
+X-FDA: 84984433674.15.EB66101
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C719510000A
 	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hutX5raY;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FXllBRGo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783963615;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xXlp3LSCmqeLKkJ9pLCunCj3Sv/06RfsfZ51UU6ozEM=;
-	b=4A2ZQM400UH4qEiBlZePtJMAj0r/h+9CIADXwHVY7lV7osOi6uMbz4mhaHKOtTWaiHDcqO
-	1IBAJQQ/wXrkJgC9KH4739VAr1xHFdu46xZmubniwwE5UaMNiK0c26WJzBTS+tu85Nty6b
-	A91X139CFtOh87pV2jen45LOkB4gu4Y=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SastZkH+hNDS42mhMDLQMsH6FNIKkbeMjoYC4+THakc=;
+	b=Ubjg+SaBRbxjPIjWaoBQXtrKcau5n32lwkcyIk5mGL30wFKUE0pBHA0Ew/569Pc74Mo2rB
+	gq32bu5ngjclccmNDpTaF8W5rfjNGRCPxhLYRrudVUxobsKBmZFRUG57t4zQyV9QLy2NUp
+	oSqvFj6aqCwI2dCoLEVnFp9KJxbI24Q=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FXllBRGo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783963615;
-	b=U7mFMn60EFbGz4PWCaNluKA3gdbdYT/w2F2XBZqhrQFx1aDfjqdMDQMArhscXW9nQ+4iJW
-	oUpiT7rC3VurudrWei8+dmQEpfIj1Q5N2IC+kV22I7EpouNHnsd0sH3KkUnjfRm0IxVV+t
-	n3LUuCvNl7UgJMJwEwxSg78ulKNFJ0Y=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hutX5raY;
-	spf=pass (imf21.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=1T90OpsJq44vfrIexQe1kczv3nTp9d1O/5f59Rd8PcSRBbyYPTOw4mlZqwRJ68zv0rGr/0
+	6SRpghGOJ6x7OguxZyY+MRzpDfPzu7rjLsWaCsHsjq1i7YiNPm2tmGCaaTupls/sNsOc8b
+	qXvgv2MvWaeeKpZL09zuAt99TuomLIA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0700A60008;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1DE1D43AC2;
 	Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A565FC2BCB8;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E7963C4AF09;
 	Mon, 13 Jul 2026 17:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783963614;
-	bh=Kx8G4hqmRXWTsJ6zc3SII4f1OYOrJ6E6dUx1yBEVJmE=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=hutX5raYLXoUNgaqyUl85iYNUkJsain7/ZlwDzL0UOB4w9+Hu5phqyS1lrwt8ISOT
-	 trgVIxuc67+USZ+KZmAm6/PlHW6/9ijhh8hxS72LL3cEHoDh1YfgUErFliYz3GApRP
-	 hGsZU4P/gnGSnaeJGOhWWVjB93X3gvcy3ssBe1LpiNeEumJWwDpESfIUpytOc5akTr
-	 WZnpaKEHCGqrhGNa3qtF1z1hpR02Wkosfhjjw8PsxicAyTxIE+A+t+PQlAJJJdlEJu
-	 60ctff4Fp1Ng55N+MoLmmBS7ex53ccTd+caP4WSIHoLJhszYXFxAd9tYvQGZU0PhxO
-	 2oAwvMaIiQzhA==
+	s=k20201202; t=1783963615;
+	bh=krFo8t/q3g+P3S7coY6W3tqdeS0OL4CwQGAAMQGMemI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=FXllBRGo1GMeQj0k2AwoHzEi+JDS6EMmGgbVqdyaVEMkc13sCFCAMzMm3ipWIFWKC
+	 cU1HPPJhLbmHYwD77y+ARSv3Xgj7OheJ+GSGnso1DlwAA6FqubI2jRm0NsNcOzXJut
+	 fJxemVLM4xRAXBjiSjiIy90Zb9rA+vyjOCYj0kLaSo4IcIjbY9ta+hgyBhtcJGPvpz
+	 v9DYdy6YB+AVJFjMh6oqNFylVnhvmNq+poV8gXbdWFFlpoOuZRe9QlRP0iNGXOI3NA
+	 wT2VWv0oRkbuQ7MM8xVDw4TdwHPOmFeXTW8l3/7rYcHmJ1zVPODgI9LZQgEBAhJAas
+	 DNSnbw+z49gvw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81A12C44501;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D43CEC44501;
 	Mon, 13 Jul 2026 17:26:54 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Subject: [PATCH RFC 00/13] mm/swap: introduce priority queue to remove
- global cluster cache and plist
-Date: Tue, 14 Jul 2026 01:25:38 +0800
-Message-Id: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
+Date: Tue, 14 Jul 2026 01:25:43 +0800
+Subject: [PATCH RFC 05/13] mm/swap: change the swapon lock into a percpu
+ rwsem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUyNL3eLyxALdgmQgLsos1DWzSDFOsTQyNTW3SFYC6ikoSk3LrACbF60
- U5OasFAsRLC5NykpNLgGZpFRbCwBgA1S8dgAAAA==
-X-Change-ID: 20260529-swap-pcp-priq-68d3d925578c
+Message-Id: <20260714-swap-pcp-priq-v1-5-de9b164ed419@tencent.com>
+References: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
+In-Reply-To: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
  Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
  Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
  Youngjun Park <youngjun.park@lge.com>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
- Baoquan He <baoquan.he@linux.dev>
+ Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783963612; l=7745;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783963612; l=15672;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=Kx8G4hqmRXWTsJ6zc3SII4f1OYOrJ6E6dUx1yBEVJmE=;
- b=c+w0tFeESadMAszrv3sx20936HsyfVQ7Hc+brIbOgFuU2E+yGJRfqeo4EUJAmxiX9Tf7VKPif
- v3jUiio/AdmCNj+0/oNQb7yHSBR8vomFy26HHHvVztfvR0NyhQchvw1
+ bh=jUpqZi3PB5w2EdScPkNb0dLNkS8Pe3V4vt1vzNmkxZU=;
+ b=Cm2pvMDQdoy4Pjql3yJbCYUyfEoznI0IpuepcQpZIh7jc33AL5WOKWYZW3WxQJWHsMgTDiq8p
+ oebV/YKKgAyDMi0WhU+y/EoDIznaZLgVT9DPqmICxpeWwgUjnaAxejX
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
+X-Rspamd-Queue-Id: C719510000A
+X-Stat-Signature: k6ih5c1f7pxio3bn9k8ikczhqs68dsd9
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B005E1C0007
-X-Stat-Signature: m69y9qsupcyxbondoyssh8fsmofqjmis
-X-HE-Tag: 1783963615-195925
-X-HE-Meta: U2FsdGVkX18OuXYf0uaRXVsUHaJDzv+TcpehY8oESMu0zF/F27dzYe19PeP1piIo8tCv9xHsWWpaBjhCgeFbViivGx69icBNigY2OO0JZkvUrodk4AGJOgLVC4pWx0UfVxzRQQT/2Xghwr4q5GHqREvElF3dHuTXddJXCAjS/8lIEsKGHyu/2BnGMyL0HR0HfcVk9B1/Ii9DpFs+GqNIhnb6Txqd9UQlupgNnvmeHrb2FbPXo5c67Isic81G6L5Av9kNUjjf3/iZOZi6u+pejgGFaLv8IX5NMHjb/hQdRBf+4YzCi7tuKgdNM4gdWDKhICQYKodv7RgoDQ2ZtnZYQ9rT4NMG4a/Kz7GtdURQjXj1bRLSrUFnPVE4FalvgxR7LSfFC3s3mh4+FOwTzcWfHxxeQacRI0/pBzh2lq/lK7SFmtdvtO2FCzL9QP3QW5Oxr4WCmEEiZ94U+9Ue3sspo9UKhKb3Mf1BlW4HMKkkOYz+W4h2IXKEjOoZUW/YC7fIL8xG/gb+iDqGWVoL1LmIPadPQkCQcU4aoBOI07ERtQnsQmuxEPU0rGpXuiGqF2cU/2NHhhE5z7ES1drCidowhbMOpNPmzvcm+H8+tEMAk6WR0MVXXl+sVLwjUhFxD1bX2szi5OlffNHQpEBh2xAhhlGCMQezyyVCeWopPTGWzmrBvXBvjCxGYoc8eWTXw1ft9R5qrJWGidtx3qk7od9MLz4filzHoXyx3XkIx8BFKZZD19i6C949BXBg+aeUavovwF0tE3l6tzG2UVBsAIv94/GCKOQdJ7HFr+7yR9rQqcEHXon+PDr7ZXlo+jDqywmBjCY8GvCv9O16JbY+2DDJlfbpOWbO93OZ5tk9O03eNOIkWLr5wHmPnClFUXdHMDdp9iIQRksBeYd9BixQh8fQKTnG607g1R554GvyKmb4dC81cPxQthZNPpuvjBXCUD8WpWxVpfQIEDH8aAWB+RJ
- dnaV/mAp
- /ONC0OpeLMsBv8dOd2JoRCWYA49b+xiO51G+b9BSGHwL+JiibSIM7ws40y24jaENxsgBYPnnf1IjNmNIDHKVl2easBZWb+e1GQ9GNjhs8TpDLvkoV8fxN46MsAo9oK3vF+j6d/EbDDzKpqcg9vKWT4JjYLJxMjczViVJmHRI2N9H2kksSjrnKnfgOu93Lm2NfEgpyW+Q29uMAUxhmSeTsED54pE32IvxW54v2NXTb9GA2f3bDVGu2+IBo9fg4+IBnfHryW6AP45rBQ0L84UfpWHNXh7o8dxY4ByrGWinORQ1VSPvC8vyfN2+ZrgIODLk0miIeBi4SV8uwtYL8FNCrg7QorE+DNW8gMpbknsAP1AlhrpwoetuSHIwqEby1iimb/e6/VXt0EPm/X3UfCLdPSJO8eful4jbqIa0f0EknwodW9d3uwsQ0DEaQA+Chne7iejYsukjTYLEWo8ne5w7OrIXXzCF8lxfivW6i
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783963615-522625
+X-HE-Meta: U2FsdGVkX18uDDI6/6p/JwQ3xEgAaPxSJUq9aYU/bQc+AVy3xOETFSTp1INEmJrntK1lkrkRj759vmvRV/wzQTdqsSaGRfJZF4ARqDbs9OqVdghem+4pIMi8yPJTHATVfW8+7KMzgbn0alsObbzt8m/3AH+Ap77zHgvCTJXVUXZAvWKDZpYdfiGeAiEn7fC9z89YykEgL/522HKBWKGdBKYSKun0AaDc//ddeX5PJyGMNpaRQWcLS+q8sSRnAww0jmA1psai+KAe16KDLz/Y1IIwfc8fiLviLRy471CrFFuNS4Qf4ugP1dD1plLhcWQvAOJ16ZAT6gVgN5D+VILStVUvvkPuctAK6ZN2RCZMnwvii5FhF/6rRyB4zNn0cPtY0DrxvMC6BxuUx1LGyvAZon0BL24gs6mCFtKpRQtuWast1Jxzn7s9A2XUtxCRyH0M7edaSINmT7LppZGDauVyplRQ/UXsdEd5YvbF+VBEYxj+z9/T6XnilMhY7i/B7dh/1q7pqVY2yfzOoP2VQR+UM8piEKKY8dGkztFggM4WLRWejmFB2DHpWcnPWd7O7GD2XTuQ9kMJedjpF5lAZwuBUoz+U85jKi1CIWBgBbeeZRpU9Vsv9FlKYrVxM3iCs6tW2umzUvvpUqm3a4sF3803wtD9mzNzQqZEwmFojO1z4VKBGn4xyx6VPQ0h2c2+DrFRHXUwvq+IcjiwJvhztO0+wny6iQDsTknMCn98+P+OXlVuvC5s7vFHLITJiEuVS1NU3TYmsB/FjP8qnyZrsbhYEFISmm3Hn9g58mmfN8CybRmlbdQgto1QFxgiSku5CcHpST4YxXhJnw/c2ppK9IZVg06ISLbUMyY7RcAzslF9l2p3KhcEPNE6qJvOsSzpodPqiBmu9kEzmlBgoOC756WiSNMtlbS2oSwsw8WL0e79Y8thyaSn7lCVRb8DCnLKSwogWwogK/qZFoajXIN1rHV
+ IGxca3LU
+ rjdaPFuJUq4XuL5tq6B3H3AFNIgavsrnHWUBhSwNCuY2iapHrKYxVUSPKJRbFhDYLu/aXfd4yorKPkH19Zh4IxqGmUJ4EgtR4k+gHN3e3oIKHwb+WFIdSaEogYTcDpKfgdAUi+P8TqBD32gmFKX8e6DtOiyAqVa9kibYTSXTrLiyeWIj098IRPLAR71o2icl6C9h/BZNBInUpy9tYMirDHhjkZIGJQNQwbMbCge0Sf2VHM3XKV+NOpxeO6z37kRZmpke065qoz+wq5WAOmoY3EjU49hpEdxHmCj5WsZKlBnl9t6LzS6W+tkfc5hYuAYzA7gr46xVCmnAb0DiQ8zA0ICMTKjOUJGQSV0w5Ng6ORNTA8u8ZFLpBWlhmN8jwjoXsMZQFTED0ViqZ0JxtLZA30jHeug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,168 +110,444 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+From: Kairui Song <kasong@tencent.com>
 
-This series introduces a new way to fairly distribute the IO to multiple
-swap devices, completely gets rid of the mutable plist and global lock,
-hence removes the global cluster cache and allows allocation and
-rotation to happen more freely. This is especially helpful for swap
-tiering or layered swap. Sending as RFC for review first as tiering
-should land first, this can rebase and join later as an optimization,
-and there are a few items that can still be improved based on this
-series. I specifically kept the tiering and layered ideas in mind to
-make the new design friendly for new ideas like these and tested a
-few different appraoches locally.
+Reading swap metadata is a common hot path, while swapon and swapoff
+are costly and very rare.  Convert the existing swap_lock spinlock
+into a percpu rwsem so that readers can run concurrently without
+contention.  This is a first step toward cleaning up the swap lock
+model and we might already see a performance gain for existing
+readers.
 
-As a dependency, this also cleanup and rework the locking pattern for swap
-device management. All swap devices and the newly introduced percpu reader
-priority queue are now guarded by a percpu rwsem for better scalability
-and a more future-proof design.
-
-Previously, each swap device had its own percpu cluster cache. To improve
-performance, commit 1b7e90020eb7 ("mm, swap: use percpu cluster as
-allocation fast path") moved the cluster cache to a global scope and let
-every device share the same global cache, so we don't need to always
-touch the plist. Fast swap allocation will just use each CPU's cluster
-cache. Device rotation is still always handled by the plist when one
-cluster is drained in the cluster cache, which bundled cluster allocation
-with rotation. It works, but this whole design caused several
-long-standing issues:
-
-1) The global percpu cluster cache sitting above device selection
-   fundamentally conflicts with concepts like swap tiering and layered
-   swap allocation. We need to bypass certain swap devices, so we have
-   to bypass the cache as well because the cache doesn't have stable
-   ownership. That would result in very poor performance. And there
-   are other problems like priority inversion and device rotation.
-   These are described in more detail in the swap tier series [1].
-
-2) The plist itself requires plist_requeue() to rotate devices for
-   round-robin, which needs swap_avail_lock held. Allocators must
-   cycle: lock -> pick -> unlock -> allocate -> lock -> rotate. All
-   CPUs contend on the same global list head, and the design is
-   neither flexible nor robust.
-
-3) Rotation is considered the slow path. The fast / slow path design to
-   avoid touching the plist has caused workarounds like commit
-   9fb749cd15078 ("mm, swap: do not perform synchronous discard during
-   allocation"), we can't stably grab an actual device before touching
-   the plist, so the design is suboptimal and has many constraints.
-
-4) We don't have a clear rule of how rotation works. The round-robin
-   rotation is strongly bundled to the cluster allocation algorithm,
-   and cluster drain is unpredictable. We will have a roughly 2M
-   rotation block size but that varies from time to time.
-
-This series gets rid of all these issues step by step:
-
-Patches 1-4: Cleanups and infrastructure
-Patches 5-7: Lock and accounting consolidation
-Patch 8: Revert the global percpu cluster by YoungJun
-Patch 9: This is the core change: percpu reader swap queue
-Patch 10: Remove the old swap_avail_head plist (no longer needed)
-Patch 11: Drop the global sync discard workaround
-Patches 12-13: Drop plist entirely
-
-The design is described in Patch 9. In general, devices of the same
-priority are arranged in the same static ring. The ring itself is mostly
-read only, but each CPU's reader of the ring rotates, with a counter
-built into each reader. The counter is adjustable and controls the
-rotation pace. The priority ring design should fit well with the current
-tiering design.
-
-The performance is looking on par with the old global cluster cache
-design, while it enables more potential features like weighted
-interleave or adjustable shard value for device rotation of same
-priority (by simply adjusting the counter value, SWAP_ROUND_ROBIN_QUOTA).
-
-Testing with 8 ZRAM devices, running a typical build linux kernel test,
-with make -j96 in a 2G memcg (Using 8 ZRAM, might not be a very common
-setup but there are such configs to avoid lock contention inside each
-ZRAM device, and this also simulates having multiple high speed block
-devices as SWAP), measure average system time for 12 testruns:
-
-Before:          6633.09s
-After patch  8: 12294.74s (Move the global cluster cache back to device scope)
-After patch 13:  6551.27s (Introduce the percpu queue to avoid device contention)
-
-And doing the workload in a 3G memcg, avg sys time of 12 testrun:
-
-Before:          3312.63s
-After patch  8:  6450.35s
-After patch 13:  3311.38s
-
-Using 12 brd, testing with: usemem --init-time -O -y -x -n 32 1536M
-Before:         4347.58 MB/s
-After patch  8: 2773.39 MB/s
-After patch 13: 4345.04 MB/s
-
-Patch 8 removed the global percpu cluster cache, so we are touching the
-plist before accessing the cache, and it's very clear that the performance
-is really bad. Then with the new percpu reader queue design, we got rid
-of the plist, performance is on-par or better, while there is no more
-slow / fast path design, and cache stays inside each device. We can
-always select a device based on priority before accessing the cache.
-
-And the shard size is adjustable through SWAP_ROUND_ROBIN_QUOTA which is
-hardcoded for now to 2M, changing that effect the performance in
-different ways too.
-
-And the distributions are fair among devices during the test (similiar
-with brd):
-
-NAME       TYPE      SIZE   USED PRIO
-/dev/zram0 partition   8G 692.4M   -1
-/dev/zram1 partition   8G 693.2M   -1
-/dev/zram2 partition   8G 694.9M   -1
-/dev/zram3 partition   8G 694.1M   -1
-/dev/zram4 partition   8G 695.5M   -1
-/dev/zram5 partition   8G 695.1M   -1
-/dev/zram6 partition   8G 694.3M   -1
-/dev/zram7 partition   8G 693.6M   -1
-
-This work was discussed several times on the mailing list [2] and
-rebased and reworked to leave room for future tiering, optimization,
-e.g. by assigning separate iterators per priority ring.
-
-One patch from YoungJun is included as well [3].
-
-Link: https://lore.kernel.org/linux-mm/20260713025644.170839-1-youngjun.park@lge.com/ [1]
-Link: https://lore.kernel.org/linux-mm/CAMgjq7BhOn48xEyC=2j837R7qddfjeBVHMiRqdx8no4ZEBpBLg@mail.gmail.com/ [2]
-Link: https://lore.kernel.org/linux-mm/20260126065242.1221862-5-youngjun.park@lge.com/ [3]
+Also update the comments in swap_info_struct to reflect the lock
+name change.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Kairui Song (12):
-      mm/swap: remove unused parameter for reading swap header
-      mm/swap: slightly cleanup the code for hibernation error handling
-      mm/swap: cleanup and document swap device availability flag usage
-      mm/swap: introduce swap device iteration helper
-      mm/swap: change the swapon lock into a percpu rwsem
-      mm/swap: remove swapon mutex and update proc reader
-      mm/swap: consolidate swap inuse accounting helpers
-      mm/swap: add priority queue for swap device allocation
-      mm/swap: remove available list
-      mm/swap: perform sync discard on single device more proactively
-      mm/swap: drop swap active plist
-      lib/plist.c: remove requeue function
+ include/linux/swap.h |  10 ++---
+ mm/swapfile.c        | 121 +++++++++++++++++++++++++++------------------------
+ 2 files changed, 69 insertions(+), 62 deletions(-)
 
-Youngjun Park (1):
-      mm/swap: change back to use each swap device's percpu cluster
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index a8ce05024cfe..d0c4e0ab5806 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -197,17 +197,17 @@ struct swap_extent {
+ /*
+  * Swap device flags, except the ones documented below, all are immutable
+  * after exposed by swap_device_enable, and until the device is freed again
+- * (SWP_USED unset). The exceptions:
+- * - SWP_USED: Protected by swap_lock. Indicates the device is inuse. Once
++ * (SWP_USED unset). The exceptions are all protected by swapon_rwsem:
++ * - SWP_USED: Protected by swapon_rwsem. Indicates the device is inuse. Once
+  *   set, won't be cleared unless all reference to this device is freed and
+  *   swapoff finished.
+- * - SWP_WRITEOK: Protected by both swap_lock and swap_avail_lock, clearing
++ * - SWP_WRITEOK: Protected by both swapon_rwsem and swap_avail_lock, clearing
+  *   this flag also waits for all current cluster lock users to exit so
+  *   checking this flag while holding any of these locks ensures the device
+  *   is safe to use at the moment. Note: clearing this flag doesn't affect
+  *   pending IO or async requests, it only prevents further entry allocation
+  *   or new async request (e.g. discard) from initiating.
+- * - SWP_HIBERNATION: Protected by swap_lock. Indicates if the device
++ * - SWP_HIBERNATION: Protected by swapon_rwsem. Indicates if the device
+  *   is pinned for hibernation.
+  */
+ enum {
+@@ -281,7 +281,7 @@ struct swap_info_struct {
+ 	spinlock_t lock;		/*
+ 					 * Protect cluster lists. Other fields
+ 					 * are only changed at swapon/swapoff,
+-					 * so are protected by swap_lock.
++					 * so are protected by swapon_rwsem.
+ 					 */
+ 	struct work_struct discard_work; /* discard worker */
+ 	struct work_struct reclaim_work; /* reclaim worker */
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 8faa4e7c32bf..d75fad161ba5 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -57,23 +57,29 @@ static void move_cluster(struct swap_info_struct *si,
+ 			 enum swap_cluster_flags new_flags);
+ 
+ /*
+- * Protects the swap_info array, and the SWP_USED flag. swap_info contains
+- * lazily allocated & freed swap device info struts, and SWP_USED indicates
+- * which device is used, ~SWP_USED devices and can be reused.
+- *
+- * Also protects swap_active_head total_swap_pages, and the SWP_WRITEOK flag.
++ * Serializes swapon/swapoff (writers) and protects the swap_info
++ * array, nr_swapfiles, total_swap_pages, and part of swap device
++ * info content (see comment of swap_info_struct).  Readers
++ * (allocation, /proc/swaps, etc.) take percpu_down_read() which
++ * is cheap as the hot path.
++ */
++DEFINE_STATIC_PERCPU_RWSEM(swapon_rwsem);
++/*
++ * swap_info contains lazily allocated swap device info structs, and
++ * SWP_USED indicates which device is used, ~SWP_USED devices can be
++ * reused. Protected by swapon_rwsem, but reading could be lockless.
+  */
+-static DEFINE_SPINLOCK(swap_lock);
++struct swap_info_struct *swap_info[MAX_SWAPFILES];
+ static unsigned int nr_swapfiles;
+-atomic_long_t nr_swap_pages;
++long total_swap_pages;
++
+ /*
+  * Some modules use swappable objects and may try to swap them out under
+  * memory pressure (via the shrinker). Before doing so, they may wish to
+  * check to see if any swap space is available.
+  */
++atomic_long_t nr_swap_pages;
+ EXPORT_SYMBOL_GPL(nr_swap_pages);
+-/* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
+-long total_swap_pages;
+ #define DEF_SWAP_PRIO  -1
+ unsigned long swapfile_maximum_size;
+ #ifdef CONFIG_MIGRATION
+@@ -85,7 +91,7 @@ static const char Bad_offset[] = "Bad swap offset entry ";
+ 
+ /*
+  * all active swap_info_structs
+- * protected with swap_lock, and ordered by priority.
++ * protected with swapon_rwsem, and ordered by priority.
+  */
+ static PLIST_HEAD(swap_active_head);
+ 
+@@ -95,20 +101,18 @@ static PLIST_HEAD(swap_active_head);
+  * This is used by folio_alloc_swap() instead of swap_active_head
+  * because swap_active_head includes all swap_info_structs,
+  * but folio_alloc_swap() doesn't need to look at full ones.
+- * This uses its own lock instead of swap_lock because when a
++ * This uses its own lock instead of swapon_rwsem because when a
+  * swap_info_struct changes between not-full/full, it needs to
+  * add/remove itself to/from this list, but the swap_info_struct->lock
+- * is held and the locking order requires swap_lock to be taken
++ * is held and the locking order requires swapon_rwsem to be taken
+  * before any swap_info_struct->lock.
+  */
+ static PLIST_HEAD(swap_avail_head);
+ static DEFINE_SPINLOCK(swap_avail_lock);
+ 
+-struct swap_info_struct *swap_info[MAX_SWAPFILES];
+-
+ static inline struct swap_info_struct *__swap_iter(int *i, unsigned long flag)
+ {
+-	lockdep_assert_held(&swap_lock);
++	lockdep_assert_held(&swapon_rwsem);
+ 	while (*i < nr_swapfiles) {
+ 		struct swap_info_struct *si = __swap_type_to_info(*i);
+ 
+@@ -128,7 +132,7 @@ static inline struct swap_info_struct *__swap_iter(int *i, unsigned long flag)
+  * for_each_swap - iterate through all allocated and inuse swap devices
+  * @si: the iterator
+  *
+- * Context: The caller must hold swap_lock. The lock may be dropped during
++ * Context: The caller must hold swapon_rwsem. The lock may be dropped during
+  * the loop body but must be re-acquired before the next iteration.
+  */
+ #define for_each_swap(si) __for_each_swap(si, SWP_USED)
+@@ -1365,10 +1369,10 @@ static bool get_swap_device_info(struct swap_info_struct *si)
+ 	/*
+ 	 * Guarantee the si->users are checked before accessing other
+ 	 * fields of swap_info_struct, and si->flags (SWP_WRITEOK) is
+-	 * up to dated.
++	 * up to date.
+ 	 *
+-	 * Paired with the spin_unlock() after setup_swap_info() in
+-	 * swap_device_enable(), and smp_wmb() in swapoff.
++	 * Paired with percpu_up_write() in swap_device_enable(), and
++	 * smp_wmb() after clearing SWP_WRITEOK in swapoff.
+ 	 */
+ 	smp_rmb();
+ 	return true;
+@@ -1453,10 +1457,10 @@ static bool swap_sync_discard(void)
+ 	bool ret = false;
+ 	struct swap_info_struct *si, *next;
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_read(&swapon_rwsem);
+ start_over:
+ 	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
+-		spin_unlock(&swap_lock);
++		percpu_up_read(&swapon_rwsem);
+ 		if (get_swap_device_info(si)) {
+ 			if (si->flags & SWP_PAGE_DISCARD)
+ 				ret = swap_do_scheduled_discard(si);
+@@ -1465,11 +1469,11 @@ static bool swap_sync_discard(void)
+ 		if (ret)
+ 			return true;
+ 
+-		spin_lock(&swap_lock);
++		percpu_down_read(&swapon_rwsem);
+ 		if (plist_node_empty(&next->list))
+ 			goto start_over;
+ 	}
+-	spin_unlock(&swap_lock);
++	percpu_up_read(&swapon_rwsem);
+ 
+ 	return false;
+ }
+@@ -2262,7 +2266,7 @@ int pin_hibernation_swap_type(dev_t device, sector_t offset)
+ 	int ret;
+ 	struct swap_info_struct *si;
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_write(&swapon_rwsem);
+ 	ret = __find_hibernation_swap_type(device, offset);
+ 	if (ret < 0)
+ 		goto out;
+@@ -2286,7 +2290,7 @@ int pin_hibernation_swap_type(dev_t device, sector_t offset)
+ 	si->flags |= SWP_HIBERNATION;
+ 
+ out:
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ 	return ret;
+ }
+ 
+@@ -2304,11 +2308,11 @@ void unpin_hibernation_swap_type(int type)
+ {
+ 	struct swap_info_struct *si;
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_write(&swapon_rwsem);
+ 	si = swap_type_to_info(type);
+ 	if (si)
+ 		si->flags &= ~SWP_HIBERNATION;
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ }
+ 
+ /**
+@@ -2333,9 +2337,9 @@ int find_hibernation_swap_type(dev_t device, sector_t offset)
+ {
+ 	int type;
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_read(&swapon_rwsem);
+ 	type = __find_hibernation_swap_type(device, offset);
+-	spin_unlock(&swap_lock);
++	percpu_up_read(&swapon_rwsem);
+ 
+ 	return type;
+ }
+@@ -2345,13 +2349,13 @@ int find_first_swap(dev_t *device)
+ 	int ret = -ENODEV;
+ 	struct swap_info_struct *si;
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_read(&swapon_rwsem);
+ 	for_each_avail_swap(si) {
+ 		*device = si->bdev->bd_dev;
+ 		ret = si->type;
+ 		break;
+ 	}
+-	spin_unlock(&swap_lock);
++	percpu_up_read(&swapon_rwsem);
+ 	return ret;
+ }
+ 
+@@ -2380,7 +2384,7 @@ unsigned int count_swap_pages(int type, int free)
+ {
+ 	unsigned int n = 0;
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_read(&swapon_rwsem);
+ 	if ((unsigned int)type < nr_swapfiles) {
+ 		struct swap_info_struct *sis = swap_info[type];
+ 
+@@ -2392,7 +2396,7 @@ unsigned int count_swap_pages(int type, int free)
+ 		}
+ 		spin_unlock(&sis->lock);
+ 	}
+-	spin_unlock(&swap_lock);
++	percpu_up_read(&swapon_rwsem);
+ 	return n;
+ }
+ #endif /* CONFIG_HIBERNATION */
+@@ -2704,10 +2708,10 @@ static unsigned int find_next_to_unuse(struct swap_info_struct *si,
+ 	unsigned long swp_tb;
+ 
+ 	/*
+-	 * No need for swap_lock here: we're just looking
++	 * No need for swapon_rwsem here: we're just looking
+ 	 * for whether an entry is in use, not modifying it; false
+ 	 * hits are okay, and sys_swapoff() has already prevented new
+-	 * allocations from this area (while holding swap_lock).
++	 * allocations from this area (while holding swapon_rwsem).
+ 	 */
+ 	for (i = prev + 1; i < si->max; i++) {
+ 		swp_tb = swap_table_get(__swap_offset_to_cluster(si, i),
+@@ -2828,8 +2832,8 @@ static int try_to_unuse(unsigned int type)
+ 
+ /*
+  * After a successful try_to_unuse, if no swap is now in use, we know
+- * we can empty the mmlist.  swap_lock must be held on entry and exit.
+- * Note that mmlist_lock nests inside swap_lock, and an mm must be
++ * we can empty the mmlist. swapon_rwsem must be held on entry and exit.
++ * Note that mmlist_lock nests inside swapon_rwsem, and an mm must be
+  * added to the mmlist just after page_duplicate - before would be racy.
+  */
+ static void drain_mmlist(void)
+@@ -2980,8 +2984,7 @@ static int setup_swap_extents(struct swap_info_struct *sis,
+  */
+ static void swap_device_enable(struct swap_info_struct *si)
+ {
+-	spin_lock(&swap_lock);
+-
++	percpu_down_write(&swapon_rwsem);
+ 	spin_lock(&swap_avail_lock);
+ 	si->flags |= SWP_WRITEOK;
+ 	spin_unlock(&swap_avail_lock);
+@@ -2989,7 +2992,7 @@ static void swap_device_enable(struct swap_info_struct *si)
+ 	atomic_long_add(si->pages, &nr_swap_pages);
+ 	total_swap_pages += si->pages;
+ 	plist_add(&si->list, &swap_active_head);
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ 
+ 	add_to_avail_list(si);
+ }
+@@ -3004,15 +3007,15 @@ static int swap_device_disable(struct swap_info_struct *si)
+ 	 * If SWP_WRITEOK is not set: another process already disabling it.
+ 	 * If SWP_HIBERNATION is set: the device is pinned for hibernation.
+ 	 */
+-	spin_lock(&swap_lock);
++	percpu_down_write(&swapon_rwsem);
+ 	if (!(si->flags & SWP_WRITEOK) ||
+ 	    si->flags & SWP_HIBERNATION) {
+-		spin_unlock(&swap_lock);
++		percpu_up_write(&swapon_rwsem);
+ 		return -EBUSY;
+ 	}
+ 
+ 	if (security_vm_enough_memory_mm(current->mm, si->pages)) {
+-		spin_unlock(&swap_lock);
++		percpu_up_write(&swapon_rwsem);
+ 		return -ENOMEM;
+ 	}
+ 	vm_unacct_memory(si->pages);
+@@ -3024,7 +3027,7 @@ static int swap_device_disable(struct swap_info_struct *si)
+ 	plist_del(&si->list, &swap_active_head);
+ 	total_swap_pages -= si->pages;
+ 	atomic_long_sub(si->pages, &nr_swap_pages);
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ 
+ 	del_from_avail_list(si, true);
+ 
+@@ -3104,7 +3107,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 		return PTR_ERR(victim);
+ 
+ 	mapping = victim->f_mapping;
+-	spin_lock(&swap_lock);
++	percpu_down_read(&swapon_rwsem);
+ 	plist_for_each_entry(p, &swap_active_head, list) {
+ 		if (p->flags & SWP_WRITEOK &&
+ 		    p->swap_file->f_mapping == mapping) {
+@@ -3112,7 +3115,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 			break;
+ 		}
+ 	}
+-	spin_unlock(&swap_lock);
++	percpu_up_read(&swapon_rwsem);
+ 	filp_close(victim, NULL);
+ 
+ 	if (!found)
+@@ -3154,7 +3157,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 		atomic_dec(&nr_rotate_swap);
+ 
+ 	mutex_lock(&swapon_mutex);
+-	spin_lock(&swap_lock);
++	percpu_down_write(&swapon_rwsem);
+ 	spin_lock(&p->lock);
+ 	drain_mmlist();
+ 
+@@ -3165,7 +3168,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	p->max = 0;
+ 	p->cluster_info = NULL;
+ 	spin_unlock(&p->lock);
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ 	arch_swap_invalidate_area(p->type);
+ 	zswap_swapoff(p->type);
+ 	mutex_unlock(&swapon_mutex);
+@@ -3184,10 +3187,14 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	 * Clear the SWP_USED flag after all resources are freed so that swapon
+ 	 * can reuse this swap_info in alloc_swap_info() safely.  It is ok to
+ 	 * not hold p->lock after we cleared its SWP_WRITEOK.
++	 *
++	 * The write lock ensures the flag clear is visible to lockless
++	 * readers of swap_type_to_info() before alloc_swap_info() reuses
++	 * this slot.
+ 	 */
+-	spin_lock(&swap_lock);
++	percpu_down_write(&swapon_rwsem);
+ 	p->flags = 0;
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ 
+ 	atomic_inc(&proc_poll_event);
+ 	wake_up_interruptible(&proc_poll_wait);
+@@ -3347,13 +3354,13 @@ static struct swap_info_struct *alloc_swap_info(void)
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_write(&swapon_rwsem);
+ 	for (type = 0; type < nr_swapfiles; type++) {
+ 		if (!(swap_info[type]->flags & SWP_USED))
+ 			break;
+ 	}
+ 	if (type >= MAX_SWAPFILES) {
+-		spin_unlock(&swap_lock);
++		percpu_up_write(&swapon_rwsem);
+ 		percpu_ref_exit(&p->users);
+ 		kvfree(p);
+ 		return ERR_PTR(-EPERM);
+@@ -3378,7 +3385,7 @@ static struct swap_info_struct *alloc_swap_info(void)
+ 	plist_node_init(&p->list, 0);
+ 	plist_node_init(&p->avail_list, 0);
+ 	p->flags = SWP_USED;
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ 	if (defer) {
+ 		percpu_ref_exit(&defer->users);
+ 		kvfree(defer);
+@@ -3804,9 +3811,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	 * Clear the SWP_USED flag after all resources are freed so
+ 	 * alloc_swap_info can reuse this si safely.
+ 	 */
+-	spin_lock(&swap_lock);
++	percpu_down_write(&swapon_rwsem);
+ 	si->flags = 0;
+-	spin_unlock(&swap_lock);
++	percpu_up_write(&swapon_rwsem);
+ 	if (inced_nr_rotate_swap)
+ 		atomic_dec(&nr_rotate_swap);
+ 	if (swap_file)
+@@ -3824,14 +3831,14 @@ void si_swapinfo(struct sysinfo *val)
+ 	struct swap_info_struct *si;
+ 	unsigned long nr_to_be_unused = 0;
+ 
+-	spin_lock(&swap_lock);
++	percpu_down_read(&swapon_rwsem);
+ 	for_each_swap(si) {
+ 		if (!(si->flags & SWP_WRITEOK))
+ 			nr_to_be_unused += swap_usage_in_pages(si);
+ 	}
+ 	val->freeswap = atomic_long_read(&nr_swap_pages) + nr_to_be_unused;
+ 	val->totalswap = total_swap_pages + nr_to_be_unused;
+-	spin_unlock(&swap_lock);
++	percpu_up_read(&swapon_rwsem);
+ }
+ 
+ /*
 
- include/linux/plist.h |    2 -
- include/linux/swap.h  |   42 +-
- lib/plist.c           |   64 ---
- mm/swap.h             |   12 +-
- mm/swapfile.c         | 1165 +++++++++++++++++++++++++++++--------------------
- 5 files changed, 718 insertions(+), 567 deletions(-)
----
-base-commit: bdc38bfc1262e3d1432afadd2aa2ffd83d139dbb
-change-id: 20260529-swap-pcp-priq-68d3d925578c
-
-Best regards,
---  
-Kairui Song <kasong@tencent.com>
+-- 
+2.55.0
 
 
 
