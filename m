@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA8A8C44506
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A410C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2B7D6B009F; Mon, 13 Jul 2026 05:34:45 -0400 (EDT)
+	id 243FE6B00A1; Mon, 13 Jul 2026 05:34:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB6266B00A0; Mon, 13 Jul 2026 05:34:45 -0400 (EDT)
+	id 1F4C16B00A2; Mon, 13 Jul 2026 05:34:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA3E56B00A1; Mon, 13 Jul 2026 05:34:45 -0400 (EDT)
+	id 0E3486B00A3; Mon, 13 Jul 2026 05:34:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A65426B009F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:34:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3058FC4918
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:45 +0000 (UTC)
-X-FDA: 84983243730.12.7FAB95D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D70636B00A1
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:34:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 778341A09C9
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:49 +0000 (UTC)
+X-FDA: 84983243898.05.D3D6547
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 94FC81C0002
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JKfTWGnK;
-	spf=none (imf21.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+	by imf18.hostedemail.com (Postfix) with ESMTP id C81D41C0003
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hws3o1OG;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf18.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783935283;
+	s=arc-20220608; t=1783935287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JB5KZgBNO/5Khqiuu5pThQuWfcjym5y13IxBuLw1t+8=;
-	b=iWpGV+cB/f5ce3pIcskz1ifxTNm9HOXr2y7weyGG243/ZPYlWkWwLGMpBFSrcU2ZDnRJya
-	pok2QRn34ka4mh84uExAbHd0MtrajG8S20fOjZ5Pnh4To/pNppoo20WOV+vqnTKCVSsAEk
-	ethw9tpXUm0fW/4ggBujLk3ooRb1dCE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783935283;
-	b=IMlexJItpmFqalvf9HMZ8+oL+ZtejX8Z0fdAPSQtVFhZdWtdHeVjZ036YYDitFWRl2AFzS
-	KwYsVb6Itui6UmYz0hJoNbOV//w3qw8UHAxKVYspqgP/7RKsaTomz+YsNPn3V5Y/0gxnSi
-	RnE6hPvxdY95t6uX7VRyNzLWSFGNVjA=
+	bh=D88P2s75qGA5uxR0r7OKzJ/uLvFvl1fYzQcrFQBZ8NM=;
+	b=q2U85JA3UmPSI2mCQAcMs6vu+x8p1MAFYzHaQEAua42UcVgRBejO9a3VcMcV1Workiut/t
+	kXyFRTl+RlcFOIm6p1PzbRIItWR7o4BswB2paIShhJu09A1nYUy6fMxaD+OKXUSgxi4yYT
+	B7GpKNIHfFDgkq6rjZyhY4ywG1zey34=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=JKfTWGnK;
-	spf=none (imf21.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hws3o1OG;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf18.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783935287;
+	b=VE6DcCeGID2GCxrMx6OTKZUPMB94d5+xVtMPJAbGQ9D2FSHdL3jkSnLK9WAR3gTMb4+5Nq
+	wkkXn/hsLlIn0Zr7uCFN84THdal+gn9DHFsxx9rLPK3luaSeekWtRYDr0zF/0e884mnZD5
+	XHdV6iO9AySIULtIplZNJDYXcMx1D2A=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=JB5KZgBNO/5Khqiuu5pThQuWfcjym5y13IxBuLw1t+8=; b=JKfTWGnK5N+xqOz1PvURoYuVF6
-	K1E52w2leCrASnlH1sKwxqHq2NLpwB8cXftpfddEUamz77UCum2Q1CjU8l7e+uV+rhUUjSk0jssh5
-	+KiBp4GHdTS2ky1ub1j9Ff3QwMJM6XNPfUT8jGxVWRss9okHrILcMuf1v+Ya04sMeT7lnkE3nxMJr
-	dV7LB3WPs3NDqpCuq99U6L+s6JZY5igO4xGOq1C6be4qWQFj9UO0/SBQR/B1mwr7c9B3QgT7QewXz
-	S+JE/WxQkXS7Qidls++S6Dm5Dzq4yLnNSeCO3U1ujZpqIFYZpYUO9lVJN4jZZuG7OiRX7pufOgWFB
-	aPX83dSA==;
+	bh=D88P2s75qGA5uxR0r7OKzJ/uLvFvl1fYzQcrFQBZ8NM=; b=hws3o1OGosZk3G21iabnVxjt2u
+	GiRe51OfmMHgVkPbjTEAPEAXDB+6k30Wz91ssA87tO4SXyScZolCoL/CYqreIVmi/X2qmKwE1oaGT
+	sUGv5G7pFriQCtXZmBoHhv020UYUdi/zSSOO0X/wre/2phR8YNt8bu5xmGXld1B2vTCj9wdnyvnsO
+	MPsFl5wzyVdpvPk4oNxfHCISMHo9iTw7p09q6N3T6o8iWdaQsHDBe5pipyVLbpJpyYmHYVery3GRS
+	oESWxOeNPjdPSag/dw00+uZ5ObmHTPSeHGr/Mun56Le4ZZImIcb0Us2HB0h3gsolnovW9at/j/00L
+	lbB8YVhg==;
 Received: from [2001:4bb8:2c2:7dc3:4a7a:b4de:3d88:bc44] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wjD3c-00000008knB-3oaB;
-	Mon, 13 Jul 2026 09:34:37 +0000
+	id 1wjD3i-00000008koW-1kJ1;
+	Mon, 13 Jul 2026 09:34:43 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: 
 Cc: baoquan.he@linux.dev,
@@ -73,23 +73,23 @@ Cc: baoquan.he@linux.dev,
 	shikemeng@huaweicloud.com,
 	youngjun.park@lge.com,
 	linux-mm@kvack.org
-Subject: [PATCH 6/7] mm/swap: remove SWP_FS_OPS
-Date: Mon, 13 Jul 2026 11:33:43 +0200
-Message-ID: <20260713093350.2154226-7-hch@lst.de>
+Subject: [PATCH 7/7] mm/vmstat: add NRSWP{IN,OUT} counters
+Date: Mon, 13 Jul 2026 11:33:44 +0200
+Message-ID: <20260713093350.2154226-8-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260713093350.2154226-1-hch@lst.de>
 References: <20260713093350.2154226-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: C81D41C0003
+X-Stat-Signature: njrznstmsrbdbgqqwzrx8ffgedwm6cip
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 94FC81C0002
-X-Stat-Signature: zz6zobyis6fjbe5ydfrq31n8nm5otabd
-X-HE-Tag: 1783935283-556667
-X-HE-Meta: U2FsdGVkX19sfoPV5YCD23x2b00H6Usd0iUl2o43V2OtoLrzsFNCWI28gGOZdlezI2PNykHEw2HDxjjR95RIZ02MDjPhTnF7g+FXx3NNHdtFmhp0M6W604jByhTmiJ9eulPASz5jFGkqJvJe2+bHIl9oRYwsLhkKEwVHsFOLQG0gHrvOrPmrXwOwYofDb7UFUnHmnDCcho0LIORrOmI4yPSmNIdwro9JpNWkFdBo56wg4XhaEP+joO2CMF9Cm/mPwV5kjrKpwGGlObUNxazCNTB7MBfZCYQHPMkmv7G9FKfo5p9f6tQaOiFuTQjwn1k9jgOVmVvU33Qh+OGF4Ck7YSDIk1cSPu+knlF2mnGBNovGaRJYGCxXazC6hXgVxTJN8w3JquGa0CjyzL3MECNK+J5cztskJ6Wjyg9ZVLEZjyNjKJpOhKBRWeMvkREo39o/7WrxS6NZaC0eCP0oJlsAH89UWyoXicnr+2gqgGImOzPH1wJorimQnrtBtJhWvubXcVjjPUAWqcUbOnI8DOowfLrBTb1u1PwfphhOefi8k91A6oiy1P+WP5vAU3HSFunetuewHJRv3TJtWYhWAOSRKJKeCUCPuXgKktsNmwRir8Pp31Q1f7X8/2mM1Rma5kMkv4h7hukKAwXJaeDiVDvhDhwrcN1yMV45OrJWD6ZpWSp939e3MdbHjprhjnZVW/taHSuq2UBMgka90+J++6kVTyYLiJ4bbMsNYe5LPtgbXOwxJYD6S8x+wt5IW/IKpv76/GFNGRmDAWOzQYWJ7jf/12QBLvv/muYaIeEC6SwRDsxij8ZIFQKp78HEGfAsYOGUgxchpeC745PlD2BBj++SxkUvmO/6N/4XVM3WUYK/onEThbwVHX4y+81oFUAX66F16JAZdY5QGiGgOPWZlR7x1hAGLGJSPAB694ndB6ryKq8EuRqlMH88tDyQmB5vZMXsMKS580zPwfaSPlSMUGV
- xSPs7o8G
- v3Uo3rbZgeu8mds2ltKuGQSr3UlcNnlSuFRT3B3hwUS3g3lhNsetJvykRiGQCIdaLj/iDnHbhw6a1A5ugJIxGzSDlkBopefsSnOMxP5kLo74jYhbvb17vfZGVr1Q/o6uEERGDd8vaoCRfpaZQHHB7Vyv18jQodzIM8qnR4CYgpdYtVl4anadi784D/Zj3smUmS5+axjBIltbqcVMT1l9HiBgJaSR9zn66Uq4s+LtJ7dF51F63Nq+8uOLqgZuVojs1PX/OaRiAXmS12qBI/w/D7GSEr9vV2xPcfmmYHRLj2Y/7YISzz7wXc67XwBH2ctUYWYuxssKxPvsGlz25WSEkM1YigWcbu2Dn6YepYLfowZuihXAOwHfLMqcTNT+u5Ht+zL2CRrQOIVTMFi44yIhO2aStAkgiBBfxdybZMUyEcH+LQ/PiIAaGy8I84uzx9EggWyWaAfPOBrbXOQPY3NkO/+jqD7/eAHUHNKiH0+T6Btxj0pOlqvmfNAbC++O8q4OLqKEdn/8KoBkjt4z76QZ1piUBEuy8sf/+bdBAfuSZd6PoIZjzaR+07W3WCD4zAmMnNmSwxZTH9fXhHqvXvdVpP1Yd/z8UH0jxuMfnsaYG8blrXIlHJc6snYmc3UhgHtspbwvy
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783935287-156924
+X-HE-Meta: U2FsdGVkX1+KuJPV70sIo0LZH7o1yJsDBz1xJl/HunZ3EvKAWkN7iw+hHcsapyp0E851DjOHgnuIlFrEmjUU9Y2Ne4tLvvhL7UeRaT7aquI8f9K7hQVDeXDhnUrju/GZuP+nsSLXvGaR2FUm1o33ecYTMOUir95wxj9fXdviR+xAmfOoGrnS9hoDJT4Y4R+8qclP8J3RGok0R3XC6V8b8eQbOHp67XjupQrFIVfHj1DlwLzUsX2LjDpWrn23pGHA9q2eaBNi52Oi+M3+Ws1Uh7U34nJvt1bQ9lGzjC06CtoynhOXnFqnVRtSSSunZETiTcQPrRrtV0MM8k7HCvq6xiCiiiuyndSlj7IYxRo6kwKEbn/8dzL0n+ov1KCGvt2dXE3AGAibRCrJUKDKiEq/eBSfM9z6oDC64iKLwre1lM4lpa923goiG0Tt9KfLhD/qPq49BqnJWAfsdSg6CcK/R8Emj/qR23KMV0Uh2WpBIUyViCRf5IbNOBN4r2WBz31KA7hz1pdhKGIZI7VXVy4ddy8xO5CiGDY7DpfrIhMpQBgVnt2D73gesMIPeolAr2KpOE9zshZZsOKhbUspN+gLKpEtJI69wdfHaYwh/pbLQLSOVewATc8amCPlbDQFUtJoFlhG7lAl8FmXJ2VjBgCkdL4VWYrJdc8PxLdNbXVjEUdtZQkhVSG0uhOv4P5/q+wSOlQXl+Qjl1nX7Q7uZMQUf8K/fVJRojiiDk5/UAp0E8yMFkL5cBYKG73NeqI09ftYBnMxy/IPouhE159Xzbc1B2sLo4ZpPxMsXVWLRPR51JgwYrhqu48ql5SJ76KhQw2tlcroa29eNnyB2eUDcSJoL6grzoJBpY5njBfq81F6rK9N1dnE26xP+ceJL7b/okrT2GWM+RkyQgMqJ3iJK7dYv279t2IqbD33ExbWsR6dMUVAxQ0zFza0Qras+bsyp/zsCx3BEY8dB6dxvzjLfsb
+ yVDGOZWM
+ J39FsADkNuiq53FziftxgDdpPSMFGD+5JSESuqWpM4Xf/ikaDXViSHXGZFWlyXoXbzxkRZ2iSgdrJURvJx6Nw+DcYh8+2xDNiuekctLCh95OqOkl3KXwiuRQGLnFI1dE+Rl6E0xo5CG+M4XIgUQ6PFRtnGDo7UpP0H5gF+gnrShTeNMKcV3ScbJOdxbdMwDhp6OQldMDQH6f73Q+cahs1u0EZ8vs0iuLA+hBj23WM89SPmirlG9kmRCAoKRVc3W2rFTMprVvECJMW0gQtDaHB0PxXHGPesDsdkvgyEorOGIwGP7mTPo4QLDIkortz77QhIFEL/enEliJ0nBpvVCoiMWNwIUDfRqoXajc5C3iCqpbrsdrmftQ3AcSfLtAM4+KrDrSyVIAN7JYl8QjtgZuvJ9lm/Qh7/TvLEJZHVPJCVBHIUC/m7buu2KJeyFnXki7cTZp6ZjsYEd06pkgwggtgoIFLVI7whSxq133z1NY6AcMcYPImli3a7KXc6bH1V/Q7AVVipa/4EzfsJInz1QVpSKcptdTVvC1M59qDPsYA005Bth5FB+Hg3Ak95LV+yVvIuoo4UXzRR7WD8IL70rqIjgEQsMqC8UQIvf4pKw1m8Hnh0NM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,251 +97,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide a swap_fs_activate helper that directly sets up swap_fs_ops,
-and a flag in struct swap_ops to indicate of NOFS swapping is allowed.
+Count how many swap I/Os we cause.  Due to batching this can be different
+than the current counter number of pages written/read, and tracking this
+information is useful to see how efficient the batching is.
+
+The counters are added at the end of enum vm_event_item and the
+vmstat_text array under the assumption that the order of fields in
+/proc/vmstat is an ABI.  If that is not the case, they could be grouped
+with the other swap counters.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 ---
- Documentation/filesystems/locking.rst |  5 +++--
- Documentation/filesystems/vfs.rst     |  4 ++--
- fs/nfs/file.c                         |  4 +---
- fs/smb/client/file.c                  |  4 +---
- include/linux/swap.h                  |  6 +++++-
- mm/page_io.c                          | 10 +++++++++-
- mm/swap.h                             | 22 ++++++++++------------
- mm/swapfile.c                         |  2 --
- mm/vmscan.c                           | 15 +++++++--------
- 9 files changed, 38 insertions(+), 34 deletions(-)
+ include/linux/vm_event_item.h | 4 ++++
+ mm/page_io.c                  | 2 ++
+ mm/vmstat.c                   | 6 +++++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
-index 08d01bc62c31..1a50d41a39a1 100644
---- a/Documentation/filesystems/locking.rst
-+++ b/Documentation/filesystems/locking.rst
-@@ -355,13 +355,14 @@ should perform any validation and preparation necessary to ensure that
- writes can be performed with minimal memory allocation.  It should call
- add_swap_extent(), or the helper iomap_swapfile_activate(), and return
- the number of extents added.  If IO should be submitted through
--->swap_rw(), it should set SWP_FS_OPS, otherwise IO will be submitted
-+->swap_rw(), it should call swap_fs_activate, otherwise IO will be submitted
- directly to the block device ``sis->bdev``.
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 03fe95f5a020..2628ccda076a 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -175,6 +175,10 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		KSTACK_REST,
+ #endif
+ #endif /* CONFIG_DEBUG_STACK_USAGE */
++#ifdef CONFIG_SWAP
++		NRSWPIN,
++		NRSWPOUT,
++#endif /* CONFIG_SWAP */
+ 		NR_VM_EVENT_ITEMS
+ };
  
- ->swap_deactivate() will be called in the sys_swapoff()
- path after ->swap_activate() returned success.
- 
--->swap_rw will be called for swap IO if SWP_FS_OPS was set by ->swap_activate().
-+->swap_rw will be called for swap IO if swap_fs_activate was called by
-+->swap_activate().
- 
- file_lock_operations
- ====================
-diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-index 7c753148af88..e7677423a20f 100644
---- a/Documentation/filesystems/vfs.rst
-+++ b/Documentation/filesystems/vfs.rst
-@@ -977,7 +977,7 @@ cache in your filesystem.  The following members are defined:
- 	can be performed with minimal memory allocation.  It should call
- 	add_swap_extent(), or the helper iomap_swapfile_activate(), and
- 	return the number of extents added.  If IO should be submitted
--	through ->swap_rw(), it should set SWP_FS_OPS, otherwise IO will
-+	through ->swap_rw(), it should call swap_fs_activate, otherwise IO will
- 	be submitted directly to the block device ``sis->bdev``.
- 
- ``swap_deactivate``
-@@ -985,7 +985,7 @@ cache in your filesystem.  The following members are defined:
- 	successful.
- 
- ``swap_rw``
--	Called to read or write swap pages when SWP_FS_OPS is set.
-+	Called to read or write swap pages when swap_fs_activate was called.
- 
- The File Object
- ===============
-diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-index a0d8f1c1cf10..851d93a09988 100644
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -597,7 +597,7 @@ static int nfs_swap_activate(struct swap_info_struct *sis, struct file *file,
- 	ret = rpc_clnt_swap_activate(clnt);
- 	if (ret)
- 		return ret;
--	ret = add_swap_extent(sis, 0, sis->max, 0);
-+	ret = swap_fs_activate(sis);
- 	if (ret < 0) {
- 		rpc_clnt_swap_deactivate(clnt);
- 		return ret;
-@@ -607,8 +607,6 @@ static int nfs_swap_activate(struct swap_info_struct *sis, struct file *file,
- 
- 	if (cl->rpc_ops->enable_swap)
- 		cl->rpc_ops->enable_swap(inode);
--
--	sis->flags |= SWP_FS_OPS;
- 	return ret;
- }
- 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 5a25635bc62a..4b1bc16b8f3f 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -3387,9 +3387,7 @@ static int cifs_swap_activate(struct swap_info_struct *sis,
- 	 * but we could add call to grab a byte range lock to prevent others
- 	 * from reading or writing the file
- 	 */
--
--	sis->flags |= SWP_FS_OPS;
--	return add_swap_extent(sis, 0, sis->max, 0);
-+	return swap_fs_activate(sis);
- }
- 
- static void cifs_swap_deactivate(struct file *file)
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index ee84d4cc8457..0544b2ec4c56 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -202,7 +202,6 @@ enum {
- 	SWP_SOLIDSTATE	= (1 << 4),	/* blkdev seeks are cheap */
- 	SWP_BLKDEV	= (1 << 6),	/* its a block device */
- 	SWP_ACTIVATED	= (1 << 7),	/* set after swap_activate success */
--	SWP_FS_OPS	= (1 << 8),	/* swapfile operations go through fs */
- 	SWP_AREA_DISCARD = (1 << 9),	/* single-time swap area discards */
- 	SWP_PAGE_DISCARD = (1 << 10),	/* freed swap page-cluster discards */
- 	SWP_STABLE_WRITES = (1 << 11),	/* no overwrite PG_writeback pages */
-@@ -336,6 +335,7 @@ extern void __meminit kswapd_stop(int nid);
- 
- #ifdef CONFIG_SWAP
- 
-+int swap_fs_activate(struct swap_info_struct *sis);
- int add_swap_extent(struct swap_info_struct *sis, unsigned long start_page,
- 		unsigned long nr_pages, sector_t start_block);
- int generic_swapfile_activate(struct swap_info_struct *, struct file *,
-@@ -461,6 +461,10 @@ static inline bool folio_free_swap(struct folio *folio)
- 	return false;
- }
- 
-+static inline int swap_fs_activate(struct swap_info_struct *sis)
-+{
-+	return -EINVAL;
-+}
- static inline int add_swap_extent(struct swap_info_struct *sis,
- 				  unsigned long start_page,
- 				  unsigned long nr_pages, sector_t start_block)
 diff --git a/mm/page_io.c b/mm/page_io.c
-index c36b44ffe947..cea438b66bce 100644
+index cea438b66bce..e4fa7ffffe8b 100644
 --- a/mm/page_io.c
 +++ b/mm/page_io.c
-@@ -686,12 +686,20 @@ static bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
- 		swap_dev_pos(prev_folio->swap) + prev_folio_size;
- }
- 
--const struct swap_ops swap_fs_ops = {
-+static const struct swap_ops swap_fs_ops = {
-+	.flags			= SWAP_OPS_F_REQUIRE_NOFS,
- 	.submit_write		= swap_fs_submit_write,
- 	.submit_read		= swap_fs_submit_read,
- 	.can_merge		= swap_fs_can_merge,
- };
- 
-+int swap_fs_activate(struct swap_info_struct *sis)
-+{
-+	sis->ops = &swap_fs_ops;
-+	return add_swap_extent(sis, 0, sis->max, 0);
-+}
-+EXPORT_SYMBOL_GPL(swap_fs_activate);
-+
- void swap_write_submit(struct swap_io_ctx *ctx)
+@@ -704,6 +704,7 @@ void swap_write_submit(struct swap_io_ctx *ctx)
  {
  	if (!ctx->sio)
-diff --git a/mm/swap.h b/mm/swap.h
-index 33a258c77064..8fb32bf15739 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -82,7 +82,17 @@ struct swap_io_ctx {
- 	struct swap_info_struct	*sis;
+ 		return;
++	count_vm_events(NRSWPOUT, 1);
+ 	ctx->sis->ops->submit_write(ctx);
+ 	ctx->sio = NULL;
+ 	ctx->sis = NULL;
+@@ -713,6 +714,7 @@ void swap_read_submit(struct swap_io_ctx *ctx)
+ {
+ 	if (!ctx->sio)
+ 		return;
++	count_vm_events(NRSWPIN, 1);
+ 	ctx->sis->ops->submit_read(ctx);
+ 	ctx->sio = NULL;
+ 	ctx->sis = NULL;
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 3b5cb1031f72..4e26e5fd6666 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1489,7 +1489,11 @@ const char * const vmstat_text[] = {
+ #if THREAD_SIZE > 65536
+ 	[I(KSTACK_REST)]			= "kstack_rest",
+ #endif
+-#endif
++#endif /* CONFIG_DEBUG_STACK_USAGE */
++#ifdef CONFIG_SWAP
++	[I(NRSWPIN)]				= "nrswpin",
++	[I(NRSWPOUT)]				= "nrswpout",
++#endif /* CONFIG_SWAP */
+ #undef I
+ #endif /* CONFIG_VM_EVENT_COUNTERS */
  };
- 
-+/*
-+ * SWAP_OPS_F_REQUIRE_NOFS:
-+ *	When set, all reclaim operations must operated as GFS_NOFS and not
-+ *	just GFP_NOIO, as GFP_NOIO allocations could recourse into the
-+ *	file system backing this swap file.
-+ */
-+#define SWAP_OPS_F_REQUIRE_NOFS		(1U << 0)
-+
- struct swap_ops {
-+	unsigned int		flags;
-+
- 	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
- 			size_t prev_folio_size, int rw);
- 	void (*submit_write)(struct swap_io_ctx *ctx);
-@@ -333,11 +343,6 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t flag, unsigned long orders,
- void swap_update_readahead(struct folio *folio, struct vm_area_struct *vma,
- 			   unsigned long addr);
- 
--static inline unsigned int folio_swap_flags(struct folio *folio)
--{
--	return __swap_entry_to_info(folio->swap)->flags;
--}
--
- #else /* CONFIG_SWAP */
- static inline struct swap_cluster_info *swap_cluster_lock(
- 	struct swap_info_struct *si, pgoff_t offset, bool irq)
-@@ -468,16 +473,9 @@ static inline void __swap_cache_replace_folio(struct swap_cluster_info *ci,
- 		struct folio *old, struct folio *new)
- {
- }
--
--static inline unsigned int folio_swap_flags(struct folio *folio)
--{
--	return 0;
--}
--
- #endif /* CONFIG_SWAP */
- 
- extern const struct swap_ops swap_bdev_ops;
--extern const struct swap_ops swap_fs_ops;
- 
- int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
- 		struct list_head *folio_list);
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index c6b3e4278045..1333def0870c 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2962,8 +2962,6 @@ static int setup_swap_extents(struct swap_info_struct *sis,
- 		ret = mapping->a_ops->swap_activate(sis, swap_file, span);
- 		if (ret < 0)
- 			return ret;
--		if (sis->flags & SWP_FS_OPS)
--			sis->ops = &swap_fs_ops;
- 		sis->flags |= SWP_ACTIVATED;
- 		return ret;
- 	}
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 1c42c925add2..4357a44ee876 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1033,16 +1033,15 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
- {
- 	if (gfp_mask & __GFP_FS)
- 		return true;
--	if (!folio_test_swapcache(folio) || !(gfp_mask & __GFP_IO))
--		return false;
- 	/*
--	 * We can "enter_fs" for swap-cache with only __GFP_IO
--	 * providing this isn't SWP_FS_OPS.
--	 * ->flags can be updated non-atomically,
--	 * but that will never affect SWP_FS_OPS, so the data_race
--	 * is safe.
-+	 * We can "enter_fs" for swap-cache with only __GFP_IO unless backed by
-+	 * a swapfile that requires GFP_NOFS I/O.
- 	 */
--	return !data_race(folio_swap_flags(folio) & SWP_FS_OPS);
-+	if (folio_test_swapcache(folio) && (gfp_mask & __GFP_IO) &&
-+	    !(__swap_entry_to_info(folio->swap)->ops->flags &
-+			SWAP_OPS_F_REQUIRE_NOFS))
-+		return true;
-+	return false;
- }
- 
- /*
 -- 
 2.53.0
 
