@@ -4,87 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14499C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A15CC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:16:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9B3C6B0147; Mon, 13 Jul 2026 13:15:55 -0400 (EDT)
+	id 574D96B0158; Mon, 13 Jul 2026 13:16:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E253A6B014A; Mon, 13 Jul 2026 13:15:55 -0400 (EDT)
+	id 5252F6B015A; Mon, 13 Jul 2026 13:16:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3B776B014E; Mon, 13 Jul 2026 13:15:55 -0400 (EDT)
+	id 3ECE36B015B; Mon, 13 Jul 2026 13:16:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A83A6B0147
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:15:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 909718C86B
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:15:53 +0000 (UTC)
-X-FDA: 84984405786.21.1A8D0A3
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 90498C0002
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:15:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=oZukcZ5v;
-	spf=pass (imf10.hostedemail.com: domain of caixiangfeng@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=caixiangfeng@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783962951;
-	b=1yBASFwlH9sSnDGROA+EFFkSQbPCS9TrTQ93Tyqq4m3Nu+NXVx5X3KYvaU5fT3uYOGkBZ6
-	elEAfTDtXYpHoIyGVK1e0VcylGdzVKCi2yQxoL8wO5ejlK88H85pu4QZacRPC/wmZXHaTx
-	76GONjqANAzlNK8RqcvTKnIIZbZrDNo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=oZukcZ5v;
-	spf=pass (imf10.hostedemail.com: domain of caixiangfeng@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=caixiangfeng@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0965D6B0158
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:16:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF7388B6CA
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:37:32 +0000 (UTC)
+X-FDA: 84983855544.20.7504A03
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 269F980010
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:37:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fBbkAIFQ;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783962951;
+	s=arc-20220608; t=1783949851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQf/qWjQhGY0dwG8Ri4r2F+VrewrSV+wxAsCOy/JUy8=;
-	b=lflBUTeqcwMSlyIkFe6zueBx8yvOqHoynw13qLU8guhQuZSdg0i9N/4fkQjkSUCqhlNDgT
-	CcfmAWa+uMMOuzYzMzBF0ARST77CoYeh4NIF8OTZswsFP1IWoVLtSMr5Azphzreo7v6Uws
-	zwCViQg3aXfJHqFhD022xNyhQ1im8yM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1783962947; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=FQf/qWjQhGY0dwG8Ri4r2F+VrewrSV+wxAsCOy/JUy8=;
- b=oZukcZ5voP5cD0olLVdsQts52lsu6o0FxT+43MJt4IJoKeHanYgl/9v/ipwcqfIMs/Zs0m
- oHkS26m5G6mVlzlM05IpLBgF59W9i8IBRr9q8yj9IfoLfgudIH1mdMBjqu9lJotWdF9MQF
- PaMHjfHr3vFphvBU/ZPtEnaDydInO/ubdR41J7Ul4C145v2vMh/8Xu4njTmYVUavtYQ3Fs
- qAhm1+TTPsxqcQrxgSAyIu2dw6oJAZenMTagq9ZyCwWpb7ChCctd5xtkUsWS4iDtpVbj9f
- nYM044hDhllTf1iTwjQICXVF2ajR8w0q3MkOWgtyPamYiKX88M1kPqlx9UkHyA==
-Subject: [PATCH 2/2] selftests/mm: add hugetlb_region_cache_race regression test
-Date: Tue, 14 Jul 2026 01:14:56 +0800
-Message-Id: <20260713171456.300518-3-caixiangfeng@bytedance.com>
-X-Mailer: git-send-email 2.55.0.122.gf85a7e6620
-Mime-Version: 1.0
-In-Reply-To: <20260713171456.300518-1-caixiangfeng@bytedance.com>
-X-Original-From: Xiangfeng Cai <caixiangfeng@bytedance.com>
-Content-Transfer-Encoding: 7bit
-References: <20260713171456.300518-1-caixiangfeng@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-To: <akpm@linux-foundation.org>, <muchun.song@linux.dev>, 
-	<osalvador@suse.de>, <david@kernel.org>
-Cc: <caixiangfeng@bytedance.com>, <richard.weiyang@linux.alibaba.com>, 
-	<baoquan.he@linux.dev>, <shuah@kernel.org>, <linux-mm@kvack.org>, 
-	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<stable@vger.kernel.org>
-From: "Xiangfeng Cai" <caixiangfeng@bytedance.com>
-X-Lms-Return-Path: <lba+26a551d41+cce69f+kvack.org+caixiangfeng@bytedance.com>
+	bh=kquTgKG2tUftdhkjvrowfIPLMW91GHe6VxDcWet49Dg=;
+	b=sV9SAqQbDuO1wJsvS9kMJHFu3Sim6IhYFOjz6x5/pwMy5QoPUQghoXs5uT7mDK3GRlqC8i
+	Y5Pa27h6+qWeIWBgaawgwJGJn4Ge0eM3JJqkRCcIe41jBVRq7mZDGKaH0dEmoaoBTlGDTo
+	8hIhekgtVkx3oloP+jJO5p/3BmeW5n4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fBbkAIFQ;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783949851;
+	b=BTR4xwx23Q68UlfB7v0SYU09ejVVIVpzC27JKDlDpBMV2pPPhITyXz9U4u4A7bzJ1pkqHh
+	gkNqa6tadD1OJJgsO5RlOjLEimHxFNUzU3PwExEPC94c9yIbqy8euBrWf0A/ULefl34WOW
+	9b7rKYRrjJgILKsQMQMohKcWmFoBqjg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783949849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kquTgKG2tUftdhkjvrowfIPLMW91GHe6VxDcWet49Dg=;
+	b=fBbkAIFQS3zQFlWxPb/v61B6TMHh3+fV7PqurWDyL/D/GL+VDJsFFmswg59dmBUY10cbU8
+	oiE2PBPYl7M/3Trby0a5ntlgn3WLY7SI5cmCmIKvTXu9AsInS7WtgplVLruizirQUtdy2m
+	ZUglO3A16XD9o3YF1hGgelR2kzGYmUM=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com,
+	Baoquan He <baoquan.he@linux.dev>,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	Liam R. Howlett <liam@infradead.org>,
+	ryan.roberts@arm.com,
+	Vlastimil Babka <vbabka@kernel.org>,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	yosry@kernel.org,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v4 10/11] mm: install PMD swap entries on swap-out
+Date: Mon, 13 Jul 2026 06:35:45 -0700
+Message-ID: <20260713133613.2707815-11-usama.arif@linux.dev>
+In-Reply-To: <20260713133613.2707815-1-usama.arif@linux.dev>
+References: <20260713133613.2707815-1-usama.arif@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 90498C0002
-X-Stat-Signature: 498gnmgu64dr1jb4wh3an7r6d7yg9etj
-X-HE-Tag: 1783962951-221174
-X-HE-Meta: U2FsdGVkX19OztuzdBBUFzoy8rF+3w/Ysqn4ceizohjDvbiQboHO171qB+r8hpf23jcsvAm0XTAB7KjP0be164zPCvrdkPMuzvffGPnIxVsAgb8sGq+VhP+WVlRGpqTgC+S9EbTlReEbE2nT7U3jTaousAnEAK807Js+WaNJ3l9UP2H9b33wFAooAhISxssTFquulktgWzBqTNQ4A7iHGfujtVrAFLk680BjEortoevV5l4NlUY2pe5/7Z95ABca246MJXD4aHBpFWJkatz2JXqxJdM1GLKiKqXB63t5Cl72hY1/kJ3ykfDmScva5DSZw0TakLJMqpsxH2ghmXBUpFoxyKUJpvyiXl4ZJE5yYUYnzLy3cZRulxtYeYo8sDgvUP9HBt5xix+DAxnGBMo6td2f5PJnRzCoov4jpfIQjNISv+TOG1iHwdrdhYu2qLWju46n0K26YNz+apqAs422GEC1eYY7jUkTdAJ5mFmhFdD3um5DGDCBPkElMsFZ76zYZMP9GPbfHrSx4uGzZTWHkGLMlUW3obhG+IZKIX02MkHuQSlQKcIMOLTkC3UOti69eYEI8erJc33IAwlQwre5jdJQpdjqsTV/krVlAN3d+iF8bcdy378Fjz5VbgBFjHsTT/B3RmIQnijgn6ze1mfcWbvdbyeI+EMRUv5wOdX/jIJe880RbJWKWvwK4DvGrghlsBMws5QBUX7YYzm/I/oNcIVmPHh7tpKwzWQv+rYS9YDNPO6hPfxU0PEARW942St+GK7/CeDgu4dAuZBgM+uY90SiTcb35S7M+MctWdA/NDuNNDISPRDv2TCcIVowoHYJXTNynW8aJvwPru7djMLj0FYqIYTjybw+Te/80Zlf9oLQnam3vLm8np2zW/HvRpkZcOLV5eaZE1xxjLL6uaqLeea9A5uh+53C+s8ClEQaQ8EOs+csEQFyY7w1s9jryDBxE6SW3NxDYshJRvgYgJM
- 8WHjn9Mv
- j54i+U45HdnYYZi5zpo/ghHh1bDS1mjwXIGyJAc/pGOeVyYL2dnQHi2Fq4BuBF7XC9Lk3vFFCZVcGeRyPs0mamUO10XpwDZJ4iOaUlAM0AAoHNvGKLqt4eQLs+mntIrDU5G7rRELOZBW1RivmEXotFkxXnA/5FNC62w6BvkPEy+r5Hgy96nNNEHr7Ze1O4dnEws5vz1MZ32EUhtTTFs+cXhw3ukCZhsecFfRBlB8vbw6s7ja50r06NteQ+qFtb9iy60jjoyCKqyE/2TXMKQXdpIIiOaWvUzU9gRd4d2YcboHWl3HyezCD7FuayA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 269F980010
+X-Stat-Signature: upiawbo7ssqr94o4kxr9zfjmf5btzi66
+X-HE-Tag: 1783949850-665834
+X-HE-Meta: U2FsdGVkX1/DDmG3p+LZY1xEyBHd6zllxN1xTE70X6353QCB2wCO5NBM9kjuNRDJcPOq7+XE1rYzNXn5OZkVAZn+kt58x0yU0QUrukHzxJPdPP3MjQfRk8olaAC9jV8mFlYAyBe4wlOkPU43xZ3te/dcHYixyP5GR5wQP9Vgxwk3xtXgagaP/oLaOUunChcuGP+oGFL0Y99faBZYpOi/1WOtPBnDav6aYcBbxXvY8eOcopD+X6/wLkC1afceIg65+D4Jtw3ej7IeHXocvSh4t8GXvPSRi354veMgGtWDg1F9+5ZNsRK0sWtnJXco4SYCyi5c7yDyuEwN6xHDfCGdVT3ZCS9Ty6dLtiwsRA/EGaEC3ZH1EWnuJCwDRm9JOqBmvxK+XRJTH05/wyx+ZbpvQenCwoSMeKIpVjRAG7e4HMd62AMQmH3PR7A4JgCTIY+uQWKkpz86xKpZmEjKzZ5EgcrhVwMOqgOJaqeGWG4XbQFDoioPnf36sBQzv7ZqnEj9t4sAR/5pjP6gKAPClOIda6YKphwLbBpN/QWz0tGx7QzDN/9cav3ONtI7pIzYkOSALXgV892OoYXB+qy9FMALbiT20zdtQwsPBiew7ANjdNrvS7I3QZhU2k/pCvLnsZjhrlxguGrUxBodTblKT4i+YCC8roaSk4/oC+gICo7RqR38st4krUD9EM0zYgIlYkhmiC8KNBf71dlqRhx/EELtk0WBfb7msO77REYINagoGb+fVAESNbSQN+WXVgi1kwnVR2uv/vXZCv3j6Wh5NEiX7Oxx5kjktoORWEQgu2X8cAHZziuFbGcV9ySdtvoMe49c/EbVKF/siTYh2Z455A2mvsTY9owr9Hj6L1NS5bZaK0dthvchSkgX9LSm3+JmfRtZ0XoiYqU9ecTENnFZqAPERmhyWzLiGK8QukPdSr29RjqwcGJAw5J/IcCOLpFGwcpB2Kl3inF6v6tw1ZWe+m1
+ +H688nbC
+ 8i+hr/m8v6cijyjqhbs0yhOGhEP2NlctCFYLH9emvdSjcZXSfs17RbosOCXdtbzGhcOk1Ryjr4Eacsyw7eJkuZXQ5VPieTDjcrh9oFsGQRSKKkW+HNNLebH8mSXFCGUYtRgXCET0XfaGj7SIWOLZJrs7yQqfqpvn02R7yhwH4SYPd5zv0o7K6JWlgpNkqVvoyJkq2HQUIr6ocNfk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,395 +113,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a regression test for the list corruption in
-allocate_file_region_entries() fixed by the previous patch
-("mm/hugetlb: fix list corruption in allocate_file_region_entries()").
+Reclaim today splits a PMD-mapped anonymous THP into 512 PTE swap
+entries before unmap, losing the huge mapping across the swap
+round-trip and forcing khugepaged to rebuild it later. The contiguous
+swap range was already secured when the folio was added to the swap
+cache (a non-contiguous allocation would have split the folio earlier),
+so the PMD can be replaced by a single PMD-level swap entry instead.
 
-Triggering the bug requires a concurrent reservation operation to drain
-resv->region_cache while allocate_file_region_entries() has dropped
-resv->lock for its GFP_KERNEL allocation, forcing its retry loop to run
-again.  As the mmap() and fallocate(PUNCH_HOLE) paths serialise on
-inode_lock, the cache has to be drained by faults from a separate address
-space.  The test forks several processes sharing one hugetlb inode via
-memfd_create(MFD_HUGETLB); each mmap()s and faults ranges and punches holes
-to keep the shared resv_map fragmented.
+This patch mirrors the existing PTE swap-out path at PMD granularity:
+- shrink_folio_list() drops TTU_SPLIT_HUGE_PMD for PMD-mappable
+  swapcache folios. zswap is handled by the PMD swap-in users: if any
+  covered slot currently has a zswap entry, they split the PMD swap
+  entry and fall back to the per-PTE path.
+- try_to_unmap_one() now has a PMD branch that calls
+  set_pmd_swap_entry() and adjusts MM_ANONPAGES / MM_SWAPENTS by
+  HPAGE_PMD_NR before walk_done. TTU_SPLIT_HUGE_PMD remains the
+  fallback.
+- set_pmd_swap_entry() is the installer. Mirroring the PTE swap-out
+  sequence at PMD granularity, it clears the present mapping (keeping
+  the original for rollback), bumps the swap_map refcount for the
+  folio's 512 slots, transfers the exclusive state in the swap entry,
+  propagates the dirty bit to the folio so writeback is not lost,
+  and installs a swap PMD that preserves the original
+  soft-dirty / uffd-wp / exclusive bits. Any failing step rolls back
+  the present mapping.
 
-Two modes are provided:
+The swap entry value matches what 512 PTE swap entries would encode, so
+swap_map refcounting is unchanged: each of the 512 slots carries a
+count of 1, released individually on later split or together on swap-in.
 
- - default: a safe single-process functional check that exercises the buggy
-   line without forcing a second loop iteration; safe on any kernel.
-
- - --trigger: the concurrent reproducer, which panics a vulnerable
-   CONFIG_DEBUG_LIST=y kernel and is therefore opt-in.  It faults pages in,
-   so it needs as many free huge pages as the file is large.
-
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Xiangfeng Cai <caixiangfeng@bytedance.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- tools/testing/selftests/mm/.gitignore         |   1 +
- tools/testing/selftests/mm/Makefile           |   1 +
- .../selftests/mm/hugetlb_region_cache_race.c  | 315 ++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh     |   1 +
- 4 files changed, 318 insertions(+)
- create mode 100644 tools/testing/selftests/mm/hugetlb_region_cache_race.c
+ include/linux/huge_mm.h       |  2 +
+ include/linux/vm_event_item.h |  1 +
+ mm/huge_memory.c              | 80 +++++++++++++++++++++++++++++++++++
+ mm/rmap.c                     | 19 +++++++++
+ mm/vmscan.c                   |  9 +++-
+ mm/vmstat.c                   |  1 +
+ 6 files changed, 111 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index 9ccd9e1447e6..7db8657960d9 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -59,6 +59,7 @@ hugetlb_madv_vs_map
- mseal_test
- droppable
- hugetlb_dio
-+hugetlb_region_cache_race
- pkey_sighandler_tests_32
- pkey_sighandler_tests_64
- guard-regions
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index e6df968f0971..421a0b7fdddf 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -67,6 +67,7 @@ TEST_GEN_FILES += hugetlb-read-hwpoison
- TEST_GEN_FILES += hugetlb-shm
- TEST_GEN_FILES += hugetlb-soft-offline
- TEST_GEN_FILES += hugetlb-vmemmap
-+TEST_GEN_FILES += hugetlb_region_cache_race
- TEST_GEN_FILES += khugepaged
- TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
-diff --git a/tools/testing/selftests/mm/hugetlb_region_cache_race.c b/tools/testing/selftests/mm/hugetlb_region_cache_race.c
-new file mode 100644
-index 000000000000..6e3f753640be
---- /dev/null
-+++ b/tools/testing/selftests/mm/hugetlb_region_cache_race.c
-@@ -0,0 +1,315 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Regression test for list corruption in
-+ * mm/hugetlb.c:allocate_file_region_entries().
-+ *
-+ * Fork processes sharing a hugetlb inode via `memfd_create(MFD_HUGETLB)`
-+ * and have them fault ranges and punch holes to fragment the shared
-+ * `resv_map` while draining `resv->region_cache` from a separate address
-+ * space.
-+ */
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <setjmp.h>
-+#include <signal.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <time.h>
-+#include <unistd.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <sys/wait.h>
-+
-+#include <linux/falloc.h>
-+#include <linux/memfd.h>
-+
-+#include "../kselftest.h"
-+#include "hugepage_settings.h"
-+
-+/* Tunables (overridable via argv). */
-+static unsigned long file_pages = 64;	/* huge pages backing the shared file */
-+static unsigned int nr_procs;		/* 0 => auto (2 * nr online cpus) */
-+static unsigned int duration_sec = 5;	/* --trigger run time */
-+
-+static unsigned long huge_page_size;	/* bytes */
-+static int memfd = -1;
-+static volatile int *stop;		/* shared across forked children */
-+
-+/*
-+ * Per-process SIGBUS escape: a fault can fail (pool exhausted) and raise
-+ * SIGBUS; jump back and abandon the rest of the current range instead of
-+ * dying.  Each child is single-threaded, so a file-scope buffer is fine.
-+ */
-+static sigjmp_buf sigbus_env;
-+
-+static void sigbus_handler(int sig)
-+{
-+	siglongjmp(sigbus_env, 1);
-+}
-+
-+static void install_sigbus_handler(void)
-+{
-+	struct sigaction sa = {
-+		.sa_handler = sigbus_handler,
-+	};
-+
-+	sigemptyset(&sa.sa_mask);
-+	sigaction(SIGBUS, &sa, NULL);
-+}
-+
-+static long sys_memfd_create(const char *name, unsigned int flags)
-+{
-+	return syscall(__NR_memfd_create, name, flags);
-+}
-+
-+/*
-+ * Map [start, start+len) of the shared file and fault every page in.
-+ *
-+ * The mmap() drives mmap-time hugetlb_reserve_pages -> region_chg (the
-+ * wide-window victim when the range is fragmented) + region_add.  The
-+ * subsequent stores fault pages in *without* inode_lock, driving the
-+ * lock-free region_add/region_chg that drains resv->region_cache -- the
-+ * concurrency the buggy loop needs from *other* processes.
-+ */
-+static void map_and_fault_range(unsigned long start, unsigned long len)
-+{
-+	unsigned long i;
-+	char *addr;
-+
-+	if (!len)
-+		return;
-+	addr = mmap(NULL, len * huge_page_size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED, memfd, start * huge_page_size);
-+	if (addr == MAP_FAILED)
-+		return;		/* ENOMEM under pool pressure is fine */
-+
-+	for (i = 0; i < len; i++) {
-+		if (sigsetjmp(sigbus_env, 1) == 0)
-+			*(volatile char *)(addr + i * huge_page_size) = (char)i;
-+		else
-+			break;	/* SIGBUS: pool exhausted, stop faulting */
-+	}
-+	munmap(addr, len * huge_page_size);
-+}
-+
-+/*
-+ * Remove [start, start+len) huge pages from the shared file, driving
-+ * hugetlbfs_punch_hole -> remove_inode_hugepages -> region_del for the pages
-+ * that were faulted in above.  This frees pages back to the pool (bounding
-+ * residency) and re-fragments the resv_map so later region_chg calls keep
-+ * needing multiple entries.
-+ */
-+static void punch_range(unsigned long start, unsigned long len)
-+{
-+	if (!len)
-+		return;
-+	fallocate(memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+		  start * huge_page_size, len * huge_page_size);
-+}
-+
-+/*
-+ * One forked worker.  Each worker is simultaneously a victim (its wide
-+ * mmap-time region_chg) and, for the other workers, a lock-free cache
-+ * drainer (its faults) -- exactly the shared-inode map+fault churn seen in
-+ * the original crash (QEMU prealloc + SPDK/Bytelight on one guest-RAM file).
-+ */
-+static void child_worker(unsigned int id)
-+{
-+	unsigned int seed = id * 2654435761u ^ (unsigned int)time(NULL) ^
-+			    ((unsigned int)getpid() << 1);
-+
-+	install_sigbus_handler();
-+
-+	while (!*stop) {
-+		unsigned long start = rand_r(&seed) % file_pages;
-+		unsigned long len = 1 + rand_r(&seed) % (file_pages - start);
-+
-+		/*
-+		 * Bias toward map+fault (victims and drainers); punch a
-+		 * quarter of the time to keep the map fragmented and to cap
-+		 * how many pages stay resident.
-+		 */
-+		if (rand_r(&seed) % 4)
-+			map_and_fault_range(start, len);
-+		else
-+			punch_range(start, len);
-+	}
-+}
-+
-+/*
-+ * Safe, single-process functional check.  It fragments the shared resv_map
-+ * (reservations for a shared mapping persist on the inode after munmap) so
-+ * that a subsequent whole-file mmap makes region_chg compute
-+ * regions_needed > 1, forcing allocate_file_region_entries to allocate and
-+ * splice several entries.  This exercises the buggy line, but without
-+ * concurrency it always makes exactly one loop iteration, so it cannot trip
-+ * the race and is safe on any kernel.  Returns 0 on success.
-+ */
-+static int functional_check(void)
-+{
-+	unsigned long i;
-+	void *addr;
-+
-+	/* Punch everything so we start from an empty resv_map. */
-+	punch_range(0, file_pages);
-+
-+	/* Reserve every other huge page -> ~file_pages/2 disjoint regions. */
-+	for (i = 0; i < file_pages; i += 2)
-+		map_and_fault_range(i, 1);
-+
-+	/*
-+	 * One mapping spanning the whole file must fill all the holes in a
-+	 * single region_chg -> a multi-entry region_cache refill.
-+	 */
-+	addr = mmap(NULL, file_pages * huge_page_size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED, memfd, 0);
-+	if (addr == MAP_FAILED) {
-+		ksft_print_msg("whole-file mmap failed: %s\n", strerror(errno));
-+		return -1;
-+	}
-+	munmap(addr, file_pages * huge_page_size);
-+	punch_range(0, file_pages);
-+	return 0;
-+}
-+
-+static int run_trigger(void)
-+{
-+	pid_t *pids;
-+	unsigned int i, started = 0;
-+
-+	stop = mmap(NULL, sizeof(*stop), PROT_READ | PROT_WRITE,
-+		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	if (stop == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap(stop flag): %s\n", strerror(errno));
-+	*stop = 0;
-+
-+	pids = calloc(nr_procs, sizeof(*pids));
-+	if (!pids)
-+		ksft_exit_fail_msg("calloc: %s\n", strerror(errno));
-+
-+	ksft_print_msg("stressing %u processes for %us on %lu huge pages (%lu MiB)\n",
-+		       nr_procs, duration_sec, file_pages,
-+		       (file_pages * huge_page_size) >> 20);
-+	ksft_print_msg("WARNING: a vulnerable kernel will panic here\n");
-+
-+	for (i = 0; i < nr_procs; i++) {
-+		pid_t pid = fork();
-+
-+		if (pid < 0) {
-+			ksft_print_msg("fork: %s\n", strerror(errno));
-+			break;
-+		}
-+		if (pid == 0) {
-+			free(pids);
-+			child_worker(i);
-+			_exit(0);
-+		}
-+		pids[started++] = pid;
-+	}
-+
-+	if (!started) {
-+		free(pids);
-+		munmap((void *)stop, sizeof(*stop));
-+		ksft_exit_fail_msg("no worker processes started\n");
-+	}
-+
-+	sleep(duration_sec);
-+	*stop = 1;
-+
-+	for (i = 0; i < started; i++)
-+		waitpid(pids[i], NULL, 0);
-+	free(pids);
-+	munmap((void *)stop, sizeof(*stop));
-+	return 0;
-+}
-+
-+static void usage(const char *prog)
-+{
-+	fprintf(stderr,
-+		"usage: %s [--trigger] [-s huge_pages] [-t procs] [-d seconds]\n"
-+		"  (default) run a safe single-process functional check\n"
-+		"  --trigger fork+fault concurrent reproducer (CAN PANIC A BUGGY HOST)\n"
-+		"  -s  huge pages backing the shared file (default %lu)\n"
-+		"  -t  worker processes for --trigger (default 2 * nr_cpus)\n"
-+		"  -d  --trigger run time in seconds (default %u)\n",
-+		prog, file_pages, duration_sec);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	bool trigger = false;
-+	int i, ret;
-+
-+	for (i = 1; i < argc; i++) {
-+		if (!strcmp(argv[i], "--trigger")) {
-+			trigger = true;
-+		} else if (!strcmp(argv[i], "-s") && i + 1 < argc) {
-+			file_pages = strtoul(argv[++i], NULL, 0);
-+		} else if (!strcmp(argv[i], "-t") && i + 1 < argc) {
-+			nr_procs = strtoul(argv[++i], NULL, 0);
-+		} else if (!strcmp(argv[i], "-d") && i + 1 < argc) {
-+			duration_sec = strtoul(argv[++i], NULL, 0);
-+		} else {
-+			usage(argv[0]);
-+			return KSFT_FAIL;
-+		}
-+	}
-+
-+	ksft_print_header();
-+	ksft_set_plan(1);
-+
-+	if (file_pages < 4)
-+		file_pages = 4;
-+	if (!nr_procs) {
-+		long cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+
-+		nr_procs = cpus > 0 ? (unsigned int)cpus * 2 : 4;
-+	}
-+	if (nr_procs < 2)
-+		nr_procs = 2;
-+
-+	huge_page_size = default_huge_page_size();
-+	if (!huge_page_size)
-+		ksft_exit_skip("no hugetlbfs / huge page size available\n");
-+
-+	/*
-+	 * Both modes fault pages in (functional_check touches every page it
-+	 * maps, and --trigger's workers fault the ranges they map), so the
-+	 * whole file may become resident; require that many *free* huge pages,
-+	 * not just reservations.
-+	 */
-+	if (hugetlb_free_default_pages() < file_pages)
-+		ksft_exit_skip("need %lu free huge pages, have %lu (set nr_hugepages)\n",
-+			       file_pages, hugetlb_free_default_pages());
-+
-+	memfd = sys_memfd_create("hugetlb_region_cache_race",
-+				 MFD_HUGETLB |
-+				 (__builtin_ctzl(huge_page_size) << MFD_HUGE_SHIFT));
-+	if (memfd < 0)
-+		ksft_exit_skip("memfd_create(MFD_HUGETLB): %s\n",
-+			       strerror(errno));
-+	if (ftruncate(memfd, file_pages * huge_page_size)) {
-+		close(memfd);
-+		ksft_exit_fail_msg("ftruncate: %s\n", strerror(errno));
-+	}
-+
-+	if (trigger)
-+		ret = run_trigger();
-+	else
-+		ret = functional_check();
-+
-+	close(memfd);
-+
-+	if (ret)
-+		ksft_test_result_fail("hugetlb region_cache race check\n");
-+	else if (trigger)
-+		ksft_test_result_pass("survived concurrent region_cache churn\n");
-+	else
-+		ksft_test_result_pass("multi-entry region_cache refill works\n");
-+
-+	ksft_finished();
-+}
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 8c296dedf047..0cb857056915 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -267,6 +267,7 @@ CATEGORY="hugetlb" run_test ./hugetlb-madvise
- CATEGORY="hugetlb" run_test ./hugetlb_dio
- CATEGORY="hugetlb" run_test ./hugetlb_fault_after_madv
- CATEGORY="hugetlb" run_test ./hugetlb_madv_vs_map
-+CATEGORY="hugetlb" run_test ./hugetlb_region_cache_race
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index b6ab28ff7eee..6d294d446f7b 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -536,6 +536,8 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
  
- if test_selected "hugetlb"; then
- 	echo "NOTE: These hugetlb tests provide minimal coverage.  Use"	  | tap_prefix
+ #ifdef CONFIG_THP_SWAP
+ vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf);
++int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
++		       struct folio *folio);
+ #else
+ static inline vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
+ {
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 03fe95f5a020..7267c06674c0 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -108,6 +108,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		THP_ZERO_PAGE_ALLOC_FAILED,
+ 		THP_SWPOUT,
+ 		THP_SWPOUT_FALLBACK,
++		THP_SWPOUT_PMD,
+ #endif
+ #ifdef CONFIG_BALLOON
+ 		BALLOON_INFLATE,
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 60f42d136945..2f5c01a043fe 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -5544,3 +5544,83 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+ 	trace_remove_migration_pmd(address, pmd_val(pmde));
+ }
+ #endif
++
++#ifdef CONFIG_THP_SWAP
++/**
++ * set_pmd_swap_entry() - Replace a PMD mapping with a PMD-level swap entry.
++ * @pvmw: Page vma mapped walk context, must have pvmw->pmd set and
++ *        pvmw->pte NULL (i.e. PMD-mapped).
++ * @folio: The folio being swapped out. Must be in the swap cache.
++ *
++ * This installs a PMD-level swap entry in place of a present PMD mapping,
++ * avoiding the need to split the PMD into PTE-level swap entries.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++int set_pmd_swap_entry(struct page_vma_mapped_walk *pvmw,
++		       struct folio *folio)
++{
++	struct vm_area_struct *vma = pvmw->vma;
++	struct mm_struct *mm = vma->vm_mm;
++	unsigned long address = pvmw->address;
++	unsigned long haddr = address & HPAGE_PMD_MASK;
++	struct page *page = folio_page(folio, 0);
++	bool anon_exclusive;
++	pmd_t pmdval;
++	swp_entry_t entry;
++	pmd_t pmdswp;
++
++	if (!(pvmw->pmd && !pvmw->pte))
++		return 0;
++
++	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
++	VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
++
++	if (unlikely(folio_test_swapbacked(folio) !=
++			folio_test_swapcache(folio))) {
++		WARN_ON_ONCE(1);
++		return -EBUSY;
++	}
++
++	flush_cache_range(vma, haddr, haddr + HPAGE_PMD_SIZE);
++
++	pmdval = pmdp_invalidate(vma, haddr, pvmw->pmd);
++
++	/* Update high watermark before we lower rss */
++	update_hiwater_rss(mm);
++
++	if (folio_dup_swap(folio, NULL) < 0) {
++		set_pmd_at(mm, haddr, pvmw->pmd, pmdval);
++		return -ENOMEM;
++	}
++
++	/* See folio_try_share_anon_rmap_pmd(): invalidate PMD first. */
++	anon_exclusive = PageAnonExclusive(page);
++	if (anon_exclusive && folio_try_share_anon_rmap_pmd(folio, page)) {
++		folio_put_swap(folio, NULL);
++		set_pmd_at(mm, haddr, pvmw->pmd, pmdval);
++		return -EBUSY;
++	}
++
++	mm_prepare_for_swap_entries(mm);
++
++	if (pmd_dirty(pmdval))
++		folio_mark_dirty(folio);
++
++	entry = folio->swap;
++	pmdswp = softleaf_to_pmd(entry);
++	if (pmd_soft_dirty(pmdval))
++		pmdswp = pmd_swp_mksoft_dirty(pmdswp);
++	if (pmd_uffd(pmdval))
++		pmdswp = pmd_swp_mkuffd(pmdswp);
++	if (anon_exclusive)
++		pmdswp = pmd_swp_mkexclusive(pmdswp);
++	set_pmd_at(mm, haddr, pvmw->pmd, pmdswp);
++
++	folio_remove_rmap_pmd(folio, page, vma);
++	folio_put(folio);
++
++	count_vm_event(THP_SWPOUT_PMD);
++	return 0;
++}
++#endif /* CONFIG_THP_SWAP */
+diff --git a/mm/rmap.c b/mm/rmap.c
+index e854679553b9..b431d52cc2e3 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2079,6 +2079,25 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 				goto walk_abort;
+ 			}
+ 
++#ifdef CONFIG_THP_SWAP
++			/*
++			 * If the folio is in the swap cache and we're not
++			 * asked to split, install a PMD-level swap entry.
++			 */
++			if (!(flags & TTU_SPLIT_HUGE_PMD) &&
++			    folio_test_anon(folio) &&
++			    folio_test_swapcache(folio)) {
++				if (set_pmd_swap_entry(&pvmw, folio))
++					goto walk_abort;
++
++				add_mm_counter(mm, MM_ANONPAGES,
++					       -HPAGE_PMD_NR);
++				add_mm_counter(mm, MM_SWAPENTS,
++					       HPAGE_PMD_NR);
++				goto walk_done;
++			}
++#endif
++
+ 			if (flags & TTU_SPLIT_HUGE_PMD) {
+ 				/*
+ 				 * We temporarily have to drop the PTL and
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 986dde8e7429..ffc72a2f635b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1322,7 +1322,14 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 			enum ttu_flags flags = TTU_BATCH_FLUSH;
+ 			bool was_swapbacked = folio_test_swapbacked(folio);
+ 
+-			if (folio_test_pmd_mappable(folio))
++			/*
++			 * With THP_SWAP, PMD-mappable folios already in the
++			 * swap cache can be unmapped with a PMD-level swap
++			 * entry, avoiding the cost of splitting the PMD.
++			 */
++			if (folio_test_pmd_mappable(folio) &&
++			    !(IS_ENABLED(CONFIG_THP_SWAP) &&
++			      folio_test_swapcache(folio)))
+ 				flags |= TTU_SPLIT_HUGE_PMD;
+ 			/*
+ 			 * Without TTU_SYNC, try_to_unmap will only begin to
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 3b5cb1031f72..08af18f2b4dc 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1422,6 +1422,7 @@ const char * const vmstat_text[] = {
+ 	[I(THP_ZERO_PAGE_ALLOC_FAILED)]		= "thp_zero_page_alloc_failed",
+ 	[I(THP_SWPOUT)]				= "thp_swpout",
+ 	[I(THP_SWPOUT_FALLBACK)]		= "thp_swpout_fallback",
++	[I(THP_SWPOUT_PMD)]			= "thp_swpout_pmd",
+ #endif
+ #ifdef CONFIG_BALLOON
+ 	[I(BALLOON_INFLATE)]			= "balloon_inflate",
 -- 
-2.55.0.122.gf85a7e6620
+2.53.0-Meta
+
 
