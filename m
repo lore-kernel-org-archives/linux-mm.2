@@ -4,105 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF7EAC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:27:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01EBCC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 17:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98F646B012A; Mon, 13 Jul 2026 13:27:01 -0400 (EDT)
+	id 127096B00D5; Mon, 13 Jul 2026 13:29:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89A3C6B012B; Mon, 13 Jul 2026 13:27:01 -0400 (EDT)
+	id 08BA16B00FB; Mon, 13 Jul 2026 13:29:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 651406B0130; Mon, 13 Jul 2026 13:27:01 -0400 (EDT)
+	id E93CE6B00FD; Mon, 13 Jul 2026 13:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D0EC36B012C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:27:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 58D24A001D
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:27:00 +0000 (UTC)
-X-FDA: 84984433800.11.8BAD4C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4BC0A4000F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:26:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NQXWFo2X;
-	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783963618;
-	b=UrsrputrXWPrxQC5xGFPwDqrORskli/mRK8cKFlSRZpHrbtGj5M+oeC+ODNeJOLHMSZKhS
-	iRzFUfV224icl6/BuPbqXACD3bmnLLX8daPwFkpJx0euBWfJsl92lgxznGqZR0Fgkk3tAA
-	UUaxzuit9IfmAjXNfpPCIm3/L+zpxxI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NQXWFo2X;
-	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BEF7D6B00D5
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 13:29:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E375A0142
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:29:18 +0000 (UTC)
+X-FDA: 84984439596.17.2758D23
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B9E8B18000A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 17:29:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V2ht2vVF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783963618;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	s=arc-20220608; t=1783963756;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yIram0CBveShx2ldiqDDOJy4swi8d/Z1B4Xqb6LfZ4Y=;
-	b=BY0f2OGBhguW/h+XbCN3dY00fCFhKTMCVn78kp6uLUzKKQOrwKM00Jua2FzB8ktniwHxx3
-	awJPq5gsxJNwcAaZIW8+wnT2E7GA3TeuB2WeA1o8LFCSP/4rais+5big6s7E5kpqtCvFIc
-	hOfFfWUJeMGDBVl5fBi5+jYJIC21hpc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 56D0B412CB;
-	Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A278C2BCB8;
-	Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783963615;
-	bh=JQKJIgJ9eudom/HTZ6AW9z1JjGv/8wYywvRoKVizjs4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=NQXWFo2XNWGl88EopSPbISG+j4H3/JVmFQbuCjUXuXJBJ3vF3Tujef3uPKQ28pilR
-	 Q3ZmGmUmEENYqNfjicdWvgR9ZFJAAMcMTaC85mgZQKV4AhMN3qQutN9+baLBmHMnsh
-	 l81RXjNUpDr/lIxxbrYPR/cbR/hpWgQs4bxYdh80tjCwebqyttEXKjQaGoG2ciuYGV
-	 eI9nkpMv2ZJoLcfJNBVZr7LIJXv+wgwOENSWIYm1Ff6tcz1w0kGqx2y5VxRmrz/Qiw
-	 9WpstUluvSJPiRu9nmSRtQEkpICxQCGcPU0ENz6my9MsJCg1r3FhpF2fuoYiZvwaqC
-	 LrMzceYV3jp2A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29AC5C44501;
-	Mon, 13 Jul 2026 17:26:55 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 14 Jul 2026 01:25:47 +0800
-Subject: [PATCH RFC 09/13] mm/swap: add priority queue for swap device
- allocation
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CQCu3DCXkh2E8vskCgULolMkoi8dFixsDbgG1aVFXB0=;
+	b=4ksq0uHPC+YhM7dvSdUi/+hkkmaqIbqqkPDzGQAy5tlJuH03DryX59hO2IiruDxqxohQxS
+	ldRnG4tAJ6+KBzUnFF60xt+h4FGClWre94xBOqoArsx18X0zL3+UUuLGLlM/eDCnZk/P3s
+	HA4RdbWZI9HbmteMMC3bTkJnS4lA/4I=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V2ht2vVF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783963756;
+	b=cxAwywX9OzrOCfSQiuf7aj731+ptG8ONthks4i9rvWejYnKR0iG56yS1g4nzlEwvkELS7j
+	65Vx6Q7HFm4wJEcd1T9pwmb++ER8kVI+DsQanF7vbgHZT9l5cBvDqtl05/mNQJA/a0EJuP
+	pdVSMlIpLGos3dwfH2ex/sfTL0YgPkg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E09E60008;
+	Mon, 13 Jul 2026 17:29:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C891F00A3A;
+	Mon, 13 Jul 2026 17:29:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783963755;
+	bh=CQCu3DCXkh2E8vskCgULolMkoi8dFixsDbgG1aVFXB0=;
+	h=Date:From:Subject:To;
+	b=V2ht2vVFbfFjbRdugHr18TSODgco0uJFeYKWhLEg4SFlTETu/jQcR8qQzhZeYuRag
+	 4FlzDrT07LzgmlETsxYnuSckY61OP7GTcNzMwhbO6hw376HdDoZFibW6euapxtTVOf
+	 HBSKY39T9hPXhA15xdHnH5V2YgXlj5XR6X/aAKA0NgUzAD/kPwxdWNYIS6bArLdNX7
+	 4Lz5J5+bitv7pDVXabeu1TKGyDK9/r6sYeaOKONqI0WuRghePNqW5HyTS3zJFW2wSX
+	 XdNXANpfL4830KXsGnC/KlAYwpxvOKnttXkPyWn4mBuu1eGUA8pexpxNFbH79B7pVj
+	 FMncR/WPNyF/Q==
+Message-ID: <bed81e01-7303-4957-bd7d-38e3a094e96f@kernel.org>
+Date: Mon, 13 Jul 2026 19:29:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-swap-pcp-priq-v1-9-de9b164ed419@tencent.com>
-References: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
-In-Reply-To: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
- Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
- Youngjun Park <youngjun.park@lge.com>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783963612; l=22359;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=8tS3UITEBOW10HWmX2xTNUIk0tFMGKzXLCIVKJeQmlw=;
- b=asjL7hIUg10OcSXI2eBjFUqN4Hj13zEqZjrAQamKtY/UIj8mbASUi+TojxI+I7DnE5Kt7b89b
- HefxciF5gYgAf3ZCBXFWPtE4LLFEkSq2bJ2GmwJixZFlPxjequ4EdbR
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Subject: [Update] mm-next status 2026/07/13
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+To: "linux-mm@kvack.org" <linux-mm@kvack.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ub6rpo1ksu4hp9o8pjqh6k8t1196qq6j
+X-Rspamd-Queue-Id: B9E8B18000A
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4BC0A4000F
-X-Stat-Signature: kssthe8ao9a9us1zc3n8bw5o7xswt18e
-X-HE-Tag: 1783963618-647786
-X-HE-Meta: U2FsdGVkX18pQN/XzZUe+LHIfha0o+/krFa27KorV9UDaLcxJhVd+j6p1K4cNPxkLyn+H0ZUV3aE9XnhhWuDLBBe2gavoD6TSuHctuFZuD2Z+OSNrVgW2bie6tlWG2z60YR1pwcDH9C8/1wJ7nAiHmYIGos/yL6IGoB7FKp+7VTxWo/VJ/9eu/XzMdT1mRlJQujO/z3kXb38kHDDKbnFDmyejEwEz9MIi+jzUN3Tng/LKGY4zlxqHZbXZAVQiMIKEQUsLB8L2MkccGkji+3kwjHzlUNy/j91mk+ePKWc8gscu2vfvSVkKdVG/Q2y3XbPR3xOahLr7jZZ+FDCi1pLWouKMU135ycM5H9LphDMqa1zFP/bBeWt28LNSGld8g6wzRvhuaPZUh1w1xinTSGBs7+iNa6EG/Qu7qXHB37XIkU5viA38utcQsLJBdGHc6xxaRCf3iP/FzLhhxzyPDK3+j0PwOdPi01ja6zEqGSzKNqiKPuYNABkwqsit8GXcqGN9+hxDiwiKZqOODYFQhQF5FwfEp5EIDiciDwHJ/q2tlKp448UGCgcNzi2NGNniH1KW+K+uDzpuKSt/ZXIX+2RJV+SQ5memsVNsY3WNZ7CptjmuN32v1D3mHBIh0hPdDZQGGW0J4kuuGkWOfLjmDMpnsg/2UPR1sQQGPacLpqgRbNRftdFNzdEQ/4+EKnbDIfDCq85HBirWlwIoLvFurhq/lXerZvsnaBwFl/woMs7KsvrQ10abE92vm4XzKKKF59aVKxUGSeMu6fTQ8rwT68VR4DvNn4cViw+ND6hSW+IIYw+avcm1u1ptwi0I/+MhAVEqLa6gwJ15ooLuU7EIPHlQAYZDPc/QfnpbviSkwdzZHrspsr6tA4TG0869pXC3sTpISb8c7yQ5K918KK0w6JACq6GDSHixpWPIXnHd6qPS6sFCrJJ4s5Kqd7ZX/RzZXXhABqJqnw/mOYsL4RKoEr
- naBYUwKE
- Dv5OwSxrlFwZMkuNnawBnbXd6fXjlazCe4F7y6XEqkvHVZkApMaVkTMEZXPHI2oWPwahCK9RhIcYBOKA8Jlg5WCp+TZOUaOSzJN3KXQrksM0BHn/u476dMJVP7TapndH4bwnqm2yjxxfJ7kF12iW3PNgkxvmelusFX7f5DeCEi2D2h9Ig4BRl+mivUdFwq0U9qw29svQxImrdOKXbXVzCnY4ne6X20lDOtli3SdwJkwiJVORhKE9RG9UnGqbT9V8iU3qL4aupKg6vKcAe5K4Pt+Daq1avCKE8SL1nfjQjCz0wnPMYvkEk4w5lSkIw+kppRwY/BeYXr2/sQevzP6b3N6TBm0jrQ9RqUQjHuVzejD0p3IlFPV7CfC3RUn2c774ttslaP0yzz5mCee2VJi5Rd9HSsg==
+X-HE-Tag: 1783963756-427429
+X-HE-Meta: U2FsdGVkX19BL8vJtdENfasSOH6JDRHV3wcWGBSK6qpCv2w7Tq59p7AE9JlpcCQqqZVK5wM5BTl2zYjxiONo6lj9jYOKv1QrCVakbtELTcEcQO6vz1wtZceDBmLtBFfjrwE8YJY7R+XtJF0pBOOxGVetKX/SmkiZQvVp7TuwCVU/DVnV3HjKqrL5KFOQCUd0FzOJ+gk2YFDvONwaVkSEMZk16OVOoxTnGceuGSknvtyTPaA5oszhtggl5cT6o7z/kYN5CXft0e813A8st7PI/Xtj1+RA533o6u7c1dqbg+dhuRqx9Anc+KpTfWDMiCcrm9PinDC1C/281dbAx/YyMvQxrFQZ0w5mJEBgQBf1t8TM1/V2blgbAT1yBtSrfc69B/p+uK6NslAj+FH+jHRH+gY08ll5r283owgpe/rho0t0FcXf6wx1+Gi3IiCBhxFcIsqptydGHn/R2O0PAeIzeiz04UdZCl+GmBUKbmQPaoEq838qpT+mQhM+Fb5IyzdjnoJ/a3QyEkwApDyE1Vt8Ee9s1y6PfngvBCG1tmMVMQyAQdVdbyNg/TYkQOiMz2n7r0/2G0hI4okQE0/gS/cHehkqwP+4+DoDyJvzHV99CtDHsFL6eSD/y3F+USrLS6/CbQ8liiUfzyORcxN4a64PBv0D/5TLUuMYfocVDVkBFA9EItEYHDhkY2XpNJBaSf08O8Y5XdTjCUWa2oEcHFoUQwiuHQuuAoGYUJE9NCrIOsd2WdpibScmPnpWLkhIZA6gzJAcK2Fd5BrnJw8RYZqccCHONFAvjlMgl/GKnvsWygwZIlyK26GiqjXF1GoxWZrztu5yyU6Ng4khGpdKBSTmz61sFjgixR1vpMGkaG6lZJ3LgNNrJmUj6BU0ikzLajyUmcmGHDlU0c7mNlrVBOz319RbsNtQtPmpHAVE+WOdMhGAwYJ3xMJIT6iSjiIdnSWnHd/lhEDyZkJjmRz+ABd
+ K270rhwY
+ FoBJhXcKiAJLRaYyySwm/zLwZFW4x/rm3roED7p1fvz0PibCFx8RG+CqG60w9HhPDEkrlRorGZE62U0HEEjFwE0Nr9RFIp7koVapn/EeMG05R1utEo2/wLiAtDVMa9PzfFsdzEDDMxmfIW0lZ5zVot4R94o8HGsiu9b5XGBBAzjalyu2vPwlvTMoWrXbNmH6A192PRYyX2Pl6jIwA3MvOLd6kBOth1+9oJhkkh3UITeR4s70sV2e08jDMIESvOZ2pIlTB6HiJ6QW/1hSMeDtiRoAoPGv/gPLLMp66bkvOked89yccDlUetojOlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,675 +132,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+Hi,
 
-The swap allocator uses a plist (swap_avail_head) ordered by
-priority to pick the next device.  To spread IO across devices at
-the same priority it rotates the current device to the tail via
-plist_requeue(), which requires holding swap_avail_lock.  It then
-drops the lock for the allocation attempt and reacquires to check
-whether the next device is still on the list.  This per-allocation
-lock cycling and the single global rotation point mean all CPUs
-contend for the same list head.
+a status update about the MM transition [1] after we had two bi-weekly mm-next
+calls.
 
-Add a custom priority queue that groups devices into rings, ordered
-by priority to form a static array as the queue.  Devices in the
-same priority ring also form a static array.
+I'm sure I'll mess something up, so hopefully people will correct me where I'm
+wrong or when I am missing something important.
 
-To eliminate CPU contention on a global lock, swapon_rwsem is reused
-to protect the queue.  The queue stays read-only, only swapon and
-swapoff can adjust the length of the queue or rings in it.  The
-writer lock is costly but swapon and swapoff are rare so this is
-acceptable.
 
-Since the queue is read-only, rotation is done from the reader side.
-Each CPU maintains its own iterator using a counter that counts down
-to advance to the next device in the same ring, so allocation is
-round-robin while retaining locality for clustering.  After a failed
-attempt the iterator also advances so the caller does not retry the
-same full or fragmented device.
+1) Tree/branch Locations
+------------------------
 
-If a whole ring is attempted and allocation could not be made, the
-iterator falls through to the next ring.  This almost never happens
-because we always want to allocate from the device with the highest
-priority, unless that device is full.
+We discussed which tress we'll have and where they will be located. Tress will
+be listed in the MAINTAINERS file. After some discussions, we agreed on the
+following:
 
-To speed up iteration when there are multiple full devices, a device
-pointer stored in the ring can be marked as unavailable so the
-iterator skips past it.  Fully used devices can mark their pointer
-as unavailable without taking the rwsem lock.  The marking is done using
-a spin lock to sync with potential writer because percpu rwsem is too
-heavy for writers, and full device transitions are more frequent and
-performance-sensitive compared to swapon and swapoff.
+The mm-next tree for the mm-next maintainer(s)/backups will be located at:
 
-With this patch, swap allocation should be faster and cleaner.  The
-percpu rwsem has very low overhead for the allocator, and it can now
-hold swapon_rwsem for the entire allocation loop, no longer needing to
-keep dropping and reacquiring a lock to rotate list entries.
+	https://git.kernel.org/pub/scm/linux/kernel/git/mm/linux.git/
 
-The old swap_avail_head plist is still maintained in parallel for
-now, updated alongside the queue in del_from_avail_list() and
-add_to_avail_list().  It will be removed once the remaining consumer
-is converted in a follow-up patch.
+For all components that we separate out and let component owners take care of
+picking patches (initially memblock and slab), the trees will be located at /
+moved to:
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/swapfile.c | 455 ++++++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 398 insertions(+), 57 deletions(-)
+	https://git.kernel.org/pub/scm/linux/kernel/git/mm/$component.git/
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index b2adf36a0884..f6dd85968928 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -55,6 +55,7 @@ static bool folio_swapcache_freeable(struct folio *folio);
- static void move_cluster(struct swap_info_struct *si,
- 			 struct swap_cluster_info *ci, struct list_head *list,
- 			 enum swap_cluster_flags new_flags);
-+static bool get_swap_device_info(struct swap_info_struct *si);
- 
- /*
-  * Serializes swapon/swapoff (writers) and protects the swap_info
-@@ -160,18 +161,350 @@ static struct swap_info_struct *swap_entry_to_info(swp_entry_t entry)
- 	return swap_type_to_info(swp_type(entry));
- }
- 
-+/*
-+ * All available swap_info_structs are grouped by priority rings, the rings
-+ * are ordered in a queue by priority (lower prio value = higher priority).
-+ * The allocator iterates and rotates devices within each priority ring.
-+ * When all devices in a ring are iterated, it goes to the next lower
-+ * priority ring.
-+ */
-+struct swap_prio_ring {
-+	int prio;
-+	unsigned int size;
-+	struct swap_info_struct *dev[] __counted_by(size);
-+};
-+
-+/*
-+ * The ring is protected by swapon_rwsem so updating it is costly. To make
-+ * the allocator and other users skip full devices faster, the lowest bit of
-+ * a device pointer is used to mark it disabled (temporarily unavailable).
-+ * This relies on struct swap_info_struct being sufficiently
-+ * aligned (guaranteed by kmalloc).
-+ */
-+#define SWAP_DEVICE_MASKED_SHIFT	0
-+#define SWAP_DEVICE_MASKED_BIT		BIT(SWAP_DEVICE_MASKED_SHIFT)
-+
-+/*
-+ * Serializes queue content mutations and keeps SWAP_USAGE_OFFLIST_BIT
-+ * consistent with the masked state of each device pointer.
-+ */
-+static DEFINE_SPINLOCK(swap_queue_update_lock);
-+
-+/*
-+ * Swap queue is protected by both swap_queue_update_lock and swapon_rwsem.
-+ * Only swapon/swapoff will take the write lock, and modify the queue length
-+ * or any ring's length. swap_queue_update_lock protects the content so
-+ * devices can be masked easily without taking the writelock, which is heavy.
-+ */
-+static struct swap_prio_ring **swap_queue;
-+static unsigned int swap_queue_len;
-+
-+/*
-+ * Each CPU has its read iterator, so the queue itself will remain read
-+ * only and the CPU side reader rotates by iterating the devices
-+ * periodically using the counter.
-+ */
-+#define SWAP_ROUND_ROBIN_QUOTA SWAPFILE_CLUSTER
-+struct swap_ring_iterator {
-+	int offset;
-+	long rr_counter;
-+};
-+
-+struct swap_queue_reader {
-+	local_lock_t lock;
-+	struct swap_ring_iterator ri[];
-+};
-+
-+static __percpu struct swap_queue_reader *swap_queue_readers;
-+
-+static inline bool swap_device_masked(struct swap_info_struct *si)
-+{
-+	return (unsigned long)si & SWAP_DEVICE_MASKED_BIT;
-+}
-+
-+static inline struct swap_info_struct *swap_device_unmask_ptr(struct swap_info_struct *si)
-+{
-+	return (struct swap_info_struct *)((unsigned long)si & ~SWAP_DEVICE_MASKED_BIT);
-+}
-+
-+static struct swap_queue_reader __percpu *swap_queue_prealloc_readers(int nr_rings, gfp_t gfp)
-+{
-+	struct swap_queue_reader __percpu *readers;
-+
-+	if (!nr_rings)
-+		return NULL;
-+
-+	readers = __alloc_percpu_gfp(struct_size(readers, ri, nr_rings),
-+				     __alignof__(*readers), gfp);
-+	return readers;
-+}
-+
-+static void swap_queue_install_readers(struct swap_queue_reader __percpu *readers)
-+{
-+	int ring_idx, cpu;
-+	struct swap_prio_ring *ring;
-+
-+	free_percpu(swap_queue_readers);
-+	swap_queue_readers = readers;
-+	if (!readers)
-+		return;
-+
-+	/* Distribute each CPU's swap IO fairly across devices. */
-+	for_each_possible_cpu(cpu) {
-+		local_lock_init(&per_cpu_ptr(readers, cpu)->lock);
-+
-+		for (ring_idx = 0; ring_idx < swap_queue_len; ring_idx++) {
-+			ring = swap_queue[ring_idx];
-+			per_cpu_ptr(readers, cpu)->ri[ring_idx].offset =
-+				    cpu % ring->size;
-+		}
-+	}
-+}
-+
-+static struct swap_info_struct *swap_queue_get_device(long nr_alloc, int nr_iter)
-+{
-+	bool rotate = false;
-+	struct swap_info_struct *si;
-+	struct swap_ring_iterator *ri;
-+	struct swap_prio_ring *ring;
-+	unsigned int queue_idx;
-+
-+	if (!swap_queue_len)
-+		return ERR_PTR(-ENOENT);
-+
-+	queue_idx = 0;
-+	while (nr_iter >= swap_queue[queue_idx]->size) {
-+		nr_iter -= swap_queue[queue_idx]->size;
-+		if (++queue_idx >= swap_queue_len)
-+			return ERR_PTR(-ENOENT);
-+	}
-+
-+	ring = swap_queue[queue_idx];
-+	local_lock(&swap_queue_readers->lock);
-+	ri = this_cpu_ptr(&swap_queue_readers->ri[queue_idx]);
-+	/* Rotate while iterating the ring, just not on the first try */
-+	if (nr_iter)
-+		rotate = true;
-+	else if (ri->rr_counter < nr_alloc)
-+		rotate = true;
-+	else if (ri->offset >= ring->size)
-+		rotate = true;
-+	if (rotate) {
-+		ri->offset++;
-+		ri->offset %= ring->size;
-+		ri->rr_counter = SWAP_ROUND_ROBIN_QUOTA;
-+	}
-+	ri->rr_counter -= nr_alloc;
-+	si = READ_ONCE(ring->dev[ri->offset]);
-+	local_unlock(&swap_queue_readers->lock);
-+
-+	if (swap_device_masked(si))
-+		return ERR_PTR(-EBUSY);
-+
-+	si = swap_device_unmask_ptr(si);
-+	return si;
-+}
-+
-+static bool swap_queue_find(struct swap_info_struct *si,
-+			    unsigned int *ring_idx, unsigned int *dev_idx)
-+{
-+	unsigned int i, j;
-+	struct swap_prio_ring *ring;
-+
-+	lockdep_assert(lockdep_is_held(&swapon_rwsem) ||
-+		       lockdep_is_held(&swap_queue_update_lock));
-+
-+	for (i = 0; i < swap_queue_len; i++) {
-+		ring = swap_queue[i];
-+		if (ring->prio != si->prio)
-+			continue;
-+		for (j = 0; j < ring->size; j++) {
-+			if (swap_device_unmask_ptr(READ_ONCE(ring->dev[j])) != si)
-+				continue;
-+			*ring_idx = i;
-+			*dev_idx = j;
-+			return true;
-+		}
-+	}
-+	return false;
-+}
-+
-+static void swap_queue_mask(struct swap_info_struct *si)
-+{
-+	unsigned int ring_idx, dev_idx;
-+
-+	lockdep_assert_held(&swap_queue_update_lock);
-+	if (swap_queue_find(si, &ring_idx, &dev_idx))
-+		__set_bit(SWAP_DEVICE_MASKED_SHIFT,
-+			  (unsigned long *)&swap_queue[ring_idx]->dev[dev_idx]);
-+}
-+
-+static void swap_queue_unmask(struct swap_info_struct *si)
-+{
-+	unsigned int ring_idx, dev_idx;
-+
-+	lockdep_assert_held(&swap_queue_update_lock);
-+	if (swap_queue_find(si, &ring_idx, &dev_idx))
-+		__clear_bit(SWAP_DEVICE_MASKED_SHIFT,
-+			    (unsigned long *)&swap_queue[ring_idx]->dev[dev_idx]);
-+}
-+
-+static int swap_queue_add(struct swap_info_struct *si)
-+{
-+	struct swap_prio_ring **new_queue = NULL, **old_queue = NULL;
-+	struct swap_queue_reader __percpu *new_readers = NULL;
-+	struct swap_prio_ring *ring, *new_ring = NULL, *old_ring = NULL;
-+	int prio = si->prio;
-+	int i, pos, err = -ENOMEM;
-+	gfp_t gfp;
-+
-+	/* Swap not usable here because this is swap, just reclaim cache. */
-+	gfp = GFP_NOIO | __GFP_HIGH;
-+	lockdep_assert_held_write(&swapon_rwsem);
-+
-+	for (pos = 0; pos < swap_queue_len; pos++) {
-+		if (swap_queue[pos]->prio == prio)
-+			goto add_to_ring;
-+		if (swap_queue[pos]->prio < prio)
-+			break;
-+	}
-+
-+	/* No ring at this priority: insert a new one at pos. */
-+	new_readers = swap_queue_prealloc_readers(swap_queue_len + 1, gfp);
-+	if (!new_readers)
-+		goto failed;
-+	new_queue = kmalloc_array(swap_queue_len + 1, sizeof(*swap_queue), gfp);
-+	if (!new_queue)
-+		goto failed;
-+	new_ring = kmalloc(struct_size(new_ring, dev, 1), gfp);
-+	if (!new_ring)
-+		goto failed;
-+	if (!get_swap_device_info(si))
-+		goto failed;
-+
-+	new_ring->prio = prio;
-+	new_ring->size = 1;
-+	new_ring->dev[0] = si;
-+	for (i = 0; i < pos; i++)
-+		new_queue[i] = swap_queue[i];
-+	new_queue[pos] = new_ring;
-+	for (i = pos; i < swap_queue_len; i++)
-+		new_queue[i + 1] = swap_queue[i];
-+
-+	spin_lock(&swap_queue_update_lock);
-+	old_queue = swap_queue;
-+	swap_queue = new_queue;
-+	swap_queue_len++;
-+	spin_unlock(&swap_queue_update_lock);
-+	kfree(old_queue);
-+
-+	swap_queue_install_readers(new_readers);
-+	return 0;
-+
-+add_to_ring:
-+	ring = swap_queue[pos];
-+	new_ring = kmalloc(struct_size(ring, dev, ring->size + 1), gfp);
-+	if (!new_ring)
-+		goto failed;
-+	if (!get_swap_device_info(si))
-+		goto failed;
-+	spin_lock(&swap_queue_update_lock);
-+	memcpy(new_ring, ring, struct_size(ring, dev, ring->size));
-+	new_ring->size++;
-+	new_ring->dev[new_ring->size - 1] = si;
-+	old_ring = swap_queue[pos];
-+	swap_queue[pos] = new_ring;
-+	spin_unlock(&swap_queue_update_lock);
-+	kfree(old_ring);
-+	return 0;
-+
-+failed:
-+	free_percpu(new_readers);
-+	kfree(new_queue);
-+	kfree(new_ring);
-+	return err;
-+}
-+
-+static void swap_queue_del(struct swap_info_struct *si)
-+{
-+	gfp_t gfp;
-+	unsigned int ring_idx, dev_idx;
-+	struct swap_queue_reader __percpu *new_readers = NULL;
-+	struct swap_prio_ring *ring, *new_ring = NULL, *old_ring = NULL;
-+	struct swap_prio_ring **new_queue = NULL, **old_queue = NULL;
-+
-+	lockdep_assert_held_write(&swapon_rwsem);
-+	if (!swap_queue_find(si, &ring_idx, &dev_idx)) {
-+		WARN_ON(1);
-+		return;
-+	}
-+
-+	/*
-+	 * To shrink memory usage, pre-allocate new smaller data before
-+	 * locking. Failure is fine, swapoff will release them anyway.
-+	 */
-+	gfp = GFP_NOIO | __GFP_HIGH;
-+	ring = swap_queue[ring_idx];
-+	if (ring->size > 1)
-+		new_ring = kmalloc(struct_size(ring, dev, ring->size - 1), gfp);
-+	if (ring->size == 1 && swap_queue_len > 1) {
-+		new_readers = swap_queue_prealloc_readers(
-+					swap_queue_len - 1, gfp);
-+		new_queue = kmalloc(sizeof(*swap_queue) *
-+				    (swap_queue_len - 1), gfp);
-+	}
-+
-+	spin_lock(&swap_queue_update_lock);
-+	if (ring->size > 1) {
-+		/* Shift trailing devices left to fill the gap. */
-+		while (++dev_idx < ring->size)
-+			ring->dev[dev_idx - 1] =
-+				ring->dev[dev_idx];
-+		ring->size--;
-+		if (new_ring) {
-+			memcpy(new_ring, ring,
-+			       struct_size(ring, dev, ring->size));
-+			old_ring = ring;
-+			swap_queue[ring_idx] = new_ring;
-+		}
-+	} else {
-+		/* Last device in this ring: remove the ring. */
-+		old_ring = ring;
-+		swap_queue_len--;
-+		while (++ring_idx <= swap_queue_len)
-+			swap_queue[ring_idx - 1] =
-+				swap_queue[ring_idx];
-+		if (new_queue) {
-+			memcpy(new_queue, swap_queue,
-+			       sizeof(*swap_queue) * swap_queue_len);
-+			old_queue = swap_queue;
-+			swap_queue = new_queue;
-+		} else if (!swap_queue_len) {
-+			old_queue = swap_queue;
-+			swap_queue = NULL;
-+		}
-+		if (new_readers || !swap_queue_len)
-+			swap_queue_install_readers(new_readers);
-+	}
-+	spin_unlock(&swap_queue_update_lock);
-+
-+	kfree(old_ring);
-+	kfree(old_queue);
-+	put_swap_device(si);
-+}
-+
- /*
-  * Use the second highest bit of inuse_pages counter as the indicator
-- * if one swap device is on the available plist, so the atomic can
-+ * if one swap device is unavailable for allocation, so the atomic can
-  * still be updated arithmetically while having special data embedded.
-  *
-  * inuse_pages counter is the only thing indicating if a device should
-- * be on avail_lists or not (except swapon / swapoff). By embedding the
-- * off-list bit in the atomic counter, updates no longer need any lock
-- * to check the list status.
-+ * be in the available queue or not (except swapon / swapoff). By
-+ * embedding the off-list bit in the atomic counter, updates no longer
-+ * need any lock to check the list status.
-  *
-- * This bit will be set if the device is not on the plist and not
-- * usable, will be cleared if the device is on the plist.
-+ * This bit will be set if the device is not in the available queue
-+ * and not usable, will be cleared if the device is in the queue.
-  */
- #define SWAP_USAGE_OFFLIST_BIT (1UL << (BITS_PER_TYPE(atomic_t) - 2))
- #define SWAP_USAGE_COUNTER_MASK (~SWAP_USAGE_OFFLIST_BIT)
-@@ -1215,6 +1548,7 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- 	unsigned long pages;
- 
- 	spin_lock(&swap_avail_lock);
-+	spin_lock(&swap_queue_update_lock);
- 
- 	/*
- 	 * Force remove it only for swapoff. Else, take it off-list only if
-@@ -1232,9 +1566,10 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- 		atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
- 	}
- 
-+	swap_queue_mask(si);
- 	plist_del(&si->avail_list, &swap_avail_head);
--
- skip:
-+	spin_unlock(&swap_queue_update_lock);
- 	spin_unlock(&swap_avail_lock);
- }
- 
-@@ -1245,12 +1580,12 @@ static void add_to_avail_list(struct swap_info_struct *si)
- 	unsigned long pages;
- 
- 	spin_lock(&swap_avail_lock);
-+	spin_lock(&swap_queue_update_lock);
- 
- 	/*
--	 * Add the device to the avail list if SWP_WRITEOK is set and
--	 * SWAP_USAGE_OFFLIST_BIT is still set. Swapoff clears
--	 * SWP_WRITEOK first, so the device won't be re-added after
--	 * swapoff starts unless swap_device_enable resurrects it.
-+	 * Mark the device as avail if SWP_WRITEOK is set. Swapoff clears
-+	 * SWP_WRITEOK first, so check that first so the device won't be
-+	 * re-added after swapoff started.
- 	 */
- 	if (!(si->flags & SWP_WRITEOK))
- 		goto skip;
-@@ -1261,9 +1596,10 @@ static void add_to_avail_list(struct swap_info_struct *si)
- 	val = atomic_long_fetch_and_relaxed(~SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
- 
- 	/*
--	 * When device is full and device is on the plist, only one updater will
--	 * see (inuse_pages == si->pages) and will call del_from_avail_list. If
--	 * that updater happen to be here, just skip adding.
-+	 * When device is full and marked as available, one reader will see
-+	 * (inuse_pages == si->pages) and should mark it as unavailable and
-+	 * set SWAP_USAGE_OFFLIST_BIT. If that updater happens to be here, just
-+	 * skip the rest.
- 	 */
- 	pages = si->pages;
- 	if (val == pages) {
-@@ -1273,10 +1609,10 @@ static void add_to_avail_list(struct swap_info_struct *si)
- 			goto skip;
- 	}
- 
-+	swap_queue_unmask(si);
- 	plist_add(&si->avail_list, &swap_avail_head);
--
- skip:
--	spin_unlock(&swap_avail_lock);
-+	spin_unlock(&swap_queue_update_lock);
- }
- 
- /*
-@@ -1292,7 +1628,7 @@ static void swap_device_inuse_add(struct swap_info_struct *si,
- 
- 	/*
- 	 * If device is full, and SWAP_USAGE_OFFLIST_BIT is not set,
--	 * remove it from the plist.
-+	 * mark it unavailable.
- 	 */
- 	inuse_pages = atomic_long_add_return_relaxed(nr_entries, &si->inuse_pages);
- 	if (unlikely(inuse_pages == si->pages)) {
-@@ -1336,7 +1672,7 @@ static void swap_device_inuse_sub(struct swap_info_struct *si, unsigned long off
- 
- 	/*
- 	 * If device is not full, and SWAP_USAGE_OFFLIST_BIT is set,
--	 * add it back to the plist.
-+	 * add it back to the available queue.
- 	 */
- 	inuse_pages = atomic_long_sub_return_relaxed(nr_entries, &si->inuse_pages);
- 	if (unlikely(inuse_pages & SWAP_USAGE_OFFLIST_BIT))
-@@ -1359,41 +1695,40 @@ static bool get_swap_device_info(struct swap_info_struct *si)
- 	return true;
- }
- 
--/* Rotate the device and switch to a new cluster */
--static void swap_alloc_entry(struct folio *folio)
-+static int swap_alloc_entry(struct folio *folio)
- {
--	struct swap_info_struct *si, *next;
-+	long nr_pages = folio_nr_pages(folio);
-+	struct swap_info_struct *si;
-+	int nr_iter, ret;
- 
--	spin_lock(&swap_avail_lock);
--start_over:
--	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
--		/* Rotate the device and switch to a new cluster */
--		plist_requeue(&si->avail_list, &swap_avail_head);
--		spin_unlock(&swap_avail_lock);
--		if (get_swap_device_info(si)) {
--			cluster_alloc_swap_entry(si, folio);
--			put_swap_device(si);
--			if (folio_test_swapcache(folio))
--				return;
--			if (folio_test_large(folio))
--				return;
-+	percpu_down_read(&swapon_rwsem);
-+	for (nr_iter = 0;; nr_iter++) {
-+		si = swap_queue_get_device(nr_pages, nr_iter);
-+		if (IS_ERR(si)) {
-+			ret = PTR_ERR(si);
-+			if (ret == -EBUSY)
-+				continue;
-+			break;
-+		}
-+		cluster_alloc_swap_entry(si, folio);
-+
-+		if (folio_test_swapcache(folio)) {
-+			ret = 0;
-+			break;
- 		}
- 
--		spin_lock(&swap_avail_lock);
- 		/*
--		 * if we got here, it's likely that si was almost full before,
--		 * multiple callers probably all tried to get a page from the
--		 * same si and it filled up before we could get one; or, the si
--		 * filled up between us dropping swap_avail_lock.
--		 * Since we dropped the swap_avail_lock, the swap_avail_list
--		 * may have been modified; so if next is still in the
--		 * swap_avail_head list then try it, otherwise start over if we
--		 * have not gotten any slots.
-+		 * For large allocation, return error directly to inform the
-+		 * caller to split it instead of fallback to other devices.
- 		 */
--		if (plist_node_empty(&next->avail_list))
--			goto start_over;
-+		if (folio_test_large(folio)) {
-+			ret = -E2BIG;
-+			break;
-+		}
- 	}
--	spin_unlock(&swap_avail_lock);
-+
-+	percpu_up_read(&swapon_rwsem);
-+	return ret;
- }
- 
- /*
-@@ -1707,6 +2042,7 @@ int folio_alloc_swap(struct folio *folio)
- {
- 	unsigned int order = folio_order(folio);
- 	unsigned int size = 1 << order;
-+	int ret;
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 	VM_BUG_ON_FOLIO(!folio_test_uptodate(folio), folio);
-@@ -1730,7 +2066,7 @@ int folio_alloc_swap(struct folio *folio)
- 	}
- 
- again:
--	swap_alloc_entry(folio);
-+	ret = swap_alloc_entry(folio);
- 
- 	if (!order && unlikely(!folio_test_swapcache(folio))) {
- 		if (swap_sync_discard())
-@@ -1742,7 +2078,7 @@ int folio_alloc_swap(struct folio *folio)
- 		swap_cache_del_folio(folio);
- 
- 	if (unlikely(!folio_test_swapcache(folio)))
--		return -ENOMEM;
-+		return ret ? ret : -ENOMEM;
- 
- 	return 0;
- }
-@@ -2913,10 +3249,9 @@ static int setup_swap_extents(struct swap_info_struct *sis,
- static void swap_device_enable(struct swap_info_struct *si)
- {
- 	percpu_down_write(&swapon_rwsem);
--	spin_lock(&swap_avail_lock);
-+	spin_lock(&swap_queue_update_lock);
- 	si->flags |= SWP_WRITEOK;
--	spin_unlock(&swap_avail_lock);
--
-+	spin_unlock(&swap_queue_update_lock);
- 	atomic_long_add(si->pages, &nr_swap_pages);
- 	total_swap_pages += si->pages;
- 	plist_add(&si->list, &swap_active_head);
-@@ -2948,16 +3283,14 @@ static int swap_device_disable(struct swap_info_struct *si)
- 	}
- 	vm_unacct_memory(si->pages);
- 
--	spin_lock(&swap_avail_lock);
-+	spin_lock(&swap_queue_update_lock);
- 	si->flags &= ~SWP_WRITEOK;
--	spin_unlock(&swap_avail_lock);
--
-+	spin_unlock(&swap_queue_update_lock);
- 	plist_del(&si->list, &swap_active_head);
- 	total_swap_pages -= si->pages;
- 	atomic_long_sub(si->pages, &nr_swap_pages);
--	percpu_up_write(&swapon_rwsem);
--
- 	del_from_avail_list(si, true);
-+	percpu_up_write(&swapon_rwsem);
- 
- 	/*
- 	 * Swap allocator doesn't touch si lock, so looping through all
-@@ -3042,6 +3375,9 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 		return err;
- 	}
- 
-+	percpu_down_write(&swapon_rwsem);
-+	swap_queue_del(p);
-+
- 	/*
- 	 * Wait for swap operations protected by get/put_swap_device()
- 	 * to complete.  Because of synchronize_rcu() here, all swap
-@@ -3062,7 +3398,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	if (!(p->flags & SWP_SOLIDSTATE))
- 		atomic_dec(&nr_rotate_swap);
- 
--	percpu_down_write(&swapon_rwsem);
- 	spin_lock(&p->lock);
- 	drain_mmlist();
- 
-@@ -3700,6 +4035,12 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 
- 	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
- 	percpu_ref_resurrect(&si->users);
-+	percpu_down_write(&swapon_rwsem);
-+	error = swap_queue_add(si);
-+	percpu_up_write(&swapon_rwsem);
-+	if (error)
-+		goto free_swap_zswap;
-+
- 	swap_device_enable(si);
- 
- 	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+Component maintainers will not have write access to other component trees /
+mm-next tree.
+
+
+2) mm/linux.git ("mm-next") Branches
+------------------------------------
+
+We discussed which branches the mm-next tree will need, and decided on the
+following for now:
+
+for-next-fixes:
+ -> Integrates all component “for-next-fixes” branches
+ -> Goes to linux-next.git pending-fixes
+
+for-next:
+ -> Integrates all component “for-next-fixes” + “for-next” branches
+ -> Goes to linux-next.git master
+
+for-test: (TBD, deferred for now)
+ -> Similar to current mm-new, will not go to linux-next.git
+ -> TBD if and how we'll use it.
+
+for-linus: (TBD)
+ -> Only used for building PULL requests.
+ -> Might not really be required.
+
+$component/*
+ -> Patch management for branches while maintained by mm-next maintainer(s)
+ -> Will be moved out once dedicated component maintainers take over
+
+
+All integration trees are rebuild constantly by merging other branches, similar
+to -next. Commit IDs will be stable as long as they remain stable from the
+source branch they are getting merged from.
+
+
+3) mm/$component.git Branches
+-----------------------------
+
+We discussed which branches component trees will need for integration into
+mm-next, and how the branches will be managed,  and decided on the following for
+now:
+
+Similar structure as mm-next:
+
+for-next-fixes:
+ -> Integrated into mm/linux.git for-next-fixes
+
+for-next:
+ -> Integrated into mm/linux.git for-next
+
+for-test: (TBD, deferred for now)
+ -> Integrated into mm/linux.git for-test
+
++ other topic branches as required
+
+
+These branches are not necessarily used for creating PULL requests. Commits that
+will go upstream need a stable commit ID in the for-next* branches for some time
+(e.g., fixes 1 week, features > 2 weeks).
+
+How these branches are managed is up to component maintainers. There are various
+options:
+
+a) Have the branches with stable followed by unstable commits. Never rebase such
+   that stable commits would change. Good enough for very little activity.
+
+b) Have stable+unstable branches that are integrated (i.e., merged) into the
+   for-next* branches.
+
+c) Use actual topic branches that are integrated (i.e., merged) into the for-
+   next* branches.
+
+d) Do something like VFS with versioned branch names ... that are integrated
+   (i.e., merged) into the for-next* branches.
+
+
+5) AKPM integration
+-------------------
+
+We discussed how we will integrate Andrews trees during the transition.
+
+mm-hotfixes-unstable (which includes mm-hotfixes-stable) will be integrated into
+mm/linux.git for-next-fixes.
+
+mm-stable + mm-unstable + mm-hotfixes-unstable will be integrated into
+mm/linux.git for-next: similar to how linux-next.git integrates it today.
+
+The expectation is, that once more components are maintained in
+https://git.kernel.org/pub/scm/linux/kernel/git/mm/*, the smaller Andrews MM
+tree will get.
+
+Conflict management TBD, and to be learned as we move forward.
+
+
+5) PULL Request Handling
+------------------------
+
+So far we touched on that topic a couple of times, but did not decide on it finally.
+
+At this point, it seems like something similar to the KVM model (components
+sending PULL requests to mm-next maintainer, which bundles (selected) PULL
+requests and sends the to Linus) might make most sense.
+
+
+6) MM CI
+--------
+
+Mike presented the current github-based CI that is based on the BPF workflow:
+* A bot grabs new submissions from patchwork (IIUC) and tries to apply it on top
+  of selected known branches (e.g., mm-unstable)
+* Creates a github MR for that submission and triggers the CI ...
+* ... which compiles a kernel, to boot it in a VM and runs MM selftests +
+  memblock, vma, xarray, mable tree etc. tests
+* Reflects the status in patchwork
+
+We discussed that we need more CI runners. So far we primarily have x86-64-based
+ones. David tries to get some arm64 runners, maybe some other companies can jump
+in as well. There was the idea of using some of BPFs infrastructure, as BPF does
+not fully exhaust their capacity.
+
+We also discussed that the selftests need more care (e.g., stability, test
+coverage), and that performance tests are out of scope for now. Arm has likely
+some capacity to work on improving selftests.
+
+We also talked about advanced tests, in particular performance tests, and agreed
+that we'll likely need a separate test project that bundles performance tests in
+the future.
+
+The primary motivation for the CI is to make it easier to judge whether a patch
+set is worth applying, reducing manual build+tests for component maintainers.
+
+So far, no CI mails are sent out yet, but we might decide to change that in the
+future.
+
+
+7) Next Steps
+-------------
+
+* Start setting up mm-next branches and get the merge process flowing.
+* Exercise the model with memblock and slab.
+* Once working reliably, ask for a -next integration change, dropping Andrew's
+  MM tress + slab and memblock trees.
+* Start picking patches for smaller, well-isolated components into the mm-next
+  tree and see how that integrates.
+
+
+8) Topics to Discuss Next
+-------------------------
+
+What we'll cover in the next session will likely be around:
+
+* PULL request handling
+* Component branch handling rules
+* Hotfixes process
+* Against which branches to submit patches
+
+Further, we'll also talk, more generally, about AI review in the context of mm-next.
+
+
+There are still plenty of things to figure out. If you feel like you should be
+part of the discussions and were missed so far, please let me known and I can
+add you to the meeting invitation.
+
+
+[1]
+https://lore.kernel.org/linux-mm/3166fcdd-5f08-4f7c-a743-192d0e0207d1@kernel.org/
 
 -- 
-2.55.0
+Cheers,
 
+David
 
 
