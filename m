@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D86AC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57DF2C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 07:17:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B34D6B0095; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
+	id 79E056B0098; Mon, 13 Jul 2026 03:17:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63D646B0096; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
+	id 7273A6B009B; Mon, 13 Jul 2026 03:17:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 504BB6B0098; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
+	id 665A36B009D; Mon, 13 Jul 2026 03:17:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 31C306B0095
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:17:38 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BC56A12052E
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:37 +0000 (UTC)
-X-FDA: 84982898154.28.1D91686
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 203CEC0007
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IEu/n99Q";
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4578B6B0098
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 03:17:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BCFB440A4D
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:39 +0000 (UTC)
+X-FDA: 84982898238.17.8952592
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 292B014000A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 07:17:38 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c9FME1wu;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783927056;
+	s=arc-20220608; t=1783927058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KFYeKargova8Ud8wjAeX+s1i+b6lKR01HyMHcvbV2VQ=;
-	b=lrHvtawEZBekwdlXyFMOMV8FS7RGQjapw7+WMAZivAKjr+82QOUwJHV56kYqfztCij++aB
-	DP361HwJgjjI2J8t1jzxn6idhCyX5D6hRAKYuZ/6MOxCDhKADcg63Lk6vEkHVGzs+8q+Pf
-	H2HMDoPUBSl3Qtu806wrABu15x+s4EE=
+	bh=Hwd078SfSbWqZ8yo3wjpm66Fjg9WDFy+fTRvcAm+UkM=;
+	b=ynEFBfTMjacbcFOmktm5MYvP6Cpp55GeefFcNIInaeES87rw/d/ovqfDCOTLcXYsX+3jex
+	D2tQpyABSGDl8mSyTL9mrSOdaWQieAEgsLEaEuY0pX7xe2zFWNR/xjpURPFMErSUJvqQfC
+	SY+v/7pJO1ALvY9rLtgsTzxMf470nF8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IEu/n99Q";
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c9FME1wu;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783927056;
-	b=Ydst49eCD5yzfJ+zDrz3NjpMidKN8Akz0QaviWuyNJBqNbWDn1ajWDnGZht3/A3Y2iII5E
-	vFIhapAUqGZxvF/Ua0iH7FEKwgRdUnuzfktDGps7PcdNb4Pji5daj5CPVGRpHRMuAFzYv1
-	KG1Clb/sySlA9K/xE9RG729S/7nkOQo=
+	t=1783927058;
+	b=ZohDlf0KGYxTmH3yrOYr9bJFaWPgN1RRcMUPmyWRnoyfiGdhHTL/LMzeOPuNfA/gze1IdU
+	bSKRaLkVABWq/zQAs9GQ3Yni1KU7GyIhD1BcaSUB3rrVMUzPHLTYxBT4uH8l9Bh7K3+xRr
+	Xlkir3H8cYrbE0Ww6bEYxkIe2OD0QZk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 665A0437D5;
+	by tor.source.kernel.org (Postfix) with ESMTP id B326C60103;
+	Mon, 13 Jul 2026 07:17:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64831F000E9;
 	Mon, 13 Jul 2026 07:17:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64671F00A3D;
-	Mon, 13 Jul 2026 07:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783927055;
-	bh=KFYeKargova8Ud8wjAeX+s1i+b6lKR01HyMHcvbV2VQ=;
+	s=k20260515; t=1783927057;
+	bh=Hwd078SfSbWqZ8yo3wjpm66Fjg9WDFy+fTRvcAm+UkM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=IEu/n99QuYXkErMNPS34wGG3wPAoz82f+IKjx411LSqg1hg5PAvx1ZTiomc+LcMEa
-	 0mLgjz4z8EU3xipYaZCuZ7XzAsbHNzfCpwM9Y9UA/WuFfE/uemo+5ng3eVB31CHKPE
-	 INQF5CBkEc0Sqq/F/wtcEU3xoJp5eCIypyNFGX0u+b2QPeBVQ1pttYlvIMwS5cz3DP
-	 0A7IEOLI6EfULdREoJj4q33cmplEHixakuAkPYaRsrViOhQxf99BE+Y1NFufAZQAfI
-	 NjldmWm1CyhuI4njvRw1N1JSf9S8OcrwlTcqcoO+XkiksVyvUi7zuykHoajCIvxTBJ
-	 8UXFi9SMQftrw==
+	b=c9FME1wuvshe3JefH5fc97yCGfSFLGlyfQzbOqHbZMegRzb6k0zRSqdoNrDOGZ2zb
+	 3X2+AdpAPwaU7vPT+62vsFrLJjiYMLudeaBWOkEBsbpYvs0rR1bSH9GzMkF1OAIG5P
+	 H6X29dIgl++yuwSSuhWdv+BllCwsbq0v+JtdUSdonTMSP7LmtSgLmBGNCIkKeCcX6i
+	 65wvtmHS5YiG/T+pbng49tkH8CimMMrTJ8QK4prOID/vFKcuv0pMP1huakRgLsIDwK
+	 ybdD81PM9GOz/IsGRk2VbWGO6DhdFIX2++f+da0P+mi6dBYZHaPfM6/tZ8HT2VO0pm
+	 Gg/Zfvl3jAXQQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Mon, 13 Jul 2026 10:17:25 +0300
-Subject: [PATCH v2 4/5] IB/mthca: allocate mthca_array memory with
- kzalloc()
+Date: Mon, 13 Jul 2026 10:17:26 +0300
+Subject: [PATCH v2 5/5] IB/rdmavt: use kzalloc() to allocate QPN-map pages
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-b4-rdma-v2-4-65d2a1a5180c@kernel.org>
+Message-Id: <20260713-b4-rdma-v2-5-65d2a1a5180c@kernel.org>
 References: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
 In-Reply-To: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
 To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
@@ -80,13 +79,13 @@ Cc: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
  linux-mm@kvack.org, linux-rdma@vger.kernel.org
 X-Mailer: b4 0.16-dev
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 203CEC0007
-X-Stat-Signature: eeaoewnq7zehrm9fxe4pnygpc1dh4j9k
-X-HE-Tag: 1783927055-806943
-X-HE-Meta: U2FsdGVkX1+GMRV9oTz9kycyQVr3Sr4b9Ep68GRxnuWMI+9loUOki+lm/foWuRY3fGSNuKDQpHogBs+FRgcGNGKccNUPw5/WNIrXNkKWcp5RPTbIjT/sURh0F1+4L0w5Yf8JX8vXGBrZlSfRntQsUKirhJ8cI3ZmHn8ruLArFeGA7f1m/nLvcdcLPHFie2U0qp1mMllLvOvAiXl6IG+Kwx5zH/F67bWYyYWLjegbyK8iDrq9bnDnqvucp3a6REngmEizHJmFfvQY7qLKnPl6Vf1OiKBUH0sKwlmKGuI5aNy/S8l7tCKV+yG36zm0o1iYNyluCX9shqB3B6Xc90utQppgbqtebrCB+eYTcghG5NlO84D+YYMdxf324JqgErOPvxumylp2LMmVtlPFUo9pelv8dyWc9yvLVoJPbvX+649PH1H4j8vp7TXxIk/ytIhty3WD+a2pCfp7LF2/n7RwrWqIFNMjvoW20VTLtTkJVaqMi/2hIfM4z65uSoyD+VojtiBL/or/bmdsnimfLwjUd8VH9+k0qQ2uBYL/0FLOESGa0dqRafoJG7KiVIjVb7xtHDCjNzAI0zaa4lXR7fNJqrp5rRD4wb8zl/ZicE3yRYqDSVN80n23sJ6YOhGMJ45Imnz6CLwgm6dKS3iv7IRTL3kHBPnLRGmFqF9vvfNxUorP0hWAa041H7gZTTpn/wfzl0daqYIzyYbYXLF22Hi2lBmWwqSUKRDlYt9KEYM9L5f3mZbfxjs8EiGHTWL5qVjaoFCox9hi9Lzj+eNm8E7pH0W3AklDceDWLYJkY1XGw5PHCkjQr5KJfpersDEjGg2507+oOaUiCG5u/w9B4gDD9zGSJRA/rfhQvBtlxQOYGljkZlZoL1HVpZ6h33xFTbp9c+S/aJqrhkU1OJPNRNuIX4onumcL2XVYS9aMa2Z9cG3D0VJPetIzmL6z7IveFnIPh9jBiq2tDnnQB+/X3xu
- bBfY78e4
- dBAA1fVHvR8oBl8jfAzUGg4RiwMVgkJ3oLJPDmuejKYfD7F6+cepMd/9mJr8NisyDF64YwU5GdKCojQiQDmldC3QmueacC8BlSI5Rudkgn6pES1jf1d+qsYEVQHT3k+5sHFXtP5EjvZ3NcSRS0FE0azzX2ffZpfDwyZUsg8rys6WReEg0c6u/XuUSX+Tf0NZ+4hrczThGKyW27sxFSJhWPmPzS8fCWF/YPdwoJH84esfNLPhP+w8Zal5YnWdnB+I/2EC4MEHEON5Vl0fiEvyrbbkmWdv95YNhtic+uTOrLIpqAOtKI7Nx6XT0yg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 292B014000A
+X-Stat-Signature: hs4q9xj8bdk3zk7e4xxe8fqodoncxijz
+X-HE-Tag: 1783927057-527058
+X-HE-Meta: U2FsdGVkX1/xtJPpLTekD7E5vJn6LhIZw1sMZC1JZyyb19St9LV9qeqFHNgpB3NWe2FN7IOBIWqo7MDHPizyyXt54XomnRMFzjGu/s+D+VAOMj+DdLxGlPhlPR2uY5ZWApMzah23Hw8chi6iyigfxNqwk/2f6ESGSOIBRDAH+E2CG8tqifFS1smiX/Ta8z2ZN1aDd2/AIUXBq0kNNU+3TcrS3GsTAAr8uc6IXodgY9jnd1CNZe49I24+LrGyp9li+JamTbAhzyPN7FKBnqwmrEDcEwI533ZVWdbTLCa6axbHn93JjO+I8+WdzJZxTkNLoHOfxTBffI1yh6pq7VR3cJcS7bzrrwvF+c8/tyZg8AwE9JJvA/yi1GQh99w1Uy7Ck+wsbLUrE9oyOClfLMSkkk9HlhicERjjC2lyn5sZid4qnZ0qwZlvRWVpTvnoflbQuIio90eRWNMXIYKeObbRNZF4R0nLvI3t5Yg7Rd3aU0rcuFPYU14DcvelZMWl3ibgdBB5CrxI4ECX4g/t7No1gVptobUYKW4pZWCTRqbzyjaWfJQC/mpYuBsdp3CbImC3PA9kivtvYwHR+Vtkf4ew0RpWmDH+3hs5stooyCnsqkEJj8td/dgQO66CCq54j0PcjIltmt6ZgdWjB7KvjPyHJsY/qmpDjf8X/BoBpHDC8RRGbposfK9TkNiiwC1xemODHLqPlIlTZjee3Y/1UsbqeWud4d0sya87e7T3DKAE8cC8UmCCTBn6+I+I27OEBmodBoknzeOWpeuNNdHV87Hh24tc2Osp5NuLSc3Cs8u9kZsOi20Q+Yl9rRFsczVuf1sX0ZkKv/4qeOnu3Jghwn295cbQAMplrTPPGkLl7XFOsr0bBpq93HaAVDtCN19Gx4w4vROyeCC6ZNGtV95ykfXLBDOcbD5OEjW9Bfp8QSYPBjJ8sAz513tU1+vkHTwo3/SOmAUbLujpUjqHqjzJWpt
+ no9Xl1Lu
+ 25b8lxvs5GJSCUe8TBjVDQdQ6y0lo7WiwaxMxHanmsldl7tX6p1pbJR7TeOzTgr2lQgNFgTA+P4lPFTvyj1OfJI7+QjZHDmbiuxiXXk1pM8+Rc2UPRmxOoIuhLNhmk3OPONlL4/hQdG4rb77zNgTCKZ1SvfT7i1cYhvBBamfbXqeUldnSTaQ7iR5egfDpNcZzprExmNh5exk0V3l9RxBKnA+hReYIlcXBRYKKWWULXLzbw6WU2/+2b/dHlrskI1h/4umSWtd3mQquVmE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,8 +93,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mthca_array is essentially a sparse array of pointers and there is no
-need to allocate its memory using page allocator.
+get_map_page() allocates bitmap pages using get_zeroed_page().
+
+The bitmaps can be allocated with kmalloc() as there's nothing special
+about them to go directly to the page allocator.
 
 kmalloc() provides a better API that does not require ugly casts and
 kfree() does not need to know the size of the freed object.
@@ -113,40 +114,43 @@ kfree().
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/infiniband/hw/mthca/mthca_allocator.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/sw/rdmavt/qp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mthca/mthca_allocator.c b/drivers/infiniband/hw/mthca/mthca_allocator.c
-index dedc301235a0..117a070e784e 100644
---- a/drivers/infiniband/hw/mthca/mthca_allocator.c
-+++ b/drivers/infiniband/hw/mthca/mthca_allocator.c
-@@ -126,7 +126,7 @@ int mthca_array_set(struct mthca_array *array, int index, void *value)
+diff --git a/drivers/infiniband/sw/rdmavt/qp.c b/drivers/infiniband/sw/rdmavt/qp.c
+index 70e7d08fdce6..c40cce69e945 100644
+--- a/drivers/infiniband/sw/rdmavt/qp.c
++++ b/drivers/infiniband/sw/rdmavt/qp.c
+@@ -263,7 +263,7 @@ static inline bool wss_exceeds_threshold(struct rvt_wss *wss)
+ static void get_map_page(struct rvt_qpn_table *qpt,
+ 			 struct rvt_qpn_map *map)
+ {
+-	unsigned long page = get_zeroed_page(GFP_KERNEL);
++	void *page = kzalloc(PAGE_SIZE, GFP_KERNEL);
  
- 	/* Allocate with GFP_ATOMIC because we'll be called with locks held. */
- 	if (!array->page_list[p].page)
--		array->page_list[p].page = (void **) get_zeroed_page(GFP_ATOMIC);
-+		array->page_list[p].page = kzalloc(PAGE_SIZE, GFP_ATOMIC);
+ 	/*
+ 	 * Free the page if someone raced with us installing it.
+@@ -271,9 +271,9 @@ static void get_map_page(struct rvt_qpn_table *qpt,
  
- 	if (!array->page_list[p].page)
- 		return -ENOMEM;
-@@ -142,7 +142,7 @@ void mthca_array_clear(struct mthca_array *array, int index)
- 	int p = (index * sizeof (void *)) >> PAGE_SHIFT;
+ 	spin_lock(&qpt->lock);
+ 	if (map->page)
+-		free_page(page);
++		kfree(page);
+ 	else
+-		map->page = (void *)page;
++		map->page = page;
+ 	spin_unlock(&qpt->lock);
+ }
  
- 	if (--array->page_list[p].used == 0) {
--		free_page((unsigned long) array->page_list[p].page);
-+		kfree(array->page_list[p].page);
- 		array->page_list[p].page = NULL;
- 	} else
- 		array->page_list[p].page[index & MTHCA_ARRAY_MASK] = NULL;
-@@ -174,7 +174,7 @@ void mthca_array_cleanup(struct mthca_array *array, int nent)
+@@ -343,7 +343,7 @@ static void free_qpn_table(struct rvt_qpn_table *qpt)
  	int i;
  
- 	for (i = 0; i < (nent * sizeof (void *) + PAGE_SIZE - 1) / PAGE_SIZE; ++i)
--		free_page((unsigned long) array->page_list[i].page);
-+		kfree(array->page_list[i].page);
- 
- 	kfree(array->page_list);
+ 	for (i = 0; i < ARRAY_SIZE(qpt->map); i++)
+-		free_page((unsigned long)qpt->map[i].page);
++		kfree(qpt->map[i].page);
  }
+ 
+ /**
 
 -- 
 2.53.0
