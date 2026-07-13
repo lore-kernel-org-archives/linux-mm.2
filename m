@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3110EC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:34:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51415C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 09:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A2A6B0088; Mon, 13 Jul 2026 05:34:10 -0400 (EDT)
+	id 3540D6B008A; Mon, 13 Jul 2026 05:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB3B16B008A; Mon, 13 Jul 2026 05:34:10 -0400 (EDT)
+	id 304D06B008C; Mon, 13 Jul 2026 05:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7D516B008C; Mon, 13 Jul 2026 05:34:10 -0400 (EDT)
+	id 17F6E6B0092; Mon, 13 Jul 2026 05:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A086B6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:34:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 26D841C43AB
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:10 +0000 (UTC)
-X-FDA: 84983242260.16.325A982
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E93336B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:34:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A1FF140A76
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:13 +0000 (UTC)
+X-FDA: 84983242386.20.A83D926
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0491E40004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=U1B4qBCC;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4E26716000E
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 09:34:11 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="N23/vW5H";
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf12.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org
+	spf=none (imf08.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783935247;
+	s=arc-20220608; t=1783935251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9FWCSt0MqdSJ/9cYGYlW2iKD/Aqr+0+3cG+7qGFYLVo=;
-	b=hzkytV7k9cIR4E0C3OvZf8OWihBy8nBw/FdNkUzUHobhnJQnon3lBbbYVdtf0fvy8clAq3
-	dHh/DgoqMa7RXvbfhh0YSJMxlDn6NaNkGGB8X49qexSnShy2Cksju3PxUozqJUuv7VEG36
-	aGnACQ5xessz35tpzkcTx9oc/hbcKb4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Wcszhlnh+HYi/8t441HBGblr6KPlRWLy9kyix1in0C0=;
+	b=oQYsqTnCdbUpLmWy9ZjTj0GfXiD26WI6veTLIVVAYVFcSfH73QyJOB0kb/AHVhrAv45Y7F
+	evJNGOayX9IyXnm5WrIiEHmgy23as7gf+MB81eUgrtLvw6u9GNAMZA8bYiEEKxVqHhc2dL
+	FqagrGFvVQpv9BdWG2XdooNzeVTr1Kw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=U1B4qBCC;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="N23/vW5H";
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf12.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org
+	spf=none (imf08.hostedemail.com: domain of BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+55c33cd1421391a2a6eb+8359+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783935247;
-	b=olPh25F6hOGM/ycQU/Ds1nggrcKncjHaMLArpMKoshyuyHlPAaNUqofUHcfYI114NeggHc
-	61goU5e2/YnWgrkW1ymJEaNYoi5YTIKXEgMxUvxAAHH62CMqQhmh9/BIRirSALUqA14aq6
-	nLCRdZu1N1WF/R7ha7lrGape5MR2hPQ=
+	t=1783935251;
+	b=8WY6Q8/fd1SMV17OBQJ+0LkqKL3arhMzXDZsGB1GJTqvz2nEPNMurVgDxqvLNWiiSNA+UN
+	ASEyn0/ryXvTFCdaUZB1/Peqa3dYraIj/P7moNjHYVhO6qIKmbVvzsekGWYD27SwoLj6oN
+	BqrG/jrNbJ1vYEacc5a4pLEVQdvkEps=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=9FWCSt0MqdSJ/9cYGYlW2iKD/Aqr+0+3cG+7qGFYLVo=; b=U1B4qBCCtjozIZCiipeQu4/1yw
-	SEYwlSVLqagPxOlwhhxysF6qe7HdppGae6hOlXtA5SnfedEFzleAJ0mPjqh4f+qPGaIkR1bkj8uqo
-	jSHQSkq85zVXD16iT6qirYqgJN8Y07c9Ka4Mn+vwCII6R55wudxgpwm7KzzosLrUvvcPaPc2ZxkMh
-	MEVdwOaotnbnmGElyd0mckSHc/YUZGH6y48xYncs2qhw04BpkSTxNPk/OgHzRorvyxdanmAj5QV2y
-	brvoEctslFhhhBW5rYRg5uBHiaJzFcXKnJm7gESuhXKrkgt1/a+jIQtSwTv//WuO/gjX9oeylpCWc
-	bnZYARuQ==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=Wcszhlnh+HYi/8t441HBGblr6KPlRWLy9kyix1in0C0=; b=N23/vW5HpaPngWrRDYKaGv+iIf
+	W/F/Iv3V7pKQ65oLZC/woEI5DZjQRKH+DW9qjDDOH0uvKSFKU4+Tilk9MXdU+lZLY4H4MQyxQKnXX
+	MzDeUELYo40lJzqzp65uJBt9hsTxLWZcy/NFskIgXw2bAM3LMD2PIyWKORN9XXrQHhjlpLF13g240
+	/+Xionr38/a5l1y/zVaVdBkwLoEo+Jr3jiZu1q4ttHVCVopFPVhv27IMZzaaCb6/lM45GGb3qf0uW
+	AJ/9HdVWttH682sgKo5b4Y1sJbyic1LNppoOc0IdZUQaTLy8KLNte61aijIRDBW3em4NJ35+0U1Zp
+	zV8OaRHg==;
 Received: from [2001:4bb8:2c2:7dc3:4a7a:b4de:3d88:bc44] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wjD30-00000008kf4-2Iwz;
-	Mon, 13 Jul 2026 09:33:58 +0000
+	id 1wjD37-00000008kfe-3D6u;
+	Mon, 13 Jul 2026 09:34:06 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: 
 Cc: baoquan.he@linux.dev,
@@ -72,22 +72,25 @@ Cc: baoquan.he@linux.dev,
 	nphamcs@gmail.com,
 	shikemeng@huaweicloud.com,
 	youngjun.park@lge.com,
-	linux-mm@kvack.org
-Subject: better block swap batching and a different take on swap_ops v5
-Date: Mon, 13 Jul 2026 11:33:37 +0200
-Message-ID: <20260713093350.2154226-1-hch@lst.de>
+	linux-mm@kvack.org,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: [PATCH 1/7] shmem: provide a shmem_write_folio wrapper
+Date: Mon, 13 Jul 2026 11:33:38 +0200
+Message-ID: <20260713093350.2154226-2-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260713093350.2154226-1-hch@lst.de>
+References: <20260713093350.2154226-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0491E40004
-X-Stat-Signature: me77b3w5uyt7bzcom8ceo7mq8no4wip1
-X-HE-Tag: 1783935246-884598
-X-HE-Meta: U2FsdGVkX1+Yx41oI6c7UHM6YfcT+eH5ckyNSmsgMTkzgXTdKo2oJP3injanAJVrH/Ie0jzU9iJkHoM5eS+vnUw23bWnOlq/p7AHPPTRFvOBwPCHMTD0T0X9hiFSYjsa6rOvEZBT7CU1xiNDtLjMJ//imM+tDfn7r/obbG8CsypymjTt2VlKnfpF9xkNZsuQCwA7rYG7+deQgdtfC4cSWEIkcS0At8ND0SZNeHr065nVtrytaN+flObrsFeAtyxUL67Uo6CCeGuUhQ0JSqCbgnKgeVDaoKXfi1nvOZRHQ+03KKPYtU6YEpydWt518cDRVSOK1qyELq2J2/JlImrQ8//Vx77YkcI2YBp7kB5vLRvqYBx+v8u/8PbhzTWjrwDikkpdzQNaLTBucwgWj5iliP9t+MoxiGqf1Z8qBkyy7hzLrlluoGv2zPJa0AYEqktW+XhF+i7PDnLcIJfypkKHI0bsAkeLtkwXllbhCnPww58F558UzCppPp82jfXrhTiPmPHyLirzQ8SE0PdpuBomIRYL9tC6Luf3Ep+2FfTNBK2Gm4CDiXwr1dScfCIfUSEqbd9B/4Km3uSSD2emItj1XqA6dxaA3LbO0IfaRxTrF0kxO4+xUn3i4LDlgY7BGnhFWqE7fsef6xauKUCY38rDYQ4cenYg0DRT9PxVbDvfWnapFZOVNA8axCEGGFiF9nEvZqyaZlPNzHPfla4D36Ovl/b7U15UeMlpSFdCbempH1iilM7vOWAXaCKSgPx9VhAX1C4IO6iDiMacvN50eNcU17/t1lZjBOdohmy8pZNQfnz4k4/iZMCy6KSbmgPt1IGoqJvbaYy7KTxOkMVfNRZghnSlSJ9Q9I67d10Ag1WjGTxBQ4avMOwzMlOFUtKYOwR30goUuPxv0CMb54kgagf42mHnY7iYQFMiXR0OK/AvAPz7g6JRYO1JEYrF9zEfw4vf8j/3ln3UC/9sbUqsfF/
- L4rF2KG6
- XsqBFadgGjSMUXe4vuNCEmJLegLAi6LLVpuTpJY1RUFxtHrfzusvInszR6xHGE0xLPVst7fndvx5+f4g+uL2Wf++4ODBfOcOtg0MaTazOmhgzT0f33HIHUp/77OyLNVpXVWwSkPuuX5g4x2nsXkxV6G2rxJZlI7sNJ2osGWjNsxDpd8YeUutnD8CQEJI6fxb3PcP0A2yXc/uL3pePBeHr/urspFM+bYrQkQJ1e91CI0mAtMNI9dzTG88ZTvVJV9pi2JxGsa2bez+NQW7DwhyF3xZOnquG2KZp3KQBeOBVEKk3p2YZ3u7vNyMn1vbupPgmCLy6PQXT+Sh6ifLxPTr7Axi1usH2bJJ0jWBcYh+l2OHEaEGnsGGdVoRx6XfNF3QRXZgjAN/CxPbuB2zMUhSKQrAJGv9jPGwhh9EqOXstbTzhSJ2cLS/46iIg6gk0NvizMSMEUcC4ADq4Y8fZAwOWJhOIe+XwGk9h2tZgb8OkuWe7P2tvr5rG7dAPY7s7vj9HSsMYrH6hFdWZdGsdy3M80HnH8MIVMIPT7R/9Wxztu8waKZEoTLPZU3vnDrwtpuaDUBX9bqQMEellgo35XbZg9NLjiD/SQwskUncyGI6nJL6EcyjZAcj0a8Dq+qgUvGJ/tBiLRLFcj3Z7vGPNQvLqYhGcZ/EQQztBu24v
+X-Rspamd-Queue-Id: 4E26716000E
+X-Stat-Signature: e87sfh3npohjr3s4ahwb3inh55wnaajj
+X-HE-Tag: 1783935251-659321
+X-HE-Meta: U2FsdGVkX1/SZjpihbd2OI72kS1B60HJAPtfSfxoLzdTEo4aWZAAG2i490+m2a0rmSqqsJeUGdKfLjw+Up3/LH6vpM1fMtcsb4eGENr3z77PsX2KFiSlJAAqr8sthISrpn/MYjl/BlWqdT/9L1yiLoSJliPuag/H8b7jvQ8KLnshUT0/fCmDpt55X3iQwJuWuYz2+8oKuAR6NNztqf93JTQNfD0dIIOjCqxNMv0Y7vC8RzSV0mNCGjKI2w3BRtQItn01Pxq7af5KlPvY6MRxZkx9c1y1stwia5dvUE7A4OXxrZ4DIbJX8f1br4dqwiW1jPzrfFvEucMVfQhOmxO9H7JoIhzQTeLs5CQBDGWvaVzeThd2Z/2iGeZXKmTx7XAQqvfuqCEyEvIUuimsFzsNb4F0avd28a5JY/HiKcefWJfgSsCkg6skpjHzttu1hcfEbKzntxIzorBsn3L+8qFrjK8j++0mM85QUzil4Hg9eIKLldTSt4e+5WfaWMmz26aeQbPhuolNT7QRelDNqzJcC3uokqmRLh58z6deUxEZN2yhtF3R7es86tNtkt0QlxEP+dQYU12dcVGJuivpakZkbNo07hjPo50hkllvFvFIWa1OJGTqmdRDk7zWIGeKuy9TuPMbr+sNtu7EVvXNVHwgz5IDGfV1XTMDEix2FAWz3H+oY1fQ7E2RLn+J14VXFIZRv2b9l8z3tUx1zgIoJfpHOmAG2zK3uKecdkTaOsITyHioP3bJV4bYANuMYuOdSrEhJA/vzczO+qEagOtxv59YQjNzGR/Yt++7KA9T8uGewRsgqKcU0+Ct9Qvf/jYnAPZUjQa5Wdb+gGjddEIvr8S3RzgslictBI1/ekD5sM45c4NoGg8PGXflpH9rRIuiY7mrAa6+naPO2+QiWsvmSjiDpdfwVfdeFNu1D8O/tS3Iri3BlDYfGFj13qENE6lmxI5RAaAKIql0K9iGr/PxLI4
+ WBGBZ66T
+ MD22lNmvHC2ku6v4MKVR2u4KexR0NDiZt8MXNi8iXuT5jcVSIcWPURqCs87MF+MJbE/tmkSItOA5PWhHVOoh/rDE6aDQzi0oKSEKXRBwXGd8Ll358KMsYyu1jF6+Py1DUxMT66cybbGRy0HwRYa77Nj6phh+PcOb5CIsusIVw4YUy+kTWQwHKNT1bC75R3/ZALzfk4UK1DfZ8QczAHFlHJyrCYqKZ6HZk6uLAyA0yi3Bajj0bsZnPcuN6S5pmIUxtWksWI/SEIpbREvseV8crHYfHT8q0Ad3sdrU6anYt9bmp+4uBg1IcLodLkNqQXTsxWssVj4arbXc6kzsuqHk4shywnzuggMKnU646v3vO1wKEipoEwLvDl/e1MsTh8ztt4JBh+dutAh6wyXRQgYQM1cfOD5CB+w4eNSnRpnLHFZvBTQIR6z41sZSkmeCQr5+/jtYdizeWhCrBrPlNSbv8NOdKC1XwNUcI0C9RqznzZdHmlwUIJcjK7CIGpQYQjroRQKaRvmxtizDgUigb5AX2bwsXAoNDDYtftao4otuoZFcjhre4DjspWAjN341gRD8xAA9sPfodWGPbH/kAjGeR2+xBHk7wUpRuGUVsqxPlB2767/Fwy6BJxPEHZQSWbpi4BC2ueKNO1DUVbSQf6DwLNhDO6sJXD+jCOdbzyX4Kgt/UcxBQmGHuFiB5yHY3FF+73CF0DsQAFUlc/D4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,57 +98,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+Provide a wrapper for the shmem abuses in drm to prepare for swap I/O
+refactoring by keeping swap_iocb handling entirely contained in mm/.
 
-this series makes use of the swap_iocb for block as well so that it
-doesn't do inefficient single-bio I/O, and then rebases the swap_ops from
-Baoquan on top of the now very different method structure.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Chris Li <chrisl@kernel.org>
+---
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 2 +-
+ drivers/gpu/drm/ttm/ttm_backup.c          | 2 +-
+ include/linux/shmem_fs.h                  | 5 +----
+ mm/shmem.c                                | 7 ++++++-
+ mm/swap.h                                 | 4 ++++
+ 5 files changed, 13 insertions(+), 7 deletions(-)
 
-When running doing kernels builds, which is a workload that doesn't
-really do much THP anonymous memory it still gets 2x clustering for
-writeout and 1.2x for reading back swap in.  The overall times do
-not actually change, though.
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+index 06543ae60706..ef9440166295 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -325,7 +325,7 @@ void __shmem_writeback(size_t size, struct address_space *mapping)
+ 		if (folio_mapped(folio))
+ 			folio_redirty_for_writepage(&wbc, folio);
+ 		else
+-			error = shmem_writeout(folio, NULL, NULL);
++			error = shmem_write_folio(folio);
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
+index 81df4cb5606b..c5b813a563e7 100644
+--- a/drivers/gpu/drm/ttm/ttm_backup.c
++++ b/drivers/gpu/drm/ttm/ttm_backup.c
+@@ -117,7 +117,7 @@ ttm_backup_backup_page(struct file *backup, struct page *page,
+ 	if (writeback && !folio_mapped(to_folio) &&
+ 	    folio_clear_dirty_for_io(to_folio)) {
+ 		folio_set_reclaim(to_folio);
+-		ret = shmem_writeout(to_folio, NULL, NULL);
++		ret = shmem_write_folio(to_folio);
+ 		if (!folio_test_writeback(to_folio))
+ 			folio_clear_reclaim(to_folio);
+ 		/*
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index e729b9b0e38d..5663dff53186 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -12,8 +12,6 @@
+ #include <linux/userfaultfd_k.h>
+ #include <linux/bits.h>
+ 
+-struct swap_iocb;
+-
+ /* inode in-kernel data */
+ 
+ #ifdef CONFIG_TMPFS_QUOTA
+@@ -123,8 +121,7 @@ static inline bool shmem_mapping(const struct address_space *mapping)
+ void shmem_unlock_mapping(struct address_space *mapping);
+ struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
+ 					pgoff_t index, gfp_t gfp_mask);
+-int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+-		struct list_head *folio_list);
++int shmem_write_folio(struct folio *folio);
+ void shmem_truncate_range(struct inode *inode, loff_t start, uoff_t end);
+ int shmem_unuse(unsigned int type);
+ 
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 3fb6dbbfa20b..39521a364376 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1737,7 +1737,12 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 	folio_mark_dirty(folio);
+ 	return AOP_WRITEPAGE_ACTIVATE;	/* Return with folio locked */
+ }
+-EXPORT_SYMBOL_GPL(shmem_writeout);
++
++int shmem_write_folio(struct folio *folio)
++{
++	return shmem_writeout(folio, NULL, NULL);
++}
++EXPORT_SYMBOL_GPL(shmem_write_folio);
+ 
+ #if defined(CONFIG_NUMA) && defined(CONFIG_TMPFS)
+ static void shmem_show_mpol(struct seq_file *seq, struct mempolicy *mpol)
+diff --git a/mm/swap.h b/mm/swap.h
+index b51ad3071a73..fe0b694a324d 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -471,4 +471,8 @@ static inline unsigned int folio_swap_flags(struct folio *folio)
+ }
+ 
+ #endif /* CONFIG_SWAP */
++
++int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
++		struct list_head *folio_list);
++
+ #endif /* _MM_SWAP_H */
+-- 
+2.53.0
 
-Changes since v4:
- - really fix the charged vs non-charged merging decision
-
-Changes since v3:
- - rebase to latest mm-unstable
- - don't merge charged and non-charged folios into a single bio
-   or fs swap request
-
-Changes since v2:
- - rebased to 7.2-rc2
- - rename swap_add_page to swap_add_folio
- - rename SWAP_OPS_F_NOFS to SWAP_OPS_F_REQUIRE_NOFS and document it
- - improve various commit logs
- - spelling fixes
-
-Changes since v1:
- - drop the memcg accounting for fs backed swap as it can't really
-   work as-is
- - change the related refactoring to not create a bisection hazard or
-   compile issue with the wrong set of cgroup config options enabled
- - remove a now dead function
-
-Diffstat:
- Documentation/filesystems/locking.rst     |    5 
- Documentation/filesystems/vfs.rst         |    4 
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c |    2 
- drivers/gpu/drm/ttm/ttm_backup.c          |    2 
- fs/nfs/file.c                             |    4 
- fs/smb/client/file.c                      |    4 
- include/linux/shmem_fs.h                  |    5 
- include/linux/swap.h                      |    7 
- include/linux/vm_event_item.h             |    4 
- mm/madvise.c                              |   16 
- mm/page_io.c                              |  586 +++++++++++++++---------------
- mm/shmem.c                                |   18 
- mm/swap.h                                 |   67 +--
- mm/swap_state.c                           |   53 +-
- mm/swapfile.c                             |   11 
- mm/vmscan.c                               |   30 -
- mm/vmstat.c                               |    6 
- mm/zswap.c                                |    4 
- 18 files changed, 432 insertions(+), 396 deletions(-)
 
