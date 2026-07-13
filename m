@@ -4,123 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A627C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 12:55:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC9BEC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 12:57:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D55866B0088; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
+	id 9AFA76B008C; Mon, 13 Jul 2026 08:57:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D05756B008A; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
+	id 986726B0092; Mon, 13 Jul 2026 08:57:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF50F6B008C; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
+	id 89F886B0093; Mon, 13 Jul 2026 08:57:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9760E6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:55:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0953E1A0149
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:55:52 +0000 (UTC)
-X-FDA: 84983750544.24.0876B90
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1FC3918000A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:55:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Vy6rOfQ3;
-	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 67F7E6B008C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 08:57:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4FC0A015A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:57:26 +0000 (UTC)
+X-FDA: 84983754492.21.C87383F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0E6E680007
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 12:57:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FEOet2xl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783947350;
+	s=arc-20220608; t=1783947445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bY380AWNQSlOibS/srY3yyaxsq2HvIperV8l0Vu7xhw=;
-	b=ImZNpcgM/PcAgzlS0EKVhuMGy5bksXh6zGYeu7+g/qZG3u5ulz4t4yA6qyKiawylZQmM2n
-	X0H32fuJ+hsYuhnIzZq4rRuUq9kX/MrO2oidUfkBJsMOwJMWtXBAJ8YeYkCW8evIUfOf6z
-	CUcQVONX4RjPV/7YmP97MLwqRcvLMuw=
+	bh=B9578WFJk2K+Q6hfVfJmltrDN/WRMnu0cbrC4CTiWnI=;
+	b=RFPNcz5LU/ssbCAFlzrsYkOhh4jo6aGBOkxkPzLdlegzHE+iOp74GxlKW6Fx33omRymmnN
+	KxGSSATzFFdfc2QCsx4JLGmYqFezpUa1nwA438cZPRZ0ItN3gkidGG5ZAsIrGmqSakN/zU
+	ef624Ppv/N8rkPQOe+WpsMSp2C64jfU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Vy6rOfQ3;
-	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FEOet2xl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783947350;
-	b=7g3lPuIIjvewGVADjLoX/sCNwRXQl59k0M88GzXbmIjYa//4tGjEikeLIi+VXl5CWyt3eH
-	1fCQGH19VXBJkPkvYdTUAMoK3g9rWn6h+SaTqHHrsAwHdqiJoiMANUSu+R6mL6gDL0nUAe
-	z34RS/vGW5xB7gdgQ0B+EFDmP1OJsnI=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493c564ed4dso2115095e9.3
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:55:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783947349; x=1784552149; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bY380AWNQSlOibS/srY3yyaxsq2HvIperV8l0Vu7xhw=;
-        b=Vy6rOfQ3ATXsu2JZ7NA06Lw9hn3omVDKJ/4VWHgBmLqtdIKnx7LKB7t3kCnvQWc6hX
-         dAnqkNGytWZ1GJaXa+zjPQLTxVwh3rzokSkpf4n6gKUyBeiBM0SXnDHkO/b9pXY/jT+u
-         5PVng5uuPHVRcqY4uVvvMCfHVVEjDGZoiHn4MLTd4Ej153JtJhDTA/mkEkHu5WfUtLn0
-         X0Sj/MPhM7hPqi4YHWEeuPP2kGYozbJ3L5NypxoNw0BxlYhCCksfo+JUaZLNaeLARYar
-         RzZlGeWiEaQ1myFd8f3kj4Sp6IAMD5m2mSeDhTJhkHxUrNOTghlX2t3A64amIU484qwE
-         HBgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783947349; x=1784552149;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bY380AWNQSlOibS/srY3yyaxsq2HvIperV8l0Vu7xhw=;
-        b=LgsTMqmJ+Jez2C5e6q+4WWPXhvbxcwH43pBwRVCAK/sQ3WnLQSJwXjWCieyC+KI78S
-         5csv+fzyknI1WckkFylOeC4GfmCXT76QhGps/Rz0IqOxoanXTa4UPtqx/Lcoeo7zHBbM
-         lc4AwnnCsx9e7SAPCxqpDpSNxnUjJzJ1g+Ce7+asAW71BhOyQfgGc4zi4otgXw4En28o
-         mQrnssQZnesGmGXwf8frML7bD5kOFm7kFKJR3KjMkl2aiphjJbqEhp1vFPsXAm++RGBR
-         QEIAwUuBtjUbuQTXvzVAoebyyJqBpPyGCCVhbRR4+xKtDdvni7DOVhf6/fTrMiLtqKYI
-         ELaA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2t3WXImRTZJY5oZxbbSXO4qO/D1OadYD/JpMC2utqGfRdceAth+ootp36k7yrOu7bTk9rGOOawg==@kvack.org
-X-Gm-Message-State: AOJu0YxGZ18eiQbNQmPMxS8HQONcwsJO2CkTcCCwL3eAPwV5rqaNSGvz
-	GTdsVrl6pznEsFz58QHQjVFoZ9NHcPTbOemDg7Hz8HI4zTF316T5H8sft5PFjyxtHyI=
-X-Gm-Gg: AfdE7clZUNvoDjdv6uobAMG+ZdgPEkNEwmmIncLAWKqSEgnXVQE9alWjRCKbrakWqVN
-	2RPrsosfaymmHKaJ2U4tr4Lsme+tiYVfkNqwuJeIlvi9rOM1hfWXtiExFNBdRNwXZ2bX0l7mSLY
-	ZKqAjsOP2qPdf5JdSFF5AgurfeDd9KydJB8W6AGmxn4XJ/OrtuslFXZ0KA/RQTmGtxeYMP/uZdU
-	0RqGTlOCVeMHtCiAtM0x9dDtTp5hcFTYf0aoTj/MqDqNp8TGcfsL1Lwf1IAQFkXYCNJgL+grogz
-	JQapbEy04nH0wZg6Wl8vmSQddm/4X0GsBbxEyIiXoavrr8WBEEFf6l39xgTA2fhihOAXeIpexwX
-	4wT4HfOO6KsmSEwNE3J/qa728CND0lpWuDM6SlDsN6+Ju28kqplrmRC5jYJ3UttyJVvKXCNYzYm
-	DLhuoG9YtBUQLDF0flE7d/75XCdOhBJRsJ88b4Lkotieb7qJ8EtbX2QT2Myt3O6DgvDI2PprBIH
-	S/Wpg==
-X-Received: by 2002:a05:600c:3e1b:b0:493:bd67:315 with SMTP id 5b1f17b1804b1-493f882fb12mr60707365e9.5.1783947348558;
-        Mon, 13 Jul 2026 05:55:48 -0700 (PDT)
-Received: from mordecai (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz. [2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6ff6casm431976995e9.5.2026.07.13.05.55.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 05:55:48 -0700 (PDT)
-Date: Mon, 13 Jul 2026 14:55:45 +0200
-From: Petr Tesarik <ptesarik@suse.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, linux-mm@kvack.org, Brendan Jackman
- <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] mm: let node_reclaim() return the number of
- pages reclaimed
-Message-ID: <20260713145545.1ff1136b@mordecai>
-In-Reply-To: <20260713110443.GD276793@cmpxchg.org>
-References: <20260710152320.2024283-1-ptesarik@suse.com>
-	<20260713110443.GD276793@cmpxchg.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-suse-linux-gnu)
+	t=1783947445;
+	b=qLQ2tvnK+NTiy+ZfWh/KBXnMPKvq3f6PywbzSAVmdlO7UQjey3hZ5VKFvrGYxX/8A2ukRo
+	i0GVtBShC9/BBiVvS4TTqYrqDjivPnRIOOoG1v+9dFpSh7H9D2JQFdXpccsKZK9GSJbPah
+	oCm9EFUtMJ/sxSbsduOA5WVWbgWdqAk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 325AE417E2;
+	Mon, 13 Jul 2026 12:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EDF1F00A3E;
+	Mon, 13 Jul 2026 12:57:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783947444;
+	bh=B9578WFJk2K+Q6hfVfJmltrDN/WRMnu0cbrC4CTiWnI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FEOet2xl60iiJk7uxbnnVR32Bo8fASIfZBQV+QxoTmwT2ow5ZUvdO+3PwRrn08x7S
+	 98l87O64FycK3x37Pujc/PM11bNCPkB+RqUVrSnLiGB39vQTuTDcTZiuzh6DOs3wsm
+	 FJjaO3V0l0+7SOG6+KEbFHmuRjdrPvvWUp7HfmoTnc2RMh4O6XBfXr6nJzT0b36ieo
+	 PLmSVKAN5uIL7/x8jUdIycvTYZxfgpPRq8lx7gSnnp6wZplV4L3/h8MvFm+meU3oZp
+	 gUkQWRQn50N52Cpc30bof5XTYbbDZWC0HX711UwhFlFpgLxMXqKWYqU3DGW4U8Bsij
+	 DDHqKhlat0aIg==
+Message-ID: <a29dae55-93de-416e-9f34-b7911a2c9fdc@kernel.org>
+Date: Mon, 13 Jul 2026 14:57:20 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/migrate_device: avoid overflowing migrate_vma
+ collection arrays
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20260707-fix-array-overflow-in-migrate_vma_collect_pmd-v1-1-ce3ff4627653@nvidia.com>
+ <b806c878-e1e6-4af9-8816-678955288d82@kernel.org>
+ <DJT9JHBIGW8V.17SI5NN5GCJVQ@nvidia.com>
+ <DJT9Q4WLXSUG.GHQOMM41P9PZ@nvidia.com>
+ <DJUUUX0BK942.1ZP1I5GNIGEY1@nvidia.com>
+ <89d20411-4915-43e8-9808-3a7fbd98d2ab@kernel.org>
+ <DJV02L9N37X3.1THK8MN9Z2RUR@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <DJV02L9N37X3.1THK8MN9Z2RUR@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pemmex5anzc5y4w6poz7c3q99na89xyk
+X-Rspamd-Queue-Id: 0E6E680007
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1FC3918000A
-X-Stat-Signature: q4u613yeyap4hyxumo1fj5ix1uk51jeq
-X-HE-Tag: 1783947349-589898
-X-HE-Meta: U2FsdGVkX1/p0uwoWlbaY0Xwrpy2T+M87gC1+WL0jR4DKpDeQdflRc2s6KSl5UvM5Ja0yOcSF391iHnX4ZK30yjGEF85MpqvEeMYcDZ8xXUFdUczz02lTLSkvMnrz0JmoY34+yshsQSP3s4dj1ErM+1TeYHj2k+CzFw+UJAT9eV52GtfKz25ybE67FafUJak+hTKrIngGlE5p3XZWpCq38Y+XvyujtmZpVZaBcivo71253oGYM5fB0Jna2zKNn6KcqIy4R+tiNaOymyzTSt4hEQ0A5g4Ii72knPoPZtpt2n1rqSVZEtfbXYodrHhl8uuYgUjMnOsI1PxzM+Dih05xBSmNrxHGT3mFQxEkTOzujUECN0pAC060gJ53GBtAuoqnC9UWJTV99eZqaIqb0aSmU+0Tick6pWYTDh26VVlZPVd654xU5QgYRdKDiOWq1DYaRDkYm6qI8mUocUkcKHLreTKn0QE/GsxV3PBzMGWKlzReLxVVo+U78o9vLg3IfabI5M0jehLmwM9pPpbXRYrHW0albJhU+CxjSsZ+6X9oRuXdq6ga+TTTDub4t4qR7mSyqU9o1vpiYyyuHOhmTfxK87R5AwRG71Yw4n8vJucc+gVln98c3s7yq4Rx8K7xQ/oQ2XN4dDA9UMig7gySyTtaFqtYsTyjiICWNIPEUE0JOw7YGtnCLZ1QhkWx7dLOopxKR363mzz3IAAWp2updVHRU7RYvPm0z7fMqNYt+T02ZxmfeTOWposBQmSW/bS6oNG9eDcathi7KnFR8BS0NrMhqBkXD2PzSBVtkTidgp0F1rChuv5GQsolU3V42iNZo2vwoKuft5dAtdAUAKx8yUoyHrSF212s+hzj60fEMFGbXOaZeOWdvze4yWGNFqN2Hr42xg3YBv2NS1vE1TT/tb9KPc5C/XSxv4hXvHI0DMvqeNfwqDvGDtVem16eXlVLCOZ5H1TUvlbIOBj6gMvJOI
- 0p3+1xRJ
- kVcffBXxbVW5VVqo37a3kK8jSKKLMQ5MjVzIZFViyWMWL1E7TPXrbb4LnmqUdVJUPMZtUY0SOqqfnebDeutTOKZYwaOaKDIX2pd0QGldfHD3CIU1fQP8Z5ctBZsiFiy6t+Wog3YkIPiUndeM92nxaTdXbwkxs1r76CQJgc6I2fU7l1YZMx8mV4XX2XgBWd4BkXHYxf+SxDi1SEKHsX0Jcmy6dhv+vNX0zyUVqotddpG8PTeiHj+tC1+JZzCeHmFBfW2V6jjYcK+iVsFXONhN+BDZQJOPiLHA0J7XIfx8EgopcAPNcUBoxslkh31DWxI3wbQIOkYGV74YN9bo/+whLCEiiSCcZUqoB7qSiiqG6A05GbWsriJK9PCctMK2OMjmH1ag0zGtxwTzXPHdW+Pzqn8qs49BQe7YT7nwz5nFXqrpPP7FmpMks7jdwv3WgQJZPeZRU
+X-HE-Tag: 1783947444-794222
+X-HE-Meta: U2FsdGVkX1+R5rrMXiNHYwHIuPjLJZEsEr75eFeBgrLk18j/NxTG4m3vol93jKhh7PFOoOMjnEPI4ozVWc/GagSQOPeyYC5NDKXNJJBju4eoVBGKqQaYCuiQ/Jx4YzY8nddr4fSI1t5XMiQZweMpJWRRm+ly3Hi8Y0NzUVbdXs5lY1CYtu6xPH3syYhC42ZQW42FcdKbFYw0S1OTTiXwVPfNH9DDRttH3Uice1JiDdGH/AzSVIn0MvFxCgSDDsNiyinZ10UfmyXuhpcCBZQQva18D3/QLffAHByz/IUP2SppEqDPfVjIJskXsRbA1aRvJA40FX57xD/MqltVbWg4fCTCtbdEemhPaFFLTmLOhUqnJQ6d1yYaFwR68rx8ZVYkkM0zmsOfAjdg3cPiRtJd8uZRrQaMrfOjCdWNMR6WONHMPYUEkiXuv1BBIWjpWj6VWaWe14FX8MLQIM3gjtxLEaCtcUrvWoAP2MW7WiobSsmkFrh2AGv6CcWF9NQuXm4YlywRmP69wnhwBftLkzKrNKZLYrUyxGn/TxszkO4kbslBJTSVOOrUWY3uPUYiZAayQ19YEXIIuhqo5oEILTJZu833Pq17SA7knO6hAV0hNzb7WEhrbVSl0MKN3Ztp7ZgqbKOitJVp00WEtznJUOQPJcSCiPHsCyogmadH5AOSXcw1bMq1+wmnOWwqEqwy9IVFhojgPFUIi8nS7b5OGtJkNUJEhyFgo60KZeJUHKtgG/CGu/5n5sDvlvStPZs77b/vYSfNS7fmItcxnfLO5fPZOQlyU9XKZaPIzvqSmN5p7Fbv5D1LuJR3NCTIPi0EiUtkychLSFU9UeIs1FZWBuYWedxddYu86FGYufWtdn2SbJc7YtoUsyoqWfD0mkBIvQnxYXa9YedrBoiheNrOqyyUZwBBVoVLyTYBQJf8eV+Pi+1yDglne1x+19AgTANEXI3EMTVK8SwUHAMVJpMxhRq
+ Wsfl5sGG
+ CT4WiobYo97LdlamWqursBmAFxZInz6nHpbj/xDGbIr+WqxMU09+PDYJlLd/rVsp57Wkl42gjgH3eyzZpMRocHOT7bW24SnA3AEPoEO2OpBjYeGdSUsGJjKx5cM9u+lak8WGCGbgBPdqiuPAuNocUzk+dMJpXX7l7/B9frSME2C0It7voAuIvlBb4p8C56YGxRpysoDUYcaJmiqaeOYo8oy5HgGC7Revvl6k/oDUI07oFJA/W/AVDgcxFN5WCJcgXs9/2MTGpcnzacogIWQTflwRa8Tt9jtQzzKTDnZyASibFZqaz+hMVnztthAU/EMvAOH+ar64/CCdHDIetfwLT9nKKOYgXdkTfuvnhP1BmWUv5q+UPENEZidrUpKzz2hI7GGHu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,46 +150,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-V Mon, 13 Jul 2026 07:04:43 -0400
-Johannes Weiner <hannes@cmpxchg.org> naps=C3=A1no:
+On 7/10/26 17:35, Zi Yan wrote:
+> On Fri Jul 10, 2026 at 7:56 AM EDT, David Hildenbrand (Arm) wrote:
+>> On 7/10/26 13:30, Zi Yan wrote:
+>>>
+>>> Hi David,
+>>>
+>>
+>> Hi,
+>>
+>>> Do you think this patch is good to get in? I would like to get ack from
+>>> you.
+>>
+>> I dislike that we fail collecting even though there is something (different)
+>> mapped now.
+> 
+> Not all the time. After a folio split and PTE lock is dropped, there are
+> different cases:
+> 
+> 1. no page table change, the collection grabs the PTE lock and continues;
 
-> On Fri, Jul 10, 2026 at 05:23:20PM +0200, Petr Tesarik wrote:
-> > There is only one caller, get_page_from_freelist(), and it does not make
-> > any use of the reason for skipping the reclaim, nor does it make any
-> > distinction between a full and partially successful reclaim.
-> >=20
-> > Therefore, node_reclaim() can simply return the number of pages that ha=
-ve
-> > been reclaimed, same as __node_reclaim(), and the NODE_RECLAIM_xxx macr=
-os
-> > can be removed.
-> >=20
-> > There is one small change of behavior when __node_reclaim() was attempt=
-ed
-> > but returned zero. The allocation now skips the zone immediately; before
-> > this patch, the zone watermarks were checked first. I believe it was an
-> > oversight rather than intention, because the chances that zone watermar=
-k is
-> > OK after __node_reclaim() did not reclaim any pages are very close to z=
-ero.
-> >=20
-> > Originally, I was looking for occurences of NODE_RECLAIM_SOME and
-> > NODE_RECLAIM_SUCCESS, but I couldn't find any. That's because they are
-> > typecast from the result of a relational operator. This seemed a bit
-> > fragile, so I dug a bit deeper and came up with this proposed cleanup.
-> >=20
-> > Signed-off-by: Petr Tesarik <ptesarik@suse.com> =20
->=20
-> Looks good to me, and agree with the minor change in behavior being
-> acceptable. With the macros actually removed,
+Yes.
 
-Uh-oh, I missed that hunk when rebasing, and of course, there's no
-compiler warning about unused macros. :-(
+> 
+> 2. some PTE(s) is changed, the same as 1 and the collection continues;
 
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Yes.
 
-Thank you. Shall I resubmit once more to include the hunk that removes
-the macros from mm/internal.h?
+> 
+> 3. the PMD pointing to the PTE page table is changed to either a leaf
+>    PMD or an invalid PMD, the collection cannot grab the PTE lock to
+>    work on the remaming PTEs, since they are gone. For the collected
+>    PFNs (they are mapped more than once) and folios with elevated
+>    refcount (they are mapped once and unmapped here as an optimization),
+>    they will be processed later in migrate_vma_unmap(). Since
+>    migrate_vma_collect() is best effort, there is no need to revert and
+>    try to recollect from the beginning (to get that possible large
+>    folio or skip).
 
-Petr T
+Yes.
+
+> 
+> BTW, recollection will be more feasible if migrate_vma_collect() does
+> not do unmap singly-mapped optimization, since in the case, no PTE is
+> changed, we just need to reset migrate->->cpages and migrate->npages and
+> restart from the beginning.
+> 
+>>
+>> In case we stumble over a PMD, there sure are no migration entries on the PTE
+>> level anymore?
+> 
+> Right. The PTE page table should be gone and the original PMD, pointing
+> to the PTE page table, becomes a leaf PMD or an invalid PMD, since
+> someone changed it when the PTE lock is dropped.
+
+Right, so I guess we'd have to remember how far to rollback, and rollback would
+mean resetting migrate->->cpages and migrate->npages.
+
+And for the entries we rollback, we have to decide whether to folio_put() and
+whether to folio_unlock() [fault_folio != folio]. That's the confusing bit given
+that the code is rather "interesting".
+
+-- 
+Cheers,
+
+David
 
