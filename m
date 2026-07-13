@@ -4,140 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D413FC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 04:59:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07735C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Jul 2026 05:01:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1AD76B0005; Mon, 13 Jul 2026 00:59:49 -0400 (EDT)
+	id E13DD6B0005; Mon, 13 Jul 2026 01:01:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEB666B0088; Mon, 13 Jul 2026 00:59:49 -0400 (EDT)
+	id DEAC06B0088; Mon, 13 Jul 2026 01:01:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADA906B008A; Mon, 13 Jul 2026 00:59:49 -0400 (EDT)
+	id D26A26B008A; Mon, 13 Jul 2026 01:01:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 864716B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 00:59:49 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A9491C4322
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:59:49 +0000 (UTC)
-X-FDA: 84982550898.06.86619E8
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2DE6F1C0004
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 04:59:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="p6/THTyW";
-	spf=pass (imf21.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783918787;
-	b=H7L+eus4krtuzjHvNDpB1wMLaH0o8aEqIOoRFQFNYF1qQ4eAy27hhVyolSMFsLA/g4VWSy
-	ZnCNhpvtX+DgPCCshLkwa3kGSmiU3XHGbX8htS0zeQLrNC0o4XgF4xMZ5Euo6iQnnnOwfz
-	3lGSS0H6DKVkaR3I1H3SOhsBuVR8Gbc=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="p6/THTyW";
-	spf=pass (imf21.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783918787;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B0F8D6B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 01:01:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B4D3120A97
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:01:08 +0000 (UTC)
+X-FDA: 84982554216.28.A9C3513
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2274D140009
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 05:01:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=agt6Kmhk;
+	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783918866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XFuNRut7vlpifKdq/gCKY+rZGjMz9I4gBz4L78ICh/E=;
-	b=lBmF8kV71KUhoIryJQzSRN9uYO/+XHUKPPl6TX9G5nQCtq2+v2jgdxST/+NQQnpDxUEkZ+
-	HjaCJ3lnZ8MW1huOFlDPRFih0HY2cE8RRht846pkVRM1m/wv+ola0y4FPKqcLt13BrfNLs
-	+5SWtBr4mc8zFsA3ur2uEUjsToS55tU=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c1630cc8d43so110508966b.1
-        for <linux-mm@kvack.org>; Sun, 12 Jul 2026 21:59:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783918786; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IY35bh+ZrZdHhyyqazC9R0+EZPPnciL9qTUxGrxRmByOfb9Q4OJvpp2ztPGAyMQwG3
-         tavCYGv+tRwKy/sp7UUa0ZptQqY1yJEv/qzkv0DTy6NOsoJtSbiU1np5V5lIuIISNJFr
-         CzEfFjcJlTLl6T0uvQEOYuR3EvJ/1odat8lovRgKchWxKdxi49GCn2Y5wNOux0CnwucA
-         gn3CKHXhEtOmRxT9/VhTTauiSI0AkYebFrz9H6WaKFSG7PYNCDS0QSOBdhfkrE2GLe/7
-         /KmXIR/nBzq2VEgTU215JVUtDulW+HLUwHVl6Okc4tYbBoWRHkJ3F8YLEajyFvKjjGOU
-         8i5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XFuNRut7vlpifKdq/gCKY+rZGjMz9I4gBz4L78ICh/E=;
-        fh=BtMIm5bDPrLzRyXJdYX4/9GrqiOkzeAHbXyGzy+AtQU=;
-        b=UjZg2FlSnK1eAePN/HL0v+JRkhl9AExSVbiX0fWqUBGGQL5qKVyQ5tlVZZfuQy9zj1
-         79f3482gpNg1lnugr0IEUriin1xBSKpnmD0xgWhDcMrZJ1FAyEeDqvWPzKgBxg4THE5A
-         oUgPnOt6mv5wirsaX0hv3c5lvPcXnYl277SbiN6sLGmMMlH69jStWYOCXI0ZgWHAk9ec
-         lHHKo2cEJuPZqDMaWeOH7oP6uNBqk7UpBLTjVH3vd3MtVZeEcDlQMCz3tYHLOiwzHTzD
-         55qQmWgxJDUMYc6Rg9EvLBfMi13YKt1TCNxTRLymuOr1zW4xjYrS4H4e8oL+6jUFJ6j3
-         sX8Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783918786; x=1784523586; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XFuNRut7vlpifKdq/gCKY+rZGjMz9I4gBz4L78ICh/E=;
-        b=p6/THTyWGDbBvzR0yFCUt6GXg0aUow1mwd6QfTi9TgctI/oq3cixE8/8EftN3EMrEI
-         Yr5USMYPlUBQ+3HTIaWsMZsRvj1+0lezrkmwfVi59i47eezBwJf5FXkh84VtaeQJ/Y5h
-         BUvm3JxsS4hpZbxSM0vxpYdzfNZq+UIkbcedNhDelctDYr43ysEtMkfaAFoPdb2BjlH+
-         a68JqJU22qum0sIFtdckngezbDFnCY7BpO9yjtqoHINqpi92DsvcdoMhZUdIuMRTQ6Mg
-         qrbyibu05S9OTmAn37UyyqKmxZmhhvtTVf4idVscwVzNMtHEpiTQqrJ27S21K56oL9Z1
-         S4cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783918786; x=1784523586;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XFuNRut7vlpifKdq/gCKY+rZGjMz9I4gBz4L78ICh/E=;
-        b=dVH+rT9kFuAIp5nx7bUO9guT7OxFQuJ09TerKDH6Tf2oN8sqg0BNMOjOEUkzoa8RbE
-         /okkVVKaTPLLvEBo9kLdcXcPcW+1ZhlLj3OtMHXh2e3h5wwFgaIIljvpRXW10EoeJIhf
-         NIwUVUx/F4MFe7yjnaUBdtJHFpeCK10UaJr1RGGyySXS7bBihqa8D5JsQWzpLdTHdYDq
-         ThSfhJ+nE9s2g3aFxZywm2YihyMNAHafo7nFSnrhIO3EfDl/iQG8jG/QScbvz+0MMWeo
-         ZQSGN9KOQsQoOLY35avlUYHSFkGzFhOvOcxOK7/jmeRfqazCpszqKFdwpO99FCy4IIPZ
-         ND2A==
-X-Forwarded-Encrypted: i=1; AHgh+RrDFsx0WZp/qx84/c4YAiO7uAoXaMosa8FEwYHfQ1Sqo/o3RGxwS62LMgUAmJ1BnnQRf/y+AglOzw==@kvack.org
-X-Gm-Message-State: AOJu0YyVtEzQaz7scRBZtL6CGqvo9bHd9Jhi2e4MgM52PRa8NnZWiZfh
-	pbrrSOqSWbApw0EAvMK7dgBYzCzwyzDQi1AlCWo+T6llwFwWJsevl275SlyaHxqsSzw6mGWEePn
-	PS+fbwANAa0GU1eYwacqItN2My6Tc/XAF4ICsQPuj
-X-Gm-Gg: AfdE7cnzz9ly8swASWjC8y0Abj4nUn16R97bhnaudP+PwRXZmEEabjfJYlua6/SvG+g
-	umtJLDkuuhjCXYUHZ3Zw/MDbaYopSL8qxXdGDov798hwZom9jMKoB76ZZEdsMcq3MJ7BaejSwQ+
-	gP4oTHpNYwDisOoV32WoxcT6hsM5GV7D10CzsZwju2OZXY/4lhszW+37ObqeGkTRtAXEznIwwhA
-	wAjpCExIuE5LSI5X3gDOpR8yujl8BVHfV+YThgKpFOUTXAst6BOCyVUjZjojBRcL6k3+wGqXnfX
-	vRWTFK61Ws7f3ok3ZJRqkfcr5Q9Os44kjccyIQ==
-X-Received: by 2002:a17:907:7212:b0:c12:6c2e:ad2 with SMTP id
- a640c23a62f3a-c161f58f14bmr326089266b.57.1783918785309; Sun, 12 Jul 2026
- 21:59:45 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/wg4NwuokG7aKarDThnCCrUPfmFQ4fLWLc1g7Jr2/KM=;
+	b=t5LoxKoqs/z/40iGuAhX844CA854vikM0ctMwKOSMGFVzaNlga7cilwJrQ8qsmx6IWzhwJ
+	VHnR5v6SCw9y3KDVfLjBS6/Z2HunA8dcbY305DGG3PTMqPCldNnZUsfLiz/GCB+GoImAbT
+	zrkZWyG+nVM44D4n9AQJO56wh4Nvmwk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=agt6Kmhk;
+	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783918866;
+	b=24fop6ZEmRKBOwxqJXQhF4ltBOnqpRfeakIK4iuZY/8Ohf6hjaYHMBlAb7Lv3sUBuoC5T4
+	aVR5qWsHgs3mU6AxdmtkcSQtHklZ9I5BuLhYUgBDMBhLuiUbIEQ5rdqUKwceoAFo3zOxQv
+	xrKo/ZfdA5OhaO6TsACssDhM7Yuk0fY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7959497;
+	Sun, 12 Jul 2026 22:01:00 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B29AF3F93E;
+	Sun, 12 Jul 2026 22:01:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783918865; bh=CPHFu/HOUKfGUBhv1RIN/ECa0WyCmUkHetizFU3uUJ4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=agt6Kmhk10EuC+oLXQPFGu2ZK+BpREh3mJTtgNRzoZJ61TeDXZHENPIXPihq5fZEB
+	 F5osFeXgTPcyImTqXgC9XWC31TDBsDIUN60pWc55Z7CWAozc2pa35AmReWYzUH/cfL
+	 bYdHo5HtSyeRL7HgrZ5tXlVOSm2shXf95LGTyAuY=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de
+Cc: Dev Jain <dev.jain@arm.com>,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com
+Subject: [PATCH v3 0/5] mm/rmap: Refactor try_to_unmap_one
+Date: Mon, 13 Jul 2026 05:00:43 +0000
+Message-ID: <20260713050050.1017741-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260708031129.3503195-1-jthoughton@google.com> <3B2B37B5-16DE-4DB0-8A78-4CB8636C1A86@linux.dev>
-In-Reply-To: <3B2B37B5-16DE-4DB0-8A78-4CB8636C1A86@linux.dev>
-From: James Houghton <jthoughton@google.com>
-Date: Sun, 12 Jul 2026 21:59:07 -0700
-X-Gm-Features: AVVi8CcLGq0YSly3OF5m8P18-3XA_YkiDDB6TSCPkAkKN6byJ-cGb8WLxIValzM
-Message-ID: <CADrL8HXNoRA_cnR7KVPwN6zA32E744OKOfTmDMReoykzR39H8Q@mail.gmail.com>
-Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
-	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, 
-	Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>, 
-	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2DE6F1C0004
-X-Stat-Signature: qxk549munh9m47ik85w7md6w6a9ik7ud
-X-HE-Tag: 1783918787-399955
-X-HE-Meta: U2FsdGVkX197BwgzrmcNg27Y1+dz6Y7Mjfbq+VTN53Sv/bElFuUgp2sFMYIeSgU9LLJkKEcYTRF1Zy1FAbDTFZYR9aGcuj9V82/vCS6GFvBeMamvNwQmaXKazhTOIHkfXfA0gxIYmmzZMWdUsCUbJ+s4YFZsnRNzfseK7AqRx6tbihWp9hwO1dxrDB6Ezf3dQT2O4djYKmSvf4P9ObH4uTM+JSVRGOUlIUz4u6QqjsWVglZFGkmnpXeJWqFlKwyc71eydJChzCWdtgO0VFGNGPYYiqHijnG8WPnhk5XJlZfr7zx3nQfrBUCiLwwbY7LkyXH+7G3oTtNx6hy66Y0QShn1NJhfghqweR83gMne9+RjdLO1m87eTGrZ6veZx3rOkuWUZuUkKarufY2tWjmCu7pYlr6szKzTlYl+wuX6+hHX1ifqQZfD+GepEvi+klqoFqCG6L0fz1cVu6de8Z6pRZItds44FU046A7/g0AzY1Ir//dwkE+2+h/BTH1vGhnaAr9vla3KWar+SwSP8sp0Zs5qPSZsNIRS1kp58SNfs0RiPzEARRNMZK1Bu4cG3LmjE2rLM9FRyWxjjWKYd82QUhMV35b6vkjOBBfIgmpnHiBef5TJkJru4hEM/GRcLNGRxyJfuiHM9Ux+MT3FYuAvmLh4dYfLDDx/yPabB3v3uLRjj/1acCg6lC4zCm000vMmSpRA24ch8qg+RZfHKUH7f0hP769gmXg6K8BP+WrL5E+DRaGANAHpVVgmA0Wf/LThOr5z4Vn6nkq+A89cwnKmMtNsPkUN+P5SznuA/P16+a+kN4/lkvikBDoOPWM5vv1ekfFsdvPMwUpP5RPkDE73B542zdnGrUF967dd3Mbeh9NjY85yNrtrokySMvRvVQOjEM8q8UNT/PzpBjvxaaxxtm5OvcF4iJKK5IM2mtv1TYu78XcevLBb+2qza3aT+w+SLD/uOXNLgahJL5bCJkq
- UmIJcRwG
- n+G8QdQcARSNInZzcMqS+TOPOGG15CyvK6KhTl3rv5Cj1j2wMYFNEh+o1LRdu0SUMmn3VqcEL/GhPJz5Xdx2cba5FqTDEPWXNI0D8fP1n191F34aH5a/gWatjYZsW3ZSb4CZ6SboQRmBCORK+Hp+9gX9RcXtQW1Km0iM9SJ043M5/2kpqnav+zGsS8ElSQo42fFgH+rM6VqYUl9qllvVVubMgDTITql/fMgVeFQsTRR2KQzEBuA6HAwor8ZQ3Sh+82hRBDlQ/DgGyKJ4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2274D140009
+X-Stat-Signature: gopn9wxs4zkfx19q4denhtchx419cweq
+X-HE-Tag: 1783918865-432514
+X-HE-Meta: U2FsdGVkX1/meJFp9A33Ha/LfNPQ6Gaba7rf54HmklBDNEyagP6AlTBKI3V8u6QPY7rnY/sudxGpf8DOVZqLvMyg9wFcAI8puaJ1RadPWDEdeUXE5In+LLvyBS5ODBw9CM9vDq2dRWcB0TU80wmEonYbce4bS8jXYFoIuTx5IsMU57qRXbfArN2kdwA5gx4iez8IuclxN037njIuyd8NBMFPNhSDAI1SUcElQWzuEQuCITlliVk5GX4afl/UZ+nOzv4IVhttp3TYDU0z7feTDMsnnvoZZ1+Iu5l2N3DfiGQRR7X+ICdDLguglGpKl8n50hqj7L+2xjwncXx3keu8tZXH8YWMfgn6kWmzqFwCB4K0KuF8crwMfRkiwh00r028PefwlRAzm2LzuPjIT6wrb61sC2NEou9KUMxp/tSJFUa/5gBY51Glv0KoqaaJkxdwdiakSSpSHYm99Kn0bdAghng7zTgQeHDQqbSHGbSNXqq+Q1+39WysTKV8rz9DjBhe82VXb/lCiK4lm4oWuEBRrCOxoORU2XSChy+75PI4g4st6a0TfDtzIJ+kinKjdD1RqI1y7/Igd/YAaNZ8Az3H9u/L/mJqh26YUdI9OoP0DqCSBW7+ZNhxy+VZ58ytUf0gTeHyWmWXiw7HoF58y23p4d9qEZ2awUPRTgDAroRcfpG88XGKxImDK2EstU9w82vco5EyQm2gUsWDIFiG/tkpAfIScjv/Pyu9HXHItF1n0TA1L5onPp8uJwVFhfFdUISZSV4Ou0xwWoJ5XGX5rVb70YIWo0dugqd27TjbQgoTJRlGBmhBmgP39p1OjWKmiAsr1hPRtreWuCF3qNa6daJruCzjuJYzOgMNo7bqHjcf1RMZ4KRePUEsRJsZxQUOgDsYzS3LLvqu+CSLZpzbU843T49VIbOfdsko8f3AwNDlgHpCBItFmrdGRylPCIF04N5OmtV6PVTwEkAjQNfUWh6
+ GllnQOM8
+ Ji0SpatPXfWkXNX+7m89N6irtxXd14lHEVI5Z6gnHjyzQDJxPDFLQsEqA3rL18Jp1wQjC2NKRobls7IpwuzHUYrJH7qZrbukOukiOFDR3hvp8Cxw1xkDVcqCXgn1uRWfNRl40Vu993kkcraTbT8dZ/FTvrtTWhkpZqYyXkQ8KiyM75Wvd5+wDD+EH6Mz+f1CCRH6X1To+PiQetT01ReArMjDJcFboYT48ozb/auBXTV1ObOApEg8z/AvHPoneU/4HbPHvat1rfHYtGhhVCDMkFkXI/PPsMhY04HeDeN4dfQ2/E38yNrG5Cc2LBq+jKr8GwZSy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,112 +98,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 9, 2026 at 9:59=E2=80=AFPM Muchun Song <muchun.song@linux.dev> =
-wrote:
-> > On Jul 8, 2026, at 11:11, James Houghton <jthoughton@google.com> wrote:
-> >
-> > Hi everyone,
-> >
-> > This patch series uses a trick with the Access Flag on CPUs that suppor=
-t
-> > hardware update of the AF to update vmemmap page table entries without
-> > introducing a time window where CPUs accessing the vmemmap might fault.
->
-> Hi James,
->
-> I was just looking into the Arm ARM specification regarding the TLB cachi=
-ng
-> behavior to better understand the "AF trick" used here, and came across a=
- few
-> sections that got me a bit confused.
->
-> Specifically, Section D8.5.1 [1] states Rule RDWZCQ:
->
->         "Descriptors with AF set to zero can never be cached in a TLB. Fo=
-r more
->          information about when translation table entries are permitted t=
-o be
->          cached in a TLB, see Translation Lookaside Buffers."
->
-> This indeed seems to support the core assumption of the AF trick. However=
-, when
-> following the reference to Section D8.16 "Translation Lookaside Buffers" =
-[2], it
-> defines the following rule for permitted caching (RSQBCS):
->
->         "When address translation is enabled, a translation table entry f=
-or an
->          in-context translation regime that does not cause a Translation =
-fault,
->          an Address size fault, or an Access flag fault is permitted to b=
-e cached
->          in a TLB or intermediate TLB caching structure as the result of =
-an
->          explicit or speculative access."
->
-> This is exactly where my confusion lies, as these two descriptions in the=
- spec
-> feel directly contradictory when FEAT_HAF(hardware management of the Acce=
-ss flag)
-> is enabled.
+In preparation for batching anonymous large folio unmapping to optimize it,
+refactor try_to_unmap_one. This series refactors hugetlb, anon-lazyfree
+and anon-swapbacked logic into their own functions, significantly
+reducing the length of the huge try_to_unmap_one.
 
-I don't think it intends to say that "translation table entries with
-AF=3D0 may be cached" just because they don't cause Access flag faults.
+---
+Split out from
+https://lore.kernel.org/all/20260526063635.61721-1-dev.jain@arm.com/
 
-It is likely that this clause was written before FEAT_HAFDBS/FEAT_HAF
-existed. Re-reading it with that in mind makes the meaning clearer:
-PTEs with AF=3D1 may be cached if the architecture otherwise allows it.
+mm-selftests pass on arm64, built on arm64 and x86.
 
-There is another clause, in D8.5 "Hardware updates of the translation
-tables", I_RGQLZ: "If hardware does not update the AF from 0 to 1,
-then the descriptor is not permitted to be cached in a TLB." I think
-this supports my interpretation.
+v2->v3:
+ - Patch 2: fix comment to say that TTU_HWPOISON can be true for small
+   folios only in try_to_unmap_one, since hugetlb bits are now refactored
+   away
+ - Patch 5: Directly do if (WARN_ON_ONCE())
+ - Rebase on latest mm-unstable to resolve conflicts with 30c83145c5b3
+   ("mm: rename uffd-wp PTE accessors to uffd")
 
-I am convinced that it is impossible for an implementation not to
-conform to Rule R_DWZCQ (PTEs with AF=3D0 cannot be cached) while
-supporting HW AF correctly. Let me try to explain why.
+v1->v2:
+ - constify ttu flags in try_to_unmap_hugetlb_one, move const variables up
+ - Assert address passed to try_to_unmap_hugetlb_one equals pvmw.address
+ - Patch 3: code and comment polishing, do the stat update in the function
+ - Remove unnecessary inline hints, remove set_swp_pte_at, instead have
+   swp_pte_prepare + set_ptes. Rename subpage -> page. constify
+   anon_exclusive.
+ - Do pte restoration in caller
 
-For HW AF to function correctly:
- 1. Setting AF=3D1 must be done atomically, otherwise hardware could set
-a bit in an invalid PTE. (This would break Linux swp_entrys.)
- 2. The AF=3D0 translation cannot be used, otherwise we could
-potentially drop AF updates.
+Dev Jain (5):
+  mm/rmap: convert page -> folio for hwpoison checks
+  mm/rmap: Add try_to_unmap_hugetlb_one
+  mm/rmap: refactor some code around lazyfree folio unmapping
+  mm/rmap: refactor anon folio unmap in try_to_unmap_one
+  mm/rmap: add anon folio unmap dispatcher
 
-If an implementation used the translation before coherently setting
-AF=3D1 to perform an architectural memory access, then it must choose
-either to set AF=3D1 on a PTE that may have since changed (perhaps to an
-invalid PTE) or drop the AF update entirely. Either way HW AF is
-broken.
+ include/linux/hugetlb.h |   1 +
+ mm/rmap.c               | 415 ++++++++++++++++++++++------------------
+ 2 files changed, 232 insertions(+), 184 deletions(-)
 
-Please also see I_GXGPN: "When the translation of an architecturally
-executed memory access occurs, the architecture requires that AF is
-set to 1."
+-- 
+2.43.0
 
-> On one hand, Section D8.5.1 [1] explicitly uses the word "never" for AF=
-=3D0
-> descriptors. On the other hand, under FEAT_HAF, an entry with AF=3D0 does=
- not cause
-> an Access flag fault anymore, because the hardware is capable of updating=
- the AF
-> automatically. This technically makes it eligible for speculative caching=
- under
-> Rule RSQBCS in Section D8.16 [2].
->
-> My question is: which part of the spec reflects the actual architectural =
-intent
-> when FEAT_HAF is enabled? Is an entry with AF=3D0 permitted to be specula=
-tively
-> cached in the TLB by the hardware under FEAT_HAF, or does the "never" in =
-RDWZCQ
-> still hold absolute priority?
->
-> Please let me know if I have misread the specification or missed some ove=
-rriding
-> constraints here.
-
-Thanks for making me look a little harder into this; it's a good
-question. I hope my reply above makes you more comfortable with the AF
-trick. I also hope to hear more from the Arm folks as well.
-
-Thanks Muchun!
 
