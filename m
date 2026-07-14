@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92B05C44507
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE9AC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:20:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A97216B0088; Mon, 13 Jul 2026 21:11:09 -0400 (EDT)
+	id 440E46B0005; Mon, 13 Jul 2026 21:20:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A46356B008A; Mon, 13 Jul 2026 21:11:09 -0400 (EDT)
+	id 3F1536B0088; Mon, 13 Jul 2026 21:20:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 936926B008C; Mon, 13 Jul 2026 21:11:09 -0400 (EDT)
+	id 306FA6B008A; Mon, 13 Jul 2026 21:20:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BBA46B0088
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:11:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6B5C160226
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:11:08 +0000 (UTC)
-X-FDA: 84985603416.13.94A7484
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 89AD820006
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:11:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=g1eB9y3B;
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783991467;
-	b=W+Tg7BrwSyPVq+bM5ITNWSBUA2+Dk4b3oheF8etwTcNIK1OMWSL5cM8YHQXfEPjleBVKev
-	rwW0JKW/Kztx15PSztUsTzd7GWKATANHiA8hlg9x+62+RfBt3uGA3RRVBE7aELMPcjSRs4
-	qsw/u3J+HiUXGRltWeRFKEdzbWZqycQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=g1eB9y3B;
-	spf=pass (imf13.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B15E6B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:20:17 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6050D1401FB
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:20:16 +0000 (UTC)
+X-FDA: 84985626432.18.6251227
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8648F1A0002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:20:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aLPVtxei;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783991467;
+	s=arc-20220608; t=1783992014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QBTuxEtzTYLRVryCNC/UKY74wgwZyisDAh2aK7ZURZk=;
-	b=QTUGyLsmkEYSBqM4wMC/e/9kX47BwsxFQ/c1GDZkHIgtYUyP9m8zyKM5fq8ep6jYu28E4m
-	ThSpKMh5FARwr1+4s1LY6AaU5cUAlQ32HyU0uuMQUs7iSM2ZJJQxAE4K4cWJE5Si17Pn+y
-	ll6qZNqepkNowdP+/BLz95PtKU6rGbY=
-Message-ID: <9117db4b-2a7b-41f3-b5e7-db9d6343bc83@linux.dev>
+	bh=ZctEu+mX1koEkj7iSspmtkQvsQ427myBTirKB+Ofv9Q=;
+	b=biiEOoH+ixlAHFOG7rykq5de3hTt8pSAjpTcIduKhlP0oEHH3kWGUHgKI9TzScIkdR3XAU
+	GnkLRvQqxyIvnMx9lMb4NhcgJd6sZ+Xuo0E9nwpjSYbqiDqi/jMGyTEtGs9ieGesjZLuxj
+	mhla3prwgZaFDHHF9MhEV2SGw3h9mKc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aLPVtxei;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783992014;
+	b=bnaTW/CfiRn3juJeWQp8+0FEIAkC9IM2aDJkQeMnQiFU+Bxj9vbMsEB5m6r+SvtwBqIiyc
+	Kyog6yr5pz2KPJE0WKO3jwE7j1A0JUMyvnkbGLgqqSwSNkeWr2sjbvB+7RcCOvtBSlyqfw
+	nYdeEAGDAO3vWwkUzTaTQTlMcB7Oxv0=
+Message-ID: <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783991464;
+	t=1783992013;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QBTuxEtzTYLRVryCNC/UKY74wgwZyisDAh2aK7ZURZk=;
-	b=g1eB9y3BOcZwZblAVHaos/wcXy3DKhqfRLmswKAnzYIj7k5fLSyUOp11oj4sbNwb7qZf5D
-	OVQeC6Z25fjQDNt934i+E6iM8eKME7IJcaZ32EqXAi0m56nj+UtEEi9MO7YgS4MX3WZ9ml
-	YHKg9phMJ74p6SrUNcGJpNitn9lZTMc=
-Date: Tue, 14 Jul 2026 09:10:46 +0800
+	bh=ZctEu+mX1koEkj7iSspmtkQvsQ427myBTirKB+Ofv9Q=;
+	b=aLPVtxeiDDTh4DfW/RDii/1ZK3BCZDRA8W8VefSwdDDRhy2veEza0ita+eFrzjWOY5Bk0U
+	vLbN3hjYA6Wa1jSjTAKTmZn8V8wZFSNkQ3PzQuisAK1lml21UZjnDRdvQqr8v7DUdU0XZf
+	mMwk10gxE/Gqd1uGn2LmMbIK2S+jeTg=
+Date: Tue, 14 Jul 2026 09:19:53 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/2] mm: vmscan: fix node reclaim ignoring swappiness
- parameter
+Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
 To: Barry Song <baohua@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
@@ -74,22 +73,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
  Ridong Chen <chenridong@xiaomi.com>
 References: <20260711091157.306070-1-ridong.chen@linux.dev>
- <20260711091157.306070-3-ridong.chen@linux.dev>
- <CAGsJ_4xGKM3HxXw-mrtyr5HmwZL3L1QVZ27utCyozqSJr1F0gQ@mail.gmail.com>
+ <20260711091157.306070-2-ridong.chen@linux.dev>
+ <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4xGKM3HxXw-mrtyr5HmwZL3L1QVZ27utCyozqSJr1F0gQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 89AD820006
-X-Stat-Signature: pwa4snr6aqgfhbqfyxgrjqd48djyue1y
-X-HE-Tag: 1783991466-841802
-X-HE-Meta: U2FsdGVkX19HznGziDuhKUlHZ+86CoaM/ckS7/UBD8Or6+kMsyj2Js2RIGv9icJzOyp1TaX8lhEBoWSTmw6pzbrHfzfTjZsR3Mrex7Qm31xRhTDYfk+RsajJgNT88m21OZU2NtJbP52JioCuLgwgu7gGgNGvazmz8sns4lrQelL4WkqPp41P9roI4bjZwie18i/7eayFqaPoDmHIYoN11e80tJPm++TYnMFLnKBwL2kUDzXBQD/vZN8QavQuoeL4QAB4xT+Xx8BdGCpuQF0ZVSfq/aYn7c8Ya6URuxwdCZfwyTfcWp74V3Go2EKLhsnAxqaK2J093J4DnY3Ai2Avc5j3MG0SD3zUTfQCg5vhOIk7m6WpZQWBSo00I6P9+2UNr3MUyrF6EGjd53KvqotvhUCnJE/xP5aBfxMyR0XCUZsEb8d7jKM+vKhl+IkywTcQKc52O1KDCJrnI4nk+jQ56iSRA8UXsQna0PhU8pK1MfeE95N7e9NK0tyos5mhVmU65bAhevDomLeMvi4uR49j/Hrp3YgoZ4piEJZOOOLQ5RiRa7gLE/KBJQ44PPN70SMPgj+MOXnF3zWLLhvkFM3IuCnVYxZ31wZcMyoAygd3DAgXbweD9IJjhmJVCJ/EeS5L630l9uG8gGjWzHVmgTPa+ilgSDYESBgnCm818ckgR3fh4xJ4YT79toOZL1QPw2AjZamF3Mo/mH1cM9H5YydDEa+vkjXEVn6BFl5EiejEjv4KMwCi61ZWDO6ebId17Gh5ABo1VpMpATyLrXK2f3qLH4KHl6cbYzo9fKb8/J95VNw72sV693YsOKnbd58RS5KpTQqKhMz7r6V49SZymNvgjFy2kZVsuld28e1s5BuuhajTKF563fO3avqVQMyuq0WyN51l6yn8AYmjv3/iN0pCHXJui2pzTSnFFDU2tNzL+sj6IohauOAj6ZjxwwPu/BW+5H51oeFAMl5ikfBtmwS
- 0cFJc0wr
- fh12S+ct2uXjcHKRACASV6HxAvl8+J6n24QrLbH3L2ajt8EUepSmSq6JZbld9+qpSVh5mSPodRzXxWMtEV7CnpJNx1neFkSeJmnWwQ+VwxrnM/3Q2Inddn6oLR0FbStb8FjBLfepNHGRNhZrrhZlywDDh9qjmpleaYKr6y5Zslp3V4vepfzkBstMr720JVaK6ic7QgqqGuMXqR2AluLfwHqbvTPefrZ1Ckyby/YSdD3qe1VXZ+UytN3KaBbJnrW8h3ce5Ny1toSA4XyhcsnxZfZqwSn+tyJStb68/
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8648F1A0002
+X-Stat-Signature: 8ptnabhust47ybet65f1h1bfikjzjpwg
+X-HE-Tag: 1783992014-462876
+X-HE-Meta: U2FsdGVkX18//3DnhxVmojHAjhbRba1Gbx1NFk2JQh6zqE3rMFqPq3vmuhmOA+0p+urlhgKXCJv2E2/tRfbkd6GtO8SHVv5f3fBzeTCanl83RF1ldhc3RE6uJa3zL6Yuqap6Sb7eDUwqLfaMZ7M42CIKAYhxNMk+WBUyZlKHmJIdPBjPmanvaD2/t2AlSmcLPcy8WWxCLuE/IKG7qF4s1thakw/Z73ZvE5uTM0nRUtpKW4PaWfZQIeOtigWLIr35FyuLZYdfcUpyM6mSgEjT/8mqd21W8VJLaGR1IviE5qKBKoBp3vFwCL3LWs/j3VZ5HlinMandkL1GjsxKN49YRxrMzF/5cStl8dBnJ8nVqC+zH5zc0ewAHZVsCZwseG51lG/x2BUEiellciN7evmJDna9H7nPrN/Qhd5EcohfzuUquI3boy5AVMs0FF0VwxF0FIMuBlYkgGlhJGTREtlZidSDIbxPb28Dkyz0ybL85hzNfhQnq0OvP7GPhpowlXKfOgnjtE61vDcuLzz6lMr7hHV2sYLAALEznNYReTjXdagIuhvUcWTYejNRC3jnY+NRVsALIK8v9IfVzMMHKputKMyAHJBW94XIiWVMBCxPg6n7euM2kTx/gtXQEHHJ3PrMBd5SkBz94FW/0X+Bo4mNxcC/YUJIlgekCtlmTjiYvkm4nplu0tJ1RdqhYRW/KaBX/vv9WMFaJmCWR72KcuRzC+8Cubt8mwzCdsamOM/6luYOo8KN0NWHJoAU/pvuJJ3d/5IwqW4Y4OoqGkG2AMV1xqaJnWiXTGIkAamQqAGlZDEtCrAm2vvotdRCiU2g5KrBs92NL0mSHAeOOVP/biSlYX9S8tRiAhQwUke9Earv9U3mMSU3gAdkmQx83rm53oZHrd8U/MfJI5NeUiabAR6miUgLZ2opXPjr/m2XWRBkqDs0X/IAolE31qSRk8tt3gjMaRv9wzxuDPcxrkwirJs
+ 4XRw6CjV
+ awxBgcUdmzDGdpiDd9yROnDWhAwbxPqFm5Ac63No6PL/z1lKP13iy7aOrFGAkRjsMlejidYvOmVbzichSkJxsmOaLTET5W/AmcEoMjJp+8Iisn7xcqR4BxLW83mCE7ga58PHD1fqCOOeKkFJrPkbXRAOjZ22IKg4vQQ6EVfTngVgR6ChtJ2stW8xGzGc2oX74xXiwyH2C0FqVdonFs7gQ7yIrETakrclu3yEd0UBJFfE6cwQY7Pz8YfuR/ihzPRuYRxFWbLPSlax89JDt5zanfSgkcacwTsklA82bOgEnJ7gaoIxBSyNtETrsNCZ2I3grtQ7Vg93jiJbTyAG42EXtoW5C1XJHwsQBSUR8mQF+Yqpbk6x+JR+ZUdMUZDiZWA5J0NQJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,72 +98,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/13/2026 11:16 PM, Barry Song wrote:
+On 7/13/2026 11:08 PM, Barry Song wrote:
 > On Sat, Jul 11, 2026 at 5:12 PM Ridong Chen <ridong.chen@linux.dev> wrote:
 >>
 >> From: Ridong Chen <chenridong@xiaomi.com>
 >>
->> sc_swappiness() had two separate definitions depending on
->> CONFIG_MEMCG. The !CONFIG_MEMCG variant simply returned
->> vm_swappiness, ignoring the proactive_swappiness value passed
->> through scan_control. This caused the swappiness parameter
->> written to /sys/devices/system/node/nodeX/reclaim to have no
->> effect when CONFIG_MEMCG is disabled.
+>> The per-memcg swappiness knob is v1-only; v2 always uses global
+>> vm_swappiness and ignores the per-cgroup field.
 >>
->> Fix this by consolidating sc_swappiness() into a single definition
->> that checks sc->proactive_swappiness first, then falls back to
->> mem_cgroup_swappiness() which already handles both CONFIG_MEMCG
->> and !CONFIG_MEMCG.
+>> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
+>> to memcontrol.h where it belongs.
 >>
->> Before fix (swappiness=max ignored, mostly file pages reclaimed):
+>> No functional change for v1; v2-only kernels drop the unused field.
 >>
->>      # cat /proc/sys/vm/swappiness
->>      60
->>      # cat /proc/vmstat | grep pgsteal
->>      pgsteal_kswapd 0
->>      pgsteal_direct 0
->>      pgsteal_khugepaged 0
->>      pgsteal_proactive 1840
->>      pgsteal_anon 25
->>      pgsteal_file 1815
->>      # echo "64M swappiness=max" > /sys/devices/system/node/node0/reclaim
->>      # cat /proc/vmstat | grep pgsteal
->>      pgsteal_kswapd 0
->>      pgsteal_direct 0
->>      pgsteal_khugepaged 0
->>      pgsteal_proactive 18013
->>      pgsteal_anon 337
->>      pgsteal_file 17676
->>
->> After fix (swappiness=max honored, anon pages reclaimed as expected):
->>
->>      # cat /proc/vmstat | grep pgsteal
->>      pgsteal_kswapd 0
->>      pgsteal_direct 0
->>      pgsteal_khugepaged 0
->>      pgsteal_proactive 0
->>      pgsteal_anon 0
->>      pgsteal_file 0
->>      # echo "64M swappiness=max" > /sys/devices/system/node/node0/reclaim
->>      # cat /proc/vmstat | grep pgsteal
->>      pgsteal_kswapd 0
->>      pgsteal_direct 0
->>      pgsteal_khugepaged 0
->>      pgsteal_proactive 16283
->>      pgsteal_anon 16283
->>      pgsteal_file 0
->>
->> Fixes: 68cd9050d871 ("mm: add swappiness= arg to memory.reclaim")
 >> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 > 
 > Reviewed-by: Barry Song <baohua@kernel.org>
 > 
-> As pointed out by Johannes, the Fixes tag should be
-> b980077899ea.
+> With some nits.
+> 
+>> ---
+> [...]
+>>          struct mem_cgroup_per_node *nodeinfo[];
+>> @@ -365,6 +366,9 @@ enum objext_flags {
+>>
+>>   #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
+>>
+>> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+>> +extern int vm_swappiness;
+> 
+> This is a bit unusual. I'm not sure whether mm/swap.h would be
+> a more appropriate place for this.
+> 
+Thank you for your reply.
 
-Hi Johannes and Barry,
-
-Thank you for your review. You are right, will update it.
+The vm_swappiness variable is not utilized within mm/swap.c. 
+Furthermore, since memcontrol.h does not include swap.h, retaining the 
+extern int vm_swappiness declaration in mm/swap.h will result in a 
+compilation failure.
 
 -- 
 Best regards
