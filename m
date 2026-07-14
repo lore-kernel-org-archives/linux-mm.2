@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7948FC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:36:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AEBDC44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:36:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287726B00D3; Tue, 14 Jul 2026 10:36:00 -0400 (EDT)
+	id 67E506B00D9; Tue, 14 Jul 2026 10:36:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 265A86B00DA; Tue, 14 Jul 2026 10:36:00 -0400 (EDT)
+	id 62C116B00DA; Tue, 14 Jul 2026 10:36:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03B696B00D8; Tue, 14 Jul 2026 10:35:59 -0400 (EDT)
+	id 4F5F76B00DB; Tue, 14 Jul 2026 10:36:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C22676B00D1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:35:59 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 156B51603C2
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:35:59 +0000 (UTC)
-X-FDA: 84987631638.09.D5FD1DA
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 135926B00D6
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:36:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D71781203FA
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:35:58 +0000 (UTC)
+X-FDA: 84987631596.18.0F0FFEC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8877220006
+	by imf15.hostedemail.com (Postfix) with ESMTP id 39DBDA0005
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:35:57 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WnjEMvgF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784039757;
-	b=pVG3hGVx5vyKF/Z/hxdGoHge4rDrHvE9OnU+DAwwa45nB+SHJ06VDKcWqj+1VCUyUtl3Hd
-	Kr2nJ5YSq0tTR6eH6vXatjJEV4Sqs2nc+bb7Yq1uJ5+p0ceZAtLkHUf6lmrLm+62SHKUqi
-	Uztl2y59+AA1HaXfvCfTbu3xWdPJmq4=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WnjEMvgF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oWhCyoH6;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784039757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K9M+/498pDyKMm1s0mlHFjJL8e/IqqSwdiOP+0fBImU=;
-	b=DqwlZicq91KlrVrNCpFAIbfj6kYlPwgMqFEhYz2m/+7hX//MAlmUkBLWhhB11wW0vyS33V
-	OEJJqtRLolGaXsgprVCfwQxHFqs+6QE3VljpwJ51rgr+eHCWjiOc5aYIETxlan7Pvwdi4u
-	fm1ooFtIxIxANR94oUlbgDf3/zE8+SY=
+	bh=t7iohU0bRHpxYfrt1uYJsO4LZsUO4rQ7qDj6JMCliOY=;
+	b=m3IPP53iz8zYtX3zM8muR1JO/O6eI8DNMYkLeq6jNVeekYlV9cNKZSRtLALbg7lFlpOcV3
+	JcThODMWTyGNh+Ldf2t//7I6PToQLKFMnSf/lPdhWgzk6YM1B/ZSvYKYDMxvt4qHWjwczI
+	dfwnOo0Bz9iczPrquz+WnRw8mMBbyxc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oWhCyoH6;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784039757;
+	b=eNq8tBt7kHfGE8SPwCnA/qJ8jjwkMqdHfjqj/W/zobRtw8n8omZlLv4RvfcE1xBPu4CRSn
+	SirBy3AkLZrXfcg2eK1pNxei0GFcPAA5SwE4GzzEGZbbrnrVod4Ym5nLhrySRIKwDxEaiW
+	BUQcU0wEYeNsnRgV9gQsPN7cXo2wDj4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D774C43779;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B3CF43784;
 	Tue, 14 Jul 2026 14:35:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957F31F000E9;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DD71F00A3E;
 	Tue, 14 Jul 2026 14:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784039756;
-	bh=K9M+/498pDyKMm1s0mlHFjJL8e/IqqSwdiOP+0fBImU=;
+	bh=t7iohU0bRHpxYfrt1uYJsO4LZsUO4rQ7qDj6JMCliOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WnjEMvgFAHBy/bzZQA4a7f1Y36g5vw4oxOI3sJN/eEZTgH4K8axXPJnwr649a+LFa
-	 DlbXW0ZCc5W06Wuksp76J+nGs2n6y+gQu/2x4rV1S7JZ6R/f6HSbjDk9gX6yA0nF0r
-	 7sKafT7Og+gChSqB8vcM9rj4dWncysS+TXLjhs6thBw+wkPC4z5yvvVZuzo+V00S2s
-	 n6xx3u1qr7rFe1ou6nF8dohhyKs3foNBHilrfNSyZ5T490c695QCroKE/uvZU+DR3E
-	 c8cSOlxmtTQO+9fli2Ju/xndl0khBw+w5HQBbbZRt28kn3+uTBzow6denRKj88hF6q
-	 MQEKH2adAzeQQ==
+	b=oWhCyoH6UI55zYnJIRuLEij7M04dcUeXAABRdD0vCF7uiCusH6dL9i7ChxBDBSgNq
+	 tjUdicBOB3BwQJDtM9zxykiTxceWYm7/MUf4vOEGSLOw7b5NBP0UZrEPgvWNNleXvb
+	 SYXFa3o2FYDdmWeYWDjOIplUISDotw2sdhF323/YKkuXEXA6X5rq2I6QPTcpTM0m7A
+	 7bMwgO2xJSW9Zv6Xsv+H5L7vxmEx9yVVgMoK7mttoPBe/nzjkHBnnYKZfJR7BiTxJ8
+	 FfQGEkkMbiaYEVSReQuLSKYuSS70q2At3qNKA2Cif0HVSlmTIBuid2F2yrFTspqn4P
+	 k9VLUFpi5cvdA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 05/10] mm/damon/core: hide private damos_filter fields
-Date: Tue, 14 Jul 2026 07:35:38 -0700
-Message-ID: <20260714143544.101305-6-sj@kernel.org>
+Subject: [PATCH 04/10] mm/damon/core: hide private damos_quota fields
+Date: Tue, 14 Jul 2026 07:35:37 -0700
+Message-ID: <20260714143544.101305-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260714143544.101305-1-sj@kernel.org>
 References: <20260714143544.101305-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8877220006
 X-Rspam-User: 
-X-Stat-Signature: 9ue8dac1dgjwe9cu63nxnm887w5adex9
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784039757-156507
-X-HE-Meta: U2FsdGVkX18gVuXNaLwg4W/NxWJAicjoq8vH2SRwLjsHfRE4l1ZUErUqb/uNLPrcemSJGoQSsgme8gmXjvQQduWWgaIU9B9JQVklzFWQ/yWQbeboKWlV5C3u3+PdQBMEoo2L/M4JRxf2vWGoUNHyEEM7Wthyr79mZYB8T4ZtBcgdkBIyqugNKT3/mSjPyjWrXCJJxj6DhXkn74TMhDBKMJLkdBSC1IGL95QObpHZtlmOP3AU9/XwaRSitN1ezX5gUh6jDBwQKHl0L4pa3cRHsoifOzOxY4Dfc+EGVE7DNIABTzFD4rzgEUKDE8oFRFWcI+TiV8hgwJiQBz7kldOAAsczyc5mPWxgYyeGLDVUBtHHC8AGyIP8ISAKdN6caNLmS7oe16vQUSB+gVRoo0ag/gBqb8/6ccGJdtY336JhVSM296yd+QYf+uGPy2bRlSHWLAvyFkQc0+4zcEaZFURd+19qfk52N/ZOHtK5iABJScoVvL5OIToRHVio0xzBV6iI61AuvJVDLnSzgk9wrpOp+f+E61SKVl48yZixS00RUlG1SZY02xOwGrtqS3NKCNFnynARVlh3CM/L7h29XFYo97pgA8g96T92rTawWAaJ2Zw1zbw6c/bmla2Tt1aP3Ybs3loTqg7WIaEqWQuYGyoR7OzEdbmmbUaqbzP1Mm8MC+z0csbnPpAqdAURt/fQjPW/ZX5WvoSHqC7f+fAC7tcsRxo00xXXkVz7shwgECFgfJUvtcUJmrnGonMgEYVSANuugQJBuJLSbMJCWKARaQKI2ZZmdAcYiPiNndDafhgYf4qDxJz2Yflq8Lpk3jBozbkZqSuAytaZsp/CsnlUIXZE0JtmKvCVt7Vac1kGcZnCjZImUzD931FbZZp2LyPzfFVtZKTER/6o1fiSpeXqHMUtc8QxedTaueqFDEXpHlyQmkBeNZTO+xTkwhQ5IrAA2gEODVf7XFD436d2xgJ9gRE
- Vft8XWEm
- 68c2No+yssmeNqYLV2q1UMrVR+mY5J7H5iqg6j4VADyWGu47wD456AY7QQRosKLb89B3ChLN5N3PHQfqdC1tQx2JG9l9kQADqkoL8Z1sRyf7oGn1qrUsKktf4zINHwUx8xvfFTYGJ5LYZMiD8HCxdaFBczPH8GqgGOvOPWtOrqKhCxRvd5Xmx86AQe7UkvZnSU24B/LBOgHKq5CIseu0SUO9lObmwn4AAsEO7J+QTSNcmoVwFlkG3huOiwvBx2wYkO7bvrAZelzesV9R3dZVjeK0McA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 39DBDA0005
+X-Stat-Signature: tocbipujkaw5czggatg9e1efpgwnr3yh
+X-HE-Tag: 1784039757-64339
+X-HE-Meta: U2FsdGVkX19+uf0Q3q4PcoXWetqa0dxD8ubVVnaSiLcNKvKTjSQF52qxW65e1GILlbqLfl5QQy11Om2tk15LD05FNS7TUsosrcxYNtp6O6cAyZiN40bBqB7VgJ4PJLcF9jwI71o6sBFmxXHCs8QHGBabUbTsI/ArJOMOTBVo5BR0KnOaGa9RSy7foCF7+vPyQm4cKmtjFAeklKQBRIp/nrl6szBbPTtKQEA7wD9NUdRRjuyy73IPfIXBw3D2KxT3YueOi0R0w1RikXIpNHh7ne5rMvzSnZKmj9C8Lnws85GTCoRuDa2nLXc3kU2tgCgRx/ql0rrw+5IhG2bDFOCPrzr/AFP4nfvh+HKSTz2msycGlqSr2I4wQNio2qn9MPHmBQbGiRYhFyyKlUFc6Y151ufYN/AAW+FCAfj72LSSh+OXKq6KRZn6huw3jfS0QZX398rsmY++9dKK9QsjoeBHmYadfAWdnTzuvGVSETNWZ+tS3/vzsC0eJQ1ltKPIe1peOnZRzVCBVo9RgpV54EDzUMYrfPoGFyIKEyDi9YEbt5JpVBtYqs/CmzAdvwgWZIz8mKg2zRHMfUXg210ZUJoWgWuGRe6qdQxl3iZRNEhk2TcigeoGhHxPXDN4RLv1UHrQbpREaFaBIYwtCoBjjdkz+s+Y4L3dQZvcukr0Lrq5/QmoDNaPh6xu/VwOj5Q8MTIcB63b1xhFFX3ySHbtPJd+lF9qfYOWYyWwfceDu/TlUg4H4ftzFvdYEn0KqDEeMAwWR1rW4yw14fCpQdjoefqdp3Cmmd6rogYm6QjEN6r7vH60Ylgad2JcJixKorbQCeyXJNM0MwPM5En0vhKnUFwb9cjiFnvtVzvxB1Getu1hqIMl+lu9x2yspP1ST0tOpPafQN2lDMIAfwONyoi1lxUasm82WvI+WcKLN5HKi4lAO0v0yUY1c/s7E9FH2mmSDrzqPcaCGKS7qp6a7H+omWw
+ ToUSq286
+ sfAEfYjXPYH6GmyDr1jpJw1kLfjJ2IYP4fPBggjhChs8mCdTKM2vIKbGv3RDhA2S9LgzQv41x3G+v8PFhFK/gXzFnzQ39EBX7r6VMmHSSp4anI3WD6RD6aRDrfYtLM0zM+C/Yq5s4HFc1vG5ldVtvzYd+FTfcHWc0d+La6F7otl6yq+2b+zV/0Ok6pfcyJGoUHaiWX0q79X/Qvu9Vg95afjxZM8De83/JVIwuCz63720BubkbnZSQNX6JCaDs52u9iIHS5Gex526Po6PgLDQzeT9tXlYmAG5NQJAthFSH0wXer6A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,35 +92,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_filter->list is intended to be used by only the DAMON core layer.
-However, it is mistakenly not marked as private.  Mark as private.
+damos_quota->goals is intended to be used by only the DAMON core layer.
+But it is mistakenly not marked as private.  Mark as private.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/damon.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index bd024b89adfa3..15517be3e4960 100644
+index d838cc27ee72a..bd024b89adfa3 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -432,7 +432,6 @@ enum damos_filter_type {
-  *		&damon_ctx->adaptive_targets if @type is
-  *		DAMOS_FILTER_TYPE_TARGET.
-  * @sz_range:	Size range if @type is DAMOS_FILTER_TYPE_HUGEPAGE_SIZE.
-- * @list:	List head for siblings.
+@@ -228,7 +228,6 @@ enum damos_quota_goal_tuner {
+  * @reset_interval:	Charge reset interval in milliseconds.
+  * @ms:			Maximum milliseconds that the scheme can use.
+  * @sz:			Maximum bytes of memory that the action can be applied.
+- * @goals:		Head of quota tuning goals (&damos_quota_goal) list.
+  * @goal_tuner:		Goal-based @esz tuning algorithm to use.
+  * @esz:		Effective size quota in bytes.
+  * @fail_charge_num:	Failed regions charge rate numerator.
+@@ -255,7 +254,7 @@ enum damos_quota_goal_tuner {
+  * the scheme's action.  DAMON then compares it against &sz and uses smaller
+  * one as the effective quota.
   *
-  * Before applying the &damos->action to a memory region, DAMOS checks if each
-  * byte of the region matches to this given condition and avoid applying the
-@@ -450,6 +449,8 @@ struct damos_filter {
- 		int target_idx;
- 		struct damon_size_range sz_range;
- 	};
-+/* private: */
-+	/* List head for siblings. */
- 	struct list_head list;
- };
+- * If @goals is not empty, DAMON calculates yet another size quota based on the
++ * If goals is not empty, DAMON calculates yet another size quota based on the
+  * goals using its internal feedback loop algorithm, for every @reset_interval.
+  * Then, if the new size quota is smaller than the effective quota, it uses the
+  * new size quota as the effective quota.
+@@ -276,7 +275,7 @@ struct damos_quota {
+ 	unsigned long reset_interval;
+ 	unsigned long ms;
+ 	unsigned long sz;
+-	struct list_head goals;
++
+ 	enum damos_quota_goal_tuner goal_tuner;
+ 	unsigned long esz;
  
+@@ -288,6 +287,8 @@ struct damos_quota {
+ 	unsigned int weight_age;
+ 
+ /* private: */
++	/* Head of quota tuning goals (&damos_quota_goal) list. */
++	struct list_head goals;
+ 	/* For throughput estimation */
+ 	unsigned long total_charged_sz;
+ 	unsigned long total_charged_ns;
 -- 
 2.47.3
 
