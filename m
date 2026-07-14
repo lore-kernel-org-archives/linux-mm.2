@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4570C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:35:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6C9BC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:35:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F5F26B0093; Tue, 14 Jul 2026 00:34:48 -0400 (EDT)
+	id BE55B6B0096; Tue, 14 Jul 2026 00:34:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E2926B0096; Tue, 14 Jul 2026 00:34:48 -0400 (EDT)
+	id AF88A6B009B; Tue, 14 Jul 2026 00:34:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AA8E6B0098; Tue, 14 Jul 2026 00:34:48 -0400 (EDT)
+	id 971E26B0099; Tue, 14 Jul 2026 00:34:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D8C246B0093
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:34:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D10BDC0245
+	by kanga.kvack.org (Postfix) with ESMTP id 607396B0096
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:34:48 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1EC2C0242
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:47 +0000 (UTC)
+X-FDA: 84986116614.26.42A2E92
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4890B140009
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:46 +0000 (UTC)
-X-FDA: 84986116572.16.B6B2182
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2F681100002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kaVBoUoC;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LkEe8e3U;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784003685;
-	b=vey6V5DydrSqQpZj1/VyV5NMBGOYmb0Qw/jkrAGQbtii1aBt4HMJhpyx+Me8QQknC1f0gz
-	gQJYnRllfLBc2EQ7w9t7hkcyIA/zwQc3DsbGN2ZwbDxhhhTYVJHso57qf9s8W71mCXNBIn
-	MLzTHtpWEdOxJ6CfvyDCDMg7exFr7lo=
+	t=1784003686;
+	b=XSCbA+caMMJ86TSbHzn+KiEBHxJMuKkxHHoNuDNVNfWpMR0tHN3QBS60aBuv7IOwJZVT+k
+	zalDaC5LXBQpmHxIJIwJ49b4H/d6S5jo26hD98eAO9zaE8jcy4tZEVexKcnNzyCYEvH/nn
+	NPqmLOYJ77OFv3f6QxeQwH/NmCuGHNE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kaVBoUoC;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LkEe8e3U;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784003685;
+	s=arc-20220608; t=1784003686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=49szHoBkn5sDldjM9+XsvM62mHHlAwosCDD8pFLfc3E=;
-	b=ErxmZYVxpCrcDYrEKxZkl1C3BSP0LfR60aAvSUT5nt1s25mvdG/EQfYr2kGOdNKX//YjFW
-	cNFzbZNavo2KAYaFUBL4fmAK7ZPeFOZgUJL1Tfw6l2VKvnKPRMK5dveOA9OPXfxGYtVY5k
-	onSPIX5MZHELeXUWChqg6svw+wfqhJc=
+	bh=Nx5e31jEsyo+C5Jzh5WXWtwiWc9v5lBvS+tYDZCZe5U=;
+	b=T4MHOFxZC30JseTCorchHR65K9eOqQRyMeilrf6OKbQbt8hU6HwoRuhZBKzQvhRuUKm7HT
+	U61ghd/96oqQpKnzFJOWL/pebSj4ujcrWUTZyskd+dcHdr5kBFZ0hFXvf3oShsgDp25QPf
+	GOyxugU/+Jz20KOc//6qvLfSZ4LNmuc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7681B43CA1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DAD1F000E9;
-	Tue, 14 Jul 2026 04:34:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D4A35601EC
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A87B1F00A3F;
+	Tue, 14 Jul 2026 04:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784003684;
-	bh=49szHoBkn5sDldjM9+XsvM62mHHlAwosCDD8pFLfc3E=;
+	s=k20260515; t=1784003685;
+	bh=Nx5e31jEsyo+C5Jzh5WXWtwiWc9v5lBvS+tYDZCZe5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kaVBoUoCqWg+Mqb/X8nZ2sMIr7T/XyFXoWfzFHELqs8PSGQv/gAQHhVgtKu9omyNP
-	 tOqK0ABBELOZiDOh0A87I4MGPhQcCJfqiBsazz7OmcDQ/wy8yzyuS+IziZ2RI0Imji
-	 LuP/k2lj9mQn63BQ6p+O9CnRvo4ALAEO+Do0bH2vfa3Tes3RzzKm4+UES5yvQO7W93
-	 vBXyN0TlWcAQqvxYfAkQBNVSvdXWYMgI6U/aWxmpWKnXWZ4NOt6HWRff9nAsjk2LBH
-	 7JFBIr7RSpUKSVVGMvl30BNBjgsMtq32d/pWTdx4yigXf6c0gQ8P7tRU+/6LAavKgn
-	 IyQkbRNpTNqoQ==
+	b=LkEe8e3UTZtu/dCxbCA9jUo0qcEklu5uKbpCJX1k35d8t0paquV8tRgmoEkqPO1Ma
+	 FQCWvJ0ChNjq+V2aoC86L3SFkFxnHaY7gfcFgB+9f/Udy2WkSldao2xE60CSM6bAgh
+	 v+sot+OTbqguCtNuaYDQG9EOtx4+Kj4sGmvBDt3l9PvxoC6JKKMPoufbcOPpJY1MAX
+	 +8SIikf9AhD2zYpEJPINKqaAARyOD6aapQwUz64A9QQ69MHX/PKhnmEQEV/OwtniN6
+	 XxQKChVCZgdHzw8yTdJIxUVs0jSu5s9NY9V0FfDZj+L0L/0TjTitxX2YXkABMDuBZo
+	 uSZnYBORIrBKA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 06/10] mm/damon/core: hide private damos fields
-Date: Mon, 13 Jul 2026 21:34:32 -0700
-Message-ID: <20260714043437.95811-7-sj@kernel.org>
+Subject: [RFC PATCH 10/10] mm/damon/core: hide core-private damon_ctx fields
+Date: Mon, 13 Jul 2026 21:34:36 -0700
+Message-ID: <20260714043437.95811-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260714043437.95811-1-sj@kernel.org>
 References: <20260714043437.95811-1-sj@kernel.org>
@@ -79,12 +79,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2F681100002
-X-Stat-Signature: 1m6ku9k839pycnb7r5ypjrmrmq6o8u1b
-X-HE-Tag: 1784003685-429751
-X-HE-Meta: U2FsdGVkX19yUkyuLaQtBWSzd+RuzBM7V0VjSW76+PN+89KzHK72ei0yGvSGfFowsEIlfyOm8oAqosX2rFb1iBajLZBQyntFuiNakN+5n6z6dLcJJZTuK3HqnxBgvCYxGGA8mHle15S3AEQ0U9Vwnd7gRHI8BRfadkWvC8g/TT0p5EBk/oAm/lJQe60XY4U/ANhz9xwEsFwzo785R0Hk254Aro/ihkQeF5hqoes6FJjwwjMdS2DGj7CSuCbGrLTzQZ8nudh9yA4hSNm7Cs9D1QFADCLjN0Kg8LVx4IQ9d0/TeBotWXzHt++8p7pAtqlqsUL+ifzTBoPvgw8RlmhUpYymrsGXpKQa1Znd5Vmxf62Mw8eLKSIyNtDLOhToBUYyspBtBdmFt0CkzmaS3noqDonjNRdpfCaA58WOEHKi0vez8MhS+uqLb8wUIEfbndiccoxbQcN3JaGXvoxBEqN2cTRY13KR8crgV5Gj1jM+++3Rxiz1CVEimaGskg7MH4sDQIqpq5vuiWnbNJA5HRpgFhgxZ0T6xhSYyJFwVeBWcEDru5Y6nbhj9npCdyJIKrOwtIkPo2Q/rZIK30OwIwVjBPNzsx2rQMd+velWCEGx7ap8sDoTz7lZIR580ZLIaSd8bJS0Rx11GTDGGjeF9nd7v3x60GW9OP+hMNMtWPW/faozm6Gl4sRCx1cLexhF4UzzsMFEf7k6mWNytaoUfkzfyXMsSmNwQeFBBFCKxsq+3M1qMMRItW5snXXFEMsi5fuGUQFi/Zw8X2iGMiWhgTyywbbWRkpX+gXTYAhz/9e4VDXc5A1J/gxsFkmL4/lpzZouzimVTiWOL15JfkevO2Az7v6VMYqoWUAAXlT7DiNElBbw//hbJZmRXQlW2vqZk6uwA2tkarhe9jB6RiQV2wh/hiLU190kP4/7YvwUukQ3Q1ZandSw/YKxspNCSZc5yjCl4pZouaCn7sr1l0K52Kr
- JIrnqfqq
- niJDRBoDiPBZnyNp35RAmiWbrMiau/HOH91ocCAWePDJ+OnJ2kzSk1OekMnaufy6/FDIqigrPP/Qhcx2dICqplx/iyqWlbkdD5652t+6GLSag/tc6uzjUsNkEIxpmsK76urlQX6Zper+fvfk5hVOdd2UuKhdc3oMQ87QjxpG2f9Vef+mB3uVyaco/9yMz0Uk6KUvctCcli5VySHzIJgFxC7pV25co2sJCjrQCD2xJbsgAGppr1m7waLH1wGiaxlz5wS6JQZCEh/WppEAUYh3Ks7hoZkA+gLIR5q4gSgNk39Ns0lA=
+X-Rspamd-Queue-Id: 4890B140009
+X-Stat-Signature: 5ze9p5b4ca5a7inbgitkpxb19kgu4oxs
+X-HE-Tag: 1784003686-992688
+X-HE-Meta: U2FsdGVkX18m00/ZcFBKQDhhjtPJakXFZbQ9CaDDIRKTXMXAXlht6gl9/TYcT6gT7FiAtiJrOS1r97CKfjAd7m+NGHIan4cvKTi/+BmRXkVdlceS48LcG25iA4f9jdsU+5zaq/UCTXMW5SA1bEYvK6aFBA/0MNst2GCbQfhinPVdxJVIoeqcGTgjCqDSDvBELFopt3LtllhnIRlubBf/KnsozgT0bkmWOBlfXMbfCWvtNPsW++x6vsCPt4cuKaWPfcLXu4UHFha0SFCJiDtA4AV0IYnj+nor7chGbsFbYBotPEecu2kPMIpNA+afSAP8AqEz5F3tEf2UTRSazimoh3WckYDCxnedRPmsPKtwa2kGcw0yRrJlJkUufHuTCMrEJlqD1AqEGEYtL6yKAn5RjO+BqNStPJDisCahnd7hlqKwiARnp+8YEOIgjsM75dGVu4Cq3Hf2KGlfLNwhzYKqPz2jw4EPKv0sOjgd8Pe/Z0G3be02h5CZYj0xfH85iL0zQxNI5erZGzgBYzwKeo/5aKvCSsRAcSJDKlmVr9ogHbnqM0YaB4+ITaTbH5vHIsdn2emf3fg05pm+y3hc66aofUEPgDE0Vxm39erLOCZARu83fd66cKRPB1+Lhn3OtNEh5SktiACfslgRrc3WIl5gCwG6qGNz/ufFkBQa3SMicE+ODzCtNx29hzsQVFS5NvkiN3M9uDX5TN9Dk78ldARqcdWPElJN08wi3mVfr3AdZjsF3/i3MvMI16z3emw5ck8DRJ8qxdohoV/ayOJGCbbCVHg155Sn7oT+9ut1A3XmWXW7QaEcH1ZDoatmaHVOplT6wfoSJFzYJ0GpawqOvkeyaj8Ku+ylcon8CvS6oME1R8WjUlQKHAmzp0xyCHSQPc24npfY+w4CflFQIBGXDnhk09OHe1ICzs+XFxottSicuIcpomK/t4ZBd0NbQftYu54+DYQ+b2bRy3P8SFY4oCh
+ trAWqqd+
+ P4Vh61Deq7YExgfir8dkeHTLLhNT8oRsgAHEhZvvwgKh3Y66+YuUa4/cdxwCIMhOBJyW+3rGJkn+Rz+icio4Fkk88kK004/QM/Ncq8xhb/KkRwodnsmDXsBJrPm1ACsVnTSmgsm5GxfhjOsjaA3mievz5LCXmf38vgej4BRAMtIfMovmHfwVeSS5MO6Y9cZm/VUXDbY8LO92mgf/8JyHGlGBT1KYcT/VO3nsfBTYWyjW74s3gVNw9xUxmIkymsT1iDe1cU13Oj93SweFEhEo8S0CP7COZ7w4iEODpzx2nqytxGlM33KXJl5PMFPbN/ee5gSkr0wwt1bTTC8iYwKVSE0uNCTmylktqVdHl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,102 +92,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-'core_filters', 'ops_filters', 'last_applied' and 'list' fields of damos
-are intended to be used by only the DAMON core layer.  However, those
-are mistakenly not marked as private.  Mark as private.
+'ops', 'probes', 'adaptive_targets', 'schemes', and 'rnd_state' fields
+of damon_ctx are intended to be used by only the DAMON core layer.
+However, those are mistakenly not marked as private.  Mark as private.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 52 ++++++++++++++++++++++---------------------
- 1 file changed, 27 insertions(+), 25 deletions(-)
+ include/linux/damon.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 15517be3e4960..907d65f03d083 100644
+index 537e59bfd7072..327f534696aa8 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -522,12 +522,8 @@ struct damos_migrate_dests {
-  * @wmarks:		Watermarks for automated (in)activation of this scheme.
-  * @migrate_dests:	Destination nodes if @action is "migrate_{hot,cold}".
-  * @target_nid:		Destination node if @action is "migrate_{hot,cold}".
-- * @core_filters:	Additional set of &struct damos_filter for &action.
-- * @ops_filters:	ops layer handling &struct damos_filter objects list.
-- * @last_applied:	Last @action applied ops-managing entity.
-  * @stat:		Statistics of this scheme.
-  * @max_nr_snapshots:	Upper limit of nr_snapshots stat.
-- * @list:		List head for siblings.
+@@ -848,14 +848,9 @@ struct damon_attrs {
+  * thread other than the kdamond should be made using safe DAMON APIs,
+  * including damon_call() and damos_walk().
   *
-  * For each @apply_interval_us, DAMON finds regions which fit in the
-  * &pattern and applies &action to those. To avoid consuming too much
-@@ -549,16 +545,7 @@ struct damos_migrate_dests {
-  *
-  * Before applying the &action to a memory region, &struct damon_operations
-  * implementation could check pages of the region and skip &action to respect
-- * &core_filters
-- *
-- * The minimum entity that @action can be applied depends on the underlying
-- * &struct damon_operations.  Since it may not be aligned with the core layer
-- * abstract, namely &struct damon_region, &struct damon_operations could apply
-- * @action to same entity multiple times.  Large folios that underlying on
-- * multiple &struct damon region objects could be such examples.  The &struct
-- * damon_operations can use @last_applied to avoid that.  DAMOS core logic
-- * unsets @last_applied when each regions walking for applying the scheme is
-- * finished.
-+ * &struct damos_filter.
-  *
-  * After applying the &action to each region, &stat is updated.
-  *
-@@ -569,6 +556,16 @@ struct damos {
- 	struct damos_access_pattern pattern;
- 	enum damos_action action;
- 	unsigned long apply_interval_us;
-+	struct damos_quota quota;
-+	struct damos_watermarks wmarks;
-+	union {
-+		struct {
-+			int target_nid;
-+			struct damos_migrate_dests migrate_dests;
-+		};
-+	};
-+	struct damos_stat stat;
-+	unsigned long max_nr_snapshots;
- /* private: internal use only */
- 	/*
- 	 * number of sample intervals that should be passed before applying
-@@ -585,20 +582,25 @@ struct damos {
- 	/* whether to reject core/ops filters umatched regions */
- 	bool core_filters_default_reject;
- 	bool ops_filters_default_reject;
--/* public: */
--	struct damos_quota quota;
--	struct damos_watermarks wmarks;
--	union {
--		struct {
--			int target_nid;
--			struct damos_migrate_dests migrate_dests;
--		};
--	};
-+	/* Additional set of &struct damos_filter for &action. */
- 	struct list_head core_filters;
-+	/* ops layer handling &struct damos_filter objects list. */
- 	struct list_head ops_filters;
-+	/*
-+	 * Last @action applied ops-managing entity.
-+	 *
-+	 * The minimum entity that @action can be applied depends on the
-+	 * underlying &struct damon_operations.  Since it may not be aligned
-+	 * with the core layer abstract, namely &struct damon_region, &struct
-+	 * damon_operations could apply @action to same entity multiple times.
-+	 * Large folios that underlying on multiple &struct damon region
-+	 * objects could be such examples.  The &struct damon_operations can
-+	 * use @last_applied to avoid that.  DAMOS core logic unsets
-+	 * @last_applied when each regions walking for applying the scheme is
-+	 * finished.
-+	 */
- 	void *last_applied;
--	struct damos_stat stat;
--	unsigned long max_nr_snapshots;
-+	/* List head for siblings. */
- 	struct list_head list;
+- * @ops:	Set of monitoring operations for given use cases.
+- * @probes:	Head of probes (&damon_probe) list.
+  * @addr_unit:	Scale factor for core to ops address conversion.
+  * @min_region_sz:	Minimum region size.
+  * @pause:	Pause kdamond main loop.
+- * @adaptive_targets:	Head of monitoring targets (&damon_target) list.
+- * @schemes:		Head of schemes (&damos) list.
+- * @rnd_state:	Per-ctx PRNG state for damon_rand().
+  */
+ struct damon_ctx {
+ 	struct damon_attrs attrs;
+@@ -904,15 +899,21 @@ struct damon_ctx {
+ 	struct mutex kdamond_lock;
+ 
+ /* public: */
+-	struct damon_operations ops;
+-	struct list_head probes;
+ 	unsigned long addr_unit;
+ 	unsigned long min_region_sz;
+ 	bool pause;
+ 
++/* private: */
++	/* Set of monitoring operations for given use cases. */
++	struct damon_operations ops;
++	/* Head of monitoring targets (&damon_target) list. */
+ 	struct list_head adaptive_targets;
++	/* Head of probes (&damon_probe) list. */
++	struct list_head probes;
++	/* Head of schemes (&damos) list. */
+ 	struct list_head schemes;
+ 
++	/* @rnd_state:	Per-ctx PRNG state for damon_rand(). */
+ 	struct rnd_state rnd_state;
  };
  
 -- 
