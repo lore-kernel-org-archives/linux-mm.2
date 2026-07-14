@@ -4,189 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D06CEC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FA09C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:03:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5DD06B0088; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
+	id 1AAA96B0005; Tue, 14 Jul 2026 08:03:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0F586B008A; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
+	id 133EF6B0088; Tue, 14 Jul 2026 08:03:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B04C6B008C; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
+	id F3E616B008A; Tue, 14 Jul 2026 08:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 698196B0088
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D62B51A03AD
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:55:47 +0000 (UTC)
-X-FDA: 84987227934.28.3FA10AB
-Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DC94240007
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:55:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=CVv3c2hh;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="f NsAiUF";
-	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	by kanga.kvack.org (Postfix) with ESMTP id BF6606B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:02:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 52366403E7
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:02:59 +0000 (UTC)
+X-FDA: 84987246078.21.0040A09
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0D79CA000F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:02:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=JXzxi9yw;
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=6486dc810=dipiets@amazon.it" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=6486dc810=dipiets@amazon.it"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784030146;
+	s=arc-20220608; t=1784030577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T+24MjkKOyccdIXKr6nivOOwP9jmSIAod++JgzQuHBc=;
-	b=xW6bSIy9s4mKCFT+3Ki/BzF6ZncCvlJN8Lg3c5yOcvPoLOKAK4VXrCuZ4aIvA2rKt4WYBz
-	l2SKLxx0EaTePXkVkW6DJWB+acXSaFg4v8+65FsAaOTrej2B0vjlk8ui2qISeirDHsk0dk
-	/GdDCUiBqfNxOeppxkfdriid+Tkj4b4=
+	bh=Xg7sx8Fcwnz35cM6X5s89ftjr56njrrKRxrcpCwNiT8=;
+	b=0LQGpFec6U+4ez0dL01BM5OS/u4+kcdcJdH5XJwMpzrzI4zSM+st0pEbpWTTYfm6rgj32l
+	Kz/iJfAEMoy7uh5hBNHOFTOvrdG+at2gdHuQl9qQJpsY1QGIbzN6quVKryyj4uJq/C78Gk
+	bEMpInhlrSkHk2Ji+Jke9nuVSzOxY0k=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=CVv3c2hh;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="f NsAiUF";
-	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	imf15.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=JXzxi9yw;
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=6486dc810=dipiets@amazon.it" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=6486dc810=dipiets@amazon.it"
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784030146;
-	b=iSw3Jqqh9JaTUGR5GpPvEgDXqDzR04owY6njkgrpAVKK+MJQKgGLkqyWTADFlwcRzf1eUf
-	uGYWiW84SMHhOb4VDYuKhbHwdRmBSVJBaUEamIWN+eyuqK+/Ncw7Xy/DIWe2KJSNs/524C
-	r2+CxQibCRK0YqtO9Q+8P7APrj8S5Gc=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id EC16A130018B;
-	Tue, 14 Jul 2026 07:55:43 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Tue, 14 Jul 2026 07:55:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784030143;
-	 x=1784037343; bh=T+24MjkKOyccdIXKr6nivOOwP9jmSIAod++JgzQuHBc=; b=
-	CVv3c2hhp8uDNc5r7ko2QUEtAAEx6nH7+CrFdGshtB/9AFtkXsk+/qw3yHVkZex3
-	Vu2pyZGe7H8X64Mc5ca+WSXsO7bWC9O09NZdEmA7HZE7eZ85HM3/1zLXggvYdeuM
-	16qF02oA9jL+4y2fpX6uD2YZuMPLGt0nMGRyEVu6f9MeJYOE+aR6E1lpqUGQowZ1
-	KP9Yq4MFqjRpWhYQBq12QjfuhTqbRZiaiTTMwnONYQKH0y2vq/r/elX57A31FF6N
-	1W3e3QWu1DoyiVFQBGIkueMbUdAh2ZnUSSYsL5UDCpUp3AC/zE/RYCulDhbLOw7k
-	+uFvtuEOSR+bhu2NrvK7aA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784030143; x=
-	1784037343; bh=T+24MjkKOyccdIXKr6nivOOwP9jmSIAod++JgzQuHBc=; b=f
-	NsAiUF2wwNHbm2aRh2VZvJga/CUIwB0EAlWxBskMLODdHCILE6vnzOvR83AnOzQl
-	C8hVCO4GyTMsu7FBrFxQGuSWPsKy3FSWOq1c+xUKsYqBv4uEqrRFB3gayLttIqS2
-	u83K4SQN9y/BFFYAKEW6yjopRJxx9hQlgxhLko+W03RWXrYA4yXKm7O2ajDzwFFM
-	e83tcetVh9XkdyXTnKRy2e8TO+K900r4hcchIyI+CPCM7XZqPq1GFTEy7UE4lIR0
-	J7HVETXUGSGEAo0czc6ylx+mDLI8TqprfL9KLguzXthnTGD0UsguRyqtmSV0VkT6
-	6aVmY5FL81d4cieO9JZ6A==
-X-ME-Sender: <xms:uyNWalt8ukQBwYv6Gt7VUExfITQvBsstUE5RUTrzK0Gvq159mQn17w>
-    <xme:uyNWapSIkzhd8c-ahrxBAFufEnZo3Sne1Fl2cbjrg2ZN3Lccmh6C_o3P-DfGDFxUn
-    sIg0pYngkjQSeMNgV0UWSAbmfoOFhIz3T9S5pIE2SX34C6jv1pjP8tw>
-X-ME-Proxy-Cause: dmFkZTGxIX4qsR7V9UOAbbpZ7DI+TPioS3EdeOfkz2sqQrWFwCwBFa2jO13xOhfwAzebyL
-    vDn4L3EOcKqRhgsBPy8K0LlhasC87RLvJKakFM63Ex5ajF1mW9HBfU9h64M01z8Zkd1enj
-    GGlJ+S1uE0LE0ntEkqcD2W8Mc7+iLE1JAn9qBp8jOSHfQ/492DuvwwXjB3rPP8pj/tMaxq
-    q5TAvzCpGhJ8fPEa4+CYMo9P46KZqjk/ruzcYSl9IYoSn7a13f67wJC/dG+TgSpdxoToXo
-    rHMhANm1HxqVijJlmPefX4wiI6JZN4Z55MCfIh8k55OoUatB+dk0XUuzpv91MEhl04VWsV
-    ZSok8TCuuKj8PWwP0EiIT6QCPzE9Rhj+56/WVYSuoFKN5pnvjixLDWFi+WaLep3dlBF/ZM
-    R1gPJomvZP0vI1mZd2xbHjHC4PbZoDJZaTI2Ff/jkCigkrwZtlj8DSAfGjPYx0nC29U3Zy
-    hDEvNQoI0Xi+DgnJGdxCmodO1+oDmF5qjsBDd7dKYUF5QBBYz+zfMf4uhbEhlzoLTu8U5r
-    m8QjPMKAYeAQelZO7q1lnl3i66zJ6sB+Q3LY9jh3ODNPd2SBRx29u7BvyOPJFOnGnIoKbW
-    izEG2Rtu653VGFVorcXYXHnVQAnHtxZF9aSmlvX/LNWUy3QkWR/KwJPtp2hw
-X-ME-Proxy: <xmx:uyNWaqzCG7oLkHgr2707HaSDbalGogtx1FIQpREY7NUn4k5I1vhZog>
-    <xmx:uyNWagdqLr2-T4dQLiEGj2x5Ja7MmcDpQ9saR64VrBglZHa2LLs_GQ>
-    <xmx:uyNWag-NW5lmoFjivEHv2jK6SIAsug9P0F140RFyfmM4dUQcWFnN4A>
-    <xmx:uyNWahES6J1uBUFym_4ngGCm93iVp4JHd694IJ2fGtylDwcLXlD07w>
-    <xmx:vyNWaurTTdPA3xEUOXdW4cewVvGt51MQOAWINakqJRR53uGyaCedkGEK>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 57A521820082; Tue, 14 Jul 2026 07:55:39 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	t=1784030577;
+	b=PA4hHJyUuRVzq2i5haWCIbgaReh3v0JhM3ZTRBuJ2uckHpq4FkWnovSL4BfGP5VlZJtEMe
+	81W/zoVA0ASM9H/ymKIM0+7Si7VU2X3Csuj51VUdDyJFneW7ZJvtjW56Hiwhfsfyz1kl1c
+	VD6UaqxxKaC3wHI9w7Nzrpil6kz0yFU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
+  t=1784030577; x=1815566577;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Xg7sx8Fcwnz35cM6X5s89ftjr56njrrKRxrcpCwNiT8=;
+  b=JXzxi9ywWJTBdi0I14WVYXtvDVt5DFXIqHrvwTac4Q32CUDZZAoU3vK5
+   2nLUSRIif7QYzYvLSN8MXJHdSAE3dkjTGMI1DjXsFGGCJNm01+jU4pPMg
+   2CHeqUOYpIIQ2cxuClE+FSJJ8GChmcEhqTxlVN34LM77ss/130OyttD9e
+   aw/B3jc6QYqHw6aHeGE/tCZmGktUd3/sh86401BtWwjdwXmdznbTvBZyz
+   YAMDBaB7NruU9UAJeBNihueyHBWz64EJBNNbrP+MAym3ymIJJYepJGYuf
+   HpW8K7YMdIwS6qvUQTzeWbrP4MiWwVrbHAYiEVpFSLOUYPXRr2m8VIZu5
+   Q==;
+X-CSE-ConnectionGUID: BBEVK6/MRkyicl38cs1lxQ==
+X-CSE-MsgGUID: 4tRkKufeQB+DvyJnPm7R1g==
+X-IronPort-AV: E=Sophos;i="6.25,163,1779148800"; 
+   d="scan'208";a="23659306"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 12:02:52 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:17218]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.51.175:2525] with esmtp (Farcaster)
+ id ac228d5a-c9a9-439a-935a-e5fef6abf6b4; Tue, 14 Jul 2026 12:02:52 +0000 (UTC)
+X-Farcaster-Flow-ID: ac228d5a-c9a9-439a-935a-e5fef6abf6b4
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Tue, 14 Jul 2026 12:02:52 +0000
+Received: from cdd-al23.dub2.corp.amazon.com (10.253.66.177) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Tue, 14 Jul 2026 12:02:48 +0000
+From: Salvatore Dipietro <dipiets@amazon.it>
+To: <hannes@cmpxchg.org>, <willy@infradead.org>
+CC: <abuehaze@amazon.com>, <akpm@linux-foundation.org>, <alisaidi@amazon.com>,
+	<blakgeof@amazon.com>, <brauner@kernel.org>, <dgc@kernel.org>,
+	<dipietro.salvatore@gmail.com>, <dipiets@amazon.it>, <djwong@kernel.org>,
+	<hch@infradead.org>, <jackmanb@google.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-xfs@vger.kernel.org>, <mhocko@suse.com>, <ritesh.list@gmail.com>,
+	<stable@vger.kernel.org>, <surenb@google.com>, <vbabka@kernel.org>,
+	<vbabka@suse.cz>, <ziy@nvidia.com>
+Subject: Re: [PATCH v3] mm/page_alloc: avoid direct compaction for costly __GFP_NORETRY allocations
+Date: Tue, 14 Jul 2026 12:02:04 +0000
+Message-ID: <20260714120204.542300-1-dipiets@amazon.it>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <alEz4Chf7Ibyg-ZG@casper.infradead.org>
+References: <alEz4Chf7Ibyg-ZG@casper.infradead.org>
 MIME-Version: 1.0
-X-ThreadId: ASU80-mPZ9gg
-Date: Tue, 14 Jul 2026 13:55:18 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Pedro Falcato" <pfalcato@suse.de>, "Yeoreum Yun" <yeoreum.yun@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
- kasan-dev@googlegroups.com,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- linux-m68k@lists.linux-m68k.org,
- "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Russell King" <linux@armlinux.org.uk>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "Mike Rapoport" <rppt@kernel.org>, "Magnus Lindholm" <linmag7@gmail.com>,
- "Christophe Leroy" <chleroy@kernel.org>,
- "Klara Modin" <klarasmodin@gmail.com>,
- "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
- "Kirill A. Shutemov" <kas@kernel.org>, zhangtianyang@loongson.cn,
- wangyuli@aosc.io, "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Will Deacon" <will@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Pasha Tatashin" <pasha.tatashin@soleen.com>,
- "Rohan McLure" <rmclure@linux.ibm.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Tejun Heo" <tj@kernel.org>, "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Anup Patel" <anup@brainfault.org>, atish.patra@linux.dev,
- "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Andy Lutomirski" <luto@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- "Johannes Weiner" <hannes@cmpxchg.org>,
- "Michal Hocko" <mhocko@kernel.org>, qi.zheng@linux.dev,
- "Shakeel Butt" <shakeel.butt@linux.dev>,
- "Kairui Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>,
- "Axel Rasmussen" <axelrasmussen@google.com>,
- "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
- "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>,
- "Andrey Konovalov" <andreyknvl@gmail.com>,
- "Dmitry Vyukov" <dvyukov@google.com>,
- "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Yang Shi" <yang@os.amperecomputing.com>, chaitanyas.prakash@arm.com,
- "Ard Biesheuvel" <ardb@kernel.org>, guoren <guoren@kernel.org>,
- yang.li85200@gmail.com, "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Dinh Nguyen" <dinguyen@kernel.org>,
- "schuster.simon@siemens-energy.com" <schuster.simon@siemens-energy.com>,
- "Vivian Wang" <wangruikang@iscas.ac.cn>, junhui.liu@pigmoral.tech,
- "Muchun Song" <muchun.song@linux.dev>,
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
- "Nam Cao" <namcao@linutronix.de>, "Pavel Machek" <pavel@kernel.org>,
- djbw@kernel.org, yu-cheng.yu@intel.com,
- "Baolu Lu" <baolu.lu@linux.intel.com>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- "Coiby Xu" <coxu@redhat.com>, "Andreas Larsson" <andreas@gaisler.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "Stafford Horne" <shorne@gmail.com>, "Jonas Bonn" <jonas@southpole.se>,
- "Stefan Kristiansson" <stefan.kristiansson@saunalahti.fi>
-Message-Id: <b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
-In-Reply-To: <alYL7B0HAvmLVHGU@pedro-suse>
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
- <20260713135614.1618183-3-yeoreum.yun@arm.com> <alYL7B0HAvmLVHGU@pedro-suse>
-Subject: Re: [RFC PATCH 02/34] ARM: mm: make 2-level pgd_t a scalar
-Content-Type: text/plain
+X-Originating-IP: [10.253.66.177]
+X-ClientProxiedBy: EX19D041UWB003.ant.amazon.com (10.13.139.176) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ktxgcn1amiyr6cymngum4wggoqkpy1dz
+X-Rspamd-Queue-Id: 0D79CA000F
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DC94240007
-X-Stat-Signature: dh8tn85xccfmt1sc6ty58dxgwrcqhbfm
-X-HE-Tag: 1784030145-690874
-X-HE-Meta: U2FsdGVkX18zPEY0OVRizO6T3CB+pkPTI6C6yO7P6IIYFTyU4HkPa7YUh+e6/iNf5+ULiyBoI41m2TMiB7u7PhGhCXnlfb5gWcpWRFXfA2DOfGqLjNVQBn3BAYylKqofFc+tzJsGYYsaPer+gS62YpRyArcMEm37NASpSPHbVH9ZttRhrXiLAARjddOcJ3OSpoCJBnhky2qNeRmLxXoicizej8+5++z4K5h5GOhslsefPJJSZ+17ms2xfSLgppHDL/UixdQpPF88Qxle2ritnJADOB8UtNfHdS97djPlumQhfFWyTsxVRg3OyjRTThjpU/+Gg3DCQ/drXC9YmkdJKE8saydKSVh4GjZgifC4ferWgdszoS4JVdtHVlMA0XOgpogbJJFkH6tqj/QES48gmlHVsGn3Lm2hahByf4kj+e2Vht9YreAlHVi6xXpW7M++wsNkzkbYRneqwVmKzQYeva4gt4q0Ps6MvMikumoYv7DhfA6/aRCz+hf7AJGajuR5kxRdiBDLMJaNK6tlPaVwyZrwrz9sNb/U20mJt2wx9nshLoUcVbdopRtDE4O67mL9x8w7hki7WLkqY8z9pMpnSvMhWbhVAyh6+Zhq9j7MJm1hAXj0fUvdeTe9GfpSkTHvsrVcb4XhcZygXak9mVUzHve/VDwxIvIhbaJQnG3UhcAR5eXKRVj9YlGX9cxM5Eiq7jzW72H6OhrCThoZZVIB7+0GX5HElvisa9oJDRLDFUE0Y80nO8tk/TTPlEL/LsUAcThKUuRZO8cWyHd+4Aw+nzN7+EGRcqPkNTd+LwhEYNmNQBLr6IzKcn8Q8E0OgWDtW26iqaq+8CHUVmcebUQJ4xMi/omD+7gYz7IrbAcHwyNzoUWwHCYm9L7dJyXjlLBj4m5DlwBm79V0oyILUkS5D3471jMq2g8aSzKWbn0S3A1+udjbC8rauK+smHGyBNXUO/SaztZs55eoSq3UCrD
- jRTb+nR+
- CtV0Sm/PMMSiKrblPq/NLZoZTwd+vCybzVZnScnqag92yxQYFYVaJItGaku4VF2JEHohUWXyRw5NQAK9K5MTUFGcVgqDAUh0bSMTx2aPIUaRRDbUlA3B5yA8/nWxGagecGRqGyPStyb6bPTneJC+Xz1B30L+8aXA4q8HJSd7Npxq4YIszJzFby+V9fKmGejwQjYFuI4M8ycZzmlP27Baeq8XfmT6/cXQFhHjK0juH69Q+61vVr2BApPNLzwhL1zFlJmI0IMvfQlcigfpIoYVz+CsXqUsW0VWTx9+OQr3kNMcrVwEL+9+p7aC8VB7W3/Sx697TlMR1c9T8g26/hv7TPUV7l3uGOzxwFLTWxSsS0QT+trMpZ/mA49XIRhd3Cyhvv03pi1LYTNIbgso0NwSbkSPfxGcT34BCRpPrG/C0J/cEgQtnRzmWwFFJ70HG3869XskfVAwjT7ILMm3PeYxSTAeh6Mfic28LCLZRYrprC6v/olxxf+gN0D5tAkcqHtUupb+GBxdgoude92zq8aJ8WU1Yl+l7s/+hXydArVT42pMKAeR/YPzVulRXgosWHC+oqwGU
+X-HE-Tag: 1784030576-912251
+X-HE-Meta: U2FsdGVkX1/xM780kcYvl9Kce/QdLJNk3aNhpbewdQMgaSs8YRohiPXScRwSiTrgd3xSx9Mg7HcLpIfdqGIli7iwwQ2v9K4YH1tAZ1RTa7x+b2jN++WjkKdIJTrUgZrmagQZxF8d3/H0zn4vnKKBLDrsCHPAlaWPdhuYwipd9uIy04T703hURA7FLJbB542oZrcSKXvpo02bOkpemi2gm1E7VEnWjzQwzoDHWnoZ3VR+FUrXJm8Brag+6Vpz21E7QYSDgGzWEAbvj6UoZKDWic9Z8KQ6VCcxpcUbDjqe15akrwcWpnpq8r4RtGunMd+u1r/OAa6gClfraxknum087NGuIXLK7GioB4y/dWcWHkaqGIWz2MVqv8hpKON82tvpghufkMPBHMGspKGN7HzgjXRCwbaLc8M5LEzTBd718HeA60Yd/iy7JyOxXsR3IwNPVS/1dmx52I4LeFBQSI9MOMKcXPuFwKGqlAdGlWaNKIXe0QJa13JLhpiw9MAndun92ybuVAHMsaM889udNt7rSHI7yC4DFG7WS8Pbv4sNnyqtxLj4WwY2k+OD/7vjcdDpPs3r09EzX+7F5+44T54mRMs9UX3YwuFf++cvJNCU5Vsajzcx1WfqGiRz9inM8Tx6uwAmhUgRrEJFf5B/cbgGmSDI7TZN6+p77ATA/67F3W+jzjuD9AY8qTsUiOTwegZRJk54v4wbN+u0/yLCKLhU5BYi+SBCnmyYeQoO7wB5PhItIyc3NyEEdxHpOsSljidf0fGZ/EV4x+qEvyu5cL1IEK629A/QBh5QWy61YCbHFL2FgMBZ7flH9LTrGe6CG3skJkKG9Dw64OwxjVbzD9BwRlDlVw5VaXpf8Qt2vqQCCwz7eNjnJNCIx7b8XJKa5Zvw+RePZDLeM1MwEjd9dzrIiBDGCAMEoBIKtyA9kIVSPT86qfBTJVRjUb06dlqpdXW6gqC6vocsfuBYmtUq1ty
+ 3OeUjvNh
+ LiFdDDVuyau5/ROCA4UMqo8Vf2aGrq5+aKJpR9vuMQXaOK8tN9xZ5NOj6Q1llGyibOUR9KGX9+CVzHf2EI8PQhtEoMCmhS4heUd1+3DHi/uUl+ei7FoBrNj12KOrmyxK1Wb/N2ZsYqwIlyZmrVCz+6dbzGfgYT8qVYJ34oKy+xEG+kxUpduAqal1uCJhfAW8uC7xIH4ii5q8SwCu6yh+qud312Qwzjloswwaw+7XTqhYaXXVmkTMwIU2O4Le+eNhi01hOHesutK11BtOgxVTk+IJrhBRhHotovMxg+pZGjzvn0iDgKuhafkf+nmFaqltNE4kYRqV89+aKoZxLHRPCA9F+SL1Pe5k5637zZaacBBHaFbF8kL0+k8VBF5q+BN7jO4a4p4PgSPUyu0M7RvsFBb+kKERj2PW5poIoPsZxm5JBtYTwdXfG3FHW82Rltn4sPHsafhBYxMqM17T8V+eZ7z6rQ9z9r18NpqZF89VQ13pDRxyJQkZ0RzP8knOZsSItakf5mFwWJjFFBD671qTiyah5JAJMnxXWZH/lZk4D0oPkxS8PnMRiiSo49LXU9Ma1X5939AJusyGhEBCS/rXPW+fhw+qdxKMAtGi9aBR+WDBlayCkuLMmHhi/nH/uJck3BbMNj0mX2hUljH5qxRa7bxh/mExD8Q5wPNqt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -194,70 +117,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026, at 12:26, Pedro Falcato wrote:
-> On Mon, Jul 13, 2026 at 02:55:41PM +0100, Yeoreum Yun wrote:
->> From: "David Hildenbrand (Arm)" <david@kernel.org>
->> 
->> We don't want pgd_t to be an array, as it prohibits returning it from a
->> function, like pgdp_get().
->> 
->> So let's just use an u64, and extract the right 32bit value in
->> pgd_val().
->> 
->> Leave the STRICT_MM_TYPECHECKS case alone for now.
->
-> I have to ask: is there a good reason for the STRICT_MM_TYPECHECKS ifdef?
->
-> I see the compiler has an awkward time returning a u64 struct (see
-> https://godbolt.org/z/qejbv6j9a), but if this doesn't work maybe we should
-> get rid of the STRICT_MM_TYPECHECKS stuff? I seriously doubt anyone is
-> purposefully toggling it on for testing from time to time.
 
-As far as I can tell, the #ifdef was originally in i386 and
-got copied to all other architectures at the time, but was
-removed in linux-2.3.23 from the original copy when CONFIG_X86_PAE
-was introduced.
+Hi Johannes, Matthew,
 
-For some reason, only sparc32 and arm32 still use the non-strict
-version, with arm having changed from the struct version in 2002:
+Thank you both for the alternative proposals. I've tested both
+approaches on the same test environment used for v3.
 
-https://github.com/tbodt/linux-history/commit/5a8202f0259a
-https://archive.armlinux.org.uk/lurker/message/20020306.213958.cd486eeb.en.html
+Results (4 runs each):
 
-> If STRICT_MM_TYPEDEFS's worse codegen doesn't matter then maybe we should
-> permanently toggle it on.
+  Config                   Avg TPS      % vs Baseline
+  --------------------------------------------------------
+  baseline (no patch)       70,735       -
+  Johannes' approach       156,908      +121.8%
+  Matthew's approach        70,145       -0.8% (within noise)
 
-This would definitely need good testing. It's possible that it's
-not that bad on modern EABI builds (i.e. everyone these days) as
-well as modern compilers, as OABI definitely had bigger problems
-with 64-bit arguments.
 
->> +static inline pmdval_t pgd_val(pgd_t pgd)
->> +{
->> +	return (*(pmdval_t (*)[2])&pgd)[0];
->
-> Ugh. This isn't correct C code. It only works because the kernel passes
-> -fno-strict-aliasing.
+Johannes' approach (clearing __GFP_DIRECT_RECLAIM early in the
+slowpath for costly __GFP_NORETRY) delivers the same ~2.2x speedup
+as v3, as expected - it prevents the entire direct reclaim and
+compaction machinery from running for these opportunistic allocations.
 
-I think the bigger problem is the code dereferencing the pgd
-pointer in the first place: Since the pgd pair is written in
-32-bit units in __pmd_populate(), anything reading it would
-technically have to operate on both entries.
+Matthew's filemap.c approach does not help in this workload.  The
+reason is that the first allocation attempt at max order still carries
+__GFP_DIRECT_RECLAIM and enters the slowpath with direct compaction
+enabled.  The __GFP_DIRECT_RECLAIM clearing only takes effect for 
+subsequent lower-order attempts in the fallback loop, but the costly 
+compaction has already executed on the first try.
 
-As the kernel relies on -fno-strict-aliasing, the type mismatch
-is less of a problem than actually doing the potentially wrong
-thing.
+Let me know if you have any other variant you want me to test, 
+or if I should prepare a v4 based on Johannes' suggestion.
 
-As far as I can tell, we are however saved by pgd_val()
-only ever being used for debug prints, where printing
-the first entry is likely all that is needed to analyse
-the real bug.
+This is what I tested for Johannes' approach:
 
-> I would recommend either forcing a struct here, or
-> using a u64 with bitmasks/shifts.
 
-That would require extra complexity for the big-endian
-case though.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index a63733dac659..6e960c969e67 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4733,10 +4733,10 @@ static inline struct page *
+ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 					struct alloc_context *ac)
+ {
+-	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
+-	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
+-	bool nofail = gfp_mask & __GFP_NOFAIL;
+ 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
++	bool can_direct_reclaim;
++	bool can_compact;
++	bool nofail;
+ 	struct page *page = NULL;
+ 	unsigned int alloc_flags;
+ 	unsigned long did_some_progress;
+@@ -4751,6 +4751,20 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	bool can_retry_reserves = true;
+ 	unsigned long alloc_start_time = jiffies;
+ 
++	/*
++	 * Costly __GFP_NORETRY allocations are opportunistic: the caller
++	 * can fall back to smaller orders.  Don't stall on direct reclaim
++	 * or compaction; clearing __GFP_DIRECT_RECLAIM makes the entire
++	 * slowpath treat this as a non-blocking request.  kswapd will wake
++	 * kcompactd as needed for background defragmentation.
++	 */
++	if (costly_order && (gfp_mask & __GFP_NORETRY))
++		gfp_mask &= ~__GFP_DIRECT_RECLAIM;
++
++	can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
++	can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
++	nofail = gfp_mask & __GFP_NOFAIL;
++
+ 	if (unlikely(nofail)) {
+ 		/*
+ 		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
 
-    Arnd
+
+Thanks,
+Salvatore
+
+
+
+
+
+AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+
+
+
 
