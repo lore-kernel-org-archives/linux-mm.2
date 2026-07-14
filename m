@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4638C4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:05:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8680BC4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2D346B0099; Tue, 14 Jul 2026 10:05:21 -0400 (EDT)
+	id 7E3676B00B2; Tue, 14 Jul 2026 10:05:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DE6A6B009E; Tue, 14 Jul 2026 10:05:21 -0400 (EDT)
+	id 7BB646B00B3; Tue, 14 Jul 2026 10:05:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F4636B009F; Tue, 14 Jul 2026 10:05:21 -0400 (EDT)
+	id 6D1176B00B4; Tue, 14 Jul 2026 10:05:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 656506B0099
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:05:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C63CCC03BB
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:20 +0000 (UTC)
-X-FDA: 84987554400.07.FE82459
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4484C6B00B2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:05:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C05BA1C0293
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:28 +0000 (UTC)
+X-FDA: 84987554736.25.274B41E
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E052F40006
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:18 +0000 (UTC)
+	by imf11.hostedemail.com (Postfix) with ESMTP id 860F04000A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:26 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZNaRsCzA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784037919;
-	b=4wtD+f/lFlMjhBBG516dAtw+2UFvfs6DakwVlKNd1YO6aTQzHaprd6o+7EDK/1eezMEYpg
-	YEVigielt/o4pLtbzQJ6e1cQD2uttwQuqsPsyulRYnCi/NJ2rhZPjJUPRxdvm4slJVGXT3
-	4Cr7LwABTpBGqutI7JMWCTmH2YtHzTw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZNaRsCzA;
+	dkim=pass header.d=arm.com header.s=foss header.b="L/UyKrDH";
 	dmarc=pass (policy=none) header.from=arm.com;
 	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784037919;
+	s=arc-20220608; t=1784037926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=phHpo+Wmxx36MHxPj4C/6kUHr4sSD0fM0/8i7RvNHM8=;
-	b=WQ6sjidlyZQhx7PXvGpY+iBQTIlMH+Q9MuAgK5VTw9MdFvZgvve6QyrTTiYLthygYZ1wAu
-	QxrRncWVy1/TVh4twJsiBgJNClJiRDlTrgK96cbvFuLGJ2dkUmh8tH9i48AJ1ESh3THV6D
-	gXr+MBzqhrC/eGbFrX7zc5vSGUQg+Hw=
+	bh=ng20Y1WVsLH0VrG9X7Anb28wNw6mpkVst635uOI6nRo=;
+	b=419xbfDMfPExN6E1BzPmv2+vn16kI91jgh3ewTSjisByv/I8GvoMvJoYWf3sMmz1/F1gk3
+	jNCmI2m4NtD7lwYxZdft80EnU+KUoU8Wd+yee1R8HSrUzpTQaMixWpE6vswuvPKV4TfeST
+	hWP++zLOX4p8D4qHKDqmo5WpU+t6Ju0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="L/UyKrDH";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784037927;
+	b=Vuke4n7kAv3OJPuEuI2XaOwo0ExctpFiCGKuvYuJuP/617+dHcZkC9FXyGRG+grYCpw0gv
+	G0vQhgxcccBlSNzkk6Nj+ihWaE/fZzayimXghwglpLGz6GAi0nMgo/3HxrHgCCgQI978bd
+	JJrFgk53ZUjNzyVR5eCTRucK5sJOe+U=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2F2C2F;
-	Tue, 14 Jul 2026 07:05:13 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63C3B339;
+	Tue, 14 Jul 2026 07:05:21 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7DEFC3F7B4;
-	Tue, 14 Jul 2026 07:05:10 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A07F3F7B4;
+	Tue, 14 Jul 2026 07:05:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784037917; bh=w+klhTdFU9VL3dvxDzm8zfdFs5zqm0APSZWeudQBGNo=;
+	t=1784037925; bh=xWJCKsvCSbOTf1MrL+nqfsWcuzx4IBI4MMfjRE6PTH4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ZNaRsCzAt1MnFAcOqfXFWvT4T4lPSEzMCEGtQrD8PcOucfEtWoppc1fCEKGc9cJXK
-	 6RWZuY1RJvPlk32rxkdaZDZjs4oIrAl0+EdZq5ACM4/oIU1EOINAjEPtOBYdtmnjAy
-	 gQq/h8AoBHc7SVStww7Gu1VeAurSqfnl+VdiDEVc=
+	b=L/UyKrDH31P2AxfsB5zaY1mh6o9sykjNj6yB/yMXG8ePSNTlccGqvWENIvdaG1tfJ
+	 Wk0YZEQWyX1mVS8XhODJBz5n9MI25kkc+YIk8/N9y9yuoLWoSBYTDhb1fyTBkqd7HI
+	 cav7VW0lg3rVkGLnx2wAlICXEbNLvp2RP9uBMl74=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:03:50 +0100
-Subject: [PATCH 01/22] mm: drop unused __mm_flags_set_mask_bits_word()
+Date: Tue, 14 Jul 2026 15:03:51 +0100
+Subject: [PATCH 02/22] mm: move mm_flags helpers to mm_types.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-1-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-2-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -106,21 +106,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=1348;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=3490;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=w+klhTdFU9VL3dvxDzm8zfdFs5zqm0APSZWeudQBGNo=;
- b=Ifi0NsVAxXOM3X00d29l/TBqH4M9i/euaIMaezX4RjYeZIsEEEbWOkkWnSKDmLxeFJ4OWFsJu
- hMlhl3GESzgCyZw7KMYDONi2E6s1qECPsAJEDuKo4qx+p6nf5J2ydG5
+ bh=xWJCKsvCSbOTf1MrL+nqfsWcuzx4IBI4MMfjRE6PTH4=;
+ b=hjHVW6q/l9oVND5egfxNDc6FE64eNht6hv1NYHcLYYfk3GK4zKlatRLYEID3yBr+Cr2y6GvLX
+ wE73qcbXnDpDJQn8OyUXgdNbqTA1wZVDqiAytR24UH8BGEWoTGJECyr
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Queue-Id: E052F40006
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 860F04000A
+X-Stat-Signature: ie4fhwobbxr7nw681nh7t9oteifmecbh
 X-Rspam-User: 
-X-Stat-Signature: fdcf4qm6dekudzwsiu54uof8iqw69tkj
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784037918-77953
-X-HE-Meta: U2FsdGVkX18ZTPl7E8zbz7oeDb6/uxxwB6+hNN95KuVaXDDzZfKZw+5Rra7kFd6CRP38gQj8DJCP0y4ImZK6l2CpBIvmTyujEWxrWWvICI0l61FtxftSGIbq5Xvo9ceTVlO/zRCeYPZrmsKoES9sdLHA30EwGwvm+23tGgRIIjzpvbU+o/qItI/G2CMJYgzckUSN105VZg3IOtyaIX322E9shccpSJr0gvb4BtmGekDUSaZUmXRF5TmSoji3aCArG/IiMn16Tsn3rq4ccP6Lyv9mOaYUnQz3qEW39WBRKFBH9n/9YZMT0qBZH2pOyz+IIPLiBnz6ZfiF4K0xfFFQiIvBEjiP57eas/RMkyLL1vCOWWFzdD9gWbhnuOgJsb0sRyDRUU+h1g+NJKmDvJQvnWm8dYS70LjOkKpFwh1STNixIXIUOwGwwxdI6W6LO1ciegcv/+6r6ljQDxEjLjPl4U8Eb+G4LA9ovC07uUgGFMCeENCDg4E22F1a9ypokv5MCTXCZEvECFQ55D0pLhKHKDAhrPcGbNk8LPZ7yec5HSPdQwcF+LYi/X8LHjT1ZB6VMiXsaW1hDHXe4Jhxtby0gJfDplNub7lXVgZXqdEzbQ80EiFFsm9QyrI9T9iW+MP0kuuSSnwUouA7k95DO/m6OXNnFnwKf7UElUy42q6Nbt8sIELDPlTG7q4ZN81UrmUFA9n2Lzcc6LozF0jyOezkHQvYoUBhDOrqT3/QycJ0BLdUcPgd+7NuAqfhGZlN4rgXCnihy8lH/Xj6S1hcnG/IB6FK/fMGLNC2RyOJMVRttxVPZKqg60xeOViAmapKa/4xBfSqRkUnAeFHMs8nvOsgsbk9/QKmyTXo/rYb93/LWDKw09c/N0ql+xq/CTpmBLZui4xybukpGuw9ER5LkPpqmOgrgY+gb1a7anCq+jADiwpC9WGXi+zKaspNoK+YMf+VcyJYi26h41RvR6PQ73R
- beaWs9/h
- CodzJZjBoqXnWkjcPTX3Dy2q2Ly8SrUM8AI3S9Y+dMqNrkKswTA2VJerxLnvG0WQpQyCUPEZAQ389nEXgkStD3nS+r86xkFBEyqId/PNBwRUOEwJBUQ/LMAW11/OzyUUBUTjCmhSu1bxpKWB1MbZ2rwzHJF7f9Iig5Ovt5OczRF5ezwdZ8xdTU+e31L2R++bcCLBicW7nKOGaAl4tS5Lu528EZ7KYrNMLGllkoIActfA0n+8WW2Zp1BUvmGhxXltvYhWvcKP9qkdIdHqar2wOWGKpygu60JOOdENiU4R0r9kCAcIe3ZazPvK8NiQ1hhQnmUOnfLtV5jjAoI8x2QOcyzYTdKaRgiyIKsrqjdQXV/OEeKXcAiGNWlc0Vg==
+X-HE-Tag: 1784037926-813316
+X-HE-Meta: U2FsdGVkX1+Uoqs43+LPsvudXnZGwzKrBepc8X2V1+02sj5PcHLXEBl6KwC5PKArYSOKgg+Esnx6OfYC3hV2x0cNC6r/mGNJE0bEq+PhFW88zJvjfqkZ8903JiLGKdaeI3mGNdT3YeNcS/iZFLPXwwMPVp9SiPOEvUDjytv24cJWjvn/dED1fosLNoXQ3Z8XunnW4h6yhq7gY7rLOrZ/Y7hGa7QKBuyPp2oLjH7DspwZwr6KcKWyZSIdB3Oxn6pu6XFR7jU6BZGof9qRRbHJduRpvukezEf7rL+jiY5lUSIvNLOa0c30nK8bHhe3WxbgO8QLaZqFlgkFH86LmAp2vKp6cEEwJJ5eqkmtgKFa8QFzeSkCWmekHN+SbxQvgHKFezgMKy7uV+05P1+/0B7aC6DG69dvo8PaMp0y5xSLLR0T4N6siPR6Xg7Dqf8M8+DCYFw+8nXC/SUX67DRMy56VxXYbxmsTKlKTTD4lA6jOtXVg3y9t6+qcw2z1HKHO5Xu28R4RQrT+0VvIhr2QtJFR22sUPaGqQZ2lXKJockvJgr8o9iO2/tEm1+8ShQhWaE+TTtPKLrhjJNViQAU7YMu+rOuuiXQwmeah2ii3rSQP8PpdcReJZRB+Zf6KUP+prEuKc3MlKSPuvJnY/hws+fUmZ4Ruy4+o2p0H2Rv5AgR2NH8K7QkSQARFiWZ9DrcBFjl5qzqfn0ChmkfaNYQLccKkuiNjLxnqRzhCS3QkEOh4I0H6vG3UA/WiE3IAjeXJNOL3cSuhttCNPpPX5fMRcbJ/4rWG37k6pdjKqmBS2BHoG7fL+MJxGONuDeLfE4syJzC9CTR3Cl+65ACprwItsVzAgZcDDyayimp3UzVPM+8oj2eYPw2MKOVO+UvqUSzTJxiCIuGUNJgZiWuYuq0uCUaMIq9MLEUMG9xts+uOMDC7rv/guC0OUVuMhNkyAqcQWstt8+u0VNfYi0wENnEmrA
+ XPI4dAvN
+ gLqQBE3I0i+IWjhPhVowt5zHk03Uw+DNazZifyxIBQLvLoV196q5kp5xnjEH3VvPzMaLuFEr6zws6NvPkcjvL0yXHnmIA8Y/5Ut/J/c908z6x9JGAoArONVzq7sHa9Nj/09RctqErrBQkZj3Xz41vss2p31O11c3V6YPGR7yFRnoPW8NPjGLkRk2SCAkCQLKA0e4sSqzrjnsExAo4Ubzt0HZ8PmydpACEpX1HW3m/2PkTeeKxOX3A8RfaPxbJy/FTMZcRkaV5t3OLoG6/PZylP98CuKYX+wPxUzRd+uNr7imJPFcvpxdpFh6mSt6S+PmH7wy2W2Tcygynqy+H+w6HShxYAgR2SzHnvHa3T0dxV8aGmelVwWRwRFyybQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,43 +128,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 39f8049cd49f ("mm: update coredump logic to correctly
-use bitmap mm flags") added coredump-specific helpers for the
-remaining masked mm-flags update users.
+Some of the mm_flags helpers are defined in <linux/mm_types.h>,
+while others are defined in <linux/mm.h>. We will soon need to call
+one of the latter helpers from mm_types.h.
 
-That left __mm_flags_set_mask_bits_word() without any callers.
-This is a special-purpose helper that is unlikely to be useful for
-other purposes; best to remove it.
+Regroup all the helpers in mm_types.h to keep things simple.
 
-Assisted-by: Codex:GPT-5.5
+Also remove #include's that were added specifically for these
+helpers in mm.h.
+
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/mm_types.h | 12 ------------
- 1 file changed, 12 deletions(-)
+ include/linux/mm.h       | 32 --------------------------------
+ include/linux/mm_types.h | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 32 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index ae9bca4eda5c..b4129beb9c4a 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1432,18 +1432,6 @@ static inline unsigned long __mm_flags_get_word(const struct mm_struct *mm)
- 	return *__mm_flags_get_bitmap(mm);
- }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 32bb723ffbb9..7a4b8e7ac8f4 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -34,8 +34,6 @@
+ #include <linux/slab.h>
+ #include <linux/cacheinfo.h>
+ #include <linux/rcuwait.h>
+-#include <linux/bitmap.h>
+-#include <linux/bitops.h>
+ #include <linux/iommu-debug-pagealloc.h>
+ #include <linux/kcsan-checks.h>
  
--/*
-- * Update the first system word of mm flags ONLY, applying the specified mask to
-- * it, then setting all flags specified by bits.
-- */
--static inline void __mm_flags_set_mask_bits_word(struct mm_struct *mm,
--		unsigned long mask, unsigned long bits)
+@@ -948,36 +946,6 @@ static inline void assert_fault_locked(const struct vm_fault *vmf)
+ }
+ #endif /* CONFIG_PER_VMA_LOCK */
+ 
+-static inline bool mm_flags_test(int flag, const struct mm_struct *mm)
 -{
--	unsigned long *bitmap = ACCESS_PRIVATE(&mm->flags, __mm_flags);
--
--	set_mask_bits(bitmap, mask, bits);
+-	return test_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
 -}
 -
- #define MM_MT_FLAGS	(MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN | \
- 			 MT_FLAGS_USE_RCU)
- extern struct mm_struct init_mm;
+-static inline bool mm_flags_test_and_set(int flag, struct mm_struct *mm)
+-{
+-	return test_and_set_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
+-}
+-
+-static inline bool mm_flags_test_and_clear(int flag, struct mm_struct *mm)
+-{
+-	return test_and_clear_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
+-}
+-
+-static inline void mm_flags_set(int flag, struct mm_struct *mm)
+-{
+-	set_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
+-}
+-
+-static inline void mm_flags_clear(int flag, struct mm_struct *mm)
+-{
+-	clear_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
+-}
+-
+-static inline void mm_flags_clear_all(struct mm_struct *mm)
+-{
+-	bitmap_zero(ACCESS_PRIVATE(&mm->flags, __mm_flags), NUM_MM_FLAG_BITS);
+-}
+-
+ extern const struct vm_operations_struct vma_dummy_vm_ops;
+ 
+ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index b4129beb9c4a..a2e0dc5892ff 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1414,6 +1414,36 @@ struct mm_struct {
+ 	char flexible_array[] __aligned(__alignof__(unsigned long));
+ };
+ 
++static inline bool mm_flags_test(int flag, const struct mm_struct *mm)
++{
++	return test_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
++}
++
++static inline bool mm_flags_test_and_set(int flag, struct mm_struct *mm)
++{
++	return test_and_set_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
++}
++
++static inline bool mm_flags_test_and_clear(int flag, struct mm_struct *mm)
++{
++	return test_and_clear_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
++}
++
++static inline void mm_flags_set(int flag, struct mm_struct *mm)
++{
++	set_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
++}
++
++static inline void mm_flags_clear(int flag, struct mm_struct *mm)
++{
++	clear_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
++}
++
++static inline void mm_flags_clear_all(struct mm_struct *mm)
++{
++	bitmap_zero(ACCESS_PRIVATE(&mm->flags, __mm_flags), NUM_MM_FLAG_BITS);
++}
++
+ /* Copy value to the first system word of mm flags, non-atomically. */
+ static inline void __mm_flags_overwrite_word(struct mm_struct *mm, unsigned long value)
+ {
 
 -- 
 2.51.2
