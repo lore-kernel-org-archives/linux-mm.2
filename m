@@ -4,115 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A491BC4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:27:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2DC9C4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:29:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA6B56B0095; Tue, 14 Jul 2026 13:27:24 -0400 (EDT)
+	id 98A056B00C9; Tue, 14 Jul 2026 13:29:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7E906B0099; Tue, 14 Jul 2026 13:27:24 -0400 (EDT)
+	id 93A586B00CA; Tue, 14 Jul 2026 13:29:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A707E6B009B; Tue, 14 Jul 2026 13:27:24 -0400 (EDT)
+	id 82A626B00CC; Tue, 14 Jul 2026 13:29:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DA2E6B0095
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:27:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 01C4040461
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:27:23 +0000 (UTC)
-X-FDA: 84988063608.26.03A47CE
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3B1EC1A0004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:27:22 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 487916B00C9
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:29:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C97D5C043F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:29:52 +0000 (UTC)
+X-FDA: 84988069824.23.8065EFA
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E9A3A1A000B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:29:49 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=r2T2H14f;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784050042;
-	b=iC4i4bZTP+h0YaqjS1TBFt6ZHUT0tgjjHQFp5kwlRndCwotBjT3iXwHYHFfomG4BDBb2RW
-	PV/CfOtboVskBjnnPexX0zEjPCH6ceryfdGnCQZTXaNnYjfGmw9fB4oe2oSPsMatq5cPOQ
-	P3iSHuw9NDX8aNHHU6OhzQdoqU5I2Kg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=r2T2H14f;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=intel.com header.s=Intel header.b=OQVTwuBi;
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784050042;
+	s=arc-20220608; t=1784050190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cPBMPvqjLyCw7WlFPS2PjvycvnYwB9f3AC5cSDOIyL8=;
-	b=tQnfnBurMePAOdzTndTbh6ctMgg1n2VB9USkXg6toOT2PhxKjL3MlmWKXIdn43bWg+Op6d
-	5k4oQNYChf86x4PZdx9jwJHor+61H7b/SPMKGcbyQs960wSYWNOXChxdxn3oRm6BKnpk6I
-	xMFgJFPN00CKpIsDMU+idx+HkrzLuA4=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84a2dcec51cso2985740b3a.3
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:27:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784050041; x=1784654841; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cPBMPvqjLyCw7WlFPS2PjvycvnYwB9f3AC5cSDOIyL8=;
-        b=r2T2H14fX59BIfdo5QYxianzlGwq///UBM47UqeXidF0SAypjZbwtMBn11DxN3rI8E
-         qHgnSQ7YugotjU/pp2kVoDrkbQdL+ArXi7irDziwfdRN8mCq7P1/g1IvCuzZdsEiZJte
-         Wsp8byALh3OztOd/ejWkuhGJBE09ZWgqwWRHlia7KHNVakwIMBx+FIPNIdNl66xVg7Kw
-         hMRWMS6Z6pNoSP0Nix5vfgabTI6wCjGlp6n9//xRh+hHrFUi00VDfB7smwCmCALTrf6I
-         0+NeGisr0Jsg1gcTisP39EhgQYQlupzLXSJbdA/uKvx68ldYU9OOVDwuMCwvi6pogvli
-         IsoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784050041; x=1784654841;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cPBMPvqjLyCw7WlFPS2PjvycvnYwB9f3AC5cSDOIyL8=;
-        b=OlBXtz1c/KGitjuizjSE4M9sNuHtukBIoxfbr2HN1M4tzCdA+8vZvQV75aV6oaL22l
-         VuyE3faqc2egfX0JrfmRHwfq0BaqoDqQYuDynlFJckDNU3FUBBsEka8AuCKiKv5YfVdy
-         9OpqsrbV9igh8fQnozUuse8JHxmkh/NJ69h66rTN64i6Jipt8KJLwN1AoTWAMm+3VnZs
-         xWroL+ezOlZRMYU7h5rF6mdLwExxfT6AymmNkjVbnviBdk97OGCCDXOdw3Q29WZ9+LvI
-         vojn66Vs795jCBeMwbyIvxRD1E7sw6smyl7cVuvbdICQ7U3/Plw0HrSQ3KN+PVXE3dxM
-         F/sA==
-X-Gm-Message-State: AOJu0YxE/QQTw5sU6icLuE0h2sEY68K6raX8JhajFUVaFGRzJPoGapd6
-	4Z1V7aqfzM25HangAhNWhV9y6E3N5ZTV+69e3ClIkoCpp0w/g5uVLTAHDy6hZVGzzT8=
-X-Gm-Gg: AfdE7cl7sMoz/MkfAt57Iyj0O4vqMV1a24cg7+2WJ6viQ6A/LIBxrUl/AHpCcOh/NX+
-	b/nPPLV+N6N4UDJAZCQQYViE0hbVheAXzKf3Doi5ghd/RCFDiAT2UK6iq6Fl0aBDLChhwVzQmiM
-	seyLavlRMuz6BcJeEsuSmNg7tWuqEfRp7URDpfJ97WCvOpWtP+U8030JPkf03IDPPP0fArRudVn
-	SNWubVSL6fNlR/KhIkkZSYeaGYoZKZb44xmUCH2OaDo6kSAM5ykxGr7kkm5plGleAnACT6bQ5Ra
-	6Z1/3A8AbPh7vv6FIa2nMmRbAqsmnQCv3fV+V2+AUOyT3b7tY9igsu7AwEztY9hKKjO5yXtFoj3
-	CwifUgRiUhn8dCKG28Zb+nLwkGmoSIIkHXzUMebd3Pdme7od8yR2OZ3Q0UKqliwOff2FqRN5zN/
-	cqk4wJBzxhfBCmrhG3tcoDMb4SJgq7rWqBWVtw5foFlv22A6v5I1AsivIH9Ew=
-X-Received: by 2002:a05:6a00:23c5:b0:848:2a71:a48a with SMTP id d2e1a72fcca58-84a5576ebb7mr3258433b3a.13.1784050040987;
-        Tue, 14 Jul 2026 10:27:20 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f6be65csm1836604b3a.36.2026.07.14.10.27.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 10:27:20 -0700 (PDT)
-Date: Wed, 15 Jul 2026 01:27:13 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Christoph Hellwig <hch@lst.de>, baoquan.he@linux.dev, 
-	akpm@linux-foundation.org, chrisl@kernel.org, usama.arif@linux.dev, kasong@tencent.com, 
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: [PATCH 1/7] shmem: provide a shmem_write_folio wrapper
-Message-ID: <alZxI0lgMDG9Ri3D@KASONG-MC4>
-References: <20260713093350.2154226-1-hch@lst.de>
- <20260713093350.2154226-2-hch@lst.de>
+	bh=T9nDWMGUUMYK4zdgmduf9ZJ/16QHCvDwhtGJVdrnzuY=;
+	b=U+XBa8cLxgsIr6/wj+CXJoEA6RBC5WEThhoDPnnWY3YSfpeqV8qGdaKIEeJJgceN83QpE/
+	zwYTP4MxxmLBp46+YUjhkx353DB0XRIWU1lXGShALEQGyeouCcxH/vHljoxG/A+hrQH3nx
+	HpiTMcl3dxTD7Nbcqu2ht7R4IBTPV60=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784050190;
+	b=8AZesJG8N5tLEjeRqVzWed+b3l0gglGMiDzeelIUricE7Ma2IOqslFpwF/jhJELLsPSwj0
+	3H+8/1JncxS+Z9HIB/+/op3yAblN2Z+VTQ1zTOVwWtqe0v/r7XuDxSbz6FX2fZmEq3SiSF
+	fsJZ5cK2aAcgJtiEhCcBb2PBMLzT4AU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OQVTwuBi;
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784050190; x=1815586190;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=T9nDWMGUUMYK4zdgmduf9ZJ/16QHCvDwhtGJVdrnzuY=;
+  b=OQVTwuBiH8pGI+8zsuOfzvbJMEaT2vHBdiHrf6izxTsdCilwAZjFuxTp
+   wKuz5+eVvYM9jrsLHd8xz7FmZi1BL7uIo8vyWIzXV/HVt2dbePaRifrWZ
+   2ASwgNxDxqHF+Oo+4rAMeTzt8SwUpxdb8AV/qm6Fk7cJ1gNauRAArQpzH
+   QAE+DAEbh/3iyZdLGAHRs+ITqXqMhtmM2V1OdcwNV7bpgejrcqQD2kBkQ
+   tbbktxCxF3+3PSYHuIUA6u6abba/tYNRTo+XRWpQin8YuoPGuyAbUs6OH
+   LeETekGfTxwYWufTM8cMI+LGNxwXAqVb8/2BqcTD1HDfQBrWvZG87dh6I
+   Q==;
+X-CSE-ConnectionGUID: TPIYzt25TniBS37PRn5SXQ==
+X-CSE-MsgGUID: y1/k0hY0Tx+mdg7RywdK7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84463062"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="84463062"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 10:29:49 -0700
+X-CSE-ConnectionGUID: JVAk0EKWSyOAbtmWxbWciQ==
+X-CSE-MsgGUID: gb3gmc2+RamLrgmELZSMvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="259497092"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.120]) ([10.125.108.120])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 10:29:48 -0700
+Message-ID: <13fcd4d7-0efc-4aa5-9425-8f4fa05c8eee@intel.com>
+Date: Tue, 14 Jul 2026 10:29:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713093350.2154226-2-hch@lst.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-hotfixes v3 2/4] x86/mm/pat: acquire mmap lock on page
+ table free to avoid ptdump UAF
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
+ <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3B1EC1A0004
-X-Stat-Signature: ckxrr4861fwxysa8e311187u9tymuypu
-X-HE-Tag: 1784050042-557835
-X-HE-Meta: U2FsdGVkX19aorl+XNRlN0MWm9ju+/CHbElYJqn5mI8+lqdACQkksnbt3zeO0cj/Hdg/rJlbV8k/2kqIMeL1g3wNzpdTIoexbJn90KccOXBRM3kTtZS8ovy54TmCrWz9xkzNZ5YxR9LmygDlnzZmPFuyC++Yz52gnC1x4at8IJipwJt05Gx6JUWwC2gQmNYPYEfPLqmxUclzhQ9R9GtW3ueOFOn39PhREIhKdx/ApiUBFoTw622K7z7i54A4O2EKYDAfWRxibINt48z+azhIUJKIVecISziNSPB91WMgvMBPwo9/PqkqQ1ecTuZ0zisi2jOL034O3CW/JaeU9oPJeLTlVdSUODsArifffvX/u7RvqlUt5+1szpC3OOYlz7tbFtFCMXUrJZXJ7hurfQTSEqbDwjAtwQXwgq3akUDMovOSV2XV2UnJrJs5HcL6m5VvTqEhKazuTpDCOeW2yiOcmtjKlfSVWwBMi4WSPXCAKpCSmICRklPRJy4cIeNvIxyd5UD7ikys9DR1eO+4iWz2uQ9dkeIILaVQxV5eFAKpf+XH5hXwKtZEz6dSxTmT+vtLmns959FLlU0mtUjYzgDLWYGdL+ocdvWOVU+a//QqA0Lp7QCPiTUbQOyo9uAeXThJyJbc4lkKm7REC8aPbGgh/2TopTd0gJhoyrLQ6WxJrhPLfNQr4zNnx2tP+o7sk8XSFFFfJ74bUZE1NAmV2qd12mA++JD+CzXwFxs52FLGaARI14DEPHfCXrQqklC23iAd2F+zf6rheuYiLEpwA0Jdxsy0xlc3EdLmYYVH+LwBeqj1htaFRo/c58OcwH+bJzCacyat7djmK4VxMyCbUfkAFGTYp0Zy3FTE8A4/89+mA8Zieky/Ty2OEYGEEXYVTPqK+WjEzYVlH6+YiKFzUrSZw8qazh5yaUYBm8BjItnOGw1ZNf/PlgdSsz1M0KaU82eG6fC8I1k8/gVcnN/yYxN
- fqYqATk3
- otLSuRGtTXn1DlQEsp9axxPEdb8orqUNUEgP3G66JrN1Kuhqnfj52guicl1WQRNKk1u8XtNiCjZly1ZMDYQf4lGx5FRRbBOvyPgg5O9o6l4RWIKULgZ6P5cPeYfILvPU10k1aAjZs1mgNGK0rzyx1h4liwY0zBtDaFLnFqAKsBpVJFrnjyhncXXR0djpuwfbNN0mx9ob7Tkjh5gc7yg4WygF3peU6wCQidOl82L29cAaqviCN+TSnWJMcUPyEjPvEF9Oz9k8NCRfS6T8tD97QNsgYmUoRsw68+0jaInXca3CzukWWJ8dCsI1pXYw9l2nihLyd9IQz7OzoTX8FWzK/AOTsI9x2hZ4Pxsb39HZ0gs0bbiL0t3BbCDGw/IHGorJCyQSWYW9IXoUlnzWH8LNoZ4gexQj789xBvNaEdH3Z+css2R/s6Ny3NG/qgViw11DXwbheZy78hNXRJviuoL1Hpw8f7CuW6iKM1dYEvsM8tKS9378yrtD7Sa1V1twehuB4QpxEQdMP9Y+wur74EC8ZC6bFz4k0F9q5EIRgalKnOfAJvTbKgsCWOlfZKg9qrXQEfTZm
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E9A3A1A000B
+X-Stat-Signature: nmo44ipiouj5zrn7f9brsauam867a7un
+X-HE-Tag: 1784050189-936154
+X-HE-Meta: U2FsdGVkX1+c/27vE+sjFE+mUMFscQ1Fj2qXVIqVoS5tuZap5IjEnb7r12zy90+1U7xik98/5M0vMjRD9CI+6rqdAYs+la39VRxn1mF1WCI05HR4TRfg0BpSY9QqJQXQVUVoL4DT0301AygpHQoUikP0aEw6d2XUUZtD2HXJXv/qGO6I3Le/rSBopVEDRbZ/UPGaRl6c3nymFQMlE6Gc2qP/FJ5E+IzWUGZ17YiyqKI2U4I2vTjC2HbxnAR2xRA7MFdBDBBM2BqWFyObSc4O0nZOKJV/S16JvKlK+izFKy/4UjuJrfepSjdhUdjcFjo5IuYrlSgL/Kz0Mk1Q8vkjYv0dEy2S3nwmnJpczhJiVacsV5QIkhH8XX1zmcHDSn2k6nej7ExX9VBbxt2C5kRgeZXrt9CWFVE/TOcqrVEuYwbDl3JJUIlL6Dto5dJCvlxZZiFL70Hm5/rK3j3kPqkVnN7Zj2arAvyqdyRjL/Q7T74InijStIUPR0CCipdJj+zUhvhs3qp6N+u13pXfnoJmO9TX+l6jGcPxL/bCsdVBws+Su4JVf6Z9+NvolcFD9VnQPbh9Qp0D95m78/iLrf7SDSe8p9bWeE4F9MBH3Cm3fEhACiwKx1qkeHuNTJukKMHo8afv5sOje4cPxBamk5YIug6kweox+Rs0eZ+i/GsGF3Ugxk/vUTghtNvJj1WdovAW3R4k7uQ9iGKoxFVgzNasgexhEHYOPhpFZHKgTxQ7pYvo8YtI1cWQHMwtzXNYBjOiiIPoXfw4NfeXQHt12NBE033jnpvxu4CE5vVIyiX/fWR/2crzrOKHwDJDA1rGAPz4P7Ek4GlhYZQLOMiwNxXabH03AniLLU32z7uLt5TbLZp3EGzXhpfISB6ZOlBaG5QAZuQNFnuhfODkTUy03a4dQ/zjzywjvIH3N5ABgz/svmlIZQZFsfUp0Sl8dB9qPFVf39Sg9vrihFIQh98dqym
+ BUamiDt7
+ lGMng5v/aL0H4YRKxUJAmLpj3D8XjCQ5kJuoy+gxs/H1h2FblYeyiVlspEUuUdVKDgOEIQ09g6zjD/AmCP5rZibe4saFhpQYi6V1BgpEUEmTSoODutoH3KgT+kJnLTeaJ+1BKzCF7/8cA1101r4S55IsND7aec81r14FglQnbO1xFiWcQGl2GHqAnBAqZPFYfWYqb/iQc2GAz4h+Zakx0TKx7fImvZgf8Py3s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,22 +164,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 11:33:38AM +0800, Christoph Hellwig wrote:
-> Provide a wrapper for the shmem abuses in drm to prepare for swap I/O
-> refactoring by keeping swap_iocb handling entirely contained in mm/.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Chris Li <chrisl@kernel.org>
-> ---
->  drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 2 +-
->  drivers/gpu/drm/ttm/ttm_backup.c          | 2 +-
->  include/linux/shmem_fs.h                  | 5 +----
->  mm/shmem.c                                | 7 ++++++-
->  mm/swap.h                                 | 4 ++++
->  5 files changed, 13 insertions(+), 7 deletions(-)
+On 7/14/26 10:24, Lorenzo Stoakes wrote:
+...
+> Resolve the issue by acquiring the mmap read lock on init_mm which prevents
+> a concurrent ptdump as it acquires the write lock.
 
-Reviewed-by: Kairui Song <kasong@tencent.com>
+The move over to locking on init_mm instead of current->mm fixes the
+earlier issues I saw with this. Thanks for doing that!
+
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+
 
