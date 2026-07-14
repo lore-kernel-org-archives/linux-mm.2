@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97285C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FA10C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:15:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 971B56B00D1; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
+	id B912A6B00D6; Tue, 14 Jul 2026 11:15:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9225C6B00D6; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
+	id B1CA86B00DE; Tue, 14 Jul 2026 11:15:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 810866B00DA; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
+	id 8FBB26B00E0; Tue, 14 Jul 2026 11:15:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D4506B00D1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 463EE6B00D6
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:15:14 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDCA3A0430
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:12 +0000 (UTC)
-X-FDA: 84987730464.25.8A6323E
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 476C21C0009
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C802D1403D3
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:13 +0000 (UTC)
+X-FDA: 84987730506.25.4993EAF
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 134CB40002
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DF0F2dTf;
-	spf=pass (imf21.hostedemail.com: domain of 3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com;
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RHRav1UR;
+	spf=pass (imf27.hostedemail.com: domain of 3flJWagcKCNUM9G9EJ87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--vipinsh.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3flJWagcKCNUM9G9EJ87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--vipinsh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784042111;
+	s=arc-20220608; t=1784042112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=AdMdxqs5Z8x509tTZKpL2bKGAMA2jSi8MmCd4hShlVQ=;
-	b=vf6q3Olem4BtBktz8P+BUItlGDP7xN9cv0ZmCu81Uye3T/Lkok2najQKcJ2Eum57EMOWVZ
-	g2yoFblJlgGfod64Sg31uA2xg7EutskfRkfajiwWZ48x8R9z/XvDf8TWLfJMoAV3evQKeQ
-	UlWE/d34J9RU53WCMFblsVswETKQKVQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784042111;
-	b=Xg1ofdE9084PytEOr3jLqQFdKvqCkHhbujjTDNneE16fuTu70j8oLz645ZfPGhZdYqjq1d
-	vkPfiIcVTYf4DAI5Zfp888EBD/xfU8sfKpixNU7xyTVGhS9qvVQR4EwbJ8XIAZJ0VqM5jp
-	mc5O0960ijPrlNNmNElLAw0pAKg9wtQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OET28Pw7Tm9U8SptXyUJqzCGyMYvQ/PVMzqx3Tt4yN8=;
+	b=LscB3BBKbCm+vo3qBOKvWRgiS9kWZ1KFFKh+/C29ZyJmQzb+pGSH6W9dEBfFZmkqp5Sqb5
+	nL3exB4YOf8HEw0ox3RCEGmr00aJfnfNdqTV7/V4ncWVCeKsC+l2aFGCq7i4L52SAhDdyq
+	iRUeCI8IAqfGhI6zThgu7vYalWBaFvU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DF0F2dTf;
-	spf=pass (imf21.hostedemail.com: domain of 3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RHRav1UR;
+	spf=pass (imf27.hostedemail.com: domain of 3flJWagcKCNUM9G9EJ87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--vipinsh.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3flJWagcKCNUM9G9EJ87FF7C5.3FDC9ELO-DDBM13B.FI7@flex--vipinsh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84a06bc82easo4135517b3a.2
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784042112;
+	b=33HnMYJS+EOkTPlIP2EZbEhCfO/I7PogE6GfhmZjO3UtHiLkMcRda3krzC0o+fby0b2QyG
+	zE6nYkWZHC5uT6gjlFXDtZI/zrOwHfFEyjvJ5udqGozZzFbn4J33fVl3Iu43V9RGLT2C5G
+	m+fQ67qh0m8+ry2XQ9qUsCEzViy1bDQ=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cacd6d37edso63564875ad.0
         for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784042110; x=1784646910; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AdMdxqs5Z8x509tTZKpL2bKGAMA2jSi8MmCd4hShlVQ=;
-        b=DF0F2dTfhDhigpMX7/dVIsn5+0tZmfGnz0ZbDq0SUb8ZV5gzYBANWohOhLydBKnv2M
-         ugzyb+ytq8sXF/UxulT7ghr9Mt9gdN72uXN2MBew9AsR2yZQ7mTO/mLhAZwBQTwoUlVn
-         NB1wUF8nmuxsoIhUFuaJ9bQq3dtc0KR02M6ZNcZyBFSz3Zl6UCW4ONdr2PhehoBRpLVg
-         FPu61ILe6aQQKZ3yc/nLorD1BhD0IdiqmSJZVuqIlWsCWAUfkmoHhP4J1o4Q7yrR8/Bp
-         EQHGc7ndCco31xO88X+Nr9iBb590y7HbsvpI1320pTNaJEZMvzicooPUjeHxRVD2XAqu
-         4uFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784042110; x=1784646910;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784042111; x=1784646911; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AdMdxqs5Z8x509tTZKpL2bKGAMA2jSi8MmCd4hShlVQ=;
-        b=iCI7/Wn5PGID7S/h7GwluBAtQcI8AGAFtlAjSuS2Y+Owjyrmj7weLmAJSd4wenvwjN
-         iRhmfUHw4PKyvI2KmNmx+fRYWusG4Pyxn//lY0kxCVo0Cu4Wp76C7ZLSHvY9bV22YmDs
-         3CSGO/dIeklMAtkSspMPJc0T9UdOJi7Wq2mSwpe6NFysDNScbh3PQI94tOflqRFF7Pq1
-         Ntikarf/TicU9IRqEJwLBVxQjmyoMUW1vKfPHYYbWDB1AS0dMhOFdtl93aEax5qATnui
-         xPKKU7CBlFGgz3/Y6gyVsS33oc6bDp6EgcCOobCYaVvGlOxPYwR4MFOSFoZig2rzWj4s
-         rOMg==
-X-Forwarded-Encrypted: i=1; AHgh+RoD9TlwsJbYQQ7bbl7KR8VvS58C8h9kWq0YzZ84Tx3nIzONTZfXfC0yoB9S+PkA+J8aoc1T9avfsw==@kvack.org
-X-Gm-Message-State: AOJu0YwcqbmZG9Hz/VUzqeJXOxgGfjQw1RNtIXcHo2RPdkCjb6YzeCcL
-	h2YE2jm59TkemuUyBR981Dezb23yaboAFEaNwoX5aTJ7UdThk5MkwVUPu8sOpKz9e6ROLsFVUuO
-	4WQ1nMtUJvQ==
-X-Received: from pfbhh6.prod.google.com ([2002:a05:6a00:8686:b0:847:9199:e06])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:460e:b0:845:363e:12d9
- with SMTP id d2e1a72fcca58-84a554f93damr3265089b3a.3.1784042109576; Tue, 14
- Jul 2026 08:15:09 -0700 (PDT)
-Date: Tue, 14 Jul 2026 08:14:45 -0700
+        bh=OET28Pw7Tm9U8SptXyUJqzCGyMYvQ/PVMzqx3Tt4yN8=;
+        b=RHRav1URHC0f+et8rB96LCEHkMB4gtMmLkuPANcrQoImIox+OF9PUNr0KJkugKMACE
+         WUU5dCPs7LtvZJaJpM4RDJZGrZGhM7a3ocmEfZsKPSy/pRhJlGcFLfn++Al+dZSjeXZE
+         0KC/9LhfSw9qYjSSMILP/eVO8ato4XwCCHvueTB4TR/jTrAHpXcLgV0AL5Tvz+Mc+8ds
+         TN0mq5Nz1/U9R2cO7RK2zu57TErZhtfHcLw+/gcNwv34t9wBd8Mvo5OYCKpQ4fN0U9o4
+         IVei9skpyJajHGrSJkVfBzVGaWMf+40RAJn6oZWMjd39++4OT+EeQZJqAQJ4vUzbUTxA
+         gOJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784042111; x=1784646911;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OET28Pw7Tm9U8SptXyUJqzCGyMYvQ/PVMzqx3Tt4yN8=;
+        b=EzYupgIG+qX/lImhBsdIUggENA2OALhsVHmG3Qaurpy9nCds5/qhYeY2bDZJvh6+Pt
+         /M27yiTNmqIbavY8uYxs0u6KakQsulKjxZDybn4FSWBb/xEQd6/bhZDY12V8vbIKyC9t
+         fSpPLWNUmAlxcCdDLKlBqS6nb4XqfREDrhHztWdts1eKFr8DYnNPnZd5JEORzFCH4VeN
+         OmB/ZCsQDqLI+/yFGrQKbF0FcYEWH9SlLSVLAcPhsxS7dTIFpjbU0eBqh2xwmYhblYR1
+         ZeB7Coc3aCm3Y2phzZ02lvGBx3wQUtr2G91Wb84LME6+BDHswq0sjEu0sRhYgJHJlfsN
+         IqOw==
+X-Forwarded-Encrypted: i=1; AHgh+RohlrAZ6rT9JSsk+vPWr6iK4ZDfKSxarQ/CjiQGeM0KlZZ+Eb2ocd9fc/xZtnxVnVSII2+bDz0BrA==@kvack.org
+X-Gm-Message-State: AOJu0Yzoz/Y4Tv/yoEmLCwLKOHceYodIjA3rCNnA/rn8IR+1w/u1Wcii
+	+ZcaDXmPjcxChWXCmQB/fKe3q+CBRyRoDmX5DeVZX9Sdr2jyubsijiQXWx2RNC3yFGRk+SPu5X8
+	o6bkEPWzy4w==
+X-Received: from pldu11.prod.google.com ([2002:a17:903:108b:b0:2c7:e06e:86f6])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b85:b0:2c9:ae0b:61e3
+ with SMTP id d9443c01a7336-2ce9e9a6ed8mr116458815ad.2.1784042110624; Tue, 14
+ Jul 2026 08:15:10 -0700 (PDT)
+Date: Tue, 14 Jul 2026 08:14:46 -0700
+In-Reply-To: <20260714151505.3466855-1-vipinsh@google.com>
 Mime-Version: 1.0
+References: <20260714151505.3466855-1-vipinsh@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260714151505.3466855-1-vipinsh@google.com>
-Subject: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
+Message-ID: <20260714151505.3466855-2-vipinsh@google.com>
+Subject: [PATCH v5 01/20] vfio/pci: Factor out the reset logic in VFIO PCI
+ device close path
 From: Vipin Sharma <vipinsh@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
@@ -104,13 +109,13 @@ Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
 	yi.l.liu@intel.com
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 476C21C0009
-X-Stat-Signature: oy56hnj5g864daohnnewprpbtze54bi5
-X-HE-Tag: 1784042111-354106
-X-HE-Meta: U2FsdGVkX1/D80goG2qKPwLuIXVBekXe4ShY8l5k/kRbeTqgGgvUG+ixd4nG4V1n/6W3sTS5phNRx1oeNLDxMzoPthuo6w6nwUWXOneSRmPGCtZRIGjatbnejmD4IxIVoj+C0SzUmXejHHZIqZDF3H0YRlRyQhjrFnhXx4cFADxqDvcfzyY34woj1Hcl8qq1f7GmEcTfbsf4hzLmJJvR5P9B3ycBgS/pmr3GhHvFA/NfJBKV0sa3oqejdFV/uWks0tC9mr2rPf1uKd6exc63J4iLDJdaI3QaNHQ6/wUNJGq2QTKdqvrlM4T2RUc1Wd0JRlRUSUW/g1W0coFmrd2TpCdN+Dyk2K4PC6j/0ywkceIZi06zXgIrvZQJg49vL/8QwRlI3OcYVvuyNIXiUxJZMgIkeigF+P7Ni7xcOEjJ23oj/ByAhNAicH7wARsCQbS5yYuRAc5OeZMyRn1JfvREU/WRHGnRc6l7mD1Y3jIbI3C/71JAf2as8NemteCwiejNov3xlEELWy8UuN9hHdbaxgMkaCgjilDBctUcru6ZqwpPaasZ8ZkVBuSE3p6JFw/GfK8DEw2usb8bbUT4KYnieDOvou0kqwGgrrqpICyKMFZNsvJAmd5GqCGvFqGntiAxV/sCgoH1LI6HzNNY2o2+v8wPU4guAwsnHqFo3YBkqjdhHaO5h0bVIMg0/QALelVwbptSOlyWjqXJGuiyLuwmX8iCmuqk8LlbXFluxc38ThV9WNnxfpDTJyMd3yb1Ghz1VJadfMPhXfvm7H7o3n59Bx9xWNhZ8WLoMGAi0wHPj2RCVHhNKziCDq+EskvbKGSDYliXznlOsMJgR+DN6RG8aLTpdYPBWbmRKjSwZZu8mT0heqg8psc9opMj5rT5GmHTM1JcZsevOP/S3OeRQbJcbfJMPCUfa76NOSiQz6lu+jGaxeuoYQij9QV7KGOpaKj5joSxcko9i2uvtkBve35
- 0jBFGa3W
- //oWGss/VPwBwUdJj9FbhWE3VoCp6kIC8ruSUgqeaLor2/PNNBwnB2FOyyR/VvE1fO7KCmyykvZvqRXHHFko6ObC+yMTZ+abSefqLWUftfKOLoG+K+AXvDXo93pktR/TuaoTy0r0owVzQecfX8IGLR9wIkWlG3xyctlyIpqvAAsAgidsVV3MLCmQsaEDxg2U65AO+hze8WrMtHqp7B39EWOuclwxFv3cze+ofxwCFWJykaFTHYMECMNPKp5jooueI52yWuq316LrTUQJgAyx4DnN/a1JHm4fJIu8v6Ro5OIClvKVFkOYJTw49NDAAq55KsP+bCHvfuIfFchdygSr65Bpfk1zOY2V4poQeOnpzlrKf0xXQH/QfO3CjBQJAPayPmdYKQ9qJuZqldCcUwpKmEk4T0D/qTBe3gk3ouD6E/KuCW+13e0l1314GdDY0TGwe2l7yoXFBYLu+AqI2tbxJiLgMCCeVum/cJEdt0MnFAnqmN0PLXMJVA9AGae9XXAccKJksGCUM/Wy8oiq6SOWEdZNkF2JX7/06VXRlhaEat4Wub/T0WhPgP3QozemSL5bagD1o5MbsoCH2lszcG+0AtK/T3E9RAlNtJecEuueEQ8dUMtuPkouk2Sh801vg641r/1Y8472SATSpg4LC5zR+W4hfEQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 134CB40002
+X-Stat-Signature: rasamgabncgsr83zhyzqtycteunqqpts
+X-HE-Tag: 1784042111-716262
+X-HE-Meta: U2FsdGVkX18r+dKQUpvZczJjEt79BKQqjxXDqaUrgwn3kUSmWJIsmthrrOzQ00rkU/EFoYCBbpa3OfZwYFo3zRRUI6OwugSV5iZYcnE0FzEH1Lj17QyQyLdOEryCk0y0UlMRWEZecCp+RHr7By1XGxFbHV6cjNNgNEKmef/oK8ckLDR8lVeY9zPKkTV+2mkVYYwXYUsrrWLI7QcxaPdRdTMUUWW70psLSNcjOSuD9EqlrdYv127CkJ4GvWOXIn5YPwY9rVF9iZlj1XHPT5HzT9WjOT75OEnoc6mcmpTz8KFOi62ASX4CynBe/KoQ5davSBkao0wiEcEzGO9W176G0bhtKvZhHDcMleKThn17ZzVNeZiwtfW9KEh69XJYiJ8p5uiICg6eBqgI9M5W5Uyaa57OxFdgzKvTFZvGqPF03IOxNs0yp+rgxfebh8cy4YN85iNh4rRybz0aGHE8jYgv7hw9D4zPVxcO6Tdz0YaWh9tBDU04LlTTiKQXSm9DOCeDYD6/AwkcWShRJ5VocByS5EZDetNYo5Zoc7PpUQWAJEA2lEQH8CBzoTPzDcTUUBTp43pUnG1sVVEvIxJ7OGW5jJWb/ZJvTBVNYPptBlvoJ1oTflglJN+l69F7NRSrnq3k9s0+NlF8mMPa+XHUcuVMDJ+7WilQ+u+koHqueSGnPQb47vzJV5uv/j/gNBBIrv859avRQHyVpmbx8yeFDVmk75IFXYJTcudgvkPXkSF+fg1gyYeISB/5wclql/LptQuXhLXMdkxe1o3AufflGC7D7n54y3Cnf3qQYSB7uGrPEWJuAvfG2VAyyvHKGWZjE8pgWoo1W6yCtWYogAX+j65lPNoOitabeiVSGzkgLfghz+sxjHRNVY+TQKF3Vn/vJGr/c4bZbarZQsYmZOK2S2iN6CYYYUhx4eVzYZwV7MRJCIDCm/vHBe9FhU6T6OoHUc8hxYEZb6WJnV4GNmBSeqg
+ Eekjylhs
+ SFLJvM4Gz348fXXG75Zix4rWFhx/PyMQXIslAh7lkl85h5sQ4A0ZBEgTY3LLd2xqNT2PpmIy/s3w7lm2aVu1kxw0QhLdPasC4eljT4vBD+3yGUqaRNrb9xoOTo2F461gTUuotMIIOnQgcQknbL/F266ZaHvSYqyyFy6g3ojUqcMdHmSuz2JJj7g7F+CMTNq6E2FtPO5h3EG8kktZc4DGakJNr0ODYqtuZEGpF5iO9Gu2/Dqbvwn350+w1csOYvNIx5y8Mm0rWiYR6fRPQiQZjAcRteRS/gO+x58+sf09UeFHtNZ+HePUCxcGBjNAO9U1IqBKILc1BZ+TYIRFhzmUEIf8kJIDPXrxpnQsb7BQPnkd5ND9HezTIDUYKIkBApaRxD/anSe1D8fZ2AUb2twWAyV03c4OthRfvhF1IxxkY33FOunB2UQUt74KIxA8ykISKZlENAhxk81FHVpTOsr25+z0kaIOpKROUotu05tXc5FCJWHaWmWCVtxH39U67a3nIhcOTomMzFmG12qe4ICxVnNisZ9UgafOD/PnwTvXISn9PUtJY2+nVeZieD55YXLjQ704F/+PObo3Ks/OfB8cCua9mxLTniAMjMif7kLEqR+S4GMM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,182 +123,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+vfio_pci_core_disable() is a very long function doing multiple things
+like exiting runtime power management, setting device to D0 power,
+clearing bus master, clearing irqs, freeing eventfds, releasing device
+regions, unmapping PCI bars, and performing device/bus resets.
 
-This series can be found on Github:
+The upcoming VFIO Liveupdate feature will also need to utilize same
+reset logic.
 
-  https://github.com/shvipin/linux vfio/liveupdate/v5
+Extract device reset code to a new helper function,
+vfio_pci_core_try_reset(), and update vfio_pci_core_disable() to use
+this new function.
 
-This series provides the base support to enable Live Update feature for
-VFIO PCI devices using the Live Update Orchestrator (LUO) and Kexec
-Handover (KHO).
+No functional change intended.
 
-Overview
---------
+Co-developed-by: David Matlack <dmatlack@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Signed-off-by: Vipin Sharma <vipinsh@google.com>
+---
+ drivers/vfio/pci/vfio_pci_core.c | 100 ++++++++++++++++---------------
+ 1 file changed, 53 insertions(+), 47 deletions(-)
 
-This series makes the following changes to support VFIO Live Update:
-
- - Puts VFIO Live Update support behind the CONFIG_VFIO_PCI_LIVEUPDATE
-   config option (which requires CONFIG_VFIO_DEVICE_CDEV).
- - Preserves VFIO cdev device FDs across a kexec Live Update session via
-   LUO/KHO.
- - Enforces that incoming preserved devices can only be retrieved via
-   LIVEUPDATE_SESSION_RETRIEVE_FD post-kexec (preventing legacy
-   group/cdev opens from accessing uninitialized state).
- - Quiesces the device prior to kexec in freeze() by resetting hardware,
-   disabling bus mastering, and marking the device frozen to reject
-   post-freeze IO/MMIO.
- - Includes VFIO selftests (uapi & kexec tests with continuous DMA
-   checks) and kernel documentation.
-
-VFIO PCI Live Update Roadmap
-----------------------------
-
-We are planning to add VFIO PCI Live Update support in phases. Since full
-support of this feature will come in phase, VFIO PCI Liveupdate is
-controlled by CONFIG_VFIO_PCI_LIVEUPDATE config option. 
-
-This series is phase 1 below:
-
- 1. PCIe function (non-VF) preserved across Live Update without changing
-    BDF
- 2. PCIe function (non-VF) preserved across Live Update without resetting
- 3. PCIe function (non-VF) preserved across Live Update with continuous
-    DMA (noiommu)
- 4. PCIe function (non-VF) preserved across Live Update with continuous
-    DMA (iommufd)
- 5. PCIe VF preserved across Live Update with continuous DMA (iommufd)
-
-Dependencies
-------------
-
-This series has following dependencies as shown in the diagram
-
-    |---------------------------|
-    |         VFIO v5           |  <--- Sent in this series.
-    |---------------------------|
-    |  Liveupdate Selftests[1]  |
-    |---------------------------|
-    |        PCI v7 [2]         |
-    |---------------------------|
-
-[1] https://lore.kernel.org/all/20260511201155.1488670-1-vipinsh@google.com/
-    These selftests changes are needed by other selftests also (iommu,
-    kvm), so, I have sent them separately.
-
-[2] https://lore.kernel.org/linux-pci/20260710212616.1351130-1-dmatlack@google.com/
-    This is the PCI v7, which adds the live update support in PCI core.
-
-Github branch I have mentioned at the top has all of these dependencies.
-
-Testing
--------
-
-Tested using VFIO Live Update selftests in both QEMU and bare-metal
-environment (Intel DSA PCIe device).
-
-  $ ./setup.sh 0000:00:04.0
-  $ ./vfio_pci_liveupdate_kexec_test --stage 1 0000:6a:01.0
-  $ kexec --reuse-cmdline -l -s /boot/vmlinuz
-  $ kexec -e
-  $ ./setup.sh 0000:00:04.0
-  $ ./vfio_pci_liveupdate_kexec_test --stage 2 0000:6a:01.0
-
-Kernel command line options used:
-  - liveupdate=on
-  - kho=on
-  - vfio_iommu_type1.allow_unsafe_interrupts=Y
-  - vfio_pci.enable_sriov=Y
-  - vfio_pci.disable_denylist=Y
-  - vfio.enable_unsafe_noiommu_mode=Y
-
-
-Changelog
----------
-
-v5:
- - Addressed Sashiko feedback.
- - Removed condition to disable CONFIG_VFIO_PCI_DMABUF.
- - Expanded vfio_find_device() helper to safely discover a registered
-   vfio_device by matching criteria. Internal Sashiko instance found
-   data race.
- - Updated selftests to latest changes in VFIO selftests.
- - Rebased on top of PCI Live Update series v7.
-
-v4: https://lore.kernel.org/kvm/20260511234802.2280368-1-vipinsh@google.com/
-
-v3: https://lore.kernel.org/kvm/20260323235817.1960573-1-dmatlack@google.com/
-
-v2: https://lore.kernel.org/kvm/20260129212510.967611-1-dmatlack@google.com/
-
-v1: https://lore.kernel.org/kvm/20251126193608.2678510-1-dmatlack@google.com/
-
-rfc: https://lore.kernel.org/kvm/20251018000713.677779-1-vipinsh@google.com/
-
-
-David Matlack (7):
-  vfio: Enforce preserved devices are retrieved via
-    LIVEUPDATE_SESSION_RETRIEVE_FD
-  docs: liveupdate: Add documentation for VFIO PCI
-  vfio: selftests: Add vfio_pci_liveupdate_uapi_test
-  vfio: selftests: Add Makefile support for TEST_GEN_PROGS_EXTENDED
-  vfio: selftests: Expose iommu_modes to tests
-  vfio: selftests: Verify that opening VFIO device fails during Live
-    Update
-  vfio: selftests: Add continuous DMA to vfio_pci_liveupdate_kexec_test
-
-Vipin Sharma (13):
-  vfio/pci: Factor out the reset logic in VFIO PCI device close path
-  vfio: Export various helpers from VFIO
-  vfio/pci: Export vfio_pci_dma_buf_move for vfio-pci module
-  liveupdate: Export symbols needed by modules
-  vfio/pci: Register a file handler with Live Update Orchestrator
-  vfio/pci: Preserve vfio-pci device files across Live Update
-  vfio: Introduce vfio_find_device() helper
-  vfio: Refactor vfio_device_fops_cdev_open()
-  vfio: Add API to open cdev device for Live Update restore
-  vfio/pci: Retrieve preserved device files after Live Update
-  vfio: selftests: Build liveupdate library in VFIO selftests
-  vfio: selftests: Initialize vfio_pci_device using a VFIO cdev FD
-  vfio: selftests: Add vfio_pci_liveupdate_kexec_test
-
- Documentation/core-api/liveupdate.rst         |   1 +
- .../driver-api/vfio_pci_liveupdate.rst        |  23 ++
- MAINTAINERS                                   |   2 +
- drivers/vfio/device_cdev.c                    |  67 +++-
- drivers/vfio/group.c                          |   9 +
- drivers/vfio/pci/Kconfig                      |  12 +
- drivers/vfio/pci/Makefile                     |   1 +
- drivers/vfio/pci/vfio_pci.c                   |  13 +-
- drivers/vfio/pci/vfio_pci_config.c            |   3 +
- drivers/vfio/pci/vfio_pci_core.c              | 119 +++---
- drivers/vfio/pci/vfio_pci_dmabuf.c            |   1 +
- drivers/vfio/pci/vfio_pci_liveupdate.c        | 340 ++++++++++++++++++
- drivers/vfio/pci/vfio_pci_priv.h              |  28 ++
- drivers/vfio/vfio.h                           |  18 +
- drivers/vfio/vfio_main.c                      |  67 +++-
- include/linux/kho/abi/vfio_pci.h              |  43 +++
- include/linux/vfio.h                          |  12 +
- include/linux/vfio_pci_core.h                 |   3 +
- kernel/liveupdate/luo_file.c                  |   2 +
- tools/testing/selftests/vfio/Makefile         |  23 +-
- .../vfio/lib/include/libvfio/iommu.h          |   2 +
- .../lib/include/libvfio/vfio_pci_device.h     |   3 +
- tools/testing/selftests/vfio/lib/iommu.c      |   4 +-
- .../selftests/vfio/lib/vfio_pci_device.c      |  25 +-
- .../vfio/vfio_pci_liveupdate_kexec_test.c     | 256 +++++++++++++
- .../vfio/vfio_pci_liveupdate_uapi_test.c      |  97 +++++
- 26 files changed, 1097 insertions(+), 77 deletions(-)
- create mode 100644 Documentation/driver-api/vfio_pci_liveupdate.rst
- create mode 100644 drivers/vfio/pci/vfio_pci_liveupdate.c
- create mode 100644 include/linux/kho/abi/vfio_pci.h
- create mode 100644 tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
- create mode 100644 tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c
-
-
-base-commit: cbf37fff757e87376e80e11a8378393a8f25145f
-prerequisite-patch-id: 85705fb54d3065efe1d87ab4b69e828a9f3404e7
-prerequisite-patch-id: a33ae79b5fc0259bd013b430c18cc3d14a678599
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index a28f1e99362c..3c8b990ee92f 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -623,9 +623,60 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_enable);
+ 
+-void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
++static void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
+ {
++	struct pci_dev *pdev = vdev->pdev;
+ 	struct pci_dev *bridge;
++
++	vdev->needs_reset = true;
++
++	/*
++	 * If we have saved state, restore it.  If we can reset the device,
++	 * even better.  Resetting with current state seems better than
++	 * nothing, but saving and restoring current state without reset
++	 * is just busy work.
++	 */
++	if (pci_load_and_free_saved_state(pdev, &vdev->pci_saved_state)) {
++		pci_info(pdev, "%s: Couldn't reload saved state\n", __func__);
++
++		if (!vdev->reset_works)
++			return;
++
++		pci_save_state(pdev);
++	}
++
++	/*
++	 * Disable INTx and MSI, presumably to avoid spurious interrupts
++	 * during reset.  Stolen from pci_reset_function()
++	 */
++	pci_write_config_word(pdev, PCI_COMMAND, PCI_COMMAND_INTX_DISABLE);
++
++	/*
++	 * Try to get the locks ourselves to prevent a deadlock. The
++	 * success of this is dependent on being able to lock the device,
++	 * which is not always possible.
++	 * We can not use the "try" reset interface here, which will
++	 * overwrite the previously restored configuration information.
++	 */
++	if (vdev->reset_works) {
++		bridge = pci_upstream_bridge(pdev);
++		if (bridge && !pci_dev_trylock(bridge))
++			goto out_restore_state;
++		if (pci_dev_trylock(pdev)) {
++			if (!__pci_reset_function_locked(pdev))
++				vdev->needs_reset = false;
++			pci_dev_unlock(pdev);
++		}
++		if (bridge)
++			pci_dev_unlock(bridge);
++	}
++
++out_restore_state:
++	pci_restore_state(pdev);
++}
++
++void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
++{
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	struct vfio_pci_dummy_resource *dummy_res, *tmp;
+ 	struct vfio_pci_ioeventfd *ioeventfd, *ioeventfd_tmp;
+@@ -700,54 +751,9 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+ 		kfree(dummy_res);
+ 	}
+ 
+-	vdev->needs_reset = true;
+-
+ 	vfio_pci_zdev_close_device(vdev);
+ 
+-	/*
+-	 * If we have saved state, restore it.  If we can reset the device,
+-	 * even better.  Resetting with current state seems better than
+-	 * nothing, but saving and restoring current state without reset
+-	 * is just busy work.
+-	 */
+-	if (pci_load_and_free_saved_state(pdev, &vdev->pci_saved_state)) {
+-		pci_info(pdev, "%s: Couldn't reload saved state\n", __func__);
+-
+-		if (!vdev->reset_works)
+-			goto out;
+-
+-		pci_save_state(pdev);
+-	}
+-
+-	/*
+-	 * Disable INTx and MSI, presumably to avoid spurious interrupts
+-	 * during reset.  Stolen from pci_reset_function()
+-	 */
+-	pci_write_config_word(pdev, PCI_COMMAND, PCI_COMMAND_INTX_DISABLE);
+-
+-	/*
+-	 * Try to get the locks ourselves to prevent a deadlock. The
+-	 * success of this is dependent on being able to lock the device,
+-	 * which is not always possible.
+-	 * We can not use the "try" reset interface here, which will
+-	 * overwrite the previously restored configuration information.
+-	 */
+-	if (vdev->reset_works) {
+-		bridge = pci_upstream_bridge(pdev);
+-		if (bridge && !pci_dev_trylock(bridge))
+-			goto out_restore_state;
+-		if (pci_dev_trylock(pdev)) {
+-			if (!__pci_reset_function_locked(pdev))
+-				vdev->needs_reset = false;
+-			pci_dev_unlock(pdev);
+-		}
+-		if (bridge)
+-			pci_dev_unlock(bridge);
+-	}
+-
+-out_restore_state:
+-	pci_restore_state(pdev);
+-out:
++	vfio_pci_core_try_reset(vdev);
+ 	pci_disable_device(pdev);
+ 
+ 	vfio_pci_dev_set_try_reset(vdev->vdev.dev_set);
 -- 
 2.55.0.795.g602f6c329a-goog
 
