@@ -4,126 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B735EC44507
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:40:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6313EC44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:53:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 967236B0005; Tue, 14 Jul 2026 07:40:51 -0400 (EDT)
+	id 406EC6B0005; Tue, 14 Jul 2026 07:53:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F0E86B0088; Tue, 14 Jul 2026 07:40:51 -0400 (EDT)
+	id 3DEB16B0088; Tue, 14 Jul 2026 07:53:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B9896B008A; Tue, 14 Jul 2026 07:40:51 -0400 (EDT)
+	id 2F6C76B008A; Tue, 14 Jul 2026 07:53:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 495806B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:40:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D37A21C031F
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:40:50 +0000 (UTC)
-X-FDA: 84987190260.23.7F523D0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 103B84000B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:40:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MvgpT4yw;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0573E6B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:53:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67EC180328
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:53:28 +0000 (UTC)
+X-FDA: 84987222096.01.7C9165B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C66B5A0004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:53:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUG61eQr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784029249;
-	b=wdpFfQY1/G5mUii+5EmbH11CqkOPLf16JOE3A4hVXY1Ge7PLeyyNvfyG2/bW7YlDrkDiQd
-	/HFjlcxvcP6cVX8xdalGUtWuy9Yn9A0tX0415vO0V+HZdz2PgY4tpKad5Ja/ujfGiR6ayd
-	p0oMgM6Wh5c69mFyBm8kiMCRvtfMSsk=
+	t=1784030006;
+	b=dsEPGMva6pbToVcaY+bOhTJIzw9q36fP0Dae9m/j2LlIYi23Bi6NijP44NvknHzgjrwioa
+	xpFOpHY/UPC1Q5Zo7O6RQs68STFjtswGD8RHoI0TqJ8y9aWnDdyqnk5Gqh2Yy4NiSKYX93
+	/KmQHuB/exqUzGo7wymok/sxVBIGzbQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MvgpT4yw;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUG61eQr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784029249;
+	s=arc-20220608; t=1784030006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FAIl10C7vKnU2RJ0duKh/jZmoT8ltCLUvNMN78zlDcE=;
-	b=8M+vH7WFAuudVCjL8HARkugzZjoEE84QAEa56Ysreq4r3vJ48Ql3Fyl2EU7TWrrPnVghYp
-	K8X38LtBJS2n3+EDHrekidLfjnDqq6R8WCY4c89rPLYQO3CDpCNeGuzYK9A62jTgWadtha
-	AUWI1ZfbQITpqZcO7DvU7+LFAlwrdlI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7EF1B1476;
-	Tue, 14 Jul 2026 04:40:43 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6AA603F93E;
-	Tue, 14 Jul 2026 04:40:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784029247; bh=MCWhEFrql7UL36iBX9OZiHoegQ6HAcW6h4DKukQd0P8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MvgpT4ywcE00IxG1JVUyBpm3lJ+pIfECdF6FM/Sc9MXmE2eFpNJRbIz7x2PHnayFc
-	 rIEH/1buiyXOZIfInJgpBQRwP/xJTZ/bbTCuLcFjDgZe3iZFv28lVTuFyfnYkwAUXC
-	 NhDONHzT6KNdhRrz3tcDrHH80ODV8po7FJy3msTE=
-Date: Tue, 14 Jul 2026 12:40:35 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
-	kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
-	linux@armlinux.org.uk, akpm@linux-foundation.org,
-	ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
-	chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
-	kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
-	wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org,
-	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org,
-	arnd@arndb.de, ryan.roberts@arm.com, pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com, baolin.wang@linux.alibaba.com, tj@kernel.org,
-	kevin.brodsky@arm.com, anup@brainfault.org, atish.patra@linux.dev,
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, dave.hansen@linux.intel.com, luto@kernel.org,
-	peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
-	bp@alien8.de, hpa@zytor.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, kasong@tencent.com,
-	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, ryabinin.a.a@gmail.com, glider@google.com,
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
-	anshuman.khandual@arm.com, yang@os.amperecomputing.com,
-	chaitanyas.prakash@arm.com, ardb@kernel.org, guoren@kernel.org,
-	yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
-	dinguyen@kernel.org, schuster.simon@siemens-energy.com,
-	wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech,
-	muchun.song@linux.dev, vishal.moola@gmail.com, namcao@linutronix.de,
-	pavel@kernel.org, djbw@kernel.org, yu-cheng.yu@intel.com,
-	baolu.lu@linux.intel.com, Jonathan.Cameron@huawei.com,
-	coxu@redhat.com, andreas@gaisler.com, liam@infradead.org,
-	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
-	geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi
-Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
-Message-ID: <alYgMxKqRnF6_X0A@e129823.arm.com>
-References: <c3edfb13-08ec-419c-bc05-8f3f64186b24@intel.com>
- <ac365196-8ccc-4d8b-83d7-28fec763e75c@kernel.org>
- <710b7eb0-8e0c-4f07-991c-2285c77e1beb@intel.com>
- <6007625e-c3f9-4ad6-99a8-61396bccbcec@kernel.org>
- <32d459d1-ad19-4baf-bbb1-0565458001d2@intel.com>
- <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
- <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com>
- <31988089-095a-4eed-b5e2-c677c70f79f6@kernel.org>
- <14e250db-1641-4085-8d13-02f819657d5f@intel.com>
- <d83c76b3-ea4d-4c41-b4c5-f5ae558ace55@kernel.org>
+	bh=2Nf0pzzNTeJOpKeQGGtmDhdnC8W2GgOPVML5TCxAQKQ=;
+	b=ZaiaW22jqI3pMJj22Ce+zmadj4yO88K38Dh6R1+zhTCFnfD4BEcru9I2p25whRkRaRuZn5
+	QIXP4lpjZGipPsbSJ1nu/BMh9Evr8u7cQDrpzWjO/qWVIHVe7UMeV4HF4b2doM51kbgcZb
+	wGg2e5o5RMMajVLWV11YrUZ9FJ8iuG0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5386760254;
+	Tue, 14 Jul 2026 11:53:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4375B1F00A3A;
+	Tue, 14 Jul 2026 11:53:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784030006;
+	bh=2Nf0pzzNTeJOpKeQGGtmDhdnC8W2GgOPVML5TCxAQKQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HUG61eQr+qwcx4Kq4681RkPJCJLDTNpPf4qw0k95lvgmE6lqKcMDXgaVntE9jLqLd
+	 MsT/5cMj0tdbasDEma3t28y9h5wLSoG5fMXfGniSmj682PlBXb6WlE9qq4LWXspiFM
+	 CxQ1C+vistKAF2WILYIfoxuA7dm9uuPDFKKxYO4yoXmGqnylYtKXZNXyOsE2F13+w+
+	 5JZSD/J0TPhTgIrsO/ZPxX3oaQbEcwwdTS5iZ2Tn2jNmLJMXzXuL3E8+VxVKNcDXZD
+	 gZz/o+sDq8I10tXaIv0mNVqnDmokH8GR0hZA+pMbq/PPLtpQYFoBXgVAh5EVc2mLZy
+	 bER0gxU5+g+2w==
+Message-ID: <67930986-152e-483e-a00d-210fe5769a10@kernel.org>
+Date: Tue, 14 Jul 2026 20:53:16 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d83c76b3-ea4d-4c41-b4c5-f5ae558ace55@kernel.org>
-X-Rspamd-Queue-Id: 103B84000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+To: Brendan Jackman <brendan.jackman@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
+ stable@vger.kernel.org
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+ <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+ <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+ <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+ <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+ <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------ku0sMi9hUnR02QaV2h2WUqQg"
+X-Rspamd-Queue-Id: C66B5A0004
 X-Rspam-User: 
-X-Stat-Signature: ew8pjg438oief7rrisucuupy7ssmwr8y
+X-Stat-Signature: kjgp769t6wr5jffu3jixberx11p6cfc5
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1784029248-800825
-X-HE-Meta: U2FsdGVkX1+YXZUFbw2izAPpf31Prd7ObhhV+NEqHVroqaXxVDMTWamxZTgIPzZt6hpgur3aTUmzMDRR7Z/RuaLEzMQKYebrsLGyu2BRoVsxvcko8ReuOeowJHvPT2IZGa3s5vPm5r0W9wloCmt4YbfJO+BHGeSQUSbnFw5mRG6UlhMnZDb6AtKPfhj7q30rOfB2v1F7R1A1lgzAYF1qj8uK03Az4diWv/xT9NzgKvfqHtkmuNaMx/aBbFAYUXoTFDdlKxo6VQ/gbASnHZ3SCoWYlng6c8V4cGfHQgpJROtbu+pC7gQE4alxp2VQqG2OjEGpclBHct785j/bnAS0eaa+ncpALwAApiKPYfYXfnXw//7nCD/vsGCmjv67xdJqFyfvYlrANKoJP9soZcjUx/6Rs6ajSS4PFskexeZpbEQ1seaoMpBZObzxaSUx3IiyHsrG65kFu1r7qQgdN1zIZogEq9uUrcO/6cCaxJFmkDTiQXlz69vDFl8fnx4US/rvtfnwEvsxIps+SqpBIRAeKyELOjDQma7Q2+FpwYdwvYZPLlmBhOhxiWlr+NYdB3g5iaFd2lV6FqOFi6fEKsctSo7u5Vf6QQssk4KQ9tD0OmY2gjyU5W6yaYZjt7UObmYl6i5hmPpJ94NRZxABqHb9dUjC+SAq7NMJhmCgTsIxJGB79W816Ng53DJibzOfraZU/h/vZUATix5a2kYqr4LXj7wzAytY05Igcv76xpjcHeVG+X9k1sPgexOf9qJYELAWVuSBRtp2wgmsqWa9P+s+4QbRM8Yvs2yc8AYSuXAp20vSFr/2ALNvJuXTrkimpNIlvcRmVVkHL8qNErZXRJ9YshNL01GCgt0RqzKBqPJtMAo9Kr0gEz4jmz4fTAfiqzPGQtBYSVyCdubMrhet4yhjsQ7NJ1r5kbIf6GmeIG06sKsWPdpQEQuEANWqB3uzQcEuF5LxOe9EIxeGFHT3hsj
- btU51Kbq
- jUhatY8sy0BLJ36uTSPzFpKsjKxX4JLzf7nA82LFeoU4Jmy4qi045jiBuvTbRsmbsofR4tOULYj7w121Y9Tclfs6KHR0HAHDBkdnJhQ7LcODiBPpPmHbL4jfNaS+bL+Yu6qKC0nMuZQrR8nBNwarsUslktJaVKB7Y4K8lUh5weDMjx+s3WUSKe5TB2/WEm69dAv/ZfximAeVNbWHDzErNkaVn1VB7cuI1cpPqh2s2lV2J8cDZ4jSqvxRmRN9rSL3LEUbLQEsrdt/l9mtRrHZ1wYwUOO8KPRCJs7XZqdlU4PqCF5bu9E5BA2zm1I5jKiTkSy75d5ikyjZHHhlZaq64raLWq1X7byAwkleRYB6YmSd11o0=
+X-HE-Tag: 1784030006-416444
+X-HE-Meta: U2FsdGVkX1/R8Cv45uvnXyDRN72dTYdN1rk4n0AfzYFbJJoBf77gRsN+BtJTzy6QmrZ11f6Qt9q9Q1FDjoMRx0c3AtYmOhSJxqdtP9iBhZm42TwmI371akl9LChAz4ViepWvsb246OqGrp0ebBuA60+tsjHlXqEKaesFs6cI9mDm9Bzowdcg3a0JqfJWwRT4wIRh82BnIHrzeG4FfjqoyoPljAYkG8O0W+W9Gt5hZV11y//uXtXB9HPEKx95X6jWaNSglzI6eex/Jm+wE8aRVKyc2Rn8biQ5cJ8PWvkEMkjfFPQjsYiLOhb2mD0u5Dfr1r10rZUXJR4ogXbHjziLEU0ALWTXYiKrhs2yz/+ZnRpL/X4HJKeYLxPKmKezEad8+Jw4u9Sk7RkyLol5XG0NitFTc+SYMxScf6X62UMiNR31iDcE4xy68l+o10VEMsVXiummIlHEUkb5uLxKewLKI5vjm7cVwZxWhKeNlL2lR2HTcwGKuqO/Huk4+30jm4RZV/yYd+UiHXBzKfhe1CzYTn8zhmsjhSwU7ssi8CTvgG+bd6fTJh+H9SjmpbgFWohehgpDZiWSusAGtbUhQvQj6jb9ODdvE51N0p+/Yiqyn/sQ/KYqX7S4sxSJiMftjl8WVyPrXEiEdOT5CoaI2qyZ7I+XTZchgdkhmn590xVRS60I6jeNcfMlwNYbrQ89bN4z/pNglqCO80Pq5FGh2t4vsZhZp+Kqp86I35rplPmWGduxi6qjBwWJmm7l6sCjj0e3ePyBTRGhGu6Nu3Pe1zR5FoxtOI00FjTOZSDy6Xhk83NAsOCu/2pqpvsE0dRXqEjAXEan5srfSgoH66YK7zj79vXgCqNKoI4fR9JHuApzyw/UCCj07F6CnjG/5iGa1KWioJoP9M0+B1sHJsetezzuR8T6r6n3K7pBSFuJKdvIwyMgoSDX+IBzL6lZK79FH3X7gQSSeWhr+hT/f4UZAuz
+ Yxya/egO
+ ciCFm/fAR08zAaubisbbaNuK5uyh55basWbfAx3QuRK5SQ+1rprCcBqNbXK3rgWb9gGp5iiU3BiwxGJECj2/NoQp9egVLhDL08R+oWV7GzTqiKQ5qjW+g5aQsDkUFSfmMGo1x78p+jxqx1BWFrwDZ84bAEOUWQe4/q51JdpX0qdYBcD9NLkbwDZnBRNEX6Stdq522SQ4nccD4El9nkFVPfqJpGBGB+Oisp2CbjGApxGj6e3iEOTEKqfRwwBG8ZcYsvoWEKYXOC2GzxpkP1S4YOceB3pIr+0DmLoOfi+ZgLDzVPP8b91XQ1EE+ZCHewBQxEZAFb2fQENe/9f8Nai2t7Lok2A0Z5Pkbd93nidTT5f8susQoSBRrbYr9rAqDvAYSzX5FFB1X3gx/VGiTfhiL6okzOcLEFmh8surGf0XweIWtYRSbEx1ZB0DZo32w7cSQktBph5FJyxJD6NF0Xl27IcZ+KjNVzSlv5SfiKD0iYFw7GMDNYWHMMuhgrX04k+GkY4Y6jZNzQ4uso8BUSzeqp8+Bmg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,206 +107,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On 7/13/26 23:40, Dave Hansen wrote:
-> > On 7/13/26 14:17, David Hildenbrand (Arm) wrote:
-> >>> To me, the double READ_ONCE() is a non-issue.
-> >> To other arch maintainers, it is!
-> > 
-> > Ahh, so it seems like Christophe in ppc32 land was looking at this more
-> > like a regression that needed to get fixed.
-> 
-> Yes, exactly. :)
-> 
-> And I agree that it is something we should be optimizing.
-> 
-> > 
-> > Christophe, just out of curiosity, was this something that was causing
-> > you practical problems like measurable performance regressions, or was
-> > it really just insane code generation that seems unacceptably suboptimal?
-> 
-> I'd be curious about that as well. I mean, looking at the generated code
-> it's clear that it is suboptimal.
-> 
-> 
-> The solution space I see:
-> 
-> 
-> (1) Pass the result from e.g., pgdp_get() into p4d_get(), so it can just return 
->     the value with folded p4ds.
-> 
-> That requires extreme amounts of churn in core-mm AFAIKS, so I don't see that as feasible.
-> 
-> 
-> (2) Rewrite folding code to make p4d_present() be a dummy instead of 
->     pgd_present(), and make p4dp_get() return a dummy value.
-> 
-> ... a lot of churn across architectures. I'm sure we'll learn soon why it was done 
-> ike the way it is today in the first place. Something interesting to look at,
-> certainly, but a bit of a stretch just to optimize reads.
-> 
-> 
-> (3) Make folded pgdp_get() use an ordinary read instead of a READ_ONCE / dummy.
-> 
-> I don't like that, because we couldn't catch easily if the value is then
-> actually used some old/new code.
-> 
-> If pgd_present() etc are supposed to ignore the value, I'd rather have a mechanism
-> that enforces that the values are actually ignore in pgd_offset() etc as well.
-> 
-> 
-> (4) What we do in this series, but instead of forbidding set_pgd(), make it only 
->     complain when we are passing in a dummy value.
-> 
-> The expectation is that it would avoid touching most architecture code in patch
-> 12 -> 27 and still prevent mistakes in the future.
-> 
-> @Yeoreum can you play with that and see what the end result would be?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------ku0sMi9hUnR02QaV2h2WUqQg
+Content-Type: multipart/mixed; boundary="------------4kdqt064WgNYuyI40EikPph1";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
+ stable@vger.kernel.org
+Message-ID: <67930986-152e-483e-a00d-210fe5769a10@kernel.org>
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+ <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+ <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+ <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+ <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+ <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
+In-Reply-To: <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
 
-Okay. I'll try with (4) and let me reply how much we can reuduce
-the volume of this patch series.
+--------------4kdqt064WgNYuyI40EikPph1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> 
-> The problem of how to handle ptdump effective_prot remains. Which is unfortunately an
-> x86 32-bit only problem ;) ... and effective_prot is essentially an x86-only thing.
-> 
-> There are various ways we could handle that, my preferred one would be
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index fb298e2191792..3d56e48fe4151 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -96,7 +96,7 @@ config X86
->         select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
->         select ARCH_HAS_PMEM_API                if X86_64
->         select ARCH_HAS_PREEMPT_LAZY
-> -       select ARCH_HAS_PTDUMP
-> +       select ARCH_HAS_PTDUMP                  if X86_64
->         select ARCH_HAS_PTE_SPECIAL
->         select ARCH_HAS_HW_PTE_YOUNG
->         select ARCH_HAS_NONLEAF_PMD_YOUNG       if PGTABLE_LEVELS > 2
-> 
-> 
-> Another option would be to keep the behavior unchanged:
-> 
-> 
-> diff --git a/mm/ptdump.c b/mm/ptdump.c
-> index 5851096e6f656..ce2cf5e07ac0a 100644
-> --- a/mm/ptdump.c
-> +++ b/mm/ptdump.c
-> @@ -39,6 +39,9 @@ static int ptdump_pgd_entry(pgd_t *pgd, unsigned long addr,
->                 return note_kasan_page_table(walk, addr);
->  #endif
->  
-> +       if (mm_p4d_folded(walk->mm))
-> +               return 0;
-> +
->         if (st->effective_prot_pgd)
->                 st->effective_prot_pgd(st, val);
->  
-> @@ -62,6 +65,13 @@ static int ptdump_p4d_entry(p4d_t *p4d, unsigned long addr,
->                 return note_kasan_page_table(walk, addr);
->  #endif
->  
-> +       if (mm_pud_folded(walk->mm))
-> +               return 0;
-> +
-> +       /* Simulate old behavior: all page table levels exist with folded values. */
-> +       if (mm_p4d_folded(walk->mm) && (st->effective_prot_pgd))
-> +               st->effective_prot_pgd(st, __pgd(p4d_val(val)));
-> +
->         if (st->effective_prot_p4d)
->                 st->effective_prot_p4d(st, val);
->  
-> @@ -85,6 +95,15 @@ static int ptdump_pud_entry(pud_t *pud, unsigned long addr,
->                 return note_kasan_page_table(walk, addr);
->  #endif
->  
-> +       if (mm_pmd_folded(walk->mm))
-> +               return 0;
-> +
-> +       /* Simulate old behavior: all page table levels exist with folded values. */
-> +       if (mm_pud_folded(walk->mm) && st->effective_prot_pgd)
-> +               st->effective_prot_pgd(st, __pgd(pud_val(val)));
-> +       if (mm_p4d_folded(walk->mm) && st->effective_prot_p4d)
-> +               st->effective_prot_p4d(st, __p4d(pud_val(val)));
-> +
->         if (st->effective_prot_pud)
->                 st->effective_prot_pud(st, val);
->  
-> @@ -107,6 +126,14 @@ static int ptdump_pmd_entry(pmd_t *pmd, unsigned long addr,
->                 return note_kasan_page_table(walk, addr);
->  #endif
->  
-> +       /* Simulate old behavior: all page table levels exist with folded values. */
-> +       if (mm_pud_folded(walk->mm) && st->effective_prot_pgd)
-> +               st->effective_prot_pgd(st, __pgd(pmd_val(val)));
-> +       if (mm_p4d_folded(walk->mm) && st->effective_prot_p4d)
-> +               st->effective_prot_p4d(st, __p4d(pmd_val(val)));
-> +       if (mm_pmd_folded(walk->mm) && st->effective_prot_pud)
-> +               st->effective_prot_pud(st, __pud(pmd_val(val)));
-> +
->         if (st->effective_prot_pmd)
->                 st->effective_prot_pmd(st, val);
->         if (pmd_leaf(val)) {
 
-But I think we can get rid of simulation if the x86 allows to modify
-(of course, x86 still wants to use PTDUMP) like:
 
-diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
-index e32848c7f26d4..aa1277f35773a 100644
---- a/arch/x86/mm/dump_pagetables.c
-+++ b/arch/x86/mm/dump_pagetables.c
-@@ -29,6 +29,7 @@ struct pg_state {
-        struct ptdump_state ptdump;
-        struct mm_struct *mm;
-        int level;
-+       int first_level;
-        pgprotval_t current_prot;
-        pgprotval_t effective_prot;
-        pgprotval_t prot_levels[5];
-@@ -254,22 +255,8 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
-        struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
-        pgprotval_t prot = val & PTE_FLAGS_MASK;
-        pgprotval_t effective;
--       bool first_level = false;
+On 7/14/26 6:52 PM, Brendan Jackman wrote:
+> On Mon Jul 13, 2026 at 4:15 PM UTC, Harry Yoo wrote:
+>> On 7/13/26 11:31 PM, Brendan Jackman wrote:
+>>> On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
+>>>> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.=
+com> wrote:
+>>>>> As noted in can_spin_trylock(), using this is unsafe in this contex=
+t.
+>>>>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
+>>>>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc =
+side
+>>>>> but missed the free side.
+>>
+>> Ouch, do we allow alloc_pages() -> free_pages_nolock()?
+>> Didn't notice.
+>=20
+> We don't explicitly disallow that but I'd say it's "forbidden by
+> default"...
+>=20
+> But I think that's unrelated? It doesn't mean you can't use
+> free_pages_nolock() from NMI, right? (Would be weird to alloc from
+> another context and then free in NMI, but I don't think it's "forbidden=
 
--       /* Ignore folded levels ... */
--       if (((level == 0) && mm_p4d_folded(st->mm)) ||
--           ((level == 1) && mm_pud_folded(st->mm)) ||
--           ((level == 2) && mm_pmd_folded(st->mm)))
--               return;
--
--       /* ... and make the actual first level remember the protection. */
--       if (((level == 0)) ||
--           ((level == 1) && mm_p4d_folded(st->mm)) ||
--           ((level == 2) && mm_pud_folded(st->mm)) ||
--           ((level == 3) && mm_pmd_folded(st->mm)))
--               first_level = true;
--
--       if (!first_level) {
-+       if (first_level > st->first_level) {
-                pgprotval_t higher_prot = st->prot_levels[level - 1];
+> by default" in the way that using unmatched APIs is).
 
-                effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
-@@ -471,6 +458,15 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
-                .seq            = m
-        };
+If you can't free pages that are not allocated via alloc_pages_nolock(),
+and if alloc_pages_nolock() always fails, you can't really use
+free_pages_nolock().
 
-+       if (mm_pmd_folded (mm))
-+               st->first_level = 3;
-+       else if (mm_pud_folded (mm))
-+               st->first_level = 2;
-+       else if (mm_p4d_folded (mm))
-+               st->first_level = 1;
-+       else
-+               st->first_level = 0;
-+
-        ptdump_walk_pgd(&st.ptdump, mm, pgd);
+But yeah BPF seems to do that and also the comment says:
 
-        if (!checkwx)
+/*
+ * Can be called while holding raw_spin_lock or from IRQ and NMI for any
+ * page type (not only those that came from alloc_pages_nolock)
+ */
 
--- 
-Sincerely,
-Yeoreum Yun
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------4kdqt064WgNYuyI40EikPph1--
+
+--------------ku0sMi9hUnR02QaV2h2WUqQg
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalYjLAAKCRCGXBN6rc5S
+1onsAP9oH3K4pQoIax+qSGFDjZf1pwd025OJ8HYNXHVk+I8vEwEAiu05mhpZJWF4
+zStwwbYgpqkkPFWKzpHYUtNrcO/tdwU=
+=BfyU
+-----END PGP SIGNATURE-----
+
+--------------ku0sMi9hUnR02QaV2h2WUqQg--
 
