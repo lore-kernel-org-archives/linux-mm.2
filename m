@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F732C4450B
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 20:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E536AC44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 20:13:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88B8D6B00A1; Tue, 14 Jul 2026 16:13:44 -0400 (EDT)
+	id EF4896B00A4; Tue, 14 Jul 2026 16:13:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 863276B00A3; Tue, 14 Jul 2026 16:13:44 -0400 (EDT)
+	id ECB6B6B00A5; Tue, 14 Jul 2026 16:13:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7530F6B00A4; Tue, 14 Jul 2026 16:13:44 -0400 (EDT)
+	id D96D46B00A6; Tue, 14 Jul 2026 16:13:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A2D56B00A1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:13:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0E6D1A04D6
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:13:43 +0000 (UTC)
-X-FDA: 84988482726.26.6545CA7
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F2F4480012
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:13:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q07y3ggj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784060022;
-	b=5ITfVq5h1PXlwxwwWXrRItQrfkBYkeIVAs0N0Z+Fivqo6afHzJzVNULW3IoyOT7uEbk0a5
-	kHaMA2sSCu+eEFEZuw///NQzdRIAyozbstLWefRM5pKTfs3Ky6Fa6nOpKQwTU49pLJAuR3
-	TVK/ZrG/FeOCluXhnRR/UWv7iQj5Ulk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q07y3ggj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B1E076B00A4
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:13:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4C507A05BF
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:13:51 +0000 (UTC)
+X-FDA: 84988483062.02.83C72B5
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4543C40004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:13:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="J4wbf/Ym";
+	spf=pass (imf12.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784060022;
+	s=arc-20220608; t=1784060029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SKEncuDEb35sxzE1YTlJf1hRIKo4X4QhyOOQXqSLrW4=;
-	b=iXifXAwYIBzlCY2vTZxYIiRPZIUU4hixN3SgPk90Pyt0ls7EAPNv7rfQd5uNB1BXORagLd
-	FL46IV+W2uquPXdFhFMu9EN5BlaItfukM50BHgFzDGipNDdJZbNVPZr2gbrBYxR1MZEG2+
-	NNgEF1/dtHQORJ6l9izGnLDCn8lqb30=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8487b7b4066so4657395b3a.1
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:13:41 -0700 (PDT)
+	bh=d214MLGyf83e1Jqi9SjyzgCBFipAoJ9SSnt0shamnDY=;
+	b=vg+Aq3Js8S/E39daVehIHRFT11ZsIenPthJlbb74RB6SjIBlCIGAgqbN+0Yfp4gGSTfKJN
+	iJsEYhhuXkzuKZhvuGdKx3PCj65jKUtzDF0Q7Kx5bJ/WZoY4ATJS59N4M1D53DnlHaiRL8
+	oHfW9XM97Kop2k19iWbmGJXIY8Ik+OM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="J4wbf/Ym";
+	spf=pass (imf12.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784060029;
+	b=KnZcDURy8yPEi9iUHvh7clUJmtyV4c01+OiYNIWyoc9vaJLYNhMyAOJ/2qXigFYKIGNpCC
+	b8LLzrQyBjslABfHY2uho/K5lGDolvQ7GQvoRuVNVW7RBPJPYGC+fB8gwo0v/cEAlmpbIH
+	tcdrtulNRPYIG86kzAAI3ftjvEF98YM=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cc73e322dbso56087165ad.1
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:13:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784060021; x=1784664821; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784060028; x=1784664828; darn=kvack.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=SKEncuDEb35sxzE1YTlJf1hRIKo4X4QhyOOQXqSLrW4=;
-        b=q07y3ggjFCE92Xi5a9aTsHbEIl8d6DjICeBdE3PhPdWcceKEDJHxbqr8KlkPH/5xHx
-         bDFeo3Dj7wPRatGescZarwy5wv7mjmE+/7nCfy/N/rpKxxwsWs0V0o0ZIRlIV+x2qOeN
-         SHdetYTs+SFLDpYLNlIytObQqnv1lAAk+5y1SX9OWLTxI3UMCD2ow0YJPAQgVASH/3Yc
-         UvJyqBevQMJwHKusvo4FpvHtw7D3hJ3Q+RKh/K3F7UIhV8m2N7zGUer8G9DTamTgh3CV
-         wsLCB6fmAsFAC53BpOXAy2rTJAMvyondB1SzOl4NgU63qzn6oRHaBzaFNT0AqO+0Qj1Q
-         3PEg==
+        bh=d214MLGyf83e1Jqi9SjyzgCBFipAoJ9SSnt0shamnDY=;
+        b=J4wbf/YmgzE/gFUDgPKMOMe/+QJ/Z8pyt+xDgOR4XHPvufnuyJ/rUzKJXmTnBWghaJ
+         DJ2yy0a0Gd5M6xe5ejogl6jjeOiSg4x3nHb+FXSW1M/W1P19ISK4UNFv8nQVT7A/OECD
+         ANrNit8/oJqcyzLU0u7FVCAsqLMVg3KPt7sZNu+QOZ79LylQrfjmfwTSNonHfbopO3fi
+         w9eWf3n5rjIIR4gYgXnAmTJserb1d8lSvU7a7j2cEN5MhTdcyMJ4BWz0UTnyjB+v6c1F
+         MN7PJEu5ccN+iNCyiTA+Hbns/jJLlxo/OVqRPfXIDI6vI412M1+d3Ifv4n3IBwEGhGew
+         HW0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784060021; x=1784664821;
+        d=1e100.net; s=20251104; t=1784060028; x=1784664828;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SKEncuDEb35sxzE1YTlJf1hRIKo4X4QhyOOQXqSLrW4=;
-        b=mosxJzHULIKKvLVuR7Ellu0YgldXfQPFIFOjg/FYILcp97YTUcBoG3QDAvlkcNd5Y0
-         1LaDXaXXHHd//IXcEipEDv8vShn6sPYM3F5B3FGFYlI7+UowqKFdL76I4ZItTDLi19Hr
-         +K/eZ0aejPtjGSUBANtoPWMQQzLt0iOEAQP4KJcHhv7Zpr8BZWqPR0i5QWK931WUqlYe
-         dQ6TWOXwtdcO3mSKqf2TPLK6r08RkA4oSUayXNjrmz4mg3xTqF51uLj8NbbUTRziMhCq
-         2n6HONfASgAKgF1pfr/f1BktwcXpO5OHVPhUuIbsychvp8LUXHRdHB/j1EVArieLLFll
-         EF1w==
-X-Forwarded-Encrypted: i=1; AHgh+Rqs78yD9S5QEV+WmLcm7RVdf8gTFF4Ljm6C+EfJ78xIK0hcssH+ZJiFygmWTnr4uwv9d+yQrJiaiQ==@kvack.org
-X-Gm-Message-State: AOJu0YxZECD7Kec/tPyhmMInF4AXajeWcY9I06fEtFSxsrkhTQ2xlDdk
-	CMX6I1Vup0YUUGk4lmMmkF+v5lp8JNBNjFb/m2g3UmV1JsgrkfIDKmRf
-X-Gm-Gg: AfdE7cnrdZQsWX7WbI2XeZfa+mwFvTBvGZj/khi7pofpQNL/n/cVjqz6sbyQbinSkwF
-	gxL2SAWBdslWlZqxTaUJ9/tq8FN7sF+f9x6dMxfRu6BMABWLIjPaqgVAgSlmMzVlnlG2Q6guaGh
-	GvSgwp3oNkAFbT4JFm89KSOUWFTCeH0y1XqKhknw8ai0OzHu/uKEvWNjtBQ18GVqLRPIq9RyCJ0
-	oGHsHYdqUz9l1ia5CZNdUFEOtOAIDojKrakq+2NLBv/x5VqB+OAJYCIjXYoBxoZyHHLiyAhCfIW
-	IPnhM1uAkROtEv1Y+UgvhRJZYU8nEfdbzWg5fZC0lTpheQTDOzdO6+qD2jAtR1Nnh70O4F/nIjq
-	1qMBEXFlC3z9MXZpSjSTzKXGCUNGQxxqK4bAWy5lPu/SYiWdyewTkKcyms2ccOCkYE8tH6Fjkmv
-	J449Jmzy8QGwMjYv/4lD4VmFAqjJeJaAuVJfTzH+8/9vA6HZ2Mla+/wLrA/s8=
-X-Received: by 2002:a05:6a00:2e16:b0:846:f502:4cd4 with SMTP id d2e1a72fcca58-84a671da73cmr45857b3a.4.1784060020856;
-        Tue, 14 Jul 2026 13:13:40 -0700 (PDT)
+        bh=d214MLGyf83e1Jqi9SjyzgCBFipAoJ9SSnt0shamnDY=;
+        b=CiCYTCfs2sk2WE7D6fEppsOWRTQO/l8UdCeufWoz/C/NbsYseUSlAYNcDqSpYh/F5m
+         9aWJgpIiaWNi6xBsFYyqy88+69/KNCEFYx970RSk5cp5/m3KJJCtX6lrp/OJ0yFKREEu
+         XSvQv32LJ/7iGLqRLPYbSkToqOn5kYpOiB+rpnggOi/3635gaTlcZCYLm0A2RUVx8HDf
+         fbgP5In59ABVU8NSSeI6tYxyhAY35uKceMCA/uDrqa0TToMe8GSy6Sh+gw8pPqTFWBfO
+         9stVKbAgJs+ENpA9yQHs/Ku+TtcbQgJXoxvX5TSoJgmj1I87teHswoB7oNJIrOJRUh/V
+         Q3/g==
+X-Forwarded-Encrypted: i=1; AHgh+RrqGxqrVMjzGTW82LGP0vWxVOSjwpg3g42kH4EkLtAUip8zu111TkLagYjdYUBZB+SbI+64zJhUuA==@kvack.org
+X-Gm-Message-State: AOJu0Yy4VO7DYVNkQxGmCvelzSkjTs6/YDlhBQggceREv7xNH1zsE+Ia
+	3b6d/nlDDljI0b1p0AlpKTU+Q5WWd3uh7sJ/lG2UrTjWjnRRSUcjTAs5
+X-Gm-Gg: AfdE7cmGAb3Net1igiAMSd21BlqsYYWFaFXMe/qD+uNON8mxjJ9gegyIT2/TKiERaWh
+	rKvDBySXIyi59YyVgPCSZX1IBklMc15L6FeF2hPUdY2AvKo4iS1ry/EHxVGuWeoiuGcqqNxpE1l
+	qOulZNYSrC4oePJ0NivcaMdVNNIO7+JeDJCcM1YrInAutSN9uKRBEkaH7pw3iJuKf0hI6nPkr44
+	D5wOs/q3YQtTBYGyHIGRl+WFxdP8kiawqXq/NfveheBSmTgIa++mSmsV8tptAYfEWZtdNdiH8VV
+	HBww5yrU9QC9Cm769h+Ax85l9Y8g4Hd5Vtkl3K2JdDoxLyWiGNopY0p0ObOQlL7JzEkly2MgKwG
+	pods2SVRcS6yu41l41zA0LMGwALvwhxZX1sF85vcUTwDGFG1e/8dPVOAFDgy8zrZIiR29kidm2x
+	szSXcf2mw3Y2F1jdGyzTb2pntxBY0r2LHYKK3ly+urhCbyYG40E1x0fnxMu0w=
+X-Received: by 2002:a17:902:d591:b0:2ca:c68:c554 with SMTP id d9443c01a7336-2ce9f15d1f6mr140607525ad.38.1784060028032;
+        Tue, 14 Jul 2026 13:13:48 -0700 (PDT)
 Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f81d770sm1966491b3a.61.2026.07.14.13.13.38
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3d45csm120844995ad.62.2026.07.14.13.13.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 13:13:39 -0700 (PDT)
-Subject: [PATCH 2/4] fixup! drm/nouveau: use
- hmm_range_fault_unlocked_timeout() for SVM faults
+        Tue, 14 Jul 2026 13:13:47 -0700 (PDT)
+Subject: [PATCH 3/4] fixup! accel/amdxdna: use
+ hmm_range_fault_unlocked_timeout() for range population
 From: Stanislav Kinsburskii <skinsburskii@gmail.com>
 To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
  corbet@lwn.net, dakr@kernel.org, david@kernel.org, jgg@ziepe.ca,
@@ -107,22 +107,22 @@ To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
 Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Tue, 14 Jul 2026 13:13:38 -0700
-Message-ID: <178406001808.1082778.17299764648397654220.stgit@skinsburskii>
+Date: Tue, 14 Jul 2026 13:13:46 -0700
+Message-ID: <178406002613.1082778.11295976907808029605.stgit@skinsburskii>
 In-Reply-To: <178405975214.1082778.5193079941156341151.stgit@skinsburskii>
 References: <178405975214.1082778.5193079941156341151.stgit@skinsburskii>
 User-Agent: StGit/0.19
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F2F4480012
 X-Rspam-User: 
-X-Stat-Signature: 9jue9e5bqfxegfnw8gatfak16nmkzqzn
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784060021-456233
-X-HE-Meta: U2FsdGVkX1+3oadDGCdMcj7XnS4PhBYZ7QL/Wfl2U2SM3ntYFESziW24PWRSkCsd9vo0xWYSd04dz35GhfzATGSIhry3MdCxE/5zCaQ0h8T1v3l0SNAGQM7SKs/vHi15OFpgF3tOcBCiN7hNdoBmhYopCEzM1E2Yjp3IQgure4/MKGEy6C86+++pQcz5mddJqbhrfAJR5cI+LaT3Sp749yWgiSLNQHsFIOHavomwekXSV4pQ50BIaReI+ro9SpfldMAYoC/ix05xCMOERMAJEafmqFETnLDNQ3YmcPKhOodE8rhT6znvISlMNG0hH+VkvCdB3+Jx17zvyfltKPXInPHWARNsI+wYyth1DnCO4PYfChVdJHE0LnB8PPMSs3RSr5ZRZdpdijCGkzfdeNIMi+uNxxUNuQP15z5/l9QuJzplFhDtDp7LACevZ+JM+5nvTHMRQsvj7aVpv2ouHCG9u3X2hLtlACV934TBarCmShe6un8ypai2WOSIG6Le22Ep8ATV4mcmt4tLeQXbG2Js9/buYSiQsyWnxh5B13FkBTrCy8Pl36na3WS5YnkMMXsl3o7j0zZCoNcNEHZds64yTD06/9oQU1kQ5NrI6lSgedQI/Za1cfjSWUopWpS7CEqo+1h9nBqIXdoNMnB2FP6VrmOkoh1FLlKMAjrA5G9Dq+Mkjy0Si1babs7F1yoPepNwX8u6dH8OSNf5nDiX1QrkwBYFOMqzIv/TxR2ByT/xGgKlmLXzd8zOC07NQAfpxDw+qbhQ66ouySoFL1xdHcjOnAqkT6s/rco5m9wzcPidjcJuFGCkjnpzERJ839GsDH/rK12OiAttblCeQkNR9wIZM+fuWIy1yJw8xrKIzcgB0EaUOsjOcppryyq8HjkU04uSMXeG3kQ6POdThOsfCkRPyDpXLoqVtBl2WjWFToKaPH3IvjFx9KfYJOOpJmxnleo1fX/w+xgZAhZ5gBbx6Vd
- SBx/11C+
- ioL2D/nnUqj0iwRT3g/FqP2Mg7L0dDD4sMABJsUmCmfiMk5q97QlFPI6zUshf1IPa2jtbmFHhKOiWUi/NWlVFvlOfTe0sK56SVCByGmzPkJYwHN7mc3OzKflQ4nwDft4nJ7/7kUKnDZnKbq+qxGsl2hU7zGdnK2eWe1o8/L63sOdFeB2j0VRrDd73/yhwD7wchcpWxYH/EqNLmNHAHX+IZDYn6vkJeX36Fp9FYGtHhR8gIarOLAje0IGYI5lTqYmQwaGVw8AWOOFhKZ/nk7iawMDDZXXnxbyrQ14rJqHtuvHGp7pK3m7h+ONLU1fxprnPA2QJa/1PKwQcsp3/2Tq5u+Ys3YfCk3B9GKN6tGdrz3YTs6EhVnKwE+EEjllKeqvUj0AGd0cj6ETxFLZUJYFtEtvcqrdklBaxZGmINSA8+0/ZUIIflIXrrmzXVsYz4kdCW1+PdghRiE96xtmoSboi0g+RelLyL6ol8s15QK25X4wwWFWyyzVBMHyuauDs44ZWVHvr7pLHgWdaj5oebTlrTSL076jPdXkGwhctwxL2JrdyN1XRNjEKmIFwIQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4543C40004
+X-Stat-Signature: z6rwzjk4p3bmw7yqcgwwh5qimqfxsuuz
+X-HE-Tag: 1784060029-736348
+X-HE-Meta: U2FsdGVkX1/rswvF+0cTcugtHqQrSy/d/gZKsXpN6TvbkrrVoWRITkt4gD/OiSb+mrvb0oQ9HfnUiR94CEPNNonfRKi23fLgbyneUdx3ObQk4F1DKvzbCXjmX45d+C8rzxJE4NTUr2DrGewQPFK3iLD2f6xIsCn3kLzRl3bZUc6tiqIcqm9ehH9leGKfS5uQweQa4GJYhHXBKzq4FrVURsZ71f6cRcab8qyWflkiaACpgozwBN0LpN1FM4KQfJmswps1XfS+3BtNPISMZ6OqH11w/oPmQXl8vjvPHvqvJU6YlcoIve1woRpASYxRpjyMPDZA7k23VOwU/cr1lewpyJNSrxD3Up0Wd/pJBvpOpNEJ2+HzTS39ZvewGLQNT/h0WJ/1LrHZDbH9c7Ynph/YN+hEZ1Mb7av8eHeMdKfvRUJepbGWUBTBSB7NHxdoup2zVCZksotCcUDZlwLD2CQL9YI0Kt9aIh70aXVuBN7FP/KoW6S1akqRXoYGCYOVZT/EIhyY6izd9XyX+dewP5cQ/CW1CNirCh/h8fnc2i/v69XXVT5N9k/ZRPBhon6tFnqdDhJrXtOazTolJrCWZ9tWvyo+PjEs5QH6U+lodyY4Qwllaqqz2V8CGvB1Nwx8Q3rLFDhwOdf2zM4A4MrPZrmjUnbek3jzBMMnnqQJo2Pp46DNH+XcFiTmPUibXxTRZoSXFxEfXMyqrVfNK8hMWROLNaME+scTXjN3lGBx/OAwzhm4maNhXL8OdM48Z0t2NWpN0saVU5uN7c6bDsRHi3BTRcbap35h73R4nZmVWFyrweAfKvRrUVTMHmxo2Bh9EKoLn2aBCid896AjnEx1wWBWnXIa/9ZrpuoYqjkmN31fsZBnaN6eIfiDyEs3+w32VK61ONHciKhBPLiMAOXKHKQo57QdsVAaI8LEqkBUQqnCOYglIvnJDazRRCV2W5s3QAkscmdSzRXt3/OCtdxqzdF
+ 3M40695z
+ EI0rctkPBgZrwz/NzsLGb67iHA8K8XBBadqAJ7FBIzWF8GMa7F9F5oEXf6jwpbUiuEhtF6Pl/FHXAXnkHHju7zmq67stqnS0cLE3GkriLipK9zrwYLEDDrwpBZ06k4VjXfLKYlfCk9Y/Sco4IJHE4ZJe7dEDJc5iI7ClbdavuC0NMtiJsnruy4yPnluxUHhrc/2zo6idBwPYZcH5PHQ9JEoJZYavK+Jl2A3ibJOj/PoGEl0n4feUN/G4dkKXvmll7Cp2DzX9OPpY+Wt+7WgJgmOH26CfvhR8ZyNoFONIxi+jNk95UANGjGOuYVenfUMuc/IqNvbNZL7WL5pv4y/WnC0tAlldrqJw5bGjog15PtcMhbqn+Ebtn72pbhLA0vulOF92mDml6yeAvADAAdPougoAa7/LHaDwihQvYxgu5YNNUKbWy2yEtUMKi1FbcblqEMV4u+uVCwAXvfLcweki5Chn3Uw3qA/Q0XIl5Md5Rko7yX581xsX99GzuMfogx5uXu03x1bqk0DTP1RfZOJ5VaFHVpisEWVGR40+hgVO+rGRJdC8Ilr/6n+ChFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,58 +147,47 @@ calculation from nouveau_range_fault().
 
 Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
 ---
- drivers/gpu/drm/nouveau/nouveau_svm.c |   30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ drivers/accel/amdxdna/aie2_ctx.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
-index 4cfb6eb7c771..b1415c2e49fc 100644
---- a/drivers/gpu/drm/nouveau/nouveau_svm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
-@@ -655,8 +655,7 @@ static int nouveau_range_fault(struct nouveau_svmm *svmm,
- 			       unsigned long hmm_flags,
- 			       struct svm_notifier *notifier)
- {
--	unsigned long timeout =
--		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
-+	unsigned long timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
- 	/* Have HMM fault pages within the fault window to the GPU. */
- 	unsigned long hmm_pfns[1];
- 	struct hmm_range range = {
-@@ -677,25 +676,16 @@ static int nouveau_range_fault(struct nouveau_svmm *svmm,
- 	range.start = notifier->notifier.interval_tree.start;
- 	range.end = notifier->notifier.interval_tree.last + 1;
+diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
+index 548ba4315554..21f2817751f9 100644
+--- a/drivers/accel/amdxdna/aie2_ctx.c
++++ b/drivers/accel/amdxdna/aie2_ctx.c
+@@ -1037,7 +1037,7 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
+ 	bool found;
+ 	int ret;
  
--	while (true) {
--		if (time_after(jiffies, timeout)) {
--			ret = -EBUSY;
--			goto out;
--		}
--
--		ret = hmm_range_fault_unlocked_timeout(&range,
--						       max(timeout - jiffies,
--							   1L));
--		if (ret)
--			goto out;
-+again:
-+	ret = hmm_range_fault_unlocked_timeout(&range, timeout);
-+	if (ret)
-+		goto out;
- 
--		mutex_lock(&svmm->mutex);
--		if (mmu_interval_read_retry(range.notifier,
--					    range.notifier_seq)) {
--			mutex_unlock(&svmm->mutex);
--			continue;
--		}
--		break;
-+	mutex_lock(&svmm->mutex);
-+	if (mmu_interval_read_retry(range.notifier,
-+				    range.notifier_seq)) {
-+		mutex_unlock(&svmm->mutex);
-+		goto again;
+-	timeout = jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
++	timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+ again:
+ 	found = false;
+ 	down_write(&xdna->notifier_lock);
+@@ -1062,13 +1062,9 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
+ 		return -EFAULT;
  	}
  
- 	nouveau_hmm_convert_pfn(drm, &range, args);
+-	ret = hmm_range_fault_unlocked_timeout(&mapp->range,
+-			max_t(long, timeout - jiffies, 1));
+-	if (ret) {
+-		if (ret == -EBUSY)
+-			ret = -ETIME;
++	ret = hmm_range_fault_unlocked_timeout(&mapp->range, timeout);
++	if (ret)
+ 		goto put_mm;
+-	}
+ 
+ 	down_write(&xdna->notifier_lock);
+ 	if (mmu_interval_read_retry(&mapp->notifier, mapp->range.notifier_seq)) {
+@@ -1086,7 +1082,7 @@ static int aie2_populate_range(struct amdxdna_gem_obj *abo)
+ put_mm:
+ 	amdxdna_umap_put(mapp);
+ 	mmput(mm);
+-	return ret;
++	return ret == -EBUSY ? -ETIME : ret;
+ }
+ 
+ int aie2_cmd_submit(struct amdxdna_hwctx *hwctx, struct amdxdna_sched_job *job, u64 *seq)
 
 
 
