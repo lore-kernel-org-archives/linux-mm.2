@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D281C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:51:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F58C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:51:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C5DC6B0005; Mon, 13 Jul 2026 21:51:38 -0400 (EDT)
+	id CC1D86B0088; Mon, 13 Jul 2026 21:51:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1766C6B0088; Mon, 13 Jul 2026 21:51:38 -0400 (EDT)
+	id C72D76B0096; Mon, 13 Jul 2026 21:51:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08DBD6B0096; Mon, 13 Jul 2026 21:51:38 -0400 (EDT)
+	id B89426B0098; Mon, 13 Jul 2026 21:51:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C89006B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:51:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 513AE160238
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:51:37 +0000 (UTC)
-X-FDA: 84985705434.18.0DC9043
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 963546B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:51:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 131F5A0270
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:51:40 +0000 (UTC)
+X-FDA: 84985705560.02.E6EFBDE
 Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 34956180003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:51:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kifN5DfT;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2654440003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:51:38 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q9MMIWnr;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783993895;
-	b=gnPRJjhOFuhtpYxzEtprsE5SUUHxRnOyeyRfKUZXl8znvZHeK1LJgkRQ2GflmwWMWKNlzW
-	Wq3S4B/+W3sBbFXbegyxMBVamY+L3zrte6tzPj5uduIVJuXEzg88tYC0aT/xr4Mrx4Z0C1
-	eB7MM0M3uaQBY4TzERHqThYl3EekLCM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kifN5DfT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783993895;
+	s=arc-20220608; t=1783993898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=iaDVF3WuxppNxImS1nHcF1VL6OsrhCsOpkRvEZ8Asik=;
-	b=WK7rNnJEnVXIptDpbJbaCcJdELiYjYm/2keU/GEGwUJX+dEg6XolLkaxrwVabECp0hmKou
-	ndWJJPCZVX+gouM+TdszwLuW9cmH91bEfEiL6SsKd1YvrVrjEBaTARVG3iR6jIeoLwIjs9
-	ESPdmD538GN/eLjO/FeSMNcYs84pxfc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JMExFnjyQtVXN7x+iPdJHV2C/UohwacNGTdpQ/luPkA=;
+	b=10CA+VWQ/tmnnnISu28kRakrc4Sv2sfE4e3lV24CL257Zt2A655Y344s5inIRw9WmrqcEw
+	6V4rH2arb8c/JkplzQCZPt86j8+0JGKU7DDOi30CEznw6oC0/8cp8eimy7gZzCwWj5OV40
+	Ck6m51kUO3Bl1/EbMC/Yiv9TsfYUCrk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q9MMIWnr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783993898;
+	b=tXFU5kMZgj2HEPeuR3qsXCmIO8F7zio4C4kAXJhV1AGBn3kwPvh9OH9pBlVLvwwnFll7g2
+	latDpNZBX952nnRuN39X/qau4KY4VXcHVk1Q89gvvkudcOOXX+RTQ/pPkotPuz8utjnopK
+	sYiKQ+/A4eC8gp8SnqgkD9abZ7UIRwA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783993893;
+	t=1783993896;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=iaDVF3WuxppNxImS1nHcF1VL6OsrhCsOpkRvEZ8Asik=;
-	b=kifN5DfTV8lnCj/IHHJTFSR5RynbXvrlPDQRBA1r8TOXEBcPS9ssNFn39vguX2dD8h6+3u
-	XMXeymH89qzvBXZHoQ/0TYaRPuqJMZtKsQ2jC39vzmmTR9gMjzgsH0vMsITeV4RHTxC3HC
-	z0kv3zEkEEfGsfKH7rCQnX65rqPUxZg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JMExFnjyQtVXN7x+iPdJHV2C/UohwacNGTdpQ/luPkA=;
+	b=q9MMIWnrG6MMXSjSwOz6WBgZTgDuv8pCguuTBtgut4YzhTSYjwchyKhMO5rI55P04ujT7t
+	cnTinz3UAN7NBNIz8Hbo79jT+K5J6wOXNNHj4gFV/FO/aCezggwftfpIJV4QI+MrmGcU2B
+	myHIU6NqkpZAl2gj8TZx5KCYkxWyUAM=
 From: Ye Liu <ye.liu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <ziy@nvidia.com>
+	Vlastimil Babka <vbabka@kernel.org>
 Cc: Ye Liu <ye.liu@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 0/9] mm/page_owner: misc cleanups
-Date: Tue, 14 Jul 2026 09:50:59 +0800
-Message-ID: <20260714015117.78351-1-ye.liu@linux.dev>
+Subject: [PATCH v6 1/9] mm/page_owner: extract skip_buddy_pages() helper to unify buddy page skipping
+Date: Tue, 14 Jul 2026 09:51:00 +0800
+Message-ID: <20260714015117.78351-2-ye.liu@linux.dev>
+In-Reply-To: <20260714015117.78351-1-ye.liu@linux.dev>
+References: <20260714015117.78351-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 34956180003
+X-Rspamd-Queue-Id: 2654440003
+X-Stat-Signature: 6rh7mw1cipux5xzfdizwt3bb695xyt8f
 X-Rspam-User: 
-X-Stat-Signature: ff1nohh6i5k1r6uer5hkiij76p8ztink
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783993895-638825
-X-HE-Meta: U2FsdGVkX19w+AFOxqGa7Xcmd9kUdKFIYJj4EQsxZYWAnxfurzSVp3BxGmCSRhO85ea5d4Hr+I3z52lazOkZ6rc2KX9xVUoQOGRnAiRlyQHBBpWNthY9RfTBO7ZbOKn7KKuemIvbDbHGjW9RtmLaxJDoXpboROgOMabV8zDeNGLaHqNDWKW1v4xRXq0omNRCPFnI3pavqemIYB9GZY9dc4aJAtaKpjRvZE1RxPKbMfArzfwZReTHz7JziJvJYid431AwZLpX5Zcyj77Uk7qA7a6TZPWCg5Ms+P+xvUPHtYbNPsEEzFXGeuJGfYKajJAbMPyrKBGMW715sgNMGucgCG+NmndflUDR7mX2vTsvcJUKmb9mBxG8xmiDkzRKQZFXLK/r1dTvm6WyeULWcq67GJElLHBbyNnc0qumca1l1HnyN4NJbdslPKmqsGiY8o/Xzga+YY8L0slqPdj0AuQmjccM1Zwka5Mk8/14eAI2Knnln53TzQZnAAwiFpa9Q7OtePdwpVqdgkyFyiGpysvmp/GYVqCIt5tIfNnGsbvg5Hpe6InmxsyYoRBNSBS204kVVRTtdMctiBgwPB/5OLEaMhtxfF2z4a5WhNRC0m5pn6sXw+hPylAmiUs+G1K2Dn4aVCNULmJXTDu/Bq4M9e4Yh6lqvqRoP7cg+D0kezAKDhFA7iHfvO3gI6c6hGnAH227O5wujaesmkLQx5m0Jb0INUiSKywB1ltiN89/d8yYigFfoZIEjbuQT4Z/PTzd05XJzifVnzAJkvMNtcORUEL0ekPORnKQ+ErnZqKyRv833Iu5cp/WpYN9Z5ksOKsv7puRz9pzigyueQrJO7CYHBepSlkwd9VMMGTe+1fJa/nQ+KSNQ65D1MBBJoSvq5XrtcSRxUNuRDUsVQYjQnwOLR4pUg97mJZBWyesXvbn+etPFfib9F+A//qw5cGT+55ED1jMeC8xt1MuNAGpfSsPs44
- O+NLtRyQ
- 44EYbu/8J7Vmzsr9hT+UISG1aYMpLIQ4eX6Y8dZQLwbet2qXckj4bmxHDXz1G35by59eLrr3JDzH8ogO2ppgyaoX4UIMUnR/1zQIp4TCUpR916WNYu+E2GGMTVcV6ft+7Cpy4eiVotlBcKvutNsKZjyoM9DqhtKZ5OgN/APDHR9WaRSfJNuKFZa+tNQDFQFwjDbOETibNbphAbnEuR4yibFi46E57nRrPoYtOfXBp0+JjKu93As0bNQhwnBJyULTr8Ea86YpBjmkm6YnNdSz45yMiVg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783993898-6263
+X-HE-Meta: U2FsdGVkX180L7Ns/CB0Hwcfzs+61yLw21BmCR1yt1HaDQRfR+DqhA/ecufQ1BuFLuiDipAJgOJNGezlKvIGCRv4K5GFkIuwfv0dsWJCmA6Ro+qPOgnUna7ej5e2QYX6DcOtzvjBIravQcloeuhqgGmyWMpoKwOphBHdjAHndu1pszZNGurZbaGhJSVHdTpQ76jIsD96UdUDjZQQ1UCbortl6uMWNxDl/v0rd36rhawRVzWg/lXtsQsoTIETQHuuSf5UHzVebtU1balDUWoQyrVhiUUh+G30fMkcXEicP/WNEtjEF7sMOUJEwURv9OYg8bcVrFGBeoo0P3PxbVdID6yb6Ykm+OV7gJqnWxkYcnNSe48OELUxkrhQSdRGhXf4bL4ymjALCuf5SRMUCwBtyeS7lQYFGrgCdS4Y4ZlGoB9U8U7mc9PdhsVKe4FgSUwIw9996ZI5v41TuIUB0RPDcP3TzSX05rObOaFgoPfM2ZGEPt3dS/+zUMcx/e+ChrD7jvT0EEGfjMHYfWEjD7E+G5wElusfgJZZ4kApqyWX9kqnI/UtSsxgxnfS9vhg1BGbfzwznwYG6A0heN+FEP871mzFsyDIsFysQCNWlVd7FzScMJ7PY0PQXU0Ygd4gUZBJUHC5K2KvB03SoSZQXuxAayuQIlx+FoyzM/1FLQdeG0tEmo5q1PVqYYOmuW8i7Md3zw9c1Ra6l6ENlUVrMsFEp74am22h74MKxaUwP5StKpwojGWh6JyH3IeXuciVCPkfPCqj5r5KSg2tCvxEmkkdRtQxkN3QcHH2WeeijU/0GtRyowEZYQVGIYVmc+4RptesnVTVviGkzE8ExmTY14EJLPpovhKOYfTo/1khOm/z0HGQ7oS4kYXZ2PXu1W8095NsMZQPwN/J07/1U4X0Tf75ytg/DbqrL/zlMScBYVLGMA7fVY9TEwkSIyJmW8Q6MPBoelbyooQznnU82aq5mBT
+ uxBSqizZ
+ 2K97w6Z4SbLKcxqj5lcD3Jr0TZnfCOeURdsrCc6x6jcducEjgls8OZX/rAYxtENHO5Fg47cmC4+u8dLyrq6FxFY4kqDhPKtE0ofjLbtvnU98sFsNmzAY2wFUB3EGCIOqhKfDA098GY3nXi+GECfHDaDGzAf6VftXupWcaC6gbKR4dvc+tciFHWkI+SMvf28qEhnQkatlBSQUVOaANtkIR0vIPuy88DWRc2zO8jaLoWy+RffKD6pb2waD+atxtTIG1ydtJqKTBOigVOigFR8zqP8TNFnNu96TwerwaHEFxvGnffpE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,125 +93,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series collects a few cleanups for mm/page_owner.c that have been
-accumulated while reading through the file.  There is no functional
-change -- the goal is to make the code easier to read and maintain.
+Three places in page_owner.c duplicate the same pattern: check if a
+page is PageBuddy, read its order via buddy_order_unsafe(), advance
+the pfn past the buddy block if the order is valid, and continue.
 
-Patch 1 consolidates three identical PageBuddy skip blocks into a
-single skip_buddy_pages() helper, eliminating the duplication and
-keeping the lockless-read comment in one place.
+Consolidate them into a single inline helper skip_buddy_pages().
+The function returns true (skip) for any buddy page and advances
+@pfn past the block when the order is valid; returns false if the
+page is not a buddy page and should be processed normally.
 
-Patch 2 replaces the -1 magic number used for "never migrated" with a
-proper MR_NEVER member in enum migrate_reason, adds the corresponding
-"never_migrated" string in the MIGRATE_REASON trace macro, and updates
-the GDB page_owner script to use MR_NEVER so that lx-dump-page-owner
-correctly detects unmigrated pages.
+The old init_pages_in_zone() variant used "order > 0" as an extra
+guard before advancing pfn, but the continue was unconditional and
+(1UL << 0) - 1 == 0, so the behaviour is identical.  The comment
+about zone->lock is preserved in the helper's kernel-doc.
 
-Patch 3 follows up by converting the remaining 'int reason' parameters
-throughout the migration and hugetlb callchains to 'enum migrate_reason',
-making the type explicit and gaining compiler checking.  The 'short
-last_migrate_reason' struct field in page_owner is intentionally left
-as 'short' since it is per-page metadata where size matters.
+No functional change.
 
-Patch 4 hoists the CONFIG_MEMCG guard out of print_page_owner_memcg()'s
-body so that the real implementation and the empty stub are two clearly
-separate definitions, the common kernel idiom.
-
-Patch 5 adds a missing \n to the count_threshold debugfs attribute
-format string so that cat(1) output is properly terminated.
-
-Patch 6 moves free_ts_nsec from the allocation summary line to the
-free section in __dump_page_owner(), grouping it with free_pid and
-free_tgid where it logically belongs.  This also makes the dump
-output consistent with print_page_owner().
-
-Patch 7 drops the redundant page_owner_ prefix from file-scoped static
-symbols (stack_fops, threshold_fops, etc.).  Since they cannot collide
-across translation units, the prefix carries no information.
-
-Patch 8 clamps the PFN advance in skip_buddy_pages() at the next
-MAX_ORDER_NR_PAGES boundary.  The lockless buddy_order_unsafe() read
-can return a garbage order value if the page is concurrently allocated
-between the PageBuddy check and the private read, potentially causing
-the PFN to advance past the next bounadry whose pfn_valid() check
-would have caught an offline memory section.  In read_page_owner(),
-which relies solely on boundary-aligned pfn_valid() to guard
-pfn_to_page(), this could lead to an unmapped mem_section access.
-
-Patch 9 avoids two TOCTOU issues in print_page_owner_memcg() by
-reusing the page->memcg_data snapshot already taken via READ_ONCE at
-the top of the function throughout, instead of calling
-page_memcg_check() and PageMemcgKmem() which re-read page->memcg_data
-locklessly with VM_BUG_ON assertions.  If the page is concurrently
-freed and reallocated as a THP tail or slab page between the initial
-guards and these later calls, those assertions can fire on
-CONFIG_DEBUG_VM=y builds.  The OBJEXTS (slab) case is also simplified
-with an early return since objcg != memcg for slabs.
-
-Ye Liu (9):
-  mm/page_owner: extract skip_buddy_pages() helper to unify buddy page
-    skipping
-  mm/page_owner: add MR_NEVER to enum migrate_reason and use it for
-    last_migrate_reason
-  mm: use enum migrate_reason instead of int for migration reason
-    parameters
-  mm/page_owner: hoist CONFIG_MEMCG to function level for
-    print_page_owner_memcg()
-  mm/page_owner: add missing newline to count_threshold format string
-  mm/page_owner: move free_ts_nsec output to free section in
-    __dump_page_owner()
-  mm/page_owner: drop redundant page_owner prefix from static symbols
-  mm/page_owner: clamp skip_buddy_pages() PFN advance at
-    MAX_ORDER_NR_PAGES boundary
-  mm/page_owner: use memcg_data snapshot to avoid TOCTOU in
-    print_page_owner_memcg()
-
- include/linux/hugetlb.h         |   9 ++-
- include/linux/migrate.h         |   8 +-
- include/linux/migrate_mode.h    |   1 +
- include/linux/page_owner.h      |   7 +-
- include/trace/events/migrate.h  |  11 +--
- mm/hugetlb.c                    |   3 +-
- mm/migrate.c                    |  12 +--
- mm/page_owner.c                 | 135 ++++++++++++++++++--------------
- scripts/gdb/linux/page_owner.py |   4 +-
- 9 files changed, 109 insertions(+), 81 deletions(-)
-
+Signed-off-by: Ye Liu <ye.liu@linux.dev>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
-v6:
- - Patch 3: drop unnecessary 'extern' from __folio_set_owner_migrate_reason()
-   declaration in page_owner.h; Adjust the indentation; add Reviewed-by from 
-   Lorenzo Stoakes.
- - Patch 8: clarify commit message wording; add Reviewed-by from Zi Yan and
-   Vlastimil Babka.
- - Patch 9: rename patch to cover both TOCTOU fixes; also replace
-   page_memcg_check(page) with extracting objcg from the memcg_data snapshot
-   to fix a second TOCTOU issue; add early return for the MEMCG_DATA_OBJEXTS
-   (slab) case.
- - Link: https://lore.kernel.org/all/20260701061101.344679-1-ye.liu@linux.dev/
-v5:
- - Place the two patches corresponding to the Close connection, patch8 
-   and patch9, together in this part.
- - Close: https://lore.kernel.org/all/20260625014708.87386-1-ye.liu@linux.dev/
- - Link: https://lore.kernel.org/all/20260701012239.315262-1-ye.liu@linux.dev/
+ mm/page_owner.c | 52 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-v4:
- - Patch 2: also update scripts/gdb/linux/page_owner.py to use MR_NEVER
-   instead of the hardcoded -1.
- - https://lore.kernel.org/all/20260630015331.147174-1-ye.liu@linux.dev/
-
-v3:
- - Patch 2: add MR_NEVER directly to enum migrate_reason instead of
-   using a local MIGRATE_REASON_NONE define (Zi Yan and Vlastimil Babka).
- - Patch 3 (new): convert all 'int reason' parameters in the migration
-   callchain to 'enum migrate_reason' so the type system reflects the
-   actual semantics.
- - Patch 7: make threshold_fops a single line.
- - Link: https://lore.kernel.org/all/20260626020522.28619-1-ye.liu@linux.dev/
-
-v2:
- - Add cover letter (no code changes).
- - Link: https://lore.kernel.org/all/20260623065234.31866-2-ye.liu@linux.dev/
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 2dddcb6510aa..342549891a8d 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -422,6 +422,29 @@ void __folio_copy_owner(struct folio *newfolio, struct folio *old)
+ 	rcu_read_unlock();
+ }
+ 
++/*
++ * Check if a page is a buddy page and advance @pfn past the entire buddy block.
++ * This safely reads the buddy order without the zone lock, which may cause us
++ * to skip less than the full buddy block, but that is acceptable for page owner
++ * iteration purposes.
++ *
++ * Return: true if the page was skipped (caller should continue its loop),
++ *         false if the page is not a buddy page and should be processed normally.
++ */
++static inline bool skip_buddy_pages(unsigned long *pfn, struct page *page)
++{
++	unsigned long order;
++
++	if (!PageBuddy(page))
++		return false;
++
++	order = buddy_order_unsafe(page);
++	if (order <= MAX_PAGE_ORDER)
++		*pfn += (1UL << order) - 1;
++
++	return true;
++}
++
+ void pagetypeinfo_showmixedcount_print(struct seq_file *m,
+ 				       pg_data_t *pgdat, struct zone *zone)
+ {
+@@ -461,14 +484,8 @@ void pagetypeinfo_showmixedcount_print(struct seq_file *m,
+ 			if (page_zone(page) != zone)
+ 				continue;
+ 
+-			if (PageBuddy(page)) {
+-				unsigned long freepage_order;
+-
+-				freepage_order = buddy_order_unsafe(page);
+-				if (freepage_order <= MAX_PAGE_ORDER)
+-					pfn += (1UL << freepage_order) - 1;
++			if (skip_buddy_pages(&pfn, page))
+ 				continue;
+-			}
+ 
+ 			if (PageReserved(page))
+ 				continue;
+@@ -697,13 +714,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 		}
+ 
+ 		page = pfn_to_page(pfn);
+-		if (PageBuddy(page)) {
+-			unsigned long freepage_order = buddy_order_unsafe(page);
+-
+-			if (freepage_order <= MAX_PAGE_ORDER)
+-				pfn += (1UL << freepage_order) - 1;
++		if (skip_buddy_pages(&pfn, page))
+ 			continue;
+-		}
+ 
+ 		page_ext = page_ext_get(page);
+ 		if (unlikely(!page_ext))
+@@ -798,20 +810,8 @@ static void init_pages_in_zone(struct zone *zone)
+ 			if (page_zone(page) != zone)
+ 				continue;
+ 
+-			/*
+-			 * To avoid having to grab zone->lock, be a little
+-			 * careful when reading buddy page order. The only
+-			 * danger is that we skip too much and potentially miss
+-			 * some early allocated pages, which is better than
+-			 * heavy lock contention.
+-			 */
+-			if (PageBuddy(page)) {
+-				unsigned long order = buddy_order_unsafe(page);
+-
+-				if (order > 0 && order <= MAX_PAGE_ORDER)
+-					pfn += (1UL << order) - 1;
++			if (skip_buddy_pages(&pfn, page))
+ 				continue;
+-			}
+ 
+ 			if (PageReserved(page))
+ 				continue;
 -- 
 2.43.0
 
