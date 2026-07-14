@@ -4,100 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76376C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:37:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B00C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:43:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E1976B0005; Mon, 13 Jul 2026 21:37:48 -0400 (EDT)
+	id 8BA256B008A; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B98C6B0088; Mon, 13 Jul 2026 21:37:48 -0400 (EDT)
+	id 869EE6B008C; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F7EE6B008A; Mon, 13 Jul 2026 21:37:48 -0400 (EDT)
+	id 7814B6B0092; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E97076B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:37:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 514836B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A6451C019B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:47 +0000 (UTC)
-X-FDA: 84985670574.19.2E0929A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8F2F720006
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:45 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XbAhT8+4;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C8A9A12020B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:22 +0000 (UTC)
+X-FDA: 84985684644.19.AFA5212
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id F168018000A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SpkxnFaW;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783993065;
+	s=arc-20220608; t=1783993401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8F4yLfOsobdGYOIb2H1K41rpcgqSprPnX1ok5IsSzP4=;
-	b=GO+uPWKWZEIrkiEbw2zRaKVLKjEVPR1rOtPEUYHFO2N/Zc4h3jKSoAgfLAPWcG32lgv4up
-	5bSwR/0Un+wIYkO/HgWpHsd/hV38qgWKTCiQ7NhN6afpHpeBtSmq/HzbCXmYV4li841w20
-	7drzW4W7CNVM5v7pogy99eJw90JtjDc=
+	bh=ZNMroDnaFepYZc/4huUd7Zc+6s2smxbRPSRvFEcecJg=;
+	b=LRaWYE1kYKsomG5nW7FHQNRFgphchCT14/LbSLFujwJFgqZtDBBjASnEqKelMtkjZpdeas
+	Na0Fgpa870kn2wMLeV/uGk+NCNbxprtqpiDkhFXcBq1Q/BMk0NBnrKaQlvt/o+xR2mVIEO
+	9QHC3mx+PCulRzqD6OaLCxbk4rKRhcY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XbAhT8+4;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SpkxnFaW;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783993065;
-	b=yAstyIIiteSxvaisLmxFbNxpUbTaFVfwiojnK7gqdtgdWfEcAf7WiuTOlT8EQsmk3s+otY
-	UWI/2m8ug9SSHrkWbPdMmTe0zRZXVTqjPRseiYKMy0ruFH33wX0inLKRLsCKVbBaslDVcz
-	d3xAi3OHFcNXKYRiZ43/vYK5OkFZvBQ=
+	t=1783993401;
+	b=P6esT8OnQlo75IU5LYtYC+QnE7Znz6vs3lbTELioEtQBZkvrKiU0LjJ43UmVpdeSsOc4z3
+	7xOMIMHVuwdvOPb5SUyhGkfFKhfMjI22lpCyZkw3UadWwhnc+JAbkdcxrcSmMsU83BPtsi
+	dBKpx82N2n+OGRJ+ttrpwhMZcCo/iPQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CEA1443C0B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55161F0155C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6ACA860120
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3E01F000E9
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783993064;
-	bh=8F4yLfOsobdGYOIb2H1K41rpcgqSprPnX1ok5IsSzP4=;
+	s=k20260515; t=1783993400;
+	bh=ZNMroDnaFepYZc/4huUd7Zc+6s2smxbRPSRvFEcecJg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=XbAhT8+4QoWiaUOO26oWk5Dt4pMcZyvfQEulP7D7EJRnIIAUGHrZSx1dQ0kOyms8A
-	 G/RwKMfm7Jn/gCxYBNJXBv2/bByTAQNPrvHqrrlBvs+CZ9rkD0w7ZlB2AfuSinK+vl
-	 jdtzM6KZWpYHgXTGy+JqeLJZg0SV6/6JILiIhEo94C4o6L3Hb2Wzm/DUu1hbyBDPaS
-	 dedK2zJy5xVMHUIThVmu9v8l9jheXr4R/smDJSu1kpTTt7GkXpGoAxTi/ksVP9B2LR
-	 lA5GXBBRJNf+tOUrCq9w+FlejZuVZYDUAQlGFsJtrSpSVcf5YaUeB2dsrtcM4eejNW
-	 BpMN9i9lEP/iA==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e5cb052edso38833885a.2
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 18:37:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rr3M2BhUetd4aQX/E9XjOpJsvwSwcWyY6GlZogoG+6V5j/nVvt0Bdio0DZ6ucq23kjJXRYdGb75Gg==@kvack.org
-X-Gm-Message-State: AOJu0YzbbhMBcHkVxs2rfccgo+npd6t9yAJi6qdUsb0wFVhmtn7r9a0y
-	OuwVn2Hh+v+YrB+3gKYMWqcNSC1yK/zFcRUBBqBshRZCpCF1/5kFaGBKOyY3+hLWGzKpcqnWPNd
-	wxDOnmdX9c3sO0080e9ABgqIwcEqSF/c=
-X-Received: by 2002:a05:620a:3199:b0:92e:c118:189b with SMTP id
- af79cd13be357-92ef2c57098mr1245176785a.78.1783993064030; Mon, 13 Jul 2026
- 18:37:44 -0700 (PDT)
+	b=SpkxnFaWHOTlnomiAK5xhXSnZQ7KgvpHNeMNEbrRTVh/9P+b2IcN0g/0wbTIo3uiE
+	 V3B19G27nYJawbYLWHSTZtS6yocGcVRgLWfXDAr5mJU59zV+Rdi5O9jjFmSSfen1g+
+	 UHwggVK/mIKkQuCJ/V8Ftn8M2yxngNXv2vPI+Rbdykoof9qCtUTXFnK9sxTF2ejHjF
+	 40xwUodA3Vl2flw0AZTiEfkZCYv8sjTQzOcXG8Lz3ldFQ9K/wh7aGMT/aeTIjdvQhX
+	 IFy2ZYWgLwVMBFnc5mQV+y6ECr7CslOiIMjfT0jsQF8A3/Z+h+DSnqDXzmFMp/NKBK
+	 6QBGGBemgdRxA==
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c15bf5000so22485751cf.3
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 18:43:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RraoHz8EqR5rQAxVGXXtMBhVM5b4EoutEKd9Z5l/BR6Dj7JvyBQjEsp9SWyL52lmZQBXogx5L5weQ==@kvack.org
+X-Gm-Message-State: AOJu0YxBpfmXOcfao4rKQ4V46jSeku2SKYaLEF2quvADcF/OSxSEu4p5
+	MqCaSzMfjTvLfXUiN4RC3kOS0kU1nMNsl5+onryAUm4Lga2+YVxtlQTT9FFVtZY9k+izYtSbBol
+	XXJPV6ZKXW28PazOne9OFd3IOrvG2TrY=
+X-Received: by 2002:a05:622a:5513:b0:516:ea30:8756 with SMTP id
+ d75a77b69052e-51cbf1426d9mr108072891cf.36.1783993399516; Mon, 13 Jul 2026
+ 18:43:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <202607140924549782dUh3YBPmy8g1NDMK2zIW@zte.com.cn> <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
-In-Reply-To: <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
+References: <20260711091157.306070-1-ridong.chen@linux.dev>
+ <20260711091157.306070-2-ridong.chen@linux.dev> <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
+ <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
+In-Reply-To: <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
 From: Barry Song <baohua@kernel.org>
-Date: Tue, 14 Jul 2026 09:37:32 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zJ0o3_RhaTuyY+Y0scwgJ1DO-6wyFb0ZRcQE8g_y-CmQ@mail.gmail.com>
-X-Gm-Features: AVVi8Cey7rtolW8W2elC5gEK55rim07-0x7pNrAV3u22ybA2jlwV0Kubqs0HO9Y
-Message-ID: <CAGsJ_4zJ0o3_RhaTuyY+Y0scwgJ1DO-6wyFb0ZRcQE8g_y-CmQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mm/mm_slot.h: add comments for mm_slot_lookup/insert
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, lance.yang@linux.dev, 
-	usama.arif@linux.dev, chengming.zhou@linux.dev, qi.zheng@linux.dev, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, wang.yaxin@zte.com.cn
+Date: Tue, 14 Jul 2026 09:43:07 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
+X-Gm-Features: AVVi8Ccz7OC-clOMQQnSoiYTuyEXEArtL6roBTyfk92e5g9qCCo-JodquNZChkw
+Message-ID: <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	David Hildenbrand <david@kernel.org>, Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: pmezxsec5jkb1cwfq58xxj8ks9p4ok5a
-X-Rspamd-Queue-Id: 8F2F720006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783993065-201965
-X-HE-Meta: U2FsdGVkX1/Y+Yg5jWqvMLpoGmJkWlLG7TXUXSuAswT6kKhIJI0RFtOka0HIL6gz7a49KYnTjTHT/SQ/gfCzaSmYSU4OYYYXSynmicg8waD9WVjfrhK/p0uyyCR6JCpVyfoyTarwb7kKKOIWzTvR8bhR2vj1EVnTsQvA3Gp7BGUgAlbbXaP16uTdp/HaQiO9bbaeIV9jgq2p1nuHolWxV+u16wXXU+3yPjYQ/IYmvJPXpHGHJEOPAVYAAvVtgMQFVRca8AL8apTbzCWghQwJpc11ltn21UNqywXIcLKYIaGuLAE5J5e4/wzpd7V23uxDs7hOsaGpuoByLxRoo2qncJZ0zXlQ+TzTTVWFGEyq1m5A4KIV9B7GXVJ21dtEZRnJGlAeZk5vrLAbX2YXAfNO+qj0RhU2iwfg1i9zEJdi6uh9cp9ljAecBCCgqQBJX42ijjwoodC15mnPKNkvGnuRHsf+boSoYEG1MZe+DykSEFOFEe2dBP6Zmb6WyJlEfv9pKsZfF1TwCHdEn/Tp0iGkDRIVosQpdGuYXkJViz1jlyucHAO4DWkQHS+OHxpg6g2No0Hp+QI4uUq1zobX44G5uLprJ2UHYsv4VVQ0V6JjZFz6g5Zkk2pa1XOeE+/qJqwUxMGPN0NtIlUUTomooTl4snrWG+6cPLQ2ggqu/x08cWPl0kuK/Y0IYfvBu9+Dk+oUGYQakdCjiIPdmt02/9MHiLujDLxZvtkLLZDg6XOOf3QCz6wih5+SaYzDi6c7FCqpdqffiKW0QZUcYduHVyqVP6wAvHCKXtBzUsS0xcl8KFy/0P7SnD5XlCMLF2lH+fv54fN2QiEA9ET8rMkmnOwz6rFjPN3v+eLb7E0ycadPd45o+LY05AWvha4mrnsobdYEKNGuJFz528NN4sp4RXU43PTnoOTNKI8YTU5IYz7j1a/xpZ5C5E+Yat7KkWmGPl4dQJCxGNtIOxt66I78v/G
- fyNIGYnC
- Y8z4dZmbf/R7yvQoX6kbFNsflx+Gt9hPy3eKJFPluM1o9uqcy1jzhNMCIviiHXuKnJ5gyu6/C+wgSVu99o5quUv7qhXY8hTSkP/2lqXJ7IISwRkZ1mIf76ZiDcc0EL15X5dnu3btRhxBL1ZDgxhi27IO8ZrUhdBF85CFoXciy1T2+I0m05kwBzulr594kemLerRvxouy9cJVbUGfjQVqb3EV7iLXCmz8xjmBTGCND+PIW/n3zfDG3ONP/ypNT3TXSXfrHpmTgcADKi+9pPttttdNl+Y9SCGXRQITDIQr8aVl4E69eFN8XKeG61uFY3hZL/vodLzEUXddhw6vHrD/am1Odaj0M+q1JxtsOL1f2pvaZmIXYgClz+0JpHEZ+77zcN3kNo+CeaT5iCfjubwM9xqwEVf7cx9cTuiNh
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F168018000A
+X-Stat-Signature: 1eoa3ygscxajo1c7ofp1od7oxcqdpc4t
+X-HE-Tag: 1783993400-37027
+X-HE-Meta: U2FsdGVkX1/3k0eT+3H+uOZ/VsVWHD3MLz/LkUfY6qaANm020FGujeKtJbUNLV+9AuL1QoqfPI2URMtyc0w8c+QLuyuPxBlmyzrgJK5ZPaqtyXanr6GUKkUbRzwTUhbCpJ7dUV581loEeTj1yVIK4TwN8VjosPO+3r0szC0RPm0xUZXA5qu/3DVUCAHisvcrA2GgoJzP3/7apwsl1RKmd2VPeR3YKrq4IuOnQDchWvza1fofeyGWJqejGl/9vk0Up+QPPReytjc5/0HPQbmUIhijT93f9KLZcOtN47tlDiHhYvyXQ7F8/BsUX4nN3JGXDOun21+F6d02slXb6qzshtgfctfqOyugN7PcWKNZ5JF7LOFen1wR7/sOQSuyKriSSXKPBreZ7CeAw0RhaytD9pHAO6DQTptmQpOvg49DY54+9CKyRVuvAzu5ewwUPIUDs3XesI8NL9aTsDoaoPbjkssn5dorVK93j4RGiSWLupsOIq3oo4TM5vAPIoYuWV0ckOohebKiyNJY9bVgYW1WXpZV7rRLuzxENs82t3tZMcS2xDn+DOhqlBP5F/LVAscEV4Y58fMXHNCCkwV9stOQfI2Ol25f0F3G/7iH7ePO9J3gNMtWuzfPCXfebOiJJxIdub53tS5k9rqNfNRm1VhAVN6jwnhJBTX1wuqo3oMr57ooe85KLFDCfluVC3q8dOtTC0/ZxKf3VDTdxnrZTKZAyI+yoGeLSwlx+WmFo+MxZKUKRXdgrGxgE1UzJZITNiG1Kvv3V4L+hHVTy0D405ETTMFsnPfiRitCmSIU7cB0VsuZS3pNFVRDyXvETItWH7X6xZS7AgqcUvw5xf1EXGuwUAiuaBCSOLFFqOv/pHicE7L0ac4nkPNsB79EFwIuY/JaIJ/fwLXWcnaQz9y1r+GCD9FUtitbUauqexiG+UZ7VIsvs/AoxIS79RbrNlCXf8QH1dE6hD/C0ZQ5nGYwHar
+ gFvWU6x/
+ 2DwtIX53XXkBjgC2bVSLocQHjm+rIJ4wuJmvHF1kPvyeYVr4PXpn/YpT2ysfdUIxV31/gVDrQb5yI5uyvqhOl/PKbTBF40CS868j8UJRzUMJdCE7uYr/wh22R71HfCY9tG86MqM6qbRbtBmWwTooYSh4to3+94XZDb1a1DdtcCStG4VnnfVHLdOos4T6Dzm/qKP9Cg47zDNHTgHMKOsdQHRJnySj8OJD+r3jbhJDBcDKhhzcuzBmEdD0rW2rOQHl9IIHzKYYGTraNJS65uCumNWsSrwDt2SkKAXqbXOixSvp5qU12bRbX9nkHF2Mguu+OrTbTUxcEZk+4UIQLkwf6rYigRHBBnQEZAuLgi2MhdyT1PzXf9ugFOko3Bm6+4Iv/IOzzGEQWdXnLJMc2iTgL4LkpCPQe5ViQFPnU5QQHkrP1hDM0FMh7ttXpWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,20 +109,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 9:28=E2=80=AFAM <xu.xin16@zte.com.cn> wrote:
+On Tue, Jul 14, 2026 at 9:20=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
 >
-> From: xu xin <xu.xin16@zte.com.cn>
 >
-> mm_slot_lookup() and mm_slot_insert() are the only helpers in
-> this header that are implemented as macros rather than static inline
-> functions. This may look inconsistent without explanation.
 >
-> Explain they must be macros because hash_for_each_possible()
-> needs the table as an array (for sizeof), not a pointer.
+> On 7/13/2026 11:08 PM, Barry Song wrote:
+> > On Sat, Jul 11, 2026 at 5:12=E2=80=AFPM Ridong Chen <ridong.chen@linux.=
+dev> wrote:
+> >>
+> >> From: Ridong Chen <chenridong@xiaomi.com>
+> >>
+> >> The per-memcg swappiness knob is v1-only; v2 always uses global
+> >> vm_swappiness and ignores the per-cgroup field.
+> >>
+> >> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
+> >> to memcontrol.h where it belongs.
+> >>
+> >> No functional change for v1; v2-only kernels drop the unused field.
+> >>
+> >> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> >> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> >
+> > Reviewed-by: Barry Song <baohua@kernel.org>
+> >
+> > With some nits.
+> >
+> >> ---
+> > [...]
+> >>          struct mem_cgroup_per_node *nodeinfo[];
+> >> @@ -365,6 +366,9 @@ enum objext_flags {
+> >>
+> >>   #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
+> >>
+> >> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+> >> +extern int vm_swappiness;
+> >
+> > This is a bit unusual. I'm not sure whether mm/swap.h would be
+> > a more appropriate place for this.
+> >
+> Thank you for your reply.
 >
-> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> The vm_swappiness variable is not utilized within mm/swap.c.
+> Furthermore, since memcontrol.h does not include swap.h, retaining the
+> extern int vm_swappiness declaration in mm/swap.h will result in a
+> compilation failure.
 
-Thanks!
+If this is the case, it still seems better to keep
+extern int vm_swappiness in include/linux/swap.h.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Then we don't need the comment:
+/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+
+It also makes it clearer that vm_swappiness is an extern variable
+belonging to the swap module, rather than the memcontrol module.
+
+Thanks
+Barry
 
