@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BABDC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2141C4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:06:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3784D6B00BF; Tue, 14 Jul 2026 10:06:23 -0400 (EDT)
+	id 9E1E16B00C1; Tue, 14 Jul 2026 10:06:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34FD86B00C1; Tue, 14 Jul 2026 10:06:23 -0400 (EDT)
+	id 9B9256B00C3; Tue, 14 Jul 2026 10:06:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 266496B00C2; Tue, 14 Jul 2026 10:06:23 -0400 (EDT)
+	id 8A7E96B00C4; Tue, 14 Jul 2026 10:06:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1D4B6B00BF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:06:22 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A44640400
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:22 +0000 (UTC)
-X-FDA: 84987557004.12.E4DCBCC
+	by kanga.kvack.org (Postfix) with ESMTP id 5E81C6B00C1
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:06:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E73EA1A03FE
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:29 +0000 (UTC)
+X-FDA: 84987557298.04.9627F8B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 91B0E2000E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=g68p8jn2;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 27A281C000F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Vw/Dcaip";
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784037980;
+	s=arc-20220608; t=1784037988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WEPAEMG15c2gH/O6ihAUxmO/06ck6asqsv3XqqkfCYY=;
-	b=FTy/6PfknwUj1tZ1ejoRGna5LiYeSTXEk6E5iQLUcyMUGWA4g7XpgY129nr3iO5AJk5R9K
-	omeafE114Y78v93tDwmSQZbz3Hr8Q8eqcafX5tJgoUHL1Hjd69v079agUoHh8Iokatc2VE
-	/nVxLlinQ2bklfeN4fxfn41+SornUeY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=g68p8jn2;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=W11OhnWcGHVOZmGTaRtReQ7d9g+T7FOsV0FghI7A38A=;
+	b=xZ3tf7FDHoZ/toXt6eAQq9FL3klbPEiqgcLn4kOVQcfrvNlE3MeHg9VFD0WwVph+SIV7Bl
+	MMFNj1DnvmpCCkO2YOSOihKWgLnuXkbiYArk6qn//n/YW5zzgdAxy1jwpxKQLzmSvdw4Rq
+	xRA58DKMEcBGw3XkD6o6Z7Njdf+pws0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784037980;
-	b=KRa7bsyB5bpwVKeDDf8F4TFNDXbuNvSU3syNpIKMx4u0V7AzXnuyJr7Z7CP+OCaoncc1KS
-	VN0Hg9kP+Dypp0PtDATRmjWk2SGWqu57R5BwzdVAOVbKiKH1CuS/RnfPmVC8WOWrivdWHF
-	aWNp6yDZxgWI63f4Vn8tIClB+LZ5H5U=
+	t=1784037988;
+	b=vt1rK7EoTE0n3zwI43kyY5A8zMg6MxIGeexQSeiqjsLd2iMvLxf62o2CyRnS5tF9nSxWbv
+	QNRp/SrcHdqdCoJX0Gy215sB3H9gJXQ9lwx/DfSX4Vh0ZuZ2Xr9osqRB0dHj7DMGD32rnf
+	l4WogkCXcs30CNnMgrtWS+s8ulM1ZVs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Vw/Dcaip";
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 79F011BB2;
-	Tue, 14 Jul 2026 07:06:15 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 357EF1BCA;
+	Tue, 14 Jul 2026 07:06:23 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4FE263F7B4;
-	Tue, 14 Jul 2026 07:06:12 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0D7CA3F7B4;
+	Tue, 14 Jul 2026 07:06:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784037979; bh=NDusZRNCWoEozZsjG5aWosyCUDI8Y1KKdd/tV+nqCY0=;
+	t=1784037987; bh=0Ls2F5YWtI+Ww29NmMlh3ILvDXBv7NqjYutzPTWlWAY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=g68p8jn2r/BRs15OVDSJM5PC0vX+xZEjL9qs6O4bNrlLAmFr23nxaTMwPJrtgFVSe
-	 PO42BSv3F1n/0/KY29fSo68pViH3svUbemsg+2g8ZALHR7Gb34DvnaAe4yB7K0yUyn
-	 X1Qg4PRgk23qfvxdXOP4RJxy06FeoAcjmt/U8Rmo=
+	b=Vw/DcaipPFO7n11+mYGQ7sNvjiW4bDFKvxM87pb4Zb7kuc57MeI8Zk26C7/35oDk9
+	 zqUNmHcLyquGe9NI65E4Her4eCylK5913yMxY4xf0bE1WBcJGqN4rBz8A8PaHgPJxY
+	 8H47S03cWv8hSaCgq8C8KHighveKeuoCTTOKDHQY=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:03:58 +0100
-Subject: [PATCH 09/22] s390: mm: use mm_is_kernel() for kernel mm checks
+Date: Tue, 14 Jul 2026 15:03:59 +0100
+Subject: [PATCH 10/22] sparc: mm: use mm_is_kernel() for kernel mm checks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-9-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-10-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -106,21 +106,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=2701;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=3538;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=NDusZRNCWoEozZsjG5aWosyCUDI8Y1KKdd/tV+nqCY0=;
- b=EN7VJwlPWQ2mLOV0RQXIAGmFgLbZqozbS12jiAz8t5flCb4LBC8CQLf9qAbAsIdiWxuJ/h34z
- +bgdLqbZMrPAgQeOceVSuzYyrvq4LTVvYRTcF4wG9fcsRmwk6IO2SXA
+ bh=0Ls2F5YWtI+Ww29NmMlh3ILvDXBv7NqjYutzPTWlWAY=;
+ b=VJPLQX/cB8CHz8XN2ewL2VVdeyfHItZBmFDR5s9RbTft/6Q4d42mZh1rja83yviws3jmyIGiU
+ WKKijSfDJjoB4fJ0orVPQbnc54Akn8lFl91qUqv6PDas/mRRckHwzdj
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Stat-Signature: d87fi149yz1s8y6gayjnmgwbnxx8ztkx
-X-Rspamd-Queue-Id: 91B0E2000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784037980-664332
-X-HE-Meta: U2FsdGVkX18w/yxXqmZpoMZjrsZKscx/x4/izayrpBTwgTSIuvlWz8EC02OpdYYyfhbw8S3pGfUAH6/qxYx1ZeTbmxiGbaJGTBn6Gj9MExFMPFKtyD75MwCdyjML+wxRoq15sBr24KwxLYTArjtsrwy6Emgn4px8y/+Yq0PBPAHLHRJdebRIhQTuaxty6FhZG4/EvBj2mvTTRJ6ZYJyB8/M1lZ6281HVIDgE5Lb1fQmpsfv5jBCuAKE0txhLSP59NLdJWQLWqdOXdjHhXyx+52XquESb/+khoQSjdhRbHHcS15iwvP/LOoSKdZEOwkHgVlYcOpoVosCPpZ6DQ/CYEDMbFmsQcHjvS4JhZgxkkXhot3CJRzUHhGiH4I7Y6GsCVW2fXycfcgn1YBORXJ2qZtcr8in8NOoH/2BsMPcMQRNw5+dEL9QFVoyliSldJb5Sg1t7Bqm9gOvNQ9I1Q84kcP+r/LpEg7mtmL0nT7zIbQXBdQVC7I0MDiofhJDsrmhRpTBGBGqs8YvldxCQgX9T5wzMimXKqJEsmzceL/lUrkUiKFdMKIsIzjUyze/HkC9xM99wM9f+vg7aQC03MUHC7cfNGhzhEWk2YqUmGnXyg0QLZeZmAmO2kdzJyr4ubNHk0/1OYGh4+wFunVT4vWh5LDMRxXHSaWRNgHSj5WcrvJ1EllmbTsDtjfbXpaJzyF5WHwv+w5EliK4sOeVdTmddcKCChZWx+y+K+kDX1DMFIRykrqYq+BhYY7wMv2ReoC3bZW6sQIqhqXglT0ZsxlmM4mCjtG7hDSHsjqw8OArQPq/XeK3XKdtm0LsZG+k93vhIdbFbWnvUzDW6dAUYU8uvGrhiXVp8WLtg7se4UqTHV1vynocdy8zg40EVJJ9KwsMq7fLEhUvE3+H/0+zCNGB4hjReZEu/vK1W35pS0ptZSVDT8nXd7EEs6YVsMe2iC9qCIc0f5fGn5SbBAFSKtcI
- Z/M+6PCD
- 4arvaCEsX/N2z1Fc3IAAwDDKLqtMbrEJD/NcZ+TA+wOoJry6mRTx9TDQcrvoxAi5U8sidY+XK551tviNiPbj8edqsQDAcrat5VBE8DsFP/4n3JZtLE+lSdK6UBGxVTDBzaljuzCsVBjzLr/KWrTrsCzD3LQ7rl8cTjE69N0yaCm6jGxuVeFi+SAInSC41N6cyFt04Ve7tF0sUhlDiD7X0I18VdrhBp+8wGwo/UP5iXZr692uLwsnz2zE25SF1acwqd6OeIiunBuwCILMLt2jjwC+VYQ4mhPtePs48rdRecFOmYxzr54jrxdmoj/kmEdtmk+MsIUL2T5KNkOYGHJEaVdcsmwINuuZxGVchrPzo/gvf1eTIFK+bvziuUQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 27A281C000F
+X-Stat-Signature: j3fy9jft7epin9xoobqetxtkuixuamq5
+X-HE-Tag: 1784037988-761825
+X-HE-Meta: U2FsdGVkX1/8zseV9KV37wY+jHFJwBaT7H5IF5I8mH5tQ8Etbg2TXLN9/XL6QmmD8HJ4PYWIl9d5oVjdViGWQozqo/8GChMwOWReZbx6gbTCSFgvfI5hzXbXIs+P9oekhgE1Mazq3/sWNNxDM71z2eDy//4iUHDDBTA5yINhcuqVo+OhV1aNsyHtEh5RncMhmjWMCtxoq4XLD7eYOh4SzyJNiQSGpEcjmJdsz85dOIqFPBY9y5u18dm0hh1nwvfU1vWbHAsDton19BEZWSkUQ/+aZKAtdQeyHOSJROo+26A2POUc62RL8yXjCEbtkg4UxWTIwYstIdoh5dz3+PZFu67za5wf1qMU8uzbY7/9dWB8s9jXRxkRkktck/YrWJud+639f7zSGK3UGPFImea2U9xir43ITEGy4eY0rwDhN4tlB1c4d/x1CBhKiT/ET7b3tmFLiCiuZ6xXdB4LtS52jU4bwJOMZv28ZoMAgD8sDk1/yOTU2YGiywXIsA2lPLqD5CBrED/Zzr2NSauGm8DtODJhia2KWM03psx+haWQMOhv58BT7xo2QXNJGVGipMQ4RP0z62adPPCc3G6bZq/tJr5U3ZlMiD2/y8VR6WI6VDJUAXJHNbzN1dVm2quYnXFb5BfwQQeBHKrafNcq4wOA/wg7zYGHZDllnl23P+WVPyqabXYCyPb88ClQ43pancNbHIWTlztlOw1xmIbgc8Kt4AiN8XyZacCC+WBahLxgttFaJiqHlrgbYg5aDxh1PnQzs/GD8wYn9Frym9dg3Sdz9o59gr362R3uSfjXQxC+gC7eRMWJNAC8pTeO6+Yf0sQgWdO8FBpRMdDf6/u4iV2uJbYzNhbj9SPDSQu6NEazwfWI0A3ERtiw/NvUlSqbyGn9fJt4bhnGu8FKpDQomebUzo6NrCBTIS8hZvEUux68oB6BkdjPVgLN3wjUL3qM27i5yhjFs+BEsJvqHuwpr9J
+ h/7LCTcK
+ 30Z+qd9stfwA7kRQqOe0YqzyRlueDIn9BOPNlnOstd581rWiHQbCZ3t7IFvAqadfb4eIERAbHlIIzhOYg7OVgALEp4BEA5eVjc2s9uHwLa8t8W5fhxtYqzeTpLYFRDSks9WO5k1nnDC5gaaLpaVzT0t3wLXkeuQZcxG2dFuU2l+IhfHEbC7E/aPLkdGlrPzkxKVnDn8CzPE+fc8oAdhWSTtNI1ihK1u47Uwp8h6hePHjck5IrOg1F+qKe2vJp9k5Amx+fGrteFaSVZOLxqlDGXOqiJEVhsAr70aOq5of6Z05U6U6iEYN3Nh0G7v10kl2Ifh0wXRLfKMkiKuBHLrrJK9zP2sJI0D36ub5SLLIpx1LIgiiGKjl+kmoCdJqsJpFeh3mr++OUx2Vs1DDr/q7RROU7DHUAG+rre8UF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,78 +134,90 @@ against &init_mm.
 
 No functional change, as only init_mm has MMF_KERNEL set for now.
 
+pgtable_64.h previously forward-declared init_mm to avoid pulling
+in mm_types.h. It seems that including mm_types.h is not causing
+troubles any more, so we can also use mm_is_kernel() there and drop
+the forward declaration.
+
 Assisted-by: Codex:GPT-5.5
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/s390/include/asm/mmu_context.h | 2 +-
- arch/s390/include/asm/pgtable.h     | 6 +++---
- arch/s390/mm/pgalloc.c              | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/sparc/include/asm/mmu_context_64.h | 2 +-
+ arch/sparc/include/asm/pgtable_64.h     | 6 ++----
+ arch/sparc/mm/init_64.c                 | 2 +-
+ arch/sparc/mm/tlb.c                     | 2 +-
+ 4 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/s390/include/asm/mmu_context.h b/arch/s390/include/asm/mmu_context.h
-index bd1ef5e2d2eb..675f270d0b70 100644
---- a/arch/s390/include/asm/mmu_context.h
-+++ b/arch/s390/include/asm/mmu_context.h
-@@ -69,7 +69,7 @@ static inline void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *
- {
+diff --git a/arch/sparc/include/asm/mmu_context_64.h b/arch/sparc/include/asm/mmu_context_64.h
+index 78bbacc14d2d..e88bc61aeb04 100644
+--- a/arch/sparc/include/asm/mmu_context_64.h
++++ b/arch/sparc/include/asm/mmu_context_64.h
+@@ -83,7 +83,7 @@ static inline void switch_mm(struct mm_struct *old_mm, struct mm_struct *mm, str
  	int cpu = smp_processor_id();
  
--	if (next == &init_mm)
-+	if (mm_is_kernel(next))
- 		get_lowcore()->user_asce = s390_invalid_asce;
- 	else
- 		get_lowcore()->user_asce.val = next->context.asce;
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index e882663a58e7..f7741e6b417e 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1836,21 +1836,21 @@ static inline int has_transparent_hugepage(void)
- #ifdef CONFIG_PAGE_TABLE_CHECK
- static inline bool pte_user_accessible_page(struct mm_struct *mm, unsigned long addr, pte_t pte)
- {
--	VM_BUG_ON(mm == &init_mm);
-+	VM_BUG_ON(mm_is_kernel(mm));
+ 	per_cpu(per_cpu_secondary_mm, cpu) = mm;
+-	if (unlikely(mm == &init_mm))
++	if (unlikely(mm_is_kernel(mm)))
+ 		return;
  
- 	return pte_present(pte);
+ 	spin_lock_irqsave(&mm->context.lock, flags);
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 0837ebbc5dce..960f8bf1ec5a 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -86,6 +86,7 @@ extern unsigned long VMALLOC_END;
+ #define vmemmap			((struct page *)VMEMMAP_BASE)
+ 
+ #include <linux/sched.h>
++#include <linux/mm_types.h>
+ #include <asm/tlbflush.h>
+ 
+ bool kern_addr_valid(unsigned long addr);
+@@ -885,9 +886,6 @@ static inline unsigned long pud_pfn(pud_t pud)
+ #define p4d_set(p4dp, pudp)	\
+ 	(p4d_val(*(p4dp)) = (__pa((unsigned long) (pudp))))
+ 
+-/* We cannot include <linux/mm_types.h> at this point yet: */
+-extern struct mm_struct init_mm;
+-
+ /* Actual page table PTE updates.  */
+ void tlb_batch_add(struct mm_struct *mm, unsigned long vaddr,
+ 		   pte_t *ptep, pte_t orig, int fullmm,
+@@ -903,7 +901,7 @@ static void maybe_tlb_batch_add(struct mm_struct *mm, unsigned long vaddr,
+ 	 * SUN4V NOTE: _PAGE_VALID is the same value in both the SUN4U
+ 	 *             and SUN4V pte layout, so this inline test is fine.
+ 	 */
+-	if (likely(mm != &init_mm) && pte_accessible(mm, orig))
++	if (likely(!mm_is_kernel(mm)) && pte_accessible(mm, orig))
+ 		tlb_batch_add(mm, vaddr, ptep, orig, fullmm, hugepage_shift);
  }
  
- static inline bool pmd_user_accessible_page(struct mm_struct *mm, unsigned long addr, pmd_t pmd)
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index 103db4683b16..e0b678349e3a 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -788,7 +788,7 @@ static void mmu_context_wrap(void)
+ 		 */
+ 		mm = per_cpu(per_cpu_secondary_mm, cpu);
+ 
+-		if (unlikely(!mm || mm == &init_mm))
++		if (unlikely(!mm || mm_is_kernel(mm)))
+ 			continue;
+ 
+ 		old_ctx = mm->context.sparc64_ctx_val;
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index 6d9dd5eb1328..47083c287a94 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -179,7 +179,7 @@ static void tlb_batch_pmd_scan(struct mm_struct *mm, unsigned long vaddr,
+ static void __set_pmd_acct(struct mm_struct *mm, unsigned long addr,
+ 			   pmd_t orig, pmd_t pmd)
  {
--	VM_BUG_ON(mm == &init_mm);
-+	VM_BUG_ON(mm_is_kernel(mm));
- 
- 	return pmd_leaf(pmd) && (pmd_val(pmd) & _SEGMENT_ENTRY_READ);
- }
- 
- static inline bool pud_user_accessible_page(struct mm_struct *mm, unsigned long addr, pud_t pud)
- {
--	VM_BUG_ON(mm == &init_mm);
-+	VM_BUG_ON(mm_is_kernel(mm));
- 
- 	return pud_leaf(pud);
- }
-diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-index 7ac44543e051..d0456b7e73d4 100644
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -20,7 +20,7 @@ unsigned long *crst_table_alloc_noprof(struct mm_struct *mm)
- 	struct ptdesc *ptdesc;
- 	unsigned long *table;
- 
 -	if (mm == &init_mm)
 +	if (mm_is_kernel(mm))
- 		gfp &= ~__GFP_ACCOUNT;
- 	ptdesc = pagetable_alloc_noprof(gfp, CRST_ALLOC_ORDER);
- 	if (!ptdesc)
-@@ -120,7 +120,7 @@ unsigned long *page_table_alloc_noprof(struct mm_struct *mm)
- 	struct ptdesc *ptdesc;
- 	unsigned long *table;
+ 		return;
  
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		gfp &= ~__GFP_ACCOUNT;
- 	ptdesc = pagetable_alloc_noprof(gfp, 0);
- 	if (!ptdesc)
+ 	if ((pmd_val(pmd) ^ pmd_val(orig)) & _PAGE_PMD_HUGE) {
 
 -- 
 2.51.2
