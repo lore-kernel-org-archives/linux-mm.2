@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63201C44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:06:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAC43C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:06:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48AEF6B00C5; Tue, 14 Jul 2026 10:06:46 -0400 (EDT)
+	id CA1096B00C7; Tue, 14 Jul 2026 10:06:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 461F46B00C7; Tue, 14 Jul 2026 10:06:46 -0400 (EDT)
+	id C790E6B00C9; Tue, 14 Jul 2026 10:06:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 351A26B00C8; Tue, 14 Jul 2026 10:06:46 -0400 (EDT)
+	id B8F356B00CA; Tue, 14 Jul 2026 10:06:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0245C6B00C5
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:06:45 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C9891A041C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:45 +0000 (UTC)
-X-FDA: 84987557970.09.1C45720
+	by kanga.kvack.org (Postfix) with ESMTP id 90D946B00C7
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:06:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 23ECF1A03DD
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:53 +0000 (UTC)
+X-FDA: 84987558306.17.72BFD55
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AC3FB14000E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HIiwhwiW;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id 654571C0014
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GMJ+Mweg;
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784038011;
+	b=0qf3GryJeOWg2Jvsq0nEl5UuXg3ewztoPHmSuCVx5r1qHWvWblNBuV+Iipv5p1j9fZNnyv
+	xIQvCZkwMUwcQ3Oe/G1EJ+MP9I2XLv1SvonacUGTrz/zS0bV4BjFG1V4zLd5MsQg1WT6rT
+	FYjQdZc+ExHqRkuV3/LGDenxqU2E7i0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GMJ+Mweg;
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784038003;
+	s=arc-20220608; t=1784038011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bBoBfUS5WMssGgUA/Wo3+dYqN4HjYGy3oqxDSlnyggk=;
-	b=BJsMWlJIU1QDDBF+S8zHkLZdZNLT3vfYiHYSA6LN4g/7WrRIplu6X6rl4S7jU0sIkm3NlV
-	bHCAvZliR1L5FAS452AHBNw8lDeBAwcfJwV5IqrCLDq9DSArczma5n8ZyIB+W3auVhQ9+/
-	osZliDV4jO5XEZcvWmfCeV6IR9/9S7I=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HIiwhwiW;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784038003;
-	b=xHdilhBbcXYMAbxLQxv1RHiwzL58gSHEyH4u+xCefbFLI07ZYzHIdNNQSwmAxPPc+Zx2Q9
-	oPlY6CM67IrUKLQeBj1cyWMHks51RZrst/tkhthNXL0HKDCEDv9HSZfPCspo718Gy0U6Hm
-	7h94ZNLs0WFha9V9/Y9Kn9ytADq8XUk=
+	bh=q94qKUmqqfiS4paWyf1M/XhTiz69R/ac7pRDBBb2HYc=;
+	b=XicbWo0KEEQZx5aWa91YP1ZAyE6y3dcz+otL9V4gk1WUxiPNu6PkT5HlK0PKKSX4+oBF6K
+	+qutcZjLyiI2Hzscipg5hD9nBREVMY7ZC3THYLHsSJ40v8qZp0I8w+FOU4Ucskx7rK52dD
+	8eF3Sb6RwzhmB39ddf+Mwl3fZws3tCE=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5A831BF7;
-	Tue, 14 Jul 2026 07:06:38 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 648F91C01;
+	Tue, 14 Jul 2026 07:06:46 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7BDF53F7B4;
-	Tue, 14 Jul 2026 07:06:35 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3991D3F7B4;
+	Tue, 14 Jul 2026 07:06:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784038002; bh=mkvNiLNNU7+2GzQNF8eqTlv1xCMmv8/GPTLyXVohroo=;
+	t=1784038010; bh=xWTuMpf6qcthpUhdZ9Vhm6UlW2cWk5z6914Plajhwho=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=HIiwhwiW5/FaoSRBjo11aX1AZpPuYcroDE7X41LVr/xwN0xxR7sqYi+EShBKHthpF
-	 n4f8woYlTVlDt26juvjhHDNOK/I92UerlQVr0VVHNOso4VCLR4Gq0Tj1gOY6PCuWSc
-	 FVgEvZfyeKpZuGic61DbMkRghFHRNE75lpgzlmYM=
+	b=GMJ+Mweg4iK/hY2NAgr6zHJe6LPOAI5rsbTNiAYQyxWefiCu+6VoxAQ21IJMDkVx+
+	 ivh2GnjSQemn2gdz2SposUZ6wFQonR0LDcZWwnq1rZX1jAwRhXlTvacd46t1gd3VoM
+	 7DeK6ToDs/ry10Z8LOV9mjtgQLtlBMud0j8fDq/U=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:04:01 +0100
-Subject: [PATCH 12/22] x86/mm: use mm_is_kernel() for kernel mm checks
+Date: Tue, 14 Jul 2026 15:04:02 +0100
+Subject: [PATCH 13/22] mm: account page table pages when allocated
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-12-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-13-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -106,21 +106,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=3862;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=2350;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=mkvNiLNNU7+2GzQNF8eqTlv1xCMmv8/GPTLyXVohroo=;
- b=TL/ATO2WidViUjXp4JukAFDeik9Bhx9UKyamDJVrFhja594xcdOFPLXtYE8/VvFDMq3oXLjVT
- 9Ry1qd/NBLGBGmKjBP3mLajDf99Eimk93BsQgUsx2B9iCCZoXZcZow+
+ bh=xWTuMpf6qcthpUhdZ9Vhm6UlW2cWk5z6914Plajhwho=;
+ b=Xnk+oBg7ELc/ZeSLJzK7tAUlR2bpnh9Zc229tTiVuKMeFbivMucrP27RTRDStMzPBnxxJrXcn
+ geH5EZLthaDBgWisWH5/sH0N2po6PG3n0k30stRCmsudF2ar5ckSV8d
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Queue-Id: AC3FB14000E
-X-Stat-Signature: df6pzymsdakizm91gacmtozirb9boeby
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784038003-691187
-X-HE-Meta: U2FsdGVkX1/40VlFWpbAShQbElNas5fy+9GQOzYcekOvgUnIu4jMzZ1Y/FGRy4rlQ9cp8ST11dr5M8vMTiCPQtu3wjmvRtTSROP+3hf8LRPD54vHf7Y3X+G6JULEwAkO1Jr25p85hEMtLl29jytKkup/0/kSyMTou/wB6fQdn2mFAVsWoFukGzLDxVXtIputMDxpGQtEm7q41J+7UxMXNQwdcPHQgaVl2BITFzbd89wF0Ksu64IfMeUHgQ0MFGHwwQ1sWcJg0tzRDslR4yodgJAISjChggD7Sur4MRo5yhgqUMZ5QVr19zlQyTthJtYeYg2As60QhfMeHkBYetdmYx5O7JohLIStOkLZOmJLVJkIArcbIn7TB0wbzZjJBvfW2N7YAj4bf4mo0KuYcSlhWb/unu2spniFVHElawXbilTFUqqkOdRoRNvEdRuvaV8lUhmJY20Z3e0zOCecvPtccrpLBcJzaPb08he/to0ZKyzFHfxPoxhIpBomE1gV18QRR7kO8ncKMBn76ZDOZHazFdkTkyQvyjznMCmQmeduQUZB7Ykg+HjmsLVH/wAY1F/7Xbqd+Hl8DI7ifY0tJtXR9WD2OvbssYseEj/IpDQTeWjekInj06q6XFcQ+toyVCw/GCnBZn8Y0Rw1dU6TdkrL5m2aohEldysbMyHK/lAc5ZwTz8mBzoE+IwBnQuvlDFn+IzJUiDbyw6fhHp1x1K9sY5jc6uir8BsxLr4h5ZiaDXc6ozTfnOh70cp2faAPpugiF/DZdME5fm6pkmTh4MPchBoIiEOciZBGZbRgO3CnXK3hfAzFzojo/M/HlOF2yBVVqgKy4y1DcbLwV8M+8YtE7/NfWS+Xx1kCm9KTR31DMtkmaQAFFy/MD13yKYlhwgD7k/g9yFAxdTe3ULYCwnQ3euRSGH8sYf3iTpUYvR/HXmpKJPYT5+meCVu2SjzaxxpWgBvq+4Dg6GFMRo7CPGn
- qLoecdXA
- zUxkJiec9uiS/vxyfyJRoZcOLNoxfKNOhCgXVKKm0BmqVt+pkfjZFBOlN0ct2OR9UEKMIAbNvLU8dS8FM5JukXU/ceOJVbdf/+EHDapaYKP/XP0iNWdtYYtgzScCmkkZy0uv5X+ojrHXQr8CaWU8LuYiW1a1T0B6FJP8MRhVIRrO2J9fh8tiDNGoHVB+AYVn03Gl/DKFrrc/ueQc3hO6oUoJBsS7uPMPAaiIro1xLe1cQ1entEw+MHJFz1Y9iab8jvbO9DiPFXb9sHnAuFjQkLoB/gMU5mTHEhenTibs9girEVM501X2kNQgH5CS00HkrkxGnfBIW9FA4RzT6SL1nBwcoMnjeOOrc9cT8bRNbfBL3sHQScEAr1Brw+Q==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 654571C0014
+X-Stat-Signature: o1x7b5n6td73tdz9kdep6ztrbobq4dds
+X-HE-Tag: 1784038011-111189
+X-HE-Meta: U2FsdGVkX1/oC5/uMKVtxpgoYDhT4Gc5iLVPqNqUKwAcj/FvmkZ4+DKQovoe7zQA20hhkA3vkxI6VXX3oPsC3k+pFFWxrjnaHqRajB4H/f1PKXpzZDmxrnBzdGGlPGIDBOepqZWNM55ESY/isHqWygYJNL5snnpaNLpjD2gSF6BncU0MPus89sU255RA8WKx/HSUKrr3EVNIAmQ1y+09welP/JYTR6zwWekWR+p6p8rrADHDSd5pdxl9BiPFO0td/fn7+36qejdHQ1WuCLHQ1yFIyzJykxZoI9duajPUGy8N0K9/PJ5J5wCOCuI5Uh0l+SKWm9r0h7Ox9OrB/zuZzFgOcJTkDchhkcdSybnY6o9gja9FrBbw8AoFgVySN3NnyiqIcFuh8/2X6FyEWFHp8acSPMcwzMiZLWzPTICepF4ekjFuztWTKSJgbAMUJBesoAk3nl0rYVigT8Jc9uxHpHSstFu5g/NRAcSXeEegLsA/kvTeFdi16KBdmBh3C5VK2YI1JNeSrS8grXK22HLxRc9Iew1o5oUpES68oGOdTZKFyINZgvklK2/vY9wfCsN2rL9UtiHH7he0fj7XhVdjWUSf8gul0WlcaElmyqfg7+j2pGCPcGwYKl8GU04APd8k9vUidS6py9sFPzcZ0r+lOP57mwizv9ttah9knoxZvBidFbCHPOE6IMGC1DqS8Uwx+7LgLDmdcCv/Fgqxsdf/3bmNPIKzbwmZ4dIHZuHqbnjADT/pXY/Z5l/T7/zk6HrP9bzmewfa3gZYJayHcNPENtFxSW1vML+/C8wPd/m3njR5bhC1jDp2fe6Iht2NXoCUW1KDKGp/e9WM0ugrq/sV8h5Byy9WU54S9Xgvg3Cn8fE6pZ6hWdXwkXEF7taXwryi2bo785AW24wax2kX12qizIvsObpr5O8toKV6Bkc5cq7Io9JqoraFvRawPU5Qs6G2hS9wDUizCB3lM/4J5LL
+ b1Wc7AxC
+ h9xydSHiGE+X1ZufUoRZB597SunwY2KCuZgpWT/tA6Hh+G9pqdY879n6CHWTHvx4FunfMR1k8Tgh/oqJEprQ4frsej1JoaKigwVOLutqn8Jvg70I9grpjo2TtM7nazhTPkvP+Mcj56OtnMNmV/k35glf+STUiZvkqTyGul0uCU1vEgLm1uUDED5jzG9mmO56m5UQvpxCT6K5M72UxDdzCHbw+QJDpqezCdJKxL8pjZW0xi1H7dK9m3Wj/Sx4gC5WDfm/yI9Mycg+WEFc45l07XDBGJ48EAYTeQjgY+mrj35fyCRPAaQjQMrFoWfyBt07K/ie960WfkdJknuOBSpGzKuKGVQEtQkpJtnoytTbjRJDdEUqEzcRhtgW8UQ5269L5C0kEoJR4TdUXuj6SOeaz7UJ0+lxy0xpOG4wy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,101 +128,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The new MMF_KERNEL flag identifies kernel-owned mm's. Checking the
-flag with mm_is_kernel() is preferred over comparing directly
-against &init_mm.
+As a step towards removing pagetable ctor/dtor calls for kernel
+mm's, move the memory accounting from the ctor/dtor to
+pagetable_{alloc,free}.
 
-No functional change, as only init_mm has MMF_KERNEL set for now.
+The ctor is normally called after pagetable_alloc() (and dtor before
+pagetable_free()) so this patch should have no functional effect in
+most cases. Where calls to ctor/dtor are currently missing (e.g.
+x86's split_large_page()), this patch should improve the accounting.
 
-Assisted-by: Codex:GPT-5.5
+This patch is based on Matthew's earlier implementation linked
+below, with the difference that when freeing the accounting is
+updated in __pagetable_free(), meaning that the update is delayed
+until the pages are actually freed in the
+CONFIG_ASYNC_KERNEL_PGTABLE_FREE case. This shouldn't matter in
+practice.
+
+Suggested-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Link: https://lore.kernel.org/r/20251113140448.1814860-3-willy@infradead.org
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/x86/include/asm/tlbflush.h | 8 ++++----
- arch/x86/mm/pgtable.c           | 2 +-
- arch/x86/mm/tlb.c               | 9 +++++----
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ include/linux/mm.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 0545fe75c3fa..4af1cf711a60 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -159,10 +159,10 @@ struct tlb_state_shared {
- 	 *  - Actively using an mm.  Our CPU's bit will be set in
- 	 *    mm_cpumask(loaded_mm) and is_lazy == false;
- 	 *
--	 *  - Not using a real mm.  loaded_mm == &init_mm.  Our CPU's bit
--	 *    will not be set in mm_cpumask(&init_mm) and is_lazy == false.
-+	 *  - Not using a real mm. loaded_mm is a kernel mm. Our CPU's bit
-+	 *    will not be set in mm_cpumask(loaded_mm) and is_lazy == false.
- 	 *
--	 *  - Lazily using a real mm.  loaded_mm != &init_mm, our bit
-+	 *  - Lazily using a real mm. loaded_mm is not a kernel mm, our bit
- 	 *    is set in mm_cpumask(loaded_mm), but is_lazy == true.
- 	 *    We're heuristically guessing that the CR3 load we
- 	 *    skipped more than makes up for the overhead added by
-@@ -188,7 +188,7 @@ DECLARE_PER_CPU_SHARED_ALIGNED(struct tlb_state_shared, cpu_tlbstate_shared);
- #define enter_lazy_tlb enter_lazy_tlb
- static __always_inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index b336eb32faa0..361a0d7b74c5 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3681,6 +3681,11 @@ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int orde
  {
--	if (this_cpu_read(cpu_tlbstate.loaded_mm) == &init_mm)
-+	if (mm_is_kernel(this_cpu_read(cpu_tlbstate.loaded_mm)))
- 		return;
+ 	struct page *page = alloc_pages_noprof(gfp | __GFP_COMP, order);
  
- 	this_cpu_write(cpu_tlbstate_shared.is_lazy, true);
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index f32facdb3035..91d2a6f2ac5a 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -168,7 +168,7 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
- 	bool failed = false;
- 	gfp_t gfp = GFP_PGTABLE_USER;
++	if (!page)
++		return NULL;
++
++	lruvec_stat_add_folio(page_folio(page), NR_PAGETABLE);
++
+ 	return page_ptdesc(page);
+ }
+ #define pagetable_alloc(...)	alloc_hooks(pagetable_alloc_noprof(__VA_ARGS__))
+@@ -3689,6 +3694,8 @@ static inline void __pagetable_free(struct ptdesc *pt)
+ {
+ 	struct page *page = ptdesc_page(pt);
  
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		gfp &= ~__GFP_ACCOUNT;
- 	gfp &= ~__GFP_HIGHMEM;
++	lruvec_stat_sub_folio(page_folio(page), NR_PAGETABLE);
++
+ 	__free_pages(page, compound_order(page));
+ }
  
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 1023acadd8f8..5517cab8ad00 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -594,7 +594,7 @@ void leave_mm(void)
- 	 * This needs to happen before any other sanity checks due to
- 	 * intel_idle's shenanigans.
- 	 */
--	if (loaded_mm == &init_mm)
-+	if (mm_is_kernel(loaded_mm))
- 		return;
+@@ -3797,7 +3804,6 @@ static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+ 	struct folio *folio = ptdesc_folio(ptdesc);
  
- 	/* Warn if we're not lazy. */
-@@ -855,7 +855,7 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- 		 * cpu_tlbstate_shared.is_lazy whether or not to send an IPI.
- 		 */
- 		if (IS_ENABLED(CONFIG_DEBUG_VM) &&
--		    WARN_ON_ONCE(prev != &init_mm && !is_notrack_mm(prev) &&
-+		    WARN_ON_ONCE(!mm_is_kernel(prev) && !is_notrack_mm(prev) &&
- 				 !cpumask_test_cpu(cpu, mm_cpumask(next))))
- 			cpumask_set_cpu(cpu, mm_cpumask(next));
+ 	__folio_set_pgtable(folio);
+-	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+ }
  
-@@ -932,7 +932,8 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- 		 * This way switch_mm() must see the new tlb_gen or
- 		 * flush_tlb_mm_range() must see the new loaded_mm, or both.
- 		 */
--		if (next != &init_mm && !cpumask_test_cpu(cpu, mm_cpumask(next)))
-+		if (!mm_is_kernel(next) &&
-+		    !cpumask_test_cpu(cpu, mm_cpumask(next)))
- 			cpumask_set_cpu(cpu, mm_cpumask(next));
- 		else
- 			smp_mb();
-@@ -1134,7 +1135,7 @@ static void flush_tlb_func(void *info)
- 		return;
- 	}
+ static inline void pagetable_dtor(struct ptdesc *ptdesc)
+@@ -3806,7 +3812,6 @@ static inline void pagetable_dtor(struct ptdesc *ptdesc)
  
--	if (unlikely(loaded_mm == &init_mm))
-+	if (unlikely(mm_is_kernel(loaded_mm)))
- 		return;
+ 	ptlock_free(ptdesc);
+ 	__folio_clear_pgtable(folio);
+-	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+ }
  
- 	/* Reload the ASID if transitioning into or out of a global ASID */
+ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
 
 -- 
 2.51.2
