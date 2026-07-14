@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBF10C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 07:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F23D6C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 07:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA5036B0005; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
+	id 877546B008A; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C56866B0088; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
+	id 829CB6B008C; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B46E66B008A; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
+	id 73EA46B0092; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 898366B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0AF61602C7
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:43:16 +0000 (UTC)
-X-FDA: 84986591592.06.F4D56D3
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D03AD1C0003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:43:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hT0bmfKP;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EDD26B008A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF24F80168
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:54:34 +0000 (UTC)
+X-FDA: 84986620068.03.4090715
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B8E334000D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:54:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784014995;
-	b=Gw+pFtoUGzvJFlVR7RH1xsh1hERcKc1jBn7R7MNYfwdm4La6ydqIfNNz+3hfilnidxA9Xa
-	//6+X2522d/tpUrbWY/kDB+0VlIfbI5LPwHnNz2gmHsgZAHuO1PLRwqwTPlvc8h3iMoofJ
-	bZZDltev1XnfZj/DEr4Xo2mR4pRt5Tg=
+	t=1784015672;
+	b=LmvLfg0Q7VeGq7y+kWmY4GBi9Nz9JL87x7VL/89k9DgRlDi4DLOJl8usJ93RziMiz0eMCh
+	PR6Z2FLhZr6ajiYnzl+8YTJjNknSEEr631RtlIyqXSE8ubGyqaHPNrNFSFJIipQFO4FFxK
+	7IbLA/4tsL175QvkpvmnSbj9AS4xS50=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hT0bmfKP;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784014995;
+	s=arc-20220608; t=1784015672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f0I0BJ125x0ILzpKQzbAIfOkMzFcIP5uJz7O94Fnv8U=;
-	b=FKTs7Md0rS+VK8zyDcq1qdEJA2YQuwndWIZh5JSy6hz4lrawVBie26zaXCP3tX6g7piEGF
-	5vrVqP4crLxmSCPhj8lf3DSO7G2pKs+wTIIkpr4VcqBVZMTBeWVqGfvwLm20I4n9dz3dgz
-	+wZ3r8m2Uvxs2oJFZAak2EnU0wBdV7s=
-Message-ID: <0545ee70-b0a0-4a93-ac2c-3e84ff504e5a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784014992;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f0I0BJ125x0ILzpKQzbAIfOkMzFcIP5uJz7O94Fnv8U=;
-	b=hT0bmfKPqQc9pDzFwsqCmtPPFoWQhN08bP7XCztt6T6O9I/sjqP6TCj1HVTvHABehMC/sC
-	D5UK+iM2oYcDiV2UGmsSH4Db3ghqh9VfT3omemPDv4Yqjxh37MZa9Q3ToX9mJG0B4UETN7
-	atCNfg0O9qKFcAuPjlda6yCvqWeDXv4=
-Date: Tue, 14 Jul 2026 15:42:52 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=muNa2L0Gvr5P+2C4uM3KspCgbioyyBjLnvMIGOkl3Gs=;
+	b=6HcbdGx/9aX7BglN8pIRKo2mFrBkyV+6KZvXFr+E8ckBgWrVD1eUNSWUyqbbSQkWmtf1+d
+	2Thzux2JYtRpMO0wpZ30fQUCjAkxm1AoIojrgWInFR/qFbJVlpjHSaDKmziIJT7zeeXCpe
+	7HT3Laf9mvkgwPpcBVwOReyD/rkWT2Y=
+X-UUID: 386c8df27f5911f1aa26b74ffac11d73-20260714
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:05dbf085-a693-45e8-a0b6-84f55bc50ee6,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.12,REQID:05dbf085-a693-45e8-a0b6-84f55bc50ee6,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:e7bac3a,CLOUDID:40f5943f7a49aee119523de9c1afc868,BulkI
+	D:260714155423MQ7OG88W,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk
+	:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,
+	BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 386c8df27f5911f1aa26b74ffac11d73-20260714
+X-User: wangxuewen@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <wangxuewen@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1772328423; Tue, 14 Jul 2026 15:54:20 +0800
+From: Xuewen Wang <wangxuewen@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Xuewen Wang <wangxuewen@kylinos.cn>
+Subject: [PATCH v1] mm/damon: remove trailing semicolons after function definitions
+Date: Tue, 14 Jul 2026 15:53:58 +0800
+Message-Id: <20260714075358.1592393-1-wangxuewen@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
-To: Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- David Hildenbrand <david@kernel.org>, Yuanchu Xie <yuanchu@google.com>,
- linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260711091157.306070-1-ridong.chen@linux.dev>
- <20260711091157.306070-2-ridong.chen@linux.dev>
- <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
- <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
- <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
- <CAGsJ_4zcgURKZKBAc6i0Y5g7u2OXjENDE7A=nqYcQ9TTVuR=Hg@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4zcgURKZKBAc6i0Y5g7u2OXjENDE7A=nqYcQ9TTVuR=Hg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: B8E334000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D03AD1C0003
-X-Stat-Signature: rtjkkdfndyzq3114yq74hiqzf6khic4h
-X-HE-Tag: 1784014994-247182
-X-HE-Meta: U2FsdGVkX19voK/7pqLtSFHtMcN4IteAdTY8EBWXFRGX3iIYrDhao5VdQf6g36WxvPWktPzfNHldM5iGfNcwnsWVfQw1b1N0XrEk6UfSpHSd/hfQa+Pzy5OxLP03K4/oAbYeRhtsBxq5d9nxyYbWvk8WPsh2KytCcaFQsySjdbDX8K91HdxYUppQZjY9WxRq7K4Ue8OKyJq0fQy3uvNBjrfMKgxtxBfBQaVVHvmlby4hZBoOqrAqckg2FcCJhQUAVFBoX70aLRZBiQHn3fL/Kl3H+8DfvxhsGZPEGCgMsIU9jQ6xSZsWLVB6PLQsJD5yus3bsdW+VCIICvBMXNd81h6G7ZfLeBWK76g3CrWUdXElq3PgEJuDG3E2SSeXt/naPcU3UWjVLS1jvKq6xGEyYCTsuZEr7sWHMKOLn/dVXdxB9MvnvWDI9Rg369InXMcNU65y9yk+lEEz5PmWwUJOmesiGlJ/BKuaxWDFFI/osC8LRNGqNNR6oRXMsTfssXNCEyXEQWe1C5py+Tg78k5/BtVBjZQQhcZ+5SQ+Ybgw5cs61LPlzxFb2dK3c9qfCpBQUMPCpWIGIOLk0YL/3pg0tSsmzD2S8x60GmEIJI6ghDO++ysJHZ927Pfz2YmaBKM9XXQPeL6dDMj4j7JA6xwR00Klg4yd8WGX+xEuwIAwnRnVFjbgOkEjq7nZX95/8TkoB4Eb93Lr2+M2IMcfpzRqmYLQjF/Iog1QkPReQEH6UEgt8b9wAPXvBQEX+cF4j9WHExV0qK3iW+ifvZVr92AHA/aCYY0twSqMYiBPwMTn0YfrkzrG6YScWBscOnBPnqVVBQAws5hI/jNnUsQX6tqQClbls4f3wtBh+rHoTD8tZ/chkFX0+WqovVnZSFgmXlOzxrTBYHo0AtBXHHVEEPkLgSO52Quf16dD2y5VdiXbKdDQEr1Z5R+5YIxIHZeCN9eiPL3FOiX+NA8FDxBxFK2
- gtGbGiKH
- 1VwlW+JSgy1zwTZudFAWErykM0YtYlttnxPmV+7xujQOzc3Z/M+G+WpZ8UsnZVqyb9y1SCmIYDbv08QbC6OLrI/S9UMMxwtuhe9M9D4/26j6guDTiftWcRHXfqX/VLsZ/kajweBqmo3qcMpYSl6/E11oYMLjw3XQh8dwEl9+DXevS0C7DtkPTieD/ws9IBgiXYOXHpn1s4yWHtvn45yfd+v7S5dZnLdV2RfbJWVttwELT/C4BzVeu3cJQ8Zliv56oOdmDLHS6jGUU/D7ErCF57m999uyT60YHhHGuEE2u1kJxLbeD7T3LQ22C8nLAmTqf6msP606hyXzRg5HcD/LFG4MJ1xgh3VlD9KTaM15QGouiGVIyMM8hovk9T1wjOpK7OyfrL5D5CT0Ab1rNBU3c7BYoCGH0PtZ19EgR
+X-Stat-Signature: 88guo8adg9ryoyur67z83jonb54az6eq
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784015670-209664
+X-HE-Meta: U2FsdGVkX1//QMQO2JvyAIRE5ZHDSK+708tKR/QN90IloNcHYSSZaJC/b01rYiNU0As5DepTkqB3iEO1edSAamv3gCJiYewCiOnkGrpKsqbn4pu6LdP+eCzJ1aUbuJd2oa6gQRMoBRg4tgjf4ETwcgt3uUGRT1WeWg1AIMh0hoHBCakomLnuJehVtbgBHsWdgngxaRyZFq6PoCDYqJF7S2oVhvFlUygd+icVwoDnC3rESrRIrrHw9leGShdbg1Wt9IhKvhn1XS1OFZsfa7ogMOU7xNGHw2woS9iyvOVkrtZuQyUjthx0yD/RfFiR8hY14axN9lt0U6hfLZKfS32raedKKdvxiM2WsZALuKmJR//Gm2eUfRekb+nLZX+FETcb/sJke3Tsp/kYUSmKo8pJwokHx/5EhL3PkJ/saPIKgMO/CnCCA6VFaXq0fsM5wgHaBoJh8v7DV4gy0qCEpOBeHV2S14/qgf8q1KOSWOYTPAJ1J+xhPehOm/zmRmupsnBhY+6fFNmjBh6qZA2AaWDzNmAG428USlKo60oSu1KypKkB6gC6WZe8ITV9F2y80hOVg1yIdzWzEL4g/Er73pGdg5RuIefXCabckvoGL+Z5u4axtOPSF02waBcx/VfJeR5ldCtNY3jxKwB2SaqJK2+pDe/Q+iQO0uiorT4X+eHXA01khT7Q2oTKaSmu0VBFGlvCLEph/M+/By752rLqr/6JQY51XOuYdHEkMiI8iw/LYVGm389zuXB0oELk9VvgKeOUucJlXWmdvzVrY44WiJJLDe+eWgJ/JNVW42xU7iRipuRONZl/BWW4XOLu5m/k8Nc5Dttec147QeILZcPTPC09dZ5O/XZa04ofQMYjOahtNpULXJytpORR16aqxv2An91gNgiFVecLsJ6njyDA2IcM+ERJArSVgwYQkMSY/sQ7AKllN4kjDmALfjwGBU9jJBirxTe0ZkLRl6gbp1FeSHD
+ BpX4pE0H
+ O/1lA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,78 +105,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Three function definitions terminate with '};' instead of '}',
+which is unnecessary and inconsistent with kernel coding style:
 
+- damon_pa_initcall() in paddr.c
+- damon_va_initcall() in vaddr.c
+- damos_get_some_mem_psi_total() in core.c
 
-On 7/14/2026 9:48 AM, Barry Song wrote:
-> On Tue, Jul 14, 2026 at 9:43 AM Barry Song <baohua@kernel.org> wrote:
->>
->> On Tue, Jul 14, 2026 at 9:20 AM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>
->>>
->>>
->>> On 7/13/2026 11:08 PM, Barry Song wrote:
->>>> On Sat, Jul 11, 2026 at 5:12 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>>>
->>>>> From: Ridong Chen <chenridong@xiaomi.com>
->>>>>
->>>>> The per-memcg swappiness knob is v1-only; v2 always uses global
->>>>> vm_swappiness and ignores the per-cgroup field.
->>>>>
->>>>> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
->>>>> to memcontrol.h where it belongs.
->>>>>
->>>>> No functional change for v1; v2-only kernels drop the unused field.
->>>>>
->>>>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->>>>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
->>>>
->>>> Reviewed-by: Barry Song <baohua@kernel.org>
->>>>
->>>> With some nits.
->>>>
->>>>> ---
->>>> [...]
->>>>>           struct mem_cgroup_per_node *nodeinfo[];
->>>>> @@ -365,6 +366,9 @@ enum objext_flags {
->>>>>
->>>>>    #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
->>>>>
->>>>> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
->>>>> +extern int vm_swappiness;
->>>>
->>>> This is a bit unusual. I'm not sure whether mm/swap.h would be
->>>> a more appropriate place for this.
->>>>
->>> Thank you for your reply.
->>>
->>> The vm_swappiness variable is not utilized within mm/swap.c.
->>> Furthermore, since memcontrol.h does not include swap.h, retaining the
->>> extern int vm_swappiness declaration in mm/swap.h will result in a
->>> compilation failure.
->>
->> If this is the case, it still seems better to keep
->> extern int vm_swappiness in include/linux/swap.h.
->>
->> Then we don't need the comment:
->> /* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
->>
->> It also makes it clearer that vm_swappiness is an extern variable
->> belonging to the swap module, rather than the memcontrol module.
-> 
-> BTW, if mem_c_group_swappiness() and vm_swappiness are only used
-> within mm/, could all of these be moved to mm/swap.h and
-> mm/internal.h instead?
-> 
-> We are making a big effort to move many unrelated things out of
-> include/linux/swap.h recently. Could you check?
-> 
-> https://lore.kernel.org/linux-mm/20260708-ch-swap-series-plus-folio-lru-cleanup-v9-0-2bc72b4f8730@gmail.com/
+No functional change intended.
 
-Good suggestion. Moving them to mm/internal.h makes sense. Will update 
-in the next version.
+Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+---
+ mm/damon/core.c  | 2 +-
+ mm/damon/paddr.c | 2 +-
+ mm/damon/vaddr.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 7e4b9affc5b0..4197957009aa 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2579,7 +2579,7 @@ static u64 damos_get_some_mem_psi_total(void)
+ static inline u64 damos_get_some_mem_psi_total(void)
+ {
+ 	return 0;
+-};
++}
+ 
+ #endif	/* CONFIG_PSI */
+ 
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index d0598f5f2688..17353b14af77 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -453,6 +453,6 @@ static int __init damon_pa_initcall(void)
+ 	};
+ 
+ 	return damon_register_ops(&ops);
+-};
++}
+ 
+ subsys_initcall(damon_pa_initcall);
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index d27147603564..13f4e05f871b 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -983,7 +983,7 @@ static int __init damon_va_initcall(void)
+ 	if (err)
+ 		return err;
+ 	return damon_register_ops(&ops_fvaddr);
+-};
++}
+ 
+ subsys_initcall(damon_va_initcall);
+ 
 -- 
-Best regards
-Ridong
+2.25.1
 
 
