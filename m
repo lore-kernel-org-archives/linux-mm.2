@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC06FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:35:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AFAC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABF6B6B0088; Tue, 14 Jul 2026 05:35:55 -0400 (EDT)
+	id 072DD6B008A; Tue, 14 Jul 2026 05:44:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A978F6B009F; Tue, 14 Jul 2026 05:35:55 -0400 (EDT)
+	id 023E06B0092; Tue, 14 Jul 2026 05:44:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AD796B00A0; Tue, 14 Jul 2026 05:35:55 -0400 (EDT)
+	id E7C406B0093; Tue, 14 Jul 2026 05:44:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 743536B0088
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:35:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFC21C02EB
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:35:54 +0000 (UTC)
-X-FDA: 84986875428.21.759B6B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5D906A000E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:35:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJVkrEWm;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C04196B008A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:44:49 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3025E1A032D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:44:49 +0000 (UTC)
+X-FDA: 84986897898.30.2FD5213
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1F60920004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:44:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ICKinEcM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784022287;
+	b=Vc0E9FiK103QqBYjwtBzZFMUbvWEAKIuaaN8ldbl4HTEuR48SbRR6joOAO68JJ9BDBCDik
+	8idHbeFFlBZ9G1HU0KbQS4IAzdjabAH6o481XNaiXT5ZKF3w3v/fduOtGomYxWDPYCAJ78
+	mks7Fh68wqpeFAyZDuL+apYIqbIJxPk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ICKinEcM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784021753;
+	s=arc-20220608; t=1784022287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UfnergjAnRDuo3uYbSqLR2MsPNG6su0Cxt59mBpdmTM=;
-	b=VJjHdotMuX3lwkKYYreZVlPurJpW9YRRtYlIsZNtz+Z/bJrCth5g/nBCmIjmAHdCYVxLE2
-	gsmiP81IyOHLM+/w5rT/Yprz6Rvyclh0XUaD33FrEciSF2yDReDPs8PB2ZcKs35saRl4LL
-	v4y/La3d8N6MiaW0dI7XVkHLwq4lMOg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJVkrEWm;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784021753;
-	b=F3dyhpnqk6RYQIGdp/tfmWDgUDBepkAry/SCziNW/7E7zPu85GEkbBLedDdbJSHobJQP/9
-	Kj7MrFC2xTPjY7pUZga9/+3TjbUPRlnMKlygsblVQXRFVVC6s7EeKY5Q1i+aMS1sAcKLXO
-	b+zReUKNziQSa2ZrTntlL2mSCDcUyFg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6786C43683;
-	Tue, 14 Jul 2026 09:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FBD1F000E9;
-	Tue, 14 Jul 2026 09:35:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784021752;
-	bh=UfnergjAnRDuo3uYbSqLR2MsPNG6su0Cxt59mBpdmTM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KJVkrEWmExl50s4hRp2xoNRfweUHQXFOAgBlRs6oo775P3o0VLXSLkfrzgNrtQQmo
-	 oI3BEQeV9kivBQi9nW4Y2K6tQRvUwagl1yGAubQxpjvS1VWBuywzW3/mGBbITh2/+R
-	 z37Om5e7uLXAWsZ61BxwGzFrBz08y5OQfMLqPoSF379dizDuxzPkeFUqag6EW33doD
-	 ulkgdbeimMWqLsvdOZh3dVq1ZM/Z/oVkn2dLMihkG7XOl5MIWO/w2rIQhsp+Op2/Ah
-	 /pfF/8OBz66RSD8tq76RiRnixipBpoZj27RWNE3CUM+Su2MPLSqS49rouf5tN5tbZt
-	 UNkvSg87FW63g==
-Date: Tue, 14 Jul 2026 10:35:39 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, 
-	chengming.zhou@linux.dev, qi.zheng@linux.dev, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	wang.yaxin@zte.com.cn
+	bh=e+lTFxB6Ymr9p1MfVTAwXm+z+pPU7EViP2K/jOfRQ/U=;
+	b=IpoagrE7A/ukJ29zW7is/E1adtPF0bRPBb61fhzDKOjNZz4wLsOaKuVjq/EUO5QO7ya3R3
+	SOzTByjPu4UmGhXg98cGx2ZMkWCeR9arV99zRV4JGTM9K9B4iPdozwsYB2i4yQ0QrjKZjh
+	yjLVCO2O0sP7Yo5tJACbJBzQjdXrKVU=
+Message-ID: <e3ca51d9-e484-453e-abfa-2cb4840ab141@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784022284;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e+lTFxB6Ymr9p1MfVTAwXm+z+pPU7EViP2K/jOfRQ/U=;
+	b=ICKinEcMvOthTfP0SGWhA/nWOfw/eUzMJ5vF/CD1CZ4In9N/gTDxYaFvhR4HjSbq7MTyjO
+	xIUnhi048VZKwJvQhhZDcSml8hRKNR8lrJZuMoP1vOAzRKpD5FdK/4dkOpJXGeo0BJKNVT
+	8qnRq8iiR7hc1/445km7Kaeiz/O6LTw=
+Date: Tue, 14 Jul 2026 17:44:25 +0800
+MIME-Version: 1.0
 Subject: Re: [PATCH v3 2/2] mm/mm_slot.h: add comments for
  mm_slot_lookup/insert
-Message-ID: <alYC2N1HmOE3Wc5z@lucifer>
-References: <202607140924549782dUh3YBPmy8g1NDMK2zIW@zte.com.cn>
- <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+ chengming.zhou@linux.dev, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, wang.yaxin@zte.com.cn
+References: <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
 In-Reply-To: <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 1F60920004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5D906A000E
-X-Stat-Signature: 3e95ik43fe9b5k54cmn9iz9eok5e3spp
-X-HE-Tag: 1784021753-677455
-X-HE-Meta: U2FsdGVkX18l9hW4EiyrIgLsgqb/o4QxB8dmw8UsSx62EfLCZ3hYCTfk2Vawo2a9r0yvPkg0poZysAHUViPCNLK+wOy8uAGWip+WYGJDZg6ZcuD1FvCDLs5W0SAWTVSibez5P7l2IgCICuHOZ5LaJDlRktfA3QijDbO6N2A8MD2Ax8Qv75ESVXlwAudGYWTSLyc5+r/+Dxw3mEe4WfQXUuPvSqxBWdlcrS+jhMC8xPciNA5eG4GKmv/JK9jPf405LNqJbd8Kmrc/bDt0FY0jRZ9bTr3FHgTWJzKa6puDHQ1+4oev9bxe8690qAqOZCgpAparZwzCOv2X6R7djwnkGVrgrnN72/t8n0XwRQYzJVfsTyscBo/9xM9HzZGxV0bxwPwTdA0jPsoucUN8JeEvwg5aOagwaArnLrWJbaxfTvgOVPEjbI3vSgS4F4OJtGn/6aTBOu33eOklErrqcDzTVY5p+q9/R5jfXZEKHFHfFIvlyWCTLGucyusym4mwFcw6o50Iyh1P/xwC1f0e2NzmadDZsGpqNfcwsDw8kkHp353/A+OOGeRaCWrJBi34iXb9+076g+mue4nXvcRdfU1TYhq+wuu/FXgH4JD0QSCrL9pJllnYXvpfD4BxSjabLCIoYhrFVGFjlZr1A1SlTBpRJxzJg+y4QGCKRz1Ov5arSXQ2wPJdcLMDazShAkkRHI4QEYciRWTHkYNhI2qEdGcfnGRxY1VNnPjfdEqvPgyv1Mi1OJyguhjlJ+A5yWz9F2WNIsXcwIhic/p1RswF6GlU3HzsiVmhYy5vCi+KjgVdxDjOiEwkCG9MAyzXSJcbseBOED7MRaqKHLekKgLwVBrrxjDPGsvt+hia3oSDMaT3G29VDKIuvngrC8ty51lUE5XiR/4KCPXPOBizWHvHXIL1rQyCJgC7KFWOOh9p3DmaDsZdzOGJm0PM24arvFnr4jN2bLXnuaFw1W24+SShXWr
- h9Rqq6fD
- k/+MmmabW3ezWem3gsTZcroiPFYnJK/ILRV0xjtP3COBaElsuzALPhAq8nDR4p0j6CBsetlNQz185gakUwQS9mqhmGpV0riv281eEs2qcSUqtFWg8w/UMkT3TamWcvMp5bQavZcm2xhr3FMw/gU+7vReQJQ6d5H7v34XeImsTZFAdq73HljJ8oWqxhWFz2vlvv1uUNY2piV/3YjUmvr9YfpdigT5fl7rNPPoxmP1yaozaEY06eZQ+KXJs9aa/zcF+FOYbxwd//kYU7C/gkkHEq0E78+iEIFf58lMvYfBZw7c6YBsakRxprZw818zGAv2NJ7oUQhjPKIZXP41YNwzv7+wlfgG6w5dh0DPJqLjB9KRy6koXnWTS9WFpoX/9i+FAvMqW
+X-Stat-Signature: 8djsnjmyfc44jubissjifptoyrrts4k8
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784022286-619531
+X-HE-Meta: U2FsdGVkX1+ogaEEyOm4Oy6XtKD1kEFiF+HZKBEmeY91+mO/lXHmxODrgm0I1HRGrO3pdhWvDeI3AhdAgDoaQbb8QvTXF8TuZ2Emjy3Bf5sOqYDT6lo70pOLFONLBWfm8l4sVIgHqQvDJbUkR/iR1rMEXJmYAVEnjJxaOJFto2/ma1oEbo6jdJ364SDGCQQIW8jHJNYCcvglf5vcxcoyz1raZe83a/3SRPsKhFEdo+QUhTg4fnsgwnYOGvR1YKrsBsCRRIOZh9wYDdw4955FQk0r6uV8nIkuZ+RkfZTNMyuwYJJeiyCJf5q7f9PfaNmbwJ6U1owAYzqthffWvgK+NFbw6CFsnXhB+vnZj8YsBpJx7dPlMYdajgqi3tsZ13N0e2y4jDU5qboAhpVmWSMw1zgJt3/2V3gY5NbthJ2sFtO5N3q3+iuVysRmEhNvBfkxaztyUebGMoYGf1y+7cSSbrDwt4T5Lby6w1lJzzM/dfKZLFNqa47JWqBHgLJwXUyp3QtzBswryNUSnfu5qMVRFZFOQZ8yk2hTXtljmGjFlKSYe2A+rn1CYYSsrQxUzymvXbHhgYoAv16GZvjQ4MksfPTAdCTlf+bD/dyb6xfSzZZwyBTQyWHPARyeAkE2z6KXCYT94DrsOSCnPSD7e8bqA+ZxvxmJjKO6PXevd+nC+x/JgVI9UDDTxjMu9ERpZai4KAAogdq3f1TYC0lAhWcBWEEbCDdg9KJOYjQwyBHhrUslIDzwipw7yKL2sGzfXHSV7lTfEhKBBgPQgFmjS7IrWzIfiCKwZRMbt0t5wvd7CSKyWeU1Ho0/Q1qB0NsdJIb9e27JU9C652Gy6A/ZHI4fsrvjkDADF3ilK6rPu4HxOs468/w+n65Gp+pvB97NVWpCxtYGB6JN4iMKT0K8XkZ6wrrr1hK/6WILyP5k1e7XOsRUiWmbQAjAZVQ20YFJ724/CgpLXqQ7CvedBmRFFvr
+ qduoIQWJ
+ wIBU8kUoTTQCk3QnI5vqbum/xpzhJtMLL2Q8DQ0GE3tkDjTePxkYA2GB0os0J3e+0ryRHVvcjhIvHZk4zTAiZFua6zNpPCci/4qPSivxQ74Mq4okjqOcq/8zPUPji58AdXbKP4rGUVTypdw8HVbeX21AKvFPeQdLEzuHEfS0t1Hk7Cy4FhlQ6aFLwjwhlk4CZXgn26HWodq/d5B+FELha0dnUqf2IQCLSexQRBwaHOSPFoqOxzzol0B7wjwdNY+dDamOpqWUJmLyvsiln6kNMhS4nJ1c7inW9e/C0DDL/yvO+9ZsJaLM2qa5eZzZg2fExPyIg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,43 +92,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 09:28:15AM +0800, xu.xin16@zte.com.cn wrote:
+
+
+On 7/14/26 9:28 AM, xu.xin16@zte.com.cn wrote:
 > From: xu xin <xu.xin16@zte.com.cn>
->
+> 
 > mm_slot_lookup() and mm_slot_insert() are the only helpers in
 > this header that are implemented as macros rather than static inline
 > functions. This may look inconsistent without explanation.
->
+> 
 > Explain they must be macros because hash_for_each_possible()
 > needs the table as an array (for sizeof), not a pointer.
->
+> 
 > Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
 > ---
->  mm/mm_slot.h | 6 ++++++
->  1 file changed, 6 insertions(+)
->
+>   mm/mm_slot.h | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
 > diff --git a/mm/mm_slot.h b/mm/mm_slot.h
 > index 5de3e91d86b4..9b09b68e5742 100644
 > --- a/mm/mm_slot.h
 > +++ b/mm/mm_slot.h
 > @@ -33,6 +33,12 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
->  	kmem_cache_free(cache, objp);
->  }
->
+>   	kmem_cache_free(cache, objp);
+>   }
+> 
 > +/*
 > + * Note: mm_slot_lookup and mm_slot_insert cannot be converted to static inline
 > + * functions because the hash helpers (hash_for_each_possible and hash_add) rely
 > + * on the actual array argument 'hashtable' for sizeof() instead of pointers.
 > + */
+
+Right, that's why I wrote them as macros to begin with.
+
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
+
 > +
->  #define mm_slot_lookup(_hashtable, _mm) 				       \
->  ({									       \
->  	struct mm_slot *tmp_slot, *mm_slot = NULL;			       \
-> --
-> 2.25.1
+>   #define mm_slot_lookup(_hashtable, _mm) 				       \
+>   ({									       \
+>   	struct mm_slot *tmp_slot, *mm_slot = NULL;			       \
+
 
