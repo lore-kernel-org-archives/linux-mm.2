@@ -4,86 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2623FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 21:14:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33202C44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 21:34:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A49FA6B0005; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
+	id E45576B0005; Tue, 14 Jul 2026 17:34:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FA566B0088; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
+	id DF7266B0088; Tue, 14 Jul 2026 17:34:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ED1B6B008C; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
+	id CE8156B008C; Tue, 14 Jul 2026 17:34:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 624DB6B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5B04A0511
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:14:44 +0000 (UTC)
-X-FDA: 84988636488.12.E312080
-Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 093A940002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:14:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 907366B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:34:00 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0849A1A04F8
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:34:00 +0000 (UTC)
+X-FDA: 84988685040.04.7A244B6
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 40A4D20010
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:33:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BwR+S5wC;
+	spf=pass (imf03.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784063683;
+	s=arc-20220608; t=1784064838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aKvOJNMobO+mlVKUT3NgXi3Acbt8uKLISzEEa0TKkJE=;
-	b=QfNSgCk8HuNmKZu7DhYV9njHPoYa0PEE1XEgeMHwUryn0P7ZJEjkwlEfD2vZdaLdXZTdde
-	nWK++aop6xmbi/7U5Dcl5euc8w3pWF+b/2dKjWANnxiXp2UYnh/05S7bUiKiQIQaK7eLAZ
-	tGTheT9VLoU8KkGU6YyLmT74Lzw/EsE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zebbIro5mkXbuDBJ5TKnPBr9hFGew4CMfA/H27lS0KU=;
+	b=RiB2hNirjUfsuPZkl8tyLHFfa0Y3JTu7xWGGtzYKzuG95wjDTSz571ilF9p03yYFF1GYRQ
+	eIxZU1sSRfgjGdxBZpggn48aKbYO6fG+CgY0UQFN8ahrd8ZnvehXa9EQecdJSVxVvqrqEt
+	aIsF2wlamTOEaUqLJkpngzFTEaQFwKc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	none
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BwR+S5wC;
+	spf=pass (imf03.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784063683;
-	b=KQxrdsvAbS6OVzcOv+EaU4/PDGjzsyHtJqt9S2uIWRf5feT230etB8kwbnYZyk+4zKMIyI
-	i55Eo0IaE1erJhBLlu7HBTtposH80cJ9MjeGW4vj5babRnSZjl5IgEG5+g8+l8kc2qIHYB
-	YrHyTMNZLu9oHx4TyD3KAUacCDLT87A=
-Received: from omf03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5AA0440522;
-	Tue, 14 Jul 2026 21:14:39 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf03.hostedemail.com (Postfix) with ESMTPA id 15C226000D;
-	Tue, 14 Jul 2026 21:14:35 +0000 (UTC)
-Date: Tue, 14 Jul 2026 17:14:38 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra
- <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter
- Anvin" <hpa@zytor.com>, x86@kernel.org, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH 08/13] mm/kwatch: add hardware breakpoint backend
-Message-ID: <20260714171438.226faf7b@gandalf.local.home>
-In-Reply-To: <20260714183206.12688-1-wangjinchao600@gmail.com>
-References: <20260714182243.10687-1-wangjinchao600@gmail.com>
-	<20260714183206.12688-1-wangjinchao600@gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	t=1784064838;
+	b=WGvVIM3D07reKqEIv6xL3ZBccSEz8UbKWM8fBBHMvmTc04wqe86YB/m2dsc01SViWfXvru
+	AUefMyk85BKHT9tPZ2Vv9hlCA3KOkyJ9xmH708d9hjcyEsJUg8nu35XqYfp4SvkrkVXhOJ
+	MmCLiozj+m1JX079ZAE6NlUxrMh1OGo=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cacf197759so22305165ad.2
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:33:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784064837; x=1784669637; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zebbIro5mkXbuDBJ5TKnPBr9hFGew4CMfA/H27lS0KU=;
+        b=BwR+S5wCl8JSutwdWGTSsjNZf+0YTccnMc2AzxY3BAxEHTWwEIgNWmjXgJVAodx3kr
+         OFVTMWj6uWwLwLvLkxkiIbFmS8Gj7ysF7PxBcalVaN/j3SCmRtVUK9HbwtDWAzZySW1y
+         EDAnbEUpepsX5ZsuSUXM5OZlp9dCms+s/ohYdEnwVkXoM/sZ/7YM4EPgWlBT80W43Qjr
+         0ZPoKMsAT/tTXpsyG799DCIHzxfz+Azs8a85JfO3n2LjvSPonnHDzn5G60R6KsQWyg3S
+         QcC99Mres6CjK/WR7P7WjCk11kRZFz3Jt2QRkLJA0NWPpiS1Lx35wIO4qWkDLv2F+wEa
+         0eGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784064837; x=1784669637;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zebbIro5mkXbuDBJ5TKnPBr9hFGew4CMfA/H27lS0KU=;
+        b=jB8Pl3OsI+V/L14cemnYXwJQKGVIZjMSRPDHsvZzVmKeb4YY35O5psugC26aIBBftV
+         K12QnBinMfASxS1Zjfyrv4lhq99pwU9QbeRl3e89/V3s1UchneapiVKuKg4yzgzLO4oB
+         uuJVgNE5E+uLm3IMCNQfOw2ZHyh3Ar3ocyvyrrnVw2Ir5sgD9nZN1Mq4543Q3EkA6ZkT
+         T2/92lgcQ4fPldfIVQ4xtow46Awu9cd7A8iDEZ/XitPNtORZvSXVQaJlzpeHDZ6vurf+
+         Q0IPkxiOxWrldC+jrhnoPytFBliYonSNwgX9tvyo/bMpQ8N6AfmBxyUv8ef+J+5/3PwH
+         ubtg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7QOfJF0I/dKUxGyInAVYuZSXmEpWPi6iuyJ5vvb/Gqv2JRK79IrIYO49vkQ68vREqkE+IQBgRmA==@kvack.org
+X-Gm-Message-State: AOJu0YztNZiCRuMo5T45ZrHwJQZKPbROwMh1Q52+xCaWFEqaK7qTXlXv
+	279MYUlRqhcBafonFEnEOm0vJJOpvF6/GNCwmlJuAqRZJQItIYxF7Ml5
+X-Gm-Gg: AfdE7clepyFb1QOso/xk3Uy0ey7w20ZxsLgXfphzJideIuzM/kmWkNZrw1lQb7qMHeU
+	FWwi8Xisjj3ZOKc+nECDOWHuG9ijcfjWEXdAtHQDA1iH3IpuZ6h7/Q12VK8d1+sDXzvASxsOJaF
+	4WTbkBzP5yL8pTsyTf3+GXqXe+ezeEeGLXtaZYKi92O833QcEOw6QbqUgb0pmku20lAjdli+Knk
+	FU+Y+7HPtYXovsLUEIVsgMHhEW2Z3Zc/5sVOjpsBrO/cAMSopiwLkSzol6XO7+FeOl6PQ4jk/Sd
+	5mK79dHhTG2v0hnGJ+hgE7mo6nLrWfvAYv8d8tqV+D7I6KccbY5qR5OSwUA/ON5IheQAzQcMVib
+	PxVAH3B46MMtmSgnFEeNpZKtUnxklxE8gAAqHPGiC/hp8LJQfyIepnrvb5w1oPHlZ2J8jg0Q2VG
+	EntPRVCwyYPNLPBe9NCY7gUHH6vnGQ3kb81QEjjbJsK5AgdIu7t8MoZvug5sJLskuj/g==
+X-Received: by 2002:a17:903:240c:b0:2c8:1c05:16bb with SMTP id d9443c01a7336-2ce9ec0f108mr142192545ad.24.1784064836947;
+        Tue, 14 Jul 2026 14:33:56 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cea6507b5csm55058005ad.72.2026.07.14.14.33.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 14:33:56 -0700 (PDT)
+Date: Tue, 14 Jul 2026 14:33:53 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
+	corbet@lwn.net, dakr@kernel.org, david@kernel.org, jgg@ziepe.ca,
+	kees@kernel.org, leon@kernel.org, liam@infradead.org,
+	lizhi.hou@amd.com, ljs@kernel.org, lyude@redhat.com,
+	maarten.lankhorst@linux.intel.com, mamin506@gmail.com,
+	mhocko@suse.com, mripard@kernel.org, nouveau@lists.freedesktop.org,
+	ogabbay@kernel.org, oleg@redhat.com, rppt@kernel.org,
+	shuah@kernel.org, simona@ffwll.ch, skhan@linuxfoundation.org,
+	surenb@google.com, tzimmermann@suse.de, vbabka@kernel.org
+Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH 2/4] fixup! drm/nouveau: use
+ hmm_range_fault_unlocked_timeout() for SVM faults
+Message-ID: <alarQbmnjwtgdBUB@skinsburskii>
+References: <178405975214.1082778.5193079941156341151.stgit@skinsburskii>
+ <178406001808.1082778.17299764648397654220.stgit@skinsburskii>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/+jUG/wma6bXPaXNDDF4uPI966CzmydeA=
-X-HE-Meta: U2FsdGVkX1+BwHjks+RcUuzIPHfbSeUChRislj0v1kLLaY98NAKF6cdZylAtqcI59w4fbE1UaMDFXzng8xvt0r2W54B6xPwD9aR33+AJde3xxYHmB3Xqy97uhwKNAjrEFHbwMYr8N+8lsjMIeaRezBQgyf4EPvq0NQyxCRRifw46VeA3PQuB85l2wH4sIawolc51TlXnBbIf/t6zg2PpDxpQ0xONaCpVs5SuoR/zHifYoqD66Sr0/ekUURTsxJf3+xmOBWatOhJM00GlJgkk1ANhdqTl8Jgjzp1LQGeDovN3/JPet+YhwAnTHMWlMR4NDTHuDFZrVnyepQjaQfBPmFF0Dc8n1a0i
-X-Rspamd-Queue-Id: 093A940002
-X-Stat-Signature: ofukrydpoaufx6f8q8s6anx3wj8ecikd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178406001808.1082778.17299764648397654220.stgit@skinsburskii>
 X-Rspam-User: 
-X-HE-Tag-Orig: 1784063675-113700
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784063682-640300
-X-HE-Meta: U2FsdGVkX1+wcnw1v5wNIfyBYe/OSsSGoLnYttckGrjIkZiQBKeyadKlYwGrJ2A7dOhPhSeSsucJEGsTxrW8sMksgvT8tYWVEStJpq/a22UuSd9iJupO4UCBMPdHfYi7O5FdUUBhvUWeHfGtzbdiVQkQklqFYe5474sHPmG4s7RPPZwoBzzxNxV4I4vNkx+SG3dtc9zeFh0evjsn5GoFWdGUOefcViYG+l3H/r+Nbw7kBGF+a6c1fcjWsB7fVg2RdZSu1GRmHvnLdpk1GAKi+dmYFn0GwnaHZmzuDzgclyNkTQiNMhj9NftVwZYYyZ3GD+mYjUqto1IwFrjkkvFEoFaLfzrdkpZkB0nxQUWqvXPhkMZM0MhQji7K9yrI5VTwTHiQ8XPrKHsw3WwMlYF49LkOkpPHw1Gq6nIj74GeSL+Kg6SHuO2pmoWE0VK6R3PgZK/ZfTJUhYjLfakNv3sYckoQ1wORSJ/JybovKYEP8YpcS3nL5b2MxYcOSjlzX9WrojBfvnU2w5Qed4oo4yygW0ZTidm8QVZvvjCME976mULIGnRsHaEs4IAbK8oGFyBgvxxtcJ3qI8+XBBtcyYs1vRTqDlv5fwVTiuFWtmKo/g5EznS4GZ9FsKxunTF57SMJrNgPm+egAAbMQ7w+kKwJ3Nlc/6nJhWMoFMfQ0z/CnMqB0sSIEtL+VzQ9aoSrgTHIhmmlS8IronHHATE2Lu9J0U+crknQBFQ6BubtLy/0RYmZSlhTeHi3X9vgcK28LUau1KZcC07wywXzQ6aEgdsF+c5Eu9Sj8TsF57rqXdWtbAUXo625IyOfPgEaHePT72cz0d5okBnHQJN9MjUguXociOlbEDzUsr0+yxykBdtke+e3CboMk9VswzGhNtLpAsgw9e0T7LTgRu8YdYoo30+wPkZLKwGvopEd+C3EUVUbsKDM/Zo/4+leJxv0B5Mv/Dbrxjw41sPvsg38YN/8i52
- 9kQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 40A4D20010
+X-Stat-Signature: kzo1k1qw3gg1a9handeeez6jui6p1ghi
+X-HE-Tag: 1784064838-216232
+X-HE-Meta: U2FsdGVkX19br6yElaTo+03NyCA+Pe1zKUiuOPvKbbvybBKSWyoGG89hlI0WWJRjXuZjqt9bQ5pzS9SYvVLB8Pls61ErJLfjv5rDxdmyWGBlwFWN2RrPmi877YvDtnEgwXX0W8EQsUHlZktN/kB9uUDvYbgjRS10wwNl3dF77SA/+v42xGQAiy5JhpQ/qA1eZusnyrW3G2cP8V9my+dEu0oKosxObswTBCucyXpdZgTWfSlJlPiwdxtpIn7MTC9nXURxCdWMmlVFLH46R0Wp2mMdty4UsBG+Dwih5+EFLmI01MCXntxVG+rWSBSIQ4ASmYvRdDgzmuyjNO0vyG11TeMVgnlct21d94MPG6YJkkqFB/nIhuQmyyG3KY3ASfnrOaRy9Dp1zKx2Ooaq9243OuJSXgONWQb0Yr/pR9HOqeDfxV4GrNPKDssSh5xzbSEkGCQ8+t2BZ4koPb4K82fb7UdoWvDOtzah1PRhn5oT/ehkH2miyLdec9b38obcEPizh3+zI2xz7J/aE6u6DZN5UbMV0BbIHuZ5BSvudC0gwO2q7eK2uLwDk4oYXBLJLxJntbA5hJoAkBcnbs1NP0Zgrn5R0XYT6bApxPrnUKjzSu6UJhF2x6tbFMDaF7KAk0JPV0cfSDPc7uYb0/n/1ieZsyZuUZyfwZ01p/nd4UXxzrygyYD6Z2JUtgeOvG+uWF11Jf7EV7/JAK0u68aOgsEQTBeHDQPIWO8P9M/zMFqBHk92N9jfFQkOABIVSkC0TLrnM38fMSqGXKOtepehzUCrsVgh/vMZypr5OLe0h7J3Fc5wauC9r1jpQxCtGxS5O7J0zW4qF4QXoQTKtPB5W4XMRKWNMlh/PNA/a6IDTDZfXCDvWShREE6lP8e7YppM2PGrmgnlaM0HPby+dY/UPmuuMptVTWt7pj8HtdIa03Fwpeglk+4FL8+xS1H5LNvKjy7CzpMOhpT7UMCVJfHO6hN
+ 07FRcl+j
+ skmncEFiJccPjZ2kyFWDp/hHTgFepIUSwyhCT/zg73HOhimxrJ9YBeBkiS+PRrND5kJWGu0zGA+KKoZbsjZ8IUMecvBhuqeRuphNtqELEu62/b0mqDn1H3IHNBZ+dAKbQrTEE80VX0YA8QjnsccvNkuTffadlJIynaY4QgYrQtSu3wQ81izQkW7dDzjfwi8P3RM4Mo3cnCYeNjkOzn/7vFd4TXOdkaaT4+lsuRprPiVcDMpy0JfL0zeyjJAokyHUQOFdo1t7QJ42WxzgImIQdOTvopbdh5/lFN2l9D8YxgHR6WvAbpipk/RTFMJKf9jYWGGx2+hzQEZP2HdBtNHIW7sya9r+ow58nvJNbYxUtoOyWbkIOlDB5bFSl66BHvBTOHxzG9KBnjpjbcFvWQeg5WPPdr/zWtf1087VeCyVktAfx+t1wkousCmXsT4Qf9anh87AJG49gyZDACOUMynnY2PmSBxDa5lTEkl3fV48U6+m6FlRCZRkTcGrP1bp4z1eqGDvD2LGqpeQ8Oiu0jsJKzkGzLd69GhraNdFmhWBcuxDGuSqt0YoDKcomDXcpZIO/EYsw/kaA6z7q/LpBNh4HT0lpVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,87 +129,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Jul 2026 02:32:06 +0800
-Jinchao Wang <wangjinchao600@gmail.com> wrote:
+On Tue, Jul 14, 2026 at 01:13:38PM -0700, Stanislav Kinsburskii wrote:
+> nouveau_range_fault() now uses hmm_range_fault_unlocked_timeout() for
+> the HMM fault path. The timeout passed to that helper is meant to bound
+> HMM's internal mmu-notifier retry loop, not the whole nouveau retry loop
+> around mmu_interval_read_retry().
+> 
+> Pass the full relative HMM_RANGE_DEFAULT_TIMEOUT value to
+> hmm_range_fault_unlocked_timeout() on each attempt, and retry from the
+> nouveau-side mmu_interval_read_retry() check with a fresh HMM retry
+> budget. This lets HMM continue when it has made progress, while still
+> preserving a timeout for repeated notifier invalidation retries inside
+> one HMM fault attempt.
+> 
+> This also removes the open-coded absolute deadline and remaining-time
+> calculation from nouveau_range_fault().
+> 
 
-> --- /dev/null
-> +++ b/include/trace/events/kwatch.h
-> @@ -0,0 +1,57 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#undef TRACE_SYSTEM
-> +#define TRACE_SYSTEM kwatch
-> +
-> +#if !defined(_TRACE_KWATCH_H) || defined(TRACE_HEADER_MULTI_READ)
-> +#define _TRACE_KWATCH_H
-> +
-> +#include <linux/tracepoint.h>
-> +#include <linux/ptrace.h>
-> +
-> +#define KWATCH_STACK_DEPTH 8
-> +
-> +struct trace_seq;
-> +const char *kwatch_trace_print_stack(struct trace_seq *p,
-> +				     const unsigned long *stack,
-> +				     unsigned int nr);
-> +
-> +TRACE_EVENT(kwatch_hit,
-> +	TP_PROTO(unsigned long ip, unsigned long sp, unsigned long addr,
-> +		 u64 time_ns,
-> +		 unsigned long *stack_entries, unsigned int stack_nr),
-> +	TP_ARGS(ip, sp, addr, time_ns, stack_entries, stack_nr),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(unsigned long, ip)
-> +		__field(unsigned long, sp)
-> +		__field(unsigned long, addr)
-> +		__field(u64, time_ns)
+Sashiko is right. I'll need to do it differently.
+There will be a v2 of this series.
 
-Move the time_ns to the first field, as unsigned long on 32 bit
-architectures is 4 bytes, and this will make 4 byte "hole" in the event.
+Thanks,
+Stanislav
 
 
-> +		__field(unsigned int, stack_nr)
-
-Make stack_nr the last element for the same reason.
-
-> +		__array(unsigned long, stack, KWATCH_STACK_DEPTH)
-
-Make the above a dynamic array based on stack entries.
-
-		__dynamic_array(unsigned long, stack, min_t(unsigned int, stack_nr,
-			  KWATCH_STACK_DEPTH);
-
-
-> +	),
-> +
-> +	TP_fast_assign(
-> +		unsigned int i;
-		unsigned long *stack = __get_dynamic_array(stack);
-> +
-> +		__entry->ip = ip;
-> +		__entry->sp = sp;
-> +		__entry->addr = addr;
-> +		__entry->time_ns = time_ns;
-> +		__entry->stack_nr = min_t(unsigned int, stack_nr,
-> +					  KWATCH_STACK_DEPTH);
-> +		for (i = 0; i < __entry->stack_nr; i++)
-> +			__entry->stack[i] = stack_entries[i];
-
-			stack[i] = stack_entries[i];
-
-> +	),
-> +
-> +	TP_printk("KWatch HIT: time=%llu.%06lu ip=%pS addr=0x%lx%s",
-> +		  __entry->time_ns / 1000000000ULL,
-> +		  (unsigned long)((__entry->time_ns / 1000ULL) % 1000000ULL),
-> +		  (void *)__entry->ip, __entry->addr,
-> +		  kwatch_trace_print_stack(p, __entry->stack,
-
-		  kwatch_trace_print_stack(p, __get_dynamic_array(stack),
-
-> +					   __entry->stack_nr))
-> +);
-> +
-
--- Steve
+> Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
+> ---
+>  drivers/gpu/drm/nouveau/nouveau_svm.c |   30 ++++++++++--------------------
+>  1 file changed, 10 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
+> index 4cfb6eb7c771..b1415c2e49fc 100644
+> --- a/drivers/gpu/drm/nouveau/nouveau_svm.c
+> +++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
+> @@ -655,8 +655,7 @@ static int nouveau_range_fault(struct nouveau_svmm *svmm,
+>  			       unsigned long hmm_flags,
+>  			       struct svm_notifier *notifier)
+>  {
+> -	unsigned long timeout =
+> -		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+> +	unsigned long timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+>  	/* Have HMM fault pages within the fault window to the GPU. */
+>  	unsigned long hmm_pfns[1];
+>  	struct hmm_range range = {
+> @@ -677,25 +676,16 @@ static int nouveau_range_fault(struct nouveau_svmm *svmm,
+>  	range.start = notifier->notifier.interval_tree.start;
+>  	range.end = notifier->notifier.interval_tree.last + 1;
+>  
+> -	while (true) {
+> -		if (time_after(jiffies, timeout)) {
+> -			ret = -EBUSY;
+> -			goto out;
+> -		}
+> -
+> -		ret = hmm_range_fault_unlocked_timeout(&range,
+> -						       max(timeout - jiffies,
+> -							   1L));
+> -		if (ret)
+> -			goto out;
+> +again:
+> +	ret = hmm_range_fault_unlocked_timeout(&range, timeout);
+> +	if (ret)
+> +		goto out;
+>  
+> -		mutex_lock(&svmm->mutex);
+> -		if (mmu_interval_read_retry(range.notifier,
+> -					    range.notifier_seq)) {
+> -			mutex_unlock(&svmm->mutex);
+> -			continue;
+> -		}
+> -		break;
+> +	mutex_lock(&svmm->mutex);
+> +	if (mmu_interval_read_retry(range.notifier,
+> +				    range.notifier_seq)) {
+> +		mutex_unlock(&svmm->mutex);
+> +		goto again;
+>  	}
+>  
+>  	nouveau_hmm_convert_pfn(drm, &range, args);
+> 
+> 
 
