@@ -4,61 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C23C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:15:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40C38C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EE636B0088; Tue, 14 Jul 2026 08:15:39 -0400 (EDT)
+	id 87CE26B008A; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14F9E6B0092; Tue, 14 Jul 2026 08:15:39 -0400 (EDT)
+	id 854056B0092; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E474E6B0088; Tue, 14 Jul 2026 08:15:38 -0400 (EDT)
+	id 71C9F6B0093; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CE2B6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:38 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EF6AC160396
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:15:37 +0000 (UTC)
-X-FDA: 84987277914.27.5B25415
-Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C1D9140018
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 371BA6B008A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2FA8A033E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:15:39 +0000 (UTC)
+X-FDA: 84987277998.11.B1E2577
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B8BBBC0017
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:15:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=bm6kt+pb;
+	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784031336;
-	b=2r+TmqFn34CBb43f3g3Y0w1wteWwJNwBTB/fAxFaNeMqSaQZRPJGWOadA74sxvbmq27Uon
-	8fSOaelt+KVWQy8aj0GZd1XxWBkJ3I2HJXV3XNGmdUuUZyZFVXKXDBaXBN/ce/iaETAYNo
-	5fb18GSdTxwpmzo6sDuO+sIfD+DjFEM=
+	t=1784031337;
+	b=2hgAMyQIFq8OrNK3EuXwtokyWlbW6zY9S+CxpKdZpwWXPHH2w3c3cVhx8OgrQJvpFhd3P8
+	euEZgePOtvG6/3bfoH/uEMhyHVl/5Y33aig1dVfNxc2cUiLJkIyIacsIxkAMDlv8Quga8V
+	XLgiTULfHjpXviOhVTS2BJH57vcHm/s=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=bm6kt+pb;
+	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784031336;
+	s=arc-20220608; t=1784031337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=jG9kvabeWurvibgf9N08skxi5cfVXo++BzhJjQERDvo=;
-	b=jD6kkF+F+0LMKj9EGde99ThgtGVNv09axWDzBo/1stL/NmDTWO6FhnyHZafcabnvbsHBzn
-	U0I+oTwzZoZczQtzSI2+2HsevVDOjQesZUDRBug/qBY0wH3EUYQD9sOWyfUNhuD9+PqtPo
-	JZwiOzTwFG8N5+LyweAYQvnQJ6lEfPM=
-Received: from TW005.hihonor.com (unknown [10.72.0.123])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gzytp13bjzYl7D0;
-	Tue, 14 Jul 2026 20:15:30 +0800 (CST)
-Received: from TA012-1.hihonor.com (10.77.199.132) by TW005.hihonor.com
- (10.72.0.123) with Microsoft SMTP Server (version=TLS1_2,
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ajWSzJC8ZX5c1v8s4BktWV/r3nVerPCf8q26E0mJDVo=;
+	b=R+9nVoMiyurFd6+nSWSr6+LT2Xh6XRxoQAdYlULVss8y4AJud6nvcZgRZRJQIFtSQLdo3X
+	ij8ThY5nPS6m02aOU6kOenirBHzE7vnXX4R4hIkx4zP2eRWeyfeClk2fIn2Lu8bqrBXIu+
+	Lv1i/4tZNEJ374j/XUQt/kxprkRaqcM=
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=ajWSzJC8ZX5c1v8s4BktWV/r3nVerPCf8q26E0mJDVo=;
+	b=bm6kt+pb2YDJ5eFS0HrJFxTuF9vH6LOkgpTUnkcRQTtLsSA/bEK9RLS/PrwpIVrNghjNzIqy2
+	SFBNTEKjWgbRLxSRRmvtZukmApB7kuHnmFJIgDjsFRX+4lgotpouNZW4YA5qOASCYC6UFRzhqnM
+	2uuiYcIdTBtzmE4M9vyA7OI=
+Received: from TW006-1.hihonor.com (unknown [10.77.215.153])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gzytq1bcMzYlJxV;
+	Tue, 14 Jul 2026 20:15:31 +0800 (CST)
+Received: from TA012-1.hihonor.com (10.77.199.132) by TW006-1.hihonor.com
+ (10.77.215.153) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 14 Jul
- 2026 20:15:29 +0800
+ 2026 20:15:31 +0800
 Received: from localhost.localdomain (10.144.5.36) by TA012-1.hihonor.com
  (10.77.199.132) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 14 Jul
- 2026 20:15:19 +0800
+ 2026 20:15:20 +0800
 From: Zicheng Wang <wangzicheng@honor.com>
 To: <akpm@linux-foundation.org>, <yuanchu@google.com>
 CC: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
@@ -73,10 +81,12 @@ CC: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
 	<kaleshsingh@google.com>, <tjmercier@google.com>, <tao.wangtao@honor.com>,
 	<zhangji1@honor.com>, <wangzhen5@honor.com>, Zicheng Wang
 	<wangzicheng@honor.com>
-Subject: [RFC v2 0/3] mm/mglru: proactive aging via memory.aging
-Date: Tue, 14 Jul 2026 20:15:26 +0800
-Message-ID: <20260714121529.2237261-1-wangzicheng@honor.com>
+Subject: [RFC v2 3/3] mm/lru_gen: expose oldest-generation page counts in memory.stat
+Date: Tue, 14 Jul 2026 20:15:29 +0800
+Message-ID: <20260714121529.2237261-4-wangzicheng@honor.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260714121529.2237261-1-wangzicheng@honor.com>
+References: <20260714121529.2237261-1-wangzicheng@honor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -85,12 +95,12 @@ X-ClientProxiedBy: TW004-1.hihonor.com (10.77.232.85) To TA012-1.hihonor.com
  (10.77.199.132)
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C1D9140018
-X-Stat-Signature: u417sr7hfxdmb8tm9ojfqr6zbxqsu1yy
-X-HE-Tag: 1784031335-97723
-X-HE-Meta: U2FsdGVkX18S0btBKY5ZHR2MhILoA840KXJhAzKocKW/PtmLIyLhJq7jm4VN1CbO7w2cMJ8PwH3lwMP+Hd+RPN3qxiYd8DjejGUUdJr4UrOTWsZvvZWp5q9mtZTerS/DXUJe9yoLqAtp00toE7LiDY5FGbn6R/w4Fu0HYAOHCleLrR1tjwktdrg6HWWLXIAabK1rOch1P/J3jSRgLk6Y2uJY2yQopXRrDYk9i+wGXFQSjlar65UQh1gqU6r5cUGIa9/mog/DBKK0bC2Cm58Rb7n2hDBEn7LNwb5hc4TZBvZ/f5ikUBs7lKuxy5m3flP4EQrjOQc+nL5ckgNA3tDpD0ph5IZx/AOXVf39GBOpXqZhSTnaAkDGw8jdfXSqhfKPh8PTu8Hs0yXAd7cL3F9fTcHytFyQA3JePn0dMZE9kPt22cvb5GXPIVOCN5h6ezcAfV+6P/jhz2udSM/MJ3+k3t26mms5RSedcPnqIaUqyxhw50UZSSdwVYBgkU8Tc5/cvUzHS24PsD+MtqzixhJX5+gb50b+VvYLPOkiRIkP1fJFu2Hs0pRvwmNm1DhNPfswChIe0ytBMK4JjOlxBpzajcGJpd6wtP/uhzxDtJkTUmlF2R2eesHeqaAuDVtxliZMgexyR9nxPPSo23pZBV4uZfJsDR41DcdwCJAjGZ1xX6id6hRWzS2kZ36En/UsIDYDNDmJb6WfjOUAHmmyqrfzM2uwtRa9GyCeorYb0+qEvdmVrZtMolN2olOc5aAiKRxNh4iw3wvbPyaBNTIukIbtjTqfxLXAnsCe+WUtZncLsrGCEezW2ZgxEtx1szglZfUBbqWTlUc6CfSyZFGzvvfqCkW5YVPjVqmfPqT2Drky76t/3qC8VpJGwtXoz8NBEpWAuUIldvHmPU6oZ4MDW0PgmQcMn7PR4Qes93TO70sK9oxa5HhSJoIUQJEHs8jaqiDjMZ6ZNAqSBaRsETcL55z
- aatabt9s
- f9LSPXsqBZOqZW6ZwYPbQR6G7UoKufBVjUKfiutsYz3APQ/0kTQkk2VnmcMwv9jxVULZXtomz2LCdDMDZylK/OWxdK56qTsNeemt8pgaMiL40RCw17jWhs9C8s7KljKKhZtqBILDTlhxYVKVlHfYiu/t8fqH7udevQaBW5gv8cmOTZ2YuXaWela6PZXGsd/sMs8Dc5Ob65lguof7VHnImJiVDcyR6ybKMI0UVmEuhiiiDpPxyvrEdbLc/v6s/544J9wqf
+X-Rspamd-Queue-Id: B8BBBC0017
+X-Stat-Signature: uyqboaigqeaf3wdzhprob8zsx3xqyci9
+X-HE-Tag: 1784031335-219585
+X-HE-Meta: U2FsdGVkX1+mXCAiic7j36Jpd0hTX+lj0cr9cN7kD3C5IM/NQLnHqQ+LeMk5dSJPaPaGm06rYiV9sXYYZGR8EwQYA2d6Egrsu8TJyyHY1+CPc6gkvVZa6ePyIkRPyo83vGqKEK3G2MpECbsEkk9UKgzdZLonw1XMKyON4O48Mq8HlSL4Wmogy0Y4A12Zx2IB71NeFAS+nozPATCbD0RHQXft0G4ss4deUaiC9l83U+lWIJUWiPWXkTgdldnhg0YaWkBz+AAaXNICtV0373gZAsO3jpogn2riZ8UkVYVF0wfhIg+hcJqCRVTWAJYOOzCGMJArsJzBoznmqcvyPmsNET4bUXIpPlsgKAoNDYQz4O3EnNmRUfak51lOTLPp3ZAmXft40nehuQoo6UFyiMdkhyhhRI1j/duqNNoAA8isWfu5ACJKWxWoLOZnrkBNjSNL6iP+URBlYbaYSBCHCZKcz2Ue3DQnI7W/rWkbBt2DY/iTLwJKZlIVLi92NahQ5A6vdLuz6Mtsgd6aFRyJutUX7qHMwciWfF9k8M6Nvwuw3SS2u/rwohlSU7PiGz+8tboIRNVV6oiJWCa5fWCbhe1GSR3rYDc8ZLaY6PTRTnw2VB6vm4VGohw1Sh1RpM2Lug3bYjiVWW2LKR7XJl4O/bfyh8EZFjVYct+aLFP6RzEp7ZVg8iMMsDzvT9W+kstObrYZyg0aFzPZigC9rbnmPKJtR82x5qEkhEmbu2YD1x6/enGPYmkrTRtwljIMVASa+ZO2rWj1TijlP2yeNS8ce63TwwUmXqiVIhD/kaFE9I7sFZiFxKJ3vuhaaVn5lvm43Jov/ocBhoEwx9o06po/vkZF5IW7EWHGmPkioRcfV31hfBOK75EZcXErJ7J3ASNsA6gd+SEe9LSGTTjaI/Uv2fzth2OnLZgNG1zVbRVjukbmIOXCI8HH4HQi/AEQRO9kWt+XZXK6N77cn5oaSmjMJVw
+ gMf+sQcT
+ E51JNz/yQXPrD+mBIo4G5tk0Lz/6NYHx4E0Nz1LksKtuC7RXXgtfJ0+Cf9UKbGhUjnG2A1tbOF4sL69SYtZL+OFM7HMPBKrLo6SkckIw3Vf5Up4ev2u8UdMA8sMx2PYpJ1w8/DBFjoTU/aMtXlpOb1rirX1C3a8vcPWxlpTw0y4dUQmFvyB3S+o0GQvxWRTn/uvRmgJC2kAbe3FTAwxSs/MqZielDdd9BlKkCOJEKMVxjuFG43aw+VLu/jEHebeZYiZ4DcYOzP8sbSx/CljbWepcy+ERS6GnmamkmNk5Ht5wET0gkJoCNP6F/XTFf5FfFgyEiMKkv2b9BpKXPwnlszne1zixwYlfPz4AfBH7DRYabKIc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,178 +108,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MGLRU inverts the reclaim order when anonymous memory is faulted in
-bulk: anonymous pages sit in the young generations while file pages
-sit in the oldest two, so reclaim evicts hot file pages before cold
-anonymous pages.  swappiness cannot correct it.  This series adds a
-per-cgroup proactive-aging operation, memory.aging, with the
-observability to drive it as a closed loop, so userspace can rebalance
-a cgroup's generations before reclaim runs.
+Add nr_oldest_anon and nr_oldest_file to memory.stat: pages in the
+oldest generation (min_seq) of each type, aggregated over the cgroup
+subtree and all N_MEMORY nodes.  This is the observation half of the
+proactive-aging loop - it shows a policy how much anon/file memory the
+next reclaim can evict directly, so it can decide whether aging is
+needed.
 
-The problem
------------
+Computed on demand from lrugen->nr_pages; no per-page maintenance, no
+hot-path cost.  Paired with the AGING counter and workingset_refault_*
+to confirm an aging pass took effect and was not too aggressive.
 
-MGLRU places pages by access path, not hotness.  On the current tree
-the entry rules in lru_gen_folio_seq() give:
+Gated by CONFIG_LRU_GEN; reported in pages, matching the lru_gen dump.
 
-  - faulted-in pages (anonymous pages; the fault path sets the active
-    mark) land at the 2nd youngest generation (max_seq - 1);
-  - file pages from read()/fadvise() land in the oldest two
-    generations: non-workingset at min_seq, workingset at min_seq + 1.
+Signed-off-by: Zicheng Wang <wangzicheng@honor.com>
+---
+ Documentation/admin-guide/cgroup-v2.rst | 18 ++++++++++++++++
+ mm/internal.h                           |  2 ++
+ mm/memcontrol.c                         | 24 +++++++++++++++++++++
+ mm/vmscan.c                             | 28 +++++++++++++++++++++++++
+ 4 files changed, 72 insertions(+)
 
-Pictorially, for a full four-generation window::
-
-       youngest                          oldest
-       max_seq   max_seq-1   min_seq+1   min_seq
-       -------------------------------------------
- anon    .          X           .           .     (faulted in)
- file    .          .           X           X     (read/fadvise)
-                                            ^
-                              reclaim scans from here -> evicts file first
-
-Reclaim scans from min_seq, so file pages are evicted before the
-anonymous pages two generations younger, a hot/cold inversion.
-
-swappiness does not fix it: it only selects which type to scan, not
-the ordering within a type, so reclaim can still evict hot pages.
-swappiness=201 (SWAPPINESS_ANON_ONLY) just flips the inversion to the
-other side: no value recovers a correct hot/cold order, because the
-order comes from the access path, not access recency [1].  This is not
-Android-specific; the same file over-reclaim is shown on servers and
-worked around there by forcing an age iteration before reclaim.
-
-Why userspace-driven
---------------------
-
-The benefit is workload-dependent: file-cache-bound servers gain from
-aging, anon-bound servers do not, so no kernel default is correct for
-all.  The kernel also cannot know when to age: on Android the right
-moment is the foreground-to-background transition, when the app's pages
-are cold but their PTE accessed bits are still accurate from foreground
-execution, a framework concept.  The kernel therefore provides the
-mechanism; userspace runs the loop.
-
-Design: observation and control
--------------------------------
-
-The series gives userspace one control primitive and the observation to
-use it.  All three pieces are per-cgroup and gated by CONFIG_LRU_GEN,
-and together they form a closed loop:
-
-  control   memory.aging          write nr_gens to advance max_seq without
-                                  reclaim; the aging counterpart of
-                                  memory.reclaim
-  observe   nr_oldest_anon/file   pages in the oldest generation of each
-                                  type: what the next reclaim can evict
-            aging                 number of aging passes, paired with
-                                  workingset_refault to spot over-aging
-
-A policy reads nr_oldest_* to see whether anon is sheltered, ages with
-memory.aging, then checks the aging counter and workingset_refault.
-A typical flow ages to rebalance, then reclaims::
-
-    echo 2 > /sys/fs/cgroup/foo/memory.aging
-    echo "100M" > /sys/fs/cgroup/foo/memory.reclaim
-
-Why cgroup v2
--------------
-
-memory.reclaim already lives in cgroup v2, but it is broken when
-anonymous pages are sheltered in the young generations: reclaim cannot
-reach anon until aging advances it.  A useful memory.reclaim therefore
-requires aging first.  Aging is not a new MGLRU detail leaked into
-cgroup v2; it is the other half of the proactive-reclaim operation
-cgroup v2 already exposes.  Putting it anywhere else (sysfs) cuts one
-operation across two ABIs and two addressing models.
-
-memory.aging is gated by CONFIG_LRU_GEN and exposes one primitive
-(advancing the generation), not internal data structures; if MGLRU is
-removed, the file goes with it.
-
-Alternatives considered
------------------------
-
-1) sysfs (/sys/kernel/mm/lru_gen/) fights sysfs's one-value-per-file,
-stateless model: the command is multi-argument and per-(memcg,node),
-the read is parameterized per memcg, and css-id addressing is hostile
-to cgroup paths.  It also splits aging from memory.reclaim.
-
-2) in-kernel automatic aging is workload-dependent (memcached regresses)
-and needs a trigger the kernel cannot know: the Android
-foreground-to-background moment is a framework concept.  MGLRU had this
-once: `should_run_aging' fired on a generation-balance heuristic::
-
-    if (young * MIN_NR_GENS > total)
-        return true;
-    if (old * (MIN_NR_GENS + 2) < total)
-        return true;
-
-
-3) extending memory.reclaim to run the debugfs aging command
-(`+ memcg_id node_id seq`) overloads a reclaim file with a non-reclaim
-operation and pulls MGLRU's debugfs command syntax into a generic
-cgroup v2 ABI. But Aging is reclaim's counterpart, not one of its modes.
-
-Results
--------
-N39 (Device-X1 8 GB/SM7750, Device-X2 12 GB/SM8750).  Production telemetry,
-~300 users, 30K+ device-hours:
-    keep-alive          +15.4% (8 GB) / +10.2% (12 GB)
-    IME dismiss latency -47.2%
-    launch/exit jank >50ms   eliminated
-    one aging pass      342 us median, never on a UX thread
-
-AN90 (a new shipping product, separate from N39):
-    scroll jank >50 ms  -22%, severe jank -26%
-    cold-launch stalls >= 3 s  eliminated
-    workingset_refault (anon + file) and direct reclaim both down
-
-Server (Intel i7-14700F, 20C/28T, 32 GB DDR5-5600, 1 TB NVMe,
-Ubuntu 24.04; same root cause, aging triggered on the
-reclaim path when anon in the oldest gen ratio < 10%):
-    fio random-read     +31.8%
-    ripgrep             +15.8%
-    memcached           -1.2%   (anon-bound; expected no gain)
-
-N39 and AN90 are different products.
-
-Why RFC
--------
-
-v1 [2] put the control in procfs/debugfs and was NAKed for the
-cgroup-v2 venue.  This version keeps aging in cgroup v2, next to
-memory.reclaim, and argues why above.  Discussed at LSF/MM 2026 [3].
-
-[1] swappiness=0/201 hot/cold inversion, and why the straightforward
-    fix is deferred:
-    https://lore.kernel.org/linux-mm/7829b070df1b405dbc97dd6a028d8c8a@honor.com/
-[2] v1: https://lore.kernel.org/linux-mm/20251128025315.3520689-1-wangzicheng@honor.com/
-[3] LSF/MM 2026 slides:
-    https://docs.google.com/presentation/d/1hUogz6InyLn13c8CjHuvEIzE4rT7saVRUV6xpWZoNfQ/
-
-Changes since v1
-----------------
-
-- Dropped the debugfs -> procfs move; aging is now a cgroup v2 file.
-- Added the AGING counter and nr_oldest_anon/file observability.
-- Corrected the generation-placement description to the current tree
-  (faults at the 2nd youngest, file in the oldest two).
-
-Zicheng Wang (3):
-  mm/lru_gen: add AGING counter and proactive aging helper
-  mm: memcontrol: add memory.aging cgroup v2 file
-  mm/lru_gen: expose oldest-generation page counts in memory.stat
-
- Documentation/admin-guide/cgroup-v2.rst       |  53 +++++++++++
- Documentation/admin-guide/mm/multigen_lru.rst |  13 +++
- include/linux/mmzone.h                        |   3 +
- mm/internal.h                                 |  19 +++++
- mm/memcontrol.c                               |  63 +++++++++++
- mm/vmscan.c                                   | 109 +++++++++++++++++++++
- mm/vmstat.c                                   |   3 +
- 7 files changed, 263 insertions(+)
-
---
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index f42ac6dddbf6..a071175d11be 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1658,6 +1658,24 @@ The following nested keys are defined.
+ 		the value for the foo counter, since the foo counter is type-based, not
+ 		list-based.
+ 
++	  nr_oldest_anon, nr_oldest_file
++		Number of pages in the oldest generation of the anonymous and
++		file types. Only present when CONFIG_LRU_GEN is enabled.
++
++		With MGLRU, page reclaim starts from the oldest generation
++		(min_seq) of each type, so these counts show how much anonymous
++		and file memory the next reclaim pass (or a proactive
++		memory.reclaim) can directly evict. They are aggregated across
++		this cgroup's subtree and all NUMA nodes, and are reported in
++		pages, matching the per-generation breakdown in the ``lru_gen``
++		debugfs file.
++
++		Proactive-aging policy can use them together with the ``aging``
++		counter and ``workingset_refault_*``: a large ``nr_oldest_file``
++		with near-zero ``nr_oldest_anon`` indicates file cache piling up
++		in the oldest generation while anonymous pages stay young, which
++		is the condition ``memory.aging`` is meant to rebalance.
++
+ 	  slab_reclaimable
+ 		Part of "slab" that might be reclaimed, such as
+ 		dentries and inodes.
+diff --git a/mm/internal.h b/mm/internal.h
+index 96add6cd4627..959d376c02a6 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -636,6 +636,8 @@ int user_proactive_reclaim(char *buf,
+ 
+ #ifdef CONFIG_LRU_GEN
+ int lru_gen_age_memcg(struct mem_cgroup *memcg, unsigned long nr_gens);
++void lru_gen_nr_oldest_pages(struct lruvec *lruvec,
++			     unsigned long *nr_anon, unsigned long *nr_file);
+ #endif
+ 
+ /*
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c6a969b56878..016194cabd60 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1733,6 +1733,30 @@ static void memcg_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
+ 		}
+ 	}
+ 
++#ifdef CONFIG_LRU_GEN
++	/* Oldest-generation (min_seq) anon/file pages over this cgroup's
++	 * subtree and all N_MEMORY nodes; see lru_gen_nr_oldest_pages().
++	 */
++	{
++		struct mem_cgroup *mi;
++		int nid;
++		unsigned long oldest_anon = 0, oldest_file = 0;
++
++		for_each_mem_cgroup_tree(mi, memcg) {
++			for_each_node_state(nid, N_MEMORY) {
++				unsigned long nr_anon, nr_file;
++				struct lruvec *lruvec = mem_cgroup_lruvec(mi, NODE_DATA(nid));
++
++				lru_gen_nr_oldest_pages(lruvec, &nr_anon, &nr_file);
++				oldest_anon += nr_anon;
++				oldest_file += nr_file;
++			}
++		}
++		seq_buf_printf(s, "nr_oldest_anon %lu\n", oldest_anon);
++		seq_buf_printf(s, "nr_oldest_file %lu\n", oldest_file);
++	}
++#endif
++
+ 	/* Accumulated memory events */
+ 	seq_buf_printf(s, "pgscan %lu\n",
+ 		       memcg_page_state(memcg, PGSCAN_KSWAPD) +
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 805e29c499c8..3800f0c4f1f5 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5935,6 +5935,34 @@ int lru_gen_age_memcg(struct mem_cgroup *memcg, unsigned long nr_gens)
+ 	return ret;
+ }
+ 
++/**
++ * lru_gen_nr_oldest_pages - pages in the oldest generation of a lruvec
++ * @lruvec: target lruvec
++ * @nr_anon: filled with oldest-generation anonymous page count
++ * @nr_file: filled with oldest-generation file page count
++ *
++ * Reclaim starts from the oldest generation (min_seq) of each type, so these
++ * count what the next reclaim can evict directly.  Computed from
++ * lrugen->nr_pages[min_seq type][zone]; eventually consistent, clamped to 0.
++ */
++void lru_gen_nr_oldest_pages(struct lruvec *lruvec,
++			     unsigned long *nr_anon, unsigned long *nr_file)
++{
++	int type, zone;
++	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++	unsigned long size[ANON_AND_FILE] = {};
++
++	for (type = 0; type < ANON_AND_FILE; type++) {
++		int gen = lru_gen_from_seq(READ_ONCE(lrugen->min_seq[type]));
++
++		for (zone = 0; zone < MAX_NR_ZONES; zone++)
++			size[type] += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
++	}
++
++	*nr_anon = size[LRU_GEN_ANON];
++	*nr_file = size[LRU_GEN_FILE];
++}
++
+ #else /* !CONFIG_LRU_GEN */
+ 
+ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
+-- 
 2.25.1
 
 
