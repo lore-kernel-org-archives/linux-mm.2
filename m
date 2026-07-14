@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F41C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7847C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D4786B009B; Tue, 14 Jul 2026 06:57:07 -0400 (EDT)
+	id AB1B86B0005; Tue, 14 Jul 2026 07:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AB3A6B009D; Tue, 14 Jul 2026 06:57:07 -0400 (EDT)
+	id A62406B0088; Tue, 14 Jul 2026 07:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C2066B009E; Tue, 14 Jul 2026 06:57:07 -0400 (EDT)
+	id 97B1B6B008A; Tue, 14 Jul 2026 07:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 075596B009B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:57:06 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A51B40369
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:57:06 +0000 (UTC)
-X-FDA: 84987080052.17.D561577
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 95368180003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:57:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gc8GFZ+d;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6BFD36B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:14:45 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2FFB4037F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:14:44 +0000 (UTC)
+X-FDA: 84987124488.27.3386AA4
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 560C8C0007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:14:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=r3eOE4fp;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784026624;
-	b=EHb4Y23UqPRKed5Zm4a1QWAwSNoFJqM63wKWaN0crWFzlD45IFne+eruiKqjDoi4XrvbKI
-	yqV1dlKqiFifedqms4+EV9KJXckQKt8oiuVt82b+39QLo4m32e3mtOZEyG3ELxee22imLy
-	rCLtUiHAvhUW4CnhMHfLVeoRBUwYj7A=
+	t=1784027683;
+	b=SbofEO0nUGKJdJ9CH8TFeWv0QfcIf4XSHkKWMb0vXVT1CGhyC23sdkR58xHeh+DlGemBf9
+	K6BYSdkPpgz+LGCTRdYEAXfOOADRp4H0p+nU6ejpsq3wNrtf4rIgWzLpC/sTXBYd6BK2tM
+	DI2tI1GrJUtGkCo1hFUeupIXEVEod/k=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Gc8GFZ+d;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=r3eOE4fp;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784026624;
+	s=arc-20220608; t=1784027683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b+/02nV5PKCig2GWCVlTdDIGXiyzApjtVUV59kIrcLM=;
-	b=bM1/5gqYkD6bazJkYgYD2ZTHe0Quz5iK70PCCCZ0pdRpGjoKhfIbkGVwKegaEjnJExngbX
-	cHoaxSQegYTK+JIpIhgiaab4Q5NEba3KsRIji3cP4XE/wcdUWY4LgFQ88UWHuV7N/wHUDX
-	tXPGAwFXUPmp52b1Ih0umFMbD4OKehU=
-Message-ID: <3b85c8ec-f49a-45be-8e40-fe729c908e0f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784026622;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b+/02nV5PKCig2GWCVlTdDIGXiyzApjtVUV59kIrcLM=;
-	b=Gc8GFZ+d3zpJbug2thf9FF6OZIE897xwN3vzOQlKoLCTS9pePGJ+vnyvp/ZqCoaevVxpL0
-	MABYh96Okw4r16h1lG84PA/X3/WsJLyqTYjIvO3ZWyboHtGV+FpE0REbcJaCFGqmtjZB8i
-	U6IvaVO/osbGa73qzG0SU06B1xld1E0=
-Date: Tue, 14 Jul 2026 18:56:29 +0800
+	bh=ulsCzZmD/Ne6RgfHVzpkXYONsVEio5AgXncvWtdl/7U=;
+	b=636+Z5hf9HjkQqLn0lu7/FKvmW7TDCp6rOr4qGufd4XKjp+y6FPk+WcsWczZnX/0Q2ct5R
+	u1b9eL/XONDXSmtQOyL6WPShOlS0i/RgGFcTrPK6AqSuPeJESlUfRzzs07LBrRVff97Y8K
+	rbw9meginTZ2qNdmZ33ne0fRyCKJasY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ulsCzZmD/Ne6RgfHVzpkXYONsVEio5AgXncvWtdl/7U=; b=r3eOE4fpb78xRcyeCxL4DOMJQn
+	7tAqieKm9NgJPfkVLMq97THSpB7+T5apxzKyp/sLnFuqu+wtz2q+OoFa+ZQy+DT0YtSY9l+yaMO+M
+	vzApCEvAtUCv2uiMV36WE7rsrvlghWw0Jfkfix01V6HZ1EA886m1+Y0JCiiSCmX261rsjT1eHgHc9
+	MQY0QNbme1GkI0NthyL6abUnwh1vi6gYCZjVq5rEDTzySdjvhgHu4nTSBTtPpq579JlP2/mx+lHfk
+	z7+MBRk6yz9JuRiOcIFRFqY1sfw3t74RzqjXKFIU+Az/2aZWuBhHocDmZ2t8NNevlBj/+AUg0cN2G
+	FeI29+tQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wjb5w-002EbI-1N;
+	Tue, 14 Jul 2026 11:14:36 +0000
+Date: Tue, 14 Jul 2026 04:14:32 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Guillaume Morin <guillaume@morinfr.org>
+Cc: osalvador@suse.de, avid@kernel.org, linux-mm@kvack.org, 
+	riel@surriel.com, Muchun Song <muchun.song@linux.dev>
+Subject: Re: [BUG] mm/hugetlb: possible temporary resv underflow
+Message-ID: <alYZ7fso3zp3j3jv@gmail.com>
+References: <alEJkwn5VlTTH_ZX@bender.morinfr.org>
+ <alSyhslcItgtqSHT@gmail.com>
+ <alYT8J9aRQDx_8pP@bender.morinfr.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] fs: push nr_cached_objects memcg gating into individual
- filesystems
-To: Usama Arif <usama.arif@linux.dev>, brauner@kernel.org, jack@suse.cz,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org
-Cc: hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com,
- linux-btrfs@vger.kernel.org, cem@kernel.org, linux-xfs@vger.kernel.org,
- shakeel.butt@linux.dev, hannes@cmpxchg.org, riel@surriel.com,
- kernel-team@meta.com
-References: <20260714101454.1202449-1-usama.arif@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260714101454.1202449-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alYT8J9aRQDx_8pP@bender.morinfr.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 560C8C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 95368180003
-X-Stat-Signature: 3g3er5j1grcbgygayt6oxs5scfg9zps6
-X-HE-Tag: 1784026624-304413
-X-HE-Meta: U2FsdGVkX18XNjbnAmQHILsBHUMIlTQGmJ3RP5oWCx6klBndwV2Ovx6T+v9CPlZB9CYhrKNbb6R1WMrVPEgLG471c6D3bo/udL25eHod1u6JLYvp7MhoGDidpEwsi7PHxJRh2PMYAjo7Ks2R5nIb/R9l/+ZVXoM9Mnqmo5gM8H46iqdzq/VLe3Up9WOc2lxAJ3ujY9nibqZ1pAk9hHo5VP/NaNFXQztEinOD6d/375zR8zXiaifQsY/yaGQk0aUgYQiaZlX55j7WM3j2j1B7+zlO0H5LWK4KtxiGMFG2foSypob9CeF4R+1d1ggJw8wxvYnjJFi+hU+vcpzsV5ChrfNzxXbgOYwiSOcQx0lgs1FI/6F4qpGKoGgsSu+CSjUNcDZBVwRpWQLnb9A3saNtTtUFRQLlq9RPBgB8vtIGqtN95zq8ia9tysXlt+tg6OADp12TWTq+6L/rkkL0zf9yowQ+W9GZSQihUMufKBldK/7XHbpiQQtGaiTMEX/Dd9RhEt8xP4EXZRqB8D1LyljRTw10bshKBysg/NJX4G+CcOH7BjcHDf9WQSI42pyXfC4YNvIgByhbVdw9S0ejkNNo935Bw+28TAyDaMfJZlcvEn2SCZeCKfen+Ounk1Bwteq9GtwdbTWsREz54++GzjLbd3/fXfZ1pjD1W2QEksukElW04SVDeBRLhkemQlal1+KKA7WfExXaejQ3rKVGT8soMlS8enEVaDBDvAtRmJ9OMcKNXHRB85jx4Nc3TlVX9vMOjV029+/hE/cZUkJ7FrYbnRlSybtASnMNFa0HF7RXKtIieLUdAyiM4houjyJuv/0RjIzBO2DkUnsiofxR0LiXi5z5riEzhf/kVmYt1lSrHhXAyUjqtVRMv/5qdvJuyWisTNEHb3HAZ0x57KlMZJTIjLwrGEUmx75h0twXhXvnf/o399CGGtgHvaRgntMLUbQnk/nMvdJcs0rQxubkZCf
- cXc7DTDR
- Ozl7E3JxnEZmttvqPooASzZjMKsvUzm+2MBAiOObN53SkRPx7UJUxmd5eTI6y83KAuN4XFCcD+DczO0SJYXR6kMR/ilnH5+u0fOOHsyWxS7S2DxVlJF9zQh3yKM/xY3MAJelxS/chW+QpU0aTj2sm8XaaKR1yGqzK+zSZxV9bHVIlS2Ho92WzMDDDAOTz1tJIJtMS8Lv2HsQRCuT07cJvOx0e5g0DmgVL/PbcT7AfA+/01Q51guGcO71znvlDeRufK03n
+X-Stat-Signature: m77pneuibe1ybfkesowqs3tyrhzmceok
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784027683-663875
+X-HE-Meta: U2FsdGVkX18VeDaz/hz4Bu6+t+/j42DxeVtS4wCMQMKuG6blMJZyeksMBVUJ+pIxqgeMKDfoZxIyLaIbKvCABntA132yXi8PoEFPBcvtdHrhlaq6T9liZqbHZbJPXB7LrmBrnkCx4XmGQbQDmRov93W00rCk4UcuzaLKlCQK/4L5D7hA0PUYDZX1d/fiXE4uoGjHcPriPwvlFdKbwSXgPUlPeDshSjQTKnVOiS3BBJAzb+nvIhg0YXkFqfkjDV151zv1e3gD0TPF2GAqhvLIs+YI1sUHQXILoIdVJ0y+LC8SZCkoH7yaPtP/hN8pdTfhl+qzGtSvKp9k7E8Cw7c+eqkCg9SkuUVNSeprf1NuOUZKVe53t48kYzNj26CBN91FC64HZxgOH8CIppo4MjRJy+yBEkHKz2ItGx4OA1qUnm7+S9bZ5MuS8ChsbaqW5xYHrBIAtz/emL6+mSE2wiXCWS27X6KeSKDasbzamv9A9X58GD289+S74E/HmQuEipr+QFTs26JVqS3nX5qZJo0AMNxOGdaWg+WlUtcVOwJiiCAd/ZIb0gaM7VSauXetpVOfTIH4+aylnG6qtn3wTUBLECK1T7pCdb6yDwdxAw9cW5P84Vbf31Fjz6T/OotxYAvqMzJVcCAFZH3zt9eJO3wj9E4hRBDV9juBEyQwkzP8H3qsHvbc1Ck2ZgcwsBTiSkQEipbd/diDUOd2FjmC9laCKFl+t+vVnaJEvpeutQV8te+fKjz335uX2EsnJZt/iTbIFrEtKepxX78Rsv7hdvJpzUuTMU2ZWeK2yGhqkORlUpvfuXnEGthUXn0yp7WejrLRGr4w2QwzIr8oCZMx0v7CEAUXxAwUX3kvWhTYhn8UhCkcUOLeXTlRnJ8vhGvA9g6Eg8YtBmGvLQehOpmT86sQCJ6uU7EVN38zVmFmmqsewp67dEfFoRyX8a9zSyzS8CJTDQEJhRnBmcIAfmN1z5Q
+ mqJoa7l1
+ wbsAbmAIvOYDt/L6y4LDC22PfoxJYqFo7+OQfgLLywYOyCv5p66jgtRGN12vGk91kD//GuPsJNXtCrzrqQODaJOF+alFwur9YwolpEWkc8NJ6sfO5WecrBblg7sh56GChlQGPZ2UqedFRc9EwAVIqAVS4+QuAkBJF4clLNibNLDTf22bVU7Go1qKwOh2iriN+R9HuAjtJN0HSkBKdeKor4rYmJZjx0jOv6KmmDnNB+BvsHGsIYdnXSGxiGOyj6M7KlPE1p8zqyOggH0HLfZoEbftM/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +94,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/14/26 6:14 PM, Usama Arif wrote:
-> Commit 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects
-> in memcg slab shrink") added a check in fs/super.c that skips the
-> ->nr_cached_objects() hook whenever the shrinker is invoked for a
-> non-root memcg, because none of the current implementations (btrfs,
-> xfs, shmem huge) honour sc->memcg.
+On Tue, Jul 14, 2026 at 12:48:16PM +0200, Guillaume Morin wrote:
+> > > I am not sure what the best fix is but checking folio_mapcount() == 0 
+> > > in __unmap_hugepage_range() seems to do the trick
+> > > 
+> > >                 adjust_reservation = false;
+> > >  
+> > >                 spin_lock_irq(&hugetlb_lock);
+> > >                 if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
+> > > -                   folio_test_anon(folio)) {
+> > > +                   folio_test_anon(folio) &&
+> > > +                   folio_mapcount(folio) == 0) {
+> > >                         folio_set_hugetlb_restore_reserve(page_folio(page));
+> > >                         /* Reservation to be adjusted after the spin lock */
+> > >                         adjust_reservation = true;
+> > 
+> > The fix looks correct to me.
 > 
-> That policy is really a filesystem-owned property: fs/super.c should
-> not encode the assumption that these hooks are never memcg-aware,
-> since a future implementation might legitimately filter by sc->memcg.
-> Move the check into btrfs_nr_cached_objects(), xfs_fs_nr_cached_objects()
-> and shmem_unused_huge_count() so each filesystem can lift the
-> restriction independently once its underlying counters/scans become
-> memcg-aware, without needing a coordinated change to fs/super.c.
-> 
-> Behaviour is unchanged: calls into these hooks from shrink_slab_memcg()
-> still early-return 0 for non-root memcg contexts, keeping the shrinker
-> bit clearable in each memcg's bitmap; the global (kswapd or root
-> direct reclaim) path still drives them as before.
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->   fs/btrfs/super.c   | 11 +++++++++++
->   fs/super.c         | 19 ++-----------------
->   fs/xfs/xfs_super.c | 12 ++++++++++++
->   mm/shmem.c         | 11 +++++++++++
->   4 files changed, 36 insertions(+), 17 deletions(-)
+> Excellent! Will you be submitting a patch or do you need me to do
+> something there?
 
-Looks reasonable to me. So
-
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
-
-Thanks!
-
+Up to you. You can either send it, or, I  can do it myself.
 
