@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B74DBC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C22C4450C
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96B226B00B5; Tue, 14 Jul 2026 10:05:44 -0400 (EDT)
+	id 042D56B00B7; Tue, 14 Jul 2026 10:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943416B00B7; Tue, 14 Jul 2026 10:05:44 -0400 (EDT)
+	id 01A916B00B9; Tue, 14 Jul 2026 10:05:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859B06B00B8; Tue, 14 Jul 2026 10:05:44 -0400 (EDT)
+	id E73056B00BA; Tue, 14 Jul 2026 10:05:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EF3A6B00B5
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:05:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8C178036D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:43 +0000 (UTC)
-X-FDA: 84987555366.24.B1F0FAA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C17506B00B7
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:05:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 57B4A1A0408
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:51 +0000 (UTC)
+X-FDA: 84987555702.19.00DE5D2
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E5B57160003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KYO9cDN7;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by imf26.hostedemail.com (Postfix) with ESMTP id 87215140011
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:49 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=J3x7thz6;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784037942;
+	s=arc-20220608; t=1784037949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7PpIAAceAbqpH6jG5ButaBQ+a0RsBJ8pT2Nb7B+4whg=;
-	b=sazbALmT9lf4dMiiD2nlxUSv1egJ3+dd+hUGgtaMqrzVm5D9t3vAGcV2Ats0VjYC3Mygii
-	/A53qWoC12azBZc/B4Sd8Nlb5DdRCbFUZozgsRNiKS1qyD4Xkx7qdKY7etAm1Gxa4c2TBo
-	nDp+17kJmCW6Hp8ISp1D0rOiLuyopJw=
+	bh=2FKZ3XNFEytxwIypQEaTGz4aBKlj8CjSZVpVOVmWyTY=;
+	b=MlJvRXYCUgAg7OJVC0sT+IDe+wqNN1Ox9q+uhzdurQBfxMa1AAwH8FY1KCs9CraPF0dQJN
+	5nYgfLRAlJUx46mWIDqmPUbGtAq/O8aCr9kokjYNFkAq/KpwzBLNtzXn9Dlnzr+rZZC2xe
+	Ygq73fuduID7BeO/PXC1h3CWbX0qY2A=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=KYO9cDN7;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=J3x7thz6;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784037942;
-	b=T2M/nfHrsDaVsZb78cldPxjAFV3yHRhirHdZ3FMRNuLb+BAX6IgzWMsunq9yHAWleQV990
-	sDsbaL0HdEhySGhtjcmdpL4/RPdkax1/Hsisqmdyx5cytYs+4GfN3N1cyUZqjCv0RSc3uo
-	4E+XXS0uhLtqHkTVCaZfpyx61imcn64=
+	t=1784037949;
+	b=LAoH4TIs7ET4ZgggwjwJVhYWmHeBR18GljXuUf6zlK7qdKbdNYnVc3DhOoTEfbZsBfMqin
+	ZIFTwtp4RiysB91R+id6wPiUhNyRTbiIy/Sq78T4NAW48NYLAkp19vhAbsggLXvOddpNxi
+	ktFG1ekSg8YPKoXTqPR//NNjOvOA+Qw=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D0068153B;
-	Tue, 14 Jul 2026 07:05:36 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 887551516;
+	Tue, 14 Jul 2026 07:05:44 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8C023F7B4;
-	Tue, 14 Jul 2026 07:05:33 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 656AE3F7B4;
+	Tue, 14 Jul 2026 07:05:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784037941; bh=5/MiBpHs0ErPi8rhCKmMSpm6ldHtuokM4yv1ELNR2HE=;
+	t=1784037948; bh=81hPHNKy6+kTl2+35lvgI+YoSAV+lxYrdESi+BeMQ9o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=KYO9cDN7rDizxe3v/je6cSxNCJeEVFPUnXsSWSe2BPhKaPCn7aqwcwGf5Fv/X2xeM
-	 fJX9X0ToA3Vm5csdSfShGsy263erMfQnPGfY2VsiME2prC8a3J844A9rhhh46ZY371
-	 B0aQM0b2gjQo2R4Q0Ts/ynPMN9wstMhZsk8mylek=
+	b=J3x7thz6DDIFd0T672gJo0MMnvLqrsR4ffqXjRuw6y/FJl0Sv4brx2AvsrenCXyub
+	 hNeHOpm1dGW6Ol7r4E98ejCd2H2xHFjmSYxf0TFC/EKx6I3nhvG3tmBb0uG3LlhJwX
+	 CsqR3L3Byysgiom9B50gJLtZIUOotRrLJXVN3jH4=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:03:53 +0100
-Subject: [PATCH 04/22] mm: use mm_is_kernel() in generic page table code
+Date: Tue, 14 Jul 2026 15:03:54 +0100
+Subject: [PATCH 05/22] arm64: mm: use mm_is_kernel() for kernel mm checks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-4-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-5-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -106,21 +106,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=7589;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=3632;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=5/MiBpHs0ErPi8rhCKmMSpm6ldHtuokM4yv1ELNR2HE=;
- b=uo2OhW6qUc5pqzt9VsrUNdo1IYgeBBnT6lqfK5Ys8RZJ6rVRF5aIis0fNbkhks1ozPQyi/VUC
- pyQWphyWV1oCOOAp4DOjVmApiSewKKEeH9vCDbxc96BlDrMTGs1NvYU
+ bh=81hPHNKy6+kTl2+35lvgI+YoSAV+lxYrdESi+BeMQ9o=;
+ b=x1sfUWl36JCNbyA4SXGcEWPKjJ2W9GBoHx+AU6SimhVKBjyOGOssy6XRkSm07LMGEZVJbSnP4
+ NXfCyMO7l0VD8qsDQe1L21uTIP7w+5/eot3+ExiUATLVcbhzhw7kG6L
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Queue-Id: E5B57160003
-X-Stat-Signature: afbf4968z7z64d4jgn4unr4wkzgttbru
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784037941-440354
-X-HE-Meta: U2FsdGVkX1+pe3pE/Q8YpzAmgBsdT4s6CqYp4UOHJOmQQ9F00CL5GfmeredDuMWzVrljtgFuXZ8Zv2pfmVnGBaXK36n1EfGqjkeqPrPgiZEI16IsMtdWi7jlvsnFTzSVgC6E6zALNGRBJ2qtKlA1fhfSyAK3A66Nq4VckrZZPsrS+ZYi43mXP77UMQcRgwYc1EPCwqM93GBpNogBnxi8mQyrkc2nWFvE22S9S4Paf966ulUF7veGr9ny0+EaLelqJNs3FBkjvR8HJWjP5HurwBoZCqviDA0afQJLA7pMy2RLYvOn3N11I7ZzX2O6rkwZCXSzy2Zp6DPu0L0wo9gsHjq+mFRNps/w2FHKYtPyjO4MwxEe2wmd5ZmsiCDaO3UTfZYTjXDuEGMreZaBxxCzanreGamsrWeNMFfNcxdINByJ4JTR4UIV5SVM3qai5T2SMMY1MpAPZ9oRw/7j6/QvjPiuNpYe+3CFLFZ8o9Rz6LVRDQrd8rrRmCMcIym3b+vd2xHCedabvBGDOvoWFi1lg/uiwQRp3WRzaMJA/kFikbqdXC5X00Nu1TCYAmJPCluJG8DhgazD8XbX84KwDbnqo2WNzejvNN63/N4bCtLZOPpBi2GCGMUM0uIptJ1Pa8Z22vI5r6rPBoeDGuXr7NFIdWgPCYshSqjb6C4WVaNGKkTZBPrVhhypQC636p8TbQO/pFG8fN4Qjz4GsvP3aKR1z+cEdREEzRo+Cu39MEz/2c+o2FpQCB1ai3dw27dx5siNAu7IqpVunoadxj31Rhv+DVwrKGCri3gaSrFyNpbUBBZF1cqUkTTxfUqWZrEsQ/pM45TrUd4GsOH2Lu7HR9KiVMWeAqojCAoutq3MpV6pnfTjdUangJbjsg1aGRvK+UHf8BrDwLf4vrnEo/epfwMKOAJxgytBs/161DDc+CEWs2Du5QlRFtU6CfIcO2sBwUh8NFQW4qgE6esCsjJ3Lzk
- Ik9bdPNg
- TfYbgQh8hBkSKCxM4LgPAUe3j9pAYQFVjJObgH0epNLfaeAlIy+MrJjEBZR+sl2rWprgeSCPWqUv1vSTtGGXZVzX8Jm/m23GE7oq/VHTV7Y/NjYm7OlFelxogDEydDpUQxsqQdnym88dIYkzqFe5hDJnE17dLR9aYuIMRONWLKk9QdNmkWb8XO+8Wf0JWeJIGdynyxBty2U4g7k1Vukoy8VQBnTEYvf4Clb2MjCOafpdqIB/hkBr100B9r277DSJz7sb/Q5ccrct0xSRnxLCclSFVt3x0y60iICPjbdbkfckam30T3zQBPTAIj2ml6BzkSwqbhZ0FqU4xaAfSKRAbrQeDsl3iGeKXZmSyL8kVD0wmEIFX7ja8b+ns8g==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 87215140011
+X-Stat-Signature: feg69nwomz867of7faurxb941g17ez4e
+X-HE-Tag: 1784037949-608438
+X-HE-Meta: U2FsdGVkX18bVK9xKRPJpWBcYG4wgCBSskVIZFYETnlqohwGzpdJpF22+9/+rC56vTOhTruNhSbPG/fl8yu6aeGCCcu1acTuYSBqbKW4Z144pjrqPddHWSf1Hyx+w1K7AxKy5IJp+Tu+twk5nVPVTanDM/vBwTOCjrZHcKoC+GZBWPZWrem/2B0QUpHmc9SvJIVVZNab35MWBhkDraa0AVShUdBCpo83xGUZXEBpdWar/5K6UGchJBtB5WXoiFefhLuDAfauOMj5SEVbVeV70+jeSleLFkaEOzukBExFJibbnwZJRCeWE79iLJVn8Ikmbqc62L5rVli+lPMumcLqj5TnK9tgSZb3KjxQsUFsh3a5645So9uXb6HiC9vibZNqvxwD1Z/lv/LvflvdmpNWb62XIDtAF1A1Suw70+1bCHyTa98k3HB1GptpeJ869KEEtCd6DcgySZt91i0TovGlUMDXcpaJYHOMIfMkjzpQFwBcdXTirCLvBgcYNlbxbVqATc5lD6J+zFkTcLUPbys4f9iuAmEel0PL50NIBjy1oEKH8zTvuO3s5Eupxzdf2MKQiGbwsMh/TfIqGt/Uum683lfRbOPwz9RfkV28olXV2YpXu6eGdkv7fMnhkjIuZa5NCpb8Feaie9g+qMiuPAmVfUzLqUDclf45Z8bTtRU0H8a/YhCHdsaHSmjrclV1daIwU91hVU9ZRx5ivM+YP3HoSTkFMq06t9rWfSh7w3Rw4f7+2s37TKMJZ1AQoglRowWY7N3akAyE5iWewX88cbicIqkffSg6qPqYQZ2AXKx4RK/pF09GCLDHfxqUFfCxkEs1+L0h8cBCK5rZG/AKvrEPlChIthu5UxX4UbjFybszonp++b3sKwLmSQdgUa4ISwikv7dDnDnUwlKTyq2tErui3zCHqRjU2uO11xksdxIb4qIkflqkkG/lDyrXcnPPkdiMq/IRtNLPBmbhav3CQi9
+ qgDxzO0f
+ p4j4rDvqDe755htBCnyljgYNcg7mCTveRS80DczQitgvwJvjC9XFwAVIQtJMCmi11LN7b+QrSSF2mrvXwySgZebNzhuGnE40U0FAM97HETG2jlYL0+jiiYiqrg4xNzoxCbS6tDZG5B5rFxqZi4ycez3f8Im2EY3e9BU6IXHZIEmjyvwrjKCEelqip0a3hFaHMK0c46LwW1ebi11dxR4pGfiB7Qn/Evh9V7WXLaBL+peoTbK4o7APtFHEFoFibgIU7LTGzsA32GkbdU3LpMZ9JpTswVxzso4+RXF05jkjE4SzkXvmAHv4wdu3Ac4W2ZGdnxxoHHBirGhsqXkcEaXWXeg8V+VNUE0PC8uKglVBgI5zPLdOT34nre7YrnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,237 +128,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Generic page-table allocation, constructor and walker code uses
-init_mm comparisons to select kernel page table handling. Use
-mm_is_kernel() instead so kernel-owned mm's can share that handling
-once they are marked with MMF_KERNEL.
+The new MMF_KERNEL flag identifies kernel-owned mm's. Checking the
+flag with mm_is_kernel() is preferred over comparing directly
+against &init_mm.
 
-No functional change as only init_mm has MMF_KERNEL set for now.
+In some cases, such as show_pte(), the handling is truly specific to
+init_mm and we leave those comparisons with &init_mm unchanged.
+
+No functional change, as only init_mm has MMF_KERNEL set for now.
+
+mm_is_user() will eventually be replaced with !mm_is_kernel(), once
+efi_mm is also marked with MMF_KERNEL.
 
 Assisted-by: Codex:GPT-5.5
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/asm-generic/pgalloc.h | 16 ++++++++--------
- include/linux/mm.h            |  4 ++--
- mm/memory.c                   |  6 +++---
- mm/page_table_check.c         | 14 +++++++-------
- mm/pagewalk.c                 |  4 ++--
- 5 files changed, 22 insertions(+), 22 deletions(-)
+ arch/arm64/include/asm/pgalloc.h | 10 +++++-----
+ arch/arm64/mm/contpte.c          |  2 +-
+ arch/arm64/mm/hugetlbpage.c      |  2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-index 051aa1331051..a283280e3140 100644
---- a/include/asm-generic/pgalloc.h
-+++ b/include/asm-generic/pgalloc.h
-@@ -138,7 +138,7 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
- 	struct ptdesc *ptdesc;
- 	gfp_t gfp = GFP_PGTABLE_USER;
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		gfp = GFP_PGTABLE_KERNEL;
- 	ptdesc = pagetable_alloc_noprof(gfp, 0);
- 	if (!ptdesc)
-@@ -148,7 +148,7 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
- 		return NULL;
- 	}
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		ptdesc_set_kernel(ptdesc);
- 
- 	return ptdesc_address(ptdesc);
-@@ -175,7 +175,7 @@ static inline pud_t *__pud_alloc_one_noprof(struct mm_struct *mm, unsigned long
- 	gfp_t gfp = GFP_PGTABLE_USER;
- 	struct ptdesc *ptdesc;
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		gfp = GFP_PGTABLE_KERNEL;
- 
- 	ptdesc = pagetable_alloc_noprof(gfp, 0);
-@@ -184,7 +184,7 @@ static inline pud_t *__pud_alloc_one_noprof(struct mm_struct *mm, unsigned long
- 
- 	pagetable_pud_ctor(ptdesc);
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		ptdesc_set_kernel(ptdesc);
- 
- 	return ptdesc_address(ptdesc);
-@@ -232,7 +232,7 @@ static inline p4d_t *__p4d_alloc_one_noprof(struct mm_struct *mm, unsigned long
- 	gfp_t gfp = GFP_PGTABLE_USER;
- 	struct ptdesc *ptdesc;
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		gfp = GFP_PGTABLE_KERNEL;
- 
- 	ptdesc = pagetable_alloc_noprof(gfp, 0);
-@@ -241,7 +241,7 @@ static inline p4d_t *__p4d_alloc_one_noprof(struct mm_struct *mm, unsigned long
- 
- 	pagetable_p4d_ctor(ptdesc);
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		ptdesc_set_kernel(ptdesc);
- 
- 	return ptdesc_address(ptdesc);
-@@ -279,7 +279,7 @@ static inline pgd_t *__pgd_alloc_noprof(struct mm_struct *mm, unsigned int order
- 	gfp_t gfp = GFP_PGTABLE_USER;
- 	struct ptdesc *ptdesc;
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		gfp = GFP_PGTABLE_KERNEL;
- 
- 	ptdesc = pagetable_alloc_noprof(gfp, order);
-@@ -288,7 +288,7 @@ static inline pgd_t *__pgd_alloc_noprof(struct mm_struct *mm, unsigned int order
- 
- 	pagetable_pgd_ctor(ptdesc);
- 
--	if (mm == &init_mm)
-+	if (mm_is_kernel(mm))
- 		ptdesc_set_kernel(ptdesc);
- 
- 	return ptdesc_address(ptdesc);
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 7a4b8e7ac8f4..b336eb32faa0 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3818,7 +3818,7 @@ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
- static inline bool pagetable_pte_ctor(struct mm_struct *mm,
- 				      struct ptdesc *ptdesc)
+diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
+index 1b4509d3382c..33db4fa3c619 100644
+--- a/arch/arm64/include/asm/pgalloc.h
++++ b/arch/arm64/include/asm/pgalloc.h
+@@ -30,7 +30,7 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmdp)
  {
--	if (mm != &init_mm && !ptlock_init(ptdesc))
-+	if (!mm_is_kernel(mm) && !ptlock_init(ptdesc))
- 		return false;
- 	__pagetable_ctor(ptdesc);
- 	return true;
-@@ -3909,7 +3909,7 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
- static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
- 				      struct ptdesc *ptdesc)
- {
--	if (mm != &init_mm && !pmd_ptlock_init(ptdesc))
-+	if (!mm_is_kernel(mm) && !pmd_ptlock_init(ptdesc))
- 		return false;
- 	ptdesc_pmd_pts_init(ptdesc);
- 	__pagetable_ctor(ptdesc);
-diff --git a/mm/memory.c b/mm/memory.c
-index d5e87624f692..c0244c0b0756 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3394,13 +3394,13 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
- 	spinlock_t *ptl;
+ 	pudval_t pudval = PUD_TYPE_TABLE | PUD_TABLE_AF;
  
- 	if (create) {
--		mapped_pte = pte = (mm == &init_mm) ?
-+		mapped_pte = pte = mm_is_kernel(mm) ?
- 			pte_alloc_kernel_track(pmd, addr, mask) :
- 			pte_alloc_map_lock(mm, pmd, addr, &ptl);
- 		if (!pte)
- 			return -ENOMEM;
- 	} else {
--		mapped_pte = pte = (mm == &init_mm) ?
-+		mapped_pte = pte = mm_is_kernel(mm) ?
- 			pte_offset_kernel(pmd, addr) :
- 			pte_offset_map_lock(mm, pmd, addr, &ptl);
- 		if (!pte)
-@@ -3422,7 +3422,7 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
- 
- 	lazy_mmu_mode_disable();
- 
--	if (mm != &init_mm)
-+	if (!mm_is_kernel(mm))
- 		pte_unmap_unlock(mapped_pte, ptl);
- 	return err;
+-	pudval |= (mm == &init_mm) ? PUD_TABLE_UXN : PUD_TABLE_PXN;
++	pudval |= mm_is_kernel(mm) ? PUD_TABLE_UXN : PUD_TABLE_PXN;
+ 	__pud_populate(pudp, __pa(pmdp), pudval);
  }
-diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 3fb995e5d40d..a5382c245b32 100644
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -148,7 +148,7 @@ void __page_table_check_zero(struct page *page, unsigned int order)
- void __page_table_check_pte_clear(struct mm_struct *mm, unsigned long addr,
- 				  pte_t pte)
+ #else
+@@ -52,7 +52,7 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4dp, pud_t *pudp)
  {
--	if (&init_mm == mm)
-+	if (mm_is_kernel(mm))
- 		return;
+ 	p4dval_t p4dval = P4D_TYPE_TABLE | P4D_TABLE_AF;
  
- 	if (pte_user_accessible_page(mm, addr, pte))
-@@ -159,7 +159,7 @@ EXPORT_SYMBOL(__page_table_check_pte_clear);
- void __page_table_check_pmd_clear(struct mm_struct *mm, unsigned long addr,
- 				  pmd_t pmd)
+-	p4dval |= (mm == &init_mm) ? P4D_TABLE_UXN : P4D_TABLE_PXN;
++	p4dval |= mm_is_kernel(mm) ? P4D_TABLE_UXN : P4D_TABLE_PXN;
+ 	__p4d_populate(p4dp, __pa(pudp), p4dval);
+ }
+ 
+@@ -81,7 +81,7 @@ static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
  {
--	if (&init_mm == mm)
-+	if (mm_is_kernel(mm))
- 		return;
+ 	pgdval_t pgdval = PGD_TYPE_TABLE | PGD_TABLE_AF;
  
- 	if (pmd_user_accessible_page(mm, addr, pmd))
-@@ -170,7 +170,7 @@ EXPORT_SYMBOL(__page_table_check_pmd_clear);
- void __page_table_check_pud_clear(struct mm_struct *mm, unsigned long addr,
- 				  pud_t pud)
+-	pgdval |= (mm == &init_mm) ? PGD_TABLE_UXN : PGD_TABLE_PXN;
++	pgdval |= mm_is_kernel(mm) ? PGD_TABLE_UXN : PGD_TABLE_PXN;
+ 	__pgd_populate(pgdp, __pa(p4dp), pgdval);
+ }
+ 
+@@ -108,7 +108,7 @@ static inline void __pmd_populate(pmd_t *pmdp, phys_addr_t ptep,
+ static inline void
+ pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep)
  {
--	if (&init_mm == mm)
-+	if (mm_is_kernel(mm))
- 		return;
- 
- 	if (pud_user_accessible_page(mm, addr, pud))
-@@ -201,7 +201,7 @@ void __page_table_check_ptes_set(struct mm_struct *mm, unsigned long addr,
+-	VM_BUG_ON(mm && mm != &init_mm);
++	VM_BUG_ON(mm && !mm_is_kernel(mm));
+ 	__pmd_populate(pmdp, __pa(ptep),
+ 		       PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_UXN);
+ }
+@@ -116,7 +116,7 @@ pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep)
+ static inline void
+ pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pgtable_t ptep)
  {
- 	unsigned int i;
+-	VM_BUG_ON(mm == &init_mm);
++	VM_BUG_ON(mm_is_kernel(mm));
+ 	__pmd_populate(pmdp, page_to_phys(ptep),
+ 		       PMD_TYPE_TABLE | PMD_TABLE_AF | PMD_TABLE_PXN);
+ }
+diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+index 2de12656b4d8..ad5c04cf66ff 100644
+--- a/arch/arm64/mm/contpte.c
++++ b/arch/arm64/mm/contpte.c
+@@ -18,7 +18,7 @@ static inline bool mm_is_user(struct mm_struct *mm)
+ 	 */
+ 	if (unlikely(mm_is_efi(mm)))
+ 		return false;
+-	return mm != &init_mm;
++	return !mm_is_kernel(mm);
+ }
  
--	if (&init_mm == mm)
+ static inline pte_t *contpte_align_down(pte_t *ptep)
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 25f04d01aabe..4d054fadf51c 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -212,7 +212,7 @@ static void clear_flush(struct mm_struct *mm,
+ 	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++)
+ 		__ptep_get_and_clear_anysz(mm, addr, ptep, pgsize);
+ 
+-	if (mm == &init_mm)
 +	if (mm_is_kernel(mm))
- 		return;
- 
- 	page_table_check_pte_flags(pte);
-@@ -231,7 +231,7 @@ void __page_table_check_pmds_set(struct mm_struct *mm, unsigned long addr,
- 	unsigned long stride = PMD_SIZE >> PAGE_SHIFT;
- 	unsigned int i;
- 
--	if (&init_mm == mm)
-+	if (mm_is_kernel(mm))
- 		return;
- 
- 	page_table_check_pmd_flags(pmd);
-@@ -249,7 +249,7 @@ void __page_table_check_puds_set(struct mm_struct *mm, unsigned long addr,
- 	unsigned long stride = PUD_SIZE >> PAGE_SHIFT;
- 	unsigned int i;
- 
--	if (&init_mm == mm)
-+	if (mm_is_kernel(mm))
- 		return;
- 
- 	for (i = 0; i < nr; i++)
-@@ -263,7 +263,7 @@ void __page_table_check_pte_clear_range(struct mm_struct *mm,
- 					unsigned long addr,
- 					pmd_t pmd)
- {
--	if (&init_mm == mm)
-+	if (mm_is_kernel(mm))
- 		return;
- 
- 	if (!pmd_bad(pmd) && !pmd_leaf(pmd)) {
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index ed4860c01936..a3f47d1de3c5 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -72,13 +72,13 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 		 * fit its pmd_bad() check (_PAGE_NX set and _PAGE_RW clear),
- 		 * and CONFIG_EFI_PGT_DUMP efi_mm goes so far as to walk them.
- 		 */
--		if (walk->mm == &init_mm || addr >= TASK_SIZE)
-+		if (mm_is_kernel(walk->mm) || addr >= TASK_SIZE)
- 			pte = pte_offset_kernel(pmd, addr);
- 		else
- 			pte = pte_offset_map(pmd, addr);
- 		if (pte) {
- 			err = walk_pte_range_inner(pte, addr, end, walk);
--			if (walk->mm != &init_mm && addr < TASK_SIZE)
-+			if (!mm_is_kernel(walk->mm) && addr < TASK_SIZE)
- 				pte_unmap(pte);
- 		}
- 	} else {
+ 		flush_tlb_kernel_range(saddr, addr);
+ 	else
+ 		__flush_hugetlb_tlb_range(&vma, saddr, addr, pgsize, TLBF_NOWALKCACHE);
 
 -- 
 2.51.2
