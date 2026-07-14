@@ -4,93 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3655AC44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:09:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A1FCC44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:09:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61B66B00D1; Tue, 14 Jul 2026 14:09:16 -0400 (EDT)
+	id DD7B96B00E0; Tue, 14 Jul 2026 14:09:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D133D6B00D2; Tue, 14 Jul 2026 14:09:16 -0400 (EDT)
+	id DB4B66B00E1; Tue, 14 Jul 2026 14:09:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD9A46B00D3; Tue, 14 Jul 2026 14:09:16 -0400 (EDT)
+	id CECB26B00E2; Tue, 14 Jul 2026 14:09:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CE8D6B00D1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:09:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F31F4140436
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:09:15 +0000 (UTC)
-X-FDA: 84988169070.02.9278BB9
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 597A2C000D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:09:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="HXw/pLdY";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D5346B00E0
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:09:27 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 23594A04AE
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:09:27 +0000 (UTC)
+X-FDA: 84988169574.08.956D393
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AC6DAC000E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:09:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784052554;
+	s=arc-20220608; t=1784052565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lL216fIv4vvT2FQ3lahp26Y5N739lhMmfF6ZddEZbhg=;
-	b=rHNSpzCKtr8Y7vhWqz18zM+8e8vEompR5c/ZYd4Yg+Dfoc+WaKDgLoGnmGJRguoGcMBrAa
-	3LrnoBt3Kc5vhZbZOJjNt3NOLoQVC9JlsMZl71E6THnVEJ6B17MjO/5d8hip2kxhF+fYNl
-	8av8yruXtv2D3MkpueuiVxCWzAhCehw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SszLXJMcqYtIVPmkLiJsJnkXN7FFEVXMgQpQ0/gWQmk=;
+	b=FU/fhFT7rw0VDpaAVMqaHeF2DpafNZkkClBaq8Y31icfAN15cyUWxXq6Bnt+gb3c5asV5W
+	SJmvXjpaZyFaMi7biAF3gTn0YQ2nkV3BtotJrJMKZN9DJ8qxNY8xpeQSd39XGQjmITgbLN
+	htICrOmo1ua6aoGNJoxnb11q79umyKg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="HXw/pLdY";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784052554;
-	b=xawlpxp7aGJbluknoih15AfkaQ2ieoOKN7v++BXfr5eYxfl3JmADBx10MDcAihNIZdADOc
-	fMLf9P8DHWUEUTCU/Ej6cevsanFnPhoy9fE+YrL5ST3lTJMtJrtl590U1RcyCac1kaeqzh
-	EcutuM/l9439ylJDt1hc1uD0RprPdxQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=lL216fIv4vvT2FQ3lahp26Y5N739lhMmfF6ZddEZbhg=; b=HXw/pLdYjTp+AlmI8arZ9MGMwt
-	BlLfk1k+5AWkCkR8zzomGFLKi7kHOzA8eBPeyKyY0OsVg+MzCm8quclLRphxEnnQeTR3xFeOT5M1m
-	1ucZamplx10R+la9m1p7K3n6p1wYSOdc1TnTAnXnk9QW4PGMG6kIUJo0W/yph1NyICIYI0RvM0xZ/
-	ROeQMVrA+ZdCz/O7aZZ91lt/1W+wdTaVnOwMd27OBrbUAkJpxCUUDXU3G406mwcjmXxXzfyIOBobt
-	PKLp8LMJ7ZrrB/H0Ldsd6BcMdkz0EENuzXAGSPcPJq8Ob4pKz9pCtohXcwcoAsr2K6MaUFFip6yei
-	L4QBMtBA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wjhYg-0000000FegS-3K0q;
-	Tue, 14 Jul 2026 18:08:42 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>,
-	linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v3 2/9] hugetlb: Mark some function arguments as const
-Date: Tue, 14 Jul 2026 19:08:32 +0100
-Message-ID: <20260714180840.3731244-3-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260714180840.3731244-1-willy@infradead.org>
-References: <20260714180840.3731244-1-willy@infradead.org>
+	t=1784052565;
+	b=tfUX8wSQq+bcSR2/VAjDl31trEyOOmLVhxYd59XzNVsz6YJkGfAPj3Hr45iU/ktDjEp9CC
+	rdoi06lHKSjkY7Py3c+pxapcdybsosSxfZg0pE3K6NwIPqXk8FN/dlvKoSMvsLCWZeKDUo
+	wClmhFARmEHhKhb3XqaYzs4d35d4fw4=
+Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
+	by 156.147.23.51 with ESMTP; 15 Jul 2026 03:09:20 +0900
+X-Original-SENDERIP: 156.147.1.127
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.127 with ESMTP; 15 Jul 2026 03:09:20 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 15 Jul 2026 03:09:20 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>
+Subject: Re: [PATCH RFC 09/13] mm/swap: add priority queue for swap device
+ allocation
+Message-ID: <alZ7UBXweuuOX4qz@yjaykim-PowerEdge-T330>
+References: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
+ <20260714-swap-pcp-priq-v1-9-de9b164ed419@tencent.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7mk3kk8skcd79j7rbgp4kjrbqat46dnf
-X-Rspamd-Queue-Id: 597A2C000D
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714-swap-pcp-priq-v1-9-de9b164ed419@tencent.com>
 X-Rspam-User: 
-X-HE-Tag: 1784052554-907059
-X-HE-Meta: U2FsdGVkX1/hUA7T7Q6CTVH+vgH3hNXGnBDv4o2mV2D/NOHxgsb6p0vafTdbdYOVNsQkOmb/oVkumE6jVG++ChdvQoIArVJjcH5TL1XK/R40rCx8xWKFk1SDyfKlmRpIRAezU6FWfmYt3UZBpzA3SH80ClUgq56+2nUBV+ByOd/QdiJTFktuFnuturyXsszVPn+Vl3ET5Q/ccv85QZ2KRkKaaMYX7bONFLP4Y5vT+a5zT1fRPkP3j8Iyj/pE0tH6mIxTYpw97ulNVakrX9LaF1HFtoshtRHuIvIMPXhiH21KgAck0gavrpTSSJeCDOcUkVobTs0vlDLBR40BpQQ4XMbPxJvULYYK3kD/jkN3tsH64PVR7/KjOA+l/SaHes34svZdjRulmA6WiUb0RzzzIHoM77BD5G64FCTSCo3kGyE3BfQ3hGDGRZkMd9FwH9ObMlJGtZcCnVn0ewp7/TpjZYIvFeCCwu1mgXUqnerfmiyouqCnktSQwl7V2HuEIRk2Fmir6EUl9nVcfW2SMJp899WyQF5syZj5Sl0TBIbiSnXNn4nSM3zr3eg4/IR/cmzevimqRacv2jJb0vDzBK4V+YbXj1Zdepxu5294dReNVgCHT/Ek8y2F8JOEJarlO2RNcIkbE7A/lQTEP+aiPJCnfLXI4jWO4z0ApSN9qwvvuBar/F3mjEuxPhThzyFxPSjd1KT7sDz8ZRcr0xmmRUnUflZXNq8Mf2zBQBFs9o4HaPg3CewNbrvSjC+O7A86Fey5Q2wR/YpvfPe07HHKhCwQwdnNDIsIciAFJiziDR1vzkb2ZrQv/bFzewV/T1gBtiIQ7BlqzesiRrvo4gyy4h/GPmY/27vcnaztSAg2uFBDxG7PafTixI2FDbi82kYcBRnBZTqu7UxwbR6JRVikPZUECC7u9cetjJbtI10IUFvbmV6s4MEMGuczTcByKXNSYlnNl5yDosudYMlS/KlO9G4
- DYiqIoCe
- rhE5phOpbPviPmoZdSn4ADQVzX3IVwrZc49iQ9AwSLcZGfRiDlKHQ/nNmJP+M0kVoErYMDRitwyRp0eZ5Nzr38OchObfEUJimPLK5HA1NrBf6NZKGx2iWWYXpLX0O9N+nyOodI8YdRrmzwsMjKGLyTckDjDvUPfKisPv/z8D2272G2WcUg6QU4Il5SgaKc6WLnrZzmal8DQpdBzPOs6JKOy/kuYIY2CFd+uO9VwEbvvpf/+fynp/0rzB9dBlASrnOiPy3sishaStUT3U8QIzQkP6NnYbpHuwn+f9uoMWEts/wtCPl0Ae5vEQAwzAy/UZQliYMNOD5p3TwpE8=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AC6DAC000E
+X-Stat-Signature: aaikq5ha17jx4w59wbowoh1zsa48wn1u
+X-HE-Tag: 1784052564-88798
+X-HE-Meta: U2FsdGVkX1/8Morgd+Zf3T1UgC2CRwCMYtoPEu609pXZsktb8+YgJJ+hYs6o0T+c5urgVbpzbfxbqCdWlptNef3NVLmlBWQvfo2OUhrp5ThpOL40zFlXyFNFYz+XcCOhvJ7ixBIyu382p9qwg8nsGoDwInnG/86/sd0iNBcLjhXqe2j5CjbMClpxIR2hz7AznvmbS3CWu1HhrMdTWO+f91ViubszFxewQ5mdsrT6ewAtkWBezG6lJU50LGFxtLcVzGsYSNGvuHmnrIUQqBERUr/phpVZJDUh6MApKGQfXCSoIhHtf/pdtBy2ZFqIVat8mBvTRJOmtvUYzF3kaK/qpnn0y2YHXwRTEtiDiymA0Gv6iYvFOOxVv2WnfwI0t5oDaOjW2uypxr1AI0gtOGkArB+aAyMXlb9L0dbDxfRobHfcpeouNZcH6hbqL2yzncMLtbNjDCvDW6Rd1+tdHxJHUNEfMt71XVUL/2uexrBdkBdLA+cqxeJ0uFc30XyPe22NgkHb84iCYWI0LmxUGQU9dRJwjXxbBMDMLOxpN8+fyNuWQ2TaxXAg1/i3gdpK8gbqk6eKps7kAN7Qo3mieDqSMOLd2/ps7jgojNP1AGP9SHvjDgnbVdZslLtRligBA54XoywIZ3WhPuhs69INm95bUO0oHHydoIXcATF7+lPgObZgaqd8LzXNZeRH87gzwyK0DRmqo8s813i4r30NQoU7AQG1MHOGM1Ca5QR7wrE6C9FnCP1KwEuPWYJh9cz/YtrDxxlbUsXKqzQ81Q2XhrdliyIKIXjwTlxOnzfaDn68FMPq4WBIakvsSfXrSXaVUxZNaCQy/G8HiKjqWJjLKcCM4QAty/qprerHCw/50ge7Wbf8LzKZiBCZAqN+o42HfwMmRgM4nesVL59ImLbsW4lnA4cLo0LhOv9UaXrooYinWGwfgFdr+K9/jr3IpvJg5AOcBNHlCitNlmR4rVAALkD
+ yb2sMn8f
+ m5VKZt0f5f+m9KhiJJP2Nk004s+86O0vPNseFHKi8gjy6WuApdDgO95PDZ+IF/cXtGArDn7Kk4b1LYaO5E3fYhHPIpkWFcjgiTea/VEdLmNob90qaIuGPU3ybo9G4WZ6ej/8lpjc/mJCjTudGDOYss9iLNbGkYBaFKsucc8qNjbMBcRHiCBnSN4W5X47yqSa6pGe3ufZgfM8LI0I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,110 +88,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These functions do not modify their folio argument, so we can mark them
-as being const which will allow for some minor optimisations and let us
-mark other function arguments as being const in the future.
+On Tue, Jul 14, 2026 at 01:25:47AM +0800, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
----
- include/linux/hugetlb.h | 19 +++++++++----------
- mm/hugetlb.c            |  2 +-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+Hi Kairui,
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2abaf99321e9..18661a7cdb37 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -165,7 +165,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
- 				 struct vm_area_struct *vma,
- 				 unsigned long address);
- 
--struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
-+struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio);
- 
- extern int movable_gigantic_pages __read_mostly;
- extern int sysctl_hugetlb_shm_group __read_mostly;
-@@ -292,8 +292,7 @@ static inline unsigned long hugetlb_total_pages(void)
- 	return 0;
- }
- 
--static inline struct address_space *hugetlb_folio_mapping_lock_write(
--							struct folio *folio)
-+static inline struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio)
- {
- 	return NULL;
- }
-@@ -595,8 +594,8 @@ enum hugetlb_page_flags {
- #ifdef CONFIG_HUGETLB_PAGE
- #define TESTHPAGEFLAG(uname, flname)				\
- static __always_inline						\
--bool folio_test_hugetlb_##flname(struct folio *folio)		\
--	{	void *private = &folio->private;		\
-+bool folio_test_hugetlb_##flname(const struct folio *folio)	\
-+	{	const void *private = &folio->private;		\
- 		return test_bit(HPG_##flname, private);		\
- 	}
- 
-@@ -616,7 +615,7 @@ void folio_clear_hugetlb_##flname(struct folio *folio)		\
- #else
- #define TESTHPAGEFLAG(uname, flname)				\
- static inline bool						\
--folio_test_hugetlb_##flname(struct folio *folio)		\
-+folio_test_hugetlb_##flname(const struct folio *folio)		\
- 	{ return 0; }
- 
- #define SETHPAGEFLAG(uname, flname)				\
-@@ -727,7 +726,7 @@ static inline struct hugepage_subpool *subpool_inode(struct inode *inode)
- 	return HUGETLBFS_SB(inode->i_sb)->spool;
- }
- 
--static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
-+static inline struct hugepage_subpool *hugetlb_folio_subpool(const struct folio *folio)
- {
- 	return folio->_hugetlb_subpool;
- }
-@@ -857,7 +856,7 @@ static inline bool arch_has_huge_bootmem_alloc(void)
- }
- #endif
- 
--static inline struct hstate *folio_hstate(struct folio *folio)
-+static inline struct hstate *folio_hstate(const struct folio *folio)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_hugetlb(folio), folio);
- 	return size_to_hstate(folio_size(folio));
-@@ -1088,7 +1087,7 @@ static inline unsigned long huge_page_mask_align(struct file *file)
- 	return 0;
- }
- 
--static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
-+static inline struct hugepage_subpool *hugetlb_folio_subpool(const struct folio *folio)
- {
- 	return NULL;
- }
-@@ -1157,7 +1156,7 @@ static inline struct hstate *hstate_vma(struct vm_area_struct *vma)
- 	return NULL;
- }
- 
--static inline struct hstate *folio_hstate(struct folio *folio)
-+static inline struct hstate *folio_hstate(const struct folio *folio)
- {
- 	return NULL;
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..cc8d98399913 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1775,7 +1775,7 @@ void init_new_hugetlb_folio(struct folio *folio)
-  * stable.  Due to locking order, we can only trylock_write.  If we can
-  * not get the lock, simply return NULL to caller.
-  */
--struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
-+struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio)
- {
- 	struct address_space *mapping = folio_mapping(folio);
- 
--- 
-2.47.3
+Thanks for the patch :)
+I like the idea. A few questions and comments on the core implementation below.
 
+I'll share my higher-level thoughts (e.g. on a tunable interface for the round-robin policy) 
+separately in a follow-up.
+
+> +/*
+> + * All available swap_info_structs are grouped by priority rings, the rings
+> + * are ordered in a queue by priority (lower prio value = higher priority).
+
+looks like comment updated needed :)
+
+[...]
+> +
+> +/*
+> + * The ring is protected by swapon_rwsem so updating it is costly. To make
+> + * the allocator and other users skip full devices faster, the lowest bit of
+> + * a device pointer is used to mark it disabled (temporarily unavailable).
+> + * This relies on struct swap_info_struct being sufficiently
+> + * aligned (guaranteed by kmalloc).
+> + */
+> +#define SWAP_DEVICE_MASKED_SHIFT	0
+> +#define SWAP_DEVICE_MASKED_BIT		BIT(SWAP_DEVICE_MASKED_SHIFT)
+
+Unlike the old plist, full devices stay in the ring, so every
+allocation keeps walking past them. When the higher priority
+devices are all full, each swap out pays one masked pointer check
+per full device before reaching a usable one. That is also the
+steady state for swap tiering, so I want to be sure it stays cheap.
+It looks like a deliberate trade-off of the static ring design.
+What do you think?
+
+[...]
+
+> +static struct swap_info_struct *swap_queue_get_device(long nr_alloc, int nr_iter)
+> +{
+> +	bool rotate = false;
+> +	struct swap_info_struct *si;
+> +	struct swap_ring_iterator *ri;
+> +	struct swap_prio_ring *ring;
+> +	unsigned int queue_idx;
+> +
+> +	if (!swap_queue_len)
+> +		return ERR_PTR(-ENOENT);
+> +
+> +	queue_idx = 0;
+> +	while (nr_iter >= swap_queue[queue_idx]->size) {
+> +		nr_iter -= swap_queue[queue_idx]->size;
+> +		if (++queue_idx >= swap_queue_len)
+> +			return ERR_PTR(-ENOENT);
+> +	}
+> +
+> +	ring = swap_queue[queue_idx];
+> +	local_lock(&swap_queue_readers->lock);
+> +	ri = this_cpu_ptr(&swap_queue_readers->ri[queue_idx]);
+> +	/* Rotate while iterating the ring, just not on the first try */
+> +	if (nr_iter)
+> +		rotate = true;
+> +	else if (ri->rr_counter < nr_alloc)
+> +		rotate = true;
+> +	else if (ri->offset >= ring->size)
+> +		rotate = true;
+> +	if (rotate) {
+> +		ri->offset++;
+> +		ri->offset %= ring->size;
+> +		ri->rr_counter = SWAP_ROUND_ROBIN_QUOTA;
+> +	}
+> +	ri->rr_counter -= nr_alloc;
+> +	si = READ_ONCE(ring->dev[ri->offset]);
+> +	local_unlock(&swap_queue_readers->lock);
+> +
+> +	if (swap_device_masked(si))
+> +		return ERR_PTR(-EBUSY);
+> +
+> +	si = swap_device_unmask_ptr(si);
+> +	return si;
+> +}
+
+Tasks interleaving on the same CPU can rotate the ring more than
+once for a single failure, since the lock is dropped between two
+get_device() calls of one allocation. A retry walk can then visit
+one device twice and skip another. It is transient and looks
+harmless, and every fix I could think of costs more than it is
+worth.... 
+
+Unless you have a better idea, how about noting it in a
+comment?
+
+> -/* Rotate the device and switch to a new cluster */
+> -static void swap_alloc_entry(struct folio *folio)
+> +static int swap_alloc_entry(struct folio *folio)
+>  {
+> -	struct swap_info_struct *si, *next;
+> +	long nr_pages = folio_nr_pages(folio);
+> +	struct swap_info_struct *si;
+> +	int nr_iter, ret;
+>
+> -	spin_lock(&swap_avail_lock);
+> -start_over:
+> -	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+> -		/* Rotate the device and switch to a new cluster */
+> -		plist_requeue(&si->avail_list, &swap_avail_head);
+> -		spin_unlock(&swap_avail_lock);
+> -		if (get_swap_device_info(si)) {
+> -			cluster_alloc_swap_entry(si, folio);
+> -			put_swap_device(si);
+> -			if (folio_test_swapcache(folio))
+> -				return;
+> -			if (folio_test_large(folio))
+> -				return;
+> +	percpu_down_read(&swapon_rwsem);
+
+The local lock is only held inside swap_queue_get_device() now, so
+the task can migrate between device selection and
+cluster_alloc_swap_entry(). Then rr_counter is charged on one CPU
+while the pages land in another CPU's cluster, so the pacing of
+one cluster per visit does not hold anymore.
+
+Since you want the loop to stay sleepable, how about
+migrate_disable() around the loop?
+
+> +	for (nr_iter = 0;; nr_iter++) {
+> +		si = swap_queue_get_device(nr_pages, nr_iter);
+
+When a ring has a single device, which is probably the most common
+setup, the iterator does nothing useful. Would a fast path that
+skips the local_lock and just reads ring->dev[0] for size == 1
+rings sequentially be worth it? swapon_rwsem keeps the queue stable, so choosing
+between the two paths should be race free, I think.
+
+> +		if (IS_ERR(si)) {
+> +			ret = PTR_ERR(si);
+> +			if (ret == -EBUSY)
+> +				continue;
+> +			break;
+> +		}
+> +		cluster_alloc_swap_entry(si, folio);
+> +
+> +		if (folio_test_swapcache(folio)) {
+> +			ret = 0;
+> +			break;
+>		}
+
+[...]
+
+>	del_from_avail_list(si, true);
+> +	percpu_up_write(&swapon_rwsem);
+>
+>	/*
+>	 * Swap allocator doesn't touch si lock, so looping through all
+> @@ -3042,6 +3375,9 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+>		return err;
+>	}
+>
+> +	percpu_down_write(&swapon_rwsem);
+> +	swap_queue_del(p);
+> +
+>	/*
+>	 * Wait for swap operations protected by get/put_swap_device()
+>	 * to complete.  Because of synchronize_rcu() here, all swap
+> @@ -3062,7 +3398,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+>	if (!(p->flags & SWP_SOLIDSTATE))
+>		atomic_dec(&nr_rotate_swap);
+>
+> -	percpu_down_write(&swapon_rwsem);
+>	spin_lock(&p->lock);
+>	drain_mmlist();
+
+synchronize_rcu() can take a while and it runs here with the write
+lock held, together with wait_for_completion() and flush_work(), so
+a single swapoff can stall all swap allocation during a little bit long time.
+
+Only swap_queue_del() and the final teardown seem to need the write
+lock. If my assumption is right, how about dropping it after
+swap_queue_del() and re-taking it for the teardown? 
+
+> @@ -3700,6 +4035,12 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>
+>	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
+>	percpu_ref_resurrect(&si->users);
+> +	percpu_down_write(&swapon_rwsem);
+> +	error = swap_queue_add(si);
+> +	percpu_up_write(&swapon_rwsem);
+> +	if (error)
+> +		goto free_swap_zswap;
+> +
+>	swap_device_enable(si);
+
+Thanks!
+Youngjun Park
 
