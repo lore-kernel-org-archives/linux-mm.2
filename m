@@ -4,126 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08710C4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:29:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16CFEC44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:31:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7DF26B009B; Tue, 14 Jul 2026 14:29:12 -0400 (EDT)
+	id D45E56B00D7; Tue, 14 Jul 2026 14:31:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2EED6B00D8; Tue, 14 Jul 2026 14:29:12 -0400 (EDT)
+	id D1E496B00DA; Tue, 14 Jul 2026 14:31:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1D986B00DE; Tue, 14 Jul 2026 14:29:12 -0400 (EDT)
+	id C33786B00DE; Tue, 14 Jul 2026 14:31:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E13A6B009B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:29:12 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D190D1C042A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:29:11 +0000 (UTC)
-X-FDA: 84988219302.15.440BEA7
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EBBA6180003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:29:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qQBkYOYv;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 96B2C6B00D7
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:31:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10A95120491
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:31:02 +0000 (UTC)
+X-FDA: 84988223964.09.EBA2019
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 436574000A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:31:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="XCew/xq8";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784053750;
+	s=arc-20220608; t=1784053860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1yYOIaoVR+nd8jE8kj63fxLDUE81oNekF/gafAEvK0g=;
-	b=NUVkubOgzXI39QjsIIWoBe9P2BmLlfDCu9VV98Wru22Lo6toxePUkeZe2vxzxrcjJMHnIW
-	mrQQAJLDO22JRLlVIr/YaNPHRhN7nee7top73WHzyFYOqDALsWhZRnyEBzTGchbXHLBR4z
-	UbgaUVRXEuKl71wWfAbKUi+X37j52co=
+	bh=XbJ+trxR7t2GCSYkV+uASOu7DEK0LHp1KcDwbXdFB5Y=;
+	b=Z4zgIsTrdQtMQj5SsifV8BPoZrVAJJcLMSDqks68aUg5Rjf4m10XnAHzH605A/Op7NR5d3
+	WzMJH/bQm5agtjYsRd39q/rBFZxDSaI+jTjPAaCIrUJXDVOqxnox/g5VlAyo9xerbLezpI
+	H2sCkLtTKhi+l+wN4++1jd6gBSU8OSY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qQBkYOYv;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="XCew/xq8";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784053750;
-	b=bMXx+da4JJQzM+QZpZ9Ax/hjnQttsWdVoPq2RNXnAMA9crm+8D9mowBBq68Q/ADdTLeqsi
-	23ty1ECwXK1QZdXsw115Jh2eXD6qmxYXwoN5C3Hj4XLlhwPpZEZhqqJ/ffo0k+TBGa4utc
-	Um15wB3Htw4EVaG32zDMFA1q7AeG1IU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CECC5339;
-	Tue, 14 Jul 2026 11:29:04 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B86773F7D8;
-	Tue, 14 Jul 2026 11:28:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784053749; bh=Q1RaqZFJWDyzCpzM1YydwuIkdx6+prWZv8uRlRqjdPI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qQBkYOYvll6kV7ChEqyEs9q4KbHl0/kv64+7ai5nhYymyDIN8BvOvG1HzfhI1sCcI
-	 qnEtCqga3FrW8+7FXBrXN5emMU1ez24iSDr20rEKRSLvtMZ9oCz/5VlGhBuCnHlKFi
-	 ME8BD+bOTZVCgK3PWVNAk87A3Vsa2vT+e5mfIs0s=
-Date: Tue, 14 Jul 2026 19:28:56 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
-	kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
-	linux@armlinux.org.uk, akpm@linux-foundation.org,
-	ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
-	chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
-	kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
-	wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org,
-	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org,
-	arnd@arndb.de, ryan.roberts@arm.com, pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com, baolin.wang@linux.alibaba.com, tj@kernel.org,
-	kevin.brodsky@arm.com, anup@brainfault.org, atish.patra@linux.dev,
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, dave.hansen@linux.intel.com, luto@kernel.org,
-	peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
-	bp@alien8.de, hpa@zytor.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, kasong@tencent.com,
-	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
-	weixugc@google.com, ryabinin.a.a@gmail.com, glider@google.com,
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
-	anshuman.khandual@arm.com, yang@os.amperecomputing.com,
-	chaitanyas.prakash@arm.com, ardb@kernel.org, guoren@kernel.org,
-	yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
-	dinguyen@kernel.org, schuster.simon@siemens-energy.com,
-	wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech,
-	muchun.song@linux.dev, vishal.moola@gmail.com, namcao@linutronix.de,
-	pavel@kernel.org, djbw@kernel.org, yu-cheng.yu@intel.com,
-	baolu.lu@linux.intel.com, Jonathan.Cameron@huawei.com,
-	coxu@redhat.com, andreas@gaisler.com, liam@infradead.org,
-	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
-	geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi
-Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
-Message-ID: <alZ_6HFc56zC7tt0@e129823.arm.com>
-References: <32d459d1-ad19-4baf-bbb1-0565458001d2@intel.com>
- <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
- <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com>
- <31988089-095a-4eed-b5e2-c677c70f79f6@kernel.org>
- <14e250db-1641-4085-8d13-02f819657d5f@intel.com>
- <d83c76b3-ea4d-4c41-b4c5-f5ae558ace55@kernel.org>
- <alYgMxKqRnF6_X0A@e129823.arm.com>
- <6df814c9-405c-48d8-96ea-929c4b28949b@intel.com>
- <alZe-Cu7yQw9qRXU@e129823.arm.com>
- <2d51a1ad-85be-46bf-ac36-18eca199b449@kernel.org>
+	t=1784053860;
+	b=sgMrJyCbqYmIR+g9XxkthHBUkSlcWEdV9EGm3FP83bsfuOK8ihI9qO8eZ/ALovY8WMd0D+
+	jOBoVnYU3WaZLZZSdXV+q97ayp/2q7V8HqHaobN7eKhhsuLktNXkCj7JwFfgEsLsZu3HTY
+	sHRHYZHY4Zfcn66RatSmNzKr3LlnDRI=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c01089e8aso10169591cf.2
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784053859; x=1784658659; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XbJ+trxR7t2GCSYkV+uASOu7DEK0LHp1KcDwbXdFB5Y=;
+        b=XCew/xq8iuBlmMk6zzDwT+RC3mSq/J3UeUAngek4zHhxi6Izh0n44QsKc4xEG6e+eF
+         Hqu5fO/1Pr1qex/kp/ztuClgTWb7Tw5U8pH79s6Y7SaXBpj2uhOB5w8xNS8sp33Ne2xZ
+         JXqSOgryFH2G+gFPtUa+K5rrWNdC3oQ0/TEUKdgGTePX30UBNbaQax1Hv/nLrc1XLaus
+         VvT6BiZxxixNHbtUcKnYN5CRlPAvA7+IcEDZbXr2fzPPxbr1ybzJclIG92OpCKqT5IB4
+         pjzdWnW7uXcNvUOeVqnmfNerMW5Sox9xOfHrEGL1Ni1B2hUbR/QiN8yg4bQmV4hkO888
+         52Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784053859; x=1784658659;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XbJ+trxR7t2GCSYkV+uASOu7DEK0LHp1KcDwbXdFB5Y=;
+        b=McEuW7/yrn1fU00apco8s1rOYm9LuEhES22rmshd6ekziGfOFEU90mLDR2LPALbiUq
+         ZiB3/GaJuWonzJYUbItRQZySLK/dYDbxhBV0al2bIt/mQGm0Lnjlzds/MaoNWEKCZhbv
+         J/Ggap07HT/Sux2LYRyeoo1JdYJQzxKqxWSidycuNb4vdbekbaWNikr7/gZeNbZgNisu
+         i0mmuamNPI2o4kIwqfx6Tf904ipBsVGJOgiussEJEbyTPSsIOoI1DGy579FZfES/wk4E
+         pcSxd/n4Ysvt6WcaG7KKC/pfDC78Bps/4VWB41wbwbhBtsLvBfGrgJr5Muu+4MGrVbt0
+         b1cA==
+X-Forwarded-Encrypted: i=1; AHgh+RpcddDCNHEAy7ZUWTufItbZHqB/EYVYEvKcyRg4jfTEG5BHkewhYgTTO51AxL83jrom4+ohqW6SZA==@kvack.org
+X-Gm-Message-State: AOJu0Yxjowl4ZJM0PhRcGQXMURx8jIBAXAPE7aQxYb1k1FHbg+Duw3qr
+	CECqjlbNAr/mMpI7Azqzl+mlDCctN20cU6URuQL6Cw4axr4qsV6j+CC8
+X-Gm-Gg: AfdE7cmQ9hxYUwjgBIcS1HpIb+5pVhs1hHJeOlQVblKWF1fumAvx2On3vmZLAif7P4Z
+	BwlaXoNbVgz7anzGCK4MZd7etal1fBv26RjondVIpw65gnXj+MwhnZicDYa/LbF7Iy+EzwF7KkV
+	hlFlRiQV+ZlCpPdvsslmNj/9XFVJ0DFPfukn8/PrrvrVSBKNX3hneA7NKx5bl6TbG8/k5rFkJH9
+	Qae/D7lrQsZaqO2RSYUZ9cUki9lBO0o7CJsru27tSOCJthM3kqcqdzfQTEFfdJh8F9Ex8B8S407
+	8djEdaKxTOOedhhU+EK+/QXo/zyy1uFEYRKtYoO5R7XWd77f5onTVAnxstBRKqMTuh+8LcIUd9D
+	giiGQmifQiqb8zZfEeWOJ69e12EaXQYC+Se++Pg+v2MnB6mz5nFtFI0PJqFLpB/JMxDKr2RLTl8
+	SoVd1UboOtxpxzEi7nEZcGD5RaZmIiZ6qyCqU45QPxvPK1Osrq5w4=
+X-Received: by 2002:a05:622a:1f98:b0:51c:84cb:b9b0 with SMTP id d75a77b69052e-51cbf301566mr148948911cf.81.1784053859166;
+        Tue, 14 Jul 2026 11:30:59 -0700 (PDT)
+Received: from localhost ([48.45.163.146])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51caae24d04sm117191211cf.18.2026.07.14.11.30.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 11:30:58 -0700 (PDT)
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Jinchao Wang <wangjinchao600@gmail.com>
+Subject: [RFC PATCH 04/13] HWBP: Add modify_wide_hw_breakpoint_local() API
+Date: Wed, 15 Jul 2026 02:30:49 +0800
+Message-ID: <20260714183049.12383-1-wangjinchao600@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260714182243.10687-1-wangjinchao600@gmail.com>
+References: <20260714182243.10687-1-wangjinchao600@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d51a1ad-85be-46bf-ac36-18eca199b449@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: y9p4swe4xko8f7r1b4fkn9iz31znwmem
+X-Rspamd-Queue-Id: 436574000A
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EBBA6180003
-X-Stat-Signature: fzhss59t8dkbsaf8bshoyroqdub1nwxa
-X-HE-Tag: 1784053749-925498
-X-HE-Meta: U2FsdGVkX1/G799ZCHeJ4GcXFY1hnaKszo0stV8aBn98gr1xQGfhqgVo7jcFqdTw05V8NB9zNoJvSqIx3yhdf+ivJ4MkRUt9wuy0RtkleGyx/5AJFcNui/gRUBBXLuT6JL9VSxCTKad9XcwZZNyjMVg5rDO6kgpNu9eAy9zc55IjhJWE/wHbi6i7EKdaolwlnqDmQ+UuuzQwmcOeyDFr4CVdKCpkHqoOB+9LETo9O8V2QzwcltKomiMnuKMmcNVz1BFrPQ5kdVLCsjzzWffxcKv2363EpN6HR6mWaDAQgRWZMu1DFvCZl3Ji+PiEESJ4qAxYwKHtNaRCkzj4ZcsX/8B1Yd2/mVDAJKZkRbXoWDpCISKdFq7i25jSyeXf9Z1kNIDehCXVBfMFoeXM6rOs11X50m6xTrtDb2GpnPnD2a3wlhg2dK+OBpoDaUwXZtZUc6QD5GpV3CeBHUFnK9eEvjq6C0JWGlvroHl7CeBLFzHIVZQUNtIYugiL8bEzEFhucbZ6WT2+VnS1UqIqmixKh5MwYcvTzy50+VCnoW2dbqPNZaI0KwLjPKUi1tsod2gMUM+PZF1ouOeNe6/kuxGKChty2UOzlptavVGU7mGI+u9VS1CY3NJOiowcHDb8Xeu1nXeWHBy5mz/l0SoDsO+6hecdS3sSi1BQXNjpYieuqlNPO63OLxunweyrL0TOOkBJks9zLz9ozuPXAy3xh3AYFuDdnogEBIhG706CCKt0lodstQLTYMRKAy3Sw/jF4gMHXoKy4K9RWeY7lLaSOz9j4VCzXYMc/AbiAcAgxR1J0HiGnENMqyl6Dc8/k7yNo18w/QU8Jjao8EHJ89kPVcAPdSgtTy+DN5odmhhd1HwUzTfDbg5xzWoYWOsK6j/5LC2zbF6stoBOv/vEnjYiNO6m9aFopNEyryacvOU8vLrUM+zPeppqsBG65M/Z9HmG65iopPSHt+GJCixAK/zFEkt
- Q8yg12Rx
- wNrJsGuIJTlQoD2fi6+ZELhh2fgw5yf5xlxjCNuFY5Jp5QcvJ6R6J6yLsLVC92kuo2KIFg85ct6fkkSaa23yn/6w7wKAL2sWeeokeqCwLm50XgXOlB7W37U77zp4943hwc1d2PxaFu/+y2ZJdeVcZNlluHIcUa4qwqu/IQPHuBSNvFVgV1H5jK6wkTrZMKRbM77wm9QJxjxuwl2cbWkNmAojiZ2gwwbVxM/yMoW2gvcgzJX3SZD1iS1AWaA0wDNJEsFAiPStMsGYuzjxZHpKkJyQPOxqxx7PTljw451aMrSDfNPCmFqUpWblC6y854lv6aXWzyORiBr5kNTCFgBc18IhZwCPYyBo52BBl6qbOMKgEZyg=
+X-HE-Tag: 1784053860-667215
+X-HE-Meta: U2FsdGVkX1/WlvOsdf0KVIxSAFyfhuJvx7PnHjNiGaC0HzsV43QBTD/kclE8JPE3PCGs+QdeNkzMN9SEGtp2h4wGz/a1eT+m8BQpPSw5HPfLVUmBxrccVJHvyAJazrHVf1wSWj9CA9w+Refn2JV7vpJ9u8KIDPppbjtGEjOyKiGFZl5IggxEIZTD06TPUzw7JLcQOYeuGehYn6z7IKVsjJCV1581dhthpWyi9HuIPh2XOew35YvdovwcudjNR20k30C0E9nJ6kyZ5eaY0E7CJLoz/MUMXKHQPQPkooCDg6QTCZFAemIP+YEtEm7RKPNPLxeYB8OPzGBCa1uX1czIeGGXj4IWNzrgJURCc3bPok+DzK6FQKk+CG7Duk7vKL7N8C0Ff047f1m7y8H1wYHVPi5HKYPEo8JPDYohYATpWue7NZrWgfn3wIEFL8/Deii8z4yETX8fju1JRgjVqmTV0IWR5c2LdvCQDtJOwqVX08BNQj/95CYCJnxqZgod16ffLV09B8SRQ2d3bhWz4H1EmPP8DAkg2gmWkYAECiGg0YDGTEQ+n6mREESLZaJOYHURZEEjcu+LpFJCfI75MCFUD1a4Ix3KXc42FphPxJoutqAcpwRPuN2mDWLv6MKqy7rgyMnBm2DTNoK07fMbsYLHMCDP0Wx+PS9LLbSthKM5V/++mH5ehtBveTNF/JJqQraow2Qa5MJMz1R861eU28z1cjahtHdlbr4lvY+XaRrcQHsZ8+oniQTaflHZGKR6yJhH1apC9XQEogYgCAmK4yWZ7Jp6HuLYbuWnk2jiYho76/6JzoGRCCA/LewhdnclnQnvAx6f7820MRUU+sgiuyFPGUmjIoh2VXK0c4bFDobhDydrH8XFZh6lX5w8/gKabtBSyQkktlLF6VgWqcRQgeKOoVo+9L1zkxjOKagIfYN84BWOdC5otfii2k7y+8fHi8i2ByMRRe7ttcHG0Hbyv6l
+ RIJbPszH
+ 5Gn0wxjh8/vdkat/BsDs3OUMywa+5/rnVoYLoTPFIkBVO2QFIdW/H2nHQT/gCxeXgDgJcg2ZijsBgkEpxo1Jw5ev/Bf6lti0QYBP54x+P/qI2MFQmJ2humgxBb9QfN6GFcfJ9x1EM6w2pdIQFdZaLEUo//EcYLh0PMek4m0n3sf9eBfDdRJc0f4NbmeSSWnX7AHarzJ98jBXtHdAIiamE2qcPkkIWCbVhbadlIJqb3SyRAoPCbWyqRP/pVXqa95U3f9b/hmgD9IYh/vuxqMus13dsAp0SP/AjLpaOjTzBKu1FYJdqA2syEzoiqHgLKkIIu9i6ABLRrpsXsULjqX7gp38bHzxfSrMCl8cmOXiGlXXaDLtRqEw4ciJdeh+wAAB1biwesECrKBbanvpcbCsjQO2c4XzRnr6UNClrAXCJInGKbyBCQv7oEEAw+43V4QiWQ5uT30JOFAjk5EMBWY2vmgFjF6O8tSY3rRSn1T7dcTptDpReLVIZcV8WQSCNBgeHgu+XRCPpuJD1e0A36F83bCbg0bhwF+4Dkx9aF18oxIKDDiWb0Uh1RAkExw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,41 +137,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 06:31:22PM +0200, David Hildenbrand (Arm) wrote:
-> 
-> >> This makes a *ton* of sense in effective_prot() especially. Its entire
-> >> job is mirroring the hardware's job of inheriting permissions from
-> >> higher levels of the page tables and enforcing them on lower level leaf
-> >> entries. If a higher level is folded, there's nothing to inherit.
-> >>
-> >> I also think it's worth taking a brief pause on the coding to think
-> >> about what kind of design would actually be nice here. If the design
-> >> really is that the pgd is folded, the 'struct mm_walk_ops' code would
-> >> ideally not even call ->pgd_entry(). It would just (for example) *start*
-> >> at ->pud_entry() for a 3-level hardware page table.
-> >>
-> >> If there are no pgds, why bother calling ->pgd_entry()? It couldn't be
-> >> done transparently to mm_walk users of course but it could be done
-> >> incrementally where users move one at a time over to a new scheme.
-> > 
-> > Agree. Calling a pXd_entry() about folded one seems meaningless.
-> > But seems enough to check mm_pXd_folded() before calling pXd_entry()
-> > in each walk_pXd_range().
-> 
-> Needs some double-checking that callers can handle it (like effective_prot()
-> would currently not), but certainly something to look into!
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-Most of mm_walk_ops *implicitly* handles the folded pgtable case
-(e.x) pXd_none() / pXd_present() and other can handle explicitly in
-its own handler.
+Add modify_wide_hw_breakpoint_local() arch-wide interface which allows
+hwbp users to update watch address on-line. This is available if the
+arch supports CONFIG_HAVE_REINSTALL_HW_BREAKPOINT.
+Note that this allows to change the type only for compatible types,
+because it does not release and reserve the hwbp slot based on type.
+For instance, you can not change HW_BREAKPOINT_W to HW_BREAKPOINT_X.
 
-But, IMHO, It would be better to skip calling pXd_entry() in the
-walk_pXd_range() by checking the folded and this is clearer conceptually.
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+---
+ include/linux/hw_breakpoint.h |  6 ++++++
+ kernel/events/hw_breakpoint.c | 37 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-For this, it  requires the rewrite the walk_mm() where use only *p4d_entry()*
-to gather the leaf/non-leaf information for MGLRU.
-
+diff --git a/include/linux/hw_breakpoint.h b/include/linux/hw_breakpoint.h
+index db199d653dd1..ea373f2587f8 100644
+--- a/include/linux/hw_breakpoint.h
++++ b/include/linux/hw_breakpoint.h
+@@ -81,6 +81,9 @@ register_wide_hw_breakpoint(struct perf_event_attr *attr,
+ 			    perf_overflow_handler_t triggered,
+ 			    void *context);
+ 
++extern int modify_wide_hw_breakpoint_local(struct perf_event *bp,
++					   struct perf_event_attr *attr);
++
+ extern int register_perf_hw_breakpoint(struct perf_event *bp);
+ extern void unregister_hw_breakpoint(struct perf_event *bp);
+ extern void unregister_wide_hw_breakpoint(struct perf_event * __percpu *cpu_events);
+@@ -124,6 +127,9 @@ register_wide_hw_breakpoint(struct perf_event_attr *attr,
+ 			    perf_overflow_handler_t triggered,
+ 			    void *context)		{ return NULL; }
+ static inline int
++modify_wide_hw_breakpoint_local(struct perf_event *bp,
++				struct perf_event_attr *attr) { return -ENOSYS; }
++static inline int
+ register_perf_hw_breakpoint(struct perf_event *bp)	{ return -ENOSYS; }
+ static inline void unregister_hw_breakpoint(struct perf_event *bp)	{ }
+ static inline void
+diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+index 789add0c185a..20ca64f30508 100644
+--- a/kernel/events/hw_breakpoint.c
++++ b/kernel/events/hw_breakpoint.c
+@@ -888,6 +888,43 @@ void unregister_wide_hw_breakpoint(struct perf_event * __percpu *cpu_events)
+ }
+ EXPORT_SYMBOL_GPL(unregister_wide_hw_breakpoint);
+ 
++/**
++ * modify_wide_hw_breakpoint_local - update breakpoint config for local CPU
++ * @bp: the hwbp perf event for this CPU
++ * @attr: the new attribute for @bp
++ *
++ * This does not release and reserve the slot of a HWBP; it just reuses the
++ * current slot on local CPU. So the users must update the other CPUs by
++ * themselves.
++ * Also, since this does not release/reserve the slot, this can not change the
++ * type to incompatible type of the HWBP.
++ * Return err if attr is invalid or the CPU fails to update debug register
++ * for new @attr.
++ */
++#ifdef CONFIG_HAVE_REINSTALL_HW_BREAKPOINT
++int modify_wide_hw_breakpoint_local(struct perf_event *bp,
++				    struct perf_event_attr *attr)
++{
++	int ret;
++
++	if (find_slot_idx(bp->attr.bp_type) != find_slot_idx(attr->bp_type))
++		return -EINVAL;
++
++	ret = hw_breakpoint_arch_parse(bp, attr, counter_arch_bp(bp));
++	if (ret)
++		return ret;
++
++	return arch_reinstall_hw_breakpoint(bp);
++}
++#else
++int modify_wide_hw_breakpoint_local(struct perf_event *bp,
++				    struct perf_event_attr *attr)
++{
++	return -EOPNOTSUPP;
++}
++#endif
++EXPORT_SYMBOL_GPL(modify_wide_hw_breakpoint_local);
++
+ /**
+  * hw_breakpoint_is_used - check if breakpoints are currently used
+  *
 -- 
-Sincerely,
-Yeoreum Yun
+2.53.0
+
 
