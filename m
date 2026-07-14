@@ -4,112 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A2DC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBBF1C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:52:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1425B6B0005; Tue, 14 Jul 2026 05:49:59 -0400 (EDT)
+	id B33526B0096; Tue, 14 Jul 2026 05:52:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F37C6B0088; Tue, 14 Jul 2026 05:49:59 -0400 (EDT)
+	id ABC796B0099; Tue, 14 Jul 2026 05:52:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFD476B008A; Tue, 14 Jul 2026 05:49:58 -0400 (EDT)
+	id 984A86B009B; Tue, 14 Jul 2026 05:52:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA3826B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:49:58 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65FF51C02B4
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:49:58 +0000 (UTC)
-X-FDA: 84986910876.18.DF1F730
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8B39E140008
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:49:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZVZmAc6Q;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784022596;
-	b=1DhUPz4JGb2lsvPZ1DFyl4HBOJ6Zn0enbgZlFbU04C0fyUNyXelvGLcC6F3NkrzCWYzvvx
-	c+D6AWSpv2XuRupESCtHTUsi+xm6D4GrAG7LTHT99OPrTXWnPDEdpCBLgV8HkcegyxsIOb
-	SKwf8eaVbPuY7jZdMZkzRtmCNKHT8G0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZVZmAc6Q;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6B2CD6B0096
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:52:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E0E541C02B3
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:52:32 +0000 (UTC)
+X-FDA: 84986917344.07.3E643C7
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 37867C0004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:52:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="QC/nN3ic";
+	spf=pass (imf28.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784022596;
+	s=arc-20220608; t=1784022751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HctaYC25xmi723t9mpPbmCLQP3IBod29aBYdTrLa6xA=;
-	b=wx7LtGTg4WwzctAQkkbY/F74C2OE7m++LaUYR2y5T14+3ObjTd/spYP1w8nevaejgFt41N
-	7u9DERFcEpa1htDBkqKzZhlq/PkdPrxXcwrEDLB2vYtn6rYgW8aYrOE2YJXgirJK08RCfZ
-	76OgoqxBUTmSNwtUD9VVyR5vt1S/KK4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 53BB8417F4;
-	Tue, 14 Jul 2026 09:49:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F87B1F000E9;
-	Tue, 14 Jul 2026 09:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784022595;
-	bh=HctaYC25xmi723t9mpPbmCLQP3IBod29aBYdTrLa6xA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=ZVZmAc6QGPyLQjp4Kd7I0ZXRjuVkK/fsGkjzg7Dr9mX68oMKo9p3bz+tPlc9xds1y
-	 UL5BGrb2JOckIQ3juGIhe7VJK+QkjeM6nnsuJYMzZXYtJXKNQ99wMk/eiz7pupxkAQ
-	 jIWNA6wpCcUeZdhpNzb3kZeMeNa6FQp7AsWpRzMLvYH+0NX5EVmxxAD3VIaqycp5n/
-	 fR8iCRtltXt5S3iLSXOf/lOTBdD8B0DVWq/fclNd47VRzfLxNulbsMTZnWwsk9qtQI
-	 MksoMVOSqDFAVPPTUlB7Tza6Oua913SFqFJWY+RR5/0oikgUyWkmQy2X++jb9LUBXd
-	 pI9mgDHReg4Zw==
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH mm-hotfixes v2 3/4] mm/ptdump: always stabilise against
- page table freeing using init_mm
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, David Carlier <devnexen@gmail.com>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-In-Reply-To: <alUdUKk0zGmskSib@thinkstation>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <20260712-series-vmap-race-fix-v2-3-ad134cc3a12a@kernel.org>
- <alUdUKk0zGmskSib@thinkstation>
-Date: Tue, 14 Jul 2026 10:49:39 +0100
-Message-Id: <178402257936.69739.4642059153515341814.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1203; i=ljs@kernel.org;
- h=from:subject:message-id; bh=ZepVuhzW21/hUCaWiKuOK4e1luh7TWvi44wNV50RL3I=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLC2Exfud25crSsetf8mCsrnNnW9nV/7tLPT5/09cimd
- V/3ln6W6ChlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEfG8w/Heo1PuZ62TUtlIh
- 9PHGKMH9iscZlofvkWJ9l3JPsbM15D4jw7rfdXP/RV1/G7ynQ8DgSIePeCH/0w8C349m1Jy4KKe
- pxQsA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+	bh=l3zdQsCZaeg9r4pCa6BdAIjCC8ytsze0HKxR9F1SBpI=;
+	b=0RMvx4g3TV2LxKEwefJjcKQj2jcvW9UC9g6B/woLnjq3QA1WNFfR30wKaYO9J1BOTlJytG
+	7VJjAGuDW4qzMykg4mQJ7xdIF9ykC0nfOsvO+EOMJPDHAOxiHryknpuo2nTEn5+SdMCB7y
+	Rh7FHayUsAEp0os1sTbf/wG3ucr063c=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="QC/nN3ic";
+	spf=pass (imf28.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784022751;
+	b=Pdrsp9LTE6prdes/9TVKJl+ESby6AATKb9ZpFKUrY0W/dHbcY96wApQ4sMPVKSJxa1jR5s
+	DAIV96b9tExQLtpKfgA5AkNRhr4Ke+gjgUsYExFNifiUhoWnqigcKCZxv4ToJvbh1WUIVM
+	JmTMGq9qXhO+sgLsoPb9AvzN2laJ0+0=
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784022749;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l3zdQsCZaeg9r4pCa6BdAIjCC8ytsze0HKxR9F1SBpI=;
+	b=QC/nN3icWHmag6UJtqg2N4KQzscCFcQB7nlwAt+o5I5fXa2cZ5qZoeDepf/8E+iOG91z7y
+	bMSoa929x18iPeIt3YIWNGzy55z1kb8yd//PZAPapzJoedeJ+/mLkVCzRmoTakv71qiQ4G
+	kcZ5BMeEHTubiMsxntmNtQQiAVyNav0=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 14 Jul 2026 09:52:12 +0000
+Message-Id: <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
+Cc: "Vlastimil Babka" <vbabka@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Sebastian Andrzej
+ Siewior" <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-rt-devel@lists.linux.dev>, <sashiko-bot@kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Harry Yoo" <harry@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Brendan Jackman" <jackmanb@google.com>
+References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
+ <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
+ <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
+ <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
+ <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+In-Reply-To: <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8B39E140008
-X-Stat-Signature: bj5mnd8s5ebmmc653u6zrakgcmkcpk1c
-X-HE-Tag: 1784022596-993690
-X-HE-Meta: U2FsdGVkX19FZU/nMssiuJb6RLb1VSkK7HGr+zzNmIzskvsp6yTF9cW/lev/UPFpp//vIuke9lyq2y2K8WE0v/sHmo0d+aA7YHYmA3GwDH0UStJzR6+tNR7KmgI5nnj8YjMIPl87x/INQ2yZILPS1ytYPpSr33oOezVnNvTLcVNBEKOGS8g2JLkAA5KEYvR8rR7LnDDE5LJqORxIfE43iz/BrJTH4opSFz8fpa1M1p72wbO8yn2+nUgArOHY5qXrdzAAmBS5PjubXhHikTTKvk0m342e8W5v2nZzbhhSMyWYZt70sj6RKcp7O1C/6eGdPlMjpJ9Fkk6RZzfCW2jtF+N21qbLG19GmITXmojdf75F7GxIFleXXK6X4D8Rfakq4U593LSAqNhFHqX7rD956+OWB/JWiXWLcq1DgKClh9WzcymVZRXmLpjsmSfHiTtmBNlqN7TbTnhbCTa5phAI+XVBxPmqGKRTcrYlyB5Ki9PVt1dn5meHLUhr9RWaqJVjIeurPDc2/4Z6uWKq84714skIxBqKvKfvmwvZsjR5TEeB+Xaym/pgq5+vDOtck0L4TIcI5i0tO7gDRemrSd5Zwkqa18h5nZEfWGHgQD71H6Gi14c4azfKNtXr6Jk7Xi0ItyzGVGQe29cZksMItmgj1Cgy1vaYOOJOZwEiVu8YyM6uuAoZYkoimBe5QwsdyWf8ThTxHBWnzsJZRrT5JhZBewRxuaXch5UmpjqHLxBtXARUqwyJKr6XU49XeE1cAb4QoOrS7K+BMrcMklyQ6bm8HCqpumROSyIQyQM1VMSWTUuq1A8iqfNUM/8uXxcMC5cAFjFuatOIyA8kS2oFCEk/SB8h99EUQnRRucxiel+y4pHQjQPQ53t/RhJ/sehO6NdB3Rn2zMUUSZFliuHQ+k3E4ou+zdQctnX2NAB4U803B99JEQKxef7HvrzOjzL3H4LI7F5bJnxa5TO+7P3TMIT
- W5WZQG5m
- +j0z8jqBe5vaofFfIrDnOAgsu+wHBgyOWeqPMGECudpiuOgytvarVjqUYm0sXyVT+gR9cu7X0DnCfNExSJKkTV8qWxgKuONeCDUN1OemflJ5eHSF59T/55K6C0XUuhFz+yZOCxsco2TDegr9h2rEk9ZRUqQU/Drc6jN7OzZ1AQ0H4ZBagXDQFzTVh2+tFFKC9jcRpP+ljEpui7oM54ZqMAHVDapmHtbfZuKy8w5GI8WQMik+meke7/kzGClm3gnmXSE95r5o5F97hsN8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 37867C0004
+X-Stat-Signature: c1bq5wppmrdsmyx4phfpu5e16ce3966x
+X-HE-Tag: 1784022751-237209
+X-HE-Meta: U2FsdGVkX1+CljwnvL19umJIJo8UlEb/Dh1MJX8BD/kmvl833L93vMJpW0gZ9VeWybYGkkcYdGg6htPXMd07k06fB96pB5QHKGYi4tJEUZqjBW3rX1z6Y6i5M+i65FrD9hWFYOny3MYMb/SCQd4pwhoktyIZFXApgjyWe+DRkMLL90K/wYa9hHmkYkGnyRDNJNet3U64vgP8d3SgYzX6RHas8pO4uBn/M/ZrnJ9NBxTNBoGuK8NtlBPE6cVDjF0op5avrBJbvyQQU9NwL+oRFA2UmnfMU08u7N3SQSZ8NdVPLbFbYwSgVN2nuDNadeCLKh+TqA3pA90G7SSeeGYu2OkHKJp8nOGP4248z9SQNtZvIpD3dQtVU8mkpVuAveBQk6NphYl8aMCBo6eLOB9NhI3NfjatE8PffFIStz9gMEwSuL9MQchzeZ41sOfZ/e68VK8F/XX1Rowc98n+jHtPG+t4OjGe6fSI0EQhVJ/LPYlY7hAbetVkevHvyBvJj2XecfjMsdJh16VNsFNdOUMFGNAS+Yz06bVzDpFAKcoB/HNAhiJ+NprwiwFZ+twer67Nj09s/UtbD8qfQUyF03+nMYUv73s9lvDUnsScfg32rk1tF4aegjTWBTdEpaJNJy6uyNYyttbEPxFh3celPegP3LbRSug9Md5veTXbZ2JH3vl2Gq/za7Ka7sc2Orsw0iWjPdETNqemeHZAQmdOKw9QyT8b65J1SApubVh3TUZAuA9xWgHmpO1tq+OVIaFr81obgztBuUiqBG4BUOyXzpxlwF6G3skVzeCoW0YyOz1YRR2w70rE3G83VV1f5hUicp1K3VFcDx9bZGCAolGw2aOhuiJCj8PE79OU7kKjo32qL68cxJlIAqoBWmNxB2YOJVmkoD5TbQ/g4Uoadka8CqpE1U7rXlUoObCN82GTSiaIG48sJkI+Uk0WhyT4xgUeYo3sWLjlhMC9Khhc5ktAfEt
+ 8SnVJLdi
+ WFxoQmBMtDwdd6Fsnf1123wNpdU+EU4DOmr5eJPnkkGvgzILWIYneTUl/d0QCFyBApf0z8hEI0RAG/Nk7r3iGCGSCgOqVYfa1ot0BQ02L6DnU6Iic4wWg9ga32w/pDbVRm/9L5+HzHBAMcYpkJt/rBeA1xI+EG83ZSSGGvZhnA6HGZFP11h8YkfMsnTO2rYyNeqz1oi2aNrwNF7IpQ/68Ol1/YaVz/3ZBMP9noS2PCUk96wQV1GVcKSoZQub5xFDIw77d8oxo7nDlBk0A6J/4WHE9JbNotYsYj8YFQXZd6r6JTt+oGm+xrM3QWQsUlXizbnfUIiw9ilIRmH7hsnBO6nCNlHUBR6pHWVPHi8beo0Btib9asF2aVxOH3YbRZ1gJ8oanZnU1u6UvwwQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,41 +101,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-13 18:19 +0100, Kiryl Shutsemau wrote:
-> On Sun, Jul 12, 2026 at 11:42:26AM +0100, Lorenzo Stoakes wrote:
-> > x86 and arm64 invoke ptdump_walk_pgd() with non-init_mm mm whilst still
-> > walking kernel page table ranges.
+On Mon Jul 13, 2026 at 4:15 PM UTC, Harry Yoo wrote:
 >
-> The code looks good to me.
-
-Thanks!
-
 >
-> Same comment as on patch 1 about the commit message structure, only
-> more so: the race itself is never actually stated -- that these walks
-> hold only the walked mm's lock, while the freeing exclusion built by
-> patches 1 and 2 hangs off the init_mm lock. The fact that makes it
-> possible (x86 shares kernel pgd entries with every mm) is hidden in a
-> parenthesis. And the last three paragraphs read like v2 changelog
-> rather than commit message material.
-
-OK, will reword.
-
+> On 7/13/26 11:31 PM, Brendan Jackman wrote:
+>> On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
+>>> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.com=
+> wrote:
+>>>
+>>>> As noted in can_spin_trylock(), using this is unsafe in this context.
+>>>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
+>>>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc sid=
+e
+>>>> but missed the free side.
 >
-> > We take this after mmap write locking the non-init_mm mm. Nothing acquires
-> > the init_mm lock first before locking an arbitrary mm, so no deadlock is
-> > possible.
+> Ouch, do we allow alloc_pages() -> free_pages_nolock()?
+> Didn't notice.
+
+We don't explicitly disallow that but I'd say it's "forbidden by
+default"...
+
+But I think that's unrelated? It doesn't mean you can't use
+free_pages_nolock() from NMI, right? (Would be weird to alloc from
+another context and then free in NMI, but I don't think it's "forbidden
+by default" in the way that using unmatched APIs is).
+
+>>>> Reported-by: sashiko-bot@kernel.org
+>>>> Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b7=
+14e19d3@google.com
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+>>>
+>>> Is this correct?  I'm not seeing anything in that commit which could
+>>> have caused this?
+>>=20
+>> Oh yeah I guess it should be:
+>>=20
+>> Fixes: 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+>>=20
+>> This is confusing coz we have:
+>>=20
+>> A: commit d7242af86434 ("mm: Introduce alloc_frozen_pages_nolock()")
+>> B: commit 8c57b687e8331 ("mm, bpf: Introduce free_pages_nolock()")
+>> ...
+>> X: commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from alloc_fr=
+ozen_pages_nolock() in NMI on UP")=20
+>>=20
+>> X is marked as Fixing A, but it was an incomplete fix. I just copy
+>> pasted the Fixes tag. But actually I'm now changing the free path that
+>> was only introduced in B.=20
+>>=20
+>>>> --- a/mm/page_alloc.c
+>>>> +++ b/mm/page_alloc.c
+>>>> @@ -2979,8 +2979,7 @@ static void __free_frozen_pages(struct page *pag=
+e, unsigned int order,
+>>>>  		migratetype =3D MIGRATE_MOVABLE;
+>>>>  	}
+>>>> =20
+>>>> -	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT_=
+RT)
+>>>> -		     && (in_nmi() || in_hardirq()))) {
+>>>> +	if (unlikely((fpi_flags & FPI_TRYLOCK) && !can_spin_trylock())) {
+>>>>  		add_page_to_zone_llist(zone, page, order);
+>>>>  		return;
+>>>>  	}
+>>>
+>>> It would be nice to include a description of the userspace impact.  I'm
+>>> suspecting that's "none known", but some speculation on what might
+>>> happen to someone is appropriate.
+>>=20
+>> Ack. I think if you trigger this bug by accident it will probably crash
+>> your machine in extremely confusing ways. If you can trigger it
+>> deliberately from unpriv (depends on the rest of the host setup, e.g.
+>> what tracing is being used) you can probably use it to get root/ring0.
+>> Can mention this in the commit message.
 >
-> Do we want to document this locking order somewhere?
-
-I guess Documentation/mm/process_addrs.rst is the best place, I'll send that as
-a follow-up separately. todo++; :)
-
+> Just noting, it is quite niche because it requires UP, and tracing
+> something that can be called in NMI on UP is even nicher.
 >
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+>>> Also, Sashiko might have found yet more pre-existing issues:
+>>> 	https://sashiko.dev/#/patchset/20260710-spin-trylock-followup-v1-0-aff=
+b5fe5ed00@google.com
+>>=20
+>> There are 2 cases here:
+>>=20
+>> 1: !pcp_allowed_order() -> This is forbidden by alloc_order_allowed(),
+>>    quite a bad miss from Sashiko IMO.
 >
+> Hmm but alloc_order_allowed() would return true for !pcp_allowed_order()
+> when spinning is allowed, then pages can be freed via
+> free_pages_nolock()?
 
-Thanks, Lorenzo
-
+As noted above I think that's forbidden. Now I think about it, I'll
+include a patch to document this.
 
