@@ -4,137 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CD4CC4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:05:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60331C4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:08:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BD466B0099; Tue, 14 Jul 2026 14:05:30 -0400 (EDT)
+	id 34ECF6B00C4; Tue, 14 Jul 2026 14:08:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3945A6B009B; Tue, 14 Jul 2026 14:05:30 -0400 (EDT)
+	id 2FFE16B00C6; Tue, 14 Jul 2026 14:08:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 284926B009D; Tue, 14 Jul 2026 14:05:30 -0400 (EDT)
+	id 215BF6B00C7; Tue, 14 Jul 2026 14:08:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1F96B0099
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:05:29 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7EB0B1C048E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:05:29 +0000 (UTC)
-X-FDA: 84988159578.29.CF6CE57
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A82671C000E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:05:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=A8iFdVFQ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of linkl@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=linkl@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784052327;
-	b=kdevZHyNmOvkwJpN1zZiw1eI/vHlBo18Hn0Vn7j7azDrsN4z+0dL/Gt+kwi8SB80tp6fPA
-	1NJd2FsxyQQgTUC6iFbirTtLzl+UAzEinue13egknDA7HHWhDJgn/uO+nh0F3IYj7LnaVe
-	bD0bvPbEbutvgS//bgQiuJvYCV31eNE=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=A8iFdVFQ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf20.hostedemail.com: domain of linkl@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=linkl@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784052327;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F2E376B00C4
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:08:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 65BDA12048E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:08:50 +0000 (UTC)
+X-FDA: 84988168020.13.C5AFD74
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BB271140007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:08:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Q1XKHCF1;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784052528;
+	b=X/8sHhYvecb2SbH58TIQ1SwPqjP32cVo+GVcT86D26rdAagUbYa5/7x9umQHQaFaKR0UKH
+	qIOkEMIcBFn1k9TuiGH2opf2aiHctTTpNtsk8d7OxehjqQ8W7+6kmm6utBmBV1N0q4vBS+
+	TBNI4Jwa6f1AhSNl0Ukvm6giim79XwA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Q1XKHCF1;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784052528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uqRkl63C710v7jj++AXCujyuoY1ta/1fvK0KnGvJPsM=;
-	b=z6QBgRABik7JIEMMv+1WUnRhQzjXh0EEbWsbkduzF6u198Ft6hVlVSc87EgG6IVXEdyMni
-	Wj9j3k4fjcFfN7Lguhgq7TMJ7slYqxTN5GxRYgd85QavSgcvJplAVYTL5lA2g8TkjbbuF2
-	GXWxHrcWMR1Em5CvPctcgCw8bEhNHnM=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ccdf36f63dso177495ad.0
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:05:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784052326; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EHToMTjkFEEgDXhoPoO1wSIv3ssZsqy6eHpAPkUstHQPS/XrODlKay7joNYG3+gTZv
-         Zhv0KGNrcI60KNcc2lH3ZNl8yi0Y8eYl0jyoGrwWaiVhbrARIpmMkGENaJJoWEgws1T0
-         sB6DAM9rBd8tRy6BHt/7QErEXNiOi1/jtCXGmKx6KQpZoJIsHa6BHZgY4LLRySDu3h8z
-         2bw6FgbL2DM/F/6/TXNDrHL8Gl/hlRY6eb+nXG6eRQ6lbAxgyoTwqV0v+4XAcvMiaxl7
-         JJfpm5THSnEbJD4aYKKeOhztNp0B0KwUcNP48OVRJjtXnvHEnVUsk4sOijRP//dRSiMh
-         RBtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=uqRkl63C710v7jj++AXCujyuoY1ta/1fvK0KnGvJPsM=;
-        fh=qSk45aSg3YmGk16uw2AfZAL+ZWJoFwhoR3IsG0+6oeI=;
-        b=iN8CceU5SJV3DqVJHS8UdTcXFn0kwa8+L76QmW9MfRbiU4fuOZhQ+s6bcyQvLB8FFY
-         cAeyewrNYo8BkUsTULFxK+5hFmFolNHCLOAk+pzdESwL5NZx9FFi3303V/Cy4HpayerM
-         0Hm7arVJXwtC4t61+pAkw0XZ0/jWzai81fj5u4ZT8m1JV2QGZUjxgP6Wmd03W8i6uYcQ
-         i1MKyg+xO5Ox2zqM23g+y9cpsTzo7dcp9O0c5cn43JNDjnf/Qg15wbI4Gx4RVZsPo2xl
-         VV7/Dsyd75rQhrJMYvIM48zrvYFyUIcSWSKIwzXjv14beK9h7HQdf0r70G0Rv2UO3PRY
-         oicg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784052326; x=1784657126; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uqRkl63C710v7jj++AXCujyuoY1ta/1fvK0KnGvJPsM=;
-        b=A8iFdVFQBTQtFs/AVxyAWTXyhQnqfvSI08loc7o4+iiqz9eiAb0k5ir3KCTYxRLYMu
-         N/Rms3qqRPqwBoGf+ptagYwsfbUqnxvaRrdqQK3Cww49jGxDRvE1CeK0whRYFbcPqgis
-         p8qajb/wUS/jjJg6dA6jIzTMDLSUYPk/CGUXmlPqHK8GbVyDRCcm7qkjwYkAr6AoK31i
-         5xAog2UILqxU5/PnZEJi4hiT+KPMAUH45RkSVhCZhDx7pjRwWyWHnvdVMsqa6rWil9hE
-         l6HQSPF0QjS/SrSs2cJCvLG4Yxa1Cjie4cOKh9shBRldPC1UsN5CHEgvJI9gALtJoEHS
-         iObw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784052326; x=1784657126;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uqRkl63C710v7jj++AXCujyuoY1ta/1fvK0KnGvJPsM=;
-        b=ZT5sEA26fQyVxkRxsT3TzDt+4xWIMyAYI4quPyLD5W/+390p91ugxEB3IrM49cwkMB
-         TXt4DCi4ay6WVMQ8KuQKn1Vqo5g/JPcLgNocZbM4cesZoaFsrpABC+PzfWEiBmHyJDRZ
-         Dcv2J90YD0GVUQT5Nqek2XWFcMaf8nHtL4Dvn5oGrS5rOxZe/D9CuaczySG7KzewlV0L
-         ffaxSTMjIidru6+OxgN3d7GVCVuHH9pfQAV7x6Smqj3y7KD0MO+9H1jcI93Yg7lWhKgV
-         viJClJc/mLplDhN/U8C3OjTW0PSgK/kqPjeX+BEzxomsF107qLKwm8RKfu1vD2D1x9Bv
-         Piqg==
-X-Forwarded-Encrypted: i=1; AHgh+RpHwJPeOeS9F3YjYjU7SzEeGtMBsQNTMuGd17NXQrgNkYmDARWBz5uu/Ibp91nyJ4c8JUDdQYISSQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx3v9drb/D6HxebS+JYop7LrIPrGP9xS1gpKfGZGTvDfLOwgScD
-	dOmsi13WLSQ3uXNHXeLR23wgcvRlZ+Z0LpFh9uS4on1xTgX2ImI+UXxA1r1vLS077wp71aXYLSm
-	e7PjcnmgAfpPwCTu4/EWyczlaaIktFJdlZs9vKA9U
-X-Gm-Gg: AfdE7ckAul3gORvZcQOBoO5GDNEi0Qsi7DA3FxRqrhnGzVJs+BOjtKCh3MqZFDxBn0c
-	glR1bXZv+B/eas0hOv3syEPKy1Upj2JRcxetvjRThLVsEdUVzFYef6GuK5rpvx9aSSwavkCN2X1
-	RAw7UjLmEh2ThJ1gF4np7ppkXz3J6YmHn01o0Xff8YgJYijH6eYYJxYOETT1IK0g7rqwzkckNaH
-	2JoSpftIneErDyQPvmudf/vW8oXwMUuiCG6B99xl3iHYIqCanLbNjr7gs7kuo+YZwnwY2kXrUfM
-	lo4/4QnAzxpZ9JsrYRV1P8bsAw==
-X-Received: by 2002:a17:902:c40a:b0:2c9:b404:b55 with SMTP id
- d9443c01a7336-2cee166107dmr5050295ad.6.1784052325956; Tue, 14 Jul 2026
- 11:05:25 -0700 (PDT)
+	bh=ItkheW7o8MDheAOq0+eksdc6lZRrHRH2+xlsXaM+TEw=;
+	b=y1a7EQBz3raTh8MiMHmPGag+3Y+5WJUblRfWF8QXBK6VODO7pJ5uPzUL3a+5wfqi0QaSRs
+	Mw5AWCEbs7NM29w6EPpCc0QV0cDPdhP1Vg/qn397c1MsldzrNAj1UsX/KKMQcFzdeZh8qX
+	SVacrsuSXttzwJ/jdvSdSw2tZ+A2frk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=ItkheW7o8MDheAOq0+eksdc6lZRrHRH2+xlsXaM+TEw=; b=Q1XKHCF1NcQCCkYe1FUurI0saw
+	2SY3+LBk6CNUrVThHugCN0aWZ8+bJac9E2jiS51/VAAqH154z30KXYNLaXOLw9mfumCF493Houpod
+	nBmNOTk8lAzdOZJLKvStkn8xo/0sJI/SZpHTz/7O/m6Wplf6rn+sUuI5d1xx/4mVJ0Y4o9HseDI5K
+	S5wOc+nTnStvZ8/OYQF6/BFIIgo/UT4dddeB9kmmYNb0qIyScuZ9Y5HyEAzr9holiKCtVUJ2B2nXu
+	jkEuPBaH/QzoNbcNXjPjp0XAhkbriAiwIa+jv8nPiMKqSwzsLAEz+Hmfec0qE4jAWy9m4b7mxVibT
+	CP7cLKwg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wjhYh-0000000Fege-1noY;
+	Tue, 14 Jul 2026 18:08:43 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>,
+	linux-mm@kvack.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>
+Subject: [PATCH v3 7/9] hugetlb: Set mapping folio order
+Date: Tue, 14 Jul 2026 19:08:37 +0100
+Message-ID: <20260714180840.3731244-8-willy@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260714180840.3731244-1-willy@infradead.org>
+References: <20260714180840.3731244-1-willy@infradead.org>
 MIME-Version: 1.0
-References: <20260709224330.946683-1-linkl@google.com> <8d316b6c-41fb-4ae3-8923-3b649b92b33d@kernel.org>
- <20260714092146-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20260714092146-mutt-send-email-mst@kernel.org>
-From: Link Lin <linkl@google.com>
-Date: Tue, 14 Jul 2026 11:05:13 -0700
-X-Gm-Features: AUfX_mx5k9DBPXvby8jHd85RScNqoUx2Mk5ySUSPxdCd7MSrVwbUj5pXe7nTaQQ
-Message-ID: <CALUx4KSxjpHhgkHZ5p1khLSe7+-cDHd+ZtBEJS1HytWSo5WbHQ@mail.gmail.com>
-Subject: Re: [RFC] virtio_balloon: fix Use-After-Free in page reporting during
- PM freeze
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, virtualization@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, prasin@google.com, rientjes@google.com, 
-	duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
-	Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com, ahwilkins@google.com, 
-	Greg Thelen <gthelen@google.com>, Alexander Duyck <alexander.duyck@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: A82671C000E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BB271140007
 X-Rspam-User: 
-X-Stat-Signature: xb9t9nfqq6quxn3xo7r4t1h35g9bba85
+X-Stat-Signature: dfosfku45spxmwn6hszey3xkenfjqqqa
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1784052327-367513
-X-HE-Meta: U2FsdGVkX1/ZmlLatGq0kKNAkkzyQ4DAJOzwlUGIL7KBPJ2p0sk2KfsVRxqFHsjyWpJNmsTrOh6phCY4w1d/bQVKDE/8rTrxG5KD+90VF7e8a8W4dkMZmD0/+Q3voTBiB4O15zx5kVF3hBIPdg0MUfcaqTYL+ZLyBGZ6w3KrAnCT3er4hG9HAIrnVymIetCTHWjFno41SvYD+wio0uknBAmzDUXRYc+f/zk7jRvgofbmOBNVzIAcp1ZYgvw72XvsIKjmm0U3/Sc1eKiXLfNoIpu2yL9UOh0D+SviJY8qMRMuOWxFJsMIN8o+bRPqo/PeN/xNVHp9NGpAYnyP5G9KHqla9Rhf1zK3K4mgPr0Hq6wxIFSfbtlXQwKdFu4t+c3lc0IqhSd5C72DTR7oNW8bomnA07MDYNiUH8S0vv9JYWbra/Msxs+Y8IlFqaLjhs4+Soo36g7YavPgxDeZXictnPvsxYo35DRlZw/OEJqQ2IsX9xdCCW8GQMvhUyVrX3j+0zT7lzjv43S542M+I0K5ywrSAM0vIlSuXZs9voZJRncoPygkOqw6rKt1MQQWNGjImZtKIfh34e7gOx52Aa+eK1bfCJnTdJVpFhRcpzBg1w8evofaJtWohqD8tHJJt+jpSqNcv89nvujjWXhl+R8HxMst+2oMmK/PYKghJ+4l4puNOLEA7J5fv8USPypTy0ey+IlDruBbpbbt64RWfHolEMV86P8zkgbzfRAs7F+SRkIPjl+ePswf+qTURlezxGQAlHIrd4tEdhB05BpxV+u/10cXR+QgP8fRXPzoUZjtdqxPMR0hllC6U6OHfJuJcoB/X4BviTY8eqQi4NEU4L0H2VMbsl3QTmjiu9thCekdUNZ1uT0aY3ixfQAgbkZgblB5UMGHLc8Qkb/5IBZ9fUOR/z+vRhvoW0Sm/TNV3LJoq/67np5+CrT4c3O/gPqmluKqbMBHWJr/7rt1CK8fMLy
- fYOqsDf9
- 9KNo36qUEVuNq02LUH8IkKZMTOWnmF8ra82cn0hkB7ln1wRyV9xeTXnqWKe61oIGLsG0JxLQsX6LY74oK3lICxJGN3awyuvoARiZ+lxaU1x3L6kLdn1m3jH3RaSrObK44fgSnV1mQc17sQ7eX9nVA2mlWhM9tFKfP9g9wR5Zcm/JDIEjTqrGpst44XDPZiiMXR4kmuuxezupGMIkleW5ZYy9Ci5sLxxqxr5o9na21dSNEGi+bdA4jBFywl73qCBW3BrTqlT6NLVNF2KuN53D5W0B+kldmREpmmPkmt+L/u+hpafJE8mWpQ1whDP0Q3nTVOgWqFXmd9FWtf9DcAakKud6qH/eN7/FXcgLSABY1kqmLKFA=
+X-HE-Tag: 1784052527-421124
+X-HE-Meta: U2FsdGVkX19EiKzRTsuWbmy2fnQux0ZfS5lzwpPjiEcKXyaMF9JMtt2ZkKuPkOnBQhBXKCse5FbxQxwlBd8QrXEC42BQi4fJ/NxRw4qjAvIyof3jpx0FpjST2THbczFcuLZsynYODSDffAzCmSbbgAuq1YRdJjdZ/iGU/rx8ts43Ku6ySG9Dd7hgxDUJPzHpRf+kGj4v+6vUgJMlbbLPKpL2/e74Yu+U1/bY3DvKJ3OQiv+RjF03oyCnTR4CYI9SY4nxAaaLpQOI540/jeHg7Eoug/QQqcwHFYgEdb620c246tgAVKEUAiS72YEqRRsQuk5GUIQbSpQ+NHf+5jWcbCy4QO6iM3L8gk5+oISUbbintrMJq1yzp0YgK8/N+I7mkF5ACf2oaolHLkKG/m6v1ro4AJTniPpt8kbqhPjrFLO1B+3BUiqArLBz7aWacl7g3SVOWVQBxmqWdSDRhSEsSvZVO+5FGeDh2bJb0sma3shiKLTVsix9f7fNya3y1YHkDW+WZZ1HBZJQVEywr9BKkDekB9jRWeKE9I/mwUQMjfSKQfmbZ63pPd9ROhGPP6pf/Zm2HFWMM8bW5ffRR5cnWrxyej6SLwBTarGofB026GmTMViP0VDSmAf/S4jDImmiKs9RzKAIUPUmdR+AirH2fi7NnqCbhxxhaecQ77aoq7ojtYn5xdh/Db7dCOnJWmtzYMYxd8SxbQaw/JgkGeWJBOfYp2lRPozU0vbyS5Ql0cuu/n2jAPsD5q+bJfXcW8kxZVnqcX3WjHgl/vplc3RR0z+5a4iO/JIR+6KFXnRncWp/4KeRVsyIe40wtr4cBDPzl/G9M7iFMUXJ7YOeqTjqX5PuqcphsbatGoMyYSQn+E7iKJVfWAkrLXGCfECfUe58Lg2FBEDoxV21V6AjKRA/Uaas+gi5B2ETO+lgf57m3hB202sfz1RqiOeKf0qU+VRvFOxELw5LrPjGxMf8gZG
+ ZsUXPr19
+ Dm6lSATEJ2rmMEHobEa8VSwNcZ4vj/XA2R9oupr4TO260Ty4HnX7Hp7X3ZNkxYFvvQuOR1zJ2I097bhu/y/pODGwYr9l1CoL6z40igUFWXHlrhn/3P0K8yKUAmKipAAW0oTpYUIU7Umd27CgGkFZBkKdonpWpC1BGkyDLCM39nsRisN6LIU9DClHtnb16kLfIa6rRHooPbK6yWNX8qOrr+t3LuJsFH54ZPDN9hsvlHKcLYJbIDuSSoaw1F7fd5XoNZiGKP0zGm5tSwqZ12yhzw1C3fTJXx30IY/fa2I0wc5jGKHXoyuX1KvYJkEOXGHa0QH9g4RnZlAt56VoDyE7RDOsKFC/6Tb1Qd76fUUjObsJ6N6Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,33 +97,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 6:17 AM David Hildenbrand wrote:
-> I assume that workqueue is not frozen yet because ... it's not freezable :)
-> So could we queue to system_freezable_wq instead, or define our own freezable
-> workqueue there? Then a driver doesn't have to worry about that.
+hugetlbfs currently uses an fs-specific way to determine the size of
+the folios in its page cache.  Thanks to the support of block sizes
+larger than page sizes, we now support this as part of the page cache.
+It's somewhat more efficient as we have this information directly in the
+mapping rather than going from inode->i_sb->s_fs_info.  We can convert
+the rest of the hugetlb code to use this at our leisure; this is needed
+now so that we can use filemap_get_pages() unmodified.
 
-Exactly. As noted in the RFC, the root cause is indeed that system_wq
-lacks the WQ_FREEZABLE flag, leaving it active during suspend.
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ fs/hugetlbfs/inode.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-Switching the worker over to system_freezable_wq is a brilliant idea.
-It's a much cleaner abstraction that solves the problem at the core,
-saving individual drivers from having to micromanage this lifecycle
-and handle failure unwinding during freeze/restore.
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index f1d4e511d9b1..725bb945a440 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -883,6 +883,16 @@ static struct inode *hugetlbfs_get_root(struct super_block *sb,
+ 	return inode;
+ }
+ 
++static void hugetlbfs_init_regular_inode(struct inode *inode)
++{
++	struct hstate *hstate = hstate_inode(inode);
++	unsigned int order = huge_page_order(hstate);
++
++	inode->i_op = &hugetlbfs_inode_operations;
++	inode->i_fop = &hugetlbfs_file_operations;
++	mapping_set_folio_order_range(inode->i_mapping, order, order);
++}
++
+ /*
+  * Hugetlbfs is not reclaimable; therefore its i_mmap_rwsem will never
+  * be taken from reclaim -- unlike regular filesystems. This needs an
+@@ -926,8 +936,7 @@ static struct inode *hugetlbfs_get_inode(struct super_block *sb,
+ 			init_special_inode(inode, mode, dev);
+ 			break;
+ 		case S_IFREG:
+-			inode->i_op = &hugetlbfs_inode_operations;
+-			inode->i_fop = &hugetlbfs_file_operations;
++			hugetlbfs_init_regular_inode(inode);
+ 			break;
+ 		case S_IFDIR:
+ 			inode->i_op = &hugetlbfs_dir_inode_operations;
+-- 
+2.47.3
 
-On Mon, Jul 13, 2026 at 6:26 AM Michael S. Tsirkin wrote:
-> +1.  Just system_freezable_wq will do the trick.
-
-Thanks, David and Michael. I will drop the virtio-balloon specific
-unregister logic and adopt this approach.
-
-Per the earlier feedback to keep these fixes independent, I'll format
-v2 as a 3-part patch series:
-  [PATCH v2 1/3] mm/page_reporting: use system_freezable_wq
-  [PATCH v2 2/3] virtio_balloon: fix shrinker UAF during PM freeze
-  [PATCH v2 3/3] virtio_balloon: fix OOM notifier UAF during PM freeze
-
-I'll send that out shortly.
-
-Thanks,
-Link
 
