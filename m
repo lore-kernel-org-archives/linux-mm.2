@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CA6DC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 02:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C11F6C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 02:10:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 565CC6B00A0; Mon, 13 Jul 2026 22:05:22 -0400 (EDT)
+	id A2C056B0099; Mon, 13 Jul 2026 22:10:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 516916B00A1; Mon, 13 Jul 2026 22:05:22 -0400 (EDT)
+	id A03596B009B; Mon, 13 Jul 2026 22:10:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4568D6B00A3; Mon, 13 Jul 2026 22:05:22 -0400 (EDT)
+	id 944256B00A1; Mon, 13 Jul 2026 22:10:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 192A16B00A0
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:05:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 739A3120210
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:05:21 +0000 (UTC)
-X-FDA: 84985740042.16.5019658
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E8080140007
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:05:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CuDkh283;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1456B0099
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:10:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA1CA40278
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:09:59 +0000 (UTC)
+X-FDA: 84985751718.03.22E841A
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2B3B3180003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:09:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pOTIrFDv;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783994719;
+	s=arc-20220608; t=1783994998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZbJ5LwUhuXRY/Z1ZqpnZgDpdVeIUjnlTCRKxmq8/Z5A=;
-	b=WH7vmD+xqYzde5wk+1Kc8UozW2eHYcn+/3LksnEsA8VxfP9CUwf5wJYdiwvnJUnLnSMe2h
-	g/ShIiCalEiuEkmuGADlgfQ4VsuL8oBdYHOe3f8bTLj1fFVZ2exNgZkoZ7mRFuw6q0qD3J
-	+lnANR5Vzel4t0q0GEPql8xdSZp6jtI=
+	bh=Oe29OFRdQWxJG3Qa1xsqDVWRullOweBuH8zwQOt47ZU=;
+	b=02g+asZSfPu9wyvsDAAk2alV+T7mxPlZWD3FROG7dMj/5f+oscBAfQ+80ORUZhZD34a1m2
+	FVARMRQDDkczHVWm/7SOofq1ajn3IMX4K82RTrYhY20tjH0WBwRyHfnIjsSbkXShoYaw0B
+	FXfDASkc1/bFkunz5ecm/UomO+U3lF0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CuDkh283;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pOTIrFDv;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783994719;
-	b=5w/IKv6NS3/YN+1aP7f03/vIERXLQYQapFtJSW6TJIQzfDXx6a2IakktV15fBs4+RF6sqE
-	D7GenU68hTFKWRWxDwLOyN3FY4aajqJmLuHU0elRbogWL4jx5CDwOTNbyrLc5siVXjSZqj
-	gxQ+zbed1uN8O/cSksm2ai55rScQNF0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 961734374F;
-	Tue, 14 Jul 2026 02:05:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0DA1F000E9;
-	Tue, 14 Jul 2026 02:05:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783994717;
-	bh=ZbJ5LwUhuXRY/Z1ZqpnZgDpdVeIUjnlTCRKxmq8/Z5A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CuDkh283igfk/RoVjv23OF3m85eAWtwTif8W9ydD5h/jT+KADP/avJipKzjv51Pq4
-	 jQi6k64QdnaWj+cNQglY7nm/RSDIAJ5HMqW2k/ruRNtkf2A+NPgR63OPHWYtapSQC6
-	 YHl2w70jw8BAoUFFmifKvtE2Gh9KvAj2Um672PqE=
-Date: Mon, 13 Jul 2026 19:05:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Shivank Garg <shivankg@amd.com>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Jann
- Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
- "Alistair Popple" <apopple@nvidia.com>, Karim Manaouil
- <kmanaouil.dev@gmail.com>, Frank van der Linden <fvdl@google.com>, Kinsey
- Ho <kinseyho@google.com>, Wei Xu <weixugc@google.com>, Bharata B Rao
- <bharata@amd.com>, David Rientjes <rientjes@google.com>, Dev Jain
- <dev.jain@arm.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/6] mm: batch rmap walks during large folio migration
-Message-Id: <20260713190516.0c669b5207667c893a9c0938@linux-foundation.org>
-In-Reply-To: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
-References: <20260712-migrate-rmap-batch-v1-0-872a734431d1@amd.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E8080140007
-X-Stat-Signature: stkko8te89p85uxcm3yrbxra9os6kmd4
+	t=1783994998;
+	b=tDnkJ+oeRPpwW9XySWBjFvEIpzARtAW95ZHc/e7sGj9rqC06R8ukI/Ggb9eiVxzBOqtGyq
+	KIVsw9RyVa/o2twvOOR15Ppb32kvN0rQxSsD8VwpnAZAJYRmHU9J/+mpaGtE4ibfX65JS5
+	pxNk9BTj7Q+tlGXw2ieM28LeP5xNTOg=
+Message-ID: <d39f8258-66d5-4ce3-8080-69dc4e2ab197@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783994996;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Oe29OFRdQWxJG3Qa1xsqDVWRullOweBuH8zwQOt47ZU=;
+	b=pOTIrFDv42shfz0GqiuCI0/zTy5N++vrqD4K3ff7oohYi86VnOG9XBajIscXw1p+JVsfbO
+	0X1+teKSyDwqVoKUvlT4KGfdQHHrzM7cMtJy5FntL1v+23Hjb491lk9x1zAlbb6iHwMMl5
+	mAiHSfrz4kFTtflqlSt/VVu2EBvFe+g=
+Date: Tue, 14 Jul 2026 10:09:26 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in memcg
+ slab shrink
+To: Usama Arif <usama.arif@linux.dev>, brauner@kernel.org, jack@suse.cz,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org
+Cc: hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com,
+ linux-btrfs@vger.kernel.org, cem@kernel.org, linux-xfs@vger.kernel.org,
+ shakeel.butt@linux.dev, hannes@cmpxchg.org, riel@surriel.com,
+ kernel-team@meta.com
+References: <20260609123047.1948242-1-usama.arif@linux.dev>
+ <4752c658-7b61-4636-ab5b-bd172e11a42c@linux.dev>
+ <a0c0a578-9334-4540-b469-4c368d07953e@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <a0c0a578-9334-4540-b469-4c368d07953e@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783994718-590603
-X-HE-Meta: U2FsdGVkX19wKPbT61CgspiTbHtrCmzHEVeXPGmhOXBUGI7RyJY6hs4+UFeydLTmoMdgx0/x+S6mE1BjNSXN+lzImmjEEihyRGZWm6nn7ILBEETQ9inGk1dG6Hf0wCxUOsWI8OiM4d13t3Y2Nek/08B/Q66/LrviiXgzxZbSZph96CQuzDnh4NsQd3v0TGCpppNKMpicBVkQOY7UDLGOWHjEJc/ZWod+kcem67UahRoNV4bTKUS/tkef8KjjC01Y78yrQbIn+19gllgM7ophv5A9p5BP7DRDucVLAcyiuHnEjG0uMU3L5nSq9mT0MKf3/LYxU12ksd1H8T+2DMebetgHMIrLy7zZXppCJsSuJFwB0nrZT9aZKs8Yu/4Zr1z9bNj1GZAyw1jHvTbAOTVh2QGXgWLOhgm8tL/91ezX/XJkNznPKh5LSCTG5wQQ8W+CBDiyUTI1+FVRB8E/KpRAAz7OX46MF8WzDC8g0Ddno+MzGRfEsaF6i9olgndt8VaDJ6DAzsCAfobv+sIKv79LxSSdpmVYBpJrWYdjHYvRcvNiDgHZsBEMG+yr3jZR1gBlHG++1gxTlVof/3MEMVMttaWIc44bNjJb+9lkw6k+vVuKfIRyKXX5Sn6rJ3mAXgi8gW0O5KxSPeQ1xRW8Zjn2eLB3vOA1QYcxjsEs+VVb3S7qNHzWtjgrukIbZ7mXyHBPiCpwXohxhf7pMQHLAM3jDHA69xZoqqEsB54o8fRYRjA3zs2tyAZZoz+6bHJKNg2cFokwUUWorzGbnWAMC6o/n9Byx5n/eFBSg9v/ghJ46hfRb0g7QbT7bVGQUcpZm3BBnU6SppRRzV3QqfGMbZtQuVl0woVA9fdMQQPfgeJeiklPd2c6ZYOWEgt2HC26gXdG4WQ9eNV0E+FP0gCVhErAxEUWjTUXAqUNcXBCYjon4xB7DPjUYlO1EcUZMB58Q2QMI8CxPSqqt3q8AEzL8sh
- 2uVqYCnA
- fmwmWYnXIJMnMcb6R56V2QvukSG7jqMu0EoGEHJ2MaGgFoyCdVhDupmP+KLdiz5ziG7HIo/h003J5xntk0rsTCpt/x0d0c7zdnVT9pQ2nS7OetJlSZn3TvpIPyU396nSndGGquHkw4zcbsXYFhGo+iT8ipxbsN6tqw0HQjGTZWEFVFTnPE0yxqAHpSlLjocwUX79/I+kAXHHPZq+Yl53KR+lkyMKvXhl6po645BvesFoydxpkQAmIJGjSqXna5stpN3XdjFE0YU+QuVCopKG7R7zBxB9XRcZrr8OX+IAtXExd/+p8iR6JnlDypxRZumFiwodM9f7wVnI5pDoxOEzaIurhxtOfz+moRKuqyjRZ7cn39PzcbDh1aZQY8+eeJaLS+UwGe6801acY0r4V1NTDdmWAWMB+IWMMVdBO
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2B3B3180003
+X-Stat-Signature: bhs7wnkpbn6wqisjogupxmgega4yzswk
+X-HE-Tag: 1783994998-763946
+X-HE-Meta: U2FsdGVkX1/ueHzu/7Xv83e6fBP2GxEsy9SQCy0fMNOjZlE/uvYsx7eRchPOpvSdmyu5RdcW6O3s9yJ4oCAfd5/aOiY2gGGWO+n2rHN7KL4fgkQQto5euN4x2nrGyfmiSoCZleT53PIrREZJgA8Pqsn3MOs8r9K+XMvoJxPqBe/B0PIbPUBPi/CllGfrIHIFsnisuW4YqI/lE0oaibgZFjsANm818JtriQyavpzB4IZYPlz/rNR6FoT28tplckFT3xw0f5QHeqec75HQYDp0M1+vtCW9NIv6V8+N7PfUxuR+5zlkISKTiOS9HbCJk6Zk2GbMm9Jiz6kn0/hnDUWBYRghqMeKk4fyV6ya1BPn40cN99fvL3nIBkHDrv/KXIXXN2WVz4cZ7XxGJMhq1l0tUy2A2Ldm2oteM2RCQPpNxbdJityudU/XH5k56k7yk9dTIGxT5GiisdPZkF6oBmKDCUPerx1Thdrjw9LOH9MH+HV+BVJZWXcmBgdzy0ljhNrXbfyRzvUs7ZQQq3dCkM3Ku/pBsehkfpOHkTGZObfLMH/Z/Vm81AdUgEIfu+eGLFlrra8JM5xPs4iWhdlqhmY+cppNzi9p9dnuItccWDzUSe5tmhyx3ZBxDNKy2sglgaGz9stBRGBr06WKGOnLs7serKY03EUB4957B9/6ZmhEgP6SNzGj63Zfec48/uBdiGw/oYFMkiLP6hT7c5qDny6V5cP333FigHRXWJkUyk4X399S/xPcy9lgTiCk2Kw6djisqCILqSlBqPZyshTC8KUiPEX8buoePlvaiOiMkE4bEQO5M10NOxNf9ELxTkdPdekDOhzRw6Em3lOZ3QmEdR4enI6CSYeB/MZzoQcAoqAURFQmhpPOtaxIIZvVNLX6iRyLnyhqf5pozEeujn3w4tvijVB7/60HXWKe/rpMoVVA0yFeqLQq6dFieOdinpOjGARSjs2eZ1ofmIEuFTroU+8
+ u2eH+nkC
+ MbRxn+YZJGwV/mNd5bNdhHfdtyspe/W9Efpw7v+7Nr0eEFCvil1qdwqOpX7x9Mpd0fLXlZYx39kUPeqAxfRRsncYfIseBxN0g55frwXREJADIFHB+0jLRIWXGChPt2YTRTYJTkCGFbXS9xHE3cVMXMHRTuRKfRuV9DYSRi4HKmraTEcP27gZ3Rj6ZMKgDIFlkX9UyrLr95/RRv0jkiidAWwdJ8cpGaovhU/ayk8wQ+wAa7BI/nF/iLo/9We5OpS/dXqDu0XB/n6B5F3H0redI5corCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,52 +95,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 12 Jul 2026 07:38:46 +0000 Shivank Garg <shivankg@amd.com> wrote:
+Hi Usama,
 
-> Performance:
->=20
-> AMD EPYC ZEN 3, 2-socket system (1 node per socket).
-> move_pages() migrating 1 GB from node 0 -> node 1, throughput
-> in GB/s:
-> 		         batch-	        batch-restore +
-> folio     vanilla        restore        unmap          restore%  restore+=
-unmap%
-> 4K        2.98=B10.09      2.95=B10.07      3.06=B10.05        -1.0%    +=
-2.6%
-> 64K       6.16=B10.09      6.24=B10.08      7.80=B10.08        +1.3%   +2=
-6.6%
-> 256K      6.85=B10.06      6.85=B10.09      9.54=B10.19        +0.0%   +3=
-9.3%
-> 1M        7.06=B10.09      7.17=B10.09      9.89=B10.06        +1.5%   +4=
-0.1%
-> 2M       10.97=B10.17     10.67=B10.13     10.69=B10.15        -2.7%    -=
-2.6%
->=20
-> In plain migration, the folio copy itself dominate the cost, so these rma=
-p walk
-> savings are only partly visible end-to-end.
-> When the folio copy is batched-copy and offloaded to DMA engine [1], the =
-copy is
-> no longer the bottlneck and rmap-walk batching translates into much large=
-r gains:
->=20
-> This series + [1], DMA Offload on PTDMA (DCBM), 16 channels:
->=20
-> 		     batch-copy
-> folio   vanilla      -offload(dcbm)  dcbm+restore   dcbm+restore+unmap
-> 4K      3.36 =B1 0.10   4.16 =B1 0.18     4.10 =B1 0.14    4.12 =B1 0.13
-> 64K     6.16 =B1 0.47   9.63 =B1 0.23    10.00 =B1 0.33   14.63 =B1 0.14
-> 256K    6.70 =B1 0.09  12.98 =B1 0.18    13.52 =B1 0.15   32.30 =B1 0.65 =
-   (2.38x)
-> 1M      6.99 =B1 0.02  14.32 =B1 0.67    14.84 =B1 0.17   38.97 =B1 1.03 =
-   (2.62x)
-> 2M     10.74 =B1 0.29  64.25 =B1 1.48    65.36 =B1 1.00   64.97 =B1 1.75
+On 7/13/26 11:34 PM, Usama Arif wrote:
+> 
+> 
+> On 13/07/2026 14:12, Qi Zheng wrote:
+>> Hi Usama,
+>>
+>> On 6/9/26 8:30 PM, Usama Arif wrote:
+>>> The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
+>>> dentry and inode LRUs are memcg-aware (via list_lru). But the optional
+>>> ->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
+>>> btrfs extent maps and xfs inode reclaim operate on filesystem-global
+>>> state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
+>>> None of them filter by sc->memcg.
+>>
+>> This makes sense for now, but how should we handle this if these
+>> shrinkers are made memcg-aware in the future?
+>>
+>> I've recently been working on making the shmem huge shrinker
+>> memcg-aware, but noticed my changes broke after rebasing onto the latest
+>> tree, which led me to this patch.
+>>
+>> As for the shmem huge shrinker, I can work around this limitation by
+>> making it a separate shrinker. But this feels more like an overall
+>> design decision, effectively meaning that all nr_cached_objects are
+>> precluded from being memcg-aware.
+>>
+>> Thanks,
+>> Qi
+>>
+> 
+> 
+> Hi Qi,
+> 
+> Thanks for raising this. I think the alternative is what I mentioned in
+> https://lore.kernel.org/all/cfdb8620-ea55-4226-98bf-d006820e6270@linux.dev/
+> move this down to the fs own callbacks instead of here. Would that
+> be better?
 
-Well dang.
+Yes, I think this is a better approach.
 
-Thanks.  I'll await reviewer input on this series.
+Later on, shrinkers that are converted to be memcg-aware can lift this 
+restriction themselves.
 
-Sashiko said things:
-	https://sashiko.dev/#/patchset/20260712-migrate-rmap-batch-v1-0-872a734431=
-d1@amd.com
+Thanks,
+Qi
+
+> 
+> Thanks,
+> Usama
+
 
