@@ -4,128 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163C1C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:17:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B586C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:23:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C514B6B0098; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
+	id 6E1916B0005; Tue, 14 Jul 2026 08:23:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C29016B009B; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
+	id 6B8E36B009B; Tue, 14 Jul 2026 08:23:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B197A6B009D; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
+	id 5CF1A6B009E; Tue, 14 Jul 2026 08:23:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 87C966B0098
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BE121603A9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:26 +0000 (UTC)
-X-FDA: 84987282492.25.5F6F50F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 331016B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:23:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B11FFA03E3
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:51 +0000 (UTC)
+X-FDA: 84987298662.29.4F0FBA3
 Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 255AB1C0006
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="0 6Cal4/";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=PUhIA20e;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by imf12.hostedemail.com (Postfix) with ESMTP id D2CF740006
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=UMSM7bM0;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=WvTFl++y;
+	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784031444;
+	s=arc-20220608; t=1784031829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ihQ95OjmEKT/BSLmlhjYTJrT0Ye20Wr9cB27N9s9Bk=;
-	b=g4Mvi1F9T8IcjsR2gHJLtJdFyj9dYfWVQrSd0+4lP3yuf2Cj/0iQzjqGiKGANoscMsfRIf
-	uf8yKvyr70yXk3WuZLLl6HxRNC2/kR3yzjJd/fWk6zUJO8PgX8O7p+1js/Lymts4OoIP9H
-	bOigXL+prOlnMklYrell/wPMhvOHTM4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GcEUonScCMIbln7kBYbF9LX8Kk9u5y/6TLeXvuvHnZo=;
+	b=GKxuL6vb3WE3e1lWWjoYV8W3yoVHDglB/27BJpWFxsFUQtF6SWGsXIMvREJsKhLMvHllDb
+	gngVsuVy05/Lol8F7O3rxB82xACt0Og7MGfloASaxor8i5WamPjF+4ThlB8gS6qr++DHIJ
+	pRe0EVv0Qe69J6uy+WWa2a68cUcnWgI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="0 6Cal4/";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=PUhIA20e;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf12.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=UMSM7bM0;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=WvTFl++y;
+	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784031444;
-	b=gwB0EA1XIp5h8ug/5CG7LD60STGHxYbV5E86Xc3XQ/S78kkO8r9F4F90OeLK8unGO4V5cf
-	d9BR/wWByJv4YAgRJANyA1bpLPvEZPks+SE2xyiqbEhsZcdKQk2/xBOaWHm2J+u9U2Lfv0
-	z4b3C8g20j1ZwVOaMx/wCjUBMHYgP0Y=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 46AAD7A00C8;
-	Tue, 14 Jul 2026 08:17:23 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 14 Jul 2026 08:17:23 -0400
+	t=1784031829;
+	b=Ea/jJt4EFWzZX1nH6Daj8SjqwB1nMH+nesuHsceNspaZbQOjQubwNh2ZGB9zdQAYk3eunB
+	7miydkK3lNOzTcKw2j7nI7M+bFtDumJgP2HuglBhjotjvQoWYZDZvwL+WCvgvYhOzKIBLm
+	8e3Jov8/3NQEzzrfM6zkZ/x4M2YRK40=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id C081F7A00CE;
+	Tue, 14 Jul 2026 08:23:48 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 14 Jul 2026 08:23:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1784031443; x=
-	1784117843; bh=1ihQ95OjmEKT/BSLmlhjYTJrT0Ye20Wr9cB27N9s9Bk=; b=0
-	6Cal4/nesLwm6f4mE6byhD/laj3yYfNDmPPOa9oRgs/u2iLf+vvd9RRYQp+QVYmD
-	TBtvTo1oLURTI8Y3NirZMchM2tsm01fBVpF33dabcJeHZ1zCMDvVvIbjyADncQH1
-	dIDuYC75hnIUdqxzuetfpUKfQooixGaeI+A+FGOEnx8eMw4rcfj467Si9RtsVdmw
-	DY4GVf3AjE8xCR+GAStTKCYaqZjz4yw5USOtF0srhoRLUG/+NRvnp1IuDIxopX9P
-	h2VbINuLD7sErXZTnQoDPGL13dHtcDIenWOc5IR6pmxbIKvXkUvjgkGX31+uzjKq
-	ypiodWU/J+vNtXxOl+w2Q==
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm3; t=1784031828; x=1784118228; bh=GcEUonScCM
+	Ibln7kBYbF9LX8Kk9u5y/6TLeXvuvHnZo=; b=UMSM7bM0a6qHriFn9FFJcolTvS
+	+qR9pq+5XieWgQ/CgV6snSLM3/OtT0cgI+xV6yiVmVHj/tboBO8FlYa9BcAtB31p
+	6aEC7JwyPhIAFdbdMSZ1cyGIdGb7zX25vC6wdMXKVJ55rGQdQ38IM0y6nkel7POc
+	Y5kg5I+3GX9YASggJ6+Jpl7aBs5CpqoV6yHKLuYvljQDm2NP0ep3YED/mV8y8IEm
+	HnCZTjso7KWv1324/1OZg+QMJk4yIu7o6gWwFJS6mpDF92coSe6Ijf83vF6y+lQJ
+	2Bpzeoi+wYAfTlwDKLHBKzgZApw80WPIhZ4UOj26RktvtQYwVzc38NWdJUng==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784031443; x=1784117843; bh=1ihQ95OjmEKT/BSLmlhjYTJrT0Ye20Wr9cB
-	27N9s9Bk=; b=PUhIA20e8K7OeGxDxE9tB+kii0iiNthFS3tNWnYGWvF69vWrCHg
-	nUqBzU2Talu06xr8VfK/XEIssnThAgrgl3h+gwHrS8nvc6nRIR1/VtPYoAndL3WL
-	1NmRmnCu9+Y9BF+skcd3Sw1VzvIRpakPSppMZkqoRM0BtBZnBcm8gMlmWFIkXOdN
-	FAdtXqwsJ1TCaa1LVBJY300Fb0f+bD4uotZVB7RsYYK4p7soOJ3kUj6kTi2zo+NI
-	kQqfVm0kMByYkmEs32csXKloHxBHohv6HpxwnHoVCVk7DaYYMuzSqFQfuXNW93cb
-	WhuAKdOzmQidOjeji/dD4ZSvBItYMkFfz2w==
-X-ME-Sender: <xms:0ihWaowxuunsTuBeLYM64Y_pCVL57SH61_FLnKHXnOoz5ftNHAQhsQ>
-    <xme:0ihWarf7pbGVtMthX8Z4dsQ7zBY2JlhewA4wzj3W8U7PHLbIT6Fp5NmwzY2u8y1ki
-    mIuiXjgHr3q2ktye98mRJVmzKhpIktBP_lAPaU1G04G6b3sPG6YVbU>
-X-ME-Received: <xmr:0ihWatABuD9zJ6Bu6CZ_e9o_OUmJ34B8obfYy28j5eunXNjrSD8qHJ2U3Ek2Ug>
-X-ME-Proxy-Cause: dmFkZTEsdwTDbwuIWMaB3+OXPGbxQuvxRaMxz2BOP1rFQ08rEyIz04CcI9S/WgIWw3VDyb
-    r4P2apzfU0OMAfbqvacRmLSnfJbzGfTEEWb1kLxSzGi9CSZWww7f7fxiGKLyrwLzZ9cRtY
-    Mi7ukQQ96JKmjFzvuZvEXKfy5SWBlp4NZ+4aUqnacz0SDWDJEu8taDd6kaDX6SZHmcnDQ7
-    +FeTxdrFeppX8uwu3EYrS7/1PEAJ/7A/cmRcog8SWn9OVYoHIpy6DT+dSAEfDYj+bmVysd
-    yHadjryjrUKxO5MX0AkZv9qRtGied6s/zaQRac10nfWloqGoYzpTNF9vTE/jJlRpYAViH8
-    SR8QnHgh4wH2LQigWB5QEEKYJXjwWBTSf3wH7d2ovgxVvZ2b20RvqGcks7mBlLGTnuh7Zn
-    QT3bw5Tz9rbkLUJsgbOd2IxXN3nIsbxQq4flRncvqsvtxawA+wjRAGhI03aWB0NqiuKq4a
-    6Hp903DMQcumSBBNTUw0kShN4y7N7+f8O35aJyv23HEyog+z5Z5jTurks8/zJTP5IsJ6iY
-    aNWMuln0wOVpx9Vc3qmYIIyl5cr+zisAgH7eF2dLJPL8N4vzV2bUh83j7IXxnGFGwfjLQj
-    jt2YmvR2slHczMGvfPV5s+kwj6JJWCC5P+lPlWDZxo5n99fbE74cbm8NmwZQ
-X-ME-Proxy: <xmx:0ihWav7eCkew19q3Tdo7e-Hy8Xd9FeW9sdeUl6puwRjiUDHG89HALA>
-    <xmx:0ihWamdjzwwwo6txrrAazMA9N700615rehIpkUTqsX-9PcrKVvm1Ww>
-    <xmx:0ihWaltzGgO40_9ByjsMesEAD5GEvrd0RY6TwUn1cnLTzCpPFCTbbQ>
-    <xmx:0ihWammxyYIKuaO7aDTFrSZSqKJVTGPf8noe56jh2d3n9HJi7fSOxg>
-    <xmx:0yhWalNWD7NJXKa_9z8QIUpLR6xTslJ8SLDCTclYyA6zsOWxBKWxrpxf>
+	1784031828; x=1784118228; bh=GcEUonScCMIbln7kBYbF9LX8Kk9u5y/6TLe
+	XvuvHnZo=; b=WvTFl++yhAsI8QwR9XKY71PQ60EMItI1JTf3gESWVjSJTqlzewG
+	IVaoYuwumOB3TF2kyoRLl+i8hK0SU2q5osa0OUAfM6Br6FYlGYTdXZ+szgE+CQ3w
+	P+KAg0ESlwt3GGGo+Kvp6+dgDK8+yHdUplDVia66LD65mf0eyxC6eJ79loZ2pnna
+	fgI0ZzYQuA+7Koc5AHrn/Fx9fX/+vS6saYDP4d3z+vqfy8m8Ka10NKMjLeHTDcKr
+	+2igLe6Ht9loZC+tegb/wnTXRxCmzHvHKMIt15nzCpyFC/7Y6psTFJI82k2T10uh
+	5ttXKwyDOqV0O8F5GhWVVWbPfRbJoZCSpPQ==
+X-ME-Sender: <xms:UypWal1nfvMTemnF5Nw2vB6sAgv4Fp5MP9Qe8VgfAaiTYu1yFZkIaQ>
+    <xme:UypWatcnho__ff3514z4q3QCms3Qu1FY6fX3QnyaHK_LxKMe88_rQ0J-7DjBrXbp_
+    hUc0xWizhTrdHIed66-1bCOafcW4cXyLuZ3jF1LLYknTFjfC01eDQ>
+X-ME-Received: <xmr:UypWavLf1GuDwl_ag6TLQBiioUB_3kyycrzJIw9M7JZvf0J-TkPWeKzq-_ZAiw>
+X-ME-Proxy-Cause: dmFkZTEVgqz1oTO3zvUDX+PI3jtyBo3j51If/6iGAsRKaE+6O3X4TwjgcPlpLg6tPsDcOc
+    fDrr8I8bXudZYHdFeCltTx9/N6biT525OE4MPAXcijUesuqj8OXGIaCUJHwfNDUk4vgUMz
+    gzYz7Lu+2QCSywzOLLCPwq5XAAcgs9YOOIzlSzaiM6QdeDkRGV6UL7An8oLrrp1S4Lu7x0
+    0L9aG5wQCzQZJWQjd+QT/psnlWbpuLBJxExJc/n9d91ImXVTcufe+cUGEPx3OlI/sTuIom
+    UdADrS6MRSU0ZwcJK8ZTXWm0wyOjhBRwJRqPdmqhQx/9Mob/a5QezG7rad+0F83/Z+YNoz
+    dDY9pumzS8Q8PB3Ok97b1ldJ9OZ9oLes4wtdJZt2DBXicdzH/ALoZo+j6kV/puCateD2aI
+    fT97QbYD3pfDY06PS7KTHshmoAuzS6nDckcwqUu25nIL72QV/f0KqS39vimvtCbKoqtnGQ
+    n3Sfz8VMwW3pD+KbzJfgKFu8bS5693IjQ611HDCDezrQZX1iok2yZaeU58P837fbz/RP4x
+    1621nsF9J6I2Ww10M2/RrHKth6fIiQ7NJlwGdhqjOIbUtDM0xfveSGz6z12Ek+XIj1GKY/
+    xcAwtOvm04oaninLKmi5FDkKXTWboyUvofaPwukM24DTxW3dwU25B87J1gsA
+X-ME-Proxy: <xmx:UypWarF85X1uOSe23Zs7W4ZTsAnXv3aUM44kwNsIN12hy3iCYD5-vQ>
+    <xmx:UypWau4mj09SEiHQgkIS2qVhNmHfHB4pGfzGLAHRbGrWAo8AlXkPkQ>
+    <xmx:UypWau3EONmUxUlJiqos_xKHZCEn6BdU6be-zVGGj5Jf3mKdopOwYA>
+    <xmx:UypWaigZhEAIqkmP7x7RPHhm0oMuvoteQ9myDuUVJ9wrjH2nzhPvXg>
+    <xmx:VCpWasPkF9eqwFWBcs4W3ORrWNFnD4XHavKptX5_9YrafGGIyrIPX_NF>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jul 2026 08:17:22 -0400 (EDT)
-Date: Tue, 14 Jul 2026 13:17:21 +0100
+ 14 Jul 2026 08:23:46 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Hao Zhang <hao_zhang_kdev@163.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm: thp: unlock i_mmap before releasing split folios
-Message-ID: <alYoARy80Vb-X_nj@thinkstation>
-References: <20260710071344.GA106129@zh-pc>
- <alDSekC_5t-29vJS@thinkstation>
- <alEWEColDdwQboYX@192.168.1.215>
- <alEg6ZPc-ao7s6o6@thinkstation>
- <DJXXKH4KOBVQ.2I9NU3EJL88HA@nvidia.com>
- <alYNlDNMQy0Fl2VB@thinkstation>
- <1fc81157-824c-4296-ac5f-e8965f64597e@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Hao Zhang <zhanghao1@kylinos.cn>,
+	Hao Zhang <hao_zhang_kdev@163.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: [PATCH v2 0/5] mm: fix inode UAF when splitting a file folio past EOF
+Date: Tue, 14 Jul 2026 13:23:39 +0100
+Message-ID: <20260714122344.351895-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1fc81157-824c-4296-ac5f-e8965f64597e@kernel.org>
-X-Rspamd-Queue-Id: 255AB1C0006
-X-Stat-Signature: bsrj1yxiqige3x8xfbgit31ernobyeds
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784031443-724305
-X-HE-Meta: U2FsdGVkX1+hW/06mtsomhifH0mHkzHa+OIVXNEWbLv34Bbv6G3+K1Fy0QOPriKeyWlVQIKLG1awZ90o/A5LVl+tNZN7Fl/S/tpcDIYuxXFdtckqVuwQ+dPVAvRdgNurpEycm9bJpbZe5b4hfzioHjMpdQIu9XLQCdcIKvSyR6lDZgG8Sh2NgidSDX6Ci07h8eXjWRVGm0fVpbS6AO9Yjug2z6vPlaE+zZIzNGTInbh6eKO97wFKGiPYrrvH1DQ4ACrCpairRh3ZSkeg1s5GqxdDXflVctxuN3qxMArYlg9eKM+R0LsqffZyiY0ozMP8AYTGwHi+0ew9UEfCIJryup+IhRTWfQ6GGXh0yJIWwM/9qmfosOW0b4HyTJnkxZ2CNeQlG6xrZwgA/JoJapy82x1YQEl2t7fV/Dl2k3IGvEzPffU0421mR8hQWL7XSjbjaspAQhi+8jpfwcfj0Cu6O7AT9vLDcQnGUPcxjR+Py3uJuAkKC3AxE9XGIaY1RGL3UPybP7oiMeKO/3Mub675Bsi0WJ5uysbddItNzwV6D3TRTEhv2OZN3Gx+tYP7Wuzri1TmdbZC04M7BDjvPa0vovSvoJyiTpk5c5f5+waHXk3fG/03q3zuKV1yIe705YQu4UC99pLBTHeVnfITHz8XtNkWk4+X4y3rVtPL6b0L+rEEdpGqbRK9g6LlJj68E26PTcsRcOHHY6ICvV601EnLpWjxPLUmc0KjJRt/cx+pcuPue2qhlThsww8YdOEf82QNkHgqubYIR0xtYoHTRYCeoyOIo6/12gcd7bpjR7dXxJZ41Msw1pnuM3LKfgvj8BM5VDbU7fIn3joODN6h8aZjT7xBCK6eL7BMyfZAkX1ZFn7dHo35F4bvyHM/fyDhvJbs1DzCGjtWjpP5cITUoAcVxnXpBqqcE5wPqceXq1uyNod3IEPg2kHOVPRbsDbqR1DkIj3Cp0SeA3ZkN3zm8V9
- NcV7ahSm
- TrShma12rrH1OGWuzJnu2d+Vbl1j+2d8TZj7ovnulqW/cJCCRDo6o9SkWmMlS2+LdcJmMFMc8qNxW+XBffV2dxWJHSREsliYAVZYNyWhpT1JlhgGidk18BpnoItLQjPZgKlABneThEF3D8AnrZi4bSjs2/sZ9KZb0nBxQhNNl/IXsQ1OZBPJ40j6iMrksf29J3NlCsgu/sxFT0HC+fRFq0xUHbTeEzjzvodKT0fc9x9zeT6lgJZ4C5MZuA2o+tshAnhtdezkFX3TwnceSkBNVWBHk5dXWo7Dpt7z4AXz4l4nTu4+n5Lmf0P8/JRcz/F17ErT38+wRFRGcOJ0uFntH0V1sw43HOHNxm2GH/bIaHFlAu5XypVop9SAqbkKrcyMthXxPnl8fCsfP7jwdKHtJHXN1b3kDAZHQIWaLN4SvGDRZ9S5xoemBbfBq4879AAZfhywwoGsMqH97FTRjHGunwoCaf37PepZTSv5IsMuOcjD7z0U=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D2CF740006
+X-Stat-Signature: sbxdps5mefn6m5rnn4piuc1iy359mw55
+X-HE-Tag: 1784031829-944071
+X-HE-Meta: U2FsdGVkX18OBXLHHWprU68pN4AKojNXK0sMAlGXL3lc77jNTytYawo+wKvY+K0wrUQTtoa/WwUxD1y3Bl+Cg1wFsu+yyd/8hwwxTZYqUa0g4GyeCwBJ7i4dCL+EfZsN241h4PNkles1+SqCI4UJSl9/oXoiPXVFKYQwO0VHCkwsoJSXtGbse66QCvsgG1FMpLK602qGkQLXMWYJkXdPeNo+/6e7Z5dl6UCpwrdzdWKPYetp54ZLUS7ZiVuAPmp1pwckdYDlxW5Q6xO7KjzZ4UTFeGRnDQppSuUfPZnE7/Ac84iMMewxlyTl6ubYSzSR1c/B8O5nJCPWqJ+jlcbxzlqiO+ILlcYsSPNZhD+lhuOZ38NPl/TgiCQ1iZWI5ve23w8OF304CaIiJS4HjhLV/61DlT4Y2T4DqEPs04YV6Iznwmm5dhia/9I76EoiY+fnJ4UqIEOHA/MuKxXYU2nLlPB3Wf4F8+3DE1OHTDGfLNwMF5w4WLTUAiBfOIhimv04HJrqF/W+7cpvjEBMaIhqGXH9srbtLp4eNtG4Qtil2G6bk4R7M1jDBemtflQwSutq3f6UjfjtNwN4DRdX+VacHC+TWrQMdfrxoIrN7wLKprhxVbHQktIxtdeke5Pymkn+QaqhHTdrmTEphneyK/Wik3ACiwZjikNzpTFiYMZVww+o7ZvlEzaNUxNpUwl5dyojDW9QE/IR8pyE0o2k2jTVblY5OdWeAUgWACmnU7M37BBdFwzfSNdQdqOfkjMl/D1m5Bum0rtKyXOgiZ1C5uWi+Vd6YQ3tjluAInnh7Zzu/D2vsxPLw/bdmwEMa84WKBPegzIg3rY7g7KAwyAfUEk5SAfzrwT5x0qLnTyovUmG3OanE+iCM56IMvWILrwJHwO1EfhnO8dKeYu3/xyvO7u03Qn/Lucyy1pyLQQL1T+CezHyXSYTAsLTcH63F6pZlv2oyzGdEBFAXX/QUAdmYCX
+ uAU6X/jk
+ vGYwPnlJ+9/wsvV3znPtweKR3/EeLQK8vWRl4Ht8aQDtY42Dyq9BrrdTjoouNmDYQS1M+3AFDk4DCd6+DYIPj1nGQj6iByl/oBU3ezVLZigRYkOi3UhDXe1L52qEj5jGtl5ivrs1TOoeXP/u6b51eKAsuTc3MYbtWdjuH3RpCsfBS4putn4/Up61UhG0si2dd/qXO7xygPc4d3xgLe9gQOfl4XHCAPJo7xaGKNnA28mKoHnTRxTOoBK7VZejf/ehDwp5+P4PBlEJPefQPyWqdfkkPoILtPzd4RGK+MV8ZrzUuMCybPj4+Km5x+KQknmCgJDjrk9NBGVlZwecOyPB5hJkHN+Xs9o/5uUjreFYOutvTE7jMeraL0GNeCwWmVqgSdBFrOA+CeRhwOZVMXl6vG5ZiglQNwKbSvYPQxEMP2mUB7T9Q/YnZS92XTyLaZ9+Oa4LJZncv1veuHKAYeYsFJlZjol1brk99vKHKRJYDgjVPYR8eoUCcKsh271QbtGHWpaFCBYjeaatQaPoGeMHMKtYReQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,24 +140,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 01:29:56PM +0200, David Hildenbrand (Arm) wrote:
-> > Any opinions?
-> 
-> I guess a deferred iput through some workqueue is not an option?
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Hm. This feels like a dirty hack to me.
+This fixes a use-after-free of the inode in __folio_split(), reported by
+Hao Zhang, and cleans up the split helpers the fix leaves unused.
 
-> I'd prefer if we could keep folio splitting working even when the passed page is
-> EOF.
+The bug: __folio_split() keeps dereferencing folio->mapping after the
+split (shmem_uncharge(), i_mmap_unlock_read()), relying on the locked
+@lock_at folio staying in the page cache to hold off inode eviction.
+memory_failure() splits at a poisoned *tail*, and when that tail is
+beyond EOF the split drops it from the page cache yet still returns it
+locked -- the inode pin is gone, and a racing final iput() can evict and
+free the inode mid-split.
 
-Can you think of legitimate use-case?
+v1 [1] pinned the inode with igrab()/iput() inside __folio_split().
+Sashiko pointed out that the iput() under the folio lock can
+self-deadlock: if it drops the last reference, eviction blocks on the
+very folio the caller still holds locked. Thanks!
 
-I will get rid of hwpoison case. It has no good reason to lock tail page
-in the first place.
+v2 drops that approach for two smaller changes:
 
-The only other case I can see is race with truncate. Loosing to it
-should be fine to split caller.
+ - memory_failure() is the only caller that passed a tail as the split
+   anchor. Patch 1 makes it lock and split at the head instead. The head
+   is piece 0, which the beyond-EOF drop loop never removes, so it always
+   stays in the page cache and keeps the inode pinned. This alone fixes
+   the UAF.
 
+ - Patch 2 makes the requirement explicit in __folio_split(): refuse the
+   split with -EBUSY when the anchor is beyond EOF, so no future caller
+   can reintroduce it. No refcounting, no lock reordering.
+
+Both are tagged for stable; patch 1 comes first so patch 2's guard never
+changes memory_failure() behaviour.
+
+Patches 3-5 are cleanups (not for stable). Patch 1 leaves
+split_huge_page_to_order() with no callers, and the audit found
+can_split_folio() (dead) and split_folio_to_list_to_order() (only ever
+called with a NULL list) alongside it. Remove/fold them.
+
+Only compile- and boot-tested: I could confirm memory_failure() enters
+__folio_split() with a tail anchor (the pattern patch 1 removes) and that
+the fixed kernel is stable, but not land the exact UAF -- the race window
+is narrow enough that my instrumentation could not open it reliably.
+
+[1] https://lore.kernel.org/all/20260713170915.239819-1-kirill@shutemov.name
+
+Kiryl Shutsemau (Meta) (5):
+  mm/memory-failure: keep the folio, not the poisoned subpage, locked
+    across split
+  mm/huge_memory: refuse to split a file folio when the anchor is beyond
+    EOF
+  mm/huge_memory: remove unused split_huge_page_to_order()
+  mm/huge_memory: remove unused can_split_folio()
+  mm/huge_memory: fold split_folio_to_list_to_order() into
+    split_folio_to_order()
+
+ include/linux/huge_mm.h | 22 +---------------------
+ mm/huge_memory.c        | 14 ++++++++++++++
+ mm/memory-failure.c     | 13 ++++++++++---
+ 3 files changed, 25 insertions(+), 24 deletions(-)
+
+
+base-commit: 0e35b9b6ec0ffcc5e23cbdec09f5c622ad532b53
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.54.0
+
 
