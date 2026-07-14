@@ -4,103 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40C38C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0336C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:17:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87CE26B008A; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
+	id 8A77B6B0096; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854056B0092; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
+	id 87F156B0098; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71C9F6B0093; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
+	id 7BC3D6B0099; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 371BA6B008A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2FA8A033E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:15:39 +0000 (UTC)
-X-FDA: 84987277998.11.B1E2577
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B8BBBC0017
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:15:35 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=bm6kt+pb;
-	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 43DFD6B0096
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED8C9140385
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:03 +0000 (UTC)
+X-FDA: 84987281526.23.2908F36
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1CD71C0003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daQnjhci;
+	spf=pass (imf22.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784031337;
-	b=2hgAMyQIFq8OrNK3EuXwtokyWlbW6zY9S+CxpKdZpwWXPHH2w3c3cVhx8OgrQJvpFhd3P8
-	euEZgePOtvG6/3bfoH/uEMhyHVl/5Y33aig1dVfNxc2cUiLJkIyIacsIxkAMDlv8Quga8V
-	XLgiTULfHjpXviOhVTS2BJH57vcHm/s=
+	t=1784031422;
+	b=J79vPiDd3ptWfwgPz6X6jqFSc92hx/A4+IsW+ElpvAWNGAnjpWTBwp0itnTsazMRJ0NVyy
+	b0q6rNjVsimWdmuNwxtL4+fU30E4sAVQz6uKcv0cfke8lYuT8oNYexu8hqpGVvmc54DNQo
+	BtaDp9VD1vdw4Vk/UHKINJpUbrFqhdQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=bm6kt+pb;
-	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=wangzicheng@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daQnjhci;
+	spf=pass (imf22.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784031337;
+	s=arc-20220608; t=1784031422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ajWSzJC8ZX5c1v8s4BktWV/r3nVerPCf8q26E0mJDVo=;
-	b=R+9nVoMiyurFd6+nSWSr6+LT2Xh6XRxoQAdYlULVss8y4AJud6nvcZgRZRJQIFtSQLdo3X
-	ij8ThY5nPS6m02aOU6kOenirBHzE7vnXX4R4hIkx4zP2eRWeyfeClk2fIn2Lu8bqrBXIu+
-	Lv1i/4tZNEJ374j/XUQt/kxprkRaqcM=
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=ajWSzJC8ZX5c1v8s4BktWV/r3nVerPCf8q26E0mJDVo=;
-	b=bm6kt+pb2YDJ5eFS0HrJFxTuF9vH6LOkgpTUnkcRQTtLsSA/bEK9RLS/PrwpIVrNghjNzIqy2
-	SFBNTEKjWgbRLxSRRmvtZukmApB7kuHnmFJIgDjsFRX+4lgotpouNZW4YA5qOASCYC6UFRzhqnM
-	2uuiYcIdTBtzmE4M9vyA7OI=
-Received: from TW006-1.hihonor.com (unknown [10.77.215.153])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gzytq1bcMzYlJxV;
-	Tue, 14 Jul 2026 20:15:31 +0800 (CST)
-Received: from TA012-1.hihonor.com (10.77.199.132) by TW006-1.hihonor.com
- (10.77.215.153) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 14 Jul
- 2026 20:15:31 +0800
-Received: from localhost.localdomain (10.144.5.36) by TA012-1.hihonor.com
- (10.77.199.132) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 14 Jul
- 2026 20:15:20 +0800
-From: Zicheng Wang <wangzicheng@honor.com>
-To: <akpm@linux-foundation.org>, <yuanchu@google.com>
-CC: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
-	<corbet@lwn.net>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
-	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
-	<weixugc@google.com>, <david@kernel.org>, <ljs@kernel.org>,
-	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <roman.gushchin@linux.dev>,
-	<muchun.song@linux.dev>, <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<willy@infradead.org>, <denghaojie@honor.com>, <baoquan.he@linux.dev>,
-	<kaleshsingh@google.com>, <tjmercier@google.com>, <tao.wangtao@honor.com>,
-	<zhangji1@honor.com>, <wangzhen5@honor.com>, Zicheng Wang
-	<wangzicheng@honor.com>
-Subject: [RFC v2 3/3] mm/lru_gen: expose oldest-generation page counts in memory.stat
-Date: Tue, 14 Jul 2026 20:15:29 +0800
-Message-ID: <20260714121529.2237261-4-wangzicheng@honor.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260714121529.2237261-1-wangzicheng@honor.com>
-References: <20260714121529.2237261-1-wangzicheng@honor.com>
+	bh=ObYWkLNfQi85p38uahLx6yranNyzKYkaSbUyvi+K6ZM=;
+	b=ofBeSMVawGJvisX75QuNHvbe7pYjxJGmRbyq7yaYXCXthGnPF62NI/2ktU9fbXEGkAUXtU
+	OxhZrV9D8ciTvn0e+JBlqy3g5W+HqRYx46kvCL7AhG8etX4jaQoLh6RuPhIeETrMsNsSCi
+	PEqc33iegyGXESsj+Jt9g1JIgdHcYdY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7514E601EC
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6861F000E9
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784031421;
+	bh=ObYWkLNfQi85p38uahLx6yranNyzKYkaSbUyvi+K6ZM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=daQnjhcicbJzzzDaAuFYC6b8ZcYAs9CAE+dZjOfq5dbSgkVQwiNPgO9MRAxwXqH3M
+	 frDdW60C9rIy4AQot91BiEaZCb0SCnuGD61TraVaNNcc5VsahjP/J8WpPGZthzFyE3
+	 wqHvAQmiLyFXK8cFDxO5QeMIdXDFc7fWF/UcVBYpg8XrvEZIMixtV9kxHwgSz4HZvR
+	 gJzt3e4715WhNhMLe2N7EbbM8orlnN7teYudfE692wxRhsI1aVImOeJaucjq2DZ2/t
+	 QC7jxAMJ+OrLhzuv9LF7i3GZ9sqF1S0C/Ie48KpNLLEiDr5Gb8IRo9oVZx9NVlnO7b
+	 zZFswpfh9K8pg==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-698ab9aae16so1692385a12.3
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:17:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrR/7ATZUa/TNY3lcpxDj3svKuOUe9oYTUr797hjobVnMv9S27LxehY82cw8BT0jODOJteSAkEKNA==@kvack.org
+X-Gm-Message-State: AOJu0Ywzh9EM/pKQYrnQhHCJ3PkUyPHvEF0JfJXOTyGkDRfF18whdu3R
+	ZAKuoDCxOrdgotlJBA1h7hlGnfjqxVO0cq8W/Sv89CGI74R6eTT5TXmL2LRYLh9BHSa0W6e33eK
+	SOknvBLge0eK4pwCEyLWraAmAOshh3YA=
+X-Received: by 2002:a05:6402:5187:b0:698:5610:76e5 with SMTP id
+ 4fb4d7f45d1cf-69c5ef85585mr5895270a12.6.1784031419744; Tue, 14 Jul 2026
+ 05:16:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.144.5.36]
-X-ClientProxiedBy: TW004-1.hihonor.com (10.77.232.85) To TA012-1.hihonor.com
- (10.77.199.132)
+References: <20260601092823.110362-1-dongtai.guo@linux.dev>
+ <20260601093930.112758-1-dongtai.guo@linux.dev> <2vxzjyqzj8s2.fsf@kernel.org>
+In-Reply-To: <2vxzjyqzj8s2.fsf@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 14 Jul 2026 20:17:25 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5B6Mj2-AffkstJ4f8EEmvvPOGXoDy2QNudKD2kSz2XkA@mail.gmail.com>
+X-Gm-Features: AUfX_mxp11E4giDW39QHMMI9j_IZOTy-7xjXpv5wTuK8FeqnLx4XCv9zSCzZnnY
+Message-ID: <CAAhV-H5B6Mj2-AffkstJ4f8EEmvvPOGXoDy2QNudKD2kSz2XkA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] LoongArch: kexec: add KHO support for FDT-based
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: George Guo <dongtai.guo@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Shuah Khan <shuah@kernel.org>, 
+	George Guo <guodongtai@kylinos.cn>, WANG Xuerui <kernel@xen0n.name>, 
+	Alexander Graf <graf@amazon.com>, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, Kexin Liu <liukexin@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B8BBBC0017
-X-Stat-Signature: uyqboaigqeaf3wdzhprob8zsx3xqyci9
-X-HE-Tag: 1784031335-219585
-X-HE-Meta: U2FsdGVkX1+mXCAiic7j36Jpd0hTX+lj0cr9cN7kD3C5IM/NQLnHqQ+LeMk5dSJPaPaGm06rYiV9sXYYZGR8EwQYA2d6Egrsu8TJyyHY1+CPc6gkvVZa6ePyIkRPyo83vGqKEK3G2MpECbsEkk9UKgzdZLonw1XMKyON4O48Mq8HlSL4Wmogy0Y4A12Zx2IB71NeFAS+nozPATCbD0RHQXft0G4ss4deUaiC9l83U+lWIJUWiPWXkTgdldnhg0YaWkBz+AAaXNICtV0373gZAsO3jpogn2riZ8UkVYVF0wfhIg+hcJqCRVTWAJYOOzCGMJArsJzBoznmqcvyPmsNET4bUXIpPlsgKAoNDYQz4O3EnNmRUfak51lOTLPp3ZAmXft40nehuQoo6UFyiMdkhyhhRI1j/duqNNoAA8isWfu5ACJKWxWoLOZnrkBNjSNL6iP+URBlYbaYSBCHCZKcz2Ue3DQnI7W/rWkbBt2DY/iTLwJKZlIVLi92NahQ5A6vdLuz6Mtsgd6aFRyJutUX7qHMwciWfF9k8M6Nvwuw3SS2u/rwohlSU7PiGz+8tboIRNVV6oiJWCa5fWCbhe1GSR3rYDc8ZLaY6PTRTnw2VB6vm4VGohw1Sh1RpM2Lug3bYjiVWW2LKR7XJl4O/bfyh8EZFjVYct+aLFP6RzEp7ZVg8iMMsDzvT9W+kstObrYZyg0aFzPZigC9rbnmPKJtR82x5qEkhEmbu2YD1x6/enGPYmkrTRtwljIMVASa+ZO2rWj1TijlP2yeNS8ce63TwwUmXqiVIhD/kaFE9I7sFZiFxKJ3vuhaaVn5lvm43Jov/ocBhoEwx9o06po/vkZF5IW7EWHGmPkioRcfV31hfBOK75EZcXErJ7J3ASNsA6gd+SEe9LSGTTjaI/Uv2fzth2OnLZgNG1zVbRVjukbmIOXCI8HH4HQi/AEQRO9kWt+XZXK6N77cn5oaSmjMJVw
- gMf+sQcT
- E51JNz/yQXPrD+mBIo4G5tk0Lz/6NYHx4E0Nz1LksKtuC7RXXgtfJ0+Cf9UKbGhUjnG2A1tbOF4sL69SYtZL+OFM7HMPBKrLo6SkckIw3Vf5Up4ev2u8UdMA8sMx2PYpJ1w8/DBFjoTU/aMtXlpOb1rirX1C3a8vcPWxlpTw0y4dUQmFvyB3S+o0GQvxWRTn/uvRmgJC2kAbe3FTAwxSs/MqZielDdd9BlKkCOJEKMVxjuFG43aw+VLu/jEHebeZYiZ4DcYOzP8sbSx/CljbWepcy+ERS6GnmamkmNk5Ht5wET0gkJoCNP6F/XTFf5FfFgyEiMKkv2b9BpKXPwnlszne1zixwYlfPz4AfBH7DRYabKIc=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1CD71C0003
+X-Stat-Signature: gk5ryh6pqufeejmdhtstn4yxp6nzxr5s
+X-HE-Tag: 1784031421-323860
+X-HE-Meta: U2FsdGVkX19TMt8nJIYE9ttKHqcTURAGa0tmpBYRKDI1WqyHMULyg5LdiEYnoOT3XE8R75jteDtQeem2g937vEISY+L55tJz6Ir7hWoE7wjalA1b8m8A/FAI2JQjivsUkwdzHtwv2nEySJzAhtkQCWSclUXYr6Y2ldH37lIRc5bdZebodLCK9sJ+ASwybyYBCW0wwa7oXMs/u0hZr0nndk82c1jnTqXawdHYHtkzoPfPQDCLdFhbVNxM4cVtP1FlJkHDD0HBPsmVOYe3EQ8s/o0y/tdyMhKyuWrzOjZI/zoZcDjEgP7/dNI2go6rtc7ZOOPxgdBh3AkKb2ma9FT/DRxwB/JIHyKieINs5mtLyeY/O6aL6GRVCtro23D0tBDAiDCUVjmnrSxIVS+UHNOClQoyTwTm3SEzkRYAoGyzNaXHGiCzTW2GTJ1HxfF4Hdj+xvh0Ll6ODmTNKbnIxR9nkeEyN3S6RxODUZCIiFUgB6bDVhqDUlLhyAzRo/kWVHRl4Pieeruk3RkV82lqoeM+hdYPXLSl/OOLr8VYbdIOameL5DkGmgR/6di4JsKBfzf8wzzmTQFTc9g/LMfFloFQbztBEXIlGQjppsTxQaSeyj3YuuxwtCcew9pI1oKeR/kX83zyJeGRelYELO8kEmhzHOJmtcwUjjPTNUZ/1NjPUh8wvwYhPgNOq3U/vfkxF0yp9oyMhDLXB4P2A8Y9VSW2203+86ruNHE22wL6vemAhnc09DYHb5FgG00GWUkk4ljq6MS7c4Ey2Tt5Dw1tRc8upRg/67pFOEs/valfgRqOqR4Pt9mssSi7LrsjiPqWejNDdKicLL2gjFnoTXGuOOPSEYmtIIcJSDGAWnjLYxgqCwIeyM9cBXk+ZSNFJFpXzWBdYtV0TJao+aYw1MyelUPFrI5uFdFCZ8h9VIc0qv0vNjaBdBO3RzK44m3gtb5qD7oFgQcjdavpRPz1t6l+BKP
+ e6Sbfkk1
+ 9aPnRPeO2eVAXeyKGLS03qr62cqWZsJaSFicV5Ye2EJrQNxIsRQwPN135Z0QMqb5hagP73CcJPt1TCyvNBqMrAB5R734DRuQ/TnLQLTOSQmWv5wzwFJS6TETyDATFJb9PsbQIvAgQNALT+/s+zQKpTfJTMoQf96zx3LBPd77ZrnAEJUL9xQu7wlNxnX6cNQXx0ynzh6cb4ns/OXiCyfRJtsgk8KXgNBupK1XsPbSNktMBxSK0f5yr48ekKO71BmVOO+C+NKmzSctZTpoq2B4bIVX22XF0jJUASau3E4HW0vYKcyZGPW2ApOC6J4KreTWzsFyO25XcqgZAvecMSnlogLyg/LtfuDcZXgjKc9p7roFC6MFcIJ4rz3orsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,144 +107,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add nr_oldest_anon and nr_oldest_file to memory.stat: pages in the
-oldest generation (min_seq) of each type, aggregated over the cgroup
-subtree and all N_MEMORY nodes.  This is the observation half of the
-proactive-aging loop - it shows a policy how much anon/file memory the
-next reclaim can evict directly, so it can decide whether aging is
-needed.
+Hi, Pratyush,
 
-Computed on demand from lrugen->nr_pages; no per-page maintenance, no
-hot-path cost.  Paired with the AGING counter and workingset_refault_*
-to confirm an aging pass took effect and was not too aggressive.
+On Mon, Jul 13, 2026 at 9:53=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
+>
+> On Mon, Jun 01 2026, George Guo wrote:
+>
+> > From: George Guo <guodongtai@kylinos.cn>
+> >
+> > Enable Kexec Handover (KHO) on LoongArch64 for FDT-based systems.
+> >
+> > - Kconfig: select ARCH_SUPPORTS_KEXEC_HANDOVER for CONFIG_64BIT
+> > - kexec.h: add fdt/fdt_mem fields to kimage_arch to hold the KHO FDT
+> >   kexec segment virtual and physical addresses
+> > - machine_kexec_file.c: add kho_load_fdt() which copies the running
+> >   kernel's FDT (initial_boot_params), appends linux,kho-fdt and
+> >   linux,kho-scratch properties to /chosen, and loads the result as a
+> >   kexec segment; called from load_other_segments().  Returns -EINVAL
+> >   when initial_boot_params is NULL (ACPI-only boot) since that path
+> >   requires separate handling.
+> > - machine_kexec.c: before jumping to the new kernel, update the
+> >   DEVICE_TREE_GUID entry in the EFI config table to point to the KHO
+> >   FDT segment so the second kernel finds it via efi_fdt_pointer() and
+> >   early_init_dt_check_kho() calls kho_populate()
+> >
+> > Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
+> > Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
+> > Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> > ---
+> >  arch/loongarch/Kconfig                     |   3 +
+> >  arch/loongarch/include/asm/kexec.h         |   4 +
+> >  arch/loongarch/kernel/machine_kexec.c      |  27 +++++
+> >  arch/loongarch/kernel/machine_kexec_file.c | 118 +++++++++++++++++++++
+> >  4 files changed, 152 insertions(+)
+> >
+> > diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> > index 606597da46b8..d494418545f5 100644
+> > --- a/arch/loongarch/Kconfig
+> > +++ b/arch/loongarch/Kconfig
+> > @@ -684,6 +684,9 @@ config ARCH_SUPPORTS_KEXEC
+> >  config ARCH_SUPPORTS_KEXEC_FILE
+> >       def_bool 64BIT
+> >
+> > +config ARCH_SUPPORTS_KEXEC_HANDOVER
+> > +     def_bool 64BIT
+> > +
+> >  config ARCH_SELECTS_KEXEC_FILE
+> >       def_bool 64BIT
+> >       depends on KEXEC_FILE
+> > diff --git a/arch/loongarch/include/asm/kexec.h b/arch/loongarch/includ=
+e/asm/kexec.h
+> > index 209fa43222e1..adf54bfcdd49 100644
+> > --- a/arch/loongarch/include/asm/kexec.h
+> > +++ b/arch/loongarch/include/asm/kexec.h
+> > @@ -39,6 +39,10 @@ struct kimage_arch {
+> >       unsigned long efi_boot;
+> >       unsigned long cmdline_ptr;
+> >       unsigned long systable_ptr;
+> > +#ifdef CONFIG_KEXEC_HANDOVER
+> > +     void *fdt;              /* virtual address of KHO FDT segment buf=
+fer */
+> > +     unsigned long fdt_mem;  /* physical address of KHO FDT segment */
+> > +#endif
+> >  };
+> >
+> >  #ifdef CONFIG_KEXEC_FILE
+> > diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/ker=
+nel/machine_kexec.c
+> > index ad27fef098f1..98529c71d001 100644
+> > --- a/arch/loongarch/kernel/machine_kexec.c
+> > +++ b/arch/loongarch/kernel/machine_kexec.c
+> > @@ -6,6 +6,7 @@
+> >   */
+> >  #include <linux/compiler.h>
+> >  #include <linux/cpu.h>
+> > +#include <linux/efi.h>
+> >  #include <linux/kexec.h>
+> >  #include <linux/crash_dump.h>
+> >  #include <linux/delay.h>
+> > @@ -289,6 +290,32 @@ void machine_kexec(struct kimage *image)
+> >       pr_notice("We will call new kernel at 0x%lx\n", start_addr);
+> >       pr_notice("Bye ...\n");
+> >
+> > +#ifdef CONFIG_KEXEC_HANDOVER
+> > +     /*
+> > +      * Point the EFI FDTPTR config table entry at the modified FDT so=
+ the
+> > +      * second kernel picks up the linux,kho-fdt and linux,kho-scratch
+> > +      * properties via early_init_dt_check_kho().
+> > +      */
+> > +     if (internal->fdt_mem) {
+> > +             /*
+> > +              * FDT-based system: DEVICE_TREE_GUID already exists in t=
+he EFI
+> > +              * config table; just update its pointer to our KHO FDT.
+> > +              */
+> > +             efi_system_table_t *st =3D
+> > +                     (efi_system_table_t *)TO_CACHE(systable_ptr);
+> > +             efi_config_table_t *ct =3D
+> > +                     (efi_config_table_t *)TO_CACHE((unsigned long)st-=
+>tables);
+> > +             unsigned long i;
+> > +
+> > +             for (i =3D 0; i < st->nr_tables; i++) {
+> > +                     if (!efi_guidcmp(ct[i].guid, DEVICE_TREE_GUID)) {
+> > +                             ct[i].table =3D (void *)internal->fdt_mem=
+;
+> > +                             break;
+> > +                     }
+> > +             }
+> > +     }
+> > +#endif
+>
+> Honestly this and the ACPI stuff looks worse to me than what your
+> previous version did. Now I am not an expert on EFI and architecture
+> stuff, and know nothing about Loongarch, but to me this looks hacky and
+> I am not sure if it is doing the right thing.
+>
+> I think you should get some alignment with Loongarch maintainers on what
+> the kexec boot protocol looks like. It looked odd to me, but if the
+> Loongarch maintainers are fine with using the kernel cmdline for
+> bootloader to pass data to the kernel, then I think we should go back to
+> that.
+>
+> Huacai, do you have any thoughts? For KHO we essentially need a way for
+> the pre-kexec kernel to tell the post-kexec kernel about a blob of
+> memory that has some information it can use. For x86, we do that via
+> setup data. See arch/x86/include/uapi/asm/setup_data.h and struct
+> kho_data for example. On arm64, we use the boot FDT's /chosen node. See
+> kho_add_chosen() in drivers/of/kexec.c.
+>
+> Ideally, all device tree platforms should use the FDT path. But
+> Loongarch also has ACPI only and I don't know what a good idea for that
+> is.
+>
+> So, do you have any suggestions on where to best place a pointer to this
+> blob of data on Loongarch? v1 of this series put it in the kernel
+> commandline, but I found that odd and asked if it can be done via DT
+> instead. But to me, this code looks even more hacky.
+I don't know which is the best way, but I can give some information.
 
-Gated by CONFIG_LRU_GEN; reported in pages, matching the lru_gen dump.
+ARM64 and RISC-V create a FDT to contain all needed boot information
+(EFI system table, command line, etc.) in efistub. In other words,
+both ACPI booting and FDT booting have an existing FDT to pass the
+blob.
 
-Signed-off-by: Zicheng Wang <wangzicheng@honor.com>
----
- Documentation/admin-guide/cgroup-v2.rst | 18 ++++++++++++++++
- mm/internal.h                           |  2 ++
- mm/memcontrol.c                         | 24 +++++++++++++++++++++
- mm/vmscan.c                             | 28 +++++++++++++++++++++++++
- 4 files changed, 72 insertions(+)
+But LoongArch is different, the efistub doesn't create a FDT, instead
+it passes the EFI system table and command line to the core kernel
+directly.
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index f42ac6dddbf6..a071175d11be 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1658,6 +1658,24 @@ The following nested keys are defined.
- 		the value for the foo counter, since the foo counter is type-based, not
- 		list-based.
- 
-+	  nr_oldest_anon, nr_oldest_file
-+		Number of pages in the oldest generation of the anonymous and
-+		file types. Only present when CONFIG_LRU_GEN is enabled.
-+
-+		With MGLRU, page reclaim starts from the oldest generation
-+		(min_seq) of each type, so these counts show how much anonymous
-+		and file memory the next reclaim pass (or a proactive
-+		memory.reclaim) can directly evict. They are aggregated across
-+		this cgroup's subtree and all NUMA nodes, and are reported in
-+		pages, matching the per-generation breakdown in the ``lru_gen``
-+		debugfs file.
-+
-+		Proactive-aging policy can use them together with the ``aging``
-+		counter and ``workingset_refault_*``: a large ``nr_oldest_file``
-+		with near-zero ``nr_oldest_anon`` indicates file cache piling up
-+		in the oldest generation while anonymous pages stay young, which
-+		is the condition ``memory.aging`` is meant to rebalance.
-+
- 	  slab_reclaimable
- 		Part of "slab" that might be reclaimed, such as
- 		dentries and inodes.
-diff --git a/mm/internal.h b/mm/internal.h
-index 96add6cd4627..959d376c02a6 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -636,6 +636,8 @@ int user_proactive_reclaim(char *buf,
- 
- #ifdef CONFIG_LRU_GEN
- int lru_gen_age_memcg(struct mem_cgroup *memcg, unsigned long nr_gens);
-+void lru_gen_nr_oldest_pages(struct lruvec *lruvec,
-+			     unsigned long *nr_anon, unsigned long *nr_file);
- #endif
- 
- /*
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index c6a969b56878..016194cabd60 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1733,6 +1733,30 @@ static void memcg_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
- 		}
- 	}
- 
-+#ifdef CONFIG_LRU_GEN
-+	/* Oldest-generation (min_seq) anon/file pages over this cgroup's
-+	 * subtree and all N_MEMORY nodes; see lru_gen_nr_oldest_pages().
-+	 */
-+	{
-+		struct mem_cgroup *mi;
-+		int nid;
-+		unsigned long oldest_anon = 0, oldest_file = 0;
-+
-+		for_each_mem_cgroup_tree(mi, memcg) {
-+			for_each_node_state(nid, N_MEMORY) {
-+				unsigned long nr_anon, nr_file;
-+				struct lruvec *lruvec = mem_cgroup_lruvec(mi, NODE_DATA(nid));
-+
-+				lru_gen_nr_oldest_pages(lruvec, &nr_anon, &nr_file);
-+				oldest_anon += nr_anon;
-+				oldest_file += nr_file;
-+			}
-+		}
-+		seq_buf_printf(s, "nr_oldest_anon %lu\n", oldest_anon);
-+		seq_buf_printf(s, "nr_oldest_file %lu\n", oldest_file);
-+	}
-+#endif
-+
- 	/* Accumulated memory events */
- 	seq_buf_printf(s, "pgscan %lu\n",
- 		       memcg_page_state(memcg, PGSCAN_KSWAPD) +
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 805e29c499c8..3800f0c4f1f5 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5935,6 +5935,34 @@ int lru_gen_age_memcg(struct mem_cgroup *memcg, unsigned long nr_gens)
- 	return ret;
- }
- 
-+/**
-+ * lru_gen_nr_oldest_pages - pages in the oldest generation of a lruvec
-+ * @lruvec: target lruvec
-+ * @nr_anon: filled with oldest-generation anonymous page count
-+ * @nr_file: filled with oldest-generation file page count
-+ *
-+ * Reclaim starts from the oldest generation (min_seq) of each type, so these
-+ * count what the next reclaim can evict directly.  Computed from
-+ * lrugen->nr_pages[min_seq type][zone]; eventually consistent, clamped to 0.
-+ */
-+void lru_gen_nr_oldest_pages(struct lruvec *lruvec,
-+			     unsigned long *nr_anon, unsigned long *nr_file)
-+{
-+	int type, zone;
-+	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	unsigned long size[ANON_AND_FILE] = {};
-+
-+	for (type = 0; type < ANON_AND_FILE; type++) {
-+		int gen = lru_gen_from_seq(READ_ONCE(lrugen->min_seq[type]));
-+
-+		for (zone = 0; zone < MAX_NR_ZONES; zone++)
-+			size[type] += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
-+	}
-+
-+	*nr_anon = size[LRU_GEN_ANON];
-+	*nr_file = size[LRU_GEN_FILE];
-+}
-+
- #else /* !CONFIG_LRU_GEN */
- 
- static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
--- 
-2.25.1
 
+Huacai
+
+>
+> > +
+> >       /* Make reboot code buffer available to the boot CPU. */
+> >       flush_cache_all();
+> >
+> [...]
+>
+> --
+> Regards,
+> Pratyush Yadav
 
