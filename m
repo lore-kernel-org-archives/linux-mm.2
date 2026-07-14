@@ -4,130 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80178C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFDF2C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:35:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F4E36B008A; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
+	id BE1EC6B0088; Tue, 14 Jul 2026 04:35:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D1016B008C; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
+	id B936C6B008A; Tue, 14 Jul 2026 04:35:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BBB26B0096; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
+	id A827A6B008C; Tue, 14 Jul 2026 04:35:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 577406B008A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE078A02BF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:24:40 +0000 (UTC)
-X-FDA: 84986695920.09.EFF2DBD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 241FB180004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:24:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NqG70l5h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784017479;
+	by kanga.kvack.org (Postfix) with ESMTP id 796E76B0088
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:35:37 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01086A02E8
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:35:36 +0000 (UTC)
+X-FDA: 84986723514.21.4FAA60E
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1B3D2C0004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:35:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X5Tpgprx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf28.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784018135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bbuLAjCoX2Tf2xn8G6n1Bh/HGLghJUpzugxizUSUcMU=;
-	b=ZT9PwhXfYX9Q9kz1aR7EeDVvyGGd8Bypgch7/D5kr36wKS5R6IMGyur0dm/hGTqfeKzIRd
-	3q2OJ+rCDe6TtoPWjjd/j19Lc7bsxOrQ6iFciHGwccElEPVEU8xIk/E0Gna7J9OdJUZLfz
-	75+FRlgwaIpx2hj0Fu07meYZpaLJfHM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NqG70l5h;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784017479;
-	b=rzjEO3Sfs3GPeKkpqgY8Lvvw99MPoNmFlNad8bhbxXQS7su4nCnr5AzM0aR1MFbvl4usc4
-	lnR59SNW51JtK6iXymN+QBO1VYJ7DHsTMP5uG25qZ41oL635Pc0jjZgtCDacsLz/yIMrO6
-	pWErTBR1ZJU4I6ksjgWXqipf3gOQEKA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7C977601EC;
-	Tue, 14 Jul 2026 08:24:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3B41F000E9;
-	Tue, 14 Jul 2026 08:24:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784017478;
-	bh=bbuLAjCoX2Tf2xn8G6n1Bh/HGLghJUpzugxizUSUcMU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NqG70l5hvvJ5SeDUUhXjDmxaW+OF2x1POiWfWXDReY39GbSmsmzqf2C9koMNrg3lm
-	 H7eYQChV3ZrCOmxu2p0sCBYTkJJ6JC5Nov2VZJ9dK5S5rXxltZTlDkn/wTk1PmaIyh
-	 x+qQ0HAMfQBUe5fvdTB5R2TWmvQoBMVDLofQ7MjdHi9yG42ksE0I3PKIzkR5+jwYCt
-	 3aaGJw21Bvf3sjQg8begs7HhaTIFlE5C/e6+ZzbLGJNu0v6Sv+Tuwc9witph46K4nu
-	 s8U70sRdEBRvb9Dkci26XqJSrT3Mxz/Fw90KdjoxP1VQjag35pUzXJFifZotgZpjvE
-	 P+dIJ71kQ1YZw==
-Message-ID: <21007313-40dc-46fb-bbf2-453c8eedf3e8@kernel.org>
-Date: Tue, 14 Jul 2026 10:24:33 +0200
+	bh=D/iDrBzzYdL3wUdhDHt5agevBzDHJ4IgYfqYHGNXII8=;
+	b=DNxII+iQbhcHb3gm05tke7UCpCnE2qnZ1DTIhVdO/XXq9Mwo7gthMzXUZvelOM7VaNMBFz
+	jYuJByD0Ehqa5ixF5omzvoDezfSluZ5HNN+CdkYQ/W3TeX3afY6pz4rjEspxntgvaYpqju
+	t5kTHEt58mCrb6mGKQ0sADdueh/TDuE=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X5Tpgprx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf28.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784018135;
+	b=i9+F4xKIXyaXeiD+xLh2eEPdVuGl67OPAm7RlaB46qjC7bndQR5Ork/ew74clCA69XwzVA
+	ugNL2brY4wzi1Yss4V/Cnn7mejsPeT0o4VtSvqvcvIbDIpg7gxPr//mYpeP7M4q2C0NmOb
+	5cDcywfd/jcDaJicceBEHB0BAr5fKbo=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f3e6cc44aso1737477f8f.3
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:35:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784018134; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fEpAORYKCs8eUtqccKqJTwngE8o0MwecVSqPsj9zrQBBK8Q4mcxoWSmA7ikzRbwMms
+         O5zTiJhPJVV/Nrx24uPP1h96n8NZCq8snIYCxwZqCRevP4kPi99v1Nqya9L1VjcW+Qgn
+         Ytk8pLq+ULHgJPUlerp6XA4K0XVuIQPbR8o54VY0Za/IeAjsgHne9qZCZpSqQTEAxWO4
+         2rsHJM2mdvsFz5GbEKu3mnmgzrSpZOiPVHVNae5out0BVA0jzIbvaA0rEioLKMV4tRuC
+         JfJ+YzYKKb7tvSPaw1uo5m/rP6cxtjjBRC/O7gC65LvKYw999XFbMsxCIWnNRev97JZO
+         HXng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=D/iDrBzzYdL3wUdhDHt5agevBzDHJ4IgYfqYHGNXII8=;
+        fh=CQIaIUClu5MBhkZc7jBgxfHSH3hAapdPch/DWemEGsY=;
+        b=eP3mD9L7qbap297kOMKccCrsLXiMsSDuRrrsCsS+q60safCJf0iWnJqMQjGClpLgHp
+         i0cfZQqO1tlUkHWNOIBz6Fdoif8cxEdmfaMt6XGADcH51jFNeys0AU0YBjjOhsxJc/m7
+         GlUaHiPyGSzjKXsDqUPDR8ADCr8+ruGwWuawD7bLDqAFMANQ1sGGTukeAEUCVb299XKR
+         A8UPQSzrL7xvoeutphJpWkebHdor/55DFEE6by2adIyoOQxNHsVFCLbCAjTKG7ScYQ8i
+         rFOCsLXiloxaD6GOh3aZP+Rjyrg4sVIyJMvTzrPAd5pMgJTK2dc+c/ssK3Zj/FqfDP3K
+         Y0Cg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784018134; x=1784622934; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D/iDrBzzYdL3wUdhDHt5agevBzDHJ4IgYfqYHGNXII8=;
+        b=X5Tpgprx77eDtyC1eVvQim3pSIkoctKyji+VttivkMIMb+AgUbCIV+2ZfeWaNyGUcm
+         rUNooizPqAiHuwVui0eVzHFUMRDaG2RTa0/oHauG+Uf7WmeJHfs+CqKyoAEX0cF7xNRf
+         yHbVKa2SJw+ujALUOAFriRHDRBQ1jTisGyyRd3enchHoVDUao2iZ0mwMF45guOjFVmVi
+         mpN4qmTKR4+tG5lObnbtEQvr1F7k4NeVcnDTP5awYwf4dtUlpk5TMfwaANr6bxWRM7I+
+         n7JstvPaMez3aftTsTVr/JpHDmTrzB7UTEtIU6Iq1ZPW3tz1U6cf9dTyjnrdjRDUaEjp
+         dO7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784018134; x=1784622934;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=D/iDrBzzYdL3wUdhDHt5agevBzDHJ4IgYfqYHGNXII8=;
+        b=Bo4LGUTUtxDdcziCd9CMx4pah4oJUYNx2Fi9+hOr3Kns8Trt/GnZirnDdr3H1WA+24
+         lQGyzCFSsq9AFQ3z25WM8OZMzuJJg82+Deq6kpzDBLZO5EhwM/TnaLSeA0H2Seln/sMO
+         g17Asdvxgnqoe74xDQYrsfOWkiO6/jSrdt0K9RcfHz8fcrvdGJzeb4RkHHJgV9hOUfVq
+         dDzdcSYTBhud9QvhK2dPwhTYQjjHbmPQECJ4+agKHtG/Xz65Uf8UFFmSkr1LVMeyZPOU
+         SpsQepD+owjL6YE7uwQsR7jC87RMsJGTm5qqY+ptniWyUENK4dGYxVIT6N0nAI67gUN1
+         cJpg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp1NC2oSleuBAFp1Ym1LCIVzLmr1IFQgW/2c0Az8h1QHS92fq5Dg9m6Zn7xSQQnLKZ4UQMebNj8FQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzg5BpCrL1x76GmqemyBjZaz2gRC/p8uKfEnNZKjGbX1LDG4rFO
+	Qol8zwSDL7pdxaDR9iQT41qcKpI2MjnS/m+lFy2mg+yMTkIYt7TxLuFGvcPlcBTZlYt0zigICvm
+	8P89ZGstY1RDlNn6RwY3SoW4bFOLBfbU=
+X-Gm-Gg: AfdE7ckM2OKgVqE2lfzgDiYJuRhLFUoSjFCNPdMmQLUY16lNCow5JEjBlj4XanT5Siu
+	YvINXEL0EzZntFhwmZbHQrGrXU4pNam+e5jmR6496ePe/igKgtoK4cc++jX9kcDzx4qoHJCSkQs
+	G51EhjRs0Xyn35ImxD9t2w8NSCoLEy2ulhlQuMgguUpq/hjUf6Uy/NVV5ZnBca3qeZFpERs/2ki
+	wdZbOAO9FHd4avDeCljjgCnNmUZAPRB0M5Dd0nrUIvh84S3Zx2uCLZqsJSvkMqs71v7HBcMVCo3
+	HNkEN6kd56xXw9/LDYI=
+X-Received: by 2002:a05:6000:250c:b0:475:a4ae:e630 with SMTP id
+ ffacd0b85a97d-47f48891d9dmr1757470f8f.37.1784018133298; Tue, 14 Jul 2026
+ 01:35:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 9/9] mm/page_owner: use memcg_data snapshot to avoid
- TOCTOU in print_page_owner_memcg()
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260714015117.78351-1-ye.liu@linux.dev>
- <20260714015117.78351-10-ye.liu@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260714015117.78351-10-ye.liu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: stsaoj4u68y9nnbq1iwi1aecdexc8yu6
-X-Rspamd-Queue-Id: 241FB180004
-X-Rspamd-Server: rspam01
+References: <20260709073823.6643-1-jiangwen6@xiaomi.com> <20260709073823.6643-2-jiangwen6@xiaomi.com>
+ <4b3c1d3f-853d-46dc-bb15-37273fb07f61@arm.com>
+In-Reply-To: <4b3c1d3f-853d-46dc-bb15-37273fb07f61@arm.com>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Tue, 14 Jul 2026 16:35:21 +0800
+X-Gm-Features: AUfX_mws3EZK8Zkz_kXisjnQFFFt4F_ceV7hPDYpct8AJTxd5OPwxVMDfFEFO0Y
+Message-ID: <CAHKocdHTzqdMnmjLnXLfc5GxhP1sPcGqZ64Wghr7xPtUqXGdgQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/6] arm64/hugetlb: Extend batching of multiple
+ CONT_PTE in a single PTE setup
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
+	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
+	ajd@linux.ibm.com, david@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com, 
+	dev.jain@arm.com, "Barry Song (Xiaomi)" <baohua@kernel.org>, Wen Jiang <jiangwen6@xiaomi.com>, 
+	Leo Yan <leo.yan@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1B3D2C0004
+X-Stat-Signature: h9m6qy15gzoq5cfmt6wt4twy7d8eyw97
 X-Rspam-User: 
-X-HE-Tag: 1784017478-1099
-X-HE-Meta: U2FsdGVkX1/XKPCgQ1nzD2EOUjm21Vfa5Vc3emmSUt6mjtLt8BjqynZ1f4o3SVWZn17JiWwEIzSXPVv/nO4JAfuoRJcPmBJFsDTFqAlFSkM0BNkchLq6yHvNJQqsjdLYJ+G9DPqKTUmXyYCg07/Luzd8jAMgKtYORL+MVunv3a39TF7bofTYYfJZPUUqfkkyc4h2UxuJV8krV0TUyZKlXHp0ZhF36V/BgAKol62v9t2FKzZcqVjRcligvP9udyWlPca0sh8zIvYQhhsm/HMPGuCJe0GN7Hgkow6lZebp3iXDjXCfAYvIE+GC0sAn1VvZKPRCekZKm6tGkO+cW7eaoGSb9zrvA3OYW2fMDu3cv+e+QCa0TFA6BAOuNgUudmhzzA8Q0AHrdQqgOa1mFWR/3KfoV5/mqc6AlGzgyiYvNW2fLY23d8WOk1mr1hG8PEfKH4ftIYj2YMdGhukakh1qoCSD8I1tLNjQqZ1NhSfD4fY/2fVYI7KSH5LTFtS1IpIdVbWcjJYrb9Wze3r7JGxgQRLyCeoZSLVnJAh0QrLDwL4WTC87OF5QUi/BPwAOWX2xBuPrijmNTVV511KF4r/2WejKnRZoI8tvU8LkDY12lpWwtpNeg4HfFQZS2LkJCGQkFfKwJvguMxl2vzOgdkIuwMNYhofemf1yQBdwce0zogoAJgKsxyJvjqgXLtgqYXVE+V4H/e+9+6y2dP8V37+V0C/dMfdzceK0pha+kpzzBz6c0IWuD9OMLq5E4jMOqYkB+90AEFhyViI74W3Uq6flJxnDoXYLz/GCwOmBpT0jzkTQ2ITlktzZD1DxQgCmUMZRMq30MMVvKzzPF+jqxqyyat30+D59j7v5SoCzYbpCdOUGWumrqhlodq5F3lawR6nRnP+/p39eHzuk0ackq/waIm7CAERRM4XwQ1bfptIhRcONcWHJZlJYdVhyvpe5x0s66olnkDVzgmPo6Mnlpo7
- SFM24XIt
- d1+GyS85sCrnMGs1NtqKRdvKpVigGwIGXozeyWuD4t6OAcplBVBPIqN1i2MPo6Y2Qixsn8fsLnYLiE3JF6f5adqd9BM8uuOfZPSLNzxX7mPiiyo/9iiNxzcpVyO8PNBYtrYG9viZitkUjNdPLYc+p/jyLQjQtHVnmNSjrCkUKOC05yfWVdD3nuKhuaW8vbqXhYgO12Q66WhGse8lIW1IxH8ruo5Q48W15ACnfql5D3sS4tjx6hDWosIhsRcm3ECgeENyZx2i0Q8oRuMnZMB+dtMciig74fAkJf7JML4tS5a9OsNxym/YSYsNeG+mwMUmBLeNNRxxiWVGUCd8+NfOGsTDLDYfHjh9C/QLE
+X-HE-Tag: 1784018134-851279
+X-HE-Meta: U2FsdGVkX1/1koNPjldSbV3K7QkrYYb6f5vpRgJ0GXr1VfOwN9hJiYfO1bSErJo05kqGv4zct8AnBgqye7/jWptEh/Y14z0piPYCjFa3gOofBGdcQ+8JtyiVsrCBGy1/DbXeFT7cEWr4lzAauGUfSEyhDMStWPgWDa6+b2Ze9wylrsRiitgD8FTPY+BCtc1Ze10R+0gX7DgYbPs7aHgZ7myvk2HqCpdxGjvN2vKK4JFOWBHhTliUMg8uAdS7b7EBuC4rU5Rokgi2t876034DSso+opzN+WN5OwirGXuMnrEPmV7Wn02LPX5Nfl2KSteicibvgVFNs8Ik7KHJRbMlufeSO6CB6djc7+4sZUer3bXfKsjKGBUhJoDAcBPglP/3R4f3YGKWSyVsIVAnlVOH0A0/k6nKmZnbp16nHXhCW9b0fmvS+nUYHeIPpcJrP3eyUsp2dsEDaYCsekcxJLvCqP6/6d/HBj4yDfRBHVhQsnlLUBbKzqSugYo05DK11+saACqbPtw/Rg+CreVg7YgQhVtQhfpnX0nsWxI+JLq/UZvwhi64aRkdOa82irNOmS4BcrlLbudclwahVkD4h3LCb9tde+74Xib0L0DKuaP5yddL9nY+be/IH+M8Dh7WEQ9pyuK6rBxlfDB5jb+wz/Wd20pXjWH+NWROK6zGOVOANHHcFKZcNd7fuW6UA9lTpVnqVEYZW3wWo22DRjoc8os9T4q54AG1Pw2QsgCRfbAGFqk/setvWc5LoqG2+hXqeHLUGL2XpW9f+oRQO1Uu9HlfbpYF8bnFtD2ZfIB7T2Ezx98Y4nvavTjObszU6pBoX3VNkUJS6T0mB9yeiiJ3agLev102fUByAHM/POm4YU4WcBS61wm92pvYeoOQTuSvHYpFEh6u85jxQrHYi8sbR59sncmwmLBgAyqFixBCzXUQaaNp6zErixYfnO0n5SwKQReLdCAYM7xZv34ueCo11DR
+ t+F/LJMG
+ kLy2P9SK2EnJrd32KWqh7gGJXsxCP4f7hQecR9lC2NH9EXfUu+wo3/hZtCd4YSBRBqbKocAOAX87tHJ6hsZ6stycZzAW4zzvLr7oUhFbGleELdWfjX0C7EXu9ojaLSwDnijinIVWfZGRF7mCTSspcW/XDfn9/sFckoI6wc7rUvC3GIJgDX6G2kBH565dJPRoN79qMhVWbEJCSXpL8gRKj3uEB7PBFsqxYaK+7MUJZ9zjwxfDnRS65EbH3Wse4AYk2FLE9xiybkKK77q5YsahTUUMxO4CTdmaNOzonMsHFcsbGDx8QBhqsHvawVDaJcH/IPTQPLXFSSMTDEHd+uAvwHlkuuc2GqkW/wvLsEf49cFCcIUW2MKCXxJjfIbWxpQNLM1QrLNKWLMQEYAxLgTbsWSihyANL3zSSaz0pMjLV+Qy2/UX3qXg3OsrNuKOwiN8PQeoT+sU7Ih8y3UduSe1CTWhg7dBeGXiuW8FQKtpHVK+Yfb6jC8McP2nZqfenC4fCSpVxE12n3tFsgODIxyjJemj95EOm88DS4soahTRQZQg77Kx6ja4iHYMdYWzs+DNErTCklxd6OoGJ8os46OjF5OhvZe50TxkaLCHi2D8vmvGW9uc2TJQECWjOokk0cplJL9U4Ww82J4nOEIGcsyfW6XggWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,109 +142,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 03:51, Ye Liu wrote:
-> print_page_owner_memcg() takes a snapshot of page->memcg_data via
-> READ_ONCE at the top of the function and guards against tail pages and
-> NULL memcg_data.  However, it later calls two functions that re-read
-> page->memcg_data locklessly:
-> 
->   1) page_memcg_check(page) — re-reads page->memcg_data;
->   2) PageMemcgKmem(page) — calls folio_memcg_kmem(), which re-reads
->      folio->memcg_data and folio->page->compound_head, wrapping both
->      in VM_BUG_ON assertions:
-> 
->         VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
->         VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
-> 
-> If the page is concurrently freed and reallocated as a THP tail page
-> or a slab page between the initial guards and these later calls, the
-> VM_BUG_ON assertions can fire on debug builds (CONFIG_DEBUG_VM=y),
-> causing a kernel panic.
-> 
-> Fix both TOCTOU issues by using the memcg_data snapshot throughout:
->   - Extract objcg from the snapshot via objcg = (void *)(memcg_data &
->     ~OBJEXTS_FLAGS_MASK) instead of calling page_memcg_check(page);
->   - Test (memcg_data & MEMCG_DATA_KMEM) instead of calling
->     PageMemcgKmem(page), which is semantically equivalent:
->     PageMemcgKmem()->folio_memcg_kmem()->folio->memcg_data &
->     MEMCG_DATA_KMEM.
->   - When memcg_data has MEMCG_DATA_OBJEXTS set, early-return after
->     printing "Slab cache page\n" since objcg != memcg for slab pages
->     and there is no meaningful cgroup to look up.
+On Tue, 14 Jul 2026 at 14:54, Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+> On 09/07/26 1:08 PM, Wen Jiang wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> >
+> > For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
+> > we can handle CONT_PTE_SIZE groups together.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > Tested-by: Leo Yan <leo.yan@arm.com>
+> > Reviewed-by: Dev Jain <dev.jain@arm.com>
+> > ---
+> >  arch/arm64/mm/hugetlbpage.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> > index a42c05cf56408..0da746f729388 100644
+> > --- a/arch/arm64/mm/hugetlbpage.c
+> > +++ b/arch/arm64/mm/hugetlbpage.c
+> > @@ -110,6 +110,12 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+> >               contig_ptes = CONT_PTES;
+> >               break;
+> >       default:
+> > +             if (size > 0 && size < PMD_SIZE &&
+>
+> Is there a possibility for size <= 0 ? If not then
+> the above conditional check might be redundant.
 
-These points have too much detail that's already in the code. Would just
-mention that we opencode applicable parts of page_memcg_check() and
-PageMemcgKmem() using the snapshot?
+Hi Anshuman,
 
-> This avoids both TOCTOU windows and the assertions entirely.
-> 
-> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+The "size > 0" check is to guard against size == 0.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > +                             IS_ALIGNED(size, CONT_PTE_SIZE)) {
+> > +                     *pgsize = PAGE_SIZE;
+> > +                     contig_ptes = size >> PAGE_SHIFT;
+> > +                     break;
+> > +             }
+> >               WARN_ON(!__hugetlb_valid_size(size));
+>
+> Would not these CONT_PTE_SIZE aligned sizes upto PMD_SIZE
+> trigger warning here because __hugetlb_valid_size() still
+> does not enumerate them ?
 
-Was all of this reported by sashiko? At least the new-in-v6 was?
-Then:
+The intermediate CONT_PTE_SIZE-aligned sizes will not hit the WARN_ON(),
+as they are handled by the new branch and break before the
+__hugetlb_valid_size() check. They are accepted here for vmalloc's partial
+contiguous-PTE mappings.
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-
-But it's no longer a cleanup but a fix, so probably this?
-
-Fixes: fcf8935832b8 ("mm/page_owner: print memcg information")
-Cc: stable@vger.kernel.org
-
-It's not fixing a new regression so I think it's fine to keep it part of
-this series for next release and not need to split out for mm-hotfixes.
-
-> ---
-> Changes in v6:
-> - Rename patch to cover both TOCTOU fixes rather than only
->   PageMemcgKmem().
-> - Also replace page_memcg_check(page) with extracting objcg from the
->   memcg_data snapshot to fix a second TOCTOU issue.
-> - Add early return for the MEMCG_DATA_OBJEXTS (slab) case since
->   objcg != memcg for slab pages and there is no cgroup to look up.
-> - Update commit message to cover all changes.
-> - Link: https://lore.kernel.org/all/20260701061101.344679-10-ye.liu@linux.dev/
->  mm/page_owner.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> index 2e3880053a34..e18512a49e38 100644
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-> @@ -540,6 +540,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
->  					 struct page *page)
->  {
->  	unsigned long memcg_data;
-> +	struct obj_cgroup *objcg;
->  	struct mem_cgroup *memcg;
->  	bool online;
->  	char name[80];
-> @@ -549,11 +550,14 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
->  	if (!memcg_data || PageTail(page))
->  		goto out_unlock;
->  
-> -	if (memcg_data & MEMCG_DATA_OBJEXTS)
-> +	if (memcg_data & MEMCG_DATA_OBJEXTS) {
->  		ret += scnprintf(kbuf + ret, count - ret,
->  				"Slab cache page\n");
-> +		goto out_unlock;
-> +	}
->  
-> -	memcg = page_memcg_check(page);
-> +	objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
-> +	memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;
->  	if (!memcg)
->  		goto out_unlock;
->  
-> @@ -561,7 +565,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
->  	cgroup_name(memcg->css.cgroup, name, sizeof(name));
->  	ret += scnprintf(kbuf + ret, count - ret,
->  			"Charged %sto %smemcg %s\n",
-> -			PageMemcgKmem(page) ? "(via objcg) " : "",
-> +			(memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",
->  			online ? "" : "offline ",
->  			name);
->  out_unlock:
-
+Thanks,
+Wen
+> >       }
+> >
+> > @@ -359,6 +365,10 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
+> >       case CONT_PTE_SIZE:
+> >               return pte_mkcont(entry);
+> >       default:
+> > +             if (pagesize > 0 && pagesize < PMD_SIZE &&
+> > +                             IS_ALIGNED(pagesize, CONT_PTE_SIZE))
+> > +                     return pte_mkcont(entry);
+> > +
+> >               break;
+> >       }
+> >       pr_warn("%s: unrecognized huge page size 0x%lx\n",
+>
 
