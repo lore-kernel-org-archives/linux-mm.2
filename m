@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 280E0C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 22:23:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B34DC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 22:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33FA26B009D; Tue, 14 Jul 2026 18:23:01 -0400 (EDT)
+	id 7B39F6B009E; Tue, 14 Jul 2026 18:26:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EFF76B009E; Tue, 14 Jul 2026 18:23:01 -0400 (EDT)
+	id 78B8C6B00A0; Tue, 14 Jul 2026 18:26:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 208B16B009F; Tue, 14 Jul 2026 18:23:01 -0400 (EDT)
+	id 6C80D6B00A1; Tue, 14 Jul 2026 18:26:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EE9996B009D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:23:00 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7EBDF1C0363
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:23:00 +0000 (UTC)
-X-FDA: 84988808520.14.8F1B9DE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C6EB4A0007
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:22:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kC//weSt";
-	spf=pass (imf25.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AA8D6B009E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:26:24 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C223C04D1
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:26:23 +0000 (UTC)
+X-FDA: 84988817046.03.ADFF691
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6B69380003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:26:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i42a4VKV;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784067778;
+	s=arc-20220608; t=1784067982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aW/VhQGKLT7lo4RL60Q9vlfIJhM19IRBW2Xc6k3j5aA=;
-	b=l8Qvkqy5k6uK+zjl3VMdy93fKLuURQiTFpeWewPla9QB/MnjRQ2SMikM1MhZGCpMobDch5
-	KYfz9qT3tKxF2boAPYzLkYHUKtZWaNe+in9WyoS02SptsqTwCLnA0BOx3oxEUQjxsxjXyE
-	xYOd8SCb8NhqXbHKhsZryoDGi+UFuBw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kC//weSt";
-	spf=pass (imf25.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=8XW3L66ASo6nPb0QYUT2YcX697e32EmDld90wK/FIsA=;
+	b=FeIhDw+tE87SC25wgUAj3HiNDLOgQlXFDuL9YMrXNmsck4EM6cJvLiqgYXUWeBZ66fxosX
+	JZubgEbr6+hNLBW9GYIvbJMBKPYnHqgTJSrgwmKyI4uZ3QGubD/OAZTfPd8caYcfSznuGu
+	+k4jFesAFr6905dyxDpm3SAXqLmfY5c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784067778;
-	b=2bssG+PqY5XmWEkPB/H6aNzmBAmdVUEzncRiQE590Bb1FLdFg1VlRBE1MFVPv9bdsKtKVj
-	zAxXXt5uyZ6J4vzoDk800JkzMGKyt4fDweO3gdliv3aWMWaLpTz1mRbZ81G30OiAgYBBVb
-	Vq8ZvZzZ+gfCGnlFsK9HPLw965SBBuA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6FF141180;
-	Tue, 14 Jul 2026 22:22:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D208D1F000E9;
-	Tue, 14 Jul 2026 22:22:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784067777;
-	bh=aW/VhQGKLT7lo4RL60Q9vlfIJhM19IRBW2Xc6k3j5aA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kC//weStXk5f3N6WZzLP0YLgvU9fktRcRiiMLCE5kGshiYa1KIxXg/9Bw7q5Ofqva
-	 3TVgHfl3KPemY8C7xjEeCt8ud9H4K/0IlxLbd3S2qNvBAO//ad8IF/JNSzvvoAmW0p
-	 NBA7wBiag/P4uG8walzTY/9BXlP5CF75pMQ5hA/WLJ8XHETIEjg2nhoAl3ht9BJuDM
-	 eH7f4ZWBfbpn3FC867t2mcdvwML0HaUuyVqAwKnorYZ9K9zrzNvr3U3c+VBB9jqSOz
-	 rdDF1enltkZ2LSSqc+GLIGA71bOdngTjtLiSSapXQ2gJjKNoo5NliTTlPAwt9wy/Ct
-	 ce62BOPi0BRYg==
-Date: Wed, 15 Jul 2026 08:22:36 +1000
-From: Dave Chinner <dgc@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: brauner@kernel.org, qi.zheng@linux.dev, jack@suse.cz,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-	hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com,
-	linux-btrfs@vger.kernel.org, cem@kernel.org,
-	linux-xfs@vger.kernel.org, shakeel.butt@linux.dev,
-	hannes@cmpxchg.org, riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH] fs: push nr_cached_objects memcg gating into individual
- filesystems
-Message-ID: <ala2rDHrFDjql3Qg@dread>
-References: <20260714101454.1202449-1-usama.arif@linux.dev>
+	t=1784067982;
+	b=1lM95toQ9S5ffMTkXV1B2evjiLPKkN4MG2JsdxpOgD7MFzaus1WEYugWQ23eV7QLQXel0i
+	dspCQ9R/zI9utE2c4SgaaQCDNY+qzWkExE065IP8W4j0DMy28BxLD+M3UtRBarQjTAkBal
+	8xlwF6eDHdKghk9kI33kFhqRe5ev8YI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i42a4VKV;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 14 Jul 2026 15:25:40 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784067979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8XW3L66ASo6nPb0QYUT2YcX697e32EmDld90wK/FIsA=;
+	b=i42a4VKVo5N20vlVKTvopu/hg8gbxNnHB9LGHEJLwYkKQDRHA9C7BCJ7ncjziBV6nDqfoS
+	1SQp/XZCif3gOzGjh9r9WAYq4iNoe9yd430Lpvxo8WTxPIgKv/dlPWL9ivdXVnFQYZPHrx
+	2bSJu/0FMyYADnrDNvuOJLi9nUvVGw8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, 
+	chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, gunho.lee@lge.com, 
+	taejoon.song@lge.com, hyungjun.cho@lge.com, baver.bae@lge.com, her0gyugyu@gmail.com
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+Message-ID: <alawYov0c7a0Q6_l@linux.dev>
+References: <20260713025644.170839-1-youngjun.park@lge.com>
+ <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+ <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330>
+ <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
+ <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330>
+ <alae-LIRwEFUjgs1@linux.dev>
+ <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260714101454.1202449-1-usama.arif@linux.dev>
+In-Reply-To: <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C6EB4A0007
-X-Stat-Signature: zb1oh68zdezfxd7kzw9dywqgu8bj4t9h
-X-HE-Tag: 1784067778-986236
-X-HE-Meta: U2FsdGVkX19n2BDIeOuGYr4FUD3TFYGirQcM5wMdMVHCpjm9ZlL3TbV2uMjRPaHIWkHjKrWa4VFJL/xMiKrM1dhXLFjElgHzdRJLzDR/Ap8hVTxNt0lorgQAQxE1/180j1pI7kRKg2QtPPh5FZqsSwaYRQGwF4WOHHQ8GrdGHkVYHVeS9dUcbBR+DcjKJbjreeGwt0NXojA+Z2dcnMDpD869VSMKKvbcm4w0ABLkGhNmUWFZrK2/PYrxTD0Go4XdHJ9SDNwBo8G7qKwatEli4cABUSOwnrDFCe63Ve31zizmZnhyXFmDM9Y9N2O6vFXE31MCaN8mBQSZJuAAHq7g/f2XjlFRZC5HNT67rKcS0W/K+/2P4Qi07bIS8FMIyV0FN0aX9neAYGoPsZt7bXi5sAyt/+uKrM7rSdHvuJInhakwK798JKnOd4QYfa3KmM1IHU8NzpIpOXbqGB8nYASjdz8rTPZ9dUQ0OZtp+aKbxHi8Uq28Es4lAANP/NZkVyD8P6hWk1PqG0teDvyly2OXWMab/NswKAn6VvYx2tJxD1CTpJYsMRtvBDTss82qLbO0aDiYQ4OBJ8nVoIHS0FP2KGIK77MOS4GQb9ropfYr1qCDy4J78G3wWEn0AxSJFL3EKG1rz69M4B2GhV0Q4OAG5VcKfTQ2B4ikxHEQvH64o0a/stkuG8ZhwJ2x3YO0gvEu0DWhpA61d4LF/gR/zDP2Ycj55WjjECmYEyAktGxCceXa42C/Tu//f34uRccuPs5seSV6c6gRDwvATniX/r+Wqh/AOQM23WlSwQ4dHT40kujRuAtA0d/box48/33/gskOMZosl5l1/U8xBklhUP4EEUSqC7R7AkWiP/WFaVBzwClPlxqEBFwRE1jbDfmbCeCZziGNVN/vPqggC5ALOWky361/BkLLcR+tyDt5vDC6AKBEXDcnbAGqfQiV9Ejz6fFQTMKjhPZsGTMAhMoqFth
- H79+3QEC
- j/QPd0Kt5kBbB9jqXhGJxFbxj/mnwvlWcntU3iNbyLajxFN4nS8dm7/IFXaFbMULWjMB3r/R3FjucC06LGZuKdwJzXRiiCI0yP4jfXaQ3/0wBIWAuZe/9+Y04Oodn2ksk38wgy0mII8eUl+WRuC0DnuIObMtIfiaYg+HlhyYIzTMxNBfxQtsC0mHyvTjvG/w8iAgA0ugMn8/IStKLRreHIGZHfQL51rSrLoVKVUtP+0D9Jqy3kN+USxHwcmTLcJ779E9eFQeinulrNos7V754aH8OdmCrkTEVIDmNjv8KJF1yGi+jdZubVeW5+40InXDMiWEC
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6B69380003
+X-Stat-Signature: qy7nrfhdoi1woy3wg1gs4e1zy71q9dzn
+X-HE-Tag: 1784067981-614539
+X-HE-Meta: U2FsdGVkX1/F04KqAmar9Z+EU0CxGSyFfGhGHxQ3AEU9HGLglG5EfHX7ioBSqG3DKU5+IG5LaOHHFnV7Kuhm/u6iO3ZX+TUMY2BhoAN2sUU+JnREGmjuxBn2hiHHYpf0jk3iFt9Kpy1W6URoinYHhNdwk+++AFLNAzt0CbcS8uEfb5oEhbowJn4J4FDMgbwKFOKYRNt7MyzqfPB+DGFXW9vyMkZWcW20cFYNCSFirXkW30EmusW4IN+64jOxiS5luIfcRrL6C/miHvIBYyLQTxcr3evKQibWk8mm/yAwPbPv0GqOaKGbwtFCs57zKrlrJI/1BuCr9LUGCN2ZdETRPxlhU/kL2AU3Llza8CB3+iuoDNvFbuTCzNnLsyrZI6qKtXGa3/TW44cVp2DnSrVlThqPKvkSPlYEoVQWPSTJTBT8//5K7MtDI7qZUhtv3lZxlNlDg9DK1K0bejfNlS/o9weGsBhiPA0D4meb5VeZsMVcRlw2ENCpL4nNpL4ViCL/p7CsL296A/7b/mnGmEQTNhWDTau43s4PJmsW9LvFuS1d+E0CUlodJR1+kIM+sfGvchzz4PoHnZj0RjfHwAIc84++BGmaoLt1xVRfYC/3ouUc5W2KtpvVBwKvf4NJzg4c8NhqKHhYhI6olxY0CsikRIlNm3VdQXrlrfIxY5Xqc1As6R209j1awSCwDgzwxSesHscwtUxSY0Wm63Rx2BDLyA2AGNj1MZbIJxbiOuMCNdykbKJnzC61NT7SUnx06RwSCptN7e7nhUNvQ4Mkr4q2CNOttHEcqSEk0Bm8WpuaORN+IJosrhdwug4jAVPB/vvqly5dG/43gYZvny3z0rAC8kylqudtzcj63r0gR4h4Cu/cKIEadITE2aa1SGf46b02QmbMavVzzolUMfHvSZC5VcXFFuYacv1tb/VBvjOXC4E5PTvp0ofgFUaR5BmLp8mQsyHW9gG3nOvvZshfPg6
+ Vf5TRme/
+ TBx6sXSA4WCQhDtqRJvtI+nXqNFZYDQWmuJ6YqUnWz2M3+/AfHdKapDlQk6Yf1uBy3A/sdmt1K6fNHQCEhaMoYOBBEUxFwtkclznQZJIwM3N0KVjvzUbuThPy4snpHqNJs/KAhpaixQStrg+XFg0DnS/1vq1DQos7M8a4RJKySKO4661I8/CqrsD4iKKUnTySkTLoOmvcFP2+dIRPriFF52RWFW9kCeT+E8R25p5ceWHp5nYEkWJr12zHhPgiu+hw+ZSXXX8fLpzDqDZJge9XIB5R0q5VTPwjwFoZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,106 +97,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 03:14:54AM -0700, Usama Arif wrote:
-> Commit 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects
-> in memcg slab shrink") added a check in fs/super.c that skips the
-> ->nr_cached_objects() hook whenever the shrinker is invoked for a
-> non-root memcg, because none of the current implementations (btrfs,
-> xfs, shmem huge) honour sc->memcg.
+On Tue, Jul 14, 2026 at 01:52:14PM -0700, Yosry Ahmed wrote:
+[...]
+> >
+> > Yosry, what is needed to enable zswap as a swap tier? What will be the minimum
+> > requirements for that?
+> 
+> From zswap's perspective, we just need to skip zswap is zswap as a
+> tier is disallowed. Could just be a check in zswap_store() similar to
+> the check if zswap is enabled. I am assuming that if a swap tier is
+> disabled, nothing happens to the existing swapped out pages in this
+> tier, but new pages do not get swapped out to it. This is the same
+> behavior that happens if zswap is disabled at runtime.
+> 
+> From the tiering perspective, we need to accept "zswap" as a possible
+> tier, or maybe creating it as a tier by default if zswap is configured
+> would be better to avoid handling the case where the user doesn't
+> create a tier for zswap. 
 
-I don't see that commit in an upstream tree. I'm guessing I wasn't
-cc'd on it, either, because I don't recall seeing that as a patch,
-either.
+Default tier if zswap is configured makes sense. Should zswap be treated as
+having 32767 (or maybe 32768) as priority as it sits infront of all swap
+devices today? Also whichever swap tier has priority range containing 32767,
+will have zswap in it.
 
-However, if anything is gating the fs_objects callouts to the fs
-when memcg is being srhunk, then it is fundamentally broken and you
-are correct to fix it.
+> We also need to disallow zswap being the only
+> tier as that combination cannot work without vswap.
+
+Do we need to do anything explicitly for this? I am assuming in a kernel with
+swap tier support, there always exist a swap tier if there is even a single swap
+device configured i.e. a tier with the full priority range.
 
 > 
-> That policy is really a filesystem-owned property: fs/super.c should
-> not encode the assumption that these hooks are never memcg-aware,
-> since a future implementation might legitimately filter by sc->memcg.
-> Move the check into btrfs_nr_cached_objects(), xfs_fs_nr_cached_objects()
-> and shmem_unused_huge_count() so each filesystem can lift the
-> restriction independently once its underlying counters/scans become
-> memcg-aware, without needing a coordinated change to fs/super.c.
-
-However, your assumptions here are incorrect.
-
-That is, the XFS fs_objects implementation is intended to be called
-even when memcg shrinking is occurring. I architected it that way
-all those years ago when I introduced the fs_objects shrinker
-callout. i.e. XFS is not aging reclaimable inodes via this call - it
-is purely an expedite freeing of recently reclaimed VFS inodes when
-there is memory pressure of any kind.
-
-Reclaimable XFS inodes are still charged to memcgs, but we don't
-track them per-memcg because it is extremely inefficient when their
-lifetime after being released by the VFS is usually less than 5
-seconds. Indeed, this low level cache is not for working set
-retention; the VFS inode cache does that. The XFS inodes need to
-through a GC state before they can be freed, this takes a little bit
-of time, so we don't hold up the VFS inode cache shrinker for that.
-
-The VFS inode cache shrinker is memcg aware, so it only pushes
-inodes that are being reclaimed by memcg reclaim into the the
-reclaimable state at the XFS level. Hence we don't need to track
-reclaimable inodes by memcg - we know that memcg owned inodes that
-are to be freed have already been pushed into reclaim by the VFS
-shrinker doing memcg reclaim. Hence all we need to do is sweep them
-and free them.
-
-This is what the XFS fs objects shrinker does.  It needs to run in
-conjunction with -any- shrinker context to immediately free the
-clean inodes that the VFS shrinker released that pass, and to
-release any of the recently released VFS inodes that needed GC and
-are now clean and can be freed.
-
-IOWs, the XFS fs_objects callout is not "memcg-aware" in the classic
-sense of "it tracks objects by their owner memcg". However, the
--combined superblock shrinker algorithm- is memcg aware and that
-results in XFS only seeing objects from the memcg being reclaimed
-transitioning to RECLAIMABLE state which it then immediately sweeps
-away.
-
-i.e. the architecture of the VFS and XFS inode cache reclaim is
-entirely memcg aware, and that is why I implemented the fs_objects
-callout for XFS all those years ago. It works efficiently, it works
-correctly with memcg based reclaim, and XFS doesn't need to care
-about memcgs in it's low level reclaim code. Win, win, win.
-
-> Behaviour is unchanged: calls into these hooks from shrink_slab_memcg()
-
-Behaviour was broken by the above commit, it needs to change.
-
-> still early-return 0 for non-root memcg contexts, keeping the shrinker
-> bit clearable in each memcg's bitmap; the global (kswapd or root
-> direct reclaim) path still drives them as before.
+> I think this should be enough to support "zswap" as a tier and allow
+> disabling/enabling zswap per-memcg (or globally?) through tiering.
 > 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->
-> @@ -170,19 +169,6 @@ static void super_wake(struct super_block *sb, unsigned int flag)
->  	wake_up_var(&sb->s_flags);
->  }
->  
-> -/*
-> - * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
-> - * operate on filesystem-global state and ignore sc->memcg. Driving them
-> - * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
-> - * per-cpu counters and queueing duplicate work: the actual reclaim happens on
-> - * the global path (kswapd or root direct reclaim) regardless. Restrict them
-> - * to that path.
-> - */
-> -static inline bool super_fs_objects_eligible(struct shrink_control *sc)
-> -{
-> -	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
-> -}
+> In the future, if/when swap demotion is added, we need to figure out
+> how that would work with zswap. For example, if pages should go to
+> swap device A then swap device B, then an entry in zswap using a swap
+> slot in device B should not skip device A and be written back directly
+> to B. vswap would naturally give us a solution for this problem.
 
-This wrapper should still exist (with a better name) so filesystems
-don't need to open code memcg cruft.
+This seems reasonable to me. Punting demotion/writeback to future.
 
--Dave.
--- 
-Dave Chinner
-dgc@kernel.org
+Youngjun, what do you think? Is this reasonable amount of additional work or do
+you envision some complexity here?
+
+> 
+> > If that is not too much, we can make that part of this series.
+> 
+> Yeah I think it's better if we agree on the design and zswap support
+> before landing partial support.
 
