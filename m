@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E044FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D38EC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:27:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAD616B0005; Mon, 13 Jul 2026 20:16:53 -0400 (EDT)
+	id 9DEAB6B0005; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5D626B0088; Mon, 13 Jul 2026 20:16:53 -0400 (EDT)
+	id 9B6CD6B0088; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B739B6B008A; Mon, 13 Jul 2026 20:16:53 -0400 (EDT)
+	id 8F41D6B008A; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B7736B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:16:53 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB6821401D7
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:16:52 +0000 (UTC)
-X-FDA: 84985466664.25.FC08ACD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 53F57C0004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:16:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e++cUxvx;
+	by kanga.kvack.org (Postfix) with ESMTP id 5E7676B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94B601401CD
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:27:43 +0000 (UTC)
+X-FDA: 84985494006.01.24EDD42
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 00D92100003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:27:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+NIdeOm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783988862;
+	b=UhRk5uXXGYZ0+gWBM+8VVeQiz4kFqP9j51veSqo+xEsNSYwjS1hUZLIJfEsMwVLCrMUCFR
+	dZQAFU5fsMLi4UzixwsFvlfVo6/IIvbHAeFeo0hot8c8GY3Er5cy6fV4JeYvyO7shmZwlJ
+	G9/ChTbxxFwhhPzLAKe6gbKQ/36KR/k=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+NIdeOm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783988211;
+	s=arc-20220608; t=1783988862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D2RRBIAKbXI1A5KhuqvtfHAInMsdKXSK8xayxkBELkc=;
-	b=AchzDc7HIEDdZ+kFyxA2QqE8JeG9kttX5jZqEG7pYxfSTgmvoUrQrnbQP2YGhDfP+J3Q5Y
-	5p24NvyP3TknlXzh6622SvIlttueHPY8maYh9tMp5vh44R7Pnabguf6BKo+hUjXTxIQi69
-	ptZcdlHoJI9Rup1EwJK8pTZAWHvCPDs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e++cUxvx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783988211;
-	b=qMwhEoZyBfR5/b92voh5kd4+tsmhjMppySNEG4b5QWbctTUKvOw7/2EGJXwLb1ZxsURFz/
-	TCW/HCPdp760Mjeumy1sWtCiT8EV67oEnoRx191vCxeonOVUHCkTNbU7YXaVgmbUav5GBT
-	InlBOLIWzl8DA2xFhXMWnwznQcDllQM=
+	bh=QoDq4TZKn0bzwtutz903WlltVUL0JHQTEIuXLfoz+KU=;
+	b=57P/iUJ5LWw3a8IE/q4tpGatovAr9SD9wsd3ANH0Q2vc/Nnj79A6MB7d65Svu/xV7dup0x
+	8f3x0hmYK7cfcAO2u8yDEaI7+WbE2nd4/tnWexFsfesWz5qHxftSZkWR0vyLP+oMwJpe0h
+	hXwGJ2k1xoCiza9xy9BFq5i949VotZE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B7FB860103;
-	Tue, 14 Jul 2026 00:16:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D181F000E9;
-	Tue, 14 Jul 2026 00:16:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BCD81429E4;
+	Tue, 14 Jul 2026 00:27:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F76C1F000E9;
+	Tue, 14 Jul 2026 00:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783988210;
-	bh=D2RRBIAKbXI1A5KhuqvtfHAInMsdKXSK8xayxkBELkc=;
+	s=k20260515; t=1783988860;
+	bh=QoDq4TZKn0bzwtutz903WlltVUL0JHQTEIuXLfoz+KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e++cUxvxNWQaLZ0BBv8TJI2IgqicvGQHtllcl3e8aUrc86UQquG+l6TghhlerW1Xb
-	 bJys7LF9kUSNDWsi7UrgNNggvworJmLOqBEbMFcIKWKiH7xQNxDi3smv6FLMefqoZo
-	 I9BN6bE4cQC3Ah3Av5dIoQ38P26HWG9pJSSigV0eVrcq32OYYi6wESKu5BUDtxk0fm
-	 GlGf9D7CSipCKhcb4CPtRH2Bay8drqbZP8b1HUoiFXO0r4JlszsgcnRFfgNRhGvsvX
-	 bJAYytdSczgfeB4k9OOvFf2wKbrlHLBV1COUE/Vj/22nF3it2RiYbehKnw1J0FFTda
-	 JmDyRA/Iw8LmA==
+	b=n+NIdeOmm/2UIFfyqHLKJu9SjYM9TwimD//3hh2m62D0IkeJOgYIlqRTvAKGfIk0g
+	 WC0ASzCbk2UXAll6ctUEWZSK0QbyFQA424v2DL4XCAJAZccaX/3X5R+VXep+dkTICP
+	 PHGZoY5VcQPm10q1qvLre5Bt0xYjOLeSqgyfc5UwY13yYFWQfRnKQpCgeql/zhBjJI
+	 2fK0hHLrG6/EIJBiUuqN/v7iyjC+QjVMpvE6AwiV1vwgnwd8XdNB/hxPbyxIRYHO2m
+	 ZBMYIPWfgoorZ+O7v6lqUeH08kV/NnXbCS23hmSsSHKh8IU6qhB0R88Nlw2Z30kRHx
+	 osT6eAj8Z1L3g==
 From: SJ Park <sj@kernel.org>
-To: xu.xin16@zte.com.cn
+To: Guopeng Zhang <guopeng.zhang@linux.dev>
 Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	chengming.zhou@linux.dev,
-	qi.zheng@linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	wang.yaxin@zte.com.cn
-Subject: Re: [PATCH v2 1/2] mm/mm_slot.h: add a helper function mm_slot_remove
-Date: Mon, 13 Jul 2026 17:16:36 -0700
-Message-ID: <20260714001636.85603-1-sj@kernel.org>
+	Guopeng Zhang <zhangguopeng@kylinos.cn>
+Subject: Re: [PATCH] mm: memcg-v1: make mem_cgroup_oom_notify_cb() return void
+Date: Mon, 13 Jul 2026 17:27:37 -0700
+Message-ID: <20260714002737.85810-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260713143707966lCkTinO0i9zYAc1K2ZmqZ@zte.com.cn>
+In-Reply-To: <20260713093737.3299646-1-guopeng.zhang@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: txxqkja6uk8b8gxg594wag46q35okmua
-X-Rspamd-Queue-Id: 53F57C0004
-X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 00D92100003
 X-Rspam-User: 
-X-HE-Tag: 1783988211-280951
-X-HE-Meta: U2FsdGVkX1+P3DuBmKIbvCeRM6AGtiaE4KDmIyFuJeRRfZKwtp2e66ZrwB+9dBr0J9FXgb/vujoWVVXMDsZo+lfDTMB4k36RfV3TnVQrWErAnMEhBLZXTSasNlBMbHpIozylX9+/bB0phdfTbr1sJju0Q6hAQEQ5fP+r9kZoqJZNG6GpGY7W+c4RoL7B45EnTQgAG1x4TeAP6awoR66htwW85WUl5KAB78teCP6frDtKZsdeO+0L7jV6QpUbAKaC1ybOeMwHka5M1qgEE2mv+c42Ho8fRF4RrF4jkNh3VQgCQ7W7EO3sOEEGw2iUmm3eMSgaGfs89Y7sGQi/+qGFuxdSvTUQWzadVsh+MBbl13SPrHaP2k+U/vmM7ncGo1xYfhakaDRm58fHcva0BaEmOMimoIvmctjAYhzcSbKM+GJj6Rk6ro1LRYOmtp7evPEwaNpc9emuKmpLwV2ifJf1YUVKCXVwc9DtW81jj1XZkzNApHp90VdtAi51Pi4LlwRYybjCjgmt1XSomIAiDa31SzG0Y2s8wqdWeRcDH12KE2/HDMu+T1NmlLX1cUT/oLeqEAasTSWHu7d3O65RoQBHsCjf7aarhj4m8yUmRJObgbpaIoLobvsQWOdGpGpMye6pMbErW/V1pekOwQhokfIHGvwKhftB+70O49gcqOLpBfmxkz5oVfgN/orLNxyuRBXo0EO4ugWjPo72qWTBXJZjmP2/rdeUbm4Bd40VXNuIzDTeHSiF3mjtt01AtWQuOwMwROCUgOV6gRfkeRN/JPIJ/mKWTskxzgFePJMCqTkjowBGziqvgL5IUJEkWRqViJUaO2IOOO1yAD/QMv+aic0X59nmwe0wsRjd6r10P6FnFRbQTgQFlrQRCMRvgEQeCfHTJhFgbnLt+NgIne9Y/V72QSgMOcq0hHS8sJHXLbxXdbPs2PSphJEhcm7P38WVMbNAn23uq3c8kv3QCi9bI7A
- 5QYa2xl4
- JrHJ8+zbZVbwCWhvB5Mqwtr2QsSmLGTtTMGzjZJnU1Qd/s05j6+488wQyADqMboTzj5xT8rGRyp+toeP/iH2fpXPQI83bEDGZOoG8G4DPsKQvONKxT5p4t8bU8XyVLtBPjJdCNTUMlwPN2LsIuZ8JOoMN6+CTQgseChMJOCfb3m3xiRSKVp2Jc2/UhtaJdmtr8E9r+qjgYVsi0uUwGoSxUyWFkdmfptSzEvThc64RFc5ny1omVPepy7Ip1RhSBWqjV8KiXsZL+yTmJDONKa4Qs4fsBOA9f2yMqaVhwXciyiMB6Cpp6vU96zYGMbFBEC6wsHdQv3CGGGFkfIALslsjxnc2vQ==
+X-Stat-Signature: kp1nxbr4birfmz4nng55c9of7t731cmz
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783988861-60676
+X-HE-Meta: U2FsdGVkX19f2HUG084I5qhJ6QJty5aGDCjtO2KMtGLTeuzHxK22BsJZqN96QpUsmyocTqRfhc5akP15iAeYItn1/fY4Y6hDwuSPlviup2bP4AwTF43fHhk1PkrbkbT/KRt0ptmJjAIVc4KpGQEhr3E33N5sIBavgwm0JugfjQzXvQqAUoQiiB/XADhVigJlljxMIWkAKJVAkJeyJC2hY9ggjgALbRr/pPi+mharTCjLg2xqvzgS47qALlZjuHM666urWqKlvg/y5x9ObkCXGqcWoVAYVaQ/cR7nhW079D022sEBK5llwqzjHGNyzeaKVtba5STkX+vhdamyaMNZP9sQFupjCZuI9qYNNpHABdWzserjXyNl8ykcD3J4bev1bWO/tpr7IiVzmde7rr46mthl8SrJtekm+2aI7503M4mBYr/EPmpIeDGXbYdp4da0WMFJrzmka1OJ1KXNAiE8441a7fVFDnaNmX7PF6fvw2uNMsBWwThHTQu5c9HIGTzRWQ5NF2mLXIhQ9gFUkGppeDkluEVRlE/2dka1vn3Je4c6prw7HPlGeSxvDpqfNCSJIlEcDkVvap1sh5U3IYYmyO2LrUq+4ijHbeJ48mf/yb3IeesPplAW6O1VOSm67Fa7p8WtBJOGKt8GwioYiqH3MQo3KeMat/E1rHLqUgbh5B7Hn7qOZT37G9jY6quRR+kR58KiqJGH+hIwDBUuIP8ZkxiPs0WEZJJnOEHDDNbs940aQkfmr0K6w6sWivPKcwqdGP8VeRuU/eQlmpF7UkNKcJhGEsNFN7u3ScbmnntX1qdm/1KMGXNKx/OQ0chH/yDeIt/qHmC9aKU9DcUKH4llzkXrgw1PDkZQfyhKwIopl4XnYCjSaGOnO7NIt4CHwk2alTgvQxIPnldI+n96XZOUOu4+CVpjH5iLfPBXUK+XXay8Vdv4R/Wd0HjKPt44tzyHKNNpVBY0lz9p8t8bzdL
+ cXeLw6Id
+ AMkqSOAMIzeZRcu7AKjn+h1B2bigMhZbMbpMhYWPC77G0IZypGJbuQiheSFLtrTuzxbTdSTCnOATD2fOuwwbaOruISDyuIkCykb0E//tR78KVbWfsqhYGYK5FWjR6xlSROucoPynEldT1Z3t04ScWf4TTcoAW9yKC5Bwbv3PqsleRwRSV7WQ1LXV3PerSiFoGoTrUa3DWTmRRyh9cwThkR2/NzHyogRRGwOuWZwgW2nvzWi0oT62g6moRtFwtyI0simhPQvVoecKladax4kEPSK5VjuVbFtFKaOMCPTd1G0gcrYGmw4tM2nxJ7Vyrl1dv89LZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,43 +99,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Jul 2026 14:37:07 +0800 (CST) <xu.xin16@zte.com.cn> wrote:
+On Mon, 13 Jul 2026 17:37:37 +0800 Guopeng Zhang <guopeng.zhang@linux.dev> wrote:
 
-> From: xu xin <xu.xin16@zte.com.cn>
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > 
-> Both THP and KSM manage per-mm scanning slots using the mm_slot
-> structure. The slot is kept in a hash table and a list, and removal from
-> both containers requires the same two operations: hash_del() and
-> list_del().
+> Commit 7d74b06f240f ("memcg: use for_each_mem_cgroup") replaced the
+> mem_cgroup_walk_tree() call in mem_cgroup_oom_notify() with
+> for_each_mem_cgroup_tree(), but left mem_cgroup_oom_notify_cb() with the
+> int return type required by the old callback interface.
 > 
-> Introduce mm_slot_remove() to abstract the common hash_del() + list_del()
-> sequence used in both khugepaged and KSM.
-> 
-> No functional change is intended.
+> The function now has a single direct caller and no failure path. Make it
+> return void.
 
-Looks good and clean to me!
+Makes sense to me.
 
 > 
-> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
 Reviewed-by: SJ Park <sj@kernel.org>
-
-[...]
-> --- a/mm/mm_slot.h
-> +++ b/mm/mm_slot.h
-> @@ -52,4 +52,9 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
->  	hash_add(_hashtable, &_mm_slot->hash, (unsigned long)_mm);	       \
->  })
-> 
-> +static inline void mm_slot_remove(struct mm_slot *slot)
-> +{
-> +	hash_del(&slot->hash);
-> +	list_del(&slot->mm_node);
-> +}
->  #endif /* _LINUX_MM_SLOT_H */
-
-I'd prefer keep having the one blank line bfore the #endif.  Definitely not a
-blocker but just thinking loud.
 
 
 Thanks,
