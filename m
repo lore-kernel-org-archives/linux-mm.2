@@ -4,175 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69332C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:09:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97285C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:15:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BC026B00DE; Tue, 14 Jul 2026 11:09:33 -0400 (EDT)
+	id 971B56B00D1; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56BD26B00E5; Tue, 14 Jul 2026 11:09:33 -0400 (EDT)
+	id 9225C6B00D6; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4339C6B00E6; Tue, 14 Jul 2026 11:09:33 -0400 (EDT)
+	id 810866B00DA; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 186DC6B00DE
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:09:33 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2BDCC03ED
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:09:32 +0000 (UTC)
-X-FDA: 84987716184.27.B96596D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C8A3518000F
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:09:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zu45SdRD;
-	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4506B00D1
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:15:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDCA3A0430
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:12 +0000 (UTC)
+X-FDA: 84987730464.25.8A6323E
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 476C21C0009
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DF0F2dTf;
+	spf=pass (imf21.hostedemail.com: domain of 3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784041770;
+	s=arc-20220608; t=1784042111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Go9xu294vQ/xZtWM33cFG/GQMdagVD3s+eiqGDNT+vo=;
-	b=ChI6+4HdIXun5SHN7k4Cx2Qox5wQCo/g9EDCXn+KXYeFiURxejMEQk9fxMlus8JPU/05tc
-	SVQIzSEHNkG3ILG81hHEWmPByze6rYVPsDruF/2mCq7BYtvIHdFj6EU+R/1DyyuU6phagE
-	ZX1kUOClFNS0nUFRSeTVh/Irqzv7fPs=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Zu45SdRD;
-	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=AdMdxqs5Z8x509tTZKpL2bKGAMA2jSi8MmCd4hShlVQ=;
+	b=vf6q3Olem4BtBktz8P+BUItlGDP7xN9cv0ZmCu81Uye3T/Lkok2najQKcJ2Eum57EMOWVZ
+	g2yoFblJlgGfod64Sg31uA2xg7EutskfRkfajiwWZ48x8R9z/XvDf8TWLfJMoAV3evQKeQ
+	UlWE/d34J9RU53WCMFblsVswETKQKVQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784041770;
-	b=aLcpqNhOF6MrN02aIcq25N2Wd7fdWm1JH9+lE2MImlINvgyB1r8tpxq2foFg/TASphGfS8
-	RXLmx5mrSYW23Yq9Rpyn6qVEeIAnO2WhH0R/B9r/nkbB4d+zGVw/LxCThXjEbEo8eGv741
-	OLMzkt68aVENiniUdlz7L58otnVeyss=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784041770; x=1815577770;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SHzp4jQz8eCvIdV8ejmgEgUpbyhbt03HpKcF+s/pm00=;
-  b=Zu45SdRDUpTedchym1+CAPSKVM3OLxjH46haJbX64zEWibFBVyGX5Hyu
-   irekaMSiTwRkBKD2bjw6BNloegglXhfKpw6twcKT5RfVXP9Grd4VvZRPZ
-   GHvkEmtqWfW+G58L781tlaZQXx+3dTAIriSwcRbdKPBG81nA05KK63tO5
-   JPTjBEGJ0KdxZ+u91bkOibpnzkFKxC3T9R3VQkxFiK6kU6iIswLtCer5R
-   w9Kp7hxavztIYEeLTzPH4+PhRAC/tt+/m+/vBqi8I3DKzJaDvY3SIHQkH
-   kj2AQcddH3MZgpBSrB2At3+vZX9aWoEJUsQZToOT2m7RYvxzEQxRtKISr
-   A==;
-X-CSE-ConnectionGUID: cqBNoTBvRL2yXyzCQGyCXA==
-X-CSE-MsgGUID: KCBAslVAQhusv/ZF/wRWZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="88344357"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="88344357"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 08:09:28 -0700
-X-CSE-ConnectionGUID: b6dfcSKcQJiv0EAhPLDFYA==
-X-CSE-MsgGUID: 47aAtZOESKmlSCqMXmHYjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="260186915"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.120]) ([10.125.108.120])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 08:09:12 -0700
-Message-ID: <bd773d0e-557e-4d87-8c34-7e20cef52135@intel.com>
-Date: Tue, 14 Jul 2026 08:09:15 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/22] x86/mm: use mm_is_kernel() for kernel mm checks
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
- Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
- x86@kernel.org, tboot-devel@lists.sourceforge.net,
- Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
- Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
- <20260714-remove_pgtable_cdtor-v1-12-44be8a7685d7@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260714-remove_pgtable_cdtor-v1-12-44be8a7685d7@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	t=1784042111;
+	b=Xg1ofdE9084PytEOr3jLqQFdKvqCkHhbujjTDNneE16fuTu70j8oLz645ZfPGhZdYqjq1d
+	vkPfiIcVTYf4DAI5Zfp888EBD/xfU8sfKpixNU7xyTVGhS9qvVQR4EwbJ8XIAZJ0VqM5jp
+	mc5O0960ijPrlNNmNElLAw0pAKg9wtQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DF0F2dTf;
+	spf=pass (imf21.hostedemail.com: domain of 3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3fVJWagcKCNQL8F8DI76EE6B4.2ECB8DKN-CCAL02A.EH6@flex--vipinsh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84a06bc82easo4135517b3a.2
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784042110; x=1784646910; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AdMdxqs5Z8x509tTZKpL2bKGAMA2jSi8MmCd4hShlVQ=;
+        b=DF0F2dTfhDhigpMX7/dVIsn5+0tZmfGnz0ZbDq0SUb8ZV5gzYBANWohOhLydBKnv2M
+         ugzyb+ytq8sXF/UxulT7ghr9Mt9gdN72uXN2MBew9AsR2yZQ7mTO/mLhAZwBQTwoUlVn
+         NB1wUF8nmuxsoIhUFuaJ9bQq3dtc0KR02M6ZNcZyBFSz3Zl6UCW4ONdr2PhehoBRpLVg
+         FPu61ILe6aQQKZ3yc/nLorD1BhD0IdiqmSJZVuqIlWsCWAUfkmoHhP4J1o4Q7yrR8/Bp
+         EQHGc7ndCco31xO88X+Nr9iBb590y7HbsvpI1320pTNaJEZMvzicooPUjeHxRVD2XAqu
+         4uFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784042110; x=1784646910;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AdMdxqs5Z8x509tTZKpL2bKGAMA2jSi8MmCd4hShlVQ=;
+        b=iCI7/Wn5PGID7S/h7GwluBAtQcI8AGAFtlAjSuS2Y+Owjyrmj7weLmAJSd4wenvwjN
+         iRhmfUHw4PKyvI2KmNmx+fRYWusG4Pyxn//lY0kxCVo0Cu4Wp76C7ZLSHvY9bV22YmDs
+         3CSGO/dIeklMAtkSspMPJc0T9UdOJi7Wq2mSwpe6NFysDNScbh3PQI94tOflqRFF7Pq1
+         Ntikarf/TicU9IRqEJwLBVxQjmyoMUW1vKfPHYYbWDB1AS0dMhOFdtl93aEax5qATnui
+         xPKKU7CBlFGgz3/Y6gyVsS33oc6bDp6EgcCOobCYaVvGlOxPYwR4MFOSFoZig2rzWj4s
+         rOMg==
+X-Forwarded-Encrypted: i=1; AHgh+RoD9TlwsJbYQQ7bbl7KR8VvS58C8h9kWq0YzZ84Tx3nIzONTZfXfC0yoB9S+PkA+J8aoc1T9avfsw==@kvack.org
+X-Gm-Message-State: AOJu0YwcqbmZG9Hz/VUzqeJXOxgGfjQw1RNtIXcHo2RPdkCjb6YzeCcL
+	h2YE2jm59TkemuUyBR981Dezb23yaboAFEaNwoX5aTJ7UdThk5MkwVUPu8sOpKz9e6ROLsFVUuO
+	4WQ1nMtUJvQ==
+X-Received: from pfbhh6.prod.google.com ([2002:a05:6a00:8686:b0:847:9199:e06])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:460e:b0:845:363e:12d9
+ with SMTP id d2e1a72fcca58-84a554f93damr3265089b3a.3.1784042109576; Tue, 14
+ Jul 2026 08:15:09 -0700 (PDT)
+Date: Tue, 14 Jul 2026 08:14:45 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
+Message-ID: <20260714151505.3466855-1-vipinsh@google.com>
+Subject: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
+From: Vipin Sharma <vipinsh@google.com>
+To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org
+Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, 
+	christian.koenig@amd.com, corbet@lwn.net, dmatlack@google.com, 
+	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
+	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
+	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
+	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, 
+	rananta@google.com, rientjes@google.com, rodrigo.vivi@intel.com, 
+	rppt@kernel.org, saeedm@nvidia.com, schnelle@linux.ibm.com, 
+	skhan@linuxfoundation.org, skhawaja@google.com, vipinsh@google.com, 
+	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, 
+	yi.l.liu@intel.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C8A3518000F
-X-Stat-Signature: 9dp6opisy39qof4s4wtam7cxjcfdwqmj
-X-HE-Tag: 1784041769-728990
-X-HE-Meta: U2FsdGVkX19p+70AUeve6rSfJ5kAgXQ+MOEe6++RTthlKNDcfTrLFmUclkRHaVSvCZIwLWSF87ZcddneZ3sPKZLoFrmzCru9evpDDCyBLu9LuF3IrHrAhL+KuqY1FkkT5BiOwwc8lCpfuadlI2MrYgQ/IP36dYdk2Wv/AUXRdC78k7LzqboaIYtlWO/LJVO6XgDyWRSR5QkhmWyA+1ue92vA0aPectIBCy/79Pxm3ACm1ObuYOrNAGriB3q+Oe3QeZ/0fjRJWruvhE7vo06IaXv10r3Mwn+l4Nbht9stSAADQxZ3BeFsI3tBFsZzYDdsRKaCrq1VCoRFGiBmO7K3+T13zGQ/kve0ACkHisDQTE4RJ8P1WmhZ+QqlFEmP2AKBUltEwfZhwuD+a/TmFazcek2Fb67iuGgUlHqg/1yXC8G1pQzNArN/hhBUid+b0i7O5qgtg/E2iWKDbg+3UvEGnBESiifhLC8yR60bvv4sss70jQncLOAKDpGmTcOpom6p2wJm6z1tiY09qUD6V0QlFRobALf3YF1BtKRpZnR3yg7O5ha0lFW5gaqxrR+eIAVLd5qYGCGEvk+uiU3sU8hoDCnc2RvR7Np55iVRJ6pebxO3UYjM8ZmZLSFFt/XasL459ZJP4POkVF9s9uUaHiAL0PmrGDBVUEvSqwxeAyFdzEauuXNeQLnrrsOcaaN3Z5sI/F729ZkpXesw8in9dRRbgMoK1jccBohHXaQFgyBQ0xZa2UpqZrxW++9NwymUFGcw3UyJRHIF212sXbHirUfyqcLrwbSMyhVW0oFrAOkkMTdhu4db7Jt6c2pkHsL2qcDU6tcNwij7dxPvkREtAL8my8Etu5nV/ldfYaIISJb1qtYZwObm9tfxhmQDdeeySu1KQCJwMT7rASTcYemgHvnKVGM0PaZkQCPeXjY8AMPRmpkmQv8pz+BpzoNJHo3Nydi/RpXRIxLqxNulBEPAMAj
- abc9MKb2
- TOgBeILdMahgyxBeca8Zj6wD8doEVgHXbKK59Y5TR8LMbehxctr4LcyL3CseBthOI1owg+nAosa4p2RjGN7GkRFO4svTd0QrjWzpNw0bdJ0oHOynWC7hb3ZeXFiC3s0Mr/pQC1Ud/Z9HQljwbyviEoc69QMrDiJh3OymrkD5uroztKeZnJICoMNmkqlA2EPSGuyfI6A1z/FYbDUlIrHriA3FaR2r6MY4CkWuiCrUwS2vjkHSjrrUdUDqBmIpLxc2psZeN4+nmYog0U4Pd2OxoiQKx+ap/Q51g/o6fXFpJbS+9FxlmHhHu8f22UlvaUrhENOM3GX87mnBiBDw=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 476C21C0009
+X-Stat-Signature: oy56hnj5g864daohnnewprpbtze54bi5
+X-HE-Tag: 1784042111-354106
+X-HE-Meta: U2FsdGVkX1/D80goG2qKPwLuIXVBekXe4ShY8l5k/kRbeTqgGgvUG+ixd4nG4V1n/6W3sTS5phNRx1oeNLDxMzoPthuo6w6nwUWXOneSRmPGCtZRIGjatbnejmD4IxIVoj+C0SzUmXejHHZIqZDF3H0YRlRyQhjrFnhXx4cFADxqDvcfzyY34woj1Hcl8qq1f7GmEcTfbsf4hzLmJJvR5P9B3ycBgS/pmr3GhHvFA/NfJBKV0sa3oqejdFV/uWks0tC9mr2rPf1uKd6exc63J4iLDJdaI3QaNHQ6/wUNJGq2QTKdqvrlM4T2RUc1Wd0JRlRUSUW/g1W0coFmrd2TpCdN+Dyk2K4PC6j/0ywkceIZi06zXgIrvZQJg49vL/8QwRlI3OcYVvuyNIXiUxJZMgIkeigF+P7Ni7xcOEjJ23oj/ByAhNAicH7wARsCQbS5yYuRAc5OeZMyRn1JfvREU/WRHGnRc6l7mD1Y3jIbI3C/71JAf2as8NemteCwiejNov3xlEELWy8UuN9hHdbaxgMkaCgjilDBctUcru6ZqwpPaasZ8ZkVBuSE3p6JFw/GfK8DEw2usb8bbUT4KYnieDOvou0kqwGgrrqpICyKMFZNsvJAmd5GqCGvFqGntiAxV/sCgoH1LI6HzNNY2o2+v8wPU4guAwsnHqFo3YBkqjdhHaO5h0bVIMg0/QALelVwbptSOlyWjqXJGuiyLuwmX8iCmuqk8LlbXFluxc38ThV9WNnxfpDTJyMd3yb1Ghz1VJadfMPhXfvm7H7o3n59Bx9xWNhZ8WLoMGAi0wHPj2RCVHhNKziCDq+EskvbKGSDYliXznlOsMJgR+DN6RG8aLTpdYPBWbmRKjSwZZu8mT0heqg8psc9opMj5rT5GmHTM1JcZsevOP/S3OeRQbJcbfJMPCUfa76NOSiQz6lu+jGaxeuoYQij9QV7KGOpaKj5joSxcko9i2uvtkBve35
+ 0jBFGa3W
+ //oWGss/VPwBwUdJj9FbhWE3VoCp6kIC8ruSUgqeaLor2/PNNBwnB2FOyyR/VvE1fO7KCmyykvZvqRXHHFko6ObC+yMTZ+abSefqLWUftfKOLoG+K+AXvDXo93pktR/TuaoTy0r0owVzQecfX8IGLR9wIkWlG3xyctlyIpqvAAsAgidsVV3MLCmQsaEDxg2U65AO+hze8WrMtHqp7B39EWOuclwxFv3cze+ofxwCFWJykaFTHYMECMNPKp5jooueI52yWuq316LrTUQJgAyx4DnN/a1JHm4fJIu8v6Ro5OIClvKVFkOYJTw49NDAAq55KsP+bCHvfuIfFchdygSr65Bpfk1zOY2V4poQeOnpzlrKf0xXQH/QfO3CjBQJAPayPmdYKQ9qJuZqldCcUwpKmEk4T0D/qTBe3gk3ouD6E/KuCW+13e0l1314GdDY0TGwe2l7yoXFBYLu+AqI2tbxJiLgMCCeVum/cJEdt0MnFAnqmN0PLXMJVA9AGae9XXAccKJksGCUM/Wy8oiq6SOWEdZNkF2JX7/06VXRlhaEat4Wub/T0WhPgP3QozemSL5bagD1o5MbsoCH2lszcG+0AtK/T3E9RAlNtJecEuueEQ8dUMtuPkouk2Sh801vg641r/1Y8472SATSpg4LC5zR+W4hfEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,92 +118,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 07:04, Kevin Brodsky wrote:
-...
-> @@ -188,7 +188,7 @@ DECLARE_PER_CPU_SHARED_ALIGNED(struct tlb_state_shared, cpu_tlbstate_shared);
->  #define enter_lazy_tlb enter_lazy_tlb
->  static __always_inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
->  {
-> -	if (this_cpu_read(cpu_tlbstate.loaded_mm) == &init_mm)
-> +	if (mm_is_kernel(this_cpu_read(cpu_tlbstate.loaded_mm)))
->  		return;
->  
->  	this_cpu_write(cpu_tlbstate_shared.is_lazy, true);
+Hello,
 
-This one makes me nervous, especially combined with the efi_mm changes
-later in the series. init_mm really is special. Before this patch,
-running on init_mm qualifies as being in lazy tlb mode. After this
-patch, efi_mm qualifies too.
+This series can be found on Github:
 
-Is that OK?
+  https://github.com/shvipin/linux vfio/liveupdate/v5
 
-> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-> index f32facdb3035..91d2a6f2ac5a 100644
-> --- a/arch/x86/mm/pgtable.c
-> +++ b/arch/x86/mm/pgtable.c
-> @@ -168,7 +168,7 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
->  	bool failed = false;
->  	gfp_t gfp = GFP_PGTABLE_USER;
->  
-> -	if (mm == &init_mm)
-> +	if (mm_is_kernel(mm))
->  		gfp &= ~__GFP_ACCOUNT;
->  	gfp &= ~__GFP_HIGHMEM;
+This series provides the base support to enable Live Update feature for
+VFIO PCI devices using the Live Update Orchestrator (LUO) and Kexec
+Handover (KHO).
 
-This hunk is probably fine.
+Overview
+--------
 
-> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> index 1023acadd8f8..5517cab8ad00 100644
-> --- a/arch/x86/mm/tlb.c
-> +++ b/arch/x86/mm/tlb.c
-> @@ -594,7 +594,7 @@ void leave_mm(void)
->  	 * This needs to happen before any other sanity checks due to
->  	 * intel_idle's shenanigans.
->  	 */
-> -	if (loaded_mm == &init_mm)
-> +	if (mm_is_kernel(loaded_mm))
->  		return;
+This series makes the following changes to support VFIO Live Update:
 
-This one is almost *certainly* buggy.
+ - Puts VFIO Live Update support behind the CONFIG_VFIO_PCI_LIVEUPDATE
+   config option (which requires CONFIG_VFIO_DEVICE_CDEV).
+ - Preserves VFIO cdev device FDs across a kexec Live Update session via
+   LUO/KHO.
+ - Enforces that incoming preserved devices can only be retrieved via
+   LIVEUPDATE_SESSION_RETRIEVE_FD post-kexec (preventing legacy
+   group/cdev opens from accessing uninitialized state).
+ - Quiesces the device prior to kexec in freeze() by resetting hardware,
+   disabling bus mastering, and marking the device frozen to reject
+   post-freeze IO/MMIO.
+ - Includes VFIO selftests (uapi & kexec tests with continuous DMA
+   checks) and kernel documentation.
 
-The efi_mm stuff uses leave_mm(). In fact, I think it's what's
-responsible for switching the hardware back over to use the init_mm page
-tables. If this check trips for init_mm, then the kernel will stay
-running on efi_mm when it's not intended to.
+VFIO PCI Live Update Roadmap
+----------------------------
 
-Remember when I asked about whether there was going to be *a* kernel mm
-or lots? This is where it starts to matter. It's outside the diff
-context but the code here is basically:
+We are planning to add VFIO PCI Live Update support in phases. Since full
+support of this feature will come in phase, VFIO PCI Liveupdate is
+controlled by CONFIG_VFIO_PCI_LIVEUPDATE config option. 
 
-        if (loaded_mm == &init_mm)
-                return;
-        switch_mm(NULL, &init_mm, NULL);
+This series is phase 1 below:
 
-So either all kernel mm's are equivalent or this code doesn't quite work.
+ 1. PCIe function (non-VF) preserved across Live Update without changing
+    BDF
+ 2. PCIe function (non-VF) preserved across Live Update without resetting
+ 3. PCIe function (non-VF) preserved across Live Update with continuous
+    DMA (noiommu)
+ 4. PCIe function (non-VF) preserved across Live Update with continuous
+    DMA (iommufd)
+ 5. PCIe VF preserved across Live Update with continuous DMA (iommufd)
 
->  	/* Warn if we're not lazy. */
-> @@ -855,7 +855,7 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
->  		 * cpu_tlbstate_shared.is_lazy whether or not to send an IPI.
->  		 */
->  		if (IS_ENABLED(CONFIG_DEBUG_VM) &&
-> -		    WARN_ON_ONCE(prev != &init_mm && !is_notrack_mm(prev) &&
-> +		    WARN_ON_ONCE(!mm_is_kernel(prev) && !is_notrack_mm(prev) &&
->  				 !cpumask_test_cpu(cpu, mm_cpumask(next))))
->  			cpumask_set_cpu(cpu, mm_cpumask(next));
->  
-> @@ -932,7 +932,8 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
->  		 * This way switch_mm() must see the new tlb_gen or
->  		 * flush_tlb_mm_range() must see the new loaded_mm, or both.
->  		 */
-> -		if (next != &init_mm && !cpumask_test_cpu(cpu, mm_cpumask(next)))
-> +		if (!mm_is_kernel(next) &&
-> +		    !cpumask_test_cpu(cpu, mm_cpumask(next)))
->  			cpumask_set_cpu(cpu, mm_cpumask(next));
->  		else
->  			smp_mb();
+Dependencies
+------------
 
-This one is interesting. It's basically saying that init_mm doesn't get
-mm_cpumask() updates. That makes sense since it has special TLB flushing
-rules. But what does this mean for efi_mm? Does it needs mm_cpumask()
-updates?
+This series has following dependencies as shown in the diagram
+
+    |---------------------------|
+    |         VFIO v5           |  <--- Sent in this series.
+    |---------------------------|
+    |  Liveupdate Selftests[1]  |
+    |---------------------------|
+    |        PCI v7 [2]         |
+    |---------------------------|
+
+[1] https://lore.kernel.org/all/20260511201155.1488670-1-vipinsh@google.com/
+    These selftests changes are needed by other selftests also (iommu,
+    kvm), so, I have sent them separately.
+
+[2] https://lore.kernel.org/linux-pci/20260710212616.1351130-1-dmatlack@google.com/
+    This is the PCI v7, which adds the live update support in PCI core.
+
+Github branch I have mentioned at the top has all of these dependencies.
+
+Testing
+-------
+
+Tested using VFIO Live Update selftests in both QEMU and bare-metal
+environment (Intel DSA PCIe device).
+
+  $ ./setup.sh 0000:00:04.0
+  $ ./vfio_pci_liveupdate_kexec_test --stage 1 0000:6a:01.0
+  $ kexec --reuse-cmdline -l -s /boot/vmlinuz
+  $ kexec -e
+  $ ./setup.sh 0000:00:04.0
+  $ ./vfio_pci_liveupdate_kexec_test --stage 2 0000:6a:01.0
+
+Kernel command line options used:
+  - liveupdate=on
+  - kho=on
+  - vfio_iommu_type1.allow_unsafe_interrupts=Y
+  - vfio_pci.enable_sriov=Y
+  - vfio_pci.disable_denylist=Y
+  - vfio.enable_unsafe_noiommu_mode=Y
+
+
+Changelog
+---------
+
+v5:
+ - Addressed Sashiko feedback.
+ - Removed condition to disable CONFIG_VFIO_PCI_DMABUF.
+ - Expanded vfio_find_device() helper to safely discover a registered
+   vfio_device by matching criteria. Internal Sashiko instance found
+   data race.
+ - Updated selftests to latest changes in VFIO selftests.
+ - Rebased on top of PCI Live Update series v7.
+
+v4: https://lore.kernel.org/kvm/20260511234802.2280368-1-vipinsh@google.com/
+
+v3: https://lore.kernel.org/kvm/20260323235817.1960573-1-dmatlack@google.com/
+
+v2: https://lore.kernel.org/kvm/20260129212510.967611-1-dmatlack@google.com/
+
+v1: https://lore.kernel.org/kvm/20251126193608.2678510-1-dmatlack@google.com/
+
+rfc: https://lore.kernel.org/kvm/20251018000713.677779-1-vipinsh@google.com/
+
+
+David Matlack (7):
+  vfio: Enforce preserved devices are retrieved via
+    LIVEUPDATE_SESSION_RETRIEVE_FD
+  docs: liveupdate: Add documentation for VFIO PCI
+  vfio: selftests: Add vfio_pci_liveupdate_uapi_test
+  vfio: selftests: Add Makefile support for TEST_GEN_PROGS_EXTENDED
+  vfio: selftests: Expose iommu_modes to tests
+  vfio: selftests: Verify that opening VFIO device fails during Live
+    Update
+  vfio: selftests: Add continuous DMA to vfio_pci_liveupdate_kexec_test
+
+Vipin Sharma (13):
+  vfio/pci: Factor out the reset logic in VFIO PCI device close path
+  vfio: Export various helpers from VFIO
+  vfio/pci: Export vfio_pci_dma_buf_move for vfio-pci module
+  liveupdate: Export symbols needed by modules
+  vfio/pci: Register a file handler with Live Update Orchestrator
+  vfio/pci: Preserve vfio-pci device files across Live Update
+  vfio: Introduce vfio_find_device() helper
+  vfio: Refactor vfio_device_fops_cdev_open()
+  vfio: Add API to open cdev device for Live Update restore
+  vfio/pci: Retrieve preserved device files after Live Update
+  vfio: selftests: Build liveupdate library in VFIO selftests
+  vfio: selftests: Initialize vfio_pci_device using a VFIO cdev FD
+  vfio: selftests: Add vfio_pci_liveupdate_kexec_test
+
+ Documentation/core-api/liveupdate.rst         |   1 +
+ .../driver-api/vfio_pci_liveupdate.rst        |  23 ++
+ MAINTAINERS                                   |   2 +
+ drivers/vfio/device_cdev.c                    |  67 +++-
+ drivers/vfio/group.c                          |   9 +
+ drivers/vfio/pci/Kconfig                      |  12 +
+ drivers/vfio/pci/Makefile                     |   1 +
+ drivers/vfio/pci/vfio_pci.c                   |  13 +-
+ drivers/vfio/pci/vfio_pci_config.c            |   3 +
+ drivers/vfio/pci/vfio_pci_core.c              | 119 +++---
+ drivers/vfio/pci/vfio_pci_dmabuf.c            |   1 +
+ drivers/vfio/pci/vfio_pci_liveupdate.c        | 340 ++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h              |  28 ++
+ drivers/vfio/vfio.h                           |  18 +
+ drivers/vfio/vfio_main.c                      |  67 +++-
+ include/linux/kho/abi/vfio_pci.h              |  43 +++
+ include/linux/vfio.h                          |  12 +
+ include/linux/vfio_pci_core.h                 |   3 +
+ kernel/liveupdate/luo_file.c                  |   2 +
+ tools/testing/selftests/vfio/Makefile         |  23 +-
+ .../vfio/lib/include/libvfio/iommu.h          |   2 +
+ .../lib/include/libvfio/vfio_pci_device.h     |   3 +
+ tools/testing/selftests/vfio/lib/iommu.c      |   4 +-
+ .../selftests/vfio/lib/vfio_pci_device.c      |  25 +-
+ .../vfio/vfio_pci_liveupdate_kexec_test.c     | 256 +++++++++++++
+ .../vfio/vfio_pci_liveupdate_uapi_test.c      |  97 +++++
+ 26 files changed, 1097 insertions(+), 77 deletions(-)
+ create mode 100644 Documentation/driver-api/vfio_pci_liveupdate.rst
+ create mode 100644 drivers/vfio/pci/vfio_pci_liveupdate.c
+ create mode 100644 include/linux/kho/abi/vfio_pci.h
+ create mode 100644 tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+ create mode 100644 tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c
+
+
+base-commit: cbf37fff757e87376e80e11a8378393a8f25145f
+prerequisite-patch-id: 85705fb54d3065efe1d87ab4b69e828a9f3404e7
+prerequisite-patch-id: a33ae79b5fc0259bd013b430c18cc3d14a678599
+-- 
+2.55.0.795.g602f6c329a-goog
+
 
