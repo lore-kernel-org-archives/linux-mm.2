@@ -4,169 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48CF0C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83926C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:15:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DC006B0005; Tue, 14 Jul 2026 08:09:29 -0400 (EDT)
+	id 39A616B0005; Tue, 14 Jul 2026 08:15:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38CB06B0088; Tue, 14 Jul 2026 08:09:29 -0400 (EDT)
+	id 377BB6B0088; Tue, 14 Jul 2026 08:15:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2540F6B008A; Tue, 14 Jul 2026 08:09:29 -0400 (EDT)
+	id 288AE6B008A; Tue, 14 Jul 2026 08:15:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E4A086B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:09:28 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E23206B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:37 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 81AEF1A03AD
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:09:28 +0000 (UTC)
-X-FDA: 84987262416.04.3E8893A
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010058.outbound.protection.outlook.com [52.101.61.58])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 900FD40003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:09:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QSix9szY;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf11.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.61.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784030965;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 58AE7A03CE
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:15:37 +0000 (UTC)
+X-FDA: 84987277914.04.CEDCE4D
+Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B15C1C0011
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:15:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784031335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tB1E8AflNK9lYSQiXymfQGGwDjrSU4Xu8+uOqchFgOE=;
-	b=PEKzY9nNOa6jFX87gc8c6kOAVSDJa1BwOvBjZsfh2AvT0OJsnFbJJMnZf0/IP5Ou0+vmxP
-	oGwCuvwua6Fb4SVKSc+E6Uu1+88b1QU06O2EZc4cMAelFOlsnzQQKRGZ58ZUlJMWQbFT6L
-	UXDP5sFfNzNfrjh+cQPrFBQ0xex65lc=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QSix9szY;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf11.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.61.58 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784030965;
-	b=N+N/wghNgb3fBNk4jq1rgyIEcmT7SoIMPqmNKvFW8rYD+CadjfBC2M+7Hak9Fsy/1WyJaB
-	odqGAU5U6gYHWaOn9M2zUW5gdxr2WB5agGp5kJWO7HRjNILy0eUmTCZoskMZnUk6vNtEDi
-	k72bdmu4gQMN88KWSZ8YRVj5cC6RAwQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L5AQyYqMSC5+uBcVQH2krfRP7iej0ixZJIummJ/rTvcj2JdAiLoqTamiCJKCtErIbfqlGOwCUoayY63/Ht01ZZ8KbNze8niOIfjMcwBgMt36afHO+sdmgE0EPGEA08Z5GEquy4ZzHQifZH37ZsbWqrwuLJ69/Dv58TResD+rm514JoMhQ23fJK8rpEo/ENEknzW61S7hdBInakGdt0Hn//Nu3g/EAW68cmhzpQbVSSHoWQwibPaa63HVKaKH0aApcgl64N9qybadmFt7MEmiV5gsana5wrliwjOBuKgPMTIZ+dw+pWetYAf2pHXo2k3CU6O4JjE7qkJGB+UheFoR0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tB1E8AflNK9lYSQiXymfQGGwDjrSU4Xu8+uOqchFgOE=;
- b=BRyM9usouIp2GjMczGKY12toFZitZDS7V/vxbRRc9QfHJGVM21HS0as9mrwats3wxLcWvWL+tff4EyNpvSNvhs01yMyG3jqwEyJsTPapGj8sJwIdTFzBl+JyWsaqloOQJizDDz5wrCCnvhJkjKX4A2onSPEj4YOz7Q8WTFdiRw8xTf5lWO3KA4Zud5lrEVArJJ3965WF45kwwIeaEH9CGIeotVz1MmC1ln1Cg3mB0RU4vgE/98dwF9XB3+F1dv/lG5LfublxZGS/VT4L+KfVvf3qtLsrmAJRaAaMepBuGX7Snh71Z0RFR+LvtLpPk7xuDNKizmDXQdhbWC1AidRZpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tB1E8AflNK9lYSQiXymfQGGwDjrSU4Xu8+uOqchFgOE=;
- b=QSix9szYZwEOqpv9KmKA+p3fx/eOIhaPP5YfXMqA0+12bJaPaXSmGOK805ZFqsPN/b3RAxOuR5iMOxxTZxpet0YD/oxgWK6nJG/vg/N7ihHtMcML4m+DFx7ZlDlYeGuNXnNtysLJAeAhEF79sDK4MRThayITU+eVsgYdgqfrQDkkIK0K/bSRKR7DZfJuxF3yJsPLzXI/fRlDT6J/vxKvbW17SazYjCOAW50vB8IaCmvTiEtHC64BhjbpmxEQKzaxaGNn9N7wqRyNlV6egqe3AVuBP5b2HQJT52d8kzK6SOMMSo/LQ/g4bGBu8mZWCZCuNQitYiU7/Z+cJ36hiEyKlw==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by BL1PR12MB5706.namprd12.prod.outlook.com (2603:10b6:208:385::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.9; Tue, 14 Jul
- 2026 12:09:17 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%3]) with mapi id 15.21.0223.008; Tue, 14 Jul 2026
- 12:09:17 +0000
-Message-ID: <5d9e8ff3-49fb-4ece-921f-a59214973894@nvidia.com>
-Date: Tue, 14 Jul 2026 22:09:08 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/8] mm: add a set_page_section_from_pfn() helper
-To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
- apopple@nvidia.com, arnd@arndb.de, bp@alien8.de,
- dave.hansen@linux.intel.com, david@kernel.org, kees@kernel.org,
- mingo@redhat.com, rppt@kernel.org, tglx@kernel.org
-Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260709112520.24857-1-lizhe.67@bytedance.com>
- <20260709112520.24857-4-lizhe.67@bytedance.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260709112520.24857-4-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MEWPR01CA0034.ausprd01.prod.outlook.com
- (2603:10c6:220:1e5::13) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZYc6Pv1xjCvE8AbV03BLquTy+t2F5F206sca1+WE2WU=;
+	b=YJvMMG2Dgbib8TJg5mBUvZct4sEtsk8RoAi30b/rTOdqNKhz++zs9ZfYpCktHWk13kSCDX
+	jQDRCq7/Xqe+kVYgx5ro3oerlO80Ed2KpvztArMv5vOq678buCz97YWTh2LcN3tGSPrPAJ
+	HCiHmHiOS2CXwhGvzSkq7vlNoLmVFd8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf10.hostedemail.com: domain of wangzicheng@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=wangzicheng@honor.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784031335;
+	b=Z0XF+DlwcIkiaNtjMsSyj1PUjQnYFO9OpI98SDRq0ekKzc1ZbVFgafZL4ZDJJMgExC/nP7
+	Ei3rZRXa3hD8N0oUOpzcTGxCLnU4cmpQH7QeEL2WFWmQ38x3rXZ/mISpB5Okn2Wf7bmC2f
+	M21kllyf0D+YQxziSeMACevyzjU27N0=
+Received: from TW003.hihonor.com (unknown [10.77.199.161])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4gzytp3XY4zYlLgc;
+	Tue, 14 Jul 2026 20:15:30 +0800 (CST)
+Received: from TA012-1.hihonor.com (10.77.199.132) by TW003.hihonor.com
+ (10.77.199.161) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 14 Jul
+ 2026 20:15:28 +0800
+Received: from localhost.localdomain (10.144.5.36) by TA012-1.hihonor.com
+ (10.77.199.132) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 14 Jul
+ 2026 20:15:19 +0800
+From: Zicheng Wang <wangzicheng@honor.com>
+To: <akpm@linux-foundation.org>, <yuanchu@google.com>
+CC: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
+	<corbet@lwn.net>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
+	<weixugc@google.com>, <david@kernel.org>, <ljs@kernel.org>,
+	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <roman.gushchin@linux.dev>,
+	<muchun.song@linux.dev>, <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<willy@infradead.org>, <denghaojie@honor.com>, <baoquan.he@linux.dev>,
+	<kaleshsingh@google.com>, <tjmercier@google.com>, <tao.wangtao@honor.com>,
+	<zhangji1@honor.com>, <wangzhen5@honor.com>, Zicheng Wang
+	<wangzicheng@honor.com>
+Subject: [RFC v2 1/3] mm/lru_gen: add AGING counter and proactive aging helper
+Date: Tue, 14 Jul 2026 20:15:27 +0800
+Message-ID: <20260714121529.2237261-2-wangzicheng@honor.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260714121529.2237261-1-wangzicheng@honor.com>
+References: <20260714121529.2237261-1-wangzicheng@honor.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|BL1PR12MB5706:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47a85bfb-60fc-43d3-dbeb-08dee1a0ba0a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|18002099003|22082099003|11063799006|56012099006|4143699003|6133799003|921020;
-X-Microsoft-Antispam-Message-Info:
-	7LMjloBgAk7EriW6tQDf8f/G2Pqc69wFXvG/7+CvrX+2VlcNehKsgmMIJk7KjAOxdwQJ/fC1MVhnmDVeOfXCcZH4WuCof3UOg1FDD/P0Sah1uLYYcP6BpX1ovdaM1j+/ErZ1kb2QhCrWHPYH5dCrKoQC/u6lgNFWJURZrAZ7o6OUPS6lmGzeUy4z85T5z2Le42gOuHavgCKhFkOTq2FrttCp3CeRBLh+gWEmUsezqWAuQK2/7li0W2v/pVZP2AqpwDQZN6wLX5C5Us/s83OqGxAXmDDzgn8vdvVBcF1RA7xAByFrZdNTWzMESAWuNaLmETalFWdBK7brJ2xpr32hh6akofQzI5g9Pz3aZgYSy4Ju7ZqLdf7ApqQMIVmxcbyn6FO0Tcbb6EfpZ6gWHcbQvDyil9V2aPm/2erNWK/cOMKjuoCH/B4t2JwXO7UcraUE4m1lDgtUqitA7ty+BwRTMyZK+QiJjKzHEnjWmCZHjVwoQTTNavKTuSpLlUX0altjiKgGRrqVM9sVAJgJZWVikexQ7FlwQdFh7ryZOqpmmGBS9zGD2dTPACpRGNL6KiMiPbBBKnrfs0V0RbzQJo43Nrp8gBIGqIJ89dTAP6iGF4C5VazIVeoGVPlHkHuCadQ8u+DLPQvUukKRcdyoA2IVqasit9qPZXheqVlZFZja1NMlxJsjXSgeIyCNIJwDIx/fLpvQO67Qs8jvhKPkG42Oog==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003)(6133799003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aGFPRVQwYW5VTXFZTktaSmVsY3l5ZEhCOERQeDBqUGE4L1RMb3NYeWhiS1Bz?=
- =?utf-8?B?cFNoTTJ1NjgvRk9HWHN0ZUtVbGh1M2tTbERRVlhjRjZMTFNEL0x5K044YjBH?=
- =?utf-8?B?OGc1aXdCeVU4dUV4cFVDenRwektqSEtSeXozYzhTUkdFUGErS0dhV0YyU3Zz?=
- =?utf-8?B?OFdGdm5yOXFLWmtibU5JYUVzMEF0VG1VN0Rhd3lEd1dVVGZndWdLZlBadDBW?=
- =?utf-8?B?RzluaVFwb0ZZZDBvQmNPeS9jeUZSVXhxYk5mZW9RN0dvb0VsVmJ3cUVZQkhZ?=
- =?utf-8?B?aFR4LzhKck10cm5zM0szdUk3V1ZUbzIyaVBORkVkanNGWkIrcXpMZnUwWGVG?=
- =?utf-8?B?MFFITnNUUjVpVkQ2cHdvUkZlSGpIdFRUSjV1L2tyTmtsRGphNUxORkZZVDJ0?=
- =?utf-8?B?L1p1L1p1V0U3SG5tN1ZtRlBFc1hwNno5QlVQYUxOczI2MkNxVFVuaVdlRU9z?=
- =?utf-8?B?WUJoMTFZL1ErUjFSN1dXVTdMWFhSWmhvQ3o4ZFZjVnZSZ3prb0wySDhrTVNy?=
- =?utf-8?B?enJ0dGRmM093dlRKdGlPU0JPdXpEQXpvWUpnOFNZbHhCQ1Ntdzc2MGNBMjFk?=
- =?utf-8?B?bFpnVmhsS1djV25BSVFPd0FZUHhrTEFEUjBFNkxaM3hHUE5OWktqQzBtQXZy?=
- =?utf-8?B?VEtzemY5Y0phWGlTcVVaMFc1NFZTb0MvWTYweHdDSURMTlRtVkd3TE1mOFhu?=
- =?utf-8?B?U3doVVZjby95MGxkeDExQ3dOeWk2WGdkWVpoQUthNVcwUU5rWGkyWm5GWlly?=
- =?utf-8?B?WEV3bzliditndFlFa1l3YlhvaWpmRGE3NEZHRll4WnZ2TFgyQXlwTjQ1WnpK?=
- =?utf-8?B?emhrMm8yU1pneFBpZWZRaU9GbGFOTXYwOFRheWQzRitCSEtiSmFmL21UMGxi?=
- =?utf-8?B?dXc5cTJKTy8vVFRCcmgxUVBUQlpNTThtWTVEdE9zNXRpNGoyUTVsRXdmV0s5?=
- =?utf-8?B?Z3F2YnpWNFFWSEFCR0RjanpPaDdxWWwxWlpvYzJBTG5mTkhhTmY0THNFaklT?=
- =?utf-8?B?S0dWTENqU0NvdFF1VmZTZmQyeEJlRjVxbUdlZUk2MVRxbDJhb2pWeXZmRndr?=
- =?utf-8?B?YUFiakJIUHBwRDlqNnRobUsrMHljNkxJZzdDOUdCYWFjM2pxUnNlU2MrWVhK?=
- =?utf-8?B?V1FHZnJnUnZqS1FlbHRwSlFLVXVKeEVlWDhlSGlYVXMxczJ4Wnk2TXM3WG5B?=
- =?utf-8?B?K2R5UzRsMWRTNHh1bE5seml3c3FLNk1jcGJLNTVlYjZ4YWtlSUFWMXhuS2Rm?=
- =?utf-8?B?NXFRN1lsOGZJZlNEQXRDWmk2c2laMEJHOUo4aVJDcWpuRmdyVTBKZEhYc2ht?=
- =?utf-8?B?UzE4ZHhzcUltc29RTm03TjQ4RXE1dStpeGVYVks4enN6bnRaM1FnWTUyVEFE?=
- =?utf-8?B?bHE5d2JobzljbUNSWG8zeU4xSFBmQWdUaHpCbGx4ZzI5dG14TXJnQmplR0RM?=
- =?utf-8?B?Y0ZBOHFNdE85UWxGeVorZy9sbXFxOFZBdjJ2Mmw2ZDNHSi9QQTl6a2FnTURG?=
- =?utf-8?B?NVlobjRVUU5acjlnalBaQUdEWEJNTmdQY0w4RTQzaFZ6NFNnM1dpMEdGRDlK?=
- =?utf-8?B?MitHb1VaM0N5cjZrelBsTU54QW8wb3phQUVaOGVoWHl6VStrSUl4ak80ZDFx?=
- =?utf-8?B?YWwrbnAzQWJuK1VmMEFVUkdnRWJGU0tCUXQrQytsOGk2YlhLTDV2QmkrdkYw?=
- =?utf-8?B?UTVRNkV5elZTR2x3NEZodXpIUjFEZW1HNXBkb3EvdFFoL1pZRWpYT3ZKZ0JI?=
- =?utf-8?B?L1dkVE5DQjNYUjY3R0tHdWR1YmQwamJCcmU5K3VlYkNKNWs5WmJuSFA5ZmxK?=
- =?utf-8?B?V09nUzFVbjNVajcvY0V3Mk5pS1d5bUUzcktWNCtFdWRkU210cW1obHNtV3VM?=
- =?utf-8?B?Y3Bhem1UeWpKUE5NSks1SlZrWlZiQUdPYTdlZzczSVg5aU01Q2dHQjNNUVpJ?=
- =?utf-8?B?Yno0eTcxNUFUdWlac203VExXRFZZaUYweHQ3eW9ZcDd2QVhHZjkrUmdSdnNw?=
- =?utf-8?B?NS9iTW8vVU9EOXp0cUFDZFN3WWVIaWdmbjdWZGdscXhEemRMcU91VzFNSVdo?=
- =?utf-8?B?aGZlM2t1eHA2RmRmZEREUjBIa2UyaDg4ZUtYYXNUVjg4eGtJYkFqRzNsT3BZ?=
- =?utf-8?B?OG1DQ2FOVjF3aGRZWS95T1JjWG1LWlMxQzBKUGZ2UFd0Z084UXpkYnVFVzVv?=
- =?utf-8?B?aEMwWnhoTkdLeXRqbnFTR3NZbmxzL05CQXEzTVgxQzRJeUE5dVpFMDdaTW4x?=
- =?utf-8?B?NGd3cXF0Z0lTVDVBZVNxWEQySVBOcHVoL25sMnNaVUl4WUlRd1R6d09zc1Rx?=
- =?utf-8?B?ZEVHWGJsT1hySUhTOGU0eVFyRzNScUNkMXlyUzVFQlk0cTZCbGtsUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47a85bfb-60fc-43d3-dbeb-08dee1a0ba0a
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 12:09:16.9869
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qv1bGZWjOjRJwqguu5BMULhrLTi1p5h6vhEaksExy5pVuL0qXKF3Dc4SOZgKashL3iSDmt4rl4RSWLdpuDeb0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5706
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.144.5.36]
+X-ClientProxiedBy: TW004-1.hihonor.com (10.77.232.85) To TA012-1.hihonor.com
+ (10.77.199.132)
+X-Rspamd-Queue-Id: B15C1C0011
+X-Stat-Signature: ucr5hkomcrwdcwtb6m8ss7b6pjebuaeu
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 900FD40003
-X-Stat-Signature: riray4e5yd4ykzfm5yi1iw5owma4okek
-X-HE-Tag: 1784030965-256741
-X-HE-Meta: U2FsdGVkX1/YnQvURH0sHDBo7MCWgRqnHnwTCW+NngSnc7R8CPYScaWBDivL6oyB7TdUXTrR9Z9wGtQ4CMv7jIsfhsth9zw8PWfpglqNJawWvFcIay8RDubURZjosKQ1xibhFI7ZdJuD18vDnim/EIVwZtOd0Tf4yyI3ctdKc27L8j3YEa0lx6gK31YFlohli5Xevli7b6kTuddOrqwZW1nfjS2d/kd/7R1sOTLzpH8BQXY72sTx2Esqjei60lfpis3BXCw+9Lhw9PTGDTRhbYwUgFBoNuF4qHhWuENnWoRdxiz+I4UPFztY3UWFcseChvla9ZGNMtlSHbGoSru7C1yqSzOOU9NyY+S3B5c0Our7Od0YHgD23NMjn6lcT9L9Lck02aXb6OH6qy+Ei48+rvo9oHkhEg3aaHU0+rcjCRo2HswCMIehsRGKU35vXojcQ6Pcg32byQCHG4Vhf5Kt/oF1AG7KWLlSFt9BN7obz5i09i74lR+ZwfB08LnGVYZTAwcpKnGuYEFBsuCJjkua34eNfUPjuOtuKUXiVuwlex4VW5sVE+I1fjVYuqgfuDs5UGVWikmt5XFkUtXOZCRI8C8jeSX5NwHssp1Ol+lO/0s4T7njdEE3lYt9JMHF1t5rkoXDEXyxJwfOeSDUlVQUrVQ9t0Wl0WCC7FwhNydSUTFA2ZEL1i/GPkmgYNqN1x1kzyaSQ/wOHkmEDG2soM9iZGYMeFvVoxMhhkzVi5B0m/gbM9FQku3gFbZmjAqMx3FwVF04IoN23KB2abUcrEpv8ARfuKJYXvkEeBUoVJGTTU9tFMygfVWohBqG7b+LMG6coWBntWebVigF0yh186VU7IKpY9fIDjRVvyUDZlMi1M6lu7QEGXfwjCPAgidivtPMeEsrvPO5GUCOGSi86RCGixFugwu2b4sCEvn1HJXOELeS+Pe2M7aCy910DC4RnnnPg0p2Haa/isJPHgXcpV1
- r42ttmTa
- Sjxfu7GHwTgGwN16zuatkVgnJnU65A74ReKCgb3zUMSH5iyzhNIfEWPRpK9sIKBQ4RZKBHs5Gs8cnjW9XH7zvkBTwWjNJ6zxSpzMRkdlgo1R6RbF9G35p20abODzjE8HbzRDkBccKsbyxmkBosaBo7uvMwiN89UIS28XJxoTbmPy1guvUVnngMWeujGUSEneKUYLACXLigtxJP5iK390V4xovC8Qr6Dw8zO0wIJaD+gGKPRqdgSh3VWhCjibvQb0xGE7Di14SHm+Aly1qQCrTVn94CNJ72brTKb96/u9tYlp9bt3gAjpCetJpBxd4IgU7Tdpg6e7/FtbaZnWk8FYTVcfrurKvbehlU5LR4+bp+BlOoiPlZYBoXSzwJ0tHwxv1rMwQhNEjQVPQlAnLGc3xr8LRUfUj+ofQ0iDow8l2YnnxiAJS6zhqCHbJL3NTkHUbTmXfrtqgKt1bV0T55L4GlGLej6cDOcC/p6i5uncyMBiTWnjfdSjpSlzNly5wYTh+ZEG+eV/CPfZ46dITGdeWGfP0Iw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784031334-217627
+X-HE-Meta: U2FsdGVkX1/rqUBfB/P09jfmFO/gCSNRUSGxGD3w0LOmu3x/xcKvG3AOfJz8xaC5pwohKO74bQf3zcGKSS/p49YJ0z7w2ojI4hmlswWM/C9wvBnXILmAnO9vz5SEsa5XLvI8S+t7+WgZJ7mKRzV0Nrbr7Wz/Ejg3VcirtIJ//cgSISlKkzXb82VvjEtfYJyMjQgqZU/X87Ids8Vprrt5Gx+tRi48Xnk0/mkBWzUegVQjzIbl9mreqYKK9Vuj3ZFaSulwMl0OYzvLo6FbN3awGOzQkCk9s7SrWplkeeA99wyJwAJz7mTNDYF2wngmuteAhngXNs1KkgOFD+kDtjN6vcQpjSeteng6cUaH1KQCPLDLve9KQTHrjWxUna1MjlhOyKrYDLNhSfTkxaV7h0imm12i9jtoYYMSF8FTaWV4EvjjNRPHpe/ULxLA85fva3li1KgJIYA6pdi0dBEm9+Asw65I6w0PrbIzD/1oC4v+DT5MVYyAVUK5ZwhSMnPPIbb82QE/HxTjm3lrX/FycRDdxZKOPAXCWUpfvcs3U8pj2DSa4s3FR3W5UrdeErHtt+1amTgxiVDhrZg4YxmN+dYIO5cVhhs351OSY+TRUFDa9bIL8fXI2J0P1C12c5GEynr7dUirvYA7cG3/XGwgl7nKL9Cv3zvECYqvVWm2KDvseFrxCX2K+exFQNTPhuGnm02Vu5LhHfiZgxuiZjQP+wEVXIxWvaFklgOQeQOilZ3Qzurlnc1Cpug5rjcktXChiW26feStsvxixydmd5wLToZXqN4qeogkqkRn4DltvaapPz2X4y9HU7H4Oa6VMg67SUB9URG5Wnh7ooMl8qNo3oOofpKDGR9djLCJJHyH9oJcXvoa9x1SJi4rUv2SVSlRJThAngd69x6gdGI3nTWcncWyc+Pt+5oo9a6ntz8hpLKrig/5A9ahe08LlmoRcQTFwiVEnLMQFiwWchigXT+scOT
+ eq5gLpi+
+ nYYu+ZEQyi7UqlHLcL6qgaGwXWxJkyHLRFT97o7q9teAyCps4Eo1O9nIE7pDzUJPfnWsoWF5rUhxsLFIeqAT6zRKJMdEweCakyI2AsZv7Ahml9agYSQDEk4MuyylcpVVy6LBu4OrXYHFh6Q6094sE5uuEBlz79eoL3Yf4yalVxfZ6um0HLbdX71IVWvBcorEBQ/Uk8j4QmdEoopwDSS5B+xohIZa+bKrpHe9sEKjGTwxI9LQY2sfLhCr2Uwj6PgDy0lHQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,75 +101,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/9/26 9:25 PM, Li Zhe wrote:
-> Callers that want to update section bits from a PFN currently need to
-> open-code:
-> 
-> 	set_page_section(page, pfn_to_section_nr(pfn));
-> 
-> and guard that sequence with #ifdef SECTION_IN_PAGE_FLAGS.
-> 
-> Add set_page_section_from_pfn() to wrap that update in one place. When
-> section bits are stored in page flags, the helper derives the section
-> number from the PFN and updates the page flags. Otherwise keep it as a
-> no-op so callers can use one helper without open-coding
-> SECTION_IN_PAGE_FLAGS.
-> 
-> Convert set_page_links() to use the new helper so later ZONE_DEVICE
-> fast-path patches can also update section bits without open-coding
-> SECTION_IN_PAGE_FLAGS at each callsite.
-> 
-> This keeps the PFN-to-section translation local to the configurations
-> that actually store section bits in struct page flags, and avoids
-> exposing that detail to generic callers.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  include/linux/mm.h | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 485df9c2dbdd..43343bfce493 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2541,11 +2541,22 @@ static inline void set_page_section(struct page *page, unsigned long section)
->  	page->flags.f |= (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
->  }
->  
-> +static inline void set_page_section_from_pfn(struct page *page,
-> +		unsigned long pfn)
-> +{
-> +	set_page_section(page, pfn_to_section_nr(pfn));
-> +}
-> +
->  static inline unsigned long memdesc_section(memdesc_flags_t mdf)
->  {
->  	return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
->  }
->  #else /* !SECTION_IN_PAGE_FLAGS */
-> +static inline void set_page_section_from_pfn(struct page *page,
-> +		unsigned long pfn)
-> +{
-> +}
-> +
->  static inline unsigned long memdesc_section(memdesc_flags_t mdf)
->  {
->  	return 0;
-> @@ -2768,9 +2779,7 @@ static inline void set_page_links(struct page *page, enum zone_type zone,
->  {
->  	set_page_zone(page, zone);
->  	set_page_node(page, node);
-> -#ifdef SECTION_IN_PAGE_FLAGS
-> -	set_page_section(page, pfn_to_section_nr(pfn));
-> -#endif
-> +	set_page_section_from_pfn(page, pfn);
->  }
->  
->  /**
+Add the two pieces the rest of the series builds on: an AGING node
+stat counter (the observation an aging policy pairs with
+workingset_refault to spot over-aging) and a reusable helper,
+lru_gen_age_memcg(), that ages a memcg by advancing max_seq without
+reclaim (the control primitive memory.aging wraps).
 
+The counter counts every pass in inc_max_seq(), regardless of caller.
+The helper mirrors lru_gen_seq_write()'s reclaim_state /
+memalloc_noreclaim / mm_walk setup; swappiness comes from
+get_swappiness() so anon is not rotated without swap, and a racing
+lruvec is skipped (-EAGAIN) without blocking other nodes.
 
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Gated by CONFIG_LRU_GEN.  No user-visible change yet.
+
+Signed-off-by: Zicheng Wang <wangzicheng@honor.com>
+---
+ include/linux/mmzone.h |  3 ++
+ mm/internal.h          |  4 +++
+ mm/memcontrol.c        |  9 +++++
+ mm/vmscan.c            | 80 ++++++++++++++++++++++++++++++++++++++++++
+ mm/vmstat.c            |  3 ++
+ 5 files changed, 99 insertions(+)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 9adb2ad21da5..ab5137c272ca 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -323,6 +323,9 @@ enum node_stat_item {
+ 	PGSCAN_ANON,
+ 	PGSCAN_FILE,
+ 	PGREFILL,
++#ifdef CONFIG_LRU_GEN
++	AGING,
++#endif
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
+ #endif
+diff --git a/mm/internal.h b/mm/internal.h
+index 5a2ddcf68e0b..96add6cd4627 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -634,6 +634,10 @@ extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason
+ int user_proactive_reclaim(char *buf,
+ 			   struct mem_cgroup *memcg, pg_data_t *pgdat);
+ 
++#ifdef CONFIG_LRU_GEN
++int lru_gen_age_memcg(struct mem_cgroup *memcg, unsigned long nr_gens);
++#endif
++
+ /*
+  * in mm/rmap.c:
+  */
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d978e18b9b2d..e42f97e004b6 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -420,6 +420,9 @@ static const unsigned int memcg_node_stat_items[] = {
+ 	PGSCAN_ANON,
+ 	PGSCAN_FILE,
+ 	PGREFILL,
++#ifdef CONFIG_LRU_GEN
++	AGING,
++#endif
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
+ #endif
+@@ -1606,6 +1609,9 @@ static const struct memory_stat memory_stats[] = {
+ #ifdef CONFIG_NUMA_BALANCING
+ 	{ "pgpromote_success",		PGPROMOTE_SUCCESS	},
+ #endif
++#ifdef CONFIG_LRU_GEN
++	{ "aging",		AGING	},
++#endif
+ };
+ 
+ /* The actual unit of the state item, not the same as the output unit */
+@@ -1655,6 +1661,9 @@ static int memcg_page_state_output_unit(int item)
+ 	case PGSCAN_KHUGEPAGED:
+ 	case PGSCAN_PROACTIVE:
+ 	case PGREFILL:
++#ifdef CONFIG_LRU_GEN
++	case AGING:
++#endif
+ #ifdef CONFIG_NUMA_BALANCING
+ 	case PGPROMOTE_SUCCESS:
+ #endif
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index b3e555561417..805e29c499c8 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3987,6 +3987,9 @@ static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int swappiness
+ 	WRITE_ONCE(lrugen->timestamps[next], jiffies);
+ 	/* make sure preceding modifications appear */
+ 	smp_store_release(&lrugen->max_seq, lrugen->max_seq + 1);
++
++	/* Count every aging pass for over-aging diagnosis. */
++	mod_lruvec_state(lruvec, AGING, 1);
+ unlock:
+ 	lruvec_unlock_irq(lruvec);
+ 
+@@ -5855,6 +5858,83 @@ static int __init init_lru_gen(void)
+ };
+ late_initcall(init_lru_gen);
+ 
++/**
++ * lru_gen_age_memcg - Proactively age a memcg by N generations
++ * @memcg: target memcg
++ * @nr_gens: number of generations to age (1..MAX_NR_GENS)
++ *
++ * Advances max_seq without page reclaim on all nodes of @memcg, using
++ * the same lock/walk protocol as lru_gen_seq_write().  Swappiness comes
++ * from get_swappiness() so anon rotation is skipped without swap.
++ * to the next node.
++ *
++ * Return: 0 on success, -EINVAL on bad input, -EAGAIN if a lruvec did
++ * not advance, -ENOMEM on mm_walk failure, -EINTR on signal.
++ */
++int lru_gen_age_memcg(struct mem_cgroup *memcg, unsigned long nr_gens)
++{
++	struct scan_control sc = {
++		.may_writepage = true,
++		.may_unmap = true,
++		.may_swap = true,
++		.reclaim_idx = MAX_NR_ZONES - 1,
++		.gfp_mask = GFP_KERNEL,
++		.proactive = true,
++	};
++	int nid, swappiness;
++	unsigned long i;
++	int ret = 0;
++	unsigned int flags;
++	struct blk_plug plug;
++	struct lruvec *lruvec;
++
++	if (!memcg)
++		return -EINVAL;
++
++	if (nr_gens == 0 || nr_gens > MAX_NR_GENS)
++		return -EINVAL;
++
++	set_task_reclaim_state(current, &sc.reclaim_state);
++	flags = memalloc_noreclaim_save();
++	blk_start_plug(&plug);
++	if (!set_mm_walk(NULL, true)) {
++		ret = -ENOMEM;
++		goto done;
++	}
++
++	for_each_node_state(nid, N_MEMORY) {
++		if (signal_pending(current)) {
++			ret = -EINTR;
++			goto done;
++		}
++
++		lruvec = get_lruvec(memcg, nid);
++		if (!lruvec)
++			continue;
++
++		swappiness = get_swappiness(lruvec, &sc);
++
++		for (i = 0; i < nr_gens; i++) {
++			DEFINE_MAX_SEQ(lruvec);
++
++			if (!try_to_inc_max_seq(lruvec, max_seq,
++						swappiness, false)) {
++				ret = -EAGAIN;
++				break;
++			}
++		}
++
++		cond_resched();
++	}
++
++done:
++	clear_mm_walk();
++	blk_finish_plug(&plug);
++	memalloc_noreclaim_restore(flags);
++	set_task_reclaim_state(current, NULL);
++	return ret;
++}
++
+ #else /* !CONFIG_LRU_GEN */
+ 
+ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f534972f517d..78ea093428c7 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1290,6 +1290,9 @@ const char * const vmstat_text[] = {
+ 	[I(PGSCAN_ANON)]			= "pgscan_anon",
+ 	[I(PGSCAN_FILE)]			= "pgscan_file",
+ 	[I(PGREFILL)]				= "pgrefill",
++#ifdef CONFIG_LRU_GEN
++	[I(AGING)]			= "aging",
++#endif
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	[I(NR_HUGETLB)]				= "nr_hugetlb",
+ #endif
+-- 
+2.25.1
+
 
