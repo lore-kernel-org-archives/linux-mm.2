@@ -4,81 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A49D6C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:55:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D871C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:01:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C07F6B00A0; Tue, 14 Jul 2026 08:55:32 -0400 (EDT)
+	id 11B746B009B; Tue, 14 Jul 2026 09:01:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94A6F6B00A2; Tue, 14 Jul 2026 08:55:32 -0400 (EDT)
+	id 0F3A06B009D; Tue, 14 Jul 2026 09:01:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ED7F6B00A3; Tue, 14 Jul 2026 08:55:32 -0400 (EDT)
+	id 00B0C6B009E; Tue, 14 Jul 2026 09:01:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EB016B00A0
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:55:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF26BA037A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:55:31 +0000 (UTC)
-X-FDA: 84987378462.16.2031E92
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E995AA000C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:55:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lfdYVF5s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B0C696B009B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:01:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD51E12034E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:01:53 +0000 (UTC)
+X-FDA: 84987394506.23.D5AD7B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D7B5C4001D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:01:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k5c7YCIU;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784033730;
+	s=arc-20220608; t=1784034111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/qAAK0pjZHrMW+ANrBUb9F/mBa8ig/34mJKgws6c344=;
-	b=dP4Z8kPu7JkzBkxzFdnUN2BxL+Rp4E282RWygUNsTDPSD+Cr/m18Gkvc7oF/76apSdEIRm
-	0ARJxuxjJOgFe7sQNNMzX1glAx6EIEUQyYkSG9zlgq1mp2v+QADxaWghfEzZUjkDaSE3Bt
-	CUT6SLCNQl9MvVz3tsFw1X/9vNqJwm8=
+	bh=HuK4P6aqO8DESV6CHxhF1gUmZk/0pbyK+8uhsekdIXE=;
+	b=TOAXuW3c0q+4nxpcFG+o/Rsp8zyrRUb8CDxbnaJfxGwX8X2Z7U8bFBRG4qcmH1fRzeW9J+
+	Q5Fpc47W77Wh2xSKVIuraxfZKCl8+hi/5F70s7KwAmBAPat9eIUXFNHuGU+8gsfp+1DIDv
+	KYjvtOOQg1p1zOUxx2Qea4pO+FbSS6c=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lfdYVF5s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k5c7YCIU;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784033730;
-	b=y1YsUb493mjBcdOqLAo7Ua7sAqFvoAU9FAEoQdt3xDsj+MBvVANK2U87gas5kJqswBJqWL
-	o926BJMOm1nqT55mVk2FB/PP3V6pBbiPuaVAk8dwdIz9Ga7KQTROoGdMvWOyn4dfIGQMH4
-	VCuvVOv3Nj0KbjRFNPz0083zbZ0iOJ0=
+	t=1784034111;
+	b=4d1ppxlp4nK4xazLYp69g13JUAYBaq72BRhgBGxR1ABGBk6itNjWzHUk4JcVkofzSdtT5V
+	TXp+pmMCT1I4Gw3MiQvwrmzoQ7xFmURZxqmsM5hWugu81F0vu/SZvR+ICcQhmuGGGgwpgs
+	/thcl8K/5Y2O2xpbkLPoCht3QyI4uOY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD90E400D0;
-	Tue, 14 Jul 2026 12:55:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5DC1F000E9;
-	Tue, 14 Jul 2026 12:55:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6EF9B60120;
+	Tue, 14 Jul 2026 13:01:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4B71F000E9;
+	Tue, 14 Jul 2026 13:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784033728;
-	bh=/qAAK0pjZHrMW+ANrBUb9F/mBa8ig/34mJKgws6c344=;
+	s=k20260515; t=1784034111;
+	bh=HuK4P6aqO8DESV6CHxhF1gUmZk/0pbyK+8uhsekdIXE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lfdYVF5spJHi4dYPtwzfJ7m+ChSz6RuxvUSVw08nQgYdnUI047Kj7IdV7Q2cEwNFc
-	 tNrD39I9lyyi/PIb3IO/hcPSubQC778wvG5tqmGx4SXLGBYd1JxW89QbaDYCSco3Ad
-	 S61sQ5DKCzkKelkozuXrv+7VygKYJiMn3EcJdaSdUG4LLeY5kbkIm9nyoJxpzQpeHI
-	 WPsNQdks78VYRvnoJiclMAwdsaydufnX5gc7gPOREcS0xlZNBZL3DBiFKczmTMcpBS
-	 BqhJNeSU1604aXpPtKp231D1tG6JE2K2K9fGm2NPYHdMve8qSKZjrzDHhMlK4PmIU3
-	 Ii95mYfjsWwBA==
-Message-ID: <d4afd345-d18b-42e8-a6ca-d7018350420a@kernel.org>
-Date: Tue, 14 Jul 2026 14:55:26 +0200
+	b=k5c7YCIU9HDxHlg4W4qOo0RvYVF1Yi9F2s+I6qWTMFhO7y5LTv3AAIisV2EWRK7gt
+	 G71ZbZF4BS24Cc39/TUyfVc5uhFkyz1eBRQWXthjI6/20woS6JR6HyEDDmL6x8i/2F
+	 DcSgKfv3TmJNEK5wNp/jycuq4f8CVqmXXBJZZun553j3NwhJj4KAGuhBwn1OmnwVy4
+	 VuiGlTDHXX0ZSUBi3SsBZzNo3DQL4esXhTMzEzjfqW0tCG7qN+LvbgwN6KHFDf9WHQ
+	 h/sVeewLC8mS4d+YQIElGTCBmyQUMpOqmwK0Yw7f5mOPS1Udc2KNg1QbwGQlpNOdHu
+	 5iV3J2HxCieBg==
+Message-ID: <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
+Date: Tue, 14 Jul 2026 15:01:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: mincore: remove special handling for VM_PFNMAP
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Zi Yan <ziy@nvidia.com>
-References: <20260710120052.103886-1-wangkefeng.wang@huawei.com>
- <20260710120052.103886-2-wangkefeng.wang@huawei.com>
- <1bd96ae4-f59d-4103-a700-f9478e88c05b@kernel.org>
- <8b94da35-a9f1-4729-bd1c-151da2f333ce@huawei.com>
+Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
+ poisoned subpage, locked across split
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>,
+ Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ stable@vger.kernel.org
+References: <20260714122344.351895-1-kirill@shutemov.name>
+ <20260714122344.351895-2-kirill@shutemov.name>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8b94da35-a9f1-4729-bd1c-151da2f333ce@huawei.com>
+In-Reply-To: <20260714122344.351895-2-kirill@shutemov.name>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6hndnsbofpqjdccgs5o6isz95uy6epz4
-X-Rspamd-Queue-Id: E995AA000C
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: r78qkq1z65un6n4c8e37aoiq3b1j6gza
+X-Rspamd-Queue-Id: D7B5C4001D
 X-Rspam-User: 
-X-HE-Tag: 1784033729-510801
-X-HE-Meta: U2FsdGVkX18kuEJuiidMie4QYZxwEYKD8fVHSor5US/uwDJxVY6jWEjBkgyhaT48HftOcQdS9ZKJ2JuLtVT2QWdcBqiu8DNV/DNe3k8Whz+f0f3Y3DXgBku7N5WUK1A/uSlBXNkmUnFBhkGitlNCsSICU08qRXxpyUQ0SF3cjUt9mYanw3UYuO/SUaVd/XZw6JvzfK86IoZemyFej1sW8luC242rL/CVM4WU+w5HcstoXcd+P8UjlIReMN6Et7pIyKde279HVAW0F3Idz2pZgXks8X2ErL5krMiu+rTOXitIlz8NnrO9AbcRdYc1HJNUKT993RwxdkDSoz5ZdeqN9U0hCN3NlNJB/lHowY2CinUJYb/re/5B08gi6mwG4mwP83X1AxXT49qQUJTy6nzHOaW5UClruU0N1ok5g3DMEy93aLzT4ZigopS6iATX36MITGPfGt5/XzZHpe5JMX1NksOWbhXx6tq9t7cBCEdQ47P/p02NXzJNhudUyBC8D0sEnQn8NahSdD1QnBV6/BPAzd9LE9iZ3EOit4iSiM0xOwRsKI1GkSyeteT7Xou4cXZqQh0gRMTlFWNGngQRQYxfPN9AjGgoPh30Rhf0nvZLh8D79scHZs+kd0qjPHyHS22EFTisyimIQLclZyVvcdjPkqPcFZB6rO7hFsKbHDJGmtDGf3+7rowsvBGkiCm6uXpS8tubjAwb9Fhaky1vdob5Fwl+92dP4L+FNy9R97RMJrRASI6gSHAxR3PdE5jmOD8+FpwmbvYZNzqBP68Iyd5HLAMvg9kFtLj9ZoVu8m8+VsNo0DDhLbSADs/gmQsIEsUhAbASk3MYrjZwwfPMIRqiiErctD3wRBi7dDNvNLs8r70b+vWEzcnLzoLt/aKlldizSLFdBEfB+PF+jD7P6DEkbGACwVccMmcEge+vxT2EXpJ/OwJYaGyOuIurORSe2uqPb8KNM9kxhzSVeNfENLT
- oruBmK/x
- 8DU3yie65a+8Fuz01Q3CsAqcXf5jPUwW/i6rvVoxQNDjtEuaknazWxUS3wCH7GM3gLqj/PJ26+fs77bGZaPA7qLFsLhEoMMCyx5Ximx9HWSjCLifKm4ipIR7kxS8Zjxow1JU8nR8RfpvJgG+vy7xMuepEBFlxDCfqovMAqpN2WKDdrVasLdm5+qYAUnzl3K8i4mjAEbIwYoWj7uNGT17LIBq6lBi6cChvcd5oewTU3XeG1Yxola4LlGY0JvSuDCFJZBeS3x/zJT5eFWgnB0muwp0xXpwZpCveoG0suwWpzKiufi+87E671pHRhsUO/5Mjq0bIF/eyePMs2DYOFC8tX851swjF24zjcV/r8GA1rYBwO5MWoNrSpphodMhn13I2FaGl
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784034111-385714
+X-HE-Meta: U2FsdGVkX18O6OooaUt5H3ic1tnBK8blxaOwwlX/Sa2XE1/LSCJEP3jJpLgQcroQUaDJE2EX1W17JfJhLHYyzSS4vmj8IdOo4CaczsnKRBVpjSdPUxCTsEmstr6Id2Y9wv1DpmQTF3PHC4nuRuEH0MOn+3iwWaxmW705xzorEx/UPweT9NrNaWiYqchiNhqA8h2xAnl1tlqBiZ5+6rSClfLM+OmyB4hLtJlaasnUCWg0WPgU+HaAnU5TmKAd+hsN6uWvOLNYG+X86iUNLsqXfxKO2DbGWLZfxlbbI8+J4RlUS1sixZg4r+KKVwYJ0PTxbmcWKigfFbm20azuQgbYY8/kwQ9A7bBwQWwoFFfkOG4LrfD0qLxRdOJrCo2raKaCeMkln906Y4lRYHWrO4xhyXTUMsiRcUdgRI/H3EGRrNi6220OREJZSF99scPCiwRgdIRM7tBHlWVSdXbIi3IQMpk7cTpRuGJs5LN5t6eXVPkPit7OnLvSuElEDbBlhrQE48lAcfV3WindOrcl34W8a4gCrubjnhD4vX+9yEgVOnWwsFfmS8nRP7xJ9vZMFyVtMJ3jjH8O1T1z6TivFAH5BO/iRvrd4WjCJ037JZXx96m5jiPkq0nOMJcUKKu551aVQkntMafXV2Ope67yugB3PuINkCnoEYOFx8Za5Vv2Suz5m7vhnQcSxA3tuJxutORPwSJ2a4cFkD4nCp5AWd3wjcCRFtBn1PIb+Z63XtIKcEdNEO/9glQOlxvjOga1nyyr4fwmwQYOaJ6vpAZ4U4eU6juMYAOwXS5L4smECA/X1luF+lGxFcB7CCjlaBOUNvv0gfMXGtiiOx0RGIjqsrqPcWnTRoZGB00BlIV8JooAo4pKuFxcS0KqA11SoeKv22MRDBH+92ANlAzGoj9D70/d+0Mds6+naxGprmpLpzV913lbW5pf2xpnfZTHHDGvYUtqu7uh3Ue2dESOsEDm5pc
+ 49vC46nL
+ XPOyQkxhMDGYcxHs+t3SRxK40LpiVIJAiyzqD8JgBPHCT0pa3cXkLulJWtRfeBIUDElDSV1MwgsLFwCX1EU5ozO/y03B1Ain56lBKMJRfMs9iUqjMRsSTorozf/APi7KCaQIhhMzMCa+olhHVUveMvyxn3Y0iVjgbzNmC+rtpny2VEwYoJT5ZIZ6NELlDx9pPdmZ4KKoUbqm8FSQTUkh7vF4VpCHQwSr+kL4/IBQRBulYV1Zh+ba16DErsQRjLYMQyApfB6q3oZDXy1PmMqtQszOERXYnYH6c+GmQaG3tUe440rq7AMnMq9+UVUUvbocr2KqeH86M81Sx1Dcn9Apvu7TYBjsqk3+KkwXabI2l9bRKU1FISfMN7lBhaTDfk0c9PeOl+Lujfhp4uto=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,108 +147,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 04:47, Kefeng Wang wrote:
+On 7/14/26 14:23, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
+> try_to_split_thp_page() locked the poisoned page and passed it to
+> split_huge_page_to_order(), which returns that very page locked to the
+> caller.  For a tail page that means __folio_split() runs with @lock_at
+> pointing into the middle of the folio.
 > 
-> On 7/10/2026 8:07 PM, David Hildenbrand (Arm) wrote:
->> On 7/10/26 14:00, Kefeng Wang wrote:
->>> As David pointed out, "it’s hard to believe that someone depends
->>> on pages in VM_PFNMAP to *not* be present", so remove the historical
->>> behavior that always reports VM_PFNMAP pages as non-resident.
->>> Instead, make them now reported as resident by checking the
->>> VMA_PFNMAP_BIT, simplifying the code.
->>>
->>> Link: https://lore.kernel.org/linux-
->>> mm/0e619d71-1c3d-4534-8376-2982c7348c31@kernel.org/
->>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->>> ---
->>>   mm/mincore.c | 10 +---------
->>>   1 file changed, 1 insertion(+), 9 deletions(-)
->>>
->>> diff --git a/mm/mincore.c b/mm/mincore.c
->>> index 53b982803771..0eb832ee0a30 100644
->>> --- a/mm/mincore.c
->>> +++ b/mm/mincore.c
->>> @@ -219,7 +219,7 @@ static inline bool can_do_mincore(struct vm_area_struct
->>> *vma)
->>>   {
->>>       if (vma_is_anonymous(vma))
->>>           return true;
->>> -    if (!vma->vm_file)
->>> +    if (!vma->vm_file || vma_test(vma, VMA_PFNMAP_BIT))
->>>           return false;
->>>       /*
->>>        * Reveal pagecache information only for non-anonymous mappings that
->>> @@ -259,14 +259,6 @@ static long do_mincore(unsigned long addr, unsigned long
->>> pages, unsigned char *v
->>>           return pages;
->>>       }
->>>   -    /*
->>> -     * mincore historically reports PFNMAP mappings as non-resident.
->>> -     */
->>> -    if (vma->vm_flags & VM_PFNMAP) {
->>> -        __mincore_unmapped_range(addr, end, vma, vec);
->>> -        return (end - addr) >> PAGE_SHIFT;
->>> -    }
->>> -
->>>       err = walk_page_range_vma(vma, addr, end, &mincore_walk_ops, vec);
->>>       if (err < 0)
->>>           return err;
->>
->>
->> What about MAP_PRIVATE PFN mappings with anonymous pages in there that could
->> have migration entries?
->>
->> I'd assume that we'd want to scan the thing and simply mark present ptes as ...
->> present.
->>
+> __folio_split() dereferences the mapping after the split completes
+> (shmem_uncharge(), i_mmap_unlock_read()).  The only thing keeping the
+> inode alive across that is the locked @lock_at folio: while it stays in
+> the page cache, eviction cannot complete.
 > 
-> Sorry for the late, thanks for your review, the current modification is
-> not very reasonable. After reconsidering the original Sahiko report, if
-> we want to remove the special handling of the PFNMAP and not split the
-> PUD page, we can add pud_entry processing and skip the PUD huge page,
-> and mark pud as resident, the change is as follows,
-
-Yes, that sounds correct.
-
+> But a tail @lock_at can lie beyond EOF -- e.g. part of a shmem THP that
+> reaches past i_size while the file is being truncated.  The split then
+> drops it from the page cache yet still returns it locked, so the pin is
+> gone and a racing final iput() can evict and RCU-free the inode while
+> __folio_split() is still running:
 > 
-> diff --git a/mm/mincore.c b/mm/mincore.c
-> index 53b982803771..dc976713ee5b 100644
-> --- a/mm/mincore.c
-> +++ b/mm/mincore.c
-> @@ -160,6 +160,25 @@ static int mincore_unmapped_range(unsigned long addr,
-> unsigned long end,
->         return 0;
->  }
+>   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
+>    i_mmap_unlock_read include/linux/fs.h:537 [inline]
+>    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
+>    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
+>    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
 > 
-> +static int mincore_pud_range(pud_t *pud, unsigned long addr, unsigned long end,
-> +                       struct mm_walk *walk)
-> +{
-> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> +       int nr = (end - addr) >> PAGE_SHIFT;
-> +       unsigned char *vec = walk->private;
-> +       spinlock_t *ptl;
-> +
-> +       ptl = pud_trans_huge_lock(pud, walk->vma);
-> +       if (!ptl)
-> +               return 0;
-> +
-> +       spin_unlock(ptl);
-> +       memset(vec, 1, nr);
-> +       walk->action = ACTION_CONTINUE;
-> +#endif
+>   Freed by task 4601:
+>    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
+>    evict+0x57f/0xac0 fs/inode.c:870
+> 
+> Split the folio as a folio, via split_folio_to_order(), so the head is
+> the anchor left locked.  The head is piece 0, which the beyond-EOF drop
+> loop never removes (it starts at folio_next(folio)), so the split always
+> leaves it in the page cache and the inode stays pinned for the whole of
+> __folio_split().  memory_failure() and soft offline re-lock the poisoned
+> subpage's folio themselves after the split, so they do not depend on it
+> being returned locked.
+> 
+> Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
+> Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
+> Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  mm/memory-failure.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 51508a55c405..68d42cbed458 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1657,11 +1657,18 @@ static int identify_page_state(unsigned long pfn, struct page *p,
+>  static int try_to_split_thp_page(struct page *page, unsigned int new_order,
+>  		bool release)
+>  {
+> +	struct folio *folio = page_folio(page);
+>  	int ret;
+>  
+> -	lock_page(page);
+> -	ret = split_huge_page_to_order(page, new_order);
+> -	unlock_page(page);
+> +	/*
+> +	 * Lock and split at the head, not the poisoned subpage: __folio_split()
+> +	 * keeps the anchor folio locked and needs it to stay in the page cache
+> +	 * to pin the inode. A tail beyond EOF would be dropped yet returned
+> +	 * locked, losing that pin. The caller re-locks @page afterwards.
+> +	 */
+> +	folio_lock(folio);
+> +	ret = split_folio_to_order(folio, new_order);
+> +	folio_unlock(folio);
 
-Do we really need the lock?
+With a non-uniform split it would actually make a difference: we'd want to split
+such that we the other folio pages minimal.
 
-pud = pudp_get(pudp);
-if (!pud_none() && (!pud_present(pud) || pud_leaf(pud)))
-	...
+ split_folio_to_order() always seems to end up in
+__split_huge_page_to_list_to_order() where we do a SPLIT_TYPE_UNIFORM.
 
-I'd prefer not using more of the pud_trans_huge() stuff directly.
+I recall discussing with Zi and Willy that in the future we'd want to convert
+more places to do a non-uniform split.
 
-I'm not really a friend of pmd_is_huge() either, but maybe we should just add a
-pud_is_huge() and use that here.
+So I'm afraid that would just re-introduce the problem then.
 
 -- 
 Cheers,
