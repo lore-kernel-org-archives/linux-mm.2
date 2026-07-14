@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 726EBC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 02:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D230C44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 02:45:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E6496B0005; Mon, 13 Jul 2026 22:34:54 -0400 (EDT)
+	id 4D7BE6B0093; Mon, 13 Jul 2026 22:45:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 497956B0088; Mon, 13 Jul 2026 22:34:54 -0400 (EDT)
+	id 43A9D6B0095; Mon, 13 Jul 2026 22:45:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 389316B008A; Mon, 13 Jul 2026 22:34:54 -0400 (EDT)
+	id 2DB9C6B0098; Mon, 13 Jul 2026 22:45:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F35206B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:34:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 76145A01F6
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:34:53 +0000 (UTC)
-X-FDA: 84985814466.12.B44202C
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C2987100003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:34:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pp1UnVQm;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 015DC6B0093
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:45:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71240C01E2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:45:23 +0000 (UTC)
+X-FDA: 84985840926.29.D1D736D
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3462840004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:45:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OMJ2w4Zw;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783996491;
+	s=arc-20220608; t=1783997121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C6cPzGN0BhSGG+3mwai37V4K2Gl6btFijFkZKpQaE0Q=;
-	b=xWU28EkK4RIdvdhOP4Ad/q0JjXt8m9wg94/Bx2RYn3EnBlrL+xZ7oXQRaMpb98Djo7sqPR
-	/hvkdovSeSFcl/yzLc/GSnj0TlfnhisOmOhJCe988AdlQHa9epRakgDxvDTCPTQpdj7wii
-	Ggu2Jpb4wbR+rYClAH7gdKsfr/Q4PPs=
+	bh=nb7XE0WKxPNCmW2jzzoEfyvfKdOTIP2EGQX42DdHNL8=;
+	b=Qkzf8QxdV8MQmmUkxQlNewaa4aK4ZaU5pTD+SfgqqkUp+ystSm3n6SYphoyTOfCnGEUUAI
+	oNbqMS4pyrIubVDP/ytSE268HLV8PINQM7KrvxH3dPXV0L3Ih9ifzDV8lPi+SaObJSlqup
+	o3c7I/NUYsXghd1Gnz2BCNSPURPOmp8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pp1UnVQm;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OMJ2w4Zw;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783996491;
-	b=UR/KPfSBrt/d69Yhzfq8HZUAnvAQBavx1jQHRL+4Z7AMrdUic/fHGifu3gYlGejLFgK+yC
-	pNPiA2ITWESBMCBexb7Pl4TCr7t9FR2LiwJrgQD9RmF1Id50+fiPCWRCfcTKbYUYb+CTNK
-	GgEUlJ6fbYgP8lA5tykEMhr5Qb/81IY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783996487; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=C6cPzGN0BhSGG+3mwai37V4K2Gl6btFijFkZKpQaE0Q=;
-	b=pp1UnVQmRvciKJKiBfAXnlDS/bj2CaRNQ3oObRIY6QWj8qaaJoJVMutT+rB8QUOR0qQb9VUUKWAUnRF8cTYeqHYAgs/6lgjqxw2uE04EBz4MvkR6oGRvnAIq2VI71kt5gdjj8dQ5A+RRi0VZs591wHoT4DYWNDH8uuTe+TNlYvY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0X72TukA_1783996484;
-Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X72TukA_1783996484 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 14 Jul 2026 10:34:45 +0800
-Message-ID: <64aae758-bcf1-45f8-bb3d-bd732ada2b11@linux.alibaba.com>
-Date: Tue, 14 Jul 2026 10:34:44 +0800
+	t=1783997121;
+	b=u8dEDuTrhZoNAlKy9yPCKeEQt3+sJysUQO1V2hKlIGQguAstiqoLs1FxSH8CvR8J3rr3rN
+	ppQKtjknEelE1pFd/9Bjsfdfo65+ni4sfAGK4VsWB4nOKVle/sSQPsxFj4NmK36ippvJNK
+	1lbngbxfRDUhqB3BBKjsxBrWO5RfnwA=
+Message-ID: <993afd58-e503-46aa-acaf-19243b0d147c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783997117;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nb7XE0WKxPNCmW2jzzoEfyvfKdOTIP2EGQX42DdHNL8=;
+	b=OMJ2w4ZwurgTTryrGfFSYG399nNWFddIFP0IbpfcqzSmC+cengYkbS2Uj3xx2QK/1Pozab
+	5yb3IX4IJBBcgNeFk2ad9gLwpxighNPp65I9K7S8C9OjYD3sMQZWQJt/T49WYCKGx5++Qf
+	JOHHqjCt1680A1SOSdk8++/jXsNzsRw=
+Date: Tue, 14 Jul 2026 10:44:47 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOWbnuWkjTogW0V4dGVybmFsIE1haWxdW1BBVENIIDYuMTgueSB2?=
- =?UTF-8?Q?2=5D_mm=3A_shmem=3A_fix_potential_livelock_issue_for_shmem_direct?=
- =?UTF-8?Q?_swapin?=
-To: =?UTF-8?B?6ams6LaF?= <machao26@xiaomi.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "hughd@google.com" <hughd@google.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: "kasong@tencent.com" <kasong@tencent.com>,
- "baohua@kernel.org" <baohua@kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- =?UTF-8?B?55Sw5a2d5paM?= <tianxiaobin@xiaomi.com>, =?UTF-8?B?5L+e5Lic5paM?=
- <yudongbin@xiaomi.com>, =?UTF-8?B?5p2O6bmP56iL?= <xiaoyaoli@xiaomi.com>
-References: <c0b158fe3f25709543b48a9d81b1933120a9e2ba.1783648317.git.baolin.wang@linux.alibaba.com>
- <636829064b674f71a11095603edcb20a@xiaomi.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <636829064b674f71a11095603edcb20a@xiaomi.com>
+Subject: Re: [PATCH v6 2/8] mm: factor zone-device page init helpers out of
+ __init_zone_device_page
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+ akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
+ balbirs@nvidia.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ david@kernel.org, kees@kernel.org, mingo@redhat.com, rppt@kernel.org,
+ tglx@kernel.org
+References: <20260709112520.24857-1-lizhe.67@bytedance.com>
+ <20260709112520.24857-3-lizhe.67@bytedance.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260709112520.24857-3-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: eb754499tnuerstew7mcsynnm5u8dunr
-X-Rspamd-Queue-Id: C2987100003
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783996489-687566
-X-HE-Meta: U2FsdGVkX19ruV6ch8OyjnOocnu1PA7uPPIZnE+7ZnJVSSx9aHuBoM154G0p3/o0AvMg7x0feA/v3YILFDnEGsR1WkUrGeM58nXGl0d5h4SZlpXfqnx4sKznYGiflBYfiyejDwWC8qcSSbJ3u9c1qG8n9wWlReoiKFbUgeK1cGRsJpn16cuQcYhm5I9ln8+kHbkRtyz89mLzC/dqf4D7ZsJT03ssr0BTHOyxhoSKLOrnkc5x7jPf94MgdK/d90Hqy5gcFi16QIbtg2PRXJycjumfzQRGgNrs0++b0A56evehD365k2QSWre8jo2T+JYwkB0kmA/eiOdIFNqOJiDBAzfVeVTzTuU7IQD/QWx/I3j8pHx2c42HMR71OUReZLer8uYTXhhfPvzURCpKjceA+QgKrZbkxtlWLRz+ghEr6afYcHAfOXEI2ptq/jUW3foSzbCNrGrNSDw0VcqFWBV3s92XfjPi0JHcbY7Lvy5zBcs6nEqiEpxJs1r45jjzsBUdyebG86ooIWDCntLRKkRJwuRAwI/WLSBGpDVoIH66N9/wje1gwc8nzP9Q1OOHUrssPd87E5zo2FfLo+rkoU9Z2DD2qnP2Zzm5FdpVLN4nGd3O/9Uv8bZoW/NSQ81q2rkvED8fNDAxpWL2rTM7ohZO9hc3b1LA/wiAVfjvr6/OaFQW2x0OcYlbDgseRHcIiddCVmp5mo5BOMS52v+6cP3YYqCEPm2OlN9jMj7wixvdl646CY2ZNyerTThOUaz+RCm7rEWugI0FAGW6L1/Sfp9WRrD7lw6nmbFbDm9jOK6omaM2tENYC+aMsNU4EDF2K7jdwm3DxGr0jYiySPlvYEF/tqPgO9AirTaFKZFVCj4MYn+/rPDRKaorqlseHClopRf+K+8E7FjisRAvLoGrPD9oeXYXT058tolXig7+6tctRc0e7umxyipaed1bnS9Hw/pO0IgroTYuectv7FPnHtH
- 4WgLlBso
- RjRfdLcaFu4MEHBEn8S7ufW2cNOZWa6HUW/zesPFpeIbExM1xQTJW45VnK0MwTij1No4aNV7NBNIedPAC5hktSpDz8eiytJObK3x+mVnROafx4Fkk8utJ8IbuPG/gQnuujpnD4Hg4IUBIs8O6s4tRL+2Cm/BYb3qBJi2i9P7YWOasAzQhY7YutOCaZbQ+tHmkc7fUld6quKIU5UcYSb6JL4yq7a+66IQmtzrNSwK3FJe6npELpGN4e3P6FW3tj5eEji3maNc9qLv35ViSPMUuXy4cr+jM2f1kHK1Eh4ykGBA4qlkQTwN+v9GFPH7DJ97KPM8marCfrAS8uZxh1eq7aTRIXR1QeBH6XamaPYO4oJCJ3szj/rVmYWGytfhDXw99qg0UMiSZq5eCJ+QemIbS7hoZAVMNUYrSrPU8B5HVLnNBEbmdUwa73q+3chzo0JmA0sYwtrI/vKdHChDNhwO59clyrQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3462840004
+X-Stat-Signature: 4p7kdutten4qwnq9qwhwie69cmsy7sdo
+X-HE-Tag: 1783997121-658982
+X-HE-Meta: U2FsdGVkX1/4gapGOz7BlwUkGETIhJXMQHkvjlOw7gg4wA9CaFEkfxfAY6JNgSzY1yxBiE6huFIgBjoxvIujJ9+KFalh9w98VL8j/+1wSKwCy/1RaCdh50fAdlYI4bSsNouIYwkBv6e5mTAqc07eY1pYlMW/Hj/eotBdQxSiJucKH5UN0yxL6yd8r4yQmmql6/gQdmZfj/mewqjizpScjJtnO5Q7Gw2Q8+RgkEioF9hd5JjEL5MTspaGrNcvAxKCn63cwtUnJJgxV/NLqbToarPKZ5Mt+Qc9r0WQtx9zmkE6Pi7a1WTXRy5mgTWTMrXFsamMhy0h7/5rAgCOs6zdM76xZkG0+eoiwVR49DMGmxyANpmJLVGD5+kR8r6CuBldi/AgFCR6iNGDFhK7jDkyzT4wzLH3zq6d3Ks6QHApUFmi3KiW/3bg6b/pn4iKhMnI1UsoHLlX3Ob6JqR75O8tUYuOlyJXJwSq5Bcbyl8IIut3JyGkMTN3h1cp8gh2YGjtkJNmcWUXnuXJdo4kYIk12RIFGlNXpr4k0QPU5w5pe+W2qgCUunwn4An7dNUmnk1qXTNP9xsF36GnxMwb/PWOFZdcurCbuC22Me3Iqq979xoAZYLeQDJPj573zi0J+WQYOlz8G+8L2Ty0Df85mAIXQ4VFzU2Jf0RRahB+DrkARsVcjh/2G+v976zc9jGJqKah7s9MDPrjtLQvB9OLgLs/2iHWEXN1A7V9+/A2CNEvo+s0HoaHPOw5LMYYoWem4ihU6PzatQanRy0APZ9fPparZWPgtHYM6QpeNRYr98KJ63EARTgfjFtxHj9EHhZXHg7Xy88utiZ/YR8//MTM0mot01Rv/DWdjtHRAVbPkoyzRBmLujPUGUIrEY5H4pR3o32UDJ7wnKS20QzwtseH6TTtj5EPkRnPjxEpieSc0H7t7IztqHj9+GRnYmEQMgeL5cROR2Yt/Fu5Wd8rj64X/zh
+ ZzOk7NBd
+ 4rYEJ3JZeQiWzK+CP5SpG2QuiOu34BI52vzRzZrrzksDEKNu29biEBfY7Ht00E/HpY6cl9sOtupv4gY4SbDJWOaSQXVOk5EpOhB2llJnZnL4w6YkURoP4a38Q+cO8c6v6nsDVYVyDQfD8qx84MeoMutknl8hWVG2hw4uzbIrU6eiCUOwpEDXr7kOjr7vzSnwoqRoBrx8ftBfStVjNqJo74CoVS7Y4mXpw7QoyPcPCT8wvdNe+s4qYkfhSABIm/EaNmYqxiVN0qjhOe/C36tzcYaX5KF7lu/NyfyuF5nTgQK7qJd9GH8P6EwqrSZBYhCoEMLsUzSEV5OFhpMk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,90 +97,129 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/13/26 7:55 PM, 马超 wrote:
->> When skipping swapcache for synchronous IO swap devices, swapcache_prepare() is used to prevent parallel swapin from proceeding with the swap cache flag.
->> However, on PREEMPT kernels this can lead to a livelock, as reported by Chao[1]:
->>
->> Thread A starts direct swapin of a shmem folio and calls swapcache_prepare() to set SWAP_HAS_CACHE. It may then be preempted inside workingset_refault().
->> Meanwhile, a higher priority thread B also attempts direct swapin of the same shmem swap entry. Since swapcache_prepare() already marks the entry, thread B repeatedly gets -EEXIST and busy-loops waiting for thread A to finish. But as thread B runs at higher priority, thread A cannot preempt it, resulting in starvation and a livelock.
->>
->> Fix it by yielding the CPU with schedule_timeout_uninterruptible(1) when
->> swapcache_prepare() fails, following the same approach used in commit 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead") and commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache").
->>
->> However, commit 01626a1823 ("mm: avoid unconditional one-tick sleep when swapcache_prepare fails") found that the unconditional one-tick sleep can cause UI stuttering on latency-sensitive Android devices. So we can follow the same approach by adding a waitqueue to wake up tasks when needed, instead of always sleeping for a full tick.
->>
->> Note that mainline does not have this potential issue, which has already been resolved by Kairui's swap refactoring work[2].
->>
->> [1] https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xiaomi.com/
->> [2] https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com/
->> Fixes: 1dd44c0af4fa ("mm: shmem: skip swapcache for swapin of synchronous swap device")
->> Reported-by: Ma Chao <machao26@xiaomi.com>
->> Closes: https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xiaomi.com/
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->> Changes from v1:
->> - Add a waitqueue to wake up tasks when needed.
->>
->> Hi Chao, could you try this patch to check if fix your issue? Thanks.
->> ---
->> mm/shmem.c | 14 +++++++++++++-
->> 1 file changed, 13 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 94c5b0d78ac3..3c329b794ae4 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -2005,11 +2005,14 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
->>         return ERR_PTR(error);
->> }
->>
->> +static DECLARE_WAIT_QUEUE_HEAD(shmem_swapcache_wq);
->> +
->> static struct folio *shmem_swap_alloc_folio(struct inode *inode,
->>                 struct vm_area_struct *vma, pgoff_t index,
->>                 swp_entry_t entry, int order, gfp_t gfp)  {
->>         struct shmem_inode_info *info = SHMEM_I(inode);
->> +       DECLARE_WAITQUEUE(wait, current);
->>         int nr_pages = 1 << order;
->>         struct folio *new;
->>         gfp_t alloc_gfp;
->> @@ -2066,6 +2069,10 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
->>         if (swapcache_prepare(entry, nr_pages)) {
->>                 folio_put(new);
->>                 new = ERR_PTR(-EEXIST);
->> +               /* Relax a bit to prevent rapid repeated page faults */
->> +               add_wait_queue(&shmem_swapcache_wq, &wait);
->> +               schedule_timeout_uninterruptible(1);
->> +               remove_wait_queue(&shmem_swapcache_wq, &wait);
->>                 /* Try smaller folio to avoid cache conflict */
->>                 goto fallback;
->>         }
->> @@ -2423,6 +2430,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
->>         if (skip_swapcache) {
->>                 folio->swap.val = 0;
->>                 swapcache_clear(si, swap, nr_pages);
->> +               if (waitqueue_active(&shmem_swapcache_wq))
->> +                       wake_up(&shmem_swapcache_wq);
->>         } else {
->>                 swap_cache_del_folio(folio);
->>         }
->> @@ -2442,8 +2451,11 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
->>         if (folio)
->>                 folio_unlock(folio);
->> failed_nolock:
->> -       if (skip_swapcache)
->> +       if (skip_swapcache) {
->>                 swapcache_clear(si, folio->swap, folio_nr_pages(folio));
->> +               if (waitqueue_active(&shmem_swapcache_wq))
->> +                       wake_up(&shmem_swapcache_wq);
->> +       }
->>         if (folio)
->>                 folio_put(folio);
->>         put_swap_device(si);
->> --
->> 2.47.3
-> 
-> We have conducted stress tests on over 10 pcs for 40 hours each, and no relevant issues have been reproduced.
+On 2026/7/9 19:25, Li Zhe wrote:
+> memmap_init_zone_device() currently mixes refcount policy and core
+> ZONE_DEVICE page setup in a single helper.
+>
+> Factor the refcount-reset predicate into pagemap_resets_refcount(), move
+> the common page initialization into __zone_device_page_init(), and wrap
+> the existing slow path in zone_device_page_init_slow().
 
-Thanks for testing. Could you add your 'Tested-by:' tag?
+Hi,
+
+Sorry if this has been discussed before, but I'm still curious—what
+is the significance of the 'slow' suffix here? I don't think I quite
+understand why this is called the 'slow path' here. Is there also a
+'fast path' for initializing struct page?
+
+Thanks.
+
+>
+> This keeps the slow-path behaviour unchanged and gives later patches
+> reusable helper boundaries.
+>
+> No functional change intended.
+>
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>   mm/mm_init.c | 56 ++++++++++++++++++++++++++++++++++------------------
+>   1 file changed, 37 insertions(+), 19 deletions(-)
+>
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 95808ab5cfdb..5fccfbacf855 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1005,11 +1005,37 @@ static void __init memmap_init(void)
+>   }
+>   
+>   #ifdef CONFIG_ZONE_DEVICE
+> -static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> +/*
+> + * Return true when the free path for this pagemap type restores the page
+> + * refcount to 1, so memmap_init_zone_device() can keep the count set by
+> + * __init_single_page(). Otherwise initialize the refcount to 0 and leave
+> + * it to the allocator or pgmap callbacks to raise it when the page is
+> + * handed out again.
+> + */
+> +static inline bool pagemap_resets_refcount(const struct dev_pagemap *pgmap)
+> +{
+> +	/*
+> +	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+> +	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+> +	 * the count again when the allocator or driver hands the page out.
+> +	 */
+> +	switch (pgmap->type) {
+> +	case MEMORY_DEVICE_FS_DAX:
+> +	case MEMORY_DEVICE_PRIVATE:
+> +	case MEMORY_DEVICE_COHERENT:
+> +	case MEMORY_DEVICE_PCI_P2PDMA:
+> +		return false;
+> +	case MEMORY_DEVICE_GENERIC:
+> +		return true;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static void __ref __zone_device_page_init(struct page *page, unsigned long pfn,
+>   					  unsigned long zone_idx, int nid,
+>   					  struct dev_pagemap *pgmap)
+>   {
+> -
+>   	__init_single_page(page, pfn, zone_idx, nid);
+>
+>   	/*
+> @@ -1028,23 +1054,15 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+>   	 */
+>   	page_folio(page)->pgmap = pgmap;
+>   	page->zone_device_data = NULL;
+> +}
+>
+> -	/*
+> -	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+> -	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+> -	 * the count again when the allocator or driver hands the page out.
+> -	 */
+> -	switch (pgmap->type) {
+> -	case MEMORY_DEVICE_FS_DAX:
+> -	case MEMORY_DEVICE_PRIVATE:
+> -	case MEMORY_DEVICE_COHERENT:
+> -	case MEMORY_DEVICE_PCI_P2PDMA:
+> +static void __ref zone_device_page_init_slow(struct page *page,
+> +		unsigned long pfn, unsigned long zone_idx, int nid,
+> +		struct dev_pagemap *pgmap)
+> +{
+> +	__zone_device_page_init(page, pfn, zone_idx, nid, pgmap);
+> +	if (!pagemap_resets_refcount(pgmap))
+>   		set_page_count(page, 0);
+> -		break;
+> -
+> -	case MEMORY_DEVICE_GENERIC:
+> -		break;
+> -	}
+>   }
+>
+>   /*
+> @@ -1090,7 +1108,7 @@ static void __ref memmap_init_compound(struct page *head,
+>   	for (pfn = head_pfn + 1; pfn < end_pfn; pfn++) {
+>   		struct page *page = pfn_to_page(pfn);
+>
+> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+>   		prep_compound_tail(page, head, order);
+>   		set_page_count(page, 0);
+>   	}
+> @@ -1126,7 +1144,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>   	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
+>   		struct page *page = pfn_to_page(pfn);
+>
+> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+>
+>   		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+>   			cond_resched();
+> --
+> 2.20.1
+
 
