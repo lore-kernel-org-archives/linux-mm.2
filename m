@@ -4,124 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6863BC44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228D0C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:11:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D7916B00D8; Tue, 14 Jul 2026 10:08:03 -0400 (EDT)
+	id 050296B00AA; Tue, 14 Jul 2026 10:11:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AFD36B00D9; Tue, 14 Jul 2026 10:08:03 -0400 (EDT)
+	id 001196B00AB; Tue, 14 Jul 2026 10:11:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59DEB6B00DA; Tue, 14 Jul 2026 10:08:03 -0400 (EDT)
+	id E32776B00DC; Tue, 14 Jul 2026 10:11:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E1256B00D8
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:08:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AEAFC1603C5
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:08:02 +0000 (UTC)
-X-FDA: 84987561204.19.1953CE9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E814040012
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:08:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="EkfHX0/w";
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C386C6B00AA
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:11:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 424031203E6
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:11:41 +0000 (UTC)
+X-FDA: 84987570402.05.12B895C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9979F140016
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:11:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PytcVd8B;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784038299;
+	b=C1OXOrqgk1z84FDspX313S+6tAbUHNFRx09bjcc9OQInQvaQDfqGqV9uy3Ubq1lWC3py8t
+	IDZAY86Xc/KrIycajl1G1fnu+5PYQT/e7KXd4uem27cFbY2ufT8uXlogvLZ+DBcIEbqfUp
+	XhhwCqLBWK4SYc+eATeH8ANCs6Rvtp0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PytcVd8B;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784038081;
+	s=arc-20220608; t=1784038299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PgBLbpLiEYzDjQhJ7FzzEMp+Q8osAIwanXh8jn8DfPQ=;
-	b=8UnA+VyA241JoqS3VzLScioEgIj0J0UJrPtykap/tcLiPTeOBoypWFJ9GY5vI8r0QlaoRO
-	dJWvyEx+edGc+TQq0DFhTIJfD2SEtvz6ifmUb7aBUOwL3YHWz9aHVd9rGybxvY37HcuQmo
-	Ky3tNiJtYqMykXWJuegyiTXMNqCJfuc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="EkfHX0/w";
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784038081;
-	b=ljMftp3x5c3EO7w3Ga61t4smfr5MxFphBQr8COEC6E7cf9aJR3k3sH9NfMHpyiIUDm/bDw
-	M6v8JprCKa9DdOHGMhJ7MNk6VfIiuAzF7LqNaTg+VJVDg+gZbd3meG2FxFLUbxJlmyVfUW
-	osKAoqQNfJW2eHpvJ5Q5dWuCLd2qy9U=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E488C1E2F;
-	Tue, 14 Jul 2026 07:07:55 -0700 (PDT)
-Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB5033F7B4;
-	Tue, 14 Jul 2026 07:07:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784038080; bh=DQUlXrijxnSdwAI1lj2qunwwpXAiVnOlOXfc6mAyMUQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=EkfHX0/wndT2DrIlt77R9MduZMLLVHV6MiJ4gGI5CEH0EicTnVS43outHXqKb+9XR
-	 AJo1EcRXTyEDah4neKxKZTW1aJvelDeHIKrOeiwCxZJanpWn/hzIrUIMMzTmeF4J8v
-	 WK5pqK4bemQaUXT1hIibNUiLONKFHv36szPAaSA8=
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:04:11 +0100
-Subject: [PATCH 22/22] riscv: mm: drop ctor/dtor calls for kernel page
- tables
+	bh=B6UDn/zB13GY2rQ9/2v1cLrwdrHaWMbAjwv9EdpOgA8=;
+	b=rNFlbu0Fprt8C9oEgqnd+va5p5/9dOVBzUWl5Czsi2RJZse7dKv7Hpr3Ljeyrrmv/Fktd2
+	317ZJD03Vs2mLtrFc02BJgQ9fGrTI5Z+FT041lSP2PiTP30Pqvq+rymECVDeZspXk6e6OB
+	D58AgfZt5x0iEAq4yXMGEbm1q17hqiI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D2F77601ED;
+	Tue, 14 Jul 2026 14:11:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592CD1F000E9;
+	Tue, 14 Jul 2026 14:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784038298;
+	bh=B6UDn/zB13GY2rQ9/2v1cLrwdrHaWMbAjwv9EdpOgA8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PytcVd8BQgI/38oDRG2qlhYVQChh7MTMHM2uHfiV55lxVh25JhDX58hRVcmGZdaQ9
+	 ZF5qI1aOuiwO1j6IoftP1UaIhfZ7WIhHztUvP7Ozm4R6H6noWdZBWTj9zoG/5JZWao
+	 Ti+s7PkLFiwAiF9dJR5dm0BWXB9saA63zVcU7O42DmM2MpW6RwUubX0AIV3TaA6lY2
+	 meIfQFGHbn8KN//6bmEJioh2Jrv6PFi361ZAxrm4OhJwUTDKS/QBG+/ZEfWT1BkeKG
+	 X242vnAKZmjr2HCGBL6IOFhWqXTxtQo/NOHU224G+3IV3nJGAuNkLD+uMkHZVhtapW
+	 8A5XeIAPCr2AQ==
+From: SJ Park <sj@kernel.org>
+To: Xuewen Wang <wangxuewen@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/damon: remove trailing semicolons after function definitions
+Date: Tue, 14 Jul 2026 07:11:27 -0700
+Message-ID: <20260714141129.96609-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260714075358.1592393-1-wangxuewen@kylinos.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-22-44be8a7685d7@arm.com>
-References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
-In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
-To: linux-mm@kvack.org
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org, 
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org, 
- Richard Weinberger <richard@nod.at>, 
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
- Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>, 
- x86@kernel.org, tboot-devel@lists.sourceforge.net, 
- Ard Biesheuvel <ardb@kernel.org>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org, 
- Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=5346;
- i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=DQUlXrijxnSdwAI1lj2qunwwpXAiVnOlOXfc6mAyMUQ=;
- b=SSTFSwZEfFo/6gx/poI9v6VwC/hohk7MtYN3kR3x0tI9+lk1TLQ5HYY8/tkfxij+JZ0fxXtY7
- dmntRxFz1BYAc9h9Vd7P6X3RSa/wxA0dmIO24BbUkIFbso++KHmSKGI
-X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
- pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E814040012
-X-Stat-Signature: k4sm89pagymm4zp583c94h6jaafqcn95
-X-HE-Tag: 1784038080-499946
-X-HE-Meta: U2FsdGVkX1/ZVMz8y6vw+RjeJbO/1utde+JLdX3V1Bmw9NsLeJvUZWIL7P6uMZQWQRTWJGC2HtlqWVzChDE6h3C25K/TeNlD4NUiN7n4bsaIK3FUjciSFvSbLT7ugol8LBwgsdOw1S9LdkhYWw/3SbfCbK2BPq63uMfXcJ5ExZMaUqv122KkNgRP9qnNVoBideJE3b1gaDGMPhqUdVmLytrZioZORs00ir1JcgHVfeyFsNt8/TSJ5lraR9j/PHaiRwWZb2mANdL1EZ0CKXdbfOmh326SEvb/2urUsx35g673J5PW5g4ymG1lHDmemjso9/bcyMA12eQGMDAJjBudd87dr5bE2P8tK6r+CBLvA3j4++V96tPB6ZdNy558C7luS8fe2k47JiTjK/wMtO5+ozHZ5IXWiy+xlYX1cCHkbxEtgMVOxpyuRm2P61bTkMNBs5lQamNdtwrMW+Tj1d6W+rpi/9LJzTPsZPPBf93PkZCet9BqqxtznFyHTXLG0mUIMNn5xLw4aX3/I0s5ebF3o2ZdyDLlUsagDGou6nqWJfLsYICPHYCwX8Aa1jw4q0hhEWD+stGX4HNckiZtTjvdGJELEOPPH/F4x//4Xmy1Yk8QB2HQz28qZ6yXjBCQxV4kyGSsv2Axj0Hs7AGvsKNRqIPjtv4+tXruifiZyN5mqCeilsDDH9bZW12ZumUk2WQYFI6n/9OVseKFp9u6hLIVmTchM+TaaVInnNtTamIc5IdKGK01c/1D++quxUzMGEMQXtmlCXvRP/tYb9YnvCyyQa3VxcDdLpeoQsPaR6RJ6TyB5Z07J4IqtTWCWQjG7W9I0hIrTCn5tmBXZ621VaGrqDM2kMbPUS0q5qJV51DbkziI4XyF2BqS2L7x1ICb0jpq/k823V+0l469RGH2I+8YKPkwwX6mndwpl2jSm6owgH+QNJYPWDM4HZq71lv5kNr/SJ+iXZm8KA6zeCV4NdH
- k0+dhO5A
- Sh+7K/DH0uG7AVwSyNiR0Ej78SZbAeZ4YZs8B3Zbbm0zd6lwc/APVH4zEumJH+PNVEergdHyeJlOnfa6WBBJelu/+nboVoQ5wCDqOLLC5PX7qRpJsk4z4/xcWd29enPUA1XW99d+2hr2WzozEwUbqIlOShLarNwD3EuK1ThrlVdosnM60OztoAAhTWdXj9+jL72uSiDsDkeY4AC1101Om0vdL9HBR4nFpP6XCSsfKDTVSt4PouH0fGc4AfrF0BchozIdIDUs8TehOD4gLJmLw9/+kvFFe4xWzGYrF2B6cCAH7+aUPlsfOFzelQOKWh3HY1Rv2ejI6bgwbcUg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9979F140016
+X-Stat-Signature: 3zc17hecg8347a18ah3ei3s3ynx54cop
+X-HE-Tag: 1784038299-794030
+X-HE-Meta: U2FsdGVkX18KMVTY5KKdf8toh2NiVioOh81r0TAQaYE2V9ZqnyeHe+ipYUZizDLFY2BkQCkI4WJy1LwRZGCHK53n4t+r/ounHWf3eyE/qmVuiocRwr75IrLJARHX3Yxbu/lmseKJAsVL8wPtfGo/QNqHM+BY6aMqECzYQFa89lFZpy5NYf+sTvwP9SxUU54UgCLobheU3v6m10tpi22TDZQlmGcI/NsWyGNZq0d8z8cS/mUcaLGO1JvIcIfODWndYvq0+tEO+VfPGdLH6RnQ5mEOZXPHmJzL4lj3Hi6yGzmcIodD3J9EsbYBYDS2ShYX9CQEpc5NsSY2GyEicRKXhKOL6EkM+vKAFeovV0gRt9WyII2Nezvdb9LPPY27+nipskML3fh+p3IQNy3e/FFwm1QS5rYS79FMS7leJL1dAqfi4T32hisX5krh40lE3OdvxhJ6vekr8JkUc40ai+s5f+Y8+2GFT/hQqKzxUojfcGC26s7jbj7r71vBXlYEv/dZu599jNJ6rlc2crJyC+uybCMCNIXM87h4lQk4urvP2G72uznvprD5IIsVuIVxKUS9pluzEZEIJsfr8gC6Mf8phJ+s+1JocQoouMHKiYxawOcG5SCJODVr011oHnWatv/JAU1Tzn0y/9PLg3KfCTwvKNeHuDo47DOv9D+Tac5IZtcgL/8fcfwAef4DUfAGUHd8iYKFhxLYtXluQq997RiB8tuglmAfuz+IAoFaro1p1l7o+rQCsyoNP7LKEL6CnAR6+5CxK4gvbMnRAq1TisdSWSeeYy+dPJCl8ptYFNrkQ8WJnYrLR5VT2jCulwLrtq8wEL401Vf9p6TfOcdhFECj3v8dH94b2fp3b67kFRxDoiT908PNZ1CKTJoy5gAWtu1G3X6JhpSX1PA/c/M7Vzpv5n5pURrEGp4DvsKlbRqc5KnO0+8nGieSYgrSwn6jDFl5bXLb4hBXzpoBh+6RLIb
+ HDslrQlD
+ BnucoGzYlrMMRMHUrQQkte0NSQgA4Tn5mmdxdhmofy1vk7/aU+HAXawZCYo4EYmP4Lweo1P9hnEwOuccFXoppgK1N81QKDSoD3LcCtSJ7VdqRstUeoXR71yYHM+B8bVBDGSFv9pLhoV7hcBn/VkZOh45VWHYq7Uzg5/KixPZdea7Lj0nawXHZgkGJPpOcJ9pyEq7Zd1Z+0ksFQSo0PYd8GjFgYRL8LlDqHThE3ZQLHvrMH2hBuihoNLLC+jMTJgSUE3XD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,169 +93,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks to recent changes:
+On Tue, 14 Jul 2026 15:53:58 +0800 Xuewen Wang <wangxuewen@kylinos.cn> wrote:
 
-* pagetable_*_ctor() and pagetable_dtor() do nothing for kernel page
-  tables.
+> Three function definitions terminate with '};' instead of '}',
+> which is unnecessary and inconsistent with kernel coding style:
+> 
+> - damon_pa_initcall() in paddr.c
+> - damon_va_initcall() in vaddr.c
+> - damos_get_some_mem_psi_total() in core.c
+> 
+> No functional change intended.
 
-* efi_mm is also treated like a kernel mm by the page table logic,
-  including ctors.
+Nice catch!  Thank you for this patch!
 
-We can therefore drop the calls to ctors when allocating special
-kernel page tables in mmu.c, as well as the dtor call when freeing
-hotplug page tables.
+> 
+> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
 
-The alloc_*_late() helpers are all identical after removing the ctor
-calls, so replace them with alloc_pgtable_late().
+Reviewed-by: SJ Park <sj@kernel.org>
 
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
----
- arch/riscv/mm/init.c | 63 ++++++++++++----------------------------------------
- 1 file changed, 14 insertions(+), 49 deletions(-)
+This series is applied to damon/next [1] tree.  If this series is not added to
+mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
+to pick this.  So, no action from your side is needed for now.  If it seems I
+also forgot doing that or you cannot wait for my action, please feel free to
+directly ask that to Andrew.
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 5b1b3c88b4d1..e823662be256 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -382,6 +382,14 @@ void __set_fixmap(enum fixed_addresses idx, phys_addr_t phys, pgprot_t prot)
- 	local_flush_tlb_page(addr);
- }
- 
-+static phys_addr_t __meminit alloc_pgtable_late(uintptr_t va)
-+{
-+	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
-+
-+	BUG_ON(!ptdesc);
-+	return __pa(ptdesc_address(ptdesc));
-+}
-+
- static inline pte_t *__init get_pte_virt_early(phys_addr_t pa)
- {
- 	return (pte_t *)((uintptr_t)pa);
-@@ -412,19 +420,6 @@ static inline phys_addr_t __init alloc_pte_fixmap(uintptr_t va)
- 	return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
- }
- 
--static phys_addr_t __meminit alloc_pte_late(uintptr_t va)
--{
--	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
--
--	/*
--	 * We do not know which mm the PTE page is associated to at this point.
--	 * Passing NULL to the ctor is the safe option, though it may result
--	 * in unnecessary work (e.g. initialising the ptlock for init_mm).
--	 */
--	BUG_ON(!ptdesc || !pagetable_pte_ctor(NULL, ptdesc));
--	return __pa((pte_t *)ptdesc_address(ptdesc));
--}
--
- static void __meminit create_pte_mapping(pte_t *ptep, uintptr_t va, phys_addr_t pa, phys_addr_t sz,
- 					 pgprot_t prot)
- {
-@@ -479,15 +474,6 @@ static phys_addr_t __init alloc_pmd_fixmap(uintptr_t va)
- 	return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
- }
- 
--static phys_addr_t __meminit alloc_pmd_late(uintptr_t va)
--{
--	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
--
--	/* See comment in alloc_pte_late() regarding NULL passed the ctor */
--	BUG_ON(!ptdesc || !pagetable_pmd_ctor(NULL, ptdesc));
--	return __pa((pmd_t *)ptdesc_address(ptdesc));
--}
--
- static void __meminit create_pmd_mapping(pmd_t *pmdp,
- 					 uintptr_t va, phys_addr_t pa,
- 					 phys_addr_t sz, pgprot_t prot)
-@@ -544,15 +530,6 @@ static phys_addr_t __init alloc_pud_fixmap(uintptr_t va)
- 	return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
- }
- 
--static phys_addr_t __meminit alloc_pud_late(uintptr_t va)
--{
--	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
--
--	BUG_ON(!ptdesc);
--	pagetable_pud_ctor(ptdesc);
--	return __pa((pud_t *)ptdesc_address(ptdesc));
--}
--
- static p4d_t *__init get_p4d_virt_early(phys_addr_t pa)
- {
- 	return (p4d_t *)((uintptr_t)pa);
-@@ -582,15 +559,6 @@ static phys_addr_t __init alloc_p4d_fixmap(uintptr_t va)
- 	return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
- }
- 
--static phys_addr_t __meminit alloc_p4d_late(uintptr_t va)
--{
--	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
--
--	BUG_ON(!ptdesc);
--	pagetable_p4d_ctor(ptdesc);
--	return __pa((p4d_t *)ptdesc_address(ptdesc));
--}
--
- static void __meminit create_pud_mapping(pud_t *pudp, uintptr_t va, phys_addr_t pa, phys_addr_t sz,
- 					 pgprot_t prot)
- {
-@@ -1003,14 +971,14 @@ static void __init pt_ops_set_fixmap(void)
-  */
- static void __init pt_ops_set_late(void)
- {
--	pt_ops.alloc_pte = alloc_pte_late;
-+	pt_ops.alloc_pte = alloc_pgtable_late;
- 	pt_ops.get_pte_virt = get_pte_virt_late;
- #ifndef __PAGETABLE_PMD_FOLDED
--	pt_ops.alloc_pmd = alloc_pmd_late;
-+	pt_ops.alloc_pmd = alloc_pgtable_late;
- 	pt_ops.get_pmd_virt = get_pmd_virt_late;
--	pt_ops.alloc_pud = alloc_pud_late;
-+	pt_ops.alloc_pud = alloc_pgtable_late;
- 	pt_ops.get_pud_virt = get_pud_virt_late;
--	pt_ops.alloc_p4d = alloc_p4d_late;
-+	pt_ops.alloc_p4d = alloc_pgtable_late;
- 	pt_ops.get_p4d_virt = get_p4d_virt_late;
- #endif
- }
-@@ -1488,7 +1456,6 @@ static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
- 			return;
- 	}
- 
--	pagetable_dtor(ptdesc);
- 	if (PageReserved(page))
- 		free_reserved_page(page);
- 	else
-@@ -1496,7 +1463,7 @@ static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
- 	pmd_clear(pmd);
- }
- 
--static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud, bool is_vmemmap)
-+static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud)
- {
- 	struct page *page = pud_page(*pud);
- 	struct ptdesc *ptdesc = page_ptdesc(page);
-@@ -1509,8 +1476,6 @@ static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud, bool is_vmemm
- 			return;
- 	}
- 
--	if (!is_vmemmap)
--		pagetable_dtor(ptdesc);
- 	if (PageReserved(page))
- 		free_reserved_page(page);
- 	else
-@@ -1634,7 +1599,7 @@ static void __meminit remove_pud_mapping(pud_t *pud_base, unsigned long addr, un
- 		remove_pmd_mapping(pmd_base, addr, next, is_vmemmap, altmap);
- 
- 		if (pgtable_l4_enabled)
--			free_pmd_table(pmd_base, pudp, is_vmemmap);
-+			free_pmd_table(pmd_base, pudp);
- 	}
- }
- 
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
--- 
-2.51.2
 
+Thanks,
+SJ
+
+[...]
 
