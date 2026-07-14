@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D38EC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:27:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34789C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DEAB6B0005; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
+	id 022246B0088; Mon, 13 Jul 2026 20:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6CD6B0088; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
+	id F3BF86B008A; Mon, 13 Jul 2026 20:30:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F41D6B008A; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
+	id E7D126B008C; Mon, 13 Jul 2026 20:30:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E7676B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:27:44 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94B601401CD
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:27:43 +0000 (UTC)
-X-FDA: 84985494006.01.24EDD42
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 00D92100003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:27:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+NIdeOm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783988862;
-	b=UhRk5uXXGYZ0+gWBM+8VVeQiz4kFqP9j51veSqo+xEsNSYwjS1hUZLIJfEsMwVLCrMUCFR
-	dZQAFU5fsMLi4UzixwsFvlfVo6/IIvbHAeFeo0hot8c8GY3Er5cy6fV4JeYvyO7shmZwlJ
-	G9/ChTbxxFwhhPzLAKe6gbKQ/36KR/k=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+NIdeOm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE6B56B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:30:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3560140249
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:30:50 +0000 (UTC)
+X-FDA: 84985501860.13.91FF319
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 642DD180010
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:30:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783988862;
+	s=arc-20220608; t=1783989048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QoDq4TZKn0bzwtutz903WlltVUL0JHQTEIuXLfoz+KU=;
-	b=57P/iUJ5LWw3a8IE/q4tpGatovAr9SD9wsd3ANH0Q2vc/Nnj79A6MB7d65Svu/xV7dup0x
-	8f3x0hmYK7cfcAO2u8yDEaI7+WbE2nd4/tnWexFsfesWz5qHxftSZkWR0vyLP+oMwJpe0h
-	hXwGJ2k1xoCiza9xy9BFq5i949VotZE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCD81429E4;
-	Tue, 14 Jul 2026 00:27:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F76C1F000E9;
-	Tue, 14 Jul 2026 00:27:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783988860;
-	bh=QoDq4TZKn0bzwtutz903WlltVUL0JHQTEIuXLfoz+KU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n+NIdeOmm/2UIFfyqHLKJu9SjYM9TwimD//3hh2m62D0IkeJOgYIlqRTvAKGfIk0g
-	 WC0ASzCbk2UXAll6ctUEWZSK0QbyFQA424v2DL4XCAJAZccaX/3X5R+VXep+dkTICP
-	 PHGZoY5VcQPm10q1qvLre5Bt0xYjOLeSqgyfc5UwY13yYFWQfRnKQpCgeql/zhBjJI
-	 2fK0hHLrG6/EIJBiUuqN/v7iyjC+QjVMpvE6AwiV1vwgnwd8XdNB/hxPbyxIRYHO2m
-	 ZBMYIPWfgoorZ+O7v6lqUeH08kV/NnXbCS23hmSsSHKh8IU6qhB0R88Nlw2Z30kRHx
-	 osT6eAj8Z1L3g==
-From: SJ Park <sj@kernel.org>
-To: Guopeng Zhang <guopeng.zhang@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>
-Subject: Re: [PATCH] mm: memcg-v1: make mem_cgroup_oom_notify_cb() return void
-Date: Mon, 13 Jul 2026 17:27:37 -0700
-Message-ID: <20260714002737.85810-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260713093737.3299646-1-guopeng.zhang@linux.dev>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 00D92100003
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CxH6boBiQC3wVDpayYNL3CJ3Kr0DFxT8OSa0w/nVwB8=;
+	b=oHAp89g0P8GUtcVm+P1jk6ZSy0PTh+ANxENeaufxW84Bb0qRYwDQZgYj+CzZLPEpbooSrC
+	/Hu9yU5w6wmHvDyLZezDH3k7fXnmk/0/6BK30GyN6pstfQVue1HHRz1h9otW6tV+RxFicl
+	9F6UVCo3gMIg6+bU7CS+jwKQXnwzua8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783989048;
+	b=mJpzaLkyydznvMwQ5tcFrVolfhWtxZ5G+vH/wvOQNIBn+B817M03oJXnv+3ZE3bBZAMXua
+	QZaV+CqJDsnwCtLMYtBi/xhf9rRWbOi8AriA+cVRHYlyoUr2J8EK1DZx3OHaJGUFB/8mYm
+	fM3wJ89vgWYcTtOq/jgK41dAzsyk2N4=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gzgFR0MLgz5B7RM;
+	Tue, 14 Jul 2026 08:30:35 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 66E0UUjn027130;
+	Tue, 14 Jul 2026 08:30:30 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 14 Jul 2026 08:30:31 +0800 (CST)
+X-Zmail-TransId: 2af96a55832746b-39f90
+X-Mailer: Zmail v1.0
+Message-ID: <20260714083031191-87qcnWfUzJUvfGv3UDje@zte.com.cn>
+In-Reply-To: <b542ad50-097b-4440-8e7b-6a93c8a70ed1@kernel.org>
+References: 20260713144153556amKkr4s-dWoQu5-ziCfZe@zte.com.cn,b542ad50-097b-4440-8e7b-6a93c8a70ed1@kernel.org
+Date: Tue, 14 Jul 2026 08:30:31 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <david@kernel.org>
+Cc: <akpm@linux-foundation.org>, <ljs@kernel.org>, <ziy@nvidia.com>,
+        <baolin.wang@linux.alibaba.com>, <baohua@kernel.org>,
+        <lance.yang@linux.dev>, <usama.arif@linux.dev>,
+        <chengming.zhou@linux.dev>, <qi.zheng@linux.dev>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <npache@redhat.com>,
+        <ryan.roberts@arm.com>, <dev.jain@arm.com>, <wang.yaxin@zte.com.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAyLzJdIG1tL21tX3Nsb3QuaDogY2xlYW4gdXAgbWFjcm8gcGFyYW1ldGVyIG5hbWVzIGluIG1tX3Nsb3RfbG9va3VwKCkgYW5kIG1tX3Nsb3RfaW5zZXJ0KCk=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 66E0UUjn027130
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 14 Jul 2026 08:30:35 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A55832B.000/4gzgFR0MLgz5B7RM
 X-Rspam-User: 
-X-Stat-Signature: kp1nxbr4birfmz4nng55c9of7t731cmz
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783988861-60676
-X-HE-Meta: U2FsdGVkX19f2HUG084I5qhJ6QJty5aGDCjtO2KMtGLTeuzHxK22BsJZqN96QpUsmyocTqRfhc5akP15iAeYItn1/fY4Y6hDwuSPlviup2bP4AwTF43fHhk1PkrbkbT/KRt0ptmJjAIVc4KpGQEhr3E33N5sIBavgwm0JugfjQzXvQqAUoQiiB/XADhVigJlljxMIWkAKJVAkJeyJC2hY9ggjgALbRr/pPi+mharTCjLg2xqvzgS47qALlZjuHM666urWqKlvg/y5x9ObkCXGqcWoVAYVaQ/cR7nhW079D022sEBK5llwqzjHGNyzeaKVtba5STkX+vhdamyaMNZP9sQFupjCZuI9qYNNpHABdWzserjXyNl8ykcD3J4bev1bWO/tpr7IiVzmde7rr46mthl8SrJtekm+2aI7503M4mBYr/EPmpIeDGXbYdp4da0WMFJrzmka1OJ1KXNAiE8441a7fVFDnaNmX7PF6fvw2uNMsBWwThHTQu5c9HIGTzRWQ5NF2mLXIhQ9gFUkGppeDkluEVRlE/2dka1vn3Je4c6prw7HPlGeSxvDpqfNCSJIlEcDkVvap1sh5U3IYYmyO2LrUq+4ijHbeJ48mf/yb3IeesPplAW6O1VOSm67Fa7p8WtBJOGKt8GwioYiqH3MQo3KeMat/E1rHLqUgbh5B7Hn7qOZT37G9jY6quRR+kR58KiqJGH+hIwDBUuIP8ZkxiPs0WEZJJnOEHDDNbs940aQkfmr0K6w6sWivPKcwqdGP8VeRuU/eQlmpF7UkNKcJhGEsNFN7u3ScbmnntX1qdm/1KMGXNKx/OQ0chH/yDeIt/qHmC9aKU9DcUKH4llzkXrgw1PDkZQfyhKwIopl4XnYCjSaGOnO7NIt4CHwk2alTgvQxIPnldI+n96XZOUOu4+CVpjH5iLfPBXUK+XXay8Vdv4R/Wd0HjKPt44tzyHKNNpVBY0lz9p8t8bzdL
- cXeLw6Id
- AMkqSOAMIzeZRcu7AKjn+h1B2bigMhZbMbpMhYWPC77G0IZypGJbuQiheSFLtrTuzxbTdSTCnOATD2fOuwwbaOruISDyuIkCykb0E//tR78KVbWfsqhYGYK5FWjR6xlSROucoPynEldT1Z3t04ScWf4TTcoAW9yKC5Bwbv3PqsleRwRSV7WQ1LXV3PerSiFoGoTrUa3DWTmRRyh9cwThkR2/NzHyogRRGwOuWZwgW2nvzWi0oT62g6moRtFwtyI0simhPQvVoecKladax4kEPSK5VjuVbFtFKaOMCPTd1G0gcrYGmw4tM2nxJ7Vyrl1dv89LZ
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 642DD180010
+X-Stat-Signature: twtq3m59pxsadx8hpibpcr9mu87yku41
+X-HE-Tag: 1783989047-94078
+X-HE-Meta: U2FsdGVkX18/5GCHfj2d8woZVU1OizprWtOMbpW37yGYM2OT3iBj4GAJw1MrIICRqdOs7W2lF54gwALZGqxGXKqFwXB2qLHWQNtah0H4Zl/27CITEnumFU7Y87UPS5BZph/JnVgmeoXavR5tlP/E709zcFqNnsek6047peJT4fj3O7a7iGfkVJCldlrJX1p15HC6/ZIouGTA0BHBC9Nzih9rE6xFkGSGP9Bsp6MZCaoY/9pg2aqOsX+T3G6z0zw6J4A25nLEg+g/MbMzG4saIY1pzRHyy3AXlRj/U1MpxkMyQXd7FG0/B2us+Rv+BF24CT1GkwcHAqZGCXCKgHV2mxHmRIfTU2OnqNOkAIdbPWeYuyRMsjw+OZJrD3L6aXowF3Yv5MSLggt9DkJEbyqzODHG9KA7bKbd2RBeX4kCEqecHQPd0Teeov9pY8fsyJeTQw9ivomYncdODrOpKWS8voYK+UQZIn/3chLLlZsiCH4We47LdfUiHMnu3K4nKQ/wPSToVmu80I+uZV8R/7IhYWivdldHMoIEm8RBO2Gias4q0+tV+JyonGFnRKAjn7Px1DYARu+Yj3ZtEDkvPATR92klvbs1/xbTZC3Y/KsowEU8KoV11b/i+5vdnRfjKclAVTIEXQz8McKvtte8KFTdGTuc2eSPkE7q1p5xWLr+dxtSHUfAyYA6zPbLdxg/IxY4Jk6sCe1DTEeJUko6qm18PuTZrdhLjCrXwZKAQ7LBsg7guoO6Yt47PUJsVr8QP3+pUCTb/zzyuwHbMHhPwObAUSrOsWLIn9W+lfBO9A603Y54gsKgKvDx2ddR+MwHsQxY8zqDhl9wwGFou8ltgMTc74EDBLXzcqk1MTcbq85kqHxzGgs45haDhij6lQpYx81GNOLOE1Doc/q6NKrRH4OCuy+PyNKxhp8FEiZEdz9wT78XZev2zAC3MXAyqbbLaoqlPeRx764B3u7AYTIIGUp
+ PX2+U2H5
+ KbCy2MOzUq0g7gtU4xiSR1HmS6cYe9SqHUNqIc5/Z9G8QEsVG/UfILRWIdh847mgYMjo1CecGA1iu+5KLUp4DqjmjKEpjLfBRdxPdCeID1LxgM6Hy5Yj6aAhykwUlEvdasEWosUBcRDde+0qwEqU+icCNXz41B6mV7wLrburv7aop7c178jQARC7zfZcjYRZpVOmuKpQ2nS2o9s4+DlEFS+TGDR0xpa1BGZrdytuLGoHAq6ppVNRnl/UmOTxquQrxAb025MUdqsml7fY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,28 +101,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Jul 2026 17:37:37 +0800 Guopeng Zhang <guopeng.zhang@linux.dev> wrote:
-
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> > From: xu xin <xu.xin16@zte.com.cn>
+> > 
 > 
-> Commit 7d74b06f240f ("memcg: use for_each_mem_cgroup") replaced the
-> mem_cgroup_walk_tree() call in mem_cgroup_oom_notify() with
-> for_each_mem_cgroup_tree(), but left mem_cgroup_oom_notify_cb() with the
-> int return type required by the old callback interface.
-> 
-> The function now has a single direct caller and no failure path. Make it
-> return void.
+> No patch description, but the other patch "mm/mm_slot.h: clean up macro
+> parameter names in mm_slot_lookup() and mm_slot_insert()" has some.
 
-Makes sense to me.
-
-> 
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+Oh, my SMTP settings were messed up, so I had to manually paste the patch,
+and it just so happened that I left out the description. I guess I should resend it.
 
