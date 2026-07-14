@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A97C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48010C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:36:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 611536B00DB; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
+	id 804CE6B00DC; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B9246B00DC; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
+	id 718926B00E3; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CFBA6B00E0; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
+	id 51C586B00DF; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DE306B00DC
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F84814039A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EE896B00DB
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:36:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6CB9BA0355
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:36:00 +0000 (UTC)
-X-FDA: 84987631680.06.9980CBD
+X-FDA: 84987631680.14.1770231
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CF52A4000F
+	by imf16.hostedemail.com (Postfix) with ESMTP id D3FCB18000A
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:35:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kPizrGqx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVRY1QaL;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784039758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UrQWXD0bifnsUsYgqcN+mYTdFMuNVs+95dSBQVBP0NI=;
-	b=UA8MTmd9VkIziFkUXgIMPDvCMiXGa741psjci7zUbdtkjS5cci8838zNiN3uveNAAUFhUY
-	i/bRSaZRLgYRWOoEQuRZNgv9vCwZx7fVUXfWTruTMwqcrVxElcOZDsbIzpjEnd6Qn97JI4
-	LtkdHmtxKDIG/RKYue+A/R3+BTnU4IM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kPizrGqx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=OgmQTZfSicG2akeujY0x1j+uFMrq86YzkqctonivABI=;
+	b=G25Xt13WgGUJhaE6DKCdtgyTV4YOuWO1IU9gbKAWiMsuUneVskOjnxJgZTTphb7zDengSp
+	k9mbi+miCHuSiAAmgqF4yalsOJkLFJxE+DetjU9TNY7H4I4xoeUKvilT5LqEGw6StXXJBW
+	fYakxx6RQ7bEho2HbrVNwVp/inYoj1g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1784039758;
-	b=Gv3WJYkD05L6esFZQXjI+GRhNjRgSe/90KzP0sFKRVT61joiv5ZpIUghhIZouges9JdPa8
-	9rsZAfL7P/FCneWOUZq9LVsM1RTw+UFZNjHcb/vUaaXtB8KvtZIW4/Zvrl8kS6TfdWesTl
-	YvAd5qvGDz9pX+C/g+rt5lCGeIkySRw=
+	b=aYsVDZFD4bh3VvPTeqvQfZoYv5tfYiQHgx7tOGXhzcehmW7skuhNyPDP12GESziTVqz7uv
+	1jhicXXPWcO1QREVYFXdc8LBcG9mlN+pzzH3ZpPQxjpoaJcpBGYc2UkLyri/aHJXzUCdZT
+	UVpuPOwdWhTBCc2YUIsqiRQ3DdcwXaw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVRY1QaL;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2761243793;
-	Tue, 14 Jul 2026 14:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B1E1F00A3E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 811DA4378B;
+	Tue, 14 Jul 2026 14:35:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6B01F00A3D;
 	Tue, 14 Jul 2026 14:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784039758;
-	bh=UrQWXD0bifnsUsYgqcN+mYTdFMuNVs+95dSBQVBP0NI=;
+	s=k20260515; t=1784039757;
+	bh=OgmQTZfSicG2akeujY0x1j+uFMrq86YzkqctonivABI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kPizrGqxSPrlQ0S99osZ0phDKd36Guwa0fDDzPkVnkKOq5VFh9VVdj3eS2argD0oy
-	 +HDpzY5VSllxbPjICaKzm4WWEzlTu5/QxfV0QG1hnCWCFWHyoadn76/HbrC5s2/I9D
-	 Ad6sZD4r9FKuklLhwdufn+NrESCE8OIIoqVjedHYsqR9kZQ7spqdA6Ursp7acIK6Ng
-	 BCz7tgC1cC8eWw/16pFxoRjs3FaEb7OlRxbS6xhH5j+b984ShtOdYUaX3sbY3eAdbj
-	 ECAV6F/sA2d0PDRDH1fR//7+2qCm9gZIOgfkZCe9vZxbX16nrGuXIVqigkjoSzVmOg
-	 caL2SuWnLe3UA==
+	b=gVRY1QaLUrnENVs/P6aecaAsLZJDki8N5Y9dQKHfDc9nig/jiF76Q0r58NFLrmaj/
+	 ihSLl7NALNFXfpeSQSwl37bMGd9kSgnNCzoU8F/SBs9UEe4G3Mt+ZPD5g9gWvlYL7c
+	 lamxCU932bBFGApJ7w7+54iPHXXFC61uIvb7ofYIr7u1EqRa9DpRoFrcKNJDLqwJCM
+	 GNw2B1QrN8hmwOyszVwrZ6GGu6VaDtDJmon56hPOztKv9QMEDE5Yq1YeMnALd4Rw2A
+	 2Cm2KNj63xEM9B3qt0VW/KzYvmxreAoLhjc/2OJ6sAuuMmRpsetl+DjkDIfJERn+J3
+	 Ah6AaN9gQUJ9A==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 09/10] mm/damon/sysfs: do not directly access damon_ctx->ops
-Date: Tue, 14 Jul 2026 07:35:42 -0700
-Message-ID: <20260714143544.101305-10-sj@kernel.org>
+Subject: [PATCH 07/10] mm/damon/core: hide private damon_filter fields
+Date: Tue, 14 Jul 2026 07:35:40 -0700
+Message-ID: <20260714143544.101305-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260714143544.101305-1-sj@kernel.org>
 References: <20260714143544.101305-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8b5tptgcnmsx91ry3xjz3997othkmzsp
-X-Rspamd-Queue-Id: CF52A4000F
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784039758-778081
-X-HE-Meta: U2FsdGVkX18cdvay04fO9ZIxFI0k3lLlivVv2vKZn4JHF8DTU+wTW1fekH23Ma5QWRWHRxGn++eizGlRsK3962q2t3qyTfKZAuQ6X5fpU2VFwUPE01HoSG3ml5r02R7xYlxhF9rNV7xdPQF9rpPmc6jFn19RL1ATb4bz8rVJ7z3SHI8cYaxCR6fgx9ycDG4joQ3o+gHEgyqm2GHbbFCKUOinwDVGqcVyeKURamevCXYeRXYEFMIoXe97k2ehX43L7TtydM+rx3+NgDVNbnWQJu4YtjWfm/4pSIuQS45d5B2L5ePZXiCSEcTKmWE1jS48NiRSPhs1emQU2+x+fD56xoz/7uYuBgxVtXV+Pkv1B2EJqV90DGyMEY8ebSc7FZJQqPAMNskBOJhGzZ/xeXGy6jIvbprwWcJlDIIp9IM1cYdajQAlQG4NvVj07ilRUBDle52cTeUKP+AJAgpm1DAfa9Le5kpxdUmkmsR6TcVOcBKySGczHdqTI2sOMtpXyUyjzVpANcoKr1QwiYyw9agT4n0GeFCqvsDB6L/D4yUdIxgZAySeWxax+0Uq3e53tgXY+V9S4LD+w0FeTZQtgaY6a54/73CpwhKAvV+0HdnOAHdBU6PEgqMyBa/a1hBofVxuKaapOupmaIMfP+OsOO+8tvrRMXL/ovgbl1Ad/5SgKEk5u1T/cbaT8kL21l3FfYTgaD3vNGgk4PyxE9Og/ffH/tliN+PL04kERzJ2b6B0hQJiH0DrTAeOQNH05AkY86uH+UiclWORCKV+dr7pIGeUG9i0TGlSUcn2JSl14jf5fQK9RGZUqIXhaOUQN38yjkvOyHkE6vkAnciGBmJmlTRqH0gd1Qd7syf+3bNPHca/p4PElXza15r7eHRcNqVc2tzyme+DwIw+LzVxgQrMmhctW0glHSnsc7gqXPGYBWodMU0tYiB8KLltuxrYDcbLEoCHoXVyln3XaUlXpq0WaTf
- W7LDqw4C
- egayVtlfAgkfs3Oc9/CHzsa3VejXc7nCytjjQIWbqVGsfexrgQfe/yuHXHGQIAXgmzL7CEoSRNWHM84bPV9pgOHGp0fygWvQB2r7gcFgz4Kgtd624jO+bezdVJs4p0lnLBPTcZbUXLc+BSnvA9RQAqKy3KXlJQX0qA+zui6arpTiTA460oSAC7dF2oA4j9rNiQODEoZ/fYdFeWaZNrOsFzJZXcs1xrSZ8oUb08+9Mt8Q9ur659RfZ5xxa2MZoUDz+wEi9wTcmvly8FUB47jOVFVicUw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D3FCB18000A
+X-Stat-Signature: q8pxursfh4eqbjn396ypqbztax4659yb
+X-HE-Tag: 1784039758-252478
+X-HE-Meta: U2FsdGVkX18OZ55DyoyuXbOqAXnIlQUWdehaXEt+qmQoHhugPB0z60nVJ8KzsGN7Lc2T95mHyUbh8Uvm3DN0+LxrzLhz3lZQRn1rnmIdIR+rC99WLGKeejGwHQTVDnWphw23t7TKn76oEh1sVF5oOtEmn6n4OBSLY/j1hRppWkjK1W5vDUHOw8X7CCdQxGhJ8ji+v9M9r5Sa/VL+ryW2zh4G58Rn+wTPFPGvmQTH7Trsiw74861Cp/jpGXh56K2arbnBqMY/4fQDrmxAYhcQmCjv6dzq5S5baaUDM9r2z9gOhH884v5G5VJ2TPC2Q/UDbQCENU6308I262l7nbUCdU07/GmTzhNFh4N/O1FZCJwKPRZgjJNUStwLz1AgqitEkTBrBL2ZLuGPlAgM8zQ7zBWJHkV83WRZFm+ZVaCYMhjtEf8VpY1XjWdRvGgLcSgN6DJbSTJS+VsulwWh1hai8SMKSiPk9cB2hk0rqvyPAcE6YmNtWdAQtyOoizjdkaKk5fHZTnEgj1YX+/z9nbyfqSNB8KGe7MqY8J5qvlcXAQZe2r1ovjWAZm0oMqj+U25umgTbJKQlBjMeX3QaB91k7YpWKqd/b8pb6yJ+FRzoyQcfhFdYX9RJHObceyhQQGraP0YwGjKiCWIaax4w4nOVBSXbksIfyL76ZiGAPrbcuDEs1YoA9axaR3x5zLpz70yvGAzYZkGELN3lczT+Ni14h5QQV/1CZHrCmB2ZyX4E4VWh0HMvdCO2uETrDXtjTW5TY17tM+MsMRN1UMb2I7hGxFhbbHb+ODGwtbwHKKJ00Ye5VgwrNeve1YqCmEz+bVUnw8IcV/PYT4IpII4Gq7fDjzwXxzsvLvlXR2RnhvqZNS9XMoCPPTwOvcFjpGU4/WuIc6/mXaBbry7gnHrXFB7B0Eq6nCjknW3UlfushIgwi9DmjbHOmzTCXGMCkCysPXuJNr1gaKP56A0VtNM5ocF
+ PAyogTAY
+ iPds2bUqXoYH07pvJ68GXfiRm9FdLH3RPHabbaKq3Schv6uLWDWjuPeiKCqKwJZxgKSNVueTd+byBfejRqDrHyZbPHnD9gUIM8NXSzbWDAaHhyWSO1nZQv5MSZLpqpP79J2+olYatKv9ChO8VyY1nkawXIM2DJsEL2pfalZi+t9NosRDuqIjWdPo+KQrB8KfxwgZNDecQ4gRFST/geEazGZax49q4eE1sBVm/Gt9NzoBz28VoLbgnM4KV4pb5c9uXtkCy9XBsxHrO1Yuz4QvmOc3qmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,29 +92,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_ctx->ops field is intended to be used by only the DAMON core
-layer.  DAMON_SYSFS is directly reading the field to find if it is for
-physical address monitoring, though.  Use the API function for the
-purpose, damon_target_has_pid(), instead.
+damon_filter->list is intended to be used by only the DAMON core layer.
+However, it is mistakenly not marked as private.  Mark as private.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/damon.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 60a1a9e4ada34..228ceb4df5f97 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2051,7 +2051,7 @@ static int damon_sysfs_add_targets(struct damon_ctx *ctx,
- 	int i, err;
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 907d65f03d083..6c3c7c75b6ca3 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -758,7 +758,6 @@ enum damon_filter_type {
+  * @matching:	Whether this filter is for the type-matching ones.
+  * @allow:	Whether the @type-@matching ones should pass this filter.
+  * @memcg_id:	Memcg id of the question if @type is DAMON_FILTER_MEMCG.
+- * @list:	Siblings list.
+  */
+ struct damon_filter {
+ 	enum damon_filter_type type;
+@@ -767,6 +766,8 @@ struct damon_filter {
+ 	union {
+ 		u64 memcg_id;
+ 	};
++/* private: */
++	/* Siblings list. */
+ 	struct list_head list;
+ };
  
- 	/* Multiple physical address space monitoring targets makes no sense */
--	if (ctx->ops.id == DAMON_OPS_PADDR && sysfs_targets->nr > 1)
-+	if (!damon_target_has_pid(ctx) && sysfs_targets->nr > 1)
- 		return -EINVAL;
- 
- 	for (i = 0; i < sysfs_targets->nr; i++) {
 -- 
 2.47.3
 
