@@ -4,102 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6313EC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D06CEC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:55:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 406EC6B0005; Tue, 14 Jul 2026 07:53:29 -0400 (EDT)
+	id B5DD06B0088; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DEB16B0088; Tue, 14 Jul 2026 07:53:29 -0400 (EDT)
+	id B0F586B008A; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F6C76B008A; Tue, 14 Jul 2026 07:53:29 -0400 (EDT)
+	id 9B04C6B008C; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0573E6B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:53:28 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67EC180328
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:53:28 +0000 (UTC)
-X-FDA: 84987222096.01.7C9165B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C66B5A0004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:53:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUG61eQr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784030006;
-	b=dsEPGMva6pbToVcaY+bOhTJIzw9q36fP0Dae9m/j2LlIYi23Bi6NijP44NvknHzgjrwioa
-	xpFOpHY/UPC1Q5Zo7O6RQs68STFjtswGD8RHoI0TqJ8y9aWnDdyqnk5Gqh2Yy4NiSKYX93
-	/KmQHuB/exqUzGo7wymok/sxVBIGzbQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUG61eQr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 698196B0088
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:55:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D62B51A03AD
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:55:47 +0000 (UTC)
+X-FDA: 84987227934.28.3FA10AB
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DC94240007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:55:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=CVv3c2hh;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="f NsAiUF";
+	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784030006;
+	s=arc-20220608; t=1784030146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Nf0pzzNTeJOpKeQGGtmDhdnC8W2GgOPVML5TCxAQKQ=;
-	b=ZaiaW22jqI3pMJj22Ce+zmadj4yO88K38Dh6R1+zhTCFnfD4BEcru9I2p25whRkRaRuZn5
-	QIXP4lpjZGipPsbSJ1nu/BMh9Evr8u7cQDrpzWjO/qWVIHVe7UMeV4HF4b2doM51kbgcZb
-	wGg2e5o5RMMajVLWV11YrUZ9FJ8iuG0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5386760254;
-	Tue, 14 Jul 2026 11:53:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4375B1F00A3A;
-	Tue, 14 Jul 2026 11:53:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784030006;
-	bh=2Nf0pzzNTeJOpKeQGGtmDhdnC8W2GgOPVML5TCxAQKQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HUG61eQr+qwcx4Kq4681RkPJCJLDTNpPf4qw0k95lvgmE6lqKcMDXgaVntE9jLqLd
-	 MsT/5cMj0tdbasDEma3t28y9h5wLSoG5fMXfGniSmj682PlBXb6WlE9qq4LWXspiFM
-	 CxQ1C+vistKAF2WILYIfoxuA7dm9uuPDFKKxYO4yoXmGqnylYtKXZNXyOsE2F13+w+
-	 5JZSD/J0TPhTgIrsO/ZPxX3oaQbEcwwdTS5iZ2Tn2jNmLJMXzXuL3E8+VxVKNcDXZD
-	 gZz/o+sDq8I10tXaIv0mNVqnDmokH8GR0hZA+pMbq/PPLtpQYFoBXgVAh5EVc2mLZy
-	 bER0gxU5+g+2w==
-Message-ID: <67930986-152e-483e-a00d-210fe5769a10@kernel.org>
-Date: Tue, 14 Jul 2026 20:53:16 +0900
+	bh=T+24MjkKOyccdIXKr6nivOOwP9jmSIAod++JgzQuHBc=;
+	b=xW6bSIy9s4mKCFT+3Ki/BzF6ZncCvlJN8Lg3c5yOcvPoLOKAK4VXrCuZ4aIvA2rKt4WYBz
+	l2SKLxx0EaTePXkVkW6DJWB+acXSaFg4v8+65FsAaOTrej2B0vjlk8ui2qISeirDHsk0dk
+	/GdDCUiBqfNxOeppxkfdriid+Tkj4b4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=CVv3c2hh;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="f NsAiUF";
+	spf=pass (imf04.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784030146;
+	b=iSw3Jqqh9JaTUGR5GpPvEgDXqDzR04owY6njkgrpAVKK+MJQKgGLkqyWTADFlwcRzf1eUf
+	uGYWiW84SMHhOb4VDYuKhbHwdRmBSVJBaUEamIWN+eyuqK+/Ncw7Xy/DIWe2KJSNs/524C
+	r2+CxQibCRK0YqtO9Q+8P7APrj8S5Gc=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id EC16A130018B;
+	Tue, 14 Jul 2026 07:55:43 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Tue, 14 Jul 2026 07:55:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784030143;
+	 x=1784037343; bh=T+24MjkKOyccdIXKr6nivOOwP9jmSIAod++JgzQuHBc=; b=
+	CVv3c2hhp8uDNc5r7ko2QUEtAAEx6nH7+CrFdGshtB/9AFtkXsk+/qw3yHVkZex3
+	Vu2pyZGe7H8X64Mc5ca+WSXsO7bWC9O09NZdEmA7HZE7eZ85HM3/1zLXggvYdeuM
+	16qF02oA9jL+4y2fpX6uD2YZuMPLGt0nMGRyEVu6f9MeJYOE+aR6E1lpqUGQowZ1
+	KP9Yq4MFqjRpWhYQBq12QjfuhTqbRZiaiTTMwnONYQKH0y2vq/r/elX57A31FF6N
+	1W3e3QWu1DoyiVFQBGIkueMbUdAh2ZnUSSYsL5UDCpUp3AC/zE/RYCulDhbLOw7k
+	+uFvtuEOSR+bhu2NrvK7aA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784030143; x=
+	1784037343; bh=T+24MjkKOyccdIXKr6nivOOwP9jmSIAod++JgzQuHBc=; b=f
+	NsAiUF2wwNHbm2aRh2VZvJga/CUIwB0EAlWxBskMLODdHCILE6vnzOvR83AnOzQl
+	C8hVCO4GyTMsu7FBrFxQGuSWPsKy3FSWOq1c+xUKsYqBv4uEqrRFB3gayLttIqS2
+	u83K4SQN9y/BFFYAKEW6yjopRJxx9hQlgxhLko+W03RWXrYA4yXKm7O2ajDzwFFM
+	e83tcetVh9XkdyXTnKRy2e8TO+K900r4hcchIyI+CPCM7XZqPq1GFTEy7UE4lIR0
+	J7HVETXUGSGEAo0czc6ylx+mDLI8TqprfL9KLguzXthnTGD0UsguRyqtmSV0VkT6
+	6aVmY5FL81d4cieO9JZ6A==
+X-ME-Sender: <xms:uyNWalt8ukQBwYv6Gt7VUExfITQvBsstUE5RUTrzK0Gvq159mQn17w>
+    <xme:uyNWapSIkzhd8c-ahrxBAFufEnZo3Sne1Fl2cbjrg2ZN3Lccmh6C_o3P-DfGDFxUn
+    sIg0pYngkjQSeMNgV0UWSAbmfoOFhIz3T9S5pIE2SX34C6jv1pjP8tw>
+X-ME-Proxy-Cause: dmFkZTGxIX4qsR7V9UOAbbpZ7DI+TPioS3EdeOfkz2sqQrWFwCwBFa2jO13xOhfwAzebyL
+    vDn4L3EOcKqRhgsBPy8K0LlhasC87RLvJKakFM63Ex5ajF1mW9HBfU9h64M01z8Zkd1enj
+    GGlJ+S1uE0LE0ntEkqcD2W8Mc7+iLE1JAn9qBp8jOSHfQ/492DuvwwXjB3rPP8pj/tMaxq
+    q5TAvzCpGhJ8fPEa4+CYMo9P46KZqjk/ruzcYSl9IYoSn7a13f67wJC/dG+TgSpdxoToXo
+    rHMhANm1HxqVijJlmPefX4wiI6JZN4Z55MCfIh8k55OoUatB+dk0XUuzpv91MEhl04VWsV
+    ZSok8TCuuKj8PWwP0EiIT6QCPzE9Rhj+56/WVYSuoFKN5pnvjixLDWFi+WaLep3dlBF/ZM
+    R1gPJomvZP0vI1mZd2xbHjHC4PbZoDJZaTI2Ff/jkCigkrwZtlj8DSAfGjPYx0nC29U3Zy
+    hDEvNQoI0Xi+DgnJGdxCmodO1+oDmF5qjsBDd7dKYUF5QBBYz+zfMf4uhbEhlzoLTu8U5r
+    m8QjPMKAYeAQelZO7q1lnl3i66zJ6sB+Q3LY9jh3ODNPd2SBRx29u7BvyOPJFOnGnIoKbW
+    izEG2Rtu653VGFVorcXYXHnVQAnHtxZF9aSmlvX/LNWUy3QkWR/KwJPtp2hw
+X-ME-Proxy: <xmx:uyNWaqzCG7oLkHgr2707HaSDbalGogtx1FIQpREY7NUn4k5I1vhZog>
+    <xmx:uyNWagdqLr2-T4dQLiEGj2x5Ja7MmcDpQ9saR64VrBglZHa2LLs_GQ>
+    <xmx:uyNWag-NW5lmoFjivEHv2jK6SIAsug9P0F140RFyfmM4dUQcWFnN4A>
+    <xmx:uyNWahES6J1uBUFym_4ngGCm93iVp4JHd694IJ2fGtylDwcLXlD07w>
+    <xmx:vyNWaurTTdPA3xEUOXdW4cewVvGt51MQOAWINakqJRR53uGyaCedkGEK>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 57A521820082; Tue, 14 Jul 2026 07:55:39 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
-To: Brendan Jackman <brendan.jackman@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
- stable@vger.kernel.org
-References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
- <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
- <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
- <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
- <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
- <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------ku0sMi9hUnR02QaV2h2WUqQg"
-X-Rspamd-Queue-Id: C66B5A0004
+X-ThreadId: ASU80-mPZ9gg
+Date: Tue, 14 Jul 2026 13:55:18 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Pedro Falcato" <pfalcato@suse.de>, "Yeoreum Yun" <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ Linux-Arch <linux-arch@vger.kernel.org>, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+ kasan-dev@googlegroups.com,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ linux-m68k@lists.linux-m68k.org,
+ "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "Mike Rapoport" <rppt@kernel.org>, "Magnus Lindholm" <linmag7@gmail.com>,
+ "Christophe Leroy" <chleroy@kernel.org>,
+ "Klara Modin" <klarasmodin@gmail.com>,
+ "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
+ "Kirill A. Shutemov" <kas@kernel.org>, zhangtianyang@loongson.cn,
+ wangyuli@aosc.io, "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Will Deacon" <will@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>,
+ "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+ "Rohan McLure" <rmclure@linux.ibm.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Tejun Heo" <tj@kernel.org>, "Kevin Brodsky" <kevin.brodsky@arm.com>,
+ "Anup Patel" <anup@brainfault.org>, atish.patra@linux.dev,
+ "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Andy Lutomirski" <luto@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Michal Hocko" <mhocko@kernel.org>, qi.zheng@linux.dev,
+ "Shakeel Butt" <shakeel.butt@linux.dev>,
+ "Kairui Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>,
+ "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
+ "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Alexander Potapenko" <glider@google.com>,
+ "Andrey Konovalov" <andreyknvl@gmail.com>,
+ "Dmitry Vyukov" <dvyukov@google.com>,
+ "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
+ "Anshuman Khandual" <anshuman.khandual@arm.com>,
+ "Yang Shi" <yang@os.amperecomputing.com>, chaitanyas.prakash@arm.com,
+ "Ard Biesheuvel" <ardb@kernel.org>, guoren <guoren@kernel.org>,
+ yang.li85200@gmail.com, "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Dinh Nguyen" <dinguyen@kernel.org>,
+ "schuster.simon@siemens-energy.com" <schuster.simon@siemens-energy.com>,
+ "Vivian Wang" <wangruikang@iscas.ac.cn>, junhui.liu@pigmoral.tech,
+ "Muchun Song" <muchun.song@linux.dev>,
+ "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+ "Nam Cao" <namcao@linutronix.de>, "Pavel Machek" <pavel@kernel.org>,
+ djbw@kernel.org, yu-cheng.yu@intel.com,
+ "Baolu Lu" <baolu.lu@linux.intel.com>,
+ "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+ "Coiby Xu" <coxu@redhat.com>, "Andreas Larsson" <andreas@gaisler.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Stafford Horne" <shorne@gmail.com>, "Jonas Bonn" <jonas@southpole.se>,
+ "Stefan Kristiansson" <stefan.kristiansson@saunalahti.fi>
+Message-Id: <b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
+In-Reply-To: <alYL7B0HAvmLVHGU@pedro-suse>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+ <20260713135614.1618183-3-yeoreum.yun@arm.com> <alYL7B0HAvmLVHGU@pedro-suse>
+Subject: Re: [RFC PATCH 02/34] ARM: mm: make 2-level pgd_t a scalar
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: kjgp769t6wr5jffu3jixberx11p6cfc5
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784030006-416444
-X-HE-Meta: U2FsdGVkX1/R8Cv45uvnXyDRN72dTYdN1rk4n0AfzYFbJJoBf77gRsN+BtJTzy6QmrZ11f6Qt9q9Q1FDjoMRx0c3AtYmOhSJxqdtP9iBhZm42TwmI371akl9LChAz4ViepWvsb246OqGrp0ebBuA60+tsjHlXqEKaesFs6cI9mDm9Bzowdcg3a0JqfJWwRT4wIRh82BnIHrzeG4FfjqoyoPljAYkG8O0W+W9Gt5hZV11y//uXtXB9HPEKx95X6jWaNSglzI6eex/Jm+wE8aRVKyc2Rn8biQ5cJ8PWvkEMkjfFPQjsYiLOhb2mD0u5Dfr1r10rZUXJR4ogXbHjziLEU0ALWTXYiKrhs2yz/+ZnRpL/X4HJKeYLxPKmKezEad8+Jw4u9Sk7RkyLol5XG0NitFTc+SYMxScf6X62UMiNR31iDcE4xy68l+o10VEMsVXiummIlHEUkb5uLxKewLKI5vjm7cVwZxWhKeNlL2lR2HTcwGKuqO/Huk4+30jm4RZV/yYd+UiHXBzKfhe1CzYTn8zhmsjhSwU7ssi8CTvgG+bd6fTJh+H9SjmpbgFWohehgpDZiWSusAGtbUhQvQj6jb9ODdvE51N0p+/Yiqyn/sQ/KYqX7S4sxSJiMftjl8WVyPrXEiEdOT5CoaI2qyZ7I+XTZchgdkhmn590xVRS60I6jeNcfMlwNYbrQ89bN4z/pNglqCO80Pq5FGh2t4vsZhZp+Kqp86I35rplPmWGduxi6qjBwWJmm7l6sCjj0e3ePyBTRGhGu6Nu3Pe1zR5FoxtOI00FjTOZSDy6Xhk83NAsOCu/2pqpvsE0dRXqEjAXEan5srfSgoH66YK7zj79vXgCqNKoI4fR9JHuApzyw/UCCj07F6CnjG/5iGa1KWioJoP9M0+B1sHJsetezzuR8T6r6n3K7pBSFuJKdvIwyMgoSDX+IBzL6lZK79FH3X7gQSSeWhr+hT/f4UZAuz
- Yxya/egO
- ciCFm/fAR08zAaubisbbaNuK5uyh55basWbfAx3QuRK5SQ+1rprCcBqNbXK3rgWb9gGp5iiU3BiwxGJECj2/NoQp9egVLhDL08R+oWV7GzTqiKQ5qjW+g5aQsDkUFSfmMGo1x78p+jxqx1BWFrwDZ84bAEOUWQe4/q51JdpX0qdYBcD9NLkbwDZnBRNEX6Stdq522SQ4nccD4El9nkFVPfqJpGBGB+Oisp2CbjGApxGj6e3iEOTEKqfRwwBG8ZcYsvoWEKYXOC2GzxpkP1S4YOceB3pIr+0DmLoOfi+ZgLDzVPP8b91XQ1EE+ZCHewBQxEZAFb2fQENe/9f8Nai2t7Lok2A0Z5Pkbd93nidTT5f8susQoSBRrbYr9rAqDvAYSzX5FFB1X3gx/VGiTfhiL6okzOcLEFmh8surGf0XweIWtYRSbEx1ZB0DZo32w7cSQktBph5FJyxJD6NF0Xl27IcZ+KjNVzSlv5SfiKD0iYFw7GMDNYWHMMuhgrX04k+GkY4Y6jZNzQ4uso8BUSzeqp8+Bmg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DC94240007
+X-Stat-Signature: dh8tn85xccfmt1sc6ty58dxgwrcqhbfm
+X-HE-Tag: 1784030145-690874
+X-HE-Meta: U2FsdGVkX18zPEY0OVRizO6T3CB+pkPTI6C6yO7P6IIYFTyU4HkPa7YUh+e6/iNf5+ULiyBoI41m2TMiB7u7PhGhCXnlfb5gWcpWRFXfA2DOfGqLjNVQBn3BAYylKqofFc+tzJsGYYsaPer+gS62YpRyArcMEm37NASpSPHbVH9ZttRhrXiLAARjddOcJ3OSpoCJBnhky2qNeRmLxXoicizej8+5++z4K5h5GOhslsefPJJSZ+17ms2xfSLgppHDL/UixdQpPF88Qxle2ritnJADOB8UtNfHdS97djPlumQhfFWyTsxVRg3OyjRTThjpU/+Gg3DCQ/drXC9YmkdJKE8saydKSVh4GjZgifC4ferWgdszoS4JVdtHVlMA0XOgpogbJJFkH6tqj/QES48gmlHVsGn3Lm2hahByf4kj+e2Vht9YreAlHVi6xXpW7M++wsNkzkbYRneqwVmKzQYeva4gt4q0Ps6MvMikumoYv7DhfA6/aRCz+hf7AJGajuR5kxRdiBDLMJaNK6tlPaVwyZrwrz9sNb/U20mJt2wx9nshLoUcVbdopRtDE4O67mL9x8w7hki7WLkqY8z9pMpnSvMhWbhVAyh6+Zhq9j7MJm1hAXj0fUvdeTe9GfpSkTHvsrVcb4XhcZygXak9mVUzHve/VDwxIvIhbaJQnG3UhcAR5eXKRVj9YlGX9cxM5Eiq7jzW72H6OhrCThoZZVIB7+0GX5HElvisa9oJDRLDFUE0Y80nO8tk/TTPlEL/LsUAcThKUuRZO8cWyHd+4Aw+nzN7+EGRcqPkNTd+LwhEYNmNQBLr6IzKcn8Q8E0OgWDtW26iqaq+8CHUVmcebUQJ4xMi/omD+7gYz7IrbAcHwyNzoUWwHCYm9L7dJyXjlLBj4m5DlwBm79V0oyILUkS5D3471jMq2g8aSzKWbn0S3A1+udjbC8rauK+smHGyBNXUO/SaztZs55eoSq3UCrD
+ jRTb+nR+
+ CtV0Sm/PMMSiKrblPq/NLZoZTwd+vCybzVZnScnqag92yxQYFYVaJItGaku4VF2JEHohUWXyRw5NQAK9K5MTUFGcVgqDAUh0bSMTx2aPIUaRRDbUlA3B5yA8/nWxGagecGRqGyPStyb6bPTneJC+Xz1B30L+8aXA4q8HJSd7Npxq4YIszJzFby+V9fKmGejwQjYFuI4M8ycZzmlP27Baeq8XfmT6/cXQFhHjK0juH69Q+61vVr2BApPNLzwhL1zFlJmI0IMvfQlcigfpIoYVz+CsXqUsW0VWTx9+OQr3kNMcrVwEL+9+p7aC8VB7W3/Sx697TlMR1c9T8g26/hv7TPUV7l3uGOzxwFLTWxSsS0QT+trMpZ/mA49XIRhd3Cyhvv03pi1LYTNIbgso0NwSbkSPfxGcT34BCRpPrG/C0J/cEgQtnRzmWwFFJ70HG3869XskfVAwjT7ILMm3PeYxSTAeh6Mfic28LCLZRYrprC6v/olxxf+gN0D5tAkcqHtUupb+GBxdgoude92zq8aJ8WU1Yl+l7s/+hXydArVT42pMKAeR/YPzVulRXgosWHC+oqwGU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,94 +194,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------ku0sMi9hUnR02QaV2h2WUqQg
-Content-Type: multipart/mixed; boundary="------------4kdqt064WgNYuyI40EikPph1";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Brendan Jackman <brendan.jackman@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org,
- stable@vger.kernel.org
-Message-ID: <67930986-152e-483e-a00d-210fe5769a10@kernel.org>
-Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
-References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
- <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
- <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
- <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
- <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
- <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
-In-Reply-To: <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
+On Tue, Jul 14, 2026, at 12:26, Pedro Falcato wrote:
+> On Mon, Jul 13, 2026 at 02:55:41PM +0100, Yeoreum Yun wrote:
+>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>> 
+>> We don't want pgd_t to be an array, as it prohibits returning it from a
+>> function, like pgdp_get().
+>> 
+>> So let's just use an u64, and extract the right 32bit value in
+>> pgd_val().
+>> 
+>> Leave the STRICT_MM_TYPECHECKS case alone for now.
+>
+> I have to ask: is there a good reason for the STRICT_MM_TYPECHECKS ifdef?
+>
+> I see the compiler has an awkward time returning a u64 struct (see
+> https://godbolt.org/z/qejbv6j9a), but if this doesn't work maybe we should
+> get rid of the STRICT_MM_TYPECHECKS stuff? I seriously doubt anyone is
+> purposefully toggling it on for testing from time to time.
 
---------------4kdqt064WgNYuyI40EikPph1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+As far as I can tell, the #ifdef was originally in i386 and
+got copied to all other architectures at the time, but was
+removed in linux-2.3.23 from the original copy when CONFIG_X86_PAE
+was introduced.
 
+For some reason, only sparc32 and arm32 still use the non-strict
+version, with arm having changed from the struct version in 2002:
 
+https://github.com/tbodt/linux-history/commit/5a8202f0259a
+https://archive.armlinux.org.uk/lurker/message/20020306.213958.cd486eeb.en.html
 
-On 7/14/26 6:52 PM, Brendan Jackman wrote:
-> On Mon Jul 13, 2026 at 4:15 PM UTC, Harry Yoo wrote:
->> On 7/13/26 11:31 PM, Brendan Jackman wrote:
->>> On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
->>>> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.=
-com> wrote:
->>>>> As noted in can_spin_trylock(), using this is unsafe in this contex=
-t.
->>>>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
->>>>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc =
-side
->>>>> but missed the free side.
->>
->> Ouch, do we allow alloc_pages() -> free_pages_nolock()?
->> Didn't notice.
->=20
-> We don't explicitly disallow that but I'd say it's "forbidden by
-> default"...
->=20
-> But I think that's unrelated? It doesn't mean you can't use
-> free_pages_nolock() from NMI, right? (Would be weird to alloc from
-> another context and then free in NMI, but I don't think it's "forbidden=
+> If STRICT_MM_TYPEDEFS's worse codegen doesn't matter then maybe we should
+> permanently toggle it on.
 
-> by default" in the way that using unmatched APIs is).
+This would definitely need good testing. It's possible that it's
+not that bad on modern EABI builds (i.e. everyone these days) as
+well as modern compilers, as OABI definitely had bigger problems
+with 64-bit arguments.
 
-If you can't free pages that are not allocated via alloc_pages_nolock(),
-and if alloc_pages_nolock() always fails, you can't really use
-free_pages_nolock().
+>> +static inline pmdval_t pgd_val(pgd_t pgd)
+>> +{
+>> +	return (*(pmdval_t (*)[2])&pgd)[0];
+>
+> Ugh. This isn't correct C code. It only works because the kernel passes
+> -fno-strict-aliasing.
 
-But yeah BPF seems to do that and also the comment says:
+I think the bigger problem is the code dereferencing the pgd
+pointer in the first place: Since the pgd pair is written in
+32-bit units in __pmd_populate(), anything reading it would
+technically have to operate on both entries.
 
-/*
- * Can be called while holding raw_spin_lock or from IRQ and NMI for any
- * page type (not only those that came from alloc_pages_nolock)
- */
+As the kernel relies on -fno-strict-aliasing, the type mismatch
+is less of a problem than actually doing the potentially wrong
+thing.
 
---=20
-Cheers,
-Harry / Hyeonggon
+As far as I can tell, we are however saved by pgd_val()
+only ever being used for debug prints, where printing
+the first entry is likely all that is needed to analyse
+the real bug.
 
+> I would recommend either forcing a struct here, or
+> using a u64 with bitmasks/shifts.
 
---------------4kdqt064WgNYuyI40EikPph1--
+That would require extra complexity for the big-endian
+case though.
 
---------------ku0sMi9hUnR02QaV2h2WUqQg
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalYjLAAKCRCGXBN6rc5S
-1onsAP9oH3K4pQoIax+qSGFDjZf1pwd025OJ8HYNXHVk+I8vEwEAiu05mhpZJWF4
-zStwwbYgpqkkPFWKzpHYUtNrcO/tdwU=
-=BfyU
------END PGP SIGNATURE-----
-
---------------ku0sMi9hUnR02QaV2h2WUqQg--
+    Arnd
 
