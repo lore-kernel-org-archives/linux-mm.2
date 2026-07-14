@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228D0C44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E31C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:19:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 050296B00AA; Tue, 14 Jul 2026 10:11:42 -0400 (EDT)
+	id 174B06B0088; Tue, 14 Jul 2026 10:19:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 001196B00AB; Tue, 14 Jul 2026 10:11:41 -0400 (EDT)
+	id 126076B00A6; Tue, 14 Jul 2026 10:19:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E32776B00DC; Tue, 14 Jul 2026 10:11:41 -0400 (EDT)
+	id 03E166B00AA; Tue, 14 Jul 2026 10:19:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C386C6B00AA
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:11:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 424031203E6
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:11:41 +0000 (UTC)
-X-FDA: 84987570402.05.12B895C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C79836B0088
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:19:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5161E1603D5
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:19:38 +0000 (UTC)
+X-FDA: 84987590436.07.6730E17
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9979F140016
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:11:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PytcVd8B;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784038299;
-	b=C1OXOrqgk1z84FDspX313S+6tAbUHNFRx09bjcc9OQInQvaQDfqGqV9uy3Ubq1lWC3py8t
-	IDZAY86Xc/KrIycajl1G1fnu+5PYQT/e7KXd4uem27cFbY2ufT8uXlogvLZ+DBcIEbqfUp
-	XhhwCqLBWK4SYc+eATeH8ANCs6Rvtp0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PytcVd8B;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id A798C40009
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:19:36 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xro6Eb+r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784038299;
+	s=arc-20220608; t=1784038776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B6UDn/zB13GY2rQ9/2v1cLrwdrHaWMbAjwv9EdpOgA8=;
-	b=rNFlbu0Fprt8C9oEgqnd+va5p5/9dOVBzUWl5Czsi2RJZse7dKv7Hpr3Ljeyrrmv/Fktd2
-	317ZJD03Vs2mLtrFc02BJgQ9fGrTI5Z+FT041lSP2PiTP30Pqvq+rymECVDeZspXk6e6OB
-	D58AgfZt5x0iEAq4yXMGEbm1q17hqiI=
+	bh=LOlbLc2qaG2QBOOhEn3n4/8lPPbfM5YgeFxaZ9vpRVo=;
+	b=n+cL0qQSV/brPuVo1cK1OmvwPs5knIgOrnxgitJB02MzKXANkFdHFaw7EYjCAkWfoJm/LI
+	xG4oJJgkSmChXy9zoyXQsN85yapthqltLNIrOxZO6p/Oi3IXkHY66VzAoIxekyEvz90cs6
+	YqIyWEnyqztUX9HmbJUQySCFW6xNlyg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xro6Eb+r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784038776;
+	b=TKhiYqjKy6Pr9oGxFdzzZqBW2z2rpU115PjyMVi/dTeh7LyJQeTXaj74G6Hr6PjAMoemp+
+	9uiecjsE7NCXNlZBTeUrcPbvR5JhGKCvAILjKMZr/TLM/3tb80/orrJ7TsvauGN/UZVUtl
+	hy3A/gC6kofja+Zg5fmQBTDB87MB7ng=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D2F77601ED;
-	Tue, 14 Jul 2026 14:11:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592CD1F000E9;
-	Tue, 14 Jul 2026 14:11:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 276DA60103;
+	Tue, 14 Jul 2026 14:19:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997CD1F000E9;
+	Tue, 14 Jul 2026 14:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784038298;
-	bh=B6UDn/zB13GY2rQ9/2v1cLrwdrHaWMbAjwv9EdpOgA8=;
+	s=k20260515; t=1784038775;
+	bh=LOlbLc2qaG2QBOOhEn3n4/8lPPbfM5YgeFxaZ9vpRVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PytcVd8BQgI/38oDRG2qlhYVQChh7MTMHM2uHfiV55lxVh25JhDX58hRVcmGZdaQ9
-	 ZF5qI1aOuiwO1j6IoftP1UaIhfZ7WIhHztUvP7Ozm4R6H6noWdZBWTj9zoG/5JZWao
-	 Ti+s7PkLFiwAiF9dJR5dm0BWXB9saA63zVcU7O42DmM2MpW6RwUubX0AIV3TaA6lY2
-	 meIfQFGHbn8KN//6bmEJioh2Jrv6PFi361ZAxrm4OhJwUTDKS/QBG+/ZEfWT1BkeKG
-	 X242vnAKZmjr2HCGBL6IOFhWqXTxtQo/NOHU224G+3IV3nJGAuNkLD+uMkHZVhtapW
-	 8A5XeIAPCr2AQ==
+	b=Xro6Eb+rUE86RnbMJWxBwPCOXOCMH7r4XuDwCdsV1tSubc3JLvla0Aph2hDvOG2XV
+	 M16+614h4x+Rn93ddAavC52RQAbBuiruOpohnIw0hBH//qTpW896P6JOsbKETHNn4O
+	 xhwGZDPoS4n+kJdTT3m4P43Jj3SVT6u7xxyczirbqGY4CqjURmAuUBwTb7VabhPR9f
+	 xjHxXlmc9c93vyEbj5LYWhCubJRoMePbGaqsO2ZNmkmXAptpzxBLw/dhznTFRivcxN
+	 kDEqlZksN/p0gkc8mgeFCKeekhTd/owc8JmoiQQFH4rQmnmGymKTBe1fhyrwEYDUZc
+	 nCMjFuz/H3WIg==
 From: SJ Park <sj@kernel.org>
-To: Xuewen Wang <wangxuewen@kylinos.cn>
+To: Jiahui Zhang <jiahuitry@outlook.com>
 Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/damon: remove trailing semicolons after function definitions
-Date: Tue, 14 Jul 2026 07:11:27 -0700
-Message-ID: <20260714141129.96609-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	Honggyu Kim <honggyu.kim@sk.com>
+Subject: Re: [PATCH v2] mm/damon/ops-common: prevent migration fallback to non-target nodes
+Date: Tue, 14 Jul 2026 07:19:26 -0700
+Message-ID: <20260714141927.100207-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260714075358.1592393-1-wangxuewen@kylinos.cn>
+In-Reply-To:  <MN2PR02MB665479119535A1235D69F125B5F92@MN2PR02MB6654.namprd02.prod.outlook.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A798C40009
+X-Stat-Signature: tbepf4da3rbmkd6kpo36oqxux9u4rsrh
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9979F140016
-X-Stat-Signature: 3zc17hecg8347a18ah3ei3s3ynx54cop
-X-HE-Tag: 1784038299-794030
-X-HE-Meta: U2FsdGVkX18KMVTY5KKdf8toh2NiVioOh81r0TAQaYE2V9ZqnyeHe+ipYUZizDLFY2BkQCkI4WJy1LwRZGCHK53n4t+r/ounHWf3eyE/qmVuiocRwr75IrLJARHX3Yxbu/lmseKJAsVL8wPtfGo/QNqHM+BY6aMqECzYQFa89lFZpy5NYf+sTvwP9SxUU54UgCLobheU3v6m10tpi22TDZQlmGcI/NsWyGNZq0d8z8cS/mUcaLGO1JvIcIfODWndYvq0+tEO+VfPGdLH6RnQ5mEOZXPHmJzL4lj3Hi6yGzmcIodD3J9EsbYBYDS2ShYX9CQEpc5NsSY2GyEicRKXhKOL6EkM+vKAFeovV0gRt9WyII2Nezvdb9LPPY27+nipskML3fh+p3IQNy3e/FFwm1QS5rYS79FMS7leJL1dAqfi4T32hisX5krh40lE3OdvxhJ6vekr8JkUc40ai+s5f+Y8+2GFT/hQqKzxUojfcGC26s7jbj7r71vBXlYEv/dZu599jNJ6rlc2crJyC+uybCMCNIXM87h4lQk4urvP2G72uznvprD5IIsVuIVxKUS9pluzEZEIJsfr8gC6Mf8phJ+s+1JocQoouMHKiYxawOcG5SCJODVr011oHnWatv/JAU1Tzn0y/9PLg3KfCTwvKNeHuDo47DOv9D+Tac5IZtcgL/8fcfwAef4DUfAGUHd8iYKFhxLYtXluQq997RiB8tuglmAfuz+IAoFaro1p1l7o+rQCsyoNP7LKEL6CnAR6+5CxK4gvbMnRAq1TisdSWSeeYy+dPJCl8ptYFNrkQ8WJnYrLR5VT2jCulwLrtq8wEL401Vf9p6TfOcdhFECj3v8dH94b2fp3b67kFRxDoiT908PNZ1CKTJoy5gAWtu1G3X6JhpSX1PA/c/M7Vzpv5n5pURrEGp4DvsKlbRqc5KnO0+8nGieSYgrSwn6jDFl5bXLb4hBXzpoBh+6RLIb
- HDslrQlD
- BnucoGzYlrMMRMHUrQQkte0NSQgA4Tn5mmdxdhmofy1vk7/aU+HAXawZCYo4EYmP4Lweo1P9hnEwOuccFXoppgK1N81QKDSoD3LcCtSJ7VdqRstUeoXR71yYHM+B8bVBDGSFv9pLhoV7hcBn/VkZOh45VWHYq7Uzg5/KixPZdea7Lj0nawXHZgkGJPpOcJ9pyEq7Zd1Z+0ksFQSo0PYd8GjFgYRL8LlDqHThE3ZQLHvrMH2hBuihoNLLC+jMTJgSUE3XD
+X-HE-Tag: 1784038776-248902
+X-HE-Meta: U2FsdGVkX19814V3biqlutCA+lW5xFSGKJhJiLw/Ljfd/Tb8kDgRGODZeHsdNAh464M3Xy5m/rtDH0MbvpRyH+daokQRPmVusN0Rdx1EgCpOwLELeOoUV9YNSnWRbynFxcw6wON5Tz68tBoluW/tNTQJ+joMPzrCGJ9pV9uLUO1vQprIbFCquT0YAxwaSVVfL8C1+Gl88LOOkZzn8o1sSnT4tr6gVMGmk0zuRff0GTOQmwKGScch0vaFzOz6rvTm54IAfJP1pKCQDQEcHvdV0xYfdk0gC1dJP0ciYvCAMxjBuaqLrhtsHoDkobM/sovC3gn2SXVCa8xj7sWB2eAaQuzwoEse/7cALL9xTlW9jIZWVJ2/UioDMTZqQR9G3LmDAGyE3c5LvqEtOOomazmsCYW6ofFCb0CbEaUhnGqHVPdQ4seAMbNTqHDQ9AT+KUk0FS/xNF7JMWbWXmxA5GTCqQgwZHEiFiw3MphyA/JljAvVhLkPMMd5/7W1pjP75LOf4DalT0G+0bQXmGOKOPBpnHq4AG0lt1C/EYQz8D9TqoyDcRr7s25V1+gI1oZxC8R8I7hh6aV47u12NDhgYvfiTG9WpHx1H6sNVOUq9N5/C64PrTw2m3jHQzaQzOW4gnApkRO5V5FskHYIh2fC5PhIZPh2sE86FVMLTnBgN7V0TZaupqddOHtmNij9KTTnbXqvVdrLQn5UZxOKCI0F6bNyIYipl1OeDCdoujsOTa3qKbpyCsvgN5xatPChPEibXoJmbyM+CThVh2alxNRKLX4rpbSIMs/aWK0wkLTjluihklNyu8urbWxuxprqFfIUanw9cWRVOezVCUQ7VAwoHuemjoVHCvUje4Bh3EpiXJJLf9exHL1/ssT0bIMW3Sbp8LczSY6SWrgWYv/mXMT5iHgdFx2WvWJdiYKSEEBqdDd9qT39L04eED9tQrQVY/T/Zug2P83R4ME8CFVfqJbTp00
+ gG2rCEaK
+ JfTdnpGg4RlQSXZH8LAQGVEOp91OvEey+5iEAsxehgXPrFzitmj8tW62hdQ/8b/ofur0vCtBy3HmW3L219+zQurYFBH8n6VnBBNZ6nSgdtOdttEy1o27AhozTJbZPtyDEmiOjQNtp/MI00zbzNoSm4bFRVXfn3cQEvdE3oGoeaNByzESygwrpv+Bf8fG95iAQEaA9yX5tctfssXGBk2nm6HG5nuz3t5iBEsKeYKIicIvXvWdvbNzML6MgAVd4YlX08oCF418Kc6Pu+9Ut251QHgnCOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,25 +94,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Jul 2026 15:53:58 +0800 Xuewen Wang <wangxuewen@kylinos.cn> wrote:
+On Tue, 14 Jul 2026 03:38:17 -0700 Jiahui Zhang <jiahuitry@outlook.com> wrote:
 
-> Three function definitions terminate with '};' instead of '}',
-> which is unnecessary and inconsistent with kernel coding style:
-> 
-> - damon_pa_initcall() in paddr.c
-> - damon_va_initcall() in vaddr.c
-> - damos_get_some_mem_psi_total() in core.c
-> 
-> No functional change intended.
+> DAMOS_MIGRATE_{HOT,COLD} passes a target NUMA node to migrate_pages().
+> But alloc_migration_target() only treats mtc->nid as a preferred node
+> unless __GFP_THISNODE is set.  Hence target allocation can fall back
+> to another node, and migrate_pages() can report success without placing
+> the folio on the requested target node.
+[...]
 
-Nice catch!  Thank you for this patch!
+All make sense to me.  Thank you for kindly revisioning with the clarification
+of the motivation, Jiahui!
 
-> 
-> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+> Signed-off-by: Jiahui Zhang <jiahuitry@outlook.com>
 
 Reviewed-by: SJ Park <sj@kernel.org>
 
-This series is applied to damon/next [1] tree.  If this series is not added to
+This patch is applied to damon/next [1] tree.  If this patch is not added to
 mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
 to pick this.  So, no action from your side is needed for now.  If it seems I
 also forgot doing that or you cannot wait for my action, please feel free to
