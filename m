@@ -4,89 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835BDC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39726C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:25:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39F4E6B0005; Tue, 14 Jul 2026 05:24:38 -0400 (EDT)
+	id EEB746B008A; Tue, 14 Jul 2026 05:24:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3291E6B0088; Tue, 14 Jul 2026 05:24:38 -0400 (EDT)
+	id E9AE56B008C; Tue, 14 Jul 2026 05:24:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F3BE6B008A; Tue, 14 Jul 2026 05:24:38 -0400 (EDT)
+	id D66466B0092; Tue, 14 Jul 2026 05:24:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E08506B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:24:37 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66C3FA02F1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:24:37 +0000 (UTC)
-X-FDA: 84986846994.20.EDC7160
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D635E20009
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:24:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c1vqSLt7;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784021075;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 986A76B008A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:24:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0D7591C013E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:24:59 +0000 (UTC)
+X-FDA: 84986847918.25.154A833
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 235E540006
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:24:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=g5E19SYk;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784021097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e5hVbWmSdqOj3dZyKgFalHXz2yWT1XoIB2Yzua6Nbdg=;
-	b=MLxRjugMKVlWNaHCCNTsb/lpqHxP6nYy4uHVlbmhzEbT+n4cRI6lMSkyxgxUqIgkaHDi+y
-	BsmDeFM7EcHGYjmNRnRCPu1yRsSwXEEkreuye77x1s9bFemZEQePZkIhXE6Y4pAecBq4Mu
-	Ah9SsspBPyrb4LWZcDBZUZxUAt2pFdo=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c1vqSLt7;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784021075;
-	b=uAn1LquTxt3NneO83fE6XkNMhifjZDenwX3blx+zqZDLVsbEPJrPodWdYGJtJRP83ZdbZ7
-	ah5zAuLuaANSK8nioRTSYqXl+SWh9b0yTUpuA35pz7l6yoOwbTPM/J4HrMfzdfoVOFgaMU
-	foxRY2q63N7LL20VPtWkg+f78UekAt0=
-Message-ID: <7bfb13a0-8f4a-4f4b-9df4-da842169f8f1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784021072;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e5hVbWmSdqOj3dZyKgFalHXz2yWT1XoIB2Yzua6Nbdg=;
-	b=c1vqSLt7YpRFDe2umMN3RExEnZnsJ+Y62WB5Cqnqs4LFBiYnVCK1S7k4r+DG46NqwyT+jo
-	rXth3VEv29BtauCCiBfDvRWZ4gxMd1r2Irwis0JtMD2c3IhnXOrtyT6uofDsp8Wy5HUCHI
-	T7FTDTnEjCFXCWSd1OgEjrANW97a/2s=
-Date: Tue, 14 Jul 2026 17:24:23 +0800
+	bh=Eb8w9+npX5/dhsCqW4lckI0v6rU18FNTvsuJCjEq5yM=;
+	b=7lxSQlinW+w9NjvCKi3HRjNDEY9XJpvpfmrAFJQMfzzqshIFsJTkkGjpNCLR3Ke+N1LjVB
+	/fxwMeBpeWXJOXmFW9GI+7wwh+OA8BbH6a7G6ZcYqO1TkA4mbGEYc2Qjnha8uvIARuaQjX
+	ISnwtOWKfwb59oeAZAGGqixd/Q0JE1o=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=g5E19SYk;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784021097;
+	b=KMilWXOd7+rAj++7uqIQ77Ddp43FI+O4tL6ZKdyTtTUpraXUYHnN4+QSDGH0Q3lDtqz+1F
+	SPJjv4cXXHiTFAG0iS9D+CCEzqhaJw4loNBtgtZclP7LO1WPflpPXgx7qJt6oYD79tahM5
+	oLhpxbnCJt2UvKmF7KYr6U0Z4oIeyZ4=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493f75f7172so26749825e9.1
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:24:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784021096; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JeATWA+CCq3hPWUORbB1EmipTd9aZvKDrdNJ2vwDo/YWCH38EnbLcmqSZaCFsGNcvG
+         Q6cCjuZVo6f8hMewzo1eZ5CideIGAm0w+uZTmdfAWNJRtlE2RTqdn24KDO6j9Y9Omp/i
+         zItpGzOMB3hWsgYWQ3nAp5xmIJeaOQBxR4WyK/QtRs47H7X68c0U3qJ4TmhuyvxPcINi
+         HgRWL8giNXHEZXzcY52FnlfyHak1qHRe+1v0kfJdfv4yo+NV15UrPCEf0mZNB0VQ2WDC
+         PJ90igX+V65fHh7WbOCWdAw+uYrorH7vtyjuXp2/OZ7VGAymktlwR4AK3JKrmPJEZm40
+         e+AA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Eb8w9+npX5/dhsCqW4lckI0v6rU18FNTvsuJCjEq5yM=;
+        fh=JKPk/MX1Q6eDwug2QjRcLNMqBCrrPfCPWglVos8868U=;
+        b=ewC0cXcPJS66QYaNI8qUraBrkw7hO+v7/oXgrAazXYuguR61prppSQ0WAOUgC5G3xJ
+         NlKQpOiV90eOJZSMjacBbNN7qGqFMFLRyjtbAqsUmp0R+LMKe+7MQjCY+bjm6YJk1UVL
+         nmf2/mcYDF7ZmXnjJOJcZgEbb06ylFvLamY8PXHujx97kf8UByfo32Mut5PfqK6iePCg
+         2US2V3OzgrQwWxiVQ+TjSx1CBXR8Db7fc9IwgC+10/h3BdvVg+DcWhq11P1D6E2cORLr
+         l23/VctgvHXMME+RcDQKznxW3/aHSuk0bXs2XrQW+R8ngv60x2Sh363183vfjhBjCIKQ
+         VEJA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784021096; x=1784625896; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Eb8w9+npX5/dhsCqW4lckI0v6rU18FNTvsuJCjEq5yM=;
+        b=g5E19SYkp22ODnC7CvVAH48fFv1+dJ777qNIuJ2btSUF8J9h4EZc/J82odIU1S8Qlb
+         EicXLd09gILBqslvG/RS/7xrzNCTYJKMGx+bhZRVEGKGaOR5OjMyV2GW/ExMm/RT4YLm
+         Rs8w/1Mo1frQNCszxhAyiQCTViUWahHmlD55IrmCvG+fQWd98t64hcUdZLxZMLuY8kr7
+         RXUXplEQauol5lpnB8vYHpXxktgr/N8vZ9cqRYF07T8qlZOZNzCW25acOJ12A+sE1sB2
+         ds9FZOKKsQCRw9MqpoE/h1YDYALhePNxLs4CCaDwMN2mPC7oqLAsQ1OhXVBakOrTRlbH
+         mxMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784021096; x=1784625896;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Eb8w9+npX5/dhsCqW4lckI0v6rU18FNTvsuJCjEq5yM=;
+        b=WdF5H49nVYFYarm8KbI++KQysZDTvw7QeMN8kuVOrzKIH6JAIqJEHp3N6WvO+F1gL6
+         26rBze8VFo2mYX7AM3bVdpwEasx0gZW/I3EVRUmBIRNh0SOV2HC+IeTfFn62vImIv29l
+         wma3zw0kuPB6zPUVkwGxGh9aMXBedC1UkVETdb7XzE8clxKlakf/gVnWkR/QrqkJXWXH
+         iLq1W+gP7LyS01acN4OX2SKrkzCyGNdxEDE9URQXMlZnh6EJ2pBcg5MTYtB1fIAagrc0
+         eRmOE358eSMoJMaTpk4byrFqNoWFVG95ariDluUWPryvml21Rkp8pB0Gd4NGkJ+wCSgI
+         2T/A==
+X-Forwarded-Encrypted: i=1; AHgh+RqoVp82jmII1Ctvx73/8QznNnoT8yOL3ESOjNURIM3Dj2M0082KvSX9lxAUCn+KJUC0uSrc8TG+KQ==@kvack.org
+X-Gm-Message-State: AOJu0YxCkQBhk/Bt9iBpRZbvAjdG3YjegkGm2XABcYEVfweXh0E4fKlX
+	xFY8w5rjJqjq7vKlQCg8k8IKRSfdOyyLcVhZXzX5o/envbTDR2i38J2JUwbG3jgveYUhVHqNJk+
+	DKH04wdp169LJ0oc6dmQB5C6UADuC7HU=
+X-Gm-Gg: AfdE7cllFY2O7rOJtskxSZk77kJ/TDub+eVacdvs4ov6uM1WTikFrtWDipzhomlu3cG
+	S9r8cC9yAWwf4RGOTfcnP+64Ct+KDRBIi5NqzWiT9zEO3/VWJ1GCOKXZY+WHf/P3RketJvyr4SZ
+	T/QJkQ8MwQ+4qR9Q+M0pK87+dvgxgBMQafop/A0WyYqQ+wTbN5KnmDoV86YGr8L8AD0fDhLuYh6
+	thamIRzMNo4rYA8NzYzwdwTUH3aNiUKg8NylGs10TpBPBe7kRX03KrqCBZXVmJIhVspSEENoA==
+X-Received: by 2002:a05:600c:5392:b0:490:b00c:8e6a with SMTP id
+ 5b1f17b1804b1-493f8826bbfmr125775275e9.28.1784021095515; Tue, 14 Jul 2026
+ 02:24:55 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 6/8] string: introduce memcpy_nt() helpers
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
- balbirs@nvidia.com, bp@alien8.de, dave.hansen@linux.intel.com,
- david@kernel.org, kees@kernel.org, mingo@redhat.com, rppt@kernel.org,
- tglx@kernel.org
-References: <20260709112520.24857-1-lizhe.67@bytedance.com>
- <20260709112520.24857-7-lizhe.67@bytedance.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260709112520.24857-7-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260709073823.6643-1-jiangwen6@xiaomi.com> <20260709073823.6643-3-jiangwen6@xiaomi.com>
+ <bc4ab9da-0b16-4203-9901-4845323c3e5c@arm.com>
+In-Reply-To: <bc4ab9da-0b16-4203-9901-4845323c3e5c@arm.com>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Tue, 14 Jul 2026 17:24:44 +0800
+X-Gm-Features: AUfX_mylJ-bQk36F-lqOtF83r56yTp9Z07DBP_uUrN5vhZN-KgZgzRTY9TytYoU
+Message-ID: <CAHKocdFn9DP=wGLYJrhndxTnxz=eMeWYjK1m2OzPotcvz_sVjA@mail.gmail.com>
+Subject: Re: [PATCH v6 2/6] arm64/vmalloc: Allow arch_vmap_pte_range_map_size
+ to batch multiple CONT_PTE
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
+	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
+	ajd@linux.ibm.com, david@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com, 
+	dev.jain@arm.com, "Barry Song (Xiaomi)" <baohua@kernel.org>, Wen Jiang <jiangwen6@xiaomi.com>, 
+	Leo Yan <leo.yan@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D635E20009
-X-Stat-Signature: podjhei8ktm8dxwhfe4hwnxu7bqhs3bd
-X-HE-Tag: 1784021074-566175
-X-HE-Meta: U2FsdGVkX1/U+f7Gf4xh6NHdxoje8p7+g5gcH4NvQpcs4a4PhyuYwHNwvaX3mop5XW+ywsZ8NtvPaAayY/q/sJlhiMNTLq8G806YfMGh3ia5LuzWb9Y6wH0oONIypKJPkrhnFxtxItOH1CSR30NCjERRe8Kv6tVWAQpBB/3Ut/rmPrH8od9klf4LMaUfj331JTPiWw0//bxd3uSxkdmd4CVKqU3/xLRF+YV+R/otuq8FmUH+CiomH09cU+g8GEB8FwqXxdercggMHLXrLmaFvruZkWpCutik5Cz13iBRvcRmJCnZA5HJve5l+XI5IjyCKais+b34E3fGIDpPHMcBZ3FxfgZdiMv75H+mFuo4Bc8UErXi9aC0sa91Qs//Cd0TpIYY3vohYKwhYqowQRNv/qO0jXjk3FjVdTiMXaoj0TEOlztCa7vuGF0osrOfM3Lcjf2KoAXIAboUYV7QZdp7JTPZwVb28qi538OAFCS/cXHSNn/AFI6Zn9eGOJnhwUOcMVQE2HiDaIdWtHwfJdYDLtP1fuSbWSQUS3wcv5xuYPqKwysxEwFePMh58weoTMp2Ik9ZQD49P6i0j4YLswU6c7GhZeuU7gOoEvFOfEgKZCoPjQ0NRYf3XDfAQidNVO8Jqs93bgKpcn7gbqFEw/mgAeHXobBDsCPnyOwXIIIQwiJKfdTSf8ReBcT0q7oLL1W33cfR7EXQ3Qk3nhS6xee8sBKnfD8v0y51R91w0Ii9DPC98uA2Ku8tdbvhI0xNv638b5d6ffC16gs4zb0+wAqegBYxLnH6lvrDFdSCrtO5jb10yNQ+OyTmMFxgqmNjaMHIWEAZFq3gtwitW+QiWY92lASfHBvetSKEEPztQ96+enW79Qyzkhdg56C9ENy2+abZ+45iZUnpmzIo7a6fHnF/XvTLJF/6YMnca7G4O0Xa0LfdjsqyG7buy1TC1wCSJ548NWRRo10SZduFplOoCZN
- NAEZasyz
- m1iHeGo0AU5jNFoUT7xo7TWzdiK6j5weKGD2tc7sdo41T8xWMht2wS4nzReN0qi4/mx02TW+EaoLZ4RCT/GkJ7QrSzAzwnCUY3D9AybhfiytXQ9BTRBz23fvZjUZd5m2kOoifCxC1GV18xIoEvgQv+rTre7pkzpkiwq9OwBomkun+6kFkrbmoykt84nXyurEbI3TeRzcc2UssheoMf+7HSet7lEDl79AmuWMjQw6JwSKUxiI2XQB/4zflTzEtz+An3ChMXq0D+2agPkg0KZUHRzmQ9jv/jrqu5QNA
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 235E540006
+X-Stat-Signature: ar88xiewdpsn9him5azytwzit7uifhhb
+X-HE-Tag: 1784021096-542918
+X-HE-Meta: U2FsdGVkX185je8F9a0kvqEMqVilDf/R/X+fWEZ8WjNWSOqH3bxakSgU7KBcBQreaWNO14i1KJ7DRJHOmpWyXsBBLtX+PFE/bLWl4V97n9/8ce3oD/mSMN00zmm9OWYIWIbPwGVFHxbrgZq6rjNcAwiBKU9N+sqV++G+leOUrxNiC2uK1XTYGw8aguXNTSjPk5kld2oXr1UJL0SmWX45Ii78JWSG0WumC4lCcfOkc/bLRc8QXAbCCRlN59Cpg52pxfMGWHtcqty4XcsMHALlkyyY98zSpowV04VWUz2zrJeEAGOteRPlSqi9880F8qAou88yegHVKV2CPYzKRVVDf8UGY+flQuSnx7UxJ8aNJx7taaPnnUgEYMFFMs99UoQ1uByUF2KQzLsHVFmO8V346SjQXIjn3yPxD/6/NC9e4wUNuAL/xf5QdKrxghpXXMqVWBD054kNP+9G17FdtdhLtqpFP5/zR/TLXS419z+25vSMBwbePyvrnOjKnTnwVyGTPN1mB69RNTqm/n47XwgMl3nRqGYoNfgZRmgnWy20tH8QVqN7jD7ncCwfbqCCy2HD2xbjuMyIuFfiuB/bzdK45EOUtqyMrDMaIubLLuOSclUrHpJIOElRBmwbgxMXu/AmHX34/udSy/OLcXR36UivffqLuu8dZqq31SmFBJHC9PZJr0WTBCcWHjlVyLb3mXfZNdfTy5RKt/L2CnvlqGfFQq+0RN4fx3+5KmOnIyRjiq+jVZZW2QA9mws4go4IWCM/jYeCtqVCPmF5Z9+oZXz2R4/s36B7eLH8AkplPnvXSg1UjmfvP4Z6jNkiKzQB/DW+CCYlGGV59P5tAtRAaEWpBiFKouWHe565Jc9wi98SyxD7n5iZp94yxtFb7Td7eLeRxeHCaX7kRextivefAnL9csCQkmEYgsPf66313R8sIcQC33nGXARmm6TrzXf/w4ep6lCJyDnhPA9NRYKQxcq
+ fFghcxFV
+ ZdmsmzpcG5s6xWehpp3dWtRd2JxEfNusawOwfYeDMIVOdlaM3RXcguUiv/chuPsgwTzi+m3uYARF7jIZHFmt8BllTu6TKA+L+tpzzJ9S/5W9FRuEGHyEIAGfQv63A4JNAcxzDPqOEXdWlTUookvqmE7gwQ16P9jNlRXjmXsjfDdHtesQXWfMCA+GwNtqDVSfvDcBFpPanYkZRqcW8AbY+BrA8vZCgrb35Qnn9F19IwuucLLiRgPn68Q7UWBmKDqt6vzpKhQfVh+s2kqKinFznCbG0JAOaEGzBMmpvU4i6fM37Ajerp2eOlJdooDYlnE9fFcuKEtINE2ZMbAdpr8V8wVgmnR0b4iNWLU7qOq5mzx2WBKH0TQkvPVpVGI8TWpRwTMlgtSfdMxQbTTkLJCPq0iKlNRzvj/8OhQTLD/CHMLSz5yfTTz9ZUiAAJVUsU7i4EHM+tHj2ADFRjzt2qrSGFFCV4EPeVXlSJ80kfanoik3E4JSd7hjLGLGE5Cbo/NmBztSHRB5Bytm93QkcFr2jmv0tnkCYKwIps01hp5voT1KRhEpzEQhIo1qyj3BdlRrhV1uMTdKnL9GxsRWP/49BqPkpQvaFx9gu9YReSX0whJ+OObvz7XEsnyLFA9kLjwkA9sCobISTIEZcamYpr0bTD6Rgng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,131 +141,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 14 Jul 2026 at 15:13, Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+>
+>
+> On 09/07/26 1:08 PM, Wen Jiang wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> >
+> > Allow arch_vmap_pte_range_map_size to batch across multiple CONT_PTE
+> > blocks, reducing both PTE setup and TLB flush iterations.
+>
+> Too little commit description for the proposed change here.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > Tested-by: Leo Yan <leo.yan@arm.com>
+> > Reviewed-by: Dev Jain <dev.jain@arm.com>
+> > ---
+> >  arch/arm64/include/asm/vmalloc.h | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
+> > index 4ec1acd3c1b34..7d9c7dc795c42 100644
+> > --- a/arch/arm64/include/asm/vmalloc.h
+> > +++ b/arch/arm64/include/asm/vmalloc.h
+> > @@ -23,6 +23,8 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
+> >                                               unsigned long end, u64 pfn,
+> >                                               unsigned int max_page_shift)
+> >  {
+> > +     unsigned long size;
+> > +
+> >       /*
+> >        * If the block is at least CONT_PTE_SIZE in size, and is naturally
+> >        * aligned in both virtual and physical space, then we can pte-map the
+> > @@ -40,7 +42,9 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
+> >       if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
+> >               return PAGE_SIZE;
+> >
+> > -     return CONT_PTE_SIZE;
+> > +     size = min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
+> > +     size = rounddown_pow_of_two(size);
+> > +     return size;
+>
+> Please do explain the fact in a comment that huge pte mappings
+> upto PMD_SIZE are being allowed here, if the given block is
+> CONT_PTE_SIZE aligned.
+>
+> IIUC arch_vmap_pte_range_map_size() gets used only when config
+> CONFIG_HUGETLB_PAGE is enabled. Hence should not these new huge
+> sizes being supported here also be added as valid HugeTLB sizes
+> thus updating __hugetlb_valid_size() and adding corresponding
+> new HugeTLB page sizes with hugetlb_add_hstate() ?
+>
+> OR could arch_vmap_pte_range_map_size() and set_huge_pte_at()
+> can be updated for vmalloc without doing corresponding changes
+> into HugeTLB itself ?
 
+These sizes are not new HugeTLB page sizes. They are only vmalloc mapping
+spans selected for a particular virtually and physically aligned range, so that
+the PTEs can be installed with the contiguous bit in larger batches.
 
-On 2026/7/9 19:25, Li Zhe wrote:
-> Introduce memcpy_nt() and memcpy_nt_drain() for write-once copy sites
-> that want a named non-temporal copy primitive plus an explicit drain
-> step.
->
-> On x86_64, override both helpers in arch/x86/include/asm/string_64.h
-> using the usual self-macro pattern, next to the existing
-> memcpy_flushcache() backend that memcpy_nt() wraps. The x86_64
-> implementation maps memcpy_nt() to memcpy_flushcache() and uses wmb()
-> for memcpy_nt_drain(), because that backend issues MOVNTI stores and
-> callers need an ordering point before later normal stores that depend
-> on those writes becoming visible.
->
-> include/linux/string.h provides the generic fallback under
-> memcpy_nt() as plain memcpy() and leaves memcpy_nt_drain() empty, so
-> architectures that do not override memcpy_nt() do not pay an
-> unconditional barrier. Architectures that later grow a specialized
-> memcpy_nt() backend can override memcpy_nt_drain() with whatever
-> drain primitive their memory-ordering rules require.
->
-> The immediate user is the ZONE_DEVICE template-copy path. It populates
-> struct page descriptors in a write-once pattern, so a regular cached
-> memcpy() can incur avoidable write-allocate traffic and cache
-> pollution for data with little near-term reuse.
->
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->   arch/x86/include/asm/string_64.h | 22 ++++++++++++++++++++++
->   include/linux/string.h           | 23 +++++++++++++++++++++++
->   2 files changed, 45 insertions(+)
->
-> diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
-> index 4635616863f5..6cb9e0ac7fa0 100644
-> --- a/arch/x86/include/asm/string_64.h
-> +++ b/arch/x86/include/asm/string_64.h
-> @@ -4,6 +4,7 @@
->
->   #ifdef __KERNEL__
->   #include <linux/jump_label.h>
-> +#include <asm/barrier.h>
->
->   /* Written 2002 by Andi Kleen */
->
-> @@ -100,6 +101,27 @@ static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t
->   	}
->   	__memcpy_flushcache(dst, src, cnt);
->   }
-> +
-> +#define memcpy_nt memcpy_nt
-> +/*
-> + * Reuse the existing x86 flushcache backend as the nt copy primitive.
-> + * Callers pair it with memcpy_nt_drain() when later stores must be
-> + * ordered after the copy.
-> + */
-> +static __always_inline void memcpy_nt(void *dst, const void *src, size_t cnt)
-> +{
-> +	memcpy_flushcache(dst, src, cnt);
+Therefore I do not think they should be added to __hugetlb_valid_size() or
+registered with hugetlb_add_hstate(). Those describe the HugeTLB hstate sizes,
+while this change only affects how vmalloc chooses the PTE-level mapping span.
 
-Why not use memcpy_flushcache() directly in device dax path? I don't
-understand the necessity of introducing memcpy_nt here.
-
-> +}
-> +
-> +#define memcpy_nt_drain memcpy_nt_drain
-> +static __always_inline void memcpy_nt_drain(void)
-> +{
-> +	/*
-> +	 * Order the prior MOVNTI stores issued by memcpy_flushcache()
-> +	 * before later normal stores.
-> +	 */
-
-I also have a question here: why are we using wmb to guarantee visibility
-at this stage?
-
-Since we are still in the very early phases of memory initialization 
-(specifically,
-struct page initialization), since we are still in an intermediate 
-initialization
-state, this shouldn't be visible to other CPUs anyway.
-
-Thanks.
-
-> +	wmb();
-> +}
->   #endif
+Thanks,
+Wen
+> >  }
+> >
+> >  #define arch_vmap_pte_range_unmap_size arch_vmap_pte_range_unmap_size
 >
->   #endif /* __KERNEL__ */
-> diff --git a/include/linux/string.h b/include/linux/string.h
-> index 5702daca4326..a109b2f86ca6 100644
-> --- a/include/linux/string.h
-> +++ b/include/linux/string.h
-> @@ -278,6 +278,29 @@ static inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
->   }
->   #endif
->
-> +#ifndef memcpy_nt
-> +/*
-> + * memcpy_nt() requests a non-temporal copy when the architecture has a
-> + * suitable backend. Architectures that do not override it fall back to
-> + * memcpy().
-> + */
-> +static inline void memcpy_nt(void *dst, const void *src, size_t cnt)
-> +{
-> +	memcpy(dst, src, cnt);
-> +}
-> +#endif
-> +
-> +#ifndef memcpy_nt_drain
-> +/*
-> + * Callers use memcpy_nt_drain() before later normal stores that need to
-> + * be ordered after memcpy_nt(). Architectures without a specialized
-> + * backend can leave it empty.
-> + */
-> +static inline void memcpy_nt_drain(void)
-> +{
-> +}
-> +#endif
-> +
->   void *memchr_inv(const void *s, int c, size_t n);
->   char *strreplace(char *str, char old, char new);
->
-> --
-> 2.20.1
->
-
 
