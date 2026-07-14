@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F3D4C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 03:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92C6FC44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:04:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CE836B0005; Mon, 13 Jul 2026 23:55:26 -0400 (EDT)
+	id 933966B0005; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 880176B0088; Mon, 13 Jul 2026 23:55:26 -0400 (EDT)
+	id 896676B0088; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797F06B008A; Mon, 13 Jul 2026 23:55:26 -0400 (EDT)
+	id 737A76B008A; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 52EAB6B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:55:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C07DF16024A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:55:25 +0000 (UTC)
-X-FDA: 84986017410.21.038B972
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2A32A40005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:55:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rp3sJxsE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 48EC66B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C8C381C01C7
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:04:36 +0000 (UTC)
+X-FDA: 84986040552.01.FDC6308
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0F26BC0009
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:04:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Uk1WSl1b;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784001875;
+	b=2NtiLmaSbp4lyj/h7zwFZh25fEqUcAbZVcJ7+83re/zAEcq2kGLjytaArOFMrDFNJALYac
+	XXcZfF70CIddudrqBtX5GNfwAoRW0ZQN7WOdxwvVlBIkKbLxFKuMO2GevE0X6DgKQwIMWZ
+	U1HJ1b70OAhkGrptQpLJdBvr7h+SYpI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Uk1WSl1b;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784001324;
+	s=arc-20220608; t=1784001875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OeVWSaO4WQATBC/4qX0BBqStbi2xbbwcGw0Xf5MNwig=;
-	b=NUtkRQfd54JM9QAkX9jg+TZwFPYyaaRNrbFJ3Ps+W1SB9llB1NyG2m2EHf5FUjD3VFXqQG
-	VaX7W7Xb/Q54RGI44sJ+EAhmYxxdaYhzJqQeLFr/gWyBmSrvSqxcVrRR381WnVBVpwISx0
-	8pWR3aYDVEn3MWbU4nTMHDGvY6NMf9s=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rp3sJxsE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784001324;
-	b=O9v12kGIOdMyq161e81vFN5DDp17gqL8334LudcNHBZleaN/lWOfQt5vWopp3yLg4J0AEt
-	ApszWb3AElyTPiYKVPmeppVqDOVTBmPmZAXqd1cRFu3M454LN9ONQf/UQBK/Rv7IxZ2XyX
-	aidyYcdHfvd8wwgqlkZPmiIhTAFlEDs=
+	bh=b8e5QwFzOEE3DTcxaJFQ4C1se1WuaDb4/2mYW5ZmvOI=;
+	b=XiWpopvtgglBcXQKpljmd59UI6J8i9mfVcyRQVyHOyxax5hFAmYYK5gT1YUbd9cDCam/d7
+	mv/SeLYeQVtfqlTtxbBMqdZuG/v/PXbuUcqwqfbWRc9Y3TYeC4kALFX9MUor+YuqCK8maG
+	QFHkbHLl2Zd+hWwowU+R6ATzsXThe1c=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784001319;
+	t=1784001873;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OeVWSaO4WQATBC/4qX0BBqStbi2xbbwcGw0Xf5MNwig=;
-	b=rp3sJxsELk9vdzoluWh+F/6SnC38h5CF5R9Az5l/xYl8L7Xxz4B92u1aI4Ujic84MweDNn
-	OMi8nZnmQ9fNO9JJHmBtcJWeea6LCYHXJofGuekUkmbm0nH19pK9yDAZpZtRXF0e66aKn/
-	Yj21CvubIXCwcD8IBSd4rhHz6uW7xAk=
+	bh=b8e5QwFzOEE3DTcxaJFQ4C1se1WuaDb4/2mYW5ZmvOI=;
+	b=Uk1WSl1bZgrN/S9B8wc/UXqr44eSqfDcnIkTgpqhfZXIea2daRtcBrV6YEWiD+ncupy3Sy
+	P51KVc1qBaBq4zNfWTsAVu0tQ9b4laiIUJnvW20yBO64PFn3kKUqz3R5qvA3N8sUY73GTQ
+	EU/RG6SaY++MB26rPfL5CHwVamUlFEk=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 1/2] mm/hugetlb: fix list corruption in
- allocate_file_region_entries()
+Subject: Re: [PATCH 2/2] selftests/mm: add hugetlb_region_cache_race
+ regression test
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260713171456.300518-2-caixiangfeng@bytedance.com>
-Date: Tue, 14 Jul 2026 11:54:28 +0800
+In-Reply-To: <20260713171456.300518-3-caixiangfeng@bytedance.com>
+Date: Tue, 14 Jul 2026 12:03:49 +0800
 Cc: akpm@linux-foundation.org,
  osalvador@suse.de,
  david@kernel.org,
@@ -79,19 +79,19 @@ Cc: akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5FB61ABB-6299-4EBE-93DC-BFAE855EE5F1@linux.dev>
+Message-Id: <1C8560A1-1F70-488E-BB62-2407B115F7B5@linux.dev>
 References: <20260713171456.300518-1-caixiangfeng@bytedance.com>
- <20260713171456.300518-2-caixiangfeng@bytedance.com>
+ <20260713171456.300518-3-caixiangfeng@bytedance.com>
 To: Xiangfeng Cai <caixiangfeng@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2A32A40005
-X-Stat-Signature: dqsnk6ernxjxqwin1haiakjqjyoq5nrp
 X-Rspam-User: 
-X-HE-Tag: 1784001322-46202
-X-HE-Meta: U2FsdGVkX18q8vLR/tZ8wXJLAbhy/H6I/yrkSERtSb/U+pP1li0dXVEMGMDuI+lq3Ajb9lvr5vbepJm3cyoVcnJ+V9xnJPlTYN1haFBE72CfD+hJ7NKN8tO+EzJNPDxjfyr/M1H40CS7M46Jv9G5ST/xarE1Klzl1klFO8dkIEyrcjWvJks7xkVmmV8rx511BGZYEt2sX7Gs/3DlUBPhF1+KZrekmgh4wuUsYr40WuE+CQ1Zt+8B3+5zEuKzQJLxVjLCre2TpS+DUZzmL/Bm3Nz3R8EyCAMOknzsZST3F7ErDhn1ynDI4WVeZ0KpoP7Kpd4e70M/LSHJba1v8C9xzxhMX2sHoTmGIlSVaYJ1eBTKxTJZ1GnY0HSpJv9AQokvsVFTHJeYDadh5nhXpWdLneOOPESZt2q4NA+CuwjMCT4JlTs9GEIhriwHB+Tpw6lHbPfIN4MM/3Smk3/gc+bS8hdON1/1HRQvnHoCfm35DYLPQlcmKSoqsvtymS13znrz6zsDuetNP05Y41U0sjFOvbiEICQcKZfhvQbXckjZ4mlgH6sUIj4O+iEV5dJBYAXsUkmZsyzWa9NliE+a7uJaoJfVPeI+XolcQlBiZZusndVgJM3FyHmBDv+jljIDqi74IMwiV8xX/SrQmgEFVY/KitTT7fOiK38U8WH/mtlzxFdBKtHPRkqrAC8xJuUZu/NP//v2p2npyOEBXp7Dc1wxTdt1pTf/YV32q0Kzttyq6rypWe1SU7RBLGBlLqWEYS0HumzBqXxj1UeSKlbztcaHRUXef2oC3lzu4JQPzTLZ377lWGD9IsaZDYViXF6ThdTiiYwT6b8N8ciB0yUTzyHSfSPYUebKmiJU2l343Ve0lnom2Ww5BY2OWzRbn1IV0Wez8krX+8/T5r9kOCY795lmcg9KFj8T6GHt+nXL1WY4IwBSzK/iAXUk3hHMQxdqZq2lDgJBZlN3kRwOKjjarJM
- 7oPbrheS
- viciJpdhCz7efGvlNr+cAabPVlJh1ndWC1/TpQY/3Cnr4Qm6hifMRrJ3pZTMGtMUczyAx3rKrHVLzzlrw9lhvYBBRN0TmEB00eLStoQNQEqAAzwdO24vQbznTg0wzCI8SaaE351QpWf1OWjIev9tFSVdWIfSmg8HuSa7XK9hUOZjpo6A4zJxHwEI7TCYAXmRu/rVPL+QXNNwyj1kEin4hsvvBm5bA8LGZkz5tOY1Fi4cJg//AmZM05beEjh/Ta0ncaHh19GfzTPQ/22wshVB2EQbdyoshR/TLXiwvkZGWqvK5vjWIgu+3H0RzmMmJ811JZssoqibQruUmO9w=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0F26BC0009
+X-Stat-Signature: dp1gkb5oakt9m3nztx8hhd61urkt3s7w
+X-HE-Tag: 1784001874-935144
+X-HE-Meta: U2FsdGVkX1+Acv9Qbg82nXFehNIiihV+XWIivWwgycIwuUHQp0DIi6Tz0F5uOCFEE6MmANO79F1uV++k0LvQyH55C3T3cimwAPCmzqaXXFFizFSByOmwh8b1hdruF4ExESulfo3quejhl/xqo51z/2fgivvZc7pfDq1VKuEjPw982uRm8o1LmM9yYWU3HSQZRV3oj5EnF88Ki9/QJl/q/kopmSHFZjk7RndtzHug40mllEFlv/m/RJYDpXdzjYjh5VoLsYaEcRCi/80aFH7mYg3Xf194kRUAku5cWt8oA4h5Phv5kDsWFurGUhdUapgBSpx0MqCjJ6XoBlctPfXvUx0lpCN1NJcfzy9/eFB6gLf8rCXeUGex05F/RdxN5hJ0AY0FVI1N7bIlvwclxrkpTgisa7coSRFBVAVbktJEpXZB7+fKikLXnBcNhWg/hU8afFE3ut4xPHx+d54UvoQIWZnDjaYLucALTVJtGJVGm+we3Gh9M/NQCf++yQoMxsM9thZrXQnazl2IbcwiT0hjtLvnJn1CTx7Wk2laghPSXaDG63OXmRjbU01gCA3TqL6MROJb3rOf9vJuAsNeY9EpsxUpyO0htdtvbA6BooX4/kt92RYiWiTkONIVwjRo9KM+zMUDwYrITcZrAGBXHcct+b7toIfDeAk7uBBkObpSkn8XEeppj2+kq8BDUZDrwvUjxNF5XRDf1z1YxtwSUv+nxqzeTND7S3MjvyYjUpm80/6X7Oead0m00j15srnmPnMMehrzl95U5+PRtqPyTdxJkkmwMoye/m0qMF9nsHrt1qFrfiYbGY68rqWeX+qUlWsjeu5HpEGD5p+GlPRsZSri1HMQueXw12LEu5ff2WVWDLCuJpopq/ImCfPXssrZ3VAYHj0fTBtLItBm84JRzc5mUEpAxBvtWuH7kyVNO3iQ+5ewyliPYaOwZBxdrVjWeKm/FYa7gZCqk00BFfzZL3L
+ zTt+cY0m
+ ihjRkgZdQ+a0M0CBvo2bzVgThd6yH6SnyvnJ2uAW4H2UG15OBZaFqfnP3C8veiQhYC5WUruVkbcmPqrUEHqE5DmtVOcgue1lWf4uZb6ulaXWgJsHgpsUHwvz6q6J9Buf7B6g+7LNe5kK+WeQ+KBaw2JNS4YOUTd/luswm9IhqQPqABtQ64/EdB2nfSKnZwmQvu8eNDtHTIUJk1EQ3aEoLMnJ9+WLBxMUnyhByFy75Hur4W60fx6UUpWj+jeduc3aq4S3fdhw4Rt2nJrie2ZuuT8Boa0yMacgBpd3BuAy/2R7OyPVMpLJIRFfHMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,56 +104,53 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 > On Jul 14, 2026, at 01:14, Xiangfeng Cai <caixiangfeng@bytedance.com> =
 wrote:
 >=20
-> allocate_file_region_entries() tops up resv->region_cache with freshly
-> allocated file_region descriptors.  The allocation uses GFP_KERNEL, so
-> resv->lock is dropped around it: the new entries are gathered on a
-> stack-local list head, allocated_regions, and spliced into
-> resv->region_cache once the lock is re-acquired.
+> Add a regression test for the list corruption in
+> allocate_file_region_entries() fixed by the previous patch
+> ("mm/hugetlb: fix list corruption in allocate_file_region_entries()").
 >=20
-> The splice used list_splice(), which moves the entries but does not
-> re-initialize the source head, so allocated_regions is left pointing =
-at an
-> entry that now lives on resv->region_cache.  The top-up runs in a =
-while
-> loop that re-checks the cache deficit after re-acquiring the lock.  =
-For a
-> shared mapping the resv_map is shared by every mapper of the hugetlbfs
-> inode, so a concurrent region_chg()/region_add()/region_del() on the =
-same
-> resv_map can consume cache entries during the unlocked window and =
-force a
-> second iteration.  That iteration calls list_add() on the stale head =
-and
-> corrupts the list; with CONFIG_DEBUG_LIST the __list_add_valid() check
-> trips:
+> Triggering the bug requires a concurrent reservation operation to =
+drain
+> resv->region_cache while allocate_file_region_entries() has dropped
+> resv->lock for its GFP_KERNEL allocation, forcing its retry loop to =
+run
+> again.  As the mmap() and fallocate(PUNCH_HOLE) paths serialise on
+> inode_lock, the cache has to be drained by faults from a separate =
+address
+> space.  The test forks several processes sharing one hugetlb inode via
+> memfd_create(MFD_HUGETLB); each mmap()s and faults ranges and punches =
+holes
+> to keep the shared resv_map fragmented.
 >=20
->  list_add corruption. next->prev should be prev (ffffc900011ff7f8),
->  but was ffff88814c281460. (next=3Dffff88814c545640).
->  kernel BUG at lib/list_debug.c:31!
->   allocate_file_region_entries+0x191/0x420
->   region_chg+0x267/0x300
->   hugetlb_reserve_pages+0x387/0xc80
->   hugetlbfs_file_mmap+0x2ce/0x3f0
->   mmap_region+0x1348/0x1a80
->   do_mmap+0x85e/0xb90
->   vm_mmap_pgoff+0x18c/0x330
->   ksys_mmap_pgoff+0x2a1/0x3e0
->   do_syscall_64+0xd7/0x420
+> Two modes are provided:
 >=20
-> Without CONFIG_DEBUG_LIST the bad list_add() silently links a =
-kernel-stack
-> address into resv->region_cache, leading to later use-after-free.
+> - default: a safe single-process functional check that exercises the =
+buggy
+>   line without forcing a second loop iteration; safe on any kernel.
 >=20
-> Use list_splice_init() so the source head is re-initialized empty =
-after
-> each splice, making the retry loop safe.
+> - --trigger: the concurrent reproducer, which panics a vulnerable
+>   CONFIG_DEBUG_LIST=3Dy kernel and is therefore opt-in.  It faults =
+pages in,
+>   so it needs as many free huge pages as the file is large.
 >=20
-> Fixes: d3ec7b6e09e5 ("mm/hugetlb: use list_splice to merge two list at =
-once")
-> Cc: <stable@vger.kernel.org>
+> Assisted-by: Claude:claude-opus-4-8
 > Signed-off-by: Xiangfeng Cai <caixiangfeng@bytedance.com>
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+It looks like this is a regression test case for a very specific =
+instance of
+list corruption.
+
+In my opinion, selftests should focus more on functional testing with =
+clear
+expected behaviors and results to users. I don't think it's worth =
+maintaining
+a test case for a minor issue like this, especially since code changes =
+happen
+so quickly. Once the code evolves, this specific list corruption might =
+never
+occur again, and the function itself could even be deleted during a =
+refactor.
+
+Therefore, I wouldn't recommend adding this as a selftest.
 
 Thanks.
 
