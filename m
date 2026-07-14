@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B38C44507
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 19:51:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21AEFC44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 19:53:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39EC66B00C8; Tue, 14 Jul 2026 15:51:56 -0400 (EDT)
+	id 1A82B6B00C9; Tue, 14 Jul 2026 15:53:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34FA46B00C9; Tue, 14 Jul 2026 15:51:56 -0400 (EDT)
+	id 158016B00CC; Tue, 14 Jul 2026 15:53:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23F706B00CA; Tue, 14 Jul 2026 15:51:56 -0400 (EDT)
+	id 06E8A6B00CD; Tue, 14 Jul 2026 15:53:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 024026B00C8
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:51:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 684361A04D6
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:51:55 +0000 (UTC)
-X-FDA: 84988427790.18.CA907D1
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 533381C0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:51:53 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xbEaUCOX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DB8FC6B00C9
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:53:39 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5E8CCC049E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:53:39 +0000 (UTC)
+X-FDA: 84988432158.01.25683C9
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A3BCB40008
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:53:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n3Mw7wBp;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784058713;
-	b=7fN4VdTnF2yUNGBGqOTg/eSpa0bIh9rK7vtChP8crv062Ildt3d1ubUHq+oPix5KCf0LUa
-	qLDOaaEs+49p1rt3QzaWkGLYgIWoDOut4DobtLWSLeKaSxowQ5L4o3FlfMCVZFt77cqFtu
-	s5ymNoR8KS/aaVfZCw+53KxNTPlpOj8=
+	t=1784058817;
+	b=afPijVJuiJny0z0tR4zhurKC5X0ajpV6eWZ9QpZ974Y+pMlOn2xGpOGonciWK99t/Io0pQ
+	0OHMS51N7DTtTZrr1K8YlrGexN5ZNQumfBEoaM3c9iIs5FkxaITd/1qQ0wX+k+tYcA8HkA
+	aoJLaS8gb6WC9irXvqKzsfgVqY/HCHg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xbEaUCOX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n3Mw7wBp;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784058713;
+	s=arc-20220608; t=1784058817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cuoijzz0rTY63A4da4n+CjQ+9RFOuE3zmPGDmmxWI6M=;
-	b=4two6/oFAcbLmE3nDbpTASF2qhW42g4bjfbMJsmjKgd/dxqeHM7ss0aDF+2oZj7dg1sfak
-	xNtBugnpKYvQq/VftyQL9KOgcnB4jrZCpDVlsNGMWqUjaupmvD6mBMdvER9vaOZCkHEsUu
-	WOkqi4Ct1IFDUEVTWrbxo/AWRZDEGZk=
-Date: Tue, 14 Jul 2026 12:51:46 -0700
+	bh=tzALV2d53RJaMjFjlVkiVRur0WMV7gOh4zd/yZy2+NI=;
+	b=0GIlfRB0f65pJmPCs6K0B0A3sZBynGO+TwSE7GXiMc7cmNxOKbpYfhkZh8U8u4sZekYKAF
+	viwUJi55IvwQuJ7gIlaZXhlT40sGq8v/Is33iv6zS3iUJCUNwKhQhPrB8nGixclkcZUmts
+	plrQOWlibE56I0PAn0wuBxbbgSd/34U=
+Date: Tue, 14 Jul 2026 12:52:55 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784058710;
+	t=1784058816;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Cuoijzz0rTY63A4da4n+CjQ+9RFOuE3zmPGDmmxWI6M=;
-	b=xbEaUCOXuxx8FfZYpiWNatKkOn8twLD8coYe4FO6wtqEyxg+Xc5o0DpNmmhZq091tIF8d+
-	DgEzCKaSTpgZl3w6bv1b4wdJ4vO/M/B95cjJk4wLhxu5e80JY+rubyvjdOYeWuf0s9uOAr
-	k3jZZEiWpz4kF5sfNDvVwF0yHk0V/hU=
+	bh=tzALV2d53RJaMjFjlVkiVRur0WMV7gOh4zd/yZy2+NI=;
+	b=n3Mw7wBpML1vKHir0x9lBaLY8AeH32oim58MtgrjP1ALriUDJi2hACH18GAMpSacDzsHvR
+	Qfj2fnw0VhK2ogHSCyXuWC0nrdoWo4W5MbgWwIRrfr61OemJmsDycoSza7ko9AMaVkKHBa
+	Pexlkt9xv2thRYcb+6ZduLoiu/a1ggg=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Guopeng Zhang <guopeng.zhang@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>, 
+To: Guopeng Zhang <guopeng.zhang@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
 	Vlastimil Babka <vbabka@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, cgroups@vger.kernel.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
 	Guopeng Zhang <zhangguopeng@kylinos.cn>
 Subject: Re: [PATCH] mm: memcontrol: update state_local when flushing NMI
  stats
-Message-ID: <alaTQeiiTTmKLngu@linux.dev>
+Message-ID: <alaTdskwkIgNmJS6@linux.dev>
 References: <20260713085053.2916813-1-guopeng.zhang@linux.dev>
- <20260713113901.GG276793@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260713113901.GG276793@cmpxchg.org>
+In-Reply-To: <20260713085053.2916813-1-guopeng.zhang@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 533381C0005
 X-Rspam-User: 
-X-Stat-Signature: hukzdnzfzro56jhyrxzhk44ej7ser68u
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784058713-457177
-X-HE-Meta: U2FsdGVkX1/0ZphbLHhEmPNDZlZHkdMJpPVVMz1upgGG5/otOzbJAdT2ZFD1sEK1Aa6n3uofH75G6WBzYTPzHuqbouNMgQB5YauBJQ9Vx/WzQhyrjBgYU1eqLfPToxNeVw9OYH2R8Qz4YQtMgXl4kC4kt9pNkbsHnydDUiqRnVNLX2qj1M+JF8npSGQvUGLOdsqqRPWaBmhfKlepY3x38YPkhr8jIrzne7hxhQgmWZSLNyN8JOlAUkErrPMt39YB5BqSfR7Vdj+ZMhvjnNhsqw6oKGSz4OHmFl0fIof4AXCvoSFZo7aQLRCtyLqyjSDlLlou8oa+HssrzOLmuPeYFheNWqMsoIlaiZk52mDfUrpC25w+sEp20QPMtUjL6/moF/U0gxG6kaFifwaI34n/1FV73o7kTzFMw6yOs8og+1yNvYAEFU7HpMD2LgOlJwNGpgvhMFQSuRjDvpttNykniT6RRQYSNg8IR9Wc3LCd+ShvbMNx61oKg8NWQh0EohYQUDfQMXG57jCJGL+Lv5OFnQBAL9i8YhShzBXiKF5Z1iTY3SJUW1JFslxH5p+TOu9n1SnzD+xcHCzq+JPTYy0LCanP0rt2BL8jRiMz8JisxDivLLg1hdnKtfTUzdniRF9ytYj6Lm6l3SWgIqrw1POdglfW+oTZSx8GVAby7lSGAd78olEOx+RADVqKpo88R5sdWZGZFtVTB0U6VjvFE+vTzGfRis9R9G+gZX+CxNnR32zlEfh9IL6PQ5lCFFYxxt22ZH6bfAvK7QvPZySPqu9xbxB6RmdOrYD9tPJQckJEXDTYxtcOabmgvVdTexqO8HypwmZ0U3uKvEa2vjW6+j1M0R4O9pOO7zwNabA7Ul6bw7BkD9dXgN2WwUG2doaBJyICuNsaJkPMKekWMILHdtPn0vnuzwxrekIrf8O1e2w5BqNA8NlI1k0NmYWXb+RY3LBZjLY3/Czmzv0Smedp42V
- wiveoaYB
- CP5E96EKQgjQ5ZJT37j8ZuKIsH6EDDUBKDGeaetKsvrFQEneL+w2+LaUmLqGr5ctLZL2JJFZcH9An+Q4k9o51X/5yVkLtaC4Du3AdZHtDryqxAKIR0z5Rj5EbwwtxV9WPleC+CdIlZT/zIoSWwEPSz4h7HAGXCXwWTAADjqkLKDpyJLFBia6JC4BmRBkpjxaNT3OsVqCvHg0fUbr1d/g4EKmh1o34zMBSoobB+Jkj8sw6V5AD49e4EXyTQ57nsN+5+JxtozJAYiZdLDRL83mEow0pPNCFa5CAfkU8nOQW8p76edo1S1M2l0q9vwmUxVV/stD7
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A3BCB40008
+X-Stat-Signature: zpxmmdwyxxddntmj88pa1hqoenixxa78
+X-HE-Tag: 1784058817-25673
+X-HE-Meta: U2FsdGVkX1+FO3kcW5eh58rNbT/fa7Vmsu4r7S799QLKVyevyTquoHSQ9I3dRld+0XydYoLVjJpr3v+jw5CUfihi3DU04yhWG7knEELcmfI7mAt8kIaFLO5QvMQW0Ubdnf/NbTn+3qF1vb6TWfLfeYMZAtJx0hETWoSyf58JJWfuDyyZyeUCGLjiXiH5DgH51Oz8V8WwQtXORQ2pGz0wPbIDxqgs5mIvm6EU/aOMRNjcaoTP/C/+6P5BJZBm2lF7ikqcPf9AvsJyUNjOkA0zf/+QxsjXRMDqkX5AwAdGKQ+q4UFjlRX5z3TC0GOoI0nVNSb1aJIJb+fiAWiWHVJrWvJG7WgtXMjhlKQTVyWgDUmgUTo5trHepNUPhimV+DTbfW/ya3VhI1V2S+tR51cqALyfzP554ObSFKOGvk+Q6bQHCtFSUA8TghdqAJkIMdSYIZHntS5hSRxhC2acLUyVBWEF4Qolh+el7WGUUB7TDDCMjWlxNL0SZV3EeCc6yvBrw1eTyhGrw2Tq8JkEB37RsWClwJBmJMuOOuYUkZNguxN/XDWSZ650CZQL3ughggTPw8QSvcICDipVYXeWX/y0etdWLgO0QzVm1c0fqSFrZzbcfX3E1MHymWg9Gg784LJ3nX9nVtmW/rfH9HOvmVpwfrSRjyRaumIBk9oWEiJkKa2q534rMR7+qV4CMtZTyY94hKf5fSX/lAl5JFxhcy5HP5MGA81EiKXFUfhK8vZCgMKzQJCWOVHKH4xP2YxeQKroM9H9bMUmm7mwAhu3NZFn5LDJ9aSY40CB3Nt3kpx1i/GC5zqX5qobAhP67yP53ZJJA02HmsTznFx9H864GhsjohV67/iF9uegJNG4eLktP75kUKmO4UYoZlU+5Q1dMB0GWi4dMZgxk1zcLwXkwVnE3/FfDnKccl8MSsnbksqVLRi36iKjM1u3BYFbxpDECzZAg7Zn4h/b8qVMFii8EYp
+ hvg2ArDe
+ DV0SCGN48AePyDz/e7JruOUOeTvQv0e2/bxHo/AVeCX42E5KNVPeRii/efbRFhA69224XzTkKW6ob8veJ5yjJnnbPw5knuv0JynnFEDPXe+JsocSspHcb+HWYLtmqMM16AdTdXlDAWB7BFs32OkXF4YeH88OrpaBZdpODQbfOkjj/oHFt2zUXyE4YHFpJ75N4LPPQj0fFGbQfvopBIERVHm7Fy3LyUy0UutCyKFIx2CYnN30k+htF/rxO2SzqQ35k9VI/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,25 +91,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 07:39:01AM -0400, Johannes Weiner wrote:
-> On Mon, Jul 13, 2026 at 04:50:53PM +0800, Guopeng Zhang wrote:
-> > From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> > 
-> > flush_nmi_stats() updates state[] for kmem and slab counters but leaves
-> > the corresponding state_local[] counters unchanged. Local kmem and
-> > slab statistics therefore miss updates collected through the NMI-safe
-> > atomic path.
-> > 
-> > Update state_local[] together with state[].
-> > 
-> > Fixes: 940b01fc8dc1 ("memcg: nmi safe memcg stats for specific archs")
-> > Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+On Mon, Jul 13, 2026 at 04:50:53PM +0800, Guopeng Zhang wrote:
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > 
-> This issue affects memcg1 but also the workingset shrinker.
+> flush_nmi_stats() updates state[] for kmem and slab counters but leaves
+> the corresponding state_local[] counters unchanged. Local kmem and
+> slab statistics therefore miss updates collected through the NMI-safe
+> atomic path.
 > 
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Update state_local[] together with state[].
 > 
-> And we should probably CC: stable # 6.15. Shakeel?
+> Fixes: 940b01fc8dc1 ("memcg: nmi safe memcg stats for specific archs")
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-Yes it makes sense.
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
