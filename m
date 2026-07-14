@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D82DC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 06:45:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13B56C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 06:54:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EACB6B0088; Tue, 14 Jul 2026 02:45:57 -0400 (EDT)
+	id 0EC656B0005; Tue, 14 Jul 2026 02:54:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19BCB6B008A; Tue, 14 Jul 2026 02:45:57 -0400 (EDT)
+	id 09DD16B0088; Tue, 14 Jul 2026 02:54:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08CDE6B008C; Tue, 14 Jul 2026 02:45:57 -0400 (EDT)
+	id ECE6A6B008A; Tue, 14 Jul 2026 02:54:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF0CB6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:45:56 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4CCF7A0289
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:45:56 +0000 (UTC)
-X-FDA: 84986447112.26.6071B7E
+	by kanga.kvack.org (Postfix) with ESMTP id C22426B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:54:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52F7AA029D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:54:24 +0000 (UTC)
+X-FDA: 84986468448.15.E07ACA5
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3592680002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:45:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mjdADVBa;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by imf31.hostedemail.com (Postfix) with ESMTP id 762FD20007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:54:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=U9B78wj6;
+	spf=pass (imf31.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784011554;
-	b=UE8oKFteWov87HLNPIFWziBpRptBBP0e42U8m/Bt8TIj9z1gcL/K9IF2wMYMv6kMR2u0km
-	KSZBFUrqifaeqdBUC6G981tIk3QKXZieBZ2MCjr03smuPj0tMS++Ax56x3kwMI6tnDaEcl
-	lmA7dq5n2h9NRRtrbPkFByqd0IlK6iM=
+	t=1784012062;
+	b=4NA0RnLykRnSrBiekIT0Ez5VvR3Hmif1ulIwmo9JLlft8nrTn3Tm4egHkGruvS2MT8dRFR
+	lSZiBzD3ndTEbO66BSHMwqpJtozlUEkqz0Be3A5MBUdSuJL+dfQkCROehk7gA+NJSFaxrW
+	JiOuqsyE4qvE4Fq+Z/0ZytkROgLTBf0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mjdADVBa;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=U9B78wj6;
+	spf=pass (imf31.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784011554;
+	s=arc-20220608; t=1784012062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=glghTutpEqXPnCOEeCh4W6AO1yrko6RLNG5OdFNkMv0=;
-	b=JtS95QVJv6tR8XqA32Nrc6kRvzvEwY8zmbVK+2Pbzl83Q28qOy785mkDqATO25Af5pvSJ0
-	LV4KAY9xs8QVTa+fVju1IDlai3wGVLOXAtb7cPmIxBq1JzOBz6H1Wy14cH9/vR9Sz3u7xU
-	jY68cIVEVD5Rjiy7HZIHBQt1PHRqoEQ=
+	bh=o4BB4hwwI/NO63lqdqTN4yLFeptjjVtn3BYVUokdEM4=;
+	b=qdOnmikeCFmK2EJs0OLutwhYu4dQLTp+w0XgwBdTizO4m9eTh4hVWJTa4Axgn0+1lVPkIc
+	LGno2s+nnX5wdfgCanMhUOitoNAkS9dy+5OjX4MpumAe+0cH5nHBCSP1wJLndQH/AyLV6c
+	8dvY9OcC79JFKeKd1dGVVLxmp9qQC0A=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C9BA11477;
-	Mon, 13 Jul 2026 23:45:48 -0700 (PDT)
-Received: from [10.164.19.52] (unknown [10.164.19.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B287D3F7B4;
-	Mon, 13 Jul 2026 23:45:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22A571477;
+	Mon, 13 Jul 2026 23:54:17 -0700 (PDT)
+Received: from [10.174.43.51] (unknown [10.174.43.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C74A3F7B4;
+	Mon, 13 Jul 2026 23:54:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784011553; bh=Hc0hzyscuk80FwBKUVOH73LX4dEOMupwQvGYeR9hS2E=;
+	t=1784012061; bh=in4ByyebPfi3733abQ4MFG3t3pXhYQ74bHn20MaCl14=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mjdADVBavbIfoQjjnjGAOKAsOn2SXw9RUkr+c9HkpzsjGg5F87xy9VajsbDz/hcD6
-	 uKVLLFNAx7UapzoLhWhvYbppY8tZqx610mKhSI2M1QU0flV3xrwBv3jOGyHyM0n4mC
-	 z1k1iHtkbnzeurZPkAHfsX9+cb2E+pFI9TkHTGgo=
-Message-ID: <945bdf1a-10f8-41fd-956e-af40af809c7b@arm.com>
-Date: Tue, 14 Jul 2026 12:15:45 +0530
+	b=U9B78wj6W/NS4Oma+YkQO132UMhYDvp3jnpulHZsE9DTZHXSrHRmg24/qJTamec1V
+	 UZR4BXyKuMC+1huPYshYfSBS6XkvHzvkGmxYd9kGDKcVGq2I5DyArZHpu3UUZZoaby
+	 Cf5vrBTOV1clKaI6jS04gJMWblJxF9Sg6G9ZnFAU=
+Message-ID: <4b3c1d3f-853d-46dc-bb15-37273fb07f61@arm.com>
+Date: Tue, 14 Jul 2026 12:24:09 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/6] mm/vmalloc: Extend page table walk to support
- larger page_shift sizes and eliminate page table rewalk
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
- urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com,
- ajd@linux.ibm.com, anshuman.khandual@arm.com, david@kernel.org,
+Subject: Re: [PATCH v6 1/6] arm64/hugetlb: Extend batching of multiple
+ CONT_PTE in a single PTE setup
+To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org
+Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, david@kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- rppt@kernel.org, ryan.roberts@arm.com,
+ rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
  "Barry Song (Xiaomi)" <baohua@kernel.org>, Wen Jiang <jiangwen6@xiaomi.com>,
  Leo Yan <leo.yan@arm.com>
 References: <20260709073823.6643-1-jiangwen6@xiaomi.com>
- <20260709073823.6643-5-jiangwen6@xiaomi.com>
- <85a3a79a-2a78-47ed-bd93-48e8f1967551@arm.com>
- <CAHKocdH0KYPaqkTOEE7n8vX4BFdgPvVbRsh3Vtb6MtvmCTn4XQ@mail.gmail.com>
+ <20260709073823.6643-2-jiangwen6@xiaomi.com>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <CAHKocdH0KYPaqkTOEE7n8vX4BFdgPvVbRsh3Vtb6MtvmCTn4XQ@mail.gmail.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20260709073823.6643-2-jiangwen6@xiaomi.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3592680002
 X-Rspam-User: 
-X-Stat-Signature: mzrmjqqhp8b3x5o5ay8tcymtcb1geszj
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784011554-614506
-X-HE-Meta: U2FsdGVkX1+cJr1iYMEAw9zr7StTSnKrDXEIWW6zKqlO4Xqciiv+kf0lvip65GIZ2UjTZP9uoauBqimVk2b3TZXiZMcNk/NSHKcSp0CYMgah175w51H5Q/5uQt73pKTYtWwRueOvXlqyJrSwfhh8cCEJm0/GEtso2Wd8yIVSobnTIsvkRDQFUyLSuWTdQ4LMLqrBGIoW9zyopz1J1H0WhJs+Cn8NNXECiggzh0zyOeT4RGr+XK8HiWw6oqf3ndmAa1rv718eFCq1wmskByWBZb9YfYzH/j34rXl2nUkG5MTwFUy2ay4qiF4+IMXDG+8uki0a2m8Xi7vW8fW6TznXINBVHacNWKfQp1CJpF1A2CP5a+Rb3qa0ECl4ntClxO+CQJ9nQBka8I+rz+NP0/AXIvRuB8RNUR9BbEyd8nNiGLkrEm1h3gJ8x2mPZaq3xece/BxiRjVkGvTN3jzB01oss5Dz4hSWkdElHpX9yYWM1UwWUVshDItvVJXsUFp9srzf7zX+z5eyWnMkkF0auLuo4Q3Go0Egd/7Zmn8BndLP1rTwUfqb5XM7KfYeP/Axt6KA4ozjnYHmHqTpt4ZOa4xxV7R3CgZF+QonL4BGqeYnZNq8gagxJ58Cs9B74KcgWgUo1QjIS31CHYsri+MbV/ni3U7iDMfcoNf2YIabvKfKYG0xA9C+6dv65Lv8h1YW8d8TJWA1pqEs5bTUDknWuhnNKKXYv7F5OCh473Dqf6yP+cYzkWegBT5DOR5kA52WRTt59RG9GXcUUfQ0EKQDaDMQ8abdQN74ivOdkBsVWC5RsaivQjmdhLq159jWA882awfJ8zdIUGIxqFLylMQ/kFiFTZ+uz1R5QB0+Zd4f4botYNSRkMhUc1oJXvTHTWiQNmGbcliDWxqx5+dfiToeHhcBANOdHBg0zTADVVHj3mE14Rw7nXSPw5g97o4MIUTu+Wd/q3w3k36JUM/tiD1MrwM
- Y0RyB/nB
- e+r2zW2fQFt4Un7v4NOQ+FGCCdX9XvbGloZbo/IY/vUIwn6Q7KnlNY+mcAZED4LxcanwDbL0QGp8ehPtMM/QlmC6dbSESvhAGuPr/W1Gvist/UdyAQzOs30F7X+IAWrb9dAAzr0enbr6CkEsfcZLxobKwHeH+ZaxLdSV7BtE4pRzuT43Ne/1eP6TYOykNVYMnTk6wv+1mNWwysL44zoTmwhwrwR5109Mks0gvVdVPmhLRuEw8e3lalGXSt6JSFMdDOe0ENkTxIcMl21tu11E8WrZ2eYnkPYxZc/1b2PdH9WG6ttRJrbsRG5qva7xVF8/Ls2GgF7L4QqaPA2LWHysEkA+5I/iZqVsq2KE12IWa6YnDRKovNDS5PR9dwJKMnGTIRc7qFSv97bSWY03WNZLrVasiOO/dO9bdbQ6KCANxs2M7fz6t4R3rFeGN9kAJ400yDR3d1YDUhdOK+fSGfWaGmSWrTQnBGaqw43/AYeTqbJq/9M0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 762FD20007
+X-Stat-Signature: irrdeicmwafsm6w45q79rxs1gmgtix8x
+X-HE-Tag: 1784012062-919385
+X-HE-Meta: U2FsdGVkX1+wIqnItcqX0ol6f1ewZz5EkxxWbgYbebogO1jCVEfQmpoRaDPg4NCV2eFT9zTxtJmqBVETgckseS3QGxdg8WNRyRH0Jd86SxoFieNcb0XphJ8wH6p2pAJbO5C/5pWua9CEGtKXkLa3QQff7zCmdK0VPMzDynYow/RIAe8hRAOBRJy3fKMwfiXyMzjCWplY+qzW1GwNEmUir6mQJqr/VZGfR1ZCsYZsSAYs8AttZo+49Re/oOpdH+Jj2LlPYtqaWF0eq8WWDtu5z9JVOMq3elQ01F32QT/kRbJBEAYm7ayCdQXln5tkfxHjfvDhmwysNzDNdiaXgqUz6usiqVQj5ARtGrs9LlTO9mmsNp+osZY4qt13KZPsGCAwhyubyv27g4OhlPlPZVNPR7+GyIpjIyAoeIv60F+VdmvDKzeMzjhK+Jkd+8oI/IbHpBj2DGOpPDfHxDDnxIrkFoN74fHhhR1+H5a+jT5v7P1g9R8pUzdNdS7xNRAJ329S1zpGSRGwo9W08NJl6qExoggWfI47rkSIwfktInOgnUzAbYdv+MtrJJ1H/C8uyS+fiwlaxZWTRMfKfDpqjN3as7VatN+RwtTwCCXSo5azRZeqCWDvicbU0P5+bBoSxk0/BDG9KzHeqC42s61LOkte0ypswSXJV+WzxPu6w94TsprhIRajw7L5lSiuH9+qSC5APaZbjhrYA7fgHRoHFp7z1Che/sVob9Msqd4uJFhkd2E4RqArc8w7k2EfCECz+tk5ct8pSYrBrvhHzzvRzm6K9uJpVAJ1cmFyV8j0bmFhVWKwrGyQZtwu7c1qlwwwp6GNIkNNYPOzCmkcEHn/uHPoG6EdFHNz72LAn8wgfX/BzcS9evTtj0gntn1x90rlolitxZSw57ZYJQVfH/i2wVmTZG5aqhywfF1XzMC1s+PuppnLcrbNnqBp6+pAcoVD/mOaOak9Ia/vBzkwdRKQnxV
+ 9KUUeN27
+ E/6t8+nL4j5zzQimB4sBRtW1tJ3aRWd4I2hGCsrJ0ziTH2/psoSIkBh/m9OjQMC/Vgu5i6D+95Y2lptkU8Eu9Dqf9ec5FG3t/2cfcGxnG48vxqO472rfyeKkf5c/xXJ3sEf9V34by3mSGtFmDTh0+FBvYliM+SGUPo/Ejz0Nc7DFbceyB9HC0576ZQP1kI6D37PoAUF95VE9iWnBMVNfi3GSCTDZWmMMhIdBcL1r5iBA60gWeHeiKllEFHXVyXWQLLCVZmdJ5GuWsjn93pYUhpyTzPftuJV9AW9l8KCkvhYZhXw1oqo9LRpllHuvLNqIcQisgXVgfwYUfsIAXQTd6DJFNdXSlDVgCMu1mADUgejSXFbKsaGTj5ROAsv098QNR7huJHQTUBv0acaM2UM1X+Yd596YfSH9XgDAHuAO91mc7UDMeHG4jsSDmHbLQCM0h6GnPV305Njp0Gz9lJVccjM01hS0dtsb99rPyQkHRKiG00fM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,85 +97,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 14/07/26 11:40 am, Wen Jiang wrote:
-> On Mon, 13 Jul 2026 at 21:49, Dev Jain <dev.jain@arm.com> wrote:
->>
->>
->>
->> On 09/07/26 1:08 pm, Wen Jiang wrote:
->>> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
->>>
->>> vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
->>> provides a clean interface by taking struct page **pages and mapping them
->>> via direct PTE iteration. This avoids the page table rewalk seen when
->>> using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
->>>
->>> Extend it to support larger page_shift values, and add PMD- and
->>> contiguous-PTE mappings as well. Rename it to vmap_pages_range_noflush_walk()
->>> since it now handles more than just small pages.
->>>
->>> For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
->>> iterate over pages one by one via vmap_range_noflush(), which would
->>> otherwise lead to page table rewalk. The code is now unified with the
->>> PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
->>>
->>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
->>> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
->>> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
->>> Tested-by: Leo Yan <leo.yan@arm.com>
->>> Reviewed-by: Dev Jain <dev.jain@arm.com>
->>> ---
->>>  mm/vmalloc.c | 81 ++++++++++++++++++++++++++++++----------------------
->>>  1 file changed, 47 insertions(+), 34 deletions(-)
->>>
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index d7fef85b241c4..d2a4d649af549 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>> @@ -125,7 +125,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->>>       pte_t *pte;
->>>       u64 pfn;
->>>       struct page *page;
->>> -     unsigned long size = PAGE_SIZE;
->>> +     unsigned long size;
->>> +     unsigned int steps;
->>>
->>>       if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
->>>               return -EINVAL;
->>> @@ -147,8 +148,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->>>               }
->>>
->>>               size = vmap_set_ptes(pte, addr, end, pfn, prot, max_page_shift);
->>> -             pfn += PFN_DOWN(size);
->>> -     } while (pte += PFN_DOWN(size), addr += size, addr != end);
->>> +             steps = PFN_DOWN(size);
->>> +     } while (pte += steps, pfn += steps, addr += size, addr != end);
->>
->> I think I had also recommended to put these vmap_pte_range() changes
->> into the previous patch.
->>
+On 09/07/26 1:08 PM, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
-> Hi Dev
+> For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
+> we can handle CONT_PTE_SIZE groups together.
 > 
-> I put this change in patch 4 following Uladzislau's earlier suggestion:
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Tested-by: Leo Yan <leo.yan@arm.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  arch/arm64/mm/hugetlbpage.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> https://lore.kernel.org/linux-mm/ah3Cn3YnefIVJDo2@milan/
-> 
-> Uladzislau, do you have a preference on where this hunk should go?
-> 
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index a42c05cf56408..0da746f729388 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -110,6 +110,12 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+>  		contig_ptes = CONT_PTES;
+>  		break;
+>  	default:
+> +		if (size > 0 && size < PMD_SIZE &&
 
-Sorry if I wasn't clear enough. I am not contradicting Uladzislau's comment -
-separate patch 3 and 4 are good. I was just commenting on the specific change
-you did here w.r.t vmap_pte_range.
+Is there a possibility for size <= 0 ? If not then
+the above conditional check might be redundant.
+> +				IS_ALIGNED(size, CONT_PTE_SIZE)) {
+> +			*pgsize = PAGE_SIZE;
+> +			contig_ptes = size >> PAGE_SHIFT;
+> +			break;
+> +		}
+>  		WARN_ON(!__hugetlb_valid_size(size));
 
-The only bit you change above is to introduce a local variable 'steps'. You
-can move this bit into the previous patch, so that patch 4 is completely
-focussed on extending the vmap_pages_* functions to accept a 'shift'.
-
-
-> Thanks,
-> Wen
+Would not these CONT_PTE_SIZE aligned sizes upto PMD_SIZE
+trigger warning here because __hugetlb_valid_size() still
+does not enumerate them ?
+>  	}
+>  
+> @@ -359,6 +365,10 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
+>  	case CONT_PTE_SIZE:
+>  		return pte_mkcont(entry);
+>  	default:
+> +		if (pagesize > 0 && pagesize < PMD_SIZE &&
+> +				IS_ALIGNED(pagesize, CONT_PTE_SIZE))
+> +			return pte_mkcont(entry);
+> +
+>  		break;
+>  	}
+>  	pr_warn("%s: unrecognized huge page size 0x%lx\n",
 
 
