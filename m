@@ -4,98 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 030A7C4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 19:11:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E6AC44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 19:17:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF5A76B00E1; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
+	id 328BB6B00D8; Tue, 14 Jul 2026 15:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA6116B00E2; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
+	id 2D9876B00DE; Tue, 14 Jul 2026 15:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABBFF6B00E4; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
+	id 1CB1B6B00DF; Tue, 14 Jul 2026 15:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DC6A6B00E1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 044DE140453
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:11:06 +0000 (UTC)
-X-FDA: 84988324974.05.9E8AAFC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2800E20005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:11:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ubEDfd2;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784056265;
-	b=QjXx3J0eFsflX7U8SNaP3HYH+rhV5q/MunfkEI8QfeaZInYkiX8rCPEua0INF7RGtH7CAI
-	ceQhVWQ71V7/k+m7W2pu/a1r5ZkJri0C60Oat9ybYnacpTP1MiKl89yfK3y4V/Tm6rlomg
-	srzncXzCNcDQ0riCuRbbnN9Ejfrf6DI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ubEDfd2;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DAAAB6B00D8
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:16:58 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 579AFC01EE
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:16:58 +0000 (UTC)
+X-FDA: 84988339716.04.02AFB93
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8AC6F20005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:16:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="mxgDV/6d";
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784056265;
+	s=arc-20220608; t=1784056616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w6alW6kAgplsNU9MfVHgcE3PqiC79iFkgMzFjduJ5sQ=;
-	b=Dw8x6fL+0ClZQWUQ0zCILicVjxnKJLlUToZtsaKitzqsrrd7F3KHNPZWm6AQYL/Wkqfqj/
-	DCoWreQJc8dWkifeyshJ9NtF76NRIlS/Vt2g7+8XMNiuISrYTeIHZvmJh40saZmLbAP+q7
-	KeLbxbahkik7k5LGoqiqa4u6+aa5CPg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0312F60103;
-	Tue, 14 Jul 2026 19:11:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C740A1F000E9;
-	Tue, 14 Jul 2026 19:11:02 +0000 (UTC)
+	bh=ox3+tgSJ/1AGA/fdosn/WLv1EiJf5bYFeotrA4JXv6k=;
+	b=Gv2Bcmglq0NDk6shk16kFxgYhD8Ynn4Z0Suubg0buN6NR7rFwyi9W9qOcVbMqCIKBwKqZC
+	3MgzNyyp7ClW1P/tUuBQkIOy/f9UV0TA1eUZh4+5iiIzwzJxkFhpN/UqVzJLLzmEH9XIm0
+	QMWAJwIF7HqC7ZUF31slwvSJWs3DjTg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="mxgDV/6d";
+	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784056616;
+	b=2idHB0qHVskYKFTrgj4iCKJJyXl432139zZhzIDVjG2fjmJjHlqbH+nksgny9B0s2m/DmO
+	u65YNcwWazzFjaP6ttGLmB/1/6D5x7+b1vKtzVEU46Z/2Ee0VX3bR/miN8EFpohYBKrDLh
+	m0pPZmjLEYCH3btW/a9pObfz1EwfJlg=
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6a38e51ae95so1003587eaf.1
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:16:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784056263;
-	bh=w6alW6kAgplsNU9MfVHgcE3PqiC79iFkgMzFjduJ5sQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=1ubEDfd2R3TAeYbwE0NtyG9rf0Dt9m11go+ZNpZ99iG+RnxImznq3aOOsz5c9eTc6
-	 krHoU0nLrt5epm3hWxpU2WqYggIoI9WP/O47lr/puJ1MOxkLyocPEqwOLTWCTbskuH
-	 IUe7SZrZnxZGODba8idgTvTKApYNyA9BPbBrjoeU=
-Date: Tue, 14 Jul 2026 12:11:02 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Uladzislau
- Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, Catalin
- Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain
- <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, David Carlier
- <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- stable@vger.kernel.org,
- syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH mm-hotfixes v3 0/4] mm: fix UAF caused by race between
- ptdump and vmap pgtable freeing
-Message-Id: <20260714121102.9cb28d080556c94d45a6bc3e@linux-foundation.org>
-In-Reply-To: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
-References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=gmail.com; s=20251104; t=1784056615; x=1784661415; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ox3+tgSJ/1AGA/fdosn/WLv1EiJf5bYFeotrA4JXv6k=;
+        b=mxgDV/6dP5b0JgpOZPoA0qcPXIDhrEr6CKfflNG7BfCWs4wO2xjDG8XmsPeUeriHVz
+         84YYRDs5Z/LXhUfeBE5u3xHr0YfY9a24VKM6No1MV3k3FMsDuDjvUnPE7WVG//gGUcL/
+         LmA3DUcruF5WCC/zFUKy1c6W/r5Vl0dS6iNfeTxtdMVtl9EHqoiCshsrSN9eoSUGtHuo
+         vIMfczjBwLkd7o3MxcxZcqp4A5oWVhSY6bhdk95RjmP9ibcpcCVc4Ealye4IaKottp/c
+         UGbMnru4LB44ZedArNrGgkGcVjxLodKz6pH2QlEysZ5KAiZeoc1EVBIRM6jg2XwzKuW4
+         VETA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784056615; x=1784661415;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ox3+tgSJ/1AGA/fdosn/WLv1EiJf5bYFeotrA4JXv6k=;
+        b=YJ9GSdk+enyvVlnqtEVkgjvft20O3PKPUyYZ7DehOUpIPfkc4dTzOdp4/3bAna3Uz9
+         um5vjv+xEQKZ7xxyjXviEQEkURr2I+8gnKMhqu/+Yr8ZrtD2rJczk/wfAMxzwyeizj2Z
+         dMg4pbZE0/F4nOp50LDVBiQDzkKkeY25DyePQ+fbn6GpFILIFqcH4oZ+sokdpr6LP/VC
+         1/H+LNfPtUQgsCwkjl2JwdnaEfe5lLAbi9tZSvTsUwfF0WCdJsiMLXYUL56oz29TdTvO
+         MPwqHk1FtFXQFvJNR4u4ceXUQ+4z1uKG84tspGww7D41dOXRTTNndyxUUPOasG6eO6fC
+         OwFA==
+X-Gm-Message-State: AOJu0YxBQ/o0+FJ7FNQ8+dfdjlWN8/mnJ5Clgqaq+xOTTmlgaFQC6H+3
+	yVki2ljQFFtgmmQTktJ7q+CUTqHIqPrHeZ4FBblEx6Tx21HGQafzu0RG
+X-Gm-Gg: AfdE7cmrIweOjQHlzSWH1AhyfFdZiEpcBbOvY53QJeHS1L/IP0y1iwGKghmZO1sEKKo
+	JsCNpoX+kVa0XjvolJnthCT1qOCU4/MD9vyrdW0tnrBDb8EmZFdhx89Ul7t3oTwRwGRSVHSkXRc
+	iN/d/VY8ISlS/cWYNURVuBmE/rGW4N/cvDt9Ax2G11SZ5N4Dnf5BQwEe+AAr9uzRItlUUmh+BeT
+	Jr6WcVPkTqoge8xLICcdKezFiu7BtHZ8+2uot4Y/xBSajybQcMnCA6xlXReeDcB7V4C/OkCHJXB
+	82LuLqnoz5yUK3TTdCSeXmxHtlSz761xVK0qU0bLKnt70J42JEy+Y/dpdd5kH5XDBOHlmNhjO44
+	shKdSPhw3Y2Ey+t7dNxtmywCV4+RH5oe/MfxJZ1Ir60wWzZuikbzKHB4DlWfToNKJ1IbnBqdLo9
+	rglUj68S9NLqj2AKD3Z3bi4lsijTrYrEYjN9IrGFM5Rg==
+X-Received: by 2002:a4a:ee19:0:b0:6a3:9853:acdd with SMTP id 006d021491bc7-6a3da002ed6mr39060eaf.33.1784056615491;
+        Tue, 14 Jul 2026 12:16:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:a::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcafdf8f2sm15761350a34.11.2026.07.14.12.16.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 12:16:55 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Cc: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm/memory-tiers: cache top tier nodes
+Date: Tue, 14 Jul 2026 12:16:52 -0700
+Message-ID: <20260714191653.829251-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <yq5apl0sk383.fsf@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2800E20005
-X-Stat-Signature: k1ddc1grq31jzsmxx6hse4unfshhu4j7
-X-HE-Tag: 1784056265-825047
-X-HE-Meta: U2FsdGVkX1+ZngPFy4XBM4KJRZOI5QgL5NQuaUcvCYQLCk7p0fS9WE+xPA4fIhReGtblE9ry+VDi/9Jo7A1mDuZhYCW+CXb+IhE5Te5eDERYOIKda27q8ViO/vDLxyMPCkWbdjbpXvh+lgzPzF/8SPYhW6dH9D3PNbQ6+QT0bd2eP33f01AGOXxvTfR/VX6bfshSj8qVLTutfXZjWbUjh52V90VnPB506umxVDqP0Txampr34IK7qAHp7Q+Kw9/BPe0dB5JzsO/7tyIRUxtbcxP2u98z6SiPwY0uIWMA2nOskSLYS1AJE+VHVm7HnIDd71J7/Hux/HXS6L8kdIOYA8bwwhqjn9QZSmko/wHzsfCSrfaFWf7ihs22BpgDXdcWRWcyDvNwfKKkosj2N1UkjZ/yr0vf40qv0hPV34+gdPKPQSvvd3XYwvMt0eYShK4MYrPRanObec6wTCsKgWyQLfS4puOvLki04PF8mK07ZOSHGafQ0lTsYnwQaH2wYbo1+vj6jqu4n59BJeIFX3jrlmasgfeEI9KoqwTXo31SCaiFFg9B2Pw6U2cqEH3BJrvT8/kwRJAtO9y4jqhK0SgSWClBoH+X5EzSYf8nVYi2mBJD/Ihotk6vgM6WrWwI/yBx2PXJJM5SskTC0uLt4NGtWVygv4Xfy4drbvAdJY8huFBZx1vNtWnz8mUNHajd3G7dMMyetraJwSRKZwb1gakJheMpF620EXtUcxOTCHjAbbQWt2P44EbCS1u0m+AXppopCSUKRK3kkOmc/p5NrfARF8cGhlAMVr3CEEwuBZjxd6qwimZVVS7uR5SrO7wHCYelVyo8BIGNwWSyRruhRanQ7P4wwPw2VYufMyrk4MVjI4kepYigSvLcPtIdW9DIIpjG+3p3UcjvhnVS1y6e2FWx1FW/9RdgM8gUMsFNtLjRckSpIiIV5Hf52mu3xc4PpuusRVra04l3/XUSvyrmndk
- YL9VIq9l
- 9usgQ/2iVIKZTWv8GVO2VTKorKN9JCAhcuzLR8Py9nggClzBkIz6yaFqa87OXduN38KmqFfKwENKTKFQ8JkKta3BzEE17MyRjSH+ibCiOqv67nig8ZvoLnx1yB4WWQZ3+I1akNTa492nWtMSN6+6Qcx+9IpCfnSeIV2KXpYXhiYDdYppMPOiMHq/mwiDbXI/1JmWJ6+9xV5qYSX3GUHapgS73YM9cNUMjhx94nbrtwp2OUJ0JKi9rnWe3w82NYEcxcC0qrnmw5END5cMGb09Q+o7wA+pZvacaILUbx/Vo+oNG0SbIfwq6/eiLtJN2v5d2kVNAafBvndrN0WVei1lilG7l1PXZhtkyEwUiJwHzfL1onxAyJQG4e0adgMXguFK3TGsfJfR+TQnXJvlj6d0mvcmzBQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8AC6F20005
+X-Stat-Signature: bo3bn17igrjpbbnyb4o1rexs5ss3qk71
+X-HE-Tag: 1784056616-35894
+X-HE-Meta: U2FsdGVkX18xsfOjw2VNTUrk4mSL7CfK4I8kdqdY9qc+dupoMQ608eB4HplTYe/knmfVhNSOVGqpYTYe9TNYO4C9NiW0wY5DH0QiHRjpqzs9zdbfsHxksLJBuWV4Zs5d3Divm6vvzu39H1iWXRf5768YPMXh/Xhb/y5g/JnSYQbrlBPuOXDlwphexhzJas0ElIgL51JUdiSMktTALop5dnJmiaYpGkSBI/Z22SRR+9HMMLaLGHFRuxVIE8q28CITXa100YWvKMWc9cyQBNHtOMmqQ505x9LWnjb90eAypMWHGZc8bTNNKwSQhwcu1+DO1r1ztOSvA/yzqXuavTz6+Yo0SAFmRXbJxuhbtC9QMH/ajJXBwH0tAZRNdmWHx5zjjwvs5IjExZ5R3WGDu1+NTHaeRHmyhCNLWh0EhKPrmttaQEqJq7aQD4nFHFZqYg3a8sSFnsXyFKJWEl+owoMaXT0mV8WwQ8V60DfzaRLbakPBEL3BBZqy8diHqVd0uRTrfQMeneRx473hSNLlrxzGc5S0+eKFpbFbsoABeqCMI1qUp6/ZE24k25InVtYMxfVcAQg3WOqdNkgMipEqo9bKsh17jMUPFTp3XyYu7+X18QlFxcGYc2CjCxmuC/XBdZj4rzkTnsBYfJe/+lyk/2lNk0ImNMKhudMOjQWGP7iUE/3Wr40Bqspwp9qr7ZYNY2sWPz0xpnt9WlvKpJiFWRJjXcWXk9+8SiCUdhnaQBSBEbS6/zRX4mHydYzfoo2MyEHygiUw3B9b3crt5AKe+xIJdUA+53vxSTNOgowQx9Ezt2IGWOYVFauuJWaGko7g7TlZS8ZJXOJZu4rf92qFBga4jb2FKVEP4R7ewW0prIkNkiWZEH2AVq05QKAYLauk0nTFDj5xstVq7LA90MUuapJM8bakz21Dl9El2F17Uz1TYKV6+0KDZj8NzSdd5ow6S6EZBGpbHJAUHpBo8QMjD3r
+ oCx62NiU
+ 2gZzeryQ3hFloeVHB8FEEHkrQou3kjRE7FVU3dOFGl3/2gvHDilT4X2VpFScGz2aDGS+SBDrFbEQ93Gq7oJldBhX1OhKGKJZJbvE5YB1Q20UnyPeQLeN6Ifrja4od0A8g6u930+Dux5PKvFCF/mwX+avF754Z+MD/SP6tc3P9dz8ZRgUaLDJlAZabdC0QREVVMsaJ9s8DnGIQcsWrVHvQNbLPNF8oS9TYeu04thJ94+uq1vejPskML57QMebxsBS5uF0W5RzK8Gxu1J8Tms8b+xwT1WgdGLMS9aIN/gxCZQ4Y8QwxRqmm5jPTg2ya6rw+Mq+IslK89i9vxi1PB7LC6ZUOot4nMb4JyQIE3HiGD9AHmwedE9g3cUpnFAhxN2fVo5IkcEPv+iqKEBztHYMqq/fOPTc4cCOy/9ireL8a7yIkOsrOIRkrGWiXNQx640QYd4neDm055rx7lLaQdxUXIIaHVZSBgoqLHzkBNXUocSI1N//mpGH3sA5eCTvYC+OOxPQaUvLpaqmLBa949ScmO82YZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,26 +125,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Jul 2026 18:24:22 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+On Sun, 12 Jul 2026 14:13:24 +0530 Aneesh Kumar K.V <aneesh.kumar@kernel.org> wrote:
 
-> Kernel page table walkers fall into two broad categories - those ranges
-> where no exclusion is required via walk_kernel_page_table_range_lockless()
-> and those where exclusion is required via walk_kernel_page_table_range()
-> or walk_page_range_debug().
+> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 > 
-> ...
->
-> This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
-> lock in vmap logic, then partially reverting commit fa93b45fd397 ("arm64:
-> Enable vmalloc-huge with ptdump"), keeping the enablement of huge vmap
-> support, and removing the ifdeffery with the partial revert patch.
+> > node_is_toptier() is called in a few hot paths: task_numa_fault(),
+> > should_numa_migrate_memory(), folio_migrate_flags(), etc. Each call
+> > takes an RCU read section and performs the tier distance check again.
+> >
+> > Tieredness for all nodes only changes on memory node hotplugs. Instead
+> > of recomputing toptier nodes inside each of the hot paths above, compute
+> > it only on memory node hotplug events and cache the results.
+> >
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> >  mm/memory-tiers.c | 36 ++++++++++--------------------------
+> >  1 file changed, 10 insertions(+), 26 deletions(-)
+> >
+> > diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> > index 54851d8a195b0..2e6e02ec1fce4 100644
+> > --- a/mm/memory-tiers.c
+> > +++ b/mm/memory-tiers.c
+> > @@ -71,6 +71,7 @@ bool folio_use_access_time(struct folio *folio)
+> >  
+> >  #ifdef CONFIG_NUMA_MIGRATION
+> >  static int top_tier_adistance;
+> > +static nodemask_t toptier_nodes __read_mostly = NODE_MASK_ALL;
+> >  /*
+> >   * node_demotion[] examples:
+> >   *
+> > @@ -276,27 +277,7 @@ static struct memory_tier *__node_get_memory_tier(int node)
+> >  #ifdef CONFIG_NUMA_MIGRATION
+> >  bool node_is_toptier(int node)
+> >  {
+> > -	bool toptier;
+> > -	pg_data_t *pgdat;
+> > -	struct memory_tier *memtier;
+> > -
+> > -	pgdat = NODE_DATA(node);
+> > -	if (!pgdat)
+> > -		return false;
+> > -
+> > -	rcu_read_lock();
+> > -	memtier = rcu_dereference(pgdat->memtier);
+> > -	if (!memtier) {
+> > -		toptier = true;
+> > -		goto out;
+> > -	}
+> > -	if (memtier->adistance_start <= top_tier_adistance)
+> > -		toptier = true;
+> > -	else
+> > -		toptier = false;
+> > -out:
+> > -	rcu_read_unlock();
+> > -	return toptier;
+> > +	return node_isset(node, toptier_nodes);
+> >  }
+> >  
+> >  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
+> > @@ -497,19 +478,22 @@ static void establish_demotion_targets(void)
+> >  		}
+> >  	}
+> >  	/*
+> > -	 * Now build the lower_tier mask for each node collecting node mask from
+> > -	 * all memory tier below it. This allows us to fallback demotion page
+> > -	 * allocation to a set of nodes that is closer the above selected
+> > -	 * preferred node.
+> > +	 * A node stays toptier unless it belongs to a tier below
+> > +	 * top_tier_adistance, while each tier's lower_tier_mask collects the
+> > +	 * nodes of every tier below it so demotion page allocation can fall
+> > +	 * back to nodes closer to the selected preferred node.
+> >  	 */
+> > +	toptier_nodes = node_states[N_MEMORY];
 
-Thanks, I've updated mm-hotfixes-unstable.
+Hello Aneesh, thank you very much for your review!
 
-> v3:
-> * Rebased on latest master of Linus's tree.
-> * Accumulated tags, thanks everybody!
-> * Reworded commit messages as per Kiryl and Boris.
+> Won't this result in a larger window where every node_is_toptier() call
+> can return an incorrect result? This change would make every memory node
+> a top-tier node until the loop below clears them from the toptier_nodes
+> nodemask.
 
-I've confirmed that v3 introduced no code alterations.
+Yes, definitely. I think I should have instead constructed a local nodemask
+and then swapped it out at the end, I overlooked this part.
+
+> I assume an incorrect result from node_is_toptier() is not too bad, but
+> is the performance impact large enough to make this change?
+
+Yes, but I think it's still important to keep it correct.
+On the notion of performance impact, it's not too big in the upstream
+kernel, but I'm working on a series that adds more hotpaths that
+frequently checks whether a folio belongs to a toptier node or not. 
+You can read more about it here [1].
+
+Thank you again for your review, I'll send up a fixed version!
+Joshua
+
+[1] https://lore.kernel.org/all/20260423203445.2914963-1-joshua.hahnjy@gmail.com/
 
