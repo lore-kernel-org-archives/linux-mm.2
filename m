@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A20C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4525C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43EA26B0092; Tue, 14 Jul 2026 06:00:17 -0400 (EDT)
+	id A35EA6B0093; Tue, 14 Jul 2026 06:01:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 416796B0093; Tue, 14 Jul 2026 06:00:17 -0400 (EDT)
+	id A0CD76B0098; Tue, 14 Jul 2026 06:01:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 355DA6B0095; Tue, 14 Jul 2026 06:00:17 -0400 (EDT)
+	id 8FD716B0099; Tue, 14 Jul 2026 06:01:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09B026B0092
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:00:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7401B1402F7
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:00:16 +0000 (UTC)
-X-FDA: 84986936832.23.556485D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C5D16B0093
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:01:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3946A034F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:01:16 +0000 (UTC)
+X-FDA: 84986939352.25.FD95971
 Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4858D180013
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:00:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bkl3kYSs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	by imf05.hostedemail.com (Postfix) with ESMTP id 90B7D100019
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:01:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WbTn73Ca;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784023214;
+	s=arc-20220608; t=1784023275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NUPSX3E//W0AeV47HSxp4Kotadz3oWkmsbNwC7CKH3M=;
-	b=dj+DuT7eMUVo7vf1vRM9zNc/sA6CdVmxPOKiNXOc2JimP9w1zM9oKVx9Z2MomqrBk/7I7o
-	v1Wkyaj4jt+Sm4DSyqN1qb1B5PUgNs3Uhh5P7dsXlJPz26wEbgPVl6/aGlDGJywMhe0F5y
-	v5E8ok0tHkKyqZjKj9EVn76gb0No9i0=
+	bh=lSUnFP23E7MR4lFPLdnwHJ9sWUfwgVFYkHzPKHpXt/4=;
+	b=dVoPGHEJjkAe6y7jks75txYaXhLTQHdbGHbatTV8yhz/pVwab6WC6jRrblvM7UzGI1EHYL
+	Js6fGLDre1Xf4ldJQQTaeAN+Pv3dkogN0yFGPFU5ESwPWXZ4yn+0zLq90UNyerDuIuhpQt
+	r8EzCnY0K8mW9E/nWU4eYvB+CsNA+xU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bkl3kYSs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WbTn73Ca;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784023214;
-	b=KqG+sXZbmblXaaFHOP6iYzazv99bR9tXzlsVdC8MmOehRF2p6M05GJCZf33dweCaoBRh80
-	lWt83292YdhQe2DHkqnUCbvcuwjQK5K7gE2eBkm1eoIvY72/Tgvka7t/xxUjo/4yOYQEio
-	vZBI9OrHk6dYb3fPqxX/2w4xl+bPZjU=
-Mime-Version: 1.0
+	t=1784023275;
+	b=Hxo3x2wLtKqucNOfOxKkWWVXbtcc/3MFlB+p5yLWsvUwRttt7oG73FFNqEV2kkLcqFRAMT
+	RELoZxx0/bTiaKC+wMXOUsfqVxXjIAUHBbTyTRRw3eGRBpiBMjhuyWPywqGOJNaWr59daA
+	jp3p9DDgno/K66iTSn7qWBwzXJOOWgs=
+Message-ID: <aa5f1c45-169f-4eb8-9b50-1be4fd0d804e@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784023212;
+	t=1784023267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NUPSX3E//W0AeV47HSxp4Kotadz3oWkmsbNwC7CKH3M=;
-	b=bkl3kYSsZsZgtlbsRJie/vYiUcqpiiAwW8MCWKzmGVHbETWoW37cqDPc8+pNOw9B+doh+V
-	YGZ8pI0v8PvVLrfI2RCbusZIbxrNvlwCFiTU5qX+XgbDOMQGVUs7GFk5mydNVB4W/PqqMz
-	dn7Vgg+ePbQY/swE3bofW8pauXZpvWs=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 14 Jul 2026 09:59:57 +0000
-Message-Id: <DJY7FYRG6QAO.2WG6GBYXUKGSV@linux.dev>
-To: "Brendan Jackman" <brendan.jackman@linux.dev>, "Harry Yoo"
- <harry@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Brendan
- Jackman" <jackmanb@google.com>
-Cc: "Vlastimil Babka" <vbabka@kernel.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Sebastian Andrzej
- Siewior" <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>,
- "Steven Rostedt" <rostedt@goodmis.org>, "Shakeel Butt"
- <shakeel.butt@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-rt-devel@lists.linux.dev>, <sashiko-bot@kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/2] mm/page_alloc: don't spin_trylock() in NMI on UP
+	bh=lSUnFP23E7MR4lFPLdnwHJ9sWUfwgVFYkHzPKHpXt/4=;
+	b=WbTn73CaweoTDIlGnKps0gEHOLQxXacKRHGEFej6SBrTauU5zvpNnGlY3MKVEL8/krECxL
+	9x5oiBWoDl8b/FXsa0ic1eRT1XgSgSXh72DWoDHo3zd6t1WCZO6AUlmBTPdM0UE45FjnYK
+	V5ion/OdhO/A/eMwVT8E+NOOwfnftk8=
+Date: Tue, 14 Jul 2026 11:00:42 +0100
+MIME-Version: 1.0
+Subject: Re: [PATCH v4 04/11] mm: zswap: add range lookup for large-folio
+ swapin
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com, Alexandre Ghiti <alexghiti@fb.com>
+References: <20260713133613.2707815-1-usama.arif@linux.dev>
+ <20260713133613.2707815-5-usama.arif@linux.dev>
+ <CAO9r8zNVnwAS-6jOQtGrcN_fq8C+6kRiiRX4=kp9h=fTC+XYNQ@mail.gmail.com>
+ <da9458cd-f039-4c7b-9e00-a473b05aa3b2@linux.dev>
+ <CAO9r8zPhwmJA8MyJPiBJponaMETbgMNd=Pz=_bj_PBo1D-Bw0w@mail.gmail.com>
+Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
- <20260710-spin-trylock-followup-v1-1-affb5fe5ed00@google.com>
- <20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org>
- <DJXILB94G82L.37YBL62YO9XBK@linux.dev>
- <4c969202-a8ed-41a8-9e9a-281a12f6dde3@kernel.org>
- <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
-In-Reply-To: <DJY7A190TSH2.B1XHHIACRSYW@linux.dev>
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAO9r8zPhwmJA8MyJPiBJponaMETbgMNd=Pz=_bj_PBo1D-Bw0w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: yqtzga3w5dzqbtior759by4mgkc89ctd
-X-Rspamd-Queue-Id: 4858D180013
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784023214-503083
-X-HE-Meta: U2FsdGVkX1/xnJKWKd+Ks6qti79Ym4yCh+1HUBZqM6qSE86emE/KN978gPTlNGxX7OUTywybdhJsX1tyPNwZYuQblkdfdH6fIotuA/D9LEjfvto59JN135EyUxjhT+u5PJ0gjHVZXni2I9DolITVLjRxeJrOhlc2JOwbXuTNHFT16e3lfQm1rqDYPYfhoY+n+RQILRGVVjWYP8hEzJwgOpP3rdwVHLsa4VJNq1xcxB+yrFzqiLNYm7e8VdUvsqjwTqAau6KDAorEGOMPtLTpZKza4WK9EjPxkqNPTy/p1s3ioYB74BMOPiIpTjG8moMX/ufvOaellLKQqhRiVOl9PlCYO66+atI8zLjnl3UPyMTYiE1b4+2BlP4kGlqO3qnX2Rn68HSvGv0IPAJLr6jk5W9rFbTT/0LdimXlXwK4tOTmpfEcfGM53md/QzlSHsEu10ej8x99KyHpQyMDjbFckS3pe+OdnQIW+Tq75VMswjxKdlbuT5de/2/KoaBn5WymJO3pk4dF+jG84IIL/rSQLjb+vyeFVeYEId5zkrpTqoVUpCTMy+YQBx0JCBMEy7vSofHAjw7ny++GsBEnrgbb0V6zufuzd8reR2k91YaN9/M9apLeryE19YDGCSXNScd6yrnhQOH/68eT4J8nlB15h4VRc9O/qq3u2lPA1I54c7vNk58b6I+IOMOHOQvtsC1xdi9odsUQYo2POthn6ipKMg5B5wuD4wEV4SEzerTiTVOrLbWFoBYxx/Oc5sFUPz9JAKEzBRaR+lxz583nJj+XRelC3gaIUOsbfoS9j3hDWFn4sW1VXCqJC37Qn/oYiEH3OfPlTQa5FM3+v1tBTUTDqHCKDWl0pk7jQTKR3faK7YWGqP1kjJkKVNk2wb1HsAILT6nzgmogTCPBEET6jZHA38TqbqHyh8owCkVtXzLZqUs1ewvhYiujLTCInrU4scx+ug7TkJNhCjFt8A5NXqY
- iLVBrm2h
- tEpv6gN2g7WRnnbbggVTOYufwLOck6OkK/09VP3m8+ckRkLujT271RBRCcRRKbJ+9mUktCuZo3260nqwp1JjtUlNn4cMj9D7tEaRbEZHDfoBacRgmIzlFTDSIfinDFyGZk5/3voZY6VY2Hfp9ZZaL9E6CQZXheKBvmzx/edBLjA5hOzjRo8kuzwkqtJWgFYLFyaRNF7HQ8+2AwkNzd4jeohv26PDLmPS3tzh89fSKGhXtLrfMD2vpd0pxVnjOF/7IzaiZOjxS7HL4pqHHldrm1gBZ8G9/Cya/UafVARFohC2sRnxTL4+9gnVdE2/w+SKDP95MOAxac5r6wIZXpgE1wQHjvW21+7w6Q0ANmiphG105La00DNfzji0vww==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 90B7D100019
+X-Stat-Signature: 95fxq9r41qz6867wj39r6hrdpjbaemmk
+X-HE-Tag: 1784023273-66289
+X-HE-Meta: U2FsdGVkX1+Ow+L5olUGNnS/vvht7dbp09LgOFCrfEyflKYwsewqBsik8giCZbAM43iXyIC29gbRtYd6T7ujQPqkWHuVYoK5EC/tFVuDEJIL1s917MjCw6nLV3p7YlYb1rOu4UT6WlBzm+ifriZA7ASazWLA5lPD6XD62tEhh2PVWFrdXAjCl32xM3bec9JEhedo4Aw2Cb8hjPBECxMdrSXkYd7ar6gKVxypbiOh3d6bTVQW6vC5L1E/IbKcFu3oXeG03K03BDfopEBn483TbfyPeY12kTsNwoI8dmlZWZ+RjNwSA+a4Kw4n96aHj1c/wJQ4t3Ssn8CR45UpGb7r8m2FQdkmbS/OrjdfKOqINV5ryKgUI22ymVfNroVFTmerzaNF6+PBRTK4nKmXU6pr27+nxsEXKLw67F9rFJIx7g6kexGprrP5tJfdbgL3jFTE0N0yRnohUWi4hd15v4kGKQ4FOfa4zuu37quWYW1i0Hibz8JmvlpNeU51E3aEhrJ+KYYM3wGWCBzPZRL235vInc4IFeo3kY1J0Nmi7KFhxwFBSWLwL8oLNj5j8I4Wi+78zfGB3Tx+TzPPreHnTI5ozrCKdJmpeWWuAcLlIM+dvIYVzyXKxH4CnAsHSVnKV6Kue28SxT75vOSlZwFqJZGzcjUDmEBAv9kECcGyVVTkJBPY8+GGrM9lAZcjSZNuMxDWJWYrvYRqC8mJl8RdGaLtw6YCRQWY0zFcH53tXe/7o+OIOMwzbrjom8glq95xsAtzpqnXRxqVT8H38KQhx1Od9EVoxwfOJx6n8arSKZ0vYC8qi0ihkTtUrEQemDmKy2m61aMDrvwn3HjD/BzvINQYK5LBSbBTOjxWQ6gHqOx77bSZgwAmh3lhwtUXqENVQAuyXRwoUj7J88a+KPigmsmCi1LIKke7v0h8rCpBBVVjOZw12B7n3yy61hXC3nD5MERwZw0FqUNiH3cmC1fluIn
+ P7OK9SAP
+ SBw+jb1iyJvhAoPvlUjqFTSUU/SZUiTqW6hXCFx5Pb437GE8uN6tzL0I0vtQVDEyVPmO4AZ77BXjlUz9zJ4LY28qCOZP8aVUBN3KpJh/e/8Ie4m5U3QWiSwAlwSxmuCEOx4SobY2xTuZVmRWmiDPWLRrNwP8x8d5FZrVuDCaAkMla3oYkEMzfQ55gvyCo1U7CJ2P8DLJ2EcxA3Su/v7A9ZL6vNxRcN5xEPEo3Pn+rUgsYroo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,42 +103,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Jul 14, 2026 at 9:52 AM UTC, Brendan Jackman wrote:
-> On Mon Jul 13, 2026 at 4:15 PM UTC, Harry Yoo wrote:
+
+
+On 13/07/2026 17:55, Yosry Ahmed wrote:
+> On Mon, Jul 13, 2026 at 9:29 AM Usama Arif <usama.arif@linux.dev> wrote:
 >>
 >>
->> On 7/13/26 11:31 PM, Brendan Jackman wrote:
->>> On Sat Jul 11, 2026 at 12:03 AM UTC, Andrew Morton wrote:
->>>> On Fri, 10 Jul 2026 10:42:20 +0000 Brendan Jackman <jackmanb@google.co=
-m> wrote:
->>>>
->>>>> As noted in can_spin_trylock(), using this is unsafe in this context.
->>>>> commit 620b46ed6ae17 ("mm/page_alloc: return NULL early from
->>>>> alloc_frozen_pages_nolock() in NMI on UP") fixed this on the alloc si=
-de
->>>>> but missed the free side.
 >>
->> Ouch, do we allow alloc_pages() -> free_pages_nolock()?
->> Didn't notice.
->
-> We don't explicitly disallow that but I'd say it's "forbidden by
-> default"...
-
-Oh, the BPF arena code does it.
-
->>>> Also, Sashiko might have found yet more pre-existing issues:
->>>> 	https://sashiko.dev/#/patchset/20260710-spin-trylock-followup-v1-0-af=
-fb5fe5ed00@google.com
->>>=20
->>> There are 2 cases here:
->>>=20
->>> 1: !pcp_allowed_order() -> This is forbidden by alloc_order_allowed(),
->>>    quite a bad miss from Sashiko IMO.
+>> On 13/07/2026 17:02, Yosry Ahmed wrote:
+>>>>  /**
+>>>>   * zswap_load() - load a folio from zswap
+>>>>   * @folio: folio to load
+>>>> @@ -1571,10 +1588,9 @@ bool zswap_store(struct folio *folio)
+>>>>   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
+>>>>   *  will SIGBUS).
+>>>>   *
+>>>> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
+>>>> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
+>>>> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+>>>> - *  do_swap_page() will SIGBUS).
+>>>> + *  -EIO: if a slot in a large-folio range is unexpectedly still in zswap.
+>>>> + *  The folio is unlocked, but NOT marked up-to-date, so that an IO
+>>>> + *  error is emitted (e.g. do_swap_page() will SIGBUS).
+>>>
+>>> Just curious, why the change from -EINVAL to -EIO here? Does it matter
+>>> in practice or is it just a matter of personal taste? :)
 >>
->> Hmm but alloc_order_allowed() would return true for !pcp_allowed_order()
->> when spinning is allowed, then pages can be freed via
->> free_pages_nolock()?
+>> The caller only checks for != -ENOENT so no functional difference here. I viewed
+>> it as a change in semantic, -EINVAL meant that you passed a large folio, which
+>> wasn't supported to -EIO meaning the request is valid but zswap cannot safely
+>> complete a PMD-sized read from per-page compressed state.
+>>
+>> I dont want to speak for Alexandre, will let him comment on this properly :)
+>> But above is what I thought of when I got the patch from Alex.
+> 
+> A mention of the reasoning in the changelog would be nice, even if
+> it's only semantic.
 
-So yeah Sashiko was right after all.
-
+Ack, Will add in next revision. Alexandre, let me know if there is something
+specific you prefer to add in the commit message, otherwise will add something
+similar to above.
 
