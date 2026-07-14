@@ -4,169 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FE47C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:34:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8AB1C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:47:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 339DA6B0092; Tue, 14 Jul 2026 09:34:58 -0400 (EDT)
+	id 4FDCF6B0093; Tue, 14 Jul 2026 09:47:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EA376B0096; Tue, 14 Jul 2026 09:34:58 -0400 (EDT)
+	id 486F76B0096; Tue, 14 Jul 2026 09:47:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B4F86B0099; Tue, 14 Jul 2026 09:34:58 -0400 (EDT)
+	id 32AFA6B0098; Tue, 14 Jul 2026 09:47:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E32896B0092
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:34:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71269140343
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:34:57 +0000 (UTC)
-X-FDA: 84987477834.25.BFEB9B2
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8C89FC0003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:34:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=P1uSVwJ2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F03BF6B0093
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:47:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 78408403B9
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:47:14 +0000 (UTC)
+X-FDA: 84987508788.21.CABA60D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7D6AE4000B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:47:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LB/8CSbN";
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784036832;
+	b=sws6SeiWtej/LM3khn0opNvEhsdmS5fNKC1nvxx38JzamBWKlzNGniTiZL9Zy2BoBFfv0B
+	JEmHO4WRmGU1nPEh7UdEKKpnLs3gDJJc3e987KLMkRT0N6DIGL6+ldH1Nzh4KSw52gPCFw
+	Hlvm1e01caluoWjpY/OSXDE3HT/zi4Y=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LB/8CSbN";
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784036095;
+	s=arc-20220608; t=1784036832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+1tfMkiBqW2Fu1p0sa+0Qy+YQWqKnxqq1+cNEQovCl0=;
-	b=b0fagvZFnn3uQokARQ84k/Bz1lA/pzumQUg/EXmaxvgH0xq7T4ZpFyLD0UXCncx8PILLjH
-	QtPvwmduZpffil4fLsq4xjGMOdqYJcWs85fuech/vFte9ku8XSaGQEarYiHAegYHqTUPXf
-	fKNvNX/T0qDe0GKggUn2WrjI6dWdrH8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=P1uSVwJ2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784036095;
-	b=rcJZBKcVado062QZeJtq6KBcGbrTyDwNedytL2RoUPi3uNvNRyVjoL2OKhiz138JlDbIs9
-	40LI7i5NqOEOl8KiDaIx4OR43MOGzX8WOpiBDfUQUEXFNRon3aKzaiKi0OOj8pFBzWjTai
-	KNwUCyfki9OZkGfBpmUF9zEuvxl/nSk=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47d70879764so2812192f8f.2
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784036094; x=1784640894; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+1tfMkiBqW2Fu1p0sa+0Qy+YQWqKnxqq1+cNEQovCl0=;
-        b=P1uSVwJ2aHQnat5Jmg7GQvKLEQT2cI97gBc0SaCI8eRDmjFnPIbpj4kYdXgZbcPGoC
-         IdbBV3M7Z85fkVIgqALF/CDCdpML3jTCqSFuecjk5nE33EhEeJtg09eA5iHSGHLHH2rn
-         sxDB2OOvRP6gy4e5YX2ikMaPTj8HWRW0KKoqExCUenMwTMedl7K/0Q2KgemErVFHcmSv
-         P1zQQdd7i8CP3cNJ0qg7c8pJV94tIxdnPe/YMIKpbkedilqi26lr6P8nW7feoymklcx8
-         5+7XAX6r4cYxskjW9Abnus+c98OlOp/y5zVOCt8VVH9VuIZF2iX9Q4sIJ74nwBtfmGnC
-         XWBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784036094; x=1784640894;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+1tfMkiBqW2Fu1p0sa+0Qy+YQWqKnxqq1+cNEQovCl0=;
-        b=ga9SvZMDqcYU3EfjuFr1ouHb6AHNnoYIIsFknXEG19CH+egGAACGpWFHgrCx14/wup
-         NvAACnY2YErEzbN6cg6Fx1b/uhoh9O2mskFKAgDnMY3ynjgZ6b0tqrKVoxYw2hMLHfJR
-         jj+lu1YG7x5nlnUfpKpUGJ6MwwPQYTvyymHepsrgu/zgsZsL4u9mXe0aO3LvCZvhmrev
-         YsI90ea+0EfWruAe8+yj1RwujxQORoyEjMQc83dP8Zr0oaM7XNB3Z1sH5nOSrNcXKpze
-         gNGL489EHVgLgk6Fi5gZ9iXeBhhTWequd+17EDcQEDts4W2hCsiYx9XqJAzAKJmtpjTV
-         IqoQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/mRuvfHz2u5nMT9g1rU4cvDcZfrXGT7/PgpY3nnBwEy/jygLWztrPOgZxNdGC1a63T87OkYixSQ==@kvack.org
-X-Gm-Message-State: AOJu0YwqhP4Um1rPLwACNcL1gvBNgdUo/FJocNTN1XoqXN9woVMl2X4/
-	05n9LC7VaReny3v7R79Nrh0C6h9vmipb+mSM5nGNpTzim3q+AmZ6MbLr
-X-Gm-Gg: AfdE7cnXFny/F/YZyugGSeA4hi4F5PaeKmUOa6QzRiPKTQoRFnm0jrXhwyRciXpF4Xy
-	RTJ07oPNzMCLrr9/PQ7gaLSFlo/a6wG4h8nvcojGy8tHtGsUYFBU3BsoG6bN0DQL+3kARLp0ve9
-	lJ2v/IdE48USzyx1CBC+acou3+8EhmpBJO/TRucRkp0GJtDSUXJTKdF3BT6Zkm6USTp7ACo3T6t
-	FWzoud1jx1h3P2ooLQZcTHx1qU0c2BYBYmUTtlRozMvXw10iXsmcQElGYCBJYnUC0nmArUdw4yY
-	PAq41n26nllOQvlogpigcxZLBN0K6zGyUhO0lWkTxQu6fEUCRfBYS1I9+WAd9GaDA2IQp35b406
-	/xODXCwoFmn966YDJCQm/yz0IRsTDcfHEr5MUp86eb4qHrTSvBApvHQKGwCTfjqYzw5x5xp9fZa
-	dNfK7isxLWa6zLwzyoGPoMD0BaxfhI0UNGOqZkbVE0sRj9XgKga7h1qpIAH4Hm
-X-Received: by 2002:a05:6000:26c7:b0:47d:f441:5f93 with SMTP id ffacd0b85a97d-47f2dcc02eemr15207624f8f.25.1784036093714;
-        Tue, 14 Jul 2026 06:34:53 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635a63esm8687695f8f.9.2026.07.14.06.34.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 06:34:52 -0700 (PDT)
-Date: Tue, 14 Jul 2026 14:34:50 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Arnd Bergmann" <arnd@arndb.de>
-Cc: "Pedro Falcato" <pfalcato@suse.de>, "Yeoreum Yun" <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, Linux-Arch
- <linux-arch@vger.kernel.org>, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
- kasan-dev@googlegroups.com, "linux-csky@vger.kernel.org"
- <linux-csky@vger.kernel.org>, linux-m68k@lists.linux-m68k.org,
- "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, "David
- Hildenbrand (Red Hat)" <david@kernel.org>, "Russell King"
- <linux@armlinux.org.uk>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Ankur Arora" <ankur.a.arora@oracle.com>, "Mike Rapoport"
- <rppt@kernel.org>, "Magnus Lindholm" <linmag7@gmail.com>, "Christophe
- Leroy" <chleroy@kernel.org>, "Klara Modin" <klarasmodin@gmail.com>, "Huacai
- Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>, "Kirill
- A. Shutemov" <kas@kernel.org>, zhangtianyang@loongson.cn, wangyuli@aosc.io,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Ryan Roberts"
- <ryan.roberts@arm.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>,
- "Rohan McLure" <rmclure@linux.ibm.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Tejun Heo" <tj@kernel.org>, "Kevin
- Brodsky" <kevin.brodsky@arm.com>, "Anup Patel" <anup@brainfault.org>,
- atish.patra@linux.dev, "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt"
- <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre
- Ghiti" <alex@ghiti.fr>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Andy
- Lutomirski" <luto@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>,
- qi.zheng@linux.dev, "Shakeel Butt" <shakeel.butt@linux.dev>, "Kairui Song"
- <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>, "Andrey Konovalov"
- <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
- Frascino" <vincenzo.frascino@arm.com>, "Anshuman Khandual"
- <anshuman.khandual@arm.com>, "Yang Shi" <yang@os.amperecomputing.com>,
- chaitanyas.prakash@arm.com, "Ard Biesheuvel" <ardb@kernel.org>, guoren
- <guoren@kernel.org>, yang.li85200@gmail.com, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Dinh Nguyen" <dinguyen@kernel.org>,
- "schuster.simon@siemens-energy.com" <schuster.simon@siemens-energy.com>,
- "Vivian Wang" <wangruikang@iscas.ac.cn>, junhui.liu@pigmoral.tech, "Muchun
- Song" <muchun.song@linux.dev>, "Vishal Moola (Oracle)"
- <vishal.moola@gmail.com>, "Nam Cao" <namcao@linutronix.de>, "Pavel Machek"
- <pavel@kernel.org>, djbw@kernel.org, yu-cheng.yu@intel.com, "Baolu Lu"
- <baolu.lu@linux.intel.com>, "Jonathan Cameron"
- <Jonathan.Cameron@huawei.com>, "Coiby Xu" <coxu@redhat.com>, "Andreas
- Larsson" <andreas@gaisler.com>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Geert Uytterhoeven"
- <geert@linux-m68k.org>, "Stafford Horne" <shorne@gmail.com>, "Jonas Bonn"
- <jonas@southpole.se>, "Stefan Kristiansson"
- <stefan.kristiansson@saunalahti.fi>
-Subject: Re: [RFC PATCH 02/34] ARM: mm: make 2-level pgd_t a scalar
-Message-ID: <20260714143450.61a94085@pumpkin>
-In-Reply-To: <b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
-	<20260713135614.1618183-3-yeoreum.yun@arm.com>
-	<alYL7B0HAvmLVHGU@pedro-suse>
-	<b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=LVXdaK2c8G8evNsHKw/C2JRPENt3K5Jpb3OpKjeLkUA=;
+	b=WnbDn1Ylnl2ARRnpU1EuU7hrHPdoC56j/D1L0h6uoa9G/zboaH3xQOjsH0mvBZ4zVUAbUR
+	V0Lps+qewk/ZheH1NoNsKnRtqxhfMIqVcQZEKP2S/CEWVz6q5BWcCqjTGr8o0GAHiZ6oRa
+	vKdh+l+lcDCC9Cn18US9gm7yL51+Rx8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7EB77419C2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A1B1F00A3A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:47:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784036831;
+	bh=LVXdaK2c8G8evNsHKw/C2JRPENt3K5Jpb3OpKjeLkUA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LB/8CSbNgC0TdnmxsKyQrPpzOy7HzaXj6/F3Ax7OgH4RzmEEObjOVZTder8OBvXEV
+	 8tePK/5pGDcD3kJW70FwgGZQZVHwsuIAoVor3mapUe9ypgEZNHpPn4WCxgQ8t/iyoi
+	 4I0O/uih9TREsTxiL0Duh+RDatUe/xyYUK0M5T1VMWyG0wvh0yrD5x3MekJp+XCea2
+	 Ac+pR/nzTlsVNdDilXaHxyLY4QGDTPPzVjEuXIzMpxG/4OV0aQaq/XHZDhbUIHry+w
+	 pDhKwuX7VB/BxNPlOTfcXOfesziaxjVuO2YzUwWbb7PpMc6AYW30RV89P00FYgx7GX
+	 b6WVxYPJD51jQ==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-9217d13c276so277199985a.1
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:47:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpNFB050WoXVYB2C02v78gKFdkP1FYq4GlAHY186pLjKOO0/4MBASxSxMsCfZz+YwQHroUWSKt7qA==@kvack.org
+X-Gm-Message-State: AOJu0YyNxrcnFVQxyVaVym2XHy6+WL+UrDktjHE8eLPZom0g947y+ReI
+	fukoCvcoeCqyXNDJ1IKIWZjzx8XbkOnQPsd2YUtqQefnh7tnDIUhaTqMO9Dd0YkEHldr9e6O3TL
+	gWfNZDSUoUxcyeRbR0P6b/ktFzjXzcPc=
+X-Received: by 2002:a05:620a:27d2:b0:92e:efc8:cbcd with SMTP id
+ af79cd13be357-93083c766c9mr310969485a.34.1784036830770; Tue, 14 Jul 2026
+ 06:47:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: upxppceeys99nsq78woycm75y6dt1q5o
-X-Rspamd-Queue-Id: 8C89FC0003
-X-Rspamd-Server: rspam01
+References: <20260711091157.306070-1-ridong.chen@linux.dev>
+ <20260711091157.306070-2-ridong.chen@linux.dev> <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
+ <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev> <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
+ <CAGsJ_4zcgURKZKBAc6i0Y5g7u2OXjENDE7A=nqYcQ9TTVuR=Hg@mail.gmail.com>
+ <0545ee70-b0a0-4a93-ac2c-3e84ff504e5a@linux.dev> <CAGsJ_4x7cg-L_OzCdyZy+8zoKptVi-Jh18k1HRkvTBTbn-EQRA@mail.gmail.com>
+ <bfb1cfa1-691a-4bac-beb6-caef9b3ac4e8@linux.dev>
+In-Reply-To: <bfb1cfa1-691a-4bac-beb6-caef9b3ac4e8@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 14 Jul 2026 21:46:58 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w8P8ERoXJY70wXf71MYEA16vX+JMAaE4sfB4=OqzN_Pg@mail.gmail.com>
+X-Gm-Features: AUfX_my8Wy9WuK8pVudQOCevj6gZzWFIrCPc6vkC_rIS3KHDzSv4JuNzHZriO3A
+Message-ID: <CAGsJ_4w8P8ERoXJY70wXf71MYEA16vX+JMAaE4sfB4=OqzN_Pg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	David Hildenbrand <david@kernel.org>, Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1784036095-637134
-X-HE-Meta: U2FsdGVkX1/3kB0T90RpBBOfhq2vPr34eshPZS846TiogbyxlhV2SxnEg7nJxRreD8j+WfvzbhG+uUlUGtaCeU7xakFDXhc5UACbGepGskXVNV+CUG7NSDoExFesplDUBQd1RaO8yZ5yEV6vzLUPflql0ErI4saPFO9xrbk89DUjZEcXx49ktjgimxFKX+P8XTwZOk6h8QKaM2W/tjRxUSdQVhcBQBzOj7q9KQJrxV7eO5gik1p9Ka2moKjkJzsT24ZrFFIibS5J6xwVFMrpdF/KqsmTxG24Af3UqoMsaoFUjbDWeuYNRknRgQ9rMQKBADVdLndW+utTkXIFEW76DytyB/gL7uWAI6PTn88ZWHwWQQ5WDSIxksXXfaWVNl5YUGWD6sBVlCj0/9oGdFPKgUTuCOyV/1/Y9ULVfVd8I07d5vrUJiWW2V7XLQBCIYfAumce4CnlhlZnwVzAm66s/qfZedLMhhC61tBwFPt0DVTj0ozJTVUn/DnxRFonsEqb5qrhf3vRUBz3SRSOKOTn0A6KIDlI2atJGw5qFRUHI+KaDENvBGaI5TOfcCwoZ3bIKOQMUxcAc6MbUAunuXvnFzxtOxF+p+xQ9VGVjXWswHW/TD8zI/nbmjwvhciG16JCNiOx2wTiq0Q3ZBcx011gP7RFQUvSqJ2Wp12v9jSMNbbJOaEdHzt58X+aUyiLDGfEDVIFv3JpRqVuMpQHyG35CUcbBbz80Qf3V966B4u8J6qxkIY5deSc+PuuFbM214CsZsKBBvubNCckGEeJj2XiACJlCfUFSUDZr2DqF5yfx8Eo82wAI/yUPD3gPNDOxUBhrOZbFv8SCkaRY4YGSzW5kOOR8cEWfMoLWbWuAqTo3K0FvOw1YsUU2rJW5gJvTlSBAkYO35A25vmQ8G12K7k7dAeC/5xtjP8WwStodU5SEzWzXtpPvoUeX6JrEX8IPiqY4tS87+QOmRGK8a3pqDN
- LCE5iewI
- wRHACdbyNk20Ss+++90Qlj9ztzjxfsUG2TSn1zr263lVFM7bn1NBc0K8qEqU+v8L8giLwEp7SzlvTdCwBrJJB7YsC5J47bTzylcaWfdqyKqfZVPe4sBzfnj5JFJhJfBA4mNXOmkABEZla0k8F9vESKsWnvPv17fl7fuRpFe9hQHwDORMgf2Qgt/jmSbbPQWzvEvg2yXB4NE9kKp0ERNZcL8odQPSVgwdPHgaKqEdu2aOtpDMtTarWW8lho4h8jn8o6YtzUxajeUsPV6whXXVTDWQbCRx254NCsNpDzMViE9RLRRtmH+a732+oCEhY9cBfSUbFMZgRUiPHEmeEZSr80Ar/ESpemY7cE4ExnPCB3Y3DWV9/QGn7rTWHJIz32MHATGVYIdZ05OIEkHRjnACsv+GonsoIJJWEJ5TX+IOLDj5bKLPzG4Qe71Xe36/q3/9OiO566EcvQxfMUsi5QuPS/mnnBg+g0aoj/IpmuSXrOPWeHftbkiVrqvjLD5qKBXeVujoGqTfJbWdJu2xLUluKzplS0nZqRIgG19I1M3SCTOS52vW9PGOS5i1mboDcgD7EOqhU0RvUPRC/pbjgZhgu5qisuq1GVn1NddSVmC+JZpgUzrhU0HHtB+K+VjRUz8mBNQaNGyOJ7onth9gDQeDcoJw3WSUoVQDECcltO1g2qtvbWSapZiK0/Iv6wZMj8e0mDdPQsAH/tqEz/zc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7D6AE4000B
+X-Stat-Signature: 53pw4jouq66sumuqi9jo4ck3745y8y63
+X-HE-Tag: 1784036832-643018
+X-HE-Meta: U2FsdGVkX1/f7EKJVwCN5j0hCn3vVz0JsfPtWhMsJXH6RZTK3QWu2Gk4CbTYZzs2+seiqwtACbj1aQXHunvQXA/pL/ilC3QECH32hV6gMdpW0SLMoDUFfZS485ogR4n2Pfn1IAWmlZMbFD+lMJ5EPJL9zlqtTrSYUcpNk7IkIT05EyXAWgpUW4rciG04NGoC/Wd/lgkBPSZZqHr/EIrzVEa/x1HNJyBsWrgi42gToOOVbmQawc8IpAmp3QMG8Uy4QtI+vUM6Hu9j5SYYbkea7GFTpC0gvJh+3o8BObgrL/9eswrTjNxEXv/n1ClCsS6lSEHAnOwlZa4DDRE5pINdyokLMDanLqguiuVBjJVqBW6tGrX0wi4cFYZ4LkXlCX7FANpKkEw8ZnQObgYEAHLaFreEZhUwzxs7IPofTpVbZYvZ+aSYwTDiEuMdhRVubtfdZpmUAPB6YS3k8RmzsUFuKMvgKjK6l4YKhpQEiXEHkTICULeLyHlJhlok74VJ85hNvHrXq9gmvKOE3JU888X68rrkG5v3b+4vqw9hqcne/zUj6Fn/9EGEtJuGrzMbCYOOcy/td3JTPBneQ19XEPrg5z6oIagwDrUGXhgWFzWxK27m4A/p3Cre7grWf3vOK4333sT4/9OubqfwWqvEwi4dp6ML0Y4rb52crQcVfTjQ+rGbXhgrbNJp1sw2bz4vF91lir5JUFTn5x7Nlp0dP1xdN9xqyNv3Yq0Di9Gd8pnc3WC1ZlB1ZMa2xkuzCvX8bjaFMSlmUbFTSOx4DmGUNXRQ2nN4NKDbxKe+axCV8uSmnmC7cv2/qpme8wd7tIIaAKjp6zkHU8AbMGQwjraI0yM9RNdNAc9MjcXD2jT5D+IwEPtIxa2vK3m38U/+gGdldeCL4fS4AmYDLg+euIA02Y7k9zC9BreiVx4BdUnsLlvD4GtUr4zbzaVEu7Ez3kUPxJQt/mt8ARa/r9M4gNVRhYE
+ NCobkL18
+ Yd7BpyyX16807/XXC2iiwT6C+CxtOTsznHMhjUAs1/epemr9m1ET1pVe0hOIJo+BHXBOB2JrOKYSX/cjwio3E9v//3An/Gg+3QRssSkUQuiOfFNJQh6UmY0hlJvycjLhxcfvWAK2CQm6I48E8aNyxiEqTg0tY6nzawPuxSHXFIweFM/CCdD4xCOM/Frd9TXPU8Bjd6wxvQ0gwrGlpOyx/Bh/EGWgfSRZu39YKiNcjL0Kys952MgKyUXhOsRozxDlFtP/tg6XQB5WlZN2ICF+HA+3LlP/q3vlXsSrxS5vT2g2TEDvUD9mUsXB1JazNaqc+K4IJke3UwsykbKRByJWkAO/nsXvWuaVoqEn7lzafX87bX0VNINvktUGvGnW13dLO/XfF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,90 +112,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Jul 2026 13:55:18 +0200
-"Arnd Bergmann" <arnd@arndb.de> wrote:
+On Tue, Jul 14, 2026 at 7:31=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
 
-> On Tue, Jul 14, 2026, at 12:26, Pedro Falcato wrote:
-> > On Mon, Jul 13, 2026 at 02:55:41PM +0100, Yeoreum Yun wrote:  
-> >> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> >> 
-> >> We don't want pgd_t to be an array, as it prohibits returning it from a
-> >> function, like pgdp_get().
-> >> 
-> >> So let's just use an u64, and extract the right 32bit value in
-> >> pgd_val().
-> >> 
-> >> Leave the STRICT_MM_TYPECHECKS case alone for now.  
+[...]
+> >>>>
+> >>>> If this is the case, it still seems better to keep
+> >>>> extern int vm_swappiness in include/linux/swap.h.
+> >>>>
+> >>>> Then we don't need the comment:
+> >>>> /* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+> >>>>
+> >>>> It also makes it clearer that vm_swappiness is an extern variable
+> >>>> belonging to the swap module, rather than the memcontrol module.
+> >>>
+> >>> BTW, if mem_c_group_swappiness() and vm_swappiness are only used
+> >>> within mm/, could all of these be moved to mm/swap.h and
+> >>> mm/internal.h instead?
+> >>>
+> >>> We are making a big effort to move many unrelated things out of
+> >>> include/linux/swap.h recently. Could you check?
+> >>>
+> >>> https://lore.kernel.org/linux-mm/20260708-ch-swap-series-plus-folio-l=
+ru-cleanup-v9-0-2bc72b4f8730@gmail.com/
+> >>
+> >> Good suggestion. Moving them to mm/internal.h makes sense. Will update
+> >> in the next version.
 > >
-> > I have to ask: is there a good reason for the STRICT_MM_TYPECHECKS ifdef?
+> > Either mm/swap.h or mm/internal.h.
+> > vm_swappiness probably belongs in mm/swap.h rather than
+> > mm/internal.h, right?
 > >
-> > I see the compiler has an awkward time returning a u64 struct (see
-> > https://godbolt.org/z/qejbv6j9a), but if this doesn't work maybe we should
-> > get rid of the STRICT_MM_TYPECHECKS stuff? I seriously doubt anyone is
-> > purposefully toggling it on for testing from time to time.  
-> 
-> As far as I can tell, the #ifdef was originally in i386 and
-> got copied to all other architectures at the time, but was
-> removed in linux-2.3.23 from the original copy when CONFIG_X86_PAE
-> was introduced.
-
-For x86-32 the makefiles request 64bit structures be returned in registers
-(at the same place regparm=3 is set - probably added at the same time
-between 2.4 and 2.6).
-
-Note that arm32 can will return a 32bit struct in a register and
-arm64 will return a 128bit struct in two registers.
-
-The only problem is returning a 64bit struct in 32bit mode.
-
-I'm sure this code is arm64 only.
-
-	David
-
-
-> 
-> For some reason, only sparc32 and arm32 still use the non-strict
-> version, with arm having changed from the struct version in 2002:
-> 
-> https://github.com/tbodt/linux-history/commit/5a8202f0259a
-> https://archive.armlinux.org.uk/lurker/message/20020306.213958.cd486eeb.en.html
-> 
-> > If STRICT_MM_TYPEDEFS's worse codegen doesn't matter then maybe we should
-> > permanently toggle it on.  
-> 
-> This would definitely need good testing. It's possible that it's
-> not that bad on modern EABI builds (i.e. everyone these days) as
-> well as modern compilers, as OABI definitely had bigger problems
-> with 64-bit arguments.
-> 
-> >> +static inline pmdval_t pgd_val(pgd_t pgd)
-> >> +{
-> >> +	return (*(pmdval_t (*)[2])&pgd)[0];  
+> > BTW, I am not particularly eager about this cleanup;
+> > it could be done later as a separate patch.
 > >
-> > Ugh. This isn't correct C code. It only works because the kernel passes
-> > -fno-strict-aliasing.  
-> 
-> I think the bigger problem is the code dereferencing the pgd
-> pointer in the first place: Since the pgd pair is written in
-> 32-bit units in __pmd_populate(), anything reading it would
-> technically have to operate on both entries.
-> 
-> As the kernel relies on -fno-strict-aliasing, the type mismatch
-> is less of a problem than actually doing the potentially wrong
-> thing.
-> 
-> As far as I can tell, we are however saved by pgd_val()
-> only ever being used for debug prints, where printing
-> the first entry is likely all that is needed to analyse
-> the real bug.
-> 
-> > I would recommend either forcing a struct here, or
-> > using a u64 with bitmasks/shifts.  
-> 
-> That would require extra complexity for the big-endian
-> case though.
-> 
->     Arnd
-> 
+> > If you decide not to do the cleanup, I think it would be better to
+> > leave "extern int vm_swappiness" in include/linux/swap.h rather than
+> > declaring it in include/linux/memcontrol.h?
+> I noticed that some swap-related macros are already defined in
+> mm/internal.h, so I'm planning to place the code right after them for
+> better grouping. Does that work for you?
 
+We also have mm/swap.h, which is dedicated to exporting
+swap-related things. Is it a better place than mm/internal.h?
+
+>
+> ```
+> ...
+> #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
+> #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
+> #define MIN_SWAPPINESS 0
+> #define MAX_SWAPPINESS 200
+>
+> /* Just reclaim from anon folios in proactive memory reclaim */
+> #define SWAPPINESS_ANON_ONLY (MAX_SWAPPINESS + 1)
+>
+> extern int vm_swappiness;
+>
+> static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
+> {
+> #ifdef CONFIG_MEMCG_V1
+>         /* Cgroup2 doesn't have per-cgroup swappiness */
+>         if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+>                 return READ_ONCE(vm_swappiness);
+>
+>         /* root ? */
+>         if (mem_cgroup_disabled() || mem_cgroup_is_root(memcg))
+>                 return READ_ONCE(vm_swappiness);
+>
+>         return READ_ONCE(memcg->swappiness);
+> #else
+>         return READ_ONCE(vm_swappiness);
+> #endif
+> }
+> ...
+> ```
 
