@@ -4,109 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73DA2C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 02:16:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD48C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 02:25:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72E506B00A5; Mon, 13 Jul 2026 22:16:54 -0400 (EDT)
+	id CBF876B009E; Mon, 13 Jul 2026 22:25:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 704EE6B00A9; Mon, 13 Jul 2026 22:16:54 -0400 (EDT)
+	id C6FF06B00A1; Mon, 13 Jul 2026 22:25:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 643416B00AA; Mon, 13 Jul 2026 22:16:54 -0400 (EDT)
+	id B37AB6B009E; Mon, 13 Jul 2026 22:25:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35D746B00A5
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:16:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A63F8160237
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:16:53 +0000 (UTC)
-X-FDA: 84985769106.19.494334F
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C8900120005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:16:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BCBE6B009B
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:25:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF3D5A0210
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:25:26 +0000 (UTC)
+X-FDA: 84985790652.16.B66EECC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 17B15120005;
+	Tue, 14 Jul 2026 02:25:23 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783995411;
-	b=oqD4O0vcJnfFH6V06ytqG9Nr3/cB4XyB5IEfCv/4EIM+va40J5CEhCVjS944hw6avQBCuj
-	asNGVxOiICTCWVSVNhNd+wCHMrHegxcz6GOdMV0t6nQi21qo8gHzbLW5jgtr/CqaYYisF9
-	gBYrZ5WEhteVRZsavUk4d/6uX+Wwrdk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b48cJk93;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783995411;
+	s=arc-20220608; t=1783995925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=+WXuxNXu2YiQPlyTnBYb8jREO6PNL9KSv7+f9mDUShE=;
-	b=KrCxEA1G5zXFOojnLt+cIaxdv+IUfmWcY7BPrcy9XaGRSBInzwg24v2GBlGDMhkF6YmEKy
-	Gxhz1hKdq12RcuC+A39MF3P0udrQQ1wqw+LSvAKOwKGI/XnYl+OQYiNjPFwBygYAmAoYU3
-	rn4n8/Q+2THnmBUuhi/u165K2VbOQPY=
-X-UUID: 0ea52a127f2a11f1aa26b74ffac11d73-20260714
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_UNTRUSTED, SN_LOWREP, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:6061745b-ef00-428d-9615-cefe2838cb4f,IP:20,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:20
-X-CID-INFO: VERSION:1.3.12,REQID:6061745b-ef00-428d-9615-cefe2838cb4f,IP:20,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:20
-X-CID-META: VersionHash:e7bac3a,CLOUDID:9782d20a55bd8e8c50539e24beaf55c2,BulkI
-	D:260714101644V8QQ3DJG,BulkQuantity:0,Recheck:0,SF:17|19|66|78|102|127|136
-	|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:ni
-	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
-	:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 0ea52a127f2a11f1aa26b74ffac11d73-20260714
-X-User: husong@kylinos.cn
-Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 165745200; Tue, 14 Jul 2026 10:16:43 +0800
-From: Song Hu <husong@kylinos.cn>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Song Hu <husong@kylinos.cn>
-Subject: [PATCH 2/2] selftests/mm: restore hidden hugetlb reservation scenarios
-Date: Tue, 14 Jul 2026 10:16:30 +0800
-Message-ID: <20260714021630.1063823-1-husong@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dxhqIlF4Nmwz7Dc6V0zHplATkq8zPUSt2q/Zds9EZa8=;
+	b=BehFXGxkg3pYMccwhrK0MphLW6oC2nlVSR5KrIb5pf9yt59Qz+62avUpT028WiVytzm5+D
+	31NKWmkE/TpeepZCQO+F/KwIGk+QA5eWXTpt2kIIxpB9Nw9KZ/t6W4M+LXt3o+M3Hshly4
+	jtAonIoTdZ2JA0N2WdiljTKjceonYhs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b48cJk93;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783995925;
+	b=IsZ3ShWDFTtqBcbgLIpvJ5t/exVJEC6epVqBOHo2zJMxASOK+w+MLLwPpFstUZCbpCVQev
+	a/Qn8x0iQy7aqIRD3oBQhAdptsVMUekR3f0hIDSieYcIcykYphi4myQbLapCHHLi3YLjON
+	Abnl7pP7Xr1+eN2ZNsfLChzxbxbI5Ng=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AC9B660103;
+	Tue, 14 Jul 2026 02:25:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DE31F000E9;
+	Tue, 14 Jul 2026 02:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783995922;
+	bh=dxhqIlF4Nmwz7Dc6V0zHplATkq8zPUSt2q/Zds9EZa8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=b48cJk93FtKmn41eVdolAVE/uzQX6EHo01Pnkn0OgnY1vIvJtpHyTyl3C+S0onbuL
+	 GGMGjmfE2JKefejiLP1J3PzT6MIi/Ch6j4XkBShkTRk15H8PEW9ZSYVvQQ/3WhTIGU
+	 P9nMjGwkFSOLhnsQCjHUwc7HZ389d5X722tVvR6w=
+Date: Mon, 13 Jul 2026 19:25:19 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Benjamin LaHaise <bcrl@kvack.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Lucas Stach <l.stach@pengutronix.de>,
+ Russell King <linux+etnaviv@armlinux.org.uk>, Christian Gmeiner
+ <christian.gmeiner@gmail.com>, Inki Dae <inki.dae@samsung.com>, Seung-Woo
+ Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin
+ <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, Jani
+ Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Rob Clark
+ <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang
+ <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Lyude Paul <lyude@redhat.com>, Danilo
+ Krummrich <dakr@kernel.org>, Tomi Valkeinen
+ <tomi.valkeinen@ideasonboard.com>, Sandy Huang <hjc@rock-chips.com>, Heiko
+ =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>, Andy Yan
+ <andy.yan@rock-chips.com>, Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter
+ <jonathanh@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>, Dmitry Osipenko
+ <dmitry.osipenko@collabora.com>, Gurchetan Singh
+ <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, Zack Rusin
+ <zack.rusin@broadcom.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Matthew Brost
+ <matthew.brost@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
+ <thomas.hellstrom@linux.intel.com>, Oleksandr Andrushchenko
+ <oleksandr_andrushchenko@epam.com>, Helge Deller <deller@gmx.de>, Kees Cook
+ <kees@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
+ <tiwai@suse.com>, Boris Brezillon <boris.brezillon@collabora.com>, Steven
+ Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-aio@kvack.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org,
+ xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org,
+ linux-sound@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>
+Subject: Re: [PATCH v2 00/13] mm: convert more vm_flags_t users to
+ vma_flags_t
+Message-Id: <20260713192519.58113fa69c169d3f5f82e453@linux-foundation.org>
+In-Reply-To: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
+References: <20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: qkgxtgzrj44xjp5rhb84gox5qe9bod5a
+X-Rspamd-Queue-Id: 17B15120005
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C8900120005
-X-Stat-Signature: t6wjh85spxogiuokwag468u9pjroxg77
-X-HE-Tag: 1783995410-331333
-X-HE-Meta: U2FsdGVkX1+ZCrlAenDYDO7oUumSYzyVx05OqeSHFV3ZCCLue24UOv/LHnWzmLU/BRnHcXKaAjX1qrP2CszCc9qZNMwXm+0bEzarnihp5d7k/wSxvpw82Cdpm1q9JTkdQDQdJMvD/NcUPwPx47PKhvzy2giOy4GE791g8qT7XgGRPeNyMGBiG2yrGx8E7es1qBp+ftZpy6FzU52PAqP92Vrxc7S/02fIcY/8t1u6homvD0eYi6AAk2k/Pg1F2YRuE3p1ck3lZZ0NvlQzwczbJBXeXVBqxFLubN5wfypFojE+Wi/40p/UHhEPsIdSWiROpJb0CLMqEteBzZD9h/3m6kiAU6EOiDCJk4rEygwadTmCAzdcTOAxvc15j+rCfvAeM4F9XPkqSZwtgYYKzPst1Kv1TnaEGbKO0AoSy6s/2wfVzdZ2C6S8MXrHOwT5wQ8VvINVgq0k7WDUwVcDiHgoBBMiSgSjOBxhssEjXsAY8QoY3a9MLJ1mjXLapFpsmD4O9qZKscMZKIvotSzFJzx7+AgQxMNwqbuObRcUBXIOaYqivegdlgNFm2sdxkapJeT8FVpLt5l9ra8KGuA6za31npHfeZUxMabEY9M5ecSJ2Lwibskzl+NEF8NfT8S82OYLHpXAWkRfalRajn55cMAHyMDJMZ+nqsd9O6nCsFSF0Qap3Hcgcjc2kuod+LEUxWrYNY6YDXWJ/U30kyzmpUrPJ3/TjT0KXr5WHk0glE6r6WxfixUwVEO/QClfGQy7NOuavy6B3D8porvugXKB4lEgpzA39/JE1Wau/0n1Jr++AvBG6QL01HCpkDrHVGYMJLb4iH1p591KFM1vmYGN/wvvE6GwsXiHZ6xQySAzBZGy4HmPYTnRJXq3BXa0q0kO4WZp5nR9JuTTxuGy/WJFgFxFqHvFaGrswpoITmkTi7iYHlBnhmC0zzQQWCmW72+66cy2PDf/qrwgAyP90yMhK5T
- QaHljXog
- ZrTUl
+X-HE-Tag: 1783995923-389014
+X-HE-Meta: U2FsdGVkX1+xV/m3fJJO/1Ov90/OX022awRO9nshYNd1YApmzNruZ6XRuVqj0AwHINRz+S4YdDezolpFI9V652PI/G2R9BI6BuZXVP2zVwGTEPTrXbvc80ILfASk6jKTUZ95tMZyvIOesX642C10Yn1GThNCqeX24MvlqXIRoDjp7irVd4KKIPAS8TU8cS7RhyrTquxc6NyVPLt+o84IQvK7uQmgBHfq/IKxvBlOAbay+NmvGZI+blJ23GJghJrs0cCu3d2tNxaCQe1XX0t/ZY0Xo8lASLoJwnioRG4JvSsVXuumpFHWOpSg0wl5UCdWjHFDnbCuUWAq2MS6NQEx7cg8lTIJDVWiO9vEKiqOdsqFqjKuSX4vm/hY1QX82DVq9qyRqkO67zvyE1gwmo/fN5eIGEIEFlVDTVjfVvPvKvwTu0K5qguHL6jwpknydleS1cz5KqujW52sdo3RVaGWYxkMIC4InMOz+0lOa9c7BtQQRmDZkHrxaVrSh4mtHaVkEj499Jxf2bnMc8BpU7DtIj7ZNA5DMFfNwDreFDf23WD9LzIPizjq52QR93/9+kpSqUJfURDonvdjcAR/h49067dGj4l0Y/6Io+tM7pKLEK4XnikxR71Us9WxsLR+jc2Z41fVssHNbODcmfzt3UE5irCz1Mnb2+Jl3WiVmDA45jUReI96G1dMtzWygrYqeq6o/KaYA+HkfxLBXVf6rk7gfNqiOETvmHFoTn16/tNo6d3BFn77XEB3dazY5STo5GIo4B0sSgI/JR8AWQYRoGyyx8+IwTp8fE7/NbBaTHq+yvp0N3fpOdRX5wEM7eFyeZWa97Jk0YlBwuQ+Lfup0Vb60rfMwN85chFL0rPo077/q1jj1AfA6mav8JtJ9V3sD6vY/99wnATwifSwz4vhTX0qJQehQYOmGoqh1JZnyemhe38VlizMECZcRGebdYfVzitUzC0pMczOeAjkkfC1bJs
+ is8vLLvX
+ ePnLwtu892AqJBiiWakcsKV+eMOzttSB1Zz7L4g6/bfQVo3WOzVmBIPTUA/mykAbyX8BbUmJ7XCqxYeDdhMvzgNA+stjQCszYqbLLDoQwZxW7UI8pMbMeucnqaoHnnQM8l/e1wISqsr/gWRbu1g+I+K/Rgy8epnUd3Hih8jTIOqURfvxm7nkRqz9fNC/pn7VDT7xtiXOfH3/06X+VuOxH2EQ0KLAjuhQTL9DlwGD5j7EJHHKbul4o/FMfMxH0s4Sq6UwA+jNZaP8oB5f7oePTLVjthVcM9lTy8qZju8NaKCKsPu1TzkMQE79iZM5D7yazEgZh8C1fXzYimYfyZJwKosYI77A9lmmpAl7KWnmxDDCcJQKwLNWUaUTjvJpTeSemYTpJ9w65pVdESlO7By9ytje7vBJgPfgfVjdAKwaKygrPrP9IVhUN7TER5rqBydx1m4PT7Atus2UK84qA13QsDjKRypOGchzq393BltUDYWlGOg23JeY3Pah1Fw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,66 +146,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A stray 'continue' in the main loop of charge_reserved_hugetlb.sh made
-the "more than reservation", "more than cgroup limit", and "multiple
-cgroups" scenarios unreachable, so they never ran.
+On Sat, 11 Jul 2026 19:44:57 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
 
-Remove it so the first two run again. The third,
-run_multiple_cgroup_test(), is separately broken -- a backslash
-line-continuation breaks its local declarations and its hugetlb
-reservation accounting does not charge as expected -- and has never run
-in CI; skip it explicitly with a comment until fixed. Also correct two
-`[[ "$method" == 2"" ]]` typos (harmless empty-string concatenation)
-to plain `2`.
+> This series makes further progress in converting usage of the deprecated
+> vm_flags_t type to its replacement, vma_flags_t.
+> 
+> It focuses on mm, though updates some users of mm APIs also.
+> 
+> It updates:
+> 
+> * The core do_mmap() code path for VMA mapping.
+> * Unmapped area logic.
+> * The usage of mm->def_vma_flags.
+> * VMA page protection bit logic.
+> * General usage of VMA flags in core mm code, mlock, mprotect, mremap.
 
-Signed-off-by: Song Hu <husong@kylinos.cn>
----
- .../selftests/mm/charge_reserved_hugetlb.sh        | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+Added to mm-new, thanks.
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index a1cfd3a349db..18b2f2060c61 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -439,11 +439,11 @@ for populate in "" "-o"; do
-         fi
- 
-         # Skip populated shmem tests. Doesn't seem to be supported.
--        if [[ "$method" == 2"" ]] && [[ "$populate" == "-o" ]]; then
-+        if [[ "$method" == 2 ]] && [[ "$populate" == "-o" ]]; then
-           continue
-         fi
- 
--        if [[ "$method" == 2"" ]] && [[ "$reserve" == "-n" ]]; then
-+        if [[ "$method" == 2 ]] && [[ "$reserve" == "-n" ]]; then
-           continue
-         fi
- 
-@@ -496,7 +496,6 @@ for populate in "" "-o"; do
-         echo 'PASS'
- 
-         cleanup
--        continue
-         echo
-         echo
-         echo
-@@ -530,6 +529,15 @@ for populate in "" "-o"; do
- 
-         cleanup
- 
-+        # The "multiple cgroups" scenario (run_multiple_cgroup_test) is
-+        # multiply broken and has never run in CI: a backslash
-+        # line-continuation breaks its local declarations, it passes
-+        # reservation sizes in bytes rather than pages (unlike
-+        # run_test), and its assertions compare page counts to byte
-+        # values. Skip it until properly rewritten; the two scenarios
-+        # above are restored by this change.
-+        continue
-+
-         echo
-         echo
-         echo
--- 
-2.43.0
+And oh my, what a lot of pre-existing issues:
+	https://sashiko.dev/#/patchset/20260711-b4-vma-flags-mm-v2-0-0fa2357d5431@kernel.org
+
 
 
