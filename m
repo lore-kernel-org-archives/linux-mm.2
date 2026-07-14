@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D92C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:07:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63384C4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:07:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA72C6B00D2; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
+	id 578066B00D4; Tue, 14 Jul 2026 10:07:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7EB26B00D3; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
+	id 54FA86B00D5; Tue, 14 Jul 2026 10:07:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 994686B00D4; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
+	id 48C866B00D6; Tue, 14 Jul 2026 10:07:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7033F6B00D2
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFC7DC03BE
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:31 +0000 (UTC)
-X-FDA: 84987559902.23.6832175
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 23F426B00D4
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB31880371
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:39 +0000 (UTC)
+X-FDA: 84987560238.19.6866D3B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1E3C41C0002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:29 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LM6l4iVa;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf24.hostedemail.com (Postfix) with ESMTP id D564B18000E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=X2EPALpi;
+	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784038050;
+	s=arc-20220608; t=1784038058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=865cl54nJQTbOF3eykkMxymd6hEBxnf3a3hksIMsfuE=;
-	b=FHDF3vrZTZ+G2KeXUH62jVdRLnAB1zB6mi3HHUU0KKXCQrz9j1M6q7x+mR0k3PFpTihFdw
-	cfeXhIqKTtqe3gMmGoH2E6ybxZyorDZH3zlqqNeLGWjpRmvpmCLlWSRx+zhq6q/E5kQORJ
-	msQ2zoBA6ORUxxNPL5k5xzN+NKD7uvk=
+	bh=KoCRR95PLYnVxjBQ0+K98Mlg61rzeKsyaOHBI9FlQ+0=;
+	b=nUgJxf3XdcQWboF2q/J3DDtv2OU2ajPn8mcvowWCXOm8eLBjdGQvgCcp9006L8m0qIWnDB
+	nRaI/buDUlon9RErYEyMKKQ4YMrsYo35EsYIFsiUNJ1FuDW6RsbtCECf3uyHRpx8UdHiGk
+	wK8Z0PqpfZVRq0qRuqe4bOLMz+/KlHg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=LM6l4iVa;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=X2EPALpi;
+	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784038050;
-	b=ja9UBgmwWceo3LKHSVfmjpfazbjpRzhp3xDZUC7Lt2+B95KqsnsJMnjiaerK/rh5WFX+Tf
-	o8aalUY31kYDgNCQkPaid+JZ/D8sd2r56fB1c0CsNXeNRQ5Xza4rSLui4ehpNFZtYozgvU
-	4tHM6niVkIiEYbMh5qMXFxl4D27YY28=
+	t=1784038058;
+	b=XBUwl9/KrXoNbV7HO+pSjcvOVrVtROCq6CGMelQwgy8Lsz1fOfjGsUfEeOeCzAl84uGYTG
+	ByLUOmhzumDILvmV/Xcb0kA7d74MYqiXt/2oi4zXHSuEchKPGzTdjQCJ/ZSli+kaLhk8Mo
+	VKJI9C0sPr1Y0CyNAE/nlyYXKQcu3Ig=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0350F1C25;
-	Tue, 14 Jul 2026 07:07:25 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B74CB1D14;
+	Tue, 14 Jul 2026 07:07:32 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D2ACB3F7B4;
-	Tue, 14 Jul 2026 07:07:21 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FA7E3F7B4;
+	Tue, 14 Jul 2026 07:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784038049; bh=VE9T6pQuQsM82lM79rZVxS9mOIiIj6SKheB2t7eP+e8=;
+	t=1784038057; bh=VrWlMtHqgM/vx22jiN3vYsU+W1Lh9jxCM8/DJ3H1HHw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=LM6l4iVarrFVDA4j9SWJAplc2WkKEHlGEtdlAtv7pOYj1y3dATl0KnbkElc5xhenP
-	 ErHq3OM3B9mOaLihBDgBjY6YaXcTg/I+07sfZRGvHPhPtHlUZIL/cU1EpblJJAXbkJ
-	 UH/xAtOtw9tn/FqSE+wrtOg61lpQnXFpNRh+nTaw=
+	b=X2EPALpiGXj7jZ//umW0i2ZiscPs5c3b9FVhjQsTjSc/roIUOCw5ccwKbAM8AZVT0
+	 R190qpIisEqdGcWQOaI8LP3WSMdBvOg2L0DaCq9z+740FCzemmIORnkMA6TGphJBf+
+	 c9VjfZElkzX4N0E1s95w/Vtd50JJkhxZY+d0MtYw=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:04:07 +0100
-Subject: [PATCH 18/22] arm64: mm: drop explicit mm_is_efi() check in
- contpte
+Date: Tue, 14 Jul 2026 15:04:08 +0100
+Subject: [PATCH 19/22] x86/tboot: mark tboot_mm as a kernel mm
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-18-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-19-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -107,21 +106,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=2365;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=1553;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=VE9T6pQuQsM82lM79rZVxS9mOIiIj6SKheB2t7eP+e8=;
- b=IJb3I/i6HXAVQpbcZffARFaIRNRmoRCmPcfDA+y7q25vE/t36H63xBNhz/u8eBXK9/0ECckK8
- YJz0OELUjVVA+CXShhe5YzEf7ewVjSRMYhD9KGxFsYnbUmRuESOa0pX
+ bh=VrWlMtHqgM/vx22jiN3vYsU+W1Lh9jxCM8/DJ3H1HHw=;
+ b=m8zZWjxysI7gu08ZC5WjroF8ppS2XmCi+NSg9AchPnK6c6wz3EcnLIwt4UrkZ1Tknhd8Uq+lO
+ humwu8pswzNB3IZSFZsQqWeKm+RG8SsPRg6CN1eLU7ZKufXomLaUKal
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1E3C41C0002
-X-Stat-Signature: uhqb94s5yupa7gtpcf6r13og8cnuw4hx
-X-HE-Tag: 1784038049-314346
-X-HE-Meta: U2FsdGVkX18tbTwJm7xKI9hOyeoViegECcmi596zhxHkIwty/Br08Lzq9u8eu/3faYOP5tWUlGgjGR3gwijpMM3xDVMHQUoiUB1Y9tTw7ovDKO5t/PtuVd4tq5zYm11R2d9YWAmlOXsIIx9yG0rqpa4HzPRGoBmjo10pMIjRRXfUlYD5l/6UKG0X1Gq79B2uT/rFHplTknDqx9ria2kbti+Wsbw7UWgk9fbVQFDHrmKf5DMDWXxSc05MIE47H0dS0DI3zInG6ylz4fZ6A2t5bbOA3szGWDlcTZpDPVzKfsmefb8PI74lsJ4DGCwQV13vxyk7yFcEgwTTlWli3G3TBsQwiqN4+bCYlMRYmQkHo5cY1KGr775+Rg6JjIRdfyQVjyxKBJaFt8GUNevtZLwe6JvVJWdPlGdlhDvSiJodUZhVUO92i3CfGEtOyC0vPz5FgjpZFncuHGXmX+rwuNRd6yG0/ptMBgMReQqs6GSz4cmG4rtKnO0YBszCx+HH82ltbIVXLqqwSQ9hBbUT8lNE1IopZESdfHXzlBURadBhKf4uzqvlg6SV+F4FqdtOdIFNpvRd32amgo5Oh2hxRM1o0VbktFeenPoAm6DuKgB0vqJDWCw9MXBEO9sp2wUTCmqq7RjCxlImzOLLj2VaDTP9zW1ud6knSXVFpTTO03cReJogViZ04c4mavRVE5PYetPmGOR/uleKsrl+prYtvsJs/BRjcUG8mQQP4BHmWPhwOGhG++4jtz1CX3raYwGpdRcdCYnWAmINjpTH1MDWw3nY8rNu0trSV/cZqZML4WUWsvP4Ol2fhzJ7RBumBiPqeqgmJi4pU35OY6+rx1BsffimNK3kel8t5V5keE1cH1HAZ0SGsXP5a/IrHWEO/tIpnR4mVQnzXK+02pzluy3kPfFL1GqbwZC/O0F0dXRo0j6h3alZJs7GSroULOMVpTmowYyHY80HfEz1rweYjQzGkHn
- dxu237oE
- 3eDYy+BTb+qodhCpAiIMtCtPFI6w9Dcvu8T0X4AFXpWyOahvcAF28/A0u+TghtkH2sD5olzJ+V1IvhsXoSeNQ6Sjv/AaCVDIxQVsH4CLs8WYAdmqOwbRKB5w16bwaXTwtyTTRMZ19uZ6ekDVLCLLZVi3gPqJQpmY5Uqlb0lbkBWUYrF3fSSUSqYb4EpL684Tlcv48TLMI/44IMwadK/ryvg9LQv+Kl8hBhj4yytQTF4DL7NEXmQuL8gGmUJS/aDf/x2HYdp0HR1LboEvVsLUEUtIKMCRhEsdRewi3e3r3ct1XAF3NKHb+8QokE7E1NHHKEcXSBdQWkRSzoMaTrBGUnaI/zzBT6KIxLoliQ6ssn2CQAKNg2QEVsmKt7g==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D564B18000E
+X-Stat-Signature: squmazf8f3iwisnx5ig8733iec34hjkm
+X-HE-Tag: 1784038057-152977
+X-HE-Meta: U2FsdGVkX1/hVGlSR080E031FltQzCz8H+FefLFr9K5T0eJXbMWjJC9Z6pPw8PkVIEf59XiYmWJ72etOB5wJ03g1tO67vl6qxu5TqzVg7YxHUbLtFsNDKj7N3QRXEFddaX1o0ApHdCFocmCAMXT16Yw+rVfp1Q8pPW+be54eaEebx3I5CfXjCKIIks2YZSEvK0X092vRkg65Jp/J7nj0DPonCaRL0J0rBvFBGkFwQDqHOxz8C9OiDM9WLVjSbzC761UAaeJy3OCkUxrzjb6UEtrY/O+Y4M6PGkyuKo3qdyfzJ7R0iXM7498anGykpyuLIyO4Nsah8Hm6S/9rY7IJ8OiJrNWpndHp2P7njN7Uf2CTBWSrS+eDhVImoszFkdnZcA/dzwmk9ynfvacRAOOfp4veCweYiEVEsJYv2B1ozO2fukvvg8BvPwHMHAGsi5O/ZVoVXH5VOi9LTFzqsT8lcum73OQIwJ9ypH7GqRaiA3qVbBNASncHQXBPyvEOu4mTY+qOKadRuJIn4uym44AJz0w9e29sZ418mGB9towS1WmSxxQ0tiDzj1FZ45ZdGWVw2CNUNWziWFWT7IkwKJMMxTzUq/SFzE5AGqYKdPjwbo0+h0LvQNMKb1JeLE/U5w85r4kXc3z2Zze+gj/dML3fQ2vQoxq7OD8CWfaaBiw7KucxBWSvitEL17/Y5T0Fk3oInImsdYa/SigrN08+fMV03CeVdJGGKrdZLURiNaJcgrjxST+c0gezlYSK+ovVI/BDv+hCt0+GAWw8ZSJV5TsMTdvr1owEMcZu5MzSPjTm1hdjyOwqymVLYJzL/Ztf91CYZ8HljOMy6cK5BhEFCCEIpxgJi6jJFaAawEbpXA7Vf//kljTt7v0LpAyyNpWD5BwpY4Ub/Py2TVvgd6AO6wHax6Fw18HMncsHWHcOqw2JPIXm3FG63qLPVIL485Qt8Rw25DI2y/gt9DdhJkKW00m
+ uxO49gTl
+ +qGFGRxqOh0b+g+kbrioU2Us6Y2aSUN3MzQY3ON+eCiApcCpeuLpBHgN0aqx6sfu9nyoG9WlvHIqwsBdUxDaN74qbuDHlA3uxT/PxGsgC6cMYxP9OBrzD7o3rDrrBgLO4pfQOCYphIjviYq9ySwEIxXOgo/Da7zYBQSYNp/vQ1/PnP46nKNsmhCNSyHQa3dkBP142mAuk8CWS0PErDIMWmm2QyZTiaDT0Pr6np6TPdu2rlJsHG0AA9hMXeK6O30e0PvlgkmxhRCvW3zlSXZ4uu3ww/Rixu6e/7+53J64FUfKyJLpfgf+eiDsFvE7m2yP+O33wgH4yY+4UuDW0QK2/6b4zjE6MAq5Ky3JhaCRq5E+d3r+mtnegG3TeBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,79 +128,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-efi_mm is now marked as a kernel mm, like init_mm. mm_is_kernel()
-therefore gives the right answer for efi_mm and mm_is_user() is now
-equivalent to !mm_is_kernel().
+tboot_mm is a kernel-owned address space used to build the
+identity map for tboot shutdown. Mark it with MMF_KERNEL so
+page table allocation and initialisation code treats its page tables
+as kernel page tables.
 
-Remove mm_is_user() and directly use mm_is_kernel() instead.
+Having marked tboot_mm as a kernel mm, we also need to convert
+pte_alloc_map() (user PTE) to pte_alloc_kernel() (kernel PTE), and
+drop the matching pte_unmap().
 
 Assisted-by: Codex:GPT-5.5
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/mm/contpte.c | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
+ arch/x86/kernel/tboot.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-index ad5c04cf66ff..e21e279101ca 100644
---- a/arch/arm64/mm/contpte.c
-+++ b/arch/arm64/mm/contpte.c
-@@ -4,23 +4,9 @@
-  */
+diff --git a/arch/x86/kernel/tboot.c b/arch/x86/kernel/tboot.c
+index 46b8f1f16676..08c899f88e41 100644
+--- a/arch/x86/kernel/tboot.c
++++ b/arch/x86/kernel/tboot.c
+@@ -99,6 +99,7 @@ static struct mm_struct tboot_mm = {
+ 	.pgd            = swapper_pg_dir,
+ 	.mm_users       = ATOMIC_INIT(2),
+ 	.mm_count       = ATOMIC_INIT(1),
++	.flags          = MM_FLAGS_INIT(MMF_KERNEL_MASK),
+ 	.write_protect_seq = SEQCNT_ZERO(tboot_mm.write_protect_seq),
+ 	MMAP_LOCK_INITIALIZER(init_mm)
+ 	.page_table_lock =  __SPIN_LOCK_UNLOCKED(init_mm.page_table_lock),
+@@ -129,11 +130,10 @@ static int map_tboot_page(unsigned long vaddr, unsigned long pfn,
+ 	pmd = pmd_alloc(&tboot_mm, pud, vaddr);
+ 	if (!pmd)
+ 		return -1;
+-	pte = pte_alloc_map(&tboot_mm, pmd, vaddr);
++	pte = pte_alloc_kernel(pmd, vaddr);
+ 	if (!pte)
+ 		return -1;
+ 	set_pte_at(&tboot_mm, vaddr, pte, pfn_pte(pfn, prot));
+-	pte_unmap(pte);
  
- #include <linux/mm.h>
--#include <linux/efi.h>
- #include <linux/export.h>
- #include <asm/tlbflush.h>
- 
--static inline bool mm_is_user(struct mm_struct *mm)
--{
--	/*
--	 * Don't attempt to apply the contig bit to kernel mappings, because
--	 * dynamically adding/removing the contig bit can cause page faults.
--	 * These racing faults are ok for user space, since they get serialized
--	 * on the PTL. But kernel mappings can't tolerate faults.
--	 */
--	if (unlikely(mm_is_efi(mm)))
--		return false;
--	return !mm_is_kernel(mm);
--}
--
- static inline pte_t *contpte_align_down(pte_t *ptep)
- {
- 	return PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * CONT_PTES);
-@@ -263,7 +249,13 @@ void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
- 
- 	int i;
- 
--	if (!mm_is_user(mm))
-+	/*
-+	 * Don't attempt to apply the contig bit to kernel mappings, because
-+	 * dynamically adding/removing the contig bit can cause page faults.
-+	 * These racing faults are ok for user space, since they get serialized
-+	 * on the PTL. But kernel mappings can't tolerate faults.
-+	 */
-+	if (mm_is_kernel(mm))
- 		return;
- 
- 	page = pte_page(pte);
-@@ -302,7 +294,7 @@ void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
- 	 * We have already checked that the ptes are contiguous in
- 	 * contpte_try_unfold(), so just check that the mm is user space.
- 	 */
--	if (!mm_is_user(mm))
-+	if (mm_is_kernel(mm))
- 		return;
- 
- 	pte = pte_mknoncont(pte);
-@@ -465,7 +457,7 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
- 	 */
- 	VM_WARN_ON(nr == 1);
- 
--	if (!mm_is_user(mm))
-+	if (mm_is_kernel(mm))
- 		return __set_ptes(mm, addr, ptep, pte, nr);
- 
- 	end = addr + (nr << PAGE_SHIFT);
+ 	/*
+ 	 * PTI poisons low addresses in the kernel page tables in the
 
 -- 
 2.51.2
