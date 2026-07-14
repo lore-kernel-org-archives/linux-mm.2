@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0440BC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 02:50:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93321C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 03:00:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD6836B0088; Mon, 13 Jul 2026 22:50:27 -0400 (EDT)
+	id 71C806B0088; Mon, 13 Jul 2026 23:00:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A868D6B008C; Mon, 13 Jul 2026 22:50:27 -0400 (EDT)
+	id 6CCAB6B008A; Mon, 13 Jul 2026 23:00:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99D5B6B0096; Mon, 13 Jul 2026 22:50:27 -0400 (EDT)
+	id 5E5BB6B008C; Mon, 13 Jul 2026 23:00:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 698916B0088
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:50:27 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DA98B1601FF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:50:26 +0000 (UTC)
-X-FDA: 84985853652.18.E170348
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3837AC0006
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:50:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="hiBkdD/S";
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 37B756B0088
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:00:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0C08A0276
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:00:33 +0000 (UTC)
+X-FDA: 84985879146.12.7BFF32F
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A65D740005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:00:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SWuFUOhZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783997425;
+	s=arc-20220608; t=1783998032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jNJoHU87nSBvCFlt3auXmfy2Vb6oZ56F943v1fbfsuM=;
-	b=w4mygpxk0AYsS0Lr9s2AfUG+RUIq3BM1wuuqndH2W+ORN+g04IAuM9NhSL+Zdv9hFAcJ4j
-	ABeS17xr61R/AN967WK66dIpXQgl8LWH32pVWQHpC6kRXGvb1SLWqRA8OuSez+TJZmaL/k
-	a4Vspk5lHGizqksg9homSyREKaTm1Qw=
+	bh=u4XC4Tt2Er5SVTqQ4QRZas9ffsbGhNq4gF6E+smuGPU=;
+	b=ATwbrBX41rF6iC8RuXsQVmUdCW9Wjo+vetRj9zl/w5Ymu9g8e8VfzgoypejOzrFLL9/IpB
+	2ZOLetJ5MdxbkxWR1X4yBe91dSWy9eHbk1j8HF0Cbs2S2LgtIIdCtbyya3LlX3fyAA4Xet
+	Q/skaYqg0kUzaM9A35XEaZE15OMA8Tw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="hiBkdD/S";
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SWuFUOhZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783997425;
-	b=8pds8W2ek82mkT72vK0w4LxcXMI754NRlCWKbX01KY7nGd6A5JvWobJXxkqI7psG6Q0kC4
-	7Ri7G90m7JxU3Lb0ADOWkV2TN5iP3E8q+YMhMTi/o5uyTc3FL53rZjSwFFP1EXUWcP9ujZ
-	N9gVx6wNCUnxDbMjfIyxFiqqnFZx1QI=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=jNJoHU87nSBvCFlt3auXmfy2Vb6oZ56F943v1fbfsuM=;
-	b=hiBkdD/SVc8SirUlEiAR5/aPciyF247mGp0oFyKSsBXxNtb2BHyV2M0+yCxMcLKNo7kuoqI+L
-	xtNlaQP7jIgIY06KWpbSLWirqelQ9xS3Kdf4minx37B4E+mjXoumnhQg8jDU10YO9QT5/RfrNG1
-	EaqkQODQgzSuolHozXEknpY=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gzk7z0DvYz1cyQ8;
-	Tue, 14 Jul 2026 10:41:03 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2D3C64055B;
-	Tue, 14 Jul 2026 10:50:19 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Jul 2026 10:50:18 +0800
-Message-ID: <1295105d-cef7-4336-a1ac-c511c7ffc779@huawei.com>
-Date: Tue, 14 Jul 2026 10:50:16 +0800
+	t=1783998032;
+	b=gvFnUsuxNRTW9YmgwRAlrgqmN1x1TekHSyySdflHNR0qv9Oq0XDX7vOtdxSC7QUHbaxLQi
+	Xj51jw1geuaQpvXSYuIKmlvPAmmooNb3j7twl8WhFDL4e6gDRFW2occiM6q15b7Aya48pS
+	4MD5cGX+2IyOt/1pMlmtA1Mbr5VP46g=
+Message-ID: <e60ca749-ddeb-46f1-baf8-01db8a2df1b9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783998028;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u4XC4Tt2Er5SVTqQ4QRZas9ffsbGhNq4gF6E+smuGPU=;
+	b=SWuFUOhZ2qAjtWWzx8WPyPnFFagUYtKh3FmiI2Eo4/FG8MdhayLP+WXKB1zAuW1Q6eGqQK
+	0iVHmFzsQNm0SAPBgDarv8HbpIHA8q5h3T0c9SRpswbEuNvcmu4SNtHBhLsZgFNhXAXSAo
+	rWUWU/ho9C6k7xPsFvGg7knT0IW+gWs=
+Date: Tue, 14 Jul 2026 11:00:19 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] mm: mincore: improve mincore_hugetlb()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: <linux-mm@kvack.org>, "Liam R . Howlett" <liam@infradead.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
-	<jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>
-References: <20260710120052.103886-1-wangkefeng.wang@huawei.com>
- <20260710120052.103886-5-wangkefeng.wang@huawei.com>
- <8992ac30-340d-42c7-8799-2d797b92b59c@kernel.org>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <8992ac30-340d-42c7-8799-2d797b92b59c@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+Cc: cui.tao@linux.dev, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, tj@kernel.org,
+ mkoutny@suse.com, shuah@kernel.org, cgroups@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] selftests/cgroup: fix missing TAP output in
+ test_hugetlb_memcg
+To: Song Hu <husong@kylinos.cn>, linux-mm@kvack.org
+References: <20260714021511.1063700-1-husong@kylinos.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <20260714021511.1063700-1-husong@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A65D740005
+X-Stat-Signature: wc5pmf1jdoiwasd4rbqbnq6dm1sbkccj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3837AC0006
-X-Stat-Signature: zkz8e41zggont534j447fniaf938mwqd
-X-HE-Tag: 1783997424-364222
-X-HE-Meta: U2FsdGVkX18KDr3dvvWgR61RKSqdLMXMijHRV2xqIb/n/0DJPCUDjtngkwE/K3y404pN206CfRYRqRrQjyWx56F3ngWaYJKgWIypkLHReFQ9cWF4dtN8w6BXwuupK1D+ESrKQMaZY9JNcUzcpUw1j36MH5InLhJPsPUFgaRSPw4jecWZQ5Y+6tkA1IC53sx3H0sOrG8LvdMTATFf8QvjV/Hkx1rWdRprNC+QKg6eOlHeWzSPS5Du8pVNxJ8r+vGW4Hq/SiXtPpKPm9jyUsyt2Fn3FWpvvXqc6ZaBSZo+tXvTljMx9nOvzYR0fEZL9SoQplFIvV9+RJSWkMnJT07CMI6ySI7MB5T4wW89LC3rx33ImZDRO1f9lnvuaxHJbJ3uobDG/BiFxHEV4nzXhn99x1yWyzzO2rPuT9qGhiCt06IaD+7Cqgm2HCoDI3ilgv3iAh5wkWqWQHbuMdlD8jdAhSdNeiYkM79nTwYCzFwTTOQOOPsmYqJyiDNHaJf4FJyUjQBIqndHzrml95C++QY2C/brLldu0xklVyNitVktSNivXjCDfew4DSie2Of9aTKX7NZrXH0X8UqlOk8UfwptiLKaDsrdMRVsrvAEoaPCdCSE9Hb0ZXW9TmWzcmjOHQKm/EFcc87gNPYkJLufgYfS0/Dh9JWUZCE9iQVuEHKBoFF5oLfsrv2U9h4GrFDspz4zJ74t4vrIEwFRnkufszM39M43hZpBQzHAngku65/lU1zzIoA46vPM9ygQF8LpPVgjh9KEeAtRleixTL2iWFe+i/8CUv89MlvmGRJR4dxWVrIRrHlBFdP6uOH/QPhNp0oruVPPLloOgYu2n+L3R6/KQSloO0HlXSX4Ca2BNvHrJj2IxAXitVBNWTygwWuJkCIuZYVcEp0/eMazNPtyX2XB3UxjOtHPWzUDrKgvLjDOxbZKbzaJYYdHcYyZPKXvm+BnkC5oPCqOKVLkh9zPyfi
- XG73I/cp
- lWFheNJMV1CrAi7Xw/D0FybxUAfdpNQ79X+LnL1ncmZ2FXgOMGZ4YxCckWpT8qMqz1VJY9bfuoB4XjVFJNrd0UFPwWFMJQ1P/PZzVoSDmW37sMcnK+uvNFu0bEDHK9yfSTyRd1nMeqNNXtliXoWAlF6zaNCIRbbUXPNvweaq7c7FsNmcYLMtbQDrQYCpkcksRP4aFsNO/MJmfZ5v5sTfPhwKKeuklJbHsthol5cg1uGq8kaPWfCP8eBROS4KOrfxp5PEwRYR/kfF+RHlnPoREtoQpWMNKDJIY5yg7ostZMDXlWVzTLedcTGc7KcqLtVp5Ffv8c79aGba+Zctl0BfbNto7n23e7k6FB4nwnvs3XEmIdAO8mU039y9oHWmuNg6juPjI
+X-HE-Tag: 1783998031-937659
+X-HE-Meta: U2FsdGVkX1+y7VF4jfPuVvVaEnKEyOQawje6ayzM1Svt3RjM4OWaWoRgoXqD1+0KGIJdqAhlBUCZptH4KOVWqQDcJZikB6SbNzGEPLFedzc98Pn9Eh5exB7VKSMh35xzBvxkX/VzMowy71HrHXB3JQprVUPdtkhGDyjM7mBn0h0U2fnPD9W/jdY/xc9bXcb/ZQ31xBlJxitrbGhIGdkoKVdKYbPFN/rrjRcmNutGTkQYuF62LDw3/0oxCiSG/elqDGyqBUz3qjcVIuLmGiDP8Us6Fc6/PJW/qthBu/Tavjt8zDmYSrnYqtjrRDhlx7Irh5tfsHZYvbl5WLzti/N3rqikuKk81Gdudcwlly3O1zeqrjNWyzPO1O8Wg1EEz9HaKPJDbbb57JhdCq1bjRMI7xXCYnBLI1EiniLAIImrAM3hr7kxj5Q7cKMpv2Vw+/EU8nY/EWUn1GmxzUhiRCBNAAHT6m6Begflfgi5/wjLI3ymA511YLSJgvb9gaOotNkLkssVxX+KQM/ePMXjSxzDNlWlbNytLXIKadUoRl1t2/GZXjAhuxD5BrN3jw+ROWsIJxtohu2PyGz9LDAJCK9Qc/XPZQgybtJkrhqN0EjmjWXjkiiR0SmlARU3/Znv0sM6CEmprg/vEfDwRbLPl7epqSxTVgCErjq0554LEIk+qt6qcCupRrlZ9inxNsSlkxnj96eajY5Z6rmD/24zR+CX1Z/nqH7PZH/B9PtEHrkWTZ1w4nrOwVk3hJbQ6aR46/+EoM7Fx25Z0JMuqglsdFP1vIZavRYMb5MjnxRxe5/AsbA5c+4XJrCEU0L0ckM4Yh7a2uOeM1G4UUq6ZweYFDQaz5S2OiS1RcQ+WobvZXKooOwrNjjp1lpvGWexYdrAlo1XXYk1EWlNQp7bUszTy1dGkxmSk/QpXDsl9iFHYIj0h2BosLsXf2hiyp/hev7iffD82HAVDo1a7wcCDE8xlKx
+ ZFjT8O6l
+ Z0Y/DQ41jIARz0bPb8KxFcN6DfOPI6x/nFfM8pgfKpFbXL5mkjFCJQ5YvSSSL/6v/PATzS8oVUg8lkJB15kwv7aH0MfHsc2Dp2BrSNg+cr6HXnXk4dItZupZdKGZZ9ZUX/zfAaRtY1Cs92QsOBTHEes5bpFcj2ASxznlE9ll/lL71sdjivAPufvhD/72sHWGUP6T/UMEBKjWMK7YXwUlEc/3Q176sC7YvTgZ9zDnrpgyMN15VAwmTFG5nwijXWp7m31piEhQmCDqxrHkhaWngHmurhTm2K9lk4e+p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,70 +94,57 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/10/2026 8:17 PM, David Hildenbrand (Arm) wrote:
-> On 7/10/26 14:00, Kefeng Wang wrote:
->> The walk_hugetlb_range() always passes a non-NULL pte, so remove the
->> dead NULL check. Replace the per-page iteration loop with memset()
->> for better performance.
->>
->> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>   mm/mincore.c | 27 +++++++--------------------
->>   1 file changed, 7 insertions(+), 20 deletions(-)
->>
->> diff --git a/mm/mincore.c b/mm/mincore.c
->> index 8b5e6afefb91..9952bc3edf76 100644
->> --- a/mm/mincore.c
->> +++ b/mm/mincore.c
->> @@ -28,30 +28,17 @@ static int mincore_hugetlb(pte_t *pte, unsigned long hmask, unsigned long addr,
->>   			unsigned long end, struct mm_walk *walk)
->>   {
->>   #ifdef CONFIG_HUGETLB_PAGE
->> -	unsigned char present;
->> +	unsigned long nr = (end - addr) >> PAGE_SHIFT;
->>   	unsigned char *vec = walk->private;
->> +	unsigned char present;
->>   	spinlock_t *ptl;
->> +	pte_t ptep;
->>   
->>   	ptl = huge_pte_lock(hstate_vma(walk->vma), walk->mm, pte);
->> -
->> -	/*
->> -	 * Hugepages under user process are always in RAM and never
->> -	 * swapped out, but theoretically it needs to be checked.
->> -	 */
->> -	if (!pte) {
->> -		present = 0;
->> -	} else {
->> -		const pte_t ptep = huge_ptep_get(walk->mm, addr, pte);
->> -
->> -		if (huge_pte_none(ptep) || pte_is_marker(ptep))
->> -			present = 0;
->> -		else
->> -			present = 1;
->> -	}
->> -
->> -	for (; addr != end; vec++, addr += PAGE_SIZE)
->> -		*vec = present;
->> -	walk->private = vec;
->> +	ptep = huge_ptep_get(walk->mm, addr, pte);
->> +	present = !(huge_pte_none(ptep) || pte_is_marker(ptep));
+在 2026/7/14 10:15, Song Hu 写道:
+> main() in test_hugetlb_memcg never calls ksft_print_header(),
+> ksft_set_plan(), or ksft_finished(), so its output has no TAP plan and is
+> not valid TAP, unlike the sibling test_memcontrol and test_kmem tests.
+> Add the header/plan/finished calls following the same pattern.
 > 
-> Easier to read as
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+> ---
+>  tools/testing/selftests/cgroup/test_hugetlb_memcg.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 > 
-> 	present = !huge_pte_none(ptep) && !pte_is_marker(ptep);
+> diff --git a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+> index b627d84358b1..8c5aced813b6 100644
+> --- a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+> +++ b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+> @@ -199,7 +199,10 @@ static int test_hugetlb_memcg(char *root)
+>  int main(int argc, char **argv)
+>  {
+>  	char root[PATH_MAX];
+> -	int ret = EXIT_SUCCESS, has_memory_hugetlb_acc;
+> +	int has_memory_hugetlb_acc;
+> +
+> +	ksft_print_header();
+> +	ksft_set_plan(1);
+>  
+>  	has_memory_hugetlb_acc = proc_mount_contains("memory_hugetlb_accounting");
+>  	if (has_memory_hugetlb_acc < 0)
+> @@ -211,7 +214,7 @@ int main(int argc, char **argv)
+>  	if (get_hugepage_size() != 2048) {
+>  		ksft_print_msg("test_hugetlb_memcg requires 2MB hugepages\n");
+>  		ksft_test_result_skip("test_hugetlb_memcg\n");
+> -		return ret;
+> +		ksft_finished();
+>  	}
+>  
+>  	if (cg_find_unified_root(root, sizeof(root), NULL))
+> @@ -233,10 +236,9 @@ int main(int argc, char **argv)
+>  		ksft_test_result_skip("test_hugetlb_memcg\n");
+>  		break;
+>  	default:
+> -		ret = EXIT_FAILURE;
+>  		ksft_test_result_fail("test_hugetlb_memcg\n");
+>  		break;
+>  	}
+>  
+> -	return ret;
+> +	ksft_finished();
+>  }
 
-OK.
+This one looks good to me — it mirrors the test_memcontrol/test_kmem
+pattern and the exit-code semantics are preserved.
 
-> 
-> But now I wonder "why not pte_present()".
-> 
-> Calling this "present" is misleading. It's maybe "resident"?
-> 
-> I guess we want to indicate migration entries and hwpoison entries as "1".
-> 
-
-mincore - determine whether pages are resident in memory,  so resident
-is much clear, will rename it, thanks.
+Reviewed-by: Tao Cui <cuitao@kylinos.cn>
 
