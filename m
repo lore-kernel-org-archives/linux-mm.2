@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 864F0C44507
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:33:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E414C4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:33:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E1386B00F1; Tue, 14 Jul 2026 14:33:11 -0400 (EDT)
+	id 0EF9F6B009D; Tue, 14 Jul 2026 14:33:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 691CC6B00F2; Tue, 14 Jul 2026 14:33:11 -0400 (EDT)
+	id 0C6C76B00F2; Tue, 14 Jul 2026 14:33:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A8836B00F3; Tue, 14 Jul 2026 14:33:11 -0400 (EDT)
+	id F1F8E6B00F3; Tue, 14 Jul 2026 14:33:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 255CB6B00F1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:33:11 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86DB780437
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:33:10 +0000 (UTC)
-X-FDA: 84988229340.04.DF1409E
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AC7494000A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:33:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="PVRB/Ca6";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B7AE76B009D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:33:28 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D4D940453
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:33:28 +0000 (UTC)
+X-FDA: 84988230096.20.9A89EDE
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5A4501C000A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:33:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CfIBjmTL;
+	spf=pass (imf20.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784053988;
+	s=arc-20220608; t=1784054006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=88qx9YixiLkFD/vh8cYDKX7z/SdNlgRZ6Zz58PjlN0k=;
-	b=eD1tgcRkvBygm5vrGwoNuSiJszdUkoRdVL9kTQ5fGaVqmik1XMz6t+ZTjgK0AhpBo+EVq/
-	R3iv+UmYVcrqSzhedtjkIfmDybAAmpJ+iB5yawBnzO09edTCnXnFmxYwmyZM1D+8BMbcJL
-	6XitQsLfpnUIU0ifcIyciLq55RMBBpU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="PVRB/Ca6";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+	bh=Wwi2vZyFk7t6QSsln2rKKiHEkjJToMmeoCsJaB6hu68=;
+	b=Il1k5+8HXPSuNWbOLk1pYmDom7NQcjPAbl3z19vU03uszfD1AEIiHp12HfF5kktLKGSmKa
+	XVtmA2y5Q4pkmbv5tNruzknKOJiiihSGJ1MP0BE4cHH4JgNUjMz3YxAbahEbYvitkYvzjt
+	/z6VH7zQ65hMwOrHXBxA7RBV9JPKmMM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784053988;
-	b=FZzTF83foxgcu12WhrGD0msj+BKJqwI5rD+4ZOKyqdBetCvhEoJTg58U1Xe5gjj+V7klhH
-	6kkz91GgUtPmQGCMWxomgTkfnJdNCR0gF8OHzPWYTWZZpJW0JlaN+xpTLeyOGMbTKlc8s2
-	2/t17/UgYYNr6M5+Wl/Y0CEWRJtTnLk=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e7c6ec9dbso197554785a.0
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:33:08 -0700 (PDT)
+	t=1784054006;
+	b=Jy3+2w96Jr0Nh3C3xw18OfdPMiX/duCJMiTUWCTWgQIQv4kB/Eg5AUnaOD2DcnnOCfYQcb
+	gZ8ntcWnZdyKDAG2J6LeeWpTnh7mj4Y8izsq7AkUhytp9H0BftXlysV/xxN8+3LgdspKW5
+	okQBnCZrAdw972HGlQSe8QUWZwzu51Y=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CfIBjmTL;
+	spf=pass (imf20.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c5382806fso10944201cf.2
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:33:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784053988; x=1784658788; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784054005; x=1784658805; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=88qx9YixiLkFD/vh8cYDKX7z/SdNlgRZ6Zz58PjlN0k=;
-        b=PVRB/Ca6rFEvgDN5jkjwVVbSF6lsLBz2rW+vFouT5qiE7d9lwdaR7s93dVyKjX+rtI
-         enCxT+qCBGhrkIuaJMqWvo1G/uLcxPy6Lqk39EA3C6qfrqhgBhZfhmXfkt6yakD7UovK
-         4L1Q44n0sG3Eb/NnFfWmXNa4zQYm+eyWxMpgxKtCpIlyIke/xyHL23Y2wUdfObDw3Z7M
-         jCV+IugQVjZsqFNpUgzuHs1VERMxxoeKSFt0/Uwcwou2TkfKdx9VklQ5js80wHXgrdy3
-         DG7gHlqbeymQl3dzZOZ5UidcfNYlWx3wkrnfZyLWogR6CKCbue03yxl+qhCI9E/hIShB
-         PdZQ==
+        bh=Wwi2vZyFk7t6QSsln2rKKiHEkjJToMmeoCsJaB6hu68=;
+        b=CfIBjmTLOeIVk/ikoRU0x9pRx5NXIjYeXNeA2Sze65gx8YKaIxHHVNrzMJQig3H6ek
+         RqvQIx/xCgTtfHAgsaAMyBIMPLm7NCcoMMR31ok0OXCWh0jePfLUQG4B5aMHjHsgYwCz
+         Sc0AbuvmlDgpRGJlX7Ltb3r1dFsu/0AypYWHFcImoz+mJDtO4q/+eZn4uMcWTSL5eHiF
+         2PTxNPM350yQozAlwKTtBY6Ghx8oofc13NGx+b0CbijVffCU5iPwT6DCGE1QbIgYe5XX
+         +PqL2rKZxR0/vPFTdnEiH2gWu1e9ju4hEuRxP1Hf7IMJuTZLOajDVL0EpZNHW0icjcWL
+         EU2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784053988; x=1784658788;
+        d=1e100.net; s=20251104; t=1784054005; x=1784658805;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=88qx9YixiLkFD/vh8cYDKX7z/SdNlgRZ6Zz58PjlN0k=;
-        b=qbTklyaKs1cbodFMyHdv1jL0cCD/LPPrfh/0nthiDdPQGSnN4YPA1JJ3DedCNZBFuh
-         iaBdgu0gxh7HuPOTs4Cigwzl0NG9BBtsmbdhhetNMkQ0wdd9DWvON9G94iUDWuELnlly
-         HiB2NJQAkWAOxCZFC9ldN1lLbG5fS7PrCHe1QkZdC8YwBYz4AUAgl52s6g/ME3N5u754
-         UW9jAKAH+F8TvebB8Ojau4am5BsaeBF7HN1uuTe9KYr98Zw3ocwGMQX97z4uEzgwIhS5
-         pZpM+qLbvmy0dFQwFelQ1smvuj0qfOoyAw9gYbACnny8di0LSNdOAYWWJM44uLWdaRLL
-         LN/g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr26sYvMsIExftOKM1sNJzC8qDzj+DHw5aAK42iQCCc1QMCc1yCxdT/JrRQsGDIp0sU6AoMQU3gJw==@kvack.org
-X-Gm-Message-State: AOJu0YwQZUrUCIUXGZ9MjpnMgdX6vx24uRkuDDP2xLwYr9fhbnf0xC+c
-	TdM1Ty2flwWo8w72BaEBcqr0kYNVYSRKUCV3JOLJjr6VorircI5n6IQD
-X-Gm-Gg: AfdE7cn+TI9JoPv9duLhBSps9uRa47ewVtRtUta6N1FuZYofng8m3eNpFirTkq+FNIQ
-	/ha+TpDIN2I0s1OXHsn4GabAo8j1C0AgEocRI3lLPUE77SWXQnKVtKJieZ8AoA0l/Z6oK/W4sJ6
-	Btz/CNqD4YEPcjcTSVB1KAchcYMSP6U96NRsmL8n/djCeP+8nc92i/NbiRwkeAsZFy6j9Lx5TuC
-	LQFE+upa8R2t64QS4CJkystMnltVZ7wXyvxvUg9tyydFOyXku/npfZfiSAK7Z+z6sqDHixqNfRs
-	hsEAFy8jn70OVb3075yP8y9AZyhzO+1plsYISq2OiZbGQ6hdEfxUgFE8Oj0iYXhKqbSfnF6VIC3
-	BirX+WCDoxrdQEIUq8iNgRzcyTjtuZl3UJfRuk0I8yF89Eh78+UGuU3HF35Ljo1L50Kp3gklbd1
-	Bzb5eWEBA1htK4OXO9c+EjoFBZB/M3LVALzRZG8pBPCuGM+8BoBBd5kvtmuvjZTA==
-X-Received: by 2002:a05:620a:2623:b0:92e:7ba3:740d with SMTP id af79cd13be357-93086c1dfb1mr389163985a.68.1784053987420;
-        Tue, 14 Jul 2026 11:33:07 -0700 (PDT)
+        bh=Wwi2vZyFk7t6QSsln2rKKiHEkjJToMmeoCsJaB6hu68=;
+        b=r88lTxSZmD5HfnHvhhbqng0n/jcgSbOOoDuTUCC5k1OiICMFqNwsZhzYeNOc5lw/D8
+         YyzIMPCpWSKjEr4uRzsQNavQMPO+wrQ7BHEEq8DepgKD2bqMKF5w8GB1x5+jH6khgLNU
+         gUSdxY7cRQgWUTY1r+ZZghtPnH9h3rQoIylYJo84vNJs8YHGFNGItD2b2opyxz7hYRMx
+         oEswOjW23xkdhTRiOp48/eEsLm1Wt1ImUoSY7C1Prs12sh/OtsfojjsUjyKnsOXdewMI
+         OWxcl6DK/Xrl9HfSnaUiAXchhx2QB1Rj/o69UwK1fXcb1VAkpqLjtXeOPemy9psV5IWk
+         Ohxg==
+X-Forwarded-Encrypted: i=1; AHgh+RoFFm6lzg12AACeh8J8fRRmX5f3c9NnEj3Jei4a3WWquk7xltj+TgHFdp5PGY4QGyFMsppIONaKOQ==@kvack.org
+X-Gm-Message-State: AOJu0YyaEUYbf4/pF8+0b5iin9x57cUCysWJkqbS1YRmoAwBNXWeFzyX
+	V9B62o9KI/nbhE+eb1mvEwnOtji8TwBhxsVCu/WOlvvoQwckJZxtONfk
+X-Gm-Gg: AfdE7cmkwnT1Yh0UozBhI30RkA0a9zXm28avLanazdoAKPmGc6WePbckkE6/c6l7Yrv
+	LgYULemwLv3UnI02BuDX2CUXfAtE3O1IY1GmylIBnm6aUsis99yGlVGLfmwe1/sYFEwDTR/LnuK
+	5OBXgU6W89ifYQBfcrTocYUGkaguU0IEjtKXf6ThbG2d96eHAU8/A8z8613qgZLmpXPVO4XnbJ8
+	7n+f6HMezL+OnghDBTxP42mLMe1aEneDGidxLXIoPwsaWOLwlKqS4TyQYvWchWv0Pk5yOp0L2TV
+	Oya/b1KjuaTcs9Bi5S7vksm3CN+ooSStiDjGmiWvmon+2HfcmLvZk2rETPywNmR/n1Q9xoUMpqV
+	3SLziFmGsuGhkb0Ja3/veFdIHEK89IRTH9vdljLLucTAybvQtbanmqHDbuEhqC5r8VGs6XMYFbx
+	jyB/+E1O8HkKG6h3wdSsHAM3h62Ikq+AoV2GqkjQxMtQyDYYFv8pI=
+X-Received: by 2002:a05:622a:53c7:b0:51c:7b12:120b with SMTP id d75a77b69052e-51cbf2ff3f6mr153433161cf.73.1784054005304;
+        Tue, 14 Jul 2026 11:33:25 -0700 (PDT)
 Received: from localhost ([48.45.163.146])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5d6c28bsm1566578185a.46.2026.07.14.11.33.01
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-903083910d1sm144098546d6.12.2026.07.14.11.33.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 11:33:06 -0700 (PDT)
+        Tue, 14 Jul 2026 11:33:24 -0700 (PDT)
 From: Jinchao Wang <wangjinchao600@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Peter Zijlstra <peterz@infradead.org>,
@@ -114,22 +114,22 @@ Cc: Ingo Molnar <mingo@redhat.com>,
 	linux-perf-users@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Jinchao Wang <wangjinchao600@gmail.com>
-Subject: [RFC PATCH 10/13] mm/kwatch: add anchor thread for global watchpoints
-Date: Wed, 15 Jul 2026 02:32:53 +0800
-Message-ID: <20260714183253.12848-1-wangjinchao600@gmail.com>
+Subject: [RFC PATCH 11/13] mm/kwatch: add debugfs control plane
+Date: Wed, 15 Jul 2026 02:33:16 +0800
+Message-ID: <20260714183316.12964-1-wangjinchao600@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260714182243.10687-1-wangjinchao600@gmail.com>
 References: <20260714182243.10687-1-wangjinchao600@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AC7494000A
-X-Stat-Signature: h5pa16ms1znazrhpoc6q75mdbrqbrf9k
-X-HE-Tag: 1784053988-756958
-X-HE-Meta: U2FsdGVkX18JQU18Ah3y+qXo7W0gAoYahqvBWoR9c5v3kMLsyb02R6Svxxy7cKwpd+PBXnzDiqbXjVpFOS8c4mN25/4O8sWJyEjMfZO6ZxxoB/DTsiUje6qiF0j9CfJvMo/LUqyuHJeJqCCkgoKf5LN2ub61znUFmCkY6LBI/DPMgS2+3z2epNPcZk/uCJOYbgyzuJ+3bGvSIOk4z8BeAQdIHhpR71wmF5XU7frMJexhSntaKLPcc4qBSJ5kqEprtuTTc+PJjTh+TyIzibui25mfXGHTmuMi5Ml+ApQ6haUEWDi2ud9DXdaVz4Ve2A/ekukMkbu+t2fqfhx9NMfONDh1xdOGQxVtZzhL5akhI/fTeTVBvpOYNKht3SipjMtMKNjsiSn0MwpDIaIHmIUJ6w5tN92om/xhi1sli3jstnkCPIjT3E0+t7DADl5/xc8yGzlQd0oAJj3HgqK9IVXEaHzgpIeXBxxseLesNTeLUyT/BRV3WaYl5/p7rkCMipePqHdqAXHwK0PYOLevfxqn3ZMkZyc/BLBDSie2Ggtw9hnzE8f7igU7wn8sOZIzqBkoCXga34RVKM4YOZ8xm2rk1czCdaPGTM38WgFXU6cWfJTjm2In5ZJA0ZNp6W2T5I0g6IT25RhXqAxkXUgGWAMoPvkFbB5xmGALM+3D7YV++r55HD23JfgIZV2bUDec6qIE/bc+1nIKdEvnJ5lRGOSsyo5jyz9e1PfNSF09sQXUjeq/nQHKbV5xdL+V8qtTK15Isq7H4WnsrWgUDQFQ1mciKvv1znMKbCUp9DgfgG78EkV7P0vu4t27IdmRNqUmOME+JSJ3/7B3Leq5ua+ZqOPJquee/KKWF6+6YhIzStebTo0A/+4bYi7lohty7FR8SjrJGgwrXoe18eGa3a/cKle668u3cqxBMncHY0DSX3n1k+RoPv/yvDiiFPvT2veycq9ftnElRvV6BBMvRnIcy0O
- 1pbdEZ0Y
- yuxhJDRr96cXHhwpIj/tVrywAdh/k5DUl8DHKdRLGpwS9TlGjch+aMkk2RI4iIzTN4oQOYd2VkA9zo0miqqQ4tlhItTiiiRMvQsynNLJeae1xntZPOALz19KlK9ZXcCGASawrgZR8fVqYI0soxRX7bU7nyhK5o8fN3lBNTI00HIOv5CAf/ajkO0Ri76WpziCvsBkrnvkWx6l5XfY13MI5giWjA/L7Y6Vj9oybmegWdw/CXa8kohZ3bEspOZMaxyMxX+ex6ZckSbGwKqZPsViT6LpuLjA+Z4NB9ZsuqypC1Ag8OPZTFGFvkr1ojloRGMXCQtXAFyx1kvz1yk8lfzmdQ3KW5Labeol0XB1R9By1oCDmsNp3c+9OhYQaVDZnMhRVg7mogpi9cbleQ9uwzgh53mCAH1mnot0+yLqQesSV/MYsr7VI6AGvt+RmZj4EraokuacY0kX1286XGHoGfPsFgJjC8Qqaoum2cPYJNfvNd+RPqF7TULTh6txaK1f1OAnOmN6sn7XKJULXRds=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5A4501C000A
+X-Stat-Signature: jgzd1a1zh4deto8gdi9xdpjxxxadzogb
+X-HE-Tag: 1784054006-871761
+X-HE-Meta: U2FsdGVkX19SE1z4fyeaHEpqndlBDf2n/EA/nIfeEAGl0k588C/oy15h8drKXsw7OAaGYYDUxTv1VfKi8avfidIhVL3T5FumiDNeAD1eV0OQH6pAf5qdATnFnJL3Htyi54sYm/hq7JapVatIxqo4qth1nQRNIJ/heb5Ao92NjuWlHMU2ZYj1qHmblWa91yMiovM1LSybHcxMB/ks0kQ2FhV07gTUIqB5d9ATcz3Bo4jJ2snaexA//4EZeZIh/ts2zdS01owqKClFNKXvSsvsXD9+zMCve5+ixCSt3kPg3w8K/y/gpr8Bw9gRub/a8OrBO3OgyI/fvfyvkQHllsHVdKc4sCYigLU95lwCPvrd2Npa+9blIXh2kdxmS4/uflpaj0irB01yFA2a1WlsZ1swOJ1s2l/MhSc+/MfYWqQouziQQK4WatsB6HV72zeAxbUzHLaSqKTZnUb5fu6EW1BPH0iBoIu22PG3fVihc9COn2lwKiz2kZ9fd915IJU2/t5hwPP4oJnk3O/lKCYrec6sZbBiv2hyfErfs7AZ4uRwlLgtfsKGmv0pYv8kXiLREI5Q6aW+X257zZgXNBsLnipI92CJ3w0c2g52ULybexB08m2VMAe+cnTMRvh6xEvxLvTFr4NZyVSjR9bP4EQzE6v3wEkRaCOt3Yxuidc2eGYTOtK+AKihqLsGGxtczh1aemvDrgL28LfSTRY36j9sqldfX+E/yIKz9mKkjXzAk1/d2ewBsCaNIt3LNhL10hPid7kdddg3wswIGWfQC5C/PRTFAKhUpQvl4K/eT/qX40Z5wMGcZx9Q/cbcwRhgWRnPk50/ow9gpRvZ58p7JGrSoHxDb7KlJRIUeyT6K1cZANocrv7PRB52/udZ1/IDpcYXGmAuhsih16cDxmlgDhGQVrQMxlFf4IUMdRSJN2LipszHpJEy3Y5MsHzrp6pu2EBT0IWVoxDm18knH8Nw5yrQi2l
+ ExtEx91l
+ sSwqcwx+u5nSk1YydcG/usb9DtVEpKF/7JxsiurERmAjNs5c5rAJ0IeYRrYoG6iApVjMFaunk0Y6aLEQSBP3KO6pZXWoAborXqnstXOcEIl/RuqaWxAclkjIidhOy6icwQxQ8S5ttJFwZeHDLaiJQ+IclYsbDvd96X8dHVlmJxd0SPYAcZxf7w5NwTYv6Tqo3cKSOTfjuUwSR0ynEwLev571P0ABRHaH8UX33ujldQkLrz/UwKKaL8F9JM9RZ25WWYoOF9vP46+1lkyXOa4VZVevTwvdMhsFWtf5mo9Pzbd1Nx9JBYD2/QeffIJZP54ZoeIcar9h+nf5DL0kF+xipRgmY7WKFSkaUrCuo6LbNost4VreHI/UfRYABipv6UnaLoK5NszwTJDfsj9I2/nioTSTE/gvaKZCValbJFhnGBVMZku8yyQiHWCbHLdAThD+2MJ8HoCBbf0PaZRuZ1OWBuzp3m38k98kSg3Z5pcKYrPZ2JnR8jd07as3G7F730pN4GtEbKLztpfF0+Ptmcs6D+aiOlJO0Kvb5FH5shGH4f+ZsHfFcAX09Iz5mXntvSfSKQjo7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,121 +137,434 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Global variables have no function whose execution can bound the
-watch window. Provide one: a kernel thread sleeps for the configured
-duration inside a dedicated noinline function,
-kwatch_global_anchor(), and the probe runtime hooks that function
-like any other target.
+Wire the pieces together behind a single debugfs file,
+/sys/kernel/debug/kwatch/config. Writing a key=value configuration
+string stops any active session and starts a new one; reading shows
+the active configuration and the nmi_rejected counter. An open-count
+guard keeps the file single-open and a mutex serializes
+start/stop/auto-stop against each other.
 
-When the duration expires the thread schedules a work item that
-tears the session down; the expired flag is cleared under the
-control-plane mutex so a stale work item from a previous session
-cannot stop a new one.
+Add the Kconfig entry and hook mm/kwatch into the mm build. KWatch
+can be built in or as a module; symbol-name watch expressions need
+the built-in flavour (kallsyms_lookup_name is not exported).
 
 Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 ---
- mm/kwatch/Makefile |  2 +-
- mm/kwatch/anchor.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 83 insertions(+), 1 deletion(-)
- create mode 100644 mm/kwatch/anchor.c
+ MAINTAINERS        |   8 ++
+ mm/Kconfig         |   1 +
+ mm/Makefile        |   1 +
+ mm/kwatch/Kconfig  |  17 +++
+ mm/kwatch/Makefile |   2 +-
+ mm/kwatch/core.c   | 325 +++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 353 insertions(+), 1 deletion(-)
+ create mode 100644 mm/kwatch/Kconfig
+ create mode 100644 mm/kwatch/core.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7cc4bca5a2c5..b6371f92fe5c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14578,6 +14578,14 @@ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
+ F:	arch/x86/kvm/xen.*
+ 
++KWATCH
++M:	Jinchao Wang <wangjinchao600@gmail.com>
++L:	linux-mm@kvack.org
++S:	Maintained
++F:	Documentation/dev-tools/kwatch.rst
++F:	include/trace/events/kwatch.h
++F:	mm/kwatch/
++
+ L3MDEV
+ M:	David Ahern <dsahern@kernel.org>
+ L:	netdev@vger.kernel.org
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 9e0ca4824905..cac75a46e21a 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1510,5 +1510,6 @@ config LAZY_MMU_MODE_KUNIT_TEST
+ 	  If unsure, say N.
+ 
+ source "mm/damon/Kconfig"
++source "mm/kwatch/Kconfig"
+ 
+ endmenu
+diff --git a/mm/Makefile b/mm/Makefile
+index eff9f9e7e061..80c688330358 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -92,6 +92,7 @@ obj-$(CONFIG_PAGE_POISONING) += page_poison.o
+ obj-$(CONFIG_KASAN)	+= kasan/
+ obj-$(CONFIG_KFENCE) += kfence/
+ obj-$(CONFIG_KMSAN)	+= kmsan/
++obj-$(CONFIG_KWATCH) += kwatch/
+ obj-$(CONFIG_FAILSLAB) += failslab.o
+ obj-$(CONFIG_FAIL_PAGE_ALLOC) += fail_page_alloc.o
+ obj-$(CONFIG_MEMTEST)		+= memtest.o
+diff --git a/mm/kwatch/Kconfig b/mm/kwatch/Kconfig
+new file mode 100644
+index 000000000000..b1c37a829dd5
+--- /dev/null
++++ b/mm/kwatch/Kconfig
+@@ -0,0 +1,17 @@
++config KWATCH
++	tristate "Kernel Watch Framework"
++	depends on PERF_EVENTS && HAVE_HW_BREAKPOINT && DEBUG_FS
++	depends on HAVE_REINSTALL_HW_BREAKPOINT
++	select KPROBES
++	select KRETPROBES
++	select STACKTRACE
++	help
++	  A generalized hardware-assisted memory monitor utility.
++	  It provides a low-overhead, real-time trigger mechanism to monitor
++	  kernel memory safely in atomic contexts using hardware breakpoints.
++
++	  KWatch is designed to catch silent memory corruptions, stack
++	  overwrites, and complex Heisenbugs by synchronously trapping the
++	  exact instruction causing the illegal access.
++
++	  If unsure, say N.
 diff --git a/mm/kwatch/Makefile b/mm/kwatch/Makefile
-index f04673cc5b1c..b196c794619a 100644
+index b196c794619a..02d7917602f1 100644
 --- a/mm/kwatch/Makefile
 +++ b/mm/kwatch/Makefile
 @@ -1,3 +1,3 @@
  obj-$(CONFIG_KWATCH) += kwatch.o
  
--kwatch-y := deref.o task_ctx.o hwbp.o probe.o
-+kwatch-y := deref.o task_ctx.o hwbp.o probe.o anchor.o
-diff --git a/mm/kwatch/anchor.c b/mm/kwatch/anchor.c
+-kwatch-y := deref.o task_ctx.o hwbp.o probe.o anchor.o
++kwatch-y := core.o deref.o task_ctx.o hwbp.o probe.o anchor.o
+diff --git a/mm/kwatch/core.c b/mm/kwatch/core.c
 new file mode 100644
-index 000000000000..11da6aff9413
+index 000000000000..548d0cdd0812
 --- /dev/null
-+++ b/mm/kwatch/anchor.c
-@@ -0,0 +1,82 @@
++++ b/mm/kwatch/core.c
+@@ -0,0 +1,325 @@
 +// SPDX-License-Identifier: GPL-2.0
 +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 +
-+#include <linux/kthread.h>
-+#include <linux/wait.h>
-+#include <linux/jiffies.h>
-+#include <linux/err.h>
-+#include <linux/workqueue.h>
-+
++#include <linux/kstrtox.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <linux/types.h>
++#include <linux/atomic.h>
++#include <linux/debugfs.h>
++#include <linux/mutex.h>
 +#include "kwatch.h"
 +
-+static DECLARE_WAIT_QUEUE_HEAD(kwatch_anchor_wq);
-+static struct task_struct *kwatch_anchor_tsk;
-+static bool kwatch_anchor_expired;
++static struct kwatch_config kwatch_config;
++static bool watching_active;
 +
-+bool kwatch_anchor_has_expired(void)
++static struct dentry *dbgfs_dir;
++static struct dentry *dbgfs_config;
++static DEFINE_MUTEX(kwatch_dbgfs_mutex);
++static atomic_t dbgfs_config_busy = ATOMIC_INIT(0);
++
++static int kwatch_start_watching(void)
 +{
-+	return READ_ONCE(kwatch_anchor_expired);
-+}
++	int ret;
 +
-+void kwatch_anchor_clear_expired(void)
-+{
-+	WRITE_ONCE(kwatch_anchor_expired, false);
-+}
-+
-+static void kwatch_auto_stop_handler(struct work_struct *work)
-+{
-+	kwatch_auto_stop();
-+}
-+
-+static DECLARE_WORK(kwatch_auto_stop_work, kwatch_auto_stop_handler);
-+
-+noinline void kwatch_global_anchor(unsigned long duration_sec)
-+{
-+	wait_event_timeout(kwatch_anchor_wq, kthread_should_stop(),
-+			   duration_sec * HZ);
-+}
-+
-+static int kwatch_anchor_thread_fn(void *data)
-+{
-+	unsigned long duration = (unsigned long)data;
-+
-+	kwatch_global_anchor(duration);
-+
-+	if (!kthread_should_stop()) {
-+		/* mark before scheduling; cleared under the control mutex */
-+		WRITE_ONCE(kwatch_anchor_expired, true);
-+		schedule_work(&kwatch_auto_stop_work);
++	if (!strlen(kwatch_config.func_name)) {
++		if (kwatch_config.duration > 0) {
++			strscpy(kwatch_config.func_name, "kwatch_global_anchor",
++				sizeof(kwatch_config.func_name));
++		} else {
++			pr_err("func_name or duration is required\n");
++			return -EINVAL;
++		}
++	} else if (kwatch_config.duration > 0 &&
++		   strcmp(kwatch_config.func_name, "kwatch_global_anchor")) {
++		pr_warn("duration is ignored when watching a specific function\n");
 +	}
 +
-+	while (!kthread_should_stop())
-+		schedule_timeout_uninterruptible(HZ);
++	if (kwatch_config.access_type > 3) {
++		pr_err("Invalid access_type (must be 0-3)\n");
++		return -EINVAL;
++	}
 +
-+	return 0;
-+}
-+
-+int kwatch_anchor_start(u16 duration)
-+{
-+	kwatch_anchor_tsk = kthread_run(kwatch_anchor_thread_fn,
-+					(void *)(unsigned long)duration,
-+					"kwatch_anchor");
-+	if (IS_ERR(kwatch_anchor_tsk)) {
-+		int ret = PTR_ERR(kwatch_anchor_tsk);
-+
-+		kwatch_anchor_tsk = NULL;
++	ret = kwatch_hwbp_prealloc(kwatch_config.max_watch,
++				   kwatch_config.access_type);
++	if (ret) {
++		pr_err("kwatch_hwbp_prealloc ret: %d\n", ret);
 +		return ret;
 +	}
++
++	ret = kwatch_tsk_ctx_prealloc(kwatch_config.max_concurrency);
++	if (ret) {
++		kwatch_hwbp_free();
++		return ret;
++	}
++
++	ret = kwatch_probe_start(&kwatch_config);
++	if (ret) {
++		pr_err("kwatch_probe_start ret: %d\n", ret);
++		kwatch_tsk_ctx_free();
++		kwatch_hwbp_free();
++		return ret;
++	}
++
++	if (!strcmp(kwatch_config.func_name, "kwatch_global_anchor")) {
++		ret = kwatch_anchor_start(kwatch_config.duration);
++		if (ret) {
++			kwatch_probe_stop();
++			synchronize_rcu();
++			kwatch_tsk_ctx_release_wps();
++			kwatch_hwbp_free();
++			kwatch_tsk_ctx_free();
++			return ret;
++		}
++	}
++
++	watching_active = true;
 +	return 0;
 +}
 +
-+void kwatch_anchor_stop(void)
++static void kwatch_stop_watching(void)
 +{
-+	if (kwatch_anchor_tsk) {
-+		kthread_stop(kwatch_anchor_tsk);
-+		kwatch_anchor_tsk = NULL;
-+	}
++	watching_active = false;
++
++	kwatch_anchor_stop();
++	/* after kthread_stop: the dead thread cannot re-mark expiry */
++	kwatch_anchor_clear_expired();
++
++	kwatch_probe_stop();
++	synchronize_rcu();
++	kwatch_tsk_ctx_release_wps();
++	/*
++	 * Waits for disarm IPIs and unregisters breakpoints: no #DB can
++	 * reach the ctx pool once this returns.
++	 */
++	kwatch_hwbp_free();
++	kwatch_tsk_ctx_free();
 +}
 +
-+void kwatch_anchor_cancel_work(void)
++void kwatch_auto_stop(void)
 +{
-+	cancel_work_sync(&kwatch_auto_stop_work);
++	mutex_lock(&kwatch_dbgfs_mutex);
++	/* the expired check neutralizes work items from torn-down sessions */
++	if (watching_active && kwatch_anchor_has_expired()) {
++		kwatch_stop_watching();
++		pr_info("watch duration expired, stopped watching\n");
++	}
++	mutex_unlock(&kwatch_dbgfs_mutex);
 +}
++
++static int kwatch_config_parse(char *buf, struct kwatch_config *cfg)
++{
++	char *token, *key, *val;
++	int ret = 0;
++
++	memset(cfg, 0, sizeof(*cfg));
++	cfg->max_concurrency = 256;
++	cfg->max_watch = 4;
++	cfg->watch_len = 8;
++	cfg->access_type = 0;
++
++	while ((token = strsep(&buf, " \t\n")) != NULL) {
++		if (!*token)
++			continue;
++		key = strsep(&token, "=");
++		val = token;
++		if (!key || !val)
++			return -EINVAL;
++
++		if (!strcmp(key, "func_name")) {
++			strscpy(cfg->func_name, val, sizeof(cfg->func_name));
++		} else if (!strcmp(key, "func_offset")) {
++			ret = kstrtou16(val, 0, &cfg->func_offset);
++		} else if (!strcmp(key, "depth")) {
++			ret = kstrtou16(val, 0, &cfg->depth);
++		} else if (!strcmp(key, "max_concurrency")) {
++			ret = kstrtou16(val, 0, &cfg->max_concurrency);
++		} else if (!strcmp(key, "max_watch")) {
++			ret = kstrtou16(val, 0, &cfg->max_watch);
++		} else if (!strcmp(key, "access_type")) {
++			ret = kstrtouint(val, 0, &cfg->access_type);
++		} else if (!strcmp(key, "watch_len")) {
++			ret = kstrtou16(val, 0, &cfg->watch_len);
++			if (!ret && cfg->watch_len != 1 &&
++			    cfg->watch_len != 2 && cfg->watch_len != 4 &&
++			    cfg->watch_len != 8)
++				ret = -EINVAL;
++		} else if (!strcmp(key, "duration")) {
++			ret = kstrtou16(val, 0, &cfg->duration);
++		} else if (!strcmp(key, "watch_expr")) {
++			strscpy(cfg->watch_expr, val, sizeof(cfg->watch_expr));
++			ret = kwatch_deref_parse(cfg, val);
++		}
++
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++
++static int kwatch_dbgfs_open(struct inode *inode, struct file *file)
++{
++	if (atomic_cmpxchg(&dbgfs_config_busy, 0, 1))
++		return -EBUSY;
++	return 0;
++}
++
++static int kwatch_dbgfs_release(struct inode *inode, struct file *file)
++{
++	atomic_set(&dbgfs_config_busy, 0);
++	return 0;
++}
++
++static ssize_t kwatch_dbgfs_read(struct file *file, char __user *user_buf,
++				 size_t count, loff_t *ppos)
++{
++	char *out_buf;
++	size_t len = 0;
++	ssize_t ret;
++
++	out_buf = kzalloc(MAX_CONFIG_STR_LEN, GFP_KERNEL);
++	if (!out_buf)
++		return -ENOMEM;
++
++	if (watching_active) {
++		len += scnprintf(out_buf + len, MAX_CONFIG_STR_LEN - len,
++				 "func_name=%s\n"
++				 "func_offset=%u\n"
++				 "depth=%u\n"
++				 "duration=%u\n"
++				 "max_concurrency=%u\n"
++				 "max_watch=%u\n"
++				 "access_type=%u\n"
++				 "watch_len=%u\n",
++				 kwatch_config.func_name,
++				 kwatch_config.func_offset, kwatch_config.depth,
++				 kwatch_config.duration,
++				 kwatch_config.max_concurrency,
++				 kwatch_config.max_watch,
++				 kwatch_config.access_type,
++				 kwatch_config.watch_len);
++
++		if (kwatch_config.base == KWATCH_BASE_GLOBAL_SYM) {
++			len += scnprintf(out_buf + len, MAX_CONFIG_STR_LEN - len,
++					 "sym_addr=0x%lx\n", kwatch_config.sym_addr);
++		}
++
++		len += scnprintf(out_buf + len, MAX_CONFIG_STR_LEN - len,
++				 "watch_expr=%s\n"
++				 "nmi_rejected=%lu\n",
++				 kwatch_config.watch_expr,
++				 kwatch_probe_nmi_rejected());
++	} else {
++		len = scnprintf(out_buf, MAX_CONFIG_STR_LEN, "not watching\n");
++	}
++
++	ret = simple_read_from_buffer(user_buf, count, ppos, out_buf, len);
++	kfree(out_buf);
++	return ret;
++}
++
++static ssize_t kwatch_dbgfs_write(struct file *file, const char __user *buffer,
++				  size_t count, loff_t *ppos)
++{
++	char *input_alloc;
++	char *parse_str;
++	int ret;
++
++	if (count == 0 || count >= MAX_CONFIG_STR_LEN)
++		return -EINVAL;
++
++	input_alloc = memdup_user_nul(buffer, count);
++	if (IS_ERR(input_alloc))
++		return PTR_ERR(input_alloc);
++
++	mutex_lock(&kwatch_dbgfs_mutex);
++
++	if (watching_active)
++		kwatch_stop_watching();
++
++	parse_str = strim(input_alloc);
++
++	if (!strlen(parse_str)) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	ret = kwatch_config_parse(parse_str, &kwatch_config);
++	if (ret) {
++		pr_err("Failed to parse config %d\n", ret);
++		goto out;
++	}
++
++	ret = kwatch_start_watching();
++	if (ret) {
++		pr_err("Failed to start watching with %d\n", ret);
++		goto out;
++	}
++
++	ret = count;
++
++out:
++	mutex_unlock(&kwatch_dbgfs_mutex);
++	kfree(input_alloc);
++	return ret;
++}
++
++static const struct file_operations kwatch_fops = {
++	.owner = THIS_MODULE,
++	.open = kwatch_dbgfs_open,
++	.release = kwatch_dbgfs_release,
++	.read = kwatch_dbgfs_read,
++	.write = kwatch_dbgfs_write,
++};
++
++static int __init kwatch_init(void)
++{
++	int ret = 0;
++
++	memset(&kwatch_config, 0, sizeof(kwatch_config));
++
++	dbgfs_dir = debugfs_create_dir("kwatch", NULL);
++	if (IS_ERR(dbgfs_dir)) {
++		ret = PTR_ERR(dbgfs_dir);
++		goto err_dir;
++	}
++
++	dbgfs_config = debugfs_create_file("config", 0600, dbgfs_dir, NULL,
++					   &kwatch_fops);
++	if (IS_ERR(dbgfs_config)) {
++		ret = PTR_ERR(dbgfs_config);
++		goto err_file;
++	}
++
++	pr_info("module loaded\n");
++	return 0;
++
++err_file:
++	debugfs_remove_recursive(dbgfs_dir);
++	dbgfs_dir = NULL;
++err_dir:
++	return ret;
++}
++module_init(kwatch_init);
++
++static void __exit kwatch_exit(void)
++{
++	mutex_lock(&kwatch_dbgfs_mutex);
++	if (watching_active)
++		kwatch_stop_watching();
++	mutex_unlock(&kwatch_dbgfs_mutex);
++
++	/* the anchor thread is dead: nothing can schedule new work now */
++	kwatch_anchor_cancel_work();
++
++	debugfs_remove_recursive(dbgfs_dir);
++	dbgfs_dir = NULL;
++
++	pr_info("kwatch unloaded\n");
++}
++module_exit(kwatch_exit);
++
++MODULE_AUTHOR("Jinchao Wang <wangjinchao600@gmail.com>");
++MODULE_DESCRIPTION("Kernel watchpoint");
++MODULE_LICENSE("GPL");
 -- 
 2.53.0
 
