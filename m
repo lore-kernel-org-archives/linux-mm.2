@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A225C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D97BFC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:24:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF6666B009E; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
+	id 8196D6B009F; Tue, 14 Jul 2026 08:23:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA7716B009F; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
+	id 7CA5C6B00A0; Tue, 14 Jul 2026 08:23:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6F5C6B00A0; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
+	id 6B93F6B00A1; Tue, 14 Jul 2026 08:23:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B513E6B009E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42CA7A03DF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:54 +0000 (UTC)
-X-FDA: 84987298788.21.6BC271B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 451566B009F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:23:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE9B216039E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:56 +0000 (UTC)
+X-FDA: 84987298872.02.44D5B6E
 Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 46A024000C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="H feikRS";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=fREjrIAb;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784031832;
-	b=kxxZMCOUJuzaO7Vx0g50WFHU5us+2Hx37wb5TSmdE3Q/3nYDxp7PzcpkJ5/Ua/BTFxfE3R
-	EENANVAxDAwTLAU4l4npuLm4wqKkJq5kLDZBwpHpCd355B5G3cQX17bOU0OjqJhXRhD0PN
-	ZA5UfObbipJsfKeVtj64VGR0W85ry6U=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="H feikRS";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=fREjrIAb;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by imf03.hostedemail.com (Postfix) with ESMTP id C82B020013
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="W LGNLuJ";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="dxic3/Ka";
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784031832;
+	s=arc-20220608; t=1784031834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0g5oskdRgsUXvKNkDRa5faJ7aqOeb+0ELgNs1jz8A+Y=;
-	b=shHVbq+2rHvQ/UNCsU13UesFYJhq1Oom+RrJDSBkij+1AVzwQJpj89Y7+9YH6aS479DcHI
-	8gdmPGNfIvG8X7woMvnqHgZ51VkkJnt0Ybs4Y4O0G1+cMJrSFHAW2mqIHTqYmEW9E0cfWj
-	01gibSbBJ+K7h6FkR5JsScm3KfkBmeE=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 374987A00CF;
-	Tue, 14 Jul 2026 08:23:51 -0400 (EDT)
+	bh=/0a1QUYMOPMY+SvL6khttYjCLI43JqaOiKufnepwcnw=;
+	b=BIqog4Q2DcQMdSTDci4cwWFgb6FpMVGwj/nBVg7wXWjpVkQqTnycmM9lWCFmZMTwTrp0in
+	APWwdrQAmriKXBSxztEKhezcn/yFQMQ92aJy6QBleULhjzy18WQZVFl6A07YSzgvO+s+NO
+	R9b33kWruHBVakcUPaK1XDOwGlvS+6A=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="W LGNLuJ";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="dxic3/Ka";
+	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784031834;
+	b=viCVav2jjhqjaA7LjKtI/RsiqL32fmzHEwRX3kqaGuvoAlO54OGSWBSnpPwCY2opwyrEkB
+	6yyDCpfbJX2Xv8YeZQVC2qfHTLibXbZtVI+qmBByDp/yUVHa88aPDRvASyVxS56eDdO2P2
+	oTUyOYWgYW3n7ppW+T4NPK3k+4j+OEE=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B7E287A00D9;
+	Tue, 14 Jul 2026 08:23:53 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 14 Jul 2026 08:23:51 -0400
+  by phl-compute-06.internal (MEProxy); Tue, 14 Jul 2026 08:23:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1784031831; x=
-	1784118231; bh=0g5oskdRgsUXvKNkDRa5faJ7aqOeb+0ELgNs1jz8A+Y=; b=H
-	feikRSq/NAyfMt025iRCTPpadEaUfC2Icr1aPhqdRQ7KTT8SeDEptHSw1oAfQFVn
-	KfffwSoGjaHKQFJG1SPNYfr8osmRwmuYtjtEuAj75ffoXnixJZm9Y7jnyah2LA25
-	0kh+DNPjtS5SgbNNMUHpSERBZmu9GIzS6wG3OL0RO54EGk9BgNbCskvBuNcvvkZE
-	QkxCWbY4MoVtbHUA6dAnOTnr+kL8zJPX9/eKQApEH9K8yikF5bQZQIKFLcamHXO0
-	s9kzHbI46Qle2Bi/iPhtyIr5/WtAJU2imS0yT64M6beuwvYyroFDlomGh5yMFCWl
-	tP9vR/qG27PWmf7Xv5CEA==
+	:reply-to:subject:subject:to:to; s=fm3; t=1784031833; x=
+	1784118233; bh=/0a1QUYMOPMY+SvL6khttYjCLI43JqaOiKufnepwcnw=; b=W
+	LGNLuJFxBWrSHckB5wRVqupAOxNLygiRQyPEsUw7uASygYWzCxbrMGxNB2NIgoQ9
+	EHffatN/GgCS7/ABt0RfMD5rKbJMY3nCMU3FTRYFoXEqyfIsPWdGA7V8XxgkgySR
+	flZUbd3L3LTWZ7Q6DS+zopB+k2IVjaERRMCTOWNh/Y7nP487sxWxujjT7udFOVLB
+	It2tOnYqj6fEgvYVIYpGMwbJepTDPC/346vIxQiEIm4pOrqkVPJ1vPOvwy/gNEtY
+	toQLi/ulIsUq/vW5zLFryE2/Fr8obt8NEeXY0T/p9kTg/hx0IOhs9Y/+PoSK47wG
+	v0Blh7m+6exfc+bqHFY8g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1784031831; x=1784118231; bh=0
-	g5oskdRgsUXvKNkDRa5faJ7aqOeb+0ELgNs1jz8A+Y=; b=fREjrIAbdI17ntVKn
-	MB8by3SxPUcW3qO+KdLZmEPeeGg/KmqRBtZY2cGUwwodsgX01r2DBhm3Vggp8Xp4
-	Nx/TuVnCQ3caFCL3j/F6RJHYYtFxL7gNELaTuw2lrIgxkyOycoI8y3aAqua9BMcV
-	5In2SikhPIDHqwBClDyojalCuSbrlTXSvRF/cQOJVZ+34LZZflIShhgrgIRZWN40
-	uV/R78R6/2BAjtvJozMVj81zg3PF0uvG2/qLmbzsnufNejX5UiHYYw9nuv0Zc2G0
-	mnQmTP1NC6roq364QNHm6zVcAPm1lOiryt2rN3IiJqtgBRakt6qj912NEVZqNP2r
-	+nFBQ==
-X-ME-Sender: <xms:VipWan-T4oIkmEE6r-RYnazwK1uosYc4Fu7pVMMok0k7wdanYCJJ5w>
-    <xme:VipWaom-4uKH2gmRoBmAjhG7P5Bp4JOu4JmbwGCEjP77oKlqz-YNZ6YJcSVM8mwsN
-    7Av-nMQLiNDi5DSB4ZlSJO_54wbujBcSjxF_jTzk-N6zgHUaHY8KQ>
-X-ME-Received: <xmr:VipWatl-UvnLzBaKQMjcjXNEEI4g2vnjNayF_EaNh47KKQCMy9VjbulQXvL-MA>
-X-ME-Proxy-Cause: dmFkZTFBvxovr0fjL2SDlhw64F6oFGvIraiDu6TVCnqgYaAZRHolensvaRSdeNznP8dyQu
-    Coman3QLm+Yiv7vIU4gCaDoV3zjPLAT5xMyob2T/RAiyCRcX5nino2GdJfXAIhMAG9Vfbt
-    8DmmQq188Z2uGp2nkuYEczpQaZcUln/b+ViESl/1sRXWiXixSkmKZ86RELzVQX1c5DoIyj
-    VYLQxCZGhSirPmfYkfg5Z9MFDCczGvA5NVGnQNjEY+/Dc2Z4MeErYRkfr5HJBXVY0/+gwS
-    wMHbPHqeV/WaAxudjO5n+4mCCjxtqKMzuTd7bYDWa5SZhntkJG3EmwdwQQDclBgW6W8CDd
-    Myk1BCEsjZDtocKPq6SFh76ysa5Z+9HMjeF/GuQroKl+BKIQFyK58Hi1iBuv4PrSsdBoed
-    qUKBlvXQLkXzvgPziLsgfGTHmGmaAYjCQitkrzLMJEtaJKPypXwEldF3t7zIQu4Y1iJZYP
-    8JdHx+ZsougTMMNwOza4whUv7GUcGNzNVeniMjQ2nZ9bV7QR6oLgFbrAdUOB3q2DJGK6ko
-    zjyFXvlBDUY3Dzjs61NkrSzXWUrHB86X9Z7AAS4GNjT7SNVwPl59/T1j+4ANijkQkYvFDr
-    dHPg2tBOQ5IC/khlzTXlr1HzV0jz38hy2O+EhVl5dFQ+G65hq3VRfujqMbdQ
-X-ME-Proxy: <xmx:VipWaktHJkAeUtY-3ehPTHEiwmneLsjIQotS6AjWgmhehaovG-lL3g>
-    <xmx:VipWavKjkYAgFgpOkSsTVPy1W9BeDBe7-Ya_Ni_bBcKY_s7fghEVJg>
-    <xmx:VipWahgk2ekyQF3e_pOaqup5HSWggwV5e-FDz82enjE4dFc1_wJxFQ>
-    <xmx:VipWajunbTktYq9IirahUkKY51FmLr8wyUmpYNbdz6VzleU4DCVw3A>
-    <xmx:VypWaugA_oyUVVqDplVi0s1VjO-1ZohE-PREermaSY2lbZedakUOpWiU>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1784031833; x=1784118233; bh=/
+	0a1QUYMOPMY+SvL6khttYjCLI43JqaOiKufnepwcnw=; b=dxic3/KaZf89qck97
+	vfe2mTSSOFkWLBxDBwepWT1gEWeXbf2QX9iW4Bmzfonw8WnKpVrHa/YuL0iy/hTe
+	cyREDf73F2o4ehWyDa9wSt/XNdGD3uA8Na3/vyapWSKTnRFMNch1rHj4jjXpRdGs
+	SQTkoClZNum0JjnryUM6vra9k2k10VWI2b3uM8Wu/bZP0yKfPXyXpqu4n8p8jTVt
+	Br4QeRE1htq65UV4+DaGHbBXhiVLd4EWlbGNv39HLszzf+cjADAjdWIB9NwVn4bs
+	xlNujrBpYB1AJxQFibUKmevJBAJMAkjiQkzEDhHmsx7DJR6nxuIxl82gPS7jYvHQ
+	0/g8w==
+X-ME-Sender: <xms:WSpWaggJkeJU3EmxeREr0QDSAyZRCAgnH9LG0vm_wrIfuwRi5-q7hw>
+    <xme:WSpWauxQijxhvz6w9GIyWAzqo152DdT97r-0JlQiz9j0XT3ugFALQbJfSlMsNBomg
+    IS6fo6zpBvP2J9vXYJ6n7nBUG1naWVJspXNnIa7zMZ3LJn7lOuMyHk>
+X-ME-Received: <xmr:WSpWamLLKynTz4ovFQl-6IECigvxenA0mWJq4C-50EqtMJwIy33gNM1gHDqSlA>
+X-ME-Proxy-Cause: dmFkZTE/UbLJkgjt0BoqHglwrJX1f5PHEA/FB0nSUDVtYKpndNAtdUl6JHnSUpXWMgfs4c
+    d4J6LwvZCUX0a5T+QyiumtaKrodT7U+OJWhjSGjWu2F5DfddgHzIfut/BYthc7Sto1/3uk
+    EHEI9Uu/OGSx6QViQOKP9KqikD2m/IBo47muElgTZEunn3coMc/3CzhGZk75H75+Vz2euG
+    I8nkEmlGh0wryQWBMqDENy1O90ym5jZd3bfa9OkWP8p+lMnB48rVCs57F+52UpkmpKSDTQ
+    pvWo96Nduo4s64x50svctFa77x9730BnaPHuEEzPQXyZFSJzjFCAKNnirj3a4e+5JuRctf
+    3AjwX4rDrPBcraK/o3UwdKh0iaxSX+j0q99V36cWJJo35qVybt7yo+jUA//DL74jZfDjav
+    UwpHaX/LCOA8zLyCvjnSWcAJJdWonIZKQH5EkfB86gIoxmJbdDA/+gkzlAz8tI6pHf3a4Q
+    hY2OEtBhBzJ8T2pcXDcts6nWcgon4DmboC3fGXnInCtwRiZ5EkfXNB6ZNhCRLIAIk6nzUy
+    qDkB38vSo+lJme+ZkJwsNqpUM/STROBDHByw9QDBKHESUSqRTs4phsjtAFbf+MiBfVmkDn
+    dJIe+pmHbjx71Zo+FTWJjNbMq9SQZvTIoOvz1lSpZenE7wQBJ8EqCdZmaqSw
+X-ME-Proxy: <xmx:WSpWar2Ly2Mn8j2HySrdEQDCWGUjJwgI2NaQMJZdjISRKA9QtelBzQ>
+    <xmx:WSpWaoc35WgD7yVf8WLqSNjT1muC7YbV0RmMDNTNRB3lQzfBAyNw0Q>
+    <xmx:WSpWan6nW1fLWAySpnerCtA0fjiVS0nG8BXuMQs03d1WK3HK7DOcOQ>
+    <xmx:WSpWaj8bBfe0BI5s3730ulC-f88KW26Z5OYpQseWknYuSVYBDNhsBw>
+    <xmx:WSpWardi_astK4Fc_m8S94wRNrXdXD_6Ehli5WeV5kRQcZCZE1c6Z0lI>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jul 2026 08:23:50 -0400 (EDT)
+ 14 Jul 2026 08:23:52 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -122,22 +122,22 @@ Cc: Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the poisoned subpage, locked across split
-Date: Tue, 14 Jul 2026 13:23:40 +0100
-Message-ID: <20260714122344.351895-2-kirill@shutemov.name>
+Subject: [PATCH v2 2/5] mm/huge_memory: refuse to split a file folio when the anchor is beyond EOF
+Date: Tue, 14 Jul 2026 13:23:41 +0100
+Message-ID: <20260714122344.351895-3-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260714122344.351895-1-kirill@shutemov.name>
 References: <20260714122344.351895-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 46A024000C
-X-Stat-Signature: 8roncuiuowbzuayo54kznc6q7x8nim8c
-X-HE-Tag: 1784031832-607391
-X-HE-Meta: U2FsdGVkX199ACy0+25/993gXcY+WI9g5ln7nS9KrsV1vGM3lo0Ln185a0c7Re8NPflaHD6v6qFHleltAhakLVdl5x033S12sZNb2Xb1sSNKmIWgpFDMgbvqaxK2/Z51KkHQTRFDQT5Ybb6l9CWJIHgmdIsAyIvDe1Vvz5md1AQzbgrY5Icup7N/ljv7yik22P4BeP/uCV+OH13xtMIB/4ZQME7HKQl/Vouh+jyBQtI/6amI1jAqci80gjwqUp7CYoYL45Z1jBJXgMg7vdL+omk6hmyRLg9IzogA2wcB3fyS3/HGRIcVMgSkvc0qsKpBlehkeLg/b9UzaPpy1umx4g4x3YL/VHcZQzlw4iRtgxVZ6ovjYwTn9hY74VP9KxPSBKpch31NU7zG1dI8Jsm+XXs4UcjKlFl2rkcxI4+rlkHZ84JsCJJ33b+/NXy3JGDxAJNOuC8UNfs7YrqHdhtb1e1b6GsNHdRyiRRKCfYDwdMQ4ejP+Re+PgNAF4gGJ4CD+NbCMd0lQA0HicnYammSuBDos50r4RgLFLd4+QC8WpVPQbpZvgO+z+3OnV2vJtxisy6xO0ZRWfzHLsjEOIzw0sAWh3u9Q31PsLw2KlFuPovdh+/imU0q4NWPOTsTteR1Tfh52QFec/jaBTbIyxW7sYQTRd7o9r5/oAek9/0b1FTiBr7SvHk9mmzn5EPY6vGFhQ31QBDyoD04aQ3wEAa7ZAl9spjJq3+baUlAO+4OwB7ab35cf0YSOTbtlhAXauEW5CX7DpV3YyxWHPYFOUssGLmVg39o2bLcNUrt9Iql7O1az9kpYia8ClRfQ8WQsOP/REpJSDfEheClgSmrq0ffJ/eph6DUYnveWP/3STRTfF1ozzBiyVX0D1YY2ZtJ/ls7vJGOddEMz2LY7HdmayLp7rvT/5wxKQ4IDbp++ZjTryB8PvxNFpMo3w7Ff/kciYwyVcu5scPsfaVZIxP1Bpr
- 0Kc2J51x
- JPLUVFYiZmagMvLVm+YgyTIY71NtMXqjSjMbCIqnePy39MzT3kUoPqyB2FR02yW7qTBy1PbnQxc8ye0yxN1NSeToA3/I7rKi8fVmPAxYLkXf3t0cVEztWJjJOxIccr+nvFa7WyDHMlHa97UYIOpfLjXCJZJBp0KFiot7omYrcByYvdJJkEPuEzg6+ZXq0aE/CGuG7TFSdwEeiUQIBqUMY5dvaVebCFzn7fHO2sw1VHmQJeBDPiv5099i6bo3dUUQDbnZ/d530k9U5kgrU4+fKlG/EINNfHGH+dwSW16nAdiCluWuVIxU7VN32LSxNlHVjx9avTW9JyT7PCSsN/0AtTmInHA7CNsKzHO5ejapNru072q0xXf2bcMJ7BROusF5ZiPsGCs8HXasZ/WLLnCiL9rqnW/BwOYMPkSvi+A7C7lnJXTzKIUdGt4nluFtfBQh2xBP18sEvdEtanrjf+qcg+4b1rp+qXBx0SyfbD75gA7RXcSNgz5SV9fOMlzPc55PrkoPyqyKxqUb6dSO0VdEc+Kcw0jN01QH8pHnKiGDS1OMH9vYrCv5bCP9wMQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C82B020013
+X-Stat-Signature: 8zs3f89itdh7y5sgaq676s9nr91797hk
+X-HE-Tag: 1784031834-93487
+X-HE-Meta: U2FsdGVkX1+yjXjdxBDJ2FpyJKSwlJQlxe0qnbcKlvZH9l7Q6h09ciB+oFUVUbeuFlD+3ihU01mrADqGOlfPlr5J1IPUWShFKilLmGGMci255hnpVJvKkg2vvKL4ie35EuHNLEPPVbUjm2OvEnkWjouyRdGoNlGT7wj6yPqauvOS8rCOdmQTCAi4SagnDyQgRFeHCmLJFw2tNUNHMSDbshWUPBdyW8UiWLKKIgYs2B1XdQYLzfGImi/SBNjsIz9JbCE1Nl65RH4Mfn0fss6YqdHaWindh2ZaAbwav/8c6KChyGeaWdiC+kzKuRVNd5DcFNtMopy5KVPGF3s87d2zNNC+KKRKHns5QBzpI0zv+12FxTdS9whZF0Qqjf66kD0YpL9O3eDSKq6YdMDpd+kmyNCpa9Cw8mH8zP1l7SUE7MLgiOrHg5F9v/Or+XzcwP2fNwLZ846XUFgB+oOuJd1pANW64BAdgF4t04+qLpRoNVi4ybC0fuq0UxtBxHorGrnlF5dD1TnP2LcQ3vn54sIEP/S65ggJM2RGDpPe+sPbMM3CtZ2ZPKQpu3vPsrSgGVy4wj0FRo/pSAcHPFqHRP9ZxWAOJhM1FC8vtQBE00oICcLK13Ivm0eBRBObb4BnF/E5MqkqGZFsAEELy/wbVUV8xJH3UiG6QzHP13oKCI2W0sJ1jU3H5xW9XNP9nknaObVmPjd0qXuouHzcJM12k9XK8kGFKqiy8Zv1tE3x1NU9icQE1qV5xVEPJZT/HsOvCBb+c1SxN2xLDFhZXhlEBBLNI/C1pdRdiRxiO7xwuJzIEO2K0lpa5/gt7N6O7sQ59/JkLfrpP9wicy7udXJREjpdqvHDWS/aDzZr1tNSQOruJ5zTtIikj279dveJIMkVfjBdNMNuPxAIwVabFrS30mGpUe5W1YPfIB544e5taDTYaEOnMeOYFpWcUaGW/FwQUl3xDZ4CE9AV5bn6+0Pc/1w
+ eqpxAsLD
+ gqlo+fGYHCpdm3jPLMS7c9/r7HQwpaI+/4rl3ndHc4rrqBioKvxB0QTdlI/ZundAAKrTRAa+SqMd09L+72kj1x8OwlDYenYsnd/bQ98fcFK09MPhNtX/Ai6qlhXQRqh/h2wpD5IJ6AbgLALfpf8HxPG5Vf75xRIN3iN/+zgeZWGKiwrESkKxSnXge5IpZOoF8mry1rW12HbagjageRO1b9xLLdZcfOIQrv3O9rcz/eBnaVC/5+DkWL2QpMtSIjq0MDiH234Oww+Ggx94quuFAQdJ7C20OZXx3/6UbBXxkbEppqRYh23NpRdHRf40OzqNLusmvJpQB6ZZJItQUiAtBPmjWojNvHtWZdEClV1AOzJXsxlyac4ItOEjYSV8FndB13Rnjoc3phRGtgQIYoU89G1Ejg1vP6PRw5ocN3SnkbnAyYRNMOdyaVvRmIMMk88DlME9v4hTLVO/Q6dUuOs+tBpLsfQbt2Z9f2dD1ctLerC61VB+NLWXn/WL+NHmZ38XBwrhAPMjYr/zg0RO27o9yKXEBY46fG2bSTiTGogBe72477Rwf1ZjKFV03J/tx1n9yErtqMaZfjJeYWWT2lpEZU0JRSNmSFzjUclT3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,75 +147,62 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-try_to_split_thp_page() locked the poisoned page and passed it to
-split_huge_page_to_order(), which returns that very page locked to the
-caller.  For a tail page that means __folio_split() runs with @lock_at
-pointing into the middle of the folio.
+__folio_split() dereferences the mapping after the split completes:
+shmem_uncharge(mapping->host) for folios dropped beyond EOF and
+i_mmap_unlock_read(mapping) on the way out.  Nothing holds an inode
+reference for that duration; the split relies on the caller's locked
+@lock_at folio, while it is locked and present in the page cache, to keep
+the inode alive through eviction's truncate_inode_pages_final().
 
-__folio_split() dereferences the mapping after the split completes
-(shmem_uncharge(), i_mmap_unlock_read()).  The only thing keeping the
-inode alive across that is the locked @lock_at folio: while it stays in
-the page cache, eviction cannot complete.
+If @lock_at lies beyond EOF, __folio_freeze_and_split_unmapped() removes
+it from the page cache while keeping it locked for the caller.  That drops
+the pin and lets a concurrent final iput() evict and free the inode under
+the still-running split.  On the anon side __folio_split() already pins
+its anchor explicitly (folio_get_anon_vma()); the file side's anchor was
+always the locked in-cache folio, just never enforced.
 
-But a tail @lock_at can lie beyond EOF -- e.g. part of a shmem THP that
-reaches past i_size while the file is being truncated.  The split then
-drops it from the page cache yet still returns it locked, so the pin is
-gone and a racing final iput() can evict and RCU-free the inode while
-__folio_split() is still running:
+The only in-tree caller that passed a beyond-EOF @lock_at was
+memory_failure(), fixed in the previous patch to anchor on the head.  Make
+the requirement explicit so it cannot be reintroduced: refuse the split
+with -EBUSY when @lock_at is at or beyond the sampled EOF.  Such a folio
+is racing truncation, so there is nothing useful to split; -EBUSY is
+already handled by every caller.
 
-  BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
-   i_mmap_unlock_read include/linux/fs.h:537 [inline]
-   __folio_split+0x732/0x1640 mm/huge_memory.c:4100
-   try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
-   memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
+The check uses the same @end sampled under the folio lock that the drop
+loop uses, so it does not race the trimming it guards against.
 
-  Freed by task 4601:
-   shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
-   evict+0x57f/0xac0 fs/inode.c:870
-
-Split the folio as a folio, via split_folio_to_order(), so the head is
-the anchor left locked.  The head is piece 0, which the beyond-EOF drop
-loop never removes (it starts at folio_next(folio)), so the split always
-leaves it in the page cache and the inode stays pinned for the whole of
-__folio_split().  memory_failure() and soft offline re-lock the poisoned
-subpage's folio themselves after the split, so they do not depend on it
-being returned locked.
-
-Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
-Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
 Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/memory-failure.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ mm/huge_memory.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 51508a55c405..68d42cbed458 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1657,11 +1657,18 @@ static int identify_page_state(unsigned long pfn, struct page *p,
- static int try_to_split_thp_page(struct page *page, unsigned int new_order,
- 		bool release)
- {
-+	struct folio *folio = page_folio(page);
- 	int ret;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..0e3ca7178d8c 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4065,6 +4065,20 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
+ 		if (shmem_mapping(mapping))
+ 			end = shmem_fallocend(mapping->host, end);
++
++		/*
++		 * @lock_at is returned locked to the caller, and while it is
++		 * locked and present in the page cache it is what keeps the
++		 * inode alive: the mapping is still dereferenced after the split
++		 * (shmem_uncharge(), i_mmap_unlock_read()).  If it lies beyond
++		 * EOF the split would drop it from the page cache while handing
++		 * it back locked, removing that pin.  Such a folio is racing
++		 * truncation and there is nothing useful to split; bail out.
++		 */
++		if (folio->index + folio_page_idx(folio, lock_at) >= end) {
++			ret = -EBUSY;
++			goto out_unlock;
++		}
+ 	}
  
--	lock_page(page);
--	ret = split_huge_page_to_order(page, new_order);
--	unlock_page(page);
-+	/*
-+	 * Lock and split at the head, not the poisoned subpage: __folio_split()
-+	 * keeps the anchor folio locked and needs it to stay in the page cache
-+	 * to pin the inode. A tail beyond EOF would be dropped yet returned
-+	 * locked, losing that pin. The caller re-locks @page afterwards.
-+	 */
-+	folio_lock(folio);
-+	ret = split_folio_to_order(folio, new_order);
-+	folio_unlock(folio);
- 
- 	if (ret && release)
- 		put_page(page);
+ 	/*
 -- 
 2.54.0
 
