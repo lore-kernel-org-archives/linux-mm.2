@@ -4,93 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C9ECC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 06:05:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E533C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 06:10:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFC186B0005; Tue, 14 Jul 2026 02:05:58 -0400 (EDT)
+	id 73F156B0088; Tue, 14 Jul 2026 02:10:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EACD86B0088; Tue, 14 Jul 2026 02:05:58 -0400 (EDT)
+	id 6F0596B008A; Tue, 14 Jul 2026 02:10:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC2A86B008A; Tue, 14 Jul 2026 02:05:58 -0400 (EDT)
+	id 5DF446B008C; Tue, 14 Jul 2026 02:10:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A72B26B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:05:58 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D1E31A02C6
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:05:58 +0000 (UTC)
-X-FDA: 84986346396.27.DBBB5ED
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2FFE540007
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:05:54 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 2D2216B0088
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:10:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A82701A0294
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:10:40 +0000 (UTC)
+X-FDA: 84986358240.21.CC0C130
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C274340008
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:10:38 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of machao26@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=machao26@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784009156;
-	b=hCOerYduEmgT1tsRfM7TzQkf7Ilj8zYZ937qXsNeJpbOnW7b7PMYG9AokqpOxy/wCKtIWX
-	+TD8pJwgFlk1FDxXVSv36FtVieesqXW0mHosuhcsJKlsvprpg62xjK7UJ8QR//O4NOF4EK
-	4ulZT8H++jJpN6NEo/OdD0L+NmM/ea4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of machao26@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=machao26@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784009156;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W5dWxMJo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf07.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784009438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UQEeBT4PUG+APsd/Pp+GWgdDe8bJZR7/s0Ng0Sk5cJU=;
-	b=JHkAfrpLbOCP2xP6GCVFkAnkUuWN99M6zn05XVi1mVODeIFAg+ULAlhJJCoxvlNv85pbfZ
-	b8FmMtFVK0hAS6fjTA39y1MXKxN+HKkZ2Er1R9o3sMsalbB2rBSIvPpo/KGvvM/dY9Yq9C
-	UOLimrxqKFwz1LHJLCFLyDBcVn/C1VQ=
-X-CSE-ConnectionGUID: Cu9lQUKeTZqphWKotg8n8A==
-X-CSE-MsgGUID: U5HVHNmxS3iUF6Ryp/ClQA==
-X-IronPort-AV: E=Sophos;i="6.25,163,1779120000"; 
-   d="scan'208";a="155936205"
-From: =?utf-8?B?6ams6LaF?= <machao26@xiaomi.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "hughd@google.com" <hughd@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "kasong@tencent.com" <kasong@tencent.com>, "baohua@kernel.org"
-	<baohua@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	=?utf-8?B?55Sw5a2d5paM?= <tianxiaobin@xiaomi.com>, =?utf-8?B?5L+e5Lic5paM?=
-	<yudongbin@xiaomi.com>, =?utf-8?B?5p2O6bmP56iL?= <xiaoyaoli@xiaomi.com>
-Subject: =?utf-8?B?5Zue5aSNOiDlm57lpI06IFtFeHRlcm5hbCBNYWlsXVtQQVRDSCA2LjE4Lnkg?=
- =?utf-8?B?djJdIG1tOiBzaG1lbTogZml4IHBvdGVudGlhbCBsaXZlbG9jayBpc3N1ZSBm?=
- =?utf-8?Q?or_shmem_direct_swapin?=
-Thread-Topic: =?utf-8?B?5Zue5aSNOiBbRXh0ZXJuYWwgTWFpbF1bUEFUQ0ggNi4xOC55IHYyXSBtbTog?=
- =?utf-8?B?c2htZW06IGZpeCBwb3RlbnRpYWwgbGl2ZWxvY2sgaXNzdWUgZm9yIHNobWVt?=
- =?utf-8?Q?_direct_swapin?=
-Thread-Index: AQHdEBErMsmrE+zz7EKRA3z2tbO3PLZrXI5QgABv3ACAAMBdIA==
-Date: Tue, 14 Jul 2026 06:05:50 +0000
-Message-ID: <777ee2cd231642c682560b41b29798fb@xiaomi.com>
-References: <c0b158fe3f25709543b48a9d81b1933120a9e2ba.1783648317.git.baolin.wang@linux.alibaba.com>
- <636829064b674f71a11095603edcb20a@xiaomi.com>
- <64aae758-bcf1-45f8-bb3d-bd732ada2b11@linux.alibaba.com>
-In-Reply-To: <64aae758-bcf1-45f8-bb3d-bd732ada2b11@linux.alibaba.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.237.8.167]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/39pAIw3xbpK7+U4L+xZrNR+VURZcoyTnPopnGzZ1Ao=;
+	b=ktrAHWXLQKqE0pVvI+qYdWwFKleEG98wB3xep2Vv5CiqK/wOxygMK2RvHKuMKYKdesDEpJ
+	wVQqzKWofitajRqedAv3jX5WTWyLkDIbctBNwLapTDbTBtI6FYQeQWcRuRrWOWiT6dGmhC
+	2TZTpqalyA7rj0xG3XZ2j5HZi7PRUn8=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=W5dWxMJo;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf07.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784009438;
+	b=eAXWcXY8udDoyaVDlI2ad81DUjewMcQsyDN9eA29fuI5eG3s5mN737m1WV/oh/j4d/imO3
+	d4qS6WNXdI6MjLISR1bUyzz7Zc3WKW0oAs2ksc8nShP60SgP0HL37nPU9hPFMUM16ZfJ+b
+	o3xZpLsIoiZMRDEU1PKhiiFAz7fqArM=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493ec555a26so25090265e9.0
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:10:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784009437; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oAQU4wLI2xGisCiVMwzlmlOZAoKeeoKJEeses/EJ438r08K6enJnrzcORr35VOBcmU
+         3ZRsvIeQFoBu3UecrbpRuVnR1fiTBOT08cijhvgS3TOlHAb0TZEc6uUvriTCibfy/cjb
+         DnXoKPlx7VKURCBB7r/83jhq6Rck9ycboDzTucF5l1uwosC1Rc9gGRnTZNakxeCzWWbi
+         +KusEVgbmFUPBvOAwB0oCgjUEkYem6xDqwT1f2Mu52DQlsXa0jEq6PWqpCfMhtDsfPfK
+         gLaSVBlICachW3viMTCih8Ipu+XUAtmXOtjpqoenYRatzsZ8Z0mLa8WB6+ncqehTwpCs
+         MQIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=/39pAIw3xbpK7+U4L+xZrNR+VURZcoyTnPopnGzZ1Ao=;
+        fh=cUrf6M/5e+2fWZ8nkxk6WmRd/eZLnecFNnr2YxBs6QE=;
+        b=S1BqXxxZda4DzE/QlMsfujIHfsI9ULgj5Ty0YGq7kaNTiyUgBBgqwvjJ/pTeD/SKBw
+         3NPGdJd+UG+LtZPHvHh5oLJtOhonMuaI0oWpQxDozK0C9Kbk/9jZkCNg3n3C29q4sg3z
+         RLM9kE7rmq4eBV6NCCjRSRHv7BDCdO7cNiYmQVZpe38/mJWbu+VZKHgTtFSUI6XckgJw
+         UD5bcgDVr6ixeMy6d/EmNhBPZi9cxfSbbsX7l1G7BZSYeoB8gxXQm2fHtuLtvaQ81ir/
+         XWDnFdvRsyQ2G9gK2HeRpHSpSL04Uk4L03vSA8tOOTZclblMoIp2HpPYLmE7ZbDKVrnH
+         6EVA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784009437; x=1784614237; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/39pAIw3xbpK7+U4L+xZrNR+VURZcoyTnPopnGzZ1Ao=;
+        b=W5dWxMJoqmvPlCMRnTlFSizETpOwEVzIQqgfZiZbx5aECAvwLsYNZt1fINLEwBpm7R
+         Ogdu0CUonVVfqhmYiCaCWfFMmeNlQ8FgZ83h7f7e84wM+bY4D9Cf1hPbT5xUzYX7L3vi
+         qH2jsZuw8IrpxjeMQTYrsrXLJQjX8ggzoShKxX29OlAMtYyTsHnZpATOVeOpIKWjhTq3
+         eMut/gNiAquf5DkE/lllUhDrwLBGyJQGwlkhCy3Fq97mMwColFA0dVp/mNtb6i4ccQCx
+         zupqBGbHobnLU/deRB7qhBt7mqA37XCVBg1glJ2im6WndE350mYSCt/oxCPnlTVyzbDt
+         WaOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784009437; x=1784614237;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/39pAIw3xbpK7+U4L+xZrNR+VURZcoyTnPopnGzZ1Ao=;
+        b=is6JNuGRJ3H2/oF7i97VMNyCEIAGNzoOZZSgpsiP+W+LpCenwM5epqcNTlp+4LVbKw
+         SkTLkJn44X2T+PjTH6fdidjcFspJfiyyRP6OhMUDyAg20bLJU0Ueu1J6rAiAkccA19SQ
+         sexZzpCpTBdQNPL+c6Fc31h5krxuvvdVCYKR3CQxNwpWk92Ty8aHPqkboPCku2HXnYyw
+         vh41V66qdZuYWqcPCPdmxgOUpTh9YhwkFmjkQqaeK8QCpcUkn0mpeRwlOAbc3e6ktL2p
+         nSL7iZNAcbq50QTHYhBA/RxnoVvorEcOmPwLyioFI0USz4BROeuBRn60IyNKooriARWd
+         4WWQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoJkPZ47nTixmwb75mOqDcfLfAzyXCPat9KBcQuLjjv6nCwUZkBenAUU1CpPk5i6H1bYW2Y9HCreg==@kvack.org
+X-Gm-Message-State: AOJu0YyM9c96ATM/Nlcv4ZrgkM24gNhA/EYWNz7uan6HwHkHHyb9oPxH
+	xuXSKQAGrbWCswCFpii6bgnhvs4hD+hAbBGwSLtlEZTObLLhy8r4s+30W7I5WqgyhSJevH9tyuU
+	s98sI7oL99LdgN+U5tPqXA/hfpl580u0=
+X-Gm-Gg: AfdE7cnZ9/iYI5SklR63z3ppBXHkFCBvWMG6phQ1D/3gKklKS1y9RvJc5G5zPe645cw
+	iZa8Z9+2K0vmsWx63vlp7Zi2h3N1EUloQd0OsQ0xvxNbdgLdjgIWqKp95IDXIO/x8Iq3a4AJLiC
+	7iDjhkx7Cm3CqTj0MoOpaPGZfphiCQFxmayFLgJyvsan/JfG6RtBO+lPoOCs+HIS0CsZpWMKbJQ
+	APhJiVoRqRgx8sQ1Y8nK8r51TjD2HWJH7l8mu5TgqbTqWaY/3x8K6Rplp6JTrJWEiglTi2ZSw==
+X-Received: by 2002:a05:600c:5392:b0:490:b00c:8e6a with SMTP id
+ 5b1f17b1804b1-493f8826bbfmr118663245e9.28.1784009437267; Mon, 13 Jul 2026
+ 23:10:37 -0700 (PDT)
 MIME-Version: 1.0
+References: <20260709073823.6643-1-jiangwen6@xiaomi.com> <20260709073823.6643-5-jiangwen6@xiaomi.com>
+ <85a3a79a-2a78-47ed-bd93-48e8f1967551@arm.com>
+In-Reply-To: <85a3a79a-2a78-47ed-bd93-48e8f1967551@arm.com>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Tue, 14 Jul 2026 14:10:25 +0800
+X-Gm-Features: AUfX_mzEw4BXfhOZBlRoqj1kqHJs057Yw2Bpm2f01kvdPVQVUYHHnqLAY8wPhow
+Message-ID: <CAHKocdH0KYPaqkTOEE7n8vX4BFdgPvVbRsh3Vtb6MtvmCTn4XQ@mail.gmail.com>
+Subject: Re: [PATCH v6 4/6] mm/vmalloc: Extend page table walk to support
+ larger page_shift sizes and eliminate page table rewalk
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
+	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
+	ajd@linux.ibm.com, anshuman.khandual@arm.com, david@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	rppt@kernel.org, ryan.roberts@arm.com, 
+	"Barry Song (Xiaomi)" <baohua@kernel.org>, Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: eq16tictedss8hftrf87z4enngrtj5ko
+X-Rspamd-Queue-Id: C274340008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2FFE540007
-X-Stat-Signature: gyetjjbx7wfca5x6mehhdx45ymui8ncu
-X-HE-Tag: 1784009154-604141
-X-HE-Meta: U2FsdGVkX19Q43HcN+M1qYYusTp2lfyuYLQ3cR4h9T8PxnZbayVIHbfnWahHbNTjmObNduhrgdOnIlX8TSoxf6ngLwo5CPD1iZbGH/hNZqB+61BYZnQC8rGsYI9tkiZGkGuJkJR3OHoCWYAH5YtYySpUnyvScnHrH5Ko3CYVsmcbn1ZWVQkO46lwPkNJ0EMAOwHEbl73uvtDJSIO3cKfIpKydrAMcbd1nQSlDABp7kJvO7yqRGd855D+WSQTPjXXrsQCj0kkpx6MaQWzyvAkrI5elHSa0+npWHDLhb8Ds2bzj8xgUVC9VhfN9K4ia9afKzfJ5w2vwY1pCcixq92IJ5YryKsw40ixZAM/WDsGyvWkNK9xwGUmaIvL1313Kqrl2IYBXT14iH+RbRLivUe8/4PdqYN1R3FiqnNV0jU148tLJq1jvAalX/l8ikKPvRu12r0qnfGvMerTeRStwkxs8pU6H1/08IENPp4dzwhSk3h0EAJFvgQOewUuYpdvINdnKMcVOTLAfyVEzucyfrQyZGkt07Qp5GwR7WY1dHQh65HpJk0fmBMjjmo/oIYLtO3Qt9OIAurNRfKGEGt3mYxc1dJLD50MpjIns5pwUAltKyrdP1hS7r+ghxWwhxiVIadfUvKKQxT9RFLZ2A+crnweEjqFJ9rFACWnfFzjgHXr5dd4SsUOq+BxH/2XxOv1nXHwxTzgzlFJsBntyHnc6lutgFVMSwOTtX2RSZ5u3hZVDXgKf8mxrKRYxAYPiUvkUzVbBn9lEtQc5Z3wdZpcTHpxrn/PgYkPvbgbyt5UgOFbYSFFSYlsYaNfAMYkvblsOVdU3ciQjnuwAIKjNXNwVhPLYrFKKYtyLMYqgEuWP9xaOuS7Ncj/PiP++e3wQ53ufkUeiFZLMSdtIupm5O/hmlD+fpE5VdSJiUuLqs+Jq7hI00d8HY+TQvaqgQbmTuyFffguQeUU4/SSu6B5/ecqqyM
- GnNkXnUn
- qWn6c77TRsiEZToO7rHtI9j59JZIkIp95MkrybBfFSvpxN3tbvKKB88BBBICBs4AphbAf+LFdhVSzPLUrY/xRmupAEUxKfbT5nbY3nFPpZ1U7zICAtbHB6rNZo9sGvXmdBkOb2StwknEWPbX15J94ZRKdC5TStcUob6UFcACVm+mUbiIoNV4BOY+OmvBOEoFuwF4OfR88L59C+F1qJ616G4ug5p7aLvB66SaTyC3XbAmrun67OhEjpvOI+2teLzKsVphCLaWAqhmnEwqKj8LUiPyWTmhUDx3gS26MtHcoSQUQvWddTprf4MKeLITJmYC4jcf44s0UfkqHcT5EhfYxKaNMfZI59GAMNAsW15uXzf22pyHc3yMbr/n4lA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784009438-203930
+X-HE-Meta: U2FsdGVkX18epsW//txjVGI5ztlhJZeqM3X+4G1tayfHvO7T4r9c4jPzvCD2YjHy3vOok9SgogXXIA+ASXuMGZFmohLxWLilknYNBp7tVLebhWdkz3b5CoG6TuM12qSKdhELlyez7BagVQ0d98HawRAOAf3jHLCxvb4pHrN2sfuNq1eHOMve7hcN3i+9c36HhI3RPG/RD88b92tmanXZ6qCY3xOCSjTKCHIJ7WS8UQ1zyvrmMXudM59Es4pwxWsADNb+cE5n/dvFU4Gi905X/Gtlj8eHlUE8/Z02yhJUyuSlK4VCoNVNQI/yQmRv4HEqezvqDopObRxYjps37v5FNHYpPXB0Cc/E1dnqCGEkWlA7Q9S/dXgkjFWxSaXbFJlEk0yaueSBh1g8a2EyC8bvmrNIH832hFws2+tIX1HRznzPE0F3FBdjCgPbI/oGHN49syCp698MmZh53IZIbiFCHIKCezLfH1+N2t5UfUxTCzFJmorZchEQHXLZQUfL35bhPHcCPBM+bcUU7IUK/1ADhyhdvbq23o40hyfN4cRKUeazT94oyGuPaXGbHyyrOpoV95FmwdkBryn+KFoF2trr0ikvn31UxgaAUvWgdetzk3ci4ad0UdBTixQB2w3gnR203oH9i7NtHbAyWk011pIMc4ijI+TToKIealAQ5B/difSPuAyjXl2DTn+gdqOKY2k+nHobavmHeHOL5epFf416QvazPZZ1zxj2tiqesZBB4/22YT8HehnaEFzJP/EscPhU+JhiCiKIzhO8/YpWi2maB8l2GNLVwEnW0IDjx3/lLo1emzzHNg9dTjS0o/2bWMtNdkHVCHhvI3mh/WGEUNFiAaaph1rOEGsDLJ2rLSYgwvMWeBs/4ypbVxl9W515e+HlgYZY3Rtl3MUsRufVZv4uOVs93Bla7Q+/sU2DkR8uE8CLDs7n9sLvxsJOwcX7KRL5l7VoYYmAeUTtJL16SCh
+ IJJW5YAd
+ 5diSifwNUjLMIrhr9HscBPrewL76QykHfgsVQmV1jlCymd+wOF+hT4Sm8CAsLPvahVqSLub4cRTU/BrfICtdjI0fpFhseysZOWCavjfTdbJuW+02VJy1t0XGLzck/4grITNEyckmEIxhzCSTF+7pf6o0pCVTeCQy9xVtNLdjcoEXTD0G5EI0r5jRD3c5IzBVJHMZ3FQtTi951fsVM8rKietidkOhJbaLSDRxPDnai1GsL7RckesfFtLy7SV7OYs30BjT7hNlpv9L/tCFVTcH/7vhznL/TbLMA+tqAmFGWDMfb04Tw+rtPZ4Xou3XYlDhOLxNPTxrAJJ23SlKf02KmwdsyEeDpyfFJdWhBrcohxkLJ3OH4JzLeRV1OmCewd2Ga/+ZRZlVOqEOgWGMiIycFm82lEgmG+PnMPwcxlapo8CIo7REJP7p1nEeDqjCSF/n2toIwJkmKHO2nmWJqTcy9z0SR4bf1SZGPJZUSWVb7DU0fapGi2CwevYqr/Bt1JYeN7ziBgUuXzLF+P6EujyYCxvrhALttw6v3bUT9EK1A6C7aJXttnwAt4C5QjO8JLs5BYYeEE7Y9CNZcGNeEgQze0hKqDu/XHhvXNPOvIeL13LRaMmR0fk00W+nCsTTZkqW9dAXzRbjiAAp4mZLzQ4U7oVCKSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,108 +141,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pk9uIDcvMTMvMjYgNzo1NSBQTSwg6ams6LaFIHdyb3RlOg0KPj4+IFdoZW4gc2tpcHBpbmcgc3dh
-cGNhY2hlIGZvciBzeW5jaHJvbm91cyBJTyBzd2FwIGRldmljZXMsIHN3YXBjYWNoZV9wcmVwYXJl
-KCkgaXMgdXNlZCB0byBwcmV2ZW50IHBhcmFsbGVsIHN3YXBpbiBmcm9tIHByb2NlZWRpbmcgd2l0
-aCB0aGUgc3dhcCBjYWNoZSBmbGFnLg0KPj4+IEhvd2V2ZXIsIG9uIFBSRUVNUFQga2VybmVscyB0
-aGlzIGNhbiBsZWFkIHRvIGEgbGl2ZWxvY2ssIGFzIHJlcG9ydGVkIGJ5IENoYW9bMV06DQo+Pj4N
-Cj4+PiBUaHJlYWQgQSBzdGFydHMgZGlyZWN0IHN3YXBpbiBvZiBhIHNobWVtIGZvbGlvIGFuZCBj
-YWxscyBzd2FwY2FjaGVfcHJlcGFyZSgpIHRvIHNldCBTV0FQX0hBU19DQUNIRS4gSXQgbWF5IHRo
-ZW4gYmUgcHJlZW1wdGVkIGluc2lkZSB3b3JraW5nc2V0X3JlZmF1bHQoKS4NCj4+PiBNZWFud2hp
-bGUsIGEgaGlnaGVyIHByaW9yaXR5IHRocmVhZCBCIGFsc28gYXR0ZW1wdHMgZGlyZWN0IHN3YXBp
-biBvZiB0aGUgc2FtZSBzaG1lbSBzd2FwIGVudHJ5LiBTaW5jZSBzd2FwY2FjaGVfcHJlcGFyZSgp
-IGFscmVhZHkgbWFya3MgdGhlIGVudHJ5LCB0aHJlYWQgQiByZXBlYXRlZGx5IGdldHMgLUVFWElT
-VCBhbmQgYnVzeS1sb29wcyB3YWl0aW5nIGZvciB0aHJlYWQgQSB0byBmaW5pc2guIEJ1dCBhcyB0
-aHJlYWQgQiBydW5zIGF0IGhpZ2hlciBwcmlvcml0eSwgdGhyZWFkIEEgY2Fubm90IHByZWVtcHQg
-aXQsIHJlc3VsdGluZyBpbiBzdGFydmF0aW9uIGFuZCBhIGxpdmVsb2NrLg0KPj4+DQo+Pj4gRml4
-IGl0IGJ5IHlpZWxkaW5nIHRoZSBDUFUgd2l0aCBzY2hlZHVsZV90aW1lb3V0X3VuaW50ZXJydXB0
-aWJsZSgxKQ0KPj4+IHdoZW4NCj4+PiBzd2FwY2FjaGVfcHJlcGFyZSgpIGZhaWxzLCBmb2xsb3dp
-bmcgdGhlIHNhbWUgYXBwcm9hY2ggdXNlZCBpbiBjb21taXQgMDI5YzQ2MjhiMmViICgibW06IHN3
-YXA6IGdldCByaWQgb2YgbGl2ZWxvY2sgaW4gc3dhcGluIHJlYWRhaGVhZCIpIGFuZCBjb21taXQg
-MTNkZGFmMjZiZTMyICgibW0vc3dhcDogZml4IHJhY2Ugd2hlbiBza2lwcGluZyBzd2FwY2FjaGUi
-KS4NCj4+Pg0KPj4+IEhvd2V2ZXIsIGNvbW1pdCAwMTYyNmExODIzICgibW06IGF2b2lkIHVuY29u
-ZGl0aW9uYWwgb25lLXRpY2sgc2xlZXAgd2hlbiBzd2FwY2FjaGVfcHJlcGFyZSBmYWlscyIpIGZv
-dW5kIHRoYXQgdGhlIHVuY29uZGl0aW9uYWwgb25lLXRpY2sgc2xlZXAgY2FuIGNhdXNlIFVJIHN0
-dXR0ZXJpbmcgb24gbGF0ZW5jeS1zZW5zaXRpdmUgQW5kcm9pZCBkZXZpY2VzLiBTbyB3ZSBjYW4g
-Zm9sbG93IHRoZSBzYW1lIGFwcHJvYWNoIGJ5IGFkZGluZyBhIHdhaXRxdWV1ZSB0byB3YWtlIHVw
-IHRhc2tzIHdoZW4gbmVlZGVkLCBpbnN0ZWFkIG9mIGFsd2F5cyBzbGVlcGluZyBmb3IgYSBmdWxs
-IHRpY2suDQo+Pj4NCj4+PiBOb3RlIHRoYXQgbWFpbmxpbmUgZG9lcyBub3QgaGF2ZSB0aGlzIHBv
-dGVudGlhbCBpc3N1ZSwgd2hpY2ggaGFzIGFscmVhZHkgYmVlbiByZXNvbHZlZCBieSBLYWlydWkn
-cyBzd2FwIHJlZmFjdG9yaW5nIHdvcmtbMl0uDQo+Pj4NCj4+PiBbMV0NCj4+PiBodHRwczovL2xv
-cmUua2VybmVsLm9yZy9hbGwvNzAwYTJjYmY5MGEyNDg0Zjk3OWFhYzg1OGYwOGY1ZDRAeGlhb21p
-LmMNCj4+PiBvbS8gWzJdDQo+Pj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjYwNTE3
-LXN3YXAtdGFibGUtcDQtdjUtMC04OGFlNDNlMDY0YzdADQo+Pj4gdGVuY2VudC5jb20vDQo+Pj4g
-Rml4ZXM6IDFkZDQ0YzBhZjRmYSAoIm1tOiBzaG1lbTogc2tpcCBzd2FwY2FjaGUgZm9yIHN3YXBp
-biBvZg0KPj4+IHN5bmNocm9ub3VzIHN3YXAgZGV2aWNlIikNCj4+PiBSZXBvcnRlZC1ieTogTWEg
-Q2hhbyA8bWFjaGFvMjZAeGlhb21pLmNvbT4NCj4+PiBDbG9zZXM6DQo+Pj4gaHR0cHM6Ly9sb3Jl
-Lmtlcm5lbC5vcmcvYWxsLzcwMGEyY2JmOTBhMjQ4NGY5NzlhYWM4NThmMDhmNWQ0QHhpYW9taS5j
-DQo+Pj4gb20vDQo+Pj4gU2lnbmVkLW9mZi1ieTogQmFvbGluIFdhbmcgPGJhb2xpbi53YW5nQGxp
-bnV4LmFsaWJhYmEuY29tPg0KPj4+IC0tLQ0KPj4+IENoYW5nZXMgZnJvbSB2MToNCj4+PiAtIEFk
-ZCBhIHdhaXRxdWV1ZSB0byB3YWtlIHVwIHRhc2tzIHdoZW4gbmVlZGVkLg0KPj4+DQo+Pj4gSGkg
-Q2hhbywgY291bGQgeW91IHRyeSB0aGlzIHBhdGNoIHRvIGNoZWNrIGlmIGZpeCB5b3VyIGlzc3Vl
-PyBUaGFua3MuDQo+Pj4gLS0tDQo+Pj4gbW0vc2htZW0uYyB8IDE0ICsrKysrKysrKysrKystDQo+
-Pj4gMSBmaWxlIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4+Pg0K
-Pj4+IGRpZmYgLS1naXQgYS9tbS9zaG1lbS5jIGIvbW0vc2htZW0uYw0KPj4+IGluZGV4IDk0YzVi
-MGQ3OGFjMy4uM2MzMjliNzk0YWU0IDEwMDY0NA0KPj4+IC0tLSBhL21tL3NobWVtLmMNCj4+PiAr
-KysgYi9tbS9zaG1lbS5jDQo+Pj4gQEAgLTIwMDUsMTEgKzIwMDUsMTQgQEAgc3RhdGljIHN0cnVj
-dCBmb2xpbyAqc2htZW1fYWxsb2NfYW5kX2FkZF9mb2xpbyhzdHJ1Y3Qgdm1fZmF1bHQgKnZtZiwN
-Cj4+PiAgICAgICAgIHJldHVybiBFUlJfUFRSKGVycm9yKTsNCj4+PiB9DQo+Pj4NCj4+PiArc3Rh
-dGljIERFQ0xBUkVfV0FJVF9RVUVVRV9IRUFEKHNobWVtX3N3YXBjYWNoZV93cSk7DQo+Pj4gKw0K
-Pj4+IHN0YXRpYyBzdHJ1Y3QgZm9saW8gKnNobWVtX3N3YXBfYWxsb2NfZm9saW8oc3RydWN0IGlu
-b2RlICppbm9kZSwNCj4+PiAgICAgICAgICAgICAgICAgc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2
-bWEsIHBnb2ZmX3QgaW5kZXgsDQo+Pj4gICAgICAgICAgICAgICAgIHN3cF9lbnRyeV90IGVudHJ5
-LCBpbnQgb3JkZXIsIGdmcF90IGdmcCkgIHsNCj4+PiAgICAgICAgIHN0cnVjdCBzaG1lbV9pbm9k
-ZV9pbmZvICppbmZvID0gU0hNRU1fSShpbm9kZSk7DQo+Pj4gKyAgICAgICBERUNMQVJFX1dBSVRR
-VUVVRSh3YWl0LCBjdXJyZW50KTsNCj4+PiAgICAgICAgIGludCBucl9wYWdlcyA9IDEgPDwgb3Jk
-ZXI7DQo+Pj4gICAgICAgICBzdHJ1Y3QgZm9saW8gKm5ldzsNCj4+PiAgICAgICAgIGdmcF90IGFs
-bG9jX2dmcDsNCj4+PiBAQCAtMjA2Niw2ICsyMDY5LDEwIEBAIHN0YXRpYyBzdHJ1Y3QgZm9saW8g
-KnNobWVtX3N3YXBfYWxsb2NfZm9saW8oc3RydWN0IGlub2RlICppbm9kZSwNCj4+PiAgICAgICAg
-IGlmIChzd2FwY2FjaGVfcHJlcGFyZShlbnRyeSwgbnJfcGFnZXMpKSB7DQo+Pj4gICAgICAgICAg
-ICAgICAgIGZvbGlvX3B1dChuZXcpOw0KPj4+ICAgICAgICAgICAgICAgICBuZXcgPSBFUlJfUFRS
-KC1FRVhJU1QpOw0KPj4+ICsgICAgICAgICAgICAgICAvKiBSZWxheCBhIGJpdCB0byBwcmV2ZW50
-IHJhcGlkIHJlcGVhdGVkIHBhZ2UgZmF1bHRzICovDQo+Pj4gKyAgICAgICAgICAgICAgIGFkZF93
-YWl0X3F1ZXVlKCZzaG1lbV9zd2FwY2FjaGVfd3EsICZ3YWl0KTsNCj4+PiArICAgICAgICAgICAg
-ICAgc2NoZWR1bGVfdGltZW91dF91bmludGVycnVwdGlibGUoMSk7DQo+Pj4gKyAgICAgICAgICAg
-ICAgIHJlbW92ZV93YWl0X3F1ZXVlKCZzaG1lbV9zd2FwY2FjaGVfd3EsICZ3YWl0KTsNCj4+PiAg
-ICAgICAgICAgICAgICAgLyogVHJ5IHNtYWxsZXIgZm9saW8gdG8gYXZvaWQgY2FjaGUgY29uZmxp
-Y3QgKi8NCj4+PiAgICAgICAgICAgICAgICAgZ290byBmYWxsYmFjazsNCj4+PiAgICAgICAgIH0N
-Cj4+PiBAQCAtMjQyMyw2ICsyNDMwLDggQEAgc3RhdGljIGludCBzaG1lbV9zd2FwaW5fZm9saW8o
-c3RydWN0IGlub2RlICppbm9kZSwgcGdvZmZfdCBpbmRleCwNCj4+PiAgICAgICAgIGlmIChza2lw
-X3N3YXBjYWNoZSkgew0KPj4+ICAgICAgICAgICAgICAgICBmb2xpby0+c3dhcC52YWwgPSAwOw0K
-Pj4+ICAgICAgICAgICAgICAgICBzd2FwY2FjaGVfY2xlYXIoc2ksIHN3YXAsIG5yX3BhZ2VzKTsN
-Cj4+PiArICAgICAgICAgICAgICAgaWYgKHdhaXRxdWV1ZV9hY3RpdmUoJnNobWVtX3N3YXBjYWNo
-ZV93cSkpDQo+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgd2FrZV91cCgmc2htZW1fc3dhcGNh
-Y2hlX3dxKTsNCj4+PiAgICAgICAgIH0gZWxzZSB7DQo+Pj4gICAgICAgICAgICAgICAgIHN3YXBf
-Y2FjaGVfZGVsX2ZvbGlvKGZvbGlvKTsNCj4+PiAgICAgICAgIH0NCj4+PiBAQCAtMjQ0Miw4ICsy
-NDUxLDExIEBAIHN0YXRpYyBpbnQgc2htZW1fc3dhcGluX2ZvbGlvKHN0cnVjdCBpbm9kZSAqaW5v
-ZGUsIHBnb2ZmX3QgaW5kZXgsDQo+Pj4gICAgICAgICBpZiAoZm9saW8pDQo+Pj4gICAgICAgICAg
-ICAgICAgIGZvbGlvX3VubG9jayhmb2xpbyk7DQo+Pj4gZmFpbGVkX25vbG9jazoNCj4+PiAtICAg
-ICAgIGlmIChza2lwX3N3YXBjYWNoZSkNCj4+PiArICAgICAgIGlmIChza2lwX3N3YXBjYWNoZSkg
-ew0KPj4+ICAgICAgICAgICAgICAgICBzd2FwY2FjaGVfY2xlYXIoc2ksIGZvbGlvLT5zd2FwLA0K
-Pj4+IGZvbGlvX25yX3BhZ2VzKGZvbGlvKSk7DQo+Pj4gKyAgICAgICAgICAgICAgIGlmICh3YWl0
-cXVldWVfYWN0aXZlKCZzaG1lbV9zd2FwY2FjaGVfd3EpKQ0KPj4+ICsgICAgICAgICAgICAgICAg
-ICAgICAgIHdha2VfdXAoJnNobWVtX3N3YXBjYWNoZV93cSk7DQo+Pj4gKyAgICAgICB9DQo+Pj4g
-ICAgICAgICBpZiAoZm9saW8pDQo+Pj4gICAgICAgICAgICAgICAgIGZvbGlvX3B1dChmb2xpbyk7
-DQo+Pj4gICAgICAgICBwdXRfc3dhcF9kZXZpY2Uoc2kpOw0KPj4+IC0tDQo+Pj4gMi40Ny4zDQo+
-Pg0KPj4gV2UgaGF2ZSBjb25kdWN0ZWQgc3RyZXNzIHRlc3RzIG9uIG92ZXIgMTAgcGNzIGZvciA0
-MCBob3VycyBlYWNoLCBhbmQgbm8gcmVsZXZhbnQgaXNzdWVzIGhhdmUgYmVlbiByZXByb2R1Y2Vk
-Lg0KPg0KPlRoYW5rcyBmb3IgdGVzdGluZy4gQ291bGQgeW91IGFkZCB5b3VyICdUZXN0ZWQtYnk6
-JyB0YWc/DQoNCldlIGhhdmUgY29uZHVjdGVkIHN0cmVzcyB0ZXN0cyBvbiBvdmVyIDEwIHBjcyBm
-b3IgNDAgaG91cnMgZWFjaCwgYW5kIG5vIHJlbGV2YW50IGlzc3VlcyBoYXZlIGJlZW4gcmVwcm9k
-dWNlZC4NClRlc3RlZC1ieTogTWEgQ2hhbyA8bWFjaGFvMjZAeGlhb21pLmNvbT4NCiMvKioqKioq
-5pys6YKu5Lu25Y+K5YW26ZmE5Lu25ZCr5pyJ5bCP57Gz5YWs5Y+455qE5L+d5a+G5L+h5oGv77yM
-5LuF6ZmQ5LqO5Y+R6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE5Liq5Lq65oiW576k57uE
-44CC56aB5q2i5Lu75L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/55So77yI5YyF5ous5L2G
-5LiN6ZmQ5LqO5YWo6YOo5oiW6YOo5YiG5Zyw5rOE6Zyy44CB5aSN5Yi244CB5oiW5pWj5Y+R77yJ
-5pys6YKu5Lu25Lit55qE5L+h5oGv44CC5aaC5p6c5oKo6ZSZ5pS25LqG5pys6YKu5Lu277yM6K+3
-5oKo56uL5Y2z55S16K+d5oiW6YKu5Lu26YCa55+l5Y+R5Lu25Lq65bm25Yig6Zmk5pys6YKu5Lu2
-77yBIFRoaXMgZS1tYWlsIGFuZCBpdHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRpYWwg
-aW5mb3JtYXRpb24gZnJvbSBYSUFPTUksIHdoaWNoIGlzIGludGVuZGVkIG9ubHkgZm9yIHRoZSBw
-ZXJzb24gb3IgZW50aXR5IHdob3NlIGFkZHJlc3MgaXMgbGlzdGVkIGFib3ZlLiBBbnkgdXNlIG9m
-IHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWluIGluIGFueSB3YXkgKGluY2x1ZGluZywg
-YnV0IG5vdCBsaW1pdGVkIHRvLCB0b3RhbCBvciBwYXJ0aWFsIGRpc2Nsb3N1cmUsIHJlcHJvZHVj
-dGlvbiwgb3IgZGlzc2VtaW5hdGlvbikgYnkgcGVyc29ucyBvdGhlciB0aGFuIHRoZSBpbnRlbmRl
-ZCByZWNpcGllbnQocykgaXMgcHJvaGliaXRlZC4gSWYgeW91IHJlY2VpdmUgdGhpcyBlLW1haWwg
-aW4gZXJyb3IsIHBsZWFzZSBub3RpZnkgdGhlIHNlbmRlciBieSBwaG9uZSBvciBlbWFpbCBpbW1l
-ZGlhdGVseSBhbmQgZGVsZXRlIGl0ISoqKioqKi8jDQo=
+On Mon, 13 Jul 2026 at 21:49, Dev Jain <dev.jain@arm.com> wrote:
+>
+>
+>
+> On 09/07/26 1:08 pm, Wen Jiang wrote:
+> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> >
+> > vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
+> > provides a clean interface by taking struct page **pages and mapping them
+> > via direct PTE iteration. This avoids the page table rewalk seen when
+> > using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+> >
+> > Extend it to support larger page_shift values, and add PMD- and
+> > contiguous-PTE mappings as well. Rename it to vmap_pages_range_noflush_walk()
+> > since it now handles more than just small pages.
+> >
+> > For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
+> > iterate over pages one by one via vmap_range_noflush(), which would
+> > otherwise lead to page table rewalk. The code is now unified with the
+> > PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > Tested-by: Leo Yan <leo.yan@arm.com>
+> > Reviewed-by: Dev Jain <dev.jain@arm.com>
+> > ---
+> >  mm/vmalloc.c | 81 ++++++++++++++++++++++++++++++----------------------
+> >  1 file changed, 47 insertions(+), 34 deletions(-)
+> >
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index d7fef85b241c4..d2a4d649af549 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -125,7 +125,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+> >       pte_t *pte;
+> >       u64 pfn;
+> >       struct page *page;
+> > -     unsigned long size = PAGE_SIZE;
+> > +     unsigned long size;
+> > +     unsigned int steps;
+> >
+> >       if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+> >               return -EINVAL;
+> > @@ -147,8 +148,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+> >               }
+> >
+> >               size = vmap_set_ptes(pte, addr, end, pfn, prot, max_page_shift);
+> > -             pfn += PFN_DOWN(size);
+> > -     } while (pte += PFN_DOWN(size), addr += size, addr != end);
+> > +             steps = PFN_DOWN(size);
+> > +     } while (pte += steps, pfn += steps, addr += size, addr != end);
+>
+> I think I had also recommended to put these vmap_pte_range() changes
+> into the previous patch.
+>
+
+Hi Dev
+
+I put this change in patch 4 following Uladzislau's earlier suggestion:
+
+https://lore.kernel.org/linux-mm/ah3Cn3YnefIVJDo2@milan/
+
+Uladzislau, do you have a preference on where this hunk should go?
+
+Thanks,
+Wen
 
