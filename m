@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B467C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:07:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D92C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:07:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80F066B00CF; Tue, 14 Jul 2026 10:07:25 -0400 (EDT)
+	id AA72C6B00D2; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BF7D6B00D1; Tue, 14 Jul 2026 10:07:25 -0400 (EDT)
+	id A7EB26B00D3; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FD4A6B00D2; Tue, 14 Jul 2026 10:07:25 -0400 (EDT)
+	id 994686B00D4; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AEBC6B00CF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3781FA0064
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:24 +0000 (UTC)
-X-FDA: 84987559608.28.06E08C7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7033F6B00D2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFC7DC03BE
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:31 +0000 (UTC)
+X-FDA: 84987559902.23.6832175
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5F07B14001F
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tcs2QjbO;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784038042;
-	b=xTNhxQe4Wx8ClKXzx6/J+PjvgQxg7CsGjF8T+zF+Sr4FF1HQThpOjlkpcM3fRno1uJloJK
-	lgjgRI3wXKIvsmh/C2UQfcJzANfLOq8rI0XFan06gc7erpcSQiACRmm7XCFamMzOWYTirt
-	o6qgnjgOPw87XV7Zg22tkfUP7oQAnzA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tcs2QjbO;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1E3C41C0002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LM6l4iVa;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784038042;
+	s=arc-20220608; t=1784038050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2AtuGnMkKUmg5Fcb42sI1/yhBOPgS1GscsBtzFqMWqA=;
-	b=vo/Bc54ui6Op/IUnw88ttY9I7wJg4FlgNgOMzGjsNoGj5Boy8jeZMuueQwDjBI8m8Zlph0
-	/8njZ9ac5XcCScbmjlJKQl2k72H7+RV4iaAIYh2ucmDM+vdLd5oYJhjPzPJUFl7b9wyNWT
-	Yku8bhfAfwG1K1wrZcUZvnBdX9RllBU=
+	bh=865cl54nJQTbOF3eykkMxymd6hEBxnf3a3hksIMsfuE=;
+	b=FHDF3vrZTZ+G2KeXUH62jVdRLnAB1zB6mi3HHUU0KKXCQrz9j1M6q7x+mR0k3PFpTihFdw
+	cfeXhIqKTtqe3gMmGoH2E6ybxZyorDZH3zlqqNeLGWjpRmvpmCLlWSRx+zhq6q/E5kQORJ
+	msQ2zoBA6ORUxxNPL5k5xzN+NKD7uvk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LM6l4iVa;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784038050;
+	b=ja9UBgmwWceo3LKHSVfmjpfazbjpRzhp3xDZUC7Lt2+B95KqsnsJMnjiaerK/rh5WFX+Tf
+	o8aalUY31kYDgNCQkPaid+JZ/D8sd2r56fB1c0CsNXeNRQ5Xza4rSLui4ehpNFZtYozgvU
+	4tHM6niVkIiEYbMh5qMXFxl4D27YY28=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 49CFE1CDD;
-	Tue, 14 Jul 2026 07:07:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0350F1C25;
+	Tue, 14 Jul 2026 07:07:25 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 211913FBB1;
-	Tue, 14 Jul 2026 07:07:14 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D2ACB3F7B4;
+	Tue, 14 Jul 2026 07:07:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784038041; bh=W5yMHnXfWcnH1ZpiyUJxzPFiGyzR0nmofTO/4v3XglM=;
+	t=1784038049; bh=VE9T6pQuQsM82lM79rZVxS9mOIiIj6SKheB2t7eP+e8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=tcs2QjbOfi2UrOaEb3Be0yDpY6GZomCe7QbbhuAt79rvxsFv0nPzL+CWkgYpCVks/
-	 ogkFHzzFifaJTeH1MCRm+XyD/611Im1Ut2kp5sQ9dzHO1o7eUkGFrrRiH6Z4V/RDtz
-	 /vlFqoX8JwYVcEUc2qvYwpr+Gn4LoNg3DQ/uWfI4=
+	b=LM6l4iVarrFVDA4j9SWJAplc2WkKEHlGEtdlAtv7pOYj1y3dATl0KnbkElc5xhenP
+	 ErHq3OM3B9mOaLihBDgBjY6YaXcTg/I+07sfZRGvHPhPtHlUZIL/cU1EpblJJAXbkJ
+	 UH/xAtOtw9tn/FqSE+wrtOg61lpQnXFpNRh+nTaw=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:04:06 +0100
-Subject: [PATCH 17/22] mm: pagewalk: drop redundant address check for
- kernel mm walks
+Date: Tue, 14 Jul 2026 15:04:07 +0100
+Subject: [PATCH 18/22] arm64: mm: drop explicit mm_is_efi() check in
+ contpte
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-17-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-18-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -107,21 +107,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=1902;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=2365;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=W5yMHnXfWcnH1ZpiyUJxzPFiGyzR0nmofTO/4v3XglM=;
- b=TFBgeJD80Ix+w11MAOvfP3+Vh87dI14Hnq0FHr8NrSRBwD9XPKoZw/aAqVJc1+sG5OV8cIA+P
- hlg2L1E8nGiAdR9B4tzknmDLhA26Dhv64+3Fs4YGAcZ8Y3UcdoWIKP6
+ bh=VE9T6pQuQsM82lM79rZVxS9mOIiIj6SKheB2t7eP+e8=;
+ b=IJb3I/i6HXAVQpbcZffARFaIRNRmoRCmPcfDA+y7q25vE/t36H63xBNhz/u8eBXK9/0ECckK8
+ YJz0OELUjVVA+CXShhe5YzEf7ewVjSRMYhD9KGxFsYnbUmRuESOa0pX
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5F07B14001F
-X-Stat-Signature: ayqu4ya3ugz1cfhif76hdme9s9m8oig7
-X-HE-Tag: 1784038042-616183
-X-HE-Meta: U2FsdGVkX1+EGqqnRp6CsE4X7IW6tzsn95Oer6gWku7d3v4NxbU9j87zQhr49GVr98NsGqb7wFtdqMUfH3+ytTZwrXQY744Di7Z1FZMw0MLSJ98W/hnhfP3gROZ3Al6Dw5E/3aeuuagNmriBOTDU2XOHSGiWDoZTeYDFrKSao2xffMDgZrOxHfM80jR6xgm7oSgaaz2nPvjNXm0OarlfmJSIci5JJTrw58dh89UjyJkxPf6Jt/0DWIpzO4qC5bBWOPanopKBfvIcSBvGCyUXw5YeIBz41b9omKjTaaSSnJG4uHj2EfgPCFF51eK59i3O0iVVZh6Ynkyo4W8TvJucqatBaVBXjsDyOZpCnSzGkCpiXwci5SC1vOoaM8NOgzK5ROVzVT073nwvIKz5knaVn+4ybdFl20Vpcv6YAe7u5GdeJY7DqsTZzLOb4K8SNQzIJV04VdV9rZFB58k/hC4xhQUaw8t2J13Il+nlI/7SSoXTayFvliwfi63edmeLAwS5YsEFObmbcB5sVLaVvb9ulXmpnTyIylmaX1IVo8mbBJ/gsDmD8vyTp/6pMUsk2afN2tr4dfi7l+na7ee3/MHGO+7DStF2wOWfdLAw36mygnXNdMCclmbQUaOChLR2ASzNsl10h1CVrG89ZzMuNb5j5+xZlLGkTxVvcpNd6gkz6b6mEPuWWa2YGgxIswIE6LJnGriTiHFK9AqPbAzEMjQGbUjk6CMQw5X438jwNuV7a7orOiyFXcSrx67TfsMm1QFbTJ0y6K9hkbrAoF4hhUczzTswMM5Q/tdMcoShEVnFpl3cyRk/zZbuZqB/rqjhmgr8DiOsou9nIaMiQhgs8MEnnsjdk1eqq1/FxiCHx6vCKOuKYLr2rkQPnfhofYz6oFDb3Y5yyrYX6s84WgeNBPK1psyKa27b+bEn6M244CGok/hgE52f0RX3Kr3N+Cwc/xp4s3jepawD7n+79iwOUnW
- MYJNa6yZ
- B9If9gp8DIKKbAT0y2VkDSoAuUI3wx+2+boDrJB3moX1gnMG1c6icbFmyrD+zijr/L96opG/LjYcOnTStyNSIc5/KKFMTVzqsScs9bH5WyQPgsY/Yj9cWPojdUUjhE8JW3NuwtvU2LI9ID81J11UFXduuaRSNSDKjbrGM05SBAEPzd9749jCRCY6Wzcium2UiqOfJm52r40kXQcSVXGDp44+8wiSJnmGLQgxEDf3WeRWf+x24CA27OUvBU61yxoZqpeeVu3yQ83wMiToJu5iVNs6CRhi9qs4FgI/1dUu7/RW/qv15GC0IOYyx/eSW5tOwX9bE2raNgEaUG7E=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1E3C41C0002
+X-Stat-Signature: uhqb94s5yupa7gtpcf6r13og8cnuw4hx
+X-HE-Tag: 1784038049-314346
+X-HE-Meta: U2FsdGVkX18tbTwJm7xKI9hOyeoViegECcmi596zhxHkIwty/Br08Lzq9u8eu/3faYOP5tWUlGgjGR3gwijpMM3xDVMHQUoiUB1Y9tTw7ovDKO5t/PtuVd4tq5zYm11R2d9YWAmlOXsIIx9yG0rqpa4HzPRGoBmjo10pMIjRRXfUlYD5l/6UKG0X1Gq79B2uT/rFHplTknDqx9ria2kbti+Wsbw7UWgk9fbVQFDHrmKf5DMDWXxSc05MIE47H0dS0DI3zInG6ylz4fZ6A2t5bbOA3szGWDlcTZpDPVzKfsmefb8PI74lsJ4DGCwQV13vxyk7yFcEgwTTlWli3G3TBsQwiqN4+bCYlMRYmQkHo5cY1KGr775+Rg6JjIRdfyQVjyxKBJaFt8GUNevtZLwe6JvVJWdPlGdlhDvSiJodUZhVUO92i3CfGEtOyC0vPz5FgjpZFncuHGXmX+rwuNRd6yG0/ptMBgMReQqs6GSz4cmG4rtKnO0YBszCx+HH82ltbIVXLqqwSQ9hBbUT8lNE1IopZESdfHXzlBURadBhKf4uzqvlg6SV+F4FqdtOdIFNpvRd32amgo5Oh2hxRM1o0VbktFeenPoAm6DuKgB0vqJDWCw9MXBEO9sp2wUTCmqq7RjCxlImzOLLj2VaDTP9zW1ud6knSXVFpTTO03cReJogViZ04c4mavRVE5PYetPmGOR/uleKsrl+prYtvsJs/BRjcUG8mQQP4BHmWPhwOGhG++4jtz1CX3raYwGpdRcdCYnWAmINjpTH1MDWw3nY8rNu0trSV/cZqZML4WUWsvP4Ol2fhzJ7RBumBiPqeqgmJi4pU35OY6+rx1BsffimNK3kel8t5V5keE1cH1HAZ0SGsXP5a/IrHWEO/tIpnR4mVQnzXK+02pzluy3kPfFL1GqbwZC/O0F0dXRo0j6h3alZJs7GSroULOMVpTmowYyHY80HfEz1rweYjQzGkHn
+ dxu237oE
+ 3eDYy+BTb+qodhCpAiIMtCtPFI6w9Dcvu8T0X4AFXpWyOahvcAF28/A0u+TghtkH2sD5olzJ+V1IvhsXoSeNQ6Sjv/AaCVDIxQVsH4CLs8WYAdmqOwbRKB5w16bwaXTwtyTTRMZ19uZ6ekDVLCLLZVi3gPqJQpmY5Uqlb0lbkBWUYrF3fSSUSqYb4EpL684Tlcv48TLMI/44IMwadK/ryvg9LQv+Kl8hBhj4yytQTF4DL7NEXmQuL8gGmUJS/aDf/x2HYdp0HR1LboEvVsLUEUtIKMCRhEsdRewi3e3r3ct1XAF3NKHb+8QokE7E1NHHKEcXSBdQWkRSzoMaTrBGUnaI/zzBT6KIxLoliQ6ssn2CQAKNg2QEVsmKt7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,54 +129,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 8b1cb4a2e819 ("mm/pagewalk: fix EFI_PGT_DUMP of
-espfix area") made no-VMA page table walks use
-pte_offset_kernel() for any address above TASK_SIZE. This avoided
-pte_offset_map() validation on EFI page table dumps, where efi_mm
-could walk x86 espfix PMDs that intentionally look bad to pmd_bad().
+efi_mm is now marked as a kernel mm, like init_mm. mm_is_kernel()
+therefore gives the right answer for efi_mm and mm_is_user() is now
+equivalent to !mm_is_kernel().
 
-efi_mm is now marked with MMF_KERNEL, and no-VMA walks use
-mm_is_kernel() to select pte_offset_kernel() for kernel mm's. As a
-result we no longer need to handle the EFI_PGT_DUMP case explicitly.The
-address check is therefore redundant for EFI_PGT_DUMP and makes the
-condition harder to reason about.
-
-Remove the address check and associated comment; mm_is_kernel()
-should be sufficient on its own.
-
-Tested by booting x86 QEMU with CONFIG_EFI_PGT_DUMP=y and reading
-/sys/kernel/debug/page_tables/efi.
+Remove mm_is_user() and directly use mm_is_kernel() instead.
 
 Assisted-by: Codex:GPT-5.5
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- mm/pagewalk.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/arm64/mm/contpte.c | 26 +++++++++-----------------
+ 1 file changed, 9 insertions(+), 17 deletions(-)
 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index a3f47d1de3c5..0dd9d4ad9b68 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -68,17 +68,14 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 	if (walk->no_vma) {
- 		/*
- 		 * pte_offset_map() might apply user-specific validation.
--		 * Indeed, on x86_64 the pmd entries set up by init_espfix_ap()
--		 * fit its pmd_bad() check (_PAGE_NX set and _PAGE_RW clear),
--		 * and CONFIG_EFI_PGT_DUMP efi_mm goes so far as to walk them.
- 		 */
--		if (mm_is_kernel(walk->mm) || addr >= TASK_SIZE)
-+		if (mm_is_kernel(walk->mm))
- 			pte = pte_offset_kernel(pmd, addr);
- 		else
- 			pte = pte_offset_map(pmd, addr);
- 		if (pte) {
- 			err = walk_pte_range_inner(pte, addr, end, walk);
--			if (!mm_is_kernel(walk->mm) && addr < TASK_SIZE)
-+			if (!mm_is_kernel(walk->mm))
- 				pte_unmap(pte);
- 		}
- 	} else {
+diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+index ad5c04cf66ff..e21e279101ca 100644
+--- a/arch/arm64/mm/contpte.c
++++ b/arch/arm64/mm/contpte.c
+@@ -4,23 +4,9 @@
+  */
+ 
+ #include <linux/mm.h>
+-#include <linux/efi.h>
+ #include <linux/export.h>
+ #include <asm/tlbflush.h>
+ 
+-static inline bool mm_is_user(struct mm_struct *mm)
+-{
+-	/*
+-	 * Don't attempt to apply the contig bit to kernel mappings, because
+-	 * dynamically adding/removing the contig bit can cause page faults.
+-	 * These racing faults are ok for user space, since they get serialized
+-	 * on the PTL. But kernel mappings can't tolerate faults.
+-	 */
+-	if (unlikely(mm_is_efi(mm)))
+-		return false;
+-	return !mm_is_kernel(mm);
+-}
+-
+ static inline pte_t *contpte_align_down(pte_t *ptep)
+ {
+ 	return PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * CONT_PTES);
+@@ -263,7 +249,13 @@ void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
+ 
+ 	int i;
+ 
+-	if (!mm_is_user(mm))
++	/*
++	 * Don't attempt to apply the contig bit to kernel mappings, because
++	 * dynamically adding/removing the contig bit can cause page faults.
++	 * These racing faults are ok for user space, since they get serialized
++	 * on the PTL. But kernel mappings can't tolerate faults.
++	 */
++	if (mm_is_kernel(mm))
+ 		return;
+ 
+ 	page = pte_page(pte);
+@@ -302,7 +294,7 @@ void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+ 	 * We have already checked that the ptes are contiguous in
+ 	 * contpte_try_unfold(), so just check that the mm is user space.
+ 	 */
+-	if (!mm_is_user(mm))
++	if (mm_is_kernel(mm))
+ 		return;
+ 
+ 	pte = pte_mknoncont(pte);
+@@ -465,7 +457,7 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+ 	 */
+ 	VM_WARN_ON(nr == 1);
+ 
+-	if (!mm_is_user(mm))
++	if (mm_is_kernel(mm))
+ 		return __set_ptes(mm, addr, ptep, pte, nr);
+ 
+ 	end = addr + (nr << PAGE_SHIFT);
 
 -- 
 2.51.2
