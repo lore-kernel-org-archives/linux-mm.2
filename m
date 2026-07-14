@@ -4,129 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED6F5C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80EE3C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:38:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9892B6B0088; Tue, 14 Jul 2026 06:29:45 -0400 (EDT)
+	id 7534A6B0005; Tue, 14 Jul 2026 06:38:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 960906B0092; Tue, 14 Jul 2026 06:29:45 -0400 (EDT)
+	id 72A716B008A; Tue, 14 Jul 2026 06:38:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 879756B0093; Tue, 14 Jul 2026 06:29:45 -0400 (EDT)
+	id 640A16B008C; Tue, 14 Jul 2026 06:38:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 51C4B6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:29:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B6386A036A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:29:44 +0000 (UTC)
-X-FDA: 84987011088.27.3A6308C
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CCB1FA000D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:29:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="d PIydHw";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=XC07vfoK;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784024982;
-	b=SkkHuuFujcs64ToKYkH79wVYNLM4RayTOge9oWCF0wmzgnTSq7lgNEihQYaol6OPDLVOl7
-	WQiUkPt0q3LJwmv8JoB+asFAumLUnuely7OUQ6Rr1k/6EhA7Tu+0rpKAm1l7DhOWmdi5jm
-	nHYiRJ4xkHaWXkItIKWsj1ruqPBmTHk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="d PIydHw";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=XC07vfoK;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784024982;
+	by kanga.kvack.org (Postfix) with ESMTP id 339BB6B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:38:38 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9238A0380
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:38:37 +0000 (UTC)
+X-FDA: 84987033474.22.CE19111
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazolkn19010022.outbound.protection.outlook.com [52.103.13.22])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 285C3140003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:38:34 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=UlJ1ynfF;
+	spf=pass (imf26.hostedemail.com: domain of jiahuitry@outlook.com designates 52.103.13.22 as permitted sender) smtp.mailfrom=jiahuitry@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784025515;
+	b=Ce6F8zmFwdyO95IKPm1hj2+/8DZDpHLr6HWSNffNIODGIh8+w0W0Vlkkj4W2oph7xqpnEN
+	6/1yYWMlkuSCuSTg/tVQvWqF2cL5+zyu9WxwZyC+AJxbdKlgK0SvHU3dbQH3fjJl/4mIhs
+	Vipv11f0E1Giw3vdAoOjWdmQepuJVNo=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=UlJ1ynfF;
+	spf=pass (imf26.hostedemail.com: domain of jiahuitry@outlook.com designates 52.103.13.22 as permitted sender) smtp.mailfrom=jiahuitry@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784025515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D/druKhd9IvNef2J0pJK27qVVVk4qI3tVilOxadA1e8=;
-	b=Js9zA5aFPHeuZsUKucjUe0DyZX35LRTJfO7ntpMkDA0HB0lUjzK8pvHafGcHDzPDSYVT/5
-	JPz0pGBd9gaLehEl7uDJzumimxxpE7YcCTW5PPWxsjlC2BlZI2otjdBDGuZfVZYEJGPAda
-	4ksKYhkjm6jrwtcGYyJJDLC/Y28mHcU=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 77E2B1D000B0;
-	Tue, 14 Jul 2026 06:29:41 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 14 Jul 2026 06:29:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1784024981; x=
-	1784111381; bh=D/druKhd9IvNef2J0pJK27qVVVk4qI3tVilOxadA1e8=; b=d
-	PIydHwDr3/Tg+Hi3OkA+1QoItUIckCj1nhbg0b9h5NSTS4gYSsFuoy2CSmb4AQNM
-	orGtwGN9bp1pQGPWIkLrQmBvjxz/NV2ZrMw1GV6Atuw959cnU4Bia6H95pTC7kSJ
-	JzIs7af1KEx3MvzY287uWhUdNSmtKeDz5ma+OkrFdlEwji5qjGk1KpSRekLidyF4
-	bmLmHz8OxCYK3sJ9DOlFXi+J1mLwXkiX2KAwTr5DbggRxxCG8NIVadPs2FIUMW4U
-	pyr2yRot8Ueq1amRdyxZwkfgYgXtdJL2Otk+h3Ko2716sMcgQj0od8BYId6LdphJ
-	NCjWM730NBRX2Oxc667Ug==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784024981; x=1784111381; bh=D/druKhd9IvNef2J0pJK27qVVVk4qI3tVil
-	OxadA1e8=; b=XC07vfoK4nsA+cBeBnFTMekbPtk+TK+HRAQIT64nptDzo2nmP/4
-	vHUAPC58ZBZNMt4eSuuAKUz5bcsw55FSa0JZg7cYxxqujb7XJEUZkghyao8C5n1S
-	BXco/DxCGNkmV7Zx59nQlrsGdcdJsVZiHpgA3HwEOlzJ//PYL+t8sPWZAkdPFAaP
-	40iYrCS4A3lZtcciy8lT+msxcyDWHOUzT8+BusKWb5jnH0XjlR78NhQuA0QMHKSL
-	sIMhBja/Dpu23e0OhjfutuCMCclE6g2HRfKjtu1ccUM/T/4ddH5fC8A1eVq30/bP
-	tX95DSxT7eOfAec1VoEdK6nX95dTIaEvzXA==
-X-ME-Sender: <xms:kw9Wat9C2QTeHF6-ePmUCQcBAUFGKePfFf5wh5wss2uh9V_8HVHPKQ>
-    <xme:kw9WakB3I-eXBfmkWnUSUpQvDP3B5aduq9oh3HB8yYqObfBCvx8fhp7D6vjgoiRPC
-    B4WbGVlmjbHEveoWiXwg622qP_Y-N1u-LaAxUbC_MMtElP8Nf1y3I4>
-X-ME-Received: <xmr:kw9WapujENMK8sn9Fr1bprk9NFRT9_p6wahvM-bDtzBN1p_D0fb45Dta8x2J7A>
-X-ME-Proxy-Cause: dmFkZTEjQddmFbvKigDMQdRqPJ9XSi1XrBW+ZC8BP7zhnCiYnrJnKj9UHprC+RU4ycuqir
-    wV2GJTTRlRcTN/CyiH+ODp1oFJ0eBsmClA3QYKTzOlBg+03PAxve7QMoYT1uOexdoEKBHl
-    3D2PiTA4kPq9gZAetGrReve0e9NbA5Lj5KTZMrwybItPm9IQH5qiiBz+sOFqdOHWjvibSB
-    uSjuhGtKEyH8YUM4yLTvaYcQLtEM6zfk6b3p8QJ2wQ+x/1luB8vJvYj2DuGjcrEsBkbwnh
-    Tl3VozsJM7BFQNSjYATBTvTc+zLxNS4S+NSy5bPvx9nbwkiBt9JqIEcfzhOy7t9Q1qEdJC
-    OYTpVUjelx4tRsH9EaKnse8jHJMVDHuw96Z5hTUcOva+qHMp6m+4X0XhgabBRrbWtC5Y1B
-    1PUTKJNyvqBrC0azgWq2E85ld4QJ+i4cOEUmlVbbiXDaV4jBYbyDT1SVC0MZnraB/ySvuq
-    wYzDVHnqNvCWXcHdlJNN7gp9qY8Vtv6eg5N6I6fv/47U/dWmMoilKh+2iZv/HfFYqjXUE2
-    D47+tLGrxVKSAZzXNcmzQZjcbgAzKp4mem39Zv51sEXOWi6fgdxfHybzU4lAuLTR4UfUy2
-    2872xGer3gtOh6wB2hmMtPVmX4SnCARpvYsE1jSvz8F50O6wO7gpFY9xb6JQ
-X-ME-Proxy: <xmx:kw9WauYAJIfJyg9M4SXs_Nme2bzDJoeSCD2CPzGuUIGS9gmopEAAbA>
-    <xmx:kw9Wav0ivMgNKptookebq9rZ9_P4eP_h7ViSgZpv68k0bLYrL9z8wQ>
-    <xmx:kw9WarnjlVZo4mEjG2GzGSVUxalHgCW_BhhAiXbwWn6bXLqcTjy_cg>
-    <xmx:kw9War9Ba-_ihxLsCURfA7Y5LobYraL9QZ7ZtLpo1QVRbaMPs093xA>
-    <xmx:lQ9Wap6J8O2PmRR8gtF5rczRAW_O-D6kQgsOgb-g7nQ06yXGRKFH30Kn>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jul 2026 06:29:38 -0400 (EDT)
-Date: Tue, 14 Jul 2026 11:29:38 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hao Zhang <hao_zhang_kdev@163.com>, 
-	Hao Zhang <zhanghao1@kylinos.cn>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: thp: pin the inode across a file folio split
-Message-ID: <alYPE1CDJE4HaP1J@thinkstation>
-References: <20260713170915.239819-1-kirill@shutemov.name>
- <20260713161341.eefb7ad32bca25ffc8f3390a@linux-foundation.org>
- <alV3oLwvbeQsagsA@thinkstation>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZecRdooQoYjT0RHRxZcXf8wdDg/u9kOsgNcQQ/EQofk=;
+	b=3vEicnLW5cgJNs9T+Cmbdubo9//+UKAxZh6PvfxqBnZnenUmgldydJnm0JELqngoLxb7S+
+	P2GIPIICw4gi1hdEnjcWDOBChYCevT/sJ2YTHp/0fgQScdv46Uu3Qh56ocvLUUuVvSWsoG
+	8yCeGYMSXMDU9ZxVmDotZs0r8MKQquQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pd5ebEufunjxOUKGwP2xfucVIc2kXTmY4E8yhrY0/NX8bMaKB9mVAwqM3kBf4B1+n5zlBLPF8u0oWqP3RQOfnGJF67dlb2wqEgeJ/tKWROZaFnYhNfZ7rIzaZ+DFgxA5NNAhorGLZcpZ6f1RNTyJX1PbXz4onVbhBgehVuNOjHOf9sr4ClbV116Zkq94T/TtzT7gVWjVc4gMbpvNSl0P1TlAwEtLjEkZAGRrIwUjmQr5IoqIbB/DEYG6cmW93Hivu6PvyqKg8pb27RpvZ5oe1F+4R/qlRFl6o6zBYE9Xk02BKFTDqyXPJK787eUHWBlYxQVkSI1vg5y+1Pysx2k+CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZecRdooQoYjT0RHRxZcXf8wdDg/u9kOsgNcQQ/EQofk=;
+ b=JlQN8o2wioYh8amO78fzMoOZbis5Rd/KXaCabxRNrJMMP6RTufuudyzhqcmtgO9UNjjFJOyxtCBt/hFjtJSkMXmN5e3G3UCAo+ojsgGEYIHzzzNaUATfn4cPWF1cjLssBTSYdLx9ND4iAwCEqdKotVJ5USvgfeHXW6mIb/lzycsvk1Oz8wHcTzvfbnDeh5IiC1EYEXqhmGY1TU+fUUq14GPTmTM374cvUoBSTjf/FCjZKFwQS4BRZgD+yK+Lwqf8b4S2hGp7jUZaH4M/UGVrNeSSaeubry4x6eZVXTzvWhJozldbSjKvSDDz4IOfdDxBqYBICeGDu+vXCtZdRh4KVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZecRdooQoYjT0RHRxZcXf8wdDg/u9kOsgNcQQ/EQofk=;
+ b=UlJ1ynfFVhHMntR/MvjR7vS2x5DNdxMjzrWq/d7vZEiK/sQmD357va/Asi34G6oNnsNmSsuYhjMOOBBsFseDMjdLagRBIUT+PPTKlzTH/zzLP+G0OpqE9/VxjTs/F28ZFUUwQwxYI4rmtRYxnCao377SSdkOWBj4Gns9iSXJ/O3t2RUdo29rrOc8sTo2yUIB2sRLOPMdbIrux22TFPzYKyXkkkrNIht6CTSEsFdN+aO2ux93TU2I7TYkMjzxHKQZCeGWM3xaIgt4/EmBkn7JCs03mP44v5hrHthAU+FLIuZW4b31weGlRM1mIN5YBvn7fGTJCuDeterLBh02PlpjJA==
+Received: from MN2PR02MB6654.namprd02.prod.outlook.com (2603:10b6:208:1de::19)
+ by DM6PR02MB6812.namprd02.prod.outlook.com (2603:10b6:5:213::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.9; Tue, 14 Jul
+ 2026 10:38:32 +0000
+Received: from MN2PR02MB6654.namprd02.prod.outlook.com
+ ([fe80::a150:49b2:4042:3050]) by MN2PR02MB6654.namprd02.prod.outlook.com
+ ([fe80::a150:49b2:4042:3050%6]) with mapi id 15.21.0202.018; Tue, 14 Jul 2026
+ 10:38:32 +0000
+From: Jiahui Zhang <jiahuitry@outlook.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Honggyu Kim <honggyu.kim@sk.com>,
+	Jiahui Zhang <jiahuitry@outlook.com>
+Subject: [PATCH v2] mm/damon/ops-common: prevent migration fallback to non-target nodes
+Date: Tue, 14 Jul 2026 03:38:17 -0700
+Message-ID:
+ <MN2PR02MB665479119535A1235D69F125B5F92@MN2PR02MB6654.namprd02.prod.outlook.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: KUZPR02CA0019.apcprd02.prod.outlook.com
+ (2603:1096:d10:31::11) To MN2PR02MB6654.namprd02.prod.outlook.com
+ (2603:10b6:208:1de::19)
+X-Microsoft-Original-Message-ID:
+ <20260714103817.68080-1-jiahuitry@outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alV3oLwvbeQsagsA@thinkstation>
-X-Rspamd-Queue-Id: CCB1FA000D
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR02MB6654:EE_|DM6PR02MB6812:EE_
+X-MS-Office365-Filtering-Correlation-Id: 213820b4-e7fc-4b2c-9515-08dee1940cab
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|25010399006|23021999003|24021099003|5072599009|51005399006|8060799015|19110799012|5062599005|15080799012|18061999006|12091999003|4302099013|3412199025|440099028|10035399007|40105399003|1602099012|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?DQCrsa7fjP9BfoOO9/kDeiMx4MEid7fpEkymdBA93UMQMNLYeGtSpyOEVGIa?=
+ =?us-ascii?Q?W4NeucdkJ0QHnIa8WHLeJ89FDf10LDUwLHCl46vddftfXBIXX/LDhjjzaD1V?=
+ =?us-ascii?Q?MU+b4xjicc3SAoG5xEDfUemYq29t05XE3LIRV2f55zpzih2NEQ2Ww9JPFuhP?=
+ =?us-ascii?Q?DVVxtveBtgjgf4XiSbXltf7Ji1uOOjpA4PGU0CPrg2iuVMtqy1EnpSn/20qB?=
+ =?us-ascii?Q?IROQCyzs/7EkxYBaKVGCBP227bFDsNhY1S/jQYRip0oFl/pxPfkJbo33mx8q?=
+ =?us-ascii?Q?F2795grCGMV4PM2Cmx89spDpYjBkencPbP5oBsilzdG2vuHiCnKVl/DnmuM9?=
+ =?us-ascii?Q?NYEffvp82s+mUiRm3I/N/B2lr92hkueNFcE0qfLy/WPtmvlCRJ87FC2vACRS?=
+ =?us-ascii?Q?Dgk5J3cAlMa1QHOrT/9ndhCF0y137v9Ypw3lw0KQjfuE+FqsuN4phlZoE5P4?=
+ =?us-ascii?Q?kzI0zlnRFslPjTXPyZoo2t10fBsO+ugDSD7XqYTzj2SL2z6E9cc+7SH1XQwY?=
+ =?us-ascii?Q?LbsS5Uv5Yt5NoCkJzKuT2svWWIrnjMlTtBJPCBtmQRRJ3MRGmujC8Gtm+Gmy?=
+ =?us-ascii?Q?4da8MmzxDM0aR+kasGp4MEFRfHJkhveWEbngaBkA1gO+rd+JMS0eSZfUDVSM?=
+ =?us-ascii?Q?BNpZvTaKztVdvL2xJ/bCok34gzbU9CpsOgUcv9j45Cdta5VPVu47RfkO2B+/?=
+ =?us-ascii?Q?c+/Wsopqa4ExbOovOSVPREBj6Vgj4PtvD+0cev7Iqg+yGtATgq2JTB+B4myO?=
+ =?us-ascii?Q?0XYFlOI+QpjK4BJZnf4IwByOBzQ/EpIAAQnKLmdnEABTje6xs7xPcElt3BfX?=
+ =?us-ascii?Q?THrA4/IwxkhIEuftRgyYDqvcV5JFfhN2U9MoSsqLKar0Fpu5ov+2D6fr96fw?=
+ =?us-ascii?Q?8aGGUK8k0MxdayjYEaIhqx2xGGtq8ZM5mBXqhHDEWjUPr++zJlWxdqMhIKjv?=
+ =?us-ascii?Q?9NLubycAVX756EDsAgfFVWYhQq76hFUHxpcb0KP9Gev1dhr+6+cd7J9l0T/u?=
+ =?us-ascii?Q?RNX5ngoKcPTcy5xxfdy737pcz0rvo1KedGNL9vd3b09ACjPATMaS7S8Os3rr?=
+ =?us-ascii?Q?dSiRe6dg+uiaQBtZ3Qbs8OL6+pVmY0wePefFcYOS9Jov5i6kKqU=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?z0c+v1BNJpSUBoBNrDoivXQz8A2yzyPDPsJBnuz2fsSXUMwLEHdPwJ560+dc?=
+ =?us-ascii?Q?e+NGxBhhwC9dOrGtvBv+3Pxb+JOcWla8dRk5Wy8ksI4KLMFA0foGggfSg4M8?=
+ =?us-ascii?Q?t+c54cPmyxJBqE2f5ZQKdwBeFLXRPzdjQwQDrQn6X0niXPmxw0825hbri8QW?=
+ =?us-ascii?Q?UMVCLAHbjEjncRih6AExrFQ5cJjxAsd36cNmxzyOMSSLClat2QGrrz09t6UT?=
+ =?us-ascii?Q?LOvg0JLT1TgnEhcRMXj7euhWTjbv07SdAd+XMKwk3kC8ufoK9SStTp8FfzWH?=
+ =?us-ascii?Q?hXUFWYTNQ5BvRp2fCfj/GiZjKC/L/a9I+kfPK3X2GyrEOWBYWrjJKanwd98P?=
+ =?us-ascii?Q?2bLo5wTcPlKDKptTBeo32k5VHtA/3nj+IFEM2Yt6qaa/mc90jcQ6vKDAPu3H?=
+ =?us-ascii?Q?6V1heQcY0ph5Snw6hOGjClRyC7Hbk3jYKFJkuruZ4D1HUJvyaRtSsBPFi9zW?=
+ =?us-ascii?Q?bAmIVG6w2WPJoP8IZxCNBdq81XBQazj/lcKjFokm4631utzP5NnoRVRsYYK8?=
+ =?us-ascii?Q?+iLJJLmHQltqGk1fhoBARes09Qk1Dzq5kosxixgO2SieLRO0Wwywxv/MFiiK?=
+ =?us-ascii?Q?K7rqD6g+/8lKDmj9LwtvjlUpo/UVfCUD75wz7ZsAz//PCMj2QeA4vFw4dCJp?=
+ =?us-ascii?Q?kODnvFV/7ZX7+t+DgDuqvD8GMML3Hw+ImRfU/GgnMNI5eb6Q5mQBfqDO/QQz?=
+ =?us-ascii?Q?jl/Z6yMY3TKz+fnCw19tdKO/GhTdnP0oRKAGaEaESpgDstX5p5dkey481AwG?=
+ =?us-ascii?Q?54+fKKr9YbIpLtMjr7TEOOLHOY6kv/shI6BtJBnpaaJ7beEyt+f2Th1zT3Y/?=
+ =?us-ascii?Q?AsV8nbxFSqYGu1eiSQZ2dJuMgZIDC+v8PSMvvuwhVtleGtMmgB6nRXYfpscI?=
+ =?us-ascii?Q?353e59rrtw/M3ZwQbhnDnCEqA36J//qunjUr8R3J30XMr2EEg3t1urkw2FsH?=
+ =?us-ascii?Q?UlLUqMiPN/AiyEUqlwBGQrWU4Ng9cTKIHYmt92EliCRKpiiQHGZ1AxtZdbhg?=
+ =?us-ascii?Q?oKbQkWknaKV2/tSZbEwrQ10dpmah/GdifKwGYLSXO2pIMrAchTl1HH0vAKdZ?=
+ =?us-ascii?Q?cfpTRtyoyaQ/EkNKCfWGDJrghlIFrCRuhgENkDS7mps8enfdMxlRjSrnPclP?=
+ =?us-ascii?Q?NV37nVmfqkjSASyKiSzqVzJTtxL0DxJGNKvBtq5rgDblWN9cy94ra+nz1fwt?=
+ =?us-ascii?Q?rxzHXPT/8CfwX1PtrIJVzDBgDLCsFRaUa02116giXxJLuR/CrLzgn88BR/NJ?=
+ =?us-ascii?Q?DEriHqHXaJiTKAW+ZhbOYJApt9stcm0/MIJUTihwlzV1Ngyld38+frGUH1aE?=
+ =?us-ascii?Q?OnSYEHti+NaBT4w2z/yl+IsNe3vJUARjwqCkSBoULYhq8E6cT240w4nMN7my?=
+ =?us-ascii?Q?5UMk5QsDf4itc8MdpEEDjmIvlN6U?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 213820b4-e7fc-4b2c-9515-08dee1940cab
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR02MB6654.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 10:38:32.8281
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6812
 X-Rspam-User: 
-X-Stat-Signature: acronhi9darojwc1p9bg9pix9gx8wp5m
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784024982-77826
-X-HE-Meta: U2FsdGVkX18whmJjr2XxIzLZKCn1neE9GY6rDtE6gVtmEaoHijS7ScANoS+FkiNA4Ba1OHhrxXzoJvfwKQbYzfmpmdybVHqXziDFbudFmn58h5wDz4S4o3zLc5lXJGEr9O2rUkuH9Zoid+xXUNpPlfq6gWu4/dJVyuPSfIjcIwpO6+VU4Yd+CeQ/CujM+hcw9hfSR87HJjXIerWLbHaoGxvMwMTrj3D2rdrzmAGQUDjd4geJuLWaXMiVg3fxNcexsvLBaomh190g2+GG7d1Ng71I02/3mxO5aW82gzAYqWUAb+YIxfAVX1azNpYiH3UY21dT0D6NC26p9d4ry/Ox5UuQAeaONSIOn3OM5BgRZbCIlSSnptA0DVNUr09IU1QlPT93QjzZSXEdTKxZQU7bT6fo4GI5cHMSF2suU4gH76ZBoX/sH01qtAimyIhusDdv7jq5Q1yhg6XKqJujiw3FvKgoRT9vYG6H58LPA30FTW9vMFZYDUyVHMGFETcMeGffxd/9lGYRYArrRA9LWadSkCBSgXNoGa8WHXFfNJ/FoGxDFPUevT9ha67BTleevvrAzWOdzaQPUnJi8a3X9tEDUt7rhA9eNGaREjsC2tIfukfxLf2NVVFTrQumt5rbkbsiBZpA26nSDWgEk7Vs3SR93/L+pDao6yZsTfQjM9hisH3SvfyEx+VjwnhPIy4xGN3PBgZBIZ47eaFRWBzaNk4z4+j2qKWlGadPEhkSN1YJJ81R8dASRkbBIrNA9l1yHLVOfmWhFgvDo6/Q+mnfjpELbBZ2sZ4D10E3LUgrU08Tqg3EhJhxxLqSIpA1Kj1OwiiAs5WOCy3OJg82h6vb+BvD8ZA25CXqzFx7yBZznue+aTLncBCgKKsBXkiXsX7IF7jqOrj7F5XD/fPqPTevpwMx0n0DRfV/fXJWCQBFTwtJBCzcUpPaALl9Oi7duPZ0TSp1sotvLMUlZKV528Ok3YV
- 5M+3ax+c
- Qn+SbYc2IHyvfqxx+uykeN6AjZGItvmpaTSXQFXcpwnTrzcV6hO/pptxOLlJdEC1tZRIVLd+EyIgr2bHeoka/9AwHpmDpRIA5YLZYhOSRhFfc5f9YkNkYszXIYNA/dZkGhe9t+LOnr8yqIJQSuyKFHC5C/rCYQiz+uoBf1iU+iRaid996sI7a5/CbzdDJpkhRV+LwqWLp1RUy8jCdU3ms8MgxNcC3X+TL4DP9t+Xy2pwWkS8iqMgPetY4+2F/zMu3iKqDfeKp/EZI6ssL/+2Cp2ELAQOKhThqN0XQ7TU9i6RpsEPeIGPpZCwutkwKSDbqBWB77Pnip9dLgeBQWWpME8ONz74avgLW7I0Tjux2FVNtvlcIK/vcH7XioY86fSOyXeN8SxL2/CX6d/hp9QjyBtivuTfrOLUYjUt4JjiGUofUE4GvTCaUXqgnfoHkSyfukEM9vUh7iqdjMf6X1iBCiDk4cT1gU7Lb+E7WjGG1/upxVV9BwImqev4BsFiEw8wki5oAl/B+5AZNPnJ42xY0hG0FAQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 285C3140003
+X-Stat-Signature: kt36rpiezniz4mr1biu6sx4yq41zty3u
+X-HE-Tag: 1784025514-817488
+X-HE-Meta: U2FsdGVkX18ZTYkHCYJRTEOgeHdYw/EYXp9zYE+949ENqu+rTJsVHI9G2dKmZKC6dClkpuWolVUahYigwzUrn5CeIm44DXTZA4DYWKZTTmQnx/exT21Zb7y5Me0D8hiYY4EJeZJ+VVzym7c5YpnnDnzsszXL5ER5ta32LhB+bxs6YRxIyxAG6wXgO5X4wh6DGXU9hu1hnl9XfAic+ef9H4mPM1Y3dw0mqW2bENAZVHGjI+DjxGcNPRnNR7Eeo31+Nf9AaNGgK0cEUTV2WWLvpwuxcXXxPaAyr/tkGF/JQT1gj+4Ry9sfCFcNDuxxQZabFH+4uDgRoq7PULUrtMs3XQg+xczvK5R62D97jEjsdU6OozvFo2fJEVUuerciFi5GUnztztOvP8OlSKaliPd8S2yH4PqnMFpIdsxeNMgKj9qqWFwkrhojG7TpqoztfJW1ZNRNy5/eRU+K+Y/T5P3XArzc0oOJ3tBi062/TRuCg42laMIJte3eG7jac3sEdn1zrW28W2m7UWhjfq6vsLrnJl+licbHcBMxGmUfQm1RgRhC0Tr8Y4pCxPqC2iG4t8j/ydTRVzlc1+OUfHV8qBJ378BxZGGWR6PLtfwIPpW/2XfAOlnkmpr8dRJ3kcSxHlB+OIBDuFgckR/5r2k+B/M3zxrc2H/5D2GpAPX9BBcYyapiDmVw5JIrNjOmUR2a0ecGo2y4DC2bmHIZ5G/ri0Yri2IlON8BrMtTc+Ssr1UTPC6yKgOghuvdzrZ0FarHx9G4ubzJH9/qE0FT5oQ1tL7WghEPnGwfpRuA80G3tYsp4oRjsfibLN0LWV0x5pZJVm8gePp/Oq2LfXPRGC30VJXk1FrZ0EDySFk8Gb9v/Kky5mTUEaRC6ImJ5Q3K3hYbmqZkB4BRT39UE3iqVJMIH8STDmPd/iyQ3QTsIdsQRiVM5f8sTWMZkxV38DXTw8GhYyJZ1V2yannn013DjGIZuaH
+ GYdmCG8n
+ 5nG/cVR7MtyC7Vk5o/wFpNxCo1Rmp8l1y0LBNDwhKekVJ0OTV34e9Ixgo5iGedy3tU3G8N4jjOFbLq0a6YSKsdPRYyZu3ez1uaUsPp1Io4IQ7G3GWmRmkeH3jnT9gOfM06Ol08ThLGoSpORL4D/erK5twA2uahIaCahRSPmwWc3cA9+e67+ZhQxYDm+Nr+WPTQO20GHfWSUk28PZeK6sl0ENvczbNCNnse0PT8Uz9Tf8DbsL7XirEpodqv6mVqMyMg09f+E7ueluD3hRuRwWhGHksX7JJERcwnyLqr0iE1icX/K/pi8D2/dhF2/ThGIr4NKgtPoGTQ3Vi+VHn2r/wARP3EHMQJd6SkCull5fn0W48QbhyT4oiFuyqalXYCgX7bWqecBLt8mx6JJkpVFoEy2HVJBD9PI8M6C19rE2oZ/FD1RP8JfDqgSV4oZ0U/szdWxLAXJuBIrgACd3md2t933edOMZhiffo4nVDti+SlImr1TSJ4CZmqtEL/gcclilCgpF34sH+zeMnsYgQT/OPh7QE2UwP7br8b6o1pfHYKunAc31ICpEUuZOP8cPQeGKZd66s4SWFPQaIVlA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,64 +172,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 12:45:41AM +0100, Kiryl Shutsemau wrote:
-> On Mon, Jul 13, 2026 at 04:13:41PM -0700, Andrew Morton wrote:
-> > On Mon, 13 Jul 2026 18:09:15 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> > 
-> > > From: "Kiryl Shutsemau (Meta)" <kirill@shutemov.name>
-> > > 
-> > > __folio_split() looks up mapping = folio->mapping for a file-backed
-> > > folio and keeps dereferencing it after the split completes:
-> > > shmem_uncharge(mapping->host) for folios dropped beyond EOF and
-> > > i_mmap_unlock_read(mapping) on the way out.
-> > > 
-> > > Nothing holds an inode reference for that duration. The split relies on
-> > > the folio the caller keeps locked (@lock_at) to pin the inode through
-> > > the page cache: while it is locked and present,
-> > > truncate_inode_pages_final() in evict() cannot make progress. But the
-> > > split drops @lock_at from the page cache when it falls beyond EOF (the
-> > > @end handling in __folio_freeze_and_split_unmapped()), while keeping it
-> > > locked for the caller. That removes the last pin, and a concurrent final
-> > > iput() can then evict and RCU-free the inode before __folio_split() is
-> > > done touching mapping.
-> > > 
-> > > This is reachable from memory_failure(): poisoning a tail page of a
-> > > shmem THP that straddles EOF makes try_to_split_thp_page() split at that
-> > > page, so the dropped @lock_at is the folio returned locked. The result
-> > > is a use-after-free, e.g.:
-> > > 
-> > >   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
-> > >    i_mmap_unlock_read include/linux/fs.h:537 [inline]
-> > >    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
-> > >    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
-> > >    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
-> > > 
-> > >   Freed by task 4601:
-> > >    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
-> > >    i_callback+0x4c/0xa0 fs/inode.c:326
-> > >    destroy_inode+0x144/0x1e0 fs/inode.c:402
-> > >    evict+0x57f/0xac0 fs/inode.c:870
-> > > 
-> > > Pin the inode with igrab() before the split and drop the reference with
-> > > iput() after the last mapping dereference. igrab() returns NULL only if
-> > > the inode is already being evicted (i_count 0 and I_FREEING set), which
-> > > a split racing eviction can observe; there is nothing safe to split
-> > > then, so return -EBUSY, which callers already handle.
-> > 
-> > Sashiko is worried about iput() while holding folio_lock():
-> > 
-> > 	https://sashiko.dev/#/patchset/20260713170915.239819-1-kirill@shutemov.name
-> 
-> Sashiko is right. If iput() drops the last reference and
-> @lock_at is still in page cache we would self-deadlock.
-> 
-> I don't see an obvious solution. Will think more tomorrow.
+DAMOS_MIGRATE_{HOT,COLD} passes a target NUMA node to migrate_pages().
+But alloc_migration_target() only treats mtc->nid as a preferred node
+unless __GFP_THISNODE is set.  Hence target allocation can fall back
+to another node, and migrate_pages() can report success without placing
+the folio on the requested target node.
 
-Andrew, please drop the patch. Zi and I are discussing possible
-alternatives.
+Consider a two-node tiered system where node 0 is a fast tier and node 1
+is a CPU-less slow tier such as CXL memory, and the user wants to promote
+hot regions from node 1 to node 0 with a command like:
 
-https://lore.kernel.org/all/alYNlDNMQy0Fl2VB@thinkstation/
+  sudo damo start --ops vaddr --target_pid ${workload_pid} \
+      --damos_action migrate_hot 0 \
+      --damos_access_rate 70% max
 
+Without the __GFP_THISNODE flag, when the memory allocator finds that
+node 0 is nearly full, it can fall back to node 1 without waking up
+kswapd.  Then the pages allocated for migrate_pages() are still on node 1,
+and the regions that are expected to be promoted to node 0 are only moved
+to different physical pages on node 1.
+
+Meanwhile, both the mm_migrate_pages tracepoint and DAMOS's own
+sz_applied statistics (reported via the damos_stat_after_apply_interval
+tracepoint) show the migrations as successful, which makes the failure
+practically invisible and hard to investigate.
+
+Running a demotion-purpose DAMOS scheme alongside the promotion scheme
+does not fully avoid this either. If demotion cannot keep up with the
+promotion rate, allocation can still fall back to node 1 during
+promotion, and the same misleading statistics show up.
+
+Make DAMON's migration target allocation strict by setting
+__GFP_THISNODE, so that a failed allocation on the target node is
+reported as a failure instead of silently landing on a different node.
+This is consistent with alloc_misplaced_dst_folio(), alloc_demote_folio(),
+and with do_move_pages_to_node(), which all use __GFP_THISNODE for
+migrations to an explicit destination node.
+
+Signed-off-by: Jiahui Zhang <jiahuitry@outlook.com>
+---
+Changes since v1:
+- Use the mm/damon/ops-common subject prefix.
+- Describe the observed misleading migration accounting and how strict
+  target-node allocation resolves it.
+- Use the formal author name.
+- No functional/code change from v1
+- Link to v1: https://lore.kernel.org/damon/BY5PR02MB6642F4D1A8BA92BFF3A034B4B5FF2@BY5PR02MB6642.namprd02.prod.outlook.com/
+
+ mm/damon/ops-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 6bdd1cfd3863..d21b106b81ca 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -311,7 +311,7 @@ static unsigned int __damon_migrate_folio_list(
+ 		 * instead of migrated.
+ 		 */
+ 		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+-			__GFP_NOMEMALLOC | GFP_NOWAIT,
++			__GFP_NOMEMALLOC | GFP_NOWAIT | __GFP_THISNODE,
+ 		.nid = target_nid,
+ 	};
+ 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.53.0
+
 
