@@ -4,132 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86512C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:23:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A225C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:23:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AC5B6B009B; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
+	id EF6666B009E; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35CB16B009E; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
+	id EA7716B009F; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EBDE6B009F; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
+	id D6F5C6B00A0; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D05276B009B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:23:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5761D1C02C9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:53 +0000 (UTC)
-X-FDA: 84987298746.13.5923AE6
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 51F8B40005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B513E6B009E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:23:54 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42CA7A03DF
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:54 +0000 (UTC)
+X-FDA: 84987298788.21.6BC271B
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 46A024000C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:23:52 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NpCerHKU;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784031831;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cOGQ3I7Kzejlffc7S9mPx4ZKKD0nbZggYmC8L5xWC1U=;
-	b=ZElmmWB5Qeex/JQ778zUZktc6//rCPGxzxIqXFYHjfFYQ2yAGcND+/n2h4ILRZgtlgvt5I
-	u7CZIeF6zIl+jAb4Byd+G/Y7H8oxkryWbIR0hoJKriw6Xw5LHKnLwsJzJcTNtQC6s0e1dR
-	RqSNhNCvbZMQoVJz8INr096yJJ3MWyc=
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="H feikRS";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=fREjrIAb;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784031832;
+	b=kxxZMCOUJuzaO7Vx0g50WFHU5us+2Hx37wb5TSmdE3Q/3nYDxp7PzcpkJ5/Ua/BTFxfE3R
+	EENANVAxDAwTLAU4l4npuLm4wqKkJq5kLDZBwpHpCd355B5G3cQX17bOU0OjqJhXRhD0PN
+	ZA5UfObbipJsfKeVtj64VGR0W85ry6U=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NpCerHKU;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784031831;
-	b=hNRMmASKcqu1yEQQUV0bF87D27BSIZ0S338G1WzEUh+2BLwTKJspiRFWTpli4Rx/5wYoW+
-	q7LCPAJVbBR2LRb/ExFnAw1Wzw+dmQ2JGhaFumCJyHYUjOCmMqFM2Me/BXmnfdtvAUl6wq
-	ig7/HyAbCu8zrOxtBzz39jG+WrlF6rU=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493c2c0b9a8so6532545e9.1
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:23:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784031830; x=1784636630; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cOGQ3I7Kzejlffc7S9mPx4ZKKD0nbZggYmC8L5xWC1U=;
-        b=NpCerHKUfSuuZMuDpgmeoieDOS8HgZZk3T/RkjJjKkXPby+wCQ1wR1Y7luF6SremzZ
-         ZVQetH/JTZ/K/Qaf6YdB/gfFDbjErMAcP/XUARTv2m6dqzcmSpldwqPLyZwiK0qArboX
-         UF4jyJ8YK/V9IYecic4paioEscCDHyFDGmL0ri3yrCeYWArRfaUBrPKOwCfhPpP4Clja
-         7Gmc3m+DpZSoh17Q3Qs39eorpN2k22KajP5O/xyS5eVJa85tTQFauKZ/yY6kMsXkbLZI
-         4hBuQE/zeS/36VgVlomO78X1E+KnN7/TyJmJT4/ZaWXH+QaqVjFw/5bHV+L7T7QiOPRS
-         91rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784031830; x=1784636630;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cOGQ3I7Kzejlffc7S9mPx4ZKKD0nbZggYmC8L5xWC1U=;
-        b=f1BbwprWdcOUgX9doIt4Dp1mtED6YQCTUTnVTGA0tqO3HcvhldC8h+Ln6MU7yZMHQd
-         Zdl72PEMp0p3F0ZL+NIykCjKOlr6Nxdp4tY8BDhZAhHL6o/AGkOIInLXF8iiABOGGunN
-         tXRPrCyw6LoHKD7WtNgi2+NdTBHrbdOOq0ESocjnMUpFJxIQjP6KS2QgIhyptpckfX4x
-         AUrHB50jE6jVLNQ6pRvWJqR6bCp1PKmamF4/Qxr9lhVQC0fUoKvdV4xzaDEblyekE2Jr
-         zVupjBwpqUAbPtu4N0yG/yjS+r8eatZUyjnIHKduCVRiC9rYfKt/n5hIkkDl0CCyDNjm
-         l8jQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2rpLjxhu+ZO9+0MOfi53COYL+b33cVIqkvz5HC+IXWCxFfYU8yI98ys96tnYkYB0g7hJ0N8h2BQ==@kvack.org
-X-Gm-Message-State: AOJu0YybWMR9ZTVUMVACEqgyKikeyHhclucRGHgJGyz4SO4syeiX8YRH
-	QR7AfbKv9HSaScHRozFu9vlGmM60sjrDUGvu6oxhwU0uJ7UpCP76yLY8NzGYYXTxXKY=
-X-Gm-Gg: AfdE7ckeRDMuMSppY+tG2ksGtFJ2br+vUik/7S3njSObQPdBJoXBBrkY4pB+01QLYU6
-	Vl9qGiNuZNT/tZTpb+s7ql0RjLDP3CLyHl9keaVMSnZKuOn9nAf1apdxjoJ6rAEgVWwdW9BVxwA
-	4nHXP530Op2FnBQcAaWp8zRhBnhKVzak26QpcPlzGIxSB9oxhI2UmZGOPLZbwo5OAM3H8ek2qA5
-	ToLzfjHDwCpwKBRdw16eNF4vPMdjkC1tIC8py0+uunqoVMpcF/bNexMpfswDqLqNLXPU21bgxEt
-	P1i+mQxWGSKvTl/kZ1GEMo4M0jS66RfU4vjGGo1eBH0DMcJnAh4wv7X8LrH6QpgiuFNzWRuOOHx
-	+XNSScgWjk672v2HlYCb6v/yqRuPq0Ymy/sJYL/r3+piCe3hjAOSh/bQx/OZxz4vbK2GQyH9xxd
-	Fz/FfOcXv4H+X3znSN3HcwwhFHWg==
-X-Received: by 2002:a05:600c:4ed4:b0:493:c42e:5be0 with SMTP id 5b1f17b1804b1-493f877e3demr150320655e9.0.1784031829843;
-        Tue, 14 Jul 2026 05:23:49 -0700 (PDT)
-Received: from localhost (109-81-95-153.rct.o2.cz. [109.81.95.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f2d97527sm390390775e9.2.2026.07.14.05.23.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 05:23:49 -0700 (PDT)
-Date: Tue, 14 Jul 2026 14:23:48 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Richard Chang <richardycc@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="H feikRS";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=fREjrIAb;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784031832;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0g5oskdRgsUXvKNkDRa5faJ7aqOeb+0ELgNs1jz8A+Y=;
+	b=shHVbq+2rHvQ/UNCsU13UesFYJhq1Oom+RrJDSBkij+1AVzwQJpj89Y7+9YH6aS479DcHI
+	8gdmPGNfIvG8X7woMvnqHgZ51VkkJnt0Ybs4Y4O0G1+cMJrSFHAW2mqIHTqYmEW9E0cfWj
+	01gibSbBJ+K7h6FkR5JsScm3KfkBmeE=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 374987A00CF;
+	Tue, 14 Jul 2026 08:23:51 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 14 Jul 2026 08:23:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1784031831; x=
+	1784118231; bh=0g5oskdRgsUXvKNkDRa5faJ7aqOeb+0ELgNs1jz8A+Y=; b=H
+	feikRSq/NAyfMt025iRCTPpadEaUfC2Icr1aPhqdRQ7KTT8SeDEptHSw1oAfQFVn
+	KfffwSoGjaHKQFJG1SPNYfr8osmRwmuYtjtEuAj75ffoXnixJZm9Y7jnyah2LA25
+	0kh+DNPjtS5SgbNNMUHpSERBZmu9GIzS6wG3OL0RO54EGk9BgNbCskvBuNcvvkZE
+	QkxCWbY4MoVtbHUA6dAnOTnr+kL8zJPX9/eKQApEH9K8yikF5bQZQIKFLcamHXO0
+	s9kzHbI46Qle2Bi/iPhtyIr5/WtAJU2imS0yT64M6beuwvYyroFDlomGh5yMFCWl
+	tP9vR/qG27PWmf7Xv5CEA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1784031831; x=1784118231; bh=0
+	g5oskdRgsUXvKNkDRa5faJ7aqOeb+0ELgNs1jz8A+Y=; b=fREjrIAbdI17ntVKn
+	MB8by3SxPUcW3qO+KdLZmEPeeGg/KmqRBtZY2cGUwwodsgX01r2DBhm3Vggp8Xp4
+	Nx/TuVnCQ3caFCL3j/F6RJHYYtFxL7gNELaTuw2lrIgxkyOycoI8y3aAqua9BMcV
+	5In2SikhPIDHqwBClDyojalCuSbrlTXSvRF/cQOJVZ+34LZZflIShhgrgIRZWN40
+	uV/R78R6/2BAjtvJozMVj81zg3PF0uvG2/qLmbzsnufNejX5UiHYYw9nuv0Zc2G0
+	mnQmTP1NC6roq364QNHm6zVcAPm1lOiryt2rN3IiJqtgBRakt6qj912NEVZqNP2r
+	+nFBQ==
+X-ME-Sender: <xms:VipWan-T4oIkmEE6r-RYnazwK1uosYc4Fu7pVMMok0k7wdanYCJJ5w>
+    <xme:VipWaom-4uKH2gmRoBmAjhG7P5Bp4JOu4JmbwGCEjP77oKlqz-YNZ6YJcSVM8mwsN
+    7Av-nMQLiNDi5DSB4ZlSJO_54wbujBcSjxF_jTzk-N6zgHUaHY8KQ>
+X-ME-Received: <xmr:VipWatl-UvnLzBaKQMjcjXNEEI4g2vnjNayF_EaNh47KKQCMy9VjbulQXvL-MA>
+X-ME-Proxy-Cause: dmFkZTFBvxovr0fjL2SDlhw64F6oFGvIraiDu6TVCnqgYaAZRHolensvaRSdeNznP8dyQu
+    Coman3QLm+Yiv7vIU4gCaDoV3zjPLAT5xMyob2T/RAiyCRcX5nino2GdJfXAIhMAG9Vfbt
+    8DmmQq188Z2uGp2nkuYEczpQaZcUln/b+ViESl/1sRXWiXixSkmKZ86RELzVQX1c5DoIyj
+    VYLQxCZGhSirPmfYkfg5Z9MFDCczGvA5NVGnQNjEY+/Dc2Z4MeErYRkfr5HJBXVY0/+gwS
+    wMHbPHqeV/WaAxudjO5n+4mCCjxtqKMzuTd7bYDWa5SZhntkJG3EmwdwQQDclBgW6W8CDd
+    Myk1BCEsjZDtocKPq6SFh76ysa5Z+9HMjeF/GuQroKl+BKIQFyK58Hi1iBuv4PrSsdBoed
+    qUKBlvXQLkXzvgPziLsgfGTHmGmaAYjCQitkrzLMJEtaJKPypXwEldF3t7zIQu4Y1iJZYP
+    8JdHx+ZsougTMMNwOza4whUv7GUcGNzNVeniMjQ2nZ9bV7QR6oLgFbrAdUOB3q2DJGK6ko
+    zjyFXvlBDUY3Dzjs61NkrSzXWUrHB86X9Z7AAS4GNjT7SNVwPl59/T1j+4ANijkQkYvFDr
+    dHPg2tBOQ5IC/khlzTXlr1HzV0jz38hy2O+EhVl5dFQ+G65hq3VRfujqMbdQ
+X-ME-Proxy: <xmx:VipWaktHJkAeUtY-3ehPTHEiwmneLsjIQotS6AjWgmhehaovG-lL3g>
+    <xmx:VipWavKjkYAgFgpOkSsTVPy1W9BeDBe7-Ya_Ni_bBcKY_s7fghEVJg>
+    <xmx:VipWahgk2ekyQF3e_pOaqup5HSWggwV5e-FDz82enjE4dFc1_wJxFQ>
+    <xmx:VipWajunbTktYq9IirahUkKY51FmLr8wyUmpYNbdz6VzleU4DCVw3A>
+    <xmx:VypWaugA_oyUVVqDplVi0s1VjO-1ZohE-PREermaSY2lbZedakUOpWiU>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 08:23:50 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"T . J . Mercier" <tjmercier@google.com>,
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: vmscan: abort proactive reclaim early when
- freezing for suspend
-Message-ID: <alYqVPEyZ2ySrdAm@tiehlicka>
-References: <ak5-qwmpXrYi5md6@linux.dev>
- <20260709072231.3163082-1-richardycc@google.com>
- <ak-OyACkE8lLaRRS@tiehlicka>
- <CALC_0q8O1uw18aWM8w8be60TxW02Os90AKSOLFoqubYAbLjkrA@mail.gmail.com>
- <alCQ28gBclWOFF4_@tiehlicka>
- <CALC_0q93iheF=Y36SSTg-XCoKgHrhxk88LqcQkDd-O3ymMVmxw@mail.gmail.com>
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Hao Zhang <zhanghao1@kylinos.cn>,
+	Hao Zhang <hao_zhang_kdev@163.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the poisoned subpage, locked across split
+Date: Tue, 14 Jul 2026 13:23:40 +0100
+Message-ID: <20260714122344.351895-2-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260714122344.351895-1-kirill@shutemov.name>
+References: <20260714122344.351895-1-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALC_0q93iheF=Y36SSTg-XCoKgHrhxk88LqcQkDd-O3ymMVmxw@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 51F8B40005
-X-Stat-Signature: 8brwzwwuy998exrocjoj1166w9x6ztxe
-X-HE-Tag: 1784031831-783871
-X-HE-Meta: U2FsdGVkX1+EtfYku5PCKMrgOJcP5tdGJ/OGYcoD+Dh3gN4l6L4bM64RUPx6/PIztIJE8SU9+9IJ6kabYUDoaSqJL0k+U1l6A/OqlIrzw6PG9HdoLz3INLVg+lsSv+CPh68h/Prf6vnEL9WeRTx0fjqA3k5ZxW+WQHzg06KOyL+GhPFSzNN6X802F3TDH2vISS0+rH/NqLSvRSE05JfN0yZng4tZLiLWs1zRmgejrn7whPHW6HAQkHhWA2T7bEEPcF3x6U+rf6Z1Qvcpw+j4RNe9VvnCoUyCWupZP683uN55fvXHgQanMqUV188h/D+XKetRShWh7yNp0ljukgd9FZphO2t6UfmhW9I2MmxzIdOlRpvMd/CR/TgSdHbC1L4GUVe5s+eY9GYhXK1h6UdQnyiL1rp4qdKV3N8OG0nEyy7uAwlLqnwKv8oKOZrH8S8fwJONCrJKG9gGs165z62UNnBPwcKGF1AzrGVDll3CrFIhKIsb1rX3uWJ273Gx4SMie0kbhNW9UR/BuAYnFTu0K5ktzYWn8GygnggUSJxAnMwFmtVbgPNpKAK6OYA2kpRELjGvSx+zpU8QWEqeVIoEzhCaPgbNKA+KiRxhIIh9Xvxje91369uqS+gBtAPjH9z18Ky6yEcMSDFnBfZZCCj1lwAJgxd/9T8B86Yqn4tZ/oVq12RqngWULcPgZfdhC2Z3ftKpeZdKzoEgR0GDACk3OeQZ1180WToGy2rG04pFF5oleIIslP7Jek7gzM+1Y/IiJmrDsK7jPa/utdBahCdPrQ5xHm5hUbYK311rQQUC63dc9fY9cMffzhVsHTPWkwLRQ5doxCJasrp7RogZaSUcMUmiaoeIA5MKOLDks/mgnIiCBgN0d9F/ZtV3ffmoVNms6zyk4l+VzJoK2B1L+VvqcyS+UuiII3tsInSVmLJRP4VDsGceWfb8zc/MKAPKX7nngchNHDFd3YsOifonk5Q
- iIPBlIwK
- tQXrgJ1hia5TVgWeZaqGUMLEzHALv8Dw/fi+OPl84hh1CBg24AkRKhW7xUsREnz8z8TfBAgcZrF5E0XLv95p5KigS6EZMje2OzKqUkjSGPqodGBW72B5EqKtxDNqe7fQ4od8QeGAM6+WSNPww3fwDK3yOYNaYzFD14BYJNqCMB0FQ1OfXOehjKx1+D/euuw5awsc1GkCR0Z5Nunh29tDYIy+P9MAC5OZiBFbxDnmL5Fubtt1zFKUrVnBtwMEqDGnCAzWU33Xs+M/5aavJ4tGGlFB8OFloADnJGLizBUO2G2y8XOuiM2IfU42EigfEkMlpw1jC1ZULrZAmrhYwo7FyxQjzpGRkNnyH445AFbmrAQ/1tT0ogKjnLsTi/M6H5arxGA0KqMkK7nqd+ux4VV6bdd1eutDSurNJ+lMIC9vpcnjOmU/qqKcFpD1EQiCOcLaq12KQ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 46A024000C
+X-Stat-Signature: 8roncuiuowbzuayo54kznc6q7x8nim8c
+X-HE-Tag: 1784031832-607391
+X-HE-Meta: U2FsdGVkX199ACy0+25/993gXcY+WI9g5ln7nS9KrsV1vGM3lo0Ln185a0c7Re8NPflaHD6v6qFHleltAhakLVdl5x033S12sZNb2Xb1sSNKmIWgpFDMgbvqaxK2/Z51KkHQTRFDQT5Ybb6l9CWJIHgmdIsAyIvDe1Vvz5md1AQzbgrY5Icup7N/ljv7yik22P4BeP/uCV+OH13xtMIB/4ZQME7HKQl/Vouh+jyBQtI/6amI1jAqci80gjwqUp7CYoYL45Z1jBJXgMg7vdL+omk6hmyRLg9IzogA2wcB3fyS3/HGRIcVMgSkvc0qsKpBlehkeLg/b9UzaPpy1umx4g4x3YL/VHcZQzlw4iRtgxVZ6ovjYwTn9hY74VP9KxPSBKpch31NU7zG1dI8Jsm+XXs4UcjKlFl2rkcxI4+rlkHZ84JsCJJ33b+/NXy3JGDxAJNOuC8UNfs7YrqHdhtb1e1b6GsNHdRyiRRKCfYDwdMQ4ejP+Re+PgNAF4gGJ4CD+NbCMd0lQA0HicnYammSuBDos50r4RgLFLd4+QC8WpVPQbpZvgO+z+3OnV2vJtxisy6xO0ZRWfzHLsjEOIzw0sAWh3u9Q31PsLw2KlFuPovdh+/imU0q4NWPOTsTteR1Tfh52QFec/jaBTbIyxW7sYQTRd7o9r5/oAek9/0b1FTiBr7SvHk9mmzn5EPY6vGFhQ31QBDyoD04aQ3wEAa7ZAl9spjJq3+baUlAO+4OwB7ab35cf0YSOTbtlhAXauEW5CX7DpV3YyxWHPYFOUssGLmVg39o2bLcNUrt9Iql7O1az9kpYia8ClRfQ8WQsOP/REpJSDfEheClgSmrq0ffJ/eph6DUYnveWP/3STRTfF1ozzBiyVX0D1YY2ZtJ/ls7vJGOddEMz2LY7HdmayLp7rvT/5wxKQ4IDbp++ZjTryB8PvxNFpMo3w7Ff/kciYwyVcu5scPsfaVZIxP1Bpr
+ 0Kc2J51x
+ JPLUVFYiZmagMvLVm+YgyTIY71NtMXqjSjMbCIqnePy39MzT3kUoPqyB2FR02yW7qTBy1PbnQxc8ye0yxN1NSeToA3/I7rKi8fVmPAxYLkXf3t0cVEztWJjJOxIccr+nvFa7WyDHMlHa97UYIOpfLjXCJZJBp0KFiot7omYrcByYvdJJkEPuEzg6+ZXq0aE/CGuG7TFSdwEeiUQIBqUMY5dvaVebCFzn7fHO2sw1VHmQJeBDPiv5099i6bo3dUUQDbnZ/d530k9U5kgrU4+fKlG/EINNfHGH+dwSW16nAdiCluWuVIxU7VN32LSxNlHVjx9avTW9JyT7PCSsN/0AtTmInHA7CNsKzHO5ejapNru072q0xXf2bcMJ7BROusF5ZiPsGCs8HXasZ/WLLnCiL9rqnW/BwOYMPkSvi+A7C7lnJXTzKIUdGt4nluFtfBQh2xBP18sEvdEtanrjf+qcg+4b1rp+qXBx0SyfbD75gA7RXcSNgz5SV9fOMlzPc55PrkoPyqyKxqUb6dSO0VdEc+Kcw0jN01QH8pHnKiGDS1OMH9vYrCv5bCP9wMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,60 +145,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 14-07-26 17:00:37, Richard Chang wrote:
-> Hi Michal,
-> 
-> On Fri, Jul 10, 2026 at 2:27 PM Michal Hocko <mhocko@suse.com> wrote:
-> >
-> > I believe this is a wrong behavior. Freezer should be invisible from the
-> > userspace POV. Your patch makes the pre-existing problem much more
-> > visible. I believe we need a slightly different approach. Should we
-> > try_to_freeze in well defined places in the reclaim and turn
-> > user_proactive_reclaim to fatal_signal_pending?
-> >
-> 
-> I believe your perspective is that we should avoid -EINTR during
-> suspend by transparently pausing and resuming the task rather than
-> aborting the system call.
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Correct.
+try_to_split_thp_page() locked the poisoned page and passed it to
+split_huge_page_to_order(), which returns that very page locked to the
+caller.  For a tail page that means __folio_split() runs with @lock_at
+pointing into the middle of the folio.
 
-> However, this approach faces a few constraints:
-> 1. fatal_signal_pending() only addresses SIGKILL, leaving us to still
-> handle standard non-fatal signals, such as SIGINT/Ctrl+C, for
-> userspace callers.
+__folio_split() dereferences the mapping after the split completes
+(shmem_uncharge(), i_mmap_unlock_read()).  The only thing keeping the
+inode alive across that is the locked @lock_at folio: while it stays in
+the page cache, eviction cannot complete.
 
-fatal_signal_pending takes care of all fatal signals - i.e. when tasks
-doesn't really return to userspace because it dies along the way so it
-doesn't realize there was a kernel internal signal ever triggered.
+But a tail @lock_at can lie beyond EOF -- e.g. part of a shmem THP that
+reaches past i_size while the file is being truncated.  The split then
+drops it from the page cache yet still returns it locked, so the pin is
+gone and a racing final iput() can evict and RCU-free the inode while
+__folio_split() is still running:
 
-> 2. Calling try_to_freeze() deep within the reclaim path is complex, as
-> it may hold various locks (such as RCU, page, or cgroup locks) while
-> suspended.
+  BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
+   i_mmap_unlock_read include/linux/fs.h:537 [inline]
+   __folio_split+0x732/0x1640 mm/huge_memory.c:4100
+   try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
+   memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
 
-True the placement would need to be done very carefully.
+  Freed by task 4601:
+   shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
+   evict+0x57f/0xac0 fs/inode.c:870
 
-> 3. Since -EINTR is already the established return behavior in
-> user_proactive_reclaim() when interrupted by signal_pending(), robust
-> userspace callers should already be equipped to handle this early
-> return.
+Split the folio as a folio, via split_folio_to_order(), so the head is
+the anchor left locked.  The head is piece 0, which the beyond-EOF drop
+loop never removes (it starts at folio_next(folio)), so the split always
+leaves it in the page cache and the inode stays pinned for the whole of
+__folio_split().  memory_failure() and soft offline re-lock the poisoned
+subpage's folio themselves after the split, so they do not depend on it
+being returned locked.
 
-This is relatively new code and a broken one I would say.
+Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
+Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
+Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ mm/memory-failure.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-> On the other hand, the freezer timeout/suspend failure is a genuine
-> bug currently impacting Android devices in the field. The proposed
-> patch safely addresses this immediate issue by leveraging the
-> pre-existing -EINTR exit path in user_proactive_reclaim(). Could we
-> focus on the current patch and open a separate discussion for a more
-> ideal, long-term design regarding freezer invisibility as a follow-up?
-
-I am not insisting both to be addressed in the same patch. But building
-more on top of a broken behavior is not healthy either.
-In the current state this should be as easy as turning signal_pending
-into fatal_signal_pending and try_to_freeze at the pro-active reclaim
-entry point which should be safe from the freezer POV.
-
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 51508a55c405..68d42cbed458 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1657,11 +1657,18 @@ static int identify_page_state(unsigned long pfn, struct page *p,
+ static int try_to_split_thp_page(struct page *page, unsigned int new_order,
+ 		bool release)
+ {
++	struct folio *folio = page_folio(page);
+ 	int ret;
+ 
+-	lock_page(page);
+-	ret = split_huge_page_to_order(page, new_order);
+-	unlock_page(page);
++	/*
++	 * Lock and split at the head, not the poisoned subpage: __folio_split()
++	 * keeps the anchor folio locked and needs it to stay in the page cache
++	 * to pin the inode. A tail beyond EOF would be dropped yet returned
++	 * locked, losing that pin. The caller re-locks @page afterwards.
++	 */
++	folio_lock(folio);
++	ret = split_folio_to_order(folio, new_order);
++	folio_unlock(folio);
+ 
+ 	if (ret && release)
+ 		put_page(page);
 -- 
-Michal Hocko
-SUSE Labs
+2.54.0
+
 
