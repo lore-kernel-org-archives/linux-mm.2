@@ -4,102 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E564C4450B
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:57:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BD6C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:59:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C8F56B0088; Tue, 14 Jul 2026 13:57:57 -0400 (EDT)
+	id 425886B00BF; Tue, 14 Jul 2026 13:59:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09EE16B0093; Tue, 14 Jul 2026 13:57:57 -0400 (EDT)
+	id 3FC0A6B00C0; Tue, 14 Jul 2026 13:59:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F208E6B0095; Tue, 14 Jul 2026 13:57:56 -0400 (EDT)
+	id 2EC4D6B00C2; Tue, 14 Jul 2026 13:59:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C8A836B0088
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:57:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 52E4116046D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:57:56 +0000 (UTC)
-X-FDA: 84988140552.08.EBB559C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 46C6620004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:57:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Del5tMhz;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784051874;
-	b=tDo2oJNGybAlVVU3MciXBbxKDjSebDLCefffUSbwBeNvNuryEOFJUE3CHC3iRHhIUkqDLb
-	Yzcetue12/nb4GWCicDrCfUGD0Ax1RhOAtwwjtnj6sLgqspmZJwsuzxSRYXrd3MxWq3LJY
-	G0i3+1V/ioi5TyXbKdzXL/SA5NHMTrE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Del5tMhz;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F247F6B00BF
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:59:13 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 85FB140479
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:59:13 +0000 (UTC)
+X-FDA: 84988143786.28.A4A2C4D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8066040003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:59:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Sy24kfg6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784051874;
+	s=arc-20220608; t=1784051952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GZsCQFEgcn6EMOCDEWdLwPkfWWcQqzlkLED/YqdY1Tc=;
-	b=g/VQtIiTwdNv1rUSfBATxN2wwLD4tAHV545RR4793R2uE6surZp3JqOE0vwCRbsxfNNpKF
-	OQdO7oOlnzBm5a5px9jh4/OZT/POsWjDWN1K0VaTV0hFnqWHDQjUOGjbSyQ/LQioEC7maS
-	2BXqCJAunkv+4Ifkk/tHEzpxY/cWt84=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5DB6641943;
-	Tue, 14 Jul 2026 17:57:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234151F000E9;
-	Tue, 14 Jul 2026 17:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784051873;
-	bh=GZsCQFEgcn6EMOCDEWdLwPkfWWcQqzlkLED/YqdY1Tc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Del5tMhzu3youmLCKHjbgtPvdsDIH+7IGGFST8BzaPmqfbbkJZKJ/z7YuaAT/X/p7
-	 YChgX7fSaBbak9aPutlauCQ1Jbkj4qG9n6iEshYriEkzHWNiPFv0rwct2vUBjwBQdh
-	 kaZUweQ5gxNphKPDgOzYUI91+awAsCTyJPp5rwvA=
-Date: Tue, 14 Jul 2026 10:57:51 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>
-Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, corbet@lwn.net,
- dakr@kernel.org, david@kernel.org, decui@microsoft.com,
- haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org, kys@microsoft.com,
- leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
- longli@microsoft.com, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
- mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
- nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
- rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
- skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
- vbabka@kernel.org, wei.liu@kernel.org, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v8 0/8] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
-Message-Id: <20260714105751.f45ec4c70702c222febdbf07@linux-foundation.org>
-In-Reply-To: <alZfTxfypj39OrCE@skinsburskii>
-References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
-	<20260710151151.1e193eedd0cf2591ae392f76@linux-foundation.org>
-	<alG2-RSitzPWClAX@skinsburskii>
-	<20260710224950.53bcb43ce7e564f07a1f6a8c@linux-foundation.org>
-	<alVRU38lMfvmUFqJ@skinsburskii>
-	<20260713154535.7656b3a630e2f6f076b4e76e@linux-foundation.org>
-	<alZfTxfypj39OrCE@skinsburskii>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 46C6620004
+	bh=OMaOFnawbeocMTVoN6n+8zspIOLBVJUKG0JkLomaTEM=;
+	b=UOqoZdo+2wMfnfkytdIHxXZk9ELmvYJ5qJQ7BmzfOAeMz6sJWhCvf1zKMyrB7GPQfoge1V
+	XX/BPYw//Gch4Zxu87fdyPAwMZ5HWeFgPMUypu/qDiShKkKG26thV//m7pX1rXNxNGT8E1
+	g7d0jRmTsAW1D+7W46MfcPZvUqzLKRk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Sy24kfg6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784051952;
+	b=B8zTsl8KPxiyWOwFW3yP/GehuhIm1P1tPUknla3wDz7xBiG4uxi2VMfK4iUafGtN0Klzll
+	jQt6MmgBiVOSspcoQ+5DpQrYBvswfyL2jRcrX7pBiwPdQmFNtWcslwggAt1UMvJFCxCGf0
+	bPAQDmwispWlj6DxR3SRhwCsxwAfmnE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27E89339;
+	Tue, 14 Jul 2026 10:59:06 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13F4F3F915;
+	Tue, 14 Jul 2026 10:58:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784051950; bh=YLSO3cj4uznp59HTo6K3Y3qLIJ+ISsuvzTFqOw8DO8w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sy24kfg6zd8pNJNRop/ip6vK3z44QuvSe+ei7yBDMgOJ+AmuCVqSqQsYm6AbuGoqC
+	 lZJ+hB5IynonlF0Xd5xFhRT6j05I3fGK7eqV9iwp4S7UfNaW857WlXcvL4lT3vU6jA
+	 Qslx6H13Q5aAiK/4ThVrFPZNAc560M7EpnY0APes=
+Date: Tue, 14 Jul 2026 18:58:57 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+	kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+	linux@armlinux.org.uk, akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
+	chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
+	kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
+	wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org,
+	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org,
+	arnd@arndb.de, ryan.roberts@arm.com, pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com, baolin.wang@linux.alibaba.com, tj@kernel.org,
+	kevin.brodsky@arm.com, anup@brainfault.org, atish.patra@linux.dev,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	alex@ghiti.fr, dave.hansen@linux.intel.com, luto@kernel.org,
+	peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, kasong@tencent.com,
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, ryabinin.a.a@gmail.com, glider@google.com,
+	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com, yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com, ardb@kernel.org, guoren@kernel.org,
+	yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org, schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev, vishal.moola@gmail.com, namcao@linutronix.de,
+	pavel@kernel.org, djbw@kernel.org, yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com, Jonathan.Cameron@huawei.com,
+	coxu@redhat.com, andreas@gaisler.com, liam@infradead.org,
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+	geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi
+Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
+ folded pgtable case in effective_prot()
+Message-ID: <alZ44XdgTEVFX6jU@e129823.arm.com>
+References: <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
+ <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com>
+ <31988089-095a-4eed-b5e2-c677c70f79f6@kernel.org>
+ <14e250db-1641-4085-8d13-02f819657d5f@intel.com>
+ <d83c76b3-ea4d-4c41-b4c5-f5ae558ace55@kernel.org>
+ <alYgMxKqRnF6_X0A@e129823.arm.com>
+ <6df814c9-405c-48d8-96ea-929c4b28949b@intel.com>
+ <alZe-Cu7yQw9qRXU@e129823.arm.com>
+ <alZo9feSrSB_StfO@e129823.arm.com>
+ <7cff02d6-d3ce-4315-b667-34911fc6f321@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7cff02d6-d3ce-4315-b667-34911fc6f321@kernel.org>
+X-Rspamd-Queue-Id: 8066040003
+X-Stat-Signature: 4xcufpbkg749h6384taag3rbe53f3wrc
 X-Rspam-User: 
-X-Stat-Signature: hszex4az7sdnz3dyw68os5ktg97iea8d
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784051874-46933
-X-HE-Meta: U2FsdGVkX1+Ylt+lQcLWwAp2HrVmUreVcr3Y6OZRLOiOOa/YcUaekO6oFoWH/OsWe9s7xKfVPH6/8cq4axCfipoCLfS+Du/VHwQSoRerQCIf+dn/l6r2zouNNJatDfIm2K9nF/FvRbEn8kbVCMaU+1uOwUgA0v0TvWVRG5KFW8g2Iso8Xy4tmTvZIOGff2nDzANcjJdsY2i6qwW520GSvtKP3s0JbtdzK0s3zs5RauerCYos6Fqpg3EHCMMVuWVz+FWj7/b9Ep1nm0GnPnUlk8YiFFu6vKySs/Q0prw+8z17yp5/uALh3Y/fNl7uhezKJhNUcRcwnDowJgjIEXmmmgOCcEMImruqpOUtMA13uCFbZBBGny3oBlqcrbk0xi6vke7C8WqffPhNpt/GqLfpbCwcTNf5vtIiL3+ZCpqJXcUWz8rZ4nB/EchEojzd60Dcd0k8uflOpfnTu8g1Ta7Jfy6RHyepEz67905nftCTsaVEunMv43PNZ0s+siUSdhhdPxuTrrtuWjA5WJu8tCIUdTH4a00tCGbYdE+jX7Nmxwzays4JAQ7bnTP2HVADWlrSdQBmOvmlSEufFMXndDVOx4HMDEHSCHByUYfVdogX1zGeXvSzW9QjuZLvzscuLAHGRHL1wOiQrZ8ikePeGvlss8A2eadixb3rkvC3NEmzOppvMbRKdDh8zAeKA+aCuUI3OZfjbomaXjXI5NrKTPxh+V6tmrEaTmpf9sbBtLWdBj2Z8U0yT/EjcWLw3UXrGWTiaGiBUKCIytUla5R/stz8eAv+mgubJzrGgjW0YxHA/98xXYA0g6wY2OfkI5XWSGGlzjL026pvtMVleVqoT+RmUCsuPzD/+QOPMuGh1TByxqdqoN2SUJtK/wAsVrlCA6HSlCJfW2DbVVFUUlOiCG61yQK0h3J8oF/oWu8PiwadL6h+FGVeMZE1+/xmrGcY0FYMQgr0Tkp//DC41YJG8wS
- DjIbjLQ4
- dsRJ6AYx838A+p5fPXOAR2JYQ9kUUsbE7nhx/pvBGDvv5js+HFmohKI8C08YlM0GutYY0UCems8vubwoyGmKve/hMniPX4ozOR3f77RIYehnS9EtaG+dQl3NCGR0NIQjcE61/go9+o5SGHKcGB1YEO1GC6IAXNqpzqKZv8cnyFmJCK0SDUwq76s+DLUgc5kkR2hOqSd6Tjw2wGCbNf3T1kl1ZNPGXnODpF6gNFlyUeQ5rotujIbKkVrzn+gaDAAqDZWy9kFp2rvWy4sH/gHLobn9q5QCRQ+d8Jsv1RsZD+FZh4Fc=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784051951-296178
+X-HE-Meta: U2FsdGVkX19SRZ5WuksIeZK83Hw42G82+xZkiWrueaZ7v0G1O0OG5kQrcwzOBjJ/Z+lG66h4jyBSwNHnr4IgDiyjglxBOfZ/ciPH3ONV5jhrkgkkgQYwrJRXU85ZcMzRmJxibmldFQVBK8j3DLHhpkenGNoE/3dTmnsIv26MYy76Sr/vNwwHsbfVzqJXRs6lyfhpeEGzSzzDr1cGVXxRd+XjIyJlznLIOawPjf4siqHbkleqzbEmhl6GxS3tCWbDHeWvBRvsAFr8N/98yvs7zyxLnWjCKd+Du2THUjaNFAFJMFw20jkeRLdKLxLFb0lu7f8EBvhjnfwgGVfLw0szePQhYOG4lWhShm9jT/PrlpzfnK0aiCU2tYIvNF8Liw8I8wZ9nq/mHgFpAlkXkuKT4DHmCoq+SPeix4yz5m73CCpI9Fm6Yro16cwvPLw0ZSBLFeQA8W7WHrUR9emc9GjWGNFqUI0hJG8bf5NZuqOkWgg06tQFHKe8QupgOMa+Kk/xnfBsQ1umQP+gfaQwHCLrMNDtKBSVWa5V4tfGAUZQD0oFDpe0gXMeUPxa5DIco1L9A9woUwHamCZ+16oauEkCacqaXApznAPMldCITVQH5Py3lOIy5qU9YnAhZmnO8hy4U1tdsgS5wi/3muBtXAkXXolqe/PC8GGWIoYW4SMNcbUKyIse22lT8Jk55IW2HrLXD9L6OJ+ZRFJ4cfrAbKZ3Y/alPxNjRH3uIorSQbKprZnn0PMquvCcK9kjZmmFUMuZqacUqdpsTSdTPuOVrf5e+X6ldy/IWAI2DjBznv+6JLYaUR+NH4WX68qcDlEaco9gMCHUNxWMajhQOfAz246trC4N7q7UIxH7XL20rZlvCzq8UBEbFXIslKkLJrEefK2/BGRxkTPsVFmeq7TdbqVOnok1bqWXha2GS38rsV0KqPi+ZXTMzpg7Eui2LpzLmZqRQf00XhvXQEOm4SnUdcE
+ iGXS2mYU
+ N/M0SlN6FKEftQ4DAr2pLTFo5TER3EzlpF5+Dt+3xuctfKjD6nToJ/fOdd5aIZnIsiymMxCq1Ui+CNJfUtmw7UEC0dtQ3Chbna3H2EFAA1Gud3abiba6bR1gHgdCqRvMtfkZT29Q+7tJCbLrS0NiQkZ7ibw+VdNMrRWzVIMWdp/ig8TWlRbXxsZIil2EwFm6mq75YK1ctxOwUg3rr7WBrJZujQOpm/jex45FK+2FQrkRF7YMKIy+N8Lp5kbH1B/pt1AT4YoelD0WYfTPaAl1mn/FsuDAB6+wkbHgGxV87NO+kXFXGn8xfY9bHD042QYrnTtrio7uphFqiOU6xbaFWL4ibAXnbEV/YT9N9u+2dY6X2S1Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,58 +131,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Jul 2026 09:09:51 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
-
-> On Mon, Jul 13, 2026 at 03:45:35PM -0700, Andrew Morton wrote:
-> > On Mon, 13 Jul 2026 13:57:55 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+On Tue, Jul 14, 2026 at 07:29:38PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/14/26 18:51, Yeoreum Yun wrote:
+> > On Tue, Jul 14, 2026 at 05:08:24PM +0100, Yeoreum Yun wrote:
+> >> On Tue, Jul 14, 2026 at 07:35:19AM -0700, Dave Hansen wrote:
+> >>>
+> >>> This is indeed an improvement and a step in the right direction! Thanks
+> >>> for looking at this.
+> >>>
+> >>> But one of my test for whether it's good x86 code is whether there's any
+> >>> actually x86-specific logic in it. Isn't this basically a translation
+> >>> between the integer level number and whether it is folded?
+> >>>
+> >>> That seems like a common helper that more than one arch could use. Could
+> >>> this be stuck in a helper so that all arch/x86 has to do is:
+> >>>
+> >>> 	if (mm_pt_level_folded(mm, level))
+> >>> 		return;
+> >>
+> >> Yes. at least the level semantic in ptdump (pgd is level 0,
+> >> p4d is level 1, ...) is same to all archs where use ptdump.
+> >> So It seems reasonable to add this common helper in ptdump.c
+> >>
 > > 
-> > > > > I rebased this series on top of mm-new right before sending it out.
-> > > > > Should I have used a different branch?
-> > > > 
-> > > > mm-new is good - Sashiko attempts that.  But it's changing rapidly at
-> > > > this point in the development cycle.
-> > > > 
-> > > 
-> > > I’d like to send another revision addressing a few comments and also
-> > > replace the `max/max_t` check with something simpler.
-> > > 
-> > > Which branch should I base it on so that Sashiko can apply it
-> > > successfully?
+> > Furthermore, the effective_prot() need to require to identify whether
+> > it's the first pgtable to prevent the inheriting from dummy value.
+> > So I think it seems to make a ptdump_pt_level_first() like:
 > > 
-> > mainline Linus would be safest.
+> > diff --git a/mm/ptdump.c b/mm/ptdump.c
+> > index 973020000096c..2ec5700e4be5e 100644
+> > --- a/mm/ptdump.c
+> > +++ b/mm/ptdump.c
+> > @@ -190,6 +190,23 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+> >         st->note_page_flush(st);
+> >  }
 > > 
+> > +bool pdtump_pt_level_first(struct mm_struct *mm, int level)
+> > +{
+> > +       if (!mm || level > CONFIG_PGTABLE_LEVELS)
+> > +               return false;
 > 
-> Looks like linux-next/master has been updated with the v8 of the series.
+> Do we actually ever get !mm ?
 
-That's because v8 is in mm.git's mm-unstable branch.
+Yes. for the case of s390 use mm anyway for folded check.
+> 
+> -- 
+> Cheers,
+> 
+> David
 
-> I have v9 with a few small fixes, but it is too late to send it out already?
-
-It's called "unstable" for a reason!  Material in mm-unstable is still
-under review, test and the latest stages of development.  Getting
-things finalized for movement into the non-rebasing mm-stable branch,
-then into mainline.
-
-So altering or replacing patchsets while they're in mm-unstable is
-perfectly OK and expected.
-
-> If it's not, then what should I base it on?
-
-Well it's a bit tricky to replace a series when it's in mm-unstable. 
-One can do a git-checkout of the commit which precedes the v8 series. 
-Or base on current Linus mainline, which usually works out.
-
-Sending little fixup patches against what's presently in mm-unstable
-also works.  I'll queue each one immediately behind the patch which it
-alters then squash them into their parent patch before moving the series
-into mm-stable.
-
-A third alternative is for me to drop v8 from mm-unstable, then you
-wait until that has propagated onto the servers or into linux-next,
-then base on that.  This approach is OK but I kinda unprefer it because
-there's a bit of latency and it makes it harder for me to prepare my
-"here's how v9 altered mm.git" summaries.
-
-
-Which would you prefer?
+-- 
+Sincerely,
+Yeoreum Yun
 
