@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5EA1C4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:07:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7073AC4450B
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACD136B00C9; Tue, 14 Jul 2026 10:07:01 -0400 (EDT)
+	id 6AE686B00CB; Tue, 14 Jul 2026 10:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA3F76B00CB; Tue, 14 Jul 2026 10:07:01 -0400 (EDT)
+	id 686286B00CD; Tue, 14 Jul 2026 10:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BBFD6B00CC; Tue, 14 Jul 2026 10:07:01 -0400 (EDT)
+	id 576776B00CE; Tue, 14 Jul 2026 10:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6371B6B00C9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DF935C03C1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:00 +0000 (UTC)
-X-FDA: 84987558600.12.26F814A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 30CB96B00CB
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:09 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BB2A540412
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:08 +0000 (UTC)
+X-FDA: 84987558936.15.282D177
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 174144000A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WLxWEHcb;
+	by imf06.hostedemail.com (Postfix) with ESMTP id D8137180016
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:07:06 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CCHuQj4b;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784038019;
+	s=arc-20220608; t=1784038027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3zQydgPZJ7Jyvl0nKZs4MsunHOywP/c9ek9M9Qkn7Jk=;
-	b=d0QuqwC3nqlzFywGOoIs0ZxN18ULnW1SPnWOqF8UC4owjlIGakjp/SdElBAcyNafBQIYs4
-	Eb8M4qjAFDfL0k3am6saDi7QgOECATq73ygY6ZEJkL7q2pkKZ3WMbRfwIQvoXx5hTD+zdd
-	e6c7MNENfTlx7Iy7j7dEYeC+Vd6hIuY=
+	bh=r2eT5LgtVDR1PdMidQbZQUNMVcJjW/kv+exPqkO9uaE=;
+	b=1omO/zllGmIn32r6DZ1wHQJlZ3pyal6OshnhXjhDcAcdRAf9hA01u65FkswtjphT3Z450M
+	u5cNLZ/y1RC1pbog/07VjI5MpyPC/mPsZJEVAh73zRGzk4r6q/9uWpaRMF05jfQ4k/Oh9M
+	ide1PK8dLJOJmYVaYgHT2sXn9e30eEQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WLxWEHcb;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CCHuQj4b;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784038019;
-	b=2bt5rwHI7r9rJYkNVSQcBWnTPgDljvKj5O47cMxPLFM61pDSWzB3DeKRh8mR4Z3eywjRc7
-	eYl7U43dezA436I8CxrtoQS5GSt6UO6TpLJh0DfsEhy5PODjVpQrPY0qXKJd6suJ53S6uL
-	i2IvHKzJ9oiPv8U0+MvRs4p1rXjpWqY=
+	t=1784038027;
+	b=ZYwWrnsDG/bMPHJ48+KsNFlhYd2xGEIdXXvPnTDJ96ZTYpSk+5jpvkzUNwhU8noGbdtnxB
+	4bP9r/egX3l8u3dI1H4HuUlsfoJ0KBu0mbL5DgbHqFTEAfBZbRderC0bti5kqWW60s1+Ui
+	hjs9pTQbNAHoSzhhCBP7KTX7eDzuK0s=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1AFDD1C00;
-	Tue, 14 Jul 2026 07:06:54 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE41D1576;
+	Tue, 14 Jul 2026 07:07:01 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB3453FBB1;
-	Tue, 14 Jul 2026 07:06:50 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A6BF83F7B4;
+	Tue, 14 Jul 2026 07:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784038018; bh=4PNxqxq/jrUer27xvNkwvequvxQnPhBMXV3o8mC51Ps=;
+	t=1784038026; bh=wRRvDY7vvj6o45l8yT2Q7WPIKaOL0Wfu1AKN4gUTBNM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=WLxWEHcbiO2GB5LbtNB+92/zwEdWv+8J6pCRQbs3PGmarOdTkL8G1gUMIDPggJIxD
-	 N9phhhgOR7QXBCkkB6FWwKpw6kiO73Y49hy9kAZeBD1ExbuR501MLF5gHb3/X1UjRF
-	 0YbOoaXts+8XwZ3/78QN/pRZ3IolUppQVMb9mRqM=
+	b=CCHuQj4boJkfZHO19ek7AVQhcn2j5x9Inj92YhvCDOQNMYxw1wJHqVP3lNtmrXDor
+	 z8dfztuTF5HxmmtkzWEn0bGB/ntiIdARdTp3OUTIiy6d1Pv6qDLGuwuR1khXjO+Vzy
+	 5ViCvZtIVrztie1QTQbSWYbDcViyYQGhZmv5eaSk=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:04:03 +0100
-Subject: [PATCH 14/22] mm: set page table page type when allocated
+Date: Tue, 14 Jul 2026 15:04:04 +0100
+Subject: [PATCH 15/22] mm: only initialise pt_share_count for user pgtables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-14-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-15-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -106,21 +106,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=3368;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=1093;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=4PNxqxq/jrUer27xvNkwvequvxQnPhBMXV3o8mC51Ps=;
- b=0VdQOf0nra1WPYggXNBDDOliZvhTj/vQmWZ9BxkvIcGSO9bbshMd8ZPkLRqWmNwzRE1zk4sMb
- RKD72ZNcXaiBd0YaTV+GgCHvQw7s/IzNuDs0JxkPVAN8TuJt7kaNkpn
+ bh=wRRvDY7vvj6o45l8yT2Q7WPIKaOL0Wfu1AKN4gUTBNM=;
+ b=Ly1CUGmQU4MNOAvYijXTm6a0Oy5bg25WoXD9BoAv+N4SapepeLDfsykLmzz2cpJ5XS9tuoOVI
+ p8vbo57maMnDOD6whiBPPJLuCq0Skgv9I5RprwD5SM3O65zdB1a2N0T
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
+X-Stat-Signature: wxd6f4zqps4jad97nafqnbxwpzik6qc3
+X-Rspamd-Queue-Id: D8137180016
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 174144000A
-X-Stat-Signature: 1ajkjcujk7kzm5xddmzk8izf1fw68ri1
-X-HE-Tag: 1784038018-985216
-X-HE-Meta: U2FsdGVkX19pL+h9R/nJfdb84aaTQWOHLRTdiObW8WIM3LO/Ium2KlsKbBSDX9eDSXYuEQqxjm1gHfvrkncJLVlUspjJsmVZNTL53pvlqtTxsXIVGfF6sp3l30gBYafChb6iRvSe2/U7dLci8ggKAy2RyOnAAdULmTHjo22UXMzYhu74kAlfeozGLYKN95hib2aNu0YsRkl7uIOv/RwQgFuotpIku4rhQhr2wafjdfvPzGyVDW3YzwnGXm1BCQElgtx+6EWCwlJNoyKmH9XH8wcoVpcVdagiwKJvVln+QTlFyPkEMunWYW/DpBMPfc9VGbFbL9+EPDx20ctCjoKR7o+C4GwvnAXm1PnGfIK/6VIYLPgxKGn1R++fsnFiw8hi3RpzwuIjDkFBosfyix9OKUJY2cAjAuBdf3U9ehWSQWyiowl8ECJb3we5lfDotJgw7vVzPJO2xJpwRzLVQ9wkJ3Tr9PQ9g4yQmBfeShmgu0U9cwRDdyqtcIqZrGn+FOOI7ehYDbkFV8UHxmJKNREOT96Eh25eVd+BleF7VIp53/4j2b4sXirbVJtJe3qDzc4gx3il+fHNFUyl2+qW12mi9e2dHeDWqMEUtCYg4dqEP5UPFHb8K+upfPGNOndsgMpQyATp76fcgdD3HdBV77vNWO7lDRe5vHpKC4Qh3HCpcTz3QkphxoRNev/oB3we9uWVRkY2vHBndnat7w8Rcr0/A9i4bDFnvvMzGQzQCvXwuVkmg79yXWgZczT1pQzgf/q56wwV03Sj2+fotuWSW3F+yMzGT0wOAP8Ou2WjokNfkMfIAZmlblL7BZHF1Rfn4YBsw5lfydxCKXny+t2au/aPWcGczQoUE7S3Nu7cKoUVD6tgJ9OPdZrxre9XlH2WcG0x2PARt3WbKqFx7TB9cBqQwlWL/SVGHozx3KKZAyKwUkHyO9/45i4629+Tbb+zyA39G27urs3yqaHJfdHNfzx
- YCAQTPjE
- BrUq+WjXNIiGAtfktlrw1Sufo1F5W1oCyurcrAns0egqIL6d1+XrgMqxu3gowlBJJ0J2ZVE+w+FX7UTOriKluSlUomdgYw/CFiqSybCXbltzds+CEZmYqjuTr4X7rgQcdGWudk9vW2PtEGuHl/8kxbw6Q2KUNOBwUg2gIO45trtVaBoiR8jLHr1M79J2Pkc9XeqHdjT/bXwLbObBOSYMwvjLeLvfa6ZxzGHlxh4icoPr5ZDcbM938G0ePn4Tjy/e/iiGiphDQIEhUOfhrMKWRI2Tp1v0GDZttWNnfPrnz035HN01WiQdfd2VJmloU2Z92AwmQvnjSgpCivr/uU+VYwM4uhvPlP88Ptt0Vdh0zETKqzf817p6L3VK0Rrt7aWYgQmiPjB1CnBl7umcE/IPHR202wqwJ4iUSTYVI
+X-HE-Tag: 1784038026-582317
+X-HE-Meta: U2FsdGVkX18MI5PYX+Gn/LNHEFWQRb2JPeKXEj92lN0HJwOeaTPt5GqXtAWMpYBlwYi47w2vmuLi4Gih6GRLmqW6HhWWg/JpYRe0kn5ZN242hzT43UWxw3LHokniIanUsECAWeY3DNE4XezPlhbdW0w/wZGfhe0xNd0F5lGqqvuoO/8C2VWEKHkjI5Da0k1ttCsyjhKoT7oUuSEPqGGbbty7DjNNnMZWbK4sKH750qFLYOCB9siX1Fi341KkiIjOIpMVPkF+ezQ87slCvMa9m6KtXmIqSYiIzZ9sQ+qUVMl7c9BJymy4FZu75G836QP6TShAi/kajJQkpvs6LjKyH1IMYyzCL2KXibSuhvhapwE9IrCG6/HpRgEj79S9cOPrsaAlYKCsqf/c+j88Z71ksPLFhIGFVJ5Yx9PQgKlGOXiuR4uiCtk6vGJYkn8CDVpRd6+8BwgjUuItqBfKy544b//SgXrAah0DGnJ86PmwQQUO5i8Rl+bRFZP1JRCC6naq8KS7ODMdQs2hrKlmPeDXV8S6OXoUuGohm8q4EQAqzhhUrkA7ENr3QhFY6hxzIwd8tqyDxRpgpRuvLPfFWROWc4igYGfuhw7QDlmmUDodk0Cyw6zyhzfk2FfSNv8VIEaGceYjoRRMv+eAdnu6Jn7feZxG5bKO4OI/BEOVBXE3mhWOQlgj36JGsmb4WTbB75IVgO0bRJFX9H28R//tIwhnH3FTWUJMV4yjyGWGQPknBISM/puk7Au02elbM+QKWWENjyf8X2NbMr8P/FHA7cTE2O2Bz7GUCsKb4OqlCluBHTDxs+k5/4ZvSqUNogIQREQBzHPnbslepK2c9AT8VUmvR3lu1P/HOVxCoseij5qKI5CmC+V4rjxosMh6IxveQwKmze9A++fRqXD+oRBSgkHDKUdaI8/XNKphFCv6/J84/7Sy/mv17i/Iilx5Wd1HLbC39QDI1sssYCQffXR4lok
+ 2e2Tf3Y6
+ AKRbK7GZgcYqldLR6ZuN1ij7rkrdfvtV8MfNW3EcMGop5/n2YGOLQFmAUPO5Ww9COm3pJb5TwktzP+oQkf9lbrKgqGJg93I1Wqp1Ai95WkV12tfD8tVt98j96XNXASFVeU+vxx3aNXmAqU5nX4t/PaKDijqKH0JD/LX1qoIfF3F4/KgrZ/0RQbm6Qw5EqsykFDB3gTbsO14q4d3Rel7G0l8n17q7RsXkBhagERBpAPtzCOD3t9Ebk1sR8O399rtL9tl2xSswYoeqerPXkFjYgL8VMtHNQNBv1bI9fuCH7aznLgNDuk5SkljZdD5Ixq/ldvRpaEqd+RcO7PYp6Y82hC6QRHRKFd0NW7HUWFeixlUoZJpxc2jvHRkLDlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,107 +128,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As a step towards removing pagetable ctor/dtor calls for kernel
-mm's, move the page type updates from the ctor/dtor to
-pagetable_{alloc,free}.
+ptdesc_pmd_pts_init() initialises the pt_share_count ptdesc field.
+That field is only used for hugetlb tracking purposes, so there is
+no need to initialise it for kernel page tables. Skip the call for
+kernel page tables, like pmd_ptlock_init().
 
-__pagetable_ctor() is now empty so remove it;
-pagetable_{pud,p4d,pgd}_ctor() will be removed at a later stage.
+From now on pagetable_*_ctor() and pagetable_dtor() do nothing for
+kernel page tables.
 
-The ctor is normally called after pagetable_alloc() (and dtor before
-pagetable_free()) so this patch should have no functional effect in
-most cases. Where calls to ctor/dtor are currently missing (e.g.
-x86's split_large_page()), this patch will ensure the page type is
-set correctly.
-
-This patch is based on Matthew's earlier implementation linked
-below, with the difference that when freeing the page type is
-cleared in __pagetable_free(), meaning that the update is delayed
-until the pages are actually freed in the
-CONFIG_ASYNC_KERNEL_PGTABLE_FREE case. This shouldn't matter in
-practice.
-
-Suggested-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Link: https://lore.kernel.org/r/20251113140448.1814860-4-willy@infradead.org
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/mm.h | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ include/linux/mm.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 361a0d7b74c5..94f0fb1c662a 100644
+index 94f0fb1c662a..b217ccbed5a3 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -3684,6 +3684,7 @@ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int orde
- 	if (!page)
- 		return NULL;
- 
-+	__folio_set_pgtable(page_folio(page));
- 	lruvec_stat_add_folio(page_folio(page), NR_PAGETABLE);
- 
- 	return page_ptdesc(page);
-@@ -3694,6 +3695,7 @@ static inline void __pagetable_free(struct ptdesc *pt)
+@@ -3905,9 +3905,12 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
+ static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
+ 				      struct ptdesc *ptdesc)
  {
- 	struct page *page = ptdesc_page(pt);
- 
-+	__folio_clear_pgtable(page_folio(page));
- 	lruvec_stat_sub_folio(page_folio(page), NR_PAGETABLE);
- 
- 	__free_pages(page, compound_order(page));
-@@ -3799,19 +3801,9 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
- static inline void ptlock_free(struct ptdesc *ptdesc) {}
- #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
- 
--static inline void __pagetable_ctor(struct ptdesc *ptdesc)
--{
--	struct folio *folio = ptdesc_folio(ptdesc);
--
--	__folio_set_pgtable(folio);
--}
--
- static inline void pagetable_dtor(struct ptdesc *ptdesc)
- {
--	struct folio *folio = ptdesc_folio(ptdesc);
--
- 	ptlock_free(ptdesc);
--	__folio_clear_pgtable(folio);
- }
- 
- static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
-@@ -3825,7 +3817,6 @@ static inline bool pagetable_pte_ctor(struct mm_struct *mm,
- {
- 	if (!mm_is_kernel(mm) && !ptlock_init(ptdesc))
- 		return false;
--	__pagetable_ctor(ptdesc);
+-	if (!mm_is_kernel(mm) && !pmd_ptlock_init(ptdesc))
+-		return false;
+-	ptdesc_pmd_pts_init(ptdesc);
++	if (!mm_is_kernel(mm)) {
++		if (!pmd_ptlock_init(ptdesc))
++			return false;
++		ptdesc_pmd_pts_init(ptdesc);
++	}
++
  	return true;
  }
  
-@@ -3917,7 +3908,6 @@ static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
- 	if (!mm_is_kernel(mm) && !pmd_ptlock_init(ptdesc))
- 		return false;
- 	ptdesc_pmd_pts_init(ptdesc);
--	__pagetable_ctor(ptdesc);
- 	return true;
- }
- 
-@@ -3942,17 +3932,14 @@ static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)
- 
- static inline void pagetable_pud_ctor(struct ptdesc *ptdesc)
- {
--	__pagetable_ctor(ptdesc);
- }
- 
- static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
- {
--	__pagetable_ctor(ptdesc);
- }
- 
- static inline void pagetable_pgd_ctor(struct ptdesc *ptdesc)
- {
--	__pagetable_ctor(ptdesc);
- }
- 
- extern void __init pagecache_init(void);
 
 -- 
 2.51.2
