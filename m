@@ -4,144 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224AFC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EFE2C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:02:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF4C26B0005; Tue, 14 Jul 2026 10:58:44 -0400 (EDT)
+	id 55C5A6B008C; Tue, 14 Jul 2026 11:02:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA56B6B008A; Tue, 14 Jul 2026 10:58:44 -0400 (EDT)
+	id 534256B0096; Tue, 14 Jul 2026 11:02:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B94E06B008C; Tue, 14 Jul 2026 10:58:44 -0400 (EDT)
+	id 42D846B009B; Tue, 14 Jul 2026 11:02:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 885AB6B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:58:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F357080399
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:58:43 +0000 (UTC)
-X-FDA: 84987688926.21.CE8A245
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 21ECE40009
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:58:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRM3rkZt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D9056B008C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:02:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C94240421
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:02:46 +0000 (UTC)
+X-FDA: 84987699132.29.E2E1664
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2143040013
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:02:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=qPFJWhnh;
+	spf=pass (imf12.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784041122;
+	s=arc-20220608; t=1784041364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/rDw+3jasEMQfWDR5/QI5ODPO0V9yA5DbFG2otOFc44=;
-	b=1HQHc3m/RPcjL0ToAs0LFnDaN5x1eMu+/scUVWYuLRlmkGbA87VQE4bNmUfP2OnQ/e4SBy
-	r1bYJoG7LnG1n/tZYa4DDyqsT4wafnbt/sRjFTSjTKAkfB9RHmTqXnMg4XOkVphasfri4L
-	4T54WcwUJMiXaZcSFsnjDBSRU50ObIk=
+	bh=IT/yVAiDabUqiE4USPZqQnbFTAYiEWdtK+BgXtb/JJ0=;
+	b=gt9fp0jy6OuzL/0gzs+ve87/LAWsHDiAR1kfZJWVbJq/qhO1eeNjvQu4aaI+mr1Lkn3WpI
+	7BuJevhuZmf3qUO+dgyuhLP3Lyex6DFrIsVFCkhNJso69dv3iZtd2aA6nC+a0X25vtatD+
+	AbofNQT5/hIzOAXXvty9rrhP4hH8U0I=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRM3rkZt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=qPFJWhnh;
+	spf=pass (imf12.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784041122;
-	b=fmr/yh8ZXtnvjXm9lkxrnBM0mN6QKsXZjD0AI798toZI4JGTAyFqrNzB52136gYImPA+TU
-	bjhn6rgPfqDU0feSLG3zrrpsGUxFvhjCB6MEFwIUnbS4gce/wfnjBop5GB6/WGg49+0Ro5
-	jITV3JYcfYjlgRvDdG3I7bX2kxYtUSA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3CD554380F;
-	Tue, 14 Jul 2026 14:58:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321A31F00A3A;
-	Tue, 14 Jul 2026 14:58:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784041121;
-	bh=/rDw+3jasEMQfWDR5/QI5ODPO0V9yA5DbFG2otOFc44=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GRM3rkZtto20bP3/Luu98NsJmLDkagWlrqsOixM8cvwNyxbbeaLw5UIoaiRzufdXT
-	 KWMeO9vlv+CN38PSZJYzRmPrecqS/9elUGuXIIRUZ6X/IFUUZ+TSpAtpSkvzot5fW/
-	 edQqYyE+wqRS+d2jUg1noS/tJDlsioUV07fohRUwI9zDrQGhiS8NVoWzvegJ3PE5iX
-	 Gav5cG+5LPW46u96Cr6is8LYT+jyPZcVJg1yT9jAd0Lz1SYlTRVrcohaBGymOYSWFl
-	 W1Da1iowMFfia0NZNLdEbAupRIiX54l4jr0Voa4QeJeM4P1c2NUL9R57RbXoBrtPjf
-	 Fkt/XC1qhYLow==
-Message-ID: <18fe5529-2ad5-4330-a362-708a152bacee@kernel.org>
-Date: Tue, 14 Jul 2026 16:58:36 +0200
+	t=1784041364;
+	b=VhQRVfAd8Af7A3s6KJtjsN3qg1O+mCikqpIoRz4t7JPQi14rOv/ZGrWkK9wrWvbpFNrokH
+	q8j5oumKNhmryQdBpJXb2QtWblizuDw1J7yhuZ54lf2uPlplsMoiN5ynLxpuoQCX5b/uPs
+	b6S1MTnjABmscMEhJD2EfF3+P5WlgFk=
+dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=IT/yVAiDabUqiE4USPZqQnbFTAYiEWdtK+BgXtb/JJ0=;
+	b=qPFJWhnhyCVI3xBc8dOhh1yOmaVoHfxNx4zX6UxJlqAqLHXI3S6qXQWbaNnx2fwSovqHzzykP
+	BtsRjfeiDMCqW4QQF30+RAjh8kFULQnsvz+/IeDokWhUj6cJnpipsXCfu4VhnKKmDafh06ZXDXh
+	223hBGHDuMpRVxVi0yP6KgM=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4h02bW5K4BzJ46b4;
+	Tue, 14 Jul 2026 23:02:31 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 85AC340584;
+	Tue, 14 Jul 2026 23:02:40 +0800 (CST)
+Received: from mscphis01197.huawei.com (10.123.65.218) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 14 Jul 2026 18:02:40 +0300
+From: <gutierrez.asier@huawei-partners.com>
+To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
+	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<zuoze1@huawei.com>, <damon@lists.linux.dev>, <sj@kernel.org>,
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [RESEND PATCH v2 3/3] Docs/mm/damon/design: Document hugepage_mem_bp target metric
+Date: Tue, 14 Jul 2026 15:01:16 +0000
+Message-ID: <20260714150116.382521-4-gutierrez.asier@huawei-partners.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260714150116.382521-1-gutierrez.asier@huawei-partners.com>
+References: <20260714150116.382521-1-gutierrez.asier@huawei-partners.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
- poisoned subpage, locked across split
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>,
- Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260714122344.351895-1-kirill@shutemov.name>
- <20260714122344.351895-2-kirill@shutemov.name>
- <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
- <alZNYYsybKZA0eJb@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <alZNYYsybKZA0eJb@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 21ECE40009
-X-Stat-Signature: k8n39sq6hm3cp8rf4u4aa11q3r443ajq
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.65.218]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Stat-Signature: cmgn3zj3imqtob9pqfjne7ow76wec7w1
+X-Rspamd-Queue-Id: 2143040013
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784041121-460812
-X-HE-Meta: U2FsdGVkX1+fJDnLpZvFTJG8dMR1pJarz1aFT/g+LhaSV+Onisd69bJd7tkufs2SivdOg932kepgQZToO1PfXFqdprno8sFZBHHRIGBOMndF28hcUjerFbb3hyr5+ZrI7auRg8ruwtd0LxGY9rA0Z1XHuPVgw1hnPJYH3DQWSyOyBa5PxcW1ROGQgE1P4As3c3ZDzKc7kIENXMzcifTRgNhsqBFtKsLHfbS2egABh0L1ZyAzFsr1MYcAjdByaGJUeTv6lKej2OB6yO6r3WtVIP0x+3eDAkd9AOBY5dJuF7949ZYbTg/QklmGZ6Bkrq9VoepPX2RDU+pL63toohD1xO0KdMbxpI6o4phiX5a0eCe1QhQVCwvfZ65MM6m852cR1DYe+tK5ucEub/KzGoIQCnPlqeg6+iruOguksj3Sh18t8D7I7jPN5pGiJp0C/S7B2CwvlZq1Z6xOBwDfx+KfLJN8DfpYqixPYFqrdGmxKNeGjBGvatO23q+AfSlHJMaB02pmucHMzSiubgCrsbGxnp66+Ba3FklpG3FUWL3Y4s8t4Wc1A5bGvn2lPIrl3jACqcKajZOj6mwXqQwpmT+8OPO/Ar4fUbWj3bpMFLAn8WESNbh0mzip/TUvqrsjFgXvD3DWbOBpaZpCrli0in5Q8DFFg2S1R7NcjOoqqCazllWY1B52OODFUks8acEEiFAICHzQRn/m1mIlrpYndodeNHio4WABlQvz6PCZrlUoDg63YNEgiHLClfjCTOYB0YCrKiexdzUqEihLLW5eUJnUhqNW2DNbgZ9gbLq8lIfvv02sKFUQahtmHmJ11qh4iULrMmiLD9MIZg/XYzLqd0kE+bc2+WcoXiQfNPA+8J9cI99JLhkdiZStoMF1CWG2Yt0NAXZ2gZHpS8ZpPXBI6MkDd/nmEEysJWf+FrgGrJGTbF0EBnHic7jEAiXO1BkuJDOACVfSKQMSzRzrSwOVo8L
- SMFPIQOn
- WvZtdrBLfMJj2pCmTNidmZ86XHMAvmTjrEVnTOTw1UXk7LHQx7PZSgdknLGHRbTura6P21t+UO5PnTdUbHrKEABoLzP5V3Do4k9UUVnrWvOTTEWjG6GDyCIAaqostH/3KksiphYsM52hmb7PFN9Ocp6GwQmWM3EDHmC8TIWOG+NRFTK5h10yZ7KWaCSFISAOhfLqv1rpRve/biBRQ5vZ3zGKH/c/5MZhwr21SmMiStsg0IM2Uv2AZkWpAlcog5WUA6guFJOq8BAKj8MB7+BdxIT3Nw5tvKmY2zJTgnuQg9IBLHzjqdgOyay9g/T+cXSjgI48QM4+qGPKEj2t2zDEOVJVasQSpuZlRjrnPds9qqBdlFnk=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784041363-239146
+X-HE-Meta: U2FsdGVkX1+qz12nbFQ+E2upk752zxrc8E2APC1366KjaV6inBpL1JIwb7wX/4Y48yZQm7SDdRoUJgp3UZoMRT/MMbpnC6vUDsp/TVgxHYRbDcBb7rWwfiSP5UsztV+TkeH08K2zGSyXZv/dQrbeslYdqgexc+q3UEcHvZbv2NIwOw1CUI9CJD77+1ylb0tth1f/q1oH+LUMpTxy2NZ+k3TytDgcSRQJAYsjSKtMEi0ahVjd1CTi3YRVoSMOonSmhFLa3ZBAT3Q/Zaj3/AOgZaN4SWd9oHIVu5H6VY40rtONw6lFfllLh5pyF+8aNtzqGm/hkBWmNh0UxXyRkietsobNDOEVW8qfuasyRSs8bvU5R3nWME8SDh31lzLWujHSpDWH5VQx6ICJjmqfVmCxvvjax/mci6QcyCayyDjnWx3uFDteKpyUlX/GLf9nnS3jSJt5IwWv7gWUvbjuCNH6TjF+FsNzMZjpogzn+iDOsSf6VDUYL3CfwQMiZ2TH6yUta7G+sKqtGuOgQMruYPJ9YsWQfPOXPSmhITmxe638/AiM3tF/CJZH6uUtq1GzwuYclGZYhsARWOwv0waBCPO2KQziq0VK/0/hd71MmGIwY9wRILTJ5DrgfHTUzXf4NObTTmBPRWZXEOylVxGya98emwUKObhPmLcRdvBUEmIJTh6WStBMRnntWh/XObLKpl/waNz5PVpfM9k1E9r0GfL3ffehbWkMSt0cwAe/5ZvgmGIbElP/u8dU9FoTlC3uHh4loOPUxCziUP5M54hh/lAVaYeEO0p2ICSrQprepDTWMnsUWYMwJGVv3WmVjPzS1meceqRbjLOZSM2qyhdAjyFwYlbMrHjjltbq/pW9eG3CNmpTi2pLdlcxmZnLpXsU4X78wHC7QjS6MpDHkO+8eZA+qo/sr/Tk0Y+3Ez8lYHJ71NVbd7cYFMMFMGTyfVmDOt1pBOiNpcfkdHiAyfwQHeP
+ hpzf2Uq+
+ Efg3rEM1k8HC8pvJ044ck2BSVKpE9Z9dQZVs8Dw6DIBSsZl2fdcZ+TYStrJmqnnJaL8pzoNabRHYfW7ooPphNbDZZ/0egGy3Pnq4nXwgnSmvoFvHXBmFxB/hyklg6iKf/xX7pI03K2JFswHr6vgAsDgDlMcT2chYWYpbBTagONPMN507HHYd6GECc7r7fKoCKHxCGZ8gfaxMAQ8cS3KcEHsY7GtNXkCQynKyzhEaMBU9efKgRXWOw/nfzuNNiERyPBSZQsSiYLjkCErnL3GT8VwL19mpC8kvcbQlYr1AxKFXs0OTT3ekmHCjJnRQlH3VaBCIjE+ib0W23f/85mCjgr3PwJ1hSmW0tn+BQeALNXjW+BQ4bKjIoMmpTWxemYkChAuA4ktshVcifnbei90iLMr5fnk6lDwGcS070qgMGxq0fGtDUDmVc6cuT0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,129 +99,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 16:53, Kiryl Shutsemau wrote:
-> On Tue, Jul 14, 2026 at 03:01:46PM +0200, David Hildenbrand (Arm) wrote:
->> On 7/14/26 14:23, Kiryl Shutsemau wrote:
->>> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->>>
->>> try_to_split_thp_page() locked the poisoned page and passed it to
->>> split_huge_page_to_order(), which returns that very page locked to the
->>> caller.  For a tail page that means __folio_split() runs with @lock_at
->>> pointing into the middle of the folio.
->>>
->>> __folio_split() dereferences the mapping after the split completes
->>> (shmem_uncharge(), i_mmap_unlock_read()).  The only thing keeping the
->>> inode alive across that is the locked @lock_at folio: while it stays in
->>> the page cache, eviction cannot complete.
->>>
->>> But a tail @lock_at can lie beyond EOF -- e.g. part of a shmem THP that
->>> reaches past i_size while the file is being truncated.  The split then
->>> drops it from the page cache yet still returns it locked, so the pin is
->>> gone and a racing final iput() can evict and RCU-free the inode while
->>> __folio_split() is still running:
->>>
->>>   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
->>>    i_mmap_unlock_read include/linux/fs.h:537 [inline]
->>>    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
->>>    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
->>>    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
->>>
->>>   Freed by task 4601:
->>>    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
->>>    evict+0x57f/0xac0 fs/inode.c:870
->>>
->>> Split the folio as a folio, via split_folio_to_order(), so the head is
->>> the anchor left locked.  The head is piece 0, which the beyond-EOF drop
->>> loop never removes (it starts at folio_next(folio)), so the split always
->>> leaves it in the page cache and the inode stays pinned for the whole of
->>> __folio_split().  memory_failure() and soft offline re-lock the poisoned
->>> subpage's folio themselves after the split, so they do not depend on it
->>> being returned locked.
->>>
->>> Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
->>> Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
->>> Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
->>> Cc: <stable@vger.kernel.org>
->>> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->>> ---
->>>  mm/memory-failure.c | 13 ++++++++++---
->>>  1 file changed, 10 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>> index 51508a55c405..68d42cbed458 100644
->>> --- a/mm/memory-failure.c
->>> +++ b/mm/memory-failure.c
->>> @@ -1657,11 +1657,18 @@ static int identify_page_state(unsigned long pfn, struct page *p,
->>>  static int try_to_split_thp_page(struct page *page, unsigned int new_order,
->>>  		bool release)
->>>  {
->>> +	struct folio *folio = page_folio(page);
->>>  	int ret;
->>>  
->>> -	lock_page(page);
->>> -	ret = split_huge_page_to_order(page, new_order);
->>> -	unlock_page(page);
->>> +	/*
->>> +	 * Lock and split at the head, not the poisoned subpage: __folio_split()
->>> +	 * keeps the anchor folio locked and needs it to stay in the page cache
->>> +	 * to pin the inode. A tail beyond EOF would be dropped yet returned
->>> +	 * locked, losing that pin. The caller re-locks @page afterwards.
->>> +	 */
->>> +	folio_lock(folio);
->>> +	ret = split_folio_to_order(folio, new_order);
->>> +	folio_unlock(folio);
->>
->> With a non-uniform split it would actually make a difference: we'd want to split
->> such that we the other folio pages minimal.
->>
->>  split_folio_to_order() always seems to end up in
->> __split_huge_page_to_list_to_order() where we do a SPLIT_TYPE_UNIFORM.
->>
->> I recall discussing with Zi and Willy that in the future we'd want to convert
->> more places to do a non-uniform split.
->>
->> So I'm afraid that would just re-introduce the problem then.
-> 
-> Right. Non-uniform split can be useful.
-> 
-> But my patch is completely broken because code expects the pin to be on the
-> @page, not on the head. put_page() few lines down can explode already.
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-Yeah.
+Document huge_mem_bp metric exposed by sysfs.
 
-> 
-> So the fix does not belong in memory_failure(). It belongs in
-> __folio_split(), and it is really just 2/5: refuse the split with -EBUSY
-> when @lock_at is at or beyond the sampled EOF.
-> 
-> The safety then sits in __folio_split() regardless of caller or split type,
-> which should also cover your non-uniform worry.
-> 
-> The behavioural change is that memory_failure() reports a beyond-EOF
-> poisoned tail as unsplit (MF_FAILED) instead of recovered, and kills the
-> mappers instead of splitting the page off. What we give up is salvaging
-> the folio's healthy pages and the clean unmap -- both low value for a page
-> that is beyond EOF and getting truncated away. Containment is unaffected:
-> PageHWPoison is set before the split and free_pages_prepare() keeps a
-> poisoned page out of the buddy allocator, so the bad page never comes back
-> regardless.
-> 
-> The alternative, if we would rather keep the recovered outcome, is to leave
-> @lock_at as the poisoned page and move i_mmap_unlock_read() (and
-> shmem_uncharge()) ahead of the after-split unlock loop, so every mapping
-> dereference happens while @folio -- the head, within EOF -- still pins the
-> inode. That is close to Hao's original patch. It works, but it rests on "no
-> mapping dereference after the unlock loop", which is its own fragility.
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+---
+ Documentation/mm/damon/design.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-At least it can be well documented.
-
-> 
-> I lean towards the -EBUSY guard.
-
-The latter approach seems cleaner to me, but let's hear others as well.
-
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 2da7ca0d3d17..34d940a13a85 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -686,6 +686,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+   (1/10,000).
+ - ``inactive_mem_bp``: Inactive to active + inactive (LRU) memory size ratio in
+   bp (1/10,000).
++- ``hugepage_mem_bp``: Total huge page to total used memory ratio in bp
++  (1/10,000).
+ 
+ ``nid`` is optionally required for only ``node_mem_used_bp``,
+ ``node_mem_free_bp``, ``node_memcg_used_bp`` and ``node_memcg_free_bp`` to
 -- 
-Cheers,
+2.43.0
 
-David
 
