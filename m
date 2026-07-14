@@ -4,135 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C005C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F304CC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:31:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E9A76B008A; Tue, 14 Jul 2026 07:30:02 -0400 (EDT)
+	id EF7A46B0092; Tue, 14 Jul 2026 07:31:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C1A56B008C; Tue, 14 Jul 2026 07:30:02 -0400 (EDT)
+	id ECEDB6B0093; Tue, 14 Jul 2026 07:31:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECBA36B0092; Tue, 14 Jul 2026 07:30:01 -0400 (EDT)
+	id E0C726B0095; Tue, 14 Jul 2026 07:31:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E646B008A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:30:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 322DFA014F
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:30:01 +0000 (UTC)
-X-FDA: 84987163002.05.B13629E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6009D40004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:29:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LhuMFxlJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B00DB6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:31:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31BBE14032C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:31:30 +0000 (UTC)
+X-FDA: 84987166740.06.4CF1882
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CFAE0140004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:31:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aubsTbCz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784028599;
+	s=arc-20220608; t=1784028687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g8Qgu4jCoGJy5UnTxB59TGXgv4KGiLDVpDg5Pc0P6aQ=;
-	b=2iMP83THglGHyGJqUtBAiisG/A8FgA7NoYIIB3wGMf+2PGhEzw+X+HmqcozZ9wTYt9R8V1
-	1hr3uWUWfpL5rZJEjKL8N2s1BqhvQkOWOCqyIlZDVihl6s8aW2RsCvJR9hLK/wn/2bJbb2
-	DLs0n/Q9EbMxcuLlmM+pEBv1ga16m5U=
+	bh=zwhrkQgNNnztcrozTTZGeAnrDC8vAtQeya0vh3r35g4=;
+	b=sc5eslj4diQoH1XfKSVs80rsjt+9+XWJ2J6PB5BYGFI89aLcOfZVmvZX50ES24vnh1ComS
+	PpVmE7YTNDpgUAm8pC3pWQTaISWB+RhfKJPJsZ7afaowQCMq0UnEbh7tdVIvbf3A1LUa3k
+	osUOfrzCcBHaKk/m4ys0he2TquJpdhw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LhuMFxlJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aubsTbCz;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784028599;
-	b=JwgsZVpKstFPffQwVVLRkxXG3yLnyBSQ8cXAtQqtSpOOtzf5AIbK9KHmstRFg1U3/WJm+c
-	HC31ttFQGKMuJa/Z9I+5jnpytYLPvlXGPVIKI8rar3IzbbJSvNn1loEBs1RFoD5E+j4zLg
-	/zBbu8D0bTlc814Ctobod+LzU9+WPsU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 428784388C;
-	Tue, 14 Jul 2026 11:29:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288261F000E9;
-	Tue, 14 Jul 2026 11:29:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784028598;
-	bh=g8Qgu4jCoGJy5UnTxB59TGXgv4KGiLDVpDg5Pc0P6aQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LhuMFxlJ+Sn+bK/n3A8CaZEya5rDRDXuzqmH4Rmb+ZzMFIU0N+638mkvPOxKux8T2
-	 nenZffcs1R8sZ9OxOmcwysa+CI2hxBCdom0kuSUHZ7lqPAJE7RF408XYroYVuAg8PO
-	 5D8mda/rzAPMZ5/+Ft3VnIW3BBFt+9BWUREovn/VKbu1AbvuIoqFRsqBrU4Hmqe/od
-	 OdqoUgjrcBhJpd4luZuZ8xTCT7n6yGmf8gQZRYsX9aB1s1bJNyU9xk1YujtizQYbze
-	 YLPPvISKdah6CX4SLnZpSVfE2kdhzXINurRtLkYBniUfRDpLegOuJdQCkIPC5XxOG9
-	 CKB7mzLajrVdQ==
-Message-ID: <1fc81157-824c-4296-ac5f-e8965f64597e@kernel.org>
-Date: Tue, 14 Jul 2026 13:29:56 +0200
+	t=1784028687;
+	b=OMgre4Gca23+YzkPJesMcvYRHBS57etIlwvTblNTPtiU9Tv4UR0i2f/LcuZarUhFXMypVD
+	t1I5ecNJkAs1/gJqgR2jCqPmzlmfqJIHULGbctpWB2V36O3GBipOFjxBaA7Gs2SHM1jNYn
+	8yOvJ0niKyxXj8BtpHfTPmC5ungJrFs=
+Message-ID: <bfb1cfa1-691a-4bac-beb6-caef9b3ac4e8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784028683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zwhrkQgNNnztcrozTTZGeAnrDC8vAtQeya0vh3r35g4=;
+	b=aubsTbCz2J03ebsHx5YMNPz+vCnRTn2SVDUHzV4RWAcoPSGngHtReBCmi1/XyTh4KGbt8A
+	72hx/ld7+39lC45i4jqGr1WlT4lLcu/Rkvyu7Xj+/pjRSGYywHARH9pvG50tCZrLWq5EMW
+	pyoqFG4tdKTLCW8zpowzsqFvlGyB/GM=
+Date: Tue, 14 Jul 2026 19:31:05 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: thp: unlock i_mmap before releasing split folios
-To: Kiryl Shutsemau <kirill@shutemov.name>, Zi Yan <ziy@nvidia.com>
-Cc: Hao Zhang <hao_zhang_kdev@163.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- linux-mm@kvack.org
-References: <20260710071344.GA106129@zh-pc> <alDSekC_5t-29vJS@thinkstation>
- <alEWEColDdwQboYX@192.168.1.215> <alEg6ZPc-ao7s6o6@thinkstation>
- <DJXXKH4KOBVQ.2I9NU3EJL88HA@nvidia.com> <alYNlDNMQy0Fl2VB@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <alYNlDNMQy0Fl2VB@thinkstation>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ David Hildenbrand <david@kernel.org>, Yuanchu Xie <yuanchu@google.com>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260711091157.306070-1-ridong.chen@linux.dev>
+ <20260711091157.306070-2-ridong.chen@linux.dev>
+ <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
+ <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
+ <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
+ <CAGsJ_4zcgURKZKBAc6i0Y5g7u2OXjENDE7A=nqYcQ9TTVuR=Hg@mail.gmail.com>
+ <0545ee70-b0a0-4a93-ac2c-3e84ff504e5a@linux.dev>
+ <CAGsJ_4x7cg-L_OzCdyZy+8zoKptVi-Jh18k1HRkvTBTbn-EQRA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4x7cg-L_OzCdyZy+8zoKptVi-Jh18k1HRkvTBTbn-EQRA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6009D40004
-X-Stat-Signature: 9zptpqnce7bndj11xakedwrdt4ty7nb8
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: sdhrrnwk9i1a5hkbsnu3i4pdx8kkqrfh
+X-Rspamd-Queue-Id: CFAE0140004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784028599-350964
-X-HE-Meta: U2FsdGVkX196/BQbd+5KDqF1HZRam0KbhJMqej6K5fjMjIRWgPTiaugFttuS/omTvY1hcCOjqSYbfHjM0+mWJcBLpp6iZm2qvb/SlvrIqrqIFBvBMW5H3fAkm94uzM25lKLECgZke1+kUifWkvVgo1+3x0a9PDAMmgra8rlK3gsZqkcUj+fbDURF3ZdUjH1cj+IiZZQxnjzkCJsQdcmjIjg4lfBlEAxtNlFjuX3tJfbKuJvmp0mVDZ469kg11VWutpOVsojTek8foUa60zRoXFgLyeksl25OaPi63M2Vcg8OkpTzyfcFDJeHjDEhFi8QNbQ/ysM5fUVau0tXdO4/FgwsU50FRfFGd/r7gWtfFN7m3dh/FThKXznsTyXC5hrGcfeh32MMGtuKq3vxUZb/eqhTNINVurFduznUfXQ3gmDrpLqeUZ5AuLkblR+ur2iBH1RH0/1fOFU7FW40hwdnTnzt8uDru+tNgYGuAyNZRrMiREHd1hp9J7TR9tvfcToQBxOV42HR8LDNGU8tr6XTVcwocukdgsONH8nWVciw43RApYiKGk1uqTplz6OFF+WCb+FMrqGO0mPYiwEKWx6ESu70o/8Q9Bj6lsUOs6ku3kRCW17ZiFjh5qP0S58O7oAjuqo2Duh7nOLTIEEvU23Hq1wz9qIHFk0FRyWQzjmhovfBDYvNNPPPohOimP68ExWwtQpXFuYvY7edzg1Tm5lGlqVCL3hcFGHHbbSCVfrOaO/PtIyF6BJy4RlLRES8v3PCXLScHMZm2xhOn1zdHyMaK9FE9Y5UiMZ/lxffHoot0RLBTKqxEg0AzWDDLtwU+N2d8wpHH/WosdsHGlHYJdIn+VKaVMwUa6EB8iiS/mTR8kvnY0ojfAKq9hmwNM18HjBPYd4/T1VxnqA41EcslFZh5eIX+bVAKiVlGpJJkkwM4qcWhMO8gcVO+TCPpjcIO17ht2FYfKC6q63zM6cV2pe
- pwx57Y+O
- fMcwFAdz+rJXIs9AZB5K8FED44Cdr07O5PkD+fR29mcHHrfZCLzJGt6eDQAn/7tQcEjE7aukkHzyMTMmUyic6QXfdStEdjpdhdKBaTLjth4KG6yisE6rLde4TxZ3FGcZvQzw73bjCUMtBW6pF1XUQ+A2eqIOBfBVNzO2j/kcrw+BoOfOZkeeroYr9KIF8ADVh7lWYF2bzJYUEinHXvEJSWgpVk3heJLlBZ9D4GBJuGCg6zatoKMo3RISGXyqWUcgpj3+domy4vn+tUennfH0gObMKHX/lxOtCw5Ve+phfkqEholKnaVHiIurMXfZj7YW/bEweSkqdqOZzvBs=
+X-HE-Tag: 1784028686-327139
+X-HE-Meta: U2FsdGVkX19oOVOLUQ43wr+Man8lSiDz//Ou/tHI43Kj7AldEsV3Rnmplz+ImZQGpU6HDQCyNBMk1nE2bUntgiPRsHr2+/5oimL5xrOSpy0LAwyHYqXzd68ZcBpNKHCI5i2YqHWp7xjm+/WvFzzwvxpHyguvdEKNcFDo6mAUb0rTijNTfYM5rmga9dTCb1B7ZL34yqsv6+gb53Fl7GOLYNNGQdqszcLsZ7yjVdziZ3Negg0mE0uq+tjDcmU9fxXeWdCcZ+1fplTnd6LtuevgRLPmQh0tV3R5DtXrg1TeWnKxyLinMb38oezvsD7pp71Fxagc2kckLYNKj8PHpQ/+BAGIYFoYZeTBUrOYyBEZJZcgA8BwwES7I/YZd8Vkzvl4sgt/xrytT8ri8zB16FlDU1wNsrEqpLAbHGTz4AoX1+UJvy+1fpZzqK6cz2IoSBkGasXt+kWOZ9Zl0jSRgODQPUUkPTB6H8NT3tczwqpaWGjxkRPLGw9h/p652NgJ8Qp+cfnv61XuLWrJNakIYbcK0OYOYjYT3k+NVLydKmTM2Wx0vZd6DoSpZd5W23oSYlQFSE+PgJUNgfPzZRN6nnkd7ccyuVFlHE346/pRTrL9TVg7zdGW+kAf544HP/1BlBAmUVtDT5d1F13KGyH7+5uf47bMaub0bA28TNu3Ed23fU7/XYiP6GSkxJSpaMiHWScV00/dSd0GxoxgEKsb6xHr2H2NkDwudOT6xsBvWDCXzE7mfAKU9JtTH8ESoKdJNknhOOISBk/nvH6A1B0691sQBrUTIS+fhSgH4TYUG1xtDX6ahWnfx+PeCqmCFhKAV2zF83Ks/LoTq6aJ1CBV5zw9/TWIAHZ6ZEsPb+IN7O25uYBu1sV8RlBJGQjwmXX0LIfYlJcLID/2hhoRSSvdNzjQXAisCuQzkWlSf/4JiFVm6uJuObetOwyHyFZ/K9tcYzO34ryIjiXqUcNTqIusBh9
+ 3oziqG3H
+ k9cTLASuSvgg2MmwW9MJz36PvLh7etH+oC/UFZ8q82sZQmi16KqHkG23G31xyq5UqoEEE3JAKDJiz8NNK/qJ47Wl9rkD8wkD87jYrM7ZuK1dsBmd1QVSBtJKxBVdBAZNp53eWGSy7LmP6PuXv9Fo3woIf3WDEDRIf5A9JB3zdP0iQ19OG4KmLo09Es8AJRzqApIqIFE1VeW8Ad1veCDoJWd9rr6jTbEwEfm+EUpqwFDDSeztqfNTqwYNlZgKsS0ox2OxMaTejJrrCCt3tAjT7OmjtRZju1Qm+PgrJofRMyc7C/iP/I4PkZjbLkSsF2UxtNtr96oLb4RnFQFu+ROEtrBHw4aLYtvFQLIONWsCxlvYiSGiNVZMDtGDWsXIPAulbJyUr1V8OVmlWzAzNlNUGgWxHu7lvk/qwLvWG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,73 +101,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 12:26, Kiryl Shutsemau wrote:
-> On Mon, Jul 13, 2026 at 10:15:40PM -0400, Zi Yan wrote:
->>> This log line confirms my suspicion.
->>>
->>> The UAF fires at i_mmap_unlock_read() while try_to_split_thp_page()
->>> still holds the poisoned page locked. For the inode to be freed at that
->>> point, eviction must have completed truncation, which is impossible
->>> while a locked folio remains in the page cache. So the after-split folio
->>> containing lock_at was no longer in the page cache — and the only way to
->>> remove a locked folio is the split itself: the new_folio->index >= end
->>> drop in __folio_freeze_and_split_unmapped(). It requires lock_at to be a
->>> tail page, which is what memory-failure passes.
->>>
->>>         CPU0                                    CPU1
->>>   i_mmap_lock_read(mapping)
->>>   __folio_freeze_and_split_unmapped()
->>>     __filemap_remove_folio(lock_at)   <-- beyond EOF: leaves cache, stays LOCKED
->>>
->>>   /* no locked folio pins the inode */
->>>                                         evict()
->>>                                           truncate_inode_pages_final()  /* nothing to block on */
->>>                                           call_rcu() -> free inode
->>>
->>>   i_mmap_unlock_read(mapping)          <-- UAF: rwsem in freed inode
->>>
->>> Your fix moves i_mmap_unlock_read() out of the window, but I don't think
->>> it is complete: shmem_uncharge(mapping->host) a few lines up also touches
->>> the inode, and its nr_shmem_dropped guard is exactly the beyond-EOF drop
->>> that triggers this. So it is in the same freed window; the patch just
->>> relocates the one dereference KASAN caught.
+
+
+On 7/14/2026 6:21 PM, Barry Song wrote:
+> On Tue, Jul 14, 2026 at 3:43 PM Ridong Chen <ridong.chen@linux.dev> wrote:
 >>
->> I was discussing this issue with Codex after I saw Kriyl's patch and the
->> iput() issue raised by Sashiko[1]. Hao's patch might be still valid for
->> shmem_uncharge(), since all after-split folios are locked at
->> shmem_uncharge() and prevents inode from going away. So the rule is no
->> mapping/inode dereferences after the after-split folios unlock loop
->> begins.
+>>
+>>
+>> On 7/14/2026 9:48 AM, Barry Song wrote:
+>>> On Tue, Jul 14, 2026 at 9:43 AM Barry Song <baohua@kernel.org> wrote:
+>>>>
+>>>> On Tue, Jul 14, 2026 at 9:20 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>>>
+>>>>>
+>>>>>
+>>>>> On 7/13/2026 11:08 PM, Barry Song wrote:
+>>>>>> On Sat, Jul 11, 2026 at 5:12 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>>>>>
+>>>>>>> From: Ridong Chen <chenridong@xiaomi.com>
+>>>>>>>
+>>>>>>> The per-memcg swappiness knob is v1-only; v2 always uses global
+>>>>>>> vm_swappiness and ignores the per-cgroup field.
+>>>>>>>
+>>>>>>> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
+>>>>>>> to memcontrol.h where it belongs.
+>>>>>>>
+>>>>>>> No functional change for v1; v2-only kernels drop the unused field.
+>>>>>>>
+>>>>>>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>>>>>>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>>>>>>
+>>>>>> Reviewed-by: Barry Song <baohua@kernel.org>
+>>>>>>
+>>>>>> With some nits.
+>>>>>>
+>>>>>>> ---
+>>>>>> [...]
+>>>>>>>            struct mem_cgroup_per_node *nodeinfo[];
+>>>>>>> @@ -365,6 +366,9 @@ enum objext_flags {
+>>>>>>>
+>>>>>>>     #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
+>>>>>>>
+>>>>>>> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+>>>>>>> +extern int vm_swappiness;
+>>>>>>
+>>>>>> This is a bit unusual. I'm not sure whether mm/swap.h would be
+>>>>>> a more appropriate place for this.
+>>>>>>
+>>>>> Thank you for your reply.
+>>>>>
+>>>>> The vm_swappiness variable is not utilized within mm/swap.c.
+>>>>> Furthermore, since memcontrol.h does not include swap.h, retaining the
+>>>>> extern int vm_swappiness declaration in mm/swap.h will result in a
+>>>>> compilation failure.
+>>>>
+>>>> If this is the case, it still seems better to keep
+>>>> extern int vm_swappiness in include/linux/swap.h.
+>>>>
+>>>> Then we don't need the comment:
+>>>> /* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+>>>>
+>>>> It also makes it clearer that vm_swappiness is an extern variable
+>>>> belonging to the swap module, rather than the memcontrol module.
+>>>
+>>> BTW, if mem_c_group_swappiness() and vm_swappiness are only used
+>>> within mm/, could all of these be moved to mm/swap.h and
+>>> mm/internal.h instead?
+>>>
+>>> We are making a big effort to move many unrelated things out of
+>>> include/linux/swap.h recently. Could you check?
+>>>
+>>> https://lore.kernel.org/linux-mm/20260708-ch-swap-series-plus-folio-lru-cleanup-v9-0-2bc72b4f8730@gmail.com/
+>>
+>> Good suggestion. Moving them to mm/internal.h makes sense. Will update
+>> in the next version.
 > 
-> I agree that Hao's fix works, but I don't think "all after-split folios
-> are locked" is the right rule: the beyond-EOF folios are locked, yet no
-> longer in the page cache, so they don't block eviction. What actually
-> pins the inode is @folio itself: the drop loop in
-> __folio_freeze_and_split_unmapped() starts at folio_next(folio), so
-> @folio always stays in the page cache -- even if it is entirely beyond
-> EOF -- and stays locked until the unlock loop.
+> Either mm/swap.h or mm/internal.h.
+> vm_swappiness probably belongs in mm/swap.h rather than
+> mm/internal.h, right?
 > 
-> But maybe we should sidestep the problem altogether and refuse the
-> split with -EBUSY if @lock_at is beyond @end. Then the caller's locked
-> folio is guaranteed to stay in the page cache and pins the inode for
-> the whole function. No ordering rules needed.
+> BTW, I am not particularly eager about this cleanup;
+> it could be done later as a separate patch.
 > 
-> It is normally only reachable as a race with truncate (or eviction),
-> where failing the split is harmless. The exception is a folio left
-> straddling EOF by a failed split in truncate_inode_partial_folio():
-> memory_failure() on a beyond-EOF subpage of it would now fail to split
-> instead of dropping the poisoned page. That range is zeroed and
-> unreachable, so I think it is acceptable.
-> 
-> Any opinions?
+> If you decide not to do the cleanup, I think it would be better to
+> leave "extern int vm_swappiness" in include/linux/swap.h rather than
+> declaring it in include/linux/memcontrol.h?
+I noticed that some swap-related macros are already defined in 
+mm/internal.h, so I'm planning to place the code right after them for 
+better grouping. Does that work for you?
 
-I guess a deferred iput through some workqueue is not an option?
+```
+...
+#define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
+#define MEMCG_RECLAIM_PROACTIVE (1 << 2)
+#define MIN_SWAPPINESS 0
+#define MAX_SWAPPINESS 200
 
-I'd prefer if we could keep folio splitting working even when the passed page is
-EOF.
+/* Just reclaim from anon folios in proactive memory reclaim */
+#define SWAPPINESS_ANON_ONLY (MAX_SWAPPINESS + 1)
+
+extern int vm_swappiness;
+
+static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
+{
+#ifdef CONFIG_MEMCG_V1
+	/* Cgroup2 doesn't have per-cgroup swappiness */
+	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+		return READ_ONCE(vm_swappiness);
+
+	/* root ? */
+	if (mem_cgroup_disabled() || mem_cgroup_is_root(memcg))
+		return READ_ONCE(vm_swappiness);
+
+	return READ_ONCE(memcg->swappiness);
+#else
+	return READ_ONCE(vm_swappiness);
+#endif
+}
+...
+```
+
 
 -- 
-Cheers,
+Best regards
+Ridong
 
-David
 
