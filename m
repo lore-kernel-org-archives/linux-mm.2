@@ -4,81 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C9EC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A054C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CF216B009E; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
+	id 84DA96B0096; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A7AE6B009F; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
+	id 7D7246B0099; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BCF06B00A0; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
+	id 69EDC6B009D; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 357EB6B009E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11B68A03B8
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:17:49 +0000 (UTC)
-X-FDA: 84987434658.06.7D48B6B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 529131C000E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:17:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FED4vNrC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 391FE6B0096
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE7EBA00BF
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:22:13 +0000 (UTC)
+X-FDA: 84987445746.04.011A2ED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DE2E040011
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:22:11 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hraK3PiX;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784035067;
+	s=arc-20220608; t=1784035332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XPP2myTGPA5lMKiNw+TtdOeHCWrcAC/vqmt4XlyULw4=;
-	b=CeF5F5bTMTIZHgTGCnHRHYi/kea8kkkmMc9DMTK71U5iQrkBDCUzbZAtJL9Jht9qtFTmrS
-	bZVKeoFIszgrTFTARSQcljXZg+G4Tw0CJH2FlgJcJ8qcFW5S+Br+zcAcklgERY/IJQZbtw
-	RVwid8LWbR0leicyD/XUnHIVXQj4Pi4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FED4vNrC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=GzusWZQvSdAC75BhLePWkECb62a3t8QA9yY4IsEwwDM=;
+	b=TTUw+dugP1QAaWcsA491h1D79kdJRUOsSdbJkJqhDa5loHmY37hJaxx/CSS8RHsHPc7qs/
+	HiII+g0fxUZo5AwqWmgTedx4ommdB4EVJBNYh/grHngtHhfD3sJWpBtpaXDLQSkWw4wiOD
+	44GDiEPc3SNw6huqISR7yc41NLAXmTg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784035067;
-	b=zfmui7s58qogMpfCktB5Hd3GAtUbdu0Zt1atYFJEwYWIPL0KijpLu571cotXZlLGsG48vg
-	xnXSbwIooggslP5NNfJo2P7X7ZNazD/dYhZx6HyEpH2Zpw18wuCGqFNmDHFbsKwAifBK78
-	fs9IXr4BmqUW9Eaq9IPcujinc3z/TmE=
+	t=1784035332;
+	b=TFXRTN1SP3Pj1h1R6DGX6trgAlf8asjGvapNkPbQCL9QTRHaKEGKU6MmJQ4JrTPWObztPl
+	UPOg6tADYVxREeyNHEGNw5tpjkfwAMZqRw3+1qde2JgSaR5UlMukhvxeDchDN98Lf3wLCz
+	2+tiRyKuPZWc6Mdaf+EqWZJKcV1ELTg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hraK3PiX;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A45E4601ED;
-	Tue, 14 Jul 2026 13:17:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887CA1F00A3A;
-	Tue, 14 Jul 2026 13:17:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C8E8A40E03;
+	Tue, 14 Jul 2026 13:22:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C91F000E9;
+	Tue, 14 Jul 2026 13:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784035066;
-	bh=XPP2myTGPA5lMKiNw+TtdOeHCWrcAC/vqmt4XlyULw4=;
+	s=k20260515; t=1784035330;
+	bh=GzusWZQvSdAC75BhLePWkECb62a3t8QA9yY4IsEwwDM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FED4vNrCvRA+E87/OHhMTv0sfCp09VAGYZiCGXNOiE/pu8OVC+5T3j135myCIb0B+
-	 HyytLmY+Zx+54l8JqAbasXFFpi4S5Wvw45Hyr3VUpIrati8G7aqxEqOIwPHfmZDNlM
-	 WWJIeDXiIWaWuTZ88BGzH1cfhWqwQQHEHu0p9yjTXmw/Am4wTsLlVQuzpZofqiFlW0
-	 AD+aQnQhQCtuAJkK/rd8PGJjcdPzRLRFWEm7QIwUMLdDEDo3j0ey9lq/HkjI8UL5Wt
-	 tbhorm20fDX8meWpCOhymc5mNvLYAPYcYIUtkesKWymOv+FhcI7oF58MmI83iUWW2L
-	 bq9WyWLH+mVnA==
-Message-ID: <8d316b6c-41fb-4ae3-8923-3b649b92b33d@kernel.org>
-Date: Tue, 14 Jul 2026 15:17:42 +0200
+	b=hraK3PiXKmtnhhb9PCsQZZMi0fnPEajxrk/hTrFivKeDnfGKVGMpZZ6CugQFEzU94
+	 xqWjX8Vb5ll8Nfl0tUO/uqtwp43W6aVdY0JwSDoelJUSkdckhXmXJz2fOjCoRYIt8V
+	 T6igIIICawbRUXs4M8kFRb5DRJmS1bBe2BHAKBor0Voz19RQBbn+Rzj9UPE9wD6bWw
+	 Az4uP5At9Iau4mQvIX8Zx6i8qVHPikHKAAGyrkKbv7KrgcPQcIICv1RRFnkjKmh+4B
+	 2UBgePb7962aGd5n+lHIssD10B4z90mlH87treQSZZIkFi1y+LOdv/2dP0udPrh1Hk
+	 I66RIsT/6WsNg==
+Message-ID: <9e9345c8-30a4-4f78-ba55-d7fa073b82d5@kernel.org>
+Date: Tue, 14 Jul 2026 15:22:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] virtio_balloon: fix Use-After-Free in page reporting during
- PM freeze
-To: Link Lin <linkl@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, "Michael S . Tsirkin" <mst@redhat.com>
-Cc: virtualization@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, prasin@google.com, rientjes@google.com,
- duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
- Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com,
- ahwilkins@google.com, Greg Thelen <gthelen@google.com>,
- Alexander Duyck <alexander.duyck@gmail.com>, stable@vger.kernel.org
-References: <20260709224330.946683-1-linkl@google.com>
+Subject: Re: [PATCH v6 2/9] mm/page_owner: add MR_NEVER to enum migrate_reason
+ and use it for last_migrate_reason
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Ye Liu <ye.liu@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Jan Kiszka <jan.kiszka@siemens.com>,
+ Kieran Bingham <kbingham@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260714015117.78351-1-ye.liu@linux.dev>
+ <20260714015117.78351-3-ye.liu@linux.dev>
+ <9e0db1c2-06ca-4dba-8fb1-552fab91cb02@kernel.org>
+ <037d58c6-de55-4b69-bb71-905e03985657@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260709224330.946683-1-linkl@google.com>
+In-Reply-To: <037d58c6-de55-4b69-bb71-905e03985657@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 529131C000E
-X-Stat-Signature: oy1cmkumw6utubjm45htr5mncxj4o6th
-X-HE-Tag: 1784035067-801847
-X-HE-Meta: U2FsdGVkX19n0OLFNwTEk/oDwn2VJ0fpxz9+i8X44Km9kEICSTiCcVG/ECY5BythgrrKV5zcC9FeI89KXdnazcoytCEObywXG0LM/O4OaLn0jzM54msg2dKPbBu2XOte4eSPIvy6EI901YkWLKk+VaLxX/y+HSqx5MASNeOzdGPYCYEkJAzMOQPgjGt5uvvPOgF6sA8cVzR8Q/P0sIWmttAPg1HhfUYQKzVILeT2FrjQD6TA3LZEVq3K8l58y1jotJl0jOwvi2TJkCBPeG30IcPRgm9RXDkzPOAMgcs76oQmlu/5w85JN/WxFo9HafWYy6vmiUgL0VmsD2veICwCMSm37b5Con1Sssxv2ZzLPgDmZcJahRKgnlN57N9LhOTLDC8b5+9RURDByA+P4mWBoh7PQxvL+BQEPvBZhzhd/LsYDryxlP4BI0NgHVIY1WqFPCmLDVKLbP2cBnHQfjZwBov98EbKTLO8vtvKFXAo2R+Dl/TinRY/G6egAkDnkjnJWmG5p5b5zA4e6zws4zrmMXi/aHfDiI1O72x8+o6UGO5dQtLbTo09xGns30LoHTYtajl0hVcPVtc7ojHueLL4hfj1+p87TRqBTHKnHcX/ULg8DCHTVhFlHFmtuBWJo3HLJTDYRJVqg2MoklbqRy8UQAwjcMPfoghQMqAP2RMHRnrnostDotxEH7K5QonDx2TP0Yy9zvA4tJK5DYXg7BBl2BCPNK4v1YTuXCDJau1xJN8axraJR0qRqRTM9cDvcltLJzuxBgSmxS6BvTYun80Ea6ngumDb2HM5YtZIKA0eH1FhFTUbMMsjHn0ZJxKaE+L7ItF++sZZ/+8y5JFdwlQIVLN0/r6svmSZBBAJdh4+9AaAfmWVzu1FrnkjpCKX/6m6AaTzRVuBUig5jY1jZr9YDYs6td6iXxjXtfqXH0Y2jHjB+x0ZUk1dv9jyjfnPNMVnqA7yGINr/MF0o43tQkj
- +P+BuLTD
- JmpDemPZFaerbKg2zi9ivuQRXt8bxI0XpbExu8VEpr835DPUia7UxCAUF5YFqcKi4HE+kRg/vlpKgLJcGhfZfzRf8q6uYjD5miK/5IyAR/HkJsw39eoLWIB8YveLjInf7zp8NmxXicfZ2XhTSa8h9hEHO2XUbB/UkBZizk0SoEib7UZfycHVJvsnmIUnhxZugQ7ChsMHn99IZHmAYTxmQqPY09JW40jmVlq3BVAlUOAuRtAKfB3iPz6KxfBr8fyR54Uv1KL2gQy0fJPoDngcqwRM3/JP2HehsPrylWadnolevoFDCbbg2dFNpiymq3b2iYUeN0GyePUR3GDwRTgQfqnZwntHFbu20IQ7EWuVdaLq7yG3rpRDwgMQXjSpGFKTOcs09VpnVROn+OWeE6WmG3+RkmRgnMCkK37uuIvPmcfMIwD5o/lo5LEqLlnSrXpiOT/98UDHyXMS7jU3YNvATcgOOEO7vudMUNCkbzBYLj9CUnmw7FvxT0cwdCTr8BD3qO5841xdHFrj0mQ/0Liek7GonbfDxpSfcDXdsclRSt+davycjtJxCDy1Klg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DE2E040011
+X-Stat-Signature: tegkzsud3a1d8853bd3zz9qpjfaydk74
+X-HE-Tag: 1784035331-349550
+X-HE-Meta: U2FsdGVkX19pvkrTOPj92CkWIenHaXk66xnn5SfFErog55xtJ1zlMK+Qd8W4YAZ1K3f8Z6m3lbvJUtHM3H9wpFjl2d16zcNgWk35GoiJ9xfNAglWxdDUQxB4c24a43Wyj4ZJcMW5DQepwyNhqupVrT07it1Rw3sMt0UYe6PJSuyoneUdFA5lNIBzmkjt5IGN2Xy/3Na0fp58/JxN3K9agLKHYM3+FyETvcMDJasXOYoQFRzj7s2r64KM6BzDprCJlA6iBvXjpL5Ul0LWBb0v1KDbDuytIRzzU1r94bOr+wcbgUjbmqg75rofzApTcXsCCMSeLmsTC9ywaQsnKy8kQEtNFd1eJ1vbxeL7AohI1q5tl/xh6uuOzHRiG5EGBgBzVDVJ13L2KNZKW821yItcQpnyEQQuLaPkEDLdzrVlrJlM0U5aCUIcUclatjj/cWhWDgUqz96meBmBgB9ZEKfWbc4pAacc3CKXm8BdAkV8F1SEgLEGifUmVE4LuICSzVFAEyd61LcsDyw7qiKzktCCJmStHPvbnHhywUNqObG9KHSvY9WimVALn9fFqmgJwgSDJyUe27RgbXZDyDvpGLjfQTmv8OYbBxsT17Nzi/ZCIN/pxl9AnD4QXRbeZlDMnfQvejy/RPeyesPtwpOs0Q4m5nlw610brjG3j8L51QNctBczaBCP3O0s5kcpayLJ0p4irazNDpkh0gAU8EGqqwlYDRTyJ/y6cV89HJler2adZCcOeFrnXEyUUUU8StSvGNmygfU1LlCNKZRcwgcHdEiz1MhKVVSU1JxQtdw+W5x8TLVM024CsSfJUd6AK2ZO/lndxwCmmMBLjveF+8t+fqkKxGGgzTquoP56GCCo86U4Yhlq1Aw9DhelohymKfjOAKsLL/p4FFb6mKan67k07NebFAjt2Zq/j0ugGTVPL35iYMVitI2nRCn5QT8QDLajEss2DRsDMOKsFyUkuGYQKAm
+ uctuZLtD
+ SC+Zq7Og+iTSVcweFxwGjSS1r7EYIO1/ikLI3dus1X6kGfa7FvuB4LJNnro4z7yD45kBGGA2cN9g4v6udd562bTLPIsCPt/LM+KPOJAreG86lx1HXYSpun4BKlIEYExeV84Rwc+/aKSw+1ZVU6/434plmlc/NBJJlLCl8WH7DN4U2OghX/fqxk9IOpG4BSmKJA+ABobJHDj+Ir6lcC9BqQWwwsL5lu2XtIyknfN2d6QuTv36wMhU7FQAxBQBPopNHNfikg7BLw0JKoEnD7x2PBuS7LziRYpRhE7d4ulIFDWllgkn1OcbAblKDpOz1+eAhCvO4IlhDqNI4PTQJgFKfkWMMhafiwu9gpUyq8k/EI4SoggtfkPcjAbrtD245gMfb+SD0WKIrI3fUCKWPTs6Y/s62DhzAdA63YgJFej2/sE823ZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,121 +153,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/10/26 00:43, Link Lin wrote:
-> During system power management freeze (e.g. ACPI S3 suspend or S4
-> hibernation), virtballoon_freeze() calls remove_common() to reset the
-> virtio device and delete all virtqueues via vdev->config->del_vqs().
-> However, unlike virtballoon_remove(), virtballoon_freeze() fails to call
-> page_reporting_unregister(&vb->pr_dev_info).
+On 7/14/26 15:09, Vlastimil Babka (SUSE) wrote:
+> On 7/14/26 15:05, David Hildenbrand (Arm) wrote:
+>> On 7/14/26 03:51, Ye Liu wrote:
+>>> The last_migrate_reason field uses -1 as a sentinel value to mean "no
+>>> migration has happened".  Replace the four bare -1 occurrences by
+>>> adding a proper MR_NEVER member to enum migrate_reason, defining a
+>>> corresponding "never_migrated" string in the MIGRATE_REASON trace
+>>> macro, and updating the GDB page_owner script to use MR_NEVER instead
+>>> of the hardcoded -1 so that lx-dump-page-owner does not incorrectly
+>>> report unmigrated pages as migrated.
+>>>
+>>> No functional change.
+>>>
+>>> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>> ---
+>>>  include/linux/migrate_mode.h    | 1 +
+>>>  include/trace/events/migrate.h  | 3 ++-
+>>>  mm/page_owner.c                 | 8 ++++----
+>>>  scripts/gdb/linux/page_owner.py | 4 +++-
+>>>  4 files changed, 10 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
+>>> index 265c4328b36a..05102d4d2490 100644
+>>> --- a/include/linux/migrate_mode.h
+>>> +++ b/include/linux/migrate_mode.h
+>>> @@ -25,6 +25,7 @@ enum migrate_reason {
+>>>  	MR_LONGTERM_PIN,
+>>>  	MR_DEMOTION,
+>>>  	MR_DAMON,
+>>> +	MR_NEVER,		/* page has never been migrated */
+>>
+>> Shouldn't this be more like
+>>
+>> "MR_NONE" ?
+>>
+>> As "never" is not really a "reason" ?
 > 
-> The comment in virtballoon_freeze() states:
->     /*
->      * The workqueue is already frozen by the PM core before this
->      * function is called.
->      */
-> 
-> While this comment was accurate in 2011 for balloon-internal workqueues
-> (such as balloon_wq, which was created with WQ_FREEZABLE and is paused
-> by the PM freezer), it is invalid for Free Page Reporting.
-> 
-> Free Page Reporting (mm/page_reporting.c) schedules its delayed work
-> (prdev->work) on the global system_wq. Because system_wq lacks the
-> WQ_FREEZABLE flag, the PM freezer (freeze_workqueues_busy()) explicitly
-> skips it. Consequently, page_reporting_process() on system_wq remains
-> active and unfrozen throughout device suspend.
-> 
-> If memory is freed into the buddy allocator or a delayed work timer
-> expires while the device is being frozen, page_reporting_process() fires
-> on system_wq and calls virtballoon_free_page_report(). This function
-> passes vb->reporting_vq into virtqueue_add_inbuf() / virtqueue_add_split().
-> Because the virtqueues were already destroyed by del_vqs(), this results
-> in a Use-After-Free / General Protection Fault:
-> 
->     [  250.709271] general protection fault, probably for non-canonical address 0x7f728084daf08d5e: 0000 [#1] SMP PTI
->     [  250.732967] CPU: 2 PID: 38 Comm: kworker/2:1 Not tainted 5.10.0-44-cloud-amd64 #1 Debian 5.10.257-1
->     [  250.751575] Workqueue: events page_reporting_process
->     [  250.756665] RIP: 0010:virtqueue_add_split+0x233/0x4c0 [virtio_ring]
->     ...
->     [  250.867678] virtballoon_free_page_report+0x3a/0xe0 [virtio_balloon]
->     [  250.883446] page_reporting_process+0x225/0x4f0
-> 
-> (Note: The OOM Notifier and Shrinker/Free Page Hinting features suffer
-> from an identical lifecycle flaw and are also vulnerable to UAFs during
-> S4 hibernation when memory pressure spikes. This patch focuses on Free
-> Page Reporting, which runs periodically, to ensure clean backports to
-> stable kernels).
-> 
-> Fix this by:
-> 1. Unregistering page reporting in virtballoon_freeze() prior to calling
->    remove_common(). This clears the RCU pr_dev_info pointer and flushes/
->    cancels prdev->work on system_wq via cancel_delayed_work_sync().
-> 2. Re-registering page reporting in virtballoon_restore() after the
->    virtqueues are re-initialized and virtio_device_ready() has been called.
-> 3. Unwinding virtqueue initialization via remove_common() in 
->    virtballoon_restore() if page_reporting_register() fails.
-> 
-> Fixes: 924a663f75e2 ("virtio-balloon: Reporting free page reservations")
-> Cc: stable@vger.kernel.org
-> Cc: jasowang@redhat.com
-> Cc: xuanzhuo@linux.alibaba.com
-> Cc: Ammar Faizi <ammarfaizi2@openresty.com>
-> Cc: jiaqiyan@google.com
-> Cc: ahwilkins@google.com
-> Cc: Greg Thelen <gthelen@google.com>
-> Cc: Alexander Duyck <alexander.duyck@gmail.com>
-> Signed-off-by: Link Lin <linkl@google.com>
-> ---
->  drivers/virtio/virtio_balloon.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index a1b2c3d4e5f6..45a90fb3abf8 100640
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -1055,6 +1055,9 @@ static int virtballoon_freeze(struct virtio_device *vdev)
->  	 * The workqueue is already frozen by the PM core before this
->  	 * function is called.
->  	 */
-> +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING))
-> +		page_reporting_unregister(&vb->pr_dev_info);
-> +
->  	remove_common(vb);
->  	return 0;
->  }
->  
->  static int virtballoon_restore(struct virtio_device *vdev)
->  {
->  	struct virtio_balloon *vb = vdev->priv;
->  	int ret;
->  
->  	ret = init_vqs(vdev->priv);
->  	if (ret)
->  		return ret;
->  
->  	virtio_device_ready(vdev);
->  
-> +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
-> +		ret = page_reporting_register(&vb->pr_dev_info);
-> +		if (ret)
-> +			goto out_remove_vqs;
-> +	}
+> It's not used ever as a reason that would be actually passed to migration.
 
-Hm, that failure handling is rather nasty.
+Right, it's a placeholder for "there is no migrate reason because it is unset"
 
+> So I think the name is more descriptive this way.
 
-In virtballoon_freeze() we document:
+Not sure I agree. The usual translation of -1 -> unset is NONE or UNSET.
 
-"The workqueue is already frozen by the PM core before this function is called"
-
-Your report states:
-
-"Workqueue: events page_reporting_process"
-
-
-I assume that workqueue is not frozen yet because ... it's not freezable :)
-
-So could we queue to system_freezable_wq instead, or define our own freezable
-workqueue there? Then a driver doesn't have to worry about that.
+At least I was confused by "NEVER".
 
 -- 
 Cheers,
