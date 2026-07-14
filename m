@@ -4,152 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 782DEC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CECEFC44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:19:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D7006B0107; Tue, 14 Jul 2026 11:16:25 -0400 (EDT)
+	id B77E76B00D0; Tue, 14 Jul 2026 11:19:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8884D6B0109; Tue, 14 Jul 2026 11:16:25 -0400 (EDT)
+	id B4FE56B00D8; Tue, 14 Jul 2026 11:19:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 728EC6B010A; Tue, 14 Jul 2026 11:16:25 -0400 (EDT)
+	id A40016B00DF; Tue, 14 Jul 2026 11:19:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 40F6A6B0107
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:16:25 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B9F021C03FA
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:16:24 +0000 (UTC)
-X-FDA: 84987733488.24.600663F
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E613B180003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:16:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ULJqt+qf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784042182;
-	b=RjIdWI/gu+jiVfgB59H2LlLO7I5lsMzp37ADhhC+HArAwFJOgteUaxmHBNqhBRc7vvivrD
-	30kuCKHvo3hna+iZ4imYlZGo/YGTybYCk5KwG6rCktUMQIPfEAPEIzOdvSyDKwN4hNBlS6
-	z8jg06w8BTah5T2vhWifpKsza84cZzM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ULJqt+qf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AE926B00D0
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:19:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E09CCC0287
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:19:53 +0000 (UTC)
+X-FDA: 84987742266.29.F6D082C
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 803A140003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:19:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dFmxuN94;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784042182;
+	s=arc-20220608; t=1784042391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fwuFYnIFntaeyFiFTCtuOmdD45sxN5bbxj7Gff2yTa4=;
-	b=XPaT1NA5LIgImaOQhtRGJ9xsB1/nz9/J9T0XtJ6SHA5VB8fK9UtL8aaFjQGhyceN4qTW7v
-	e1zdqNqoGNkPuM8RNUB3W2aNz9CSyeWl57NnVuiogls/TOH/8hRyFRKytDs97SW6v0CU8y
-	frqaqyTJPRdyBzLlZsJ6lYSsIm/H36M=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-37e0a189b0bso997627a91.1
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:16:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784042182; x=1784646982; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fwuFYnIFntaeyFiFTCtuOmdD45sxN5bbxj7Gff2yTa4=;
-        b=ULJqt+qfAGzQfg83r0kQd6bz0iRNkvPUtjmJl6uRZhOHEVdKG/VmXg/Q9Jmbo0W2UF
-         4U09k56IXzDGavjJ398Tm8ZIsa0mNidFE9Zx0uYUzsyxncgEXtxwXvNRU1RAjDphpG33
-         HRo0j/QcX42vCJH8Ep9PBPQdNLd7/tvM/lxjYVlmDDkajCVQ8E3/v7n+I9eyIp1vVN1H
-         hjgYpbFzShxRf5m78gNEGw+80E3MtreQzcbd+tPsoHs9y7kdDWT+w84vu0bWCbcbkUvp
-         831eYDs6F19/clq9msblm3OJpvIvewmApaF0onSm4Coqv8myldsT+tQVvQy7xACyVUbO
-         XckA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784042182; x=1784646982;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fwuFYnIFntaeyFiFTCtuOmdD45sxN5bbxj7Gff2yTa4=;
-        b=s4r5DfZy7rjf4KbI63QweItAoWCWD+I59qWknGHDmUjIZp+Obd9l9UzDSUnkcJPd5e
-         U7EWGE6f6jgp9UWjLqUxhVXNbA26IIZlnKMJolrZlS3HOEYveTRiIAj2PdBqWaCW1ybz
-         g0wf9gp7ptMN9W6l5Ui1KDaZVWtNy2vrlTJTiPOgB6P2I+WiyChlDkdLb4C61yYdG4sr
-         To0sRbhCuAuK6k1+2bIdJ9caVXT7/+4JNHbwLypJv5X2w8cX4XNgp7CG0NZSo9gw8TeZ
-         l69xeY8QFYZczOEae8IkxOI5zPLShUmWNjjge+rXNeEywvcRRHMn5TpFw+ZfrWeZQom0
-         BUcg==
-X-Gm-Message-State: AOJu0YwGhUad/ZmWC2R1ki6WIyhMBLYURS5bwYJpTrfurevdsQiO3uDN
-	QjFf1jB32E/YgOY1CqShpMfoQc4CSLx3q0tjY0KHM18mU0iHs2Bowh1T
-X-Gm-Gg: AfdE7clbdbXVCD8pydO3Wq7phEZiyYugodQ/aWNG0KEDiaIyESaeBuDTyFzuYrgg+Im
-	rZoG2zy85jazAENwFEwlzk4bZLazz4ZUvTWL/lG3Zl+/VpTpEDXc5KBlRC6dA3dKyJ+eBi/UETT
-	PkjYq6yqhuJ3G/0TTa1lLFzIsmdpOX4aTtqVE7EJM+9Dm+V4himfLafg3n0S/BM/i+bni4piOdm
-	y+bgu3ftPIt3KXRcafccdIG+xgoYmTm+GV4sm96lp+kpFOH/FP6ylR2YWWXQecaiyPEwyCQBSOB
-	PXfGsYPUntG7CRGIuJeQjYVPbMymIbMZe2wFHy1JgefOP2pX1FZRz+XpKNmDLGOyOOZpnbbTjHY
-	YSxFko7GTZKc92idR4/S5S91Ufrdsof97KA74vn66kblKx3wINvWilJyLW3cmGMCb0i1/hGFExX
-	GhWR6sRbCtk77zdQemsLkerPNZSxi/dqGENY/PkCztYf4L
-X-Received: by 2002:a17:90b:2e8f:b0:380:8b14:d8e1 with SMTP id 98e67ed59e1d1-38dc7b3f8ccmr13234040a91.24.1784042181685;
-        Tue, 14 Jul 2026 08:16:21 -0700 (PDT)
-Received: from fedora ([2601:644:937c:6c90:6d4e:7b2d:4a39:fb0c])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-313b4b97661sm49794403eec.7.2026.07.14.08.16.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 08:16:20 -0700 (PDT)
-Date: Tue, 14 Jul 2026 08:16:16 -0700
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	linux-um@lists.infradead.org, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ning Sun <ning.sun@intel.com>, x86@kernel.org,
-	tboot-devel@lists.sourceforge.net, Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	linux-efi@vger.kernel.org, Alistair Popple <apopple@nvidia.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH 14/22] mm: set page table page type when allocated
-Message-ID: <alZSwAM4pwmMOeaD@fedora>
-References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
- <20260714-remove_pgtable_cdtor-v1-14-44be8a7685d7@arm.com>
+	bh=aCZkw6xUYrO5rEP39TOIyxkZCiZu3ZPSrqz2vmLuQBs=;
+	b=cav+yr3cH68jRVIchHmy4JCPVWXC2+L0oRySsOXAB9IUOxCBctsQGOJi+B/YnnxrqyMV4g
+	XVGmdDLQjdbrwEgnm9emD+/P8U/9BkPnUHAz6QbI8dftzwjqRnGtQLNvxzqshSrJDfsnF4
+	EM0U4vdiHPSwEP+ZZ18rAXSdsVJSwKI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dFmxuN94;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf27.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784042391;
+	b=fViiMmEZdjDCUP8OpGqxgRcMaOMhC6YDoSFJ60bJ7WAJneV7LDd/4qrFDPbJZ4PQZ55VvU
+	b7TlkZDsVpYcLh3lbCTIauUiEle5uCUPShTdR3DAQr341THfjmVt+vnKoPDEWvdDJ46zY4
+	wQXjQy7W7e8go6kdK8X3aEhJaks7Er8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784042390; x=1815578390;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=esUIM83rL258sK5DdFG0wJRDc+71b8kfykgRsy5DN/U=;
+  b=dFmxuN94xnxN3FcyaBnSiRiz8lgAC9pBvp9RhUrvZY5/nWULWHBtg+Hv
+   2dF6uhHnb2Sr2egmKz8IhNZ5ndmWmwyoTDSbqE/H27auhuY6FBQRsazj0
+   ShfdgI0G6RXsi4VUjzWp31VYkREwODpphfbegiOVOQNde7dzXbwKrkfnl
+   fHfbGMqewHNQXrxDHZKr87TMWhhHS5FppxjHy80SAZQue3qER4NqdBVM8
+   KBIhi6vnGuB7LVK/beqrqvciu9OYojAFDfjh6jZAFUXzz4w8/NCv/ddRj
+   /EGMYiUJDv3yjARpnsZ3cK5NSX54bTz4lV+8cpDppyCFklUtg18EBmqaK
+   Q==;
+X-CSE-ConnectionGUID: /LAPxOJ9QiWQS/WRbSSYKw==
+X-CSE-MsgGUID: T9yP3R/rTnywr8vHpIe3YA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="72190946"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="72190946"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 08:19:48 -0700
+X-CSE-ConnectionGUID: gDiNFzG4QZm+kdK1kk6ciw==
+X-CSE-MsgGUID: 2aROqIJzRsmirZemmKQlTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="254764161"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.120]) ([10.125.108.120])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 08:19:48 -0700
+Message-ID: <8acb01ac-0875-4816-8826-59e15b4e30b8@intel.com>
+Date: Tue, 14 Jul 2026 08:19:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714-remove_pgtable_cdtor-v1-14-44be8a7685d7@arm.com>
-X-Rspamd-Queue-Id: E613B180003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 19/22] x86/tboot: mark tboot_mm as a kernel mm
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-arm-kernel@lists.infradead.org,
+ Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, linux-um@lists.infradead.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ning Sun <ning.sun@intel.com>,
+ x86@kernel.org, tboot-devel@lists.sourceforge.net,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org,
+ Vishal Moola <vishal.moola@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
+ <20260714-remove_pgtable_cdtor-v1-19-44be8a7685d7@arm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260714-remove_pgtable_cdtor-v1-19-44be8a7685d7@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 34ejfu7shfi488wa4uooxx5j8ohmbi7u
+X-Rspamd-Queue-Id: 803A140003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Stat-Signature: 7n3m1hea7fx43m155hw195rcchdk5dei
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784042182-721992
-X-HE-Meta: U2FsdGVkX1+Isi6/Y9u6Ms5mBIGamyevt/EIZrvB+Ey7mPZ7/5tI+71UOM4pdJDA3OZZwJUz7am4N8mWfhNhy61czE0oU0iKr96ehqEXtEAtTFHf2gPicb0xqzTC2CW0hYNSixBtXR/hDfvJJKkFcb9Ea6HEOYVfw8V1Hzzu1ZPro2LeilToI68JFvWaWodbCIhjIFay+bvnGY4i7TdeiwN1pk8hGou/vS+VjZw79W/U3MsWw6bZU5tbouJs/kDou7qR2jeEMbpWhpcf3bt2ttcIobehzI8tCS5q46ox/zgcmPsTMJlvMdO47XBbDndWLN7sH5Jcb0SsW6xxfoI1BoaJDIZ5VsTTk9OiA+tXniCb2oSel9rJ4DUvRd+upPwNFr0ZKTZpdGIJ5zPKjdJsZkLObGaXjvwyFWzW1hvDnxRM0gmlMw0oy0Ngcej88G54dDCnIkVey4ycTeFNC7KmpFHitKzNJ0XF7AiDsPgFtMATBIJXNemk32FAfV93xfMctISRtfuhi+sgXn3UzLjvmfU3YXdHE9RLOp293aCGUU8JCZ/EIaEEqfanYo5+FeVNzquDDaALKpswNfOQRE82yiqv/YBqiymTIBf44j/96olySuZcYbT9/wsGbPP6mFAJYZysjasLf6C1V9b/lbLJrMt9cempAYXZBHn6Hm46W9LrDsnrZGPSkPwGmlnM4EMDF7AFw+k/jloGDHhIc65BKY841VRKNKbn30U03IDlyYaonaIBA03DSZ+OMLxriHPb2HlFGKXRohQ5Qg994UzlexMKvLS9ao+/ViNzrbxPtxXklg6sOJmxtFHWKBva68JjJulqZ/v4Ztgu7L/Guhcv+7irS3o/2/I6TUFtq9Z+aULZuk4VdzwYcUHpeNRax6qawLiJbn58RgyZRt3e1SnZo9dzJpzySDFD8IKbPgDLBpLz7dHenmQ8dHuUjqOoBmHsw9M4PGkZ0pmg2CT7qhF
- 3+0UsWtF
- 4gOrC30pdVMI3srJ5MR75Gh6zQ4DyATAMbIosGbr9HFTHQVDZ0S5ULZBtTuFRYWJ/tNojWukHJNdrjLyKeWwaPMY2RfOegREt0bvYuaHPoF53FrTkZbMwM9KyCo2AIBwjNZPUBI+Fe+WJHJckC+Kb+WQCI9bW69rB1cdoBcg26mL5yT4kAdh1TFWWrWCJD/0yMwD0YWV8YpJMe+sSbuCsigfRjiv2VwLHG7DHzprmy2Z1lkcbdmpuHUntTGJN9xqLui9pJK+QxINoXgOkJVvTEIykEuGu4N+71op3O2tQ/k0q3cLvIM4r/7a7H0bSbfwROxwJx/P/P+/bGlFkg/WKl35HoOOpm7en0ilcqaRMdlXA/ZLShgCDpQg5/Gw2TW861xsKCRL7wW0UJknltfy2qYDHigHPNFrXJY7iW+oH+MKSlBy8noj/1jFnxHEbcU67xJolgWlNVKZWUP10/zWe5n4z8K0HNPZDmpTXFEMwv6C4SZ002Zt+9kLKF2KYh7ydMhoHDvwbgUWWH91ncoFcIm+2zgB6kHVFbAqzh8SiJRhglQ9jJ2cXTLelqKmNMtZdj9ZARphEOXjxgHRDcTeixWEVuSa+2lBXvipKkyWjXjXQ5a5ihSlotohA2/1piwgrMr+IZorngxot69Fx9vFBh3lhBZ3wVBneAII554c+DSxl/QA7U2/+xVR4UyIRgbCWAmw7
+X-HE-Tag: 1784042390-330745
+X-HE-Meta: U2FsdGVkX19Alzu6OoKkpLMJW21R6f4T0uMvONyorQOTWxw+mWA/UN5oF8VXaTkY6GvH2BaWOR9FLY68+E+3/OR6/KYxWt7mfa8gZ/wrz0Mi2FxXVlMDRIJdX8WyZomrxJonunJukPxbE3DvZYJSTqSIopr9RpYHmmY/GLCSgbRQBiOCCdl817vGxAvGa3dUvLyJ+LN2jzv9Gr/frfY533TKDzqbrUTn4lMWusvY5CgiPZEZzfCt7q40jifssq3iKMXKkXO8Nmfb4TWETOt+K310ieCcZzLv73XWlbS/pu0j3gk7d6K64eQo0HeAHbz6A2BnBnggoaSEeWJVufRCti2h3xtYxLZx8pbCGXgVXwpIeaIp9ggD0VY27Y+H5uWWcj5u12Ja4A3jittFVda5zIDZGue4TgSWtoRB8GddkF4nGEJXMf9D9RSJJ6iDLiMKjw+rAA7GmyG49LlR1o3O3cneY08Bvo73WBs5NeMDJOqmABvzxglclwPqZcQ+pLvnqi2zUg5QdijDvhhVUOBtHd/4GGVz48dq2SUoiE2jpp3QyFaXso0V1TqG1U7Il4cWxkf33gFCJa62S5vLpe6goUp2nz6bBIVSW/ZdvfT6SdwOoLScLWayJ5ppUHpMvRdOEFsvYbAa6ciyGZ9EcqgjVJVTayDJ/curTGYdhA5yWmfpyToSEV1nhqoHwGG6oQeHfyjrEuF/h7aezaFzvNtg6H4xcyvPMrJuU/Cl89B21YSapRYk9hkaYCpwSvohhcVW+uqPj+UcBm80ZXSpGb956WNB8ea8Yw/kw/ImZsBcm4HEKyQrMIdG7a13Zj2nFd7RkkXE2oU9A9g7PEWlOZzpHJ+YvrEM/mj7ZAtNP5nYayN8NHno9oUmK9VU4lhm/UYY/JIHHFngipZ6CW5X15aGPCIKSRw0UlcLU8dk/lvHqXFHI0IC81vLxZFi1z2/flSFJtZJ6a+1yAZ52cuUQvG
+ aqpXJYWb
+ YXV7ZvLa+ssfp6JRDWjkltNyFYYJg87L3Vlb0+VuP0VUW2AuOfNNYfrg2SxzC1s3cLWeZp8d1QhYnXMHzoxlcrHEbRhQtJ/wyFLo5Q/u8GI2t8wrMQ5jusEwXvVVdnIduNgvTvPaKFETDvAlCjLH/U3u8Yx4Yg4Vezl3BN3lWO6OIGIAMCQUu5rYpmozro9TAfdRc43CKyA2Wk9TO6UMeOkbNby8w9LIIqgWj1+3LzprnbAtwNdE5xirvXMLq90SQfMxE05nQCCxOPfHu1qBxoJUUw1q6qQ1ZqC0fRYmZyYbHPydf+bUOscnp2q9GU6hd+6QFZRGVF0Ye6iw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,120 +180,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 03:04:03PM +0100, Kevin Brodsky wrote:
-> As a step towards removing pagetable ctor/dtor calls for kernel
-> mm's, move the page type updates from the ctor/dtor to
-> pagetable_{alloc,free}.
+On 7/14/26 07:04, Kevin Brodsky wrote:
+> tboot_mm is a kernel-owned address space used to build the
+> identity map for tboot shutdown. Mark it with MMF_KERNEL so
+> page table allocation and initialisation code treats its page tables
+> as kernel page tables.
+> 
+> Having marked tboot_mm as a kernel mm, we also need to convert
+> pte_alloc_map() (user PTE) to pte_alloc_kernel() (kernel PTE), and
+> drop the matching pte_unmap().
 
-Thanks for doing this patchset.
+This makes me wonder whether MMF_KERNEL is the right way to mark these mms.
 
-We should switch over from __folio_set_pgtable() to __SetPagePgtable()
-in this patch. Ptdescs and folios should be treated as distinctly
-independent of each other.
+I think this series tries to cram too much into that one bit.
 
-Eventually, we want to replace the memcg accounting as well, but
-there's no existing API for that right now. Lets leave that as is for
-now; this patchset is big enough already ;)
+Using MMF_KERNEL to drive the page table accounting seems like a good
+idea. It also seems like a good thing to make sure that those mm's don't
+ever exit to userspace, for instance.
 
-> __pagetable_ctor() is now empty so remove it;
-> pagetable_{pud,p4d,pgd}_ctor() will be removed at a later stage.
-> 
-> The ctor is normally called after pagetable_alloc() (and dtor before
-> pagetable_free()) so this patch should have no functional effect in
-> most cases. Where calls to ctor/dtor are currently missing (e.g.
-> x86's split_large_page()), this patch will ensure the page type is
-> set correctly.
-> 
-> This patch is based on Matthew's earlier implementation linked
-> below, with the difference that when freeing the page type is
-> cleared in __pagetable_free(), meaning that the update is delayed
-> until the pages are actually freed in the
-> CONFIG_ASYNC_KERNEL_PGTABLE_FREE case. This shouldn't matter in
-> practice.
-> 
-> Suggested-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Link: https://lore.kernel.org/r/20251113140448.1814860-4-willy@infradead.org
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  include/linux/mm.h | 17 ++---------------
->  1 file changed, 2 insertions(+), 15 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 361a0d7b74c5..94f0fb1c662a 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3684,6 +3684,7 @@ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int orde
->  	if (!page)
->  		return NULL;
->  
-> +	__folio_set_pgtable(page_folio(page));
->  	lruvec_stat_add_folio(page_folio(page), NR_PAGETABLE);
->  
->  	return page_ptdesc(page);
-> @@ -3694,6 +3695,7 @@ static inline void __pagetable_free(struct ptdesc *pt)
->  {
->  	struct page *page = ptdesc_page(pt);
->  
-> +	__folio_clear_pgtable(page_folio(page));
->  	lruvec_stat_sub_folio(page_folio(page), NR_PAGETABLE);
->  
->  	__free_pages(page, compound_order(page));
-> @@ -3799,19 +3801,9 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
->  static inline void ptlock_free(struct ptdesc *ptdesc) {}
->  #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
->  
-> -static inline void __pagetable_ctor(struct ptdesc *ptdesc)
-> -{
-> -	struct folio *folio = ptdesc_folio(ptdesc);
-> -
-> -	__folio_set_pgtable(folio);
-> -}
-> -
->  static inline void pagetable_dtor(struct ptdesc *ptdesc)
->  {
-> -	struct folio *folio = ptdesc_folio(ptdesc);
-> -
->  	ptlock_free(ptdesc);
-> -	__folio_clear_pgtable(folio);
->  }
->  
->  static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
-> @@ -3825,7 +3817,6 @@ static inline bool pagetable_pte_ctor(struct mm_struct *mm,
->  {
->  	if (!mm_is_kernel(mm) && !ptlock_init(ptdesc))
->  		return false;
-> -	__pagetable_ctor(ptdesc);
->  	return true;
->  }
->  
-> @@ -3917,7 +3908,6 @@ static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
->  	if (!mm_is_kernel(mm) && !pmd_ptlock_init(ptdesc))
->  		return false;
->  	ptdesc_pmd_pts_init(ptdesc);
-> -	__pagetable_ctor(ptdesc);
->  	return true;
->  }
->  
-> @@ -3942,17 +3932,14 @@ static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)
->  
->  static inline void pagetable_pud_ctor(struct ptdesc *ptdesc)
->  {
-> -	__pagetable_ctor(ptdesc);
->  }
->  
->  static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
->  {
-> -	__pagetable_ctor(ptdesc);
->  }
->  
->  static inline void pagetable_pgd_ctor(struct ptdesc *ptdesc)
->  {
-> -	__pagetable_ctor(ptdesc);
->  }
->  
->  extern void __init pagecache_init(void);
-> 
-> -- 
-> 2.51.2
-> 
+But I think it goes a step too far to say that all the special 'init_mm'
+TLB flushing should also be common among all MMF_KERNEL mms.
+
+My suggestion for now would be to just go after the page table
+accounting alone. Don't mechanically replace mm==&mm_init checks.
 
