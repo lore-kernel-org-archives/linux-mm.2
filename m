@@ -4,75 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6B9C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 05:06:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8752C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 05:12:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96D996B009B; Tue, 14 Jul 2026 01:06:57 -0400 (EDT)
+	id 758626B0092; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91EB46B009F; Tue, 14 Jul 2026 01:06:57 -0400 (EDT)
+	id 72FC96B0096; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 833F66B00A2; Tue, 14 Jul 2026 01:06:57 -0400 (EDT)
+	id 644BB6B0099; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56F226B009B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:06:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BDE4160268
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:06:56 +0000 (UTC)
-X-FDA: 84986197632.24.9F85613
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C588A14000B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:06:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FF036B0092
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B23A6C024B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:12:22 +0000 (UTC)
+X-FDA: 84986211324.25.65CD05D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EE6011C0002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:12:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ufuW9pbH;
+	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784005615;
+	s=arc-20220608; t=1784005941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cil6ibnzSChTysBJVExVRrdSVE+bXTPf+rUGgc9AyrA=;
-	b=6qqkdcMp2vg1m/NG5dpU1ZXkBq+RDBq0orOe7Y+lXs16D0Rebucbc+CXX2lFxSkBckUoAn
-	CTa/px5dIVRU8s7mLce72cE39wzdJ8GaI3eWK4BeI8DnqIjaCqyfRuQLmoywRupOm7YRim
-	blpyat4nrLJ+y7MjaKYIYYy77DD4SE4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TMXzA4wrYATAkRbd0MtGWCT8lsBcidpH7evOMPd0N8M=;
+	b=re+XxA47Lr3UD83ab/+R2AL0K4Qr/+VMYxtKVb9pk0tgIM67YQ9/P6ftOrNeqmKPHtNZht
+	raRoBwU9ObPsEJJG6eYI0IVmHwbHRbkR4HHwNPiPy4AirZ0zzcxSTMjCoKukyeRTXC6E3+
+	aD/lwTe09LCd4nk1RJU7bHHJ/UCj168=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	imf20.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ufuW9pbH;
+	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784005615;
-	b=3SdJr2mXGPxIM21plapLfo6/egA2yKfI4kkjv/DG32wvN/NbkSrtttlIa+rHyc1uSRmbyt
-	R1GapimgmqtqORc/MARW16hcgViK/bdAhZZdjJuVfTK8USBwv2urA1Dkz7f5roytuTfI0E
-	Wzc2adIerumWvHMWlrWq/H/RXoqYQYU=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id DDFCE68BFE; Tue, 14 Jul 2026 07:06:49 +0200 (CEST)
-Date: Tue, 14 Jul 2026 07:06:49 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Christoph Hellwig <hch@lst.de>, akpm@linux-foundation.org,
-	chrisl@kernel.org, usama.arif@linux.dev, kasong@tencent.com,
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 2/7] mm/swap: introduce struct swap_io_ctx
-Message-ID: <20260714050649.GA31523@lst.de>
-References: <20260713093350.2154226-1-hch@lst.de> <20260713093350.2154226-3-hch@lst.de> <alWQMssVSvO8Zp1U@MiWiFi-R3L-srv>
+	t=1784005941;
+	b=3o3yjvrlW8ypWqADabdVBPbycx+ISBCtZEP8Nmwjg1+Kw2c8aOxV+DmwafMAbbNlWNGO/L
+	OjFYhRCWe9mVxetbadFvW9g7dbfoivmeLbg0MrmGLRfYKNperH1KIIZSm5DNp0eh1+PBm0
+	muRQ94llp0HFY3XFJ3D5vmgxtOj8nvc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C520040483;
+	Tue, 14 Jul 2026 05:12:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE51F000E9;
+	Tue, 14 Jul 2026 05:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784005939;
+	bh=TMXzA4wrYATAkRbd0MtGWCT8lsBcidpH7evOMPd0N8M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ufuW9pbH7t+BO068AtApQMfa4+R7cKxsBYRakma1PEbq7EB76XZ69ffufKfWQMuem
+	 f85rZKZBc6EuYiVdHJSbXn1izuXBuR+2eXapNX2n9Og9RT1CeamIHN7/upL3odkuGa
+	 MVa20/aJOfYrBOAFuzn5EHWR0Oi5pGxxGx0gd9zA=
+Date: Tue, 14 Jul 2026 07:11:00 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Qi Xi <xiqi2@huawei.com>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, sunnanyong@huawei.com,
+	wangkefeng.wang@huawei.com, stable@vger.kernel.org
+Subject: Re: [PATCH stable/linux-6.6.y] mm/memory-failure: fix missing
+ ->mf_stats count when hugetlb folio already poisoned
+Message-ID: <2026071451-geologic-handprint-89d1@gregkh>
+References: <20260706084118.1284271-1-xiqi2@huawei.com>
+ <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alWQMssVSvO8Zp1U@MiWiFi-R3L-srv>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: wer9836s94zu4e67b3a7n7rzrrx1kdp8
-X-Rspamd-Queue-Id: C588A14000B
-X-Rspamd-Server: rspam01
+In-Reply-To: <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1784005614-981964
-X-HE-Meta: U2FsdGVkX1+8eCDROqMXDoTdnxQA5/L4cg8cuKReWUw72obuaOBwOfz2Ry5cNSHsdjiE6KGRcFn6T4jPTJ11048BmDI3kYS7to6C9YE/CbeKepA+agtIl3I/iwo1hRFNb4iY+8ixdMQeYDHFD+uCRc/gVOLzUBvGrELjeh4pshbXg+Mlu9BWMTwnkSIA2noWWX2zfhDq55KOo1fzl5XSufPzEbPR2I/Ol8bV4PJ/B/9Qg2xP9N7pKY88ZCphTQNf31YXUOFCB4WeZKZN3udqrhboY6ZNnDnUSnq6El2Hzi8oBUKvWT6yuLS0Xvx9T5Mp2xrNH678nqMDtDxwbO53NkIKEFw/BoYz8MUPzmr30+p9boGjJH42R1ro/zecdBkEHeoGO6e0iBrvatq4lIaxNCVldGCW/siZyU/XoScgSPMOPAoSlbD22RVIkuIsD641CgWVw3v5cneRy3zwBfjCW56KQYn9Zl1obICMtnSRKUUJ/YJsFCNpkTsj/oWUt3MzaMCg+0KgrUv6HwVieoVKtb8dkxC4SRokspnHv223oxhQHXmsH676pfjA1jBBStVfknUPSbdH/1XKi7lVMnu+iMufgmdawErHaGNQ6RBq8VFGS0AihW4aC35vKKM7Gy6oyJbQ7I5+u2s6+3ccKs6QVZDs4k3uJEdz09q94sglWyineu8dhdMS34HugW2cT7oTMj/1u3bwC6kpJTcE0uYoYnDQMEVH1eFtmADMU1l2188RhBbRlyF0ldwd6BwbHCLcFF7RQZH43v7wbgeL6YPh3c73pFXa7z6XcWYGtQDe1q/glKlT/eY5VN14WrNAgRGJMfUqtxe5r24VM25/hKIvOltbQZd9OUSU/NMCLGUV7toNTN6H8XyzrXDDyR5xPx1fGvEoEcaDWHZnDz0no4BXEZOIaBdkE2cofQM5fNeAEiOIhHBvHhEbDstn/HSVBZEzmL/bB3h3uWy4nTNjPi9
- blNAqmel
- 1Scp0gjdFg7//N/3j/LGySBZ+7sICL9LCIBrMVBU5oLP+vNCZu/E9OoxgEXZP4uVt7ppf2gEPrXeyIOokwhYuTYLotkMWfwpfoRfZeubKVgu0ChzvJdAgEiaAPzvGn5EUX8tZcVMCjvPHnfDzngEnWqSx0qiZsms5rSI/
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EE6011C0002
+X-Stat-Signature: 7bat4dtwwy5zh73erx4dw36oz1bn8x6m
+X-HE-Tag: 1784005940-543883
+X-HE-Meta: U2FsdGVkX18gWjZ36SeX8L/Oc7Z+Y/KJWOjGAzXchps2GGRT/0jNkjzuZ1dUWpV5vXtSGGZn3ZjCOZRRgGL4sa8r0fHzOy2TZM65+qxFAYrT8it2+p115IjHtlwRfXeMRtEaGNgW9RO7v2NeRNCEsf1ryrCHCYzB2P/kJDVlupKCwqP2rdJPGMbNw+BVGo6tIktgGshilUABN80m9u9btL3ZWsPZMKwVAQ8EKKR7FeV7Zr14D+mcb8S5fViLl0kIzS+wYU7nb9ebdrNEFyQfHEk47+IvTm+B5Wapd0eGvnJ7eIpRnXmMs4TobhVTAegoSeg1PNE4igmQ93TKkn+6rr2yN9qjMh4yV1VCIA3VJa+8FbSNgC7ldNVKfSSRCVdtJmaXATCR+2dNiBJTl0/b2ICi9L5BvrXGc4kRQjPFGWVUOdFU2UsYCsfL4MxEwnuYMOE0fFuUqKtcDXVhxJ9lJ2rXMKj4WmT0qhvO5eJvMt96fVzW0Ci17E5n5EIM4pzL2QqxveTPbylyMw95DoaC0sAuq0e2K7WaOXtBNtN2nFcr+I2A3FCqP/XazAxGK++s0NcqOpUsjYWe+1vYBs7bAzk7OYmbEtTQX35c+Twgib7+pNWyvv/LlFUIEe4OTSk+EEpUCc77m57dzDy9vJC6AyfBRfG10Q/31+YiQ6PH3kzRZt83GM9xRZPQR5n3KmmffmP48bGNB3hOX8vvtF+ddE0zWyUBxFBxXaPhr4tUd0H7p7tk0sfz1YLk6vm/KWvxvEeYl/6vbfLZV6g/oU2jsewcslh2jDDC1gJ4CdCsc0ioo+I+Omw9hAiWlFRXRLzGkS7nx8zkgLoKl69QakcZvyR6hfa3sn5jmZrHxDiZnXefgeTcSb9ddvlXSxFb/4l3o2LStE4vI1/Xe9WlVB7xREIV3G9NTgNytKwbalneJzKXjuLKw4Y1xlrVvS6kQAEM5SLhGVdovG0xf03/M4X
+ xg9cS5/l
+ 20cd80f+MSc6ft+I15xhu2SvfWqZiMuU1gwBLQ7pk3Wqjwrhm0n94OUqS8UnXxlScpD5RjSgxW1LG/DjGSUNQ7StgxnsIz0dMJ+jUaU006ttgcm/MEixEfL/j2SrrnBbkm9UXTV5SqL77rBpf13i1Ico869BNJZpxgHyvFbLwX2ld6OvZt5gwu9h8DJYTicth94HQ3sT/hUeVyxJZlF9kwuWeHsFQkEw+lFVDKVLOaKea1Ark+ophK4SW3HTLmLselT3WC4yYJdjEWkqF3Vai/Ww3msfvU6KbVitom3Z0GktgWKuRc8CsBRK0xeHc7DfKWT/LDEGVEl+EXcNUIGr52q+aZNvy424VTmKeo0XuVs7+3unCZfqpIX3zt/YgS3U2/lPrRt+4pNRgsyxZroNbVvQMKOyVJ2efocEmJ1bQbf54/xiaUI7pXPH+WNaWgjKIk8uu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -80,28 +93,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 09:26:10AM +0800, Baoquan He wrote:
-> Hi Chrisoph,
-> 
-> On 07/13/26 at 11:33am, Christoph Hellwig wrote:
-> ......snip...
-> > @@ -212,15 +212,15 @@ static int swapin_walk_pmd_entry(pmd_t *pmd, unsigned long start,
-> >  		pte_unmap_unlock(ptep, ptl);
-> >  		ptep = NULL;
-> >  
-> > -		folio = read_swap_cache_async(entry, GFP_HIGHUSER_MOVABLE,
-> > -					     vma, addr, &splug);
-> > +		folio = read_swap_cache_async(&ctx, entry, GFP_HIGHUSER_MOVABLE,
-> > +					vma, addr);
-> 
-> Could you please help answer the question in v2?
-> https://lore.kernel.org/all/aiFaWmCWgEWAFj4W@MiWiFi-R3L-srv/T/#u
-> 
-> It's not clear to me why ctx need be put at the 1st parameter. And if
-> only replace &splug with &ctx, there will be one less line of code
-> change, and this applies to other places of change.
+On Tue, Jul 14, 2026 at 09:45:03AM +0800, Qi Xi wrote:
+> Add stable@ to Cc.
 
-It is not needed, but passing a context as the first argument is a common
-and good convention.
+<formletter>
 
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
 
