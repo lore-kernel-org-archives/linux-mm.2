@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32A56C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:52:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF764C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:52:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45ED66B009F; Mon, 13 Jul 2026 21:52:10 -0400 (EDT)
+	id 3C39D6B00A0; Mon, 13 Jul 2026 21:52:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4393D6B00A0; Mon, 13 Jul 2026 21:52:10 -0400 (EDT)
+	id 39A1D6B00A1; Mon, 13 Jul 2026 21:52:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 374396B00A1; Mon, 13 Jul 2026 21:52:10 -0400 (EDT)
+	id 2D8956B00A2; Mon, 13 Jul 2026 21:52:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1689D6B009F
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:52:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 94426120207
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:52:09 +0000 (UTC)
-X-FDA: 84985706778.14.4B3AE0F
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0B24B100004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:52:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c7lduUdd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EBEAA6B00A0
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:52:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A8BA80206
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:52:13 +0000 (UTC)
+X-FDA: 84985706946.29.441C00F
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BE96C140004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:52:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U08nGuag;
+	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783993928;
+	s=arc-20220608; t=1783993931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/hUCwkjzO8JlsV4HHcqpi2o/7R7QmnmDlK+R08kvU+c=;
-	b=rwWFnakuCJ6mGQt3hxoAfMFH9oKOlWD6I/PLBLUdb0GuAAuOluRLG3O9PiNYy4SFR99xPC
-	g+sQRALxuRWC3OWF1HqsUIN5N37o7fi3PZk+IJckeISKzBGanJdK2QPqE1KD9ysoxVH7pM
-	0yExeOjH+/kXEaeCUc7YM+HTOc+vCIA=
+	bh=Zi8sMOqCJW2NCRhuASX5GgkHm8VKvEUdMiR4+SQo7LU=;
+	b=38F6VlqH8Bo/HwghDV/tY3tCJLCSkce+8FtoQ3hg9bwoJ7HnolECjsrljl2RfgmSX3zChC
+	DE1epccYiu/tNLjWreH9I+HyQLH8Czi9cpIT1cYnzkWMa2hdUpB9WjEPrm/tYqyL+K1c4e
+	1ByTFWvbgctfrSV+vJd2RYGphiZUfHE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c7lduUdd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=U08nGuag;
+	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783993928;
-	b=kSn2Ln9ipfDWW/tgyntY/zL+kmih8lukjALBWNi0oB546DnJ9AWWdCyQfNPU0Qs5v4nGEW
-	cEwSBtDlgSljurQHnuHeEiKhzYGoYa/7b0XzYDQcm4/pg/BnddeDyCgdsKEEcUFqRdskPL
-	xnaTYx9oOAjzl7dy+HV/y4AtwU5LUKs=
+	t=1783993931;
+	b=ud8LUFUV/TOMDB5vcKidFp47xvMbUbybWbFAZON0eXIamfY6HpljyaX8CLlgicSfUiNhRe
+	5aHh2YTu2I0tkgO3/2zeiBjJWwq12fvkbuK8ZYNkuv0tocq8XwvNxUpd6a8S3lS774R/Mu
+	cO5PIctbkgRsHcM4RKxY/CCGrpimhEs=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783993926;
+	t=1783993930;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/hUCwkjzO8JlsV4HHcqpi2o/7R7QmnmDlK+R08kvU+c=;
-	b=c7lduUddicEIKFtK1ufOalDWkjpj1e6uQ0u1KARNsdMvK19yMSiSGT2sZaIMYsO5FP6G8E
-	wcbXw/8O16sW4mlSuRh1ce0CoIOioW9C/4EKp5p1Em1pS8PXs64yu8f0XJj4fNNIvDESdY
-	/VkCeP/32yXCzDw3/2i54pTCqTU+t+o=
+	bh=Zi8sMOqCJW2NCRhuASX5GgkHm8VKvEUdMiR4+SQo7LU=;
+	b=U08nGuagzbVhLLarcP6Ht3kvNTZeXYqu3T5PvbGybt6QkW43Jh4P2dRv0/rY/wJErmKNrS
+	pNZXrhPoV3IehqV6DD/WE8oX+Gf8zyotNtcam06UrfbSuj04VyD/ZiMMyC19BYOCtvHb1H
+	G+APLQqEcI61CRRjWSjiJmTtRPeT/Z4=
 From: Ye Liu <ye.liu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>
@@ -70,22 +70,22 @@ Cc: Ye Liu <ye.liu@linux.dev>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 7/9] mm/page_owner: drop redundant page_owner prefix from static symbols
-Date: Tue, 14 Jul 2026 09:51:06 +0800
-Message-ID: <20260714015117.78351-8-ye.liu@linux.dev>
+Subject: [PATCH v6 8/9] mm/page_owner: clamp skip_buddy_pages() PFN advance at MAX_ORDER_NR_PAGES boundary
+Date: Tue, 14 Jul 2026 09:51:07 +0800
+Message-ID: <20260714015117.78351-9-ye.liu@linux.dev>
 In-Reply-To: <20260714015117.78351-1-ye.liu@linux.dev>
 References: <20260714015117.78351-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0B24B100004
-X-Stat-Signature: gyguo1fx3wd88h4a3aer3obumhz7ejfw
 X-Rspam-User: 
-X-HE-Tag: 1783993927-857259
-X-HE-Meta: U2FsdGVkX1+Gf5WiJoTW/hULpei0pgJDcuGpCJCRyg0piou3enbw+omIf4T3NmR+0DB5b3+TTSyCGAaw6sDMWUBVkX3hKJHNwqd1eo6n25KmKZmkx6Og3gTWrdZTUZA4KLthEOYmPxbzwCUbJV2gnfm8DyEarJLTEHnngj0m+i7R6f2mz2EpwLWQn97BqH08PoJFQDZbFT2la5B/TyLOVpHqNDvlq3SGpY5SiYfDad5E+CCbmPCD1qJ/jaZGs86uq8h6Yc0+Ox7q9Cmg11h76dJGB9t9Go8+8uoK9t+CkvPGMJQyCoK/hmeb7MAPJbb/q7oDyRvuKoZ2tZPMQQOW7DtCiy/VHxqZtjCp4RWRRymKrUnVwO4F1yjHOljBK+NcgIwGHQs1C/ymjn7HTKQcPZPAhekYk1v446kB1AdD007JwE2dC8mly/a9qggwanCSoPxf6IlqDXsjBIiPiWSXKnwCwg6SCO64pP0wAYOx8IfrqQla8/UoYOjW6kRZ1739h+9wIPLjYuYNW6BnLPn5levBztD+EGWaqIM9yv6XPxtF9egSDu4HOv0oBNhynmR7JVlKCvufa2E+pYny2jpIC0KQ826mmw69uWOSenZrvJjZGU9lkOUbndjdBb7rsAVX7bpwSJo3qggxIv3EPPRQsQdD942QqpFq9MObZm56IiLeQYs9ekzmeB5M5o1cYPA3u/RqYb1qW5Nui8HtJiEQov8CaX2KY4Nm/jJMDbCJl/xTlECdizRb6u4Nw8J5pZGKX8cCG5QF7g/KlOd8+vcBtdvpVm5p/5XcbEEiSS3C1pKwuqJv6TOeoGRa5yk8+NPkzCfMLVMaqBGcFfKq4Jrbyjr8SwN593zn0GnMGjx/AwF9KBPddXGnA/9NJYaiS9lOr4VdgHIRlSlFGHiRsZbL7KWhKJqfohZkihkMbv1nzQ3sQ+sNEzaqH7fTGmKE2hwwS4mwVHEiw1Sm3IDa8sd
- h6ylOaVu
- /btE/u2LOiiezFfvsu3+MXjWbtZ7rj2mC/jm7y+hXrfsCfxl9VeJpFW2jYAyyuQU4hCD0u2lK1zI8eN9+42I4SPAe/YMPWITSMCd/a5URmj9P+T7pb3xMWUtqeR0IxgvKMs6mWMBZ+Rfe+FV48ZpQmFuUknQfywNn7oIELL/JCORwac7en+tEakf5a1s7RgiH4eoZJHU/UrdbqFbkhbD1j5sEukTf0zMrb/NSTVgfOg2Bx6VFnsQidQ2AdbCfUvnvkzeyYPQm6K0+zmJp0FlMZfqop3ZMEH4ztFN5B46bvOHCOxQ=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BE96C140004
+X-Stat-Signature: xad1rbj9rx18izjeph1gbu41giwwxgf1
+X-HE-Tag: 1783993931-485767
+X-HE-Meta: U2FsdGVkX193h3+bnFXlKRDFaMSmcNDlPudCJegc2i/vdKlIr3q+S9l/M8/6MLuBCcTEQIbRbFCYmbnIexXrCxLSOvCZutHZRrhTzeVw3AecuaCzLr4cEqNrrNxVtuKX6huO48nc6TLjDM1YNsPqPqAbrcBwNfG19TuLMZRX69OvtdqVPr7ET87U2q0ScmfH08WjXeNM86RtLZUWRE/yABDI8xv9JXG7o+0nMhIo0kzU8P5pBedqnJYqCBGqkv12eRgiaYJjNmJfUqLhhhwMjEvSH7uERTJTTNY5sL5SMpmgrlcImnJUhPQRrROv7Z0ngBcRJiWROjT3T+oVU6xj4WsudDJZxQDUaomt1iesrHR5KxmcIcYAbg2l7U6BCcML0qBLmS3I+YH48OUFsgDR18rWJto/o519IBpFHYE1zu+tcQWyC4+3U6gQGJj9KMPGl2deqvtsPLp12WnClsVkJjwAE35QQSO7ixcsf2dsnq8KpnuP7ek3Hwvbw/EPCKw23PABVvO0nSir49FiLlZTgm4ktLFihFQfYw8+15nRi9bS8nSYIOsZBzo6ke7Gox13cbyFSubJu0vqYg2Q+K6tzdFonVcBnkS64oyHpUznWrdHOvz0FzPcjmh9w+QEb1hLHQ111F8Zy6QeTyN9TsQM4o54HM/hFr1o+rSlgI3Caghv9g48CQlw4GrLjNq9jsuDnYTFC/sMVghu1KERnlymC2SXKSgMOYrURPKsiEnKGzgmDQV75xxY1F4VH6QSFlwXcuV8+XldvWNP0kv6zFcjVqs5MaGEM0ZqqzScW1ZwIKJ6W+qtb10HUTTlxuzgW8Il+aHZsVdcVCk87g8CCF3RdyZc+fhsz1s1gWL0AX8zh+l3Oc1WGUwvGo1jdWIIOLSUQxGi4+kTOB/BwPRVAdx+hrfrNNPMPJAXX2td7KSTOIuzMA49va35soe9qP4IyT8r9speQD8YTUP4oqkcB43
+ VMPsEO+K
+ RW3/hG86faE33twsBTibXlNgNqs2GVJv+DcVmUYcD+dWu6xgA/aqolv7YXZYsl5NqR9uMsZzRHPCmxTWaC35GIoSkkk68gb2+qo2WTSQfgAghjerlLXhnNk0GsVz9iJO/1ndRTmd0ujMCXPbufNgdVuAPb3g3u/PakAoXF3OmcWdBh3WjW657XXVohzxAGKmozQu3+XDnD74piIlDVwYRgMMaZofU8Ajtc8J0pc5VYip4+huZQYgAqlT6LOfFGONb3o41TnFwkWiOvB/zsQElvZxpud0IeSMxzy/Bcrl0svLKXx8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,127 +93,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All of these symbols are file-scoped (static) in page_owner.c, so the
-page_owner_ prefix is pure noise.  Rename them to shorter, still-clear
-names:
+The lockless buddy_order_unsafe() read can return a garbage order
+value if the page is concurrently allocated between the PageBuddy
+check and the private read.  If this bogus order is <= MAX_PAGE_ORDER,
+skip_buddy_pages() would arbitrarily advance the PFN, potentially
+jumping past a MAX_ORDER_NR_PAGES boundary whose pfn_valid() check
+would have caught an offline memory section.
 
-  page_owner_stack_op      -> stack_op
-  page_owner_stack_open    -> stack_open
-  page_owner_stack_fops    -> stack_fops
-  page_owner_pages_threshold -> pages_threshold
-  page_owner_threshold_get -> threshold_get
-  page_owner_threshold_set -> threshold_set
-  page_owner_threshold_fops -> threshold_fops
+In read_page_owner(), which relies solely on boundary-aligned
+pfn_valid() to guard pfn_to_page(), skipping the boundary could
+cause pfn_to_page() to access an unmapped mem_section.
 
-No functional change.
+Clamp the advance so it never crosses the next MAX_ORDER_NR_PAGES
+boundary.  This is safe for all three callers: the pageblock-iterating
+ones already handle boundary transitions in their outer loops, and
+for read_page_owner() the worst case is one extra PageBuddy check per
+1024 pages when a bogus order would otherwise push past the boundary.
 
 Signed-off-by: Ye Liu <ye.liu@linux.dev>
-Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/page_owner.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ mm/page_owner.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 84eb44459478..46a933f9c229 100644
+index 46a933f9c229..2e3880053a34 100644
 --- a/mm/page_owner.c
 +++ b/mm/page_owner.c
-@@ -894,7 +894,7 @@ static void *stack_next(struct seq_file *m, void *v, loff_t *ppos)
- 	return stack;
+@@ -428,6 +428,12 @@ void __folio_copy_owner(struct folio *newfolio, struct folio *old)
+  * to skip less than the full buddy block, but that is acceptable for page owner
+  * iteration purposes.
+  *
++ * The lockless read of buddy_order_unsafe() can also return a garbage order if
++ * the page is concurrently allocated and PageBuddy is cleared between the check
++ * and the read. Clamp the advance at the next MAX_ORDER_NR_PAGES boundary so
++ * that a bogus order cannot carry @pfn into an unvalidated memory section,
++ * which would break callers that rely on boundary-aligned pfn_valid() checks.
++ *
+  * Return: true if the page was skipped (caller should continue its loop),
+  *         false if the page is not a buddy page and should be processed normally.
+  */
+@@ -439,8 +445,12 @@ static inline bool skip_buddy_pages(unsigned long *pfn, struct page *page)
+ 		return false;
+ 
+ 	order = buddy_order_unsafe(page);
+-	if (order <= MAX_PAGE_ORDER)
+-		*pfn += (1UL << order) - 1;
++	if (order <= MAX_PAGE_ORDER) {
++		unsigned long new_pfn = *pfn + (1UL << order);
++		unsigned long boundary = ALIGN(*pfn + 1, MAX_ORDER_NR_PAGES);
++
++		*pfn = min(new_pfn, boundary) - 1;
++	}
+ 
+ 	return true;
  }
- 
--static unsigned long page_owner_pages_threshold;
-+static unsigned long pages_threshold;
- 
- static int stack_print(struct seq_file *m, void *v)
- {
-@@ -911,7 +911,7 @@ static int stack_print(struct seq_file *m, void *v)
- 	nr_base_pages = refcount_read(&stack_record->count) - 1;
- 
- 	if (ctx->flags & STACK_PRINT_FLAG_PAGES &&
--	    (nr_base_pages < 1 || nr_base_pages < page_owner_pages_threshold))
-+	    (nr_base_pages < 1 || nr_base_pages < pages_threshold))
- 		return 0;
- 
- 	if (ctx->flags & STACK_PRINT_FLAG_STACK) {
-@@ -933,16 +933,16 @@ static void stack_stop(struct seq_file *m, void *v)
- {
- }
- 
--static const struct seq_operations page_owner_stack_op = {
-+static const struct seq_operations stack_op = {
- 	.start	= stack_start,
- 	.next	= stack_next,
- 	.stop	= stack_stop,
- 	.show	= stack_print
- };
- 
--static int page_owner_stack_open(struct inode *inode, struct file *file)
-+static int stack_open(struct inode *inode, struct file *file)
- {
--	int ret = seq_open_private(file, &page_owner_stack_op,
-+	int ret = seq_open_private(file, &stack_op,
- 				   sizeof(struct stack_print_ctx));
- 
- 	if (!ret) {
-@@ -955,28 +955,26 @@ static int page_owner_stack_open(struct inode *inode, struct file *file)
- 	return ret;
- }
- 
--static const struct file_operations page_owner_stack_fops = {
--	.open		= page_owner_stack_open,
-+static const struct file_operations stack_fops = {
-+	.open		= stack_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
- 	.release	= seq_release_private,
- };
- 
--static int page_owner_threshold_get(void *data, u64 *val)
-+static int threshold_get(void *data, u64 *val)
- {
--	*val = READ_ONCE(page_owner_pages_threshold);
-+	*val = READ_ONCE(pages_threshold);
- 	return 0;
- }
- 
--static int page_owner_threshold_set(void *data, u64 val)
-+static int threshold_set(void *data, u64 val)
- {
--	WRITE_ONCE(page_owner_pages_threshold, val);
-+	WRITE_ONCE(pages_threshold, val);
- 	return 0;
- }
- 
--DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
--			&page_owner_threshold_set, "%llu\n");
--
-+DEFINE_SIMPLE_ATTRIBUTE(threshold_fops, &threshold_get, &threshold_set, "%llu\n");
- 
- static int __init pageowner_init(void)
- {
-@@ -992,17 +990,17 @@ static int __init pageowner_init(void)
- 	debugfs_create_file("show_stacks", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_STACK |
- 				     STACK_PRINT_FLAG_PAGES),
--			     &page_owner_stack_fops);
-+			     &stack_fops);
- 	debugfs_create_file("show_handles", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_HANDLE |
- 				     STACK_PRINT_FLAG_PAGES),
--			    &page_owner_stack_fops);
-+			    &stack_fops);
- 	debugfs_create_file("show_stacks_handles", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_STACK |
- 				     STACK_PRINT_FLAG_HANDLE),
--			    &page_owner_stack_fops);
-+			    &stack_fops);
- 	debugfs_create_file("count_threshold", 0600, dir, NULL,
--			    &page_owner_threshold_fops);
-+			    &threshold_fops);
- 	return 0;
- }
- late_initcall(pageowner_init)
 -- 
 2.43.0
 
