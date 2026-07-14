@@ -4,135 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0F73C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 16:40:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14BCBC44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 16:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 722946B00DA; Tue, 14 Jul 2026 12:40:37 -0400 (EDT)
+	id EB3D46B00D0; Tue, 14 Jul 2026 12:51:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D3F36B00DE; Tue, 14 Jul 2026 12:40:37 -0400 (EDT)
+	id E642E6B00D2; Tue, 14 Jul 2026 12:51:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C2366B00DF; Tue, 14 Jul 2026 12:40:37 -0400 (EDT)
+	id D54316B00D5; Tue, 14 Jul 2026 12:51:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 34A9B6B00DA
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:40:37 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5573A0464
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:40:36 +0000 (UTC)
-X-FDA: 84987945672.02.838DE4C
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BE7902000C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:40:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="z Zdw/Zw";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=mquybT60;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A4ED16B00D0
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:51:18 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B485120444
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:51:18 +0000 (UTC)
+X-FDA: 84987972636.03.E82F029
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 29E7440007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:51:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LJE9Gnqg;
+	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784047234;
+	s=arc-20220608; t=1784047876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOFwnYn8fKwb2zNmcy6xu4xuyuD89fwUpbMgojxdUPE=;
-	b=YLT30RT1w66MM3cP1nW2/WpKhjZBUuA/7dp/Bubzmf7PwlFL/I/2CL4JwSOn9bNSt6xbqd
-	8qXF2v80M2XJcRtcIX1cCBTnZyhD/OqXEOnWiBKxgBVbNmLk2HTDkyaxgbVsuqMKLLQxGm
-	TuvPYmttUthq9hUac2I91W9TDOhZ2Ns=
+	bh=JFYx/PcJYBHS7M9Y27BjGgk5pg7WT/rEUT06432k7IQ=;
+	b=WpmE6+U38FQTZ0xJ6eVmL6yjlkC3PoFRb/x6Wo5rEyYdElMQyeI/n0DILEJ1VRlJOsWjfU
+	SKJ2xqRUeZp7fCnGa46MJaQt/kxtj6ETqCrOm2AgZxX8O0yirfRk24gguSHQdeh1r+z5TW
+	DX66qKRlQeUzFaAjyy0EEXMCzZHOc68=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="z Zdw/Zw";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=mquybT60;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LJE9Gnqg;
+	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784047234;
-	b=o8vPJpoeNC8RRFKVyC8t/B/JIhwcEW7Efxs2rowfMHhMBulOHH5pZeejZiSMvNfXy5P9M+
-	SxoRub55HDC06q5XfpqKcc4ImV4gaGmdZH1dfwKY8yUukP94xcN+v4HsEqCYHxtFH/rPRB
-	/h/ZRAktSzw7uGNjtCEoBl2A7JVij7E=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 0E71D7A01C4;
-	Tue, 14 Jul 2026 12:40:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 14 Jul 2026 12:40:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1784047232; x=
-	1784133632; bh=zOFwnYn8fKwb2zNmcy6xu4xuyuD89fwUpbMgojxdUPE=; b=z
-	Zdw/Zwyb81IxsqSfNS/raBGeuan1HzOQYWrNFbkXtZWmrGnFrHmwhqDveaZMfmxa
-	Upjrr96mJda9sxuSQlC0XwMD3+dodrQIofGl7Ftxh5/PVKgucEA50e2/XAWxoH7E
-	scd89ps49a0zDXfA2O3ddEu08apFSBxwA4E2uIqpGF4ZyXHp8vN6QgOwcZDUFdWE
-	W01jTbMi3FjN0HiZ/8YGvN2jV882DY6z9ACQ2xwKSMhpX2lRglxuBWFpQeiYHBxD
-	ixqNwxCwAHE6mrM5gUy/nUdqOLWlqneYhqs/f9Alba6ripl07oC8xSi1JvHNEsUh
-	JmazU6KNQRAjeo++ovyeA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784047232; x=1784133632; bh=zOFwnYn8fKwb2zNmcy6xu4xuyuD89fwUpbM
-	gojxdUPE=; b=mquybT60523LAiJ2lXKXHpZMf++q3tFZxxH0PpCZJ+L2egIWwRJ
-	xHr56f1D/2eLxpNP5x6wxqf6Xksgqqiw2GoixnaI+bJWTOFcNAKFMO+E3feYMJw8
-	ydIprwdrSDyh6CoxBQ/rCQvEA+ojyjD5+YJvBjqkBRR3F0Y/ObLjYsjDsnMbNgqX
-	0VuAtpJk9eALBauGIrRIRDJHA+AjgLBiExL2eTFFhkT58G0pUt/iTeRfQ6xkymGe
-	eRK57WPYp2Jof0KA1cGr4BUHJliBODEYpBepT2M6YNqK+hQeZ9PW2OvHcr4Z8nUr
-	EFq8sUpfAzDr8SutMP8wevnrJsYDMmRv1eA==
-X-ME-Sender: <xms:fmZWaq5D-KsdSDYOKB1hwgrXn9KpwKA3sKtZ3OaYjMTlZ76SGDiggg>
-    <xme:fmZWagpPUCxO367GuUOsYJ1tbLutPRT1ejqOSY4nv7IFLyntKom92p5-4anvVNzp9
-    YYMfA7oW2FflEQKDlz_4eZpDSWLQKay_Opu5H8q1JvkZQyT3MkT_CM>
-X-ME-Received: <xmr:fmZWapBtjlZpF7-AkzT5080VuSIE_r2onpwmP6URLtrWcptWwhedWuPe7KgtZw>
-X-ME-Proxy-Cause: dmFkZTFSadJpVIVVrErQQ5w2CnbepoBgy44z029bkLXtVdKgSSNPIZMzKcIe9uqZn4Tbaq
-    zcj6CdDtshQXjIieWXYkkTfUGYylzBJqUB2hRsg8qh/r/r9vzfNUv5SVdDY0Ft84tTZRyx
-    +mY1ZeuZa7qeYQsG5vRcrTz+ioyIabOvZ44WliUYtezZXEAJwUBYvCHEhVP03OZpJgfxD8
-    fZCiyklxgLdmqhr+dwiUZzGaJfDfH8MQKxr9EZnuy3KYT/bDXTZ9zZ1QKyBmCqduqKoWDw
-    HLv9mdSi78zC8T4D/qQd0Ds7osYCRNpt+0Kp7xPiFqgGu0HLHg3bACIjI/eCiao0pPMEHY
-    ev2V5YusamRF+J7KGyZOJGdSanPVqrxIoj1oVwDyLHJYVRyXnKhVRrFXYZbjNwmxFiJi5h
-    jVSxmFi8jV8H8Z8fyDEEcVqEdHRcQ79+a7mCg3RbHvo8BLuDTsunMnmod0kE5zqQy4jEgC
-    MDS4qZFhCQBbtYsYtXTP80AC/cJstV82taW5qsjQ5TBhe3tzYw37RiMCt/0JdQ6U8ezWUk
-    L5ux+tBqdEenH/RgxWXiXCZtByWIyRYflPUF6AhzyKotiNOIdNHqkqzmnaS2YcaKA5HvD3
-    pTObWLxx7xQA9LhUvSYhD/Piqh3gkF1z10zu/ZUvKBFjfTo3XFazq68NcfFw
-X-ME-Proxy: <xmx:fmZWavxgOIUfIw2YCggDwLwNxjLCbk8Ufg3Hbzu33KjZ67TjCwzaFQ>
-    <xmx:fmZWaiYW3te2kHeUvzxj73M3nrDHuNxK3CrvRq9e_YvZSSUB6-p7yg>
-    <xmx:fmZWaovWViWPM5Y-l6a0PdpvnjbVEewYF7K0RqTlpSg023PBeqadgg>
-    <xmx:fmZWaowpcDOQ-L0rTa2QzV5RE4bCh8LxjMsJgFI7WNlVX_qx-DQRFg>
-    <xmx:gGZWaseA5mjguVNQhqIQPGtSlzou5PrQLfCFrEGriXgeYQaLmz3zjq2K>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jul 2026 12:40:29 -0400 (EDT)
-Date: Tue, 14 Jul 2026 17:40:28 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>, 
-	Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
- poisoned subpage, locked across split
-Message-ID: <alZljHr4Nk3FOpCP@thinkstation>
-References: <20260714122344.351895-1-kirill@shutemov.name>
- <20260714122344.351895-2-kirill@shutemov.name>
- <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
- <alZNYYsybKZA0eJb@thinkstation>
- <18fe5529-2ad5-4330-a362-708a152bacee@kernel.org>
- <66A57599-EDA0-4E99-B073-F2AE0B2ED708@nvidia.com>
+	t=1784047876;
+	b=NMOGdzCBEC5XTNh+FVuwdLrtK/po13IQsMC/DSQqtL/LrNtiDs9eHvNM6eHmk+aG/r66ZC
+	D5FwWpgHksUR8kOsJS6UBR/yfF108CI2+LOllf/nBfZmS+x7yfxZLicPxBbNk1aPx8RRrx
+	xagm8Tn+of9szJHvaOMA3I1dtY0LqyM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 34AC11477;
+	Tue, 14 Jul 2026 09:51:10 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 92B183F7B4;
+	Tue, 14 Jul 2026 09:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784047873; bh=UvBhg+nD12g2Xn0O2D0o4P28bmGT2yfpQKOxtSEnl1I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LJE9GnqgPAJTHNyrHvXiGytDU8Y+XMmq5qcc7VQwk9xF51NV6qToYp1rk0iHEdw2c
+	 SQefERcHjF0VMLdrLpD4VYdyPuCv0noF41iChasEg/du+6t2wy8gA1iDS6Ph+r4Igc
+	 KCRrQeoHcKvxhPGR+tFzzHZ+eCmo3MvDkxCNZGoc=
+Date: Tue, 14 Jul 2026 17:51:01 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+	kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+	linux@armlinux.org.uk, akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
+	chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
+	kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
+	wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org,
+	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org,
+	arnd@arndb.de, ryan.roberts@arm.com, pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com, baolin.wang@linux.alibaba.com, tj@kernel.org,
+	kevin.brodsky@arm.com, anup@brainfault.org, atish.patra@linux.dev,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	alex@ghiti.fr, dave.hansen@linux.intel.com, luto@kernel.org,
+	peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, kasong@tencent.com,
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, ryabinin.a.a@gmail.com, glider@google.com,
+	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com, yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com, ardb@kernel.org, guoren@kernel.org,
+	yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org, schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev, vishal.moola@gmail.com, namcao@linutronix.de,
+	pavel@kernel.org, djbw@kernel.org, yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com, Jonathan.Cameron@huawei.com,
+	coxu@redhat.com, andreas@gaisler.com, liam@infradead.org,
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+	geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi
+Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
+ folded pgtable case in effective_prot()
+Message-ID: <alZo9feSrSB_StfO@e129823.arm.com>
+References: <6007625e-c3f9-4ad6-99a8-61396bccbcec@kernel.org>
+ <32d459d1-ad19-4baf-bbb1-0565458001d2@intel.com>
+ <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
+ <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com>
+ <31988089-095a-4eed-b5e2-c677c70f79f6@kernel.org>
+ <14e250db-1641-4085-8d13-02f819657d5f@intel.com>
+ <d83c76b3-ea4d-4c41-b4c5-f5ae558ace55@kernel.org>
+ <alYgMxKqRnF6_X0A@e129823.arm.com>
+ <6df814c9-405c-48d8-96ea-929c4b28949b@intel.com>
+ <alZe-Cu7yQw9qRXU@e129823.arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <66A57599-EDA0-4E99-B073-F2AE0B2ED708@nvidia.com>
+In-Reply-To: <alZe-Cu7yQw9qRXU@e129823.arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BE7902000C
-X-Stat-Signature: yipg4rymnw3rk4eo958ckhu4mfaqysfn
-X-HE-Tag: 1784047234-56410
-X-HE-Meta: U2FsdGVkX191so1WNXBUA9evAjlriHC/2pssvkMiqw+u6r7n5/A1CLaVUgmJlfmcfFfVLpsb/heOE7tHvzbFjurhR81DgZzwdH+dETVLuGGXDwHWiz5gVpgcYrXNSh6bg74HvfP2Oj+4ONlvNXeHJly2onsmQZ4gjDggDYNk3w0fKkCSKwooLfj6YkEEG8+gNqBWybHD4L6FuHtwTepfTssRrCfp2aqsifikNoQ1L3GHXrMepl6UMipozP8XLbdyKc70A7IyB6bn4lqKSoCQWfWXFanHApQUwza4kKL6l/GlYJhqlFdPzcWaV3VucIPSBv+VUcfODJOr7khnLB/6FWhMbS4NiEQ2f+fRP/+08C5a1zct3J33DsdPP44SnDNbVJsMttAQ/GvMmZ00C5hG7JHYDPeMSuQ7Qwl40ASMQEv/8bXH6utSC3cVnFa+NyXHtrySN9QacGr4vy0I/xEKAZFqMLfWPy9JuQfaqNmLTf5Hrm1NqA/RoVJaqgm6YPMXzd5Z8GvLSRqkpwXe/gGFlZ6BMjhRWYIh7KhXndg8/x+OYhognZbiRJ9QqNmIl9J1VVJI7XrmiCY6HJoYG05EO88HJG/04y91A32NveKZWfNmkdvigtnpFvHlBo18LXw+YobK1KGOCC0A7fRnFVU+rze65VBNqgSMXrQD2Fn2kRmBXuj92ZFGMXa+O/LpU3C/0uDmKn7KikVmmEPopHXMWoc5NTZaK1RxrljjYo3zNqWeUTiNbqLqydznjhLfUC+r/Xvcpgt7iSiJavr2sxRu3INNV2Wdiff5ZAIgAktihAayyiN+M2WCinZtoRLL/UhN44/SrDwpCya9BfAYNBnOgetCDvRJUnBb1uJe+L+BrNzbvw7xNEVTyzqHEeEKROy5nyEH3QqMbdoHjMgbJDNuYSBOiXmh+eRe+N+ylIA5QBQqZ8OCzJFA5sOOwP9ir5d8EPQ8DOwhbV6Ygj2uRus
- cDWMQPJ9
- ct64IzzXPb+mwSaHlGazM/Ta8A9LGTnUxms3cSs6r1db5BTjuXfygAqSB5KfJfmx/69bQ/qsq+7/JaRTg4ySA0tGU/oSOQwsLLAEJc6jpna1iVdbvVUdB2Mkt3XzhGKP7VMq6wZ8dhE+L/Eddqa+pEgEk4RBVY2H2ZcO8jjdRwsstEVBe470ZPvxBI3OziViwx+/Zwvf6hQbbpbpF2exfhU1eZZZ9u9a5FHTGsxTYGnaonubt/bAjKamIdkYmu3iHD30uV18JZWTUkc0Lq8vXdEbSvnrNgZ6jEPhmlePh2r8FnuOKYOC6nmdk7Cs8rsdAFnH5QfD4z+I/FFxo/Lqra8edZnlqb8JSptV0OTPg5qCByEzvCGRFJ6noL7tldq5qtzGSESQwalLqlnpTtzmRjgunCz73UyQ313wVaNQkGr4I6zWGwD9FUASyxzBZ5U9WaZoD+M54X4ecxetlrgrrb/RmtjwtGN8IeOfItbG3FrHHP4mqlFICXFFktaEsw1JlcG0lWcpToLKG1BI=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 29E7440007
+X-Stat-Signature: 3ihxz69676s75qjpcufg7wi9op9kc41u
+X-HE-Tag: 1784047875-518312
+X-HE-Meta: U2FsdGVkX1/p3ky83RQQ1MpYuIKn7NmqLZPwyXJ0h5/vPzNLiKnI4LVl1zsuHLk8QGRmAfsDmbtF8W0dgtbA4FrdOOJWDY/BQg5USnncChRsv9nLY78KYEG6BBgxBhsZi4NaaAkMJoLJkFBK96bqGTqM51Omp/BjL7WH1sS6d3/v5POFaUe9x5EJFeK9rlZVif2oTcca7oOzXW6bDG8CMcSmRQHTA+c6t5+yDkBEbEZEKCV9Vb3CJB4Rx2GtjT4n0mXmsdJaMWxtmwD9AOAFksIMa8IPZ6N0huz6SG30Nu9TSndb5drcWNr4Sl5HLr38TaLpzsUv55JQ4wRrcMJrmF88mXiZZbPF7KmqtXVTGMJZbEHeZsSmWcV/rMVRS1AB0A3cyRNWsWUSZaIssFiKbC9E9+WR4+Hlcw0m7D2K56DPxnMcoLwRSPEFmsXlhP5q2HL18nJzb9oAOBuIbdH+JaAS9V47Mh73FQ+LTqzL1rZI0v4jN6U+5Xnoqin5x/OahJFHf+RlopxSgbWoGJUoCcyYE5Z/H19u0Dle/D7EzOuWqEXCjOg1sJF7xIJww7MPc6HsztB0y5KiTD5QNI05XlsCjjrc/TR8l2wHY+LGckb/T+Pd9PNaiYat4n7dqYwbxURkH6f+AKZPfWnEwchQG3saENYRYQtYgeIAnnPD97MVkYj84Y3vn7w0ORE5NRkh6MvwZTUj5LfAZtEnctOb4RBFyLUOKs9isx58dspbC9PDcc1t4uO2s9gFRgaUTp4EQ0rckKFg72wVlmPpM3PrEkh/EKQyx8w8soUIqal8aw3xNOQh98HktTfX1jOi5iY57Ilw7v5PuqaeIT/ufpAza20R/9sJX9l+NCe+BYRAuCLNN/97ydb1TwaQPy4TdwykZgR1xl3LDrV8X62ErMRaIcDSBkB9nG8UmvO2dMICSz4CT7RG/HXSlItHt9rTFi5XjQrMqGyMiCM8fTY1Nhb
+ kiufs8OA
+ y/8uv9cMpRUQAEAQzTpxc8Xe1XL2O4oyHte3/zXH8diAA6O79jjzivYjd1xNUGOX7DY5LIZuj17iuOFdepTvuieyCVcE/iVWKcGkVvYccgH8eBcbJEVZJAeD5FUYurLqUg45xZYtF2tUl0NchNn4+fPzQVbkY6PMwEYvupJ5ylKXjYECWUJVZKiZ3eOhvichd8tM0u3zP03Jyp5eIsfL+9eEBYVFy77FhSJYXpG+zCmnbROfmHY0GqA728ZM3HMGHG/ldK4qpmll8MhYJo7+3X1hXlalRcMMMQ8mZiBh3BiDFFSQkSxZQ7AEJ+dhrHQYfOWOe0eujklAc4WEOo+WXVwfu5XlbAx/OrXAHqA7CpKehCSE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,16 +132,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 11:44:39AM -0400, Zi Yan wrote:
-> There is an alternative, only igrab() when @lock_at is at or beyond the EOF,
-> as I was bouncing ideas with Codex.
+On Tue, Jul 14, 2026 at 05:08:24PM +0100, Yeoreum Yun wrote:
+> On Tue, Jul 14, 2026 at 07:35:19AM -0700, Dave Hansen wrote:
+> > On 7/14/26 04:40, Yeoreum Yun wrote:
+> > > @@ -254,22 +255,8 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
+> > >         struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
+> > >         pgprotval_t prot = val & PTE_FLAGS_MASK;
+> > >         pgprotval_t effective;
+> > > -       bool first_level = false;
+> > > 
+> > > -       /* Ignore folded levels ... */
+> > > -       if (((level == 0) && mm_p4d_folded(st->mm)) ||
+> > > -           ((level == 1) && mm_pud_folded(st->mm)) ||
+> > > -           ((level == 2) && mm_pmd_folded(st->mm)))
+> > > -               return;
+> > > -
+> > > -       /* ... and make the actual first level remember the protection. */
+> > > -       if (((level == 0)) ||
+> > > -           ((level == 1) && mm_p4d_folded(st->mm)) ||
+> > > -           ((level == 2) && mm_pud_folded(st->mm)) ||
+> > > -           ((level == 3) && mm_pmd_folded(st->mm)))
+> > > -               first_level = true;
+> > > -
+> > > -       if (!first_level) {
+> > > +       if (first_level > st->first_level) {
+> > >                 pgprotval_t higher_prot = st->prot_levels[level - 1];
+> > > 
+> > >                 effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
+> > > @@ -471,6 +458,15 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
+> > >                 .seq            = m
+> > >         };
+> > > 
+> > > +       if (mm_pmd_folded (mm))
+> > > +               st->first_level = 3;
+> > > +       else if (mm_pud_folded (mm))
+> > > +               st->first_level = 2;
+> > > +       else if (mm_p4d_folded (mm))
+> > > +               st->first_level = 1;
+> > > +       else
+> > > +               st->first_level = 0;
+> > > +
+> > >         ptdump_walk_pgd(&st.ptdump, mm, pgd);
+> > 
+> > This is indeed an improvement and a step in the right direction! Thanks
+> > for looking at this.
+> > 
+> > But one of my test for whether it's good x86 code is whether there's any
+> > actually x86-specific logic in it. Isn't this basically a translation
+> > between the integer level number and whether it is folded?
+> > 
+> > That seems like a common helper that more than one arch could use. Could
+> > this be stuck in a helper so that all arch/x86 has to do is:
+> > 
+> > 	if (mm_pt_level_folded(mm, level))
+> > 		return;
+> 
+> Yes. at least the level semantic in ptdump (pgd is level 0,
+> p4d is level 1, ...) is same to all archs where use ptdump.
+> So It seems reasonable to add this common helper in ptdump.c
+> 
 
-I saw this option too, but I wound rather not go this path.
+Furthermore, the effective_prot() need to require to identify whether
+it's the first pgtable to prevent the inheriting from dummy value.
+So I think it seems to make a ptdump_pt_level_first() like:
 
-iput() still can lead to inode eviction an bunch of random filesystem
-complexity under us. I don't think we want to think about other
-fs-related locking issues in split context.
+diff --git a/mm/ptdump.c b/mm/ptdump.c
+index 973020000096c..2ec5700e4be5e 100644
+--- a/mm/ptdump.c
++++ b/mm/ptdump.c
+@@ -190,6 +190,23 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+        st->note_page_flush(st);
+ }
+
++bool pdtump_pt_level_first(struct mm_struct *mm, int level)
++{
++       if (!mm || level > CONFIG_PGTABLE_LEVELS)
++               return false;
++
++       if (mm_pmd_folded(mm) && level == 3)
++               return true;
++       if (mm_pud_folded(mm) && level == 2)
++               return true;
++       if (mm_p4d_folded(mm) && level == 1)
++               return true;
++       if (level == 0)
++               return true;
++
++       return false;
++}
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sincerely,
+Yeoreum Yun
 
