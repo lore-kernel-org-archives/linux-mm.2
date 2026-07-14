@@ -4,125 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 231C2C44507
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 22:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 280E0C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 22:23:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F23416B0098; Tue, 14 Jul 2026 18:21:55 -0400 (EDT)
+	id 33FA26B009D; Tue, 14 Jul 2026 18:23:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED4656B0099; Tue, 14 Jul 2026 18:21:55 -0400 (EDT)
+	id 2EFF76B009E; Tue, 14 Jul 2026 18:23:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEAAE6B009B; Tue, 14 Jul 2026 18:21:55 -0400 (EDT)
+	id 208B16B009F; Tue, 14 Jul 2026 18:23:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF6596B0098
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:21:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EDEB40551
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:21:55 +0000 (UTC)
-X-FDA: 84988805790.12.9E6E6B2
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5FEEA40004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:21:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nrCwYXdx;
-	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784067713;
-	b=LZuoglupwGb6E8ZgqvW3H4YVwTJnHe5IrCMD0obZYnPSf+pwawDYNWTqzigy/pPXRumQ0x
-	mxucBErSjdDDAtA/xRM3ldLCjNkR9bTc97DtP4mSA3Yznr75E1fwkrA754VRkDqYwpIL23
-	NJPs+Q33589gZ9qKYdUKQ5HMo2ryiS4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nrCwYXdx;
-	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE9996B009D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:23:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7EBDF1C0363
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:23:00 +0000 (UTC)
+X-FDA: 84988808520.14.8F1B9DE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C6EB4A0007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 22:22:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kC//weSt";
+	spf=pass (imf25.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784067713;
+	s=arc-20220608; t=1784067778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUZJ2b06rpE59kyPt/lRc7T/ATHNB4Peeih6JEYSOE8=;
-	b=CQi899R0aYF10JZCS261OvepqE4MGgo65KjFcNNVu9CQ+VKiLWjFF2LXJr913dmuhEBcEB
-	a29Kg2PGqw51yqZ7yt+5UXOUNp5gnyktgQqXrSGt/vi7T9KMKt+xvkkBVK4BOFMMpUBT4X
-	5nU3yzJ5L8MUHHPZ7z27FXm5kJx7rSg=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cea3004256so48377245ad.0
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:21:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784067712; x=1784672512; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=EUZJ2b06rpE59kyPt/lRc7T/ATHNB4Peeih6JEYSOE8=;
-        b=nrCwYXdx2tfPenep8suIlzyV84+HDM7XPayCJhOuShA4EXhA91CtKvqFxioca5TJIJ
-         SytmgtaM+5vMnjeTE6WslIDW7GnYQWio4MFh/bG6ILLz6spF9LgprqALInbtPLXOPKhm
-         0Qzet0eRGPl8NNJUV3jO2Decjc1WF1XtR9BcAkSIY7n37BRqR0Lyervp5jbZhubA7aLx
-         csyJM0AvBUgOGkTW6KC1SRWoFQQnpgbIE9oveOuT22+3AC/r0ebeJkJHRwj565DykABN
-         2EE8eihtOIRedvSkcUchydoB4/j8OhvLEMusbNDaCGzd9Anz2wE75O05WolJ61Q48HI2
-         M5OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784067712; x=1784672512;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EUZJ2b06rpE59kyPt/lRc7T/ATHNB4Peeih6JEYSOE8=;
-        b=evAutXUDvv99QMDXrKe9r5aZOUZ3Mc6wk/QSRP08PmdTIcirGwHu1859wD3z6MFM/L
-         STiusvIEyDOpeWEyi/lxoGY5eQQ0wOhflQ8neFmcINnFBTh9479rEEuBQZLdKcpWVFIT
-         9TCG1u8FPV+AkH9F53hmTheYmIgpmKk46bLa+Y8ojemxcaND5G6W5CVnJ4mHPO0UT0gN
-         KZC4c2aRXrFtq+E+YFNMwhUGhiyTDJhpuUOplWy5K/iaAJ52xg0gH4Akyp5T7kraOHW2
-         GLp57MLqGB13mIE0dlbxQeh0zBcvl4NIaVMHXijHlorOScgje80xvdLfsLRKY+Gb9HBQ
-         UqLw==
-X-Forwarded-Encrypted: i=1; AHgh+RquL97QPdlrxt3qtNb+bo1dRxlCen8TRhqsZdymO1WvTRsMWCkzzmSqmGz6e1bjGtSSegVH2A9aGA==@kvack.org
-X-Gm-Message-State: AOJu0YxqSUXdjQVNHWhI13A8lHDo5BNDzDwWBTk2yM1O0dXdPf800t6X
-	wCXH2Lypqm6TfViDOBihDeZEvewGiLDbg3G+ipRoA8xgyVfPuXmBtgXi
-X-Gm-Gg: AfdE7ck3gwUyNfMo0NMh4yWg5V4QyadU+wsH15+kWvyoohw9NHEDYbul0wBM44Y8mNM
-	V5XeQkp93RxwAykCVh/X4zKZm1oxpss1Dv/Tw6UhorRWI4b3QYCqJRxFJLo+K5sfWYA1+koBNhS
-	rfxYDXaXuLpm1sHolVIgNTpd9PngUrgeZ9rcYcJ12xGKcGWo6+q5hAugOK0RAF5EC//5Mqi7/Sh
-	MADdlHPiuvGG7TgAKr1hpmpFRISGv5oJJsIZ6YN3Ubx14cw/bg/NdQ4KZCSm2uPDR8ZfZR5cltP
-	0S8vk7s0jVOvGf6YJB1TlQak2+FWLIIDIzp5LvrKviGyoJe+QMbGpKBzY4tdNB1d6umDvSkg5ma
-	sPjSG3ucTsH1azJFW1KkqFRmjKYMSGwg9bv3Q4wwuoojfLWH436xp9SBHDh8UK5+ouYblBaKkGC
-	v8DVKhdGw4Smb8KhZunkwF/RhN2NutusPkGfCb0MxYMGOQEDlqLkymZbmlMiM=
-X-Received: by 2002:a17:902:e751:b0:2cc:307c:51f2 with SMTP id d9443c01a7336-2cef143aec1mr42102315ad.22.1784067712200;
-        Tue, 14 Jul 2026 15:21:52 -0700 (PDT)
-Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d1f030sm122554955ad.51.2026.07.14.15.21.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 15:21:51 -0700 (PDT)
-Subject: [PATCH v2 4/4] fixup! drm/gpusvm: use
- hmm_range_fault_unlocked_timeout() for range faults
-From: Stanislav Kinsburskii <skinsburskii@gmail.com>
-To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
- corbet@lwn.net, dakr@kernel.org, david@kernel.org, jgg@ziepe.ca,
- kees@kernel.org, leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com,
- ljs@kernel.org, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
- mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
- nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
- rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
- skhan@linuxfoundation.org, skinsburskii@gmail.com, surenb@google.com,
- tzimmermann@suse.de, vbabka@kernel.org
-Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Tue, 14 Jul 2026 15:21:49 -0700
-Message-ID: <178406770964.1106335.10099816010446253543.stgit@skinsburskii>
-In-Reply-To: <178406760622.1106335.2379450382728057793.stgit@skinsburskii>
-References: <178406760622.1106335.2379450382728057793.stgit@skinsburskii>
-User-Agent: StGit/0.19
+	bh=aW/VhQGKLT7lo4RL60Q9vlfIJhM19IRBW2Xc6k3j5aA=;
+	b=l8Qvkqy5k6uK+zjl3VMdy93fKLuURQiTFpeWewPla9QB/MnjRQ2SMikM1MhZGCpMobDch5
+	KYfz9qT3tKxF2boAPYzLkYHUKtZWaNe+in9WyoS02SptsqTwCLnA0BOx3oxEUQjxsxjXyE
+	xYOd8SCb8NhqXbHKhsZryoDGi+UFuBw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kC//weSt";
+	spf=pass (imf25.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784067778;
+	b=2bssG+PqY5XmWEkPB/H6aNzmBAmdVUEzncRiQE590Bb1FLdFg1VlRBE1MFVPv9bdsKtKVj
+	zAxXXt5uyZ6J4vzoDk800JkzMGKyt4fDweO3gdliv3aWMWaLpTz1mRbZ81G30OiAgYBBVb
+	Vq8ZvZzZ+gfCGnlFsK9HPLw965SBBuA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C6FF141180;
+	Tue, 14 Jul 2026 22:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D208D1F000E9;
+	Tue, 14 Jul 2026 22:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784067777;
+	bh=aW/VhQGKLT7lo4RL60Q9vlfIJhM19IRBW2Xc6k3j5aA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kC//weStXk5f3N6WZzLP0YLgvU9fktRcRiiMLCE5kGshiYa1KIxXg/9Bw7q5Ofqva
+	 3TVgHfl3KPemY8C7xjEeCt8ud9H4K/0IlxLbd3S2qNvBAO//ad8IF/JNSzvvoAmW0p
+	 NBA7wBiag/P4uG8walzTY/9BXlP5CF75pMQ5hA/WLJ8XHETIEjg2nhoAl3ht9BJuDM
+	 eH7f4ZWBfbpn3FC867t2mcdvwML0HaUuyVqAwKnorYZ9K9zrzNvr3U3c+VBB9jqSOz
+	 rdDF1enltkZ2LSSqc+GLIGA71bOdngTjtLiSSapXQ2gJjKNoo5NliTTlPAwt9wy/Ct
+	 ce62BOPi0BRYg==
+Date: Wed, 15 Jul 2026 08:22:36 +1000
+From: Dave Chinner <dgc@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: brauner@kernel.org, qi.zheng@linux.dev, jack@suse.cz,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
+	hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com,
+	linux-btrfs@vger.kernel.org, cem@kernel.org,
+	linux-xfs@vger.kernel.org, shakeel.butt@linux.dev,
+	hannes@cmpxchg.org, riel@surriel.com, kernel-team@meta.com
+Subject: Re: [PATCH] fs: push nr_cached_objects memcg gating into individual
+ filesystems
+Message-ID: <ala2rDHrFDjql3Qg@dread>
+References: <20260714101454.1202449-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714101454.1202449-1-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5FEEA40004
-X-Stat-Signature: 7oz5nmc4ck18n66t4daijsppwk4x96fm
-X-HE-Tag: 1784067713-742018
-X-HE-Meta: U2FsdGVkX1/qGyfOBcxL3QRZ1ykQTtRO5JXUf98UJ6aJeJ/xVU5pK+Ieh4rja6nCozVP/88hsvJs9lHVGgUq0wcWs2itaeIAsfM6i9OzwiGW4SJFqTE4pyQnpdp8e//3GdFcLcBGSwqT3Vh+/ZbzBlBCYo7ymqT66iFVc9gbhCWF5a3t/NKqKMkc2GLk+CgUyH2wGoB03lXZL4tf94KEbrG9TqVQHhvV7r/sn7EAIZ2zZe6DRDrl9cceZhQS56UAPLO353CmkSM/i0JsHGum32e1/+SrVTPRkUMWTrtaUwkNL7qrmNyj0Eo2veJZllTXBnbn91hwEC7kbQIT7wGLu+CS2M5cEUNsX2dOsEos5XLRRarHWliewY/uIknq0W4v9PrJ73A+yu3jeLdacvsjbnL316cPg12WPPivWCIu10uksc87TnrSEvG74EHTldQ9aePd6/ps87zdYk9XJIm8CQdgnpIGNeb7tOLCLoFyx2RDqPXaT37Sq+vQ2Gi32PuKIW/Wt47G9QtXdK88VOQPcL/CqjsPsT2RvQ4vORJi5oyswHsVUgyrc7VOKwpUCY5ft6pa2w6UzJeb932BgUlwFDuTJB4K3lneRU5rxCf9uDfTA18LYmqq3Wv6cFVbHMPOLYSQVZCf6QDUmYAFR4INSIwbeoiRQSqjFKt80TavQfmu3mUgV2/XbQLsQFmvPBc0baA2lekjiG6/ggOnLxNKJsVSuPIGVPovjz3JV1Fd5UIZXy1HXdVEpgD6Da9aiBEZZdNsxCLp+yR1yLe8nrOainyA6u4nUKOmMRhyRiLwAWDIdmtCeCwUh88gQcHAM5IOc9qh0DDT+hfTl/3JvZ86J3IyWyKHPZOJMkpPFuvaxYTE6Tr58Tn86SBfsuR5MAOw6vWsugr5jimqSYS2XRZDRR1dLIMXSSiFLB7lFNsbCDGvA4CaEl/cWXaUbDJLZMt0GdopxVhjXRbbrL17dKg
- lSMEBG4U
- EHNZDcnS6/0CgY95UvpwXsjFBqdQqSUKq4xhWk0GRwDoe9eqHUpxhmACFiQIebCW1Je70ZVcKb4p0k3+GMPV24MS0pTWZd+YtUbMxx3Cod+rWq11bDOCPA9eFm/DKwT1Kba+r8hAMHTMuagz7hXv0dNztxjPuCPLQ8Jw4SjIlWdpGtxWKQEkVW8jeCWU5qLbxQfeK2bsjKPUK7qOUz7/oBsO1odQYxVLdFOdRzia/r05bwWY8aJQl7e5PySMR2eMk8/sW4stxanQm2SLZbWBd+BWFpW8dECvZRHhadqFX3AajjUYfixor+VcoCzfSomJtXAWtTcAMbO6GLZzWPDGBm0HDIFcdPgReFU3ulx/N0YZJMdYxUq+DxNwivfFqJACD6zP/Xqgx06XrgdIHp0bLFE0K86rWnDAvk6wgD/OZR+wwI7XKfbLFy7jnyvce6bcox6HTJduKhbzQoaWxD2vnxsPYKhv+ih9dggfQB6jw7uqk5lSjKMjoQzv/UMdQ4x0U3zP4fWTflLGaXhDtr77m8jyMvpQZqktfv2dgDW2Lz1n95nYJB6lrmm7FqQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C6EB4A0007
+X-Stat-Signature: zb1oh68zdezfxd7kzw9dywqgu8bj4t9h
+X-HE-Tag: 1784067778-986236
+X-HE-Meta: U2FsdGVkX19n2BDIeOuGYr4FUD3TFYGirQcM5wMdMVHCpjm9ZlL3TbV2uMjRPaHIWkHjKrWa4VFJL/xMiKrM1dhXLFjElgHzdRJLzDR/Ap8hVTxNt0lorgQAQxE1/180j1pI7kRKg2QtPPh5FZqsSwaYRQGwF4WOHHQ8GrdGHkVYHVeS9dUcbBR+DcjKJbjreeGwt0NXojA+Z2dcnMDpD869VSMKKvbcm4w0ABLkGhNmUWFZrK2/PYrxTD0Go4XdHJ9SDNwBo8G7qKwatEli4cABUSOwnrDFCe63Ve31zizmZnhyXFmDM9Y9N2O6vFXE31MCaN8mBQSZJuAAHq7g/f2XjlFRZC5HNT67rKcS0W/K+/2P4Qi07bIS8FMIyV0FN0aX9neAYGoPsZt7bXi5sAyt/+uKrM7rSdHvuJInhakwK798JKnOd4QYfa3KmM1IHU8NzpIpOXbqGB8nYASjdz8rTPZ9dUQ0OZtp+aKbxHi8Uq28Es4lAANP/NZkVyD8P6hWk1PqG0teDvyly2OXWMab/NswKAn6VvYx2tJxD1CTpJYsMRtvBDTss82qLbO0aDiYQ4OBJ8nVoIHS0FP2KGIK77MOS4GQb9ropfYr1qCDy4J78G3wWEn0AxSJFL3EKG1rz69M4B2GhV0Q4OAG5VcKfTQ2B4ikxHEQvH64o0a/stkuG8ZhwJ2x3YO0gvEu0DWhpA61d4LF/gR/zDP2Ycj55WjjECmYEyAktGxCceXa42C/Tu//f34uRccuPs5seSV6c6gRDwvATniX/r+Wqh/AOQM23WlSwQ4dHT40kujRuAtA0d/box48/33/gskOMZosl5l1/U8xBklhUP4EEUSqC7R7AkWiP/WFaVBzwClPlxqEBFwRE1jbDfmbCeCZziGNVN/vPqggC5ALOWky361/BkLLcR+tyDt5vDC6AKBEXDcnbAGqfQiV9Ejz6fFQTMKjhPZsGTMAhMoqFth
+ H79+3QEC
+ j/QPd0Kt5kBbB9jqXhGJxFbxj/mnwvlWcntU3iNbyLajxFN4nS8dm7/IFXaFbMULWjMB3r/R3FjucC06LGZuKdwJzXRiiCI0yP4jfXaQ3/0wBIWAuZe/9+Y04Oodn2ksk38wgy0mII8eUl+WRuC0DnuIObMtIfiaYg+HlhyYIzTMxNBfxQtsC0mHyvTjvG/w8iAgA0ugMn8/IStKLRreHIGZHfQL51rSrLoVKVUtP+0D9Jqy3kN+USxHwcmTLcJ779E9eFQeinulrNos7V754aH8OdmCrkTEVIDmNjv8KJF1yGi+jdZubVeW5+40InXDMiWEC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,99 +96,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The timeout passed to hmm_range_fault_unlocked_timeout() is a relative
-retry budget for HMM's internal mmu-notifier retry loop. drm_gpusvm was
-still keeping an absolute deadline around the outer driver retry logic
-and passing the remaining time into HMM.
+On Tue, Jul 14, 2026 at 03:14:54AM -0700, Usama Arif wrote:
+> Commit 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects
+> in memcg slab shrink") added a check in fs/super.c that skips the
+> ->nr_cached_objects() hook whenever the shrinker is invoked for a
+> non-root memcg, because none of the current implementations (btrfs,
+> xfs, shmem huge) honour sc->memcg.
 
-Pass HMM_RANGE_DEFAULT_TIMEOUT directly to
-hmm_range_fault_unlocked_timeout() on each HMM fault attempt instead.
-If HMM succeeds but the later drm_gpusvm-side mmu_interval_read_retry()
-check observes an invalidation, retry with a fresh HMM retry budget.
+I don't see that commit in an upstream tree. I'm guessing I wasn't
+cc'd on it, either, because I don't recall seeing that as a patch,
+either.
 
-This keeps the timeout focused on repeated notifier retries inside HMM,
-while avoiding an outer deadline that also accounts unrelated driver-side
-work after HMM has made progress.
+However, if anything is gating the fs_objects callouts to the fs
+when memcg is being srhunk, then it is fundamentally broken and you
+are correct to fix it.
 
-Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
----
- drivers/gpu/drm/drm_gpusvm.c |   21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+> 
+> That policy is really a filesystem-owned property: fs/super.c should
+> not encode the assumption that these hooks are never memcg-aware,
+> since a future implementation might legitimately filter by sc->memcg.
+> Move the check into btrfs_nr_cached_objects(), xfs_fs_nr_cached_objects()
+> and shmem_unused_huge_count() so each filesystem can lift the
+> restriction independently once its underlying counters/scans become
+> memcg-aware, without needing a coordinated change to fs/super.c.
 
-diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
-index b8f2dd9982f5..76e8a0028c7f 100644
---- a/drivers/gpu/drm/drm_gpusvm.c
-+++ b/drivers/gpu/drm/drm_gpusvm.c
-@@ -852,8 +852,7 @@ enum drm_gpusvm_scan_result drm_gpusvm_scan_mm(struct drm_gpusvm_range *range,
- 		.end = end,
- 		.dev_private_owner = dev_private_owner,
- 	};
--	unsigned long timeout =
--		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
-+	unsigned long timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
- 	enum drm_gpusvm_scan_result state = DRM_GPUSVM_SCAN_UNPOPULATED, new_state;
- 	unsigned long *pfns;
- 	unsigned long npages = npages_in_range(start, end);
-@@ -867,8 +866,7 @@ enum drm_gpusvm_scan_result drm_gpusvm_scan_mm(struct drm_gpusvm_range *range,
- 	hmm_range.hmm_pfns = pfns;
- 
- retry:
--	err = hmm_range_fault_unlocked_timeout(&hmm_range,
--					       max(timeout - jiffies, 1L));
-+	err = hmm_range_fault_unlocked_timeout(&hmm_range, timeout);
- 	if (err)
- 		goto err_free;
- 
-@@ -1459,8 +1457,7 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
- 		.dev_private_owner = ctx->device_private_page_owner,
- 	};
- 	void *zdd;
--	unsigned long timeout =
--		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
-+	unsigned long timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
- 	unsigned long i, j;
- 	unsigned long npages = npages_in_range(pages_start, pages_end);
- 	unsigned long num_dma_mapped;
-@@ -1478,9 +1475,6 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
- 		return -EINVAL;
- 
- retry:
--	if (time_after(jiffies, timeout))
--		return -EBUSY;
--
- 	hmm_range.notifier_seq = mmu_interval_read_begin(notifier);
- 	if (drm_gpusvm_pages_valid_unlocked(gpusvm, svm_pages))
- 		goto set_seqno;
-@@ -1495,8 +1489,7 @@ int drm_gpusvm_get_pages(struct drm_gpusvm *gpusvm,
- 	}
- 
- 	hmm_range.hmm_pfns = pfns;
--	err = hmm_range_fault_unlocked_timeout(&hmm_range,
--				max_t(long, timeout - jiffies, 1));
-+	err = hmm_range_fault_unlocked_timeout(&hmm_range, timeout);
- 	mmput(mm);
- 	if (err)
- 		goto err_free;
-@@ -1718,8 +1711,7 @@ int drm_gpusvm_range_evict(struct drm_gpusvm *gpusvm,
- 		.end = drm_gpusvm_range_end(range),
- 		.dev_private_owner = NULL,
- 	};
--	unsigned long timeout =
--		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
-+	unsigned long timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
- 	unsigned long *pfns;
- 	unsigned long npages = npages_in_range(drm_gpusvm_range_start(range),
- 					       drm_gpusvm_range_end(range));
-@@ -1734,8 +1726,7 @@ int drm_gpusvm_range_evict(struct drm_gpusvm *gpusvm,
- 		return -ENOMEM;
- 
- 	hmm_range.hmm_pfns = pfns;
--	err = hmm_range_fault_unlocked_timeout(&hmm_range,
--				max_t(long, timeout - jiffies, 1));
-+	err = hmm_range_fault_unlocked_timeout(&hmm_range, timeout);
- 
- 	kvfree(pfns);
- 	mmput(mm);
+However, your assumptions here are incorrect.
 
+That is, the XFS fs_objects implementation is intended to be called
+even when memcg shrinking is occurring. I architected it that way
+all those years ago when I introduced the fs_objects shrinker
+callout. i.e. XFS is not aging reclaimable inodes via this call - it
+is purely an expedite freeing of recently reclaimed VFS inodes when
+there is memory pressure of any kind.
 
+Reclaimable XFS inodes are still charged to memcgs, but we don't
+track them per-memcg because it is extremely inefficient when their
+lifetime after being released by the VFS is usually less than 5
+seconds. Indeed, this low level cache is not for working set
+retention; the VFS inode cache does that. The XFS inodes need to
+through a GC state before they can be freed, this takes a little bit
+of time, so we don't hold up the VFS inode cache shrinker for that.
+
+The VFS inode cache shrinker is memcg aware, so it only pushes
+inodes that are being reclaimed by memcg reclaim into the the
+reclaimable state at the XFS level. Hence we don't need to track
+reclaimable inodes by memcg - we know that memcg owned inodes that
+are to be freed have already been pushed into reclaim by the VFS
+shrinker doing memcg reclaim. Hence all we need to do is sweep them
+and free them.
+
+This is what the XFS fs objects shrinker does.  It needs to run in
+conjunction with -any- shrinker context to immediately free the
+clean inodes that the VFS shrinker released that pass, and to
+release any of the recently released VFS inodes that needed GC and
+are now clean and can be freed.
+
+IOWs, the XFS fs_objects callout is not "memcg-aware" in the classic
+sense of "it tracks objects by their owner memcg". However, the
+-combined superblock shrinker algorithm- is memcg aware and that
+results in XFS only seeing objects from the memcg being reclaimed
+transitioning to RECLAIMABLE state which it then immediately sweeps
+away.
+
+i.e. the architecture of the VFS and XFS inode cache reclaim is
+entirely memcg aware, and that is why I implemented the fs_objects
+callout for XFS all those years ago. It works efficiently, it works
+correctly with memcg based reclaim, and XFS doesn't need to care
+about memcgs in it's low level reclaim code. Win, win, win.
+
+> Behaviour is unchanged: calls into these hooks from shrink_slab_memcg()
+
+Behaviour was broken by the above commit, it needs to change.
+
+> still early-return 0 for non-root memcg contexts, keeping the shrinker
+> bit clearable in each memcg's bitmap; the global (kswapd or root
+> direct reclaim) path still drives them as before.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>
+> @@ -170,19 +169,6 @@ static void super_wake(struct super_block *sb, unsigned int flag)
+>  	wake_up_var(&sb->s_flags);
+>  }
+>  
+> -/*
+> - * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
+> - * operate on filesystem-global state and ignore sc->memcg. Driving them
+> - * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
+> - * per-cpu counters and queueing duplicate work: the actual reclaim happens on
+> - * the global path (kswapd or root direct reclaim) regardless. Restrict them
+> - * to that path.
+> - */
+> -static inline bool super_fs_objects_eligible(struct shrink_control *sc)
+> -{
+> -	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
+> -}
+
+This wrapper should still exist (with a better name) so filesystems
+don't need to open code memcg cruft.
+
+-Dave.
+-- 
+Dave Chinner
+dgc@kernel.org
 
