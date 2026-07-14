@@ -4,101 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDA65C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:24:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7007C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:28:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B460E6B00CA; Tue, 14 Jul 2026 10:24:57 -0400 (EDT)
+	id 9C61C6B00C2; Tue, 14 Jul 2026 10:28:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1D796B00CC; Tue, 14 Jul 2026 10:24:57 -0400 (EDT)
+	id 977536B00C4; Tue, 14 Jul 2026 10:28:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A339D6B00CE; Tue, 14 Jul 2026 10:24:57 -0400 (EDT)
+	id 8664F6B00CC; Tue, 14 Jul 2026 10:28:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CDB26B00CA
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:24:57 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7053D1C0322
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:24:56 +0000 (UTC)
-X-FDA: 84987603792.22.C0C482D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AB00940007
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:24:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVUo0AzL;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784039094;
-	b=YzQVvFUrJJUJKALx3j/5Y7UAlNXyP6vAU3XbBMVrY6afNQxhLbcFVAW19ivNtZdkV+1b+r
-	OsYIdW0NAnYueNePUWpo+NpaxaDcd1s96m69ptS+z7Z2w9tSc8YmiGYgstrGoNjL+hD6pj
-	KPyu3TNFTCkFdY6Hw+nNY/laE+vBJsA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hVUo0AzL;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784039094;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5290D6B00C2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:28:05 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C31CC40393
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:28:04 +0000 (UTC)
+X-FDA: 84987611688.06.8EFB306
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C59021C0009
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:28:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hMu36plc;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784039282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pyz6EaO/6llNSaFaKVzJaaM9NbK8ZwsmK152gESqL9k=;
-	b=tDUTx0DNr7bNI5q70G1C+SyN71Pkjc8Zt+Xw72zYAjllvrv4typ/mc6hkcYvdugGXQRTU0
-	0+6r1dAWct3nzW22pfw3HYg+3insIxg0Gq9qtPCQzoxXsipj2PzsAHz5Gxk4Vu1KP/13jQ
-	V91902CA+V0mDi9OMKit2fh9GxrEuPU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E03D840E13;
-	Tue, 14 Jul 2026 14:24:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D781F000E9;
-	Tue, 14 Jul 2026 14:24:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784039093;
-	bh=Pyz6EaO/6llNSaFaKVzJaaM9NbK8ZwsmK152gESqL9k=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=hVUo0AzLzX+R9EBHPvMHuu0cTkQtJ53ePYvEyPjTWz7YiJbTHWxyOHSYmNMfFQmDZ
-	 r/FTeA0M/IXuLDuVpVcgzOAWEE5XtGlDITli8gGx3LA5aO3Issy3YPoLcj3PjNQdkL
-	 RHGqQVzTKtkw4tbs+S1kvAeVBmspn0RdCpwc6BX1mC5Jwg+bNBUm/MnFwWLOerWGHo
-	 VSRpau2/oUjcbMMDULechBup4aW4MCgelmz2WSl/VO1Jfqg9fsUoRe7hW+ezRVDQ4D
-	 Qt7homRTMFD+rbEo9flhUpP+J99lOjf83PrPrhkPH6P3t2pVxhGKjQs5x5lJ2SPKEB
-	 sN4JImhahLfow==
+	bh=n4B/kN2tOm8HvOthVfdrwOHJC+6JLP/8BE/hz7vCTkg=;
+	b=6FoGVInHUaKmH96J/hfLmB8x65Q68JZUYIUJfDIewuyLSWiJlyP0yn4enxB0im4qFOjgF/
+	jnSe7QvZnX6mRZmYdjpTDGmQ5pb8p3LgcEo19jHTcbbBrkcuF58fWpxOUePQq6qs9UWCLV
+	wEWNOv58HEDgx5m0rD4j29UbehekZ3A=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hMu36plc;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784039282;
+	b=V1CwoTUkM/ijdnyYG3cQur3pJgIn4xeTD10klzaTD6QCfY7PI7on+SjntyWxoyuGfysAPV
+	VhLw08zfI38zPdz/WNYbgmYETvfggIfXAI5un39uQ936fTFDsQZh4UxJC1X7gP6/cbUb8a
+	3oJlhooIAnEaFoxDrOm1GjOapMjLkXw=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c15a5b265so317361cf.0
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:28:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784039282; cv=none;
+        d=google.com; s=arc-20260327;
+        b=en0iQxmwu+ozyncEpHLHzYlV/S5gZ0NXGc+TaskUJypnxLavrg8p4qG6gCnfgoiFbt
+         M7YkjPrzHlHorwjRmEhyISoaeLvYkIhoi72dxwcO71oRtYoYI2MCPeFkfm8JgcSFUgXx
+         EBQ23N2v5Mt6v+xXF3QAytz1h005xgmwnK7kyQh9sxtv5aZpY0ypy/p/+dbalS8uMgGS
+         2+lW9GGRyI1BCKsQEFkRSRWFIvGtUnoyMPgQNR6vQdYw9qjAxI2JbiQs1+H5+bXsM8lg
+         xB+MXM7he6u3XzgTxL0LNqmp1z/0EstjyzOdseWeAOMuyZGYZjvF6j2ilD2oAChc00zr
+         1R8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=n4B/kN2tOm8HvOthVfdrwOHJC+6JLP/8BE/hz7vCTkg=;
+        fh=eLQggCrv16O18GVrARXMaVLt3nNMxgS21AQG2QlkhYs=;
+        b=h/KdsikqEaUdyGGQL0iAjsPqn0y+vxAwrsY9qP/1zxjxwREdcTWkKWVJL/OyVJChhu
+         5jPbOuLCeaGAjXdg7gF94zyZGABHfbdXBVqR0ejDdr9eWDp5fLeiOvYD2GNCD/Jo5yfm
+         xUFFqeggSRTR/NzzUYUzl0SslN8ESzqRrLgRUvViLxLrIx+ktY15heHOo1z5la/G9DGt
+         pKMPRETt+59urYk2knko9HHmQRaWPmQ6dtyeBH5Br5Rgl3bLf7JEewb7BoRgpGmCzltx
+         DZx/sphxXCnas6NqXBkv2qA6ZrOhiFTnfZF0CR2vUkshgDWHM+rJP0x6LZZwNbAKC/Px
+         42Xw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784039282; x=1784644082; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=n4B/kN2tOm8HvOthVfdrwOHJC+6JLP/8BE/hz7vCTkg=;
+        b=hMu36plcjTNnL8DU6Lvl4akiIaKJqYxQKSUQ6aSc89Sqml4fO4dx+dRuBHMzW+AcER
+         W/NmdthCWV7owKyZAds6h8mdDsItVKIqd/liRCFREUomGbFTBXtmZhBFXMqLH2jAUpVg
+         LtLEFcYAyVbHN9Qx+uJIoNBqI07U7fWABTSHONPT53D6UxAMiP9swxImQU8ImU667H4q
+         1O0W9PZAgM6SdYZM0iwTl3jedF22U8zS6KwhiKFH99NMUt64uBMVX2B+3K1uspvyiwi9
+         umCKltdMsmQZODwig4+9CnRK9Sz36S8UUHfaLmTkl6P9vuMg50E4hUGlPo8LsWiNiQAJ
+         RtMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784039282; x=1784644082;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=n4B/kN2tOm8HvOthVfdrwOHJC+6JLP/8BE/hz7vCTkg=;
+        b=Pniho+mEDDlLspIe1zlGOzyTF87Fdd6h5XRu4josYLGTZmZMr5zVGK8ASZkKPtt9a6
+         tW2inBzYJ37dE6W+w973ijfZsaZYEqHOPhN0kYaB4uzMZm+dlV2F1v5RaBDNf/Qzrajx
+         J7aQYl+hK7CfoWAA8Z9oapOSN0lgPCHc/mc+IkRHgin3hOS57BaITxDxWcWvYc3z2J2J
+         NGkW7BU/M6E8eHhQFGqMT/bElBeA9l8p93x6ClFMIAJIzJ59TzhK3X1U9WdvNdAUpv5H
+         1TKbubOyBfJkWyjvFDNsAfRPyTRtXAHXw4emrOECPWBiz593LDpOuBZqr2eOtDs6HDrq
+         Aoxg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro9cdj0BtGaUEQqWLc9DXyu3AcEwf8f/wAW5JInqDzIBnMG3RgAaALKXV//nYBA8Fzse1peHaMJHA==@kvack.org
+X-Gm-Message-State: AOJu0YzMqc3tcJwG11YwSmwGARxKff29U1sAWlSO25pdLOym06/qY00E
+	VloA9YY65BMApylvk6pg37mbSqhZjkE2czVmySCw2fAZYREZ+Wq8+AGvxq1xlA+jL6N/foRuVJp
+	RtHztNYYFDof+9qZ9XESSmPJG6NIuAnlOoWcdsKMi
+X-Gm-Gg: AfdE7ckPKvQOWUwJvxTcTcjKwwrHc0rLDPa/0vM1RC/7ODx3pRF/AnEOTEPM4wPyaKl
+	vGSir92749w+7WY2FNBYoeMiFRoEw8cOtQkDGUiTJNDQw6HrnttYxzk8+l5cuB1a8PLJsG+LNB8
+	viIjTeR9EiBN3S67yqAX7GMZkKrpyXwya0UjoblheLawknhcYFhm3ECDfkMz6pbHnvtlt9qZ4T0
+	R2CwViGul3OwgIuRn09XAxFrPteOiQ9rpvX0nuAEPl9AbgLqoYDqJ4LN8GFNahmVyDb8P8Snz9B
+	USHU6+IdXjFwn5R9Fm7ECSmTQSuy/wkXzYv4aA==
+X-Received: by 2002:a05:622a:289:b0:519:b82d:fe62 with SMTP id
+ d75a77b69052e-51d7bcc96ffmr14384931cf.7.1784039281041; Tue, 14 Jul 2026
+ 07:28:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm/kconfig: Drop redundant dependency wrappers
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R . Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Julian Braha <julianbraha@gmail.com>, Muchun Song <muchun.song@linux.dev>, 
- Kaitao Cheng <chengkaitao@kylinos.cn>
-In-Reply-To: <20260712093326.8313-1-kaitao.cheng@linux.dev>
-References: <20260712093326.8313-1-kaitao.cheng@linux.dev>
-Date: Tue, 14 Jul 2026 15:24:33 +0100
-Message-Id: <178403907335.85099.7801499875058888180.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1332; i=ljs@kernel.org;
- h=from:subject:message-id; bh=IJCgrcH6A9ig503egfKPpGBy1RiIJ/iQ0X6c5JCcFWA=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLC3JYb6DxbPsf8lHBIT352kaitznJHs8Y40z3MF286K
- C82qD/aUcrCIMbFICumyPL8i/j+IJGweZ0X/N1g5rAygQxh4OIUgIlMuMrwP+LHUt9eM5dZ/Zuj
- qp+yfg++7f+q4l+h+G69QxXz3yxsSWNkmHxTfp941mbP1qx1F6doP2y6s3frgcaLkjOOvZdfdeH
- xG14A
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-4-47c7bd138de7@kernel.org> <CAJuCfpFda=dEfW5Cr6ZPfOEq4nwgX-zox=QNTHc_hum07mFH2g@mail.gmail.com>
+ <121dda1a-f050-4035-93c0-6a36278e50b7@kernel.org> <87f607bb-3766-4b90-b3cc-a98d3cadf760@kernel.org>
+In-Reply-To: <87f607bb-3766-4b90-b3cc-a98d3cadf760@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 14 Jul 2026 07:27:50 -0700
+X-Gm-Features: AUfX_mxM6MKd6lYzY5gADqHjc7MtmsEzHEclvBmankGe7_dzOZ5a3j8Vh1Q1vaI
+Message-ID: <CAJuCfpGodo28+dZBJLkKPysoKg_XxMX55JrAH=Jx8OD2fLjzVg@mail.gmail.com>
+Subject: Re: [PATCH slab/for-next-fixes v3 4/4] mm/slab: prevent unbounded
+ recursion in free path with new kmalloc type
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>, 
+	Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AB00940007
-X-Stat-Signature: oyj9n1o4p1tncnqyxyng34sgmpod9p36
-X-HE-Tag: 1784039094-903409
-X-HE-Meta: U2FsdGVkX1+eHoFLcHnb9wwIyRipDzC1T1vW7UCRdoW90qQjjvdXWmECxj+sL/MJ+5ACrjSANCguhZz3UzNJkgO3GE3Gnv6aLA1uiiAtFXEisDD1gtdqluqGkTtlxcvxk/GNPfdoJO0puqEnvw1plZ8pXjwK8v1nmKY8zVPC53l08qYBGpUdNCFHeQTKTteI5VE8Q/amcgTFkIKiJv79CZK9U/6uD1FeroeWa+m/Pp9qN1o2tx32Pf1xNC3gnmFnYXLKI0sV1ZoYFymS3BfANzXxhgysLFmjT6fHx53Brz0RcudSo/h1uvHoNi7Zuja3LXOzprDiT4l/HF3ipZdtGZ1Bw+VxYG2pVxAAadTI+VOunIi1A2+mamntou+oLuKTLajxK0e0WYAeWKJ1FAdTK+ii88xLqGhpP2aBPa2T3UzxNaPTGsV6OsBuNNrTk3Mdc2VXWUqVKx6j0rbjzpSOw1qjMk/VPCyV6e/+qev25F1WLouGYxa9YyTFdSt132W3z37PjFq/+jTVU6WaTO07bRlDtK7b3uGOYi2RkzgZWyV7jT99x+IRU+QPDRal8590vTZqIGIjGEeOjMab1wnkDXXkCuVmuOyA1GHmi4EUZOyR6grStGA4TCMN0vyC9FiIDCKEZgjvVNOEMvsBKXzULL4xVeeurJkTxVQEIqW1JgupuCzCCcEbgcULoBEiacBmpDX3dHVPo+NtEkj4TLGhdIy6sNgD52RI1leKmlZSK727VwnpU5/vPrJIIoHJlqWjlWoLic5KTmO2ibvsGXI/K3lCCZtRsey3udSYQvskQR4/mab+aFwSdTKASgLv5O965aSid6Q1Jpuz/xsL0KI2YdJ3oUbwCLOdIgkDbVcY8LVQlwiLtzpweMOldvHkAWt8FcLSzgO+SFT3dnPwM6+5EgudGPuFw38dMqJl4GiGBLEZOt/UvunfqjaFyuvN3wE9g+yHDe6DYf7nBjSNpeM
- iGVn0EoL
- dAzuyovenRkglyEFXowbMGq+8ggpnp8EUY62DVZE+vInvkrp7dUkp1vQBASu0PZtHWmn42hkdxyZZDk905HjhTKMYLpQ2Ljpj0tryhclQO1TCeRG+rFCfZNxkHNfXF6Q8JkHqes4dWXlUtA5V258B2ZPMc2U5recjs8PtzHGp64W4uDL1h9OylB6NI0jg21c/534mLWUsH6h1pQrKR7B7AX/t19pQGJsippo3aQx3nZPeLkdfbTDLhpS0U6SOKglo7ygrUWo2bRONELY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C59021C0009
+X-Stat-Signature: q1pdpqgayxftiy95y78htmyzebd4zrb6
+X-HE-Tag: 1784039282-719236
+X-HE-Meta: U2FsdGVkX1+cIeOqL9yM20apignimFxk2nip4ZyyFdnSmbo61MpvPo+FMGuFGQG+/BKmb5IfNM65FercuKusAxFFCq3tY+m8sclijcbLOSHpRbQBSFJ3y2fuqkGfjihCHJzEKjihbDW7enEo0kxXs+g3urbwZwpK+ONEBQi3sK+VhUXeAqDfC6Wx48NjZjpJrmU1W7bmNphk1kx46Z/hGqrv8GtuTaFHf7eyCs/TL7dQK2AWnErfncZJxHNHxSVtvpXfcigK4wAypdDAuPwBfoKgVK/XyvB8ou48nWddTcD7qQNcFaxVuTzPXlPVAvB4Z+0IWEjMyt4bsex8dP+MBCwrGaLRHo6tzDuUNZWN5NyUvTrBWjNzOT4p04OSQSvwSytINtvFxKtsbHaYlhvl8xxg0Kd0P6AzFO8f3L7IVhxB4MsMe/KlhHZzJafZu99KSmjknXu3PflJmueyKvXDOVKAhs/W4gcSJJ/F9lnBXFVHmhgTQPSaAPKWwQ+cvkrx43VAEj/52cX8d0ZNCVODxtLjbVdifn5OELJV4eGx+FUvSmfQqSSc2WvH5MOBIUbNdnGd3Nva7LBn8vnYaJDV20lRtNWaZKPKT84aZrz0XhX7TBv6SXftKBBZBCbavVbjwkZ5hHic6D2ZOsDcrg6aiyTDbXnYHAC+Rx7wuSotQW9DPGHp8OPRsT2SMZPF7Ycim159c9raWjaSa5MeKN6XDdFVz5zIMZ74Re1gKHds1JJl/Vq8787jvwi390BCev4KDrLRGDxsCmIKaBiC6Zz06cClFOnmMlZo31k3b2bAoUaVuq2z1aut6DjsaYIEJ7RG5LBHYBj5AihD9TOu+8Ob6y0hgG6qip3fRfrejDp8nf293lmrdFDYEjAURC1+F8QB8uEt6lVg7metVsmrywJgW0+Q5cz8zZC09lVk/b92gt9bfkf6sjJr3EVWEkV095lZXCo+CzKR9NwuoyBaEjK
+ VBTX523e
+ HTy2xLJw8wzHOpQDpE0T37AGt6dvhPIAxqSTRhuxH3JDM8uQw538SK/Znlh7NO/gPm92dY0mGvaN6oK2jEzCkJEYwtBQCOQw1VT5uQ2/bKc9yVbD540eFH8S6MUWvGb40hoQ+68USqLxkJjeTaj6U1HIbitTaRMpN4HW97LSrsywcj8oK73Osxdf3el8WH2yyC8hAf1bc8BAojTqkLtiq8IiTwQjXzvY3lsEyk1TvrA/tyJpgd1sc1CCdjPU+H+oFpvsooMk8hODOI/c4aZbQu90ct0o4wIvO6eeL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,51 +146,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 12 Jul 2026 17:33:26 +0800, Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
-> [...]
-> 
-> This keeps the same visibility and defaults while avoiding duplicate
-> dependency expressions.
-> 
-> Suggested-by: Julian Braha <julianbraha@gmail.com>
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+On Tue, Jul 14, 2026 at 2:12=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> On 7/14/26 07:17, Harry Yoo wrote:
+> >
+> > On 7/14/26 2:08 AM, Suren Baghdasaryan wrote:
+> >> On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@kern=
+el.org> wrote:
+> >>> @@ -386,12 +387,17 @@ static inline unsigned int size_index_elem(unsi=
+gned int bytes)
+> >>>   * KMALLOC_MAX_CACHE_SIZE and the caller must check that.
+> >>>   */
+> >>>  static inline struct kmem_cache *
+> >>> -kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, kmalloc_toke=
+n_t token)
+> >>> +kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, kmalloc_toke=
+n_t token,
+> >>> +            unsigned int alloc_flags)
+> >>>  {
+> >>>         unsigned int index;
+> >>> +       enum kmalloc_cache_type type =3D kmalloc_type(flags, token);
+> >>> +
+> >>> +       if (alloc_flags & SLAB_ALLOC_NO_OBJ_EXT)
+> >>> +               type =3D KMALLOC_NO_OBJ_EXT;
+> >
+> > Hi Suren, thanks for the reviews.
+> > It's indeed helpful to have an eye for those bugfixes.
+> >
+> >> Why not let kmalloc_type() handle alloc_flags?
+> >
+> > Good point!
+> >
+> >> Other users (there are
+> >> only 4 of them) can pass SLAB_ALLOC_DEFAULT. That seems cleaner to me
+> >> and more robust.
+> >
+> > Hmm, there was a reason... *checks notes*, oh, there is no note.
+> > IIRC I was afraid of exposing SLAB_ALLOC_* flags to arbitrary users.
+>
+> Hm good point, they are in mm/slab.h and kmalloc_type() needs to be in th=
+e
+> public include/linux/slab.h. Given its usage in __builtin_constant_p(size=
+)
+> paths of kmalloc[_node] I would rather not complicate it (even if a
+> hardcoded SLAB_ALLOC_DEFAULT should eliminate the extra code).
+> So I'd rather keep KMALLOC_NO_OBJ_EXT handling hidden in mm/ as long as i=
+t's
+> possible.
+>
+> > should probably fine as long as it's not used in
+> > kmalloc/kmem_cache_alloc() APIs, not sure.
+> >
+> >>>         if (!b)
+> >>> -               b =3D &kmalloc_caches[kmalloc_type(flags, token)];
+> >>> +               b =3D &kmalloc_caches[type];
+> >>>         if (size <=3D 192)
+> >>>                 index =3D kmalloc_size_index[size_index_elem(size)];
+> >>>         else
+> >>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> >>> index b6426d7ceec9..03ecac12cd86 100644
+> >>> --- a/mm/slab_common.c
+> >>> +++ b/mm/slab_common.c
+> >>> @@ -957,6 +968,12 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_ty=
+pe type)
+> >>>                         return;
+> >>>                 }
+> >>>                 flags |=3D SLAB_ACCOUNT;
+> >>> +       } else if (IS_ENABLED(CONFIG_SLAB_OBJ_EXT) && type =3D=3D KMA=
+LLOC_NO_OBJ_EXT) {
+> >>
+> >> Hmm, you have to check IS_ENABLED(CONFIG_SLAB_OBJ_EXT) here because
+> >> KMALLOC_NO_OBJ_EXT can be aliased with KMALLOC_NORMAL... Could we
+> >> instead have a helper function like this (maybe with a better name):
+> >
+> > Hmm that's fine, but I think that bit should not be part of -stable
+> > fixes at least. Here I tried to make it consistent with KMALLOC_RECLAIM
+> > and KMALLOC_DMA :)
+>
+> Agreed.
+>
+> >> #ifdef CONFIG_SLAB_OBJ_EXT
+> >> bool is_kmalloc_no_obj_ext_type(type) { return type =3D=3D KMALLOC_NO_=
+OBJ_EXT; }
+> >> #else
+> >> bool is_kmalloc_no_obj_ext_type(type) { return false; }
+> >> #endif
+> >> ?
+> >
+> > is_kmalloc_no_obj_ext_type(),
+> > kmalloc_type_is_no_obj_ext(),
+> > is_kmalloc_type_no_obj_ext(),
+> > ...
+> >
+> > naming is hard, ugh :)
+> >
+> >>
+> >>> +               if (!need_kmalloc_no_objext()) {
+> >>> +                       kmalloc_caches[type][idx] =3D kmalloc_caches[=
+KMALLOC_NORMAL][idx];
+> >>
+> >> Could kmalloc_caches[KMALLOC_NORMAL][idx] be NULL here?
+> >
+> > No. KMALLOC_NORMAL caches are created before all other kmalloc
+> > caches.
+> >
+> > IIRC checking if kmalloc_caches[KMALLOC_NORMAL][idx] is NULL was added
+> > by commit 963e84b0f262 ("mm/slab: limit kmalloc() minimum alignment
+> > to dma_get_cache_alignment()") to avoid creating kmalloc caches of same
+> > type and size due to minimum alignment.
+> >
+> >> In general why do we special-case and do an early exit here?
+> >>
+> >> Can we do instead:
+> >>
+> >> if (need_kmalloc_no_objext())
+> >>     flags |=3D SLAB_NO_OBJ_EXT | SLAB_NO_MERGE;
+> >>
+> >> and use the common path?
+> >
+> > Hmm, but even without SLAB_NO_MERGE, we often end up not merging
+> > kmalloc caches e.g.) because of non-zero s->usersize.
+> >
+> > I think that's why we do special-case and an early exit?
+> >
+> > We could probably do some refactoring to change that, but in general
+> > I'm afraid of backporting refactoring work to -stable because I fear
+> > introducing very subtle behavioral changes that nobody would notice.
+>
+> Agreed, let's keep hotfixes as minimal as possible and refactor later.
 
-LGTM!
+Sounds good. Feel free to add:
+
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
 >
+> >>> +                       return;
+> >>> +               }
+> >>> +               flags |=3D SLAB_NO_OBJ_EXT | SLAB_NO_MERGE;
+> >>>         } else if (IS_ENABLED(CONFIG_ZONE_DMA) && (type =3D=3D KMALLO=
+C_DMA)) {
+> >>>                 flags |=3D SLAB_CACHE_DMA;
+> >>>         }
+> >>> diff --git a/mm/slub.c b/mm/slub.c
+> >>> index abe748b7dddb..a34f9b8770dc 100644
+> >>> --- a/mm/slub.c
+> >>> +++ b/mm/slub.c
+> >>> @@ -2168,14 +2132,20 @@ int alloc_slab_obj_exts(struct slab *slab, st=
+ruct kmem_cache *s,
+> >>>         unsigned long new_exts;
+> >>>         unsigned long old_exts;
+> >>>         struct slabobj_ext *vec;
+> >>> -       size_t sz;
+> >>> +       size_t sz =3D sizeof(struct slabobj_ext) * slab->objects;
+> >>>
+> >>>         gfp &=3D ~OBJCGS_CLEAR_MASK;
+> >>> -       /* Prevent recursive extension vector allocation */
+> >>> -       alloc_flags |=3D SLAB_ALLOC_NO_RECURSE;
+> >>> -       alloc_flags &=3D ~SLAB_ALLOC_NEW_SLAB;
+> >>> +       /*
+> >>> +        * In most cases, obj_exts arrays are allocated from normal k=
+malloc.
+> >>> +        * However, normal kmalloc caches must allocate them from
+> >>> +        * KMALLOC_NO_OBJ_EXT caches to prevent recursion.
+> >>
+> >> For debugging it would have been convenient to allocate all obj_ext
+> >> vectors from dedicated caches... Maybe we can do that for
+> >> CONFIG_DEBUG_VM or someday when we add CONFIG_OBJ_EXT_DEBUG? Anyway,
+> >> not really a complaint but a wish.
+> >
+> > Vlastimil and I had a conversation on always (even w/o debug options)
+> > having dedicated caches (primarily to separate lifetime and for
+> > simplicity), it would be interesting to explore.
+> >
+> > https://lore.kernel.org/all/2436707a-b6ab-45ec-98e5-538e18589462@kernel=
+.org
+> >
 >
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 4efff892820d..eaff45c9f7b7 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -591,12 +587,10 @@ endchoice
->  config MEMORY_HOTREMOVE
->  	bool "Allow for memory hot remove"
->  	select HAVE_BOOTMEM_INFO_NODE if X86_64
-> -	depends on MEMORY_HOTPLUG
->  	select MIGRATION
->  
->  config MHP_MEMMAP_ON_MEMORY
->  	def_bool y
-> -	depends on MEMORY_HOTPLUG
-
-Honestly I hate that we have both if and depends on, I'd rather we just had
-depends on so we had consistency everywhere :) but it's not your fault, just a
-gripe with Kconfig in general! :)
-
-> @@ -1391,17 +1385,15 @@ menuconfig USERFAULTFD
-> [ ... skip 12 lines ... ]
->  	  purposes.  It is required to enable userfaultfd write protection on
->  	  file-backed memory types like shmem and hugetlbfs.
-> -endif # USERFAULTFD
->  
->  # multi-gen LRU {
->  config LRU_GEN
-
-Cheers, Lorenzo
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
