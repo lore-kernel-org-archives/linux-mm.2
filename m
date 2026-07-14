@@ -4,102 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0336C44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163C1C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:17:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A77B6B0096; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
+	id C514B6B0098; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87F156B0098; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
+	id C29016B009B; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BC3D6B0099; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
+	id B197A6B009D; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 43DFD6B0096
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:17:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED8C9140385
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:03 +0000 (UTC)
-X-FDA: 84987281526.23.2908F36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1CD71C0003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daQnjhci;
-	spf=pass (imf22.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784031422;
-	b=J79vPiDd3ptWfwgPz6X6jqFSc92hx/A4+IsW+ElpvAWNGAnjpWTBwp0itnTsazMRJ0NVyy
-	b0q6rNjVsimWdmuNwxtL4+fU30E4sAVQz6uKcv0cfke8lYuT8oNYexu8hqpGVvmc54DNQo
-	BtaDp9VD1vdw4Vk/UHKINJpUbrFqhdQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=daQnjhci;
-	spf=pass (imf22.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 87C966B0098
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:17:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BE121603A9
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:26 +0000 (UTC)
+X-FDA: 84987282492.25.5F6F50F
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 255AB1C0006
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="0 6Cal4/";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=PUhIA20e;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784031422;
+	s=arc-20220608; t=1784031444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ObYWkLNfQi85p38uahLx6yranNyzKYkaSbUyvi+K6ZM=;
-	b=ofBeSMVawGJvisX75QuNHvbe7pYjxJGmRbyq7yaYXCXthGnPF62NI/2ktU9fbXEGkAUXtU
-	OxhZrV9D8ciTvn0e+JBlqy3g5W+HqRYx46kvCL7AhG8etX4jaQoLh6RuPhIeETrMsNsSCi
-	PEqc33iegyGXESsj+Jt9g1JIgdHcYdY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7514E601EC
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6861F000E9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:17:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784031421;
-	bh=ObYWkLNfQi85p38uahLx6yranNyzKYkaSbUyvi+K6ZM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=daQnjhcicbJzzzDaAuFYC6b8ZcYAs9CAE+dZjOfq5dbSgkVQwiNPgO9MRAxwXqH3M
-	 frDdW60C9rIy4AQot91BiEaZCb0SCnuGD61TraVaNNcc5VsahjP/J8WpPGZthzFyE3
-	 wqHvAQmiLyFXK8cFDxO5QeMIdXDFc7fWF/UcVBYpg8XrvEZIMixtV9kxHwgSz4HZvR
-	 gJzt3e4715WhNhMLe2N7EbbM8orlnN7teYudfE692wxRhsI1aVImOeJaucjq2DZ2/t
-	 QC7jxAMJ+OrLhzuv9LF7i3GZ9sqF1S0C/Ie48KpNLLEiDr5Gb8IRo9oVZx9NVlnO7b
-	 zZFswpfh9K8pg==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-698ab9aae16so1692385a12.3
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:17:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrR/7ATZUa/TNY3lcpxDj3svKuOUe9oYTUr797hjobVnMv9S27LxehY82cw8BT0jODOJteSAkEKNA==@kvack.org
-X-Gm-Message-State: AOJu0Ywzh9EM/pKQYrnQhHCJ3PkUyPHvEF0JfJXOTyGkDRfF18whdu3R
-	ZAKuoDCxOrdgotlJBA1h7hlGnfjqxVO0cq8W/Sv89CGI74R6eTT5TXmL2LRYLh9BHSa0W6e33eK
-	SOknvBLge0eK4pwCEyLWraAmAOshh3YA=
-X-Received: by 2002:a05:6402:5187:b0:698:5610:76e5 with SMTP id
- 4fb4d7f45d1cf-69c5ef85585mr5895270a12.6.1784031419744; Tue, 14 Jul 2026
- 05:16:59 -0700 (PDT)
+	bh=1ihQ95OjmEKT/BSLmlhjYTJrT0Ye20Wr9cB27N9s9Bk=;
+	b=g4Mvi1F9T8IcjsR2gHJLtJdFyj9dYfWVQrSd0+4lP3yuf2Cj/0iQzjqGiKGANoscMsfRIf
+	uf8yKvyr70yXk3WuZLLl6HxRNC2/kR3yzjJd/fWk6zUJO8PgX8O7p+1js/Lymts4OoIP9H
+	bOigXL+prOlnMklYrell/wPMhvOHTM4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="0 6Cal4/";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=PUhIA20e;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784031444;
+	b=gwB0EA1XIp5h8ug/5CG7LD60STGHxYbV5E86Xc3XQ/S78kkO8r9F4F90OeLK8unGO4V5cf
+	d9BR/wWByJv4YAgRJANyA1bpLPvEZPks+SE2xyiqbEhsZcdKQk2/xBOaWHm2J+u9U2Lfv0
+	z4b3C8g20j1ZwVOaMx/wCjUBMHYgP0Y=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 46AAD7A00C8;
+	Tue, 14 Jul 2026 08:17:23 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Tue, 14 Jul 2026 08:17:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1784031443; x=
+	1784117843; bh=1ihQ95OjmEKT/BSLmlhjYTJrT0Ye20Wr9cB27N9s9Bk=; b=0
+	6Cal4/nesLwm6f4mE6byhD/laj3yYfNDmPPOa9oRgs/u2iLf+vvd9RRYQp+QVYmD
+	TBtvTo1oLURTI8Y3NirZMchM2tsm01fBVpF33dabcJeHZ1zCMDvVvIbjyADncQH1
+	dIDuYC75hnIUdqxzuetfpUKfQooixGaeI+A+FGOEnx8eMw4rcfj467Si9RtsVdmw
+	DY4GVf3AjE8xCR+GAStTKCYaqZjz4yw5USOtF0srhoRLUG/+NRvnp1IuDIxopX9P
+	h2VbINuLD7sErXZTnQoDPGL13dHtcDIenWOc5IR6pmxbIKvXkUvjgkGX31+uzjKq
+	ypiodWU/J+vNtXxOl+w2Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784031443; x=1784117843; bh=1ihQ95OjmEKT/BSLmlhjYTJrT0Ye20Wr9cB
+	27N9s9Bk=; b=PUhIA20e8K7OeGxDxE9tB+kii0iiNthFS3tNWnYGWvF69vWrCHg
+	nUqBzU2Talu06xr8VfK/XEIssnThAgrgl3h+gwHrS8nvc6nRIR1/VtPYoAndL3WL
+	1NmRmnCu9+Y9BF+skcd3Sw1VzvIRpakPSppMZkqoRM0BtBZnBcm8gMlmWFIkXOdN
+	FAdtXqwsJ1TCaa1LVBJY300Fb0f+bD4uotZVB7RsYYK4p7soOJ3kUj6kTi2zo+NI
+	kQqfVm0kMByYkmEs32csXKloHxBHohv6HpxwnHoVCVk7DaYYMuzSqFQfuXNW93cb
+	WhuAKdOzmQidOjeji/dD4ZSvBItYMkFfz2w==
+X-ME-Sender: <xms:0ihWaowxuunsTuBeLYM64Y_pCVL57SH61_FLnKHXnOoz5ftNHAQhsQ>
+    <xme:0ihWarf7pbGVtMthX8Z4dsQ7zBY2JlhewA4wzj3W8U7PHLbIT6Fp5NmwzY2u8y1ki
+    mIuiXjgHr3q2ktye98mRJVmzKhpIktBP_lAPaU1G04G6b3sPG6YVbU>
+X-ME-Received: <xmr:0ihWatABuD9zJ6Bu6CZ_e9o_OUmJ34B8obfYy28j5eunXNjrSD8qHJ2U3Ek2Ug>
+X-ME-Proxy-Cause: dmFkZTEsdwTDbwuIWMaB3+OXPGbxQuvxRaMxz2BOP1rFQ08rEyIz04CcI9S/WgIWw3VDyb
+    r4P2apzfU0OMAfbqvacRmLSnfJbzGfTEEWb1kLxSzGi9CSZWww7f7fxiGKLyrwLzZ9cRtY
+    Mi7ukQQ96JKmjFzvuZvEXKfy5SWBlp4NZ+4aUqnacz0SDWDJEu8taDd6kaDX6SZHmcnDQ7
+    +FeTxdrFeppX8uwu3EYrS7/1PEAJ/7A/cmRcog8SWn9OVYoHIpy6DT+dSAEfDYj+bmVysd
+    yHadjryjrUKxO5MX0AkZv9qRtGied6s/zaQRac10nfWloqGoYzpTNF9vTE/jJlRpYAViH8
+    SR8QnHgh4wH2LQigWB5QEEKYJXjwWBTSf3wH7d2ovgxVvZ2b20RvqGcks7mBlLGTnuh7Zn
+    QT3bw5Tz9rbkLUJsgbOd2IxXN3nIsbxQq4flRncvqsvtxawA+wjRAGhI03aWB0NqiuKq4a
+    6Hp903DMQcumSBBNTUw0kShN4y7N7+f8O35aJyv23HEyog+z5Z5jTurks8/zJTP5IsJ6iY
+    aNWMuln0wOVpx9Vc3qmYIIyl5cr+zisAgH7eF2dLJPL8N4vzV2bUh83j7IXxnGFGwfjLQj
+    jt2YmvR2slHczMGvfPV5s+kwj6JJWCC5P+lPlWDZxo5n99fbE74cbm8NmwZQ
+X-ME-Proxy: <xmx:0ihWav7eCkew19q3Tdo7e-Hy8Xd9FeW9sdeUl6puwRjiUDHG89HALA>
+    <xmx:0ihWamdjzwwwo6txrrAazMA9N700615rehIpkUTqsX-9PcrKVvm1Ww>
+    <xmx:0ihWaltzGgO40_9ByjsMesEAD5GEvrd0RY6TwUn1cnLTzCpPFCTbbQ>
+    <xmx:0ihWammxyYIKuaO7aDTFrSZSqKJVTGPf8noe56jh2d3n9HJi7fSOxg>
+    <xmx:0yhWalNWD7NJXKa_9z8QIUpLR6xTslJ8SLDCTclYyA6zsOWxBKWxrpxf>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 08:17:22 -0400 (EDT)
+Date: Tue, 14 Jul 2026 13:17:21 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Hao Zhang <hao_zhang_kdev@163.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: thp: unlock i_mmap before releasing split folios
+Message-ID: <alYoARy80Vb-X_nj@thinkstation>
+References: <20260710071344.GA106129@zh-pc>
+ <alDSekC_5t-29vJS@thinkstation>
+ <alEWEColDdwQboYX@192.168.1.215>
+ <alEg6ZPc-ao7s6o6@thinkstation>
+ <DJXXKH4KOBVQ.2I9NU3EJL88HA@nvidia.com>
+ <alYNlDNMQy0Fl2VB@thinkstation>
+ <1fc81157-824c-4296-ac5f-e8965f64597e@kernel.org>
 MIME-Version: 1.0
-References: <20260601092823.110362-1-dongtai.guo@linux.dev>
- <20260601093930.112758-1-dongtai.guo@linux.dev> <2vxzjyqzj8s2.fsf@kernel.org>
-In-Reply-To: <2vxzjyqzj8s2.fsf@kernel.org>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 14 Jul 2026 20:17:25 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5B6Mj2-AffkstJ4f8EEmvvPOGXoDy2QNudKD2kSz2XkA@mail.gmail.com>
-X-Gm-Features: AUfX_mxp11E4giDW39QHMMI9j_IZOTy-7xjXpv5wTuK8FeqnLx4XCv9zSCzZnnY
-Message-ID: <CAAhV-H5B6Mj2-AffkstJ4f8EEmvvPOGXoDy2QNudKD2kSz2XkA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] LoongArch: kexec: add KHO support for FDT-based
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: George Guo <dongtai.guo@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Shuah Khan <shuah@kernel.org>, 
-	George Guo <guodongtai@kylinos.cn>, WANG Xuerui <kernel@xen0n.name>, 
-	Alexander Graf <graf@amazon.com>, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, Kexin Liu <liukexin@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1fc81157-824c-4296-ac5f-e8965f64597e@kernel.org>
+X-Rspamd-Queue-Id: 255AB1C0006
+X-Stat-Signature: bsrj1yxiqige3x8xfbgit31ernobyeds
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1CD71C0003
-X-Stat-Signature: gk5ryh6pqufeejmdhtstn4yxp6nzxr5s
-X-HE-Tag: 1784031421-323860
-X-HE-Meta: U2FsdGVkX19TMt8nJIYE9ttKHqcTURAGa0tmpBYRKDI1WqyHMULyg5LdiEYnoOT3XE8R75jteDtQeem2g937vEISY+L55tJz6Ir7hWoE7wjalA1b8m8A/FAI2JQjivsUkwdzHtwv2nEySJzAhtkQCWSclUXYr6Y2ldH37lIRc5bdZebodLCK9sJ+ASwybyYBCW0wwa7oXMs/u0hZr0nndk82c1jnTqXawdHYHtkzoPfPQDCLdFhbVNxM4cVtP1FlJkHDD0HBPsmVOYe3EQ8s/o0y/tdyMhKyuWrzOjZI/zoZcDjEgP7/dNI2go6rtc7ZOOPxgdBh3AkKb2ma9FT/DRxwB/JIHyKieINs5mtLyeY/O6aL6GRVCtro23D0tBDAiDCUVjmnrSxIVS+UHNOClQoyTwTm3SEzkRYAoGyzNaXHGiCzTW2GTJ1HxfF4Hdj+xvh0Ll6ODmTNKbnIxR9nkeEyN3S6RxODUZCIiFUgB6bDVhqDUlLhyAzRo/kWVHRl4Pieeruk3RkV82lqoeM+hdYPXLSl/OOLr8VYbdIOameL5DkGmgR/6di4JsKBfzf8wzzmTQFTc9g/LMfFloFQbztBEXIlGQjppsTxQaSeyj3YuuxwtCcew9pI1oKeR/kX83zyJeGRelYELO8kEmhzHOJmtcwUjjPTNUZ/1NjPUh8wvwYhPgNOq3U/vfkxF0yp9oyMhDLXB4P2A8Y9VSW2203+86ruNHE22wL6vemAhnc09DYHb5FgG00GWUkk4ljq6MS7c4Ey2Tt5Dw1tRc8upRg/67pFOEs/valfgRqOqR4Pt9mssSi7LrsjiPqWejNDdKicLL2gjFnoTXGuOOPSEYmtIIcJSDGAWnjLYxgqCwIeyM9cBXk+ZSNFJFpXzWBdYtV0TJao+aYw1MyelUPFrI5uFdFCZ8h9VIc0qv0vNjaBdBO3RzK44m3gtb5qD7oFgQcjdavpRPz1t6l+BKP
- e6Sbfkk1
- 9aPnRPeO2eVAXeyKGLS03qr62cqWZsJaSFicV5Ye2EJrQNxIsRQwPN135Z0QMqb5hagP73CcJPt1TCyvNBqMrAB5R734DRuQ/TnLQLTOSQmWv5wzwFJS6TETyDATFJb9PsbQIvAgQNALT+/s+zQKpTfJTMoQf96zx3LBPd77ZrnAEJUL9xQu7wlNxnX6cNQXx0ynzh6cb4ns/OXiCyfRJtsgk8KXgNBupK1XsPbSNktMBxSK0f5yr48ekKO71BmVOO+C+NKmzSctZTpoq2B4bIVX22XF0jJUASau3E4HW0vYKcyZGPW2ApOC6J4KreTWzsFyO25XcqgZAvecMSnlogLyg/LtfuDcZXgjKc9p7roFC6MFcIJ4rz3orsQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784031443-724305
+X-HE-Meta: U2FsdGVkX1+hW/06mtsomhifH0mHkzHa+OIVXNEWbLv34Bbv6G3+K1Fy0QOPriKeyWlVQIKLG1awZ90o/A5LVl+tNZN7Fl/S/tpcDIYuxXFdtckqVuwQ+dPVAvRdgNurpEycm9bJpbZe5b4hfzioHjMpdQIu9XLQCdcIKvSyR6lDZgG8Sh2NgidSDX6Ci07h8eXjWRVGm0fVpbS6AO9Yjug2z6vPlaE+zZIzNGTInbh6eKO97wFKGiPYrrvH1DQ4ACrCpairRh3ZSkeg1s5GqxdDXflVctxuN3qxMArYlg9eKM+R0LsqffZyiY0ozMP8AYTGwHi+0ew9UEfCIJryup+IhRTWfQ6GGXh0yJIWwM/9qmfosOW0b4HyTJnkxZ2CNeQlG6xrZwgA/JoJapy82x1YQEl2t7fV/Dl2k3IGvEzPffU0421mR8hQWL7XSjbjaspAQhi+8jpfwcfj0Cu6O7AT9vLDcQnGUPcxjR+Py3uJuAkKC3AxE9XGIaY1RGL3UPybP7oiMeKO/3Mub675Bsi0WJ5uysbddItNzwV6D3TRTEhv2OZN3Gx+tYP7Wuzri1TmdbZC04M7BDjvPa0vovSvoJyiTpk5c5f5+waHXk3fG/03q3zuKV1yIe705YQu4UC99pLBTHeVnfITHz8XtNkWk4+X4y3rVtPL6b0L+rEEdpGqbRK9g6LlJj68E26PTcsRcOHHY6ICvV601EnLpWjxPLUmc0KjJRt/cx+pcuPue2qhlThsww8YdOEf82QNkHgqubYIR0xtYoHTRYCeoyOIo6/12gcd7bpjR7dXxJZ41Msw1pnuM3LKfgvj8BM5VDbU7fIn3joODN6h8aZjT7xBCK6eL7BMyfZAkX1ZFn7dHo35F4bvyHM/fyDhvJbs1DzCGjtWjpP5cITUoAcVxnXpBqqcE5wPqceXq1uyNod3IEPg2kHOVPRbsDbqR1DkIj3Cp0SeA3ZkN3zm8V9
+ NcV7ahSm
+ TrShma12rrH1OGWuzJnu2d+Vbl1j+2d8TZj7ovnulqW/cJCCRDo6o9SkWmMlS2+LdcJmMFMc8qNxW+XBffV2dxWJHSREsliYAVZYNyWhpT1JlhgGidk18BpnoItLQjPZgKlABneThEF3D8AnrZi4bSjs2/sZ9KZb0nBxQhNNl/IXsQ1OZBPJ40j6iMrksf29J3NlCsgu/sxFT0HC+fRFq0xUHbTeEzjzvodKT0fc9x9zeT6lgJZ4C5MZuA2o+tshAnhtdezkFX3TwnceSkBNVWBHk5dXWo7Dpt7z4AXz4l4nTu4+n5Lmf0P8/JRcz/F17ErT38+wRFRGcOJ0uFntH0V1sw43HOHNxm2GH/bIaHFlAu5XypVop9SAqbkKrcyMthXxPnl8fCsfP7jwdKHtJHXN1b3kDAZHQIWaLN4SvGDRZ9S5xoemBbfBq4879AAZfhywwoGsMqH97FTRjHGunwoCaf37PepZTSv5IsMuOcjD7z0U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,167 +133,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Pratyush,
+On Tue, Jul 14, 2026 at 01:29:56PM +0200, David Hildenbrand (Arm) wrote:
+> > Any opinions?
+> 
+> I guess a deferred iput through some workqueue is not an option?
 
-On Mon, Jul 13, 2026 at 9:53=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> On Mon, Jun 01 2026, George Guo wrote:
->
-> > From: George Guo <guodongtai@kylinos.cn>
-> >
-> > Enable Kexec Handover (KHO) on LoongArch64 for FDT-based systems.
-> >
-> > - Kconfig: select ARCH_SUPPORTS_KEXEC_HANDOVER for CONFIG_64BIT
-> > - kexec.h: add fdt/fdt_mem fields to kimage_arch to hold the KHO FDT
-> >   kexec segment virtual and physical addresses
-> > - machine_kexec_file.c: add kho_load_fdt() which copies the running
-> >   kernel's FDT (initial_boot_params), appends linux,kho-fdt and
-> >   linux,kho-scratch properties to /chosen, and loads the result as a
-> >   kexec segment; called from load_other_segments().  Returns -EINVAL
-> >   when initial_boot_params is NULL (ACPI-only boot) since that path
-> >   requires separate handling.
-> > - machine_kexec.c: before jumping to the new kernel, update the
-> >   DEVICE_TREE_GUID entry in the EFI config table to point to the KHO
-> >   FDT segment so the second kernel finds it via efi_fdt_pointer() and
-> >   early_init_dt_check_kho() calls kho_populate()
-> >
-> > Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-> > Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
-> > Signed-off-by: George Guo <guodongtai@kylinos.cn>
-> > ---
-> >  arch/loongarch/Kconfig                     |   3 +
-> >  arch/loongarch/include/asm/kexec.h         |   4 +
-> >  arch/loongarch/kernel/machine_kexec.c      |  27 +++++
-> >  arch/loongarch/kernel/machine_kexec_file.c | 118 +++++++++++++++++++++
-> >  4 files changed, 152 insertions(+)
-> >
-> > diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> > index 606597da46b8..d494418545f5 100644
-> > --- a/arch/loongarch/Kconfig
-> > +++ b/arch/loongarch/Kconfig
-> > @@ -684,6 +684,9 @@ config ARCH_SUPPORTS_KEXEC
-> >  config ARCH_SUPPORTS_KEXEC_FILE
-> >       def_bool 64BIT
-> >
-> > +config ARCH_SUPPORTS_KEXEC_HANDOVER
-> > +     def_bool 64BIT
-> > +
-> >  config ARCH_SELECTS_KEXEC_FILE
-> >       def_bool 64BIT
-> >       depends on KEXEC_FILE
-> > diff --git a/arch/loongarch/include/asm/kexec.h b/arch/loongarch/includ=
-e/asm/kexec.h
-> > index 209fa43222e1..adf54bfcdd49 100644
-> > --- a/arch/loongarch/include/asm/kexec.h
-> > +++ b/arch/loongarch/include/asm/kexec.h
-> > @@ -39,6 +39,10 @@ struct kimage_arch {
-> >       unsigned long efi_boot;
-> >       unsigned long cmdline_ptr;
-> >       unsigned long systable_ptr;
-> > +#ifdef CONFIG_KEXEC_HANDOVER
-> > +     void *fdt;              /* virtual address of KHO FDT segment buf=
-fer */
-> > +     unsigned long fdt_mem;  /* physical address of KHO FDT segment */
-> > +#endif
-> >  };
-> >
-> >  #ifdef CONFIG_KEXEC_FILE
-> > diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/ker=
-nel/machine_kexec.c
-> > index ad27fef098f1..98529c71d001 100644
-> > --- a/arch/loongarch/kernel/machine_kexec.c
-> > +++ b/arch/loongarch/kernel/machine_kexec.c
-> > @@ -6,6 +6,7 @@
-> >   */
-> >  #include <linux/compiler.h>
-> >  #include <linux/cpu.h>
-> > +#include <linux/efi.h>
-> >  #include <linux/kexec.h>
-> >  #include <linux/crash_dump.h>
-> >  #include <linux/delay.h>
-> > @@ -289,6 +290,32 @@ void machine_kexec(struct kimage *image)
-> >       pr_notice("We will call new kernel at 0x%lx\n", start_addr);
-> >       pr_notice("Bye ...\n");
-> >
-> > +#ifdef CONFIG_KEXEC_HANDOVER
-> > +     /*
-> > +      * Point the EFI FDTPTR config table entry at the modified FDT so=
- the
-> > +      * second kernel picks up the linux,kho-fdt and linux,kho-scratch
-> > +      * properties via early_init_dt_check_kho().
-> > +      */
-> > +     if (internal->fdt_mem) {
-> > +             /*
-> > +              * FDT-based system: DEVICE_TREE_GUID already exists in t=
-he EFI
-> > +              * config table; just update its pointer to our KHO FDT.
-> > +              */
-> > +             efi_system_table_t *st =3D
-> > +                     (efi_system_table_t *)TO_CACHE(systable_ptr);
-> > +             efi_config_table_t *ct =3D
-> > +                     (efi_config_table_t *)TO_CACHE((unsigned long)st-=
->tables);
-> > +             unsigned long i;
-> > +
-> > +             for (i =3D 0; i < st->nr_tables; i++) {
-> > +                     if (!efi_guidcmp(ct[i].guid, DEVICE_TREE_GUID)) {
-> > +                             ct[i].table =3D (void *)internal->fdt_mem=
-;
-> > +                             break;
-> > +                     }
-> > +             }
-> > +     }
-> > +#endif
->
-> Honestly this and the ACPI stuff looks worse to me than what your
-> previous version did. Now I am not an expert on EFI and architecture
-> stuff, and know nothing about Loongarch, but to me this looks hacky and
-> I am not sure if it is doing the right thing.
->
-> I think you should get some alignment with Loongarch maintainers on what
-> the kexec boot protocol looks like. It looked odd to me, but if the
-> Loongarch maintainers are fine with using the kernel cmdline for
-> bootloader to pass data to the kernel, then I think we should go back to
-> that.
->
-> Huacai, do you have any thoughts? For KHO we essentially need a way for
-> the pre-kexec kernel to tell the post-kexec kernel about a blob of
-> memory that has some information it can use. For x86, we do that via
-> setup data. See arch/x86/include/uapi/asm/setup_data.h and struct
-> kho_data for example. On arm64, we use the boot FDT's /chosen node. See
-> kho_add_chosen() in drivers/of/kexec.c.
->
-> Ideally, all device tree platforms should use the FDT path. But
-> Loongarch also has ACPI only and I don't know what a good idea for that
-> is.
->
-> So, do you have any suggestions on where to best place a pointer to this
-> blob of data on Loongarch? v1 of this series put it in the kernel
-> commandline, but I found that odd and asked if it can be done via DT
-> instead. But to me, this code looks even more hacky.
-I don't know which is the best way, but I can give some information.
+Hm. This feels like a dirty hack to me.
 
-ARM64 and RISC-V create a FDT to contain all needed boot information
-(EFI system table, command line, etc.) in efistub. In other words,
-both ACPI booting and FDT booting have an existing FDT to pass the
-blob.
+> I'd prefer if we could keep folio splitting working even when the passed page is
+> EOF.
 
-But LoongArch is different, the efistub doesn't create a FDT, instead
-it passes the EFI system table and command line to the core kernel
-directly.
+Can you think of legitimate use-case?
 
+I will get rid of hwpoison case. It has no good reason to lock tail page
+in the first place.
 
-Huacai
+The only other case I can see is race with truncate. Loosing to it
+should be fine to split caller.
 
->
-> > +
-> >       /* Make reboot code buffer available to the boot CPU. */
-> >       flush_cache_all();
-> >
-> [...]
->
-> --
-> Regards,
-> Pratyush Yadav
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
