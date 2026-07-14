@@ -4,92 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F58DC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 07:13:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBF10C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 07:43:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4CB86B0005; Tue, 14 Jul 2026 03:13:24 -0400 (EDT)
+	id CA5036B0005; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD5A16B0088; Tue, 14 Jul 2026 03:13:24 -0400 (EDT)
+	id C56866B0088; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA1546B008A; Tue, 14 Jul 2026 03:13:24 -0400 (EDT)
+	id B46E66B008A; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 905AB6B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:13:24 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E26221202BD
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:13:23 +0000 (UTC)
-X-FDA: 84986516286.14.93D9745
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C5D8D180010
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:13:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Sz+oIaHu;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 898366B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:43:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0AF61602C7
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:43:16 +0000 (UTC)
+X-FDA: 84986591592.06.F4D56D3
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D03AD1C0003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:43:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hT0bmfKP;
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784013202;
-	b=dlY3SFr9bXIqJ5GVp+BqeNc12szjLtqNCfO/CZN2apGLEEiWrwOXodjsZZvCaYvgXnlVnD
-	kitF2p8o0HSv7fg8t1psUfwbvu/ztohsonxaM8phBO5NtMlxIBIXr5anceTGxai0aKMjiT
-	jeeSEUNAirWUesuxypRBCnhrsV+j2VA=
+	t=1784014995;
+	b=Gw+pFtoUGzvJFlVR7RH1xsh1hERcKc1jBn7R7MNYfwdm4La6ydqIfNNz+3hfilnidxA9Xa
+	//6+X2522d/tpUrbWY/kDB+0VlIfbI5LPwHnNz2gmHsgZAHuO1PLRwqwTPlvc8h3iMoofJ
+	bZZDltev1XnfZj/DEr4Xo2mR4pRt5Tg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Sz+oIaHu;
-	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hT0bmfKP;
+	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784013202;
+	s=arc-20220608; t=1784014995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZEqHKQJnshBDwnqUujbHpW+soJYVZoj7reUsLZHK68o=;
-	b=1oliiuEpqec6VHt6eQzw3soE5uYW15j/trFyAcQ3vLS9P+ZTzLxR0ENmvo0J92hw/S9iek
-	3Z5/OVGMSQYKO9EUW9lY4GdFJDQZ58SE05cTtgyR9o5x0WvGNYTvWCftqsVd+/XIeqzZXf
-	ALy8bknwhNXUq4UTekrzHTriFojyJBc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9CE7D1477;
-	Tue, 14 Jul 2026 00:13:16 -0700 (PDT)
-Received: from [10.174.43.51] (unknown [10.174.43.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27E393F93E;
-	Tue, 14 Jul 2026 00:13:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784013200; bh=vGgg3Qhk3LciFAKcCZtv6vtYBkSq7V8PiOHvlnoXqa4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Sz+oIaHuVKKjMMsFlz6Z9rbkRcgyv0VRQJBY+fbnoYAP1bz+y3BcSzbdYwuTwxQvr
-	 1hreH7uBfrDuVGG5SXe2x+MKH8SPOl7Q6snfZh1IqWxIqk19CSMJCvpbYb0Zg8TbO9
-	 Q+4vW3G/939zbf7aoKsejcM5n6Lyacx78l/pMqCE=
-Message-ID: <bc4ab9da-0b16-4203-9901-4845323c3e5c@arm.com>
-Date: Tue, 14 Jul 2026 12:43:07 +0530
+	bh=f0I0BJ125x0ILzpKQzbAIfOkMzFcIP5uJz7O94Fnv8U=;
+	b=FKTs7Md0rS+VK8zyDcq1qdEJA2YQuwndWIZh5JSy6hz4lrawVBie26zaXCP3tX6g7piEGF
+	5vrVqP4crLxmSCPhj8lf3DSO7G2pKs+wTIIkpr4VcqBVZMTBeWVqGfvwLm20I4n9dz3dgz
+	+wZ3r8m2Uvxs2oJFZAak2EnU0wBdV7s=
+Message-ID: <0545ee70-b0a0-4a93-ac2c-3e84ff504e5a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784014992;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f0I0BJ125x0ILzpKQzbAIfOkMzFcIP5uJz7O94Fnv8U=;
+	b=hT0bmfKPqQc9pDzFwsqCmtPPFoWQhN08bP7XCztt6T6O9I/sjqP6TCj1HVTvHABehMC/sC
+	D5UK+iM2oYcDiV2UGmsSH4Db3ghqh9VfT3omemPDv4Yqjxh37MZa9Q3ToX9mJG0B4UETN7
+	atCNfg0O9qKFcAuPjlda6yCvqWeDXv4=
+Date: Tue, 14 Jul 2026 15:42:52 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/6] arm64/vmalloc: Allow arch_vmap_pte_range_map_size
- to batch multiple CONT_PTE
-To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
- will@kernel.org
-Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, david@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com,
- "Barry Song (Xiaomi)" <baohua@kernel.org>, Wen Jiang <jiangwen6@xiaomi.com>,
- Leo Yan <leo.yan@arm.com>
-References: <20260709073823.6643-1-jiangwen6@xiaomi.com>
- <20260709073823.6643-3-jiangwen6@xiaomi.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260709073823.6643-3-jiangwen6@xiaomi.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ David Hildenbrand <david@kernel.org>, Yuanchu Xie <yuanchu@google.com>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260711091157.306070-1-ridong.chen@linux.dev>
+ <20260711091157.306070-2-ridong.chen@linux.dev>
+ <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
+ <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
+ <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
+ <CAGsJ_4zcgURKZKBAc6i0Y5g7u2OXjENDE7A=nqYcQ9TTVuR=Hg@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4zcgURKZKBAc6i0Y5g7u2OXjENDE7A=nqYcQ9TTVuR=Hg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C5D8D180010
-X-Stat-Signature: ybf6cehb1smkkkhyf8r363n4p8934seq
-X-HE-Tag: 1784013201-248188
-X-HE-Meta: U2FsdGVkX18/PI7MbnzPm/4lsfYe2iRBev98EQd+SBfaXIJfw3cOwX19AijnTZIiS/xr47+eOAUhjQ6/s/y3NspQW91fP1k+CAITJcP3HA9gqIktOQHi7Flwikb4quAtraeVLnOVsJZHql74no+f39soFEAbgSzdIvusVaqs3cGtaDRXWGmZUvxvT0moivm+diPON8XJD9RhiE4Kk/zS0yya0tMgZUimUZddaGa0JqE3dA1BE0A/wknxgPIHybItXbYHxVxYtt7nKJqwjIDBHBHhHC70fozUep1MJ5lOR1tqfxr3H0Hv2b0atZJnPnFmUa69NAN+CqbyzG7G5ztCXt+RWai2ddbU1lSlO5QFps7BbKc7rl5zaKZd4RoM19vG5XSOJOWW8+zoSi4ABJKszHSwlz/XxiIlPq5N82ezXaNHsUgQc3tPII8hoQryFtXP6H7L35ZywToPgv3OfQSNwbyYm1yxkAXIQ5sXXNO+lQBYnG3Vt7CddQILCCtFUFZdik0AxFQLYBCZI4CFV4Oysfh6gnwwZaClya1ziPJmDpWfjkVW6gdoDNmZxMvsw3/rN/K6xjbwZotbJRvaEmbdz/g7vdZUBc1GEzECOGAYqDzXGoCNQKkvlRf82hbVlpKWpXhXrWGfgM1vbIc7vtz8tTrX8TD4kIQeK8BltUq6hvNc77zGWuQaM3aLBTl9wKUDONmalItSHVXWetsHjA+1mjsITnvn5ypXBoAtJ4/PVk40eZHPkFWDppnUaUMw/CKB/wK7Si4pzZNSTTQmA0T6Rb2YL1MQLlTHUBLORLo75JxIuMf8LA57CUe+g6f3m6FPvJcwM+z6/R0bKdda+zzT4mXGgnIFelOBW1Bpm+dNcPIXFR7+o4qAJrjf2oAZZbwrUwAeHLcR0WVzQ5BHU57d9Diq0sf/d3VmbmCrDksMC6Au3cuGPDSbPCD4S16MgwPNnyeYs7TvYSMO2knGB/T
- 5Aa7hLPf
- w/2HNUZt7XliECCeqIVIkcRrymCn3KNWuucfXY+TCws9GzrYSjpGPf6Q8W6AFXNVWJds1MGjIMGpestI+9VZ+0Ry9PpvoZRuYda+010GF20Y/06Tj9LML9QcwiznRD5d24ayg2IfIi+H+qH3aROIo8eoaNdpKUU7Pmfqm2wlaOn7vgZDwm5tr7k457kuNLoPdDiQJgMzCu6K9mp79MkQQmO0jE2s7KQ7NsMHnM/df15zsPsfZ3MeQ5gl19wMbQBZNJfpXltpFCSiqrHj56IazfvU7wfqdQvNrWhLnZTGFrStMz7T5G6YkWzerrghAfJzgvwVaoVPGrAGtVHap+AhaNFgW//QzWlcdBRbWATv240eYTXD/IoLAgwuX6fboHq/TAlm0+UUNaNIzT7uhMGaeyYpYu/4LiO7E3y/9YNvLxD2YLxPAfmxdzeCRKN6hsVsLOD3nN4dm2OmTAClpGH70uDD8uHsp/oBsX4BulZmXD50V020=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D03AD1C0003
+X-Stat-Signature: rtjkkdfndyzq3114yq74hiqzf6khic4h
+X-HE-Tag: 1784014994-247182
+X-HE-Meta: U2FsdGVkX19voK/7pqLtSFHtMcN4IteAdTY8EBWXFRGX3iIYrDhao5VdQf6g36WxvPWktPzfNHldM5iGfNcwnsWVfQw1b1N0XrEk6UfSpHSd/hfQa+Pzy5OxLP03K4/oAbYeRhtsBxq5d9nxyYbWvk8WPsh2KytCcaFQsySjdbDX8K91HdxYUppQZjY9WxRq7K4Ue8OKyJq0fQy3uvNBjrfMKgxtxBfBQaVVHvmlby4hZBoOqrAqckg2FcCJhQUAVFBoX70aLRZBiQHn3fL/Kl3H+8DfvxhsGZPEGCgMsIU9jQ6xSZsWLVB6PLQsJD5yus3bsdW+VCIICvBMXNd81h6G7ZfLeBWK76g3CrWUdXElq3PgEJuDG3E2SSeXt/naPcU3UWjVLS1jvKq6xGEyYCTsuZEr7sWHMKOLn/dVXdxB9MvnvWDI9Rg369InXMcNU65y9yk+lEEz5PmWwUJOmesiGlJ/BKuaxWDFFI/osC8LRNGqNNR6oRXMsTfssXNCEyXEQWe1C5py+Tg78k5/BtVBjZQQhcZ+5SQ+Ybgw5cs61LPlzxFb2dK3c9qfCpBQUMPCpWIGIOLk0YL/3pg0tSsmzD2S8x60GmEIJI6ghDO++ysJHZ927Pfz2YmaBKM9XXQPeL6dDMj4j7JA6xwR00Klg4yd8WGX+xEuwIAwnRnVFjbgOkEjq7nZX95/8TkoB4Eb93Lr2+M2IMcfpzRqmYLQjF/Iog1QkPReQEH6UEgt8b9wAPXvBQEX+cF4j9WHExV0qK3iW+ifvZVr92AHA/aCYY0twSqMYiBPwMTn0YfrkzrG6YScWBscOnBPnqVVBQAws5hI/jNnUsQX6tqQClbls4f3wtBh+rHoTD8tZ/chkFX0+WqovVnZSFgmXlOzxrTBYHo0AtBXHHVEEPkLgSO52Quf16dD2y5VdiXbKdDQEr1Z5R+5YIxIHZeCN9eiPL3FOiX+NA8FDxBxFK2
+ gtGbGiKH
+ 1VwlW+JSgy1zwTZudFAWErykM0YtYlttnxPmV+7xujQOzc3Z/M+G+WpZ8UsnZVqyb9y1SCmIYDbv08QbC6OLrI/S9UMMxwtuhe9M9D4/26j6guDTiftWcRHXfqX/VLsZ/kajweBqmo3qcMpYSl6/E11oYMLjw3XQh8dwEl9+DXevS0C7DtkPTieD/ws9IBgiXYOXHpn1s4yWHtvn45yfd+v7S5dZnLdV2RfbJWVttwELT/C4BzVeu3cJQ8Zliv56oOdmDLHS6jGUU/D7ErCF57m999uyT60YHhHGuEE2u1kJxLbeD7T3LQ22C8nLAmTqf6msP606hyXzRg5HcD/LFG4MJ1xgh3VlD9KTaM15QGouiGVIyMM8hovk9T1wjOpK7OyfrL5D5CT0Ab1rNBU3c7BYoCGH0PtZ19EgR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,60 +101,76 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 09/07/26 1:08 PM, Wen Jiang wrote:
-> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On 7/14/2026 9:48 AM, Barry Song wrote:
+> On Tue, Jul 14, 2026 at 9:43 AM Barry Song <baohua@kernel.org> wrote:
+>>
+>> On Tue, Jul 14, 2026 at 9:20 AM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>
+>>>
+>>>
+>>> On 7/13/2026 11:08 PM, Barry Song wrote:
+>>>> On Sat, Jul 11, 2026 at 5:12 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>>>>
+>>>>> From: Ridong Chen <chenridong@xiaomi.com>
+>>>>>
+>>>>> The per-memcg swappiness knob is v1-only; v2 always uses global
+>>>>> vm_swappiness and ignores the per-cgroup field.
+>>>>>
+>>>>> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
+>>>>> to memcontrol.h where it belongs.
+>>>>>
+>>>>> No functional change for v1; v2-only kernels drop the unused field.
+>>>>>
+>>>>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>>>>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>>>>
+>>>> Reviewed-by: Barry Song <baohua@kernel.org>
+>>>>
+>>>> With some nits.
+>>>>
+>>>>> ---
+>>>> [...]
+>>>>>           struct mem_cgroup_per_node *nodeinfo[];
+>>>>> @@ -365,6 +366,9 @@ enum objext_flags {
+>>>>>
+>>>>>    #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
+>>>>>
+>>>>> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+>>>>> +extern int vm_swappiness;
+>>>>
+>>>> This is a bit unusual. I'm not sure whether mm/swap.h would be
+>>>> a more appropriate place for this.
+>>>>
+>>> Thank you for your reply.
+>>>
+>>> The vm_swappiness variable is not utilized within mm/swap.c.
+>>> Furthermore, since memcontrol.h does not include swap.h, retaining the
+>>> extern int vm_swappiness declaration in mm/swap.h will result in a
+>>> compilation failure.
+>>
+>> If this is the case, it still seems better to keep
+>> extern int vm_swappiness in include/linux/swap.h.
+>>
+>> Then we don't need the comment:
+>> /* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
+>>
+>> It also makes it clearer that vm_swappiness is an extern variable
+>> belonging to the swap module, rather than the memcontrol module.
 > 
-> Allow arch_vmap_pte_range_map_size to batch across multiple CONT_PTE
-> blocks, reducing both PTE setup and TLB flush iterations.
-
-Too little commit description for the proposed change here.
+> BTW, if mem_c_group_swappiness() and vm_swappiness are only used
+> within mm/, could all of these be moved to mm/swap.h and
+> mm/internal.h instead?
 > 
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Tested-by: Leo Yan <leo.yan@arm.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> ---
->  arch/arm64/include/asm/vmalloc.h | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+> We are making a big effort to move many unrelated things out of
+> include/linux/swap.h recently. Could you check?
 > 
-> diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
-> index 4ec1acd3c1b34..7d9c7dc795c42 100644
-> --- a/arch/arm64/include/asm/vmalloc.h
-> +++ b/arch/arm64/include/asm/vmalloc.h
-> @@ -23,6 +23,8 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
->  						unsigned long end, u64 pfn,
->  						unsigned int max_page_shift)
->  {
-> +	unsigned long size;
-> +
->  	/*
->  	 * If the block is at least CONT_PTE_SIZE in size, and is naturally
->  	 * aligned in both virtual and physical space, then we can pte-map the
-> @@ -40,7 +42,9 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
->  	if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
->  		return PAGE_SIZE;
->  
-> -	return CONT_PTE_SIZE;
-> +	size = min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
-> +	size = rounddown_pow_of_two(size);
-> +	return size;
+> https://lore.kernel.org/linux-mm/20260708-ch-swap-series-plus-folio-lru-cleanup-v9-0-2bc72b4f8730@gmail.com/
 
-Please do explain the fact in a comment that huge pte mappings
-upto PMD_SIZE are being allowed here, if the given block is
-CONT_PTE_SIZE aligned.
+Good suggestion. Moving them to mm/internal.h makes sense. Will update 
+in the next version.
 
-IIUC arch_vmap_pte_range_map_size() gets used only when config
-CONFIG_HUGETLB_PAGE is enabled. Hence should not these new huge
-sizes being supported here also be added as valid HugeTLB sizes
-thus updating __hugetlb_valid_size() and adding corresponding
-new HugeTLB page sizes with hugetlb_add_hstate() ?
-
-OR could arch_vmap_pte_range_map_size() and set_huge_pte_at()
-can be updated for vmalloc without doing corresponding changes
-into HugeTLB itself ?
->  }
->  
->  #define arch_vmap_pte_range_unmap_size arch_vmap_pte_range_unmap_size
+-- 
+Best regards
+Ridong
 
 
