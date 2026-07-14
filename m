@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61498C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95F2CC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:48:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AF026B008A; Tue, 14 Jul 2026 06:39:24 -0400 (EDT)
+	id 93DB86B0005; Tue, 14 Jul 2026 06:48:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15F796B008C; Tue, 14 Jul 2026 06:39:24 -0400 (EDT)
+	id 8EEE76B0088; Tue, 14 Jul 2026 06:48:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09CD56B0093; Tue, 14 Jul 2026 06:39:24 -0400 (EDT)
+	id 7DD3C6B008A; Tue, 14 Jul 2026 06:48:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C96FB6B008A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:39:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27EADC0314
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:39:23 +0000 (UTC)
-X-FDA: 84987035406.23.81551AC
+	by kanga.kvack.org (Postfix) with ESMTP id 4B8E56B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:48:26 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA596C0323
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:48:25 +0000 (UTC)
+X-FDA: 84987058170.16.5D77916
 Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 36CD7180004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:39:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=FaM0bWVt;
-	spf=pass (imf06.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=debian.org (policy=none)
+	by imf10.hostedemail.com (Postfix) with ESMTP id CF8A5C0002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:48:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=morinfr.org header.s=20170427 header.b=owAkIuyg;
+	dmarc=pass (policy=quarantine) header.from=morinfr.org;
+	spf=pass (imf10.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784025561;
+	s=arc-20220608; t=1784026104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sIy8s9LzAS3y+QKpstmCYWZM0GNo86vujkJXCwSEINs=;
-	b=FJRnrldYa/YJ6jgPuQaYfG5C7llbpFpK8dL9XOVt5S8TSBh0VPEtVrW32gstfBrpie5/cO
-	xY6r4ZnCVeiTLHu/XijUcndrLZsu6RsWFcJvzNJ3ovv4HAOPv6eycV69D1OoQ7qY/zENih
-	5QlXuUyMlwwe+d+5AUiaae1hXBXpac4=
+	bh=bEgwL1IKqZfGUrOyC7LTidplKFGkQUk+g+MtogZxKQs=;
+	b=fiOVlax9J0o8/lc8skXvDPEJfDFaCYNEo0nHCAuiB3FYnoEKnrkAtPOIJjQo+HVKWTHbyu
+	rZo7rD0kUcY80TiYryjg8T1bw6Bx1Osgnc/RlXjm/vfrGN9hlsuOtLnI+mN+exL1ioiX9a
+	lONDWwP9HZe63T2Cepvin+bESl2kLpI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=FaM0bWVt;
-	spf=pass (imf06.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=debian.org (policy=none)
+	imf10.hostedemail.com;
+	dkim=pass header.d=morinfr.org header.s=20170427 header.b=owAkIuyg;
+	dmarc=pass (policy=quarantine) header.from=morinfr.org;
+	spf=pass (imf10.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784025561;
-	b=2PU7KdkRHe9uJ3EniOavX+we3RYjyZbjk7/olW6zABQlRWXBteXJsxtkL0s90lFAq35Qum
-	HPOFxORc+FaLFVdB9hLUGs1+OAP630KVEqbcTB5FcPx6Gf+MvGV5rmkYbMOrnYt9LcxBbB
-	eTpbmq3y2TW3jjbZtOgbdxLrszL/DZ0=
+	t=1784026104;
+	b=nDMRiCUyBMNJ6jc1EIvJ+CtFlMqI8/eOoD2GNTIF0wlsYJ/02Zh5yUhdYIKOTGspjYqCwG
+	7Sr0w6k8zPtzkX4QHBuwnx5pIYeNigG9uSR6gvtXAuM79N36b51jFNyEomu/cyJ3E1Xwr0
+	PcWIlsC72S0CKAHdPgFJleyvL1MoWQQ=
 Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp2-g21.free.fr (Postfix) with ESMTPS id DB32E2003C6;
-	Tue, 14 Jul 2026 12:39:12 +0200 (CEST)
+	by smtp2-g21.free.fr (Postfix) with ESMTPS id C5F4E2003BE;
+	Tue, 14 Jul 2026 12:48:16 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
 	; s=20170427; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sIy8s9LzAS3y+QKpstmCYWZM0GNo86vujkJXCwSEINs=; b=FaM0bWVtNQm8x3pORnNDjylI1t
-	MePw4aTl5Ae2RQCGqkEtQ0Hzwgs9Int4Ih3FL2prad7sXNFfIYyXDQWYYH0rN4IEdZOp/ezuABjI/
-	QDY98y+oxgduz1iQ6/+rYICC2YqI/brpoT+mnnrduT3GcEvTmC1n9enmt5jaUFsJ2SoI=;
+	bh=bEgwL1IKqZfGUrOyC7LTidplKFGkQUk+g+MtogZxKQs=; b=owAkIuygiGas8VfqRdJaiFwZV1
+	m4sKUiqDyCY7lwLYT+vtEM69Y2aPcIvq0U1yzmrazE+/pqjceqK7woQlMU9mO0MljUarmyIeL6FVv
+	X2IAwfuh9uIpy+VvbX05a1Dxulg0IasPKuNPjuYpL4BOkXdbTQBdprDpY1VBosFC3bjg=;
 Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
 	(envelope-from <guillaume@morinfr.org>)
-	id 1wjaXg-00000003ZQI-0s2B;
-	Tue, 14 Jul 2026 12:39:12 +0200
-Date: Tue, 14 Jul 2026 12:39:12 +0200
-From: Guillaume Morin <gemorin@debian.org>
+	id 1wjagS-00000003ZbJ-0zzM;
+	Tue, 14 Jul 2026 12:48:16 +0200
+Date: Tue, 14 Jul 2026 12:48:16 +0200
+From: Guillaume Morin <guillaume@morinfr.org>
 To: Breno Leitao <leitao@debian.org>
 Cc: Guillaume Morin <guillaume@morinfr.org>, osalvador@suse.de,
 	avid@kernel.org, linux-mm@kvack.org, riel@surriel.com,
 	Muchun Song <muchun.song@linux.dev>
 Subject: Re: [BUG] mm/hugetlb: possible temporary resv underflow
-Message-ID: <alYR0NXacVVKKstj@bender.morinfr.org>
+Message-ID: <alYT8J9aRQDx_8pP@bender.morinfr.org>
 References: <alEJkwn5VlTTH_ZX@bender.morinfr.org>
  <alSyhslcItgtqSHT@gmail.com>
 MIME-Version: 1.0
@@ -80,20 +80,23 @@ Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 In-Reply-To: <alSyhslcItgtqSHT@gmail.com>
+X-Stat-Signature: jjisxjw3pbox6mh4pw1xup8mzg9z5f8i
+X-Rspamd-Queue-Id: CF8A5C0002
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 36CD7180004
-X-Stat-Signature: 5w7d7u64j9hpc93ha1rgd7t4bj83b6nz
-X-HE-Tag: 1784025561-663445
-X-HE-Meta: U2FsdGVkX19pT9j3RBDnjn4vMtRgPmdlEHgTNdCm66x7VzD6A9a+G7KCCxIqcpHBVUpTlY5eFDvRO0qJt9K0kCCx7sXqXxyrMuOtO+X82/lbwPoTaUrttzjs5PAt8mMPtrCdKp2wanULCq/Fd9DMWyTnyFw8DCapw0fACL9EcYLPmUefe0dsx0Nef94bY7vuEMxUAER6R8OqRWgwbyEyPSxKMRiVvRdCr+7BKhkj05PoNSZYW7Qgyafz/t4tX54uJKV4S4YTVtco1MQe8GeO3pDXkioGEP6vz8NIZOOCTwuTyBkyAouP3/7ZF/jlqmgaPTaUHcONCvBLjR1J3faXW/N7wftKfTaC38SHH3XCyT692svuKLoANsZemMc9LkNKGk8AvpQxdX2szrctDK1WbeT2hUkwmZ+r+TJWiZ40QqhAymYj9otP4zQ0AUAMAc65WDMgBSZIFWOosQxf57tkXYt/ZONE2pa0BfeWf90k48ZGVK+1Vxr8wiUu+HQWM/kWtrsr4OuqHNXoNyBenS0oV0HvtMGEI9Ys5Z5UibZ1rO4Ly1t4Ey6sTda1sdvH+uRRFtN/smEkx8AWBPWy3sKI0C0lmgSCUjHnh24LH61f7SN6P3DR19zg5vSMwoY+w6kOyVuAoIFeQM6wzF/FQ1KmRTucKW2sE8k5FPPhcKXBsbBcCqNT6JXDZd1fGIf0NMz0ZRKJf0WBEUiy466k7gSeZxttVPZMwgF/arfxsvAx/kqM0tWiWzvwevzALeHac2UDClnnA6h1ag85hWj+2p+KF651vKxOVxy5t6xxkkNgAe9aDU2dseJZDDNlXxyxuV92xNrxS6PSb8I5gN71drG2PiBmhD1zy32JDdTOBfdcnRGAaNc0wMNFEbxVk2RYwRXFg1mTpfpZS3pZcRzMP5poVskZHr/vWeVhJTCBwAsolgzWj9w3Hp3yU9DefBEmynlMfcWrAD/CeVIoYeB1VBu
- lxf5kTfG
- WajCJ/cqRKN2d5fqlZZdVuwyTAEQkqHqOp5SeEDH2X0sxCUyPPzHmwTNSXdrO3CsNJkHrCVB+Lj40kqSiEk0Q6uJ3EQJ9UlK0VTb1KpiNln/mxi1eP6g/VWZCbQ40rhikpUJFSW6926OzI5kU/CsIXQfwTz654qjvhdo2SUz4gZDeRlU5OSdYhdCzhU4eXwqQhN3K03Pct5ghK9YjkbHHa2JBBGOKjOy4vJZe+vbvZ1o3nGC+Ps7jsa6H01a3kCV3ypeYcYBK02Wqk8nq9+AuuY/2oYUzSkv61IxFfa/wpbWV9PH+AxTMGmXWLxq75xCU03Ulx73OtJEc/xehRKl9fGXpgj8bBGXsmhmv6H2/AG9WBDXFrXN+ZHVCT5oe/04zGEsWXOsPEsLC0UGr5fHm8GQJqufnvjA+q4eLa+xk/3NtkknSrviM6JqIUWiHOFYLyQmYREHfUaFlL0yZRUf4KTf4mGrZVIvfbZ1sXQi/MAqJz6w=
+X-HE-Tag: 1784026103-635715
+X-HE-Meta: U2FsdGVkX1/7Cx58TQybWvR0RqN8dMZrkPlkEkwoteJcs1Q7utkSODUXI3LkIgJia5wWCf9cz6xhgTb26IcxvrILMlZmkCpRRkG4f32fHM5Qw/V1ftYcqApR0YXFhX7gSuzBJ8IGeGl4pO30VsJHrXI3QmLQU+P2Sy8mpXcVNUag2is0dY7aWlPczaUjjjximZ/v7lB49oWDxt6nPu2K4tetcJRW2UxrNu9oAibEKgQgJcnKSrM97Tsy4Cj2xAb5IuuyhWpnLWQspcI+FHi2PPc8YqnQhtDlwrraKe6EimmRKvyEzjtUUjztLdjmozv5KT6+fCx3hEX8HCVrjkZWY1JuG2ehkPfIm3NsG4qivoa6gnv/zrg5TsUHhHs3SHo/lZL51FDPX2NI2cojtf15D5+oaYjvyqWp3wOChJEOiNrCNzGAQrwx+KPPyBkQcuIajY8gc9fgVVwu2D1ndaPitRJokMwSQF1hvan86ZFqdqdLVMNGiWnxlBwN5PUB+Hc2Mj+2yff29KOJpugrFP7KcQSqnKIDWa3LLTvHk8PPP4WKD+k27n2+tsLY/hQaRuEg+DaatIOv7lFt0qbut4JW/o1olenI2Ei9mfBoarj4fHYgCEXC6Bc5XpWTXO0zQFQRd3/PvE6W//fcHKoIuRL81P4xEYriOiPrwvGWE4xYIDt6FR7SHY+GQVcpNH+izEY+hoRc48bWJ4RQabivl3V0Pl/OD0GHc8CAU/zlQ4JvMaxab7BKsMQja39CWvki1g7ADD55oZ7EqbNduO+gHYQs20HlK33bBWuD6l9U9dIN0tiaClI9IYihUE+KAJK33sJ7UL9bbaSE+UDF/HCcI4fgDD0nm4FQLRcQUUVF+Kuo0/ITPTKCH4Ew/T8ndXvvx1XYXnk/Rxt2TGZIYJ7gJJy8rRbIQQqcyNpN83o6HNCBjLa+OGsdnWBvI/aDA9PKNxbwOCpL0VdYGKAYiA12z2D
+ mSN6JIDs
+ A768jiam9gDloSaLoAkZM3B692nJmkrylycrfCEAdcXxCdOEO2X6EYXRxcel8+gAth+RGWtgr2d9MlCmKp+NmcS/cWthFgPbMvoBy582pKqiygHx5ZnMWn5ndcewX4+hCweWI98162QhrG+Y1qq4xjniyKljVz4KxbDFhtnxphGZO9nbZxVFu287L//KCzb4b5NKsx4PqhvrreyVaJj2HcAh5Oo/ZK+oZZfsYttnb64yjDDgnM2NdqZkCX1pm72O9rodyrL8NPkjDYK6ULu1Hf8v7JBzNizyVSQYZApZgd3SPGmKLgHZo+tQ6RO+kAMTsOoI/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
+
+Sorry for the resend, an old send hook put an old email address. Fixed
+now.
 
 Hello Breno,
 
