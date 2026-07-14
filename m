@@ -4,90 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70B21C4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DDABC4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:52:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D5F36B00EA; Tue, 14 Jul 2026 14:44:20 -0400 (EDT)
+	id 0812E6B0095; Tue, 14 Jul 2026 14:52:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 685FB6B00EE; Tue, 14 Jul 2026 14:44:20 -0400 (EDT)
+	id 0583D6B009B; Tue, 14 Jul 2026 14:52:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59E8F6B00EF; Tue, 14 Jul 2026 14:44:20 -0400 (EDT)
+	id EB0206B009D; Tue, 14 Jul 2026 14:52:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 34D2E6B00EA
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:44:20 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B91CDA0482
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:44:19 +0000 (UTC)
-X-FDA: 84988257438.18.F81E06E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F2A31100003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:44:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kb5ECDFR;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784054658;
-	b=Fn1nBQNzhgYV4wXrh+TVseHb8erYx2OxmpZmYCK7wHegbEx6VIsX1aV73J2NxQSgDObgob
-	ahG9MfEKyTuN1QKIXe730xWSDYh2DgmJ61YFl+gikI+FIN5zUJL3oKIXVSnSsyz5IBPrsb
-	mJlbmjFr4vHVWmbd9DJl7/CTtFiaj9w=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kb5ECDFR;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BD5566B0095
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:52:48 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DC891C047F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:52:48 +0000 (UTC)
+X-FDA: 84988278816.23.336F6F3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EC59E4000F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:52:45 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XYxaky9c;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784054658;
+	s=arc-20220608; t=1784055166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UYp3fFoWaSvK1ZQvrg6poTd1wGmPJuU6X2lxSu3LEoA=;
-	b=Ua+irINF5G10zuvzcMnh1hj338BIVbBtZbLe9GtYmnW5H5NLDjovsPFadDvDV4UvMfO3uM
-	tXqYownZkLAmgbUBt6hmMWqYI3k7lxEOmFvUemJAcZ+HX47oUyagrwwFTu/Q/zx/KgHyyQ
-	ILCsRgSmJdEIY4keHkMerGivB+QzmTg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UYp3fFoWaSvK1ZQvrg6poTd1wGmPJuU6X2lxSu3LEoA=; b=kb5ECDFRCSmGPS58Y3hiuDcc41
-	QgrD3XNA/n+0hqGvX6V3+LUkM+guvHdz7BsE5Qg+wG7/FBNkhYi6Ijz7HHfhfg/7Ch6km5/HfsU9+
-	QIrCbbNc4xdLVE2cMgZnjxdLZs5yl84AUJOr331G18eR+UWv25l3eSUIuNcwEihVtuhL4f2tfsjqj
-	ivv3/rWbcdTRbzQVY4CB+7ZvbzhYn7+c3Xo7HY3PS+eGysVyQuRE13uk927cV5uXt/tAJ26cmWLbp
-	zlL/ZIZZ/ReVIsbHA1tLlzu+M5MEVu9bidXtwnWKHXvok2SmyJg/Xty9DdRFtpSVJTamEA+1l/dbi
-	Re2YN95Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wji76-0000000Fj3Q-2ka3;
-	Tue, 14 Jul 2026 18:44:16 +0000
-Date: Tue, 14 Jul 2026 19:44:16 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v3 9/9] hugetlb: replace hugetlbfs_read_iter() with
- generic_file_read_iter()
-Message-ID: <alaDgCdMQvrfUL8f@casper.infradead.org>
-References: <20260714180840.3731244-1-willy@infradead.org>
- <20260714180840.3731244-10-willy@infradead.org>
+	bh=nIfwW/o8U7z/0oL+ZaQUBUaHVA8qfCLS7p9kgkBe1fQ=;
+	b=opY0tkWo5jZ45sO4PIUx9VwXug4WJGN0EsRpGaVuG7uGS96/yFIQYHwwwfT4NBupZLNTpJ
+	GwrNYg+GXydpTdlC72d/lz8qnzcNu8gUGFaI7Xxji0T2eZVGOGkT58DL1VmAVnLDGErJBd
+	FsoX4VDH5mURTbHTqv7vky9SCBfk2PY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XYxaky9c;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784055166;
+	b=L0BiDDokZwKnVn52Tyv9bHseCuh9ahLGg1hp/bsuR6SvVoOV1HCvJvpzZPto10/PGlhngL
+	BpQMA9Sun3vuExq3KYsBJceOogXNS+eP6EZhTXsVEgGXL9phz4+v88Ti2Tqv5yR9uP1XnN
+	4aXN+H6f7Bb8miO8W2DmZIDYomSwP6M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784055165;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nIfwW/o8U7z/0oL+ZaQUBUaHVA8qfCLS7p9kgkBe1fQ=;
+	b=XYxaky9cPWlOEL2KS88x6JBpWPwnwxRgchhSNRHioO+diYqjT///0j+Vr8HYYsZP4jGobp
+	HBBAznsY1FhT9lptk0BrG8cLehNTNSDSzHsL6Xp4DIxXKsxnSjNLcuw+Q9AvjnM6WP0myt
+	Q8FK7suH/LumcDP/1yDzm3mC1Y91XAA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-ZMYrU9F2OL-MxL-Tvs8A8A-1; Tue, 14 Jul 2026 14:52:43 -0400
+X-MC-Unique: ZMYrU9F2OL-MxL-Tvs8A8A-1
+X-Mimecast-MFC-AGG-ID: ZMYrU9F2OL-MxL-Tvs8A8A_1784055162
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4744b72f90bso2445062f8f.0
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:52:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784055162; x=1784659962;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nIfwW/o8U7z/0oL+ZaQUBUaHVA8qfCLS7p9kgkBe1fQ=;
+        b=aC8JvTm8ZBTGuV/sWV75UiiPw14vP3w4kSZhWw++zyENvyTBFlVFy7ikeBdhswdeWC
+         AJflw6/hda4zvnp45X/JFCjuc479Pepnmz2Rq1LwAqk4USpFi4xAX8VvW427k5SWZGtg
+         AXgt5xvLvi3BZ8S0OzGzdxehmaLuxIpEVvABzYdM2kQfBOwXFg2T2MonLj0QakajUOUx
+         yI7arbfL+Lk8Ws89E2celVTEAYhfm2uIphQB1SkhiQdDN9P8urJ2yY/2pmfJDrVNoOdS
+         jfcQU3gW9GZf0qUMyGFnbbzY6J0B4Jb4kPf8zH/gmkb2/mnXxRCzVXLAxk7aNTotK2jv
+         9rJA==
+X-Forwarded-Encrypted: i=1; AHgh+RqA/z1Q4uxq4coQPnlF4kXhDzIN6l2+jZXx839Tk5rqddZF25TYaVVK72bZrhgzyNlfB+SaY7OXuA==@kvack.org
+X-Gm-Message-State: AOJu0YzKlYnMJrdgexmtCbIz2jFqo4SCf/MUUTiaAcfvWwUI4p+z9tDe
+	pWeRVW4ROKaETiT2ufnlbF5xTNOjy8H5uMScL1J/EG5okNQixOV5xJKxdaWF1N1C14R2NfYSPy1
+	LnR06FKJSJd7/vxcRIus70bGuX+9kNN94NZscEw8ksicKET5F4U91
+X-Gm-Gg: AfdE7cmW/32Da1nP9a6NS9YIiGLqKTJCMqNEvB2AmCS9kzrsIvKIPpp4RcIF/XAokYM
+	VCTCYU8xD1i/ukoKmtNKc4YN2RfXO5JFvaSQXdHARZyn/6XORm8mZTLAHMCcewMCUKyOQH1kFrZ
+	d8AjGy8NapU6x7FjvbQj0dzHbuBpMgzT4dpSqjd+4h3yBAz8vA2vabtolCiNFWD7GZ2yp53SuTH
+	d+4xtHpNhisWWBuh4v77f48W3XMJtqjCS4vqPLhiSJDHqgrQ64l2UOL6utj5K7cG+vul0yh5d78
+	b15TOmlnF8jz7bd1gneV5ChduxrONaJ/xcwCNXpslstsugrGxeY31bL6S2G6jogBleC42hCEXFR
+	hg0u+wzg3Tiw0l5Ky1aUHRnJcFTrb5Fb5hlE=
+X-Received: by 2002:a5d:5f49:0:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47f4886edc6mr4094730f8f.4.1784055161954;
+        Tue, 14 Jul 2026 11:52:41 -0700 (PDT)
+X-Received: by 2002:a5d:5f49:0:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47f4886edc6mr4094699f8f.4.1784055161476;
+        Tue, 14 Jul 2026 11:52:41 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-24-117.inter.net.il. [80.230.24.117])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a9879sm11237677f8f.22.2026.07.14.11.52.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 11:52:40 -0700 (PDT)
+Date: Tue, 14 Jul 2026 14:52:37 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: David Rientjes <rientjes@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Link Lin <linkl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>, virtualization@lists.linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, prasin@google.com,
+	duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com,
+	ahwilkins@google.com, Greg Thelen <gthelen@google.com>,
+	Alexander Duyck <alexander.duyck@gmail.com>, stable@vger.kernel.org
+Subject: Re: [RFC] virtio_balloon: fix Use-After-Free in page reporting
+ during PM freeze
+Message-ID: <20260714145155-mutt-send-email-mst@kernel.org>
+References: <20260709224330.946683-1-linkl@google.com>
+ <8d316b6c-41fb-4ae3-8923-3b649b92b33d@kernel.org>
+ <20260714092146-mutt-send-email-mst@kernel.org>
+ <5e18d7ec-a9d7-2cc3-7741-695ec3580ffa@google.com>
 MIME-Version: 1.0
+In-Reply-To: <5e18d7ec-a9d7-2cc3-7741-695ec3580ffa@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JqOP8e3rbFuqtA1n4oQ7NXpuGuIQ1z8EVqCkHyeF9mE_1784055162
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260714180840.3731244-10-willy@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F2A31100003
-X-Stat-Signature: a4hk3w6yga775k5sm8kwhggfgzo7cgg1
-X-HE-Tag: 1784054657-154140
-X-HE-Meta: U2FsdGVkX1+vIl/Qs8r86FYh4dgXRv2b1kIgdgrg24SgUIzKCIJpFmtKdMyUiJ0ZSdAsDcNmJOZAoft8Lax11cAT/hd1rGrYNLwUj33bJydqpyvRIBpIORfyZnZwmOLl72dcnAPfWl9WsoURY+B62eu1XbAxchmUb1GoGqjhoH9BkyuAnL3Ed8HoK505PnoAZxfMs2As1v3J03vCXYEV39vYAjMvJ5cTB2PYk3lGD2tyUvy+/FDRDgO7FSBEnoNu3TjaaWCmwMWf2PxVBMP9HrR2/szc8nK4Nt6MkWyA/YYahSdwPkTS3PbGafAtAK3eU7H0Mp5UJkWUA+9/6zqEQNP7cZtQg9hoBZcMjF5LWGXa8ZSljxcCDalejqXj6ntIPDvZ6FRneyki80PQbprLdYNm7BSq6QBup9PbU+hB6sYuWHGwwLEjGgs12Pco/WMwGvqgLUSf1WB0G6KXDII4bIYnoGOKfyg3w5sswT9PQyS/6oSsgMoS4wSGUix6XlDYNnOB5YLEd74wi2+GPnNzaxG0fSzxlui1VIT3biK/BRazRryPDv6HORxP1KqW80sOMZ0rXxoTSfPTsmBd4ULtmz5ws0jvpPBm1VSr9THHxcmsUpPUncdshtdUjVVgjewIZ5GnVs7rdCFVCodOT1SkY4elNLlPtLA03nzkVtfurS0ucWyvy1JLcDUXMw9oApz6OjSOqrQ6c4JC+zKT/LOiorxrpSfcztlUROsgz4asV09P6voJlfmh2Tbb4ng4n2cQpDuj68nWEYyxy4vlkt/IV14q8TRwC6DaJvd2ujf+JmzccWS/+B2dXaZJgf2cJibqQzL09ZXQHQFXLiOT83qZlv9nxvZLqlDwzqtgFNe0A7eifbX6/XJE+Z+GhN0d8LEWPV7yKILFXC6dEytWNkR938FajhgQftOlZUmnsZpSgpug7mYQdsV2Zp8jlHZ4Has9dOQFmxLl/3Fgkh3X3RF
- Wzg4bFch
- TV3BbK+1zUl8YnGawzUd7d8/Xy2nAwzBm5NZvvMXluPDbyhoXYolIxgb1novw/ittyzax8WdhJcna0A839/JTpy9wICiyXTJFTidCOHjoSDkIAwX3tNimvSMYH9XSdYBWfKx8JkHipsAL0OjzU3w9s7u4sEXUMop2dUDdE4wW/T7AWeoqoBPQcgNpysWLJ9TLhqJBbt5TG2l7RN1wlE/s5Dvf1Ma+NgYfSVHC5/Ln/aXxjE5M45CcMlLaUGUUc9ho20Yvx9cEClAcG85RhcG5VETgijWaITu2zX0q5CXmbhNaFyq9xbPwDhcURr8d7DLHvjY6rofVmuD1b/PkfShhY2GnRJxybAjWskmQB1FXfr1O7f2ngJIDhG/bAJpyqVhmxC21Q2nUEbRC6bc7QygAxVJAA96aeiYC1BKjAeCkT60xnFNBNDA/2HVzULr0+zCzqXTy
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EC59E4000F
+X-Stat-Signature: u7yeqf93otzofmu34pwb4amnzm4kx883
+X-HE-Tag: 1784055165-870866
+X-HE-Meta: U2FsdGVkX18XzBiJA/oXg7M3v/OtdGZb22XZPdl3VFb8V9MCPjjBURwOkCXxV2V2pbVjwjxYPGy+A+vWQ4LRgt/klxwnkdVA55PJIy1J3lBvfZfZC6XjOLkPQLUDNBhJxdw1g7bgiZib7N5cLDIsC0za0uJcYdDLydtXR8t+VdaJqqCBNvvQ76dPlipR7eUkxon95pxIpvbTAM7l6xhTCswPphthRApigXfC+dmKiwyNcj38BpSgTWGfBozNLadnAbLqbGmUxro8e1v1+q7f5JKoNfXHWntB6ifIWupyvCpkXRCF+/DWrMb37Auxf4/CWJVda0rdY4xgGZPAZFJNKpXJLF1P1GjLDvZmhRDzBf228uhpEZw0FDV96qwMjuL1i0wAeHfpCwwDGJrnof/UgC867J8UrOCuUufB3xyTAftZ7tXUYvmqelsiJaR1dedzbIWzbR81Z45tIeTUfEViEQ1j3qz5Gw3oV7toXUJFwV2lGf77Rqzmpqo8FUED1BslpwjV8IKDmPXJdT+SlaWnb+Db9I3AjQITazaiOr/1lMDGPCpq4tGLYYtyOgJUofjImtkbIi7/LqERW1LAuCB8r0O17wzFhNMqS3gNyfB9dD/NmJHO2WPywo1ft2Tp6NTeumT5O4jueMQw2NNKmBhXOxGfVoeUqVU8uhIYJ9aJtlIi6nXD6FuwG5CCGJdYJdsenczhpobVeIhWgziOpl22H2OCfNgifU2tDzVKgiWD5b8zNGxO1LyDosmsh3+A6uV+E4LCYgBreyvKOpDCVsDEMbyJxVn+hHuohEhFglrq4krTgV1jow36qkrxrPwhqJyp+5fAkSgutUZ9duFas6YG72+9uSpPNKnIIUwx+5wccLs0cB3y09MXYaL/IXtu51LnUnmjbgvm968eSocuOBmBT9lG4OydA0d7T7DXf23rDrgT0+85f2PKOtQlcxH2XxKPYQzukS8PwfjwRcplE33
+ +h1XDvI9
+ Ov1eSBYShaESf/vhWJFl5e1Oo5/8f4yDiDxd8+BpvVSnNvHJREUXqJrjlGQbB+HbCYHSQsW23lGC0i80fO4E1HzWzjtAhQiSZ+qXKUGCRpHTVBqDd7axmDb3n/tvFc4P/UcfKYSNv3izbKIcfmQAEeS+nejeMsWVl+wASW8b7m0bKHYbgXiX/a6NRf0SVWWIdxWRT3F0FghesYPqkNPS576GHr6dW6goj+uh6GmnsSgpegqF33QRkbjIW1wuqo85qF0Rz8/R/EFXCIeDw53vyZSZCZv1J4fT3lgjt9S5LYU+mKvUafCpLYsyAQaRXY5lWnnffzwIjRYNvSp4ZBvxRvJ4Np8jC9TdNE2J9y8aNHUxVLDXAhiwFJtMuZ2vtg/sqlyXn7NB1VsjvkGhhAFTVxGEU65DXnAszZzjo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,30 +137,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 07:08:39PM +0100, Matthew Wilcox (Oracle) wrote:
-> From: Jane Chu <jane.chu@oracle.com>
+On Tue, Jul 14, 2026 at 11:21:33AM -0700, David Rientjes wrote:
+> On Tue, 14 Jul 2026, Michael S. Tsirkin wrote:
 > 
-> generic_file_read_iter() now handles hugetlb poison, hugetlb page
-> size and missing folios correctly, so we no longer need a separate
-> hugetlbfs_read_iter().
+> > > > diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> > > > index a1b2c3d4e5f6..45a90fb3abf8 100640
+> > > > --- a/drivers/virtio/virtio_balloon.c
+> > > > +++ b/drivers/virtio/virtio_balloon.c
+> > > > @@ -1055,6 +1055,9 @@ static int virtballoon_freeze(struct virtio_device *vdev)
+> > > >  	 * The workqueue is already frozen by the PM core before this
+> > > >  	 * function is called.
+> > > >  	 */
+> > > > +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING))
+> > > > +		page_reporting_unregister(&vb->pr_dev_info);
+> > > > +
+> > > >  	remove_common(vb);
+> > > >  	return 0;
+> > > >  }
+> > > >  
+> > > >  static int virtballoon_restore(struct virtio_device *vdev)
+> > > >  {
+> > > >  	struct virtio_balloon *vb = vdev->priv;
+> > > >  	int ret;
+> > > >  
+> > > >  	ret = init_vqs(vdev->priv);
+> > > >  	if (ret)
+> > > >  		return ret;
+> > > >  
+> > > >  	virtio_device_ready(vdev);
+> > > >  
+> > > > +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
+> > > > +		ret = page_reporting_register(&vb->pr_dev_info);
+> > > > +		if (ret)
+> > > > +			goto out_remove_vqs;
+> > > > +	}
+> > > 
+> > > Hm, that failure handling is rather nasty.
+> > > 
+> > > 
+> > > In virtballoon_freeze() we document:
+> > > 
+> > > "The workqueue is already frozen by the PM core before this function is called"
+> > > 
+> > > Your report states:
+> > > 
+> > > "Workqueue: events page_reporting_process"
+> > > 
+> > > 
+> > > I assume that workqueue is not frozen yet because ... it's not freezable :)
+> > > 
+> > > So could we queue to system_freezable_wq instead, or define our own freezable
+> > > workqueue there? Then a driver doesn't have to worry about that.
+> > > 
+> > > -- 
+> > > Cheers,
+> > > 
+> > > David
+> > 
+> > +1.  Just system_freezable_wq will do the trick.
+> > 
 > 
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> Co-developed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  fs/hugetlbfs/inode.c | 109 +------------------------------------------
->  1 file changed, 1 insertion(+), 108 deletions(-)
+> This makes sense.
+> 
+> I'm curious why this bug hasn't popped up earlier, presumably any VM that 
+> has gone through suspend while reporting free pages through FPR is 
+> vulnerable to it and could have panicked as a result.  Which would suggest 
+> maybe >99% of FPR is done by guests that never suspend?
 
-What I was _testing_ had this hunk in that I neglected to commit to git
-before running format-patch:
+Quite possible.
 
-@@ -784,6 +784,7 @@ static void hugetlbfs_init_regular_inode(struct inode *inode)
-        inode->i_op = &hugetlbfs_inode_operations;
-        inode->i_fop = &hugetlbfs_file_operations;
-        mapping_set_folio_order_range(inode->i_mapping, order, order);
-+       mapping_set_authoritative(inode->i_mapping);
- }
-
- /*
+>  While under 
+> pressure this issue seems reproducible.
 
 
