@@ -4,88 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC43CC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:07:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 256C6C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 10:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D031F6B0005; Tue, 14 Jul 2026 06:07:38 -0400 (EDT)
+	id F314B6B008A; Tue, 14 Jul 2026 06:12:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB3156B0088; Tue, 14 Jul 2026 06:07:38 -0400 (EDT)
+	id F08AD6B008C; Tue, 14 Jul 2026 06:12:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9666B008A; Tue, 14 Jul 2026 06:07:38 -0400 (EDT)
+	id E1E3F6B0092; Tue, 14 Jul 2026 06:12:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 933D16B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:07:38 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E9F7F120339
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:37 +0000 (UTC)
-X-FDA: 84986955354.27.A280119
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 107B0C0004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:07:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gJyD9QEX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD4976B008A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:12:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4622F802CA
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:12:54 +0000 (UTC)
+X-FDA: 84986968668.29.ED0B7AE
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 867461C0004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:12:52 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=zk2GyPuL;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=UX4RPTay;
+	spf=pass (imf18.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784023656;
+	s=arc-20220608; t=1784023972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/175y28NB+ZFC3yHKio3eZe/JFspmgrkZa1O3kEAj9E=;
-	b=DiZ88O9+Z+h5EWT14FbXJvdKHyOKvnIZeMFYOLBIeWZNf53w93WYlZ2fqfvbM+t2lz1pCj
-	8F9Qzk8um1IrIGmoiCof4kT7vJ4ucuhRZ6bNUz3SJpNIt2+YvH6elmnCiKE3CVh7qww0hV
-	ftFbsGpnh54CWDQ42e5xjgq4lwjH64M=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gJyD9QEX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=iTkmerU8UE91t1uqi1Zg80dTpHp+N6TCCSgmWke5AWY=;
+	b=7GbhoK1x0r5aYygIrVtiVSLwKFa6WKtMDGV24RaOXQ7qWvAso/R0IkXMn0ACBwLdUmIBRW
+	Xq/GDfH3EIP1JS4eoEZlMkB97WptliTEa8PrkVTp3XocfLOtaR9yO9BS1X6PRXEqxEptag
+	jJjUts2x1Ok49wS6kxwUsTvDDKSwmbw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784023656;
-	b=SAXJninzf7E6KS/IxNa9/UQK0B5u3aQ8e9TMVpZtkGID8VAhhElfZO0H4i34T8wDY0ZMFp
-	orUm7Z7HFg7nFde1Ff77+iElYg/NNhT+il9OxttQdLmfWcLRFM8/CRRM5Pw58dNJTN5Lq5
-	Zlamhti+oKzf2Sv8f+qnJVhBG8dW5SU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64C4D60120;
-	Tue, 14 Jul 2026 10:07:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F6B1F00A3A;
-	Tue, 14 Jul 2026 10:07:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784023655;
-	bh=/175y28NB+ZFC3yHKio3eZe/JFspmgrkZa1O3kEAj9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gJyD9QEXespHpA+2dReUkty/xaWk1Mf7m6uy1vuLe2wGx4K5bgW81Pj7zaGIuljgD
-	 2RejCTkR9Evunw8dM4kLlDUXTVeEA7HkjN2GZqqURC0rLNiyFW2UdarzMyUlwtvfG/
-	 r7yXxQdWlIvMk+pgiO8txJjuFf9FV4aAN8S7FTBHKfdz5xQDpUmMpEZbdEMfu4MSLe
-	 v17e88C4bRLQoO4zPMJIgh+xb2ZWBU6Dm1+7nGGN181gf9rkIfyoQa597Uo+eSphpn
-	 jVEr3A3ANQwx7/tmM2xN9oJ7GTaz5jjThOBeYxsgbX5VgqqCjyW2dqFqrlXlTL4Q6J
-	 zhoEm847xH63g==
-Date: Tue, 14 Jul 2026 11:07:21 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, 
-	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, shuah@kernel.org, balbirs@nvidia.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	hongfu.li@linux.dev, SJ Park <sj@kernel.org>
-Subject: Re: [PATCH v2] selftests/mm: Fix memleak in migration benchmark
-Message-ID: <alYJzrQOXY1AoV6j@lucifer>
-References: <20260709081843.1451202-1-lihongfu@kylinos.cn>
+	t=1784023972;
+	b=Y1DhsYbyv8RiKLvSVBmhJ1EMOaKECASgZ3MTubnqswKr1BSVlFplADKd978k6Hgm/1VRSh
+	yqN2YV8gyU+oJrO3wMqUM1p+pquudz3Xi8+Oo9PXOu4eaVc1OfEIrl0+Ica6fH1cQ2GckP
+	LoRkiMZRbI8fAkTwz16DcWZrv9qeFEo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=zk2GyPuL;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=UX4RPTay;
+	spf=pass (imf18.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+Date: Tue, 14 Jul 2026 12:12:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1784023971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iTkmerU8UE91t1uqi1Zg80dTpHp+N6TCCSgmWke5AWY=;
+	b=zk2GyPuLv/CULvPLi8yopdSODYUTrhGxZKZk8dd8mzHUNuBSoZcHm43puFTCkFjFXm8uD0
+	EKzG/04UrVUW5/s+MKyPIecaj7TnLKSsJhra2w69fUBlZqCRtgex48kf84oZWv+ijO7xUB
+	MXwsbqhdUvynljp3nafCL1enVh0Xp8d/AJUv6JgfXle0ZzSTTq8sBb6IEcWVhyy4IO8/Nf
+	/s+UlSdE/v9xVUUZpvRTJ4pVRv9yKjQPDDR3a25XVGjttjZOmrgfZv5qsP92UwibxkupX1
+	ZRClx/XM9C1sf50o+COZoIqgSIL+m5BDD0Lri5/T6Nvz3L8z47TpJqgu3s7SUQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1784023971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iTkmerU8UE91t1uqi1Zg80dTpHp+N6TCCSgmWke5AWY=;
+	b=UX4RPTayR35zaZYCZZkIfXYdmcBvYC+h+fQ87S32/PfxvcS+wsHmXehsVSYaPPhLzb4Uhl
+	mvzIyqsh+iM8wJCg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>,
+	Marco Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Li RongQing <lirongqing@baidu.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Douglas Anderson <dianders@chromium.org>,
+	Gary Guo <gary@garyguo.net>, Christian Brauner <brauner@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Masahiro Yamada <masahiroy@kernel.org>, Coiby Xu <coxu@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v4 0/4] Introduce Per-CPU Work helpers (was QPW)
+Message-ID: <20260714101248.hV06z2cr@linutronix.de>
+References: <20260519012754.240804-1-leobras.c@gmail.com>
+ <20260520130903.Ebsd4aUa@linutronix.de>
+ <alP58SgTc2_8OFPc@WindFlash>
+ <20260713080723.XOTiibfG@linutronix.de>
+ <alVV44RO_SolaqMW@WindFlash>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260709081843.1451202-1-lihongfu@kylinos.cn>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 107B0C0004
-X-Stat-Signature: d5zef9soxpwa4oiwc7ycq7x54mzgyzow
+In-Reply-To: <alVV44RO_SolaqMW@WindFlash>
 X-Rspam-User: 
-X-HE-Tag: 1784023655-553433
-X-HE-Meta: U2FsdGVkX18rug2ulLfZshIZULmWCGw58NabAgnA3UPyp3Kgj6zWubu9s7lo59a5HZQigu8Yso54/IZZm67WepQvgBlKyCQRnDg4Gz2rMtEHwUKgW1+90h7c9v3h1p92HIgHaAz8detcr2zskCqVYtFsUfNiOihy5EnT9Z4kfbvniaA+Q4+514qnlIoNogLKMt7U09k1Uwj2Ws7PUy0F28ocTp2S1hTxGJrjFSuWF6QGK13iyCeqXqPibdi1izqEWZroVBJJlGlXGZE1OOZ4wPnwhgMMw/ChrrlWHtpnsoU8G6ZXxQqS+Ecm2uLOGL4/J38MhC7WKVymWgiGi+toqpfxi9sMIconYtdeDoSI7Q+dLqtpWdwwRTCTct+tfqPAIIYfhQEH7brbs9/o0wygDlnMHQxsYdsJCA0Svuy7mMjK2qP0q98BIKsBqT4QARW08lwNsOgnxvt36WPUfa640fkE9D2uw3B17DYH/zuA+tbLOjDKobotfmnfMz4/2G6LjBY+Ky2a4+a8CiMR8AFPs7HxKmZf2Si54HHIln8Te8M5ozjLwiK6PX3kZr97UJXjrUzPOIfupqX19NT9x9SX2/s2w5DbDpegwnviMt4KYJqK3YvF9AvCK0zKVpgBnYws8dwM152N/+XaoiDXdD6PAjCLwMIcSaCI1ChhwwddlTUaJRzaX5TumQTT+Pn6HLPpIFcxFxTMOfRxMft0rwmkWtLMJVjXU8+jJ/04tlh63CDxqtKDlC6mvA9dWdRgbFXq58GwJnhH0biH0ihFY5IvSsWK+SiRDkQv6rfGEiCoKefYKL2EIcwvfrzJhdfrxZ/6X0oYpTeMFE/8vavjrQUWIRoIhzmAAU6wyeGZrMQ700dBm5V8qHu/3k4GJmAYacvYptTbC9IIg0xFTuLYm8dgvwroBF0COKxvpnuS7pldwLazo8VbioHOHnrGiW7/Ma8jtgJl6Lx/TPMXnTNRthl
- h8VQwTSU
- s3mADajhyeU15dztPonBcepl4ajInNyWI8x0g5yxQ00a6snG5UhQQpQS7KzGR31XF10h5A7ZMvprA53Dhyg027oRuzbrG7UoO7YxWAbZFYjtFxTt4OJRA/kRAZXVn6ovb1++QfCH415UQHy8DMxLC9ADI8Nf5dPX2I0+JTtV5vMFJauKskmzoeqS+znKuY9a5U2ZNV9F+BJuBfKgf2hfTzQ2269kHqk7Y0lq7GUQPQEfHfqym8/pjEU95Hrtnad8cKrd0WadkrFV5hGGbZQFl6zCNL/171HzN6IB65HD39ChoZ4m+KQusnJKXfg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 867461C0004
+X-Stat-Signature: m857mjxxeppki339kzh1ysfgfcsft7s4
+X-HE-Tag: 1784023972-216195
+X-HE-Meta: U2FsdGVkX1+jWTC9rdjrPx0fCMgpbZHXCjw2b+x0EMM3OS7sztIcvzXtJ+KVes5e7Pl+NyygFJq9nBtTd8pdnOmAD72zJLJTeObT28wQMsuvC2npgQweXODFjFY8G+kWtcInv6EEja8Axg2o19QjBsE2rLIKn7LYUhd5ppf8dxwyeVHy3OJyKZM/dZryIGZ+iqboDLkZ7isZugkpehftnPWEOslRSFqEL5NObcH6lozqPMCf6OijvkEgiQIVDcNTa+rag4I3f2QCFV75cgU6/N8pMNeuAwAKnanjPfRXHxwBUFRwwiodcfKpoytd8urC4RHEeFKj/YYJ+wFG26eRhqJQE6Y1TjoD/92ibbI9PabBsBsrwB12pAj/Ou7a22YztRdagRMaJyIVAEgBXtKIt+nq3oxFg2ESmzQtZfoabhFvrm8sMxKelY6y8MTQn+QVbErAgXfxl6S/WcR/zfoeK6nqvuDPrBTJjQRIQhJyj8ZItLDyQTuFEA+IAyJ+uQgPRHvPlZ/CKUFUhjsIZLnzxOOgfySQe44rzLWcN/CGijyEuHhS2HAt3pkiKtrcdihUXW3Sm5WsMohO+a7RjeIVHpZ6qncimytU9dYQzlwsA8iSG+PHpwURKwNOPl0J4ZadomnxJIoP9otM7VSdjePhxXQQV4wxxlW5jQS2bDOYo/6IcxrZ5gmj9T/efeVptCKlVoMXpcjkqGxVLQG0nRdGDcE862wv2cDXIIek63i+wbTo3U64qcnt5rlTiUmUIG/zAc/2ARlono3k+ay400OVRxSeNlRH+k2laMNnXAkeePu9GkbPRphvoOUOIHKbrs3Oj4ThD17HVHmDYRCcMnUDOhgra6qSvRcDBvLW6JE25qseyqGv4oC9Fn7t/FCTnyFjod6CZa/3Slml5jV2nO05If9CVfmoyN2Lcj6nwKMPJUvQduGMbWBHLcNXEhDgsHWNLZmZhuKSW1JhIMTDWu3
+ 4YzGSETG
+ coXV04FfiJiET9/GxUIog9cd9znIqkoxPTL8k4RijAvaiH6yBbec96e7oxsxp9GD9XvxlMn8W/aEcIQewRdPv3t3nFSL9+0QOhxYS06x5XnSKqe/nw8/ubSIfuwYoV/iCHNTfhH5M89108IOf5TrVscqmQ46hnMINamo1c/0afjEUBtcyUeAwAb8fdirpsDPFQ2VxRJonCTsr7X+zbJYR39MGY3Agzu+SEJas/owtQZAWep080ZmqZlvsEAZO+7Y6lrsvFNAqbko3UJs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,105 +146,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 04:18:43PM +0800, Hongfu Li wrote:
-> Several early return paths in run_migration_benchmark() skip
-> hmm_buffer_free(), leaking the buffer. Replace with a single cleanup
-> label.
->
-> Fixes: 271a7b2e3c13 ("selftests/mm/hmm-tests: new throughput tests including THP")
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: SJ Park <sj@kernel.org>
+On 2026-07-13 18:17:23 [-0300], Leonardo Bras wrote:
+> IIRC there are multiple users of this mechanism around the kernel. I 
+> remember picking the first three (swap, slub and memcontrol) as examples of 
+> how to use pwlocks (QPW at the time). With the concept proven, I could then 
+> proceed to work with other potential users to replace it. (We ended up 
+> dropping memcontrol in the process)
+> 
+> The main idea is to replace as many potential users as possible to reduce 
+> as much as possible the amount of IPIs in isolated cpus, and allow Linux 
+> to run workloads which require much lower latency.
 
-LGTM, so:
+Right. I am not entirely opposed to this idea. If you can't improve the
+situation by other means I would consider this as the last resort. If
+the mm folks are on board with this, then even better.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> This idea came as a general solution to a bunch of latency violations  
+> Marcelo and I were coming across.
+> 
+> Thanks!
+> Leo
 
-> ---
-> v2:
->  - Set buffer->ptr to NULL on mmap failure to avoid passing MAP_FAILED
->    to munmap() in hmm_buffer_free()
->  - Drop the redundant "/* Cleanup */" comment
->  - Add Fixes tag for the commit that introduced the leak
->  - Collect Reviewed-by tags from David Hildenbrand and SJ Park
-> ---
->  tools/testing/selftests/mm/hmm-tests.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index e4c49699f3f7..402c6f6f5f09 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2828,8 +2828,11 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  	buffer->ptr = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
->  			  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->
-> -	if (buffer->ptr == MAP_FAILED)
-> -		return -1;
-> +	if (buffer->ptr == MAP_FAILED) {
-> +		buffer->ptr = NULL;
-> +		ret = -1;
-> +		goto cleanup;
-> +	}
->
->  	/* Apply THP hint if requested */
->  	if (use_thp)
-> @@ -2838,7 +2841,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  		ret = madvise(buffer->ptr, buffer_size, MADV_NOHUGEPAGE);
->
->  	if (ret)
-> -		return ret;
-> +		goto cleanup;
->
->  	/* Initialize memory to make sure pages are allocated */
->  	ptr = (int *)buffer->ptr;
-> @@ -2848,11 +2851,11 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  	/* Warmup iteration */
->  	ret = hmm_migrate_sys_to_dev(fd, buffer, npages);
->  	if (ret)
-> -		return ret;
-> +		goto cleanup;
->
->  	ret = hmm_migrate_dev_to_sys(fd, buffer, npages);
->  	if (ret)
-> -		return ret;
-> +		goto cleanup;
->
->  	/* Benchmark iterations */
->  	for (i = 0; i < iterations; i++) {
-> @@ -2861,7 +2864,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->
->  		ret = hmm_migrate_sys_to_dev(fd, buffer, npages);
->  		if (ret)
-> -			return ret;
-> +			goto cleanup;
->
->  		end = get_time_ms();
->  		s2d_total += (end - start);
-> @@ -2871,7 +2874,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->
->  		ret = hmm_migrate_dev_to_sys(fd, buffer, npages);
->  		if (ret)
-> -			return ret;
-> +			goto cleanup;
->
->  		end = get_time_ms();
->  		d2s_total += (end - start);
-> @@ -2885,9 +2888,9 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  	results->throughput_d2s = (buffer_size / (1024.0 * 1024.0 * 1024.0)) /
->  				 (results->dev_to_sys_time / 1000.0);
->
-> -	/* Cleanup */
-> +cleanup:
->  	hmm_buffer_free(buffer);
-> -	return 0;
-> +	return ret;
->  }
->
->  /*
-> --
-> 2.25.1
->
-
-Cheers, Lorenzo
+Sebastian
 
