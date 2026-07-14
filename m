@@ -4,96 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B25C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:41:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF394C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D81A46B0005; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
+	id EC74B6B008A; Mon, 13 Jul 2026 20:46:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32EE6B0088; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
+	id E77976B008C; Mon, 13 Jul 2026 20:46:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C49B06B008A; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
+	id D69766B0092; Mon, 13 Jul 2026 20:46:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4B86B0005
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 295A8160207
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:41:22 +0000 (UTC)
-X-FDA: 84985528404.28.D2CD002
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C84D3C0002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:41:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A01636B008A
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:46:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D421A018F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:46:20 +0000 (UTC)
+X-FDA: 84985540920.19.29EAE56
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A0A9620007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:46:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783989978;
+	b=37fweMyTn2c7JDuOjFO7kg+ZzFKLkQSzIkiHEWNeBXqQcQVm1UEVMWQ7qYew0Vrr3ZfC01
+	xhMGJ6GLm+3VOdB3cD2zz8M7Xs2hqeNuCRETpm1/7j/itNij5zRpuVAOFvN6CQoSqiImWS
+	SDysX6Lnr2UQoR2eb8qwbzHIXD6ey2o=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
 	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	spf=pass (imf03.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783989680;
+	s=arc-20220608; t=1783989978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8xd8/TgcoIVW2dBr0gKr5kPkmk/XCPljFfXa98YCEFA=;
-	b=T8dBkKgrNodFPa02ed4wKkL/36WA3Mr8dnKUg13Fn40SCpHoKZVVg/GGV77t9mcBdWMd5N
-	meKoqS68KL34qn9gyNWpv6nUx/tNTkgHC3oLR8AuzMOlQVx/hATetRT9PCKg6R54/wFLQt
-	Xp2LVKHbgjbg5HXN8ZSp+PI98rtthbI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783989680;
-	b=sP0wDH2gTlW2w/X73w9H1LJWUQBAUsqZk1DpFnPTA/ZIKhJR6EL0Qs08HsJ6Ce3G3emC9U
-	0Q73wpok4MFuXPuYEcCPrErwc1vxd/AKfsgBUh4dG6WyuTl5ymHuKZqkJk6FgjpTZrbT0p
-	pw6Bd4qESbD5fHPQ5ZptCDsN+/QYsEM=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzgTm61yGz5BNRf;
-	Tue, 14 Jul 2026 08:41:16 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 66E0fAuu007375;
-	Tue, 14 Jul 2026 08:41:10 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 14 Jul 2026 08:41:11 +0800 (CST)
-X-Zmail-TransId: 2afc6a5585a7f9b-3eabc
-X-Mailer: Zmail v1.0
-Message-ID: <20260714084111267LYR6nswASLSX-jLwxQh4w@zte.com.cn>
-In-Reply-To: <alUNQrCzt6Las0PP@lucifer>
-References: 20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn,20260713144153556amKkr4s-dWoQu5-ziCfZe@zte.com.cn,alUNQrCzt6Las0PP@lucifer
-Date: Tue, 14 Jul 2026 08:41:11 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <ljs@kernel.org>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ziy@nvidia.com>,
-        <baolin.wang@linux.alibaba.com>, <baohua@kernel.org>,
-        <lance.yang@linux.dev>, <usama.arif@linux.dev>,
-        <chengming.zhou@linux.dev>, <qi.zheng@linux.dev>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <npache@redhat.com>,
-        <ryan.roberts@arm.com>, <dev.jain@arm.com>, <wang.yaxin@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAyLzJdIG1tL21tX3Nsb3QuaDogY2xlYW4gdXAgbWFjcm8gcGFyYW1ldGVyIG5hbWVzIGluIG1tX3Nsb3RfbG9va3VwKCkgYW5kIG1tX3Nsb3RfaW5zZXJ0KCk=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66E0fAuu007375
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 14 Jul 2026 08:41:16 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A5585AC.000/4gzgTm61yGz5BNRf
+	bh=OTiGwCBfcJulfC0Sk12e4bNbbG1DyStUhJ0NnHPVZ6Y=;
+	b=71zuivuEzlI75ROfc4RufjJljDPFkdRV1PI3XXfVN/C8sPSwfHfque2nwNvdr6jMraCYga
+	tZP3ysrmYImEiGI3p5SK3+c5huxOp3b1EkYrFtKuLFcTN9n8BtsfIDxbEhRaQtuz/Ekj2B
+	pQwrB8tjM6PxTukA0lOOUNsV/fMd6YY=
+X-UUID: 66763a047f1d11f1aa26b74ffac11d73-20260714
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:b9a02f50-6f9e-4643-9cb9-ced1449825f7,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.12,REQID:b9a02f50-6f9e-4643-9cb9-ced1449825f7,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:e7bac3a,CLOUDID:f0c52908228f37835a4e6c072af3c148,BulkI
+	D:260713224606VYPSDRI6,BulkQuantity:2,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|136|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:99|1,F
+	ile:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
+	DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 66763a047f1d11f1aa26b74ffac11d73-20260714
+X-User: husong@kylinos.cn
+Received: from [192.168.110.173] [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 138411820; Tue, 14 Jul 2026 08:46:07 +0800
+Message-ID: <45e2e42c-73c0-4d2b-9b4b-bd44730c2378@kylinos.cn>
+Date: Tue, 14 Jul 2026 08:45:44 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hugetlb: restore failed global reservations to subpool
+ in alloc_hugetlb_folio
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Wupeng Ma <mawupeng1@huawei.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Ackerley Tng <ackerleytng@google.com>, Zhao Li <enderaoelyther@gmail.com>,
+ David Carlier <devnexen@gmail.com>
+References: <20260713144557.3845941-1-joshua.hahnjy@gmail.com>
+From: Song Hu <husong@kylinos.cn>
+In-Reply-To: <20260713144557.3845941-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C84D3C0002
-X-Stat-Signature: 6q9kdajzeu3ftwap3w1jsp7f96m7fcxr
-X-HE-Tag: 1783989679-458386
-X-HE-Meta: U2FsdGVkX1/mvwnl5PPO1kJDXKqEC2pBrlWYkuQ1M+lCO8ffHwAHIL8s3lzcl9pDhcv0fnCyr6JaoVf7jiOn0v/0H5Oerx7YEYwFJgA74VR7JSSOc0vpFx2DMD0aIeF+r6IUR0KHJERFvT+bhWWj6/dHiNIQCcWk4w0k/fKPC4743GjRda4Y1I+lchRR6MyauavGTVWOnQysg8Cd9/HjDB1+BxyDLO//csSXowclz2XBzwNqHy6jgSGPTRwYyrwGMbvf4GdE3+JKjihky9qFbp3xorMQHLD0nJRB87anPJpM7T05j4UCi71ohHDHeDn76UyzMk5iC67NKWgbcCgG25y3xYqdQ2awoiWoHVTDOTN+yYSAcj7mqXKGXTZI/P8QPFhBnXuas21RAGgfGHW/GgfhZFlTvzs/0YECr461c2zm8nMoPSwrj/FuHGbU6mfKfbav3cXKus6wVIYa2p2V4rDLv+Zqwl20uv3SLndY/TNQtgTfDjkg8h1NL1xDCjMGc6xryj4Ozbl8fEZY4h2Rlv12uTQyJhHUf1QtdcSQJzDwnWbDeZQDnAbzXphmSB6OafBnr1CBmSiGm16rP1fFKP9HOTkSVt+CuAY86VMr7jnFfIAOi/XHSUWan0uprI7eSdzC8y6XsANaiUR1v4boKl91/MbN8Y6cr1XqfywCR917xfuXL8ohAFU2ZrejPBvq5SexXgab7ezU6Np1fDb25pBdsWWiGc9gxqt1INPtNoQL+MvX/nGM3pH+PRhDx2RuOKv63BDgpWtFDax0Nc1YkRa+MT+Ry49KtpFxh0SjpLVCyHLnbfU6fZlM4NuuP/ZNzTGAOthQFb5Ws2Iy8sOq+h+KHUswksa0EP7lPR5i+5JzLRSn+B5CguulhPiRwjeJ0nCUCgLBc3bz/3xo1DdZDeiUKDb8+ddAzVFcingyWpGN8RbP4Z24n+19wNjPnSO/dCHTnMXsI2qhc/BAERp
- xUUn1nza
- 0FWvqbZ4AxfWwEXDXhxTEB9uK78btogBlXkATRXO/m9O4eAtUKcxWxRe2dN20DvsfeFR5V4yxDmwtxh344KEcYh1wMlcX3m8R/gUIkmwmSRmfF99I6Eupf+d4sl5cATbijjpaXiKjnipjI1gwsPDiE84DR8qTixugCKfbhkdVHnuEbGL2g5F4Rl8X7nGnEK+UBoedSKBitanBPNSVtV379IoDTjRc2XUB3kxkn4P4QRxGevaHK1t61aEZb1QkifY4Fr8MKQtcHnh194M=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A0A9620007
+X-Stat-Signature: nhkgfaji9f3ka59waxbk1eggryud338y
+X-HE-Tag: 1783989976-811527
+X-HE-Meta: U2FsdGVkX1+qSFHLwAMCbddUfxI0L39ybzkz33QJyayxc3vpzFWmLPtLA3VYJlC/hE/Ewu9t8jTC+Bv54xGW+IUfyWi4ZILP+GC4X2bfTyYOBWrc6aeRWpRYWYqeFwOQPH+Zh2XS9k6xOud5Wc0+y/gVix+/5kD6QRPg0KKGptCb3Fwk9vdWYraitSoY52TybQj194Cx8HkIhqHhFGWBXZ3T57qUIUONkQKQugkc/W1XnP0lqexVU/20pD0WA3s71WHXTRaMk71d0D3vOnhUkRjLaq4L9dz6WkvYCGgxlxcXlZJFP7ERzhN5SjzSMYyIcn8Dnjt9Xe13WKCMpSvR3ozAjOwIVS1qP6zYpzpjkWI053CSz9mEXiyLFysN2buTjH890UDZhOFkexTL75BCLSwRRvB7vwhy5WmKx2i2yaEJWDu3HqBDEGq7Qp1kfdJba8ccBVUwmXKMd3sZ1PeDQKQGJnAkCQ3X4vdlaDMCV90NVAs4KPIdeDlIUSVnexVMxwHW5iaV5TA83usDYJ21N8k1iauYIG3MjowGU97AFeg1lla+rJW9GSB4YT/RsYQOnSEH82UtNw/dzUlPDNnSrOybVSgCzRAo72wQ1h1KkF8FcD8e9X2kCjdg1wfrkwfiZhUvPwEk+hQVBRUrPxtxqMUiQMuSQ/rYbZHWav4MZl8JcUoFTJDxeRcbGkfNYZRtTDk92LQZ/+4t2LNoGtPyiYeKTgKBsXpjO50oP3kh23uyQZE95dFIEdW7PvVCNV2iV7VhjbFWl/vAaPv6N5Km4Em6Qp3Hr1aiz+g8dF1KG2qh9BW5TurTbPlSxv1ACm4+HgLqiFRLy9yLFH9yKmcQoRZBjv//QOekQl68wOQ9lR1hk7D0RRfDC9Y6FMxVy91abCRkwnYjCewaJRhWsEMeCNdnF18uvfg9xq02k/jzPXGEKJyvCGjORlpQ3SL1VUS2y5GqjRBzDMLis958xNq
+ 0ROdAtOb
+ 1YGkHl4tAk4ulAIEekOOQ59kWchEEue6Id6s/MKqEtfc6yZXKBu68qhPsx7i/rGuLXnW+oDVLh2ZbZlTbk5HFCqbfWd2wovxUD8b4rZm4AEvIfTuEqRZW+3TX19AD92Pi06nJSWBihBnn5DNqYjaRQVOHNsyrc6Lfvq5t3QK5B3EBjbQJYlNRSg+/MSs0Scs4c5pff1R4HALc1z9U/xPskipeSqtJsCljUnOO5YUd9jNLegmZjww8vu5uagjS9Zyr6X42Cf1szwqiLxFX/QU/AFH/3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,51 +104,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Hmm not sure I suggested adding a comment to explain it...  or removing the
-> prefix _ from the existing macros :P
 
-Maybe I misunderstood it.
+在 2026/7/13 22:45, Joshua Hahn 写道:
+> On Mon, 13 Jul 2026 19:50:08 +0800 Song Hu <husong@kylinos.cn> wrote:
+>
+> Hi Song, thank you for the patch.
+>
+>> When hugetlb_alloc_folio() fails, alloc_hugetlb_folio() only rolls back
+>> spool->used_hpages in the out_subpool_put path when gbl_chg == 0. For
+>> gbl_chg > 0 (e.g. a size= hugetlbfs mount), hugepage_subpool_get_pages()
+>> has already incremented used_hpages, but the error path skips the
+>> rollback, so each failed fault permanently leaks one used_hpage until
+>> the subpool is exhausted and hugepage_subpool_get_pages() itself fails.
+>>
+>> Decrement used_hpages for the gbl_chg > 0 case too, mirroring the
+>> hugetlb_reserve_pages() fix.
+> So something is clearly wrong with this codepath here; there are now 4
+> competing fixes in the mailing list currently being discussed [1] [2] [3]
+> including this one and they all do things slightly differently.
+> Let's please agree on what the correct solution is, 
+> I've CC-ed the authors of those 3 other solutions to discuss here. 
+Hi Joshua,
 
-> 
-> > Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-> 
-> Honestly I don't think this is really adding much, but I guess adding the
-> comment can't hurt.
+Thanks for the review and for bringing the authors together.
 
-Agreed.
+First, apologies for the duplicate submission — when I sent this I was not
+aware of the other proposals on the list ([1][2][3]). I ran into this leak
+while looking at the subpool accounting and simply wanted to share a fix;
+I did not mean to add noise to an ongoing discussion.
+>> Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+>> Signed-off-by: Song Hu <husong@kylinos.cn>
+>> ---
+>>  mm/hugetlb.c | 13 +++++++++++++
+>>  1 file changed, 13 insertions(+)
+>>
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index d6c812d1857b..8413ec92d836 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -3073,6 +3073,19 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>>  	if (map_chg && !gbl_chg) {
+>>  		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
+>>  		hugetlb_acct_memory(h, -gbl_reserve);
+>> +	} else if (map_chg && gbl_chg > 0 && spool) {
+>> +		/*
+>> +		 * Restore used_hpages for the globally-requested page that
+>> +		 * hugepage_subpool_get_pages() counted against the subpool's
+>> +		 * maximum, but which we failed to back from the global pool.
+>> +		 * Mirrors the fix in hugetlb_reserve_pages() (1d3f9bb4c8af).
+>> +		 */
+>> +		unsigned long flags;
+>> +
+>> +		spin_lock_irqsave(&spool->lock, flags);
+>> +		if (spool->max_hpages != -1)
+>> +			spool->used_hpages -= gbl_chg;
+>> +		unlock_or_release_subpool(spool, flags);
+> Why are we unlocking or releasing the subpool here? 
+Good catch — it does not belong here. unlock_or_release_subpool() is meant
+for paths that may drop the subpool's last reference (e.g.
+hugepage_subpool_put_pages(), after which the subpool can become free). In
+this error path we only adjust used_hpages and never touch spool->count, so
+the subpool cannot be released here; a plain
+spin_unlock_irqrestore(&spool->lock, flags) is sufficient and clearer. I
+copied it from the hugetlb_reserve_pages() sibling fix (1d3f9bb4c8af), but
+it is not the right helper here either; I will switch to
+spin_unlock_irqrestore() in v2.
 
-Regardless, adding a comment to explain why these have to be macros would be
-better. Would it be okay if I send a new patch that merely adds the comment,
-without removing the underscore prefixes from the existing macros? 
+One thing that may be worth keeping in mind for the discussion:
+a833a693a490 is already in 6.x -stable, so the leak is present in those
+trees as well, and a backportable fix will be needed there regardless of
+which direction is chosen for mainline.
 
-> 
-> > ---
-> >  mm/mm_slot.h | 17 +++++++++++------
-> >  1 file changed, 11 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/mm_slot.h b/mm/mm_slot.h
-> > index 5de3e91d86b4..710c70166c79 100644
-> > --- a/mm/mm_slot.h
-> > +++ b/mm/mm_slot.h
-> > @@ -33,12 +33,17 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
-> >  	kmem_cache_free(cache, objp);
-> >  }
-> >
-> > -#define mm_slot_lookup(_hashtable, _mm) 				       \
-> > +/*
-> > + * Note: mm_slot_lookup and mm_slot_insert cannot be converted to static inline
-> > + * functions because hash_for_each_possible relys on the actual array argument
-> > + * 'hashtable' for sizeof() instead of pointers.
-> > + */
-> 
-> I didn't say that you should change the _macros_ to drop the underscores
-> though, there could be some nasty macro hygiene issue without (though
-> probably something's broken if that does happen).
-> 
-> So let's not do that.
-> 
-> Also you'd probably want this comment above both with a newline after so it
-> doesn't just seem attached to mm_slot_lookup() :)
+For what it is worth, I verified the behavior with a small reproducer (a
+size= hugetlbfs mount with nr_hugepages churned 10 -> 2 -> 10: unpatched,
+the subpool only maps 2/10 pages after the leak; patched, 10/10), in case
+it is useful to whoever ends up shaping the final fix.
 
-Yes.
+Happy to help with whatever direction people want to take.
+
+Thanks,
+Song
+>>  	}
+>>  
+>>  out_end_reservation:
+>> -- 
+>> 2.43.0
+> Thanks again for the patch,
+> Joshua
+>
+> [1] https://lore.kernel.org/all/20260708-hugetlb-alloc-failure-fixes-v2-2-c7f27cbb462b@google.com/
+> [2] https://lore.kernel.org/linux-mm/20260428113037.88766-2-enderaoelyther@gmail.com/
+> [3] https://lore.kernel.org/linux-mm/20260515202902.461539-1-devnexen@gmail.com/
 
