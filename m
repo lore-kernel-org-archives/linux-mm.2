@@ -4,157 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 235EAC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:10:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C9EC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:17:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DE076B009D; Tue, 14 Jul 2026 09:10:39 -0400 (EDT)
+	id 7CF216B009E; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4516B00A6; Tue, 14 Jul 2026 09:10:39 -0400 (EDT)
+	id 7A7AE6B009F; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A4206B00A9; Tue, 14 Jul 2026 09:10:39 -0400 (EDT)
+	id 6BCF06B00A0; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF8EE6B009D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:10:38 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 08901802FF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:10:38 +0000 (UTC)
-X-FDA: 84987416556.16.B2BCED0
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011020.outbound.protection.outlook.com [52.101.52.20])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1E88214000F
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:10:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=itHCJeQg;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.52.20 as permitted sender) smtp.mailfrom=ynorov@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784034635;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 357EB6B009E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:17:50 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11B68A03B8
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:17:49 +0000 (UTC)
+X-FDA: 84987434658.06.7D48B6B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 529131C000E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:17:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FED4vNrC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784035067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=47JETSfzH+9Qq13yeulDnYn8gIFhTM2mDI0j/LVolSc=;
-	b=xJjkyUYlPD9qrYQDCJqCnndFshdtBdbx/SWwV2g4nFL6HZ0zj9158E47Wht9YmpWIO7fgp
-	YVQkfNlH1wqtBJ+HZNIakC4w3S9CJiunviEG7THwVzmj9xWYTpWGzkcxpf33CUaBHQvKvG
-	eWQK0AOSDndFDWXSdWGfZXeQkSxOupg=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=itHCJeQg;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.52.20 as permitted sender) smtp.mailfrom=ynorov@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784034635;
-	b=rNNoXnqEgcLJns05Dznwv6ZDH0eDbzitzuv4rEJNaUhjR3jdvju+Y2SHbueQgsKbUrfZyd
-	oOoRNTx49rqX53e28Y22I7n7SA/qrZ433Qh3GbwbiS+3lkWCAHWIdorlSm6d5eotqFRA2V
-	wmv6HGrg1t0HkBh/vZwKV6S6hCyj5Z4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DkxMiFRs246o15wZ8Eqjo6Dllhc9YXAbKM1yOE6I4t52Xft9c9/TpLRtK3bYPkCnJ7SzPg6lNBWp8DqV4nOm0udqNlqhzOeYq6Sysi90IlIKaizdtq8CUvLa/onZDKVJik1a5EH0xZcO5fnBREI5t64S3diacgjmSpqZE5RBflFH1HhbL7ReZYrvPynKVOHtapA4gx1x/zDty63+g8fJtsMXCshgUeqKAn4dk/Ra2NDyxltNWS4aFXFoEURVMUIWw+zsvI69UotI4SooFkTb3XinB4TNeLAprzfDdOSd1MvRuBm4Kos06BJG2rKYg3X7gnqivFKhldZ3f8nOTQW4vA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=47JETSfzH+9Qq13yeulDnYn8gIFhTM2mDI0j/LVolSc=;
- b=G7L28fYqHRZ/RgpUM9G38d2dQSj7ZYYE+JXC8YRuNbaUqdnb9foeMXlNvxhyt/vtko87CPNrQxm+LFKfXX0dSBkdkY5bT+W1c3VQlNYszZMYQ4XjMyNBqR0UwAVgnuXYuv2sjLeHi24Q+59O46D+rzumxHjKK4abnRrR8FU/XIxTzc3/xMzMPO/uX7/C7W+hjw9B8CjM5rMhNyEITHw69p5WySXxoatJwWUxOn4iirr2xLf1pXIuS24VQqTXGooddq+UBCryeZlRkWjuwTrnfzy3WXUqDpdkyA+pBu9zr0t1IkfME8IEY2XXA2eAgO0uecAEY0sGVBos33oJUlP7/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=47JETSfzH+9Qq13yeulDnYn8gIFhTM2mDI0j/LVolSc=;
- b=itHCJeQgRcIybnYuUMMvl6NAsB+4sMFgjSP2gEoATD1DpnwpY60qccO0LZr2Lh8oG4OJe1IT7hdygbTalgjyKAqydBWf0iK9LEIWREV5RbqRVMeqQ6eY0bWttaUwu4jrbJyS8naJwxSaOfzKA5LPb8+9imgkLOf+2l5KoAihfmgiSN7Itr0M4rnVyomeVvAuAGf3kcVEf0v3COE9UYZ5tvOt31iU94jMDoH3Tox7FO3M0YGGJ+XruAIXqRzgK7YjcaDHGX7qXHoqH2h46x0hUxdL463PwUs8GY3bAwrLlU3Bz37w5N1RRQTUgfO0EBaB0LZY4ujAtl8RrHhzzTpEFg==
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by SJ2PR12MB9191.namprd12.prod.outlook.com (2603:10b6:a03:55a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Tue, 14 Jul
- 2026 13:10:31 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0202.014; Tue, 14 Jul 2026
- 13:10:31 +0000
-Date: Tue, 14 Jul 2026 09:10:30 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: lirongqing <lirongqing@baidu.com>
-Cc: Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v2] nodemask: reduce bitmap width to nr_node_ids in
- __nodemask_pr_numnodes()
-Message-ID: <alY1Rm7n8DmEzqAd@yury>
-References: <20260713075104.2196-1-lirongqing@baidu.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713075104.2196-1-lirongqing@baidu.com>
-X-ClientProxiedBy: BN1PR14CA0002.namprd14.prod.outlook.com
- (2603:10b6:408:e3::7) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	bh=XPP2myTGPA5lMKiNw+TtdOeHCWrcAC/vqmt4XlyULw4=;
+	b=CeF5F5bTMTIZHgTGCnHRHYi/kea8kkkmMc9DMTK71U5iQrkBDCUzbZAtJL9Jht9qtFTmrS
+	bZVKeoFIszgrTFTARSQcljXZg+G4Tw0CJH2FlgJcJ8qcFW5S+Br+zcAcklgERY/IJQZbtw
+	RVwid8LWbR0leicyD/XUnHIVXQj4Pi4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FED4vNrC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784035067;
+	b=zfmui7s58qogMpfCktB5Hd3GAtUbdu0Zt1atYFJEwYWIPL0KijpLu571cotXZlLGsG48vg
+	xnXSbwIooggslP5NNfJo2P7X7ZNazD/dYhZx6HyEpH2Zpw18wuCGqFNmDHFbsKwAifBK78
+	fs9IXr4BmqUW9Eaq9IPcujinc3z/TmE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A45E4601ED;
+	Tue, 14 Jul 2026 13:17:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887CA1F00A3A;
+	Tue, 14 Jul 2026 13:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784035066;
+	bh=XPP2myTGPA5lMKiNw+TtdOeHCWrcAC/vqmt4XlyULw4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FED4vNrCvRA+E87/OHhMTv0sfCp09VAGYZiCGXNOiE/pu8OVC+5T3j135myCIb0B+
+	 HyytLmY+Zx+54l8JqAbasXFFpi4S5Wvw45Hyr3VUpIrati8G7aqxEqOIwPHfmZDNlM
+	 WWJIeDXiIWaWuTZ88BGzH1cfhWqwQQHEHu0p9yjTXmw/Am4wTsLlVQuzpZofqiFlW0
+	 AD+aQnQhQCtuAJkK/rd8PGJjcdPzRLRFWEm7QIwUMLdDEDo3j0ey9lq/HkjI8UL5Wt
+	 tbhorm20fDX8meWpCOhymc5mNvLYAPYcYIUtkesKWymOv+FhcI7oF58MmI83iUWW2L
+	 bq9WyWLH+mVnA==
+Message-ID: <8d316b6c-41fb-4ae3-8923-3b649b92b33d@kernel.org>
+Date: Tue, 14 Jul 2026 15:17:42 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|SJ2PR12MB9191:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b46ec02-082a-483d-feb6-08dee1a94886
-X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|56012099006|22082099003|18002099003|3023799007|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	r0ZDIfWNIkIcbo8HDmq6c0WNWr4ltLb9W8hgXWZopAxBT12tcAV6D3SmuUcvh7+UESUtUemhDjpjqz3kyPwfVU40bgVuEjkOcT/ur3lG93d+usfZGnnZpuPGTXH7guJpL0W67H+7XVzH8V7NITHV7oNzcRuezmKL7lJWZGEDQ4F7ZRPxv7R16qGTDxjVWNAYHMQ2IKhaFTSQSuRP8tXk2sFku9CjYO4iVZQj7AvjzMsrSIenbeI1sJW6FJ1Emj35UWjoYQm41YEqfWH9RcCPQH9VdWPCcuPRD6IjSdQoY14jJa3Pqpq80FMlsluE0VIdRJgw6w8hsrHGdCTHD7QgtAT3Rv1as25bYlOCN18vJZmzZPbYgtScsnbT0b3rJ8QJpA9wqGlP1FIaYjOaSKQhiEk9NyQ4s95XU9d0SR9OGbVptvarrr2khYrD7puEVS8VaJAfl3f/JrjpU47ylKDgsrT463cB58Q6X6CPN5j0yrS/LPS5PXp9ASBANJOhP9Tu0shn4SrCFnqRGxaBvN7J12XzdAezJFgSzLcKBlWrPB9K15HWiJXgAq7Ocbyrrfd/Gv9kJhsYR091sCeRtm5yPl5d8G78xmUktlW6a096ob+TkOTcRDfoznZHOkRgt4DV2tmtUpQinfN3scyKEZ4BzuW+4HGe2y6DLmRqp3RmLvc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(56012099006)(22082099003)(18002099003)(3023799007)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?weyVp3sD21n1vNE74CiQr1IwAQazGAaQjTvhuAvGQQkUAvmbJgfP5Zwykn5a?=
- =?us-ascii?Q?b50nCLnSQfncijcCHGXQQmRX99GiWDdQsXd6i/kRLmYE7xe34qMbNsJ3E51z?=
- =?us-ascii?Q?IF3fp7GxI9RekwmRDNDtrCiFeNC/9p7FainCs5Xxe1BRqqEa0i00/E9sVb/T?=
- =?us-ascii?Q?2W5N+Jbm4CVFcd/vStaA/dKnr6cAbgrIE270yLleFljKahCtsN/sPo/nASKR?=
- =?us-ascii?Q?AVyO+00I0QZ9lq8AL5eCfPffhOIHGvlseana/J7IgJl7Sa7m4fNv5p3VPGWG?=
- =?us-ascii?Q?fGN+dDqZHAor01ndBB8R76fiXm7CYfYMNg0eG1pmG6Dw6Li2KOIgVYtSaQw1?=
- =?us-ascii?Q?m4+Fa9jvDmXA9esSi+DZgo7OP32y8xazxgWCMGyeWA4Jxn7YnzLqo7JsB9XX?=
- =?us-ascii?Q?7R6Hjaov3t92EDm1t5K3p6cFRBbkYOXxDsfgOUrBqNPkgVfG642cmjfo5VRr?=
- =?us-ascii?Q?l5TXI1+xVxReUpHsa8y8c/wRs/upPo/Aveeo2QB/G5GULqKK6VCe1/3JwJUd?=
- =?us-ascii?Q?u61rLM6McO//JpOL6fc2NFSOUqbz7EqOJ2xaX4WEbSj24RrSWCgsbHLW0IJY?=
- =?us-ascii?Q?TYOhQacDTiRt19HqhcgG9b/J/80ndScrqZfM3f2Bgi1PHKlBitLSlLjA6poe?=
- =?us-ascii?Q?67gYH+n5EV1DJ5EF1E26VAP8iuBkExn2aPZeFeZj1vh+lWJ2qrlnpDAo7B4X?=
- =?us-ascii?Q?HRuiB+5Q5spq98kULBwpkG4+UcWE2ZUEJubRfFQXrCyEy2doCtuqoI8AkePM?=
- =?us-ascii?Q?mbJH9hXaglylON3bAr/0eiuEsEFN5eHHmt7y0nwV0JYSZeUkMa3BToP6SNBC?=
- =?us-ascii?Q?E0Y8OOTb+52lv2v43wgSEgeQp869P/PWHUnTAXrRpTq5R8Bmq5pv7ImFvIwd?=
- =?us-ascii?Q?SRblnsBNMZMuZkC0dzKprZ5S5oTFL/ilndS0mOD4Yrxj0lnbKkhBLSn0fbW7?=
- =?us-ascii?Q?c+eZHpVWk3rpWw8yWSEaeE3Blz9GJtmR/NJFPNHVuoZ1kGxeAd7K8qexIHAS?=
- =?us-ascii?Q?pjFUQWMlHq8oJJ49+L//idOXtZhXVUZMhZfmPjiJHo82SXfm1U09lLX5Eq4n?=
- =?us-ascii?Q?XnPq6/zgWJxSFAKwbDslqdLYp6AH0Vw0Pk0jHJ0t0aDMcIEGPrHYgGn9E8Z4?=
- =?us-ascii?Q?Mv0ppvgVFc/j7DWIeVwUEfhQx+XHkV5UQwq46Ez9sU9OmKfLvkktilREuKFG?=
- =?us-ascii?Q?KdY0bwbf6p9BN+1BSzhH+cCgLft6I3CQcQf8nNOBY295Ev2MX0woyqQxMaqY?=
- =?us-ascii?Q?GMPq1KzU1K/NR1eJZbFm3rQts/i3nea+2d4JJQPWxKeHwPJNCpiu7DavJNFC?=
- =?us-ascii?Q?s+Ey0eWUVIkfA7ZkwcGHfaolYz/Hb9f3Kr9MXdTrYlvCFiuHmkTtfxWn+eDp?=
- =?us-ascii?Q?h2RhKAtR26lMCNL6Qyzz0yFHkIirj3Q0pk3Lu705Ib2ZALpRkrxtDQAZ/CUN?=
- =?us-ascii?Q?pwbmnm2+xbvFy0NhuA5uowfwvdNxChcGLPF32WpvexawNpZJQOLi5FejV7gj?=
- =?us-ascii?Q?WMcY/sDSR+wy8WDvz4n7QkHSwJaLWYkPOZgHuVkLpLax1NIAYNrRRFJi5o6e?=
- =?us-ascii?Q?ANEH2hY0850HaqnLrcCSFImTFW9Glaemj6AF/b/xyQ5EuX/8n3J7gWgOmRPf?=
- =?us-ascii?Q?96yqWG7D8fQ/TewO5gKD50M0R7YjJuiwWp6GwW62/wsnV9iX3AWpoq5APkOd?=
- =?us-ascii?Q?n+zUmKJG+W5DJyjRLEpnh3WmSvTVCZ0YhvKuTLXlm1T720QZKqnSNaOk08+y?=
- =?us-ascii?Q?gdlrN1bNRw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b46ec02-082a-483d-feb6-08dee1a94886
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 13:10:31.7910
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 96IY5EKju0YkRW9TrwvVgxUyM4wSp6XaKkswtey70qxgtdDUbmmPrnFx6mKW1UI/+0FXfxwFlZZdf3GtkKsK9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9191
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1E88214000F
-X-Stat-Signature: ffoqcook435937i9e9f4n45hafjrxwgi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] virtio_balloon: fix Use-After-Free in page reporting during
+ PM freeze
+To: Link Lin <linkl@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: virtualization@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, prasin@google.com, rientjes@google.com,
+ duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+ Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com,
+ ahwilkins@google.com, Greg Thelen <gthelen@google.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, stable@vger.kernel.org
+References: <20260709224330.946683-1-linkl@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260709224330.946683-1-linkl@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1784034635-238102
-X-HE-Meta: U2FsdGVkX1+c5Anp4p+QYs31CJV8qtsK9RVa0m7Dh1iSUfPDUshheExcT8PpgeH4/+IEqTrLzLLJXIggqPXN9neT2YZ0fvpimn5fJw2qIGNK9V2BmglUi8kj385RbWyNlAu+HOwOtPe0grNsfzlBegCQr3fJH2hg2rF8TGazqNcbUWdw+ztLnQsuthFU3TwDraiQ4XhNdJ16/FLHCsnxiO8bF2snmWeaV0rBYFu1pu6+WV3+DfnHXYfM8bLaEzDnQVkyFwIvRQu0u3Mk2d1/ohxIi9yVMbMMgrls0xS/Xo8uAZMeMR2njjU2q42y7gvaeFrvHUBfGhjSpu9OstogJlyXKkkAJR4WQ+f3knmhDdKWaggF3hF9CAsavCkMqoS4EQqxOhIcmdfkxH2b/mvJp41K5G9uw4VLYAh2HvMQRhJhebsHbxWD/kmTVZbz8C5vUcm30GBRYmJu7ISPAyBqmlBt0R/CoYQTVtZW9jAhlotzXHHewOs06P1F/cuE6f7C84948LXfHbsG1XahHfdKnou6Ye9I8qO0tYajSGB26YU9KQjVj+B3npWC+3QehFl2ETZQy8w0AslpTD+cRlWdBxgCsNrG1W7m7dtikAaq1ggS6tX1pfFIUPzsVO1/HB8x09EjGqx+kA9hnMA3yUcM96+wQ6bmhvsRcX1gjzHLDmx7ywKKhCXr119HHWGTCroi9/1ctX4TSHhTWUkQxC9Jpz/rhso5oJJLiLKusP3fuFqKndOFS5HtVXSFFlB/6xpUOKPmXEIc6sE82SJmQvL2ebKsqMjWj+PeAaNdkzq8/ZfNRosl4WoqkhmdrFh5A7wgqMmdEiFTx9uke+D3JExDgRU5/U6bLF7KyxkUkGV+Z6qhVwJdQiHlCWwVwzSjclXBJyNyaL1CtEkn/j7d92GtuSjH36sZhNPFBuyCWCUniQ2ne9DaTfK7m4VluGCsAvwqdI57sK6uF6U6Q38sydS
- rlEjikJq
- ExW60M5904QxP79RMyOfN0yo1maQg0df1CEu67108YTbMzMwvdxau6I8ne4xsKzO/S/SVM0kbmmqrXC/QU39+PblL+C5Xw856vCeW4+CXpTRe5HWipYYxvLbDfQYykUN24cbwqxx5vGS2HZsF4rG7bKKmc4B8Sb1Pm9YQTDQeD1c+moRxE61pqOpZvPY60fwCYJgfPqbt2emaQ10orIodkrb1BRE4hdfcWwAChG24VybktpGZ+2h2FwuFhG4Nwv/PcfUhE5yj3WvGN5D4T2KoroJRAZeyVpqD3iBRjOdbjYIg+6nSp6ECrwNMm88JUlBb6vPP4OXaddIC8a2VMU50MhEUYZd8tNlfV+ZGUmq9cxNSF18g0zVc+zn5ih4bq3NNA+6mpzHV/6u5HaYkbBT1YIqzDbNB/sxwXEePGMawc0NAe2R1Jn06066C/CHm6IMmq4AOJ8M36mgwnqllWY82UdCzr3DEvMYfXofUl3MHSP1wmBnv/d/LIXe2thwlPKlPUxDX4dvHrz0v2ajQGQJMeQpr09LOFRBL8O5k+avcq9vyc19Ctl50p2aGC89MRjTxY96dtXsY8qYPtbJpaI7sRQhOMo+I4nks5vuuAuqGH6KBenn/gfJ/n4PqQDoMY3RtfAXSJ8xy6mk/WAW1s/eSqzBnAhjbergJWEeojGO43nWlGxtLDKZpim26jg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 529131C000E
+X-Stat-Signature: oy1cmkumw6utubjm45htr5mncxj4o6th
+X-HE-Tag: 1784035067-801847
+X-HE-Meta: U2FsdGVkX19n0OLFNwTEk/oDwn2VJ0fpxz9+i8X44Km9kEICSTiCcVG/ECY5BythgrrKV5zcC9FeI89KXdnazcoytCEObywXG0LM/O4OaLn0jzM54msg2dKPbBu2XOte4eSPIvy6EI901YkWLKk+VaLxX/y+HSqx5MASNeOzdGPYCYEkJAzMOQPgjGt5uvvPOgF6sA8cVzR8Q/P0sIWmttAPg1HhfUYQKzVILeT2FrjQD6TA3LZEVq3K8l58y1jotJl0jOwvi2TJkCBPeG30IcPRgm9RXDkzPOAMgcs76oQmlu/5w85JN/WxFo9HafWYy6vmiUgL0VmsD2veICwCMSm37b5Con1Sssxv2ZzLPgDmZcJahRKgnlN57N9LhOTLDC8b5+9RURDByA+P4mWBoh7PQxvL+BQEPvBZhzhd/LsYDryxlP4BI0NgHVIY1WqFPCmLDVKLbP2cBnHQfjZwBov98EbKTLO8vtvKFXAo2R+Dl/TinRY/G6egAkDnkjnJWmG5p5b5zA4e6zws4zrmMXi/aHfDiI1O72x8+o6UGO5dQtLbTo09xGns30LoHTYtajl0hVcPVtc7ojHueLL4hfj1+p87TRqBTHKnHcX/ULg8DCHTVhFlHFmtuBWJo3HLJTDYRJVqg2MoklbqRy8UQAwjcMPfoghQMqAP2RMHRnrnostDotxEH7K5QonDx2TP0Yy9zvA4tJK5DYXg7BBl2BCPNK4v1YTuXCDJau1xJN8axraJR0qRqRTM9cDvcltLJzuxBgSmxS6BvTYun80Ea6ngumDb2HM5YtZIKA0eH1FhFTUbMMsjHn0ZJxKaE+L7ItF++sZZ/+8y5JFdwlQIVLN0/r6svmSZBBAJdh4+9AaAfmWVzu1FrnkjpCKX/6m6AaTzRVuBUig5jY1jZr9YDYs6td6iXxjXtfqXH0Y2jHjB+x0ZUk1dv9jyjfnPNMVnqA7yGINr/MF0o43tQkj
+ +P+BuLTD
+ JmpDemPZFaerbKg2zi9ivuQRXt8bxI0XpbExu8VEpr835DPUia7UxCAUF5YFqcKi4HE+kRg/vlpKgLJcGhfZfzRf8q6uYjD5miK/5IyAR/HkJsw39eoLWIB8YveLjInf7zp8NmxXicfZ2XhTSa8h9hEHO2XUbB/UkBZizk0SoEib7UZfycHVJvsnmIUnhxZugQ7ChsMHn99IZHmAYTxmQqPY09JW40jmVlq3BVAlUOAuRtAKfB3iPz6KxfBr8fyR54Uv1KL2gQy0fJPoDngcqwRM3/JP2HehsPrylWadnolevoFDCbbg2dFNpiymq3b2iYUeN0GyePUR3GDwRTgQfqnZwntHFbu20IQ7EWuVdaLq7yG3rpRDwgMQXjSpGFKTOcs09VpnVROn+OWeE6WmG3+RkmRgnMCkK37uuIvPmcfMIwD5o/lo5LEqLlnSrXpiOT/98UDHyXMS7jU3YNvATcgOOEO7vudMUNCkbzBYLj9CUnmw7FvxT0cwdCTr8BD3qO5841xdHFrj0mQ/0Liek7GonbfDxpSfcDXdsclRSt+davycjtJxCDy1Klg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,109 +143,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 03:51:04PM +0800, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
+On 7/10/26 00:43, Link Lin wrote:
+> During system power management freeze (e.g. ACPI S3 suspend or S4
+> hibernation), virtballoon_freeze() calls remove_common() to reset the
+> virtio device and delete all virtqueues via vdev->config->del_vqs().
+> However, unlike virtballoon_remove(), virtballoon_freeze() fails to call
+> page_reporting_unregister(&vb->pr_dev_info).
 > 
-> __nodemask_pr_numnodes() currently returns MAX_NUMNODES as the field
-> width for '%*pb[l]' nodemask printing. MAX_NUMNODES is a compile-time
-> upper bound and can be much larger than the runtime node id range,
-> resulting in excessive zero padding in bitmap-form output.
+> The comment in virtballoon_freeze() states:
+>     /*
+>      * The workqueue is already frozen by the PM core before this
+>      * function is called.
+>      */
 > 
-> For example, /proc/<pid>/status prints Mems_allowed with '%*pb' using
-> the nodemask_pr_args() helper. On systems built with MAX_NUMNODES=1024
-> but booted with a much smaller possible-node range, this produces:
+> While this comment was accurate in 2011 for balloon-internal workqueues
+> (such as balloon_wq, which was created with WQ_FREEZABLE and is paused
+> by the PM freezer), it is invalid for Free Page Reporting.
 > 
->   Mems_allowed: 00000000,00000000,...,00000003
+> Free Page Reporting (mm/page_reporting.c) schedules its delayed work
+> (prdev->work) on the global system_wq. Because system_wq lacks the
+> WQ_FREEZABLE flag, the PM freezer (freeze_workqueues_busy()) explicitly
+> skips it. Consequently, page_reporting_process() on system_wq remains
+> active and unfrozen throughout device suspend.
 > 
-> Switch to nr_node_ids, matching the behavior of cpumask_pr_args() which
-> uses nr_cpu_ids. This reduces the output width from MAX_NUMNODES bits
-> to the runtime node id range:
+> If memory is freed into the buddy allocator or a delayed work timer
+> expires while the device is being frozen, page_reporting_process() fires
+> on system_wq and calls virtballoon_free_page_report(). This function
+> passes vb->reporting_vq into virtqueue_add_inbuf() / virtqueue_add_split().
+> Because the virtqueues were already destroyed by del_vqs(), this results
+> in a Use-After-Free / General Protection Fault:
 > 
->   Mems_allowed: 3
+>     [  250.709271] general protection fault, probably for non-canonical address 0x7f728084daf08d5e: 0000 [#1] SMP PTI
+>     [  250.732967] CPU: 2 PID: 38 Comm: kworker/2:1 Not tainted 5.10.0-44-cloud-amd64 #1 Debian 5.10.257-1
+>     [  250.751575] Workqueue: events page_reporting_process
+>     [  250.756665] RIP: 0010:virtqueue_add_split+0x233/0x4c0 [virtio_ring]
+>     ...
+>     [  250.867678] virtballoon_free_page_report+0x3a/0xe0 [virtio_balloon]
+>     [  250.883446] page_reporting_process+0x225/0x4f0
 > 
-> Visible impact on in-tree users:
-> - Bitmap format ('%*pb') users:
->   * /proc/<pid>/status Mems_allowed (format changes as shown above)
-
-OK, let me take it for testing. If no complains from users, it's a
-nice cleanup.
- 
-> - List format ('%*pbl') users, output is unchanged, as list formatter
->   only prints set bit ranges:
->   * /sys/devices/system/node/{possible,online,has_normal_memory, ...}
->   * NVMe multipath sysfs numa_nodes
->   * memory tier sysfs nodelist
->   * cpuset cgroup mems and effective_mems files
->   * /proc/<pid>/status Mems_allowed_list
->   * mempolicy strings in /proc/<pid>/numa_maps
->   * SLUB debugfs output
->   * Kernel log messages printing nodemasks
+> (Note: The OOM Notifier and Shrinker/Free Page Hinting features suffer
+> from an identical lifecycle flaw and are also vulnerable to UAFs during
+> S4 hibernation when memory pressure spikes. This patch focuses on Free
+> Page Reporting, which runs periodically, to ensure clean backports to
+> stable kernels).
 > 
-> Move nr_node_ids and nr_online_nodes declarations earlier in the file
-> to allow __nodemask_pr_numnodes() to use nr_node_ids.
+> Fix this by:
+> 1. Unregistering page reporting in virtballoon_freeze() prior to calling
+>    remove_common(). This clears the RCU pr_dev_info pointer and flushes/
+>    cancels prdev->work on system_wq via cancel_delayed_work_sync().
+> 2. Re-registering page reporting in virtballoon_restore() after the
+>    virtqueues are re-initialized and virtio_device_ready() has been called.
+> 3. Unwinding virtqueue initialization via remove_common() in 
+>    virtballoon_restore() if page_reporting_register() fails.
 > 
-> Cc: Yury Norov <yury.norov@gmail.com>
-> Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> Fixes: 924a663f75e2 ("virtio-balloon: Reporting free page reservations")
+> Cc: stable@vger.kernel.org
+> Cc: jasowang@redhat.com
+> Cc: xuanzhuo@linux.alibaba.com
+> Cc: Ammar Faizi <ammarfaizi2@openresty.com>
+> Cc: jiaqiyan@google.com
+> Cc: ahwilkins@google.com
+> Cc: Greg Thelen <gthelen@google.com>
+> Cc: Alexander Duyck <alexander.duyck@gmail.com>
+> Signed-off-by: Link Lin <linkl@google.com>
 > ---
-> Changes from v1:
-> - List the unaffected '%*pbl' users explicitly, noting that their
->   visible output is unchanged since the list formatter only prints
->   set bit ranges regardless of field width.
-> - Move the nr_node_ids and nr_online_nodes declarations earlier 
+>  drivers/virtio/virtio_balloon.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> include/linux/nodemask.h | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-> index b842aa5..607373b 100644
-> --- a/include/linux/nodemask.h
-> +++ b/include/linux/nodemask.h
-> @@ -95,6 +95,14 @@
->  
->  extern nodemask_t _unused_nodemask_arg_;
->  
-> +#if MAX_NUMNODES > 1
-> +extern unsigned int nr_node_ids;
-> +extern unsigned int nr_online_nodes;
-> +#else
-> +#define nr_node_ids		1U
-> +#define nr_online_nodes		1U
-> +#endif
+> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> index a1b2c3d4e5f6..45a90fb3abf8 100640
+> --- a/drivers/virtio/virtio_balloon.c
+> +++ b/drivers/virtio/virtio_balloon.c
+> @@ -1055,6 +1055,9 @@ static int virtballoon_freeze(struct virtio_device *vdev)
+>  	 * The workqueue is already frozen by the PM core before this
+>  	 * function is called.
+>  	 */
+> +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING))
+> +		page_reporting_unregister(&vb->pr_dev_info);
 > +
->  /**
->   * nodemask_pr_args - printf args to output a nodemask
->   * @maskp: nodemask to be printed
-> @@ -105,7 +113,7 @@ extern nodemask_t _unused_nodemask_arg_;
->  				__nodemask_pr_bits(maskp)
->  static __always_inline unsigned int __nodemask_pr_numnodes(const nodemask_t *m)
->  {
-> -	return m ? MAX_NUMNODES : 0;
-> +	return m ? nr_node_ids : 0;
->  }
->  static __always_inline const unsigned long *__nodemask_pr_bits(const nodemask_t *m)
->  {
-> @@ -438,9 +446,6 @@ static __always_inline unsigned int next_memory_node(int nid)
->  	return next_node(nid, node_states[N_MEMORY]);
+>  	remove_common(vb);
+>  	return 0;
 >  }
 >  
-> -extern unsigned int nr_node_ids;
-> -extern unsigned int nr_online_nodes;
-> -
->  static __always_inline void node_set_online(int nid)
+>  static int virtballoon_restore(struct virtio_device *vdev)
 >  {
->  	node_set_state(nid, N_ONLINE);
-> @@ -480,8 +485,6 @@ static __always_inline int num_node_state(enum node_states state)
->  #define first_memory_node	0
->  #define next_online_node(nid)	(MAX_NUMNODES)
->  #define next_memory_node(nid)	(MAX_NUMNODES)
-> -#define nr_node_ids		1U
-> -#define nr_online_nodes		1U
+>  	struct virtio_balloon *vb = vdev->priv;
+>  	int ret;
 >  
->  #define node_set_online(node)	   node_set_state((node), N_ONLINE)
->  #define node_set_offline(node)	   node_clear_state((node), N_ONLINE)
-> -- 
-> 2.9.4
+>  	ret = init_vqs(vdev->priv);
+>  	if (ret)
+>  		return ret;
+>  
+>  	virtio_device_ready(vdev);
+>  
+> +	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
+> +		ret = page_reporting_register(&vb->pr_dev_info);
+> +		if (ret)
+> +			goto out_remove_vqs;
+> +	}
+
+Hm, that failure handling is rather nasty.
+
+
+In virtballoon_freeze() we document:
+
+"The workqueue is already frozen by the PM core before this function is called"
+
+Your report states:
+
+"Workqueue: events page_reporting_process"
+
+
+I assume that workqueue is not frozen yet because ... it's not freezable :)
+
+So could we queue to system_freezable_wq instead, or define our own freezable
+workqueue there? Then a driver doesn't have to worry about that.
+
+-- 
+Cheers,
+
+David
 
