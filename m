@@ -4,104 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2087C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A228FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:15:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A52E76B0005; Tue, 14 Jul 2026 04:14:37 -0400 (EDT)
+	id 8595D6B008A; Tue, 14 Jul 2026 04:15:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A03FF6B0088; Tue, 14 Jul 2026 04:14:37 -0400 (EDT)
+	id 830896B008C; Tue, 14 Jul 2026 04:15:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91BC96B008A; Tue, 14 Jul 2026 04:14:37 -0400 (EDT)
+	id 749276B0092; Tue, 14 Jul 2026 04:15:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 693896B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:14:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 501A26B008A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:15:28 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB1991C0231
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:14:36 +0000 (UTC)
-X-FDA: 84986670552.18.AD7914B
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B478540004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:14:32 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	spf=pass (imf17.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7F08A02BD
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:27 +0000 (UTC)
+X-FDA: 84986672694.18.928C445
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2B69480004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lHwwWTqq;
+	spf=pass (imf30.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784016926;
+	b=y/ckirRvr0jt0N+WbI3jph2f2umhg3u96+37+YT/tW1BheSZ3ViLmxEAsfglg7yyP8/wBO
+	/HrXwBTNkIhNFEdkLQ2lhctkQ0VxlnYLb1HKzND5sY0vPDUA9eyQH949sKjnB8A/UDYYuN
+	Krkn53+SqGaeWlS8Y9CcK5NdM0zg22k=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lHwwWTqq;
+	spf=pass (imf30.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784016874;
+	s=arc-20220608; t=1784016926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=KlbBZBMghzYLmdEwCeMzA2yspJJ1Tvu2NKwiTx/ZtGA=;
-	b=0d8na8g9GLzxWmTNggbUocbpB5Ocmt6usDSpy9GuX4TmLV8DuTGs/9q85fXw6D80C/6LPW
-	x65vuZQnvgcB6UiKwwbfHPeBhV3z4yRLpDSjkgmwFGchS2ycAOJiyh7aheDry2i6c4HWm8
-	dJdu7NPSjsgXBDgGc1aMShhLVtFHSdw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784016874;
-	b=LeZ6DiYv5XL6Y0iEBKs/SvXio0sg6zBigdDQw29b65mkUy2Jns7FMLmerwI2M2jki+4KSA
-	K+pqJUEuUtUT6n90qseZu9F2pG9Hr2H7C06LiPp/q/rBBjxIix/6liIzAPA8yNxPkGLvmw
-	NBrIWkf9Y6Atg+6ozkj2xAewa8z5+5Q=
-X-UUID: 05adc23e7f5c11f1aa26b74ffac11d73-20260714
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:1c751aa5-e02a-4755-9f61-ae73243d78ca,IP:20,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:45
-X-CID-INFO: VERSION:1.3.12,REQID:1c751aa5-e02a-4755-9f61-ae73243d78ca,IP:20,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:45
-X-CID-META: VersionHash:e7bac3a,CLOUDID:dfdd182856bcc302edbee6b71e9bdf3c,BulkI
-	D:260714161426D0BFWHNS,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|865|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:
-	nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
-	RE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 05adc23e7f5c11f1aa26b74ffac11d73-20260714
-X-User: wangxuewen@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 327767584; Tue, 14 Jul 2026 16:14:23 +0800
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-To: ryabinin.a.a@gmail.com,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	akpm@linux-foundation.org
-Cc: kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
+	 in-reply-to:references:dkim-signature;
+	bh=6v3T/GQPfCFX0/32VfRd7BGJzQx4Npq1DwXlYIYPAls=;
+	b=ZJPP5Pb7m01PvDo9Nmoh9TUxASSpZ9NAcInbhoTh0lbNmKCtZNZwV+esD2F3eaH3EeK9Pw
+	7SUawNQ0NZHmzOwxnNq/LoeygtgosVKibO3eCdnygTLejaixhxyCapfyGkb4UbLbdIqTWf
+	vC3CRvzCc4fnjWSEWgaZgG1GbX5BBB4=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38175907a56so554150a91.0
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:15:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784016925; x=1784621725; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6v3T/GQPfCFX0/32VfRd7BGJzQx4Npq1DwXlYIYPAls=;
+        b=lHwwWTqqHG+fiXTIl3mygjV4Oahx3ADqpGcrZKAIElOy9PzpRADjK2igMkEJ90djt3
+         FNLZTRik60Y3MqIzrGmayKwrpCTREeiLHOKlC58DaHiU+qj8mAeuemi2DD4vTYKnV82h
+         AybMHjG44eIvldVB9to4XOMh6CIcMDIIo/yxTFR+HyBtbMwIVB2CHDJQYR3F0FIW75oh
+         /7Q3R0+N0ljKtC87KhrkDQYB1beaWOgieYYF3GXm/Tx4yS/1kOnlvNf3Sjos1CR89ynr
+         pZUgtXBSulhKGbYFHPc1ANosnkJczYPPTluR1ovmJikRNKamTPMQ9RB4PcQDm92LJpOh
+         Kvpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784016925; x=1784621725;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6v3T/GQPfCFX0/32VfRd7BGJzQx4Npq1DwXlYIYPAls=;
+        b=gW0AF0JDLoLQ0rQEUGIi7VrJJ7dR3hhcUzF4hgxWfybXJzddWd84V4u/TGcUbRzt6s
+         Ptz3wHjmAfQNKPfwGpHFpsrDGqXpmsP8q9btND2sxItfDhxM/w307b8gNYWJKVA7LM04
+         v68UwGXfD2B/XauSuRGYIwJgnOuYy6QIGzlLxpz8FuklXK72ARvM6eFRdINJUx9qwWRD
+         QFBHDA5sUEwXzQusZyztd8wx4DOlEtN6vEH9g3IGvZ+nGZpO4vtSvcvDBFBRvKqHETDc
+         VwSk0NkVcXECyUllBq5HhZRPwsnYCEk+ZmUb2SEljCkU/QQTB48z2wJ761zam+qOwdLk
+         s9oA==
+X-Gm-Message-State: AOJu0YwluV64lY8Kig9LTONKasm0+FHVZjO/whLzE7DLJhxMbLScML4D
+	xGsmlo7RuLXAGtck8o/duAwueGGSJNHCRj1LbSZ8hXRyja+xpJoRuLj/
+X-Gm-Gg: AfdE7cn0cEuTiniuJdJcjc/7LiBDsKHPWNJBG2O7KNG/Ub7NnyAD1dE2TcpudK9tuth
+	mZ6c6NCw7HtYco57/PwzKc0aQ6T9Ho7hk9Z1rkbDTkfAaYMqRuf2KmrCLMxtG5AjWHN0s58UKMy
+	lGC7bAjQ0s+TVCQNnGpBmC6F0Qg/shsyv/TQGFSlGcX0nRkRKW5sW+4ZPh/5MLHRiple4WXXUF1
+	jwLT7REZqxBfSaZPv6CjA8ky3rvOPJa7RMQ+41nSRa4EUYjnV155IEXT25cvSRTSRxjB4DdrmVr
+	PT/ItuCrQ3AD1hMzeEe6UaXUrOYaGyyZVFrp+JUd5Wz0JJykPiKYUgOO+CiOQVKCAGpo+ouxGBv
+	18IrhaeMpJvqnLH9gpF4VQNnIA1ukSkX77CZgyfgXv7zv3rCyKHWgobP/Zn14gUF/4hjiX9zptb
+	wNBW3Tmm3gL00Tkx+1wrClcHabAdbYtA71nZ57HG1E
+X-Received: by 2002:a17:90b:3b87:b0:38e:120d:df07 with SMTP id 98e67ed59e1d1-38e120de08cmr3459964a91.11.1784016924878;
+        Tue, 14 Jul 2026 01:15:24 -0700 (PDT)
+Received: from localhost.localdomain ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e17443f4fsm1091008a91.11.2026.07.14.01.15.17
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 14 Jul 2026 01:15:24 -0700 (PDT)
+From: Hao Jia <jiahao.kernel@gmail.com>
+To: akpm@linux-foundation.org,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	shakeel.butt@linux.dev,
+	mhocko@kernel.org,
+	yosry@kernel.org,
+	mkoutny@suse.com,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	muchun.song@linux.dev,
+	roman.gushchin@linux.dev
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH v1] mm/kasan: fix swapped read/write lock usage in stack ring
-Date: Tue, 14 Jul 2026 16:14:08 +0800
-Message-Id: <20260714081408.1596052-1-wangxuewen@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	linux-doc@vger.kernel.org,
+	Hao Jia <jiahao1@lixiang.com>
+Subject: [PATCH 0/2] mm/zswap: Fixes and improves the zswap global shrinker
+Date: Tue, 14 Jul 2026 16:15:08 +0800
+Message-Id: <20260714081510.16895-1-jiahao.kernel@gmail.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B478540004
-X-Stat-Signature: dwy47ttx4jyzi5xtqqpa5rsz41qaj5gz
-X-HE-Tag: 1784016872-709540
-X-HE-Meta: U2FsdGVkX1+nWLSbC3VbIUvCmFb0XCYvNyEp0KvdsnfaZbg83hLJ1XNkDUC2sECDSAuCy9IdgS5eC2Il53fTO0gQrRWgeRM7+1Ag2z8r1XQflzFLl4A7f8a72fvJ9ygNMvpVoDzKo/BQT1mLXgV+yhU4xdNlDPv9xN9722qwFiZiZa32TdX+JSk/QrJBcVQ2+pTGhQvtke+iScqsoE3zsGnwRSNZB3XBG+I8y/YLnEwS+W2umTlmnDjDxQNw9Dvv73RDtE82DVqtL7aV/se2t1AxiTPPAyO9B8VpV5H/994CHTYMpv6jEcl3tGBUAKBOgAYCDBbgPhqTazWZ3odFeP1me7//YsVgxUY2mQes/w1yGMf4a1gaaTny65FGOBerS383m1tdNhWswU6DKzS3MPb1WwxTBW72RV0gKze1MT28J82qefT9I74biadHIGEd+s4jmBmCakPjlUcumdBHZAOuD1voncclhpBvw89kSEBxqG23GpEy9xjkIjEwDd7SWTTng29jMShQKa0ZbnJhxhrBe5ndKlOOztB1O0Fkbi4ov10SOcF58qGU3OLZjtCLn8zboDte8LHRbuGjJIkOIh02XAypmd7KXqua/5rLIHBg0eR3PoLbx4UeVCFLQdYE2u3SNXlNGPkhQ3uePhb51alDi/4epSQAtl9mlwWA4z6d0P5GavZK2u99r9sAtTcRJkHFtPFydM+duvkemz6Wf/OlADrAgvjdVA5pcuLbghoXDXn2EL4mDsdvATcaTfzUcZrj3tHgyqu9lZxSG7brYecstKdOPW1aILin2JIqszb6yujM4fJlqSxvwq3uzwOucolUxka6ykvBwCOCUUVYoegChoHkhxY+Pa2G12bvcG1dJ0VaXIIIozJbUQ4bJT/SUrTRlfJA1VTNb62oMR3qelTyzAVfp1rokOgGzl4b4y4QQo9xRyrgpkZO8Yz5kMBoKKQswW6hUq3TyVfae0r
- m9rhRXup
- Nl4Qk1ZSkdsFwRa4YBvVxthraXy+QQ7+vYyFv8kb3X8Ol7PcSklY7iX5zwctMIfghxfWDQcGIXT7KJIs=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2B69480004
+X-Stat-Signature: ffnepyqe1j161ddkgmxyt97xdpxgwkob
+X-HE-Tag: 1784016926-700725
+X-HE-Meta: U2FsdGVkX1/vN6Nv5TOca/t0BHTamJyX4TBUSsM0Y0UFIR7B/1YO421rAP5s/2iAwEoyZCmm8aHHqsDlDQ3YAyQa2ExHt16Crqz5JGQO9fHRRc8g7n9ctDfIxzZX8WWcHGcAQDt3JYYr/O7MZRm8kl9WI1zeJQB6PWGFMpj97+90/rKr4tbBzFe+UxNLATo/kY2XimFwTclmWwORWSVaSq1zInB/FGoqmk+l4gA6l2rU68F2yvs6ucwEkW/g17apEdQ1SXijPHrOSz1SJaSRWK1RCbxpjXEiSGB7hpTlv5qodlJpH45WIHP90SngoqmL0NFe860eKBMLhl20kwB+f8Xixe960KZz/dP8VFKtMVr6riKJBN3oK2R0FgN9Xv7owxG8uSM2+6Rm2Ivr+xwl4clyhxNTdQmnyZJGccZ6RyTT44J6H8JOJr+Zvrt7x/G9ZSJC1wUEKy9QWC4cf79+GscL6yogbzFqRvTN+aHWwi61+aZLACs7/siViLZcTxrtHivPJzpEC2Bip/L2EWlVx1qSLDFcqoJ72mvKE5Tjwi2+DbV2pZI7LiO7N00CYormtJ503xoqpqvPePGNEfnBm46O3GZ/sU5nm3x0BVzwUdaxHcZ9nQYMnfJcanxowOoohdNJvPwhbbE7P101UHD2e/JBTHyAyvCQ7dNVdOOWH3B9vJER67ALZofLZMDzhuOHgbKd0Uv9FbuhnK2MeySRK590GmHtwKMPWUGuPss9aFbfyUXSXwb2oAEXQqTEQuK8bTg9Hj9EC0pmIvcQeKkwCK+WUDc8ZwAmD4b7qLY7YQpr7j8sPwC3tpK9l4r4GmworXfBDGYeeP9hGU4Tpy1Kea2IP/X06SbO5WxB3KbSQg+k49gN9yNVHYgIS3VGaLEcjNb/+g2v3fCqIAqrV4hBJb6Dm6cKw42M6kzWXMkuyXTaIg41bBLDT+KVe/NXl3XeSkFVuBnatrLUCUoMa6J
+ 7eXgguvh
+ 7HJhENDcwNwBPQbfkuUR5hqaZj7hQSo2JnGWqI1/0oJKxEzcx3hS3MXwYmvCZiy6QOo2xPZXJ1KyGH45ty6DdWme9w+hW7Z2hyEGMurrNch7nY6dvCX7z86xHW5Iff5h2C5+pdXclXEUsjYi2jT5Joj1KqMLa7fKFG+jrGsfl5/IKdBbSzYAxdXnXVK0zlrlFpZgBZSzQQL246h7t/oa7S66Mf6fykaqCeM76D2Sg3T6K7Ac6G4mZikQRLGfGwOE/HcrWwg5HZAs4LUFNWhuEugxc2zRez015qQvxrTSYMww7g2jJ2+MR81vmuL5h2PJEPJhAXHyKlpuAYcNVpZiiUPsiNyaRvWw9R+3S+g3CRlCAN74IMgSL1AodpvnystUPnkJTUvJOTToCe4kI2jlayTyAINNT6DmL6xzSLc73HeROAxR7fM3K4SQqYlgeTpUEwyytd8tiiOZZ7k4VVpvBKa1qKhlHaKHAeTu1/rPm+tD4JR33IUiSOL1B3pCsGcyRLOCUzimlDXYzj60uDquBDFVtgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,71 +125,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The read-write lock semantics for stack_ring.lock are inverted:
+From: Hao Jia <jiahao1@lixiang.com>
 
-- save_stack_info() modifies stack ring entries but uses read_lock,
-  which does not protect against concurrent writers and does not
-  block readers from observing partial updates.
-- kasan_complete_mode_report_info() only reads the stack ring but
-  uses write_lock_irqsave(), which prevents concurrent readers from
-  walking the ring simultaneously.
+This is the first half of the patch series[1]. The remaining part,
+which covers proactive writeback, will be submitted later once the
+swap tiering design is finalized.
 
-Swap the lock types to match their actual access patterns:
-- save_stack_info(): read_lock -> write_lock
-- kasan_complete_mode_report_info(): write_lock -> read_lock
+This series fixes and improves the zswap global shrinker (shrink_worker()):
+Patch 1: Fix missing global shrinker when memory cgroup is disabled.
+Patch 2: Extend shrink_memcg() to support batch writeback and update its
+         return value semantics, thereby improving the writeback efficiency
+         in the shrink_worker() path.
 
-Fixes: 7bc0584e5d2a ("kasan: implement stack ring for tag-based modes")
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
----
- mm/kasan/report_tags.c | 4 ++--
- mm/kasan/tags.c        | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+[1] https://lore.kernel.org/all/20260629112032.20423-1-jiahao.kernel@gmail.com
 
-diff --git a/mm/kasan/report_tags.c b/mm/kasan/report_tags.c
-index d15f8f580e2c..62576b1470e1 100644
---- a/mm/kasan/report_tags.c
-+++ b/mm/kasan/report_tags.c
-@@ -39,7 +39,7 @@ void kasan_complete_mode_report_info(struct kasan_report_info *info)
- 		return;
- 	}
- 
--	write_lock_irqsave(&stack_ring.lock, flags);
-+	read_lock_irqsave(&stack_ring.lock, flags);
- 
- 	pos = atomic64_read(&stack_ring.pos);
- 
-@@ -99,7 +99,7 @@ void kasan_complete_mode_report_info(struct kasan_report_info *info)
- 		}
- 	}
- 
--	write_unlock_irqrestore(&stack_ring.lock, flags);
-+	read_unlock_irqrestore(&stack_ring.lock, flags);
- 
- 	/* Assign the common bug type if no entries were found. */
- 	if (!info->bug_type)
-diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
-index d65d48b85f90..6aa09122f09e 100644
---- a/mm/kasan/tags.c
-+++ b/mm/kasan/tags.c
-@@ -110,7 +110,7 @@ static void save_stack_info(struct kmem_cache *cache, void *object,
- 	 * Prevent save_stack_info() from modifying stack ring
- 	 * when kasan_complete_mode_report_info() is walking it.
- 	 */
--	read_lock_irqsave(&stack_ring.lock, flags);
-+	write_lock_irqsave(&stack_ring.lock, flags);
- 
- next:
- 	pos = atomic64_fetch_add(1, &stack_ring.pos);
-@@ -131,7 +131,7 @@ static void save_stack_info(struct kmem_cache *cache, void *object,
- 
- 	entry->ptr = object;
- 
--	read_unlock_irqrestore(&stack_ring.lock, flags);
-+	write_unlock_irqrestore(&stack_ring.lock, flags);
- 
- 	if (old_stack)
- 		stack_depot_put(old_stack);
+Hao Jia (2):
+  mm/zswap: Fix global shrinker when memory cgroup is disabled
+  mm/zswap: Support batch writeback in shrink_memcg()
+
+ mm/zswap.c | 100 +++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 75 insertions(+), 25 deletions(-)
+
 -- 
-2.25.1
+2.34.1
 
 
