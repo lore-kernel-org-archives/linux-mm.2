@@ -4,86 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B525C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 20:05:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B8B7C4450B
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 20:05:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BDCA6B00CA; Tue, 14 Jul 2026 16:05:32 -0400 (EDT)
+	id A00796B00F3; Tue, 14 Jul 2026 16:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3746D6B00F3; Tue, 14 Jul 2026 16:05:32 -0400 (EDT)
+	id 9D7E86B00F4; Tue, 14 Jul 2026 16:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 287256B00F4; Tue, 14 Jul 2026 16:05:32 -0400 (EDT)
+	id 8C9126B00F5; Tue, 14 Jul 2026 16:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F30856B00CA
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:05:31 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 79FDF14045D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:05:31 +0000 (UTC)
-X-FDA: 84988462062.03.59BCF54
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C02D314000B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:05:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nASgY/cP";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 639D46B00F3
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:05:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EBACE40363
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:05:53 +0000 (UTC)
+X-FDA: 84988462986.27.7F17930
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1DB6940005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:05:51 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oQOka9op;
+	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784059552;
+	b=Mv3mjE7Skfylenc7hzhGG17c3vG2VkR1czAXRnzqxLqJ+Vo8AQyCE07bgX5msC7b7l82I5
+	TTXk9eALqk0/P6tHHUuCBE/rCw0hVPTm0dcX/nqYDzyhgpXaOsVMFOcnoRNR8/banGGgYo
+	iiucwcvZvuRd5k9zR4RIILSSA93rWz8=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oQOka9op;
+	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784059529;
+	s=arc-20220608; t=1784059552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BLqLKH5IvfKdelylXtTpwefx4KsBR33CINxbQ5x0Fqk=;
-	b=z10VOSw0/0rpzrx84ePVxGZ+GumbixLyCYxNNDq39XnibYpKQiX4DqpZzdIov0xAjs0VUU
-	GbuCHuwK5fBBTxOuL97wqIR9VVd3OS2qpn4Muu4IdgRT0C7RQZok11GccAOED1xrYniBlv
-	w4I/QLeneWHDKu4Fvaxe5E/ybK/0fwc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nASgY/cP";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784059529;
-	b=25NfXjWyTNIo5pV1Gmz3UULbQG5hT4Ls50buBxWe36dAsbjGuFfNtF0dbU5QD6060kCW9a
-	MrbdB0kJE2Ymjn0ZBE79zZ16FJ/rkKTeYG+f7a5x0ibQMj804l1cPXHfRuxdEdIeM9eytE
-	I0BBdxUsENwlTIsRqDlOR7PE+nCTEFQ=
-Date: Tue, 14 Jul 2026 13:05:08 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784059528;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BLqLKH5IvfKdelylXtTpwefx4KsBR33CINxbQ5x0Fqk=;
-	b=nASgY/cPDPiWt21ZZyKIcwGLYVyGB4ufGOPaFxRr5hd6gHTbtV8ySF1XScNfYac7cwG9pg
-	QeQlV4JxgsYquQV9RNtt34ZrStlkQWSaagjaMGCvZawUrfC+veAPNpWRV3spiCK62S1xJ+
-	HdM9i+zJep7TuSY+/PyleCqGIiIoqv0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
-	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	hannes@cmpxchg.org, harry@kernel.org, muchun.song@linux.dev, 
-	peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev, ljs@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v5] mm: mglru: fix stale batch updates after memcg
- reparenting
-Message-ID: <alaWT_sKn7V9zoOr@linux.dev>
-References: <20260710154318.75388-1-qi.zheng@linux.dev>
+	bh=2TZmO5aEOGXmRgWMClTIlhAZCzNX5InAxzEzEi9D4GA=;
+	b=xtL10YbJyKa6fQNt1zL4mBbAznIdM7XKYZYRwri+nhweCxwPN0nEnUF8vgkg8jQi2sx17v
+	uF05HXBCjvAjFLRUsFFhCxuob/8nLiZFLkoEUlqlCPZyhZ+iPwuXeAXlyyL1psrdfy+Tux
+	pjpdSQ4wd7tEyykfQ1GPFjP5ieZWIes=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38759bcd877so4105142a91.2
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:05:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784059551; x=1784664351; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2TZmO5aEOGXmRgWMClTIlhAZCzNX5InAxzEzEi9D4GA=;
+        b=oQOka9opBkYR+XX6VWuZvYQvkz+rfQOweXMMogwO1MO8D1+9C0C861yubVFgNfJO+v
+         pOpp6cpYNeL8T8XMmnIkCyPVOIehK/CBjJwNLbSPI9ctDQgvZvb1GCtUYXGGBQTcrhIY
+         ZwGzPElqSE8xY31yqmj3sL5Kbaa++vOcym1OAVjkvDL19v19TB0MPUPFS5Z1Vd05yR1S
+         LqWYnJuETFbgZntzXAUHlO5xEAC6O1UlFeOpfSuVG7NASnyxCpArrhlgqgqLqCvBRxMy
+         evYJHdm6whYntsPnozZ1urvjLNi9K6HzL6Pd9gW5qk7GwiQJK5c26B7BveY/ONRoxPE/
+         BJCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784059551; x=1784664351;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=2TZmO5aEOGXmRgWMClTIlhAZCzNX5InAxzEzEi9D4GA=;
+        b=VmJrnZj5TfHhYLUo0E/iK+3GOj6Jblrv5XyBAM21hMTE/myKDG7hVwtURmmEh/Jqxd
+         hDKK5NYgawQkOZXBrHfzICkZGCML/2xbC1zlP34urn6owOzimBCrc4LjSp8u5/Og4zoK
+         s2z40ZxmirBqfyPH9KWdzN0HefE1k+5IPQcHqAKTFn/4sa7ZXhCUWE6srcYK1bloCTWR
+         iAyXziifFHlt/xjJbkFbFv3qy/B9ghfIbskISuOqPZcp3eXKX3HAp8XjHeXhG/lXJ0Jn
+         6VlLWGqF8M23oTvOlAS4GUi/MR/BsDyhdZ//CmVkPs2ar+EQdSC2OBTiTWBmSrJ2FE60
+         Ksjg==
+X-Forwarded-Encrypted: i=1; AHgh+RoKp7ynz5tpGSZz3st2zDe8ZQWImLrLm+igXA6XjCuePF+5hxerMC12mFFjFWha/9w9rburOawANw==@kvack.org
+X-Gm-Message-State: AOJu0YwvLMVs2YvnmCq50pEC2gRzKX7la9P5TlHClqTXql9g5en5mmDJ
+	bowg02nAG434XNanv+92aUfIzABb/g7K8H2rKzshfhUH3uKIQq/IOKiY
+X-Gm-Gg: AfdE7cmYhG+HwleOhM3RTcdioTKWCZqT5S4/cREA7hLct0qv1qWb4QkkNmxEDrk8bSI
+	zNvLDd0eKGLaz+1kjDr4qXdLbST4XwSpNa6x49rWDfSqZKxpb6WOnm7x22jz+5nzGE1Hsbr6mXF
+	gcghO682S875NlHlPBrDhZGO0iuo65fQDDXA4pQkjK3+QTBP58f0ol7PPUv9KWsWYF10Te/hFpi
+	0Qj2fsV04GLMXD5clT0sBiICHf/QrNtiXt6BAFon/xjnSSg9gm/Iy6NEmy4WUIeIzmYNhlHVoTk
+	vEscgruE0HiZGLR/8OzK4N2WV5J42nG7q/EI9mgpADzmNY1U8ghEPIWonaX+/DKoHrtcw9pxD7q
+	9fZlYnvVB8p8vsuEK/Wf9b8CY9o2taMM06WyuZG3sT8GYkCVSNqrOVAlcgfft2VIFmK1iVn0kNi
+	DP3tiNo/E3ovB6YD43CVFBFy1sm5/bGqOSWjrm+6wD1eKOXH1yNchJfCk=
+X-Received: by 2002:a17:90b:57e5:b0:37f:be6c:f3f2 with SMTP id 98e67ed59e1d1-38e29ff93eemr138372a91.2.1784059550783;
+        Tue, 14 Jul 2026 13:05:50 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e172b6cfbsm2007674a91.3.2026.07.14.13.05.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 13:05:50 -0700 (PDT)
+Date: Tue, 14 Jul 2026 13:05:45 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, corbet@lwn.net,
+	dakr@kernel.org, david@kernel.org, decui@microsoft.com,
+	haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org,
+	kys@microsoft.com, leon@kernel.org, liam@infradead.org,
+	lizhi.hou@amd.com, ljs@kernel.org, longli@microsoft.com,
+	lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+	mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+	nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+	rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+	skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
+	vbabka@kernel.org, wei.liu@kernel.org,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v8 0/8] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+Message-ID: <alaWmUEeIBeSkmO0@skinsburskii>
+References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
+ <20260710151151.1e193eedd0cf2591ae392f76@linux-foundation.org>
+ <alG2-RSitzPWClAX@skinsburskii>
+ <20260710224950.53bcb43ce7e564f07a1f6a8c@linux-foundation.org>
+ <alVRU38lMfvmUFqJ@skinsburskii>
+ <20260713154535.7656b3a630e2f6f076b4e76e@linux-foundation.org>
+ <alZfTxfypj39OrCE@skinsburskii>
+ <20260714105751.f45ec4c70702c222febdbf07@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260710154318.75388-1-qi.zheng@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260714105751.f45ec4c70702c222febdbf07@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C02D314000B
-X-Stat-Signature: h4hwc4iycm7rjzz33hpopu3dza7s9yh5
-X-HE-Tag: 1784059529-270797
-X-HE-Meta: U2FsdGVkX18NzNdF4o9vh4nNvbMJ/eY1v5BVkDxzT2S1LUgcPa/YMA7mgwVOX494XADnrX8Roi61MA6qCffoGM2aBmZRdTA876w+gkEr6OIu4D0MhG7niYzisUGcK8UUIeOwg5Q/i2uF//Z8GNXXQohImz6Yo+NrM9+3u/1D30j91pnP5lL0R5tTMeqeiaF9pwQwTqTfA4HTlUNKUAB09Oe08NtxHNz3pLc8fTY+FVTCjFHiuyiMJ6lG/++uYSk+C811yBBRCxSE29JC6ypMUgZpUCabqMgMXp3Vyktp+4Wyk0fQ80HD8511uC7HZgvJKpCj4H5hDVe3YFKl0vDGscmWhy+eaS2Y1EEtkm4Dg62Wgt6sWXqDgCqllElORIhk5Twk5IlYDOVi9nRQ8R1nKa0e48jiiKMB26kmt54aXmPcUO7xwJ3jXwDfsxtakhFv8/l8ydLiyxkDv7k2Y/d2xXkqzyyyytPRBEn77Mvl9h/QqDfuMzOy/9MxxT2ME2JSmZGG6RtVJgmvGs/aSj+T8R41Qickjrslkwk0aAZQ+mpHxcYdmMUzZ8JpBqP7o0CcG+rklUD7bCv5ulAXXh+LLWNLpmS4e6C6Ud7RLbkUVrZUwIw4kWJ/yQ83AMt7ARP186hE9kDozF917qqY2cT47H+fcSpaQS+qC/GqrOciXIky6McjR7tYcSnNSOxS9cNN8IHG0eujjnT3jN8Dsy/eTE38ZK3oLNpFbPSaxb0DHgkDpBxDk4TD/vWMtBThR3kbw3AoCEFJiUtzdF8sSCmyhk3fNDwdIBWt03RVQQkWXnj92ijhg6Jet5ylRseuBINGw3URbnZVW+cQHZ2Y9YmJPbqZ3yteVUjuTsTC3/DftRCkkLH6q09WJLqAhI1s0HU3wLnS/T+BH5xg9noJKkBG2Dq2gcNunnh+EQdFX2eghUFP46Da3tc4PXTgEXC5fd8PbN27tIjmf6XMktLC6Ou
- 9WA03ZZg
- TRfewcJAJPqk0eKxhY9vTKEu7UdHBaSRkNu6Rl6OAHTnPwTNK27By8T4eewzYo+SO1gMX2y7QTjImALw5stdPyg9VluQvyVdRyYT1sulKaiurT9MHiFIpbprxNczIf7UldysLuVjsY7LQGrnWaJtq8PWzh7CtKwKTPTiNE6XhYEClGZs9QPH6NsYGwIwgG9Z7E+KlrcW3KY6BeV8G1aGEyj4oZ2/aC71T8L0Rnlw9KPqjYsrNfhBYq90ASHM75TyBnaT+
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1DB6940005
+X-Stat-Signature: qg9n3p47bc1r4dx6nffwgoz5pkx16nge
+X-HE-Tag: 1784059551-849399
+X-HE-Meta: U2FsdGVkX18GeP2A6P6zuXpdGHsqWXDac0/Aw2fzMVub5qPI6TWq8GDqPzJxpeLU6qLE6IOZyqeNS3CPZTIyzPTHIqx5gOcQSWerLzo/UB0d1tcq2cMyCxtsanfkkM+TpXkqu4WicxGlLY7kMKopLlqiNmcLmk7ljjS1oDmRBMVU2VJtkatATfcgLId0leTByzii2xyCY6INiBoCoDGX5WvsG7EHhYuJrg9LgrVNMfX5YAafy/M+DhYEdW/M5TNjPFUCLerxAdpvVEQmDmpoCB+Bxs8BpI+VW4NpyVmdTyjl1ydgLy9qHAZjf0Us8e1K72z0YkCAlkMnuwp1u1GzpxSww23wMNbkTSnbd4VUTnVCMJ9rxOq8K+E+DN1ozobAaTMJR+2JqCdCp4aL6T5loLPWAhR5h+yWenSxNi47XgLT0+BOLm4J802yoeHqOUNIHCZzvGCXso3rN/6+LUvtMgWPNZxaH6b6EK8jeEXxYXQEo9TpTwBYHZxhLOHA/BP79I8YSE9vjJ6vTELMD/xi40nHqk2dn6ZZHRF778Ozx9G621YUn/tjlfOYidsSCDg0hmHwl34NerMnMRCoiY6Bq0NlRvkhjJdDLlqWzizWa7T6q7vSNrS0QDglZg8425jE0l6AxnRy4a0fJtJa+BhtkRvsKCnl/7SYy3E7wwDqQCpH4cn4BNU6EfFQh3Ox6NJBmSnRBsWWPhbmqw2+tc2g2DaGtSnkJWc7WZPrjKhfMskd1bYtoG6qplTg3TEPJ1usNjsVgeo8oG9a8QOvg47MeFgLiWgKZRu4zAZLkbYgePchOomwZ7SeedK9Ugh5NaVJikRwTza3w/ypW7VnC4tm0ierRRCXvucFZ8QbgpFvurs0YRRdxiAKQ9gXXrdEEWrt1mXmv2VxOVXe27HAW7p4kP2cfjbvmpnAplj6d9+NSNV5wqhrd8cRUCYLZZX72Q9+4kL9Cq6OC/1oM/sXYWf
+ Q1bOJbnj
+ fikcQwhG5j+jYXX1RmBo1aMdM9N0dEWArK+2cttjRSHooWANP4UhubImknLVSwV2FnyyY6ar6DcJA3TWvnFaGBFZquEC4Bk2p6QDrekonIXymRgu3qdGevj9DYzSG+A8vxYyDZGBv8lz0MtRgPcrfCUYVi16w26WdV+zrtE5meQlIggWLPt4Qi4CQdCaXvY9yDKSsEgHg5gND8+VmyQXZ3YcqIfrKL7fM+fg6mJ32QPkeIrWV7rh0KQl0OEMRJ6EJpXd7COFwAnyDfWJMYdQShI2Tosz9TMl0qgCNL+6p0XGnoYR6haxziIsTNhe6UD14ZKOmSU3mx9lhSmwf1H9O+axDxBJQWcl/8NQaTPQVvuXd6oqIf/+zy+9Fz0Phfx8HYimmfCv1T71kPpvuY232+O7pXyMy+mM0V3Eo8KI7zrWHj3rsTW+afAOL7++8q29I5ylFzXoXTvs55WUb6rOcal8YqS04BXtylzYr/FiIY+D3OGTmCmogWuWznY8hsubaKf4w+qCIl59yNZksevte29rZgg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,56 +141,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 11:43:18PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
+On Tue, Jul 14, 2026 at 10:57:51AM -0700, Andrew Morton wrote:
+> On Tue, 14 Jul 2026 09:09:51 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
 > 
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec lock.
-> The reset_batch_size() later folds those deltas into walk->lruvec under
-> the lruvec lock.
+> > On Mon, Jul 13, 2026 at 03:45:35PM -0700, Andrew Morton wrote:
+> > > On Mon, 13 Jul 2026 13:57:55 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+> > > 
+> > > > > > I rebased this series on top of mm-new right before sending it out.
+> > > > > > Should I have used a different branch?
+> > > > > 
+> > > > > mm-new is good - Sashiko attempts that.  But it's changing rapidly at
+> > > > > this point in the development cycle.
+> > > > > 
+> > > > 
+> > > > I’d like to send another revision addressing a few comments and also
+> > > > replace the `max/max_t` check with something simpler.
+> > > > 
+> > > > Which branch should I base it on so that Sashiko can apply it
+> > > > successfully?
+> > > 
+> > > mainline Linus would be safest.
+> > > 
+> > 
+> > Looks like linux-next/master has been updated with the v8 of the series.
 > 
-> The page table walker can run concurrently with the memcg reparenting path
-> as follows:
+> That's because v8 is in mm.git's mm-unstable branch.
 > 
-> CPU0                           CPU1
-> ====                           ====
+> > I have v9 with a few small fixes, but it is too late to send it out already?
 > 
-> walk_mm
-> --> walk_page_range
->     --> update_batch_size
->         --> walk->nr_pages += delta
+> It's called "unstable" for a reason!  Material in mm-unstable is still
+> under review, test and the latest stages of development.  Getting
+> things finalized for movement into the non-rebasing mm-stable branch,
+> then into mainline.
 > 
->                               mem_cgroup_css_offline
->                               --> memcg_reparent_objcgs
->                                   --> lock lruvec
->                                       lru_gen_reparent_memcg
->                                       --> reparent child folios to parent
->                                       unlock lruvec
+> So altering or replacing patchsets while they're in mm-unstable is
+> perfectly OK and expected.
 > 
->     lock lruvec
->     reset_batch_size
->     --> child lrugen->nr_pages += delta
+> > If it's not, then what should I base it on?
 > 
-> This will trigger the following warning in lru_gen_exit_memcg():
+> Well it's a bit tricky to replace a series when it's in mm-unstable. 
+> One can do a git-checkout of the commit which precedes the v8 series. 
+> Or base on current Linus mainline, which usually works out.
 > 
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
+> Sending little fixup patches against what's presently in mm-unstable
+> also works.  I'll queue each one immediately behind the patch which it
+> alters then squash them into their parent patch before moving the series
+> into mm-stable.
 > 
-> And the user-visible impact of underestimated nr_pages in MGLRU was
-> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
-> reaches zero, but there are still more pages.
+> A third alternative is for me to drop v8 from mm-unstable, then you
+> wait until that has propagated onto the servers or into linux-next,
+> then base on that.  This approach is OK but I kinda unprefer it because
+> there's a bit of latency and it makes it harder for me to prepare my
+> "here's how v9 altered mm.git" summaries.
 > 
-> To fix it, make reset_batch_size() check CSS_DYING under RCU before
-> flushing the pending batch. A non-dying memcg keeps the original lruvec
-> stable against RCU-delayed offlining; a dying memcg redirects the deltas
-> to the first non-dying ancestor.
 > 
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Which would you prefer?
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Well, given that Sashiko didn’t pick up my series based on mm-new, I’d
+prefer to send a few follow-up patches in the hope that they will be
+reviewed in the context of the original series.
+
+Thanks,
+Stanislav
 
