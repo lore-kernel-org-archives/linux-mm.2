@@ -4,148 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A054C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:22:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 767A7C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:23:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84DA96B0096; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
+	id 84FAC6B0099; Tue, 14 Jul 2026 09:23:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D7246B0099; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
+	id 800326B009F; Tue, 14 Jul 2026 09:23:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69EDC6B009D; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
+	id 6EF226B00A2; Tue, 14 Jul 2026 09:23:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 391FE6B0096
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:22:14 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE7EBA00BF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:22:13 +0000 (UTC)
-X-FDA: 84987445746.04.011A2ED
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DE2E040011
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:22:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hraK3PiX;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4161D6B0099
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:23:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 97F02C0360
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:23:07 +0000 (UTC)
+X-FDA: 84987448014.10.A38D580
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B6ECF180005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:23:04 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YgoJDpOH;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=ptesarik@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784035332;
+	s=arc-20220608; t=1784035384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GzusWZQvSdAC75BhLePWkECb62a3t8QA9yY4IsEwwDM=;
-	b=TTUw+dugP1QAaWcsA491h1D79kdJRUOsSdbJkJqhDa5loHmY37hJaxx/CSS8RHsHPc7qs/
-	HiII+g0fxUZo5AwqWmgTedx4ommdB4EVJBNYh/grHngtHhfD3sJWpBtpaXDLQSkWw4wiOD
-	44GDiEPc3SNw6huqISR7yc41NLAXmTg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784035332;
-	b=TFXRTN1SP3Pj1h1R6DGX6trgAlf8asjGvapNkPbQCL9QTRHaKEGKU6MmJQ4JrTPWObztPl
-	UPOg6tADYVxREeyNHEGNw5tpjkfwAMZqRw3+1qde2JgSaR5UlMukhvxeDchDN98Lf3wLCz
-	2+tiRyKuPZWc6Mdaf+EqWZJKcV1ELTg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7NBFOxG906Drn2yZYxTN5FbdXtG8HM2NksR/ydZmHCU=;
+	b=0tGzldi3/mk7nv0OJQaT1dBvr95kOiF9+o1bSll2GuHEp6LFzGDuEh4rrT1ANZDrMwtQEu
+	Eq0AApVlYyVZURjwoXJ3zoseTpNRKlvF3Rih2MmKtSCLh596zCh8mwwGm/Fv9Yt5h2o0PO
+	b1KNw5gTh3Wbq5gZi6Kc3CUjpGRy5Xc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hraK3PiX;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C8E8A40E03;
-	Tue, 14 Jul 2026 13:22:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C91F000E9;
-	Tue, 14 Jul 2026 13:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784035330;
-	bh=GzusWZQvSdAC75BhLePWkECb62a3t8QA9yY4IsEwwDM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hraK3PiXKmtnhhb9PCsQZZMi0fnPEajxrk/hTrFivKeDnfGKVGMpZZ6CugQFEzU94
-	 xqWjX8Vb5ll8Nfl0tUO/uqtwp43W6aVdY0JwSDoelJUSkdckhXmXJz2fOjCoRYIt8V
-	 T6igIIICawbRUXs4M8kFRb5DRJmS1bBe2BHAKBor0Voz19RQBbn+Rzj9UPE9wD6bWw
-	 Az4uP5At9Iau4mQvIX8Zx6i8qVHPikHKAAGyrkKbv7KrgcPQcIICv1RRFnkjKmh+4B
-	 2UBgePb7962aGd5n+lHIssD10B4z90mlH87treQSZZIkFi1y+LOdv/2dP0udPrh1Hk
-	 I66RIsT/6WsNg==
-Message-ID: <9e9345c8-30a4-4f78-ba55-d7fa073b82d5@kernel.org>
-Date: Tue, 14 Jul 2026 15:22:06 +0200
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YgoJDpOH;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=ptesarik@suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784035384;
+	b=CSi7LM5FHRJxVztcOG4vQnRnrQiN5Gto+nimr5S9tiRD+pQIABZCHHNfZ8vUS2wKMNJGeV
+	fFsq5HRh6i6Op+2TFQ1hdXJdVEKJNu5sw4uNYIpr7gTbCLQW8Y0slt4MMu4l8YbYttg9VP
+	Qhr2t2V8LpS96/5fN5lPXSUNZStrdEE=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f25e3fe44so212670f8f.2
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:23:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1784035383; x=1784640183; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7NBFOxG906Drn2yZYxTN5FbdXtG8HM2NksR/ydZmHCU=;
+        b=YgoJDpOHcd5rKj/O87Y5rbHd3vbq596vfg0HNY6kZyaDVATrW9HeEdUqhiFkfRQDYb
+         vZdnvT+h2C13K1LRf+nTxU3dji5j5nOk42AifjsDY8HoBEvVO3LhV/17rRyNwNUpg4ms
+         rjWb3lmah1DHhqXi1jdgp6EtSoz3ecmIpcaqg+P7ckBdH0nJxDnU0gMHphUxEQL/SbaM
+         o0Ngj+y+zPxaOfR0EOPQhH6JuRPuBkkIQijPfrGoF5AOb5IJ+D3rN/Nw/OhRQGW3R7Di
+         UCDC2aMSA1+Z3ll0hRYpLkoVlR1IIQA6P4sqVtX7iEL3lkle4Bt58ax22yEEdpMUTZdH
+         z5yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784035383; x=1784640183;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7NBFOxG906Drn2yZYxTN5FbdXtG8HM2NksR/ydZmHCU=;
+        b=TjmN6bqixXgt3qSBu64d4pqjEOL9rvVr/Zz5Y11kLMSe7uzY9JEu+6P0FzsdubkIXC
+         wqGts/fq67nMLeJ6CSXlTrV/h94edtvU1BVjs/US3DAVfUbIo9SzvE6w1GUgNA7dhkfV
+         98Yl0pUFKh4dH8In9jXZBuoQJCQ3nABgwYemNkk5hN8jEHLlPCylyrT2+TxSj1MwGrTo
+         psAguC1vm6KBLHbmiRC2mRSgVtr2k3KODT6I/eoAn1t61zMfOtWSN2htZ4tg+albrBci
+         Sz2bKi524iPOYvw5V5MmuKG9uGtZVvIdpNh3OBihRjzQfgZW9Jqo+MWBNedrWhh0EV8j
+         byQw==
+X-Forwarded-Encrypted: i=1; AHgh+RqGITCxkbXlcy6/6P6VhcwM6zL7JTZq8Kj3iBktxb3Sacqo4tAuSZjIPXgm/NzmKSx91XfFcEw4Gg==@kvack.org
+X-Gm-Message-State: AOJu0YzMKupQo8ejzaKCeNIyfClvkyRMXIRvbEIECqkaaEv3tp0xZ6oN
+	zqcRMqu3qkEuHyq0Qf93IjMI6mHArfTeI7EuJq32LWH9bdT01ibs95QRS3xhgZcZJpk=
+X-Gm-Gg: AfdE7cnse8DI6RAgrskbkyP1j0OFVP1yHxG+QeWCygOdiruJtfFyo4DKjXu+YqXMD2a
+	9mTk1dsPB9rf9Tc81S0MtGlttrtzu0ni3Xc/KO8wXj4hpORPFqhddDeo/H9Ak1okuHSr0QkuQ7X
+	rO2Cx6cjQlzn+oH4YwI8ebTuguJWv7HZnf8VXIVSrCJxF+ey6YfV8L0XSueIHApzyooSoTMMtvC
+	kU7XRZLxEavIlHy+7ZX8VO8eGomrrtlZp6/vfsFpitNiwXmy5uit8sw6EkJfdChLQKzVd605L8n
+	JRiXjXj27J0YFzi9Ed2wPsYX1U+gsdH3MK+7bnf0kYlbNcrSNY5wpxE6r4QaZaxcAPM0ZWOffcM
+	5OnDf0HSU9+MdMTf6PJBAHmlXQ2Yt8HSf715uXlLgYEmJxPvDjWpOQuyMLK7LhQpOsxDcUplYEy
+	h6v7IM906b6AQ8srfXfSq/huMRXSHxazgCDA==
+X-Received: by 2002:a05:600c:848c:b0:493:b6a2:858d with SMTP id 5b1f17b1804b1-493f885b387mr72994565e9.6.1784035383086;
+        Tue, 14 Jul 2026 06:23:03 -0700 (PDT)
+Received: from localhost (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49508732395sm74727475e9.5.2026.07.14.06.23.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 06:23:02 -0700 (PDT)
+From: Petr Tesarik <ptesarik@suse.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	linux-kernel@vger.kernel.org,
+	Petr Tesarik <ptesarik@suse.com>
+Subject: [PATCH v4 1/1] mm: let node_reclaim() return the number of pages reclaimed
+Date: Tue, 14 Jul 2026 15:23:00 +0200
+Message-ID: <20260714132300.2136018-1-ptesarik@suse.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/9] mm/page_owner: add MR_NEVER to enum migrate_reason
- and use it for last_migrate_reason
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Ye Liu <ye.liu@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Jan Kiszka <jan.kiszka@siemens.com>,
- Kieran Bingham <kbingham@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-References: <20260714015117.78351-1-ye.liu@linux.dev>
- <20260714015117.78351-3-ye.liu@linux.dev>
- <9e0db1c2-06ca-4dba-8fb1-552fab91cb02@kernel.org>
- <037d58c6-de55-4b69-bb71-905e03985657@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <037d58c6-de55-4b69-bb71-905e03985657@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B6ECF180005
+X-Stat-Signature: p1nepbb4nef6ccmr3j9h9e1dmfmxqx3y
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DE2E040011
-X-Stat-Signature: tegkzsud3a1d8853bd3zz9qpjfaydk74
-X-HE-Tag: 1784035331-349550
-X-HE-Meta: U2FsdGVkX19pvkrTOPj92CkWIenHaXk66xnn5SfFErog55xtJ1zlMK+Qd8W4YAZ1K3f8Z6m3lbvJUtHM3H9wpFjl2d16zcNgWk35GoiJ9xfNAglWxdDUQxB4c24a43Wyj4ZJcMW5DQepwyNhqupVrT07it1Rw3sMt0UYe6PJSuyoneUdFA5lNIBzmkjt5IGN2Xy/3Na0fp58/JxN3K9agLKHYM3+FyETvcMDJasXOYoQFRzj7s2r64KM6BzDprCJlA6iBvXjpL5Ul0LWBb0v1KDbDuytIRzzU1r94bOr+wcbgUjbmqg75rofzApTcXsCCMSeLmsTC9ywaQsnKy8kQEtNFd1eJ1vbxeL7AohI1q5tl/xh6uuOzHRiG5EGBgBzVDVJ13L2KNZKW821yItcQpnyEQQuLaPkEDLdzrVlrJlM0U5aCUIcUclatjj/cWhWDgUqz96meBmBgB9ZEKfWbc4pAacc3CKXm8BdAkV8F1SEgLEGifUmVE4LuICSzVFAEyd61LcsDyw7qiKzktCCJmStHPvbnHhywUNqObG9KHSvY9WimVALn9fFqmgJwgSDJyUe27RgbXZDyDvpGLjfQTmv8OYbBxsT17Nzi/ZCIN/pxl9AnD4QXRbeZlDMnfQvejy/RPeyesPtwpOs0Q4m5nlw610brjG3j8L51QNctBczaBCP3O0s5kcpayLJ0p4irazNDpkh0gAU8EGqqwlYDRTyJ/y6cV89HJler2adZCcOeFrnXEyUUUU8StSvGNmygfU1LlCNKZRcwgcHdEiz1MhKVVSU1JxQtdw+W5x8TLVM024CsSfJUd6AK2ZO/lndxwCmmMBLjveF+8t+fqkKxGGgzTquoP56GCCo86U4Yhlq1Aw9DhelohymKfjOAKsLL/p4FFb6mKan67k07NebFAjt2Zq/j0ugGTVPL35iYMVitI2nRCn5QT8QDLajEss2DRsDMOKsFyUkuGYQKAm
- uctuZLtD
- SC+Zq7Og+iTSVcweFxwGjSS1r7EYIO1/ikLI3dus1X6kGfa7FvuB4LJNnro4z7yD45kBGGA2cN9g4v6udd562bTLPIsCPt/LM+KPOJAreG86lx1HXYSpun4BKlIEYExeV84Rwc+/aKSw+1ZVU6/434plmlc/NBJJlLCl8WH7DN4U2OghX/fqxk9IOpG4BSmKJA+ABobJHDj+Ir6lcC9BqQWwwsL5lu2XtIyknfN2d6QuTv36wMhU7FQAxBQBPopNHNfikg7BLw0JKoEnD7x2PBuS7LziRYpRhE7d4ulIFDWllgkn1OcbAblKDpOz1+eAhCvO4IlhDqNI4PTQJgFKfkWMMhafiwu9gpUyq8k/EI4SoggtfkPcjAbrtD245gMfb+SD0WKIrI3fUCKWPTs6Y/s62DhzAdA63YgJFej2/sE823ZM=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784035384-336733
+X-HE-Meta: U2FsdGVkX19bY3ejCD7yzW8RnnQMWBG4Y8ZebON0SbRizCcdxrFAg41Anb9yq2pUfZ9HQMuYbee/M8lFRv5vUj/5eF/6AxcJEO+hSL3etOQ6I+hOhg3in1jIhBMPB42w0WV+IYk1vBRF2gsu/2cgeFT6zfBBYCDGTgVBKcSfAlYABCfGhbel7rlEkqDqNWtQTRlu/BIVrvhuqovKtyR9m9p13/p0Y2vV+VDkFSyCmv7PLo2cr0lL+yeam0DywhiH1LT+Z+vXakWiwZCALcCE9CVJlX5IQi3jYZ0LtPEvIgbK2GRgxlxr12CjGaWVAHr4LUy5Ek4+YY8fxb/HDRTD21+CnmlDh/gF4ITXiDTS7btiGsGJXKL/bbDLmNoj+DwJZqNYnG57YOrHmxruEQBhEYex2gJlyPC17R6Uaisw2xfEWLY6fL9WD0TMS5BIrNQCYuKEmOR9Yr2hDkvaHqZ9epDaU2YbfJLRf8d0cdpub4Bxa1koDSV/Q/sB8Oknd1SpO9/KWm9mWiBHxhxTjL1eVDAjh6aTMzGBwaOFxpEgyHsqoU4endIAWVzH/MrQ0WpQT0onnBLmxTMDhU9IyZkCfPj1VRriPuGrUeNS+EupIf8nNrt7FfpmQvu5wHuAKkGVq0P/37iYt8RxbqRktsepRsdQPuNpuB0XWQgcSZGfNxcK3GlAGdKR1aqHCHzJF+6lsiNg1mnC0RYqd9UV9FZQMtTnA2OvKAww6Ub57hV8bBfL7dBVn4fzdtlEHAgvwAkCwIndSgsBTOhmL5m7H/PvD+bjt9HwNyRG2rDB1HEByQzUIdsOXdaXtMqBZefXw4J2A7HMKFK0KZXFiEuNCHQBvspiiOhcQKV0+uLDNPhgGScgT1dxiWkUK8NdKsx8Xu3yyUSqP3/bwGRufNeRn6rbEBvmoJ5h9EvX2Kj+X/JPb7/MbgP0XnbwgGujB2dQD/oFVYnvDi/TDtDQmKPXfQ5
+ dTdgAxnj
+ /DHTGKDy8PYXAcMji5ep4R/DKlJoIU18mdfIxopB9/yr+8VGHvXIdBo8JcG5/aXOgRG+8FzNnvtbYDlhzDTgjJmFFFlQtu9wl0xvTqzCveVBCg21EYHAeSJShYngpC2+DCTxEWAcbxZHaL2gwC46mbRHhVOJ4OLf+vOQ0uQ8HG4tdOSaYguWWI5psa4OiSytK6QJyYmmvZ9G6EeN/3Xu+JueDab5hSg9A1FdwPXuBp5ykgD6MiOKWeMJpC3eXQfxeYCQarxY2v78CYRiVNJsJ4EhjmQpmZ6G4xSp5zNCm+YTZ+BGNHO7ZijalgMRXVRDgfJuQ4YnQr2G+UF4pJyMOdsZBKDZ2zDegWyjVIddpelI2E6yRVnEHLqfozLAPhE0eDgrWmtSntMtUWGvdbFn+VxOiaAwuPwS6xNd5xEfKFfW2YuUjpE0QJiG9gmzJjFtIZYnIOmtJJK/fuzad+ozfbgLOB1QwiqghbHMTrLHmXcDf5jkLEHFSB93FqAYhR7EWNSCANKv1ZaluWwDKAkGb70fGiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,57 +125,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 15:09, Vlastimil Babka (SUSE) wrote:
-> On 7/14/26 15:05, David Hildenbrand (Arm) wrote:
->> On 7/14/26 03:51, Ye Liu wrote:
->>> The last_migrate_reason field uses -1 as a sentinel value to mean "no
->>> migration has happened".  Replace the four bare -1 occurrences by
->>> adding a proper MR_NEVER member to enum migrate_reason, defining a
->>> corresponding "never_migrated" string in the MIGRATE_REASON trace
->>> macro, and updating the GDB page_owner script to use MR_NEVER instead
->>> of the hardcoded -1 so that lx-dump-page-owner does not incorrectly
->>> report unmigrated pages as migrated.
->>>
->>> No functional change.
->>>
->>> Signed-off-by: Ye Liu <ye.liu@linux.dev>
->>> Reviewed-by: Zi Yan <ziy@nvidia.com>
->>> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->>> ---
->>>  include/linux/migrate_mode.h    | 1 +
->>>  include/trace/events/migrate.h  | 3 ++-
->>>  mm/page_owner.c                 | 8 ++++----
->>>  scripts/gdb/linux/page_owner.py | 4 +++-
->>>  4 files changed, 10 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
->>> index 265c4328b36a..05102d4d2490 100644
->>> --- a/include/linux/migrate_mode.h
->>> +++ b/include/linux/migrate_mode.h
->>> @@ -25,6 +25,7 @@ enum migrate_reason {
->>>  	MR_LONGTERM_PIN,
->>>  	MR_DEMOTION,
->>>  	MR_DAMON,
->>> +	MR_NEVER,		/* page has never been migrated */
->>
->> Shouldn't this be more like
->>
->> "MR_NONE" ?
->>
->> As "never" is not really a "reason" ?
-> 
-> It's not used ever as a reason that would be actually passed to migration.
+There is only one caller, get_page_from_freelist(), and it does not make
+any use of the reason for skipping the reclaim, nor does it make any
+distinction between a full and partially successful reclaim.
 
-Right, it's a placeholder for "there is no migrate reason because it is unset"
+Therefore, node_reclaim() can simply return the number of pages that have
+been reclaimed, same as __node_reclaim(), and the NODE_RECLAIM_xxx macros
+can be removed.
 
-> So I think the name is more descriptive this way.
+There is one small change of behavior when __node_reclaim() was attempted
+but returned zero. The allocation now skips the zone immediately; before
+this patch, the zone watermarks were checked first. I believe it was an
+oversight rather than intention, because the chances that zone watermark is
+OK after __node_reclaim() did not reclaim any pages are very close to zero.
 
-Not sure I agree. The usual translation of -1 -> unset is NONE or UNSET.
+Originally, I was looking for occurences of NODE_RECLAIM_SOME and
+NODE_RECLAIM_SUCCESS, but I couldn't find any. That's because they are
+typecast from the result of a relational operator. This seemed a bit
+fragile, so I dug a bit deeper and came up with this proposed cleanup.
 
-At least I was confused by "NEVER".
+Signed-off-by: Petr Tesarik <ptesarik@suse.com>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
+--
+Changes from v3:
+- remove NODE_RECLAIM_xxx macro #define's
+
+Changes from v2:
+- remove the enum and return the number of pages reclaimed
+
+Changes from v1:
+- use an enum instead of a bool
+---
+ mm/internal.h   | 14 +++++---------
+ mm/page_alloc.c | 19 ++++---------------
+ mm/vmscan.c     | 16 ++++++++--------
+ 3 files changed, 17 insertions(+), 32 deletions(-)
+
+diff --git a/mm/internal.h b/mm/internal.h
+index 874be94cf2570..f26423de4ca28 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1098,23 +1098,19 @@ static inline void mlock_drain_local(void) { }
+ static inline void mlock_drain_remote(int cpu) { }
+ #endif /* !CONFIG_MMU */
+ 
+-#define NODE_RECLAIM_NOSCAN	-2
+-#define NODE_RECLAIM_FULL	-1
+-#define NODE_RECLAIM_SOME	0
+-#define NODE_RECLAIM_SUCCESS	1
+-
+ #ifdef CONFIG_NUMA
+ extern int node_reclaim_mode;
+ 
+-extern int node_reclaim(struct pglist_data *, gfp_t, unsigned int);
++extern unsigned long node_reclaim(struct pglist_data *pgdat,
++				  gfp_t gfp_mask, unsigned int order);
+ extern int find_next_best_node(int node, nodemask_t *used_node_mask);
+ #else
+ #define node_reclaim_mode 0
+ 
+-static inline int node_reclaim(struct pglist_data *pgdat, gfp_t mask,
+-				unsigned int order)
++static inline unsigned long node_reclaim(struct pglist_data *pgdat,
++					 gfp_t mask, unsigned int order)
+ {
+-	return NODE_RECLAIM_NOSCAN;
++	return 0;
+ }
+ static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
+ {
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 9c97a86da2b9f..af63558391345 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3908,8 +3908,6 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 		if (!zone_watermark_fast(zone, order, mark,
+ 				       ac->highest_zoneidx, alloc_flags,
+ 				       gfp_mask)) {
+-			int ret;
+-
+ 			if (cond_accept_memory(zone, order, alloc_flags))
+ 				goto try_this_zone;
+ 
+@@ -3930,22 +3928,13 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 			    !zone_allows_reclaim(zonelist_zone(ac->preferred_zoneref), zone))
+ 				continue;
+ 
+-			ret = node_reclaim(zone->zone_pgdat, gfp_mask, order);
+-			switch (ret) {
+-			case NODE_RECLAIM_NOSCAN:
+-				/* did not scan */
+-				continue;
+-			case NODE_RECLAIM_FULL:
+-				/* scanned but unreclaimable */
++			if (!node_reclaim(zone->zone_pgdat, gfp_mask, order))
+ 				continue;
+-			default:
+-				/* did we reclaim enough */
+-				if (zone_watermark_ok(zone, order, mark,
+-					ac->highest_zoneidx, alloc_flags))
+-					goto try_this_zone;
+ 
++			/* did we reclaim enough */
++			if (!zone_watermark_ok(zone, order, mark,
++					       ac->highest_zoneidx, alloc_flags))
+ 				continue;
+-			}
+ 		}
+ 
+ try_this_zone:
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 4357a44ee8767..b7ef032e78a0b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7768,9 +7768,9 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
+ 	return sc->nr_reclaimed;
+ }
+ 
+-int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
++unsigned long node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
+ {
+-	int ret;
++	unsigned long ret;
+ 	/* Minimum pages needed in order to stay on node */
+ 	const unsigned long nr_pages = 1 << order;
+ 	struct scan_control sc = {
+@@ -7797,13 +7797,13 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
+ 	if (node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages &&
+ 	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=
+ 	    pgdat->min_slab_pages)
+-		return NODE_RECLAIM_FULL;
++		return 0;
+ 
+ 	/*
+ 	 * Do not scan if the allocation should not be delayed.
+ 	 */
+ 	if (!gfpflags_allow_blocking(gfp_mask) || (current->flags & PF_MEMALLOC))
+-		return NODE_RECLAIM_NOSCAN;
++		return 0;
+ 
+ 	/*
+ 	 * Only run node reclaim on the local node or on nodes that do not
+@@ -7812,15 +7812,15 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
+ 	 * as wide as possible.
+ 	 */
+ 	if (node_state(pgdat->node_id, N_CPU) && pgdat->node_id != numa_node_id())
+-		return NODE_RECLAIM_NOSCAN;
++		return 0;
+ 
+ 	if (test_and_set_bit_lock(PGDAT_RECLAIM_LOCKED, &pgdat->flags))
+-		return NODE_RECLAIM_NOSCAN;
++		return 0;
+ 
+-	ret = __node_reclaim(pgdat, gfp_mask, nr_pages, &sc) >= nr_pages;
++	ret = __node_reclaim(pgdat, gfp_mask, nr_pages, &sc);
+ 	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
+ 
+-	if (ret)
++	if (ret >= nr_pages)
+ 		count_vm_event(PGSCAN_ZONE_RECLAIM_SUCCESS);
+ 	else
+ 		count_vm_event(PGSCAN_ZONE_RECLAIM_FAILED);
 -- 
-Cheers,
+2.54.0
 
-David
 
