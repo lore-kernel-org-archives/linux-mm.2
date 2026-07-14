@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8752C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 05:12:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6DF0C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 05:12:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 758626B0092; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
+	id 6E2726B0096; Tue, 14 Jul 2026 01:12:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72FC96B0096; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
+	id 6BA896B009E; Tue, 14 Jul 2026 01:12:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 644BB6B0099; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
+	id 5FA046B00A0; Tue, 14 Jul 2026 01:12:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FF036B0092
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:12:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B23A6C024B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:12:22 +0000 (UTC)
-X-FDA: 84986211324.25.65CD05D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EE6011C0002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:12:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ufuW9pbH;
-	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35DEB6B0096
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:12:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9C1F16026F
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:12:51 +0000 (UTC)
+X-FDA: 84986212542.27.8AD7105
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DFC2E1C0004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:12:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784005941;
+	s=arc-20220608; t=1784005970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TMXzA4wrYATAkRbd0MtGWCT8lsBcidpH7evOMPd0N8M=;
-	b=re+XxA47Lr3UD83ab/+R2AL0K4Qr/+VMYxtKVb9pk0tgIM67YQ9/P6ftOrNeqmKPHtNZht
-	raRoBwU9ObPsEJJG6eYI0IVmHwbHRbkR4HHwNPiPy4AirZ0zzcxSTMjCoKukyeRTXC6E3+
-	aD/lwTe09LCd4nk1RJU7bHHJ/UCj168=
+	 in-reply-to:in-reply-to:references:references;
+	bh=jlGQlluaXUrSTZrKOg+r4D/pydaZrrAAXG/tTp3JdDU=;
+	b=HmUrwurU5pU+cO8Q3Tq4pZiQS6VkPfodVu9aaG7pVYM+qhMwgbdIfpi0BKrTESJLim2Q5/
+	5EpKGF30zuEaIm6lHM08TFSyPiKXdmeBTz2KH3Sn3tjZ75JWrCSXYBWC2tOv2ZYcku3kju
+	9r6L6wgPfUrIkJdT91A7lxL9+zj8Yhc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ufuW9pbH;
-	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784005941;
-	b=3o3yjvrlW8ypWqADabdVBPbycx+ISBCtZEP8Nmwjg1+Kw2c8aOxV+DmwafMAbbNlWNGO/L
-	OjFYhRCWe9mVxetbadFvW9g7dbfoivmeLbg0MrmGLRfYKNperH1KIIZSm5DNp0eh1+PBm0
-	muRQ94llp0HFY3XFJ3D5vmgxtOj8nvc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C520040483;
-	Tue, 14 Jul 2026 05:12:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE51F000E9;
-	Tue, 14 Jul 2026 05:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784005939;
-	bh=TMXzA4wrYATAkRbd0MtGWCT8lsBcidpH7evOMPd0N8M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ufuW9pbH7t+BO068AtApQMfa4+R7cKxsBYRakma1PEbq7EB76XZ69ffufKfWQMuem
-	 f85rZKZBc6EuYiVdHJSbXn1izuXBuR+2eXapNX2n9Og9RT1CeamIHN7/upL3odkuGa
-	 MVa20/aJOfYrBOAFuzn5EHWR0Oi5pGxxGx0gd9zA=
-Date: Tue, 14 Jul 2026 07:11:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Qi Xi <xiqi2@huawei.com>
-Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, sunnanyong@huawei.com,
-	wangkefeng.wang@huawei.com, stable@vger.kernel.org
-Subject: Re: [PATCH stable/linux-6.6.y] mm/memory-failure: fix missing
- ->mf_stats count when hugetlb folio already poisoned
-Message-ID: <2026071451-geologic-handprint-89d1@gregkh>
-References: <20260706084118.1284271-1-xiqi2@huawei.com>
- <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
+	t=1784005970;
+	b=x0PHAVVsdFxicl3kXzNHq363ZOzUPOanAWkNR2WFMTO9DiaUdo1ev3LyvLO6rZ1jopEI0n
+	TViPJbLVAypcCTa9cE7BkCsqhdU5Jx7ex4tCR0QoG9GbRFG4yi9cU9vSBqN4cVMXGADEAr
+	Gx9tZX96bzZ9LIwSWmVgyF/qKEmLl+k=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id F228D68BFE; Tue, 14 Jul 2026 07:12:43 +0200 (CEST)
+Date: Tue, 14 Jul 2026 07:12:43 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>, baoquan.he@linux.dev, chrisl@kernel.org,
+	usama.arif@linux.dev, kasong@tencent.com, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-mm@kvack.org, Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: better block swap batching and a different take on swap_ops v5
+Message-ID: <20260714051243.GB31523@lst.de>
+References: <20260713093350.2154226-1-hch@lst.de> <20260713131305.3efec91d077d224a3a8d1aad@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
+In-Reply-To: <20260713131305.3efec91d077d224a3a8d1aad@linux-foundation.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EE6011C0002
-X-Stat-Signature: 7bat4dtwwy5zh73erx4dw36oz1bn8x6m
-X-HE-Tag: 1784005940-543883
-X-HE-Meta: U2FsdGVkX18gWjZ36SeX8L/Oc7Z+Y/KJWOjGAzXchps2GGRT/0jNkjzuZ1dUWpV5vXtSGGZn3ZjCOZRRgGL4sa8r0fHzOy2TZM65+qxFAYrT8it2+p115IjHtlwRfXeMRtEaGNgW9RO7v2NeRNCEsf1ryrCHCYzB2P/kJDVlupKCwqP2rdJPGMbNw+BVGo6tIktgGshilUABN80m9u9btL3ZWsPZMKwVAQ8EKKR7FeV7Zr14D+mcb8S5fViLl0kIzS+wYU7nb9ebdrNEFyQfHEk47+IvTm+B5Wapd0eGvnJ7eIpRnXmMs4TobhVTAegoSeg1PNE4igmQ93TKkn+6rr2yN9qjMh4yV1VCIA3VJa+8FbSNgC7ldNVKfSSRCVdtJmaXATCR+2dNiBJTl0/b2ICi9L5BvrXGc4kRQjPFGWVUOdFU2UsYCsfL4MxEwnuYMOE0fFuUqKtcDXVhxJ9lJ2rXMKj4WmT0qhvO5eJvMt96fVzW0Ci17E5n5EIM4pzL2QqxveTPbylyMw95DoaC0sAuq0e2K7WaOXtBNtN2nFcr+I2A3FCqP/XazAxGK++s0NcqOpUsjYWe+1vYBs7bAzk7OYmbEtTQX35c+Twgib7+pNWyvv/LlFUIEe4OTSk+EEpUCc77m57dzDy9vJC6AyfBRfG10Q/31+YiQ6PH3kzRZt83GM9xRZPQR5n3KmmffmP48bGNB3hOX8vvtF+ddE0zWyUBxFBxXaPhr4tUd0H7p7tk0sfz1YLk6vm/KWvxvEeYl/6vbfLZV6g/oU2jsewcslh2jDDC1gJ4CdCsc0ioo+I+Omw9hAiWlFRXRLzGkS7nx8zkgLoKl69QakcZvyR6hfa3sn5jmZrHxDiZnXefgeTcSb9ddvlXSxFb/4l3o2LStE4vI1/Xe9WlVB7xREIV3G9NTgNytKwbalneJzKXjuLKw4Y1xlrVvS6kQAEM5SLhGVdovG0xf03/M4X
- xg9cS5/l
- 20cd80f+MSc6ft+I15xhu2SvfWqZiMuU1gwBLQ7pk3Wqjwrhm0n94OUqS8UnXxlScpD5RjSgxW1LG/DjGSUNQ7StgxnsIz0dMJ+jUaU006ttgcm/MEixEfL/j2SrrnBbkm9UXTV5SqL77rBpf13i1Ico869BNJZpxgHyvFbLwX2ld6OvZt5gwu9h8DJYTicth94HQ3sT/hUeVyxJZlF9kwuWeHsFQkEw+lFVDKVLOaKea1Ark+ophK4SW3HTLmLselT3WC4yYJdjEWkqF3Vai/Ww3msfvU6KbVitom3Z0GktgWKuRc8CsBRK0xeHc7DfKWT/LDEGVEl+EXcNUIGr52q+aZNvy424VTmKeo0XuVs7+3unCZfqpIX3zt/YgS3U2/lPrRt+4pNRgsyxZroNbVvQMKOyVJ2efocEmJ1bQbf54/xiaUI7pXPH+WNaWgjKIk8uu
+X-Rspamd-Queue-Id: DFC2E1C0004
+X-Stat-Signature: s5847u6ays91sahncucxupz6pt1apb84
+X-HE-Tag: 1784005969-982504
+X-HE-Meta: U2FsdGVkX19yy9dDg6JLsmMntDpAzb6ljopmnn9LiZQOuCQcj6h6rX9qbsKqxRzbs3geroBzE9SJ0HxL8KUqLnkdy1VEda/y/bY1oLNp3N6srzkRu4kxFEWVhUZtywHiB0rJDwC3/oVbnHxzfFg0P3LMT9FGcmCJFjDyhFTplcXnybZQXskn5id2gQmcFlQYjmrJCXRstd5ucqV315A/ZSRJPLgo2et7CnQKjMolT3k1ogVPQm9xSexQkmNdzNSwHhvfsXhVd3vEiQ/vF2l2NcfUub0/YvxoNpHHfxGcNwV1z9pe3deRZXm4QeioX71yYttQweFH0vyMd1QUrXY+hpRdwVtG7nCN7b843O2QZJ+lBqb+7dRnNI7MJR251xK8WleIPhoWKqZuztoFffgTJvZdE7+gccDSUEg8rmR++wQ+/uf/fYQwiDj+9cMAikEJ4qf/NBnWsWEW8jG5MoG43u2uWXl1eWm12vutFM9InA5mIPa8wtlCm9zgqmqVD5Uz+AxAL8y6vmMTnS9TOFOQd2FXDlq/dsTj9JlsRST1KV9t5TognTU1e6ZQNHW89VPu8o50+UP12tLnXY6xz4DOmLqLKvCeQNNB0UDfJTnBY2fVpNi8T8nu0PLthUH5yAluaAGuYamHwHU0bQVg9AdH+XY7+WcnDRFl1WwJoyubpHIFiVjwWE+dB+jMCDTGsuu5WCfc3sXNvwnXrXGfh0Y4RPP6kxMwYi2Z5Ab4KCfyYH4eLpzihPFdtXEeaqlNOvzOl67OG40KNeJCcVilfk1Fy+UsJp01AoIVWGlPL+zEL0Gn8FyeGjvj9VZ0keCdY3tfgM9rLKhgWyg+4JPBXRy5pxWGG+4IFc+0DKv/8JzfIestSPBGcYQNmaa5QSGhBzJYL7d3cBpAP65SfMrzPy3F5uLP1ifmBqTCTWuU3q/bl3z7c5sPeMwEA+4fRsmcqLxzlndi27EK9ddjTLz4v0c
+ BoczRopa
+ Ixjed7lC33YKpqsfrPG1C5iH6Km40Rc7IqnSMVjrZlgC2T9vIzlc0q1Di/k5Drtd7zK8uKHDwutD+rOnHz7nSM9n7Ikl9kfR3pT24dbUnyokCwVkLCG6HUuLB4FV2t1JG/HlpT11jPkdQu9QhSsutSyRZwRHWIqdS3JajIzxaozE13yY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,15 +92,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 09:45:03AM +0800, Qi Xi wrote:
-> Add stable@ to Cc.
+On Mon, Jul 13, 2026 at 01:13:05PM -0700, Andrew Morton wrote:
+> On Mon, 13 Jul 2026 11:33:37 +0200 Christoph Hellwig <hch@lst.de> wrote:
+> 
+> > this series makes use of the swap_iocb for block as well so that it
+> > doesn't do inefficient single-bio I/O, and then rebases the swap_ops from
+> > Baoquan on top of the now very different method structure.
+> > 
+> > When running doing kernels builds, which is a workload that doesn't
+> > really do much THP anonymous memory it still gets 2x clustering for
+> > writeout and 1.2x for reading back swap in.  The overall times do
+> > not actually change, though.
+> 
+> Thanks.  Sashiko review might have found a couple of deadly issues in 
+> 
+> 	drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> 	drivers/gpu/drm/ttm/ttm_backup.c
+> 
+> so let me add a zillions cc's.
 
-<formletter>
+Well, I mentioned this before, as did you.  But it is all existing
+issues.  The proper fix would of course be to not give users such
+low-level access to shmem writeback..
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+On the other Sashiko comment: the bi_vcnt doesn't make any sense,
+bi_vcnt is only for the submitters convenience.
 
-</formletter>
 
