@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 752C8C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:25:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A137C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 12:26:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 620466B00AA; Tue, 14 Jul 2026 08:25:02 -0400 (EDT)
+	id 958D36B00AB; Tue, 14 Jul 2026 08:26:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F75C6B00AB; Tue, 14 Jul 2026 08:25:02 -0400 (EDT)
+	id 92F8E6B00AC; Tue, 14 Jul 2026 08:26:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 535636B00AC; Tue, 14 Jul 2026 08:25:02 -0400 (EDT)
+	id 7F7966B00AD; Tue, 14 Jul 2026 08:26:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2174E6B00AA
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:25:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99A27C0335
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:25:01 +0000 (UTC)
-X-FDA: 84987301602.10.356AF4C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FF9B6B00AB
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:26:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C24F9A033E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:26:28 +0000 (UTC)
+X-FDA: 84987305256.25.C3AF6D1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1484480009
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:24:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uk8LCrfd;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3285820002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:26:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d/43HVnA";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784031900;
+	s=arc-20220608; t=1784031987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ncHjbQ9ufoT6SdeAfwRC2oHP5TMeYh9A0isrkQOo65c=;
-	b=g5NFFTktCFQE0H3JtLcdSgaPuwJ75gjL7eYjTuQWSz78qZsgD0xiXS5xmwqu86DLa+YPQJ
-	BgEboM+Ob50EBc9NqV+DwehYu3wWAeiJEboTNG8nbhP8efMItI346tVZaY5g/+meTBLkJT
-	QxKMsVgYmt4mKoSFNaHwP+xJiUISDeE=
+	bh=mGk1WxQeIjy8TXxnkr72i3ixVNdguqRlqFJcS5wfXts=;
+	b=FLbn9CEiwPMftev+gqSEVAkG2P/Yfz98oWpTWOVnzRO/856TlRf3MeWhCnUOg1++G1ToHn
+	C+69jCf8lYsdMgiZ70YE1J4jH3EPQX3EV7suK5khzVuiTVccOhVWqOAxkBRfJ0Nx9XoDqL
+	jZdLqPwK6iMQFutWvEMqQ1Su/HeAa38=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uk8LCrfd;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d/43HVnA";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784031900;
-	b=mgaGmt4nzs6tCubRZ55gH9pbAzZ/oVWUwhcQFk+kX0adQzJA9RHMPJfknxovrPq8n+9KKo
-	f8jSOw9dXgNxLowBRyEXXxqvIdYN06yl4FVA6yGreJbKtUw2bw5b4tKr+lGN2xNOmZqvCD
-	MSHxticFWViXnFIqIYh3cLKnLZvvmUE=
+	t=1784031987;
+	b=pl20yjMi9/3s0SOOxlSP452VhnTdAXUdkD7/AWoZQPOc3mqOjFZvgkqrLwtEJiH2pGrM3A
+	gb/cH31niz6vMN//0e6me77DmdZWZu+cX3ZPbSjBZASPLdxTWZXe9OGmw8pkxWpQoiFl4+
+	9smEW1GtoTiaEiMezJQRbE5cwOl16fA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 959E760120;
-	Tue, 14 Jul 2026 12:24:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB38A1F00A3A;
-	Tue, 14 Jul 2026 12:24:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B6DA960120;
+	Tue, 14 Jul 2026 12:26:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19F21F000E9;
+	Tue, 14 Jul 2026 12:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784031899;
-	bh=ncHjbQ9ufoT6SdeAfwRC2oHP5TMeYh9A0isrkQOo65c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Uk8LCrfdl+bpQBeTpDRh0oc+8+a48aSIelbqzRi4zcYvWLX8sL8PxBp5hbaMZ0N9Y
-	 nVwiwe5noR2fo5n8OoliuzsH7AN/eZRgcnZMxx4vJk4UrEIUqUa6k2idnbK9QgHqXj
-	 MvcdH/lQE7Be/UpQwxNPD6F6RDv4kQpNEWdShdefAKU7jb+xKA44rV4fWKT8iKCIpd
-	 oYq5git6zMaT/Ydsw25+f41mpCLw8kebEFGA22uBE3LXWKxb4zzlWHCYg2aA4NMASc
-	 6KhnkAFxAiN3+HQ57h5wBLKt+VIJv0+/x3+ocfej2PJIAOaCgDGi2/izTJw36B81t0
-	 qYENoTSEHp4mg==
-Date: Tue, 14 Jul 2026 15:24:56 +0300
+	s=k20260515; t=1784031986;
+	bh=mGk1WxQeIjy8TXxnkr72i3ixVNdguqRlqFJcS5wfXts=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=d/43HVnAk7/FJSfqTj5xPz9u7OIgJtrLN5hKMCb2FWagDN2HMlJti7jLHQXFwtYFY
+	 UInW9HOmx+m5UEb3lc4W8EUlLakzhEfewyYo3bWFc+aqt0RWPbjQwVnsPZgO14nvka
+	 Pka70MqwZmt6lszXW0R534MSEcoD7NE38iOKc7wCJoeq5Qwil2yxBJwwGigzAaKrhj
+	 qN0kPwPnAxhKpEs5HYpFBfUbjd3t3H7RAu4SrH55t291VHsYv45Yhauf7Lgk38OoUN
+	 DmHtVL++ue2LbRreljwCMORN2W/HyIPvdEQcMj7dIEmHuO3S9noT1f0yg0OxJbPX8/
+	 2tpQJRrjVJO+A==
 From: Leon Romanovsky <leon@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-rdma@vger.kernel.org
+To: Jason Gunthorpe <jgg@ziepe.ca>, 
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-rdma@vger.kernel.org
+In-Reply-To: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
+References: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
 Subject: Re: [PATCH v2 0/5] RDMA, IB: replace __get_free_pages() with
  kmalloc()
-Message-ID: <20260714122456.GD19233@unreal>
-References: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
+Message-Id: <178403198364.107074.8884062475078285923.b4-ty@kernel.org>
+Date: Tue, 14 Jul 2026 08:26:23 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org>
-X-Stat-Signature: dt7dkzno4tkf5b9emq9wen8ekcq8869j
-X-Rspamd-Queue-Id: 1484480009
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-18f8f
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784031899-611803
-X-HE-Meta: U2FsdGVkX1+1b5g+KwzB0RHX8ipjJLQgoi00FackawmZPqB3mEk5WQJMrleJgkRGXCQy9DwpgSpe2lSDFHmzZ6J9oe60Cdi1PtpSrEQT55SdJH3GPPjFoI4inKAbXduSpufmBBdEclp2B7KxLY7tAK1rJytVHu9nWP9YI3tVvPm174egTXFO4gXXToGXlws98PIi01PmeRsgR7qm7ZmXZCbeNfYitfskM2DW0NH9G/Qn2PTcFHJFkgQ5OoH0qCsRSKvZyFL4cnG4wtWP0BXfTtWVba/9FryNtMWMMqljf54PbJgOwlPnkyY26xt45rPehzpioqgHmv8V60e97hUaa15T7JNqzTLATPEcHNN0Ga8kafiHqKWswo+XBplhcAzC9HjMEEsLtQkFsuU1Aa0hXILpCXlA695F9mfbrDz3kEVNB1CVpVkz9cRwirOMg9E2fcs2LN1mqJjQe/8ZbBDuEWFsny5MQokGgXdFluuGuZ4cfrmTF22PIUZW6nJjAbw2634al2fnbtJVGhuLJwkafciCDfnMNtycweEYk9VdJAsxBSnZjmJ4bkhm2IL5lipTPuikjx98afnzCJ4+eCT6gw45tLpN96SY54hBLGJZhNvc+VzKoWkY6w0e3QHFeFU7BWshdX9uJgTxivLk1SllMw0sT8TS4Jt9fQypZJ050rUUD45HSeDnNJy7ce6AxSXYJdjW6behBjoewKXhdFKoSFF1K888errkkYkw6hCxivZ2Hr3s7dG32auk8qwoR9ix7rbhM+EOQ1DrsNK09cRkSSqY+gRFNLYr+zEDwfsZ0jyJPqXDZHuJAWeq8H+4zD/9EljUaWafLxIcuFHbP8p6YDndhUvxwtrQRbhqvW9TnEYkKbE7k63GkNhVEWWkiwI65sxHHBgAZqdijNLa0x6KgirklEh/oax3AIwLnxTEgY+ZS/kHNPIO8A7c2lhL4tYyyvX0NNfFnKzMlDR0MlJ
- CbU7u6MR
- z9HUyKHU/1h/5asryTR+xFdIeBpDZ6W1LXXncTUNuWO2BXzGcFcIhWHLa4D3ikV9Ju6ypSj0x+1aVHFUz3GLx/YJYCLX1O3H4WsrjIB3xGs/fteZ2TfvnbhJ1DPscrKwp/7Dh63SwyZ4oZn1pl4uuB1NK/SLYj8JyTaNLfT60Ypgug13d+Mak4BMjQ9Ez63DVrQYUWAjkMdvOopqpfjqw8X542NOqs9nc4CafO5hUjWscoo/Gpb/hIdVzGMVzAlwS4ZncZ5lllrO8S/I+GCOJtNid7GLHG25cuEkj95yt4nX2rLzxO1FUqeGI8lJHUYpyBcOSjPXINo/znLJ3lPksezvfsAegdJIqX5N9G6LOG2W6FAngzN/gkELPgUy3c5HBcB6fabryE2RV6J5uu5M/ncMhS+amHoF7jiwGAiAoCV/O83s=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3285820002
+X-Stat-Signature: 1f77jjj9m6jjj6aaxg3x6rocnsc37i6k
+X-HE-Tag: 1784031987-687248
+X-HE-Meta: U2FsdGVkX1+2OIX2jOxBqqjrLEQVnf6tZTj094V9mxmhTgeaYZDzAJGAnIgqJixNSu4+QC16xCet2l2uE9SzKIO73VtEhhqwbf2JymwbJSDTHp5XGl9N1cSIo9z9dKdKLpUZPJR8yy4FQSucxiPj4Zv1Ki0qGd4j3jf42NHwA6Y7cZhYcOmIJDYMwbRFs11z/jFuHm2Imua5Xg3RbdBuaIMVdeAS0Xg9QB8Ine/QdZ5Ub/DVfME//w69mIJOCV4Umzhk3hgqy8Y9Az8vyslYqT3IeV2XW2b/ANQrP55kiV1TvMhPGp70vNDNX3GPrSv30RhXwcouQEZRlPYicMcstLUpC6yYJPmooxRguvh8PmHrN/27nLNlhmj73kpCPhLB8C2KwS1hZvCKUe1RWTU3Di+GGS46H19hmZQCHr9YtAIe1nKCRmic+j8bWclCn3ElznQd6qiFLuQ6TlKVPPk08Qk3nCa1FPhjkDssa3dyETGpyVHYlBTObAY3jHspT3PVtueGv1TOM2au7Z+Ptipiv8Iml4E8K0NEBZ9X0SDRzzpDs6bE2bMkAI0lgsTN5PY2AEvcFOlrTcgl8jie1Sna5kv0ev66n1FY/CdrEOOV4+aodkro1ZFxbjR03DbQlrnFfYCa4FfVY7mKB/dW7YQ818MD/POyNnO5eBKvphPwNVIZSHQwI45DNqzGzZhugKwgFC9qT7Nbx03eaNSzo1VgL30IkjMxVTtQtULXbrgjnLpw0KvPyx0ege/nYe6xdX5YQTtMfDFFxkmGNrZ7qphxb6iH6zTN9UOuAokV9rJB0TUX3nV+FTKcD4d6WnCrB8uH1yoa5/zIKWOOTLtL8RjCDBuxcXuEIMRT6/cz4dykymhea5F0NzESWyQG8HGtXxk6sWyhbnobVP84kLqIbWUzkqyMDh3hKmliQHxWFwlQETgLTuxQEW8VdS+07W4L3/vdDhRZxLepklbvYv/P3cE
+ Q58Jd+12
+ /+XV6rfTEV88Na4b/j9Wc+tBJgvVGKjAoM/mF4UJebEJkCgZmeO7DetNrmaYttVIvOPXpDZTooWCSZHjopGas0U27RavKSRTYf7oaKDDi+g505ROlW3SIHL5dsOUgbkkIk6lT1z7XeYsE5zT4cfSkttnH7JnZ2uS4DtY/GE3ntiOIJ1iIG+9F+gsuWH1w7FKsaoPcpgn1zFVGC7Tt9TO7UE6dWJJ8T0iMqrAMgb31qCg34qLJYpdq29BWMCb6JNOTSmF/bCL8g+U/FH3kvGE+KJpTDWc/jjmGc5lr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,7 +95,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 10:17:21AM +0300, Mike Rapoport (Microsoft) wrote:
+
+On Mon, 13 Jul 2026 10:17:21 +0300, Mike Rapoport (Microsoft) wrote:
 > This is a (small) part of larger work of replacing page allocator calls
 > with kmalloc.
 > 
@@ -101,65 +104,23 @@ On Mon, Jul 13, 2026 at 10:17:21AM +0300, Mike Rapoport (Microsoft) wrote:
 > willy pointed out that Linus objected to something like this [2] and it
 > looks like more than a decade old technical debt.
 > 
-> Largely, anything that doesn't need struct page (or a memdesc in the
-> future) should just use kmalloc() or kvmalloc() to allocate memory.
-> kmalloc() guarantees alignment, physical contiguity and working
-> virt_to_phys() and beside nicer API that returns void * on alloc and
-> doesn't require to know the allocation size on free, kmalloc() provides
-> better debugging capabilities than page allocator.
-> 
-> Another thing is that touching these allocation sites gives the reviewers
-> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-> another size is appropriate.
-> 
-> For larger allocations that don't need physically contiguous memory
-> kvmalloc() can be a better option that __get_free_pages() because under
-> memory pressure it's is easier to allocate several order-0 pages than a
-> physically contiguous chunk with the same number of pages.
-> 
-> And last, but not least, removing needless calls to page allocator should
-> help with memdesc (aka project folio) conversion. There will be way less
-> places to audit to see if the user was actually using struct page.
-> 
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/rdma
+> [...]
 
-Will you also change get_zeroed_page() in RDMA, or should I
-prepare a patch?
+Applied, thanks!
 
-Thanks
+[1/5] RDMA/umem: ib_umem_get(): use kmalloc() to allocate page array
+      https://git.kernel.org/rdma/rdma/c/66073100a7b857
+[2/5] RDMA/mlx5: replace __get_free_page() with kmalloc()
+      https://git.kernel.org/rdma/rdma/c/e3d8c413e2e9e8
+[3/5] IB/mthca: mthca_reg_user_mr(): use kmalloc() to allocate addresses array
+      https://git.kernel.org/rdma/rdma/c/5036553f0e39e2
+[4/5] IB/mthca: allocate mthca_array memory with kzalloc()
+      https://git.kernel.org/rdma/rdma/c/45bf0b3da47d75
+[5/5] IB/rdmavt: use kzalloc() to allocate QPN-map pages
+      https://git.kernel.org/rdma/rdma/c/f8d04b0c74e989
 
-> 
-> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/ 
-> 
-> ---
-> v2 changes:
-> * add comment to keep markers for sites that need "fast and as large as
->   possible" allocation helper
-> 
-> v1: https://patch.msgid.link/20260630-b4-rdma-v1-0-ab42bcf0de92@kernel.org
-> 
-> ---
-> Mike Rapoport (Microsoft) (5):
->       RDMA/umem: ib_umem_get(): use kmalloc() to allocate page array
->       RDMA/mlx5: replace __get_free_page() with kmalloc()
->       IB/mthca: mthca_reg_user_mr(): use kmalloc() to allocate addresses array
->       IB/mthca: allocate mthca_array memory with kzalloc()
->       IB/rdmavt: use kzalloc() to allocate QPN-map pages
-> 
->  drivers/infiniband/core/umem.c                | 5 +++--
->  drivers/infiniband/hw/mlx5/odp.c              | 6 ++++--
->  drivers/infiniband/hw/mthca/mthca_allocator.c | 6 +++---
->  drivers/infiniband/hw/mthca/mthca_provider.c  | 5 +++--
->  drivers/infiniband/sw/rdmavt/qp.c             | 8 ++++----
->  5 files changed, 17 insertions(+), 13 deletions(-)
-> ---
-> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-> change-id: 20260610-b4-rdma-44625922fe16
-> 
-> --
-> Sincerely yours,
-> Mike.
-> 
+Best regards,
+-- 
+Leon Romanovsky <leon@kernel.org>
+
 
