@@ -4,135 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CD0DC4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:05:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F16F1C4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:15:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EFC36B00CC; Tue, 14 Jul 2026 13:05:14 -0400 (EDT)
+	id 9907A6B00BA; Tue, 14 Jul 2026 13:15:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7CD6B00CD; Tue, 14 Jul 2026 13:05:14 -0400 (EDT)
+	id 940F66B00BD; Tue, 14 Jul 2026 13:15:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F22666B00CF; Tue, 14 Jul 2026 13:05:13 -0400 (EDT)
+	id 8303E6B00BE; Tue, 14 Jul 2026 13:15:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C29D56B00CC
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:05:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 472E740496
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:05:13 +0000 (UTC)
-X-FDA: 84988007706.25.294619F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1BAE4120005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:05:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8hD0Weu;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 488606B00BA
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:15:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB7FD140415
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:15:15 +0000 (UTC)
+X-FDA: 84988032990.21.B58B462
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2FF90C0003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:15:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="uq60Fh4/";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3n25WagcKCDAbdMfYMXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--pratmal.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3n25WagcKCDAbdMfYMXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--pratmal.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784048711;
+	s=arc-20220608; t=1784049314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ydgxQP/oa7xEv0jlIXInXGbUm/sXAmGgSanquee8prE=;
-	b=XehBamkOcYniauWGQkM5HWQDoN4ybgZzgoMJELQuCwQ0dKwWlzkOU4geMlPkmKOoFst8oJ
-	OJdSXdS7q9lu5UZ9TSAn8zirEWZHA0kN0a0RmL4TZUJBZ1c5pCfaq5yxxW4FNHw5xYR25l
-	TlTK+wvLdNA/Upebx5i9eDd2khKbNhU=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HQl/YhNIycgwR9ahJpRcbgcx4L53MFsyko1Sj3ozvDU=;
+	b=wlNLufFwC2s0G53/MBoVEGv9Fj6vktqzmBaJEx2739+GRUIUfSLgDJft+Vh1RIyZNN0D5O
+	FhtjYbY1GJ6fhwS7OsJKnlMRLRWKWm9yxT/h1z73X3qLuP6at7y99PKRcozAyZN4NL0vl6
+	ffVpAt2vfH+95/sDO5YOu3B9e2eWHp0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8hD0Weu;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="uq60Fh4/";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3n25WagcKCDAbdMfYMXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--pratmal.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3n25WagcKCDAbdMfYMXSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--pratmal.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784048711;
-	b=oxsmlhGwnbE2C8tT7XGpSyPZaqgVIYDc6F/7m8ihI12ZUlhD7qAlakU4HHTjsp1hLy5OOT
-	+DxlcE7g+3M7U+Qd33HFPOkWVgmDho58yDaASdK/1RBzLCWaGlhUubBz3c3Hncl4XCIGxd
-	ydViLOB7sj9dYMY5r/6jImFd/1bi7mQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0DE1641870;
-	Tue, 14 Jul 2026 17:05:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4031F1F000E9;
-	Tue, 14 Jul 2026 17:05:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784048709;
-	bh=ydgxQP/oa7xEv0jlIXInXGbUm/sXAmGgSanquee8prE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D8hD0WeuYKlx36Y5L2e4bzKDjObG0iLRTHPa2FOZvUhTU0FrYNaaMeFA8sHpKtrdA
-	 KwXMMoUkns+4VYuoR2bugd6YoPO0xzv7zp3C/c+6pIm7x//ttFG6KF9/lAyy1oYnmg
-	 nrHEgYoOFkroutxdRfFu4R2P5Z7bLE1HgkOgsEeg29x7ySkRZKcr1WBFGbdMCmQh7n
-	 l8P8t2sd1a2Jckb1bsUT0sr7xbKNJEFkji9hiablV0GE32MsF55/FgOKh0keIbfOdZ
-	 ldEnwxHukjw5ov3fGqFNEoi6UovYUE1LUWbJlerABj5mz/RtRICoCh8ZBP89UjqZle
-	 hxJZmW76rCqOg==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6FB16F4006B;
-	Tue, 14 Jul 2026 13:05:08 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 14 Jul 2026 13:05:08 -0400
-X-ME-Sender: <xms:RGxWapPXbB5dVu53Jz7RrippvtSKKiAiIJVJ5GoTsW29sf-zJC66Jw>
-    <xme:RGxWasZTnBKb9bCAmfX0IqbM8Ed5DZM-tMrieZPtZAv-_vOKsS4WlCPcFe_HzuGoR
-    4yhsz-XKh5zBAEJuk9zp0cQ9zWdMZDIdT6qwkGq6rkt24kiKrBV7A>
-X-ME-Received: <xmr:RGxWapslvvrOUkuR9AuAdM_Gt0YsL-K_n0305h3XhPWdgjEVANE4Bevhdipelw>
-X-ME-Proxy-Cause: dmFkZTFmy+VemEL8y4m/0c6SxM2MpgY/lUB50b1pGO9hizfkVYuDYx4C2dh69xVyekjjVF
-    SM16JUY7uBZ4MgywK/EicPR2jaoa2RvJU2pvEyOxthy7IxCU4yoKq5ltVWcNJlEPeG5PD/
-    La7r4WvGmHo6f+HQp9hAsZMebjDJ6UU4aeFkik8+mWeHwOszix8pf/umVHOJ3FrSeeX1Ep
-    urx2zOqpy79jM/gcgeHPLClx4ZD5PIiAPgkDFFJ8vW2YYYwEh3OSG/Ng0deBensnErFliG
-    Cx85IWH5hmqDvVZlFms+1oCUSCe2CgRWM9tg918uHCJjnaCkn6LHh0uivkwfLqo+HrrSqw
-    /vD5cDJGDYcRixMT4B1b1W/Oqoir4wrmSc04uvjG+o9qqJajA+QNDm9rCdp5WdTi7wtlWh
-    ow8/u1xCky2ml+w62/3u0/11lgO4Ch7qe+KEj+eztYk0agWgOkcNQS7AepEXJIyZ5szllJ
-    5aMvBky0fhySWBI5vvukYk5SbrPDoaQ5sIsFNbluAxKbB4KBJjwf0PeW1oKB7+nPQ/n02u
-    oCvgqRALMOOl5sngUh6rP3Q5kZHgjv48PtDGFT6kihcspAuv/N1ExURuPiLuhi4HYSCfeL
-    q//noQRZyomBaUesw2AggexEf3LHnrFQotNu2k+xS7i3QXELw3IUnA9qhV7g
-X-ME-Proxy: <xmx:RGxWaltsTtr4ZjIGeOTb2H7BlQE0FP4YCrbw4gdcPHSHCzs3YznmIg>
-    <xmx:RGxWag1RMUC3o23VL7q3yu2zQ7NeU5EL7ocwG3bKkk9QlCg4JI_YCg>
-    <xmx:RGxWaqNrWGr5C3kXNzgBHVFPBVDWKgd0N3KUDgFTF3sMfQqZ9VOE8A>
-    <xmx:RGxWat5YHEcBpFpFY44XIzGRimwMYLN9Edflpk0v-w5jXuD5GmbpCQ>
-    <xmx:RGxWapZdlcn3WvyTxZNGFMK7K0whXjTgVTcsMq0ulr4g5weXE5EZKU6t>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jul 2026 13:05:05 -0400 (EDT)
-Date: Tue, 14 Jul 2026 18:05:01 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- 	Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- 	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, 	Uladzislau Rezki <urezki@gmail.com>,
- Toshi Kani <toshi.kani@hpe.com>,
- 	Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>,
- 	Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, 	Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- 	"H. Peter Anvin" <hpa@zytor.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- 	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Ryan Roberts <ryan.roberts@arm.com>, 	David Carlier <devnexen@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 	bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- 	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH mm-hotfixes v2 0/4] mm: fix UAF caused by race between
- ptdump and vmap pgtable freeing
-Message-ID: <alZm0tBf8DpMXimM@thinkstation>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <alTn7NguEW_4bodu@thinkstation>
- <alTq4V50767L-s5H@lucifer>
- <alUNiWcygLd4rqBo@thinkstation>
- <178404602957.85099.8935151447302412515.b4-reply@b4>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178404602957.85099.8935151447302412515.b4-reply@b4>
+	t=1784049314;
+	b=OK6/CdIeHDNUgcuG6MvUIVFWXE/GnrZaTnJODGvgr7qw+TcIDP7nOeZlfyRDuNfDZYzKGN
+	WC04gD7AchJy+Om2AocviqizZq5J98JwHKDg9A51snYNvRluzw85MrYvukO+hD4aU7OA5y
+	RIWWbqtM6Ey3QOJCJzBnfYQpwtjEuos=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-caf5fa127d4so1800100a12.0
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784049313; x=1784654113; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HQl/YhNIycgwR9ahJpRcbgcx4L53MFsyko1Sj3ozvDU=;
+        b=uq60Fh4/OoHDTMNI1fFp4HVtzq23lvz3fC7aLefKBGTyCBrIduuvY/xKH4cGvo6M3D
+         CRMTFzpoRDobjZ8WTIDbGViaMJ5Vbh3HceYB+GtDJs/U4im/rO3KGMgJqLWL0lWKF8+m
+         d1uiq4XSh3J15jryg4lG3MBvu7RMaj5GZ2Up6gsnbDq0kshuFl3CkIjOg9Xleg04mRd0
+         0gxI4DD3PanvKg2T9/xsZ5W9LXUjvz1Mh7blqS+2j8OCWICASpBcg/n6o3Lxro8mqc0x
+         oRvii4UCwx9lIAnu0RhNksQDqw0WnWjee2XqsjERfOHwasOpnzXmMb3B7MtjVUQK47u1
+         K73Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784049313; x=1784654113;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HQl/YhNIycgwR9ahJpRcbgcx4L53MFsyko1Sj3ozvDU=;
+        b=PSAuIcWwEBGi7oIMfU7WJStsr0HX+UKMyVMahEgcor3lZQA8Klc1STBwnk3StQHyF/
+         z+jc12GISAV3B+GBqyxdDhOIo/xwQNunbNakbyfTAhGYYoyS+dmgXGGuYmRpqL0vzx1P
+         rNOnBNlBTj8tA+JJ5lETBcaJyLjVQMdE8hSmR8trZ/crYxIFDE9500C3j75/Zm3eKrEH
+         D+QV58DRBMibIYNapRUfMEaYv8w1jQfRKrj4I8rAM0gh5tXu5rCzQebj475fGyTqp86K
+         cgP7TPC/fBtlLifVB9YgmDkVtpZU1McKjEgETckckzUFGCxVVudoNCl9tKql0h5PXsqC
+         dHZQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrlH8LqbszO0O+W1g7nxpDv6dm/HTkKcvy0JMu54x0pCA4H3nqYUzhEtYt4MM5Vxx5dJ5x8vYvvFA==@kvack.org
+X-Gm-Message-State: AOJu0YzEQYKvv/XvfSAVsKeGDtSmPZhHAQUYGs+YxYhFxPrMJpEoha/X
+	pVSI1BxqB/IA/viBQwCbp100qqSJqu4igjQ8LAsqACMxGiRfSdz8w74KHy8vIIBllPiz79nWlfY
+	hvSCzzr2sbA==
+X-Received: from dled1-n2.prod.google.com ([2002:a05:701b:42c1:20b0:13b:9e9c:c86a])
+ (user=pratmal job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3394:b0:3a8:21e0:1ffa
+ with SMTP id adf61e73a8af0-3c110160cabmr18302925637.27.1784049311355; Tue, 14
+ Jul 2026 10:15:11 -0700 (PDT)
+Date: Tue, 14 Jul 2026 17:14:55 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
+Message-ID: <20260714171456.2350037-1-pratmal@google.com>
+Subject: [RFC PATCH] mm/page_reporting: Add page_reporting_delay sysctl
+From: pratmal@google.com
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Greg Thelen <gthelen@google.com>, 
+	Pratyush Mallick <pratmal@google.com>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 6b9rnk1n1psaw4ws746byd1podpp88kk
+X-Rspamd-Queue-Id: 2FF90C0003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1BAE4120005
-X-Stat-Signature: qbzkm76cxrx8xm1ec9zdu4ffya5qrw6y
-X-HE-Tag: 1784048710-182989
-X-HE-Meta: U2FsdGVkX1+6OXWY5R9cbRO9PpD0MC5Pu42YZcXzapdgfLdN8sPnqaKVTrBxmUToORO/evem3vcKZFSJx+qbfgk+OF6wpQ4+3n0j81JWM3dbN9afoalvzkWoq35VpQ2Va49S2K2Cmk9rD6n54Np6BwjnNvanJcyj9McJxGGX/Cpf//xDif/qc8V3E6LpV+LSyc5b4iadzmeApKO6u1d6wy3HuVBBkyAqoGgBM8ap/+ZwB555X3RjklcMx3R1nKUT+MfUSkvLSuwhwoGW4lKuLhq7++flXI5reGQxT3HurPxaMXyabhEGvSKl6V0yUIX6giAzkhlaYOQPRRIUwqlP/IRG1fUlDyNqoWz9HWFvELz+ea10yg7vrfldQrYfjDak0xvM4C7L6CaQhRF9EfHfgRYb06KTQZ9igBpipBcSskniYgop0/sBlRXMkin6eTLL8WYB/ZogJzHd3gy7O30qLIb8PeyuDGhizuAaVqOtbMNB17hpmWIhrHiO9Ja5nxzCR5lPjGy1WeiiLraq5O3hrr21x+7dVxgdaJzSCaK7vv0MfLClNF7bwLSBYgrL/FFIgfvdD8OMJPxAH8snkEraaT5TJ29B8BVsu9XS29zbSjErah8I62AVvTI9EIdFPXOU8c4cbVW/1NRWpzXWlaWkmg5pATLT2NDvcdQTNw8TvALEPxnEpXkObJ8oGXN4mWpxtlVMW5PbECl5bQVJKq3VH0twTE9JYQUWU3XMYR0vSEgZ3kiTe8gPSKIq2JASY2s+YM47mA/vX2jdsySF0X+4vBeVf3hKowY/qnisNxSAfpsjWDZq9rL93DbuCsO/wkLGSrs30sToTDh13MWu4Q2HZWHQPuCnf9nEmFv01mt4E4IRPbfRj5Iea45bUURFZ1ytb6/uOxRWXYm0VWIt5GZUEmpd63v1FXiytlIwbguxkT2QG7RkF5OlYoxUaXC8rFpqzQg1roFUMG1v5rFQ/9+
- NsiqUlAD
- sRc6XIGP4T30XRm0d2Tw6oSPP4+TJ8HWkNKVj2f2mNUKsqqdrCc2c6lKdtbEKGAqh2Y9hNNV09TjHKtrZkoeFGPbWf81gl5v+jOXT7l3tn48CPGc4odVz7NIRO7zDMu/48aZdU/Lj569/CbKN7Y0Ug0VQIoxL6yhd7r8TEVHbIIpUsGbZFlvtPgwN7m+ClNrPc6jX9HYXMJVjBgl9nxZyU6foXv/X7EjtIZ5DO88m0qHnKvtcaqN4rI2SzXHErhAwHiqBWWNS0WHzhMS/+cPYp9aihA11dV0u0VUfR59vWr8orQkprJtLnr0CrgMnRF/Ap0uMTC16yv4s2sm2+oFuDvPupoWG5gPg5SjKyNytgItwUzZlDb1VcDwR82lwuAeAAGU13vFn2rYx9u/moi7+EfGNaiIC8lBciOP8
+X-HE-Tag: 1784049314-616119
+X-HE-Meta: U2FsdGVkX1+qo5KZ6lF6hpng2uA8BtozUsxJwFauFq9ProWv+rs58wUifHovE22Lv36tQ+EpLWqpduncL5BQslxZeUA7/a1Ki/8X6/zRH+hhm0Nw1F8fXYXf8SwuGgrncqIhI2uWGUqS0FHydAUBxOK0+47FAgjzbvUU1pudmnzVdvHnDPH+4FYVDFqX/C8gKZK/4ykdW4Dk4TpP7n07tGTayE+27HQKCQiV1YhZJnT5DbrH+dTEb5twLP7yxnp3+uPodTFAPOox/qyfUk2qo460Z7S6kpvbxQIWhjfpUIrp2IxI3dvKTvHvuLs5ee/NeXoBrCBlfM/VSkVywzFt4JHax9QvIxk1lcVb1jCQ2RPCT5hJN3MgiefTPP3rlnJUjcRWbVncDvqZuOzKm1xAy73WLjsBT/w2ksMrPAYAl8I7ggHgqbH+Djf40lqr0aenzWQC2cbAuISMNUpPgrtjBioSrkuNOI9n6vsQcPJ2AfZYAmgCf94wqd7m1Mql9ud6C9ew2wvPAhRmxHhBE0984Nge7QCnPwhpe0TMoQqxGSbaVU0XMomY46bTV6XTrLKyzZwJ8s6BWPljTmZNikAYmHzsqZvuTW3wlaXBmPtojzIc5hVjhsgtUi4H6VcmBimCXuNm8wewVsLHRfzAoV1tSQxRod5eCPc8dRVrgoUWyRd5X9lGY3eShCCxyYASEp0384TnIDmyNwZ+51WE9O50aQkmXvuc/BGPyqCKeG018jlPQKB0n4wHRSJwNhwIW5uqH+nf/63sOI7JNCRw6/I9YQRF6Jw4NvCdN+QReGBwtmMvNhj3MrVMSflDPCJfSAkV5ZKV1xhL+x3sznlGInoF6ECiwPAvGR48F1G4XkHnblXRG7lQTrHmBjryV8BdSJ8ysQiu4o1cUKg/pdeldTEBNy/pNKjXlGBPvuNjw5rwfzK4sshkBJ2/o6ZIF5FX8DWN7vVtNwwDjHggNZZDyju
+ FxvYuois
+ xFzwkNR9/p/AuS+FU1+731O6BA4DbJ1wETQMltlFA74Nv0pFmY84gxEGZtIfV3QvP9N5LiaB7slJuLeeauGyWblBuu3k8Wfk+UGfPy6wbgxCDidwlOktQP3r8IoLx25TtBRF7KLn08BUky3xocNMgop9U4Wi0JB2L6sHJN0cScMWbluPumbiWXRGGflcS2ZJCfA9wjWkWNkmn4WrlzLYymu7O33f1OGJeVupIclvL+I6xOKPzoPmLwSICR4EIJ9ZF0DS3wOt0ry9i5Nd20XrgnPu20ms5MURc8GLs/ob5uI8UEx5GvD0yFeEL3R7Tsx/2CTm2x3waAJR2Npq4Zq4OnJnqgsigDsBpBmJcT0rHFya7QNa8NaOAlkmQD2cH7frAZ6bbBvKllFdD9eLBF8ApCH0dfOV6Sbe5OVytMICTdDcp1whRjRlSSx4D4EgBXIKYH8ZMsyG0gzMSlXaj/Z24q07P2zXKpoO+GV/2d2DIvM1I1SDMimOFFQR8hPvbR1BFxpN3MI+ttxTgOlAA6BTlJX4Bss8WLzHqJ0w+pak58oMWDiWT2Cz+FJoySzy0YYtPDYTVcr7uo98++duPW83FpnHyNb50auYHIsiVLi4OlrCmiB3WGZshrD+K4Kkzb0iEWa7OjRPFWYe+lmm4/KfM9JSyAD6WyM+8oCBidWag8MdqZT1PfBPBwYPQ0fRCko2m1EkXuTfsYWOh3TBQvis+zBkjbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,36 +107,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 05:20:29PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Basically you need the IRQs disabled to get the semi-RCU behaviour and to
-> be able to safely traverse page tables that way.
-> 
-> So with CONFIG_PT_RECLAIM you're safe to RCU traverse PTEs only.
+From: Pratyush Mallick <pratmal@google.com>
 
-I think this is stale. Since 1fb3d8c20bfa ("mm/mmu_gather: replace IPI
-with synchronize_rcu() when batch allocation fails") the !PT_RECLAIM
-fallback is a real grace period -- note your own quote of
-__tlb_remove_table_one() calls tlb_remove_table_sync_rcu(), which is
-synchronize_rcu() nowadays, not the IPI broadcast. The name invites
-the confusion.
+Currently, the free page reporting daemon uses a hardcoded delay of
+(2 HZ) between reporting intervals. While this is a reasonable
+default, it lacks the flexibility to adapt to varying guest workloads.
 
-Together with a37259732a7d ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE
-unconditional") that means every freeing path through the generic
-mmu_gather is genuine RCU, batched or not, all levels. A plain
-rcu_read_lock() walker is protected; IRQs disabled is not required.
+A low delay allows aggressive memory reclamation, returning unused
+pages to the hypervisor as quickly as possible. However, during spiky
+allocation/free churn, this immediate reporting can lead to a severe
+performance penalty (nested page faults) as the guest re-allocates memory
+that the hypervisor has just unmapped. In these scenarios, there is benefit
+from increasing the delay to batch free pages over a longer window,
+absorbing the churn without hypercall and re-fault overhead.
 
-> HAVE_ARCH_TLB_REMOVE_TABLE is set for powerpc, which also enables PTDUMP :)
-> and that's because it actually tracks multiple PTE page tables together as
-> a fragment.
+This patch refactors the delay into a dynamically tunable sysctl,
+/proc/sys/vm/page_reporting_delay, measured in milliseconds. The value
+defaults to 2000ms to precisely match the original (2 HZ) behavior.
+If the sysctl is modified across reporting windows, the sysctl handler
+immediately issues a mod_delayed_work() to honor the new configuration
+without waiting for the prior timeout to lapse.
 
-sparc also sets it with SMP. So the audit list for custom
-tlb_remove_table() implementations is powerpc and sparc -- everything
-else gets the generic behaviour above.
+Signed-off-by: Pratyush Mallick <pratmal@google.com>
+---
 
-No disagreement on the rest: the walker needs
-ptep_get_lockless()/pmdp_get_lockless(), and the ppc kernel-side
-fragments need a look.
+Sending this as an RFC to get thoughts on exposing this delay as a sysctl. 
+                                                                           
+Benchmark Results:
+We kill a process allocated with 10GB memory within the VM and mesure the
+time it takes to report all the memory to host as well the delay in
+initiating the reporting.
+ 
+default(2s delay): https://drive.google.com/file/d/1Ouxm_raj4xPNthc_ryk0Mdbo-c_zXKiP/view?usp=sharing
+Tuned to 0s delay: https://drive.google.com/file/d/1mk58LPiYgIF4Yk6kmX5JHplhrwIw0NbC/view?usp=sharing
+                                                                           
+The data shows (sysctl.vm.page_reporting_delay=0) that within ~2 seconds,
+the guest reports ~10 GiB and the reporting is initiated as soon as 100ms. 
+With the default 2s delay, it takes around ~7 sec to report the same and
+initiation delay is around 2 sec.
 
+ mm/page_reporting.c | 47 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 42 insertions(+), 5 deletions(-)
+
+diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+index f0042d5743af..6fde542cbe09 100644
+--- a/mm/page_reporting.c
++++ b/mm/page_reporting.c
+@@ -6,6 +6,7 @@
+ #include <linux/export.h>
+ #include <linux/module.h>
+ #include <linux/delay.h>
++#include <linux/sysctl.h>
+ #include <linux/scatterlist.h>
+ 
+ #include "page_reporting.h"
+@@ -47,15 +48,44 @@ MODULE_PARM_DESC(page_reporting_order, "Set page reporting order");
+  */
+ EXPORT_SYMBOL_GPL(page_reporting_order);
+ 
+-#define PAGE_REPORTING_DELAY	(2 * HZ)
+-static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
+-
+ enum {
+ 	PAGE_REPORTING_IDLE = 0,
+ 	PAGE_REPORTING_REQUESTED,
+ 	PAGE_REPORTING_ACTIVE
+ };
+ 
++static unsigned int page_reporting_delay = 2000;
++static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
++
++static int page_reporting_delay_sysctl(const struct ctl_table *table, int write,
++				       void *buffer, size_t *lenp, loff_t *ppos)
++{
++	int ret;
++	struct page_reporting_dev_info *prdev;
++
++	ret = proc_dointvec(table, write, buffer, lenp, ppos);
++	if (ret < 0 || !write)
++		return ret;
++
++	rcu_read_lock();
++	prdev = rcu_dereference(pr_dev_info);
++	if (prdev && atomic_read(&prdev->state) == PAGE_REPORTING_REQUESTED)
++		mod_delayed_work(system_wq, &prdev->work, msecs_to_jiffies(page_reporting_delay));
++	rcu_read_unlock();
++
++	return 0;
++}
++
++static struct ctl_table page_reporting_sysctls[] = {
++	{
++		.procname	= "page_reporting_delay",
++		.data		= &page_reporting_delay,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= page_reporting_delay_sysctl,
++	},
++};
++
+ /* request page reporting */
+ static void
+ __page_reporting_request(struct page_reporting_dev_info *prdev)
+@@ -80,7 +110,7 @@ __page_reporting_request(struct page_reporting_dev_info *prdev)
+ 	 * now we are limiting this to running no more than once every
+ 	 * couple of seconds.
+ 	 */
+-	schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
++	schedule_delayed_work(&prdev->work, msecs_to_jiffies(page_reporting_delay));
+ }
+ 
+ /* notify prdev of free page reporting request */
+@@ -343,7 +373,7 @@ static void page_reporting_process(struct work_struct *work)
+ 	 */
+ 	state = atomic_cmpxchg(&prdev->state, state, PAGE_REPORTING_IDLE);
+ 	if (state == PAGE_REPORTING_REQUESTED)
+-		schedule_delayed_work(&prdev->work, PAGE_REPORTING_DELAY);
++		schedule_delayed_work(&prdev->work, msecs_to_jiffies(page_reporting_delay));
+ }
+ 
+ static DEFINE_MUTEX(page_reporting_mutex);
+@@ -415,3 +445,10 @@ void page_reporting_unregister(struct page_reporting_dev_info *prdev)
+ 	mutex_unlock(&page_reporting_mutex);
+ }
+ EXPORT_SYMBOL_GPL(page_reporting_unregister);
++
++static int __init page_reporting_sysctl_init(void)
++{
++	register_sysctl_init("vm", page_reporting_sysctls);
++	return 0;
++}
++late_initcall(page_reporting_sysctl_init);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.55.0.141.g00534a21ce-goog
+
 
