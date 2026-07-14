@@ -4,82 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0453BC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 03:19:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73D7BC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 03:44:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0680D6B008A; Mon, 13 Jul 2026 23:19:44 -0400 (EDT)
+	id 079BF6B0005; Mon, 13 Jul 2026 23:44:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01A096B008C; Mon, 13 Jul 2026 23:19:43 -0400 (EDT)
+	id 02A2F6B0088; Mon, 13 Jul 2026 23:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E49A26B0092; Mon, 13 Jul 2026 23:19:43 -0400 (EDT)
+	id E5DB76B008A; Mon, 13 Jul 2026 23:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE746B008A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:19:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08C1A120256
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:19:43 +0000 (UTC)
-X-FDA: 84985927446.27.4EB6049
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3BD54160003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:19:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bXg2gctA;
-	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A40316B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:44:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 165A31C0195
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:44:28 +0000 (UTC)
+X-FDA: 84985989816.18.E039704
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 794BA100005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:44:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ouBI0wGg;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783999181;
+	s=arc-20220608; t=1784000664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=alps6hWuCsfgbK5PMQqSSoX0zJN9Car9QULf3pXnrhc=;
-	b=wA5dexiDV379DXzvVOLECTGrNh71+f5WbE9lIMAjxVF4sa8sQw6QkWnNvveJSmxpyyfVb8
-	hzYuCzTOhl8hZOrCQPUOHeq3NQHz0DYPMH3u08pKNs4IRZsagdO0XMOAbUHIHHkNO/Tdp0
-	PAGWKVk3R2VJkgdcVQn1fKuhkBqdS3Q=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bXg2gctA;
-	spf=pass (imf08.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iXOjuMzSvD+gYbqTC2OLzZ9jnmRNC6TFl8r9wiAZ3Pw=;
+	b=qrvjcAIfSZKtlOh7I8aXBXvuj9bG5GDYXTdQ/shAP3VXHaf9SOjfwmun17ptoHUpbMGvgz
+	DwEKvT/3Bk32PcLAykryTaeuOzXSOe7SXK8TG6jqx6K5oi+PUITYxV8OD5UT380c2BL1M4
+	IqZ3qwor5mTmiN5Zfb1Hskq1MAUE7mw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783999181;
-	b=sEb+Af6BgHYOXqcX+Cvu6AcQG+6xXU6QeOivrr6lHKRGOZOzehHj13uS0gZPYssR0gurPX
-	JdYbFZnDuhUsBZjt71vgzn7d5B7dkzZvjIipRmML19GnD8vJQBdE958OkSLiATk2wIprx2
-	QUjI9GMSJNI9NjguWmU+482gHS2poV4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783999177;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=alps6hWuCsfgbK5PMQqSSoX0zJN9Car9QULf3pXnrhc=;
-	b=bXg2gctAQ3TAZ9Fqr/zweZsh7VAigTgKQ7ogJD74ChWlKQ7WbOMk/1Jcz6kFaMxNkWA2I8
-	itAPU3R4tt1h5+vQmBLHfP7oqloebG9Iyoc9AML9QL9Le5KoPmFg9a0l/T/jndp7X8BEXi
-	jsj5O6MuU/PvOmC5fXaYyeiNPx45xHU=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	usama.arif@linux.dev
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH] mm: shmem: make unused huge shrinker memcg aware
-Date: Tue, 14 Jul 2026 11:19:18 +0800
-Message-ID: <20260714031918.308-1-qi.zheng@linux.dev>
+	t=1784000664;
+	b=Cga5okUkYVmtEBjAHYhTAxIgGaC5U3boq8QJT7UB04c15uhHaEr8U9gXO7TtV9tjBXKaOK
+	eIkxKLARvLAQ4DePErgYe7Yh4MTMyn9Tnn4JBCajK4qZXz4Rb6lo9qcaqewtzBSGPUl6Lb
+	MzL9DvVJFTEtyng0mM883i/5cXEYznk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ouBI0wGg;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784000660; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=iXOjuMzSvD+gYbqTC2OLzZ9jnmRNC6TFl8r9wiAZ3Pw=;
+	b=ouBI0wGgxJTn1/Z7aWqiKyXTcX+Fh2NwCxNWTl3JcPAVy3EvR9vtPM3HIhsV2BmEhzcOmDO/iSOI9tDAo2jK60qHQUxOWXuY3bZ2JQGlS2EDJMnKoZHUP/nrOpMoyd9ZEYx2nsT0wdd/VC9ScMS7HHcB0tVkl/Bgxpfw+njsOPY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0X72hfDk_1784000658;
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X72hfDk_1784000658 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 14 Jul 2026 11:44:19 +0800
+Message-ID: <880d2e49-3225-405b-a0b6-d5a7d5d84648@linux.alibaba.com>
+Date: Tue, 14 Jul 2026 11:44:18 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: thp: unlock i_mmap before releasing split folios
+To: Zi Yan <ziy@nvidia.com>, Kiryl Shutsemau <kirill@shutemov.name>,
+ Hao Zhang <hao_zhang_kdev@163.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ linux-mm@kvack.org
+References: <20260710071344.GA106129@zh-pc> <alDSekC_5t-29vJS@thinkstation>
+ <alEWEColDdwQboYX@192.168.1.215> <alEg6ZPc-ao7s6o6@thinkstation>
+ <DJXXKH4KOBVQ.2I9NU3EJL88HA@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <DJXXKH4KOBVQ.2I9NU3EJL88HA@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3BD54160003
-X-Stat-Signature: x18i5971yzn6f9pbs3yejxfm59oenkkt
-X-HE-Tag: 1783999181-170003
-X-HE-Meta: U2FsdGVkX1+QzyLZcn8yIE6OfHlQabqyPTMVOPyrBy0BQy70etKOpsC8KIiCKd0VVOVrmtwPHUq/eCbYwgNkO0EiUy/u9KaX6nws6uaDcvIo9YzEcyV+r0R9xiQ2tKd2qFyXqREvLjuMd40qWnItoLjDOYydFMgI5FrYcAQdxV5F1xOsEKnblK6j4yk21R3yirtw0FJZ9LbT4lCTmrpkMRnszjtFlmTvdQN1I8fJejmSyCI527CNEHbZsY7dA2xiefoMAZ5BYKP2ClRTe4LbB8TrEWdh7N0SoDSqOR4vI2kPy/RPmolX2TUBHhNrP4NWvwjfgIKkfyo0uTb69joSqlkpwrCWZu5GmuJKa1AbrT/FoKhfuAHkdUMDdvOZGgnD2A3kk60GRAIEIyLasBrB1r9QSTNWZhvNWc1yhplGLe0CwdFo90sEOwdX1/kWHyIGJ8gpqCPIzhS59uIdJbE14pb7qlHMY7nBLswFTNjqRzQlfXSpCor7Kz2DYX+ZH/2tTFF9w3/CPjxFCZfMZhcu54ug3G3/cObmXUgdPns5p9H37t6mHQus4SMHVqHE0dAcJmiI25Xu+ijB7GpmrK/petAMkkDCYFHC0tbK/MCo/sOgLaXFbAY0R8TRA3e/7lokeMCZVlFZVlD79oQCplqza+Av4zV5sIDeAzv4NXddgxNnNPTCto+B0sSc+9vP8kCOL3ho9r25d36OOtthsE9/T6Hh0VdMAvLQRGIpeJnaorgK0v8YtYaMvOvMbYUpkYeAOLRy3iBbnMZJkZVoKnOns7S7BABPIsDYmz0g2Zp+CjWPdtAiotNvibyDyRbZyOvVuKDbwE26/zv50Z5TWzk3Y9IT1Yi0vpgWZ3LrbOMPPfeTuUOIFjleZ8llTgrc0t83XCcO0mFMwkKQ0i3YJ1DdqanKAYPMfFMwtmMh2UJOciX3drxsrVQ8aQnUBaeNSlD8R+20YVogjNAxPKG+2N+
- WJuXnE7n
- vv2SGjT/pUdr0ZEEdJ2/HAutBB3AddPDuYKKSfpHF4xLtxRptM7kZzDecLHZjtSx1CScIPQhUyxV6BE+4isdPBBb/Ms6rmKn0Fdw0wLD6M839hgW6D6c7Innha0UKVhl7Ti+wIHIIFhAwbp3JcEi2uMXVGsH0HT1z9uca1NhHhoXCa0VbWUdszC1l+OY1ON5HxZeTQcHNRokHrzn2cwqv3h9biZG40GIkYh+8RL6Ndh4cBTrNuuOsbN+Mbg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 794BA100005
+X-Stat-Signature: dn1qtu3gfqh1yjg45hez7f1enj4497ob
+X-HE-Tag: 1784000663-512296
+X-HE-Meta: U2FsdGVkX18tXKk/XSNwmgVynSiwvtaSDAI2dKX7AXKm222d1xaz5FDl/bEVbIQB4ZhxeNdTQ0atSQZY/ZhBfSGV5qbgOplHUTYnW/9tfNMwkHKhWyk+OKZoNevO4Wn9LJ0QAqjJYtu79uYQpVc5BNbLcXEyGOLcM+rfhgzBhTRJqlS+mDrm76FN1r88P3dnPutcm1X+ru/Lz0cjSM9rBuIKuBRjULlHYvmlT8S0rnOXmRyqpooMRLwrJNqWJJfPx9/ZpjFYhEDi3w0VDbJQ/4lJBi38W7MA/0FzEwkxYNn139eiAk6HEToXhKnPQfLH7MlnovFqnMZUnOoMgllXGlb6TUAVEYIrf/scv9nhMYSE86r/Dd9V39c/BP9ZswxoNhZD682Q4nOTMIHA0yUU38I39hy8Z6koNDMciaMFT9SAO8+iGYSjzJTpPqmAdbIcTCBhVZ8QvFeIqAqbCY0E+ImPSZiItUjttv1Wzwokw8NgJU+FWFDNPijc5Qw3RXmOYSsxQXScB6o+74OVsEHEDqxyoQ2y/nnL3IFRaqwlnMY4w1nuuH5340Ksm7WRwu+iM5k6xIxdX5HT4bZ6R2l6aLD1DEzkmb+Dt9Ay2xvsANEn4UzQSJZxCJxG2d2/+ljTnaq01JwKCcMY14Ifr9VmF7fEf92tRM2+q2JWbSreHxBhiAKxqKjCOYaEiex18+l5RY6zxiilJxdwdhLc5FtcTgfF6/wRjD0qKLIzWvp7X+X/rz10hyrc8lTU7KeT5L/jCBP77IA28Ji/9n6LZOWH41KM1brYFqAxNtHsylqzabFRkvOKvzV2jH8RmRsATX12+nCSlOu5jnJawAxjiGNnVm51tMjOtK0bPCY+J7WW8owJBZD1kNWbohPIGCJjfoO4j11gO59UpTxRx8hKILW1IN/+qx6udNKXWRHle4J7w/I3PeLUgujVqqKfyfnXTJj+ovwAJ+NboE5jpRmnf3i
+ O4TzpaRV
+ 3DSMOIuhhGt5hV6mo+YA12A6kO97rFh5GKtLqqUH+XNKumtijXC1P0aqTPMlVQsR4RN5/6XD4kPUkmJ7Jri8m/io20gaUrcCW970InMODrJWqfEqzDVANnDid8WdxNB2QBYHwZGK5tcoxDwUNegsWQnGhjuuy6kYOnBXg89EjBlMNfi1fNhf8fGuY8UiZCvCj0UBuGkKTPUpxa4VQ14Mvv2vWCYR4bRCf9+ed3zGLCK3C1OKBJeAaiBnBbqvtmKEbPjPf7pb8u+AdxgxoJjImVzvz+NIxaDsJIZ7AZEiJqXMVtvyPy/cU/drsvp6pQkWxPDuYzoTi9w3FzfxlYSKN2JpU2JIjQNh9FVO5N1+IgoDPB/ieaVnmtIdKdRMcLX98kZDka5N9QNB0g1iEphfUQ4mAD7ELeue2EIehIWqRmeOH5VoCT7vBRIeKfvUCMHxDJHeQaaTnarSVhL91O9I2yK6Uo+QNwz2KI+DV2dNGIi7MYa4cQF53Aq6iQKc7w0GhLVDfphsuAy3XZ5CDlwR+auI/WgUSXgdcH8AfOWWN+dKaU2LDy3PqVC2Xog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,576 +90,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-The shmem unused huge shrinker keeps a per-superblock list of inodes whose
-tail huge folio extends beyond i_size. Since that list is not memcg aware,
-reclaim triggered by one memcg can scan inodes from the whole superblock
-and split shmem huge folios charged to unrelated memcgs.
 
-Convert the shrink list to a memcg-aware list_lru. Queue each inode on the
-list_lru sublist matching the memcg and node of the current tail huge
-folio, so non-root memcg reclaim only walks candidates charged to the
-reclaiming memcg. Global reclaim, root memcg reclaim and shmem quota
-reclaim keep global semantics.
+On 7/14/26 10:15 AM, Zi Yan wrote:
+> Removed owner-linux-mm@kvack.org from Cc.
+> 
+> On Fri Jul 10, 2026 at 1:17 PM EDT, Kiryl Shutsemau wrote:
+>> On Fri, Jul 10, 2026 at 11:56:00PM +0800, Hao Zhang wrote:
+>>> On Fri, Jul 10, 2026, Kiryl Shutsemau wrote:
+>>>> On Fri, Jul 10, 2026 at 03:13:44PM +0800, Hao Zhang wrote:
+>>>>> From: Hao Zhang <zhanghao1@kylinos.cn>
+>>>>> Date: Thu, 9 Jul 2026 16:30:00 +0800
+>>>>>
+>>>>> __folio_split() takes mapping->i_mmap_rwsem while unmapping and
+>>>>> splitting a file-backed large folio. The lock is currently released
+>>>>> only after the split folios that are not returned locked to the caller
+>>>>> have been unlocked and put.
+>>>>>
+>>>>> That leaves a lifetime hole. Once the split folios are unlocked and
+>>>>> their references are dropped, inode eviction can make progress through
+>>>>> the final page-cache truncation path. After the folios are removed from
+>>>>> the page cache and the last inode reference is dropped, the inode that
+>>>>> embeds the address_space can be freed after an RCU grace period. A later
+>>>>> i_mmap_unlock_read(mapping) then dereferences mapping->i_mmap_rwsem
+>>>>> from freed memory.
+>>>>>
+>>>>> A possible race is:
+>>>>>
+>>>>>    CPU0                                    CPU1
+>>>>>    __folio_split()
+>>>>>      i_mmap_lock_read(mapping)
+>>>>>      ...
+>>>>>      remap_page()
+>>>>>      folio_unlock(new_folio)
+>>>>>      free_folio_and_swap_cache(new_folio)
+>>>>>                                            evict inode
+>>>>>                                            truncate_inode_pages_final()
+>>>>>                                            destroy_inode()
+>>>>>                                            call_rcu()
+>>>>>                                            RCU callback frees inode
+>>>>>      i_mmap_unlock_read(mapping)
+>>>>>
+>>>>> Release mapping->i_mmap_rwsem after the page-cache and reverse-mapping
+>>>>> work has completed, but before unlocking and putting any of the split
+>>>>> folios. Clear the local mapping pointer after the early unlock so the
+>>>>> common exit path does not unlock it a second time.
+>>>>
+>>>> I don't buy this analysis. We still have the lock_at page which is locked
+>>>> and still in the page cache. Inode eviction cannot complete past
+>>>> truncate_inode_pages_final() until it is unlocked, which only happens
+>>>> after __folio_split() has released i_mmap_rwsem.
+>>>>
+>>>> One possible path how this can be hit is if lock_at ends up in an
+>>>> after-split folio beyond EOF and __folio_freeze_and_split_unmapped()
+>>>> removes it from the page cache. Note the drop loop starts at
+>>>> folio_next(folio), so this requires splitting at a tail page (e.g.
+>>>> memory-failure) racing with truncate.
+>>>>
+>>>> But that's not what your analysis claims. Please share the actual crash
+>>>> reports. Let's get to the bottom of the situation before changing the
+>>>> code.
+>>>>
+>>>> -- 
+>>>>    Kiryl Shutsemau / Kirill A. Shutemov
+>>>>
+>>>
+>>> Memory failure: 0x5a6a7: recovery action for clean LRU page: Recovered
+>>> Injecting memory failure for pfn 0x81bfe at process virtual address 0x200000ffe000
+>>> ==================================================================
+>>> BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790 data/linux/kernel/locking/rwsem.c:1353
+>>> Read of size 8 at addr ffff88800b81c5e8 by task syz.2.11034/45874
+>>>
+>>> CPU: 0 UID: 0 PID: 45874 Comm: syz.2.11034 Not tainted 7.0.0-rc3base+ #62 PREEMPT(full)
+>>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+>>> Call Trace:
+>>>   <TASK>
+>>>   __dump_stack data/linux/lib/dump_stack.c:94 [inline]
+>>>   dump_stack_lvl+0xbe/0x130 data/linux/lib/dump_stack.c:120
+>>>   print_address_description data/linux/mm/kasan/report.c:378 [inline]
+>>>   print_report+0xd1/0x660 data/linux/mm/kasan/report.c:482
+>>>   kasan_report+0xec/0x130 data/linux/mm/kasan/report.c:595
+>>>   __asan_report_load8_noabort+0x14/0x30 data/linux/mm/kasan/report_generic.c:381
+>>>   __up_read+0x634/0x790 data/linux/kernel/locking/rwsem.c:1353
+>>>   up_read+0x22/0x30 data/linux/kernel/locking/rwsem.c:1633
+>>>   i_mmap_unlock_read data/linux/include/linux/fs.h:537 [inline]
+>>>   __folio_split+0x732/0x1640 data/linux/mm/huge_memory.c:4100
+>>>   __split_huge_page_to_list_to_order+0x7b/0x140 data/linux/mm/huge_memory.c:4203
+>>>   split_huge_page_to_list_to_order data/linux/include/linux/huge_mm.h:385 [inline]
+>>>   split_huge_page_to_order data/linux/include/linux/huge_mm.h:389 [inline]
+>>>   try_to_split_thp_page+0xab/0x390 data/linux/mm/memory-failure.c:1675
+>>>   memory_failure+0x1394/0x26e0 data/linux/mm/memory-failure.c:2470
+>>>   madvise_inject_error data/linux/mm/madvise.c:1487 [inline]
+>>>   madvise_do_behavior+0x4ae/0x8a0 data/linux/mm/madvise.c:1925
+>>>   do_madvise+0x162/0x230 data/linux/mm/madvise.c:2028
+>>>   __do_sys_madvise data/linux/mm/madvise.c:2037 [inline]
+>>>   __se_sys_madvise data/linux/mm/madvise.c:2035 [inline]
+>>>   __x64_sys_madvise+0xae/0x120 data/linux/mm/madvise.c:2035
+>>>   x64_sys_call+0x1bed/0x25e0 data/linux/arch/x86/include/generated/asm/syscalls_64.h:29
+>>>   do_syscall_x64 data/linux/arch/x86/entry/syscall_64.c:63 [inline]
+>>>   do_syscall_64+0xe2/0x14e0 data/linux/arch/x86/entry/syscall_64.c:94
+>>>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>>
+>> ...
+>>
+>>> Memory failure: 0x81bfe: recovery action for already truncated LRU page: Ignored
+>>
+>> This log line confirms my suspicion.
+>>
+>> The UAF fires at i_mmap_unlock_read() while try_to_split_thp_page()
+>> still holds the poisoned page locked. For the inode to be freed at that
+>> point, eviction must have completed truncation, which is impossible
+>> while a locked folio remains in the page cache. So the after-split folio
+>> containing lock_at was no longer in the page cache — and the only way to
+>> remove a locked folio is the split itself: the new_folio->index >= end
+>> drop in __folio_freeze_and_split_unmapped(). It requires lock_at to be a
+>> tail page, which is what memory-failure passes.
+>>
+>>          CPU0                                    CPU1
+>>    i_mmap_lock_read(mapping)
+>>    __folio_freeze_and_split_unmapped()
+>>      __filemap_remove_folio(lock_at)   <-- beyond EOF: leaves cache, stays LOCKED
+>>
+>>    /* no locked folio pins the inode */
+>>                                          evict()
+>>                                            truncate_inode_pages_final()  /* nothing to block on */
+>>                                            call_rcu() -> free inode
+>>
+>>    i_mmap_unlock_read(mapping)          <-- UAF: rwsem in freed inode
+>>
+>> Your fix moves i_mmap_unlock_read() out of the window, but I don't think
+>> it is complete: shmem_uncharge(mapping->host) a few lines up also touches
+>> the inode, and its nr_shmem_dropped guard is exactly the beyond-EOF drop
+>> that triggers this. So it is in the same freed window; the patch just
+>> relocates the one dereference KASAN caught.
+> 
+> I was discussing this issue with Codex after I saw Kriyl's patch and the
+> iput() issue raised by Sashiko[1]. Hao's patch might be still valid for
+> shmem_uncharge(), since all after-split folios are locked at
+> shmem_uncharge() and prevents inode from going away. So the rule is no
+> mapping/inode dereferences after the after-split folios unlock loop
+> begins.
+> 
+> But let me know if I miss anything. Thanks.
+> [1]
+> https://sashiko.dev/#/patchset/20260713170915.239819-1-kirill@shutemov.name
 
-The list_lru still tracks inodes while the actual split target is the
-current tail huge folio, so validate the folio memcg/node during scan. If
-the folio no longer matches the reclaim context or splitting cannot
-proceed, requeue the inode according to the current tail folio; if the
-inode is no longer shrinkable, drop the scan entry.
-
-This can be tested with the shrinker debugfs interface by allocating 32
-tmpfs tail THPs in each of two memcgs, then scanning the sb-tmpfs shrinker
-with memcg A's cgroup id:
-
-               before A scan        after A scan
-  base         A=64M, B=64M         A=0,  B=0
-  patched      A=64M, B=64M         A=0,  B=64M
-
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
----
-This patch is based on next-20260701 because it doesn't include this patch:
-
-https://lore.kernel.org/all/20260609123047.1948242-1-usama.arif@linux.dev/
-
-Later on, Usama will consider moving this restriction down into the fs callback.
-
- include/linux/shmem_fs.h |  14 +-
- mm/shmem.c               | 379 ++++++++++++++++++++++++++++++---------
- 2 files changed, 310 insertions(+), 83 deletions(-)
-
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index e729b9b0e38d4..0b14de1e890a9 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -11,6 +11,7 @@
- #include <linux/fs_parser.h>
- #include <linux/userfaultfd_k.h>
- #include <linux/bits.h>
-+#include <linux/list_lru.h>
- 
- struct swap_iocb;
- 
-@@ -56,6 +57,13 @@ struct shmem_inode_info {
- 	struct dquot __rcu	*i_dquot[MAXQUOTAS];
- #endif
- 	struct inode		vfs_inode;
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	struct list_head	shrinklist_scan;
-+	struct mem_cgroup	*shrinklist_memcg;
-+	int			shrinklist_nid;
-+	bool			shrinklist_isolated;
-+#endif
- };
- 
- #define SHMEM_FL_USER_VISIBLE		(FS_FL_USER_VISIBLE | FS_CASEFOLD_FL)
-@@ -85,9 +93,9 @@ struct shmem_sb_info {
- 	ino_t next_ino;		    /* The next per-sb inode number to use */
- 	ino_t __percpu *ino_batch;  /* The next per-cpu inode number to use */
- 	struct mempolicy *mpol;     /* default memory policy for mappings */
--	spinlock_t shrinklist_lock;   /* Protects shrinklist */
--	struct list_head shrinklist;  /* List of shinkable inodes */
--	unsigned long shrinklist_len; /* Length of shrinklist */
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	struct list_lru shrinklist; /* List of shrinkable inodes */
-+#endif
- 	struct shmem_quota_limits qlimits; /* Default quota limits */
- 	struct simple_xattr_cache xa_cache;
- };
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b06c1ae2f50c3..a17150e6107c6 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -724,50 +724,252 @@ static const char *shmem_format_huge(int huge)
- }
- #endif
- 
-+static inline struct mem_cgroup *shmem_get_and_clear_memcg(struct shmem_inode_info *info)
-+{
-+	struct mem_cgroup *memcg = info->shrinklist_memcg;
-+
-+	info->shrinklist_memcg = NULL;
-+	info->shrinklist_nid = -1;
-+
-+	return memcg;
-+}
-+
-+#ifdef CONFIG_MEMCG
-+static struct mem_cgroup *
-+shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
-+			    gfp_t gfp)
-+{
-+	struct mem_cgroup *memcg;
-+	int ret;
-+
-+	memcg = get_mem_cgroup_from_folio(folio);
-+	if (!memcg)
-+		return NULL;
-+
-+	ret = memcg_list_lru_alloc(memcg, &sbinfo->shrinklist, gfp);
-+	if (ret) {
-+		mem_cgroup_put(memcg);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return memcg;
-+}
-+#else
-+static struct mem_cgroup *
-+shmem_unused_huge_alloc_lru(struct shmem_sb_info *sbinfo, struct folio *folio,
-+			    gfp_t gfp)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+static void shmem_unused_huge_add(struct inode *inode, struct folio *folio,
-+				  gfp_t gfp)
-+{
-+	struct shmem_inode_info *info = SHMEM_I(inode);
-+	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
-+	int nid = folio_nid(folio);
-+	struct mem_cgroup *memcg = NULL, *old_memcg = NULL;
-+
-+	memcg = shmem_unused_huge_alloc_lru(sbinfo, folio, gfp);
-+	if (IS_ERR(memcg))
-+		return;
-+
-+	spin_lock(&info->lock);
-+	if (!list_empty(&info->shrinklist)) {
-+		if (info->shrinklist_nid == nid &&
-+		    info->shrinklist_memcg == memcg)
-+			goto unlock;
-+
-+		list_lru_del(&sbinfo->shrinklist, &info->shrinklist,
-+			     info->shrinklist_nid, info->shrinklist_memcg);
-+		old_memcg = shmem_get_and_clear_memcg(info);
-+	}
-+
-+	list_lru_add(&sbinfo->shrinklist, &info->shrinklist, nid, memcg);
-+	info->shrinklist_memcg = memcg;
-+	info->shrinklist_nid = nid;
-+	memcg = NULL;
-+unlock:
-+	spin_unlock(&info->lock);
-+	mem_cgroup_put(old_memcg);
-+	mem_cgroup_put(memcg);
-+}
-+
-+static void shmem_unused_huge_del(struct inode *inode)
-+{
-+	struct shmem_inode_info *info = SHMEM_I(inode);
-+	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
-+	struct mem_cgroup *memcg = NULL;
-+
-+	spin_lock(&info->lock);
-+	if (!list_empty(&info->shrinklist)) {
-+		list_lru_del(&sbinfo->shrinklist, &info->shrinklist,
-+			     info->shrinklist_nid, info->shrinklist_memcg);
-+		memcg = shmem_get_and_clear_memcg(info);
-+	}
-+	spin_unlock(&info->lock);
-+
-+	mem_cgroup_put(memcg);
-+}
-+
-+struct shmem_unused_huge_scan {
-+	struct list_head list;
-+	struct shrink_control *sc;
-+};
-+
-+static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
-+						 struct list_lru_one *lru,
-+						 void *arg)
-+{
-+	struct shmem_unused_huge_scan *scan = arg;
-+	struct shmem_inode_info *info;
-+	struct inode *inode;
-+	struct mem_cgroup *memcg = NULL;
-+
-+	info = list_entry(item, struct shmem_inode_info, shrinklist);
-+	if (!spin_trylock(&info->lock))
-+		return LRU_SKIP;
-+
-+	if (info->shrinklist_isolated) {
-+		spin_unlock(&info->lock);
-+		return LRU_SKIP;
-+	}
-+
-+	inode = igrab(&info->vfs_inode);
-+	if (!inode) {
-+		/*
-+		 * This inode is being evicted, just drop its stale active LRU
-+		 * entry.
-+		 */
-+		list_lru_isolate(lru, item);
-+		memcg = shmem_get_and_clear_memcg(info);
-+		spin_unlock(&info->lock);
-+		mem_cgroup_put(memcg);
-+		return LRU_REMOVED;
-+	}
-+
-+	info->shrinklist_isolated = true;
-+	list_lru_isolate(lru, item);
-+	memcg = shmem_get_and_clear_memcg(info);
-+	list_add_tail(&info->shrinklist_scan, &scan->list);
-+	spin_unlock(&info->lock);
-+	mem_cgroup_put(memcg);
-+
-+	return LRU_REMOVED;
-+}
-+
-+static bool is_shmem_unused_huge_readded(struct inode *inode)
-+{
-+	struct shmem_inode_info *info = SHMEM_I(inode);
-+	bool readded;
-+
-+	spin_lock(&info->lock);
-+	readded = info->shrinklist_isolated && !list_empty(&info->shrinklist);
-+	spin_unlock(&info->lock);
-+
-+	return readded;
-+}
-+
-+static bool is_shmem_unused_huge_match(struct folio *folio,
-+				       struct shrink_control *sc)
-+{
-+	struct mem_cgroup *memcg = NULL;
-+	bool match;
-+
-+	/*
-+	 * Only non-root memcg reclaim needs to match the folio charge against
-+	 * sc->memcg. Skip the folio memcg check for the following cases:
-+	 * 1. shmem quota reclaim (sc == NULL)
-+	 * 2. global shrinker reclaim
-+	 * 3. root memcg reclaim
-+	 */
-+	if (!sc || !sc->memcg || mem_cgroup_is_root(sc->memcg))
-+		return true;
-+
-+	if (folio_nid(folio) != sc->nid)
-+		return false;
-+
-+	memcg = get_mem_cgroup_from_folio(folio);
-+	match = memcg == sc->memcg;
-+	mem_cgroup_put(memcg);
-+
-+	return match;
-+}
-+
-+static void shmem_unused_huge_drop(struct inode *inode)
-+{
-+	struct shmem_inode_info *info = SHMEM_I(inode);
-+
-+	spin_lock(&info->lock);
-+	list_del_init(&info->shrinklist_scan);
-+	info->shrinklist_isolated = false;
-+	spin_unlock(&info->lock);
-+}
-+
-+static void shmem_unused_huge_requeue(struct inode *inode, struct folio *folio)
-+{
-+	struct shmem_inode_info *info = SHMEM_I(inode);
-+	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
-+	struct mem_cgroup *memcg;
-+	int nid = folio_nid(folio);
-+
-+	memcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
-+	if (IS_ERR(memcg))
-+		goto drop;
-+
-+	spin_lock(&info->lock);
-+	if (!info->shrinklist_isolated)
-+		goto unlock;
-+
-+	list_del_init(&info->shrinklist_scan);
-+	info->shrinklist_isolated = false;
-+	if (!list_empty(&info->shrinklist))
-+		goto unlock;
-+
-+	list_lru_add(&sbinfo->shrinklist, &info->shrinklist, nid, memcg);
-+	info->shrinklist_memcg = memcg;
-+	info->shrinklist_nid = nid;
-+	memcg = NULL;
-+
-+unlock:
-+	spin_unlock(&info->lock);
-+	mem_cgroup_put(memcg);
-+	return;
-+
-+drop:
-+	shmem_unused_huge_drop(inode);
-+}
-+
- static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
- 		struct shrink_control *sc, unsigned long nr_to_free)
- {
--	LIST_HEAD(list), *pos, *next;
-+	struct shmem_unused_huge_scan scan;
- 	struct inode *inode;
- 	struct shmem_inode_info *info;
- 	struct folio *folio;
--	unsigned long batch = sc ? sc->nr_to_scan : 128;
-+	struct list_head *pos, *next;
- 	unsigned long split = 0, freed = 0;
- 
--	if (list_empty(&sbinfo->shrinklist))
--		return SHRINK_STOP;
--
--	spin_lock(&sbinfo->shrinklist_lock);
--	list_for_each_safe(pos, next, &sbinfo->shrinklist) {
--		info = list_entry(pos, struct shmem_inode_info, shrinklist);
--
--		/* pin the inode */
--		inode = igrab(&info->vfs_inode);
--
--		/* inode is about to be evicted */
--		if (!inode) {
--			list_del_init(&info->shrinklist);
--			goto next;
--		}
--
--		list_move(&info->shrinklist, &list);
--next:
--		sbinfo->shrinklist_len--;
--		if (!--batch)
--			break;
--	}
--	spin_unlock(&sbinfo->shrinklist_lock);
-+	INIT_LIST_HEAD(&scan.list);
-+	scan.sc = sc;
-+	if (sc)
-+		list_lru_shrink_walk(&sbinfo->shrinklist, sc,
-+				     shmem_unused_huge_isolate, &scan);
-+	else
-+		list_lru_walk(&sbinfo->shrinklist, shmem_unused_huge_isolate,
-+			      &scan, 128);
- 
--	list_for_each_safe(pos, next, &list) {
-+	list_for_each_safe(pos, next, &scan.list) {
- 		pgoff_t next, end;
- 		loff_t i_size;
- 		int ret;
- 
--		info = list_entry(pos, struct shmem_inode_info, shrinklist);
-+		info = list_entry(pos, struct shmem_inode_info, shrinklist_scan);
- 		inode = &info->vfs_inode;
- 
--		if (nr_to_free && freed >= nr_to_free)
--			goto move_back;
-+		if (is_shmem_unused_huge_readded(inode))
-+			goto drop;
- 
- 		i_size = i_size_read(inode);
- 		folio = filemap_get_entry(inode->i_mapping, i_size / PAGE_SIZE);
-@@ -788,6 +990,18 @@ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
- 			goto drop;
- 		}
- 
-+		if (!is_shmem_unused_huge_match(folio, scan.sc)) {
-+			shmem_unused_huge_requeue(inode, folio);
-+			folio_put(folio);
-+			goto put;
-+		}
-+
-+		if (nr_to_free && freed >= nr_to_free) {
-+			shmem_unused_huge_requeue(inode, folio);
-+			folio_put(folio);
-+			goto put;
-+		}
-+
- 		/*
- 		 * Move the inode on the list back to shrinklist if we failed
- 		 * to lock the page at this time.
-@@ -796,34 +1010,39 @@ static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
- 		 * reclaim path.
- 		 */
- 		if (!folio_trylock(folio)) {
-+			shmem_unused_huge_requeue(inode, folio);
- 			folio_put(folio);
--			goto move_back;
-+			goto put;
-+		}
-+
-+		if (is_shmem_unused_huge_readded(inode)) {
-+			folio_unlock(folio);
-+			folio_put(folio);
-+			goto drop;
-+		}
-+
-+		if (!is_shmem_unused_huge_match(folio, scan.sc)) {
-+			folio_unlock(folio);
-+			shmem_unused_huge_requeue(inode, folio);
-+			folio_put(folio);
-+			goto put;
- 		}
- 
- 		ret = split_folio(folio);
- 		folio_unlock(folio);
--		folio_put(folio);
- 
- 		/* If split failed move the inode on the list back to shrinklist */
--		if (ret)
--			goto move_back;
-+		if (ret) {
-+			shmem_unused_huge_requeue(inode, folio);
-+			folio_put(folio);
-+			goto put;
-+		}
- 
- 		freed += next - end;
- 		split++;
-+		folio_put(folio);
- drop:
--		list_del_init(&info->shrinklist);
--		goto put;
--move_back:
--		/*
--		 * Make sure the inode is either on the global list or deleted
--		 * from any local list before iput() since it could be deleted
--		 * in another thread once we put the inode (then the local list
--		 * is corrupted).
--		 */
--		spin_lock(&sbinfo->shrinklist_lock);
--		list_move(&info->shrinklist, &sbinfo->shrinklist);
--		sbinfo->shrinklist_len++;
--		spin_unlock(&sbinfo->shrinklist_lock);
-+		shmem_unused_huge_drop(inode);
- put:
- 		iput(inode);
- 	}
-@@ -836,7 +1055,7 @@ static long shmem_unused_huge_scan(struct super_block *sb,
- {
- 	struct shmem_sb_info *sbinfo = SHMEM_SB(sb);
- 
--	if (!READ_ONCE(sbinfo->shrinklist_len))
-+	if (!list_lru_shrink_count(&sbinfo->shrinklist, sc))
- 		return SHRINK_STOP;
- 
- 	return shmem_unused_huge_shrink(sbinfo, sc, 0);
-@@ -846,12 +1065,22 @@ static long shmem_unused_huge_count(struct super_block *sb,
- 		struct shrink_control *sc)
- {
- 	struct shmem_sb_info *sbinfo = SHMEM_SB(sb);
--	return READ_ONCE(sbinfo->shrinklist_len);
-+
-+	return list_lru_shrink_count(&sbinfo->shrinklist, sc);
- }
- #else /* !CONFIG_TRANSPARENT_HUGEPAGE */
- 
- #define shmem_huge SHMEM_HUGE_DENY
- 
-+static void shmem_unused_huge_add(struct inode *inode, struct folio *folio,
-+				  gfp_t gfp)
-+{
-+}
-+
-+static void shmem_unused_huge_del(struct inode *inode)
-+{
-+}
-+
- static unsigned long shmem_unused_huge_shrink(struct shmem_sb_info *sbinfo,
- 		struct shrink_control *sc, unsigned long nr_to_free)
- {
-@@ -1405,14 +1634,7 @@ static void shmem_evict_inode(struct inode *inode)
- 		inode->i_size = 0;
- 		mapping_set_exiting(inode->i_mapping);
- 		shmem_truncate_range(inode, 0, (loff_t)-1);
--		if (!list_empty(&info->shrinklist)) {
--			spin_lock(&sbinfo->shrinklist_lock);
--			if (!list_empty(&info->shrinklist)) {
--				list_del_init(&info->shrinklist);
--				sbinfo->shrinklist_len--;
--			}
--			spin_unlock(&sbinfo->shrinklist_lock);
--		}
-+		shmem_unused_huge_del(inode);
- 		while (!list_empty(&info->swaplist)) {
- 			/* Wait while shmem_unuse() is scanning this inode... */
- 			wait_var_event(&info->stop_eviction,
-@@ -2510,28 +2732,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 
- alloced:
- 	alloced = true;
--	if (folio_test_large(folio) &&
--	    DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE) <
--					folio_next_index(folio)) {
--		struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
--		struct shmem_inode_info *info = SHMEM_I(inode);
--		/*
--		 * Part of the large folio is beyond i_size: subject
--		 * to shrink under memory pressure.
--		 */
--		spin_lock(&sbinfo->shrinklist_lock);
--		/*
--		 * _careful to defend against unlocked access to
--		 * ->shrink_list in shmem_unused_huge_shrink()
--		 */
--		if (list_empty_careful(&info->shrinklist)) {
--			list_add_tail(&info->shrinklist,
--				      &sbinfo->shrinklist);
--			sbinfo->shrinklist_len++;
--		}
--		spin_unlock(&sbinfo->shrinklist_lock);
--	}
--
- 	if (sgp == SGP_WRITE)
- 		folio_set_referenced(folio);
- 	/*
-@@ -2560,6 +2760,15 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 		error = -EINVAL;
- 		goto unlock;
- 	}
-+
-+	if (alloced && folio_test_large(folio) &&
-+	    DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE) < folio_next_index(folio)) {
-+		/*
-+		 * Part of the large folio is beyond i_size: subject
-+		 * to shrink under memory pressure.
-+		 */
-+		shmem_unused_huge_add(inode, folio, gfp);
-+	}
- out:
- 	*foliop = folio;
- 	return 0;
-@@ -3036,6 +3245,10 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
- 	if (info->fsflags)
- 		shmem_set_inode_flags(inode, info->fsflags, NULL);
- 	INIT_LIST_HEAD(&info->shrinklist);
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	INIT_LIST_HEAD(&info->shrinklist_scan);
-+	info->shrinklist_nid = -1;
-+#endif
- 	INIT_LIST_HEAD(&info->swaplist);
- 	cache_no_acl(inode);
- 	if (sbinfo->noswap)
-@@ -4902,6 +5115,9 @@ static void shmem_put_super(struct super_block *sb)
- #endif
- 	free_percpu(sbinfo->ino_batch);
- 	percpu_counter_destroy(&sbinfo->used_blocks);
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	list_lru_destroy(&sbinfo->shrinklist);
-+#endif
- 	mpol_put(sbinfo->mpol);
- #ifdef CONFIG_TMPFS_XATTR
- 	simple_xattr_cache_cleanup(&sbinfo->xa_cache);
-@@ -4995,8 +5211,11 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
- 	raw_spin_lock_init(&sbinfo->stat_lock);
- 	if (percpu_counter_init(&sbinfo->used_blocks, 0, GFP_KERNEL))
- 		goto failed;
--	spin_lock_init(&sbinfo->shrinklist_lock);
--	INIT_LIST_HEAD(&sbinfo->shrinklist);
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	if (list_lru_init_memcg(&sbinfo->shrinklist, sb->s_shrink))
-+		goto failed;
-+#endif
- 
- 	sb->s_maxbytes = MAX_LFS_FILESIZE;
- 	sb->s_blocksize = PAGE_SIZE;
--- 
-2.54.0
-
+After reading the analysis, I agree with you. Hao's fix looks simple and 
+effective, unless I've also missed anything. :)
 
