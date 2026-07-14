@@ -4,137 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF7D8C44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:28:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FE47C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:34:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A9ED6B008C; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
+	id 339DA6B0092; Tue, 14 Jul 2026 09:34:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85A146B0092; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
+	id 2EA376B0096; Tue, 14 Jul 2026 09:34:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74BB16B0098; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
+	id 1B4F86B0099; Tue, 14 Jul 2026 09:34:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F13C6B008C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B98FF160354
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:28:24 +0000 (UTC)
-X-FDA: 84987461328.08.D668088
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0097E180002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:28:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lP3K0krZ;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E32896B0092
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:34:57 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71269140343
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:34:57 +0000 (UTC)
+X-FDA: 84987477834.25.BFEB9B2
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8C89FC0003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:34:55 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=P1uSVwJ2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784035703;
+	s=arc-20220608; t=1784036095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h4NWkOyTUgNN9NiCMlPZ/SA4EFAV9liu5YT3JftznMo=;
-	b=Z1/GH/LQ3AfbHAApMFI83LIyHn/wW3g64NkZfFq5IOGJtH7APmQtLbRIV7JFqC2as2xA/4
-	eF1y5Hk9Oh05ufuhYZjzBKLvMbLfSnH6taHe6Z6Cq95wanduCMMHtlWbH5QvamPphBnipB
-	i6HO8kefYc4NE89tJqQSuA8YCqsDHbQ=
+	bh=+1tfMkiBqW2Fu1p0sa+0Qy+YQWqKnxqq1+cNEQovCl0=;
+	b=b0fagvZFnn3uQokARQ84k/Bz1lA/pzumQUg/EXmaxvgH0xq7T4ZpFyLD0UXCncx8PILLjH
+	QtPvwmduZpffil4fLsq4xjGMOdqYJcWs85fuech/vFte9ku8XSaGQEarYiHAegYHqTUPXf
+	fKNvNX/T0qDe0GKggUn2WrjI6dWdrH8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lP3K0krZ;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=P1uSVwJ2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784035703;
-	b=mdUaVsejlxhBXcmzoAO6hvGqvNoDVA9IBb/or2iYaBoZ/DoQKrIUCbZSxxvpXTZNBY685k
-	AQPYjrs+AcVfODN+FyjayceQl/7msr3tweINIK1i9/fR/jHODWLLioD5Fui7aGej+1CtB5
-	LjwJWYZM3L7m33N28B76uHiQE1gfO0Y=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8279C601ED;
-	Tue, 14 Jul 2026 13:28:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1024E1F00A3E;
-	Tue, 14 Jul 2026 13:28:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784035702;
-	bh=h4NWkOyTUgNN9NiCMlPZ/SA4EFAV9liu5YT3JftznMo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lP3K0krZT7KuUIMbksx4cF6z3GlkKoEdsdZDCpLRlfuPTtfjcJHQYfY61LjbX+RFn
-	 xsAzCWDSz7j3EDx5rjpzm9GAO081oPgUCEamq2oJ1LbuU78hMhuxIxIzzRB5vv0Gga
-	 NfOu2mEqX8yh7AVtG7nYGDLo/x5AtUoi8sSPSdhsJuQHjXAOLn8ZKHYGB1hUWaZwKV
-	 g/BsgXqyoXSGTPQWgEpJlG7IFDVA0zCK0AHmYJGTIWWYPsKM6dDisFp1KHxkXJXIEZ
-	 KZzOjSkeivHRrO22IckyIwmLZC2oB/e0D4dV9ZuIV9HmhzGx5Kl/Fl7+BcLduZpwZc
-	 rQrbmaGQiAyUQ==
-Message-ID: <51bc272e-53ae-449c-9ac1-bdac2775e47e@kernel.org>
-Date: Tue, 14 Jul 2026 15:28:18 +0200
+	t=1784036095;
+	b=rcJZBKcVado062QZeJtq6KBcGbrTyDwNedytL2RoUPi3uNvNRyVjoL2OKhiz138JlDbIs9
+	40LI7i5NqOEOl8KiDaIx4OR43MOGzX8WOpiBDfUQUEXFNRon3aKzaiKi0OOj8pFBzWjTai
+	KNwUCyfki9OZkGfBpmUF9zEuvxl/nSk=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47d70879764so2812192f8f.2
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:34:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784036094; x=1784640894; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+1tfMkiBqW2Fu1p0sa+0Qy+YQWqKnxqq1+cNEQovCl0=;
+        b=P1uSVwJ2aHQnat5Jmg7GQvKLEQT2cI97gBc0SaCI8eRDmjFnPIbpj4kYdXgZbcPGoC
+         IdbBV3M7Z85fkVIgqALF/CDCdpML3jTCqSFuecjk5nE33EhEeJtg09eA5iHSGHLHH2rn
+         sxDB2OOvRP6gy4e5YX2ikMaPTj8HWRW0KKoqExCUenMwTMedl7K/0Q2KgemErVFHcmSv
+         P1zQQdd7i8CP3cNJ0qg7c8pJV94tIxdnPe/YMIKpbkedilqi26lr6P8nW7feoymklcx8
+         5+7XAX6r4cYxskjW9Abnus+c98OlOp/y5zVOCt8VVH9VuIZF2iX9Q4sIJ74nwBtfmGnC
+         XWBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784036094; x=1784640894;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+1tfMkiBqW2Fu1p0sa+0Qy+YQWqKnxqq1+cNEQovCl0=;
+        b=ga9SvZMDqcYU3EfjuFr1ouHb6AHNnoYIIsFknXEG19CH+egGAACGpWFHgrCx14/wup
+         NvAACnY2YErEzbN6cg6Fx1b/uhoh9O2mskFKAgDnMY3ynjgZ6b0tqrKVoxYw2hMLHfJR
+         jj+lu1YG7x5nlnUfpKpUGJ6MwwPQYTvyymHepsrgu/zgsZsL4u9mXe0aO3LvCZvhmrev
+         YsI90ea+0EfWruAe8+yj1RwujxQORoyEjMQc83dP8Zr0oaM7XNB3Z1sH5nOSrNcXKpze
+         gNGL489EHVgLgk6Fi5gZ9iXeBhhTWequd+17EDcQEDts4W2hCsiYx9XqJAzAKJmtpjTV
+         IqoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro/mRuvfHz2u5nMT9g1rU4cvDcZfrXGT7/PgpY3nnBwEy/jygLWztrPOgZxNdGC1a63T87OkYixSQ==@kvack.org
+X-Gm-Message-State: AOJu0YwqhP4Um1rPLwACNcL1gvBNgdUo/FJocNTN1XoqXN9woVMl2X4/
+	05n9LC7VaReny3v7R79Nrh0C6h9vmipb+mSM5nGNpTzim3q+AmZ6MbLr
+X-Gm-Gg: AfdE7cnXFny/F/YZyugGSeA4hi4F5PaeKmUOa6QzRiPKTQoRFnm0jrXhwyRciXpF4Xy
+	RTJ07oPNzMCLrr9/PQ7gaLSFlo/a6wG4h8nvcojGy8tHtGsUYFBU3BsoG6bN0DQL+3kARLp0ve9
+	lJ2v/IdE48USzyx1CBC+acou3+8EhmpBJO/TRucRkp0GJtDSUXJTKdF3BT6Zkm6USTp7ACo3T6t
+	FWzoud1jx1h3P2ooLQZcTHx1qU0c2BYBYmUTtlRozMvXw10iXsmcQElGYCBJYnUC0nmArUdw4yY
+	PAq41n26nllOQvlogpigcxZLBN0K6zGyUhO0lWkTxQu6fEUCRfBYS1I9+WAd9GaDA2IQp35b406
+	/xODXCwoFmn966YDJCQm/yz0IRsTDcfHEr5MUp86eb4qHrTSvBApvHQKGwCTfjqYzw5x5xp9fZa
+	dNfK7isxLWa6zLwzyoGPoMD0BaxfhI0UNGOqZkbVE0sRj9XgKga7h1qpIAH4Hm
+X-Received: by 2002:a05:6000:26c7:b0:47d:f441:5f93 with SMTP id ffacd0b85a97d-47f2dcc02eemr15207624f8f.25.1784036093714;
+        Tue, 14 Jul 2026 06:34:53 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635a63esm8687695f8f.9.2026.07.14.06.34.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 06:34:52 -0700 (PDT)
+Date: Tue, 14 Jul 2026 14:34:50 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Pedro Falcato" <pfalcato@suse.de>, "Yeoreum Yun" <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org, Linux-Arch
+ <linux-arch@vger.kernel.org>, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+ kasan-dev@googlegroups.com, "linux-csky@vger.kernel.org"
+ <linux-csky@vger.kernel.org>, linux-m68k@lists.linux-m68k.org,
+ "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, "David
+ Hildenbrand (Red Hat)" <david@kernel.org>, "Russell King"
+ <linux@armlinux.org.uk>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>, "Mike Rapoport"
+ <rppt@kernel.org>, "Magnus Lindholm" <linmag7@gmail.com>, "Christophe
+ Leroy" <chleroy@kernel.org>, "Klara Modin" <klarasmodin@gmail.com>, "Huacai
+ Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>, "Kirill
+ A. Shutemov" <kas@kernel.org>, zhangtianyang@loongson.cn, wangyuli@aosc.io,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Ryan Roberts"
+ <ryan.roberts@arm.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+ "Rohan McLure" <rmclure@linux.ibm.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Tejun Heo" <tj@kernel.org>, "Kevin
+ Brodsky" <kevin.brodsky@arm.com>, "Anup Patel" <anup@brainfault.org>,
+ atish.patra@linux.dev, "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt"
+ <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre
+ Ghiti" <alex@ghiti.fr>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Andy
+ Lutomirski" <luto@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>,
+ qi.zheng@linux.dev, "Shakeel Butt" <shakeel.butt@linux.dev>, "Kairui Song"
+ <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Alexander Potapenko" <glider@google.com>, "Andrey Konovalov"
+ <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
+ Frascino" <vincenzo.frascino@arm.com>, "Anshuman Khandual"
+ <anshuman.khandual@arm.com>, "Yang Shi" <yang@os.amperecomputing.com>,
+ chaitanyas.prakash@arm.com, "Ard Biesheuvel" <ardb@kernel.org>, guoren
+ <guoren@kernel.org>, yang.li85200@gmail.com, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Dinh Nguyen" <dinguyen@kernel.org>,
+ "schuster.simon@siemens-energy.com" <schuster.simon@siemens-energy.com>,
+ "Vivian Wang" <wangruikang@iscas.ac.cn>, junhui.liu@pigmoral.tech, "Muchun
+ Song" <muchun.song@linux.dev>, "Vishal Moola (Oracle)"
+ <vishal.moola@gmail.com>, "Nam Cao" <namcao@linutronix.de>, "Pavel Machek"
+ <pavel@kernel.org>, djbw@kernel.org, yu-cheng.yu@intel.com, "Baolu Lu"
+ <baolu.lu@linux.intel.com>, "Jonathan Cameron"
+ <Jonathan.Cameron@huawei.com>, "Coiby Xu" <coxu@redhat.com>, "Andreas
+ Larsson" <andreas@gaisler.com>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Geert Uytterhoeven"
+ <geert@linux-m68k.org>, "Stafford Horne" <shorne@gmail.com>, "Jonas Bonn"
+ <jonas@southpole.se>, "Stefan Kristiansson"
+ <stefan.kristiansson@saunalahti.fi>
+Subject: Re: [RFC PATCH 02/34] ARM: mm: make 2-level pgd_t a scalar
+Message-ID: <20260714143450.61a94085@pumpkin>
+In-Reply-To: <b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+	<20260713135614.1618183-3-yeoreum.yun@arm.com>
+	<alYL7B0HAvmLVHGU@pedro-suse>
+	<b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/kconfig: Drop redundant dependency wrappers
-To: Kaitao Cheng <kaitao.cheng@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Julian Braha <julianbraha@gmail.com>, Muchun Song <muchun.song@linux.dev>,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-References: <20260712093326.8313-1-kaitao.cheng@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260712093326.8313-1-kaitao.cheng@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: dqzhecp8e4nnhtu9fy57u31g63jiy4i3
-X-Rspamd-Queue-Id: 0097E180002
+X-Stat-Signature: upxppceeys99nsq78woycm75y6dt1q5o
+X-Rspamd-Queue-Id: 8C89FC0003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784035702-558105
-X-HE-Meta: U2FsdGVkX18tdr/jqMll3TZzDDn6GFxBkujCuwoa1ed8BOH2hHpRAaWemVL7fMlviy/p5zPcdv7+C4TrPtimUcLwUTbZ7MdsF86bqKNJUxkEDV7bVU3CekKfRguKkzTKqUKcCQHsdifvG7ZGteAp76CUKArxwp/lPbkt/2tBeWBS0xBoAnq4NUQUNYGUU7ugcL2jprNydXrUiuky+JB5IdNioK3rqI9labt1MKpS8oG9AVBpVW3IERJRIXKWPrTR5AkToMs3olKLpdfcgpxWXiOW/SIETzrptEKQWMKFKyiaoCWEYrkddNIb9L3C9G9v9IHg0ENZ5P7u19k4RBAY60bvgFoCzA5ZJczSXVSAoPpdvqn88lxKxyP0TTjtCeZJv9yDQPquOij6Xf/iNZdK7cZ5n8abjvmzHtQj7NRHVd0uV7zz2Wmo4AuDzUrPG43NB+Gr46KAdqnYC3TU2y7Dks9gk9MyEQEss3HC73VgN88ogkhi6iaTeCPRM3HAYxczpEp61fnI23BJ6NpF8Nw1/EaU9w8x4OKB8HhYQzXcC0hnmTQsmEGrrRNK+V4oYo64CDfzsoo/XiwC/Iufd4Ika7fQ/4jJzLvFxX0k8OBo/u/RdavKjotHyLWtAtevX8q/b4Ciw9Wsedzt9qUFimsKmEWt7LIZGmKPnf7bvh8XUEnkdgPb5TkF4gsBIUfiGUCXcn1n0Fdpt1bLnEqlSOrLDqyRm9mDaS2WiOiSYUnDShM6Rez9JDIoetMrOqMejJ+PSEFllIo8aiGdcj1BfAMr3Mrul4MYA36ZlmXsjwPAzqVsfttPf6OR01w+ChS3hh2BhDfx+H37RmdASfEWfGCPSVaBGr9zQmd0AXSi/w/rGz0HwGszvrs3p2z2zPKDVmJLT88/ofsXG6ac8kyLPoEsll1HdH6AvmknI0CCYpbgyiyOMQK3zoO9jtmB24fmMjr+uvKxI0LQxLxsyr2218s
- Qsgh7uMB
- M74qBiTzwhntn14fM5ts692BLXIu1uCdoOS8/VjnDLyo0q7SeCcbxpJYqG6xoFBBLJ4YGQU08aFM/DQYVY9jkFWPPnO9Buaz79hkF70u+flB0PTdUdFPnez8OP7OMNL4e/SRtZ8upnyqQTcTXfAhYeJ3cNg+ef8Sq1ar2ijjydPPVx83QhtVdCEqyBPLEzFhkkhrs/Yy0Ag3ceKkVypb9zXMtgYM6f0HgQnMOxRQuXzTEr1uJBOhKJ97J13lnRGBsoWhY6OwcFZ9QkvkszsWYarwKBUnkTwLgkBowOsGyXAnStgK2JXDEDCOVHg==
+X-HE-Tag: 1784036095-637134
+X-HE-Meta: U2FsdGVkX1/3kB0T90RpBBOfhq2vPr34eshPZS846TiogbyxlhV2SxnEg7nJxRreD8j+WfvzbhG+uUlUGtaCeU7xakFDXhc5UACbGepGskXVNV+CUG7NSDoExFesplDUBQd1RaO8yZ5yEV6vzLUPflql0ErI4saPFO9xrbk89DUjZEcXx49ktjgimxFKX+P8XTwZOk6h8QKaM2W/tjRxUSdQVhcBQBzOj7q9KQJrxV7eO5gik1p9Ka2moKjkJzsT24ZrFFIibS5J6xwVFMrpdF/KqsmTxG24Af3UqoMsaoFUjbDWeuYNRknRgQ9rMQKBADVdLndW+utTkXIFEW76DytyB/gL7uWAI6PTn88ZWHwWQQ5WDSIxksXXfaWVNl5YUGWD6sBVlCj0/9oGdFPKgUTuCOyV/1/Y9ULVfVd8I07d5vrUJiWW2V7XLQBCIYfAumce4CnlhlZnwVzAm66s/qfZedLMhhC61tBwFPt0DVTj0ozJTVUn/DnxRFonsEqb5qrhf3vRUBz3SRSOKOTn0A6KIDlI2atJGw5qFRUHI+KaDENvBGaI5TOfcCwoZ3bIKOQMUxcAc6MbUAunuXvnFzxtOxF+p+xQ9VGVjXWswHW/TD8zI/nbmjwvhciG16JCNiOx2wTiq0Q3ZBcx011gP7RFQUvSqJ2Wp12v9jSMNbbJOaEdHzt58X+aUyiLDGfEDVIFv3JpRqVuMpQHyG35CUcbBbz80Qf3V966B4u8J6qxkIY5deSc+PuuFbM214CsZsKBBvubNCckGEeJj2XiACJlCfUFSUDZr2DqF5yfx8Eo82wAI/yUPD3gPNDOxUBhrOZbFv8SCkaRY4YGSzW5kOOR8cEWfMoLWbWuAqTo3K0FvOw1YsUU2rJW5gJvTlSBAkYO35A25vmQ8G12K7k7dAeC/5xtjP8WwStodU5SEzWzXtpPvoUeX6JrEX8IPiqY4tS87+QOmRGK8a3pqDN
+ LCE5iewI
+ wRHACdbyNk20Ss+++90Qlj9ztzjxfsUG2TSn1zr263lVFM7bn1NBc0K8qEqU+v8L8giLwEp7SzlvTdCwBrJJB7YsC5J47bTzylcaWfdqyKqfZVPe4sBzfnj5JFJhJfBA4mNXOmkABEZla0k8F9vESKsWnvPv17fl7fuRpFe9hQHwDORMgf2Qgt/jmSbbPQWzvEvg2yXB4NE9kKp0ERNZcL8odQPSVgwdPHgaKqEdu2aOtpDMtTarWW8lho4h8jn8o6YtzUxajeUsPV6whXXVTDWQbCRx254NCsNpDzMViE9RLRRtmH+a732+oCEhY9cBfSUbFMZgRUiPHEmeEZSr80Ar/ESpemY7cE4ExnPCB3Y3DWV9/QGn7rTWHJIz32MHATGVYIdZ05OIEkHRjnACsv+GonsoIJJWEJ5TX+IOLDj5bKLPzG4Qe71Xe36/q3/9OiO566EcvQxfMUsi5QuPS/mnnBg+g0aoj/IpmuSXrOPWeHftbkiVrqvjLD5qKBXeVujoGqTfJbWdJu2xLUluKzplS0nZqRIgG19I1M3SCTOS52vW9PGOS5i1mboDcgD7EOqhU0RvUPRC/pbjgZhgu5qisuq1GVn1NddSVmC+JZpgUzrhU0HHtB+K+VjRUz8mBNQaNGyOJ7onth9gDQeDcoJw3WSUoVQDECcltO1g2qtvbWSapZiK0/Iv6wZMj8e0mDdPQsAH/tqEz/zc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,32 +174,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/12/26 11:33, Kaitao Cheng wrote:
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> Some mm Kconfig entries repeat dependencies that are already expressed by
-> their surrounding blocks or menus.
-> 
-> The zsmalloc allocator options menu already depends on ZSMALLOC, so the
-> outer if ZSMALLOC block does not add any extra constraint. MEMORY_HOTREMOVE
-> and MHP_MEMMAP_ON_MEMORY are both inside the if MEMORY_HOTPLUG block, so
-> their local depends on MEMORY_HOTPLUG entries are redundant.
-> 
-> PTE_MARKER_UFFD_WP is the only entry under if USERFAULTFD. Move the
-> USERFAULTFD dependency into the symbol itself and combine it with the
-> architecture support dependency.
-> 
-> This keeps the same visibility and defaults while avoiding duplicate
-> dependency expressions.
-> 
-> Suggested-by: Julian Braha <julianbraha@gmail.com>
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
-> ---
+On Tue, 14 Jul 2026 13:55:18 +0200
+"Arnd Bergmann" <arnd@arndb.de> wrote:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> On Tue, Jul 14, 2026, at 12:26, Pedro Falcato wrote:
+> > On Mon, Jul 13, 2026 at 02:55:41PM +0100, Yeoreum Yun wrote:  
+> >> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> >> 
+> >> We don't want pgd_t to be an array, as it prohibits returning it from a
+> >> function, like pgdp_get().
+> >> 
+> >> So let's just use an u64, and extract the right 32bit value in
+> >> pgd_val().
+> >> 
+> >> Leave the STRICT_MM_TYPECHECKS case alone for now.  
+> >
+> > I have to ask: is there a good reason for the STRICT_MM_TYPECHECKS ifdef?
+> >
+> > I see the compiler has an awkward time returning a u64 struct (see
+> > https://godbolt.org/z/qejbv6j9a), but if this doesn't work maybe we should
+> > get rid of the STRICT_MM_TYPECHECKS stuff? I seriously doubt anyone is
+> > purposefully toggling it on for testing from time to time.  
+> 
+> As far as I can tell, the #ifdef was originally in i386 and
+> got copied to all other architectures at the time, but was
+> removed in linux-2.3.23 from the original copy when CONFIG_X86_PAE
+> was introduced.
 
--- 
-Cheers,
+For x86-32 the makefiles request 64bit structures be returned in registers
+(at the same place regparm=3 is set - probably added at the same time
+between 2.4 and 2.6).
 
-David
+Note that arm32 can will return a 32bit struct in a register and
+arm64 will return a 128bit struct in two registers.
+
+The only problem is returning a 64bit struct in 32bit mode.
+
+I'm sure this code is arm64 only.
+
+	David
+
+
+> 
+> For some reason, only sparc32 and arm32 still use the non-strict
+> version, with arm having changed from the struct version in 2002:
+> 
+> https://github.com/tbodt/linux-history/commit/5a8202f0259a
+> https://archive.armlinux.org.uk/lurker/message/20020306.213958.cd486eeb.en.html
+> 
+> > If STRICT_MM_TYPEDEFS's worse codegen doesn't matter then maybe we should
+> > permanently toggle it on.  
+> 
+> This would definitely need good testing. It's possible that it's
+> not that bad on modern EABI builds (i.e. everyone these days) as
+> well as modern compilers, as OABI definitely had bigger problems
+> with 64-bit arguments.
+> 
+> >> +static inline pmdval_t pgd_val(pgd_t pgd)
+> >> +{
+> >> +	return (*(pmdval_t (*)[2])&pgd)[0];  
+> >
+> > Ugh. This isn't correct C code. It only works because the kernel passes
+> > -fno-strict-aliasing.  
+> 
+> I think the bigger problem is the code dereferencing the pgd
+> pointer in the first place: Since the pgd pair is written in
+> 32-bit units in __pmd_populate(), anything reading it would
+> technically have to operate on both entries.
+> 
+> As the kernel relies on -fno-strict-aliasing, the type mismatch
+> is less of a problem than actually doing the potentially wrong
+> thing.
+> 
+> As far as I can tell, we are however saved by pgd_val()
+> only ever being used for debug prints, where printing
+> the first entry is likely all that is needed to analyse
+> the real bug.
+> 
+> > I would recommend either forcing a struct here, or
+> > using a u64 with bitmasks/shifts.  
+> 
+> That would require extra complexity for the big-endian
+> case though.
+> 
+>     Arnd
+> 
+
 
