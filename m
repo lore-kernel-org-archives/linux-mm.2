@@ -4,90 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C227C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB86C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:46:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 817FF6B0005; Tue, 14 Jul 2026 04:38:23 -0400 (EDT)
+	id 0FF086B0005; Tue, 14 Jul 2026 04:46:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C9626B0092; Tue, 14 Jul 2026 04:38:23 -0400 (EDT)
+	id 0D71A6B0088; Tue, 14 Jul 2026 04:46:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DE906B0093; Tue, 14 Jul 2026 04:38:23 -0400 (EDT)
+	id F31666B008A; Tue, 14 Jul 2026 04:46:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 417846B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:38:23 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C9BD71C0274
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:38:22 +0000 (UTC)
-X-FDA: 84986730444.17.4A8B134
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7EDA8160003
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:38:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B5ABB6B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:46:23 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1B38B120300
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:46:23 +0000 (UTC)
+X-FDA: 84986750646.11.B3B39AC
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 04CF5160003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:46:20 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mOzRF47s;
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DMLbNoNj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lyVlUAK4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DMLbNoNj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lyVlUAK4;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784018301;
+	s=arc-20220608; t=1784018781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z/TOVltIv8GPU47lxpzdPKdqcZK9SsP+TbwAvBawLlM=;
-	b=FoKg8Q5OWNTIM5dNbjGHFeoMnd54iD/qDX22xzMj6HAePrWdIj0uleVgxxQNeN0Vuc37Ba
-	ZURYh6+gpXFTsNxElexzJysU2uKncytf1/pB1OqmrQCt12nZnx8Kh5bSJYzW2bHuNgXgNm
-	ySjbtxSD9PKInLIA8SPoXOFnasYXDY8=
+	bh=WPDedMYoIPcbcGvrvY5H+IQoUl1T+mrUVDSGwBtiCbg=;
+	b=ueqWXCRjufjXn1KoMt28pXJMFIVPmoa+VzIYdjqXsK2YBWBMSbkyp3W7cmQAGNtVGkoaXq
+	6hFoQOgGP4kd0xbeAMyIoNO2alxgNnF1iFJMLx9SxHIZfPsj9ZAKG+JRHYG0sJYUGX3lIY
+	SIp/LJ2VBwWKuPDDXUd+gwMqQ0/JY0o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784018301;
-	b=epWgtGqD2XzfZpQruw+ZmGyNXreNHC5a5aDJrFirp2RxhwmKaRx6VxJLIw7fcYOw+Pq+iX
-	yvo8AZiWdemt3uLs36ZcegND01OCxA0nu247c/wqhl/eO/N76InZaYTEWEw9L9SSyVJM+x
-	mjXYtCuvr+ih5EDOpparIMTDcmjGWow=
+	t=1784018781;
+	b=IRBeFaSR+0Usee+ePJyVsnNjWmt7llI803V2GJcrypoOhZQ8CZGd0yEjZNbj3DWDCXgzUG
+	dZH2JipTMgl2wVkj6V8ZVzWyF7lBGaHyNIuZ1MOWOqM/kwVcJNiea9wGlWv3gSbxrcEFFu
+	k3aaml8yeqgOvtv/StAO0fqNQZn9+5Y=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mOzRF47s;
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <08d40cad-8f61-4aba-9556-5a84067c6494@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784018295;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DMLbNoNj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lyVlUAK4;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DMLbNoNj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lyVlUAK4;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5EE133E28;
+	Tue, 14 Jul 2026 08:46:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784018779; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=z/TOVltIv8GPU47lxpzdPKdqcZK9SsP+TbwAvBawLlM=;
-	b=mOzRF47sNowHOJv3Ro+2smpWgvrVnbtSu3znbZPaqdsX6mmf+8GdvZV1Zkf0KgboqBb50T
-	7OfeR5BfkHTmCzLsBIuvgr8rSzkNhxNDVXkqb+Hamf+qTxglcbNAHfp7RgdWvsUby3svmk
-	Dd5ffzXrKaoxqfVWxQYV3Adw8KX/wZ4=
-Date: Tue, 14 Jul 2026 16:38:06 +0800
+	bh=WPDedMYoIPcbcGvrvY5H+IQoUl1T+mrUVDSGwBtiCbg=;
+	b=DMLbNoNjgWmDIdKbEiPtdPrkH+ld3RlsqcX64XXxxm2RRfUg8MvGJZ92ZgBD27P28wzVAA
+	WRSveFEoJOgqWKyZQ6GSxKCLZHtGdMqV1GrwiawGsxptpJoltg8OJztjLYy2/lMw2iBI/P
+	fAX3DThYJFKoqdOXrOHqge89JD7L96I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784018779;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WPDedMYoIPcbcGvrvY5H+IQoUl1T+mrUVDSGwBtiCbg=;
+	b=lyVlUAK45w4IS5EBJhNIkm2IZu+OwsxYgYOU3pgx6TZtANaLf1fDpxr7lpSfW0kNN+MAcF
+	DHuo8dkcwMuEetBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784018779; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WPDedMYoIPcbcGvrvY5H+IQoUl1T+mrUVDSGwBtiCbg=;
+	b=DMLbNoNjgWmDIdKbEiPtdPrkH+ld3RlsqcX64XXxxm2RRfUg8MvGJZ92ZgBD27P28wzVAA
+	WRSveFEoJOgqWKyZQ6GSxKCLZHtGdMqV1GrwiawGsxptpJoltg8OJztjLYy2/lMw2iBI/P
+	fAX3DThYJFKoqdOXrOHqge89JD7L96I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784018779;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WPDedMYoIPcbcGvrvY5H+IQoUl1T+mrUVDSGwBtiCbg=;
+	b=lyVlUAK45w4IS5EBJhNIkm2IZu+OwsxYgYOU3pgx6TZtANaLf1fDpxr7lpSfW0kNN+MAcF
+	DHuo8dkcwMuEetBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 34B25779AE;
+	Tue, 14 Jul 2026 08:46:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HaT/CFr3VWphQAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 14 Jul 2026 08:46:18 +0000
+Date: Tue, 14 Jul 2026 09:46:16 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: James Houghton <jthoughton@google.com>
+Cc: Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
+	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>, 
+	Frank van der Linden <fvdl@google.com>, David Rientjes <rientjes@google.com>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
+Message-ID: <alXtiUdmabf1TZgj@pedro-suse>
+References: <20260708031129.3503195-1-jthoughton@google.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 4/8] mm: add a template-based fast path for zone-device
- page init
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
- balbirs@nvidia.com, bp@alien8.de, dave.hansen@linux.intel.com,
- david@kernel.org, kees@kernel.org, mingo@redhat.com, rppt@kernel.org,
- tglx@kernel.org
-References: <20260709112520.24857-1-lizhe.67@bytedance.com>
- <20260709112520.24857-5-lizhe.67@bytedance.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260709112520.24857-5-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708031129.3503195-1-jthoughton@google.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7EDA8160003
-X-Stat-Signature: 8xrehje9gzd55gdftu64tjej91s9uknn
-X-HE-Tag: 1784018299-782824
-X-HE-Meta: U2FsdGVkX1+4Kxe+shANACMNPfQjJmxREFl3pDUP1SMujsprOmaauiq/q/pjatq82K/W+UBkhl8Kh8mLTXUWyn3tkputfShiM21+Ih3xj0j+SAVM0rF/2gG/HuDR6eza5VkT7pznVar838SMa5bEtbvP4Qxh+jeVKa2FRY/b4UVPFArPS+g33vxD+IZMTm4EM+ub7OEDPvO/guurZB0E8B5veIZRf8vcMFmM4R6bqCwojXlCsyZNVA+8SEOXZI+t8e03hAxOQqj8SWL4/6x8IouaQyo8CcBnkPJNiQ58ngMwrdqfaPQC/Bie87PiDkUr7D0zHWKU7m9VFU5t/YoZbLKqlKi4TIKxOxKxBr3fxiKdw8il2aAofBEfri6XfiRUkDcMUd9I/Sf/b7h1/ye8ZGEC32j60KpmM/Xt/1qiNBDY9w5F1EfPUsEUyQSHixvTdDm/IjADpPH2HGJJ8244RuxM40FQkp42UWUbBTmaAdJuzly5GKGtrjc7V6QlIsqksypDRfobTvFaD9QrIaof1QHSkDRNnjLWbFHbIbvDhQn9hky7UMSf1fb4+yogyzCaZ+SMX7zpcB/ExRntPl5mzOuMqJVwXYvHSAbJeqE9yyS5NrWvPLFi94L31PVlPiw5Y6nU7D07mljH8ihnXYByb5TUJTam+ErXMHLpZyyttNyBiFLMRB+87pO15rCQSh72mJI2JHWUHNV1nfXIn3PTkExpGsLTYfE6OnL3gwbJ+tOUvRnk90pwQSseaPfpeFkDQE95ntK7sRtyYy/gLZ6CSyCLYuWm7BarBlQ0UR5QY63zYEekkTF9Q5m637uiFQbFL1fyd0rLyuSZ2TEdigrSEuJxGdL5pa8EOS1Ey0/7p8ES1k85F4rJgGHK9a/hO1WxgezsbiLUtWeyyd292Yr3pfa1sD5q6N+WVdGJ6T0FG6ugKSYb+6wyMEvqTUGKgJoLm5hptdiiFoY2jNYvt7t
- d4AbN5Aq
- lcLtd876NxTo21ZMeWsAshdl7e74HdtIl+Rdaxo66mxGjyXqusJVXkBYr29FexIM/jV5dUzgDPeXYp40Uvr0GE9XFTU6foDctjk2X28FHCpWbuxOeQR99W67j8PyptCZ16uPfK2Zfdv42Ub2/Z0maClPCgyAGusG9Mg2krPe1pwEWDLaHr6SUCgNsfUJbZlgSSZfbR6FQYC9m6zWKAQGUB11GDyu+TruxfLU96+3ru7ZmqcQ=
+X-Rspamd-Queue-Id: 04CF5160003
+X-Stat-Signature: a8qsmy74hnqgi4woambk8jt6kmudeeo9
+X-HE-Tag: 1784018780-399519
+X-HE-Meta: U2FsdGVkX18ASUAziFIy4UawZHwLJPVO1ZGsdunMKC7y0/cRxvmhDqCpfQwLY/wnNB5qLdVeoJ1z4A1pML+khsV7VSnhS5rpH9DF1mZp0fow6S0BelIzvZwGpA3wzbhzJetTxojlmUFjFB1Hk9Ft8UbY9s0UGkHFTnHWbJIbS29dGOgvtSruJ/iwUPHhFFQDryAhGN+OM0b0/3VVq5c1VOUEIrZ3EkbGfGaWjuf2UfusZaUl2VJPg//yHnfjGfh6Hfu+To9kB8B15RWbSV8WOM/KYpGIu0uuB+Nb3c/t0380//rSVXQ+ltdT1i4ETkCliNc6wJUgEPVFldk8aVfuSwCUhy6E5xEk4fsQvr9+B3AeBURpWlxiZzM59JDCBLxvi5jwWGnjlO8IzJ/qNXBZWSGH7N8Py6eyvSjjcQou/0SSOEZ/8D7w3x+P1HyWfuC43JatXhQPIumf2ZcL+nK3GUcRkmJZ84OwYwPG5E3dcvdUNfxIy791oRrBStN4JjSOPJO29kV6pYWb0NwB1ho//l4K5/cV3eq0GIDIXZnzDSheAE7eXNtQN0LC71wpJFcASHoryEi8hsuoqCsN9goIc3TeeuVOe4xkgLHdjYIsXRRoUBhbqlbWwn/bSXCvVJ2JeH2Eh226UpaIZUJ99ceIfwz+SZ75nysq//aHPgMzBiCAhHymOUmuKUl5wxfQph5kP39PXei8zyfPltgisbk7dscOXrpxPNmhsL88DLz+naClGfnc56BTTH7WKRQ1w313+WXmVfgoKeMQzuXCZ1zbercvYFkT43XdDOL9HyoC7JQFlL8CO+/3JLCf6wdg01KxWKmThcTHX0KpY7fpFkof6U5pRltQhabir/ELibs8r1HN4i76NGN+ut3m3M+2iS8XQu7zIpTKbRpO35gAh+a8TFeFIS/DjANj3/Qj/Orf38oJuiCr7geTkxixaRtf/GEtyskYtLIgtoyQz1inHbN
+ Fk7aC0X+
+ b/2OoQaFjvC9ByEeWwj7tdmPZkj0j4wwG0EO083B1lOMdx7TFBQ1q55ucQc3mHXblHJ8ZNe4hwbZDXOoL9LrpRB/nAG4dAzHBnL41SwE2P6xowCBG9kwWlemsjOOBt1q4XumlADO9HSXSdNLp3cpavdJ/0Z4vtnlcssRFBctgH2jorIT4LdLOZ29N40if6TClO7BvpGEeEdVxpOn8UVqLGWmi2LsuP2oM2MetcuohRDUg7OY41FEYYyj9+1WqMYhfygnNIGa525mMwzAB+2PicPoBrmQ80hq3VPM1tTjsmyDU4ztjghr4icwE/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,155 +136,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello,
 
+On Wed, Jul 08, 2026 at 03:11:10AM +0000, James Houghton wrote:
+> Hi everyone,
+> 
+> This patch series uses a trick with the Access Flag on CPUs that support
+> hardware update of the AF to update vmemmap page table entries without
+> introducing a time window where CPUs accessing the vmemmap might fault.
+> 
+> By avoiding faults, the HugeTLB vmemmap optimization (HVO) can be
+> implemented correctly on arm64 in a much more straightforward way than
+> previously attempted, most recently here[1] (please see [1] for a
+> breakdown of the other approaches attempted before).
+> 
+> For large-memory systems that allocate most of their available memory to
+> HugeTLB, HVO saves a huge amount of memory (1.5% of system memory).
+> 
+> This series has four parts:
+>   1. Some preparatory changes (patches 1-3)
+>   1. Bare minimum HVO support (patches 4-10)
+>   2. Drop BBML2_NOABORT requirement for HVO (patches 11-13)
+>   3. Drop the user-configurable Kconfig for HVO (patches 14-18)
+> 
+> Parts 3 and 4 are technically optional. More details below.
+> 
+> The main functional caveat with this series is that bootmem HugeTLB
+> pages are not "pre-HVOed". They will be HVOed, but because at pre-HVO
+> time SMP CPUs have not been enabled, we cannot query for full system
+> support.
+> 
+> This series is based on 7.2-rc2 (0e35b9b6ec0f).
+> 
+> This series almost 100% cleanly applies to mm-new, which has some of
+> Muchun's HVO patches, with one trivial conflict. I imagine this series
+> will conflict pretty heavily with some of Muchun's other patches[2].
+> 
+> -- The AF trick --
+> 
+> The trick is that translations with the AF unset cannot be cached in the
+> TLB (see Rule R_DWZCQ in the Arm ARM), so they can be atomically updated
+> without needing a full break-before-make sequence.
+> 
+> So the PTE update sequence becomes:
+>   1. Atomically clear the AF on the existing PTE.
+>   2. Invalidate the TLB.
+>   3. cmpxchg the AF=0 PTE with the new PTE. If this fails, goto 1.
+> 
 
-On 2026/7/9 19:25, Li Zhe wrote:
-> memmap_init_zone_device() repeats nearly identical head-page
-> initialization for each PFN. Prepare one reusable ZONE_DEVICE head-page
-> template through the existing slow path, refresh the PFN-dependent
-> fields in that template before each copy, and memcpy it into each
-> destination page.
->
-> The optimized path assigns _refcount through the copied template, so
-> keep it disabled when the page_ref_set tracepoint is enabled.
->
-> This patch accelerates head-page initialization. The pfns_per_compound
-> == 1 case gets the full benefit here, compound tails are handled in the
-> next patch.
->
-> Tested in a VM with a 100 GB fsdax namespace device configured with
-> map=dev on Intel Ice Lake server. This test exercises the nd_pmem rebind
-> path (pfns_per_compound == 1).
->
-> Test procedure:
-> Rebind the nd_pmem driver 30 times and collect the memmap initialization
-> time from the pr_debug() output of memmap_init_zone_device().
->
-> Base(v7.2-rc1):
->    First binding: 1456 ms
->    Average of subsequent rebinds: 244.28 ms
->
-> With this patch and its prerequisites applied:
->    First binding: 1440 ms
->    Average of subsequent rebinds: 217.19 ms
->
-> This reduces the average rebind time from 244.28 ms to 217.19 ms, or
-> about 11%.
->
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->   mm/mm_init.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 58 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 5fccfbacf855..170021e182e0 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1065,6 +1065,44 @@ static void __ref zone_device_page_init_slow(struct page *page,
->   		set_page_count(page, 0);
->   }
->   
-> +static inline bool zone_device_page_init_optimization_enabled(void)
-> +{
-> +	/*
-> +	 * The template fast path copies a preinitialized struct page image.
-> +	 * Skip it when the page_ref_set tracepoint is enabled.
-> +	 */
-> +	return !page_ref_tracepoint_active(page_ref_set);
+So, this sounds really cool but I'm not sure if its correct. Looking at
+D8.17.1 Using break-before-make when updating translation table entries:
+Per IGXGZY:
+For a translation stage with AF hardware management enabled, if a translation
+table entry is modified and the break-before-make sequence is not followed,
+then all of the following failures associated with AF hardware updates can
+occur:
 
-I'm not sure why we need to make this. I think we can go ahead and
-perform this optimization unconditionally.
+- When a memory location associated with that translation table entry is
+accessed, the AF is not set.
+- When hardware updates to that translation table entry are followed by
+stores appearing later in program order, the ordering required is not followed.
 
-If we look at why the tracepoint was added in the first place, it's
-clear that its primary purpose is for debugging, particularly regarding
-why CMA memory pages cannot be allocated (see commit 95813b8faa0). But
-at this stage, the struct page hasn't even been initialized yet; we
-are currently in the middle of initialization. From the perspective of
-the page being initialized, the user doesn't need to care at all about
-how the reference count is changing. Therefore, I don't think we need to
-include these checks. It would only increase the complexity of the code.
+So apparently per the ARM ARM you can possibly never observe AF=0 even if it's
+cached.
 
-I suggest deleting this section of code to keep things simple.
+And then other semantics concerns may arise e.g I'm not sure if AF=0 implies
+that the walk cache has nothing for that address, or if it's just that
+particular translation that's not in the TLB. Though this might not
+particularly matter since we're not collapsing the PTEs back to a PMD block
+mapping.
 
-Thanks.
-> +}
-> +
-> +/*
-> + * 'template' is a reusable page prototype rather than a strictly immutable
-> + * object. Most ZONE_DEVICE fields stay constant across the pages covered by
-> + * the current template, but section bits and page->virtual may still depend
-> + * on the PFN. Refresh those PFN-dependent fields in the template before
-> + * copying it into @page.
-> + */
-> +static inline void zone_device_page_update_template(struct page *template,
-> +		unsigned long pfn)
-> +{
-> +	set_page_section_from_pfn(template, pfn);
-> +#ifdef WANT_PAGE_VIRTUAL
-> +	if (!is_highmem_idx(ZONE_DEVICE))
-> +		set_page_address(template, __va(pfn << PAGE_SHIFT));
-> +#endif
-> +}
-> +
-> +static void zone_device_page_init_from_template(struct page *page,
-> +		unsigned long pfn, struct page *template)
-> +{
-> +	/*
-> +	 * 'template' carries the invariant portion of a ZONE_DEVICE struct
-> +	 * page. Update the PFN-dependent fields in place before copying it
-> +	 * to the destination page.
-> +	 */
-> +	zone_device_page_update_template(template, pfn);
-> +	memcpy(page, template, sizeof(*page));
-> +}
-> +
->   /*
->    * With compound page geometry and when struct pages are stored in ram most
->    * tail pages are reused. Consequently, the amount of unique struct pages to
-> @@ -1120,6 +1158,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->   				   unsigned long nr_pages,
->   				   struct dev_pagemap *pgmap)
->   {
-> +	bool use_template = zone_device_page_init_optimization_enabled();
->   	unsigned long pfn, end_pfn = start_pfn + nr_pages;
->   	struct pglist_data *pgdat = zone->zone_pgdat;
->   	struct vmem_altmap *altmap = pgmap_altmap(pgmap);
-> @@ -1127,6 +1166,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->   	unsigned long zone_idx = zone_idx(zone);
->   	unsigned long start = jiffies;
->   	int nid = pgdat->node_id;
-> +	struct page template;
->
->   	if (WARN_ON_ONCE(!pgmap || zone_idx != ZONE_DEVICE))
->   		return;
-> @@ -1144,7 +1184,24 @@ void __ref memmap_init_zone_device(struct zone *zone,
->   	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
->   		struct page *page = pfn_to_page(pfn);
->
-> -		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
-> +		if (!use_template) {
-> +			zone_device_page_init_slow(page, pfn, zone_idx,
-> +						   nid, pgmap);
-> +		} else if (pfn == start_pfn) {
-> +			/*
-> +			 * Seed the reusable head-page template from the
-> +			 * first real struct page, because the existing
-> +			 * page-init and pageblock helpers expect a real
-> +			 * memmap entry rather than a stack object.
-> +			 */
-> +			zone_device_page_init_slow(page, pfn, zone_idx,
-> +						   nid, pgmap);
-> +			/* init template page */
-> +			memcpy(&template, page, sizeof(*page));
-> +		} else {
-> +			zone_device_page_init_from_template(page, pfn,
-> +							    &template);
-> +		}
->
->   		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
->   			cond_resched();
-> --
-> 2.20.1
->
+Right? Tell me I'm wrong :)
 
+-- 
+Pedro
 
