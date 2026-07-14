@@ -4,87 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F831C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE172C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:38:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD47C6B00E1; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
+	id B16756B00E2; Tue, 14 Jul 2026 10:38:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B856E6B00E2; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
+	id AC7446B00E5; Tue, 14 Jul 2026 10:38:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC2136B00E3; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
+	id 9B6426B00E6; Tue, 14 Jul 2026 10:38:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 697506B00E1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:36:01 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C348080395
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:36:00 +0000 (UTC)
-X-FDA: 84987631680.28.9FA7978
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2068814000B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:35:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X2Rciwt8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784039759;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 57F736B00E2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:38:10 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8560C03BE
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:38:09 +0000 (UTC)
+X-FDA: 84987637098.16.3D99DA8
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D5F19120006
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:38:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mMXX43WW;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784039887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nx5e31jEsyo+C5Jzh5WXWtwiWc9v5lBvS+tYDZCZe5U=;
-	b=jYAmAAjKLif0AbfxPx6LLyWI74/+/t3pJc7/lpCnNczENnCUpQgpF3jDFw2d5WtTA98T5a
-	MIKogS62Tfnr9jvKa2/2dr3kOFqqbUrIFSHDQ/7kknzPcpZRFHv8PF/YyXdpdRPG7WLDpn
-	rZIGLQgWZQxOFN21TmyG+ItA4s5VmFI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X2Rciwt8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784039759;
-	b=YdOfH/Z48Y0HIQrSKX+RU/fo0CdPYH3JZuGdzuBMIf1pvI8CP4Z7uqmwPQoIUrr+pyXrdg
-	6haxvYrkZYGNregfATpVbZ3/CUV3mS5Tp78zPGw9v1eFP2KQpWloghWDcJp/zW2kNmOG+n
-	bEcYv7BQ233vN7qzcOBBLKMAXxC6OJI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 74E7A43552;
-	Tue, 14 Jul 2026 14:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314151F000E9;
-	Tue, 14 Jul 2026 14:35:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784039758;
-	bh=Nx5e31jEsyo+C5Jzh5WXWtwiWc9v5lBvS+tYDZCZe5U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X2Rciwt8/MTshxbMH0LSsW0OR5pxu4vbJGl88cl2PRUro+DUfPRKEYh7Vts9El31w
-	 X8TbZ54j1otU/V0hjiojVpRFfLpBdszW/YtCED1ora5wJIx0lxLqL6Ow4CxGQO20ii
-	 Mg6CyV3lXbGzoHAtXfHrB7lfOF5QnBFUR2EzQdWm8ibl7qgdvMRcayZiM42ol8lb62
-	 7WGvox44qnx8rpsLk0YKFfM9TlYfXSd5ZJrZA/D3cgcMwkpTfLBYx3eR1FOKXxOmWr
-	 Uv5+KueXbDIJ7Hlf4Fc5vreeym9sZajj3btVddDyt3mBHllF50x6qphpx/fDSexBOf
-	 Lui7jPMAJhntg==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 10/10] mm/damon/core: hide core-private damon_ctx fields
-Date: Tue, 14 Jul 2026 07:35:43 -0700
-Message-ID: <20260714143544.101305-11-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260714143544.101305-1-sj@kernel.org>
-References: <20260714143544.101305-1-sj@kernel.org>
+	bh=klabNcutZlGjGAyxaUYGBRc4Z56CA+f2nGt8Tj9nR2w=;
+	b=WDhw15y6sCQvLxG/JOOI9sqzWBf8EtT2dg1qzzCr6gkflJLL0oamgY03K0JgFgZIBQwxim
+	phdxPghcD5TYUluqdjWo1xXsLu82Oa54qZWwD341VzA23HX7x6wh0fMQtp2iCUkb1jvX1J
+	liIbfRQNdmP7mO8x6ChWW4fD7a3TIHc=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mMXX43WW;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784039887;
+	b=h0P3fZ16HKBbZyX5ZacvOiQ45Q2jSxlA8X7EcdbKwsoRj3h70Gz9WyeyBi+qP3Yo0Y1/gf
+	WF2Owuc4+OWqB2uXbgz3sKSVk+pfug5Vz5c7t9KiCZM/RkSOMtnAz2ZhED7Qok5WiNBIey
+	7Slsy3dmb6tqotWCs8ibSzhHWi7w9+Q=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c10e86e52so324381cf.1
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:38:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784039887; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ONrJDzdkONWYE+ZcuUvtD4lrIi0Ui295DbL39Ix8hLu1CLWpalVqThiCLbhIQmQrIn
+         YIwtSTAOqBoQHhl88q4TptX7fD6VpD0r3zC2qKHW0p1of0itrFidN9VG3HJul+mjBYLh
+         TvniirUUEl9+xQYqKH7VaKJUH1LmKsQNXAnTesR+mR52GxPunsDsGLZm6x1q+DH4U+w2
+         TlJ6uM5F1lUISrfPzMBQrgNX/Xyk14Ka0b+qV03ruYuA0xBxjEQkv6iwebq749ccT3QH
+         QxyGhNo6Tc/JeIh8QonTtPRjDRq0zmC0+dzyBJKqbTdD0SgKEDrXnBn0Mhcx2b19A31Z
+         cv/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=klabNcutZlGjGAyxaUYGBRc4Z56CA+f2nGt8Tj9nR2w=;
+        fh=gYv1pkfwOepCpzkLaQJo5yTWd5sOweaiZXfpGrqFPOQ=;
+        b=SpBNo+d/NX+mUL4MfZX9iuVJTdj7E780op5gRPZlqAxLMIEO+3DN1rcsKgxeCNAn1V
+         1tn6Zl2BuGb/Bvkee+0YvXfmuM7ShvfiRI23GKVodIv5uSoqGnwqjgZ049x/3klAbhg5
+         aN2iFM+jrDkv5xiqsoGL0HAlWMUwfK+pPUOLEkIQJ9FR+q2s6XmJqGk+SAypgH4r5MkC
+         1tYxLTbWvU6VkVhsrP8BY06Igx7InOMyEY0xL19oqssEYMQmGNr5X3UZg2TqtC29Xxqs
+         LCKcGtwoNYrjfal/zU14dqKsCBPmTV6rqbZszu0owutRYpieqdGNFWeWxJdUd6z4kkws
+         M5yA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784039887; x=1784644687; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=klabNcutZlGjGAyxaUYGBRc4Z56CA+f2nGt8Tj9nR2w=;
+        b=mMXX43WWm3la/todW18DxPTmbwxRr+Nz90odZBmJ8QE2rZmZFxOTWIfUxaqoJbBQ7N
+         gZ2pBrFNta/lPeL3H1EKmNrRduPdXEvpQh6iHCfB3Zw4aI1JGKaqcR2q618hWL9Z+upd
+         cQQuLhZCdj1J5uRNqqjRAZj6nVbn0pPIstFDytijweJa4ExoXF06R7s7/7X00L0jl0G3
+         pHUpd+nbFUOBRQYROEIL9fuUMjZgYs3nXgtJjAUPS5J+d033mMqjetn/BSmcyrOm6GOQ
+         Dka4KAc8I33C1MiPyIbH4eSE3z6z+o4eDt9QZ4J7vBzUtIi6M6wBK7tIRkYrqovD2TdT
+         uNzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784039887; x=1784644687;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=klabNcutZlGjGAyxaUYGBRc4Z56CA+f2nGt8Tj9nR2w=;
+        b=H6WlNIcoVWWninta1gIXNC5THThytqAZQqk9m0eODdnK4bjzs6nV27Mxx+gKX2/3rj
+         VIiRkUsuQaOGCHJ3YwFX8FbYiF/kBPfDXCdKMIBAajBVcb7C7OyEO3Jw6otSI/1I2rO6
+         yCiJjNuTVaAMFGE7Lk9U9AahLAc5V10nBOI1kAr7X2cXPwshNWQRmIVewiNQT5Jq5epe
+         a/HTALH7X3HqdR8yPGXvv/fQvI3snEJgHthXgMuX5IRn/yuW0giZn3dLhH9ER2gN06p/
+         l1BaxedqKCNjWA6MxH+blOTwTMr7b5WgUi3GmNdNQ+IWGHIJDu9cZGipWUX2t/kcmSr9
+         lsWg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq/DCQT25ExriP6AZRN82hNC8KqzQQugmqPkL7VZUcGUWEcvg68EcwEkZpZmJlV8piojY/LJinmiA==@kvack.org
+X-Gm-Message-State: AOJu0YzOdVZTvVHC8uwV0tOQPMW8txDCYaA1sl2VtJWOeASuAqbAyrdz
+	fqhV/zXciCCjGgG4V/h5DtrW3HqMqapp+dK/zCVN5oh9n7SzhJoNTHPlpj6xrV5Nhz5kdwHlO/3
+	3SXh9/p4dLhK+vHst1b6hiYowrX/I9lenpD1xOy8E
+X-Gm-Gg: AfdE7ckpA2Ge38H1kn9b5HhxbiIzTuPBID5SWVMS3aFGScWaMejQKaa4ypgIVYZmbVt
+	TdVlFO+FvJTl0mutLRv5Q9TSbeutA6ABsk2SABXHHWsQMR+E8tP3j5eG8+VCdq5NtvMEHirQgcP
+	qWo/L8GUepZ5Q/9PKhUAE/mwmQrHfu+tX+fuH5JLZQz0HfwKVWSWY3ZRhe5/0ai+W4e8uH2tD7M
+	7G4tYTGib6De8LpXHn7riZ3VbxPf5T22HKtpj8Y3qB0JQIypZvD1XGsRwjOFLd5MGJ1rVOWrGJt
+	2Yl1oLXTGiS2lcUtLEXNyuiB6u8=
+X-Received: by 2002:ac8:7fd1:0:b0:51c:9ad:d76 with SMTP id d75a77b69052e-51d7c6a8b03mr15483251cf.19.1784039886094;
+ Tue, 14 Jul 2026 07:38:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2068814000B
-X-Stat-Signature: g5q7t8skff1obwjsj9trxd7h7hh4tnbi
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org> <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
+ <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org> <34af7126-0a19-4da7-a3dc-4e6e0ae01ca7@kernel.org>
+In-Reply-To: <34af7126-0a19-4da7-a3dc-4e6e0ae01ca7@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 14 Jul 2026 07:37:53 -0700
+X-Gm-Features: AUfX_mwYeQCfOUzC_nBCAycgCXI-QzCA2j7jZA37ZhkSyGe8sO_yDF7WPJ9DhZE
+Message-ID: <CAJuCfpHYbTobe04+Mm_CRMv2SkUuT_9j8T7ByEyv=cJU+YZZCg@mail.gmail.com>
+Subject: Re: [PATCH slab/for-next-fixes v3 3/4] lib/alloc_tag: introduce mem_alloc_profiling_permanently_disabled()
+To: Harry Yoo <harry@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>, 
+	Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784039758-843327
-X-HE-Meta: U2FsdGVkX1854LmW38tTDfC320ph/XnEOpvfTJIGc21ipDyo4YVb71YrUrpSWEHYs64HY8wBDVpvHE6zNwtP0QmtQcPEmmncl31sSUYJf/aVKCLi0W3cYre3QyBwRN/2+CUiRfaMCXvPMT0n6Nd5Fcr7KzUIRqAJoUU1OYbciKGuGWKDgy1ockfSdPlaOO+7I2T0rdDs3ahSnjbamne4nAn4TLF9yKappqJIooyvZHX2ejEypLpx4oGiAugkn7Q4VkbN5KOCVeFs6fi8q39Ly19ni2IAT0JGBN0j+Qnm3yy9VOACaeGLBSQzbBDWHCrmyxOtqzspmXl2Qy7g81t/NptC/yWZHdT+s35suRBs7qdKjS8DeZ6qmwTjmwgz4Di/yFbH1GXiZQFsKGEKHrYuFMvnYe/70Rut0292l0hhzwTCw3OZrHYFXFYnOLIu1/dzsHkq6JXntq21/Dw7gx52Qa72o96/hkF630ANLS2MGsCaJU7RLySHSUI8SRkjDRlGvPaVGyjLL//m4QBlb20vYsEwPAk8N2QDbjiqQhnzUX0M74CmVt4lK97UfukvN+oWanncjfazTyHsYPQAmVJwYkVA0HPjzexHJO2tXTaqKNiEu1+YdS/kSlpluns8ZOvJ8POsrNJfWQNwEZnQZngwQ3uQ2XhEZzQVUJUdnM3ruYHVqlY8R/0cyvyzbged4eF8mp4Ye2KdSrOQF9PB5GUK3Ehs9gc57cFhnLgcumeO94MTRH05HKKWIzHSClvr6c97Ekl8NYyxNgIkw7TNS/VIBMVihbtfJec53Jw6vqIfmcRcgfMg9UifEMLfgAX0vsbRIi0dcyW3qlZeallfO+JwV62IYUykatI0XhhkmVLl88DTo4ia8f9xkJsMfi9X3NHjZBqFJ4yspT4b5t097uPWdzRlJkOY0rlY3gathVBXmmi92YFmICgHzhgnJA4mrfYTy+9PyNDAzK7vSCUorKb
- HZJSAB/q
- lPIf8PvMejQftN2zJcCmWxSrWBlhplv+6sPNK5DR2X9AvDn9xsvhgN1JXh/CjK0yUpThXvCYCtHKYN24BlyqSqmOrI2JyreT4ZDC7PAHJlK+aLvAFt8kG2uNSXz7u1/ccZyIOFCqwHLqTFZEY3se74vVdBC65usLElNUbpSvlWS8fVfxX5EeYFOZtnyImE2HIqvV5UeUdozNPtIzJER9mGvWvaW/I7Gx8A9xDn04PhM0TnIYWFVNeWnXiwRIgvusFPIlOgEZT4QP+pSbZW9Fs3u7oig==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D5F19120006
+X-Stat-Signature: snr8ztrqmxjpwn9rkuyfmabtzc9cmejz
+X-HE-Tag: 1784039887-713460
+X-HE-Meta: U2FsdGVkX1/Zc/TOcptdy8RFBKKkzkaGXKFbnxvhJ6xSBzxfp4DiXlgpPPaaqwGS8WQW2G6F3YyrNtLP4CqUGQLz/gPGwde1S8vYT6XlwFdFZS8nf+ovZoMNjVp0oNGHdPDnzDbNvDy84icQOgdQbgNDaO0yzlV/Oh3OwSB/S/JySY5bPA9XhSVt9bzykvvMUYmuD36R8wbDbsxYpJVo4pDH+lwfiff84gr2hfgbFYkB3mZkPsyW5PZCRZTBsfSLT2rS5CJjCvyokHi7ZVOi9I2ThHn0+ltlcazD5cpcoM/6fPFyVKfZnI+v8f7kKRMFln+S4IB4p5KyXJA3oh7VmFXZX1HSx96X8ZrNMcp1cL05Osu8u5L+dB4U2JOlG+2dMmSsfK+cNLXjwY+9h+aWDa4ZbaXQ00yj4SiPSEY8VMRxlmGr6Ib8LabIpBJXnBeYDlQ+oP7VLc5TdcXmfhm02m8uUcoQ7ZBDYE2t/O+21k/a5YNfWScsbxUIFNRmSfqJqxg2OcHmlWeUogvffeO9HuzV3jqnNgMlEojg5OHg2/gGc+1xPYwQH6bCA/ue3oChDetvUFdVGfZFF1Qrl7JdrNnI1e7u6gAEm7aBSyiVE6RzVwuMTO+6K8SW7ZyqoAJJT9JILcBfcKB+asSOjgqWYIdASbcAwWwBSMiKvxyNVeMTZOlsT09YPk5kjv86xlXQkrdhlOoSadlnBZNVnlrtkkC27JiZj2MsWMP7GbJT2NGBWR1Xa7RV8DT1U7c7zhjDRhk8cAZZKsLHJ9FEFvJ32SaV1fQB4SbOBxMEMdWnCLdrW4aeMJ4l3Em4X7Kxux0UKfLed9XkgnH7gRIJKTxo4/J9namyCxMYhetU+z8L0RvwJ9EQE/0OY2Y0xz7vY6L9hVscsfDKZt5epkZkEil9Ql/f+FXjYSqCdq+YWkQZt31de7q98tdA71NELrBD0dP6/EDn6J/vghNKQZG6zO6
+ t1gDRd1y
+ JKJiHpfZETYCOfJAnFoYT5qCeW/XyUALEwJO5ooYWHN0+gfS19emA2ZNSoyy8LYdhBXe0OAXW/Wms9KKPxsxvhH5wo2Pzz9sCdwabojyu3hDNFaI4nOJdqrLq3hGcGWbVTJGbADC2TWgYAk+k8ZFjdWxCKg7WIu9V8soAKSNULWFtgL3XyXc2bpyncBQNGdAD7SdWUtnIcobxJi+0ZaADadRBgcN59uZtAVDtvwBwI0dK4js1+9m0zEAC+ihHcbZVWU00MUnyLZdIXm4JKyF/Jo0FYhxWX/8w8lxaec81RoiPQnawr+4KLdtDuFMvAxguyGd+bPFoVd4Bu+o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,58 +144,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-'ops', 'probes', 'adaptive_targets', 'schemes', and 'rnd_state' fields
-of damon_ctx are intended to be used by only the DAMON core layer.
-However, those are mistakenly not marked as private.  Mark as private.
+On Mon, Jul 13, 2026 at 9:28=E2=80=AFAM Harry Yoo <harry@kernel.org> wrote:
+>
+>
+>
+> On 7/14/26 1:15 AM, Vlastimil Babka (SUSE) wrote:
+> > On 7/13/26 17:43, Suren Baghdasaryan wrote:
+> >> On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@kern=
+el.org> wrote:
+> >>>
+> >>> mem_alloc_profiling_enabled() tells whether memalloc profiling is
+> >>> currently enabled. However, even when this function returns false,
+> >>> it can be enabled later.
+> >>>
+> >>> However, this is not enough. Some optimizations can be applied only w=
+hen
+> >>> memalloc profiling is permanently disabled. For example, to skip the
+> >>> creation of KMALLOC_NO_OBJ_EXT caches at boot time, mem_profiling mus=
+t
+> >>> be set to "never", "0" w/ debugging on, or have been shutdown so that
+> >>> it can no longer be enabled.
+> >>>
+> >>> Introduce mem_alloc_profiling_permanently_disabled() for this purpose=
+.
+> >>
+> >> nit: I would call it mem_alloc_profiling_supported() but this name wou=
+ld do.
+> >
+> > I wouldn't like that name, because _supported to me sounds like those
+> > CONFIG_ARCH_SUPPORTS... things and not something that was just disabled=
+.
+>
+> Agreed!
+>
+> Actually, last year I wasn't sure what "_support" in
+> mem_profiling_support means and had to look at the code while fixing a
+> bug [1].
+>
+> This year I forgot what it meant and had to look at the code again :)
+>
+> > I suggested mem_alloc_profiling_unavailable(), but it's not ideal eithe=
+r,
+>
+> Hehe, in terms of 'the meaning is obvious without reading the code',
+> it's not very straightforward...
+>
+> > naming is hard.
+>
+> Agreed!
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- include/linux/damon.h | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+I'll let you pick one :)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 537e59bfd7072..327f534696aa8 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -848,14 +848,9 @@ struct damon_attrs {
-  * thread other than the kdamond should be made using safe DAMON APIs,
-  * including damon_call() and damos_walk().
-  *
-- * @ops:	Set of monitoring operations for given use cases.
-- * @probes:	Head of probes (&damon_probe) list.
-  * @addr_unit:	Scale factor for core to ops address conversion.
-  * @min_region_sz:	Minimum region size.
-  * @pause:	Pause kdamond main loop.
-- * @adaptive_targets:	Head of monitoring targets (&damon_target) list.
-- * @schemes:		Head of schemes (&damos) list.
-- * @rnd_state:	Per-ctx PRNG state for damon_rand().
-  */
- struct damon_ctx {
- 	struct damon_attrs attrs;
-@@ -904,15 +899,21 @@ struct damon_ctx {
- 	struct mutex kdamond_lock;
- 
- /* public: */
--	struct damon_operations ops;
--	struct list_head probes;
- 	unsigned long addr_unit;
- 	unsigned long min_region_sz;
- 	bool pause;
- 
-+/* private: */
-+	/* Set of monitoring operations for given use cases. */
-+	struct damon_operations ops;
-+	/* Head of monitoring targets (&damon_target) list. */
- 	struct list_head adaptive_targets;
-+	/* Head of probes (&damon_probe) list. */
-+	struct list_head probes;
-+	/* Head of schemes (&damos) list. */
- 	struct list_head schemes;
- 
-+	/* @rnd_state:	Per-ctx PRNG state for damon_rand(). */
- 	struct rnd_state rnd_state;
- };
- 
--- 
-2.47.3
+>
+> [1]
+> https://lore.kernel.org/linux-mm/20250624072513.84219-1-harry.yoo@oracle.=
+com
+>
+> --
+> Cheers,
+> Harry / Hyeonggon
+>
 
