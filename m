@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F23D6C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 07:54:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C87CCC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 07:58:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 877546B008A; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
+	id B66656B0005; Tue, 14 Jul 2026 03:58:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 829CB6B008C; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
+	id B17486B0088; Tue, 14 Jul 2026 03:58:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73EA46B0092; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
+	id A06456B008C; Tue, 14 Jul 2026 03:58:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EDD26B008A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:54:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF24F80168
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:54:34 +0000 (UTC)
-X-FDA: 84986620068.03.4090715
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B8E334000D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:54:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FB0A6B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 03:58:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E2AAA402B4
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:58:26 +0000 (UTC)
+X-FDA: 84986629812.29.4386DEE
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C4BDD12000C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:58:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n1FTh+Jp;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784015672;
-	b=LmvLfg0Q7VeGq7y+kWmY4GBi9Nz9JL87x7VL/89k9DgRlDi4DLOJl8usJ93RziMiz0eMCh
-	PR6Z2FLhZr6ajiYnzl+8YTJjNknSEEr631RtlIyqXSE8ubGyqaHPNrNFSFJIipQFO4FFxK
-	7IbLA/4tsL175QvkpvmnSbj9AS4xS50=
+	t=1784015905;
+	b=4qdsPczhXiKSNvFrUH05niSy7nZc7o9lRyHPcE9K6se8qvEL7DeejLD6t666rfjAuDYvNp
+	7JALgFrZ7IgC+NqPFv3zsog358uwvPqBCr5O44K2FphzWwS1Aav4Z4jIocf5KXn/WKLBGg
+	2GILKZKnZxQ5cqHoCQ6LELb04zTlWzc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n1FTh+Jp;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784015672;
+	s=arc-20220608; t=1784015905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=muNa2L0Gvr5P+2C4uM3KspCgbioyyBjLnvMIGOkl3Gs=;
-	b=6HcbdGx/9aX7BglN8pIRKo2mFrBkyV+6KZvXFr+E8ckBgWrVD1eUNSWUyqbbSQkWmtf1+d
-	2Thzux2JYtRpMO0wpZ30fQUCjAkxm1AoIojrgWInFR/qFbJVlpjHSaDKmziIJT7zeeXCpe
-	7HT3Laf9mvkgwPpcBVwOReyD/rkWT2Y=
-X-UUID: 386c8df27f5911f1aa26b74ffac11d73-20260714
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:05dbf085-a693-45e8-a0b6-84f55bc50ee6,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:05dbf085-a693-45e8-a0b6-84f55bc50ee6,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:40f5943f7a49aee119523de9c1afc868,BulkI
-	D:260714155423MQ7OG88W,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk
-	:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,
-	BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 386c8df27f5911f1aa26b74ffac11d73-20260714
-X-User: wangxuewen@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1772328423; Tue, 14 Jul 2026 15:54:20 +0800
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH v1] mm/damon: remove trailing semicolons after function definitions
-Date: Tue, 14 Jul 2026 15:53:58 +0800
-Message-Id: <20260714075358.1592393-1-wangxuewen@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OkniB9iRE9HjM/WA7MlrZBOT68W89sN6W9xYL05jo1s=;
+	b=UCa5W6bTeEyh0IXVPZqugrHMhbe6raStorLXBU3x4RrQHGE/pJk5mdwRqBIVIQnZPYpSEW
+	KvDN6UUOF+1gNcupTgEhQGua7s3kVIqrfjr2GGLn0cPRxYVlGNM9sB/LOjR+3pqfOIaOsh
+	s7J/lG58QwOqN6qhOy1PO2HKj25UImI=
+Message-ID: <0f52a483-27d1-480a-bb0c-99c108e676b5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784015899;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OkniB9iRE9HjM/WA7MlrZBOT68W89sN6W9xYL05jo1s=;
+	b=n1FTh+JpAeQQlCuAEVfL1kEPAaqwHzkFyq0bcYfdQFGZcO0WXrEo1an3hYHF+gNGckdoeW
+	5qY5kmuEbYAKtGE7erW9NHPRe87+U8HJgjM72MdPXsD+Yp+HGcq2+bX7BIH3OOEFUQ3DnR
+	KqsX1p+oGDyvM7JxdHHUIec785AJgP8=
+Date: Tue, 14 Jul 2026 15:58:04 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B8E334000D
+Subject: Re: [PATCH 2/2] mm: vmscan: fix node reclaim ignoring swappiness
+ parameter
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ David Hildenbrand <david@kernel.org>, Barry Song <baohua@kernel.org>,
+ Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260711091157.306070-1-ridong.chen@linux.dev>
+ <20260711091157.306070-3-ridong.chen@linux.dev>
+ <20260713112803.GF276793@cmpxchg.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <20260713112803.GF276793@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: C4BDD12000C
 X-Rspam-User: 
-X-Stat-Signature: 88guo8adg9ryoyur67z83jonb54az6eq
+X-Stat-Signature: 37ocyuummbumox7buot3quuhx1m5eryn
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1784015670-209664
-X-HE-Meta: U2FsdGVkX1//QMQO2JvyAIRE5ZHDSK+708tKR/QN90IloNcHYSSZaJC/b01rYiNU0As5DepTkqB3iEO1edSAamv3gCJiYewCiOnkGrpKsqbn4pu6LdP+eCzJ1aUbuJd2oa6gQRMoBRg4tgjf4ETwcgt3uUGRT1WeWg1AIMh0hoHBCakomLnuJehVtbgBHsWdgngxaRyZFq6PoCDYqJF7S2oVhvFlUygd+icVwoDnC3rESrRIrrHw9leGShdbg1Wt9IhKvhn1XS1OFZsfa7ogMOU7xNGHw2woS9iyvOVkrtZuQyUjthx0yD/RfFiR8hY14axN9lt0U6hfLZKfS32raedKKdvxiM2WsZALuKmJR//Gm2eUfRekb+nLZX+FETcb/sJke3Tsp/kYUSmKo8pJwokHx/5EhL3PkJ/saPIKgMO/CnCCA6VFaXq0fsM5wgHaBoJh8v7DV4gy0qCEpOBeHV2S14/qgf8q1KOSWOYTPAJ1J+xhPehOm/zmRmupsnBhY+6fFNmjBh6qZA2AaWDzNmAG428USlKo60oSu1KypKkB6gC6WZe8ITV9F2y80hOVg1yIdzWzEL4g/Er73pGdg5RuIefXCabckvoGL+Z5u4axtOPSF02waBcx/VfJeR5ldCtNY3jxKwB2SaqJK2+pDe/Q+iQO0uiorT4X+eHXA01khT7Q2oTKaSmu0VBFGlvCLEph/M+/By752rLqr/6JQY51XOuYdHEkMiI8iw/LYVGm389zuXB0oELk9VvgKeOUucJlXWmdvzVrY44WiJJLDe+eWgJ/JNVW42xU7iRipuRONZl/BWW4XOLu5m/k8Nc5Dttec147QeILZcPTPC09dZ5O/XZa04ofQMYjOahtNpULXJytpORR16aqxv2An91gNgiFVecLsJ6njyDA2IcM+ERJArSVgwYQkMSY/sQ7AKllN4kjDmALfjwGBU9jJBirxTe0ZkLRl6gbp1FeSHD
- BpX4pE0H
- O/1lA
+X-HE-Tag: 1784015904-626312
+X-HE-Meta: U2FsdGVkX19hJwIF8jz8FQ6wz8vWGHQW6uTqFmoNLZ06pdlnrBjRNP6EhmuizfJ27vifWEL9qv4j2rjLS29FywIdxv2fPfJe8BTXof06toFmw4VrXTefnIshGg0sseUbyk9YJ44vztY25c+5w1hV3kJ+ezIpGGrkPcW/lovJjw4hLwe/DOYK0OidPhtL7kVc/z8/xR4TLWHYtzQqpMGZgvo88xnoWhJ5yhiWwjPRszDfvUxqWB855Ti0Mmf6eXIqlxXr0L1VahDCwpCI/cP2sWqfsM8hiOlI6MPbrb2HvCwWaZKrhwsZI6pe36MNKvp7VI/CFQZJ1te7VAhAyk8mcboPhl9ivbaPLOlL0EcH2y4nFGGNo52NHtjMh07csZBz7/ErHNYB8IW76BO8zOIi+BXTlt2ldT/yP1+Svh4Qs9NClPB1BhUPN9KgETk0yJWS0P3I/KfA6EJoKtwovTm/KFWMt2Va6VVwoLoX1akwI+UlI52rO6ZKvygR+YCWv4yoLGHapwU260CmNPh5axe551CWr/6Ix4y8MIFioKC+o53LSa/voN3SvrXVBNj7oSh+KlZQUL0jWCmVJfEcCBdQfXF1/BCFcWFXcDj6wqxwB9lSxQKM71CH2emXCEhqLw6dElIF7wbuIbsyinjziJTsvG7f0nSJDx2J2/wCjpWK9+xH2/JJiFALaCNfyaSFotfR1gw8xWRaiETS+fm3vYoZslE+nyJRQmfx/BilrmzgEZZvcFzTHOv1AuZVYkhPZwr6MQOUvV2qbm1pNeAHKKmqaXMBUGzvA1Aau7jqxoo025TbFfo8xiLFQumP/SReI5q/4QTjrr37ycxsyq8j6hn1G3npEzKohRRDP/qJL1Zk644F5D81CTZHp1LCAxGkqfMTTG5QbOxAEmz0J6kWNIuzyVoRHMLYX1u6jtcSfMwgx1MCVlxzx9BejfhNOyrNUhhxCcN3qI1paQ5gsfhcvF1
+ ibAOkjNj
+ hPMySrFUy2SYOQmHFTUM+RGRXJg1mevZu5/gfrpxQ1nCIqVi4qB3JimfrrO0o4UTruOFhFPHamDH3wl8Qf86RG3xKcygb1gpwzIOVXwf+W3fw3M3ipzyeXrlz1NcFSXPGe4oCSCJlFtW/HLzJkzxaEkcC+4F3oNkaakR7JQ+SayV4005W3pbFsELzpQ2uQLH9TMcI3NcU44II2yQQVLqEOmyUPy4Jh16SBwOjbcXAnJsSl5M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,61 +97,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Three function definitions terminate with '};' instead of '}',
-which is unnecessary and inconsistent with kernel coding style:
+Hi Johannes,
 
-- damon_pa_initcall() in paddr.c
-- damon_va_initcall() in vaddr.c
-- damos_get_some_mem_psi_total() in core.c
+> Probably warrants a stable CC for 6.16 as well since this is pretty
+> user-visible breakage.
 
-No functional change intended.
+Thanks for the stable tag suggestion.
+I checked the commit baseline:
 
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
----
- mm/damon/core.c  | 2 +-
- mm/damon/paddr.c | 2 +-
- mm/damon/vaddr.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+git name-rev b980077899ea
+b980077899ea tags/v6.17-rc1
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 7e4b9affc5b0..4197957009aa 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2579,7 +2579,7 @@ static u64 damos_get_some_mem_psi_total(void)
- static inline u64 damos_get_some_mem_psi_total(void)
- {
- 	return 0;
--};
-+}
- 
- #endif	/* CONFIG_PSI */
- 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index d0598f5f2688..17353b14af77 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -453,6 +453,6 @@ static int __init damon_pa_initcall(void)
- 	};
- 
- 	return damon_register_ops(&ops);
--};
-+}
- 
- subsys_initcall(damon_pa_initcall);
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index d27147603564..13f4e05f871b 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -983,7 +983,7 @@ static int __init damon_va_initcall(void)
- 	if (err)
- 		return err;
- 	return damon_register_ops(&ops_fvaddr);
--};
-+}
- 
- subsys_initcall(damon_va_initcall);
- 
+So this should be tagged for 6.17+ rather than 6.16. I'll add:
+
+Cc: stable@vger.kernel.org # 6.17+
+
 -- 
-2.25.1
+Best regards
+Ridong
 
 
