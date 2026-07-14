@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07650C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:34:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DBBDC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:34:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EABB56B0092; Tue, 14 Jul 2026 00:34:46 -0400 (EDT)
+	id 1654F6B008A; Tue, 14 Jul 2026 00:34:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDF006B008A; Tue, 14 Jul 2026 00:34:46 -0400 (EDT)
+	id EA3216B008C; Tue, 14 Jul 2026 00:34:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C584F6B0095; Tue, 14 Jul 2026 00:34:46 -0400 (EDT)
+	id D1BA86B0092; Tue, 14 Jul 2026 00:34:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 91CC36B008A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 999DA6B008C
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:34:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 16A22140233
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D8381A0291
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:46 +0000 (UTC)
-X-FDA: 84986116572.23.96412E2
+X-FDA: 84986116572.21.6BC4EB4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 78EB340003
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7B96FC0004
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:44 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YUYkN1dy;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nP6v27zd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784003684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0BZxDJkFvulRjFQmRcUYV8xQhtaa1R3auddZnH6jsbQ=;
-	b=ux3tWeRV3USr0YPsYBz6vqUuGXd81YVkwD1BgVXVGi+ZymboAakKarIaJYIZIFPq5fqFYu
-	HyhvhpCkI1dlE/6R585VF9v5e2gABymLH7LuTlTzXfLW1PoFJ219hLFQNZ5hGxmVxGS48b
-	cKy3MnCMVyPRczJGgEj2nwiUu2kMMQE=
+	bh=3wUP+A3V/Raa3GTzyt1oBi5Pi6+PUzbHoN/8enGeFJg=;
+	b=7r652a3FojC6c5glQYnUwNU6DlSPgGUXk1CDuZbOU4QXbt31VDBUDEgcbsIttpELzfPh8b
+	si6L86T0FHp5OZ+s76znXKBuxCx0RIK8iGqlMD0GS3scHbsitSUfJpOE7Mn2RXfMzTJQ3u
+	dMNeyenUGj4f8nO5UEmvNGQ2iVadp4Y=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YUYkN1dy;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nP6v27zd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1784003684;
-	b=cBYSAaujQpozDBkOjt2y9va3bhOr0fOHsoyriBjEA+Em8FbvcqmI9rFDgMpy/OcYVYtr68
-	95cSVm5A+bMCPBURBEXGthSVNlr1egKqICAz8bBsoDpKHiZk8BFfYPleaKc+f9tfBldVzk
-	IbdHZgWG4TvbUe3vMb+0bkHSUUIA8Jg=
+	b=PmT/S1GH6guwLof3nS2B57/EGyRy4zbms+bhv80beznhN9WxoLYvDZA6i1EKynizQy7g85
+	HDC5zuKfa/2zH4Sx5D8x+HG9eUTrw8zBi+ar6FcrKqNJS5qD0Ezm4+MnaZjsPx108Xb5fQ
+	EXNagqXoz1Y1ZKs4jSaUT/Vp0oqQjk0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 924E9439F2
+	by sea.source.kernel.org (Postfix) with ESMTP id 49FE34073D
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D2E1F00A3F;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A951F00A3D;
 	Tue, 14 Jul 2026 04:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784003683;
-	bh=0BZxDJkFvulRjFQmRcUYV8xQhtaa1R3auddZnH6jsbQ=;
+	bh=3wUP+A3V/Raa3GTzyt1oBi5Pi6+PUzbHoN/8enGeFJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YUYkN1dyAZZVX7GlyawUhpPuUYcxjJtD7mNDEzExlsgDd4Lzuh00cSJ+ITsVT/eQB
-	 6jPW6zrcsJ4xnAnhUlxGkI7jSZDm2eJNk6T8EGMom1fxQMpKMfjFUlbThFWHc+yC2k
-	 ybl+0eRpOf/YZhEAcqPsXgjhXqYP1Yk65xjc3ThZElPr1qw8ZoJod2ngN2laAtKNWe
-	 GaiX450u37uI+T8dCKsgQjKQ4G1oZAjlFQygK57rOODlYtwlPSTJeOuhVYrDpeViab
-	 QsqEzegoO8dlsrEVtXuTO4jsBiDMCdpoh9IZvZImOzpVEe7wrrylv5e83j5BEkHayz
-	 VYoy9D59OoWHg==
+	b=nP6v27zd4aZIjybbP2COmXtRqP64OzGCediBE5NcFQI8GuA0zz1gNkaynT70/+zZk
+	 yM+YIwnMmbkXKyTYLa0jGcOWwSzO6VuBYhrE3QZ/lHkw/w8SkMOme1mrQG4WpPLEEZ
+	 Ad4GcPivWRMb3xXEXLWv5ahPmUJEBpH5ttpSp9s/LLZMW5HyqGzYkOcU2/jem0emEC
+	 Hm9+poQXtUCUeZkviaPqjtr9ZHdHqc0GFWwu44Qdc9aqZOxpkkvgepa64ezz8nHjsF
+	 4cv8fzPDSCneTLC+RaCJLT9e2tqMg4o3r0+BWRbNsxavDweTgBtn0dYb6ro2E6GufB
+	 8EPNdi2OXrOzA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 03/10] mm/damon/core: hide private damos_quota_goal fields
-Date: Mon, 13 Jul 2026 21:34:29 -0700
-Message-ID: <20260714043437.95811-4-sj@kernel.org>
+Subject: [RFC PATCH 02/10] mm/damon/core: hide private damon_target fields
+Date: Mon, 13 Jul 2026 21:34:28 -0700
+Message-ID: <20260714043437.95811-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260714043437.95811-1-sj@kernel.org>
 References: <20260714043437.95811-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4rg35mtmkk9yptaou5cynyfyk6anyrya
-X-Rspamd-Queue-Id: 78EB340003
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784003684-428725
-X-HE-Meta: U2FsdGVkX1/HObFD7zPUDrhG+3CEHdTVv6eY2sRsiT/ZNBhXtNVMDCz/64ik7M50u7Nm7wyNiyBCizu7Ga8gPeQ5611Qqbc2m5pBF4WS/Or9QzXv/3tx2fJUVfiv571Mxuy4vAv+xpzMrNqzRKTfHH4qAFRzqJxqWCZZTUmeisDGP8b4hA7RT3w+Xx4VeN9ANth6cx04bQEQKfsLzIfrMomqTdlTB9/l0uq5dvhv9A0JknSO7lTRBXDeXAFecIY2O+pv206M4zz6+i1z1QN+tHoFSS6rEGKrBNzmj0sS63perNpfm9noBYyvEIisZ7NdTbqjzsqQzZa+w8cYSdLqRunzP1sZi4O9hn8CJKEOy5RKznlkKDivNwpzBEeDcsI+1XHtNHL2kDecg1UjNVzPbiNPiUSi1w/fTbVenXw8fzgf98LXwE29+oQYJTvO8d2LgimF6L+5jmCz8P29D5gPH1G3TkFjt8BCxDOAOpcw8ieN31IvHiEcDW5ufPcEeWYHxrLjAcesiuzHylW5x03GgYPN1ZnxbxKs4sUG92eQXxHTYFPBTLqPXA3fcv2OxviI8eQESpIq2EiHKxkhBRKMScgqCcTZrmDGdpHlgAsl0suCxFZPpAESlVoErsw1YDdarfc8QWssJ2f/mRFBhVuD0OEZXKGoReXEZQ66+PyNNN3j6uTAOCTHxs/Z1BG7LbIB3oTNTR9i+jKjShTSNrvH6C/wu/OxyuAxi0fUzuwP4xQpVVMRSyWZ6RKjoDRNq7j/DwMmigg/KP3GnGgFn4aVJ2S9NRShe+RxOQMQtil58FgRglFt77qT6X5UDGT815DchnKhj9hw8t25rlgw5hsWWoGZBV7htPevsItHfehFFMxADuVIXgd6bTztr+z5f9CW1WfAIRLcXIB/x9Goj7k9L9BjDJk04rDxPfsJ8jfwcx/IYA9MtZKCdDqmggqLERWdoafo8hEaWP9LF01KbnE
- UrxMmZdi
- yyLy3CPANiazuT+28L96h44BWWm1pS27VSr6NUpj9PdokgX8arc+tHkxoDT1a1Iz19TCt/JgjSQdq7x8wwmLxsKJFuC1OeoMn7XreGZKQJ5BPYGelbAZ2O38Ke/oqSJ1LsDhfKaFSJFQpo0SqUq7B8m+gBZOkfcRPwRn/IFpUTwsk3gz13Do5olXUl1T6BvKdQTGdZsqjpS1K4t5gBRUEVnZbaffDXWJBLjHM1uV8H784hZ0+uJrnjfaImrCxvZOrMOZehuVtP/MaLKGWy69hcyvvBb5KOF1BO12tuj/FJKzg4olEgyExstDftJee3iD3vmuYqEknoBsrZ8Hi2yGpw+R2ITiwhvOrkq09
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7B96FC0004
+X-Stat-Signature: tc31se4womxz6obja5ejacq91pndig9s
+X-HE-Tag: 1784003684-412678
+X-HE-Meta: U2FsdGVkX18GciyhCVaa0whRP6FEONmC49rZGcEKYZ0dg+g21BUrTMem1iwQdhiuX6edpLIX1P65dyv4ucnp7gobcop3zf90nX/sZADqSOljGgMMA3LcTMf7O3xvFrIaBi2ydQXtroE3BJU8KrEhHM59NqNkOB5BpLa2fNRAny3SH4yTpU2zZHfRSxEmVwN1V1rsVm4tBCE6efWIDd056IXzDKkuTZpdBL7IPH7HSMz5aaCNKfQhZL6tg2L6zX+e6OO2FnmFZcOICW7qV8NOPptZfdVT7OOYS6u4N/7l6Js3V3wKEYxFzmSCLI44Xzgqe9nUSzGI0/OhJ4cjV+ntbQ9CNc6kKw3oqzbBeS7cpWwewno3GqdrOVtEOYvBx1QyyOMYMTvTSK0lExZ3/EUl8ha787bxVofiDe9gP6zqXkQeBARLb08Ef8Dg8KmfStLGtDN0bEDAr0hkInm0SHEsK6Cqm7/zClhkYyKsQKzRCb2DKswhxo3ATmVmHmeLVYEGzvbMbWm+mjsuGKr3snCJwTbOKIi/2usa87N8ddtUQUw5uYTU+e6vRr/GTzrN6gx7hNZXSOIWj3KH45IF35I0wKyUzDYDz/gkJeN/Vhe7KujQt2QzKCFP0VGz70ApNI01z2FRRxjdcrqzxqeUumcPePhB3DR26CpqbCYWA5/6oLdYl2xDtgL3fM17OgXluFTTqvMnGcScY5UQkzjp8+8BMELFAV2tg1dzJNOzrM9dN/IZmtuvPqB9V6YfQyfnflffKYaL6vifL0OOWXwYuViKviG+pUq+GM10rUCpmptYQ1gyXclaWM3F/RZ1ztii9JZVz92YUzub9D1Ud9NS54QUUYuDUDApVf3Z6o/S4JnJJXWz7xGnFOYmtfO5tcfZTKnZd0CERpxFvJqQ2hQSuQF2FxOEDTudNKcxUDh7NuyPmHixeMOtKuXHY+IkcHHfcgGUuwax/HKwBRccH9oA9zw
+ 1pLBp9aU
+ oRf7MprAoPWFIQlqDieJxyivpNmkOE2zebX/7QsrPzM60RCpJXFkyWkqLv+HZhmoD8gq5s8Hn0xokcFeKzah2FbtwMejmR0XIlUcX6TPw3YjCX6r/eERxA9wNs2/NIkbyTtCzQfngb0ksa2fRK4ZFplwidVC9dlUNIWrAOi4bQmUqM6YE3AkNKIAb83xHtgY5FTF6yzmFwilRToV8NGZ2gjtDeOla4MWAtsoL6cG5mYwkr8xBBu8xp2DuBRXtRO/jBhxnbaOlh8hUUy2ReQQDq5Tz4BwBSdnwWaq9+Dnjf85zwpBXsZ7gHc6NT4CJDG4fPW6k8pBbPBguq2TT8hs+DxmTd8oB1nmg3WpL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,49 +92,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-'last_psi_total' and 'list' of damos_quota_goal are intended to be used
-by only the DAMON core layer.  Those are mistakenly not marked as
-private, though.  Mark as private.
+'nr_regions', 'regions_list' and 'list' fields of damon_target are
+intended to be used by only the DAMON core layer.  Those are mistakenly
+not marked as private.  Mark as private.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ include/linux/damon.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 6e160557a0014..d838cc27ee72a 100644
+index d32377e7e535e..6e160557a0014 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -175,10 +175,8 @@ enum damos_quota_goal_metric {
-  * @metric:		Metric to be used for representing the goal.
-  * @target_value:	Target value of @metric to achieve with the tuning.
-  * @current_value:	Current value of @metric.
-- * @last_psi_total:	Last measured total PSI
-  * @nid:		Node id.
-  * @memcg_id:		Memcg id.
+@@ -79,9 +79,6 @@ struct damon_region {
+ /**
+  * struct damon_target - Represents a monitoring target.
+  * @pid:		The PID of the virtual address space to monitor.
+- * @nr_regions:		Number of monitoring target regions of this target.
+- * @regions_list:	Head of the monitoring target regions of this target.
 - * @list:		List head for siblings.
+  * @obsolete:		Whether the commit destination target is obsolete.
   *
-  * Data structure for getting the current score of the quota tuning goal.  The
-  * score is calculated by how close @current_value and @target_value are.  Then
-@@ -201,12 +199,17 @@ struct damos_quota_goal {
- 	unsigned long current_value;
- 	/* metric-dependent fields */
- 	union {
--		u64 last_psi_total;
- 		struct {
- 			int nid;
- 			u64 memcg_id;
- 		};
+  * Each monitoring context could have multiple targets.  For example, a context
+@@ -95,10 +92,14 @@ struct damon_region {
+  */
+ struct damon_target {
+ 	struct pid *pid;
++	bool obsolete;
 +/* private: */
-+		/* Last measured total PSI */
-+		u64 last_psi_total;
-+
- 	};
-+/* private: */
++	/* Number of monitoring target regions of this target. */
+ 	unsigned int nr_regions;
++	/* Head of the monitoring target regions of this target. */
+ 	struct list_head regions_list;
 +	/* List head for siblings. */
  	struct list_head list;
+-	bool obsolete;
  };
  
+ /**
 -- 
 2.47.3
 
