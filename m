@@ -4,78 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66530C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF7D8C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:28:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 597CD6B00A3; Tue, 14 Jul 2026 09:26:12 -0400 (EDT)
+	id 8A9ED6B008C; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56FDE6B00A6; Tue, 14 Jul 2026 09:26:12 -0400 (EDT)
+	id 85A146B0092; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43A596B00A9; Tue, 14 Jul 2026 09:26:12 -0400 (EDT)
+	id 74BB16B0098; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BAA06B00A3
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:26:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A2091202CC
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:26:11 +0000 (UTC)
-X-FDA: 84987455742.29.2C6A2E5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F13C6B008C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:28:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B98FF160354
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:28:24 +0000 (UTC)
+X-FDA: 84987461328.08.D668088
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A8E601A0010
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:26:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z1XhDKT8;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0097E180002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:28:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lP3K0krZ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784035569;
+	s=arc-20220608; t=1784035703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1mQLTZWwP6nMInX5WTcyghl8Fqock2YYXubpJfFkSWk=;
-	b=7eHvPC27GnIr0K4K0CScisXedmI/eKs88QS2GyebwGWSldFJPRoZffZ3umi50aymXKX9zP
-	+KN1pjwyAuSPsw+5gPA3JWKYAWQUm0aQYc1SnHstZXESvt8dEZ4S9oJnM17slhaFfhYb2F
-	1RH8IkqNB6Xf6jwBj89opIC29K9aB1I=
+	bh=h4NWkOyTUgNN9NiCMlPZ/SA4EFAV9liu5YT3JftznMo=;
+	b=Z1/GH/LQ3AfbHAApMFI83LIyHn/wW3g64NkZfFq5IOGJtH7APmQtLbRIV7JFqC2as2xA/4
+	eF1y5Hk9Oh05ufuhYZjzBKLvMbLfSnH6taHe6Z6Cq95wanduCMMHtlWbH5QvamPphBnipB
+	i6HO8kefYc4NE89tJqQSuA8YCqsDHbQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z1XhDKT8;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lP3K0krZ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784035569;
-	b=GmGUKcz3zLcXLyzfAjiq2SgOmpGZkkv7wyqgiIPlqNZ4UfXhErgiY+kKen5kJSlgfotYCn
-	8d6vkGL7NCmBelZWdFTvO1VnY8E9vLP0/1JB/xlX8SUU3y9yYU5hVxSUl4JzXkmH5QXLbQ
-	rhVYoAp9Bk053dxbaRCA8dSD7bpe95U=
+	t=1784035703;
+	b=mdUaVsejlxhBXcmzoAO6hvGqvNoDVA9IBb/or2iYaBoZ/DoQKrIUCbZSxxvpXTZNBY685k
+	AQPYjrs+AcVfODN+FyjayceQl/7msr3tweINIK1i9/fR/jHODWLLioD5Fui7aGej+1CtB5
+	LjwJWYZM3L7m33N28B76uHiQE1gfO0Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 31962601ED;
-	Tue, 14 Jul 2026 13:26:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE421F000E9;
-	Tue, 14 Jul 2026 13:26:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8279C601ED;
+	Tue, 14 Jul 2026 13:28:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1024E1F00A3E;
+	Tue, 14 Jul 2026 13:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784035568;
-	bh=1mQLTZWwP6nMInX5WTcyghl8Fqock2YYXubpJfFkSWk=;
+	s=k20260515; t=1784035702;
+	bh=h4NWkOyTUgNN9NiCMlPZ/SA4EFAV9liu5YT3JftznMo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Z1XhDKT87qBocQzpl60CD0aLeOnDf9acs+kQMWgukwr8tQ0psN4Bkv6tAD11itR9P
-	 iuLieA+4AEN/80Vk/BS3Z8C3vtQ630UrLaXEGohYcbTZUtAix0v3dwTj51vxwmX19G
-	 +9SGVmB/sy8yHokphiwWVGs1i/FEUScb1DinJVIMzjuqw/P0mqMz2y1qSW7q2BRUcg
-	 OHmwgZaSkTfXFbQbVu13v1QPY+pgY0hPZ+BAm2Zr2dhOdgywpvqbckr0vRa/oQpePc
-	 ws3/1jY8x+I3HwyCmdk+HQ81UJljfD8VltMEmKq8h7RSrezPEyOVNjqnqN850mf/+G
-	 sTcrXidnvmh/w==
-Message-ID: <5344474e-1584-48af-97f9-4a6a97057e9e@kernel.org>
-Date: Tue, 14 Jul 2026 15:26:05 +0200
+	b=lP3K0krZT7KuUIMbksx4cF6z3GlkKoEdsdZDCpLRlfuPTtfjcJHQYfY61LjbX+RFn
+	 xsAzCWDSz7j3EDx5rjpzm9GAO081oPgUCEamq2oJ1LbuU78hMhuxIxIzzRB5vv0Gga
+	 NfOu2mEqX8yh7AVtG7nYGDLo/x5AtUoi8sSPSdhsJuQHjXAOLn8ZKHYGB1hUWaZwKV
+	 g/BsgXqyoXSGTPQWgEpJlG7IFDVA0zCK0AHmYJGTIWWYPsKM6dDisFp1KHxkXJXIEZ
+	 KZzOjSkeivHRrO22IckyIwmLZC2oB/e0D4dV9ZuIV9HmhzGx5Kl/Fl7+BcLduZpwZc
+	 rQrbmaGQiAyUQ==
+Message-ID: <51bc272e-53ae-449c-9ac1-bdac2775e47e@kernel.org>
+Date: Tue, 14 Jul 2026 15:28:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] mm/mm_slot.h: add comments for
- mm_slot_lookup/insert
-To: xu.xin16@zte.com.cn, akpm@linux-foundation.org, ljs@kernel.org,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
- lance.yang@linux.dev, usama.arif@linux.dev, chengming.zhou@linux.dev,
- qi.zheng@linux.dev, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, wang.yaxin@zte.com.cn
-References: <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
+Subject: Re: [PATCH] mm/kconfig: Drop redundant dependency wrappers
+To: Kaitao Cheng <kaitao.cheng@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Julian Braha <julianbraha@gmail.com>, Muchun Song <muchun.song@linux.dev>,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+References: <20260712093326.8313-1-kaitao.cheng@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
+In-Reply-To: <20260712093326.8313-1-kaitao.cheng@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dqzhecp8e4nnhtu9fy57u31g63jiy4i3
+X-Rspamd-Queue-Id: 0097E180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A8E601A0010
-X-Stat-Signature: swmifdkzu1br89eprwkuabw9gsoo37x4
-X-HE-Tag: 1784035569-413475
-X-HE-Meta: U2FsdGVkX19vwQqdZ5GzeJic9WvCqirX843FlAOzOevyV1iNpDJj+GOLqKQskv/LsKd9qVz6c1JpJMuiT5XvHY2Dkd8y9Atx/mpWvD65QXyE7konknyY8kIzVVAlrRblEe+hNtusuatoz8uY84qiOC+jWXxV3ykHFIdIeiLFfSnVj8p1mBuEYBNh6vBd9RUuhH9L0UApTQ/ySb424e39fWCbzFPLDPxuJfrGV69SOPDGlfIk5bV2YVFoojd/wHsUyzJcz/XsE+YE0lXDUF4URkPdHJdJ3G/E40kuCwbzsTcTG5u457LJygiIsB5HYZTie2xRs7QF2Ke2cM+pzXSgIucYMNDQLHDjLFRrwPzwZYFytoB9wtyRBSxhhVtZ443mI/REU2hk1C7Q8FOsnS4acJvbgjv9+3tHwfd6K5e7cIFcWF+oaDfTzq6A34SXeQxW0S9VlnYcbLeg4D2deV53b/cgA+iwEs15fXZjNy9VJwYcIfnvc/lFqX8s7fTAuCINxM2uR0qIc79DVUO8rtRUXZh+j3vqk7s/iuZw0wxdUz0lqzmj3lj24PEWrrFJCMo7Ldke2AfFYZ/oJehnFNdwgwpT92M8/iEtBAE5oMpfoe3dDmOVd1HZLQPPoWhmM7JFwmNeivj52tU5zMImq9mq5GCqP/w2VAUgItsNDCFFLJs5JVtrZ/z7Lml63pHbcRjwaxqP4rsfsb1/gxLby+xL7Rh0Xc0fhqoqpRyjm4iQdBT2P4dcOrlgaqTBtUlnvEZNxDGnE6Cj9E8r6ZTcxl1PBpVrU8wYwX2PXndhICHObvEpFOcCg8V3iZ/M8evD75PAWQg2IzlKAcFPeSI8O/AZ1h7hhwbjintHrh6mSoKhzCYFU8VrwNMsr4oYPuH1wjgIl3OCzvAoO+q+AdrtpLIoHZPqDTRnY42Nj/GkzHaHpZffRvL12waa1qcCDHhweC9ZVHLzbjGnH5OWsiJ79hC
- OXd0S0GW
- SC5kTBKtZJBMp/agpM3sq/BuvdTGSvYFkAarA/yirmjhv+vyF6Nc5bYiRWySEzBDcS97oZ9D5s0gMWnv7ysC9FOXPn5r+N9oEXbkxCTBrXfs1xxJ56GCuOx6Wv1Wbgq0q9CItD5B6mxaid8ESUYRFFpuZVEvhCqERfojYetJCJt0rZlFLa8RPRjbEh5mW+PXf03/s5TYrnH+QnmgToaD2WICjP89wKha+dx6BZrSGBV8P4Hs6IVgYX1gh6a5QdWgM6NZAH+J5xMneaI7EjpetAvrNaCgyQqOHcEmtexei9ivxwZO918hn4SEb+qcD7S8ubec1niXiIdJ9jO1lODkJ3qPypIAalmwAwLNQhPteCZavs6xds/wl2QW2kzbe1kjrNfKxzzCjDUX+RCk=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784035702-558105
+X-HE-Meta: U2FsdGVkX18tdr/jqMll3TZzDDn6GFxBkujCuwoa1ed8BOH2hHpRAaWemVL7fMlviy/p5zPcdv7+C4TrPtimUcLwUTbZ7MdsF86bqKNJUxkEDV7bVU3CekKfRguKkzTKqUKcCQHsdifvG7ZGteAp76CUKArxwp/lPbkt/2tBeWBS0xBoAnq4NUQUNYGUU7ugcL2jprNydXrUiuky+JB5IdNioK3rqI9labt1MKpS8oG9AVBpVW3IERJRIXKWPrTR5AkToMs3olKLpdfcgpxWXiOW/SIETzrptEKQWMKFKyiaoCWEYrkddNIb9L3C9G9v9IHg0ENZ5P7u19k4RBAY60bvgFoCzA5ZJczSXVSAoPpdvqn88lxKxyP0TTjtCeZJv9yDQPquOij6Xf/iNZdK7cZ5n8abjvmzHtQj7NRHVd0uV7zz2Wmo4AuDzUrPG43NB+Gr46KAdqnYC3TU2y7Dks9gk9MyEQEss3HC73VgN88ogkhi6iaTeCPRM3HAYxczpEp61fnI23BJ6NpF8Nw1/EaU9w8x4OKB8HhYQzXcC0hnmTQsmEGrrRNK+V4oYo64CDfzsoo/XiwC/Iufd4Ika7fQ/4jJzLvFxX0k8OBo/u/RdavKjotHyLWtAtevX8q/b4Ciw9Wsedzt9qUFimsKmEWt7LIZGmKPnf7bvh8XUEnkdgPb5TkF4gsBIUfiGUCXcn1n0Fdpt1bLnEqlSOrLDqyRm9mDaS2WiOiSYUnDShM6Rez9JDIoetMrOqMejJ+PSEFllIo8aiGdcj1BfAMr3Mrul4MYA36ZlmXsjwPAzqVsfttPf6OR01w+ChS3hh2BhDfx+H37RmdASfEWfGCPSVaBGr9zQmd0AXSi/w/rGz0HwGszvrs3p2z2zPKDVmJLT88/ofsXG6ac8kyLPoEsll1HdH6AvmknI0CCYpbgyiyOMQK3zoO9jtmB24fmMjr+uvKxI0LQxLxsyr2218s
+ Qsgh7uMB
+ M74qBiTzwhntn14fM5ts692BLXIu1uCdoOS8/VjnDLyo0q7SeCcbxpJYqG6xoFBBLJ4YGQU08aFM/DQYVY9jkFWPPnO9Buaz79hkF70u+flB0PTdUdFPnez8OP7OMNL4e/SRtZ8upnyqQTcTXfAhYeJ3cNg+ef8Sq1ar2ijjydPPVx83QhtVdCEqyBPLEzFhkkhrs/Yy0Ag3ceKkVypb9zXMtgYM6f0HgQnMOxRQuXzTEr1uJBOhKJ97J13lnRGBsoWhY6OwcFZ9QkvkszsWYarwKBUnkTwLgkBowOsGyXAnStgK2JXDEDCOVHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,17 +142,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 03:28, xu.xin16@zte.com.cn wrote:
-> From: xu xin <xu.xin16@zte.com.cn>
+On 7/12/26 11:33, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
 > 
-> mm_slot_lookup() and mm_slot_insert() are the only helpers in
-> this header that are implemented as macros rather than static inline
-> functions. This may look inconsistent without explanation.
+> Some mm Kconfig entries repeat dependencies that are already expressed by
+> their surrounding blocks or menus.
 > 
-> Explain they must be macros because hash_for_each_possible()
-> needs the table as an array (for sizeof), not a pointer.
+> The zsmalloc allocator options menu already depends on ZSMALLOC, so the
+> outer if ZSMALLOC block does not add any extra constraint. MEMORY_HOTREMOVE
+> and MHP_MEMMAP_ON_MEMORY are both inside the if MEMORY_HOTPLUG block, so
+> their local depends on MEMORY_HOTPLUG entries are redundant.
 > 
-> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> PTE_MARKER_UFFD_WP is the only entry under if USERFAULTFD. Move the
+> USERFAULTFD dependency into the symbol itself and combine it with the
+> architecture support dependency.
+> 
+> This keeps the same visibility and defaults while avoiding duplicate
+> dependency expressions.
+> 
+> Suggested-by: Julian Braha <julianbraha@gmail.com>
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 > ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
