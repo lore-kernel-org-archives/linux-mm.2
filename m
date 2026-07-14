@@ -4,104 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B00C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:43:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E1E8C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:45:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BA256B008A; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
+	id CDC546B008C; Mon, 13 Jul 2026 21:45:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 869EE6B008C; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
+	id C8C966B0092; Mon, 13 Jul 2026 21:45:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7814B6B0092; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
+	id BA7B26B0093; Mon, 13 Jul 2026 21:45:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 514836B008A
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:43:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C8A9A12020B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:22 +0000 (UTC)
-X-FDA: 84985684644.19.AFA5212
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F168018000A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SpkxnFaW;
-	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 908346B008C
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:45:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 120B7120210
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:45:14 +0000 (UTC)
+X-FDA: 84985689348.24.47A37FA
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 51E741C0006
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:45:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=RRpYOdHo;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=xiqi2@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783993401;
+	s=arc-20220608; t=1783993512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNMroDnaFepYZc/4huUd7Zc+6s2smxbRPSRvFEcecJg=;
-	b=LRaWYE1kYKsomG5nW7FHQNRFgphchCT14/LbSLFujwJFgqZtDBBjASnEqKelMtkjZpdeas
-	Na0Fgpa870kn2wMLeV/uGk+NCNbxprtqpiDkhFXcBq1Q/BMk0NBnrKaQlvt/o+xR2mVIEO
-	9QHC3mx+PCulRzqD6OaLCxbk4rKRhcY=
+	bh=++7rftVlakMrFKrEO4lbgQgtkLGmOkhVD/bI4OObalE=;
+	b=IVD9MDTvC8nFWordt7SlySxgg0nGkclOD5VdWAVLvd7VrmHeYYfCMeDtYyRPW32LBOlIVU
+	2FCcyCUvUgIKwCtBKxgJqgK0h+JUD4VxgmBuyFoReJPtQUw+iZFuVLxqLfp9+3V0ZoCXYc
+	XryROc1Hg++dDxnyPgg8dcxKXJt+reo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SpkxnFaW;
-	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=RRpYOdHo;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=xiqi2@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783993401;
-	b=P6esT8OnQlo75IU5LYtYC+QnE7Znz6vs3lbTELioEtQBZkvrKiU0LjJ43UmVpdeSsOc4z3
-	7xOMIMHVuwdvOPb5SUyhGkfFKhfMjI22lpCyZkw3UadWwhnc+JAbkdcxrcSmMsU83BPtsi
-	dBKpx82N2n+OGRJ+ttrpwhMZcCo/iPQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6ACA860120
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3E01F000E9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:43:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783993400;
-	bh=ZNMroDnaFepYZc/4huUd7Zc+6s2smxbRPSRvFEcecJg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SpkxnFaWHOTlnomiAK5xhXSnZQ7KgvpHNeMNEbrRTVh/9P+b2IcN0g/0wbTIo3uiE
-	 V3B19G27nYJawbYLWHSTZtS6yocGcVRgLWfXDAr5mJU59zV+Rdi5O9jjFmSSfen1g+
-	 UHwggVK/mIKkQuCJ/V8Ftn8M2yxngNXv2vPI+Rbdykoof9qCtUTXFnK9sxTF2ejHjF
-	 40xwUodA3Vl2flw0AZTiEfkZCYv8sjTQzOcXG8Lz3ldFQ9K/wh7aGMT/aeTIjdvQhX
-	 IFy2ZYWgLwVMBFnc5mQV+y6ECr7CslOiIMjfT0jsQF8A3/Z+h+DSnqDXzmFMp/NKBK
-	 6QBGGBemgdRxA==
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c15bf5000so22485751cf.3
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 18:43:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RraoHz8EqR5rQAxVGXXtMBhVM5b4EoutEKd9Z5l/BR6Dj7JvyBQjEsp9SWyL52lmZQBXogx5L5weQ==@kvack.org
-X-Gm-Message-State: AOJu0YxBpfmXOcfao4rKQ4V46jSeku2SKYaLEF2quvADcF/OSxSEu4p5
-	MqCaSzMfjTvLfXUiN4RC3kOS0kU1nMNsl5+onryAUm4Lga2+YVxtlQTT9FFVtZY9k+izYtSbBol
-	XXJPV6ZKXW28PazOne9OFd3IOrvG2TrY=
-X-Received: by 2002:a05:622a:5513:b0:516:ea30:8756 with SMTP id
- d75a77b69052e-51cbf1426d9mr108072891cf.36.1783993399516; Mon, 13 Jul 2026
- 18:43:19 -0700 (PDT)
+	t=1783993512;
+	b=hFJpL8pFDikDU/eRXU91fyS+FQ1l6FgUx7j9HE1qa6254G7bXoTByU81fue4jQtItAtlPS
+	LJ1XNWTFB2iJlZUaFFPxvpJ2JY44CorNZkdDKlw7FYktoFfzY6ExXptb1KU8maNJAOdO1T
+	UB9ijM3edCAwYIHS2eXvsXSU7ic6+Pg=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=++7rftVlakMrFKrEO4lbgQgtkLGmOkhVD/bI4OObalE=;
+	b=RRpYOdHoz6aig9ixOWmUmHZ6DUP+FRy4yp9nJIvt1oWKQardHIM6lNOfdg4+SQio5nDymzU2T
+	g0eQmUzNqJQaSauuPYuMvyl50Fv1V3ReK3mFS0Nw0UBIlRTFUGMMExz1RsZP01r1nA0i4Sf0Rre
+	HGmNlL8ajvtOuwDwcP/YmUY=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gzhhG52WKz12LCc;
+	Tue, 14 Jul 2026 09:35:26 +0800 (CST)
+Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3A8004057D;
+	Tue, 14 Jul 2026 09:45:05 +0800 (CST)
+Received: from [10.174.178.56] (10.174.178.56) by
+ kwepemo200010.china.huawei.com (7.202.195.178) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 14 Jul 2026 09:45:04 +0800
+Message-ID: <6a756801-f4a5-44a5-abfd-e9ae57432c56@huawei.com>
+Date: Tue, 14 Jul 2026 09:45:03 +0800
 MIME-Version: 1.0
-References: <20260711091157.306070-1-ridong.chen@linux.dev>
- <20260711091157.306070-2-ridong.chen@linux.dev> <CAGsJ_4y39eSYqYwSPzqcZPk1wcJEYN3HZr83MPv8pMgN8Nct5A@mail.gmail.com>
- <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
-In-Reply-To: <87dc4105-b98b-4541-bafe-c0adfbf58836@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 14 Jul 2026 09:43:07 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
-X-Gm-Features: AVVi8Ccz7OC-clOMQQnSoiYTuyEXEArtL6roBTyfk92e5g9qCCo-JodquNZChkw
-Message-ID: <CAGsJ_4wDMrdvGksTJ1SMGE=aHY3CMY529ceKDD68cXLsHQCjtQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] memcg: move mem_cgroup_swappiness to memcontrol.h
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	David Hildenbrand <david@kernel.org>, Yuanchu Xie <yuanchu@google.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable/linux-6.6.y] mm/memory-failure: fix missing
+ ->mf_stats count when hugetlb folio already poisoned
+To: Naoya Horiguchi <naoya.horiguchi@nec.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Miaohe Lin <linmiaohe@huawei.com>
+CC: Jane Chu <jane.chu@oracle.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <sunnanyong@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <stable@vger.kernel.org>, <xiqi2@huawei.com>
+References: <20260706084118.1284271-1-xiqi2@huawei.com>
+Content-Language: en-GB
+From: Qi Xi <xiqi2@huawei.com>
+In-Reply-To: <20260706084118.1284271-1-xiqi2@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.56]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemo200010.china.huawei.com (7.202.195.178)
+X-Rspamd-Queue-Id: 51E741C0006
+X-Stat-Signature: wkepmobtmpeqzwstoif576t5mqxj86f4
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F168018000A
-X-Stat-Signature: 1eoa3ygscxajo1c7ofp1od7oxcqdpc4t
-X-HE-Tag: 1783993400-37027
-X-HE-Meta: U2FsdGVkX1/3k0eT+3H+uOZ/VsVWHD3MLz/LkUfY6qaANm020FGujeKtJbUNLV+9AuL1QoqfPI2URMtyc0w8c+QLuyuPxBlmyzrgJK5ZPaqtyXanr6GUKkUbRzwTUhbCpJ7dUV581loEeTj1yVIK4TwN8VjosPO+3r0szC0RPm0xUZXA5qu/3DVUCAHisvcrA2GgoJzP3/7apwsl1RKmd2VPeR3YKrq4IuOnQDchWvza1fofeyGWJqejGl/9vk0Up+QPPReytjc5/0HPQbmUIhijT93f9KLZcOtN47tlDiHhYvyXQ7F8/BsUX4nN3JGXDOun21+F6d02slXb6qzshtgfctfqOyugN7PcWKNZ5JF7LOFen1wR7/sOQSuyKriSSXKPBreZ7CeAw0RhaytD9pHAO6DQTptmQpOvg49DY54+9CKyRVuvAzu5ewwUPIUDs3XesI8NL9aTsDoaoPbjkssn5dorVK93j4RGiSWLupsOIq3oo4TM5vAPIoYuWV0ckOohebKiyNJY9bVgYW1WXpZV7rRLuzxENs82t3tZMcS2xDn+DOhqlBP5F/LVAscEV4Y58fMXHNCCkwV9stOQfI2Ol25f0F3G/7iH7ePO9J3gNMtWuzfPCXfebOiJJxIdub53tS5k9rqNfNRm1VhAVN6jwnhJBTX1wuqo3oMr57ooe85KLFDCfluVC3q8dOtTC0/ZxKf3VDTdxnrZTKZAyI+yoGeLSwlx+WmFo+MxZKUKRXdgrGxgE1UzJZITNiG1Kvv3V4L+hHVTy0D405ETTMFsnPfiRitCmSIU7cB0VsuZS3pNFVRDyXvETItWH7X6xZS7AgqcUvw5xf1EXGuwUAiuaBCSOLFFqOv/pHicE7L0ac4nkPNsB79EFwIuY/JaIJ/fwLXWcnaQz9y1r+GCD9FUtitbUauqexiG+UZ7VIsvs/AoxIS79RbrNlCXf8QH1dE6hD/C0ZQ5nGYwHar
- gFvWU6x/
- 2DwtIX53XXkBjgC2bVSLocQHjm+rIJ4wuJmvHF1kPvyeYVr4PXpn/YpT2ysfdUIxV31/gVDrQb5yI5uyvqhOl/PKbTBF40CS868j8UJRzUMJdCE7uYr/wh22R71HfCY9tG86MqM6qbRbtBmWwTooYSh4to3+94XZDb1a1DdtcCStG4VnnfVHLdOos4T6Dzm/qKP9Cg47zDNHTgHMKOsdQHRJnySj8OJD+r3jbhJDBcDKhhzcuzBmEdD0rW2rOQHl9IIHzKYYGTraNJS65uCumNWsSrwDt2SkKAXqbXOixSvp5qU12bRbX9nkHF2Mguu+OrTbTUxcEZk+4UIQLkwf6rYigRHBBnQEZAuLgi2MhdyT1PzXf9ugFOko3Bm6+4Iv/IOzzGEQWdXnLJMc2iTgL4LkpCPQe5ViQFPnU5QQHkrP1hDM0FMh7ttXpWA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783993510-593070
+X-HE-Meta: U2FsdGVkX1/SCs3zAqog2ihKjA8DelhRSgle68kUubpUA6PdcUxF6pWms9mLLDeIJclU5mHpvWS3u0JSm9aFdqAmK790aSODXgQ+wkitqO2uwqT458J60xCymCek+xQklbsUNqTKTCygpybTzf+PAMs0co8j0rq5XJaQy9CybiMs2QwcyTDA2DP/XKVPvKuTbYDTqbMlf/JzY4wEZj8yF68ACUI/K40xGDcyzZuhZlr37iRo6Xw9mF5aV5xhIUElNxpBWn59BOtedFirCz1cG4VcPAzLndVx2y57n7wxPJ6EJYWFmc5Dj+9NPa8q8gezARbdKon5yzH/qwHWublIeAJdrfCLtUaLPw3xoF14RnGUW2qXFziEdqySXO4ez3s1cn8deRd6mXvsf31lep62h4Yb3EUN+LFKwEyRB7lsS4VBi15wt/78OK20BWqTcZUE0pvbwx98b+zJm/e4DjGRBRN4TH605Z8E8jTZmztWHPWITAUFLBOhyeA10Wl1qOyXN/35NxmHdsVe2Q10Spwq6ggTdypRdm800N6IML3Xwh8bNydekSYixpkz0D6lWNESLj/Dbi/6hyBTOjr+nlJeNMenfvykHfDrvZTLkGiXKnMGlRRYUgF3JIQDBQzd9kObOCTU80+A7gM4WGQuAi+VtDLoKxWm9q8qkR7ROXvDHFsmkJEAA2KX4F6Y34589QdKJyDWrU/TXXhfVuO6SgL/Jx4mUDF78+oBxDhFXrD2iY/6+6mhzaAK82VTnhqBZiriSiGZ1akSHNYSXBYj7hAWrtORrznAG664LZVx1rjtBPrbEsdNWj4VRaLwcuSG6m4Aye7agzqMgqrCEjvcNHMCv/G2Jp00VihV6UoyXCJlXN+UQuNqSzP5itd5QMAjg9dpqU017F59SsksvBtE5SYYkkEuHapW+v8CoIFxPBqr8WE/oAB/hNer5ADWbbsTsF2gXlKTB3uG6tuaeQaBKZg
+ WtCxZkbY
+ 6/GLnOWH6ppUfJmsjMDHGoztkz0HSqHm5S+jw3FFchY6X0/O0R8WoTsEg0pZqxL7K7s15IwuU7CI+r90u296HCvy0XMXSgsio1rmUL2oeSy9UDrDMKN0qeRNimrl7ba6mbFmQfPCoAjvCx0GoEb4FIiVUiFZSTOPDeHi5+TTIcUVy+y5I0ghCCQF6kDVfePzSFleUQxbse8+BJKCzDGqzRnoD0C+2Mom3zBazA8C4zVaWRzNHWROykLc/LwEQ1ka1HQqcuU6OT4uVPkq/lWQ2G6dQaJaebmmyetfF64bw17rHdsDKBuYLA9zUieRJJYh44Cyg639c9upkQD/HV5RLwEo1Uz5wiqkGX4lp5YMSCM7JJYWLo6O19Qdu1cq+ibtdtAy4eeUFeYEokYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,61 +102,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 9:20=E2=80=AFAM Ridong Chen <ridong.chen@linux.dev>=
- wrote:
->
->
->
-> On 7/13/2026 11:08 PM, Barry Song wrote:
-> > On Sat, Jul 11, 2026 at 5:12=E2=80=AFPM Ridong Chen <ridong.chen@linux.=
-dev> wrote:
-> >>
-> >> From: Ridong Chen <chenridong@xiaomi.com>
-> >>
-> >> The per-memcg swappiness knob is v1-only; v2 always uses global
-> >> vm_swappiness and ignores the per-cgroup field.
-> >>
-> >> Guard memcg->swappiness with CONFIG_MEMCG_V1, and move the helper
-> >> to memcontrol.h where it belongs.
-> >>
-> >> No functional change for v1; v2-only kernels drop the unused field.
-> >>
-> >> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> >> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> >
-> > Reviewed-by: Barry Song <baohua@kernel.org>
-> >
-> > With some nits.
-> >
-> >> ---
-> > [...]
-> >>          struct mem_cgroup_per_node *nodeinfo[];
-> >> @@ -365,6 +366,9 @@ enum objext_flags {
-> >>
-> >>   #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
-> >>
-> >> +/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
-> >> +extern int vm_swappiness;
-> >
-> > This is a bit unusual. I'm not sure whether mm/swap.h would be
-> > a more appropriate place for this.
-> >
-> Thank you for your reply.
->
-> The vm_swappiness variable is not utilized within mm/swap.c.
-> Furthermore, since memcontrol.h does not include swap.h, retaining the
-> extern int vm_swappiness declaration in mm/swap.h will result in a
-> compilation failure.
+Add stable@ to Cc.
 
-If this is the case, it still seems better to keep
-extern int vm_swappiness in include/linux/swap.h.
-
-Then we don't need the comment:
-/* Defined in mm/vmscan.c; used by mem_cgroup_swappiness(). */
-
-It also makes it clearer that vm_swappiness is an extern variable
-belonging to the swap module, rather than the memcontrol module.
-
-Thanks
-Barry
+On 06/07/2026 16:41, Qi Xi wrote:
+> When a new subpage is poisoned on a hugetlb folio that has already been
+> marked hwpoison (MF_HUGETLB_FOLIO_PRE_POISONED), hugetlb_update_hwpoison()
+> increments num_poisoned_pages directly, but the per-node ->mf_stats is
+> not updated because this path bypasses action_result(). This leaves the
+> two accounting counters inconsistent within the hardware memory-failure
+> path: a new poison event is counted in num_poisoned_pages but not reflected
+> in the per-node mf_stats.
+>
+> In mainline, commit a148a2040191 ("mm/memory-failure: fix missing
+> ->mf_stats count in hugetlb poison") fixed this by removing the direct
+> num_poisoned_pages_inc() from the helper and adding action_result() calls
+> in try_memory_failure_hugetlb() for the already-poisoned cases. The
+> backport to linux-6.6.y as commit 252bb328b36f ("mm/memory-failure: fix
+> missing ->mf_stats count in hugetlb poison") applied the refactoring
+> (naming, constants, switch-case) but omitted the core counting fix,
+> leaving the inconsistency in place.
+>
+> Fix this by adding a matching update_per_node_mf_stats() call alongside
+> the existing num_poisoned_pages_inc() in the same block, so both counters
+> stay consistent without restructuring the error path.
+>
+> Fixes: 252bb328b36f ("mm/memory-failure: fix missing ->mf_stats count in hugetlb poison")
+> Signed-off-by: Qi Xi <xiqi2@huawei.com>
+> ---
+>   mm/memory-failure.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 86cdf36ee3bb..5f9203bf8ec1 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1947,8 +1947,10 @@ static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+>   		raw_hwp->page = page;
+>   		llist_add(&raw_hwp->node, head);
+>   		/* the first error event will be counted in action_result(). */
+> -		if (ret)
+> +		if (ret) {
+>   			num_poisoned_pages_inc(page_to_pfn(page));
+> +			update_per_node_mf_stats(page_to_pfn(page), MF_FAILED);
+> +		}
+>   	} else {
+>   		/*
+>   		 * Failed to save raw error info.  We no longer trace all
 
