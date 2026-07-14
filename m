@@ -4,148 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1840C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 06:23:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99D01C44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 06:29:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B06956B0005; Tue, 14 Jul 2026 02:23:28 -0400 (EDT)
+	id 609186B0005; Tue, 14 Jul 2026 02:28:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB7306B0088; Tue, 14 Jul 2026 02:23:28 -0400 (EDT)
+	id 5BA186B0088; Tue, 14 Jul 2026 02:28:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 981556B008A; Tue, 14 Jul 2026 02:23:28 -0400 (EDT)
+	id 484C16B008A; Tue, 14 Jul 2026 02:28:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 65E016B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:23:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EA0C4402F9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:23:27 +0000 (UTC)
-X-FDA: 84986390454.12.48931F8
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 979CC100005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:23:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XZmUlE6v;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784010206;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 12AD66B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 02:28:59 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8386EC0285
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:28:58 +0000 (UTC)
+X-FDA: 84986404356.28.EEBE931
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 917E340007
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 06:28:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=M2KaevwK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784010536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UmwZ2JdGpnQjzlIbtGvTSfdYg7lmImsp/NzZpGZ4h5M=;
-	b=YlVWnu4y7doiKFQu636O4jCEl70a0/zA2KpNBfrJmq5TCDjikghsRB2GCY5PGxN+5aUj46
-	lteKrAA1uR6qV3xmlzfhwKup4h6Aq/1Eh4MeGMqFCNVgX/WTCpwulFjoAtvLfoKoMr/bso
-	1kcWjIFZY8oAbdh3KYwNTCuLrD1aCZg=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XZmUlE6v;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf05.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784010206;
-	b=nUtRWmqPBZYAludBIgrzvaKO9odRmbqIno2v137IdN9qrgcdXuGgJZPzrR9AA9XR+Xl3nw
-	MqigfnTaSg4LGx1R5RYkXoIrtubjpXYEM67i9QVethOzDghdn+8NiELzlXUdfao3Ep+7IN
-	d/ew98VBkkq9d1naJZeUUMzegBtmjGE=
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-48d6c621a67so1906641b6e.3
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:23:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784010203; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OzA+1lV/3UefDnifR/GAVQkYmgfXWGAMBsJZaZMEu/Nw0oRQ+NPvjxht4SVMqicFLV
-         Z926MJw58dXBkGU0HH8OVUI6V7DdDY8Z+FwGeEyYpE65+/XrzRPmOs1WfpvYA5LOB+wV
-         4FmfTp3AcKCW3achzPU7C98W+LLqVuKEnkMiCH450kA+qLGKI70acY2j9RhRyLByo/Yg
-         XhdBmeE9Ij0TJILFNXV5Bg7TuRMJ1IpRwMKb02y/MhG9kXgL1B0H8FPUlN5LvqNqGwRi
-         0haT5sfzylWyZjwig/YpasG+gveLme1uEua9+8C8XyAzuC3iRZ79b3CmTgEAtGs62+dV
-         LQsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UmwZ2JdGpnQjzlIbtGvTSfdYg7lmImsp/NzZpGZ4h5M=;
-        fh=SZqyM/rON8Hx9AOH5zmDbl6SRjyVpiocBV9Ypob9yY0=;
-        b=KOdIPBqkZTXdES1eMiGMqE/X1gVcT0P/LUtc55ohW/Olc1XHmRn0xiOv8BjbpT5z7b
-         WBlWfr+IZk6cs14OcrLZw8159JQy74uf0uHFzWt3vVpzLf+Hct/FY8h0ivOzcKKBzw7f
-         Oeua+SjpRSvk1u41HuSGU1RqVCGN5ueShrdz9DgVNUk8u/Fh6uoyN+kkFUx9q4cGk+RF
-         F7NXkuQvcIDO22MZjoNmMiF64P9xFGqKTFEXeIzDJbtGU6+xcnEfVRb29GlfoFDCnsOC
-         N4wLlJcs7Uxlqd58e1sZGu0+MmbilTqrtxz6paknWDkt5ct6rp3SymCCgg/C8P5X4ZT/
-         Ufuw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=crd7Xg7SoeCwZRC39cwMbg/cTdFhUS9QG4xnLU9ZNdk=;
+	b=6lziJNHd6YOYJQCQPBYm1XBzAF+FeR4hB43cx0ZnSrkixFxDZq7ABLbM7BIYgK369xXGgX
+	jqcsda5IoeuK58Nyv+7dgFdmyZTRtzWXDK1MP0bjxZXpAO7106IlFzsEgT2Ccvcggi1ovt
+	VH1oJolrWVqXvUOEJV+0YIrrwgulHTE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=M2KaevwK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784010536;
+	b=oGEcZdjJojwL5rRo93V/Q+USs9PUThSC+PgOq/l2EJofv1dtrAhrorWcDyit9vijzD1dvu
+	dC9ZmSzcpeukL+ArL1wVdkPRE89+uO1UE6BDwnSXhc7ZdO7QozFE2Oy69YvnbYJeipHuEx
+	M/yhT8jGiiN1SMpY4TGR8OeD7hh6FKU=
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca7a25cd87dso434174a12.1
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 23:28:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784010203; x=1784615003; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UmwZ2JdGpnQjzlIbtGvTSfdYg7lmImsp/NzZpGZ4h5M=;
-        b=XZmUlE6vY1szOHNxs4td63/eBnDaAllDnNcpueEWfEAOoQNgVOEa9G+W5MetWssIZ1
-         avrRFVQb9e9jNiCHu2lPdPe5hkNIIcU5DHtu06MjfZjO955Vj7THaPlZQEyd8Ny9bHMY
-         iAExVTP/9uejhcSE0pq6NNcK2bh9r8hbtARjgvGoi+m3WqwduCQMhMb3Yx9IPKleI63f
-         IXGgvgyKW1RLuLmRfBzzKnDrURFHAU5g1OOEJ5xY/y7VTx0Wlec9DZFSoBG8aB7G9zMQ
-         GSubSTk9wv1TUYRuBMIom2fuerY3EYCmBt8iQsSskoFoTxsUSAJ2+pMQnrw47EEt6sCD
-         PdPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784010203; x=1784615003;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1784010535; x=1784615335; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UmwZ2JdGpnQjzlIbtGvTSfdYg7lmImsp/NzZpGZ4h5M=;
-        b=ia8BkFFeH/gyZjPq521sS4qHaab2VVbPNsP+1cgknKxNbuuvMtegS23GnFEGAav7OD
-         cFC8BfSDcxrotFEIQ9jcGPtUy+8y1bGRG1g3MiR0a3QQuXFUEn84LZpQe0KCJ3CUfSQU
-         YH6EZrZnrpu8nfufqK9/SC9j4DqSc2Qg/F35kRtV9ZDEsLiC6nEuCDMKgiLgCDnvXLqJ
-         PLZy9+n2yVcW0etaqVJiHBGqacYICWKIn2jgZjNT7IYE2hQUlXRsfrR8+DhHRO8rCP+q
-         PC/cVO8DEBSMHzPwBoC3YMnmBPmeYEO354kCL6+7uMHFP6ma5XxKH86P9DGNNXR/MsWZ
-         mxig==
-X-Forwarded-Encrypted: i=1; AFNElJ8EmiGuuGeahHyyxf47fSqMsUgNnEjUj9/RWMGqRH2Y5sfoB+17YRxVijQYiqERGm6iVdZFYqT7OA==@kvack.org
-X-Gm-Message-State: AOJu0YyuZzu1Wy+5yRpQ0sXGr38pKHOtBgeIrONuHjPqe9bTJTRG2Xh/
-	2xyjjnJaZhloh7lJeQBRNYAlZyJrmDpdFII8Q4uifgB4hlw/2ir1TQTie+RdgK0Spp4M77sovb0
-	hkhcoEXeUBuRiTKyXYX991yvyFh2uyx1jQS02s+bVcA==
-X-Gm-Gg: AfdE7cm6oDIE74M0hQcqbv44zomgmiRvxNDGuhlu6X4d7I0MNQtlXNU3QkK1YKuSvYw
-	bKnX/4HuMBQgS3jGx0/z3/ZJlpNIKW6YVsEi866Ja82g0/7SY9mOX7A1CL7VelzjVvZpt0lT8DK
-	jDV4/a5C+FCDM2PwTT0qwxGzlvkoBSDq665Dx7ilMB/dOdweMjgZdueq5XeZMABC4wX8U4IAq1u
-	2r9aKoJgm32Kh8dkBLiHngbZXBCu/nNTpNDKFRur/BeljUtFG0pgPYtx/Ejkn+t/u0Fggv823A=
-X-Received: by 2002:a05:6808:1b24:b0:495:f79d:b08e with SMTP id
- 5614622812f47-4a47a6c1d27mr439710b6e.21.1784010203197; Mon, 13 Jul 2026
- 23:23:23 -0700 (PDT)
+        bh=crd7Xg7SoeCwZRC39cwMbg/cTdFhUS9QG4xnLU9ZNdk=;
+        b=M2KaevwKM2OPwrq/ucwjsdQn5z+nQZoQTymTo38axXq6v9z3i6P7yfBooPzvYl2mvv
+         tud2X+kxLHAQgGGlu+93WcFRBXDM0A35GQZy5k3Mv2NkAbEweB0CqWRC+kmX9MVEopvy
+         dsp6DwpRUmQYi7/Wgp0uZza0bc9yrZgasfLRgLA0sAi+swN22N0AsTolxzqU1ttlAvMZ
+         mk5PKrrMXIEY9hO+BlN6RELv2wYZld42RIdgYdy0+p16r3wrQ7wvQ7oIXm4XswgmjvaF
+         nQ0WLzWxEaz00QxMaMaPIknDcBLzBWjXs/jiHWT9O+x7fWb7cRwMn1chxjHGHlpJ0N86
+         4XyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784010535; x=1784615335;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=crd7Xg7SoeCwZRC39cwMbg/cTdFhUS9QG4xnLU9ZNdk=;
+        b=n51CVKuMPOmYKf/isp6zDl7DIsy9y7NI0K5e+Qr0cmCRtfEsfslOuYJx+a1DRZGF2Z
+         Zr1FNczRWgUcLGlrXE5BodLW7AsPW07TvPtZGDnu1QeQDpJWHXxzPjQ1X0b6D+bpqFgm
+         Wb+o9PdQHUsQ8XTOvg3E9aTf5BMoTv3lStoR18BunvwrstijyeInPe+KYdsTxwG19I66
+         z+cOkgti5yMri47FtH2ufObph1EjRENkB+9O2sAu6aiA7/qMViuRPbJQyLrsqgcKCS0B
+         eLP93dwiEFJUs9OInOicj3xHtqHDqmXx4QxckJ7imVJ+WoSlibUahoYjDc5B55l3h3Fe
+         F7/A==
+X-Forwarded-Encrypted: i=1; AHgh+RoVFobp89bLVlbc9iQ0UTspFUIhs1ZUfLB/n4igctKHiG8evZMW4h0HQ+I6IE1iVt/CrMPfPdTMzw==@kvack.org
+X-Gm-Message-State: AOJu0YzjQRh2F2VWGxSq7GyTkWC33Q6c5Bxf89Y5KTfU4oOL1AyzM1wy
+	JtHK/Lysxwi6mW1HZqNSeCiqn1DEFXHAqSAJEwqIoV6+waUYJ720dXmM
+X-Gm-Gg: AfdE7ckbsXbL9MlCGxe3+eV+ZtZ/Alea/GntAPPldgZlHl5GDZaRuQUw1rTZM/EWz5g
+	D2BCl77wI05VXyHinv4Yzevs5zMUq6sbDZNzYtmnC54mF5jKN35u4fY6w9FcAQ4DsurWDKHNvca
+	smD7KWewfOF1f/IHihafQvOAYnJXtBFMulaQmoNIy5v00dH00j1tWZDKnCkZRI0hiGseEK/EZWl
+	kDObjahCrkJMPS8YTQQJxqmDgX5Pl837wstxMbhK95Y0FKbrYFMMGn5nAeUu5pNLvYzH1Xni1Xm
+	UMIRDoe8yqJ3D/8GaPc9Qat8ytJHeLmpw02R/VU7Ym32TPbngCev0r9OfVPdiXNtwOaQPx/bovn
+	nlCJdFwgqe2RNXHVH1iOCCTYt3Ka4OQo5adofJtdanPZxCnxrJ6hDbYH5feEByLibvzJHXsK0Fi
+	uwTUSefT3BwnhqPMzWR6nb
+X-Received: by 2002:a05:6a00:1398:b0:843:49f0:f5a0 with SMTP id d2e1a72fcca58-84889649003mr11827641b3a.32.1784010535341;
+        Mon, 13 Jul 2026 23:28:55 -0700 (PDT)
+Received: from [10.125.112.20] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f7dc8e7sm902307b3a.47.2026.07.13.23.28.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jul 2026 23:28:54 -0700 (PDT)
+Message-ID: <0e597d80-e115-490e-af69-f84ad1c0588e@gmail.com>
+Date: Tue, 14 Jul 2026 14:28:39 +0800
 MIME-Version: 1.0
-References: <20260703122832.15984-1-cuiyunhui@bytedance.com>
- <20260703122832.15984-2-cuiyunhui@bytedance.com> <74ffb0c5-4edd-7b64-3d3f-be76c2aec4c2@kernel.org>
-In-Reply-To: <74ffb0c5-4edd-7b64-3d3f-be76c2aec4c2@kernel.org>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Tue, 14 Jul 2026 14:23:12 +0800
-X-Gm-Features: AUfX_mxF_EkkHPpXwVLSHWKREo9gY6a3BeqhKBMKR6LcYXx54wa2zu3a3fsDMQ8
-Message-ID: <CAEEQ3wk8gK9pam2da=o5mbfzU3-5EtfH5nyhAoVfCoy+7UuCGA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v8 1/3] riscv: io: avoid null-pointer
- arithmetic in PIO helpers
-To: Paul Walmsley <pjw@kernel.org>
-Cc: palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-	dennis@kernel.org, tj@kernel.org, cl@gentwo.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com, puranjay@kernel.org, 
-	thuth@redhat.com, ajones@ventanamicro.com, ben.dooks@codethink.co.uk, 
-	rkrcmar@ventanamicro.com, samuel.holland@sifive.com, zong.li@sifive.com, 
-	conor.dooley@microchip.com, tglx@kernel.org, debug@rivosinc.com, 
-	seanwascoding@gmail.com, andybnac@gmail.com, menglong8.dong@gmail.com, 
-	cyrilbur@tenstorrent.com, wangruikang@iscas.ac.cn, atishp@rivosinc.com, 
-	apatel@ventanamicro.com, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	arnd@arndb.de, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, qingfang.deng@siflower.com.cn, 
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ksucdhqyjjf3sxcbxydk86yi5c1xjgon
-X-Rspamd-Queue-Id: 979CC100005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] mm/migrate: do not migrate folios mapped into
+ VM_LOCKED VMAs under compaction
+To: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: vbabka@kernel.org, david@kernel.org, rostedt@goodmis.org,
+ mhiramat@kernel.org, Alexander.Krabler@kuka.com, hughd@google.com,
+ fvdl@google.com, bigeasy@linutronix.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, akpm@linux-foundation.org,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ riel@surriel.com, liam@infradead.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, pfalcato@suse.de
+References: <20260707125925.3725177-1-chenwandun1@gmail.com>
+ <20260707125925.3725177-2-chenwandun1@gmail.com> <akz7ythMxfIZeT0d@lucifer>
+ <c372e68f-2bfc-45b6-a431-01bf55717247@gmail.com>
+ <6A08B6C8-E94C-4690-A29E-B9A0DAFE19EF@nvidia.com>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <6A08B6C8-E94C-4690-A29E-B9A0DAFE19EF@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 917E340007
+X-Stat-Signature: f6iiee8t7u7igu7psgfx1gzw39qn34kr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784010204-72236
-X-HE-Meta: U2FsdGVkX1+9fJ19siemsT4zpqOtPGKVqCsTSbDCBSArYVj2BUjWhtcj1G8dDdhSRINXAdRG3iFmrEpvULpcq1FtJJTNKCZkgqzNRGT1Ciwqs5s1EOTxgcm/H8+/ONxJPJCeGnlnz1mx+hTle9sPHngE4+6RHbM66pg9PZ3bLHmpzVLuOq4O7Yu/KRYW8YjFnroWEe3OkvhlZEkkhz0I5fUHhEkVhtEgGgfDrTj+MHWXIaDyTTnl65raYWqoGQOf8pD7tUfpPER4XFWoSgLpRSipT+OZbWOPAaDzmTXz2iTm+gIDGr26wg0yebIJr2tena0CLvozdtWYNm7eCFvICQLa1W8Rvg2JMSmFvzRhIchGJ8JMLxJkSsYJEGuA97+9p00mOuIah/S89VYyGeLL6c1ZjIX2vWrBuNaR4I+eaE5v9Q1ACHX5YF87bEAN/kSW1TeiJ+xBTEdD5MV/sGozSG1oKSch2sKPZTURPdoB1CdRBslRMJczPSsGp3Uzw6ELqDsoEaGmFszfalN2+0SYrqgB3ePQESpTVHBS3fLYxZZq5HliK7+w3x/vQrqAHGpsYRD8+EOP0PzyFtQIGz+97GLUVdaaRGK2LEuDyv4SaR8u0hgZRuxelDLwacTSxWWN76c8hfrD95aHFQ4sqwF/G8fWPd920BI4IGMq/jogGKUCHq03DsNfD0NoVb5uU01jtaQzfTjbGQKlmIv6wzeA2itbxlSZ7/LwdSBzNT+wIxejZ8yLzp7e0OSCvV3nJVKeEhKm6t35QcQ4rjR9e0KLbu/GMY3Tzhg0gQ5zWmfbP/bAb06XZjzYDQdoK/slGR3bFqfP9sf13PAR/kHLbXoWslU0by+o08O8F/4soLbxiH4BSRu0xT/xJIgXtU+SsUBHWtivBjbd6nEZemTEAcwiX1v6Ixkj54MGS4Egk/+12h/qwH41byCkyJ73ncoGSKk07AfiFKuxcsjZ6bC97aF
- NBKPnpnH
- ZEpQscf+XY0o0PHsK4j5HD4yswDILdVov99urYyNfmSbelCMtTq4xpsxyyA2bYip/Q3FaPU5nqY709sRVwojtLKRHUsTX2I6YdrfGUF0uloxbO7AZWDNKk2NvqaLGGLtt8FgIQ1avzf9z1uXvpqprgZVpPzzAgYRH1mjZ5zibp+QffrQB8gpdKYceAz96oz+WuYR4lACTQOXtdUurqPcT5+P+gSqgLBE8w9wc5LMKrlW1F7iNuKr0AjWOr8f4yBwRdI02Bjx6Ii0gym5XSPjSn1SszduR1n6Zrjan3PYznaPMFq0Rnz0LRjDimxKpTwYkflHh7pE0QG7IO19xVlJH17A0jf+HkzO6tQTDa8ozt7bPCFkxtU1NcOTZkyDAP6woMyBSyCvXk5Syxyc+KyPFHhAht2z68EoCfGiL
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784010536-577720
+X-HE-Meta: U2FsdGVkX1/PWPwMW4OuqVA0OpBGRQFr0gECTvBgGQP8Q2y4R0LDWfbUW+zVm8QJL9vJ6hzsc7jxPlzJ8Y9SAp0sQXjC/aawMIUYKkRRqtoIA3rWTJyg/I28Exiux+ykbMZ8q89PphX7EZs2eCAjPvoUegZ5vxHFlJ/xbJRkCIS7iwONx9aVJ+N0m9+Y9eIWtnLDpQ9aqBJu57m2LuL4sQ6pEQZxydwWM5iK0g+XGSGVpc5Qk5ANJgIT9nAIp7PoD22h/FEqvafXqhaai4bflrazhF+n0Bqg0B9f+zkRZ1Zrf7kPU9S5aS2+l5+TpG63u01f19ZZtwE9bHMv/I/2W1l0/J/7wnU6OgOGC+f5tCXXApz0wDrkhnJtQmCbv5sPYjttpmYTUZLIle/QDUgFa4CTZs5UZxGNgoKy7m6e7mSybhUAq2U3R1b+4nHUjIjYeCwW9PO/9rWEHdxKj4b89LU8i3dFkIDj0/q9VPcD+AzXnz8QiDtjOXAbP9YEVimjUKkLZseHVldWEOWhTL1rQv6WF2TF5842ZwXAE8hcIXMWA6wBcCYgrYY3jliS/eW+AUx4idT9ON00U3J/sfZ3TB4AzggF9CPd44CCkzWw/z3C8mqBDHDWtf5ifRFiGVYIdpQvi0joEtRL6YZfEYtcriW3FGCU8xgF/nJ2LDKMjbNuX9Xvj7UdWuI+U1wKvOWcPNSh0DnX54H7Lhh19fZ22kIvt6IoV09S71ZIdKXOkh5RKed91Hq2hrhhqwVIdM5wgaGSlm6eLPG3Ld7azeZ8P0gOAE57NIPWZ39MERn2ewby71W/S/5IQgjyWj8UGnwpSRvffVkiBgy51jM2kVlZUOXsJxQX8rUG+CI8/CoDIIJ07/hFNqhN6qgINmOJ5NEJef1SR7M4wpMl1vM4fR2NC6hheM8hChUQ/YK6Ik5lAECSyljFVv38M42o5Y6SA/3DObW2Cp00Tom3/sb9ASG
+ iLFFHbIt
+ txtqMgfiL+s0xXMKJ+avYl+oYsk2KI6dJl4PXQ/UpWgge5sYyPfiLJxvSMFKQFLiBnj/Mmen9ZAAUuIdvqTSZHg9kt3Z0fPx4OR4SXT97ryXOuxnPdo9EKy+14i47oLZT5ftTPP9neiyNixCmVz6k4NMYG9eI3XuS2P0iwgdxqqrX+4QxMG6OWm1cXb8YWDne2mIFer6t40k3QjvzywfcKQ7IhyjsihZ4D52kJWaWhxIzkb+eZbYSZOWlUjIYO45w/h0dDkmTkJDbdEVS8B91z9n6i8VJwGevy8zTa45P6yemC6YLrbBHn4Vr1Hwn8eTA0IDHdrf8xHzb9dV4qahhhfqyYdnLfe1Q1TQR5aLqZPOnwhrpM5sRuv/lDmNtj5Z3s2y78ZlAjLWC/+DCUiUXx2vYSADE7g2fl/1IG/QtTtZ8oMzDA0kaY5EW4C2nxtffSRaoASEm2yXuEVrs7N507oyCa7iETdJ2ViIiIIvdAHvOury4tQxUUWo06HPAEdtyvPn/9AaErPmGGob/ZfTNMy598Yht0ZHJVLNDP6J3CMWRYHEz0RWBd1AL/GBAl45tbxj3uCToF+HCXNdA9OAh9/m3ErGWjs15vC4JsPogNtg2h5wNXklm7h7zuXTBp4oQ4mMBSUoHX9AR8OPnxFfZAiw6ZYc8QsASSrNY8o96RfMEjUYZFWNfboxPUvEOMPzPE9ZEMFtgX2giGrK/65oYUKgfwBuLUX5mK33a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,44 +135,325 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Paul,
-
-On Tue, Jul 14, 2026 at 2:04=E2=80=AFAM Paul Walmsley <pjw@kernel.org> wrot=
-e:
->
-> On Fri, 3 Jul 2026, Yunhui Cui wrote:
->
-> > When port I/O is not supported, exposing the port-string helpers is bot=
-h
-> > unnecessary and can make clang diagnose null-pointer arithmetic from th=
-e
-> > PCI_IOBASE based address expression.  Keep the MMIO string helpers
-> > available as before, but only provide the port I/O variants when
-> > CONFIG_HAS_IOPORT is enabled.
-> >
-> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> > Reviewed-by: Arnd Bergmann <arnd@arndb.de>
->
-> Thanks, queued for v7.2-rc.
-
-Thanks for queuing patch 1.
-
-That patch is independent and safe to take as-is.
-
-For patches 2/3, we later found that the percpu try_cmpxchg fallback path c=
-an
-expose a variable-shadowing issue in the current RISC-V cmpxchg macro
-implementation in arch/riscv/include/asm/cmpxchg.h.
-
-I'll address that in the next revision of the percpu patches, so please jus=
-t
-take patch 1 from v8 for now.
-
->
->
-> - Paul
 
 
-Thanks,
-Yunhui
+On 7/10/26 00:10, Zi Yan wrote:
+> On 8 Jul 2026, at 23:31, Wandun wrote:
+> 
+>> On 7/7/26 21:44, Lorenzo Stoakes wrote:
+>>> (Being really nitty, your subject line is too long)
+>>>
+>>> Please don't reference legacy VMA flags for newer patches 'do not migrate
+>>> folios mapped into mlocked VMAs...' works just as well.
+>> Got it.
+>>>
+>>> On Tue, Jul 07, 2026 at 08:59:22PM +0800, Wandun Chen wrote:
+>>>> From: Wandun Chen <chenwandun@lixiang.com>
+>>>>
+>>>> When compact_unevictable_allowed=0, unevictable pages should not be
+>>>> migrated. However, mlock_folio_batch in the mlock[all] syscall introduces
+>>>> a race, mlock_folio() sets PG_mlocked immediately but defers PG_unevictable
+>>>> to mlock_folio_batch(), causing pages that are about to become unevictable
+>>>> to be migrated, which violates the intent of compact_unevictable_allowed,
+>>>> and causes spike latency in RT kernels [1].
+>>>>
+>>>> In order to fix this, migration is forbidden for pages mapped into VMAs
+>>>> marked with VM_LOCKED. In addition, two early-return paths are introduced,
+>>>
+>>> Please don't reference legacy VMA flags. -> VMA_LOCKED_BIT.
+>> Got it.
+>>>
+>>>> filter out mlocked pages, return early to avoid unnecessary operations.
+>>>>
+>>>> Fixes: 90d07210ab55 ("mm: mlock: use folios and a folio batch internally")
+>>>
+>>> Hmmmm why do you think my patch caused this? That was just a folio conversion?
+>>
+>> Oh, I made a mistake, your patch was just a folio conversion.
+>>
+>> Batching mlocked page was introduced in v5.18 by:
+>> 	commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch by pagevec")
+>>
+>> Setting sysctl_compact_unevictable_allowed to zero was introduced in v5.7 by:
+>> 	commit 6923aa0d8c62 ("mm/compaction: Disable compact_unevictable_allowed on RT")
+>>
+>> So this issue exist after v5.18.
+>>
+>>>
+>>> Also I didn't think we liked having fixes spotted about a series with non-fixes
+>>> tags?
+>> Got it, will split this series in next version.
+>>>
+>>>> Reported-by: Alexander Krabler <Alexander.Krabler@kuka.com>
+>>>> Closes: https://lore.kernel.org/all/DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/ [1]
+>>>> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+>>>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+>>>> Link: https://lore.kernel.org/linux-rt-users/33275585-f2db-4779-89f0-3ae24b455a67@suse.cz/#t
+>>>> ---
+>>>>  include/linux/compaction.h |  6 ++++++
+>>>>  include/linux/rmap.h       |  3 +++
+>>>>  mm/compaction.c            |  8 +++++++-
+>>>>  mm/migrate.c               | 23 +++++++++++++++++++----
+>>>>  mm/rmap.c                  | 12 +++++++++---
+>>>>  5 files changed, 44 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+>>>> index f29ef0653546..04e60f65b976 100644
+>>>> --- a/include/linux/compaction.h
+>>>> +++ b/include/linux/compaction.h
+>>>> @@ -106,6 +106,7 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+>>>>  extern void __meminit kcompactd_run(int nid);
+>>>>  extern void __meminit kcompactd_stop(int nid);
+>>>>  extern void wakeup_kcompactd(pg_data_t *pgdat, int order, int highest_zoneidx);
+>>>> +extern bool compaction_allow_unevictable(void);
+>>>
+>>> Don't use extern. We remove extern as we go it's not needed.
+>> Got it.
+>>>
+>>>>
+>>>>  #else
+>>>>  static inline void reset_isolation_suitable(pg_data_t *pgdat)
+>>>> @@ -131,6 +132,11 @@ static inline void wakeup_kcompactd(pg_data_t *pgdat,
+>>>>  {
+>>>>  }
+>>>>
+>>>> +static inline bool compaction_allow_unevictable(void)
+>>>> +{
+>>>> +	return true;
+>>>> +}
+>>>> +
+>>>>  #endif /* CONFIG_COMPACTION */
+>>>>
+>>>>  struct node;
+>>>> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+>>>> index 8dc0871e5f00..359c7426b6b9 100644
+>>>> --- a/include/linux/rmap.h
+>>>> +++ b/include/linux/rmap.h
+>>>> @@ -102,6 +102,9 @@ enum ttu_flags {
+>>>>  					 * do a final flush if necessary */
+>>>>  	TTU_RMAP_LOCKED		= 0x80,	/* do not grab rmap lock:
+>>>>  					 * caller holds it */
+>>>> +	TTU_RESPECT_MLOCK	= 0x100,/* leave VM_LOCKED vmas mapped instead
+>>>
+>>> -> VMA_LOCKED_BIT please. Also maybe just say mlock'd?
+>> Got it.
+>>>
+>>>> +					 * of installing a migration entry
+>>>> +					 */
+>>>>  };
+>>>>
+>>>>  #ifdef CONFIG_MMU
+>>>> diff --git a/mm/compaction.c b/mm/compaction.c
+>>>> index f08765ade014..5d256930e389 100644
+>>>> --- a/mm/compaction.c
+>>>> +++ b/mm/compaction.c
+>>>> @@ -1116,7 +1116,8 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+>>>>  		is_unevictable = folio_test_unevictable(folio);
+>>>>
+>>>>  		/* Compaction might skip unevictable pages but CMA takes them */
+>>>> -		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
+>>>> +		if (!(mode & ISOLATE_UNEVICTABLE) &&
+>>>> +		    (is_unevictable || folio_test_mlocked(folio)))
+>>>
+>>> Maybe just change is_unevictable to include this check?
+>>>
+>>> Like:
+>>>
+>>> 	is_unevictable = folio_test_unevictable(folio) ||
+>>> 		folio_test_mlocked(folio);
+>>>
+>>> ?
+>> Sounds good, I'll fold mlock into is_unevictable so both checks
+>> stay consistent.
+>>>
+>>> Also later you have:
+>>>
+>>> 		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) ||
+>>> 		    (mapping && is_unevictable)) {
+>>> 		    	...
+>>>
+>>> Which doesn't account for mlock as-is? Is that correct?
+>> IIUC, The is_unevictable check here mainly serves as a cheap pre-filter
+>> for inaccessible mappings (which are always unevictable folio).
+>> It's unrelated to the mlock.
+>>
+>>>
+>>>
+>>>
+>>>>  			goto isolate_fail_put;
+>>>>
+>>>>  		/*
+>>>> @@ -1898,6 +1899,11 @@ typedef enum {
+>>>>   * compactable pages.
+>>>>   */
+>>>>  static int sysctl_compact_unevictable_allowed __read_mostly = CONFIG_COMPACT_UNEVICTABLE_DEFAULT;
+>>>> +
+>>>> +bool compaction_allow_unevictable(void)
+>>>> +{
+>>>> +	return sysctl_compact_unevictable_allowed;
+>>>> +}
+>>>
+>>> You add this helper but isolate_migratepages() still references
+>>> sysctl_compact_unevictable_allowed directly?
+>> I'll route that reference through compaction_allow_unevictable()
+>> in next version.
+>>>
+>>>>  /*
+>>>>   * Tunable for proactive compaction. It determines how
+>>>>   * aggressively the kernel should compact memory in the
+>>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>>> index a786549551e3..3a15eb13e82b 100644
+>>>> --- a/mm/migrate.c
+>>>> +++ b/mm/migrate.c
+>>>> @@ -1202,7 +1202,7 @@ static void migrate_folio_done(struct folio *src,
+>>>>  static int migrate_folio_unmap(new_folio_t get_new_folio,
+>>>>  		free_folio_t put_new_folio, unsigned long private,
+>>>>  		struct folio *src, struct folio **dstp, enum migrate_mode mode,
+>>>> -		struct list_head *ret)
+>>>> +		struct list_head *ret, enum migrate_reason reason)
+>>>>  {
+>>>>  	struct folio *dst;
+>>>>  	int rc = -EAGAIN;
+>>>> @@ -1210,6 +1210,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>>>>  	struct anon_vma *anon_vma = NULL;
+>>>>  	bool locked = false;
+>>>>  	bool dst_locked = false;
+>>>> +	enum ttu_flags ttu = 0;
+>>>
+>>> You reference ttu only in an if-block below no? So why are you declaring
+>>> this here? Move it to the if-block.
+>> Got it. I'll move it to the if-block in next version.
+>>>
+>>>>
+>>>>  	dst = get_new_folio(src, private);
+>>>>  	if (!dst)
+>>>> @@ -1249,9 +1250,15 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>>>>  		folio_lock(src);
+>>>>  	}
+>>>>  	locked = true;
+>>>> -	if (folio_test_mlocked(src))
+>>>> +	if (folio_test_mlocked(src)) {
+>>>>  		old_folio_state |= FOLIO_WAS_MLOCKED;
+>>>>
+>>>> +		if (reason == MR_COMPACTION && !compaction_allow_unevictable()) {
+>>>
+>>> This should really be a helper since you repeat yourself and it's not
+>>> obvious what this is checking.
+>>>
+>>> Like:
+>>>
+>>> 	static migrate_mlock_allowed(enum migrate_reason reason)
+>>> 	{
+>>> 		/* Only compaction is disallowed. */
+>>> 		if (reason != MR_COMPACTION)
+>>> 			return true;
+>>>
+>>> 		/* If we can compact unevictable folios, we are ok. */
+>>> 		if (compaction_allow_unevictable())
+>>> 			return true;
+>>>
+>>> 		/* Conservative: if any folio could be mlock()'d, disallow. */
+>>> 		return false;
+>>> 	}
+>>>
+>>> Then you could self-document what you're checking and avoid code duplication below.
+>> Got it, it is more clear, thanks.
+>>>
+>>>> +			rc = -EBUSY;
+>>>> +			goto out;
+>>>> +		}
+>>>> +	}
+>>>> +
+>>>>  	if (folio_test_writeback(src)) {
+>>>>  		/*
+>>>>  		 * Only in the case of a full synchronous migration is it
+>>>> @@ -1324,7 +1331,14 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>>>>  		/* Establish migration ptes */
+>>>>  		VM_BUG_ON_FOLIO(folio_test_anon(src) &&
+>>>>  			       !folio_test_ksm(src) && !anon_vma, src);
+>>>
+>>> Useful to convert VM_BUG_*() -> VM_WARN_*() (possibly _ONCE() here also) as we go!
+>> Got it.
+>>>
+>>>> -		try_to_migrate(src, mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0);
+>>>> +
+>>>> +		if (mode == MIGRATE_ASYNC)
+>>>> +			ttu |= TTU_BATCH_FLUSH;
+>>>> +
+>>>> +		if (reason == MR_COMPACTION && !compaction_allow_unevictable())
+>>>
+>>> See above about deduplicating.
+>>>
+>>>> +			ttu |= TTU_RESPECT_MLOCK;
+>>>
+>>> Hmm. I don't love 'respect mlock'. I guess we only know about the reason
+>>> being compaction here.
+>> Right, we only know about the reason.
+>>>
+>>> But I'm confused anyway. We have the folio, why aren't we just checking for
+>>> PG_mlocked() here instead of getting the rmap to see if it's mapped
+>>> anywhere with VMA_LOCKED_BIT?
+>>
+>> There was a race scenario without patch 02, vma may already marked with
+>> VMA_LOCKED_BIT but folio has't marked with mlocked, such as below:
+>>
+>>
+>> CPUA: mlock()                                  		CPUB: compaction / migration
+>>
+>> mmap_write_lock()
+>>     mlock_fixup set VM_CLOKED
+>>     mlock_pte_range
+>>     	mlock_folio(page N)
+>>
+>>                                              		isolate page N+50 (mlock hasn't reached it)
+>>                                             		migrate_folio_unmap
+>>                                        			folio_test_mlocked() --> false, but VMA:VM_LOCKED
+>>                                        			try_to_migrate()
+>>                                          			rmap_walk(P) [anon_vma rwsem / i_mmap_rwsem, read]
+>>                                            			try_to_migrate_one -->install migration entry
+>>         ...reaches page N+50
+>>         skip migration entry (without patch 02)
+>> mmap_write_unlock()
+>>
+>>
+>> access page N + 50 --> wait for migration complete
+>> 							
+>> 							migrate_folios_move
+>> 							....
+>>                                              		migrate complete
+>>
+>>
+>>
+>> If apply patch 02, mlock itself will wait migration complete, so checking
+>> VMA_LOCKED_BIT in the rmap path is no longer necessary, but this logic is
+>> retained to avoid unnecessary migration operations.
+>>
+> 
+> For this race condition, since VMA has VM_LOCKED_BIT set, maybe you can
+> extend rwc->invalid_vma semantics to return 1:SKIP, 0:OK, -1:STOP.
+> Then install an invalid_vma function when !compaction_allow_unevictable().
+> The invalid_vma function returns -1:STOP for any vma with VM_LOCKED_BIT set.
+> __rmap_walk_file() and rmap_walk_anon() will need to break when -1:STOP
+> is returned.
+
+Hi Zi Yan,
+
+Thanks for the suggestion, I really like this approach.
+Adding a TTU flag and the corresponding check in the rmap logic does
+make the code more complex. With the addition of STOP logic, the
+entire patch becomes very clear and readable.
+
+Hi, Lorenzo, would you be happy with Yan's invalid_vma STOP extension?
+I'm inclined toward the this since it removes the new flag and reads
+more clearly.
+
+Best regards,
+Wandun
+> 
+> This approach will not require a new TTU flag, although it requires more
+> code changes.
+> 
+> Best Regards,
+> Yan, Zi
+
 
