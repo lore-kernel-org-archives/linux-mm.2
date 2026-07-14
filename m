@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AA6FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44C71C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:07:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62D516B0099; Tue, 14 Jul 2026 09:05:54 -0400 (EDT)
+	id 1293F6B00A2; Tue, 14 Jul 2026 09:07:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60AD26B00A2; Tue, 14 Jul 2026 09:05:54 -0400 (EDT)
+	id 101B26B00A5; Tue, 14 Jul 2026 09:07:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F6BE6B00A3; Tue, 14 Jul 2026 09:05:54 -0400 (EDT)
+	id 018FE6B00A6; Tue, 14 Jul 2026 09:07:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D0C76B0099
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:05:54 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1BF83403B4
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:05:53 +0000 (UTC)
-X-FDA: 84987404586.12.348D737
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C84AF6B00A2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:07:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F9E41C030C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:07:30 +0000 (UTC)
+X-FDA: 84987408660.17.84FFF8A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5F921100006
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:05:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gIvkcNKG;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9341E100013
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:07:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K6MJtEwI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784034351;
-	b=FLOBQN8zKnO+oFsrnAex+9s5YNsYluPVg4WhIGOe0rIxSXt2XfOK1pMUnTtnUmOHGM84r9
-	GR8PryogJ1IPoCDXbhx1P0L5fFZhjgVnjxfprCuByZMjSvrOX9XDVrIvI3Zu7kMvdG2Id3
-	2IK3GGoMw+5wwK7WrPajCUzN1ZCQPVc=
+	t=1784034448;
+	b=vG4PpHs9EtRWaJaTYhVEPJ6kc/kcKdqCjy/+Ux9G3aieZ76gG4kL73tTLxqwpFVhVZxraA
+	mXk1YwEVKGJLvzI9nfYprLNvLAV308aE5Lg74XvPicZFMnfe1zesQcuGQLZJAMJSp/gcJn
+	JWxcNruJQ1t4jKtZGoHD4RRLIGERBJ0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gIvkcNKG;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K6MJtEwI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784034351;
+	s=arc-20220608; t=1784034448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5H03+CpfRIUyjXLbOlyOr5XkjFBA2v9Q+EuJBH0CT8=;
-	b=mWIe7B1SA+QBNJSx1ysD6eo5RpJaJBv1jHh7mbS6b/w9pznSznypnKW5gaiM/bYxotcwCk
-	dJWhU2wyYw6c/zQYsQic4/bucW2vWa8St1/RHSVBLHkT1uVxsoK0eUjFbM2xcu77WXu0Ox
-	lwhqGVABv5qNPV5SmuVBHrF9RsGkCis=
+	bh=EsVxz/W6sGxLsQuzAI42WMd1nMcUj94TONJ6LOFJRiY=;
+	b=Nn0geani6cSzVLssOwwBWb4UqilCgZqPzvoaX7YK/TTjMLHyVx3cGzcQ+AEPXX9n6G9z1Q
+	eQtA6MsFuXSd79gZgxyQB6FlB6cmKhZzgIfoOoqm+aBOASQutBZ08oUG7CSZkza6ft3Ixh
+	0/a8L+9t5okOBm6SC/sgmBNDqyT/8sQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C68A36136B;
-	Tue, 14 Jul 2026 13:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6C31F000E9;
-	Tue, 14 Jul 2026 13:05:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 11ED1601ED;
+	Tue, 14 Jul 2026 13:07:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B418F1F000E9;
+	Tue, 14 Jul 2026 13:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784034350;
-	bh=s5H03+CpfRIUyjXLbOlyOr5XkjFBA2v9Q+EuJBH0CT8=;
+	s=k20260515; t=1784034447;
+	bh=EsVxz/W6sGxLsQuzAI42WMd1nMcUj94TONJ6LOFJRiY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gIvkcNKGPYOQyg0OoD2EcOKk6jp3QCaEszxn/eNJkK3mNudKcg/pidi834G2XiUhf
-	 LqcEJL5Rslc+z1j38FLMnR7WMUHvHlpnnie3RSHtwiXdylxDT24D/IDesR+4SrwZlc
-	 oKwwNKJp+/E0LX71X5TdNHw7sogC18f8/N1mXjWrrYNRqwmlsOTKIVELQW7HCWPO0k
-	 BB7IuhXe8LPagBA5crVQEsT5n1EAu9ASwq3xtpSwRb8qLOpRjjj2LM45l3wjX0zuiS
-	 pwg4tg2Yx7bamy9RkUEGbMcP4cea4OvI78w5EA0IDIMSxRknaOkIguhF1b9Tfse9pO
-	 TayF4gJAajBIg==
-Message-ID: <9e0db1c2-06ca-4dba-8fb1-552fab91cb02@kernel.org>
-Date: Tue, 14 Jul 2026 15:05:45 +0200
+	b=K6MJtEwIr80Vjjfi32H5DQ31sRLKgQosXD1UrxyuZO+SDKO/RhiT/VC7UX+MU8AxR
+	 lwgtzDgRd40mzR/RL4Z8eooQuLa05SSfBzUeIAzV4sm/M63zqJxKg4Wvw4NB0Y3G6u
+	 HMb/8jYYdcqK7RTOgPIgz5bXoodHytI+8YEFF9V3RZr7jlbKU2rUb5ifin/nl32jK/
+	 bTSK9HurDgqm0M6CjmLowA/m5DhS+R0cTJHcGQzYVu8lazBPAK7qkWJX9nb32WgFeD
+	 LJ9RNljwbDEXG6khInQe4BoU44os+kkARioKRuaLhMT+YzIw5i6i1Q5L2h5EKVmJ7a
+	 /gKp1ESYlOTOg==
+Message-ID: <4f36c923-fe3e-43da-b635-b7b752748958@kernel.org>
+Date: Tue, 14 Jul 2026 15:07:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/9] mm/page_owner: add MR_NEVER to enum migrate_reason
- and use it for last_migrate_reason
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+Subject: Re: [PATCH v6 3/9] mm: use enum migrate_reason instead of int for
+ migration reason parameters
+To: Ye Liu <ye.liu@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Vlastimil Babka <vbabka@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
  Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
  Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
  Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Alistair Popple <apopple@nvidia.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org
 References: <20260714015117.78351-1-ye.liu@linux.dev>
- <20260714015117.78351-3-ye.liu@linux.dev>
+ <20260714015117.78351-4-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260714015117.78351-3-ye.liu@linux.dev>
+In-Reply-To: <20260714015117.78351-4-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5F921100006
+X-Rspamd-Queue-Id: 9341E100013
 X-Rspam-User: 
-X-Stat-Signature: 4rqksn8neao4aummj99h8qpzhx8pbco5
+X-Stat-Signature: 3gu3h8311qqiu9qf6ywdkxxzok5s33pc
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1784034351-908488
-X-HE-Meta: U2FsdGVkX18jqRLTP3KGDit1fI45bfc6qbt86jeMNs8/yMqkfSm5iuTRcHn9ppFs34F0XxQOuXd0DqfppQtLLYm1OmDrc4dn+NKW9BzO5ykl3BBNKQZj2Da1r1CbL2nsAYWqI9mR3TMLqMxYYTMB3B7wfeGb7qTftA6jbPmVBlwn1I0p+k9VxdYIwseolIC2afTSpC4YO7Cscrd5p+W3brU87nw3/1Vx2Qtjw30xnBD2AXkjDpHDJswZ3NEUve4S1XrZAxVwJ+oO8P3/PCNunjjYwdaCXwBB+UdCrHgTTBs1Bul+dzFE/IBQIhCv13Ar3Xkk+AxXoTTjwsdpwPL6TnQGV5nPTxMeAUpckzR4ut1l2NNzj9rbwhqf3OtNEw2SgTQbbygWoUD1wKCOymaIkrhLfUwKj4K/rySjVz7KxHKjQHLMyPLnmvYS49do0Fq77rQy1E1KbWr1kpQ8ytwcfx9Oa2tpGndUqNSL1r3MRnvm/8WLnhqsz70z1LjVydzNJDZmAJqu6+dQWKK+DEDi23Inr27SlUnndA1OEu8JhtT4pXShg16RmxHY6JXohfXnBEUHI6gccn7EXs4bJViv93QPNGVE27dlw8U1o8BboSKHKPhhTSIFPsGWIkHMdtWjoul4rNT2v4pzAcpUfTLcbvVgzPmS6YcpqFZZfyAEVDMHxAsu2B+L3nNCEbEwN39AAOUvdJQhgEP11rHPndbqWNmwHyAOxpR6liB5pUwpiPb/Slx/3qeZDfYWpMFTyLdnRQaaGBZWA0dAw+mn0DqcCp613kqtBE6TED6SiC1/FwrlrTsyN8VzM0EVSiO2/UWoki7s7NZZ3O1wwpKGIiPukzM2leIx+qV0JMHJQsELFnKZDSWQ6RFufU/9VNv2/lH79i0HhfN8wZ7CdGsB4oHAg7jSGSeTtrF5kmX3HzUCgVoMDqawzZQZfbr8NqEH4qUKUM6eG/FzC+ZowYHcKLS
- cXoHrx2Y
- livi9KvyuAULCH1N31MkY3V9ZB3IiAy8jjX06QM9S24pZQDRb41ppOQH/+7IND5BGErkKUy+DdRVN4yyzU48Ug6aYyI5UcmUn1DCrnhaxnJwFPNoiGok9vtMhmFU1G2Ibu9GyxBBXHJgolBZjokprAtnzVJpMZCBCOfBU2KPzl0SBMC+c3g4mQ1UMT0ts0DIAK6WW1HZgkBlzuO9cFHcqhoHlrUir3yZ2hOTJ8jrXznaDcoHoxwuXnKMlXD0618hbweFZ8TusWTZ3epjq+ClWyXtbsrG/cm9hxMBxnLuwam2/0ezvcBjbj4+V2Udq8QntIy2FBROnpoy8+nsh0Gz2NqnF9bTJHPnH49iNSkAFebnc9L/HwD/SBu4kUb/d1+v+fHhb2L2BmNmUp64oPEXJTlS90l4jUZExNosns8ehnJxglgs=
+X-HE-Tag: 1784034448-114983
+X-HE-Meta: U2FsdGVkX1+GwtqUjBQDesU/JHTv3I0XNAPYQ1xZkQ10N2wu+nJgswwy1eftQphWstGqMCh1QM+f1R8ImRWst2JUcItp9+WjXkxLDJ0euKDOjgehxrlcJpZSal1AJH+ncqXteAJOeQL/uonqaN9CRnKNsSu2kek600J+LN1wblFLpRhyFgLQ/TCuSat9TO6unr4DrLU4JK1et0OnBux/oZPPC+wHqhYVY+qBTcww1UpR+K7qTnTnUejLAco/6gS7M3R/XlRF/1kLMsOQ4zry2EKVC/K1mgLHvrIVm/qb6lF3EijpNMT2viqjI7ZfbdvIvlWQs5j+GokYzyMemIx4ivV9hTkJbtVdF78uD6sj5qR89ZpSdHr3L0UWrD/TUqCvgUilQi9jrpPtj568aU1jUZ5lU0TnIsl5aBaGLRgUhyuTiX8FblSBjqvjFKwUxwqS0ajEpC6WO6LoYkNiSiPHICMJ9FDmEf1a78a2U1JxSsmDFWjdv+IYtrlJTs5pmqsWX1iFKVMpR2ven0YEvYa3Sl7NpQ6vQotE7IkE4WMczkpUZuCNQNfSGPoRBkA3/byoBowxP9GwuWqi+ePjVY+qomqMzbFuOpOEP9FowanXjCOSl87PS0uUButWOE5IDbizYQI1YMEMpi5lnnLiGe8r3dw8dOqkFJW+T3tZAmRuLJuVFpkOu6rFkUS0V3ZcSLqbopPqVYzkTHnm5Vs8BdYiWq4P5gSW1mmXmREPLFxk80esXRo/fOd1N8eVan6RQ0wWiNKigqBp8BoZit9qyPSY7rucuPp90uDbgIqFl399XnqT7opoUB0dCnV9NI/auWxf2Ju5k1ghKe17X0JH5JbcbWUVG3RyYK0dZqMiskcrpb4ekjswb0/MdHwXOTG7uryaeYmqJwH07sGB1jtLzMqu3iufCOZMlcfvrUbYOx8O8KriHsIKVw9wWM5a+S7tGFajxKa5pOAzfbYtuJBsmMs
+ Nz/yGlGO
+ Znq7kdsppGAE567NqXR3VwR9juOOt7yF66u+6krpR5dr7h0wAY2WvoQq5mctWZ4kXpPI7DdfIHhrguwP2OSSJ9KgFVfQ3e88e9oYaTVUEU1BJATG9KOZ2eojv1ElydEi6QtUUkvtb+RgclvIiPcSas5ONC2CwUtXzEhE9TBtdh67BifvcFh8XUtMWZrmOVvW2uSJJaaOqBmoQkNktjIsyiNJ4pSnXTJUPZHELd1dC1rNG/vKiu+zlRXMxIbLY0qnKs8bpAOrNuuXBILfBVVHAu46D5Buh+rKCgaGto1mqvubVcjTJ2BIA8cUoNKqrkyV1adxuqu42JpD0o/rbs9flq6YV9I/gqjM0MUcxyR2iK7EjGZ3RUWiCp6wYcE3iEDUud0DKqryqe1VwtyjiFy8Wg6Pbhh5CxNwd3+Nx81OimipHQcc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,41 +153,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/14/26 03:51, Ye Liu wrote:
-> The last_migrate_reason field uses -1 as a sentinel value to mean "no
-> migration has happened".  Replace the four bare -1 occurrences by
-> adding a proper MR_NEVER member to enum migrate_reason, defining a
-> corresponding "never_migrated" string in the MIGRATE_REASON trace
-> macro, and updating the GDB page_owner script to use MR_NEVER instead
-> of the hardcoded -1 so that lx-dump-page-owner does not incorrectly
-> report unmigrated pages as migrated.
+> Replace all 'int reason' function parameters that carry migrate_reason
+> values with the proper 'enum migrate_reason' type.  This makes the
+> intent explicit and leverages compiler type checking.  The affected
+> subsystems are:
+> 
+>   - page_owner: __folio_set_owner_migrate_reason(),
+>                 folio_set_owner_migrate_reason()
+>   - migrate: migrate_pages(), migrate_pages_sync(),
+>              migrate_pages_batch(), migrate_folios_move(),
+>              migrate_hugetlbs(), unmap_and_move_huge_page()
+>   - hugetlb: move_hugetlb_state(), htlb_allow_alloc_fallback()
+>   - trace: mm_migrate_pages and mm_migrate_pages_start events
+> 
+> The 'short last_migrate_reason' struct field and internal helper
+> parameter in page_owner are intentionally left as 'short' since they
+> store per-page metadata where size matters.
 > 
 > No functional change.
 > 
 > Signed-off-by: Ye Liu <ye.liu@linux.dev>
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
 > Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 > ---
->  include/linux/migrate_mode.h    | 1 +
->  include/trace/events/migrate.h  | 3 ++-
->  mm/page_owner.c                 | 8 ++++----
->  scripts/gdb/linux/page_owner.py | 4 +++-
->  4 files changed, 10 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
-> index 265c4328b36a..05102d4d2490 100644
-> --- a/include/linux/migrate_mode.h
-> +++ b/include/linux/migrate_mode.h
-> @@ -25,6 +25,7 @@ enum migrate_reason {
->  	MR_LONGTERM_PIN,
->  	MR_DEMOTION,
->  	MR_DAMON,
-> +	MR_NEVER,		/* page has never been migrated */
 
-Shouldn't this be more like
-
-"MR_NONE" ?
-
-As "never" is not really a "reason" ?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
