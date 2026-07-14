@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2C68C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BDD6C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:34:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D44CA6B0005; Tue, 14 Jul 2026 00:34:45 -0400 (EDT)
+	id 0242A6B0088; Tue, 14 Jul 2026 00:34:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5136B008A; Tue, 14 Jul 2026 00:34:45 -0400 (EDT)
+	id F17F76B008A; Tue, 14 Jul 2026 00:34:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBF166B008C; Tue, 14 Jul 2026 00:34:45 -0400 (EDT)
+	id E05A46B0092; Tue, 14 Jul 2026 00:34:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F43C6B0005
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD1996B0088
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:34:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2226EA021D
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 24FB01A0291
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:45 +0000 (UTC)
-X-FDA: 84986116530.24.B949B71
+X-FDA: 84986116530.06.E4709E4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 95B0620003
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9F8A1C0003
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:43 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VQRV77Tb;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784003683;
-	b=jOXB6UrGvJXMnSaP9leRAjymhPHsQGoLBMjo4Dw/2xEoCagDv41yEmuZeO02n+qhqjjSE/
-	0zZeNZ3BEhXu5aAd5nN+8KxRQnvbzhUZcCtBj7bbzuQoKHH5m9Tr/0VcH1/xbUqnmUf17I
-	8UYB3La3SD6zb8cVYmt+OZTvyobgALI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VQRV77Tb;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drn30NTu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784003683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O1GFuFV6Qv2wWJnuvFbk/HsH8hWm9YYqEFf3m4C5iW0=;
-	b=upZXe19VsxQREiLdCxPpEbTvI9hIujXBFC9UEJtAPNBtXHqSinqYill/GNEch+l+FzY9fN
-	c39hgeFCzEnH6Rp6twDftjIT6XEVrFf7Wjh74ZxdzntmLIq6pan4RYYc+RfkQGvIu8tUWV
-	RpvZIQR9391oiDr8xFYRLISb1MtkCvI=
+	 in-reply-to:references:dkim-signature;
+	bh=5HorvAmOdD8OW3Wub7kaOWmH60W1P8iHnRf74xopIeM=;
+	b=Y23TKDJregGDx5ES89siIN3Y678Xj2NcBux76bM588lZltBnrDj/NSmb6H5QUjzAlKT/0U
+	Vqx4YgzjEw/svnOxZNr+9KGfJ/LN+x6iS216O0Vkuflpc4SMB3pOcLJ6IWjQgY/OmhNms2
+	7ZBawA2tjncuPaKda1a3bByAZZf31Xc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drn30NTu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784003683;
+	b=jk5KQT0Xf/DIlTXPykcWIhc858GyzlhMGwVqoIAjLyR8fatAHCasbRoVDTsVjwwzonVGre
+	VmBKT2NlpVmq/qCutapmg7rpdUAex3ZRVKZDr/KqCnb/lO2unOXu6ZvMw7dX56DNzEdRhp
+	MbPLy07buoFxfexWToF88bqkuL8YLa8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 353B4601ED
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF35F1F00A3A;
+	by tor.source.kernel.org (Postfix) with ESMTP id E22A0601EC;
+	Tue, 14 Jul 2026 04:34:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7201F000E9;
 	Tue, 14 Jul 2026 04:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784003682;
-	bh=O1GFuFV6Qv2wWJnuvFbk/HsH8hWm9YYqEFf3m4C5iW0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VQRV77TbKCUCH8IIFl5SmwBxcr7DCsc0PHVTjB4QqHoY4fgGMOvJCZa8DI9M7ykYd
-	 AGEPwYZeh2oj6uJ+WMGR3dzoJI+taM8N82sUkKnX16BHWrwQ764XFFU89JxM8nrD0n
-	 Qa4b2Plfg3QqQbTBj4n1gIxwOqK1Wp563CBJSwNiCnPKFkRS2TCZm/MvncH2lvpb3r
-	 lABcSdLR1kWgyT25ZPbRY6oFCHYGBzJs+n/cOcM3hY3LUqfxN7Sbg/YJ0FCOgxYEMU
-	 F7dpH1T+W2uEKXxgqOEKK+xMj1wVz+0fP0C6gtbiNKOfGQZVN5yF6aji/nfj9XDyFH
-	 DCl2lFWH4fOOA==
+	bh=5HorvAmOdD8OW3Wub7kaOWmH60W1P8iHnRf74xopIeM=;
+	h=From:To:Cc:Subject:Date;
+	b=drn30NTuEyGs0VhHRcO2ejG3YH6liKQeRe5AxNWRh4i/+A7XpsuZmrdwvvX+lwJSl
+	 6AOeFEtEzP2ViEBt/iijZ3ehOfYqar+arJbzUHe2tAOkP3cAEd/hu9Smprb7kIxoX8
+	 t3QlN8GCMK60uFV9IJ7ihwhEMvhhTBluAKDKNjNFj1BiBRC6yx3Yj1dPK+Pi+3rR3p
+	 6DOZsqtarnk0GVD+7HgGYPXnExDizW1R/P+MbLlVe6t8nn7qEVM5c54prvGLUxAPW/
+	 bEPxRqBbBOh4ix9OHRKoKgxE2wi3HFVfeFoBdjWTdkr/YHC4uRJU+bOFVFaTFnIBX9
+	 BlAa6+mUSZN4w==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 01/10] mm/damon/core: hide private damon_region fields
-Date: Mon, 13 Jul 2026 21:34:27 -0700
-Message-ID: <20260714043437.95811-2-sj@kernel.org>
+Subject: [RFC PATCH 00/10] mm/damon/core: hide core-private struct fields
+Date: Mon, 13 Jul 2026 21:34:26 -0700
+Message-ID: <20260714043437.95811-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260714043437.95811-1-sj@kernel.org>
-References: <20260714043437.95811-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 95B0620003
-X-Stat-Signature: sirzunprgwssbcupm1zrjkc6rc58bugb
-X-HE-Tag: 1784003683-683951
-X-HE-Meta: U2FsdGVkX1+buUkWo8qu+UIjv1BYdV5KO3F59+oKykjttCtVwuLylpRgMWs/QZMiwajBJ+pPCqahLlgoGk66h3fRKskx97MPj16u0GxycjA3UXrnCl6NPEtg+a1O1ej9yfFl9HVdn+MzhojaMXKAh/4KJxgcpIPOAFK7T29iyyMBv8nlYWF9lEoui02SLDZubCte2flBQ8DWRMe0/BoCokVsaeZYTE4GfYCYLj7JwsDnG0alj+5Jx4pF3AXXKE4kupUEmJwNdk93HpHDtXXG19KH1RcCozvPw0xa3ovNew0VGqYhr2zRFtKYRz7j5GVyuJSS3BDPlW+AMmjehBcqSWIUCTIigIpmAhYtgKY4CH7wa4V5ATrxp3soi174bdCBQAkUCFLsSyXt16ybw7e6qgrtBHt2ml1ERk+J/heTgjnUUldkeAAWOLbdNq8l90n+VzsbLT+K2yqKXlBo69LVBg8Samrmsx8i4efV7yi/4/G0S6sKcSaBcyHa/ulFu2hxvWyhnfog0a3h/bER8YOlz2w8UvVlOuEvHtbc1PRtaj0StPEV9p2J9nOi8CKo2eFMYRBi6YlEWm+yBEZVSVvRUcDCexr1UmgkuI6LfzxAKlZ9/NvmK2hoHy5u7pRMmxWtXGVTFjGb0VAvZQC/rf8Xq79ijteC3eolHE9upyeYHgJusf+t4VGumDacuUGMCIEl0PhKuM+jBeMy6ygOcFF6zx7js0M06OowCR8e/AEDETMybguXz6VIcJlNiT1X0YeL9FMgEqFnQ32tCtujRlhOMmuzUoPc/uUVD3hLzcozaUu9jVKyLY5stOFs32GlChfIIXlNkwnr9TcEUXX9g5t7pdf7TLfqfLtr+pW7VKz5GljqUdAt5luw1HpFYTUCJIgQuDPXQQg+Ihm0Jo5QR3EI0HjwgOIwMVzy3Zg8VMTzt+pskRpFRzjNbM/bxl2GlFnEnuf8YzvlGnE1A6ntTIR
- VeGZ9QqL
- Mg6JaSGbyp+gCY5jE3z+8GNsUV4/aywrcKfwWn+HhH8ybkDl3A8gKxHDxAIop3sCqFWH/1zrtdLgAox9Gzj9zgv8qGmkGO3CD5sOK/FQZt5Bw8Hx6BykAN3Ma5YtCTIhaOyWb1YWyQZhbQUtNFRAkXkXnNBIcGSRHKEdr5JBd1lE+uJ7byeJ7kY/RQqM1aBqY6Qfd7yDd/ZPTX4mEMNZ58SNFBZ+3GkqXsq7Dy/XI0DIfuYhLGWPaWfNxhSZB1VWiAcQnn2ddYXfjEO2UxEqAykIS3rP+9YNmOuQiLnCUBkssU6vSNNEEEYJTyopt/qNmexN0RqcdRCu15asOzURtWZi5WFpGTR+PKhO9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9F8A1C0003
+X-Stat-Signature: yyqxp7qtmsxciud475ramp48r9ogdd9h
+X-HE-Tag: 1784003683-150342
+X-HE-Meta: U2FsdGVkX18adUAXTWgjDdDbU3CZfsFgPGoo67atNlaeBZ99tNp9nbgcknB6NnEoh0Pqwbfl4janzMu+uSrbkCHMNsBYUSHd7n3HuvheSdpFLQ04sWrSPSsh4RO6Jv3tuFEVoOfaxQuSundWO3M55JBdjzAQLrMMlyymvHMZ+6jDpDjS5cT+ISYxeE2naqk3Lrimj2os9MJoKUyAVmfce4wL9k+Q5MmglI7ChPr0CmsMYPNAjOcyWJNhPAa0GbdN7o8kQOBddbdVAaJNVfdpp7bEAeA61evWyUlRRMfVfFljHiYhhy2VpYKigcsnyWuJaXtKRwq4hj9Fetssvs6ZiYg+H79ovWpkNhhK71PA/7jH/uTY/IEnyefN5KdHGjinjqNfqwSNXBOcLxd+yP72aMxz8l1iZwzTuDEi7E2WQhn8yawIK1yJkN0I4KFbn53vTYQMc2Mx2rUYV8fP55zRlLV7Ikvyi6X1rx+g+qTof5XDcXnA8TWvE0ldSFp1LxIdApf3yuf303vnrRp1eeKUnENTamMlkkHRYIRDLuMUhIdmRBxXP49M4FiYLvDhS/Bfcm1M1gmPULOlgYmxrm2Gn8uLk8PT3oq9Q7EEn/ydm9g5DNhC9fZStnH3kO97BQzQA4yxb58c0r1kw/U5/mDsSKhaNL2dJzIKQu78nuQpzM779Se2vbstDjFQq68w0U3Oo8Rorp+fIXRnc/kQ/RNBlKhrMk89JF2fGBL4Dz/+UovCKiXV6lHgvWwD9oFbAO40P7FFjzikvOCxVou18W9Gtfqw1c05W5x/fx4i8ufH61PqFoawLsoHOe/0mVwTkeYQQYV7yYf663ApU4nz+kPATAHs0fYugVY4O97j/qRlDbe3lc8vUwdYS1gf5WHfMqHZ3xX0Ge6B8e6JSr4LU5ebq/LMc/j/CZzWh4t+JINus1/AbjFqc34Uqtt826qQLvz/19qS7HGzTsgVuVrwRwU
+ V+roUKzl
+ ceae3fEfHruMHjJU/nUQfU2d67dFBVaifLoB9ZFlVReltQUc7IgJvmmS3gM1M0QCJZOZ4akrt47ROXHvnAIUxxZnjM+4wQTf29L4mdMwAMKzpP9nxq5jb4H032YHbpO8nvmQNnTWuGExrx9WihpzgbVDJ5gbI32gti37C3qZcZY82EILZSxwDv7CLu7GkavfOcNDN4WJqh9jamD4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,41 +91,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_region->list is intended to be used by only the DAMON core layer.
-But it is mistakenly not marked as private.  Hide it from the callers by
-marking it private.
+DAMON core structs hide core-private fields using 'private:' comment
+tags.  It is incomplete and inconsistent.  The linked list heads in a
+few structs, for example, are intended to be hidden, and always be used
+using the wrapper macros like damon_for_each_region().  But those were
+mistakenly marked as non-private.  A few core layer-only fields were
+also mistakenly added as non-private.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- include/linux/damon.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+This only encourages callers to directly use the private fields.  It is
+easy to make mistakes, and difficult to control.  Mark all such DAMON
+core struct fields as private.
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index f69442a9d4312..d32377e7e535e 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -46,7 +46,6 @@ struct damon_size_range {
-  * @sampling_addr:	Address of the sample for the next access check.
-  * @nr_accesses:	Access frequency of this region.
-  * @probe_hits:		Number of probe-positive region samples.
-- * @list:		List head for siblings.
-  * @age:		Age of this region.
-  *
-  * For any use case, @ar should be non-zero positive size.  damon_set_regions()
-@@ -68,9 +67,11 @@ struct damon_region {
- 	unsigned long sampling_addr;
- 	unsigned int nr_accesses;
- 	unsigned char probe_hits[DAMON_MAX_PROBES];
--	struct list_head list;
- 	unsigned int age;
--/* private: Internal value for age calculation. */
-+/* private: internal use only. */
-+	/* List head for siblings. */
-+	struct list_head list;
-+	/* for age calculation. */
- 	unsigned int last_nr_accesses;
- 	unsigned char last_probe_hits[DAMON_MAX_PROBES];
- };
+Patches 1-8 mark the private fields for damon_region, damon_target,
+damos_quota_goal, damos_quota, damos_filter, damos, damon_filter and
+damon_probe, respectively.  Patch 9 removes DAMON_SYSFS's direct access
+to core-private field, damon_ctx->ops.  Finally patch 10 mark the
+private fields for damon_ctx.
+
+SJ Park (10):
+  mm/damon/core: hide private damon_region fields
+  mm/damon/core: hide private damon_target fields
+  mm/damon/core: hide private damos_quota_goal fields
+  mm/damon/core: hide private damos_quota fields
+  mm/damon/core: hide private damos_filter fields
+  mm/damon/core: hide private damos fields
+  mm/damon/core: hide private damon_filter fields
+  mm/damon/core: hide private damon_probe fields
+  mm/damon/sysfs: do not directly access damon_ctx->ops
+  mm/damon/core: hide core-private damon_ctx fields
+
+ include/linux/damon.h | 110 +++++++++++++++++++++++-------------------
+ mm/damon/sysfs.c      |   2 +-
+ 2 files changed, 62 insertions(+), 50 deletions(-)
+
+
+base-commit: ddf3f75c217672edd46466c9156d64abf5119b68
 -- 
 2.47.3
 
