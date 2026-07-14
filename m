@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 690BBC4450A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 19:41:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B38C44507
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 19:51:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29E3D6B0093; Tue, 14 Jul 2026 15:41:49 -0400 (EDT)
+	id 39EC66B00C8; Tue, 14 Jul 2026 15:51:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276246B0099; Tue, 14 Jul 2026 15:41:49 -0400 (EDT)
+	id 34FA46B00C9; Tue, 14 Jul 2026 15:51:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B6926B009B; Tue, 14 Jul 2026 15:41:49 -0400 (EDT)
+	id 23F706B00CA; Tue, 14 Jul 2026 15:51:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ECF896B0093
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:41:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D4921A04E3
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:41:48 +0000 (UTC)
-X-FDA: 84988402296.15.17DEA0E
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3F33D120008
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:41:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Zl8Y98I6;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 024026B00C8
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:51:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 684361A04D6
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:51:55 +0000 (UTC)
+X-FDA: 84988427790.18.CA907D1
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 533381C0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:51:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xbEaUCOX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784058713;
+	b=7fN4VdTnF2yUNGBGqOTg/eSpa0bIh9rK7vtChP8crv062Ildt3d1ubUHq+oPix5KCf0LUa
+	qLDOaaEs+49p1rt3QzaWkGLYgIWoDOut4DobtLWSLeKaSxowQ5L4o3FlfMCVZFt77cqFtu
+	s5ymNoR8KS/aaVfZCw+53KxNTPlpOj8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xbEaUCOX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784058106;
+	s=arc-20220608; t=1784058713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kYcYCSULV/hfG7U7cWmlPQ/oHtSU1VEtwNwKSB8CpEM=;
-	b=O1bKGC0Ra2AErRbJEJcDoFUuhq6S7LnWnUru1ebATmNsCdUAwhJZ7txUXFAnzaYnkHokKV
-	Oya4oABxaMA/X4i730JxcmXmsZjWzDAmQeL5vMWoQm2UQrPzCLGYZXdmRK9JmhySbaVCyT
-	4ul8EU8ikjfnJb0k8xTf54g4bwJyIXg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Zl8Y98I6;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784058106;
-	b=vfyog2MV6AgdViHFNwfxqLfXCGIKyEYwdYejzs0xeiXyJqd3LaSjpHqlo1Vk/kCrmGEK/+
-	z/2m+TTgsRvgqhTVXnodwUIEzVGGw+3eMSS2Qhck2q+Hi4kbSDpHvA7BJVpApFLFcHW9eC
-	MS1++cTwXvUyvAoyZ/tycyfWnMA0G6c=
-Date: Tue, 14 Jul 2026 12:41:28 -0700
+	bh=Cuoijzz0rTY63A4da4n+CjQ+9RFOuE3zmPGDmmxWI6M=;
+	b=4two6/oFAcbLmE3nDbpTASF2qhW42g4bjfbMJsmjKgd/dxqeHM7ss0aDF+2oZj7dg1sfak
+	xNtBugnpKYvQq/VftyQL9KOgcnB4jrZCpDVlsNGMWqUjaupmvD6mBMdvER9vaOZCkHEsUu
+	WOkqi4Ct1IFDUEVTWrbxo/AWRZDEGZk=
+Date: Tue, 14 Jul 2026 12:51:46 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784058103;
+	t=1784058710;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kYcYCSULV/hfG7U7cWmlPQ/oHtSU1VEtwNwKSB8CpEM=;
-	b=Zl8Y98I6TSwbZ6r8suDxniwyylFwFl2e1Uau1HCcE8ii377yG/8MagwcljzpEk0YOb8REZ
-	qHJAuCBiRirQETZGb7LWtF5StJUHNQdqGjh3TlG5a6CDN6PbPEj9NBsA88g0TA5LrGRNq2
-	e6ARkIOGoJ2oH9RrVX684FV/RY5Ob9o=
+	bh=Cuoijzz0rTY63A4da4n+CjQ+9RFOuE3zmPGDmmxWI6M=;
+	b=xbEaUCOXuxx8FfZYpiWNatKkOn8twLD8coYe4FO6wtqEyxg+Xc5o0DpNmmhZq091tIF8d+
+	DgEzCKaSTpgZl3w6bv1b4wdJ4vO/M/B95cjJk4wLhxu5e80JY+rubyvjdOYeWuf0s9uOAr
+	k3jZZEiWpz4kF5sfNDvVwF0yHk0V/hU=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: brauner@kernel.org, qi.zheng@linux.dev, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, 
-	linux-mm@kvack.org, hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com, 
-	linux-btrfs@vger.kernel.org, cem@kernel.org, linux-xfs@vger.kernel.org, hannes@cmpxchg.org, 
-	riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH] fs: push nr_cached_objects memcg gating into individual
- filesystems
-Message-ID: <alaQ0VgxOuLVoYbU@linux.dev>
-References: <20260714101454.1202449-1-usama.arif@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Guopeng Zhang <guopeng.zhang@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Guopeng Zhang <zhangguopeng@kylinos.cn>
+Subject: Re: [PATCH] mm: memcontrol: update state_local when flushing NMI
+ stats
+Message-ID: <alaTQeiiTTmKLngu@linux.dev>
+References: <20260713085053.2916813-1-guopeng.zhang@linux.dev>
+ <20260713113901.GG276793@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260714101454.1202449-1-usama.arif@linux.dev>
+In-Reply-To: <20260713113901.GG276793@cmpxchg.org>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 533381C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3F33D120008
-X-Stat-Signature: icj6a88rzgbudux8xkpqeqojxwxb366y
-X-HE-Tag: 1784058105-412317
-X-HE-Meta: U2FsdGVkX1/T7FsxKF+zw9YBMZ54sljIcaylN4XYoRPT4mcqGn3h4k7hxTgoUPKV8hwvpZNKlpzW8tWJ3rw+jtmccSCDtjvFkUqTMHt9987e5Iv3hgBy0PHBQ3cKOfc6+s+iQh93cDrJ2M3R+sbmAxd1xAyN0pJgLIL8jBRfclsX5h+bCzWVeXyMO0p9Szpgp99EaA4M78pCR3U1Bujm2/EEsZoArKMEq8a0FaPItoRf+PVEdxd4+q0Nh8FEREiZVrX75fyOPV8/GhH2MX7cXlZw1Twmv1WVl5QYhhueUj2XZId4KCG/JnMc05sW8fIh14mRe9tVO5aAcwNMlPc8X+cGlkglvcSbebYaDhwVeNMpL+bu9VZ6j8ogaxfc60HqszJBLFiXKjPqauhA15td0lOeYgQ+ahThRtrg7Kc3F8Vf+p5KB74VlBEIKgX7P6B8vIQAiC0FjJHpVUjbBHf8sPTgkbReyS65HfAx+tefCgTRVmypZfSQfOnGpU8EHuKElIWHJi248+pwGbDN98IhpNGwn1U20NLBXaXaNl74SL7yLnSGNzIkgw4Xtz0Kg4+eg32hHXZT0s3QPN7iAFAgF9gF/R180bRxpX+Wra54VNdrBtkXMyWc5pH1QIVPVjjgfiUtGIrfVkvIV1f8q1HDCLqsrtJuqnM9KcGNE9FYlN5rSAwTw8IpgJv3w6Ny637M6FQIdtlNaiQXS3EZXtAUu22BFhaQxh42zrxI4W+o//7HGg00rQu/5gvvZzOEk7TheqyvtpAlT3VTtTqARYH6m+MB9o65a9ZcHkbFBu3kh58za06kfOl02NBXA+VnzaTNQ/W8luh5YV7jf8T8Nm1nDokK74bTq6ri43QNEzC5ik4VcOfzbm3+TssDDP8uoqr0iLyVvtt7b+zLnXCaxtdFYCmuIXEXMOpuBKUSkRpzFTwF08JSJezpdml5pCoVx4J8/5TmyojE/wtn88kCblt
- 8X0+g/vR
- dage8zUPdmRfzMD/S/H2n8EXQjUk8jnXBJYFcwp0Ci0+sDZbn5d9lgsa38+rYEjIlwIndlrNbXL78zW8Whz5Qw2bURLEtDTtme03tQXE3Eb25yYMQqzOGJUbFy+1C76oExZopBznzRcQyTkW4saCmVqz0gUqrs8zF0h9Hk6m60qSRoDejsiIGd79g9Gu237g+4EyU6lSzdLo6RFT5e5P2nv6rq+IsdCqsxZ1fFPiGIE0Q9FyMmtdSHmJgb8gwn+7Bfuri
+X-Stat-Signature: hukzdnzfzro56jhyrxzhk44ej7ser68u
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784058713-457177
+X-HE-Meta: U2FsdGVkX1/0ZphbLHhEmPNDZlZHkdMJpPVVMz1upgGG5/otOzbJAdT2ZFD1sEK1Aa6n3uofH75G6WBzYTPzHuqbouNMgQB5YauBJQ9Vx/WzQhyrjBgYU1eqLfPToxNeVw9OYH2R8Qz4YQtMgXl4kC4kt9pNkbsHnydDUiqRnVNLX2qj1M+JF8npSGQvUGLOdsqqRPWaBmhfKlepY3x38YPkhr8jIrzne7hxhQgmWZSLNyN8JOlAUkErrPMt39YB5BqSfR7Vdj+ZMhvjnNhsqw6oKGSz4OHmFl0fIof4AXCvoSFZo7aQLRCtyLqyjSDlLlou8oa+HssrzOLmuPeYFheNWqMsoIlaiZk52mDfUrpC25w+sEp20QPMtUjL6/moF/U0gxG6kaFifwaI34n/1FV73o7kTzFMw6yOs8og+1yNvYAEFU7HpMD2LgOlJwNGpgvhMFQSuRjDvpttNykniT6RRQYSNg8IR9Wc3LCd+ShvbMNx61oKg8NWQh0EohYQUDfQMXG57jCJGL+Lv5OFnQBAL9i8YhShzBXiKF5Z1iTY3SJUW1JFslxH5p+TOu9n1SnzD+xcHCzq+JPTYy0LCanP0rt2BL8jRiMz8JisxDivLLg1hdnKtfTUzdniRF9ytYj6Lm6l3SWgIqrw1POdglfW+oTZSx8GVAby7lSGAd78olEOx+RADVqKpo88R5sdWZGZFtVTB0U6VjvFE+vTzGfRis9R9G+gZX+CxNnR32zlEfh9IL6PQ5lCFFYxxt22ZH6bfAvK7QvPZySPqu9xbxB6RmdOrYD9tPJQckJEXDTYxtcOabmgvVdTexqO8HypwmZ0U3uKvEa2vjW6+j1M0R4O9pOO7zwNabA7Ul6bw7BkD9dXgN2WwUG2doaBJyICuNsaJkPMKekWMILHdtPn0vnuzwxrekIrf8O1e2w5BqNA8NlI1k0NmYWXb+RY3LBZjLY3/Czmzv0Smedp42V
+ wiveoaYB
+ CP5E96EKQgjQ5ZJT37j8ZuKIsH6EDDUBKDGeaetKsvrFQEneL+w2+LaUmLqGr5ctLZL2JJFZcH9An+Q4k9o51X/5yVkLtaC4Du3AdZHtDryqxAKIR0z5Rj5EbwwtxV9WPleC+CdIlZT/zIoSWwEPSz4h7HAGXCXwWTAADjqkLKDpyJLFBia6JC4BmRBkpjxaNT3OsVqCvHg0fUbr1d/g4EKmh1o34zMBSoobB+Jkj8sw6V5AD49e4EXyTQ57nsN+5+JxtozJAYiZdLDRL83mEow0pPNCFa5CAfkU8nOQW8p76edo1S1M2l0q9vwmUxVV/stD7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,27 +92,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 03:14:54AM -0700, Usama Arif wrote:
-> Commit 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects
-> in memcg slab shrink") added a check in fs/super.c that skips the
-> ->nr_cached_objects() hook whenever the shrinker is invoked for a
-> non-root memcg, because none of the current implementations (btrfs,
-> xfs, shmem huge) honour sc->memcg.
+On Mon, Jul 13, 2026 at 07:39:01AM -0400, Johannes Weiner wrote:
+> On Mon, Jul 13, 2026 at 04:50:53PM +0800, Guopeng Zhang wrote:
+> > From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> > 
+> > flush_nmi_stats() updates state[] for kmem and slab counters but leaves
+> > the corresponding state_local[] counters unchanged. Local kmem and
+> > slab statistics therefore miss updates collected through the NMI-safe
+> > atomic path.
+> > 
+> > Update state_local[] together with state[].
+> > 
+> > Fixes: 940b01fc8dc1 ("memcg: nmi safe memcg stats for specific archs")
+> > Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
 > 
-> That policy is really a filesystem-owned property: fs/super.c should
-> not encode the assumption that these hooks are never memcg-aware,
-> since a future implementation might legitimately filter by sc->memcg.
-> Move the check into btrfs_nr_cached_objects(), xfs_fs_nr_cached_objects()
-> and shmem_unused_huge_count() so each filesystem can lift the
-> restriction independently once its underlying counters/scans become
-> memcg-aware, without needing a coordinated change to fs/super.c.
+> This issue affects memcg1 but also the workingset shrinker.
 > 
-> Behaviour is unchanged: calls into these hooks from shrink_slab_memcg()
-> still early-return 0 for non-root memcg contexts, keeping the shrinker
-> bit clearable in each memcg's bitmap; the global (kswapd or root
-> direct reclaim) path still drives them as before.
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 > 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> And we should probably CC: stable # 6.15. Shakeel?
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Yes it makes sense.
 
