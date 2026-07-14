@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4FC9C4450B
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63201C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 14:06:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C04936B00C3; Tue, 14 Jul 2026 10:06:38 -0400 (EDT)
+	id 48AEF6B00C5; Tue, 14 Jul 2026 10:06:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDC056B00C5; Tue, 14 Jul 2026 10:06:38 -0400 (EDT)
+	id 461F46B00C7; Tue, 14 Jul 2026 10:06:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B19026B00C6; Tue, 14 Jul 2026 10:06:38 -0400 (EDT)
+	id 351A26B00C8; Tue, 14 Jul 2026 10:06:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AD416B00C3
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:06:38 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19025403B7
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:38 +0000 (UTC)
-X-FDA: 84987557676.13.DAB9290
+	by kanga.kvack.org (Postfix) with ESMTP id 0245C6B00C5
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:06:45 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C9891A041C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:45 +0000 (UTC)
+X-FDA: 84987557970.09.1C45720
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3B69A1C000B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YzY9thwi;
+	by imf09.hostedemail.com (Postfix) with ESMTP id AC3FB14000E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:06:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=HIiwhwiW;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784037996;
+	s=arc-20220608; t=1784038003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iM8SB61kZfRlZBBjK1HisTzxprKerLF7NioQQq06LHM=;
-	b=g+ttays+ZE+ja7+6x7jRt3ZSErIi5Bes188eyG3mjklQuQSisz18CJqXv8VU85VoHL6eNz
-	LQfOsNzncWrOcEXRQ0EqJxbeP9Z2mFQdBsWPHdU/G0rD7XEbBzflWBHzVeU0iOJkewFx+c
-	yOyzkGeXwKWAKDxGO/lDmnzG4ROyPLA=
+	bh=bBoBfUS5WMssGgUA/Wo3+dYqN4HjYGy3oqxDSlnyggk=;
+	b=BJsMWlJIU1QDDBF+S8zHkLZdZNLT3vfYiHYSA6LN4g/7WrRIplu6X6rl4S7jU0sIkm3NlV
+	bHCAvZliR1L5FAS452AHBNw8lDeBAwcfJwV5IqrCLDq9DSArczma5n8ZyIB+W3auVhQ9+/
+	osZliDV4jO5XEZcvWmfCeV6IR9/9S7I=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YzY9thwi;
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=HIiwhwiW;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784037996;
-	b=1eFfH/t9zmhfgYJycTiIBpV6jG4140X95sh5+Q5dNzDIPU7jbgy0OvzesAHAaZyNQ6Hw2C
-	Tpscaj2kFYpbWgx52pJ1SDfETfT/ko3Atmv/MDZF7ACMT/xlEY8a4IqIpp5p2rYEp/80Fc
-	3ptUsq1/Zbnv2umMQ7YMVOKHqctye4Q=
+	t=1784038003;
+	b=xHdilhBbcXYMAbxLQxv1RHiwzL58gSHEyH4u+xCefbFLI07ZYzHIdNNQSwmAxPPc+Zx2Q9
+	oPlY6CM67IrUKLQeBj1cyWMHks51RZrst/tkhthNXL0HKDCEDv9HSZfPCspo718Gy0U6Hm
+	7h94ZNLs0WFha9V9/Y9Kn9ytADq8XUk=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8A9E1BF3;
-	Tue, 14 Jul 2026 07:06:30 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5A831BF7;
+	Tue, 14 Jul 2026 07:06:38 -0700 (PDT)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE3913F7B4;
-	Tue, 14 Jul 2026 07:06:27 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7BDF53F7B4;
+	Tue, 14 Jul 2026 07:06:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784037995; bh=brubU8ipNy1ujnPWOSJsU4D9Csfsl5oNxDWj3XnSBxg=;
+	t=1784038002; bh=mkvNiLNNU7+2GzQNF8eqTlv1xCMmv8/GPTLyXVohroo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YzY9thwiHc65wNiUxU67y6/tJ7ZmfWCBeoA2a4LNQMo0O7ibHK6ctA9ComeTUEm9C
-	 I/qi+0IpZSq41xPb+OZ7Z3/G4uCkw9cLd6IhSMUabwxmOQOqx2sF6D5jJAoetl8ck9
-	 oA5zuyScXswzHCcI9ibhnX1aroPeO+YpvDY2p/3g=
+	b=HIiwhwiW5/FaoSRBjo11aX1AZpPuYcroDE7X41LVr/xwN0xxR7sqYi+EShBKHthpF
+	 n4f8woYlTVlDt26juvjhHDNOK/I92UerlQVr0VVHNOso4VCLR4Gq0Tj1gOY6PCuWSc
+	 FVgEvZfyeKpZuGic61DbMkRghFHRNE75lpgzlmYM=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Tue, 14 Jul 2026 15:04:00 +0100
-Subject: [PATCH 11/22] um: mm: use mm_is_kernel() in TLB sync
+Date: Tue, 14 Jul 2026 15:04:01 +0100
+Subject: [PATCH 12/22] x86/mm: use mm_is_kernel() for kernel mm checks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-remove_pgtable_cdtor-v1-11-44be8a7685d7@arm.com>
+Message-Id: <20260714-remove_pgtable_cdtor-v1-12-44be8a7685d7@arm.com>
 References: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 In-Reply-To: <20260714-remove_pgtable_cdtor-v1-0-44be8a7685d7@arm.com>
 To: linux-mm@kvack.org
@@ -106,21 +106,21 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=784;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784037902; l=3862;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=brubU8ipNy1ujnPWOSJsU4D9Csfsl5oNxDWj3XnSBxg=;
- b=/PzTb9tRgc6q7ZO/WLmLmpzghLV5CdRWiA/u95e31NiKnKwzFm+3cKJU2/zrnT5S/P+reJB4V
- ezvWWMbftRCD/SWI9ofvYfumKl5AhLTyCVWAwhB/2VFq3mOJHXdgNVl
+ bh=mkvNiLNNU7+2GzQNF8eqTlv1xCMmv8/GPTLyXVohroo=;
+ b=TL/ATO2WidViUjXp4JukAFDeik9Bhx9UKyamDJVrFhja594xcdOFPLXtYE8/VvFDMq3oXLjVT
+ 9Ry1qd/NBLGBGmKjBP3mLajDf99Eimk93BsQgUsx2B9iCCZoXZcZow+
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
+X-Rspamd-Queue-Id: AC3FB14000E
+X-Stat-Signature: df6pzymsdakizm91gacmtozirb9boeby
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3B69A1C000B
-X-Stat-Signature: 4nmkstjg6dmxd6snmhasdgo94tkqewun
-X-HE-Tag: 1784037996-53288
-X-HE-Meta: U2FsdGVkX19poVmDitjTXtqi0mNuosVCYda8t6SP9AuIdtAN3Ru/XxVk/l8Oddc7XGFNk2Bs+uZfnleS26wIe2BGqdVWOTh/sn8V8R83CbcsZgj9DtBD/V0K3swSy+B1iS2V9+82CGlnqTlFdcz0QFhoPqrrghdY4SnOW1cCHRDFbfJAIjo0FoA+A3bJfhydeiOy9bTDLb3XQml3+lbl1XuPxRGHcJ3J+W0NFclq1T2cR6MIMW/rsJHGdujZAaDCkBK3AY220KRlhFUa96Ob7ZAYSGiDFCB2YTr7T9COGLcpHSO6yXrkIDQwaZ/5PQnO/gqo5ku2cD6qMplVBaGm6va5Ec5v02MpFyl/8FZ/mc5c/pPaGr6iIFQvUPpBqwfFRd08SnTNC8baVsIW2KdZ+vJroeQCTemYwETzeSJwY42reXDkyjg9MJaRJniqqUdG+p9gAfD+QTCAds08Pvcs8NnsFldTOXu+BLlUW8avdRSU8mCbCQ3fVRkgswnqjPsgFGFTOcgY2z5UQ24ss6w1rMbV+eSOw2IOGoCu3afbplOd2U3ZfA9fQluuSa08lCDHh+N+dqndS5nbLNy2WQiBkubrm4yx1n330oeeFN22VapNhGEXovQY9AVVyb7O1vMuhAnj+OadEkK6f3LIwJnOXz5M4gkmER39/pdQnut43goEFi0GXRud0FBQjQyJtg/V8OOP0IFTuhpHWXf5KPogi2UZXUuwFJpHgjhiHD2eN+URSGx48xxEnOjjDiKliLetjvl9c4r0LzmEzo6WCayxJS0SMQSH4SLugZd89sxix1iMq1zh1y3MlRIXm//Cj/NTS36y+Dnm7aPfqdGhsXtfH317kphZqgdDUtwLg54pLYBneFXh8lX9SreUx3sSV/oBCkXUm9UHimI/+YEXzh9U2UrU8ReWYsXxZlhXgxvQ5GrG4CVFRQSFF5OfkJ3s3nxIN9piMz6SwMEUUCjlwAP
- 7WLH+oui
- GyvAKAq7t2RPzxqsmXpTWGS/XEwnECoj6b/O/e0/7XNQn9QxMVBc50L8hOBidfJo1zaRzqFTOS7hyaSITuXap4IKU4oxFeupiJBoZQX4YKACS85h/bt9hPerrvKW2VdOCkwkqCSj+UqqPOLBKxw6vrYecBlOaH9fftKVqc7hnVsy76R4t6yJ6OnHdpLnexzNj2oHarBA+uEScMxtNt3k0mLIghIdc2u6DOr85svBppIh878InTi4L5lRDrXxe2kApNp/xlXc/varJnmd3omVCPvQ1EeArMNvmdjjp44VhiN+APpsOKs/aSUXHHEb4A8PY9V4Img7ejeV6fp6XM3mizVjzMsZ+XrhR0UbRwC/BIyjod/1k/uVtDxILnTC7hJrzVGdL3kzc9ylvniQZcEsKAlpcrA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784038003-691187
+X-HE-Meta: U2FsdGVkX1/40VlFWpbAShQbElNas5fy+9GQOzYcekOvgUnIu4jMzZ1Y/FGRy4rlQ9cp8ST11dr5M8vMTiCPQtu3wjmvRtTSROP+3hf8LRPD54vHf7Y3X+G6JULEwAkO1Jr25p85hEMtLl29jytKkup/0/kSyMTou/wB6fQdn2mFAVsWoFukGzLDxVXtIputMDxpGQtEm7q41J+7UxMXNQwdcPHQgaVl2BITFzbd89wF0Ksu64IfMeUHgQ0MFGHwwQ1sWcJg0tzRDslR4yodgJAISjChggD7Sur4MRo5yhgqUMZ5QVr19zlQyTthJtYeYg2As60QhfMeHkBYetdmYx5O7JohLIStOkLZOmJLVJkIArcbIn7TB0wbzZjJBvfW2N7YAj4bf4mo0KuYcSlhWb/unu2spniFVHElawXbilTFUqqkOdRoRNvEdRuvaV8lUhmJY20Z3e0zOCecvPtccrpLBcJzaPb08he/to0ZKyzFHfxPoxhIpBomE1gV18QRR7kO8ncKMBn76ZDOZHazFdkTkyQvyjznMCmQmeduQUZB7Ykg+HjmsLVH/wAY1F/7Xbqd+Hl8DI7ifY0tJtXR9WD2OvbssYseEj/IpDQTeWjekInj06q6XFcQ+toyVCw/GCnBZn8Y0Rw1dU6TdkrL5m2aohEldysbMyHK/lAc5ZwTz8mBzoE+IwBnQuvlDFn+IzJUiDbyw6fhHp1x1K9sY5jc6uir8BsxLr4h5ZiaDXc6ozTfnOh70cp2faAPpugiF/DZdME5fm6pkmTh4MPchBoIiEOciZBGZbRgO3CnXK3hfAzFzojo/M/HlOF2yBVVqgKy4y1DcbLwV8M+8YtE7/NfWS+Xx1kCm9KTR31DMtkmaQAFFy/MD13yKYlhwgD7k/g9yFAxdTe3ULYCwnQ3euRSGH8sYf3iTpUYvR/HXmpKJPYT5+meCVu2SjzaxxpWgBvq+4Dg6GFMRo7CPGn
+ qLoecdXA
+ zUxkJiec9uiS/vxyfyJRoZcOLNoxfKNOhCgXVKKm0BmqVt+pkfjZFBOlN0ct2OR9UEKMIAbNvLU8dS8FM5JukXU/ceOJVbdf/+EHDapaYKP/XP0iNWdtYYtgzScCmkkZy0uv5X+ojrHXQr8CaWU8LuYiW1a1T0B6FJP8MRhVIRrO2J9fh8tiDNGoHVB+AYVn03Gl/DKFrrc/ueQc3hO6oUoJBsS7uPMPAaiIro1xLe1cQ1entEw+MHJFz1Y9iab8jvbO9DiPFXb9sHnAuFjQkLoB/gMU5mTHEhenTibs9girEVM501X2kNQgH5CS00HkrkxGnfBIW9FA4RzT6SL1nBwcoMnjeOOrc9cT8bRNbfBL3sHQScEAr1Brw+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,22 +137,92 @@ No functional change, as only init_mm has MMF_KERNEL set for now.
 Assisted-by: Codex:GPT-5.5
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/um/kernel/tlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/tlbflush.h | 8 ++++----
+ arch/x86/mm/pgtable.c           | 2 +-
+ arch/x86/mm/tlb.c               | 9 +++++----
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/arch/um/kernel/tlb.c b/arch/um/kernel/tlb.c
-index 1f175716b474..fa34a710203e 100644
---- a/arch/um/kernel/tlb.c
-+++ b/arch/um/kernel/tlb.c
-@@ -171,7 +171,7 @@ int um_tlb_sync(struct mm_struct *mm)
- 		return 0;
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 0545fe75c3fa..4af1cf711a60 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -159,10 +159,10 @@ struct tlb_state_shared {
+ 	 *  - Actively using an mm.  Our CPU's bit will be set in
+ 	 *    mm_cpumask(loaded_mm) and is_lazy == false;
+ 	 *
+-	 *  - Not using a real mm.  loaded_mm == &init_mm.  Our CPU's bit
+-	 *    will not be set in mm_cpumask(&init_mm) and is_lazy == false.
++	 *  - Not using a real mm. loaded_mm is a kernel mm. Our CPU's bit
++	 *    will not be set in mm_cpumask(loaded_mm) and is_lazy == false.
+ 	 *
+-	 *  - Lazily using a real mm.  loaded_mm != &init_mm, our bit
++	 *  - Lazily using a real mm. loaded_mm is not a kernel mm, our bit
+ 	 *    is set in mm_cpumask(loaded_mm), but is_lazy == true.
+ 	 *    We're heuristically guessing that the CR3 load we
+ 	 *    skipped more than makes up for the overhead added by
+@@ -188,7 +188,7 @@ DECLARE_PER_CPU_SHARED_ALIGNED(struct tlb_state_shared, cpu_tlbstate_shared);
+ #define enter_lazy_tlb enter_lazy_tlb
+ static __always_inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+ {
+-	if (this_cpu_read(cpu_tlbstate.loaded_mm) == &init_mm)
++	if (mm_is_kernel(this_cpu_read(cpu_tlbstate.loaded_mm)))
+ 		return;
  
- 	ops.mm_idp = &mm->context.id;
--	if (mm == &init_mm) {
-+	if (mm_is_kernel(mm)) {
- 		ops.mmap = kern_map;
- 		ops.unmap = kern_unmap;
- 	} else {
+ 	this_cpu_write(cpu_tlbstate_shared.is_lazy, true);
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index f32facdb3035..91d2a6f2ac5a 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -168,7 +168,7 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
+ 	bool failed = false;
+ 	gfp_t gfp = GFP_PGTABLE_USER;
+ 
+-	if (mm == &init_mm)
++	if (mm_is_kernel(mm))
+ 		gfp &= ~__GFP_ACCOUNT;
+ 	gfp &= ~__GFP_HIGHMEM;
+ 
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 1023acadd8f8..5517cab8ad00 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -594,7 +594,7 @@ void leave_mm(void)
+ 	 * This needs to happen before any other sanity checks due to
+ 	 * intel_idle's shenanigans.
+ 	 */
+-	if (loaded_mm == &init_mm)
++	if (mm_is_kernel(loaded_mm))
+ 		return;
+ 
+ 	/* Warn if we're not lazy. */
+@@ -855,7 +855,7 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
+ 		 * cpu_tlbstate_shared.is_lazy whether or not to send an IPI.
+ 		 */
+ 		if (IS_ENABLED(CONFIG_DEBUG_VM) &&
+-		    WARN_ON_ONCE(prev != &init_mm && !is_notrack_mm(prev) &&
++		    WARN_ON_ONCE(!mm_is_kernel(prev) && !is_notrack_mm(prev) &&
+ 				 !cpumask_test_cpu(cpu, mm_cpumask(next))))
+ 			cpumask_set_cpu(cpu, mm_cpumask(next));
+ 
+@@ -932,7 +932,8 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
+ 		 * This way switch_mm() must see the new tlb_gen or
+ 		 * flush_tlb_mm_range() must see the new loaded_mm, or both.
+ 		 */
+-		if (next != &init_mm && !cpumask_test_cpu(cpu, mm_cpumask(next)))
++		if (!mm_is_kernel(next) &&
++		    !cpumask_test_cpu(cpu, mm_cpumask(next)))
+ 			cpumask_set_cpu(cpu, mm_cpumask(next));
+ 		else
+ 			smp_mb();
+@@ -1134,7 +1135,7 @@ static void flush_tlb_func(void *info)
+ 		return;
+ 	}
+ 
+-	if (unlikely(loaded_mm == &init_mm))
++	if (unlikely(mm_is_kernel(loaded_mm)))
+ 		return;
+ 
+ 	/* Reload the ASID if transitioning into or out of a global ASID */
 
 -- 
 2.51.2
