@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D95C44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F26C4450C
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:15:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7752F6B00DE; Tue, 14 Jul 2026 11:15:15 -0400 (EDT)
+	id B45816B00E5; Tue, 14 Jul 2026 11:15:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7253E6B00E5; Tue, 14 Jul 2026 11:15:15 -0400 (EDT)
+	id B1DD66B00E7; Tue, 14 Jul 2026 11:15:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 614196B00E6; Tue, 14 Jul 2026 11:15:15 -0400 (EDT)
+	id 8FB136B00E8; Tue, 14 Jul 2026 11:15:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E4956B00DE
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:15:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9788F1C03B1
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:14 +0000 (UTC)
-X-FDA: 84987730548.23.DC33E40
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5782B6B00E5
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:15:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE23A12041D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:15 +0000 (UTC)
+X-FDA: 84987730590.13.5D87B2A
 Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D67B5140013
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=duFsHKao;
-	spf=pass (imf09.hostedemail.com: domain of 3f1JWagcKCNYNAHAFK98GG8D6.4GEDAFMP-EECN24C.GJ8@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3f1JWagcKCNYNAHAFK98GG8D6.4GEDAFMP-EECN24C.GJ8@flex--vipinsh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1038F160005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:15:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ts2SoC9Y;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 3gFJWagcKCNcOBIBGLA9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3gFJWagcKCNcOBIBGLA9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--vipinsh.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784042112;
+	s=arc-20220608; t=1784042114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S1UFdHONMaUW3i8xUAtShYLn0EA7imz4HjKdEgIKF0Q=;
-	b=wqc5zqtioeCsNzBIrW+HhHB1B2AXp2lOLthFZGIbdVpUxKZOToj3SWFYfTUv18n3Myzk6z
-	gznR/eIHSbqKudxxvsCy/j6fT7FGxfTPadOUwbS1OJGCOvUWf8TzTtL9fvWLidwF8SRdwT
-	4LXOoDPum5goOCF7WHmu/TuKV0DMdQo=
+	bh=NOi6e266Y3mSv+Tn1Q4zn00EKJBjh0V4SkK/1ApFkGE=;
+	b=OP8/3pB6wgypq5++KK9MULYD7SECbL8iSAPzrABHgtvNqX4C+8j0bjHstxiI/07f852Cjh
+	T0dBpwAZ2tMf4f5NgPS1agFN4OxhpIP3X+r4JYzlbuGPJCXZ0saU/BRJMU2vDbfb8Xa0Uq
+	Unr6PTpgi0aW7D581PY74b9S8FIUuvw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=duFsHKao;
-	spf=pass (imf09.hostedemail.com: domain of 3f1JWagcKCNYNAHAFK98GG8D6.4GEDAFMP-EECN24C.GJ8@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3f1JWagcKCNYNAHAFK98GG8D6.4GEDAFMP-EECN24C.GJ8@flex--vipinsh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ts2SoC9Y;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 3gFJWagcKCNcOBIBGLA9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--vipinsh.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3gFJWagcKCNcOBIBGLA9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--vipinsh.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784042112;
-	b=dTWafIzLSVPfA9uvyYTQ0a1SJ7hzCVwFsZjm/u8vhjKb7NaisS55FbDXw5i3ryqoCI7ukn
-	I+eLpV2iia4YU3YtS/AKbmeK4RQQezTWJR8CUdlHo40legv0xDm0OD3Go5clx90/Kfbyl6
-	kmSFnTW6YS+OXBh/hz77VZxYEF+7K14=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8482fd61e83so8628388b3a.1
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:12 -0700 (PDT)
+	t=1784042114;
+	b=07gWgrqExfivyi96BdyRF05OQ9rzSznL59uV7RmMLO4nzKqfEccX2pWa9qCu4fDXdm2G/7
+	FSFiQMXcgnjkNxvpKl9/VlUxfdKUkWkYCBfYMAuv/XEnAFUTAQFMRmxZU8Pl4WZLPdhjRo
+	wj75Ht8TUV8zoI3XQqdPIUfQd72NFXU=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-848551b54f5so8620403b3a.0
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784042112; x=1784646912; darn=kvack.org;
+        d=google.com; s=20251104; t=1784042113; x=1784646913; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=S1UFdHONMaUW3i8xUAtShYLn0EA7imz4HjKdEgIKF0Q=;
-        b=duFsHKao6s2cD48xine1x/c/xu+2bkmNNJpmpwrdbd2m4dBZjN5Y4e2S/bK0wBjFuc
-         /jYgtMXl5pVMBLSUS1Jix2jWO6pcHLvfJ1qD8yM4Kz4ksEY3TjaosOkoLnn56xtqe4tp
-         F4HKU/888wtJ/X0QIFZZgNuf3Oks7pJdpxpudeLLk3G1NeZxQW6kdeVR9DIEZVrRjJiR
-         L3AxqgPAe96NjC5OUezZWQ6qsbiS6EfQRp3Y7KxnacICDXcab7kp2SCWOg9YdM84I5dC
-         rAZsRiqHukkonTviTdP+yZiw1p0NgNBJI9nphzdZKYzQBQs+ahXjTQ1a2PtsSnxq3hwr
-         11rw==
+        bh=NOi6e266Y3mSv+Tn1Q4zn00EKJBjh0V4SkK/1ApFkGE=;
+        b=ts2SoC9YBHps7BQBGx24zo/k1DDQpBeiDJcRo+b6+5lvdERaCmj3LRw7xmjb1nQCvL
+         LMTw1aPIYq9Shj70H5+2fkofSDqNQ/eC7WutrBCgF7XZQaQ44kAtYyM832sbtzi6d1t9
+         e6gBzDwby2OHxvvp/Z8djCKHvnu9DRwcpfN9IhkcIpVrZeQ3+sYwp51ZGNWMGrROSdqS
+         Q0bUnPJx4kkURhujfzx+Msj2XJSgFdErLqxtYmgsbudfzAx+/JF5JL7RpGpLClx+7Fi6
+         TdUmq8/8BhmgKP1DhJycL6i3zcdf/hLxWOjFMtMeRQQwJ1ZRdj7lQJw4JW/WtzM5On7A
+         sGRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784042112; x=1784646912;
+        d=1e100.net; s=20251104; t=1784042113; x=1784646913;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=S1UFdHONMaUW3i8xUAtShYLn0EA7imz4HjKdEgIKF0Q=;
-        b=ADPeGE40d7/0XCobvZdwYqcrqhyYnnBopcl7odNC/de7THQY1+eB9QRcLgTBafG7kv
-         WyEyKBXE9cCwB1efvE/xeqhe2HQSOyju6g1x3HdcU5V84yHVnDE18TS67jhsRuHR3RzA
-         CFDKvNPY2nc5yx+5FslZE2iVfuMsB2q9XfultlTPSjHjS3wBLLRpjI4ZsvQNG8Admvma
-         SwM61VbT76BJ1nnamnw6bOGckgQ3uB/R5tBogWzEsJtjvZ1Lb0euXr8O0QFzaGjTdBuN
-         BzMoAHL4ppsAgZjERzHpQV1ZrKFbAimprvnJ13HTJcvx5u3L8RL+UhJLWzYJPJtV5as7
-         CjVQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2DrW7wMAFA8AV43cU+fiFJ0N2iQIQrB7S6eZB8tsbtPJQBIvAK4Juc5tw3JXmhChNEB3ADNmcEQ==@kvack.org
-X-Gm-Message-State: AOJu0YwvZmE2awr4qLS6DqVOXuNVG4LHCfNwUTzGBOSNSokJJgFig8jf
-	jIZZ1rxIDexAshOkHKOv3QoKG60ZaieaJUq1+rfsvC88IMwFkqcre+PpBD5cptHjxYPUTH8jZza
-	vyO+N49NqJg==
-X-Received: from pfbdi5.prod.google.com ([2002:a05:6a00:4805:b0:848:4690:d658])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e93:b0:848:19f4:3b52
- with SMTP id d2e1a72fcca58-84a516062d4mr3676620b3a.38.1784042111640; Tue, 14
- Jul 2026 08:15:11 -0700 (PDT)
-Date: Tue, 14 Jul 2026 08:14:47 -0700
+        bh=NOi6e266Y3mSv+Tn1Q4zn00EKJBjh0V4SkK/1ApFkGE=;
+        b=ULZHuH1VrZzy+ZkUYjO0s4nIcMXB5w/82RJ6qXn8AIKD7cGWK4fMtJ0T+7xXw1juXT
+         uaIOgbsuCD7vRcPEgwfE12LFOhcmScjlihF+XIIRb3zP5Zk+RKJduEdpdnjgHLdlzaHX
+         mwCrunQ/XoL+ffFGsuiKvbpA4GVNDeKkcSMeBW+JRRDk6eh2d03ra0AGE7zWB1tOhehL
+         Wu0Gk+U+2nKfcOaoF8kaHQU+ZQGdMYVk/abnsH5c7CgyntxEoDQ6pOg+AG5SJDiJv3XH
+         8X4q1fK/lfyqm/hyrADIQkssYX2KeWLH0YSkkzmb/T2DyTz7pd+nWDk8grNpdH6lBynJ
+         OF1g==
+X-Forwarded-Encrypted: i=1; AHgh+Rq1/k5JDX4vkEHRPxba8YJTKUrcqP7dYwGbwV+U9inbOs6Cazz//y8OxZ0jhhtaVTtFVprwy2ObTA==@kvack.org
+X-Gm-Message-State: AOJu0YxPjzmASxZCljrIJUtk0HwoBK376DT/7XdcgSzDFOFaEhQ3ngx8
+	/nKBdkGgkgqz8beDV++/0T/0aC8t7GBb2jtCXv28wTycrwfDpyEAnde7kE6hNoGT6NrP8jLgc2v
+	XJLYn/EAcTA==
+X-Received: from pfee10.prod.google.com ([2002:a05:6a00:bc8a:b0:847:a829:37d1])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a27:b0:848:2f7a:2e5e
+ with SMTP id d2e1a72fcca58-8488976671amr13012571b3a.77.1784042112537; Tue, 14
+ Jul 2026 08:15:12 -0700 (PDT)
+Date: Tue, 14 Jul 2026 08:14:48 -0700
 In-Reply-To: <20260714151505.3466855-1-vipinsh@google.com>
 Mime-Version: 1.0
 References: <20260714151505.3466855-1-vipinsh@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260714151505.3466855-3-vipinsh@google.com>
-Subject: [PATCH v5 02/20] vfio: Export various helpers from VFIO
+Message-ID: <20260714151505.3466855-4-vipinsh@google.com>
+Subject: [PATCH v5 03/20] vfio/pci: Export vfio_pci_dma_buf_move for vfio-pci module
 From: Vipin Sharma <vipinsh@google.com>
 To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
@@ -107,14 +107,14 @@ Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
 	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, 
 	yi.l.liu@intel.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: onwsjg9o5jc9rhuh1mya3mswz9i9rg1i
-X-Rspamd-Queue-Id: D67B5140013
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1038F160005
+X-Stat-Signature: tgkqoas9yqnttz9rifjzgayukn71d8q5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784042112-971562
-X-HE-Meta: U2FsdGVkX18GN23oaEVcGDLtV7LSPteHzEKSoEUkxayfsX9qrTfZlU8xhhpjm3nKDc0zs4o6oH8Oa4LUTy/4Ak4/Ew1E39PQud3jLEor0pR08dVzK214L+80eVkCvC+oOvknHc/FFpwnAd1lZvzhrdp8P83bUItTsg7gKZI8Mur3o+smDE3PZJwkj+AhE6nTd29frmNb6nk4SqIySC2S85WBWBFI4HoXDzOO56wzTA8tgwoodFWTKLW2R7OWrjtL/n5Ioz6WxdY44Ni2Gbhx6QmMo26n6A5xbs54sKMzri60oE6eE2OO2Fj87Y7Awgzm747LACcfhjDDCo6rSXFWqrJ3E3NxbjqhAQduwHiVbvT+3Yyrwh4qZDYYNYZplgOu47pGMN3kWHyZT9sOeNAmFySAf6ayNeab/sFtEoRRXFQjQtciRj8vtmo0tkSj3aHhGPtkeQ0lKoUKfvjxr8cU+WYC9C95bF8a75Q/kpjWdt7Uj8Ccvc56ZZuB9H3EUpLsiju5X2FjyTyjQQGKXqrNC4cWo5agpolCpLyl90wGj9yhsZtJjoH2G50sIKMO2khPn0BNkm1CKTd+8KafxvWs4Hn5nVr7oE28scvMkb2gidFk8ncC02ZFwwtcVlqbo+nbnzapes/CPiocFph/ttFwrfEP/JWR6piTnG13LANSMaYTqNyLNW8J8TptNofOoLl6Z6PIyoQS7weH0sB3okz5SZePX4urX/ux5GkAm8zDUZ02t/zXTCO4KIrLAMb765mniQgVen4Y/j/JB94EXrfLHMs0/wac+/pzMdw1Q3qfhaIMhfvZPCG8k+9Fy6eS9TC+f3mtSYHfYASfiskPw3RG0e899RW5UbXdac0luDAAaOPrR/bo/2sy3/TLeIQiDOixrGnjVkAZZJtPstL6mJJCd0UBY958ffeRQw2fyiReDRPVGyWHo45Ucgh5VjZaDn+PVjF1QbuzodNmhq0QQOQ
- ysab8KlS
- Pb5JfHtsn7tEdrpfDRJzLMl01MaUBwdXj6joYLJKIGkXc7xO4iMT3xQ0u9hKwkkaN62VAq4k0dHQMqfI1wUHQbP5u3rvl4CbGvCz6bQGuYmgotz6sXwBgp9aygyLOHuVLPvgCKASueAdfGytKdwfTNqWlVYYXOAMKgRjYlQDi4vUzI1y54+GwnmLP7Jv/Nqx8J2h0RAkPo/MNFwZ0zMKiq2fYw6WlPLIhItACefzFSdcLXamx5a7t6WkpvZ8CqY9+NDPjn7KlsK2+erQbTXffyjh4uCOSdzGg8UJzjPt9KNOk0x5B7WMqNNGJvCzUZG0NP4JjVCBJE0G5A2UDa4NvazrqdYTOxx/nnUMvC7gRZNd774Lb056wPWJqPay75wRKa8w6yxAxXzI2H4lAVcvNQfhqaDtc07vBb7bXQzCpNzPQLe/YYI6Xw7jcKu+6P04UpTAK2rngaPsUiUsNGAtHsiFN2jWGYGO5Yp2y3AfDHRMW/Gsp/wjuqA+XEuqKJqoD9MvGcaf0zMzPIUvmVANPcVPtelEfJeV4pI4bzSCBNWKpaqV0naK2Hb61Xz1/88JSu2Gs+XgmKzH8cGJ74gHCLWzHRQ==
+X-HE-Tag: 1784042113-690312
+X-HE-Meta: U2FsdGVkX1+jlkLeWDd5XISHxAjHiUGPwzc9PcU1IRBnLny6jwCeXFR2DlECPKYBypndtwFlmG21P9fPROepBcYen7LcDNp8wGcRPz+IlkwF7IjWbI6Oili6bsg82bdrRWfxDaH/F4n3vbHylVLmnw34IR/XoXVdU1hCb6wnshzG2cH/mufYoZ/BRJOJNVlLy4bJOxrjE9Eh5jvVsJRuN66gIald1VSkyrjG7eX0SEEI1W9xF4PRuu+rvsywHx3w3PeGgHCMgfOdid6SIvCz1Wgtj7bDod9JLVddlU3Ucn7fPqjT2llSdOY+ZhOSBGbo2hrTvQie+PpouyfYjYmlPC6v7gGlTP+YP9OwFjjP1YkYk/+/ueKHb0zJfFImHbImgDy5mV5jrGFQ/z0IqZ71mrtoVPY95BKQGZBVehOcxuXp8/Y12H2ijZCAPNXD8LbvCYWqcUblKz2VRYNSTSfr5Ao8BEmDDNehKP0NmGbyVlJNBp5MOpx49phtzwFaH4kkqZZq7eqNfe/G20NHlk1B+jbBWeTXd25kXwXwX1IMUp4JM+UsqiMbFll7Ot5wPPdBIWyC3NBr83aqY63n/h4E1VP2G6WzsOkiJne9T28ZT3DxjHn8ofbEIJRuXiMqkzxd5QOCz2qMCL5aPwVhtdyUyL24vF2xF2NDct/bdwF3PljerCjERlXkRrdCIJODmDhqMbsCcAIPVu/TAQEggUApPyXychGN+f/B/x/QWv5BdcrwHJGvTLFQpvbwvVFSSp40zxh1QSY6W6LpMH0ItO5ExfBFSmv3zSFxjR1ZWfcDNOg8+gFa0El3DoQP0myWyB8Z8l8N8xnXwF1c/Zs4M+85Sos2Y35nJEEx/9p4VXXtYbkGXQy7wAGGiRSBHfKoNesa6oWCKKCMzjxHNlwJ9vlLOwCDdAHrSplPfNAVEBf6rQTnIV35o5P4Z3wZG4/uob0yDLj481/zYP+9bLPvQRF
+ bDhikuuX
+ /RWxDdW9g/yr4wuYS99NlZ1WrxgPV0CSnbcDGC7DOms4n3yjo9gAfVm0UgcuacYT0KWNiBjiQU9v49Tx5FsoPI0x8zDLZBGRG39o3sMAONHggkhCJcTQJjDZm3CNkQ/bo6UlAND7sGkG5fayc71rmOZ9Mq9412ZNVasinhThX0vHIVsbJrp4Y+Be/Fh646Ws8xapHHbah1SZi0XdC2b9pxVLEEwvvgJYshb14TI920p6kk9xK0YIMUxhOtsbbEV/JtWI6MffWKMOgFy00sXvT/7VBH2FtDJxreeCvyQF0hyd7wIPm3Adbatjx3BLZklH0ht++Bcf3aVwZqo/455aPD7CDVy0I8afgzhM5qBEzbgGooN+WzESZyxhbilvv19fNAuGt3qaq9kDTWLp+zawImGKOCuG/x43mehBx8AWdIe/rxpgRpaeHMKgSgZCd+be/djwBMwHXHfR2mq8/REdymioJXwLlpk7zzmQXGXN44fwZE/cfJGRKTnh/hxe6oRj5s9OQOXtAe/GVIBbuxS7coYkVBLlT7H5M6sa4Hp1RLnclzC8rtGgnVTlNhJAYurUXGppCdr5SAkZpjE9xLEcOjDksJf2prLl6gsLmEEK8ywRLgp4VuglJvG5y9chzLdIEdZp4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,131 +122,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The upcoming VFIO live update feature needs to access various helper
-functions for its logic which are not exported by default.
+VFIO Live update during freeze needs to reset the device before handing
+over to next kernel.
 
-Export these functions and variable for other modules to use them.
-Remove static from their declaration and add them in
-include/linux/vfio.h and drivers/vfio/pci/vfio_pci_priv.h header files.
-
-No functional change intended.
+Export DMA revoke function which VFIO Live Update will call in its
+freeze before reset so that P2P DMA doesn't error out or cause some
+other issue.
 
 Signed-off-by: Vipin Sharma <vipinsh@google.com>
 ---
- drivers/vfio/pci/vfio_pci.c      | 2 +-
- drivers/vfio/pci/vfio_pci_core.c | 6 ++++--
- drivers/vfio/pci/vfio_pci_priv.h | 5 +++++
- drivers/vfio/vfio_main.c         | 3 ++-
- include/linux/vfio.h             | 1 +
- 5 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index 0c771064c0b8..1fb4b276afe7 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -125,7 +125,7 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
- 	return 0;
+diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+index c16f460c01d6..2c05fb5a171a 100644
+--- a/drivers/vfio/pci/vfio_pci_dmabuf.c
++++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+@@ -376,6 +376,7 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
+ 		fput(priv->dmabuf->file);
+ 	}
  }
++EXPORT_SYMBOL_GPL(vfio_pci_dma_buf_move);
  
--static const struct vfio_device_ops vfio_pci_ops = {
-+const struct vfio_device_ops vfio_pci_ops = {
- 	.name		= "vfio-pci",
- 	.init		= vfio_pci_core_init_dev,
- 	.release	= vfio_pci_core_release_dev,
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 3c8b990ee92f..f31e59e5badb 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -623,7 +623,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_enable);
- 
--static void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
-+void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
+ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
  {
- 	struct pci_dev *pdev = vdev->pdev;
- 	struct pci_dev *bridge;
-@@ -674,6 +674,7 @@ static void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev)
- out_restore_state:
- 	pci_restore_state(pdev);
- }
-+EXPORT_SYMBOL_GPL(vfio_pci_core_try_reset);
- 
- void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
- {
-@@ -1657,7 +1658,7 @@ ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *bu
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_write);
- 
--static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
-+void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
- {
- 	struct vfio_device *core_vdev = &vdev->vdev;
- 	loff_t start = VFIO_PCI_INDEX_TO_OFFSET(VFIO_PCI_BAR0_REGION_INDEX);
-@@ -1666,6 +1667,7 @@ static void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev)
- 
- 	unmap_mapping_range(core_vdev->inode->i_mapping, start, len, true);
- }
-+EXPORT_SYMBOL_GPL(vfio_pci_zap_bars);
- 
- void vfio_pci_zap_and_down_write_memory_lock(struct vfio_pci_core_device *vdev)
- {
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index fca9d0dfac90..85bc1666cb0e 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -11,6 +11,8 @@
- /* Cap maximum number of ioeventfds per device (arbitrary) */
- #define VFIO_PCI_IOEVENTFD_MAX		1000
- 
-+extern const struct vfio_device_ops vfio_pci_ops;
-+
- struct vfio_pci_ioeventfd {
- 	struct list_head	next;
- 	struct vfio_pci_core_device	*vdev;
-@@ -73,6 +75,9 @@ u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev);
- void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev,
- 					u16 cmd);
- 
-+void vfio_pci_zap_bars(struct vfio_pci_core_device *vdev);
-+void vfio_pci_core_try_reset(struct vfio_pci_core_device *vdev);
-+
- #ifdef CONFIG_VFIO_PCI_IGD
- bool vfio_pci_is_intel_display(struct pci_dev *pdev);
- int vfio_pci_igd_init(struct vfio_pci_core_device *vdev);
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 5e0422014523..2437af031169 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1467,7 +1467,7 @@ const struct file_operations vfio_device_fops = {
- #endif
- };
- 
--static struct vfio_device *vfio_device_from_file(struct file *file)
-+struct vfio_device *vfio_device_from_file(struct file *file)
- {
- 	struct vfio_device_file *df = file->private_data;
- 
-@@ -1475,6 +1475,7 @@ static struct vfio_device *vfio_device_from_file(struct file *file)
- 		return NULL;
- 	return df->device;
- }
-+EXPORT_SYMBOL_GPL(vfio_device_from_file);
- 
- /**
-  * vfio_file_is_valid - True if the file is valid vfio file
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 31b826efba00..cf0d941d0410 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -378,6 +378,7 @@ static inline bool vfio_file_has_dev(struct file *file, struct vfio_device *devi
- bool vfio_file_is_valid(struct file *file);
- bool vfio_file_enforced_coherent(struct file *file);
- void vfio_file_set_kvm(struct file *file, struct kvm *kvm);
-+struct vfio_device *vfio_device_from_file(struct file *file);
- 
- #define VFIO_PIN_PAGES_MAX_ENTRIES	(PAGE_SIZE/sizeof(unsigned long))
- 
 -- 
 2.55.0.795.g602f6c329a-goog
 
