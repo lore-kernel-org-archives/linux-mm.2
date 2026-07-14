@@ -4,100 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9580C44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 16:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CD0DC4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:05:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1D0A6B00D6; Tue, 14 Jul 2026 12:53:15 -0400 (EDT)
+	id 0EFC36B00CC; Tue, 14 Jul 2026 13:05:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA5EB6B00DA; Tue, 14 Jul 2026 12:53:15 -0400 (EDT)
+	id 0C7CD6B00CD; Tue, 14 Jul 2026 13:05:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C95516B00DE; Tue, 14 Jul 2026 12:53:15 -0400 (EDT)
+	id F22666B00CF; Tue, 14 Jul 2026 13:05:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9719E6B00D6
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:53:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3BD9216043A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:53:15 +0000 (UTC)
-X-FDA: 84987977550.27.123FC83
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 514AE40009
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:53:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W8C2R35o;
-	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C29D56B00CC
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:05:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 472E740496
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:05:13 +0000 (UTC)
+X-FDA: 84988007706.25.294619F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1BAE4120005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:05:10 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8hD0Weu;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784047993;
+	s=arc-20220608; t=1784048711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0GuTTRWvyCne6K/TMPuZlWhgMIx0adVHAqSG19V+XXw=;
-	b=icqXSbZlNFE0v1iZTL3gHKp+7d2Le++t+QFgk50dQ9d6K6o0vT1R2TztL+uW+J3Pyahoaf
-	4xyz9Q3lifcfF1VGbDPa1sByMVkbPRqQtT2pPYt1lsph3Vk3NCCXdVFhyS3Mfoise7c+yi
-	2qkkFg4deXS8H6QmP2Nvfh9CFgUqyhY=
+	bh=ydgxQP/oa7xEv0jlIXInXGbUm/sXAmGgSanquee8prE=;
+	b=XehBamkOcYniauWGQkM5HWQDoN4ybgZzgoMJELQuCwQ0dKwWlzkOU4geMlPkmKOoFst8oJ
+	OJdSXdS7q9lu5UZ9TSAn8zirEWZHA0kN0a0RmL4TZUJBZ1c5pCfaq5yxxW4FNHw5xYR25l
+	TlTK+wvLdNA/Upebx5i9eDd2khKbNhU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W8C2R35o;
-	spf=pass (imf07.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8hD0Weu;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784047993;
-	b=cOkGNNr8eqIyUgKuZ0nkcPE1oZiorjGNVre4peOwQ3u/lNwGS812apDQK2eQbyCnc9bPbs
-	3j57m1PV4uFfw2OcRsFcFgu4BZtMjyY9VAiYZbSjSO60iBRQJ5ZyrkLHGaoRa+ea+G0dYF
-	zDP7isn3OO7HjKw48djaN3X7JJUhMtY=
+	t=1784048711;
+	b=oxsmlhGwnbE2C8tT7XGpSyPZaqgVIYDc6F/7m8ihI12ZUlhD7qAlakU4HHTjsp1hLy5OOT
+	+DxlcE7g+3M7U+Qd33HFPOkWVgmDho58yDaASdK/1RBzLCWaGlhUubBz3c3Hncl4XCIGxd
+	ydViLOB7sj9dYMY5r/6jImFd/1bi7mQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB15160254
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A7E1F00A3F
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:53:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0DE1641870;
+	Tue, 14 Jul 2026 17:05:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4031F1F000E9;
+	Tue, 14 Jul 2026 17:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784047992;
-	bh=0GuTTRWvyCne6K/TMPuZlWhgMIx0adVHAqSG19V+XXw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=W8C2R35o/I1X5fPhJO9ImuwUaHrliG8WoQRrIrsHHP4d1xxjszyvgMZi2CiFMypDn
-	 uoN3tI+ojAif5C21kFnBwncWcXpTiI7KPsUfIgW6T108T0FTvUlrkqToyUX1LH+q6m
-	 Wbbt2qPDYd76RKnyIBH+ReHj+2xasBqZAkwiH1tBsHjEO3oysgzORSsjibaQJH4zGq
-	 LxM8U53HTEsaopQ+3EIXviGDjsK6JFEHg+x/w/+24Tw2g68cYfSCabaVhWzhSzr0tQ
-	 168cUo75DXafH+UqJ/UJdHSvxrCoNu+ToDYsf4RhSx2v+HLQu2zSJftwhhRfkP0CXB
-	 hnajdki9ChO7w==
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-698ab9aae16so2266261a12.3
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:53:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpUNZFUYmpmu73cw4rvZd1fPgttslulIi8vLfiCs7maYYsxIss+xDoKx6xDCC5w1ov+zkZlWBbj+w==@kvack.org
-X-Gm-Message-State: AOJu0YxUBJIoc2ErZIwPJOJUeGFuiUQVnAJc8BTJchV+fVWpWFkkEHFs
-	uD4uKwvWCXFL+W0A6ppMOnFFAWQzvx+GY+Xezv+vn4GGJorRd85t75131DwAUdj2DJMDOyydfqF
-	GYukJnqxlJJoU8ylPrT8w7LZAZr95x40=
-X-Received: by 2002:a17:906:f5a1:b0:c16:12ff:dc8b with SMTP id
- a640c23a62f3a-c161f3b58ecmr712408966b.54.1784047991521; Tue, 14 Jul 2026
- 09:53:11 -0700 (PDT)
+	s=k20260515; t=1784048709;
+	bh=ydgxQP/oa7xEv0jlIXInXGbUm/sXAmGgSanquee8prE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=D8hD0WeuYKlx36Y5L2e4bzKDjObG0iLRTHPa2FOZvUhTU0FrYNaaMeFA8sHpKtrdA
+	 KwXMMoUkns+4VYuoR2bugd6YoPO0xzv7zp3C/c+6pIm7x//ttFG6KF9/lAyy1oYnmg
+	 nrHEgYoOFkroutxdRfFu4R2P5Z7bLE1HgkOgsEeg29x7ySkRZKcr1WBFGbdMCmQh7n
+	 l8P8t2sd1a2Jckb1bsUT0sr7xbKNJEFkji9hiablV0GE32MsF55/FgOKh0keIbfOdZ
+	 ldEnwxHukjw5ov3fGqFNEoi6UovYUE1LUWbJlerABj5mz/RtRICoCh8ZBP89UjqZle
+	 hxJZmW76rCqOg==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6FB16F4006B;
+	Tue, 14 Jul 2026 13:05:08 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 14 Jul 2026 13:05:08 -0400
+X-ME-Sender: <xms:RGxWapPXbB5dVu53Jz7RrippvtSKKiAiIJVJ5GoTsW29sf-zJC66Jw>
+    <xme:RGxWasZTnBKb9bCAmfX0IqbM8Ed5DZM-tMrieZPtZAv-_vOKsS4WlCPcFe_HzuGoR
+    4yhsz-XKh5zBAEJuk9zp0cQ9zWdMZDIdT6qwkGq6rkt24kiKrBV7A>
+X-ME-Received: <xmr:RGxWapslvvrOUkuR9AuAdM_Gt0YsL-K_n0305h3XhPWdgjEVANE4Bevhdipelw>
+X-ME-Proxy-Cause: dmFkZTFmy+VemEL8y4m/0c6SxM2MpgY/lUB50b1pGO9hizfkVYuDYx4C2dh69xVyekjjVF
+    SM16JUY7uBZ4MgywK/EicPR2jaoa2RvJU2pvEyOxthy7IxCU4yoKq5ltVWcNJlEPeG5PD/
+    La7r4WvGmHo6f+HQp9hAsZMebjDJ6UU4aeFkik8+mWeHwOszix8pf/umVHOJ3FrSeeX1Ep
+    urx2zOqpy79jM/gcgeHPLClx4ZD5PIiAPgkDFFJ8vW2YYYwEh3OSG/Ng0deBensnErFliG
+    Cx85IWH5hmqDvVZlFms+1oCUSCe2CgRWM9tg918uHCJjnaCkn6LHh0uivkwfLqo+HrrSqw
+    /vD5cDJGDYcRixMT4B1b1W/Oqoir4wrmSc04uvjG+o9qqJajA+QNDm9rCdp5WdTi7wtlWh
+    ow8/u1xCky2ml+w62/3u0/11lgO4Ch7qe+KEj+eztYk0agWgOkcNQS7AepEXJIyZ5szllJ
+    5aMvBky0fhySWBI5vvukYk5SbrPDoaQ5sIsFNbluAxKbB4KBJjwf0PeW1oKB7+nPQ/n02u
+    oCvgqRALMOOl5sngUh6rP3Q5kZHgjv48PtDGFT6kihcspAuv/N1ExURuPiLuhi4HYSCfeL
+    q//noQRZyomBaUesw2AggexEf3LHnrFQotNu2k+xS7i3QXELw3IUnA9qhV7g
+X-ME-Proxy: <xmx:RGxWaltsTtr4ZjIGeOTb2H7BlQE0FP4YCrbw4gdcPHSHCzs3YznmIg>
+    <xmx:RGxWag1RMUC3o23VL7q3yu2zQ7NeU5EL7ocwG3bKkk9QlCg4JI_YCg>
+    <xmx:RGxWaqNrWGr5C3kXNzgBHVFPBVDWKgd0N3KUDgFTF3sMfQqZ9VOE8A>
+    <xmx:RGxWat5YHEcBpFpFY44XIzGRimwMYLN9Edflpk0v-w5jXuD5GmbpCQ>
+    <xmx:RGxWapZdlcn3WvyTxZNGFMK7K0whXjTgVTcsMq0ulr4g5weXE5EZKU6t>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 13:05:05 -0400 (EDT)
+Date: Tue, 14 Jul 2026 18:05:01 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ 	Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ 	Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ 	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, 	Uladzislau Rezki <urezki@gmail.com>,
+ Toshi Kani <toshi.kani@hpe.com>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ 	Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, 	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ 	"H. Peter Anvin" <hpa@zytor.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ 	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, 	David Carlier <devnexen@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 	bpf@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+ 	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Subject: Re: [PATCH mm-hotfixes v2 0/4] mm: fix UAF caused by race between
+ ptdump and vmap pgtable freeing
+Message-ID: <alZm0tBf8DpMXimM@thinkstation>
+References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
+ <alTn7NguEW_4bodu@thinkstation>
+ <alTq4V50767L-s5H@lucifer>
+ <alUNiWcygLd4rqBo@thinkstation>
+ <178404602957.85099.8935151447302412515.b4-reply@b4>
 MIME-Version: 1.0
-References: <20260714081510.16895-1-jiahao.kernel@gmail.com> <20260714081510.16895-2-jiahao.kernel@gmail.com>
-In-Reply-To: <20260714081510.16895-2-jiahao.kernel@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 14 Jul 2026 09:52:59 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zM5nzDqNcx5UoDgGexvR6jf8MmJV9SomM4AS7n-rZ2o5Q@mail.gmail.com>
-X-Gm-Features: AUfX_myK2ScSuKb9Od0WSe9xHl83YPOH--7pRL1A1D1eWAOU3YMEEFq2p0-lNTY
-Message-ID: <CAO9r8zM5nzDqNcx5UoDgGexvR6jf8MmJV9SomM4AS7n-rZ2o5Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/zswap: Fix global shrinker when memory cgroup is disabled
-To: Hao Jia <jiahao.kernel@gmail.com>, akpm@linux-foundation.org
-Cc: tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev, 
-	mhocko@kernel.org, mkoutny@suse.com, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178404602957.85099.8935151447302412515.b4-reply@b4>
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 514AE40009
-X-Stat-Signature: 8jkmhuafsa6xaif6qiztf5a6h8u61c6u
-X-HE-Tag: 1784047993-750443
-X-HE-Meta: U2FsdGVkX19Aq36dLEk85FtNrXpJy55mdzl5Djv8LTAVJHr87Q/VIMbUaPdVF26JzBouxPlvjI1ZCbxijhV44ka9MHiVXwh59Nhe8un/15rnUD/Y1k0sC+8ff139yjdyu8bTsn88CyV4H4pzXLTCyT5Pbwt54TOyidEpj0XaLnX6vZ3zYG51DxDkKAUds3J2aPzGYyTmJp73bzq0nXlv+LM8WdkVApQRwvHv5h5XDhW6ee7G3xG2ViUgIAv2sy9xi4N/hVLR2LJay4BPCmXcaVGnVHPuHk8JeHllv5llH5y7r9nNZnSRu/ghjktNr4ljqgabkzXUwMTKC39XtmRXL+Ec7SyUzC+WFsqW2ubEvASFqEwktWCokw942r7yM/S78WPdoe0hOZnOUlusZw+uKHHyIlkurWglRLSIxx1eYRLLz5q6+curI6fmIZeqQQFxKLnqE+Otp1Y8rTeJTE4I1znb6uHpiBDzxZve9kXw9KzZDkNWNt66M7ber/U2uc5odQu52cAIrWuBhTbmb6O2ZRkRzh25HMSM25OMrgPDpGYskaXpfscqJqTA8d7syw3ok2UsuyeP7tSKxlFnGCbv+fK3yn//ZU4YslIhP+2eKt/Zn+o1ocKot1wrEp6xbjfJ5CBv/6kLcvVCRGzvYPG+MbfdDWae3qRwjTMfrcQhsHC4mbOYLnDAdkUdoGoN54YjRfVmp0VENosT7i//BtCv5YyWBJ8zv7nTMbIy3YjAIe7imp4Das4MHShquZCQDBMValx53ZDeFTTmpDJfGjRusADnj7o26KD9Xs7X7Bi4SWjphnUGuQdp+ToATOK55ulJ/1mRtVw9Lbs+1abEVdm9ZFVWyV7Gy+3xX3ROv/6RfWYwS3RO1kage7s5ITejbLANR8UCTl6hOEUe6tcwoIgiqSL9zwZF5bI01Skui81cU9i/GT0R4Jhnb5Vt9TF6JY/VqmOKNvUUUtzikqA4TP5
- h2Ff/Oq2
- SCBZ7UFUEyN53Pebk8l+v3RFzdKLB4mnd62v9Sqj3wHR6r+RN6xWjwF3tKE3Ivtq7uAEolxEafFrxCGkkJqRetTiwRiJdXc0+6aus7ja/waFxVIG6aO4T3MV9lhsSMKDLZitdAYald/bRoGBV0/th2IxbAOTIoG7Gd8k/yGaJ7oy0+cOZIScBSweXEriy8/M24JWOSfk7ZdnINXWHkrtzsiemkAPSu2ozYDjJDQ1+gVc/0HsHyzfIO0bZbdibkhr2wqvqXB4LbLEXhNqkCQYT48S53lAtzGGN+Msq8wk/KrVG6DaLCG5g6fk/8OHnABUqnp1pCrEonN1L+643w75mX/AjIwpAJNZw/0h5NrH02jrHPx4KtY/CT4GV9m9e7eVSa+9LU6imE/6HiZTUqt/vvFNJU4mNzSSacLizNFNajlJXbZWKoRn5DaB93CuibG+2XvrbCom3UORiRZgUmrVBw2PBeQ==
+X-Rspamd-Queue-Id: 1BAE4120005
+X-Stat-Signature: qbzkm76cxrx8xm1ec9zdu4ffya5qrw6y
+X-HE-Tag: 1784048710-182989
+X-HE-Meta: U2FsdGVkX1+6OXWY5R9cbRO9PpD0MC5Pu42YZcXzapdgfLdN8sPnqaKVTrBxmUToORO/evem3vcKZFSJx+qbfgk+OF6wpQ4+3n0j81JWM3dbN9afoalvzkWoq35VpQ2Va49S2K2Cmk9rD6n54Np6BwjnNvanJcyj9McJxGGX/Cpf//xDif/qc8V3E6LpV+LSyc5b4iadzmeApKO6u1d6wy3HuVBBkyAqoGgBM8ap/+ZwB555X3RjklcMx3R1nKUT+MfUSkvLSuwhwoGW4lKuLhq7++flXI5reGQxT3HurPxaMXyabhEGvSKl6V0yUIX6giAzkhlaYOQPRRIUwqlP/IRG1fUlDyNqoWz9HWFvELz+ea10yg7vrfldQrYfjDak0xvM4C7L6CaQhRF9EfHfgRYb06KTQZ9igBpipBcSskniYgop0/sBlRXMkin6eTLL8WYB/ZogJzHd3gy7O30qLIb8PeyuDGhizuAaVqOtbMNB17hpmWIhrHiO9Ja5nxzCR5lPjGy1WeiiLraq5O3hrr21x+7dVxgdaJzSCaK7vv0MfLClNF7bwLSBYgrL/FFIgfvdD8OMJPxAH8snkEraaT5TJ29B8BVsu9XS29zbSjErah8I62AVvTI9EIdFPXOU8c4cbVW/1NRWpzXWlaWkmg5pATLT2NDvcdQTNw8TvALEPxnEpXkObJ8oGXN4mWpxtlVMW5PbECl5bQVJKq3VH0twTE9JYQUWU3XMYR0vSEgZ3kiTe8gPSKIq2JASY2s+YM47mA/vX2jdsySF0X+4vBeVf3hKowY/qnisNxSAfpsjWDZq9rL93DbuCsO/wkLGSrs30sToTDh13MWu4Q2HZWHQPuCnf9nEmFv01mt4E4IRPbfRj5Iea45bUURFZ1ytb6/uOxRWXYm0VWIt5GZUEmpd63v1FXiytlIwbguxkT2QG7RkF5OlYoxUaXC8rFpqzQg1roFUMG1v5rFQ/9+
+ NsiqUlAD
+ sRc6XIGP4T30XRm0d2Tw6oSPP4+TJ8HWkNKVj2f2mNUKsqqdrCc2c6lKdtbEKGAqh2Y9hNNV09TjHKtrZkoeFGPbWf81gl5v+jOXT7l3tn48CPGc4odVz7NIRO7zDMu/48aZdU/Lj569/CbKN7Y0Ug0VQIoxL6yhd7r8TEVHbIIpUsGbZFlvtPgwN7m+ClNrPc6jX9HYXMJVjBgl9nxZyU6foXv/X7EjtIZ5DO88m0qHnKvtcaqN4rI2SzXHErhAwHiqBWWNS0WHzhMS/+cPYp9aihA11dV0u0VUfR59vWr8orQkprJtLnr0CrgMnRF/Ap0uMTC16yv4s2sm2+oFuDvPupoWG5gPg5SjKyNytgItwUzZlDb1VcDwR82lwuAeAAGU13vFn2rYx9u/moi7+EfGNaiIC8lBciOP8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,75 +140,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 1:15=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> w=
-rote:
->
-> From: Hao Jia <jiahao1@lixiang.com>
->
-> When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
-> Therefore, the global shrinker shrink_worker() always takes the !memcg
-> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up=
-,
-> so it fails to write back anything.
->
-> Therefore, when memory cgroup is disabled, fall through with the !memcg
-> branch and shrink the root memcg directly.
->
-> With memcg disabled, shrink_memcg() only returns -ENOENT when the root
-> LRU is empty, which means the total pages are already below thr. The
-> loop then safely bails out via the zswap_total_pages() <=3D thr check.
-> For any other return value from shrink_memcg(), the loop is guaranteed
-> to terminate, either after MAX_RECLAIM_RETRIES failures or once the
-> threshold is met.
->
-> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> Acked-by: Yosry Ahmed <yosry@kernel.org>
-> Reported-by: Yosry Ahmed <yosry@kernel.org>
-> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeL=
-c=3DeyTPKPVQgX4g@mail.gmail.com
-> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+On Tue, Jul 14, 2026 at 05:20:29PM +0100, Lorenzo Stoakes (ARM) wrote:
+> Basically you need the IRQs disabled to get the semi-RCU behaviour and to
+> be able to safely traverse page tables that way.
+> 
+> So with CONFIG_PT_RECLAIM you're safe to RCU traverse PTEs only.
 
-Patch 2 doesn't really depend on this one, right?
+I think this is stale. Since 1fb3d8c20bfa ("mm/mmu_gather: replace IPI
+with synchronize_rcu() when batch allocation fails") the !PT_RECLAIM
+fallback is a real grace period -- note your own quote of
+__tlb_remove_table_one() calls tlb_remove_table_sync_rcu(), which is
+synchronize_rcu() nowadays, not the IPI broadcast. The name invites
+the confusion.
 
-If that's the case I think this can (and should be) picked up
-separately as a hotfix. Andrew, WDYT?
+Together with a37259732a7d ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE
+unconditional") that means every freeing path through the generic
+mmu_gather is genuine RCU, batched or not, all levels. A plain
+rcu_read_lock() walker is protected; IRQs disabled is not required.
 
-> ---
->  mm/zswap.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index b5a17ea20237..3d697a1a5365 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1356,11 +1356,12 @@ static void shrink_worker(struct work_struct *w)
->                 } while (memcg && !mem_cgroup_tryget_online(memcg));
->                 spin_unlock(&zswap_shrink_lock);
->
-> -               if (!memcg) {
-> -                       /*
-> -                        * Continue shrinking without incrementing failur=
-es if
-> -                        * we found candidate memcgs in the last tree wal=
-k.
-> -                        */
-> +               /*
-> +                * A NULL memcg ends a full hierarchy pass (except when m=
-emcg is
-> +                * disabled, where it is always NULL: fall through to the=
- root LRU).
-> +                * Count a failure only if the last pass found no candida=
-tes.
-> +                */
-> +               if (!memcg && !mem_cgroup_disabled()) {
->                         if (!attempts && ++failures =3D=3D MAX_RECLAIM_RE=
-TRIES)
->                                 break;
->
-> --
-> 2.34.1
->
+> HAVE_ARCH_TLB_REMOVE_TABLE is set for powerpc, which also enables PTDUMP :)
+> and that's because it actually tracks multiple PTE page tables together as
+> a fragment.
+
+sparc also sets it with SMP. So the audit list for custom
+tlb_remove_table() implementations is powerpc and sparc -- everything
+else gets the generic behaviour above.
+
+No disagreement on the rest: the walker needs
+ptep_get_lockless()/pmdp_get_lockless(), and the ppc kernel-side
+fragments need a look.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
