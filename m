@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9D2FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B25C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 00:41:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBB2E6B008C; Mon, 13 Jul 2026 20:32:39 -0400 (EDT)
+	id D81A46B0005; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6C1B6B0092; Mon, 13 Jul 2026 20:32:39 -0400 (EDT)
+	id D32EE6B0088; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5B4D6B0093; Mon, 13 Jul 2026 20:32:39 -0400 (EDT)
+	id C49B06B008A; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CBD36B008C
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:32:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21A82A0031
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:32:39 +0000 (UTC)
-X-FDA: 84985506438.22.2F8957B
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 82D0918000E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:32:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C4B86B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 20:41:22 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 295A8160207
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:41:22 +0000 (UTC)
+X-FDA: 84985528404.28.D2CD002
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C84D3C0002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:41:19 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf06.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783989157;
+	s=arc-20220608; t=1783989680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Va0eNKIKvKuFzLCgPpEqEkJRX3T73HtPSJIVjBgCKPA=;
-	b=GEVyDBjQoU9ASaxRzzIdhEIkW35trKWTrAbeU0mdWnIHk8WKXEC3WDcdzUuJXv4ykrBNZN
-	Fe1xzWa94IkPTIaNlTsx4TkwTBYogEYsPKzA5FmcbJVg19Hp/q7rtUjBbfZdsfboyaE7A6
-	MmzlOJjtl2upZ4TJB47AUCbU9AFfduY=
+	bh=8xd8/TgcoIVW2dBr0gKr5kPkmk/XCPljFfXa98YCEFA=;
+	b=T8dBkKgrNodFPa02ed4wKkL/36WA3Mr8dnKUg13Fn40SCpHoKZVVg/GGV77t9mcBdWMd5N
+	meKoqS68KL34qn9gyNWpv6nUx/tNTkgHC3oLR8AuzMOlQVx/hATetRT9PCKg6R54/wFLQt
+	Xp2LVKHbgjbg5HXN8ZSp+PI98rtthbI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
+	imf22.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf06.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783989157;
-	b=V9GmyMlQ+NvmqXiKJ6TbFSZiCIefxmHmeB49cZKijHSjJ/qP/ulvwIuhfpIPAA2B0G+Dks
-	QaJIfHRNOZFq6Jn1BXDxj2W6frCPJH5HBAv3R962hMYdhI/hEb4IZaeBP8lwekPFll68SX
-	9KokR6P2OTu9Qc18YVlTcx7/Y//kHj4=
+	t=1783989680;
+	b=sP0wDH2gTlW2w/X73w9H1LJWUQBAUsqZk1DpFnPTA/ZIKhJR6EL0Qs08HsJ6Ce3G3emC9U
+	0Q73wpok4MFuXPuYEcCPrErwc1vxd/AKfsgBUh4dG6WyuTl5ymHuKZqkJk6FgjpTZrbT0p
+	pw6Bd4qESbD5fHPQ5ZptCDsN+/QYsEM=
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gzgHb41PGz5B7RB;
-	Tue, 14 Jul 2026 08:32:27 +0800 (CST)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzgTm61yGz5BNRf;
+	Tue, 14 Jul 2026 08:41:16 +0800 (CST)
 Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 66E0WOl1099310;
-	Tue, 14 Jul 2026 08:32:24 +0800 (+08)
+	by mse-fl2.zte.com.cn with SMTP id 66E0fAuu007375;
+	Tue, 14 Jul 2026 08:41:10 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp04[null])
+Received: from mapi (xaxapp05[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Tue, 14 Jul 2026 08:32:24 +0800 (CST)
-X-Zmail-TransId: 2afb6a55839883d-29373
+	Tue, 14 Jul 2026 08:41:11 +0800 (CST)
+X-Zmail-TransId: 2afc6a5585a7f9b-3eabc
 X-Mailer: Zmail v1.0
-Message-ID: <20260714083224130jlbtZQdI9DjitrA0KHUHU@zte.com.cn>
-In-Reply-To: <CAGsJ_4xtCBE5cO3-s3ss0t+GuqrAKFRYvT=SyFEO=txDYVq-hQ@mail.gmail.com>
-References: 20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn,20260713144153556amKkr4s-dWoQu5-ziCfZe@zte.com.cn,CAGsJ_4xtCBE5cO3-s3ss0t+GuqrAKFRYvT=SyFEO=txDYVq-hQ@mail.gmail.com
-Date: Tue, 14 Jul 2026 08:32:24 +0800 (CST)
+Message-ID: <20260714084111267LYR6nswASLSX-jLwxQh4w@zte.com.cn>
+In-Reply-To: <alUNQrCzt6Las0PP@lucifer>
+References: 20260713143534964Cml5-QLfcPMDtbbq_j7tG@zte.com.cn,20260713144153556amKkr4s-dWoQu5-ziCfZe@zte.com.cn,alUNQrCzt6Las0PP@lucifer
+Date: Tue, 14 Jul 2026 08:41:11 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
-To: <baohua@kernel.org>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-        <ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>,
+To: <ljs@kernel.org>
+Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ziy@nvidia.com>,
+        <baolin.wang@linux.alibaba.com>, <baohua@kernel.org>,
         <lance.yang@linux.dev>, <usama.arif@linux.dev>,
         <chengming.zhou@linux.dev>, <qi.zheng@linux.dev>, <linux-mm@kvack.org>,
         <linux-kernel@vger.kernel.org>, <npache@redhat.com>,
@@ -79,21 +79,21 @@ Cc: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
 Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAyLzJdIG1tL21tX3Nsb3QuaDogY2xlYW4gdXAgbWFjcm8gcGFyYW1ldGVyIG5hbWVzIGluIG1tX3Nsb3RfbG9va3VwKCkgYW5kIG1tX3Nsb3RfaW5zZXJ0KCk=?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66E0WOl1099310
+X-MAIL:mse-fl2.zte.com.cn 66E0fAuu007375
 X-TLS: YES
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 14 Jul 2026 08:32:27 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 14 Jul 2026 08:41:16 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A55839B.000/4gzgHb41PGz5B7RB
+X-Fangmail-MID-QID: 6A5585AC.000/4gzgTm61yGz5BNRf
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 82D0918000E
-X-Stat-Signature: fn96mxspnj7ucwyzjb8m75sojq7qc4ir
-X-HE-Tag: 1783989156-980329
-X-HE-Meta: U2FsdGVkX19X0ELEPITLFJ2tXUhvJCCKsfI4xZdGs9d2JYUYmDjuxPmYk1nlBehuRIbH/Bi6Xng+duRdDRfq19H5XDB/HEiGzk1bho/6Jur0I7SWKYaCqWpk7dZZJ6gyxm/crD+FIwQt3ICAOK80g4xhtNEWwGfUu6HdTMZbrlQ7pPjTECw3wTaBxh6B5aBQwIkwvdvkD85sIZnuMlV15A+rLIo33GCHIqF29f/RAYdh8nLCOBEyCG3JiD4hNLMLABqqQErcPOaGq8eOJg1IxMmEkgcLg8PkrvjBZWhVo70zVxJRhu8m0cEaEFH0g0HILIr6Bpw0wtfpl3C3JiXH9/v/qNmzZ3yPFmdv/voby+RJOx45Vj7IOqkbt7OZddfgTf4jbxzSrdzciG3qmESr/3UNPBwXG5i85TSWB9b6DhvwxBD2vAcIIX7a4Z9MYWnps3PprzEYy4WJcZygrsXcSAcSAx2UHc0DerfIOzaDOvP+qH216m4xiRGvkKPxpiWGpl0dCV3SvOUvqcDbpiMUd7ZeEAAiG4mdYdK110rrbytWc88jzG1T99N7FBqNvUrWKuNu2fuDAQK1YsQ5OrvtRwx8K33LhMqHJJ0n5O/FNltWaE6Dpo4zz1cZzkWEFkXe0G9fiUFYnic/8rl+j/nJip6kLpGk81cC/ad4+P7/mgPvpoZNWwJfgIhQOHtYLpEHopAaNhpp0XKZvOBFIqnETkckBu+EVH8S93H3n3FAnfOVl4GDUYoZlcvDxLcRCANjNgcurjfspVppBQiNcuMXjyCosSs55U7x2oND0y5tnZJEpEyAR9Xs+Y3JaZPIpVutK4+PxBi26vcQAp2TfSrv6WgZlQGJGk+qLBTC8FKwJoi0uAUrOiEMqhTHjHOXrReHH1Kbm5YmyPDz9gALvLvcw1IoFhTg6LJOG2jsPUKx5/kgs2PHGWLtm84wgpl7qfui4yWj804NS1fhp6NW0SS
- UFYVPkm/
- iEL31KC+JxiZG9jT2nUjVOuAuMAHAHSUOszja9GR3he5MYONERUe3efg4XgX9akqWhELV7+h19VhSU3y70sMCVQVLvlttGYxKc2uAUFvSadbmdycTNkwawhFR0/t6AzWNUYwwtWA6ukgpZ8iObbCuxg9q8oQfmWsL6F4R7j8Nz39GFLuWFQ4DTPhAgwk+Jqzq0Tjx5A3e9N6S9bMMnP4d9/VEE9KTWk8AyMoQb5YRa6g4rWM4IVQMBH4RzXwk/k2kszS7cuhngaJ8rNU9OspiaqZ1DGBzpclO/fPg
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C84D3C0002
+X-Stat-Signature: 6q9kdajzeu3ftwap3w1jsp7f96m7fcxr
+X-HE-Tag: 1783989679-458386
+X-HE-Meta: U2FsdGVkX1/mvwnl5PPO1kJDXKqEC2pBrlWYkuQ1M+lCO8ffHwAHIL8s3lzcl9pDhcv0fnCyr6JaoVf7jiOn0v/0H5Oerx7YEYwFJgA74VR7JSSOc0vpFx2DMD0aIeF+r6IUR0KHJERFvT+bhWWj6/dHiNIQCcWk4w0k/fKPC4743GjRda4Y1I+lchRR6MyauavGTVWOnQysg8Cd9/HjDB1+BxyDLO//csSXowclz2XBzwNqHy6jgSGPTRwYyrwGMbvf4GdE3+JKjihky9qFbp3xorMQHLD0nJRB87anPJpM7T05j4UCi71ohHDHeDn76UyzMk5iC67NKWgbcCgG25y3xYqdQ2awoiWoHVTDOTN+yYSAcj7mqXKGXTZI/P8QPFhBnXuas21RAGgfGHW/GgfhZFlTvzs/0YECr461c2zm8nMoPSwrj/FuHGbU6mfKfbav3cXKus6wVIYa2p2V4rDLv+Zqwl20uv3SLndY/TNQtgTfDjkg8h1NL1xDCjMGc6xryj4Ozbl8fEZY4h2Rlv12uTQyJhHUf1QtdcSQJzDwnWbDeZQDnAbzXphmSB6OafBnr1CBmSiGm16rP1fFKP9HOTkSVt+CuAY86VMr7jnFfIAOi/XHSUWan0uprI7eSdzC8y6XsANaiUR1v4boKl91/MbN8Y6cr1XqfywCR917xfuXL8ohAFU2ZrejPBvq5SexXgab7ezU6Np1fDb25pBdsWWiGc9gxqt1INPtNoQL+MvX/nGM3pH+PRhDx2RuOKv63BDgpWtFDax0Nc1YkRa+MT+Ry49KtpFxh0SjpLVCyHLnbfU6fZlM4NuuP/ZNzTGAOthQFb5Ws2Iy8sOq+h+KHUswksa0EP7lPR5i+5JzLRSn+B5CguulhPiRwjeJ0nCUCgLBc3bz/3xo1DdZDeiUKDb8+ddAzVFcingyWpGN8RbP4Z24n+19wNjPnSO/dCHTnMXsI2qhc/BAERp
+ xUUn1nza
+ 0FWvqbZ4AxfWwEXDXhxTEB9uK78btogBlXkATRXO/m9O4eAtUKcxWxRe2dN20DvsfeFR5V4yxDmwtxh344KEcYh1wMlcX3m8R/gUIkmwmSRmfF99I6Eupf+d4sl5cATbijjpaXiKjnipjI1gwsPDiE84DR8qTixugCKfbhkdVHnuEbGL2g5F4Rl8X7nGnEK+UBoedSKBitanBPNSVtV379IoDTjRc2XUB3kxkn4P4QRxGevaHK1t61aEZb1QkifY4Fr8MKQtcHnh194M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,12 +101,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >
-> > From: xu xin <xu.xin16@zte.com.cn>
-> >
-> 
-> Can we have some words here to explain why?
+> Hmm not sure I suggested adding a comment to explain it...  or removing the
+> prefix _ from the existing macros :P
 
-Sure, my SMTP settings were messed up, so I had to manually paste the patch,
-and it just so happened that I left out the description. I guess I should resend it.
+Maybe I misunderstood it.
+
+> 
+> > Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> 
+> Honestly I don't think this is really adding much, but I guess adding the
+> comment can't hurt.
+
+Agreed.
+
+Regardless, adding a comment to explain why these have to be macros would be
+better. Would it be okay if I send a new patch that merely adds the comment,
+without removing the underscore prefixes from the existing macros? 
+
+> 
+> > ---
+> >  mm/mm_slot.h | 17 +++++++++++------
+> >  1 file changed, 11 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/mm/mm_slot.h b/mm/mm_slot.h
+> > index 5de3e91d86b4..710c70166c79 100644
+> > --- a/mm/mm_slot.h
+> > +++ b/mm/mm_slot.h
+> > @@ -33,12 +33,17 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
+> >  	kmem_cache_free(cache, objp);
+> >  }
+> >
+> > -#define mm_slot_lookup(_hashtable, _mm) 				       \
+> > +/*
+> > + * Note: mm_slot_lookup and mm_slot_insert cannot be converted to static inline
+> > + * functions because hash_for_each_possible relys on the actual array argument
+> > + * 'hashtable' for sizeof() instead of pointers.
+> > + */
+> 
+> I didn't say that you should change the _macros_ to drop the underscores
+> though, there could be some nasty macro hygiene issue without (though
+> probably something's broken if that does happen).
+> 
+> So let's not do that.
+> 
+> Also you'd probably want this comment above both with a newline after so it
+> doesn't just seem attached to mm_slot_lookup() :)
+
+Yes.
 
