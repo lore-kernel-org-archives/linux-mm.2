@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20FB8C44507
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 18:53:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 030A7C4450A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 19:11:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 035EC6B00EF; Tue, 14 Jul 2026 14:53:38 -0400 (EDT)
+	id BF5A76B00E1; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F28346B00F0; Tue, 14 Jul 2026 14:53:37 -0400 (EDT)
+	id BA6116B00E2; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E40E46B00F1; Tue, 14 Jul 2026 14:53:37 -0400 (EDT)
+	id ABBFF6B00E4; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B31796B00EF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 14:53:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4C61514044C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:53:37 +0000 (UTC)
-X-FDA: 84988280874.22.818F473
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 958FC18000C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 18:53:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UsMeaVij;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7DC6A6B00E1
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:11:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 044DE140453
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:11:06 +0000 (UTC)
+X-FDA: 84988324974.05.9E8AAFC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2800E20005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 19:11:05 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ubEDfd2;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784056265;
+	b=QjXx3J0eFsflX7U8SNaP3HYH+rhV5q/MunfkEI8QfeaZInYkiX8rCPEua0INF7RGtH7CAI
+	ceQhVWQ71V7/k+m7W2pu/a1r5ZkJri0C60Oat9ybYnacpTP1MiKl89yfK3y4V/Tm6rlomg
+	srzncXzCNcDQ0riCuRbbnN9Ejfrf6DI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ubEDfd2;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784055215;
+	s=arc-20220608; t=1784056265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drFn20uL6NhR91DYLEIp22lK9ia3uqNE29xicoI1pdw=;
-	b=goAx9VX8Eb/U0mMiSgjoHPRunoD8mhI+tIcX2gHyZwHRJK/rLWcfmqusImBhvgqD0ucTQI
-	p7Zx3J3DChMM9YwyJCPg6zmYeipVf8yyusnTZ3s54jubJykTwM1GLFTwT0yK7Z+4bmwFvP
-	m27Gd9bP3X0mo+4Rv6vlGrBct8ujh3M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784055215;
-	b=R71JoCHz0nl/0rO0FNPPmE7OSyTA0Hs9OOZz6sJkVOblTKvvo6+CB0qdUeJVludsH0cyBe
-	T70nYeSTp/233pMJwQhQG3IQsEBR7ErsndAhZmTFt1svHiGoP/PWkBurMTIN3CLMJzCmgH
-	FCzWS9KUZJnkPEy8yeKLxuBT1xIsOLs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UsMeaVij;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=w6alW6kAgplsNU9MfVHgcE3PqiC79iFkgMzFjduJ5sQ=;
+	b=Dw8x6fL+0ClZQWUQ0zCILicVjxnKJLlUToZtsaKitzqsrrd7F3KHNPZWm6AQYL/Wkqfqj/
+	DCoWreQJc8dWkifeyshJ9NtF76NRIlS/Vt2g7+8XMNiuISrYTeIHZvmJh40saZmLbAP+q7
+	KeLbxbahkik7k5LGoqiqa4u6+aa5CPg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 92F2642AC2;
-	Tue, 14 Jul 2026 18:53:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 6A11B1F000E9;
-	Tue, 14 Jul 2026 18:53:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784055214;
-	bh=drFn20uL6NhR91DYLEIp22lK9ia3uqNE29xicoI1pdw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UsMeaVij47APGwJcrPHXd7+hvVpqN+150v8Uoyo3YcdjZ3MCelNg1wwak+G7n+BBA
-	 dDxZV64KRRxMoOkvybY2pS6s3+PN99UwHmTbuC9Fp2cN/GkTJWlQs3XVDQwDm0ZDpM
-	 QENQggcZF9bYD7vQTVsOLF4jjxq2LMy+qTCTgZyjJlEvpyvlvRwR9GPmUealIC0OGl
-	 Vz6ZCn4Ed/wghhnkGiDsAKyHglmHMWqAH+Sr6O9J5aQK2Q9Wv/0Skme15W5ZEbT+uW
-	 afsqlsPnikFiDOlzluwuI2WiI9Q/05DzhmD0jmBMmnaDOviNUcjYa4ejwIWsouX4aB
-	 HTexjKWSk9Q2w==
-Date: Tue, 14 Jul 2026 11:53:34 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "Zhou, Yun" <yun.zhou@windriver.com>,
-	Christoph Hellwig <hch@infradead.org>, cem@kernel.org,
-	linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm <linux-mm@kvack.org>
-Subject: Re: [PATCH] xfs: restore nofs context unconditionally in
- xfs_trans_roll
-Message-ID: <20260714185334.GI7398@frogsfrogsfrogs>
-References: <20260713035505.1635191-1-yun.zhou@windriver.com>
- <alSrO3aDTuZkX0K9@infradead.org>
- <7a053113-f678-486e-a78b-8f5e94e73acb@windriver.com>
- <alToBmAN_HyeXth9@infradead.org>
- <20260713230420.GN7195@frogsfrogsfrogs>
- <0792c175-6a7c-4108-966d-4afbc8c515a2@windriver.com>
- <20260714175528.GG7380@frogsfrogsfrogs>
- <alZ80Dv4uNWWhrDk@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <alZ80Dv4uNWWhrDk@casper.infradead.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id 0312F60103;
+	Tue, 14 Jul 2026 19:11:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C740A1F000E9;
+	Tue, 14 Jul 2026 19:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784056263;
+	bh=w6alW6kAgplsNU9MfVHgcE3PqiC79iFkgMzFjduJ5sQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=1ubEDfd2R3TAeYbwE0NtyG9rf0Dt9m11go+ZNpZ99iG+RnxImznq3aOOsz5c9eTc6
+	 krHoU0nLrt5epm3hWxpU2WqYggIoI9WP/O47lr/puJ1MOxkLyocPEqwOLTWCTbskuH
+	 IUe7SZrZnxZGODba8idgTvTKApYNyA9BPbBrjoeU=
+Date: Tue, 14 Jul 2026 12:11:02 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt
+ <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Uladzislau
+ Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain
+ <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, David Carlier
+ <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ stable@vger.kernel.org,
+ syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Subject: Re: [PATCH mm-hotfixes v3 0/4] mm: fix UAF caused by race between
+ ptdump and vmap pgtable freeing
+Message-Id: <20260714121102.9cb28d080556c94d45a6bc3e@linux-foundation.org>
+In-Reply-To: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
+References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 958FC18000C
-X-Stat-Signature: yapkptth8ya7uz8ipmomd1dfjongi7sj
-X-HE-Tag: 1784055215-163964
-X-HE-Meta: U2FsdGVkX1/hPT518w+eo3uSTBT4gu+82di8qQIH4uoQd73B9AiKE2Cl4Cq5tK0R7GnHG8vOAoY3bahBEfeUosOa1uzmb55nloFDcsnBU3sv9ZvP3FDpff61SVZB9LQBkwim3coDrU8Qkk76ZipCwyouEmQ01rQo+G4zubWdF5JY3XxkkedveBTNH1356x0AiWQQpJQUV6Rx+KsbldFKiY1UZsaVy3bFsaBS4am0RBMr1xWKN3O/c6aTOkNSns+pj7fSlHsGoRombnFrKf2DLdk/ejzffxWs0SAnZ1DI2cZ8HndETxD90Kzn0FEPk87N0fWzVE5beMyKM7Doa2QxTYU7FekfPHV8D+Ef1CqUmd3ad83x5B39XMkUKsDbGGlotHmGlANtSTrr3OfFqVvL7M5fr1Le7avD4EnrIc0vUaXNVKwfHUuGmzuzfEKtd/Xgk9DYDCWbEdnqRhqu2/iiyuM/PZbJuUi0enXOKprxiZbn1/MWGUuyy9sRwBkgwoBiB0AU/NXdMX3RheoSnT5IDCJQjpP749YwmjVy+yGavqE3JlKAmqtbph6VkM50aIKnafmrIGN725iw7SBjF+mU7YdF73YWXfMTfJBVGuRCJtwMyrI32BOnbDA4gcJRXBN/TcJ6pHnSEGVA4tryRXVqUA7rebRYWUJZPkUzMgUe++LbBNBAj73UnThQvq4nvrjAomNU9G36CsRidjkh/UvtbXD9EyXKWgzw6dBa5QmO37zoby/KzCmATeaqwXB548hRUkMj6t2V8GDTNi0plXh9tyXwIE0IHz/e3WcbGTbBaSecZ7BAEyGkMxNB5b4oRSNad51AwYyTkB6/oMMD+tEmss1JlUzBnGVhko5yva8zShVCDeV8IscOXJzDJNnztKlEJY4GNLkR6hOFL6pvBdKVgAXILDR6DNjCVlWZnSxik961+j3yXpj/iU/LAlPurZUWsUaOeXPBSKsQBUX/V/i
- K1gEniEb
- 8ZyZ3zhRKNO4yB3laLZABfkxRxuxjHQyFsT5htgguuS2wsRqHUfNhydFSxYvJXwY3x6evLUNT7rjvZbbolY7sekSQY/GCjCorlrrI7HWHce69LDanm6GuD+0Rp3fgGdXt/SQkB5GNMiT3Iwi3VRpPattMtCLCybwELmFbC9dCCbB1tLngyDTRi7F+tdaD12S7FIMy2uRBisX2lkXmKduy4N098LyqgJV/USPyyyb6EgtD24KRDyPQjI2zkc8rKHoXA0KzmOm2nRtT8arhgex7xXps/2nQVhKNf/xt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2800E20005
+X-Stat-Signature: k1ddc1grq31jzsmxx6hse4unfshhu4j7
+X-HE-Tag: 1784056265-825047
+X-HE-Meta: U2FsdGVkX1+ZngPFy4XBM4KJRZOI5QgL5NQuaUcvCYQLCk7p0fS9WE+xPA4fIhReGtblE9ry+VDi/9Jo7A1mDuZhYCW+CXb+IhE5Te5eDERYOIKda27q8ViO/vDLxyMPCkWbdjbpXvh+lgzPzF/8SPYhW6dH9D3PNbQ6+QT0bd2eP33f01AGOXxvTfR/VX6bfshSj8qVLTutfXZjWbUjh52V90VnPB506umxVDqP0Txampr34IK7qAHp7Q+Kw9/BPe0dB5JzsO/7tyIRUxtbcxP2u98z6SiPwY0uIWMA2nOskSLYS1AJE+VHVm7HnIDd71J7/Hux/HXS6L8kdIOYA8bwwhqjn9QZSmko/wHzsfCSrfaFWf7ihs22BpgDXdcWRWcyDvNwfKKkosj2N1UkjZ/yr0vf40qv0hPV34+gdPKPQSvvd3XYwvMt0eYShK4MYrPRanObec6wTCsKgWyQLfS4puOvLki04PF8mK07ZOSHGafQ0lTsYnwQaH2wYbo1+vj6jqu4n59BJeIFX3jrlmasgfeEI9KoqwTXo31SCaiFFg9B2Pw6U2cqEH3BJrvT8/kwRJAtO9y4jqhK0SgSWClBoH+X5EzSYf8nVYi2mBJD/Ihotk6vgM6WrWwI/yBx2PXJJM5SskTC0uLt4NGtWVygv4Xfy4drbvAdJY8huFBZx1vNtWnz8mUNHajd3G7dMMyetraJwSRKZwb1gakJheMpF620EXtUcxOTCHjAbbQWt2P44EbCS1u0m+AXppopCSUKRK3kkOmc/p5NrfARF8cGhlAMVr3CEEwuBZjxd6qwimZVVS7uR5SrO7wHCYelVyo8BIGNwWSyRruhRanQ7P4wwPw2VYufMyrk4MVjI4kepYigSvLcPtIdW9DIIpjG+3p3UcjvhnVS1y6e2FWx1FW/9RdgM8gUMsFNtLjRckSpIiIV5Hf52mu3xc4PpuusRVra04l3/XUSvyrmndk
+ YL9VIq9l
+ 9usgQ/2iVIKZTWv8GVO2VTKorKN9JCAhcuzLR8Py9nggClzBkIz6yaFqa87OXduN38KmqFfKwENKTKFQ8JkKta3BzEE17MyRjSH+ibCiOqv67nig8ZvoLnx1yB4WWQZ3+I1akNTa492nWtMSN6+6Qcx+9IpCfnSeIV2KXpYXhiYDdYppMPOiMHq/mwiDbXI/1JmWJ6+9xV5qYSX3GUHapgS73YM9cNUMjhx94nbrtwp2OUJ0JKi9rnWe3w82NYEcxcC0qrnmw5END5cMGb09Q+o7wA+pZvacaILUbx/Vo+oNG0SbIfwq6/eiLtJN2v5d2kVNAafBvndrN0WVei1lilG7l1PXZhtkyEwUiJwHzfL1onxAyJQG4e0adgMXguFK3TGsfJfR+TQnXJvlj6d0mvcmzBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,102 +103,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 07:15:44PM +0100, Matthew Wilcox wrote:
-> On Tue, Jul 14, 2026 at 10:55:28AM -0700, Darrick J. Wong wrote:
-> > [add linux-mm since we're talking about memalloc_nofs_save]
+On Tue, 14 Jul 2026 18:24:22 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+
+> Kernel page table walkers fall into two broad categories - those ranges
+> where no exclusion is required via walk_kernel_page_table_range_lockless()
+> and those where exclusion is required via walk_kernel_page_table_range()
+> or walk_page_range_debug().
 > 
-> Thanks!
-> 
-> > On Tue, Jul 14, 2026 at 10:15:53AM +0800, Zhou, Yun wrote:
-> > > On 7/14/26 07:04, Darrick J. Wong wrote:
-> > > > On Mon, Jul 13, 2026 at 06:28:38AM -0700, Christoph Hellwig wrote:
-> > > > > On Mon, Jul 13, 2026 at 06:06:38PM +0800, Zhou, Yun wrote:
-> > > > > > On 7/13/26 17:09, Christoph Hellwig wrote:
-> > > > > > > On Mon, Jul 13, 2026 at 11:55:05AM +0800, Yun Zhou wrote:
-> > > > > > > > diff --git a/fs/xfs/xfs_trans.c b/fs/xfs/xfs_trans.c
-> > > > > > > > index 7bfbd9f6f0df..1b36cf12d4e3 100644
-> > > > > > > > --- a/fs/xfs/xfs_trans.c
-> > > > > > > > +++ b/fs/xfs/xfs_trans.c
-> > > > > > > > @@ -1029,6 +1029,15 @@ xfs_trans_roll(
-> > > > > > > >          * duplicate transaction that gets returned.
-> > > > > > > >          */
-> > > > > > > >         error = __xfs_trans_commit(tp, true);
-> > > > > > > > +
-> > > > > > > > +     tp = *tpp;
-> > > > > > > > +     /*
-> > > > > > > > +      * __xfs_trans_commit cleared the NOFS flag by calling into
-> > > > > > > > +      * xfs_trans_free.  Set it again here before doing memory
-> > > > > > > > +      * allocations.
-> > > > > > > > +      */
-> > > > > > > > +     xfs_trans_set_context(tp);
-> > > > > > > 
-> > > > > > > The tp assignment above now returns the incorrect transaction when
-> > > > > > > __xfs_trans_commit fails, so you can't do this.
-> > > > > > > 
-> > > > > > > Otherwise yes, this call should move up.  I don't really see how
-> > > > > > > it fixes the syzbot report, though.
-> > > > > > 
-> > > > > > Thank you very much for your reply. The tp here is a local variable only
-> > > > > > used for convenience within the function. The caller always gets the new
-> > > > > > transaction through *tpp, which was set by xfs_trans_dup() before the commit
-> > > > > > call. Moving tp = *tpp before the error check doesn't change what the caller
-> > > > > > sees - *tpp still points to the new (dup'd) transaction regardless.
-> > > > > 
-> > > > > Ah, right.  Tis should be fine:
-> > > > > 
-> > > > > Reviewed-by: Christoph Hellwig <hch@lst.de>
-> > > > 
-> > > > Why not move tp_pflags to the new transaction in xfs_trans_dup like we
-> > > > do for the deferred item list:
-> > > > 
-> > > >          /* move deferred ops over to the new tp */
-> > > >          xfs_defer_move(ntp, tp);
-> > > > 
-> > > >          ntp->t_pflags = tp->t_pflags;
-> > > >          tp->t_pflags = 0;
-> > > 
-> > > That's what the old xfs_trans_switch_context() did before a1ca658d649a
-> > > removed it. The problem is that setting tp->t_pflags = 0 means
-> > > xfs_trans_free() calls memalloc_nofs_restore(0), which relies on that being
-> > > a  no-op — an mm implementation detail. A fresh memalloc_nofs_save() on the
-> > > new tp keeps the save/restore pairing correct unconditionally.
-> > 
-> > So add a new helper.
-> > 
-> > /**
-> >  * memalloc_flags_take - move an implicit __GFP_MEMALLOC scope from one
-> >  * tracking structure to another.
-> >  */
-> > static inline unsigned int
-> > memalloc_flags_take(unsigned int *old_flags)
-> > {
-> > 	unsigned int ret = *old_flags;
-> > 
-> > 	*old_flags = 0;
-> > 	return ret;
-> > }
-> > 
-> > and then:
-> > 
-> > 	/* move deferred ops over to the new tp */
-> > 	xfs_defer_move(ntp, tp);
-> > 
-> > 	ntp->t_pflags = memalloc_flags_take(&tp->t_pflags);
-> 
-> I might stick with the 'move' wording?  ie memalloc_flags_move().
+> ...
+>
+> This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
+> lock in vmap logic, then partially reverting commit fa93b45fd397 ("arm64:
+> Enable vmalloc-huge with ptdump"), keeping the enablement of huge vmap
+> support, and removing the ifdeffery with the partial revert patch.
 
-<nod>
+Thanks, I've updated mm-hotfixes-unstable.
 
-> And I think you should bury the call to memalloc_flags_move() inside
-> xfs_defer_move().  I don't think there's a case where you'd want to move
-> from one transaction to another without preserving the nofs state, is
-> there?  Bit hard to tell since there's only one caller of xfs_defer_move()
-> in the XFS code base.
+> v3:
+> * Rebased on latest master of Linus's tree.
+> * Accumulated tags, thanks everybody!
+> * Reworded commit messages as per Kiryl and Boris.
 
-There's only ever going to be one caller, and it's the transaction
-rolling mechanism.  I wouldn't put the memalloc_flags_move in
-xfs_defer_move because userspace transactions don't have t_pflags
-because NOFS is meaningless there.
-
---D
+I've confirmed that v3 introduced no code alterations.
 
