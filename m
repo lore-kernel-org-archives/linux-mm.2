@@ -4,139 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71297C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 05:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4308C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 05:17:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 453366B008A; Tue, 14 Jul 2026 01:16:26 -0400 (EDT)
+	id A22876B009D; Tue, 14 Jul 2026 01:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42ABA6B0095; Tue, 14 Jul 2026 01:16:26 -0400 (EDT)
+	id 9F9A66B00A1; Tue, 14 Jul 2026 01:17:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 341A76B009F; Tue, 14 Jul 2026 01:16:26 -0400 (EDT)
+	id 937396B00A2; Tue, 14 Jul 2026 01:17:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F105B6B008A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:16:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 748D3A0222
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:16:25 +0000 (UTC)
-X-FDA: 84986221530.12.8DB56B8
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 83DFD40005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:16:23 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PiSYkXv4;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784006183;
+	by kanga.kvack.org (Postfix) with ESMTP id 661AF6B009D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:17:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EEC13A0233
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:17:25 +0000 (UTC)
+X-FDA: 84986224050.10.0F7DA96
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4C1DE160006
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:17:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g5msADjj;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784006244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iHbvi2QfhAaf34o+4KbfPlqiDqDZm9ft1GC/EbztkuU=;
-	b=viwyhP2TWH+1bTVUAWWO6htujj6oK+2mAkBlPUOzO81xGgqIR2dG35Gwt9Cmybeii5m0Nw
-	Foj8BKks0GATbHa+CpOZ8t42PKe1U1VQnSqdpMjL4JOOSbRarjVRXOIDEI/xfxHnnqRn2I
-	Fg2H6ye8a+4FeFuKzF8iF5Cjv/4bP/0=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PiSYkXv4;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784006183;
-	b=geBEzvPtEbU6yHNyhMpvo+2bBpgH9cf8W6y3efBq8D9qgBl8KaqZA5eKz5uMAq1569uRu9
-	XWSiwSy0bp+CZL+u18fDshqfkfVlgjG0KyGdfv6PBTP6T9OS7tDPU4/2wy7bJP9jL+JqrN
-	GfXjTfCQjY6LUEYl6AuFArHiHWi7DXk=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-471eeac43bfso3776801f8f.3
-        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 22:16:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784006182; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dLUyhXYdT9c9xVofgEaKCwKOJqRy8wtGxsgTpbsS4QaE44vfEPJWfnNEZndZ2k+WRp
-         EpRrl9FybqJCOVHFlqWH7bv313wGB1WfbFbhn8uJMR7PyNd/OZieJJl70bT7HJIcu1jB
-         6DVXw1AuTjLhkLCElmTi/mEJX/WTxbemnmzkZx/fZXy/HoBAkwuWNuRk3J7rIzuqkmyo
-         I7rAcDxWphCO6W0OKw9KaaMtXidK3TSnf5AJyQdE6aOyZlDJOaM/pw/QtczZPkUC1Bfh
-         JUMp/K8q4qqLSPiatpAXSFrksu/zIDQ6PGW+l7PjcwTiDcIW1zVJb7UNYnSrY8UTURtp
-         Mftw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iHbvi2QfhAaf34o+4KbfPlqiDqDZm9ft1GC/EbztkuU=;
-        fh=OGKl1tQKrg4g0DZDaKv6Qqqcahp66vWVvowe573JCz4=;
-        b=brdsToEdcYElIw37g9B/cPlJ0UNJ1++rtwMcqkCQrQzALG3m58kL1t4JH3GRHQdcPz
-         OqwuKa2Wp7JrUYWj8YfLaLfksb/T2igR8yyFieUTy8U5P3zHbLiSORsExgosAstlBojg
-         6I4WmpmZsOWCEmf8tU4F359MhdkOoNzCljI3MEGCPeTKHI7+ojjKedD4MPfderLYbFS3
-         T7r3MotJMuA9xtD02GOfRDoEE2dGwJjo4kVeJcaHx99Ew/SxpExXorZY8gad++5Y0Siy
-         uUp4K6FkMK5cfEV4/dO4Ms8vM2AiF3CoOFVzox7j69i226VcqBGjXERDoHog+PGDYHXN
-         fWKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784006182; x=1784610982; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iHbvi2QfhAaf34o+4KbfPlqiDqDZm9ft1GC/EbztkuU=;
-        b=PiSYkXv4XrIWzgjvN3R9fRIK40V+9O0iGMcb80BYx4RxU8IHHSl1Pido4Y1Ux3QOmZ
-         i1Wd8XBwxPivTVz4eDGH8k63R8w/JX5sCrKQtui+pk/NJcxBJbPTFSAoU/ZIrJbEp7tv
-         fVtMcvCqGgoIpi/vs7zXn5ytFhfdmdr01X2Z6RD+iPVmIOPHAwGrr+JAiv/sVSy7v2/s
-         k2hoURNeDemrVIphvClTiXpoak1CMTi/geAMeLVdIEHNhWQSj4/6jBxrUbYaRGkJdDa5
-         GuypeydnnzH9yU2FGzhJjU1UzPo1dOwb3q9mzYfevbh4xRkJAhqchVGK6QrdchqzI/MN
-         TTvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784006182; x=1784610982;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iHbvi2QfhAaf34o+4KbfPlqiDqDZm9ft1GC/EbztkuU=;
-        b=crht05bUiCCOsEPHNjeziQ+dZcH2+0tlBLSfKPd7DXfi6/Oa8mgTmTGpkTHEK8xFaf
-         MeZj4LJwDm8h1ObbMRZlx4BLQw33Gmn6tIBw4tbLP8DMo/1ir1Hoflmm/qNF1LB/AkQy
-         aL/d19Jtym10M/dn+GazpgiNYcdvW/3gj6i7ZXpcOJIArhhC2xZh//X5xSHYet34Nqi9
-         BLHLxM18cJwM+q5ks9EQwMF2MJs3BJYMLwzoDXK2jVfS+GsWA7FU3xpslKwQVe67h49k
-         njzA6mNnOO9MnOJ2+7N5dIP9JMfXAv7kg8PGVHdnTJjg2rgtWGACmKTMD1sY4AFuJrqD
-         3V2Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoIBXDgUN0pX+XExZxdn9RAf/u5JCnTV7dNFyT3AwrDAqcHp+X9Byl8lnxlfVCyhBFkewEohCyVLg==@kvack.org
-X-Gm-Message-State: AOJu0Yzw2xiz7XB2GbDY+7WxcnQ9MQksbDGjZEvWaKvaXWov59TeCjsd
-	M5gGe3YFiYI4MDC1xwMwoV+zFm6JM/9xKd5dZ5kllRU83Ek7yCzOr7kA9usI2uQrqdIZA6gXrTx
-	KCaLY/EXmwrdy6nVlcdJPZ8vjSNyc7mM=
-X-Gm-Gg: AfdE7ckuBiV1Kg728g4miIiQTtbil/T3OA8qBBdVfDB2ZIxDfVUB+ogVXOSmkK4YEnU
-	C5SZWiK8Kag3oK8+e4ZpGH/VLbu3wr2sasYKKDJawR5E8yCg1vstmuFPw/SOTqHdomC3JUYiBMm
-	i0JTebEkgG8/PxrNuT3rv3RWKg7zuSIcqpAtu7+ochTSseZ3wbdOYMOUVXJiWXSfKFpm1HKlvu8
-	HacSFCZF+L0h/Us53Z+7lJJc/U/EFO56wkBs3biSvCX0QA/WkusjUfMWBYfYaiwg07Z7y717w==
-X-Received: by 2002:a05:6000:2013:b0:47d:f01e:83cf with SMTP id
- ffacd0b85a97d-47f2dd0a07fmr13768845f8f.58.1784006181734; Mon, 13 Jul 2026
- 22:16:21 -0700 (PDT)
+	bh=/OjuiN05GbYsLwmaFUSOWemRKGb9XaF2IwNnXtFq2YA=;
+	b=lWaCTrepuXaQx8W24UJGJ/A0mIikk5oLpa9897B4EvrCZgCpTQGvLPsH/ryrwJgceJDKZ3
+	k93EyTUleaCdCnRTnPjXkuSq8K5keR3vwiheLnmuN7QoIfgYK6LiNk04I3AYcOsWZCMjjf
+	1kjsS9S2TR1biIR508BqhiTq6uBVUGA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g5msADjj;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784006244;
+	b=3wJnesvSs9pzilapB2KlLxpEoPwpmzCd6agSQvr7qFgzjisL1sGt5drOjaka0TeKcOIibR
+	chPWELDeLrQVO5PF2CVSlxfQBGZEXs6QIYCnx8VrZvL3C+zNATm6gJy4Wh6ICIr8VdkmdW
+	mL+un/zhyr/PASIE0wF+V8WYpQGYeRk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AB58A60120;
+	Tue, 14 Jul 2026 05:17:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093F91F000E9;
+	Tue, 14 Jul 2026 05:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784006243;
+	bh=/OjuiN05GbYsLwmaFUSOWemRKGb9XaF2IwNnXtFq2YA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=g5msADjjydhlG2el855oH79NnH+/3tMuni1u9RR13v2aIZi6wnMeMHHWc2FhpkLBi
+	 /kmp5xaAiczsTmhFeS2OaknKNyKYuGPVeCKJ5JfoqpXuKPawx6QLYDsybPtt4oyQ/x
+	 PRx0qc5goakUGEGPWJ9NG4LDSb39rBL7Vjz1oBS2SU4WVr2orbey03ww5qiil2u7k9
+	 qY7n/rOU0rC06hthkqjKf6v3V7wEKssUQxkRgcYJR0KR962FGB2QVrPQq/ApFSqnI2
+	 2eT1zzGlHwU92BXucG4H9DDj5VUoy+KIPMy1zfo+/RFMKhqagZ8G4vBmh6O+qwYdZQ
+	 +MGD7hiqaNrqA==
+Message-ID: <121dda1a-f050-4035-93c0-6a36278e50b7@kernel.org>
+Date: Tue, 14 Jul 2026 14:17:16 +0900
 MIME-Version: 1.0
-References: <20260709073823.6643-1-jiangwen6@xiaomi.com> <20260709073823.6643-6-jiangwen6@xiaomi.com>
- <aa5d2aa2-89c8-4b6c-9a28-5c22143277b0@arm.com>
-In-Reply-To: <aa5d2aa2-89c8-4b6c-9a28-5c22143277b0@arm.com>
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-Date: Tue, 14 Jul 2026 13:16:12 +0800
-X-Gm-Features: AUfX_mxsvUtzI2D0AgHPIRqMMW6_Ug3R10MrIF7o3aE9P-mmfmUpHGE00EZO9xk
-Message-ID: <CAHKocdG7iO=S+pZLSs+mYO3GmVC_WvpC0V_1Tjj7RZ-YxWVh_w@mail.gmail.com>
-Subject: Re: [PATCH v6 5/6] mm/vmalloc: map contiguous pages in batches for
- vmap() if possible
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
-	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
-	ajd@linux.ibm.com, anshuman.khandual@arm.com, david@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	rppt@kernel.org, ryan.roberts@arm.com, 
-	"Barry Song (Xiaomi)" <baohua@kernel.org>, Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab/for-next-fixes v3 4/4] mm/slab: prevent unbounded
+ recursion in free path with new kmalloc type
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-4-47c7bd138de7@kernel.org>
+ <CAJuCfpFda=dEfW5Cr6ZPfOEq4nwgX-zox=QNTHc_hum07mFH2g@mail.gmail.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <CAJuCfpFda=dEfW5Cr6ZPfOEq4nwgX-zox=QNTHc_hum07mFH2g@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------UVBlYSA9X76uRpIL4AKv05mR"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 83DFD40005
-X-Stat-Signature: fd8s4wzo8oyocnj8kxw7cjc6y71rfgrr
-X-HE-Tag: 1784006183-240019
-X-HE-Meta: U2FsdGVkX1/wXVIRns4l+6Va8rNLtQtBPPqfkWqruA2qg709jE0cZuRnORlBe6i8bZIXH/bg3kF/JLjGC/YPVcLt1Ng9J/jueCSeXZvqPAVrYPilH+7tBhYLhMDfUQxE5MKcY5nyANm4/tZxqPxFgqCY71a6FnhFivqqtqKp9A7npouOUQZGKa0RJblOqmCj0Awo+MN4f9AKny8zqvRshUsBCo5WvR5ouL77dS+NaDButXphfza4ekDo+MnMyjyfOEJuF5t8c47XPeQT6qY9iFlwscAgc4hgJQRzQp7rxyg7XaErO+irG0sf/7NTf6lTCk/hEs6aJn04tSxTJ/xvOc17i7op+Ejable7EGilDIr3Sjri8ckmTGFIldavv1jg6cC9xSyVDUU7P9abZ9pDkiODGb3QlhQtv50OPKbJEjp/qujA8nK/pfN984Ua/MjaOowxWiADgHLZyQtgkvSSj2nTUtdQezTdz/JaNwabTsDja1JSBbO8z+hAvyQab6NKxdLWvvuZyE1unN8YOybLgYKuedKgE+G0UkWEzgBaC+HW7LeOgKDIbat3kPKxbUtbDwYF7dZYOR59ubS15m2NklUeudDe0RmLYQ7bK1uEwnJvVvhmvU1Hf1OyncsRZxy9qtyVdd4g4Su343XOzLP0y1jduAXIITQXw9Kio/WsVmY/1A5TG7DD0ZrGrr86EPVZ+E5AcD4C6VY+AdGGkOMmwaMzFpNJumIDlwRED6K7Y7A8UEU6iQxHc7HnbrkQoi+COT72ZzS44isj/NyxLtrEajeGh3FCAV4r/5c0hqhoiWhRdQZ9zZK+QoK2NSFWbSmUheWzItauNG5tf93U3vucjrapZ3STk9W3xJCL0atDz2qD3jz2JScrJuaklmWQQepDK/0LLog6Ie9n5z9vJOSdXrAN8ue72BnGmn+B3o1pRlUCkdocCGvGJZFDjXV/M1Qdsv/sH5kcBscqcWCtz3h
- a1L0pRdn
- F8AH+BIy/4i3jFo2/PP+55pu0OOC+ZmUFJWtV7sivLH8LVJhhrFVt0M5H7DFZJ5xQpYpD4xh9rhmiF2E4f3S4azvmsff8/V7Qxn4u9ZQ8qvIg1Aw+EThZwfX2kHypVsBIGI29+CXB4n3zqyI5p+nLUtP3vw6fDIHfPsiDZatjRc/oLiimwhIs/VpYGAjf16Xmx+ahYkkJWRH0O+MofEtiW2+2HnEaY5dvuGOTXc3W8G1rYUKxH/aager8xR/cxJX7lRPyycCFQ4wGB6PPtjH+JUlRHk8HUa+c/k/H+abT1ZaaofJAf9YFLueVtkufL3+eoSnE2GUgD+LzhupJWYG5mRjaq6PO5f9hu+lExrHwg4hAn0creKE71+Vy4JKjO2GQUZvOqPsKCqugzTGGTGHxVCDVidlc/UMsihfyoyE9e3qOEsGWl95Z/04mWISEkh++UZeTYk843M2bAIsPOAdLAb/13107WJVraZFDALSnQE/i36G3bX5G/HNxPb6ojOsrls/8kEZSXxkviejf/h/Sss3xtXPKfngExUMsyyZwbq0DPS+YfYOj0Q+3KO1HMn03hJBOrAho3UGnFqVd2SCHc0SqD7BYbP3veYIA
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4C1DE160006
+X-Stat-Signature: muewrrickmae9wxtg5xg51m1zxbkdirc
+X-HE-Tag: 1784006244-221242
+X-HE-Meta: U2FsdGVkX1+t7iE9HitcHxp1qnx+DBcHcQ4XGY2tBDCW0pbVozXLtNRhqFac0J/jdm4lQP+OKtKKoEkeTv18/5jkVzqUCPHKixHC4jR2Ld/ntCJAQgvRGrhEHvESuw/jw8fkyxjSLHC/I7Nf4Jtv7ZeuX/bKTrY+4mzvLBR7TuiuhdmoJD5XlYp/ScmKcBu+MUGufaDkd+GJWCZbXnV/4lN0R2vxuLVoEt6Wvwv8KN2La8DNzEQY3ZOHqPvZwqEL4ihuU2QStgtTrCGjUKgrvNY8CnGCu9QKWvQEtg0w2mJypLem4zRfxWbfJMkNDwbbA73Z/3NxpcwHKLNZw+REJl/EIFNgnRVNQ/ost8URCsDJDPxL0MVEg6Tr5fSoMMdSnch2Z9wHDfx0qPHRmN5KZqibDI4kahl0P4RI0xeomfxY1Z6uAnlGf9upUMu/kEr+T9mkvim9aX+vsqDIY+wzaFt7PCiY3uaypvo2J5P0IfFUAC2/slQC6TkvDHabGebLWLSUcm/z+rOcU+zlCbfQ61KW58CDd3V+W/nXJvpIvopPCuq8DrKrumqB1AWhzWQoh03NdnynZALmuSDRk08gXzsB3FBslaItkpKYpFDs2hILGuUObXhR36VYCAJehbcq+WZca//vBa2elfgSg0S8gtm7dyNwnPvtxPO0QOrA7jFsy0zG01U/BckuypUCr4rrZoUhesy2PbgogiceBD6YHVXYQ+9TlmU+Y93K/7U0bUdSocMgEOECYSmKWUhqyArRUXw9+qK/Ca5+TaQ/Kr99XvAHxBWxFcVBe4FoIceTLEmXp9bmkdwT6jbEJYRJLn0cqpgzmybm3THZ9Pr7oxMyi0wJMRHf5tR3727nMW2MgL30j1u1P9yZZoc+CoWzldk+DzRwJJsG6vugPy9rEG6QEVAZh/f+xE2DvTTG2m1cPoLKDbm0jt3Uf2xyRDixbHB33aXc9qkt7GQerokBvT7
+ TJJjo8Nq
+ uz+/KN7QxqO169sT7Z65fDP8xsmZUn8Bd+V/5BtAsxvBrstg3E61BllRFGi1aOxCmUYZE3xqWr6kL5ouxw+QI+kimY6u5ctE4pcBwhSXSC1LyJ2vx7KwiDZosDdasVcy6BJgTQuMYTvFoGuqh3b3kKF7Qz7UXwXx/Vh0WsCdsfSpsnvBb2UDVRLFIPyW96N9o7SCanhqmHxpBlUVEF6c0hDyY/hVQN+iBrfforwsarift0x1qyJe1zMmUWyWclAj6ZKvPajlLnO21YKekMg+r05IvEQSxbElFapAnCSBRrrZZB702vaQqYlCJycfsV+kXnzfVSk+GtkAJV/t97URHoMIGuYw7cgpyMvuYjXQzSCne2cDS8pB4jIu2/kmJGuh/FQjO76rObE6eOStxOFkidQFUt2M5t1kA+rc7s6IVqureGIz0R3Pfm/3v2POsbqA1c2I3NpJo+HJL31eZQA1x1+rgFg0LJ51/LWQM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,131 +103,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Jul 2026 at 23:19, Dev Jain <dev.jain@arm.com> wrote:
->
->
->
-> On 09/07/26 1:08 pm, Wen Jiang wrote:
-> > From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> >
-> > In many cases, the pages passed to vmap() may include high-order
-> > pages. For example, the systemheap often allocates pages in descending
-> > order: order 8, then 4, then 0. Currently, vmap() iterates over every
-> > page individually=E2=80=94even pages inside a high-order block are hand=
-led
-> > one by one.
-> >
-> > This patch detects physically contiguous pages (regardless of whether
-> > they are compound or non-compound) by scanning with
-> > num_pages_contiguous(), and maps them as a single contiguous block
-> > whenever possible. The mapping order is determined by taking the
-> > minimum of the contiguous page count and the pfn alignment, allowing
-> > graceful degradation when pfn alignment is less than the contiguous
-> > range.
-> >
-> > Pages with the same page_shift are coalesced and mapped via
-> > vmap_pages_range_noflush_walk() to avoid page table rewalk.
-> >
-> > As users typically allocate memory in descending orders (e.g.
-> > 8 =E2=86=92 4 =E2=86=92 0), once an order-0 page is encountered, we sto=
-p scanning
-> > for contiguous pages since subsequent pages are likely order-0 as well.
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > Co-developed-by: Dev Jain <dev.jain@arm.com>
-> > Signed-off-by: Dev Jain <dev.jain@arm.com>
-> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > Tested-by: Leo Yan <leo.yan@arm.com>
-> > ---
-> >  mm/vmalloc.c | 87 ++++++++++++++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 85 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index d2a4d649af549..db0492151ad08 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3543,6 +3543,89 @@ void vunmap(const void *addr)
-> >  }
-> >  EXPORT_SYMBOL(vunmap);
-> >
-> > +static inline unsigned int vm_shift(pgprot_t prot, unsigned long size)
-> > +{
-> > +     if (arch_vmap_pmd_supported(prot) && size >=3D PMD_SIZE)
-> > +             return PMD_SHIFT;
-> > +
-> > +     return arch_vmap_pte_supported_shift(size);
-> > +}
->
-> Need to throw in a preparatory patch for this, which will (in addition to
-> introduction of the vm_shift() function) do:
->
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------UVBlYSA9X76uRpIL4AKv05mR
+Content-Type: multipart/mixed; boundary="------------2Cw0wARP2YgVbWWTJx8Rq53F";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <121dda1a-f050-4035-93c0-6a36278e50b7@kernel.org>
+Subject: Re: [PATCH slab/for-next-fixes v3 4/4] mm/slab: prevent unbounded
+ recursion in free path with new kmalloc type
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-4-47c7bd138de7@kernel.org>
+ <CAJuCfpFda=dEfW5Cr6ZPfOEq4nwgX-zox=QNTHc_hum07mFH2g@mail.gmail.com>
+In-Reply-To: <CAJuCfpFda=dEfW5Cr6ZPfOEq4nwgX-zox=QNTHc_hum07mFH2g@mail.gmail.com>
 
-Hi Dev,
+--------------2Cw0wARP2YgVbWWTJx8Rq53F
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Your suggestion is to extract "vm_shift" into a separate patch, say
-Patch 5, to make it a common utility function just like Patch 3. And
-move the existing code that can use vm_shift into this new patch as
-well, correct?
 
-Thanks,
-Wen
+On 7/14/26 2:08 AM, Suren Baghdasaryan wrote:
+> On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@kerne=
+l.org> wrote:
+>> @@ -386,12 +387,17 @@ static inline unsigned int size_index_elem(unsig=
+ned int bytes)
+>>   * KMALLOC_MAX_CACHE_SIZE and the caller must check that.
+>>   */
+>>  static inline struct kmem_cache *
+>> -kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, kmalloc_token=
+_t token)
+>> +kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, kmalloc_token=
+_t token,
+>> +            unsigned int alloc_flags)
+>>  {
+>>         unsigned int index;
+>> +       enum kmalloc_cache_type type =3D kmalloc_type(flags, token);
+>> +
+>> +       if (alloc_flags & SLAB_ALLOC_NO_OBJ_EXT)
+>> +               type =3D KMALLOC_NO_OBJ_EXT;
 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index afaa14ebf17bb..dac87e1cd484b 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4175,10 +4175,7 @@ void *__vmalloc_node_range_noprof(unsigned long si=
-ze, unsigned long align,
->                  * supporting them.
->                  */
->
-> -               if (arch_vmap_pmd_supported(prot) && size >=3D PMD_SIZE)
-> -                       shift =3D PMD_SHIFT;
-> -               else
-> -                       shift =3D arch_vmap_pte_supported_shift(size);
-> +               shift =3D vm_shift(prot, size);
->
->                 align =3D max(original_align, 1UL << shift);
->         }
->
->
->
-> > +
-> > +static inline int get_vmap_batch_order(struct page **pages,
-> > +             pgprot_t prot, unsigned int max_steps, unsigned int idx)
-> > +{
-> > +     unsigned int nr_contig;
-> > +     int order;
-> > +
-> > +     if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> > +             return 0;
-> > +
-> > +     nr_contig =3D num_pages_contiguous(&pages[idx], max_steps);
-> > +     if (nr_contig < 2)
-> > +             return 0;
-> > +
-> > +     order =3D ilog2(nr_contig);
-> > +
-> > +     /* Limit order by pfn alignment */
-> > +     order =3D min_t(int, order, __ffs(page_to_pfn(pages[idx])));
->
-> You missed Sashiko's point here :) the pfn may be zero and this
-> will blow up. You can just first derive the pfn and do the clamping
-> only when pfn > 0.
->
->
+Hi Suren, thanks for the reviews.
+It's indeed helpful to have an eye for those bugfixes.
 
-Will fix this.
+> Why not let kmalloc_type() handle alloc_flags?
 
-Thanks,
-Wen
+Good point!
+
+> Other users (there are
+> only 4 of them) can pass SLAB_ALLOC_DEFAULT. That seems cleaner to me
+> and more robust.
+
+Hmm, there was a reason... *checks notes*, oh, there is no note.
+IIRC I was afraid of exposing SLAB_ALLOC_* flags to arbitrary users.
+
+should probably fine as long as it's not used in
+kmalloc/kmem_cache_alloc() APIs, not sure.
+
+>>         if (!b)
+>> -               b =3D &kmalloc_caches[kmalloc_type(flags, token)];
+>> +               b =3D &kmalloc_caches[type];
+>>         if (size <=3D 192)
+>>                 index =3D kmalloc_size_index[size_index_elem(size)];
+>>         else
+>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+>> index b6426d7ceec9..03ecac12cd86 100644
+>> --- a/mm/slab_common.c
+>> +++ b/mm/slab_common.c
+>> @@ -957,6 +968,12 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_typ=
+e type)
+>>                         return;
+>>                 }
+>>                 flags |=3D SLAB_ACCOUNT;
+>> +       } else if (IS_ENABLED(CONFIG_SLAB_OBJ_EXT) && type =3D=3D KMAL=
+LOC_NO_OBJ_EXT) {
+>=20
+> Hmm, you have to check IS_ENABLED(CONFIG_SLAB_OBJ_EXT) here because
+> KMALLOC_NO_OBJ_EXT can be aliased with KMALLOC_NORMAL... Could we
+> instead have a helper function like this (maybe with a better name):
+
+Hmm that's fine, but I think that bit should not be part of -stable
+fixes at least. Here I tried to make it consistent with KMALLOC_RECLAIM
+and KMALLOC_DMA :)
+
+> #ifdef CONFIG_SLAB_OBJ_EXT
+> bool is_kmalloc_no_obj_ext_type(type) { return type =3D=3D KMALLOC_NO_O=
+BJ_EXT; }
+> #else
+> bool is_kmalloc_no_obj_ext_type(type) { return false; }
+> #endif
+> ?
+
+is_kmalloc_no_obj_ext_type(),
+kmalloc_type_is_no_obj_ext(),
+is_kmalloc_type_no_obj_ext(),
+=2E..
+
+naming is hard, ugh :)
+
+>=20
+>> +               if (!need_kmalloc_no_objext()) {
+>> +                       kmalloc_caches[type][idx] =3D kmalloc_caches[K=
+MALLOC_NORMAL][idx];
+>=20
+> Could kmalloc_caches[KMALLOC_NORMAL][idx] be NULL here?
+
+No. KMALLOC_NORMAL caches are created before all other kmalloc
+caches.
+
+IIRC checking if kmalloc_caches[KMALLOC_NORMAL][idx] is NULL was added
+by commit 963e84b0f262 ("mm/slab: limit kmalloc() minimum alignment
+to dma_get_cache_alignment()") to avoid creating kmalloc caches of same
+type and size due to minimum alignment.
+
+> In general why do we special-case and do an early exit here?
 >
-> > +
-> > +     if (vm_shift(prot, PAGE_SIZE << order) =3D=3D PAGE_SHIFT)
-> > +             return 0;
-> > +
-> > +     return order;
-> > +}
-> > +
+> Can we do instead:
+>=20
+> if (need_kmalloc_no_objext())
+>     flags |=3D SLAB_NO_OBJ_EXT | SLAB_NO_MERGE;
+>=20
+> and use the common path?
+
+Hmm, but even without SLAB_NO_MERGE, we often end up not merging
+kmalloc caches e.g.) because of non-zero s->usersize.
+
+I think that's why we do special-case and an early exit?
+
+We could probably do some refactoring to change that, but in general
+I'm afraid of backporting refactoring work to -stable because I fear
+introducing very subtle behavioral changes that nobody would notice.
+
+>> +                       return;
+>> +               }
+>> +               flags |=3D SLAB_NO_OBJ_EXT | SLAB_NO_MERGE;
+>>         } else if (IS_ENABLED(CONFIG_ZONE_DMA) && (type =3D=3D KMALLOC=
+_DMA)) {
+>>                 flags |=3D SLAB_CACHE_DMA;
+>>         }
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index abe748b7dddb..a34f9b8770dc 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -2168,14 +2132,20 @@ int alloc_slab_obj_exts(struct slab *slab, str=
+uct kmem_cache *s,
+>>         unsigned long new_exts;
+>>         unsigned long old_exts;
+>>         struct slabobj_ext *vec;
+>> -       size_t sz;
+>> +       size_t sz =3D sizeof(struct slabobj_ext) * slab->objects;
+>>
+>>         gfp &=3D ~OBJCGS_CLEAR_MASK;
+>> -       /* Prevent recursive extension vector allocation */
+>> -       alloc_flags |=3D SLAB_ALLOC_NO_RECURSE;
+>> -       alloc_flags &=3D ~SLAB_ALLOC_NEW_SLAB;
+>> +       /*
+>> +        * In most cases, obj_exts arrays are allocated from normal km=
+alloc.
+>> +        * However, normal kmalloc caches must allocate them from
+>> +        * KMALLOC_NO_OBJ_EXT caches to prevent recursion.
+>=20
+> For debugging it would have been convenient to allocate all obj_ext
+> vectors from dedicated caches... Maybe we can do that for
+> CONFIG_DEBUG_VM or someday when we add CONFIG_OBJ_EXT_DEBUG? Anyway,
+> not really a complaint but a wish.
+
+Vlastimil and I had a conversation on always (even w/o debug options)
+having dedicated caches (primarily to separate lifetime and for
+simplicity), it would be interesting to explore.
+
+https://lore.kernel.org/all/2436707a-b6ab-45ec-98e5-538e18589462@kernel.o=
+rg
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------2Cw0wARP2YgVbWWTJx8Rq53F--
+
+--------------UVBlYSA9X76uRpIL4AKv05mR
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalXGXAAKCRCGXBN6rc5S
+1l8cAQC3kFEYeg3gH7846Wi5C2cKWOq9FC9HqLfR6CZBYttsbAEAmXMstvPLhZ1q
+FZRL7Vh4QgPoHbC5DYcp6+ZX0kuNlAw=
+=ZxKB
+-----END PGP SIGNATURE-----
+
+--------------UVBlYSA9X76uRpIL4AKv05mR--
 
