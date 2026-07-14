@@ -4,96 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1BD7C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:28:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76376C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 01:37:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E7436B0095; Mon, 13 Jul 2026 21:28:26 -0400 (EDT)
+	id 2E1976B0005; Mon, 13 Jul 2026 21:37:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 897926B0096; Mon, 13 Jul 2026 21:28:26 -0400 (EDT)
+	id 2B98C6B0088; Mon, 13 Jul 2026 21:37:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7615C6B0098; Mon, 13 Jul 2026 21:28:26 -0400 (EDT)
+	id 1F7EE6B008A; Mon, 13 Jul 2026 21:37:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 437766B0095
-	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:28:26 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A7D8712023D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:28:25 +0000 (UTC)
-X-FDA: 84985646970.14.11C4009
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 586EC120007
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:28:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783992503;
-	b=yafx0HjwbLTYD9mSFb1rg7GmrfKmfdwEsI6d7czpVwf3x4dKB7araBwb6ap858AY3CMejI
-	B9irsBZtagD0L0V86T4kAJmdiNbc7tbRmZxxjdIvgx48H/Zi1CoIlZlVgIeE9ypHdxKb+2
-	CclEGWeLNh1JwsxZcte2izcnGaFWxRQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E97076B0005
+	for <linux-mm@kvack.org>; Mon, 13 Jul 2026 21:37:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A6451C019B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:47 +0000 (UTC)
+X-FDA: 84985670574.19.2E0929A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8F2F720006
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:45 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XbAhT8+4;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783992503;
+	s=arc-20220608; t=1783993065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ksecKoV1m91X877ghp+baDEWFePEaPZQ+S6Q11gltZE=;
-	b=GllA6F7uWKJkpdW/GqgnyUDUzScKH+wxr60x3Mqkv8wyMIHcubkYFCfPM7hRqx6NYjuWZZ
-	GSatjcgW4zyyEwMo3VXp3n4J6MPqZOmREwVhEPB9L99Gl+7XiKDWdDZCTyF7bjx5s4U9ua
-	on+ieWy+Yhm8Mp9kp4yEx4k1gt7mvtQ=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gzhX51XLHz4yjjG;
-	Tue, 14 Jul 2026 09:28:21 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl1.zte.com.cn with SMTP id 66E1SEBN096313;
-	Tue, 14 Jul 2026 09:28:14 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 14 Jul 2026 09:28:15 +0800 (CST)
-X-Zmail-TransId: 2af96a5590afcc4-a677d
-X-Mailer: Zmail v1.0
-Message-ID: <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
-In-Reply-To: <202607140924549782dUh3YBPmy8g1NDMK2zIW@zte.com.cn>
-References: 202607140924549782dUh3YBPmy8g1NDMK2zIW@zte.com.cn
-Date: Tue, 14 Jul 2026 09:28:15 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-        <ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <baohua@kernel.org>,
-        <lance.yang@linux.dev>, <usama.arif@linux.dev>,
-        <chengming.zhou@linux.dev>, <qi.zheng@linux.dev>, <npache@redhat.com>,
-        <ryan.roberts@arm.com>, <dev.jain@arm.com>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <wang.yaxin@zte.com.cn>, <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHYzIDIvMl0gbW0vbW1fc2xvdC5oOiBhZGQgY29tbWVudHMgZm9yIG1tX3Nsb3RfbG9va3VwL2luc2VydA==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 66E1SEBN096313
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 14 Jul 2026 09:28:21 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A5590B5.000/4gzhX51XLHz4yjjG
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8F4yLfOsobdGYOIb2H1K41rpcgqSprPnX1ok5IsSzP4=;
+	b=GO+uPWKWZEIrkiEbw2zRaKVLKjEVPR1rOtPEUYHFO2N/Zc4h3jKSoAgfLAPWcG32lgv4up
+	5bSwR/0Un+wIYkO/HgWpHsd/hV38qgWKTCiQ7NhN6afpHpeBtSmq/HzbCXmYV4li841w20
+	7drzW4W7CNVM5v7pogy99eJw90JtjDc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XbAhT8+4;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783993065;
+	b=yAstyIIiteSxvaisLmxFbNxpUbTaFVfwiojnK7gqdtgdWfEcAf7WiuTOlT8EQsmk3s+otY
+	UWI/2m8ug9SSHrkWbPdMmTe0zRZXVTqjPRseiYKMy0ruFH33wX0inLKRLsCKVbBaslDVcz
+	d3xAi3OHFcNXKYRiZ43/vYK5OkFZvBQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CEA1443C0B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55161F0155C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:37:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783993064;
+	bh=8F4yLfOsobdGYOIb2H1K41rpcgqSprPnX1ok5IsSzP4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=XbAhT8+4QoWiaUOO26oWk5Dt4pMcZyvfQEulP7D7EJRnIIAUGHrZSx1dQ0kOyms8A
+	 G/RwKMfm7Jn/gCxYBNJXBv2/bByTAQNPrvHqrrlBvs+CZ9rkD0w7ZlB2AfuSinK+vl
+	 jdtzM6KZWpYHgXTGy+JqeLJZg0SV6/6JILiIhEo94C4o6L3Hb2Wzm/DUu1hbyBDPaS
+	 dedK2zJy5xVMHUIThVmu9v8l9jheXr4R/smDJSu1kpTTt7GkXpGoAxTi/ksVP9B2LR
+	 lA5GXBBRJNf+tOUrCq9w+FlejZuVZYDUAQlGFsJtrSpSVcf5YaUeB2dsrtcM4eejNW
+	 BpMN9i9lEP/iA==
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e5cb052edso38833885a.2
+        for <linux-mm@kvack.org>; Mon, 13 Jul 2026 18:37:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rr3M2BhUetd4aQX/E9XjOpJsvwSwcWyY6GlZogoG+6V5j/nVvt0Bdio0DZ6ucq23kjJXRYdGb75Gg==@kvack.org
+X-Gm-Message-State: AOJu0YzbbhMBcHkVxs2rfccgo+npd6t9yAJi6qdUsb0wFVhmtn7r9a0y
+	OuwVn2Hh+v+YrB+3gKYMWqcNSC1yK/zFcRUBBqBshRZCpCF1/5kFaGBKOyY3+hLWGzKpcqnWPNd
+	wxDOnmdX9c3sO0080e9ABgqIwcEqSF/c=
+X-Received: by 2002:a05:620a:3199:b0:92e:c118:189b with SMTP id
+ af79cd13be357-92ef2c57098mr1245176785a.78.1783993064030; Mon, 13 Jul 2026
+ 18:37:44 -0700 (PDT)
+MIME-Version: 1.0
+References: <202607140924549782dUh3YBPmy8g1NDMK2zIW@zte.com.cn> <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
+In-Reply-To: <20260714092815120Wv-CFDlLKtsTmda--97Qw@zte.com.cn>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 14 Jul 2026 09:37:32 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zJ0o3_RhaTuyY+Y0scwgJ1DO-6wyFb0ZRcQE8g_y-CmQ@mail.gmail.com>
+X-Gm-Features: AVVi8Cey7rtolW8W2elC5gEK55rim07-0x7pNrAV3u22ybA2jlwV0Kubqs0HO9Y
+Message-ID: <CAGsJ_4zJ0o3_RhaTuyY+Y0scwgJ1DO-6wyFb0ZRcQE8g_y-CmQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm/mm_slot.h: add comments for mm_slot_lookup/insert
+To: xu.xin16@zte.com.cn
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, lance.yang@linux.dev, 
+	usama.arif@linux.dev, chengming.zhou@linux.dev, qi.zheng@linux.dev, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, wang.yaxin@zte.com.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: pmezxsec5jkb1cwfq58xxj8ks9p4ok5a
+X-Rspamd-Queue-Id: 8F2F720006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 586EC120007
-X-Stat-Signature: 8eemaoi6rwz31zf8896byumxtzixp8ig
-X-HE-Tag: 1783992503-951441
-X-HE-Meta: U2FsdGVkX1/+HMkTe4qPMpAv0gMEwizakdraWtWv8fpkoIAsDZwT3Hjvtxq/CC1dKUevfdGSPtGMKYgXG6vC07cwAjD7P0m4T5Z9exMD/mhqWklNm4h3Fi9zeGOgmHLyPPlOWaZca89RLPyB3FHv+j4KjPxc3fGAiIta/9Nnsa0u8AbpD8mS+mLgff7q3NnTNR7jgyBIuTVGlZFMreySeJJ3ui/lgg+Wu5fmENHVhQvGSq4okKkNr+p3p2O20YRhkU0qsC3oYytQLmWE6fvoe8piMps7lseWdyphEPTtFLg2xKG6h/WFmt9a1wPi6/YW4SQnxBzrhNaA2Ga3yxs8wc7AHJzRdGYFAsqhWygN2PzgZEfrUArLzTzsHOrpDjJRg4rM0xrHseOQH5z2m0gQmEEb/iBDAAeYPruG/KVHPZ6aAJ2vs7nYR6KxNB266tMvYLIYrIWOwzhS0FmhAQU/phg7Nj03eA4osTeBuGxm41q/ItBznhymJF2n/m5dtIdOpOhOGx39h3UCazeuLzKPfzzKRXz/OsMNY2g7QagGRfUyhdEBORjAUfuhWOWJu+qbAnYGMsakiTLSyekJwcqG2uaBTMy8Cr+LwnPXw2SXfOb6wea6+o9Y70lFLvqzQpTxpR5jCcFvEyTjJC7y0TG7HMi1EaYYnlEDqsBegM5ydKCc+yyEPmQ3lxI7M397A6QduN0rNGBGEJBpeNf+YH4cG1ZIoUKlbyl2J32/GIoNXGY4FuwiPkcCkd/fScSpxZROQoZYFZceskZFNOHvHgXAZLym0Fixs5ha7ow6xBlmkGrJnoPuqD6y70TI1dDUXv1lmKZJwJgKpBxA+4dsru/PrtaH35yFrANw1STgRvncz1Kyaycx1wCOpvHWvkHtgQPY3zhyuGZ6JxlZLCHpNla/JKjMv7Oe5/ejmSL0TDx+o7PX3sH3lIjGOgdOzIR+adMIv1JmizdjuDbmQwJ9CHh
- mTmJHOX/
- zQDi6RlugW4byPghfvf9lwKHoSCNDNNmhfYbS8+gGQzA2+TRcpN6sFOrLuRTwi9p6/X7cBOe3HPqzEGjlgc7NFuVc7jPWls9UtphUhkcuMsUoEu7ZjL3DZlRk6vi4Vmr6HCxtCT9OFZ/jqKD0IJqq4aPjpDmtCHwhi7yGLxpYg0uP5Gxq/5e6tLz2wROq3e+M+ybdXnszWtysKpbmuWKHaDaTNnvXToGJNU0jpN1cBboGUds3OdKp4w0Iwts1CGw+7vyKuwjK/K/Plxw=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783993065-201965
+X-HE-Meta: U2FsdGVkX1/Y+Yg5jWqvMLpoGmJkWlLG7TXUXSuAswT6kKhIJI0RFtOka0HIL6gz7a49KYnTjTHT/SQ/gfCzaSmYSU4OYYYXSynmicg8waD9WVjfrhK/p0uyyCR6JCpVyfoyTarwb7kKKOIWzTvR8bhR2vj1EVnTsQvA3Gp7BGUgAlbbXaP16uTdp/HaQiO9bbaeIV9jgq2p1nuHolWxV+u16wXXU+3yPjYQ/IYmvJPXpHGHJEOPAVYAAvVtgMQFVRca8AL8apTbzCWghQwJpc11ltn21UNqywXIcLKYIaGuLAE5J5e4/wzpd7V23uxDs7hOsaGpuoByLxRoo2qncJZ0zXlQ+TzTTVWFGEyq1m5A4KIV9B7GXVJ21dtEZRnJGlAeZk5vrLAbX2YXAfNO+qj0RhU2iwfg1i9zEJdi6uh9cp9ljAecBCCgqQBJX42ijjwoodC15mnPKNkvGnuRHsf+boSoYEG1MZe+DykSEFOFEe2dBP6Zmb6WyJlEfv9pKsZfF1TwCHdEn/Tp0iGkDRIVosQpdGuYXkJViz1jlyucHAO4DWkQHS+OHxpg6g2No0Hp+QI4uUq1zobX44G5uLprJ2UHYsv4VVQ0V6JjZFz6g5Zkk2pa1XOeE+/qJqwUxMGPN0NtIlUUTomooTl4snrWG+6cPLQ2ggqu/x08cWPl0kuK/Y0IYfvBu9+Dk+oUGYQakdCjiIPdmt02/9MHiLujDLxZvtkLLZDg6XOOf3QCz6wih5+SaYzDi6c7FCqpdqffiKW0QZUcYduHVyqVP6wAvHCKXtBzUsS0xcl8KFy/0P7SnD5XlCMLF2lH+fv54fN2QiEA9ET8rMkmnOwz6rFjPN3v+eLb7E0ycadPd45o+LY05AWvha4mrnsobdYEKNGuJFz528NN4sp4RXU43PTnoOTNKI8YTU5IYz7j1a/xpZ5C5E+Yat7KkWmGPl4dQJCxGNtIOxt66I78v/G
+ fyNIGYnC
+ Y8z4dZmbf/R7yvQoX6kbFNsflx+Gt9hPy3eKJFPluM1o9uqcy1jzhNMCIviiHXuKnJ5gyu6/C+wgSVu99o5quUv7qhXY8hTSkP/2lqXJ7IISwRkZ1mIf76ZiDcc0EL15X5dnu3btRhxBL1ZDgxhi27IO8ZrUhdBF85CFoXciy1T2+I0m05kwBzulr594kemLerRvxouy9cJVbUGfjQVqb3EV7iLXCmz8xjmBTGCND+PIW/n3zfDG3ONP/ypNT3TXSXfrHpmTgcADKi+9pPttttdNl+Y9SCGXRQITDIQr8aVl4E69eFN8XKeG61uFY3hZL/vodLzEUXddhw6vHrD/am1Odaj0M+q1JxtsOL1f2pvaZmIXYgClz+0JpHEZ+77zcN3kNo+CeaT5iCfjubwM9xqwEVf7cx9cTuiNh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,37 +105,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+On Tue, Jul 14, 2026 at 9:28=E2=80=AFAM <xu.xin16@zte.com.cn> wrote:
+>
+> From: xu xin <xu.xin16@zte.com.cn>
+>
+> mm_slot_lookup() and mm_slot_insert() are the only helpers in
+> this header that are implemented as macros rather than static inline
+> functions. This may look inconsistent without explanation.
+>
+> Explain they must be macros because hash_for_each_possible()
+> needs the table as an array (for sizeof), not a pointer.
+>
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
 
-mm_slot_lookup() and mm_slot_insert() are the only helpers in
-this header that are implemented as macros rather than static inline
-functions. This may look inconsistent without explanation.
+Thanks!
 
-Explain they must be macros because hash_for_each_possible()
-needs the table as an array (for sizeof), not a pointer.
-
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- mm/mm_slot.h | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/mm/mm_slot.h b/mm/mm_slot.h
-index 5de3e91d86b4..9b09b68e5742 100644
---- a/mm/mm_slot.h
-+++ b/mm/mm_slot.h
-@@ -33,6 +33,12 @@ static inline void mm_slot_free(struct kmem_cache *cache, void *objp)
- 	kmem_cache_free(cache, objp);
- }
-
-+/*
-+ * Note: mm_slot_lookup and mm_slot_insert cannot be converted to static inline
-+ * functions because the hash helpers (hash_for_each_possible and hash_add) rely
-+ * on the actual array argument 'hashtable' for sizeof() instead of pointers.
-+ */
-+
- #define mm_slot_lookup(_hashtable, _mm) 				       \
- ({									       \
- 	struct mm_slot *tmp_slot, *mm_slot = NULL;			       \
--- 
-2.25.1
+Reviewed-by: Barry Song <baohua@kernel.org>
 
