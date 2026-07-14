@@ -4,89 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 058ECC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7600FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 09:46:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF3A86B0092; Tue, 14 Jul 2026 05:45:27 -0400 (EDT)
+	id 6E0456B009D; Tue, 14 Jul 2026 05:46:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECAB36B0093; Tue, 14 Jul 2026 05:45:27 -0400 (EDT)
+	id 6B79B6B009E; Tue, 14 Jul 2026 05:46:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E09166B009B; Tue, 14 Jul 2026 05:45:27 -0400 (EDT)
+	id 5A78A6B009F; Tue, 14 Jul 2026 05:46:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B6FA66B0092
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:45:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40296C02DF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:45:27 +0000 (UTC)
-X-FDA: 84986899494.01.8064D4C
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2FE4DC0009
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:45:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s2kVBwVl;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AAE26B009D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 05:46:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B1F54A0352
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:46:48 +0000 (UTC)
+X-FDA: 84986902896.12.C166CF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F3967160003
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:46:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wx5oJE4R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784022325;
+	s=arc-20220608; t=1784022407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mekORx+dFKRiABrAy+XEgciHwWSjZPvElZQGPDy01aI=;
-	b=pw/2/dWTLLmuaQQb5RdMcBUjFhU56COuYo3a0XJsDDkKnbf2iWRvlM0vTe6c4W7iqihwBc
-	Bu7uq6ErBy3o595SFOX0uw+0fVNQIEk4NTNOpLHwAo6z/eVI6euHf+r9s58AxkJkHdMqVL
-	+bo46NJQofL9gAGvwaX4LKarYKZ1K2U=
+	bh=E1UQ1who+MzGJnhRAGQnZjnEvcZY391rlmuNIJbBr8I=;
+	b=4zDeu1a5SEXBsxrEdMP3MqLmiGLA0oQcoj0/rHeYa8Zf0nyfNtWtX7d87W/zxW5cWE2r3i
+	HnhNB/qYjWQ2fB7CAIFsPJubvc+KXIJRedAd8F6UvzOVhHBDB/n7WtnsyFyQvFuLgPg6Sm
+	W/5tKtcLBmspgnVKDszIEbnQsVHVw7Q=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=s2kVBwVl;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wx5oJE4R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784022325;
-	b=tKzvvX+7SnnAXlCSObeZ89Mzwzo0f53ts1Qa4BXGJVnqLjcurzy68fafj/LvP8q1odX731
-	CPqRrfMJTu1ioPaze64+Fszyzj0x0fL3QS1YdVqbWaVE2f5nBUPH1Ls947NcG+iz1gjjim
-	AfayOtibaop+W/hk7nio7OH2+9KOg9Q=
-Message-ID: <04f5b50a-a526-4644-b9f0-c54a0d6db702@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784022323;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mekORx+dFKRiABrAy+XEgciHwWSjZPvElZQGPDy01aI=;
-	b=s2kVBwVl7nJQg4Gb/Kqxo1bPGuZQp8vx9e/9dh096WOea1GmNZvCyunI+kd7T22YqJYDA/
-	NKH2dTJV7HWZL661cCIPgju0vw80HFbKnXFteGddtiUZO3JDANIoYLOYb9ukTtCzgsEIpr
-	nc7fRXOdZErHcdm3A2EnLN4UvV7I5T4=
-Date: Tue, 14 Jul 2026 17:45:17 +0800
+	t=1784022407;
+	b=bkKQPH66vnnacraqIwAmCwejRUv0jF+zJmMrA3BSSfJ6IjfCDxfm1aCkhcWeNBtL7BioF6
+	5bNVPt+WLHfDYoNdXx/deEZ0Cg4aJzik0Rs6/tk4CKdxaZ2SIXHq/V002LJGB7inE5O1qa
+	iGw14Ay2j2unz+n1B+KIdGHsC27AjUw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5EE36601EC;
+	Tue, 14 Jul 2026 09:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4AE1F000E9;
+	Tue, 14 Jul 2026 09:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784022406;
+	bh=E1UQ1who+MzGJnhRAGQnZjnEvcZY391rlmuNIJbBr8I=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=Wx5oJE4RDEO4dpFV0phT403AjtH8RYoSYzbGWynEUfagmkrDOBkIbSFsS+x53Ry+Z
+	 5EyDiYSdAlSv9M9WXQCsigWqSLQqxT60I3cGYCq+cTtojdHF9mL5k6OUmcHi9JboFn
+	 GEb5fgFiZIjw/cz5FWDvHJte2fMyl2uab32nxlFj2pXeb84lc9s0I0zXS6z3d6SXXl
+	 VP1FX7yrz+0z7UUMLnhbYRTPjdYSiE/+1upFXAxeEEBWrK+9mI+jbnZLn34Nu0FyLx
+	 lh9kNwEY/9P0B8kcjQOWOs0RkuOPBOwgdAthkIV9aVwNzhJUf3oauqhZB02agLe1es
+	 olERYlqWI2iYw==
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 8/8] mm: use memcpy_nt() in zone-device template copies
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
- balbirs@nvidia.com, bp@alien8.de, dave.hansen@linux.intel.com,
- david@kernel.org, kees@kernel.org, mingo@redhat.com, rppt@kernel.org,
- tglx@kernel.org
-References: <20260709112520.24857-1-lizhe.67@bytedance.com>
- <20260709112520.24857-9-lizhe.67@bytedance.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260709112520.24857-9-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH mm-hotfixes v2 1/4] mm/vmalloc: acquire init_mm lock on
+ huge vmap to avoid ptdump UAF
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, David Carlier <devnexen@gmail.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+ syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+In-Reply-To: <alUUfGnM_vbhOTVK@thinkstation>
+References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
+ <20260712-series-vmap-race-fix-v2-1-ad134cc3a12a@kernel.org>
+ <alUUfGnM_vbhOTVK@thinkstation>
+Date: Tue, 14 Jul 2026 10:46:30 +0100
+Message-Id: <178402239024.69739.1681992582238824793.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1415; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=a7VMRw+J+v8nzO2qena+1Qa+1xYq9bL9avRWJ8DcXDM=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLCWMtnZOXOu+4kNGHDhr83f+jpc3x//2kdX9irTVzJ1
+ lqvT5qXd5SyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAi7TMZ/heEXvVdbXTATHn5
+ Vw8+tT+vdm+4V+LvWbF054M3B9t/T21gZPjK4SQ4J9OKY9Nhx39/5+0WvP0neuI64/CWJqVTqp8
+ mmzEBAA==
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: F3967160003
+X-Stat-Signature: oaodiugub41sq3fa1d39iugkeidntr5r
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2FE4DC0009
-X-Stat-Signature: c3sek3z15n6pky5ffu3ehuampt98arzi
-X-HE-Tag: 1784022325-953599
-X-HE-Meta: U2FsdGVkX186zfQH37GWoKh/xarelYnx+G1py+lJNoQ1yDqx0DV6elqstPLvl0YbQDJzPxkE9xxvBjWIfCzNlkk2Fo+nVs2Twa9J07VbiBPOM+hJ0hUL+kUUqXo1Yut4JFM5yzikfUFU1P/tSyvDpHO+iyAsOeUTL1zhT1icC62IdODCxsy/DKBQgJhzcBj6N81Y4f33tTS7emdnc60fCpIwED/jOY8no2WISFbutL+xHelHcUCXBADfR5BQt7yoWGuuWg9IKA/FPBmGQW2Z0W8TS7ZD6YRLfUgrI7J5lXRb3goajcB3+q/gIZ1n0bP45GzAPtPnCgLcbgymiD+FHD8EHQyQiQdiyxbjNiWey3m93LGV+ZH29RNtZAUkejjZKidcepnTbC8RKcVN/0HODeKIt5m5WbKVIekfVDEHuPNw5+ll78mXjFY8Kb00ln5FJIMCAxT1XdG58C4s8r7+CQKc/z+0HqiSgiSWIlP+ROWr7LBrQURMD2x4gTv9C1ZuogtYLVd13GkkLs4ErHMZ//zDL9ywN2maF0GAbNJcZDYonrtmeoB1Nq99Rwyheni5pw7V7mgZoPCteAfYXyJ8hyF7/qgjQS3pNY0609Lm6s8tvi2Hhz8JfRvWRX7bG3Bg7Nv9zuqLZzYmsA0GQFqWsg1jPVr4AjZcH7HgxujUxv78ouVg47y4ac9I/y/t2hQZTKyfE8nY1MfPwYI1DGqydMLS2mCeOW7VHHgUd6/CV3Wfdj6m1USraJ9Uq1TFkCbAzyF+YnT75rPElqygrbTogR7JwO2nOTZVLHmDc3lZsh+mZNWjLq/KT6FgZREX1POhL14hIyRLkm99YyHtGKy3yOFQ/w541EEa+RBgIU8SxDyifuEnAlQB9jGCnqvgCdrtR6mbEvyQXPBxYOvuL5uOSlAM+ygD+qhO8tAGfHfbNOZHvtDkvCPZ/LStpgEmyTWc6dLh+cLyqCAbx6dW+Y1
- aifr8fF3
- WGoLU0CSlTCPEivezJjPPC+lXyD/XOqPqwghipyAQfFSAk+B+lGqBdYCJhs8SpzvNmJA5W1h1y3fxol+3lnfxm5rjV8HRzgWbAdTOow1oQjbPpKI/ED996vQD93zYJMBZux59P0U1x1FgmPiuymHtPe73xC2Av0GoR0/72SPwreaLabOoZgwVAwjPxkw9vKlKZfb4jwGjU1hLyYIEIwib+FodObNwkioHVdt4WCyCP3JEeND4ruG5tTJ8xpLV2j8DOdXpK7/eJvngXxrpNa5QwsX/90e0IpTv9Wo1
+X-HE-Tag: 1784022406-275266
+X-HE-Meta: U2FsdGVkX19YRjPPkX6QCPWmll02QxygUUR+XN5HRGm2qUOHE5DPDFYdl9a/rT813nEzDz3Nqp35LLgpXdKIk5wKqn9j6AVdHMoQ6hw6LlXjYQRmnDIGRPNA1tZhEcp0emlV1C7SPytT6+U29Qu+kQ9pLUYJKkC6oBGRZQ1P6dqQ/TOM8Ud3ObU5zPcZ+TMjwmqeB8nt8B4HwUkbuU3hV9grx+Mhg9Ntt5aCi4VX5CeEQiYEoR8fVbtktWZ8Z4XCYUFI4RmEsyrcmwPN6/alnyya+CWjiqizzZdwIvrLALeGKKHEwCOO80hQ+aoeM3jubDzNGdfagUG72stGVDAA1fxmp8drdNLiILYeJIR8Z5jb0lcnNyLYCrrTNDiXWYRwlbg+ueVx3PlqEz0EqBvdcgCSAIzpJPs3V6x3auHNmbYlcTC2chlqwGnFFCKjhCb+KvCCzCYc91u6wqEol28/1Z4RyOI/kS3HJaQwVSM51ZbQ5JFqWJYlhuP4HYNWVvWODs9ppx49zQrLFJwZR0d9kOAV54GtAXmsuRGalxm0T8y/RqxqSDAX9wIL00/Wdreml0LfwHs/iohaZ4j0P/QtcIZ35jG/Mb66SsOdn0nDTfXSl5B9KV8BLn00xugbhysRYiubgtWTIB9NVuGdajQ8VGRi2NfydfLob5WE+zienhCzJJKtoewmkfjV5V+a16kx36+G0LXfL4bLSbMfgOM/JhzfpNixfESLuKhispcEoPyCpp2KmPpshzZz5T2ihBSM7sIVjjREH9e/QB0C5Rb335zKfQp78F3HV61XZY/ZfKEmvlq+GBKZb65Wk3qLEE2DNMKfnEwFTu9dHAKGt7ur44XJVIini1MttNxm94y1SxM2uyIHKqzT1VdeFOfLFQ/mw/Cam7U+ghlUGe5kc5iGg4C/IFH9ruqFOB6BHJMHabrDBJj4ae2g+gg3UwW/Alfb4etQkryQDoOSkR8FWDR
+ LCPnKBdY
+ KVxwMdONEPj4dB3kPRaYmV9PjOlZoCW0maWIjcIod3tMM6F/FINFayOpb6bVlzyFEDW9HJp/OI28zki+ALWX58vBJWHWUww2wsB8uwS4rPz1myltkh3OsD2kY+8G7MIo5S5K32pO+dNZejXfplKlQlgrK8SIPMSh2vYJ+6hS1L1LzQiMRF0G1PM0HXWNaPooTYvi70jiTlJj6eS0eYCdY43TzJxtVGALBwq4qcRouPCb5i0hHu/nAxWmUT3oewfZYh/66PgqxEKOqqj9M9oUih3KQdsJkmJ9T98Q41VqNi/OdyTNcIVRJI/gzPeqB2jedyB4bK+8FHemk167KHZT+BHkAlpJGgpAy27heB4Z9vJyMn4ptXEjptMA3oBa6q7m48pze4rptKTeepTfsMv+UZmyRZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,152 +118,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/7/9 19:25, Li Zhe wrote:
-> The template fast path currently uses memcpy() for the actual struct
-> page copy. Switch zone_device_page_init_from_template() to memcpy_nt()
-> and add memcpy_nt_drain() before memmap_init_compound(), before
-> prep_compound_head() updates overlapping tail metadata, and before
-> returning from memmap_init_zone_device().
+On 2026-07-13 17:42 +0100, Kiryl Shutsemau wrote:
+> On Sun, Jul 12, 2026 at 11:42:24AM +0100, Lorenzo Stoakes wrote:
+> > Currently there is a nasty race between ptdump and vmap when attempting to
+> > map a huge P4D, PMD or PUD entry.
 >
-> ZONE_DEVICE memmap initialization is largely write-once: each struct
-> page is populated once, and most destination cachelines are not expected
-> to be reused immediately afterwards. On x86, a regular cached memcpy()
-> can therefore incur write-allocate traffic by pulling destination
-> cachelines into the cache before writeback, and can populate the cache
-> with data that has little near-term reuse. Using memcpy_nt() lets this
-> path request non-temporal stores for that copy pattern, which can reduce
-> cache pollution and avoid part of the associated write-allocate
-> overhead, while architectures without a specialized backend still fall
-> back to memcpy().
+> <... skip 145 lines of commit message :P >
 >
-> When memcpy_nt() maps to non-temporal stores, order those stores before
-> memmap_init_compound(), before prep_compound_head() updates overlapping
-> compound metadata, and before returning from memmap_init_zone_device().
+> The code looks good to me, but I think the commit message needs some
+> love. It is long, and the pieces of the story are scattered: the race
+> itself only shows up around the middle, after several paragraphs of
+> ptdump background (including the arm32 and EFI notes that the text
+> itself says are not relevant to the bug), and the one genuinely subtle
+> part -- why the read lock is sufficient -- is not spelled out at all.
 >
-> Keep sanitized builds on the slow path so KASAN/KMSAN retain their
-> instrumented stores.
+> Something along these lines would be much easier to follow:
 >
-> Tested in a VM with a 100 GB fsdax namespace device configured with
-> map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
-> server.
+> 1. The race, up front. Diagram, if we you feel like it;
+> 2. The fix, and why the read lock is enough;
+> 3. Why a trylock;
+> 4. The arm64 wrinkle and the temporary ifdeffery patch 4 removes;
+> 5. Secondary changes (guard class, walk_page_range_debug() assert);
+> 6. History, if you feel like it.
 >
-> Test procedure:
-> Rebind the nd_pmem and dax_pmem driver 30 times and collect the memmap
-> initialization time from the pr_debug() output of
-> memmap_init_zone_device().
->
-> Base(v7.2-rc1):
->    First binding for nd_pmem driver: 1456 ms
->    Average of subsequent rebinds: 244.28 ms
->
->    First binding for dax_pmem driver: 1462 ms
->    Average of subsequent rebinds: 273.31 ms
->
-> With this series:
->    First binding for nd_pmem driver: 1272 ms
->    Average of subsequent rebinds: 96.79 ms
->
->    First binding for dax_pmem driver: 1354 ms
->    Average of subsequent rebinds: 119.04 ms
->
-> This reduces the average rebind time by about 60.4% for nd_pmem and
-> 56.4% for dax_pmem.
->
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> ---
->   mm/mm_init.c | 39 +++++++++++++++++++++++++++++++++++++--
->   1 file changed, 37 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index fb855bb0437a..addb4969587e 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1067,11 +1067,21 @@ static void __ref zone_device_page_init_slow(struct page *page,
->
->   static inline bool zone_device_page_init_optimization_enabled(void)
->   {
-> +	/*
-> +	 * Keep sanitized builds on the slow path so their stores stay
-> +	 * instrumented.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_KASAN) || IS_ENABLED(CONFIG_KMSAN))
-> +		return false;
-
-It is not a major concern if struct page initialization lacks KASAN or
-KMSAN instrumentation. To keep things simple, let's just entirely remove
-zone_device_page_init_optimization_enabled() to simplify the code.
-
-Thanks.
-
-> +
->   	/*
->   	 * The template fast path copies a preinitialized struct page image.
->   	 * Skip it when the page_ref_set tracepoint is enabled.
->   	 */
-> -	return !page_ref_tracepoint_active(page_ref_set);
-> +	if (page_ref_tracepoint_active(page_ref_set))
-> +		return false;
-> +
-> +	return true;
->   }
->
->   static inline void zone_device_tail_page_init(struct page *page,
-> @@ -1110,7 +1120,7 @@ static void zone_device_page_init_from_template(struct page *page,
->   	 * to the destination page.
->   	 */
->   	zone_device_page_update_template(template, pfn);
-> -	memcpy(page, template, sizeof(*page));
-> +	memcpy_nt(page, template, sizeof(*page));
->   }
->
->   /*
-> @@ -1179,6 +1189,15 @@ static void __ref memmap_init_compound(struct page *head,
->   							    &template);
->   		}
->   	}
-> +
-> +	/*
-> +	 * When the template path is enabled, order the preceding tail-page copies
-> +	 * before prep_compound_head() updates the overlapping compound metadata
-> +	 * in the first tail-page descriptors. If memcpy_nt() fell back to
-> +	 * regular cached stores, memcpy_nt_drain() may be a no-op.
-> +	 */
-> +	if (use_template)
-> +		memcpy_nt_drain();
->   	prep_compound_head(head, order);
->   }
->
-> @@ -1238,10 +1257,26 @@ void __ref memmap_init_zone_device(struct zone *zone,
->   		if (pfns_per_compound == 1)
->   			continue;
->
-> +		/*
-> +		 * When the template path is enabled, order the preceding head-page copy
-> +		 * before memmap_init_compound(), which immediately updates compound-head
-> +		 * metadata. If memcpy_nt() fell back to regular cached stores,
-> +		 * memcpy_nt_drain() may be a no-op.
-> +		 */
-> +		if (use_template)
-> +			memcpy_nt_drain();
-> +
->   		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
->   				     compound_nr_pages(pfn, altmap, pgmap),
->   				     use_template);
->   	}
-> +	/*
-> +	 * Ensure any prior template copies are ordered before returning.
-> +	 * On architectures where memcpy_nt() used regular cached stores,
-> +	 * memcpy_nt_drain() may be a no-op.
-> +	 */
-> +	if (use_template)
-> +		memcpy_nt_drain();
->
->   	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE);
+> Point 2 is the one I care about most -- the same reasoning would also
+> help in the comment in vmap_try_huge_pmd(), where "Therefore, acquire
+> the mmap read lock" is doing a lot of unexplained work.
 >
 > --
-> 2.20.1
+>   Kiryl Shutsemau / Kirill A. Shutemov
 >
+
+
+Yeah that's fair, I will reword!
+
+Cheers, Lorenzo
 
 
