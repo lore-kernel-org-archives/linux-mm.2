@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68A40C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7895C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:52:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0A966B00A0; Tue, 14 Jul 2026 09:52:44 -0400 (EDT)
+	id 6DBAD6B00A2; Tue, 14 Jul 2026 09:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6FCA6B00A2; Tue, 14 Jul 2026 09:52:44 -0400 (EDT)
+	id 68DAA6B00A5; Tue, 14 Jul 2026 09:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5EA66B00A4; Tue, 14 Jul 2026 09:52:44 -0400 (EDT)
+	id 57C556B00A6; Tue, 14 Jul 2026 09:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7202A6B00A0
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:52:44 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26F2A6B00A2
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:52:45 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF993A03F9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:52:43 +0000 (UTC)
-X-FDA: 84987522606.22.F9E75D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 46D42140003
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93A3C403F0
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:52:44 +0000 (UTC)
+X-FDA: 84987522648.22.A2235F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 09CF520006
 	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:52:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2Mu32fe;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d0KLQDgD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784037163;
+	b=jj9AGZURGTuu8AIgZUydZ5SLxMJunRiqGgRoHuDCwAUXHhc/0HA3nKi/f8SiR+qNeX8crY
+	ryeuxmTs3vfA/0F6IQndk3C+9R1RGdlO3/rxR8gi3c8RcueV4tVUvy1c2634qP6y6myMgQ
+	oCM1paWJHP/yaaHDxAXh3NxlAu0znQ0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d0KLQDgD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784037162;
+	s=arc-20220608; t=1784037163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Csk2Bs95SoFAJpGitaPFL2lXi5OcS5tAvUkrHnWNWRA=;
-	b=xMmOpibc6Dqzp+QyWA9BTwU3ejrZkpL/UjIugDPKPeCBjzhZF+wlTVSSMgx9rornRUN65/
-	p3RQ00RvThoX05rrbM+eEFW/2U037bJqZ61rvfd35RcNb3eLsLw1JFGFB1Jf8De1FVMwGM
-	e+6zS/dN7RsrcTmL4U0QPl6+Rm+ZR6I=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2Mu32fe;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784037162;
-	b=1yXovPtebQ/+AxccvZz/6D50CN8vjxvnnpYzb5b33LCUxQlZVtWs+xomGcWZzhLtjdbQ2x
-	Um3Q+RNVS9LkE06DIQeLTVMScQKaRCdqobG8lE3VoiZlLHXz+9kMfYThDLgftH/gBoOVeC
-	uzYcYlyY8SzsSjEUcgl3N7wmxtkjBuY=
+	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
+	b=GoE9rIhz3xPPC0VqIIwOtSMyPwUpFASLtcfqWKhaU402A2t3KyDcyCYMgPXrxzpiEQEZl/
+	qz4NHoS6ngi1s0zjp0aTdiAzOelqwvuhu0fcYa3M2G9avndGYtt+lg3AZ4jOtZYkhUgoyC
+	sThY0r8UaPcyDKW90OCZ0uu3RCvYvqA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A4654081D;
-	Tue, 14 Jul 2026 13:52:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E051D1F00A3D;
-	Tue, 14 Jul 2026 13:52:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A627561377;
+	Tue, 14 Jul 2026 13:52:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374B31F00A3F;
+	Tue, 14 Jul 2026 13:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784037161;
-	bh=Csk2Bs95SoFAJpGitaPFL2lXi5OcS5tAvUkrHnWNWRA=;
+	s=k20260515; t=1784037162;
+	bh=hhmDCI+ot7IL3VsT3pLzYBJmbk4njLZd345nGTc/fNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o2Mu32feVKP83fD7JNCE+FPeaLoTggU2hLWV+t91Oq6Xo/b7T0n91PDrKGBicdpIT
-	 tpx7pkI6XwSagk62CiGVmhne6IeOKo8WbVk+n3mogaHWHsVIDCTFl2ar8xwch0Kc1Q
-	 4DxxOJ66fjwEMNPC8Gx/UtamMjq5vnz2drmQ2Ms2q/x0xLhSQSZYEl8WQ+zvrcQCz2
-	 4n/elR7mws1pVx6Rfn7PvRVZYtRNH1JfJnMdtcSCP5/9dTyxKcWpQimVMabUYxJNKM
-	 /2kZJa3E83DkUVcmNqKZbkYKgnyEdquT4xc4eSqF1wqV77KN8xdgkWTJsDDc5HNOCO
-	 xnu1NV3GuDpfg==
+	b=d0KLQDgDpLeerstVYPZQr9U6UvUxQHOZeA3gGp96M0sHUHYIQvTLsOQu8j9ZkZjOD
+	 Lovnt/dNpVbutyl7O51WD5VJYBEOgKrYFJjtMEoncELZe33ehRqbD+sSZiWgKYb4m2
+	 wP5jZhnfLWN9umI+1wMHvD58d0IzCHJfg9r+nPLg2wTwZrhkecb7VwubPiq22IzErr
+	 YAjwXNS1SmHclM456MNnuIKt8whSfSxja5+wfsMKqTzdQ6vqfb+pxXQ7/MXaNzlIOT
+	 MUZUt7TAAI3Yos/2cya6zodYFjT0hf0O8Hr8wPKBDsmv9Q6RL6Q1YygDFB+cld3LSr
+	 XAASuxfuqLPhg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	SeongJae Park <sjpark@amazon.de>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/5] mm/damon/tests/core-kunit: catch test failure in test_merge_regions_of()
-Date: Tue, 14 Jul 2026 06:52:30 -0700
-Message-ID: <20260714135236.92699-3-sj@kernel.org>
+Subject: [PATCH 5/5] mm/damon/sysfs: read ops_id only once
+Date: Tue, 14 Jul 2026 06:52:33 -0700
+Message-ID: <20260714135236.92699-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260714135236.92699-1-sj@kernel.org>
 References: <20260714135236.92699-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3skkyzhxm5z83x5aq75wr94rnbmpeed9
-X-Rspamd-Queue-Id: 46D42140003
+X-Rspamd-Queue-Id: 09CF520006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784037162-488786
-X-HE-Meta: U2FsdGVkX1+ps30HwK/ZYjQpMoZ20qS8R4lrUvh4RMC75+h707XDlOGARkw13bx6gZfVXq2hqYkYlNeySPF/Vi8pF+PNKZ03da+OxATk6P+NsKH28O36GtRjTBJ/T1gCvqXVWEqIYjjXa18tnj/AjsN1QknqHBrASGJaBg8bsDAM1u3DuySrmFdHxhkJUhb88MPkdUEp50XAUZYBykybQXqUXOjPWTztLYcQJlGt993Vu4VXup+Y6kNoryaJAGUiW0Gt7EnYCFJlzwSL+4tAQv+NdXgu8mOoznfOEM6CxGVeqXdoFWda0lOHhylRst3eI/Jzg7ktBS00CGNCMAQFiUH6yM1OogjGdSZPn0Loj5/kF1hRqf5TfzCAc80Q7LIbHnf4M0s4MCgatoMYsjlzvw0CecgR5MY48ZTHJvzdA4EM++3KZ+dLgcUdZFvPTWxTi3fa+n8shnAJRWxJ02MGhFrtIURIw/G6UzuAYqdN5dzmUP5MQ36HAbxhU9sE/7s1blDN9TrDqooZtOzsk8DQWozjTzy7fnrkGsaQHUhGyG2NNiqtBkmgHQpetv+1P9XP+NzK5bL0+EXtTjgS0IU9rt22oI55svN21Bu4lKZVyfb6svexCP6QYgjv0Lorr0qPk5fmkeirNvKAoZHavtpfzYdWtvFuFrCu5ggufMw2ZZ2BYaOWRg4njnKFYdv/kMoepeAgKHu9czkno6fhEnGVr+I1+WXOU26ulh5CXndDrVKzJmWCShOM/xAG2W1qkJ8NnJAAzoR/ft631lUCToBKnFD7B4VE0mcAK13vJa/dXURWVslEczAdv+vIGXUXKA38dE7HjVTiwP7vRFRJ4dXODhUszBPfHayCkOiMkAhW59r3hiBcXe7sVkZBGP7ehyXsjPWL8tscWOf+FwonxSVtSg0rU1ufzTHcMFxq6pAwW5gFNDdNe3y8ctLIan3fOrVXx2PxFaH07CSHB3h2CLw
- CMkcouN2
- Vcm+KZec0dDzZJ+TBDB865Fa3xVaDMWOML1n1kZWRmudzMZjdtaRYXaEWiJqO8dkOfXJcV1wxSurFZ1sEOvi1a1rxFWYQbKRsW4UBbVl68hUrzfsSAYSbDX6AE1UksQdr8SCKvThNyv3ga8wdpF8lhIUq+VU9MEiU+0Q2u7ffrNFoKrglZhGu7LBikzAOt055zgxQK+4o4vyy96nXTv+sQeDBg5RR+g2Jh+5Cp14G2ueW5P/mW6PltA8qj5Ahs/wJy8nH28d2v0cp3L3BtkfPqfhV+Sw6iipkyICt2mFyM6arO+/Oi8jzWu/O+DtHyupZw07f
+X-Stat-Signature: c8gesxc49mfqauf889poo19ftgjno34h
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784037162-468070
+X-HE-Meta: U2FsdGVkX1/I94GqqnG08GLZChhAQTwK0bac1rLvKY4kY+lp8jWhc3Nkyc5iEMpnDQ7+VpSaaFFPDPCfaeNE4sWHePPDdBfrcx7N+SeRrTyy4J0Q1eugE9V+U5mktE4O0GzBnFh9++KRvg+ghNcVEzpv2yZE3DwsD4M73vCcAFDZfo28fWGdgmYcNBsqYzGp+xrrNeSRu8ww9AbZhREhEexyNbB+33wkCQ0pdKn2yzwiTyX50TJCCJ5ETntcwXbpEa+JwthIfR9l2mSB3CqqBtcqf+CIoVMLMFo9FLyEn3wlzIz4RRlQ6f2mniPc8m6YIYx6mBue893u8YC5t7uF94vwRt7fXKiI/0Lzq956FQG/HhBPO56BJgvol+I9cadeBgWG0VmiRkA1ER1A8cdSiiWmZir5cRIL7CjiYmF1oyUs+Na0xJ7Ez6qZrPKu7SlWSf8W9GVdJ/LV6x80ZuQygGhxnNAn4gH6Ghofj1k3ssxujNAuDn0qUeVmRwbHcbIMlRm5OhCtON+eSXy2oLtg1HzyFSOm5DVCByemtDg7xxSGMYC2U5r6Hh/EQWzjDRDrk2YEPl905pbGDJRwM+8d3Ji+YIW1M03vAry0kZc5acafNWYTE1EbJGd0g2BL/DvZrOfjBaKAP2Fsoaxq76KvxahA5sZZDdsgm5E/jsy3WlfyI0uxlR4iiEkp3WIJ6O7wADewr/Gxa4A0EncNTT9l748N/twWkP9TnlDz0sjm2HbmMzx+tgVJ5v0VagyWZjMR3sBiMFJ3sXywWoqfvWKAN3ztRLIRZbft+3RB94cBzzazlhWC6v/8SAdOx0kZeENxcLLVmMpeLXTVzOe0gIwcpZBoVG1XHIIm07DvTiM+h1y00TsCrjxpeDSbj1k4Rk9xiUod0VFCOMT3SoS1m4B6c+T4c56vsZtGMBVFOKMxApPfaAaU+k8i/W4tA/FUQ8dOeyC0C22ImbNib7Yw0dF
+ 9vnmhDuG
+ TkP7HK+J+ZLK8HadJfH5RPL2uvk1r0cc9mf6T/xVwnpWaYPcOJ+toR8qZgmHJtpO4il6Gd2Kzn7Nxs3jER+ZKlsSWQXcIOYBLpj0NqlAqWNEaQYGRGhMYCIQiFZyr4/hAoZik+FvDOrzb80CXzVuQFKWCPJmP98HnrJmXyI+MvtEFWzBg73wqDmKo8pczpy2ZT9hca8vzJGh0W2eMlyI/MgK0Rqc8Jqqd141nAL8OWUf8wdeirJweJ1W9huq+/IV+vVRo5lCsFaewKI5oUmditNnmmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,48 +92,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KUNIT_EXPECT_EQ() does not abort the execution of test code when the
-expectation is not met.  But damon_test_merge_regions_of() code after
-its initial KUNIT_EXPECT_EQ() call assumes the expectation is met.  It
-does a per-region test with a hard-coded number of regions that is
-correct only if the expectation was met.  As a result, __nth_region_of()
-could return NULL, and the test code can dereference NULL pointers.  Fix
-the issue by catching the expectation failure and skip the per-region
-tests.
+damon_sysfs_apply_inputs() reads ops_id twice.  It could race with
+ops_id_store().  As a result, the min_region_sz could wrongly be set up.
+Read it once.
 
-The user impact on realistic setups should be negligible, as it is a
-unit test.
+The user impact is trivial.  Sane users ain't update the parameter in
+parallel.  Even if it happens, only monitoring itself runs differently
+than expected.  No critical consequences like kernel panic or memory
+corruption happen.
 
 The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260710144937.26981-1-sj@kernel.org
+[1] https://lore.kernel.org/20260703172417.95426-1-sj@kernel.org
 
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 485472ddebd19..eba643762132f 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -260,11 +260,14 @@ static void damon_test_merge_regions_of(struct kunit *test)
- 	damon_merge_regions_of(t, 9, 9999, ctx, true);
- 	/* 0-112, 114-130, 130-156, 156-170, 170-230, 230-10170 */
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 6u);
-+	if (damon_nr_regions(t) != 6)
-+		goto out;
- 	for (i = 0; i < 6; i++) {
- 		r = __nth_region_of(t, i);
- 		KUNIT_EXPECT_EQ(test, r->ar.start, saddrs[i]);
- 		KUNIT_EXPECT_EQ(test, r->ar.end, eaddrs[i]);
- 	}
-+out:
- 	damon_free_target(t);
- 	damon_destroy_ctx(ctx);
- }
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index b5fe036f78015..60a1a9e4ada34 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2094,14 +2094,16 @@ static inline bool damon_sysfs_kdamond_running(
+ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+ 		struct damon_sysfs_context *sys_ctx)
+ {
++	enum damon_ops_id ops_id;
+ 	int err;
+ 
+-	err = damon_select_ops(ctx, sys_ctx->ops_id);
++	ops_id = READ_ONCE(sys_ctx->ops_id);
++	err = damon_select_ops(ctx, ops_id);
+ 	if (err)
+ 		return err;
+ 	ctx->addr_unit = sys_ctx->addr_unit;
+ 	/* addr_unit is respected by only DAMON_OPS_PADDR */
+-	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
++	if (ops_id == DAMON_OPS_PADDR)
+ 		ctx->min_region_sz = max(
+ 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
+ 	ctx->pause = sys_ctx->pause;
 -- 
 2.47.3
 
