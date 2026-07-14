@@ -4,101 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD11BC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 20:51:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BF0C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 20:52:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 869C86B0088; Tue, 14 Jul 2026 16:51:26 -0400 (EDT)
+	id 55EA36B0093; Tue, 14 Jul 2026 16:52:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F3496B0092; Tue, 14 Jul 2026 16:51:26 -0400 (EDT)
+	id 4E8B96B0095; Tue, 14 Jul 2026 16:52:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BBBD6B0093; Tue, 14 Jul 2026 16:51:26 -0400 (EDT)
+	id 3B2DA6B0096; Tue, 14 Jul 2026 16:52:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 324A76B0088
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:51:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6EB01C0513
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:51:25 +0000 (UTC)
-X-FDA: 84988577730.01.9613448
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 24180120008
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:51:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Hr9i5kGg;
-	spf=pass (imf29.hostedemail.com: domain of 3SqFWagoKCEEpfodslqvnljrrjoh.frpolqx0-ppnydfn.ruj@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3SqFWagoKCEEpfodslqvnljrrjoh.frpolqx0-ppnydfn.ruj@flex--mclapinski.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0815D6B0093
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:52:29 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 905711A051E
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:29 +0000 (UTC)
+X-FDA: 84988580418.24.83AEA16
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B8C062000B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LojGFe5a;
+	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784062284;
+	s=arc-20220608; t=1784062347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=d9tldHgHpDRf8TAZCwFzg+tWQLwf+4+RS0Dz7CW5np8=;
-	b=xD86cJ+cNOUL94Z/p7Y8rGrUZ824AV/sdmYoDEF9OYw662N/33/6UKKjKTkxi11rAg2DPF
-	kuHt2yioZhWQ4DoAZbFnrjp173uYpWe8ZL1pcDfgQCbJogDWJp4Y8rXsoiOEpbbmO7w9+i
-	IniORqK+XLxJ3tCZ/A0UK7x5Q5yvcp8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Hr9i5kGg;
-	spf=pass (imf29.hostedemail.com: domain of 3SqFWagoKCEEpfodslqvnljrrjoh.frpolqx0-ppnydfn.ruj@flex--mclapinski.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3SqFWagoKCEEpfodslqvnljrrjoh.frpolqx0-ppnydfn.ruj@flex--mclapinski.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iTqi3alAZsmClmkp2BKQHhwiYigUfhN2a2XtbcHcncw=;
+	b=5dVtA6hxVa2CjptkwKM4oi6kFe+Be9W+l3wWcMmyUka2J5WoR+3W/ddomkrg33OwaW6o5a
+	LvsIVkDOc55AlS/ycJ2Kr+YSbnxiDkG/cUJoSs0vcRfoc6q14quhCk0wJjvE4SaV5InDcZ
+	bVz+xzddsjsDRPOsnZedmeE1+FWKgYY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784062284;
-	b=KQDBkmE2cRuaGsL3v95U1VjjYe3hbzQdBTClBcMMexQ4+/juWRy1MN1yHOumZO/7itjksx
-	i/Rj3uuLt2FyDKSupwcjoEYUWWAOBglbEy4QnT3oNjakKpbkVy2Fu3sEI5//iBjgQ2SmQe
-	6+iXB5Y/Rkki51+755jKhRCMMWnoa4k=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4926596eebcso9875345e9.3
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:51:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784062282; x=1784667082; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=d9tldHgHpDRf8TAZCwFzg+tWQLwf+4+RS0Dz7CW5np8=;
-        b=Hr9i5kGg0J0bC3pLhHB2XYhMDkJ7dST1x59rktulxn8oFEwl5L/eN4IGcZMOoCzzlQ
-         ZrjKgRZlQofk/yuT29sA2KeO5ajzBUPoUt4BmPSJ6sqdA+E9cs7Zg4baKwjCa2FODwaF
-         WFk9KZt9vBC5YhdT5dAMbKm9LsE0+hjPjf84VNcNoSAoMwrSCzbVvqlA8o5BjL+zgMAh
-         Ac336P2bXblE0eSDcKWvfgTnQnvZvkeuwD5ZZ3wZ6CEpxnYSFM7fMWYVY+DsGnq9iwv9
-         PoVvPh9FZc7/T0sw6GgTV9N3aBo87TI9yvEwpojHt8CfLW03PYZjHtTWw7zsUAkeuOkS
-         DzsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784062282; x=1784667082;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d9tldHgHpDRf8TAZCwFzg+tWQLwf+4+RS0Dz7CW5np8=;
-        b=GbhvuIXYUgpHdQu6ntTRD2/rlyEdewoeB+391RJPf8CRobm8SxPU+m0GDMY57yLx4v
-         OSf+NCCp1Nl46blsdl2smV4W3547PV/vOc43ldQttQ8JyF6ULtcRr7a1CbPAPJjC8qS6
-         7oPNeYv6PUY2G/XApq6GSUQD514RLy8HsvWBsg9RROHyQSo6oVcsDnNtHmJ269l/DaAf
-         DxsDgcjQ+rPht7vXfQpXzJldEArUyl2/0Axr/l3Mp61LAsiwhy+qivo0goAjsg0mYBkX
-         kPOyzBJDqKCIwDa956tW1FbMxBXXMeb+KRLW8GaVF/eYmmHGv3/TONrTV0CE8WW08lJd
-         aXuQ==
-X-Gm-Message-State: AOJu0YwdtXvC+8Bq1QllzXsMPkWtLHkIAmMEd7fbIFFYDDSe82EGxLA8
-	t/jKERGLxnj3rsTfM3CMd0D0X0q7QStWvhDPAD6Zw/lIWiileiCwF5e4ldrJJHS4iElfRnU/btj
-	/rZiRRVHwWsx1Re+ASWKSAA==
-X-Received: from wmkz11.prod.google.com ([2002:a7b:c7cb:0:b0:493:b78f:716b])
- (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3f06:b0:493:b9cd:1272 with SMTP id 5b1f17b1804b1-493f881de56mr144831135e9.23.1784062282098;
- Tue, 14 Jul 2026 13:51:22 -0700 (PDT)
-Date: Tue, 14 Jul 2026 22:51:11 +0200
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <20260714205111.2497151-1-mclapinski@google.com>
-Subject: [PATCH] kho: align kho_scratch to MAX_ORDER_NR_PAGES pages
-From: Michal Clapinski <mclapinski@google.com>
-To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Evangelos Petrongonas <epetron@amazon.de>, kexec@lists.infradead.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Michal Clapinski <mclapinski@google.com>
+	t=1784062347;
+	b=aituVmA943IfzgU2OAhfWYd/EL7qqKAl7cNUoi+6bQt32+TVtFMYFEs/0mHM4c+3nj1jnz
+	OuK43t4oqns6g6s0Ns9kAGcYWXTBZEXV8BotoQ/LQyEFvC8T6VQCQ++001I2/ZbarVWSrT
+	YfFmSFW7i7q+AC3Zd2+bhDWR/ADzQKg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LojGFe5a;
+	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 27F32601D9
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53811F00A3A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784062346;
+	bh=iTqi3alAZsmClmkp2BKQHhwiYigUfhN2a2XtbcHcncw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LojGFe5aBgMbCn0entPMrDRIK+MvJJ1bB33pHkwkvWHhC2Nphio6l2ttvWlScTOmb
+	 LxaHkMHcUGpLGi0sTicdWt0B1Bx/H7zlW0JdKgI3DXuXjaHkhq0Xy9pCmLiZ63Oti2
+	 ARjvDUBvsLTAgz2GKWJp6nSLErYQqejnt2QmlJsgToBWImM6vLOfKGI+Wjo2YzqtSM
+	 mJXM0UUxDjrtnZNsFjVs/5GOI+TJrswQirIbl4E/WtCFczL3aPbUmCRwb5meUO0xbO
+	 BuTPRafv5bsDr0SZAYJ6LmTbX3ezoeZs3aboSxmbX0jtNJsthvZ1X0ofwuR1EeBSBy
+	 R1/FC6i7DLTmg==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-698beff7178so8070412a12.3
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:52:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpBAnYE2Qb/zSTkjZS+Igf8GMaepA9MG5cDV3eMOv5f/iE5syF6iYwHHFcTpnNPVNCc74KmPchlpw==@kvack.org
+X-Gm-Message-State: AOJu0YxJ2kuompifOYS3/pHvnuOVdUK408X0uMFZjQh+/bEANK9o939A
+	yXWrrBn+pmEAm5OqVWWzbYnOjGe5ond0hVmVouIZmDpEKEmFuVmnXOh+MHdqmxDQKJ0L3nf3PdR
+	dASxsdf8Fwy0v/9/sLIA8JJzR5PD/jww=
+X-Received: by 2002:a17:906:9fce:b0:c12:34ec:ad1c with SMTP id
+ a640c23a62f3a-c1679367183mr21088566b.56.1784062345755; Tue, 14 Jul 2026
+ 13:52:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260713025644.170839-1-youngjun.park@lge.com>
+ <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+ <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330> <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
+ <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330> <alae-LIRwEFUjgs1@linux.dev>
+In-Reply-To: <alae-LIRwEFUjgs1@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 14 Jul 2026 13:52:14 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
+X-Gm-Features: AUfX_mzvYPO0I-kzUXbogAiHLzr_xtUWxhzL5KSspLm9Ule6jCBXezY4eupVLjk
+Message-ID: <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, chrisl@kernel.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
+	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
+	baver.bae@lge.com, her0gyugyu@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: pi8st5ct7w3mdu87yft95beriaw6jkb3
-X-Rspamd-Queue-Id: 24180120008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784062283-816865
-X-HE-Meta: U2FsdGVkX1+IlxjDCTF36OtU/8XxA1AFni81d61YHBqRKNOY0SRlMq08FSn59qwDye1GJI3Vk7QCW3exmgKcBA7i38yjpXusO8a1IoE6GR3TcZDjNvybwQ9ze/wcuF4IlClYpjmncWOOBSgc0B2LAsiTGYsyVsyF7EF4HQHf7+MMdfzwOmfd0IZ1OA2mzbFReZWAsKf177hQcjSeC/v21tiFulq12hiLn/ZgEiYkNwLJSY6R21MfAKb3hKjIrgEl6N5S4rcAnUmk44ulQDkC+kkCv3taOSJ53mn7TBcxGNSrF+15D6ItrHry8aTk/YslOyfaRyMsf8mEQtI3pfhYAoKbLVHYd/JcokgefWmi0zr8VHZN0aVk1Iiab2dPpmBqlfVZxnZKJWfXnvPQJyfW3v+IBkk9MvSOaYy4kdMlkV/6wvEOpgAlh7dh9CPqV3i/GGiP9iw99CKasNhXcOFtdgrMnmjkCZ1sel8rdJZcxrQEncyAgxqFzm4xoXj9zCAZOxCcgA6uyffF3kfSL2X/Hb/wBqLZPY9O+ZQtq/a6/eFH+amJ0yj5lOwpCjtMJZY0wNbpoiIlqlMZ6jmLmjgC4viwHmBHJoNjy0z43wb1Dunt+rRw7HwOqKmyjRNJieEvFKA/z411pBwFIfcGApOCtAWwI1VMb7K0BPvptnCnoezRPxpvS6jtYzEwi1bCEWN0i7zgk8y0yY+TSaModC+Ivk3c8mdlIjt63BrKQXW7naUCb8gbs1CItV5q7yOD1bzesA9yH17/HvbdHwKSyn7ojEzErq35mf+rT0vG20pSIEH540YU6fANcfUF/s8zVRq+qXi4EIQUldxy6ePKVHTwCDGoD99EoQc/cD+jRwFkJzPARCfxrpcaZJosd5W1qmfZvdtCZIs+6vYEPB8xMODo7pSsWW5fBY+yLZD4MaxWZUMslF59Uo1g5QfiWFrYJx73JOpW8s5kPUVhSC9Ch8A
- cAqHr6Pb
- 5hl/E+kIdxgAF6riiKWEiKccDuFWmzmNaCcdhPQ2Aq3DfqBQRj2jtXXRfjAFoma/IwwFTNouvFDxfsdTlJgo4aT/KM9iLtHN67CmrQ/s+yUxJVCMcBfNyVhG3r20E0xBBX0unihGUb9ZVIBQWYl+XOn0X1ppk0FZz6hLMD72im9em1UxuLYc71EgoZmL+NHYSOnSoTbhSuupPSRts5mvnCtgM0t0HxfrUE8tSv0EZvAdMbiWkFfFv1uK9Jcm2BVhwkquJytJVQFsVnCFpef2VYsfpBzTsPGHyn390nQiCMZBZDbBwvPQKEQ9q2j4AMmTFm6TqKfXP9TOl9xDa8EMyOb3iCHT7Rke2NJG4ggzAQ38CZmZkbuKAZFlXSR8jimueKNLpmTyEjMdxpjoMD/m1t3bB73JgZ8/xfMIOMwjTSnHVblValT4hcz2c09wKHLUXd9ZHXcO/edlBWlVOqvl4EdZjFotCR0RYKSL+e8RoMEx9kKeLzlXUVXgWbd4BtLIfTN4Wrf6CFATZ0X5tT6VKcc7deBdgPPphgpSeA3ALZslsFNkkEhkyRuQxOBZBxDt7X6eT9Q06RoNkKcL8SaBdTdTrvfJpJ65ah6Wh+oM5zcltuyX0OBpU+sfAIv82s8eAkkQ/LxhereoiiTV3DGlUDFa3UQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B8C062000B
+X-Stat-Signature: rirc9j66sebejy11rcwbxxtjrf718wmp
+X-HE-Tag: 1784062347-279330
+X-HE-Meta: U2FsdGVkX1/Pmlb1+mF3GEPIA/egJxsXV+HsEQBKNRbJJ1+2LES7fpXNNQmC5AZyVf5iqnhv7G8M7E1NEZy2bfLd5ZoBnaDlYc52ReALBTvP77Re8s4bDetz1GKpfyEY6Nft9l57JHnxDvIYBOBXy5pFbo++N3sJpmVabN8B1vi+tD5vWcdtoxaRNSkwWgtpNBhprHqq6ARCrGoxAtZa7YunFjNwdm2miaEnKpNvN3KH5p1kUjbJwtRe2uI+p/s7ROXxjl6oGYkvsCcwMJq0u1c83vboh2oiqDwPZTkTB/my+I00x5Zen8u+5958nCL1xhXqrtXJ361BVvS4XLNyDYSFLoS3jIMSOufbXREqB1s8rVbcKmes536nmhf+KNaH+AYvvzr17c9lAqfFaGIQ/UosYxRlI4r/Fx+d2IxHg19aNL69qCNiK+SkOskDo7HClvY8SxfPgkhDK69uZ832AVYSRAyBdjSUKA+5YrAeYSH6gLvHnws4YZRYJJ5hCA5qOrdcPP5q8ghzfyFjXXHoROD11hdrgoW78cE78txAvVdPDaSW4BBbD6UZBZtAytsIszcMcxMyqJmulSlMAZl2jd+6+T55TKdA8+/9Z/MQxMyLn9CJUCjXn2ywiHxO4rIdvuQKW8iKD97wRqe0O12zVjv9lA03MOBUuY04gwHBc2ZNKK3KvBBJUI2mClQHIW+ihFuQ5zPPqCrwBTeCUBUIo2+6UK1zJA1tCdMp1PlWSSJmwP6dmwdgmpEUU8GdOQypiFtx6QwiQtGHO1mzD9RAB3uDjx2T0PzsqwEV2iHzg8UHEryDRIqOn6mG7w6i/PHyFz55hl1R6ncTCd7jp4IDqZLzrF9BpJHtABaxhLe4cOWpPrjkSbnwPckfzAhJSL+rNFDgjjhHz3gfTFr0PQ8Hu6haEz38vmtpUC9i4A+gOFPwLkqg+WPeNB23+DpMplkVQs+H2VyUT6fZ06SylIF
+ 8SsPiKxR
+ antZbirfTMqHu75ro5dwEcY04monaqdS0U1RzD1CyD/hipyTLFK4UEetp2TGGx8VQI84csYWRXilq9/tvbCeLq4tvqYP79t7c2t83/IObKaiXFq/wkZ2i9Ij0zlKRDEAbN2w9iE1ATYOly64TtG55OzKslR8jnRq7zyn1sVFb9hU89TGYKmIow50bWfQkvWsGpq4EIV8/cS0ohkBR8gtAP/OTISzlJEQTosatfunznu6+dEk1XSpclWJtVHLmat0jXCwrTB4UGGOSK1DWiU/o0F2IgHd9LrjctA4P+NeVzLa/Il3DhmSnTUUtv/XkkzcTC6OOaavhS1J9tCN1nbQBcTVORUykwXM7SDyqlzB6YfsymlA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,120 +109,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I caught this crash:
-BUG: unable to handle page fault for address: ff19164fffff8328
-RIP: 0010:__free_one_page+0x1a1/0x6b0
-Call Trace:
- <TASK>
- [<ffffffff913208bf>] free_one_page+0xaf/0x240
- [<ffffffff93973288>] deferred_free_pages+0xa8/0xd0
- [<ffffffff93971b4f>] deferred_init_memmap_chunk+0x10f/0x1b0
- [<ffffffff9396e265>] padata_mt_helper+0x65/0xa0
- [<ffffffff90fac402>] process_scheduled_works+0x202/0x410
- [<ffffffff90fae739>] worker_thread+0x1f9/0x2d0
- [<ffffffff90fb62fd>] kthread+0x27d/0x2f0
- [<ffffffff90fae540>] ? __pfx_worker_thread+0x10/0x10
- [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
- [<ffffffff90efdc55>] ret_from_fork+0x145/0x280
- [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
- [<ffffffff90e2e46a>] ret_from_fork_asm+0x1a/0x30
- </TASK>
+> > > >
+> > > > Hello Yosry!
+> > > >
+> > > > This series does not cover zswap as a tier yet.
+> > > >
+> > > > My plan is to land the swap tier infrastructure together with the
+> > > > first use case (cgroup-based swap control) first, and then follow
+> > > > up with zswap tier support in a subsequent series, continuing the
+> > > > discussions we've had above.
+> > > > (I mentioned on cover letter, right above the overview section)
+> > > >
+> > > > Does that approach sound reasonable to you?
+> > >
+> > > How does swap tiering work with zswap in the current series? I assume
+> > > zswap is just enabled for all devices in all tiers?
+> >
+> > Yes, that's correct.
+> >
+> > > I wonder if introducing zswap as a tier after the fact changes user-visible
+> > > behavior. I guess if zswap will be introduced with a default "max"
+> > > value it will more-or-less be the same behavior,
+> >
+> > Right, that's the plan.
+> >
+> > > but I would check all
+> > > user-visible behaviors related to zswap (e.g. interaction with other
+> > > zswap interfaces) to make sure nothing breaks or changes in a
+> > > meaningful way when zswap is introduced as a tier later.
+> >
+> > Fair point. Let me review this more and get back to you!
+>
+> Please do report back what you find.
+>
+> Yosry, what is needed to enable zswap as a swap tier? What will be the minimum
+> requirements for that?
 
-deferred_init_memmap_chunk() works fine without KHO because free
-regions will never be neighbors. However, with KHO, free memory
-will be split into (free && scratch) and (free && !scratch).
-KHO scratch is aligned to CMA_MIN_ALIGNMENT_BYTES (which on my setup
-is equal to 1 << 9 pages) but buddy can look at the neighborhood of
-MAX_ORDER_NR_PAGES pages (which is equal to 1 << 10 pages).
-This sometimes crashes when one half of the neighborhood is being
-initialized but the other part is yet to be initialized.
+From zswap's perspective, we just need to skip zswap is zswap as a
+tier is disallowed. Could just be a check in zswap_store() similar to
+the check if zswap is enabled. I am assuming that if a swap tier is
+disabled, nothing happens to the existing swapped out pages in this
+tier, but new pages do not get swapped out to it. This is the same
+behavior that happens if zswap is disabled at runtime.
 
-To fix this, let's just align KHO scratch to MAX_ORDER_NR_PAGES pages.
+From the tiering perspective, we need to accept "zswap" as a possible
+tier, or maybe creating it as a tier by default if zswap is configured
+would be better to avoid handling the case where the user doesn't
+create a tier for zswap. We also need to disallow zswap being the only
+tier as that combination cannot work without vswap.
 
-Fixes: c6073743d0c7 ("kho: make preserved pages compatible with deferred struct page init")
-Signed-off-by: Michal Clapinski <mclapinski@google.com>
----
-Unfortunately, this is very hard to catch, so I don't have a good
-reproducer. But I run the code with the fix through extensive testing
-and it seems fine.
-I think I've never caught it before because enabling HUGETLB is what
-causes CMA_MIN_ALIGNMENT_PAGES to be 1 << 9, instead of 1 << 10.
+I think this should be enough to support "zswap" as a tier and allow
+disabling/enabling zswap per-memcg (or globally?) through tiering.
 
-If this passes review, please cherry-pick it to 7.2 so we don't release
-a broken kernel.
----
- kernel/liveupdate/kexec_handover.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+In the future, if/when swap demotion is added, we need to figure out
+how that would work with zswap. For example, if pages should go to
+swap device A then swap device B, then an entry in zswap using a swap
+slot in device B should not skip device A and be written back directly
+to B. vswap would naturally give us a solution for this problem.
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 4834a809985a..50928aaa3371 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -38,6 +38,16 @@
- #include "../kexec_internal.h"
- #include "kexec_handover_internal.h"
- 
-+/*
-+ * This is the minimal alignment required by deferred struct page init.
-+ * deferred_init_memmap_chunk frees memory to the buddy allocator, which looks
-+ * at the neighboring pages (up to MAX_PAGE_ORDER) to merge them.
-+ * If KHO scratch is not aligned to that value, buddy can access uninitialized
-+ * struct pages, which can cause a crash.
-+ */
-+#define SCRATCH_ALIGNMENT_BYTES (1 << (PAGE_SHIFT + MAX_PAGE_ORDER))
-+static_assert(SCRATCH_ALIGNMENT_BYTES >= CMA_MIN_ALIGNMENT_BYTES);
-+
- /* The magic token for preserved pages */
- #define KHO_PAGE_MAGIC 0x4b484f50U /* ASCII for 'KHOP' */
- 
-@@ -640,8 +650,8 @@ static void __init scratch_size_update(void)
- 	 * Scratch areas are released as MIGRATE_CMA. Round them up to the right
- 	 * size.
- 	 */
--	scratch_size_lowmem = round_up(scratch_size_lowmem, CMA_MIN_ALIGNMENT_BYTES);
--	scratch_size_global = round_up(scratch_size_global, CMA_MIN_ALIGNMENT_BYTES);
-+	scratch_size_lowmem = round_up(scratch_size_lowmem, SCRATCH_ALIGNMENT_BYTES);
-+	scratch_size_global = round_up(scratch_size_global, SCRATCH_ALIGNMENT_BYTES);
- }
- 
- static phys_addr_t __init scratch_size_node(int nid)
-@@ -656,7 +666,7 @@ static phys_addr_t __init scratch_size_node(int nid)
- 		size = scratch_size_pernode;
- 	}
- 
--	return round_up(size, CMA_MIN_ALIGNMENT_BYTES);
-+	return round_up(size, SCRATCH_ALIGNMENT_BYTES);
- }
- 
- /**
-@@ -692,7 +702,7 @@ static void __init kho_reserve_scratch(void)
- 	 * next kernel
- 	 */
- 	size = scratch_size_lowmem;
--	addr = memblock_phys_alloc_range(size, CMA_MIN_ALIGNMENT_BYTES, 0,
-+	addr = memblock_phys_alloc_range(size, SCRATCH_ALIGNMENT_BYTES, 0,
- 					 ARCH_LOW_ADDRESS_LIMIT);
- 	if (!addr) {
- 		pr_err("Failed to reserve lowmem scratch buffer\n");
-@@ -705,7 +715,7 @@ static void __init kho_reserve_scratch(void)
- 
- 	/* reserve large contiguous area for allocations without nid */
- 	size = scratch_size_global;
--	addr = memblock_phys_alloc(size, CMA_MIN_ALIGNMENT_BYTES);
-+	addr = memblock_phys_alloc(size, SCRATCH_ALIGNMENT_BYTES);
- 	if (!addr) {
- 		pr_err("Failed to reserve global scratch buffer\n");
- 		goto err_free_scratch_areas;
-@@ -721,7 +731,7 @@ static void __init kho_reserve_scratch(void)
- 	 */
- 	for_each_node_state(nid, N_MEMORY) {
- 		size = scratch_size_node(nid);
--		addr = memblock_alloc_range_nid(size, CMA_MIN_ALIGNMENT_BYTES,
-+		addr = memblock_alloc_range_nid(size, SCRATCH_ALIGNMENT_BYTES,
- 						0, MEMBLOCK_ALLOC_ACCESSIBLE,
- 						nid, true);
- 		if (!addr) {
--- 
-2.55.0.141.g00534a21ce-goog
+> If that is not too much, we can make that part of this series.
 
+Yeah I think it's better if we agree on the design and zswap support
+before landing partial support.
 
