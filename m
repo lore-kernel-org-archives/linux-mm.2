@@ -4,127 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03848C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EED80C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 11:36:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E627A6B0093; Tue, 14 Jul 2026 07:34:14 -0400 (EDT)
+	id E65496B0095; Tue, 14 Jul 2026 07:36:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E11BF6B0095; Tue, 14 Jul 2026 07:34:14 -0400 (EDT)
+	id DEFD36B0096; Tue, 14 Jul 2026 07:36:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB3B46B0096; Tue, 14 Jul 2026 07:34:14 -0400 (EDT)
+	id C6B986B0098; Tue, 14 Jul 2026 07:36:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 975F56B0093
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:34:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 08058403CF
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:34:14 +0000 (UTC)
-X-FDA: 84987173628.09.8F1C5CD
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EDAC14000C
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:34:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="E0RO/Cl/";
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784028852;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 95D5F6B0095
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 07:36:03 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19727C0371
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:36:03 +0000 (UTC)
+X-FDA: 84987178206.16.A1865E4
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010005.outbound.protection.outlook.com [52.101.56.5])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 412FB1C0004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:36:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Xu1EBMXz;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.5 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784028960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tBR9GB4eP2IBRWceSzgIs35meZqLIN2i5MroWVCDAUM=;
-	b=6saN04kUP3j+9G0SIveq+d84A8wmSayVzbwu7ZZhrlV/XaCyQJBxKIIBF3MGjFw8iO0m2y
-	aEm0HRoa9qDdDy59qP6wpfizdERQMlgSnSN/OchGjzQC+Ll3LGmjohiwI7iIKFOxaw5Zmq
-	Q0KLsAyXruH6BGJComKmv8ujkZScHd8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="E0RO/Cl/";
-	spf=pass (imf07.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784028852;
-	b=08sW85A6h+QHpbuBGL9c15utbwPtvoYwh5Fw3eEFF+e7+0/aZos5kyh9HM67rjqOlBsYqb
-	efHhchtuiYvIaIG7lpCFrop54o7phZFs+MxjjvYOTKBjF64YY1e0iy0xVhHu8zjJF+txm9
-	ckSp2AMd0+6+4Wl3Al+mJI5iDgiosg4=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4720d22c94aso828935f8f.1
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:34:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784028850; x=1784633650; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tBR9GB4eP2IBRWceSzgIs35meZqLIN2i5MroWVCDAUM=;
-        b=E0RO/Cl/0qDVCSiOlUf2K/VXKYfmkL8E6aSEGr1OLuBf8x40rfnhhcHy7O6d2aoMm/
-         BScZJFjvpK4sXuQa8eVUZZzYrKEt1xlxPUm4Ro/1fJYh7NBscMZxKOpIMwA886pOdLld
-         egIk6FuZ1GwnSBpFqgJ0jJnxl1HJvgkNCMSeGpD0Z5sNGtnjldPkv1Ze48Go30D9muZs
-         b9zWClCHhBZ0KzivKEVdr1AGqEHkIpP4Qtn3Ir0CTuC1HhOkPqpl0Dcb3ygDyqYAqigz
-         GJztmMaaKejlSXwSJWwHdeam3ZYDDsDrzC396f/PKa/nhI04vBwhz6nhPCjQYiKk6y1v
-         lFfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784028850; x=1784633650;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tBR9GB4eP2IBRWceSzgIs35meZqLIN2i5MroWVCDAUM=;
-        b=VKywQd8K5d6+sUjRkfeXC3Arc9veuIpi5Ey2QjAJ3KjR0ashEVBdAkyIxkpR7TIa4h
-         gZ8hGew3fxOF0LUGNxDFi83v0JrE3TOQ4W9qrBT0C8NS8pODIqVSP7idYjhMg1yFlQsL
-         WDAQWxexgNVgH2+6s5jiY413+63zbqNm6ZLn/0aKgpLLNEZvmfr7u1PWiOVKnO4mzGX2
-         RgTDi8zU8wKTSN5X0dj2rwKXAjNa+zlwKuwfqx7JmKQGgPcKntoW9e6Ce1MFuwPX0Avy
-         JyQW7iFR72gJV65xt79nF56vit4rg9ZPG0LimYnIP1BlrSSgg+cYFiqE+A8LcAXDo3ku
-         b5pQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqb4Rtb0EDSmLL5gYOhe/VTMbv91eApb59VcuUnNTUKaQ71AcLuxPEcY7I0vl5i2KlAaATJ27DuWw==@kvack.org
-X-Gm-Message-State: AOJu0YxOuQQ6VUerQOr0utQds29sVjwJyHzCS0hGbHvqlRZ5cTXxrA0M
-	W3gWUPLDJT1pI1363M9P4wfIP73sOIwnS9zKs89Y/ixkFkeBt+I56tBjvKc3J5wSKEs=
-X-Gm-Gg: AfdE7cn4DMGkBUPEv/gBCwOv1VmyOcbUNXok1Y7wwcC6/N+RST6teEN8B61gKRzd/XH
-	Gw1mlFDGxO1XOUfltU8jjUARJ0enEfdSxbdo5vIqC8W8iqQ4p1igA2hV82ZK9EWPxTVYjtF3gce
-	bfE23xS6+V1/5wm+7mt8gRnUaY8l73VCI2Ipwq/wwq5SNI9nt1JmPC3nhfpOJyd4VvqtppcPDhj
-	pYI61ivI1VYxZ5RERRR9SpaP4qevknB+PUbDt1WuzZzTJ+N42T5xFDHKW/NlK/HQJD9c81eEwUI
-	diVdkS3uEqqOT2E3tKwweidI39Pb/iZsXOUsbwixUnQw8QDh95X2sTK9nJcwlyw9uUP0Vs8rgfn
-	FMzPivUJiTnFxqAkuFZzefPLwVQzQBSqLRipeMZbo7I7VTFWkymPucG+ysmz4Tkc/ZDa0eZaUsL
-	jLIx2Ouu3bK7o2t3pa1LTkJ8+pBQ==
-X-Received: by 2002:a05:6000:2c07:b0:475:f0d1:eb5f with SMTP id ffacd0b85a97d-47f2dd1b13dmr15238319f8f.58.1784028850320;
-        Tue, 14 Jul 2026 04:34:10 -0700 (PDT)
-Received: from localhost (109-81-95-153.rct.o2.cz. [109.81.95.153])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464b7f84sm7267657f8f.27.2026.07.14.04.34.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 04:34:09 -0700 (PDT)
-Date: Tue, 14 Jul 2026 13:34:08 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Altan Hacigumus <ahacigu.linux@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: clear hopeless kswapd when global direct
- reclaim makes progress
-Message-ID: <alYesAbH_i-v9mPh@tiehlicka>
-References: <20260710024429.70923-1-ahacigu.linux@gmail.com>
+	bh=50c/2a4cgZyUQrqlxOZ0b7WMOIbsLSy6QmLfqAj6kcw=;
+	b=0o9AgZSJM3wZNYSdJpvKx/EKqRNBA9oT+9y7GYRQPxTBhg4oJ3d670Zi0GBjgD3QtzmIc5
+	9efkIWfXNUOSeikkEq1LsoIc1b1HUut8eDHz26TSppEVGldFiC+tnUzIUbx7zVJxLloMpY
+	NmS1MimT3arXCvdm+j178V26SrdMybg=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Xu1EBMXz;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.5 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784028960;
+	b=b6OS5hNjEtk6izkq5wyIQTy9MJ9vaV/6G2bbCsF4x5JgWLPXzGrUSOK5vt8hKDPOtPcLWg
+	myUGtd+7Vnh008Jux7XnAukW13Yp1LczhnfHJDT0RQ832TuTn60rHa2QEqj2ab2ezWLv9a
+	SylRGWWn79CXbZ8O1S8tQwh/FemKIQo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qQbn4Hihz1RqBLgDPtTxXw04gKtpWl7SUyuPUJgux7h2XlWXNSLasvjYiO55U5fjozZogB1Af2oc9Am/ZuzDxpyh592LahAZHghfsGif+mJi/DQfMNJHktOR5FfumYHgOyLL0qen6XUtN4TkVn+X6ustfVBFf1CC3tuwOs410UAwu0HCvvxqN2fEZZJ9ufiE9VAUWn9fNpae74dHlJq0buFYjJvOVj7VKtMpY4tNNLJgoOzTcKMoTSmh8cFPdwDi3SyeK33YK0QRAYc9Vp1qaPZqKSCS/BdU7SDjiJCk6Q/3HzELMrTgExf71Og7j2QXy7cgbzSHeYgxoYVkJAwcuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=50c/2a4cgZyUQrqlxOZ0b7WMOIbsLSy6QmLfqAj6kcw=;
+ b=TpNwdLQXFezB1dKVqcQPexC85wgr3UxYb8jRErTyzw7YKy4pXgOdIklw7ciI9HkCVy3ONwdSlIUeEVpdKG//odK8p6NZu37D5OuORUo6UTnceEe/yHhFexKLVlGmvUPT1QWELZ2ZyVZMU8xWgER3u1WtfnMS/GiWN5/OAjKoWR2vgxqLYxoJ4RCd/wDKMCFAqtWwra1sf7OLJrYlIebceDzpXuNEJIukP9u+ULTRT8tDaEaqaD02rd0UAGRbER8EUbUDc/iXTIab0MF07TQHwCJCjkpb3PFsr/jD80Ok7OSiD9Yc0/cQYBJGYHDKFFAYsspRea8eQHCSyX130Ji2RQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=50c/2a4cgZyUQrqlxOZ0b7WMOIbsLSy6QmLfqAj6kcw=;
+ b=Xu1EBMXzdGOfW8TzQaxm5uU5LeHAPrqZ2AC4RJBPwg4LzsEZGT3f/r5fHicgq8vaUTzgekeT4kTtlbDBuk2CQESPU27z22Z31/7s3A/LNMbcosyMsYi6/rts5MC2s99QPQBmCqM46Wcarw4a1IvCvY5eEdAXPU3eEWcHQLqaLANJLVYOPoI+o/AErpOnAPb0e3rD/yH0jHtbG17Yp/NaOrhkD9x0hP3DJWupSELDMEo2ZY8lQzFNjuUPRaGMyyBADaXgxWK5zS4kePp+mP/KXRrcuoMFIcCMycojME1jlLyDmG9H1TmoEBjFlzDbfFtAiBGWSaVBQq2SIvrfrjroag==
+Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
+ by IA0PR12MB8746.namprd12.prod.outlook.com (2603:10b6:208:490::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Tue, 14 Jul
+ 2026 11:35:53 +0000
+Received: from CH2PR12MB5001.namprd12.prod.outlook.com
+ ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
+ ([fe80::89e3:6df0:de90:8dfe%3]) with mapi id 15.21.0223.008; Tue, 14 Jul 2026
+ 11:35:53 +0000
+Message-ID: <ff75fd32-6aef-4712-8a4c-4deaeb5c3269@nvidia.com>
+Date: Tue, 14 Jul 2026 21:35:44 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/8] mm: factor zone-device page init helpers out of
+ __init_zone_device_page
+To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
+ apopple@nvidia.com, arnd@arndb.de, bp@alien8.de,
+ dave.hansen@linux.intel.com, david@kernel.org, kees@kernel.org,
+ mingo@redhat.com, rppt@kernel.org, tglx@kernel.org
+Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+References: <20260709112520.24857-1-lizhe.67@bytedance.com>
+ <20260709112520.24857-3-lizhe.67@bytedance.com>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <20260709112520.24857-3-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ME3PR01CA0053.ausprd01.prod.outlook.com
+ (2603:10c6:220:f7::10) To CH2PR12MB5001.namprd12.prod.outlook.com
+ (2603:10b6:610:61::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710024429.70923-1-ahacigu.linux@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|IA0PR12MB8746:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b608fbf-fb5a-428f-91c5-08dee19c0fc9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|6133799003|4143699003|56012099006|11063799006|22082099003|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	bux7qwnPEaSVJc8ISOIMthqPu0LhA/rEZudXnF9fYH6KEsuaNA486+npTgsA3exjzdKGDNjuIb5opUqufiKGWXJZ/LNn3ZQGyokHFLpro6D5BxiWqKVjOgmyFObEytS0cNrVCbfZVT6D5apDItygKZlLnmztY31/F6YAIq5vrLZFrpHjnWz6yUs/8tAZlzBfqG2Wq4LvsvNGTAYhI9iYtOktVM1qUylO/SV11Ow+HTXkXOoXzOKbm4qtk1NzjK6CgA2e0+IAIrgZ2JIkMIozCKw0jG0MxoZzuOAlqIGBINELat8vuBnciwZ31MZoXVygDCRmXMDOSVPxZfI2323Nb0ghCeYk9giG2pGXD7W1kC0AA8CkBuqjVljwUPIHO/LIRoXgumw5TcNsKepmN+PYnxEtI4oZv3lr9rqwbDDug1py3T66I00mapXJhmpQ+xniUczH81HR88PLcKUsSnYhEwnWOcisjpiRnKsBEX3CqOC5UXgxyyMG9ZxsZhRvDEpzexdaUgxq6VjO3Yq8m8m1w8Rhgqs7AqETWgdTiZXVzFYXjQFHmdC2l4MMe7/UeDJeKoM38JbByvwDU10k1PDnGqJB+/2s0hELnQSIbsM3jRoQ/iT8bgwXiKkkeutGgKM5BWVwcAJk4xqeKUxSt8PNf31pOvmr2MmoHqiCEqwRmCnpjNQfkjBBzGriZpCjTXPsK11/2HcPSzMgru2hTf6ziA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(6133799003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SU16UEVlUkdxWXFNcDR2K21xWTZOa3BmcURqMUl1U0NtU09yN1dQblp4SW4w?=
+ =?utf-8?B?Rm50SHFyM3VYN3EwS0xuT2JWRXM5WGJmS3FIdXF6UEc4RFZIMks5d0xLeGlU?=
+ =?utf-8?B?MnlDaHNydElkRjhpNkt2TElDbkZIMTR6QktZVFhCVEZhTEpSM2Q3akI1VkY5?=
+ =?utf-8?B?YXpOTy9mVWxRTERrN1RVTnJWbHp2OWc5MURPMlRJUXk5Nm5yWGJveElsdFMw?=
+ =?utf-8?B?SCt1S1RNd1NVVUVrMVNhUHJHdm5lSnJCTXphK255dXpydjdScUZHdFFpbFZR?=
+ =?utf-8?B?RUZQWHVzdWVmdHZtZmM4RDZQVFNnY0x0bTRtOGZtOVVKNVV6amdFZnkxQ2N2?=
+ =?utf-8?B?WGloYUYzWk8xdGtSbkxFN3YzT0FDdWRVa29GL3IwdFhOTnV6UjRFYmEyc2pa?=
+ =?utf-8?B?eHFQQlRWU2t2Z0FUSHZNTTRxbGdlb3MreVpaMmVJdTkrb2U4N1JwdmJLNnJG?=
+ =?utf-8?B?b1ZUT1V4MDhNMFZkemkvSnFsbE50OUFFdXVucCtacTlNSHdLbFBycGpwVFpM?=
+ =?utf-8?B?dW1FWWExN016c3p5dHpXd0NxRXRCM0FpbDN3dE5Jbi9OVFpSMTMxTVJhR25y?=
+ =?utf-8?B?Sjl6NVBnbEc3UzIyU3dpZng0WWtUVk1qay9MOEZnY1RwM2I1ODJDQkh4RUdv?=
+ =?utf-8?B?YnROMEFVK1pVeWRRdGFNZklDYnBtdHhlRDkvYWZpUU51RUk3YzdiditqQVRo?=
+ =?utf-8?B?U2RxMDhSOGErYXRGeGNpbkJwdTlLangySGdxTkpqMXMxdjZWY3U5aHVXejhE?=
+ =?utf-8?B?YnJ3aXBNMk4rSER6Z2MyM2hxY3gwU1RzdXdWZ3lRdEI5MmY5Qk1ZMnJmVmRu?=
+ =?utf-8?B?d3NjTzVWQ1NIeUdJelBrZmpGSk5kR1F2b0VKWklDSWhLUUtoejFweFAvQnlY?=
+ =?utf-8?B?RFZIcXNLV3llQWFkVWNTVVU3UXN0cm5Xc2FLRGNZdjJ4VHVVejNkRmJzbSs5?=
+ =?utf-8?B?bm92QWFzc2krR2hEUExFcE9NMmhKWi9wc1FnNjVIdFExcU1seEdaRjZXWUpn?=
+ =?utf-8?B?QkZmUndabnBsa1hkdnVQRld4Qm1IZXUyL2tabC9XOFd4L3hyWHUreXJCdGdk?=
+ =?utf-8?B?VEZIY2ZRdTkwN2lyemxZNGtDRjNYUm0rb1lJVjB5WGR2OE8vTHhSMUJGalZp?=
+ =?utf-8?B?K1lnZTJwbXFOakxaZThrVThNNUYyTCs2WmZ0WFRxQlRJRkNLa08yR25oaXhw?=
+ =?utf-8?B?YmZmTnY1MHEvb2lxcXB5Ukptbkg3Vm1OWWtrQmkwQlh4WWRmTkp3czRsK1c4?=
+ =?utf-8?B?eXJEZHZaRTRRRHF3UVQzL0I1MEU3cXNMM25mWUhxTllUZzdMTEVMVjQ1M2Uz?=
+ =?utf-8?B?SnVEc0hDTlhKQnRvK0JwMFdhVnI0V3dUVUE1Y055T2Y5LzNTZG8wT3RNaWNO?=
+ =?utf-8?B?Y0hIQzhSN3V5MVc5eE1CaVpWUVhFcVZsMlhkOFpsSUtMNVI3cHhRZU04Um5S?=
+ =?utf-8?B?QytEVWZGNnlDMk9YMGFBOVZPWk5ZS2RvUlN6SWlqSklOUWRVNFFkdmZtb3dk?=
+ =?utf-8?B?bG1XSldraUhNREJ1TGc3LzV1TDNyNHIxdEMvL1Myc0c2dVFMeE5pTzIvSVRQ?=
+ =?utf-8?B?M3B5UG03Zi9ra3p0cU1LZTBrNWU4TU9nQUkwbkZiR0l5eHgyVEQzYnhRZGpU?=
+ =?utf-8?B?WG1Wc2o5TitTUGtDdmREQ3RIUTlQQ1RHUXpsd2o2Uy9uSlU0R2FETlEzbndo?=
+ =?utf-8?B?enA1V1g2azNNZndNZCtSUGJNUDR3UWhqcW9JcHdudmFFejNHczZyT1VQL1A1?=
+ =?utf-8?B?alo1MWl0QXlOcFFnbHBsZ1plTGRwTlRTRk5hZWVkN0JEWGplVmJFa3A0RTZV?=
+ =?utf-8?B?aysyRTdEaTJQK3V2Ung1ZHpCbW5ZblJ1WU5HUEZhZXBjVEhCaDlnYXJFTEE0?=
+ =?utf-8?B?VGlBczJ6TFE0ek1wREg3ZlEwaUJZRWw0N1gxZWIvR1FLbG5XN1J3UXJTTFhU?=
+ =?utf-8?B?TG0yYkV0ajJEc0VOMWNKSGlxdzlFYnJuMDRhWjFtWVhQeUFKd1Z0dXk0dGdq?=
+ =?utf-8?B?V0R1UURuWjFvajhnQVplY1RLckVOV2lhRTRPNE9oMHFUUThtT05TeVA1QXJD?=
+ =?utf-8?B?Nk5CQitlVTh4dkh5bWtScnp5V25GTTF1U21Rdm9Zc3F2aklxUGFmMjVvUDJL?=
+ =?utf-8?B?SXQ3Y2VHMWdaSmI4U0RXeEZ0akNMajRXUmtkVklSSnlmL05kZHQ5WUY5bU5E?=
+ =?utf-8?B?bHJJNDJadGtmdlIwUTNlNm1XMVFnb1ZBeDl6QXpWTTh1NnlYQmpScExzSmhv?=
+ =?utf-8?B?cmdSMGFBUzVsWndFZ2kvQTNCSk1BTDBlVlhPbGJGSmd3S3VaWnQzUzFxMkFH?=
+ =?utf-8?B?WS9UdFJHaGM1eDJyQVdlb0owcHc4UGQ0aVVhMERyS3R2RlQyZjNjQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b608fbf-fb5a-428f-91c5-08dee19c0fc9
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 11:35:53.3096
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dMKCSbwsVc8DMIiesXdcadp9a0aLX9XDL5oKSgxdhR/j8X21FGir3vulJo+pG/VjWWAYZyrCybq1R2Au/ej0pQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8746
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EDAC14000C
-X-Stat-Signature: rhsqrzntm89rcgaa5qig5wkq9t47tt9a
-X-HE-Tag: 1784028851-845124
-X-HE-Meta: U2FsdGVkX1+Er5Feaktwt/3x28qX8qxrYVA6GwlLTG/6kpWI8VYB8qMuNRhHfWArwQsUYk6ynJ6+AHC4GrFCYB4nbjOhGT4nftdtauPNkFG7AODobbiISUyZ2/l/zOMtDWz6UDH1NzRiBjfd5ecHcJfFXkhnFAMThhr9wLQiQGNjXqjlLfDC+shLU0xyS3ZUtPZd8Pewc73NKvzJ7Ps65/MucyuryN+QdID/+kUpIK3Fmvn3mGu0RtoNIrPZb6iirw9owVGq7LDtgfN8x/nqjfTQ2qnG6tFCPWBn6NMtwlUkaMQKEOJP+6zlWDXuxcgVqyRK0/vhfW1X8tE4tWkvlMCC8puUvrwTU0iiRTgzC692F5pMCvw9MAWM4FABzHGWq4Kqs0SvKNweNGFiqX5Jn1EylJ+lICkPWG9b9jmdBeJHDXnVNMX/hxRkFq/V4T2kzHRsiS4I6pLPrsHCJliqul+TZC5FohHa1dYkCPpYvMQsq15JaUXVPiw7SbLL3iIAtus6C50uPdbhpMrPcn2pAKmMcUr+jHYDAC8JTVqa+h2Y0SNLGLFPGbYdOlVAHdXYx8jUWie7ZCXjl/E2MEjWY25rsmUyHgd449A7oOe9ISEeLnsrs3PQqzcsrHvjTCXH/X2lShzl2YwRQ0yXUcZd6yMTcuOGYmI6c5M921PYCb4ELxEvmTvwy8l7pxVhw17v9Xcnu0nF1FGiqKbMl+ureQQJVD96zwahb35qlXoPGfhcw3ep5sdgYNjyHrPDuJQilvrHXdm/O2mXWpgs9G+Eozjzgl5GPM6pA96q9t8H9tfX1zk8HIns7aqmmLcfGDQj8M6mpj3U2gsQvNsZmoujgB3dhJsPWP/ea9ClwNcDdwfIXj3ypnrLpyeWRr/wGgOyB4fjeIccTbcf+DSMGfNL9W7yb18QiHt9xB6CIukckMAjhB1qUxseHznHwETvmCOMIyrZ5mB8gijTOP75qY5
- w/zJBg4f
- J8PA6zUqJRP8jS22h6POTB5NJEP5BBtqmvE+56oEUYDBRvbSaw1lw5abCkBfciQOMSCCA2zgD2dQkFWqLUdaeytD9lYmI0AM0jvGdTOc34C6WEpICtrRoEFuyJo6MpdmS6DhDNLkTvpLAF7YFy7hdNfyolM+6scwIAsdF9QN+aA/+8jPR28Ys2IZGMbn15S83HJAhagBdVruHzRW4tUUI0y2ueVFdVtfrv3BqRZMYijPjXO41SHrkRwpncxfZR9oKsKJusOaQuc9NUSDlpF1sZABA7zz9pSNM205wiFbVpXLUUfh5VYL7HquJz34dgR80RHO56zUEUX34Jem+ZYOb3mGQjF5mEL4w4QDXrT6t85Iyzj35XoQnvOqp98gHLHEZieZaFNT2kiPJwcshQt4RplxgFkeFB5eApj8Dhr6Z8ntvkOop3AzTX9/Vjsqi19U5oRyVK89Yfh4ZioQ=
+X-Rspamd-Queue-Id: 412FB1C0004
+X-Stat-Signature: oywjttnui59kmiuwm1cff6sp6ootewtg
+X-HE-Tag: 1784028960-685440
+X-HE-Meta: U2FsdGVkX1+p8yEIkWljzkDcfv3xnyzOU/IKYEnQ8F3Lf79bbDWEhFVUOT5or4iODit875fhZJwSfH9VW8QpbhfVSefwXPKum3j4V0kKSlqNMi1GiE6kbvaRjH03YbcIviTiceg0p/nLvoqvO2FFt8Z9Tq6bOwjwQ4cxp7/fIR+Vo+mIMh8bnbtBLMplABrkivsvc4pRYkmXD38iR0Sub6dRocIhLZGfgucyD/QQyLTIhE2/bksTuBzd9dQ4JV/XiMYAH0G7+QJGyBVsHIAjiyThwD9c/sBVY9TovFSN22dmN0Yqa3n+H9eKyQKQkynuyvq5izaKC2cHDnjFVckjzAFzJIgiOgGqDDaFRyTieMqPvswOaA8w3hhn9gHdLopWtskcyfNJVTVff+zHdSkTv6dU16julQ2SO/Gp7Khe1HdPv/tqvo3WCMcgOws8P7ZBmGOv5pqqOIyA0BTw+yBtIplFB8VjHkQunVqBbFJ/LBefgHqs62QVdToD4Ckm8z4hAI1rPh0OSrX7BxImB1TfWQX2BEs8NUxDE8zD1l8LkMxVYUuyrvDymJohHyDudokM7tvWMkIQ3lppE/iJFh/xYudtXddl/th69JHfFNETC9EKKx8bydHMox0sZ75m8IwZMw7Yp6UVtYfh9TL/UAmdhHyaoHTEB87dfE/okOMlCcJLtVe1sohhVLGlvlUjoJZJdoEvGq7y9hEe7cCeKb9WrvwVFjFOSAgE1hHE7bcqk2fNIb82t0/x/Ic4Qqo1yy1OFBlrb8rjMhwmtnw3fYGIqUaKAbLo3eyGdd5dfSs7QTB9eVsvjEJL7uT8Qa5EnPdwHDQCffsYooQhnvlRAxQ2uKDMNouaWdW/lr7TBx21fNAc9Ki4diA3RKSTQ+zWS2d/3xBP6k99Pj3yLxq5jdkb9gg4JSwruUObuDnDIc4sdaT/wyXtVvFCzQD4eud8uE6LzAvxGq4J2D8c6fjqLcC
+ +GOQmxJX
+ gSl6xBqkTFenipGDhq4ARDqsy7wue1xSa0lZrak9HJw7EBg2LO3iIZkLzhpyM04OJhjS0+8LKeeYVb9SAfKz3CzZgRM9ECoIOna/v43Ni7qt+NeZNH+T1iVR53p636Lflr85y6/IceUiTE7qv1+cCqOx06B5kI8MxSUjOJmg84HbcTpgGVq4TspZPDto3KY7T38nXfJ/Mla32iLQCohEl39H3ZishBCpf8R6WYXi7Vvr5yCxhTkkc4LZqdjyynLZe5R26jJv/zQGiOmc+8byPihusIaWb33S2MZB3w3OKXHKf20hJUOeNcnmejPqHfoTJZd0C3i4QS8fsQL7Zok23mhl/s+qiFxlG6wyCq/w3Wd2D5cXAyUaTXZGulaIaQRNKbR1qzEPm055huSTToahBSnrNTk8key4HYjqs+0mWmEXH/jULpSTnR9S0B3CdrwDw35DK6sHgdt1bHle4flQBBAmBYPSv+Yd1wv68jkZsRNmcPf+U4pJ14YzmngzZIr2tQ+PA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,123 +175,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 09-07-26 19:44:29, Altan Hacigumus wrote:
-> Direct reclaim clears the hopeless kswapd state only once the node
-> becomes balanced. This avoids cgroup memory.high reclaim repeatedly
-> reviving a kswapd that cannot balance the node.
+On 7/9/26 9:25 PM, Li Zhe wrote:
+> memmap_init_zone_device() currently mixes refcount policy and core
+> ZONE_DEVICE page setup in a single helper.
 > 
-> However, it also prevents global direct reclaim from reviving kswapd.
-> Under sustained memory pressure, global direct reclaim may continue
-> making progress without the node ever reaching the high watermark,
-> leaving reclaim to allocating tasks.
+> Factor the refcount-reset predicate into pagemap_resets_refcount(), move
+> the common page initialization into __zone_device_page_init(), and wrap
+> the existing slow path in zone_device_page_init_slow().
 > 
-> Unlike memcg reclaim, global direct reclaim follows the same node-wide
-> reclaim path as kswapd. Clear the hopeless state when global direct
-> reclaim makes progress, while continuing to require a balanced node for
-> memcg reclaim. kswapd_try_clear_hopeless() becomes static since struct
-> scan_control is private to vmscan.c.
+> This keeps the slow-path behaviour unchanged and gives later patches
+> reusable helper boundaries.
 > 
-> On a workload with most memory mlocked and the remainder under sustained
-> churn, with swap enabled, comparing the same 60s window:
->                               base       patched
->   allocstall (all zones)    413441          6532
->   pgsteal_direct          15889552        255619
->   pgsteal_kswapd                 0      26079382
->   PSI memory full avg60     13.10%         9.37%
+> No functional change intended.
 > 
-> Direct reclaim was already reclaiming many pages in the baseline;
-> this change lets kswapd resume doing that work asynchronously.
-> 
-> Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  include/linux/mmzone.h |  2 --
->  mm/vmscan.c            | 23 ++++++++++++++---------
->  2 files changed, 14 insertions(+), 11 deletions(-)
+>  mm/mm_init.c | 56 ++++++++++++++++++++++++++++++++++------------------
+>  1 file changed, 37 insertions(+), 19 deletions(-)
 > 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index ca2712187147..1db6f8dac927 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1630,8 +1630,6 @@ enum kswapd_clear_hopeless_reason {
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 95808ab5cfdb..5fccfbacf855 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1005,11 +1005,37 @@ static void __init memmap_init(void)
+>  }
 >  
->  void wakeup_kswapd(struct zone *zone, gfp_t gfp_mask, int order,
->  		   enum zone_type highest_zoneidx);
-> -void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
-> -			       unsigned int order, int highest_zoneidx);
->  void kswapd_clear_hopeless(pg_data_t *pgdat, enum kswapd_clear_hopeless_reason reason);
->  bool kswapd_test_hopeless(pg_data_t *pgdat);
->  
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..78fd35a11eee 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -198,6 +198,9 @@ struct scan_control {
->   */
->  int vm_swappiness = 60;
->  
-> +static void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
-> +				      struct scan_control *sc);
+>  #ifdef CONFIG_ZONE_DEVICE
+> -static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> +/*
+> + * Return true when the free path for this pagemap type restores the page
+> + * refcount to 1, so memmap_init_zone_device() can keep the count set by
+> + * __init_single_page(). Otherwise initialize the refcount to 0 and leave
+> + * it to the allocator or pgmap callbacks to raise it when the page is
+> + * handed out again.
+> + */
+> +static inline bool pagemap_resets_refcount(const struct dev_pagemap *pgmap)
+> +{
+
+resets_refcount reads like it resets it to 0, but it could be just me. How does
+pagemap_requires_refcount_reset() sound, with the value returned being toggled
+
+> +	/*
+> +	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+> +	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+> +	 * the count again when the allocator or driver hands the page out.
+> +	 */
+> +	switch (pgmap->type) {
+> +	case MEMORY_DEVICE_FS_DAX:
+> +	case MEMORY_DEVICE_PRIVATE:
+> +	case MEMORY_DEVICE_COHERENT:
+> +	case MEMORY_DEVICE_PCI_P2PDMA:
+> +		return false;
+> +	case MEMORY_DEVICE_GENERIC:
+> +		return true;
+> +	}
 > +
->  #ifdef CONFIG_MEMCG
+> +	return true;
+
+Shouldn't the default be a VM_WARN_ON()?
+
+> +}
+> +
+> +static void __ref __zone_device_page_init(struct page *page, unsigned long pfn,
+>  					  unsigned long zone_idx, int nid,
+>  					  struct dev_pagemap *pgmap)
+>  {
+> -
+>  	__init_single_page(page, pfn, zone_idx, nid);
 >  
->  /* Returns true for reclaim through cgroup limits or cgroup interfaces. */
-> @@ -5172,7 +5175,7 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
->  	blk_finish_plug(&plug);
->  done:
->  	if (sc->nr_reclaimed > reclaimed)
-> -		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
-> +		kswapd_try_clear_hopeless(pgdat, sc);
->  }
->  
->  /******************************************************************************
-> @@ -6251,7 +6254,7 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
->  	 * successful direct reclaim run will revive a dormant kswapd.
+>  	/*
+> @@ -1028,23 +1054,15 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
 >  	 */
->  	if (reclaimable)
-> -		kswapd_try_clear_hopeless(pgdat, sc->order, sc->reclaim_idx);
-> +		kswapd_try_clear_hopeless(pgdat, sc);
->  	else if (sc->cache_trim_mode)
->  		sc->cache_trim_mode_failed = 1;
->  }
-> @@ -7530,15 +7533,17 @@ void kswapd_clear_hopeless(pg_data_t *pgdat, enum kswapd_clear_hopeless_reason r
+>  	page_folio(page)->pgmap = pgmap;
+>  	page->zone_device_data = NULL;
+> +}
+>  
+> -	/*
+> -	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+> -	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+> -	 * the count again when the allocator or driver hands the page out.
+> -	 */
+> -	switch (pgmap->type) {
+> -	case MEMORY_DEVICE_FS_DAX:
+> -	case MEMORY_DEVICE_PRIVATE:
+> -	case MEMORY_DEVICE_COHERENT:
+> -	case MEMORY_DEVICE_PCI_P2PDMA:
+> +static void __ref zone_device_page_init_slow(struct page *page,
+> +		unsigned long pfn, unsigned long zone_idx, int nid,
+> +		struct dev_pagemap *pgmap)
+> +{
+> +	__zone_device_page_init(page, pfn, zone_idx, nid, pgmap);
+> +	if (!pagemap_resets_refcount(pgmap))
+>  		set_page_count(page, 0);
+> -		break;
+> -
+> -	case MEMORY_DEVICE_GENERIC:
+> -		break;
+> -	}
 >  }
 >  
 >  /*
-> - * Reset kswapd_failures only when the node is balanced. Without this
-> - * check, successful direct reclaim (e.g., from cgroup memory.high
-> - * throttling) can keep resetting kswapd_failures even when the node
-> - * cannot be balanced, causing kswapd to run endlessly.
-> + * Reset kswapd_failures when the node is balanced, or when global
-> + * direct reclaim makes progress - then kswapd can make progress too.
-> + * Memcg reclaim can succeed where kswapd cannot (memcg protection is
-> + * not enforced against the reclaim target), so its progress resets
-> + * kswapd_failures only when the node is balanced.
->   */
-> -void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
-> -			       unsigned int order, int highest_zoneidx)
-> +static void kswapd_try_clear_hopeless(struct pglist_data *pgdat,
-> +				      struct scan_control *sc)
->  {
-> -	if (pgdat_balanced(pgdat, order, highest_zoneidx))
-> +	if ((!current_is_kswapd() && !cgroup_reclaim(sc)) ||
-> +	    pgdat_balanced(pgdat, sc->order, sc->reclaim_idx))
->  		kswapd_clear_hopeless(pgdat, current_is_kswapd() ?
->  			KSWAPD_CLEAR_HOPELESS_KSWAPD : KSWAPD_CLEAR_HOPELESS_DIRECT);
+> @@ -1090,7 +1108,7 @@ static void __ref memmap_init_compound(struct page *head,
+>  	for (pfn = head_pfn + 1; pfn < end_pfn; pfn++) {
+>  		struct page *page = pfn_to_page(pfn);
+>  
+> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+>  		prep_compound_tail(page, head, order);
+>  		set_page_count(page, 0);
+>  	}
+> @@ -1126,7 +1144,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
+>  		struct page *page = pfn_to_page(pfn);
+>  
+> -		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> +		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+>  
+>  		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+>  			cond_resched();
 
-Is there any particular reason why pgdat_balanced is evaluated for
-cgroup_reclaim? Shouldn't this be global reclaim logic only?
-I.e.
-	if (cgroup_reclaim(sc))
-		return;
-	if (!current_is_kswapd() || pgdat_balanced(pgdat, sc->order, sc->reclaim_idx))
-		kswapd_clear_hopeless(pgdat, current_is_kswapd() ? KSWAPD_CLEAR_HOPELESS_KSWAPD : KSWAPD_CLEAR_HOPELESS_DIRECT);
-
-
->  }
-> -- 
-> 2.55.0
-
--- 
-Michal Hocko
-SUSE Labs
+Balbir
 
