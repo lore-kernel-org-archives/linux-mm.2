@@ -4,132 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3507BC44508
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86E1DC44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 17:55:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EF886B00C7; Tue, 14 Jul 2026 13:41:23 -0400 (EDT)
+	id 4B8856B00BA; Tue, 14 Jul 2026 13:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A0AB6B00C8; Tue, 14 Jul 2026 13:41:23 -0400 (EDT)
+	id 469AA6B00BD; Tue, 14 Jul 2026 13:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAA766B00CA; Tue, 14 Jul 2026 13:41:22 -0400 (EDT)
+	id 37F2F6B00BE; Tue, 14 Jul 2026 13:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B66836B00C7
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:41:22 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A4961A0493
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:41:22 +0000 (UTC)
-X-FDA: 84988098804.06.3506A65
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CDF9B18000A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:41:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N2D8XYyR;
-	spf=pass (imf16.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0FEBD6B00BA
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:55:32 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 854A01A042A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:55:31 +0000 (UTC)
+X-FDA: 84988134462.15.BC5C412
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CAE5DC0008
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:55:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GQH+uGuf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784050880;
+	s=arc-20220608; t=1784051729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0XneA0CYM00BRNRTb4B9DVpDpuR42nW+B7bPBHZY/xY=;
-	b=O5iVYfmOBlcG5biAn4jlU8v03eAI5pLngqy9+BkaSFK3N59qS3zG49HXx2x9Fl1DpYG0Lb
-	6ezrt5S0bOYMayZYkI6sL2yKa25xnYMcWGoiA7hxL9RHe5jAz1nl4jNpWM9Liqk0D6YXBA
-	Lhx/Zg9RWOuoj9r4X6C4VxKNYmPRdBU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784050880;
-	b=Uiqw0wt7ym1yq1uG3QW/SWnkc5mQIYaSi7Ah1nHGTzzIXJUYYXBXeu3BRvV8dYaAyNu3NZ
-	ucf71nYlRn7GTnd40+DwHmvefG1GAUNh8h7x5Jv4R2CwoAsYu8DUyfMiB6e6YDlzBdXCSi
-	p/k6nesEX/0urjIrqtmWNysbAuxmwsY=
+	bh=kqPa6Awexo1sZ9NAhkSiBlt6klZOADUjfwrP4NV/fLY=;
+	b=6IHpLpDvE0Y7R4OGaDwMin29UbCgeOHz/hnuBqnwz3chKwkoSkyINv1g869JMTLvso1tGI
+	lHzz0gZ/EPuMVIyL05y+lXSTI+8ROhhkALE9cfeJ+sH4xLvQJu2eqa/gFaFIlWl5R8zdOe
+	gkCn3ELAYRf4yeKDatv4Es1xaorIHDM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N2D8XYyR;
-	spf=pass (imf16.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784050879;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0XneA0CYM00BRNRTb4B9DVpDpuR42nW+B7bPBHZY/xY=;
-	b=N2D8XYyRpmQvchLr2eY0KtkzkawvKNrWmmbd3nla3Acd+LGm1m/6DAlF27Wt5M6hllizC4
-	kkBp0v6uWd4B5GhOgZRoyo9IPrdpsCz8PWQJRZ/eEvDaGRZ/MGXya8sOtenkVq+/KyFBah
-	qEUcrKqCkESQ1RcKYGGIetug2bgmpfc=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-JSXllTO_MquFwX_-7FRfzg-1; Tue, 14 Jul 2026 13:41:18 -0400
-X-MC-Unique: JSXllTO_MquFwX_-7FRfzg-1
-X-Mimecast-MFC-AGG-ID: JSXllTO_MquFwX_-7FRfzg_1784050878
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8efad04d884so22883876d6.0
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 10:41:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784050877; x=1784655677;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0XneA0CYM00BRNRTb4B9DVpDpuR42nW+B7bPBHZY/xY=;
-        b=fRINsB6hC0aEG/vIkI9KZ43MzdRj7MRKMeUQUCIh0l6THV55vadXbQv4d6Y3i3BvbN
-         iujg0+XNTYfj3Q+pDSkg2R8jdC+DQyk96B1BgX4LIldQIGVaG75gMzzVX31UgceFV8NM
-         0YoDeidyM40weRAS/O+cI9RvS/J9fRzFRqw8a1x4ylyDAt2WTdCBFdZ+OSC3DatqBgAX
-         RScpiB1YFJdnC14wZNhysDPuuaZFCjoNHK3wCAVnSIBzNQMELITEvho6PLKwS78GupWd
-         5k2fGZwNzZBQ+DJfAALPwqcK3lzq85z5aJjopRt4vrygKYWDqwd6khdeLdZuaY1W2SkJ
-         Furg==
-X-Forwarded-Encrypted: i=1; AHgh+RraCx3ohCHQOrPycPUcsxYTigV4NDdtx/1hph4OkXIIKscgduGtgqaAdgduHCVbOUQNf3NQt6d3Lw==@kvack.org
-X-Gm-Message-State: AOJu0YwMFiA32+Kls6Ns2hrINaCRjp1QHUZ9b02lcvMGcQpHsQk0Wozy
-	7rQHebxVB0pU/oMpfXVMAM3oNt15hF6D/NGhb+mvHWvIZk+eg436hA6Y3M3ZnCT9clncA9J/tWk
-	iS84wZ3gb12snjSBw18y/iIYt2Efrx3Z+bdHpozIoaIvyFFFxnU4B
-X-Gm-Gg: AfdE7clVW8oWUypacV2p5DO1n2X9AASixidAALX3QAKlQDNycix54WTFeSUln1ncLnM
-	hWCUv6tGOpQNFaGf71rGcEnRwGo8hCoXLD6AbBZcK581Alh5QxRsn2ea4EiniHK14DgQmnxM3qq
-	zvquxKuGm12+tYy/n6G5Iu0/jqVBkP6SoAhcRrZObvCEhCTrHK7DbRFpavELLM09vp9AZ8GGX5s
-	+47s3LQYWaVMHQRgEpBB9L8QPaib26hBrXlBpJ1+U6jT8IWnkOi4KqD/ptwFNJR4jcjymz7b6BS
-	BgunAz34k97tfR95glKPonVuvpQ/3pYOlK0ufkgVotz/iujXV1Q1UxPCZ9nHub2vyF/q9kQZjex
-	KAX6VG9+QlOsWOPbC7H2PHQ8/2uCe3qGhItm1gCwRoMn3XOnTChas/dZQjnip903fGWcMzdDF
-X-Received: by 2002:a05:6214:130b:b0:8ea:efae:ab26 with SMTP id 6a1803df08f44-903fdd64832mr161430716d6.0.1784050877674;
-        Tue, 14 Jul 2026 10:41:17 -0700 (PDT)
-X-Received: by 2002:a05:6214:130b:b0:8ea:efae:ab26 with SMTP id 6a1803df08f44-903fdd64832mr161430346d6.0.1784050877267;
-        Tue, 14 Jul 2026 10:41:17 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-61-70-49-81-60.dsl.bell.ca. [70.49.81.60])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd7c1fd2bsm175197236d6.27.2026.07.14.10.41.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jul 2026 10:41:16 -0700 (PDT)
-Message-ID: <690257d2-2126-4a8e-86de-b0882e282431@redhat.com>
-Date: Tue, 14 Jul 2026 13:41:16 -0400
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GQH+uGuf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784051729;
+	b=VgAkArZjt29ZH+BI/7Z3Tj1v3I3cdHPmXZ9+XmY5Yr8kJj8jGYquRHmJ/Gq+kSVwqnWCPy
+	mj7WLcYXW6IbY6FQHHSfkPuMiza5kb693rLyTI48OFigb8tLjKU/Etrpj/20pwhCgdbgMg
+	fnQbZkgngcc5AjlERnpLMjJJcQEFDC0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 0EBAC413B6;
+	Tue, 14 Jul 2026 17:55:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id D8CDB1F000E9;
+	Tue, 14 Jul 2026 17:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784051728;
+	bh=kqPa6Awexo1sZ9NAhkSiBlt6klZOADUjfwrP4NV/fLY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GQH+uGuf7cG6jloVA22oC1BzvBnCdLn6AaVkT11e9Pl4dlrZGqhSiKh/vPEmjkhUD
+	 fF/zQxGSmJIehfWOBVrypqs9fxhp+3sTIWs8usgUkzwuvgPtVyGyiPtP4Hydrbq6OB
+	 peDtP0/8RQIj1W4l1b7eHIe/XwxTNxh2/LBPllthqzyZHWcI1GfP6HPc4IZBwGWc5v
+	 708AyWb9OC4FTGIlsNXG1VjviLyWmvxf7+P+bISXLDRNPGX8h5NbI3IHfNXjDfWet0
+	 tpPgF0TWMHuCOj8/oxx7kqkTGJXEK8n7ykLKBviqU9GHH0HzdA4glcbugdTEuJlBmP
+	 +vg20gZ1ZRRLg==
+Date: Tue, 14 Jul 2026 10:55:28 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: "Zhou, Yun" <yun.zhou@windriver.com>
+Cc: Christoph Hellwig <hch@infradead.org>, cem@kernel.org,
+	linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm <linux-mm@kvack.org>
+Subject: Re: [PATCH] xfs: restore nofs context unconditionally in
+ xfs_trans_roll
+Message-ID: <20260714175528.GG7380@frogsfrogsfrogs>
+References: <20260713035505.1635191-1-yun.zhou@windriver.com>
+ <alSrO3aDTuZkX0K9@infradead.org>
+ <7a053113-f678-486e-a78b-8f5e94e73acb@windriver.com>
+ <alToBmAN_HyeXth9@infradead.org>
+ <20260713230420.GN7195@frogsfrogsfrogs>
+ <0792c175-6a7c-4108-966d-4afbc8c515a2@windriver.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/util: don't read __page_2 for order-1 folios in
- snapshot_page()
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Sourabh Jain <sourabhjain@linux.ibm.com>,
- Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260708201954.686111-1-aboorvad@linux.ibm.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260708201954.686111-1-aboorvad@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TLEH43Rxh-FLQsIV2mtKmXJWboB_qk7T_Hh0K2bDDcE_1784050878
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0792c175-6a7c-4108-966d-4afbc8c515a2@windriver.com>
+X-Rspamd-Queue-Id: CAE5DC0008
+X-Stat-Signature: 9pgaxkeoxff64x316z5u4183uup95xca
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CDF9B18000A
-X-Stat-Signature: 9abw7r3w1h4ahk8x1wdj4bptjzfp8tf5
-X-HE-Tag: 1784050879-351160
-X-HE-Meta: U2FsdGVkX1+LQrwAW7EA2JXBLF9LOvtguFrTWvaOrKxPMTWzqct4H8P4L4WadBr6120iUgRFoiGlmYdtXK3R2PAWKvs7I7cY30kFmto9/g/YnGpMGmzEN4VfEV1BUTUGKwaKtXNLuykC9229lZ55+FeTyNoUu+ClN4IWxsv1ATTCw0aonsC5kXNq6grqiPFHBl6rY5dsNT6r3xdC7o0z9Bd2Za1qMXquBagKC1/viXCPGNcK9hwWj63sDPuX/XLpOjaaO3x0JkroQKHg84GtwCTeJEkM44Uy4Ym3ibAnbFTcbySRUf+k8c51TdpYpK2m7edV1yaij37SD9uJfGc4VwMiM4cN7xJOhIyvcpGuiA589vn7CJq6VlGHF2Buh/6FrjTnawalps2OfdHLqNkgELHBsVG/ML33kKxa/YQ5cZg2twciNnupwy1lbvW6a9APWaDe6Duv2mDcK7L6iC8Dd2IkYE0Ts9AhWlFOF8CXtKCqXsXcvcK28bmR9BpHusInzYRIPPqndEVlPYCJ8mjhh2u7bE6ik/umlijoGpNTLoxr5X+Upoq27cCWRifpsNq32ZST027nW+EBKWFN8kaLJKrT6gXitV0XgIQGVXnEjhYGS0AnmE0BhLq4xyLEn/2Alvxq9iiL/xvmapTN4PDcQJMxvt5wrZUon8uiASgJ0hACQWe4pUC+LbgpJiAZyMq8tRx/V5EGHxswQ2VoRVqqzGJXBBtqjm2lPMOWXRPJDVws+t+qDIW7hnopBmSMfGIeyQw7uoLeX2vYVXUxiseV5j+ZR8u/TQ5u1nLAEuZf9B/WfoJxVHjp7kdUhELMXmcvcBOyyQrpmfpGeClxuaye4LVNilnII/yOtHsrpMCjkOomfBljuStnoqEMsRbxUSOZQWOWolCto9kGI7DgUj1jXHNAXTDQXzgues2jxlqsi8IeDHJfzhuO5ab67EleCtZkGlZUwo2FT24tmD6qGwM
- 6UzW5r3N
- rG5XEClcboevRsbK8VtG18JAGH8lLT6r2Ck/Z6uFRmEv2l6WxU14PepGsSqpe1Gq8wfN0DzOOrBrxt4BVSBw7sP03yPhE9cW+zbkJphgBOL7i6htTphCvgkTEckuyI2SSmdqq1SH0QnYM1p7VjPULdxRlway/i5MH1YXIjNWvltHBTVryd/mvxOAjaOdlfZu5mwCfRmDWRI3h1AOKfbNpP/gVI4bObTGd8VuQqBwgU5vCMpBsiu7fqI6EcSnC+uuyk21nwKCFOcXe/u+jIynmpHxLQo9bzmxfmrxqpRuGqPiWD/8722WiXxwPuUnbdchsdzUqLUU0EMJwTdX66xvAxUd0ZBr+OFq4MX/yVbvj5vcAXQouIUAUobsx11n0BDVDLxAuuZ9rAf+iGyuzYbvhLWKyAN4xGibuEt2L6GyWb+s2wJLMbmQGmwbafhKqx1+y7KTxZfhHdz1Kgl1bHZnpbtJg21PDsDu6yRkEahNJmyw5xzz7hK/LNNIy60vScIzvMnV2gQjbQbJb/1jCs+kHLQH9+w==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784051729-182729
+X-HE-Meta: U2FsdGVkX18gKxMItFx36/9YrQl5BPtEgKwiPiS8gQOr9EdT8Wup8/iOve0cponcbs91KsLAkMQqwLE+UL7tqDmW0UlefujEXGl1ggMQCMVqsWRHHyGfbdjeCdRuaqlrMPZfF7R9DTIQFRQq9vFidZnifdv0Hr1Uk+5Kbpt7Fv5zVU2030gBpdKIBJgmZ9rwSZ5RGpN2bpwHAp2TM4fFZqKf9+ow3cMYDQ5pfVR5izXR8o+Bmni8ntqYQ9jEqPsr6GzPFeF2dvCwfRolyNInA2hWtwtFCE8gfdRH6oAIWr6G8oo9Px7W5MtX0vtoyJhKO7v1p6KGUqUrytQr1nZh8N/QNnu7dYzx9Fj6DirFtyXSs2mlsThYaX4aX82ygaY5QERhsfhtK9GE+/BukNjVfZZ05x5MtiIfyCiCt3uKscso1WRKoWhfVlEgYdgUKTQbt8RW03awSXIjHzD9OdaKGnm+duzCqdLa/R278AX/D2uyvfV7mC6rsJ0P+a2FlI2Yk3IJd3mnY7o/OVOwSP60hobq2+0nz4APjxjS+IwQ+cle0KHkU4AXc4WsgxFSf5HWe9dXuWpfEAolUEUAIg8ET2NR7sNRPn9zNaUZ1br8eqRBTiPc1uS5JjNtNXcSj8R1DFzj2HUpZwKBcUBVvRe4QiEvQ1VzirjA9c+QdvQJmM4PBgM2taWoV5kf+Sg5+3KWwgwPmyB1cRWLRExUHwf1QzWBEB5xgDuEU0r0euJ9sEtoMGA0WrDq3P6FM7uN+0saRV5qdd9U0/lzNhqNgmeSe9nhbkLL6Dy/2554rxiQ0aySoUFXZ6sE8aSo5uh9jH6u7qkiCww8KUzq8sBFhYK+Hd5YkYs1A/0W27QO7JUwR4R2//3SvsYrBT9C9uo6QCDiMih1ojGJ3dJfdIZu3YmU3D4IsthhcsjY3iADTPXoVBWxx8RCBxADnE8HPehL+Yg7IpB9X+doQR9TkYr6OmL
+ kWUdNdmo
+ owXtD5YpCopRTjYxkF3ZHXFUPLVcTckXbbCIi104JopQ+b20ze4Z2oojWxBLcx0lrtYj0+qyvbPUjCSMYzan1xGbXTRiWod6uAMZSCU+LJoZRAJZHujKpp9HPIOFgvjRqinU+enMC8EFe6EKYMniScLSbKBR7WvK3hiGTA+BmaExNDmNXCF2V16mFzuyWGcQXsKv/ZSr4FFVyYltqQ71cG3cLUME2BYDHzfkvl3zGoWBI6l/lo8C63rGUqgiYElvu4pI67AqUAm1eVIkiZma4NgsOfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,46 +99,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-08 16:19, Aboorva Devarajan wrote:
-> snapshot_page() currently reads __page_2 after checking nr_pages > 1,
-> but it should only do so when nr_pages > 2.
-> 
-> During DLPAR memory remove on a 22 TB ppc64le LPAR, snapshot_page()
-> oopsed on the page isolation path while reading an order-1 folio's
-> __page_2 from an adjacent absent section (unmapped vmemmap).
-> 
-> Fix this to avoid reading memmap that doesn't exist (e.g., a vmemmap
-> hole).
+[add linux-mm since we're talking about memalloc_nofs_save]
 
-Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+On Tue, Jul 14, 2026 at 10:15:53AM +0800, Zhou, Yun wrote:
+> 
+> 
+> On 7/14/26 07:04, Darrick J. Wong wrote:
+> > CAUTION: This email comes from a non Wind River email account!
+> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> > 
+> > On Mon, Jul 13, 2026 at 06:28:38AM -0700, Christoph Hellwig wrote:
+> > > On Mon, Jul 13, 2026 at 06:06:38PM +0800, Zhou, Yun wrote:
+> > > > 
+> > > > 
+> > > > On 7/13/26 17:09, Christoph Hellwig wrote:
+> > > > > 
+> > > > > On Mon, Jul 13, 2026 at 11:55:05AM +0800, Yun Zhou wrote:
+> > > > > > 
+> > > > > > diff --git a/fs/xfs/xfs_trans.c b/fs/xfs/xfs_trans.c
+> > > > > > index 7bfbd9f6f0df..1b36cf12d4e3 100644
+> > > > > > --- a/fs/xfs/xfs_trans.c
+> > > > > > +++ b/fs/xfs/xfs_trans.c
+> > > > > > @@ -1029,6 +1029,15 @@ xfs_trans_roll(
+> > > > > >          * duplicate transaction that gets returned.
+> > > > > >          */
+> > > > > >         error = __xfs_trans_commit(tp, true);
+> > > > > > +
+> > > > > > +     tp = *tpp;
+> > > > > > +     /*
+> > > > > > +      * __xfs_trans_commit cleared the NOFS flag by calling into
+> > > > > > +      * xfs_trans_free.  Set it again here before doing memory
+> > > > > > +      * allocations.
+> > > > > > +      */
+> > > > > > +     xfs_trans_set_context(tp);
+> > > > > 
+> > > > > The tp assignment above now returns the incorrect transaction when
+> > > > > __xfs_trans_commit fails, so you can't do this.
+> > > > > 
+> > > > > Otherwise yes, this call should move up.  I don't really see how
+> > > > > it fixes the syzbot report, though.
+> > > > > 
+> > > > 
+> > > > Thank you very much for your reply. The tp here is a local variable only
+> > > > used for convenience within the function. The caller always gets the new
+> > > > transaction through *tpp, which was set by xfs_trans_dup() before the commit
+> > > > call. Moving tp = *tpp before the error check doesn't change what the caller
+> > > > sees - *tpp still points to the new (dup'd) transaction regardless.
+> > > 
+> > > Ah, right.  Tis should be fine:
+> > > 
+> > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > 
+> > Why not move tp_pflags to the new transaction in xfs_trans_dup like we
+> > do for the deferred item list:
+> > 
+> >          /* move deferred ops over to the new tp */
+> >          xfs_defer_move(ntp, tp);
+> > 
+> >          ntp->t_pflags = tp->t_pflags;
+> >          tp->t_pflags = 0;
+> > 
+> 
+> That's what the old xfs_trans_switch_context() did before a1ca658d649a
+> removed it. The problem is that setting tp->t_pflags = 0 means
+> xfs_trans_free() calls memalloc_nofs_restore(0), which relies on that being
+> a  no-op — an mm implementation detail. A fresh memalloc_nofs_save() on the
+> new tp keeps the save/restore pairing correct unconditionally.
 
-> 
-> Fixes: 31a31da8a618 ("mm: move _pincount in folio to page[2] on 32bit")
-> Cc: stable@vger.kernel.org # v6.15+
-> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> ---
-> v1 -> v2:
->   - Condense the commit message.
->   - Drop the code comment.
-> 
->   mm/util.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/util.c b/mm/util.c
-> index af2c2103f0d95..34cb43b3eaa4c 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1353,7 +1353,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
->   	if (ps->idx < MAX_FOLIO_NR_PAGES) {
->   		memcpy(&ps->folio_snapshot, foliop, 2 * sizeof(struct page));
->   		nr_pages = folio_nr_pages(&ps->folio_snapshot);
-> -		if (nr_pages > 1)
-> +		if (nr_pages > 2)
->   			memcpy(&ps->folio_snapshot.__page_2, &foliop->__page_2,
->   			       sizeof(struct page));
->   		set_ps_flags(ps, foliop, page);
+So add a new helper.
 
+/**
+ * memalloc_flags_take - move an implicit __GFP_MEMALLOC scope from one
+ * tracking structure to another.
+ */
+static inline unsigned int
+memalloc_flags_take(unsigned int *old_flags)
+{
+	unsigned int ret = *old_flags;
+
+	*old_flags = 0;
+	return ret;
+}
+
+and then:
+
+	/* move deferred ops over to the new tp */
+	xfs_defer_move(ntp, tp);
+
+	ntp->t_pflags = memalloc_flags_take(&tp->t_pflags);
+
+--D
+
+> BR,
+> Yun
+> 
 
