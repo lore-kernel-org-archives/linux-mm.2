@@ -4,130 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC69C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:39:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71426C44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:42:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E12D46B00F6; Tue, 14 Jul 2026 11:39:12 -0400 (EDT)
+	id 78AE76B00EF; Tue, 14 Jul 2026 11:42:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEB486B00F8; Tue, 14 Jul 2026 11:39:12 -0400 (EDT)
+	id 762F76B00F0; Tue, 14 Jul 2026 11:42:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDD096B00FA; Tue, 14 Jul 2026 11:39:12 -0400 (EDT)
+	id 6796B6B00F1; Tue, 14 Jul 2026 11:42:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A55596B00F6
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:39:12 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D0281C03E0
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:39:12 +0000 (UTC)
-X-FDA: 84987790944.27.7C59ACF
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5ACB3180002
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:39:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cQ0YtouV;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 390986B00EF
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:42:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE1284044B
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:42:18 +0000 (UTC)
+X-FDA: 84987798756.07.4B431A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 02CCD20004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:42:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RCn/6lhz";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784043550;
-	b=ngOtODKdtw1MjkCTpZ8/A3GwW276YRD8rG+qE19A++qpy44tgoBnjX206CHUNYMjhScrYe
-	axDSe4LTWkE8WBYkDMoaAhTvBIEUzFLeUGkfOqgzuVFTqgLA8P8x3YM4hdJkM9VFEhcX2t
-	9kHwtfmW35CHPdD6cZSoY94Fw7HS0Ps=
+	t=1784043737;
+	b=wwTsqggusBiX7kiRZP/Cf86NweAxqiCnp6vqK3o/zBzPGwt7e6WQueNsVWUsN/0wD+oBgZ
+	eIGosHER3J6IkAcCnJBwlaqr/eYYqPZ97f47lL7Neg6HyWIw6SY462SUp+U5PXfXZdJ8pv
+	7jxOAykrFpTO4CDuNd0r1Edg2L8hOaM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cQ0YtouV;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RCn/6lhz";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784043550;
+	s=arc-20220608; t=1784043737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h2jZPg8BmRJ0mbFQa7ElFHkaNBrmZCQEMsa0xC0hHN8=;
-	b=wWw365DIBtJnhR/QmkdkI9v6YqSkzjbyVbKlwZ/iR48pcMOqLKLZORQjokahPPhCYcJKYH
-	HgCp8CX5uwYxNtzmWlOsnvKfUkYVcPA28xYBS/Fx2wC0ryaCRzSG+I/ILNGrTmXwaQ/aeS
-	MWQurdZv4FDEbaDUGF/vbesKOZrm/zA=
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7e9ef94c0e2so490647a34.3
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:39:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784043549; x=1784648349; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=h2jZPg8BmRJ0mbFQa7ElFHkaNBrmZCQEMsa0xC0hHN8=;
-        b=cQ0YtouVErgHGJskYFOnuyFWYgYztA3RcxDeFpvv8VPck3Jo4/zz4bn7GJ0BJshg9C
-         rYqKpUtsLpzlQT2PzpxkGMQ7FueB31C/88jRFsRqEsOWPJOtQCu15s2MFaB2mtI8XZQi
-         RddxFmZVrkXMSqxaTpsxUncSGAbx695lXWP7xVA7SiYapUmnPIeq209yICtRumHdfqK5
-         dN2PR21AFck9eBJghGO18J7YBrHv8jNTpJY3SnayIq/dCVKOiylzhM1J089StffBPR0U
-         L7c5MnTwwd9r2PibhchwNSlC9+OVH8Ubpnlwpn22Ks1JGUku1w/VLaYshnDZzP8YyCTY
-         fEnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784043549; x=1784648349;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h2jZPg8BmRJ0mbFQa7ElFHkaNBrmZCQEMsa0xC0hHN8=;
-        b=B19npy3pA0IVf9W3SlbjuS2C7ByFJvY63bHEL7RtOSWLH20QJdP9sYS+B6h1IWerf5
-         Uc87kw9eUZBmAJsnkpSiKEa0JescBDeyhKJWFEdEFQeJBrOLcqcw79zBUTqGdIV+dD0/
-         hjkDJZ5QGR4wN+7Nww515i/c67w6cOkjj6bNWUXeKct3DTOelzhKZ4J2tmm7zZimnuM6
-         kowHuYFrNUb9MUR6VtjxLeQ0zDSRu2nPgvTb/J0hhAIKX25GkdTbEJm5JP414dAFUEEn
-         AfBMao0T4wFfiib07rE7IPXJnMvWmPa4hb/caDzNlNcPYKpMmL/HrN58LprSGKq/nEQ0
-         iTtA==
-X-Forwarded-Encrypted: i=1; AFNElJ9D9McPUAglRT3IYjXDcoxT/2dygRnIcukCNv+OTe5O3OeSyj1TpJBF/Ug2wwjYCC8OeknYzaaWig==@kvack.org
-X-Gm-Message-State: AOJu0YyFcde8ZgG042njFUH5CM6AHNJTbt2W4agmLF9reNuhlQR3vgmJ
-	jGScLd7FHFn2Z9z83rCmdJ9sFYL1SyAadm9Gz3M165PYkjLE/0Czr9GB
-X-Gm-Gg: AfdE7ckQw16HvwZxRyZcz8nl6YwQNykud00wVDYGrug7xTZtQDgHGon0jWEKxPYZEGS
-	mOTROOEMjWcBxjxoujtl6JGoFZE6r1c01D5uQ5/+AnLOhvK6RPKemnAf/HMtsv/ZZmiZW6Oo6Zi
-	TKnronYk51VOFvFJQybIUS+zYtcn7vidKODu+2FFdPNbnCOsrgFxKA/29wjQLTaLVaLz+83lTaq
-	74uOjUrb4h8/11BDI24UQrPW45bNbUyZxMuW/fbu+Ax3a7hW7lNrUywR1rqnHg8sV1djyOVydau
-	DbC1DQZPlXgIBjLxkIu64DzNb7nEzo24nkXxz87mh5sexqKA5GwVLxs3T9Yjo299aBTwIswsenJ
-	2pfxdWEyh5kYCeJ94yafer+0VOUs41iD1g7osKN396PiXr88pneqZEbeo/KWnSyfPyLTg/eiJ9s
-	iI+kW9n+RMtNarQCjBiu4U3kwAVA2S/xZlUhmsJF4GTwE=
-X-Received: by 2002:a05:6830:6ae6:b0:7e6:e385:4c1e with SMTP id 46e09a7af769-7ec096027c1mr8121305a34.4.1784043549120;
-        Tue, 14 Jul 2026 08:39:09 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:5f::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb3f2b86sm15347657a34.26.2026.07.14.08.39.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 08:39:08 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Xu <peterx@redhat.com>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	fvdl@google.com,
-	rientjes@google.com,
-	jthoughton@google.com,
-	vannapurve@google.com,
-	erdemaktas@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>,
-	Zhao Li <enderaoelyther@gmail.com>,
-	lance.yang@linux.dev
-Subject: Re: [PATCH v2 2/5] mm: hugetlb: Fix subpool usage leak on allocation failure
-Date: Tue, 14 Jul 2026 08:39:06 -0700
-Message-ID: <20260714153906.772019-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAEvNRgGN0HSJ2iLSDD2haSKOxifa-uhkO9Hwossh0+Q_d9fzOw@mail.gmail.com>
-References: 
+	bh=hw/GZ8sZpK+8U70Cy1Nb/z5CpTUfbrL8cZQu/aoFn14=;
+	b=FFGv7t6Kq7bC2Iu5C6Jm0XRxQqM/Ee9+vz3NC0SyLWgdKWM47K4R3VY4vTuzacZhBytHN2
+	UqAYPPnYddQff0I+AsVijdZVT6MNJVmeFDjiRF6X1mKmTf/lV+Uf6/ljsfHGbxEAqrizoA
+	c4qN0Hi5RhqsWEHknPsakUC484/+T7k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CB37A41A34;
+	Tue, 14 Jul 2026 15:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB9D1F000E9;
+	Tue, 14 Jul 2026 15:42:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784043735;
+	bh=hw/GZ8sZpK+8U70Cy1Nb/z5CpTUfbrL8cZQu/aoFn14=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RCn/6lhzugIh3KOvzkWnO7fmMiOJkMPuoc8O5LC40STlvH8RA8BR2h3NhLhJfwAON
+	 kiMgkZtg7EYfgTQz/GXzTzXHjTTquIaYTwkMT3jJXYDh4VmBrNW1xvC3wcv2lgfMN0
+	 xN/+i1QAN47zqnJK3Mrod5M0XzFdcMUkRDh9QXOYi6BKW0yUGlhcOmfagnlUCa82nA
+	 84DFV8yOusVilPmKvx6kOhOlpzgVnSXs1xI5apl7ZO99oRWByskzZHl+kKBuLq6V92
+	 1dwDlmXI7TCErdZ4xRmRrqwuJMfJy+HpLDPUOj97gUgvK/UGb7RmJcCe9dfTKsgD3/
+	 PSClyydLsCITg==
+Message-ID: <ba47a92a-417a-4ea6-94cd-dafd5d33ac4a@kernel.org>
+Date: Tue, 14 Jul 2026 17:42:11 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab/for-next-fixes v3 0/4] mm/slab: fix unbounded
+ recursion in free path with memalloc profiling
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 02CCD20004
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5ACB3180002
-X-Stat-Signature: rbw4p8ikfmhxnhcm8c9b6g7o61u57gfs
-X-HE-Tag: 1784043550-104975
-X-HE-Meta: U2FsdGVkX1+Zec+HCwBKAkmxExJfiIV1f3PaoFKCqQtKMfVtqqGV71aXQQ8xgO6klZwBE7+5VvswnGk4864RNBG0173RMFMQYySiWiO5ymPgeTgrVFCeW/FzsmbVSSYAAy8y+qHHcqTaFU63x4navmDRIn5LLwNI8Q+eoGT4x0ZwSIUb1AC8cMrLeg7hT2Qpvo1/fZBqFW/D5bt9aumkydnNKg9yIXlGOHEMIw2b0s2xK31L+kZ5lE3SDnYxmgZ0LVvqp+bgoOTSxoSpDXIf7/nTbPaaS27N3zd7A0+vsJC8FgSJr2WCyReu4OlhLgiF5fKRTo2p6+b33JVWnAK6gHmK1pZN+fXlsUxzCsKQoZsd4379pMiSiwQ2A5Un17kYjbjcQRwmKl0YjgdC/+qmhmfEgBttphAIQtkhlrd/j++l/gXSq0uFY8bE/Sz4xY4StuG7mZhpXOVyr0KpG3s3PfPqMEHJSLIBhJi/OEPAppqYLrmKaaw7AcI0shDJX5+Sb59LZv9Ld725b0ZAmrh8lD8OH5B96jKugR9l4hmScjqf8nrKVA1QNDxEUmoeaBAPfoEx6NgAGaUPAmlV+FzK1XYRhzC2xRwS/AqIV+OWseOy+7zBLL2PX4nmsjeONn4zsaIlud3Hip2+avgLSc9L6QXHfgf28Ja9G07L8bv0xhn2+AyI1AYMrI6TP6ZmlpIYRSGoTCmCGIfcn8BFxsy65+p7kOTX5jteEj3Jo3fS1OzQ/+H4nJMhslUqn86uGYmmnOv93piXsInGH2efxOIFaLriL1fO2ZoEqPZ+tZ/VbAo/2hmOU24o+Ivu/2Toys5HMYM7KeHlW3oY8DMkojoL0EVrW6mhGDQkZ9VrPxNCzz6ReGLV4I810WiBvQRg/o8SUi4pWzobDQYJm476jIwT/N0E80P6UOtbWKqUnWRMlUbeCVAQbQdUhlSqlQ5ViUPdhTobtUnYdIWl6al4kXF
- M2MlPg3S
- p0v1/PCtsv9vpPInkwuZEQA27XH9/cQsXblEJqFId5FnwPBXdNFEN+XavOWkqduvElGSnJI3ejTGOVt8ixzjtXpLTPwONgi6mrvK1VltAfDtH+MsP4wzqCCewSPinsByP+p5tcg8B+Jyzkt+2VpElwXBLTtUGR4ZYtuB7+ELionG7akFVuaEXj09cPrnUEGOyFt9MwSEQmhQ3cWP2/DKt+zQMf++ongo64i3d0+Xm65buVriR0mdZtvVTd4J3fbUj+91nAPhfmcjpZlnKifGBw2hrMdiHj2MeWJeiAdAvagp2qSfJJH41Ba/yYSF/8SkQvCoAYkVowVyJASFji2u9cLBxb51BRkPwDvTnFtqviezys7pAeV0PDGBlSnvviQ+rheUwndGqonkipsPkmepKyPgdyOQ5qg1NbVKiZcs326nUkfT3MYhcgPangU6iH/OxWUS7zcEOpSlkFQunS9TMmeyt2VFBtsjgevLEBUR6vDtIIbYL2EXhK8/JYJ7eQ2gLGnbzOVFmAUDDLlO/KcbOfEkAfVcBGeBhLTWs7ynty3P9MAtbMyTNMARE3cSIvh8LF+0L4+HXhUBQfExPgXjVH+ojxBXKIkf4QD6iMK2ah9FiPOrCMOqZHmolSs1N7kxxq4VPCRJQOLWJN5P40QbOJjpd4yEMd37KiO9gManFSPVaAi2GKvfuTWORqI1dxkMwFNn749JJuvdq5HIAXYoTlU1Feg==
+X-Stat-Signature: zo48g8x1dsiaiafota8cep4y766aseo9
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784043736-631141
+X-HE-Meta: U2FsdGVkX19R3YVDbpOKvk9nyBKLJW5uQl146zDieBYAgnDo1RrzR4vmTsY4rQc/8HxJyalEPhutnoL8kaR7brQbTjXez3SVE7OvBrZnvyRU1QciBd4oOXZZtdJ8xd8MDaA9lKP9BVBFdjAyVbgNaBSJtIT10ijJ2qxOEIxdWWfkpqTRJMe2f4dKPwfR6AQMCDywokCtGpKOdoB/x5Ycs0dqFPxL2ntmRIxLSl45EiEimRnUIfmUqUqDEk0wLnQuYhgwA6z5HvlET2LaNH0+78qVeXkoOBOhv1z7nCfNeAjdqV5Iu6WRCcGMFuoxnIaSD/MbLafwMYnz7jj2e+nf4ZJ6P4TlQy3CYBMYQEOannC6m3Sd2+2vU1j4Xj9h4nqaPqL1pxo0nFym7lVbZwqFCALQrtwrYxd3uuO8TKfD4oP9uPfCRlBnyi4/hELtjezxb4JTQtnYUrFWznpai9x8SkNx9+aaJIfmlE7t4YN57v7yWwgDAkKLRjE7t6lOhHJWmqqiJSfwN2uVSvaOWib6aC099sgWautZxS6Up1AdsU+JLhiWHSrssFT0snoekwHh88Q/VuRVLEnkdgx6hGW60OL5LYOF9GhpLNWdcqDXIkEqEVTB48l/BVRJExmWgWdur4jRm+aoC37N5cR7UvcIMsj9XGmPiDhOds14eiFmihslAm7bnkJgJTZf/Vn1YIbvKm2/t2sqVHn0+Uw/u91Sj9YvFfrfgjm8JNKjysNOPfsQxfQMt1Ncj/qvygL0dTfcPhgfbmfVJSa+Kp7cOa/5I5ohOlivyLdPgJPO7N112UcBq/lOvP8D62Fpph+s3cdXfKjFDkhZCJ7DR0Rznl4cKmr+lVo49gykPqGLPFcnHHFBjoPxlgjuIE3TR4wI6sOGjUJnZCYD6TQodJBQdp+uj1x9bOFDz/fo5j/ITy4ukmS9d1aGG/RQq8McsLLGOpMD+0zKfOTTQBD/W2acL0X
+ VL0UMAFP
+ +H5xQagcONJkq1E14phVIHwQZueLSrQioZ8fxn2xgI0bg7vIi9eWF+LkgS08DgLICx7bIYtvfcHYRUGqzVR1P6Jw3Y1Ax1Zd8PbG6WtXyA1kj13QRgCK6v5HwIivEDoh+x9vMnQ+uFcwD70ZC7NpesIfOIVbasirh0trBBJ0/LmHKRXOXb7AT9mzwNb1zfHdhZ/1oircJvXG93GlqXzxMrUn3DLP7hWnqueTR6FJ7GS6oSizMs6NTfX94Wlzz1qQUbmJxSl5loDHPDmYbxAUSDw6hjIifPaH8PEVjF6SD9WecdSdmdmJkPGXMKlrifUQaz5yWVBF7d4fo1L76NkmCS0Pdit6e9PjyK+O/IL/XhH+jpvQA4FqmEUU7k5JuEJxjlO2yoY2tw5IDvPAQYqguxNGegeRII0vuNJhk8pa7kITBnC+AFN74Tv+tdA0xFPrrlo0E0sRx/i25u1xT17rXmbxcVAlAriI6tTTlmceYK1yApWMdfLEKvbS9/pwntIjso1pXHR/soi18C4C5s9LNrDHvp8TiNxnAKozThmFAHCFamzarlhlxw2aITK50i4Aa2J9ICAFEWOGYxquq9T9+enUDUrvoyY9T0+Mp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,171 +140,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 9 Jul 2026 15:15:50 -0700 Ackerley Tng <ackerleytng@google.com> wrote:
+On 7/13/26 16:28, Harry Yoo (Oracle) wrote:
+> This is a follow-up fix after the recent discussion [1].
+> See patch 4 for the detailed description on the bug.
+> 
+> Based on slab/for-next-fixes (af9ea231c0b45) and is available at
+> git.kernel.org [2].
+> 
+> Instead preventing cycles by bumping up the allocation size of obj_exts
+> arrays, it introduces a new kmalloc type called KMALLOC_NO_OBJ_EXT and
+> disallow formation of cycles between kmalloc types when allocating
+> obj_exts arrays. obj_exts arrays of normal kmalloc caches are served
+> from KMALLOC_NO_OBJ_EXT caches (that don't have obj_exts), and all other
+> obj_exts arrays are served from normal kmalloc caches.
+> 
+> I tried to reuse SLAB_ALLOC_NO_RECURSE to make kmalloc_slab() select
+> KMALLOC_NO_OBJ_EXT, but it was not great because it does not allow
+> sheaves for those caches. So I introduced a new slab alloc flag
+> SLAB_ALLOC_NO_OBJ_EXT.
+> 
+> To avoid huge confusion, I had to decouple "disallowing sheaves"
+> semantics from SLAB_NO_OBJ_EXT and introduced SLAB_NO_SHEAVES.
+> 
+> While this cannot be directly backported to v6.18 and v6.12 due to lack
+> of SLAB_ALLOC_* flags and kmalloc_flags(), I don't this will be
+> particularily challenging to backport it. Instead of a new slab alloc
+> flag, we can use __GFP_NO_OBJ_EXT to select KMALLOC_NO_OBJ_EXT as
+> kmalloc caches don't have sheaves in v6.18 anyway.
+> 
+> [1] https://lore.kernel.org/linux-mm/9a139365-28e6-4f1e-b35b-7f6091e9aa14@kernel.org
+> 
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/log/?h=kmalloc-no-objext-v3r1
+> 
+> To: Vlastimil Babka <vbabka@kernel.org>
+> To: Andrew Morton <akpm@linux-foundation.org>
+> To: Hao Li <hao.li@linux.dev>
+> To: Christoph Lameter <cl@gentwo.org>
+> To: David Rientjes <rientjes@google.com>
+> To: Roman Gushchin <roman.gushchin@linux.dev>
+> To: Suren Baghdasaryan <surenb@google.com>
+> To: Hao Ge <hao.ge@linux.dev>
+> To: Kees Cook <kees@kernel.org>
+> To: Pedro Falcato <pfalcato@suse.de>
+> To: Shakeel Butt <shakeel.butt@linux.dev>
+> To: Danielle Constantino <dcostantino@meta.com>
+> To: Liam R. Howlett <liam@infradead.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-> Ackerley Tng <ackerleytng@google.com> writes:
-> 
-> > Joshua Hahn <joshua.hahnjy@gmail.com> writes:
-> >
-> >> Hi Ackerley,
-> >>
-> >> Thank you for this series. I really wanted to work on hugeTLB accounting
-> >> fixes but never got the time to get to it. I'm very grateful that you
-> >> are taking a look!!
-> >>
-> >>> From: Ackerley Tng <ackerleytng@google.com>
-> >>>
-> >>> When alloc_hugetlb_folio() fails early (e.g. buddy allocation failure or
-> >>> hugetlb cgroup charging failure) and gbl_chg == 1 (meaning a reservation
-> >>> was not used, but a global page was allocated instead), the subpool page
-> >>> acquired via hugepage_subpool_get_pages() must still be returned.
-> >>>
-> >>> Currently, the error path out_subpool_put: only calls
-> >>> hugepage_subpool_put_pages() if !gbl_chg is true. If gbl_chg is 1, it
-> >>> skips it, permanently leaking the subpool's used_hpages counter.
-> >>>
-> >>> With the earlier patch to always track used_hpages in the subpool, always
-> >>> call hugepage_subpool_put_pages() if map_chg is true to consistently
-> >>> restore the page to the subpool. Only call hugetlb_acct_memory() to adjust
-> >>> global reservations if gbl_chg == 0 since gbl_chg == 0 indicates a
-> >>> subpool (and global) reservation was used.
-> >>
-> >> So I think that I've seen that this part of the accounting specifically
-> >> is a bit suspicious. There have been two attempts in the past to fix
-> >> this area [1] [2]. I think functionally they are quite similar to this
-> >> fix, they just open-code the contents of the put_pages function inside
-> >> the condition. I've Cc-ed the authors of those two patches in case
-> >> they wanted to chime in.
-> >>
-> >
-> > Thanks for connecting us! I didn't realize this was already being worked
-> > on. Also adding Lance, who commented at [3].
-> >
-> >> I reference these fixes because I think they handle the minimum
-> >> subpage case a bit differently. To be honest, I recall reading those
-> >> fixes a while back and getting a bit confused on what exactly happens
-> >> when the page is absorbed to fulfill the minimum size...
-> >>
-> >> It does seem like Sashiko also notes this as a possible concern.
-> >> WDYT? Does your reproducer for this issue also work when a minimum
-> >> size is set (let's say, to 1?)
-> >>
-> >
-> > Let me look into this more!
-> >
+Added to slab/for-next-fixes, thanks!
 
-Hi Ackerley, sorry that the reply took a while : -(
+I've removed Fixes: and Cc: stable from patches 2 and 3 as I don't believe
+it's the way to handle the dependencies.
 
-> I was looking at Sashiko's comment [4] and Sashiko is right that there
-> could be a race. Specifically, at the time of
-> hugepage_subpool_get_page(), I might be using a reservation, hence
-> returning 1 (thread A), but at the time of hugepage_subpool_put_page(),
-> some other thread (B) might already have restored a reservation to the
-> subpool.
-> 
-> With used_hpages tracking within the subpool, we can rely on the return value of
-> hugepage_subpool_put_page():
-> 
-> + Return 1: Reservation should be returned elsewhere (pool has enough pages to
->   satisfy minimum, or doesn't track minimums)
-> + Return 0: Reservation does not need to be returned elsewhere
-> 
-> But calling hugepage_subpool_put_pages(1) doesn't say anything about whether the
-> 1 (in this case, 1 doesn't always represent a page, since specifically on the
-> error cases, the page wasn't allocated) consumed a reservation or not.
-> 
-> + gbl_chg == 0 means a reservation was used, and
-> + gbl_chg == 1 means a reservation *should be used*, but
-> + gbl_chg == 1 does not necessarily mean a reservation should be used, since
->   h->resv_huge_pages may not have been decremented yet. (See goto
->   out_subpool_put and goto out_uncharge_cgroup_reservation in
->   alloc_hugetlb_folio())
-
-Yeah... this kind of tripped me up.
-
-> So, we need to track if h->resv_huge_pages-- happened (with some local variable
-> like reservation_consumed)
-> 
-> | reservation_consumed | hugepage_subpool_put_pages() return value |
-> h->resv_huge_pages++ |
-> |----------------------|-------------------------------------------|----------------------|
-> | 1                    | 1                                         |
-> Yes                  |
-> | 1                    | 0                                         |
-> No                   |
-> | 0                    | 1                                         |
-> No                   |
-> | 0                    | 0                                         |
-> No                   |
-> 
-> TLDR: replace !gbl_chg with reservation_consumed?
-
-This seems like quite a reasonable approach. It's new information that
-we can't derive from the existing flags we have.
-
->     <<== reservation_consumed = true
-> 
-> 	if (!gbl_chg) {
-> 		folio_set_hugetlb_restore_reserve(folio);
-> 		h->resv_huge_pages--;
->         <<== reservation_consumed = true
-> 	}
-> 
-> 	if (map_chg) {
-> 		long gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-> 
-> 		if (!gbl_chg)  <<== this should be reservation_consumed
-> 			hugetlb_acct_memory(h, -gbl_reserve);
-> 	}
-> 
-> I believe this depends on always tracking used_hpages in subpools, in order to
-> know for sure, just based on a number (with no page information), if the page is
-> supposed to use a reservation.
-> 
-> 
-> Perhaps related: does it make sense to flipping the reservation tracking
-> to instead track an "available" page count? This is basically the
-> mathematical opposite of rsvd_huge_pages, as in,
-> 
->   available_pages = free_huge_pages - resv_huge_pages
-> 
-> This way, there's no need to synchronize the number of reserved pages in
-> both the subpool and global hstate.
-> 
-> It's quite confusing now, that reserved_pages-- can be either "used a
-> reservation" or "unreserve". If we track the opposite, available_pages--
-> will definitely mean the page's availability is removed from the global
-> hstate and transferred to the subpool, and allocating page doesn't
-> involve updating both the subpool and hstate.
-
-I think I like the semantic change, since it does make the code a lot
-more obvious on why and where we are making the accounting changes.
-One fear that I have is that this churn could introduce some new
-subtle accounting errors, since we have been fixing this area for
-quite some time now. Let's audit very carefully to make sure that
-there are no new accounting errors that will be introduced : -)
-
-> One downside I can think of is that creating hugepages (surplus, or
-> promote/demote, or hotplug, or runtime echo 1 > nr_hugepages) would need
-> to update the global hstate's available_pages count, but I imagine that
-> would be less frequent than allocating huge pages?
-
-Yup I think so. You might be more familiar with the new usecase you
-are adding as part of the guest_memfd, but I have not really seen a
-usecase for hugeTLB that would require userspace to do many hugeTLB
-allocations (that THP wouldn't be able to serve). Having this accuracy
-seems to be much more important than the rare contention we will see.
-
-Thanks again for the fixes and ideas Ackerley! Looking forward to your
-new approach : -)
-Joshua
-
-> >>
-> >> [...snip...]
-> >>
-> >>
-> >> [1] https://lore.kernel.org/linux-mm/20260428113037.88766-2-enderaoelyther@gmail.com/
-> >> [2] https://lore.kernel.org/linux-mm/20260515202902.461539-1-devnexen@gmail.com/
-> > [3] https://lore.kernel.org/linux-mm/20260428113059.79001-1-lance.yang@linux.dev/
-> [4] https://sashiko.dev/#/patchset/20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b%40google.com?part=2,
 
