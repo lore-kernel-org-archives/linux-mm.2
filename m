@@ -4,104 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BF0C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 20:52:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2623FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 21:14:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55EA36B0093; Tue, 14 Jul 2026 16:52:30 -0400 (EDT)
+	id A49FA6B0005; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E8B96B0095; Tue, 14 Jul 2026 16:52:30 -0400 (EDT)
+	id 9FA566B0088; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B2DA6B0096; Tue, 14 Jul 2026 16:52:30 -0400 (EDT)
+	id 8ED1B6B008C; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0815D6B0093
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:52:29 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 905711A051E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:29 +0000 (UTC)
-X-FDA: 84988580418.24.83AEA16
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B8C062000B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LojGFe5a;
-	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 624DB6B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:14:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5B04A0511
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:14:44 +0000 (UTC)
+X-FDA: 84988636488.12.E312080
+Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 093A940002
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:14:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784062347;
+	s=arc-20220608; t=1784063683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iTqi3alAZsmClmkp2BKQHhwiYigUfhN2a2XtbcHcncw=;
-	b=5dVtA6hxVa2CjptkwKM4oi6kFe+Be9W+l3wWcMmyUka2J5WoR+3W/ddomkrg33OwaW6o5a
-	LvsIVkDOc55AlS/ycJ2Kr+YSbnxiDkG/cUJoSs0vcRfoc6q14quhCk0wJjvE4SaV5InDcZ
-	bVz+xzddsjsDRPOsnZedmeE1+FWKgYY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784062347;
-	b=aituVmA943IfzgU2OAhfWYd/EL7qqKAl7cNUoi+6bQt32+TVtFMYFEs/0mHM4c+3nj1jnz
-	OuK43t4oqns6g6s0Ns9kAGcYWXTBZEXV8BotoQ/LQyEFvC8T6VQCQ++001I2/ZbarVWSrT
-	YfFmSFW7i7q+AC3Zd2+bhDWR/ADzQKg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aKvOJNMobO+mlVKUT3NgXi3Acbt8uKLISzEEa0TKkJE=;
+	b=QfNSgCk8HuNmKZu7DhYV9njHPoYa0PEE1XEgeMHwUryn0P7ZJEjkwlEfD2vZdaLdXZTdde
+	nWK++aop6xmbi/7U5Dcl5euc8w3pWF+b/2dKjWANnxiXp2UYnh/05S7bUiKiQIQaK7eLAZ
+	tGTheT9VLoU8KkGU6YyLmT74Lzw/EsE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LojGFe5a;
-	spf=pass (imf13.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 27F32601D9
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53811F00A3A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784062346;
-	bh=iTqi3alAZsmClmkp2BKQHhwiYigUfhN2a2XtbcHcncw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LojGFe5aBgMbCn0entPMrDRIK+MvJJ1bB33pHkwkvWHhC2Nphio6l2ttvWlScTOmb
-	 LxaHkMHcUGpLGi0sTicdWt0B1Bx/H7zlW0JdKgI3DXuXjaHkhq0Xy9pCmLiZ63Oti2
-	 ARjvDUBvsLTAgz2GKWJp6nSLErYQqejnt2QmlJsgToBWImM6vLOfKGI+Wjo2YzqtSM
-	 mJXM0UUxDjrtnZNsFjVs/5GOI+TJrswQirIbl4E/WtCFczL3aPbUmCRwb5meUO0xbO
-	 BuTPRafv5bsDr0SZAYJ6LmTbX3ezoeZs3aboSxmbX0jtNJsthvZ1X0ofwuR1EeBSBy
-	 R1/FC6i7DLTmg==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-698beff7178so8070412a12.3
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:52:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpBAnYE2Qb/zSTkjZS+Igf8GMaepA9MG5cDV3eMOv5f/iE5syF6iYwHHFcTpnNPVNCc74KmPchlpw==@kvack.org
-X-Gm-Message-State: AOJu0YxJ2kuompifOYS3/pHvnuOVdUK408X0uMFZjQh+/bEANK9o939A
-	yXWrrBn+pmEAm5OqVWWzbYnOjGe5ond0hVmVouIZmDpEKEmFuVmnXOh+MHdqmxDQKJ0L3nf3PdR
-	dASxsdf8Fwy0v/9/sLIA8JJzR5PD/jww=
-X-Received: by 2002:a17:906:9fce:b0:c12:34ec:ad1c with SMTP id
- a640c23a62f3a-c1679367183mr21088566b.56.1784062345755; Tue, 14 Jul 2026
- 13:52:25 -0700 (PDT)
+	imf17.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784063683;
+	b=KQxrdsvAbS6OVzcOv+EaU4/PDGjzsyHtJqt9S2uIWRf5feT230etB8kwbnYZyk+4zKMIyI
+	i55Eo0IaE1erJhBLlu7HBTtposH80cJ9MjeGW4vj5babRnSZjl5IgEG5+g8+l8kc2qIHYB
+	YrHyTMNZLu9oHx4TyD3KAUacCDLT87A=
+Received: from omf03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5AA0440522;
+	Tue, 14 Jul 2026 21:14:39 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf03.hostedemail.com (Postfix) with ESMTPA id 15C226000D;
+	Tue, 14 Jul 2026 21:14:35 +0000 (UTC)
+Date: Tue, 14 Jul 2026 17:14:38 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra
+ <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter
+ Anvin" <hpa@zytor.com>, x86@kernel.org, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH 08/13] mm/kwatch: add hardware breakpoint backend
+Message-ID: <20260714171438.226faf7b@gandalf.local.home>
+In-Reply-To: <20260714183206.12688-1-wangjinchao600@gmail.com>
+References: <20260714182243.10687-1-wangjinchao600@gmail.com>
+	<20260714183206.12688-1-wangjinchao600@gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20260713025644.170839-1-youngjun.park@lge.com>
- <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
- <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330> <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
- <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330> <alae-LIRwEFUjgs1@linux.dev>
-In-Reply-To: <alae-LIRwEFUjgs1@linux.dev>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 14 Jul 2026 13:52:14 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
-X-Gm-Features: AUfX_mzvYPO0I-kzUXbogAiHLzr_xtUWxhzL5KSspLm9Ule6jCBXezY4eupVLjk
-Message-ID: <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
-Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, chrisl@kernel.org, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
-	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
-	baver.bae@lge.com, her0gyugyu@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/+jUG/wma6bXPaXNDDF4uPI966CzmydeA=
+X-HE-Meta: U2FsdGVkX1+BwHjks+RcUuzIPHfbSeUChRislj0v1kLLaY98NAKF6cdZylAtqcI59w4fbE1UaMDFXzng8xvt0r2W54B6xPwD9aR33+AJde3xxYHmB3Xqy97uhwKNAjrEFHbwMYr8N+8lsjMIeaRezBQgyf4EPvq0NQyxCRRifw46VeA3PQuB85l2wH4sIawolc51TlXnBbIf/t6zg2PpDxpQ0xONaCpVs5SuoR/zHifYoqD66Sr0/ekUURTsxJf3+xmOBWatOhJM00GlJgkk1ANhdqTl8Jgjzp1LQGeDovN3/JPet+YhwAnTHMWlMR4NDTHuDFZrVnyepQjaQfBPmFF0Dc8n1a0i
+X-Rspamd-Queue-Id: 093A940002
+X-Stat-Signature: ofukrydpoaufx6f8q8s6anx3wj8ecikd
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B8C062000B
-X-Stat-Signature: rirc9j66sebejy11rcwbxxtjrf718wmp
-X-HE-Tag: 1784062347-279330
-X-HE-Meta: U2FsdGVkX1/Pmlb1+mF3GEPIA/egJxsXV+HsEQBKNRbJJ1+2LES7fpXNNQmC5AZyVf5iqnhv7G8M7E1NEZy2bfLd5ZoBnaDlYc52ReALBTvP77Re8s4bDetz1GKpfyEY6Nft9l57JHnxDvIYBOBXy5pFbo++N3sJpmVabN8B1vi+tD5vWcdtoxaRNSkwWgtpNBhprHqq6ARCrGoxAtZa7YunFjNwdm2miaEnKpNvN3KH5p1kUjbJwtRe2uI+p/s7ROXxjl6oGYkvsCcwMJq0u1c83vboh2oiqDwPZTkTB/my+I00x5Zen8u+5958nCL1xhXqrtXJ361BVvS4XLNyDYSFLoS3jIMSOufbXREqB1s8rVbcKmes536nmhf+KNaH+AYvvzr17c9lAqfFaGIQ/UosYxRlI4r/Fx+d2IxHg19aNL69qCNiK+SkOskDo7HClvY8SxfPgkhDK69uZ832AVYSRAyBdjSUKA+5YrAeYSH6gLvHnws4YZRYJJ5hCA5qOrdcPP5q8ghzfyFjXXHoROD11hdrgoW78cE78txAvVdPDaSW4BBbD6UZBZtAytsIszcMcxMyqJmulSlMAZl2jd+6+T55TKdA8+/9Z/MQxMyLn9CJUCjXn2ywiHxO4rIdvuQKW8iKD97wRqe0O12zVjv9lA03MOBUuY04gwHBc2ZNKK3KvBBJUI2mClQHIW+ihFuQ5zPPqCrwBTeCUBUIo2+6UK1zJA1tCdMp1PlWSSJmwP6dmwdgmpEUU8GdOQypiFtx6QwiQtGHO1mzD9RAB3uDjx2T0PzsqwEV2iHzg8UHEryDRIqOn6mG7w6i/PHyFz55hl1R6ncTCd7jp4IDqZLzrF9BpJHtABaxhLe4cOWpPrjkSbnwPckfzAhJSL+rNFDgjjhHz3gfTFr0PQ8Hu6haEz38vmtpUC9i4A+gOFPwLkqg+WPeNB23+DpMplkVQs+H2VyUT6fZ06SylIF
- 8SsPiKxR
- antZbirfTMqHu75ro5dwEcY04monaqdS0U1RzD1CyD/hipyTLFK4UEetp2TGGx8VQI84csYWRXilq9/tvbCeLq4tvqYP79t7c2t83/IObKaiXFq/wkZ2i9Ij0zlKRDEAbN2w9iE1ATYOly64TtG55OzKslR8jnRq7zyn1sVFb9hU89TGYKmIow50bWfQkvWsGpq4EIV8/cS0ohkBR8gtAP/OTISzlJEQTosatfunznu6+dEk1XSpclWJtVHLmat0jXCwrTB4UGGOSK1DWiU/o0F2IgHd9LrjctA4P+NeVzLa/Il3DhmSnTUUtv/XkkzcTC6OOaavhS1J9tCN1nbQBcTVORUykwXM7SDyqlzB6YfsymlA=
+X-HE-Tag-Orig: 1784063675-113700
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784063682-640300
+X-HE-Meta: U2FsdGVkX1+wcnw1v5wNIfyBYe/OSsSGoLnYttckGrjIkZiQBKeyadKlYwGrJ2A7dOhPhSeSsucJEGsTxrW8sMksgvT8tYWVEStJpq/a22UuSd9iJupO4UCBMPdHfYi7O5FdUUBhvUWeHfGtzbdiVQkQklqFYe5474sHPmG4s7RPPZwoBzzxNxV4I4vNkx+SG3dtc9zeFh0evjsn5GoFWdGUOefcViYG+l3H/r+Nbw7kBGF+a6c1fcjWsB7fVg2RdZSu1GRmHvnLdpk1GAKi+dmYFn0GwnaHZmzuDzgclyNkTQiNMhj9NftVwZYYyZ3GD+mYjUqto1IwFrjkkvFEoFaLfzrdkpZkB0nxQUWqvXPhkMZM0MhQji7K9yrI5VTwTHiQ8XPrKHsw3WwMlYF49LkOkpPHw1Gq6nIj74GeSL+Kg6SHuO2pmoWE0VK6R3PgZK/ZfTJUhYjLfakNv3sYckoQ1wORSJ/JybovKYEP8YpcS3nL5b2MxYcOSjlzX9WrojBfvnU2w5Qed4oo4yygW0ZTidm8QVZvvjCME976mULIGnRsHaEs4IAbK8oGFyBgvxxtcJ3qI8+XBBtcyYs1vRTqDlv5fwVTiuFWtmKo/g5EznS4GZ9FsKxunTF57SMJrNgPm+egAAbMQ7w+kKwJ3Nlc/6nJhWMoFMfQ0z/CnMqB0sSIEtL+VzQ9aoSrgTHIhmmlS8IronHHATE2Lu9J0U+crknQBFQ6BubtLy/0RYmZSlhTeHi3X9vgcK28LUau1KZcC07wywXzQ6aEgdsF+c5Eu9Sj8TsF57rqXdWtbAUXo625IyOfPgEaHePT72cz0d5okBnHQJN9MjUguXociOlbEDzUsr0+yxykBdtke+e3CboMk9VswzGhNtLpAsgw9e0T7LTgRu8YdYoo30+wPkZLKwGvopEd+C3EUVUbsKDM/Zo/4+leJxv0B5Mv/Dbrxjw41sPvsg38YN/8i52
+ 9kQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,66 +91,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > > >
-> > > > Hello Yosry!
-> > > >
-> > > > This series does not cover zswap as a tier yet.
-> > > >
-> > > > My plan is to land the swap tier infrastructure together with the
-> > > > first use case (cgroup-based swap control) first, and then follow
-> > > > up with zswap tier support in a subsequent series, continuing the
-> > > > discussions we've had above.
-> > > > (I mentioned on cover letter, right above the overview section)
-> > > >
-> > > > Does that approach sound reasonable to you?
-> > >
-> > > How does swap tiering work with zswap in the current series? I assume
-> > > zswap is just enabled for all devices in all tiers?
-> >
-> > Yes, that's correct.
-> >
-> > > I wonder if introducing zswap as a tier after the fact changes user-visible
-> > > behavior. I guess if zswap will be introduced with a default "max"
-> > > value it will more-or-less be the same behavior,
-> >
-> > Right, that's the plan.
-> >
-> > > but I would check all
-> > > user-visible behaviors related to zswap (e.g. interaction with other
-> > > zswap interfaces) to make sure nothing breaks or changes in a
-> > > meaningful way when zswap is introduced as a tier later.
-> >
-> > Fair point. Let me review this more and get back to you!
->
-> Please do report back what you find.
->
-> Yosry, what is needed to enable zswap as a swap tier? What will be the minimum
-> requirements for that?
+On Wed, 15 Jul 2026 02:32:06 +0800
+Jinchao Wang <wangjinchao600@gmail.com> wrote:
 
-From zswap's perspective, we just need to skip zswap is zswap as a
-tier is disallowed. Could just be a check in zswap_store() similar to
-the check if zswap is enabled. I am assuming that if a swap tier is
-disabled, nothing happens to the existing swapped out pages in this
-tier, but new pages do not get swapped out to it. This is the same
-behavior that happens if zswap is disabled at runtime.
+> --- /dev/null
+> +++ b/include/trace/events/kwatch.h
+> @@ -0,0 +1,57 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#undef TRACE_SYSTEM
+> +#define TRACE_SYSTEM kwatch
+> +
+> +#if !defined(_TRACE_KWATCH_H) || defined(TRACE_HEADER_MULTI_READ)
+> +#define _TRACE_KWATCH_H
+> +
+> +#include <linux/tracepoint.h>
+> +#include <linux/ptrace.h>
+> +
+> +#define KWATCH_STACK_DEPTH 8
+> +
+> +struct trace_seq;
+> +const char *kwatch_trace_print_stack(struct trace_seq *p,
+> +				     const unsigned long *stack,
+> +				     unsigned int nr);
+> +
+> +TRACE_EVENT(kwatch_hit,
+> +	TP_PROTO(unsigned long ip, unsigned long sp, unsigned long addr,
+> +		 u64 time_ns,
+> +		 unsigned long *stack_entries, unsigned int stack_nr),
+> +	TP_ARGS(ip, sp, addr, time_ns, stack_entries, stack_nr),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(unsigned long, ip)
+> +		__field(unsigned long, sp)
+> +		__field(unsigned long, addr)
+> +		__field(u64, time_ns)
 
-From the tiering perspective, we need to accept "zswap" as a possible
-tier, or maybe creating it as a tier by default if zswap is configured
-would be better to avoid handling the case where the user doesn't
-create a tier for zswap. We also need to disallow zswap being the only
-tier as that combination cannot work without vswap.
+Move the time_ns to the first field, as unsigned long on 32 bit
+architectures is 4 bytes, and this will make 4 byte "hole" in the event.
 
-I think this should be enough to support "zswap" as a tier and allow
-disabling/enabling zswap per-memcg (or globally?) through tiering.
 
-In the future, if/when swap demotion is added, we need to figure out
-how that would work with zswap. For example, if pages should go to
-swap device A then swap device B, then an entry in zswap using a swap
-slot in device B should not skip device A and be written back directly
-to B. vswap would naturally give us a solution for this problem.
+> +		__field(unsigned int, stack_nr)
 
-> If that is not too much, we can make that part of this series.
+Make stack_nr the last element for the same reason.
 
-Yeah I think it's better if we agree on the design and zswap support
-before landing partial support.
+> +		__array(unsigned long, stack, KWATCH_STACK_DEPTH)
+
+Make the above a dynamic array based on stack entries.
+
+		__dynamic_array(unsigned long, stack, min_t(unsigned int, stack_nr,
+			  KWATCH_STACK_DEPTH);
+
+
+> +	),
+> +
+> +	TP_fast_assign(
+> +		unsigned int i;
+		unsigned long *stack = __get_dynamic_array(stack);
+> +
+> +		__entry->ip = ip;
+> +		__entry->sp = sp;
+> +		__entry->addr = addr;
+> +		__entry->time_ns = time_ns;
+> +		__entry->stack_nr = min_t(unsigned int, stack_nr,
+> +					  KWATCH_STACK_DEPTH);
+> +		for (i = 0; i < __entry->stack_nr; i++)
+> +			__entry->stack[i] = stack_entries[i];
+
+			stack[i] = stack_entries[i];
+
+> +	),
+> +
+> +	TP_printk("KWatch HIT: time=%llu.%06lu ip=%pS addr=0x%lx%s",
+> +		  __entry->time_ns / 1000000000ULL,
+> +		  (unsigned long)((__entry->time_ns / 1000ULL) % 1000000ULL),
+> +		  (void *)__entry->ip, __entry->addr,
+> +		  kwatch_trace_print_stack(p, __entry->stack,
+
+		  kwatch_trace_print_stack(p, __get_dynamic_array(stack),
+
+> +					   __entry->stack_nr))
+> +);
+> +
+
+-- Steve
 
