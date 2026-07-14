@@ -4,94 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92C6FC44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:04:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835C1C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 04:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 933966B0005; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
+	id 7C26B6B0005; Tue, 14 Jul 2026 00:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 896676B0088; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
+	id 772926B0088; Tue, 14 Jul 2026 00:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 737A76B008A; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
+	id 688606B008A; Tue, 14 Jul 2026 00:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 48EC66B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:04:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C8C381C01C7
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:04:36 +0000 (UTC)
-X-FDA: 84986040552.01.FDC6308
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0F26BC0009
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:04:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Uk1WSl1b;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 38AC86B0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 00:15:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 953E11C01CE
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:14:59 +0000 (UTC)
+X-FDA: 84986066718.03.E8358B2
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E45CB120005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:14:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=iIQ6xewQ;
+	spf=pass (imf29.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784001875;
-	b=2NtiLmaSbp4lyj/h7zwFZh25fEqUcAbZVcJ7+83re/zAEcq2kGLjytaArOFMrDFNJALYac
-	XXcZfF70CIddudrqBtX5GNfwAoRW0ZQN7WOdxwvVlBIkKbLxFKuMO2GevE0X6DgKQwIMWZ
-	U1HJ1b70OAhkGrptQpLJdBvr7h+SYpI=
+	t=1784002498;
+	b=lYkumhUlygjmaNrEP3iy0JGBiX6yOjLoytkD2KG3JAGKY1YvOPiNJAjVeFhPyxI+yUk2Tg
+	3S3jMvdES6LtdklXjDLwdb8QeXXfNnkk164z5q+KRz/P04XWgN603jrtY+qsj0/ul/N8S7
+	ao/5BDA6ZpGMMnDKodR4cyv3gAwXSic=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Uk1WSl1b;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=iIQ6xewQ;
+	spf=pass (imf29.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784001875;
+	s=arc-20220608; t=1784002498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b8e5QwFzOEE3DTcxaJFQ4C1se1WuaDb4/2mYW5ZmvOI=;
-	b=XiWpopvtgglBcXQKpljmd59UI6J8i9mfVcyRQVyHOyxax5hFAmYYK5gT1YUbd9cDCam/d7
-	mv/SeLYeQVtfqlTtxbBMqdZuG/v/PXbuUcqwqfbWRc9Y3TYeC4kALFX9MUor+YuqCK8maG
-	QFHkbHLl2Zd+hWwowU+R6ATzsXThe1c=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784001873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b8e5QwFzOEE3DTcxaJFQ4C1se1WuaDb4/2mYW5ZmvOI=;
-	b=Uk1WSl1bZgrN/S9B8wc/UXqr44eSqfDcnIkTgpqhfZXIea2daRtcBrV6YEWiD+ncupy3Sy
-	P51KVc1qBaBq4zNfWTsAVu0tQ9b4laiIUJnvW20yBO64PFn3kKUqz3R5qvA3N8sUY73GTQ
-	EU/RG6SaY++MB26rPfL5CHwVamUlFEk=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 2/2] selftests/mm: add hugetlb_region_cache_race
- regression test
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260713171456.300518-3-caixiangfeng@bytedance.com>
-Date: Tue, 14 Jul 2026 12:03:49 +0800
-Cc: akpm@linux-foundation.org,
- osalvador@suse.de,
- david@kernel.org,
- richard.weiyang@linux.alibaba.com,
- baoquan.he@linux.dev,
- shuah@kernel.org,
- linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1C8560A1-1F70-488E-BB62-2407B115F7B5@linux.dev>
-References: <20260713171456.300518-1-caixiangfeng@bytedance.com>
- <20260713171456.300518-3-caixiangfeng@bytedance.com>
-To: Xiangfeng Cai <caixiangfeng@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MV2PppsIiMWqIO+DNMAc6xCQwmADIksnc8DCtHjHJMI=;
+	b=WiG2Pg3hzEGe+VJE1oKiOBZWzvtzaFS5+DzL8qL1Y3eNfQwhEDYFTGYel1cchQ2qAHQ7EG
+	jhUAG6KyOJsksON4AJYy67cHhFLkyMf5vnRaVQtibH+STZ00SjHflCngre8eA7f48G5NvJ
+	eH0KDQIFScc7/818LKuVmoPDuYic+ls=
+Received: from macsyma.thunk.org ([151.240.45.25])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 66E4ErRC025390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 00:14:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1784002496; bh=MV2PppsIiMWqIO+DNMAc6xCQwmADIksnc8DCtHjHJMI=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=iIQ6xewQv08RpAocToswgcb8vVJMxz9k1bD7fceVk+A763UEO24mt1+/b4GT46IUP
+	 NjyJieu6TJDOGhozlV65RysZm4E3muBfUP+LbD195TGkwOfl7L8+0jRUOBOouRE5U9
+	 65+kNDdOgNQt6azYCU3QJwFW1IP0hig6PB4toXyhgVLpuKTTA6hVYVmB+UL7f1KwdN
+	 1vAPffzNJ2Zo4MNONM3va4Pn8ZoMipvUYJrHNF9LIPi6H54YfxiZnmFZEwrKEYI+/s
+	 QRoPyEdQkxJ4neHEVUTgyE87/s+E4L1Wxzh51941RJYYZSZzPNaylQiRwy+N3lYpzr
+	 SMgrWzkHYZEMw==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id C5547A04BAB; Tue, 14 Jul 2026 00:14:53 -0400 (EDT)
+Date: Tue, 14 Jul 2026 00:14:53 -0400
+From: "Theodore Tso" <tytso@mit.edu>
+To: linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mm@kvack.org, ksummit@lists.linux.dev
+Subject: Maintainers Summit 2026 Call for Topics
+Message-ID: <alW3eJ9x6iJ8Juhi@mit.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0F26BC0009
-X-Stat-Signature: dp1gkb5oakt9m3nztx8hhd61urkt3s7w
-X-HE-Tag: 1784001874-935144
-X-HE-Meta: U2FsdGVkX1+Acv9Qbg82nXFehNIiihV+XWIivWwgycIwuUHQp0DIi6Tz0F5uOCFEE6MmANO79F1uV++k0LvQyH55C3T3cimwAPCmzqaXXFFizFSByOmwh8b1hdruF4ExESulfo3quejhl/xqo51z/2fgivvZc7pfDq1VKuEjPw982uRm8o1LmM9yYWU3HSQZRV3oj5EnF88Ki9/QJl/q/kopmSHFZjk7RndtzHug40mllEFlv/m/RJYDpXdzjYjh5VoLsYaEcRCi/80aFH7mYg3Xf194kRUAku5cWt8oA4h5Phv5kDsWFurGUhdUapgBSpx0MqCjJ6XoBlctPfXvUx0lpCN1NJcfzy9/eFB6gLf8rCXeUGex05F/RdxN5hJ0AY0FVI1N7bIlvwclxrkpTgisa7coSRFBVAVbktJEpXZB7+fKikLXnBcNhWg/hU8afFE3ut4xPHx+d54UvoQIWZnDjaYLucALTVJtGJVGm+we3Gh9M/NQCf++yQoMxsM9thZrXQnazl2IbcwiT0hjtLvnJn1CTx7Wk2laghPSXaDG63OXmRjbU01gCA3TqL6MROJb3rOf9vJuAsNeY9EpsxUpyO0htdtvbA6BooX4/kt92RYiWiTkONIVwjRo9KM+zMUDwYrITcZrAGBXHcct+b7toIfDeAk7uBBkObpSkn8XEeppj2+kq8BDUZDrwvUjxNF5XRDf1z1YxtwSUv+nxqzeTND7S3MjvyYjUpm80/6X7Oead0m00j15srnmPnMMehrzl95U5+PRtqPyTdxJkkmwMoye/m0qMF9nsHrt1qFrfiYbGY68rqWeX+qUlWsjeu5HpEGD5p+GlPRsZSri1HMQueXw12LEu5ff2WVWDLCuJpopq/ImCfPXssrZ3VAYHj0fTBtLItBm84JRzc5mUEpAxBvtWuH7kyVNO3iQ+5ewyliPYaOwZBxdrVjWeKm/FYa7gZCqk00BFfzZL3L
- zTt+cY0m
- ihjRkgZdQ+a0M0CBvo2bzVgThd6yH6SnyvnJ2uAW4H2UG15OBZaFqfnP3C8veiQhYC5WUruVkbcmPqrUEHqE5DmtVOcgue1lWf4uZb6ulaXWgJsHgpsUHwvz6q6J9Buf7B6g+7LNe5kK+WeQ+KBaw2JNS4YOUTd/luswm9IhqQPqABtQ64/EdB2nfSKnZwmQvu8eNDtHTIUJk1EQ3aEoLMnJ9+WLBxMUnyhByFy75Hur4W60fx6UUpWj+jeduc3aq4S3fdhw4Rt2nJrie2ZuuT8Boa0yMacgBpd3BuAy/2R7OyPVMpLJIRFfHMQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E45CB120005
+X-Stat-Signature: ywsigom1yajfnihw8q5y8sc91ioyfuut
+X-HE-Tag: 1784002497-162429
+X-HE-Meta: U2FsdGVkX18glZVC7cQIM+Nwv2k52Hr7LpBvQB+RMWtBplu8ttxZ4h59jKGGNtWMwHv1VVPN2j0yxgWyt6rBYtTxvdECxS9NSk6+jUZO4hZ5i1wjc0hHoUlKCkwyKDhroO3exP4WNy7LEkUm1x0IM4bQ7FAdeQiqoAPOHvw2/IYcR7VSWzs3FU8sVIFFcMSG5v7rRT4fs9FrEEqVcVGcy9RjRHUb9H3DGTG3IHM+X08dC7Lc67E1RkRp8IrYPQsR4sZGI+83XbWWE84l6wzIlQv6yLBBJXwmT9AZWYdGHh6f780yy8kUIQUjlzxgyL2ftUoLNO98vwxabkZ3dvzpH6nqt33N9Kq9/3pcdlt2JxFPyXrlrQogxUkRyEz70XxocJhRWVA3AcgveyMRT8oxTK+2kS7nhnVjgVrZsYvpbgf8rXeiWhL7AOYAeXlqkMkSG0CahMq5imV+ro2DOwzgqvf649CMbWaPBa226ijcpyKV8qopWkFzxXYNt68SJhSwBuvzb2up7kL7PgT4tU34N7YOjcyXwuk4aQgKC3gGeCCLuiAntJBODM7N6YR3obnWSjWy4hAdahiFeHCISY85BWxLpKa59OYFF4xPsIaPlOdP4RmTlCU6U54nAkDNMA7zcun3yk8U4lBXDgUWe4VYQdXURJnMLXSG9uqgeDxuhjXGKSF334rieoAd+zTS5K7r2aZUiAj8zRsJeVBWvkMFOoeO+j5gLeXMBGWklOZMpwi6PqTrUqY+5HEbnHKbMkkvEQgtgjZQGUL8iqTHsdI9uA73ke6HITp9yxZ58wxL8Y8VGaxuEASeIsOAbw3sUYTZfQPOZAIjlhe1z6VE9hxn6sHtwV7sk7L9K9MziX+C3qa0imZkeskzGtJ7aWvFMwz4tee1i9+7xuZpRWDdxDNMTGLRnU/N7fHmwXJxXcAD/QCtdiK/5FAgvA0QoAvSVORHTka7Nsk02ITAlPw8b86
+ pkHsbNrO
+ UKw8vrlEl8homv9XdiA/ZlTeEDVBFwtiQz3OhMVvQsNVj+3UsIkBmVPYCFJd3R90FdoXCKuckExobtHb1DPP6z+H4BeTSGGuJLexGYT6mmsFQ6kXweDcTIwuab5OMkKU9gvCAhipxBdUZwkONITKSickF83cFrZZ8E5pT3mjhcsWMIhwgCoT21QvQ3+3pGafm9VhDRDp+Uky12VagH3sHazvf3AA6EWoANo/f+BEO2xrl1Xmlz5TaguQEwaozEIxMR1f5ZBQHu6abCUsCCmO3DgmSebtAyUgycfq64w/MV4rMCWNJE/fCxqUjS8sSDer3ydjVWbnSqN4OGfwbX61RSWyBqZ9/eKNKYRHWcuQZCUu4B+k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,59 +89,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This year, the Maintainers Summit will be held in Prague, Czech
+Republic on Thursday, October 8th, 2026, just after the Linux
+Plumber's Conference (October 5 -- 7th).
 
+As in previous years, the Maintainers Summit is invite-only, where the
+primary focus will be process issues around Linux Kernel Development.
+It will be limited to 30 invitees and a handful of sponsored
+attendees.
 
-> On Jul 14, 2026, at 01:14, Xiangfeng Cai <caixiangfeng@bytedance.com> =
-wrote:
->=20
-> Add a regression test for the list corruption in
-> allocate_file_region_entries() fixed by the previous patch
-> ("mm/hugetlb: fix list corruption in allocate_file_region_entries()").
->=20
-> Triggering the bug requires a concurrent reservation operation to =
-drain
-> resv->region_cache while allocate_file_region_entries() has dropped
-> resv->lock for its GFP_KERNEL allocation, forcing its retry loop to =
-run
-> again.  As the mmap() and fallocate(PUNCH_HOLE) paths serialise on
-> inode_lock, the cache has to be drained by faults from a separate =
-address
-> space.  The test forks several processes sharing one hugetlb inode via
-> memfd_create(MFD_HUGETLB); each mmap()s and faults ranges and punches =
-holes
-> to keep the shared resv_map fragmented.
->=20
-> Two modes are provided:
->=20
-> - default: a safe single-process functional check that exercises the =
-buggy
->   line without forcing a second loop iteration; safe on any kernel.
->=20
-> - --trigger: the concurrent reproducer, which panics a vulnerable
->   CONFIG_DEBUG_LIST=3Dy kernel and is therefore opt-in.  It faults =
-pages in,
->   so it needs as many free huge pages as the file is large.
->=20
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Xiangfeng Cai <caixiangfeng@bytedance.com>
+The Maintainers Summit depends on the development community to bring
+forward topics that can benefit from discussion in that setting.  What
+are the nagging development issues, pain points, or other important
+decisions that are not amenable to resolution on the mailing lists?
+If you have a topic in mind, please send it to ksummit@lists.linux.dev
+with a subject prefix of [MAINTAINERS SUMMIT].
 
-It looks like this is a regression test case for a very specific =
-instance of
-list corruption.
+The attendees are jointly selected by Linus Torvlads (who has provided
+us with a roughly a dozen maintainers that he would like to attend),
+and the program committee, who choose from maintainers and developers
+who have been the most active in the past year.
 
-In my opinion, selftests should focus more on functional testing with =
-clear
-expected behaviors and results to users. I don't think it's worth =
-maintaining
-a test case for a minor issue like this, especially since code changes =
-happen
-so quickly. Once the code evolves, this specific list corruption might =
-never
-occur again, and the function itself could even be deleted during a =
-refactor.
+Anybody proposing a topic before July 24th will be added to the list
+of potential attendees selected by the program committee; other
+potential nominees can be proposed (as a self-nomination or by others)
+by sending a note to the ksumimt list saying why that person's
+presence would help the discussion.
 
-Therefore, I wouldn't recommend adding this as a selftest.
+For an examples of past Maintainers Summit topics, please see the
+these LWN articles:
 
-Thanks.
+ * 2025 https://lwn.net/Articles/1049982/
+ * 2024 https://lwn.net/Articles/990740/
+ * 2023 https://lwn.net/Articles/951847/
+
+The program committee this year is composed of the following people:
+
+Christian Brauner
+Jon Corbet
+Greg KH
+Ted Ts'o
+Rafael J. Wysocki
 
 
