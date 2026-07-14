@@ -4,85 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D871C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:01:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A767AC44501
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 13:03:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11B746B009B; Tue, 14 Jul 2026 09:01:57 -0400 (EDT)
+	id 9F97C6B009D; Tue, 14 Jul 2026 09:03:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F3A06B009D; Tue, 14 Jul 2026 09:01:57 -0400 (EDT)
+	id 9AA376B00A0; Tue, 14 Jul 2026 09:03:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00B0C6B009E; Tue, 14 Jul 2026 09:01:56 -0400 (EDT)
+	id 871196B00A2; Tue, 14 Jul 2026 09:03:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B0C696B009B
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:01:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD51E12034E
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:01:53 +0000 (UTC)
-X-FDA: 84987394506.23.D5AD7B3
+	by kanga.kvack.org (Postfix) with ESMTP id 5F2976B009D
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 09:03:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D10941203A7
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:03:47 +0000 (UTC)
+X-FDA: 84987399294.04.139E59E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D7B5C4001D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:01:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k5c7YCIU;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1F4AE180011
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 13:03:45 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ddGyknup;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784034111;
+	s=arc-20220608; t=1784034226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HuK4P6aqO8DESV6CHxhF1gUmZk/0pbyK+8uhsekdIXE=;
-	b=TOAXuW3c0q+4nxpcFG+o/Rsp8zyrRUb8CDxbnaJfxGwX8X2Z7U8bFBRG4qcmH1fRzeW9J+
-	Q5Fpc47W77Wh2xSKVIuraxfZKCl8+hi/5F70s7KwAmBAPat9eIUXFNHuGU+8gsfp+1DIDv
-	KYjvtOOQg1p1zOUxx2Qea4pO+FbSS6c=
+	bh=jWi7hqyYTbzO1/N8hNuw+3aCqzWSHoGEXiSIX2DNwFo=;
+	b=g3iOZH3pmdLJeqw89cPGLnGYNuVmExIf0vjw/XulRYv9fqkhaYiAHswSgzkCwH2x/nROEC
+	hfR1d4fa4lt1cAYlNk5xCXezoNIcsa4XZsj7eqntZpWeM15jJ6uoHCpwcZKvBLNlANrS9A
+	zccqAJqy/xreMzbQlRthwO3XxnbjXto=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k5c7YCIU;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ddGyknup;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784034111;
-	b=4d1ppxlp4nK4xazLYp69g13JUAYBaq72BRhgBGxR1ABGBk6itNjWzHUk4JcVkofzSdtT5V
-	TXp+pmMCT1I4Gw3MiQvwrmzoQ7xFmURZxqmsM5hWugu81F0vu/SZvR+ICcQhmuGGGgwpgs
-	/thcl8K/5Y2O2xpbkLPoCht3QyI4uOY=
+	t=1784034226;
+	b=6j29jZ9aJ0TkboX3PK4zMs9NAQF8SM93Y9W32RHzr9lhB9emncrdtqXHPwczPDpuFzNUes
+	2G8YDN4U18wRpJ+5KYrs3fvctKPHdljJi8rcCa+kCEkG+uShSumuZG16EILWoMXRtp5n9n
+	6qiHCtRybAH0Rv6pteCJj2gv44xFczQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6EF9B60120;
-	Tue, 14 Jul 2026 13:01:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4B71F000E9;
-	Tue, 14 Jul 2026 13:01:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 37D0E601ED;
+	Tue, 14 Jul 2026 13:03:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587281F000E9;
+	Tue, 14 Jul 2026 13:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784034111;
-	bh=HuK4P6aqO8DESV6CHxhF1gUmZk/0pbyK+8uhsekdIXE=;
+	s=k20260515; t=1784034224;
+	bh=jWi7hqyYTbzO1/N8hNuw+3aCqzWSHoGEXiSIX2DNwFo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=k5c7YCIU9HDxHlg4W4qOo0RvYVF1Yi9F2s+I6qWTMFhO7y5LTv3AAIisV2EWRK7gt
-	 G71ZbZF4BS24Cc39/TUyfVc5uhFkyz1eBRQWXthjI6/20woS6JR6HyEDDmL6x8i/2F
-	 DcSgKfv3TmJNEK5wNp/jycuq4f8CVqmXXBJZZun553j3NwhJj4KAGuhBwn1OmnwVy4
-	 VuiGlTDHXX0ZSUBi3SsBZzNo3DQL4esXhTMzEzjfqW0tCG7qN+LvbgwN6KHFDf9WHQ
-	 h/sVeewLC8mS4d+YQIElGTCBmyQUMpOqmwK0Yw7f5mOPS1Udc2KNg1QbwGQlpNOdHu
-	 5iV3J2HxCieBg==
-Message-ID: <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
-Date: Tue, 14 Jul 2026 15:01:46 +0200
+	b=ddGyknup29KvGfQGIfEwqFGZ1d4WWXQIGRtrE9OBzjxL9Xd5BK3gttkewgrGTwbiL
+	 NSk8Zcv3meMLAjy0eCgXXMtcGhvakuD2PtTuuiPL5xd9U6yhj3uWoReue0sc05+ZVV
+	 9Fos/z1NtDQJGC2dZCMRTg7VozDKZqjrye+LSnwqd22EHIsaWMzAYs+Y9tZzTujqTb
+	 3M2/1Ivgo4ZY0qHAHmGFoqX6ixQRbeLA6bIToa4Wm4Dh3db/n/585AZFwIigaeQFxN
+	 3T3p1A92MU030ioQLguXyDW+g2niZAtU5QtzovFMDS2PpF0W/nHjlatlwL+SdrRFpk
+	 GKw2afA4K4BxA==
+Message-ID: <1d49594c-3549-482d-8c11-fdeb2051e952@kernel.org>
+Date: Tue, 14 Jul 2026 15:03:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
- poisoned subpage, locked across split
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>,
- Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- stable@vger.kernel.org
-References: <20260714122344.351895-1-kirill@shutemov.name>
- <20260714122344.351895-2-kirill@shutemov.name>
+Subject: Re: [RFC PATCH 02/34] ARM: mm: make 2-level pgd_t a scalar
+To: David Laight <david.laight.linux@gmail.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+ kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux@armlinux.org.uk, akpm@linux-foundation.org, ankur.a.arora@oracle.com,
+ rppt@kernel.org, linmag7@gmail.com, chleroy@kernel.org,
+ klarasmodin@gmail.com, chenhuacai@kernel.org, kernel@xen0n.name,
+ kas@kernel.org, zhangtianyang@loongson.cn, wangyuli@aosc.io,
+ tsbogend@alpha.franken.de, ljs@kernel.org, jgg@ziepe.ca,
+ catalin.marinas@arm.com, will@kernel.org, arnd@arndb.de,
+ ryan.roberts@arm.com, pasha.tatashin@soleen.com, rmclure@linux.ibm.com,
+ baolin.wang@linux.alibaba.com, tj@kernel.org, kevin.brodsky@arm.com,
+ anup@brainfault.org, atish.patra@linux.dev, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, kasong@tencent.com, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, anshuman.khandual@arm.com,
+ yang@os.amperecomputing.com, chaitanyas.prakash@arm.com, ardb@kernel.org,
+ guoren@kernel.org, yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
+ dinguyen@kernel.org, schuster.simon@siemens-energy.com,
+ wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech, muchun.song@linux.dev,
+ vishal.moola@gmail.com, namcao@linutronix.de, pavel@kernel.org,
+ djbw@kernel.org, yu-cheng.yu@intel.com, baolu.lu@linux.intel.com,
+ Jonathan.Cameron@huawei.com, coxu@redhat.com, andreas@gaisler.com,
+ liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
+ stefan.kristiansson@saunalahti.fi
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+ <20260713135614.1618183-3-yeoreum.yun@arm.com>
+ <20260714133415.78e25654@pumpkin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +153,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260714122344.351895-2-kirill@shutemov.name>
+In-Reply-To: <20260714133415.78e25654@pumpkin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: r78qkq1z65un6n4c8e37aoiq3b1j6gza
-X-Rspamd-Queue-Id: D7B5C4001D
+X-Rspamd-Queue-Id: 1F4AE180011
+X-Stat-Signature: adgtuy9bp7tywyr4fny5ng9qqpqc6gqi
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784034111-385714
-X-HE-Meta: U2FsdGVkX18O6OooaUt5H3ic1tnBK8blxaOwwlX/Sa2XE1/LSCJEP3jJpLgQcroQUaDJE2EX1W17JfJhLHYyzSS4vmj8IdOo4CaczsnKRBVpjSdPUxCTsEmstr6Id2Y9wv1DpmQTF3PHC4nuRuEH0MOn+3iwWaxmW705xzorEx/UPweT9NrNaWiYqchiNhqA8h2xAnl1tlqBiZ5+6rSClfLM+OmyB4hLtJlaasnUCWg0WPgU+HaAnU5TmKAd+hsN6uWvOLNYG+X86iUNLsqXfxKO2DbGWLZfxlbbI8+J4RlUS1sixZg4r+KKVwYJ0PTxbmcWKigfFbm20azuQgbYY8/kwQ9A7bBwQWwoFFfkOG4LrfD0qLxRdOJrCo2raKaCeMkln906Y4lRYHWrO4xhyXTUMsiRcUdgRI/H3EGRrNi6220OREJZSF99scPCiwRgdIRM7tBHlWVSdXbIi3IQMpk7cTpRuGJs5LN5t6eXVPkPit7OnLvSuElEDbBlhrQE48lAcfV3WindOrcl34W8a4gCrubjnhD4vX+9yEgVOnWwsFfmS8nRP7xJ9vZMFyVtMJ3jjH8O1T1z6TivFAH5BO/iRvrd4WjCJ037JZXx96m5jiPkq0nOMJcUKKu551aVQkntMafXV2Ope67yugB3PuINkCnoEYOFx8Za5Vv2Suz5m7vhnQcSxA3tuJxutORPwSJ2a4cFkD4nCp5AWd3wjcCRFtBn1PIb+Z63XtIKcEdNEO/9glQOlxvjOga1nyyr4fwmwQYOaJ6vpAZ4U4eU6juMYAOwXS5L4smECA/X1luF+lGxFcB7CCjlaBOUNvv0gfMXGtiiOx0RGIjqsrqPcWnTRoZGB00BlIV8JooAo4pKuFxcS0KqA11SoeKv22MRDBH+92ANlAzGoj9D70/d+0Mds6+naxGprmpLpzV913lbW5pf2xpnfZTHHDGvYUtqu7uh3Ue2dESOsEDm5pc
- 49vC46nL
- XPOyQkxhMDGYcxHs+t3SRxK40LpiVIJAiyzqD8JgBPHCT0pa3cXkLulJWtRfeBIUDElDSV1MwgsLFwCX1EU5ozO/y03B1Ain56lBKMJRfMs9iUqjMRsSTorozf/APi7KCaQIhhMzMCa+olhHVUveMvyxn3Y0iVjgbzNmC+rtpny2VEwYoJT5ZIZ6NELlDx9pPdmZ4KKoUbqm8FSQTUkh7vF4VpCHQwSr+kL4/IBQRBulYV1Zh+ba16DErsQRjLYMQyApfB6q3oZDXy1PmMqtQszOERXYnYH6c+GmQaG3tUe440rq7AMnMq9+UVUUvbocr2KqeH86M81Sx1Dcn9Apvu7TYBjsqk3+KkwXabI2l9bRKU1FISfMN7lBhaTDfk0c9PeOl+Lujfhp4uto=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784034225-244675
+X-HE-Meta: U2FsdGVkX19qRfciERmIE2D3A4HO/2509xghrot6V0du5/bP2IUumBcOT6HTTn5q3GZ0UeiArayeyM2DSys7kdAlAws6AXsRxs7WPp+2S64qCizUa8cwBKSvNSErI2WGcHg4uIA+GWDqHFh35NEVQCHrA/t3s13pwojkNtLK25zW0pvEYJ4Q9MEE2LEr/vR1+5FEUwrtcRVfMGClxtBPL/BdN3RPbU8Q50UcGWu5/HUR8gpTsVqM6cmWGi73lh1aw5AjjOroDjTPPw7pi9Mh6FSD/aFCWLLhaAhbQVZ4WK/d98aZE1W27SIq33bGw/MZmY90Au2ojMOY0tcBZpzgufUph1wROr9QMc4iQkJvErEfLAuOhGNKsc/FMqelKPXoH7wTdjCoTbkJ1FVvvXQIYSWqofvc/NXluYYBGTPMbztSEBzK8Dq6jlFRKZQyN2GjBff/cH0h+DCqJK+D2VSn9QkRf1RiDxJem5oEN9rWp2LgrXuPqdr6M6uNdypY/m9X91WRDo2kUfdqNG/4KK5ZtdxVi7lLRY4I2aE/Ay1Wg3cSSW7tWXQlPneajT/QXoOwsXp0J27NCcemQDyaeWKTPOIXJYQPjeAZMi6e1ycsu00WBwbKGBoTI/P9JttzAVbJxlLWtDrYiX28E2tvpP8cHBiaUtuUCDHeS8WKd04iEWhFEyDpGIneQjb+uLamXE8iKgX7GHQDljzE8jywj0E4icJ/4p/N1wGmdPwuQdrAujDBpVBWmZ/CdxD2ssmP9Yg+qjjdUaW0z7S0iEFo52ugRgugDFXGvAQPcOK5fQ2X5U7kLhxH+PPYZTd84R2lGgI6H0+iM+y1prU47dINC2nXJ/MtckiuOk+7XD7ZlPPOsK0s13RdKMNR3GewUOQI6XdeBKdeBDjo2iY6bqQQc0mpdvz91Q7af1Q3ZqUBpNnmbatNFT/RF/nE9fhdRQcHlksX4j6HlhOf146pK1u6wLr
+ bBr76j3l
+ zq9PN7nBdndbX7RHEDgxFWpbnMCsxIGobiwI9mzkQzCA7l3ig4OH6s7vyq3o050Av+OpcJPQmuAWP5YxS3s0PEAHsoJkRa49sK0VvujH15tZ3o872PswOH02r3yK/K4XybbFje9sjCcvS9519odGjtAmiBQhODns7Ek2llUAqqkxOFFRehFW55A35lnQCZg/F7TYx8K2UpgDv79OLu/lR/5AYcvW7NyyR098vVv0yt/LFcet2khEubcGaDzI4mn/bauqJ6esRBhKxWyH1cWI1TQFR0RVkGZ8HkEqWLbUGZEgfUaTHcHzaJrxIzl4ePJ6stYvWofQltQbrN9yIyWncdscpFg0FVyH6qo5yBI5Z7hbTs96E2AfZ4QDfYIwW7SCTq0QkaNRKeSS4Yt1deMSzB2uzFeLUiAy9Z4+0bYgjb5i0xxVrwtoVt04bNfkVSg9Kz2Of/szRJAhwtpOwU7M2O8pBnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,86 +171,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 14:23, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On 7/14/26 14:34, David Laight wrote:
+> On Mon, 13 Jul 2026 14:55:41 +0100
+> Yeoreum Yun <yeoreum.yun@arm.com> wrote:
 > 
-> try_to_split_thp_page() locked the poisoned page and passed it to
-> split_huge_page_to_order(), which returns that very page locked to the
-> caller.  For a tail page that means __folio_split() runs with @lock_at
-> pointing into the middle of the folio.
+>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>>
+>> We don't want pgd_t to be an array, as it prohibits returning it from a
+>> function, like pgdp_get().
 > 
-> __folio_split() dereferences the mapping after the split completes
-> (shmem_uncharge(), i_mmap_unlock_read()).  The only thing keeping the
-> inode alive across that is the locked @lock_at folio: while it stays in
-> the page cache, eviction cannot complete.
-> 
-> But a tail @lock_at can lie beyond EOF -- e.g. part of a shmem THP that
-> reaches past i_size while the file is being truncated.  The split then
-> drops it from the page cache yet still returns it locked, so the pin is
-> gone and a racing final iput() can evict and RCU-free the inode while
-> __folio_split() is still running:
-> 
->   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
->    i_mmap_unlock_read include/linux/fs.h:537 [inline]
->    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
->    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
->    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
-> 
->   Freed by task 4601:
->    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
->    evict+0x57f/0xac0 fs/inode.c:870
-> 
-> Split the folio as a folio, via split_folio_to_order(), so the head is
-> the anchor left locked.  The head is piece 0, which the beyond-EOF drop
-> loop never removes (it starts at folio_next(folio)), so the split always
-> leaves it in the page cache and the inode stays pinned for the whole of
-> __folio_split().  memory_failure() and soft offline re-lock the poisoned
-> subpage's folio themselves after the split, so they do not depend on it
-> being returned locked.
-> 
-> Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
-> Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
-> Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  mm/memory-failure.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 51508a55c405..68d42cbed458 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1657,11 +1657,18 @@ static int identify_page_state(unsigned long pfn, struct page *p,
->  static int try_to_split_thp_page(struct page *page, unsigned int new_order,
->  		bool release)
->  {
-> +	struct folio *folio = page_folio(page);
->  	int ret;
->  
-> -	lock_page(page);
-> -	ret = split_huge_page_to_order(page, new_order);
-> -	unlock_page(page);
-> +	/*
-> +	 * Lock and split at the head, not the poisoned subpage: __folio_split()
-> +	 * keeps the anchor folio locked and needs it to stay in the page cache
-> +	 * to pin the inode. A tail beyond EOF would be dropped yet returned
-> +	 * locked, losing that pin. The caller re-locks @page afterwards.
-> +	 */
-> +	folio_lock(folio);
-> +	ret = split_folio_to_order(folio, new_order);
-> +	folio_unlock(folio);
+> If you use a two element structure the compiler/ABI might be able to
+> return that from a function in two registers.
+> That might make the entire mess more readable ...
 
-With a non-uniform split it would actually make a difference: we'd want to split
-such that we the other folio pages minimal.
+The patch description states:
 
- split_folio_to_order() always seems to end up in
-__split_huge_page_to_list_to_order() where we do a SPLIT_TYPE_UNIFORM.
+"
+As an alternative, we could use the STRICT_MM_TYPECHECKS approach here
+as well, but using an u64 looks conceptually cleaner, even though
+pgd_val() gets a bit more involved.
+"
 
-I recall discussing with Zi and Willy that in the future we'd want to convert
-more places to do a non-uniform split.
+Arnd replied on that in more detail.
 
-So I'm afraid that would just re-introduce the problem then.
+Maybe I should just go back to using bit shifts and handing endianess.
 
 -- 
 Cheers,
