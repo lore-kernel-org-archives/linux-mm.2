@@ -4,179 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EC68C44501
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 15:44:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE91C44508
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 16:08:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 596036B008A; Tue, 14 Jul 2026 11:44:54 -0400 (EDT)
+	id 7EE866B00E4; Tue, 14 Jul 2026 12:08:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56CB56B0095; Tue, 14 Jul 2026 11:44:54 -0400 (EDT)
+	id 79F526B00E6; Tue, 14 Jul 2026 12:08:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45E746B009B; Tue, 14 Jul 2026 11:44:54 -0400 (EDT)
+	id 6B6486B00E8; Tue, 14 Jul 2026 12:08:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B5D56B008A
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 11:44:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7FCA440433
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:44:53 +0000 (UTC)
-X-FDA: 84987805266.28.2FDD9C8
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010045.outbound.protection.outlook.com [40.93.198.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9815B140004
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 15:44:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SGkqoeTo;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784043890;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B0606B00E4
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 12:08:40 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D100F1403E0
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:08:39 +0000 (UTC)
+X-FDA: 84987865158.10.AFE67EC
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ADC601C0005
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 16:08:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iCzZbGET;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784045318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EGIp83wTOTXEuMP1RVbuzZHlmxrE8CndGqGjOuZdRNA=;
-	b=4yALpJ6/sHCbFPdnK6GgG0Yx4p2iGRyHhqCF0HzRsB97xGefp1i/jXs/Q/0aGm2wHKJ2Kv
-	iOXDt+k7D5NVwoAX6lF0iPvwnpvdeH9PN0aLeN1TFpLRFwHh67Cm7uupWAQdLiLYwgHYqZ
-	yQcWxwJuHpMOOAM74iXzayaYW2yt97o=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SGkqoeTo;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784043890;
-	b=yEmZpE3QbFlFj6UvwcTvqFT+SWJAxplkRfhcyhnKvEy225uMVmQ9nEh/aWaSP0aSEQYq8T
-	7Ug1nPhFkSnYGrl/M2VuvMLBF98zG4ZIOFofxz4bWSzz19sOqJ7WecDsXKXtxhuoEZLmtD
-	76XcgaskdhVg+HNhs/o0xU1bWIeDWlE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PgE+xDo3mvpBZt6amHa914SGMUg38KmF7SjIRK77wmkFxWs/VU8ysihr4VpbBHnSgyqj/t7ABQ0NfBRBNfmU1ccsJJNlLB4Ihhcq24swgpXMhiTFRIq+ZVUfZYNErf3G1GYZbxD6OU3fwEOAR4s2R36a3dhyP084eK/p3QwYCQisa33DBQY1fNpqk8/ecVCfYI7Y3MVW8ziWEgq2JVlmh2WCVim25JK76xryVbeo1sxkwcRpaP7/e11h8win03QyRlHvrR+fiGz+qo1A65RB+h7mC233BTRcOvIR7ih/es88wJe2mHefiFqqbJ1LXyxnJ9Y//4iSeZzfhANNe2fFlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EGIp83wTOTXEuMP1RVbuzZHlmxrE8CndGqGjOuZdRNA=;
- b=hypNrSmHVPizM2EinFZ+ZbKObAonUxkgWFKFzkK7hmYJ7YJLOX8xewM+HfMrAtSkeaJ9byU0hSB/6m8ko/d5M+tem/j9VxR02LG1Ax8kTPQO2GW5tsw8geTVmNor40Yn2bLY0uJY90ggVU8ZxG5Ih7YteZpmmkm5EdoR+gskQqhCiFaz7RZpZ/zS0iIMJORPGL9lMXvNEZjwn1elfLlQQ0OQv5mj+8MXYpidTnTKhMMou+g9fQZy8LRxYvTWUD7whqtMNkhCUyd0WhDxsEitrqiQU63fw+rsYBO1+j5koIm2Jnd67j/ibU0Y40QytkZZckyXOGLtgwCFSEO+hEJlLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EGIp83wTOTXEuMP1RVbuzZHlmxrE8CndGqGjOuZdRNA=;
- b=SGkqoeTouJrl2DdrVB0zcP8Z7izjPRpZo1mJUWapPGW7m7hGpVyx/vxdoI1RiGWfnNWmmNdekzNDeS7Q+oBsn3a51PDYbZNa1Duw5qjSW3llJWVh5enu6haWib1JL9oiKu1sDSNkMdRHsA7EXqahdRnFfstrXmlL7mKgowLd9Rx7emMZOEE64G5F0TpEo6dFCZ7fGm9IZ+yx2x5DwIEwnFbl6Phk20sWGMMIXaJuBDBkwR1+nrepc/8l1n/8bVuF0TNEYpnJVxdpz/oulc4xDFj50MQePCJfEY63gYLafMN7RRDJDw6c54wDfXaAn4boYNUPoUdQ59pa+FIITkTPfw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SJ2PR12MB7920.namprd12.prod.outlook.com (2603:10b6:a03:4c6::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Tue, 14 Jul
- 2026 15:44:41 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0223.008; Tue, 14 Jul 2026
- 15:44:41 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>,
- Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
- poisoned subpage, locked across split
-Date: Tue, 14 Jul 2026 11:44:39 -0400
-X-Mailer: MailMate (3.0r7017)
-Message-ID: <66A57599-EDA0-4E99-B073-F2AE0B2ED708@nvidia.com>
-In-Reply-To: <18fe5529-2ad5-4330-a362-708a152bacee@kernel.org>
-References: <20260714122344.351895-1-kirill@shutemov.name>
- <20260714122344.351895-2-kirill@shutemov.name>
- <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
- <alZNYYsybKZA0eJb@thinkstation>
- <18fe5529-2ad5-4330-a362-708a152bacee@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN9PR03CA0709.namprd03.prod.outlook.com
- (2603:10b6:408:ef::24) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=Vi1DydRXtX7bGPT3LMqOXRQKIoXwlIclgcCEzEexLhk=;
+	b=mwrrmSuJiz/GuiZpgfYcDrPYKxa96X32Q706/pBQkEveQbxeWFB+Za70/wev96KYOh60e8
+	CTLr+JqUpdnATx3Z2CSRB+KnLeh5tZP5vyStgZdYM2Q9y2RUyp6ntTp1ObZKTSaGjcUyiv
+	PgqrqL8n0xcRL6wMQf+IgixUSUB7Jes=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iCzZbGET;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784045318;
+	b=iBdL8VB4vmj1g89scHZQHjYe9bhcJ0AvCCAE7qBuqBIwJR5f+L3yQOEm0E4vSyvHM6NDe1
+	AxtzQkDA18z2/AHtdIPERCsKsd+82XtJzrUgs14UP/zZNCpFxNXhfiGdOuwFzFlQ/0bcrB
+	AIHm27AFIzZ2b0M85pBBW4HEsiYj9ms=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C0F7339;
+	Tue, 14 Jul 2026 09:08:32 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E9193F7B4;
+	Tue, 14 Jul 2026 09:08:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784045316; bh=zgLVwM1JwHFja7lLv/ELj5WdO9n9zTqb8IzXUFezT90=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iCzZbGETk1sjjX6eOrBH+8HsRtioG5p9ficyglXR5ZOGjWAywCxpvKBCX5YKjzVO3
+	 lqTbW4BkVoCgjyW6aQc14TvI91LoFiK/lix5zRJXBa7aprCYI8FSFGSdrtX3ku0RTb
+	 mnDMqhPMuq2pJz8eXOt4MCF6VA5P5DAEnERr6DDk=
+Date: Tue, 14 Jul 2026 17:08:24 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+	kasan-dev@googlegroups.com, linux-csky@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+	linux@armlinux.org.uk, akpm@linux-foundation.org,
+	ankur.a.arora@oracle.com, rppt@kernel.org, linmag7@gmail.com,
+	chleroy@kernel.org, klarasmodin@gmail.com, chenhuacai@kernel.org,
+	kernel@xen0n.name, kas@kernel.org, zhangtianyang@loongson.cn,
+	wangyuli@aosc.io, tsbogend@alpha.franken.de, ljs@kernel.org,
+	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org,
+	arnd@arndb.de, ryan.roberts@arm.com, pasha.tatashin@soleen.com,
+	rmclure@linux.ibm.com, baolin.wang@linux.alibaba.com, tj@kernel.org,
+	kevin.brodsky@arm.com, anup@brainfault.org, atish.patra@linux.dev,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	alex@ghiti.fr, dave.hansen@linux.intel.com, luto@kernel.org,
+	peterz@infradead.org, tglx@kernel.org, mingo@redhat.com,
+	bp@alien8.de, hpa@zytor.com, hannes@cmpxchg.org, mhocko@kernel.org,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, kasong@tencent.com,
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, ryabinin.a.a@gmail.com, glider@google.com,
+	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+	anshuman.khandual@arm.com, yang@os.amperecomputing.com,
+	chaitanyas.prakash@arm.com, ardb@kernel.org, guoren@kernel.org,
+	yang.li85200@gmail.com, viro@zeniv.linux.org.uk,
+	dinguyen@kernel.org, schuster.simon@siemens-energy.com,
+	wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech,
+	muchun.song@linux.dev, vishal.moola@gmail.com, namcao@linutronix.de,
+	pavel@kernel.org, djbw@kernel.org, yu-cheng.yu@intel.com,
+	baolu.lu@linux.intel.com, Jonathan.Cameron@huawei.com,
+	coxu@redhat.com, andreas@gaisler.com, liam@infradead.org,
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+	geert@linux-m68k.org, shorne@gmail.com, jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi
+Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
+ folded pgtable case in effective_prot()
+Message-ID: <alZe-Cu7yQw9qRXU@e129823.arm.com>
+References: <710b7eb0-8e0c-4f07-991c-2285c77e1beb@intel.com>
+ <6007625e-c3f9-4ad6-99a8-61396bccbcec@kernel.org>
+ <32d459d1-ad19-4baf-bbb1-0565458001d2@intel.com>
+ <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
+ <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com>
+ <31988089-095a-4eed-b5e2-c677c70f79f6@kernel.org>
+ <14e250db-1641-4085-8d13-02f819657d5f@intel.com>
+ <d83c76b3-ea4d-4c41-b4c5-f5ae558ace55@kernel.org>
+ <alYgMxKqRnF6_X0A@e129823.arm.com>
+ <6df814c9-405c-48d8-96ea-929c4b28949b@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ2PR12MB7920:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e1c4728-2145-45dd-9762-08dee1bed1cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|4143699003|11063799006|6133799003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	/2vJ+fke319pdnoMayk25BlAPdEpz89Wlara7MdOiiorRLz/GONUgIm81tQxox+zJKaXBOKliiDbcfMN/2oJVRiiAWMpywbk9vBEOt86rFbj+DJFhBkCRdF0pMCBeHm9fiswq6Xyr++HMlZkPWDgs//A/t8BTueqDI5liFAGf/4PVxqRHyIP6VN4XWR0SQJR80vqsfOoj7zpT5zabCLT/pNuCDiuMa6F3Cg0nqGhfSBVAp0Ons/kmXEbe2Wnv6+h7F3kIMgc8iJOHybm6bqJLDEb8XeFm4ebzgP1m5Rdz+TIvm67KYE1k2ou3k28Ri01Y7FRbFFqFqC/HKAv5nCH2NoDqaLu1mih8GqrDW+FteQjqwCIPlU7I0uW5TXUWa8cDwQr5t9bFCJrmYgUgPYlQdCcey5haLjCKOzVaXsCrviAKvp+kTCCt1AZGw9stkrE4MkKmyb3NzBvGxlcEA3Q3NyvgnaMUGbsrdPd9MyCmZER2pE/7koFfonVbIcrxXx21JIE4fXzRsNDL0Bwk/wmY11RUqk2MurSqTZ07ErQKPoKuq9SliZnpAwheE+1dOVkjigfXg3vOlRL7CaWVUwDeMgibhkMJgQv7sLhJIvw9+BXrdkMi+wCp3n6VL/WN4+Sw6MA6AQWFqy318R2LqtyMk38/eZYSeRupt4BmSOtiiw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(4143699003)(11063799006)(6133799003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TEpWQnJLQlZ6emNBUk41Y2pQRmJsMkFjSWhQQWsyODBtT2VmWFFUUEpha2RL?=
- =?utf-8?B?eFZ1YVIwN3NFbUsxN01qSlc2S0J5bXBDelVXZzc2Q3pNN1VzRGNaVVhVcnFh?=
- =?utf-8?B?QTdTMmVhdW0wSEI3SDdrVzc4Zlg5SStqa2xFc0dtc0tab3ltREZzY3UrNUww?=
- =?utf-8?B?TzFialpsdFBoRzd6bUdkdnVZNXAwd0ZPTWhySzFQUEE2cEpNeER1Zlcvb1g5?=
- =?utf-8?B?c3E4dmdZQXQ2NkRuZ3RCVk1TNGg2UjhKeDlYZ2k4RkExbjA2b3NDYlVkTG5F?=
- =?utf-8?B?WWd4bFVpNFRZKzF1KzBCSkpFejBKVjAwN3p0ZUw0KzZ3OEVqN3BwSkRuZjlY?=
- =?utf-8?B?MDg5UUhjNUJsempNckMvTXh4R3pUeDEvc0s1VHJ5ek03V2xobDVzcjhUc1ZP?=
- =?utf-8?B?K3BkVGxyV0pNR3Vyb2drQ0tiWjQ0NlJZUzdLWjVPZDVETFY0VCtOQW9GRzdG?=
- =?utf-8?B?aWVyVWc0MC8zQTlJM01uTDNNeHROOEI1TU8rUTdDeWZEemJwTVQ1SkNzUGNy?=
- =?utf-8?B?OE9SSEdXZllpWDVZM2RDU1hMTlZXVnJQcXFkeDdzcG9mVGdJbERTVWplcC9l?=
- =?utf-8?B?M2w1TlRyYnZYdFRhVldBelJ4c0xIVWdESmlUVG54T0JEeUIweTFQS2dVTVFB?=
- =?utf-8?B?L0JNRlVsL0FWQmpLdTcyK2oxczJIZ0VhN1NLeFV3RDVsSXVBSEtqN0ptaUNj?=
- =?utf-8?B?SHdJdEF1b2xHWElsSEhDdkx3dE1ITU1kYnFNQjNIN1l5VnAvOXNpRXV5UVhR?=
- =?utf-8?B?UEJtV05taEVpQ2lhRWM0UGRNNURqTkplRGdDZkNGRUxhYmZORkZlWVJtTWhi?=
- =?utf-8?B?VHhJb0dPeEpudk5PSmRIVFV0eEIwakR1NUdZWDlpSU1aRFBBZGFZM3pvUGFU?=
- =?utf-8?B?OHlVUVV6UGxvY0pBMyszMlRaRjNveUltaFNRMFh0dC90Nm9SaWdvalpadFls?=
- =?utf-8?B?K3daUEowenkxQnIwaGs3cTJPenJsdVhudnpMUjlDNXpRaEIwL2ZWdGJCRHA0?=
- =?utf-8?B?SVpRVnhzV0grMHd4U2d1cXY1N1JOckgxVWNiK0QzdTV2N3ByWDhPMWJ6Nm1J?=
- =?utf-8?B?UldtUm4zS0s0WjFtL2JDZENka2JKanV6SXdnTDFZTTd3Y0JzSXFhc0k5SkNk?=
- =?utf-8?B?TDhVNnRhaSs5RTl6dDBlRkVRYTlLY1dHb1FESWVjZ3dUK1JmblVkQTZjVEhs?=
- =?utf-8?B?cmpIOTFhYTBRelJWTzkxdVVUOTFlUWNTQkRjZFJ0dXpkUFVDejBWT2U4UHEw?=
- =?utf-8?B?LzlIY25ySy9zd1Yva2c2V3plMk5tYUNEczlERkhzQm0rZXoyUVl3VnJuaU92?=
- =?utf-8?B?aWtZc1J5bzdtaC84eTZEK0gyVjB4M1ppenhXd3AvcXNyZVV0SXkzZzgzR1c5?=
- =?utf-8?B?b0YxZjduYU1LS2Q3RHdOZlE0VkFCSWJ1MWt2bzNERTJ6eFk5WFN2NDJnZ2I2?=
- =?utf-8?B?TjNyUU1CdkJ1cEN3d1JLeS82cmhGcTBRYTZ6dytNeUVrdTVyckFkUmxDd1BO?=
- =?utf-8?B?VzZhL1hiM21SRkhBb09ub0xjSWNVUVJvcDNVOVMwdm5tV2NTR1F4SGtOUTBV?=
- =?utf-8?B?UnlRby9hVzIrcmw0L1E2M0dNMlExVTV3OXVxUFJNRjk5c0RDbE1hWnRNYzk3?=
- =?utf-8?B?cHFFT2QyWjRQRk9qUzM1WHhodzhvTzlmSE5rTU9vaDVYZThnYWlmUEMrVWdC?=
- =?utf-8?B?K0NuZk1YbFVZN2ZNYjh3SHY1bXBObGUzb3IzY1RkR0lZL3VncGgyL0JaMW5E?=
- =?utf-8?B?dnVMTU93L2p4MnZsd2dUelFiRDFnOENVUjVXTE9MVkJrL21IcVAwMEo1RmdS?=
- =?utf-8?B?MVE2N3VOM2RpNEtncmFpUHdmMWlmNmtjZEVoVEpVMUwxU0dwdzFiNmJoVDBn?=
- =?utf-8?B?eGEwbEhoK2kzc24yaFBwdEg3U0xuRVp3clNDTndIdEp6UHp6VXlKdHpMeUk5?=
- =?utf-8?B?blZKWVJ1ZEU1U3VOTHlWSndPckJaS1ZKNGFETnhacy9TZ1VjSzY1MExNSlp6?=
- =?utf-8?B?WW1pWnhQQnQrdVRRUHZCQytEemt6Ykt3TEoxWUluRFdVVUNSYXpBUGg3a1Zz?=
- =?utf-8?B?cWlyd0l3T0NKTi9ycW4rMFNuVHB2ZVpPNThNTVdKalhYS0VuVkk4UlU0ZlRZ?=
- =?utf-8?B?eWJCcnBSRzRaODNqdGtDVEpwK2pwcGhOK2JhOGNBQWN1Ky9jaW5DVU55QjlM?=
- =?utf-8?B?NnlVSVFuanhZUVQyek9md3VBejlCWi9GOTNWaDB4NU5wRVc3M3REclMzQjVL?=
- =?utf-8?B?eitDbHdFL0pQaTFFcmRnT3V3QnhqK29SL2liWlBjSjliTlRhTnhlaU1sMVhR?=
- =?utf-8?Q?WKcyk8U09e9WASidF7?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e1c4728-2145-45dd-9762-08dee1bed1cb
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 15:44:41.4709
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wJ47FCQmfCwZgMJGUWaZXx0neY59azCoDe6MXYpCOVOso/1HEAvNtHemUUiGiwVa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7920
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6df814c9-405c-48d8-96ea-929c4b28949b@intel.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: ADC601C0005
+X-Stat-Signature: qy95nzk8c8796rdect8dccc8e3x336od
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9815B140004
-X-Stat-Signature: q63akxekoy5twkieqh5q7n7epxdr7rgo
-X-HE-Tag: 1784043890-372683
-X-HE-Meta: U2FsdGVkX1/uJXK7Yok/YGosQgSxdkT6+ND8q/60ryA8eShOCqLiUOz1Y1ZnprnuCOlNJGNiGQpoOFknqesSWwwKvUxSlVn0hyfexHc+sInrVRoH/K7ZPrNNDUKo9z3Txgv+B3Qoz1TgnbkkY9HixhPv8zkM0ezlFt5r/ti4f5ssCkrCzYBOOgWoM2oVyuJ16TUteKVIkQvM9IJNHbneFhFJ1ynwbS07gLpVm/qidzyaU4Q3itoMtLoyaSHrCiUeChIu9I7EsUc22xx7CePw2aJGlbeZKYcy3QdnaEJGAbA3mB1TpQdfM9AD8Bp91eV/sVevSbo5bizjO6ZDXgqAza+SP5PU1SJcCjo1AHEYx50r5H+QXT/B0Z2mpNnBMN8zr1/Y44jec1jbBb2NbDeEpCP/wnujXURXWOOg9pBAdHg/TeXjEXCRjSvivBPd8YCC36tF1WOScGxGPL6IUnU2GAgByWmtpFPQ4fK3L3ia+YSBM8vr9V+OfnRbxKikQbn+HbhCyatNbdAUubEloGL/dPQY/CsEoBt9jVe6byW9a19NmOUt8WPZOqbHP9WQNFLfoBHSqWnwC7rKKEIOdMR8Md1ieQTeQszu99tRPSVEZyz4CzSUbLPTZ3QDMZwhwjxfA9WU3SBxb96FeQus51iveV89a19G8aNm15ArttfLJ40Wb/yF8GaIkkjcnUtsEP+GQtK9ztKk85McPtn8+7nmjQUZJkYj1xCBDRgCzG4HCh/9+M+fNm7uujJH+JUt3cr9PJt3HolUN+v1AJXnrmaH71eL4U40BxJ8wfF3AMEBcXKac2Zbf8sMInyh8pJv42ZQgnaxnqrUnExeZUGg0my9kEBYwN1tULViEOm7swFWKKlR4fDqduooVLW05n/msgRyWybjdSbi8P8XIcwrOdH+LmUMa0sCMC43+McLefEeXbk6NzMaxzHFPcpXNi2YQqUMcOicn+mY3QxdfgOUwtG
- uGQCqpPB
- 8HhEOOHb7i+qmC/f3f1G4CjGRDuLrqHL0lZRxW152mhfNp8BNxCGQzY5pwwFxHyF+4IhLH+es5FfPwzYGuCr/yq9tJV7Ed0IzKZ3m7QMHqFngfFFG00Gh8cbQVk1pXS9l0FxBQt813x0+AuLWQMBE3yThrM+lwdua1gCwozWAjq3Pl5BvV4cvBJuQliYqfk57YE2MAlOdma/YiA4QBoIGSWWV89+FdCs4jR9RKYPeaK1ScSg7W1ehwXewDZykpPHN4ku1MPiDoEthhL7pqernsv53xw8VW95vpr9JgaboxagKwAsOChnTBzx4qvZQd+5VU42xjvT++hi6H6OBvTZAPtjoKA+2mOjnlR7BWzNiHaV1ahBw8o26aJ83fygg7W5YTGFo+9tdQmkASzAod+BrJi0VsRYHXzo6a3gbG/HRHTpwnrapwuz83JygcdauRH07IvT1tnTVXesx9y1DYFRMb1+B9HsnqnUKGNgR
+X-HE-Tag: 1784045317-646336
+X-HE-Meta: U2FsdGVkX19Owi9JLGIrif3tCHKTyLFiijDCB2J5HjDg3Bot/c+U6rEj1FECjiUVY+YRmT4NjhziJeP0cNIeMBbRTd7vmJHneym/HX7iFKa5q5PsGFosnXdijDRg+FElqtg/V3cHMSuKrpHODaExkr8d/MWf7XD7wdA7Ib5ObdSQxweoac1k4cODWeJBReOlHNMazOMvClnQBVUAx4dSRTJCaOG37PCJZ6wLDfj/m5Q2ay2pKTasAeSXM2WdEQhlO3jLExqOTFJ7scoyMs0Qq2RQQHmJV4YJ75P7vmT+xW4socjcD/AQ5EpTqJ+C12DlcIlxyPocmx17Ga5N3F3lTkrLMJkPDHfTW8e7GDwciFXv3F3GesN0Zts7WDWiL8j3mUNFgSfmJjTNEq7OsC+/0qoYjtmZbMXO+bCj1pUnesixFnDCWkZ+JjlCP5/v+0UdeMcCvMkCR67IxXt8jRt/bX95UJ77i1+2xZwqgxznwUm2jR/nE3OtIh6tQxuUHKjVtsjgbXCvD43Jxp02xNixGEZXTG08TesQY6R2J4D6TZzeNkCFq/qSt3qiMNybYCYaTkftGeFfy92lR2BnCzWVVVTKZbL3s0Zo8W0F/Hja6Do/UtEkPyPJnyg+MMl8Hs0CoPSo60DularJJ0ShPDyMwP1/l7krR85lZb+H7RGDyKjX/Ks2Cjye62q7pVuaKmgmkX2yyuCa19bsHRJAhlNU1wdhMzjDASBos09THo7/qJItaDWest9QA2X/YbNI7r+MTgBT5wzaGrbo/14zPYa52/DSaiYZ37c29kJBKYi9mmQ7eryRonWlLgXMHkAiLM6Vt6VRgyG+zH0+MITA/v4OL5H8qhpRIV1K2549Qdn693R7BQkKyfE2SRtCGP73HhZfSzvsAMKQTzC/m1DjkKw3pW9rkLgVpulvwoOxtTuj5gWRtbWHhxVH/XtSn+YNQPakBWgM0BOFK/dXzcsi7sG
+ 94WAs+uo
+ g9SEz78xjkSwvYQMXcffxX5tNb3XDYGMwmCxXbOHE9nAsDrBwVGykpPOyE2iSOou2eiiL/8KtV4DakUi91W5JJHKheh2N2DL7Hm+gJFfWOlWRba8/RYB+joQ52a1Ys/fAAku0E9kJk+iOVkhZcRWo5UVDtS/Z4GOIwiG+GuYrNDOGcw0wVgqFDiUFLjOFEHqFBIsgipyfgTYwjdGihaQYtMVALSVm6s6BAplSXQOBv4vVuy4h6AhMTpmFQoX4I/bHvUwshj1DEiL1scTclNzU5h8BEXQI5Hvmp6ASB5/bPtDnt0LI9QWHR1yKxKZ/RmIM5oZPK2isAxiKSoiHuEixThYZdMuY0xZa3n78II0YEEGuAB4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,195 +132,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14 Jul 2026, at 10:58, David Hildenbrand (Arm) wrote:
+On Tue, Jul 14, 2026 at 07:35:19AM -0700, Dave Hansen wrote:
+> On 7/14/26 04:40, Yeoreum Yun wrote:
+> > @@ -254,22 +255,8 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
+> >         struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
+> >         pgprotval_t prot = val & PTE_FLAGS_MASK;
+> >         pgprotval_t effective;
+> > -       bool first_level = false;
+> > 
+> > -       /* Ignore folded levels ... */
+> > -       if (((level == 0) && mm_p4d_folded(st->mm)) ||
+> > -           ((level == 1) && mm_pud_folded(st->mm)) ||
+> > -           ((level == 2) && mm_pmd_folded(st->mm)))
+> > -               return;
+> > -
+> > -       /* ... and make the actual first level remember the protection. */
+> > -       if (((level == 0)) ||
+> > -           ((level == 1) && mm_p4d_folded(st->mm)) ||
+> > -           ((level == 2) && mm_pud_folded(st->mm)) ||
+> > -           ((level == 3) && mm_pmd_folded(st->mm)))
+> > -               first_level = true;
+> > -
+> > -       if (!first_level) {
+> > +       if (first_level > st->first_level) {
+> >                 pgprotval_t higher_prot = st->prot_levels[level - 1];
+> > 
+> >                 effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
+> > @@ -471,6 +458,15 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
+> >                 .seq            = m
+> >         };
+> > 
+> > +       if (mm_pmd_folded (mm))
+> > +               st->first_level = 3;
+> > +       else if (mm_pud_folded (mm))
+> > +               st->first_level = 2;
+> > +       else if (mm_p4d_folded (mm))
+> > +               st->first_level = 1;
+> > +       else
+> > +               st->first_level = 0;
+> > +
+> >         ptdump_walk_pgd(&st.ptdump, mm, pgd);
+> 
+> This is indeed an improvement and a step in the right direction! Thanks
+> for looking at this.
+> 
+> But one of my test for whether it's good x86 code is whether there's any
+> actually x86-specific logic in it. Isn't this basically a translation
+> between the integer level number and whether it is folded?
+> 
+> That seems like a common helper that more than one arch could use. Could
+> this be stuck in a helper so that all arch/x86 has to do is:
+> 
+> 	if (mm_pt_level_folded(mm, level))
+> 		return;
 
-> On 7/14/26 16:53, Kiryl Shutsemau wrote:
->> On Tue, Jul 14, 2026 at 03:01:46PM +0200, David Hildenbrand (Arm) wrote:
->>> On 7/14/26 14:23, Kiryl Shutsemau wrote:
->>>> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->>>>
->>>> try_to_split_thp_page() locked the poisoned page and passed it to
->>>> split_huge_page_to_order(), which returns that very page locked to the
->>>> caller.  For a tail page that means __folio_split() runs with @lock_at
->>>> pointing into the middle of the folio.
->>>>
->>>> __folio_split() dereferences the mapping after the split completes
->>>> (shmem_uncharge(), i_mmap_unlock_read()).  The only thing keeping the
->>>> inode alive across that is the locked @lock_at folio: while it stays i=
-n
->>>> the page cache, eviction cannot complete.
->>>>
->>>> But a tail @lock_at can lie beyond EOF -- e.g. part of a shmem THP tha=
-t
->>>> reaches past i_size while the file is being truncated.  The split then
->>>> drops it from the page cache yet still returns it locked, so the pin i=
-s
->>>> gone and a racing final iput() can evict and RCU-free the inode while
->>>> __folio_split() is still running:
->>>>
->>>>   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
->>>>    i_mmap_unlock_read include/linux/fs.h:537 [inline]
->>>>    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
->>>>    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
->>>>    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
->>>>
->>>>   Freed by task 4601:
->>>>    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
->>>>    evict+0x57f/0xac0 fs/inode.c:870
->>>>
->>>> Split the folio as a folio, via split_folio_to_order(), so the head is
->>>> the anchor left locked.  The head is piece 0, which the beyond-EOF dro=
-p
->>>> loop never removes (it starts at folio_next(folio)), so the split alwa=
-ys
->>>> leaves it in the page cache and the inode stays pinned for the whole o=
-f
->>>> __folio_split().  memory_failure() and soft offline re-lock the poison=
-ed
->>>> subpage's folio themselves after the split, so they do not depend on i=
-t
->>>> being returned locked.
->>>>
->>>> Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
->>>> Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
->>>> Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
->>>> Cc: <stable@vger.kernel.org>
->>>> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->>>> ---
->>>>  mm/memory-failure.c | 13 ++++++++++---
->>>>  1 file changed, 10 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>>> index 51508a55c405..68d42cbed458 100644
->>>> --- a/mm/memory-failure.c
->>>> +++ b/mm/memory-failure.c
->>>> @@ -1657,11 +1657,18 @@ static int identify_page_state(unsigned long p=
-fn, struct page *p,
->>>>  static int try_to_split_thp_page(struct page *page, unsigned int new_=
-order,
->>>>  		bool release)
->>>>  {
->>>> +	struct folio *folio =3D page_folio(page);
->>>>  	int ret;
->>>>
->>>> -	lock_page(page);
->>>> -	ret =3D split_huge_page_to_order(page, new_order);
->>>> -	unlock_page(page);
->>>> +	/*
->>>> +	 * Lock and split at the head, not the poisoned subpage: __folio_spl=
-it()
->>>> +	 * keeps the anchor folio locked and needs it to stay in the page ca=
-che
->>>> +	 * to pin the inode. A tail beyond EOF would be dropped yet returned
->>>> +	 * locked, losing that pin. The caller re-locks @page afterwards.
->>>> +	 */
->>>> +	folio_lock(folio);
->>>> +	ret =3D split_folio_to_order(folio, new_order);
->>>> +	folio_unlock(folio);
->>>
->>> With a non-uniform split it would actually make a difference: we'd want=
- to split
->>> such that we the other folio pages minimal.
->>>
->>>  split_folio_to_order() always seems to end up in
->>> __split_huge_page_to_list_to_order() where we do a SPLIT_TYPE_UNIFORM.
->>>
->>> I recall discussing with Zi and Willy that in the future we'd want to c=
-onvert
->>> more places to do a non-uniform split.
->>>
->>> So I'm afraid that would just re-introduce the problem then.
->>
->> Right. Non-uniform split can be useful.
->>
->> But my patch is completely broken because code expects the pin to be on =
-the
->> @page, not on the head. put_page() few lines down can explode already.
->
-> Yeah.
->
->>
->> So the fix does not belong in memory_failure(). It belongs in
->> __folio_split(), and it is really just 2/5: refuse the split with -EBUSY
->> when @lock_at is at or beyond the sampled EOF.
+Yes. at least the level semantic in ptdump (pgd is level 0,
+p4d is level 1, ...) is same to all archs where use ptdump.
+So It seems reasonable to add this common helper in ptdump.c
 
-There is an alternative, only igrab() when @lock_at is at or beyond the EOF=
-,
-as I was bouncing ideas with Codex.
+> 
+> This makes a *ton* of sense in effective_prot() especially. Its entire
+> job is mirroring the hardware's job of inheriting permissions from
+> higher levels of the page tables and enforcing them on lower level leaf
+> entries. If a higher level is folded, there's nothing to inherit.
+> 
+> I also think it's worth taking a brief pause on the coding to think
+> about what kind of design would actually be nice here. If the design
+> really is that the pgd is folded, the 'struct mm_walk_ops' code would
+> ideally not even call ->pgd_entry(). It would just (for example) *start*
+> at ->pud_entry() for a 3-level hardware page table.
+> 
+> If there are no pgds, why bother calling ->pgd_entry()? It couldn't be
+> done transparently to mm_walk users of course but it could be done
+> incrementally where users move one at a time over to a new scheme.
 
-Some subtlety exists in these two =E2=80=9C@lock_at at or beyond EOF=E2=80=
-=9D approaches.
-When @lock_at can be a tail page of an after-split folio, Patch 2 returns
--EBUSY unnecessarily, since the after-split folio containing @lock_at will
-be still in xarray, preventing inode going away. To make a precise decision=
-,
-we will need to determine the index of the after-split folio containing @lo=
-ck_at
-when checking against end. It is easy for uniform split, namely
+Agree. Calling a pXd_entry() about folded one seems meaningless.
+But seems enough to check mm_pXd_folded() before calling pXd_entry()
+in each walk_pXd_range().
 
-lock_at_folio_index =3D
-	folio->index + round_down(lock_at - &folio->page, 1UL << new_order);
+[...]
 
-but for non-uniform split, the calculation is more involved and I have not
-figured it out yet.
-
-If we go =E2=80=9Creturn -EBUSY if @lock_at index is at or beyond EOF=E2=80=
-=9D, are we OK
-with not being able to split a folio when it is actually splittable?
-
-
->>
->> The safety then sits in __folio_split() regardless of caller or split ty=
-pe,
->> which should also cover your non-uniform worry.
->>
->> The behavioural change is that memory_failure() reports a beyond-EOF
->> poisoned tail as unsplit (MF_FAILED) instead of recovered, and kills the
->> mappers instead of splitting the page off. What we give up is salvaging
->> the folio's healthy pages and the clean unmap -- both low value for a pa=
-ge
->> that is beyond EOF and getting truncated away. Containment is unaffected=
-:
->> PageHWPoison is set before the split and free_pages_prepare() keeps a
->> poisoned page out of the buddy allocator, so the bad page never comes ba=
-ck
->> regardless.
->>
->> The alternative, if we would rather keep the recovered outcome, is to le=
-ave
->> @lock_at as the poisoned page and move i_mmap_unlock_read() (and
->> shmem_uncharge()) ahead of the after-split unlock loop, so every mapping
->> dereference happens while @folio -- the head, within EOF -- still pins t=
-he
->> inode. That is close to Hao's original patch. It works, but it rests on =
-"no
->> mapping dereference after the unlock loop", which is its own fragility.
->
-> At least it can be well documented.
-
-This approach works without changing existing behavior, as long as we docum=
-ent
-the requirement well.
-
-I admit that this is another implicit synchronization in folio split proces=
-s,
-in addition to
-1) keeping original folio frozen until xarray is updated and
-2) do not update xarray with after-split folios until after-split folios ar=
-e
-unfrozen.
-
->
->>
->> I lean towards the -EBUSY guard.
->
-> The latter approach seems cleaner to me, but let's hear others as well.
-
-I prefer moving i_mmap_unlock_read() before the unlock loop (shmem_uncharge=
-()
-is already before the loop), but I am more than happy to be convinced that
-=E2=80=9Creturn -EBUSY=E2=80=9D is better or something else.
-
-Best Regards,
-Yan, Zi
+-- 
+Sincerely,
+Yeoreum Yun
 
