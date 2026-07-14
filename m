@@ -4,123 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68006C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:16:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80178C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Jul 2026 08:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6860D6B0093; Tue, 14 Jul 2026 04:15:59 -0400 (EDT)
+	id 9F4E36B008A; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 636AE6B0095; Tue, 14 Jul 2026 04:15:59 -0400 (EDT)
+	id 9D1016B008C; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54CF56B0096; Tue, 14 Jul 2026 04:15:59 -0400 (EDT)
+	id 8BBB26B0096; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A0506B0093
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:15:59 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99F921C022D
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:57 +0000 (UTC)
-X-FDA: 84986673954.20.2E473D1
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D7CE240007
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:15:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=l8ay7+oz;
-	spf=pass (imf12.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784016955;
-	b=WFV9I9IALrEyv+7iMo9GAb49q5IDdJXTgwERlHkjJQMpweSHR45uHZ+Asj/OJKurs/S0uA
-	+BbPvBO7CdQT/EFOtLbYon5jrX8d+5f65IwEdmzquQIdXKlgMO3UZnFBT66peUR2OVPLLH
-	toXsbjmXAxw5U9oXdpFXIqoRbkstZ7w=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=l8ay7+oz;
-	spf=pass (imf12.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 577406B008A
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 04:24:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE078A02BF
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:24:40 +0000 (UTC)
+X-FDA: 84986695920.09.EFF2DBD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 241FB180004
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 08:24:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NqG70l5h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784016955;
+	s=arc-20220608; t=1784017479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8UXPYiyfSEkWVl+cC8sK2nhliwJgX/ylc+YW6RL4x9c=;
-	b=eZpVOWPKdKUHre82KFhE6mExa1xFYEld1pyN3x9cqhZYhq6i+/LHJvN2NMlzOuRKSsDgJV
-	nk0ZUcoLKbcQb3qp10i1/xTLoQhGGwcIuEY8FdgU6Rpc5sGPLan1wXkwSvbXlilfexUlea
-	RAxfNeJqYj4R1NJOWkxRvK3edcYhOv0=
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38dcbade417so2403165a91.1
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 01:15:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784016955; x=1784621755; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8UXPYiyfSEkWVl+cC8sK2nhliwJgX/ylc+YW6RL4x9c=;
-        b=l8ay7+oz8Vj0eMZVfyUys5zQF4zWsPD3d0rUyOPiROkbMOYDno+uhkLhM2YApST4Nc
-         98FNSrCoZ6p1kkDB+HP6jA0+zA+29CSjJv5WgZ83YEZH86NJMenSC40sruWZB/AeyVFm
-         hDgt3SNI0cFM1ICyQk0C7FF+wCenOegRkmTqrKVoavg9r61nPAGi30OFV4Y+RHgNEAhC
-         Zv/8JBgFiHlEj8jT4q7gvrl0oEb3ptgDS5RKbz36x+nGdU9XpFcBywiCttdCQDSjUWhZ
-         n992Bp0YW4XV5LCcxyF/buv2eJrHNCGViAnDzoYEmtew4pTbvvbDHigvjWe9xhluphEW
-         OJ/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784016955; x=1784621755;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8UXPYiyfSEkWVl+cC8sK2nhliwJgX/ylc+YW6RL4x9c=;
-        b=Ho0R6qanYhorGtRh6ViCFKZ0nUfpnBkOxFO16u6DIaRJAvGuZVzTl44N/XdywDq/8v
-         rF7WjdXv7IMnqFS6tTiou+siXanIbO/oB3PvAzkCKZhoC96ivQoqqwWMVD0sjvPaFN+4
-         cFsnGouN3HsWj5JntFEXN3OIno+PbeXbe6DF0IWpcM9w4Lc1CSoHvFbeh6RBJOFDoJH0
-         ECTVW30Y1fGWOm0BTQTpgp0iYkUV7mEZCNq12qVfrD/Jy7MSE4zMkIqJIiNir5zJ3XFM
-         oJJo/eNqTx2Lh94ydgwMI4ntIM2+shABxn6hetpIETR4aAcdnVnWPfQMHeI5y4hj7K7O
-         JFDg==
-X-Gm-Message-State: AOJu0YzhyBd7o6Z+3Hlu/Lccc5LVPuqO0Tkz76zTSFBGzFfps+Y1XkjL
-	GUHCmyuwZxOtkUZwcniAcp2G/qy8FpoQk/FxihCCxmWapVXM666CBf7Z
-X-Gm-Gg: AfdE7cnMvSEsT1warLP8ABBsfCmc4YT3mXiqF6cBA0zCfGd9i2ankYpjIw5MEHk/15a
-	mE+r4/6fWiLAe1ogiEG8o29CdzaDQOuHCY2UuMfNjNpCu25AzKXe3tibB3IGYNPfhFZedDa9wpt
-	OEHxJbEKhxVJoqv8qDEDcI64ufOdkVZffmOBHoUwUcv5EifKHofXOt1uONVs4SWVCD+vr/QOnjH
-	vu73OXEfmMz7WmvtE/w8uEomjg+w2pig0ezptbgnS0YqqiXwhQAECNuErM5Kt4dl5QkOBbhgq/g
-	B+NE9m0rnP32FSKQ5ZtKFid55RWRM4w7HskhcLd6TdZFtMtrJGAPHSttBe5FiX7U4MEtieYv8C7
-	OhJjUWrwV1K1llrbLpTWTN4FB2U8B4Eto7nGFbI4McrFL+f06P90wSPkogzsJbqzIUNykRSSVbt
-	883F66NGhLTVXiUSONtJay2Dc7b8GYhFRlayH20f6v
-X-Received: by 2002:a17:90b:28c4:b0:38d:fda6:4873 with SMTP id 98e67ed59e1d1-38e17db7bd5mr2555852a91.10.1784016954644;
-        Tue, 14 Jul 2026 01:15:54 -0700 (PDT)
-Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e17443f4fsm1091008a91.11.2026.07.14.01.15.47
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 14 Jul 2026 01:15:54 -0700 (PDT)
-From: Hao Jia <jiahao.kernel@gmail.com>
-To: akpm@linux-foundation.org,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	mhocko@kernel.org,
-	yosry@kernel.org,
-	mkoutny@suse.com,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH 2/2] mm/zswap: Support batch writeback in shrink_memcg()
-Date: Tue, 14 Jul 2026 16:15:10 +0800
-Message-Id: <20260714081510.16895-3-jiahao.kernel@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20260714081510.16895-1-jiahao.kernel@gmail.com>
-References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
+	bh=bbuLAjCoX2Tf2xn8G6n1Bh/HGLghJUpzugxizUSUcMU=;
+	b=ZT9PwhXfYX9Q9kz1aR7EeDVvyGGd8Bypgch7/D5kr36wKS5R6IMGyur0dm/hGTqfeKzIRd
+	3q2OJ+rCDe6TtoPWjjd/j19Lc7bsxOrQ6iFciHGwccElEPVEU8xIk/E0Gna7J9OdJUZLfz
+	75+FRlgwaIpx2hj0Fu07meYZpaLJfHM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NqG70l5h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784017479;
+	b=rzjEO3Sfs3GPeKkpqgY8Lvvw99MPoNmFlNad8bhbxXQS7su4nCnr5AzM0aR1MFbvl4usc4
+	lnR59SNW51JtK6iXymN+QBO1VYJ7DHsTMP5uG25qZ41oL635Pc0jjZgtCDacsLz/yIMrO6
+	pWErTBR1ZJU4I6ksjgWXqipf3gOQEKA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7C977601EC;
+	Tue, 14 Jul 2026 08:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3B41F000E9;
+	Tue, 14 Jul 2026 08:24:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784017478;
+	bh=bbuLAjCoX2Tf2xn8G6n1Bh/HGLghJUpzugxizUSUcMU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NqG70l5hvvJ5SeDUUhXjDmxaW+OF2x1POiWfWXDReY39GbSmsmzqf2C9koMNrg3lm
+	 H7eYQChV3ZrCOmxu2p0sCBYTkJJ6JC5Nov2VZJ9dK5S5rXxltZTlDkn/wTk1PmaIyh
+	 x+qQ0HAMfQBUe5fvdTB5R2TWmvQoBMVDLofQ7MjdHi9yG42ksE0I3PKIzkR5+jwYCt
+	 3aaGJw21Bvf3sjQg8begs7HhaTIFlE5C/e6+ZzbLGJNu0v6Sv+Tuwc9witph46K4nu
+	 s8U70sRdEBRvb9Dkci26XqJSrT3Mxz/Fw90KdjoxP1VQjag35pUzXJFifZotgZpjvE
+	 P+dIJ71kQ1YZw==
+Message-ID: <21007313-40dc-46fb-bbf2-453c8eedf3e8@kernel.org>
+Date: Tue, 14 Jul 2026 10:24:33 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 9/9] mm/page_owner: use memcg_data snapshot to avoid
+ TOCTOU in print_page_owner_memcg()
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260714015117.78351-1-ye.liu@linux.dev>
+ <20260714015117.78351-10-ye.liu@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260714015117.78351-10-ye.liu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: stsaoj4u68y9nnbq1iwi1aecdexc8yu6
+X-Rspamd-Queue-Id: 241FB180004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D7CE240007
-X-Stat-Signature: 3uckmmaiuu43o33dhtm6h4khrn3ohaot
-X-HE-Tag: 1784016955-353286
-X-HE-Meta: U2FsdGVkX1/xpVXQYEk36R0gfUG/c5ZZvr1Z01XxKVyNzwf501Verh5+xv/nxlTA1RFsbgrswlNm758EZAhTGamorzTZa/eZntW9arJBCTu33VGLTnsRYI1omqvJuwdIUH/7Arunv3MtzoCD4aX1F/wPmh+zlH66tT2E1wOQPcFch5jo0fwNu8MVthrjgtdUbVvBsDvYxpLZp8pPeE4LYYlK/Lij/Dfn05Ug73y4kDQRPRFHrlGhHseFkbsyNM8YfYbDqFsI+1/y6fVxQrMSj5VweQihX2SmnICJI8nUeWp3stZDpPQ38ngBGI192i1TOGpdZBIPGyNy/edahPqNMYTy9ZUMPGxgOvvBwhUXxuTWphdCuDX8cU24Xqa0/6/NtsMw47Z5srAvXdnWb8Sw1NBu8Y+cbT5dmwFI8PlvX2JpnM5AE4ZVk5I7x8k7N9dFnbnI/sm1cz/GirCI7RvjLnLE/JAWLdDJ6AdXYq71UAgC7yLhVXvoUtMxfIT4kt8WPh+tUfWQAs7Gndg/zFe+hrAO/ub1xkF/N11XUToHNlg4MqcRmcesZ7ily5gCkOdaA/HB59hwEwiLP8wuWqpBz7TfbNxPlm1Bx0oOuutaXXmSoez5akn+GqFHtoSNQMpyUIBno4/wm1ZhikPp34+1xKt9I2VXCOvnT1SqAdjVLI7aLweFc8WE/qrAGJxS0VkA7IfmmvPlxq8TW0HV5Ghq9PL39PJwo5pPlAfKAV4obHqP9DvPnsMK4ShFRMTmZDzHrDzt9BIz1m/wGF9C40m62o42C4sG+BHw0B5UABVJwnl+gRuypfQzUF9yJ2o59Eki1r5/sCyPkSq9EqNSkeWsjFWGBZJpsUnNtyF0K36AjZov7e8xmYgyjc8IXNQZgeXpyVNTxwzY8AJMZ46ficIR2n/s8LXGRaasEX/4FYWGNBahqoPdwleX8BBiHp/X6HsYTth1GogLF6VWZAEyPQI
- KfsE7K3Q
- 23Bg8tZnSK99YhltSjy8F02gKlAihqmyyO+b8PJm2SRVRKBOE1bO98Ygj5VXL5veNNqWpvWB9wwkwYO/vdQhcF+N1CDQR4YNWASxNMfN6zLqb18wjSxki3rAidPmUn4IawE6yHwmWjrCYFYVU835pJsn5n/IzqA63rvgBak9K0rgbDXT0jjyLHfC98Hx4TggkiY+lzwNg4XteznvjdXsdhSf6pAN6WVszr5FYpRcmFzbEUajr2Bt7yDIs03vvVuWo4nlTnRah08Hy2Q8G47Ph/eJ8heAWek/ZfUKwS6iXrew6mzfNPdiIGkyWpsaFoLGN/27LjPzlnwhW08yi37RR/FCKla2K7tZoqTJfoCsGHnKXWiBTzwPGNUSooNV8vOuAKpZEMMADVFZEJ2JlmyCDj/vq01tRAAsSg6w5ke7Wyz2PUUVAUPB1CQYm1OZXyQWqfI6Ga8BfHnlwkJckHCKKHqYsqzDeGRMJPcUjnOmFJkdzKixMVrubI53d2z7Y9/Gjo17jBHPk9Mcvat47rY7hHYwiG/NQ8Zi3hSPSieA1Sd5szKTADOJxXHLc+Q==
+X-HE-Tag: 1784017478-1099
+X-HE-Meta: U2FsdGVkX1/XKPCgQ1nzD2EOUjm21Vfa5Vc3emmSUt6mjtLt8BjqynZ1f4o3SVWZn17JiWwEIzSXPVv/nO4JAfuoRJcPmBJFsDTFqAlFSkM0BNkchLq6yHvNJQqsjdLYJ+G9DPqKTUmXyYCg07/Luzd8jAMgKtYORL+MVunv3a39TF7bofTYYfJZPUUqfkkyc4h2UxuJV8krV0TUyZKlXHp0ZhF36V/BgAKol62v9t2FKzZcqVjRcligvP9udyWlPca0sh8zIvYQhhsm/HMPGuCJe0GN7Hgkow6lZebp3iXDjXCfAYvIE+GC0sAn1VvZKPRCekZKm6tGkO+cW7eaoGSb9zrvA3OYW2fMDu3cv+e+QCa0TFA6BAOuNgUudmhzzA8Q0AHrdQqgOa1mFWR/3KfoV5/mqc6AlGzgyiYvNW2fLY23d8WOk1mr1hG8PEfKH4ftIYj2YMdGhukakh1qoCSD8I1tLNjQqZ1NhSfD4fY/2fVYI7KSH5LTFtS1IpIdVbWcjJYrb9Wze3r7JGxgQRLyCeoZSLVnJAh0QrLDwL4WTC87OF5QUi/BPwAOWX2xBuPrijmNTVV511KF4r/2WejKnRZoI8tvU8LkDY12lpWwtpNeg4HfFQZS2LkJCGQkFfKwJvguMxl2vzOgdkIuwMNYhofemf1yQBdwce0zogoAJgKsxyJvjqgXLtgqYXVE+V4H/e+9+6y2dP8V37+V0C/dMfdzceK0pha+kpzzBz6c0IWuD9OMLq5E4jMOqYkB+90AEFhyViI74W3Uq6flJxnDoXYLz/GCwOmBpT0jzkTQ2ITlktzZD1DxQgCmUMZRMq30MMVvKzzPF+jqxqyyat30+D59j7v5SoCzYbpCdOUGWumrqhlodq5F3lawR6nRnP+/p39eHzuk0ackq/waIm7CAERRM4XwQ1bfptIhRcONcWHJZlJYdVhyvpe5x0s66olnkDVzgmPo6Mnlpo7
+ SFM24XIt
+ d1+GyS85sCrnMGs1NtqKRdvKpVigGwIGXozeyWuD4t6OAcplBVBPIqN1i2MPo6Y2Qixsn8fsLnYLiE3JF6f5adqd9BM8uuOfZPSLNzxX7mPiiyo/9iiNxzcpVyO8PNBYtrYG9viZitkUjNdPLYc+p/jyLQjQtHVnmNSjrCkUKOC05yfWVdD3nuKhuaW8vbqXhYgO12Q66WhGse8lIW1IxH8ruo5Q48W15ACnfql5D3sS4tjx6hDWosIhsRcm3ECgeENyZx2i0Q8oRuMnZMB+dtMciig74fAkJf7JML4tS5a9OsNxym/YSYsNeG+mwMUmBLeNNRxxiWVGUCd8+NfOGsTDLDYfHjh9C/QLE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,244 +135,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Jia <jiahao1@lixiang.com>
+On 7/14/26 03:51, Ye Liu wrote:
+> print_page_owner_memcg() takes a snapshot of page->memcg_data via
+> READ_ONCE at the top of the function and guards against tail pages and
+> NULL memcg_data.  However, it later calls two functions that re-read
+> page->memcg_data locklessly:
+> 
+>   1) page_memcg_check(page) — re-reads page->memcg_data;
+>   2) PageMemcgKmem(page) — calls folio_memcg_kmem(), which re-reads
+>      folio->memcg_data and folio->page->compound_head, wrapping both
+>      in VM_BUG_ON assertions:
+> 
+>         VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
+>         VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
+> 
+> If the page is concurrently freed and reallocated as a THP tail page
+> or a slab page between the initial guards and these later calls, the
+> VM_BUG_ON assertions can fire on debug builds (CONFIG_DEBUG_VM=y),
+> causing a kernel panic.
+> 
+> Fix both TOCTOU issues by using the memcg_data snapshot throughout:
+>   - Extract objcg from the snapshot via objcg = (void *)(memcg_data &
+>     ~OBJEXTS_FLAGS_MASK) instead of calling page_memcg_check(page);
+>   - Test (memcg_data & MEMCG_DATA_KMEM) instead of calling
+>     PageMemcgKmem(page), which is semantically equivalent:
+>     PageMemcgKmem()->folio_memcg_kmem()->folio->memcg_data &
+>     MEMCG_DATA_KMEM.
+>   - When memcg_data has MEMCG_DATA_OBJEXTS set, early-return after
+>     printing "Slab cache page\n" since objcg != memcg for slab pages
+>     and there is no meaningful cgroup to look up.
 
-Currently, shrink_memcg() writes back at most one entry per-node during
-its traversal. This makes shrink_worker() inefficient, as it must
-repeatedly re-enter shrink_memcg() to make any substantial progress.
+These points have too much detail that's already in the code. Would just
+mention that we opencode applicable parts of page_memcg_check() and
+PageMemcgKmem() using the snapshot?
 
-To address this, extend shrink_memcg() and rewrite its LRU iteration logic
-to support batch writeback. Introduce the nr_to_scan parameter to bound how
-many pages are scanned per call. This enables batch writeback in the
-shrink_worker() path, while maintaining a low scan budget in the
-zswap_store() path.
+> This avoids both TOCTOU windows and the assertions entirely.
+> 
+> Signed-off-by: Ye Liu <ye.liu@linux.dev>
 
-Additionally, to prepare for future proactive writeback, update the return
-value semantics of shrink_memcg(): a positive value now represents the
-actual number of compressed bytes written back, 0 indicates that candidates
-existed but no writeback succeeded, and a negative value represents an
-error code.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Test Setup:
-Total memory: 32 GB.
-zswap settings: max_pool_percent=1, accept_threshold_percent=50,
-shrinker_enabled=N.
-Allocate 512MB of anonymous pages and fill them with random data (to avoid
-compression), then use cgroup memory.reclaim to force a large amount of
-anonymous pages into zswap. At an interval of 2ms, allocate a 4K anonymous
-page where the first 4 bytes are random numbers and the rest are zeros, and
-then trigger a reclamation of this 4K anonymous page through cgroup
-memory.reclaim. When the pool threshold is reached, shrink_memcg() will
-be triggered.
+Was all of this reported by sashiko? At least the new-in-v6 was?
+Then:
 
-The test data after running for 120s is as follows:
-                           Baseline         Patched
-shrink_worker wakeups          5363             85
-shrink_memcg calls       11,345,012        188,264
-written_back                  40214          40275
+Reported-by: Sashiko <sashiko-bot@kernel.org>
 
-Conclusion:
-Under the same workload and run duration, the patched kernel shows a
-significant reduction in both shrink_worker wakeups and shrink_memcg calls.
+But it's no longer a cleanup but a fix, so probably this?
 
-Suggested-by: Yosry Ahmed <yosry@kernel.org>
-Signed-off-by: Hao Jia <jiahao1@lixiang.com>
----
- mm/zswap.c | 89 ++++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 69 insertions(+), 20 deletions(-)
+Fixes: fcf8935832b8 ("mm/page_owner: print memcg information")
+Cc: stable@vger.kernel.org
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 3d697a1a5365..6d492762957a 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -160,6 +160,11 @@ struct zswap_pool {
- 	char tfm_name[CRYPTO_MAX_ALG_NAME];
- };
- 
-+struct zswap_shrink_walk_arg {
-+	unsigned long bytes_written;
-+	bool encountered_page_in_swapcache;
-+};
-+
- /* Global LRU lists shared by all zswap pools. */
- static struct list_lru zswap_list_lru;
- 
-@@ -1089,8 +1094,9 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- 				       void *arg)
- {
- 	struct zswap_entry *entry = container_of(item, struct zswap_entry, lru);
--	bool *encountered_page_in_swapcache = (bool *)arg;
-+	struct zswap_shrink_walk_arg *walk_arg = arg;
- 	swp_entry_t swpentry;
-+	unsigned int length;
- 	enum lru_status ret = LRU_REMOVED_RETRY;
- 	int writeback_result;
- 
-@@ -1133,10 +1139,11 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- 
- 	/*
- 	 * Once the lru lock is dropped, the entry might get freed. The
--	 * swpentry is copied to the stack, and entry isn't deref'd again
--	 * until the entry is verified to still be alive in the tree.
-+	 * needed fields are copied to the stack, and entry isn't deref'd
-+	 * again until it is verified to still be alive in the tree.
- 	 */
- 	swpentry = entry->swpentry;
-+	length = entry->length;
- 
- 	/*
- 	 * It's safe to drop the lock here because we return either
-@@ -1155,12 +1162,13 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- 		 * into the warmer region. We should terminate shrinking (if we're in the dynamic
- 		 * shrinker context).
- 		 */
--		if (writeback_result == -EEXIST && encountered_page_in_swapcache) {
-+		if (writeback_result == -EEXIST) {
- 			ret = LRU_STOP;
--			*encountered_page_in_swapcache = true;
-+			walk_arg->encountered_page_in_swapcache = true;
- 		}
- 	} else {
- 		zswap_written_back_pages++;
-+		walk_arg->bytes_written += length;
- 	}
- 
- 	return ret;
-@@ -1169,8 +1177,11 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
- 		struct shrink_control *sc)
- {
-+	struct zswap_shrink_walk_arg walk_arg = {
-+		.bytes_written = 0,
-+		.encountered_page_in_swapcache = false,
-+	};
- 	unsigned long shrink_ret;
--	bool encountered_page_in_swapcache = false;
- 
- 	if (!zswap_shrinker_enabled ||
- 			!mem_cgroup_zswap_writeback_enabled(sc->memcg)) {
-@@ -1179,9 +1190,9 @@ static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
- 	}
- 
- 	shrink_ret = list_lru_shrink_walk(&zswap_list_lru, sc, &shrink_memcg_cb,
--		&encountered_page_in_swapcache);
-+		&walk_arg);
- 
--	if (encountered_page_in_swapcache)
-+	if (walk_arg.encountered_page_in_swapcache)
- 		return SHRINK_STOP;
- 
- 	return shrink_ret ? shrink_ret : SHRINK_STOP;
-@@ -1275,9 +1286,31 @@ static struct shrinker *zswap_alloc_shrinker(void)
- 	return shrinker;
- }
- 
--static int shrink_memcg(struct mem_cgroup *memcg)
-+#define NR_ZSWAP_WB_BATCH	64UL
-+
-+/*
-+ * Scan up to @nr_to_scan pages across the per-node zswap LRUs of @memcg
-+ * and write back the reclaimable ones.
-+ *
-+ * Since the second-chance algorithm rotates referenced entries to the
-+ * LRU tail, the per-node scan is capped at the current LRU length so
-+ * each entry is scanned at most once per call. It is up to the caller
-+ * to handle retries, deciding whether to scan another memcg to complete
-+ * the full iteration, or to rescan the current memcg to drain its zswap
-+ * entries.
-+ *
-+ * Return: The number of compressed bytes written back (>= 0), or -ENOENT
-+ * if @memcg has writeback disabled, is a zombie cgroup, or has empty
-+ * zswap LRUs.
-+ */
-+static long shrink_memcg(struct mem_cgroup *memcg, unsigned long nr_to_scan)
- {
--	int nid, shrunk = 0, scanned = 0;
-+	struct zswap_shrink_walk_arg walk_arg = {
-+		.bytes_written = 0,
-+		.encountered_page_in_swapcache = false,
-+	};
-+	unsigned long nr_remaining = nr_to_scan;
-+	int nid;
- 
- 	if (!mem_cgroup_zswap_writeback_enabled(memcg))
- 		return -ENOENT;
-@@ -1290,24 +1323,40 @@ static int shrink_memcg(struct mem_cgroup *memcg)
- 		return -ENOENT;
- 
- 	for_each_node_state(nid, N_NORMAL_MEMORY) {
--		unsigned long nr_to_walk = 1;
-+		unsigned long nr_to_walk;
- 
--		shrunk += list_lru_walk_one(&zswap_list_lru, nid, memcg,
--					    &shrink_memcg_cb, NULL, &nr_to_walk);
--		scanned += 1 - nr_to_walk;
-+		/*
-+		 * Cap the scan at per-node LRU length so each entry is scanned
-+		 * at most once per call.
-+		 */
-+		nr_to_walk = min(nr_remaining,
-+				 list_lru_count_one(&zswap_list_lru, nid, memcg));
-+		if (!nr_to_walk)
-+			continue;
-+
-+		nr_remaining -= nr_to_walk;
-+		list_lru_walk_one(&zswap_list_lru, nid, memcg, &shrink_memcg_cb,
-+				  &walk_arg, &nr_to_walk);
-+		/* Return the unused share of the budget to the pool. */
-+		nr_remaining += nr_to_walk;
-+
-+		if (!nr_remaining)
-+			break;
- 	}
- 
--	if (!scanned)
-+	/* Nothing was scanned: every LRU under @memcg was empty. */
-+	if (nr_remaining == nr_to_scan)
- 		return -ENOENT;
- 
--	return shrunk ? 0 : -EAGAIN;
-+	return walk_arg.bytes_written;
- }
- 
- static void shrink_worker(struct work_struct *w)
- {
- 	struct mem_cgroup *memcg;
--	int ret, failures = 0, attempts = 0;
-+	int failures = 0, attempts = 0;
- 	unsigned long thr;
-+	long ret;
- 
- 	/* Reclaim down to the accept threshold */
- 	thr = zswap_accept_thr_pages();
-@@ -1369,7 +1418,7 @@ static void shrink_worker(struct work_struct *w)
- 			goto resched;
- 		}
- 
--		ret = shrink_memcg(memcg);
-+		ret = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
- 		/* drop the extra reference */
- 		mem_cgroup_put(memcg);
- 
-@@ -1383,7 +1432,7 @@ static void shrink_worker(struct work_struct *w)
- 			continue;
- 		++attempts;
- 
--		if (ret && ++failures == MAX_RECLAIM_RETRIES)
-+		if (ret <= 0 && ++failures == MAX_RECLAIM_RETRIES)
- 			break;
- resched:
- 		cond_resched();
-@@ -1493,7 +1542,7 @@ bool zswap_store(struct folio *folio)
- 	objcg = get_obj_cgroup_from_folio(folio);
- 	if (objcg && !obj_cgroup_may_zswap(objcg)) {
- 		memcg = get_mem_cgroup_from_objcg(objcg);
--		if (shrink_memcg(memcg)) {
-+		if (shrink_memcg(memcg, 1) <= 0) {
- 			mem_cgroup_put(memcg);
- 			goto put_objcg;
- 		}
--- 
-2.34.1
+It's not fixing a new regression so I think it's fine to keep it part of
+this series for next release and not need to split out for mm-hotfixes.
+
+> ---
+> Changes in v6:
+> - Rename patch to cover both TOCTOU fixes rather than only
+>   PageMemcgKmem().
+> - Also replace page_memcg_check(page) with extracting objcg from the
+>   memcg_data snapshot to fix a second TOCTOU issue.
+> - Add early return for the MEMCG_DATA_OBJEXTS (slab) case since
+>   objcg != memcg for slab pages and there is no cgroup to look up.
+> - Update commit message to cover all changes.
+> - Link: https://lore.kernel.org/all/20260701061101.344679-10-ye.liu@linux.dev/
+>  mm/page_owner.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/page_owner.c b/mm/page_owner.c
+> index 2e3880053a34..e18512a49e38 100644
+> --- a/mm/page_owner.c
+> +++ b/mm/page_owner.c
+> @@ -540,6 +540,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+>  					 struct page *page)
+>  {
+>  	unsigned long memcg_data;
+> +	struct obj_cgroup *objcg;
+>  	struct mem_cgroup *memcg;
+>  	bool online;
+>  	char name[80];
+> @@ -549,11 +550,14 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+>  	if (!memcg_data || PageTail(page))
+>  		goto out_unlock;
+>  
+> -	if (memcg_data & MEMCG_DATA_OBJEXTS)
+> +	if (memcg_data & MEMCG_DATA_OBJEXTS) {
+>  		ret += scnprintf(kbuf + ret, count - ret,
+>  				"Slab cache page\n");
+> +		goto out_unlock;
+> +	}
+>  
+> -	memcg = page_memcg_check(page);
+> +	objcg = (void *)(memcg_data & ~OBJEXTS_FLAGS_MASK);
+> +	memcg = objcg ? obj_cgroup_memcg(objcg) : NULL;
+>  	if (!memcg)
+>  		goto out_unlock;
+>  
+> @@ -561,7 +565,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
+>  	cgroup_name(memcg->css.cgroup, name, sizeof(name));
+>  	ret += scnprintf(kbuf + ret, count - ret,
+>  			"Charged %sto %smemcg %s\n",
+> -			PageMemcgKmem(page) ? "(via objcg) " : "",
+> +			(memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",
+>  			online ? "" : "offline ",
+>  			name);
+>  out_unlock:
 
 
