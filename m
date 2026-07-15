@@ -4,98 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 913BAC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 17:14:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCB55C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 17:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 324F16B0088; Wed, 15 Jul 2026 13:14:38 -0400 (EDT)
+	id 80AAB6B0088; Wed, 15 Jul 2026 13:23:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC5C6B008A; Wed, 15 Jul 2026 13:14:38 -0400 (EDT)
+	id 7A4926B008A; Wed, 15 Jul 2026 13:23:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C6A16B008C; Wed, 15 Jul 2026 13:14:38 -0400 (EDT)
+	id 6BCCC6B008C; Wed, 15 Jul 2026 13:23:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDAB46B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:14:37 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7CEB180251
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:14:37 +0000 (UTC)
-X-FDA: 84991660194.10.5590F3C
+	by kanga.kvack.org (Postfix) with ESMTP id 352646B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:23:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8A65801B7
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:22:59 +0000 (UTC)
+X-FDA: 84991681278.08.8EB67D9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7B05B40011
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:14:35 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id B6E1F4000D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:22:57 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="2QLj0B/E";
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XIgtcyhT;
+	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784135675;
+	s=arc-20220608; t=1784136177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TfHHEaVjP268tDYxyafxZXD74CF9fG6Fu7sb5cedFpc=;
-	b=FToorvzPe9Mjsck6XeM9EdE5YN+62nbkeMZEfvtMpppPUaYASRIfufd7vh5vqeIFlzWQXa
-	CTILNuo5kLmBNomFxreaXIu+21eNLZHURU+5C+7YOGWX6dhNKGNCK4VrhGE0AkhiScfRW0
-	V8InNbz9DPxVjgIz9BPm+rSIBXFZs7c=
+	bh=fPNZtKv0G0JaCpItLnUH7W8J8CLF9ZlgP6GTiszUw9w=;
+	b=M152+Zl+GIWcs50blePrjhatVxcMHj1sMMci762UhzJ7vknhlQ3B0Q8orMNlLEVOgffOTg
+	EoASCh/ez7o5unZo2qevGbPDfvJ9u/mCro3TEr/GroB6R897+q/QL5OwWjS82ZJZvuroua
+	mA9+oERuuHcsqZ0vzBmadPe22TaRulQ=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="2QLj0B/E";
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XIgtcyhT;
+	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784135675;
-	b=xguL7GcPfkTc/Jf7HFgmDiXNPrra0IKnmgHegypNnr6PHSMKPi0UiDFichPVdODgObREWG
-	xJaL4nH9aD+tDc7xs3Y1Jjwtt93cD9dafCOX7qi6qiTOb4oTEaRvAMKiBw0yGTyvI+Ccfl
-	a8JY3M1j7VIqd0RraCbEicsr0ejPm/w=
+	t=1784136177;
+	b=QLaIZ6RafzPBYG7HKDKIxexqWNkO4Gzkkvy7ULU9NRo8jkOahbvQnqGKDVmXEbGg+8ltfA
+	sZFoUBEZ2evoIYaJvslK1SYQWrFbpHPBhFR+6gGLnjPGMkh5EVaBx79kZIzGJZbGQfOoC4
+	dkaGI+W/LyuQfHDPBmWsbPyG0FlPPFA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89B8E437DC;
-	Wed, 15 Jul 2026 17:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F26D1F000E9;
-	Wed, 15 Jul 2026 17:14:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784135674;
-	bh=TfHHEaVjP268tDYxyafxZXD74CF9fG6Fu7sb5cedFpc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=2QLj0B/EWa4lYbwGV5I4Q8S6EE2h+YoSscnlwHTueR2CgkYheQri+8JcigQG4CilI
-	 gBtr1vMmIm2RnvVB9VFHABy+xQcmM99eg1Qt5ThrQfI5xX4O1/+LDp/iHJwv379AK4
-	 UVN02ASUZrntaUlHn1ZMkt1GZEdVN+Y4TeFWC3h8=
-Date: Wed, 15 Jul 2026 10:14:32 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "David Hildenbrand (Arm)"
- <david@kernel.org>, airlied@gmail.com, akhilesh@ee.iitb.ac.in,
- corbet@lwn.net, dakr@kernel.org, jgg@ziepe.ca, kees@kernel.org,
- leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, lyude@redhat.com,
- maarten.lankhorst@linux.intel.com, mamin506@gmail.com, mhocko@suse.com,
- mripard@kernel.org, nouveau@lists.freedesktop.org, ogabbay@kernel.org,
- oleg@redhat.com, rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
- skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
- vbabka@kernel.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] mm/hmm: Clarify notifier retry state and scope
- HMM timeouts
-Message-Id: <20260715101432.99957d2d33203fafe4af2e1c@linux-foundation.org>
-In-Reply-To: <ale3ydkx1xt6ruuP@skinsburskii>
-References: <178406760622.1106335.2379450382728057793.stgit@skinsburskii>
-	<4300f09b-8f93-4605-b072-7c09a82cb16e@kernel.org>
-	<alecaJ1FUso39D9k@skinsburskii>
-	<alet21wLwM6P_Km2@lucifer>
-	<ale3ydkx1xt6ruuP@skinsburskii>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id E7858438DF
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABD81F00ADB
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:22:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784136176;
+	bh=fPNZtKv0G0JaCpItLnUH7W8J8CLF9ZlgP6GTiszUw9w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=XIgtcyhTtCfLYmrEGTmDrQTJzTR990zzImckQ7iG69FnN0aqvINA62sZKic1ZAFCk
+	 QgK72rr4+6ZdC/Trsr/+f+pXq6shpE0rT2IYBr7nX4HcGrabL/0oNvupYi+oR5dkAD
+	 JPqeBLW6dMKQQvKzsvshRvAnppRu08AA3yOEx8nyPq75LuMXYaxlFsJlxTHHvOx8+w
+	 +IGRjA8Lm2Au8XfAiAwaa5hQxMLPt16P5HR8JdJ+wytOwOmGLYfIUUbOFvJdoFo7xX
+	 fm35d81PXT/JKGsmhSO4I9AMGzzu5JcZoWnCSQQpe8s+kwr77Yw4/HFzMXg0obYQiH
+	 +ptMVpLLlwvFQ==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81ec29f1d07so21998707b3.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:22:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rp4PE1B24RGYAbzdlK9bmGBxTi+axH6e2c7TZZ7eBsiFTtkS82zSkTCeQLp+8MOquWPneXmELfLHw==@kvack.org
+X-Gm-Message-State: AOJu0Yzc+28raQMvFXHgD/F9SjybF6hdFPV/g3kKZqyXZfk6wbXMQCKY
+	RAfAgANuWbxv/AIEVsJ+NvHeyhaec+lNtUlprEcoR4ERmOqDQvgB2EExS0s9rd3cbdAeGqrJYQm
+	i6AhsXgdI2GTAhlEEScX0TPXyBBYbla/Ps5Nv9YI7PQ==
+X-Received: by 2002:a05:690c:c91:b0:81e:8985:4046 with SMTP id
+ 00721157ae682-81ebb299076mr70998317b3.53.1784136176139; Wed, 15 Jul 2026
+ 10:22:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260713025644.170839-1-youngjun.park@lge.com>
+ <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
+ <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330> <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
+ <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330> <alae-LIRwEFUjgs1@linux.dev>
+ <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com> <alawYov0c7a0Q6_l@linux.dev>
+In-Reply-To: <alawYov0c7a0Q6_l@linux.dev>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 15 Jul 2026 10:22:44 -0700
+X-Gmail-Original-Message-ID: <CACePvbW6FKB8z3K=i7OjxvMT+SV8Dnpmd_8-pzB6tH0GBQv7pA@mail.gmail.com>
+X-Gm-Features: AUfX_mzEFEZ8gnhhoTyYsBdUcS0O3teHPgTkExn2p-PbqOit0XXG1fqEfQT6aWI
+Message-ID: <CACePvbW6FKB8z3K=i7OjxvMT+SV8Dnpmd_8-pzB6tH0GBQv7pA@mail.gmail.com>
+Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Yosry Ahmed <yosry@kernel.org>, Youngjun Park <youngjun.park@lge.com>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
+	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
+	baver.bae@lge.com, her0gyugyu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7B05B40011
-X-Stat-Signature: xw3yhy6o3jmih3n6fscumgy3wx45hc6h
-X-HE-Tag: 1784135675-977672
-X-HE-Meta: U2FsdGVkX19B17xkjxWqQc590jwjG3vXFQAQ37qwcYnga5LmxZMEw/I70P14gOfvkmXAxLzapvquts7Z/UNBdXrQD9sXfiTREdVj5RiUHUMlXW+QINj3bQWeoNhjHN8aqo5xzPJpSvTtvffma3zaBEzWxjsfxXuinPTtabcQR+BtZ7nvLp++GLw1iAYSYEjB7tciPd3Klpt2nv5mfoHnQtjTGBMPJM5zjYM99r/jaLDN6m4YvUCOBftR1eCuN4xabNFA62EcWWhXQjbvnbcEcS5hLjpqWADMk2W2IVU7lDZTxxpX7NpjeLuIVRjuAezdrl96zTzRHP8OcnFzyZ9+v4Txp+uCi2z3ncKcZeF0pMtMbKgJI09u3TMNeTKwEviO/uLeW4teWpj7JzkIUzjXaN6rnu+9VU7XoBc6BIwwuUCaCaam3OyIWr5ZzsEjkWQKtfVMWNJpEyKZbctMnH4gKW8q+x9K/NGZzh3z8bc0pgbd9em8ZkfbZrxSk5ihju/EZGLI+ial8zvkvz+inkaUyR3hY9JbOSnjOAYnlkZ0r83+UjaFQSd2H+B1cYyMhP6iWBbadjQqR0uRZZCSLAJ9f0kJBiLSU5sjiF5jW88oRB5W/jhpY33x3hR80UCfWPi9AU1P2hDlpnpZkzGq93IH2SnCNOXojMId2tEsVi0VUqdgvLS3ywnskIvmTZvqUIdnrSo9wVY3sxm6nPOjiBX3Zp4hET3PxjDihxzyN+0ayGsS2VPbXRqBZHOG7QaASZsizggqXHUdVv1ZLuVy5nhNA0M87sL2uVhMgDn0dDkiQsD3AO308sQ3D1T+BSF17S2NljNG5riYDCb0IcyaSduibYfCaohZOdEqXSsxmPAV5xBWx8diNKVs3Hq+S3Ev33oQxJe2zkBoKkcmigyotU8dGZ+7jr+oanHmJzTTbc1HzngoHJ1/IUSOaS8lEObgkcdM4ISpCsPEozZ5pBsj+D8
- 7sKLqSts
- BY5dJBqBuqJuAZTLdfc3MN7HPPqsQqnY1mj+C2V07SULKCy8J+dRXYwAR/lA5a6lK+zFRv3SjQIvPaKHjKWANsW0dsUaA97WzwtdA5144yzzziicH9udr+PWzsdF7NCaQ9lg78j+MRhssJ3/eh0dLBPJmdBchabAZEUK4hOyuBIUoeOeoXuCwDa1Y+vEcRsejolc1lLnW86ZdY4dB0TcV1pvYuXeMsNOD8sP0+8RsVPw8KTSonFASOIS6gHqq1pG1pvKOmGfwxAxe5Zczt0TVQ5m8oA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B6E1F4000D
+X-Stat-Signature: fhgwwd3ggyz91afgp61hpjgewfighxpb
+X-HE-Tag: 1784136177-734506
+X-HE-Meta: U2FsdGVkX19PkOMvatzQA9Wd5k+E8CpSfh3oopp+WewjlgvAvpQ+bqQeWUGZjctrc3A+ab/jKZMthVw27BnSmztBMZfw2iupiPToCfyn41RxV+GA04XX7FMesIKksj0mR6qfugvKW+zb87+h62lT+WHTVUKlv0LgH5MTjcKcRD6F6hBMoJSNW3VSGtzyhrU6ebZbt3bXPu9HUHuA7m9r9IrEUOGF4ozpkaTk+OlQmFbjHbVzmEuMadNdovK+TbK1O45HE5rwBKJoxP+tGNWIRQll0CYeOCWz0TlQ9JH+ubyzsMdYXsjM6GiRqjeRrYK5k+Scc6usWLt5aVUrfXsLeAYCYW+xg5OVIZx4gyFbneM5I6ERalCTjrHd57xzDuSZk1LxhcPdnD1NV0YOrKBnfw88hvNgE5ElOE0HByCMpqfbU8pI5JUqUOACmNY/KS0j9vMRsFd/m8tNWTQ8Wq+mKbTxE9mBzmQKutRFoANGELjjda2g5GuPhy4UbLw4jbSsQ0R+ujJE98wjrm/GCg55brVv1qnSh4hLY2u/nAOQ07XIhnMb0RxijrPdJRTvG9HoohO3+F41VT0Yi8oV15ep4XlOcvAVzUlEYfeL2bL5rv/nQPJy4DSlXfXBEj5RVNAdGlkL03i5tY4LyE5CoVDVeHHGyFGQYVO2heVHDHNAKZ7UpteyLOWmvXwZzLj40WPKPcNciXhbbGc2DxFg1SM8dJYCiTYMeFirMfjjneiTN771M9sAZ7c2NxEG4PbZOVteFU3RT2IHuVN1hxLgaUOSVdgcnj6ftBnwEZ2QWjtdhEkI70RpHo39iiWydwsd2RiHftS5QmGxykqf7qlPM776SdwhpWXuroWBRUsOh/3IGqCh5kTP/B9rNx8lwMSZPXgBXnLVfqqfhSKH0SJ76DCjYrJVupyjyDcWNBEAljwsZVzdRvRBJR2IrWUfElU/2SQirtCuhpA7xbW3m/hhdof
+ gvJHQ9ls
+ elAM5RuufiHzHPvOVEabBZpdhYb7oFf3FAvy58DUd5moJdnm4zRk2s0AeOwS1nQIH+NrGugkUDgaffwkNi06f9UeCZjoUhFDmfBzrOBjYqsOSCBE8NPnBw4Asn6yYNlQqGH8w/d0BeucQa3a7quFAIrIS2B7+6qvjyKm7xNyixWw3LDYuW5uN6rqxjXRb+KvYMaZ3zVLdAxE1IUmUjN5m4kYp4XWESiaOM5q5b7gcFweuxHp5j3uy2fjoyaIibt1SHf6wpJpXoLXQ2Lxs2xghygeGMrWISHJLcp8ybFjK+1nddlMQlfGHl32ZxEy4KV/LK2Nh8f3HCXyZO3iSVl5rBkvn1UYPQqYMPFzchtJgnXZUt3k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,29 +112,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Jul 2026 09:39:37 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
+On Tue, Jul 14, 2026 at 3:26=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Tue, Jul 14, 2026 at 01:52:14PM -0700, Yosry Ahmed wrote:
+> [...]
+> > >
+> > > Yosry, what is needed to enable zswap as a swap tier? What will be th=
+e minimum
+> > > requirements for that?
+> >
+> > From zswap's perspective, we just need to skip zswap is zswap as a
+> > tier is disallowed. Could just be a check in zswap_store() similar to
+> > the check if zswap is enabled. I am assuming that if a swap tier is
+> > disabled, nothing happens to the existing swapped out pages in this
+> > tier, but new pages do not get swapped out to it. This is the same
+> > behavior that happens if zswap is disabled at runtime.
+> >
+> > From the tiering perspective, we need to accept "zswap" as a possible
+> > tier, or maybe creating it as a tier by default if zswap is configured
+> > would be better to avoid handling the case where the user doesn't
+> > create a tier for zswap.
+>
+> Default tier if zswap is configured makes sense. Should zswap be treated =
+as
+> having 32767 (or maybe 32768) as priority as it sits infront of all swap
+> devices today? Also whichever swap tier has priority range containing 327=
+67,
+> will have zswap in it.
 
-> > > The goal was to get a Sashiko review, and v8 has already been applied to
-> > > both `mm-new` and `linux-next`.
-> > 
-> > Please don't do this, this is completely impossible to track for review :)
-> > 
-> > mm review is currently very difficult based on volumes, it'll become impossible
-> > to manage if people sound fragments of series.
-> > 
-> > Please just resend the whole thing at this point.
-> > 
-> 
-> Well, I followed the guidance provided by Andrew, and I believe he
-> applied all of the changes, including these, to the `mm` tree.
-> 
-> Do you still want me to send v9 under these circumstances?
+You shouldn't need to hard code that priority for zswap. Zswap, if you
+make it a tier, it is a special case. It is different than other swap
+tier devices because when you search for a swap slot, you don't need
+to search zswap as a swap device now. So the priority of the swap
+device does not even come into play. Internally, zswap is already
+hardcoded to perform before the underlying swap device. It is not an
+order you can change in any way.
 
-Sure, if that's what reviewers prefer.
+So we don't need that priority number. Just reserve a special name for zswa=
+p.
 
-This is a bit unfriendly to people who have already reviewed the code. 
-Which is one of the reasons why I respond to a new version with a
-single diff showing reviewers (and the author, and myself) what changed
-since the previous version.
+> > We also need to disallow zswap being the only
+> > tier as that combination cannot work without vswap.
+>
+> Do we need to do anything explicitly for this? I am assuming in a kernel =
+with
+> swap tier support, there always exist a swap tier if there is even a sing=
+le swap
+> device configured i.e. a tier with the full priority range.
 
+There is no need to do anything special now. The current zswap is bind
+to the underlying swap device. That is unless we use vswap/Xswap/ghost
+swapfile.
+
+> >
+> > I think this should be enough to support "zswap" as a tier and allow
+> > disabling/enabling zswap per-memcg (or globally?) through tiering.
+> >
+> > In the future, if/when swap demotion is added, we need to figure out
+> > how that would work with zswap. For example, if pages should go to
+> > swap device A then swap device B, then an entry in zswap using a swap
+> > slot in device B should not skip device A and be written back directly
+> > to B. vswap would naturally give us a solution for this problem.
+>
+> This seems reasonable to me. Punting demotion/writeback to future.
+
+Agree as well
+
+Chris
+
+>
+> Youngjun, what do you think? Is this reasonable amount of additional work=
+ or do
+> you envision some complexity here?
+>
+> >
+> > > If that is not too much, we can make that part of this series.
+> >
+> > Yeah I think it's better if we agree on the design and zswap support
+> > before landing partial support.
 
