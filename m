@@ -4,89 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5FB2C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 18:58:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25AC7C44511
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 19:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 968BE6B00A6; Wed, 15 Jul 2026 14:58:57 -0400 (EDT)
+	id BAE206B009E; Wed, 15 Jul 2026 15:14:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 919C26B00A7; Wed, 15 Jul 2026 14:58:57 -0400 (EDT)
+	id B5E7E6B00A0; Wed, 15 Jul 2026 15:14:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 831316B00A9; Wed, 15 Jul 2026 14:58:57 -0400 (EDT)
+	id A752B6B00A1; Wed, 15 Jul 2026 15:14:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 549FF6B00A6
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:58:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D79CFA0301
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:58:56 +0000 (UTC)
-X-FDA: 84991923072.10.24B2014
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 96C464000A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:58:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vJEETtdd;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C5E36B009E
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:14:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D99671A02B7
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:14:56 +0000 (UTC)
+X-FDA: 84991963392.16.64778F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CABB840004
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:14:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wM3fu0hQ;
 	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784141935;
+	s=arc-20220608; t=1784142895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fqHHwO7JAlURhQG4Jw1SHv5Ft9ovtN2t3y4hVi2W09Q=;
-	b=nGryNtvGM7ViK3nsYtsqoa91Jn0UUGs9SLqaP0/81Oyil7psb5Cz19b2pWsolwmWjGEPTi
-	VpoYGFeMoCKZOiXf3Tvq8gpzr60FPpdNg4UT7xtoOxMpeAzKBEoirm9FV/Um8XcFofbeWh
-	zIbJ9Rm3Mo5aL/Bh9YDXIC29zW4VRKg=
+	bh=ViHw0i/Ol3YgTRIw9C4EDJ0sBKCT3F9/+wZKL98nwYI=;
+	b=rV63FC7X+co/IEjE9zc9LPdW8Da/riiBPGaTZdv9E2qrRHVn3pV22Hwr5IkLo9yvHtKWvB
+	3qK5/oXU8m+UoTNHsUMGwHr9jyzBFXKs0cUPBTKxYxVl2D+Lh18U8ZDaU+KHOFk6jk/FH/
+	/jerZjns0qFZiR+be98Kqmb2tRcVuA0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vJEETtdd;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wM3fu0hQ;
 	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784141935;
-	b=FPC3tA1gvdJF4toyI3e76d/zsM9pMO10ZySHu7JNaJC7mbMUUFsQcrFkzJI663XF/fBA5s
-	ptEOK+AAdRtEjDk68VAaDJKaUL8WqTsYqjkqahszwduo1dChBXsuh94fP/fgpzJbUGBr4Z
-	A087VQTUkGE9ceHH5+c2e05Ek/JH2E8=
+	t=1784142895;
+	b=5DD1tVDal5p2H1cu2QTzbhyheqjGHUwT5QAoatILVf4dAAxRqpm3S6X2gNlFUcB2YBuc6N
+	PAfcWtSnH/rNM1EoLY4iyRZZqyeYdstVkOUgKPAre2lySLsA1xC1qwxVwRtIpCRyHyj9X5
+	Yd8R65/B/XsCR9jd6wBeyIDAgbtqQ2w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3A764166D;
-	Wed, 15 Jul 2026 18:58:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78A11F000E9;
-	Wed, 15 Jul 2026 18:58:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2EABF61878;
+	Wed, 15 Jul 2026 19:14:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D151F00ADB;
+	Wed, 15 Jul 2026 19:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784141933;
-	bh=fqHHwO7JAlURhQG4Jw1SHv5Ft9ovtN2t3y4hVi2W09Q=;
+	d=linux-foundation.org; s=korg; t=1784142893;
+	bh=ViHw0i/Ol3YgTRIw9C4EDJ0sBKCT3F9/+wZKL98nwYI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=vJEETtdddAlz7+EIMGm4DFsoK2J4nhFAUDgu3sHei+wYslXrtYTuv0lfjA0KOc7+L
-	 MwOHC1I9bfN82KG/UdpfdjP4uSeUx+hjAphiy6+RoyU2R2IFNSs7V2RFgeYVnV1WiG
-	 3T4GGcwtZYgqkZHsFtD92xJe+vpDNX8rNcdU4WyI=
-Date: Wed, 15 Jul 2026 11:58:52 -0700
+	b=wM3fu0hQUE2ZXeszCzbkXLBbR0dCG5bwf0UQtBQA7nGKj9H0vkzsdRCLcRDBHDRvl
+	 oW/UCFp1zjFYwiluqA8Anl7AliHSWpMayahnYCHmlv73JUX7cea0fqZAmvYU/9P40A
+	 C3SsVY8UUbuFctRY81KY8OGqMm6+JX0KWy6eVf38=
+Date: Wed, 15 Jul 2026 12:14:52 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, riel@surriel.com,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-Subject: Re: [PATCH 0/3] Batch unmap of uffd-wp file folios
-Message-Id: <20260715115852.a32e472d97fa182d6a5ee482@linux-foundation.org>
-In-Reply-To: <20260715111839.1667914-1-dev.jain@arm.com>
-References: <20260715111839.1667914-1-dev.jain@arm.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, David
+ Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal
+ Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, Toshi Kani
+ <toshi.kani@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
+ Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain
+ <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, David Carlier
+ <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ stable@vger.kernel.org,
+ syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Subject: Re: [PATCH mm-hotfixes v3 1/4] mm/vmalloc: acquire init_mm lock on
+ huge vmap to avoid ptdump UAF
+Message-Id: <20260715121452.3e8047663eeaaa3048f80985@linux-foundation.org>
+In-Reply-To: <178412496800.59347.11482869717348078349.b4-reply@b4>
+References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
+	<20260714-series-vmap-race-fix-v3-1-b812eccfa0f9@kernel.org>
+	<aldhVdwj9oMRN1Lk@thinkstation>
+	<178412496800.59347.11482869717348078349.b4-reply@b4>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CABB840004
+X-Stat-Signature: iicy3t6ic3fo3c1xo55rswq1foyafiay
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 96C464000A
-X-Stat-Signature: r3ttiid5er8trxj13fuih63h8p8744xb
-X-HE-Tag: 1784141934-904877
-X-HE-Meta: U2FsdGVkX1+z3G+WJMrajroipN+AR//1SdUqTjx2YuNGZ3rKYveR94uCkz+fD3YKjNu3uNvpF7XXLv+BRfu8rY8frJWJYZQtW+h+iXzPzqGEjgnXMrW0VJc0YFhZoCyuHSNCLAceTbT76AO/pjb464zCVnOwehZpUMd4k4iTAAxmlJFb3qddOEQ7vtAAPBzY8yQl9xOOmpg/joTDKZlICAonCu2y5z8eBlDUjFmrG/Szw2yxTUv15c7835jcsQhbEBsipsOrZ2OrmtZvbYwZyiZP0/oulq9LFMyzmGJ37S/doQiXKslwzofjoMKJEeE8sieGeUWAAL0rAooQoov5APeait5EG0u+LuqXyfaSwWvTzxC17vnR2AgAmlPwRE41AKn5I/Si1DSSxmkncGDG7eeqZrOmetdXywDoT0Pt0pnG8jJH+QWLnIhc0ND+OwMHhdL8w+Fk0jJRKqD//zLTNTKxkiOiysIbsvr2c/ilTbLCWL3jvvnd+tcS7hS1FkCZkErYkxVVqHWP83lGZFLFn4nPcPb8IxG19z+QFCetckVFTNucjAo8b6pA37NyHnd8IcRGGhGij3ZtnmUcZGBYZABNwf2JVIpwoX4X+JFgsCEpK4uc1R1++URBDnQdP6B4Ip93DNy0v8v2GI4+apAHYL+hxMhjQ+o9bOI66Mv80qf/iFuHngmxRNBS1vBumcgp87eAC0v2/WcAr2tb1bt6t3HCQu5NqK8VpNVM0PSt7qJ9Kt3/ido6TWFxrCcp3l8Z3LZabpPv1/MpZdDaKLU+KZu5phLZPlH8U8Rk4feOTVeGlH6frZQQi5zd6gipi72TfUea3s3ELdeOJQlzzzgZmOUrsAjcIEiB3ZBnGdrwFjQgSFyy9ca0mdnsSC1ueL2fHmi0Tp2lllXmyMU36swBLka8TDd5n1L56ay8sBGq6M/xbWM8oAYDFj3lreiBhqbbinQvPFMHkXrOV7Epgx4
- si29Lseb
- GckpXhqhrvhllCI3FU+cD++tVrlwE/QFnO9bjJRQMNIrnEX45aTpF2bTDhWERCzIaBdxfHeYdKzUwWaBq7Bf7cLK8+Hrt5hXDI9u4kkWAkCptdbcmXxiGHVyHQRCRfv5rzuChr9b3TvvpELQSCJFaWqJmHJsgU1xhQdkQsSiBSvKVpOM3hlEz4SDJJ3vb+o9CBOU7uJA2nEpbdvB/6m4cf6PCpJjd9kf1x19PUIQHLwmyY2VX1Y0neycdCZevBKSMX0lxZuZQnXRtazFhp56fhRCr3W9jnED031GBhrcxdd+hAcyZXFJqEoYg7Q5kYOadGysGxgE6E+IO/KXrvAPrUjzzswQ1brnVC20U2ACzHcAdDI6v9QIntcC/2w==
+X-HE-Tag: 1784142894-386602
+X-HE-Meta: U2FsdGVkX1/RRa0xVUWB4yJZgKr7uePmvWcdW5az5lgRY+mcYi2e36XWAWvKE9rKIogzCJaOJvBJg27h941B13G9VLrsNaYO2Z/ENg6XAxOQV0BbJJWu0OURDk05qZn3cgVAK7V2nGx5v4wGDwG5YOSAlvjH27uaHOeNQLjfwXiMbtYh5ePJmadiU43mHfjGRbxg4Y7R1PKlQnx3BYJ7f5EW7X8Zz3Fbylnuw+RwoOi76MjgHWA0TjRK3ZUlocsG9b/qe+FQTm1ZqFO4Iia9U3Iv3HusczYEbRJpRL+9oVymqR2Pf4oJXGDEntqpPG8SrxtI7X5JHE41NqCM9+0bq6RVq6nlwxM8i952wyj2DQNmEjNdS5LhjYHsBhBhLOnHGqVp8YpZHjMp0QpkZVtkXAB3lRzRRCLI1jFzQuOa86/JsGm9mmT8GqbXZmDTAPdxb5vawmeJaamGgJaeGLfUw/4I6HIiDROj0jvF6IBMkDrVEeq35/fFheaf8lODg65TjgzcbMNF0F9NmQlQVeLOF8OmcsmnSTXB+7/dSvVn38J3DZDRrk1KTTVWuNbMkrkVIlcQFDBc2gpKnOZvjEaxmBlEaWTb7glUwdDLInR+gSx9bqk8R/hZZ7zFaFab2Sl5OEv6OC10dZM3Gr/BfxeHdfdkCP1qiQ2I5o1Xd84PFzygvASPEXjjlbpIBFDeQ+2VX08/0nN8oFHxBNC3JLTpU7rjaX/was0Ka+NQvmBuOac7vC0kcWYIlxyAUPIWe7hDWHGe6lF3hB7Fxo9mzGuA6X8gCQ9hEXtS4aHf/rwPSEd36i4mWD8bHtNst55OK5hfJyPaXFT7YPNqDCMMaCBpddu0EgbjdPr+unZbhLNanq+umLTL+WxaMVeOLFhefo34xA1hEUaJMgXjjpZlmt2DhN2yEki8QeqK8Bh0wn40nbkfSxejLPVorTHAsIUdbOlXJOa2rWF5U1zWG8T6U2a
+ 3N1x2hip
+ AmSNma08I0ir2OrbtYizH+nmKNaoObkzmFarPKGdrPzWb4i+dyEh6UL74LWlW4wHPQJYexqdX65BpoWGCqAO3DRAOEPpu77iaUIRzPUkKqOog9H9yveb0l/DHIUQlg5qMz1k6U6JDE6LU2BgArGodj/AZM9kjWzGk/Ent/hStaHk3hdMZ5XkGEHABlS9oLaozkQzdX9TnrqTvoyOIWRYH/xZSAfXZPbBZ1iAK33eZu/8Ha/1yHO+ABA/eZwjRNQXg6AZQwLL8T824gul/WkUmmjn3JrxoCYej7/HO5NaNr5/HKVKrBIqrKozDQ0JcJQh1fCskd42SrTtMjdnM71GFX5xr5A7eEOTbKrsOrOVW5aqcloWd2U9W2kqeNbgMkTyJbxX4WlhC+5c6cv8G1ID/4xR8nJZduafjyivw2bMR+iMwociJw3sUGe1tmxlkqKP+degrpQGGYm9MWrU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +106,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Jul 2026 11:18:33 +0000 Dev Jain <dev.jain@arm.com> wrote:
+On Wed, 15 Jul 2026 15:16:08 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-> Currently, batched unmapping is supported if:
+> On 2026-07-15 11:34 +0100, Kiryl Shutsemau wrote:
+> > On Tue, Jul 14, 2026 at 06:24:23PM +0100, Lorenzo Stoakes wrote:
+> > > Currently there is a nasty race between ptdump and vmap when attempting to
+> > > map a huge P4D, PMD or PUD entry:
+> >
+> > Nit: that's a strange order of levels :P
 > 
-> 1) folio is a file folio, not belonging to uffd-wp VMA
-> 2) folio is anonymous and not swapbacked (lazyfree), not belonging to
->    uffd-wp VMA
+> Ha, seems I couldn't decide on ordering so went with something random :P
 > 
-> So the cases which are not supported are
+> Let's try 'P4D, PUD or PMD' instead :))
 > 
-> 1) folio belonging to uffd-wp VMA
-> 2) folio is anonymous and swapbacked
+> >
+> > > Fix this by holding the mmap read lock in vmap_try_huge_*() when freeing
+> > > page tables.
+> >
+> > How about adding here something like:
+> >
+> >   The read lock is sufficient: ptdump is the only walker that must be
+> >   excluded and it holds the mmap write lock. Other holders of the read
+> >   lock may run concurrently, but each exclusively owns the range it
+> >   operates on and cannot reach the page tables freed here.
 > 
-> It is easy to see that this adds a lot of cognitive load while reading
-> try_to_unmap_one - we need to remember throughout whether nr_pages == 1
-> or > 1.
+> You mean maybe I put the commit message on _too_ much of a diet? :)
 > 
-> The uffd-wp handling in try_to_unmap_one is regarding preserving the
-> uffd-wp state for file folios via pte_install_uffd_wp_if_needed (for anon
-> folio, we handle that while constructing the swap pte).
-> 
-> Stop special casing on uffd-wp VMAs by simply adding batching support
-> to pte_install_uffd_wp_if_needed.
+> Yeah sure, sounds good.
 
-Thanks, I'll await reviewer input on this.
+I made this changelog alteration:
 
-Sashiko might have found a pre-existing issue:
-	https://sashiko.dev/#/patchset/20260715111839.1667914-1-dev.jain@arm.com
+--- a/txt/mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf.txt
++++ b/txt/mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf.txt
+@@ -103,6 +103,11 @@ walk_page_range_debug(), vmap takes no relevant locks at all.
+ Fix this by holding the mmap read lock in vmap_try_huge_*() when freeing
+ page tables.
+ 
++The read lock is sufficient: ptdump is the only walker that must be
++excluded and it holds the mmap write lock.  Other holders of the read lock
++may run concurrently, but each exclusively owns the range it operates on
++and cannot reach the page tables freed here.
++
+ We also hold the lock while assigning the huge page table entry, which
+ means page table walkers observe only the huge or non-huge page table
+ entry.
+
+> >
+> > > +	/*
+> > > +	 * Kernel page table walkers either walk ranges they own exclusively or
+> > > +	 * hold the mmap write lock on init_mm (ptdump being the motivating
+> > > +	 * case).
+> > > +	 *
+> > > +	 * Therefore, acquire the mmap read lock to prevent use-after-free when
+> > > +	 * freeing page tables.
+> > > +	 */
+> >
+> > Same for the comment, maybe:
+> >
+> >       /*
+> >        * Acquire the mmap read lock to exclude ptdump, which walks
+> >        * kernel page tables it does not own under the mmap write lock.
+> +	 *
+> >        * Concurrent read lock holders are safe: each exclusively owns
+> >        * the range it operates on and cannot reach this page table.
+> >        */
+> 
+> Yeah that's better agreed.
+> 
+> Let's replace it, but I think (being super nitty) with an extra blank line as
+> above.
+
+This?
+
+--- a/mm/vmalloc.c~mm-vmalloc-acquire-init_mm-lock-on-huge-vmap-to-avoid-ptdump-uaf-fix
++++ a/mm/vmalloc.c
+@@ -163,12 +163,11 @@ static int vmap_try_huge_pmd(pmd_t *pmd,
+ 		return pmd_set_huge(pmd, phys_addr, prot);
+ 
+ 	/*
+-	 * Kernel page table walkers either walk ranges they own exclusively or
+-	 * hold the mmap write lock on init_mm (ptdump being the motivating
+-	 * case).
++	 * Acquire the mmap read lock to exclude ptdump, which walks kernel
++	 * page tables it does not own under the mmap write lock.
+ 	 *
+-	 * Therefore, acquire the mmap read lock to prevent use-after-free when
+-	 * freeing page tables.
++	 * Concurrent read lock holders are safe: each exclusively owns the
++	 * range it operates on and cannot reach this page table.
+ 	 */
+ #ifndef CONFIG_ARM64
+ 	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
+_
+
+
 
