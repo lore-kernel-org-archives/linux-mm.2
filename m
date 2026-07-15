@@ -4,99 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BAD6C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C17DFC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:33:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2958C6B00C2; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
+	id 814266B00C4; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 246016B00C4; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
+	id 7EB816B00C5; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 184436B00C5; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
+	id 6166F6B00C6; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D8F0D6B00C2
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB9E6120180
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:13:37 +0000 (UTC)
-X-FDA: 84991052874.30.6FE86A4
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A5261120002
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:13:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QA80ny0f;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784121216;
-	b=yVrS6TZ8Drs0bxFoOo11C1mbCWvXsc7OHeSZDV3PUHZ+b9CIPufm31nF3CT8kifCQFGpxR
-	qjrodJqPwsaQCOREJeXvpL5QUfcRvKxwjr/HUnAr+YdXDspj2FRSkWssQC2e2RougYbbMW
-	OcF/VWAYZ6wmNfpobawl3FbhYlHc59s=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QA80ny0f;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 415746B00C4
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 16955120196
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:22:51 +0000 (UTC)
+X-FDA: 84991076142.16.5B97DBB
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B4BC614000C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:22:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PhE+jxTO;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784121216;
+	s=arc-20220608; t=1784121768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4WBE3M/nI/ozpD58c8KdJqhsFEjd9mM2a+4L8TirpAc=;
-	b=y8jWqR3jqzLO68yLiQFGqjg7paxMAT5hvH3g9NlbcG14jItMYyDdFc3mgIv5jEklkUoQbo
-	d8YRxrHiZ13yj/mZFssn0bBLR2dXHcTgSxUjaI4WsYiqwFbJdm3Ikwttzs/g9c/Zc5iVMH
-	A0Iy/USPdlCMLl1Lx8UT3VhP2hQFBZ8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784121210;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4WBE3M/nI/ozpD58c8KdJqhsFEjd9mM2a+4L8TirpAc=;
-	b=QA80ny0foxBzYr02oXTnT7KL8JDbwj1CGFV5k5kcasnKKjxzsZmuFpySC1fJ29WlP6bhuQ
-	h1VMgFU13pTUefpXTiEQ5Z8UBuzAcMQlPqu6gPxNu62D7dYKgMCoIZnYoZh1tkzvG5jcbm
-	PlibFk3jAHIqspoJF0qfZj//bk/9PDY=
-From: Leon Hwang <leon.hwang@linux.dev>
-To: linux-mm@kvack.org
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Gary Guo <gary@garyguo.net>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/mseal: fix mseal documentation for 32-bit kernels
-Date: Wed, 15 Jul 2026 21:12:58 +0800
-Message-ID: <20260715131258.55499-1-leon.hwang@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vIFo0YrK5esCG67Dm/2h5j9Bki/Ly61qdMaw02Uu8MM=;
+	b=rvZUXEEjNTtwGG7ygEtscauy1BjtJra7mQTIdmJNLZ50lMONNzZOYSGd7cZ27lYB8DNJ4Q
+	wZfvNioV4AhfsVAs7xb1k6NhR2M8Zhi2lUEfUIYO0nQrF0tw0y2p0j4dwkHuyNuQvnJwzz
+	EiKPEXRTt3hZzcKEIdG/ROQVvhGkv1k=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PhE+jxTO;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784121768;
+	b=kVO3VmKzPMuMYhjoyQOHlpbjxxQ8vburLYnX86MJE7CHYk266fxxlxWhAGKrovUZZ5qxad
+	Jm9sOycTcE50PS/6WTWxDobOM4KtER0fbvfUyifk1YPlkUKlHu9Ick1I+dtommpTRF435t
+	0vecE1kkQnUpsgbhbl/XoBHulGuGq9Y=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66FBfwpS4179583;
+	Wed, 15 Jul 2026 13:22:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=vIFo0YrK5esCG67Dm
+	/2h5j9Bki/Ly61qdMaw02Uu8MM=; b=PhE+jxTOXGB8BQ4QyyMswmDciwBbYrj1k
+	rPANFzDHOzHLz47e5EJTVtG4q4Fh/c6uiMHLQsZYJoRG9136twRe72xzIj0OSRIA
+	dDYxP0J/qv127hYyiZ2vo6ImoJZ043nwlG9Z5PdyYffvdGvU3bZqvJ9HGVZ76NLG
+	5ZP90coqDU3K94gMkr5mPlAH5SWG2LT0trPEPYXCFMlKqW9bNDBsIDT/6P5NJGvZ
+	eumsEMmv3WVxJ9YwuBu4o9YsCrm6fwQ8v3nGc7kv1rsiyQ2LQX51zw9jsQtxfUI9
+	zKsacZlJlp9+YBv31Ir2aVeDInNYWxfptn9MVd2Bdq5/a01UbfhNg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbexwu31m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jul 2026 13:22:43 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66FDJevV025139;
+	Wed, 15 Jul 2026 13:22:43 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc0hw8an2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jul 2026 13:22:43 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66FDMdp940960292
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Jul 2026 13:22:39 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16A082004B;
+	Wed, 15 Jul 2026 13:22:39 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCF3320043;
+	Wed, 15 Jul 2026 13:22:38 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 15 Jul 2026 13:22:38 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id C454B16267D; Wed, 15 Jul 2026 15:22:38 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+        Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>
+Subject: [PATCH v6 3/4] mm/kasan: Introduce helpers for lazy MMU mode sanitizer
+Date: Wed, 15 Jul 2026 15:22:37 +0200
+Message-ID: <a5bf7ac327864193bb7c95d8575d6ce1f6a9576c.1784121418.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1784121418.git.agordeev@linux.ibm.com>
+References: <cover.1784121418.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A5261120002
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 2ZgdxkD_DYSdg9jm7Pp6y5oNH5YOUkHx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDEzMSBTYWx0ZWRfXwrK7eiK2dknl
+ 51QHOgXzU39lTsIxK9u9LCfMzbI4qgTtRmhhyG5FAVTwfEmWxmJYbU4q2zFLIjWSGvus23wtqU8
+ roC1X+wiXxX56BswANoX4v0pm5GrqEgZSgaMSqSmUCbPFkJbVGkhnFjCHR6HA9JoiV7tDV7LlH5
+ VBy8Ybnu4q4MAKKt4OR8gW1I7+D0w94BrANMDGlQE4+4vrLo8Cm0BctlW18gOe8MppJzRv0ixrk
+ hM4o+Omul91T15izPsT7db63Z6OhuM+hdGJosA5PMdXlZZiY/Mzqg1RQnOseTIruSREnHjs6QFM
+ JrVFjdK7qY5+VV0iKIA58BbKRq2xZuVXsH+MrCt1MkhnxhWmK5hlWmXqQdkwpClMv3SDDW8P4Ar
+ NrGOQ/8ZW4MgEZN29NpWay4ccT2NIJp8pijkydyOIrz9dwGC3Oo4eHoq33agFghFZ39JZvQ9Rbg
+ tlWvfgASLia0IaqZuqw==
+X-Authority-Analysis: v=2.4 cv=XJoAjwhE c=1 sm=1 tr=0 ts=6a5789a4 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=IbWDVZlrxelGz4sJbtUA:9
+X-Proofpoint-ORIG-GUID: FE-uiVEGEwD2-Wux2TSiwKAzgMqSIBSs
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDEzMSBTYWx0ZWRfXyYt7UqZQ06T/
+ rBvOxOuNJCamh4xOpMiPJJW7nukNzFcGbangxtz5EIWDHthw7llQba4INI1kgxRPZVuOhNn2nqq
+ ZX5HCFF3uVAaStAKg7ae/DXtpFKeUm4=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-15_02,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607150131
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B4BC614000C
+X-Stat-Signature: u3unoii93azk86fjbfq1swsx7y8fdpkm
 X-Rspam-User: 
-X-Stat-Signature: qr6f87zkonwz48atcumkeo3utyd5uhhq
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784121215-12344
-X-HE-Meta: U2FsdGVkX1/PagG4b8Uc4I2tlKCiHhT0Grjd46gCoD0FIrIrRWBEbT1QK4T+W6g2j7RfKaEEgXkKGmH2aP8bgkH4Y7HtujrWh5JtZ13pzkcKSyJLhwIm0I1qu1yX61+n+w4B9UJc7AMfRhV/G+wYS/55S5ZMhCPDTbYNdu0+pzl9Lre7OtUSx+uhb1QFLT38t3ITlc1VJvGPA1bsQ/P/l/E6mDbHGT4oxtsnirKks2N7pTDucpADZ+x0if/gn6F5bi4JyHxEsTWc6mkw/kenNrn/P3j8ffKGKes4BSab1jk6y6mWjNzoYnXIZyp7rQ1Az5af9xfXwE+uok1kkVXYLwVS2+aczw8qS+A408PUGOSUh1SMSLf5heAyCAO12uyKz26NorfKgcDDbmvLDbYZrkcA4pC3+KAvVy5rkzZluHflXsy1jsMajVT3qYnfR4kFumhKHmM9jsi1Mf2IWIBWnxOMfHXTNiIxKXRm33O3H+wWyeLeDoM0zqQizAabPP7GV8SXhz6fKEGXn68iyaSXVnCKcwhoqz9uwTp454EQIb5pZlKssHPJr6PjwNHBrKgHbPjW8HRaOqOWm1NACg4WhEetJ6lm8UCUm6n2APxZHfg8dodJciwGOiD3j/p5J1WeQO0AzxTOtmygEWmN/LdXMGwzXxRlwLiLNsrrk1oJBpKHMby985IWXOa+8cut1Si5MXdZhw5zSJODhhIP3akTDp3uniH313zMFfxuJg/h45YCf3TgkcCtce8Gr1vUBmMST/XO4wW/FyoBjUwA5p+kNBjUhRvOIdxIhNMye6JEXzRiEkRxldYu0GwrWXxL6bthQ0EtUIADEjVZKIRNKbjMcBFsAAQ3teLTwLQHt6i2HyvGq6HHtI9mPdrzDnyiJ240xbHw+M4b+iE5AY6MKmMg3n0apN/99Nu2r/kGv/KB+Zvoiu4oUUgxi/vJEhpvasbBFgQwpbmTB7uqLEDgVxS
- 2wwBr2yL
- e+hyOWPYc1JHD7WKd4u3UlaJczOWP/ZmV213Rx7DefKC/BLraZi20O5k2DOfkyB9zzU2FGaOpNTN2wmaZ8eT44RGgb9phnTv+X0V2MOdPVbV1CfmyUttSvpzIhVMxA6Ge4P9rNnz1PQKjuWrvklRgfruRSSc9R5Wx89MDA0WpO3Spf/b9PdADIXPvx6QOfmxYw8olTb/rzqehRchJLCx8i7AGNzFQ3ODLcMDls3fCl2ZnY9y5mBAHWt79YhCtpqp5wMHC5A1oPdxNqeUvDUrWqGD9MJPP4OizUiV3ryYG8h8MuX0=
+X-HE-Tag: 1784121768-212770
+X-HE-Meta: U2FsdGVkX1+Wkxk3pUtIKg2gDd16mbQkFUCSf2ZvcA29VBV0vOvvNNqcFrJeLdQpb9JvkxxXCl4lSyz5kRHa6Jak+EBUvr0ndqz2JTvC/gOSQOijWMZmddBDrHOApCg2/SmZn6sUnjh7CF/SFJzrSk+4lUKvWiwyUBA8o78kHI4h+mBD6rkYZ0YBMl17tQ2vr5MzYiK+zcgf/ouZ7V675q6PdwR7rFdyAXYrvsTldy8bjGjRe4uQ1/N6jNnj73ux8piggi90F2sPrLTpsD5sEq+HAf6dQqHZ4ncu+Zy0gvVdo428BgEWUOmrkWAC5QvnbkwbkFYhCZNfteejPmyl8E5MlUB8/SCODEZRAce1mH8qrA/P+MSUkXJ4Wyv1jRuPr9yiAb708SaiiIeJVgfXAUJUEi9IhCJ12KxtsMFaRTDXbdUiYSWao1OVB00AGuzV/NMMgZ/j/qbDVjnt7mVv0G3L+5baVL3VPOC2nCmw28SwJd3et8n1X/1QkoJbzZLT6CrTfKqksrxUyd2kXTrYV+oTEAjR1z56w2/8tVbvWIO+HNoNZcvZ1TCJG9sfMUru4779DtVL9XIt4k/yorXjbbMWVU4jIEKQ+dwoKeSeXlUF1OGxRJ74njeFyr7sUBPXEXSdyA0AhOGvE0mKWX5P+KQZPKDWz/MYLIb4Q+yKq4ikZtj+TVHFBeuSQAoqHUwGsZ5GiJ4BYu1lEyAEQOxC1kavIf750Xki3p0mRfs2foD34qcPqBi6/0WmHHr8ktLnFGDyKcdpZUIwsqMj18BwaEvsAx6zzZHoLRfLkTBm1k2P3sPmrAoVpOvhWl1cXLxA//OFiaXO1wmnzz/mUToBmq1eLT0UwA1KgHLaeW44OCsLYM1fKnVAaTJJEbjm2i9nlO+Ou4FsgfiAmvGiWN5oVNDGeGc20ZmXrlq4vV6TvKgmNgOiEm05IUH0R8Owz+RwgMyQlfh5cTyzDqyKgpV
+ 6qgWRx9H
+ U0I5E8x0zX4F24fw6PbvRYV67qKl/e/jg2kzBwjjUWG0afeZKom3eCKIUF1KhBKdAWyj3u0HxPumXWxSIPdzilrkl3nFA4iGZsWbXREQ+MCSYe0xibmXyydrYyFWH6KFA7Y/IhN5KG2+wlf7e/qwUTwG/XvAPv2OFHkn+gJYlryzzgXdF0tqTt5jTFIwEQb0Uwoqm8mvnX3mOsw14Ta9fawXwxkG8US8jJ6z3Mo/k5qcgZ0+Qd1VgOXIFpo2Tl8tA6OO7eVgEKI/wS8CmAHJ9Em3iGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,157 +147,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mseal.o is built only for 64-bit kernels, so 32-bit kernels fall back
-to sys_ni_syscall() and return -ENOSYS rather than -EPERM.
+Provide helpers that allow architectures implement
+illegitimate PTE direct accesses while the lazy MMU
+mode is enabled, such as:
 
-Drop architecture description in mseal.rst, since the arch feature
-doc has the latest state of mseal for each architecture.
+	pte_t pte =3D *ptep;
+	*ptep =3D pte;
 
-Fix the CONFIG_MSEAL_SYSTEM_MAPPINGS typo in init/Kconfig.
+By contrast, these would have to be:
 
-Drop the whole comment of do_mseal() to avoid stale info in the
-comment, as we have the doc in mseal.rst.
+	pte_t pte =3D ptep_get(ptep);
+	set_pte(ptep, pte);
 
-Acked-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+The direct PTE accesses pose a real issue on s390.
+
+Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 ---
-v1 -> v2:
-* Drop -EINTR description in mseal.rst. (per Mathew)
-* Drop VM_SEALED_SYSMAP change in mseal.rst. (per Pedro)
-* Drop architecture description in mseal.rst. (per Pedro)
-* Drop the whole comment of do_mseal(). (per Pedro)
-* v1: https://lore.kernel.org/linux-mm/20260703022507.187457-1-leon.hwang@linux.dev/
----
- Documentation/userspace-api/mseal.rst | 14 ++++----
- init/Kconfig                          |  2 +-
- mm/mseal.c                            | 52 ---------------------------
- 3 files changed, 7 insertions(+), 61 deletions(-)
+ include/linux/kasan.h     | 16 ++++++++++++++++
+ mm/kasan/common.c         | 14 ++++++++++++++
+ mm/kasan/kasan.h          |  2 ++
+ mm/kasan/report_generic.c |  3 +++
+ 4 files changed, 35 insertions(+)
 
-diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
-index ea9b11a0bd89..c039d782f9f5 100644
---- a/Documentation/userspace-api/mseal.rst
-+++ b/Documentation/userspace-api/mseal.rst
-@@ -50,8 +50,8 @@ mseal syscall signature
-          * The start address (``addr``) is not allocated.
-          * The end address (``addr`` + ``len``) is not allocated.
-          * A gap (unallocated memory) between start and end address.
--      - **-EPERM**:
--         * sealing is supported only on 64-bit CPUs, 32-bit is not supported.
-+      - **-ENOSYS**:
-+         * The kernel does not implement ``mseal()``.
-
-    **Note about error return**:
-       - For above error cases, users can expect the given memory range is
-@@ -62,7 +62,8 @@ mseal syscall signature
-         memory range could happen. However, those cases should be rare.
-
-    **Architecture support**:
--      mseal only works on 64-bit CPUs, not 32-bit CPUs.
-+      mseal is built only for 64-bit kernels. 32-bit kernels return
-+      ``-ENOSYS``.
-
-    **Idempotent**:
-       users can call mseal multiple times. mseal on an already sealed memory
-@@ -131,11 +132,11 @@ Use cases
- - Chrome browser: protect some security sensitive data structures.
-
- - System mappings:
--  The system mappings are created by the kernel and includes vdso, vvar,
-+  The system mappings are created by the kernel and include vdso, vvar,
-   vvar_vclock, vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
-
-   Those system mappings are readonly only or execute only, memory sealing can
--  protect them from ever changing to writable or unmmap/remapped as different
-+  protect them from ever changing to writable or unmapped/remapped as different
-   attributes. This is useful to mitigate memory corruption issues where a
-   corrupted pointer is passed to a memory management system.
-
-@@ -143,9 +144,6 @@ Use cases
-   the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
-   architecture.
-
--  The following architectures currently support this feature: x86-64, arm64,
--  loongarch and s390.
--
-   WARNING: This feature breaks programs which rely on relocating
-   or unmapping system mappings. Known broken software at the time
-   of writing includes CHECKPOINT_RESTORE, UML, gVisor, rr. Therefore
-diff --git a/init/Kconfig b/init/Kconfig
-index 9d91074c5d0a..a1402bd82026 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -2120,7 +2120,7 @@ config ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
- 	  from a kernel perspective.
-
- 	  After the architecture enables this, a distribution can set
--	  CONFIG_MSEAL_SYSTEM_MAPPING to manage access to the feature.
-+	  CONFIG_MSEAL_SYSTEM_MAPPINGS to manage access to the feature.
-
- 	  For complete descriptions of memory sealing, please see
- 	  Documentation/userspace-api/mseal.rst
-diff --git a/mm/mseal.c b/mm/mseal.c
-index 9781647483d1..69a53207ab57 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -88,58 +88,6 @@ static int mseal_apply(struct mm_struct *mm,
- 	return 0;
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index bf233bde68c7..deadf566b84a 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -134,6 +134,20 @@ static __always_inline void kasan_poison_slab(struct=
+ slab *slab)
+ 		__kasan_poison_slab(slab);
  }
-
--/*
-- * mseal(2) seals the VM's meta data from
-- * selected syscalls.
-- *
-- * addr/len: VM address range.
-- *
-- *  The address range by addr/len must meet:
-- *   start (addr) must be in a valid VMA.
-- *   end (addr + len) must be in a valid VMA.
-- *   no gap (unallocated memory) between start and end.
-- *   start (addr) must be page aligned.
-- *
-- *  len: len will be page aligned implicitly.
-- *
-- *   Below VMA operations are blocked after sealing.
-- *   1> Unmapping, moving to another location, and shrinking
-- *	the size, via munmap() and mremap(), can leave an empty
-- *	space, therefore can be replaced with a VMA with a new
-- *	set of attributes.
-- *   2> Moving or expanding a different vma into the current location,
-- *	via mremap().
-- *   3> Modifying a VMA via mmap(MAP_FIXED).
-- *   4> Size expansion, via mremap(), does not appear to pose any
-- *	specific risks to sealed VMAs. It is included anyway because
-- *	the use case is unclear. In any case, users can rely on
-- *	merging to expand a sealed VMA.
-- *   5> mprotect and pkey_mprotect.
-- *   6> Some destructive madvice() behavior (e.g. MADV_DONTNEED)
-- *      for anonymous memory, when users don't have write permission to the
-- *	memory. Those behaviors can alter region contents by discarding pages,
-- *	effectively a memset(0) for anonymous memory.
-- *
-- *  flags: reserved.
-- *
-- * return values:
-- *  zero: success.
-- *  -EINVAL:
-- *   invalid input flags.
-- *   start address is not page aligned.
-- *   Address range (start + len) overflow.
-- *  -ENOMEM:
-- *   addr is not a valid address (not allocated).
-- *   end (start + len) is not a valid address.
-- *   a gap (unallocated memory) between start and end.
-- *  -EPERM:
-- *  - In 32 bit architecture, sealing is not supported.
-- * Note:
-- *  user can call mseal(2) multiple times, adding a seal on an
-- *  already sealed memory is a no-action (no error).
-- *
-- *  unseal() is not supported.
-- */
- int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
+=20
++void __kasan_poison_pte(pte_t *pte, int nr);
++static __always_inline void kasan_poison_pte(pte_t *pte, int nr)
++{
++	if (kasan_enabled())
++		__kasan_poison_pte(pte, nr);
++}
++
++void __kasan_unpoison_pte(pte_t *pte, int nr);
++static __always_inline void kasan_unpoison_pte(pte_t *pte, int nr)
++{
++	if (kasan_enabled())
++		__kasan_unpoison_pte(pte, nr);
++}
++
+ void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)=
+;
+ /**
+  * kasan_unpoison_new_object - Temporarily unpoison a new slab object.
+@@ -414,6 +428,8 @@ static inline bool kasan_unpoison_pages(struct page *=
+page, unsigned int order,
+ 	return false;
+ }
+ static inline void kasan_poison_slab(struct slab *slab) {}
++static inline void kasan_poison_pte(pte_t *pte, int nr) {}
++static inline void kasan_unpoison_pte(pte_t *pte, int nr) {}
+ static inline void kasan_unpoison_new_object(struct kmem_cache *cache,
+ 					void *object) {}
+ static inline void kasan_poison_new_object(struct kmem_cache *cache,
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index b7d05c2a6d93..94d106094989 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -163,6 +163,20 @@ void __kasan_poison_slab(struct slab *slab)
+ 		     KASAN_SLAB_REDZONE, false);
+ }
+=20
++void __kasan_poison_pte(pte_t *pte, int nr)
++{
++	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
++		kasan_poison(pte, sizeof(*pte) * nr, KASAN_LAZY_MMU_PTE, false);
++}
++EXPORT_SYMBOL_GPL(__kasan_poison_pte);
++
++void __kasan_unpoison_pte(pte_t *pte, int nr)
++{
++	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
++		kasan_unpoison(pte, sizeof(*pte) * nr, false);
++}
++EXPORT_SYMBOL_GPL(__kasan_unpoison_pte);
++
+ void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)
  {
- 	size_t len;
---
-2.55.0
+ 	kasan_unpoison(object, cache->object_size, false);
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index fc9169a54766..1a2d18cdb21d 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -144,12 +144,14 @@ static inline bool kasan_requires_meta(void)
+ #define KASAN_PAGE_REDZONE	0xFE  /* redzone for kmalloc_large allocation=
+ */
+ #define KASAN_SLAB_REDZONE	0xFC  /* redzone for slab object */
+ #define KASAN_SLAB_FREE		0xFB  /* freed slab object */
++#define KASAN_LAZY_MMU_PTE	0xFD  /* direct pte access in lazy mmu mode *=
+/
+ #define KASAN_VMALLOC_INVALID	0xF8  /* inaccessible space in vmap area *=
+/
+ #else
+ #define KASAN_PAGE_FREE		KASAN_TAG_INVALID
+ #define KASAN_PAGE_REDZONE	KASAN_TAG_INVALID
+ #define KASAN_SLAB_REDZONE	KASAN_TAG_INVALID
+ #define KASAN_SLAB_FREE		KASAN_TAG_INVALID
++#define KASAN_LAZY_MMU_PTE	KASAN_TAG_INVALID
+ #define KASAN_VMALLOC_INVALID	KASAN_TAG_INVALID /* only used for SW_TAGS=
+ */
+ #endif
+=20
+diff --git a/mm/kasan/report_generic.c b/mm/kasan/report_generic.c
+index f5b8e37b3805..489d4a8d6902 100644
+--- a/mm/kasan/report_generic.c
++++ b/mm/kasan/report_generic.c
+@@ -113,6 +113,9 @@ static const char *get_shadow_bug_type(struct kasan_r=
+eport_info *info)
+ 	case KASAN_SLAB_FREE_META:
+ 		bug_type =3D "slab-use-after-free";
+ 		break;
++	case KASAN_LAZY_MMU_PTE:
++		bug_type =3D "lazy-mmu-pte-access";
++		break;
+ 	case KASAN_ALLOCA_LEFT:
+ 	case KASAN_ALLOCA_RIGHT:
+ 		bug_type =3D "alloca-out-of-bounds";
+--=20
+2.53.0
+
 
