@@ -4,127 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B5AEC4450A
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 04:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47037C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 04:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 367286B0099; Wed, 15 Jul 2026 00:04:23 -0400 (EDT)
+	id 404F46B009D; Wed, 15 Jul 2026 00:05:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 317836B009D; Wed, 15 Jul 2026 00:04:23 -0400 (EDT)
+	id 3DD016B009F; Wed, 15 Jul 2026 00:05:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 206416B009E; Wed, 15 Jul 2026 00:04:23 -0400 (EDT)
+	id 2F4266B00A1; Wed, 15 Jul 2026 00:05:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D31BA6B0099
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:04:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 514631205B1
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:04:22 +0000 (UTC)
-X-FDA: 84989668764.01.59D7303
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 02BA01C0003
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:04:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bIe4+f+H;
-	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B90E6B009D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:05:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8EE3B80333
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:05:28 +0000 (UTC)
+X-FDA: 84989671536.04.66B0490
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 546E01A0003
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:05:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Be6daMTs;
+	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784088260;
-	b=MK8aOgyuBOehdN8ipnf/jp5REMz6eJCKmwC5/kJKoY1lhTW3uPaua56bM8dDOhGeh79+8Z
-	cuwR0lFOuZwyPD++srh5M07o+jDPiSSF/vwT/WLWNniHQ1agiWgNMvxRZ6cE9y/rRHRhWx
-	dR1QPOhc9W5Sye//quxtUz3eJaOiFGQ=
+	t=1784088327;
+	b=Wc4RwWR+Fd1Xiqsx/RVcP75D2iQDnBXtJCjobK8f6pNaHA04pTbEonrRMwAo/86K94yyJs
+	P+h1E74Y5uAbMlWXdtQpZwy0iBVCgGMoMZAKgvFuR1BnhmVlOfu+/xacJZE0P9EqbeAq8g
+	LEusZxVKRU5Us8NHqDTJQhapneMvih0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bIe4+f+H;
-	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Be6daMTs;
+	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784088260;
+	s=arc-20220608; t=1784088327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rH41fwMQHzUYIu6gTUt3+s8hao9usLK+f5RMSL/O0OE=;
-	b=gA4K4XtNA6o/1m0G0AaXKHvdetkXeg9yjGg62d/06cl9Vr7wY56AmmeSMJp4lBgLlathjC
-	2vzfX6lORUyNpJV/X3kd73/QRR/V/T7UNjU6x4aOMbn7Kn3ctGG4zuLN1DvUWyjwa2vMVB
-	BwMjwQKdDhyBjvexanPhPRncF8Pyi9U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784088259;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rH41fwMQHzUYIu6gTUt3+s8hao9usLK+f5RMSL/O0OE=;
-	b=bIe4+f+HrwZjIC3sJfbEL3Po+ElxqxuBEylY6vThI9NpURqEb9mJn5kvrsWLkEsOSh1PDi
-	5bQjyx78BP3Ukjs2LLE1sG83V2tAlNJYavrlHw8rLKZzPIdKjuSWZhQnbbiRZNs01gHWAg
-	SaHtXX5sZqjx64ZBhHBE17V4k96j1Fk=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-YvYks8uXOvCRCXIYDk5VNQ-1; Wed, 15 Jul 2026 00:04:17 -0400
-X-MC-Unique: YvYks8uXOvCRCXIYDk5VNQ-1
-X-Mimecast-MFC-AGG-ID: YvYks8uXOvCRCXIYDk5VNQ_1784088256
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-39abd6b0c78so7968861fa.1
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:04:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784088256; x=1784693056;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rH41fwMQHzUYIu6gTUt3+s8hao9usLK+f5RMSL/O0OE=;
-        b=hD98pgWlZUzVq1gq+kBS8ZW74hThvuW8XURXD5IyDOR4sf56wyxJ5sBCiyJeUBadRx
-         Y67ej/DRIhb0f2jvdyXJBEh3L77UhwS2O9Bdfpgnt3s3Lllwwaov/gZw5p5cuFyFzhOE
-         A2FwxvnSWPR7KOdfpzaQKdXPLM1sQWoL2uiUN/QE2bKN6cPZGPGDmd9uQdEDsBW4+9RJ
-         KpzftJiwl2wMihXBqJGc52GNwMh0R4ORZgMssbkKI/v0sP84a9NIBXkOEGK28arIvZsk
-         DxfW3a19HfVLL3zpkt6U07fZ95l30Na+S0rTwGRCy+EKBtpZGtO8/Qabg2wNxhTnJyhC
-         BuYA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5xtWUTaaNAByBK4RMWiWliqjC9kuapV4ZgErUEQvoL70inQ2IcS28ObOfjUE5P4t1j31y+s1IuA==@kvack.org
-X-Gm-Message-State: AOJu0YzNIfvDudZ6/zxysn7plAXNV9ONB3jBENpcBfgUMqjsDdey5Ung
-	qj1E9yu1eFUDahf0wYlh6aEyTTMKFByi6KDoCBASuN3jA8kG+WdtRx0vAfjZOQFXRI4zh0YWueR
-	SsoQawWCxqY6BC6NKZTWxBaP9UoIYVn5LrXcYHROi/QEq6vrXfBO5Cio8HEkTW9bsEpjFG4z81k
-	BM8HlFnBwbRzcO52hQllEirBKrxHI=
-X-Gm-Gg: AfdE7cmteJ070DqWWTPKwypO9ho03FF6E3EVRxOr+2N3w2jvh3hvWcS1xvEkxhA0LIl
-	OLYoxyEjN0x6Ol+bmZUKPaVwdOiK3gyOA3LRK0dSZ7yzPNXgRznIdIfiNvbiVc9NvzGgBzGORen
-	e8Xv6a4EFgauXRkp4aCfserMQfnfL8TfKzTpU0oOCl+RsgVq8o6wnbkFl7nO28Hbny
-X-Received: by 2002:a2e:9812:0:b0:39c:677c:8492 with SMTP id 38308e7fff4ca-39c94c3f33amr27740141fa.13.1784088254831;
-        Tue, 14 Jul 2026 21:04:14 -0700 (PDT)
-X-Received: by 2002:a2e:9812:0:b0:39c:677c:8492 with SMTP id
- 38308e7fff4ca-39c94c3f33amr27739911fa.13.1784088254254; Tue, 14 Jul 2026
- 21:04:14 -0700 (PDT)
+	bh=+NKTSivvd/RznSgZgQ5XRa9Kux+hc0gRY6vB/wLL5b8=;
+	b=t0WWKKoQlZnvGKcqAe5a1Gs5zXsO6SjCuxWhLSvwia2h0lf6+3HnLCtHVpLpPkNQ92Z+lH
+	sUo21A/ZzYA2eWBUPJFS/vnJl7eHWdFsEvzWKO6jL/Fc+s0ZDtzqUaEsyJBH0BxWPFmdBZ
+	f30Cfi7ZPkEN0n98YWc6DH5N16iufY8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FA7E339;
+	Tue, 14 Jul 2026 21:05:20 -0700 (PDT)
+Received: from [10.164.18.40] (unknown [10.164.18.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D24F23F7D8;
+	Tue, 14 Jul 2026 21:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784088324; bh=JleE5ZWx9SjpMJn0oHA2QSPbxd8mp4PaHdJxoION0bY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Be6daMTs1IbU1CSoetXmxbaEoBz8AoymrrC01Gu2ZMKnuQTFZg2itQMyvkNGJewjG
+	 W00xD+NdY68zakgWc9vHhmLYz2D0EOw8R5GaE/MwzP4v6IMDxG+eCYgDl+6Ojz1itL
+	 dUS8pwTSACiNa/1z7jgbTix7dOW1TdVfVZn1Jrzk=
+Message-ID: <90194352-7389-4942-a33f-37ed4df7c51e@arm.com>
+Date: Wed, 15 Jul 2026 09:35:18 +0530
 MIME-Version: 1.0
-References: <18102ABA-0D8E-4DA0-AC30-544E34E445D5@nvidia.com> <20260609172719.803537-1-usama.arif@linux.dev>
-In-Reply-To: <20260609172719.803537-1-usama.arif@linux.dev>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 14 Jul 2026 22:05:31 -0600
-X-Gm-Features: AUfX_mxAhc1Bv761Jc1uQW1A2zX6aSuIHHc8y6wnhBmDS4BiVEszC5e_cJSQeA4
-Message-ID: <CAA1CXcA84BtQZxOpE0sWgb2ed6y3m0NLKkWD+5MfWS9eF5dqTQ@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting
- from interacting with KSM
-To: Usama Arif <usama.arif@linux.dev>, Zi Yan <ziy@nvidia.com>, ljs@kernel.org, 
-	david@kernel.org
-Cc: xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	usamaarif642@gmail.com, yuzhao@google.com, aarcange@redhat.com, 
-	akpm@linux-foundation.org, chengming.zhou@linux.dev, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Z_-5imj6r2vdONXnT5eo1zMjmxwXI0cYjsMkaej9Qc8_1784088256
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/6] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+To: Dev Jain <dev.jain@arm.com>, Wen Jiang <jiangwenxiaomi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
+ david@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, rppt@kernel.org, ryan.roberts@arm.com,
+ Wen Jiang <jiangwen6@xiaomi.com>
+References: <20260709073823.6643-1-jiangwen6@xiaomi.com>
+ <20260709160805.26e63bae89dd03cf2951104e@linux-foundation.org>
+ <CAHKocdH5kp5kTtZht+v5j-4-Thh40TGvif3=kRMgErRXr+Q+RQ@mail.gmail.com>
+ <929dedc2-eea3-4153-be6d-d2dd727fed89@arm.com>
+ <a08e2a7b-2ab8-4429-8d4d-9c13b6a2a77b@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <a08e2a7b-2ab8-4429-8d4d-9c13b6a2a77b@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 02BA01C0003
-X-Stat-Signature: zo86p1pcjcw9xdoz6145583rrunsrfop
-X-HE-Tag: 1784088259-115663
-X-HE-Meta: U2FsdGVkX188XfB0vMA8diUIXPXL9pDx87SZakgOjWSUddjwhvswj1e7s4b2g4lfH7KaT8JwiV58JCZX+MP9GEyCIfeQxwz0wmOYKxafV0KVWokMQL6wIaxTc1b5vxzCbRYXjt/Z+LyLTA6+1tnTeLxhWHRKFsqQ8O5WeGXOs7VZg4MQPNfvzcZIhsNJMutRAKcpZO9JgckGWyo3NysN3xGEQJRmAskSRZzwgTJtrx2GAhlkNQ91Ge4wCPnPnf2bzut4ElZ2dlHepU+ZUgZ4OpvqBL4iy3dC4tXeF5PVTPOiQoU6edhWCZ/2Ahh99yGlEEN7Q5fDVSmQmSXFXah/1bL/MVwjBWMqOQ6qI/84Ej4v1wt4v4rRk5B28imiUbgY6Uaf0j6pz1aJp37fojWNe2CfNP2TQCeI548KE3cgGJQ5B69PoU0ITPq8+Q2KfYQDI6GBGjsWXvylufpT0JTb35SDe8u5zGYcJbyYkhz9HlwjM+IPRYyk1+rJje5QHAWZFPMBjyXkDjRSvZIjuontQxtNZfnSfWM6RDppI5IbmwnIuSQzg/CuB8VNUMwhqtWygsl9mhMU1t04qUveu3QxTjOXXzrXfkHFjy46WCL5stMHpsuPXoZYRAYmy8KuTE19b7/40AfqM8+XNeTBpoDHv98P2U+vDXhj5LfhoUOT2vuZrp7ugk6HFx2Tssgec8nvOfgsjSAYBPNSxRz3u/1R4tKp5Y/BhlKqSO0NXmh7WPOYw4kIfop2mGAG4FnuJsjn4ihfmpxNZSs9pSoRVu0S1nz/7oXF1OiNyQWxIqUEntyYMZbpCzsg9gpIzAvSaXd0yfkU7VYfHQftaqBglA0f4iMt4p2kuycKPormp1FJqmWH2goSXozp2Y277KMGfSFQ2atLJdYGypL2m6x2VxbT5PQfUTfYy5v27nxWmFluh0X0RgIcjQKIqkv6HzJbSHFZ5wu6DxWLTzvdzY0vqAG
- F4frHdCp
- /Hu0rf+tjb6ZNpwtkXXdF6Zhlh0K9H7sNxqCMlxhrJAjaAe2LdYMQKAJbNXVSLA/w8CCibvqwX2jdJ2Z8M3RReX6YwilY6DsAytwy08lm8JnGPovnU09Y395U0lno/MBg+eKcbwmzK/Xid0Jop8gnUivogHK/S60EIVyqn93xOTfTqdts+c6vLUIcmCZH16W/+rF+kN5ZJgloACs5ina3npJRUWidhCqn0qXTf7SanV5yaCe5gULZj+Oa+AqXjjcTKYejzoSOrXuH3rRFMUKLBWhZMCNsLJywsxJoTYA4T3TAG8IOFhWQmpyUtiTa807L8UShFzmNl38w2MnvN4mWdX1F45UkUdW8e8bQXEqj1T26IfF1rMnYy85mZNSJz7FeocWdLcauevdHxsY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 546E01A0003
+X-Stat-Signature: o9gdxwdbobp7u7bye4kpaapgjjwr1cek
+X-HE-Tag: 1784088326-321424
+X-HE-Meta: U2FsdGVkX19NzeK08LcbaffvEfwKyJ+Z/Ky/AaqGg/HV+LE6iP3Q2VVxX571aNMded1mkZnjPwtugJ8eQhlBCQIrkn/au2KzhGCMRJSeY2suwTA/1kW6QQjbIAve57xy/uuSmstfyyrJxOwp/c8cYedkqtTBECX8LCPQ+HOmJqvH09gSRgeQiNAbEOjL0ozYMzyPU/7U1qfBCqiUuXhNuKxv5lOdFSTlI3ZJ9EQvrL8wGglN0L4MyN/7U4uJy4cgypVZxV6ifJv4nhsmoiVbJD/HCKj6Yhe1MhXCkOrQcvQSrDbLQUB7V41RPtDC4crs04s0QrlH/3NuUx3WWZtrI7fhyzABg7NyA9GTjzg31zkJEtQI/Angxgrg6cyDz5TZOl91UsuZKozi0Nsj14TslRDp8GJypWe6gDbiY+Crn1FPtEIjWhpr2sDrc45KGHErLHbN+o0BhJXIVzMk1OzHQJgn0zF/tur6HY/D0epv6/SUtHmgLGvT4LoobnlrCaQAQx9Pu2NuTNYdOw0xzeU8OinpofkoI8SPSzHjdjRYjdZsu9UYQ9qGk+Rl/40u8Bfq+Lh+1iI8J+3DBs8HN2xwrmHwfdh7dqqshOBcKyu2Oev6BmzxCpe4ufbkMA5lmRijdxQvGdhRceRYzK6BDpL2ngb1XUwM5ZfciEQGgBZbmbYRrnIvc2bsyg7WMpuSjeDfze5m2HESpnDusLE8uwdXq8L6oWg2SPlLZFeImFwSCbZnX6zUhbwF/wplIY7Td3N+/1RNDYQ3816mIqvW7fMjEVJnOzitsbEfZs4fzfN48eDOMbm/PLp4mVlO+Kmo1mLkN7At2BlgeppErxzD5m1aEPRKDPECiLqvGGuSzWfVDMPSXA6DBCz5SAlc8l+3J/CVtXUjOT52e5P0S3STsb1FYz1pPlwK4AyOGMHI9FN2nhqb4X4Buf8VBwHOuxEPOClP5WjFwbCbgTDkUbF2slB
+ K0F06P1/
+ nJBXjO8fcYzTBNordHsBDvUS0nB+KvqDzcZyi/FN2WeBJ8S5PB3hXqQ55HK7wqZCjJ2gm/9CTcQNrs6cL6slLTOrshyIcaunvCnRfxs0M/5dBjyMuoKuRPgrvlRGkmmmG6uO//2neeAc50ZLkyiPmJMEMQS2d/hHtGy7IuwvTi72Ov2A20H5i1ytB60FCwfjN0B+i+9NPNoKDxe95LuM+yMQF7/R1PRXyT64XDDh4qXGQ8lgOu9d90oHCzOEf7VyeNDziouDadT9MNJLiwE8nmU0hWGufDN0BQAcfWyUpXcP7lS1eOl5kWfyfYgta5qwyfNO/0G357OsGnAQgJC9Hg+U0Cm9UEA+GFpyGKW+UxnAEOxRX92NLfueo6fgg6Ni+akVykGowHSJgpxjW4kw5ASbZLSoceADlPN1ly5jbmhJNa3CK/6ldhXE+X8DbXORC/A0qXcOJzCRAlWqg1dTuBiwZCQPIVcKq3AMu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,144 +99,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 11:27=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
->
-> On Tue, 09 Jun 2026 10:07:20 -0400 Zi Yan <ziy@nvidia.com> wrote:
->
-> > On 9 Jun 2026, at 9:47, xu.xin16@zte.com.cn wrote:
-> >
-> > >>>> Since commit b1f202060afe ("mm: remap unused subpages to shared ze=
-ropage
-> > >>>> when splitting isolated thp"), splitting an anonymous THP remaps a=
-ll
-> > >>>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZER=
-OPAGE.
-> > >>>> This flag is set unconditionally for every anonymous folio split,
-> > >>>> including splits triggered by KSM.
-> > >>>>
-> > >>>> When KSM is enabled with THP=3Dalways, this causes two regressions=
-:
-> > >>>>
-> > >>>> 1. use_zero_pages=3D1: KSM calls try_to_merge_one_page() which tri=
-ggers
-> > >>>>   split_huge_page(). The split remaps all 512 zero-filled subpages=
- to
-> > >>>>   the shared zeropage at once, freeing the entire 2MB THP when KSM=
- only
-> > >>>>   intended to process a single 4KB page. This bypasses KSM's
-> > >>>>   pages_to_scan rate limiting, causing ~1GB to be freed almost
-> > >>>>   instantly.
-> > >>>>
-> > >>>
-> > >>> Why do you see it as regressions?
-> > >>
-> > >> Since the zero-page remapping was introduced our test has shown the
-> > >> following behavior changes:
-> > >>
-> > >> With use_zero_pages=3D0, the merge rate drops from 60MB/s to ~6 MB/s
-> > >> even after raising pages_to_scan. The KSM merging is now much slower
-> > >> and CPU utilization has increased.
-> > >>
-> > >> With use_zero_pages=3D1, ~1 GB is freed almost instantly, and it no
-> > >> longer respects the pages_to_scan behavior.
-> > >>
-> > >> Even with just this patch (1 & 2) or the RFC linked in the cover
-> > >> letter, the issue no longer occurs.
-> > >
-> > > Understood. You're saying that the additional processing action in sp=
-lit_huge_page
-> > > (remap unused subpages to shared zeropage) increases the scanning cos=
-t of ksmd.
-> > >
-> > > However, I still wouldn't simply classify this as a performance regre=
-ssion,
-> > > because commit b1f202060afe increases memory savings through this act=
-ion =E2=80=94 so
-> > > it saves memory at the cost of additional CPU overhead.
-> > >
-> > > If you want to address the increased overhead on ksmd, I think we cou=
-ld add a
-> > > check for the shared zeropage in cmp_and_merge_page, and skip merging=
- when a
-> > > shared zeropage is detected.
-> > >
-> > >>>
-> > >>> AFAIU, KSM and THP do often conflict with each other. THP tries har=
-d to collapse
-> > >>> a huge page (which may contain many zero pages). If KSM is enabled =
-and part of
-> > >>> that huge page is mergeable, it can easily be split by KSM, renderi=
-ng THP's
-> > >>> efforts futile.
-> > >>>
-> > >>> Therefore, in our actual production environment, we typically avoid=
- making the
-> > >>> same region both KSM mergeable and THP always.
-> > >>
-> > >> THP=3Dalways is a global setting used in many production environment=
-s,
-> > >> so these features now interact very poorly together.
-> > >>
-> > >
-> > > Actually, I have long thought about submitting a patch: add a new int=
-erface
-> > > 'skip_huge_page' under KSM's sysfs, allowing users to choose not to s=
-plit huge pages.
 
-This would be a good intermediate solution while allowing backward
-compatibility.
 
-> >
-> > Just think out loud. Or just skip huge pages all the time unless memory=
- pressure
-> > is present. Basically treat KSM as a way of reducing memory pressure by=
- merging
-> > pages.
+On 14/07/26 4:47 PM, Dev Jain wrote:
+> 
+> 
+> On 14/07/26 2:06 pm, Anshuman Khandual wrote:
+>>
+>>
+>> On 10/07/26 2:24 PM, Wen Jiang wrote:
+>>> On Fri, 10 Jul 2026 at 07:08, Andrew Morton <akpm@linux-foundation.org> wrote:
+>>>>
+>>>> On Thu,  9 Jul 2026 15:38:17 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
+>>>>
+>>>>> This patchset accelerates ioremap, vmalloc, and vmap when the memory
+>>>>> is physically fully or partially contiguous.
+>>>>
+>>>> Thanks, I added this to mm.git's mm-new branch for wider testing.
+>>>>
+>>>> AI review asked some questions, and some of them are new since the v5
+>>>> series:
+>>>>         https://sashiko.dev/#/patchset/20260709073823.6643-1-jiangwen6@xiaomi.com
+>>>
+>>> Hi Andrew,
+>>>
+>>> I've gone through the Sashiko findings:
+>>>
+>>> - Patch 1 (find_num_contig): Over-interpretation. No new hugetlbfs hstate
+>>>   is added. The extra sizes are only used by init_mm kernel mappings via.
+>>
+>> But not sure if that is a right approach. If these multi CONT_PTE
+>> sized mappings need to be supported in vmalloc() but without adding
+>> corresponding HugeTLB sizes, probably these required helpers could
+>> just be factored outside HugeTLB.
+> 
+> The problem is that the existing vmalloc-huge code reuses the hugetlb helpers
+> because it is easier that way.
+> 
+> If you really look at it, num_contig_ptes(), set_huge_pte_at() and arch_make_huge_pte()
+> do not have anything to do with hugetlbfs, but with huge mappings. It is unfortunate
+> that these helpers are sitting in hugetlbpage.c . Really these functions should be
+> pulled out of CONFIG_HUGETLBFS and put into some common header - but I can't think
+> of a clean solution to this.
+> 
 
-Hmm interesting. We should decide on future changes before committing
-to one direction; however, i think the immediate solution would be
-what I currently have prepped for v2.
+set_huge_pte_at() and arch_make_huge_pte() are provided by subscribing platforms
+to be used in generic HugeTLB. But later these callbacks started getting used in
+generic vmalloc() as well. Although arch_vmap_pte_range_map_size() first narrows
+down supported size from HugeTLB list. Basically vmalloc huge mapping support is
+still a subset of HugeTLB support. Hence we should not add new vmalloc based huge
+size support without first adding that up in HugeTLB. Otherwise set_huge_pte_at()
+and arch_make_huge_pte() need moved outside generic HugeTLB as well.
 
-My v2 follows my RFC alternative approach: skip zeropage remapping if
-the split comes from KSM. It also contains the patch (3) from this
-version, which skips zeropage remapping if the shrinker is disabled.
+> So I think for this series, the least we can do is add a comment to clarify that these
+> helpers can be used by non-hugetlbfs mm code to set multiple huge mappings at the PTE level.
 
->
-> I do agree with this. I questioned about if it even makes sense to split =
-THP
-> with KSM in RFC (https://lore.kernel.org/all/20260510114001.600681-1-usam=
-a.arif@linux.dev/)
+For these helpers to be used outside HugeTLB (without prerequisite)
 
-This is indeed a good question but I don't know the right solution.
+- Move them outside generic HugeTLB
+- Drop #ifdef CONFIG_HUGETLB_PAGE in vmalloc.c
 
-Perhaps we can discuss it here.
+Not sure if a comment would be sufficient here.
 
-So far here are the potential solutions:
-a) skip zeropage remapping if the split comes from KSM
-b) skip zeropage remapping completely if the shrinker is disabled
-c) Disable KSM THP splitting completely
-d) add a skip_huge_page sysfs toggle
-e) only scan THPs when memory pressure is present
-
-(a)+(b) would be my V2 which I can send out whenever.
-
-(c) is the nuclear option, but perhaps KSM for THP is rather
-inefficient and pointless
-
-(d) could be used with (a) and (b) and allows more flexibility than (c)
-
-(e) is a more dynamic approach, and could be combined with (b) and (d)
-
-Let me know what you think :)
--- Nico
-
->
->
-> >
-> > Best Regards,
-> > Yan, Zi
-> >
->
+> > 
+>>>
+>>> - Patch 5/6 (NULL page): Invalid input. vmap() expects a fully populated
+>>>     array of valid struct page pointers.
+>>>
+>>> - Patch 6 (32-bit count << PAGE_SHIFT overflow): Pre-existing. This was
+>>>     already discussed in the V3 thread, and a separate fix was proposed
+>>>     there.
+>>>
+>>> Thanks,
+>>> Wen
+>>
+> 
 
 
