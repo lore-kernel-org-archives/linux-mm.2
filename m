@@ -4,106 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D920C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 15:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F26B5C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 15:32:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE26B6B009E; Wed, 15 Jul 2026 11:25:12 -0400 (EDT)
+	id BDC076B0099; Wed, 15 Jul 2026 11:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A92F96B00A3; Wed, 15 Jul 2026 11:25:12 -0400 (EDT)
+	id BB3D76B009B; Wed, 15 Jul 2026 11:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95D6B6B00A5; Wed, 15 Jul 2026 11:25:12 -0400 (EDT)
+	id ACBF16B009F; Wed, 15 Jul 2026 11:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BC9B6B009E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:25:12 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94832140216
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:25:11 +0000 (UTC)
-X-FDA: 84991384422.19.74461C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EEC0EC0009
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:25:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwMy915a;
-	spf=pass (imf28.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784129110;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DB146B0099
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:32:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E323E12020B
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:32:32 +0000 (UTC)
+X-FDA: 84991402944.15.315701D
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C8FBF20010
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:32:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Jb4wWyn3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784129550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qCp0Z/LIk1edhZq1e91Hff3OKVN7JtELVDWP1PDw0J0=;
-	b=Qz7PZXfYShEXc/RsIVzOHrGLnlrXw47T1xLLHfTIGtoLStMO2d82IrF8XiJj0wa2oTQdL7
-	WN67bMIBPfX4AvqwtL+WDO5p+fO71O1dnf+Hfkt3fOupIIsRRz1yhTxEi4oSanlCzzYB0W
-	SMhb6CTkJ9rvOkX1A4DU7Sv6vobOJek=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwMy915a;
-	spf=pass (imf28.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784129110;
-	b=em4XL+rRlBjCLV6aM/Y7cGL4w7zME/XWCSKX12tTp3poiw8doHAgS/KusrbcH23+LwNUCa
-	/1TzuMCQpphrsgIil26O+OApX2gbbLZYm6WaVYFuleHt8PjYmVtNLJlpY47wA9reryS/lO
-	dUm4920q9vLfmSjZbsZE/NI9Znvgugk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D2A2A40DDB;
-	Wed, 15 Jul 2026 15:25:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964801F00A3A;
-	Wed, 15 Jul 2026 15:25:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784129108;
-	bh=qCp0Z/LIk1edhZq1e91Hff3OKVN7JtELVDWP1PDw0J0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VwMy915aEQWDn/J7UuYWhhXw3fAuF/NfHhCeydmjSgm8zTWdGZ07KnFIzAFCGPioU
-	 mNxRZH8SV2AisnBrgxf6GmCTn7fXNnVEc+e6DwDNpH8jpvm7hrvgYEc111EpGEewhI
-	 6h1bpyF04jdaupPip8MRN51K+CRQ7yFfolxRDo1qEZeqCY/M/SWy/xLZkfS7kJ4Glg
-	 ILmipLdPfluoX0rllpEQL22sWbqsl9tnp7m7OpLfDbSlevM6b2g8JeCQyXT/bMyIg7
-	 OOiSSVscvB13OcUayLrJJSpfisWAiHKVMx1nO7Bc9tqbk0zTWgfwXUf+nUg98nEETe
-	 O4cENe7Z0QUYQ==
-Date: Wed, 15 Jul 2026 16:24:59 +0100
-From: Will Deacon <will@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Toshi Kani <toshi.kani@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	abarnas@google.com
-Subject: Re: [PATCH mm-hotfixes v3 2/4] x86/mm/pat: acquire mmap lock on page
- table free to avoid ptdump UAF
-Message-ID: <alemS7vxeRB7NcBO@willie-the-truck>
-References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
- <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
+	bh=o+EmL6ul0Mt4yc97Q5opSK0Zr5dXjXkyP7dXXPr3OPA=;
+	b=ytGv+0gN8BtUo773jVVAEUV+tCNXNyql6QMrrppBSvClSFxMOqknvVczdOxqG1nny4kVSU
+	RhNDFwVH5Ycw3Nh5mEZdDFcCoAt2nlA3AiPEEuD/Lriusv2j2rx4u51npcy402P5FGvQNj
+	oSmo5CvsCjiShDvrTm48cpvIklLq/ZA=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Jb4wWyn3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784129550;
+	b=yTjeM80x/6e1EtNqhYNTyvB/e7YoMhkrKUNzpS7EKjTXCJTBKEtZh5FQxZydJs73U71U07
+	GIFvlAp6kiFWFflLlNEKdkEA6i7xgNY3R7j6MFa7b7j7no376Cno9VLU7gyJ+xtKqScQLA
+	3tWneohT6/nLTsPJIbxJI5b2nLPjLgs=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso11530a12.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 08:32:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784129549; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nZDHtj6HFHk+gwwc1tbIDrM9sJI3tOjg1aslsDDgohlmFl2peNdc6snfVUubaB9Mw7
+         rY8M4pYGkwo9IgKBIaf6Trh0LH05PjuydRvQ7Ou2Qshm7Dk9gLkpzMag2V5Fb31YeTlU
+         aOCgw2p0UvpChgZfELcLTKO0kZ9D6Ch3T4bAJK7Q5WMIOh+84r+0hm6W9L0Jmzx1y8O3
+         /ghDsdDuN4CiPsgbvkbP43Ke+P21NvCpem4NHBhvuJ+mgAEIMma/on1feLx0BdPvyYBb
+         1e8u9JUavxwE4WIyVcVl5mA060D1sB9orugrgm8brgD9Q/uK166/NuDvJ1ygIiBkVKEu
+         eWIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=o+EmL6ul0Mt4yc97Q5opSK0Zr5dXjXkyP7dXXPr3OPA=;
+        fh=zVvzSI9fCGgqSCSFg8ohKHjfgeNS1WkOozFhjQGDXDo=;
+        b=MaidnOScUcHjawXbavHVQ9rjmHCTWFkUQWnfOYDzLRG1TG2eU+CqHAGH0qh/Qiw67L
+         TJD0QQBjXVhaEXBX0Njgf4XteAb+05Us+MadpufwWC4R49cqJUtZ9a9MQg9rp7OO/lmM
+         nTDg6KEsKlOkMZ2S6Pnyv1ZSIJMk4ncmAYstwfGntwuw3/6qZzDG7Hy+uIIQgeH1cU0T
+         JPdF+Nxl7nAUvytnVwV9zKyHcFB7gQdpzdQYWradJIVON7W+95qVvAMPytPfl3MQuLb1
+         onSUfuT7iOwuXUs+AM/w2UBVGCD0hyCggrvF5rmpzvT+FPFQqnAJxmtyLCnLYfo3mPPj
+         +87g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784129549; x=1784734349; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=o+EmL6ul0Mt4yc97Q5opSK0Zr5dXjXkyP7dXXPr3OPA=;
+        b=Jb4wWyn3ry/75RYLdJKU8Qeh5KvfuHaN4u9/IA7QPe69zGl1ryVz6Ys4CXaR9m4dPP
+         3ipnCn19H9QEiSKWY8f4eltJhxAkchnkKsAhsK19lbRIlvUAEe2xraOpJpeh/iuf2S0l
+         2Fk1B0udxvbLOfWTS3k5y1bQ8yuGXYVU5aSnwgiyzNmrjpeRtS4e329wudz1bKweKxPE
+         7qVnyGf/hrmqiyM2k//iWAnj2xy6tlTKUZ9HTd23flpMcz4B7UwIEj73zuyU0Uz6781s
+         TcYZoJqPobcb9UgepS/tNmWS9YKd6S5IlA8GAGFeH8cIp74E+6A6DLe5cGvXgRNrvOce
+         vK+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784129549; x=1784734349;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o+EmL6ul0Mt4yc97Q5opSK0Zr5dXjXkyP7dXXPr3OPA=;
+        b=M5yw4UMaqn4I201nB+dTqBsOTOs1yG2+nvbxGRMSVsxM6H8fAoOJuSxomp4SH0eGyi
+         +eF1XYCrLtBPx9IUzMt9Ew8EnEmhlGM2u4bGkDaZe1Pkz/3l+81Co666fsPn5kqaI8zC
+         5wq5k1xdYRW0/i+uDBSj2AQYrXAaurMIlYYNKZk6fUlubUs2g7Eb450Ojb8wqikIYBz9
+         ovgoNgK1UhJCcbDucbMPKUoNSeHq3u5hOkhQetnb92dR6m+f2eJr9KLvUHP2lflcFPkA
+         2v0WI9XYxB3TgYrk9ZV3phwkD/1gKwh8u6N8vl6F7pqRIlwB+StRWLHonaatIn2Xh7pe
+         Vo5A==
+X-Forwarded-Encrypted: i=1; AHgh+RraK5y/Xtjhsmq86EGg9tbPVvHB1xzJyYCbtdN8DIkt+ZYLvyNyMuxGkBx53SnVphxuirhAgy4fVg==@kvack.org
+X-Gm-Message-State: AOJu0Yybmt1N6uW56FvE3qtP9he8r4EJC7OQBHHuyNiBgOLSKgwO3TLp
+	dkDenOrlDoKa6h/doFae5CezHpeViYgca3vI0MxwIZQqk1dTOcxhLAplA9EobVs82TnsGmqrwrm
+	AWByLqlFAWTUXtV5ObC+9e1sEC3i6rps1X0dv0uKQ
+X-Gm-Gg: AfdE7cl7V5e7txEcjIGWjM/syssCUW5MCuMmtE7wNIfszSJmNdZggEDCi4lHW1yEMaV
+	++IycVP8gIlDRpNlbfviwBIZpOn8TKYZvcGOxa9SNOPCafUBHbI62nT7Lv2e1pXFurCQMb86TY0
+	DH47UrZYDCheeoojGUojpt+UafuAU+6l+mi/I4pRbxH3ZtgTlHridapUPQ/0yO3JVNP43P6ccst
+	eAL/usBPt8d7q0lUhnZlulm9czmE0zTduUjYJAFNS3eGT7R0B4KAy75DEHq5Ordh+58LPhCo/Zb
+	Zh/4l6fx4MAQQEQMkXiAwaqj/jM=
+X-Received: by 2002:a05:6402:a39c:b0:697:e82f:e4f2 with SMTP id
+ 4fb4d7f45d1cf-69ccf08bba4mr183091a12.4.1784129548768; Wed, 15 Jul 2026
+ 08:32:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
-X-Stat-Signature: 9bxbontj7yndswcuc949fueuoc8zbi5a
-X-Rspamd-Queue-Id: EEC0EC0009
+References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
+In-Reply-To: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 15 Jul 2026 08:32:15 -0700
+X-Gm-Features: AUfX_mxQK59tgAAh8WBIpXQKDElc_jbLM3NvO9a2ZdZbwnoad_i4PU5FH57YufA
+Message-ID: <CAJuCfpEVQU6s58s9XWCVDUXzr=7bbatmCi35vxnSiyA1pe1P6g@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/12] mm/slab, alloc_tag: reduce obj_ext memory waste
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: xnazeqegbmt13xhk648kzsjpb65uq8bh
+X-Rspamd-Queue-Id: C8FBF20010
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1784129109-156677
-X-HE-Meta: U2FsdGVkX1+5gTCyZIoT24JdtWVBJzA3VFHCTMvaubXUmEhQkKKxESFncr5a+JRDLJAdU4IKh4gplAuTtxJJRiLdpQaLkCnR2+wjg6L1W53c27ZEMe3UDkdEHhMEB6swZ0jSsCCUfOx16zf/JNQmqyb8dIWppEm7HObPVkPX2RY++q1MvHPtbsMeaAOmWZW7ygy/RgOfnEsTA++bDYTQjQKjUogV5XWhrc7pJ0eDOWUjKSMj+kHS/1v68nRr8do/UaPz1w5s3z2t9Wclpbalv5YpqjzLr4YMTYt1PWhpgWRqvMVzP0YyifaF+pnBZ0Gejeru9s612gPY0BJ5KNckHzJbLH9FjH98Y8yAj8Q+QL1SAPLp/7kirHDHI5NqQF7yS61wUyuZcUn6YW2sDGvmz/y1/qkOpEfJhrAE7KgpY9J8nI2mbm334XUbu7IHYmRDsaI+ZbZcgNqvm0Mgpgg+tRBdH+p8g0aQIdzuF8zxbNryIryOOCyWsgQlNhlmWotgowggdBvVUfyQli/d666+2MiqtMdkzguUYx/udR0+uV4Q3YwrGvvAJoZi4GHQ29x6n5iaEaCBn52Q2PV9yv6fddw8W9TvQif8q3nz7ytr8PNNjSjB0ELw3KYvCSZeA7bcL678YesVi7BlpBsxljJVOuvswms5pSZXONoQFiW7C8A7Kqjlt+zEeBVqS22X1vClnGiU7JI1tuzSPihli+kckpRiN8lRULJJGom68TDUUMhPlh4fu/6qvwNxpcXJZN3MkcHHhBL3YXBf8EOvcKh62+g+Q1r7RKPHes0XjX+OOSj37xyW2hwAgOXOQwjVFqm28gvQlE91lP1OX2Kupew+KJTxETldlD4s2K7DKMRG6Vt6hwKhTVpD+AZxFwPIN7Yqm91Z4R0DwMBarstSKJaM4pwyLLUONM5sBzyX0cKf1++Tb69Co+joaU1yRmq73aISIAXxjjohfoJp/80nS7g
- qdW4gYsI
- 0aDGfSqboSG9YDHOfJGHqhPveuYo+XloNTNVsvTxfZ+9q7poW7+XJECS7IvVzz/w8/Jq0B+ZqXnZllu3vcwULAMFr22ulr3WqreQRfao5LFtfPOrkVZRwaRHPYXJg9jte1mrM1Wxa6+wndi82HiI4m2h+Yw8zNiUv2rx3oE80Tk5O993tO3oDlLKvYj511ZliVedvjcowwG8T8cVqWzPF/4UQoaGondHGh/BH0ghv59uDEQSzmQnUCnJkmohfiCYbYjouKxKHwIwh5c/TobDrEN1jt22bqYvzbuje65kdYrSTEQ5wLTr8aklEWg==
+X-HE-Tag: 1784129550-658464
+X-HE-Meta: U2FsdGVkX18FunYdhDCIceY2VXmEjmg+bqSdJl8U4R5D2WdLjH832vsCzPsGSHw5idiidc5ZbvPrh8UAbi7ruNX0QiQCsBRVFzNH4WkB4PTNOZYa2a8tQ3m5hzeqAMFYgT9nJybr2ep34mdSGRBbadPaIE45YU4sL8NCnE8qjLoRBQuP3weP0zOQvQBTMMYkcnCVApd3MuFUOqK1bXEQsxxwRpJIbZW+MGzQ8XTvUknppQKONs0M6vezqty/yKv2uF6jOGq6LYQYjuyvDD1SlSNqiFk6P88v9V3vYgUv00Zj4UY0Qvj8+/zRoiRkeXoqHwKzPJNLxKiD2EYiUsftm+ANPBDSJgfCtuzFqvCI+hZmPqcAiVKY02evlSOsmjxwAeWNgK4NHjKqfSCVW1jxYTOwFww1RKwm7i92sxf0YLddf/5Qc6y57DrJOXjP3rCDdHaOQlpoVa8YpRzh09rUx5uX1eEcDhDTacQjJjCJBnJVI3RKXOGyXojgcCeIqvf68bEQwKHSwKGfyBFUDaijDcZgd1/6y8uXeDhk4gKGCk1OKLzpQX0ciEOhqLL/WOkeKdPcFHn7lcBcfZae3dMvGFJ4NH2x88gW5fdti1mMP5CB26es0+5YV2ieJBfq7V6ZSx8MsD0oRKdRcqiCKEVFv2aodizgh6U/dMox2GMWZtI8GQfI11ps4dTC/k5mcw71FK6Exo6wJHBZ4ohn3hd2PsbAYrmbQtWdis1KLNXJavfp7DXLBx+Jh03NNEM5ZvE70u/FyJmxc6rlqlygDYvFpiEJB2xYilY3RBpYpUv3Wqv426eeCaPYRqQwfPmmqHbaMHva6ZNakgp70VvxJYsahPEBgpjFT/r6Eu/ESDbMuUlSr26xdR42K6fXmK91TiiKqVM7QlgV4c9n47tMMqu7R+z/2nYw3+QrCk3gCXni2g+RQQIbHbkZ5L+nzJ+owFVHkjpzh4ZHKXPQ05e/DlG
+ 4zNlq3wz
+ CSG6He1TSB38bk4NpmcJoEqtEBNfxIbfYXxikCtF/sPmE+NGb8i8fPxWMPt9GRKDx5qPTTVrtRGoJnDIzDz0diWCBf3SpZRgu96BH80Ip61NhrJ2HfYju/TejzzYzN34VWBoFWJzcaNkvvM5YVLXiUtZr5bXkDH9OhrBZf2wf5Cd7Pyha20ezoviboMX51QrDXZeGXczlkRv54boErLm21WRMxQAiZK6WchKfFMbNvx92n2Prhd8AWVbRELge96sm03RZzjfSAL42DdnKRxqclXJ6yi1W0oxHGm1XHsLSmur5dVryRxC2+uV9rA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,109 +143,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+On Wed, Jul 15, 2026 at 3:10=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> The recent fixes for objext array handling inspired me to look into this
+> finally. It's been bothering me that the memory usage of struct
+> slabobj_ext depend only on config options and not whether the fields are
+> actually used. So with both CONFIG_MEMCG=3Dy and
+> CONFIG_MEM_ALLOC_PROFILING=3Dy there is always objcg field and codetag_re=
+f
+> field. And thus:
+>
+> 1) Having memory allocation profiling config-enabled but not
+>    boot-enabled means wasted memory on unused codetag_refs. This makes
+>    it less suitable for a general distro config and the page allocator
+>    side doesn't suffer from this, only slab and percpu.
+>
+> 2) Complementary, with memory allocation profiling enabled, there are
+>    caches/slabs that don't need the objcg field, so memory is wasted on
+>    those.
 
-I'm certainly no x86 expert (quite the opposite!), but I was looking at
-this with Adrian and got myself confused. See below.
+It's funny because yesterday I started working on a prototype for the
+same optimization. But your patchset is much more mature, so I'll
+focus instead on reviewing it.
 
-On Tue, Jul 14, 2026 at 06:24:24PM +0100, Lorenzo Stoakes wrote:
-> x86 implements page attribute modification using its Change Page
-> Attributes (CPA) mechanism.
-> 
-> This tracks properties of ranges such as cache mode through x86 page
-> attributes, and as part of that logic manipulates kernel page tables.
-> 
-> Since commit 41d88484c71c ("x86/mm/pat: restore large ROX pages after
-> fragmentation") ranges of kernel page table entries can be collapsed into
-> huge page table entries as part of this logic.
-> 
-> As part of this collapse, it frees the page tables which the collapsed
-> entries previously pointed to, and it does so without any relevant locks
-> being held to preclude concurrent kernel page table walkers.
-> 
-> The only way this code can be reached is if CPA_COLLAPSE is specified, and
-> this is only set in set_memory_rox() via:
-> 
-> set_memory_rox()
-> -> change_page_attr_set_clr()
-> -> cpa_flush()
-> -> cpa_collapse_large_pages()
-> 
-> Notable users of this are execmem and bpf when manipulating executable
-> mappings.
-> 
-> However, this is problematic for ptdump as it walks ranges it does not own
-> and thus runs the risk of a use-after-free on page tables freed underneath
-> it.
-> 
-> Resolve the issue by acquiring the mmap read lock on init_mm which prevents
-> a concurrent ptdump as it acquires the write lock.
-> 
-> It is safe to acquire a sleeping lock as all the callers invoke
-> set_memory_rox() from process context and in any case,
-> change_page_attr_set_clr() calls vm_unmap_alias() which ultimately takes a
-> mutex, disallowing atomic context here.
-> 
-> Fixes: 41d88484c71c ("x86/mm/pat: restore large ROX pages after fragmentation")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+> This series should solve the point 1) fully for slab, pcpuobj_ext
+> handling can be perhaps improved similarly, haven't looked into that.
+>
+> For 2) it avoids allocating objcg fields for KMALLOC_NORMAL caches where
+> we know they are not necessary because kmalloc() with __GFP_ACCOUNT will
+> pick a KMALLOC_CGROUP type.
+>
+> The named kmem_caches are tricky. They can be created with SLAB_ACCOUNT
+> and then we know objcg fields are always needed. But also they can be
+> created without SLAB_ACCOUNT and then some allocations have
+> __GFP_ACCOUNT and some not and we don't know that in advance.
+
+Do you know how often this happens that a named cache with no
+SLAB_ACCOUNT is used for __GFP_ACCOUNT allocation?
+
+>
+> A possible future solution is to introduce e.g. SLAB_MAYBE_ACCOUNT, add
+> it to caches where we know __GFP_ACCOUNT is used, and only honour
+> __GFP_ACCOUNT for those, while warning for an unexpected usage
+> elsewhere.
+
+I wonder if for such caches we could create two separate caches, one
+serving __GFP_ACCOUNT and using extentions containing objcg and
+another one for non-__GFP_ACCOUNT with optimized extentions?
+
+>
+> Only lightly tested, need to run at least some microbenchmarks to see if
+> the now somewhat more complicated access to objcg is visible or not.
+>
+> Based on slab/for-next-fixes
+>
+> Git branch: https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.=
+git/log/?h=3Db4/objext_split
+>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
->  arch/x86/mm/pat/set_memory.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index d023a40a1e03..4c4b8244502f 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -22,6 +22,7 @@
->  #include <linux/cc_platform.h>
->  #include <linux/set_memory.h>
->  #include <linux/memregion.h>
-> +#include <linux/cleanup.h>
->  
->  #include <asm/e820/api.h>
->  #include <asm/processor.h>
-> @@ -436,9 +437,16 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
->  
->  	flush_tlb_all();
->  
-> -	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
-> -		list_del(&ptdesc->pt_list);
-> -		pagetable_free(ptdesc);
-> +	/*
-> +	 * ptdump might read these page tables, so avoid a use-after-free by
-> +	 * acquiring the mmap read lock on init_mm (ptdump acquires the mmap
-> +	 * write lock).
-> +	 */
-> +	scoped_guard(mmap_read_lock, &init_mm) {
-> +		list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
-> +			list_del(&ptdesc->pt_list);
-> +			pagetable_free(ptdesc);
-> +		}
-
-As I understand it, the argument for taking the read lock is that we're
-operating on a region that we "wholly own" and therefore we can happily
-run concurrently with CPUs walking distinct parts of the page-table.
-However, from what I can tell, the CPA collapse logic will operate on
-regions outside of the address range being manipulated by its caller
-because it rounds up to the PMD size.
-
-As a made-up example, imagine I have a 2MiB aligned region where the
-first 1MiB is read-only and the second 1MiB is in the default r/w state.
-If one CPU calls set_memory_rw() on the first 1MiB while another CPU is
-walking the second 1MiB (via some other API that doesn't take cpa_lock),
-it looks to me like the first CPU can collapse the page-table and free
-the unused pages under the feet of the other CPU. What prevents that
-from happening?
-
-If all concurrent walkers have interrupts disabled, I guess the TLB
-invalidation logic would do it, but it would be good to call this out in
-the commit message because it's not clear to me why the read_lock is
-sufficient for the collapsing case.
-
-Cheers,
-
-Will
+> Vlastimil Babka (SUSE) (12):
+>       mm/slab: skip kfence objects in allocation profiling
+>       mm/slab: remove objs_per_slab()
+>       mm: move struct slabobj_ext to mm/slab.h
+>       mm/slab: make slab_obj_ext() determine object index
+>       mm/slab: abstract slabobj_ext.objcg access
+>       mm/slab: abstract slabobj_ext.ref access
+>       mm/slab: replace slab.stride with obj_exts_in_object
+>       mm/slab: change struct slabobj_ext to a union
+>       mm/slab: introduce slab_obj_ext_has_codetag()
+>       mm/slab: reduce slabobj_ext memory with allocation profiling disabl=
+ed
+>       mm/slab: add slab_needs_objcg() helper
+>       mm/slab: stop allocating objcg pointers when unnecessary
+>
+>  include/linux/memcontrol.h |  13 ----
+>  mm/kfence/core.c           |   5 +-
+>  mm/kfence/kfence_test.c    |   2 +-
+>  mm/memcontrol.c            |  41 ++++++-----
+>  mm/slab.h                  | 169 ++++++++++++++++++++++++++++++++++++---=
+------
+>  mm/slub.c                  | 162 +++++++++++++++++++++++++++------------=
+----
+>  6 files changed, 267 insertions(+), 125 deletions(-)
+> ---
+> base-commit: d9e6a7623938968e3752b67e37eaff097e559a54
+> change-id: 20260714-b4-objext_split-da82426257d5
+>
 
