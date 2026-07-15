@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79A0BC44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 17:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F91EC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 17:33:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 742C96B0098; Wed, 15 Jul 2026 13:31:03 -0400 (EDT)
+	id 91DE06B0088; Wed, 15 Jul 2026 13:33:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F4656B0099; Wed, 15 Jul 2026 13:31:03 -0400 (EDT)
+	id 8CEF16B008A; Wed, 15 Jul 2026 13:33:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E5DF6B009B; Wed, 15 Jul 2026 13:31:03 -0400 (EDT)
+	id 723D16B008C; Wed, 15 Jul 2026 13:33:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 251236B0098
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:31:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB531A025E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:31:02 +0000 (UTC)
-X-FDA: 84991701564.16.28FAD3B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3262D6B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:33:28 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BEFC401F1
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:33:27 +0000 (UTC)
+X-FDA: 84991707654.02.2DECDB6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C85751C0010
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:31:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJ2vIVoB;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id A93C44000F
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:33:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Plq0sbET;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784136660;
-	b=bJqYYykIoQeitnJE+xrgDU72qB5jnv55B06PaDizR88S8+RrD82iJ8NvcWQFf1AlJpekx3
-	6m3HEDOmRF+Oo79G5Zy+57n1gmTqAKeWm/LdHkYXQE6U/Z2hxrCbtYXisOwfo/q/m4Qpn7
-	3mE/C2CmlDWWDeiK6sfUrrOn8757I7o=
+	t=1784136805;
+	b=J7SMM1o+KIj9EZS6QzCE+SMQ1wj0LYmkiKFyqDObw8jU2jXwcG1afTip3FmQ3Dfp2Jqozd
+	I7HyAGVUwuD3AgUGLfKoCdXAD6+A6d6DJwLlxYgqoePpTSpGk9ZbCmiqxGhtq9tkawjcov
+	eHkHyjr7b4OaNJdVvNm0gQnK5MTiWq0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJ2vIVoB;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Plq0sbET;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784136660;
+	s=arc-20220608; t=1784136805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mn8oct4HW8vssYVWtxQHphxPwvPDO5eabbxzgczXegY=;
-	b=LGK1tdSmrxytCNTabuT4Vbajsha22TDHemwuX+JeX5hWJ3p6G7HAPUVMWTJmMpCmmOQrob
-	+CxfV0GFd8uipC2xXmKZBycpAMpa/CUegdpFi+4qcqZSQhvAqhOEcyzuOQsOEb50BYzpJD
-	P9ULNTxq2lCCCYybq+W1n54OtoYiZAA=
+	bh=AbFSf57xlvRU+7oRSFFrOCqwNArP44ynDnY9nIh20AY=;
+	b=zZTN3JyflfZYCn5Asr+hHHyf4rPtJR/yXcF8wm8aWzMhWyxZKclgxGU0DdNfoS5Ng31Pjd
+	WkYKHB9hON6B3HPYkj1Ufu9GoDi2nWFUfsvMy6/83v2kKsdXgcyEQAimcRR0DQaPQhsFXd
+	AhO6TuhA92fSg8XEZfvZTe0gF/XdCY8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B99E042B72;
-	Wed, 15 Jul 2026 17:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14401F000E9;
-	Wed, 15 Jul 2026 17:30:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9F2F24344A;
+	Wed, 15 Jul 2026 17:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969781F000E9;
+	Wed, 15 Jul 2026 17:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784136659;
-	bh=Mn8oct4HW8vssYVWtxQHphxPwvPDO5eabbxzgczXegY=;
+	s=k20260515; t=1784136804;
+	bh=AbFSf57xlvRU+7oRSFFrOCqwNArP44ynDnY9nIh20AY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NJ2vIVoBzjUtT4ioB4s1p+a4H+WhbDamfXKkdQ2iDI05seVhaT+i00hofCw0+HIAn
-	 ksJLqEMik4pOD8dVwbbp/F2grlpq2DvNIuariG0w7Rt+V0mmQs31uuMLyBAsqi0bep
-	 VhNbafEZ6cQ+3rIw91s7rGhAyry1PRjmuQSLU6T7GA2xX2BzFJKpAAnO+sYjmpyUqT
-	 8Fzi449V9qcI1dEXKzQhmyILoG9bPx9uEy9ZFMXObYKvJqxUHo6z4bL4Z5IkQIPWKH
-	 xk5jDrhlLlnX5DEolBMp7Jw99VvCPM+M6IFE/K8XZj8+X9t3a4O8J6QIA+jKulrtnv
-	 vCRrWw9gTvsDw==
-Message-ID: <0925897e-1a19-4e7e-84bd-43bcd2310a49@kernel.org>
-Date: Wed, 15 Jul 2026 19:30:34 +0200
+	b=Plq0sbETLnXdMAnyr13Z7qquALZkI61HIXPlDtbTJXle3KmIPSHsRIwRYmKnpLWlo
+	 19eJ5bHwIL3oVOiP8iDflJPmZt6j5Nw6MrL4/VfsyRh9F92YzgyXkq5Lczs8NiSMUN
+	 SstWyL1GrOp98wvFI0l0tVtqvON5NCaGqZvAS8cVtNQkvzu+Lm1N2Vmd20/5FL+Jxw
+	 KE/82mNtPPptX6Y3tbqbGmoMiIylHvRURsOGhlxwi7dZy3XzZ34mvZ0d/HomYcJgHU
+	 iBrea2Oz0LWMg2oxV3xJb5F+NM9SzEsbtXr+EtFE0PGDRHLu1KboOje6+diumQQuqQ
+	 LXqmrN3WsVtEg==
+Message-ID: <84b0cb24-ceeb-4a8a-ba6b-cba2c9f9c4bf@kernel.org>
+Date: Wed, 15 Jul 2026 19:33:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 21/33] mm: use linear_page_[index, delta]()
- consistently
+Subject: Re: [PATCH v2 22/33] mm/vma: introduce vma_assert_can_modify()
 Content-Language: en-US
 To: Lorenzo Stoakes <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -144,10 +143,9 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
  dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
  freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
- kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>,
- Kai Huang <kai.huang@intel.com>, Ackerley Tng <ackerleytng@google.com>
+ kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
 References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-21-2a5aa403d977@kernel.org>
+ <20260710-b4-pre-scalable-cow-v2-22-2a5aa403d977@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -188,23 +186,23 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-21-2a5aa403d977@kernel.org>
+In-Reply-To: <20260710-b4-pre-scalable-cow-v2-22-2a5aa403d977@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C85751C0010
-X-Stat-Signature: e6q5t8ophupdjkhzikjjq1385e5qbkzp
-X-HE-Tag: 1784136660-769516
-X-HE-Meta: U2FsdGVkX1+6qK8ibUPFDVaZDahNLBtZVhWOSCSnqwRpVKkl6hxvDqp7YkAQpokCZez8e+H0Slq6sshpBgNJ2PlfbA9wSmPkUzSzssZ6y8z0fCF0vYh0QniIet5mcufR6Y9Cip/816CYgAeexaBilDc7hvUmHRkq9D2mssO2qn9GyOdlJBjmeeNLrBaLcIb93WDbnekySKWfHuCGVVip38jvopfh7hKLP5VTJ1UTa/1Fr2SKhj1m5OmTdxm/EP1424C8NcioUVituDkGH1rpaJ0CntPcXCizI4EgxKmGI5cxXfj9hlgMTJZhyIh6W49G4A8P8VFJYSND+8H7CG0hORq2EtS+7/9KrytQLrF+Zky0yNKVULknjKlnUxwhAe+sxbaVV3NpK7+/5RfJ8AP2DyTqyEjx3eyHZ13fDXRmSLt2OX1HueD80UlNsPj1vOp6Sx+N9gV5cuNrix5mMkOLPsVxz9FRZl5Xrzpym0YXBVZM6oUWP9AcYuH8w9Qh2dSSA/zLMxRg/rNxz22KPcr3ZqFqeVRcpsNf5euYYTv4cEQhgNmkzpKAxG5l4QuUtRX/NjINJdWuAmpjE0MZhchKJIJb2mvn5S1VyeYDuRnH3eFX+vr4W1kAS/hAAFLCWcKPvn0BTcmibGsdRai9xhxZsM/NpcgftwrOpz+RrZ7ECjUqeg+HphRxmRCx93ZAqNwfLuxWXPeSv7Nh1leIanboQ948BnC+x7OICmht3F8IQklViwn0ztlvjB+A1DYPbPC/nDgG3j82p/oHoeQgCQPP+yyCKKWhaeVclYa2vdLld+yYAH8mMY0MoQquM384aAqU9tdvR1vfJIqsdcg2L2moAvcXo3iIMMwnWgPZlzvSCKdmW5sHgkWJnDWHex7gBj9lHeE/S33jma2crpwxQ/I1y2sDfPshd7Cvy45sySpjVSrmdVr4Qgt4B0pHiZ47fAaIG7Kx3iKl5AbyKnW1fmf
- 87flUSpx
- zoMskG1mu1dsvpZFQZUPRiwAN9PBdRcPQWpAkNy2IhMXMDZIhFv7sLh+/LUHWykJzYYSpGJ5G42i1BfJ5odfGf8VOow4vbJk0egE5sTSfSSRLJE4gRn/1RJGJIDH4frUTTFf/tAgux03WTp7Vd2pXsrBbhYvGjamFr81U+PSINo3IrYDpwborlHCGazpFnuMq3rovQKegpd7/XaqvQTmQTRniIIQsN+s9NsVa/RnzFTgZPPfXKWNDG+Pa8o0YdCLxhG2EeOwX40XjwpTvLMIJJbQStUFYbVZL/TakHtpfGH+SIZHSsQLLwNkrdb+r08MG2ynjnsJtLh/mdHUR/kB99a7de9zn9cij5R0nzrQNMWvqETbg4GI+rn2ymrc061Q2iGc4df9c6Ib9gYf4dFP/vrx+pk3DSY3MDo0bs8UcfpQusc5lvv1vrAoGHNoUaB443/hWSlKNZOGZ84uai1TGC5ruBxdyzKCEtDpQzFYq120m3cgBO+2q1isqDEkO4lGHQpiGEbHnJyU3jxV67Cliyd4kD5ENZJEx3LKO4QapzL6UX6yimHd83BZAYtpaanT4r9F3Pm/b+RgwMeYVeYH01O74dR4XmcwBI/e+uNHhB6xEQJkeX/Ak/cHyXxsieo1foezGzkZ5mV+G7oOca4qf6nJhw1g2XOh3qmGY/om8v1RoxW3gPPfUL2vf3WQutgeGmBSrONPjRVcHj/bRGVQG6Nf7XJR+9X7zDqJL3YDDoKN3HCwfMR04Iwr/VDj78Z8/NQ4JDZNyZT7+uDmMTm7u4oWxtyoybPjOg27D2s748oLui0fihwnepFy9Mbi+TNkw7zqZGb5Jy7wjaH0JW3Nw2ATKqrhZ1FlD2apvid3QYb43atzqMNFkoZEJzUdv4gFqVMVH5lHDXRAGNuYlQvUpvV9D89ehOhpDS57JNLJC8tuMGGtR7WBVoLNUuWoibky6XBX3PJat6QM6Oym7rQny7ISCrRjx
- 5WMU9tRr
- ER1G7FDqYbsRhWJ0b0IZzn3Hwx4yZi0qhKIO+0vhSwZ+Bj0btiXtbt+JmVmvAb21wsgHrPHUVsuFi6xOpvj3Gh4S9+6bOVH/v+KMJTz4jdsyVbtomqkXlNx/ZcSMUNxlk0jPIC5C+huQVzcNcn2xl0Us16s0z4lH4gwJPOqoD6oSfPGFJVdHD1Gnwya9hpIEm4jp/i0EhvUE5f2mEsJUvwFrWI7x0pW1qbjGSpiwV/cvZgmUAJbld8nF3BDCWPoaQzbCK9+qA7SA23cTBeUSBB0BBzJYdYtUOg+6uvFAQ/aOFRrmAFobmI8YiF6xa7s6aBIvrD9UxnvRpkhRRtaeZlXvVpIadSbyDNhsU/DY9Ie80vMuNPnCb8qZXUCu0zgoarR9OkhXknVekmnDa9ysL2PeTz0HRfFRKqQ+Pdp19pU/onFOBARFUbqNf0RzN7W7vBr+az0jvg6kiTbrT6kFQJ7+Vl6NbgyKHfCGEneloKAzOwNTOMnbi3x6eWT742T+KQWjP7ww68srJG089QyBYKApmah62eYGGxaziAm+WEJ0H8b85+0tZPurOpPw4VNik4JrByhvSxQU9D4rheJdQ78YZ7ya70oEx429c84JwCqfgGK30u76pmfUQWxEQRsBE0rjW6FH53U8DqHG4cTVcZyINn+lOgP9i1jUfSZ4oEdX0qQFBI967UH1sLYYMeTDamNt1JFHnToT4T2xsfvYqVDFbX9rFKuZIW9cGClvZALKz+upLks2AcPD9NAGBvQITm8GqMhGWt3avLho6sgdcy/IVGjGvmPo+L4dajEAvQFLG7VdXVW3aC2aBf/WILO22MhzbgurxjHFmWIE83vl6Qw2Mk6KCyl/T9Y7u3zGUIFCLC2Np4UZNhZX7P3zTV/G89TStbGX8A0ee8wzse244HRtKAIyFL3qz0+OdUFwIQzLYKbZdSCoSwR2BhQK/Q9JII9sDKQMlay4FBOK13Md1HnMWuhbd
- 5ipB7N40
- V+I+W0pwIowo9Q8X04FqBMXkA12HrBZyQAl9dNujxUHY6UKWSaWklRugm6e3E2VSHr7kRDR71u1Quk5MBGxprxphp2srME0DJeYPOxl6vGHRW6zafeVC6bTXw4GCI8quNkBz1CyeZTSv8gLR1DnSFDXF3MjgsEr2onJC01wfKqyTbw05MYagQ05rfN8DKm8SJk1VDetWm1Lp4BbiWgNbxud/12jkdgfRdBzv5tPNKv93dEWgqErX4lYxckNjAYrH7iNgFdemCAIiFFYJ6sX+ASbYP4Y6V1xWYePLPkKOqQxMGJkmMfLNl1iHKzD6rpLVEmBDb3zOk5hS6qyzCFG7LJ6c/yfyNxVHBLTORUe+fTFAdXur7myiy9S7IhUblHzMIErvb6JUbvEcsI9gmZjyT+jj2FQr8XshYU9ux0scQz+DHXCrTDjl5fXBx02/DR4jGcaL2Y/BS/dKJ66woAxoAeXJhSItWy5AjX9i+ky6PKiG4vxmWrc14dFPFbIzu2EsMGGvTxjzY1ZMdKosRerNjP+Wmg1s6XvbRCf0ocrCuWtMoE1hTrSVfSn+umBFV4HTSmGCOaVj/o0FVqH4LKYlSi9QjaMrxbcbGZONFb8MrYuWpjTnt9nTdvJO9kqvCz/QfUqFBYObXAeBviRNEiu/lw6Xi21fXruax1uRyHC5VUtXaF8PA/2aRfI8Q1NhbNDK11wlGxea5Xf6lQJfjCXx3+1Mui+vBhGqZO2kNGDMaJJKUBm4aMXZWuzvC2Iy9e/IK8ABgXg3Fk+mvUj1IXr1WM0SuBg1aNq5FXGHrDb41nxDBxg3QQiYLwikymwfgvgSeOA39LtsNCFDPimAjjXBCcy7zlon7zlMMMU1jMfGTdrgIjtYZTeckslo0wFzV9mQEZ6+GRTPvb6wM6dbQuklitwl6w5LlHKcFbidvt1gyvMLf5IjxoQaz2qzIOfsVvNpi5T+fN0MmxFL8LRIQiqEJ7nkiI4AB
- 3X6483Dp
- PHKNAvnX64JEeuFWMtx3xnBYqa/C5I316/ttZXMCYgHm31NU3AZIeEhzYR9bC7skaFYRKYdowfTdAUHbqBFITuUI5v9kFumhCUVJSWPF9fGLuBh432naziGLde7TxmosEuBYGiC0oRCbvSdx8QwbpsJsQ64l5UuJJqh3tPZoVirMMNYbZwMJER0UBo4d80GqZo0rnAORu/43D0oO+pBdeY2cOBhqcpgO63smdxAdPDM5em9l/Tkox6asK9hGIccWDZk2aTwKZzQNOwn+iNg/N0wdQzo3H+t0uLqV1+wHDVxN0pAdTUqEcoLAuP4n8Ijloop1ivTlGdTgCzGbwqzVSgMUIQ/K+xjbBJlCRIzJtJrD20XAJqgv3uQzRT9YiZFCN9UoHS2OPoTlKrXweWRgrbZGij3xtdu+pH7o8sbWyg2geg3e5Abt4AcL/AchhtThclbr8GQg8R9Wp7UHgatsAkK0Bin2ITU772sePakJS7C290lcBkx3ycCMUWDDCFkiITeMHtsQr2MvTUUuNEN/f0HLjq7OBS+c7dPFu3pkcgvvpcaLJMHGWo6OwoGlKk+e8/1tdmpnLLYSNQM0MhJQxGFXaXK5HHccjDdKgOHE5B/eH/aGRsAVxFtS2lsSLRgh8=
+X-Rspamd-Queue-Id: A93C44000F
+X-Stat-Signature: c8fte9cd6fk1gn8o33rqrqfeanka8rkp
+X-HE-Tag: 1784136805-690578
+X-HE-Meta: U2FsdGVkX1/pre8Usl/ixL+/glOCR0HpQG+0GQXZMFj/gnZxVOu6mu2Vd350nEI+Do1u9cF8xDAwdBY2m9eQjahsp0K3W13EYf0yPmgHhvUyPILSqFaqXjp3pfBSp96AnB8Bdfui3igClY5/fmg6sqJv0GrpEMl/R9xZvJ5QwzOi+aPXapT0XTFTJuwBhHNgionxaRrZvCDpTrFX0CkXUSGmXJ+vD2I6hMjSQEeoszSSBtaHSnOJD1vZ0SHXoFjnQbZ9UFqbrfuXBmnbIjgJR6LfcoWnnwx8w+JlkctMWIMnhEnyfO+77D109/1eU7914WV44ynzR3w49xVbC5L2kaBpT+2pEac55SwOt9h9Y4V4kZmPiHxUhGp8Vby6x8Yug8LY2yUnkO7X7BmBIbBVa5OAKEt/DzOX0CTRyU2aoShYQek7830gTFjB5LUqjdFmiJx+QHsYDvl7A3kMGVmGktY5LKCUBZMGLMKBc2dQDCJaqAUmWnVDcMFMBrs413DWxyqNzYSYkl5b3bRSSSCmaZN3ghbmLYhbCsNGFLRsQG/8Q4JzwkAz05YfvQXO4CGf+f2clnS7HPMdWlNyBRKBXm7HEO0xFWgTfv6rvqagWnoMUuf066hvXifS0GIgKUyD7WV6jgToLQIS/+A3OIjbNTPXGAqLmrRk101ZpU2kiubx38zK1q03ax1Q44Ea5UGr+ZWE+J17CQz2Bpx+7vaPeSgPWWM2B32H84JNXwGGvaqf6aOtEqKM89cBPqL2B9ZsnAeHoiCf6B9DSCtXf4bgg+e03kixapti4P8sRG1j1YkFK6/w419PUt7IwsfZzpeasOBjsEzA/P5bCtr0qOzmnJ+B/Okh2yEfFdCwDvcwuSeeIkkNG1dj+s3kLLJqt6VT/PGeyOvqEY/1NU+DX/B+yfIcuh8HQEA/QHCNSjaKqO9JQSCoOCNPAu546M0YoU1OrBGTOS2n1UfghvkOM59
+ +0lykzZj
+ Bb1Qgmij25q3dCfCIcKM34hKlTcRPpnf/SgajHmJX57kz+Alrz3Fe0M/Z8a1qxrb2UvbIZ9SwGM6ih26x/JcTgLhqr+zHmvNKa7ttwD3rSTNiR1h6aSVkj9V532yQElVKSQmrnehChfiq89LwQHpMcBJcRqaAiJdYbVWbqEuKjuqqVXnuYfmB7iK6NRj9mgrpYIg33FiunPMqbb9Jdfm+PDzk+ppGUGecRxiuIog5oqNVN7VxEmuY6fa/56TNaoP/CcF7FZDNqz+Eq/ngWXV1bFalbSEzdxu3FRRP7Hkabn1KTLW91GC8jenzzrSoU8Ufz9Gryp5yJ9GG6u7+KRKDHubIGMi9ccTbi1qLhocRpJ6HzedWcjK4oEZX7BNMvtma4w/PCri13qNFGty/u9ZHVPZ2ApQ13JUyh6KqtOA6UJzFCguJjS6zaFC2grPfEW8t1487tnPSPUq1+6rTMArhJk040r2maeif/R0lt63wwa92Q/RYNTrhXFgunP1tNZE8QoUiSZs1gB0nzwyb5aBJ/b5LTaDFiMK7hdwKbsEuoNM34AQk1vDJF+OCtiogeVpzxUrjYktme8Hbcc3PFoLdlVLkM3i9XrOekLJwmUEHKuMVIEzOJcW83IkrO28VLPcQh8duizxmSlPG4hGgTxe6A0ZMYhcZjIHBK36x08BXM1L4faloeX42CilF+OI5zsHJxSU0xaqeK9mpQsJI5hD7dXC0EB3yCjj8lfKgiGfO88ddLlyY9byjlp9DJ3pG3XxZhC3HN13JQ6LgqIVwnPnPZmk0a09Zq4T+VApEdnE03K3boVRK8kAvCsWnAk3YAhaILmlcu9deIflcFdLOkTCtLsPRZc3q7blS4rZ2n0gMCuKBuOP6JQOISCfcM1anvDS1LrgPv110Ixx/thKSJ1YdfsoN9mlhOxM2RU2Q8GUK05lvMlew+3wslbQ/GS1WSYrS/N5UQoVlIvMEqsKTwXRvZ9FqL7fM
+ 7dFSHJ8k
+ 2R3JuCoJ7DDPtVLh0Hy6ZrwmOdZykElqd8o5Qbl7y2hkFhrOyxI9twO6aq5R6CmJngXdA7HOdLx1TLB4S/wnJGV4ZjHgRRuMv1ZRPUT4k2zfGeDbWTAUxeYzRZjz5QzInJdbVRiqtCw3Cmh0eqsZx8YGbKmYIGsIB6GvSensDpVZjSdW0IZxw4nNuwu5MDrHUCruE376E3r9PjMrIFpcxlMQxovm8Mjxuo7Zc9QqugMd+tikmZvBk0G+Yf4q6/t0HU9acs7NnNnSkX8s9w3YWhYIWsvaa+7Hp7TWlgmFe0jZFY/JQ6Tb3JB1yBmoJGhyxN0vyipMUcvADCb+r7mK+iO969XoxQEsiYbZDx+xnFtde+3KhCnP9APlx+qz7q27x4CtoeYTu3aub7wJfvGOXqbzs/rnW5/hIAAKw/uMTZ2PCkpUsTuUw9UQGBFRN+TfSnn/WyxOMXZuli+HM1mzQEXaFbpd/+jsuTkJOp9FoihfH/2ZY/pg78haoXL5i23XGqqJPpRCoBb780WYXW0udcmUoneiXtT5/FXQ7qHTO8Z0L91EaX/iXJibD23ACICYsaPHlgZgoAlFnYpTQqo1QNSMABTFPB2UF/tEpHNJILChxId0lqUw7K6LLh7jqHSH99nPuZ1+M0WxGfN7CRkffYZOezLxllrdTm1E0lK8D7qzqHqKY3XMOk1W3nnDrQidlPU/3WuxrBd1FBwb/ZG23CXlo5DIEWPQ7/1sRJvJwpwgtsMH6OhLSXK7WBG8vhEwmg5yD9KzL6B9MMZv5sb1t8Hu+fx9HXyKETPdHzetHecV3DXpzkPmKY9CumPp4vQ+a4bP3+85+R91UaBR78rn7zLgoiB8ZFQFxupROD0gn8CTaNSVkb94fd/bYoicOISOvuDbuyl+wjyWbsrZMwIfxIX/XiLF0KIIOZgfTqS/AcyeW7m1i/r1XKgDTEBsTxml5kgjQi+vZTZC7pWT7eqHz1L28yT8S
+ +XH+KGhZ
+ OIyVM0d7Da7+WptCy1NDtOb6AR4aUwaT85g1JEiz+Q+DekTQ33Y8noB67RWgFDI5oSrahGrlLZMi4A+xciZ0EFQL+WNzg7rdfeqH0dM+TzAzEe8qbj/wp3E2vziCFBOmax5bT60SG2C7OInl+/A7jV87L0z7KO3eZ0tmz3AYTrw7hfUMJTbkCyGsLInY1djI40psdesQSMcUOleCK0hBXpJNdbZYmywd0vvK7u6LzE3LxdDh6xFJ2SFwcCdsI+hX5Nf6FlPRylI6SkcZfx/lcHfdDwhHc7oc/kxTWmKj2X4W0K35gsReMIIzWD0NDtf+JtTDSSBkF+caKPZh3HrvXuhjG3SzgKvTTiOJ6ppN/koPubG++O6LGdjcx0tvMCHi+/asScjoEjhBU+6sEiIJ15L/RkTkrxZQfceTtjkJm26HilDKfkQJycNILr0a5/bffMDiao8mEgRtuLggjHfrUE6acoUlmV+IN9bKzRHwWrimQ+sT1OoJzfZ0uVODSiC61LLdn+NKJJM6OSoTz7ToVERGNI/JBQJGDVx0HcFHp+tFbK8kk6lOOryyOL5thaKMFgxr1eQRcbzIk/AJ01EY6IKXy+AepinfFIPsxeYXSgSSbJOMRlCz7hzUtJBAylC40rCjVVVsVhk4CoLZGo8tGwFa54sUiFNLBVSYOScgZ/LS7RPHaJ12OgoocNQOW9iRiLk5beTxUF64Ot36ZkJQCOzE3f1dvaZqiFcdADHEclGsT+s7WzXQPcQhC5meR4pOYbT2bLP6ccNjH8mBYVBgmUsUYKuAeDXyEzSe0GnTOuXWAQMix0dVuFWnRVSa+oO7BM8zVI04qKDcQ2nPBax364Y5qsNJSSspsJn2TXQjXosu86oBeCnujopCiES2YAWhS/py7+HuM4rZSTG4vc+kYGyE7JXuwI9TJOETP3azE8tH0/VYF5sLRJauNm0cQhC1aNgTOtPhAze3fUOseuaw+L/C3StE2
+ xXxu72yu
+ bWYKxxFnWyvltq7FUSFp+uEAiMbKhmVqhO9Lb25ds5oDQen+1lic53ubKc8APGUgM91VsNMxub0X2c1320d5GqOsqrT4/d1FO1STRF0K1zr7wbLTU0WLmQDXQ22jaXecLTICGH6JvE8VD4iyMMzPqDmj7S54i2kP3sfMehP+4do4to+bFrSySiswLQIbqzNTLv+5KC2iwFDrU1puhXWvv+Ra27b0zYrw9MrSDPdx1YmE6OeCI/SKeszp7H5Dah5HUQUw0gsEU5pJoBwwGeRAIeDHXnsPPrY2/qZnEDMXuVvYyRPitFgNmXjYwH+CuMGABxnKYcQlf9qB9/2v2CMX8eNylfFaRKeaY9M+QH1Ai62ExCN5OsdRyiNLbgjvPpcb3ijilyNJi72rnmGR3/BIvjyX6iRI9IDI6S3/GHeiU9GNRRdPzscOUzpoAQq3myY6ERcVieKEpAuYkEUVQKt32rqYqlXmdKStzxywE5SBf6QfuTTyfPYPGGkMPUDjn2eThckHm2Cb9SI5Pv+zi9awbwvZTFSvQauPQCCcxKtWdjSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -213,18 +211,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/10/26 22:17, Lorenzo Stoakes wrote:
-> There are a number of places where we open code what linear_page_index()
-> and linear_page_delta() calculate.
+> vma_assert_write_locked() and vma_assert_attached() are useful for their
+> own purposes, however VMA code absolutely does allow the modification of
+> non-write locked VMAs if they are at that point detached (i.e. unreachable
+> from anywhere).
 > 
-> Replace this code with the appropriate functions for consistency.
+> It's therefore useful to be able to assert that a VMA is either
+> detached (modification doesn't matter) or write locked (you're explicitly
+> locked for modification).
 > 
-> No functional change intended.
+> Therefore introduce vma_assert_can_modify() for this purpose.
 > 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de> # for DRM
-> Acked-by: Kai Huang <kai.huang@intel.com> # for sgx
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de> # for mm
-> Reviewed-by: Ackerley Tng <ackerleytng@google.com> # for guest_memfd
+> While we're here, make vma_is_attached() available generally - if
+> !CONFIG_PER_VMA_LOCK, then there's no sense in which a VMA is
+> detached (vma_mark_detached() is a noop), so have this default to true in
+> this case.
+> 
+> Also update VMA userland tests to reflect this change, correcting the
+> previously open-coded vma_assert_[attached,detached]() there.
+> 
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
