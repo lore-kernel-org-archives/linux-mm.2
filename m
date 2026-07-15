@@ -4,128 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DE6BC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:34:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEA58C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:34:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78F546B00A1; Wed, 15 Jul 2026 10:34:03 -0400 (EDT)
+	id C23C46B00A2; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7678A6B00A2; Wed, 15 Jul 2026 10:34:03 -0400 (EDT)
+	id BFA676B00A4; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 657CD6B00A3; Wed, 15 Jul 2026 10:34:03 -0400 (EDT)
+	id AECA26B00A5; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 33E0F6B00A1
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:34:03 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 949D9A0095
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:08:48 +0000 (UTC)
-X-FDA: 84990889536.25.A146A97
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A5CD8180009
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:08:46 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JSn0gN0Q;
-	spf=pass (imf24.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784117326;
-	b=kPx3VptBiAtt9b9BXhZTCg8ND9G3uQ67PScJ/NA6t/e10UFyXUBsEPpWeiLY4VZgKzCgOR
-	EmT6yjeJjDLo+2Lee3rJkjaI1h1k/4rid0qZEpGe6AxoGEbiFeAAjCYT+oN0VyyR/Vw965
-	kCQiCZ1LBssD4YVwGGubbePNFrqE6w8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JSn0gN0Q;
-	spf=pass (imf24.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C88D6B00A2
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6BD2C16012A
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:54:53 +0000 (UTC)
+X-FDA: 84990703266.30.1AD00EB
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4404040002
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:54:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jagq1YVU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784117326;
+	s=arc-20220608; t=1784112891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q6yq7ihIfejq4Lg+OKf3wnzi+aWZFQXVEshsSbOMWJY=;
-	b=EPQ8Bh5SxpSUySZp4DbEhuGosYOhrbpeNzIAtTIZNscMZsurQKfIqWMRub2U8mto0CoXAD
-	d3aq5PVnurlRYmDtANwTgH01iMzLT+6iPOiIY7tV4wzxC68eJVLIY1hO0R/mfUJAJQJl71
-	EsX/LuvnBN8ok4rJqIJrWJBGX5n7UU0=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so61731875ad.1
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:08:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784117325; x=1784722125; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Q6yq7ihIfejq4Lg+OKf3wnzi+aWZFQXVEshsSbOMWJY=;
-        b=JSn0gN0Qu6PczHJqGhLkS+B2lXnXqHL4BFsstwxZkaJb9xeR/95DwrmcfIzl5YrYjd
-         MSwYrHQIHnyvutcdK3WyRfRYtzX8bTT1LEKp0cEIQPhjFbcX1OfOOO7Y51hdT2GW7KPi
-         UYk2m1I4pdiNdht3dZwASNm9uDc2d0qcPitthi2r2kkSVPp4yjLWBKGVQmDutWTzJNln
-         StqXmXuC0wL/qpLuNl5/UEX/NO915REaY2Lt6dy2yyofqqQ7w5zyunGhyas/Wu0rCH3B
-         oVgq6nFf4HPEGwP2x+QgWuywVRIKS462EMNA88lmtor4c4yOdVupu1tsNEnhKkIP3c59
-         SO6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784117325; x=1784722125;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q6yq7ihIfejq4Lg+OKf3wnzi+aWZFQXVEshsSbOMWJY=;
-        b=UhLawrbtFG+gTnWG2kgttFWBS/+XEI1Ymvc89JW+G+y3+Fv29bT1AUFdzAOADg6JXA
-         2u9TSMnAmvkMTn9+EQYD32LAKqhPU/hUv03VrWf32lG5UtL7ZK46sioV5g9olEX+BIKw
-         9Bauw9e+0gwp3JPxn+SG7oasjo1udoHiagblf9BSTUnW5XCbC1QhFgVa7wCMZveGJkOG
-         yAC/aZyiLQ2La4mM6AexK8vmRVszTciFWGA7u19BAxAaDJhgGqnoYqvoGfpqgIs39B4t
-         5KkY1SuNhb9Z2+gfOjXz3VxDT9O0RgiXA9jKp0W+nuhOSeAsbjiyMjx/TlBMtKSbf12l
-         2Dlg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro5UpGqAkRxtntiFJ3b1pfR0F5VJmQ6AP+GRLv/FKGAPkZlQjwOvdAanJsUYBWl9euNeIceBUIZ6A==@kvack.org
-X-Gm-Message-State: AOJu0YygWb4/r7yujSs1Ye6vH32yeTvNsOb+Qm16JVplVNTftYEOYsHY
-	P5pIKsGrDVr1Q/BFgYxPQS6AiGxPOyT70AO/p+YQUHAS3ZQDeqe0JrhPwVc/Dg==
-X-Gm-Gg: AfdE7cm0HDrPwRiUOmSTt2ThuuF2oZEUKITPxhv4e3gMpwFWffYYx2bUZt/Xk2mz0Ey
-	P0hAqtIF6dd6fdQU3C1nplfDXNPeTXnbW+bzgSjI/UYs7pPa3fjC7G8FsG/6/5YxGsPxWxZPJMT
-	0Prcvn7ZbiK0mq0QVe5SvitM2VfevKgpBHNYTBUFsgseZL8f8Cs9KFAHBssYmfPvLdTAVRy4tOk
-	Ki1MwXpulrteEa1TLuw0Y/TKWe6lVDtzWCQFzxH/KAjAL1vUS3UR6043x5il7eyE6aH5weBCJ90
-	cfItl1wygi5ayTcxORZtqKloaa39yWXvBZr2Q+cAJSbuZJiyh4O1SUDdWaEjgxWp99wSMorwg5P
-	E1S67KBBLknyCKR9Q9a6KH+kEPeJfDT4cK70KQp6xYC78LlpH4VJaEwo4mCMu9EkJ9+HklrS3H4
-	DpZAOjh7E3GAi6rL+ptIkFXzKgHY1v98ri4Lw=
-X-Received: by 2002:a17:903:1a45:b0:2c6:90ec:f601 with SMTP id d9443c01a7336-2cf03bd51b0mr23224295ad.8.1784117325413;
-        Wed, 15 Jul 2026 05:08:45 -0700 (PDT)
-Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf105bc642sm1216325ad.63.2026.07.15.05.08.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 05:08:44 -0700 (PDT)
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
-To: akpm@linux-foundation.org,
-	catalin.marinas@arm.com,
-	linux-mm@kvack.org,
-	urezki@gmail.com,
-	will@kernel.org
-Cc: Xueyuan.chen21@gmail.com,
-	ajd@linux.ibm.com,
-	anshuman.khandual@arm.com,
+	bh=70Z5NezoUH2RJlJVI3JA/0j2Eg0rD+q2bAJ3zEsLrN4=;
+	b=NvNvwCYc2yTYXLXBM7rDCY/kasLefPk+LHTBmlYL2kOplb5UJDGXTlSrv3kPocPzeIzFrX
+	HeoWdojb5PrG+AexOhqwh4Rcsxqqe3+RO7GweiULt1E9N70B291xLREk6r5RtLOCOqjvSi
+	5inRinOVqMM09nS9AQOb5CUPPpdBYBM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jagq1YVU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784112891;
+	b=tGtobZGnmvCrB5XtnoGaoKrYr2BXYHdLAOCM+u/ijLnTE5xZ55KW0+pAqnEpjngszH/si0
+	ABYWfTaz2OFiFO3BIaMqRmjDh4+EiSDo/3x9Jywl20PD+fP0B5hMkSjKHz97ILZuyHQuew
+	w/6z1WhtDUZa9V9TfvwqlTg7WHuZ8Fk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784112889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=70Z5NezoUH2RJlJVI3JA/0j2Eg0rD+q2bAJ3zEsLrN4=;
+	b=jagq1YVUsHNqTIL8gPgg0nmxCuxZois9P4j0k7ZR4PfYTYED1sfSvHB3lgfr7ExZl/gLno
+	ZwjS4uegfSMlEUxhd1JHymHJkVuz5B8uB1I8HhOP+8Is8F3ZCeXJ+p8LntlYJbmcwg9YI5
+	7zwIgenApe1eeKa49so47zudgDoBRdk=
+From: Usama Arif <usama.arif@linux.dev>
+To: Nico Pache <npache@redhat.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	ljs@kernel.org,
 	david@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	xu.xin16@zte.com.cn,
 	linux-kernel@vger.kernel.org,
-	rppt@kernel.org,
+	linux-mm@kvack.org,
+	usamaarif642@gmail.com,
+	yuzhao@google.com,
+	aarcange@redhat.com,
+	akpm@linux-foundation.org,
+	chengming.zhou@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
 	ryan.roberts@arm.com,
 	dev.jain@arm.com,
 	baohua@kernel.org,
-	Wen Jiang <jiangwen6@xiaomi.com>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>,
-	Leo Yan <leo.yan@arm.com>
-Subject: [PATCH v7 4/7] mm/vmalloc: Extend page table walk to support larger page_shift sizes and eliminate page table rewalk
-Date: Wed, 15 Jul 2026 20:08:10 +0800
-Message-Id: <20260715120813.3609949-5-jiangwen6@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
-References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+	lance.yang@linux.dev,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com
+Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting from interacting with KSM
+Date: Wed, 15 Jul 2026 03:54:33 -0700
+Message-ID: <20260715105440.2946210-1-usama.arif@linux.dev>
+In-Reply-To: <CAA1CXcA84BtQZxOpE0sWgb2ed6y3m0NLKkWD+5MfWS9eF5dqTQ@mail.gmail.com>
+References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 5ffee76mqzozx7ux4jbf1oh1to5httc1
+X-Rspamd-Queue-Id: 4404040002
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A5CD8180009
-X-Stat-Signature: wxri387ag9na55m4rrrnodzj95jhc8ys
-X-HE-Tag: 1784117326-41484
-X-HE-Meta: U2FsdGVkX18M1hz9fajnEtSzdwr9datIWp8bzSH9zJysmZkCEjb1ox1fYSX7dI+GKlL+cNKgYrUxaQuv18CpZvBoaoXVxEsqx4Q5BZidQfDO62UjD7zKQ4+dR0KBGEK0chPTYKGhlOSwxiS5333rtl44/znExVGYFD0Ov+n4S9BcYIrKwVDDRLIwy4jxnGfsczG9y9kksKJq6pik/ITAtLjvH0mq9WgPIk/AmrnxM3wgYHMcfEWWnYOTTclIyEjB6HS1MjVNku4XUim1o2MPBulXvO+zQeZ4IGH49Ib6qFt27+mw1q+6WsxIc3bFzAEsFant+rwdtMXlSASVJqu7FRRIwNPUI7c4feHFKHG8mhqx3dAMmUxvrlnKOs8fLr+ilcxkx50DVNNd27AkjHEd8YZDF544fqneSl3AUD3308Td3uSsZJoSG1n4QtK5WAHPvfDRSpLPQbEQnXYqU/jp7yG7Cg5lQ2/mLkaqpIAcs0ZHghq8DLw5qB5G/gStlPMnGJDJdnCv02zMvASFzd5nMsOvy8fZHfBOz61d+4FBh/VWjMY+jpMOhtPVxIwRB29kYZ7+GPotvPpRo/lbDs8mEWtsO+G8DYAfk44zHMr3qSFkZCeQ0+e81VYRFecI36aqjYluK5PFbrvTDM3G1svsVgRR4ynKyR7Pz3B3UHU7ImV3+/2wP5FXGirhVnQiCL7zH3QSnKeUnC5sAeq9/h9PY+H2hvo7sSqKbtP+29gVA2uJq9SYDjSNSPrq/jqlQhVHSifa4LXXbtvg3oumGIPrHQlnQ1ERYe8PJcEFBJBIC9SSumRpbM2nre3rrdGDCIY1MGZR+NPT9TO3QjIAJSkxR1Fic2VXYGE9U47DFPN8KANuGG5ufA3raFYSwMIhBb7/Xd8ao2gH4Sm/0zNgqRvyLpSgILjxFhKadgQYIfHpeWkFITyOFBZGex/C0ki7w28hQsbV8EBiqodK7E6g1Li
- cK26pDnF
- 4cO/EW8nLOscchSy5NWT2q/YMWpcAT4YDAErN2ZUwaSunQKsCLtE+Cd2fRPmLAqzbe/X3NdzJHOqBNjBYvhWcnBzAbJCIDzlu3hR9LLc/TBxDSd3XaI6CD/BCkkt3CjGvlbF+xvGm4lCfL2dovEfXrgat+0Vj//o/VE7C7vkKpPRBYS2/P90BnOD5hw+k95/N9zsMdUy3Nf+eaPL94evCqiUmTnbvmBYW7wR3ZiwuqoJ4z94nSjxbZzyk49XDVzzsHpR4qtK1bKaccoNOGFGhF5WU0ErNGpi7MkZFanakzyx1Td+vW4V5DvA2yBqfwBcGVmkimX5x383yIbXvwJVSfnJ+MESQmREBBhQewwskbmWHSrZNkoJDmftWpCqrQa5An6vXirn/PwgMDdCIjG4l9wDaH+lysOWFmt2yrrPO5av1uqdfKBARMHFrrLd9ESAzvPpSC1m6UohAA1KKXeSuj7bYUjH2QecZYBN/k1ThoyOkDWXJCR/rNvjmkmGb/rxj5K99sU9CRtSON1Ym7qQN4MITgfppYpIoKmsUlFfBS2LNuoqBK1tjbWtgC0bRVuO0UDwOLN+32bC2udGAwlv4awkf9NksmcdHUS//
+X-HE-Tag: 1784112891-450851
+X-HE-Meta: U2FsdGVkX1/OZMbhWmAjb51XzyjM8YqMYG2r2JoNqGU/Aedd12oVSvn6BK1XFycvDiBNt3s6PCW//fn2ApHLNpyLnX/ztG1o1Rv76//m4GlDxVH25T+S5jvucD6pgIHJTopkgSh67pY7FT0FJd80SPIoepI+tPbkVwJiGJ5xiIe4lIAUWP0AO2YDDM8XjZTgd9vxn0ggagxqv+8zsivGRwgastNyiBg5DUH6lha6MM1VNcRoMyO9pYNOVk281agUnkgBTf+yQ8Tx++zcYjCR2CaVhoNpfqg/dEklwHLpSsmJwx7Hm2kwS80QB+eVvMoj2u0sZTEnEweQ61g8QvvPn0eg7T9TOp692RFnDHlDyvNQA+W0/kaN/cuzwYat0BY1wP4sB7NWopwgnunjfuKwRbVTNPAibu1VriKhSBtOanb6To89YdykZeHfl8uK89vkfzzab/VtGhb40qgZdZnnd6AyoylqM7oBxrl7NywXt/m8qkBpAzcwBVlkT8UxwBXIJoBaKiMa6ovH4KLrq3QuHfkTvitHA/WEoFdbL9yHxkCEh9YCHGTixv/lyT6ekTPgSBUrShY+scvCQYlO53J5VlYrRbZ1hocKIOwSssU8uRy3+I1xbwtQgWvLn9F5d9g9fakKCcpPMZAB/mLVeLqHRcscqO3BN5NVcYGPtzsV3oxdmYtYHpqK6p69Aa5Jq2am5I0K/UVry4KqqJFbsmp5wnaGw4Be1Q4DEvFuqfYRmu/FP0YcJTkAumBdGDBjTYvUsDr7FSsJVT74zTgv+9/kHbrkDufImmABvgrprQho0A3YeXcEXn01iEusDlUuSUPQfvSpRaFHugXflRv4UirDSns5XP9BOX2IIlhiTRprhNErp1E7fJdoCRsrhqgXtdEyzN1m+cMNB+59jJsyfc5LY63kYePME9clKORxf1xK2VdN6zFNB5m9D2b3Nk/bjaErTu5t1m9gaJ3HudSC5n7
+ UElA9+4Y
+ qEwIQgnLMVGHE5cDjRotBRHqFSBbz9lhwesNaThjfaR2bicp7mDi5aviA/wE9SaoXnOudQcdWHffReuCMbEq8UJ8GalsZWFDi53nDUxs/ImPP7kCl4eq1beuVdn9uPrFlUJJ3u0Ou3L+DRlEl/bs/bAAt8/yYJugCacpJOLXUjiXJBrPpJqQwTimSe6wc5PcQ8ONccxXhzoJZoqaPibRYZXUNnt3ohI43sp8R1PayjdVgpxhujjfufT949o7y+TRhnHsJ+XDEg/vRUACkoUEu1wp3yxdhlsNLXKpc6o6sHwErreGXSy6TBAGqQY/64knPYBFG61ZIbaJF88F/Q6gvY1wRLYSHKI9z55iTW0uFTqYK82+l7AFRzUVm6xT8XkuNStsA1bqbzqdhbVNSBZNNV45fWdP4DjEW6J4vxgpud/jeZI2BAWo8zgVOc8IBI2jKV7c0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,206 +111,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On Tue, 14 Jul 2026 22:05:31 -0600 Nico Pache <npache@redhat.com> wrote:
 
-vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
-provides a clean interface by taking struct page **pages and mapping them
-via direct PTE iteration. This avoids the page table rewalk seen when
-using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+> On Tue, Jun 9, 2026 at 11:27 AM Usama Arif <usama.arif@linux.dev> wrote:
+> >
+> > On Tue, 09 Jun 2026 10:07:20 -0400 Zi Yan <ziy@nvidia.com> wrote:
+> >
+> > > On 9 Jun 2026, at 9:47, xu.xin16@zte.com.cn wrote:
+> > >
+> > > >>>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+> > > >>>> when splitting isolated thp"), splitting an anonymous THP remaps all
+> > > >>>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+> > > >>>> This flag is set unconditionally for every anonymous folio split,
+> > > >>>> including splits triggered by KSM.
+> > > >>>>
+> > > >>>> When KSM is enabled with THP=always, this causes two regressions:
+> > > >>>>
+> > > >>>> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
+> > > >>>>   split_huge_page(). The split remaps all 512 zero-filled subpages to
+> > > >>>>   the shared zeropage at once, freeing the entire 2MB THP when KSM only
+> > > >>>>   intended to process a single 4KB page. This bypasses KSM's
+> > > >>>>   pages_to_scan rate limiting, causing ~1GB to be freed almost
+> > > >>>>   instantly.
+> > > >>>>
+> > > >>>
+> > > >>> Why do you see it as regressions?
+> > > >>
+> > > >> Since the zero-page remapping was introduced our test has shown the
+> > > >> following behavior changes:
+> > > >>
+> > > >> With use_zero_pages=0, the merge rate drops from 60MB/s to ~6 MB/s
+> > > >> even after raising pages_to_scan. The KSM merging is now much slower
+> > > >> and CPU utilization has increased.
+> > > >>
+> > > >> With use_zero_pages=1, ~1 GB is freed almost instantly, and it no
+> > > >> longer respects the pages_to_scan behavior.
+> > > >>
+> > > >> Even with just this patch (1 & 2) or the RFC linked in the cover
+> > > >> letter, the issue no longer occurs.
+> > > >
+> > > > Understood. You're saying that the additional processing action in split_huge_page
+> > > > (remap unused subpages to shared zeropage) increases the scanning cost of ksmd.
+> > > >
+> > > > However, I still wouldn't simply classify this as a performance regression,
+> > > > because commit b1f202060afe increases memory savings through this action — so
+> > > > it saves memory at the cost of additional CPU overhead.
+> > > >
+> > > > If you want to address the increased overhead on ksmd, I think we could add a
+> > > > check for the shared zeropage in cmp_and_merge_page, and skip merging when a
+> > > > shared zeropage is detected.
+> > > >
+> > > >>>
+> > > >>> AFAIU, KSM and THP do often conflict with each other. THP tries hard to collapse
+> > > >>> a huge page (which may contain many zero pages). If KSM is enabled and part of
+> > > >>> that huge page is mergeable, it can easily be split by KSM, rendering THP's
+> > > >>> efforts futile.
+> > > >>>
+> > > >>> Therefore, in our actual production environment, we typically avoid making the
+> > > >>> same region both KSM mergeable and THP always.
+> > > >>
+> > > >> THP=always is a global setting used in many production environments,
+> > > >> so these features now interact very poorly together.
+> > > >>
+> > > >
+> > > > Actually, I have long thought about submitting a patch: add a new interface
+> > > > 'skip_huge_page' under KSM's sysfs, allowing users to choose not to split huge pages.
+> 
+> This would be a good intermediate solution while allowing backward
+> compatibility.
+> 
+> > >
+> > > Just think out loud. Or just skip huge pages all the time unless memory pressure
+> > > is present. Basically treat KSM as a way of reducing memory pressure by merging
+> > > pages.
+> 
+> Hmm interesting. We should decide on future changes before committing
+> to one direction; however, i think the immediate solution would be
+> what I currently have prepped for v2.
+> 
+> My v2 follows my RFC alternative approach: skip zeropage remapping if
+> the split comes from KSM. It also contains the patch (3) from this
+> version, which skips zeropage remapping if the shrinker is disabled.
+> 
+> >
+> > I do agree with this. I questioned about if it even makes sense to split THP
+> > with KSM in RFC (https://lore.kernel.org/all/20260510114001.600681-1-usama.arif@linux.dev/)
+> 
+> This is indeed a good question but I don't know the right solution.
+> 
+> Perhaps we can discuss it here.
+> 
+> So far here are the potential solutions:
+> a) skip zeropage remapping if the split comes from KSM
+> b) skip zeropage remapping completely if the shrinker is disabled
+> c) Disable KSM THP splitting completely
+> d) add a skip_huge_page sysfs toggle
+> e) only scan THPs when memory pressure is present
+> 
+> (a)+(b) would be my V2 which I can send out whenever.
+> 
+> (c) is the nuclear option, but perhaps KSM for THP is rather
+> inefficient and pointless
 
-Extend it to support larger page_shift values, and add PMD- and
-contiguous-PTE mappings as well.
+I really like and want (c), but I know David has already pointed out
+that there might be someone already deploying and expecting this.
 
-Rename it to vmap_pages_range_noflush_walk() since it now handles
-more than just small pages.
+> 
+> (d) could be used with (a) and (b) and allows more flexibility than (c)
+> 
+> (e) is a more dynamic approach, and could be combined with (b) and (d)
+> 
 
-For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
-iterate over pages one by one via vmap_range_noflush(), which would
-otherwise lead to page table rewalk. The code is now unified with the
-PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
+(e) sounds like a good idea, but then KSM effectively becomes a THP shrinker?
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Tested-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
----
- mm/vmalloc.c | 86 +++++++++++++++++++++++++++++++---------------------
- 1 file changed, 52 insertions(+), 34 deletions(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index b9b29f7857bb2..afc695d5973e8 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -541,8 +541,10 @@ void vunmap_range(unsigned long addr, unsigned long end)
-
- static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
-+	unsigned long pfn, size;
-+	unsigned int steps;
- 	int err = 0;
- 	pte_t *pte;
-
-@@ -573,9 +575,10 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
- 			break;
- 		}
-
--		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
--		(*nr)++;
--	} while (pte++, addr += PAGE_SIZE, addr != end);
-+		pfn = page_to_pfn(page);
-+		size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
-+		steps = PFN_DOWN(size);
-+	} while (pte += steps, *nr += steps, addr += size, addr != end);
-
- 	lazy_mmu_mode_disable();
- 	*mask |= PGTBL_PTE_MODIFIED;
-@@ -585,60 +588,90 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
-
- static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
- 	pmd_t *pmd;
- 	unsigned long next;
-+	int err;
-
- 	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
- 	if (!pmd)
- 		return -ENOMEM;
- 	do {
- 		next = pmd_addr_end(addr, end);
--		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
--			return -ENOMEM;
-+
-+		if (shift >= PMD_SHIFT) {
-+			struct page *page = pages[*nr];
-+			phys_addr_t phys_addr;
-+
-+			if (WARN_ON(!page))
-+				return -ENOMEM;
-+			if (WARN_ON(!pfn_valid(page_to_pfn(page))))
-+				return -EINVAL;
-+
-+			phys_addr = page_to_phys(page);
-+
-+			if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
-+						shift)) {
-+				*mask |= PGTBL_PMD_MODIFIED;
-+				*nr += 1 << (PMD_SHIFT - PAGE_SHIFT);
-+				continue;
-+			}
-+		}
-+
-+		err = vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask, shift);
-+		if (err)
-+			return err;
- 	} while (pmd++, addr = next, addr != end);
- 	return 0;
- }
-
- static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
- 	pud_t *pud;
- 	unsigned long next;
-+	int err;
-
- 	pud = pud_alloc_track(&init_mm, p4d, addr, mask);
- 	if (!pud)
- 		return -ENOMEM;
- 	do {
- 		next = pud_addr_end(addr, end);
--		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
--			return -ENOMEM;
-+		err = vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask, shift);
-+		if (err)
-+			return err;
- 	} while (pud++, addr = next, addr != end);
- 	return 0;
- }
-
- static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
- 	p4d_t *p4d;
- 	unsigned long next;
-+	int err;
-
- 	p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
- 	if (!p4d)
- 		return -ENOMEM;
- 	do {
- 		next = p4d_addr_end(addr, end);
--		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
--			return -ENOMEM;
-+		err = vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask, shift);
-+		if (err)
-+			return err;
- 	} while (p4d++, addr = next, addr != end);
- 	return 0;
- }
-
--static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
--		pgprot_t prot, struct page **pages)
-+/*
-+ * It can take an array of pages which are not all contiguous, but it
-+ * may have contiguous chunks, as hinted by @shift.
-+ */
-+static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
-+		pgprot_t prot, struct page **pages, unsigned int shift)
- {
- 	unsigned long start = addr;
- 	pgd_t *pgd;
-@@ -653,7 +686,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
- 		next = pgd_addr_end(addr, end);
- 		if (pgd_bad(*pgd))
- 			mask |= PGTBL_PGD_MODIFIED;
--		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
-+		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask, shift);
- 		if (err)
- 			break;
- 	} while (pgd++, addr = next, addr != end);
-@@ -676,27 +709,12 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
- int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 		pgprot_t prot, struct page **pages, unsigned int page_shift)
- {
--	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
--
- 	WARN_ON(page_shift < PAGE_SHIFT);
-
--	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
--			page_shift == PAGE_SHIFT)
--		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-+	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
-+		page_shift = PAGE_SHIFT;
-
--	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
--		int err;
--
--		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
--					page_to_phys(pages[i]), prot,
--					page_shift);
--		if (err)
--			return err;
--
--		addr += 1UL << page_shift;
--	}
--
--	return 0;
-+	return vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift);
- }
-
- int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
---
-2.34.1
-
+> Let me know what you think :)
+> -- Nico
+> 
+> >
+> >
+> > >
+> > > Best Regards,
+> > > Yan, Zi
+> > >
+> >
+> 
+> 
 
