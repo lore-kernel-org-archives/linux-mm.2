@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A50C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 20:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC7BC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 21:17:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3EF86B0088; Wed, 15 Jul 2026 16:36:25 -0400 (EDT)
+	id D82736B0088; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EFC46B008A; Wed, 15 Jul 2026 16:36:25 -0400 (EDT)
+	id D330F6B008A; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9057C6B008C; Wed, 15 Jul 2026 16:36:25 -0400 (EDT)
+	id C4B846B008C; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 531916B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:36:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C626CA024A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 20:36:24 +0000 (UTC)
-X-FDA: 84992168688.08.878031C
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 18DF64000F
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 20:36:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NDaqQ0cu;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 992156B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F28871A0305
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:17:41 +0000 (UTC)
+X-FDA: 84992272722.21.6E50974
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2739EC000A
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:17:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lw1aE0Rl;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784147783;
+	s=arc-20220608; t=1784150260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mo3OtT6Wk9vIr43G06ljgu1nSIzxYDl9BQZisg9bu58=;
-	b=8IrbfOrSgz4NyiMgR69XHC5yqpR2IZ1w4O6OiURJPTeNTkBI9b783zSpfvaJ/YoeR6sLjv
-	dhaVnWdVQ+Qybd+s488kjE1L1mZvcP/HCVkdHirwg5lSZ664SUiuK3lc9XmQ1zE+CFnBpz
-	G1MMEzZqHoQxMoA2dMyoXW9DnBNIffc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784147783;
-	b=FTMWv6XpFZHTzObHVU7rpPKvMlPdNxSR86ABxyzXOD2boxr5A92fzINOrO2mvSiTDhJDsW
-	sRweXHIMGK7Ryq0HT+TkMHbRYFEB2fBClzPYFreipd3fpywJbVHZM4F1j1nxoOXnGhULM7
-	cCWn+0ycDykyJ4wo6iIwD8Yt/5m25F8=
+	bh=UU+zPW9iRvCJbBM3XKZCH/KKzyu8mkExGEFSmL1gNYg=;
+	b=TQAksjy5EBGcroJdaT6Frkzxt3yDbKsUM4let6GeWMlQgA3x39ZA27YezLesaspfVBj67E
+	hEfFuWDJrBHoF2CqerWxVK6HtMLjrWBXF4Op94HRyxL0/QvdqrTH0XhyJzwOwQ9poi6F59
+	yp5nYBMIWXc1MKK09xRmd7qOjbkk634=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NDaqQ0cu;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Wed, 15 Jul 2026 13:35:56 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784147777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mo3OtT6Wk9vIr43G06ljgu1nSIzxYDl9BQZisg9bu58=;
-	b=NDaqQ0cuaRwXU76Il3raLdJi4qiC6OqzUb2UO3fPbucggNWoFdggpf+GH3YtwgJcGTPRTI
-	BpKLlswF8rIWD8MGIPIcUNKdvglsG1hUA12eeO6JfKinOcbtnnj4FkEYx3A/SWTPjnGtkS
-	LEjaZ19YzZDSwi5TlJJCdPW3N76X13U=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Chris Li <chrisl@kernel.org>
-Cc: Yosry Ahmed <yosry@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, gunho.lee@lge.com, 
-	taejoon.song@lge.com, hyungjun.cho@lge.com, baver.bae@lge.com, her0gyugyu@gmail.com
-Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-Message-ID: <alfuD8BVdvswr4ch@linux.dev>
-References: <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
- <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330>
- <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
- <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330>
- <alae-LIRwEFUjgs1@linux.dev>
- <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
- <alawYov0c7a0Q6_l@linux.dev>
- <alchYX43oV9KybWx@yjaykim-PowerEdge-T330>
- <CAO9r8zML09YzraA6rstMz6+Krui5Vma6a9D3j10_FXGbqfEQvQ@mail.gmail.com>
- <CACePvbVQxvZKa1y4b=mAgdT_uUO=nk4uvuSob3xvW9MZ6OEONg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lw1aE0Rl;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784150260;
+	b=7zCpnNFGLmjLmZluDUEUYwcD2NRp1digyZOMplbSXwkEdTPFlP8Jd0CS5yJW8VskD3XW77
+	ZO/u4TJ+DNgkGRJSKE8hECb6JElAifGYpQw5dxhvU0l8QU1eYTcdpvgay93o9UdGA5FbbF
+	3luvImbaZc3QHu433xiv+9YhVvNaTPU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 19A494028F;
+	Wed, 15 Jul 2026 21:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56601F000E9;
+	Wed, 15 Jul 2026 21:17:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784150259;
+	bh=UU+zPW9iRvCJbBM3XKZCH/KKzyu8mkExGEFSmL1gNYg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=lw1aE0RlWxmrVX1SBFRJgy1UyPRTg4K6nP+DEjnY9dlEAsFMk2L2RNTreb0d+vs/k
+	 1gYgzd2yzaN3XobC7uyRdh1AW0rjf0Olb3qRLd+W/Q1HYfJhedn8GiXr9Nt0CNftbb
+	 PL/NA8rFtyplykMr0XbJ7OZgExm1aHBfS+hm1Ecw=
+Date: Wed, 15 Jul 2026 14:17:37 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, corbet@lwn.net,
+ dakr@kernel.org, david@kernel.org, decui@microsoft.com,
+ haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org, kys@microsoft.com,
+ leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
+ longli@microsoft.com, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+ mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+ nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+ rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+ skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
+ vbabka@kernel.org, wei.liu@kernel.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v9 0/8] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+Message-Id: <20260715141737.4097a5c7d74953ffd8ed66c9@linux-foundation.org>
+In-Reply-To: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
+References: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbVQxvZKa1y4b=mAgdT_uUO=nk4uvuSob3xvW9MZ6OEONg@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 18DF64000F
-X-Stat-Signature: kphrbe9grbxyqzdf4ky3et8gbsd4eda6
-X-HE-Tag: 1784147780-799959
-X-HE-Meta: U2FsdGVkX185rI+ykJJ+cx8b3SGe7lJiE5+qHGTwAB+Th00cqa4w4a1MsWmFabyrXDwi/pDNt4C5QXdd8iRF0D/jcBCjkeGgpEh/W7OWj2Sg4+2nzooTtQ2/u80ll0EPOHlpOX1e4SlwvsQBVftniPn53qwrAUYPJhrG7ht54L+cTyX+AH9uZ9NYThm7x7B4B081hoyqMCy8gouBXVOB8014KHXggbCogHxL8km2mB8yP+ZPQz2dZKX6pA479N7Ety+/LFSy8Z6yITyujOMsCCoq5UgPkgTCOwUmqKCy4ephJWkih+9iovhVmi2Zr1aa5lyObOD/hPOB3axWhXJz8srJR970YPBRwuLceJ4/wRPrNx4+ohmCtTaI0iUK0cOVLT0Y2f5wlyKxWhM2bIwhQUGS6LlbhOtuGOA9QxSzjeQne02J0lFztWiII8O4t2pIaoig3nNthgSTbPxmuZXdciVJgmV/CPr1c3tv8HtNqkCS3ktT0MDlsY5qBom3k9DtRKgF46F8LFyS4xaCAoe+rUSL7gxNm1Ng+60do+tuWvOV34DN1BURucikiPux2y845+J83zUbDk58bhN3whTQbIpY+xrVhQWl0CQdkNL5IMhcv7LlRBRxqnZ4CKM/mtW8bPsYu2vbzeOWyPaq6e7S/F9etprKnhNunJV5o3Ysm6shDPksikxWSDV12/F6MxY/I7QwB64XbHBJbxqCRwNRm3Iagv6BORyIEwPy++a9NbT0mIqZ+mjg6wjNh09JDqED45yxHuhaV6X3BK7nEBalgM7XYohNKHF7w8d9hJjipN3cdoUXqWoCckFI4giUsV5pqvDM/UZv/4OhAbdUUX4e2juI1i1m/tJ6o/AVrIpF0uB0tk0vKFQ6MYfMW3RdUKvdGnYbmxbjZRmPUNj8DvE0V8kBjPgw0nbTAfxYKfVz29ViVHsaHOOgBGALeZbn5FHVv6BRXXaiYbA9wrzudmQ
- aEqIdws4
- xAiHzIs1ln47W6nAkiAvLfwNVMbbdzLEJB7gpm4nZciB9Nyk8AEoUNyrxHN/jmVRLa1o5N8K/SqRSnrnmDkRSFE2nuSTqeGkIhvzWlqC7sUmy+5aeyz5D7DRDvC5uy/1ZboK+cEbo9EHQhj7JB3bWVDioUZ+rMLmhB6qrnT+oDRW7umoa5s0yWKvkJDcO24aYJl+vuCXLWkB9cK/uEnR4wP0DGmJnrMYtD1DJ5JcMweqTsRsSLEcs4PATBwv5LASFyiajMQ0+4/XbdI62vIomoR07RiDdUcy2sb55GpLHIqztBGIIBRuBeMsX1Xjlq5Qzh1NGD0eUFUhW8E8k/nSwH+E3ovRp4mGormZ+4Lz6C56ZlkU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2739EC000A
+X-Stat-Signature: ddsitz8rj9ydc6yihpoaucngxjj1fxre
+X-HE-Tag: 1784150259-611760
+X-HE-Meta: U2FsdGVkX19C8DlqVJOLenfuHOAplsz3PGcSOXpjrJtfBQyUurGWkPPJaYf/Jfi+LY+nwdF1TPhWyFDgoywIh/BEy7/jis/Elf8VX50gTaujmBRIq1Jd6kJOUdCHxI0nFliLZfhTtduYZGxwmCKAEtvkeZ96TynemB/mN3btk69vjIwWCQre/No4Bo4mON9rmt3zjIg/88Z5NSjkG7FHl4K4Vp29QwGGwrBjPy4Ql2zS2U7Hcr1CKuxlvCuPJ0PIkHBczX8BBfQZN3Q+m0vPil/7deJkYwu0XEl0EMFqFTmncqjhd0rICUVLL9fr12XX9lHgt/fqe3AVbXs8mp8rGkwk9QAnbRztX+0ujUfcZQTf64Mtu42zeY8vsVLsmfJY2u2lmCnhoaOmvPv5WwebWPPXVJC4Ty7yMVbgAt1y8jeJD6VYYLVtQrto/zdEcew+GK24XZ5fmliHeiyl/3Ep41IQquec4ODwgLd8MPGVrirYvsYsa+iCMVCMTSIdv3iT/34l/AFDHh95Z7U/aDTtdrBQtuQVjEfWezOMVvVhVvr06aJWwXJWMfHoXZhExCLs5PQnMlfWcml8vjM+gLU4l8Ctw44hIh62gHtdUVXbfieauiaH3WvXnj0Nytp4iZJ0lIMOrKTrnjIy+GQW6IBf2c+TXrrMbyMdGZmSdVyWZqYPZYM8cua6wPJj99gbpCnpYi5VH9njmlVwLUbOi+D/IXpS0vWOweagFLqT8n42fyXo2zcjk1pUdhhYWNV+H79z0/vSP5vFc+LoOigerEAg8H5pff5l+ZZ+hdT9Ur2vQhO1HblvVs0JmiN567PqROvL1qwb83rnTRkh6D5wRoCdbPhCWzUpeNWUu/hZVb49nHj0HMZHTjWzymCAYxxq545lvwaNXnH5bEGhoUvQIptjE+9oUlxFJZIuEwDyDY07qxPUnAd+BtixsRxrj5+UAvMGVKyBJNxJlD8Gh33NM7K
+ gI8y0O36
+ MIGMvHl1P4gKRVwek9thiZtIRy3op+QZHxy6f6DP/K3SQywjCzn29jXu8PYjsdH2riCgt43FFZDq9ivB9q02SwVCpoFcyA0/D0KopdlfMGHXWPGMI/XV/6FI6afsqqYUDb1SUInzNS6ocUk/AzavRKfLpieM6IqIxuisAjHlXcvg6GDXdXwtTmWHpE5BaMuc2PxM9CObEpX6xh4pTLp+JNmmnvqioyfa1Q3USGVa35YQd2iS0Uol1ZZ45dbmmD01an7Mg1k++pdDXZHvYZMpbrqmejmPXH3niO7Ck8JTjUyRl0gk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,76 +102,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 10:30:26AM -0700, Chris Li wrote:
-> On Wed, Jul 15, 2026 at 9:27 AM Yosry Ahmed <yosry@kernel.org> wrote:
-> >
-> > On Tue, Jul 14, 2026 at 10:58 PM Youngjun Park <youngjun.park@lge.com> wrote:
-> > >
-> > > On Tue, Jul 14, 2026 at 03:25:40PM -0700, Shakeel Butt wrote:
-> > > > On Tue, Jul 14, 2026 at 01:52:14PM -0700, Yosry Ahmed wrote:
-> > > > [...]
-> > > > > >
-> > > > > > Yosry, what is needed to enable zswap as a swap tier? What will be the minimum
-> > > > > > requirements for that?
-> > > > >
-> > > > > From zswap's perspective, we just need to skip zswap is zswap as a
-> > > > > tier is disallowed. Could just be a check in zswap_store() similar to
-> > > > > the check if zswap is enabled. I am assuming that if a swap tier is
-> > > > > disabled, nothing happens to the existing swapped out pages in this
-> > > > > tier, but new pages do not get swapped out to it. This is the same
-> > > > > behavior that happens if zswap is disabled at runtime.
-> > > > >
-> > > > > From the tiering perspective, we need to accept "zswap" as a possible
-> > > > > tier, or maybe creating it as a tier by default if zswap is configured
-> > > > > would be better to avoid handling the case where the user doesn't
-> > > > > create a tier for zswap.
-> > > >
-> > > > Default tier if zswap is configured makes sense. Should zswap be treated as
-> > > > having 32767 (or maybe 32768) as priority as it sits infront of all swap
-> > > > devices today? Also whichever swap tier has priority range containing 32767,
-> > > > will have zswap in it.
-> > >
-> > > Maybe we can handle zswap as an internally reserved tier which is always
-> > > preferred over swap devices.
-> > >
-> > > I do not think there is a strong use case for grouping zswap together with a
-> > > swap device that happens to use the highest priority. Also, using a visible
-> > > priority value for zswap may have a small side effect that one priority value
-> > > effectively becomes unavailable to users.
-> > >
-> > > That said, if zswap is represented as a tier, I agree that it should be the
-> > > top tier. The exact priority value or whether it is internally reserved should
-> > > be adjustable when we implement it.
-> >
-> > Agreed.
-> >
-> > [..]
-> > > I agree this is reasonable. I can treat the demotion/writeback interaction as
-> > > future work and follow up separately.
-> > >
-> > > > Youngjun, what do you think? Is this reasonable amount of additional work or do
-> > > > you envision some complexity here?
-> > >
-> > > I sent a note with some thoughts about making zswap a tier. Since Chris also
-> > > raised concerns around this area, I think it would be better to discuss it a
-> > > bit more and evaluate the details carefully.
-> > >
-> > > At this point, there does not seem to be an immediate use case that requires
-> > > zswap tiering in this series. So my preference is to keep this as future work
-> > > for now, and follow up with an RFC after verifying that introducing zswap as a
-> > > tier on top of this patchset does not cause problems.
-> >
-> > My main concern is locking ourselves into an implementation without
-> > zswap as a tier. One of the appeals of swap tiering to me, from the
-> > zswap side, is eventually unifying zswap writeback as part of a more
-> > general swap demotion, and unifying zswap controls with more general
-> > swap tier controls.
-> 
-> There is nothing locked. The major complexity will come when
-> zswap/vswap/Xswap/ghostswap become independent swap devices for swap
-> tiers. We are not there yet. But if you want a bool for zswap in swap
-> tiers world, we can make it happen trivially.
+On Wed, 15 Jul 2026 11:15:50 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
 
-Yes please let's do this. Can you also please comment on Youngjun's response at
-https://lore.kernel.org/all/alcebHobUCUyO70k@yjaykim-PowerEdge-T330/ as well?
+> This series extends the HMM framework to support userfaultfd-backed memory
+> by allowing the mmap read lock to be dropped during hmm_range_fault().
+
+Thanks, updated.
+
+> Changes in v9:
+> 
+>   - Folded the fixups into the full 8-patch series instead of sending a
+>     separate fixup series.
+>   - Clarified that the HMM timeout bounds repeated HMM/mmu-notifier retry
+>     attempts, with the helper refreshing range->notifier_seq internally.
+>   - Kept nouveau’s explicit outer deadline because its retry loop runs in a GPU
+>     fault worker and cannot rely on fatal signals from the faulting process.
+>   - Converted amdxdna, and GPU SVM callers to pass the shole timeout budget to
+>     hmm_range_fault_unlocked_timeout().
+
+These are all in your fixups for v8, so the v9 series made no
+alteration to mm.git.
+
 
