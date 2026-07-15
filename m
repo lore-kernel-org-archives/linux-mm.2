@@ -4,194 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BDEFC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 16:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE79C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 16:25:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70E3D6B0005; Wed, 15 Jul 2026 12:17:02 -0400 (EDT)
+	id 4883D6B008C; Wed, 15 Jul 2026 12:25:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BF406B009B; Wed, 15 Jul 2026 12:17:02 -0400 (EDT)
+	id 439C16B0092; Wed, 15 Jul 2026 12:25:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53F1E6B009E; Wed, 15 Jul 2026 12:17:02 -0400 (EDT)
+	id 329066B0096; Wed, 15 Jul 2026 12:25:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D2D96B0005
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:17:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE15E1A0233
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:17:00 +0000 (UTC)
-X-FDA: 84991515000.06.443CDD1
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013043.outbound.protection.outlook.com [40.107.159.43])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A2E7020012
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:16:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=g7vAGzIx;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=g7vAGzIx;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf03.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.159.43 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784132217;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 054196B008C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:25:22 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7396E1C0160
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:25:22 +0000 (UTC)
+X-FDA: 84991536084.19.15FD19F
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8B8B21C0005
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:25:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VpGBx2aM;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784132720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fwky7dU2ZLGfcQTZTie9pJXkcdEnlkwiiYLZBD9aaJg=;
-	b=vs06782Pdh3Kqav4hri9euBm7r4AzQ+Zollr2wtclN77LROpXVuAPToDcE8fDBYw5BGAtp
-	gJy9akU6Am/E4YmtDuesWUKmj6WRsgJMSOQldHqUYo5t2/tWTQt9E9DrXC6SNCwr1RNGPR
-	nOZGsZFgtezELAV+PWXriEWp1N45CjI=
-ARC-Authentication-Results: i=3;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=g7vAGzIx;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=g7vAGzIx;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf03.hostedemail.com: domain of Usama.Anjum@arm.com designates 40.107.159.43 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com
-ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784132217;
-	b=hTHvE6IGkSAlDlHJRZUlZlK7B376EY3A/BuB9xC1Tqg2Q3uyFrgqB+EShBKbzq4TehGojI
-	YNKAoasKQmNJTdYI77+e367UXHIrWRdOD+KwCzTtDWmaoH5Q/gXQoRsw5RvJDSkjehBNEG
-	xn+s/MkDzPcJaUteEfqG8vt5KfjUBZ8=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=DoiBJW+/RdCKft7zj+vLsWfq+pHdRMLMLWb61xePkkEBwDHWS6HGc6OnDMdhjcYzCCht3eqnxnJ001m2ZiD9NDqOCSxmopb9r4Wwf47duioYqO/ZhKg2tC0BH4TaSXmUkF0+1h3TEZf3V+2FAXw7XKO4D+wx406awwbxF7CJYqh8Vgb/d0NxcVgP+H8QNvv2WW/FoW8f9wDquMTl+8dInqmw9DCxDq2z5TYaXnnKaDW+Y01pQWBs/tc86ZjFNVO4eCR3KCzvULCdfa2/dxAKKLobsXiaoqraM4j+GOhabu+93699rq8nXaGYDwqlPXzd9lQK9DOwU/NBGAOMqBA3cg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fwky7dU2ZLGfcQTZTie9pJXkcdEnlkwiiYLZBD9aaJg=;
- b=QK8sYLbRRSgNV5rbA76MF7avz0DZ12kJ4xtmyWz3jVRmgQ/vCMemHCBV2NxctrCxSr4S5aASdyl9V5kL4SW6zbgzrAV6kUyzA0o3xUn8N7LZdua4hb62eA9IAg4AyUI2yvZgWQM1Z3K9rEvbpui32/YGjY4xmlzu0rAHpfGitku5nYRx7b+b7wNtBqwUFCGvuTRSBmr1dBi4/FCTfUVwnP93N3ukI7xM1xOI+OQIc5CzuzZCv3ORkp+LsMntpgGi7i+HyVkExV4YgvH0h2xV+fzQr3rmTTAfd9NdQyYhjEMg4BsxGhscCJov+riE9X2Nk49uq5VuX53iQdUoxfvf5A==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fwky7dU2ZLGfcQTZTie9pJXkcdEnlkwiiYLZBD9aaJg=;
- b=g7vAGzIx5Cn8R+L5Dc9nRobs+deF360TNhkHy7gdZuk2lW18EL2zVidOYVsASq5xhBZIlRHVnp+NGnts69ULOQ074qOVJtCSSgfOCuO1bnUT8kQcYjsrjreZP/oSP/k0qCuVJoNwvleCLlXgjWmCGDxGt6Dv0doNcN3uaKCYpu8=
-Received: from AM9P250CA0028.EURP250.PROD.OUTLOOK.COM (2603:10a6:20b:21c::33)
- by DU5PR08MB10658.eurprd08.prod.outlook.com (2603:10a6:10:523::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Wed, 15 Jul
- 2026 16:16:50 +0000
-Received: from AMS1EPF00000041.eurprd04.prod.outlook.com
- (2603:10a6:20b:21c:cafe::5a) by AM9P250CA0028.outlook.office365.com
- (2603:10a6:20b:21c::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.11 via Frontend Transport; Wed,
- 15 Jul 2026 16:16:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS1EPF00000041.mail.protection.outlook.com (10.167.16.38) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.9
- via Frontend Transport; Wed, 15 Jul 2026 16:16:49 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g+a/EOSk0oVPruoUQo9rNd2eU9D7wFUZjwwUGlpQ6A1eRQg65pHtZINri+PRG25cGCJT/tO6ZT/daTpnJJCcPnAsNA+IMbpv/mhpk2DmWzs3H6Z+Sa6SjOz7MA2SYyh9OVKldiGPYRSBjI95lbY9HybyYqvQeZpL1s//YBW12DY8mI3lzUKQaO6bQSzwFza9PRg4Htflr/FpUvgPLXlA2iWutulmpeOpkZs1QBBRq+2iKt+1HOe+XHACx6wR/blVZ4cWnEL7uKXHUzny51vfTl0EqwDYqsXOe4RIOG4+/lLhllJjYo7PhbuRNHvyzlyZ59Jx69tUAsE4Q+2RXVmdJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fwky7dU2ZLGfcQTZTie9pJXkcdEnlkwiiYLZBD9aaJg=;
- b=kZAHXSy0E8zG9xN91oj+R67IRLToTAKkmwWTE7lVw+kK3HV/FkX6A7imlVhOhW3EQkS+10Tp2EaiW+o8J7NMMUkCLk9tGWMQ8D4qhg7F5ugCZheT8ndw1zoHnkNUbdLAU1RDjrxwNAwN8j21mtYwh708ndZVuYYzr1QJ1q2v4ip3rCuNGnURMj+Rr4kpdru7GsXQFP2flvqriU+44nWbHK7QOoGPDL14ipXUORVTLjVGum3j+v3/irjqLOpTRONtP1XcFp2iLlJe4AO7iHa58gpwwLQvq6ELXlPW29wr1VqNG2WsP80D/FJC0TD4MngoeQNGn8WSFRQsmBBaVZB+Aw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fwky7dU2ZLGfcQTZTie9pJXkcdEnlkwiiYLZBD9aaJg=;
- b=g7vAGzIx5Cn8R+L5Dc9nRobs+deF360TNhkHy7gdZuk2lW18EL2zVidOYVsASq5xhBZIlRHVnp+NGnts69ULOQ074qOVJtCSSgfOCuO1bnUT8kQcYjsrjreZP/oSP/k0qCuVJoNwvleCLlXgjWmCGDxGt6Dv0doNcN3uaKCYpu8=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
- by GVXPR08MB7800.eurprd08.prod.outlook.com (2603:10a6:150:2::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.9; Wed, 15 Jul
- 2026 16:15:38 +0000
-Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
- ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0202.018; Wed, 15 Jul 2026
- 16:15:38 +0000
-Message-ID: <6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com>
-Date: Wed, 15 Jul 2026 17:15:36 +0100
-User-Agent: Mozilla Thunderbird
-Cc: usama.anjum@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Samuel Holland <samuel.holland@sifive.com>
-Subject: Re: mm: opaque hardware page-table entry handles
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Pedro Falcato <pfalcato@suse.de>, Ryan Roberts <ryan.roberts@arm.com>,
- Lorenzo Stoakes <ljs@kernel.org>
-References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
- <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
- <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
- <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-In-Reply-To: <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0097.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:191::12) To VI1PR08MB3421.eurprd08.prod.outlook.com
- (2603:10a6:803:80::16)
+	bh=LYFz+BLLR5wpciF0ebXIUZFDHZ3ZsvyoUkgOaonjmmA=;
+	b=W+LXjwKX/nxVvsnVIriSmZHLfPEDsZXGxPtCpY1icJA6rO2IVIIpj0y6cLrnXeuCTdXbZb
+	lMfBLh/ocWXt0R3JrvxY14DXfgEAkyiXOEbpb10W5L4VzavWphR6BweQmbzKHcOSTG2v7q
+	7OkzM7A4hMTBP5bJ0FFNQnKVdvjvWro=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VpGBx2aM;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784132720;
+	b=2vBJBL58pIJ/DGsja73H8Jf1bsrnAe82V2Yhl3t/yUMLJWiJ449idGPQEZZsYoccL9CiIv
+	TKaS0NLbd8O0qQlicFWnHg7JfjmFaKFfhmngPLqkSdaj2DAlJdE6kWpX0sWJ3RrOPiDwKB
+	3ZUqgzw16Sq0Zr21Adpf5e19Yqzrrfc=
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-39d4c864bfbso26372641fa.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:25:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784132719; cv=none;
+        d=google.com; s=arc-20260327;
+        b=i7vzvpNEH/EPwy7w5wSBkJpb75UnvEmOfDXIngnpMDgvB6czU+52iKKT0zoXz+WqdX
+         63SmU2jfFi6jPYDQcaRpG07kMsOfV8ll5yHp/J5uU/EXMaXICzN+PoBTcoiEq6W0qdjV
+         PY8sS2ayb3Kbn7UdDqCjCcx9OO66Rfxrae6UJjsmFku6JGxMKv4ewLd/8WfBNI4LVd8x
+         fE6Ir0BB3259DatrFs+sU6cCgNvyuKLL28WIUggYQebgPVakqCJucdnniIp7d2ZnBJHa
+         1lAJ6PIHmYSw/T9YAv3IOjCqZVfBM9kTZbCKJweJx23moHfVnCH5GvCIyiqYgIbYJ3t3
+         zChg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LYFz+BLLR5wpciF0ebXIUZFDHZ3ZsvyoUkgOaonjmmA=;
+        fh=vaecG6QtO6r12GzAj38pAxqRjsWQrAnjzLyMhvd9eFw=;
+        b=NeP0EP8RPbPQAmUBey7InZSoVWSU/R0f/9w3kSY0bOOThr13MC/Mb/1BfvfFH4HFfl
+         eaCZulyuDOhaGzUXTquGZTE+5JANgccgd0FQikZJrXXZxVqGfJklq3NLk8GPDaIjpSGV
+         /SV+OA3T6PMFzP8Krnot8idlHs3ADkTjRxSbx6UY/q64ZlAoN5OMab+9i5/NoK1Zdq0P
+         eic1ZB8kgP31h6TexTH+rQN93zKNnDgeWyBH1f1DuuMdFV3GGboJMhh33k2JG9+Iz5FH
+         LIxuSL0wm7rLRvJJ4aZT8r8LHHhqDZSDercMj4GKrF09DlIR6npTsNobFkF12nZZ7yiL
+         VkQw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784132719; x=1784737519; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LYFz+BLLR5wpciF0ebXIUZFDHZ3ZsvyoUkgOaonjmmA=;
+        b=VpGBx2aMwiV4VcVHKk11edgNXi3wmz9vYYxir0r4GxPqBjSM5lgXFvqlLGAAVOuPVY
+         IyRniZn8nC52d59flqwv1hFined5M6gashQwrFtqv1DLfwiLVfuOVxoFbDM6vRAaDLca
+         XrFsRjwhDVw14HTz2E7sHwFUHBDot+8ynAK3DMYzWE8MNcwbo4JOcQdpRexS9pLLFxUu
+         VdVnBPHDKccyWX7H7GYHFmHLD0vDf33MDQZlkkYs5c89l7ujbZVMQb+ezRnLbkj5c6VZ
+         ASoCeIg5CZHGB0Up0q9/Am9/mPwqV/qJ0mOmxlbM9RQUn+fGExDFZDEjJiGw7k97Ad5W
+         IrAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784132719; x=1784737519;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LYFz+BLLR5wpciF0ebXIUZFDHZ3ZsvyoUkgOaonjmmA=;
+        b=MKEdjqvakYKaA52s8+Tzwf3Jp61CW9g0jONI/FBjAws2/bgSeWWNc9jg+LHcczSuxh
+         a3z/ft/8EgMIRfeHsKzD+W9poByDDnml8XtCatfd4I/oxpkchX+dGDDpWE0icBFBa0oJ
+         xMNjzfyNQq7qeXdm+7vhVin2INoTP5JfeYGVrDZOaHsCXeBzR1XYP3BpoN70bj3/Dfud
+         DKwEXG501XouQB2s/zMA7Zl0bTa6PZkL7wc4AHosb3tTo/shU7TNtmfTD85t1SKRhioQ
+         BzPNLeD+WBLXvb1FzdACJyG/lcvXSHyj01OgbWbndm3uZOxOyYkkClGPGvlSP79RIAAd
+         f1NA==
+X-Gm-Message-State: AOJu0YxdZKBNfInsSssy7uwnGVagC9/oNQ9oRhI9InDGbRri205AGYnb
+	qxq0jZhhU2PTawU09rnx20bpw/gjPdUo8DCEp2AkSRGZO23C0q9xJpRC1hh1uLl4LsyVelKLaU2
+	u/lLYdUhYWfS67Br1LvmY6APznsn35bCTaHKy07L2Ew==
+X-Gm-Gg: AfdE7cmGmG+VdGGW/GpJoykkG/xFB5Wk5mGJudGW6R5pRXyM19+bJwbXEjlQOG7lz1d
+	XVugHeshyaCkJ4FBnWpxmR+DxET4HTfcuknpWmS+cn9rzJP3JvcKrZ7fwAlqSUTp8dwkydliqTI
+	+xQSwnN5d+fmzo/tTt83PRvuy9AjcLztAPN8jJNOIQGU32YYOsy/A+QVizkm4lG9pPCO3xcr6tj
+	lla83XOOb5EGx5kIEZ6cypsuyfyvyeFj7mBIi+v3KI1tMp1B4yEoVmNs3C8S2Wzobt0M9Y4wJhP
+	JGlz6aFkbSW8t6mbEP81YhTyFL/Pe0C1PHMJzVAhQEm5
+X-Received: by 2002:a05:6000:220f:b0:45d:4a00:b927 with SMTP id
+ ffacd0b85a97d-47f2dcd7876mr22960079f8f.31.1784132275600; Wed, 15 Jul 2026
+ 09:17:55 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	VI1PR08MB3421:EE_|GVXPR08MB7800:EE_|AMS1EPF00000041:EE_|DU5PR08MB10658:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70638194-68dc-43e8-1a06-08dee28c799c
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|4143699003|3023799007|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info-Original:
- gtYpi9ooM4OjX8kTq40qPmSvVQ9JjQ9+JJPAJDdSteghwdthNoQOvYfZWX+HVZSAkcCWrmFBFb5eQLm6F4S+4lyclfeBDzo9+0msYQSqGdtSNbQbnPBtNXDbO49hyO3tUfYXYnlqU/jTsHcQUwVCemDFdqJtnHX1/NJ8sZp+UmUv9EK8IdL5F/1TFpuIBYTXwFSb0hK5zreMAFytWgmbbyG2SkOSyuBUvIdb/hAE72IASSH3YaKztm3Pjof9fxV9eP0mRTR3IBTqIsQMYK6pZTGPgD7vYCxczbCP8mxVD/sWgkS8xpccnbNzrL3JvFdsnM0kY0MZ56iqOY/5ApFr8EzxojKeF6j5fHo8JJnMbMupV+nUjt6aQm6H6wHHx6Kiib7gt7ArOF0iNn5Xj04HabEvxnrNR3Dt07UW934lvqHbgsgFvDVkCA3b6qrjkkPMe5fXI7dR32p1MfWNiXgA1qHIA5UrdkodBJKBZos/OdWCmlDHkLIwNmCaAmF3GnAoXTdE6bevYuOUMWQPjEAZ/ZgQ4zA8vtH0Ys1jQunfeS5RiksdNXetWO8UUyg24srAP5EMlztN+CXd1skUD9toirMFGFIihRss/wHS66Y297cfCL+Y/q5PrnxGmSvm7efTnbdRu77+qumGiG1CMkc71CmNXcijSeoojw2cv+QuPtY=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(4143699003)(3023799007)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- cWWYVhzrHQ08d4QLVrQ6A4M63+Rr+BVUQdXRqvIHdGP7FjPRL0/Nt76IwnM+q0HODpEItb5X62Y79Si4MCjOG7eSg90RObk6T6LnYLFvAVk23tEj07JR97ketyZaPiW6D1MFjyWkFb9kXV7Kr97/ejB1SoAdsuZUomexcgWCyZBaQys7hdjpL2YN8lXgzz5faDdQtvU013InavgeD1931OHy99vRjQCG68hL4By/x/GKZHvcvMZP7NkbzlaJ2W5n9YGONZPPgNQo3ELExgYmG26NGuW83OLz/aL8+4fTG0z85dHiZEZw7UEui3g4aO4NpdpU11OXJd1OpTRNaU8/rw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB7800
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS1EPF00000041.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	bdebe999-872d-42d7-611a-08dee28c4ecb
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|14060799003|1800799024|35042699022|82310400026|7416014|36860700016|376014|13003099007|6133799003|18002099003|22082099003|11063799006|56012099006|10067099003|4143699003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	ad2BskIu5TgRj29kv8GI7s3WRr3+JbHYXPj6+LO6iNgm8af9iq+MMLjwDpr6PsTBdPmXBn4DrYvqUVzLqNGXof3SRQrSG0IhrplormMVEzD4J5UiQMwODySz1NukiImLWAysWZM5D44gjk71etADn+RYZ80ajegrC6abMcgw4bpV1599y7A7lDIMcg/iaw+OUGr1pGZ34i/Gf0n6UKayUTfJchSvMNAXZwGwdaLFXvz5OL3lj1etB9l+XZmf92+qltN2dFeTeDa8+H9dDhkCujJzWsTljToqyBWNtEsKpV4QmgMkmnjtAuzjj7RQl60SRIu3r9vpLi6sBf95MfpXnAAPwph/WAGLZNV34VzGE4DTzIVYpMa0/lhrH9k5vNxheVHGEyyf5b9RR8Sb544V4QH9kdNsqoxFtyIvm/mQbAaMAAnICQNRoaboq3VooIrnMqhDahEzNGhC00fxDZWL7TU4rhXTN731q+KLw/5eSEdGxMxWgfIHUdM9kA6accuNtAJhb+fGf/EEjRd7TMuH6WgfaRLg4M2oTlY/Q8/Ad5Qavy8QufKxTGRzfhAlhLSJKs4N1Fgo1V54lOwK5KkmD4i8wlSv6pJfkFU52/qIpI8TRXMCU0hsqBJ78nJAuQt2+L9RhfKd9++amPEYI3AVY4gTb7Au2xnQF+r/UTQ54bX8FkaP3k1azuvgwubVQ9kTtanXuGqcgJKuYwbZXlduvg==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(14060799003)(1800799024)(35042699022)(82310400026)(7416014)(36860700016)(376014)(13003099007)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003)(4143699003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Ih4RVPnbBAO3g4PmXAKD01UEuLSVFMQYm8w6bv7IJmIG34lyKq1bo35qKe6Fd+5DXeJiMaKsGfuhOv3VhUZnSfp8v/cz/qaDUWgWC9nwYPrqsqQ3C0kWNFDmZYOMZkrY6F+YWnTZqpTBmwj0ORUsOE8DEsaZzAYQeLWdLEidpS0SOHvRfKHwX4+Z2ZfXV36z5acsHyaj2wh7vk1ELYyZJL/ga8zie3mIIUYLIUb7zjXZ/7a/6k3In3yVxp67baFt1fOIVfqTuWWWaryQvx2DKRChA4I73LWMmysriAELomnDV79bGqThdCND1YKUtcpWTz0efjlZfMp9rUgDHgs3nsae14dzcoh8hZYZop5c6MNVUT0rGuZGgFMgjkjwhoZVI6hhKfilIsVQmJkk/N3Dl3c3TdjdNBdcLDN7yXG72OPeCB+okCj0jzGEhu3C25zI
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 16:16:49.5710
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70638194-68dc-43e8-1a06-08dee28c799c
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF00000041.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU5PR08MB10658
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A2E7020012
-X-Stat-Signature: 6pigs9r6iupynh3porrardze3pr4khdh
+References: <20260707082614.95030-1-baoquan.he@linux.dev> <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
+ <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv> <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
+ <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv> <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv>
+In-Reply-To: <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 15 Jul 2026 09:17:43 -0700
+X-Gm-Features: AUfX_myDRiXvEcbH0kTMV189rxGGfoEnvRZLJ1kyk6qh9OoCLGsjI2wlui5CBRQ
+Message-ID: <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
+ via Redirect entries
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org, 
+	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1784132216-296445
-X-HE-Meta: U2FsdGVkX1/vgUT437AQmbmcZaex0fQSQjxaCGSUfYVd/fEelJkC0OODsR1ZxB8OKNxb3ag5QIRMBDf3UCB4QZMoKYNy6oE+Ut8TT/lOSNhCCPaP3uAxvRYZkgnbsnaq41+u6rwvuJU8nXCMPt4lm2st4+eY5oxUsT9oK1tNZBupxxq1xkgqhl8BjS7OxQj2A2190RkeHj8aLYmI0AHadWfHz1JB/rFFYqBb1tXbDW/AU8u79ZFPlbENjwApDOAVvBClpnGscDhnOxZdWATpeNftXwKb283AwiQnjtbP8hM8tYChwGfO2essirePsJ1wcXVOsZ+MVzvFvdmlN3Ke+C6lV1gVgn5ppmD7pChPEPQdLs3pOH2dPwKDruOWj58s7XYex7fM6kfnG2gNI0uSkOp9slWpWN+y641QyzIyTgAk594bVD8UrSjLAsDn7CNbCoSMOMtfjAI6X8kPXFvktyj/MXHkYjl/Wwa7+41uOD6kRs2xL/3cW6RgeigNLs6C5w59LZztrZrU5K7tNGBFy4oDwArLmQFILJu9R0PYfJkX0Bwf15CIhfIKwLdBradx9jq6lr5lSafqh6nVF9EgwEvKOtZmy3enRltdDMk/oWOLcTDZBculqzPE+vza8LCc2YqYs5e4FV3dDsxNnQGHkBp/wDL1tuYfSkorUSBiuIz+qTOmZXKQAPb/7VLSo9+OrcQCnkh/FuTRbwuVvxgDMyDkTacH7m2hLTBdED0sQ9iR/7zf5ln2MJAMf4uvQbF1NI9d2QIfcCcwljl4KQFRCWKoZimN0rNi/07jgWcdJIu+hDEgfwemsJjv4obD3luMu6V5QySz3K2EJWvDKS0Y0ZYsiW01Xkj2QaL0fMr9j2Prf4uoNrqKpt/uDAIMVztKLs7H59HiqAsSXeeJoQartOcbiYdDEyysio3/l0+Td6fXe5C0pTK0LuDvZZUeI0dARAdVdMCZ210ja8ufUk/
- 122S+n0N
- CIob4noVi+qPTaUtS7DLtzkMhh9CHX8DSdmddubKsKGimk9zxWnajo+NT2iMIDYJ40shCM3D7JuMsiLv3n7LORVcBD6hs1WRoIsn0Q8zJB2sTgJ642Kn6rWd12VgWssrCI9bDBvujwwG/tgDiRN2n+bugVnwFN6mvywnmiBphc+wZGFlk0oMCXnErXcbOhHeXD0lQdnbAcQfm7ssUJ7zwN4UXBWiWS5Rj1ZPBQXVgOy4DlLB89vShauvbd6X/CdzuqKHvlFerPnZBATvL3HYCUUl7unDsKgPfaX0MVUyLJmLnKGGEXUl5qYI2KdaA13rzI6l0Q4JzKT4OW/Un22eW/L/xCjfjOetkrwB9xl5curb5jvlftA1Fc2Oz2PEXDb+XdjuFUz/AryqTL9mJdL9dcx9bPERxfPw5Y+mcrwoFQRh4gEboNRN9I/ZcqFUiy2cgqpUIHz0Yau/D9n9wJgAgWzqU5bntl+pn1pqnv9+ODmemIwpf45hquw88lD9Y3XWQxMUVSDMKW0YYv1mHlf2VNZPEommY4TFY8p2G
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8B8B21C0005
+X-Stat-Signature: 5xxbzqko6xee6qsoi7pqpbnamdexz866
+X-HE-Tag: 1784132720-954195
+X-HE-Meta: U2FsdGVkX18u9Yv3RHRZahxzMsbZImRrVGva6zPRbEhnJFT0Yz3ACeCLqgftyqmOxiB9eIkVx/ShQV/QFxexS2o7U5w+ed6LlPRIx7j8pxH0dDfz69ZoOQoJ4xav3K6knMSk0AzQYAunhsIXwRYA/czo0wiKmzHnKGIj5DYIVoeMFv4uc4vVWaoy4927zAqgSZMz4vJXSOr0z7b92eJypyo5oYKN8bKb4nilXLIMuQ2UZEVm9w1MAjiWqfgFH1wH9PS4fSJseMILKN6XoLkAjEA/azl8bkTFHKqh1TeyNJXNzh2kOP+jxv6s10rnl/9ygLEcAtCrYGa5jMXAtyU0xwbJd6T7KnyFLfjB6rX4YBdy0/EUQQbhCJsvsrzOqDagz0QBe0tvQMZ670bhpdL92d7BvSJCFAWB0uVWKxvekdjgupWkWq8EN+LiftNdA9vPjuc9/78pVBoGEE+bPekOvI4/QxG1onzbH7/bO1udU8akdTU9yVO3rtrSUY/nZ0ncAxCyseTOTLGAj42PAIXD/sGHCtLK1LaE8HmV9itTLSxS+o9E3rjWtN8ZaeAjMp3Ir4K2GfnJvo2raR35fFNArYax3Inu/U6t0iBQIIOccG8jGmRhMwJ7o0y3o63PkY9GrVi6ZRaR/+KhJfZaubSBYkex3eJ4grNqABZXxdP4hoZg/F3yCz9TQHhqcheTlAfb4lbl6FJtHCH6II+2nwqIcAPpaNTfFnR46FwWMsnwFF4b1DzFB1+Rk65wbYxJwIsYjZQ5Jf5wROxFgzHBo0srW8zzhD0yiq9QLpxKo5hrS0+qyBz6tEEiD4RXs6ZRSnekFm00JO0KFiaWw1FPiK23r+K335Lw0dvqnV+c+2puhzoRarTSu6EuNL7TMwK4Kp5AkW5KUzATJu7tV8y6vUm/VlP/8pbREdJ+V0G2Ce0YG81qgikj8fPnYfmP3gQ71HibEpF5VB5+K63X0ezo6Kr
+ +wl713vt
+ gk98mTiIBD9bzWDvZ9K89ixjrwQIaGVUTFQfb1avpDSQ/KVqF/6h2/UginR56VtE9ChMswAVRr0h4JTpsfHCQsnDNnId89vgi783KXWiu+hzK88iJIupaDnyP567R2w/rTNAedtvUfbdItnfzNVJQyiBcZHzX8ALlNX0JORcdoVyIJgsKiQveva95ixRicUFV2u8nMxwptow9YPdd0ufIuCxLXoL57urhvsZkXzD2iPhy8oQ96+3n/c66hMI0407aWEg2c94kCLR+c//adphwIA5LrwmSzwNPIFPK6Vh6ZcZoAPQSe/VlebrsJhmiehEAbO/rDeDp9nmLEQduR//ODSaoiPmf8M3/XK9mQg6w2ZJCHRvpWBz25kxYahf5yB3DRzSBcIp6/U7vd/I4t7TI+GusJZqAzxHZ5aSa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -199,114 +143,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, Jul 15, 2026 at 7:19=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
+rote:
+>
+> On 07/15/26 at 07:21pm, Baoquan He wrote:
+> > Hi Nhat,
+> >
+> > On 07/12/26 at 05:02pm, Nhat Pham wrote:
+> > > On Thu, Jul 9, 2026 at 4:39=E2=80=AFAM Baoquan He <baoquan.he@linux.d=
+ev> wrote:
+> > ...snip...
+> >
+> > Sorry, I won't reply to each comment individually. I'll just leave
+> > a summary reply at the end.
+> >
+> > > > I think VSS goes beyond solving the "zswap without backing store"
+> > > > problem =E2=80=94 it is fundamentally an architectural restructurin=
+g of the
+> > > > swap subsystem, with virtual swap as a first-class abstraction laye=
+red
+> > > > above physical devices.  That is both its strength (comprehensive,
+> > > > future-proof) and its trade-off (more invasive to existing paths).
+> > > > I respect that.
+> > > >
+> > > > My goal with ghost swap is different: address the immediate pain po=
+int
+> > > > with the smallest possible change to the existing infrastructure.  =
+Both
+> > > > approaches have value, and I hope the community discussion will hel=
+p
+> > > > identify the right balance.
+> > >
+> > > That's because I believe "zswap without backing store" just by itself
+> > > is a bit narrow of a problem. It's certainly nice to fix, but it's
+> > > more of a nuisance - you already have userspace hacks for it (as I
+> > > mentioned above).
+> > >
+> > > The problem I'm trying to solve is to support:
+> > >
+> > > 1. Writeback.
+> > >
+> > > 2. Dynamicity.
+> > >
+> > > 3. Decoupled backends.
+> > >
+> > > all of which are motivated by real production issues, not some
+> > > theoretical problems. I'm concerned that if we only focus on the thir=
+d
+> > > goal, we'll dig ourself into a hole that prevents us from solving 1
+> > > and 2 efficiently down the line.
+> > >
+> > > >
+> > > > Thank you again for the detailed review =E2=80=94 it has already cl=
+arified
+> > > > which parts of the design need more thought and documentation, and =
+will
+> > > > make the next version stronger.
+> > >
+> > > I really don't want to be antagonistic, but I hope you'd take the rea=
+l
+> > > production pains that we've had (and have tried to communicate in
+> > > multiple mailing threads, across a timeline of almost 2 years at this
+> > > point) seriously.
+> > >
+> > > Collaborations should go both ways. I've gone out of my way to try to
+> > > address the concerns of various parties, from spending *multiple
+> > > weeks* testing and investigating performance regression on zram
+> > > backend (which my company does not use), to a rewrite/re-design of
+> > > virtual swap to accommodate parties who wished to opt out of virtual
+> > > swap for now.
+> > >
+> > > I hope you can extend the same good will to our needs :) I've include=
+d
+> > > you (and other swap folks such as Chris and Kairui) in my cc-lists. I=
+f
+> > > you have concerns, you could have commented. Instead, you decided to
+> > > send a patch series, which is basically just the ghost swapfile, with
+> > > a bit of afterthought to handle writeback and dynamicity, rather
+> > > inefficiently (no dedicated per-CPU caching), and not even correctly
+> > > (the lack of rmap means swapoff / swap-cache-only physical swap slot
+> > > reclaim is broken).
+> > >
+> > > I respect you and Chris very much to assume bad faith, but please wor=
+k
+> > > with me rather than against me.
+> >
+> > Before I get into the technical discussion, I want to address something
+> > you raised at the end of your reply =E2=80=94 the concern that I'm work=
+ing
+> > against you rather than with you. Our paths in MM simply haven't crosse=
+d
+> > much until now. I can't think of reason why I would want to target you
+> > or your work.
+> >
+> > I respect the work you've put into VSS. I did check it. Honestly I am n=
+ot
+> > fan of it. In your v2: 2244 insertions, 250 deletions, 15 files touched=
+,
+> > a new 455-line header (vswap.h). While swap subsystem has just absorbed=
+ the
+> > swap table series. Then another 2200 lines of architectural restructuri=
+ng
+> > on top is added. Not sure if anybody raise concern about your solution,
+> > or anybody suggests other directions.
 
-[Moved some already involved people to To. So they can help with the plan
-details mentioned below.]
+Yes, it's a big patch series. But as you pointed out earlier, it
+solves a larger problem with a single coherent design :)
 
-On 07/07/2026 2:17 pm, David Hildenbrand (Arm) wrote:
-> [...]
-> 
->>>
->>> typedef struct {
->>> 	pte_t __pte;
->>> } hw_pte_t;
->>>
->>> And then simply use
->>>
->>> hw_pte_t *hptep;
->> Make sense. So you have suggested to just hide put pte_t inside a structure
->> instead of complex structure of pointer. I've tried to implement and it reduces
->> churn enormously.
-> 
-> Right. And for most architectures we can probable leave both types be the same
-> under the hood.
-> 
-> So we'd only have to convert common code first, and can then e.g., look into
-> making architectures that care about the difference (e.g., arm64) actually have
-> it be two separate types.
-It makes a lot of sense.
+> >
+> > I posted ghost swap because I saw a concrete, narrow problem that I bel=
+ieved
+> > could be solved with a small change. It makes decoupling and dynamic
+> > growth with the minimum possible mechanism.  Writeback is explicitly de=
+ferred
+> >  =E2=80=94 not because it's unimportant, but because it's a separate pr=
+oblem that
+> > shouldn't block the common case. With my shallow knowledge, it's optima=
+l
+> > solution to the encountered problem. If you agree, you can change to
 
-Let's even divide the series into more parts as there are several places where
-conversion is controversial. (Xi Yan had mentioned one example earlier in this
-thread.) Most of those controversial conversions are pmd related. I propose
-that we convert pte_t first, then pmd_t and others. It'll keep the number of
-patches manageable and easier to review. 
+The problem is not the lack of writeback support per se. I understand
+that sometimes pieces of a design can be deferred to a follow-up patch
+series.
 
-I think wider agreement for this approach will be very helpful before I post the
-actual code.
+I'm more concerned that the ghost direction so far does not seriously
+take it into account in the design at all, which might make it either
+impossible or very hard to redesign around down the line. I don't want
+to rip a huge chunk of it out down the line later - we just avoided it
+with the swap table with Kairui's proposal.
 
-> 
-> Just an idea to further reduce the churn and limit it only to core code (because
-> I saw some very ugly stuff in some arch code that would make such a conversion
-> harder).
-> 
-> [...]
-> 
->>> Why do we need this and what would we use it for?
->> The idea was that there should be two different functions to read value. Let's
->> leave this out of the first initial series. It is complicating the original
->> proposal.
-> 
-> Right, let's leave that out for now. I'm currently working with Levi on an
-> approach that tries to avoid the overhead due to READ_ONCE with folded page
-> tables. [1]
-So you are referring to page folding improvements. I also stumbled upon those
-while doing a dirty implementation.
+>
+> Part of above sentence is missing. I meant if you agree on the ghost
+> solution, you can change to take its way and continue, just add me to
+> CC. Or we can work together.
 
-> 
-> We're still struggling with some bits, but looks like we can make it fly and
-> have it be fairly robust.
-> 
-> With that, maybe there is no reason left to have separate pXXp_get() vs.
-> pXXp_get_once(). TBD :)
-Yeah, I was reviewing that series earlier today. I've not looked deeply, but it
-seems there are still a lot of cases where (mostly) pmd is getting dereferenced
-directly. To complete the conversion, direct dereferences need to be converted
-into an API. I've been thinking if there should be a dereference macro or we
-must always use pmdp_get() even though it ensures ordering. It may add excessive 
-ordering in some functions if pmdp_get() is getting called multiple times. But
-storing its output in a tmp variable would solve this. 
+How about this - let's solve one piece of the puzzle together, one at a tim=
+e.
 
-Do you agree with converting all direct dereferences into pXXp_get()?
+First, your optimization patch series. Have you taken a look at my
+proposal ([1])? I believe that design should be cleaner, while still
+allowing you to put it all you want to get (elimination of xarray
+being the chief benefit), without requiring you to modify swap cache
+and swap count operations (since you don't have to move the metadata
+in and out of struct zswap_entry). It does require a bit more code to
+dynamically allocated the backend array, but should be trivial IMHO.
 
-> 
-> [1] https://lore.kernel.org/all/08ecabe9-0664-4aea-82fb-f9cb1739f762@kernel.org/
-> 
-> [...]
-> 
->>>
->>> I'm still not sure about the _once() really, and if we need that right now. We
->>> survived without is so far, why do we need it now?
->> The idea is to convert all current pXXp_get() to pXXp_get_once() and convert raw
->> dereference to pXXp_get(). Let's keep this idea separate for the other work. Let's
->> discuss it later sometime again later.
-> 
-> Sounds good.
+[1]: https://lore.kernel.org/all/CAKEwX=3DOvR7GbU_9f2h_MtU4m0g6s-esHmNQKYNh=
+Jz610M0P3Sw@mail.gmail.com/
 
-I've tried to do conversions already. Converting by call hierarchy wise is very
-difficult and error prune.
+Next, if you just want pure ghost swapfile without writeback support,
+maybe something similar to the first 2 patches in my RFC? i.e up to
+this patch:
 
-Converting component by component (such as page walk, huge page) is also difficult
-as code is tangled. Some helper which is getting used in one component is also used
-in another component.
+https://lore.kernel.org/all/20260612193738.2183968-3-nphamcs@gmail.com/
 
-I see the following way forward:
-* Add the new type
-* Identify which functions need explicitly pointer to a stack variable. These
-  must not be converted. These variables must be renamed to a common name. For
-  pte_t pointers on stack some functions already use ptentp, which is unique name
-  if we look at generic code. So ptentp would be used for all such variables.
-* One commit per controversial change would be done at this point. We need new
-  separate function for stack types. Also we can do more renaming to a name which
-  will not be converted.
-* Run Coccinelle script directory-by-directory which would ignore converting any
-  ptentp (and similarly for other types). Coccinelle doesn't converts in some case
-  (pte_t *a. *b) which can be done by hand at this point.
-* Update any remaining functions
+I'm sure you could find issues/bugs in it too with some extensive
+testing (a lot of my performance testing is done on the entire series
+as a whole), but from a design point of view it should achieve what us
+both want, no? It's literally just a ghost swap device - most of the
+other design elements of vswap (the new charging behavior, rmap,
+support for writeback) comes in latter patches. I think the difference
+is:
 
--- 
-Thanks,
-Usama
+1. It's transparently dynamic, whereas in your RFC it's driven by a
+userspace knob. Do you think there are inherent values in a userspace
+knob?
 
+2. The address space can also shrink when swap usage drops at runtime.
+
+3. The dynamic address space is backed by an xarray. Note that it's
+structured differently than zswap's one (it's an xarray pointing to
+clusters). If you have rationales or numbers to show that vmalloc
+array is superior (while still support the kernel-driven expansion and
+shrink), please let me know.
+
+If you have no faith in me and do not like my code, you can take the
+code as a starting point, or just the idea, and drive it yourself. Or
+let me know if you're unhappy with any piece of it - we can discuss
+further.
+
+>
+> > Otherwise, please continue to push virtual swap forward. I'll stop and
+> > wait.
+
+Look man, I care about the problems being solved and I'm a sucker for
+good ideas, but I'm not married to anything, be it my code or my
+ideas.
+
+I have literally dropped my old code and adopted Kairui's suggestions
+after playing with it and liking it, to make sure every party's
+concern is met.
+
+If you have concerns, please let me know, or keep sending code if you
+believe you can get it done better than I do :) All I'm asking is you
+take my concerns into account in your design.
 
