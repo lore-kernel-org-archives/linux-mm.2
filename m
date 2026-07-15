@@ -4,123 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 279AEC4450A
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:00:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6AA5C4450A
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:04:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19EB46B008C; Wed, 15 Jul 2026 10:00:54 -0400 (EDT)
+	id D665D6B0095; Wed, 15 Jul 2026 10:04:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1755D6B0098; Wed, 15 Jul 2026 10:00:54 -0400 (EDT)
+	id D14D16B0096; Wed, 15 Jul 2026 10:04:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B3066B009D; Wed, 15 Jul 2026 10:00:54 -0400 (EDT)
+	id BDE566B0099; Wed, 15 Jul 2026 10:04:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E0CBF6B008C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:00:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C4188013C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:00:53 +0000 (UTC)
-X-FDA: 84991171986.20.A1E6009
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A47BE18000B
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:00:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=H7oIxqye;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 976AE6B0095
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:04:02 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6EB9BA0016
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:26:19 +0000 (UTC)
+X-FDA: 84990631278.13.43A68EB
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4B98DC0004
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:26:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hx4OibK1;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784124051;
+	s=arc-20220608; t=1784111177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NqH9gBKIbRjL89vi05p9Hog3cwkQA8VspLKF8/hJCJs=;
-	b=e+vPPtJm+BLOyJWKwMR23pBDHB+TkTX0fiiQTTBJecMYFFu+WzLfkxBbTk+uG3gimozOWz
-	RA3Kwwp1hg9w84PEFkVHl/iqynXE0wcDr1d4nwmOKWYqkU2kprV9KRlOW3qizx6wwIY1aL
-	dKvR9fmktNLeOsQ+84dyI6qpy+07W/I=
+	bh=kEd62YpRlYzH7ddXxgaLtMBL/oT0lPJiUJAY2FiEygY=;
+	b=5ArBDY/EBJRGBiby+0xKue1aJWzHGFtMUSbkb6xneQDmW8lc+Yp2EhBxTi3cL7i9+cCwi4
+	/f9Nt0MrmAydqPSsknxFVrvgMT+VD6wmz5DEZ76oF4XsqmGgOkJw+3v2H8sS4MqTAyr9r2
+	hIJ717/ESEagN/wrNQBU66fjl8ufw4Y=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=H7oIxqye;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hx4OibK1;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784124051;
-	b=rbFpOb5jcQm9Kwt0o6XDwVWzfqAwVOYYv0HOQU5PBLYxEzdU3JHk/BjX+Nr0kNDBaHI6RK
-	x26YRKMTP5Z5XGCQGlrh2ro9vRdxc/2EOL+ZhJc2cHmCHLeEZTjTLFLDTcibAl61R7mX/X
-	oM7p/y1R/JfwkKE5rw8aRdOetDa/cq8=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f36a122fdso2384169f8f.2
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 07:00:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1784124049; x=1784728849; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NqH9gBKIbRjL89vi05p9Hog3cwkQA8VspLKF8/hJCJs=;
-        b=H7oIxqye0kTflKxF/QI//02XUa4Gimmc7doecg9UkTVRCw1t7chqsSJGJfPBGSBep4
-         v4TxQhBot+6zq37u4AbyentDfpzgO01AOT/akPT5VesstJrlOUWuFVDTYf16VJgjK73z
-         rPSUHMmHM/pnYWpQso+9nkfjhaahBY7ddhQF3950yxIPTnQixlthdyH6E4quBg+vCa+y
-         waEvsJ0BSSBJd5f3ob1dZKGRAPCe1aSfrB+P/+j8JXlnPeP+iamkJo7wuepAHThIFQ5k
-         /cc+74Rc2vvOjCnKQg3USyJN8FLkEenbMY8aaY3na1aoHdbT5qxO1tWS5nLR6J/XU8Jp
-         sJ+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784124049; x=1784728849;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NqH9gBKIbRjL89vi05p9Hog3cwkQA8VspLKF8/hJCJs=;
-        b=lEVijL07zj/5QsbeuTiLY/pgblMT0/OzvpO4d0e7U6XHfsCU2Xi9EXczz2VRtuaOib
-         Jw42pmuHuKA1hyUfnATv/CWrRlKiUGZA47MqUWKNj4g4k8TK0VvSS+joJq46cBqAdG0m
-         nyKiqht5U8UuFi99bAoJWC+tlb557oQY4zLfWglkFYJoguDv0CFSwh+ZHv0x13fM9843
-         VB7FarMKog+LRfbOQTFK3V+kZywyjOfSVs4RimaRCahmUMyYeuJDlqFGzC0fd5DbWCId
-         67ISeXUS26TSRfyTAsR23r9kpkgN9m8Gct/p8jLxXtkuiwz10CB0iv56giOG+yHiwDWw
-         ZWmQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpyUIQskuNi6DMB2xk4FyG6YkZzx2CfCld4mxViJ4SM0Ufv4ts/BWkKKZ5URSceOomq4ke9PWdJPQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy45vVyR4IjL2e7BFRsSSgzWq7f/z2AtFiCnqbIbre+/jw7gzV1
-	tc4/QkRS2cMGccd6xYbKMRxGwC1U7wr0nuaqSPaTRqvzryb6j3tQyQRWvuqhwjb+0VM=
-X-Gm-Gg: AfdE7clDvHfIlUR9ki7lvOv1x2QcLFle8vNErSfXVcBHIVoIqIoK/Za+kw8jy/Qvl9D
-	Wkifii6X5etKol+xEWzG8MS62SkjhG2CAgUpq3YrlmOHNoLBIup1Ybae5C/A9X956cQ1NKLfw4B
-	clUiKkpCM3zP34MYg/dL1Uj8OwCKFx4N38gb7331KL6jGmAVRKz/OSg5g3b5c7/g5nfcGUJuIKz
-	DsjdXn/q8ChDwqswC6jq2iGI5qHMk3Q1cXWrmizFjWIYggaP5yahgQgEQtBHHkvC7VET3ImnYYY
-	LIAsuNlwjQa0rSo17NW6IFBLyGQoE6fNqUgc2geLdMgcqdp6cLrnVb9VZ2qYDQYNKqvmGQZJ8YV
-	wFatpOT46cEApHJ1ZJ8tKe/gRfNnUBLcPFtE6YOCg/rZgUD/GhrgWr8Cc6Ci5BjYf/ePTsPmhe5
-	oyxvGVTslyWYpVZA==
-X-Received: by 2002:a5d:64eb:0:b0:472:d154:facf with SMTP id ffacd0b85a97d-47f2dd2bd5fmr22313384f8f.42.1784124048779;
-        Wed, 15 Jul 2026 07:00:48 -0700 (PDT)
-Received: from localhost ([2a02:8071:8280:d6e0:1353:8eb8:c84a:b6d4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a9879sm17535061f8f.22.2026.07.15.07.00.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 07:00:48 -0700 (PDT)
-Date: Wed, 15 Jul 2026 16:00:46 +0200
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Zicheng Wang <wangzicheng@honor.com>
-Cc: akpm@linux-foundation.org, yuanchu@google.com, tj@kernel.org,
-	mkoutny@suse.com, corbet@lwn.net, kasong@tencent.com,
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org,
-	axelrasmussen@google.com, weixugc@google.com, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	roman.gushchin@linux.dev, muchun.song@linux.dev,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	willy@infradead.org, denghaojie@honor.com, baoquan.he@linux.dev,
-	kaleshsingh@google.com, tjmercier@google.com, tao.wangtao@honor.com,
-	zhangji1@honor.com, wangzhen5@honor.com
-Subject: Re: [RFC v2 0/3] mm/mglru: proactive aging via memory.aging
-Message-ID: <20260715140046.GO276793@cmpxchg.org>
-References: <20260714121529.2237261-1-wangzicheng@honor.com>
+	t=1784111177;
+	b=l171dp5wmIJXQNlVlzhcGZLnFbQJtJ77/LXlysXFfojeliRXJFggpaRCgMXWXKlXOxZCBt
+	CwzSNLd5jKuAEixQ7fe2hiwjCLeR98fveU0eA+yerGF0c3rS7BLAv8afs1zk1pvikceg3E
+	pV2RqlMk9rT2Ww02qpVhPWt3MrygKtU=
+Message-ID: <44bf7cd3-8083-454c-9419-d377061e31c2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784111174;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kEd62YpRlYzH7ddXxgaLtMBL/oT0lPJiUJAY2FiEygY=;
+	b=hx4OibK1fXVjDH6lWemesdKXKAAp8ftOERwPW2o9fu+hyp2uu+GzE3hSdBoXrCoRdTdWtf
+	AVHlJUwVDD5uhg+HbwYA6G70/DEf8VD+cV4zliNOWad5kMQ1pCHY0BnbWdEMFYlu4O6nRA
+	pIYP/tCPGwtoKeOapGthO5rvafaKxRI=
+Date: Wed, 15 Jul 2026 11:26:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714121529.2237261-1-wangzicheng@honor.com>
+Subject: Re: [PATCH] fs: push nr_cached_objects memcg gating into individual
+ filesystems
+To: Dave Chinner <dgc@kernel.org>
+Cc: brauner@kernel.org, qi.zheng@linux.dev, jack@suse.cz,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, hughd@google.com,
+ boris@bur.io, clm@fb.com, dsterba@suse.com, linux-btrfs@vger.kernel.org,
+ cem@kernel.org, linux-xfs@vger.kernel.org, shakeel.butt@linux.dev,
+ hannes@cmpxchg.org, riel@surriel.com, kernel-team@meta.com
+References: <20260714101454.1202449-1-usama.arif@linux.dev>
+ <ala2rDHrFDjql3Qg@dread>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <ala2rDHrFDjql3Qg@dread>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: skf3d937w4yyyhtes36hbgop4fexcpcb
+X-Rspamd-Queue-Id: 4B98DC0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A47BE18000B
-X-Stat-Signature: m9k5p5faqtfwrz3guaq14au51u3ruuzd
-X-HE-Tag: 1784124050-298217
-X-HE-Meta: U2FsdGVkX1+pwg++IYfZ/B2Q3COJSxpIvtJhCEhoHY0ElG3POt12QY8GG2Ds8F5KgOOSa/D/oZ3UE6mkXFZVoon1hGj6rDwybPGD6hHy79zDoWufKC348hxgUDGGhdKt9YzqgymnYW0+57tYuF8jdF0/1NuJ8oJPjgsjpOHm5D3LTNuA7bEoDnUKcR+hFjcS/lBWY9ZpmAJiqY700ED55NNJIefFxELIq6qSyRrOAbVGprf36aHNT4mbqlbdrb4ORJAOj5vIIZXca4nbaonwkARnfJvNKXedZr2dIu1bvebQj4K3G95kvsiCFkt95kaCU18t3hpl5hm20argz5lZWVbasgdnRSfh9NXPCCvWh3E2+0x1s0TbPt09823v1H/aY+DuUCiSStYmhfJn9pNv0NQ2Tdp6Skg/vPdA9lVToKqhSbwhNwCzkFUT0+uMnBjCY4de2QDG9sBoZ9ciYlHqbKbRBCLePB072QzHZvXFthP+rpiB9xRQnNMxLQJURdmu7oks6oH+Vkkvg6ABkFovBl/csWCVqGfrPLWAc3YfTvtDtPSiRd52ZrpWfR8L8fjKdPK+BCODYqQ0livnep9uIC+nXxrkVpnCArJrbjPC3PafOFfL0Ub96yWe0o7oaHmvPeguj497hVZv9wCDodFeWaHmYtOG+Ss4qtvVYSPNUNioG0/9m0yGcN0GMu38LmProMOxFIsWikF1zj3ve5QxO+rBSBQnaYW/EfItG5akCjntYVsIIs2f57JB1/w/FNOYj33vLNTL/LsqMdKoTH9vNb7X/B2CQn224yv9EkrC5UETEexCsk32s7bBjsafdIoEpBHlZTnuEfZF9pC+SNB0bP8Nd7T7AwDaHfZQ5HpDZrD8dGFv8Pg+XEzUXCRmQtSz4DwlCnEN1YHhFvDGXVBIaUJxZo2LGgd1EF4eMFGvsN9nMfHZGPQWlBc1aPuRWq25ljy8zA2R2AsBSCO4JrM
- Sw4H/xse
- CekFh12es9fdCMrxl5nZWJM8imRoANyU0/pFo0CvJkB8SVJgCmTFt819d6QQabYMlY99WNslAKkJSTKslxZsn+CV0uu6MXVk0xmd0YjX4xwwgg8ZvhlA4+YjKuzgHPnksxe3VnabJmBwxeo7dCWUaiFGr5nvi7YThfsgrR4+vm932KWeBEAsujcmRVoZMOqOnc9gzcrNMsJ2/vQurZ8pvRPW/CMB2PcpdffIyJmx/BYTrUc8/g9R3et01ooBD+BOXnN6+YGL0Fen7lCYvB+YbW1yrU/MJWlL/TJK+kwbdiBoYfnWguBYpDfMFPv1u8Mkh31N/3g9lwEPjJmh0MKawW1mnswgwTYednnxeGumIslFXdP/HUgWoesQOMQl6AcWd7F4WvtZoFNkUESGwKxhzpdsnPw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784111177-597043
+X-HE-Meta: U2FsdGVkX19lzIb/jZjokMPY7Wh8ohuYu1ezuPTPjyffT9Enh/E6z6/yiAaWiMwAYiKLhjQfr5tE7Z8xtTMkwJhjoDuxgyFbg7Ux23dnaEzfmp4bEuLXeeKEt7gZoYC2AzygUdgqEckxeZCQp9Rknf7tyzkD4at7KszJoOo6r+iqpz360b8ey+WkIebjt1wBtlJJeY5i+iMaTiQpNE5QO6br4Q/qYdwr+IToMoCIl5z0zVEAEGmGOOkYV0/YgIyLkke9PTchfYFQM6ZMdyUuJ7/V8bzXY2uIdt6C9oBYHyEqtcFAQ7+ULvrL1oHaPvGBk62lTCHlQEKDC1/+fM0RSMONHVu+APtifofLP4ktxnoJQj63rDkzgddJE/HYvZFIgOEpPK4oCZibmoDbASEU8SqMlfn6cCiqjCrvl1Wf9V7Cg3+OjtCz9k6KzRzjnj6IqaQHsPqyhCWmsjSv4F0DOaDGPaUv4H0z1bKWxBx6waYSj8VroyQU++aElVStTzxbUdkO8Gkl/k14nja2qsj3AYXcSbnEavJvTDptSEy7dJ+a5rzLkRTux3L6u8x0/u0PCQHJzxgg25k3qSyLy/DkLI4+exjgmw4k4yZjpkF6LXC78wcuSnh3Zdv3OKEqPdMErFLeHXpSRV5fGx7bN6R9kUILqqMVLEiC92vrQH83H4/V6hT2CtyML7q2GCVxXojjbJEsZVt61E0SY2xVK6xw5/+m7fJaBRnnEOlbDp4yjgw/Xv/FTYTKXUr6XoVr3CNw0A+UP9fYlot9oQWoGYMQs44+2ypTWAtBfVmrAZtJblmmubdLMkdlXXBRlWVZGjqZSaH1ReRgULngwTrLnjcron8VfH8/fe/zE0e2xhNQxHU6EUITLDMu8NpabStsgsd9qUXwjlnW+fuVr3gnE3hOjAE5G8/PkcEdGhluCpGRSxvywOFNBNeoNeQglqW22P0xLmgUfp1cunkQ4RecJvk
+ /r0dCsaL
+ miL9MTM1b0a2DGIE07E1j4rmBokEhHfnNFlmgDkERPdIUGaRY3G5L57ad5CDbs3O7OPJY1jcYMqyxog/mnQy3jJr1TbuPisIwO+QD03Low2Masrqlxhvszsn0NtPbJFViqaV606+2t2HPAQNN6t7TtlXfSxGxEGsoZWDEJ/3g6UJy5cUG4PQ+9UGD79DpsdVnHNmKDqxi+qQKuoGrl0llKElug4Am1w2rVFnh5taxtAYtoq4EhbsiH3UhyrMyCSRV89sc8kgmHop2m5JCymOh8mgIx8PgogxCtIX5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,12 +95,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 08:15:26PM +0800, Zicheng Wang wrote:
-> MGLRU inverts the reclaim order when anonymous memory is faulted in
-> bulk: anonymous pages sit in the young generations while file pages
-> sit in the oldest two, so reclaim evicts hot file pages before cold
-> anonymous pages.
 
-An aging inversion in the reclaim algorithm seems like an exceedingly
-poor justification for a userspace interface to work around them.
+
+On 14/07/2026 23:22, Dave Chinner wrote:
+> On Tue, Jul 14, 2026 at 03:14:54AM -0700, Usama Arif wrote:
+>> Commit 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects
+>> in memcg slab shrink") added a check in fs/super.c that skips the
+>> ->nr_cached_objects() hook whenever the shrinker is invoked for a
+>> non-root memcg, because none of the current implementations (btrfs,
+>> xfs, shmem huge) honour sc->memcg.
+> 
+> I don't see that commit in an upstream tree. I'm guessing I wasn't
+> cc'd on it, either, because I don't recall seeing that as a patch,
+> either.
+
+Ah sorry about this, I just ran get_maintainers.pl on the patch, plus added
+shmem, btrfs and xfs maintainers on it. get_maintainers.pl didn't report
+shrinker maintainers (likely because the change was in fs/) and it didn't
+come to my mind as well :(
+
+The patch is here: https://lore.kernel.org/all/20260609123047.1948242-1-usama.arif@linux.dev/> 
+> However, if anything is gating the fs_objects callouts to the fs
+> when memcg is being srhunk, then it is fundamentally broken and you
+> are correct to fix it.
+> 
+>>
+>> That policy is really a filesystem-owned property: fs/super.c should
+>> not encode the assumption that these hooks are never memcg-aware,
+>> since a future implementation might legitimately filter by sc->memcg.
+>> Move the check into btrfs_nr_cached_objects(), xfs_fs_nr_cached_objects()
+>> and shmem_unused_huge_count() so each filesystem can lift the
+>> restriction independently once its underlying counters/scans become
+>> memcg-aware, without needing a coordinated change to fs/super.c.
+> 
+> However, your assumptions here are incorrect.
+> 
+> That is, the XFS fs_objects implementation is intended to be called
+> even when memcg shrinking is occurring. I architected it that way
+> all those years ago when I introduced the fs_objects shrinker
+> callout. i.e. XFS is not aging reclaimable inodes via this call - it
+> is purely an expedite freeing of recently reclaimed VFS inodes when
+> there is memory pressure of any kind.
+> 
+> Reclaimable XFS inodes are still charged to memcgs, but we don't
+> track them per-memcg because it is extremely inefficient when their
+> lifetime after being released by the VFS is usually less than 5
+> seconds. Indeed, this low level cache is not for working set
+> retention; the VFS inode cache does that. The XFS inodes need to
+> through a GC state before they can be freed, this takes a little bit
+> of time, so we don't hold up the VFS inode cache shrinker for that.
+> 
+> The VFS inode cache shrinker is memcg aware, so it only pushes
+> inodes that are being reclaimed by memcg reclaim into the the
+> reclaimable state at the XFS level. Hence we don't need to track
+> reclaimable inodes by memcg - we know that memcg owned inodes that
+> are to be freed have already been pushed into reclaim by the VFS
+> shrinker doing memcg reclaim. Hence all we need to do is sweep them
+> and free them.
+> 
+> This is what the XFS fs objects shrinker does.  It needs to run in
+> conjunction with -any- shrinker context to immediately free the
+> clean inodes that the VFS shrinker released that pass, and to
+> release any of the recently released VFS inodes that needed GC and
+> are now clean and can be freed.
+> 
+> IOWs, the XFS fs_objects callout is not "memcg-aware" in the classic
+> sense of "it tracks objects by their owner memcg". However, the
+> -combined superblock shrinker algorithm- is memcg aware and that
+> results in XFS only seeing objects from the memcg being reclaimed
+> transitioning to RECLAIMABLE state which it then immediately sweeps
+> away.
+> 
+> i.e. the architecture of the VFS and XFS inode cache reclaim is
+> entirely memcg aware, and that is why I implemented the fs_objects
+> callout for XFS all those years ago. It works efficiently, it works
+> correctly with memcg based reclaim, and XFS doesn't need to care
+> about memcgs in it's low level reclaim code. Win, win, win.
+
+Ack on above, and Thanks for explaining this!> 
+>> Behaviour is unchanged: calls into these hooks from shrink_slab_memcg()
+> 
+> Behaviour was broken by the above commit, it needs to change.
+
+Ack.> 
+>> still early-return 0 for non-root memcg contexts, keeping the shrinker
+>> bit clearable in each memcg's bitmap; the global (kswapd or root
+>> direct reclaim) path still drives them as before.
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>
+>> @@ -170,19 +169,6 @@ static void super_wake(struct super_block *sb, unsigned int flag)
+>>  	wake_up_var(&sb->s_flags);
+>>  }
+>>  
+>> -/*
+>> - * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
+>> - * operate on filesystem-global state and ignore sc->memcg. Driving them
+>> - * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
+>> - * per-cpu counters and queueing duplicate work: the actual reclaim happens on
+>> - * the global path (kswapd or root direct reclaim) regardless. Restrict them
+>> - * to that path.
+>> - */
+>> -static inline bool super_fs_objects_eligible(struct shrink_control *sc)
+>> -{
+>> -	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
+>> -}
+> 
+> This wrapper should still exist (with a better name) so filesystems
+> don't need to open code memcg cruft.
+
+Ack,
+
+I am going to send a v2, which will include Fixes tag and follow above.> 
+> -Dave.
+
 
