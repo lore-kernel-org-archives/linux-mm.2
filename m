@@ -4,95 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B4EC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE2FDC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:32:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC27A6B00C0; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
+	id CDE076B00C1; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B950C6B00C1; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
+	id C31726B00C5; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD1976B00C4; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
+	id B1F9F6B00C3; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F0256B00C0
+	by kanga.kvack.org (Postfix) with ESMTP id 900BF6B00C1
 	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25872120183
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:16:14 +0000 (UTC)
-X-FDA: 84991059468.25.74DBF6F
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 31A0C40006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:16:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etgzWdvj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0649D120134
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:03:45 +0000 (UTC)
+X-FDA: 84990725610.27.16500DF
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5656B1C000C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:03:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XggWLaVU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3DWlXaggKCJY902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3DWlXaggKCJY902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784121372;
+	s=arc-20220608; t=1784113423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=srO3k5jRIT7j/Rini580mlp+14o/AyomRtsZhtG4hCI=;
-	b=T8X9jEQJ+Pn8SI65ndx5ZwAVE7GAkmgQZN9bat7WFVpINzDt7t3N/Y4kn+Haqv5QYJvks+
-	RpgTcUDStBPOUn/T4UKveTx9oYIQbtbDaurtAn/pvhA7/pMjXvHe8xPYxODa8IqYuChHSl
-	ljm5JX7it9BG4cYJjKCsj1l8XoDV46c=
+	bh=dz86EwLqIg9rsRKy2+oVo0cZ8RAfDlpYQ8xyeR+GWfk=;
+	b=kINlj1m3d5FTPgCAoO0nEIfFLcM86amLjakTJtWxQDkjS5X/FX0bmYI/CUIr3aqhjK8yt3
+	ZvqbapZatlwEvopbNEo9Yj4XDJK3BUSL3cZXAsVzbmVid1Ry7bGtlarXDRk8zfYKBBgSOu
+	hO6lZY8XeZtniR3G+VMRLtcKOuKtxFM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=etgzWdvj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XggWLaVU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3DWlXaggKCJY902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3DWlXaggKCJY902AC0D16EE6B4.2ECB8DKN-CCAL02A.EH6@flex--jackmanb.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784121372;
-	b=ifFq0ql6pqlORfcI8JpwlRHIkpPh/NqzQPoPnwIejCsCV2cjIcVg4++6cZF4T16muFQOGw
-	unXAFeR8VFbY0KLc7oyO2P/PKqsViJ8eDjaBBv7zM49JOMQJkCYpU3JaTkgL4hJvSvvifM
-	hKyyz0ObcN/nFWMAOnyU9WLz/K5CXAE=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784121370;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=srO3k5jRIT7j/Rini580mlp+14o/AyomRtsZhtG4hCI=;
-	b=etgzWdvjNC1TMDtVDX+x9Q5g2sIxuMpIdwS50okxqRoHDutTxG5dTtClX8s+ENM5MZy+PZ
-	qwhf+NGbyHv+Qkh3M07BQIC3pLkxfDd3KElnXMJj7tgajcptqov2RuWkSj0sMRJ3njeP9k
-	MkpMp+Y15IHhczLN3FGWTbSYiqeq7+c=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH 01/17] mm/sparse: drop power-of-2 size requirement for
- struct mem_section
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260715103445.31b2f727@pumpkin>
-Date: Wed, 15 Jul 2026 21:15:45 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <71E70E00-98A1-4769-A167-5F4CB59EC96B@linux.dev>
-References: <20260702093821.2740183-1-songmuchun@bytedance.com>
- <20260702093821.2740183-2-songmuchun@bytedance.com>
- <20260715103445.31b2f727@pumpkin>
-To: David Laight <david.laight.linux@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 31A0C40006
-X-Stat-Signature: 5pb81bt9rpug86tjq3c6hcmsjrob35yd
+	t=1784113423;
+	b=4utczudyTDiWZ8yg2idsWFh/5Zc/qL8LMX/mBMY9576CnUAU886z6lP71SIMmamY9ZczGT
+	PgXIG5J+VdEywM4S4dxt5mbPNfovWnGRx+zIIOHmdrs4kZ3ycTpPB2EOayYe8QdhqaF7Np
+	+30vQLTmwd1GGJyBtKI9U4yZ+HoAgno=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493bdaf8549so50958615e9.2
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:03:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784113422; x=1784718222; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dz86EwLqIg9rsRKy2+oVo0cZ8RAfDlpYQ8xyeR+GWfk=;
+        b=XggWLaVUs/pdut5IHOYHHSLiH6wGMWd5PcW2L730Wch+Thr+A6CkPbagn72QcyvLV0
+         lhXByfSphZqBHmvaX0G7YMDDre360q/g1Yzr+brmYQoXqJ7XOkN3A7BDndC+JjaXWkaa
+         vvBWID7vVHjglotrxzXLUZbjQ0J7PD3y/nNK3s+GTjSzxfaJgTD9E+ahqrzE6NnStVbs
+         8RRZxsmUvJ/6Mkc78LpEdGGibbKYbBFyX1YmSysX9Cwio91BqW+q1ryyaW5kISgpC5H4
+         rxfUkM9EJVY2OeZC+OsjwQkDQBXS4XlFVerSoThMqYy3UGqDjZb8x0yOWyYtTJXVmA2z
+         rMsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784113422; x=1784718222;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dz86EwLqIg9rsRKy2+oVo0cZ8RAfDlpYQ8xyeR+GWfk=;
+        b=aV8PpwPjG/Dk62LOqHC6RukannnrqrrbTmvdvE/2IvBuheAzRSzVTGMgLfT4GQYdGy
+         RqCzz44KRsxODmyK9xnBE5y9P+VZ0UQM7c6PcvS9LDb7244i4pp17bo3TgqWoljY7ZIG
+         bjhSiqV/yHcQs7Jv4VVbSs7yC5v2bSWw5BIYcmDAcD5AtPZVtj7l7xbdsaXqqwleTh5y
+         YDaoXgO+D5rlQ3wbu8YcJFI9bO473D5w0DYVe4OaYTQgYQopvbWk6VFlY+JFMfjxENTD
+         QZnUX2Twp0Hz3OaB669laoVr0fIDnjjMJ5diRzg00ZMuUXvXaxowhON9ewLJy0gDchG1
+         t5Pg==
+X-Gm-Message-State: AOJu0Yza1H2AweOgbPqEF+Vb7wu5tsBqbihWv0CLlMO1TLOa7ilykovf
+	hO9XRMiclNhykFqz81xHDJmLhExTzOx9g5bshKRCUWw5+dRdDXdv0nuf4ryNbcSiDDRX9DfKK6Q
+	pIvasXAYLa9Y+Ow==
+X-Received: from wmoh4.prod.google.com ([2002:a05:600c:3144:b0:490:b2a6:e6f5])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3e0d:b0:493:b499:3ef2 with SMTP id 5b1f17b1804b1-4953c299474mr25989985e9.37.1784113421736;
+ Wed, 15 Jul 2026 04:03:41 -0700 (PDT)
+Date: Wed, 15 Jul 2026 11:03:21 +0000
+In-Reply-To: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
+Mime-Version: 1.0
+References: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
+X-Mailer: b4 0.15.2
+Message-ID: <20260715-spin-trylock-followup-v3-4-fc4d246f705d@google.com>
+Subject: [PATCH v3 4/4] mm/page_alloc: remove a couple of VM_BUG_ON()st
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Waiman Long <longman@redhat.com>, 
+	Ridong Chen <ridong.chen@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	"=?utf-8?q?Michal_Koutn=C3=BD?=" <mkoutny@suse.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5656B1C000C
+X-Stat-Signature: pjrui1g1qgsbzqysfdu9fnn3ewfgtt6s
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784121372-923889
-X-HE-Meta: U2FsdGVkX19U8GEX8WSMYhN58o7NdKmGZCwzRtse/XXRz/lRy35x5vazx1Ne2LpP4qa7Dv19o1wpe+86enahDOol3h8IhuO0Sa8d6eBXzevjy/Ye4YiPfGGmbtfu7mVonyxcNwlWQ9Mc2E5PH0o6fUKOFn7ib7+Dqzqds9wkeekUnNGIihEPW2OPbMHjRBFG5hyoxGLamnPqZ2zYRJxtA0vtzN1Cdkig9h2atYkZbg+BgvMCMssl9yVGX3EYwb27naHoPU65IGxlAjlVH/c7DszSsPv5NrTKDfQZfuPk5yYPs9AwdwK1eveNYToYqsMcooC7Dw8zzRGB/bLyQ63uWld+EgtkJ7Nk1sgsf2cfxzIQkb1QMgOnf2857vkG2FMNJJbLVwyhhVoMBTfXQY2G8CQSM9yRn9Yeo8L7/+0dBJ72TcTxujdUGShRTnhgWA9wLCpYkmNyP9LCr4BTI3hD2KqTfDV8/dSC7EUTaeiaA387Y1CLbrb9WU7UJZR23cfjSu2tJfsapWAEKaaGbXI6exiS9I52aXKryzxKOe2795bv5s8/0eT5AukezuBn607H0+MBPu1Pm2AQFgzvq6EPomM0Wv0Uo3kqXTtjGDkKffxntSz/3kjTpWoYhK0+2K3k3Gtd8+wjg394GxbeavavHiu2lVJi0rOec/1ZnCO/ztrgvYPLuCRcvzoi73x2E0uHiXpIWlOc4sJTVNUtcr/0G0X0Xap46FB3KDV3Jz6qdXhqNF5lZgiy2ocEFK3gkHxla9AI2KmVsllklwkuGcPEExfANFHZPPX5zMiRY5QBcAUTdAUY3FhhKlpPM2mXFA0bE6/Gx3JTpuMXmy63Bjz4LDwba168fMNuMOlm9LFQCRX0rPY7tOnXKfo2Clw3yXcnAYg8Dyonvdgk5uA29LVPf1Mn9Ut7dlheMUejTURyuqJBi8hDVmFq7NwlReBesAoO/XO0K2spqLmqxPZHrSV
- ue/87tYq
- ssQ3sqC/J94sbTgKvUh/FuQd2VDq3pQxuOTup8Thg4WVSe9tSGwLu66+Xl+JVCrhx6mkUpEFGisA/kUy2gkXaGxo15D4/DdvW2B+AA1sC6LG2KhBwAICAASmjrlU7Xh6209DSm7wla/Z0pgtuDMYJBXazo7em/xKc9RlLqvP7u5rxKLGfc028FZ4i6aBOkmoOsXkiitAdKBBC9LyDTjGdvbkBdDQU3+Bbcp/dnrZ9JxiJBDv3LZLBN/HHYRFLkadAeVeIdUTvTInfCwdW800ASRoSi4nHLorPWcGm8NNKeC+YT7ozHTH3VVyDtL87i+X0GDuyYE1jpTC3/gpHrd6W7djHGpIURBXnaYfTpCmejUT9IK/TcI//9PG+7IV12v5WkLTY2NjsALs1i1JxxgxFk0kIKQ==
+X-HE-Tag: 1784113423-440636
+X-HE-Meta: U2FsdGVkX1+02JT5kCk5PUxW10G34CpNdU39EqgXPfCiV/AhIJDQ2ZMBmMo4oApaF0CakbeoiSHT3YHNyDZxLLYfR/AHtOY0DomOmUx38Wynpfs3RnM29oDywBdcBLLlPsRSgUYs41kjqZ2jfgydSCYiV/9UpRn0IQB0kB0VSHmXN4PstCe5r2TvfPT2OspVVh55r0bA6A9GdSY8lgqvRHRAitAn3MOXQroby8IInLBUf+1I50BV9c0MmdoK5wcuOG6gzlAUhaXF5FFHtMQpVlMoff9tqm2JSoV0El5oN77V1CpRMHS7ERobtUMjvCCsXorGeReTJishamO8RzV2NnYd/bzS2lXLqduCr+NrMUwNdQ75rfkHEHedX8dW7ffHTNWkNcPL2E5evzOOrWQl/6CfaBlG9qi+VHokxp9q/4uFLF+S3Y2Fcx7Zy6Jz+9TplawG8iH30X7g9z80y9q3hz1r1k1HsD4Hf3AzLjDfZ+aYzd/xR/yxZ6g9hsseLQO+9hO/mog6CrM9E35dDAm48HGbAapvb3eo07/Yo3ac6uphEi+/b8ezaL1BN2n4aytf9ir3531WH7YXrkyWa6hAdQWUq/8xWlwqjyizj8VaX1sMVzmMtcR4PnnRV8EQ3n+m9wC0qsTvMXqR1GNiRJ1ORC5uXQ7APdPl/2EL3spW2mSxnAVCPKwrlKJjTaU9qN6TlO1XvF8kVRjH/wBsw9auL5ncFKPW7QvwPSNvQrAYz7QQH9GLZ/JPMh/GrcKDJ8ckz8FunQ2o9tyLn94qFOhnacnOcX+0Dt9ia7ezpXOl27ItRdlrEG6sYXnE9mFID9auJ0zwpLn/mL378qQpK5dJPUZkuGV8jY/shCagljeM4XiyCojxoJpmxWO8Ki5ByJEebdRgNxzzx3DpHnBPQZWrYKIRpeOvxi8AuTP69XIs+RPH8SaGG26Qr15gFHegfAMlD6davvl+7kppwimDPoS
+ UzFZsQkm
+ BhAqIbZ4hzhMW2H96oCZc3dpCQyxmZbq5kH1O7oGb4o6uwd5IPTmYjUFHK/1/aHwkF+ZMLFxtW6w/PWZbJPCb/wb8gJsHfJ0g/VSg6LR12r6I55aNEeqhd+9L7pFDeAjml53Jjv09wjcjCCjzLtDCyJhTGu0e7Qj/85Y/Tz26mGEEizqDuApi5HqbiMg1ua66qxkfRNWNp6Bgf2qWv+HuqUJfkqz7fv7zYHVsyvSmGnr6qN72IyuchtUqPcPoNszNI+KwwmZBQPdV0JkINDZkBNqt353yZ4gL+dkdrTwurXnHnRrA8tatQmXFqOupRuPU4Yuf9NOWDhXEfqH6DXFsJOrNsihc7BRZB+5bxkVuQWcK23hu4H881uEytehhCpOwAldm8GF9FTA+M4wyluOwBeSzRmGjNBYb00l/sa8nFZOOJ0Fn2dgVuszl33Y+N8RyQTLLuOqiQA9+Pxmpdj2mXNr7BDq7q3Z7blF1iG9q8ElWTZGWCnW7V42v08WednTBHThyF0L1Mbn8C+ug18b1GbvZQLZgO2Dw91ESaVD4Xau7syzPZLOVs5YZp+yHl+c5S9zr1qR+PXm6dr2zpNq8jUzIKO7tvlUewzDKwYQwloYyEjtqPavd968QSVy9XNsyexCo7OPu8qkcWUH3hA8Psu0aqYw5gK9B2fQLwz+/aSb4/DgbUGc9QOE9Iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,83 +115,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+VM_BUG_ON() is out of favour and on the way to removal, since I recently
+touched alloc_pages_node_noprof() I am removing that invocation, and
+also removing the __folio_alloc_node_noprof() one for consistency. If
+this precondition is violated, the system will soon crash anyway.
 
+Suggested-by: Zi Yan <ziy@nvidia.com>
+Link: https://lore.kernel.org/all/7F866265-3F2E-4765-B9D4-9AB898A9C4AC@nvidia.com/
+Acked-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+ include/linux/gfp.h | 1 -
+ mm/page_alloc.c     | 1 -
+ 2 files changed, 2 deletions(-)
 
-> On Jul 15, 2026, at 17:34, David Laight <david.laight.linux@gmail.com> =
-wrote:
->=20
-> On Thu,  2 Jul 2026 17:38:05 +0800
-> Muchun Song <songmuchun@bytedance.com> wrote:
->=20
->> struct mem_section is currently forced to a power-of-2 size so the
->> section-to-root lookup can use a mask instead of a modulo.
->>=20
->> That requirement adds configuration-dependent padding, especially =
-with
->> CONFIG_PAGE_EXTENSION, just to preserve the lookup scheme.
->>=20
->> Drop the constraint and use a plain modulo for the lookup instead. =
-The
->> divisor is constant, so the generated code remains cheap while =
-avoiding
->> the extra padding. It also removes an unnecessary layout constraint
->> from the type.
->=20
-> This has a side effect of changing the size of the 'section' from
-> PAGE_SIZE to something 'a bit smaller' when CONFIG_PAGE_EXTENSION
-> is defined.
-> I don't think it actually matters, the allocation is done by:
->=20
-> static noinline struct mem_section __ref *sparse_index_alloc(int nid)
-> {
-> 	struct mem_section *section =3D NULL;
-> 	unsigned long array_size =3D SECTIONS_PER_ROOT *
-> 				   sizeof(struct mem_section);
->=20
-> 	if (slab_is_available()) {
-> 		section =3D kzalloc_node(array_size, GFP_KERNEL, nid);
-> 	} else {
-> 		section =3D memblock_alloc_node(array_size, =
-SMP_CACHE_BYTES,
-> 					      nid);
->=20
-> so the size might get rounded up to PAGE_SIZE anyway.
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index 4d57e9c0bf204..872bc53f32ec8 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -255,7 +255,6 @@ static inline void warn_if_node_offline(int this_node, gfp_t gfp_mask)
+ static inline
+ struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+ {
+-	VM_BUG_ON(nid < 0 || nid >= MAX_NUMNODES);
+ 	warn_if_node_offline(nid, gfp);
+ 
+ 	return __folio_alloc_noprof(gfp, order, nid, NULL);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 25a83a57aab66..4c6815f84adc6 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5427,7 +5427,6 @@ struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order
+ 	if (nid == NUMA_NO_NODE)
+ 		nid = numa_mem_id();
+ 
+-	VM_BUG_ON(nid < 0 || nid >= MAX_NUMNODES);
+ 	warn_if_node_offline(nid, gfp_mask);
+ 
+ 	return __alloc_pages_noprof(gfp_mask, order, nid, NULL, ALLOC_DEFAULT);
 
-I'm not sure I really understand what you mean. You might be asking =
-whether
-the reduction in the size of the `mem_section` structure does not =
-actually result
-in memory savings? If so, please let me explain clearly. As you =
-mentioned, the
-size of memory allocated each time here should be PAGE_SIZE. Before the
-modification, one page could hold 4096/32 =3D 128 `struct mem_section` =
-instances;
-with the modified code, the number of `struct mem_section` instances =
-that can fit
-is 4096/24 =3D 170. Therefore, the range of memory sections that a =
-PAGE_SIZE can
-cover has increased 32%.
-
-Please let me know if I didn=E2=80=99t get your point.
-
->=20
-> I also suspect that '% 24u' might be enough slower than '% 32u' to
-> generate a measurable performance drop.
-> (It doesn't matter whether you do '& 31' or '% 32u'.)
-
-David, I agree that % 24u is slower than % 32u =E2=80=94 the latter maps =
-to =E2=80=98and', while the
-former requires a multiply-shift sequence. However, since the divisor is =
-a constant,
-the compiler should uses the magic multiplier approach at -O2, which is =
-~3-5 cycles
-instead of 1. So I think the per-lookup overhead is real but small.
-
-Thanks for your review.
-
-Muchun
-
->=20
-> 	David
+-- 
+2.54.0
 
 
