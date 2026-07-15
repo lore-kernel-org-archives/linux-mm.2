@@ -4,123 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D0EC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B04ABC4450A
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:12:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 759396B00A0; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
+	id A44816B0088; Wed, 15 Jul 2026 10:12:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 730876B00A1; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
+	id A1D3D6B0092; Wed, 15 Jul 2026 10:12:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 622D36B00A4; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
+	id 90DA56B0095; Wed, 15 Jul 2026 10:12:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29B316B00A0
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE8DAA0129
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:10:21 +0000 (UTC)
-X-FDA: 84991195842.11.BDF3359
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 96D7B1A0005
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:10:19 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OgqC1O9p;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784124620;
-	b=3k0PFlAxP1DkT3EzjfJUyIBNJpsxJjtdBbvIdp67amUhMmwqj11JunuSQmuGVfD3hkmVfc
-	y+Uojek6zcGn3bHqOcU6e3MQQvAsss4a5iju6uoDqn1n/VKj6Ct+zwr/LatkLsAAezy0se
-	Nu+Gr+8Zpbbodv8fjyE70oXV+okRO5g=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OgqC1O9p;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 63F0B6B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:12:38 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97BCC1C0022
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:36:31 +0000 (UTC)
+X-FDA: 84990656982.16.FA549E7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id A563020002
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:36:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bnZ19469;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784124620;
+	s=arc-20220608; t=1784111789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pIsfZleXeVRVmzFEqb2XavBzUBRe+/S77RcLpiiBE+s=;
-	b=Ea5/auI2dT1pM6OpHPaPXLI9Ito1V54n+SpoGV1XO0JXSSSLY1rjty8/9Mg4AVRR6zj365
-	VmKugwvo+jSp/pckZG2RcT4mpGCAbY/f7xgA3O1EZtRdeJvB20ue+JLs6TB4U6Lx4uGxUH
-	4og3w7eyhsVVWqQNxK9pN7SEPlukXp0=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493ba701891so17804535e9.3
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 07:10:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1784124618; x=1784729418; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pIsfZleXeVRVmzFEqb2XavBzUBRe+/S77RcLpiiBE+s=;
-        b=OgqC1O9pCNo+y7DQMbKBeqWgv9QU1se17AqSV0EyVJdwdupDF7soDEXJcLc6fhOcSe
-         8Ps5fcwOvcDgno09xOl6gi4DuEDFbhq6xQhoH/KZJSU20O/xPOMueWYNleJlLAXi1y+B
-         nfL65fHz//ZXFM0rc64g76UNjwFlgbCfGI++CeCkEGSVhpyO9tZhhjEW+bQi60iWbvyX
-         35o1bAn6MEORoGfJOtRYMp/TBBQKIRs2aAgIVg/l2jdaOKhDr7qjdlUsWyWZmQpZmVFY
-         7RKPaJCzQ2P0vA24HLgGvHayX86XRHZsgmVrLarJS8X68V0QJuQbPrwJmC/UO/4fI999
-         FS6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784124618; x=1784729418;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pIsfZleXeVRVmzFEqb2XavBzUBRe+/S77RcLpiiBE+s=;
-        b=BVpQN6y4/QMYvb2rELPG9HIpNAYZL83Gq3T5Oybxiyr2Bi8IHk7eEKqleDeU7MhIq3
-         jkeFFHNlFKmvKZpU9V4+jM55ap1uHzhtEnHcOGbeL9tk2Bmk0nkF3hNExNA1q0yLdm0i
-         k4EoDj0x6JYCh6YgGZ192bKLqV3rpjXr6bWClpjaedZ3XE3Fz01VcGovL4U3a8IS3eIr
-         SeIiZmRX1AyRSgpjNHVSSwix1MUtiksspWhZNxjmp0nFcazFWOJ4sKoB+dV0Z9UAdysG
-         HwbEuoW3lCpJU+KFjl1a1pBjtT4wZkw8mcjrMUFm73JmKSGZB2duuthPxBIjQ30AlU0T
-         1pEQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrcljwIakwPSo6amQKLPeze+2wgvArpW1I8mBdb+YDsjUvT44u1dUpwzWQ9zc8w6kKL9q7LIl1fQA==@kvack.org
-X-Gm-Message-State: AOJu0Yyfvn2DGiCtfifjH7jD2VlDa45oVPeMR8H58gkC2z7jVS6dxCkh
-	EWGmBZolVT7lbqoxAM3dq+cz4UD8ab2A1l0SHT/nC7wOIi7t4o1r24expikrelJH3iw=
-X-Gm-Gg: AfdE7cmiHYE4yKKc/CKStBi/SHNTq4gP4mF+wdOTa/8VZkWWsF2g0XFf0z3JtuQ5km6
-	sfsslgjBjxMVi6Rqm7EpwKewnTdFujiDX4tMIqe7lU+11DNpkIyzhNQt+i7bUicHu4/WqUYdHdI
-	/DMCOPloCc/zzrP9oZf/XYW40gjC5//YKPFuxfCQR/sMAtwxo4B6VoK7eavjgWZvcUAxdqXEGc9
-	qvwE6qf1rTrYD2d+jUaADYW4nv7pMF7Kz00OZXg6I5kIe/IK65O6ZfWPepnVCoPBJmB8YHPs/rg
-	YBZLAty2LExGMFTz6wqsecZ39LTvhRRHzq4iWryQ9HXKmuD1pK51TJwh2QWbfNHPVINxCz+P0f1
-	DHbX3iY89n5ikWlusp9cuPc1O98XC8+szumnrBSYFNRyhf3J+0S/qb61UBRBi91iCypdKjS9Q2h
-	XAEamkvG4dKs/Lcw==
-X-Received: by 2002:a05:600c:e548:10b0:493:b877:fbc with SMTP id 5b1f17b1804b1-493f881d146mr126677095e9.21.1784124617927;
-        Wed, 15 Jul 2026 07:10:17 -0700 (PDT)
-Received: from localhost ([2a02:8071:8280:d6e0:1353:8eb8:c84a:b6d4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4953f643acdsm24454195e9.3.2026.07.15.07.10.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 07:10:17 -0700 (PDT)
-Date: Wed, 15 Jul 2026 16:10:15 +0200
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
-	youngjun.park@lge.com, roman.gushchin@linux.dev,
-	muchun.song@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	rientjes@google.com, kernel-team@meta.com
-Subject: Re: [PATCH v2 1/2] mm/vmstat, mm/memcontrol: add _monotonic vmstat
- readers
-Message-ID: <20260715141015.GP276793@cmpxchg.org>
-References: <20260713163443.3562378-1-usama.arif@linux.dev>
- <20260713163443.3562378-2-usama.arif@linux.dev>
+	bh=SGc4wLtrcKFcbhoINTj74T+3qOdK6ANKsLr4fj0Hk3A=;
+	b=I14C39T72KDqoiHPxTugrrdzyRlIOtGQz2V6keg2ES1JmTLm/OAMAXWLMaZ7t0OB2XUmFV
+	ZstRiRmuqwhWJ7cWrkFVFrbS0DlmeFV2xgqmWpvlEl8uTL5lsUgu0rMYUVS1gzdt0Gl4Mt
+	Ae0eoOaHHebBmS0yPF0Y7P9vIZKrzDI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bnZ19469;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784111789;
+	b=qmeV7iQwued+4Vzx5v7XM5UFC4Fvk2koWc2shofhXaFpKosAZlj49R0Iau1jhNPgK1Xde9
+	uj7QmD62ezAsQnNozShuhNnp/ahl+fKwnQXE+znXIS0IzxCml2hBBT4pFTs3b/SmxPIC5/
+	nIbPkFR1eKwNLcM1sCkOhKXvSxzXPBQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DAE98410A0;
+	Wed, 15 Jul 2026 10:36:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C89F1F00A3D;
+	Wed, 15 Jul 2026 10:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784111788;
+	bh=SGc4wLtrcKFcbhoINTj74T+3qOdK6ANKsLr4fj0Hk3A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bnZ19469YhZeYDpeyL6D0njcuIEVUlNV8xaZPdx4Wv2g2llZ6KtIs3UIIygTumOUb
+	 l+cwxB2A7PICphDlPyE6wZMdhDFkKKg9q3moF6U2KyrAKXqsJOj1Flv6eRw9MyEwIH
+	 tJhhbkMpCk/YNyTzBBc4IpTn5DdrSJkLQkQumDOOtPhXPcynGpZzHE102rOWo7LD5N
+	 56o74i5t2pPRwvzSNAe2e1169ofKYjMwkuSx1lceloXmCtqpot1iqEGOPw4IIqQs4/
+	 1uXVxKHAcXoKlqg7CbUCFymnbWnw6NeGNkQC/idZnGatxcK3lT1HA9DEFeX3/sgL0e
+	 pluXygxbaYEIg==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 66559F40066;
+	Wed, 15 Jul 2026 06:36:27 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 15 Jul 2026 06:36:27 -0400
+X-ME-Sender: <xms:q2JXasIcTK87tj0M0Ic5UFNoiOPAF3NQ_Dk0NQ4OKwV6DbMdgZB89g>
+    <xme:q2JXapsfnLe82cce_X9YNZ32UrazxLJ7ljJyH0VqgC0vnzqBoF0dHsCxavnczcawL
+    jFuMR93yj_XY2XQaeP326wrnJhbGuq3ok_pqQmiW88iRMuljNFRwm0>
+X-ME-Received: <xmr:q2JXaluvJMyCEaUSGr9WrIdcYatWNe0w3oVo2l1GGmGg4Bv0sxlCqr6a50qEkg>
+X-ME-Proxy-Cause: dmFkZTFoH2pQZa2MB7F8P1KNkzYrZ2FYupTRLNJuIuUdKMkzQz8rOl/YdOFBjeV64/eFiz
+    grneVbhOZ/mzsgLWmb97Z2MXlENOxDXRl0cjegtXKlxj7YYlu4P2rypydA+jQG17m5ZjrR
+    uLA1BH2IYxm64puaRDdrEUMLMhexkcckKs1sEKyml2zpBfIOSacHHPCSa4mrPwXtsA2S2d
+    n0AJWgO4Aw1zfMMWmrVVxIux3bA1rGhvs7yymGF6naIGts5DplcBRYFDrF2cdeaP8bZG8h
+    uqCwtISn/RjBCphxWoCiq60O2Gpp2nzA6uqQaHx3NgXSiS8IQjohJzFr1kWpEVdFieI5W+
+    zSj+F2tRIKbdZ2G88GOn9AR08ypKHMcQnabYwnXiXOn5vdgj+TTtPEjU77Mr2BjBI6Urjw
+    1vmC7n/u6OnMBgowj8zJPICTT4s5l+RuxGFGLXG0NLSHoz4timfc4hGSlksoUVvKCK3QUn
+    RativehZ1FvH6M7cZDGxQzTgn3rOMiMnL7PWTwdxApBc83z7CgVqOahJ9cYkPoN2O0N7no
+    Uk56UlfKVpn5B5rZ9K92JX11zIjWvcbS3QkUU2KCY1FkHuzb23XDwrGqdb2unwf6VuN9av
+    S+AKROKDhvXXTxODKw/rsrmVUYvXwVOH78t1sU2BP4CBslU/925LAlXUL9+w
+X-ME-Proxy: <xmx:q2JXakRIMffs8qDUs1mdoH-Go4g25NPKMZ_CN2_PaPuJC3KlAtmQqA>
+    <xmx:q2JXat3vrR8eDZNO3tneFiN4zykuaM5Xu5mh8hrWNr55hWX2ztia6Q>
+    <xmx:q2JXarO16LV0vMtw1_LPC551Fv11Wz-CIgkMvyOHqYsQFcK4IsisiQ>
+    <xmx:q2JXagMG8AUv0D_wEPFu-w5uJ9gEPBmFmz4nKLWwwieLVmfSPPO5kA>
+    <xmx:q2JXajnknuqqU4lS55abKbdlbfEbUvoPKP6YacJirxQNOwdPPCl1Zs4U>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 15 Jul 2026 06:36:26 -0400 (EDT)
+Date: Wed, 15 Jul 2026 11:36:25 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes v3 3/4] mm/ptdump: always stabilise against
+ page table freeing using init_mm
+Message-ID: <aldim43Nu5sREkDP@thinkstation>
+References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
+ <20260714-series-vmap-race-fix-v3-3-b812eccfa0f9@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260713163443.3562378-2-usama.arif@linux.dev>
-X-Rspamd-Queue-Id: 96D7B1A0005
+In-Reply-To: <20260714-series-vmap-race-fix-v3-3-b812eccfa0f9@kernel.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A563020002
+X-Stat-Signature: hspio3nefmfiri4td6ns4ph38yeikfkf
 X-Rspam-User: 
-X-Stat-Signature: kapdxh6w7ys6mndgut5a198ww77arihk
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784124619-260148
-X-HE-Meta: U2FsdGVkX1+8dpSLQGmBHjzuka+4LJA8mithNpc0OE82crs4UABLMaelSNcQRk26BaosE3E+xY++TiqlXZVm2j9yEBN5+5/vXDgx9pC0FgdjjVyizgrfvPtKWzz4ni/Hdk9Iqt5mEPE6u1UVZ401AfoZxCzRpZOfcpm0D0Y3EYcF33OpLYvnfiguKj4RlyOOsPfwDDi3hzF5/oFMdxK8e0AGEjLLLrvU0AyKNc3kkHD0zR345iZjHahMlxyagPo/GTvBI1NSEoHpA3oVIBcxgj1nRAkC0x2w9/64kZB1e99g6+4zZv6rb5bRF2MBFW32yF+ddan8C+A1QydoMhXjgLJv34r1XUCZUs2QRa1NE08DIEwfyLFxk9FWtq/X2nbIMMU5ItdeOx4krYdOpslGqiY5VEyCnPBWlJgcx1zIuQy5vR4lrucgfH+CBKp2RegKctxNl7POtYRhg7KH8OgMl/8+YaX65XJHjhkB1BBy93PxCjgDjTPmOlrU9R7I3nsoka/qQadk8+YzIbXRuNnhkHBBB4j52oNakQSIbe+hXkdiWLzslkvhA1BWMgSJf+7i0QBneFLVh19FPUTfby7YtOxCHul/Ppmy6Yh5d+YUearWnpvoO7jVJBDGfyYv53LCmmaPQsgWoB8rmBYa0veFvWhPGkylmhsQAavAj8UXRlwSkIoWoDFPbopYGicYC6qL/UQYDiuMt5Rfwo2q8VuS5+KamFBLZV01O1iktl+Yd5VFF1qoqCKkDDeQoP7ipsO0bwFQeAKJOLvmUwGG5oLeTASHK4NNchrEdxGLu29tpCQgMDwEW/lW2HMLJrnxB30UVB6wCuiFc/UoCHkvI7J7V9XW9/5UAA8/gUUNiMYAhN9NduhH5mcn9bDdCpXzonuPWsuGBq+K6Y+fdKUQejiaxjWU3bGCu1eANzsmY6Hm1xSztjh+9oZKF+hOPnIVrs2y8GX2rXS9ABY2PlZdMOP
- ZLujqppB
- PAYIa/qJTIxBYBS2Pbt4jbcwvaUnO+/PfPeCvAm9U9Ymz8HP7yxP5edbyvj+kgsA8L2MDMagmnHzB0/o9P3THqkYTSoe8QFUnPScG+alh1Bta6UnQu2+BFlwrCrgIGpp47fiNXNxQjRqa4eMq6umV66+BxKbK277ri+zRa0PWGFlaGwjA27hsad/LZBetTTRDY/0iHcQ1xH/yu8QkT3S1/v7rr/P00HB+BNUWMsXylI3OvHDqbroezkPBEjO0CxmURCLssRPY6gwi0KISxiLY30HqWkFInC1vOoMhKbfdazKUMD3VXMjXHKINActS+CQg/2LeSigKjltGeGffs2YUMYlFbsvYntgBquFU+FidLiaHxd6lGeS0Ibj6bUUiXpPSmV0JzzcdO0FlF69Vo48flCzA+MnrNeO2ANcNTj7qkmoT9BfQvJVn6qNpModYYgBF3o6ouuN1+JDtdZojphPKCHKJFPd8T/GPdsSh
+X-HE-Tag: 1784111789-708436
+X-HE-Meta: U2FsdGVkX18jRqZRKmX/o7DNiNyL7jRE7AmZ7G4ivAVxwcQIQ4eF8mN5O/8iCEmn2/FRxm/OKpKwMro63JJvizvfodlGPnNnbXV8qdILo0Jvdz+YwAzJmT4G+EDJe4Dezyg56XSvGWCwfjTgd8Pj1+YGGbHDFSwwhJo9Fnw42GruVn1Hxc5JrMXRXdt4Io69UnQrox6ZIfcDMNb2Ocrm7miMheenwzOsULa9w9ULphTHbImZmam+B5ZWYhG2WOL26fv3W/MzkCHwrz3UUkZntc/JSCq15OxJq6Iz228wFE1dW7hOQwgj5aAWcacW6qzR7Rp1vJd6rlXWJJcpWthWjIoHwKU6XJaArMa+aiG5NqKJg2XjgarlWDhyOL+t5GEwP/D4zlvuv6SgmcClJQ3q3vf8VvyhCDfJebvi7rwfmi9UtA6P+5fYA8kSoyngPwB68DAq9Wq0o2+FccTq2PVjfzjj9Fbchgc5zfL5y3xkv+xxJHWH9epwq7Oz7Hf6o7bBBnsR2uIItkMzafEWEOwoon1EFRl8xH84JDcn46vG/bapxhTTW37MrcKVShX0MAgztbXw85KxO6hPulxJBoK197qc7wi0Sda+hD/wIjj1CtZjr2V7l9rlaP37Re5d0uWyHplgTLx0LDJEx49VeXhE7w+gf7lvfIXln1pr7EQdPVIeDQR8KeA2YCEe6oNknYqXFLunizUylOKcehqpG+vJ598XPwMDqZnX46YnoMAF2GeHbsu/rFQWqrLmEiQ/h/G8w6ZFGrEqpVbVvZtIQJhajLOq1miYuKWCu39eJFeV3UuXcA9iKbynm9XSyxQRdOQ+9zmEOFCzI+p2oQmekWJCKytjU4LtF6KxrnBoSKstQfbRKYzghBCLskz+MeFiBCPE2mefkWuw81I1z6yyNM92ZhcE3dbz+BH+Xb9IoQvJoGb5uhpN+OHwx6yviD8zVId863DPe+W5qItSuqR55o/
+ lev5tH1E
+ 5Z0ZXpoyoUl5GRfJKCXOVbbB61t6cUvIMYed7SzXEx+XWmLPe/aZzDnlWcObBxG4Cgr5dgxUdlx0CktUDYr6L6pDbzjoKIWfP4PC/VwshmXill4cYHj6ZCW07uc9kEVhQEmMh28c0jhdAb0valkqL4neEuOBCwdmXKVHi6TJ68QeVUtCuru9awXXpN5BHbIeO191mbDlPZwhZP1Y5GXm1t9YLHSF4Ls9oy2zQsseggRgsdCqvFRtEw/pJDcPgUxPpIT/brsbR4bfkPTGSjp7olrwkI/exZOsY8TBhQM+jxjG9OBEyZ/sxcYnx6C+znpXR72vyFcsh7bwUkxP40ZyQpiBgmmfUbtvq1aR0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,54 +129,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 13, 2026 at 09:34:16AM -0700, Usama Arif wrote:
-> lruvec_page_state(), node_page_state(), and global_node_page_state()
-> all clamp negative reads to zero on CONFIG_SMP so that a transient
-> per-CPU delta skew presents as zero pages rather than
-> as a garbage unsigned value. This is the right behaviour for
-> non-monotonic page-count readers.
+On Tue, Jul 14, 2026 at 06:24:25PM +0100, Lorenzo Stoakes wrote:
+> Previous commits have established the invariant that kernel page table
+> freeing is performed while an mmap read lock on init_mm is held, which
+> fixes races between ptdump and kernel page table freeing over init_mm.
 > 
-> It is however incorrect for callers that snapshot a monotonically-
-> incremented event counter and compute a delta from two samples.
-> Once the underlying signed long wraps past LONG_MAX, the clamped read
-> drops to zero while the previously-recorded snapshot still holds the
-> pre-wrap value; the unsigned subtraction then underflows into a
-> ~2^31 spurious delta for 32-bit architecture and corrupts the
-> caller's accumulator.
+> However, x86 and arm64 can perform a ptdump over an mm other than init_mm
+> via ptdump_walk_pgd() and since kernel memory ranges are shared across
+> non-kernel mm's, this means that the race still exists for these cases.
 > 
-> Add non-clamping siblings that return the underlying state value
-> cast to unsigned long:
+> Fix this by acquiring a nested mmap write lock for init_mm in
+> ptdump_walk_pgd().
 > 
->   global_node_page_state_monotonic()
->   node_page_state_monotonic()
->   lruvec_page_state_monotonic()
+> This is safe as we take this after mmap write locking the mm, and nothing
+> acquires the init_mm lock first before locking an arbitrary mm, so no
+> deadlock is possible.
 > 
-> With both samples read via the _monotonic variant, unsigned modular
-> subtraction stays correct across a signed-long wraparound as long
-> as the true growth between two samples fits in unsigned long
-> (< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
-> practically-reachable one that motivates this helper.
+> Also update walk_page_range_debug() to assert that init_mm is write locked,
+> add a comment explaining why and remove some redundant code, and eliminate
+> the unnecessary and confusing invocation of walk_kernel_page_table_range().
 > 
-> The variants are only safe for monotonically-incremented counters.
-> Non-monotonic page-count readers must keep using the existing
-> clamped helpers so transient negative reads still present as zero.
+> We can safely remove the non-NULL check for walk.mm, as the mmap lock
+> asserts would NULL pointer deref if it was (and of course no callers do
+> this).
 > 
-> This is a prerequisite for the following patch which
-> replaces the producer-side anon_cost/file_cost accumulators with a
-> read-side accumulator in prepare_scan_control() that samples
-> monotonic per-LRU vmstat counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*,
-> WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
-> the unsigned modular delta into a per-lruvec cost_accum[].
+> The first point at which ptdump can race kernel page table freeing is
+> commit b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page
+> table"), so we target this in the Fixes tag.
 > 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
 
-It's unfortunate that we mix state counts with monotonic events in
-node_stat_item. We have vm_event_state for monotonics, but they aren't
-tracked per-node (which we need here and for other places in vmscan),
-and they can't easily be made so because there are "global" events in
-there that don't easily map to a specific node.
+Thanks!
 
-So this seems like the best solution for now.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
