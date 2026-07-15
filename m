@@ -4,89 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E54EDC4450A
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 03:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C5D8C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 03:17:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C60836B0095; Tue, 14 Jul 2026 23:10:27 -0400 (EDT)
+	id BFB676B00A1; Tue, 14 Jul 2026 23:17:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C38506B0098; Tue, 14 Jul 2026 23:10:27 -0400 (EDT)
+	id BABD76B00A2; Tue, 14 Jul 2026 23:17:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B74736B0099; Tue, 14 Jul 2026 23:10:27 -0400 (EDT)
+	id AC46A6B00A3; Tue, 14 Jul 2026 23:17:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D63B6B0095
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 23:10:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5F094A05C0
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:10:16 +0000 (UTC)
-X-FDA: 84989532432.02.49A8AAF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D0189100009
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:10:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMMF0rtj;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784085014;
-	b=hstkWJgSdArknfk7JsMCVYZsEajIpqxJTXqshef2YQg3b6VujJh7XHef6NU179p+ccBY1k
-	Sw/BdLs4XAaUdUCWCvqv4zTcW7f51f8ui0Zer5r5loewzkdxCVSq6Za0vEqnuS9Z3b/zE7
-	Unzb6JUEvnZTQgWYqt/Go3oYuGkqk5M=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EMMF0rtj;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7F7536B00A1
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 23:17:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B52BA05B5
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:00:23 +0000 (UTC)
+X-FDA: 84989507526.01.258E1D6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 787294000A
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:00:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MWfoPVL9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784085014;
+	s=arc-20220608; t=1784084421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZlM1xLtscWm6r5E9re97Un+lNNnhMeBCpTniJTuHyU=;
-	b=WWvOUqZlkEhGZ15q0hOan4OcDEbMoiOLxbHDyfTO7yRXHvzTezDq0Nv3iFOm+LAxAJZqDv
-	3vv/3qs8ACrgI0osKVGiS3Y4BpOIUYPsYrvGcpGVKrwEg2ax/x5xka9abgLSWfgVbyWs3L
-	OsLmIGIvNfr+y2QtQB910z1GW8YEee8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2692343D5F;
-	Wed, 15 Jul 2026 03:10:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AAE1F00A3A;
-	Wed, 15 Jul 2026 03:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784085014;
-	bh=OZlM1xLtscWm6r5E9re97Un+lNNnhMeBCpTniJTuHyU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EMMF0rtjKzOj0NNvQBnEZPkh8CNIg1ZQIhxvDGhbBTy52EkzBm+3e/8x2Gnzj6Nsf
-	 6JdD3stcnyBiFwEMkFGMjBoB8/1rpHvUZEJIp8GfgSDkdu5qbhFDbhc1rFv6FIDUdb
-	 I0oASfLvYVVqGqRlhbySFBlqa/S6A2xwZtSa6v3RHhl7Z5R/2OkdsSuCpphyhzhK5A
-	 oZMVmL7hEPWSPhDuJInt53pgNVmyltHbjgSiDItpav0q/hMrlqnE4f0tjzEmPrIPp4
-	 THGzI+Km+xtK61uFANf0yvaKZxb+YJpaqcz4xaUzCegDhRuAzJfyxmTiN76AGEoGiK
-	 I5wFy6TESpYIQ==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	damon@lists.linux.dev,
+	bh=r2S1pF402fEwqnXDZiEv0A+qeJQZJmSklciMUBTEkZ4=;
+	b=8UU8g8x3QjDKg6d/FdmJDdUWWBepCcSID41NbAEu1HPFxTcc71Ap/6n3D4wYgCTRy2Z7FM
+	pwTp1ixK42mwIoteCpk8d2ueX/dbTA8ekmE4tz7l6B8H901AcT3KrRJovwRLCODZepoG9y
+	WNBuR2s+LVkNi7RMOYAVdQA3uRxbiuY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MWfoPVL9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784084421;
+	b=aX0C07FkkNGWuHg640OodW1ebltr2OuMO85dHV+Xq6ACLppUYho4sjIOBd4BDesP6sLMzM
+	35ngBn7uUo59cnnnsFQnf5RBXRIIpYdZ5Z9fj8hN8X2V7fqcn9TIp49yBy598gpvXZUFpr
+	07tPr/yRR0LWEOOV7nOl+Xz8N4gLMUM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784084421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r2S1pF402fEwqnXDZiEv0A+qeJQZJmSklciMUBTEkZ4=;
+	b=MWfoPVL9MURYxsNVDuSL+GPcO6KKI2jNZZRTpCfCH2y+BN3xP4V3Mdsux3AcoEfg+pe8aM
+	VYRSaA9Tt/Bu41sLlSG2TNyuxMt/pgPimSW6GDUNTBlvS5rRAXZ3/yX7voYuso+a8ss0rI
+	Mbb46C7vbthTZuwq8NHKsBwG0EDGvbQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-DaWvWqfgNIqxwO1J7L8avA-1; Tue,
+ 14 Jul 2026 23:00:17 -0400
+X-MC-Unique: DaWvWqfgNIqxwO1J7L8avA-1
+X-Mimecast-MFC-AGG-ID: DaWvWqfgNIqxwO1J7L8avA_1784084414
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6D8BC1956052;
+	Wed, 15 Jul 2026 03:00:12 +0000 (UTC)
+Received: from p1.redhat.com (unknown [10.22.76.5])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ED26818005B7;
+	Wed, 15 Jul 2026 03:00:00 +0000 (UTC)
+From: Nico Pache <npache@redhat.com>
+To: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v1.1 5/6] mm/damon/sysfs: read addr_unit only once in damon_sysfs_apply_inputs()
-Date: Tue, 14 Jul 2026 20:10:00 -0700
-Message-ID: <20260715031002.108504-6-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260715031002.108504-1-sj@kernel.org>
-References: <20260715031002.108504-1-sj@kernel.org>
+Cc: Nico Pache <npache@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v2 1/7] mm/khugepaged: refactor per-scan state clearing into collapse_control_init_scan()
+Date: Tue, 14 Jul 2026 20:59:30 -0600
+Message-ID: <20260715025941.1571316-2-npache@redhat.com>
+In-Reply-To: <20260715025941.1571316-1-npache@redhat.com>
+References: <20260715025941.1571316-1-npache@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: TSZ04XzKWreB2WlPQgXrMkPmVy0y2vqjKko_h6OY7RY_1784084414
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Queue-Id: 787294000A
+X-Stat-Signature: o9ms4wjtjgjhgj157csnxezr8uenbayr
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D0189100009
-X-Stat-Signature: y7bqw4wgps1nqxwztg3585ikc33zjne1
-X-HE-Tag: 1784085014-996157
-X-HE-Meta: U2FsdGVkX19ePnnSWIcvZYk6IzIBakMaQTMJBf209ZPdaC6VfY7wCrOtAdePnmJi8DEHbk/jWgsNj7hnHhXwzd9rXlgL3lH//orDrbaThp9F9M5Ttfxa6819lb++dboSrzWQEM8bCATv4I4erQUEFE25nj38q73Gwmqj5HdxTP20sS1IxoPSeAmVx8v9zCPO3SW0a0EGmEzJgP+w+xK1GM9uXXv8lKPVuAXIzZ86RCnyRNKNlNHS41lVgk/LJN1PMcqcIy4MvD1AQJRwGUtii7nBRkt9j2tNg4rFFgqemrfm1I/mt1EQVOASKwdzA/jWnPeSAZq1xNza4LI+zKtew05b8+k/xqRpTMjEXwOQrL3Iw+W4Gg408fFFnYRIOb5Th5Gj3Q9YNiIBj2900Rr4RT1XHhgNwhy2eTVHdXpG1jCN4RWUEfbpOP1q//Q05RI6iJSwjpie15M/MEzYWo2FfpnQMtOUDf8D0FjzWpkiY2qau9ktUSrPjpcEqKPP9MQBvSRUK5x5S9zt7H8tmGrVw5xtPCR+C1wALJxVyjk0KMolhRQ3gqEmleRjNxz5cvdc5sQpq0K4bxKuHGGVkNNLL9vVI7NCUNdRgIIIIVOberCf2QCwzzxf6nfav7dv/U9mfv/KceTGXncVCbU/TgbzZNN+i5ryHYIj9M1xfCePpnmMhjY4h8iitC30pJXvo9e9WbUvZ6uVJEbtLS+2sZx7/GqILZgUzvEPm2iZgAoovPCjYYpWSr3Kb4xy16gWmP5h7299ZTbb8eUpn+wzcLrJm4FKAYLMX7pHlDld4x92wfYazkZAKrmZNCuP2/XwrqswpUXB53kXrr8ktJs5MfKGNuofwVyBc9qDz7uKLfjV9afZMxpoJ1/tG8INCt+6Z32XKvaJOR3QUOM66JT2lAFMbVGp0tMq8hn+h9X78sI3A+sEpADQrX6qD1QZT/PpI3hIzZoh7YY2NfVKZUfsaNA
- tzfifRSF
- 9KyroQCZ8FJFq3mwAHea/Rc+Sz0iS8RTULNbTb6rJ+U/fF3EeIEYWqV0h35oMdjrJ82GNRx1BqoEZY9fA14bv0Eny99zBeN0geJpbjRLbJBnPibCu7mm2mZUcJ+dEtC8A+bzk77BogJpah/qF7qhoJ9CyXfKVwia01Gdawotg0/K7i522pXRxLO0HaEL8S3t68CuEKdqGGt5f8l4/ylSiOKoBRlO5kX1SXwFCJ8ly4709/8/VruoLfWAGs07BOdusJRN/vF3x1VYPz6zRKEk03R1hmw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784084421-653234
+X-HE-Meta: U2FsdGVkX1+xz8k3SYB+e48Dm/SVkTpMujO/iTzzLl7wu6IVWTNTNlHNQP0w8cXigPSThhoUKH1M0zknHcWRd57BqMBiVaxNKcsare8Z5OW2C2kTGSw9ftJKVvU0eKO22ffs1J936nhKxQcP5qwu3NK4A4PDhI7uF3sZeA2lsBz7Ndyb0SjeX6xcBbF3g9D+dfCwWSJ5HcrFC01yc0kz2XpECnrrIcudS2QaGOkN0ju9oRFBAmhdm6FiJ7Pf/YWMNeJCUxZvpfn6DdtCgmsw4PVXBM8RSFAnCWEyn5zR885CZYMIpxyACZEipUbTEET9CBbkaSaXG7A3o7U8HqbW0D5vZpOb+qjLJq6QfyfJYTeDQnZsYcB07Bw2FrfTRaEQPKdp3i80SxszB/TRo0r95Jhn1KVVk5CL1WAgky/YMbU6lKCUJ7zqNaJmtauTx75ohnlra1ATnTH52qxchdCzrlGAK5ORAUkw6L8os/SXOef4aLlZZJO/g5DTOiBnICxC3RjyvKq8xNmnKSVHUxyswlgsaWS09QFB5NtOzBfXxadG4RuVaIfqHJX/ikBciade3Mfr0PSqK4fJPGY5BP+OGK/wB4BDQn2jo7Zh79pbKR5cY4rwyt4iph1iBWLUmsbSyZFDcktqzl7NU6EHADVCt12m1L4biVnYyZ7pmNFV0RyzNgfRLqWa2pA7mYZkyxgQ9/ZUkdIqO5RuWAI2R9hvI1aCkR5HuB8cIrOI+51mOdWG7gHpySoMIJCPnqnoZwIPfqXQ2kh372rMLsAnpjS4zbFMG0H/dL0Dnj59869Pw1sTbOo5xaYltQlylp9QUI4l3mEzuDMV2q39XgkVr2HN4f49KqNOiY2C47yow7zV9h0jAA3WeiN+4zqu7Yz/X06WZmXvjfZa8M2zLuWkpqociB+K+ntkqx5pTR/LcqKrFpDen7D+7jXiEOytPDHoCvnzUdiiNROyxqRSkP5GdoU
+ k2sXiXy9
+ qkpJYsR6QbSMLkjtwy+u8qs8QZtlSYC7SHJ3pGhbXzs/YNFAaU8A0Po918B1juTmIo7l8YcHnHz4q9qH8Q0x0YmgsRlCqL4KSI8pC/i2+M8nDd/4tUgSDstQYWEokVi/0qwu0RTKfezkePvgO8rkGmaW2fnDBjw3LSn61cdxevJX11MNQQGPSMA7RYA0ikdF4xOnBy/hoTLsacRh+HcEIO27ajnjpe+/x3rwbM+PdCPXCgQfl/U35mYJIQlZOZblnUjH0OmtHhZCEEFpJols3mvNTL5R60pTQmo8laCFmpoLxTCzWXMzY5tCrFZ0ghqZX4coFWjN3nMutnG/a+9AwWWvuYikPyX1UVxVrFrow7/lk9zcUOkiHB1YRWntCYDHsGqGkxuJabRKPYWavl9STsO7MXvGxLLBA52EG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,46 +123,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_apply_inputs() reads addr_unit twice.  It could race with
-addr_unit_store().  As a result, the min_region_sz could wrongly be set
-up.  Read it once.
+Extract the repeated clearing of node_load, alloc_nmask, and
+mthp_present_ptes into a helper to reduce duplication in
+collapse_scan_pmd() and collapse_scan_file(). Althought file scans do not
+current use the bitmap, they will in the future, and clearing it now is
+harmless.
 
-The user impact is trivial.  Sane users ain't update the parameter in
-parallel.  Even if it happens, the DAMON core layer handles the wrong
-min_region_sz (!is_power_of_2()).  Even if somehow the race ended up
-making a min_region_sz that is different from the user's intention but
-still valid, only monitoring itself runs differently than expected.  No
-critical consequences like kernel panic or memory corruption happen.
-
-The issue was discovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260714142950.100711-1-sj@kernel.org
-
-Fixes: 540a2aebc657 ("mm/damon/sysfs: implement addr_unit file under context dir")
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: SJ Park <sj@kernel.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- mm/damon/sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/khugepaged.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index b5fe036f78015..65a502c7746c0 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2099,11 +2099,11 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 	err = damon_select_ops(ctx, sys_ctx->ops_id);
- 	if (err)
- 		return err;
--	ctx->addr_unit = sys_ctx->addr_unit;
-+	ctx->addr_unit = READ_ONCE(sys_ctx->addr_unit);
- 	/* addr_unit is respected by only DAMON_OPS_PADDR */
- 	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
- 		ctx->min_region_sz = max(
--				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
-+				DAMON_MIN_REGION_SZ / ctx->addr_unit, 1);
- 	ctx->pause = sys_ctx->pause;
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
- 	if (err)
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 55157567dc4c..6ec0812210b6 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -629,6 +629,13 @@ void __khugepaged_exit(struct mm_struct *mm)
+ 	}
+ }
+ 
++static void collapse_control_init_scan(struct collapse_control *cc)
++{
++	memset(cc->node_load, 0, sizeof(cc->node_load));
++	nodes_clear(cc->alloc_nmask);
++	bitmap_zero(cc->mthp_present_ptes, MAX_PTRS_PER_PTE);
++}
++
+ static void release_pte_folio(struct folio *folio)
+ {
+ 	node_stat_mod_folio(folio,
+@@ -1617,9 +1624,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 		goto out;
+ 	}
+ 
+-	bitmap_zero(cc->mthp_present_ptes, MAX_PTRS_PER_PTE);
+-	memset(cc->node_load, 0, sizeof(cc->node_load));
+-	nodes_clear(cc->alloc_nmask);
++	collapse_control_init_scan(cc);
+ 
+ 	enabled_orders = collapse_possible_orders(vma, vma->vm_flags, tva_flags);
+ 
+@@ -2691,8 +2696,7 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+ 
+ 	present = 0;
+ 	swap = 0;
+-	memset(cc->node_load, 0, sizeof(cc->node_load));
+-	nodes_clear(cc->alloc_nmask);
++	collapse_control_init_scan(cc);
+ 	rcu_read_lock();
+ 	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
+ 		if (xas_retry(&xas, folio))
 -- 
-2.47.3
+2.54.0
+
 
