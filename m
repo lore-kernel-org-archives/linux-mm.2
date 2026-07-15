@@ -4,103 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C82EC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8129C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:47:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 094ED6B00D3; Wed, 15 Jul 2026 09:47:38 -0400 (EDT)
+	id BE07A6B00DD; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06D046B00DD; Wed, 15 Jul 2026 09:47:38 -0400 (EDT)
+	id BB85F6B00E1; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77596B00E0; Wed, 15 Jul 2026 09:47:37 -0400 (EDT)
+	id ACE756B00E2; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A75916B00D3
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:47:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3E5A1C0032
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:19:01 +0000 (UTC)
-X-FDA: 84990764082.04.1A3CE18
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CDB26A000F
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:18:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=uKHK81Vu;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8659C6B00DD
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C67054011E
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:21:59 +0000 (UTC)
+X-FDA: 84990771558.13.F11F03F
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AA55540003
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:21:57 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r3Q4haA0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784114518;
+	b=BgJg4dFkordjjtOMF1agpJ2GneZoCkvLh6XcyP9uVpTDrrKS/MtgSRGcc+UxS83YAT0gBV
+	a21o+rIpYBIPv06ITLRXyW6YL25e3d7CVBF3SiSxYR2OoFPUi3kpFEvCZKzmzynN0yCQRU
+	8kykdirGuKAKy+5meReB1hl3spNvoow=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r3Q4haA0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784114340;
+	s=arc-20220608; t=1784114518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/VBhPK01MeYx6vLCmjfrGoLn5wvn70sO6Tn27zDnhk=;
-	b=CLahY3lLSpvDx5GHWNeulC2yiwKJWaWwHrcfxup56CVCQO96/XVd75kyFWlPqgOq8JgnRS
-	K06aXZhN0sbKYsqevkCT1jObK9c5UJJ5P9LYi0EGVhJ2h1d8vQC6yK8t2u63xGuUZYPaNi
-	6iGv2RO6y0bwLtO/bV4YsdgN3DbCwvo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=uKHK81Vu;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784114340;
-	b=RLhoQbBYouZDEA6DzL7EAZyVzilBjBBanLiKTnEKUz8s1NLnuxmD9RdVUD6KC63p4fnJWD
-	AVaGZrHzcwrucT9zYzjA18KzJnL0UVsVbLklqCL9NMIG1rldK49ie9WwRhfQepnJa04uj7
-	xVmScGAGpy5SXpkMT3fsqnYFsQnOTss=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8284D2F;
-	Wed, 15 Jul 2026 04:18:54 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B4BFC3F915;
-	Wed, 15 Jul 2026 04:18:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784114338; bh=M7nWun3z+db3sBAe7iYaXrTLAK9O6JS/QNOYDD0lRw0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKHK81Vughycr2Fec3IOhaO6pqa5BpmtEOeHailq6wIswGpOLQ4C+aaS9XlvZ0xbi
-	 nEHkhqvkygf3VZQBfxA4v7HvSZi4GAEOBqlquC8V4znMgkmNArWBoC2zW38CKyjnwH
-	 /FUcGpSp76LzA+o93S4NTnGtMkhs3dE+dUq+rIrU=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: Dev Jain <dev.jain@arm.com>,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	riel@surriel.com,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH 1/3] mm/memory: move pte_install_uffd_wp_if_needed() into memory.c
-Date: Wed, 15 Jul 2026 11:18:34 +0000
-Message-ID: <20260715111839.1667914-2-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260715111839.1667914-1-dev.jain@arm.com>
-References: <20260715111839.1667914-1-dev.jain@arm.com>
+	bh=vuZDUV79ZgTnqtJKP5GUBOq9cZrf3SO80INLa2FcDD0=;
+	b=QXuGWzexibjhHjNyqc5+Al2tvjvZDjBivZuWne1R5ATsaZrvkd0yEbYnjfb9bVhyn1z+b1
+	XGTeo4qsxJYWwqt69iyJGn0IfRDS9xXcqe8AR69heCyMWvl3vRJ4APlJgNU7q3Wkxyh+dt
+	oburyVOjlffbOT8V/UhS2pQ131MOYBs=
+Date: Wed, 15 Jul 2026 19:21:47 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784114515;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vuZDUV79ZgTnqtJKP5GUBOq9cZrf3SO80INLa2FcDD0=;
+	b=r3Q4haA0HFuVl2emqUbDWIJ8/hC/gXaScj3Bw8OCGRSI5k2pNKOJw6thAY1RNIzWkgQ7ay
+	NUnBoZLvcJFVnTEqo0qR63zh5GvdwBZh4gCnbIi92JUuI785/LSEQ1soPPuy0kDFN9I9eF
+	7ZADhA4EA4fWjw50DaDKkryssDljCnE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org,
+	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org,
+	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
+ via Redirect entries
+Message-ID: <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv>
+References: <20260707082614.95030-1-baoquan.he@linux.dev>
+ <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
+ <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv>
+ <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CDB26A000F
-X-Stat-Signature: rxbid5jmgi37f9k3yzxm8hsz9kfbasnu
+In-Reply-To: <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: AA55540003
 X-Rspam-User: 
-X-HE-Tag: 1784114339-49067
-X-HE-Meta: U2FsdGVkX1+OAUCDNm53W+RvCThL3MPQI3NDV6J4QJF5vLjwqOJ9REZk9iL7SpvEpUmcUXEC0ScGXqTvLWqj+0HKIJDaI6Mds6K7BDYPt8FOdSE36/bMHxQAm7eMXqFErb2CQ4EyIOnSTl6wtJ2GEVujSYIBib2kBeAls5PGhLvXTxSLoQDU8fFrsLrtK1BPlwq5Z/HlGt+p3urE16npePUVjqS8F/GNB8+s157fhVPw179arMrF8ZvJp0R+WRCD7McFR3U+4sZBwko+Nqj7T1dGZb3mghJ3mNzO+sq5vv91C9znbMAMb6lxXVpwkjtXaThVFRSkXhcSohhl3GLeqOk1NZ99X8a+IPlm4kBzelTEEobeIcoXHdGMk55G/Yp4Sr0nL6naYfmBfes8f3Su/HZ3NbeImA9J4NkEBP7UxZK/7H8m9dp42WUgtzA8VGPd1Ozgej8uyxo+xLW6I8Hds8ei8hpTLjQgMJNEWnkXFJ354EqbqNVHNOsZWgSA0mpDfnI0V0tepxQQxJA68AVrDmp6VcHuESakzYRMHFb+gp14IQHyEjkuPwP4PdoZxp100R0dJfaTUt6YwU/TX8Urv/baBExTQcBID4YOqk3yS6umefZd5W9riOpFufOqG/9DmJmpyOM7vwrTGy/yBcWnWWEjiPGGyU8OFBYbNUm043iTMsnf/wuYrrOadKTyVtvoA5gbdRW6xdm+7NlQPhMsfwotZPbE9FpztdXi8jztC059qDUTe/nYMkcs5TPqW9UuJ7GGQ0BAX+D36a34G/HukXK442496MXzzEX9NiTll8Ez1rxgFVd4GtIi4psp3qEmWQEh5yYKKCK8F00kEwiGUYg/1HdjxlN02ylHHmv19dGk4HpHl2N6jsh5FHot4iyqdzQiEdqlZfbcNM3/Nf+VJz1Tb7y1R+buXIeHzkRH2bWLMTn+B5g4G0Kmg806cPYsJ8cCAB/7XnfSKI6+Mmz
- jJdiZDsT
- HnWGjKHM/9iDJX73MOoNfY/4MX4cL3wAcDzmffeDErZGs/U5dRiFyAkrWpHoLFlRl1Ta3EX4Bb2PC3lLh2IHVsjWF2PagTa9HLJEricCfk+IzwnGYuY1Ov7z1sJ7UYvfjfoj8B+3jgOakSMdj6CzYHy/v0c9Nm5pVxjcIHguc7hlxholm1o7S05OBX6DylVrUpIZsYBtxiWRGa51A62VIZMPWLecTxljdA1oxKSDvcUNIJEK8lccn0dVqpaJEq/H3WK4TDIWjsn/N6bXwbxJCN4cE+wBJfPZ7bDJygxyq9pNCSi8=
+X-Stat-Signature: mqpyypknymraf3kamkeze5apww3dz9qy
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784114517-947974
+X-HE-Meta: U2FsdGVkX1+bOrqrFSEuJC9nd1uNCQgHtoHL8pItJESLBBX9C4SDSdLi4VGQ97d7OuAqwlmcCuRlpy1BhA1Tb7XYPg7YWODBH5hnuYtGq2KfxlHIDhNdr+2C2zjLnsVBySgx7l0smXQT/ditG49EIwvS2+bOPsB4mIqz5KDI2gEXu2yRajOuF+SdKsPLBoVb6sbw2FPHB5Nfw1KlFCk5RiT/M7Da1hRSNbywxAoTtSIOCr2UMFTUZNqNIyPALdXjD3a66OBGx3+AUPctgFrpfTCtj0n+hyPQYBuJ1p6sgJYromzMxLBhj5UcvMgDhuw8PhhAEtuAaxmZdwGAHyPRO4p1SAIfeai9W3s0p94Xo94l8ZOcMJgMuLrPtPv/r7QUlbCqfmD2ltH/zBTTQx7Q2X9k1XnFDhl9PhVdPhfPLpaoIVb8jenjj7R0dou06Gdni5rRFVNcOeV3zi94+DW8DfDfLm8CQSG9fdt2+nSm5jbI1O8Ku7WUkQH79x8V40/dgNhx0WZEpeym5c8GeTr8cXQyyKMBoMhdZOWMRNCeya9Q5mVo80Fn5U1kqeG1Hg3NOS7DHrufqKFE2rrS/FRNJUfVXm69Aky2DedsthqAiJVSXoOoKzmBXcsfn1LsKWvrxX7BrFzNyOxc3Gs6BTVfpdt4WUPQMXyXdYf9t401BHWdth/5Re19UrzuDrs3W7s0VGekOaATK5a2vAgirafayNgP3yIQjOjvCV+6CN61lFZPIDX+Scb0WChL7fXT7Ik/gP480zNgnImZDH5FG0JU6USWz2apXMZ4PohhJHAw6XgpZHoMWRl1ZNlS7WmL+1s5NFpCqtqq7FPmyLBq/sM40d0puISU6Aacu6MsdUHmMtj4zIZbg5mineyPfnOQ4mMzyuMXR65DBJ8K57PR7aazaLhHpUweCvrBDqEL5ZJj4yWJkdUAy0ylmYwyZ7hD2xW5XshRq9IMFZhqoB0lyYQ
+ z7xMipRc
+ V985aWd/zY4M7XqLSZNOim9HLnzctgyQeFGJlPxvYkibQ/fJ4SmN6lJ3+7uFHeHs3H989rrmtnsiaMiQsTWm2Zz4MH+uuV0P0WoMERbysqOq+p3Yf8373Zms35NVXnn/Oi1ViaI1jTT5nzCsGErveSzWM6icsF1ySe4kp+SDiTWdz449virPFUgSiKCnQZb96TbYp5I7Em+HQSyO4JoanukETL/gQNl6KhzXGjuONxljHAartzwZbjdD+N4G4teRsKO5aPwpJsDs7ZXhrAbET/Y14uA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,167 +95,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pte_install_uffd_wp_if_needed() has grown too large for mm_inline.h.
-Move it to memory.c.
+Hi Nhat,
 
-While at it, convert the comment to kerneldoc and rename the local
-arguments from pte/pteval to ptep/pte so the pointer and pte value
-are easier to distinguish.
+On 07/12/26 at 05:02pm, Nhat Pham wrote:
+> On Thu, Jul 9, 2026 at 4:39 AM Baoquan He <baoquan.he@linux.dev> wrote:
+...snip...
 
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- include/linux/mm.h        |  2 ++
- include/linux/mm_inline.h | 53 ----------------------------------
- mm/memory.c               | 60 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 62 insertions(+), 53 deletions(-)
+Sorry, I won't reply to each comment individually. I'll just leave
+a summary reply at the end.
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 550fb92957d18..a71341c44655e 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -5406,4 +5406,6 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
- 		struct vm_area_struct *vma, unsigned long addr,
- 		bool uffd_wp);
- 
-+bool pte_install_uffd_wp_if_needed(struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep, pte_t pte);
- #endif /* _LINUX_MM_H */
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index b5c4dc0f3fe32..621c8653d8f7e 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -566,59 +566,6 @@ static inline pte_marker copy_pte_marker(
- 	return dstm;
- }
- 
--/*
-- * If this pte is wr-protected by uffd-wp in any form, arm the special pte to
-- * replace a none pte.  NOTE!  This should only be called when *pte is already
-- * cleared so we will never accidentally replace something valuable.  Meanwhile
-- * none pte also means we are not demoting the pte so tlb flushed is not needed.
-- * E.g., when pte cleared the caller should have taken care of the tlb flush.
-- *
-- * Must be called with pgtable lock held so that no thread will see the none
-- * pte, and if they see it, they'll fault and serialize at the pgtable lock.
-- *
-- * Returns true if an uffd-wp pte was installed, false otherwise.
-- */
--static inline bool
--pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
--			      pte_t *pte, pte_t pteval)
--{
--	bool arm_uffd_pte = false;
--
--	if (!uffd_supports_wp_marker())
--		return false;
--
--	/* The current status of the pte should be "cleared" before calling */
--	WARN_ON_ONCE(!pte_none(ptep_get(pte)));
--
--	/*
--	 * NOTE: userfaultfd_wp_unpopulated() doesn't need this whole
--	 * thing, because when zapping either it means it's dropping the
--	 * page, or in TTU where the present pte will be quickly replaced
--	 * with a swap pte.  There's no way of leaking the bit.
--	 */
--	if (vma_is_anonymous(vma) || !userfaultfd_wp(vma))
--		return false;
--
--	/* A uffd-wp wr-protected normal pte */
--	if (unlikely(pte_present(pteval) && pte_uffd(pteval)))
--		arm_uffd_pte = true;
--
--	/*
--	 * A uffd-wp wr-protected swap pte.  Note: this should even cover an
--	 * existing pte marker with uffd-wp bit set.
--	 */
--	if (unlikely(pte_swp_uffd_any(pteval)))
--		arm_uffd_pte = true;
--
--	if (unlikely(arm_uffd_pte)) {
--		set_pte_at(vma->vm_mm, addr, pte,
--			   make_pte_marker(PTE_MARKER_UFFD_WP));
--		return true;
--	}
--
--	return false;
--}
--
- static inline bool vma_has_recency(const struct vm_area_struct *vma)
- {
- 	if (vma->vm_flags & (VM_SEQ_READ | VM_RAND_READ))
-diff --git a/mm/memory.c b/mm/memory.c
-index d5e87624f6920..98b3ace15cef2 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1675,6 +1675,66 @@ static inline bool zap_drop_markers(struct zap_details *details)
- 	return details->zap_flags & ZAP_FLAG_DROP_MARKER;
- }
- 
-+/**
-+ * pte_install_uffd_wp_if_needed - install uffd-wp marker after clearing a PTE
-+ * @vma: The VMA the page is mapped into.
-+ * @addr: Address the page is mapped at.
-+ * @ptep: Page table pointer for this entry.
-+ * @pte: Old value of the entry pointed to by @ptep.
-+ *
-+ * If the PTE was write-protected by uffd-wp in any form, arm a special PTE
-+ * to replace a none PTE. NOTE! This should only be called when the PTE is
-+ * already cleared so we will never accidentally replace something valuable.
-+ * Meanwhile none PTEs also mean we are not demoting the PTE so a TLB flush is
-+ * not needed. E.g., when the PTE was cleared, the caller should have taken care
-+ * of the TLB flush.
-+ *
-+ * Must be called with the page table lock held so that no thread will see the
-+ * none PTE, and if they see it, they'll fault and serialize at the page table
-+ * lock.
-+ *
-+ * Returns true if an uffd-wp PTE was installed, false otherwise.
-+ */
-+bool pte_install_uffd_wp_if_needed(struct vm_area_struct *vma,
-+				   unsigned long addr, pte_t *ptep, pte_t pte)
-+{
-+	bool arm_uffd_pte = false;
-+
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
-+	/* The current status of the pte should be "cleared" before calling */
-+	WARN_ON_ONCE(!pte_none(ptep_get(ptep)));
-+
-+	/*
-+	 * NOTE: userfaultfd_wp_unpopulated() doesn't need this whole
-+	 * thing, because when zapping either it means it's dropping the
-+	 * page, or in TTU where the present pte will be quickly replaced
-+	 * with a swap pte. There's no way of leaking the bit.
-+	 */
-+	if (vma_is_anonymous(vma) || !userfaultfd_wp(vma))
-+		return false;
-+
-+	/* A uffd-wp write-protected normal pte */
-+	if (unlikely(pte_present(pte) && pte_uffd(pte)))
-+		arm_uffd_pte = true;
-+
-+	/*
-+	 * A uffd-wp write-protected swap pte. Note: this should even cover an
-+	 * existing pte marker with uffd-wp bit set.
-+	 */
-+	if (unlikely(pte_swp_uffd_any(pte)))
-+		arm_uffd_pte = true;
-+
-+	if (unlikely(arm_uffd_pte)) {
-+		set_pte_at(vma->vm_mm, addr, ptep,
-+			   make_pte_marker(PTE_MARKER_UFFD_WP));
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * This function makes sure that we'll replace the none pte with an uffd-wp
-  * swap special pte marker when necessary. Must be with the pgtable lock held.
--- 
-2.43.0
+> > I think VSS goes beyond solving the "zswap without backing store"
+> > problem — it is fundamentally an architectural restructuring of the
+> > swap subsystem, with virtual swap as a first-class abstraction layered
+> > above physical devices.  That is both its strength (comprehensive,
+> > future-proof) and its trade-off (more invasive to existing paths).
+> > I respect that.
+> >
+> > My goal with ghost swap is different: address the immediate pain point
+> > with the smallest possible change to the existing infrastructure.  Both
+> > approaches have value, and I hope the community discussion will help
+> > identify the right balance.
+> 
+> That's because I believe "zswap without backing store" just by itself
+> is a bit narrow of a problem. It's certainly nice to fix, but it's
+> more of a nuisance - you already have userspace hacks for it (as I
+> mentioned above).
+> 
+> The problem I'm trying to solve is to support:
+> 
+> 1. Writeback.
+> 
+> 2. Dynamicity.
+> 
+> 3. Decoupled backends.
+> 
+> all of which are motivated by real production issues, not some
+> theoretical problems. I'm concerned that if we only focus on the third
+> goal, we'll dig ourself into a hole that prevents us from solving 1
+> and 2 efficiently down the line.
+> 
+> >
+> > Thank you again for the detailed review — it has already clarified
+> > which parts of the design need more thought and documentation, and will
+> > make the next version stronger.
+> 
+> I really don't want to be antagonistic, but I hope you'd take the real
+> production pains that we've had (and have tried to communicate in
+> multiple mailing threads, across a timeline of almost 2 years at this
+> point) seriously.
+> 
+> Collaborations should go both ways. I've gone out of my way to try to
+> address the concerns of various parties, from spending *multiple
+> weeks* testing and investigating performance regression on zram
+> backend (which my company does not use), to a rewrite/re-design of
+> virtual swap to accommodate parties who wished to opt out of virtual
+> swap for now.
+> 
+> I hope you can extend the same good will to our needs :) I've included
+> you (and other swap folks such as Chris and Kairui) in my cc-lists. If
+> you have concerns, you could have commented. Instead, you decided to
+> send a patch series, which is basically just the ghost swapfile, with
+> a bit of afterthought to handle writeback and dynamicity, rather
+> inefficiently (no dedicated per-CPU caching), and not even correctly
+> (the lack of rmap means swapoff / swap-cache-only physical swap slot
+> reclaim is broken).
+> 
+> I respect you and Chris very much to assume bad faith, but please work
+> with me rather than against me.
 
+Before I get into the technical discussion, I want to address something
+you raised at the end of your reply — the concern that I'm working
+against you rather than with you. Our paths in MM simply haven't crossed
+much until now. I can't think of reason why I would want to target you
+or your work.
+
+I respect the work you've put into VSS. I did check it. Honestly I am not
+fan of it. In your v2: 2244 insertions, 250 deletions, 15 files touched,
+a new 455-line header (vswap.h). While swap subsystem has just absorbed the
+swap table series. Then another 2200 lines of architectural restructuring
+on top is added. Not sure if anybody raise concern about your solution,
+or anybody suggests other directions.
+
+I posted ghost swap because I saw a concrete, narrow problem that I believed
+could be solved with a small change. It makes decoupling and dynamic
+growth with the minimum possible mechanism.  Writeback is explicitly deferred
+ — not because it's unimportant, but because it's a separate problem that
+shouldn't block the common case. With my shallow knowledge, it's optimal
+solution to the encountered problem. If you agree, you can change to
+Otherwise, please continue to push virtual swap forward. I'll stop and
+wait.
+
+Thanks
+Baoquan
 
