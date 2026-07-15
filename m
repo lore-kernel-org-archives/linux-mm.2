@@ -4,145 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A847C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 18:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09B99C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 18:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EBF86B00B5; Wed, 15 Jul 2026 14:06:56 -0400 (EDT)
+	id C8BF06B0088; Wed, 15 Jul 2026 14:15:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39D4F6B00B6; Wed, 15 Jul 2026 14:06:56 -0400 (EDT)
+	id C42306B008A; Wed, 15 Jul 2026 14:15:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28B606B00B7; Wed, 15 Jul 2026 14:06:56 -0400 (EDT)
+	id B04CD6B00A9; Wed, 15 Jul 2026 14:15:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECA176B00B5
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:06:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8278C140297
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:06:55 +0000 (UTC)
-X-FDA: 84991791990.25.2EEE6A9
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A62C712000A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:06:52 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 719016B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:15:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D736D160260
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:15:55 +0000 (UTC)
+X-FDA: 84991814670.06.4B75562
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 240CE12000E
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:15:54 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ep4rwIOo;
-	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XyexKePB;
+	spf=pass (imf29.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784138814;
+	s=arc-20220608; t=1784139354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qngtohDCDGKOAZ2UVf9Yg6jMkSiGUEfIvWoLem96Mp4=;
-	b=HUJNPjtOfiwzQfplEqCV3gn2NpoF1K3GHxSUtUSLJCgrQ4QgC5NCE2+x1lAHXzO+gAOVTR
-	WFlyg9pMV8kKzNUtWgEHc+9dyvGrJpUrdReCvk6ETTqvm7HxOp3LB+a3Vzj6/WI9jVhh8h
-	wC8HJ0eGTs/S3XBHMveFg48ZMa3xWTU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=o8cXs1v6rCZCT506ix1H6vuS6eKjBp0nDmZrJvk5ap0=;
+	b=czUF+5KLpf6kGILkUZxjdooChdtYVC+Tp8llWS06boBRXzvM9mzQmMi3dZfmj8G8pLdoC/
+	x/jvw/KeJ97ZudsZ8AndCj1GGHn/izPltMAVuSJoFZ4uBJKzGQa+X8iunqXrwFkJ9hN4eu
+	Z+g/m/Cbr8pyaQNrYjuQlDFm7MvZLWQ=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ep4rwIOo;
-	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XyexKePB;
+	spf=pass (imf29.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784138814;
-	b=PyPaSOWt0/cbe4XkuMZmpKpxDne9JwxxFsdl90aN1JFkuyj09JfJ8CalF9T2SMK4TLSSuo
-	UwcU4Yla3g4BDhKKRPq1dqnwB3kQlNATW2+pnrG5EkSL3Jbxqs0WPoaZriZgxZm2a/Q3R4
-	n8xxoh+cM0uCq1kVSTVaqiUl0/cNilE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qngtohDCDGKOAZ2UVf9Yg6jMkSiGUEfIvWoLem96Mp4=; b=ep4rwIOo/ExvDfJmbtyA8cKzMw
-	0K/f7VDtaU/DLWnU8uwYuMWewE/dC3S1ac1go5eVbtwF80qPWn5KvA3OvHqfcuRIXpW4OY5odfN5U
-	weSzRKDDHCZ2JEhPfQKlDUbJQdhIg5wO+rloHvOBdYg7m1s/mQdTBwtZ0KOy4bDybM+1nE6KlB7Ux
-	57bMIakkBMvb4B9//cOXUVMiSdXw67CFBTK9w74YZdPjPkP37w3eKwbO9XcT9HNqvpacpkQaqu1I2
-	3hGgEFOXqCguSeUIllYGOWMxmlxPIA4nF3mzmcU+fuz7v4+2Qrd3UJCpm6P357Gsn91/sNfi6dOHa
-	ZDhmCkMg==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wk3zd-0000000FcKu-2dgd;
-	Wed, 15 Jul 2026 18:06:01 +0000
-Date: Wed, 15 Jul 2026 14:05:42 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	SJ Park <sj@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Peter Xu <peterx@redhat.com>, 
-	Kees Cook <kees@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Christian Gmeiner <christian.gmeiner@gmail.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Clark <robin.clark@oss.qualcomm.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Christian Koenig <christian.koenig@amd.com>, 
-	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, 
-	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev, iommu@lists.linux.dev, 
-	kasan-dev@googlegroups.com, linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	Russell King <linux+etnaviv@armlinux.org.uk>
-Subject: Re: [PATCH v2 01/33] mm: move vma_start_pgoff() into mm.h and clean
- up
-Message-ID: <uqfnbb7knn5gs2symluouczdbxehpwuubek3ypziavv776jncb@l7r4zlatslxd>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-1-2a5aa403d977@kernel.org>
+	t=1784139354;
+	b=dbW3e1OY5b0KnMt4zrSUTq2zCSxlTHQXOHF5koptfq+wjONWXpJoUDeZK9M9KnMr0zYi8T
+	gdBMdXtKbKloQgKjZ+UOhKWgTYSoO7PVdqCkjNm6CSl1f0EZ5ZgAmL8MNBSt/zEmD8lF5R
+	IvZodJ5SOH5ZyF5VQiWjSKcAfxjKMWY=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cacf197759so40552625ad.2
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:15:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784139353; x=1784744153; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o8cXs1v6rCZCT506ix1H6vuS6eKjBp0nDmZrJvk5ap0=;
+        b=XyexKePB4/HlIPUPdL6bCIrtujgh2zUTaZ4b9idkCStJTAJMaTxpFhW6ZCiRiVoh3O
+         /olo8U0lyACu3v+PWnRsmBSEogOEXWXuj++16lPhuU69s7u23E1qvAKM/3fNNytbGmDb
+         Q//pPPe+RDvq16M9T/60innkS2kBu2NliQI9+oun2Rjsa40tWhpedSez6yINUWMk8Xd8
+         ckseaqCVHio8UKwEXTUgSjy8UhbCkr+ssTN96EkAEe6H/9kJNPFlHDtWYu0MJ3ru+fKQ
+         fwp4pxgZe4Gfsx7on2WHJ5FCBZMUHGkJEZJ9nUAQy19Y6BRANxJK88FcxdWKMKUv7l3z
+         hokQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784139353; x=1784744153;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o8cXs1v6rCZCT506ix1H6vuS6eKjBp0nDmZrJvk5ap0=;
+        b=AMJHV3IC0t9yj0AILwiFJITgJKGUIzgBaGPeD1V7f2bvnrSUMMl4dKbraj05/VOEbR
+         zfC6BwMQcn27GK+CHtJmBKfCkFLT4d5tt5A3zxsGX8upxLIvz5BfW8zE8GNruGq5AT6e
+         cy5cXEtfPke6f6iIJCi/biKcRyMQ3FpA0ohld8q6qtqulvcxeE5KG8cmbfLqRUGOQhKG
+         d6pLRbF/GWDM2lo5rKgY414Supi5W6+/WrmDuGUFbPhXQbe3Rw0QCpZ+OjmwXwQms3zz
+         /IoiYIDdWWhfQ99+E/ewUdFlVNMGsUFAOcklAtJHhlp1RHnKlnj5gveIIPe1ISEiuxPw
+         cOOA==
+X-Forwarded-Encrypted: i=1; AHgh+RpjYfgZB/i20G3ohV5k5WrBhqdtuqF53Dt2brJ26RqGMgkwuO4FA+tk0B0WfNOMMnTqxX2LZkr8xg==@kvack.org
+X-Gm-Message-State: AOJu0Yz9mDmCDknjE3w/hYQ0CRl41opHwjYo/h0QTPl/wSCzNd45WKlv
+	MEykk//EI3Dpb1PSvedYoM9+yWed8Kmb2Fvtcxo7kf3i4A6DOB+EpdIe
+X-Gm-Gg: AfdE7ckFKV4bfbxE4CSiYtFTkpkzRpyKF65SQyKhQzHC7m1uIEj3APV7vAGyTtgTz9s
+	XPvkyhK44fmxQ4nVOasXGg0UIwPGZjKManCn6Q9BFIilAmu/pQFVbPQEuWQ9r0aXBUHsfQAclqy
+	RZkTIxfK2hzAHfQjTFtQuv8kuFP1RUlYx0IFeg3CJM6sdKL6RYZQN4KCTv6uHiyXn5Q1vpc6TYn
+	yWMcVGSj25WeVWiv/qll9VlU1gy0u6emxEuPRoBxn2PElMY4ZkMKEUlrS0MHK58S8aSIFqbh6d/
+	9svSD0SXUU54asBmYw4pFpNoxX+yMgwY77oVLDCzciIUoeVfW2kbr+9Bmmoy92COfZYa2XpRThW
+	ZxQseJkyUxf3WdCHhgfjkm0cCtB+bAG3weZHjzk/LfyktxkokAQDwZt5y776XBi0he0QEu+eHKa
+	2YKke/hSIZrLpM1uekW/tOgfeW1iekltGZ/ovIe8P1FGGmeQlcTsejotHUuJE+LLBC57giCg==
+X-Received: by 2002:a17:903:19c3:b0:2c9:97a9:2096 with SMTP id d9443c01a7336-2ce9f05981emr195144115ad.42.1784139352792;
+        Wed, 15 Jul 2026 11:15:52 -0700 (PDT)
+Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf1055cde6sm6969345ad.52.2026.07.15.11.15.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 11:15:51 -0700 (PDT)
+Subject: [PATCH v9 0/8] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
+ corbet@lwn.net, dakr@kernel.org, david@kernel.org, decui@microsoft.com,
+ haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org, kys@microsoft.com,
+ leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
+ longli@microsoft.com, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+ mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+ nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+ rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+ skhan@linuxfoundation.org, skinsburskii@gmail.com, surenb@google.com,
+ tzimmermann@suse.de, vbabka@kernel.org, wei.liu@kernel.org,
+ skinsburskii@gmail.com
+Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+Date: Wed, 15 Jul 2026 11:15:50 -0700
+Message-ID: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-1-2a5aa403d977@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A62C712000A
-X-Stat-Signature: gzy9fqzd1qx435w4phj1sut76sc3sfkz
-X-HE-Tag: 1784138812-328309
-X-HE-Meta: U2FsdGVkX18bySgdjPk0FNwD/IETw7NztPd6l9yWadzRjmm8yzWJupWmKyg4MAtp5YHF6EsRhdhIYr8G6GIBzanBifLuDZrX0SayiKmQiJEYQF3vQ7/dPnHX+aCj71ACdYWJhSAPjREkslUERp/CcsMdSuZlbbFdZrwsr4JEv39wyi0phHjpTjLl4IlAySRPZpxz5BIWSWUnk6TSa94yuYb82cIoLDgF0bY8arJ2zHULG5K3svGmpfGuS16zPzASRsGzLxEKIttb6NVatdLTyJ/boLAbRnkGaZWOX1l8dscjnzZuBXJGY0SO6RiylG8tgEQdpENy+hAklxuHrHBURwRogmvsTSPCNey6b2gLmPlqI3Z/MIzswtJYHcXIRXJaMI49LCAccXOu8cVM78qmqzbCrajRhvehj9x9DhK2WbYN/5LEN8jd+iCUVFhKj6aHOUtJEQ6LlRzCSCHcvu1U3ZJo1HUbPoUGNywnhjFKT1cZzfCy67vlLrUo4ZB4lm47nwWm9IxkkzZAzDccW/gHvphyGE8tlXF1hEOWXZT+tUnSC/JXTg+dJQADgaY5RNAWSxf4maISNVGoa495imVJqAoqFopWTOvyvtC/NJnbkluOomB/6KYU3g+udQr3LoslUcYBGp48uGvGmNak65ZnE9XdmQ0n0HGjvy0OTPJTPei+fqH8ZfrOH/Nwd+OxvDG78CpokLbt6veT3KGUWcrMv18banOfci/1WCcinyoELEQvPO3wDlUesn6Un/unJnF1QW17ykL1EnBJ9bKS36xv9HGMA+wQqTSRUjJrmp5fzEGV3ZIgmOZst/Wg+AXuITHWi8Cw9R2N3K+pwSaBv93WG0LRUvygxbpviajHlo3hJPuguhJGQ4vcJ7tyNfGE16s3qHgAZ8tG4IgU5g+SknCFD272P6moiILYPq6gXJIINYGg/7GIJdxLxt9iJ0Rh3p4Yhcxtc263PveUY8IMfx9
- igcWnw3M
- Z7I7mWzmtyTwQ0DS1iOWjQVg0kAYdLcWYYYuDU1d4piLU8/ffMg14HAEMI2OFBpF4WhhAFJx32RtaRgzri5YYj/elBcgpDtAXOEuQmkH5CiNhTKXycMA65pvTVc5dMT6rIJott2kENiJylrRfdpV6uh0BN/Hti4pMbvqOxtOR5TE7Za1QSzG8X2ibJPvwNItrG4raFqgfSwRZvklzgjjxthorrggUyMDQOWMQ9hnTQaH7oSXTtCSynOyDEaofIRPqaWYcA8gDIJYyte4F4JIxj0X5zaBZmQl7DSGBNelcijmJj516ij8qoB0NsGPykF5unT880d4leVTOSXqoY5WmSsoRyMRvvVXfS0a2hlx24nLNBbCXxB9xrCuuEyuLQvhSY/JRRruRUSzNBBf5fVIIfTCSfUQ6mOLZtR6Juuvcmds2WMY9PZ6i44CW5BIuCxFfT3Qb5rhMmuQ9h0TkDd9DeCidCKQCuzMut0+yaMhJkP37f5mtnKyc4YAuzwgUnrZ/4HeQ7FpxmSNAS1dErFUfkPWwObjiX6WLuPqULbBEPTS/BQACE31ENlWKkJuyI89gG0Ii4Abg88Elw51S3LXYgrcM2SYDvgqG+VR57Tm/x2/kxBW1W6Cant2Ku/8sXQNZEZURp+sS1bxwM9z3lIWoxTLWSV5q9Uhm8UUC7tV6tNFhG9e4GmwL5SUB34ZjYyVqTMAQKk7ZzN2Hio/zIS0rEIKUs7MzZcBIX0JEwX0amsimX6g3rQmaTZ7P3KqReWXv/5o9dXoFHlO/ekXx+VYegZrwV9L0gUjITg23iJ4d+Tw8IvN2XUiY3K239qooYGW/Cos2ZpLb/J5STRqe432A4R/ZVYOrYqIkF8tZHR2pg3Xk/GJR65HEA8Arz9bOROO5JySzla7F6qoX5mUibV8d/iwaG2c45R27kWCYeoKvoyAOtqwPxGc9E5BKgpkHA1mk0eJyCAQZMUGEgwK09bJFNPQiGCWd
- f3KMOOaN
- VjesShI88NDA801LKrS1Kh/lm8c1ftvIlHjLtNXFPWpSIufOW7u66LPb5YSZ4XyqurcSAjT380Vfv4d36tZY7HkNwZXZyoXJ2vLhcX54MNzBCLuB2dRlgfqcDxl8qQkIqepxxcYsB1ZYioJgronBti4uOXo6XFRzSfB2Z5EM6FyXjVrxi8+j61mpsDXInLXHbMxx2WNvCvg51H/GQRlxR2JxG0uVvOQVy3F0ajqaxudlwLZ7mnjQbNFZDCrPNXOraJ6wHLRigbhHxtAw8+UBPFYqLZk7c0Lec8JxMhZIfkkWu54ZE7pCkESH+hSwx1/QhHbo3geQ/+6vKlHYHK+7clIBeWgjKJ3Z3RTJM1OGITmGgRNosMXpbAxIG1Pz/TlVdwdQzYhl/AUvqNOwwQ4oT4R+d1JXTOD/647M8sCEAmcxuXeBgB7wvnXPAc0NcibC7csVbSYdAAjaEdS3P8lD8VUAOGLTsc3Jd4QxMvXJfTtVQqyhiDdMRhIfhkAigqApveQVLz5onHninzEPHmcQ7d6v1ItKTcNP7ePTItI96E+Nd7+TDXC6hAaZnsyzS1L8JVrcRHQhoKgRmlW0QjBrVRYCn6BJcwlUDYlv/D/odAH9JO5AM7eEi4LCYlX8+KXSeMsa6A5GVR10vvxWVoadTPjS57SbgwdDQxLn3AgqVjYYKU2lRpTFch06SErbyKa7t6ezzKT6Pc6BjXSePCbC5VpEHG+1+5ggngRMlvuLCiimyCq37Pk7jI96oUWYu20K3Xa2BJv4GtUcLSJXzx8zmas5G2UIBkqW7X+TluqsQrHgl0K+BskeAwvRqwa4LaeCcjpbz3+h9WTvkh5lD/xqMKJ2hzS5pH6+LGAG73tEwcCh6HZp/Hn/+6qRteD84mMcbSAQ2R7GXMRcxQBnSrG9QV00S0qiI1b5fiyXAIcJMc87Ow+Yjr1ctVopI2kXsRxSizFMKy4f6wqlAu0um2DX5DEf8R2Tj
- uKBfT04v
- Kgiy6SZZCsx2LzoQDoKSG2u4FruH8tW7rmP44dbSAbpSrPBGODEcejokC6FQ0a+rHqrBSI0hDMGLmbyvOI/GclhI8ImyOZ8XOVAV7FOtTEyUX+KnazPd3iundkeTplaevLiTejmZGqqT1Jw+SWLOSAH9Uuoh9v2Ym7AEFQCpvmEaBeYD7Qc+UkdEyDXL7hBrYqioJ8KzGgInI8ajgxg/KRpRYVmylk3cauWFLxt/aFMtQDfHvHXUbaScdN+DCfe9NKNeTCPDhKEY655pPsEsf9JkSf2q1np9WOuINBF8sk2hnqM5ohyyfbiTm8MFCP+24q8Pi28/u0tooagFkuesO6dnta93xiXCMsOg/Qe4IGdAm9r+8cywajkMmczqHPklGJp/4rD6uEvm7ERnYZE+YWBnNmuGbolfTlRcpFKQvZMctOXqCYULzrjw62YuaTklL8tehibW0jx2Y9hbv1qGoKTQvk1kql8wnAjq5Qym5lmP/5SgeSL53PJuspAjfuRDjHyMOoQzBZLlq9Nb5KijNNsiRKSeoPyodXc6a2XggsOhJ87oEa/acYDho49ZuvgrzhZ6aStepGiXSqsn45IvShiK63pXHS18aF28WUkfTGpcGlCECiaE/i7GJJYVGqb0nJBZZYuyAH/Kfy0nDooDAaTpaJ94gucXzLtj8UHvEUVIjePjYa5QZQnxSw45FVlAZmXBdC8lApAxQ2MaEnuQf5ay5eaIx/wQYv4SMzzN+4hVYKn8RZTCIqrN9rr43k3qD5Dz61w1MNgcv9DjZPsKKNJelVucjlwgZbEpw/FsKcKJ66Ylq4zsF7dSPaKe59noSSPmU2Aw2PGWnrypfZJrbK0So1sXm75wyJaNdRZNX6LNTUSqHjk00umqro3H8OOWbiCCXRMGzbd6TmG3UyrlDQjRKmcLEyM5ONpcd4oWGFpgfbZIHHQ9QjbcIp3+rbzxceHzJDow7897uIate7+yZeZkRxMRE
- m3UnlT8T
- uTO0QrCoNHYIHy/W/MqZwEmfoIomxfx818JCpzUROHDTP75IdQ3kAZm5f4BAygf4ouiWXLN5tanzl/92PUw8oWhnPorn6Fk+Wc7IJWlwc2LVQ+csld6KME4WcA03nEa64eLrgNgVofhI/ghPRgewy4AwFHkLkPskP47au5TTIqWIeomG0ffEa+Dw6GwVb4WYQXYP4ss7Rk8ybU8zv3ms9pX9JIX2nuBwURgMtOK9zjSQ1QLqVsZ+ATgVufwxmlDNhmSLdDm1DcFY8Atsy0kOXY+o86olpR8NH8KlWKPLzmLAiHt0oIATAyax5z7nlRhjfuypMjnoobesHs1H/qEErj3z4yELI/FvI3cgJ4/ZFrg2I3h/rbpTdPMNVFepOOh7COmcj7HzpnI1wdxFqYN6H9OEC07sAC19EisyrLyGyhtz4zP1xSXJ+bmUQfq98j5ZqMwxTTZxl2htmQMpteD5PIM/D3+kpzKSZo/+E7t7I4JxFMjQAAw4M14nhuRIRqBzb6afwAn8MD1Wr/5ap/hHi9evkSO7aJCwEjfuCPPILLH/Go0s48MIlB+RDv47jLnhIYHw3eBoXPkjHCeceqOG9VwAXX977CmHgtWQ9kz8FuuPPjVS7QpqBRzdlwZu13Gyj44sxeH2qKOoGNIg5UFmMSObK+KyR1EcA=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 240CE12000E
+X-Stat-Signature: 3rkpnuuftaggsh3hj5p7119dg3o8mkcc
+X-HE-Tag: 1784139354-422290
+X-HE-Meta: U2FsdGVkX18CQic2TObWKkksA7ZEyr4uaPJzfhcJOMkIl+bJgfkXw9VbAD3DDMqL3+UByea1ldkUULQ6HkxBcPEyTZfi2MzFORd2YUXcsUK3hBcDyFsYEEi8JhXo0m+bGJU8bDkkVZ4Gs9+ns0segQUd/kFBb8JLUZ3P05xEBYCvz+YxqxF5uW/zhKzqO5ESaSNXDHsci1qPgM4JmqG4tuVcvp1ppYjb4y9dyMnyIoupECPeaR0AltbM/nTOW7lW4iHAhGWG0t+923eL2fJKVWTaZtOtNworh85USIk6UhznSmA5UTPxrYGyq6uKkKv3/6zF4diyorQcEb1wlACltcUGN5FQPJXkyirDiL1fHYfDPEA+PNJdZIjB6T+PYpgJN4gFVkITSYQkdZQEel2gtPGV9+Fhvb7p1BnMOSgpgPZVnmRG+M7XB6t40M0OQwnZDmQAJ6iZy3XF9HUyiP8jFVNPgC/N4nc3+gEs1EQp05stWtaqzk4RqL8ZprIAK1eqLtcp3YzZMvlFgcdJ5u5B/xW4/j1186U+HkimDpe9L9Tb2jvI9JlexRVynu5jX8cfqjINe/A0M/S0+co1TtmnGmB6X54GFFoQ6iWx9dcbg/8euVNw9+N1ExAY7azCQf2Cs/sgLyXzjT1pjbXZ8pAQ5VaZnFyLNPlxA+XNuowPtTeALJJi8zLrLZImKyijmZO+exJGFFxTz3xcDjrqB3XSvuNlXvitSzLrrOcjmXDI+Ql+12O8mHnCPvkPWYzwXGbIY2GXhAEvtGkvXU7nVMME8u3JCPr1qEn6oRVdy01cvF7FRYFCHL+SEqlmlxJTxWL9dVDltPkYx/d/uCr07uxvqZy6D4yW2gpqmch4vQP6Wg1zuAfTmsEBqHWM4D3jEcLoGtbpsUNSiHTxRuE3GepeXWuRBFrUT2tt0xjkhCN60vWztIzZiYhxkhdKlxKeOdfk6A1kENtnVGMQTMkaUI1
+ 9cSixStb
+ /PmEPokPVrcol29G0MTbKHXyNj3J3lIhk4tEXBdwJn9wGdo+IEOs+T50fplBZuDXjdyEcmqxyacdi37zJh28zFhzfogoLi+y70mF1epToMRr/mggO7+nZx/XcMy4E5vMPp2VBUz4IeqanVD0OE00dSZjJ1xj7xbgADq6ZZt95GkFoSvDI7pjzijaDOOixezF3d5rM3lGy82yvZfQW1JZxWxweWTZbiuu3ydxrEk7+fwRuJhqSLsWyO8kS1HB/vhlYZDQM7mBSeGlxsTK5j2Do2HY481NrB8UTQ56w5YE+yZpegydE/rQOGYJpHilY8Z89B6jaLuum2zZeFBfIiTs6WNelq5PAd0BWSNMrpyfVrYWun+hbvNHEjavRzYdRrAA+DZeqJL8gWaBZs3ri/Q1hCq0MjEobaDKWrJlMf0XRqlNN5Rv2EoXZJDtXjcnlYEsSf3LPBpAz+cjjFvkZv8z+ntoSlkUq2zmHLDt5GcSLmlwgRviCcfGOQszjjJv9K3OpT3bv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,95 +129,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/07/10 09:16PM, Lorenzo Stoakes wrote:
-> vma_last_pgoff() already lives there, so it's a bit odd to keep
-> vma_start_pgoff() in mm/interval_tree.c. Move them together.
-> 
-> These each return unsigned long, which pgoff_t is typedef'd to. Make this
-> consistent and have these functions return pgoff_t instead.
-> 
-> Additionally, express vma_last_pgoff() in terms of vma_start_pgoff(), since
-> we wrap the vma->vm_pgoff access, we may as well use it here.
-> 
-> Also while we're here, const-ify the VMA and cleanup a bit.
-> 
-> Also update the VMA userland tests to reflect the change.
+This series extends the HMM framework to support userfaultfd-backed memory
+by allowing the mmap read lock to be dropped during hmm_range_fault().
 
-This patch could have been 01/35?  Disappointing, but I will try to get
-over it.
+Some page fault handlers — most notably userfaultfd — require the mmap lock
+to be released so that userspace can resolve the fault. The current HMM
+interface never sets FAULT_FLAG_ALLOW_RETRY, making it impossible to fault
+in pages from userfaultfd-registered regions.
 
-> 
-> No functional change intended.
-> 
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+This series follows the established int *locked pattern from
+get_user_pages_remote() in mm/gup.c. A new helper function,
+hmm_range_fault_locked(), accepts an int *locked parameter. When the
+mmap lock is dropped during fault resolution (VM_FAULT_RETRY or
+VM_FAULT_COMPLETED), the function returns 0 with *locked = 0, signalling
+the caller to restart its walk. The existing hmm_range_fault() is
+refactored into a thin wrapper that passes NULL, preserving current
+behavior for all existing callers.
 
-Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+Possible approaches to lift this limitation are documented in
+Documentation/mm/hmm.rst.
 
-> ---
->  include/linux/mm.h              | 9 +++++++--
->  mm/interval_tree.c              | 5 -----
->  tools/testing/vma/include/dup.h | 5 +++++
->  3 files changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 25e669632d2c..09b06d8fea74 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4307,9 +4307,14 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
->  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
->  }
->  
-> -static inline unsigned long vma_last_pgoff(struct vm_area_struct *vma)
-> +static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
->  {
-> -	return vma->vm_pgoff + vma_pages(vma) - 1;
-> +	return vma->vm_pgoff;
-> +}
-> +
-> +static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
-> +{
-> +	return vma_start_pgoff(vma) + vma_pages(vma) - 1;
->  }
->  
->  static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
-> diff --git a/mm/interval_tree.c b/mm/interval_tree.c
-> index 32bcfbfcf15f..344d1f5946c7 100644
-> --- a/mm/interval_tree.c
-> +++ b/mm/interval_tree.c
-> @@ -10,11 +10,6 @@
->  #include <linux/rmap.h>
->  #include <linux/interval_tree_generic.h>
->  
-> -static inline unsigned long vma_start_pgoff(struct vm_area_struct *v)
-> -{
-> -	return v->vm_pgoff;
-> -}
-> -
->  INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
->  		     unsigned long, shared.rb_subtree_last,
->  		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
-> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> index bf26b3f48d3a..668650067c7c 100644
-> --- a/tools/testing/vma/include/dup.h
-> +++ b/tools/testing/vma/include/dup.h
-> @@ -1301,6 +1301,11 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
->  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
->  }
->  
-> +static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
-> +{
-> +	return vma->vm_pgoff;
-> +}
-> +
->  static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
->  {
->  	return file->f_op->mmap_prepare(desc);
-> 
-> -- 
-> 2.55.0
-> 
+Changes in v9:
+
+  - Folded the fixups into the full 8-patch series instead of sending a
+    separate fixup series.
+  - Clarified that the HMM timeout bounds repeated HMM/mmu-notifier retry
+    attempts, with the helper refreshing range->notifier_seq internally.
+  - Kept nouveau’s explicit outer deadline because its retry loop runs in a GPU
+    fault worker and cannot rely on fatal signals from the faulting process.
+  - Converted amdxdna, and GPU SVM callers to pass the shole timeout budget to
+    hmm_range_fault_unlocked_timeout().
+
+Changes in v8:
+
+  - Make hmm_range_fault_unlocked_timeout() the primary documented HMM
+    range-fault API, and move hmm_range_fault() into the “use only if the
+    caller really must hold mmap_lock” category.
+  - Clarify that the timeout is a retry budget for repeated mmu-notifier
+    invalidation retries. HMM does not interrupt an in-progress page fault
+    when the timeout expires.
+  - Restart the retry timeout only when handle_mm_fault() dropped
+    mmap_lock, because that indicates a lock-dropping fault handler such as
+    userfaultfd made progress. Ordinary -EBUSY retries keep the existing
+    deadline.
+  - Remove the attempted timeout selftest. The remaining selftest covers the
+    intended userfaultfd path by resolving missing-page faults through
+    HMM_DMIRROR_READ_UNLOCKED and hmm_range_fault_unlocked_timeout(..., 0).
+
+Changes in v7:
+  - Replaced the unlocked HMM API with
+    hmm_range_fault_unlocked_timeout(). The helper now takes a timeout in
+    jiffies, with 0 meaning retry indefinitely.
+  - Moved -EBUSY retry handling into the HMM helper for the unlocked path.
+    The helper refreshes range->notifier_seq internally before each retry.
+  - Switched the unlocked path to mmap_read_lock_killable() and return
+    -EINTR if mmap lock acquisition is interrupted or a fatal signal is
+    pending during retry handling.
+  - Removed the redundant non-timeout hmm_range_fault_unlocked() interface.
+  - Updated Documentation/mm/hmm.rst and kernel-doc to describe the timeout API
+    and the intended caller pattern.
+  - Updated the HMM selftests to use hmm_range_fault_unlocked_timeout()
+    only, including coverage for the finite-timeout path.
+  - Added in-tree users of the new helper:
+      - mshv
+      - nouveau
+      - RDMA/umem
+      - amdxdna
+      - drm/gpusvm
+  - Preserved each converted driver’s existing timeout convention:
+      - unbounded retry where the old code retried indefinitely,
+      - HMM_RANGE_DEFAULT_TIMEOUT where the old code used that budget,
+      - existing driver-specific timeout return values such as -ETIME.
+  - Used max_t(long, timeout - jiffies, 1) when passing remaining time from
+    absolute jiffies deadlines to avoid unsigned underflow while keeping a
+    minimum one-jiffy retry window.
+  - Left callers on hmm_range_fault() when they already need to hold
+    mmap_lock across surrounding work, such as drm_gpusvm_check_pages().
+
+Changes in v6:
+  - Reworked the new API from the external int *locked pattern to
+    hmm_range_fault_unlocked(), which owns mmap_read_lock() internally.
+  - Changed the dropped-lock contract: hmm_range_fault_unlocked() now returns
+    -EBUSY when the mmap lock is dropped, and callers restart with a fresh
+    mmu_interval_read_begin() sequence.
+  - Kept hmm_range_fault() as the locked variant for existing users, preserving
+    its caller-held mmap lock contract.
+  - Added an in-tree user by converting the MSHV region fault path to
+    hmm_range_fault_unlocked().
+  - Updated Documentation/mm/hmm.rst and kernel-doc to describe the unlocked
+    helper and retry pattern.
+  - Updated commit messages to match the new API and return semantics.
+  - Kept the userfaultfd HMM selftest using the test_hmm unlocked read ioctl
+    path.
+
+Changes in v5:
+ - Rework hmm_range_fault_unlockable() retry handling to retry
+   VM_FAULT_RETRY internally with FAULT_FLAG_TRIED set, matching the
+   fixup_user_fault() pattern and avoiding repeated first-retry lock drops.
+ - Distinguish VM_FAULT_RETRY from VM_FAULT_COMPLETED: retry faults now
+   reacquire the mmap lock internally, while completed faults return to the
+   caller with *locked = 0 so the caller can restart with a fresh notifier
+   sequence.
+ - Document the two *locked return states, including the -EINTR case when a
+   fatal signal is pending after the mmap lock has already been dropped.
+ - Update comments around HMM_FAULT_UNLOCKED and the HMM fault loop to match
+   the current hmm_range_fault_unlockable() implementation.
+
+Changes in v4:
+ - Rebased on 7.2-rc1
+
+Changes in v3:
+ - Return -EFAULT from dmirror_fault_unlockable() when the mirrored mm can
+   no longer be pinned.
+ - Add an eventfd stop signal for the userfaultfd handler thread to avoid
+   waiting for the poll timeout on successful test completion.
+
+Changes in v2:
+
+ - Split into a preparatory refactor (new patch 1) that moves
+   handle_mm_fault() out of the walk callbacks, plus a smaller feature
+   patch on top.  Suggested by David Hildenbrand.
+ - Hugetlb regions are now supported on the unlockable path; the v1
+   -EFAULT short-circuit and the hugetlb_vma_lock_read drop/retake
+   dance are gone.
+ - Distinct internal sentinels for "needs fault" (HMM_FAULT_PENDING)
+   and "lock dropped" (HMM_FAULT_UNLOCKED).
+ - Outer loop now re-walks after a successful internal fault so the
+   faulted pfns end up in range->hmm_pfns.
+ - Kernel-doc on hmm_range_fault_unlockable() and the
+   Documentation/mm/hmm.rst example match the implementation.
+ - Dropped the mshv driver conversion (v1 patch 2); will post
+   separately.
+ - Selftest converted to drive the path through test_hmm with a
+   userfaultfd handler (new HMM_DMIRROR_READ_UNLOCKABLE ioctl).
+
+---
+
+Stanislav Kinsburskii (8):
+      mm/hmm: move page fault handling out of walk callbacks
+      mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap lock-drop support
+      selftests/mm: add HMM test for mmap lock-dropping faults
+      mshv: Use hmm_range_fault_unlocked_timeout() for region faults
+      drm/nouveau: Use hmm_range_fault_unlocked_timeout() for SVM faults
+      RDMA/umem: Use hmm_range_fault_unlocked_timeout() for ODP faults
+      accel/amdxdna: Use hmm_range_fault_unlocked_timeout() for range population
+      drm/gpusvm: Use hmm_range_fault_unlocked_timeout() for range faults
+
+
+ Documentation/mm/hmm.rst               |   79 +++++++---
+ drivers/accel/amdxdna/aie2_ctx.c       |   23 ---
+ drivers/gpu/drm/drm_gpusvm.c           |   61 +-------
+ drivers/gpu/drm/nouveau/nouveau_svm.c  |   20 +-
+ drivers/hv/mshv_regions.c              |   54 +------
+ drivers/infiniband/core/umem_odp.c     |   18 +-
+ include/linux/hmm.h                    |    2 
+ lib/test_hmm.c                         |  107 +++++++++++++
+ lib/test_hmm_uapi.h                    |    1 
+ mm/hmm.c                               |  259 +++++++++++++++++++++++++-------
+ tools/testing/selftests/mm/hmm-tests.c |  150 +++++++++++++++++++
+ 11 files changed, 551 insertions(+), 223 deletions(-)
+
 
