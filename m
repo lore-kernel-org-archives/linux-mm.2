@@ -4,118 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 725D1C4450A
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 03:17:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 994EBC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 03:17:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98A136B00A2; Tue, 14 Jul 2026 23:17:46 -0400 (EDT)
+	id CBF026B00A4; Tue, 14 Jul 2026 23:17:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 961766B00A3; Tue, 14 Jul 2026 23:17:46 -0400 (EDT)
+	id C967F6B00A5; Tue, 14 Jul 2026 23:17:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 850D16B00A4; Tue, 14 Jul 2026 23:17:46 -0400 (EDT)
+	id BD39A6B00A6; Tue, 14 Jul 2026 23:17:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 162806B00A2
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 23:17:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D864A053C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:01:00 +0000 (UTC)
-X-FDA: 84989509080.27.CC36CC7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 714AF6B00A4
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 23:17:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B0EC0405A4
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:01:31 +0000 (UTC)
+X-FDA: 84989510382.11.40178E1
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 31A8220010
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:00:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eENy7ROG;
-	spf=pass (imf03.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 277CE120006
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:01:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gL4/zDqj";
+	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784084458;
+	s=arc-20220608; t=1784084488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9uqOn1R4+r9lMeuwYoLpR5vlJPP1JnN5hGqw9wV+8Ww=;
-	b=Lf0z6V6ieOnp4ECgYrBPLgR+R6cHcW48q4qaj1dWcfVIpvdAvymkn1nfE7VpeVdo5pzKRr
-	aWoqxJY4aZpMsmZYWsu8B91tDejyuAD8Egweh+jwtTZQ6C2f6QK1vgHTqLaRd+NoTVmqpM
-	bPlNhMD40uauz6DrvfZM5Yytx9bI7sE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784084458;
-	b=yYnReRdHvVkdR5p1A4VRelm2VuDTVjUC/Cob9oaJz1LANHfS3FqTm8tJANE1qtssvRTYVG
-	bBynNdy/tRWoXm/5Mnb2QMuS+C2b4CquuRffvjxLwzHFB2x9O6NuvAZPcQ6356lISK6zwR
-	PY7+7NFQTjr6Lw0fp5xaxvfXKWpokIk=
+	bh=5TDsdIa8Xg5/7TFb8E//3LgWq7maer0xFr2rl4UMK3c=;
+	b=KGTEysTaijTfuis4tFQKEFkUgDX5rwwSjJL9RMK0NwqP47bIe4vfW2EHsabGJjivw7STuS
+	QDYKTEyI9fwBsakHYuCvUziOU/flUNpsmQxRa16iV+z+0oFYa5nJo7HNtdc6U/tRkW07av
+	5ITmpJAm38Pnp6P2UjlBBzXKoUz7Qhk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eENy7ROG;
-	spf=pass (imf03.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gL4/zDqj";
+	spf=pass (imf29.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784084488;
+	b=nmmZ1PEgRdzARDoSMdIINMUZfk8uDrCSnSJSU+j7FE1644GA3LZNAcFkeAqr6fIdcAYhY4
+	tTRN2j2feNNB/+pdJ/ORMPVnTufLnWIpViI1HKYrQD3CmWiLyc8XiTDpLu7+xiDFW/v54Q
+	EOwEY6qdIs+zW0Ffsyy3Lk1Oh3gsPY8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784084457;
+	s=mimecast20190719; t=1784084487;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9uqOn1R4+r9lMeuwYoLpR5vlJPP1JnN5hGqw9wV+8Ww=;
-	b=eENy7ROG49yyx32Q3ueCcv9WnqJ874Yly5DOyREHKbDivSTN7phLmZapCsXk2dbjDBAylH
-	THMcvME/0KmRy8wB8HVGaDRqDLNPWgY0eV3QwvA/AgFsheD74mIKkVm7kw2wyouUYbX1IC
-	SEGa8u6PsFYWi6Cnk2c6RxgP8pqXrQ4=
+	bh=5TDsdIa8Xg5/7TFb8E//3LgWq7maer0xFr2rl4UMK3c=;
+	b=gL4/zDqjxbB6pf2/qv1KPOeSA1vzlMYcCgt2VJp5Z6x4DPAniTVl12+dCTW+y6nHem9UoC
+	cGdPlCfKypvMAjVZG+9566DKTKIUmch0OPV25nRmkPmyoCOpWMwEwaR34la9FJOK0HypET
+	bE5zzOPU5UW+Yp/ibG26u31wmDyqzgQ=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-RLZNDMXpO7-tX4auukvGpQ-1; Tue,
- 14 Jul 2026 23:00:52 -0400
-X-MC-Unique: RLZNDMXpO7-tX4auukvGpQ-1
-X-Mimecast-MFC-AGG-ID: RLZNDMXpO7-tX4auukvGpQ_1784084449
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-DN0lcp4kP0eGz8Mp95imLg-1; Tue,
+ 14 Jul 2026 23:01:23 -0400
+X-MC-Unique: DN0lcp4kP0eGz8Mp95imLg-1
+X-Mimecast-MFC-AGG-ID: DN0lcp4kP0eGz8Mp95imLg_1784084480
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AC3C3180034C;
-	Wed, 15 Jul 2026 03:00:49 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5BE501800361;
+	Wed, 15 Jul 2026 03:01:20 +0000 (UTC)
 Received: from p1.redhat.com (unknown [10.22.76.5])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DEBAB180028B;
-	Wed, 15 Jul 2026 03:00:38 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 807BB180028B;
+	Wed, 15 Jul 2026 03:01:10 +0000 (UTC)
 From: Nico Pache <npache@redhat.com>
 To: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
 Cc: Nico Pache <npache@redhat.com>,
-	Usama Arif <usama.arif@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
 	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	Ryan Roberts <ryan.roberts@arm.com>,
 	Dev Jain <dev.jain@arm.com>,
 	Barry Song <baohua@kernel.org>,
 	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v2 4/7] mm/khugepaged: fix outdated comments
-Date: Tue, 14 Jul 2026 20:59:33 -0600
-Message-ID: <20260715025941.1571316-5-npache@redhat.com>
+Subject: [PATCH v2 7/7] mm: Documentation: clarify where the mTHP stats live
+Date: Tue, 14 Jul 2026 20:59:36 -0600
+Message-ID: <20260715025941.1571316-8-npache@redhat.com>
 In-Reply-To: <20260715025941.1571316-1-npache@redhat.com>
 References: <20260715025941.1571316-1-npache@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: t91916uA0r1QTWx9jZ8-wPtvBsEk5tlwZ9AnlVaOXOM_1784084449
+X-Mimecast-MFC-PROC-ID: _K7rv6wXU7JWpct45kfWLmp7HjXYzGUFECPOXsPlbVA_1784084480
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 31A8220010
-X-Stat-Signature: k6n6stbpgw3igii57r53oji95m4y6yte
-X-HE-Tag: 1784084457-26648
-X-HE-Meta: U2FsdGVkX1/Z1Mm6wK2Q1JDreId9BPe/i1T/R6rPXKWhZ3K/LV2SzbppsYUJklF5tG0jNlbUUtD6FFYJjg2LEZNwcIzilLF5ynycOA/Rd3ecKXsVDduxaxInAeMU61MWqWHoSgUEODesLgK52lFvufj8pn2FTG0M8mW+s43ipA0/9O2dkzJulZWpz/YkSHMWMelGNSrox72gMnGEdzvsXt3RRww4q+/dJTVzVRvFZClFErXMvSRggZDomfkPDbcX7AJjxPZOqKmXuYGPCCml3a0DE/NRzQR2s5BLJfNerjOqWxf9pSSv1ks09lHyJsXcnTYPfMGTtdZhOzMJrCfO1eHbu4+//PWO28gCxJUa/rrwUa+lZNZZzyva2vbxOL+sKrn39bZq+k6I+EVBntQJZoTWpP8CkO0PQ0hCEc7rVW9qdyJx5EDyZ9o9FopyZkKfGqs50/P5YCenF4NQzpVG9koeiJ2pcR8rN7XxKxlpYQwm84M6uAxZ4yda1joEr8XWY22kiDKRXC7aZ94o3EuSIOv1ovH//oQnVWo3TbqX4tg3u7GlX7DZUQQ9Tijdb3tx6s04/NVVa6GPJnHlKyL3FR9wsl2998WcKnaS+6OZMfVwgIYDtjTcU4vzdc1xtaG2QDU9cdaPxOobOc5gL+z9/X5lLWBNK+uzovwNDX1nXGWTsRageZnxlE5UsxC0ki+gDmNq7Y6HCdui4q7siQ7iKCKOcFemmg+T2IauFdqQOVN0utkFZ+Cc+hjQ7YMnqqWslin/1cfbna77wJZi0EcqOOUQ/FIC+JPESWJq/I8dzhU7g/2ZQtWTRWZuYLYNRIy9e5bGnQpcvogG6io8edeGjc9ffwZk77L1cgbZe//mpWrfoSt7QmIiui0hd4VV5IbLtlN4mE7jjXIr6OIFA9rnYVV85N2EaOjtVuEW6lclZe+D6xUDZd0bNIOVMZSsDfDMWy5zR6RVQ/XxFbvCV0v
- fi7Q34v0
- xExyv06fXT52Bx9TngkQu/vxgWDC27VF6XQ3qZbXXjBCooLlOiuOqc7p5L8egrjQ5X5+Pb81Q96gfn9af5ELdff+9QS2JJViumFIHUhXFfujO5Rlch/TT2siUx1/Ni9X6RKSBawbwOjPVM8J2FmxtyUsOXHXMxu97Iwecm+XLL7ydLLzDjvdr+uSmRxWLcpOM4S3547PsZLdlNIaiu8Hf0w9V4Q1zi6U9n5P78x4FW5OOsuf/Rw0Oy0XMRdzaCXhffKY2WVU9gWzbXS4nxh2Y6JJfUsxI+aTzgRtf7BlBeBhU/4iPYjRSCuYLlN903ypSP2YPh0y6UakLFWxNPsf6BNMxYQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 277CE120006
+X-Stat-Signature: gw3cpebd5phqtq8omrw3wu5ytfb4c3p5
+X-HE-Tag: 1784084488-209030
+X-HE-Meta: U2FsdGVkX1/XnhL9olxx0qncHXfo+2PJjbLJ3Cb+MMyFxkkjs0Rft7nXvItNR5reT+DuZKK82ZeB54t9sneFNCJxehHR7RrCWQv1pzKsQXELPPrz1lV00H7v6IqWvOo5le43CA49u1t4l27/C/dSJ50dAcZmzJMFWkXcIo6/b0qq+n9A7KQT8J5IKdTN2me/YLUYfrzJQ5cNjyUcFDuxdxLli36xNHv3r7wffIu4CAN9TN65A2IFB0tl/XBRQcszKvmEX1kMP13e43P9VJBaSVzIW66PP9QnZqoUVpf2b+PTileiNk+E2uXTvxE2Izq0apv1//bY6wkrQcbkawP+LkSUBNJ3P6Vk6oOyE+493sM8p9JP+uMS8Y5cgGanw2FyY6JvXAqIHt82Pn3d4LjFrzKTszExnCSeSKHjpXGNpzaYufF0BKgOrzYN5mjgJh+eGRgNgIcMJjdVXJrRiVGHac3ROj9a50iQw9Z/a0kfTnmN4WD1EyFWR972U2fwbC2dxFYWbYSlFzkJ/BJZXLXRynUOetLWSsQM+6WMTRorNgKCPC6PkHDhZQtmsPngO0MKMK7oeTWfmZozHv5d+7c8aqWXBqHzAHGGShjSISiQZY1w35S37NYTeW1uiVcpdmVddGwJLuJT5xjEH57wWcDqX/tA1jckIgVP8WzqliqHMjz+K/fykUyq+JkeQWlpO2zr4Ca7Zwc+N011tGql2j5lsnNsm/u5gpjh6yA3IOiwXgl+nfiRG42Hc15Sg7ZIOYaL0R8n49erS9sXh7jtM4uAHRMo2WkZ3sT2bUsXmUBn2US6m/rDZVB2hE2cOWKrQzQoWc6t/qSg4T+zeQccoNlKg2E7U5GW/VbpEnuohEKmf1sZ7ND5Dtj6d48IS8m65e0flgC+3NeCLy7qWMjuID5RGQQze3W+aUGn42Rv8Bq2X9hq2MjoAe38/eZGyfa/O28v9xXOwn44aLOEBjfmfZA
+ xUy5H+pi
+ q2Xd7IIgNeLK9Hp41BlEjz5H/l835ac0RD/BprtBRSXYyti86Cao4nii5b8JeK7xXQFlZ3Vqjdk5TtCfh8pKo2cwkA2xM0VjKkC/vmyb/6/0/+OTekaAX+m1knJxRo986YcDT8tPa0IvIDI8wEiTvnCPEnTOgqllgNWKplmN10TmBRNIoGyzXXxdVvIb7tvuwBHEhqU4QHdxuFrLofcpRO80KkAqDfPBthuycWaNhe+enwWxJd0m7iRdtpwKFwcVt6W85YJagmerLgqIyraaLqY95obL+FfXnNe4swYsKXjX/ItTOBNx1KvmdWmgMdG/gYRGuQRshmcY+ybOYpzNZUoITX8Xr+0yDgizYCX9c11WyTNx/OfAFcyh5QTlQ0v9njYpxJsTn4wC27Jo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,116 +123,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix comment in collapse_scan_pmd() that still described the old
-folio_mapcount() > folio_ref_count() check and a "512" false-positive
-scenario. The code now uses folio_expected_ref_count() != folio_ref_count()
-which doesn't suffer from the same limitation.
+The note about khugepaged counters references /proc/vmstat for the PMD
+case, but never mentions where the mTHPs stats can be found
+(i.e.: /sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)
+Add a small addition to this section for clarity.
 
-Fix comment in collapse_huge_page() that referenced ptep_clear_flush,
-when the code actually uses pmdp_collapse_flush.
+Also fix a missing period while we are at it.
 
-Fix comment in __collapse_huge_page_swapin() that referenced the old
-function name khugepaged_scan_pmd, now collapse_scan_pmd.
-
-Also clean up some simple typos and stale terminology (mmap_sem ->
-mmap_lock, PG_lock -> folio lock, page -> folio, grammar).
-
-We also clarify a comment regarding where the max_ptes_none check is
-deferred to in mthp_collapse() from the original collapse_scan_pmd check.
-
-Acked-by: Usama Arif <usama.arif@linux.dev>
-Assisted-by: Cursor(claude-sonnet-4):4.6
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- mm/khugepaged.c | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ Documentation/admin-guide/mm/transhuge.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index f65bbe2051b3..d785468ffb96 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -620,7 +620,7 @@ void __khugepaged_exit(struct mm_struct *mm)
- 		/*
- 		 * This is required to serialize against
- 		 * collapse_test_exit() (which is guaranteed to run
--		 * under mmap sem read mode). Stop here (after we return all
-+		 * under mmap_lock read mode). Stop here (after we return all
- 		 * pagetables will be destroyed) until khugepaged has finished
- 		 * working on the pagetables under the mmap_lock.
- 		 */
-@@ -789,7 +789,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index 16f37135ed80..b187d618452f 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -224,7 +224,7 @@ khugepaged will be automatically started when any THP size is enabled
+ (either of the per-size anon control or the top-level control are set
+ to "always" or "madvise"), and it'll be automatically shutdown when
+ all THP sizes are disabled (when both the per-size anon control and the
+-top-level control are "never")
++top-level control are "never").
  
- 		/*
- 		 * We can do it before folio_isolate_lru because the
--		 * folio can't be freed from under us. NOTE: PG_lock
-+		 * folio can't be freed from under us. NOTE: folio lock
- 		 * is needed to serialize against split_huge_page
- 		 * when invoked from the VM.
- 		 */
-@@ -816,7 +816,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		}
+ process THP controls
+ --------------------
+@@ -301,7 +301,9 @@ being replaced by a PMD mapping, or (2) physical pages replaced by one
+ hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
+ or together, depending on the type of memory and the failures that occur.
+ As such, this value should be interpreted roughly as a sign of progress,
+-and counters in /proc/vmstat consulted for more accurate accounting)::
++and counters in /proc/vmstat consulted for more accurate accounting.
++Per-order mTHP collapse statistics are also available under
++/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/stats/)::
  
- 		/*
--		 * Isolate the page to avoid collapsing an hugepage
-+		 * Isolate the folio to avoid collapsing a hugepage
- 		 * currently in use by the VM.
- 		 */
- 		if (!folio_isolate_lru(folio)) {
-@@ -1101,7 +1101,7 @@ static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned l
- 		return SCAN_VMA_CHECK;
- 	/*
- 	 * Anon VMA expected, the address may be unmapped then
--	 * remapped to file after khugepaged reaquired the mmap_lock.
-+	 * remapped to file after khugepaged reacquired the mmap_lock.
- 	 *
- 	 * thp_vma_allowable_orders may return true for qualified file
- 	 * vmas.
-@@ -1159,7 +1159,7 @@ static enum scan_result check_pmd_still_valid(struct mm_struct *mm,
+ 	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
  
- /*
-  * Bring missing pages in from swap, to complete THP collapse.
-- * Only done if khugepaged_scan_pmd believes it is worthwhile.
-+ * Only done if collapse_scan_pmd believes it is worthwhile.
-  *
-  * For mTHP orders the function bails on the first swap entry, because
-  * faulting pages back in during collapse could re-populate PTEs that
-@@ -1351,8 +1351,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	mmap_read_unlock(mm);
- 	/*
- 	 * Prevent all access to pagetables with the exception of
--	 * gup_fast later handled by the ptep_clear_flush and the VM
--	 * handled by the anon_vma lock + PG_lock.
-+	 * gup_fast later handled by the pmdp_collapse_flush and the VM
-+	 * handled by the anon_vma lock + folio lock.
- 	 *
- 	 * UFFDIO_MOVE is prevented to race as well thanks to the
- 	 * mmap_lock.
-@@ -1643,7 +1643,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 
- 	/*
- 	 * If PMD is the only enabled order, enforce max_ptes_none, otherwise
--	 * scan all pages to populate the bitmap for mTHP collapse.
-+	 * scan all pages to populate the bitmap for mTHP collapse. The bitmap
-+	 * is then checked again in mthp_collapse() for each attempted order.
- 	 */
- 	if (enabled_orders != BIT(HPAGE_PMD_ORDER))
- 		max_ptes_none = KHUGEPAGED_MAX_PTES_LIMIT;
-@@ -1764,12 +1765,9 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 		/*
- 		 * Check if the page has any GUP (or other external) pins.
- 		 *
--		 * Here the check may be racy:
--		 * it may see folio_mapcount() > folio_ref_count().
--		 * But such case is ephemeral we could always retry collapse
--		 * later.  However it may report false positive if the page
--		 * has excessive GUP pins (i.e. 512).  Anyway the same check
--		 * will be done again later the risk seems low.
-+		 * Here the check is racy, but such case is ephemeral and
-+		 * we could always retry collapse later. Anyway the same
-+		 * check will be done again later the risk seems low.
- 		 */
- 		if (folio_expected_ref_count(folio) != folio_ref_count(folio)) {
- 			result = SCAN_PAGE_COUNT;
 -- 
 2.54.0
 
