@@ -4,78 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB43C4450A
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 433EEC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BA746B0096; Wed, 15 Jul 2026 09:37:44 -0400 (EDT)
+	id 38C6B6B00CD; Wed, 15 Jul 2026 09:37:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33C1D6B00D2; Wed, 15 Jul 2026 09:37:44 -0400 (EDT)
+	id 33C776B00D2; Wed, 15 Jul 2026 09:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1417D6B00A4; Wed, 15 Jul 2026 09:37:44 -0400 (EDT)
+	id 1DE846B00D4; Wed, 15 Jul 2026 09:37:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C448A6B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:37:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3E58A0181
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:59:56 +0000 (UTC)
-X-FDA: 84991018392.16.AEA4E3F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CDA80100002
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:59:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TDojiWSB;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DAF8F6B00CD
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:37:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D87F1A0193
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:01:28 +0000 (UTC)
+X-FDA: 84991022256.01.7F58F93
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5750E1C0005
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:01:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWf54nLm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784120394;
+	s=arc-20220608; t=1784120486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U+/oYZie1wlRVt0EOqLK1nvaTbYvCLc0MdBf4vus2Mg=;
-	b=caAv0IVni2+LHd+iCfIsuTNIN6+ZO4w3vBzQeamRMHmEILdlFlwUjQYQD452gfy1nZTtsz
-	3bu1N1BDrdAbzIopQK1jg83UlFjrTHALnako9rsR5NML9eI8p3ihFpuaC51S4Apf0qzyTQ
-	QLezqaovgnxwNWL+pSo/3IQjeCbWNoI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784120394;
-	b=sLktHRGZlzqAIZXSnuuyprkQBQTVP+oqe3QA7BOUmok3IVm/erkxtTQEOgLNA2CRI7bIcJ
-	VA+TM3mPKgscsF2brADPw6YMrqJ/3VF/bBhkzW6QScdg2ca9jlLc0yv61OkRQXKdZLuLiw
-	WOgmeTqTwjBGMGCfzA54fc7/5KBQnQk=
+	bh=wUXuEqTpyi55WJTpZHqeaTPsyp4qkuq1mFSEddNo1tA=;
+	b=0vQTqxc1d9A43gNVWT/BPA4dN4Op0H9CLqBNUUyRySdHe/GXhwYKs9Su1SMkzIfvg7OcfI
+	Gjy5DfzGMjaT9QSqRgJmJDiijbbzph1lqYk3zIwl3Iv2HbgW8s3J1Xx8IiPG0ebp49tWTj
+	AOw0q1f6llk8h1W0Wi40R3L7enS9oiY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TDojiWSB;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWf54nLm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784120486;
+	b=UHvNrHvOJWFIKlYnb2TJXpvdZC2qxjJOKarSRL3hakHhsoMcjoItUnqT1QKOXRsx1fUgHZ
+	IfVDJ5GXnMrZE1C/zDdfXnBbaRgIipfxAYD9UbVUiNjQtpnLK80bWVPVPIIE9l1B5G1uxo
+	Bkx2fxDmrPx2+/zEQfZ0sKk5EN+dBa0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A02B41FC8;
-	Wed, 15 Jul 2026 12:59:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3AB1F000E9;
-	Wed, 15 Jul 2026 12:59:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AA91D6001A;
+	Wed, 15 Jul 2026 13:01:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397A31F000E9;
+	Wed, 15 Jul 2026 13:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784120393;
-	bh=U+/oYZie1wlRVt0EOqLK1nvaTbYvCLc0MdBf4vus2Mg=;
+	s=k20260515; t=1784120485;
+	bh=wUXuEqTpyi55WJTpZHqeaTPsyp4qkuq1mFSEddNo1tA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TDojiWSBNJJ6rI5kdkcQGawZH/Lu2ljtrTXZLi+k0l5LTVuEJ/9zJSYOEVSvjCdOm
-	 ED70I7IMb3mjoVFolWFueD2Snl+sDaZ+q4RCMAathPncNGWzmoU/GJYhhlU42jsjuU
-	 hMNwl9oImdcKVknG51AzxlN2yjIdwULEA8zLalknDJYo0XCCMSxkMYnIp26+JUFgff
-	 DsG+2pnLh+khDtBoIB2tD69ZHPyIpIAN6FSycNx2yFm4ZnuvwV6V4yqY2w9X0BZ6tV
-	 zvODD0cGQiAdt2/4KM11WWt6nGESNWdqddq2udmTrtZOxYqxmWLbk9xdQJxWLPfh5p
-	 tsdT20QzPNDLw==
-Message-ID: <70392f94-137a-4220-8ff5-64dd874cf5d9@kernel.org>
-Date: Wed, 15 Jul 2026 14:59:49 +0200
+	b=gWf54nLmEwWJANF5qUC6poTKMViOSzEpoFuUKkjJj63i8H9uciYM6Dlgpy27x1WZp
+	 4Nw2fRu/qXdKsuvJ6taqOeOQeKbrO9UqxRGcK2DhOjKN3flD4HKVB57Uvj+f14KnVr
+	 VPzyVR7iuSIdM4xo2zbz5c40benVATHoca0c+Ls+3c6h6GT44ZSGFrL+6C2UCl6SGd
+	 +frsS5rS/CWL4+tNaQu90B+aRXEviBOQwiFgrkYAXSOk8K/bdY9HtIMk2gJW2Cy2MX
+	 f31aWYHXfliY5eoDu6elZcL524x422cFRrEthYOJ3xufmQIEmkM8m/Acc+JADTzuvg
+	 0r2w6G5b9EWQw==
+Message-ID: <feaa5d7f-0717-4309-be90-7fd99ea525c1@kernel.org>
+Date: Wed, 15 Jul 2026 15:01:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/page_reporting: Add page_reporting_delay sysctl
-To: pratmal@google.com, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>
-Cc: Greg Thelen <gthelen@google.com>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260714171456.2350037-1-pratmal@google.com>
+Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
+ poisoned subpage, locked across split
+To: Kiryl Shutsemau <kirill@shutemov.name>, Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>,
+ Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260714122344.351895-1-kirill@shutemov.name>
+ <20260714122344.351895-2-kirill@shutemov.name>
+ <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
+ <alZNYYsybKZA0eJb@thinkstation>
+ <18fe5529-2ad5-4330-a362-708a152bacee@kernel.org>
+ <66A57599-EDA0-4E99-B073-F2AE0B2ED708@nvidia.com>
+ <alZljHr4Nk3FOpCP@thinkstation> <DJYH202OLKZF.432DAJWF2MGA@nvidia.com>
+ <aldjhtfVByHDQXe6@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260714171456.2350037-1-pratmal@google.com>
+In-Reply-To: <aldjhtfVByHDQXe6@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5750E1C0005
+X-Stat-Signature: 98584zktpx3mxrqoo5ok31etdi11dy7s
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CDA80100002
-X-Stat-Signature: rsjxh6coxokejkyxfq479xf4461qq7d8
-X-HE-Tag: 1784120394-867625
-X-HE-Meta: U2FsdGVkX1/hgsTHBxLYklvvy9ZSMCBhQeQ5FQlvCWNDIjpAZlYSlxQpqi4i0k4HzmmeMhqKW2g2yKvRIYY3M6kdWY70erBVA+UpmlrDRrLyw6Tjh1PyngWhaiW1GbtcrbQ10Q6GgJE2qW8kf1YlHr9q7c4coByi8z+VfkZKQFfC0uTrtXUKIpkF8sQpsbnSmK0y7sbvfheocBNqJZJZIhrlWU0dPbwCHvnPl1WBqB9T0u1dST7EcDU6/3edSCKTKY3BzaK05Wca5D53T2W4svBJAXyy7gYQwba02yZ/jQgwROx59NpLHYzTFqDUnbhHKXVt2h54ZyfM0NY4S06SSE3vBdzPPVVflDJGNZCIYaaE7PLafXn15KHDW6iWBrrKcORRv79IcoalL3Gng43bZEdXQqSISEY9AWO94cl0ibGnIslQyUUWbGReqDhB/ChLEarXAXLUQEmGGGMDYkJ/iuXMjh9kvQSLtJfZyS+Fh4SZ3wniXxiNHC1d/3oCv5FwE4redZq2AC4jnizGp1gIOSpEH8yf+xIQa+hzyczt4p6le2glgPAD4eOZnGRp5Fk472SvLSmaQyrHYMVFD2cFkpwDNzf4q8lWx02fXENkD+DyavfNr52ymUs1ikjigmgPhEpNYZfItOuc0J8AtL30mgmSubL6c/DA+a9kui001DPFXQSjIclIDZMKqxgd3fr9nJ0rrgRViWoNmagbk1e7HSUPD0ET38YwE/fHU/+zzHk4ZXMfGnLDtpJilFXyv49EgmlpAppviOmsfBu5Xt67pCp89slFrRL497+mUBFGcMZiVkHqxMxQPFDCqK4tRCkFA765lzMl9FqjKGuNJrzEGN+WZV/arAm7afpAd56y2amv0WKiflsEDs/DkDJzmYqIYWaae1v1HwAfzrBupJNikuktagofFrsJAKjBy5Hj3Dfi/FD+N9a4KPbhHwEPZ0VhEwOaLOLQ5uBvhb1jhbD
- WHpTcMUk
- jpNs5IJDVIgLo47Mxax1X+v59S9tyospmOV1MVvF6oDV2NhyXoloOxOGYFdgZn81Q+x8ELtyacZifjmIeC5DJ9Q2lmdOobN8AGgUG/dPY42kLuda2SwgLGeK9nUIud7A2UwuKmFtlE+N99crTb1XIJryesDMk369YAdXcyYEGa+XeJYwfZMqppa6vr1HrajVpj6uXBlmeivgUEjdJGlmz8qrhndjfoedTmxwoJ4BIdgV+loShDfhPnVbW88k+RxO2RXjlo5HjqL/Nkbif+1ivpsbI2dZilEQ1fw+Kf8/HQggK07ZAu9sV671uRU3n1rieFpgi182jdJwhtQEsIjEMSjfrOdBdlN3z8CKaghMstQJvtxWtASoKXgtoNHGIcfKZ+4lf
+X-HE-Tag: 1784120486-615596
+X-HE-Meta: U2FsdGVkX19CbY8lpAe0zTGi9vVJIadydCouKdPHsvbg+4Y+iUdDNwtZqS7nU23qSZI67+SFirhI89omHY1aEPOh9eWygG9+PIuVPhB0RXZY4vkr5uDIplfZ8aHe5ByxgrNrhY+EfVHlW/qh4FuHkIkqQXsJhPaVo/MQLS8WEDR9zuBLz1tg0LcIIrG58NoLIwj7C3/3n7INR0MmRv7OwviVgQPR6NFe1Lx6ceR8ol7RWNGlg1eHgLqbrQTXa15FFnR2jeE3SkWe/fiQ4XAwELrr/CFwQ+8tGahJDTrDoQpFYVjVFz4vZKD4smCUhYLVG8vcn6XadtM2lRqcCR3t888lt/Uj+kxedS/KLwFp/pF1kN1nNmfK0lyCAx6CFSAnuf9b2fv3UqGhEhAnu1BXajxmAEFfCJnlLoGqTPAFw6chrufslZez5dBuo3G7mHXZjEiM9Ps0KweBWZ9lVjGDMgQpdlkT6/XRAb9/t+YQYtj5ABelD1XEMQ5oTXU9mGjJGYIoNklQvdAAWvbLPjJcuelBwIcg7LKaVGAAybM667mb2zBiGHwD7W0J1Y+uPAyXfi7rAlS1ZJQzoNqEjlCJnm6sEsMGrEhnTMbL2r+IPSybK+pfWbK8zLARzqAs96Fd/XM4XKhwUkn58iD5PwC+WSz2WURa8ag01wb6kC0skYBRe+B2YFL+ZZlcefX4HE1+S6m3+UM47tBxU6LB/FZKebi0UM9HGB9aR5cMV9kqCY9+dVkhBxMTJyFL2WDhYABj87H8gt/LFXt4iI8fYh2dYiQ0h1LeX6nHUm5/UmLvzqIPlN9fWPVAE2rr+UNbbdmW1mDQJtXRP79C2LcsQRwKSvphlp/1K12rxzDPSHfFI8NKFWTnbOx3o45w1PeVGHF2xwbBOMWLGMsi/Tn95MRtMHiCBOtAEfTeVi1dSLCovu1vEQdcT1rD828rBOMDLdtswG1qiK0PZoXasKkyWy9
+ X/aKEpQK
+ IIfyh4wX8eiEli6RXy65FlUVnJh/JM5qT59S+L2ty2Cq4NGQthJ3PNz3bq6ucB9qnMuOWAZeyVcjBlIwoS6k6LPajDoP+7keQLJ4HlW9xiE/gz9TAlgPxhvLNXuIYG2LEhDsh25yfijOuOMFWilxbPXf7PuF3RqX/dM5joJtmhbTgF0TPouhL352A3foHp5jD3rJFk+jdFRO1ZLQiIOkidmO+8+MXWDdH81IJNH0DpEKLTh5XCS9kj9J/adlIhhKofyJEmDSWtWYruWHLAeYEiCdZXxv7RXcSdJs1vwTIlIU3zTAd2USLOEtukEZGDGnlm/OfNsn8b8fHXIOl5jyt0/unR/QsMl+Eu48zHYwb7FNy4fM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,96 +153,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/14/26 19:14, pratmal@google.com wrote:
-> From: Pratyush Mallick <pratmal@google.com>
+On 7/15/26 12:42, Kiryl Shutsemau wrote:
+> On Tue, Jul 14, 2026 at 01:31:54PM -0400, Zi Yan wrote:
+>> On Tue Jul 14, 2026 at 12:40 PM EDT, Kiryl Shutsemau wrote:
+>>>
+>>> I saw this option too, but I wound rather not go this path.
+>>>
+>>> iput() still can lead to inode eviction an bunch of random filesystem
+>>> complexity under us. I don't think we want to think about other
+>>> fs-related locking issues in split context.
+>>
+>> Your reasoning makes sense to me. Let's ignore this option.
+>>
+>> For your patch 2, we might want something like below to avoid over
+>> rejecting splits. WDYT?
+>>
+>> offset = folio_page_idx(folio, lock_at);
+>>
+>> if (split_type == SPLIT_TYPE_UNIFORM)
+>> 	lock_at_index = folio->index + round_down(offset, 1UL << new_order);
+>> else
+>> 	/* @lock_at in non uniform split is always @folio */
+>> 	lock_at_index = folio->index;
+>>
+>> if (lock_at_index >= end) {
+>> 	ret = -EBUSY;
+>> 	goto out_unlock;
+>> }
+>>
 > 
-> Currently, the free page reporting daemon uses a hardcoded delay of
-> (2 HZ) between reporting intervals. While this is a reasonable
-> default, it lacks the flexibility to adapt to varying guest workloads.
+> Right. With the -EBUSY condition growing this hairy -- and having to stay
+> correct for non-uniform splits too -- just moving i_mmap_unlock_read() out
+> of the window looks more attractive.
 > 
-> A low delay allows aggressive memory reclamation, returning unused
-> pages to the hypervisor as quickly as possible. However, during spiky
-> allocation/free churn, this immediate reporting can lead to a severe
-> performance penalty (nested page faults) as the guest re-allocates memory
-> that the hypervisor has just unmapped. In these scenarios, there is benefit
-> from increasing the delay to batch free pages over a longer window,
-> absorbing the churn without hypercall and re-fault overhead.
+> This is really Hao's original patch with the reasoning corrected, so I kept
+> him as author. v3 below.
 > 
-> This patch refactors the delay into a dynamically tunable sysctl,
-> /proc/sys/vm/page_reporting_delay, measured in milliseconds. The value
-> defaults to 2000ms to precisely match the original (2 HZ) behavior.
-> If the sysctl is modified across reporting windows, the sysctl handler
-> immediately issues a mod_delayed_work() to honor the new configuration
-> without waiting for the prior timeout to lapse.
+> ----------------------------------------------------------------------
 > 
-> Signed-off-by: Pratyush Mallick <pratmal@google.com>
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> Subject: [PATCH v3] mm/huge_memory: unlock i_mmap_rwsem before releasing
+>  after-split folios
+> 
+> __folio_split() keeps dereferencing the mapping after the split:
+> shmem_uncharge(mapping->host) and remap_page() while the folios are still
+> frozen/locked, and i_mmap_unlock_read(mapping) at the very end, after the
+> after-split folios have been unlocked and freed.
+> 
+> Nothing holds an inode reference across that. The split relies on @folio
+> -- which the beyond-EOF drop loop never removes, as it starts at
+> folio_next(folio) -- staying locked and in the page cache to hold off
+> eviction. But the unlock loop unlocks @folio before i_mmap_unlock_read()
+> runs. If the caller's @lock_at is a tail beyond EOF, as memory_failure()
+> passes when splitting a poisoned tail of a shmem THP that reaches past
+> i_size during truncation, it too is gone from the page cache; so once
+> @folio is unlocked no locked, in-cache folio pins the inode, and a
+> concurrent final iput() can evict and RCU-free it before
+> i_mmap_unlock_read() touches i_mmap_rwsem:
+> 
+>   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
+>    i_mmap_unlock_read include/linux/fs.h:537 [inline]
+>    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
+>    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
+>    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
+> 
+>   Freed by task 4601:
+>    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
+>    evict+0x57f/0xac0 fs/inode.c:870
+> 
+> Do every mapping dereference while @folio still pins the inode: drop
+> i_mmap_rwsem right after remap_page(), before the loop that unlocks and
+> frees the after-split folios, and clear @mapping so the exit path does not
+> unlock it again. shmem_uncharge() and remap_page() already run before that
+> point, so after this nothing past the unlock loop touches the inode or the
+> mapping.
+> 
+> This is now a rule the split depends on, alongside keeping @folio frozen
+> until the page cache is updated: no inode or mapping dereference once the
+> after-split folios start being unlocked.
+> 
+> Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
+> Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
+> Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
+> Cc: <stable@vger.kernel.org>
+> Co-developed-by: Hao Zhang <zhanghao1@kylinos.cn>
+> Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 > ---
+>  mm/huge_memory.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> Sending this as an RFC to get thoughts on exposing this delay as a sysctl. 
->                                                                            
-> Benchmark Results:
-> We kill a process allocated with 10GB memory within the VM and mesure the
-> time it takes to report all the memory to host as well the delay in
-> initiating the reporting.
->  
-> default(2s delay): https://drive.google.com/file/d/1Ouxm_raj4xPNthc_ryk0Mdbo-c_zXKiP/view?usp=sharing
-> Tuned to 0s delay: https://drive.google.com/file/d/1mk58LPiYgIF4Yk6kmX5JHplhrwIw0NbC/view?usp=sharing
-
-[...]
-
-Hi!
-
->  
->  #include "page_reporting.h"
-> @@ -47,15 +48,44 @@ MODULE_PARM_DESC(page_reporting_order, "Set page reporting order");
->   */
->  EXPORT_SYMBOL_GPL(page_reporting_order);
->  
-> -#define PAGE_REPORTING_DELAY	(2 * HZ)
-> -static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
-> -
-
-Why are you moving that?
-
->  enum {
->  	PAGE_REPORTING_IDLE = 0,
->  	PAGE_REPORTING_REQUESTED,
->  	PAGE_REPORTING_ACTIVE
->  };
->  
-> +static unsigned int page_reporting_delay = 2000;
-
-Maybe "2 * MSEC_PER_SEC;"
-
-Would we want to call that page_reporting_delay_ms to make it clearer what we
-are dealing with?
-
-> +static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 2bccb0a53a0a..abaea34ef558 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4109,6 +4109,18 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+> 
+>  	remap_page(folio, 1 << old_order, ttu_flags);
+> 
+> +	/*
+> +	 * Drop the mapping while the inode is still pinned. @folio stays
+> +	 * locked and present in the page cache until the loop below, so
+> +	 * eviction cannot free the inode yet; @lock_at is not enough, it may
+> +	 * be a tail beyond EOF that the split already dropped from the page
+> +	 * cache. Nothing past this point may touch the inode or the mapping.
+> +	 */
+> +	if (mapping) {
+> +		i_mmap_unlock_read(mapping);
+> +		mapping = NULL;
+> +	}
 > +
-> +static int page_reporting_delay_sysctl(const struct ctl_table *table, int write,
-> +				       void *buffer, size_t *lenp, loff_t *ppos)
+>  	/*
+>  	 * Unlock all after-split folios except the one containing
+>  	 * @lock_at page. If @folio is not split, it will be kept locked.
 
-We prefer two tabs here in MM land.
+LGTM
 
-> +{
-> +	int ret;
-> +	struct page_reporting_dev_info *prdev;
-> +
-> +	ret = proc_dointvec(table, write, buffer, lenp, ppos);
-> +	if (ret < 0 || !write)
-> +		return ret;
-
-Would we want to cap it at reasonable values?
-
-> +
-> +	rcu_read_lock();
-> +	prdev = rcu_dereference(pr_dev_info);
-> +	if (prdev && atomic_read(&prdev->state) == PAGE_REPORTING_REQUESTED)
-> +		mod_delayed_work(system_wq, &prdev->work, msecs_to_jiffies(page_reporting_delay));
-> +	rcu_read_unlock();
-
-Is that really required? Seems unnecessary given that we expect something in the
-range of a couple of seconds max.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
