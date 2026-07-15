@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A828EC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE928C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:59:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5E056B0005; Wed, 15 Jul 2026 09:58:49 -0400 (EDT)
+	id 0B1736B0088; Wed, 15 Jul 2026 09:59:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B349D6B0088; Wed, 15 Jul 2026 09:58:49 -0400 (EDT)
+	id 0889C6B008A; Wed, 15 Jul 2026 09:59:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A720D6B0092; Wed, 15 Jul 2026 09:58:49 -0400 (EDT)
+	id F07B66B0092; Wed, 15 Jul 2026 09:59:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 873C26B0005
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:58:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18B221A01BE
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:58:49 +0000 (UTC)
-X-FDA: 84991166778.27.393B9C9
-Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6568040006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:58:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b="Go/9ENca";
-	dmarc=pass (policy=quarantine) header.from=morinfr.org;
-	spf=pass (imf04.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D0D2C6B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:59:33 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79C0AC0119
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:33:16 +0000 (UTC)
+X-FDA: 84990799992.20.5438632
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E0B7BA0005
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:33:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bscw2GOx;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784115194;
+	b=mdzv55HDskBVyHi3N24DsMeEoj4LaW1HQPyWN1DziELcaI0V/nQ6thL++ABehl0GBBPc9c
+	FjhuMbHnnuEDIUqj1VRSdbeazlQBVODJ4eiMXwL/jjuB8300vkAJLxnYqdu52XPuEDmtbj
+	javPY9pbvWrKrINu0Ltgl7frFpTYutc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bscw2GOx;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784123927;
+	s=arc-20220608; t=1784115194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/0TSRqUtBqv4LNuB9QoC19FaESHdGA0a27gnrDjs45I=;
-	b=ALo0Pvh3SGsjw6WsrLMlWMOLSmuPkvPUvBNYSPTrdjYeyn8qJ0VXpLIejk/V7ZEmLTlKXy
-	wT1dd9/oSQFITNwT1HnB68ULFBPav8UOtsNIIdpH71rrq7pZrMS8cdUs1eyXjgXUBC/FS+
-	LIDFxsnz/iERfPMRnTkNWoX2bOEz/mI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b="Go/9ENca";
-	dmarc=pass (policy=quarantine) header.from=morinfr.org;
-	spf=pass (imf04.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784123927;
-	b=dyeGH6Jl1ZcQigBAOC9M9YDie9Mhjo5CO8NKCMqvSgJWUM9pAxTuOh03XFJ0WDeM4yshvI
-	9UGdWh55/YVdH5jNQd1BFFiwIRvnasvnObBOfyLJ+AjiuvoptwIUfQAWC6lmr2Y2cCP96B
-	dw4AyG0QITKJlirdLCbv12Mx3jsz8uY=
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp2-g21.free.fr (Postfix) with ESMTPS id 85ECA2003C3;
-	Wed, 15 Jul 2026 15:58:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=/0TSRqUtBqv4LNuB9QoC19FaESHdGA0a27gnrDjs45I=; b=Go/9ENcapVzmJw+O4blJ3Th6hB
-	GKYDM9jYAAQ0X3rpKCLsXtQF6VBujHN6rRWWrtEo2bWXqlkG8XyccRZqOqvou9tf7DHo6u5eoOVqq
-	13ts4Ust/S/FbQTSx0NKbbQaOvlXRpCfN/sYPediT9vJMctpOnLu00jPE8BrhgicKk04=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1wk08F-00000004Fbu-3WMr;
-	Wed, 15 Jul 2026 15:58:39 +0200
-Date: Wed, 15 Jul 2026 15:58:39 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Guillaume Morin <guillaume@morinfr.org>, osalvador@suse.de,
-	avid@kernel.org, linux-mm@kvack.org, riel@surriel.com,
-	Muchun Song <muchun.song@linux.dev>
-Subject: Re: [BUG] mm/hugetlb: possible temporary resv underflow
-Message-ID: <aleSDxoADBD0Qkb-@bender.morinfr.org>
-References: <alEJkwn5VlTTH_ZX@bender.morinfr.org>
- <alSyhslcItgtqSHT@gmail.com>
- <alYT8J9aRQDx_8pP@bender.morinfr.org>
- <alYZ7fso3zp3j3jv@gmail.com>
+	bh=LCDqEALQukdy48lYCnyqwpZMutqK5Js8PtN9MiPr3Po=;
+	b=4GDpfpyLUWIgbLS5Jn2X4h6JJ8pHD7bRSr7AAkJAqyuyDhlYRTa7Lhc25MvK6CqLgT7wY+
+	ZP341Ya1abXWLmP7fXJELPnrIlwL+qzwiBlP+Ks5jlVk3A59qhefsbc4n/GiWob/1yhbzz
+	e/eyOsmFKx0kuvYnX6ahb++II7AntyI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CD83D600BB;
+	Wed, 15 Jul 2026 11:33:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141C81F000E9;
+	Wed, 15 Jul 2026 11:33:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784115193;
+	bh=LCDqEALQukdy48lYCnyqwpZMutqK5Js8PtN9MiPr3Po=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bscw2GOxvcq7zy/uL4d2iR32U2VH/nFsAt0vLQ1y4PKosX/mVdfhsHAWOXa5z1kjt
+	 zsX1ykm4LBRa4oe/Q/S2zOE4Tco09jVjJIwmPZ2S63mDJ/lcoBaAxZJ9JWJ6WLd0j2
+	 P0IgyX2poBYgNq4qNtgg1vE+FPViT3Q9HDY8sWbS+8RuXLLBUTUdlYmeOk+x7HkrqW
+	 arGZPkjmYmXvqpTAqJnIhBHusfgWxIVO1kPqGRJu6RB/JIc2qzff07tvSJA4VvxaEH
+	 WHNKJkewg75wt1S+QTcPc2DaHURIv2qV60CA1Wlc3TaqxsJZ3KS/rBIwgpy3IbVWYg
+	 Z3qmvKg2BYBgw==
+Date: Wed, 15 Jul 2026 14:33:05 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
+Message-ID: <aldv8U-lzCn0SCBL@kernel.org>
+References: <20260703-secretmem-highmem-v1-1-30d5ff944664@google.com>
+ <20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org>
+ <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev>
+ <akpBWmnujSnj1ZEE@kernel.org>
+ <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
+ <DJZ3TQV3GPDO.6AN321FGTTX@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alYZ7fso3zp3j3jv@gmail.com>
-X-Stat-Signature: sijdjo1ejcm8uytt33rxdzwd1bn6715k
-X-Rspamd-Queue-Id: 6568040006
-X-Rspamd-Server: rspam01
+In-Reply-To: <DJZ3TQV3GPDO.6AN321FGTTX@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1784123927-754674
-X-HE-Meta: U2FsdGVkX18eqqRFN94g4KmPUgIWNupgJty0YWc2z9257afHUHKp8pYPqbcAIL048drFzfnRVBm45Nf8Gy0oVFsu95m/eUgxxlRRh0wH7cATtzn29Q9IGfCLRsdQJ+VxKIuFqs2DyoDUphCOk9eZqAOjAlnxFP58fEynqLxIaOY5wRrh3BUkOO+Uha6xAjuw2gbUqVVb2viUkbZ9Wo3idm63cRtPjbzZD57/U6yQtD/ySkHqS5m4bBobFw2bOUuD4CPUDXkVAOli2FYH7kad9UILS6gq4ka0QEmhQp8iOzSWgzEUyDHfK8WPt7S9jnqi6tQY/y5vL2O6k+3nmSZaTmkf8qWqPQBipvn3XsisV89J+r95pwPz9B2tKA4h57PWbiwVbCJ9CPZ7YU7P+CFrJ7N1wrkEih0u++LMT8RyZUQxy6tjA4TMXTPdpxVjo8yJ9zye4hGyTjEQV8DweGm9iaY3vNiWOp7wlRnM7UdH8hrb9WBh+fTluDrMp7oEa7oZQoYnMF52fN1XjdIYbdory1rGJ52oTHc/bjyegKmcFFg8kYgGzvbgLDogvhRrmGkiEo/cUkzkYzPJA3PEAgeDFQHFawwK1obTwcwbTFFm7Qrj2RFtKymtIL7cW/h3YWe9BASUPFTVD9fasVKtIgc4hEmg3fo2QF3ApQRMyTTBiOOLyUkuLbITMYhDDTnR7KIOi4jjYQcVRqfxMM0M2iifMuboEtYvhAeUKD6rLl2Bfd4EKy5g+B4lk06MNUImIA2FLs9N3j8sg/fbckIt+CfUvj3ntfMZ06FkGk9LhcKAQkXaGMDqMM5AN6FS0ISkzeu+PkOdQwEhr+dF+0wZ3FzQFUSsS/XPSdBjl8+PSoFVfNE8esKS69E8L8p6GtDqbVjY39/2GeaFyVLTQYRwiT2Y82TG9D/T9e/iMQp5Z2UaKTqkhjGX/HLmQkHrPjRScL8/ub18lPZXDKlbojOUwOH
- 9xDFuIs+
- gp6eOy9qzZNQ0D9XBKPTbQApowAcSdie/bZ3nJupoji1wl8IdmlDjNGxOWY8cQg3JkNnseVO90/H5TKl7Ea4zqJbokThpxB7nsZRemZF9J/V5JOJfjG8owEv4O4hw2T9D2oF+orDEbbreS1sozb/UuDvSuqKztkN/87Vi8ZPzCEGZoVROv4VV64NgBJpRJyl78yquNmdz4eiCQHNcQZgshaw3VJPGD5EPHb6xHpUdKq+4cID2xImftHU9QdmgDJRcT/06NkLGyTFOAqWIZyvN2sNkjA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E0B7BA0005
+X-Stat-Signature: fguiaj6dmob57i7jky7xtdd59wypukum
+X-HE-Tag: 1784115194-540622
+X-HE-Meta: U2FsdGVkX18c7Q2vyy8fOKaDAlqltZ+OdGZ+gXvuv8Q75t5mqpIa0XlZUo2Ir6HXWAXCrcg8YFteLocU58VJDDtZkoh4R2V/I+/KsIx+K+IeSJ4dw7HwjQBMcGL9tXK+u5AUOdJpv1ilmjlIto2GlwHDs9ogM9zfqTiGMjSw6m/iP6wQ6jJ3Ox8GJ9AwnGRpTo8h+3BgQ/uiaXHYWoUtL2X0mEY5Ri98E8DYelC4B1ev8nd7OaivkWqqVlS7Y1S9nzxyUay+eSqVp0cmqs//murnaJMB9jTkXsGPej8nqdUDSEaY0gUZLBC9h0lDA0ojKhVh81NP4CyYFlDFMogqek2Pmg8OIKBcTmtUQMJOGKCixMR99kyVD76nmGGq/ndm0Y8HDkNyEIuldOQj33IIUvD0HgoTNs/DRRZJLhWd5uu+9wn9h7OCO0TLbM1cpxlYnHo14PNF7t9ATPkH16NcFnQZ+i8YmURkRAx1RkrKSkwNwsI/aVAh+pfp99I5NpfYMVDYmS7LrIi+MfQrf0CsljObqHzl7iPdIyAp7kWHCSnIfpWFxXkdLvOYDLSfGz/RAQtVLRchsJfUbVSCWcTuxehBevU6Eu+YM7zbrjdWxrcCMq1Fkg+YQ8zbgaWXnmLKOqc71Oqom/z4W63Y49Iv8n3q+7wCyAWQy+fUMdkOnjcaUx3019Kq8DwOC4tzekqDh5xUyppbe1qhV6KBot7p62yjFcttZlCnTA1e1ItwDQY0QwCe+EzbmJEmDC2e6sSz7Kpyd2T/ioj+J6fjdXpOfs934ZocRtvaQXRn95fL5Vgt88pLTTh+QrJJcXcU33/J1OQ+mWcjQHtX1jLorbAOKwqUTn3YciWPvBaB29bsLz55A/x9kvrdrXnDtnTUFOOJRK+CRw/USi0BwBP99hcQsypQKTBQReOwR50r9jDonbnU63CZCtpBOfCpesimOY3pAjXcvHDe0uRv2tqOwod
+ nxEw+24V
+ /PG2t/fAzDL2KEnOIg7iATpMOaPQKPigMPUcbmuT90SxjY6xBMBWYRhokQO6swGXRIPPLQlNvf9OrKFSiHwiHDNF3D7MRdPrr6wAcIUh3IQvbOHI2w0C+5eKG+FPd6CinnENv2cMgeQl3/MbXA0JWpbh+p0k1hjKB3ufrOrobX6aa8t5/KAGyPwVENU5T0wb4cLyEFjhzfehoRt6uslRLtZfFt4qnqY7C3EmU0i4nBY7c64YYOHaoCOLAIJONhySJvGBo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,37 +102,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14 Jul  4:14, Breno Leitao wrote:
->
-> On Tue, Jul 14, 2026 at 12:48:16PM +0200, Guillaume Morin wrote:
-> > > > I am not sure what the best fix is but checking folio_mapcount() == 0 
-> > > > in __unmap_hugepage_range() seems to do the trick
-> > > > 
-> > > >                 adjust_reservation = false;
-> > > >  
-> > > >                 spin_lock_irq(&hugetlb_lock);
-> > > >                 if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
-> > > > -                   folio_test_anon(folio)) {
-> > > > +                   folio_test_anon(folio) &&
-> > > > +                   folio_mapcount(folio) == 0) {
-> > > >                         folio_set_hugetlb_restore_reserve(page_folio(page));
-> > > >                         /* Reservation to be adjusted after the spin lock */
-> > > >                         adjust_reservation = true;
-> > > 
-> > > The fix looks correct to me.
-> > 
-> > Excellent! Will you be submitting a patch or do you need me to do
-> > something there?
+On Wed, Jul 15, 2026 at 11:22:33AM +0000, Brendan Jackman wrote:
+> On Mon Jul 6, 2026 at 8:42 AM UTC, David Hildenbrand (Arm) wrote:
+> > On 7/5/26 13:34, Mike Rapoport wrote:
+> >> On Sun, Jul 05, 2026 at 10:46:19AM +0000, Brendan Jackman wrote:
+> >>> On Sun Jul 5, 2026 at 2:26 AM UTC, Andrew Morton wrote:
+> >>>>
+> >>>> Well OK, but the secretmem code is still wrong.  The patch protects
+> >>>> people from hitting the bug but leaves the bug in place.  Surely it would be
+> >>>> better to fix the bug?
+> >>>
+> >>> I don't think the code is wrong if highmem is disabled. Certainly
+> >>> there is an implicit coupling between the .c file and the Kconfig file,
+> >>> but we could always add a BUILD_BUG_ON(IS_ENABLED(CONFIG_SECRETMEM)) to
+> >>> the relevant bit of code to make it explicit.
+> >>>
+> >>>> Is that as simple as adding the folio_test_highmem() test?  
+> >>>
+> >>> This would fix the WARN+SIGBUS but I don't think it resolves the fact
+> >>> that this configuration is completely untested - there are likely other
+> >>> functional bugs? But more importantly, I am not sure if secretmem
+> >>> actually does its security job if kmap_local_page() isn't a NOP. I
+> >>> think shipping a "security feature" that doesn't do what it says would
+> >>> be really terrible. (It might work totally fine, I dunno, but it would
+> >>> require some research and deep thinking that I don't really want to do
+> >>> for a configuration with no users).
+> >>>
+> >>>> Or switching to GFP_KERNEL?  
+> >>>
+> >>> ... Oh, that's a nice idea though :)
+> >> 
+> >> GFP_USER if anything :)
+> >
+> > Right.
+> >
+> >> 
+> >> But still with kmap() and friends not being an NOP the promise "kernel does
+> >> not map this memory" does not hold.
+> >> 
+> >> I think that keeping SECRETMEM and HIGHMEM mutually exclusive is
+> >> conceptually correct.
+> >
+> > We could even limit it to 64BIT ;)
 > 
-> Up to you. You can either send it, or, I  can do it myself.
+> I fear this in limbo, we have quite a wide range of opinions from "fix
+> the broken configuration" all the way to "disable secretmem completely on
+> 32bit". I'm not passionately committed to any one answer but I do think
+> we need to pick something.
+> 
+> Mike's position seems to be roughly "in the middle" of the spectrum, and
 
-I just sent a patch, hopefully it does the job.
+Right :)
+Supporting 32-bit without HIGHMEM is easy, so I don't think we should limit
+it to 64BIT at this point.
 
-Did you have the chance of looking at the selftest version of the repro?
-Should I spin up a patch for this as well?
+> (conveniently for me) happens to align with what I did in the [PATCH].
+> So... could we go ahead with this?
 
-Guillaume.
 
 -- 
-Guillaume Morin <guillaume@morinfr.org>
+Sincerely yours,
+Mike.
 
