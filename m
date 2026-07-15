@@ -4,102 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3043C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 15:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22FBBC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 15:02:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFE926B00AA; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
+	id 1B1A16B00AB; Wed, 15 Jul 2026 11:02:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD6646B00AB; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
+	id 187DC6B00AE; Wed, 15 Jul 2026 11:02:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EBA56B00AC; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
+	id 052D66B00B1; Wed, 15 Jul 2026 11:02:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 749606B00AA
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA57AC01B8
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:01:39 +0000 (UTC)
-X-FDA: 84991325118.25.7F6E58F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9FB1810000D
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:01:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPiuISMO;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784127697;
-	b=SKlTKLOBWt4gIHtucPo2BVOGBQFeLLDa9RQaWCx/qq3bUfj8MT0efEL3cMJMKICjd9k61L
-	0WN+QDLNIRsA1mSNg3YbR1iNGLgCjkGVeTBGNPvg4mI9+vEPnS1jchLPPlUFkjZgeM+ZUR
-	pnJVdjaTcUP1iw+X+ZkU4uAjTbOJmv0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPiuISMO;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D0C6F6B00AB
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:02:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B50C1C0114
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:02:16 +0000 (UTC)
+X-FDA: 84991326672.01.E60CA8A
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 543D9120019
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:02:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=c+1GHKgU;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.217.47 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784127697;
+	s=arc-20220608; t=1784127734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Z2zNKjRbgDz18AB/OdbEQN5wpqYTgFBDPBnDwJEk2E=;
-	b=eOSMwkDgC/k50/5iYCGIZAIarIDE68BDEGxSYEAaTJ/g5ThTJABNMQ2oopxElCY78vfsA2
-	mZdDhr7Lr6KfLd8EtTFf8R3JBtj9Z00dXXlaBKzUiLIYE6Vyk1IwuiteYdxmZntj/zYQzt
-	nKCzYnmfhN1Xsm4yP4y75zQQg++lO0E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 29ACC6001D;
-	Wed, 15 Jul 2026 15:01:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95521F000E9;
-	Wed, 15 Jul 2026 15:01:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784127696;
-	bh=9Z2zNKjRbgDz18AB/OdbEQN5wpqYTgFBDPBnDwJEk2E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cPiuISMOHZKbNJ/q+U6zBqKZl6i/54DB+RZCuayF6sI/kqfwtjdaALQ69uJ88Y9Tb
-	 t9oj0Gwrjx61elraU/lF3M+8XrCqQFajfZU2mv8YfRrP78r/Wx340y3KQ4iUlEGzM5
-	 eE16z35L/cQdoa8olim+hEXZt4VTFLQlzUnuc/usVzrf89juTGp0WUhVkaElN3dhQx
-	 LbUCrcNvso4ErQy0XseZ4PxpaGqrP2jfw6djWjwKyuHqNf1PD0jPkdNqnYsTErA07p
-	 qx9E+rQb+xIH6dJ9sMrZ7/kfrX+NQDC/1YbeWlscd9NRHmuuwccHGiNexKkLt5Onau
-	 bl+psB0aDqyCw==
-Date: Wed, 15 Jul 2026 16:01:18 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH mm-hotfixes v2 0/4] mm: fix UAF caused by race between
- ptdump and vmap pgtable freeing
-Message-ID: <aleYrvnf4nVUCu-f@lucifer>
-References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
- <alTn7NguEW_4bodu@thinkstation>
- <alTq4V50767L-s5H@lucifer>
- <alUNiWcygLd4rqBo@thinkstation>
- <178404602957.85099.8935151447302412515.b4-reply@b4>
- <alZm0tBf8DpMXimM@thinkstation>
+	bh=nGecurzBYdjUfiEExv0oL4FVVbYZSUEIMh9OhYH+0R0=;
+	b=eRnO8wMft1wdHY9eG24QG2Ji0tOhbof13r7I3Fi4zcYAtVIta/zpjPz+eRgEk3eNZsU6UU
+	X6YpaxSGxuuAHtpGL0eOnF5OzSXJ8gLy+Ohkyjm718GpcL4jfd3rLrZyc8ykQWVLU1388s
+	kWlWPuSF9/3NdBNb2IkAwHglKSVOL/k=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=c+1GHKgU;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.217.47 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784127734;
+	b=iBm+RajxZ3zlkkwuGaqU3UYJ4mo7hKUK/cfECQHErTmS/ObLGzhbAQBMXUn/jbfdsSGlbd
+	LAevKQ+Enx3qS2tkoBo4eJaB3/Wruf0wgMTscJSXRNBgYmYJDRK7lrhz202TH2M9VhlBPq
+	DpqX8D1MLHMbeKptJVR/oEGSl9KXHIA=
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-737f6e70678so3880083137.0
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 08:02:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1784127733; x=1784732533; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nGecurzBYdjUfiEExv0oL4FVVbYZSUEIMh9OhYH+0R0=;
+        b=c+1GHKgUrV2VEG2iEH8W5VwQfd2yK8Jk8newZeU5YkuUAXe4pl9ZxpNNMypbHs1Sbe
+         LkriiScc969j9MHe0PPx3F31qB8rnH4L+G5oJlTk8WO4AjiIMQLNxQ+7vMeYuEuWuVuM
+         mvgGegTOxGu135zSodUvQpgT6B080uuKnHXeYQs16Sce5fUl+0xGkPZe5apT5meMqk2P
+         mmV/OHPQyGxfOYzFDM2kDcmZbC0XNbvr/uEaL1AjWC+P0ZTe6Ooq1c7YsFx/I5FNuYoO
+         QWCM3dCXEAMGI3+4d6/iouzjafBBMJ0Jfy7VJlK3hOb01fP/HwfCKpHKHoMDxC260pDE
+         fX+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784127733; x=1784732533;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nGecurzBYdjUfiEExv0oL4FVVbYZSUEIMh9OhYH+0R0=;
+        b=EQ/Gf7bweeIXFZpjMmXXxH/KdazJT1ad0/6PwPUWkJQY7NaoWO1Jvea62+pbsftJGL
+         BpjZHoAojYhuq/2/4ouU7e0iGGFbYpFke3PVLzg8+E+gnNe4TfSZccI1GhjNKwpEjdfe
+         bV2CZuw3ycBwv5m3SIx7xPz7vXXUYBDp3878/rjIVEieXd1nBicL3IdEeDOAlqBCynHl
+         ++zwJge6EQ2tj6cGLWQt1EKIftt5ZkYBXdAsiFC0bGNoFEddrnUvqFG6/29Fq0DvjXKH
+         ENL3M4fGFreY+0Mu32ara/DYzJ54LS/ZTc5QHYo0KWVd3RQ2oOYbd28ke9NGkxvh1Ipm
+         sgxQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoyWkPUcJ8P+TcS7WiLQTFXXVXmAlBQZICjQpxOROYXA6dpRVkjlYDxZsmdt2DOBH0OkcliWr/CPg==@kvack.org
+X-Gm-Message-State: AOJu0YzT+uHAn8dOoKJEmJB8tkzqINVtTciWceS/L0RjNigw/8NrvI2i
+	zEKNCXEA74+464mMhpZJ/2LJzk9MgTrYmVj3C3OCmp78icIV8ERxhHc76JbRGWpZ5Uk=
+X-Gm-Gg: AfdE7ckGWEoCELVYsfmEPDxtFPRwNi9woAIrTP29b8+JU49X/LVrJoIwZ62qnNrL9uR
+	03Mys1PQGhWOUtRlkhVca0d6hC4pdICRg0rnMNVcWvFS8426qmvvoF+69VGEeymTc00WMXdKR/F
+	dUjvjp4e+sgZTV6jCa5ZaJoC8fybaC/Q5tiTRjgAbUx3zOzIBCkI6xeoPwe1nJ1l4QzHwwQwgs9
+	yoZmIZErFdwjs3Tcc+cFheF/kFN74kgSXG14PD7YizDEebkVzcEqJCC1DJiG2bFbxWZoHDhc1qI
+	/qIHgriJ0dRl8COSP+M1VMJ1B+karN7upzUC/YzWUIck6DZpN/43QE70FmUQKpR0EdaQT4xELr+
+	gQ/prQ8TWpS7ATUTwILPmh9y47lVG/EP6WNX083s6bPOZMkxxoHfM1uwkZSqB
+X-Received: by 2002:a05:6102:d87:b0:737:9edc:36f6 with SMTP id ada2fe7eead31-7458757b204mr4167130137.26.1784127732764;
+        Wed, 15 Jul 2026 08:02:12 -0700 (PDT)
+Received: from ziepe.ca ([159.2.72.92])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd50e0811sm196100666d6.3.2026.07.15.08.02.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 08:02:11 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wk17i-00000000TXQ-3Nvp;
+	Wed, 15 Jul 2026 12:02:10 -0300
+Date: Wed, 15 Jul 2026 12:02:10 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, airlied@gmail.com,
+	akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org, corbet@lwn.net,
+	dakr@kernel.org, kees@kernel.org, leon@kernel.org,
+	liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
+	lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+	mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+	nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+	rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+	skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
+	vbabka@kernel.org, dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] mm/hmm: Clarify notifier retry state and scope
+ HMM timeouts
+Message-ID: <20260715150210.GA3846105@ziepe.ca>
+References: <178406760622.1106335.2379450382728057793.stgit@skinsburskii>
+ <4300f09b-8f93-4605-b072-7c09a82cb16e@kernel.org>
+ <alecaJ1FUso39D9k@skinsburskii>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alZm0tBf8DpMXimM@thinkstation>
+In-Reply-To: <alecaJ1FUso39D9k@skinsburskii>
+X-Rspamd-Queue-Id: 543D9120019
+X-Stat-Signature: yrryqmid834t6wzo1kkenwwxsdkwcs1i
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9FB1810000D
-X-Stat-Signature: sto6i1x3rcskub6wsi1qd4bdg9bzwqsz
-X-HE-Tag: 1784127697-126319
-X-HE-Meta: U2FsdGVkX1929Fdp0r9CakIPqYxwf1LsPkuvDUNVOHAu7NSnTfdJbYpl5bhs4N0LeBcfG+nuaUPztQdRERcIU39oTUE9JnPUKeD1TO4HsPVC0fVSeoiKL4FdYqOx45Qla/frxszpANdmPTt/wiqPgtWxm/PQ2ZZ8y/UP/RVrJji7TkTLbB1XbgIcqwZTzV8s2rTuqQJdKtcumz3J5DI9QxfOk4cYgolsqFhJ8eW90wyys7t6k7zFpjOptEDQPl1mPtnPHbCHnsl8So9FXiqwEvNxnCUzvfewrKXxR+sno0Mnh6bplONjk3hbkZP9qVADuONbbtSvgunaRPyypVA0mZwd5O3iJcwtGsqJ8TiJqCpH3i/dsYsfS3QbfJ3Vf+qrheNU2mQRLPB4iyfmT4UFx79KApOeBPWKHIpC6kur+wU2vRsSLryi9iVUDXEHV521+jaDPCQe0gt6ANfLh3t/CtEewoLW7Vwxpc7/yLLKbTNatqXrGIw59KuuNab0oS9X3V4XHEDWydE6VJJi5wpDS+Q+3cJ9MfGZvtx0alt2xlAF7eV9Jva8oPI1J2t0z/BP7MhYwPzvFF+RQ36q1Ob8L0drWjd+izYvvJPh+lIuu7h0/t+fUXVB9q0KihWKGfyEcivho7deiI7otP0vkAujybWi7GebPwkQTKIuMVmufd1DcixIegJ7aM7A+Y3f3+WM+NYq3qkNHpeLmSUGc7g2O/CWLOHDQ2d2+CyKRqoLHX0BbxUautT8ian9yxMvUT01+I3b7qhrT73hZw0frVrIURMaJwwxANufN+cMlKtMr0ikZmZrB1lVNLGromAYZOHWpQ7OP5+EcrlwBlELmMixV/v6445/kZEFQuekP+yh0t1aRhNhBRMpPxHMVfvI2VF7k3L+okqQc4s4QX9YpP4S0iDzTZ3ZZXly4z0anmPuo5jtTwbeG/kGbI9YCo53pMzG8OVQ6hWcH3XI1Xc02nZ
- grl3mZ1P
- 2PcR0hwReS4LYeO3mIUbvIXr6kIQp8gNEsY0gPixdz+RrpRLp0zOv4TrpBgTixWjPGeknO6e1VUV0HZMBog5ifp0F2fie/rd+R6UFzu9nwXzLVOmYH8T4U5s7NEYCLuA2Ky5BXKPReynxRY7rOSvLDNh6f13jjp57w9WMSo/hBcfjgAVdCJshcEclrmWj7HPzRkNqqhvZfDDag036C08mrWM8s9HmrPKN/7mxZChSjs2JLxxjIkuULSIjOSkz78z6b4SR+4JXL3IqMv42G2kEUbeZ/J8DTAU/o1xoZdvJ+7A5M8m1iznbUOJFC9Gj0P8383GfYD9r2KgCdWNyrGk9z7O8XAD/AYcvMIPbFrMDgef0Y8vd0LnFZK2eI9t3MWXQUf0A
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784127734-817472
+X-HE-Meta: U2FsdGVkX1/OEQg2zoRGCpcjvTfFq/1ZNx3QPnnI3226strCHozy1N0D2CAvP1sw74RsN03xe5uMXJEk/szqF3oUQUGZl1KfJrULJM27b3xPwLLHJuckanJZqHzCV9tMI8bu97RRwTD4LaMjK5ZN6/8j0DB0OjUP7ugZuLieTgcymtd2KeCESiu03jhVKFyvDefOxIt0nYyf6sHzARABPGsuTrSE+ujaOB0Bre6mAfAYVaDnLFZ69r7ZIDK9NfK84Vng3hFlUf0DReSnfG3zR7degSRuC/3x9etffzfMQfKqb6/lUeqXFmHj54clTU5Lc/4pb8LPHJEVpnkXe9nUMVp2BuWthoJZSW7p9eO0uMGUhQEnKNIlyw6yAtO3nMYWVFRapWRgZRHLyPJK0u5QIem4FmC2jhpR65A743Cio9TQdAzKTcwBnNrWtS8qcrJAKHu0/fD+vKvJh1Bb3IwvgyHdVreBonzOPOvh3bGc9DDfI3WgEN2JcaJ7Ja2jmpfzdYkv9nxAUTm6sCaRM0/owBGcjRYLKGMTGPZQv9UGRJVGqnLJ21W9/8S6Z5+9r6L7thAY4PmRAWCvAOAKcFS6tFC8BXf5pQJYmWlW0rcMinCDow0cOaDLnBGY2HUAeZ95mjgKImlNeniAlEx1pJ5sRBGIi11miemwZhXKxSnUZ5s4yCHL/O41rKnOcESEaOSnEtn0ae7JUgxhMT41UxqI1CA9F/7r72rcDcde6pZrEJlTT2DdQQjYeRx3PWKzyc9BvNdGQVAJZU7fu/+QlsYmFsoS5A4wMDxxfQyPuIjbfeCFabqPc8alrusIlNsp1owPwy8MKF06oSp9hnBoa9aLqVNSoirdThXdbMkdTZNGjjopvc5/vfNfixESwalE9fC1ezTl1Ynyz//rZ/rb9QRZ1jeidTZacSVRJTKlwcaGwIDD2mIqDoqLcCYElIXxb5YREr+gKgEuocw4es/Flui
+ 4Nsr9+MU
+ ZWeMhIX8YcZMtxGzaP4AOmJLFD5NtkO1qtbbqUUlurz4oZDQj1BXbyDLcUlE+jglx61X1d+0QfCAOqcpo1O3XPODrN0capMlSgX2/Y8+zOpLgbFKi501aoqZ0iZ5IN3HpYKpXrsCGpD5paeRTFhaeTD+j9Cv5fTIl7c1kTsCqMddto3nXjPRl9t3ikjj54tUWXaM8MnyUhsG+sJvARrKSNoiWwWpb/XjNzXRr2AQRnKQYRKjkOZqsW7DiHIRbvqL24bcDz/mQVkaHki3J/j2WupuBuN199NxhEfnV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,60 +135,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Lance for thanks :)
+On Wed, Jul 15, 2026 at 07:42:48AM -0700, Stanislav Kinsburskii wrote:
 
-On Tue, Jul 14, 2026 at 06:05:01PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Jul 14, 2026 at 05:20:29PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Basically you need the IRQs disabled to get the semi-RCU behaviour and to
-> > be able to safely traverse page tables that way.
-> >
-> > So with CONFIG_PT_RECLAIM you're safe to RCU traverse PTEs only.
->
-> I think this is stale. Since 1fb3d8c20bfa ("mm/mmu_gather: replace IPI
-> with synchronize_rcu() when batch allocation fails") the !PT_RECLAIM
-> fallback is a real grace period -- note your own quote of
-> __tlb_remove_table_one() calls tlb_remove_table_sync_rcu(), which is
-> synchronize_rcu() nowadays, not the IPI broadcast. The name invites
-> the confusion.
+> > > Stanislav Kinsburskii (4):
+> > >       fixup! mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap lock-drop support
+> > >       fixup! drm/nouveau: use hmm_range_fault_unlocked_timeout() for SVM faults
+> > >       fixup! accel/amdxdna: use hmm_range_fault_unlocked_timeout() for range population
+> > >       fixup! drm/gpusvm: use hmm_range_fault_unlocked_timeout() for range faults
+> > 
+> > Why a fixup series instead of properly resending the full thing?
+> > 
+> 
+> The goal was to get a Sashiko review, and v8 has already been applied to
+> both `mm-new` and `linux-next`.
 
-Ahhh, nice thank you Lance :)
+I think if you send the whole thing with a base-commit tag that
+specifies a real base commit in linux-next sashiko should work
 
-
->
-> Together with a37259732a7d ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE
-> unconditional") that means every freeing path through the generic
-> mmu_gather is genuine RCU, batched or not, all levels. A plain
-> rcu_read_lock() walker is protected; IRQs disabled is not required.
-
-Lovely. I'll probably send a patch to fix the comment then :)
-
->
-> > HAVE_ARCH_TLB_REMOVE_TABLE is set for powerpc, which also enables PTDUMP :)
-> > and that's because it actually tracks multiple PTE page tables together as
-> > a fragment.
->
-> sparc also sets it with SMP. So the audit list for custom
-> tlb_remove_table() implementations is powerpc and sparc -- everything
-> else gets the generic behaviour above.
-
-Yeah.
-
->
-> No disagreement on the rest: the walker needs
-> ptep_get_lockless()/pmdp_get_lockless(), and the ppc kernel-side
-> fragments need a look.
-
-Indeed.
-
-I know Suren's been taken a look at this, pinged him off-list (he's also
-cc'd) to see where he's at but I'm going to take a general look at this.
-
-I feel that RCU page table freeing is likely to be a requirement for
-scalable CoW, so directly impacts me :)
-
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
-
-Cheers, Lorenzo
+Jason
 
