@@ -4,98 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AE30C44507
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 00:29:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65211C4450B
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 00:29:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C5B56B0093; Tue, 14 Jul 2026 20:29:00 -0400 (EDT)
+	id EBF706B0095; Tue, 14 Jul 2026 20:29:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 102EB6B0095; Tue, 14 Jul 2026 20:29:00 -0400 (EDT)
+	id E975F6B0096; Tue, 14 Jul 2026 20:29:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E49676B0096; Tue, 14 Jul 2026 20:28:59 -0400 (EDT)
+	id DACE06B0098; Tue, 14 Jul 2026 20:29:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD476B0093
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:28:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25E7640559
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:28:59 +0000 (UTC)
-X-FDA: 84989125998.18.2360F70
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5124240006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:28:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J18+ptKY;
+	by kanga.kvack.org (Postfix) with ESMTP id ADE856B0095
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:29:00 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3AC16401E1
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:29:00 +0000 (UTC)
+X-FDA: 84989126040.04.45B409D
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5CA5740007
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:28:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CRck9rmp;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784075337;
-	b=KdUnEOHVWmdHLOG+IRXDFK0r68JyFPy/F5ii3untQIGrx2Lth6MkvMeFIhYuUAsIj3Bpz5
-	4evjZoSZk9FRXvUCx+Ht/9gFfu6LHF22Kdf+haRDDLQVP/UXT6OFAlgbq15dnSffsPkKrb
-	og4XPv1WwG2jxpYEY9tRzFfNP6s6fSA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J18+ptKY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+	spf=pass (imf07.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784075337;
+	s=arc-20220608; t=1784075338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q6EUyZKF6G67Gt1NStk+455yKefIcrRIfkjtGEXNiGs=;
-	b=xTxX5t0uUJtGpAejScJx3G6xgsCGOEfE+zyTcJXSjwyD7USWkqb+ERQYj80YKgKKt+b513
-	XnwRHLlLCpnZr68MzJxcVol3gGchJzm65e+NV7lSN0/GW5hdaPDBoYPMuuMxzOsJZWl3vX
-	K5+tTaXD1dtr51eTL0KqXm8aJbhbisM=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38e041ea211so2223466a91.0
-        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:28:57 -0700 (PDT)
+	bh=4nfsPSoEu0xJfM3sfM8gGgAEUP6nwZ6n8ooDYgwCJHw=;
+	b=poeI2/hlFbUX0eGtokA0gsqPZTOMod3JgVsDsWylTc39OPh/VxgaaAgEiEO9mQtvIyJtNl
+	ZL3D08rtdlgUQmCpypd+d4IDPHsHQbMEQcmm+178iZ/3tztzqDkpohu0cDOfXZvPouQovT
+	YTsWmsrli0LF562eFeslZuvMkCk02RY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CRck9rmp;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784075338;
+	b=ZTOUzaWdSDsoIagcCKB5hTn0gycyGm/OSj/NtzDulAaUn4CDuE9k7IhfN12zlYXpIsrrEP
+	jHYuBLg78aydGUEcbx7FUxvqKfUSvlYXJZxdPiwmneHbJCUWEVfgt39SWb2ZWZ6KQsdGH+
+	suMkaX0cbNOrvd2BQQIpuu+4K6od7AQ=
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3847e8b0f3aso4047139a91.3
+        for <linux-mm@kvack.org>; Tue, 14 Jul 2026 17:28:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784075336; x=1784680136; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784075337; x=1784680137; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Q6EUyZKF6G67Gt1NStk+455yKefIcrRIfkjtGEXNiGs=;
-        b=J18+ptKYUR+eXnucLU0X8iYveawWJU036LV+hEeXbXXcJIztnhvIejqcxEf/Rx2SJ8
-         qGMt1u1o5+g/Y7YV+XoWB8mdoJf902T2GODC2CoXcMxKmaPL5K/UIRwx3YXKFjRDJ4qD
-         Ev2Nya9iSDExI4WH/bm3XvZzQnQw4ipRGJuVsj/phJjwZt65zF3ZmnWqN6WrVfbY3koS
-         zCr9dGC8BYfQa5cHIchswiyN3qY26q/LBSqExjMqof9tQq5YuQq7W9ksNcX7XE9bxpqC
-         Zz9FtjABZWDWsMsL1/wd0ZbHBzeE1fGgy4VO43jP28rBqzhQ9JYFk2EXubfusjz+fM+x
-         Uk6Q==
+        bh=4nfsPSoEu0xJfM3sfM8gGgAEUP6nwZ6n8ooDYgwCJHw=;
+        b=CRck9rmp+yqIckmMHQu7zUpgeoqJXpqrXFyl5o12zHcmCr5QKKHzLMewfOn7Wk1tCF
+         MreIU2zIU20QqGFxElERo2mIF510O/iB+sXyhtOhf5t5XQ67zFyeSuvYTBn6nHQIS5R2
+         tZnQk0B4CSt+qTEyykK6F2lHUX5aaDkIOCRFbPD58gNWpWpCzXT7sTsDuwKtfuJl/ysl
+         yMoQo4fUGBmgYY3fFgXTkIwjNc7JoyL6SYXHIKAJO0TqM+PrS88aygh4KyIO0ui1fUDr
+         Av1ZywmqNaNt8CEmCFVQkgsEPfHnQZUU8MkSfwCFFTjstnPP5VuLHWVnl9AwDxaneDQQ
+         XYCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784075336; x=1784680136;
+        d=1e100.net; s=20251104; t=1784075337; x=1784680137;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Q6EUyZKF6G67Gt1NStk+455yKefIcrRIfkjtGEXNiGs=;
-        b=CyaS+C61ZodGAjwro6skUEQcKZ7WPdk7C05OJw8ge8/peExKi0OVo93Fvqc6Wgrqoj
-         F0Lg+vBbxohF7L9gkRrSR5zEQoko2sigriICx95zW075d+slkgUa8PSb+XuDpW64ual0
-         Iq+uPP55HDG/b2+fIz+AKx4ezzhJZnWPgsNz80FfwT7tZbbvcPite6alAYVbQw527onm
-         eVXeWWlQqelbkKqQLcViCO6Lr5LKdAT0twUldBdQdXn7IgdNR8xZgUCsIJkdOkxAuRKX
-         4iwgQf7txQm8y/+HZt1ZE2KrLKqdpJEWhabO/1wVFEuerpJOFHSg7MnECTDoJnXR2SnR
-         6hrw==
-X-Forwarded-Encrypted: i=1; AHgh+RokgOKhDgqdakuPsK6BQU1LZqUCo/6RqRFl+zsNUqxY3BLH5Ij/CCBh8shZOYp+9pYf3aI0c0QnWg==@kvack.org
-X-Gm-Message-State: AOJu0YxCNB2unkTfM7IoYpUi7X0m2VDxX7NeXgjWocdB59IG73r2EOU8
-	+fZ6I524Y+0q7EUP/7I2j3l0h+iWro0PMWq3iEWAOjNCa7PgZbROpRvH
-X-Gm-Gg: AfdE7clLW8K0GhAYq+LZj1T+PiIIhR7t8o4r/IhRmefJ/UzjwtqjAjqnpSpwuCF2WS5
-	SB7XrMxAi6VG5W1sFxZxW340CLnUNWpPwLa7VkLPs37W6GPEGqRkoxZo5OiA2pCN1OGwcKkCn/t
-	fmsQDcI3nfHVVOUPY3tKpxRcIAI6yZS6CIuUdBFUWmhiEf3QTw8Lo5lUnkyBnOohP1PNd+zkIua
-	0QkjSEPeCBnwsTtgKBTUIIXVSfSMEmja1ZVZ40zngGIyw8+lFyRhLJkvkYvZRLF1yOOfrA6ASey
-	JZQdJviSb+Wuvy/AnK52rG0eDHIJ8GdVKLx/TOSANgJF7Sf3Itw7Ahu6pep9qT5JTSFI1463+v2
-	yoNZGikP/Gqz8clp+QFCLphZTFN12hYt9pR79k8IbSBJmAh5ux11d5/MeA2sfZns9wb88SLV2AP
-	w5LBm5hwtpfFXLEvyh
-X-Received: by 2002:a17:90b:2544:b0:37f:9ce1:736b with SMTP id 98e67ed59e1d1-38e1af37168mr4216164a91.33.1784075336213;
-        Tue, 14 Jul 2026 17:28:56 -0700 (PDT)
+        bh=4nfsPSoEu0xJfM3sfM8gGgAEUP6nwZ6n8ooDYgwCJHw=;
+        b=SArq1aJyvefIQj0fwZiBcS6TsU082olop48MlIZUKx0mUXHQm3EEzfyA2lpzuD+ylT
+         /TkrvG3svcVUWbZd+0g+CT6Q2atwiIKJpvqgjxAcOO4giXTJj7BR+hW5/cGQ3jRq6nxA
+         oMhC9gW5QdypLPHOm3N0NtnCNrVCPIm4oVzTN5aajz3y0sGZlDNRQU65p+lFxWhiO9z6
+         AhwhNBLIq5neeQTtF8ye0X4nkvWFwGncrzRCR0Kfd5c1qReUJmMei2r9hU4nqsJOTYsD
+         V177Pog6CakLMYHyAavAzRnc+WGDU1zbHSHF6PA+bumUSJ+j8VtWiGjAO90JZIQfPxbz
+         5Vzg==
+X-Forwarded-Encrypted: i=1; AHgh+RrpHw7xuGiyStNXdvm+7RjKNAoFbDdbRc712Q239w8Ah3xL4b0YDLZ1PyUtUOdWHCJeccVcoTNxNQ==@kvack.org
+X-Gm-Message-State: AOJu0YwjVDSAtrY0dTM5FM00hkRz+7Ws6YkHG86tb9bGLcAXBzEcIB1n
+	dy0I+7ECJbq3S863wrAz3g5wjKsZBJWVa29CmuCco296EjjJ0bPWuxcq
+X-Gm-Gg: AfdE7ckpUeBpRxDpJ5MnGab+aKVVquv2lz+CZLJvuiSum2gY5loDezRJbNpbMlBwUeZ
+	cmhxoBSI+hTBcVH5HQMfXIrTqETO9q9RtU9tHSX4jb+Z8CsaowvbfLvKL7/w8/UDMdTslbnvkl0
+	4KcvYUNCv5Vmqt1PVGArdB/k0ZB/CiIgO1t5GZZvDUCleLcYwH4C8YrLwyg7LYUyluai7pJcMRa
+	FjUxZeFXXuadAnCOTvuwJP6g6K1UT2fXpNxoVavU4PCb8zy1eT+qRV2Sfp1jEw+duJwyXmmSqqJ
+	GG4GAauuPyVXCedl2E7nJffPaK96rjtzcJ2VWyEouiM8aoU3kueSbrAuXn2XI6fpUG4CapANEkA
+	WU7dOg5S+pnSE0HKy/Hk8wwMMjNUDDVmkZMMApFpwQJ72AIkH/lA44rWLwOxL4PhM/GeeQftu8a
+	N4qzMf295r9d1pPWjR
+X-Received: by 2002:a17:90b:258c:b0:380:105f:8ffd with SMTP id 98e67ed59e1d1-38e29fe2241mr708416a91.16.1784075337235;
+        Tue, 14 Jul 2026 17:28:57 -0700 (PDT)
 Received: from [127.0.0.2] ([98.35.8.117])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117d847e17sm86075098eec.18.2026.07.14.17.28.55
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117d847e17sm86075098eec.18.2026.07.14.17.28.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 17:28:55 -0700 (PDT)
+        Tue, 14 Jul 2026 17:28:56 -0700 (PDT)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 4/9] binfmt_misc: wire up bpf-backed 'B' entries
+Subject: Re: [PATCH v2 5/9] bpf: allow fs kfuncs for binfmt_misc_ops
+ programs
 From: Farid Zakaria <farid.m.zakaria@gmail.com>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Farid Zakaria <farid.m.zakaria@gmail.com>, 
@@ -104,20 +105,20 @@ Cc: Farid Zakaria <farid.m.zakaria@gmail.com>,
  Jan Kara <jack@suse.cz>, Jonathan Corbet <corbet@lwn.net>, 
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
  jannh@google.com, mail@johnericson.me
-In-Reply-To: <20260714-work-bpf-binfmt_misc-v2-4-57b7529c002c@kernel.org>
+In-Reply-To: <20260714-work-bpf-binfmt_misc-v2-5-57b7529c002c@kernel.org>
 References: <20260714-work-bpf-binfmt_misc-v2-0-57b7529c002c@kernel.org>
- <20260714-work-bpf-binfmt_misc-v2-4-57b7529c002c@kernel.org>
+ <20260714-work-bpf-binfmt_misc-v2-5-57b7529c002c@kernel.org>
 Date: Tue, 14 Jul 2026 17:28:38 -0700
-Message-Id: <178407531871.2243172.18093804936760543620.b4-review@b4>
+Message-Id: <178407531871.2243172.8952621667118278231.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 5124240006
+X-Rspamd-Queue-Id: 5CA5740007
+X-Stat-Signature: cd9gybg7sptirufm9t46h87n84iyc1sn
 X-Rspam-User: 
-X-Stat-Signature: 94c74bpeuk86y55tr47hoeipygztzox9
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784075337-368759
-X-HE-Meta: U2FsdGVkX18r6uChJK3Dc44cD93TRW7md3FcVeNSNIBDkmGBbVXP1sykcTNk+pTzKpqvsau9pMaEI+1UnrMDDIaj9bPCOR/3Fh7KDgpiY+SdagmMLnbFlQRLeoOC4gugXz87rUKDWXPKW8J4cSuc3aq/eWkbvxInISBiyk381CooFJVYbLc37lzCc4AhwUPaf+pk1yj0vjSeqN+oiQEp+C9seyX3XvBIKmk2IUzjZLjsdzDoVdre3b4U9o4OcIdez0ySQV4R2r0V7BPhyNBMiUXp11PPAqy8u68tfyjqMPiOJi94HhMMCvCd2QEK5SAdL4mHlbjban3D71H12IsxtvyCRYml2KPIsRZZg7+bTVQ3CIuGEmznhz3cR3+/Nc8AV19G3oaTp72rj9yP/AY1s+LsOVn5XQA0sV1qmAqlan2iHg9Vpbi1VNjBfbc4KJoNerX1Q5hy+4AYusV25uh4uqTd3Kc6omAdPJdvchzW1NjG20C3OWJwKcUY/5Ea+zqiZc5Hx3AsXJtHuyoPc9F3GV+zxdC040w2Db+0a5Bu0bmhpG2q85jriBd8RJ0wg+gypwqm+wVOKqPzWUCANH1iKsGtlQrQJyw1+EW7lgDbG/liIqLl+tgktJ2SS4FEvHsH64mZiL+UIjXmA5VswSLZE4uwN28DqrZuLJggwF6TmVphwEFZS22hin+WKxmV3hSSN/9MFNS4eWui97M7r8sGsi3ETXZfn/EfifxJ8ASmACcu2XS92d7/yJRRa8cMlDEMxbCbG7KFt3FXIdzHMS1BfZuo06/IBX2FmxrnQ7hRKZ+flGc93KFbPXs6BERn2tOvM2HnwdUEbs8C2gWo3697rJZNB1PIaND4SgN1r1KZmTmNPdxGrslPCfN1yvrJzkKsMCsA+zn+4VKJL5DS9lS2fvBnOo8cB2xh/5hM6xOY2p0wRBXXNtQTPxJiT4mWv1Uy/+dv17pBnI5h41naNjH
- xHwW46fM
- pn3kQOT48l5fWRHlKaUZNNfovfQadOQAzjl75zo8PB+Y4HuuzE7c82rVZs64o8FbM0cKKb0o7dyMQwSBWK3CaypDIpx/BNY2tXz8LmX2yyxGVMMYl/+AhxCm0ze8/hlBmgBvNZxYQ/lsXiZlbb6OMudjJPW6+lP+UsV2cT02JnQdIzlgAuW7Vqu5JaRB4MFmI0RcIMN/BF5O0DkgyG7KOctrV74z2pBLf/myrK3jnWY0K4on9vV5JwvaPlRIcmXcmcdbneGM0kKRFH6ND2z1tqnWzDo5CIrhDiPgoEJHIPQxfst4C4HMiNyHYu/Dmb8zMldsv5LVv+qY9oXR/iYbMYRSy06N+H8sAITDQSz/wIskyTVH5af6jnDOpEnQuuedRnc0NsKL/up9bydslWsNI6sS64hRXCUeb5mHRTsMqWBJGagPEyRxxMlsmepimkA+Y9JoBwVLImhzbVIoouWFKn2PrXTLJ4LkKteXMfxu0prciCt0OcP/gAuxXyWH36TFlq7wdNmtRP6Ffk3wWYvyIM+CnDxxtxHRQJWtzypvCKOURpZcCfysXlsF0L/ykYmGSVpq6
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784075338-579173
+X-HE-Meta: U2FsdGVkX1+FvykbMcSVDq2gROey9IbeBnuQxlD5ZNKP4B6cSpAhBZQhWdOD6kf6wq/syoV/0bPAsemYYwTCOTXULDuZEUlUvvS6DwGa+KkTHZeY0ySI71Gh6HpRfenBtE+72h3eUCVxZqp7lg7Ae+BaiJPTW4KHfl/0MqivkT/sbp2U801TBzK2cxudJUCn8GdUyoBZ4WV/xzsuaVMvj7LWT90dEZqke3u3VsHPovavfB/Wecfzwna6ppHQx9fRvFqZLGdfmKePkc/MkIR6HK/6Hd8pYgvcla7iYsYaVlicenetmOSuVAQmUrqao4F999mNxcI/v4u5TgPTQ4dBKP5lVZta8Chxc4VBP5zVBnWnWh3k0nP7qBrun67QbzHRz2cR0p31vuW/CaKaidc05hxMMcYXdkxjf7rZdGTOG5tH3hMqFzeLDTS0L7BmSCJI77i3Rf8Yo8buza/gQUDv9bzVYBF37ES/uM47OJVcNYoq+ev/WpNlVwoG/VzTVHfa1b542cSr6iMeksy61Wgn+XkKDcERNepi3tuIVtD23MKh4WW/v0kVd/7CAaak7CrZ+ZC6xsuGBhbXExb+7GTjUHqgGB9SEVWwgMUzRsd5l6FMSjea99P6IltMW3CGYNJApvcTVEI+noP/M0GvKWOo47c+Jc79Nbew39Lp+XEBLZqJemXhXbeIrw/vTAyTLTzDO6hhMaiFfLYVyzCPH5mmIZvwY2J0gvXnWJc9vpv9V08PWZZDHLrsDtkkbvJztHskQDulBwEEza8lAEH8z+f5RunAb/fgG/vJ+S7dj860QlUuB9HaWp5dZbG+uedSZ0cYtiCpCuyoygHClWX+/lE7r1gMzRWmPpJCbBCodVgatrsUIQcOaWXdKFCd/yRRQjFr6u/Dju+xZ335rBzs1wGm7GjvvuWn7pGGCkbH2x3qYt/XvMFnG/0qzUxlTjqhJ3udtBm3LxAZZNqN9XdayUu
+ YtXuG9wx
+ 33V5HYgWmPQXCXhdMrDsoZwvIzdGX+l/6u94uNl4u1WJ0yFlbAaKaPp6TvHwtL/EYaCRqYOo4Rh572gT00bcI9p7ohHR7aWKzWr3T0xHu3BQS3lb2BPhI6ZHNM8t/a5mKMdD8I/E0adlbeRGqe7gsHNvujO2zRiF7YpZeNSef5o26n18lXQ7ZNYw33Tdxfeh6MZvhl5F0zLOUHLF/1DnQY1/jjNufbAln9ULoPearPX3tjNf7fJXUOb5ORJQak8odxBuHO5KdATmySZ6yrAHJ6jHxb/5dfv5AUsD2PKxGok/R+iFLzObjpMiCDX8meLoj7tRAR2k8RwNzaXIozNtX3B2Avi+gVBYzOhV3k3+NSxOECs65Yu7vJGuCrueXN4SbE7wneS+nRYd8e7llT5vLw4K9r4gENKHxAZmdkxV2XTapzjPwVPdqH0QtIDgCZRbeCPNNZYsyTPJJBFvzAmJVIjgus9SfVUGpmDpPfU4hEIiCaGMFL23sR+ULBjWLeUyRoOFoUZzAahOphzHNAQKyeiV62pf3TF9r9PfUF89yMWHVBzep7ekPcKkTBC7DmMw3k5pX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,26 +126,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Jul 2026 21:58:09 +0200, Christian Brauner <brauner@kernel.org> wrote:
-> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-> index f7264b136..a8f641c4e 100644
-> --- a/fs/binfmt_misc.c
-> +++ b/fs/binfmt_misc.c
-> @@ -226,12 +240,51 @@ static struct binfmt_misc *current_binfmt_misc(void)
-> [ ... skip 34 lines ... ]
-> +	/* Selecting an interpreter is part of the contract. */
-> +	if (!bprm->bpf_interp)
-> +		return ERR_PTR(-ENOEXEC);
-> +
-> +	return bprm->bpf_interp;
-> +}
-
-The "contract" says that if the BPF program returns 0, it must take
-ownership of selecting the interpreter. However the bpf_interp can be
-NULL here and therefore is indistinguishable from the refuse to handle
-case.
-
-We might want to treat 0-without-interp as a hard -ENOEXEC-to-caller.
+On Tue, 14 Jul 2026 21:58:10 +0200, Christian Brauner <brauner@kernel.org> wrote:
+> The fs kfuncs are currently exclusive to LSM programs. A binfmt_misc
+> handler needs a subset of them to do anything interesting: computing an
+> interpreter relative to the binary's location wants bpf_path_d_path()
+> on bprm->file->f_path from the load program, and matching on per-binary
+> metadata wants bpf_get_file_xattr() and friends right from the match
+> program.
+> 
+> [...]
 
 Reviewed-by: Farid Zakaria <farid.m.zakaria@gmail.com>
 
