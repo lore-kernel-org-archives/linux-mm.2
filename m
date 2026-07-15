@@ -4,134 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 097E9C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:09:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D0EC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:10:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0797E6B009E; Wed, 15 Jul 2026 10:09:36 -0400 (EDT)
+	id 759396B00A0; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0519E6B00A0; Wed, 15 Jul 2026 10:09:36 -0400 (EDT)
+	id 730876B00A1; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84F66B00A2; Wed, 15 Jul 2026 10:09:35 -0400 (EDT)
+	id 622D36B00A4; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C2E276B009E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:09:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C57C1C009E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:09:35 +0000 (UTC)
-X-FDA: 84991193910.20.2573CFA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7965F10000D
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:09:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JsMhAAJu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 29B316B00A0
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:10:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE8DAA0129
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:10:21 +0000 (UTC)
+X-FDA: 84991195842.11.BDF3359
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 96D7B1A0005
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:10:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=OgqC1O9p;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784124573;
-	b=IprPw5FprpK/D4C51vuSFd/C7S/lgj5Kyy9MC5NTp8GXOPyoZmJpjp4LngdepMB+QF1qBj
-	DQiUK22Wh7crZ5T+50aardb7YqFsJ4XXqXjr61C65jf6F5frmLCASlY0cG8y6RrWFcQs+8
-	29oc+WiLu5a39AVe2AAeVjf//kz5ktY=
+	t=1784124620;
+	b=3k0PFlAxP1DkT3EzjfJUyIBNJpsxJjtdBbvIdp67amUhMmwqj11JunuSQmuGVfD3hkmVfc
+	y+Uojek6zcGn3bHqOcU6e3MQQvAsss4a5iju6uoDqn1n/VKj6Ct+zwr/LatkLsAAezy0se
+	Nu+Gr+8Zpbbodv8fjyE70oXV+okRO5g=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JsMhAAJu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=OgqC1O9p;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784124573;
+	s=arc-20220608; t=1784124620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fmLajELBwebxH7WxDXtone4cRwMQnjq82TSthiZG3yo=;
-	b=WhqxsvR237OFaLXCE6rBPwui6awuov8qhxjTZ30SJN7S1919NXME2VnIU28JT8RQA58I8T
-	6ZzISJzyUefDtP/2JsHJrV6L4gfNh7EwD3FkHH+btWZiJXP7wQdHNRecAG6w2OMxXLlIJe
-	abqVa2jenANO4J7VG04d2obKybZVTBA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 609ED41E48;
-	Wed, 15 Jul 2026 14:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E091F00A3A;
-	Wed, 15 Jul 2026 14:09:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784124572;
-	bh=fmLajELBwebxH7WxDXtone4cRwMQnjq82TSthiZG3yo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JsMhAAJuy0UKuZYDWb8ZyxBhcEuXGK7+4HoxA4WQGGFilUXJaziL3rUg7N0l8O0oY
-	 yaHX8HnIfERUujyI5L5IhE9tZnSNQCC9KcTHx5qoAAjZ52vBqwR8KuPqodpd61mKEm
-	 D+s4P+6SRTeGylndvOLiBBr09KD1cbI666l3fAuMwv6q6DmrbSdwMCCqScrRl4y/yp
-	 50wFx4hlc0cVgyHkMrDAgkeTNMowmF4oFjCFbi4LK+SXX4YwLZ2Jisj6DWDGZ28TKn
-	 C9r9i4lyMv+fR7kGR501lTKkzRkVtYaLFNeuaUFm8JbK0ISqN8kBErZFDitcqKdX2f
-	 jSIxL3z9xKN1g==
-Message-ID: <4b6904b5-81f9-4e27-8ac5-5bd7e7174c5d@kernel.org>
-Date: Wed, 15 Jul 2026 16:09:29 +0200
+	bh=pIsfZleXeVRVmzFEqb2XavBzUBRe+/S77RcLpiiBE+s=;
+	b=Ea5/auI2dT1pM6OpHPaPXLI9Ito1V54n+SpoGV1XO0JXSSSLY1rjty8/9Mg4AVRR6zj365
+	VmKugwvo+jSp/pckZG2RcT4mpGCAbY/f7xgA3O1EZtRdeJvB20ue+JLs6TB4U6Lx4uGxUH
+	4og3w7eyhsVVWqQNxK9pN7SEPlukXp0=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493ba701891so17804535e9.3
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 07:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1784124618; x=1784729418; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pIsfZleXeVRVmzFEqb2XavBzUBRe+/S77RcLpiiBE+s=;
+        b=OgqC1O9pCNo+y7DQMbKBeqWgv9QU1se17AqSV0EyVJdwdupDF7soDEXJcLc6fhOcSe
+         8Ps5fcwOvcDgno09xOl6gi4DuEDFbhq6xQhoH/KZJSU20O/xPOMueWYNleJlLAXi1y+B
+         nfL65fHz//ZXFM0rc64g76UNjwFlgbCfGI++CeCkEGSVhpyO9tZhhjEW+bQi60iWbvyX
+         35o1bAn6MEORoGfJOtRYMp/TBBQKIRs2aAgIVg/l2jdaOKhDr7qjdlUsWyWZmQpZmVFY
+         7RKPaJCzQ2P0vA24HLgGvHayX86XRHZsgmVrLarJS8X68V0QJuQbPrwJmC/UO/4fI999
+         FS6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784124618; x=1784729418;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pIsfZleXeVRVmzFEqb2XavBzUBRe+/S77RcLpiiBE+s=;
+        b=BVpQN6y4/QMYvb2rELPG9HIpNAYZL83Gq3T5Oybxiyr2Bi8IHk7eEKqleDeU7MhIq3
+         jkeFFHNlFKmvKZpU9V4+jM55ap1uHzhtEnHcOGbeL9tk2Bmk0nkF3hNExNA1q0yLdm0i
+         k4EoDj0x6JYCh6YgGZ192bKLqV3rpjXr6bWClpjaedZ3XE3Fz01VcGovL4U3a8IS3eIr
+         SeIiZmRX1AyRSgpjNHVSSwix1MUtiksspWhZNxjmp0nFcazFWOJ4sKoB+dV0Z9UAdysG
+         HwbEuoW3lCpJU+KFjl1a1pBjtT4wZkw8mcjrMUFm73JmKSGZB2duuthPxBIjQ30AlU0T
+         1pEQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrcljwIakwPSo6amQKLPeze+2wgvArpW1I8mBdb+YDsjUvT44u1dUpwzWQ9zc8w6kKL9q7LIl1fQA==@kvack.org
+X-Gm-Message-State: AOJu0Yyfvn2DGiCtfifjH7jD2VlDa45oVPeMR8H58gkC2z7jVS6dxCkh
+	EWGmBZolVT7lbqoxAM3dq+cz4UD8ab2A1l0SHT/nC7wOIi7t4o1r24expikrelJH3iw=
+X-Gm-Gg: AfdE7cmiHYE4yKKc/CKStBi/SHNTq4gP4mF+wdOTa/8VZkWWsF2g0XFf0z3JtuQ5km6
+	sfsslgjBjxMVi6Rqm7EpwKewnTdFujiDX4tMIqe7lU+11DNpkIyzhNQt+i7bUicHu4/WqUYdHdI
+	/DMCOPloCc/zzrP9oZf/XYW40gjC5//YKPFuxfCQR/sMAtwxo4B6VoK7eavjgWZvcUAxdqXEGc9
+	qvwE6qf1rTrYD2d+jUaADYW4nv7pMF7Kz00OZXg6I5kIe/IK65O6ZfWPepnVCoPBJmB8YHPs/rg
+	YBZLAty2LExGMFTz6wqsecZ39LTvhRRHzq4iWryQ9HXKmuD1pK51TJwh2QWbfNHPVINxCz+P0f1
+	DHbX3iY89n5ikWlusp9cuPc1O98XC8+szumnrBSYFNRyhf3J+0S/qb61UBRBi91iCypdKjS9Q2h
+	XAEamkvG4dKs/Lcw==
+X-Received: by 2002:a05:600c:e548:10b0:493:b877:fbc with SMTP id 5b1f17b1804b1-493f881d146mr126677095e9.21.1784124617927;
+        Wed, 15 Jul 2026 07:10:17 -0700 (PDT)
+Received: from localhost ([2a02:8071:8280:d6e0:1353:8eb8:c84a:b6d4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4953f643acdsm24454195e9.3.2026.07.15.07.10.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 07:10:17 -0700 (PDT)
+Date: Wed, 15 Jul 2026 16:10:15 +0200
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	chrisl@kernel.org, nphamcs@gmail.com, baoquan.he@linux.dev,
+	youngjun.park@lge.com, roman.gushchin@linux.dev,
+	muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	rientjes@google.com, kernel-team@meta.com
+Subject: Re: [PATCH v2 1/2] mm/vmstat, mm/memcontrol: add _monotonic vmstat
+ readers
+Message-ID: <20260715141015.GP276793@cmpxchg.org>
+References: <20260713163443.3562378-1-usama.arif@linux.dev>
+ <20260713163443.3562378-2-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: khugepaged: skip swap tests when swap is
- unavailable
-To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7965F10000D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713163443.3562378-2-usama.arif@linux.dev>
+X-Rspamd-Queue-Id: 96D7B1A0005
 X-Rspam-User: 
-X-Stat-Signature: ppmr61jsmjkjodxkwabeit3ch8wy9edd
+X-Stat-Signature: kapdxh6w7ys6mndgut5a198ww77arihk
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1784124573-874084
-X-HE-Meta: U2FsdGVkX18QOWB/ZLNRhxwIaLrxW/ssRlMktZoJO3rZk1L+hXlA5Kb37nqMJB6k6RjJ/Cz5itXIZTdoT1x8n0Oet6k8bIO3UUuThtBjlwx5FjUiyXT/UFutx5HW2W9YV+cBzeIIVkTV4BaaWnp7msrNfo7GQrq6jIFpDcQzNrlJ4DIBC/Nkp/Tfy5CBWE7bGUkzr85zapTN50NO4p63g1aPgv0PheXQBSZtjTONKrGYyvxG3ZADpmG3y1g5zPo8iLBSWhOwy+ARmL507xuw8Lfnm6qRnsohUPg8O2nMLNfEC1hEpfk15y9qeiwc60BzevAwCD+JvH/Jvcf+qeLu9EDPBdLESl93/sgbZh3zQ0dTUDXlU8Yca8M+TSqoJvfXVQ6wYMVeNJLJuJu4GD4dSbeQZw0ZKV/Gr+ZeVP9SE5eINwXYxjNr2EVe7XsKpk6ptsdHNIe8/W+y0O4KIpHUNGiutVEQRDnO6WdxVTjt6WUo3wVywti7EMV5VAK8B7yr0DOdm1xCfmuk1ITvourm7IwGhvjypCTClAWX/QkgQueAoKsw4mAD7Rq8nnl/RwP475IZj/AH3uxdiWo29eiRKGIoTHjCFN4+fIGhiY1kTzWmwx1USmHz3Tozh7f63I8ykcjkz+bc9SEmK/cX6QFlS/zuIR0TOZS3QDetZO6GZPtlCi2MDVGczwmGMSdUwXTK+MdVvl5ZIXXKNot2lp8tuIoR+dhiuXUuiyCJm6o2fxkXdkjuj3J4QqxLheKj/BNRPZ2VLPUj4WRhtK8yl5LQy8GEQwcBOo9hvvorNzy7Xq5oMsPgt+HLC70xLojKgAyFdouZOAWxk8/ee2J8+W66ZrdKqk6NgPPGmuEWx0+mMJe051uhs2uhtLWxI0oxcqNawtTmDj1yAgUBgCVUWal2yUlGc21RpwtuIzRSVMG94cfl7Ery9hvWZEUAfhaCoJJzX5/OQ9hLFMdAG0tOXb/
- 6RolUA/X
- LgGBHW9yz8V4tf4E9tBeTtoshOxTlXUeol/k0w6m+LC81mFN31YVYy8ar4kUTY6kSsxDGeLk06V7gza8F97TnIESAGMZeEPS8LKQ1SrngVRtAbjGE948eFR74OD9kDLY3fFa0ghjXO4nYVuIfSWhEhrhzw86yoY+GO3qyteC09P8wVO75MeRAW9tfMRElqp3lJo2T6Pi4XDtUK+ZL/RAzFte8ZTkgNfMc8TOr9H+Ts52oV1/WQwRBRcH5twrEhTgsdikCR+GfYdUhA7B+hIqxzbQhsGBYrCWp9fHwOQDB2OPqHDlN99GxSvCNbKQm6ZM/cBrSa9eYQ/x3MozKmlPdJg1eJLZP98I9rIhl
+X-HE-Tag: 1784124619-260148
+X-HE-Meta: U2FsdGVkX1+8dpSLQGmBHjzuka+4LJA8mithNpc0OE82crs4UABLMaelSNcQRk26BaosE3E+xY++TiqlXZVm2j9yEBN5+5/vXDgx9pC0FgdjjVyizgrfvPtKWzz4ni/Hdk9Iqt5mEPE6u1UVZ401AfoZxCzRpZOfcpm0D0Y3EYcF33OpLYvnfiguKj4RlyOOsPfwDDi3hzF5/oFMdxK8e0AGEjLLLrvU0AyKNc3kkHD0zR345iZjHahMlxyagPo/GTvBI1NSEoHpA3oVIBcxgj1nRAkC0x2w9/64kZB1e99g6+4zZv6rb5bRF2MBFW32yF+ddan8C+A1QydoMhXjgLJv34r1XUCZUs2QRa1NE08DIEwfyLFxk9FWtq/X2nbIMMU5ItdeOx4krYdOpslGqiY5VEyCnPBWlJgcx1zIuQy5vR4lrucgfH+CBKp2RegKctxNl7POtYRhg7KH8OgMl/8+YaX65XJHjhkB1BBy93PxCjgDjTPmOlrU9R7I3nsoka/qQadk8+YzIbXRuNnhkHBBB4j52oNakQSIbe+hXkdiWLzslkvhA1BWMgSJf+7i0QBneFLVh19FPUTfby7YtOxCHul/Ppmy6Yh5d+YUearWnpvoO7jVJBDGfyYv53LCmmaPQsgWoB8rmBYa0veFvWhPGkylmhsQAavAj8UXRlwSkIoWoDFPbopYGicYC6qL/UQYDiuMt5Rfwo2q8VuS5+KamFBLZV01O1iktl+Yd5VFF1qoqCKkDDeQoP7ipsO0bwFQeAKJOLvmUwGG5oLeTASHK4NNchrEdxGLu29tpCQgMDwEW/lW2HMLJrnxB30UVB6wCuiFc/UoCHkvI7J7V9XW9/5UAA8/gUUNiMYAhN9NduhH5mcn9bDdCpXzonuPWsuGBq+K6Y+fdKUQejiaxjWU3bGCu1eANzsmY6Hm1xSztjh+9oZKF+hOPnIVrs2y8GX2rXS9ABY2PlZdMOP
+ ZLujqppB
+ PAYIa/qJTIxBYBS2Pbt4jbcwvaUnO+/PfPeCvAm9U9Ymz8HP7yxP5edbyvj+kgsA8L2MDMagmnHzB0/o9P3THqkYTSoe8QFUnPScG+alh1Bta6UnQu2+BFlwrCrgIGpp47fiNXNxQjRqa4eMq6umV66+BxKbK277ri+zRa0PWGFlaGwjA27hsad/LZBetTTRDY/0iHcQ1xH/yu8QkT3S1/v7rr/P00HB+BNUWMsXylI3OvHDqbroezkPBEjO0CxmURCLssRPY6gwi0KISxiLY30HqWkFInC1vOoMhKbfdazKUMD3VXMjXHKINActS+CQg/2LeSigKjltGeGffs2YUMYlFbsvYntgBquFU+FidLiaHxd6lGeS0Ibj6bUUiXpPSmV0JzzcdO0FlF69Vo48flCzA+MnrNeO2ANcNTj7qkmoT9BfQvJVn6qNpModYYgBF3o6ouuN1+JDtdZojphPKCHKJFPd8T/GPdsSh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,54 +128,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 15:34, Jaeyeon Lee wrote:
-> The collapse_swapin_single_pte and collapse_max_ptes_swap tests use
-> MADV_PAGEOUT to swap out pages before verifying khugepaged collapse
-> behavior. On systems without swap configured, MADV_PAGEOUT succeeds
-> but the pages are not actually swapped out, so check_swap() returns
-> false and the tests report a failure.
+On Mon, Jul 13, 2026 at 09:34:16AM -0700, Usama Arif wrote:
+> lruvec_page_state(), node_page_state(), and global_node_page_state()
+> all clamp negative reads to zero on CONFIG_SMP so that a transient
+> per-CPU delta skew presents as zero pages rather than
+> as a garbage unsigned value. This is the right behaviour for
+> non-monotonic page-count readers.
 > 
-> These tests cannot run meaningfully without swap, so a missing swap
-> area is an environment limitation rather than a test failure. Detect
-> the absence of swap via /proc/swaps and skip the affected tests
-> instead of failing them.
+> It is however incorrect for callers that snapshot a monotonically-
+> incremented event counter and compute a delta from two samples.
+> Once the underlying signed long wraps past LONG_MAX, the clamped read
+> drops to zero while the previously-recorded snapshot still holds the
+> pre-wrap value; the unsigned subtraction then underflows into a
+> ~2^31 spurious delta for 32-bit architecture and corrupts the
+> caller's accumulator.
 > 
-> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-> ---
->  tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+> Add non-clamping siblings that return the underlying state value
+> cast to unsigned long:
 > 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 10e8dedcb087..f9b4ebe733ce 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -100,6 +100,22 @@ static void skip(const char *msg)
->  	exit_status = KSFT_SKIP;
->  }
->  
-> +static bool swap_available(void)
-> +{
-> +	char buf[256];
-> +	bool ret;
-> +	FILE *fp = fopen("/proc/swaps", "r");
-> +
-> +	if (!fp)
-> +		return false;
-> +
-> +	fgets(buf, sizeof(buf), fp);
-> +	ret = !!fgets(buf, sizeof(buf), fp);
-> +
-> +	fclose(fp);
-> +	return ret;
-> +}
-> +
+>   global_node_page_state_monotonic()
+>   node_page_state_monotonic()
+>   lruvec_page_state_monotonic()
+> 
+> With both samples read via the _monotonic variant, unsigned modular
+> subtraction stays correct across a signed-long wraparound as long
+> as the true growth between two samples fits in unsigned long
+> (< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
+> practically-reachable one that motivates this helper.
+> 
+> The variants are only safe for monotonically-incremented counters.
+> Non-monotonic page-count readers must keep using the existing
+> clamped helpers so transient negative reads still present as zero.
+> 
+> This is a prerequisite for the following patch which
+> replaces the producer-side anon_cost/file_cost accumulators with a
+> read-side accumulator in prepare_scan_control() that samples
+> monotonic per-LRU vmstat counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*,
+> WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
+> the unsigned modular delta into a per-lruvec cost_accum[].
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-That doesn't mean that swapout will succeed.
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Take a look at cow.c where we use pagemap_is_swapped() after MADV_PAGEOUT.
+It's unfortunate that we mix state counts with monotonic events in
+node_stat_item. We have vm_event_state for monotonics, but they aren't
+tracked per-node (which we need here and for other places in vmscan),
+and they can't easily be made so because there are "global" events in
+there that don't easily map to a specific node.
 
--- 
-Cheers,
-
-David
+So this seems like the best solution for now.
 
