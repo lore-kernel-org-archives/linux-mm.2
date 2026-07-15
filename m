@@ -4,31 +4,31 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50C0BC44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 18:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B202C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 18:06:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A1466B00A0; Wed, 15 Jul 2026 14:06:03 -0400 (EDT)
+	id 3C28C6B009D; Wed, 15 Jul 2026 14:06:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1526D6B00A2; Wed, 15 Jul 2026 14:06:03 -0400 (EDT)
+	id 399E06B00A1; Wed, 15 Jul 2026 14:06:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0CCD6B00A1; Wed, 15 Jul 2026 14:06:02 -0400 (EDT)
+	id 19F3A6B009F; Wed, 15 Jul 2026 14:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4A46B009D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CCC286B009F
 	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:06:02 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 442DFC024D
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E68AA02CD
 	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:06:02 +0000 (UTC)
-X-FDA: 84991789764.05.F36FF4B
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020078.outbound.protection.outlook.com [52.101.193.78])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 680AD18000B
+X-FDA: 84991789764.23.5D95BCD
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020141.outbound.protection.outlook.com [52.101.201.141])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 731D620009
 	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:05:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=vFq1UpQl;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=CLqhFtx7;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.193.78 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
+	spf=pass (imf13.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.201.141 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784138759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -36,28 +36,28 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sc4DDd+cQ6kv3hKNLVMRVQ+JpaHxehsf4M1/oCbtNBc=;
-	b=zwqGVnxmsvXvc91OgnnOeXVS5xbNFkfTIh+rKWtbpP3HlyUVf9AkrlRljy2529TXS1XH+Z
-	7S5ABX7yQuHKSXghQPxelRHl/fXQIOMJYDIQj78LY0sBBy3sUoHtUNMtpl/A5VN82QrMu1
-	LRJN3X0FOg2WUQI5Sh+er0eqvjMszXU=
+	bh=iqPy7+ky7gV23SiopGjOcwW6j11A2L5Q4P86X1V4LrI=;
+	b=k2R21f4BLjL5kju03RYhIJJccvWRlv5FPWEi25zsvIclWXYRZ+iAGalGqt7E2pmy8klUj/
+	gZWCeflHIC7voccb9bGpUv22AbQLI0YRe/5elXVQfZg2YOWETNPOW8rDDrknOoxJXVx6Eu
+	7cZye8FAKNHzxj+3Y/N7osCbh+iMSac=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=vFq1UpQl;
+	imf13.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=CLqhFtx7;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.193.78 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
+	spf=pass (imf13.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.201.141 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1784138759;
-	b=BwGqS7+4pu2oRP0LQx1ZVd/Wn61CMkCBjs+lElzYXoDjZu9SCLN75FU4y9Prd0ey46Euk3
-	n2Ooa4H5/a4PPmr2LdcWiXpl2N/QCANlrv8m2EwnPKSt7Orkf9t6WRoBodDn7olEKIYJ33
-	1BDP2FPwtUuZ2QNyNMVvF+NJwH9j8gk=
+	b=OPXSXH+0kny/4hnyCIb/C47tPHF1tVMl/qS3PHU+IaKTPfnzdpR6XffTKgcf3IthGtwIbE
+	F2W8+yWyvGoTKJNyl02L+Ub5tjbvaAdGi5QY4FzQ/D8AyvbUEfPSIKOuOt2suQhu44TjPQ
+	fTZjUtbIiET8g2jOlgwl5Y5nm/AuzQM=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=opKWfv/BDktkF+XIkZLR+jqRzuh7kmvcPRq2gAwAkTrubPkK4Raz7TSAtrSiuGCKWDpyJv/jUbGA7gHh8hHKBs47YKOIPJvGuP+oUZ1Q4PjJjv4jsgWYe4Gywyk20hR0GYP3Aum7m2WFiO5niG8QIMECGMjwXMnWvg83a+4/NLerpTS1h6ZGRpmH6LP+ccgz3QHmQXtsrr8ChgsL/Ad42NLXQp0FQeew7lJ2p/3W/nu2tDGA582t7fUK6R0QCBGPcTHZ8BxuteHtJqgx5CCvDXwNWTJHxH54Eo7YSUG1eAYfSTzN6dVeRUQsQUOmcj+IlfWaxPyNxpY8ydp+foB6gA==
+ b=zKgCLVjlW8P2yKcp7hbPDAHKkrzmWUSgyzH9g/oFmjlsNTCjq7O+9RFBTxL7CmHNmNZg29Vkd1sNVXoH5jdleBRE80CEpv3GQhcuEZgQw/MDEtXA27SIVF+HvichkBtMxab+QKzq6DwDvkT2F4s0NrxqPLakCII8J3KW22FyPuWIrZx/SBRk2le5vJwNl3G9SZH4IN1JE4/jCQrvSTut7Gv2X3/ggMaEcvPrpHPoZyNE1VqmdYGRLwYS/rf+ZoAomYD17glAhcnUDRQnacwhJtAwJhI9VHP28JmHh7xrOtYJgXXPowTdolxYZEZ9hYKa7ieTzm+/0Qqj6CY4P/hbdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sc4DDd+cQ6kv3hKNLVMRVQ+JpaHxehsf4M1/oCbtNBc=;
- b=k4HDgkgvKTOWSoMJ6o+/WA91xlFGqCzwsB4u5UZN6MX9sRlgiXeJ7JyDEWF0aRLqovcmmf7N7OWCn9v4OV6dvQwAsRp41DOYtp8HK6Pz/ILVSEi0xN3H6a23nuixN+uCmy7CF+pmY61spdCfPd6bXVgYXossXy7bbIZoaNU2ByfnZtdVByzOUyfSCykwddFz4Mch3Yq3tFqdbWO6y+wFTYXXaOukfM3s55hH5L3hv5OFO3VsHm5hOhWQ7Eg/h5BjY40nEa/jInr8/ASmEdtdo7Z0CJV4qIPAPDjiVD2Hx21EI3LK5HcW3O8yEeNB0rP0F+nVygedD/O27es7RjWQrA==
+ bh=iqPy7+ky7gV23SiopGjOcwW6j11A2L5Q4P86X1V4LrI=;
+ b=CG+n0K++vVZ5XahGwPzWipPSzVX47L7Ef7Gn+sJkJhBMsNLxqQEf4Q9Wvq2ITECtQpUOaJuj66somk81wPfIG0DsXfD212gYy15DEpK8MDjoUqUaEFelBI2cuh9nf8OHtRp9xrh8Xozzs3LbD6vyyihoJ0FHIjOopOQoKPC+yo93f6ptku9zKtJaf+sZB1kgfLfTuOQVVFWGd71ude8PxFZIS1JzOVmoc1qaU6oy5HediYvVmHV06fTagvgjaMUZFih4covIR5HItkELFR8/wAfs67xk2/OlO8xLZvB2SeeOBrQk4j/yTKYLkdzMl5kEKCInu20C5y2p8yAl00VRXA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -65,16 +65,16 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sc4DDd+cQ6kv3hKNLVMRVQ+JpaHxehsf4M1/oCbtNBc=;
- b=vFq1UpQlYQ0XzqLTnBdhecGsj1sYSqHEBjRuDaT2sX4euyXMILT2l2bTwku0J6M6qt3i4OtHRDapoVJJFuzoj3R1yMonXDviq3Me9G/iVCBfcIwi0IIKTt+3iVIcQAbIgvpgc9xvRveB7XvvnE68TC2lfi8y/+Wf0QU8Oziu5Ao=
+ bh=iqPy7+ky7gV23SiopGjOcwW6j11A2L5Q4P86X1V4LrI=;
+ b=CLqhFtx75v0vMX1IIBg/c30Dj/q4aYEvbQn97iO77SYhiKmnb/F4D7uCkc023jtwjeDFOZ3OdGO2eazPhuh5qzKlM5ShwVB1nguEFdlCc9xp5w+EK+J/9SDA4CDMaqLmkhlqi+702cZr/z5AxooM+XKMmPtYtbKm2D1eGHqUwbM=
 Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
  LV2PR01MB7767.prod.exchangelabs.com (2603:10b6:408:170::6) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.10; Wed, 15 Jul 2026 18:05:45 +0000
+ 15.21.223.10; Wed, 15 Jul 2026 18:05:46 +0000
 Received: from CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::46eb:64a3:667c:c1a0]) by CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::46eb:64a3:667c:c1a0%3]) with mapi id 15.21.0223.008; Wed, 15 Jul 2026
- 18:05:45 +0000
+ 18:05:46 +0000
 From: Yang Shi <yang@os.amperecomputing.com>
 To: cl@gentwo.org,
 	dennis@kernel.org,
@@ -92,9 +92,9 @@ Cc: yang@os.amperecomputing.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 10/16] mm: percpu: prepare to use dedicated percpu area
-Date: Wed, 15 Jul 2026 11:04:12 -0700
-Message-ID: <20260715180455.515692-11-yang@os.amperecomputing.com>
+Subject: [PATCH 11/16] arm64: mm: map local percpu first chunk
+Date: Wed, 15 Jul 2026 11:04:13 -0700
+Message-ID: <20260715180455.515692-12-yang@os.amperecomputing.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260715180455.515692-1-yang@os.amperecomputing.com>
 References: <20260715180455.515692-1-yang@os.amperecomputing.com>
@@ -106,67 +106,67 @@ X-ClientProxiedBy: CYZPR05CA0010.namprd05.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|LV2PR01MB7767:EE_
-X-MS-Office365-Filtering-Correlation-Id: c18bd9bf-4020-4ab9-b56d-08dee29bb0ea
+X-MS-Office365-Filtering-Correlation-Id: 7cbf1262-dbc3-465c-e4b1-08dee29bb1a8
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|11063799006|56012099006|10067099003|3023799007|22082099003|55112099003|18002099003|921020;
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|11063799006|56012099006|10067099003|22082099003|55112099003|18002099003|6133799003|921020;
 X-Microsoft-Antispam-Message-Info:
-	lYTJ5qU1ar3ibmVjeEeClgHS5kqjfnNpGhRxS5MhZ5e19lN6aTin7P4smSSnpb4XelL2MKzFDz++nAHQSPO6VS4Wq2qhb1QxiADaWC62rTJ+tH+agEonvU3U2ArKAuwGPPdGe/g6NbJcjiIU3BU/pqpjBHoiI5WLVDAJksjJlXvA1Vq9eimhUGW3LROyjF9KVBDov/Fz2jEr3yK9zcvUBTQCmCOFzd1/XOeY0mgE6HUl15uoGCBVI3y0Oh/GJfo+5zWUmby2OEXfIXgOFqvDDt08r+rfiBcfdhorI4bp+V6+4f0ymu+j/KOn5srnTQvihA5J144AgZnPq8iU2Y+HhWBhmuplom7y044z80uZeqzn7it1bWdx6TMwsfMq4ApZT+4HXQaHehSXDlK2rmHGgsyzrUR0htCn6j5A4GJ/uqKbf++DQ/wHgL9ZN8Ipf5KukTz3i42s7znsxAwN6AB7YCsad0eDwHbeW0EKCEI0d9NEeANDpVDMFk0sTXu+uQndCLa2g2YuF0JVFQsVLpbm/qFqGeQepONR/jlvO2o4CbFeVkU4RnlVNhCx/fR5PsRvMmiDkIZF0TAxMSq6y1Af4v5bDIEs4VaYF32I5ANZAQL7rDpmCe16VHMP3QPiqiq8Z9OAMVPGLO00wOs+pvdtTBWLgGZPAe8Hd8rjQYn1QL07lxa9JuyFkyg82cQdCDWMkzSiLluZFl2A0tBeSYmI3w==
+	7K1iSLciUox6EMUZnEbPa7x9VSSUSC0MtsKvsjkFlOjdOz38fASuMcDPBBA85prS/fw6p82V30zr6KDNi1ej8o/CF9nKYCurJS9lHA1fsXwjQ9CsYs74WK9Ej3NhDWy+fNgOE24DCcB0TuaA0wEFaRNhaeg4jbMywU2dTow8aIAbrZuEiq61CZn2HqymV8IhXj3qJ24utVEroRi4Vyou3V7efKe/gY+o6Cuorhlxc+QdPCXYc0VnIBOwYfXFGhI7lfk22alPAUlwI9C9rIxIYiYEffVPyViiSAf4FwxwhuILs6fIohbhrdmB6Jt513JFj5U/K5vDjk9RjLup+groQIApm3AyQpy9PeJpI/OQ3p5BVH4FaWnLXBGvmo9JTK/5/HyDqaJkK41Nr2MmtxRo60Zh+zc0B+HwlQYTcLyoo9EvcxTu4c3iO0P0sBynoSxU2dxs9uIbcRHg2hmSJfG5h2iKgHWzrt6hhdern9LK3XI7i3XbVuMGgXfYJ6ou5b1XTyWoMU56iak3R8pG7jN8B0vVcrJ7ZEXX8PGkCz6/NJaV8okl7lXYutpbXAONYZQS3MDe/Fkk+/vY4AMmZ32SwMbcseQBowXkl6klsDhBxcl3XELt3gEI6daSyyi5ETV5axzPs4nB4r7kyXDXUQFSMFZEsiTd2zqY1UyvMiJw4vkOhhT6bdnjxZhK4ENMYqg+QLbsw5rtfDXK61DplLWepA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(11063799006)(56012099006)(10067099003)(3023799007)(22082099003)(55112099003)(18002099003)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(11063799006)(56012099006)(10067099003)(22082099003)(55112099003)(18002099003)(6133799003)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XWgfVG1kkHYXJy3qYlSzFF445WgKrl4StXgYktOkEcXUFWnzwoizwZgZKJ+0?=
- =?us-ascii?Q?KyEYW+kLGH2A1T4tVTykzbZRO3eJBwjYrzoZtOu5pYecTnymnpyrQ+DilefO?=
- =?us-ascii?Q?jaA8fveW5M/gbYuGMx2h+gByxtGOcPXRzAJkMuIGnj2szB/Oo/tWweSYdSay?=
- =?us-ascii?Q?oA7VDPTALDw+q8D6a/LqVQFkLV7Snsoj6GfxmQDRWp/TqlcZlJyCoVjSucqx?=
- =?us-ascii?Q?jYZIsBxh3Z96HpIqqsOlM4hXHpvV79171p52Kv4TYb4ouEtw1m8NJlUkDDph?=
- =?us-ascii?Q?yLzFBFGzfEGcqSDw6H8PKFIsT1w560gE5trqKwYmFeGNjFD3IohwtVkd6XQF?=
- =?us-ascii?Q?8w3SroxMy0qVe2RfArFdxJxChVzVpwS1I5Q3uVLjgoI7NzC46eFDu33bI30N?=
- =?us-ascii?Q?XyFZ/E7cmNi/uO46Yml/9SfjJAVFBWz6zw/9FhBop8uLfkx6/8ujpKkOXmso?=
- =?us-ascii?Q?Ahz/valVc5TrPOecxIMYNuiz+TTjg1gUVdsUlUVH82vWCZ+HoNqzg/r10Pcl?=
- =?us-ascii?Q?WknRL/I2nD7VgXnggosoZgyXzASCNguYDi+/qAD3YEZcgX6HwB40XKnF3aFl?=
- =?us-ascii?Q?Q5TdQh+dfrIxlnkk6cIPXbmpv5DgLv9YojBogYjWNdCOqeRUtt5pPKE0qDxO?=
- =?us-ascii?Q?fTFvU5vvKl2ReYMnpWgo7LXuSCN7s02pWztBRJ2I75OqYwnSPATyTvUf+syL?=
- =?us-ascii?Q?ZRjMMC0Agmp+/aTpTOX2x9kgo2sjoH6QMdmv1EwuR//weDGv27CyDHV6Zshv?=
- =?us-ascii?Q?2Mt+CSkADp3byGGGJhxHW/6q8pDDbVkYCwZnga3jeeWbvf2g0PX8V2xKotm9?=
- =?us-ascii?Q?WV5Tidfem/8w7YiOQwCImEf6QWAkjR0qUxfrZ5Peh+c8afm6ALcjOpg3qx9H?=
- =?us-ascii?Q?XlmS4FWi5RpzSlJK3Gj0mlKnDMe2ysIwVrNaCEMtzngXkPQpGMa+Ax/tnf77?=
- =?us-ascii?Q?McLksGrDpPRthtRD3jhfFxdc0cEF9xHSMRD8fG4qtI/61eJ/+BcC+CaI52tj?=
- =?us-ascii?Q?pWRKcFK/qSwqxGonAYmo9r8ki+veO8HVZphUs5k85llG8ONcWstmfdvDY+Vg?=
- =?us-ascii?Q?ctDfWgl3/NrfbCr5fi66WBTTtMRaADYvhlZ3b7gi4hw/X/fcVZ+sxFs1uZpn?=
- =?us-ascii?Q?xhpR+qmGLDCtz5p6/Pk7NLiTvWAeg9LJjr6wVvL++7hM7lftvqYEDlrVP6KP?=
- =?us-ascii?Q?IVRp+5JcB6Vud3HCEwmbWw5+6nY8q1f1iVgjqc0ZjhrXiAzpa30LeZwdrER6?=
- =?us-ascii?Q?g+OKeiPDSW1O3caJOOwIDA+rCYS5b8ZytUDj90fiNEg9ola1DeDmzSadQ9is?=
- =?us-ascii?Q?SdOvtbbp21ANMr3HdvrwKFeLXzQlyjPir7/pEs3qCGCI6zR1BsyY/PbDu8fr?=
- =?us-ascii?Q?kjNDoihs21uaDQ0eUhluKmtxNHa1dAmSg5bRufg2TJixjKNkSOQP+vP/KB6W?=
- =?us-ascii?Q?68saiQCXRP8aOxY56O6F5e5dRfuEtip8+3tf0f9RQmYgJIXyREPEkJlAx9bb?=
- =?us-ascii?Q?Ce9DDU5WS+iS/JL4OfwxTPcJ9SwLKiYoxOwaHbt86IXSMR2ryIEhnSgaEsft?=
- =?us-ascii?Q?tJakY9nLZ/0vs94yJ+B1dEQ9blWOGdIrrpk59sok94sp0jC6SfKm938JLBV3?=
- =?us-ascii?Q?dJRnCPyYW1NTfgye4c/NX63eeJhAUeAu5bZ+cSJE1U1r8NhK6NIKAUgst5tZ?=
- =?us-ascii?Q?h6zDQeEJ8UBzNWq8Xz46LTtx4Wwon/2sk1Zx0NPHZGiGLKXepQC5Mj/34IqX?=
- =?us-ascii?Q?3glOWfqpN/fTARYwBKPC93NSMZ6XsqE=3D?=
+	=?us-ascii?Q?MamGYGrNabTudSSFf9xtlMv6vcX1/cs6BifFNRy+qth2qWS9j7+1sQ+USQ8/?=
+ =?us-ascii?Q?1HKkpn3qx7bbk4xRkB6Cbv+bRW6vb+I5ooE5HqQslyz1ZB76/LNXZMLxn5GO?=
+ =?us-ascii?Q?ov52ky4nLUl+bu064X5dn1Y8s8/XBiXjj7+QAbhCgFOVjgXpKJUF2eUp2HX5?=
+ =?us-ascii?Q?Drvm4iGMOBSD4b43nxVZF76noCixi0rsuSXXHiiAt2gNi1xVggTGMR8/0BwE?=
+ =?us-ascii?Q?zGI7AbtgDx4lcK70Sm1T2ITWUnXHRzoW7dfSMleRuc+Lp+jhQdyLScvX0f+m?=
+ =?us-ascii?Q?4AIeFNJbhjg8SDHMRHEE+lkoYJVp7FLY22Ne54iYhX+Omq5tcpydWE370Pw0?=
+ =?us-ascii?Q?xjwHDuGwWpfrIFy3puoAZW+0ZN49fow5z9z1Y4NCR1W1wR+w9XXA7XNxa1QP?=
+ =?us-ascii?Q?UOg4iUreuzLT5XgSORntlNU0dkP/XBlzOxsN0XjxPB/EzOmg2UI28EvKcEx+?=
+ =?us-ascii?Q?yQfKb0x1CuSqjQ6uiYYPMYY5DY1hLzGfp6GQrmzHqRzkWO/z8Y+ZPlimSMPG?=
+ =?us-ascii?Q?pmM7uJaZMIi9LwzMafOp8nqVV56b28mMPYD07M+eBCdQf/2UQCSIgHC16cHT?=
+ =?us-ascii?Q?aYtEHa1YGjAIysV+8H8Qs9QdoacTuDzzKlnaP6bbVDblXojtvZF3dNA7MHJs?=
+ =?us-ascii?Q?rnlOv/hhfuVVy4EY/bqMoOjzYC1VpigbG9hClSZTBood0YGGARJrTM4kUkCY?=
+ =?us-ascii?Q?T4Gk1XKoqvI4L3bGltEw1ytZMmRp5uyT4nYA1qAM27NMieJhvtu2YWhVef1O?=
+ =?us-ascii?Q?aUbvB6V31jSdmoTeKszNvAmCXHwVnWGy+p+HlcdZeTwEm/Jn6t1NHrmR4R8c?=
+ =?us-ascii?Q?tHhP2tXavW3vlyAKrVfA3onpnP26lVEBZiKAu+R1SxLbvEqVyIRAVcirM/9d?=
+ =?us-ascii?Q?ja4QPMkERUr1lysrMpxO0xRLxPpnDdrXO2GsrlThgNdsm0Koheop5yLBFleZ?=
+ =?us-ascii?Q?1jsfIDbKEIWgpjj7ZHRIhPnjvHCTS/bjf/oO9rCx25K+cdJQXYUm3y2+eEPK?=
+ =?us-ascii?Q?rLVyLl4TWUq4Yo7qgjvu/fRfI1ju6vf3OARVNxKaQOcUdB6ge8M7fT1n3bJV?=
+ =?us-ascii?Q?urftIrvq1Uho9mqBcEEm1kJlG01qgZkYZhS09eZq6BIRrbtKjrqRPh5VDCzl?=
+ =?us-ascii?Q?bCGuoRr/xDboXuMNEpsL2g/arMEUnNQezmsaKNqLv/EY9Zc8p4jeyUtpF82e?=
+ =?us-ascii?Q?mdKV3TxPumg21PEBKCoINKvLS6qD/7o8tvSVWdjLVNiwCz6uLNpIVAjLWJiv?=
+ =?us-ascii?Q?jIjLojNcP0brc+Kgv5tWEL7kZ9a54OfhiOkHctAQLMHEFIM4jLDg5ZfhiA9L?=
+ =?us-ascii?Q?fSY0Ls/Yf4tf3qzW45KAKxA50aEmzxz+UPlxMcx0jcXS5yeUfo8rw2GLPcnt?=
+ =?us-ascii?Q?XJfmRABo1y7YCsa5hEZpIqAT7WHEs9DxQkNlk7UKBQWYLIYWsQmSst8EK51I?=
+ =?us-ascii?Q?6jD9mOSMAnQRXA2yH1n7+kF/jn7IF/CC+czFqAOVaI7mS/LOAp9D0qAVfa6l?=
+ =?us-ascii?Q?g6UAl81fCHdcqaAeLOVg6fQbXm1CJBbul/GiQmpZ7Hchs10Py1lA7/by/O75?=
+ =?us-ascii?Q?fJszHsRo+TpYq85NHwnPRSvJ1N53yYVk2ZEiJaQKmb3b7MfzBwjGYd+HFjKQ?=
+ =?us-ascii?Q?0VtSEasZFz2JmMwbj7iUFWe8nSg8JURvxACjdAdRF0FTosdwUzKfnNhOGtFS?=
+ =?us-ascii?Q?4m64eGf9th5T3ppciMNaP9WqtG+3gPGvJzqb9LcY2GybIpleRLxwNo05GRyV?=
+ =?us-ascii?Q?FFdGjzmhX7qjFdIREdlIYPussCWcuyc=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c18bd9bf-4020-4ab9-b56d-08dee29bb0ea
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cbf1262-dbc3-465c-e4b1-08dee29bb1a8
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 18:05:45.0305
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 18:05:46.2964
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E6BwwYx5TWqD3wOQM1Alni5OxCsi/gdZFSkguIaaL6r2K6SeZOYSCw4eCuUKnxaOWuPXpCF7LW4przjxbg6f/LfXPQguJqXP2BbpnPe8J+U=
+X-MS-Exchange-CrossTenant-UserPrincipalName: jMz8Ssj0ZoCn56/42crDsbanlCFBdkkwZkBUb2jvZVjR5wy5P55xaO5V4U/BpzHX4dr0nzYjOG4TKnL8yi5mDF7nBfGQnmrQ8AjecmmYsJM=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR01MB7767
+X-Rspamd-Queue-Id: 731D620009
+X-Stat-Signature: h5bqzhauy9mspjj7imbct791x1cdugsd
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 680AD18000B
-X-Stat-Signature: 9yt4ta36ebfuf4bmntxu8gg7z74p5dj8
-X-HE-Tag: 1784138759-388098
-X-HE-Meta: U2FsdGVkX1+4DQfKj7aLop3f5OIOVOGUOLdDOuYZWo/ScArGAgJA3Uzzt7fxnIOc66smLcAzCSQrn5928oqC8fRBOVtWzwmLWXCiEA6vbcj9TLufUatLLcH5EmOK4GbH/nS7ayXoWa9ZUzWV8Ok5yW3DxPIWmh1NcshPIsirhxth0ELleaUtN0p6dRCtb+RxGieHMl9EIGZTS9agR85Ok2pILMSdCueA6kByDzmAfrCvbwKQrlf8iu6thBWhABIyA1pHp/mdO0RZ2v7LXdJGa5dNdXAJmdYI1cVbiZ4P1K3gc/ERwelhBo2MsepVb4MMfnBJVfU/jrwSmdcm7rd1JGdMe9lZ581B8TPngeNFh8R4OlMsiNOl61mcBDa7m2yCle9YCWhFUUZ7j3Y9FxFRHQOyi5Z5O8vkdhGS1K0SPo6NHjI4bX0fieC3GYKPgI+9y68veLZrvAU5N12rCJlJ3CjSZYim28jSBeClUgDolZmnC8LwBuRwcMBhN41t4n96pnIVpl7bkxx4LcTpFa1ZDgXctH8vvc+btn5+qZ7wbtaaRRBIDRkf6C7csj6v0p55dIbDGFWdUaberX/7DKzIPTf8NFRU3jDozj9ZKzoLO5JJmY7rJIlE+FTrpO+5VH4bps7dTF3cyCjoVmY0UqbBQk3OcTWv6M/qXB9h84NIqIGkMY0e1S04FoLI43mm2t3gOykaLqshMwADpcEnh0UePkEyTW06V3l5jtNkdLt0zql0/4xNDXBlcx8gIGFzSLVvYT3li2lNuptHRpbnd3FUIY9BLCCZrJJvleJd0u+wKvJEM+FI8erDqL5My6SrixNI0xWJNCukIVtv0uZgN3ahebFXAD1MA5MkLihKOj/UHCZnXMWwTR/ScoqsnbsR8sbLchi1+2MiWoPdc4brE3KcvV9q+kqNOQUfrEEuWu3rooMSLcPl5ILEzh6Ybnkw5nH+v6qHu1XOGOnMgQI6cUc
- YcxfkCRT
- QKF4IpDLCYz2ABTblDS8q77YiXoLfZeW1k8q3yBz2mvOOa4FK5w9Tn+MyFxj183VSoKcGzFUfZVD5hMxq2SYFdax/4VN0srcqDjVK4XT7uoLswtmzwUhi2/rVCDbIy6SEfNClPsVIuZ+xBsSv/UGD0pGHDj7+FmtyLr1OYDULX/O52OlFpy8Z2X/D/7ZZBDjItpBBCh2i3KBvzq6EurLjKdFfRDFAaExEuU2X/7HW/GaSbkSKGlX4uAaQ0kPlOrXZVkx/hBXRPVzCPnQb842jnOHNVGipaWU3YCLwH7y18+f5++yhwsv09WTCqkrfYbWVRBFGB1U83BjEpXhh17iDQwYigqRqYPVyq1xN3jy1Qs1w2cYDwjcV/5Co8kUWVQkvGiWHydUIlzTwP+yhFl/rpHdg7xN0CwqQLlxb0CCwkXxgKhOZ5+PVGI9wWKsWloZOUmjIflS9u2T83Bo5U7cAC1+UqXZvwWkWAK4rVQZs6Sl4FMIMFh9lx18OhcGB6FqxJtcF
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784138759-791738
+X-HE-Meta: U2FsdGVkX1+ju6PoLk5mlbbmWtCgAS6ihCfvraJ67xTvbDBaR64w75PqQ/BaTL2ppAuW3MII8V0+SYhwJdDAhpXA73E5WHjQCeh0N18Dbo5zAKsCadpaj7czADFrX0KBp63uH109BknbVJjYuES8lauYwqDlzU8+Yan3yRZAnC/q475F39GvS5BIf+vaCGtgfMLnio5np63E4HaGesZDVpVRqbwmy2M0ik45XN3oCILCjQTuKMLt9b1bQkCRWOln+N7BrSwXoNIDaMT9W5e8s7O2m8nD1o9PMk+PYSLihXV7YxPNXguJuAxKwtRx6T83nj2p63nTG1r69Z+cBAZ3IcTvWRrvkN6XBu4cPVgAgYMSV5RamuJGoifsuc+bCMqMAZIRgS4OuESsgjs7qMoTBfrGAqbe78+s9oWDQ+JIXbaEPMIIpChraF4WODLddq6HA6agbj70gdtvL/VuMG3A54z1caCvjEnSSkr66oxmrRugnCoRWXLPAgQ0DW1bi4T/u0gBSjHsol/uKnK7FrneuM1VxTMPLtowsq87JRj4vfl999GjD9pTUXA+8+OhRJgEwa92Hcgfopy82bdm1g/AkbVUQUPuWcg4rurVc13U9tsdN/d34QoFDRyA4UVnnd1VzudV8yu7VBaU7XnMlwCTWmaYOexcWeitNDK6AgcCuCf1xRTzGLodgVu+jba/L/QDtlaOykyiLhUfO+XdsQ8IbXG8HssRq61gumzzXtOpEdcg6xYm3lREEApVmhDkOnvP5z6u1fWkmoC4VNHxCBTsoRGn95ZLyF2Tb3qwagVWiU+38W1jTiBIu+oioalO4IJ+72rK0Z9pDzKOC06IAy0Ic9/NSrF+3BtHtNL+OPaDSsJzNMTlPaX1YKAn9H728c6QYEdMcXxEB/x9CHiaSwcS1tBFtsNAH3zeDcD8F0ay5ATMe+2CCf+KZ+JwUnzg/0TD/GxKfa7/RerwAbth5QX
+ 5R6PFArD
+ jyPbFuo2oOtWLnuYBCEZS06d5QlCU+qxuN6+FBbG8J6ONB37Kh/9E50pZfd5BVDFouq6GBLpLLj/LxrFkSwTsr8fcYJDPYT3MHEzwZIKd6Anx2puzm9OU7BH02olMJpS+uRFzy2lQR21zbHMSs9+Lu9H/yW2jZ6rWmlxsDjdC8SoXhPZOPS+7gGgMUPEt+MzlmN9ZnHjnbgX0TF2HBtUPaxHq0/Ir6mQJMS42HvDwwaAJ22myxwybjwSqrkz9WxvnUzoFLq2DgfWacOfo7zttTuerO7Y96KFdScdxW8JJ04BGBLd1HaaytAboCEn0Hqy05F6lz22hmr2ZlnqMjci6d1qwrvP3A+/THNF+u/DnYBQaHUaLyjGtOwAYKoWX59zJfL5NgZyv3UKnZUXU7EZcqm6vs1jDeWxuW6jIGsemn+kf+76e/MSXx2LHN/rOwtH06gXcKkFamXMXGOiufmTZAiEkZNnkTmczzGm0FJKlUZqfp+eJN2nWGnkw2Ok/+ch4pl4w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,138 +174,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The percpu variables are allocated from vmalloc area by default.  The
-architectures which support local percpu map will allocate percpu
-variables from dedicated percpu area, for example, ARM64.
+Allocate local percpu area and map to percpu page table for the first
+chunk.
 
-Introduce a new kernel config, CONFIG_HAVE_LOCAL_PER_CPU_MAP.  The
-architectures which support local percpu map will need to select it.  If
-it is enabled, allocate percpu variables from the dedicated percpu area.
-
-But still treat percpu area address as vmalloc address.
+It doesn't work for PCPU_FC_EMBED because the percpu base adddress may
+be in linear mapping space in this case, it will result in returning huge
+offset for percpu allocator.  So percpu local map just can work with
+PCPU_FC_PAGE which allocates percpu variables from vmalloc area or the
+dedicated percpu area.  So unselect NEED_PER_CPU_EMBED_FIRST_CHUNK if
+the architectures support percpu local map.
 
 Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
 ---
- include/linux/mm.h | 11 +++++++++++
- mm/Kconfig         |  3 +++
- mm/percpu.c        |  8 ++++++++
- mm/vmalloc.c       | 23 ++++++++++++++++++++---
- 4 files changed, 42 insertions(+), 3 deletions(-)
+ arch/arm64/Kconfig           |  1 -
+ arch/arm64/include/asm/mmu.h |  4 ++++
+ arch/arm64/kernel/smp.c      | 25 ++-----------------------
+ arch/arm64/mm/mmu.c          | 23 +++++++++++++++++++++++
+ mm/percpu-internal.h         | 11 +++++++++++
+ mm/percpu.c                  | 16 ++++++++++++++++
+ 6 files changed, 56 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..c8c3800fbd9f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1858,6 +1858,17 @@ unsigned long vmalloc_to_pfn(const void *addr);
- #ifdef CONFIG_MMU
- extern bool is_vmalloc_addr(const void *x);
- extern int is_vmalloc_or_module_addr(const void *x);
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 23cad9fc7046..df55e6bdf81f 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -242,7 +242,6 @@ config ARM64
+ 	select LOCK_MM_AND_FIND_VMA
+ 	select MODULES_USE_ELF_RELA
+ 	select NEED_DMA_MAP_STATE
+-	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+ 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+ 	select NEED_SG_DMA_LENGTH
+ 	select OF
+diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
+index 8ed3b5f3cf84..aa0818f7ec58 100644
+--- a/arch/arm64/include/asm/mmu.h
++++ b/arch/arm64/include/asm/mmu.h
+@@ -73,6 +73,10 @@ extern void *fixmap_remap_fdt(phys_addr_t dt_phys, int *size, pgprot_t prot);
+ extern void mark_linear_text_alias_ro(void);
+ extern int split_kernel_leaf_mapping(unsigned long start, unsigned long end);
+ extern void linear_map_maybe_split_to_ptes(void);
 +#ifdef CONFIG_HAVE_LOCAL_PER_CPU_MAP
-+static inline bool is_percpu_addr(unsigned long addr)
++extern void map_local_percpu_first_chunk(unsigned int cpu, unsigned long virt,
++				struct page **pages, unsigned int nr);
++#endif
+ 
+ /*
+  * This check is triggered during the early boot before the cpufeature
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 49524a7176b2..4c112bab8356 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -840,36 +840,15 @@ int early_cpu_to_node(int cpu)
+ unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(__per_cpu_offset);
+ 
+-static int __init pcpu_cpu_distance(unsigned int from, unsigned int to)
+-{
+-	return node_distance(early_cpu_to_node(from), early_cpu_to_node(to));
+-}
+-
+ void __init setup_per_cpu_areas(void)
+ {
+ 	unsigned long delta;
+ 	unsigned int cpu;
+ 	int rc = -EINVAL;
+ 
+-	if (pcpu_chosen_fc != PCPU_FC_PAGE) {
+-		/*
+-		 * Always reserve area for module percpu variables.  That's
+-		 * what the legacy allocator did.
+-		 */
+-		rc = pcpu_embed_first_chunk(PERCPU_MODULE_RESERVE,
+-					    PERCPU_DYNAMIC_RESERVE, PAGE_SIZE,
+-					    pcpu_cpu_distance,
+-					    early_cpu_to_node);
+-#ifdef CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK
+-		if (rc < 0)
+-			pr_warn("PERCPU: %s allocator failed (%d), falling back to page size\n",
+-				   pcpu_fc_names[pcpu_chosen_fc], rc);
+-#endif
+-	}
+-
+ #ifdef CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK
+-	if (rc < 0)
+-		rc = pcpu_page_first_chunk(PERCPU_MODULE_RESERVE, early_cpu_to_node);
++	/* PCPU page table just can support PCPU_FC_PAGE */
++	rc = pcpu_page_first_chunk(PERCPU_MODULE_RESERVE, early_cpu_to_node);
+ #endif
+ 	if (rc < 0)
+ 		panic("Failed to initialize percpu areas (err=%d).", rc);
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index f14ba512fd8f..ee4ab031ebf8 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1080,6 +1080,29 @@ void __init linear_map_maybe_split_to_ptes(void)
+ 	}
+ }
+ 
++#ifdef CONFIG_HAVE_LOCAL_PER_CPU_MAP
++void __init map_local_percpu_first_chunk(unsigned int cpu, unsigned long virt,
++			    struct page **pages, unsigned int nr)
 +{
-+	return addr >= PERCPU_START && addr < LOCAL_PERCPU_END;
-+}
-+#else
-+static inline bool is_percpu_addr(unsigned long addr)
-+{
-+	return false;
++	int i, ret;
++	pgtbl_mod_mask mask = 0;
++
++	arch_enter_lazy_mmu_mode();
++
++	for (i = 0; i < nr; i++) {
++		phys_addr_t phys = page_to_phys(pages[i]);
++		ret = __create_pgd_mapping(percpu_pgd[cpu], phys, virt, PAGE_SIZE, PAGE_KERNEL,
++					   early_pgtable_alloc, NO_EXEC_MAPPINGS, &mask);
++		if (ret)
++			panic("Failed to create local percpu first chunk\n");
++
++		virt += PAGE_SIZE;
++	}
++
++	arch_leave_lazy_mmu_mode();
 +}
 +#endif
- #else
- static inline bool is_vmalloc_addr(const void *x)
- {
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 13ea4b29ee7b..e1910c332638 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1061,6 +1061,9 @@ config NEED_PER_CPU_PAGE_FIRST_CHUNK
- config USE_PERCPU_NUMA_NODE_ID
- 	bool
- 
-+config HAVE_LOCAL_PER_CPU_MAP
-+	bool
 +
- config HAVE_SETUP_PER_CPU_AREA
- 	bool
+ /*
+  * This function can only be used to modify existing table entries,
+  * without allocating new levels of table. Note that this permits the
+diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
+index 8cbe039bf847..6d0542fb9e49 100644
+--- a/mm/percpu-internal.h
++++ b/mm/percpu-internal.h
+@@ -162,6 +162,17 @@ static inline size_t pcpu_obj_full_size(size_t size)
+ 	return size * num_possible_cpus() + extra_size;
+ }
  
++#ifdef CONFIG_HAVE_LOCAL_PER_CPU_MAP
++extern void __init map_local_percpu_first_chunk(unsigned int cpu, unsigned long virt,
++                            struct page **pages, unsigned int nr);
++#else
++static inline void __init map_local_percpu_first_chunk(unsigned int cpu, unsigned long virt,
++                            struct page **pages, unsigned int nr)
++{
++	return;
++}
++#endif
++
+ #ifdef CONFIG_PERCPU_STATS
+ 
+ #include <linux/spinlock.h>
 diff --git a/mm/percpu.c b/mm/percpu.c
-index 45c30c6531c5..b27828602c32 100644
+index b27828602c32..df2daa57309b 100644
 --- a/mm/percpu.c
 +++ b/mm/percpu.c
-@@ -3243,9 +3243,17 @@ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t
- 	}
- 
- 	/* allocate vm area, map the pages and copy static data */
-+#ifdef CONFIG_HAVE_LOCAL_PER_CPU_MAP
-+	vm.flags = VM_ALLOC;
-+	vm.addr = (void *)ALIGN(PERCPU_START, PAGE_SIZE);
-+	vm.size = num_possible_cpus() * ai->unit_size;
-+	vm_area_add_early(&vm);
-+	kasan_populate_early_vm_area_shadow(vm.addr, vm.size);
-+#else
+@@ -3194,6 +3194,7 @@ void __init __weak pcpu_populate_pte(unsigned long addr)
+ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn)
+ {
+ 	static struct vm_struct vm;
++	static struct vm_struct pcpu_vm;
+ 	struct pcpu_alloc_info *ai;
+ 	char psize_str[16];
+ 	int unit_pages;
+@@ -3249,6 +3250,12 @@ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t
+ 	vm.size = num_possible_cpus() * ai->unit_size;
+ 	vm_area_add_early(&vm);
+ 	kasan_populate_early_vm_area_shadow(vm.addr, vm.size);
++
++	pcpu_vm.flags = VM_ALLOC;
++	pcpu_vm.addr = (void *)ALIGN(LOCAL_PERCPU_START, PAGE_SIZE);
++	pcpu_vm.size = ai->unit_size;
++	vm_area_add_early(&pcpu_vm);
++	kasan_populate_early_vm_area_shadow(pcpu_vm.addr, pcpu_vm.size);
+ #else
  	vm.flags = VM_ALLOC;
  	vm.size = num_possible_cpus() * ai->unit_size;
- 	vm_area_register_early(&vm, PAGE_SIZE);
-+#endif
+@@ -3256,6 +3263,7 @@ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t
+ #endif
  
  	for (unit = 0; unit < num_possible_cpus(); unit++) {
++		unsigned int cpu = ai->groups[0].cpu_map[unit];
  		unsigned long unit_addr =
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 17c26e9796b2..9ec401918736 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -80,6 +80,9 @@ bool is_vmalloc_addr(const void *x)
- {
- 	unsigned long addr = (unsigned long)kasan_reset_tag(x);
+ 			(unsigned long)vm.addr + unit * ai->unit_size;
  
-+	if (is_percpu_addr(addr))
-+		return true;
-+
- 	return addr >= VMALLOC_START && addr < VMALLOC_END;
- }
- EXPORT_SYMBOL(is_vmalloc_addr);
-@@ -4926,9 +4929,15 @@ pvm_find_va_enclose_addr(unsigned long addr)
- static unsigned long
- pvm_determine_end_from_reverse(struct vmap_area **va, unsigned long align)
- {
--	unsigned long vmalloc_end = VMALLOC_END & ~(align - 1);
-+	unsigned long vmalloc_end;
- 	unsigned long addr;
+@@ -3272,6 +3280,14 @@ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t
  
-+#ifdef CONFIG_HAVE_LOCAL_PER_CPU_MAP
-+	vmalloc_end = PERCPU_END & ~(align - 1);
-+#else
-+	vmalloc_end = VMALLOC_END & ~(align - 1);
-+#endif
+ 		/* copy static data */
+ 		memcpy((void *)unit_addr, __per_cpu_start, ai->static_size);
 +
- 	if (likely(*va)) {
- 		list_for_each_entry_from_reverse((*va),
- 				&free_vmap_area_list, list) {
-@@ -4969,14 +4978,22 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 				     const size_t *sizes, int nr_vms,
- 				     size_t align)
- {
--	const unsigned long vmalloc_start = ALIGN(VMALLOC_START, align);
--	const unsigned long vmalloc_end = VMALLOC_END & ~(align - 1);
-+	unsigned long vmalloc_start;
-+	unsigned long vmalloc_end;
- 	struct vmap_area **vas, *va;
- 	struct vm_struct **vms;
- 	int area, area2, last_area, term_area;
- 	unsigned long base, start, size, end, last_end, orig_start, orig_end;
- 	bool purged = false;
++		/*
++		 * Map percpu data to PERCPU map.
++		 *
++		 * PCPU_FC_EMBED can't support it.
++		 */
++		map_local_percpu_first_chunk(cpu, (unsigned long)pcpu_vm.addr,
++				&pages[unit * unit_pages], unit_pages);
+ 	}
  
-+#ifdef CONFIG_HAVE_LOCAL_PER_CPU_MAP
-+	vmalloc_start = ALIGN(PERCPU_START, align);
-+	vmalloc_end = PERCPU_END & ~(align - 1);
-+#else
-+	vmalloc_start = ALIGN(VMALLOC_START, align);
-+	vmalloc_end = VMALLOC_END & ~(align - 1);
-+#endif
-+
- 	/* verify parameters and allocate data structures */
- 	BUG_ON(offset_in_page(align) || !is_power_of_2(align));
- 	for (last_area = 0, area = 0; area < nr_vms; area++) {
+ 	/* we're ready, commit */
 -- 
 2.47.0
 
