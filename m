@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22CD4C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 05:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAAE8C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 05:08:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAD896B0088; Wed, 15 Jul 2026 01:08:52 -0400 (EDT)
+	id AD5B16B0095; Wed, 15 Jul 2026 01:08:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5EC86B0095; Wed, 15 Jul 2026 01:08:52 -0400 (EDT)
+	id A86986B0096; Wed, 15 Jul 2026 01:08:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 950596B0096; Wed, 15 Jul 2026 01:08:52 -0400 (EDT)
+	id 900816B0098; Wed, 15 Jul 2026 01:08:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 707726B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:08:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D34018057B
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:08:51 +0000 (UTC)
-X-FDA: 84989831262.17.D581A7E
+	by kanga.kvack.org (Postfix) with ESMTP id 64E896B0095
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:08:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC17080576
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:08:54 +0000 (UTC)
+X-FDA: 84989831388.21.89A04A7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3C17D40002
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:08:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTCyj648;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0988C40006
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:08:52 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ae9KqP+w;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784092130;
+	s=arc-20220608; t=1784092133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XzYuCV5uNPBNgG8UwLvTze/n4tjKM9lyxr5rl5XEZXc=;
-	b=tB31eXIORIOT5kQEB96gucGSEKzCpjIyze20kRqwUN6LdQwZ6FtqwYHdH90SBOQ6iTp5dt
-	VKCEp9ENGu/7YtKiJdPsKBFiRRte5CqCqoBnL3EXRJFsU+wMQCcOAmjfzDfWE0AgA17gby
-	b9JVH790PVReF0u6sDFtsHTWqfWYixs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTCyj648;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=BB3YMrrQsGcIsgFNc9/zDh94ii0Kkov4WxY4a6dKJhU=;
+	b=T0d69lzeefD8UsUASJTHSEz8XW61Gr/IBWX8PLIc3fg2Y+ggVEEVUgPvWtEv0OdNoUmFtQ
+	UF3/X3NjVOprKiqRanCa805HYYOz8KR5HUSZTx/g1pVeFP8zSGMhpSEcKLaGWw9E+SRg6w
+	dSwhzzu10iAOtmPnnRViJ/t+M82dSjE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784092130;
-	b=ZVbV/FS8pNDDpo/VRu+8Zo5m9CkxoGJ/5zZ2bebIo2myXD2r32I0W9rMuotFprXRnsZXvr
-	u7d7G98+cEZ5P1yyQDlSP1X+J5rGSTUb8LyjejNthM+PFn/j2keftXj45CBDuAZ9JKnrTp
-	RyAjOAMH+eW3GYD+Vgk/niW37ecZaIA=
+	t=1784092133;
+	b=zGrQ/eBgjzL8F5BYzsTxbzuPSLLk8V0K79BJNOqFsJMLjd+RHbCGHflqvuVz0M5MMMuHkF
+	BkNpx8O9EnqBurkX/Gs/B06fv26oYDZWxsNKhfSYlYKN7iXcdoGSlYCZTvbCFV1NVHHLVV
+	1z7UgBuli4j/eazyGnrb69souYys2Us=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ae9KqP+w;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6994243A4E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5198643DAA;
+	Wed, 15 Jul 2026 05:08:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C371F00A3A;
 	Wed, 15 Jul 2026 05:08:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24141F000E9;
-	Wed, 15 Jul 2026 05:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784092129;
-	bh=XzYuCV5uNPBNgG8UwLvTze/n4tjKM9lyxr5rl5XEZXc=;
+	s=k20260515; t=1784092132;
+	bh=BB3YMrrQsGcIsgFNc9/zDh94ii0Kkov4WxY4a6dKJhU=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=fTCyj648Aq1McQIitI0Z2l0OH/LkG5rBJzoqdsYEpSAJq89QJdfFD1q1Uf+bC/ZTh
-	 GGBhuj4oTXV6IHFGZj9TVdqptwOTCEOxtQiSwA3tO1BpWk3vMry5jPU3XQoUUjgDw6
-	 fXlrjihnkv0qAaBwU5IAzstoNHU7+nkXXKBwL8dxKlzICEwlqG0VDvFh2+Mc977Lrl
-	 7+BOcqAI53ldAztLKhCKAZXJmHOctnfe98tH8jceD3sUNRIPpIMD7qTkkcTdqDE+4Q
-	 Zw6dpqxCu1XK54vB3EHnzRmHJ60saAxEEH4k5jeIdHnC6QxFOzKu838I6DuAbk7dw0
-	 m7pKGgbMwsdWA==
+	b=ae9KqP+wtvN8VQUsqUjKmmA+otd9jevIVhJMXbCS+X2lykSd5HBoP/JYF0bVAgv1J
+	 MgoBtePj8hCx40pIwNSNVq+PYnqae6dbMAcjHE472c/T2wWvXT6MnCnAvvmcj7zxNI
+	 QRWunS0iNgFN4lgbGE2r27zvhDXv99671veKWg6HO+SWiW5ypt653ZDRXVahwALZ6b
+	 tvCuJ+x4NVHRNx1LNeCkLWlhsEy8hcOm5y/tZQELwaq0NYIdg2S5YAZ+3t4Kq8+Ei6
+	 7u9yNkhxQ3JR5dKZzR1WRY+GdJya/cADdJLqnXCxvshfpsqPCnx97lzWW/TtUE39To
+	 d+gHvoWzeLsdg==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 01/17] mm/sparse: drop power-of-2 size requirement for
+Subject: Re: [PATCH 02/17] mm/sparse-vmemmap: track compound page order in
  struct mem_section
 From: Mike Rapoport <rppt@kernel.org>
 To: Muchun Song <songmuchun@bytedance.com>
@@ -77,20 +77,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, 
  muchun.song@linux.dev
-In-Reply-To: <20260702093821.2740183-2-songmuchun@bytedance.com>
+In-Reply-To: <20260702093821.2740183-3-songmuchun@bytedance.com>
 References: <20260702093821.2740183-1-songmuchun@bytedance.com>
- <20260702093821.2740183-2-songmuchun@bytedance.com>
+ <20260702093821.2740183-3-songmuchun@bytedance.com>
 Date: Wed, 15 Jul 2026 08:08:42 +0300
-Message-Id: <178409212283.638342.3417101488436415116.b4-review@b4>
+Message-Id: <178409212283.638342.5794416106269994417.b4-review@b4>
 X-Mailer: b4 0.16-dev
-X-Stat-Signature: cz4cociqzhcm5c7ssb5b5jdn5rbfox8n
-X-Rspamd-Queue-Id: 3C17D40002
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784092130-824731
-X-HE-Meta: U2FsdGVkX18GwG0tW8TrB9df/yJRS8AQfAbPAOHH0u98kwctAksJ1Q5YKe1eqLBZQDN5t9X1F7CyySQr2NOijG5NMLqXqHzng197UEIq/LOTKH8kQsP3W703Q760WGN6PG1wWqh87iha3YJ76QUmi7UJPeCs2XDSfWAdY2XdB3EslUJmsPjO94udMQBDB//fblF7CID0uAVvRMeDuHTSbZd6zvNRJbokfLDHiaDVEa+DKYR3/mTMXiE5d2CaN/EsP79QzEu/YVqBgpHmU7KB0o5MQ4PbBqhx3v4Hh6MP3M2q9z+7UFQMUa9EpRXNsnxb1qVDlIb0Dk/gSpFde/uMTcd7I9eqtWhYkNiG6IHu9ioDuXMOxmfVaJRLryC/RZrm1J5aba/Pp0PlEEsjxvc+2UynAQ3IGa+9bf/jKQYnTML5GK4roEs0VEzv0aFM6x8EiMtl4QghyvjAjQWOR7rPXYRCfWqQgUAigUOaTHUlxjqZMl+oZq3Cgold/V59QSd3XY+5FU9L1XFLgHdhSlxsqYsbazOK+BCypV1bZpg2fBhnVwU7C6HOiB1efpmcQVJNp93ya45biUrMljSaToK8PpYoz7VuTqfatzx7ZLvgZVFZY7zKJZ5aflB5WFCie2le0KwcrlM3zT1cTp/QtzsBWrCk0No41j2tySasMGeZtErBxEBbeGJE8mCiks1Vnci4epVrz92j119Kh2RQxh9omFX++p9kwwtMopvK/jtvjQJaH7RfHM0M3cZLaM6drOhJcb1A9fKK0U3LCu3jsKlvJgV7MyAzC+VmMsrnx4JC9bKVtxZorPNdUXY6p7FXXhfxYeKTjCzGOJ6r1ICwA0fucrN9LXtz1EhL2VqCOd277x2tSdAOwTGls2Kz361wBndUCKmmZIWTCYwDIb0iGler0GuhvJczxOxX/utrz4+McqWiWVc2iRYxlkCJY7tWWPxp98nHbu/kplRhVfSlnPd
- wxyf+ESQ
- FqkMiNTp/DM0dyyQZSt/BDofbzwW27SFvNezVYqKJY3OrDNnvTsEu2chaV446TovUbm/4l+f8/5qZgomxwdbV4FEKcJcc5fDbJKrdiYYV24SCATnIF5SFjcYr3OBvu7KTxLjOX3hJUsO9YHkspPrAbBxLo+ldG+jpuzjMFlq2JodjSmOtKXfmW1aUIBCNLZ7V58u2hjPrJnPeEruvY8h6Mmv/Qml6cFJ0EDx9S2QDF50DtdqJI3nKJmiXeccfIsWo3FxG/TOcI7BfDxCU8jiK3xjha/7BmZbhwIDQJszWA7CIKWxdUx/nhObBfg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0988C40006
+X-Stat-Signature: msm4s1y7x8ap7rw93bfxe8x4of3h4qit
+X-HE-Tag: 1784092132-663528
+X-HE-Meta: U2FsdGVkX1+gUJAOwQmMCUPLhrRju4WQW8Ddv+t+ARccXbTazgNhgsQUSyeqWLNKcrcbXs5H3ngrcSfA51XhnASzN4WtDnCZ+EV9B1d8DF33T6bJyiwXGe1eoriIO7NjEq54MVGchYvUzEOquHQGeQFmCbbWElXE7zcTHN4mHjn2DJuF1A5F+u46kRDkM/l3TpN8FcnOj5IshbkpcVVLZyVA1SoxDk58yP7ZKEk8Jwzqdvu5vkEGB36qjA7vhHut+3bDfoRmCjQytM/tfGFgceyWAjgM6Zqf7+/aVCb2aM37uJnjpE8HAftiU/T2cdomdCk2RnTVcROoTYEGPmnrwlPFy0IXwxiCHX5V5JzEOylF4yjg8Jbf1ym6exGHrnGYuc56v7r0gVEB5gUIMpK01dxJiGUE9r78EdBq1h+ohAhHoG+yu1aBCITT+LsA+pYYOHd3kjXqvkH5RfxAIwGRAbrEiB/iobguoTKJW5b8eWiLYOYBaOURwQIc4rnB7+0/9LLsE2hfCJme99uUWUmlM9hVUPRfst6TQ0H3CCreWmX6jAUU48X0O6Do3HCVJ7pvMw3ULs2Gsj9a6BVt8tKenh0ev5acZl79yoQw4pqLvBnTgGtpZbjJ1V6fN70lhBLsQUbwCKC+mmK4iFt7vbUcsOl3atjMMXLo+384R59GpKEBlTYMFLjUwNPJdWfYhKPNLJfGpYiInlR7LpHo7VLOa9cMOa0uMAoRNGwqZu9qt4SaZ5DBqWeGWBwuZVMuliNyxn8Iv8Qfg9Sf1+919Vq29RPpCtvNZW94OV04s3Zo22zAWKcV31DbYmJh8rdhoKMBWIPAizBvOnLJXE8kEA22oFt0w+GAhD90PlYN29Q8ARa56EPE2pHZTPAF5OYph86/n8mHkca4+K04l9Hy94ogdXF4bcPAVXAC9jdPKQZNV2a6yOScNHzXqEwMsiggGdRcZAT8UwH0PuYIxUm4ojk
+ i7mWa2sk
+ wnxTPCuwArIOHDabju8LFvufBsECTNR8U/giVZNAnDOwuenHlMVbHH7doYSTWqcaP/Ef/ucA3CYHcxn12P01jmsDNn1A5UbdVvSmQEeUaQg0Oi9TfQe7T40wEWLCQfCJcd6pR7VzeJGfU+uGg1VCBzs4y9LatzJqAQ/72oP/XCrivg20MXGpw+q4CvpCQgfsZDh3308uHp9YEtegekDl4cIRS6gryELQiw09NkXyCpN0Qn89aWez+HYOYz9yTN5qLUgVTLzNW6bIoVLcNsrgzEKY7VyTyuWlE7uD7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,21 +98,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 02 Jul 2026 17:38:05 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
-> struct mem_section is currently forced to a power-of-2 size so the
-> section-to-root lookup can use a mask instead of a modulo.
+> HugeTLB and DAX both rely on vmemmap optimization, but sparsemem does
+> not record what compound page order a section is populated with.
 > 
-> That requirement adds configuration-dependent padding, especially with
-> CONFIG_PAGE_EXTENSION, just to preserve the lookup scheme.
+> As a result, code that needs this information has to open-code
+> separate handling across users of vmemmap optimization.  It also
+> prevents other memory management code, such as struct page
+> initialization, from skipping initialization of shared vmemmap pages
+> when needed.
 > 
-> Drop the constraint and use a plain modulo for the lookup instead. The
-> divisor is constant, so the generated code remains cheap while avoiding
-> the extra padding. It also removes an unnecessary layout constraint
-> from the type.
+> Track the compound page order in struct mem_section and provide small
+> helpers to access it.  A compound page larger than a section naturally
+> carries the same order across all covered sections.
 > 
-> [...]
+> This is a preparatory change for consolidating vmemmap optimization
+> handling and for letting later code make initialization decisions
+> based on the section's compound page order.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 1353bcf7b712..bacd89572c5c 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -2015,6 +2015,14 @@ struct mem_section {
+>  	 */
+>  	struct page_ext *page_ext;
+>  #endif
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +	/*
+> +	 * The order of compound pages in this section. Typically, the section
+> +	 * holds compound pages of this order; a larger compound page will span
+> +	 * multiple sections.
+> +	 */
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Typically a section holds order-0 pages ;-)
+
+I think this comment should mention that this is for special sections,
+like hugetlb and DAX.
+
+> +	unsigned int order;
+> +#endif
+>  };
+>  
+>  #ifdef CONFIG_SPARSEMEM_EXTREME
+> @@ -2361,10 +2369,34 @@ static inline unsigned long next_present_section_nr(unsigned long section_nr)
+>  #endif
+>  
+>  #else
+> +struct mem_section;
+> +
+>  #define sparse_vmemmap_init_nid_early(_nid) do {} while (0)
+>  #define pfn_in_present_section pfn_valid
+>  #endif /* CONFIG_SPARSEMEM */
+>  
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +static inline void section_set_order(struct mem_section *section, unsigned int order)
+> +{
+> +	VM_WARN_ON(section->order && order && section->order != order);
+> +	section->order = order;
+> +}
+> +
+> +static inline unsigned int section_order(const struct mem_section *section)
+> +{
+> +	return section->order;
+> +}
+
+You mention open-coded handling, is there any open-coded case that can
+be replaced with the new helpers right away?
+
+We strive to have new APIs and at least some of their users in the same
+patch.
 
 -- 
 Sincerely yours,
