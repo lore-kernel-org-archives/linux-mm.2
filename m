@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8129C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0831C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:47:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE07A6B00DD; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
+	id E2A826B00E1; Wed, 15 Jul 2026 09:47:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB85F6B00E1; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
+	id DDACD6B00E3; Wed, 15 Jul 2026 09:47:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACE756B00E2; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
+	id D18416B00E4; Wed, 15 Jul 2026 09:47:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8659C6B00DD
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:47:50 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C67054011E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:21:59 +0000 (UTC)
-X-FDA: 84990771558.13.F11F03F
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AA55540003
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:21:57 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r3Q4haA0;
+	by kanga.kvack.org (Postfix) with ESMTP id AFD506B00E1
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:47:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AABDE1A0146
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:22:39 +0000 (UTC)
+X-FDA: 84990773238.29.0673C7B
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 80C57A000C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:22:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u29GFpsZ;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784114518;
-	b=BgJg4dFkordjjtOMF1agpJ2GneZoCkvLh6XcyP9uVpTDrrKS/MtgSRGcc+UxS83YAT0gBV
-	a21o+rIpYBIPv06ITLRXyW6YL25e3d7CVBF3SiSxYR2OoFPUi3kpFEvCZKzmzynN0yCQRU
-	8kykdirGuKAKy+5meReB1hl3spNvoow=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r3Q4haA0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784114518;
+	s=arc-20220608; t=1784114558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vuZDUV79ZgTnqtJKP5GUBOq9cZrf3SO80INLa2FcDD0=;
-	b=QXuGWzexibjhHjNyqc5+Al2tvjvZDjBivZuWne1R5ATsaZrvkd0yEbYnjfb9bVhyn1z+b1
-	XGTeo4qsxJYWwqt69iyJGn0IfRDS9xXcqe8AR69heCyMWvl3vRJ4APlJgNU7q3Wkxyh+dt
-	oburyVOjlffbOT8V/UhS2pQ131MOYBs=
-Date: Wed, 15 Jul 2026 19:21:47 +0800
+	bh=xzse005bRK2beF4axCqwSeS3nY/Hievh0FGpo5JbUqE=;
+	b=BO0TqMYohwcAZiUwb+lBtUMQ8q0BGTY+0D1qY8brdKzOwKqm3G32WSGytT4BJdipgTmYqO
+	AFO8JPAX3gex/o4DsD8rcpvs0nSLAYvgf+Fg7haM5geI1D3TrWBHj8aDMjjBLzI7pFkSj/
+	BHd//vAkuJ4dlTse7/ZQfj6JEl8shdU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u29GFpsZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784114558;
+	b=2aIDKM3+O43X4gc4iZhsUYkt7et/WPVXB25EYJ6MN7RsFmjfdt/WU2zoNtd/zpDFtfdR++
+	MpjVfLO6vbifUxulXGv4MHgaBZqnMcy0dIasZii+cHe4l+gnZfVw2VYRMdDkgLJtiIMfmR
+	7GAT7x6ElNwYE1xBP1cbIFIlrP5VpX4=
+Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784114515;
+	t=1784114555;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vuZDUV79ZgTnqtJKP5GUBOq9cZrf3SO80INLa2FcDD0=;
-	b=r3Q4haA0HFuVl2emqUbDWIJ8/hC/gXaScj3Bw8OCGRSI5k2pNKOJw6thAY1RNIzWkgQ7ay
-	NUnBoZLvcJFVnTEqo0qR63zh5GvdwBZh4gCnbIi92JUuI785/LSEQ1soPPuy0kDFN9I9eF
-	7ZADhA4EA4fWjw50DaDKkryssDljCnE=
+	bh=xzse005bRK2beF4axCqwSeS3nY/Hievh0FGpo5JbUqE=;
+	b=u29GFpsZPTVPLgktNR0g+QLd237hye/AUK+IfIMVJB4Z63V1UVaP983BXy/sk3KjtdfDgq
+	SMtP/MHsVGi9w7wkqmd4X0qYqgqnAjm17ma9mJBafVLVCkuy/flWiIx2gRe+MCp6sx6sxK
+	8ypyz8fSPE+VJ2wQMO3fAt7UbGRx9kk=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 Jul 2026 11:22:33 +0000
+Message-Id: <DJZ3TQV3GPDO.6AN321FGTTX@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org,
-	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org,
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
- via Redirect entries
-Message-ID: <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv>
-References: <20260707082614.95030-1-baoquan.he@linux.dev>
- <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
- <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv>
- <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Mike Rapoport"
+ <rppt@kernel.org>, "Brendan Jackman" <brendan.jackman@linux.dev>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Brendan Jackman"
+ <jackmanb@google.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>,
+ "Suren Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
+References: <20260703-secretmem-highmem-v1-1-30d5ff944664@google.com>
+ <20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org>
+ <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev> <akpBWmnujSnj1ZEE@kernel.org>
+ <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
+In-Reply-To: <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: AA55540003
+X-Rspamd-Queue-Id: 80C57A000C
+X-Stat-Signature: yjkogx5hswo1f5gf8mofg9uu4xp1mujw
 X-Rspam-User: 
-X-Stat-Signature: mqpyypknymraf3kamkeze5apww3dz9qy
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784114517-947974
-X-HE-Meta: U2FsdGVkX1+bOrqrFSEuJC9nd1uNCQgHtoHL8pItJESLBBX9C4SDSdLi4VGQ97d7OuAqwlmcCuRlpy1BhA1Tb7XYPg7YWODBH5hnuYtGq2KfxlHIDhNdr+2C2zjLnsVBySgx7l0smXQT/ditG49EIwvS2+bOPsB4mIqz5KDI2gEXu2yRajOuF+SdKsPLBoVb6sbw2FPHB5Nfw1KlFCk5RiT/M7Da1hRSNbywxAoTtSIOCr2UMFTUZNqNIyPALdXjD3a66OBGx3+AUPctgFrpfTCtj0n+hyPQYBuJ1p6sgJYromzMxLBhj5UcvMgDhuw8PhhAEtuAaxmZdwGAHyPRO4p1SAIfeai9W3s0p94Xo94l8ZOcMJgMuLrPtPv/r7QUlbCqfmD2ltH/zBTTQx7Q2X9k1XnFDhl9PhVdPhfPLpaoIVb8jenjj7R0dou06Gdni5rRFVNcOeV3zi94+DW8DfDfLm8CQSG9fdt2+nSm5jbI1O8Ku7WUkQH79x8V40/dgNhx0WZEpeym5c8GeTr8cXQyyKMBoMhdZOWMRNCeya9Q5mVo80Fn5U1kqeG1Hg3NOS7DHrufqKFE2rrS/FRNJUfVXm69Aky2DedsthqAiJVSXoOoKzmBXcsfn1LsKWvrxX7BrFzNyOxc3Gs6BTVfpdt4WUPQMXyXdYf9t401BHWdth/5Re19UrzuDrs3W7s0VGekOaATK5a2vAgirafayNgP3yIQjOjvCV+6CN61lFZPIDX+Scb0WChL7fXT7Ik/gP480zNgnImZDH5FG0JU6USWz2apXMZ4PohhJHAw6XgpZHoMWRl1ZNlS7WmL+1s5NFpCqtqq7FPmyLBq/sM40d0puISU6Aacu6MsdUHmMtj4zIZbg5mineyPfnOQ4mMzyuMXR65DBJ8K57PR7aazaLhHpUweCvrBDqEL5ZJj4yWJkdUAy0ylmYwyZ7hD2xW5XshRq9IMFZhqoB0lyYQ
- z7xMipRc
- V985aWd/zY4M7XqLSZNOim9HLnzctgyQeFGJlPxvYkibQ/fJ4SmN6lJ3+7uFHeHs3H989rrmtnsiaMiQsTWm2Zz4MH+uuV0P0WoMERbysqOq+p3Yf8373Zms35NVXnn/Oi1ViaI1jTT5nzCsGErveSzWM6icsF1ySe4kp+SDiTWdz449virPFUgSiKCnQZb96TbYp5I7Em+HQSyO4JoanukETL/gQNl6KhzXGjuONxljHAartzwZbjdD+N4G4teRsKO5aPwpJsDs7ZXhrAbET/Y14uA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784114557-749200
+X-HE-Meta: U2FsdGVkX1+2XZNGrR25AioVxlzUtY2lYGoaWI37xdg6cT7ChjMgRpIBBWaGJI/1yir3jJYCo7tM7CrvyA3XKIUxBOm83leFI+CLSpUjDH4R36R3emo9bx37zmy4DlkJdaxXyAta/fqwMRBOJFbIpIQD0DG0quVHrzTg79GvqCOJctaiCoCIIwhWwiB2up3W6X64Gnn1W2QENxnjcf2YDr1DONXh90eQNswx0md5FlisZWx5OtXwVT69Lf37G0BQq7fg4pOyHZr7InY8NVj0/+uvTvRr0cwQJuMMejqQ+/4lElvH+zr4c018rK5/gh4M7yldYaPUJGU7cg5NApyVuszaP68Mu4NEykD6jUxb2m+4D8B4AAoUz3IBUyEf6xxi3UT0NNGEcJVvC3U5n+GlKMB4tpj6LyhFqUyOlLnpfNNvwGaISn2VKCvG8I3Q+Haqt88Ri79+y7spj3AsHf3C4hwZk5ZAcAdLM9S/Tv7xruyQUjp6hRhJvp4vo4hV56LxpIXJskkSaZQ37PNNmZA98Ge9pdbUMvD/KXGGTMO8DGHNnLQ2eR8VvAp0GbhCkiUBDYSmQpt/rp89ccQed+/OoTMmtVDs0eVVh+V/0dOhUtV9HPukjIlaLfRZATk1xx7MFh02f95Vw9gWTjVrev60pVfD8BCxGc5udXbABEc3z5b7yv6pAgLKFcX50QHqYhLk7R4GXMc7M4mxEiYDOOEjttF8nCzlRQVHNhfIUb0GLGhvK77psOFPK6nVET7vCjv3CiZKr9LrHdLrmG6T7Spp8137Y8CtkmcFk2VajXe68xl8VjwUT63tTSEA3ZhXhRRV6A1bBQIrTSf8H90O606S/G0o/I6kyIu7EgQ4UQsZTM8iSGMOzyIsSMi+EaTi21kdNe6rFgi27svx0i9b9JJ4sBBBundh1H0bCWaqLW8eg7TiUTI5sT3PI3ya/fa/1b10izXw5pJ8HkRKEHtRgoi
+ 12qZSVGl
+ a4sk/w1ltFvqW565FqWwGwBNWTrIi61J06yZYJq8iRBlF7fzcjftkLEuP9EHJnRmEX1fpMXZES3H+X+9bvCPuiuhghj+3HpvUIoUvC5DuSZTdw8cn25ryhg/sGHNcIKI20izMmYF8AkMO1yM8qCdufNwsGKYYkftwtwcrMPuPxibdKpd8rRupNHDQYIMzLjPiOrrKIhqIb6BfzAZkC3Z/EtYTDNzyM9z45Bq6U7z530orRt8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,96 +95,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nhat,
+On Mon Jul 6, 2026 at 8:42 AM UTC, David Hildenbrand (Arm) wrote:
+> On 7/5/26 13:34, Mike Rapoport wrote:
+>> On Sun, Jul 05, 2026 at 10:46:19AM +0000, Brendan Jackman wrote:
+>>> On Sun Jul 5, 2026 at 2:26 AM UTC, Andrew Morton wrote:
+>>>>
+>>>> Well OK, but the secretmem code is still wrong.  The patch protects
+>>>> people from hitting the bug but leaves the bug in place.  Surely it wo=
+uld be
+>>>> better to fix the bug?
+>>>
+>>> I don't think the code is wrong if highmem is disabled. Certainly
+>>> there is an implicit coupling between the .c file and the Kconfig file,
+>>> but we could always add a BUILD_BUG_ON(IS_ENABLED(CONFIG_SECRETMEM)) to
+>>> the relevant bit of code to make it explicit.
+>>>
+>>>> Is that as simple as adding the folio_test_highmem() test? =20
+>>>
+>>> This would fix the WARN+SIGBUS but I don't think it resolves the fact
+>>> that this configuration is completely untested - there are likely other
+>>> functional bugs? But more importantly, I am not sure if secretmem
+>>> actually does its security job if kmap_local_page() isn't a NOP. I
+>>> think shipping a "security feature" that doesn't do what it says would
+>>> be really terrible. (It might work totally fine, I dunno, but it would
+>>> require some research and deep thinking that I don't really want to do
+>>> for a configuration with no users).
+>>>
+>>>> Or switching to GFP_KERNEL? =20
+>>>
+>>> ... Oh, that's a nice idea though :)
+>>=20
+>> GFP_USER if anything :)
+>
+> Right.
+>
+>>=20
+>> But still with kmap() and friends not being an NOP the promise "kernel d=
+oes
+>> not map this memory" does not hold.
+>>=20
+>> I think that keeping SECRETMEM and HIGHMEM mutually exclusive is
+>> conceptually correct.
+>
+> We could even limit it to 64BIT ;)
 
-On 07/12/26 at 05:02pm, Nhat Pham wrote:
-> On Thu, Jul 9, 2026 at 4:39 AM Baoquan He <baoquan.he@linux.dev> wrote:
-...snip...
+I fear this in limbo, we have quite a wide range of opinions from "fix
+the broken configuration" all the way to "disable secretmem completely on
+32bit". I'm not passionately committed to any one answer but I do think
+we need to pick something.
 
-Sorry, I won't reply to each comment individually. I'll just leave
-a summary reply at the end.
-
-> > I think VSS goes beyond solving the "zswap without backing store"
-> > problem — it is fundamentally an architectural restructuring of the
-> > swap subsystem, with virtual swap as a first-class abstraction layered
-> > above physical devices.  That is both its strength (comprehensive,
-> > future-proof) and its trade-off (more invasive to existing paths).
-> > I respect that.
-> >
-> > My goal with ghost swap is different: address the immediate pain point
-> > with the smallest possible change to the existing infrastructure.  Both
-> > approaches have value, and I hope the community discussion will help
-> > identify the right balance.
-> 
-> That's because I believe "zswap without backing store" just by itself
-> is a bit narrow of a problem. It's certainly nice to fix, but it's
-> more of a nuisance - you already have userspace hacks for it (as I
-> mentioned above).
-> 
-> The problem I'm trying to solve is to support:
-> 
-> 1. Writeback.
-> 
-> 2. Dynamicity.
-> 
-> 3. Decoupled backends.
-> 
-> all of which are motivated by real production issues, not some
-> theoretical problems. I'm concerned that if we only focus on the third
-> goal, we'll dig ourself into a hole that prevents us from solving 1
-> and 2 efficiently down the line.
-> 
-> >
-> > Thank you again for the detailed review — it has already clarified
-> > which parts of the design need more thought and documentation, and will
-> > make the next version stronger.
-> 
-> I really don't want to be antagonistic, but I hope you'd take the real
-> production pains that we've had (and have tried to communicate in
-> multiple mailing threads, across a timeline of almost 2 years at this
-> point) seriously.
-> 
-> Collaborations should go both ways. I've gone out of my way to try to
-> address the concerns of various parties, from spending *multiple
-> weeks* testing and investigating performance regression on zram
-> backend (which my company does not use), to a rewrite/re-design of
-> virtual swap to accommodate parties who wished to opt out of virtual
-> swap for now.
-> 
-> I hope you can extend the same good will to our needs :) I've included
-> you (and other swap folks such as Chris and Kairui) in my cc-lists. If
-> you have concerns, you could have commented. Instead, you decided to
-> send a patch series, which is basically just the ghost swapfile, with
-> a bit of afterthought to handle writeback and dynamicity, rather
-> inefficiently (no dedicated per-CPU caching), and not even correctly
-> (the lack of rmap means swapoff / swap-cache-only physical swap slot
-> reclaim is broken).
-> 
-> I respect you and Chris very much to assume bad faith, but please work
-> with me rather than against me.
-
-Before I get into the technical discussion, I want to address something
-you raised at the end of your reply — the concern that I'm working
-against you rather than with you. Our paths in MM simply haven't crossed
-much until now. I can't think of reason why I would want to target you
-or your work.
-
-I respect the work you've put into VSS. I did check it. Honestly I am not
-fan of it. In your v2: 2244 insertions, 250 deletions, 15 files touched,
-a new 455-line header (vswap.h). While swap subsystem has just absorbed the
-swap table series. Then another 2200 lines of architectural restructuring
-on top is added. Not sure if anybody raise concern about your solution,
-or anybody suggests other directions.
-
-I posted ghost swap because I saw a concrete, narrow problem that I believed
-could be solved with a small change. It makes decoupling and dynamic
-growth with the minimum possible mechanism.  Writeback is explicitly deferred
- — not because it's unimportant, but because it's a separate problem that
-shouldn't block the common case. With my shallow knowledge, it's optimal
-solution to the encountered problem. If you agree, you can change to
-Otherwise, please continue to push virtual swap forward. I'll stop and
-wait.
-
-Thanks
-Baoquan
+Mike's position seems to be roughly "in the middle" of the spectrum, and
+(conveniently for me) happens to align with what I did in the [PATCH].
+So... could we go ahead with this?
 
