@@ -4,137 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F2CAC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C385FC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC40E6B00AA; Wed, 15 Jul 2026 10:19:02 -0400 (EDT)
+	id BB2CB6B00AB; Wed, 15 Jul 2026 10:19:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9BB86B00AB; Wed, 15 Jul 2026 10:19:02 -0400 (EDT)
+	id B8B5B6B00AD; Wed, 15 Jul 2026 10:19:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8DAC6B00AC; Wed, 15 Jul 2026 10:19:02 -0400 (EDT)
+	id A9FE86B00AE; Wed, 15 Jul 2026 10:19:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 939E76B00AA
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:19:02 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 763C0A0029
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:42:18 +0000 (UTC)
-X-FDA: 84990671556.30.63EA5E9
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 46D07C0006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:42:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="J aG7kJa";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=RDB5YZTm;
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 82EBC6B00AB
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:19:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 469DB16010C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:39:57 +0000 (UTC)
+X-FDA: 84990665634.19.AEB39A1
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4DEEC40006
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:39:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784112136;
+	s=arc-20220608; t=1784111995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a+5vgXGfVtnA+C8TUUd5eVRpaUmr2OuAC+1IP97VaFY=;
-	b=TG35spKd6ZrBT0N8xiU/bjt8M7h4gTZPqtE/svpmnZpKkthLtuRWSB9xTBMHr1y3bEYWjV
-	2bbYhyRJRhrMcDzdg24mSNu+cAk0ySuO/rfe2r7ZOuuMvZyY0mtX2mzQJw3zdlBl3JUI8D
-	VwAS9Z7XC5vhqdcMN6tzI5xrB3kTrGM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784112136;
-	b=du6Jp94xoFkrVHP4oC4k6ON6vHT9me6RAqk58aUYjdFEgVzOm9IZD9Ycb6nh6Jd8RpV/3f
-	X4d9am1jjwMcgjSlvx3r1IR7Uuu2Zed70N+FhVycQ958qCKsj7N8nx2IFAbc77bj3gAsp2
-	X+PEIqsqDFfdbATJScwCkB1tBvBgFfg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=BcTdMoZv6JVy6M/fO3WdP9FofoXGw30zAP9bsFgIqfs=;
+	b=F/Gfn+6QPoGZHmYOsfvD9S8989kA1rG+e8SKUEk619CrsRYEWm/rMGN3fEXaUJ6uARpoh+
+	8vFCbJOyW9Mh9pw2/2r7sEJ0zLK1mBjOwtiadwl1yEeGbxuZbEwhUKUU1zwJN5uo3NEZNg
+	zdus40gtob/s0Fv3qotD8iRf4HW9aCw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="J aG7kJa";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=RDB5YZTm;
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id A39FCEC017D;
-	Wed, 15 Jul 2026 06:42:15 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 15 Jul 2026 06:42:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1784112135; x=
-	1784198535; bh=a+5vgXGfVtnA+C8TUUd5eVRpaUmr2OuAC+1IP97VaFY=; b=J
-	aG7kJaOkQvvMO2Q35MySTKjWaBVQCh18uVGdm1R/6W4p5/lPFYOa+3r44Y9K3BWj
-	LE2ubqv3jQrnvdVzdQ/lj7OBUTb+ZvXpkACyYITPkps9qTFK5892aLn8He3bnXtL
-	7DtxUitBhQMComeUfm+XO/Ozd+Su6XDlIdjXvXyL0HXb8Og2ycsc1qQdidhhYwfn
-	scgOcjawS8udmEbINlyppjIuiOlATAoKuEIwppUwqgOjHVPz9s3GqBQmMQPuvIDN
-	+f1oCi/VxzemhH1I+pcuDT4Gy2GZ3ZOsgXR+uKK/ZaBF3p/hBCjlbGSlhBhCws/R
-	S3zuzs/aDGbbuM5No93Kw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784112135; x=1784198535; bh=a+5vgXGfVtnA+C8TUUd5eVRpaUmr2OuAC+1
-	IP97VaFY=; b=RDB5YZTmX/XJnlisXGsGa3uwLP4/Uyapc81MdjkCTfS0IOoIGBh
-	pbIGXzTxVS4vVDdz6qFFH8oanLzYnJb7O8N6Xx9INYVFTD8zwARMH5hYEy7obSZS
-	+yvec6X6At1i0si6h0hfjiq1gtQ6gMYTa+tWmRXoiUwEeA4PHufax+VDCgy0e4IQ
-	NvEROuUl957WqUXE7x3zeN0wGJV6zqqayy4vr86Oze/npzc5sElo4xb9AnQiATgR
-	ATyBFYSvdDAInQfT41y1nzT4Obhoj4nc/z/r4cPMZwUFfc2gy9AaElfJSyPvD8Y4
-	JYXWTpy1GAuI9oTHdNGL2Co4Qv879hVGeqg==
-X-ME-Sender: <xms:BWRXavIgQeIqkQdv4FtTIVkWY0w7mEuu7TDhG82AI3HhlAK3ZhKp7g>
-    <xme:BWRXav6c0bKGpTISYdsir-lh5csyU6UBTitOj6AtU6qKsK2FJvk7yQ5lkgKSlDxeI
-    o7JucPTjs_UzYH8x5rQ0mo8Gu4njr8LLITRfjHOIGtGh9_f7MmiiwWG>
-X-ME-Received: <xmr:BWRXanTWlTyXFP9QPLopOn6evzWLP0CArDGGQCyfmZc4KyCYvVtLa610eqJUGg>
-X-ME-Proxy-Cause: dmFkZTE9+Ty5l4Hk0j2Gb/fQsQ06CRASYsBJEfuCILaPdrY/Msekl1F224gFNu4HbzAd+8
-    VH096Af2te/9p9gN8W+uLHfTfJY3/MewqKtksHPdVeIlSUko6AmavqOS2wHQHu0Af4u6hv
-    MBdGSgVHhNLjRDhaMGEUPIMvmKxxVtem7RG6M6eFAiYwe1tZjVIzx52TKkb/rO+HmK2jxQ
-    BtkslAy8JwZMpnnkyKY91rjDXF/CjXJhvfiw8b0n9zIjoWzmTbAkK1KdwBR7N4uHr3R1Xf
-    xbun1TN0PGYpixfedcwO8eDkjDfFtVWEmeKRFqDpLYrsD82I0htClLB/NonMTbwH/OXBEM
-    DuCxAyIOFSUzqzMzvFZu92cGQXV6ZfgYDENNUxygCwLJq67+SpQHbg3C7hlzLhTTtYkTAy
-    /He4ijGt4iurXwACK2BCBN96pgXXmlIx7PtgqPlmwdoe4aP1ZFhv0dk+jYBsf89jplxH0D
-    jWDVUYVIUnaVacMpSeSn7O28moLI6frAcpjuN2VpeWjPiaKUT/aiuy3nNwMPw+aPMxjTi6
-    sjJrYYglKnVvBXo0uz4c7nYNC3inDyE+kQd9f62FBh017pk0PckBNmbspXz/fo6xBsgXl8
-    ivxudcSo923yeXXYEcYsfaObq6KdTOlXrZf9YeYhFGGSSymI3TyHV+44pqkw
-X-ME-Proxy: <xmx:BWRXahDizIhaw6HR5F5ZrxTVLVQL36GKjPQBLJLHJnBTK5NLUh6Iow>
-    <xmx:BWRXaqoDgSAlM5Z5pCQnFoMiKfefcb6A9aH7yUQJ9p0qRacfoTPtVA>
-    <xmx:BWRXar-PyuHxrKYZdDMQlURlN-8CBfI7MzyvYDyrjKCWLC2KkIXd3Q>
-    <xmx:BWRXarC8Cj2W3Gz6qcJRcyMyVbvNiTzQiT_lN1C0H5dJcXgckMu4rw>
-    <xmx:B2RXams3h0snFzACnpl-cqoUQniKCZjnjczy7GYYMZ4VnDI7e_uSlIr8>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Jul 2026 06:42:12 -0400 (EDT)
-Date: Wed, 15 Jul 2026 11:42:12 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>, 
-	Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
- poisoned subpage, locked across split
-Message-ID: <aldjhtfVByHDQXe6@thinkstation>
-References: <20260714122344.351895-1-kirill@shutemov.name>
- <20260714122344.351895-2-kirill@shutemov.name>
- <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
- <alZNYYsybKZA0eJb@thinkstation>
- <18fe5529-2ad5-4330-a362-708a152bacee@kernel.org>
- <66A57599-EDA0-4E99-B073-F2AE0B2ED708@nvidia.com>
- <alZljHr4Nk3FOpCP@thinkstation>
- <DJYH202OLKZF.432DAJWF2MGA@nvidia.com>
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784111995;
+	b=r/E/ZUGYXnsGBIA5ullJdmYTAg9YNhZRgP5dtJlmdv114FAO8L/K8aPQ5g7Ls29UkjXEI9
+	1xbeXl4dlvUgRCbPe8eQvErfoFFT5hcgZ624eOyGKryGMX3XOMkB+OmwG+FJyJY1YoNfT1
+	AblKCzbiAFy2MTpDfhGI6CBkYOCAfIA=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92e85499ffbso149652085a.0
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:39:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784111994; x=1784716794;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BcTdMoZv6JVy6M/fO3WdP9FofoXGw30zAP9bsFgIqfs=;
+        b=f86fsyrcAZA0O4TOw/MTbshFX9Ki7ih3IKgze+6J+ltr97JzY5+2X4MN3Onfo112MP
+         nC+j09uLBnqiwDTMSiNfvazT0ptEAuQiyPFfjHOffLSxN5B1BPstBMZZrJ+1AhIlKeq3
+         nUMFT+TGJJFolKEuBysOlZEoJ47uD5SrvyJQKRjuwg5d+7uysgETrnmVI10xz1kfJrsZ
+         5eBWeX4VBtLM3YzgK+sZXG1GfarTO4oJFEQHJd/Nl4oo4WCrr5b/B+gzJ6hffYJdRrg0
+         MIJrjt8NJgM5ORuIOZsZIH+CMxw3WfxEj+1ik8HXHQ/+w6UNZ+uDdehUe4+87l1pXW3h
+         k/sw==
+X-Forwarded-Encrypted: i=1; AHgh+RqfF01TLjW3ZDzwHsrYDaYyiMZdQdbf8Zs2lG1Z/0uWM6te/XCdTWV58y2qShJP/Q6JKHsonIWrBA==@kvack.org
+X-Gm-Message-State: AOJu0YwjD5+5u0jz6ueB+SUIazs2juy7pn8wQPpN0T9acqjcl8a1ooK1
+	rYQdyk+EJIkhwPigJLBHhNaJ6olCP0bk2my5D4QvrXS14lqgtF2uSvk3az869ULPcHQ=
+X-Gm-Gg: AfdE7cmbgsa3+sLWQJGMJA2KwohRgNpCAxuSsea85shb9IRguVy0XHyD25JoJy1ddfD
+	O6lJCDnV4RNvFRwOWNsDXjCJ/KW4weqsLUo7BXoon3YJbTyAFArWwyb7tdgUPpQCb8jhMMwRk5W
+	adJYikYPHDcnctQpcgzbVilW1FGkFh+debFPRKqOtWWpQJchmiIt7GOwhA7AXJ0lYykXTJllOYN
+	tYtmBfbIeBIGBJOhH0Ii78pLmakHYhoggmPGfhLceO2IErxF6Xsz1e843G9P7cwgFEHQM8o0HNV
+	IiwDQXtMZXNAijm1rjss6ns8/EwTpvXQCK4ewEq/tT1RRn9pL02vIitrAqN3OsyS12TF3HCYCqw
+	yYw9xQdtkExBGUdJDs4rmYEl4UqmsxVd8RLVB7JADLRYFI3aedjbGzkK79FFPloWTNQMgyS5cSz
+	VK7vEY2NactBsTakRzZU4agqDBJk8Jm/Va3xb/XEsRzNU0W72Mz6xj3Q==
+X-Received: by 2002:a05:620a:3947:b0:92e:60c8:1cb7 with SMTP id af79cd13be357-92ef2bcc66emr1997101485a.50.1784111993316;
+        Wed, 15 Jul 2026 03:39:53 -0700 (PDT)
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com. [209.85.160.175])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5cf7ab2sm1630122985a.30.2026.07.15.03.39.52
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jul 2026 03:39:52 -0700 (PDT)
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c1d487f2cso20468261cf.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 03:39:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqDkKfJx0Qp5ZsDQMX4HKYJkW6vmPr5iSQe5VTdf+hISV5+NEv1wikY8env8cnL09BrEM1ls9Mzxg==@kvack.org
+X-Received: by 2002:a05:6102:94c:b0:730:db02:1d08 with SMTP id
+ ada2fe7eead31-74533c1eae8mr11245328137.10.1784111681255; Wed, 15 Jul 2026
+ 03:34:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJYH202OLKZF.432DAJWF2MGA@nvidia.com>
+References: <3ea30f8a-bb29-4bf5-8400-1c4840d46a88@kernel.org>
+ <7e84b200-25eb-43a6-b5e2-5f27f2d82a77@intel.com> <31988089-095a-4eed-b5e2-c677c70f79f6@kernel.org>
+ <14e250db-1641-4085-8d13-02f819657d5f@intel.com> <d83c76b3-ea4d-4c41-b4c5-f5ae558ace55@kernel.org>
+ <alYgMxKqRnF6_X0A@e129823.arm.com> <6df814c9-405c-48d8-96ea-929c4b28949b@intel.com>
+ <alZe-Cu7yQw9qRXU@e129823.arm.com> <alZo9feSrSB_StfO@e129823.arm.com>
+ <CAMuHMdUqL=vJFAzYgcRVNbD_VWWwhehwTuhTfwLt_yRR8c+B0g@mail.gmail.com> <aldV23PwIXnFloaN@e129823.arm.com>
+In-Reply-To: <aldV23PwIXnFloaN@e129823.arm.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 15 Jul 2026 12:34:29 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVOHm6MmP9QsNVvxLsGp1e0jC9u9RGb6+xee0ZBs4Zwfw@mail.gmail.com>
+X-Gm-Features: AUfX_mxU0lxjO-fzCeQeNX344H_SVkvovWXaE8EEgaGKFYO5e9NLd2LkTofC79k
+Message-ID: <CAMuHMdVOHm6MmP9QsNVvxLsGp1e0jC9u9RGb6+xee0ZBs4Zwfw@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/34] x86: mm: carve out the generic compile-time
+ folded pgtable case in effective_prot()
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-arch@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org, 
+	kasan-dev@googlegroups.com, linux-csky@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
+	linux@armlinux.org.uk, akpm@linux-foundation.org, ankur.a.arora@oracle.com, 
+	rppt@kernel.org, linmag7@gmail.com, chleroy@kernel.org, klarasmodin@gmail.com, 
+	chenhuacai@kernel.org, kernel@xen0n.name, kas@kernel.org, 
+	zhangtianyang@loongson.cn, wangyuli@aosc.io, tsbogend@alpha.franken.de, 
+	ljs@kernel.org, jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org, 
+	arnd@arndb.de, ryan.roberts@arm.com, pasha.tatashin@soleen.com, 
+	rmclure@linux.ibm.com, baolin.wang@linux.alibaba.com, tj@kernel.org, 
+	kevin.brodsky@arm.com, anup@brainfault.org, atish.patra@linux.dev, 
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, hpa@zytor.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, kasong@tencent.com, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com, 
+	dvyukov@google.com, vincenzo.frascino@arm.com, anshuman.khandual@arm.com, 
+	yang@os.amperecomputing.com, chaitanyas.prakash@arm.com, ardb@kernel.org, 
+	guoren@kernel.org, yang.li85200@gmail.com, viro@zeniv.linux.org.uk, 
+	dinguyen@kernel.org, schuster.simon@siemens-energy.com, 
+	wangruikang@iscas.ac.cn, junhui.liu@pigmoral.tech, muchun.song@linux.dev, 
+	vishal.moola@gmail.com, namcao@linutronix.de, pavel@kernel.org, 
+	djbw@kernel.org, yu-cheng.yu@intel.com, baolu.lu@linux.intel.com, 
+	Jonathan.Cameron@huawei.com, coxu@redhat.com, andreas@gaisler.com, 
+	liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com, 
+	shorne@gmail.com, jonas@southpole.se, stefan.kristiansson@saunalahti.fi
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4DEEC40006
+X-Stat-Signature: jhurm6w5z8imbiaz4jgfuxwhsdkutkqa
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 46D07C0006
-X-Stat-Signature: m19wnquajjamgz6xbos14ux5bwoirz1h
-X-HE-Tag: 1784112136-296859
-X-HE-Meta: U2FsdGVkX1/B45G1d8IrZh/EJld0VjSED/S3PohIIYHXTwXUWjsg+BsUyR5mlxuBvMI++pFrtk0nWzOqlvpT7rAxezpG2NkaKqgRq8neXqcNpGxTEN7uFKpqQo6kAGaImGZSRJdJFYNjBSQ8tWFBSoEPrvlJtXOihioClJfe6877HRF0Vdr4yx0HkhaLiYNt275k/nILDEouujDuFbgX6V/Es3SYKxEe9wVGSeS3fOwF7iY/6MS4aGkauCaVu2+zCrC8QerkYKcEw/rp7XEOmCukJX2x9dL37gg70+iPII7hDcJN3XDg2BmGDVfQwas9unpk0QIUb0bOm4vimdNCma6FNlZWKCW59zlxDlQ1qEIpPUiIGTeyd0m4CCzph1VNlgTwlT8l0jWqMiU+yiVkU0DgbK8effIFzZYz+Imr7K93oyjK3KHs4nycpzPFtuE9VugLFVSiZJUXu3DCYXcDwwGRQOHBtViBhPJC2KKbUrCErFShC6sx1RLOGeIUu21jdA6oib01u4g6jbHCR+nhqAMn4ycYiG4sk3FDftkFoMHpEC0K0Twq4WquBhURHa8E9k9xV7KUwvCLtGt+cFwfMS8hGU3fKube/aMetgRXvsLtzkP1VJp8XFlODYOOtmt0bTbOr9NQWa4dKve+iqByQIvbLpZSPSP2akznZDoIXF7XhNe5+HKAXLbeDGRyLKwWYKsz6kJ7z386c6FcakHqaZ5bJBbfMnW3osdCquENmcbmmCGvtuihZTZGQ2aySoCCYumOMJvn0ZY6hZYc3RS2rqXlPhGdN0LWZn2VDGB0+BKyP+QgaVE85mrHxbOatX9ZtTkj5IlkVrZGNUEpKoHEt+29Vz8HH4pC2BOCi+6zq5G/KqRWZpmo+Uv+XowDZYs8fhgMnRTuIOSn+ReK+7MIfsoFNATaplXnVuTw4PHEaXPbBjd4GnqYpgXFXl7I9XoUebYk7xETxwVEaiQN0LY
- /LsFGbM9
- P744sClJ96qEbk1FMJ4AWNmrTpzNGlIRpMqNz3RPuvX86hsQi0rMbfbXb2rSl3BK1QVYYQlh0MJsjNpPbI0AXhBAt/PWtwQsglUjipMjl0tgKoJ+Ullr6mfXAMQo7bbvEdnENUx4Tj7Y7GA/pTep9aU0wTBIgTiVQJwW4iDx2ueYuabjhD+YvmudCyTcctIQ7V/7mW8jlQjIRirMjugJ/GUUbSMC1Hvm8TMjYfgMr/ER4345pTpGk3m8CbRRAt1mor23cdWfl84bNv341/ZpEAHpVrFcdoY8p2VQZSYQZ/46L14eaJidV78yRI1a2JpZjA533uHU0+YAnTdZ2cHMrmV20kbKuudp5ZQsXkJt6O+Cm8gM+14ekthrx2sELzbX1Q+jaWHST0QfhSR2JP5LF7MRSLUBA3w0mnERTbn1WDjnY3yg7xTJ6FoLRZGVWOkA8nVDhTON2GrDxgPsQv49gKPojFSm5xAk9SL5y33yGiqr9MJyLPd0iZh+C4eWOIhZg5UwwP8vCuP9DtKlg8ybakEbmfUNxtnVNTGvfG3vQO3SW39A=
+X-HE-Tag: 1784111995-16734
+X-HE-Meta: U2FsdGVkX1/buhafExxp3IOW5Npr5BbjC4ui+RJeaHHWR+HTEMGnFL3wVuH9TZhWWUjleP+d3TalAPBg4ciJsoSCMo2NBEYlghFvihiGALvUplfN1hshNsol/3SIvQZZhEFRn18L4+Jod0ZM4FCnba+vt7ofAkwHCnt4XTydOt83me4Ca1FGLpXVocKOpTZoZF7Ay9ussRYPGMmdldCi2xwdp4hJm2SR4j57N5RlGl1aBFzZa91v4gcxdMFQA3l2YQ5bUHIWBAq5nb3qJWxVoXOeZ5Ad+Z+eooL7+HiQFWQVKiaY83OSyaYMh8/fJYIgKoGM8DaRpCjADaiAeEl+VJwbjlJG5z7HeIpC4NK2V40T4ycLg5TGutiIYd+3TxIUQ+3wAbpIseh48VhJS2ZLvmfH7yN0BDrF3OoK8sWt/Eg4nlvahvcaCuMdcYHNtwmB3viEoMHzGkGGNizh3nlA6oZfCD7Qu5BUBbRjm9mp6LF3xhgWH2u6qyL6g5+1QdMHlIAG5kp0D9QKhjNtW15ZNtgcFkSrw/2WJD6ba6GZG0sFot7aBygC5HJhYBMdp8Kj+upNS1+tN6BgL3svbrGx1DxVluI1rbthYuhMYgjQI7Ez5SYQ5jfrUG7TfwC2+Xue4qzQ7ehOxvLFSpFyOBPORLTSheucZCRTIJjgQtNT/51iLFzqmU9d2WKKgR5tnsd1A56zw1DKRCJbCiW1fgOpVPl3P6uPU2wIZddEOBExJpkyrMBItw3cIST223yVd6HvE+uP584amwhMslX0RS4WBxFr4po+VacHwXEfckdWa4grWCipnoxsWBqBFmHPW5bJDDNGxzxxvNrCJsIXfW/Z3A5oTUmFPG7rzWjvI/UO8pvUzksHqpXS+4yMUB4awO9k/Q3KItLCGKFx3fGdO64RX1LSuBNg/WzfrMZIC+4x4XWiKktE6APZx2TbzQOYuR7V2L/4ze4GAIciKs/QzI7
+ BWRsPiia
+ 0TmWC6iOzevxyIeJQCLRapy+Ce/3Mm4E3KyWvEiYjMtaSGolKb0eoGj+7Yi1/gbFI/z5mwfhNdiX1/HUVawDrFUqWVSS+hWojWH3vL1UE7juppnjT5jfRf9TixkwKexrQCJp9IdvFAi1uWRreUaTvOUQ8uSPCqHBhzzFF0R9Pwq5pNP650uj2pU9/YUPY8o/q4wmvK6WCvOau3AxRW1LFW/RDtR7o3x2+JQYo7fScjPbXa52M/z/U5tv8LnzsDB1/6M7BTRSqKTJitBgqupjjQkMkMJXcrnAUN36fKaXjCAKxhqPTh1wdXkIJj+kocqc+ZFgjJsl6pxS5Qv1zyU7tyo57XWxb7o/Snyl+KaEIAAEZUkZ1WODniKfiB9x72R4pmlNjDhXOA9rB7cS7EWzHWIImIrlfx4vfGYukkXylzpOm2ttcIyNZa/r6/0ozcg2UYP8BPfSmEdOxx5Tb9i/FlXDzl4aY8qLlaybkjoxelmniKB7vo8qIAhNIoS0gnhteVmWM3mb2l8hd2V2+xkrFVFmYdegFhQvzL2NjQlKl/RO3+I+JiMRhh3n3GQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,121 +147,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 01:31:54PM -0400, Zi Yan wrote:
-> On Tue Jul 14, 2026 at 12:40 PM EDT, Kiryl Shutsemau wrote:
-> > On Tue, Jul 14, 2026 at 11:44:39AM -0400, Zi Yan wrote:
-> >> There is an alternative, only igrab() when @lock_at is at or beyond the EOF,
-> >> as I was bouncing ideas with Codex.
+Hi Yeoreum,
+
+On Wed, 15 Jul 2026 at 11:42, Yeoreum Yun <yeoreum.yun@arm.com> wrote:
+> > On Tue, 14 Jul 2026 at 18:51, Yeoreum Yun <yeoreum.yun@arm.com> wrote:
+> > > --- a/mm/ptdump.c
+> > > +++ b/mm/ptdump.c
+> > > @@ -190,6 +190,23 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+> > >         st->note_page_flush(st);
+> > >  }
+> > >
+> > > +bool pdtump_pt_level_first(struct mm_struct *mm, int level)
+> > > +{
+> > > +       if (!mm || level > CONFIG_PGTABLE_LEVELS)
+> > > +               return false;
+> > > +
+> > > +       if (mm_pmd_folded(mm) && level == 3)
+> > > +               return true;
+> > > +       if (mm_pud_folded(mm) && level == 2)
+> > > +               return true;
+> > > +       if (mm_p4d_folded(mm) && level == 1)
+> > > +               return true;
 > >
-> > I saw this option too, but I wound rather not go this path.
+> > Is this order (... && level == ...) the optimal order?
+> > On arm64, mm_pud_folded() and mm_p4d_folded() perform several checks.
 > >
-> > iput() still can lead to inode eviction an bunch of random filesystem
-> > complexity under us. I don't think we want to think about other
-> > fs-related locking issues in split context.
-> 
-> Your reasoning makes sense to me. Let's ignore this option.
-> 
-> For your patch 2, we might want something like below to avoid over
-> rejecting splits. WDYT?
-> 
-> offset = folio_page_idx(folio, lock_at);
-> 
-> if (split_type == SPLIT_TYPE_UNIFORM)
-> 	lock_at_index = folio->index + round_down(offset, 1UL << new_order);
-> else
-> 	/* @lock_at in non uniform split is always @folio */
-> 	lock_at_index = folio->index;
-> 
-> if (lock_at_index >= end) {
-> 	ret = -EBUSY;
-> 	goto out_unlock;
-> }
-> 
+> > > +       if (level == 0)
+> > > +               return true;
+> > > +
+> > > +       return false;
+> > > +}
+>
+> It is. since the purpose of ptdump_pt_level_first is designed to be used
+> in the *callback* of pXd_entry(). IOW, if we check level 0 first,
+> it always returns wrong return in folded case.
 
-Right. With the -EBUSY condition growing this hairy -- and having to stay
-correct for non-uniform splits too -- just moving i_mmap_unlock_read() out
-of the window looks more attractive.
+I meant the order inside the if () conditions.
+E.g.
+"if (mm_pud_folded(mm) && level == 2)" does the expensive check first.
+"if (level == 2 && mm_pud_folded(mm))" does the cheap check first.
 
-This is really Hao's original patch with the reasoning corrected, so I kept
-him as author. v3 below.
+Gr{oetje,eeting}s,
 
-----------------------------------------------------------------------
+                        Geert
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v3] mm/huge_memory: unlock i_mmap_rwsem before releasing
- after-split folios
-
-__folio_split() keeps dereferencing the mapping after the split:
-shmem_uncharge(mapping->host) and remap_page() while the folios are still
-frozen/locked, and i_mmap_unlock_read(mapping) at the very end, after the
-after-split folios have been unlocked and freed.
-
-Nothing holds an inode reference across that. The split relies on @folio
--- which the beyond-EOF drop loop never removes, as it starts at
-folio_next(folio) -- staying locked and in the page cache to hold off
-eviction. But the unlock loop unlocks @folio before i_mmap_unlock_read()
-runs. If the caller's @lock_at is a tail beyond EOF, as memory_failure()
-passes when splitting a poisoned tail of a shmem THP that reaches past
-i_size during truncation, it too is gone from the page cache; so once
-@folio is unlocked no locked, in-cache folio pins the inode, and a
-concurrent final iput() can evict and RCU-free it before
-i_mmap_unlock_read() touches i_mmap_rwsem:
-
-  BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
-   i_mmap_unlock_read include/linux/fs.h:537 [inline]
-   __folio_split+0x732/0x1640 mm/huge_memory.c:4100
-   try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
-   memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
-
-  Freed by task 4601:
-   shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
-   evict+0x57f/0xac0 fs/inode.c:870
-
-Do every mapping dereference while @folio still pins the inode: drop
-i_mmap_rwsem right after remap_page(), before the loop that unlocks and
-frees the after-split folios, and clear @mapping so the exit path does not
-unlock it again. shmem_uncharge() and remap_page() already run before that
-point, so after this nothing past the unlock loop touches the inode or the
-mapping.
-
-This is now a rule the split depends on, alongside keeping @folio frozen
-until the page cache is updated: no inode or mapping dereference once the
-after-split folios start being unlocked.
-
-Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
-Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
-Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
-Cc: <stable@vger.kernel.org>
-Co-developed-by: Hao Zhang <zhanghao1@kylinos.cn>
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- mm/huge_memory.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..abaea34ef558 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4109,6 +4109,18 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-
- 	remap_page(folio, 1 << old_order, ttu_flags);
-
-+	/*
-+	 * Drop the mapping while the inode is still pinned. @folio stays
-+	 * locked and present in the page cache until the loop below, so
-+	 * eviction cannot free the inode yet; @lock_at is not enough, it may
-+	 * be a tail beyond EOF that the split already dropped from the page
-+	 * cache. Nothing past this point may touch the inode or the mapping.
-+	 */
-+	if (mapping) {
-+		i_mmap_unlock_read(mapping);
-+		mapping = NULL;
-+	}
-+
- 	/*
- 	 * Unlock all after-split folios except the one containing
- 	 * @lock_at page. If @folio is not split, it will be kept locked.
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
