@@ -4,148 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B980C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:09:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 097E9C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:09:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B60F6B009B; Wed, 15 Jul 2026 10:09:25 -0400 (EDT)
+	id 0797E6B009E; Wed, 15 Jul 2026 10:09:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88DE76B009E; Wed, 15 Jul 2026 10:09:25 -0400 (EDT)
+	id 0519E6B00A0; Wed, 15 Jul 2026 10:09:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77F706B009F; Wed, 15 Jul 2026 10:09:25 -0400 (EDT)
+	id E84F66B00A2; Wed, 15 Jul 2026 10:09:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40D5C6B009B
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:09:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C2FA6A010E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:09:24 +0000 (UTC)
-X-FDA: 84991193448.29.C08CA28
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C20934000A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:09:22 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=S1THguRb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784124562;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C2E276B009E
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:09:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C57C1C009E
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:09:35 +0000 (UTC)
+X-FDA: 84991193910.20.2573CFA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7965F10000D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:09:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JsMhAAJu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784124573;
+	b=IprPw5FprpK/D4C51vuSFd/C7S/lgj5Kyy9MC5NTp8GXOPyoZmJpjp4LngdepMB+QF1qBj
+	DQiUK22Wh7crZ5T+50aardb7YqFsJ4XXqXjr61C65jf6F5frmLCASlY0cG8y6RrWFcQs+8
+	29oc+WiLu5a39AVe2AAeVjf//kz5ktY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JsMhAAJu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784124573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1mcx5kizqsJiWKU3Assktv3idKETuJ14oVMLxFKExzM=;
-	b=jth7u/aLaRc+XPIXjhfLFV++Rr3Soz4Ba7W7hx0NAPIRZwGP4QuFvISXATduJTmtFpf7Jc
-	Fzlq4qm7deAB/ucOEY7DMIIz67MyMthcJ/14mUwavbSLm1k00IuV6rVGj5eJRNRMQD66xU
-	qC8XN8sOxYWTmo69wCZSvoJVokMFF2M=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=S1THguRb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=aliceryhl@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784124562;
-	b=rhQUGRG4lQT+3YWc+Tcu/Z7CCrKxRB1C+JkJocmBTrT6Xg4mE3pbyMcaAdniGIyHCVXztX
-	kEhu3Zv8yIDMMYGm/+oasT9sUxgiAUOC9s6pnQQk8m2WLvBogIaxM3m4NEVn83m0LymDd9
-	TBQVisCnJadVX+8c+SaWGn6eg28YgG0=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493c19bad03so49173145e9.2
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 07:09:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784124561; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AOFhpmo2jrShsOFNghHoMEYIqdmSGa4jKR0q79PNvQdE3ls/U2J01a5Xmc6FIxRKsu
-         qozw48L94r8sxD24wMvT18XOicg45OGtrYyTAZ9b3YSf4i7K+N6NO58eCexN5ADCgNJM
-         irMF34KKjFwEkBd5t6YQz+bsi8tfWpNoA+KN4lRZVz++89gy9xrT9+UNEZAtNGYYLFaD
-         WmIQisv+OUUjzBEQJpT0Vucufp42TOT8q75jGNYXVdIR9cWinShQuWWIDIEF7jSxmmdd
-         n1w47j2tqxuXJb5jVpIOBZxbdGy0svCUfPeZSDAk6YYFz+eQt0CTxW/9CDkzntsNK/Nv
-         9JJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1mcx5kizqsJiWKU3Assktv3idKETuJ14oVMLxFKExzM=;
-        fh=mMzmvVlMUI0yilVQzpdBOL4OX5OL67CPx70b6GRc/2E=;
-        b=Gnn0SG1BJW/jvdPn43bLUUMhk597XN0Ej6ZPHfYNwoH5EX1d7t2F80AsKciHcFVSmR
-         nlgc0j/DJISlXMpqtj4Wx8wdhZMWHOjX3SBcnWZ4qf+rIi987fOePoUQZMs1HRsruULy
-         JzCa7R5BZJipkiSr28jlnbLCmlU9OjvOyEpLXEwfb/04TcYpuDii4dBeaTVcaJQl+DgO
-         FmiP12kzyVVlZ312J2oBIvglQ9vZSDPUGuxN4lZSf+97UnuYYZYVAQxyBY8IVevtdDp2
-         Igj8VsltktVxZig7Yd5Tt9y7xasmqHxnboJQp4ky+x3FmLkfTYdUNwG+YMs0PUXQWifz
-         hrWA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784124561; x=1784729361; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1mcx5kizqsJiWKU3Assktv3idKETuJ14oVMLxFKExzM=;
-        b=S1THguRbcECw5XEolkN3SrD8QVSrdcerjRaWcIqdsdu/FZ9h6snPiCsN8DMXxRnVw2
-         YSq35Cbiaqli8iA21tAVnIqcEsiYpVWkCMHLi3b9zb2IYVhHpmqoNkNQ/iLAMvvKl2qN
-         G1zLTM7EPgAJmbQwQB3W8Z6ewNzCNIYLOzOR4B263P+B1yLPOmwkN+34eKVqLbFOHJK+
-         ukOYzYWcpmL1ceJz9GxSPCfki7sFDqKPm6MQyUZKXufOqnSWKqch8ey9pkSr0d5CYtvY
-         JuNzXkccZ94KukslJ8op5ZPNitojtg/P4wKMaO6zU6xUcExXOP4DzVeehC0KneVb0K68
-         qHeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784124561; x=1784729361;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1mcx5kizqsJiWKU3Assktv3idKETuJ14oVMLxFKExzM=;
-        b=NvB5H1L6MedeLrKVeiTiJKolXtPQaQEvIkebAkgiktiNUW8sVF87coL0WGQbFG58dY
-         E0w0x1b1edV8vxbFDoCqy7MZl/WHnGRnNbPJWbvDxIp9Jo/FioP8CEsmRCwz0VmsIAZ5
-         0DE5pO41BGoH2DdegQTEYRb3+QjXNjojkS+0CaP49wEsbNcS/6FJ95ZWWdpymzh8G+3E
-         RuIZagaTy7SVuvjp1wmcCBF/OuhAhLe8I5aUZYxBcMDBzAgAHxBZ9W+BDpNhIQh6xFAB
-         xqrdI8sZx05E9/MhcYjPMoW3NHYXsoUST/0M5icLBXPeFtUBAPzCUIxp9XkfyOk8qAvu
-         MmSw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2ZyJXyFBTo+xruGojIcfipaqDFYlDqB/40zjoidkxchMydVkQnNxzdLdSOwTmFDv2BqFYGcg8MA==@kvack.org
-X-Gm-Message-State: AOJu0Yyv1tkJY9FxYn9oRpB9UGdRhTV9/KGQBPBICK+Yb1ewfKOBIwvT
-	q1KaN4xPxnr9bPiFlAhmDRV7Z6F6jull/8E0hB6bzz9zZDvyFLRkNXvgcu5ERE8MMCoqlSywY7M
-	AyQI/cVvXilb8U35WsOlO+pD8R3ONHP1Gi4h9tYIm
-X-Gm-Gg: AfdE7ck5WbCiLpK71PSoiZSOFL+7xJLABvp1xIaQmhGYeP5td4tGbRR3cXDRolMLXg0
-	rYPKsGUJapMWJKPe/eRhDJKU7Yig7mohxYICId+REqLId/NwkPTgK6UW1iLc88+LyBbE3kMIzyU
-	DKow1tA1GbRWbRve0Dxm2hL+vvjbiXqJxtt0/7EoB19PWo44XGZjX5BKKm3oM/686ZVAKieePig
-	klXXGBizc6Kjpp9Gugy7Myl4b8hjNogQ2E9NO+0O10qq70XKfv3SoufJKXxTHfR0Daru7/1ViET
-	gA0tYpJrUH/ZPv2oFLkMAxI5HZE=
-X-Received: by 2002:a05:600d:8443:10b0:495:404b:85eb with SMTP id
- 5b1f17b1804b1-495404b8636mr4530305e9.26.1784124560869; Wed, 15 Jul 2026
- 07:09:20 -0700 (PDT)
+	bh=fmLajELBwebxH7WxDXtone4cRwMQnjq82TSthiZG3yo=;
+	b=WhqxsvR237OFaLXCE6rBPwui6awuov8qhxjTZ30SJN7S1919NXME2VnIU28JT8RQA58I8T
+	6ZzISJzyUefDtP/2JsHJrV6L4gfNh7EwD3FkHH+btWZiJXP7wQdHNRecAG6w2OMxXLlIJe
+	abqVa2jenANO4J7VG04d2obKybZVTBA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 609ED41E48;
+	Wed, 15 Jul 2026 14:09:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E091F00A3A;
+	Wed, 15 Jul 2026 14:09:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784124572;
+	bh=fmLajELBwebxH7WxDXtone4cRwMQnjq82TSthiZG3yo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JsMhAAJuy0UKuZYDWb8ZyxBhcEuXGK7+4HoxA4WQGGFilUXJaziL3rUg7N0l8O0oY
+	 yaHX8HnIfERUujyI5L5IhE9tZnSNQCC9KcTHx5qoAAjZ52vBqwR8KuPqodpd61mKEm
+	 D+s4P+6SRTeGylndvOLiBBr09KD1cbI666l3fAuMwv6q6DmrbSdwMCCqScrRl4y/yp
+	 50wFx4hlc0cVgyHkMrDAgkeTNMowmF4oFjCFbi4LK+SXX4YwLZ2Jisj6DWDGZ28TKn
+	 C9r9i4lyMv+fR7kGR501lTKkzRkVtYaLFNeuaUFm8JbK0ISqN8kBErZFDitcqKdX2f
+	 jSIxL3z9xKN1g==
+Message-ID: <4b6904b5-81f9-4e27-8ac5-5bd7e7174c5d@kernel.org>
+Date: Wed, 15 Jul 2026 16:09:29 +0200
 MIME-Version: 1.0
-References: <20260605133541.22569-1-boqun@kernel.org> <20260605133541.22569-5-boqun@kernel.org>
-In-Reply-To: <20260605133541.22569-5-boqun@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 15 Jul 2026 16:09:08 +0200
-X-Gm-Features: AUfX_myXsOMxqzySIL_c6wjy_KTMgParE-LvwcdXFSkdOBkOsDSHqrVd6QhTOvc
-Message-ID: <CAH5fLggHxeDMm1ygYEGPpjCdfRD8nEsgN31WMvjX3mMPs5p5yg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: maple_tree: Add load_rcu()
-To: Boqun Feng <boqun@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	rcu@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Andrew Ballance <andrewjballance@gmail.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Philipp Stanner <phasta@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C20934000A
-X-Stat-Signature: tfbt46n9kkiu5yxi3ajnhx5hg3i9sycw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: khugepaged: skip swap tests when swap is
+ unavailable
+To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7965F10000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784124562-961857
-X-HE-Meta: U2FsdGVkX19SYS1KUPY6AdM+4QS4gdP54dwXADl2UjCUg9rHrez4wYyFH6mSMLQl036i9YyET85fnE6jp6IKo1ByDfXo5JgWW09gM/9+ij0b/wzRAcDwjVs0mLj/c6fjNQlj6UtODo8AY/iQ7kc5kmRBbimqRmEJRqXQhbI5cUM2XazvgWER5bhKsYFK13OWiPUrt8htHVQj+xjRsWBjR/8D5uG65l1c+3xZUYGanFBqx5UNES1GYw1F7C7pFtxdUiGOr2WoOoPpMO3+TZaBEVPvXj0YEdjiI0GPUiImHHvAMQT3zqkenlkuHH+cqE/Ia9pmXJV0ld3FROLKe1Vp+LXFdDTOe/k+UenjCUiBMVMP9bbi72mhznpdR8g2yVIp6iAklb4U9ZkX53+c8xxJrin/3tWFoAQH5elIQetW4ZeTDpTk687FhhNUSa+3x6uPN/ieoIwr/dfMeEnKuyPG8EJ2EUyyFCo766INx6n8Gdv+jqEPCpLh24SiY3PbVO28Wjxy30FlUBsumni8R+UnzHmqluH62iDlMWe55nsemSrjZrnVvrlLSUsRp0oDfJ8dEGV2IRPaufCcP2jd2lHEg7fcTtdW/cgwpFhPECGPQP8EkH1ZR+HK0A+z7WHZ2Q4WgHQuuoilbZo09O0npcJqsSlBUJO1+7yIHfTyxrjmVLxnZCPqVKE3P6h1GF302LmNkZDKNsxb8TQ/imbIpP6kDwlg++XPLbLzvZ7MkxZpy99ZRexZiYC8TiHAfhCRJ8XvCQkU57xhoVw5dl3q044THUewDhWV7saSP+gStslCkbOWAJr+p4M36f6NNa1IFqEiyJeuBVDcMyVGiLcaioOd/gXg2QvsCVEqFYOXCSek3GAY8vFW8MSzlR3wA/7OZVZ7NYX6prqBVDXrySZ/bwzzaMVEUtSFu26d6k3krQML5YaghMiIdNyWERsgWcik28V5WcTC1nUxv8dh0sGLGP0
- UIpCnXEk
- pZ8YWqmK+IZfDT6v1Sv4F6iV0Tw6QgozRzYdYYYqAbYsDCCNsdn1fB0aYQh6vEPUTYf9NNydAkE98uOSTTcJFhA4cbVs0uDbPfTboeUkdbuDwihDgBo4y+WNr9ERKpVrpT2wL4NK3afZQLm3WXrNg/vTIaCKU6KleSOxz0Z1hH3e9Kx3EcUY0YtJ28vud1NMfXcYDaZNE4W1uUUYbpra3DoImcCnI376oQNcq01qv8LrxqEDblGBDlMZBhVhu+R+JdfHaeRaNXbyDHF5giziKX7xp/ebb+Y8DpH1P9I9M1V8e1BShxrqQJwCpkZ60V60FE6Ho9bRaGbKG3xY=
+X-Stat-Signature: ppmr61jsmjkjodxkwabeit3ch8wy9edd
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784124573-874084
+X-HE-Meta: U2FsdGVkX18QOWB/ZLNRhxwIaLrxW/ssRlMktZoJO3rZk1L+hXlA5Kb37nqMJB6k6RjJ/Cz5itXIZTdoT1x8n0Oet6k8bIO3UUuThtBjlwx5FjUiyXT/UFutx5HW2W9YV+cBzeIIVkTV4BaaWnp7msrNfo7GQrq6jIFpDcQzNrlJ4DIBC/Nkp/Tfy5CBWE7bGUkzr85zapTN50NO4p63g1aPgv0PheXQBSZtjTONKrGYyvxG3ZADpmG3y1g5zPo8iLBSWhOwy+ARmL507xuw8Lfnm6qRnsohUPg8O2nMLNfEC1hEpfk15y9qeiwc60BzevAwCD+JvH/Jvcf+qeLu9EDPBdLESl93/sgbZh3zQ0dTUDXlU8Yca8M+TSqoJvfXVQ6wYMVeNJLJuJu4GD4dSbeQZw0ZKV/Gr+ZeVP9SE5eINwXYxjNr2EVe7XsKpk6ptsdHNIe8/W+y0O4KIpHUNGiutVEQRDnO6WdxVTjt6WUo3wVywti7EMV5VAK8B7yr0DOdm1xCfmuk1ITvourm7IwGhvjypCTClAWX/QkgQueAoKsw4mAD7Rq8nnl/RwP475IZj/AH3uxdiWo29eiRKGIoTHjCFN4+fIGhiY1kTzWmwx1USmHz3Tozh7f63I8ykcjkz+bc9SEmK/cX6QFlS/zuIR0TOZS3QDetZO6GZPtlCi2MDVGczwmGMSdUwXTK+MdVvl5ZIXXKNot2lp8tuIoR+dhiuXUuiyCJm6o2fxkXdkjuj3J4QqxLheKj/BNRPZ2VLPUj4WRhtK8yl5LQy8GEQwcBOo9hvvorNzy7Xq5oMsPgt+HLC70xLojKgAyFdouZOAWxk8/ee2J8+W66ZrdKqk6NgPPGmuEWx0+mMJe051uhs2uhtLWxI0oxcqNawtTmDj1yAgUBgCVUWal2yUlGc21RpwtuIzRSVMG94cfl7Ery9hvWZEUAfhaCoJJzX5/OQ9hLFMdAG0tOXb/
+ 6RolUA/X
+ LgGBHW9yz8V4tf4E9tBeTtoshOxTlXUeol/k0w6m+LC81mFN31YVYy8ar4kUTY6kSsxDGeLk06V7gza8F97TnIESAGMZeEPS8LKQ1SrngVRtAbjGE948eFR74OD9kDLY3fFa0ghjXO4nYVuIfSWhEhrhzw86yoY+GO3qyteC09P8wVO75MeRAW9tfMRElqp3lJo2T6Pi4XDtUK+ZL/RAzFte8ZTkgNfMc8TOr9H+Ts52oV1/WQwRBRcH5twrEhTgsdikCR+GfYdUhA7B+hIqxzbQhsGBYrCWp9fHwOQDB2OPqHDlN99GxSvCNbKQm6ZM/cBrSa9eYQ/x3MozKmlPdJg1eJLZP98I9rIhl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,81 +139,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 5, 2026 at 3:35=E2=80=AFPM Boqun Feng <boqun@kernel.org> wrote:
->
-> From: Alice Ryhl <aliceryhl@google.com>
->
-> Now that we have a concept of rcu-safe containers, we may add a
-> load_rcu() method to MapleTree that does not take the spinlock.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On 7/15/26 15:34, Jaeyeon Lee wrote:
+> The collapse_swapin_single_pte and collapse_max_ptes_swap tests use
+> MADV_PAGEOUT to swap out pages before verifying khugepaged collapse
+> behavior. On systems without swap configured, MADV_PAGEOUT succeeds
+> but the pages are not actually swapped out, so check_swap() returns
+> false and the tests report a failure.
+> 
+> These tests cannot run meaningfully without swap, so a missing swap
+> area is an environment limitation rather than a test failure. Detect
+> the absence of swap via /proc/swaps and skip the affected tests
+> instead of failing them.
+> 
+> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
 > ---
->  rust/kernel/maple_tree.rs | 52 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
->
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> index 265d6396a78a..1499191b8935 100644
-> --- a/rust/kernel/maple_tree.rs
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -16,6 +16,10 @@
->      alloc::Flags,
->      error::to_result,
->      prelude::*,
-> +    sync::rcu::{
-> +        self,
-> +        ForeignOwnableRcu, //
-> +    },
->      types::{ForeignOwnable, Opaque},
->  };
->
-> @@ -233,6 +237,54 @@ pub fn erase(&self, index: usize) -> Option<T> {
->          unsafe { T::try_from_foreign(ret) }
->      }
->
-> +    /// Load the value at the given index with rcu.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// Read the value under an rcu read lock. Even if the value is remo=
-ved, it remains accessible
-> +    /// for one rcu grace period.
-> +    ///
-> +    /// ```ignore
-> +    /// use kernel::{
-> +    ///     maple_tree::MapleTree,
-> +    ///     sync::rcu::{self, RcuBox},
-> +    /// };
-> +    ///
-> +    /// let tree =3D KBox::pin_init(MapleTree::<RcuBox<i32>>::new(), GFP=
-_KERNEL)?;
-> +    ///
-> +    /// let ten =3D RcuBox::new(10, GFP_KERNEL)?;
-> +    /// tree.insert(100, ten, GFP_KERNEL)?;
-> +    ///
-> +    /// let rcu_read_lock =3D rcu::Guard::new();
-> +    /// let ten =3D tree.load_rcu(100, &rcu_read_lock);
-> +    /// assert_eq!(ten, Some(&10));
-> +    ///
-> +    /// // Even if the value gets removed, we may continue to access it =
-for one rcu grace period.
-> +    /// tree.erase(100);
-> +    /// assert_eq!(ten, Some(&10));
-> +    /// # Ok::<_, Error>(())
-> +    /// ```
-> +    #[inline]
-> +    pub fn load_rcu<'rcu>(
-> +        &self,
-> +        index: usize,
-> +        _rcu: &'rcu rcu::Guard,
-> +    ) -> Option<T::RcuBorrowed<'rcu>>
-> +    where
-> +        T: ForeignOwnableRcu,
-> +    {
-> +        // SAFETY: `self.tree` contains a valid maple tree.
-> +        let ret =3D unsafe { bindings::mtree_load(self.tree.get(), index=
-) };
+>  tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index 10e8dedcb087..f9b4ebe733ce 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -100,6 +100,22 @@ static void skip(const char *msg)
+>  	exit_status = KSFT_SKIP;
+>  }
+>  
+> +static bool swap_available(void)
+> +{
+> +	char buf[256];
+> +	bool ret;
+> +	FILE *fp = fopen("/proc/swaps", "r");
+> +
+> +	if (!fp)
+> +		return false;
+> +
+> +	fgets(buf, sizeof(buf), fp);
+> +	ret = !!fgets(buf, sizeof(buf), fp);
+> +
+> +	fclose(fp);
+> +	return ret;
+> +}
+> +
 
-I think this is only legal if MT_FLAGS_USE_RCU is set on the tree. :(
+That doesn't mean that swapout will succeed.
 
-Alice
+Take a look at cow.c where we use pagemap_is_swapped() after MADV_PAGEOUT.
+
+-- 
+Cheers,
+
+David
 
