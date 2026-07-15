@@ -4,138 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE694C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 382A5C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:34:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B744A6B00CF; Wed, 15 Jul 2026 09:34:37 -0400 (EDT)
+	id 161E56B00D1; Wed, 15 Jul 2026 09:34:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4B346B00D1; Wed, 15 Jul 2026 09:34:37 -0400 (EDT)
+	id 139D46B00D2; Wed, 15 Jul 2026 09:34:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A153D6B00D0; Wed, 15 Jul 2026 09:34:37 -0400 (EDT)
+	id 0767F6B00D3; Wed, 15 Jul 2026 09:34:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BC656B00CD
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:34:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B80E8014A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:15:01 +0000 (UTC)
-X-FDA: 84991056402.23.2691B50
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C9EEA40009
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:14:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gQNfz/n4";
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CAA486B00D1
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:34:39 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47DD9401B1
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:34:39 +0000 (UTC)
+X-FDA: 84991105878.03.E8EE5D1
+Received: from mail-wm2-f2.google.com (mail-wm2-f2.google.com [74.125.225.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9C30F18000C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:34:37 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jh71tGWj;
+	spf=pass (imf16.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.130 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784121299;
-	b=uSkJSbDaW0/addhDXjD0Le+42iLObVSiET2Cv4/3HV9xAHe60ktkmCh3blSXYa+wA0yu9U
-	ibK9UirHx/jJKTEpxlUJs4BWaFCWvNUbwKx1vXyHU5Mev5dEfmKWlVLhJMtEQmvW6fG/X/
-	n7Hf9pI1A3lW0Ywt+HSeJpV9uBxDePQ=
+	t=1784122477;
+	b=eT7jfs/1q3bHiuAbfeSwrAyEEg9ObGrEQjq4qzQy39i/rLOTzTZVWd+uncOXJZfHIfogks
+	2mxrVke9TJ+sh9e/HAeK9rtFtePTgo+QWvb39vPI3AC0IGmyleqC37oDYF3o2307nEGQHt
+	dFJUhBnDNwf8esrsoUWL+5NJ0KZbH7Q=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gQNfz/n4";
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jh71tGWj;
+	spf=pass (imf16.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.130 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784121299;
+	s=arc-20220608; t=1784122477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vM2dkF/6lSWo/swXz9lDfkksfM0DbUYYsHFUpZl+IKQ=;
-	b=E8ZhV0Oduc3CZkxowhtSVAOjkXoqX9PGUc5IBXRFt69N+3Y+Abu9ZvSyv2bZlG295/P+3K
-	e1kPwopJe/RS2D3iNdx5ZR8KrPxZ5fPf8cFXEJ2Iw6NM8mmEBUaKaq2pzuZPGu37KEB1ly
-	2zrFxD1WxlQlwilhfGCqLh9CxftZ/Aw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5995461382;
-	Wed, 15 Jul 2026 13:14:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230F21F000E9;
-	Wed, 15 Jul 2026 13:14:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784121299;
-	bh=vM2dkF/6lSWo/swXz9lDfkksfM0DbUYYsHFUpZl+IKQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gQNfz/n4GrHbrVnvIgE2OgeJCJJpUZ0ZBqZufkO6fvqW5Se77tNKewsBgZD/gpLKw
-	 JGKciVFxEzfEslsNGysyRVW8RK/F1V/zPxlErEOezScbMjUbt8YpIo3K2A7BZFECdf
-	 8HsJ6IVlKkA3c4aVgoM3uBIQYD/Je3wLfTrnZ0q9hzDP/uDmD5OwL5QRLGRG2vp+p4
-	 ydiBCToxDIHDkoao24Nwh5wQVW+gIH4WSsWLjZ4BZTG0me1TUDGmc0v9NaRtK8it0A
-	 xeTwzvdnny3Bm7oCxnh5tmaXhQrvqNlGk0yeNERqr4guHDUyMzA/agMzf1HPHhz0Yd
-	 gCHZAswKY3DFg==
-Message-ID: <ada7bf29-1bd2-4de0-bf3c-0916f0ce512f@kernel.org>
-Date: Wed, 15 Jul 2026 15:14:53 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=gpdCEuNC6+ipebO3NzplfX4VLPuQi09kjzb5eK7FZmM=;
+	b=OGI547fg9/Fu/NAsU3HW4THs3x/G7SDbba9E36mH/MMV7yN0HM5/KrDpCb0yxsy8lgUXSD
+	L+L+UFVdTMkFeMwIUMqEgJ9UX3JKmL0jrfh1xKnYnowWX25BzhitI2qXr9tPjGoplWY6OH
+	OWu9HMLHSWtuIdir4bHix5j5srAp9oc=
+Received: by mail-wm2-f2.google.com with SMTP id 5b1f17b1804b1-4926d058720so5658495e9.0
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 06:34:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784122476; x=1784727276; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gpdCEuNC6+ipebO3NzplfX4VLPuQi09kjzb5eK7FZmM=;
+        b=Jh71tGWjnVQOcCFUMFxjLHIROmldE6m4hyNVbBY7NaCI3Ckf639lwbauy4v/xnUCLa
+         ar5tIyBL0dXjOWSlVdfi1lDQSbGJBFCPnd0lsnOm83AgkSBNe7/rKbo2fXeUrbf7DsYd
+         Cyb6dnd6TuxkyYKCn/eCQlu77MmLFyY0GJKjo77V9vFrMT+mk65+1LN+pjHMYB+8gWbN
+         WTssAsTJH5DuoIs2HnS7F+K1MyTT7EOq+4fazGe62kiz+/M1MbpCZNbUEpG41GBv4rWl
+         mr0s60dCZwt5LoqAavfbaNCnv+yfmnZWh8JGUibw1wCURJj7J8Mwu7B1+zGmrjx92MaJ
+         aVaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784122476; x=1784727276;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gpdCEuNC6+ipebO3NzplfX4VLPuQi09kjzb5eK7FZmM=;
+        b=rEKhOSlx50xiLfc2WT23j5Edx0j5M1CnAdegxoAbq15of1+oCn55810GzCBjMvmSwn
+         L3cX1E6NhuYJkrwJ0Oxa1SsKRNnG6ucRW4pnByHWaH4wtKE6stjlD9+rXIZZM02eTLNA
+         PylQs+aJ+RIttWEyT27feV/yhuecFSbLNMSbSN4gj9MsDHbUytRRYMdI5qjAO7lQoJQp
+         A8Rkd7aiCAHTf/Os7vLSPCXMtcZ5ltJ5VwjCc8qcXUI6NX7z+Bs9r8Uq1c9pzClAPmvI
+         IwvLK6kByJdj2vpqibTFDg89NV31n1Jo024dMELO4tG+ZTSLrkS8WqmRRd1FcSbPEkkc
+         Vr9w==
+X-Gm-Message-State: AOJu0YzfbyricLX4zrCILgc7FboYbkc7suZxKdLORzuGxjjWQsZTVLJp
+	/ewPtOi4m0lXpztOXS1Q8ul10tGTiMIIoiVtaraunJJuaQijEQh4p7Ca
+X-Gm-Gg: AfdE7cmU7hfNukKAhTwuZVuDMaBWBakQ0/KOwAvfRCd6CGf2hcp6AyrwMejUWD7ooVc
+	W8KDL6eaTwpCdiivpn5vlzdUqKXO3cu2o8uqYLF24hVY8HE60uOBc1ftHaSRipdW1Vw89IFcbfo
+	XTD42dvLy+TECszRGY1damAta5/KY2HhSKl/MyLyb0r/RJDkF1zWCnhMJxvZP5MydhS5I216dVI
+	OqK+4A9/wIAxpp7LHBwU1Y454PskTG5nt23b7ciaqU/4Baj9ANCXwPfW4nSLLSOzTPGsYc3Ot9D
+	+7wWNX8sCpWU+a/qursVH/vI9+P7RVmwuwCVvgZi5W2BHZwk6AtBWoKZ43BTm5McyOsUI6xGF7y
+	5SwqR4HzSpP5ny82ROfizE2r1DK3Zxz53opVPxbsHqM5CwYntlALOZhEXjWdvFykn8qD50i4L4X
+	WoHJmHHR8LqoRpDUgOt+WFxgn0bivY7CcE+62dH/y/g7IOJ0UsJMVO/u04I18nR0QJ9AqnLGWoP
+	BJyZXO96ctANLwZOPLPdrmP9/giKJKFvg==
+X-Received: by 2002:a05:600c:a00f:b0:495:3dd7:ef06 with SMTP id 5b1f17b1804b1-4953dd7f0bcmr26130985e9.12.1784122475929;
+        Wed, 15 Jul 2026 06:34:35 -0700 (PDT)
+Received: from lima-kernel.. (host-123-106.campusbrigittenau.at. [78.104.123.106])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a322c86sm142033015e9.11.2026.07.15.06.34.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 06:34:35 -0700 (PDT)
+From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+Subject: [PATCH] selftests/mm: khugepaged: skip swap tests when swap is unavailable
+Date: Wed, 15 Jul 2026 15:34:17 +0200
+Message-ID: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] mm/page_alloc: rename FPI_TRYLOCK -> FPI_NOLOCK
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Waiman Long <longman@redhat.com>, Ridong Chen <ridong.chen@linux.dev>,
- Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-rt-devel@lists.linux.dev
-References: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
- <20260715-spin-trylock-followup-v3-1-fc4d246f705d@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260715-spin-trylock-followup-v3-1-fc4d246f705d@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C9EEA40009
-X-Stat-Signature: f89rwggdtye8czdrhbuhitnn1qdpnx5w
-X-HE-Tag: 1784121299-230080
-X-HE-Meta: U2FsdGVkX18FRW+8od24RhgWRLWu8UTtqkE/wORZl9kV1GnTWMmKEIkawKsLp7V8kCf2fKGBjuphdgnVif/uUXtA0+WVlNoBgo6zmZBlDWqsB+4Oumk4aO4UIADbouv8yYwMfGclVOkrWAy3CbxhbJUFohL9tE3ilSUgg96IIdk4/FZAwm4ilACV2icuQDnR2i4maZM7Qz0F4zhrSQl87XqO6b54/DIoPZqaSFCmsmR3QVszDHh2pqIx2pCW8POsiz3/6L2ot7msAvMaSBPRy1yWa1HVleR17mKyHJP1TRad6P/yEvi6dchRlmltOIzCV8n9RRnD/O6Zd0bxhLeeR3by7/MBV3GKetPEoc5FZRxR9AElsmQutFZYbVAM+oMq4jOfVfDgENkJ7BA/l9cMuOjR0ekVNylKJZvB3D981RR6sqo90N0wYv1/t9BAG0BkFjciX9aYlf9BGnLV0O0m5Q+7juSlJeAGBjozMg6MQ3S4KV6ImfVnWDx7AO6tkJMhJtzNdYvQ2kUfKPjs+qFecmQGPyRpMT3BQBZ50sFKG1M9F/4gzoaumJEVXTqXtXqoAEHlQ+HFT/4NyQw9ePpYGEZI//SG5uS05p4+jawsdiNsg/EaPGIVjspyH1RhVGvi0hymQ+JcVcE0ELlQVD4UP0coBEAN2Jp41p8zLt35JUSdGJWPX+qE6GaHyr040Av0aHkwNYU4qrapVybahXRUhcF0B6XEb/4gSRQsewh5Zpv9jlmWNNZOKU/w7mr5vGZHB6ku1cNsVGh1doR8xuHQaCCX9s7lcjjsM64xN9nhhJgxh1yJcxZ6YmQi3so7UZRV+TCfI382OVzvpPEqOUfQIXAygOJsp8T36HO19gbWuldN9DGRMiPZpBLsbtwGOOd6KCzVZBEP+6SQksHlm4erLjjT5loxYBSIpwcSfgRcskdonkz8s5iVoabeG4d5xdq/4GwDUPVFmxICLuPgle4
- e/R9/yj4
- NzDr2lHHGZUoEdgQJ/qdsG1KrL04Bd2J1aVcKr/eQw1z3b6aapV074sOxlOSa6EeOO11/F4Xh0KQfk+TBU7hfG5+zwiWgFFSsHKKkVQWFho/NtI8oN0Qo/gEb6x56OG2emrM18G4cVTMAIFqhTKsT7buMqXCJFh2bOIDOJuiUfK+pvKlvafugi1p0Hh1nuXI3hxnVlSJV3e04UPONq44S/tN3AhYCv0Yc8nIWtoPKpAiMLkBQQrw1ChZiM09IHIpIoq829B7NMe5tqs6ZHWvZ9sKh6iymFBp0umz8RHpFkGelhBZfy+PVJ0nZilyOIQWbybqRtRfljoUFtUrGB2Gub9OJuh79FxUCxJUbkC1pw5eHwIfD4dZ5bNhTOSdCP1icLWzP
+X-Rspamd-Queue-Id: 9C30F18000C
+X-Stat-Signature: 7yworcxm8pprpz8feqp3dc971zsjy93i
+X-HE-Tag: 1784122477-460991
+X-HE-Meta: U2FsdGVkX1/f7SEUZUF/A1LJEFZr9bZHTFU6HU8Q+aTMrz9NwIFtr/Hf9SiVsiweDTDapvtQThL0njHl9sWg30mAERFP6lgxJxK2+HXTUbmJ9Jg2B3x5j0erc5aw3h9sT+f3Ju0rD2K3lT2E3rAyT3AEbbVqGcxDl6If5EqFjYZ60iIPCypmmaM3g8+kd90k2HluZJYk4GDOdDux7RozLRE5S5P82bEbfh66WeJbcnlmrq9EeJrj97O6mVNsHdVRbRQG/v0ytb48wCzR5aIUJP6qCFpkvDr5gH+A/5QYG4HjG7mrjZtaMmMn0ZYjlorJbVPHyN46r1REgLiHPDJva4qjiTmdRptfu+st99lTnkaThS54kZOLyoO251yb/lAKuY00aefwZd7HWpdz58MQ75Fk+iSIpCe4R1hCylTdfaEk769QjMd2TOG9MvovQa0szm/jkarZN36FUXDyI1/Ttl/2BdC5+F7srTiIGLRhDHD8/HuZVJKS0yqvl6ZnrUijKuW6lWulH1XStR2pO3mYdtxy+Gq8qIzgBRKf2oFu6BeA5auxUTQYksA9G6l0ZJLw5BMAqChQNkBUNhNnYmiUvThJSDRZPy+5B/te99ODTmdmfjnvvO0Eg2ya/SjvvtmxFedqXpvNDAAscLASoZ1iH1sjKUbS2Q1Cs9Uk75qqRQviY/NDYVGLfTzC+UHRJ9+oEyD1liSiMC4zazI+n1cQrFr0be1HVLI3z6edoN+/VqQBkQ2aRnuy66UGk2AhaMJQSh4N4mS9+WlVmadS1cVMJWU7WzP0l/naSmuz9GvT04hOEtxfkvn86H5+diRscaYNEHFfYODBMA4vBhsLlYDBA9AaMGZMDjOPXyUpjEhILvOIckoR+CAkpMf5zPw/jtlV4z8dJOK1Hds5atmKl1oHekj/Dh4bRkrnvhTVyDWMyWKZZqrNzdGIp6LuEKDVIvGcbAUqZVSMpoRwThM1zXe
+ tZHECyBE
+ F61YblWGaAcY+nN+veIUnLtQHRKMhBMcTHzCmbC92zmpr5cb8ae715Hflz03Vlq2Cu0nnDd7TWtqsLPm4y6tTXE1Dunyyfw/1xkqepNfWnBC+Bea6JYUSKBLx/G/HKLoVQFZB1s/9rsWE4bccPPGSm3uvbvv8Us5BZh0tAZMMOYzWHUCXaC78MzWV2qmHKmEm/rKMqlavYqaehib8qh3H/mPdtEYBUrtJFtz7JwiKZdnA9Ro0zT8QQkxbWVOnjT0PjjwOfs5nLp82nC9ym5dE9TzHEvfaiO/zQwAODr+O+h7RhoWmIwp7nqASTBBX8f/VU3A0DUpWkDvqchRz20vW++sUIqv595OrXb/PzCI8q8KK3//WlKrAOvie5b4Mo1DFqReReUXK1F4WFE6zPmvnHWT8K1aVPvSHeRAr5tygHT/8sEpIDBXD7XUZ81G1K7BeHlItFyB/pxkZFm3K4x2ZYLMhCgjquY5CjPKONsOA/JSgTJw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,108 +118,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 13:03, Brendan Jackman wrote:
-> As discussed in the linked patch, the there is some inconsistency between
-> "trylock" and "nolock" nomenclature, let's align it. Since "nolock" is
-> used in the public API it seems to have more mindshare so do that.
-> 
-> The linked patch did this for the ALLOC_ flag but forgot about FPI_.
-> 
-> Link: https://lore.kernel.org/all/20260703-alloc-trylock-v5-1-c87b714e19d3@google.com/
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+The collapse_swapin_single_pte and collapse_max_ptes_swap tests use
+MADV_PAGEOUT to swap out pages before verifying khugepaged collapse
+behavior. On systems without swap configured, MADV_PAGEOUT succeeds
+but the pages are not actually swapped out, so check_swap() returns
+false and the tests report a failure.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+These tests cannot run meaningfully without swap, so a missing swap
+area is an environment limitation rather than a test failure. Detect
+the absence of swap via /proc/swaps and skip the affected tests
+instead of failing them.
 
-> ---
->  mm/page_alloc.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index af63558391345..c2da85e69a0f8 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -90,7 +90,7 @@ typedef int __bitwise fpi_t;
->  #define FPI_TO_TAIL		((__force fpi_t)BIT(1))
->  
->  /* Free the page without taking locks. Rely on trylock only. */
-> -#define FPI_TRYLOCK		((__force fpi_t)BIT(2))
-> +#define FPI_NOLOCK		((__force fpi_t)BIT(2))
->  
->  /* free_pages_prepare() has already been called for page(s) being freed. */
->  #define FPI_PREPARED		((__force fpi_t)BIT(3))
-> @@ -1419,7 +1419,7 @@ static __always_inline bool __free_pages_prepare(struct page *page,
->  	page_table_check_free(page, order);
->  	pgalloc_tag_sub(page, 1 << order);
->  
-> -	if (!PageHighMem(page) && !(fpi_flags & FPI_TRYLOCK)) {
-> +	if (!PageHighMem(page) && !(fpi_flags & FPI_NOLOCK)) {
->  		debug_check_no_locks_freed(page_address(page),
->  					   PAGE_SIZE << order);
->  		debug_check_no_obj_freed(page_address(page),
-> @@ -1558,7 +1558,7 @@ static void free_one_page(struct zone *zone, struct page *page,
->  	struct llist_head *llhead;
->  	unsigned long flags;
->  
-> -	if (unlikely(fpi_flags & FPI_TRYLOCK)) {
-> +	if (unlikely(fpi_flags & FPI_NOLOCK)) {
->  		if (!spin_trylock_irqsave(&zone->lock, flags)) {
->  			add_page_to_zone_llist(zone, page, order);
->  			return;
-> @@ -1569,7 +1569,7 @@ static void free_one_page(struct zone *zone, struct page *page,
->  
->  	/* The lock succeeded. Process deferred pages. */
->  	llhead = &zone->trylock_free_pages;
-> -	if (unlikely(!llist_empty(llhead) && !(fpi_flags & FPI_TRYLOCK))) {
-> +	if (unlikely(!llist_empty(llhead) && !(fpi_flags & FPI_NOLOCK))) {
->  		struct llist_node *llnode;
->  		struct page *p, *tmp;
->  
-> @@ -2882,7 +2882,7 @@ static bool free_frozen_page_commit(struct zone *zone,
->  	if (pcp->free_count < (batch << CONFIG_PCP_BATCH_SCALE_MAX))
->  		pcp->free_count += (1 << order);
->  
-> -	if (unlikely(fpi_flags & FPI_TRYLOCK)) {
-> +	if (unlikely(fpi_flags & FPI_NOLOCK)) {
->  		/*
->  		 * Do not attempt to take a zone lock. Let pcp->count get
->  		 * over high mark temporarily.
-> @@ -2979,7 +2979,7 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
->  		migratetype = MIGRATE_MOVABLE;
->  	}
->  
-> -	if (unlikely((fpi_flags & FPI_TRYLOCK) && IS_ENABLED(CONFIG_PREEMPT_RT)
-> +	if (unlikely((fpi_flags & FPI_NOLOCK) && IS_ENABLED(CONFIG_PREEMPT_RT)
->  		     && (in_nmi() || in_hardirq()))) {
->  		add_page_to_zone_llist(zone, page, order);
->  		return;
-> @@ -3002,7 +3002,7 @@ void free_frozen_pages(struct page *page, unsigned int order)
->  
->  void free_frozen_pages_nolock(struct page *page, unsigned int order)
->  {
-> -	__free_frozen_pages(page, order, FPI_TRYLOCK);
-> +	__free_frozen_pages(page, order, FPI_NOLOCK);
->  }
->  
->  /*
-> @@ -5399,7 +5399,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
->  	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT) && page &&
->  	    unlikely(__memcg_kmem_charge_page(page, gfp, order) != 0)) {
->  		__free_frozen_pages(page, order,
-> -				    alloc_flags & ALLOC_NOLOCK ? FPI_TRYLOCK : 0);
-> +				    alloc_flags & ALLOC_NOLOCK ? FPI_NOLOCK : 0);
->  		page = NULL;
->  	}
->  
-> @@ -5522,7 +5522,7 @@ EXPORT_SYMBOL(__free_pages);
->   */
->  void free_pages_nolock(struct page *page, unsigned int order)
->  {
-> -	___free_pages(page, order, FPI_TRYLOCK);
-> +	___free_pages(page, order, FPI_NOLOCK);
->  }
->  
->  /**
-> 
+Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+---
+ tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 10e8dedcb087..f9b4ebe733ce 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -100,6 +100,22 @@ static void skip(const char *msg)
+ 	exit_status = KSFT_SKIP;
+ }
+ 
++static bool swap_available(void)
++{
++	char buf[256];
++	bool ret;
++	FILE *fp = fopen("/proc/swaps", "r");
++
++	if (!fp)
++		return false;
++
++	fgets(buf, sizeof(buf), fp);
++	ret = !!fgets(buf, sizeof(buf), fp);
++
++	fclose(fp);
++	return ret;
++}
++
+ static void save_settings(void)
+ {
+ 	ksft_print_msg("Save THP and khugepaged settings...");
+@@ -742,6 +758,9 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
+ 		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
+ 	if (check_swap(p, page_size)) {
+ 		success("OK");
++	} else if (!swap_available()) {
++		skip("Swap is not available");
++		goto out;
+ 	} else {
+ 		fail("Fail");
+ 		goto out;
+@@ -768,6 +787,9 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
+ 		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
+ 	if (check_swap(p, (max_ptes_swap + 1) * page_size)) {
+ 		success("OK");
++	} else if (!swap_available()) {
++		skip("Swap is not available");
++		goto out;
+ 	} else {
+ 		fail("Fail");
+ 		goto out;
+@@ -785,6 +807,9 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
+ 			ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
+ 		if (check_swap(p, max_ptes_swap * page_size)) {
+ 			success("OK");
++		} else if (!swap_available()) {
++			skip("Swap is not available");
++			goto out;
+ 		} else {
+ 			fail("Fail");
+ 			goto out;
+
+base-commit: 7081238c5ca29839924f13bf5daa80763bc589f2
+-- 
+2.43.0
 
 
