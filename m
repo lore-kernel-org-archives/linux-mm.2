@@ -4,127 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F00AFC4450E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F23C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:45:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DA366B00B1; Wed, 15 Jul 2026 10:42:55 -0400 (EDT)
+	id 670B26B0005; Wed, 15 Jul 2026 10:45:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B29D6B00B2; Wed, 15 Jul 2026 10:42:55 -0400 (EDT)
+	id 620896B0088; Wed, 15 Jul 2026 10:45:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753426B00B3; Wed, 15 Jul 2026 10:42:55 -0400 (EDT)
+	id 5378D6B008A; Wed, 15 Jul 2026 10:45:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48CFB6B00B1
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:42:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C584AA00D5
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:54 +0000 (UTC)
-X-FDA: 84991277868.04.49A156A
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EC36E14000E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eknkcREH;
-	spf=pass (imf23.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 210BA6B0005
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:45:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1DFC801C6
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:45:42 +0000 (UTC)
+X-FDA: 84991284924.22.2E6EBBF
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B366C10000B
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:45:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=efPFpHYQ;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784126741;
+	b=2I2w+yACJ5EZIs9BKEuxkBioLdwfj423ualH9BJQb0nSIrs2jgJbTY7y6Qhka5b9gRUTgU
+	25KoxUJz0CZFX5SAl2vOqZK+HQDOcbMxjUdZPrL1Eser6+QHW/lWz5wl+L3mR4H9A25USL
+	d/UJSNOHCQ/XotgTRFql4dkprbgEW4U=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=efPFpHYQ;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784126572;
+	s=arc-20220608; t=1784126741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YFdvFy4JZmcJMIT1d11E7kO8Wgq6KQpSjvMclrKV/Fk=;
-	b=4HbcYP6rBhBTwQ0dodKa4J5+Gs855kN/pFFkgoLtB0/4IrFGcPnk0UzQczOFceflgDpoLu
-	AdeIkDFfxl1+0aHtyBWNJqjwkLpxhq2Z13DodFyi+AMKkOcH9fbwMMFBtqaEu8rd4FLNbt
-	qptgsIQPjtX/jvbBu8JOh7dO7Il8IFs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eknkcREH;
-	spf=pass (imf23.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784126572;
-	b=8VBFQn2KsnYdDF/4/7BTOVQzk7jQI8GHXlRDjgQfCCNzfRwjkvZIfUDirTeIxRF5Q5GgTo
-	IzZ1XbL/VHlyUVdrQIjOM2UdEG4c4VHeH4iTXS+Eznh2pfq+voIZHDn3pyBPgw5SCVnD0V
-	ocKE11CWvgSpkgH4SeFsoPaBBggcqxM=
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38759bcd877so4834951a91.2
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 07:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784126572; x=1784731372; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YFdvFy4JZmcJMIT1d11E7kO8Wgq6KQpSjvMclrKV/Fk=;
-        b=eknkcREHaAbjd5s8cVzFX25TL4a5GUq2SLKtiSMhLjAeVdAEaGAlaXudBg+jLlBZxI
-         6+LWTk+DvDpqNERkg4SXheJOlpbYe1SaC4SGu//GZpDpBcbDacHM0gHEP/oCvFn/oRyK
-         uMMjghx1emUnxu8IOLXlhhtlgSfX6s3JBO1xjLxctqcYjN6XKr+Wk7yvnjz7HbqwJRVC
-         gTyjhtwOGTJx8rtOLczsJFX8BtE22rg5oHWc5tR4TL8EHm2zZmpypxKeV00aVT3b8HNo
-         TSoLZfdZN2GjbsszsN0fwBhUZR8JcEASxIoGJqnhI/usikiJmZwYB535OPMTYivLO3uE
-         in/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784126572; x=1784731372;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=YFdvFy4JZmcJMIT1d11E7kO8Wgq6KQpSjvMclrKV/Fk=;
-        b=fpmVX/DtQhV/w8o1b6cgWLqamm/fFw3wORsaXlNEBGZ6Trt/KgA6e9JwtbiIQSpW43
-         d3SqX8PT341EhhgePLls4fpNoOoTKc1d7FYJhp5nKkdJQOzZIxkJaquHDCjb5EBUs5lR
-         kX4hCarqGz4/6pUmGEy7ZhIYo4mrhYiFZxxVTKBK3OsZVD+PROT8ryDB0uyDRiTD/Et3
-         3cV5tLUzHkIcVrJ3o7MLmLSUBjaLJ/UpPuMlHK9PFfrX//YRfbmySDwryqoxMkr6lVlG
-         oPG3Q3xjHo7RAFfv84R3bk2vrb5+bkLbKCdUlKdtN9Y9CCW1omM+qZ96+N5HLQ5vEiWB
-         tBiQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoLj9p1cMj9ecpJxmFSI83xR/IV+120sPHSkKuugOgMlEuzILF/mjqCPEt0bot32xz9sTdegIii+w==@kvack.org
-X-Gm-Message-State: AOJu0YzmbXLVDv6WgdTuI8gPIHUP4qZIcta95qxO7/3KWb62cffz9RYh
-	PNegRzmZmruQGuLStscTdA4amxELmTld8XOrfJoSVFFOo8G/TQRk8U0G
-X-Gm-Gg: AfdE7ckeBia9EDRMjmoaRGe9q+Aw36DT3ivNZnDL3w1FpaiNgX+ePWOTUTgMEEvteZ0
-	JT/5JnUNEdibXXmvxOsO5yyh9pptC6HAryn/qhDVVUIAszpqHnAszOwP9fgsyX6fo50vw+VHq7Y
-	3UdLlslT7uLJo8lOQ+wqVZD4bONdcYdhAzOdrs+LVAe4/ZgOfCdMgq8OZFaRuitag+8D+k+4Xvj
-	clAmxsBjTlJDbkn8NpLG01E7Wt0jPQIUDIwKDHPz9pa03IDUjfThdPeacSr8D68vK4TqTL5Gi2u
-	OP7tNMfcyBj0jEp6iXISbQvugWH3TVwOmrV9eCztQVH9F9kK0KZfhmfmzpLUraKNQjPZ9u1JqGx
-	RLHcvEcwZwqm9wi24DR29B/rUe8ZUtMZM5IL+CdluCQs2VpnS1ieNH4P/KjvlelyUC4JN7yjegC
-	iqrO6Ik0jSFOpLajY6mfVOK9jT6R9/PDDpe2G7lppHuXRaRBPxSg3szN8=
-X-Received: by 2002:a17:90b:2890:b0:37d:f983:7b5 with SMTP id 98e67ed59e1d1-38e29ff97b1mr2563808a91.9.1784126571549;
-        Wed, 15 Jul 2026 07:42:51 -0700 (PDT)
-Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e172b6da2sm3320825a91.4.2026.07.15.07.42.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 07:42:51 -0700 (PDT)
-Date: Wed, 15 Jul 2026 07:42:48 -0700
-From: Stanislav Kinsburskii <skinsburskii@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
-	corbet@lwn.net, dakr@kernel.org, jgg@ziepe.ca, kees@kernel.org,
-	leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com,
-	ljs@kernel.org, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
-	mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
-	nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
-	rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
-	skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
-	vbabka@kernel.org, dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] mm/hmm: Clarify notifier retry state and scope
- HMM timeouts
-Message-ID: <alecaJ1FUso39D9k@skinsburskii>
-References: <178406760622.1106335.2379450382728057793.stgit@skinsburskii>
- <4300f09b-8f93-4605-b072-7c09a82cb16e@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4300f09b-8f93-4605-b072-7c09a82cb16e@kernel.org>
-X-Stat-Signature: mhwpei7igwgtfbsgq34mkketk3ox5o5i
-X-Rspamd-Queue-Id: EC36E14000E
+	bh=keIhINC+VA871Ln1KapohfRN71O/agbmMSX+dc5P8RE=;
+	b=suYGAUNYUAUXADIW46ULg/gdUG8IXI93KaaVIcIo5eBjy+/rVnDogrma9qffYyUcWcRnus
+	qEhok34gBo3GGadUUnZep22swiU0/9K7bQzSD9eGBSmrtRB9VLFsLWzstvEYffaDbOjNSl
+	E+DI0PzEKKF+W/BO3ysacMhX2KiTbFw=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784126738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=keIhINC+VA871Ln1KapohfRN71O/agbmMSX+dc5P8RE=;
+	b=efPFpHYQe/nSz9XdIyoENtn8+CdURuOUWYnl95+Lftg7pdhFI2N8/wyWn4+j9MBc0PBS3y
+	e489GVrwECSeqDhkTe2o8MY97hrD/z5/ft5LWbz3tTnMEJDeTbbSmMpiOnlQpyPMKHFAkr
+	y6DSNcll+WXtdS9cptLkCNGSTlozjqY=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH 06/17] mm/sparse-vmemmap: support section-based vmemmap
+ accounting
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <178409212283.638342.6610895811767474932.b4-review@b4>
+Date: Wed, 15 Jul 2026 22:44:51 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ linux-mm@kvack.org,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FB36B71D-0972-4EF4-9887-C765CAC33E12@linux.dev>
+References: <20260702093821.2740183-1-songmuchun@bytedance.com>
+ <20260702093821.2740183-7-songmuchun@bytedance.com>
+ <178409212283.638342.6610895811767474932.b4-review@b4>
+To: Mike Rapoport <rppt@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784126572-898805
-X-HE-Meta: U2FsdGVkX19CcUilHK2hHh9syfZDVC37wi078q4sgstZQCjTAmXrD2PD61DlJzbTmKFdez22MCDp89LcXvAc+nZ6TFoB+C6DX4gwKUaixjV8np6tWBCcIhNSmBS7rXJr7LwlbIou2qf/gSonStTY1otKia4YUYvi4n8WYdH7ZyU4kIJ19rgj7tc0StU/QuPMCxGOa0rxE4bZnLiwVDHZx/nabM5/4VigEMaPl+RpG26BET4wZddWuhGcBT0Fp8bj0fONx2qvXVT7qIbpUxSX3IcLIOFb8SJJZj/KG0evJh9MkfGJ4hFwvc1xkhqGYzqUTPnOmV21ttiSOz4fuFY0pxIz2G3dT9WF7rrZHSn+TzYQGgTcTG3fJoNoLKubMMkqKp1OPSeEyRhk/mAtYeBtp5geKO/Beihb0zBGvGvYUvmInZYqbdMn1McOG176UVlXaKDdRvLvNmC36lYf83sZ5E+rB/gKFcG9EiAymC6SvpvC+0NZK/8TeReufcW5rqDQ3T0G5E58VgyK0QkerhV2+yqhJYeArB2v2gkR5Wfj/K2DOgMvXZIriJk2I/89uc4itNP+VViV5suKqLH5xF1zgkDqlgzTRMXJCMgA1JUTk2NtuzOAtVclVGZXOn3IwDAdBAGmwQJGKRMD0iM23aqyIUJrp1M4BIprTGUee5UWlgBJ3/gaK52WuL6zaaHAjTScJ2lhnbeGmNGoA6LzdsAfZPXbUBjbbCF1y2ACblRHIqVa2oZfhyCXM+6zuBzWV/AjIpY1llPnTBRWkKm1xiAWzXOa2Bl9Cro9yV8StGuYFUb7R+UloLhvVqjelAjCdyzLJcNB0lM9AtojDObRk4+8frbskw70RxLG5QZbT2GC/lcWgCkGmoBX0zPucwdTu4fDMymqRxIQ6hXKof9d7zRiR6SLFG9Ba8u91kwWUeCkexwUESJbfSRJv58x05g9Ub1I76HjC2mUnEvWhjql6+n
- vIEf9Ji6
- AUpdMEAIV37+ju40HzT9XF7hAL9j0xxaja7oORoE9R50bzLx/fPVNWUHaRlsEDvkK7qMTmV6sMhmEFt8jJBp5rRr7L/feT7+sQqJUen5TfRXJvM1nWU7MPc570W+IDBmwy++uQiyeAWSjg/tHGfTeRPWlEkOdEtWQjVnhNw5IxQ6tX8dEnrv5lZRD2tpxvwSGICj1DA/qZhgoPUMxDEFPt8Ls4svse0xxS3s0SgvzO8BPkRzx/q34ioI+8al6ZIQVfm/FUP2b8bWfoL2Z0k3IusAl0xqsEiySVAEojGOsRBBQKvbDXIO5RJaZGe0wlfyWq2CS/7rAC55FLrIHKqPBWUwTYcUzIJpNKfONZVdcEANbBC6gllRuxdN1Xf6bNg3nwP0RgtgiZjcLPl3mHCm22ZWJ8S9IuwMf8oOGwHnxoYeNeWQEGp+XfzEUL+MTews2wKD+K7/HC/MRqLFf/f2SZqmArLUX8dGjpC0j1jFs5jrztZUHg7Ft4ezCa6GvVcVsdG1c6cix+IRGMx/D9fPvBjOI4+gYaqtaLTdPwDwZiOiYj08H21XXFz9hwgAtaN8JNfJa
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B366C10000B
+X-Stat-Signature: eht3wazn3tznn5jopx7xhfhog9i83pgc
+X-HE-Tag: 1784126740-497625
+X-HE-Meta: U2FsdGVkX18dae63j0sWtbLXmvcr9Gtu9H5WMu8xC5BQFpuYu6WdsA3kZO1GPHw6KpKPHDaHKW/N2of5nxIhjLZwNPM+A8TQkJgP+UtLvJdS6Xfbq0Dfrnna7WEPL28xuMOhseQhEdYKVu8nwG97Q4qtbW6PWv1PLVToEN6X8pVi38GV66qqtJ62OfhP9Y74ZGQKChvrnPmb+Rf49W82zKLVKbGTJyqBab1U9gQ4lmGG+S1sirWsqL7cH+GSSEIJ9wQQ2SeFPSCUWkuCBi6ks4LJFSxIkFufZ1VbAWtG7S7M7eA45rxnlQepWVwPWCc0V9jUnOAFtpzahYHb/+f8L69uoRKLH928+XbTgo8zV+RAdgPFOxem6KQDJOIA7CRasNC5JJmuOMR7iJP5ecy8dKTc8dfVI/8Xgp2Eral794gabjuZXmlTIhLat2KBbm+DaFx3/kZFcQwCmbsD8sDkFtTEKIIp3olMqFWajG7wackUkj3VmDMas/V55lMFPD5veBhAkvgfvA13aC/0E5/8l8pdjdPWWX9d0V6hMABk+4FoeRkkLzkt+vZlARqVPzNCw658lOCbYGpVZ86Fpwh65QYCGKFv6A8aoatAdO1WhUtBfaa5ocTD1+fCsTFpZZh/LjKym6e/aJ5+e3i83XcoS0M1TPHhFxhvAxYfEfviNUPW+K1W8uCsV4c+srm7nPVvMR7M0QIkaCdCtSkxFNXckh9wF7cLxpoUwxqNc5K70/b8KgR4cwLFs7CptwwdlHMHx27Voj9O74vi5E6YoseTmsqq61CsSY6nG7Ayxhov8yYFlCwI7ORDL3pxRd461IsjzJWia335NnzEQiPp6BeZBrfMyLZU9HHg7BKRPdz1xgGM1X83n38iKM9vnxgG7evpWBYTsV5Oj2MtKHjkvtBaerT46T7GeNYwayFFX059hr+AiHUKeVqdxCF4ztJdTCNAmKXq4oRYoxXd2SjrgF9
+ KDhcdy5z
+ p9R4JUjWYsk9oGuZggJFiZZiq2WtH1dL0hEWajf4zKE8St8jrD7r6tKy9muWA5YFTAkPjEwMsiyJnKFn6dsXkXgcjkE+v4xWCzkEJXRYR9CU97YYl9Qpg+EwHJWmDYAzPKWWK3aQX31GDppQ/7S2j71Es5sBTZ3HCI7dK2v3zlaBCL3YP3k4soVDcPLwOh2bHjTPKRLR2XDiaFua3goMJPVpoO2oHHfMjsfdZhglvIbFFbYxeXa+NgRtta5slhUGnE2/i8mo+hELeV9ir2PXUqMiYcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,66 +99,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 02:41:43PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/15/26 00:21, Stanislav Kinsburskii wrote:
-> > This small fixup series applies on top of:
-> > 
-> >   [PATCH v8 0/8] mm/hmm: Add mmap lock-drop support for userfaultfd-backed mappings
-> > 
-> > The first patch updates the HMM documentation example to make the
-> > mmu_interval_read_retry() state explicit: callers should use the notifier and
-> > notifier_seq stored in the same hmm_range that was passed to
-> > hmm_range_fault_unlocked_timeout().
-> > 
-> > The remaining patches adjust nouveau, amdxdna, and drm_gpusvm users so the
-> > timeout passed to hmm_range_fault_unlocked_timeout() is treated as a relative
-> > HMM retry budget. These callers no longer keep an absolute deadline around
-> > their outer driver retry loops or pass a computed remaining time into HMM.
-> > 
-> > This keeps the timeout scoped to HMM's internal mmu-notifier retry handling. If
-> > HMM succeeds and the driver later observes an invalidation through
-> > mmu_interval_read_retry(), the driver retries the operation with a fresh HMM
-> > retry budget.
-> > 
-> > Changes in v2:
-> >   - Kept the nouveau outer absolute timeout around the
-> >     mmu_interval_read_retry() loop. hmm_range_fault_unlocked_timeout() only
-> >     bounds HMM’s internal retries, while nouveau faults are handled from a GPU
-> >     fault worker, so userspace fatal signals cannot break an endless stream of
-> >     invalidations there.
-> >   - Updated nouveau to use time_after_eq() before calling HMM, so the remaining
-> >     timeout passed to hmm_range_fault_unlocked_timeout() is always positive and
-> >     never 0, which would mean retry indefinitely.
-> >   - Updated the nouveau fixup commit message to explain the worker-thread
-> >     timeout issue and the time_after_eq() boundary behavior.
-> >   - Fixed the amdxdna fixup commit message. It now describes
-> >     aie2_populate_range() correctly instead of carrying stale nouveau prose,
-> >     and notes that command submission still keeps its broader timeout while HMM
-> >     gets a fresh relative retry budget.
-> > 
-> > 
-> > ---
-> > 
-> > Stanislav Kinsburskii (4):
-> >       fixup! mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap lock-drop support
-> >       fixup! drm/nouveau: use hmm_range_fault_unlocked_timeout() for SVM faults
-> >       fixup! accel/amdxdna: use hmm_range_fault_unlocked_timeout() for range population
-> >       fixup! drm/gpusvm: use hmm_range_fault_unlocked_timeout() for range faults
-> 
-> Why a fixup series instead of properly resending the full thing?
-> 
 
-The goal was to get a Sashiko review, and v8 has already been applied to
-both `mm-new` and `linux-next`.
 
-You can find more details here:
+> On Jul 15, 2026, at 13:08, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+>> section_nr_vmemmap_pages() is used to account the vmemmap pages =
+consumed by a
+>> memory section, but it currently only understands the ordinary case =
+and the
+>> pgmap-provided optimization case. That is not enough for =
+section-based vmemmap
+>> optimization, where the compound page order is carried by the memory =
+section
+>> itself and tail vmemmap pages may be shared.
+>>=20
+>> Make the helper report the actual vmemmap footprint of a section, so =
+it can be
+>> used as the common accounting path for both ordinary and optimized =
+sections.
+>>=20
+>> Teach section_nr_vmemmap_pages() to use the section order when there =
+is no
+>> pgmap, and to account only the vmemmap pages that are actually needed =
+for an
+>> optimizable section. This keeps the accounting consistent with =
+section-based
+>> vmemmap optimization.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>=20
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index 6fa6e7f0abf9..41a1ebbe5e85 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -2403,6 +2403,14 @@ static inline unsigned int section_order(const =
+struct mem_section *section)
+>> }
+>> #endif
+>>=20
+>> +static inline bool section_vmemmap_optimizable(const struct =
+mem_section *section)
+>> +{
+>> + 	if (!is_power_of_2(sizeof(struct page)))
+>> + 		return false;
+>> +
+>> + 	return section_order(section) >=3D OPTIMIZABLE_FOLIO_MIN_ORDER;
+>=20
+> Like with page_vmemmap_optimizable() I think it's not obvious that
+> section_order() is enough to gate vmemmap optimization.
 
-  https://sashiko.dev/#/message/alaWmUEeIBeSkmO0%40skinsburskii
+page_vmemmap_optimizable() checks the optimizability of an individual =
+page.
+section_vmemmap_optimizable() checks whether the optimization can be =
+applied
+to a section. Some people may think that section_vmemmap_optimizable() =
+checks
+the optimizability of all pages within an entire section. You are =
+referring
+to that ambiguity, right?
 
-Thanks, Stanislav
+What do you think about renaming it to =
+section_vmemmap_optimization_eligible()?
+Would that clear up the ambiguity? Or should we add a comment to
+section_vmemmap_optimizableto explain its purpose?
 
-> -- 
-> Cheers,
-> 
-> David
+>=20
+>> +}
+>> +
+>> /*
+>>  * Fallback case for when the architecture provides its own =
+pfn_valid() but
+>>  * not a corresponding for_each_valid_pfn().
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 77154e9da08c..99f59394feab 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -645,24 +645,29 @@ void offline_mem_sections(unsigned long =
+start_pfn, unsigned long end_pfn)
+>> static int __meminit section_nr_vmemmap_pages(unsigned long pfn, =
+unsigned long nr_pages,
+>> struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> {
+>> - 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
+>> + 	const struct mem_section *ms =3D __pfn_to_section(pfn);
+>> + 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : =
+section_order(ms);
+>> 	const unsigned long pages_per_compound =3D 1UL << order;
+>> + 	unsigned int vmemmap_pages =3D OPTIMIZED_FOLIO_VMEMMAP_PAGES;
+>>=20
+>> 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, =
+PAGES_PER_SUBSECTION));
+>> 	VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
+>>=20
+>> - 	if (!vmemmap_can_optimize(altmap, pgmap))
+>> + 	if (vmemmap_can_optimize(altmap, pgmap))
+>> + 		vmemmap_pages =3D VMEMMAP_RESERVE_NR;
+>=20
+> I'd put it below the next if ...
+
+Make sense. Will do.
+
+Thanks for your review.
+
+Muchun
+
+>=20
+>> +
+>> + 	if (!vmemmap_can_optimize(altmap, pgmap) && =
+!section_vmemmap_optimizable(ms))
+>> 		return DIV_ROUND_UP(nr_pages * sizeof(struct page), =
+PAGE_SIZE);
+>=20
+> ... and make it
+>=20
+> vmmemap_pages =3D vmemmap_can_optimize() ? VMEMMAP_RESERVE_NR : 1;
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+>=20
+
 
