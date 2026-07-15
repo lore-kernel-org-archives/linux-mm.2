@@ -4,96 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F1F9C44507
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 01:18:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BA4C44507
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 01:19:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F2046B0092; Tue, 14 Jul 2026 21:18:35 -0400 (EDT)
+	id CE7556B0095; Tue, 14 Jul 2026 21:19:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A20A6B0093; Tue, 14 Jul 2026 21:18:35 -0400 (EDT)
+	id C9E1B6B0096; Tue, 14 Jul 2026 21:19:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 591446B0095; Tue, 14 Jul 2026 21:18:35 -0400 (EDT)
+	id B3B416B0098; Tue, 14 Jul 2026 21:19:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 287B56B0092
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:18:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BBFC0A056E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:18:34 +0000 (UTC)
-X-FDA: 84989250948.27.481A1A6
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7E21A1C0006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:18:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	spf=pass (imf20.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784078312;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8886E6B0095
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:19:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06EFF12058D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:19:38 +0000 (UTC)
+X-FDA: 84989253636.07.7BBAB65
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013059.outbound.protection.outlook.com [40.93.196.59])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 21369140007
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:19:34 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lfoDNpr9;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784078375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OkMKVk4P0PbcXWc3yKxkzG+LWPnUfDIOgq8qFX2TSSg=;
-	b=hKQxxufJj4adLj0U6MuVydmsSTycFuI6sV7y09C2hIVNlS6Xph/WqpDaNCHUqjZLeB7Oti
-	UV+gspOSqd72XMOLlazvmfNg7GRwwio4fkdvnD/hqe91VKZnaYlU/E5nxEhxYk6F9DKmOH
-	Pka595fwVFTg4+0Pa+OQxA71I6rna0A=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784078312;
-	b=J72p0l7jUj9W1MOCG/49kSq7NxKo3Xd8fUnTmFuqmrkoI/3eNSwVpeEwk1kPr3TT/V92pb
-	gnoFq4zUGWKuzikFfrkmGAh/UQClJCR+M9EpBFnceiFP4BH86JGQoEs6yOWdOxVAmC/nq4
-	TtYnLHOJS8GxyQbOiLWIs/QoPMoGGGs=
-X-UUID: 1376776e7feb11f1aa26b74ffac11d73-20260715
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:1688ebe3-db3a-448c-8430-08ac806101eb,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:1688ebe3-db3a-448c-8430-08ac806101eb,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:ac62efcc4b2e0075817572b3d91bb13b,BulkI
-	D:260714220020ZHYS69O7,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:0,File:nil
-	,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,D
-	KP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 1376776e7feb11f1aa26b74ffac11d73-20260715
-X-User: wangxuewen@kylinos.cn
-Received: from [192.168.109.138] [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 2114387964; Wed, 15 Jul 2026 09:18:24 +0800
-Message-ID: <f1ef3691-f903-4d14-9805-c074a5980007@kylinos.cn>
-Date: Wed, 15 Jul 2026 09:18:21 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/kasan: fix swapped read/write lock usage in stack
- ring
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com,
- vincenzo.frascino@arm.com, akpm@linux-foundation.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260714081408.1596052-1-wangxuewen@kylinos.cn>
- <CA+fCnZcyZZAwhVpVe+PQfjNiS5XaZE8UGDocxnxYPxpX48+mxA@mail.gmail.com>
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-In-Reply-To: <CA+fCnZcyZZAwhVpVe+PQfjNiS5XaZE8UGDocxnxYPxpX48+mxA@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=r0ejwsFMgRrgS/pO6xUgyYgGcplcbvABiuGH3NizbAc=;
+	b=7KeIljM36tG1NGHk1sOTB2fNLlDkIo90xQfy0b/oVXhvyrrPt/T3BjK5DTJPOBcs0D2i0e
+	i3OivDmNwfy1dEAsjppB4Y4C5juuV4mwDnALcXAT+2nA6eHwJSn/Icqn3d3kahEyggBTX6
+	7QkBPW1P2QuR4e23c88829jf/twSImw=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lfoDNpr9;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784078375;
+	b=4DQSE/BmCoGD7uv+rRNAy+vCPFqPRPH9W60MDhz332Q/YbdydgCcmtNbJT+rDrsDBFczov
+	/VqKptnOMSvkhvEwpknrSVTpjMoEP4G+gVYrNLMmmsB30tWyw5gsI5NEajKOsfXF+eF1xE
+	Q7dftbAv3sLf0+2EIiBRmtKxeJFeumw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J2si6JJ7BEMCcgFmWmwjZ8MQ9yChtnwYfXzpyGmpNAHdM07zhsKt4D4xBR42u6Z0XcM3dkahclG5gDS8qr94mb2/db3jFZQY3lCTPMeR9dArl4YxfNUe6U9FUbH/VpKPN9kkZOmS/UvMrOg6jtm1+vkNv3l97Ihh4Fq32CzdteWZeIaXx38R9Oftx0GTlIzT56jFfP6s3GK6a7pT2l5/LAK+CjLZixfjlu7lP52dI8gT4hrR/7cWWJ1/Z27S3Kk4CKmO7uQ2dH748qCpzKDU3eSTwTtj0uFzdw9YcUkJize9naYsYPWVtjIe7gg73JplHV7uSEetBnlDVRMJh8QuGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r0ejwsFMgRrgS/pO6xUgyYgGcplcbvABiuGH3NizbAc=;
+ b=D85a1gihoal8+ex6GGgZ6HHUQTwzVj7Yog5OZ3FXITg8GeDKhygFkzhtU7a6PXm2QDSkxf5NXVLlu0l9AUZmcg6T2K+p/ViCsibPGk0sR/75ThUJSh4IYUHlTcKG4CrXGZKwFJctiPRF8dU9dU787u+r75knTPeiTuDoR6uRblwoLgSib4lwmZYRMNb7cU0N3xX/9pRAo6X94ym94p7gXxycwidAxQ0Ty1DcTOu1v/NSksZuE7KLXILwBY/A9KJ28psZASFY+7optpDsXbiPeQR+Sl0ee3/xSLoCYtjCXrXYXTxsdOaZcIh7utdwRwWpKLTB4EjMr3RMGG09ZU3r7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r0ejwsFMgRrgS/pO6xUgyYgGcplcbvABiuGH3NizbAc=;
+ b=lfoDNpr9W6JTMDILLQEmjLw8+/EXCwvLP7Z8M4Bi466wyYqff6ZADyKseaUL70yML7/h0Q1GCmsPkSRhPvjzljg6vaR3lu5gZMtdBY9OUW4qsTQlCVby+CUG4I7YMspQweAMOqJDvXD9/lZEMX3R6SQ3JAwviUAJ+KdZgENo0f45dOa6YsYRn5EQuKDXt5qZUqZvII7MrLwtZSukq9f5svunyotSxcVKp5VKUlMdYmrLZduD8fW6w7MpP5rdP2ud7puzhGicENimGtZ42JXFkLIvj+qQWHyHmECPp89fTKPppQXv/dg9/5oWmvGDqmh3aA16PRxbzrIw6Fq1AaL48w==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by BN7PPF5D27497F1.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6d1) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.23; Wed, 15 Jul
+ 2026 01:19:32 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0223.008; Wed, 15 Jul 2026
+ 01:19:31 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 14 Jul 2026 21:19:30 -0400
+Message-Id: <DJYR00V65DBO.EAAIW26NL9ID@nvidia.com>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH v2 3/4] mm/page_alloc: fixup alloc_pages_nolock_noprof()
+ comment
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <cgroups@vger.kernel.org>, <sashiko-bot@kernel.org>
+To: "Brendan Jackman" <jackmanb@google.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Sebastian Andrzej Siewior"
+ <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
+ Rostedt" <rostedt@goodmis.org>, "Waiman Long" <longman@redhat.com>, "Ridong
+ Chen" <ridong.chen@linux.dev>, "Tejun Heo" <tj@kernel.org>,
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+X-Mailer: aerc 0.21.0
+References: <20260714-spin-trylock-followup-v2-0-3c20ed032b14@google.com>
+ <20260714-spin-trylock-followup-v2-3-3c20ed032b14@google.com>
+In-Reply-To: <20260714-spin-trylock-followup-v2-3-3c20ed032b14@google.com>
+X-ClientProxiedBy: MN0P221CA0028.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:52a::16) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|BN7PPF5D27497F1:EE_
+X-MS-Office365-Filtering-Correlation-Id: db3dcb12-d794-4bc3-b75a-08dee20f1f8b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|56012099006|11063799006|4143699003|22082099003|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	FyClaYTsuHdkVqvJxc4EKjinONQ3TNT/QhdVk08DL3Cf00472bnojhGN4M8cI4az+Adm+iuOeOwh0gfaA5TlejP9EIPOvSpXmi/Mw9ns08Xfd/q3f68wOb/tKPcoF9M9IcenoCC4FyK95hccgDz93F0CbQFxMIxbrX/RQCh7/3wXUO69LkGvrcE1kajp1zFBTRo85On1x4RP1I0q8kamBkKocDFzW2oLeL4k3jvXWntHvOX/0QZfWMgBwgOgUdUXsaUj4wV1L97SpoUd+A1VUpI4Ff7Qa0eGd5j2iUVpJME97LOaEX451IiuGes0cJlWJ+yUxXzGCFOl3x9L1mD6b5d0UkgFzxaH5ahV27bz017M6LyQTJ4S5131rw3VAotE93YHmM5h16ZuRPhQD1xOcby9mwo8FQb4NUWCwhxFMz3EsfIczf/vMS20qr1e3O/RbU6QwOLO7nAmDSGvGfovC4VLlrm4w0J5XJOOS4B62ujzpQYCYR1oIYpu/idAlSCfFCM+sNBEstfr8ptuVGil/SyZx6bd8HGdu4IapLqVPHKNLJ+7pRBKTgpEaKneo/Vi4cPYA1Ph7KFL4I+AJ9kS/BMWDRJ9ghAx7oc5g9zSODhbqW/Izg/owchCUtGBBWSwwn5VRFo854Ofb9u6IWoPYLtdLEbIXjirH9lw57KK0Ac+vMFwU86h4xmmv+IfQKABUpX1CDlUkXI/n4n0aYbaIA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K3ppang1TUxGYWYybTczWEJ2VkRzMW9pMlBSMUxVSjlWYTFxSlF4VVpSQkhv?=
+ =?utf-8?B?RlZZTkR1eXFMU0xMZHpIVWRLRGxuallwejdRVHI5UEY1NUVnSTQ0Y1lJZ2Nj?=
+ =?utf-8?B?Z3RVcnR4LytxQmVJM056UlBmeHdDRExEZmI2aWdOMlV3MmNzUnRZeEZDOGlK?=
+ =?utf-8?B?eHg2OGR4ZzYwRjJ4UCtGbHJkZUd3ZkgrbnpEZFRmOTl2QWd2QWdnWnpET1dF?=
+ =?utf-8?B?RTdwWVdjT0tNb3NQN2NLM1NoaWFIRmhUcEttMitwMmdseXJVeDNqNSs3aHVx?=
+ =?utf-8?B?QStNMVhlaDBST2dpZXpqeU9XNDMyK3FqYVdRN2pHYi9BdHFlVXhiZmNzT2Rh?=
+ =?utf-8?B?bG1YRTErSFBValVIR25oQ3JoUFV5Sm4wbjQ2WkQycjFpcmJTRXlmTXB3dlRj?=
+ =?utf-8?B?N1QzV3FqRWh4M3NmN1F4MTBOMlVQVnV2aFp2a3dIcnp3a0VkL2NBajU1eXdo?=
+ =?utf-8?B?RUIvMXRSTzMybk9lazFIdW1ER2pTME1aZ3I5VE1TVGJUZHE0S1dBQmE0WXIx?=
+ =?utf-8?B?eTBpUHd4dHpTNk15emdqUVNCRGpFV0JpdHo4MDlNWTJIbktXN1J4eWZsWE13?=
+ =?utf-8?B?MXJuMmZoTS8xWjY0Rk1jdUNUcGRoZUJQWlVRWTJSbDNKMi96NTBodVllbFVy?=
+ =?utf-8?B?NkpRUkxYclRKelhjMDR3NWU1dWZ3ZmJDaDRCYXNMYk1VUkQxcjR3WG1LYXNE?=
+ =?utf-8?B?RC9mVFh4ODJXVmZsSkIvaWJZOThjQWVYUklGUjEyKzlVV1lHcUFLVkVjdTRl?=
+ =?utf-8?B?d2tOWThpV3FueHgyRnZ3OW5jcnorMHFIaWg5RXJtS3M5RU1mV2xDNEZOeVdy?=
+ =?utf-8?B?R2JBZmZhMk80SWZLYno3b2lYZHdHdnc5S3ZDN2MwVFF3TTBiTFR2bFRqN1hD?=
+ =?utf-8?B?NW9pdTdRU0hBdHRNcnZPMit5WFVRZ1Nxa3QrTSs1SHlvaTJ0ZW4zZHZPbTc3?=
+ =?utf-8?B?YkVzSWNOdDBxYW4yYzBEYlUrVVlrNWo5K0MwN01JaWFSblZTZFJKWmc4ZEZm?=
+ =?utf-8?B?d1I5aTFIelRZYlI4WEZkeUdlaHhESE81WWorNzhaUUsrd1pHbm9RSkFxYnVJ?=
+ =?utf-8?B?NmZ2S0xNUFcwU0srNmlVUlJFbHBqYjQ4REQrY3JvUHRDZWQ0eE1hWUp1bTFF?=
+ =?utf-8?B?a1hwbC9ZVzdZWWVsUzdqNVZVRmY5WkYxU0RWeXFTWGk3WkhxNHFYQnZEekdD?=
+ =?utf-8?B?ckxmaFF1cWZtTXlrMnNvdnhCb2hBT3NGeDlHV1h6MFhVUTlOYjRIamtOVUY3?=
+ =?utf-8?B?WmJGN05jK2RmUjNBNDBXVFJyZS9NS0RmajhaQVFXb0F0aTlpdXRveHI5UUlq?=
+ =?utf-8?B?dVl1cXZ4TktzNVpReHYwMmVsdm9pQzVBT1U3dDU2MTRvZjZqVEFaU1JKaFND?=
+ =?utf-8?B?Z1hudGZnZkZZWThIVTVhN3hXd29VaVhlKzNxUEdENVB5M0M0a0NscW96ZG5M?=
+ =?utf-8?B?dXNlZEYvMk5SbzJ0M2c0VGFYSStOU01DQlVnODQxUEVYOWJ0K2cxM1UrdHhh?=
+ =?utf-8?B?R002dUZNeUdXUG0xZFNVUnU5SllIaXR4bTFVRFM4bEZ0dWpsQ3NlZjNUNHVY?=
+ =?utf-8?B?Z1A1UWR4WWY3MFhCdFBYRjJIRXlwdHdsZm9MMGx0UzJlSk1ITnhoZHk0YzdC?=
+ =?utf-8?B?UDZiR0l6a253YU4rWmdHYjA2OVJ5TXlVNGYrZHovVnNBUGx3Q1NEcjVHRVhW?=
+ =?utf-8?B?NUdybUN3YlJJMUpSM3JpTXZiYzBRWnRCb2NReFluOUNhb21lTUwyMkc1RUUz?=
+ =?utf-8?B?V3VXTTZqcDdTbndQak50cCtQcUhDTGJ5bTB6SHRWM2JlRy9sc0ZpaDN5bjY2?=
+ =?utf-8?B?K091WGo3MEloS0ZtT3p1UnYzbElFV1p6My9LeHlzd0JCRmRxQWs5UEtZeGVs?=
+ =?utf-8?B?aFh4UDlwbEpvRVd0SElZazBycHAxb202ME43VXFtbTBjcG5oK204a2lZeUZ4?=
+ =?utf-8?B?UjE3OWtzaEtpS01oeTMza3Q1WVNyU0hQZFRkM3FiMFZIbm81VTI5NmExMHJO?=
+ =?utf-8?B?ZmR6cmhCeldIN21mZFZVNXEvaDYzem8wU0FQdWx5Ujl6bTNaQ2xjWjhsVVd6?=
+ =?utf-8?B?Qm94cWlkMXdWdnZwcDVac2d4SWJJakFETFJPTXRGUlNINkZ4MVdzekZFaWxi?=
+ =?utf-8?B?OFpMNG83eFZIc2hOTGc4M2NRNFdoTm51TXU0M2pvT0hyOXZmYzNZRVdGaWtr?=
+ =?utf-8?B?SXlCRjdMWXUzdVRpdTNkU2tDNldCcC8yUDBqWDNmeExMUkhHVFdXV3VFcjJ4?=
+ =?utf-8?B?cUdQTlBydEVhOER2SzMrM2FwUldCdnByRVFadG9LdUV4NHE4ZHh4VVJmTUZp?=
+ =?utf-8?Q?9Q5p5268gM2DKWwBR2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db3dcb12-d794-4bc3-b75a-08dee20f1f8b
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 01:19:31.6306
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RnsmbhMDSaKChJuMML8ma1Yqz99BHD0kBtOHtyyM26Y+cM5Qq3uph4EUJhdMmx+R
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF5D27497F1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7E21A1C0006
-X-Stat-Signature: pzud9djjwy5dqs9qx69akbhk94rpoifh
-X-HE-Tag: 1784078311-130319
-X-HE-Meta: U2FsdGVkX199TTePXFzs8PZt12lzYN2mpDtM4XAcMNOKnE1XKk4VdE9DRE5iR3/ypAReE1LdstPp6NRUCw+Jp+atgZac6m4mExTY0CWbR9xNINslv/AlvJ9OHJPaWRaV46MKKnqXOVJFf0VADS8HRqYwoz0G3XOurr2To5bna5SVLI66UxyY/mGsh76GhUmgJsoxy5SOg+NY2N73+L1L0heVkE3bwhYpqCbHFBvs2o2fk8ErT7QSA8ubeLYlr+G1+NT6u0PrI7TEB/YdnXe9ktwXpsFmyoNJo+f5Eol2eNq4Fi+tyFgovK913JipcFIZCDK04UmWWncFmIUcD0RfIyvdy6sGewWIvr+KaW9zxGkBNalg0UZ5ZNs09jokxEo0wGpT4Vg9DjwZzHUtT3Tbp2iZS3358T4aEZJvuXHeB0rNRZBGIMbchSJAVstKra4dFfkxleAv4PXxBlkMGF9zIZoaM7g25Y9AOpq4iHxxvFklAroM+MqgjQXJKKJmNtQXPcOIQXl2QHwXixKZ4SwgioxeUSZv3gijhn34xsD8ykanw4EMGHSzLC4PtL0WSkoHhcPekuRKfe4ORajShmNPRRY/MJN8y/mvpMboi1nFosjYwXBQmq6u0V6jJg6hjmwVTqkF6MsndiCi/udB6LHDCih1g094CgVcfbqyxLwl5OCWsVgmtVbDtDjxCJL5HufJt2K/cdA2kCMDgekW1dT2OimOb0k1trD5TWdKY5x9HGmW60Gz5oulEuEpARChiemVw4wMJ8n6Mjb/QZq96xY9V9OxNTV+TzN+67spfcwR9lTc1XdghSR4j4n5vMv5vb7uwj2kZqIjdzwynk7QA/K59OXVuj57F4Wv0oquDjV6gYxUSCUvJrGFVpiXSq9LaVV9ftu9QYNr98sWfNuv0uyyycEvv8gQOA/r9GaMD4Cf3L1BfMiGSWm06Gz8/Wnb71F33QHt/eWpGjn0k8YWa9D
- 0VY69B7J
- arqIgV8LgZGXIkKt2D91UrXAN1Z0DDnpDrKqxwbGPuB2Crj6eiha0dFA4yGMqrhav0V4OZrC9s+0pUOvuh5Z0Ksv/uqylrWUCUY4Fa7VZDczkwqYlX7MUObb3+FRyr8WQBSDnx/Sdll876T9RdH7D4/pW4w==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 21369140007
+X-Stat-Signature: 56ps41thhmzy8zq4bnegw1shrgdykqf8
+X-HE-Tag: 1784078374-351471
+X-HE-Meta: U2FsdGVkX19YiqV2BC+lfYMmtb94jZkD/i/bGTcBlq90HWdDS0/YhN9pUwBcsU/nPYoncqWM2YJrkaiRn74OWM4DxqGF0kxZ33SSVCai6a5uWAFRatkP456CplLWdIqcMh5xPIXsmh/ZtgZo/l0U3X2FxoJEDM4wHG2yt7zWQrekVvOxxCMBn+/jP/Vzgi5j4bNltR2OTD93gsy04Dj/LH3Tt3LARM4EdgbnVPKqSZyp5Npufjh5/eLueF6vndZ+ZbPv8w/DV4S47KJjZBQ6EYQPmlShTP9soL2BnHY8XI9KnSJmdc7NUGp2vp6sUqQ0KqkpsuqoLpB67ht+0MYfngEnE0dTQg4hrjmO092/7BYZ/ukEPUQ+UPelPHC2giUqdaEcmXreuBR/XFEqUB/Cbj/3Nal5PK1IASYY9XfmJYbaPHAn7vL3bwGbzG4R9vrYldrJt91wD8RVHwpzLprGp5UpE1jtIoHMJ1fgcun0zobs8PSPn5tulghwn5Sgus41qc4e9ed+1YY1+HjYfTvbvUVcpmMU+h9AJ0DViAe+Hf2kUrpYepd78rO/i1Xb1X9GbzM7u4SJSuh7gS2FplDAaSf/hRPr75S9DcLkz/m6CymiHCw1DGXRV9eG5Q+j+uiKwI0flojRvaKJZqFMwcoasznZLN100ZORh++FDKT4K6NiKqA5DYFZ4EpFMV4Kupfwwgaf37cwYTZAgoXDrCYiCbZqQ+1XjiSjhhgFgzAcq7CwODYw3p9486T5e8/4pK7pOLAU/Xy3NsUh52a3O/5tLlF31yAg13ZuP0iuavfaq2dOfBKQv2sWeiYmQlmtrBx0e7rz2y6GNf8X60+mzG9Y7hauYt0HAEy6LxsXYGe0WKpgrKa7OecJFm00AA76t7c8E7J2bgM/pt2iR0kwc4+KfCnFKUD/LIqyPz+4vgKYwJfYsCot4y3cnKoOZggtD0jPOv+pl/0JQzMr5Gze/35
+ //RBJaDa
+ gunKJNmX9vuOuzBvPcB8+8/NTQLzJoLGENtsLGbb8RnKF1DfcnnSKR79y+IE8K0HRpITAJ0WYJ0FSUpNKUj5bhUNAcPFQaTTkNWUj/M6l8LtebB7uaS7QV/DBsF7sp97P2ktYcc6rvH9h9XL/xuLFVNDEIH/iCYvbuUfZ47tKxoD15yjJx2TLbpzeKamtHCtuP4ig1tmmklSPfOSy36SKbG+W1YYavfI8gViY7jOR3+HwVOzm/RhrS7Nc2GjhmrLZPAB/ktt58nCeciO7cjNtyVyXNfxEyYwHFFfzrjQRn4Tx8JhXLJIumGmBmHUrt0KngDADVbvqQ3SUWg9tyvUroozsdy4onpHp2yoG4iprIDUG2CQ/778/qYE7IadTAIaHQSdtJ3ACTN6gn8ZtMVB6ee34NJqIdvAniaKQBLmU6eDfumqzHjwK4Cj13rq0Xzv2KLtuB6N+/BygiBy1ci4z348amf4726CeJlZsgMOw0KsHGO+m9PQ7YlAOd4kQx+KFPgX1tzSGI2Vbfe+VfTFE5FCvbZ80Ab8z3iTLzA/jhi7IYKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,92 +178,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrey,
-Thank you for your clarification and correction.
-I misunderstood the design intention of this rwlock before. I only judged it from conventional read-write lock semantics, and failed to notice that concurrent writes are guaranteed by slot-level atomic operations and cmpxchg reservation. The lock is specifically used to serialize the report path against all writers, while allowing multiple save_stack_info() instances to run in parallel without lock contention.
-This patch is not appropriate, so I will drop it and not proceed with a new version.
-Thanks again for your guidance.
-Best regards,
-Xuewen Wang
+On Tue Jul 14, 2026 at 5:32 AM EDT, Brendan Jackman wrote:
+> Update the comment to reflect the recent change to allow flags in
+> gfp_nolock.
+>
+> Reported-by: sashiko-bot@kernel.org
+> Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b714e=
+19d3@google.com
 
-在 2026/7/14 21:59, Andrey Konovalov 写道:
-> On Tue, Jul 14, 2026 at 10:14 AM Xuewen Wang <wangxuewen@kylinos.cn> wrote:
->>
->> The read-write lock semantics for stack_ring.lock are inverted:
->>
->> - save_stack_info() modifies stack ring entries but uses read_lock,
->>   which does not protect against concurrent writers and does not
->>   block readers from observing partial updates.
->> - kasan_complete_mode_report_info() only reads the stack ring but
->>   uses write_lock_irqsave(), which prevents concurrent readers from
->>   walking the ring simultaneously.
->>
->> Swap the lock types to match their actual access patterns:
->> - save_stack_info(): read_lock -> write_lock
->> - kasan_complete_mode_report_info(): write_lock -> read_lock
->>
->> Fixes: 7bc0584e5d2a ("kasan: implement stack ring for tag-based modes")
->> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
->> ---
->>  mm/kasan/report_tags.c | 4 ++--
->>  mm/kasan/tags.c        | 4 ++--
->>  2 files changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/kasan/report_tags.c b/mm/kasan/report_tags.c
->> index d15f8f580e2c..62576b1470e1 100644
->> --- a/mm/kasan/report_tags.c
->> +++ b/mm/kasan/report_tags.c
->> @@ -39,7 +39,7 @@ void kasan_complete_mode_report_info(struct kasan_report_info *info)
->>                 return;
->>         }
->>
->> -       write_lock_irqsave(&stack_ring.lock, flags);
->> +       read_lock_irqsave(&stack_ring.lock, flags);
->>
->>         pos = atomic64_read(&stack_ring.pos);
->>
->> @@ -99,7 +99,7 @@ void kasan_complete_mode_report_info(struct kasan_report_info *info)
->>                 }
->>         }
->>
->> -       write_unlock_irqrestore(&stack_ring.lock, flags);
->> +       read_unlock_irqrestore(&stack_ring.lock, flags);
->>
->>         /* Assign the common bug type if no entries were found. */
->>         if (!info->bug_type)
->> diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
->> index d65d48b85f90..6aa09122f09e 100644
->> --- a/mm/kasan/tags.c
->> +++ b/mm/kasan/tags.c
->> @@ -110,7 +110,7 @@ static void save_stack_info(struct kmem_cache *cache, void *object,
->>          * Prevent save_stack_info() from modifying stack ring
->>          * when kasan_complete_mode_report_info() is walking it.
->>          */
->> -       read_lock_irqsave(&stack_ring.lock, flags);
->> +       write_lock_irqsave(&stack_ring.lock, flags);
->>
->>  next:
->>         pos = atomic64_fetch_add(1, &stack_ring.pos);
->> @@ -131,7 +131,7 @@ static void save_stack_info(struct kmem_cache *cache, void *object,
->>
->>         entry->ptr = object;
->>
->> -       read_unlock_irqrestore(&stack_ring.lock, flags);
->> +       write_unlock_irqrestore(&stack_ring.lock, flags);
->>
->>         if (old_stack)
->>                 stack_depot_put(old_stack);
->> --
->> 2.25.1
->>
-> 
-> This is no good.
-> 
-> RW lock here is used to prevent kasan_complete_mode_report_info() from
-> running concurrently with save_stack_info(). But multiple
-> save_stack_info() must be allowed to execute concurrently without
-> contending for a lock. Concurrent writes coming from multiple
-> save_stack_info() executing at the same time are handled via
-> atomic64_fetch_add/try_cmpxchg() slot reservation.
+The link below points to Sashiko's comment directly. You can find the
+link at the end of the title "Patch 6: ...".
+
+Link: https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b714e19=
+d3%40google.com?part=3D6
+
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  mm/page_alloc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+
+LGTM.
+
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+
+
+--=20
+Best Regards,
+Yan, Zi
 
 
