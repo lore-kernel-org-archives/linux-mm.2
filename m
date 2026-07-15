@@ -4,122 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A604C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 17:48:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F683C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 17:56:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CABB6B0096; Wed, 15 Jul 2026 13:47:59 -0400 (EDT)
+	id 448AA6B008C; Wed, 15 Jul 2026 13:56:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A18A6B0098; Wed, 15 Jul 2026 13:47:59 -0400 (EDT)
+	id 3FA5C6B0092; Wed, 15 Jul 2026 13:56:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BAE86B0099; Wed, 15 Jul 2026 13:47:59 -0400 (EDT)
+	id 2EB416B0093; Wed, 15 Jul 2026 13:56:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 52F996B0096
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:47:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB5A31401C9
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:47:58 +0000 (UTC)
-X-FDA: 84991744236.10.6F80906
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AFEED20006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:47:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E5VUWfzb;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784137676;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E77866B008C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:56:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 647BCC0222
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:56:12 +0000 (UTC)
+X-FDA: 84991764984.17.88EDFF1
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7AABB40002
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:56:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HsdCR8jL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784138170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SIVygPSmRSWtd96RmEBykYqblePCOKqaKqCbFyUwsMM=;
-	b=gQL4Kwu64TQZQsaqmNzG72NvsoxgbI12wqUleZublo/RO01I0P6F1WofFjBYXVsHVoVEXt
-	BQXIk/vJ1eMQIHz/DF0aHpTlJ/Ed+wME712fPCRWUnVQ00wMaxJ7YZUOyko4dlUGyW2Bhn
-	QmTMHjCubkHRKhWAM9bAYBMFe5/blw0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784137676;
-	b=FFRSvuBu6ViltXoBF/4RJoo2jRTTwAXDqJwiGR/zpTcvzR3If4ImBXRbWFIcqSXLePrZ8T
-	Cqt16WDMliPfi4dtn2n2C+n9y7yHk9qDdk73c8WVmH6e1yWyczFd7tPw91t7kywzX0SacA
-	0Lk+jDgr5+GWkLEQkdYVruCVgLa+gqg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E5VUWfzb;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784137676;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SIVygPSmRSWtd96RmEBykYqblePCOKqaKqCbFyUwsMM=;
-	b=E5VUWfzbuwCymsOZ5D34RTrQqFootkyAzEdSSFk9IpLAH3aXbe2Qt/xMvfyhtefMr7CefQ
-	9h8vQrEboCEEv6eFx6ShyVHlCLRqJXlvZ5AGwCg/eXF6lAD5aN/e3S8sWMLv52yL2xcTub
-	x5Citp3hsfbShOewrbWWdmnAFNr58nM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-548-QVSUtwD9MmKUJTfozln6hQ-1; Wed,
- 15 Jul 2026 13:47:49 -0400
-X-MC-Unique: QVSUtwD9MmKUJTfozln6hQ-1
-X-Mimecast-MFC-AGG-ID: QVSUtwD9MmKUJTfozln6hQ_1784137667
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D79CC1955F7D;
-	Wed, 15 Jul 2026 17:47:45 +0000 (UTC)
-Received: from fedora (unknown [10.44.49.164])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id F37061800480;
-	Wed, 15 Jul 2026 17:47:38 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Wed, 15 Jul 2026 19:47:45 +0200 (CEST)
-Date: Wed, 15 Jul 2026 19:47:37 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Richard Chang <richardycc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"T . J . Mercier" <tjmercier@google.com>,
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: vmscan: abort proactive reclaim early when
- freezing for suspend
-Message-ID: <alfHuSTW8sPAl9l3@redhat.com>
-References: <ak5-qwmpXrYi5md6@linux.dev>
- <20260709072231.3163082-1-richardycc@google.com>
- <ak-OyACkE8lLaRRS@tiehlicka>
- <CALC_0q8O1uw18aWM8w8be60TxW02Os90AKSOLFoqubYAbLjkrA@mail.gmail.com>
- <alCQ28gBclWOFF4_@tiehlicka>
- <CALC_0q93iheF=Y36SSTg-XCoKgHrhxk88LqcQkDd-O3ymMVmxw@mail.gmail.com>
- <alYqVPEyZ2ySrdAm@tiehlicka>
- <alYuKYnHgAaOFz-z@tiehlicka>
- <CALC_0q_9DamACOEyXeevWvq-6D9dQZ6NNt=iBN7gkOQRM9xqfw@mail.gmail.com>
- <aldJnz0u1YyoCyGr@tiehlicka>
+	bh=RuBIyMRxxSG5xOKfBj9RRTURzzjnDkJEBKCLyFmN4sQ=;
+	b=4Nt0Wh3KfBxxGkGCocPA+GRU0F6V4oa/iSpTOfrR5kJPorjhSWfWGMxOTmtTyetvyMXUh/
+	ryjGIirscjMnH5SVAcgq2gOibjw/e0YuJtM+cTAIaNtivJjoDf0Q/kenKxFZZ4jIKHVAWt
+	fUa1PQXKYXZwofW1C1LYCA9eVfRJB4M=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HsdCR8jL;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784138170;
+	b=GpTNfdJ04VkEYAgOHAtaX8eVX/vnYwVyk1Y88IY+khwDxPfXkPHJHpZrX8YxeQQzXtxb7s
+	uKu/sY4oTfp2rlhoh3m6+Yt0fGS5YWa7NTKoQWIuLbE/LjasS6jEvYIVTY4WGBWeweLSBa
+	9wTQmDBmSSsoVks0FKPUg/OthVroQDw=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493c556ada3so5515e9.0
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:56:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784138169; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lW9ZYLMpVInFKB+kTznSclkQuK+raYFhbjT7qrFlq97D/9E43KNg4lCIn4umXmbgK6
+         cVZCEc0mvVw9DbVLLHdgUrQoZciMdcGU5NM2C/7wAxdV5TPUOtWqXygpd2NO0Yc1ZDhM
+         Mkt3L4zVTUOktlH/Q8hoyW78DsjcjFFrBPLAbcuErZdNSon5ZgWE942H0wMpDScoLhnK
+         xajHFZdkFWGdNAHLzuzgPfaHT0ufcko+RMmdTcgK2LYe1XM4osv79VkL1MHku7peSZKZ
+         QJU2EyFqlb+vU7ZEhcLuQAtTQxgIhEfijFGub6C2ZtWrAMPnH8icaBzCcTduann2fYAt
+         dN7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RuBIyMRxxSG5xOKfBj9RRTURzzjnDkJEBKCLyFmN4sQ=;
+        fh=9gy1tYFiOEQcrNsEgEZ7wxveCY7C6WkxP6k3E5vPOZg=;
+        b=IkpFBynAindFfTHb5tCJnA/ABMEQu2LopwiuEgA7zILvitd1YATRUz7aWsPvdydtJj
+         Xu7X4N/SwNF8GL3HQhbtUgdbDu1aaPqs81G/GbZZkd/LBG7CJ59/X5evUbR7FYvWD3k4
+         SQcklzO3xhcmDWBsjfgbxzyxOdPc92gslZDNzg2Dd1Lwy0YUwfSzXHr7CmwgfOuvSs4U
+         uQUT7tlu7fOPBoIn6qzsDeMq4FDDsd5Wxhyftk05tiehrfMAlhCadehIogSvKdSxYUJ5
+         +YXYemCpbH92RtiNBzINFCjbu/L43vBmsdypcRwzL1mBAvfXN2tVf5d0yUcvO/l/bi7q
+         BeQg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784138169; x=1784742969; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RuBIyMRxxSG5xOKfBj9RRTURzzjnDkJEBKCLyFmN4sQ=;
+        b=HsdCR8jLYdp0iEVsoMLN5uXi5teDvVaB6bmuI5omXUDUDbzGkGouEREkwcP/MeUElc
+         cDsI88IL0frSfrPMG5b0ooPag6y2HAgcAQfeMmGw2moYPrEjsPzGMjJIKFBViyoYGySB
+         3uhd+6SjoYzT6N/A9zqzsaUWShcqlaRPxeu4GDY0PiC7Ol4g1FQv+pzMwPhh6ZwpzZC5
+         /tDJ/JwvXAS8GhaXi5HmxfzoGm7p63NUvF6Eu3KmPD1tl8x68XI4cOK0aQDqbB7fnNET
+         GTq2tA/c+KB6wD4VoKFTZll3w1WPCMLQsIVzDfSo4Al9dzT4pz7FXv2HtsOfLHfV9YTr
+         z3WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784138169; x=1784742969;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RuBIyMRxxSG5xOKfBj9RRTURzzjnDkJEBKCLyFmN4sQ=;
+        b=TLq6x4lm2PYHD0Sj+9qMZwXGvDnvY4c5Z8yHtyaxlzgNC1VzIUT0KWYIlfP0oacymy
+         qyLMNpO7fQ4+TtwbPuvQKd+VTIe3qV85spGJWgNIfE11vEcIAeNAi41BxGSHCMh7IAet
+         DaH0OUwOHEwLyVkIOONypiKVzwQJuidgpxkopWfFHVvT3lIOem5sP/LyAjbvamd9ymol
+         0S4yxgdbb67iG/HKYdxv4DRl7gbUFd3g+UrD046zujPKXxTR8+YccbeA6N7jRGDccP+8
+         YZhGTCctx0yvZ5nIlNsjQCCtX8UOvBbAI+2ku7gk81vrBFVQVQiz6B0gGTwX0mOX1Aj+
+         12EQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqSaYptbM4BoeuG702YC8iysPi3DCSmra1qEbAEGbYfaGrhrCmHt+MZT4uFOQ+OMV0Hq7x6YUoZNQ==@kvack.org
+X-Gm-Message-State: AOJu0YyQFQV9wNEfKOEMTry2Cnxme9RkbWeOaooWxREsUWmM3vNUalAa
+	Bx2/8yTFke4+wSBCif6oFpqlHrGeH36wXAEdr6XDHdbG78BIjcvlvWYYBb0Nigyolw2Qspgz2cp
+	Saz92BUQXv5L3H5xTqjT0ISlGvRn7au40EEmvkvhD
+X-Gm-Gg: AfdE7cl6EBBMS6rahdoy/Nv2+t2r6/Wed0K6T/80EtwIHypg6eN9b0pQXmnuv+cro/g
+	Ls4apPIhMVxbADAHP3q18RnEPiIzg0C/fStmEXwCNyNJnM1X9d/W7jgz+GmNoTGdeFi0QQBUfvG
+	gVMooKWgy72E69OapGCd/Qkn771wh5SfJieY3d+8OAReTXFaUJf5B0WmF/fEZMbLP1e7deSb9T7
+	jITaJ2l0TMeVmPuNUBYh4FUYzM+8s2dz2HdrpPFLsV5yotUn+svA427lQY3WiAqyzKXc95vKqcX
+	Buot/Kvb37c9sWE5b3bPpByUj3Dvn8KIUY+/2YmOfNtvmjMDR0HuFWcSWN2bJJ379BaPMg==
+X-Received: by 2002:a05:600c:4ec6:b0:495:4069:b0de with SMTP id
+ 5b1f17b1804b1-495414230f0mr128295e9.9.1784138168394; Wed, 15 Jul 2026
+ 10:56:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <aldJnz0u1YyoCyGr@tiehlicka>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: lSd_tpm8-U3O6iDAr_IlvVYnuBgphoeACdNJ_0Czo3E_1784137667
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260714121529.2237261-1-wangzicheng@honor.com>
+In-Reply-To: <20260714121529.2237261-1-wangzicheng@honor.com>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Wed, 15 Jul 2026 10:55:56 -0700
+X-Gm-Features: AUfX_mzAYIm26JZUendtoZyWaKS-eWpz07CFW-u1bis9rmp-d5YT8fcNAcUgKUM
+Message-ID: <CABdmKX3y841t4Oqg3RRHTGXWP-LMMSi_exDuxAc4jR9v9ChD2g@mail.gmail.com>
+Subject: Re: [RFC v2 0/3] mm/mglru: proactive aging via memory.aging
+To: Zicheng Wang <wangzicheng@honor.com>
+Cc: akpm@linux-foundation.org, yuanchu@google.com, tj@kernel.org, 
+	hannes@cmpxchg.org, mkoutny@suse.com, corbet@lwn.net, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, weixugc@google.com, david@kernel.org, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, willy@infradead.org, 
+	denghaojie@honor.com, baoquan.he@linux.dev, kaleshsingh@google.com, 
+	tao.wangtao@honor.com, zhangji1@honor.com, wangzhen5@honor.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AFEED20006
-X-Stat-Signature: eyc1gdyizxsu3x8aodjgqyuxz3i995ny
-X-HE-Tag: 1784137676-373843
-X-HE-Meta: U2FsdGVkX1/SJh6105FA1WoCwuREdPWyS5RIQhR1wfOIAAJO85Mjg+ypFKOLisoOHObCWFn/J8987JdQhJPFHh6LiLahybcJB/9LcBfKHIVfoUZSRvZXT1xqu7lM59IA1RPkaWqnwKafquovTsKzMfbVN0vUKRXb3SYRBAKwjsTUJ+/ouCSTz0N/GWDCxYGfKd12use3IY1jVRQ7WLnbjbgYQHVJzCu9LdiFUsySkNKStB6SZR4zUPRcoq3tGyhTAsjtdrn01Be85H5A6PPkG6PLrie647LK5+g6i7OgRBic1RdBbU46bzjiE2JikUmbeepnZKuagXvefD7gzijyMegAiBymeJEy2LjgJT2KCnumcpPEYUnpFB6o5KRpPOppP5RDe9TrzvsB7Skn7w7YIeMQSXVfIA+nMPeJQOPB2Al0AmSCW7EWArsN8sltQfO2QBbjjhr1u95DtD+KFoqEIZ3SDC5BlEGPp8r9oxTLVqmTKkPtH2VF6gUxRa9ue4QG5BfmQ55vzxC+tFIBSu9BMzT0LU/ngUpJHQ7Kd3Vct2Pg4UHRyM9mbxyvmY38qb78JiaPpTW2QcFCNrHBet/JSL6eoeTLYgNzbCimP9eN6o/ZYdkF1i9/+sLu06N3AnHI5VgJkXSuvWn6zMgP+IrE3yvZJCWoAR2ecJtGBmre7tLQj51OAc+6nA3BTwZmQaa06nOVYg3iw7jZ+/+GutmZ8FnKIXEkzrIuRw9bLqKESsgY+BCgtNhJACuWsOSz9o8rr8HCXT8j66kWYRCoslyH2ZYM1oG95S0O63gJ8HWaeCMqmigynLyyHiOrU7PACSlasKST+Xg81XUI5WAAqtAmyPLASnp+U5PaQToi/yS7LK8wO4a0ZUCODY6hNLNGGMOAxV9CnzKbfXrSoufrtIMT6FcZ5tDt/dfOm4lxDaabwQ0cbhbUddh1TR66LcWG5pCzybGBp4F8k3XwUHuOAIX
- uFqIgayR
- 61g2nIe8+kwkhHCx2j34NhKZXzTKTqsI8Sziinp+pF9TswqAfSiiD7wI+U5oeyoHp5SbD5e3TwS5bZq5WV3IHXjKb2vcOx5KDcdKxWuNK0fVd8+tq7nVKeAq6h4++NVb0l6u/RGJeFHQRHS6+hvJq/KkhWOPSOU8Ef2Lt6SMkv1aIW3gG3XW6KzGh240j35lBOMvD/s92DeKRKUh36lwgh0pmYXwL/Qj7SQSl6UjTarqChStzatj6rd06HmdIemkdeJiQJ78OmTrbXBhUaBkDCVIg4JpoFmgCqE1pZq3SX+qUpv+JtiL6VdcAh0AwspWgT5vVoEVEXM73ejfWnb5eE2vIt4mcjORceitB
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7AABB40002
+X-Stat-Signature: wp7g76kkunbznbdo4g5censj1bwdzcca
+X-HE-Tag: 1784138170-982969
+X-HE-Meta: U2FsdGVkX1+mn338QGnqo9yZeg8v6Bx/XVUW3FU1X9eSXm8FWpYSye451+47QXyE6U2dFJeuqsr/UWtVYiCYot6spNMedsD6SrFr9mr0N/WO4n1Z7e9MWiVXilzKHDZ0iUADbrVCEZ90raVhC9uRFKTqkDC8o8Pf0Xdx6wl6Wuhm+xh6WS7QSus4qfV6NWrJ+AZ/EaqXoDNJ3qA4Np4qzACVN0dx3v6zhDJT6O2PbsQWI4pnJ5meo22yGXB570MptAFC+eQ5kL74RfCgxjBkc/b79eGMjuS6hgoLMzsRPRjYpBCF0fGEgxLUEMMBqepOScZIgaQsHRonMF9cU7j9vLZux6OzO5xZZM3rCDq9K5+YNLEv+rg8FW92Qem5qAqHoNHEG4rLbDAwphDhOthKIyvsNzg8FXwy9f/uai+DjUvX0Q2K2eAqyrsDn+OvOHLMmatBjqwZI0T3rPdkqQHrgkr3Z71AxmteDZe3lmqcU+0fZ1hasEHo1idl+jApRV68OOP0BpXX1Mj9DhHqqM6lxPW/9+11oPodUL7U9NEexLgp8RITMwFAQMKd5VTj8nvYJfF2JabInxMO6NhO7KNlPgcBZ+i1xxc0J6SIlxlYVb+fe6zsvp4fb1hJ1A0jp1I6KnkZb/XXIFzPWqXn4qUMuQp0aYzXwSw5VMo0L8kgtzkBHBCeXPlhhESC7FNkBiBii3ShDDC+mjd4cza2spFOeAgFxYfkV60xLAhL7p6VgpPlaKOqJGDQe4VVecTguPRhHNBMm14gKVeXuxfZWeYVIVQPuZu7jwizSqZ45eFjpjUZUQSqjzxMb3UDm+eqSHHFSFY9gW1sLxV+SYPv542ynAbxIL69Pkjl2trHD9slJYWNWnSbpC4luFDG3vxc4S6m4qy7ue5DBvqrZxQ7uFs4fsHvTB/3Ln+tOYuwgyO6iE7Z42BQdZRvTiB1kanfoFJZAI2Qsn12ka7QdB4FL41
+ l1rk1912
+ eWh9q/wObOkPOUOsEzS/IqaKE8OX4kAUpTFs9W7S5DR8EMMGtwlwA1F2CX5bpwH9rS4m0U6sidog5IsIEvuxOw/E8e7xuZBdr6np21fG7JLHnq3KU5Es9nrKpfcXAUJ5bjss/QToJFpZKFIjenEbvnfaBe5lTdRNCVvRkzAcQSxWeGswYEPf+MRFcnFUdFE4jtF5pDPHmPKuCtIaIcilQOlxdJaCwp6o6h/wNKlzvGrnrD/6MV0eC67/ROcfgSF1rlCHNYsbgSTkMrqU93x2VP2HRr7v1/hIC4W4eoW/PHhlRBtG6CVh/+l9WyJ6jEz5TetTm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,48 +147,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
+On Tue, Jul 14, 2026 at 5:15=E2=80=AFAM Zicheng Wang <wangzicheng@honor.com=
+> wrote:
+> The benefit is workload-dependent: file-cache-bound servers gain from
+> aging, anon-bound servers do not, so no kernel default is correct for
+> all.  The kernel also cannot know when to age: on Android the right
+> moment is the foreground-to-background transition, when the app's pages
+> are cold but their PTE accessed bits are still accurate from foreground
+> execution, a framework concept.
 
-On 07/15, Michal Hocko wrote:
->
-> Oleg you haven't been CCed from the top of the thread but TL;DR is that
-> we need to freeze a user task performing pro-active memory reclaim that
-> might take long.  Currently we are calling signal_pending to bail out
-> but that leaks EINTR which is bad as freezing task has a side effect of
-> terminating it.
+When an app transitions and becomes cached, we attempt to reclaim its
+entire workingset. We basically cat memory.current > memory.reclaim
+and freeze the cgroup.
+https://cs.android.com/android/platform/superproject/+/android-latest-relea=
+se:system/core/libprocessgroup/task_profiles.cpp;drc=3D65bd7ab941a709bf0498=
+71406981022b988e1721;l=3D706
 
-Sorry, I guess I don't understand the problem...
-
-Yes, unlike EINTR, ERESTARTSYS should not leak to the caller (just in case,
-debugger can see this error code).
-
-But I am sure you know this. And the patch looks fine to me.
-
-Oleg.
-
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..336af76d2a28 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -7909,8 +7909,13 @@ int user_proactive_reclaim(char *buf,
->  		unsigned long batch_size = (nr_to_reclaim - nr_reclaimed) / 4;
->  		unsigned long reclaimed;
->  
-> +		/*
-> +		 * Make sure that we enter freezer without delaying much and
-> +		 * leaking EINTR when that happens but also take care of 
-> +		 * fatal signals to terminate.
-> +		 */
->  		if (signal_pending(current))
-> -			return -EINTR;
-> +			return -ERESTARTSYS;
->  
->  		/*
->  		 * This is the final attempt, drain percpu lru caches in the
-> -- 
-> Michal Hocko
-> SUSE Labs
-> 
-
+File / anon balance vs hotness and generational placement doesn't
+matter in that scenario because we want to get rid of all of it. So I
+don't really understand how you'd want to use an aging knob.
 
