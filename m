@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3A39C44507
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 19:33:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5444FC44507
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 19:40:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 631BD6B0088; Wed, 15 Jul 2026 15:33:14 -0400 (EDT)
+	id ECD3F6B008A; Wed, 15 Jul 2026 15:40:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 609736B008A; Wed, 15 Jul 2026 15:33:14 -0400 (EDT)
+	id E7E596B008C; Wed, 15 Jul 2026 15:40:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51FAE6B008C; Wed, 15 Jul 2026 15:33:14 -0400 (EDT)
+	id D6D7F6B0092; Wed, 15 Jul 2026 15:40:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3193E6B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:33:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B51041C0226
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:33:13 +0000 (UTC)
-X-FDA: 84992009466.07.4F5BDE2
+	by kanga.kvack.org (Postfix) with ESMTP id AF5266B008A
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:40:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B8821C021E
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:40:34 +0000 (UTC)
+X-FDA: 84992027988.20.FE39E7C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AC7804000B
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:33:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vZzmcAqU;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784143991;
-	b=VbZjGKBNyCyTbbIkhxFcpHnWYFY9Ofp521qI7eYNOoC/sS6e8Nojwb8UuJsP2bMR2hKsKI
-	hM65tyoKv90jeZgtDh29o6ICtNhgpXfdOPfDRzycn/GQb8gpSjhXg2loZbhVajguShK5aD
-	DmuHgyNRDwr90qJHe+dYTwDUBuhEQgE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vZzmcAqU;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 365AD100002
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:40:32 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rtRWU1qY;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784143991;
+	s=arc-20220608; t=1784144432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JNgTwmxam6nd7h0Quf1kWnjF2oRJDHmqN2SP0HCpJIE=;
-	b=qp9AEalSsjtFr6a/vemQGJkpwygTX8kUCm4TWjwrtEcK1fWTUHri17cy3JhOs/jtAadZ/Q
-	1tw37sORIVphTXoR39Qhv/HOImcZCjp0o4k5zhZHAeXR94v+C5dtWl/WYRvxdKpvvp1vMB
-	1HiT5+Y0fOBgqgXckO8PAeCdW5oQb2s=
+	bh=5nbMCVDVtFVWhMbY76EutKt9ipf8/7GaWfOcZIYGuE4=;
+	b=BqheYnNQs1XnEs9OI7+Qv9IJTSgfbny5hqjomDSc0JEIJ293ycAKlZfWlZEYnrFQdIMdgm
+	j+6fliayDbSCnh3CslOYsiFMM3mdn7vaBiwnUE7TASY6Wi+WDvEn8f3amiT495r8jj/1rs
+	MFUcluDc8uKlLdkbbkZNjvvVOyoK9kE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rtRWU1qY;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784144432;
+	b=VjaRFrVOqT4ezG3fqie4vaJtzypRwl7+4EAqACU0o/28R/49+T/RDYJEAzIt8sV2tzLrRc
+	JonzRjKE1RoHLH/IUlP6NaZJ92B6EiXMyHrmjYzYgaLCDsk/VzZFrOVrKvrVwSjF1UBJG9
+	ZPB5+r8aesmbmLOLdpvP7nM9w1rgnGE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F060D61836;
-	Wed, 15 Jul 2026 19:33:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F811F000E9;
-	Wed, 15 Jul 2026 19:33:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 95F9E61878;
+	Wed, 15 Jul 2026 19:40:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1161F000E9;
+	Wed, 15 Jul 2026 19:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784143990;
-	bh=JNgTwmxam6nd7h0Quf1kWnjF2oRJDHmqN2SP0HCpJIE=;
+	d=linux-foundation.org; s=korg; t=1784144431;
+	bh=5nbMCVDVtFVWhMbY76EutKt9ipf8/7GaWfOcZIYGuE4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=vZzmcAqUuhtTtgFOjBIROzyqMPic/9fHZY9lG8sX3dgSEhWI514lr8ha1A4xwlnNG
-	 gwVsibhPJdVEtCLMn80evGYjHGZ5pnPIB+ze1PfbqqSW+FUg2agz49fq0UAjqARp8d
-	 stOqxqz85f+2UBHAhV7g1jtwOpuJQ1VtBmZan1cU=
-Date: Wed, 15 Jul 2026 12:33:09 -0700
+	b=rtRWU1qYY4JybTJn4q2H2NQdwPLy1E9KmQp4PxCsr0qJf6LEFbjPskeEQ2E3Xm59X
+	 wUvR5j+ul8YNSnXwPlhfJeFxA96YomGg+bV8qNHYcqUlO6VVDx+pBMd1OKBLpwDNDb
+	 ArMR+1YWqhL4Lm7OL3SWY0GiJrwOjzp0w7JUsZy0=
+Date: Wed, 15 Jul 2026 12:40:30 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
- Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>, Harry
- Yoo <harry@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- sashiko-bot@kernel.org
-Subject: Re: [PATCH 0/2] mm/page_alloc: fixes for free_pages_nolock() on
- RT/UP
-Message-Id: <20260715123309.621edcb4b5ed72499d31ec9a@linux-foundation.org>
-In-Reply-To: <20260715-alloc-nolock-fixes-v1-0-fadc49952dda@google.com>
-References: <20260715-alloc-nolock-fixes-v1-0-fadc49952dda@google.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Qi Zheng
+ <zhengqi.arch@bytedance.com>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] mm: shmem: make unused huge shrinker memcg aware
+Message-Id: <20260715124030.feb2d407e5e5ae28a39674a3@linux-foundation.org>
+In-Reply-To: <ba9911ee-f447-475c-bd4d-ddd6bf443bcc@linux.dev>
+References: <20260714031918.308-1-qi.zheng@linux.dev>
+	<20260714213223.9a03d78f4aba252c512e01b9@linux-foundation.org>
+	<ba9911ee-f447-475c-bd4d-ddd6bf443bcc@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AC7804000B
 X-Rspam-User: 
-X-Stat-Signature: 1x6qg9z5hndqmkjd9a3k4eiqskh8awur
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784143991-425897
-X-HE-Meta: U2FsdGVkX18zQ9yItW/M0ep7qk381D5/D4MDQr+Qww8oFIFPAIYmBgU9eohA+rZYpd59EwFmImD8+Ccmll1kTyML9DFgkhlrVbxO4zb8ojg4jraa2GSmnYSUpHlhUtRdwaC+Vg/tQTPT3X8V4Y3bqhKWGmeL2FiqNR1kkcJWDjxjvplDQjlIc5XnfLQkTKSflQBWwukqG5hr1kiyZFs4okoVjIdfEuVeRlhZaYPPRcbacJeBFWEWza/nGHZwbvB7FiXK8CyZ8dRKRNdQd2V4k9sjJ5DGul2l+KO4W06bCJDUvNcWq3OVBRSIDqeskRDyrtTHUfdcRR4nnWa899iBDZzAEm151UQhi00VvTc+hZmiPWTHT9bzqKrjq6LqckuiL4CDcnTbWzTktL1zVRh6+26/ijm8BHJza3vj6CvU2AM3CDOHFF/qDKsZ0SedbGDHHIKmcxX2Dcn1Xp9dm2hzLwBDk/x8/U1Nad4erZzOtDaU6qlSb7AxQAT2RAUYCWKzRKywDDT5Tv25h7ufvx56vIjOI8fEQwLOiDWgj3cciZoOEzA8UiAk9UbzftSmpuVpZkTfYn2IUV5yK+uMqjU2zm13LtndRw4cK/yrg9+D55UdYlLmMW54pND+QbYALE6W2XXXD538IwzzdTaG7gD677CGfXToEiJGWJXJFC/xFaikuTMw9pk3iutkYLSQN3ZSqZq+r0Ly/aO0uxPWM1XagL3OB4srxARyY0vJu34KCiHMH1eCdefxRnce0jdwoUwTVuqADfPw0w2nOmdgdKqkF+Sx4A7/9/TOSu/5tyFN4p5XeILATjMCZAXBgwmQoU+1zUzBxHXvwxqlJvKzCRxNP9TImOBjEYyKerRntyW8D7bur0DJ6dOHB/h+6pqC/tckpDpxfrD/wzWHfT0Jw5vbVaQ585gw4txhXyWEJRIXdCEkn0/xECWkQrArwP0XZTeRKSSgjCvWas+oZa9zXTG
- jWKdy2Hn
- dPHQFcpuI+Vy45CDWdoBnZopKfuYRei/p6ayfpCS18Ydq32xCMqRuGMlXucSIAtL3WNCM+vYWKaZjzxKkUsDPUWV9jZMRSnU4GOrO2EypniV7zWYfmyjqz2GWFDRIe3lqmhe6fegyf0dXBsXmKg5Va8NVS4VMnmFUaotbTnigEclyW8sHZwFvEdn0mPUqXgXWa2t+mJBFVkcS2JHaHhKtR1c0IL4yrUWGAU0deTSEVDgawBXq/mVCF3I55DAxZSnNbmGoR7h0Mi0a88OydKQEn/SpO6U/WhS1jN9rYszXJqOGIYHKY2Y1l8TZMPGhietqpK1VU19VMmj9wul7wmTa5Hfws1cgAJawwc2/nSJZ9TCMPOqy52cqDBZv6AAxFVZK1DEzjzF3BOHBYdewiJTx4FEVeA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 365AD100002
+X-Stat-Signature: pp95hh4p6g7m8nio7ho9gxuabaorpqcb
+X-HE-Tag: 1784144432-308790
+X-HE-Meta: U2FsdGVkX1/tWuwyLjHqwE6rUyiJypvuxQG9Az4X53ktadkb8jldeF9yxBQvvTh4IBkDL0zs9Svhn9tcvd6Ei+ysjRvor6r0KF5RSWLnfLyDw0CfxuVC3aVIiS0vGtr/DpD0Wu1bZRygpzf/Rnsuve/lneopLh5s15ubZ815OzGSqRp1Bc6n+OQb+FHOq9P0uHN5H5aiM9JUoNydBCIb16yUbBZNjbMieUv2e8Lk0AJI5Ee2u3Bv9CbYXXs8s4OSYuVxYvwIIwuZnE6bSa3uMOq81q1WJto/iePrLVRt2ytZaAtmQPDY++X2Nh3klBOEIcIH+ey0QLCEjJcVuANBpLC9TgMBLC25BnkqOsaDXr+CTTTP7FhqFFnVoLcaNc3AeQkPc/sy2/DXyiTQLFsYDPKqpbnEWB62PFbkrzqDqWji5Knr9eg/qRsOg5YZSWEjQy+qOsYPRMnD5BISHpBaos7Gjg61X+xadOJsIhPbfSzfEgeMNMNsVeQbtq+AdSrHQMLn8v+5xoOkxPiEGQ9q0rjFrK5oGkIE4N61RHsMaqgQ2pB6QxGSFI23i9nn677L3q9KzSDucUCtiKRw3FzqMJIyh/DyVN/XjrSpyVjQkAQOLAaulCPfz3bqotfbVO+GXhBMN+S1XWEmxEa2JqUEOzJeA7HnEdJcNgl7/CKezDXRRZmfdgrq7kKILOs/BnRH6wcFojbyPU8TVMTJTnrx1oeeyd6kHsy9IhwtAxztA2JAK0QhN8+uODczxEiCxHz7Yt9ILQCR5aProIqDdS9EL6OOxDspRKJfe6tk2dLQ9JAOElhFOmKv5///Iiqki/JFMnmTLAYL4f2sp8oo+GmX0X30A07+LzJWrdYzQrOGX5Tj19KzRyyNTYAnVY9HaPUFK/X0s8YCZ2b5KzT78OMM2GVyBiR7UTIvoCrY/wh2rsw4FaX+8NjQm3UH+JpESL/sSKclbusk8HhaC3S26m4
+ hgoM50/L
+ 4Jlw42kJLKpATGXUho2huwhk2gF9MoSBLsycSSPLdeuM5SfO08G2J8vEtIdR9FR2P+iORd3IgU3XUaABydIQEpKYWedhgETQbBWRM7OHALcII1xRaJjVFtO6JATGGCGGQ5/PR4K5usyBrjIh1YVMqzQgWzC3szF0qfyDPN+JQc50ObOg8EUO2ZbmtTuXhzluqWxz4UYJQ+ZWiLcNV8lNpJwIHBr8S50CZCvtkuSLYCiT63/np6iYWON95v4ZL3iXK8vhIKPFyEoTGRYY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,22 +92,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Jul 2026 09:03:57 +0000 Brendan Jackman <jackmanb@google.com> wrote:
+On Wed, 15 Jul 2026 14:49:28 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-> First patch was originally part of a different series but Andrew asked
-> for it to be separate:
-> https://lore.kernel.org/all/20260710170311.e22bfd21c658e8357ceddeec@linux-foundation.org/
+> > 
+> >> This patch is based on next-20260701 because it doesn't include this patch:
+> >>
+> >> https://lore.kernel.org/all/20260609123047.1948242-1-usama.arif@linux.dev/
+> >>
+> >> Later on, Usama will consider moving this restriction down into the fs callback.
+> > 
+> > I'm not understanding.  Was Usama's above patch ever included in
+> > anything?
 > 
-> Pre-existing bugs found by Sashiko during review of this other series:
-> https://lore.kernel.org/all/20260703-alloc-trylock-v5-0-c87b714e19d3@google.com/
-> 
-> I have not reproduced these bugs, and I suspect there is no real-world
-> user that is affected by them.
+> It's included in linux-next, e.g. next-20260710.
 
-Right, thanks.  I'll stage these for the next merge window - no need to
-rush these fixes into mainline.
+Oh, OK, it came in via Christian's vfs.git tree.
 
-And I staged them ahead of your "mm/page_alloc: rename FPI_TRYLOCK ->
-FPI_NOLOCK", to lessen backporting hassles.
+0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects in memcg slab shrink")
 
+Should we be asking Christian to make some alteration here?
 
