@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3312C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 18:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1724DC44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 18:16:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 671786B00B9; Wed, 15 Jul 2026 14:16:21 -0400 (EDT)
+	id BCA596B00BA; Wed, 15 Jul 2026 14:16:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6496A6B00BA; Wed, 15 Jul 2026 14:16:21 -0400 (EDT)
+	id BA2516B00BB; Wed, 15 Jul 2026 14:16:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5603A6B00BB; Wed, 15 Jul 2026 14:16:21 -0400 (EDT)
+	id ABAF66B00BC; Wed, 15 Jul 2026 14:16:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FD996B00B9
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:16:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88F1DA0155
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:16:20 +0000 (UTC)
-X-FDA: 84991815720.20.89779C5
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A7722140008
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:16:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=soHMfzNX;
-	spf=pass (imf09.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7183C6B00BA
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:16:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2D52A02D3
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:16:27 +0000 (UTC)
+X-FDA: 84991816014.01.E880142
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 20151100006
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:16:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ODuOg0lf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784139378;
+	s=arc-20220608; t=1784139386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RipBZIycyhdDriy0xY08qbrpkk/gJ3+/YM3pixpsFXk=;
-	b=lvRUh5wS+rsb21GwaYD4KanBLOqLBASI+u/D1MtXoFgAtLuWYuG1WjwAjGhcfko6nD45hZ
-	dYeA/h+w7V2Ahvgn/zdVtavKprlJpql7mIy8rg4F7eAatwMi2hcetFSS6oTbLOwGmMJv5K
-	NdbxhLr/gOtcIJkI7zc4t0oZHd0wrSU=
+	bh=hJyDStROVAjhZv77Mf9h0pLyMcLfVsgmfa9JsYP9Vb0=;
+	b=SteZnm5eaTOZUfYztXd3gguzOZG0XUnFuHwMRi3Jp+5niG8Yaj/eVN6DlacJBv6dz1sjxW
+	dJOnpHEY5m0P/WghRlsyZ27UWSMCbB4eVC1BDPhY8zMeii61zgIuNCDajkHKiSTQ9bNLQY
+	GnEmOkaX6NhmhDmuSvh+nLKYvYIpYwc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=soHMfzNX;
-	spf=pass (imf09.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ODuOg0lf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784139378;
-	b=dhnt1zwOQ21IBhJnniEmFODBCcNuHbUm6KE6jTpkgQccHVR7hb2JsCTNM5DydJwzJKbkC8
-	LIo7rv4PJuwi7AsvcQqfLs7LwT7B2IPMAGpuKXeip72/tgkD0PIX5prvAShZvSjnFC4QHj
-	U/jpyu5t0RAzYwVeNvw1ecCfyHpZA5U=
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9aea40d799so1155702a12.0
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:16:18 -0700 (PDT)
+	t=1784139386;
+	b=slDUWy5xpLFtXD8owO2M1ENg8C0px88PUsgioj8leGa1vv4kKGSo29Vg76tlf56DI/eEyU
+	FaINug9JloqhKdf3fN75+oN1yBDrJ9LXyqQLFMjYAijCPUjY8vcEtcBXLBoYhnQ2REGz8t
+	tRzDllwfU8x/GmPfZh75awd65/dpvLM=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cacf197759so40562185ad.2
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784139377; x=1784744177; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784139385; x=1784744185; darn=kvack.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=RipBZIycyhdDriy0xY08qbrpkk/gJ3+/YM3pixpsFXk=;
-        b=soHMfzNXk6E5PAQHsAR4J+pvMFoOor5SaDKpXWsZhrkALNLYJSwlDIuCj9HY0yA2fk
-         JnQm6vIsB2mrLAbvFVy8c8pQQ95SQEfPvn1GWUtB7Kd1IrJpRwUO7ASRculEz4D+uE0Q
-         dCDSC9rAvhAS1T1Wc2fZlj0lc6wa+dMVENG+kLCPbeKV2q48eke2XOM26gEdRO4XtIB8
-         xMJ4aUqdoqynp2agoDCfIYEaXOpQ31xfTZwBe6IhW6WGQeN46POuIyPoFtdACQfKlvTh
-         QS3eUMbuCm1lIhCkaUoLyEdtdyZun5aAJA9m5GS2uSBsqi1RA9hzBybXBqGYgafP9Ayt
-         Oavg==
+        bh=hJyDStROVAjhZv77Mf9h0pLyMcLfVsgmfa9JsYP9Vb0=;
+        b=ODuOg0lfbKloo77HeAOiSMBGYauzZl04iAn/XbBRmYOFwS89pUmZbxjjmLmfxiPtbN
+         9mhe0DkrXmookpwVB6v790ExFgbV3Guf7+Llgp81086CQZZ/mql8R4JVEIdqAD8getb6
+         MXw41xpjIJX029ytVUrcBXOPqa5yZw6H5B7k3pLyNdC59PSiWK6zG8G/oCeu7QtfoORe
+         wxZ0o14b6I2Rup4uaXLTMX5zRG32gpJTrklIxUHJ6mE5Ah1AJ6+Ay0vbO7bM6QJkybZ1
+         GvPNNMxlBpJtBCqGC/8VHbIH/io46+ySZxLJ6m0qp30GNDHV3Ac8X7ZK/8XU9o70cae8
+         bH3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784139377; x=1784744177;
+        d=1e100.net; s=20251104; t=1784139385; x=1784744185;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RipBZIycyhdDriy0xY08qbrpkk/gJ3+/YM3pixpsFXk=;
-        b=Ejn5HgV50D914fWL9+27uw09Sz5hm+/kcwYHcG71zHkjjIatPodxlPgNElwvbg3406
-         UckSC5JVzSFnm+fwh+NtCagQh5WYlb36XOvm5ZUaqfHpJUxwDgBETQ6oX1LTsZyuAxwn
-         IrUqsyK9tenlAel7qfxQ6U/xXPrdnKS/o5rlx5vqJQwrBPossPb5NIekCj+hIefyn8WR
-         fh76gcgd+Ynu87hiws0jCObYmN2Tl5+VVb1W/VJVh8zyiuvErCLU8e6q0LSZHzUuTCzH
-         3Nai4FN79RzuF6k3BnZRT+AEBVeIkYsZrI3PiPRt1N6SjfNT94IggwwABbOi1kEbBWTW
-         ciPw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq9Gvkezl7YdlYCXXV9ICjHOTFOLtV1jgPXSR/HX4dtnleIOhgzaEFmGiHw1NxZoTKMcJQ+59U6KA==@kvack.org
-X-Gm-Message-State: AOJu0YxtLw9QFKALjesCEVTnAA1TqavP0hCtrm1IiEEkMA3abkIcyBxD
-	XsJu/9WBf1Tr/QZb46tJBQY/uw88+5HQBYRbX2lc3Lfo4UqLgqpxGaW9
-X-Gm-Gg: AfdE7ckLcAyol4IVFsBNDhcl5ar3/dMb7srfm/gXa9CppECt9BNixOlo/gMHli1jKax
-	o0p7eDPpphUaBfNBN+oW2GRAbjbcEAQ0tsFqg0XjNLgnxjY01gj/7IiF4az6LV6eA4jwOGG+hOj
-	Iks176Z+e0uVG7Zj6cF14rfDEekhFBaL6XkN4qWtD3ezeFMY5iUkhe0Rh6R+Y0kKAyuFAiMk4Op
-	7yia0aWTqXhtCz/xK2KEuRPrcMHiTVXR4RWWO/6+HYdFbAsbc1fNeWWPARF4rdgMHaJmVQYblUx
-	ICBa4mPRUX0qCueBBZj27RUdVhbqgcB63EWAQ0tNItxj26STIn2bpV50a9Xx1IEmQVGlwXXAH75
-	ZiNL5QkZTNKyJxzPM5UGXuUQELYKuUqZm/Po4YW0zCty8WFRiXYBPJeoQ3kfRI6WByuSw2PF3X2
-	hhH5eeFPvVeu4oabFqA9U+L++Mx4AiuDqpYRVtTehEkiaI3fzOwNQRdrxZBLY=
-X-Received: by 2002:a05:6a20:9149:b0:3bf:aa1f:4881 with SMTP id adf61e73a8af0-3c110ad509cmr19061608637.56.1784139377267;
-        Wed, 15 Jul 2026 11:16:17 -0700 (PDT)
+        bh=hJyDStROVAjhZv77Mf9h0pLyMcLfVsgmfa9JsYP9Vb0=;
+        b=UUiTfhx6gSeyFePMlNeq4+hvroUHn+9i8orPyh1DWVVv1ILdHhEv/HeoPAAmGq9raU
+         eRN3CEeeiVE6zkdQI/oobEIcyzu/RuU6M3pSeMa2z3ahN/e/6R8YO5tol9HGfTePB94T
+         tleOe++a91oTX3NmRUZsX41m4i5/xBYBTtQ4dm3kBPwQq/A0OFUEF2Z/9YoXufKf2Uqp
+         N9iYtwWqllY1gVOgX4OXAB1oUq4O+ZVJbi0hWFD+u0QEcWymdI43deU/y7tRL4eRyr1y
+         NnX0MwzEo6CbO3NJ51ZrURxVPCDEzqtg/wtjBULUJwaLQ9sCwdTusaB6Nw2P0gVgV3GT
+         jPeg==
+X-Forwarded-Encrypted: i=1; AHgh+RrwakV4qP/VBX4QTDwqbm0Y8DLKwtIlC64TNf84SOyfOv8oUj8VXEO1CR776yqJVH6kCu3OrBmyew==@kvack.org
+X-Gm-Message-State: AOJu0YzohazO5yid5QmSHBZGBcdIz+MnOgRXaI64DmJ7/vDHj3sv7e1Y
+	1SkJRPcm0ZL4PtZ/HrVPLCKwCjSCzzQU7Dl+Qqx4UB2AC4xBTFULwG2y
+X-Gm-Gg: AfdE7cmbPwUsQFl35R4VO7R1sA/xrzLFN0/XQddYk676qV8pR0SqgYBjyMiiCin0KCq
+	dyl+ycD+eodQE0MBn0fP34k07Gdq18sINYJTjXkR4cUOBWrJ/gMP3iSEHU4Rn49edoU1l0z3EsZ
+	BhZ2Nv3aYekG93GpH0/2Cmnt2wWsLbm62WSfAAAs7sr8IkI1br9eEvbQMeikWo5WYnY9ED6/o77
+	0rQqhhaoVNA7K+Qs/zo2dzEDGdFos+POXmuVbkP7rpQtnR1aC3dZE5/CEguSGwA9E6snfmW9SEb
+	bZoxOeJ2JvYx50o/jvG/1Dl+Oeze5dwaheKtI9oQW3eQF/Vn0EUKrASh8LWas0tzukPi8TfQIDJ
+	/Nsy8Ph/aokwSTqNamz19xwxLjIaN7YPZvojxgv+SYlECbD4MTu7qO3IGUHX4uxDCbBo6MZ+dPX
+	5cqnWB343isKtt17f02wWyuLjpWpG2UPxkp5sKC5+nAUws3wdonWXImN5MmW0=
+X-Received: by 2002:a17:903:19c5:b0:2ca:bb6:e7c6 with SMTP id d9443c01a7336-2ce9ef22bc9mr189071215ad.37.1784139385005;
+        Wed, 15 Jul 2026 11:16:25 -0700 (PDT)
 Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb25902b597sm620902a12.32.2026.07.15.11.16.14
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf0fdb3a0asm7052845ad.0.2026.07.15.11.16.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 11:16:16 -0700 (PDT)
-Subject: [PATCH v9 3/8] selftests/mm: add HMM test for mmap lock-dropping
- faults
+        Wed, 15 Jul 2026 11:16:24 -0700 (PDT)
+Subject: [PATCH v9 4/8] mshv: Use hmm_range_fault_unlocked_timeout() for
+ region faults
 From: Stanislav Kinsburskii <skinsburskii@gmail.com>
 To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
  corbet@lwn.net, dakr@kernel.org, david@kernel.org, decui@microsoft.com,
@@ -110,22 +110,22 @@ Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
  linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-rdma@vger.kernel.org
-Date: Wed, 15 Jul 2026 11:16:13 -0700
-Message-ID: <178413937354.1155966.16649896548407894107.stgit@skinsburskii>
+Date: Wed, 15 Jul 2026 11:16:22 -0700
+Message-ID: <178413938249.1155966.292562154596800687.stgit@skinsburskii>
 In-Reply-To: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
 References: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
 User-Agent: StGit/0.19
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 20151100006
+X-Stat-Signature: 9fycz4qdr6e558ydz5af1u4tgtne7k5s
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A7722140008
-X-Stat-Signature: 88tze6qmqdgbksz5fssgibr4aak1c7ty
-X-HE-Tag: 1784139378-181220
-X-HE-Meta: U2FsdGVkX1/Onsux8FFxyECSIEikpIPhZLxlAIaTajqZnNYgRej3ztIj9MfFe2ACbExA8I3z64+xFZ0MEKzNbqEMcJCjON20B3NV3+JhleZFBACWa6z+GC35aPrXCu9zCWVq5mm4qlQ791tdGCrgznAb9R6Vgi396bY+bZTzkc5HDsEd3QQsClmhtdw2zeaRVlRq1FkWGL3TrhtQvpE/4GTRxFf6BSk6MpcRMW27Jf9UEPlPp3KRfF5M6QxPdeCmgY3jO7jgKvykLXM3F4IoWO4ewgTYhZMNxOj8cblecYj2JK+nyq5WlrOzNQwjgRORjH1uuGFtAIIhQyG+S9AM12fWTukAumh7QmFzCgpJVj1PL16+46AfUgLnEHDAlz3hglVFMag/3GHs9zmYjkaN1tU80ZCD0WzzfDYl/tR6BxaMsV5H1tXdY1IN+JbcSsxTtrniOiY5nSFVCzmmZcojlCjbP+6ohXW/mig1sZa097d6W9yZxG5MVs5KlwNQzFIgT0jcGiHeQC8Y/hytczW0AdQroqwMr3dwAD/cHf3UN2SQIS4oC4OAbqe6vgUCu5+2SooQn9+ZSvmN1fuMWV6+kLVp6sWY8XkSgS6TWMvniy7dr8smNvVoLEJWKDyxjwQnkDeYdKjf1wbiuoiMzjvRBdbC7AZrtU+5nthHJVWyg9j9iNYngyuwd8hjWxRAa+DHqn3Okbk43nfIMWmPwUvXj3gof669PXNHPsuB69MGpukLg0Z3zVEt08G5J78KfFqpm+IvqpJvH6TAEGhPJSxXj5sxESUHlpL003zlW5LZ/gjgkrT5VqSgnlRuCbOByc+AFAAMauYyHxNNxlA/nEolz8+q37ZHh8GQYFwDFQ9uZgrpsx4DZ/syCJScOKJUibuAAgz+kyopDLjgwIHo22uLpTdq1+tVhM1VCzbJXMnuhvxpg8ROghLIMZnNjwWPPnJ3CPWWa645AhOZsbgpoeg
- ewzKGTtf
- nJn+K2OZ7Czy4nrXL3urcDHBCN1gErwFDcWZ2FH30Z+CjHyse95DEWl9+sKWEbXznP6xLO9TtN9ZGtnAD1yWOJbxTKNHMc/EDw+LZ0kWy0X+CvqTxEj2I7f1LyPU43rPDEnvv8r2Rc+al9m9TUBrwJkpeCvM0YrkPzQIxzTtVoGkwVUYR10yNDw98vtc5FWl6XxWNDUM1AGUqohpItDHb6VC9QedwxzYKqNIoB6HDeovCb/UClTCJPwMgK1j23+7X98WyVZmB1S07P5S4tIxQkPliDy7toiEp9utv1MufLycnVKNUvv5JZqo9G63L0vyk/X3uH/2jbmgIWDHdf4TH+KpBFt1M9Z61oIJ4C8iehariKi6R+V/7x1BZoOy2fxYTsnC+45KvriptK6GiB7/5APbAhcLILDZDvTazhVnW8h2erfRSLLeYOjQ5i85uJNNK1oU8qEB8+d4xDjlAWKnVXoCzQ3FUZxKCYUOX3dMhviMpaiSMi9J3jV/ktPKr5d+PrhLHiDbx+6H6xg9Vdf1kT+Bp4dJ+AIHU31XOWYZRPVe5x2KMWv4jEtzdMB9fod40LEeeUxuQzS9ly3RAAKMURiuspYznxZSj4N/T2fppliatSBLUT+Gu7EU6zw43ITRb4/wu
+X-HE-Tag: 1784139385-571373
+X-HE-Meta: U2FsdGVkX19sVo6uHaocEPagOaWKKYFaM6PsNK2xJADK+Jy4LYbO4rXlNLEOhgd9BYTTT3UtBrXoG5eEUEkNfpk1yMCaw6s0Rs1cKYdN5YvTGlXH92t+yxxxMTxH7HtYkkBiEIf7Zp2jB2oWyhOvcwWAz1ZNM327YEhDmPM3oo90cCowke1rj21waQoSWB/uG79SEMx8TccokkGhqom6M5qI8Xhju11t9qFP0YUi4ppH78XnsX4fHYlWxN1qDim+vFwy21/SaLjgfhiscCPAVpe3eeLpoDlNV3gAVlWLJoMIkEgcTtFEgqSbuBfjwiR9dDQJefRc04zdvtTk66EF6BCcMokt1Cn8DMf1uYc6dIfFQ/v7xSZu8wSTp+NmJ2zMKy5xF56eREsiQyNr6id5/CZgbiiguGcfLb3yPytBOSFq5U/Mpl2TRvpoVqpCy7E5IWhwIUdeVFxnvzENoVCNRkxJL61h1g8qUGF03qYaAN0yZK/uRobiG7ea1bF6eCIRHnBQ27+aJmcI7sNkmxm6M+fdRm93iFW0/kZCBotkCRWlryiMdJ4EWA6nbPFX3rsoxCyF5khC+iZXUgNnxnTEi60qhPlxlhIQb9QFLWSdylJy0NXJQLKySWfYFv3rdo9HsHilQnEbumhFbbVbpMTUGqC3ts0NSb4i2eZMPLEkhfNZk9y9vWTS2RjPrNznN5AofzEyebiGsp5GVHnF5QnwlStdixTZkEXyNVbSEaga0YcQnfSCTGwM8Qhot8MEg7dflC7TWVkUS8BLFbAke0FWLl1gS+zJHJc+vyXI6nbyoBmuaIwvHuYIbWp0GGAHYHASqMiy7IC45zdVHS5RZ7QoV2iy/ociKLjCIOmWXxWxOM1O3wjI7FHkZwp1G5FS47/rWetepGAAPKybq/L9tsqMvA8SNp2PpStSdslwEUitOiri6i+YhX8UUqF91VGpKE6njhF6a0HsUjUEbFC8fv7
+ WoTvbfuY
+ fhjD7S5OYOtHDX1GdH4dAF9QoBPRJIjmY5d+1pyBHy8P6JM65cNNW8zjolpS643gRLX0Ncd3Y1qHeF5Ltke/Doqit/EQN2aSRLilM0OPe9u+PyR0Ca/lE/XUwQbtewaisol6CkukHgfyAocSffX1yB+fXD1wzDhIz8BPPDxthIGS5mEkEpO0z6geC8iw2O0Vs+kWcsigjJxNTMiSIEXwfwNw3OPin1XOXCxVg9NLDMzB7ch3ynzwtroaBSxnci9iYLOm81elVHe7E37XlIUPYbpAoQ0XDqLgNfemYeGapHWKWZJRGbVLlQ7a/eenPp4rdyyvZ5FqgrTAiRW0PIgbamEBrco1vsV/6U3lLSRQXHfZWKEHAFGe0zpzSHY2KUZ4hs6kcqIkCB8IlM0U06rB6Ry//Ra+jyFBZeF/K3i0O+pKOKkxaTXzHnqOkXeoKn+H391cezRbI7vIMvcvmq+VzD4QnUGPdolu+zwKBUO9LxfuyZ6pZ4dho4R1GYDMiiTfDjC8qvvLvOduJDEKAsfXjmLP5siSiOtsA+4Q9PtgW4YZHzfOsMx24ZkzPQqX6L7cHnKkdHueLnHi1zeKCH/N+WleR2K5WLnKvCBQnENglbeTAZxwgWqaB4Et0UfGuT8K+51JO8L1ABrUHVOK/lpLp74WZO7FGqBZeZNIixG1aCXuMYDW3eQUaeWBWPqD0fde1T7buhqXxt5tPpIo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,337 +133,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add test_hmm coverage for the HMM lock-dropping fault path. The test module
-gets a new HMM_DMIRROR_READ_UNLOCKED ioctl that calls
-hmm_range_fault_unlocked_timeout() with a timeout of 0, exercising the
-unbounded retry mode while allowing the mmap lock to be dropped during
-fault handling.
+MSHV currently faults movable memory regions by taking mmap_read_lock()
+around hmm_range_fault(). That prevents the fault path from handling VMAs
+whose fault handlers need to drop mmap_lock, such as userfaultfd-backed
+mappings.
 
-Add a userfaultfd_read selftest that registers an anonymous mapping with
-UFFDIO_REGISTER_MODE_MISSING, services the faults from a handler thread
-with UFFDIO_COPY, and verifies that HMM can read back the data supplied by
-the handler. This exercises the path where handle_mm_fault() drops
-mmap_lock and hmm_range_fault_unlocked_timeout() restarts the walk
-internally.
+Use hmm_range_fault_unlocked_timeout() instead. Passing a timeout of 0
+preserves MSHV's existing unbounded retry behavior while letting the HMM
+helper own mmap_lock acquisition and refresh range->notifier_seq internally
+before walking the range. After the fault succeeds, MSHV still takes
+mreg_mutex and checks mmu_interval_read_retry() before installing the pages
+into the region, so the existing invalidation synchronization is preserved.
 
-Assisted-by: GitHub-Copilot:claude-opus-4.6
+Fold the small fault-and-lock helper into mshv_region_range_fault(), since
+the remaining retry path is just the standard "fault, take the driver lock,
+check the interval notifier sequence" pattern.
+
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
 ---
- lib/test_hmm.c                         |  107 +++++++++++++++++++++++
- lib/test_hmm_uapi.h                    |    1 
- tools/testing/selftests/mm/hmm-tests.c |  150 ++++++++++++++++++++++++++++++++
- 3 files changed, 257 insertions(+), 1 deletion(-)
+ drivers/hv/mshv_regions.c |   54 ++++++++-------------------------------------
+ 1 file changed, 10 insertions(+), 44 deletions(-)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 45c0cb992218..6205fb313bd0 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -389,6 +389,67 @@ static int dmirror_range_fault(struct dmirror *dmirror,
- 	return ret;
+diff --git a/drivers/hv/mshv_regions.c b/drivers/hv/mshv_regions.c
+index 6d65e5b42152..dddaade31b5d 100644
+--- a/drivers/hv/mshv_regions.c
++++ b/drivers/hv/mshv_regions.c
+@@ -381,46 +381,6 @@ int mshv_region_get(struct mshv_mem_region *region)
+ 	return kref_get_unless_zero(&region->mreg_refcount);
  }
  
-+static int dmirror_range_fault_unlocked(struct dmirror *dmirror,
-+					struct hmm_range *range,
-+					unsigned long timeout)
-+{
-+	int ret;
-+
-+	while (true) {
-+		ret = hmm_range_fault_unlocked_timeout(range, timeout);
-+		if (ret)
-+			goto out;
-+
-+		mutex_lock(&dmirror->mutex);
-+		if (mmu_interval_read_retry(range->notifier,
-+					    range->notifier_seq)) {
-+			mutex_unlock(&dmirror->mutex);
-+			continue;
-+		}
-+		break;
-+	}
-+
-+	ret = dmirror_do_fault(dmirror, range);
-+
-+	mutex_unlock(&dmirror->mutex);
-+out:
-+	return ret;
-+}
-+
-+static int dmirror_fault_unlocked(struct dmirror *dmirror,
-+				  unsigned long start,
-+				  unsigned long end, bool write,
-+				  unsigned long timeout)
-+{
-+	struct mm_struct *mm = dmirror->notifier.mm;
-+	unsigned long addr;
-+	unsigned long pfns[32];
-+	struct hmm_range range = {
-+		.notifier = &dmirror->notifier,
-+		.hmm_pfns = pfns,
-+		.pfn_flags_mask = 0,
-+		.default_flags =
-+			HMM_PFN_REQ_FAULT | (write ? HMM_PFN_REQ_WRITE : 0),
-+		.dev_private_owner = dmirror->mdevice,
-+	};
-+	int ret = 0;
-+
-+	if (!mmget_not_zero(mm))
-+		return -EFAULT;
-+
-+	for (addr = start; addr < end; addr = range.end) {
-+		range.start = addr;
-+		range.end = min(addr + (ARRAY_SIZE(pfns) << PAGE_SHIFT), end);
-+
-+		ret = dmirror_range_fault_unlocked(dmirror, &range, timeout);
-+		if (ret)
-+			break;
-+	}
-+
-+	mmput(mm);
-+	return ret;
-+}
-+
- static int dmirror_fault(struct dmirror *dmirror, unsigned long start,
- 			 unsigned long end, bool write)
- {
-@@ -488,6 +549,48 @@ static int dmirror_read(struct dmirror *dmirror, struct hmm_dmirror_cmd *cmd)
- 	return ret;
- }
- 
-+static int dmirror_read_unlocked(struct dmirror *dmirror,
-+				 struct hmm_dmirror_cmd *cmd,
-+				 unsigned long timeout)
-+{
-+	struct dmirror_bounce bounce;
-+	unsigned long start, end;
-+	unsigned long size = cmd->npages << PAGE_SHIFT;
-+	int ret;
-+
-+	start = cmd->addr;
-+	end = start + size;
-+	if (end < start)
-+		return -EINVAL;
-+
-+	ret = dmirror_bounce_init(&bounce, start, size);
-+	if (ret)
-+		return ret;
-+
-+	while (1) {
-+		mutex_lock(&dmirror->mutex);
-+		ret = dmirror_do_read(dmirror, start, end, &bounce);
-+		mutex_unlock(&dmirror->mutex);
-+		if (ret != -ENOENT)
-+			break;
-+
-+		start = cmd->addr + (bounce.cpages << PAGE_SHIFT);
-+		ret = dmirror_fault_unlocked(dmirror, start, end, false, timeout);
-+		if (ret)
-+			break;
-+		cmd->faults++;
-+	}
-+
-+	if (ret == 0) {
-+		if (copy_to_user(u64_to_user_ptr(cmd->ptr), bounce.ptr,
-+				 bounce.size))
-+			ret = -EFAULT;
-+	}
-+	cmd->cpages = bounce.cpages;
-+	dmirror_bounce_fini(&bounce);
-+	return ret;
-+}
-+
- static int dmirror_do_write(struct dmirror *dmirror, unsigned long start,
- 			    unsigned long end, struct dmirror_bounce *bounce)
- {
-@@ -1572,7 +1675,9 @@ static long dmirror_fops_unlocked_ioctl(struct file *filp,
- 		dmirror->flags = cmd.npages;
- 		ret = 0;
- 		break;
+-/**
+- * mshv_region_hmm_fault_and_lock - Handle HMM faults and lock the memory region
+- * @region: Pointer to the memory region structure
+- * @range: Pointer to the HMM range structure
+- *
+- * This function performs the following steps:
+- * 1. Reads the notifier sequence for the HMM range.
+- * 2. Acquires a read lock on the memory map.
+- * 3. Handles HMM faults for the specified range.
+- * 4. Releases the read lock on the memory map.
+- * 5. If successful, locks the memory region mutex.
+- * 6. Verifies if the notifier sequence has changed during the operation.
+- *    If it has, releases the mutex and returns -EBUSY to match with
+- *    hmm_range_fault() return code for repeating.
+- *
+- * Return: 0 on success, a negative error code otherwise.
+- */
+-static int mshv_region_hmm_fault_and_lock(struct mshv_mem_region *region,
+-					  struct hmm_range *range)
+-{
+-	int ret;
 -
-+	case HMM_DMIRROR_READ_UNLOCKED:
-+		ret = dmirror_read_unlocked(dmirror, &cmd, 0);
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-diff --git a/lib/test_hmm_uapi.h b/lib/test_hmm_uapi.h
-index f94c6d457338..ea9b0ec404fb 100644
---- a/lib/test_hmm_uapi.h
-+++ b/lib/test_hmm_uapi.h
-@@ -38,6 +38,7 @@ struct hmm_dmirror_cmd {
- #define HMM_DMIRROR_CHECK_EXCLUSIVE	_IOWR('H', 0x06, struct hmm_dmirror_cmd)
- #define HMM_DMIRROR_RELEASE		_IOWR('H', 0x07, struct hmm_dmirror_cmd)
- #define HMM_DMIRROR_FLAGS		_IOWR('H', 0x08, struct hmm_dmirror_cmd)
-+#define HMM_DMIRROR_READ_UNLOCKED	_IOWR('H', 0x09, struct hmm_dmirror_cmd)
+-	range->notifier_seq = mmu_interval_read_begin(range->notifier);
+-	mmap_read_lock(region->mreg_mni.mm);
+-	ret = hmm_range_fault(range);
+-	mmap_read_unlock(region->mreg_mni.mm);
+-	if (ret)
+-		return ret;
+-
+-	mutex_lock(&region->mreg_mutex);
+-
+-	if (mmu_interval_read_retry(range->notifier, range->notifier_seq)) {
+-		mutex_unlock(&region->mreg_mutex);
+-		cond_resched();
+-		return -EBUSY;
+-	}
+-
+-	return 0;
+-}
+-
+ /**
+  * mshv_region_range_fault - Handle memory range faults for a given region.
+  * @region: Pointer to the memory region structure.
+@@ -452,13 +412,19 @@ static int mshv_region_range_fault(struct mshv_mem_region *region,
+ 	range.start = region->start_uaddr + page_offset * HV_HYP_PAGE_SIZE;
+ 	range.end = range.start + page_count * HV_HYP_PAGE_SIZE;
  
- #define HMM_DMIRROR_FLAG_FAIL_ALLOC	(1ULL << 0)
+-	do {
+-		ret = mshv_region_hmm_fault_and_lock(region, &range);
+-	} while (ret == -EBUSY);
+-
++again:
++	ret = hmm_range_fault_unlocked_timeout(&range, 0);
+ 	if (ret)
+ 		goto out;
  
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index 6fccbdab02ee..5acb728666f8 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -29,6 +29,10 @@
- #include <sys/mman.h>
- #include <sys/ioctl.h>
- #include <sys/time.h>
-+#include <sys/syscall.h>
-+#include <sys/eventfd.h>
-+#include <linux/userfaultfd.h>
-+#include <poll.h>
- 
- /*
-  * This is a private UAPI to the kernel test module so it isn't exported
-@@ -2952,4 +2956,150 @@ TEST_F_TIMEOUT(hmm, benchmark_thp_migration, 120)
- 					&thp_results, &regular_results);
- 	}
- }
-+/*
-+ * Test that HMM can fault in pages backed by userfaultfd using the
-+ * hmm_range_fault_unlocked_timeout() path with no timeout. This exercises
-+ * the lock-drop retry logic in the HMM framework.
-+ */
-+struct uffd_thread_args {
-+	int uffd;
-+	int stop_fd;
-+	void *page_buffer;
-+	unsigned long page_size;
-+};
++	mutex_lock(&region->mreg_mutex);
 +
-+static void *uffd_handler_thread(void *arg)
-+{
-+	struct uffd_thread_args *args = arg;
-+	struct uffd_msg msg;
-+	struct uffdio_copy copy;
-+	struct pollfd pollfd[2];
-+	int ret;
-+
-+	pollfd[0].fd = args->uffd;
-+	pollfd[0].events = POLLIN;
-+	pollfd[1].fd = args->stop_fd;
-+	pollfd[1].events = POLLIN;
-+
-+	while (1) {
-+		ret = poll(pollfd, 2, -1);
-+		if (ret <= 0)
-+			break;
-+		if (pollfd[1].revents)
-+			break;
-+		if (!(pollfd[0].revents & POLLIN))
-+			break;
-+
-+		ret = read(args->uffd, &msg, sizeof(msg));
-+		if (ret != sizeof(msg))
-+			break;
-+
-+		if (msg.event != UFFD_EVENT_PAGEFAULT)
-+			break;
-+
-+		/* Fill the page with a known pattern */
-+		memset(args->page_buffer, 0xAB, args->page_size);
-+
-+		copy.dst = msg.arg.pagefault.address & ~(args->page_size - 1);
-+		copy.src = (unsigned long)args->page_buffer;
-+		copy.len = args->page_size;
-+		copy.mode = 0;
-+		copy.copy = 0;
-+
-+		ret = ioctl(args->uffd, UFFDIO_COPY, &copy);
-+		if (ret < 0)
-+			break;
++	if (mmu_interval_read_retry(range.notifier, range.notifier_seq)) {
++		mutex_unlock(&region->mreg_mutex);
++		cond_resched();
++		goto again;
 +	}
 +
-+	return NULL;
-+}
-+
-+TEST_F(hmm, userfaultfd_read)
-+{
-+	struct hmm_buffer *buffer;
-+	struct uffd_thread_args uffd_args;
-+	unsigned long npages;
-+	unsigned long size;
-+	unsigned long i;
-+	unsigned char *ptr;
-+	pthread_t thread;
-+	int uffd;
-+	int stop_fd;
-+	int ret;
-+	struct uffdio_api api;
-+	struct uffdio_register reg;
-+	uint64_t stop = 1;
-+	ssize_t nwrite;
-+
-+	npages = 4;
-+	size = npages << self->page_shift;
-+
-+	/* Create userfaultfd */
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (uffd < 0)
-+		SKIP(return, "userfaultfd not available");
-+
-+	api.api = UFFD_API;
-+	api.features = 0;
-+	ret = ioctl(uffd, UFFDIO_API, &api);
-+	ASSERT_EQ(ret, 0);
-+
-+	buffer = malloc(sizeof(*buffer));
-+	ASSERT_NE(buffer, NULL);
-+
-+	buffer->fd = -1;
-+	buffer->size = size;
-+	buffer->mirror = malloc(size);
-+	ASSERT_NE(buffer->mirror, NULL);
-+
-+	/* Create anonymous mapping */
-+	buffer->ptr = mmap(NULL, size,
-+			   PROT_READ | PROT_WRITE,
-+			   MAP_PRIVATE | MAP_ANONYMOUS,
-+			   -1, 0);
-+	ASSERT_NE(buffer->ptr, MAP_FAILED);
-+
-+	/* Register the region with userfaultfd */
-+	reg.range.start = (unsigned long)buffer->ptr;
-+	reg.range.len = size;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ret = ioctl(uffd, UFFDIO_REGISTER, &reg);
-+	ASSERT_EQ(ret, 0);
-+
-+	/* Set up the handler thread */
-+	uffd_args.uffd = uffd;
-+	stop_fd = eventfd(0, EFD_CLOEXEC);
-+	ASSERT_GE(stop_fd, 0);
-+	uffd_args.stop_fd = stop_fd;
-+	uffd_args.page_buffer = malloc(self->page_size);
-+	ASSERT_NE(uffd_args.page_buffer, NULL);
-+	uffd_args.page_size = self->page_size;
-+
-+	ret = pthread_create(&thread, NULL, uffd_handler_thread, &uffd_args);
-+	ASSERT_EQ(ret, 0);
-+
-+	/*
-+	 * Use the unlocked read path which allows the mmap lock to be
-+	 * dropped during the fault, enabling userfaultfd resolution.
-+	 */
-+	ret = hmm_dmirror_cmd(self->fd, HMM_DMIRROR_READ_UNLOCKED,
-+			      buffer, npages);
-+	ASSERT_EQ(ret, 0);
-+	ASSERT_EQ(buffer->cpages, npages);
-+
-+	/* Verify the device read the data filled by the uffd handler */
-+	ptr = buffer->mirror;
-+	for (i = 0; i < size; ++i)
-+		ASSERT_EQ(ptr[i], (unsigned char)0xAB);
-+
-+	nwrite = write(stop_fd, &stop, sizeof(stop));
-+	ASSERT_EQ(nwrite, sizeof(stop));
-+	pthread_join(thread, NULL);
-+	close(stop_fd);
-+	free(uffd_args.page_buffer);
-+	close(uffd);
-+	hmm_buffer_free(buffer);
-+}
-+
-+
- TEST_HARNESS_MAIN
+ 	for (i = 0; i < page_count; i++)
+ 		region->mreg_pages[page_offset + i] = hmm_pfn_to_page(pfns[i]);
+ 
 
 
 
