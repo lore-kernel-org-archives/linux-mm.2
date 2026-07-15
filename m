@@ -4,140 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6466AC44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:49:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6C81C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 505FB6B00E5; Wed, 15 Jul 2026 09:49:14 -0400 (EDT)
+	id DE0776B00E7; Wed, 15 Jul 2026 09:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DD416B00E7; Wed, 15 Jul 2026 09:49:14 -0400 (EDT)
+	id DB8676B00E9; Wed, 15 Jul 2026 09:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CFBB6B00E8; Wed, 15 Jul 2026 09:49:14 -0400 (EDT)
+	id CA7BC6B00EA; Wed, 15 Jul 2026 09:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ED606B00E5
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:49:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DADD160183
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:31:15 +0000 (UTC)
-X-FDA: 84990946110.24.04BEEB9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7AD9C40011
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:31:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALPc5rU4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A58966B00E7
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:49:33 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA5E9C0144
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:31:06 +0000 (UTC)
+X-FDA: 84990945732.17.AB94DA3
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0E0B71C000A
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:31:04 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e+qO3gpc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784118673;
+	s=arc-20220608; t=1784118665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+CA/gvPPeHGWFx0KXCJPnqrnkMq9p15aLakAKFtTXRw=;
-	b=ZEkxW8O7YIPchmsDnriVmmdN8TBse+iYBhFQ9dEbxKGodcdyL+Nmjhr7jdvT5vgZybDekS
-	L48QUuj9Ubq768PTCQXKKoowNtQe6wpVv8coZlBkm1Dm9DRbgKtYvdvzQQWGLJTGt5a3xn
-	auYyQ1LIkKak54QBrEehaCPXvLYpBIE=
+	bh=FL4DH6iSB8h5Gk2sonUHgNYBuRFyDX29syp4nQdWWD4=;
+	b=Abxh6W1wDYNxwxiQR4iV2DrODEUX8VHYLHlbIKmlIrlG6OHn9KJ5TERBb1bfGbifxwizTS
+	IsMx/A+fu5dL131CuB6BPSWV7wjuEbMao1aeGZ5yP+4flwfWigWcBvVDCjYhqYSnUfSfC6
+	dutBAGrFhxikus8gFT7upqCbdx415u0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALPc5rU4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e+qO3gpc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784118673;
-	b=ck61wgivQIA/VOGd93GWpYBs0GvtKdSAjMcipuFcrXBauM6tJDTOqy3H2ylCrIZYhcygDs
-	QVNjPoiTNwpeuBdv9VbxUhJDeNmTtmL3EECSFykRGvGGe/xylfpVzWojWYdwH5w9NETYas
-	KxNyQnQQ9oERcGIb1zPeK/OUiZ1IcwA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 76C916001A;
-	Wed, 15 Jul 2026 12:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614E01F000E9;
-	Wed, 15 Jul 2026 12:31:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784118671;
-	bh=+CA/gvPPeHGWFx0KXCJPnqrnkMq9p15aLakAKFtTXRw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ALPc5rU4iA2uCm6/0MW48v2YQLtEUCunTv6hjH04sGEcZbW4ILuLcldAnLH49GdGx
-	 Ukl8vT8VBqwbOs9iVLEQsda+8QnAQeIznt5pXea+Dw8kG8y/MhV2LN0tDO7vDSHdl/
-	 cGgDRpVS0oq2W6YPfRhjrVPkIesZB4AR7yp76daWhBukoYdR2ZPA/dlwem0IJM9i4y
-	 ildAHIWAOCVCJtprNMgB1Y9mlGZ/QGBaLrIyWbaW8PxOsUeEexqybKXnIl+j7qFC4y
-	 H/22OJ3WA1zuOJpj+N26B1baUgoVFaQs9Btvv5CBOuWlDP9GxKfpyzcoiEHesrPsyb
-	 WPlDLSoSPM+JQ==
-Message-ID: <7e7f20de-c43d-40f7-82d3-8d05ceb3656b@kernel.org>
-Date: Wed, 15 Jul 2026 14:31:08 +0200
+	t=1784118665;
+	b=etMHa2+/MEBlEAR7Yg+xOiYdhXEucKh2TG6qhjsHkLiw9e/e0KazztQb1Xo6tDGehO6vrz
+	AvIp5q1BMyQHIZMPOgyn5swnEJAbaSiV5OfQqTaawLzNaN9WLegulPtpA178YpPcCPd/wG
+	Mcazh7mhFk0MOiyUQhZvL/7kVcQT/2Q=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8485ef63b68so4884418b3a.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:31:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784118664; x=1784723464; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=FL4DH6iSB8h5Gk2sonUHgNYBuRFyDX29syp4nQdWWD4=;
+        b=e+qO3gpc1ctuXD1e2sUj7Y5JNlByTm3jrzu4V2Uf/RzZOdtuqLHSFwsbrSHOuUtrVW
+         zPg/I66SOBiR6XGQpd5Irq7HVS1lInPIASyRSGlTWhwdldYAOkGG6ndcgFAnANIROivD
+         3VHIabGr30doXagXgYlrgTnU6OwQ3Nkwt28fIob+x3Wof/jbF3XbkMPL11tw/w0j8mGt
+         0ygALDM0LuS4bd6le07g87ERDMubTpTzy11YQC2IfYU7f23MD7REcoRjv4A7uLk1x6cJ
+         D/LZdYn8iFEbSL+Lcztao8d8aGrjgatytg0huXDwHchWizhX9z9TPuSDFoIqVKnhTRsE
+         Udrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784118664; x=1784723464;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FL4DH6iSB8h5Gk2sonUHgNYBuRFyDX29syp4nQdWWD4=;
+        b=UssItmAvXQLjphO5f/2u186EEAzqhh35RPK8121Mn+k/TLH4bw0WaNr6EHQUBinnaP
+         gRPch7YzUfZtENrw583QN3/HbQm1CdX7f28Q4O+Z6KkFtRzdd0WxhNxm3IMtPLUVcA8W
+         B2CpiSzTo10TaGjJ3KPjWv90cEP2sFhLOlQ9x9kIOGLlPYKbbcfT8CTtYMirt8D7VpWL
+         Qfob4dFoMAEjsTwUc79eFix0XoNVQH0m2Rh4qesEL6kXmjSFnulCb/PfhLwD01bcEkoo
+         jMd+QDGOcM58WwyD1zER1vgfOsdZ9adXnowkQvp2PnYU2mwjlgs0T+EkGwgja3lQ3Nz4
+         rVUg==
+X-Forwarded-Encrypted: i=1; AHgh+RqviSPJMFMm78L0ldZFzYnZ9DdnJfNZDRws+clmyc/Kc6pyh9g4r7Mt1ow/kRe9k5F1zIDQ560VBw==@kvack.org
+X-Gm-Message-State: AOJu0Yx4BVuORt3iIk2/XjlaslkhfDuMF5izVxbNnkFM+huJjLqUBaOC
+	P5zoWoXeznPnFZuVsLb8tTcBlURwCAbE50hrRffjrUlCC/dFBBjCeYjO
+X-Gm-Gg: AfdE7cmI/QAM2x/ENgYI5gAMRLnW40cus6WlodnLE0u7AdVln0WuYko11XOjaXlEKHU
+	XrlOYIpdd+IEgKWkPaozz6y8AbqtBCb1FDQi1rSbBaMczgmUYlaNG1BxezAq7FwYyVhTtCxN3Ln
+	Sym02MogOc7DtCmvnXRVS1QwocpIhBB+0M3LU4QqwxzrlqHarsOtr9+u5jnJGNVfntnFo1n7buX
+	xw7IoshICArKj2PT0NDrVM1AYAy3tBg2aj+lmNVlpotWRh8ENDuMQCHI8IHaxEqZbR4wO07PRZM
+	3+zKp4Fa0Zoyk3QWuHz+14OmWbDh9ZQdvMP9xWanH9pcSCF9pGmNiV+fUg3igURR2WeLDNetBMj
+	/NfREpOqLAtgYP+ePbwQPxNxiDmVyBbq3srKvnHy9Mg1cFdcAzSfa7G1Eq+pPvzm5nXN0f4jC+B
+	FNOLCSDfBlvq3C2DQMMTcPmy6wju4DS0RbmQ==
+X-Received: by 2002:a05:6a00:4612:b0:848:2f6e:e52e with SMTP id d2e1a72fcca58-84a5587a0a1mr6247775b3a.66.1784118663610;
+        Wed, 15 Jul 2026 05:31:03 -0700 (PDT)
+Received: from [10.125.192.114] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f7dade0sm3092157b3a.46.2026.07.15.05.30.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jul 2026 05:31:03 -0700 (PDT)
+Message-ID: <7a1fe347-7ca6-4768-9308-420bf1251f54@gmail.com>
+Date: Wed, 15 Jul 2026 20:30:43 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
-To: Mike Rapoport <rppt@kernel.org>,
- Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260703-secretmem-highmem-v1-1-30d5ff944664@google.com>
- <20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org>
- <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev> <akpBWmnujSnj1ZEE@kernel.org>
- <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
- <DJZ3TQV3GPDO.6AN321FGTTX@linux.dev> <aldv8U-lzCn0SCBL@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aldv8U-lzCn0SCBL@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH 1/2] mm/zswap: Fix global shrinker when memory cgroup is
+ disabled
+To: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed
+ <yosry@kernel.org>, nphamcs@gmail.com
+Cc: tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
+ mhocko@kernel.org, mkoutny@suse.com, chengming.zhou@linux.dev,
+ muchun.song@linux.dev, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
+ <20260714081510.16895-2-jiahao.kernel@gmail.com>
+ <CAO9r8zM5nzDqNcx5UoDgGexvR6jf8MmJV9SomM4AS7n-rZ2o5Q@mail.gmail.com>
+ <20260714193129.f81711f516504b659d544741@linux-foundation.org>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <20260714193129.f81711f516504b659d544741@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7AD9C40011
-X-Stat-Signature: 961dox156adqsu3pyoec4uskkbxr4kax
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0E0B71C000A
+X-Stat-Signature: 39uwmy5yc3gj1kesqbrwmx7kfan9jyuk
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784118673-930782
-X-HE-Meta: U2FsdGVkX19Cqc4H6fYTs52YjuoOVBF2Ezi9XeeaFFtw/NY/otPq0iq9Yfwqg5WMM2n2nRlyDYF19ULZ+5u98/h5Fdsh1S52ZViJx2b2/6GpOgHjlECk3CawrrcpBZYCztUgVNbfg6mfJMfu+PxZumPjWpsq0Hlfm2UdnA23Na/yc669XgOJtCR2eP7tn7IWerNz0Iy59gwDcswcs6E0sjfh1bITh/7scs6BOQfSgIfiVzkVrFsnjPl9TRbUIncRDV3d8ZIU4l4bLtq6N5vePmK6ZV+cJsbUAbf/qqSjUvGpuOlSrmFamgPMEN4r5IyVYLP/5tTTi/riZoJJMOVqIzf48nCGg73Zw9SZBOVnWxqtuaMZYsu1EVV71lw8io93zLppwEhNWYOIAbaOt2q7BoEqsYy/xV0eB6r4S78NnBNEKqhkGYnRSS5OXCt9HVebRgNmPbrHpye81ip/LRvwbxhq5zZEGV11M3j40L6EgSa2CMuDOF9elpIr9p0+LW+F3TTEyDylf9/XJNh6qiUEP9XUTYn/4HkZJ6Nkli/SmwJBBWezRmeyYx3uQU6ekhY414f3srQpPhBA7JsZeGk4v/ThgDiINhPr6g3gxPGNkXG1RYCS8+4Sp7BGvC/jJdZ6H6AdECu+LFM1LgEaV+t3erDFnBiD5jleElgbjEN6jI98R2361oADvlHbGg2wkql+fm3yZfR4decto8Im3wbQYZ4oGY017uTvnCh9OzX/thH9bfO08l/YpverRvYFWAQXd+RXlQGmil0e6Tkmyf3XsNPmQVGvKUerLQc0iS9nTTiwAjb5YNhNOz7IUNSEUg8/0Rukd9WNsng8jKnPhDOZhm1Oze+0iKqvJQkUcfBQO1lvmIOXzh73EEa3eC17NBsoHxWICIm6RtSV+RDiQ7m27JAG2pjXpL4RD3aTERGOQjmKO+q1dktuKor0/Je1N8XgcbPyU90FFcG8gw4YuKa
- SsMmVQDg
- m3gmmCiM3t4QrLLRms6z7ta3ll+xWqQk4caloph5FR8VsZd+xoyO3Rzj5OE5f0jtqA/RUMbRve2OTJCZBiaBkNfpXsi3rKyygO+9KCMQMDw+8CnsZc6K5HH+LzefxKgn/3CpDykCbOSextxhNjqLAz2mzC2onMbK3tY+K8nDZXZ/EVCLRJXDX7k0zp0blY6QRmdUsPA8Ejc/eqNZhBey6seyVw912NrKRj8wqA/F8Y78Hkan3G4uDSOnEtDuhcCGl/FU5
+X-HE-Tag: 1784118664-377101
+X-HE-Meta: U2FsdGVkX1+9CSBQAjjyvPQe7jAZzPXgwBFT8HPzi5ruu6uMAAn5wVpjNhCA+z/akk8uz1FZ1D/QY+L4G5nHR1kTD2APo7mr61vLE10wDlnyW38BvcX5H5hdHATnd8UvKOivyohUzv3nosxp75XHCVNbrePJeAqr26Swz9ZlD6/VZPxAnCYqD2c8asnWgE7sMHpFLusAyDMNixeaDoqxTiPaWLzSTHx4XFhx1cfgLPRtmvZ5PZvoTaUHeBsd9jv+hlTGavtNLNB5dlDAW4svN2PtssDI25sn6o7LQOLip5o8TCX9tyUakYarfU4Bfk/3VhfXwuIf4nZK1661b49b+6vmw10nePIhmS7Z6fJqWr01gSnum0dG/5WOBrnV3FkcSc75jQL5um0Ujy4dkmJcBM0GM0b9rV8bLfKlh/mEMXocNLPhs801YSnvGJGGm9/9tTxZiMTMgfH/K8iXYix/gOUdF6gRd9CwHoOYiTQHQuqlD3xRzUUmTolwiHcMof1oeuWnGtfZHEuvgarsMXuF+EXy6h9nDhz8iL0uQGtp1KBpvu9oJaH8h7l2+q9/yNhJjtBZbkoB5aHQfw1Tq4RTwPszTbP9wU9c54ty3DMs2ae7w9P2QZWtzl1tfNT5Sy1VC1iuq8564z146IJ/27Pg+VTHyIfiHGcZfUraKKQ/KBv10jMS7FVBKbH9ejLr9x1BBOSGZlTxxA5EMyWPmLV+eljFUf9mjh3lx+5kY2/jxSeEqQ7TbF9WVlJnQ9S05GgsyD7HbP+/8uOta6jzaGB8N0wd/Lmu2kDNEerljhwh0zIosKCIktawSk1NMirvpVA8jEVwh/g5EIGAHGV04KZBbv6hOCbc9sJXznjSaJXl+PckmkliIuQs7CoddSddt96fpOvd/wPxeEnTDyVVb+7OgpivDQYjzrhvNgZkzFNS1h18L9OOvghbIEZBnkaPJ7jRSCLA5WhmQUUJjm+iILC
+ BCcouQ1l
+ R5P67PHjXtcIOyEerDEQFD6hvfzXnssyxAbMqciteQMQ8lyYAcO2o4gSTFr+GbRrlHDAE/WgpTftVzyaIGMmbtd0xrNdYejV7bGMITwQEgk0Z6DFkr3wUNVt51ENmczAK8j5kgc3gQiauO+k6rE+o7j+sKZrKgaj+qQrUgHN+afuqblL/oCeaqlsk3z7w222F2NsgLan+SnkQLL7XuaZg7Gff0ridyV9MIALmwCx8CX1ODPLoTPicnkISJU+kjKgDEVu1401Mtj4X4M3BRqw42nP6F7bSCRY5eqMsirWHRucnwged+oYqY6WNEdDgKXwnWGqFF8XYs1/vLI4hYAKvhsSGhnqamJ6I1ElxvRhMyAhTmGJMynApbUOaWBZMJawZVJ0A0wegWxhJKD0y/lfdWNUE2+yCrz5HsvIPVFe0UFDAROb88sp9itQKryfMyK1f6O2S9iCFA2UznDU5ePiW8SP9X14mf9hDHnz/DYfBqfBhSOAHpWzzDo+AmICEKiH/ydlHmPGLAGZxHtIqJCjGIj38nADOrGAU9NLylE/tYYc1+0baWRVvfQXTKvIvTENJjkM7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,47 +129,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 13:33, Mike Rapoport wrote:
-> On Wed, Jul 15, 2026 at 11:22:33AM +0000, Brendan Jackman wrote:
->> On Mon Jul 6, 2026 at 8:42 AM UTC, David Hildenbrand (Arm) wrote:
->>>
->>> Right.
->>>
->>>
->>> We could even limit it to 64BIT ;)
->>
->> I fear this in limbo, we have quite a wide range of opinions from "fix
->> the broken configuration" all the way to "disable secretmem completely on
->> 32bit". I'm not passionately committed to any one answer but I do think
->> we need to pick something.
->>
->> Mike's position seems to be roughly "in the middle" of the spectrum, and
+
+
+On 2026/7/15 10:31, Andrew Morton wrote:
+> On Tue, 14 Jul 2026 09:52:59 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
 > 
-> Right :)
-> Supporting 32-bit without HIGHMEM is easy, so I don't think we should limit
-> it to 64BIT at this point.
+>>> When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
+>>> Therefore, the global shrinker shrink_worker() always takes the !memcg
+>>> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up,
+>>> so it fails to write back anything.
+>>>
+>>> Therefore, when memory cgroup is disabled, fall through with the !memcg
+>>> branch and shrink the root memcg directly.
+>>>
+>>> With memcg disabled, shrink_memcg() only returns -ENOENT when the root
+>>> LRU is empty, which means the total pages are already below thr. The
+>>> loop then safely bails out via the zswap_total_pages() <= thr check.
+>>> For any other return value from shrink_memcg(), the loop is guaranteed
+>>> to terminate, either after MAX_RECLAIM_RETRIES failures or once the
+>>> threshold is met.
+>>>
+>>> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+>>> Cc: stable@vger.kernel.org
+>>> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+>>> Acked-by: Nhat Pham <nphamcs@gmail.com>
+>>> Acked-by: Yosry Ahmed <yosry@kernel.org>
+>>> Reported-by: Yosry Ahmed <yosry@kernel.org>
+>>> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
+>>> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+>>
+>> Patch 2 doesn't really depend on this one, right?
+>>
+>> If that's the case I think this can (and should be) picked up
+>> separately as a hotfix. Andrew, WDYT?
+> 
+> Please update the changelog to clearly describe the userspace-visible
+> effects of the bug, thanks.
 
-You mean
+I am not entirely sure if my understanding is correct here, but maybe I 
+should add something like this to the commit message?
 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 4877c262cb1f6..d29865075b6ea 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -202,7 +202,7 @@ static struct file *secretmem_file_create(unsigned long flags)
-        if (IS_ERR(file))
-                goto err_free_inode;
+When cgroup_disable=memory is used (or with CONFIG_MEMCG=n), the global 
+shrinker fails to write back any pages. Consequently, the zswap pool 
+fills up to its limit and rejects further storage, preventing memory 
+pressure from being offloaded to the backing swap device.
 
--       mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-+       mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
-        mapping_set_unevictable(inode->i_mapping);
+> Also, AI review has flagged several possible issues, all appear to be
+> serious:
+> 	https://sashiko.dev/#/patchset/20260714081510.16895-1-jiahao.kernel@gmail.com
 
-        inode->i_op = &secretmem_iops;
+For AI review comments on this patch:
+I suspect this scenario might only exist in theory. For zswap LRU to be 
+empty while zswap_total_pages() > thr holds true, it would require a 
+prolonged state where there are always more than thr zswap entries on 
+the zswap LRU whenever zswap_total_pages() > thr is evaluated, yet the 
+zswap LRU happens to be empty during shrink_memcg(root_memcg).
+
+If we want to fix this, perhaps we could do something like this?
+
+Yosry, Nhat, what are your thoughts on this?
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index b5a17ea20237..ca71b517a58d 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1356,11 +1356,12 @@ static void shrink_worker(struct work_struct *w)
+                 } while (memcg && !mem_cgroup_tryget_online(memcg));
+                 spin_unlock(&zswap_shrink_lock);
+
+-               if (!memcg) {
+-                       /*
+-                        * Continue shrinking without incrementing 
+failures if
+-                        * we found candidate memcgs in the last tree walk.
+-                        */
++               /*
++                * A NULL memcg ends a full hierarchy pass (except when 
+memcg is
++                * disabled, where it is always NULL: fall through to 
+the root LRU).
++                * Count a failure only if the last pass found no 
+candidates.
++                */
++               if (!memcg && !mem_cgroup_disabled()) {
+                         if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
+                                 break;
+
+@@ -1378,8 +1379,15 @@ static void shrink_worker(struct work_struct *w)
+                  * with pages in zswap. Skip this without incrementing 
+attempts
+                  * and failures.
+                  */
+-               if (ret == -ENOENT)
++               if (ret == -ENOENT) {
++                       /*
++                        * With memcg disabled the root LRU is the only 
+target, so
++                        * we should abort if it has no 
+writeback-candidate pages.
++                        */
++                       if (mem_cgroup_disabled())
++                               break;
+                         continue;
++               }
+                 ++attempts;
+
+                 if (ret && ++failures == MAX_RECLAIM_RETRIES)
 
 
-then?
-
--- 
-Cheers,
-
-David
+Thanks,
+Hao
 
