@@ -4,181 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDE8C44507
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 00:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E92A7C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 01:02:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F81B6B0005; Tue, 14 Jul 2026 20:59:11 -0400 (EDT)
+	id 93C966B0088; Tue, 14 Jul 2026 21:02:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A9E86B0088; Tue, 14 Jul 2026 20:59:11 -0400 (EDT)
+	id 8EDD76B008C; Tue, 14 Jul 2026 21:02:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB2ED6B008C; Tue, 14 Jul 2026 20:59:10 -0400 (EDT)
+	id 790096B0092; Tue, 14 Jul 2026 21:02:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA1836B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:59:10 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 278AB16056A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:59:10 +0000 (UTC)
-X-FDA: 84989202060.02.26E4915
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013023.outbound.protection.outlook.com [40.93.196.23])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3DBDC20003
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:59:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PhNzckfc;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 43B146B0088
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 21:02:25 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5848A058B
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:02:24 +0000 (UTC)
+X-FDA: 84989210208.22.8DFEE0C
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013068.outbound.protection.outlook.com [40.93.201.68])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EB8CDC0003
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 01:02:21 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=m1zRuI4R;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.23 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784077147;
+	s=arc-20220608; t=1784077342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NAghJ2OszyZvYN3G0RSryBLUt+h4Sy23XdMDr72/oGY=;
-	b=ZnIsDcqV41VmwgONzpr4rjDLbMRbUHWzFq4xcNJ3GhCySU6QtHXr2MaZqVlyCu1M+E86tO
-	0YioeH8NRo3uAdJzeJvNRBq0jnXnP+2DHxlGcLjjQ5bAbIL3wdo89KcpxY299gNhhzmQib
-	1dkZl9tGEItFETLRM+lUufCDudXaCNg=
+	bh=Y6mxE3xjt/Mc8VC7nfyYootatX7UmYTWpC+Qejrzhrk=;
+	b=s62/+y9tx9OuRmfYpiZMBxF3nJV1P8XV+BvTXpQSevuuxut0CKYJPAxKUEoOy6zHRRNv84
+	Jj/udi2PhE976FB9WRqnoIvxtzihJEx0+oz/B1MTcOsQPAO128gKlvWOwIPDPfG5RyYQ8Z
+	AAtVPcrSbx0PiILISBE2rQdAz0X8xUE=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PhNzckfc;
+	imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=m1zRuI4R;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.23 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784077147;
-	b=wloWCsPxagII+jAtivIvD6sNKlexBIDcePXB1jXU5bgzv64XqWIcJYZERZ6O5vRB646AoD
-	BhsU7jkodr7ottC4Rb9pidbw/sbNMEGG3irFB+U1J3nT4HZIxlId9QhRihVjQX5uqqtI64
-	PYzooNQKIpvGSoUw1E+N/plg5Y0Iz5U=
+	t=1784077342;
+	b=AvajoCKb6AhUJrTQZkBN9/izT4mcJnMRE2fqTivn6WnbnXSBSg0CJEkRkIRpwyYLljhpC2
+	DNcuqZGowAHonnym6+7D1Cijnqj40rmro4o1AxG27Erw+AKEIQcH+cGeA32VcKzihi2uEG
+	WX75uwTrjOIHdVk/NnKIEJoQbG0P38g=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fw4SGN0+ZCUq8gCBphNyh+BmY1RQrk5jHfeYxpCOkDGNatO9MNUWzlx7ow5m8qf9xZ4NlsCEpK9udy032+DQ3rZI//7u8nt1ObQ89mnLKzBUyTNTimIDduuDe/G1gEWmLntjR2DZHUyhsUknzsuDiUGdrI8No6tdJAADMRKYe2aNQ4pmc4h8FvqBO+igMQPG5riBZJ9DMAT+E2YUuBegwhYY3X5doXceBaGBty5NYPDj0qZCp2+3Ky7lhQezvR+9fP9HXXch6zRAG/GoyZLMiIP1LLCP0dvWqi+7R2kAI0k1INr+/SAnbxWSIATlaTsjlOW3QbLpeD+gKXOHtMBM3Q==
+ b=A6whVJA2d1pHiG0m0CHzid/M82V/TB8m+V/JCjhy6nO9NZRP0WaaTmsf4Wp8tgKQ7OoPCWA4jnShvycGJarKZLE51dsB/QwUv6saQ8mLx47Qhm1IiOBnmOxHCnxTrzarbNvtQmKqapNTfjCX55qd46fnnWk2Ba02LvaHSmdGVG8LBfJrgfslXqZjPy3Di1MyBSh6Khjbp3FJuIoxt9c2s0vfegNLEiOsOLloNRvtSs+M6V7fnT0HzfERfX27zKN6UjXxXDsf1nvtHKkaP218jkQKAtRGZGgiNgpMP/PbewJAb1eDZtTJqCxHm9Q6bWN9SAT2kl5aGXi3pHuXZ75Nsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NAghJ2OszyZvYN3G0RSryBLUt+h4Sy23XdMDr72/oGY=;
- b=hw8yy4zg9UR5FutSqbNVRtX1nqyTDSh/oPPOmpGMBKGcjFzF+FbqEvP0deQg+AbuGBuSTDXyc2XbeAQZD4bvoDl4HnJRId6TzazQRDQXpY/Oh5+Zjz3C37UB14KiN9czy6t3pwCR7BZb4vRjVv/aVFGPrGbe/Bb4HIgcipy2UB3gTLMbcUZarwXosd3sj4Rg3CwfK3nqFxCdSWsshUsqGLwPQojsLxR89Wgyj81lIH3DOeOHdgHvXl+N9G85eMz7v3/LV1OJ9wOr9iTimgqmQVZ/BxIk/lxwkps/KPSQUZ0MmOcWgilShzId+7DQ4t8WtWXh3/Oy0l/CTs85twUmkg==
+ bh=Y6mxE3xjt/Mc8VC7nfyYootatX7UmYTWpC+Qejrzhrk=;
+ b=Jia3Z40EB3t6497GPRyUlSYYczzDGei/wg0ziZopWablYfiK0gbctEyyiOR5ZSgODNMIBUjOeFrZD/qkbIRqn+WZWV9BJIUxjIAM1EeIpAD7q3GTFxeIEIlxDRKb0SxbYQhxIvFG65CimX/jTcG4rRhy1CYfauBzAMwMAX8+4rRg3Bj6PiCgBfTMr5HvgStuzEkEt7dTHZYyEQZm3sv9VlWnOACcWys+wweNOL00/U8coxQjLf/Z41cgOfUbS/qElsZ96TVkJHJy2aS092vPV/BnA8rFjZqNkaDeyT23Ylg2LtHFthMiCsQB/hT4BW66PBSmV899/CDn/PgTicN20g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NAghJ2OszyZvYN3G0RSryBLUt+h4Sy23XdMDr72/oGY=;
- b=PhNzckfcvRUZSTkCSJ/cYzniZdLYbsaVv4u5lFyNhR2kDgovrC/rKOeZPt8avKfOQlDQOKoPqfoXu4idFQgemTFnfqIDuhNgn8B7MG+pSoeqxvml7xbeJ5yak0oPaOyvPquGQTBhzaGftzg0vI9ewGUGwuyAia+CjndFFGgcFiX0ZlGaX4iW/fXzemB2A3oixw3Ykugl0AW7boNqJfnjnTUM0iRQWCjWFn9DUdBzsJ+rG584ViaTxMhFwHDMHcqGl4G5f0q4f3ciD15rw/pj50Mzmydc2bExfJTDy9WvbKu/N9zgTNIijJ8HRWdTRmoszYwn/U/6rS/qHvOmUa7UQA==
+ bh=Y6mxE3xjt/Mc8VC7nfyYootatX7UmYTWpC+Qejrzhrk=;
+ b=m1zRuI4Roz0YOggT4yHUlNECb4iulQuJG/ijhlF3DtonoS2SMDacUsD6lKstScnVu4yw0Ffg1KTwZ0K47JiiEKmsmBzNRSbhniOpCe040KkSg64Vc+3dGMAmD/6Ff2oenLJR4QGXA4Uy4Ed1bxAKhqdXUCQQ+saZzMvHGMr17PcnyEbT7xl0iTHp8qN5soVuA38n++jbW4FB5hI/nfDGq1RUdPk+4j3GOmT/jSsHj7X9NRC2yYwsPIjVV7tHftY0hxD8DyF0t9Gx7QMvdSAbiRBPDKbVOIdjahws2gDeZi/CvApItenvEKfNhu4ohOUlg/dV4SLkm1OQe5kE+R0rgw==
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
  by SJ2PR12MB8689.namprd12.prod.outlook.com (2603:10b6:a03:53d::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Wed, 15 Jul
- 2026 00:59:02 +0000
+ 2026 01:02:18 +0000
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0223.008; Wed, 15 Jul 2026
- 00:59:01 +0000
+ 01:02:17 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 14 Jul 2026 20:59:00 -0400
-Message-Id: <DJYQKBV5C3WQ.2A702GAYGPW71@nvidia.com>
-Subject: Re: [PATCH] mm/migrate_device: avoid overflowing migrate_vma
- collection arrays
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, "Matthew Brost"
- <matthew.brost@intel.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
- "Byungchul Park" <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>,
- "Ying Huang" <ying.huang@linux.alibaba.com>, "Kefeng Wang"
- <wangkefeng.wang@huawei.com>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>, "Balbir Singh"
- <balbirs@nvidia.com>
+Date: Tue, 14 Jul 2026 21:02:16 -0400
+Message-Id: <DJYQMTVRAHNG.1DTTNWHH4006X@nvidia.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <zhongling0719@126.com>, <stable@vger.kernel.org>
+To: "Hongling Zeng" <zenghongling@kylinos.cn>, <akpm@linux-foundation.org>,
+ <david@kernel.org>, <ljs@kernel.org>, <baolin.wang@linux.alibaba.com>,
+ <liam@infradead.org>, <npache@redhat.com>, <ryan.roberts@arm.com>,
+ <dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>
 From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH] mm: huge_memory: Fix kobject cleanup in thpsize_create
+ error
 X-Mailer: aerc 0.21.0
-References: <DJT9Q4WLXSUG.GHQOMM41P9PZ@nvidia.com>
- <DJUUUX0BK942.1ZP1I5GNIGEY1@nvidia.com>
- <89d20411-4915-43e8-9808-3a7fbd98d2ab@kernel.org>
- <DJV02L9N37X3.1THK8MN9Z2RUR@nvidia.com>
- <a29dae55-93de-416e-9f34-b7911a2c9fdc@kernel.org>
- <A1606A10-AB38-4101-A058-8355E5E81C47@nvidia.com>
- <57cc487b-6ec3-4ca6-8735-f37644e2b0ab@kernel.org>
- <F14401B1-7388-4C5A-A19F-E031002A76CF@nvidia.com>
- <alVjyqWiAggf1mTG@nvdebian.thelocal>
- <aaab69a7-d1f8-4fba-be13-6de109f37348@nvidia.com>
- <alXFS7BJWLwH6Wpt@nvdebian.thelocal>
-In-Reply-To: <alXFS7BJWLwH6Wpt@nvdebian.thelocal>
-X-ClientProxiedBy: BL1PR13CA0426.namprd13.prod.outlook.com
- (2603:10b6:208:2c3::11) To IA0PR12MB8374.namprd12.prod.outlook.com
+References: <20260711084624.207777-1-zenghongling@kylinos.cn>
+In-Reply-To: <20260711084624.207777-1-zenghongling@kylinos.cn>
+X-ClientProxiedBy: BN9PR03CA0334.namprd03.prod.outlook.com
+ (2603:10b6:408:f6::9) To IA0PR12MB8374.namprd12.prod.outlook.com
  (2603:10b6:208:40e::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ2PR12MB8689:EE_
-X-MS-Office365-Filtering-Correlation-Id: d4435ae6-601e-4119-46de-08dee20c425d
+X-MS-Office365-Filtering-Correlation-Id: 2e241afa-a8b0-434d-c53a-08dee20cb765
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|18002099003|22082099003|6133799003|56012099006|11063799006|4143699003;
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|18002099003|22082099003|921020|6133799003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	AJvzcAP/ItL0jYYH9WZCGMmNfcyIfnPhwPb5mnvdw/F0XtvB9Uc/bfXpL8t5O5ukjOVuUcELrg2n/xhahAv2yfkViuD3w2Aap1sB3T/W/U1TtoQovZAXXmW4bs6aRACXqOVG2CSPIQtzHyDZLj7M5zIFljpmH37pNQectjh7WK/mwDTs1sniRP3ub3KDzR7fdXX+zkBNmk6t05Drys+Tw2Jf+RQDcJJVu1CdvhKjJ/d7tGVX5zt9d3JxZRdnQUcCXAIhAjIwS6KPe0Yt+3gPLd29407i4yCzCytZVRIOVuIiWio/g/KnOy6U1GUngaScsKT2ZQi3gHOd7PPu8UdcjvR2c8dSqx+QaOsPC5I/8wGamnegLI1gy5ZKXZSjZsU97hD/oTbvFQrXc5NX93HapSGGsZJVm/QJEsKHoEqGHIJBofk3SHdBgtIX4cKzw0/G0se3R1wh5Xvt8sAeQTwoU2qxwsvrLz6qt7kwnlALG5hXRntaX4hKQ6Ua90aGcokGmttTzFKH6thZjQd/82rUEACNZEHtHyOgaK24nBk0otUCwcIr7JpqaFDQD2t+gvlRRHK340BIx9lfYs2CBUq640ni0Rdrk2HPZnoQM9dnteYBN8GPWeUGfshZqNhmXG7Zdkb/Z8scQOlYdAY/3psGs2OZsrljYnGLNIYh4PG8zGI=
+	XuZcSrRjpqQF0rY03Footg/qRyiQ1eQ+j4BO37r/1Iqr5CJpmbyOtpuN57Zvo8IJGSsUXy2o/wLuc/VAJTS2TX6/89bebG3Q5LSoOIYR1z2QSB3hZUS83qC0/ZvHI5kDmz2S86Ez0+Dscoml79gIivsaDT6Kpa642DGjtbRDJsgY5mgiJtZJB+3lBJ3AL6rNnAw7j1mzoa99EDDvIlSyu+Mj3SeLfaOQVxo5rmIdLRhYmRmShdK8XLxtwCwISTq+rGhlf9S0Nf9XrJqgFdmBfHn5EsvIOTwHv7riKJDPimCQkWawmlRyKi2YFsmnkQfF64FmprskmG4DfCqpzLxXOBw3LhTBNuvw1cJuIGG/PxgvzhV7JOkREv5nkMdlZ9WhSHYk+CU7osnMVAOp0gLk40enh6SPQ4mcOkm5qlQobXoIwMi21UdSiEm0WAkz9IDYm9jGiX+01rbbX1t9jr7KqqOh/LJbZYcnhF1kGoLJhbtnGMF62NZeI9qSggtJvskT5tx2L6dQ7kqnI4MrKKbj4/Nbi3PO0WSZYdL2Rnb01SS//0vp/bSM0F6LmKm34kBN/lypiqKJUHQzx5rmV6wolEyode6oef+F8KXGq2AdDfjrbYz/CFz+A8dCONx1g4VmZPr0Qn6XTc4lMIcJVD+L0CCv3Ej27BfUy9W7zLgB5mJt8fFkdW8pRb2sSb8rlQYvGaTwOBAxeNsGyHf2d1s+Ew==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(18002099003)(22082099003)(6133799003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(18002099003)(22082099003)(921020)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WmhpYm51ZFFReDVZUHRYc3paM25xNXFncGF2cFVtRjdaL2lpaDR5eUV2RDdY?=
- =?utf-8?B?Z1l0amMvK2pVYW45MHc2UzdEZE9xSlJvY2tkUUNKZXF1SFdZZnZmdVBTS1F4?=
- =?utf-8?B?eTd6V214MUZaNHFnaWIxVS82M1RtS3NIS1VJaUtmdE5Nd3RhNGZSUFhqMStV?=
- =?utf-8?B?TVY5R0ZWSkJDWVcyTm16RUFOZnRJZTg4UHhrNHlDL3VhTzc3NGZ4MkpxVThT?=
- =?utf-8?B?RmlveFNHWk9DbXl6S09keGtNNUdmdWwyUjlSb3VzSlVYa2YrclRsT2ZxeWFI?=
- =?utf-8?B?d1RHaUEzRVJva0lXNkYxVElud28wT1ZSZTE0QjYxSnN3cVVUSTNnTzRlL2di?=
- =?utf-8?B?OXhJRmUzZ1FnWWFicldaaHROZUQ1cEtMTjhWY3djdm55c3VJZHVvNE44M3Aw?=
- =?utf-8?B?ZFYvbnZMeWllL0luMDRENU5GL2VJWjhGUGRoRS95cmhyRkZhYWQrNy95cFlR?=
- =?utf-8?B?cVFad01kYU1uZnlEbUVzNzhJL0xoS2JLeUJuMlhZR3RXVXpHdUJNSDh3dkx6?=
- =?utf-8?B?a0w2WmFwd3JHNlRsT0ZuRWNNM3dIcWtSTEMwOGJWTWJZazZ2RDhkanBoOUhK?=
- =?utf-8?B?QVpST09OYTNZY3FRY1pHWDM4cEkwUEc0LzhPS2VIdUlqM0ljL3hqMFdDbVVk?=
- =?utf-8?B?a1lvMGhzUXFVMGM0aW9aRUYzRkpkMWFoWW9UaGhxWEpYN01aS2JzQXJLV0FV?=
- =?utf-8?B?RjUzYVU5UmtiSlpaWVk0cWU3YldnNytwL0lzTTYva0d6Zll5L3g5VFhYZ1pG?=
- =?utf-8?B?K2JRY1Qxc3E2d3VWUWhHdS9YWmkxaUxGMWZvajhGNyt4WExmZldwdTdKSTZv?=
- =?utf-8?B?eVhXL1hIRU83QmJKbS9HNnlHbUxDdWFwOTQ5MUNjRVo5UndmbUhzODVjcnVq?=
- =?utf-8?B?cmpwa2JwbUdoQXZFdURjRThwTU1RWDBRVmJDaVNpMWxuYXBQejNHMk9HNTRw?=
- =?utf-8?B?eTBMMDR4NGFia2k5ak4zb0U3cG5TMStsbTZnbEZYTUxHWllEeXFWY0N2b1Bl?=
- =?utf-8?B?WHZZNE1RbWdPSURIMjVVUm5JZi8vaU9PRDVuUzA4OEcvWG50ZVpPdVZsSTFT?=
- =?utf-8?B?TFN3K2lZdG5BOWNHaHB1N0VldHd6UDF6cUFlcEc0Wjg1eEZvNzNSQVZxSEtv?=
- =?utf-8?B?TDVXZGprRWYxdm40aFF6ZnNlOVRINWhnTEp6V1JNSlQwUUZhZWovNVluRXd1?=
- =?utf-8?B?QlFiUkExT1B2Q2hlWkt2WDZjNGgxNFk3Q0JjeW9mdTNwY25TNjhjcmgrT0ht?=
- =?utf-8?B?c1BrbGpoSndXRlVHTnVxUlg4NkNzcis4anlSNHk3ak9tNWcwbjArT1d6M2Iv?=
- =?utf-8?B?ZVNITVZ2WFRBaWZXc0RhMlp5UHduNkx6OW1vNjVBblAyQzR0MjJIdlBYNm5y?=
- =?utf-8?B?Rm1Ib2NzRjNGYjlmZVB1TnFiSnlHeFdmekM4V2JyUlpUMXZqYU1OMkNocktz?=
- =?utf-8?B?NVV2NHBFZCtTQWR6QzFPUXdER1lnR3Z5OVJxSU5LSDRPMkZwWTdVeUJxUElR?=
- =?utf-8?B?QkNEM1Q5K3h0U3hVeTQ0MkZlYXhXcEh1Q2RjTkltaVBETmNYNm1nODhSSmpx?=
- =?utf-8?B?MEVjSGd2NmU1aGlTL1VKV1dMY2hleWhLbWFUU1V1a2NkZ3hacTVzR1d2NjhT?=
- =?utf-8?B?WFVhMDlCZEdib0hiREhkRytWSk55ZWllL3lEUTNXbFZwVW1UeHR6aW9Nejhy?=
- =?utf-8?B?QnFoTjBldkNiakdvUVhRRWduRENaa08rMnlZQ1Y4d0xNbmc3RU5mcTRqTzVM?=
- =?utf-8?B?cGV6NDdTb1U4dWIvQU82a3BHcUx6YnhVRDF0MWk4OHN4MjltK0FSanhRU2pS?=
- =?utf-8?B?Z0FrVy9CNm40RnFFK2NVaG5ETkYxZ001SUJob2h4dnV3aGlHcDVvVVhLcC9Y?=
- =?utf-8?B?M0VSQ2ozeTBTR0J1MTl3U3FzUWwrSTB2NzhncFpFNlYxMk11c0FIWmppYVpo?=
- =?utf-8?B?NGxRY1gyRTV5d3hqT25nSnc4alhsV21Qdk9TR3ZncEFmTlVaL2tGazU1VXlq?=
- =?utf-8?B?S3hjRElGSFNSZkJvTFNuN0JEeUVXUmVZS2RwMytBYTZlNXJkQzN1T0h2R01v?=
- =?utf-8?B?V0pNQUg0bjF3VVpIQTgwekh2TDUvSk5DT0dHTUFrMXZhazVrVHlXRytGaFNV?=
- =?utf-8?B?QnA2cWQxSUl1c3ltSUhFUUt5WlJLU3BTanJDTERSNUsxRlE3MytTbGJwajE3?=
- =?utf-8?B?WjMxbDRrNHpxVTEveDh5a0ZDcUZUaVp1SjNwZHdSREdZV1JGOU1XWXNLeTA4?=
- =?utf-8?B?bTJMNVhEMUt3bndWVmViQ1lIa2p1S1BDUTZwUzI2S256djVlWGcxZkl2TFRy?=
- =?utf-8?Q?5kiv9+QR36NYs4Zsl0?=
+	=?utf-8?B?TUlwNE9HV3FEZDFGWnZNdWI2bGI5T2J6ZjlFZTY1alNmaWhZanJUVTNEbDk2?=
+ =?utf-8?B?Y0o5UDNjS1pjVHB3RjZkVWRoL21aMEI4bHhWcytwRjdPbDV5VXNYN3BBOVdq?=
+ =?utf-8?B?TzVwL0VSOEwxa3AvUjdhMHgwUnFXM3BITERyN2VmSmp4em1IZXRpbStYZWJ2?=
+ =?utf-8?B?QjQwb0pWRGlQcmUyMG4vWmIvVTlKbFlKdHN3c3M0cXJaUG5QNmplRkhJQmEw?=
+ =?utf-8?B?K2oxblhaV2dQNVJ0NThDZ2lac3BwYXdvQ2xlb21qdWRuU1lodmhlYTI0dUxN?=
+ =?utf-8?B?TDRoZUljVUw3WkdtdEZaRUdKRFJNQVhvQXYxV0dJR0k1Nm1ZTFFSdjUrR0tl?=
+ =?utf-8?B?bG1yQXNOSG9kMGQ3V1hCcXpFSk9LNHJpZXlxMWJmSmdrZWRhc1M5WWRld3Jr?=
+ =?utf-8?B?VEIxclc2TGZzSFVML01HYjJMMTRlNHUzalR1YXhRcXNvWmNna1NCdHFhUUVP?=
+ =?utf-8?B?bllnc05JT2NVb3ZaWUZVaXFmTFdmb3ZJZENOS05FU0lCeU1VV2lDQ1hNOWdC?=
+ =?utf-8?B?cEtzWkc2aXZsNkVzSXlvdlB0RTNqOXExZmxFVmZvZmFheFc2VkRoU2cwTnUz?=
+ =?utf-8?B?Si9oY3ZDL0hXQnZEb09BVUZVMEtCUVJjODl1eWxvd0lVSmEzeDQ4TlhpR1ZW?=
+ =?utf-8?B?a1hGSzZ3R0o1RGJKSTJyS25pUFljVWEzTFg1QTFiTmJTTEVLcXQvbCs3QllR?=
+ =?utf-8?B?amJwT2RaakRKMkQ4Wmc2YlRXZDBFenZMRlVodituT2ZEbk5adExYcTlERGdy?=
+ =?utf-8?B?TTJNNWhPS085MUwyMmNnY1N2Z1hXZXFvdXV0dmJXaERkYjhrZXFld0xpT3g5?=
+ =?utf-8?B?YU5YVjJRcDFpYjdnL1QremRnOWt6Ui80aDNDZHRCL3M2ZlJIUlN5K1VXbEpj?=
+ =?utf-8?B?NmNIK2MzWUxYRUdQS0JZdHo4WldMbm9QKzhqVm41eFNwSHJkTGVFNm1RRzYr?=
+ =?utf-8?B?ZXgyOUpiVVpianhuL0hJcSsvVFdIY0laUmV6OGVmQ2YxTG12UTdkTmhOdDJw?=
+ =?utf-8?B?S00rL3dsRlhlVUpzYlFoRHNpbU12THdQNWFKd2ErQmlrWHB2MXZ5ekdlSEw5?=
+ =?utf-8?B?T1o3MXhVZmMzRnd5alJxMVJHRDJEeUw2ZENTOHAxdWJEM01OTWNtay9wbjRn?=
+ =?utf-8?B?aU9mTTg4S3FVSUFwbEEzM1h0WkUrTFVVWDJFWGdxUUk0VFpvMkIybER4TW4y?=
+ =?utf-8?B?UVMxSzk5dEhOUTF0SzlVZlJHbUFaalhlWS9CcHFjd1BrQysxcDBPVTA1eVZW?=
+ =?utf-8?B?bVlwMUlXUGIreFZxc3FnT3FwdU1mREdnaTBEd2dkRlRTQ1RPYzVtcThMaHMr?=
+ =?utf-8?B?eDkyalphVC9hbkQrUzI5QVNXUmU2SHExMGRteWQvZ2tPSWJ0NWNsK2FMczYz?=
+ =?utf-8?B?blVhR0FXRTlGemg5bXk3S2toSEtYaDRILzVBejFIaEZEbkYydnRObm9xL3Qv?=
+ =?utf-8?B?SjZ1TUZWaVFDa0xjU0dmbXYyZG9OWlp5cjRWckwyczBWUUN0SjRzSk9jRm4w?=
+ =?utf-8?B?VlZyanlXMUFKWjAxSXM0bzFsWnFRRTZic1ZKcXZJWTBoVExoMVE2b3laQ1lS?=
+ =?utf-8?B?YWgyM3pKejdBMkxIamgwa3E4cUE2TXdRY2kxZmJ4eVFKdVNCSEVRWnVic3JI?=
+ =?utf-8?B?djVwcTdReGd5ME1lT2RJQlpPRHh4cnNtOWxFRFRRSzN1VjROdEtGZXdVU202?=
+ =?utf-8?B?Tk51aTZPK2lhNDMvSWFWYUhzQ3FSa3Y4Rmp1RXdMekVnTk53SUxDUW55LzBT?=
+ =?utf-8?B?MkQ1K0RWMFNkVFV5UlVZMlkzQnoydjBqMWcvc1FJWGJ0cFVTT2V2MitCdDN6?=
+ =?utf-8?B?SXpRMUhmZkZPQlpMYnVMdnJ5dm1LKzlWcTlzU3R5dFJqTU9NWVZlS0Y3SUZZ?=
+ =?utf-8?B?Y3VMT2EvWE51T1JOWFhaZ3NCUDdUK254THAwMW5kcGRkNGxYRC9aVi8wMUVw?=
+ =?utf-8?B?ZHZiVjczdTM4ZzJBN2szSEtRUVk5aDMweTBsekRlUHVKRDJHaHo1OXU1RVpr?=
+ =?utf-8?B?NGpSem02UitwbWRHQzJCNm9ubk1xSmYxd0NmRENwRm5wekpVaVUyUmRteFIy?=
+ =?utf-8?B?Q29DU3BMY0FvME91SW43SDlER3RDR3B4aDJhMVl1a0F5aVdXbE0vTE1EY29M?=
+ =?utf-8?B?a0NBOWdQNFIvaFFBU2JQY205VU1wTXFqNGt0ZFRsU0I0a0hUbHhoMUVLNFpR?=
+ =?utf-8?B?OUt4QUtmZ1R4TnpqeVlFbTF6b2c1V1JTem8xUlU5Y095Q3B4L1FDeVpBR0g2?=
+ =?utf-8?B?bHRLOTFhZlZQUDNjVFFjQXMzanJOaXBKcE1wcnVGOXM0Tm9yQnd2UndJWEpL?=
+ =?utf-8?Q?IBF0nVr7pzebpkwD3m?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4435ae6-601e-4119-46de-08dee20c425d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e241afa-a8b0-434d-c53a-08dee20cb765
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 00:59:01.5787
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 01:02:17.8667
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qBy11lPgAXuLYOtu+EUmJznNDREqTrOmAcRkprURJsoJx5+KLuV5i3oreP1+pz34
+X-MS-Exchange-CrossTenant-UserPrincipalName: PCU0gPgXSL+Isoy0ja6gX0MyRuDf1ARaXCLejBRj5Tn/LleyVrMzJyfwDmv6N+jy
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8689
-X-Stat-Signature: pi6ihzhkzmre3qi4pnm9y4jstsz4m8yk
-X-Rspamd-Queue-Id: 3DBDC20003
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784077147-815581
-X-HE-Meta: U2FsdGVkX189AH0K8852QUN4F0dfYwzYHlpV0OSxKFqAKDh1mLgVLMNY8b8NlZEoGv5ZThMMQKaU9TaCvOnvop2tfptmPRUPpOqptFkDK+RYVL5RBGGSMkqFdo1gniJfp8ZpJK/8ie1c62Dr6HBdksol01Vs7YyTVntTdLMwKcsWbFTn7lY17+ZWH9oFe0skYl2qAEARZauXSIWWe6C+wCyeYYYr8+mfsbEsRW/ukv5LTPSGW2uZqe9Vza6gV4mpQyXx3eroXwWabizXbgmFptFGs/+5a5vuRuBbONi9uJ9djCFTUibVKIxjWczHjwSdgBi0GAjQlFTmEYIVjvvVhmurHFaBkgIt00jIxfSvddwI84Ov3Ss5XtotILHgZF3XD0ZwwBKAn57ZiSYrEGZF9Vq+IRgHR4iDUx2J81O7sUEMgVsrTSDSggJS+r4l1oGol0vQ+q3RdqcWSga6HP+6kln4UXWqcgRQvfyrbkxWmrvb/DpD75ytOZR3LAzLVIYE4Kp3gTl/9GMX20b0b8vUCz2P/NTUfOj38XiCItzHGNpgJqdE/FeySFPyCV5PFPiEdB5adfbOiyS4ByU0VxnxmAPyE0J9JorWYHIT9N5xKdvVqv3cdtbs78tXMLrTy7nHsQ1hs8N3vtr5CXfASr8tZLhYYtZGZmAN7cL93ZwPtKlzcCAwPa74i/hDwE1xll5Lu7ltBLJqglTP/4pJRu+Bm52D4jrxxBoUC4I6HRUgQJzg3GMCSJFsiChaxF+HNCYbkCZggA5hZ1WwI9xOZESONnNEkJ3DDHUZhdVgupOlqNiWpmykhWpmGaHCfekiYSuH8T1boLaHzdHdRtZXSnTAXJwAu5lJOnhIhPOg4berBEjswHPloIAIph5rtXOlbkSr4zz19beQTJ6PcusGdOLkxYj0ZzxENAQtowhDOhVoIVQXoyU8FsevlRxv4fHb61QkBEwOKqMhJ0kUUL8NGpB
- vQOkPkQ/
- NiGKHiP64JRJorD75dZBqF7lEkmb/E+/2cZUMlpXQ18hqY3arcR73hlu6aTaZMNGw0nNnIJ0kf4axu/Zmsh/CqOW66VX2gp1vCzrh+WxeeyeGEiaAuRRg7uA6evax6poU2Asmf3fqXxQDxuVgcuMK8S0KjeA8EJUFtiOwpL098A8QZFPsR/aK54koEoxEVobedjk4rfvpgdKMVldorODwBC0BOBwY7Zm+7MMqGuy/pMSyr+Ivi5d8I6K1n0iGYkbtjLHZyCskscBoAffddqU5w9qsfSwuzP6ximBs7QE0tu0po+r81WG3kO8vjbTCFbGMv1BwRZqHsvELp0Hccwyoy+KkjR5fDmPAdDSnobcrITwMIvrf8KO4MVSvifxZSyYSsqQ5jRLdNBrHJoBfmM8dbtuwTblqQ+qt7q3YPjbAcnCNmtxk6TB3Ml6Klox9NrMAvTOLwiK0x3I+TUfKGnccwbLZsb3gop45JgM+skwvtvGA/FUyimmk3WW4wkUGwGAkvDk+6VIZUtWpDMI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EB8CDC0003
+X-Stat-Signature: 1efuqs6s8rhz3tiw7y78t3jwdox9jppg
+X-HE-Tag: 1784077341-10439
+X-HE-Meta: U2FsdGVkX1/4kzuP2vkFpJHL2XCvhqURSQqVXrkr+b7N8osDd3OUBTDy3IBbtLG+OPEKKr1vorDA16HDUR4UBDI433bpGdoaUZfXrMLGIebHS1tYAwPMlT1RfVjQs6PyuYsVbVFLsBmRNGR9dbfpTnJ8Jh+3v8W7rGZC4Eq6nJqK0MtRrj6P1jhp/ZLnoLW7COGchNnafP7NCcpGejQiTtlvxYg+v90ztJEI4VVh4ET7Lju/K7V38v4n1SmLIJrdjjL0fK4E/bN7JElBbVAPUnXNqY64wO/jMRczk4ogOeFNDTV9EKqduTUhSath0F1rbTNWnYwxh8PW4knGyxZiJ56bxwyz0G0RI5J2J8lVxTbJRyFFknzWjAE9Q1qPOvwmANPv2dAw1t7VfQ5kBq0xKEtK883ZS/JPVoh4P94TZNOY/AUfBsOUL0BpwXd8JShHNTHzebNYUTZLyZjCXr37N2k4W57AgAfGAA1aqN6f7Q4uLBsOXUUrj4AK0qm+lT7sXV1kOcEOCaCzsr2JC57Nbgje+n6KKSZ2C6SQCRrlC6jZvbPzZQBc1Ru+QQR5d85/LHoTJJts03B4iVXK3W7mNHDrsn7ylDTFNymM22UpfjXay5dbcdB+BGWvFk7gBkfWpaEtoulFDHKAprCKCOQHZZe3CUCCHKwfcYthKYWTygHLCCN2nB2s3KQy+PVPx/ZECef/7rHyocM/SyoTkYE0eBkd6wcWGeqMD+vv32DMFvX6qxDjHQE/i0/u1BtZlezF6O9ZAQD/A2NIABha3NXpeeuEZOtMlRVns4yHs9ea81MI6Amo1nr4tNAOsoTcptdhD7/MSjNNkF63HwhsLPPb4ZWS6qjb9rshaOycUc+OTPe5LmqJBSqHQ2MILt7q7xF0YkkTW9V6+8jNIhRs98/7hKHRW/Ik9Ertilr23y1gbGCKzz5QLajPq4rBceTre1kGFEfBGrGFqAVR649jUDE
+ NZprLPB6
+ fq/Xq64MgUqK06J8OtK+k6/UnSqVRWPXGKVKXeXYMxgAugMPUpV7ws/4SrKJkQkSUQyh+IGRn2iegYl81JsfitETnhu3em6EqzNFWXtIzb+TYtNd43UVJU51HAxyNTbSjf2pKfd8oQWphhEPxCxccbUAYm51btyvTBR4h5/884RNv+vqGnom1AL17nDIckrXQ/RrqLEamEz+6IaP4aXeIG7BJo8m6gtk9hcnScRlY50X1JewWKogoigjNs7GbFSWpGxxSWdFRnTykWLNGaRWKT14cX3dlhO0/gTCzhNUo6bAfCN7Whs12jotHzzyrm4NN91ysl0Nkr6MSKSpZBHwa22vBgO0Lq5r8GqmMCAXIPCzCpplHuEzFaETvtIWlav9otxhy32sUhqU0zWPAt96NBMC6QbgroCQ63c4SuOCh7qy1eVODYmboD+2rICZ5phRF+3+ApVsQT5agQPbFod7+g0QSs+VLTZDvZvgd/8BIWpgIxgo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -186,347 +173,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Jul 14, 2026 at 1:30 AM EDT, Alistair Popple wrote:
-> On 2026-07-14 at 10:10 +1000, Balbir Singh <balbirs@nvidia.com> wrote...
->> On 7/14/26 8:24 AM, Alistair Popple wrote:
->> > On 2026-07-14 at 01:39 +1000, Zi Yan <ziy@nvidia.com> wrote...
->> >> On 13 Jul 2026, at 11:25, David Hildenbrand (Arm) wrote:
->> >>
->> >>> On 7/13/26 17:20, Zi Yan wrote:
->> >>>> On 13 Jul 2026, at 8:57, David Hildenbrand (Arm) wrote:
->> >>>>
->> >>>>> On 7/10/26 17:35, Zi Yan wrote:
->> >>>>>>
->> >>>>>> Not all the time. After a folio split and PTE lock is dropped, th=
-ere are
->> >>>>>> different cases:
->> >>>>>>
->> >>>>>> 1. no page table change, the collection grabs the PTE lock and co=
-ntinues;
->> >>>>>
->> >>>>> Yes.
->> >>>>>
->> >>>>>>
->> >>>>>> 2. some PTE(s) is changed, the same as 1 and the collection conti=
-nues;
->> >>>>>
->> >>>>> Yes.
->> >>>>>
->> >>>>>>
->> >>>>>> 3. the PMD pointing to the PTE page table is changed to either a =
-leaf
->> >>>>>>    PMD or an invalid PMD, the collection cannot grab the PTE lock=
- to
->> >>>>>>    work on the remaming PTEs, since they are gone. For the collec=
-ted
->> >>>>>>    PFNs (they are mapped more than once) and folios with elevated
->> >>>>>>    refcount (they are mapped once and unmapped here as an optimiz=
-ation),
->> >>>>>>    they will be processed later in migrate_vma_unmap(). Since
->> >>>>>>    migrate_vma_collect() is best effort, there is no need to reve=
-rt and
->> >>>>>>    try to recollect from the beginning (to get that possible larg=
-e
->> >>>>>>    folio or skip).
->> >>>>>
->> >>>>> Yes.
->> >>>>>
->> >>>>>>
->> >>>>>> BTW, recollection will be more feasible if migrate_vma_collect() =
-does
->> >>>>>> not do unmap singly-mapped optimization, since in the case, no PT=
-E is
->> >>>>>> changed, we just need to reset migrate->->cpages and migrate->npa=
-ges and
->> >>>>>> restart from the beginning.
->> >>>>>>
->> >>>>>>
->> >>>>>> Right. The PTE page table should be gone and the original PMD, po=
-inting
->> >>>>>> to the PTE page table, becomes a leaf PMD or an invalid PMD, sinc=
-e
->> >>>>>> someone changed it when the PTE lock is dropped.
->> >>>>>
->> >>>>> Right, so I guess we'd have to remember how far to rollback, and r=
-ollback would
->> >>>>> mean resetting migrate->->cpages and migrate->npages.
->> >>>>
->> >>>> For case 1 and 2, we do not roll back. For case 3, since the PMD is=
- changed,
->> >>>> we just roll back to the start address and set migrate->cpages and =
-migrate->npages
->> >>>> both to 0.
->> >>>
->> >>> Can't we walk multiple PMDs and have data already in there?
->> >>
->> >> migrate_vma_collect() is the pmd_entry of struct mm_walk_ops, so it o=
-nly
->> >> walks a single PMD at a time.
->> >>
->> >>>
->> >>>>>
->> >>>>> And for the entries we rollback, we have to decide whether to foli=
-o_put() and
->> >>>>> whether to folio_unlock() [fault_folio !=3D folio]. That's the con=
-fusing bit given
->> >>>>> that the code is rather "interesting".
->> >>>>
->> >>>> IMHO, it might be much cleaner to remove the =E2=80=9Cunmap the map=
-ping if the folio is
->> >>>> only mapped once=E2=80=9D optimization, so there is no need to roll=
- back at all.
->> >>>
->> >>> I guess most folios are only mapped once. Do we have any numbers on =
-that?
->> >>
->> >> I will defer the question to Balbir, Alistair, and Matthew.
->> >=20
->> > Unfortunately previous tests that I've done showed the optimisation is=
- critical
->> > to performance in the common case (ie. singly mapped folios).
->> >=20
->> > I say unfortunately because I have similar feelings to others here abo=
-ut this
->> > code :) I tested this a while ago because I was trying to clean up the=
- collect
->> > step by mostly removing it and replacing it with a hmm_range_fault() t=
-ype thing,
->> > but the optimisation proved too important due to unmap having to do an=
-other
->> > rmap/page table walk.
->> >=20
->> > I don't have the numbers on hand atm, but will recreate them just in c=
-ase my
->> > recollection is faulty.
->> >=20
->>=20
->> I had a patch to add tracepoints to the code and some of that instrument=
-ation
->> included this data. A combination of the trace points + hmm_tests will h=
-elp us
->> get some data to start with.
+On Sat Jul 11, 2026 at 4:46 AM EDT, Hongling Zeng wrote:
+> When kobject_init_and_add() fails, the kobject API requires calling
+> kobject_put() to properly clean up the memory, not direct kfree().
 >
-> But hmm-test already has a nice bandwidth benchmark :) We just need to fo=
-rce
-> the slow path. That used to be easier before I simplified the trylock han=
-dling
-> but with the below patch applied I get quite a lot better perf from the
-> optimisation. Note the patch isn't entirely correct as it assumes any loc=
-ked
-> page was locked by migrate_vma_collect_pmd but it's good enough for the p=
-urposes
-> here.
-
-Thanks for the numbers. If I read them correctly, the optimization
-has about 3x throughput of unoptimzied version. The optimization has to
-stay.
-
-I will try to come up with a fix that resets collected PFNs, reverts
-established migration entry along with putting folio ref, and restarts
-from the beginning.
-
+> According to the kobject API documentation, kobject_init_and_add()
+> calls kobject_init() internally. If the subsequent kobject_add()
+> fails, the kobject has still been initialized and must be cleaned up
+> via the reference count mechanism (kobject_put), not direct kfree().
 >
-> Optimised results:
+> Direct kfree() leaves the kobject's internal state (including the
+> reference count and kset membership) uncleaned, which can cause:
+>  - Memory leaks of kobject internal structures
+>  - Potential use-after-free if there are pending references
+>  - Inconsistent state with the rest of the error handling code
 >
-> HMM THP Migration Benchmark
-> ---------------------------
-> System page size: 4096 bytes
+> This fix matches the pattern used elsewhere in the kernel and in the
+> same function (err_put label) which correctly uses kobject_put().
 >
-> =3D=3D=3D Small Buffer (0.5 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.097 ms        | 0.120 ms        | 19.5%
-> Dev->Sys Migration   | 0.061 ms        | 0.062 ms        | 0.4%
-> S->D Throughput      | 5.05 GB/s      | 4.07 GB/s      | 24.2%
-> D->S Throughput      | 7.96 GB/s      | 7.92 GB/s      | 0.4%
->
-> =3D=3D=3D Half THP Size (1.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.217 ms        | 0.212 ms        | -2.1%
-> Dev->Sys Migration   | 0.136 ms        | 0.138 ms        | 1.2%
-> S->D Throughput      | 4.51 GB/s      | 4.60 GB/s      | -2.1%
-> D->S Throughput      | 7.17 GB/s      | 7.09 GB/s      | 1.2%
->
-> =3D=3D=3D Single THP Size (2.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.290 ms        | 0.506 ms        | 42.6%
-> Dev->Sys Migration   | 0.095 ms        | 0.283 ms        | 66.3%
-> S->D Throughput      | 6.72 GB/s      | 3.86 GB/s      | 74.3%
-> D->S Throughput      | 20.52 GB/s      | 6.91 GB/s      | 197.0%
->
-> =3D=3D=3D Two THP Size (4.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.634 ms        | 1.026 ms        | 38.2%
-> Dev->Sys Migration   | 0.195 ms        | 0.567 ms        | 65.6%
-> S->D Throughput      | 6.16 GB/s      | 3.81 GB/s      | 61.8%
-> D->S Throughput      | 20.05 GB/s      | 6.89 GB/s      | 191.1%
->
-> =3D=3D=3D Four THP Size (8.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 1.301 ms        | 2.593 ms        | 49.8%
-> Dev->Sys Migration   | 0.541 ms        | 1.444 ms        | 62.5%
-> S->D Throughput      | 6.01 GB/s      | 3.01 GB/s      | 99.3%
-> D->S Throughput      | 14.45 GB/s      | 5.41 GB/s      | 167.0%
->
-> =3D=3D=3D Eight THP Size (16.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 3.853 ms        | 6.119 ms        | 37.0%
-> Dev->Sys Migration   | 1.731 ms        | 3.354 ms        | 48.4%
-> S->D Throughput      | 4.06 GB/s      | 2.55 GB/s      | 58.8%
-> D->S Throughput      | 9.03 GB/s      | 4.66 GB/s      | 93.8%
->
-> =3D=3D=3D One twenty eight THP Size (256.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 70.022 ms        | 105.921 ms        | 33.9%
-> Dev->Sys Migration   | 31.175 ms        | 55.393 ms        | 43.7%
-> S->D Throughput      | 3.57 GB/s      | 2.36 GB/s      | 51.3%
-> D->S Throughput      | 8.02 GB/s      | 4.51 GB/s      | 77.7%
->
->
-> Non-optmisied results (ignore the THP column, I wasn't able to test the s=
-low
-> path so easily there so just skipped that bit of the test):
->
-> =3D=3D=3D Small Buffer (0.5 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.000 ms        | 0.321 ms        | 100.0%
-> Dev->Sys Migration   | 0.000 ms        | 0.276 ms        | 100.0%
-> S->D Throughput      | 0.00 GB/s      | 1.52 GB/s      | -100.0%
-> D->S Throughput      | 0.00 GB/s      | 1.77 GB/s      | -100.0%
->
-> =3D=3D=3D Half THP Size (1.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.000 ms        | 0.660 ms        | 100.0%
-> Dev->Sys Migration   | 0.000 ms        | 0.571 ms        | 100.0%
-> S->D Throughput      | 0.00 GB/s      | 1.48 GB/s      | -100.0%
-> D->S Throughput      | 0.00 GB/s      | 1.71 GB/s      | -100.0%
->
-> =3D=3D=3D Single THP Size (2.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.000 ms        | 1.385 ms        | 100.0%
-> Dev->Sys Migration   | 0.000 ms        | 1.152 ms        | 100.0%
-> S->D Throughput      | 0.00 GB/s      | 1.41 GB/s      | -100.0%
-> D->S Throughput      | 0.00 GB/s      | 1.69 GB/s      | -100.0%
->
-> =3D=3D=3D Two THP Size (4.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.000 ms        | 2.863 ms        | 100.0%
-> Dev->Sys Migration   | 0.000 ms        | 2.323 ms        | 100.0%
-> S->D Throughput      | 0.00 GB/s      | 1.36 GB/s      | -100.0%
-> D->S Throughput      | 0.00 GB/s      | 1.68 GB/s      | -100.0%
->
-> =3D=3D=3D Four THP Size (8.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.000 ms        | 6.199 ms        | 100.0%
-> Dev->Sys Migration   | 0.000 ms        | 4.904 ms        | 100.0%
-> S->D Throughput      | 0.00 GB/s      | 1.26 GB/s      | -100.0%
-> D->S Throughput      | 0.00 GB/s      | 1.59 GB/s      | -100.0%
->
-> =3D=3D=3D Eight THP Size (16.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.000 ms        | 14.260 ms        | 100.0%
-> Dev->Sys Migration   | 0.000 ms        | 10.457 ms        | 100.0%
-> S->D Throughput      | 0.00 GB/s      | 1.10 GB/s      | -100.0%
-> D->S Throughput      | 0.00 GB/s      | 1.49 GB/s      | -100.0%
->
-> =3D=3D=3D One twenty eight THP Size (256.0 MB) =3D=3D=3D
->                      | With THP        | Without THP     | Improvement
-> ---------------------------------------------------------------------
-> Sys->Dev Migration   | 0.000 ms        | 234.215 ms        | 100.0%
-> Dev->Sys Migration   | 0.000 ms        | 167.061 ms        | 100.0%
-> S->D Throughput      | 0.00 GB/s      | 1.07 GB/s      | -100.0%
-> D->S Throughput      | 0.00 GB/s      | 1.50 GB/s      | -100.0%
->
+> Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 > ---
+>  mm/huge_memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 554754eb26ff..9f5563af8cd9 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -397,7 +397,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->                  * optimisation to avoid walking the rmap later with
->                  * try_to_migrate().
->                  */
-> -               if (fault_folio =3D=3D folio || folio_trylock(folio)) {
-> +               if (fault_folio =3D=3D folio) {
->                         bool anon_exclusive;
->                         pte_t swp_pte;
-> =20
-> @@ -466,8 +466,16 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->                         if (pte_present(pte))
->                                 unmapped++;
->                 } else {
-> -                       folio_put(folio);
-> -                       mpfn =3D 0;
-> +                       /*
-> +                        * Slow path: couldn't lock the folio. Leave the =
-PTE
-> +                        * intact and collect it anyway; migrate_device_u=
-nmap()
-> +                        * will lock it and use try_to_migrate() to insta=
-ll the
-> +                        * migration entry via rmap walk.
-> +                        *
-> +                        * Keep the reference taken above for
-> +                        * migrate_device_unmap() to drop.
-> +                        */
-> +                       migrate->cpages++;
->                 }
-> =20
->  next:
-> @@ -605,6 +613,16 @@ static unsigned long migrate_device_unmap(unsigned l=
-ong *src_pfns,
->                         folio_put(folio);
->                 }
-> =20
-> +               /*
-> +                * Fast-path pages (folio_trylock succeeded in collect) a=
-re
-> +                * already locked. Slow-path pages were not locked during
-> +                * collect; lock them now so try_to_migrate() and the fin=
-alize
-> +                * path can rely on the folio being locked. This applies =
-to
-> +                * both regular and zone-device folios.
-> +                */
-> +               if (!folio_test_locked(folio))
-> +                       folio_lock(folio);
-> +
->                 if (folio_mapped(folio))
->                         try_to_migrate(folio, 0);
-> =20
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selft=
-ests/mm/hmm-tests.c
-> index e4c49699f3f7..3a673181b9ad 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2936,8 +2936,8 @@ TEST_F_TIMEOUT(hmm, benchmark_thp_migration, 120)
->                         break;
-> =20
->                 /* Test with THP */
-> -               ASSERT_EQ(run_migration_benchmark(self->fd, 1, test_sizes=
-[i],
-> -                                       iterations, &thp_results), 0);
-> +               // ASSERT_EQ(run_migration_benchmark(self->fd, 1, test_si=
-zes[i],
-> +               //                      iterations, &thp_results), 0);
-> =20
->                 /* Test without THP */
->                 ASSERT_EQ(run_migration_benchmark(self->fd, 0, test_sizes=
-[i],
+LGTM.
 
+Acked-by: Zi Yan <ziy@nvidia.com>
 
 
 
