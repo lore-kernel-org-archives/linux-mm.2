@@ -4,113 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 382A5C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:34:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E57FC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:37:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 161E56B00D1; Wed, 15 Jul 2026 09:34:40 -0400 (EDT)
+	id 27A8D6B0088; Wed, 15 Jul 2026 09:37:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139D46B00D2; Wed, 15 Jul 2026 09:34:40 -0400 (EDT)
+	id 208966B0096; Wed, 15 Jul 2026 09:37:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0767F6B00D3; Wed, 15 Jul 2026 09:34:40 -0400 (EDT)
+	id 0A58F6B00CD; Wed, 15 Jul 2026 09:37:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CAA486B00D1
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:34:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47DD9401B1
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:34:39 +0000 (UTC)
-X-FDA: 84991105878.03.E8EE5D1
-Received: from mail-wm2-f2.google.com (mail-wm2-f2.google.com [74.125.225.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9C30F18000C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:34:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jh71tGWj;
-	spf=pass (imf16.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.130 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784122477;
-	b=eT7jfs/1q3bHiuAbfeSwrAyEEg9ObGrEQjq4qzQy39i/rLOTzTZVWd+uncOXJZfHIfogks
-	2mxrVke9TJ+sh9e/HAeK9rtFtePTgo+QWvb39vPI3AC0IGmyleqC37oDYF3o2307nEGQHt
-	dFJUhBnDNwf8esrsoUWL+5NJ0KZbH7Q=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jh71tGWj;
-	spf=pass (imf16.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.225.130 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C4CB96B0096
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:37:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4CC7FA012D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:07:55 +0000 (UTC)
+X-FDA: 84990736110.08.6852808
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 560D240004
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:07:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ai83GQU1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mAvO173l;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ai83GQU1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mAvO173l;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784122477;
+	s=arc-20220608; t=1784113673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gpdCEuNC6+ipebO3NzplfX4VLPuQi09kjzb5eK7FZmM=;
-	b=OGI547fg9/Fu/NAsU3HW4THs3x/G7SDbba9E36mH/MMV7yN0HM5/KrDpCb0yxsy8lgUXSD
-	L+L+UFVdTMkFeMwIUMqEgJ9UX3JKmL0jrfh1xKnYnowWX25BzhitI2qXr9tPjGoplWY6OH
-	OWu9HMLHSWtuIdir4bHix5j5srAp9oc=
-Received: by mail-wm2-f2.google.com with SMTP id 5b1f17b1804b1-4926d058720so5658495e9.0
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 06:34:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784122476; x=1784727276; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gpdCEuNC6+ipebO3NzplfX4VLPuQi09kjzb5eK7FZmM=;
-        b=Jh71tGWjnVQOcCFUMFxjLHIROmldE6m4hyNVbBY7NaCI3Ckf639lwbauy4v/xnUCLa
-         ar5tIyBL0dXjOWSlVdfi1lDQSbGJBFCPnd0lsnOm83AgkSBNe7/rKbo2fXeUrbf7DsYd
-         Cyb6dnd6TuxkyYKCn/eCQlu77MmLFyY0GJKjo77V9vFrMT+mk65+1LN+pjHMYB+8gWbN
-         WTssAsTJH5DuoIs2HnS7F+K1MyTT7EOq+4fazGe62kiz+/M1MbpCZNbUEpG41GBv4rWl
-         mr0s60dCZwt5LoqAavfbaNCnv+yfmnZWh8JGUibw1wCURJj7J8Mwu7B1+zGmrjx92MaJ
-         aVaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784122476; x=1784727276;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gpdCEuNC6+ipebO3NzplfX4VLPuQi09kjzb5eK7FZmM=;
-        b=rEKhOSlx50xiLfc2WT23j5Edx0j5M1CnAdegxoAbq15of1+oCn55810GzCBjMvmSwn
-         L3cX1E6NhuYJkrwJ0Oxa1SsKRNnG6ucRW4pnByHWaH4wtKE6stjlD9+rXIZZM02eTLNA
-         PylQs+aJ+RIttWEyT27feV/yhuecFSbLNMSbSN4gj9MsDHbUytRRYMdI5qjAO7lQoJQp
-         A8Rkd7aiCAHTf/Os7vLSPCXMtcZ5ltJ5VwjCc8qcXUI6NX7z+Bs9r8Uq1c9pzClAPmvI
-         IwvLK6kByJdj2vpqibTFDg89NV31n1Jo024dMELO4tG+ZTSLrkS8WqmRRd1FcSbPEkkc
-         Vr9w==
-X-Gm-Message-State: AOJu0YzfbyricLX4zrCILgc7FboYbkc7suZxKdLORzuGxjjWQsZTVLJp
-	/ewPtOi4m0lXpztOXS1Q8ul10tGTiMIIoiVtaraunJJuaQijEQh4p7Ca
-X-Gm-Gg: AfdE7cmU7hfNukKAhTwuZVuDMaBWBakQ0/KOwAvfRCd6CGf2hcp6AyrwMejUWD7ooVc
-	W8KDL6eaTwpCdiivpn5vlzdUqKXO3cu2o8uqYLF24hVY8HE60uOBc1ftHaSRipdW1Vw89IFcbfo
-	XTD42dvLy+TECszRGY1damAta5/KY2HhSKl/MyLyb0r/RJDkF1zWCnhMJxvZP5MydhS5I216dVI
-	OqK+4A9/wIAxpp7LHBwU1Y454PskTG5nt23b7ciaqU/4Baj9ANCXwPfW4nSLLSOzTPGsYc3Ot9D
-	+7wWNX8sCpWU+a/qursVH/vI9+P7RVmwuwCVvgZi5W2BHZwk6AtBWoKZ43BTm5McyOsUI6xGF7y
-	5SwqR4HzSpP5ny82ROfizE2r1DK3Zxz53opVPxbsHqM5CwYntlALOZhEXjWdvFykn8qD50i4L4X
-	WoHJmHHR8LqoRpDUgOt+WFxgn0bivY7CcE+62dH/y/g7IOJ0UsJMVO/u04I18nR0QJ9AqnLGWoP
-	BJyZXO96ctANLwZOPLPdrmP9/giKJKFvg==
-X-Received: by 2002:a05:600c:a00f:b0:495:3dd7:ef06 with SMTP id 5b1f17b1804b1-4953dd7f0bcmr26130985e9.12.1784122475929;
-        Wed, 15 Jul 2026 06:34:35 -0700 (PDT)
-Received: from lima-kernel.. (host-123-106.campusbrigittenau.at. [78.104.123.106])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a322c86sm142033015e9.11.2026.07.15.06.34.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 06:34:35 -0700 (PDT)
-From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-Subject: [PATCH] selftests/mm: khugepaged: skip swap tests when swap is unavailable
-Date: Wed, 15 Jul 2026 15:34:17 +0200
-Message-ID: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nioUefq1xbXjtodWxvKxZTWQPlbxpqryGWIKwDtgw9w=;
+	b=e6dWTOva+AZu922HY6XZCOPmtQfoumyZuWsNN+kdq+UZR6q9knPSWn4v+6eJtTMlX2ejKV
+	R+Cv3GIAPkr+lNqS4PnoMvU+mmtOGKBcaWIqvGvMbKXI/Wt8MmFKKwkLzheHOhKqI2Wh13
+	6hofW3RCTnngSx9xLs1ifs8f3luaeeY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ai83GQU1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mAvO173l;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ai83GQU1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mAvO173l;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784113673;
+	b=X0sgYqFGIEQSg1bh3DaOp+LsFT8NCUPxMEC6r/UcQ7MCVk7KK4yOaLawWHCPMBOHpnhQaO
+	LtjGqSIxOt0PcnnMHqIOGpX2yZ+0belcjt5vPIoZLVeuB/7miVlGWQsLKLL8gSjD6cdLky
+	0eqONCWiJOQRg82y6KM2J8eXQcKSFRc=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 07A567837A;
+	Wed, 15 Jul 2026 11:07:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784113672; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nioUefq1xbXjtodWxvKxZTWQPlbxpqryGWIKwDtgw9w=;
+	b=ai83GQU1QSLW4HMqQLHqkTNNKJcdnVJeYTkcJczwLEkaWbE4HH08Sgzz4Zi3FfHHLXKF0w
+	BUqWf9xtp+Poz7MSTvJxVILX1rJ1fg0J0/12EhNSXj8Ts27FocAgBdZZtHRJP2E0SYcjVW
+	dRLsXyhi36zD9Vi640oinf7YuU/RvAU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784113672;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nioUefq1xbXjtodWxvKxZTWQPlbxpqryGWIKwDtgw9w=;
+	b=mAvO173lFLygJBfvjytDRj9llSE+d8jC3KzkTwirCPAfOhdFiZxPmaq14VxHUPIQnWNtTe
+	BMuK6oUQqZjAcqAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784113672; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nioUefq1xbXjtodWxvKxZTWQPlbxpqryGWIKwDtgw9w=;
+	b=ai83GQU1QSLW4HMqQLHqkTNNKJcdnVJeYTkcJczwLEkaWbE4HH08Sgzz4Zi3FfHHLXKF0w
+	BUqWf9xtp+Poz7MSTvJxVILX1rJ1fg0J0/12EhNSXj8Ts27FocAgBdZZtHRJP2E0SYcjVW
+	dRLsXyhi36zD9Vi640oinf7YuU/RvAU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784113672;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nioUefq1xbXjtodWxvKxZTWQPlbxpqryGWIKwDtgw9w=;
+	b=mAvO173lFLygJBfvjytDRj9llSE+d8jC3KzkTwirCPAfOhdFiZxPmaq14VxHUPIQnWNtTe
+	BMuK6oUQqZjAcqAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E927779AE;
+	Wed, 15 Jul 2026 11:07:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iqBNAAdqV2ooAwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 15 Jul 2026 11:07:51 +0000
+Date: Wed, 15 Jul 2026 12:07:49 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Harry Yoo <harry@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>, 
+	linux-mm@kvack.org, Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH net-next v3] net: skb: isolate skb data area allocations
+ into a separate bucket
+Message-ID: <aldpAY6nXwgayHL0@pedro-suse.lan>
+References: <20260702170728.168755-1-pfalcato@suse.de>
+ <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
+ <ak4w2k4Woj55E0On@pedro-suse>
+ <529e3997-d26f-4d8e-ad90-3329fe90e555@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <529e3997-d26f-4d8e-ad90-3329fe90e555@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9C30F18000C
-X-Stat-Signature: 7yworcxm8pprpz8feqp3dc971zsjy93i
-X-HE-Tag: 1784122477-460991
-X-HE-Meta: U2FsdGVkX1/f7SEUZUF/A1LJEFZr9bZHTFU6HU8Q+aTMrz9NwIFtr/Hf9SiVsiweDTDapvtQThL0njHl9sWg30mAERFP6lgxJxK2+HXTUbmJ9Jg2B3x5j0erc5aw3h9sT+f3Ju0rD2K3lT2E3rAyT3AEbbVqGcxDl6If5EqFjYZ60iIPCypmmaM3g8+kd90k2HluZJYk4GDOdDux7RozLRE5S5P82bEbfh66WeJbcnlmrq9EeJrj97O6mVNsHdVRbRQG/v0ytb48wCzR5aIUJP6qCFpkvDr5gH+A/5QYG4HjG7mrjZtaMmMn0ZYjlorJbVPHyN46r1REgLiHPDJva4qjiTmdRptfu+st99lTnkaThS54kZOLyoO251yb/lAKuY00aefwZd7HWpdz58MQ75Fk+iSIpCe4R1hCylTdfaEk769QjMd2TOG9MvovQa0szm/jkarZN36FUXDyI1/Ttl/2BdC5+F7srTiIGLRhDHD8/HuZVJKS0yqvl6ZnrUijKuW6lWulH1XStR2pO3mYdtxy+Gq8qIzgBRKf2oFu6BeA5auxUTQYksA9G6l0ZJLw5BMAqChQNkBUNhNnYmiUvThJSDRZPy+5B/te99ODTmdmfjnvvO0Eg2ya/SjvvtmxFedqXpvNDAAscLASoZ1iH1sjKUbS2Q1Cs9Uk75qqRQviY/NDYVGLfTzC+UHRJ9+oEyD1liSiMC4zazI+n1cQrFr0be1HVLI3z6edoN+/VqQBkQ2aRnuy66UGk2AhaMJQSh4N4mS9+WlVmadS1cVMJWU7WzP0l/naSmuz9GvT04hOEtxfkvn86H5+diRscaYNEHFfYODBMA4vBhsLlYDBA9AaMGZMDjOPXyUpjEhILvOIckoR+CAkpMf5zPw/jtlV4z8dJOK1Hds5atmKl1oHekj/Dh4bRkrnvhTVyDWMyWKZZqrNzdGIp6LuEKDVIvGcbAUqZVSMpoRwThM1zXe
- tZHECyBE
- F61YblWGaAcY+nN+veIUnLtQHRKMhBMcTHzCmbC92zmpr5cb8ae715Hflz03Vlq2Cu0nnDd7TWtqsLPm4y6tTXE1Dunyyfw/1xkqepNfWnBC+Bea6JYUSKBLx/G/HKLoVQFZB1s/9rsWE4bccPPGSm3uvbvv8Us5BZh0tAZMMOYzWHUCXaC78MzWV2qmHKmEm/rKMqlavYqaehib8qh3H/mPdtEYBUrtJFtz7JwiKZdnA9Ro0zT8QQkxbWVOnjT0PjjwOfs5nLp82nC9ym5dE9TzHEvfaiO/zQwAODr+O+h7RhoWmIwp7nqASTBBX8f/VU3A0DUpWkDvqchRz20vW++sUIqv595OrXb/PzCI8q8KK3//WlKrAOvie5b4Mo1DFqReReUXK1F4WFE6zPmvnHWT8K1aVPvSHeRAr5tygHT/8sEpIDBXD7XUZ81G1K7BeHlItFyB/pxkZFm3K4x2ZYLMhCgjquY5CjPKONsOA/JSgTJw=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 560D240004
+X-Stat-Signature: bmak1yy7er6i8neocsxpd8yfii887hp7
+X-HE-Tag: 1784113673-806502
+X-HE-Meta: U2FsdGVkX18Kk95VLyy35uA6XxIlvnEDzclm4PggErozLyf8W4i4WNH5tNIS+f763Jxv3RXJjq/tRX9SROiutyTnETL8S5Ibb3ZKW+wPR83rt9Sv8JQuPIBqi6KdS5Twm/bKZlfPK6hHZkjL9N8KNTKT9tp30qd90cgThTebS0vtZHhyjfeGgEo7AC/4ocONNlhqfZNLcHOHdnh+G45+N8Eucz6Vz8hUyMqqvPRWm2Pje5jGWm/PiZAzzZvz6/kTMYyN9k2/cfQw1rtZ0+6whPKgz1cOKIKWfD1nGFNzXX07u7UR91L8SLRW03g3fVQc7FUSnmgdrAUFw/RbDZAyFE1tjSdbR61kizfiRlqtma6wMfg7WsHZGvsYUUoHiiQn5tT9WoDW0JlEAA1qEB9AdpoUZyYPAHkEYA/39HMXdyjtjctMomDfJRJ4MySW/eb4F/c4UWo6w7vj8qO+9gpbLbaziMNSjgtdDbZOlG4autio+D33l3kyyXb0YCk1c9vTm1I5ttVu8wpzp7RoNRo06+KaF6ePo0jCNLkTVGDGN3gnL1F1DhLJ0W5SgxA2H5Ep4DS+I3QuF4xTuy+K4cLMhBMogRtjFfDJLsqpfPpuO9JHiIDjfvQHSbc+R5xqAfbHAF1cMn6O1D1N1H8VHraPsuxzxR44tenCs6PB/HpywJrRRZ26CMYRNWtSKLkaeK7TDL7oZ3SAlpgPtWeWVRj06xLr2S4gakLYIVaVc6AHjXYsn2Uq5XOEi4bQgsBD0LntNdlk8tXGh6Iea1jWYmW/m1FQ92aYGgl9lYCMElBhCQX4988ncBG9ip8CX3Z5i4OXMfXrOri4bHHyO38kyeaN13GLp729LuMTIbs9YMwltM4f2ILInMKg3grP4wiTR8yWT5JyxepR5rJT6vgf5BmamSXSes4qWoteebz4lffNqaiVesQdV+j7uNKTe107r33jg2A/o6xAICR4Oe7GpiL
+ soeHEUKJ
+ RiqvQSKbJjv28GLixH1Mf45tu0f4+Yi5Got4ALFar/O6w7s51vzcdN4Q5s5sKltDnJtzVjWRdeHF4XOG7Bim1EA8mRIxZDGPGRgnMTm394hMdgzZn2D+u/IP1KtKeDUufooEsxN9PXLOVVaVDNWmls7soGGQs9SPb/AaASUCRaLCvFLZOxzli3NrfV5XW6wi6aUOiVBXCYjhQWKWC67eA/0j2jRoPs7ns12qz83yPkq2ZKV2KpZ/gSeuHR1dN3CQl6NWyouG6ug4+9Hak/5/8Gm9hR5Fg7HMlgDOCnmrlZRrtTbzTqsi/plxzazJIEWVPGjoHYghB/rMwRIM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,82 +137,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The collapse_swapin_single_pte and collapse_max_ptes_swap tests use
-MADV_PAGEOUT to swap out pages before verifying khugepaged collapse
-behavior. On systems without swap configured, MADV_PAGEOUT succeeds
-but the pages are not actually swapped out, so check_swap() returns
-false and the tests report a failure.
+On Wed, Jul 08, 2026 at 10:27:54PM +0900, Harry Yoo wrote:
+> 
+> 
+> On 7/8/26 8:16 PM, Pedro Falcato wrote:
+> > On Wed, Jul 08, 2026 at 10:30:50AM +0200, Paolo Abeni wrote:
+> >> On 7/2/26 7:07 PM, Pedro Falcato wrote:> @@ -586,6 +586,8 @@ struct
+> >> sk_buff *napi_build_skb(void *data, unsigned int frag_size)
+> >>>  }
+> >>>  EXPORT_SYMBOL(napi_build_skb);
+> >>>  
+> >>> +static kmem_buckets *skb_data_buckets __ro_after_init;
+> >>> +
+> >>>  static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+> >>>  {
+> >>>  	if (!gfp_pfmemalloc_allowed(flags))
+> >>> @@ -593,7 +595,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+> >>>  	if (!obj_size)
+> >>>  		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
+> >>>  					     flags, node);
+> >>> -	return kmalloc_node_track_caller(obj_size, flags, node);
+> >>> +	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
+> >>> +						    flags, node);
+> >>
+> >> Sashiko noted that some drivers may require GFP_DMA buckets, and the
+> >> above may break them:
+> >>
+> >> https://sashiko.dev/#/patchset/20260702170728.168755-1-pfalcato%40suse.de
+> > 
+> > Oh, this is really awkward. Adding linux-mm and slab maintainers for input here.
+> > 
+> > Considering the current slab bucketing does not seem to duplicate DMA or
+> > CGROUP caches, could it make sense to duplicate those as well?
+> 
+> Could we specify what kmalloc types the user needs when creating
+> kmem_buckets and duplicate caches for the requested kmalloc types only?
 
-These tests cannot run meaningfully without swap, so a missing swap
-area is an environment limitation rather than a test failure. Detect
-the absence of swap via /proc/swaps and skip the affected tests
-instead of failing them.
+Perhaps. But do the users themselves know? alloc_skb() allows users to specify
+random __GFP flags. We're bound to see some random caller do
+alloc_skb(__GFP_ACCOUNT) ;)
 
-Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
----
- tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+In all honesty, I'm not quite sure what the best way forward here is. The most
+transparent way is to bucket those other kmalloc types as well, but that might
+very trivially result in a lot more caches (and possibly memory usage) for no
+great reason. So perhaps specifying caches might do.
 
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 10e8dedcb087..f9b4ebe733ce 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -100,6 +100,22 @@ static void skip(const char *msg)
- 	exit_status = KSFT_SKIP;
- }
- 
-+static bool swap_available(void)
-+{
-+	char buf[256];
-+	bool ret;
-+	FILE *fp = fopen("/proc/swaps", "r");
-+
-+	if (!fp)
-+		return false;
-+
-+	fgets(buf, sizeof(buf), fp);
-+	ret = !!fgets(buf, sizeof(buf), fp);
-+
-+	fclose(fp);
-+	return ret;
-+}
-+
- static void save_settings(void)
- {
- 	ksft_print_msg("Save THP and khugepaged settings...");
-@@ -742,6 +758,9 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
- 		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
- 	if (check_swap(p, page_size)) {
- 		success("OK");
-+	} else if (!swap_available()) {
-+		skip("Swap is not available");
-+		goto out;
- 	} else {
- 		fail("Fail");
- 		goto out;
-@@ -768,6 +787,9 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
- 		ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
- 	if (check_swap(p, (max_ptes_swap + 1) * page_size)) {
- 		success("OK");
-+	} else if (!swap_available()) {
-+		skip("Swap is not available");
-+		goto out;
- 	} else {
- 		fail("Fail");
- 		goto out;
-@@ -785,6 +807,9 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
- 			ksft_exit_fail_perror("madvise(MADV_PAGEOUT)");
- 		if (check_swap(p, max_ptes_swap * page_size)) {
- 			success("OK");
-+		} else if (!swap_available()) {
-+			skip("Swap is not available");
-+			goto out;
- 		} else {
- 			fail("Fail");
- 			goto out;
-
-base-commit: 7081238c5ca29839924f13bf5daa80763bc589f2
 -- 
-2.43.0
-
+Pedro
 
