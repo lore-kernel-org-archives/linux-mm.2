@@ -4,102 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22859C44507
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 23:04:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD14BC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 23:29:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F1246B0088; Wed, 15 Jul 2026 19:04:04 -0400 (EDT)
+	id 66B006B0088; Wed, 15 Jul 2026 19:29:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C9316B008A; Wed, 15 Jul 2026 19:04:04 -0400 (EDT)
+	id 61C4E6B008A; Wed, 15 Jul 2026 19:29:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B82E6B008C; Wed, 15 Jul 2026 19:04:04 -0400 (EDT)
+	id 50DA66B008C; Wed, 15 Jul 2026 19:29:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C66D6B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:04:04 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93ABDC02F1
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 23:04:03 +0000 (UTC)
-X-FDA: 84992540766.19.EDDCD65
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B6AEA14000F
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 23:04:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FazrS5ZM;
-	spf=pass (imf23.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784156641;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E09F6B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:29:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 825D91C0283
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 23:29:00 +0000 (UTC)
+X-FDA: 84992603640.17.0111E99
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C55A440004
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 23:28:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=sejcLQDl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of sagis@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=sagis@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784158138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zSb/pkneEjl1tluDcf0JGWXSHFW2tZLVqDpYWPHPt9I=;
-	b=GSuxdr2T9o7bUCRW3jfxeyglUHxMnu8NN96sduvQtH/OYv7ueykzSMHCPvMFGDaaLBsrIG
-	oEV6H2M7VG5ijYBHgP8kvdzqAyo/dAcK3fzqGSIgw93LapVpk+K38eBKySlDYN0u1wAfNI
-	AK8RhJ+d3stjftyMKyUTa8qU398g82E=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FazrS5ZM;
-	spf=pass (imf23.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784156641;
-	b=sO2U1QAU4Gqz/EpSSg3xtgaoWY66qhb0kl23uBDayE/K/rjp3Yt7Ktk4V1oJMZPnTiQE3Z
-	VrdLNTW4x/BHhzpKm0eZSMrFDjLpPYh+s6+i6Fh5ng9K5ow4e0PHU6e6zBbywAp5hFu3J3
-	ESg3Sd/EYZYmkKDBEYIA2KH3SNSgRbo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E153E600B0
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 23:04:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AE41F00A3F
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 23:04:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784156640;
-	bh=zSb/pkneEjl1tluDcf0JGWXSHFW2tZLVqDpYWPHPt9I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FazrS5ZMltQFQNqPaSz6k4lIXILI1U9whL5zQ+9OhDV/mx/mrBn16W4sfmah2l/MI
-	 6WRdKY5+01frihBwIlpy3HztpyXiAmS0KXN1wO9GB/GieMwTEPG5ttz0enZpjWSbwR
-	 N4rh+cYo+Js24OyOrETqEDppnNL8WgloZMf3nxhwmem+ODRkAHvmCyr8t3wy/MSkY7
-	 f8+vxRVoqJqzlXMTmRqn38IsjDUhbTYgYTAI1CHc1cz14q/0RbpvzXs8pr/OssKY7V
-	 /C9S90aR+U1ZiuRa72u8s+SQCpCb2MX9H5g1NgVveHqyiBPqaKUx9S4+htePLWm2gW
-	 MPHmjlfOlt4PQ==
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-81ea0b7d137so50863087b3.2
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:04:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpIY1REAtZn2h9Z7F/Aphik2UCU+yKIw7x0EOSE2+e2ZTgCm2814GgGGQKRJ0tMjgEARlTGTy/nkw==@kvack.org
-X-Gm-Message-State: AOJu0Yy8KoT8W9BlkpJPjEHHT6ijPnvLEZFRISOnh85GFNV/ea+ppRGP
-	svPAlrhXhy2X+z1pmgfDqiiZhuz10mIv0l0HR2VflDsOrc8VuAorwD3+H72sOovabOdigaMY1TW
-	4cm62flGSNQqfzsrnNffdWBxiB8S7zQC+Bdkuw2doHQ==
-X-Received: by 2002:a05:690c:c8e:b0:814:47f2:217 with SMTP id
- 00721157ae682-81ecfadb793mr39724207b3.65.1784156639477; Wed, 15 Jul 2026
- 16:03:59 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qLeRdnIYqFL2ZkvvJB0Jh6+9BtBNZEB47wJZNGFb0wU=;
+	b=TryaF6grqeJc/9IZKyP4B/fPHOhn/P7jY1W22nZMzUCYjPZJFe9ea/43UKLTrj/LfQTLg2
+	kzuVB1s1QpbFWGNs5yCU8bmptgxsPkgZl7aqdLPDkrnUyhjzYWpi0nDBRexjolYfp9dNh3
+	0lBVZ4wHwDasSTI/S3ojIquXcPabU+g=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=sejcLQDl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of sagis@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=sagis@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784158138;
+	b=oN4iwfdFROYgu8cUeeRZluc6Ngk0/8QlohnGgSeYEFrnHtekUYJFxuqLMJTvGTVvvYl45S
+	jbL6otzH9LviYdKSjuUjevy0URpMef8BIu3tF9DMunUaJOuciFDt+SjmvAe0ayWpvpmaA6
+	56du7h72db6tfYvJiQCu+fqe412Y9U8=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c15a5b265so119341cf.0
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:28:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784158138; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Tr0QRfvR3EInpWOZr4qX5VC44MhL3aD3uXD7Uhv1a0Iv8mjeHZpY/rjYbI72xcRRox
+         GUssmauuF9vubhysLoMFpz38eqm6+Fomlj/sf4Wos0b/5rwg3JGlyeacztDV/4Kz9yTS
+         pyJC7gqxQTTBf8hESOxy00B9UUXjVVWlP6IPvRXc4uXRoWdDn5HQhRUfJwAxTvFH8mzO
+         p1P5gZMjAv1ibkCT7QnQPDb7xZWUOSFaZCFuErAeSNmubdll3Oi3/1OTkdVB5gXoiIXR
+         Tcymvb+pompvSOsi1bZ3c1NnTiG2RLRIV5hXHeblI62PwVraQ22wz4cs/pds410d1oKp
+         bb4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=qLeRdnIYqFL2ZkvvJB0Jh6+9BtBNZEB47wJZNGFb0wU=;
+        fh=Zq59pp1ueMPHlTtJRAZDJUJaL3MvHuIRlkR312ytYeI=;
+        b=Q+PddPd5U+wB7g8PEXC/sTs07RcvaPNaFZ5ruuqWtswE3KRbOHwBvxZ2cnC3XlhSvA
+         9nrhKPfFDD9bn3bV3jrmEviPkhxWnFckvOE8SqYx9JNlBmcSeaCcbL3WB5m4NcCzU7jl
+         64l6kvJlX92ZBWYKJIagwCi2fo6jpEzmWE+Nmm3ms/IGEzLTV290LTv2E9eKSGXPFLA5
+         6j9ThvROzZzJyNFd6w0k6Mp3q+AJ2u6NkXpoGNnHyEA49/J9Hz4i+lchoB8Dq7kzEd4V
+         EGSiPZFlt68+qtZ15kigSo+UihhOToDMMTmTJKBkbwXcABwntEahNnr2m0i4cZ35ZTCW
+         Pigg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784158138; x=1784762938; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qLeRdnIYqFL2ZkvvJB0Jh6+9BtBNZEB47wJZNGFb0wU=;
+        b=sejcLQDlpN2MJd9QT8io5pJjwN+xRY5NqhzYz55jTff6l5HtI84TwgAKxJc1Tgo5QT
+         jksn6SB+sC4TkiN9cHf+wymxTfWuZFt9GcWn2LNRgRYuhG2uxxqVGoXOibs5xIW8kl4D
+         WA1arPJCZmyrhQIHZNxTqGpEc5ZcpxUeblyDTW0F+kqKN2CjQaKkT22et4fkhFJVOzQ4
+         hUbD7ekuKlE9XU5xZrIzhe2yHmO/+In2AaqsPX1LrbXSDcOm6YAvMo+48EFK2Oht7rh0
+         A36Y0c9MnTpGcqYLMFj/z+QfolDXCPEUngMB4xsix73LywmBWZ0wgdRiHTxmbtvNhRqs
+         alVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784158138; x=1784762938;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qLeRdnIYqFL2ZkvvJB0Jh6+9BtBNZEB47wJZNGFb0wU=;
+        b=ILOLEvsr8JIjy35iB1M8L9TYWWGczOyATQL+8cUnZZVLDVlEf0FdIKbyo9XLbVTjIM
+         j5ZU0wj48JqGw5LcZirYeKAmXwNIvUhyHwZ1OySVNBudJrcaM/w0ZAhamxeOSa55MacT
+         vIlOYYfdy1Aw4wqrl+zEGcEhgDyAOX+cum6D6aXAbsiHkCn/9LObs2s99v6ZKyCJjEdj
+         iCM4t6qQIN9NcXZtGOdcxrRpeT7LZJ8B9j10SExrOvR01TrtyN3pb4DR5ZMAoQZPGD6N
+         h2MITBUMV2X8nU0dHyBWeTymsk3CPUZBviu8KjpPXKeVO+257NYSvnQRhIxKuisXjVXU
+         CHgA==
+X-Gm-Message-State: AOJu0Yw7TP4LXWZUatvyA+o9Ua2IBf/afyQPylScxO8cg1FYHIhJ6U/Y
+	KXk3lM/Hg0S6D1cEj+esCOBfU/FCxGdwiBKUiJswaCm4aFgUe3NlGwWHk27Kx8ppZy1TcOASBEw
+	M59soe2kd8oroaJcXWioqWWNOfDuqoDgfpy7mtCxk
+X-Gm-Gg: AfdE7ckPhchT2FKfiUF5cddZvUeAuShVV8FZ5U8fGkyHtWl5UjvAAc3yngz9igdMIEY
+	sG83bS48jh3mLj/FiO1okQ7n070Ol1SrLSw7SuWIjoiRcCk+YMe+OfstoLcpVRpOcXsQoVN42s/
+	C2ZAPL3x8cLo6SDmb4PnPYSHIw+WLagOPxZT/nge8sQncwPuT3uL2St7K7UULAPK6Lkr35FlzBv
+	dDjwEV3IaSO6ZgZ0Wmpi7q0/2F1W6Hzf5PmEKUkpqMQB/en0sPLnNvEOJB8gN/k/jCKFClsK2jd
+	+JzSUMq6wkgWxILhbJQ=
+X-Received: by 2002:ac8:584e:0:b0:51b:fe30:b8c5 with SMTP id
+ d75a77b69052e-51f7d273d83mr3129991cf.6.1784158137304; Wed, 15 Jul 2026
+ 16:28:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260707082614.95030-1-baoquan.he@linux.dev> <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
- <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv> <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
- <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv> <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv> <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
-In-Reply-To: <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 15 Jul 2026 16:03:48 -0700
-X-Gmail-Original-Message-ID: <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com>
-X-Gm-Features: AUfX_mzzERb5u7ncl3q-5z2GdYY51rYeb2c2RbOqF_GhNfWDzc9KNHkmok9bnso
-Message-ID: <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
- via Redirect entries
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
-	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org, 
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
+From: Sagi Shahar <sagis@google.com>
+Date: Wed, 15 Jul 2026 18:28:45 -0500
+X-Gm-Features: AUfX_mw5IkLq6HBWbNyFqtB_FJLQY-ss8e5iexyKJ5DFpuVyQE-Godhtk7slzLo
+Message-ID: <CAAhR5DGpL6_ViMwQ0nKzTgOoziE_oq8JofpO-VtHBXK37uO-FA@mail.gmail.com>
+Subject: Preserving TDX module during kexec with live update
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
+	"Andersen, Tycho" <Tycho.Andersen@amd.com>, Anthony Yznaga <anthony.yznaga@oracle.com>, 
+	Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
+	David Matlack <dmatlack@google.com>, "Heyne, Maximillian" <mheyne@amazon.de>, 
+	James Gowans <jgowans@amazon.com>, Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, "Woodhouse, David" <dwmw@amazon.co.uk>, 
+	Luca Boccassi <luca.boccassi@gmail.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Jork Loeser <jloeser@linux.microsoft.com>, Chenghao Duan <duanchenghao@kylinos.cn>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>, Sean Christopherson <seanjc@google.com>, 
+	"Verma, Vishal L" <vishal.l.verma@intel.com>
+Cc: linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C55A440004
+X-Stat-Signature: nccsunqijo7kji7cb6bj9q1b4ask1rpw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B6AEA14000F
-X-Stat-Signature: 5eru5gtgjbkebkz4545ycjg4dw4ji7r7
-X-HE-Tag: 1784156641-992561
-X-HE-Meta: U2FsdGVkX19+s7+xjW25/EpKLCwuDeZv1YTC8om9maT2jIyhgZ5VTrfEgWL1I/qg1gVpDocY5vb91HGaGeMYNSolOlZ7XkQXi1D+b84y0UfCl+RrAZzvx4I620g3CZ514K9azoKcsdYfPdk3RVaPHM7Eo5vdUDUbnwEf92qbuw0JelRlyb9bAqqPLklWz5s7Ojzp+8lkkQEOJql8Fbffstxdp15DWc1n8LYlNP4O0jpTFve7eAzY3YqLb3OD2q1CJxLS28gMtKHhAzwf2cQVunofUywzO9WKGY8x5g/YwMeWJ2Q405tOiuv5W/26jdSjDv7zQy04XR/BFeIRZ/NHdq10/cYXYLStOx2wkqCvxCgYmPeK9OBbCinye7pf6ad4/hXFhZHeE6TDnSXXzwmA8Z65o3auDXGHNA4/CT+VE5a+XHtO8xLZrhvc6ewGokPrezT9nMclgLI5G5SqyXWlx+kNxKCIwqKogprHaQ9MVGuLHjjQ/f+ER6rN17bGgiXYOj+6UE3E4n/5ksrYm4q7MWkYxh8g4gBeGfhZUd9hSwhFizu5NK5wSAmbFaM9u9mIQ1g63Q65UcadmkbqzuhPbDAsXDpbm2jbTbrnRantgKlK10TiTLRSflPmH3CkkUZJCLLh+4EM52EFkh6TvEOFqAB5C+DdpnuZZ6upVqEH4aMacUJ7gJyhEzLaDiYi4sTTSbZJ+n+7Pgbf1DWWMwTYH6l5KBwCHRraWSIieXB7G9x1OPoRs/HIqhOL+ZKAUtynz4/Kn0c/bsZGL5DwWcJ8FqlHyUREoL5kIXJZl5RgHRsfccG+qJvWoio3P0g97kAZhE7AOq0f55XkpjdaS4YYjrMhNRpLZISb71l5ZnEGb7PWsCM4dn1G9D90VLLzDG6IfsVzgCQ9nzbNLYD2C6S7zoRjWkMmCWdeM+24ZqjQxU8GuGORyIIPvfISl/A0GV3QK1bISGpEdAxS2+OC6jC
- NsqF6/hm
- FDABPS4l0A9AcfxjxUXlCNgssArHH+9BIGE65TlTB/78k+JEQ3lIWpJ6YOi8cAmIh/4Ms73WH0EU72VbLaTbQAgJUpb/5Iei72tyf0mdI0+10zrjbj4OW82bxmOPUf5nicsD7fI3fLb79cNTPtPimbZWEwmNvPRe30N4FmxgbXQKBlwjkWtf2UrU22CxzgFgZmV2xxQyJNsvW01F4EUqvHqCOKuHTGIkl/dinWSqUbMOPosCNdNNDd9a3fWy8MpAWmzoWnkzgFJbbKGoE/G5z3GCZ0JQjL7LXRiDb61UDbYFgvFCbEX4YseAbI+h0Z1tEA2CgW6KKgeAU62k=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784158138-426989
+X-HE-Meta: U2FsdGVkX19hQyBBrNJUrpj7+iejf/B+kuHEN48BEr+dj5V093R0D2i1oxau55BbivREihdrEdrYQRh7BK96TYR1iwymvMx5nDm1g5MfGh8t2R1cvLiQWCWbIKirOmL581Wj8aaSZc2The3S7zb5r+Mx3X+nPOVal8a5OetjJ/G20zUaBTbeg21Kg6gd1r8gdU5kOddgAgimWRq4YauwgdrNM+1EnjAXrj12Y48tXJhFhvb+Dm+GWhlwZhk8AswPpFhEPLpP3nfglzZulmfClbZTkod0JPDK+vwk57DO+UpqwIJz47RkGj00NuMAykaTsIZnDI0ZwagTFrUkaQvfaQQV1jksdKkTnxd7FOyRGx9ISWYheY+vfEVcLo2w0oE7rdAY+n2/jfBI52OUYQlWJFmjQ9kC+SRWAyJD7B9RXnxP8HD9Ej7gLcl4fJPRMjdizkO6ngLVvF7gEv6tqZ2VZlEbgrDpvziRSq0iigQl0AdeFu6iNvISEN5qkBPvvTwz5uaG3yZaoGMUe4X//rvkRQzgeOGP8rBBdI4FJZWuLNXpJWSa5xbu65Wi7e4nycs1AIJiyPaWRk5GMWgFKs/itSiGsNbl+oP/23C/Q+LeFRjTGEDuCrNgNT/HAyZRRjLYotD8Xhlr6WRF7g3lDOCYoKIKl/AjQlVouVg+VDMC2OE2Kx8XT5b79KPmi8mbCfdqAH7Tkl23cBXpmX+LMez4CuJUfySziuWex5R0q/eblkpyipGBE6GvV6F5L87HZMfC+NFG7dF3XS/d8vsRnhxqc+Zr7XTP6yaJzy6FZC7RPDlOdOWJeaKpYeiAK1WRoV1o+37SsGKVOFHYcOHLG8AEQdAyEWRhvtBOpI/xAwOxhqXwhd5tiF1w2+y+SaBsKhBRdxF3evOU16CtdGW095UzW+sC8ax75YNbex51TlT6IlEPupbHxGtUWQCwkUoZlvyJbBeiaKFsjCUvv/WFS4J
+ NDVP/KDp
+ u4+KGHMedB9x0diP1bk81Jwh7SWRSbHz3DiMTgYTVJv4oDTqp5SxRZlxrfpL4FUZNQ1GNSCLRYOHpwfWwGF/NgY/7G5fPjy4i69Dk8d4qiGqdCd6XzVExEZ5w5HRAZfgxdpQ26dR9ePwQfYF5GTIKQDe7BDoZZJdDHftJKmXhI01Btv3QNR3xeamxMNpnukehuM2VSEEmvN9T6NmLn++j0YCpx+7PEpOSN8N6sZvCHSpQt2NpbP4UITX4k+lu2FTPxkYcfQh/FHOeCqvsB5YrlGb0I/+SZ4m0a4iSdjnxvzBYRh4+0miUf0ntaNndTjbB3u2hTQm6Yo46kEbi48QmR/zaVbHT/fpxy/hYgvmwVHBG82M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,241 +141,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 9:18=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> On Wed, Jul 15, 2026 at 7:19=E2=80=AFAM Baoquan He <baoquan.he@linux.dev>=
- wrote:
-> >
-> > On 07/15/26 at 07:21pm, Baoquan He wrote:
-> > > Hi Nhat,
-> > >
-> > > On 07/12/26 at 05:02pm, Nhat Pham wrote:
-> > > > On Thu, Jul 9, 2026 at 4:39=E2=80=AFAM Baoquan He <baoquan.he@linux=
-.dev> wrote:
-> > > ...snip...
-> > >
-> > > Sorry, I won't reply to each comment individually. I'll just leave
-> > > a summary reply at the end.
-> > >
-> > > > > I think VSS goes beyond solving the "zswap without backing store"
-> > > > > problem =E2=80=94 it is fundamentally an architectural restructur=
-ing of the
-> > > > > swap subsystem, with virtual swap as a first-class abstraction la=
-yered
-> > > > > above physical devices.  That is both its strength (comprehensive=
-,
-> > > > > future-proof) and its trade-off (more invasive to existing paths)=
-.
-> > > > > I respect that.
-> > > > >
-> > > > > My goal with ghost swap is different: address the immediate pain =
-point
-> > > > > with the smallest possible change to the existing infrastructure.=
-  Both
-> > > > > approaches have value, and I hope the community discussion will h=
-elp
-> > > > > identify the right balance.
-> > > >
-> > > > That's because I believe "zswap without backing store" just by itse=
-lf
-> > > > is a bit narrow of a problem. It's certainly nice to fix, but it's
-> > > > more of a nuisance - you already have userspace hacks for it (as I
-> > > > mentioned above).
-> > > >
-> > > > The problem I'm trying to solve is to support:
-> > > >
-> > > > 1. Writeback.
-> > > >
-> > > > 2. Dynamicity.
-> > > >
-> > > > 3. Decoupled backends.
-> > > >
-> > > > all of which are motivated by real production issues, not some
-> > > > theoretical problems. I'm concerned that if we only focus on the th=
-ird
-> > > > goal, we'll dig ourself into a hole that prevents us from solving 1
-> > > > and 2 efficiently down the line.
-> > > >
-> > > > >
-> > > > > Thank you again for the detailed review =E2=80=94 it has already =
-clarified
-> > > > > which parts of the design need more thought and documentation, an=
-d will
-> > > > > make the next version stronger.
-> > > >
-> > > > I really don't want to be antagonistic, but I hope you'd take the r=
-eal
-> > > > production pains that we've had (and have tried to communicate in
-> > > > multiple mailing threads, across a timeline of almost 2 years at th=
-is
-> > > > point) seriously.
-> > > >
-> > > > Collaborations should go both ways. I've gone out of my way to try =
-to
-> > > > address the concerns of various parties, from spending *multiple
-> > > > weeks* testing and investigating performance regression on zram
-> > > > backend (which my company does not use), to a rewrite/re-design of
-> > > > virtual swap to accommodate parties who wished to opt out of virtua=
-l
-> > > > swap for now.
-> > > >
-> > > > I hope you can extend the same good will to our needs :) I've inclu=
-ded
-> > > > you (and other swap folks such as Chris and Kairui) in my cc-lists.=
- If
-> > > > you have concerns, you could have commented. Instead, you decided t=
-o
-> > > > send a patch series, which is basically just the ghost swapfile, wi=
-th
-> > > > a bit of afterthought to handle writeback and dynamicity, rather
-> > > > inefficiently (no dedicated per-CPU caching), and not even correctl=
-y
-> > > > (the lack of rmap means swapoff / swap-cache-only physical swap slo=
-t
-> > > > reclaim is broken).
-> > > >
-> > > > I respect you and Chris very much to assume bad faith, but please w=
-ork
-> > > > with me rather than against me.
-> > >
-> > > Before I get into the technical discussion, I want to address somethi=
-ng
-> > > you raised at the end of your reply =E2=80=94 the concern that I'm wo=
-rking
-> > > against you rather than with you. Our paths in MM simply haven't cros=
-sed
-> > > much until now. I can't think of reason why I would want to target yo=
-u
-> > > or your work.
-> > >
-> > > I respect the work you've put into VSS. I did check it. Honestly I am=
- not
-> > > fan of it. In your v2: 2244 insertions, 250 deletions, 15 files touch=
-ed,
-> > > a new 455-line header (vswap.h). While swap subsystem has just absorb=
-ed the
-> > > swap table series. Then another 2200 lines of architectural restructu=
-ring
-> > > on top is added. Not sure if anybody raise concern about your solutio=
-n,
-> > > or anybody suggests other directions.
->
-> Yes, it's a big patch series. But as you pointed out earlier, it
-> solves a larger problem with a single coherent design :)
->
-> > >
-> > > I posted ghost swap because I saw a concrete, narrow problem that I b=
-elieved
-> > > could be solved with a small change. It makes decoupling and dynamic
-> > > growth with the minimum possible mechanism.  Writeback is explicitly =
-deferred
-> > >  =E2=80=94 not because it's unimportant, but because it's a separate =
-problem that
-> > > shouldn't block the common case. With my shallow knowledge, it's opti=
-mal
-> > > solution to the encountered problem. If you agree, you can change to
->
-> The problem is not the lack of writeback support per se. I understand
-> that sometimes pieces of a design can be deferred to a follow-up patch
-> series.
->
-> I'm more concerned that the ghost direction so far does not seriously
-> take it into account in the design at all, which might make it either
-> impossible or very hard to redesign around down the line. I don't want
-> to rip a huge chunk of it out down the line later - we just avoided it
-> with the swap table with Kairui's proposal.
->
-> >
-> > Part of above sentence is missing. I meant if you agree on the ghost
-> > solution, you can change to take its way and continue, just add me to
-> > CC. Or we can work together.
->
-> How about this - let's solve one piece of the puzzle together, one at a t=
-ime.
->
-> First, your optimization patch series. Have you taken a look at my
-> proposal ([1])? I believe that design should be cleaner, while still
-> allowing you to put it all you want to get (elimination of xarray
-> being the chief benefit), without requiring you to modify swap cache
-> and swap count operations (since you don't have to move the metadata
-> in and out of struct zswap_entry). It does require a bit more code to
-> dynamically allocated the backend array, but should be trivial IMHO.
->
-> [1]: https://lore.kernel.org/all/CAKEwX=3DOvR7GbU_9f2h_MtU4m0g6s-esHmNQKY=
-NhJz610M0P3Sw@mail.gmail.com/
+Hi,
 
-Hi Nhat,
+I started looking into preserving the TDX module across live updates
+and I'm not sure what the best approach is. I tried looking into using
+flb as David M suggested but I don't think this approach works for the
+TDX module.
 
-Sorry for the late reply. I've been busy and just saw this.  First
-impression looks promising, it is better than any previous version of
-VS. Thanks for incorporating Kairui's feedback. Please give me some
-time to sleep on it. I will get back to you on that.
+Right now the way that TDX supports kexec is by disabling the TDX
+module on kexec and then reinitilizing it on the next boot [1]. This
+approach clears the TDX module state so any TDX VM from the source
+kernel won't be able to resume running on the destination kernel.
 
-> Next, if you just want pure ghost swapfile without writeback support,
-> maybe something similar to the first 2 patches in my RFC? i.e up to
-> this patch:
->
-> https://lore.kernel.org/all/20260612193738.2183968-3-nphamcs@gmail.com/
->
-> I'm sure you could find issues/bugs in it too with some extensive
-> testing (a lot of my performance testing is done on the entire series
-> as a whole), but from a design point of view it should achieve what us
-> both want, no? It's literally just a ghost swap device - most of the
-> other design elements of vswap (the new charging behavior, rmap,
-> support for writeback) comes in latter patches. I think the difference
-> is:
->
-> 1. It's transparently dynamic, whereas in your RFC it's driven by a
-> userspace knob. Do you think there are inherent values in a userspace
-> knob?
->
-> 2. The address space can also shrink when swap usage drops at runtime.
->
-> 3. The dynamic address space is backed by an xarray. Note that it's
-> structured differently than zswap's one (it's an xarray pointing to
-> clusters). If you have rationales or numbers to show that vmalloc
-> array is superior (while still support the kernel-driven expansion and
-> shrink), please let me know.
->
-> If you have no faith in me and do not like my code, you can take the
-> code as a starting point, or just the idea, and drive it yourself. Or
-> let me know if you're unhappy with any piece of it - we can discuss
-> further.
->
-> >
-> > > Otherwise, please continue to push virtual swap forward. I'll stop an=
-d
-> > > wait.
->
-> Look man, I care about the problems being solved and I'm a sucker for
-> good ideas, but I'm not married to anything, be it my code or my
-> ideas.
->
-> I have literally dropped my old code and adopted Kairui's suggestions
-> after playing with it and liking it, to make sure every party's
-> concern is met.
->
-> If you have concerns, please let me know, or keep sending code if you
+In order to support live update while keeping the VMs alive we need to
+skip the TDH_SYS_DISABLE call and instead preserve pages used by the
+TDX module such as the TDMR pages from the source kernel.
 
-May I add one wishlist item related to ghost swapfile here? I will
-reply to your VS thread for other feedback.
+From what I understand, using flb will tie the TDX module save/restore
+to the lifecycle of the VMs depending on it. This means the module
+will be restored too late during kernel boot, after the VMs are
+restored using the live update IOCTLs.
 
-For the ghost swapfile usage case (no writeback). Can VS support this
-usage case while maintaining per-swap-slot metadata usage comparable
-to the ghost swapfile implementation? If we have to put a number to
-it, let's say the increase in metadata is less than 1 byte per swap
-slot compared to the ghost swapfile implementation.
+I'm thinking we should preserve the TDX module during the shutdown
+stage of the source kernel. Perhaps we can preserve the pages used by
+the TDX module as we allocate them on the source kernel and pass
+pointers and additional metadata during KHO. Then on the destination
+we need to pipe this information to where the TDX module gets
+initialized during the KVM module initialization.
 
-We have large deployments of ghost swapfile in the fleet. I want an
-upstream aligned solution that does not increase the existing memory
-overhead compared to the current ghost swapfile deployment, for that
-usage. As you know, memory pricing and optimization pressure are high.
-The ghost swapfile patch itself is relatively simple. If VS can
-address this usage case, it will remove a lot of incentive to explore
-ghost swapfile-like solutions.
+I haven't found a device that acts in a similar way so I'm not sure
+how complicated this will be or if there's a better approach.
 
-Thanks
+I would love to hear your thoughts and if you have any pointers on
+where this code can be implemented.
 
-Chris
+Thanks,
+Sagi
+
+[1] https://lore.kernel.org/all/20260323-fuller_tdx_kexec_support-v2-0-87a36409e051@intel.com/
 
