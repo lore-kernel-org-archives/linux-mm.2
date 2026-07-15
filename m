@@ -4,128 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01604C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3D88C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:27:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C3AA6B00A1; Wed, 15 Jul 2026 09:27:39 -0400 (EDT)
+	id E23956B00AC; Wed, 15 Jul 2026 09:27:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 301866B00AC; Wed, 15 Jul 2026 09:27:39 -0400 (EDT)
+	id DFAAE6B00AD; Wed, 15 Jul 2026 09:27:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19E7B6B00AD; Wed, 15 Jul 2026 09:27:39 -0400 (EDT)
+	id CC2C86B00AF; Wed, 15 Jul 2026 09:27:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5116B00A1
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:27:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E5D51C002A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:02:24 +0000 (UTC)
-X-FDA: 84990722208.18.456F931
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E4CA11C0005
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:02:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LOZE2WkQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k5q9WukS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YmFcTJzn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WeE0jk4o;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F7316B00AC
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:27:49 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 720D740158
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:08:31 +0000 (UTC)
+X-FDA: 84990888822.22.E22175D
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 736BD20010
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:08:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="oEQo/Btf";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784113342;
+	s=arc-20220608; t=1784117309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=awWRLmdYvk3T0kyC5GXSDxyc9sU+56IS2/k4lm4UTqU=;
-	b=yL0J9VZvY+pyHn4oPWuLz9u/I+amqzHrSu5qmeHgWNcg7fWxEJyrY8OotLOrn9wtcot9GO
-	WrOPBrYwaCwFWPeswn9wDxP8tUs9A5otvpx+q1QqNG8JrPcvoTMqYhsfXe70q2R/ZeHJaz
-	apRv3Xoc7O0GBJYO+rKIs+fuzgigJa4=
+	bh=etJA2syXRyIgV9yIfYwz42KuGi2MCTWS+UAi0vZeNE4=;
+	b=deHpCzUSEdFIBKRcXCkpIzX5lIYR1Kw3ek5kX6A5V+a+/NUGz2Pnhh9RKYTN5DXIdxRzpa
+	zbfoMMByTLF0XDhKljbNoRdZ6a0a8QCJS2SPRPJW1My+rB0pD2jX+bNsbpJCPC9S67Q0zR
+	+tHJWygPwvWXcL7+r6ewt3Za6URbKMY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LOZE2WkQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k5q9WukS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YmFcTJzn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WeE0jk4o;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="oEQo/Btf";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784113342;
-	b=24f+KU+vDpGyuCUQc4QziBq8Q0urYJDOTxUhqSzQ96lhMGP9RRxCO55Ig8EUdqSuEC4P1E
-	XK+HQ7uVUsi5t9QiJYy9EeddswwPqa0c2PSb6M6vk6PKA9tgVnay+ibLsRLCwwwVZl+rDT
-	Tr/PwLGq6R4NRiFCdurmXIkHKtZBOfg=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A58157836D;
-	Wed, 15 Jul 2026 11:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784113336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awWRLmdYvk3T0kyC5GXSDxyc9sU+56IS2/k4lm4UTqU=;
-	b=LOZE2WkQU8SqoT0Od6xtHGztXuLBTKeq0vwL2KC7tW/V8sN3dCsWU3CXgg1DHTwQO20lvP
-	FaLL2sIIs9T9O/qtX2psKMPydmD59VbJNDZZBf5C8sVr6YH3P7USJSUWIFWOSOvPsmWL18
-	RzM7BjBNYriIfaKB6d5WmuGAVDDPxHw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784113336;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awWRLmdYvk3T0kyC5GXSDxyc9sU+56IS2/k4lm4UTqU=;
-	b=k5q9WukS1rf+5uOqq7/uYAiIKCXIwczoydsPteGRpPPTBPq7OcFdth7xShqKi3Askoczon
-	ftTpRD3BH8gR50Ag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784113331; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awWRLmdYvk3T0kyC5GXSDxyc9sU+56IS2/k4lm4UTqU=;
-	b=YmFcTJzn17KM6igiXi4SvOZ0A1DFg9t3GkYeYdvFELLE2wykcF3U2OhsS9G70qz9qbK7fF
-	JQOemyqZyRZ7Z+5GuEYT575tpimBb6iySrn8TiXtF8/Rvf7GhO0BhvdKB0hrIDUs7akI5y
-	aiKy9Pkh9Yt2lWOPDDK6tZ1Uk3PZGaE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784113331;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awWRLmdYvk3T0kyC5GXSDxyc9sU+56IS2/k4lm4UTqU=;
-	b=WeE0jk4oqGf9L8A9LdtqB80/xlVuHiS+eAKy/fVum4WmeIOdBENw0Y8Gr7zGRetjvFN9M5
-	X5wuhno4DiExQoCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0925A779AD;
-	Wed, 15 Jul 2026 11:02:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id O9RQOq1oV2oufAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 15 Jul 2026 11:02:05 +0000
-Date: Wed, 15 Jul 2026 12:02:04 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Aaron Rainbolt <arraybolt3@gmail.com>
-Cc: xen-devel@lists.xenproject.org, jgross@suse.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, marmarek@invisiblethingslab.com, 
-	adrelanos@whonix.org, Matthew Wilcox <willy@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: Intermittent kernel WARN in mm.h get_page() when forcefully
- removing a xen_netfront interface from xenstore
-Message-ID: <aldj4Jwd5T9q1-sK@pedro-suse.lan>
-References: <20260714234912.7a75536b@gmail.com>
+	t=1784117309;
+	b=Oy464mPqRvs+2pmgUrVmCc9lINrSaSaEFWOho9qYpfnDCq4dj7VtxQq+S8d8G8K8JKerIq
+	r91uXGdUP8AwqJADUfegk9jMEx8qIQI716WP4kgwUPCQjygg3HPgExngyfZPuXlMxsqbWl
+	bHHq5TPRid6Q2YelRtcTJCA3294Pl78=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so61728855ad.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784117308; x=1784722108; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=etJA2syXRyIgV9yIfYwz42KuGi2MCTWS+UAi0vZeNE4=;
+        b=oEQo/BtfkI+wtIETVdo8ZYW8I9JpfXfVfg4bTcPm+1jyZGE/O/7vwsAyauDFygtLs5
+         Ssbpvu0wVKjsY+ZSJmcZoHLsGafQUP8J+FT6mfmyC0YXzz3orUtFzmRbV9+bdxWHa25T
+         CVMG3Z3E2Yu5xXSogQoQ/Yh37UQghSA8nwtcJbksPsbFf3767Qch9RSC2VtaslGchwDo
+         wK/GBw0EtwQ5ChLbNO3A+yMvHR+ol6ZHzSJoNCIfGOuO3J7pOezcu+Z5wgg/G2Q3Hbur
+         a7gMqS9JlEL2Q8EW3F41X3jsuQm1ypDzdsDfvPAG0aQkTKdLsLviwF9e7bM50k5LqW8S
+         XdqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784117308; x=1784722108;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=etJA2syXRyIgV9yIfYwz42KuGi2MCTWS+UAi0vZeNE4=;
+        b=fX2YxodNYLmFesRaSzN/UMvQwMezuXDO1nGG4eyVNgCQtzRcGnoaislrYbZTDZiaeW
+         OY96MNev32I9RfoziC2+ddwQPhvtiuhbTE5I2wUtyFFxok+pqqk3L1azK9Be7fgXRHwe
+         SkDpmfLZeHnx7GtV3AFN8huc+XdnjVWLsc9u4MR/IuDUb3BAU3nHLAsDiptkrcUk/8tR
+         qjJMJKH/k9WOkRScIAkr/TInrQNhecLl4JJhepVpJNeUbBn8h+RutmWvmlmD/qWLEAzO
+         mVxLLDD/1k4FWmGWVaElWZfm5gy1wh7QjZDuYs5elLWyk6mA1dPp9cPxkbRq+xfYbOhM
+         XTGQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrjQ9gewYgtKf/2PcQ8cYXYtjCPNtiW+DS3+HRX6ifLGkAVPOKYvRmECzJbdzkb7vWnkEmkU1pb+g==@kvack.org
+X-Gm-Message-State: AOJu0YyV3EZtSI6a05vm4g6syfAOc59O/Irh/p6pXIGYhUwDJJraj4h9
+	K7Udvi+VF7obdufGyBSfYlU3aJeXAk++KHvL1GZYeTwaeTkRp2mU62F9
+X-Gm-Gg: AfdE7cnAtT0ItjDkvO6ub5O5Ua35SHyuJlDaPwemsfOks8GBHOA+WFaW/5xGBwATWam
+	UPG9BSZC3DwP8KwtrRYE4mKKYLNgpSwCmyaD5Ru83ABMP7bJ3n+dWZJGczJVWUXxeTkwU1T4+o2
+	CFKF71EXHXUDq2aQYW00ftrhrtHmBCJhLPLlDyl9fYjPdAvQE+LrTTCMOqSXxvo3KE4GYvPmvT8
+	Ham12dSY5D4rgoB+nm2FDlMjkUXfjQK2i8IHhp014ja55GrhmpuI8yjcccOUi/EKYPjNhmD5xvf
+	o6ZBOblI7rcH25Ah+ZK5lNMvmkSdTMoJvsW/BxlW2xkbJI5L4b7VMnwyQeeoru3duBDbBHaCeu4
+	jcqCrXl8I6z2wGSt27614q0xpxtAKYlSKjcFiL7rew4jGzDpw1fECduWdhhGKWOzzjNvxt/IEE7
+	rihpnblODpuL05H7XvYd41PXGxLjOppR+ZIQI=
+X-Received: by 2002:a17:902:ecce:b0:2c9:cf5d:d9b8 with SMTP id d9443c01a7336-2cf03d24104mr22917075ad.33.1784117308327;
+        Wed, 15 Jul 2026 05:08:28 -0700 (PDT)
+Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf105bc642sm1216325ad.63.2026.07.15.05.08.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 05:08:27 -0700 (PDT)
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
+To: akpm@linux-foundation.org,
+	catalin.marinas@arm.com,
+	linux-mm@kvack.org,
+	urezki@gmail.com,
+	will@kernel.org
+Cc: Xueyuan.chen21@gmail.com,
+	ajd@linux.ibm.com,
+	anshuman.khandual@arm.com,
+	david@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	Wen Jiang <jiangwen6@xiaomi.com>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>,
+	Leo Yan <leo.yan@arm.com>
+Subject: [PATCH v7 1/7] arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE setup
+Date: Wed, 15 Jul 2026 20:08:07 +0800
+Message-Id: <20260715120813.3609949-2-jiangwen6@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714234912.7a75536b@gmail.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: E4CA11C0005
-X-Stat-Signature: uyjeiykssu3hsdzgajy7buqs8q4nab1h
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784113341-776704
-X-HE-Meta: U2FsdGVkX1/yvutepZsCpspPqMg9eiarv/3yGd81BOObZ2cYIGWMYTt4UaPyLh7X55Md0esGA/uCTMzL8wV3mNAreihVq214VsSGWiVaBAZnoK+kp74iRCiFprmkcSADYtbmmldn/ASq2Qhqsk1/jPdp84frgdPYEaGIjkDUJsW2zH5gVNdw2gl4FbAyId5Iz7YUkXkPSjY3blKL6m8PFC+/2DrlTW3e5KNFhyG8mBzds1/zoar8VfHPKrGx7I1fcTQI3DorRT+x6xK53hMO3qyLHavbayaTunRSIrEbUSzE5iHBhsLgEytNsaAenTKJZRPZpkuzUj9GU5t6eav68uNL1JmdWjj6NoXhKxav44Em8KqUTSO174ln2v2C5QFG0wupw/3syi+dSyL0cCqIKJzN6RSIF7d5Md8yQaxiuJoMPTBcenBuPsr3tuFczMKQd2HHHdUQFaZFrsukOvpxESSAp9+WP/LFc/wSVawFw1adf64IBX2YQb01Q6LpO86ura48kEQQgBenFJwupkUxFcw8/7DNsk3/VmVh7RW3Cs9nDAdUm+7nakztjeAJtgI/hvUpAez1CHGjMWOQHufCORIlusX1j/xVMrQHiR88sKl1wFdgxvCEllFTiVxVH0utyqqbnKbhGZM9g9ONUaWreZNJbfz4M1/rWZ6KctoSszRz9oL89Y57il+aS1Svcg403WtwDAV7BrcIpuoMUMATnqyOnoELlMOcrBErV/EtfzvMtopoBk61+7Zl2tmcQ/1Dv39A8dnj56L4WhakVRbZ3uRqK14Lk3t00i8WYwrpMkqW+i9av48cLwIunKb8/EtFCMlhPNVUo+uj12Y7E2dQ6Z956R+4xDA3jLCY/mcN0mXyLPeW/iotf3N8Jqe3SLjSOEjzvUtpzF+lqDSRFPMQaK4ISv3ByOtDk/hGMX0FbnrPm/fFOByXyPnhyRFQZdFJwMQHIhhQTDEyFrL8piG
- dtyJp5R6
- DGKk832ubP24hxe5KQvhDRlX7iE7yGxeZPc9oGqS+tkIW6n90JMTrXwqtke9R5fmXtBwNbF9utvQogImdGqbr3hOG4giFWl+clXiyzo08BpL/HkmEAIVi2PoUz8i9wNJWUQ1/EPQEffLeX+tLHt/J+cjK5FNIqcad+IhsS+8VwQI0N33FbSuTycOcVQV1GmAL2khGBpPA9FvWwjRRaNxYUyw2rW/yxhkRq3kNo3+sS4IPuaYbtb8OXlLhMYlnl8hkX2dFILqYIXQQip+X/LEYnuFPD5W1xp1QO8PbgRNSCN6tPIj0lthInzbr1SIj/+z+a/n/adC5a8sJ7tWD0g11k2KD4w0UyacjboA0I9QhTrBwWR4Gme26P3+xnkDfUpRBg91MgJIT2cEDaKI=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 736BD20010
+X-Stat-Signature: dyo95gp6sy33kc9j966p8k6gy9szchpr
+X-HE-Tag: 1784117309-719003
+X-HE-Meta: U2FsdGVkX19wTXEATRmC0OByLenGGuaArhDUK7XInrV7VezTdArGlWt/1aS6MQPR4Hmb1jBbCjdQvPDxx3OpNd0okJ4N2KcixsaN6oGSzzPoYYpCsLKbSok1w28R/iT7TPKblzyyAvfRTEpvrEdj5KN3az1lA/PKPiX4CkYMoqLwhH1po8omM1+gzTkAwY2qXgdE8ve2fEjhE0D9kc5OtUMxdIYXzU356gUmDB3fJFEjhcOFYSIbrlQUpeAxu9T3nVNddACQqFCZDFiESadv+9ouZ0vMukMc1F+n/S91Y7BCwZGoRUh8GNxW2bcU3fpmvRhmtr5FQRK6Y4m7s25KRlt2NqFTNtqezi8NODbsP8Tj4oHBSfIyGP+lkPlPWFfLEiEcMaWNvRgKngO5lgUd73iz/dU++k6ryaU8q+VpEMG68/CMe6tKf8H0H+LsfjUF2zzrxUAAbx/ftIyBXt+2b7T896D/6UnYUoRLLzGrGK/VvdxidrlZdD3pVugaTBCLzE3z6gehgNl7YtnffNp0cE3htUpTw5c7e18eVKm6FTQ8dXrUFTDHo5O3QvtBVTiY3/K1CZg2CEqRqKs0omUIu7jraYmqM4GpKXhTEt0y0vBnp7YRt/mqFaXU6/q7TvwMX35LpLl/4o8e9k028mSKDRWqH9wMs/W29eIadZbAe0+JxG7vCBCQ5sD+oMpCx1KiPM7MSCNTrdLx3sJjsB+mRKpW5fxN0GK/La/m9KeKk+XREm/T2P3OY1MLEXVsLYGJulW8lm0SbHV+gXeuqAMbYFwZiV0jbzxowOVeB96rqMVmrhC+v0kr2yCzZXKNanu9GmLUAAWhTAcuDfw8UrkRFTI2zzrm9ZXE1BdeKgnjW4Yjrwq7SFtVxWEgfYXsB9XURpiV8MgiT6VxpbI1MpiKBGXff/MTBsvOaoXc3guiq51fTb4YEqG7W7auNiPiyMgGXethlTJSAI2M19XB8LX
+ CgFtpqWx
+ 783c9qZ7oTzlpYaFBftc6e7kbhNAPNy9xGphH/QejYKR/leGSYymXzt2/t38nBVrH403NBsxn7vMDX45uoU/BkbioHmHdgIORUY98heH9liV5zHBtF2iDhDPzlWFjZyVF4suO5StmdPZIysLVqugjkgiF8D7LYHXX5TlvP5qvAH573zas4NGHGq4BwKi0YsLryN+yM4nhRhR2H5WVihXXtYNV27R8kDn4WZaHIfWh2xWlsu4uAZ3IERaxHlOyRsBmsgePM7k0tCxVRp81wA3C8F7gYFGhuGj9w8Qf8nfEsa7l9wYX06M70UtZcLpO5PRrqSrGxc+3lthGtKUwNxq8JcJTqGzj6ovQQbJq5nkRD6fkobRUCszP9O6FXuiH1724pcNhYxW2bbrvPyCi//P0HnfjFF9YniAr3f9ACE3Fe3AV9PNprAt5etWv1qWE6mR7T/7fQlcxxb2JTV3MvnRQM8DtQT+yoSlUARYINu2USeR/jUnP3XZTx+9B4GDZL5XOV36itLZ9O3NEuFosfAX6OApWHtCFfVlYm0Zp6+AZniuzpRT8jzj+KUoHXwL+PDMNTMJkjOqB4DB4HEDR4iWsHLovT8kSyGhpDQXc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,116 +133,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc Willy, Vlastimil
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 
-On Tue, Jul 14, 2026 at 11:49:12PM -0400, Aaron Rainbolt wrote:
-> A user in the Qubes OS issue tracker reported that they could cause
-> kernel WARNs in some of their AppVMs when forcibly terminating a NetVM
-> that those AppVMs were connected to. [1] Typically, a message such as
-> `vif vif-0: xenbus: device forcefully removed from xenstore` appears,
-> then a "WARNING" appears immediately thereafter indicating an issue in
-> `xennet_disconnect_backend`, with the line of code throwing the warning
-> being somewhere in `include/linux/mm.h`. Originally it was thought that
-> the warning was simply normal behavior when a device is forcefully
-> removed, but it seemed very weird that memory management code would be
-> in charge of triggering that warning. Furthermore, I cannot reproduce
-> the issue reliably; for some users, it happens immediately after
-> shutting down the NetVM, whereas for me, I had to use multiple tricks
-> including pausing and unpausing a VM to trigger it. After some
-> fiddling, I was able to reproduce the issue using the latest stable
-> 7.1.3 kernel:
-> 
-> 1. On a Whonix-Workstation 18 AppVM (such as anon-whonix), build kernel
->    7.1.3 using the steps from
->    https://kernel-team.pages.debian.net/kernel-handbook/ch-common-tasks.html#s-common-size,
->    ensuring that debug info is enabled. Use Debian's kernel config from
->    the linux-base-7.1.3+deb14-amd64_7.1.3-1_amd64.deb package as the
->    starting kernel config.
-> 2. Install the new kernel into a cloned Whonix-Workstation 18 template.
-> 3. Install pvgrub in dom0: `sudo qubes-dom0-update --action=install
->    grub2-xen-pvh`
-> 4. Create a new AppVM named `anon-whonix-kerntest` based on this
->    template.
-> 5. Set the kernel for `anon-whonix-kerntest` to `pvgrub2-pvh`.
-> 6. Start `anon-whonix-kerntest`.
-> 7. Run `uname -r` in `anon-whonix-kerntest`, ensure that the kernel
->    version displayed is 7.1.3.
-> 8. Open a root QTerminal window in `anon-whonix-kerntest` by running
->    the following in dom0: `qvm-run -u root anon-whonix-kerntest
->    qterminal`.
-> 9. In the root QTerminal window, run `sysctl kernel.warn_limit=5` to
->    prevent an immediate kernel panic when the kernel warn occurs.
-> 10. Open Tor Browser in `anon-whonix-kerntest`, and attempt to navigate
->     to a fairly resource-intensive web page like Reddit's front page.
-> 11. While the page is still loading, run `qvm-pause
->     anon-whonix-kerntest` in dom0 to freeze the AppVM.
-> 12. In dom0, run `qvm-kill sys-whonix`.
-> 13. Wait a few seconds, then run `qvm-unpause anon-whonix-kerntest` to
->     unfreeze the AppVM.
-> 14. In the root QTerminal window of `anon-whonix-kerntest`, run `dmesg
->     -w` to watch for kernel messages.
-> 15. Wait a few seconds, then start `sys-whonix`. Qubes OS will reattach
->     the network when this is done (there is the equivalent of `xl
->     network-attach` done by the Qubes code automatically). The following
->     messages should appear in dmesg:
-> 
->     [  426.609004] vif vif-0: xenbus: device forcefully removed from xenstore
->     [  426.609242] ------------[ cut here ]------------
->     [  426.609254] WARNING: ./include/linux/mm.h:2097 at xennet_disconnect_backend+0x1c7/0x520 [xen_netfront], CPU#0: xenwatch/64
->     [  426.609269] Modules linked in: snd_seq_dummy(E) snd_hrtimer(E) snd_seq(E) snd_seq_device(E) snd_timer(E) snd(E) soundcore(E) cfg80211(E) nls_ascii(E) nls_cp437(E) vfat(E) fat(E) rfkill(E) xenfs(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) binfmt_misc(E) intel_rapl_msr(E) intel_rapl_common(E) intel_uncore_frequency_common(E) intel_pmc_ssram_telemetry(E) intel_vsec(E) aesni_intel(E) gf128mul(E) xen_netfront(E) xen_privcmd(E) xen_gntdev(E) xen_gntalloc(E) xen_blkback(E) drm(E) xen_evtchn(E) jitterentropy_rng(E) libsha3(E) loop(E) configfs(E) efi_pstore(E) nfnetlink(E) ip_tables(E) x_tables(E) autofs4(E) ext4(E) crc16(E) mbcache(E) jbd2(E) dm_snapshot(E) dm_bufio(E) dm_mod(E) xen_blkfront(E)    
->     [  426.609334] CPU: 0 UID: 0 PID: 64 Comm: xenwatch Tainted: G            E       7.1.3 #5 PREEMPT(lazy)
->     [  426.609340] Tainted: [E]=UNSIGNED_MODULE
->     [  426.609343] RIP: 0010:xennet_disconnect_backend+0x1c7/0x520 [xen_netfront]
->     [  426.609349] Code: 94 dd a0 10 00 00 48 8b 4a 08 48 89 ce 83 e6 01 48 83 ee 01 48 09 f1 48 21 ca 0f b6 4a 33 81 f9 f5 00 00 00 0f 85 ea fe ff ff <0f> 0b 49 81 ff 00 01 00 00 0f 82 f8 fe ff ff 4c 89 fe 48 c7 c7 e0    
->     [  426.609352] RSP: 0018:ffffce3d810c3c98 EFLAGS: 00010246
->     [  426.609356] RAX: 0000000000000010 RBX: 0000000000000000 RCX: 00000000000000f5
->     [  426.609358] RDX: fffffb0d80ca9800 RSI: 0000000000000000 RDI: ffffffff88c8a8a0
->     [  426.609360] RBP: ffff8dec51df0000 R08: ffff8debf4dd5a80 R09: ffff8debf4dd5a80
->     [  426.609362] R10: 0000000000000020 R11: 00000000000000bf R12: 0000000000000000
->     [  426.609364] R13: ffff8dec8ef30b80 R14: ffff8dec197fcac0 R15: 0000000000000000
->     [  426.609366] FS:  0000000000000000(0000) GS:ffff8ded2d129000(0000) knlGS:0000000000000000
->     [  426.609369] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->     [  426.609370] CR2: 00005faa1a7d3737 CR3: 00000000b420a003 CR4: 0000000000770ef0
->     [  426.609377] PKRU: 55555554
->     [  426.609379] Call Trace:
+For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
+we can handle CONT_PTE_SIZE groups together.
 
-This is due (or looks like it...) to
-static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev)
-[...]
-page = virt_to_page(skb->data); /* skb->data is a slab kmallocation */
-/* ... */
-	info.page = page;
-	first_tx = xennet_make_first_txreq(&info, offset, len);
-/* ... */
-queue->grant_tx_page[i] = page;
+These additional sizes are mapping spans used by non-hugetlbfs(vmalloc)
+mm code, not new HugeTLB hstate sizes.
 
-and then later
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Tested-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+---
+ arch/arm64/mm/hugetlbpage.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-static void xennet_disconnect_backend(struct netfront_info *info)
-/* ... */
-xennet_release_tx_bufs
-get_page(queue->grant_tx_page[i]);
-gnttab_end_foreign_access(queue->grant_tx_ref[i],
-			  queue->grant_tx_page[i]);
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index a42c05cf56408..7ce159483a354 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -94,6 +94,11 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+ 	return CONT_PTES;
+ }
 
-which may trigger get_page() on a slab page:
-static inline void get_page(struct page *page)
-{
-	struct folio *folio = page_folio(page);
-	if (WARN_ON_ONCE(folio_test_slab(folio)))
-		return;
-	if (WARN_ON_ONCE(folio_test_large_kmalloc(folio)))
-		return;
-	folio_get(folio);
-}
++/*
++ * num_contig_ptes(), set_huge_pte_at() and arch_make_huge_pte() can be
++ * used by non-hugetlbfs(vmalloc) mm code to set multiple huge mappings
++ * at the PTE level.
++ */
+ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+ {
+ 	int contig_ptes = 1;
+@@ -110,6 +115,12 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+ 		contig_ptes = CONT_PTES;
+ 		break;
+ 	default:
++		if (size > 0 && size < PMD_SIZE &&
++				IS_ALIGNED(size, CONT_PTE_SIZE)) {
++			*pgsize = PAGE_SIZE;
++			contig_ptes = size >> PAGE_SHIFT;
++			break;
++		}
+ 		WARN_ON(!__hugetlb_valid_size(size));
+ 	}
 
-and there's your WARN. The code as-is is wrong. get_page() does not stabilize
-slab allocations, and the skb is freed right after, which may very well free
-the data. This _can_ make sense for other page frags, but I would simply defer
-freeing the skb until either the full skb is xmitted, or you successfully
-cancel the whole transfer (what I understand is the "foreign access" in this
-code). The skb itself should pin the pages.
+@@ -359,6 +370,10 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
+ 	case CONT_PTE_SIZE:
+ 		return pte_mkcont(entry);
+ 	default:
++		if (pagesize > 0 && pagesize < PMD_SIZE &&
++				IS_ALIGNED(pagesize, CONT_PTE_SIZE))
++			return pte_mkcont(entry);
++
+ 		break;
+ 	}
+ 	pr_warn("%s: unrecognized huge page size 0x%lx\n",
+--
+2.34.1
 
--- 
-Pedro
 
