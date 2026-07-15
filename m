@@ -4,137 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE35C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:47:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12BC6C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48C956B00AD; Wed, 15 Jul 2026 09:47:08 -0400 (EDT)
+	id DB5CD6B00D1; Wed, 15 Jul 2026 09:47:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 464256B00B1; Wed, 15 Jul 2026 09:47:08 -0400 (EDT)
+	id D65C46B00DD; Wed, 15 Jul 2026 09:47:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3554C6B00BF; Wed, 15 Jul 2026 09:47:08 -0400 (EDT)
+	id C7D786B00DF; Wed, 15 Jul 2026 09:47:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 090BD6B00AD
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:47:07 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8038FA01AD
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:47:07 +0000 (UTC)
-X-FDA: 84991137294.16.FDD4C65
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A80F840011
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:47:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7A+mev9;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 960E06B00D1
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:47:37 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 080551C0029
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:19:08 +0000 (UTC)
+X-FDA: 84990764376.03.CBE96E2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 40C6E12000F
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:19:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TSyiesxW;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784123225;
+	s=arc-20220608; t=1784114346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aP96cxQwNvwA5luy8u1o+ZF1ybuDilkkCbV3IS4N/IM=;
-	b=B8Dq2uMCL+1t4ogbYTdkudTvbkG3YK03h+ifvCV4BfJF8GXbhaYwuab39RjxV0nIAwq9Ws
-	5lSWwUn1c93T88uds+4DPk1WIA2mPS1TXJdlKHZB09SwPsfjAwfvYOq+0z4mpDtW7BOh+9
-	D68Hthcj4SLj+G2nBKEd0vgHP+Jfmw8=
+	bh=t9sBwucW0H+Ur8B3pqY/4qV99s4uAuyQMfEzLRIRZkM=;
+	b=sdsa/xfAhRPefPp0wmQuSb9t7qWZmKEje/DMCSmoAm9xHJRDWxLi99naOCgHDCBX8quWcw
+	5V47N9ydjpUi7ooO4Ks9AizNjlZ3faJjIu0SOef8Vfsm1SCMSIv/ZDnkgqsSWIu/9RZT0a
+	wGkF7y5fQg3Rp6OFgBlkG0zzWl7F9rc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7A+mev9;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TSyiesxW;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784123225;
-	b=iogrxogwmfcC5qqc9z2CNsK47IWwD+HWU2BPOSfrThZbT203/4bBN0aF4SbwiYzmZaF8mJ
-	ZgwT9tOvlc96CtVXrlpW2OvNxMKA/tSFw6CUGJ8bBCdfRCtgNgJDec+bQYRKpgvKtCtAuk
-	5i+W4dbci4p7QvhkArJTCw8v+lk4R6U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E28F443472;
-	Wed, 15 Jul 2026 13:47:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82731F00A3A;
-	Wed, 15 Jul 2026 13:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784123224;
-	bh=aP96cxQwNvwA5luy8u1o+ZF1ybuDilkkCbV3IS4N/IM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i7A+mev99IMS5NhE6uoqCpYFn8cTH9RCK3VXAifzAqJko4VXnsfJJ2QyNF/9FbLmg
-	 bfYcMMLi8C/1x5jYcmfAIVmT/xR+MdEBlZdY/UvFqW2FnveSNimZEiwQsW5jSB2QXD
-	 443E3IRIBWtO3tp89gm5EIGg3ewoscj0YmL3760CBlsvewBg+HxCZ126RCKGGePX1z
-	 clxKAGTwC/O8HXnLUgJfbK3Q6WEGrcKw95n8SzjNdhjQNsHXfDJgDQydx+Mt8Q/jas
-	 BQmayOGJMQCo0JDWjHOvKENRGXmyALfcFtCC5C8/afg3/o6MhIj18J99RgWb+vbjk1
-	 ooTQo2V8YBGVA==
-Message-ID: <f5700c45-9eab-47e1-946c-47d9a531bfeb@kernel.org>
-Date: Wed, 15 Jul 2026 15:47:00 +0200
+	t=1784114346;
+	b=x00bUU8RsqZoxbS1Zbl0DElVQo1ovsO7sdq2IykK4X/uOZYbGBy+7YAHtWdRLLmip8TQvN
+	f4IBOysX69Qmi/Brfg7idm9Xl0wgps9mF0NB1YLYCx+QBgT3RiTL0engTnnj8YJkJY8Qdd
+	xYmre6vXNPUnnWhHqbsrDknVFIopwQ0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23C991477;
+	Wed, 15 Jul 2026 04:19:01 -0700 (PDT)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5602D3F915;
+	Wed, 15 Jul 2026 04:18:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784114345; bh=FASJfRiTYqPOAEgL4yWBpkca2p01JpG0G1APx8Od+GI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TSyiesxWF+4lR5EXk4mJ8aedDhJdaZr5m6Ev+e3nDI2m73M0OUfsk7FB+lhm5eOtu
+	 +ssIUymltMwxLBuDjFjNmuScj5fBtfHkZi6H0MeKLaBRTZhXaitWiZgodxES19d3BN
+	 eqw+Zq1ohFviuknmQalmTbW1tD/w//s76UbIdHfk=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: Dev Jain <dev.jain@arm.com>,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	riel@surriel.com,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com
+Subject: [PATCH 2/3] mm/memory: batch set uffd-wp markers during zapping
+Date: Wed, 15 Jul 2026 11:18:35 +0000
+Message-ID: <20260715111839.1667914-3-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260715111839.1667914-1-dev.jain@arm.com>
+References: <20260715111839.1667914-1-dev.jain@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] fs/proc/task_mmu: fix PAGEMAP_SCAN written state for
- PMD holes
-To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org
-Cc: usama.anjum@collabora.com, peterx@redhat.com, liam@infradead.org,
- ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org, kernel-team@meta.com
-References: <20260713091710.206548-1-kirill@shutemov.name>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260713091710.206548-1-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A80F840011
-X-Stat-Signature: 7byj3qpzcnbnqxtczkpmxdeaeq6hdhr6
-X-HE-Tag: 1784123225-247689
-X-HE-Meta: U2FsdGVkX1/Qg42OvaMs942bfl/XIXzKljbDcYxpBkGSiiq5AWNO/dUAQK3qV4tOebQVIlLgRiLlWTRF6IYYl564tPQMyqlAMbkV/QvtLUFmuSmsWI5YCXf3o3cI5eJiwXiSQjLZxF5EtTQgSbvyZB2ef25k31/bKCQor5w1x4AOAzRn7vuiRbzMj5BsOjilyGM9NNhNgcL5TJc0cGLzMTVlI2P3W94SmipJLYBwNDWNA8ahan8UQ4fpqwrHf4yM2CNJD4SLUoifp29d+7x28q93ZAtgHFLsEXkuU4uGME6L5/PIG0x9A8BLX09AL0DZA0XF09jmPNUT0+Y5hdfL6eD6RG3TLRC3kKUpZIjxsis6cr5EGDSqQzn11gM2cWXVXpQNUZOVgmbeGuj7bm2oG+PZ2fOnYh4KQNVaj0XD3CqzR7MRcDEYXgXFPQmwbZXsgF+p9FFBdqzBcfQqicZLyWlswfFHRAUySeFn2aLepXObgnNqc9CVLUTFvdBSA/mIzHkujASbsmk8WjWnTGRR55+jhnoZw99Cy4tfGsmSu1r+m9eETiSsrCqmo5GALke1vn06lwJjmHqiI+/6RXvdHSTIhIBj8Cp8hS7VmXjKgWRWpau7ZojL+4nUG9Gt6oUNvJ2T0YnDO4QEuxZJDGUMlfkLhQO4A0BYtk+EB8F9EyoMtlke6RWBKxLQvytiRENodIHBvfjTvHF+RN080MRxhbRLux09HETX7seb/YiUaax2SVrLvcxwgTc9P7ApugZl7aWP/d8/+OjoO62xVo1oOfC4Hq+fN7dbIUbyOnPdwbGigUriOm4A0yQIKqsLiQsYPEl4JkCABCsj1LYmYLJKXPYLZOc/MsjYFwOw/2YhPJLKIh0jUVuFg0a1isJ2k77zTHumFSdZz4rC8+lXEpJ5q/DKaTgYbzWxOSBoAe9Up4hYcvzMprgVP/rwu/azGIxLcgQwhVyGBeea4njqYZi
- IXGRamM4
- 1j3zgBOslryTebm2FV7kg0wPq2DXJns3ICU+x8PJPkTuX4wvxYx82Itlu4ocVqLYFpYSWHk8K9pyCMg/PKf/Fa97MF8bisV0A7ia6n7LruM4pEbzVPdENMFYvV6rBSWMe4dMVtfHAa8bD8nNzhWZn4X+afEqKKeRyiTx21JX3T5B/Ef7pTDPpa3hWFVY3GJkk37daXTbCgcAdzw2oSyLMn0L6WAxQJ4WZJ9AZDG1m6DcNqSNtgc1Zzy0odfWL3KKrff83fKtBLo1xZQPPqnRC4dZUEH74ZploqwRhd4rLa+I7iQVX0SxXRiTBy2CKFPQzyUNdTHOiA83oeT90ep5L/mnVRJYlUvOcZwdg+th5UtnoCDH075ukr0uKwuxXQ6IgAUXNyZDG8xIEm40h4kKkZywHDsmPmrWLbXswVlgqYWFXvP81qtC00bFyEEt802A75t4fCVaESCx0LdDGq/6lemCRfg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 40C6E12000F
+X-Stat-Signature: 9hjoy8hwnndfoj1e164abrbmswuiag9u
+X-HE-Tag: 1784114346-690058
+X-HE-Meta: U2FsdGVkX1/mmMBIjiIft4//nPUnBXO3+939emcGJziSJEyotG31PxOuOMbm9z/RLfp92BapQOLYCrHcQCt8jyce2hLWk1kJSd/1a9UxkrmYD3tPLtsEkk17GL4Hc87Fr9QvCvQ4ftmAkPhr4yO7m256Il2OiQhHRVdKNIyRPtyjzxn9TdrMPGzDvZIeINBYbswkTPHrgveDRP92xtcyIuAI3f8KCX8yMbqYTrE8q+M/cmwHG+2LGqSXLJyDclkM+h6HLB2+WyA0hPkFiHzPsmvRpSQgsoPDxnZkD1VGpg+bFr+8yQTKJgF7STYILScJxESlciesFiu3nWVwl3kK+bYykReroi7zRG4DUTVeBX4LdR1eMwMPVtX6ciDeg3u952rqMex7idxb1ptJoNWwi0GkuT6bLkMq9JUaIhSROBDAL/pOWUF+W4lD666a3bOa/eV7jlUPqH0oBZxRlBuZztm8jAJLr45JRaVRc1q7L//q0HD80/VGb/5srnVgk3zQSL7iglLNfunxOarRtDFBUeOdPp+ND6w3lm5dCcOkjYvrerT6AtyM7EOKEJu2i7M9M3Sci98o8b/YxJ9SVYvpXeta3m10AGgbhhpNG6XtWJ4DYzkonv1Z2Izn9mXJlhu0w9clu5NQv/AcwxDVvFQqW6VlA/MY+p+eDm5O3rAbSjLNAefOTcAynnApCsYvXiCw/trymA+TDk2BeubJbbTwkhn4/j5ljD3YzrRNNVPuqi6x6ay8NM7Y9J8+SdYMl4mIsn1Fk9wH9/++n9jtYgfkriI1j3/LViPb2nb4NoSOm9JEG7zSR83wp83FSzI4m9+VAlefr7I+zfMMzj1gId2IFntaWuqPb36y+w0ed8LT2Iv0DsvCwaiKiJ5d+WU75c4iAppT1GLclg9xrGcu0HfKzo35OWougMFK4SB5CWhyed8Hc/2XA762jHpYWKGDhgAy2Fpl0/6vtAa7PWyx5R+
+ 74bZ7S2x
+ 3MCarYaHaplcPmAu+h0OCBHxdzPLmIrHjoVARrERGZUQdha63ZhV1oCpMDCQWXf+P6cGru4cqZ5qfCW2gizyB8XNfPfMWk6/l7gIPP+CsQsy2XX4y0HmlgncUKC+bQhWX2xNDdiLrwSzRBSFMIkAXT9pd2hEkxYZCPrhumfV5C8L9FJqpadk/pJ2m6XxWO0mBiueDRvyq9BvbSW5Snmq7tOgMO/wuzaJuKWTsbzMOBqP4imkLD0NaCxIE6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,235 +108,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/13/26 11:17, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
+Enable batch setting of uffd-wp ptes.
 
-Reading this, some of the details how this fits together are missing. You
-capture some of that in the comment.
+The code paths passing nr > 1 to zap_install_uffd_wp_if_needed() produce
+that nr through either folio_pte_batch or swap_pte_batch, therefore
+batching is correct:
 
-> PAGEMAP_SCAN reports an unpopulated PTE in a uffd-wp VMA as written, but
-> a range with no page table at all -- a PMD hole -- is skipped:
-> pagemap_scan_pte_hole() tests p->cur_vma_category, which never carries
-> PAGE_IS_WRITTEN, so the hole is neither reported nor (under
-> PM_SCAN_WP_MATCHING) armed.
+1) all ptes belong to the same type of VMA (anonymous or non-anonymous,
+   wp-armed or non-wp-armed)
 
-Okay, the reason is that UFFD_FEATURE_WP_UNPOPULATED will make use of uffd
-markers when protecting a range.
+2) all ptes being marked with uffd-wp or all being not marked (same is the
+   case with the pte_swp_uffd_wp_any check)
 
-Seeing that marker gone translates to "MADV_DONTNEED was used". At least on
-anonymous memory, looking at zap_install_uffd_wp_if_needed().
+3) uffd_supports_wp_marker() is independent of the function parameters
 
-> 
-> MADV_DONTNEED has fill-with-zeros semantics: it changes the contents of
-> the range to zeroes (a subsequent read maps the zero page), which write
+Note that we will have to use set_pte_at() in a loop instead of set_ptes()
+since the latter cannot handle present->non-present conversion for
+nr_pages > 1.
 
-Only in MAP_PRIVATE | MAP_ANON mappings.
+Rename the function to cond_install_uffd_wp_ptes.
 
-For e.g., MAP_PRIVATE file/shmem it will fallback to the original pagecache page
-and there are no such guarantees.
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+To handle nonpresent->nonpresent transition in the ptes, we can have a
+set_nonpresent_ptes() (in my unmap series) : if !softleaf_has_pfn(), use
+set the same pte value to all ptep's in the patch. if softleaf_has_pfn(),
+then add a softleaf_next_pfn() to construct the next softleaf, and
+pte_next_softleaf() to call softleaf_next_pfn() and preserve the
+wp bit, s-d bit, etc from the previous pte.
 
-> tracking must report as written. An anonymous THP is write-protected in
-> place as a huge PMD, so a full-PMD MADV_DONTNEED clears it to pmd_none --
-> a hole -- and the zeroing goes unreported. A write-tracking
-> checkpoint/migration tool (e.g. CRIU) then treats the range as unchanged
-> and keeps its previous contents, so after restore or live migration the
-> process reads stale data instead of zeroes -- data corruption.
+ include/linux/mm.h |  6 +++--
+ mm/memory.c        | 64 +++++++++++++++++-----------------------------
+ mm/rmap.c          |  2 +-
+ 3 files changed, 29 insertions(+), 43 deletions(-)
 
-With UFFD_FEATURE_WP_UNPOPULATED, uffd-write-protecting a range without a PMD
-table will end up allocating a page table (pgtable_populate_needed) that will be
-filled with uffd-wp markers.
-
-So what needs to happen is getting a THP collapsed there, to then zap the THP.
-
-Or, of course, zapping a THP that was uffd-wp'ed. (which is what your test case
-does IIUC)
-
-> 
-> Report a hole in a non-hugetlb uffd-wp VMA as written, matching the
-> pte_none handling in pagemap_page_category(); the existing
-> PM_SCAN_WP_MATCHING path then arms it via uffd_wp_range().
-
-About which memory backing are walking about? Anon? Shmem? Something else?
-
-> 
-> hugetlb is excluded: pagemap_hugetlb_category() reports an empty hugetlb
-> entry (huge_pte_none) as not-written, unlike pagemap_page_category(),
-> which reports pte_none as written. pagemap_scan_pte_hole() fires for a
-> hugetlb slot only when it has no page table; keeping that not-written
-> matches how an allocated-but-empty hugetlb entry reads, so the hole and
-> the empty-entry cases agree within the VMA.
-> 
-> Add a pagemap_ioctl selftest covering the anon-THP PMD-hole case.
-> 
-
-
-Do we really want to backport a test case? Usually we split them from the actual
-fix.
-
-> Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260707151349.92143-1-kirill@shutemov.name
-> Fixes: 2bad466cc9d9 ("mm/uffd: UFFD_FEATURE_WP_UNPOPULATED")
-> Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-fable-5
-> ---
-> 
-> Changes since v3 [1]:
->   - Include <linux/mman.h> for MADV_COLLAPSE; <sys/mman.h> lacks it on
->     older glibc (e.g. 2.34), breaking the selftest build. Same approach
->     as fd5295afae91 ("selftests/mm: hmm-tests: include linux/mman.h to
->     access MADV_COLLAPSE"). Reported by Zenghui Yu.
-> 
-> [1] https://lore.kernel.org/all/20260709121629.205562-1-kirill@shutemov.name/
->  fs/proc/task_mmu.c                         | 27 +++++++++-
->  tools/testing/selftests/mm/pagemap_ioctl.c | 57 +++++++++++++++++++++-
->  2 files changed, 81 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index d45c729ab6bb..03ead4184546 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -3049,12 +3049,35 @@ static int pagemap_scan_pte_hole(unsigned long addr, unsigned long end,
->  {
->  	struct pagemap_scan_private *p = walk->private;
->  	struct vm_area_struct *vma = walk->vma;
-> +	unsigned long categories;
->  	int ret, err;
->  
-> -	if (!vma || !pagemap_scan_is_interesting_page(p->cur_vma_category, p))
-> +	if (!vma)
->  		return 0;
->  
-> -	ret = pagemap_scan_output(p->cur_vma_category, p, addr, &end);
-> +	/*
-> +	 * An unpopulated range with no page table -- e.g. a 2MB anon THP
-> +	 * dropped via MADV_DONTNEED, which pagemap_page_category() never sees
-> +	 * -- reads as written on a uffd-wp VMA, matching the pte_none case
-> +	 * there. Reporting it also lets the PM_SCAN_WP_MATCHING arming below
-> +	 * install markers (uffd_wp_range() allocates the page table under
-> +	 * WP_UNPOPULATED), so the next scan sees it clean until re-written.
-> +	 *
-> +	 * hugetlb is excluded: pagemap_hugetlb_category() reports an empty
-> +	 * hugetlb entry (huge_pte_none) as not-written, unlike
-> +	 * pagemap_page_category(), which reports pte_none as written. This
-> +	 * path fires for a hugetlb slot only when it has no page table;
-> +	 * keeping that not-written matches how an allocated-but-empty
-> +	 * hugetlb entry reads, so the two agree within the VMA.
-
-Can that all be shortened?
-
-"In a uffd-wp VMA, any unpopulated range is treated as written, as uffd-wp
-registration populates page tables and installs markers with WP_UNPOPULATED. See
-pte_none() handling in pagemap_page_category().
-
-hugetlb handling differs, see pagemap_hugetlb_category().
-"
-
-> +	 */
-> +	categories = p->cur_vma_category;
-> +	if (userfaultfd_wp(vma) && !is_vm_hugetlb_page(vma))
-> +		categories |= PAGE_IS_WRITTEN;
-
-
-[...]
-
-> +/*
-> + * A 2MB anon THP dropped with MADV_DONTNEED leaves a pmd_none hole with no
-> + * page table, which pagemap_page_category() never sees. PAGEMAP_SCAN must
-> + * still report it as written on a uffd-wp VMA, via pagemap_scan_pte_hole().
-> + */
-> +static void unpopulated_thp_hole_test(void)
-> +{
-> +	long npages, written = 0, ret, i;
-> +	struct page_region regions[16];
-> +	char *area, *mem;
-> +
-> +	if (!hpage_size) {
-> +		ksft_test_result_skip("%s THP not supported\n", __func__);
-> +		return;
-> +	}
-> +	npages = hpage_size / page_size;
-> +
-> +	/* Get a PMD-aligned range so the range can be a single THP. */
-> +	area = mmap(NULL, 2 * hpage_size, PROT_READ | PROT_WRITE,
-> +		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	if (area == MAP_FAILED)
-> +		ksft_exit_fail_msg("%s mmap failed\n", __func__);
-
-Why exit the test? unpopulated_scan_test() seems to do that, but that is also
-rather suboptimal. We can easily recover and continue executing tests.
-
-
-> +	mem = (char *)(((unsigned long)area + hpage_size - 1) & ~(hpage_size - 1));
-> +
-> +	memset(mem, 1, hpage_size);
-> +	if (madvise(mem, hpage_size, MADV_COLLAPSE) ||
-> +	    !check_huge_anon(mem, 1, hpage_size)) {
-> +		ksft_test_result_skip("%s could not form a THP\n", __func__);
-> +		munmap(area, 2 * hpage_size);
-> +		return;
-> +	}
-> +
-> +	wp_init(mem, hpage_size);
-> +
-> +	/* Drop the whole PMD: it is cleared to a pmd_none hole. */
-> +	if (madvise(mem, hpage_size, MADV_DONTNEED))
-> +		ksft_exit_fail_msg("%s MADV_DONTNEED failed\n", __func__);
-> +
-> +	ret = pagemap_ioctl(mem, hpage_size, regions, 16, 0, 0,
-> +			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
-> +	if (ret < 0)
-> +		ksft_exit_fail_msg("%s scan failed\n", __func__);
-> +	for (i = 0; i < ret; i++)
-> +		written += LEN(regions[i]);
-> +
-> +	ksft_test_result(written == npages,
-> +			 "%s pmd-hole reported written (%ld of %ld)\n",
-> +			 __func__, written, npages);
-> +
-> +	wp_free(mem, hpage_size);
-> +	munmap(area, 2 * hpage_size);
-
-There is quite some overlap with unpopulated_scan_test. Primarily the THP
-allocation differs.
-
-Couldn't we make the sequence similar by
-
-(1) mmap
-(2) wp_init(mem, mem_size); -> Populates page table
-(3) memset(mem, 1, hpage_size); -> Allocates all entries
-(4) MADV_COLLAPSE -> Get a THP
-(5) MADV_DONTNEED -> Drop the THP
-
-So couldn't we reuse most of unpopulated_scan_test in a reworked way?
-
-> +}
-> +
->  int sanity_tests(void)
->  {
->  	unsigned long long mem_size, vec_size;
-> @@ -1610,7 +1664,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
->  	if (!hugetlb_setup_default(4))
->  		ksft_print_msg("HugeTLB test will be skipped\n");
->  
-> -	ksft_set_plan(118);
-> +	ksft_set_plan(119);
->  
->  	page_size = getpagesize();
->  	hpage_size = read_pmd_pagesize();
-> @@ -1790,6 +1844,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
->  
->  	/* 18. Unpopulated pte scan-path consistency */
->  	unpopulated_scan_test();
-> +	unpopulated_thp_hole_test();
-
-Any reason this is not a unpopulated_thp_scan_test ?
-
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a71341c44655e..94e0a92bc70b1 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -5406,6 +5406,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
+ 		struct vm_area_struct *vma, unsigned long addr,
+ 		bool uffd_wp);
+ 
+-bool pte_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep, pte_t pte);
++bool cond_install_uffd_wp_ptes(struct vm_area_struct *vma, unsigned long addr,
++			       pte_t *ptep, pte_t pte,
++			       unsigned long nr_ptes);
++
+ #endif /* _LINUX_MM_H */
+diff --git a/mm/memory.c b/mm/memory.c
+index 98b3ace15cef2..5d2b567b383d4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1676,27 +1676,29 @@ static inline bool zap_drop_markers(struct zap_details *details)
+ }
+ 
+ /**
+- * pte_install_uffd_wp_if_needed - install uffd-wp marker after clearing a PTE
+- * @vma: The VMA the page is mapped into.
+- * @addr: Address the page is mapped at.
+- * @ptep: Page table pointer for this entry.
++ * cond_install_uffd_wp_ptes - install uffd-wp markers after clearing PTEs
++ * @vma: The VMA the pages are mapped into.
++ * @addr: Address the first page of this batch is mapped at.
++ * @ptep: Page table pointer for the first entry of this batch.
+  * @pte: Old value of the entry pointed to by @ptep.
++ * @nr_ptes: Number of entries to install.
+  *
+- * If the PTE was write-protected by uffd-wp in any form, arm a special PTE
+- * to replace a none PTE. NOTE! This should only be called when the PTE is
+- * already cleared so we will never accidentally replace something valuable.
+- * Meanwhile none PTEs also mean we are not demoting the PTE so a TLB flush is
+- * not needed. E.g., when the PTE was cleared, the caller should have taken care
+- * of the TLB flush.
++ * If the PTEs were write-protected by uffd-wp in any form, arm special
++ * PTEs to replace none PTEs. NOTE! This should only be called when the PTEs
++ * are already cleared so we will never accidentally replace something
++ * valuable. Meanwhile none PTEs also mean we are not demoting the PTEs so a
++ * TLB flush is not needed. E.g., when PTEs were cleared, the caller should
++ * have taken care of the TLB flush.
+  *
+- * Must be called with the page table lock held so that no thread will see the
+- * none PTE, and if they see it, they'll fault and serialize at the page table
+- * lock.
++ * Must be called with the page table lock held so that no thread will see
++ * the none PTEs, and if they see them, they'll fault and serialize at the
++ * page table lock.
+  *
+- * Returns true if an uffd-wp PTE was installed, false otherwise.
++ * Returns true if uffd-wp PTEs were installed, false otherwise.
+  */
+-bool pte_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+-				   unsigned long addr, pte_t *ptep, pte_t pte)
++bool cond_install_uffd_wp_ptes(struct vm_area_struct *vma,
++		unsigned long addr, pte_t *ptep, pte_t pte,
++		unsigned long nr_ptes)
+ {
+ 	bool arm_uffd_pte = false;
+ 
+@@ -1726,13 +1728,14 @@ bool pte_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+ 	if (unlikely(pte_swp_uffd_any(pte)))
+ 		arm_uffd_pte = true;
+ 
+-	if (unlikely(arm_uffd_pte)) {
++	if (likely(!arm_uffd_pte))
++		return false;
++
++	for (unsigned long i = 0; i < nr_ptes; ++i, ++ptep, addr += PAGE_SIZE)
+ 		set_pte_at(vma->vm_mm, addr, ptep,
+ 			   make_pte_marker(PTE_MARKER_UFFD_WP));
+-		return true;
+-	}
+ 
+-	return false;
++	return true;
+ }
+ 
+ /*
+@@ -1746,29 +1749,10 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+ 			      unsigned long addr, pte_t *pte, int nr,
+ 			      struct zap_details *details, pte_t pteval)
+ {
+-	bool was_installed = false;
+-
+-	if (!uffd_supports_wp_marker())
+-		return false;
+-
+-	/* Zap on anonymous always means dropping everything */
+-	if (vma_is_anonymous(vma))
+-		return false;
+-
+ 	if (zap_drop_markers(details))
+ 		return false;
+ 
+-	for (;;) {
+-		/* the PFN in the PTE is irrelevant. */
+-		if (pte_install_uffd_wp_if_needed(vma, addr, pte, pteval))
+-			was_installed = true;
+-		if (--nr == 0)
+-			break;
+-		pte++;
+-		addr += PAGE_SIZE;
+-	}
+-
+-	return was_installed;
++	return cond_install_uffd_wp_ptes(vma, addr, pte, pteval, nr);
+ }
+ 
+ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
+diff --git a/mm/rmap.c b/mm/rmap.c
+index ad820fe86f7d8..2f938d0ac6953 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2345,7 +2345,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 		 * we may want to replace a none pte with a marker pte if
+ 		 * it's file-backed, so we don't lose the tracking info.
+ 		 */
+-		pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
++		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, 1);
+ 
+ 		/* Update high watermark before we lower rss */
+ 		update_hiwater_rss(mm);
 -- 
-Cheers,
+2.43.0
 
-David
 
