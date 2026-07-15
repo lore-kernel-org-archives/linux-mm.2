@@ -4,136 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 806F9C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 16:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90DD4C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 16:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 606E46B0093; Wed, 15 Jul 2026 12:39:16 -0400 (EDT)
+	id 8EF346B0096; Wed, 15 Jul 2026 12:39:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DF6C6B0095; Wed, 15 Jul 2026 12:39:16 -0400 (EDT)
+	id 89F716B0098; Wed, 15 Jul 2026 12:39:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F5D26B0096; Wed, 15 Jul 2026 12:39:16 -0400 (EDT)
+	id 7DFCF6B0099; Wed, 15 Jul 2026 12:39:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A73F6B0093
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:39:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 902D0C0224
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:39:15 +0000 (UTC)
-X-FDA: 84991571070.18.4B652BB
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B401880007
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:39:13 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4C26B0096
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:39:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7934C0209
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:39:43 +0000 (UTC)
+X-FDA: 84991572246.23.3876906
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D602880007
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:39:41 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eYZSdmWT;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j7acuO2z;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784133553;
-	b=g0KhPoxe5unzB37Bl5BZAdpeJ1k7BlgStbQpDoMDGl1a0YOPCAS6rfwEP4LuiTjbyz5df9
-	0+xorYWaTnOhYglYm1/phJa29s5OnkasPvryafYCiiKthycPDILyIIVV+svf74MpVOQ6YJ
-	aLsyRcd2tK6+89qU2YWwms6QJXLRls4=
-ARC-Authentication-Results: i=2;
+	spf=pass (imf30.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784133581;
+	b=r53vNbMgbRgdagHUWnNXgaranGeIVihPY/mkDrqESVHiw4pzo+JgLAkkYoTDxty1fZbAOw
+	7Ww8hrVDrmlsgMUTxRDQmqA6AiQbgvyFLXy2gtNorKDct3qlwM6p6t+E6vxDW09Vl9C5lJ
+	eqZvxpab9OEcTa+u+GNP1Y1oCxGI8xE=
+ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eYZSdmWT;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j7acuO2z;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784133553;
+	spf=pass (imf30.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784133581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NfbPeKYAmqSLM3UIvnqSVfgnAiaMMQcURGzzlVXKKr0=;
-	b=443JMJ4WHHSNBfR0C728QpIHTg5+He1XVPFvFAgtxAXgQGVSv2QRk8iyyf/99nG85ydMFr
-	RCKsBx0QSrpPTwuhzCREfZkYkwGiLuKDCM8dvzpuHsUgIqOWnCU0j0BjCkSgShHGs5Bppv
-	FjEhzjxq7+cj7DOAkz4ztN/LL1F+NJE=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8423f236418so1969376b3a.1
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:39:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784133552; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DF6YEcsDOxPME/8k6SjPbUFZRzyAI1zLAFJ7rNu1QJJZTFjHBlmcNlBVVs+kvE27Dy
-         z13Mu79Sa0sEpSw+K11uTyictw8y2HjTuArUJ3EokhwoA3tD6VSRpJ6KC/b3ldIZ+r7i
-         W1D+OZeE3TYnwIWQOtBuFy0TMM+m1UMW0uxtj5Dmatvl6n9f93nxihgjbTVl6CWzB9fi
-         avlwHucx2tZHKw5UHfGCInH68MxYdlDwsfMloqeXblBy+hSDRW1QsfOsxg70Bc5O+bK1
-         6PXZUBYxQ1fvfLwhVDOaKfeJ7+++lzJ7aZdWGD+lkBQLVC72d/NZwCCNWf80TpqJP4hV
-         0+dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NfbPeKYAmqSLM3UIvnqSVfgnAiaMMQcURGzzlVXKKr0=;
-        fh=WtDIpbk/Cvu3WygGOyAVw7yjotC0gdPbdzxBpkx80rc=;
-        b=qICI3wF5QLhmWBakExOmKlbiOm6SKAGESHB1BMFL5ZL0iXG8jGOgLio+KTUkNDFLIk
-         3OpFcZGD7skgLPmmbVFeu3H9fNdbOzcfMOJG+hatrsKS9bO2IqbgcL2I6KMwcB0zRbIl
-         yJ1/UCQcB6mnkk0HVIbjQk33oJa+2ZMEgyufuzB9Yh8wkRb9N5WgtdIJmFVcfTxHVa93
-         YpMSrOakAQR0L1ZvUPP075uU0G5vKxRUUTWQnFOSKt8cm7+PsUoy84ht4klhz56P3rpa
-         39o0019KK8Tqs+G7ZvHNwz/hPqLqR9t7Xi5f97aHMUlkU19WQWChJHTK+rnKt3/W1Xw9
-         wg2A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=or7RxpRNzsjVzPQB5YJNcUrM8L7o9Zk9H3H5s18AhOk=;
+	b=vCaKZiZf+5tUC/yaxhZtdtE25yVnl7/Apg31ZiQ8b3T/dCpnSzn7I9ve47yOueJ66GSACV
+	Gym6QDPfoVuGG9tCjWja1+esedftCOFlRGiAF+Qb0eORtV+iiSg+x30sxnm0V/UiWaGtiq
+	ogQ5iBjosAclxl+yD4qeLX/qH8bAGSs=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-caf707e3a70so652569a12.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:39:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784133552; x=1784738352; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NfbPeKYAmqSLM3UIvnqSVfgnAiaMMQcURGzzlVXKKr0=;
-        b=eYZSdmWTww/p1Z2Rnw2rqpuhhaP2H2+ovg7gxc0vr6WoR+FYS4UNzWGr3YNQ7rDUjQ
-         u7Fn20pJZTIwO2/mu3mDeTUKTbeTJaHtuXln2bwSsxTqH8rSwtNj09ulu2RMB3GrjMoH
-         rbsk2mkUhq5OK+NrOebk7mHbQEsiQY90s7heDXPKBisYw50QLnqn6c+MzC2Zm9Gx6sbA
-         E+gFwAxazxWYCYqa6bWO4W5mZYuA43M4JecWvnbWEoNSj5n7k+Cs53a1E3kTeJ0+CiDY
-         wkKyp3/7iyCBPigES2L8DF9n62hs+wRIrnQM9bXFaRtTbu9qKXQz4m6U0MBFzPpCjzuU
-         Bd7g==
+        d=gmail.com; s=20251104; t=1784133581; x=1784738381; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=or7RxpRNzsjVzPQB5YJNcUrM8L7o9Zk9H3H5s18AhOk=;
+        b=j7acuO2zO8NAVbhkrWRKB8GFXEeK0wADdpHssj80n2SFgFhDf8WyUZg+plg2y1Eaaa
+         iwLYL8tW9bhbpglS8eEaiJgZmfOuIKpFRGIYzKZSPtg0P6GsbYG7HNJBwoGfKGjJlLf3
+         kT6PiuvzJNu544bcKAxG3xydj/Ro7ZEZUhHk8Bo6tQmwGLPjTTJ/dRavi/4xY+hNdF9O
+         Lm+c2mRipJ+30/8Vtpl2lqy9q+mDFvXe0aP7f/FcpV094E1GLPk7PzQXREee2tsqBi1D
+         gL09ibfZzM1oWV5DQhOhV2L4hdpx6xUrJo+iXkYwA12anXUoQlvoTfGYNPVZ38wEmc+k
+         dwUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784133552; x=1784738352;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NfbPeKYAmqSLM3UIvnqSVfgnAiaMMQcURGzzlVXKKr0=;
-        b=TktDsRRvBNPelPV8jG4Up6JSRTNUOWoMO/R6OA2mC3OVd/cfrfh8NLenfp9Pw4E8cR
-         XDQ5W+prIQdHpmdkbrg6+otuLwnnl9FMzYW5KSMcYc7OtH/W+rpjGzMk4L2UP6c/PGPn
-         VBDr19qcgmodoK48o9wPXs5tECwZlw6fVhsdSHoJdT0WkA8LKyURvaMmliVGjkUF9MU2
-         zwo9/n4rnkN9fkfQllZfbrLPRUGEx8zwvnFqdv/UAfujUEggW/C/qX8i9JHea30030cO
-         pYd47ESG0jvdrQ1fMjcPcO+J8BzygWPOI3FcktMQiaIh84q925BT6+gafqG924qwPhBD
-         /+1Q==
-X-Gm-Message-State: AOJu0YyOYT2XbFNsLPXQQYV7RjraOVrQRDd1RnemiEntq5qd83uGgMwY
-	fe+oBtRkPzuYQSaIjGiVNAjJE5lI7fGbnZbEsTZsJhGGteZjETH8k9kO/xQVC+gMob0Al1a0d1O
-	8mp/M/ZtoItRXzEvY8/UJhsIXahRmWHQ=
-X-Gm-Gg: AfdE7cldQmP6/iVxzoZ0r4ldCusL9h9Q/uaSIWHV+xPg27Rtd11zr3/SLrLyzycexOj
-	tb5sUB9Z6633Yh5D8a8GIfVF76LwU9iI+NQc/Qhxa8EWoelzTe8TGG49ODH01/BQdIQXprcHBEm
-	gf4rUo7Mn+76Xg7pVqI9ad32RstJTYT2Bft0gzMazdIEVwTjaz/QcpVGQIFZJD6odhSs/FZyAFX
-	6uplh9Xg8+b1fakjmpzaITZemgLF9hQGoXBye1fffgjMuMRHI9xs0vYvjjR0vqGUD3LdOSNHK+h
-	Zc1GGYWCqsJgvke6aUO2sz8CUKcjtw==
-X-Received: by 2002:a05:6a00:14ce:b0:847:7f7a:dd18 with SMTP id
- d2e1a72fcca58-848895db925mr17089883b3a.3.1784133552453; Wed, 15 Jul 2026
- 09:39:12 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784133581; x=1784738381;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=or7RxpRNzsjVzPQB5YJNcUrM8L7o9Zk9H3H5s18AhOk=;
+        b=HSo6theKeoUCSxkRE1vRpuye3Q4G4c7MzbR6TMyrUWirj8gJdkd2ZDUp5VLJ+yHKwa
+         S/utVMgs/v4V7RU28hHiuXm1CrnwKWSk8eXiTsvlT0n+azEo1qqDb+b6pTLMtkJZ6L7S
+         BFzV0jlrhM6I9qJh0qvuco30E1Yz8aEsknl+AET6HFxokU36bHwM0cTWMgimnA+WXsD+
+         i2zwfNfgD9Kmzaf4ilY6irCKuE6hjLHD+DtJMl2agAovjupbTVUhev7ylYqpk5la5FgO
+         NaGOvd4rYTUBs9SC6KS+ZBcJtp5Hg7VoUloRzWHG+SLVgwsaGf5fIZNVXhVuJE34FAvU
+         /Idw==
+X-Forwarded-Encrypted: i=1; AHgh+RqnabsFXeA6HKMz44QzNCwC6NtEM/nKyeh7mijvOqgt2Kd9wlbXBaHXyfk8/SUXFq4oNYxnptB7zg==@kvack.org
+X-Gm-Message-State: AOJu0YzapSeQJZ3QRLHzZmNcq6idZ53EPXT+5pyWM2eWC66d9i8X2gPk
+	Xy0gY1ZeSciJrht/nsXNvM0Lf/XSulLPegCfbQMs17r3Aya1U0PAWmi7
+X-Gm-Gg: AfdE7cmzo0/HSzYWgW1JnrpOhNb8P9t/TTNys6of0Rm4fVe4m84BOUYe9xn2pd8GFb9
+	eLyxNFH5B7d0+xY0WNiarlMGGqI6X45VrTv8ptS+oUx+8w83qQIUHgfnvwabxyADWx5Wy28/Ktm
+	uTh5nvVvT+A+vhKuTICGxnlCZLilXoO5+PIrycIoet7n7RjhZQA7oK2QOGDl8zIJRIfhaXqmU4m
+	lz6ZxLWNt6HCwiREyzuxCWABRgQ3rx74hUeN0yA4eNZ6jcwLDnxSxUlKMk0o7Zk0/6vBT3dbwp6
+	XS2Nl8blZNHTb6325Hd9JgSsQVkIQSX8UVLpmaT6sYHS6617Brx5b+IKEV+yHpFyJmP1INHUzVv
+	3saeDDAVzWuyoJc1mFIWkZMrQhkRxaK5dE58QrpnV1VD/kY88V/Pn1mwJsx+xqyHHvJxLIxW4f4
+	FAliIAgLrwzCDY6dn1raxVMrf+gSp6R8mdYb5uC/yIO/dggt8S75Y5KD8S7zPwujoTGA==
+X-Received: by 2002:a05:6a21:7785:b0:3c3:682d:9fbb with SMTP id adf61e73a8af0-3c384b91e5amr105261637.21.1784133580580;
+        Wed, 15 Jul 2026 09:39:40 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258fd10d2sm486006a12.16.2026.07.15.09.39.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 09:39:39 -0700 (PDT)
+Date: Wed, 15 Jul 2026 09:39:37 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, airlied@gmail.com,
+	akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org, corbet@lwn.net,
+	dakr@kernel.org, jgg@ziepe.ca, kees@kernel.org, leon@kernel.org,
+	liam@infradead.org, lizhi.hou@amd.com, lyude@redhat.com,
+	maarten.lankhorst@linux.intel.com, mamin506@gmail.com,
+	mhocko@suse.com, mripard@kernel.org, nouveau@lists.freedesktop.org,
+	ogabbay@kernel.org, oleg@redhat.com, rppt@kernel.org,
+	shuah@kernel.org, simona@ffwll.ch, skhan@linuxfoundation.org,
+	surenb@google.com, tzimmermann@suse.de, vbabka@kernel.org,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] mm/hmm: Clarify notifier retry state and scope
+ HMM timeouts
+Message-ID: <ale3ydkx1xt6ruuP@skinsburskii>
+References: <178406760622.1106335.2379450382728057793.stgit@skinsburskii>
+ <4300f09b-8f93-4605-b072-7c09a82cb16e@kernel.org>
+ <alecaJ1FUso39D9k@skinsburskii>
+ <alet21wLwM6P_Km2@lucifer>
 MIME-Version: 1.0
-References: <20260714-swap-pcp-priq-v1-0-de9b164ed419@tencent.com>
- <20260714-swap-pcp-priq-v1-9-de9b164ed419@tencent.com> <77d6da3d-10af-49a1-a356-72aa8b462e85@gmail.com>
-In-Reply-To: <77d6da3d-10af-49a1-a356-72aa8b462e85@gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 16 Jul 2026 00:38:31 +0800
-X-Gm-Features: AUfX_mxST2YGU16fRIenEFs2J8gf4QhxF6WBV_5xFoYyMW2BHeQJ6cQZZFJxX2o
-Message-ID: <CAMgjq7A7hdrMip=2A32J7GUuBzgcYuJb=HRYu2oJ6Roi1v14Ug@mail.gmail.com>
-Subject: Re: [PATCH RFC 09/13] mm/swap: add priority queue for swap device allocation
-To: Jihan LIN <linjh22s@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Kemeng Shi <shikemeng@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B401880007
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alet21wLwM6P_Km2@lucifer>
+X-Rspamd-Queue-Id: D602880007
 X-Rspam-User: 
-X-Stat-Signature: 3pb4cqr3o8ejqoo3c7bcxzmstfxkkdkm
+X-Stat-Signature: 3ng3gbj5w3a3tabrzdt49co6oifjzwhj
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1784133553-175137
-X-HE-Meta: U2FsdGVkX1/wJ71eU7BSM3/9EK7yCvEi8rGMbrgfpoIxJ6FFuOVXDv5YsT2wocWhaw4PLdmI0WY7FmDx6pJwnTaRgczOS0zPehZdAU+EDCV/iuVbx0U7g2slNz11/U4h2STEFgQzZ+nAiDQdgaKkTrquEnBfkGjgTkiFYnTb1akcPgdlyIUOYtmHfU/ag+xI4ioj/A4z3kKeh1G7xsfUP8sI4Kync640davnAMNSFlwF0T4EwMIU1AcjYX4d20mxur/AREPE7+lAW/JpZwGNZqNkJ0LxfmXHiy5lKl0gHNQ3uDnclW+w0YLFMYHF07SjiBVYqirxPCpGUI3jzVCvgfjC0qaC69IYq7aB2oM/ffY4Mv+tKFEJ5wT7j7ddOoii33QofuANMwvDfAXvwcg5aBkEnSW2ggdCe8fOHLSp7DK1OsFShLowAbj04ixhoEV8gRVSOVYhIUVMA1fE6gNKd02MSWZ1db9HCnECUQSN+dS/cybwUM6s1jGDJ4F+BtI+yLA/qLtPd+jcuC9sP8c8ivzbtFMtOfN+Lwkf133Qx+VfqkicMwxZPlxYa1c6Co0EkYBUJZh2GT53OQhXZrKetRy7CtQAojG8L23zw0I3RW5aOHMf3ebjbrZegqtCVX+Bvw+yGYUjZqBnxWiYJURIrxfG3pxJbsTWFcWvhVqSvXpuNPsGm1t7Dnx653NVZjN7EaHujhhfXrD4aHodVIfL8h8JIO3YBOYX5VhB2OS4/hG2hVlheX2nWjBawjJ5Vqt7mnm2roLyZvQgpyj2lsr452BWvGj/5Qi/t9WuFyEXXZ4De9oXeRiRwgVNaGpiM6ZIhu1x7v9swFw1xsdJA5GfCnRoN0iGm89vmZabMdqhn69rltc1Bup5+rC/tq9S29arwmIOd1yoXydf7vkoJp2L/InOgCwRtu9KmhzyH6PKK89CTO89OMPJdfffCX0It3NDv8b4PFlh/r1Cbs2kHTA
- 44Zt42rt
- ryCLYFxCyRWd0wRZf89SoPsqyrAUJTiH7wchac2LYX+O4Gs/a6kAzAuEUwiYjG6V8cjgGgTeU6yFGt05PsbrywlTrKR0NkLyCZascSJTJNh/3r7nqGLLTEBWZUXzzaHBMOclNptj7rXADlIBXDSKj+D2K/VvQ14hch3Z4OFZnDXq7z+Vhlfh330oyRFibTYHokepQ0oL0Rx/Vu1tEzjNBp5PdnSQ2ZxLhms37cXluZOv97bi3EFuO3MkORUk+tFiUTOK/E1YuhWYohp1e5/5vW7DCTGDvxO6TuGB4oTg8a9X1iTp93rxyTPw2fs8oCHbnpYV0qFLDjff9pcPY4vbkcuNNTWs9oN3XhwiPCARYEodI8U6ynEvJOvU2fl6QnrtLrw94IR1GvU4yXfII7PdZG3jdM6ijB6WmkxaCl2MsXCfOAKw=
+X-HE-Tag: 1784133581-245909
+X-HE-Meta: U2FsdGVkX1/eO2kJ+e13Zts74cbvPsqVWl8CNo9ao6pIc+Jcu8ghI1Eb2Fz19O6UcaVS4PIyMRXFrBlqf7D5/ZcfmH1iEF2SBok0behpKz0bafKut0p+qsX3wGEHk/7aEtCf2IbEW07WlYBYcV+w1+I2hKjsy9Wt6fjShmfJV7vkoZjm9xCfy81etZTPLU8EcmStSGpuymAJo+dFrNGabiPenmhAAs0Iqc25ybGrx5/P71Q4RHB454LEpK91jsTF/hp7nyU/e6tW4Ym4yn3Q54CPdqTmCXQk1aPicAShmGlepCtD/Rlx8G1rTSvFf4Z8Wdv33j4szedPgrzcgoXY/i/RgqfzWHf9BpTxP8f31bZnAsKkNgK49gjT4eHKRUkQ+Q3WAJf8dK3Qz3OQGkFoRc/0wyni4odkiyB6TiSjSweEY/5s1RVbScX31Gy/dNETA+/ZYGbxToiE+XxLxOb766C0DndMLIe7mNQxsG2tWOL+xxWSzENEoYPPSE8K0AaKGeWuJH3rd6/KOY/+sYsFtCNVGRgNyEF7MtGFHKVQU8dc8/eODsc0xJ9N+3bbdgAm+Z9iQeaNyHCZrEVBy0NnxU2Wap+gKJcLNOQs3RMfGEZ8ETBpOpROeBhjUp91OWjPohB6KAi0m1TD7mCYs8/oYmmznLThcV3uUfWe/I/EPj7ARbAyeUJAQxNLfDADhuEp0+YjFTF2B6g3utdqMau78HbweRYUwVBDD+hUzn3o8EbYb7PXBq0KE47ouGi2O6vFNJOicnEsZOxDpdD1/nth8hhkx5YtcWeN6ahDEA5ZaDbeDf9KdPsX8ipB9zekR/WJdd7f8lR5Tw/MVbw93yJlhctOH3tyCzTOw1UZkQ54nH4lyRbuYHrMbYTGdqee9c3+5kMzNUpFQnPuKE2Uh78kDjsZlow6YFlcB7oKj9+wnSBRzQjifwoygI130Axj+ZAB18KLgwEmkvGaHd6qIQF
+ y7vCrOUR
+ Aic4AoCVGyvPwQUe1uiyNNBXFihvakqXg4sE2ILklfcJHn3NvznaAw9sFeyAJiUbRxVP9mnwblPOJewdk/g+vzy3fa31eyL5KuCxLi1Y/gse9ltrgtC+56SMuk3gPrwJXHqtOUpwb/BA1aWPbsTlLQOhjmLgem79LYNCjWu3QC7jhYj9PwWO6Wu7p8712KrOxpNMoqve8tOJ5Bm4w/OM/60zuCfowBqht+ZqG4VU9aNCDtEJ6SV9UFtEmt6NFRp/NQmCr+i0Wp8lIJl5mgn7ydcvXWV22EgCxbHBhwmBzqAJWxbcKBr0M7k/TYnV2UoDCRaWORY1DjTnVflyiCeJhWPIAvWGjeU2j7qwdFHj+yE+RmqsRsXnlbdrucbMTKkzkmp6b2yll/rSY0SBe83X/xsWabgge4nZ9Zy51PQtJ3618P8JXqJtJwRjC3fH8ILg461KYzndsThky0Q1TYQx28Lr2Xrzofy0aer1kptJ2kluXXXxJ0ycrcCUlHlpZ96yzMenYzaLYPKI2KDo+V1D4WVceyTvPZpjBU/7z+0ORTwRh72lZ0clkHv3cNHOyCkw0jdwA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,148 +134,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 11:58=E2=80=AFPM Jihan LIN <linjh22s@gmail.com> wro=
-te:
->
-> Hi Kairui,
->
-> Thanks for this series! I noticed a few issues in this patch:
-
-Thanks for the review!
-
-> >+static struct swap_info_struct *swap_queue_get_device(long nr_alloc, in=
-t nr_iter)
-> >+{
-> >+      bool rotate =3D false;
-> >+      struct swap_info_struct *si;
-> >+      struct swap_ring_iterator *ri;
-> >+      struct swap_prio_ring *ring;
-> >+      unsigned int queue_idx;
-> >+
-> >+      if (!swap_queue_len)
-> >+              return ERR_PTR(-ENOENT);
-> >+
-> >+      queue_idx =3D 0;
-> >+      while (nr_iter >=3D swap_queue[queue_idx]->size) {
-> >+              nr_iter -=3D swap_queue[queue_idx]->size;
-> >+              if (++queue_idx >=3D swap_queue_len)
-> >+                      return ERR_PTR(-ENOENT);
-> >+      }
-> >+
-> >+      ring =3D swap_queue[queue_idx];
-> >+      local_lock(&swap_queue_readers->lock);
-> >+      ri =3D this_cpu_ptr(&swap_queue_readers->ri[queue_idx]);
-> >+      /* Rotate while iterating the ring, just not on the first try */
-> >+      if (nr_iter)
-> >+              rotate =3D true;
-> >+      else if (ri->rr_counter < nr_alloc)
-> >+              rotate =3D true;
-> >+      else if (ri->offset >=3D ring->size)
-> >+              rotate =3D true;
-> >+      if (rotate) {
-> >+              ri->offset++;
-> >+              ri->offset %=3D ring->size;
-> >+              ri->rr_counter =3D SWAP_ROUND_ROBIN_QUOTA;
-> >+      }
-> >+      ri->rr_counter -=3D nr_alloc;
->
-> ri->rr_counter is left at 0 so the first allocation on each CPU hits
-> ri->rr_counter < nr_alloc and rotates, shifting offset away from
-> intended cpu % ring->size start. Initializing rr_counter to
-> SWAP_ROUND_ROBIN_QUOTA would avoid this, or is this initial rotation
-> perhaps intentional?
-
-Yeah, that's true, it hardly matters as we will do million of
-allocation and rotates a lot randomly, so the first allocation is
-really trivial. But initlalize it as SWAP_ROUND_ROBIN_QUOTA definately
-make it more consistent. Agree on that.
-
-> [...]
->
-> > @@ -1245,12 +1580,12 @@ static void add_to_avail_list(struct swap_info_=
-struct *si)
-> >       unsigned long pages;
+On Wed, Jul 15, 2026 at 05:02:59PM +0100, Lorenzo Stoakes (ARM) wrote:
+> To avoid confusion: obviously please don't merge this series Andrew.
+> 
+> On Wed, Jul 15, 2026 at 07:42:48AM -0700, Stanislav Kinsburskii wrote:
+> > On Wed, Jul 15, 2026 at 02:41:43PM +0200, David Hildenbrand (Arm) wrote:
+> > > On 7/15/26 00:21, Stanislav Kinsburskii wrote:
+> > > > This small fixup series applies on top of:
+> > > >
+> > > >   [PATCH v8 0/8] mm/hmm: Add mmap lock-drop support for userfaultfd-backed mappings
+> > > >
+> > > > The first patch updates the HMM documentation example to make the
+> > > > mmu_interval_read_retry() state explicit: callers should use the notifier and
+> > > > notifier_seq stored in the same hmm_range that was passed to
+> > > > hmm_range_fault_unlocked_timeout().
+> > > >
+> > > > The remaining patches adjust nouveau, amdxdna, and drm_gpusvm users so the
+> > > > timeout passed to hmm_range_fault_unlocked_timeout() is treated as a relative
+> > > > HMM retry budget. These callers no longer keep an absolute deadline around
+> > > > their outer driver retry loops or pass a computed remaining time into HMM.
+> > > >
+> > > > This keeps the timeout scoped to HMM's internal mmu-notifier retry handling. If
+> > > > HMM succeeds and the driver later observes an invalidation through
+> > > > mmu_interval_read_retry(), the driver retries the operation with a fresh HMM
+> > > > retry budget.
+> > > >
+> > > > Changes in v2:
+> > > >   - Kept the nouveau outer absolute timeout around the
+> > > >     mmu_interval_read_retry() loop. hmm_range_fault_unlocked_timeout() only
+> > > >     bounds HMM’s internal retries, while nouveau faults are handled from a GPU
+> > > >     fault worker, so userspace fatal signals cannot break an endless stream of
+> > > >     invalidations there.
+> > > >   - Updated nouveau to use time_after_eq() before calling HMM, so the remaining
+> > > >     timeout passed to hmm_range_fault_unlocked_timeout() is always positive and
+> > > >     never 0, which would mean retry indefinitely.
+> > > >   - Updated the nouveau fixup commit message to explain the worker-thread
+> > > >     timeout issue and the time_after_eq() boundary behavior.
+> > > >   - Fixed the amdxdna fixup commit message. It now describes
+> > > >     aie2_populate_range() correctly instead of carrying stale nouveau prose,
+> > > >     and notes that command submission still keeps its broader timeout while HMM
+> > > >     gets a fresh relative retry budget.
+> > > >
+> > > >
+> > > > ---
+> > > >
+> > > > Stanislav Kinsburskii (4):
+> > > >       fixup! mm/hmm: add hmm_range_fault_unlocked_timeout() for mmap lock-drop support
+> > > >       fixup! drm/nouveau: use hmm_range_fault_unlocked_timeout() for SVM faults
+> > > >       fixup! accel/amdxdna: use hmm_range_fault_unlocked_timeout() for range population
+> > > >       fixup! drm/gpusvm: use hmm_range_fault_unlocked_timeout() for range faults
+> > >
+> > > Why a fixup series instead of properly resending the full thing?
+> > >
 > >
-> >       spin_lock(&swap_avail_lock);
-> >+      spin_lock(&swap_queue_update_lock);
-> >
-> >       /*
-> >-       * Add the device to the avail list if SWP_WRITEOK is set and
-> >-       * SWAP_USAGE_OFFLIST_BIT is still set. Swapoff clears
-> >-       * SWP_WRITEOK first, so the device won't be re-added after
-> >-       * swapoff starts unless swap_device_enable resurrects it.
-> >+       * Mark the device as avail if SWP_WRITEOK is set. Swapoff clears
-> >+       * SWP_WRITEOK first, so check that first so the device won't be
-> >+       * re-added after swapoff started.
-> >        */
-> >       if (!(si->flags & SWP_WRITEOK))
-> >               goto skip;
-> >@@ -1261,9 +1596,10 @@ static void add_to_avail_list(struct swap_info_st=
-ruct *si)
-> >       val =3D atomic_long_fetch_and_relaxed(~SWAP_USAGE_OFFLIST_BIT, &s=
-i->inuse_pages);
-> >
-> >       /*
-> >-       * When device is full and device is on the plist, only one updat=
-er will
-> >-       * see (inuse_pages =3D=3D si->pages) and will call del_from_avai=
-l_list. If
-> >-       * that updater happen to be here, just skip adding.
-> >+       * When device is full and marked as available, one reader will s=
-ee
-> >+       * (inuse_pages =3D=3D si->pages) and should mark it as unavailab=
-le and
-> >+       * set SWAP_USAGE_OFFLIST_BIT. If that updater happens to be here=
-, just
-> >+       * skip the rest.
-> >        */
-> >       pages =3D si->pages;
-> >       if (val =3D=3D pages) {
-> >@@ -1273,10 +1609,10 @@ static void add_to_avail_list(struct swap_info_s=
-truct *si)
-> >                       goto skip;
-> >       }
-> >
-> >+      swap_queue_unmask(si);
-> >       plist_add(&si->avail_list, &swap_avail_head);
-> >-
-> > skip:
-> >-      spin_unlock(&swap_avail_lock);
-> >+      spin_unlock(&swap_queue_update_lock);
-> > }
-> swap_avail_lock is acquired but never released when add_to_avail_list()
-> returns.
+> > The goal was to get a Sashiko review, and v8 has already been applied to
+> > both `mm-new` and `linux-next`.
+> 
+> Please don't do this, this is completely impossible to track for review :)
+> 
+> mm review is currently very difficult based on volumes, it'll become impossible
+> to manage if people sound fragments of series.
+> 
+> Please just resend the whole thing at this point.
+> 
 
-Ah, that really a silly error of mine, in the following commit
-swap_avail_lock is completely removed, so I didn't notice that during
-review or test. Need to fix this intermeidate commit. Thanks!
+Well, I followed the guidance provided by Andrew, and I believe he
+applied all of the changes, including these, to the `mm` tree.
 
->
-> [...]
->
-> >@@ -3700,6 +4035,12 @@ SYSCALL_DEFINE2(swapon, const char __user *, spec=
-ialfile, int, swap_flags)
+Do you still want me to send v9 under these circumstances?
+
+Thanks, Stanislav
+
 > >
-> >       /* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap de=
-vice */
-> >       percpu_ref_resurrect(&si->users);
-> >+      percpu_down_write(&swapon_rwsem);
-> >+      error =3D swap_queue_add(si);
-> >+      percpu_up_write(&swapon_rwsem);
-> >+      if (error)
-> >+              goto free_swap_zswap;
-> >+
-> >       swap_device_enable(si);
-> The swapfile is inserted into the ring unmasked before SWP_WRITEOK was se=
-t in
-> swap_device_enable(). Allocators can pick it and get -EBUSY from
-> get_swap_device_info(). How about adding masked and then letting
-> swap_device_enable() unmask the new swapfile?
-
-Yeah, that's a good idea. I considered it but thought it wasn't
-necessary for the RFC, so I skipped that part. We can definitely do
-that, it will also help for some other synchronization issues that are
-still present.
-
-Thanks again!
+> > You can find more details here:
+> >
+> >   https://sashiko.dev/#/message/alaWmUEeIBeSkmO0%40skinsburskii
+> >
+> > Thanks, Stanislav
+> >
+> > > --
+> > > Cheers,
+> > >
+> > > David
+> 
+> Thanks, Lorenzo
 
