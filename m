@@ -4,115 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A44C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BAD6C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F19036B00C3; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
+	id 2958C6B00C2; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF13B6B00C5; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
+	id 246016B00C4; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA77F6B00C4; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
+	id 184436B00C5; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A27D26B00C2
+	by kanga.kvack.org (Postfix) with ESMTP id D8F0D6B00C2
 	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C486912013C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:03:40 +0000 (UTC)
-X-FDA: 84990725400.04.B364EFD
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 132D120003
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:03:38 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YM5AQXgU;
-	spf=pass (imf31.hostedemail.com: domain of 3CWlXaggKCJI5wy68w9x2AA270.yA8749GJ-886Hwy6.AD2@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3CWlXaggKCJI5wy68w9x2AA270.yA8749GJ-886Hwy6.AD2@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB9E6120180
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:13:37 +0000 (UTC)
+X-FDA: 84991052874.30.6FE86A4
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A5261120002
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:13:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QA80ny0f;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784121216;
+	b=yVrS6TZ8Drs0bxFoOo11C1mbCWvXsc7OHeSZDV3PUHZ+b9CIPufm31nF3CT8kifCQFGpxR
+	qjrodJqPwsaQCOREJeXvpL5QUfcRvKxwjr/HUnAr+YdXDspj2FRSkWssQC2e2RougYbbMW
+	OcF/VWAYZ6wmNfpobawl3FbhYlHc59s=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QA80ny0f;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784113419;
+	s=arc-20220608; t=1784121216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=BvOk2rkLE/yZxPV4YYeXjAMJoxjIiJfLSZRx9VhA7SI=;
-	b=L4FOaw5ZXt0m8H2ICeMM3HE4f9yxPtRT4Fvpx6nJzm/GA493zMm/EkIyCgBEfPy1UVrEFe
-	vOnlt5g++xV1T1eLYN8sRrh53Y0oFi18+X6zMN6gpa/M9V3T2ZBl6giabzs2uEE/xYPoqn
-	32BlUiuDyWiAWSdW+AoNpjUT57U1Z2I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784113419;
-	b=vzCfBW7UHCBTmjzLTFjzIPDcU2yhSAoAOajSB4d/9as9qg0F8LBAL4mW4vhjKexES8QjsY
-	mvm4MD9qIoPpHnWcMFSM4NUaJnFERNQFLd5jfkmv/7zJ6pSYNEs03qlSINDvWuONw/fOys
-	7rJ76fD4Kip+adZzJ8FQ7YpQzzIrQHE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YM5AQXgU;
-	spf=pass (imf31.hostedemail.com: domain of 3CWlXaggKCJI5wy68w9x2AA270.yA8749GJ-886Hwy6.AD2@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3CWlXaggKCJI5wy68w9x2AA270.yA8749GJ-886Hwy6.AD2@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-493c526df6bso17621345e9.3
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:03:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784113417; x=1784718217; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BvOk2rkLE/yZxPV4YYeXjAMJoxjIiJfLSZRx9VhA7SI=;
-        b=YM5AQXgUIm9ZOsqGfUiKc/hAISY7jpUoC8juMlMFOFM9WJBBV4RdLCzjDQBbbA/ilx
-         QZTHhd2JPY+F9vM6Tpc21dixSwA82u9zh6Hfe2LRFnU5fjqy7jPKnw3GSip33UErpA9p
-         h8+Y8aId6hSAiOlCZjwXuq8u++7FoZtjnJCbhhC+rvdS2dip0pw2qg56qvimL9xYF0P/
-         XS2tYfHtUzpVeWdOUIf5G73qGbArcsIXJo7t2drLpMD/CPnoUYjcdrwePVVWeJfRh5jc
-         q2OY+jkY/BCrcAmrwGmCTlzZRlyN8JjnebrH9UDezD5sQmKVBKYS/BterIcxyshihejC
-         nO4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784113417; x=1784718217;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BvOk2rkLE/yZxPV4YYeXjAMJoxjIiJfLSZRx9VhA7SI=;
-        b=VQmTWW1iuX2DW4T1pfnt0hjl7H/A8OEf9Z8AmPSFxAC1B1kHutf3GsFaafCQroBn7H
-         9/KPIwb4ostNwDUFotDrbKJ97C3F7/muW9gZcl1nKm3MckNBPsVbF9nLWtR+R4V1NxlY
-         uYZangZue+FMGR2R/18s4ucpq3d6gSjHmNiIqGWFOiJdFUUNs2e97XJnWRF1nEsaVZU3
-         HWJUPLiPtdVxUi4da20v41SUQX7sCGtd+CAHFtFmOIgCSgs+vblALA+2WFTJcNAaicA+
-         g4PLg7YLwbo4TVtLeYng7cXGPhlxzVyPiTsQ933OIhmW5KR3VdAGGXtck3kirz0syxpb
-         z2Aw==
-X-Gm-Message-State: AOJu0Yw9IfcKP3SFjtT97LUp3OLDWOV0tYGcAwsKXvPQQw2kndjzJVA9
-	ZNwdAe+PhnT6LdgG8Ol75veMrrrXnT/hCobjjlWJrosox1vmSJre6ml7C/9DTkpmpM6tNFrEPb9
-	syVdniWdHeBlOZA==
-X-Received: from wmoq16.prod.google.com ([2002:a05:600c:46d0:b0:493:b593:ca9f])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f8a:b0:493:f7c8:eae2 with SMTP id 5b1f17b1804b1-493f87e6e9cmr175096055e9.15.1784113417076;
- Wed, 15 Jul 2026 04:03:37 -0700 (PDT)
-Date: Wed, 15 Jul 2026 11:03:17 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPVoV2oC/4XNQQ6CMBQE0KuQrq35tIDBlfcwLqD8QrVS0kKVE
- O5uixtdGJeTzLxZiEOr0JFjshCLXjll+hD4LiGiq/oWqWpCJgxYAYcUqBtUT0c7ayNuVBqtzWM
- aKOdMFLxAaMqShO1gUarn5p4v7+ym+opijFhsdMqNxs7bsU9j79+HTynQSso6l5hjA3BqjWk17 oW5k3ji2SeT/WJYYLhgEAjO6jT7YtZ1fQEIegvxFAEAAA==
-X-Change-Id: 20260710-spin-trylock-followup-332c636e0d99
-X-Mailer: b4 0.15.2
-Message-ID: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
-Subject: [PATCH v3 0/4] mm/page_alloc: couple of followups for recent cleanups
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Waiman Long <longman@redhat.com>, 
-	Ridong Chen <ridong.chen@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	"=?utf-8?q?Michal_Koutn=C3=BD?=" <mkoutny@suse.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, sashiko-bot@kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=4WBE3M/nI/ozpD58c8KdJqhsFEjd9mM2a+4L8TirpAc=;
+	b=y8jWqR3jqzLO68yLiQFGqjg7paxMAT5hvH3g9NlbcG14jItMYyDdFc3mgIv5jEklkUoQbo
+	d8YRxrHiZ13yj/mZFssn0bBLR2dXHcTgSxUjaI4WsYiqwFbJdm3Ikwttzs/g9c/Zc5iVMH
+	A0Iy/USPdlCMLl1Lx8UT3VhP2hQFBZ8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784121210;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4WBE3M/nI/ozpD58c8KdJqhsFEjd9mM2a+4L8TirpAc=;
+	b=QA80ny0foxBzYr02oXTnT7KL8JDbwj1CGFV5k5kcasnKKjxzsZmuFpySC1fJ29WlP6bhuQ
+	h1VMgFU13pTUefpXTiEQ5Z8UBuzAcMQlPqu6gPxNu62D7dYKgMCoIZnYoZh1tkzvG5jcbm
+	PlibFk3jAHIqspoJF0qfZj//bk/9PDY=
+From: Leon Hwang <leon.hwang@linux.dev>
+To: linux-mm@kvack.org
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Gary Guo <gary@garyguo.net>,
+	Anand Moon <linux.amoon@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/mseal: fix mseal documentation for 32-bit kernels
+Date: Wed, 15 Jul 2026 21:12:58 +0800
+Message-ID: <20260715131258.55499-1-leon.hwang@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A5261120002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 132D120003
-X-Stat-Signature: nf94443g1q38pkiac3rtcwaypmbutmxd
-X-HE-Tag: 1784113418-947528
-X-HE-Meta: U2FsdGVkX1+n3F8LiLL9dymRDfyKfsauT8EtYg7ILxjWafyqASwNq106XbqVA8CpgiGdeeFmWplJVKU5NZs9bfHjyV7EJXfwpdkOjw8dNLrgOvXqwXbp7WLpWzvdLAuj8Gginlz6qa0n1w8TnAOdfUjualVSmg4hJZOk1crWtbN6n8yXB4SA46y67SDauxScnIqlOpse+nt+ycuJcJKG6zrbKM7o7n1IiN1wFEDeatY1XR1t9uqGMj/MA/0JF3UVvdw3GNexhEswSnEiAI+XOM2WE5qjaNtOw7mGSvtEObPiORRMiG7L76j6RJo+Ms64jGQgMyiIGz8Ief7qxAP2vkhd0JBiusRyEk6ZThzWQiUwLUvEEndlFDoGFwaL/B+JV9EM0xBGE1yuwDkRfd3i9i9dPfFOjjkkRH0qcMPjKif/AkAOP91pzESY2sUo7TT16FCo4iZEmfM3l3Je6MdiAPdA3kXAotu7T50sB8yFWUtPZ6HoSMdcprY3lpC37vP1HgiwWlADUr8rmTtiNP7CLUMf8A5fdNLAsVjiDxevFENTn/3vHtilVGgzM0LiKQPeXjeMgrI+FrVklugVstkii4Rd1FE5+JHEXfOS6CdvJGxa7qwzV6MCnh64zNvtm5MKQ898x5X8RHYvV5k8EvXrgjwWbZ2pdzRKB72PMNoNDVReWT2yvunZXxf6of6YpHxIYQRmMTpq5HLhqbB5R0aIHkhzZk33MQ18F/ToMzUz1llRcUgSj6y68dGMSJgJQGlonclqxNUe2RJpID8oXTjyMz7vIN2IXUWVpU4oZWm7D1Za7wouuQkSyyp/fts+aRLwlJci2VFmhn5mqouOv/E84PNGb86QkfnR4iDv7TB7+CDRimJI+fkfer172NhAR7axvpi0rDNLRnDyV5y8R4vjqCsXohYcD3pFq8G1LhQY9BCgmSsum1/k3SZCiIdbq32Z1XyoI5VDhPNTKZgwIkl
- sKH+LX6y
- Z1dNblF42LsOspCQ9lgTRpFJvxP8bLaF8e3b6SmNMD/1whrhmMJHJH74V87m392p8q/kUBXQOE856WKXWHTpevzwFIYheuC+dMHDMTcDDfA27V+89ZUQH4ORosfsCJgywKajGcnZDv0lk6yMqGXlpn9+8VWxL1nFXlLvpZ9ONyqYSgaytsqadQh4L29snNHbWktGgWJ4IsYnAQDhjpXPeY4ztormJ5xUtCjFJG0yXrITN1gwV7LVrcf2rDoA/1MqSQ/LnyymRhzJRBZXdshYpKRBAMj0P9qlms3c2Cwv7JTOgGsKyMh8esR2DsuRtlcDCpa2QNyB2QYR4+ef7NtOMTFIyQN8vJzwuh8/Hz5NEWWtpqIDkJyyRMUX/jy23ScAMiOdWGCGOoN7FVY/x7XygB5uf4VpglZ0EweZ3e1RhD5YZBX6lORLTV/5YPOpS9CJErVza6aSj4ucFIQVWkvIsqW3bbG1c+rJhpHbEji5mf/L6Zl/jGv2ZWDpAz2o65zzh2DX9T9r8S04yP3xKB9fOLtgWSaJ08q/In6lxA2cMu10SO18WQViypHFDcvLIQWUiweWHYaus/4k40S1xPdHtJMgi+GFPo7Ma1438d81saW7H2+tctOVFeEeTzdPkwWfvijxlyE5OKCp2xN2u4ln4jlR2u9ZZLDkebNSn0xH1P1sxBLEA17PI73+G59C3ndftohxveEunGKkAjP4+h9GdHDtpYXDqJpOGUfIWQ8tX1YN6YSWbeZgFf7fHkzyGMvMUyxmvkzGpwWZ8KCTOtGptzumf34suEg8AOI5hjGQF1uKrTC5oaO+9Z2+E5O0KFOPsd5+Km/YOGsGWsinv8OVQftMJogqh9TWSNrdI9kBwD0yA2qxgmkYQk9PcQD9rifJB0ow76TCy8B0G+bBKhEQGcBAULJyS01+vXTmN1Fy8Yh02dq+cKiZO18FTA0IVaex/IN2tJsgpibWQfZ0C92knOLKIQ0U7
- ELQxQotF
- zhpZI2rMvPMVX6h/FTuREmDg8SQlfS0LyuXCrgI31GA4LVQyUJQmb6IAjE9VtkIhzzNkHG9GIiq7DroBDZ3Wf9wWww2lErAaAmECLbKhkyGyt88L4/1GRVtiPnFcIt3zuKDk+1siCT0WngUiogE8zp0uQOM/b+UXDSsaaXGrukorRn8JuL3xeA==
+X-Stat-Signature: qr6f87zkonwz48atcumkeo3utyd5uhhq
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784121215-12344
+X-HE-Meta: U2FsdGVkX1/PagG4b8Uc4I2tlKCiHhT0Grjd46gCoD0FIrIrRWBEbT1QK4T+W6g2j7RfKaEEgXkKGmH2aP8bgkH4Y7HtujrWh5JtZ13pzkcKSyJLhwIm0I1qu1yX61+n+w4B9UJc7AMfRhV/G+wYS/55S5ZMhCPDTbYNdu0+pzl9Lre7OtUSx+uhb1QFLT38t3ITlc1VJvGPA1bsQ/P/l/E6mDbHGT4oxtsnirKks2N7pTDucpADZ+x0if/gn6F5bi4JyHxEsTWc6mkw/kenNrn/P3j8ffKGKes4BSab1jk6y6mWjNzoYnXIZyp7rQ1Az5af9xfXwE+uok1kkVXYLwVS2+aczw8qS+A408PUGOSUh1SMSLf5heAyCAO12uyKz26NorfKgcDDbmvLDbYZrkcA4pC3+KAvVy5rkzZluHflXsy1jsMajVT3qYnfR4kFumhKHmM9jsi1Mf2IWIBWnxOMfHXTNiIxKXRm33O3H+wWyeLeDoM0zqQizAabPP7GV8SXhz6fKEGXn68iyaSXVnCKcwhoqz9uwTp454EQIb5pZlKssHPJr6PjwNHBrKgHbPjW8HRaOqOWm1NACg4WhEetJ6lm8UCUm6n2APxZHfg8dodJciwGOiD3j/p5J1WeQO0AzxTOtmygEWmN/LdXMGwzXxRlwLiLNsrrk1oJBpKHMby985IWXOa+8cut1Si5MXdZhw5zSJODhhIP3akTDp3uniH313zMFfxuJg/h45YCf3TgkcCtce8Gr1vUBmMST/XO4wW/FyoBjUwA5p+kNBjUhRvOIdxIhNMye6JEXzRiEkRxldYu0GwrWXxL6bthQ0EtUIADEjVZKIRNKbjMcBFsAAQ3teLTwLQHt6i2HyvGq6HHtI9mPdrzDnyiJ240xbHw+M4b+iE5AY6MKmMg3n0apN/99Nu2r/kGv/KB+Zvoiu4oUUgxi/vJEhpvasbBFgQwpbmTB7uqLEDgVxS
+ 2wwBr2yL
+ e+hyOWPYc1JHD7WKd4u3UlaJczOWP/ZmV213Rx7DefKC/BLraZi20O5k2DOfkyB9zzU2FGaOpNTN2wmaZ8eT44RGgb9phnTv+X0V2MOdPVbV1CfmyUttSvpzIhVMxA6Ge4P9rNnz1PQKjuWrvklRgfruRSSc9R5Wx89MDA0WpO3Spf/b9PdADIXPvx6QOfmxYw8olTb/rzqehRchJLCx8i7AGNzFQ3ODLcMDls3fCl2ZnY9y5mBAHWt79YhCtpqp5wMHC5A1oPdxNqeUvDUrWqGD9MJPP4OizUiV3ryYG8h8MuX0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,74 +104,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+mseal.o is built only for 64-bit kernels, so 32-bit kernels fall back
+to sys_ni_syscall() and return -ENOSYS rather than -EPERM.
 
+Drop architecture description in mseal.rst, since the arch feature
+doc has the latest state of mseal for each architecture.
 
+Fix the CONFIG_MSEAL_SYSTEM_MAPPINGS typo in init/Kconfig.
+
+Drop the whole comment of do_mseal() to avoid stale info in the
+comment, as we have the doc in mseal.rst.
+
+Acked-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
 ---
-Changes in v3:
-- Fixed Sashiko Links: (Zi Yan)
-- Fixed kerneldoc syntax (Sashiko)
-- Removed extra VM_BUG_ON() (Sashiko)
-- Link to v2: https://patch.msgid.link/20260714-spin-trylock-followup-v2-0-=
-3c20ed032b14@google.com
-
-Changes in v2:
-- Separated from functional fixes
-- Added cpuset cleanup, comment fixup, VM_BUG_ON() removal from Zi Yan's
-  review of [0].
-- Link to v1: https://patch.msgid.link/20260710-spin-trylock-followup-v1-0-=
-affb5fe5ed00@google.com
-
-Based on mm-new, these are followups to [0]
-
-The alloc_pages_nolock_noprof() comment fixup could be squashed into
-"mm/page_alloc: relax GFP WARN in nolock allocs" - currently
-11770f8836f44 in mm-new.
-
-The VM_BUG_ON() removal could be squashed into "mm: remove
-__alloc_pages_node()", currently fba100a6cdfc5.
-[0]: https://lore.kernel.org/all/20260703-alloc-trylock-v5-0-c87b714e19d3@g=
-oogle.com/
-
-To: Andrew Morton <akpm@linux-foundation.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-To: Michal Hocko <mhocko@suse.com>
-To: Brendan Jackman <jackmanb@google.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-To: Zi Yan <ziy@nvidia.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Clark Williams <clrkwllms@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-To: Waiman Long <longman@redhat.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-To: Tejun Heo <tj@kernel.org>
-To: Michal Koutn=C3=BD <mkoutny@suse.com>
-To: David Hildenbrand <david@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: cgroups@vger.kernel.org
-Cc: linux-rt-devel@lists.linux.dev
-
+v1 -> v2:
+* Drop -EINTR description in mseal.rst. (per Mathew)
+* Drop VM_SEALED_SYSMAP change in mseal.rst. (per Pedro)
+* Drop architecture description in mseal.rst. (per Pedro)
+* Drop the whole comment of do_mseal(). (per Pedro)
+* v1: https://lore.kernel.org/linux-mm/20260703022507.187457-1-leon.hwang@linux.dev/
 ---
-Brendan Jackman (4):
-      mm/page_alloc: rename FPI_TRYLOCK -> FPI_NOLOCK
-      cgroup/cpuset: update some comments about the page allocator
-      mm/page_alloc: fixup alloc_pages_nolock_noprof() comment
-      mm/page_alloc: remove a couple of VM_BUG_ON()st
+ Documentation/userspace-api/mseal.rst | 14 ++++----
+ init/Kconfig                          |  2 +-
+ mm/mseal.c                            | 52 ---------------------------
+ 3 files changed, 7 insertions(+), 61 deletions(-)
 
- include/linux/gfp.h    |  1 -
- kernel/cgroup/cpuset.c | 13 +++++--------
- mm/page_alloc.c        | 22 +++++++++++-----------
- 3 files changed, 16 insertions(+), 20 deletions(-)
----
-base-commit: 59c684a9908d2e6f7a791f7f033eae57ec2b3a61
-change-id: 20260710-spin-trylock-followup-332c636e0d99
+diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
+index ea9b11a0bd89..c039d782f9f5 100644
+--- a/Documentation/userspace-api/mseal.rst
++++ b/Documentation/userspace-api/mseal.rst
+@@ -50,8 +50,8 @@ mseal syscall signature
+          * The start address (``addr``) is not allocated.
+          * The end address (``addr`` + ``len``) is not allocated.
+          * A gap (unallocated memory) between start and end address.
+-      - **-EPERM**:
+-         * sealing is supported only on 64-bit CPUs, 32-bit is not supported.
++      - **-ENOSYS**:
++         * The kernel does not implement ``mseal()``.
 
-Best regards,
--- =20
-Brendan Jackman <jackmanb@google.com>
+    **Note about error return**:
+       - For above error cases, users can expect the given memory range is
+@@ -62,7 +62,8 @@ mseal syscall signature
+         memory range could happen. However, those cases should be rare.
 
+    **Architecture support**:
+-      mseal only works on 64-bit CPUs, not 32-bit CPUs.
++      mseal is built only for 64-bit kernels. 32-bit kernels return
++      ``-ENOSYS``.
+
+    **Idempotent**:
+       users can call mseal multiple times. mseal on an already sealed memory
+@@ -131,11 +132,11 @@ Use cases
+ - Chrome browser: protect some security sensitive data structures.
+
+ - System mappings:
+-  The system mappings are created by the kernel and includes vdso, vvar,
++  The system mappings are created by the kernel and include vdso, vvar,
+   vvar_vclock, vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
+
+   Those system mappings are readonly only or execute only, memory sealing can
+-  protect them from ever changing to writable or unmmap/remapped as different
++  protect them from ever changing to writable or unmapped/remapped as different
+   attributes. This is useful to mitigate memory corruption issues where a
+   corrupted pointer is passed to a memory management system.
+
+@@ -143,9 +144,6 @@ Use cases
+   the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
+   architecture.
+
+-  The following architectures currently support this feature: x86-64, arm64,
+-  loongarch and s390.
+-
+   WARNING: This feature breaks programs which rely on relocating
+   or unmapping system mappings. Known broken software at the time
+   of writing includes CHECKPOINT_RESTORE, UML, gVisor, rr. Therefore
+diff --git a/init/Kconfig b/init/Kconfig
+index 9d91074c5d0a..a1402bd82026 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2120,7 +2120,7 @@ config ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+ 	  from a kernel perspective.
+
+ 	  After the architecture enables this, a distribution can set
+-	  CONFIG_MSEAL_SYSTEM_MAPPING to manage access to the feature.
++	  CONFIG_MSEAL_SYSTEM_MAPPINGS to manage access to the feature.
+
+ 	  For complete descriptions of memory sealing, please see
+ 	  Documentation/userspace-api/mseal.rst
+diff --git a/mm/mseal.c b/mm/mseal.c
+index 9781647483d1..69a53207ab57 100644
+--- a/mm/mseal.c
++++ b/mm/mseal.c
+@@ -88,58 +88,6 @@ static int mseal_apply(struct mm_struct *mm,
+ 	return 0;
+ }
+
+-/*
+- * mseal(2) seals the VM's meta data from
+- * selected syscalls.
+- *
+- * addr/len: VM address range.
+- *
+- *  The address range by addr/len must meet:
+- *   start (addr) must be in a valid VMA.
+- *   end (addr + len) must be in a valid VMA.
+- *   no gap (unallocated memory) between start and end.
+- *   start (addr) must be page aligned.
+- *
+- *  len: len will be page aligned implicitly.
+- *
+- *   Below VMA operations are blocked after sealing.
+- *   1> Unmapping, moving to another location, and shrinking
+- *	the size, via munmap() and mremap(), can leave an empty
+- *	space, therefore can be replaced with a VMA with a new
+- *	set of attributes.
+- *   2> Moving or expanding a different vma into the current location,
+- *	via mremap().
+- *   3> Modifying a VMA via mmap(MAP_FIXED).
+- *   4> Size expansion, via mremap(), does not appear to pose any
+- *	specific risks to sealed VMAs. It is included anyway because
+- *	the use case is unclear. In any case, users can rely on
+- *	merging to expand a sealed VMA.
+- *   5> mprotect and pkey_mprotect.
+- *   6> Some destructive madvice() behavior (e.g. MADV_DONTNEED)
+- *      for anonymous memory, when users don't have write permission to the
+- *	memory. Those behaviors can alter region contents by discarding pages,
+- *	effectively a memset(0) for anonymous memory.
+- *
+- *  flags: reserved.
+- *
+- * return values:
+- *  zero: success.
+- *  -EINVAL:
+- *   invalid input flags.
+- *   start address is not page aligned.
+- *   Address range (start + len) overflow.
+- *  -ENOMEM:
+- *   addr is not a valid address (not allocated).
+- *   end (start + len) is not a valid address.
+- *   a gap (unallocated memory) between start and end.
+- *  -EPERM:
+- *  - In 32 bit architecture, sealing is not supported.
+- * Note:
+- *  user can call mseal(2) multiple times, adding a seal on an
+- *  already sealed memory is a no-action (no error).
+- *
+- *  unseal() is not supported.
+- */
+ int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
+ {
+ 	size_t len;
+--
+2.55.0
 
