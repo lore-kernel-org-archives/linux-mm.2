@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACED6C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 19:52:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBB3CC44507
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 19:54:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87EF36B008A; Wed, 15 Jul 2026 15:51:59 -0400 (EDT)
+	id 80DEB6B0088; Wed, 15 Jul 2026 15:54:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82E4A6B008C; Wed, 15 Jul 2026 15:51:59 -0400 (EDT)
+	id 7978C6B0092; Wed, 15 Jul 2026 15:54:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71D3B6B0093; Wed, 15 Jul 2026 15:51:59 -0400 (EDT)
+	id 63A4C6B0093; Wed, 15 Jul 2026 15:54:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D7F86B008A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:51:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2254A006F
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:51:58 +0000 (UTC)
-X-FDA: 84992056716.03.9B7EF0D
+	by kanga.kvack.org (Postfix) with ESMTP id 27CB16B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:54:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BA298024A
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:54:10 +0000 (UTC)
+X-FDA: 84992062260.16.9BCBAAF
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9CFDD40008
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:51:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lJgKKfhl;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 557E140003
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:54:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="G9Ads1/5";
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf01.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784145117;
-	b=I8Sr7yRHUiu8Mfx7kjP9sn4+mQJ/GKErVBD23J0FpzeKmQJeU7I8LssX+U2ESrglHE2Tnn
-	NOfgC7aTlrk5wFzS+rGCwoSTH56ZAIxJJ1nHxX0q2D93JVfteDmdxmp40W4rLcB6eUTHtN
-	F+cxnkuoL+kkVSNbEVmYMoIpPbtMvEk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lJgKKfhl;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf01.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784145117;
+	s=arc-20220608; t=1784145249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qECPUV5KWvny4esgaF2Vf7PlyZR+bR1BGzMVUFeolqU=;
-	b=WukSX+uhiJtaeF8CTJ10lJOtJ86kZqVNMIgNFB5CflbQo5JbdtIzklZpYJzq00Twj3lM4G
-	TJmchnWFCh0o/5bKhckvuAsraV9ghr1M/yFVh6mrHhQEYQl28Sc7e4PdAnqZwCozyymxiX
-	cRiMHW4R1QNu0EvG8v+qIgpyZYnpaLE=
+	bh=u1xTcKNYwdOUdwgNpbyIzAcPowaOLgUaHPOaAeLqzfg=;
+	b=lWKKBYnw0PUga3CwPm+ONqwqcYafweeGM11JOKsJ1lU72VVy0kBTZiMlNdo7uVHaOa6sZ1
+	WgXqYHvaVuBSDcl1jKwDVtC4RgriTGS4EdcjBCEBJzX7ZYipJQCaFw/B8WranjZRiN6YdJ
+	ZH6VoJEnhk7S7h12HuIBh8gUiAZ5W2k=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="G9Ads1/5";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784145249;
+	b=M7EX5+QW+zJGBL99sLuBrFdWxYaj4F5gA4DUbxU0DLbCUXlQHsRxVPYLpJdmJfhKNxzh+W
+	Jx04OSgl+xUaAEP6aEkfePbt4SrQ7FcnfDzpQur8GQdq88FTKjJSQHBFX1UpV/BIRwjCLf
+	jyzeBcSyeyFaI06s6ucMroTc1MJANJw=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qECPUV5KWvny4esgaF2Vf7PlyZR+bR1BGzMVUFeolqU=; b=lJgKKfhlIrhdAC1jyT5Hf3uPxE
-	l7vnGovceMuPLVWPqgV9wNKl/gQuYIaCna2P59iOxwIjz8TgnSZxKIXp5GeAqkWZQaTeT3+cubzjK
-	HGiNQpMygZIeOjVTO50mffhkjlNpKQVqpAAM1eEVW8Hs3fCuJZ+uAhYmyDBNCwh9jTJS9/Q5Y3LVu
-	ywLG36QvrGrHdJQUhM57vSlVQ7DI/PmUKWzLTbToYJXiR4beiet5xPyeJKLkIRtK7Wmpn2r5twtYX
-	SVWE+upv4jajftjr+NcrbxoQcLUUOncC03VumZY0PwcxCLxWxWB2Ce3O/uWL9GgzwaAmWuf5JkTOn
-	i46gZwWQ==;
+	bh=u1xTcKNYwdOUdwgNpbyIzAcPowaOLgUaHPOaAeLqzfg=; b=G9Ads1/50L6jZQcaHXYJq/Psc7
+	AryEJZcuGxV76jnQvR75aByyQN2+s4KISlfDdk2TV92ezj8Mb4OV3LQF0ZVYbq4Bwq7lXV48A3koM
+	4dW7xh0EelhZHZsLKX5Terjo3G/wY4H4bI5wxUs6ArdrtWB1DCY3d3mbi6Xxwegu+cmC0ufKyHXMu
+	AqLncMI+gSugHyCRPWyTnaJ8K+c0jt3rkv99sJlwJf7PJ+dQ563sPdXLBXOHRlyBfZi2YB6bdEe6v
+	/P14vLsGTAZrR7gY0vy5J00O3llg1vnu5Lm0yJTpk8XtVFADXa9x0/iPQC2akptOn3wrnWTNwWmxS
+	CaBTrBPw==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wk5dP-0000000Fp73-3ueX;
-	Wed, 15 Jul 2026 19:51:12 +0000
-Date: Wed, 15 Jul 2026 15:51:01 -0400
+	id 1wk5fh-0000000FpH0-1NIX;
+	Wed, 15 Jul 2026 19:53:33 +0000
+Date: Wed, 15 Jul 2026 15:53:23 -0400
 From: "Liam R. Howlett" <liam@infradead.org>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -120,28 +120,29 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
 	linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
 	Russell King <linux+etnaviv@armlinux.org.uk>
-Subject: Re: [PATCH v2 02/33] mm: add kdoc comments for vma_start/last_pgoff()
-Message-ID: <jwtocg3yekest4xrda4fhzck5tcrcib2mmzjztvi3jk6i4oin7@xcvem5gdkwa7>
+Subject: Re: [PATCH v2 03/33] tools/testing/vma: use vma_start_pgoff() in
+ merge tests
+Message-ID: <p6bhkbzvrdz6bb4a6cdmd6bmlwuwxfjd3lx5opq334o7nwjhwa@ctqdd3i2daon>
 References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-2-2a5aa403d977@kernel.org>
+ <20260710-b4-pre-scalable-cow-v2-3-2a5aa403d977@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-2-2a5aa403d977@kernel.org>
-X-Rspamd-Queue-Id: 9CFDD40008
+In-Reply-To: <20260710-b4-pre-scalable-cow-v2-3-2a5aa403d977@kernel.org>
+X-Stat-Signature: t4bspyf83at9wcn1f1bcg64wf3r13cs1
+X-Rspamd-Queue-Id: 557E140003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Stat-Signature: a8zpfom1yf6fstmb7tdyw3wh968iaod8
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784145115-970307
-X-HE-Meta: U2FsdGVkX18GWOX8+5UuUxEg6Yl3S7ImHIwlVZsfKyjoZ3DKcG4M9juqsWDjZ5ZmBDRilWFG1pzymakS2ktZVtp2r4ukzp2h+0u8PmyfXZtfTXsZu7zLcwSI7dDWPpR9KIedIESAgbqbvWtrDKGlMLrNrWHrWcGu2DvVS7EuUIlvbQtcou0d7eRxUbSWFIptoXh6VzuIScBJE7Au6Qdzp6oiRF3lxhLpMYuPrW2l+Z0N2Btij8stejMP80ehyGAYSFzMBkpQVLCV9/GnHxDfEgd0+sy89xGNAG0um2wwPW5iDz7tWH6kZgt/tydZMtINcH+hCfBGUaCn8AgT5Ard58oFWm2Y1r/X/rDccO3Z2V/FSegXISCRR8ApuBOm5jUiVYosI+TcRkAnyzb/vaedqr8RAms3koDwgSkvRc37039GWIH0h8qhau3VfJNZFFiR7WtyWpOVDLjHXLIOylUM8jZFo+/ntivOezuAWgAjnwo30207kYLcw2lxpwqp3pVwTG+ocVi+mJwTSNJ3rMFuE80zcjkH0mRfOf5SUHIkgxbo2Idrza6m40hbWsDBEOQJ+RUxuXM6FTQAnDwZuT6izOA8gLDWev2jGuYSH4yqY3kFGN0pY/DdAi1a0uiw7fcxjLDGFuo/IKiBCcjR8kSgTt4Oixz8GmTIC5IohN0owFYpP7rNarVHRrbkKYyiKYp4ffEnk0zWTs9NUcT+8iYc4eMIdl/jOI/uQeHf/vK0glD3qRlnx17QZdHZT54OX0jEhTccxKKwdNcmeS0mNZsKsbaUhC0tEHj0uRP2xpBXjf/+Z29tOCxHMQEREz51XM50W3yd55fFfRKT/BAK4tHhgFB1ImfR0uBtUv2DwOrsDdyyPS1PZEApTqzfzwKczjD6DZ5loUdnqkw6toRSBD/StmMCKgloo5pnMTEe3A5Bo1XQPWfTCnB3t623ub6jG+xZ4iNCCkQ6utqGSWXHCCz
- Fj4u7U7s
- lOJMe4H8ChfjsgrIOS9cP4XE0YSaSoBnB6adBGa2uMQq+qbAESQzMtwUpVnytBn0ETQdC/5IYpjoGHpdZmyZFM+c2ojFDV8+SxWuIRgAL4L7a1BP+AbbcEfFXWNgztME0B3mVDHP9A0XPEs6uhAlYLZ56vtxQrXrL5PoGJhpcHLrbgi+jyTgbbZcQgPgrIXoaa/8O8uMC9RfhmqTbDXIpQPm4oswJ7weg40dIRpnTsrSwg7XK7DL1xo2ptRT3h4Sh9K6wc5Cj2sz7T1LHDBQeEdRUeAsZdSb2NXQpC3QgQ9TS99Lajtg4xjvEDtiPyG5eynoY48EHCUfh+6izgN1eGTHa9ISWpeLrQeg8w4Jn3mSzBD02xxhKptAm9tFLxDp3iPfFy6e7mAeBROVnl/d5awtQRLHk+ixN0dJ1kbdPGXDAQEyeKlhC723cfFNH8JUX7UnA6T/8YoA5uWhEr1P1DLWDrHQrcWl87c8kgpWqQ+uGOYHVQL8Ui52VPd2EgokCjsR+JpnfTf/Z6Hq3z6j+2hverO513c6jI7RPtRiZFQflw9p5PexMKTiUk4SSLxOCuWeisyhaQVcMZjsldwNTUfvRAYaYSoTbjMvRQmz5Gre5UE5f6RNWiHeNHOVPcZQlT3GIzTC1p5jl06uv1t3epM9QE/PtPJZbrRUPU4r7HJJl7fzKIxSkt8fl782mtPITyV3Jq7qeEQuLC51D3FmFqZmmEZMuAUGXzbuoY9MrS/DbHv5Dmm6i3g5wc3Hrv3cua1max5mHBTg8U+HcY1m9epiC/dCknxo7aF7Yz6aAqKQ6ag22NjXpuJNdkxzQ8UPLuPwN83MCsNbT8FE9lBVYj6/ZCMOq6rl8WFVmTRZ9gDDZBChys2ibZpQta0McHVGMyHazFCgOiuR8eduhFHX5JXE3StGPobRt/JiMIQci4Bn0J27rlls62IkEfOuZiCl+DVLXK2JieL8atClT26oIIpcMfh7r
- Dt6FPs2i
- QOuv5MKO5wqa7rcpc7pJkT9QneXH3pq9NZDeKn9+R9D6Mblhc4KQ/JhmJvzZYN3FtEJMv4jcrxfmKzWaSsGQtBysSWjNwlsMc+GJaoMxs4TN0zALy5ay1g7vZ7ivGeXMSuSlxl1iMriNhkkNmQZFE2GxUJZBaetqwAYZB2hWnAA0g8vloGVAhXGmrz4j1ez9GG9Es4uIgw/Lz9J+7MoNHcmIsPkTwrQbHsaq3LQyCwaI3E2Gb3oghWphLgQk7Hjf1zN4P3so/sv49wSFay2xBbD1RVmTc01Kv/uaT0dkdC2tj+L+SKwrl1hnyMPJXu2HThb/F6Tm9yTYrovTPjpc/mvegja9ajdyKMP03bvQRm9kyKlCmDz+PFyiJHcFwDjhXuaB3E8+kBDFhbw3A4q3z3eei6jsDx1TwoQhjRYkd05yXpTHM7LlcNBT81mwhXTmIhcP0y0mcEDos6sHDNqGEsj6Tqc/OiXF0pGzsoBsV+bp1IH2kImn9LXObfnO34+qJ+KEaVk2b2l3vAi2qbzKp5XKQyxsqKhKon0X3EKJH8WbnRbgYQZleX0Uoq5ive510ydOMl2EkXWY1DHxDjLpLbsqijapaEjnbvsAT95SFsvobVAC1iPlTNEV8a0X1NEhQUOUNEl6h4jdQsaTIWdfNEwKsiyLlTHqiSywM7vVZwL/4IlUEq4s99JIBfubbhBpi8i46HX9HbLcSX6arSrMyJc1mT7gu8CsOcCtcDb6FfVAZf8cHHxNCVBns6cN2vSk6MHd0WNY80shtkCrTZh6IlKwsuFLcnjg0AkweXZcvpzgIMegtqwHze/7/ffMi1ounUOlLlpurFpdHIiRs694FdwxLgeIKsVS/Qny8gP5e9uRQCkaYZ+A1Qi0eW7chUInvIQPp5RjIQviOCO0DR0caajpuTZz7kRn/ayfPJPLKYd6KzLDtntPw3iESm1Nc/JeI0LZh1+Yhf+yQ3DGc6DRCaxXbgfvs
- fHwjxZ6c
- Dh0ynNy3oxXA9ntpCs0mgZGMUX3SapRfuKap4MB0kx/FTTocvD43I2BcoAIO86rgxC2G9X7dfu6iG2EqOxY5qLQej0WtGnzK8QAo59HXBIp0KXNX4rcQIspt8Wkl0ZuaXq3+N0/nSkrvcVNMisr7zCSvREFSlDT9ECIk6M2HKmxZQl3yQqun9vJtq9jpV/9r70zkMsH9wt/YdHQy4e1O3vQkB6etS9B+nzpC6GydoRp+rBN2D72Q0SoUF6WCNkk5zuaK3dPli2cuPV/FsBLEXaw8ub55RNPkZ60/97c0nJMC43VdDrMWlhQCZgol7wvJ9qV5hMrojNS2jxtq9zuKVc0xkk9vIL7gUCC9/hTIvmutGiFKv7nxEXXw0Z8VtRzvFE1i9gOEmqpi6U6PwQfcotSfmI4Tx8eMSw9OaaOoYmWGaNDlQ6RVvyR/Fh+y+PrIWSyfTCnwJ7vZLcjbR+aQQ9wnSkfQuOfV/7uI+JJfvFBej8ebFUUWRyDrzyS4pKwxXlIp4k8mh5DWpQAEF646QDFJdIRNDmWAkTCHuW2U4mWCcVwOVa8WgjLuga0W68dmFgp//MNwZJ2MvmsV7rU0CoXzcIbpokaflQKp+vZQstdfIQr0K1c6epNGyAJs9H1T4Czr/4/Q7k8EwvlBGOnRqRZO3O79f52QK5jPyqvz6ckuiDwdsWfmy80KK7vUF7vGYoid/Az1h87ziIMCvJXm15mAzkWQdX6oXA9OESUetngw71xHRwRwVer8w1sERry71JQFPSNStHnXcvHXRKhoU2pUyHoP4l2Wzmt1/y8a/yE4arnjxB5/dA7t6YBYiDHbIkP2z1KUs1NlCZhDa8zqY+Cqqf4mZKmJrepA//HIqY/3B5gyD8z4Ief1wCIte4wZHnJS6E/D0uYDq+cg9jIE89iUicPiQz9k3YeKNlmSOWK7trgmDHcvFi1t8Af9Ba9q60UyomFZqY1q5RtGlN8Vb08Py3JZQ
- 3rtbKOTF
- BBm/b/ro7RoAm0KLSBVYTqE/GGFe4JHH8a6bWQS+BMwZjF+eP0n2l+5pGxdydTQCtbCwreVWt307YyjPJhdF05dan6YK49/w9M6XJEWHdvOpCEbo4h5jUILAMVDN5xg4cKku638gvuCoQvze3rGAZ7Mq9tkiGTnn2RPDXf6/DUXwRFq1pUR//4jVbzpbDyD2TvPsoo0pTosxfA45bDoOYFfN/08ICuR/vv1/9gJdeoz34+RTTOluoDrkNRT5YScOFFFySfCwskCxBo1klFSPPH+eYf+QS77mf0KT97Jx+cTjZVeI1oixcUgolFFC6pROGOV6TL22s+qII+Mu7N+W1OCkNz3QXFqPvfBvPdjh6yVRzHbMut/0qXHiWgLd2590XJa06gFiXyGtCyfqwXZ9c4AxhhC3sPnZ9LyazQAvGCpwV3Bsj8rLUaOidONDxN3XLpxzdWdJFejm4Wb99l5FMYz+CNQXg/ZvkYvVk+SEDAUPKFVBzIRIjRjvrJdHxUKDfbNrFuL7OXOPuU1xOe3B1t3rkx6uflxq9f3IvemG3Pn/gm+NZwasJVnaDJtgolG0SFblD9TpJ/Zobdd5Oyxhlz8KFl67318NhARIjewI2EMzI7QkQ/9tgCDcvhVYs6k6vTL2vpnorgTxNBQupzXL/OjXFjv10YXDk=
+X-HE-Tag: 1784145248-555211
+X-HE-Meta: U2FsdGVkX18+ISuJd/K1L6ws7r39GlgEaG1iGo+jg/JFfbbzz3yhv9Ihf/lnfqtgi/R6Ya6+mVuI79PhGkw2HYXlKiVqoKmOIadxkyBZv19ptStXo0++WQi33EqReU+zPgMC7qbzBwOWh8gk1yn9KRLxvXwN3slWkMwVzt/I7FWtOtZvEHzHV1Nb3WBmiduCKmgwSl1mcfPwfvAI1ljcqj4UwnszcP1hP+zwWx6prUxNpjqQrLmSqFfjwOK4+CCKHok43yA5zHKutDjhi7G9eBT+6S4YkOrFMj9Gq7J2QrqvnGq1oWexZ+zjY6OqxQgEbY5Zmp/BL4Lhrh4TcfD8zfO2xyZx0UkrMhe/uPnC7K3dh45er37/0V/5yO4PFOBmhvX6d6wVhmnCEcT6u5AF2pQopSfcBkm6gotfFlpUEzAQW5xC+0U1ICQ2bISXiH+KUp34Nfk9jevRQBvU5OKhjWvXdcKYXSK4oq+8CujlvgN4m+THJnL7qKestmrUw2+QA7eo0TSbwgp89s6iipJ0c5gzQe9ocp42y1Nt3laWhmWx388FGv3pMD0puv6DpERVHshfRESuK0yHm5BrtL3EMlvq3sm+kzJYV0YyOxGGM+TQQaM1V5a3mLHhIIJ3HFTnhFgzwojMgbqNb9GpCiL1ytkkQKEKduf0Eb0ZiCXMI5TLqMwl/H8MuOjzjd9oOWqiM6qpx/qt6IGUoyY4ietkEHCi9pauQR0sKDHPsOvJsc8ZUs2CSSzmqSdAAmUCHxA691V6/CVvauMpkj21kqmQJak7ZBLbs6/WuHRfCOC9WQIml9LACZX1yrpGHD7Yd5FwqqP+6MPKSNNfjBoGLAspB1B6cpsPEOSQqtX5E18VeHj75Blg2TQfBRVdExTshiwLrRMJhZ7CqT6eDRALJalk/UXj77pHHp1QupWT3D/dacYRmP82Anx4jQNasNp4oTGe0+KtEIJJ88526HIloYB
+ YChXvUR4
+ UUx2LUM7gxGQqF4Hpw8tY/TCnLpRaxQ3eiKVai+GglR/HX7u09W6DwtP3ptuNpI9FiDOehEKbfknb6OTjdUMttPvAW9nASIaJBalphZdxH+eIcbtx4MnrhZN91E0cQrAOINEKlO9d5/xupuXXhltKUpnENDSW+pxik75uY49ZZuAIYu1GEJKOgSoXDWplIhIBzkLgHJOLGDFewhT2MGsdYi114xV8O90MrKCrxJEq63LHwLv8yVbPyiQ3frB2mn3uZ2oZDB2B+cP5AZFWfVTmaRoPA65Pibzqa3zsJoF6I+dPsX/zkt4ZOZws0SlUkTuz4PEvFc/9TLU8qE/6bDWg1V6TREsCcSYXjzlFZYmNU6CPaQ6vm29hafq+1mAVskPxGG/23eR2Dq2DW1VIvq/wiomo4BrANDifLKTV21iTIFP7ddZ+qKlfuMmBKvpoY00JPec4dzZNjx8yqKJ4Ae7/f+Qho1pZ95vHXdLjZOgO5PkxdRroYhKOlbCJzy10XZb0j7WemRnzkrBNHRoE4Dgp6iphLuQM53gMfAvPsiKKFVt40w1OoyuBAbaPlaloKKBaTm+XH278QICGf0saDQZcUTNKRBYRXD4ZNVEDnzFeZXMOYkVVUK39wHAvu+4ZngnJNt5ivI2O9vtiXp38yk2iPLGIQCR8Z+6VjSTlvat85IHMl4/IlW6XKiOANwZbyMLJuvmQBavNUj7+3/Yy8nzJGT0gJPbebT4Z2B1J/9rqt2f18i6SjqUiHtbNwzWqgtogkdNlbAvRvO18d+IvqdkzuIgqTy+HJTMr54zIiVbSmZBns4l+Azwkz9b6QAhIhq4JIYv2dB/dPhQdh6FO1sk4NY9yxCGswbpqDfjcT9VTapUNbfowSgNvtWrNGjZ0Le6GYi2MxSWJOf1/z0Ej7muxxNorU73/7Ztb74BRunNMFyp2LKlAyQNdiA8o1JVWnqUjJykuur9FNMN7J45iMAI14q7HWXDk
+ kj1o6t6m
+ tKj9AJB0GAu1X+foB+LDjnMq7is6gLsEyjO+3JJPx6kER3WOpDT7MvBqRslc5/WUoUyXKTqUF/pdYuXrp4S8nAaJeROtMlZFkKjPErnOQ39JpX4kV8Upr+xAnof7gpLrXVIYBpoLE+RC/IO7Cy0m/dy/OnxlGxntJpBgL/aCCOOsDo6tAhvoxSoeKXHcen7Y1d0Ez1ZujXt5oXIXVUUgH8KhiQRpTyvxaiePWd23wblIkRQbTUmuh3EkRnoHvawT1KPSPB51RknPmXxH0z7JvyPlVhz8WRaK410IBgP5cTTKyfVQrBKF01r+uLVw1ERpU3OLeMeSbtkGWyreQ4hh5zfxu5iL0cL+5d0vN2DFhiy0hPNafR0AErXimq9uZlDCHMPAX1b6kUN0vp4Flp3mxdPWfa+AZewCNXW384CpwvB7Wj5NQjVhp+vOH5sQrh2Jcbcg1kSbCWlv9aQmb1t37Uv28jWDCMgjMEehEGjkdn5pC46q4WWPUdhxbmzd14sXmNvT6tZs23xABHEvanmgOFF8YLTlQrg3bbiR8xaF9zJ/Rtnh/vo2cgCHOgiiLcxXqga5HGu2xVy9cXFJlriH4Y4PtLAj/8ODjhdDGcndF1qTrCrZxvFXHzRgy3XZpTPoK7K61uHpLBor0LqVl2S0DpDR3A3wsQ0hGX5L9/7xKTJvLXHe5TnzY4pPRDMRPeZsSGv4Ebu/f50hGYbtFZOqZS9mUt48NGl0a7C9npSUY0/xtGGXx9om/HFSrPneps7rhr9qrZgUAz0uu5uA9xKMObdWZT5U8u9wp/5oupkElVwCJGXQWt9Ymn9H3MCnNKEEBejDynxZvmMYegGjTCrGfQUDwcUJ0a+hteO6kwNUIKilzOYyOERax7KBwRUpkg2TqeAZbS7Y2YgXik8NIh1fx84+xvs56dVzWBi7z5gWXnquaOoAgvEjcYZIOlu/ZS55Fhoz6gPc/IiEUyyx8a6eESMTpmDyI
+ BfANYReP
+ b5LTEvWSD9cicZK8KV7nu9aC5AGfObizzK0btGnqcehGUdnUGgKH6gq/8P67IJByJiZ74N62MMtNRXOdS3GSO9Dq9xIPgYFTJMJxF9dZOqZGSaJAWG33kz6ddXa3jrX8T5mOHhI3hLhSqee2sVf6TTbQhzDAWuiiKFn83QcCTfLDTRl0U3SVxHNfP0D1KkMq56IRKnYiNYYYLZ8uLaBX687W60li0PD1yQnby+A1wTyxlVkc79kL2BC0/L5Hyz1qrCWtnlOC3r3f+L0ZRz/xvq88YXVvCn9M9OK3pM/E8HtZ5Qz/5heKplqAwfq5W3Ub+VknnshaliawzWtmaZ2WPHX/b48SJ4SbOeR2yTzks8R91JoTBWn4gkgKhvVHRuAk067Ft9AnaFXzvrQob/CpZqLul529n8eee2/aWZLPHZQjZBZJVHCWIVrGCqqx8IUGODWSNHv+icgoKzcxrP/nNdllhrcAkJf3PF4XQfu8hTlUdPleFHGhn7H3maARVrmLpOrJyF8RiPImqyKKrpSv5WLOJh2jhnu6iS4juyFYDkdE1z9qkbKY/UNaw8Xr3YarU+Rvb+IDV5Gtt/GMYKUgneJQl6g96EyMDCemek1tQulZxOeqc6hzkEWYi3QUlJvnS3QSf79io88RQsE/K21lmgC5S+ife8Lc1frCaRta0j1EVD2CyV02EupWBH6YrMe79KJXYsj+UE3G4wKjAnoTteu+4UlgorBeIB7Y1wUzF02/omZo3s1fpeSfDziZmNRqLEgdtuoasPDiGMrq8may5Sf0uxjIm8rDUxNtEwtsIXbLPKVQzDiUhUEc7K/qJQw1sRpI7ZBqJjFl0Mc4Zw2q0IsvNDJuP9vWyYYM7u9pHWHc5jFSIVM2jW56CLe89Hbu4QS15OwsbvJKLa8h2H0FmiXjYv6sIXCsIY8NjFfLICaCMcVfJesFBa63P+c6Z87XjqmOPBybkR0A4iATDnoV8gC77Hc48
+ oTX5CWpx
+ /z2keR/8jKfs37QI4kBInBV7TVrJRtJwlvH7txmYJjIJ6juxPNEIEU+NN6HWojF4AazbHPdXIYjiXqh6da+Eg1pqDwcpeMXSpbarRcFKcOIRnoy6pFmEdvDKqmJXdEn+jQwnDD7iY8Fml+NCQTvFsy9XDhe6bE0QvqVMc4hczgxSsOkyR9Sr28Rf9/Zt9z5m1/9llZjuSSwmkEB57UlT/8cl+MsqVUZGOarCnilZ+YC8WbNXfn9N3rKPoRyXddtAgzp2X/ZqFWLg7QWbKRYyFynz5o/I7KNwRxjvnYzx2znM//RX9/oWQYbTLIGY6ClnZHc7INIyr7no2o58v9FMxEgZk8YGLVqqu/f1q2jtVZklArIJLYhuMe6qjuKB8fu6Ld7WxX1pIb7G+LLt/daL/Z0fi5g7XCq5awKz78/FamcOfTnrUF7+YQSutPW7J+OeJkJjScBVA1j+8bwxHKdHO6AdtEoTl+8jwYMZmAfRZmkZ6oKc6RCWii4IKnBGY2BUjvIKl6jZGWycAbWAg9ulIc6yBl4r1Pur+zbhhmTrTRA6Izp1i6jvQ3j4sW1u/r/IHGloR3ih/ZxySZ7CoweO1MaRw352V+FWOBEfVwMWyrXHLSqM3lZacMW3SWDx73UOmAByojDEwkknzMos79mMHfOgKhlqOCXLk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,13 +151,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 26/07/10 09:16PM, Lorenzo Stoakes wrote:
-> Describe what vma_start_pgoff() and vma_last_pgoff() actually provide in
-> detail.
-> 
-> This is in order that we can differentiate this between functions that will
-> be added in a subsequent patch which provide a different page offset.
-> 
-> We go to lengths to describe the edge cases that can be run into here.
+> Now we have the vma_start_pgoff() helper, update the merge tests to make
+> use of it for consistency.
 > 
 > No functional change intended.
 > 
@@ -168,55 +164,184 @@ On 26/07/10 09:16PM, Lorenzo Stoakes wrote:
 Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 
 > ---
->  include/linux/mm.h | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+>  tools/testing/vma/tests/merge.c | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 09b06d8fea74..abac72785277 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4307,11 +4307,41 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
->  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
->  }
+> diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
+> index 03b6f9820e0a..f8666a755749 100644
+> --- a/tools/testing/vma/tests/merge.c
+> +++ b/tools/testing/vma/tests/merge.c
+> @@ -118,7 +118,7 @@ static bool test_simple_merge(void)
 >  
-> +/**
-> + * vma_start_pgoff() - Get the page offset of the start of @vma
-> + * @vma: The VMA whose page offset is required.
-> + *
-> + * If the VMA is file-backed, this is the page offset into the file.
-> + *
-> + * If @vma is anonymous, this is the virtual page offset of the start of the
-> + * VMA - if unfaulted, then vma->vm_start >> PAGE_SHIFT, if faulted then the
-> + * virtual page offset at the time of first fault.
-> + *
-> + * If @vma is a MAP_PRIVATE file-backed mapping, then this returns the
-> + * page offset within the file.
-> + *
-> + * Edge cases: nommu does not abide by these, MAP_PRIVATE-/dev/zero satisfies
-> + * vma_is_anonymous() but has file-backed page offset, and MAP_PRIVATE-pfnmap
-> + * regions have their page offset set to the first PFN in the range.
-> + *
-> + * Returns: The page offset of the start of @vma.
-> + */
->  static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
->  {
->  	return vma->vm_pgoff;
->  }
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x3000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  	ASSERT_FLAGS_SAME_MASK(&vma->flags, vma_flags);
 >  
-> +/**
-> + * vma_last_pgoff() - Get the page offset of the last page in @vma
-> + * @vma: The VMA whose last page offset is required.
-> + *
-> + * This returns the last page offset contained within @vma.
-> + *
-> + * See the description of vma_start_pgoff() for a description of VMA page
-> + * offsets.
-> + *
-> + * Returns: The last page offset of @vma.
-> + */
->  static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
->  {
->  	return vma_start_pgoff(vma) + vma_pages(vma) - 1;
+>  	detach_free_vma(vma);
+> @@ -150,7 +150,7 @@ static bool test_simple_modify(void)
+>  
+>  	ASSERT_EQ(vma->vm_start, 0x1000);
+>  	ASSERT_EQ(vma->vm_end, 0x2000);
+> -	ASSERT_EQ(vma->vm_pgoff, 1);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 1);
+>  
+>  	/*
+>  	 * Now walk through the three split VMAs and make sure they are as
+> @@ -162,7 +162,7 @@ static bool test_simple_modify(void)
+>  
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x1000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  
+>  	detach_free_vma(vma);
+>  	vma_iter_clear(&vmi);
+> @@ -171,7 +171,7 @@ static bool test_simple_modify(void)
+>  
+>  	ASSERT_EQ(vma->vm_start, 0x1000);
+>  	ASSERT_EQ(vma->vm_end, 0x2000);
+> -	ASSERT_EQ(vma->vm_pgoff, 1);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 1);
+>  
+>  	detach_free_vma(vma);
+>  	vma_iter_clear(&vmi);
+> @@ -180,7 +180,7 @@ static bool test_simple_modify(void)
+>  
+>  	ASSERT_EQ(vma->vm_start, 0x2000);
+>  	ASSERT_EQ(vma->vm_end, 0x3000);
+> -	ASSERT_EQ(vma->vm_pgoff, 2);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 2);
+>  
+>  	detach_free_vma(vma);
+>  	mtree_destroy(&mm.mm_mt);
+> @@ -209,7 +209,7 @@ static bool test_simple_expand(void)
+>  
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x3000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  
+>  	detach_free_vma(vma);
+>  	mtree_destroy(&mm.mm_mt);
+> @@ -231,7 +231,7 @@ static bool test_simple_shrink(void)
+>  
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x1000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  
+>  	detach_free_vma(vma);
+>  	mtree_destroy(&mm.mm_mt);
+> @@ -324,7 +324,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
+>  	ASSERT_TRUE(merged);
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x4000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 3);
+> @@ -343,7 +343,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
+>  	ASSERT_TRUE(merged);
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x5000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 3);
+> @@ -364,7 +364,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
+>  	ASSERT_TRUE(merged);
+>  	ASSERT_EQ(vma->vm_start, 0x6000);
+>  	ASSERT_EQ(vma->vm_end, 0x9000);
+> -	ASSERT_EQ(vma->vm_pgoff, 6);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 6);
+>  	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 3);
+> @@ -384,7 +384,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
+>  	ASSERT_TRUE(merged);
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x9000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 2);
+> @@ -404,7 +404,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
+>  	ASSERT_TRUE(merged);
+>  	ASSERT_EQ(vma->vm_start, 0xa000);
+>  	ASSERT_EQ(vma->vm_end, 0xc000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0xa);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0xa);
+>  	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 2);
+> @@ -423,7 +423,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
+>  	ASSERT_TRUE(merged);
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0xc000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 1);
+> @@ -443,7 +443,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
+>  		ASSERT_NE(vma, NULL);
+>  		ASSERT_EQ(vma->vm_start, 0);
+>  		ASSERT_EQ(vma->vm_end, 0xc000);
+> -		ASSERT_EQ(vma->vm_pgoff, 0);
+> +		ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  		ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
+>  
+>  		detach_free_vma(vma);
+> @@ -805,7 +805,7 @@ static bool test_vma_merge_new_with_close(void)
+>  	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x5000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  	ASSERT_EQ(vma->vm_ops, &vm_ops);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 2);
+> @@ -865,7 +865,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
+>  	ASSERT_EQ(vma_next->anon_vma, &dummy_anon_vma);
+>  	ASSERT_EQ(vma->vm_start, 0x2000);
+>  	ASSERT_EQ(vma->vm_end, 0x3000);
+> -	ASSERT_EQ(vma->vm_pgoff, 2);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 2);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_TRUE(vma_write_started(vma_next));
+>  	ASSERT_EQ(mm.map_count, 2);
+> @@ -931,7 +931,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
+>  	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
+>  	ASSERT_EQ(vma->vm_start, 0x6000);
+>  	ASSERT_EQ(vma->vm_end, 0x7000);
+> -	ASSERT_EQ(vma->vm_pgoff, 6);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 6);
+>  	ASSERT_TRUE(vma_write_started(vma_prev));
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 2);
+> @@ -1416,7 +1416,7 @@ static bool test_merge_extend(void)
+>  	ASSERT_EQ(vma_merge_extend(&vmi, vma, 0x2000), vma);
+>  	ASSERT_EQ(vma->vm_start, 0);
+>  	ASSERT_EQ(vma->vm_end, 0x4000);
+> -	ASSERT_EQ(vma->vm_pgoff, 0);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 0);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(mm.map_count, 1);
+>  
+> @@ -1456,7 +1456,7 @@ static bool test_expand_only_mode(void)
+>  	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
+>  	ASSERT_EQ(vma->vm_start, 0x3000);
+>  	ASSERT_EQ(vma->vm_end, 0x9000);
+> -	ASSERT_EQ(vma->vm_pgoff, 3);
+> +	ASSERT_EQ(vma_start_pgoff(vma), 3);
+>  	ASSERT_TRUE(vma_write_started(vma));
+>  	ASSERT_EQ(vma_iter_addr(&vmi), 0x3000);
+>  	vma_assert_attached(vma);
 > 
 > -- 
 > 2.55.0
