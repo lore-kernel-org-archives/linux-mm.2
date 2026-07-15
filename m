@@ -4,106 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEA58C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:34:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 930ACC4450E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C23C46B00A2; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
+	id 545546B00A4; Wed, 15 Jul 2026 10:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFA676B00A4; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
+	id 51C816B00A6; Wed, 15 Jul 2026 10:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AECA26B00A5; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
+	id 3BDCE6B00A7; Wed, 15 Jul 2026 10:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C88D6B00A2
+	by kanga.kvack.org (Postfix) with ESMTP id 054D26B00A4
 	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:34:13 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6BD2C16012A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:54:53 +0000 (UTC)
-X-FDA: 84990703266.30.1AD00EB
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4404040002
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:54:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jagq1YVU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFC9E16016F
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:08:25 +0000 (UTC)
+X-FDA: 84990888570.14.414CF2C
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F3ECA16000D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:08:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HA+mCMX7;
+	spf=pass (imf08.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784117304;
+	b=oTZ2CTtZdR032VrqZYmlhiwMw7Ic827e8ZX31at3UoA2v0vMAWsNnUk7cTsdnBiV/hMt2/
+	/XxHy7f+5rBToAs2l4Y9TqICq8Rnxi8ALyHYE+gWSwfuUEhF7HPsYhnGqljSbqsibzZ7gn
+	4LmRbuqvQlJamigxbMvQc8eGfZiTg6A=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HA+mCMX7;
+	spf=pass (imf08.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784112891;
+	s=arc-20220608; t=1784117304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=70Z5NezoUH2RJlJVI3JA/0j2Eg0rD+q2bAJ3zEsLrN4=;
-	b=NvNvwCYc2yTYXLXBM7rDCY/kasLefPk+LHTBmlYL2kOplb5UJDGXTlSrv3kPocPzeIzFrX
-	HeoWdojb5PrG+AexOhqwh4Rcsxqqe3+RO7GweiULt1E9N70B291xLREk6r5RtLOCOqjvSi
-	5inRinOVqMM09nS9AQOb5CUPPpdBYBM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jagq1YVU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784112891;
-	b=tGtobZGnmvCrB5XtnoGaoKrYr2BXYHdLAOCM+u/ijLnTE5xZ55KW0+pAqnEpjngszH/si0
-	ABYWfTaz2OFiFO3BIaMqRmjDh4+EiSDo/3x9Jywl20PD+fP0B5hMkSjKHz97ILZuyHQuew
-	w/6z1WhtDUZa9V9TfvwqlTg7WHuZ8Fk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784112889;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=70Z5NezoUH2RJlJVI3JA/0j2Eg0rD+q2bAJ3zEsLrN4=;
-	b=jagq1YVUsHNqTIL8gPgg0nmxCuxZois9P4j0k7ZR4PfYTYED1sfSvHB3lgfr7ExZl/gLno
-	ZwjS4uegfSMlEUxhd1JHymHJkVuz5B8uB1I8HhOP+8Is8F3ZCeXJ+p8LntlYJbmcwg9YI5
-	7zwIgenApe1eeKa49so47zudgDoBRdk=
-From: Usama Arif <usama.arif@linux.dev>
-To: Nico Pache <npache@redhat.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	ljs@kernel.org,
-	david@kernel.org,
-	xu.xin16@zte.com.cn,
-	linux-kernel@vger.kernel.org,
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vzsH/LHbJwPhcS/F03MRPLO6wWkth0B2xmqisYYr6kQ=;
+	b=Hat+06txcHXXdSKpDnFpNM+SIALFumXreC65XUqr/xRUP5/FBY0H8WYDkTy+QORcU/9lPq
+	pYfZj9M9hKFgUPkF7AeLYF7QSt+mB9JKAWj/NA7GTzRioBNnAYulAJFJ4jSxqIZ4PigPeJ
+	SADH/psJVVLjHa9xtk0KANwVmyS4cIo=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cc6dd436c6so24142355ad.2
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 05:08:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784117303; x=1784722103; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vzsH/LHbJwPhcS/F03MRPLO6wWkth0B2xmqisYYr6kQ=;
+        b=HA+mCMX7JJZf088kjQNaxH5rjZ5Fcz60aalzoDVoxYahQKE2ZxjXfZJilYo1wlpW2e
+         XUd1/5vTLxAtyH+rJa6TUd5yjkeotwMHImRtMlfPjRBif3fZzzTmaEyDmrYw0/IbZNeT
+         JTEh/hoyUsWl/yL6uadg5xrgR+xfPlfoTXBybpkF4VPQCR3MrG8cgsrQxaq32pdTOFqY
+         KcrpOnWLMvdbe+dKrycwdeBwQdPVMKvc6glI5dss0a84vit36vjX6DWcCfAxtctvxf8s
+         tmytIfGWyCEPrl8JdWBHyglI3DXyPzxMLQfd+uto3miTwfW7ccm2y8Tdly0l3yUHQC8q
+         J89g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784117303; x=1784722103;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vzsH/LHbJwPhcS/F03MRPLO6wWkth0B2xmqisYYr6kQ=;
+        b=OcN0Fk6om61TUVj/bfDxI6t4gMBPj4QOj18ws5Dq/F6Q0QyuYUro7HUhj45Bn98u5Z
+         hHvIbrUJ1Ep5TC3yPk0nIhd00rkERwLPyrsI5ldCrQZS2F//XqhXqVBkgEMN+6WGZF0I
+         gKd90Vg8uH1e6Q4bqhZngQvk0u2U3gVWC47oyL5WU6yMlRTzNDkfXnLdQhEjMMKrdrzc
+         FBQy2qcb2I1DB4r+QfYrtv5zy6L+0QEpr3Wd5QIkgeG/G34oJzSRfaHHLz7h+ZQ6mX+x
+         X6MJHckDedF2FK+ULT5JMjigO3RhGT1N9x2kdsZJw6A2DpaEtU4AJUdNXWMMiW1UIc9g
+         yaGg==
+X-Forwarded-Encrypted: i=1; AHgh+RoM3zYAG+24Ssb/GNFGrEBazT4+8jjm9lTiRhFWrWH8ITns44cNA3ioZ2rZLJltZNHo3AHahdiOzA==@kvack.org
+X-Gm-Message-State: AOJu0Yy4DzB8OxnETikp7fpYGG8wLWg7WKSgbRe2Z2itTpTW7b7VdnQP
+	UmfogiDdtdmq3aCQNSYMqqnflpkhCS0xTTgZss5Y2NofxkI1HaCDgHlc
+X-Gm-Gg: AfdE7cnDGHxYX//V2hkdemBv6wP8W5X9SvjsZwEFWVjRJkv4tzyUbagxxf35uKUKh9I
+	9z4YslU0M0ITNgdhMONFoDq85nrhKTNuGXTDiu3Z90NmAE+2DuPZO2z9e+5DDoGPVBMht3zRcM/
+	ZDe3PzoWD6HZokr6QCxgSde3EaotVEzdFebVYq5taGhl/7P5I3hgAfEfGrF/jWjIJzcmaJwJNcN
+	ZXAxAqS1Vmwlv1INyvZn/nx2idKExgevyUZ3FZsrpWjkyxPORNsDhLYnTZl+6EhlEptUn7LTgKp
+	YBeX0KUZkfy0IJK3XE7FI44SEsZ+ur1a56Iqtr+p7T+Acu2avmAxgBzvTkVOEey2ALEItMACODX
+	sU8+dbFRZI5MoQdHZEYlsIA84PdyGv5RtkKD998oFytaiut+39vpN8irI7+A6mX8GFdAQdcjP2d
+	vd71+bbyWfMPrx7TkSlMmyRFvsj9+tYZ5iLSU=
+X-Received: by 2002:a17:902:d552:b0:2cb:2b53:559f with SMTP id d9443c01a7336-2ce9f3a4910mr175721715ad.35.1784117302761;
+        Wed, 15 Jul 2026 05:08:22 -0700 (PDT)
+Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf105bc642sm1216325ad.63.2026.07.15.05.08.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 05:08:22 -0700 (PDT)
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
+To: akpm@linux-foundation.org,
+	catalin.marinas@arm.com,
 	linux-mm@kvack.org,
-	usamaarif642@gmail.com,
-	yuzhao@google.com,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	chengming.zhou@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
+	urezki@gmail.com,
+	will@kernel.org
+Cc: Xueyuan.chen21@gmail.com,
+	ajd@linux.ibm.com,
+	anshuman.khandual@arm.com,
+	david@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	rppt@kernel.org,
 	ryan.roberts@arm.com,
 	dev.jain@arm.com,
 	baohua@kernel.org,
-	lance.yang@linux.dev,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com
-Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting from interacting with KSM
-Date: Wed, 15 Jul 2026 03:54:33 -0700
-Message-ID: <20260715105440.2946210-1-usama.arif@linux.dev>
-In-Reply-To: <CAA1CXcA84BtQZxOpE0sWgb2ed6y3m0NLKkWD+5MfWS9eF5dqTQ@mail.gmail.com>
-References: 
+	Wen Jiang <jiangwen6@xiaomi.com>
+Subject: [PATCH v7 0/7] mm/vmalloc: Speed up ioremap, vmalloc and vmap with contiguous memory
+Date: Wed, 15 Jul 2026 20:08:06 +0800
+Message-Id: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 5ffee76mqzozx7ux4jbf1oh1to5httc1
-X-Rspamd-Queue-Id: 4404040002
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784112891-450851
-X-HE-Meta: U2FsdGVkX1/OZMbhWmAjb51XzyjM8YqMYG2r2JoNqGU/Aedd12oVSvn6BK1XFycvDiBNt3s6PCW//fn2ApHLNpyLnX/ztG1o1Rv76//m4GlDxVH25T+S5jvucD6pgIHJTopkgSh67pY7FT0FJd80SPIoepI+tPbkVwJiGJ5xiIe4lIAUWP0AO2YDDM8XjZTgd9vxn0ggagxqv+8zsivGRwgastNyiBg5DUH6lha6MM1VNcRoMyO9pYNOVk281agUnkgBTf+yQ8Tx++zcYjCR2CaVhoNpfqg/dEklwHLpSsmJwx7Hm2kwS80QB+eVvMoj2u0sZTEnEweQ61g8QvvPn0eg7T9TOp692RFnDHlDyvNQA+W0/kaN/cuzwYat0BY1wP4sB7NWopwgnunjfuKwRbVTNPAibu1VriKhSBtOanb6To89YdykZeHfl8uK89vkfzzab/VtGhb40qgZdZnnd6AyoylqM7oBxrl7NywXt/m8qkBpAzcwBVlkT8UxwBXIJoBaKiMa6ovH4KLrq3QuHfkTvitHA/WEoFdbL9yHxkCEh9YCHGTixv/lyT6ekTPgSBUrShY+scvCQYlO53J5VlYrRbZ1hocKIOwSssU8uRy3+I1xbwtQgWvLn9F5d9g9fakKCcpPMZAB/mLVeLqHRcscqO3BN5NVcYGPtzsV3oxdmYtYHpqK6p69Aa5Jq2am5I0K/UVry4KqqJFbsmp5wnaGw4Be1Q4DEvFuqfYRmu/FP0YcJTkAumBdGDBjTYvUsDr7FSsJVT74zTgv+9/kHbrkDufImmABvgrprQho0A3YeXcEXn01iEusDlUuSUPQfvSpRaFHugXflRv4UirDSns5XP9BOX2IIlhiTRprhNErp1E7fJdoCRsrhqgXtdEyzN1m+cMNB+59jJsyfc5LY63kYePME9clKORxf1xK2VdN6zFNB5m9D2b3Nk/bjaErTu5t1m9gaJ3HudSC5n7
- UElA9+4Y
- qEwIQgnLMVGHE5cDjRotBRHqFSBbz9lhwesNaThjfaR2bicp7mDi5aviA/wE9SaoXnOudQcdWHffReuCMbEq8UJ8GalsZWFDi53nDUxs/ImPP7kCl4eq1beuVdn9uPrFlUJJ3u0Ou3L+DRlEl/bs/bAAt8/yYJugCacpJOLXUjiXJBrPpJqQwTimSe6wc5PcQ8ONccxXhzoJZoqaPibRYZXUNnt3ohI43sp8R1PayjdVgpxhujjfufT949o7y+TRhnHsJ+XDEg/vRUACkoUEu1wp3yxdhlsNLXKpc6o6sHwErreGXSy6TBAGqQY/64knPYBFG61ZIbaJF88F/Q6gvY1wRLYSHKI9z55iTW0uFTqYK82+l7AFRzUVm6xT8XkuNStsA1bqbzqdhbVNSBZNNV45fWdP4DjEW6J4vxgpud/jeZI2BAWo8zgVOc8IBI2jKV7c0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F3ECA16000D
+X-Stat-Signature: ngtjhckf384ei7e3iy8fto6r86ye4edz
+X-HE-Tag: 1784117303-611128
+X-HE-Meta: U2FsdGVkX1/R1Gx+Mtous7NycTzZdSfkhEkfYBPUDuQRMniGqrI3KKJaIgm9hMXIU6To4PWeNOQ8d/PuPjqEY8j4KXR+O5dNaEDAnswYaC0Gra8qgO8JgECF1onDR4ofE4uxzd/9DXjp+Mrf7b6L0wP/taycxt3+mZpQlHAd3MP6baKkJUx3hd++AkLy7qyaSx5ZFXHlAUgmrKUsj+eWSslwND3Xt9UNg6+mxLNiuyWZO3XpJC1Eyn2QRGWQEaLbHBaqPKHYRAujJma1eKcYhfJrTmrTT1YfjPt6XRl51HjOKSl/llBCm0CkEdB0ynM6QkTB2shbl0SPEyCAWdo1UfpZJwYqUvWYlRJeWgvAINwQiCViiS5r0i1AJ+rAdn78qo7abC9VkDZ9PMHweLZQYPE6+I0I7cMlZxvVg6fYPGQg12LvQs7zAaCmmbfNSYbLw2xL4ArFVrotWWx6ZQAsDeNqPrjcd8sWOL9YnyuCIukVsme78IC5ljfrdOXgB4NoXEILqDcezyAUotS59EKCY+Ccr/a+fwmCLm+pU74qbTfZFXv6I3XTEsBJQhQTdfGFw/tuE2UgXxxfCpGQ95dFMkC/IodmTmuHzUtZoHYV4Q69JyK2MGkZsRwYTO4wxPmJxNPitcNbRfHcVEIhWPeOFjjE/5DmOLrdJiKWZcrGUC5Ghrn1Hox7BXyAL+P7zzdekwoItuNktZ0Eppq2bkPnn9lyxYXZji26sgPFYv22vawtH6M//hndGPmbOrNwq01nEIzUdQqgGfOGDhiUTpj3o5wj1FjGri+tvwKgU5hqOkiqP3d5XtaMOBcLTN6YRl9ncR6B716QFfoJQGX5w3g3TDVvDUiSSAhN1N0lSl4JaiKIi2VjZIhLt/G4Ykc8utusg0KnIGCBTV6bMyfLZNgofoDFUCZtzAuVNJ265NrweI59ESnG9/D4jX8oNLEjt+vvruNXl9wiBVjwlFSeDbA
+ CR9Uhnxr
+ Fb9K8qzGxqG+f5Q/53MVMMNrsrVyDXb8SBMjHS7b643kEw+Jt/y5dkcxmfVqO31vTyhWQ9iASuLjSari1hRmmJ3ucsX8L/vg0coA1/58/viJ7GU/PDqkpu4BrzMzs7SfI7PDKomFar+lEDMWxAUAjsZ+7CkP0XylPf463rruvlGo6szJQR6UFkxlfN0zVkNQ8LzqYzjJ/UyRSNE04RAgF2weRoJ28N4CLEG0RfekQNsRVQun5gK2Tspw1jWxtjqNjKIG2xWq7JnxkZQYbsbZAiQqDSAe7hhQYBFnEfmBbT8t6EQi/0BPjmAIJ9LeBH7EBuLRaeEzOgBaUYjLV4kJyHz+xtMubGTXtoi5F2kKC/KXUn4VtDKRVzpaIQd5hBKLEN22N/poA4ImVHe04Kont2G58uzJ9xIPyqwp+STUrsH77BB0Jg7pc6QnmbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,129 +130,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Jul 2026 22:05:31 -0600 Nico Pache <npache@redhat.com> wrote:
+This patchset accelerates ioremap, vmalloc, and vmap when the memory
+is physically fully or partially contiguous. Two techniques are used:
 
-> On Tue, Jun 9, 2026 at 11:27 AM Usama Arif <usama.arif@linux.dev> wrote:
-> >
-> > On Tue, 09 Jun 2026 10:07:20 -0400 Zi Yan <ziy@nvidia.com> wrote:
-> >
-> > > On 9 Jun 2026, at 9:47, xu.xin16@zte.com.cn wrote:
-> > >
-> > > >>>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-> > > >>>> when splitting isolated thp"), splitting an anonymous THP remaps all
-> > > >>>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-> > > >>>> This flag is set unconditionally for every anonymous folio split,
-> > > >>>> including splits triggered by KSM.
-> > > >>>>
-> > > >>>> When KSM is enabled with THP=always, this causes two regressions:
-> > > >>>>
-> > > >>>> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
-> > > >>>>   split_huge_page(). The split remaps all 512 zero-filled subpages to
-> > > >>>>   the shared zeropage at once, freeing the entire 2MB THP when KSM only
-> > > >>>>   intended to process a single 4KB page. This bypasses KSM's
-> > > >>>>   pages_to_scan rate limiting, causing ~1GB to be freed almost
-> > > >>>>   instantly.
-> > > >>>>
-> > > >>>
-> > > >>> Why do you see it as regressions?
-> > > >>
-> > > >> Since the zero-page remapping was introduced our test has shown the
-> > > >> following behavior changes:
-> > > >>
-> > > >> With use_zero_pages=0, the merge rate drops from 60MB/s to ~6 MB/s
-> > > >> even after raising pages_to_scan. The KSM merging is now much slower
-> > > >> and CPU utilization has increased.
-> > > >>
-> > > >> With use_zero_pages=1, ~1 GB is freed almost instantly, and it no
-> > > >> longer respects the pages_to_scan behavior.
-> > > >>
-> > > >> Even with just this patch (1 & 2) or the RFC linked in the cover
-> > > >> letter, the issue no longer occurs.
-> > > >
-> > > > Understood. You're saying that the additional processing action in split_huge_page
-> > > > (remap unused subpages to shared zeropage) increases the scanning cost of ksmd.
-> > > >
-> > > > However, I still wouldn't simply classify this as a performance regression,
-> > > > because commit b1f202060afe increases memory savings through this action — so
-> > > > it saves memory at the cost of additional CPU overhead.
-> > > >
-> > > > If you want to address the increased overhead on ksmd, I think we could add a
-> > > > check for the shared zeropage in cmp_and_merge_page, and skip merging when a
-> > > > shared zeropage is detected.
-> > > >
-> > > >>>
-> > > >>> AFAIU, KSM and THP do often conflict with each other. THP tries hard to collapse
-> > > >>> a huge page (which may contain many zero pages). If KSM is enabled and part of
-> > > >>> that huge page is mergeable, it can easily be split by KSM, rendering THP's
-> > > >>> efforts futile.
-> > > >>>
-> > > >>> Therefore, in our actual production environment, we typically avoid making the
-> > > >>> same region both KSM mergeable and THP always.
-> > > >>
-> > > >> THP=always is a global setting used in many production environments,
-> > > >> so these features now interact very poorly together.
-> > > >>
-> > > >
-> > > > Actually, I have long thought about submitting a patch: add a new interface
-> > > > 'skip_huge_page' under KSM's sysfs, allowing users to choose not to split huge pages.
-> 
-> This would be a good intermediate solution while allowing backward
-> compatibility.
-> 
-> > >
-> > > Just think out loud. Or just skip huge pages all the time unless memory pressure
-> > > is present. Basically treat KSM as a way of reducing memory pressure by merging
-> > > pages.
-> 
-> Hmm interesting. We should decide on future changes before committing
-> to one direction; however, i think the immediate solution would be
-> what I currently have prepped for v2.
-> 
-> My v2 follows my RFC alternative approach: skip zeropage remapping if
-> the split comes from KSM. It also contains the patch (3) from this
-> version, which skips zeropage remapping if the shrinker is disabled.
-> 
-> >
-> > I do agree with this. I questioned about if it even makes sense to split THP
-> > with KSM in RFC (https://lore.kernel.org/all/20260510114001.600681-1-usama.arif@linux.dev/)
-> 
-> This is indeed a good question but I don't know the right solution.
-> 
-> Perhaps we can discuss it here.
-> 
-> So far here are the potential solutions:
-> a) skip zeropage remapping if the split comes from KSM
-> b) skip zeropage remapping completely if the shrinker is disabled
-> c) Disable KSM THP splitting completely
-> d) add a skip_huge_page sysfs toggle
-> e) only scan THPs when memory pressure is present
-> 
-> (a)+(b) would be my V2 which I can send out whenever.
-> 
-> (c) is the nuclear option, but perhaps KSM for THP is rather
-> inefficient and pointless
+1. Avoid page table rewalk when setting PTEs/PMDs for multiple memory
+   segments
+2. Use batched mappings wherever possible in both vmalloc and ARM64
+   layers
 
-I really like and want (c), but I know David has already pointed out
-that there might be someone already deploying and expecting this.
+Besides accelerating the mapping path, this also enables large
+mappings (PMD and cont-PTE) for vmap, which are currently not
+supported.
 
-> 
-> (d) could be used with (a) and (b) and allows more flexibility than (c)
-> 
-> (e) is a more dynamic approach, and could be combined with (b) and (d)
-> 
+Patches 1-2 extend ARM64 vmalloc CONT-PTE mapping to support multiple
+CONT-PTE regions instead of just one.
 
-(e) sounds like a good idea, but then KSM effectively becomes a THP shrinker?
+Patch 3 extracts a common helper vmap_set_ptes() that consolidates PTE
+mapping logic for the ioremap and vmalloc/vmap paths, handling both
+CONT_PTE and regular PTE mappings. This prepares for the next patch.
 
-> Let me know what you think :)
-> -- Nico
-> 
-> >
-> >
-> > >
-> > > Best Regards,
-> > > Yan, Zi
-> > >
-> >
-> 
-> 
+Patch 4 extends the page table walk path to support page shifts other
+than PAGE_SHIFT and eliminates the page table rewalk for huge vmalloc
+mappings. The function is renamed from vmap_small_pages_range_noflush()
+to vmap_pages_range_noflush_walk().
+
+Patch 5 extracts vm_shift() to consolidate vmalloc mapping shift
+selection for reuse in the batching path.
+
+Patches 6-7 add huge vmap support for contiguous pages, including
+support for non-compound pages with pfn alignment verification.
+
+On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
+the performance CPUfreq policy enabled, benchmark results:
+
+* ioremap(1 MB): 1.35x faster (3407 ns -> 2526 ns)
+* vmalloc(1 MB) mapping time (excluding allocation) with
+  VM_ALLOW_HUGE_VMAP: 1.42x faster (5.00 us -> 3.53 us)
+* vmap(100MB) with order-8 pages: 8.3x faster (1235 us -> 149 us)
+
+Many thanks to Xueyuan Chen for his testing efforts on RK3588 boards.
+
+Large vmap() mappings were also tested by Leo Yan with ARM trace buffer
+units, including TRBE and SPE. These units use the CPU page tables for
+address translation when writing trace data to DRAM, so using larger
+vmap() mapping granules can reduce TLB pressure on the trace writer.
+
+The TRBE test used a 1G CoreSight ETM AUX buffer. Across five runs on an
+isolated CPU, the average results were:
+
+* dtlb_walk:       68.4 -> 59.4 (-13.16%)
+* l1d_tlb_refill: 155.8 -> 119.6 (-23.23%)
+* l2d_tlb_refill: 161435.8 -> 495.0 (-99.69%)
+
+The SPE test used a 512M ARM SPE AUX buffer. Across five runs on an
+isolated CPU, the average results were:
+
+* dtlb_walk:       1710.4 -> 1315.6 (-23.08%)
+* l1d_tlb_refill: 16000.0 -> 15950.2 (-0.31%)
+* l2d_tlb_refill: 4796.0 -> 2931.2 (-38.88%)
+
+These results show that enabling larger vmap() mappings can materially
+reduce page table walks and TLB refills for large trace buffers.
+
+Many thanks to Leo Yan for his testing efforts on ARM trace buffers.
+
+Changes since v6:
+- Add a clarifying comment about the reuse of hugetlb helpers
+  by non-hugetlbfs(vmalloc) mm code (patch 1)
+- Expand the arm64/vmalloc commit message and comment to clarify that
+  multi-CONT_PTE_SIZE values are vmalloc mapping spans, not HugeTLB
+  hstate sizes (patch 2)
+- Move the local steps variable change in vmap_pte_range() into the
+  vmap_set_ptes() extraction patch (patch 3)
+- Propagate vmap_pages_pte_range() errors through the upper
+  vmap_pages_*() levels instead of returning -ENOMEM for all failures
+  (patch 4)
+- Add a preparatory vm_shift() helper patch before the batching patch
+  (patch 5)
+- Guard the PFN alignment clamp in get_vmap_batch_order() against PFN 0
+  before calling __ffs() (patch 6)
+- Fix kmsan_vmap_pages_range_noflush() indentation in the batching path
+  (patch 6)
+
+Changes since v5:
+- No code changes.
+- Pick up Reviewed-by and Tested-by tags from Dev, Leo and Uladzislau.
+  Many thanks!
+- Add TRBE/SPE large vmap() test results from Leo Yan to the cover
+  letter.
+
+Changes since v4:
+- Move pgsize update before contig_ptes check (patch 1)
+- Use rounddown_pow_of_two instead of __fls in
+  arch_vmap_pte_range_map_size (patch 2)
+- Reword comment to avoid mentioning cont_pte and remove if in
+  vmap_set_ptes (patch 3)
+- Rename vmap_batched() to vmap_pages_range_batched() (patch 5)
+- Use batch_end as the batching cursor to avoid an unused start variable
+  (patch 5)
+- Check arch_vmap_pmd_supported before PMD mapping (patch 6)
+
+Changes since v3:
+- Squash vmap_pte_range() loop variable fix into patch 4 (patch 3, 4)
+- Use shift >= PMD_SHIFT and fix *nr increment in
+  vmap_pages_pmd_range() (patch 4)
+- Pass page_shift directly without capping at PMD_SHIFT (patch 4, 5)
+- Add vm_shift() helper and pass pgprot_t to get_vmap_batch_order()
+  (patch 5)
+- Use min(order, __ffs(pfn)) for graceful pfn alignment degradation,
+  replacing IS_ALIGNED check (patch 5)
+- Remove irrelevant ioremap_max_page_shift early-exit (patch 5)
+- Add __get_vm_area_node_aligned_caller() wrapper, rename to
+  vmap_get_aligned_vm_area() (patch 6)
+
+Changes since v2:
+- Use __fls instead of fls in arch_vmap_pte_range_map_size (patch 2)
+- Add WARN_ON checks in vmap_pages_pmd_range (patch 4)
+- Fix flush_cache_vmap to use saved start address instead of the
+  already-advanced addr (patch 5)
+- Rename __vmap_huge() to vmap_batched() (patch 5)
+- Add caller parameter and unroll while(1) loop (patch 5)
+- Squash patch 7 into patch 5 (stop scanning for compound pages after
+  encountering small pages)
+
+Changes since v1:
+- Fix condition order and use PMD_SIZE instead of CONT_PMD_SIZE in
+  patch 1 (Dev Jain)
+- Squash patch 3+4 and patch 5+7 (Dev Jain)
+- Replace "zigzag" with "page table rewalk" in commit messages
+  (Dev Jain)
+- Rename vmap_small_pages_range_noflush() to
+  vmap_pages_range_noflush_walk() (Dev Jain)
+- Extract vmap_set_ptes() as a new patch to consolidate PTE mapping
+  logic between vmap_pte_range() and vmap_pages_pte_range(), handling
+  both CONT_PTE and regular mappings (Mike Rapoport)
+- Support non-compound pages in get_vmap_batch_order() by falling
+  back to physical contiguity scanning with pfn alignment check
+  (Dev Jain, Uladzislau Rezki)
+- In get_vmap_batch_order(), filter out orders that the architecture
+  cannot batch by checking arch_vmap_pte_supported_shift() directly.
+  This avoids overhead for orders 1-3 on ARM64 CONT_PTE with 4K
+  pages. (patch 5)
+
+Barry Song (Xiaomi) (5):
+  arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
+    setup
+  arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
+    CONT_PTE
+  mm/vmalloc: Extend page table walk to support larger page_shift sizes
+    and eliminate page table rewalk
+  mm/vmalloc: map contiguous pages in batches for vmap() if possible
+  mm/vmalloc: align vm_area so vmap() can batch mappings
+
+Wen Jiang (2):
+  mm/vmalloc: Extract vmap_set_ptes() to consolidate PTE mapping logic
+  mm/vmalloc: Extract vm_shift() to consolidate mapping shift selection
+
+ arch/arm64/include/asm/vmalloc.h |   8 +-
+ arch/arm64/mm/hugetlbpage.c      |  15 ++
+ mm/vmalloc.c                     | 264 ++++++++++++++++++++++++-------
+ 3 files changed, 229 insertions(+), 58 deletions(-)
+
+-- 
+2.34.1
+
 
