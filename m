@@ -4,97 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E62C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 00:12:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2036FC44507
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 00:18:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F11606B0005; Tue, 14 Jul 2026 20:12:49 -0400 (EDT)
+	id CAC9E6B008C; Tue, 14 Jul 2026 20:18:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E73556B0088; Tue, 14 Jul 2026 20:12:49 -0400 (EDT)
+	id C5DBC6B0092; Tue, 14 Jul 2026 20:18:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D90946B008C; Tue, 14 Jul 2026 20:12:49 -0400 (EDT)
+	id B73C76B0093; Tue, 14 Jul 2026 20:18:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ACEF36B0005
-	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:12:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C54EC0459
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:12:49 +0000 (UTC)
-X-FDA: 84989085258.13.5954253
+	by kanga.kvack.org (Postfix) with ESMTP id 907C36B008C
+	for <linux-mm@kvack.org>; Tue, 14 Jul 2026 20:18:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B6BFC0526
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:18:43 +0000 (UTC)
+X-FDA: 84989100126.29.5D2EECC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8767D140004
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:12:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FWnx+NYf;
-	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784074367;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ozXR1slcn31dh4aPRCoJtnpI58JF0zu6o/7FlOEgDic=;
-	b=oiJu6mXGdAtvKaih30d4hUPuldnahck7Mpm1PzjzgNb9LdVOFcznGvUMuO4rAiaktchBfk
-	2+HkyPkt/9k8tvrg7orTpME2jYoSzHwDLRIUmUBCXb2BkstD09KwqHFBB1IlYBMKZ5wLdv
-	lgoYW0Jjh49y9CDUO1mI+F8MJkiL/UQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FWnx+NYf;
-	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 74F8FC0004
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:18:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dFPo7Yva;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784074367;
-	b=2YcgcvbvGQIabRLYbMvleaiYCFd5rrkWwUPgANiwfn4vW4HqXCjM445NMbh5EDayD1AkqL
-	eKpzzjUWS62W/DGYQjYCv1pjtWNHZ1xe0KDCixzvwFWOq0di1GUbjxOGiueIS063Fwy/Jh
-	ffvZRchlEpwicmTFiRMgI3Rz09u546o=
+	t=1784074721;
+	b=KrYj1e3AzIQ0l40xJPNWnoLzbJHnWnA/0s0GsocVmQKCvNDOz255pGJ2O8cMPESHEq/rKy
+	0accH1Ifwl08O4z7BzX2lk8MiHK3E5E67zhGCX66ltZLYR1W0HowXwX+uAi3X2YTCHtBvS
+	5DIwyRCRDaCAWd54MruNVztb+YlZA9Y=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dFPo7Yva;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784074721;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o3HZR7bEntVs/K50pnsd0JT6YW8Jt0IbF3Prw+PD4Wc=;
+	b=MHsHr2nbQ9oe71bIrf5AXOD8eEu4HWyzGoqO1iDZveuGBXUazn0z53n6poIxjxFQwRZCN1
+	P1a22iYMrrvBE5w/xGDS/QyIyxrb8+6QV3k4fRE3cmYKILF/JI3AZ7bh57hvrGV2HzkzPH
+	KG55rR+Ef6+guR3pGPDL+72hM6wxR5g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF642600BB;
-	Wed, 15 Jul 2026 00:12:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E4C1F000E9;
-	Wed, 15 Jul 2026 00:12:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DF85D600BB;
+	Wed, 15 Jul 2026 00:18:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485D31F000E9;
+	Wed, 15 Jul 2026 00:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784074366;
-	bh=ozXR1slcn31dh4aPRCoJtnpI58JF0zu6o/7FlOEgDic=;
+	s=k20260515; t=1784074720;
+	bh=o3HZR7bEntVs/K50pnsd0JT6YW8Jt0IbF3Prw+PD4Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FWnx+NYfb5FwvhodlMCqyYy9nh3ePVb+3EJrWivJxXTvWSGs82XAB8VIaNaCfAPy5
-	 Q3FbGZplUvSxCvjPSZ40TLOAypiEZz5xFWI+WM6pCfzbJW1LhKI0A/KR+Dq/KhaWGJ
-	 UIYEWddX9euan+TWsq3cmbfVlR8oHSU5WMHgea3BtfH03wg865U2kX+cMugDjJE8dA
-	 4LKczmP/eTHCNC/VDIiU6AmvcTsS/ViXEgkzzE0ibsfX4uVzg05YnwTmKphqJo7i1e
-	 R7yBSHNUnUsL+QRgQAC404+8LwGj69OaCPOqrMejp4sh+ZDO78lAppi/M+kafGSqD6
-	 O21DeDJrhipZg==
-From: Sasha Levin <sashal@kernel.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"hughd@google.com" <hughd@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	"kasong@tencent.com" <kasong@tencent.com>,
-	"baohua@kernel.org" <baohua@kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	=?UTF-8?q?=E7=94=B0=E5=AD=9D=E6=96=8C?= <tianxiaobin@xiaomi.com>,
-	=?UTF-8?q?=E4=BF=9E=E4=B8=9C=E6=96=8C?= <yudongbin@xiaomi.com>,
-	=?UTF-8?q?=E6=9D=8E=E9=B9=8F=E7=A8=8B?= <xiaoyaoli@xiaomi.com>,
-	=?UTF-8?q?=E9=A9=AC=E8=B6=85?= <machao26@xiaomi.com>
-Subject: =?UTF-8?q?Re=3A=20=E5=9B=9E=E5=A4=8D=3A=20=E5=9B=9E=E5=A4=8D=3A=20=5BExternal=20Mail=5D=5BPATCH=206=2E18=2Ey=20v2=5D=20mm=3A=20shmem=3A=20fix=20potential=20livelock=20issue=20for=20shmem=20direct=20swapin?=
-Date: Tue, 14 Jul 2026 20:12:30 -0400
-Message-ID: <20260714200600.stable0001@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <777ee2cd231642c682560b41b29798fb@xiaomi.com>
-References: <777ee2cd231642c682560b41b29798fb@xiaomi.com>
+	b=dFPo7YvamTYKlHjwOtyNaUSjis67MXYZWdKFSkGSx6G4bObncfvdmjEsa5FWh/OPY
+	 Trt2dtUHJuvE5gmZRgxhooyhUEB5Zat/ZY79a4BAZcYMQ1Uqw1cZNhmxr6PTeN4ovI
+	 G30gsVPCdgBoLy3Kt1h45sUaQuSCc9eAy95MrjUG5CtTfZ+2TiIxwVISb0jkrwBz0r
+	 wW1SvgaLHIQsBc/9CYB72kUls6ZRPDWnO3wuFxpI3+jXMnAoGVRVo2mvlZKhSlMUDY
+	 EnCImW0pkEP0pz07eCRqFr5nbSapBGAVCNnV0U24UkvSMRJJXw1sHnY9hO8ilNYphP
+	 NJQko7jkqNwHw==
+From: SJ Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SJ Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH v2 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
+Date: Tue, 14 Jul 2026 17:18:32 -0700
+Message-ID: <20260715001832.106007-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260714150116.382521-1-gutierrez.asier@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8767D140004
-X-Stat-Signature: dfrb84xmrinat3brmi5iyf9nfqekxdom
-X-HE-Tag: 1784074367-823351
-X-HE-Meta: U2FsdGVkX1+G3li3WgColePy//bVZwvwrHVtDPrFcBzTmYjpwvq59QfAX+m8iVmoN2htQJnEcvfglldHhxNuGMImDx0Gk85chHNFzElLm/FHLrCh8ltZyYgABmZaOMOtgWSfT5ppYPkAYAnqX+azxFg1a+rbsd4tmqDDF1Q2Fj1gBe7NMQQq3eHYODfMrIbgqAACHf/A/12Cg1fpcVSFkh8EUettZFlhxHc6bUyjoqK/pxkv5nr4mL6gMyAxmV1zEO7IAOWQHraf3FnkLBXk/ZqImXaqqeKh62dR7wvNZgQggNf1I7EWGiq3dZLKmL2gFj2R1KNrqmZzuDR8oeCPyF+D0JRYPXrEZ9iNJRhlZFeJgjjV1glnuwKkfqdSruqLEHj2I3m6JyLCegVUuCbAHcAWCmgWH4ptpXJn7YMqn+CjjQuhFvkO0OBxEbs1xyDEEB5UY117MxGEUHtIsqQtASWPgrURRbl0wYPvsc60FNUOnzGWfgEPkq9jF9QGyPr98RDqjqTUp9aY3hLkL/gWhUaJKROFK7pRlOZxTTfmcAXawISMc8zR8hck1NdyCH72k69L9csUX0L7FEJFqqITMDevU2e2GGHYwsNfSVSKRrnTk5n5OO+89He2SxNMgO3gR4+pcsjEuvdiIN9nIRYBXn/yOnQaUJO4qo+Gdx+6WlU+a7i6g6bXkf6R+wGGaoZUvA6inIikQCXMWmmjW1tRsjWuoExnhRo5m1eJyxiDChZQittuKwszduGmB0tVO2fAU2uvaVwlU8ilQ97XW5/N9wS0kyWGfJNHHnegTD7EsGLPVPa2yBEbKG05cBiLW1wtbcjjDY7lF5QifdB1UKm5xsUV5b6ZLp+hztc28YFMkM7DLa9J+1cy3sLYnyzzVocqKaF9hoBey8pbHno2yAHul03LR4cTpXcGK3+F0R6AeYDpBksoY4rbMDcL+UdJmNFTe9uGrNEI/CTkd1nEjdB
- nI1MR3Y8
- 65QWLevA8sm7+tI5YX2nGeVP+H5kEOizc/DKW3Ha0D+OPaidlYQzGIhknKXdwZHverINeWfZA+RMBbrgtdwWh9Gup0TkFuCXtt20dQPT1yodH/morSj31hZYbgqZgv/9FtltbSVYdUkeBRdCkpm8yP2mkgoIhFsICQ34X90O/7AS6iWPguGXZUrv4iOFdKeooyRHlLGT+KGUpWv5+VV4XN42HUg9ax4RZBXS8DBt49o8iqTm52L6DSWIT39bfqqmiqgk4Bw8iGCkwhkV1E3JYupQLKcXvakpn+0TirTEuS6NEL6MxK6HVZ0fgdOKRVHSmfLpO0KsPDt/v1FkAkMTVMSEuPg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 74F8FC0004
+X-Stat-Signature: 4yzhdaob7m6pkf4jx4wfkdrr8fgpgndk
+X-HE-Tag: 1784074721-711435
+X-HE-Meta: U2FsdGVkX1/B0O8S3MQm3tU5eRKeDKFEZxsljU5e9H29uiZ+N9P3HKw7aeOqtednO0Ar7vTsnaOXONK9mWkNHqpwGIqFsGm/Rs0RxYVL11gR4Uh7h+/GYDFej0af3x4OgFHct02Ra+0lh9sDkxpoiuXHk/Mnf42Skib4tPDJ4iZMeuqn19OOzNKY7Suq8EktmaquiuRPr/haThEGiw1Vm19ibG9FWKEBzFfOZyrUhWSglBK8v9D8BU1szl/pj5LrlYvsp+RtSWgsMyFj5LpqTDv/qwTWxDkSucKC0rUuw+FHFuBhyJ82s6j9jnZfjFGZ07a0pS+e11ifzveRcbEfoTGvRoc8ykbGA2+iyv2KHnW8nlsmUQGP+610RuBG5VgYQ3xKn2oWG7hg5pzJ9rqAKWWqRVGcVnQ0KJurbXrorxOrFysbsj0ybim6+6reL1eNyYNHf5Fui7ihfYJCP0NxVUabqGQ6mmNldl72L9HfOd28IhuiUTpDlu0cDtQ95NEM+TN85QNeiJQGZgl4eMWOkAebnN6eRFdoXm3pYRWVXYk9CoUuSjQ5aeP0Rwpb62zeKwx7NJs1ZKlBNvBFQHCrr5PEdLFmCH3VKkbevyKJmxwvaK3LsLp8eMaRbeMPYXw9lVHijvkN1I+G4C0WUuCgPbvAcpm9cHTrOJJdzFB45cY6hasd/XVap96qrccMmIcmrUMEurIcY7cCAl2mablhpmHOR5iWEAizuVwLCWepZAc8Oy2IhNpMXyztVXv3pw+83VJpGIqHwVRD7JUBwLKDwnnjMmsSim79WFtP687cm9z1OUfFLtzw9GyrqUcs9z2EY3piXH7MfNVvLG+EzPj/Uw1vYkYhS9OLhyFB/hCwhWVyKBMm/NnsS3VVbMH67GV4k3sOEfbKIR7YrXqZe4saaV8EjkLCSbiYTyiILqVj7NWQo5QViLhiZbO2OyV8MguA/qqhFlt3XctHZyy4lGk
+ s5MyHn5a
+ pv3k6C7ENTD9CC+Mtqxai3VnVpJh/cJZNPbimwC1T3a+DJqtcwf/doryDPRxgzmuwyCZ8Ft6V5+s2wX+dXUBQ8xAJtNggNJ+QNtGUuNSmD6Vh2aXT0a46paUi1KluXuTB3q/+i8buZ2ggQGDzHdzif4wNDWmJDkCfnC1zNJRtIB/31KGv9jqoESedElF3oZhHeygFI5d2w7ivw5KbAaC2B6tws3Ws6JaK8QkZxsAZ6XnxNk6vgBiez/thLzuFANhjusuyi+oWBqIOGcKUrtFz/GRr9fVMSlProMzs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,13 +97,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> We have conducted stress tests on over 10 pcs for 40 hours each, and no
-> relevant issues have been reproduced.
-> Tested-by: Ma Chao <machao26@xiaomi.com>
+Hello Asier,
 
-Queued for 6.18, thanks.
+On Tue, 14 Jul 2026 15:01:13 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
--- 
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> 
+> Overview
+> ========
+> 
+> This patch set introduces a new autotuning which allows to collapse
+> hot regions into hugepages.
+
+I sincerely appreciate your continued work on this.  But, I have to say I'm
+holding review of this series for below reason...
+
+> 
+> Motivation
+> ==========
+> 
+> Since TLB is a bottleneck for many systems[1], a way to optimize TLB
+> misses (or hits) is to use huge pages. Unfortunately, using "always"
+> in THP leads to memory fragmentation and memory waste. For this reason,
+> most application guides and system administrators suggest to disable THP.
+> 
+> Currently DAMON has DAMOS_HUGEPAGE, DAMOS_NONHUGEPAGE and DAMOS_COLLAPSE.
+> However, there is no way to tune the settings. It will collapse all the
+> hot regions that meet the access pattern. If the server is a bare metal
+> database or big data server, this will also lead to eventual fragmentation.
+> 
+> Additionally, currently THP is set globally. Ideally, there should be a
+> way to control which tasks can use huge pages.
+
+You told me [1] you will rephrase the above.  But I show no change from the
+previous version.
+
+Asier, this is a repeated pattern that makes me reviewing this series very
+difficult and tiresome.  I don't really want to waste our time on repeating
+same words.  I know you did this great job so far and you can make it well
+completed.  Could you please thoroughly and carefully review "all" previous
+discussions, address all the comments and resend the new version?
+
+Particularly, please note that I also asked [2] you a question about Sashiko
+review, and I'm still waiting for your answer.  If you don't have a very good
+and confident answer, I'd recommend simply adding the zero-case check.
+
+To avoid wasting our time repeating same words, I skip reviewing the remainder
+of this version of the series.  I will review the next version.
+
+[1] https://lore.kernel.org/b786294f-0ba5-4b05-b956-d902c358dd88@huawei-partners.com
+[2] https://lore.kernel.org/20260617041515.98906-1-sj@kernel.org
+
+
 Thanks,
-Sasha
+SJ
+
+[...]
 
