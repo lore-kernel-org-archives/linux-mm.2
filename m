@@ -4,142 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EABA2C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:32:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B4EC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:32:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F195D6B00BE; Wed, 15 Jul 2026 09:32:37 -0400 (EDT)
+	id BC27A6B00C0; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF02D6B00C0; Wed, 15 Jul 2026 09:32:37 -0400 (EDT)
+	id B950C6B00C1; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBA776B00C1; Wed, 15 Jul 2026 09:32:37 -0400 (EDT)
+	id AD1976B00C4; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B9B4C6B00BE
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A50E71C0027
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:22:51 +0000 (UTC)
-X-FDA: 84991076142.04.E155821
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2EA661C0004
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:22:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=olB+mlG8;
-	spf=pass (imf21.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F0256B00C0
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25872120183
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:16:14 +0000 (UTC)
+X-FDA: 84991059468.25.74DBF6F
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 31A0C40006
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:16:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=etgzWdvj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784121769;
+	s=arc-20220608; t=1784121372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZ/C2SviyVY4H5WIesI8BfP7X/LNOC1ZDba8bhepJz0=;
-	b=rP1PQq2NUjAyBkcmEANBjKBeE9BUHhTt+2bA0cU3KRuJ1rzHOinScYX25uQs78OU6LGUKB
-	zn5ePlqdMerJe4HeJVFe7Ti81cYUEHGC1iZ+ZnG6lc4afJdNF5Ej6GqainYXn5t2JMmVJG
-	1IMNw0tTQ+E0f3M97WJ4hO/G8VtMCSQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784121769;
-	b=hAUkCFh8EYCxRF5Yw95sVw1oXwx8et0Szth/eAhPb5Vj7rR9Vv8j3izRljQXgfjZLJB9l3
-	Jf9bdo1OhWQYaSBkIiD76uzyiEVc2wNa8KHiO01vtYbUkSMDb0yIc60DtOmmju0cbvw++o
-	stpOzRADjyVdnN8DlaafXwTrmZQl75Q=
+	bh=srO3k5jRIT7j/Rini580mlp+14o/AyomRtsZhtG4hCI=;
+	b=T8X9jEQJ+Pn8SI65ndx5ZwAVE7GAkmgQZN9bat7WFVpINzDt7t3N/Y4kn+Haqv5QYJvks+
+	RpgTcUDStBPOUn/T4UKveTx9oYIQbtbDaurtAn/pvhA7/pMjXvHe8xPYxODa8IqYuChHSl
+	ljm5JX7it9BG4cYJjKCsj1l8XoDV46c=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=olB+mlG8;
-	spf=pass (imf21.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66FBfiuE075082;
-	Wed, 15 Jul 2026 13:22:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=LZ/C2SviyVY4H5WIe
-	sI8BfP7X/LNOC1ZDba8bhepJz0=; b=olB+mlG82agEwqz7YBUtChMsq+hqt+SQw
-	t2uefipLBXY14/kQbhqEnE5fNB8zAiwIrrGe2TBlDW/MDgkdv5jFNRiYgWB6I4GC
-	fCLtNwb6BSy0fe4rXvXNbvvVydgP0N2BqgEhP7LVGdqQyc9tb6BwgXvnlGaPdVrC
-	b1tML4c3GYf3PkWG2fJfwafNgTNECmUT2P+veQ2e+1Ld6LY2xhJ3ydPmzOgulmxU
-	Ol/p3DGkAQxOLX+sarl814tlzO2GXPWSZgHV+nddWNFzILDdIeIQtPoTySRAoebr
-	vTDjRR3bCYrLgDjfLLGwVZ10WjIaTp39Wa2VuT9XJ8aXgmr51/zCg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegtbsbr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 13:22:44 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66FDJbBf025130;
-	Wed, 15 Jul 2026 13:22:42 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc0hw8an1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 13:22:42 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66FDMdkI24117690
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Jul 2026 13:22:39 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1812A20043;
-	Wed, 15 Jul 2026 13:22:39 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DEE9B20040;
-	Wed, 15 Jul 2026 13:22:38 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 15 Jul 2026 13:22:38 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id C67FC162688; Wed, 15 Jul 2026 15:22:38 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH v6 4/4] s390/mm: Lazy MMU mode sanitizer
-Date: Wed, 15 Jul 2026 15:22:38 +0200
-Message-ID: <a3a32c582430b6065810025466d414aad7c0fda7.1784121418.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1784121418.git.agordeev@linux.ibm.com>
-References: <cover.1784121418.git.agordeev@linux.ibm.com>
-MIME-Version: 1.0
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=etgzWdvj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784121372;
+	b=ifFq0ql6pqlORfcI8JpwlRHIkpPh/NqzQPoPnwIejCsCV2cjIcVg4++6cZF4T16muFQOGw
+	unXAFeR8VFbY0KLc7oyO2P/PKqsViJ8eDjaBBv7zM49JOMQJkCYpU3JaTkgL4hJvSvvifM
+	hKyyz0ObcN/nFWMAOnyU9WLz/K5CXAE=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784121370;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=srO3k5jRIT7j/Rini580mlp+14o/AyomRtsZhtG4hCI=;
+	b=etgzWdvjNC1TMDtVDX+x9Q5g2sIxuMpIdwS50okxqRoHDutTxG5dTtClX8s+ENM5MZy+PZ
+	qwhf+NGbyHv+Qkh3M07BQIC3pLkxfDd3KElnXMJj7tgajcptqov2RuWkSj0sMRJ3njeP9k
+	MkpMp+Y15IHhczLN3FGWTbSYiqeq7+c=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH 01/17] mm/sparse: drop power-of-2 size requirement for
+ struct mem_section
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260715103445.31b2f727@pumpkin>
+Date: Wed, 15 Jul 2026 21:15:45 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ linux-mm@kvack.org,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: NzwnRmpJrrt-hFlhno_51qgFNBqErqBa
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDEzMSBTYWx0ZWRfX68NFAi6S/zcg
- UzWZpRSfcFOWnkA+tKIgL+8hsC9iFOl0mxI0jVU/Sj8NeDd5XERLPISiXP8dQT5JOVoBmzboGIg
- Zy9Vkxoj2Vl16Ld6/e9kfMTdlNDuuyI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDEzMSBTYWx0ZWRfXz9xZeV2pgw+U
- J37NUlB/7LIPSOuILoz47iaVhqJpIGMh3zRW5D7cvkdzNI32csohwSsC9QuLgStkVfSAKCPp8hU
- LtwtTUD4+V7k3K+oh+ZLWGN6IEarSJzKkLa6h6x/F58Nm5Uyi3suTF+++bdWOsvrJIcV6JiGX/u
- fGqk6GO70J5m6+wvTTgRBiitmdvfkHYsUNDbSowhfV5PeVk3UqxI48X8lNUzMqBoljQobBF4E1O
- C0FmGCz3mias0Qt+pPraw3GCWg10wPublKEBfWJaqKSYfuyefwq8XI1YkWYQyYD9gbXaWyw1+hp
- kolHongc6zw6v9VFel6ACNcmMq6Qw9kJ/1/8Llj1+JEEAimGdfRZ691bKGKqgtEG15DyegodyLx
- KQH3JCTHnt4UxhMVug/I2iWaZ6pNJA263aSNMPAG/W+0vlth4pTHo09QssSUvyNcaymLeK1VPQZ
- kvzKlkP5xEauEPlTFiw==
-X-Authority-Analysis: v=2.4 cv=IqMutr/g c=1 sm=1 tr=0 ts=6a5789a4 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=DuHJb5c9rUSq-GGRdagA:9
-X-Proofpoint-GUID: rLnwT-xYCmxNLq09tf11Z8QOx2djurBF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-15_02,2026-07-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607150131
+Message-Id: <71E70E00-98A1-4769-A167-5F4CB59EC96B@linux.dev>
+References: <20260702093821.2740183-1-songmuchun@bytedance.com>
+ <20260702093821.2740183-2-songmuchun@bytedance.com>
+ <20260715103445.31b2f727@pumpkin>
+To: David Laight <david.laight.linux@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 31A0C40006
+X-Stat-Signature: 5pb81bt9rpug86tjq3c6hcmsjrob35yd
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2EA661C0004
-X-Stat-Signature: 9b1pgj59bgx8xij1js4fymugbi66k8sx
-X-HE-Tag: 1784121768-5903
-X-HE-Meta: U2FsdGVkX1+A7ueIVRwPC9TiBxkXkhoW68R3xB9+nhZ0f59IR1vjxSJLCRRo71h9zT9HenFoosnzViZJwwzOF5Wu64Ulp9WfCwE3oWTRuPTx+FbuW05EzXanLGZdLjCGCvWOf8AEj+zycPShsU6izMEz34DQoWJdgXkQyDKY2+SclsmApOlps3k1XfQOJlpSr838HaGBu05wDr+/EgsrFkeVJ7TOGxEofULFunJUgEoyWm8asIQ5p7zbmcX/7WoJfzLZU0yUirGcyPpQG6OGoU0aNfBwDQbFZxo10bNZyQI4+E4GTHKRMaig76dkyBshrSgQDlAWe43Nh4jMJjyEsVcKkkRGJCpTVc6WMwCMoqNlLZ22V1MmXseo1wvak2E0nvqBfohX+6yABv8+qC0mDgmrS12P21K4bqjX6voSO7B56PN310+gVLJi/bxOOFkO2P33HKR/EOgmn0x1eCDQiswca/EKryYRYvQG6+/1rCx81ABZSAg8DiaOwd9ZpKnX+N/+xF87derUAYpUWWlNDOB9e4qyU2QM09Nx9LtcNvJwhwYK84YvnCzupI7PeiodnqfNBOw8KCn7v7Wx9c8EyR1VtbJ81f4N1Y9ZvnUDcTbX7r8qqk5iJaMaq59YN1AKwVWNeawRFpkRf26+oOK/EHZB7trHIAPwpVB+cWYXyWGJK6lOnf27wk1atF52MqlQEIBzDApAYlqPsXPV/vw8x6O/b5h8zGeqERrekw4VoZPqnNmYP7qNk7yxhbbGW0HSFHTMlz+wOpZ3rJ+sMvWbRCcnt3lxwXapOEujXjTfvYwLiJdVLFpOoRX1TNcJSjEfXZ3E7Bj4gkCheJtBGqFHn61Lc8ux2pfzvHnrgtHUL+NNEAogNAR/fMnVuK6Xh+5qLyTWuS507sx8EwNwbpadpWha9y0dGueH35Ng8fy6jTe2OIVMR5HGxnrCUFsHefIuc29Y38EjcbGI89Q3zY7
- +iY1BlJw
- vsZxNAniHMlB/j1XgboT7+SIVKLD9kYtxdLc2mXzOaoyS8AFCNFUwRGcBaG+aaNUmA+pumluHSa3aJds8Mbgw2J+LXGLdpf/st+cKaEHNuTuCxWXXsj4iP2mfNsTcwUs7QmC41KmJ5DzzTcQAeVevMpIzUxr0fi2lGxuLyb25T6qPDJgsu6d4S7LGbhAlxiJmsPaa4tg08aDBD8Ml7Dxd4ZKXOrlnjVJ7Gfwqqe1d6fvAwkz64sC4oQQXnZR73wbrmrJSs13A3jvqVwiIMJqwm1TODQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784121372-923889
+X-HE-Meta: U2FsdGVkX19U8GEX8WSMYhN58o7NdKmGZCwzRtse/XXRz/lRy35x5vazx1Ne2LpP4qa7Dv19o1wpe+86enahDOol3h8IhuO0Sa8d6eBXzevjy/Ye4YiPfGGmbtfu7mVonyxcNwlWQ9Mc2E5PH0o6fUKOFn7ib7+Dqzqds9wkeekUnNGIihEPW2OPbMHjRBFG5hyoxGLamnPqZ2zYRJxtA0vtzN1Cdkig9h2atYkZbg+BgvMCMssl9yVGX3EYwb27naHoPU65IGxlAjlVH/c7DszSsPv5NrTKDfQZfuPk5yYPs9AwdwK1eveNYToYqsMcooC7Dw8zzRGB/bLyQ63uWld+EgtkJ7Nk1sgsf2cfxzIQkb1QMgOnf2857vkG2FMNJJbLVwyhhVoMBTfXQY2G8CQSM9yRn9Yeo8L7/+0dBJ72TcTxujdUGShRTnhgWA9wLCpYkmNyP9LCr4BTI3hD2KqTfDV8/dSC7EUTaeiaA387Y1CLbrb9WU7UJZR23cfjSu2tJfsapWAEKaaGbXI6exiS9I52aXKryzxKOe2795bv5s8/0eT5AukezuBn607H0+MBPu1Pm2AQFgzvq6EPomM0Wv0Uo3kqXTtjGDkKffxntSz/3kjTpWoYhK0+2K3k3Gtd8+wjg394GxbeavavHiu2lVJi0rOec/1ZnCO/ztrgvYPLuCRcvzoi73x2E0uHiXpIWlOc4sJTVNUtcr/0G0X0Xap46FB3KDV3Jz6qdXhqNF5lZgiy2ocEFK3gkHxla9AI2KmVsllklwkuGcPEExfANFHZPPX5zMiRY5QBcAUTdAUY3FhhKlpPM2mXFA0bE6/Gx3JTpuMXmy63Bjz4LDwba168fMNuMOlm9LFQCRX0rPY7tOnXKfo2Clw3yXcnAYg8Dyonvdgk5uA29LVPf1Mn9Ut7dlheMUejTURyuqJBi8hDVmFq7NwlReBesAoO/XO0K2spqLmqxPZHrSV
+ ue/87tYq
+ ssQ3sqC/J94sbTgKvUh/FuQd2VDq3pQxuOTup8Thg4WVSe9tSGwLu66+Xl+JVCrhx6mkUpEFGisA/kUy2gkXaGxo15D4/DdvW2B+AA1sC6LG2KhBwAICAASmjrlU7Xh6209DSm7wla/Z0pgtuDMYJBXazo7em/xKc9RlLqvP7u5rxKLGfc028FZ4i6aBOkmoOsXkiitAdKBBC9LyDTjGdvbkBdDQU3+Bbcp/dnrZ9JxiJBDv3LZLBN/HHYRFLkadAeVeIdUTvTInfCwdW800ASRoSi4nHLorPWcGm8NNKeC+YT7ozHTH3VVyDtL87i+X0GDuyYE1jpTC3/gpHrd6W7djHGpIURBXnaYfTpCmejUT9IK/TcI//9PG+7IV12v5WkLTY2NjsALs1i1JxxgxFk0kIKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,129 +100,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Detect PTE entries access in lazy MMU mode by means other
-than set_pte() and ptep_get() primitives, which would be
-a read hazard.
 
-The access to kasan shadow memory from ptep_get_lockless()
-mistakenly hits invalid access in case a concurrent lazy
-MMU access to the same PTE is happening. To avoid that
-disable instrumentation for ptep_get_lockless() altogether.
 
-Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- arch/s390/include/asm/pgtable.h |  6 ++++++
- arch/s390/mm/lazy_mmu.c         | 27 +++++++++++++++++++++++----
- 2 files changed, 29 insertions(+), 4 deletions(-)
+> On Jul 15, 2026, at 17:34, David Laight <david.laight.linux@gmail.com> =
+wrote:
+>=20
+> On Thu,  2 Jul 2026 17:38:05 +0800
+> Muchun Song <songmuchun@bytedance.com> wrote:
+>=20
+>> struct mem_section is currently forced to a power-of-2 size so the
+>> section-to-root lookup can use a mask instead of a modulo.
+>>=20
+>> That requirement adds configuration-dependent padding, especially =
+with
+>> CONFIG_PAGE_EXTENSION, just to preserve the lookup scheme.
+>>=20
+>> Drop the constraint and use a plain modulo for the lookup instead. =
+The
+>> divisor is constant, so the generated code remains cheap while =
+avoiding
+>> the extra padding. It also removes an unnecessary layout constraint
+>> from the type.
+>=20
+> This has a side effect of changing the size of the 'section' from
+> PAGE_SIZE to something 'a bit smaller' when CONFIG_PAGE_EXTENSION
+> is defined.
+> I don't think it actually matters, the allocation is done by:
+>=20
+> static noinline struct mem_section __ref *sparse_index_alloc(int nid)
+> {
+> 	struct mem_section *section =3D NULL;
+> 	unsigned long array_size =3D SECTIONS_PER_ROOT *
+> 				   sizeof(struct mem_section);
+>=20
+> 	if (slab_is_available()) {
+> 		section =3D kzalloc_node(array_size, GFP_KERNEL, nid);
+> 	} else {
+> 		section =3D memblock_alloc_node(array_size, =
+SMP_CACHE_BYTES,
+> 					      nid);
+>=20
+> so the size might get rounded up to PAGE_SIZE anyway.
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgta=
-ble.h
-index bf54202a0630..1e8a79989ed6 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1049,6 +1049,12 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
- 		__set_pte(ptep, pte);
- }
-=20
-+#define ptep_get_lockless ptep_get_lockless
-+static inline __no_sanitize_address pte_t ptep_get_lockless(pte_t *ptep)
-+{
-+	return READ_ONCE(*ptep);
-+}
-+
- static inline pte_t __ptep_get(pte_t *ptep)
- {
- 	return READ_ONCE(*ptep);
-diff --git a/arch/s390/mm/lazy_mmu.c b/arch/s390/mm/lazy_mmu.c
-index 79dc68bb9a53..8947e29132ca 100644
---- a/arch/s390/mm/lazy_mmu.c
-+++ b/arch/s390/mm/lazy_mmu.c
-@@ -63,10 +63,13 @@ static int invalidate_pte_range(struct mm_struct *mm,=
- unsigned long addr,
- }
-=20
- static void set_pte_range(struct mm_struct *mm, unsigned long addr,
--			  pte_t *ptep, pte_t *end, pte_t *cache)
-+			  pte_t *start, pte_t *end, pte_t *cache)
- {
--	int i, nr_ptes;
-+	int nr_ptes, nr_total =3D end - start;
-+	pte_t *ptep =3D start;
-+	int i;
-=20
-+	kasan_unpoison_pte(start, nr_total);
- 	while (ptep < end) {
- 		nr_ptes =3D invalidate_pte_range(mm, addr, ptep, end);
-=20
-@@ -77,6 +80,7 @@ static void set_pte_range(struct mm_struct *mm, unsigne=
-d long addr,
-=20
- 		addr +=3D nr_ptes * PAGE_SIZE;
- 	}
-+	kasan_poison_pte(start, nr_total);
- }
-=20
- static void enter_ipte_norange(void)
-@@ -94,6 +98,7 @@ static void enter_ipte_range(struct mm_struct *mm,
- 			     unsigned long addr, unsigned long end, pte_t *pte)
- {
- 	struct ipte_range *range;
-+	unsigned int nr_ptes;
-=20
- 	if (!test_facility(13))
- 		return;
-@@ -108,6 +113,9 @@ static void enter_ipte_range(struct mm_struct *mm,
- 	range->base_addr =3D addr;
- 	range->base_end =3D end;
- 	range->base_pte =3D pte;
-+
-+	nr_ptes =3D (range->base_end - range->base_addr) / PAGE_SIZE;
-+	kasan_poison_pte(range->base_pte, nr_ptes);
- }
-=20
- static void leave_ipte_range(void)
-@@ -115,6 +123,7 @@ static void leave_ipte_range(void)
- 	pte_t *ptep, *start, *start_cache, *cache;
- 	unsigned long start_addr, addr;
- 	struct ipte_range *range;
-+	unsigned int nr_ptes;
- 	int start_idx;
-=20
- 	if (!test_facility(13))
-@@ -151,6 +160,9 @@ static void leave_ipte_range(void)
- 	range->end_pte =3D NULL;
-=20
- done:
-+	nr_ptes =3D (range->base_end - range->base_addr) / PAGE_SIZE;
-+	kasan_unpoison_pte(range->base_pte, nr_ptes);
-+
- 	range->mm =3D NULL;
- 	range->base_addr =3D 0;
- 	range->base_end =3D 0;
-@@ -230,10 +242,17 @@ static void __ipte_range_set_pte(struct ipte_range =
-*range, pte_t *ptep, pte_t pt
- static pte_t __ipte_range_ptep_get(struct ipte_range *range, pte_t *ptep=
-)
- {
- 	unsigned int idx =3D ptep - range->base_pte;
-+	pte_t pte;
-=20
- 	lockdep_assert_preemption_disabled();
--	if (pte_val(range->cache[idx]) =3D=3D PTE_POISON)
--		return __ptep_get(ptep);
-+	if (pte_val(range->cache[idx]) =3D=3D PTE_POISON) {
-+		kasan_unpoison_pte(ptep, 1);
-+		pte =3D __ptep_get(ptep);
-+		kasan_poison_pte(ptep, 1);
-+
-+		return pte;
-+	}
-+
- 	return range->cache[idx];
- }
-=20
---=20
-2.53.0
+I'm not sure I really understand what you mean. You might be asking =
+whether
+the reduction in the size of the `mem_section` structure does not =
+actually result
+in memory savings? If so, please let me explain clearly. As you =
+mentioned, the
+size of memory allocated each time here should be PAGE_SIZE. Before the
+modification, one page could hold 4096/32 =3D 128 `struct mem_section` =
+instances;
+with the modified code, the number of `struct mem_section` instances =
+that can fit
+is 4096/24 =3D 170. Therefore, the range of memory sections that a =
+PAGE_SIZE can
+cover has increased 32%.
+
+Please let me know if I didn=E2=80=99t get your point.
+
+>=20
+> I also suspect that '% 24u' might be enough slower than '% 32u' to
+> generate a measurable performance drop.
+> (It doesn't matter whether you do '& 31' or '% 32u'.)
+
+David, I agree that % 24u is slower than % 32u =E2=80=94 the latter maps =
+to =E2=80=98and', while the
+former requires a multiply-shift sequence. However, since the divisor is =
+a constant,
+the compiler should uses the magic multiplier approach at -O2, which is =
+~3-5 cycles
+instead of 1. So I think the per-lookup overhead is real but small.
+
+Thanks for your review.
+
+Muchun
+
+>=20
+> 	David
 
 
