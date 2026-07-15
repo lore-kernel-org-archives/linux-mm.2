@@ -4,101 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E84B8C44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3043C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 15:01:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF2D86B00B0; Wed, 15 Jul 2026 10:58:12 -0400 (EDT)
+	id AFE926B00AA; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7C406B00B3; Wed, 15 Jul 2026 10:58:12 -0400 (EDT)
+	id AD6646B00AB; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B44086B00B5; Wed, 15 Jul 2026 10:58:12 -0400 (EDT)
+	id 9EBA56B00AC; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8991B6B00B0
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:58:12 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1CE931A01DD
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:58:12 +0000 (UTC)
-X-FDA: 84991316424.09.BDD671D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7CCDE10000F
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:58:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbGb75aA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 749606B00AA
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:01:40 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA57AC01B8
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:01:39 +0000 (UTC)
+X-FDA: 84991325118.25.7F6E58F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9FB1810000D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:01:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPiuISMO;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784127697;
+	b=SKlTKLOBWt4gIHtucPo2BVOGBQFeLLDa9RQaWCx/qq3bUfj8MT0efEL3cMJMKICjd9k61L
+	0WN+QDLNIRsA1mSNg3YbR1iNGLgCjkGVeTBGNPvg4mI9+vEPnS1jchLPPlUFkjZgeM+ZUR
+	pnJVdjaTcUP1iw+X+ZkU4uAjTbOJmv0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cPiuISMO;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784127490;
+	s=arc-20220608; t=1784127697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YFpgyWHs9kn9sVjQ/mwxuF5PU2oG2W0sa64U48Z9bFQ=;
-	b=xLiV2IV1jM5MKd/hl6byW+o1I5kcUCSgVXM8jQRDWPCoULqRxr1Pk0qUECkzM5zqzXSndK
-	HM0qbkzYPq4l3wCUqH7UzCasyxsXWbijvx+oMRs4U2tdqaNGBmWFkK45dDy4XC4kHWWNH9
-	0IzkuQLScqq+vLw8VsYZJm+yPefMkpA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbGb75aA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784127490;
-	b=7kDLNgs9PRYOqouD9XZxq84u7jMfN/OGkYHqKZeEuFIXeMrxaxrs9LyP0T71ngg4gVF4IR
-	U2O4aNuO7Znax85/6HFVidwZ+D1FpAgFTE4bXfVyBsHCr4NGdRaNNXnPbhAP8Ovu5AsVsR
-	Yr7Rdjp5XV4umdxd9250JcJkQx52t2s=
+	bh=9Z2zNKjRbgDz18AB/OdbEQN5wpqYTgFBDPBnDwJEk2E=;
+	b=eOSMwkDgC/k50/5iYCGIZAIarIDE68BDEGxSYEAaTJ/g5ThTJABNMQ2oopxElCY78vfsA2
+	mZdDhr7Lr6KfLd8EtTFf8R3JBtj9Z00dXXlaBKzUiLIYE6Vyk1IwuiteYdxmZntj/zYQzt
+	nKCzYnmfhN1Xsm4yP4y75zQQg++lO0E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5F8114039A;
-	Wed, 15 Jul 2026 14:58:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94ACB1F000E9;
-	Wed, 15 Jul 2026 14:58:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 29ACC6001D;
+	Wed, 15 Jul 2026 15:01:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95521F000E9;
+	Wed, 15 Jul 2026 15:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784127489;
-	bh=YFpgyWHs9kn9sVjQ/mwxuF5PU2oG2W0sa64U48Z9bFQ=;
+	s=k20260515; t=1784127696;
+	bh=9Z2zNKjRbgDz18AB/OdbEQN5wpqYTgFBDPBnDwJEk2E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JbGb75aAr0mj+X+n+hCLEoLVDMXVr4L3aSdbks4fQSvqKqdcwweNjv1vxnURJcViq
-	 IoyGAJfwYaWjTwe4uz3c631hVjBY7ShFGZjwu4WHrDAsVFEKKPz/fxQV3L8x25WW7a
-	 fUdzLS1yGAUa140tt8lJ8K6NVr9Tvgzn2bdk4LoGeYtyLAM0qFCjF4/CX31z8gHssp
-	 sxaxGbMQW++pn2tXqWWpTmR0V2S0z6Zko9sb5m69v8ACPtQcruBvvf+3IKMH8H/QDj
-	 ZBBcx0Nq/WuPutNVCCXl+AAD1b2ARJZTKVRAwU2tzptwKIz9uOZQvaPhzrvI+EN8A5
-	 EpAqtYBhMPh3A==
-Date: Wed, 15 Jul 2026 17:58:03 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
-Message-ID: <alef-_LMykiBQ2qP@kernel.org>
-References: <20260703-secretmem-highmem-v1-1-30d5ff944664@google.com>
- <20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org>
- <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev>
- <akpBWmnujSnj1ZEE@kernel.org>
- <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
- <DJZ3TQV3GPDO.6AN321FGTTX@linux.dev>
- <aldv8U-lzCn0SCBL@kernel.org>
- <7e7f20de-c43d-40f7-82d3-8d05ceb3656b@kernel.org>
- <aleOvBtB3WCSsqEd@kernel.org>
- <21e7746b-9bc2-4643-b0ca-c59e0c77f810@kernel.org>
+	b=cPiuISMOHZKbNJ/q+U6zBqKZl6i/54DB+RZCuayF6sI/kqfwtjdaALQ69uJ88Y9Tb
+	 t9oj0Gwrjx61elraU/lF3M+8XrCqQFajfZU2mv8YfRrP78r/Wx340y3KQ4iUlEGzM5
+	 eE16z35L/cQdoa8olim+hEXZt4VTFLQlzUnuc/usVzrf89juTGp0WUhVkaElN3dhQx
+	 LbUCrcNvso4ErQy0XseZ4PxpaGqrP2jfw6djWjwKyuHqNf1PD0jPkdNqnYsTErA07p
+	 qx9E+rQb+xIH6dJ9sMrZ7/kfrX+NQDC/1YbeWlscd9NRHmuuwccHGiNexKkLt5Onau
+	 bl+psB0aDqyCw==
+Date: Wed, 15 Jul 2026 16:01:18 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH mm-hotfixes v2 0/4] mm: fix UAF caused by race between
+ ptdump and vmap pgtable freeing
+Message-ID: <aleYrvnf4nVUCu-f@lucifer>
+References: <20260712-series-vmap-race-fix-v2-0-ad134cc3a12a@kernel.org>
+ <alTn7NguEW_4bodu@thinkstation>
+ <alTq4V50767L-s5H@lucifer>
+ <alUNiWcygLd4rqBo@thinkstation>
+ <178404602957.85099.8935151447302412515.b4-reply@b4>
+ <alZm0tBf8DpMXimM@thinkstation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <21e7746b-9bc2-4643-b0ca-c59e0c77f810@kernel.org>
-X-Rspamd-Queue-Id: 7CCDE10000F
-X-Stat-Signature: codkwkpzokr8qeh5ceitpj8ibcitxjja
+In-Reply-To: <alZm0tBf8DpMXimM@thinkstation>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784127490-610157
-X-HE-Meta: U2FsdGVkX19E6j/mS8V9B3W10Gq1pVaWbgE71IebCZah5icQtLMjvqJb94FDptXwverbGCKN7qvC2PrS8rApBu3ovZ8Gxb9EQS7FBNrEOSY7rqU8eu2F9Acs3DPSchRFFT+VtaSHLnj9M05XDqT7ypj3kay4NIaVFmhe/foFjItz74rWimTpepDXLVivlL8ZhgCiGw5BjPmhL6VmccddNipbqNQzJsGqVrHPxEjvGo1npcUk7a7wvjty7gCsoWMHTTtB/Dm8+6zQGyd/lTPAvZlbKGiWNUXe9Me243Gh2VNkbPlyYxbsafT5n5lt4WfsFYajs6GOxVXou6Io7tN/8t3+hKurmoHqGjyenKEvcAPMGNsxd0acsWk4PKV/rIhLN5YqGtBzA14we78ddyynldIawNHLdI8L0GxAr+bkUCiM56/v25bWVSSAYyn/juGkhwHlOXAOTrTubL0E4VBoHerrTB8qS1v9bHk6GKP3GpQoogQ1dld+LW5Kkok660x4QqbkpL5LpBxxs6/pGXXOu8oPdomhuiXKFVjagzNNsQZCB90XpbFdLQicw/K9Eud7h06wCD/z5QKpNXt4+ARjOuoZPxHRK2UlxHH3XKxQhcC/bGlf+vo5VJdsBmdzu+Qp3UZxwfPqNK/h/BleevwEnCDHlbcIssEKvYFCS6ENsH7JgHKt8MotVMnbA1d7Hv8QUCKpy/iLs89NSzuZkLxoNfQ28scuEZaUtHFojnG07AT5GeT5ud11F5Bk2qwppqceFN+svuK4yBa7/tRV/FGPF8RDdGrMeopZ8QY83Lt/nWDDlHpMZZTV5wppwLrgSwcE+aK1eFim0O6PFLtPTllsM1JBXowC3ADD/V21ygwVQK96PAJz7sh9RWh005CclD5ydJyTqVKsyj9kC8GNxULffAjCt5uPXwwjjXzFQPzNFzILUzZHy66yoiuj9VnEvS97+nMaFtwQRT3puEBPWyq
- PLpO1g6B
- nYBlfPowU/cDjGl68FxM3g4UvI2vfSzO1N3DEN9TTHIUrFnTGq/gqj8dVM+Ky7FIIfRhwoEeRUNKhqdIlwORlXN+is/686M6ZdeT322raQtEpBvkLpC3Xy6NFTIQ40Wnz/9BS1zn7FWnUB0e9saUS+lXEDgaSZiHWJn/Mpw63tsNlAWOTPHlTUr9BCM58DzBosO4MX4p6iVC/ZS3M46XfJfM080y6Ak2xGbFFeARR1IzJfeFTWP3ekqVXzX1MVt6JEcoy
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9FB1810000D
+X-Stat-Signature: sto6i1x3rcskub6wsi1qd4bdg9bzwqsz
+X-HE-Tag: 1784127697-126319
+X-HE-Meta: U2FsdGVkX1929Fdp0r9CakIPqYxwf1LsPkuvDUNVOHAu7NSnTfdJbYpl5bhs4N0LeBcfG+nuaUPztQdRERcIU39oTUE9JnPUKeD1TO4HsPVC0fVSeoiKL4FdYqOx45Qla/frxszpANdmPTt/wiqPgtWxm/PQ2ZZ8y/UP/RVrJji7TkTLbB1XbgIcqwZTzV8s2rTuqQJdKtcumz3J5DI9QxfOk4cYgolsqFhJ8eW90wyys7t6k7zFpjOptEDQPl1mPtnPHbCHnsl8So9FXiqwEvNxnCUzvfewrKXxR+sno0Mnh6bplONjk3hbkZP9qVADuONbbtSvgunaRPyypVA0mZwd5O3iJcwtGsqJ8TiJqCpH3i/dsYsfS3QbfJ3Vf+qrheNU2mQRLPB4iyfmT4UFx79KApOeBPWKHIpC6kur+wU2vRsSLryi9iVUDXEHV521+jaDPCQe0gt6ANfLh3t/CtEewoLW7Vwxpc7/yLLKbTNatqXrGIw59KuuNab0oS9X3V4XHEDWydE6VJJi5wpDS+Q+3cJ9MfGZvtx0alt2xlAF7eV9Jva8oPI1J2t0z/BP7MhYwPzvFF+RQ36q1Ob8L0drWjd+izYvvJPh+lIuu7h0/t+fUXVB9q0KihWKGfyEcivho7deiI7otP0vkAujybWi7GebPwkQTKIuMVmufd1DcixIegJ7aM7A+Y3f3+WM+NYq3qkNHpeLmSUGc7g2O/CWLOHDQ2d2+CyKRqoLHX0BbxUautT8ian9yxMvUT01+I3b7qhrT73hZw0frVrIURMaJwwxANufN+cMlKtMr0ikZmZrB1lVNLGromAYZOHWpQ7OP5+EcrlwBlELmMixV/v6445/kZEFQuekP+yh0t1aRhNhBRMpPxHMVfvI2VF7k3L+okqQc4s4QX9YpP4S0iDzTZ3ZZXly4z0anmPuo5jtTwbeG/kGbI9YCo53pMzG8OVQ6hWcH3XI1Xc02nZ
+ grl3mZ1P
+ 2PcR0hwReS4LYeO3mIUbvIXr6kIQp8gNEsY0gPixdz+RrpRLp0zOv4TrpBgTixWjPGeknO6e1VUV0HZMBog5ifp0F2fie/rd+R6UFzu9nwXzLVOmYH8T4U5s7NEYCLuA2Ky5BXKPReynxRY7rOSvLDNh6f13jjp57w9WMSo/hBcfjgAVdCJshcEclrmWj7HPzRkNqqhvZfDDag036C08mrWM8s9HmrPKN/7mxZChSjs2JLxxjIkuULSIjOSkz78z6b4SR+4JXL3IqMv42G2kEUbeZ/J8DTAU/o1xoZdvJ+7A5M8m1iznbUOJFC9Gj0P8383GfYD9r2KgCdWNyrGk9z7O8XAD/AYcvMIPbFrMDgef0Y8vd0LnFZK2eI9t3MWXQUf0A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,57 +107,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 03:49:39PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/15/26 15:44, Mike Rapoport wrote:
-> > On Wed, Jul 15, 2026 at 02:31:08PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 7/15/26 13:33, Mike Rapoport wrote:
-> >>>
-> >>> Right :)
-> >>> Supporting 32-bit without HIGHMEM is easy, so I don't think we should limit
-> >>> it to 64BIT at this point.
-> >>
-> >> You mean
-> >>
-> >> diff --git a/mm/secretmem.c b/mm/secretmem.c
-> >> index 4877c262cb1f6..d29865075b6ea 100644
-> >> --- a/mm/secretmem.c
-> >> +++ b/mm/secretmem.c
-> >> @@ -202,7 +202,7 @@ static struct file *secretmem_file_create(unsigned long flags)
-> >>         if (IS_ERR(file))
-> >>                 goto err_free_inode;
-> >>
-> >> -       mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> >> +       mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
-> >>         mapping_set_unevictable(inode->i_mapping);
-> >>
-> >>         inode->i_op = &secretmem_iops;
-> >>
-> >>
-> >> then?
-> > 
-> > No, I mean what Brendan's patch did:
-> > 
-> >  config SECRETMEM
-> >         default y
-> >         bool "Enable memfd_secret() system call" if EXPERT
-> > -       depends on ARCH_HAS_SET_DIRECT_MAP
-> > +       depends on ARCH_HAS_SET_DIRECT_MAP && !HIGHMEM
-> > 
-> > We can change gfp_mask as well for the sake of pedancy
-> 
-> Why not change the gfp mask only then?
++cc Lance for thanks :)
 
-Citing myself from a few emails back: 
+On Tue, Jul 14, 2026 at 06:05:01PM +0100, Kiryl Shutsemau wrote:
+> On Tue, Jul 14, 2026 at 05:20:29PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > Basically you need the IRQs disabled to get the semi-RCU behaviour and to
+> > be able to safely traverse page tables that way.
+> >
+> > So with CONFIG_PT_RECLAIM you're safe to RCU traverse PTEs only.
+>
+> I think this is stale. Since 1fb3d8c20bfa ("mm/mmu_gather: replace IPI
+> with synchronize_rcu() when batch allocation fails") the !PT_RECLAIM
+> fallback is a real grace period -- note your own quote of
+> __tlb_remove_table_one() calls tlb_remove_table_sync_rcu(), which is
+> synchronize_rcu() nowadays, not the IPI broadcast. The name invites
+> the confusion.
 
->> But still with kmap() and friends not being an NOP the promise "kernel does
->> not map this memory" does not hold.
- 
-> -- 
-> Cheers,
-> 
-> David
+Ahhh, nice thank you Lance :)
 
--- 
-Sincerely yours,
-Mike.
+
+>
+> Together with a37259732a7d ("x86/mm: Make MMU_GATHER_RCU_TABLE_FREE
+> unconditional") that means every freeing path through the generic
+> mmu_gather is genuine RCU, batched or not, all levels. A plain
+> rcu_read_lock() walker is protected; IRQs disabled is not required.
+
+Lovely. I'll probably send a patch to fix the comment then :)
+
+>
+> > HAVE_ARCH_TLB_REMOVE_TABLE is set for powerpc, which also enables PTDUMP :)
+> > and that's because it actually tracks multiple PTE page tables together as
+> > a fragment.
+>
+> sparc also sets it with SMP. So the audit list for custom
+> tlb_remove_table() implementations is powerpc and sparc -- everything
+> else gets the generic behaviour above.
+
+Yeah.
+
+>
+> No disagreement on the rest: the walker needs
+> ptep_get_lockless()/pmdp_get_lockless(), and the ppc kernel-side
+> fragments need a look.
+
+Indeed.
+
+I know Suren's been taken a look at this, pinged him off-list (he's also
+cc'd) to see where he's at but I'm going to take a general look at this.
+
+I feel that RCU page table freeing is likely to be a requirement for
+scalable CoW, so directly impacts me :)
+
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
+
+Cheers, Lorenzo
 
