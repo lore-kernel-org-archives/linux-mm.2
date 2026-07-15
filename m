@@ -4,132 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B294EC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:14:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B922C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:14:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B595C6B0099; Wed, 15 Jul 2026 10:14:22 -0400 (EDT)
+	id 629516B009D; Wed, 15 Jul 2026 10:14:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B30D26B009D; Wed, 15 Jul 2026 10:14:22 -0400 (EDT)
+	id 601976B00A5; Wed, 15 Jul 2026 10:14:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A203D6B00A1; Wed, 15 Jul 2026 10:14:22 -0400 (EDT)
+	id 53EF66B00A6; Wed, 15 Jul 2026 10:14:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 706566B0099
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:14:22 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E784140123
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:34:42 +0000 (UTC)
-X-FDA: 84990652404.27.30D357D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 83566C0006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:34:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ari7ydGK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E9126B009D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:14:33 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12D11C0109
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:35:34 +0000 (UTC)
+X-FDA: 84990654588.14.78D79AF
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9552040009
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:35:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lWVjevAk;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784111680;
+	s=arc-20220608; t=1784111732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/u+P2N6zRIR8FUBVRNxWHd1rg794l4gpgYxauKphMTA=;
-	b=ZQww2DDqAZJuy5B3WktqLnNmbecUV1W/e+dL5QkPfBABZcoaMhcvz85wWL1GRaLGdXQZnK
-	Weq3YS5U6T7rO7zxmToyJEmouIxXT1eCTrEcYZ9oghxtrZDAmhgl7CC/pp8BhOCgLEmdG3
-	uyOy8Lnb8uonAFzmXYJMrYO7ABKD17k=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0PjHU3TbDnfGWF+iD96TKWS2XZ53YHp9da69Ponf0rw=;
+	b=Dlsd2e7zfmNIaVkd0vMI8OtKhHbOJZm/auuXM7S0tfGn5frcxCAXhoecS8cNb+949actOu
+	G/5bHrE7jGGG/+rwbRosAnbOu//Jk5D44eEY8ELkhdYsAhwsT9YZ7KA+urfng7eCVsUEl6
+	S0CU3x3xO1GJiFnxxNrAWzc98WYSCCk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ari7ydGK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lWVjevAk;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784111680;
-	b=gVfy+Jn3qaenKteFMthB/bbR63Qguv7ndf3ucOqVgZ+kK1utepJcelU5SLs1odX/lRW17a
-	fHg25eULiv4D0EGOrVczLMetVC4YLswKo33tBD4S13//LyPI6BVGvY6nVjjxJqpyNyPgDZ
-	VAzsGLXI2s8zanzZzDySXBAnsjnLqCY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B604842B7F;
-	Wed, 15 Jul 2026 10:34:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BC41F00A3A;
-	Wed, 15 Jul 2026 10:34:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784111679;
-	bh=/u+P2N6zRIR8FUBVRNxWHd1rg794l4gpgYxauKphMTA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ari7ydGKpfnwTgzb36nY7kVdlGE6vrYVN/Ti/SAeTHYi1fxDuCYpPGllrZtl2Y1Yg
-	 jfK/Fp4iUqc9sKtVxtnvzkBxVk3aqa6rw+8COlt9lKU+uuvG4d0NboqpKhc5Upwvpl
-	 Xy4thbUJY3MHpWDEUJg989mLl2Lt7244u3sPbyPWDkJqvjywzYjYwaIR2iEt4tRuE0
-	 9Vmf6B9x/XqE0aIanJtr4fnXJDCdN/ZwxKgmSbqao6ayO87cudr1ytx40vZQt+q7pZ
-	 l4zfRngP3OjVyd2ydUlpVcN4FKWy4md6cYl5KNquOqlNsLJdIdF06Rh8ho/yYCSjwV
-	 xmir6DvcTpteQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E790AF40066;
-	Wed, 15 Jul 2026 06:34:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 15 Jul 2026 06:34:37 -0400
-X-ME-Sender: <xms:PWJXagXvnJIrLEGLn2TcaaNLm5k5GJ8CvbH_2X_DyPi17SHywh8FOQ>
-    <xme:PWJXam7Zjsa24wXb_097Eqc4nDWs9VG_U2mHOWe2TBMZxU6SqNHp8T9L-4iqGhjY2
-    L3VfekuLMx0tRuKTMlNTGbvCtyzLvWSUvGQZZfd-5qzsI5J_r_2lZI>
-X-ME-Received: <xmr:PWJXajKPPuRgSNa8OXZIF2oNs_s7HbLU7HuhIUTJafbIBsmifZodbVEVhP0KxA>
-X-ME-Proxy-Cause: dmFkZTF8BlW1JbhLHKAA5CCFXFcYGHtkBS3RzYLv20V59nT+I7FpSJ/Ok8ON8iUs6XHz7u
-    +G87ehG5oQ0BL42Uj6L+tKW2gixAEPGzywC8/ROEYb+ORNvX3EuvZfc4z0v6davUQgGBef
-    nv/jIaoJLpLf5mwPdwSqDDaztaF20dpNkeWVjyaLioO6Khtwor59qcar6llBTGJ0VX6d2c
-    tGKzEbkgZrClapzBkAposaU5h3W0k2guVll2eZTtqt9qaU21+vCnXUQav3DkFMNxeWh9bQ
-    h4IL8dIXlwpLvyKEvBdV6VCPSf/irpl/uHVoZNcHQDaubztS+Fhd7BZy1pQgRDVMWGg7sR
-    ZDqvbDgPX0jEBV46NyMkqHWWmPL5pjyXSZEXm3SVkv84XhOwrRJngtPmkgeQfnRrX0zbxL
-    m+HLvlKHwLRImojhngp+JRlI3tXihZtgQAXc0OVB+Ajo92Ha/bn3x4AacB7U3kysFaCJEo
-    vvwpqdRcl6EdjaYO8P2aHisOrxXpA3Ib41YGPgA5jXlWDserU+pes/cLGpgn0eUwz+Htrq
-    t3i9BWqYrc0iE+3sVUL/69zQpmtnjVcTk+uwY292UIxT0wMlVh1eF2LjA0tPQVC8DXmbPE
-    lfMNuqwlQIZB1re+HJkD/FcF5sWDhPZqa1TekZUorvAwxFBEHAKrvN/7zaCA
-X-ME-Proxy: <xmx:PWJXaphQ8cqKFJDXfA-hPYB343__wdvaK33Twj9yuIwO205snQ8KrA>
-    <xmx:PWJXatIb0xs4XANPVgpl2zaqWQrLAgvU27hhIaXg4kaSN4G2ZLPagA>
-    <xmx:PWJXauGW9z-3YwEfJh7p1mFiZHiq2jHUyLWtCrk4rfkPofg3pYXjkA>
-    <xmx:PWJXat12aX1XWeTqpZLHbDzwHd8Blu1u4qvLLzlgv9Hhb7rJJ8QzkQ>
-    <xmx:PWJXau2fJ6rHSw7XXpJLCXVLbBHBULFi4tfSDhi-2wPRTAjc7yJTgf7Y>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Jul 2026 06:34:36 -0400 (EDT)
-Date: Wed, 15 Jul 2026 11:34:35 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- 	Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- 	Vlastimil Babka <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- 	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@suse.com>, 	Uladzislau Rezki <urezki@gmail.com>,
- Toshi Kani <toshi.kani@hpe.com>,
- 	Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>,
- 	Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, 	Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- 	"H. Peter Anvin" <hpa@zytor.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- 	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Ryan Roberts <ryan.roberts@arm.com>, 	David Carlier <devnexen@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, 	bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- 	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH mm-hotfixes v3 1/4] mm/vmalloc: acquire init_mm lock on
- huge vmap to avoid ptdump UAF
-Message-ID: <aldhVdwj9oMRN1Lk@thinkstation>
-References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
- <20260714-series-vmap-race-fix-v3-1-b812eccfa0f9@kernel.org>
+	t=1784111732;
+	b=0EOTPWtMasNmHQoHyCt5flsXusZkFRy4z+2sh2MBDm+QnqA7DuoCzfMbR0vpkkoS/M8kuf
+	yMxXVIUrZeIz2NnrIYWsRL7SILIOWj22d8RgFtOj3hwY0OAbsByJKrttjrY8baKRLk2/Uu
+	rzpy0DLQLuuWCAS3kwgtMFaJUKdeI2Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784111726;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0PjHU3TbDnfGWF+iD96TKWS2XZ53YHp9da69Ponf0rw=;
+	b=lWVjevAkYZ064aFltJs8lMrrHhbvW3jfDDXTJNUk7br0vYrO703lDuTQkLrrB6DW2oxclA
+	CDTz4ntBIHKH7+v1OXbDtlB7q9AuF4Y9XDGtBTQ8/JYqvFRDPp3/uFjWpytuv6YlkxJ9HI
+	zsJlgnUW59RhgT+41ErbmMD+ZA0Uy4k=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@fromorbit.com,
+	dgc@kernel.org,
+	qi.zheng@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	brauner@kernel.org,
+	cgroups@vger.kernel.org,
+	clm@fb.com,
+	dsterba@suse.com,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jack@suse.cz,
+	linux-btrfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@kernel.org,
+	muchun.song@linux.dev,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	kernel-team@meta.com
+Cc: Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v2] fs: push nr_cached_objects memcg gating into individual filesystems
+Date: Wed, 15 Jul 2026 03:35:16 -0700
+Message-ID: <20260715103516.2410175-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714-series-vmap-race-fix-v3-1-b812eccfa0f9@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 83566C0006
-X-Stat-Signature: ph7b1qa5czk5mbcow9ax3sce4yrrwu68
-X-HE-Tag: 1784111680-211958
-X-HE-Meta: U2FsdGVkX1/ti93OClCwcaXD/1vqGpqPlWgoY+Nz9I7OgAL4F8K04I2SLpVDmzgB6qFWFeKSgHK+TzXLj8O+pQeGS1v833NQh25/wiznDSmBr5mTxfOTjlcBM6hfkY+vorGRbZSO0rzdmrhONADj43SzGljtzMcQePPCzWU+2v0vF+G1vIoEM8lnDwqsKv63N2LgbUmf8soM9BHMDypBnJmSrcc9KSzAhu1Jlk+A1VZgsSEiX2H659fNEeWzGednJR/rc79dO90EfC9ZKbkAfiMEONNbq7pTqpm8/Eaz8MySNs5CoeIbrn6IDY0pD8BvZeI4NPqNKcogpJTEUS2D9qFIDMUnxd43k5CJYXyiX3vTJse+6fvo5BN0If9mNnlpgc68Lway7GDmdrmhZiL2LVveEOQD+Ok1QsVvaDsF79UgjbUHaOjz+TJlyA+NsgC11BRGskjlfHOyNZu2vYfr54cTERy8IH55/Nh5/VgyZLwrmgBGMc9qzeUSPiTW+FFhUsjOnGLU8EEpA+uGQvYDw6kD0twSufr/ifHBEKe8X3mriyO+WcPCPOw/BZKQBvXAjUeEMGPj+7Y/5CmFanURv29sHsRznEtF42BWiXK5aOjbbbsaW+owoxRAwqkGWEHKN2lJrC3+y+ck39vSd/aIyKR9G5fzXs36wRz+CKj2d6g+ZYAstcZw/VdlpZ4P9NScFAuny0Le8eXyETy2jkrnTeysopZamY0YuAOQLDDsCyXmwtPogr7Bi3j3/2ZPynBBeiYuBzhs7Q0Iu7ApcPuWCMRS+0DUKnsltIHC/H5aEQ/X7E92YHfMHVSgsG1iPKsji9iRTO4QTdyWPiexl4cpzSkiWYZ5P3bSxV6Au7bFwqunvP3lE7LMTkWoG28tw0Km7ldg9kvn29gG34Gjxdq0OHEp4wnJ9N+5zBRAUFQ6Pr05oHHKhA126ZYNxKDgaSRs/9RjGEichd0Fi3nf9R1
- Fd1suFY7
- ze9cXUXFbfhkNEKwDaLHJIKQL7kyefIut9rYe6mk2incYIMf8UvjF1u1Ia3INaDlzZT/4/p4O/B1lvVi1z95m2Selbh6TclrJ73sWWLwW5FAT6ddqONDVOuWC+Q7r6xlpX5dRoDQx/HXNzix6zkP6eS/PMd52CCLkR/xzzXyxIJYgakbytNjtQbYyrxPrkwGWl1tSXA8m+ES8vIJHe65LH+MXURXx/rGqZasJ7p4ZWtOKLmmZQbEtOGOCGS3ZPlqnZ991ZCEFzjPEtcXRMCQQDvWUMcaU8vXJzFwgpPvk+gwp9IgYGbTdX3nEWIDifV2uCjz72UPmuH5r0FUC83yCN3Q949SL7N5Tfjj+rDVGFAxCFIKcZxGBbAsvB+4XKJL1JpqBwdoI17Xp+V376z+N1lAyofIEsQ5bm1nIUwxsdHLxwI1Byx4akuia/OOhndAfHTb7eptOJNq3Bu9bSB7QpvpVH5DY6wtqdB8H
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9552040009
+X-Stat-Signature: raniyuuw7w5z88pgnpi958ry54i9hh7e
+X-HE-Tag: 1784111730-476873
+X-HE-Meta: U2FsdGVkX1/Plso3uakGmN6BG2VPU55di5bM1hrqTuloezD5HRsjh2BCOFMvlgzK46Loik5Pbql06j3aFwulVxMaJsa3kuuwtlGvA8NKDBDl2ymnH1W9On2eetrlJjac3Xrl7pO0G9+0KFL7juRz01S2LrEDNJKyjBpqjMdhX/fzjk1Eq9TLFrtGJSLih6+SiSyZCXgUvoSy6GX6Th4fM4R1jfsQz6ZlMeqYm7rBCHyBJSwXfcOotXl5cHyuV6UUo0jsZdQDvZxJgC65qqLCG5joqME8kEQ6Mm5Tyl4LaT3Fcauz6DLxXNpnd8PD48gXqitds0epsbTrYoWph7lR2H+VD9Vm/2gXNPIQGlceoSs4/OjVrFnxivjDRPm6vIAsOTxnTxQirDhrx5eYiFE41dG0TWjba+aOH10SinIT4JSprOwFRFiUpQx62F2s7gT17IILhTLzYmTB9z7svmDqgDVt34du/mril3k+LqNwqVkfv9IvfS9PvOQkLZbGzIj4hsgLQyOSKZRpNx+RlTFsszEOwwRVyZ5x5sDGMOzGtzOwSbri7h/5aPqLKdtCaiQZjvqcdlXEO5i/LSv+QcxD3UFxcuc8MLJxiRZafRZJzhkAUkUtS7SK5lTpCd1G9lD9xIKuOsW6sHuLguX6o0zD7ANFKzZQ8ZI1Y6ks3ITh43rhhbXI4XmyNOE7Wb3NMq9c1Fh8Zyo5MZMEIpWQj5Zm6+J+drE9W6aG7BtBE+eOfaQr+WeuA5DX1hnhqr+ad79e66T8Qd3fH7ETXKmfVIsaM1YkezF/MmMwSvfQA50UNPeuAB49z88ktb+At3PHcGaGbLuVj9BiTr2w2emNkeZwRTM3FKEkiLtkhfmkBQxPyK1BatlMRw7wi7ge0nOKcaO7K3FCjRfuWzcjyEhONt8VY3ruNRMhhYTyuvqILG4E+Cgz5qGhKc6L83J/zqAH994nOkcbDN16jbENXkQ8RjD
+ oQ8eFTIg
+ aiVYPAJYv0lKUGpCtN+dfYwuTUCoDYdIfOJ8MVhKg16u8cwBXoYzOjzfIlgI4yAS9a38uSMY2m49o+cB0X7i9Sl2renN9U77cEvCagZE+hRIXYepEj/xvbiQsRV9xxHvXQGMEfUBOb6P2IlOhbNgdLHleKby/l7RqR/wGL1culSegiuMbYC8XfkMkP/pt4SxvmxBhNmsfhkTlZK6rMFj1hiH06rm/m/iy1MMIMyjk3CYQs32hDZ9BlsmtTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,44 +103,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 06:24:23PM +0100, Lorenzo Stoakes wrote:
-> Currently there is a nasty race between ptdump and vmap when attempting to
-> map a huge P4D, PMD or PUD entry:
+Commit 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects
+in memcg slab shrink") added a check in fs/super.c that skipped every
+->nr_cached_objects() hook whenever the shrinker was invoked for a
+non-root memcg, on the assumption that none of them honour sc->memcg.
 
-Nit: that's a strange order of levels :P
+That assumption is wrong for XFS, whose inode-reclaim hook is
+intentionally driven from per-memcg contexts to free memcg-charged
+slab. Encoding a blanket "never memcg-aware" policy in fs/super.c
+short-circuits that path.
 
-> Fix this by holding the mmap read lock in vmap_try_huge_*() when freeing
-> page tables.
+Push the check down into the callbacks whose counters really are
+irrelevant to per-memcg reclaim - btrfs_nr_cached_objects() and
+shmem_unused_huge_count() - and drop the fs/super.c gate. Each
+filesystem can now lift the restriction independently if its counter
+later grows memcg awareness, without touching fs/super.c.
 
-How about adding here something like:
+Introduce mem_cgroup_shrink_is_root() in <linux/memcontrol.h> so the
+callbacks don't open-code "sc->memcg is NULL or root".
 
-  The read lock is sufficient: ptdump is the only walker that must be
-  excluded and it holds the mmap write lock. Other holders of the read
-  lock may run concurrently, but each exclusively owns the range it
-  operates on and cannot reach the page tables freed here.
+Fixes: 0baad6f9b997 ("fs/super: skip non-memcg-aware nr_cached_objects in memcg slab shrink")
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+v1 -> v2:
+- Do not gate xfs_fs_nr_cached_objects(); XFS's inode reclaim is
+  intentionally driven from per-memcg contexts to free memcg-charged
+  slab (Dave Chinner).
+- Add mem_cgroup_shrink_is_root() helper in <linux/memcontrol.h> so the
+  filesystem callbacks don't open-code "sc->memcg is NULL or root".
+  (Dave Chinner)
+- Add fixes tag (Dave Chinner)
+---
+ fs/btrfs/super.c           | 10 ++++++++++
+ fs/super.c                 | 19 ++-----------------
+ include/linux/memcontrol.h | 21 +++++++++++++++++++++
+ mm/shmem.c                 | 10 ++++++++++
+ 4 files changed, 43 insertions(+), 17 deletions(-)
 
-> +	/*
-> +	 * Kernel page table walkers either walk ranges they own exclusively or
-> +	 * hold the mmap write lock on init_mm (ptdump being the motivating
-> +	 * case).
-> +	 *
-> +	 * Therefore, acquire the mmap read lock to prevent use-after-free when
-> +	 * freeing page tables.
-> +	 */
-
-Same for the comment, maybe:
-
-      /*
-       * Acquire the mmap read lock to exclude ptdump, which walks
-       * kernel page tables it does not own under the mmap write lock.
-       * Concurrent read lock holders are safe: each exclusively owns
-       * the range it operates on and cannot reach this page table.
-       */
-
-With that:
-
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-
+diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
+index a7d804219bec..cc4537435399 100644
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -22,6 +22,7 @@
+ #include <linux/namei.h>
+ #include <linux/miscdevice.h>
+ #include <linux/magic.h>
++#include <linux/memcontrol.h>
+ #include <linux/slab.h>
+ #include <linux/ratelimit.h>
+ #include <linux/crc32c.h>
+@@ -2434,6 +2435,15 @@ static long btrfs_nr_cached_objects(struct super_block *sb, struct shrink_contro
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
+ 	const s64 nr = percpu_counter_read_positive(&fs_info->evictable_extent_maps);
+ 
++	/*
++	 * The evictable extent map counter is filesystem-global and does not
++	 * honour sc->memcg, so it is only meaningful on the global (kswapd or
++	 * root direct reclaim) shrink path. Skip the per-memcg iterations of
++	 * shrink_slab_memcg() to avoid queueing duplicate global work.
++	 */
++	if (!mem_cgroup_shrink_is_root(sc))
++		return 0;
++
+ 	trace_btrfs_extent_map_shrinker_count(fs_info, nr);
+ 
+ 	return nr;
+diff --git a/fs/super.c b/fs/super.c
+index d2d04a6f4f84..a8fd61136aaf 100644
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -24,7 +24,6 @@
+ #include <linux/export.h>
+ #include <linux/slab.h>
+ #include <linux/blkdev.h>
+-#include <linux/memcontrol.h>
+ #include <linux/mount.h>
+ #include <linux/security.h>
+ #include <linux/writeback.h>		/* for the emergency remount stuff */
+@@ -170,19 +169,6 @@ static void super_wake(struct super_block *sb, unsigned int flag)
+ 	wake_up_var(&sb->s_flags);
+ }
+ 
+-/*
+- * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
+- * operate on filesystem-global state and ignore sc->memcg. Driving them
+- * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
+- * per-cpu counters and queueing duplicate work: the actual reclaim happens on
+- * the global path (kswapd or root direct reclaim) regardless. Restrict them
+- * to that path.
+- */
+-static inline bool super_fs_objects_eligible(struct shrink_control *sc)
+-{
+-	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
+-}
+-
+ /*
+  * One thing we have to be careful of with a per-sb shrinker is that we don't
+  * drop the last active reference to the superblock from within the shrinker.
+@@ -212,7 +198,7 @@ static unsigned long super_cache_scan(struct shrinker *shrink,
+ 	if (!super_trylock_shared(sb))
+ 		return SHRINK_STOP;
+ 
+-	if (sb->s_op->nr_cached_objects && super_fs_objects_eligible(sc))
++	if (sb->s_op->nr_cached_objects)
+ 		fs_objects = sb->s_op->nr_cached_objects(sb, sc);
+ 
+ 	inodes = list_lru_shrink_count(&sb->s_inode_lru, sc);
+@@ -273,8 +259,7 @@ static unsigned long super_cache_count(struct shrinker *shrink,
+ 		return 0;
+ 	smp_rmb();
+ 
+-	if (sb->s_op && sb->s_op->nr_cached_objects &&
+-	    super_fs_objects_eligible(sc))
++	if (sb->s_op && sb->s_op->nr_cached_objects)
+ 		total_objects = sb->s_op->nr_cached_objects(sb, sc);
+ 
+ 	total_objects += list_lru_shrink_count(&sb->s_dentry_lru, sc);
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index e1f46a0016fc..5407e4200460 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -520,6 +520,22 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+ 	return (memcg == root_mem_cgroup);
+ }
+ 
++/**
++ * mem_cgroup_shrink_is_root - is this a global or root-memcg shrink invocation?
++ * @sc: shrink_control describing the current shrinker call
++ *
++ * Returns true when @sc represents a global reclaim shrink (sc->memcg == NULL)
++ * or a root-memcg shrink, i.e. not a per-memcg iteration of
++ * shrink_slab_memcg(). Filesystems whose ->nr_cached_objects()/
++ * ->free_cached_objects() implementations operate on filesystem-global state
++ * and do not honour sc->memcg can use this to early-return 0 in per-memcg
++ * contexts.
++ */
++static inline bool mem_cgroup_shrink_is_root(struct shrink_control *sc)
++{
++	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
++}
++
+ static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+ {
+ 	return objcg->is_root;
+@@ -1071,6 +1087,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+ 	return true;
+ }
+ 
++static inline bool mem_cgroup_shrink_is_root(struct shrink_control *sc)
++{
++	return true;
++}
++
+ static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
+ {
+ 	return true;
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5789a0f5a346..dc8cd4f563f4 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -846,6 +846,16 @@ static long shmem_unused_huge_count(struct super_block *sb,
+ 		struct shrink_control *sc)
+ {
+ 	struct shmem_sb_info *sbinfo = SHMEM_SB(sb);
++
++	/*
++	 * The per-superblock shrinklist is filesystem-global and does not
++	 * honour sc->memcg, so it is only meaningful on the global (kswapd or
++	 * root direct reclaim) shrink path. Skip the per-memcg iterations of
++	 * shrink_slab_memcg() to avoid queueing duplicate global work.
++	 */
++	if (!mem_cgroup_shrink_is_root(sc))
++		return 0;
++
+ 	return READ_ONCE(sbinfo->shrinklist_len);
+ }
+ #else /* !CONFIG_TRANSPARENT_HUGEPAGE */
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.53.0-Meta
+
 
