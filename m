@@ -4,140 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EB8FC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03F7C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:42:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 901946B00AB; Wed, 15 Jul 2026 10:42:45 -0400 (EDT)
+	id 976796B00AE; Wed, 15 Jul 2026 10:42:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88B336B00AE; Wed, 15 Jul 2026 10:42:45 -0400 (EDT)
+	id 94EB96B00B0; Wed, 15 Jul 2026 10:42:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77B2F6B00AF; Wed, 15 Jul 2026 10:42:45 -0400 (EDT)
+	id 7EF5A6B00B1; Wed, 15 Jul 2026 10:42:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 420F26B00AB
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:42:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B08A71A01EA
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:44 +0000 (UTC)
-X-FDA: 84991277448.24.9E89966
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C66C7100003
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:42 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="E HFI4Kw";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=C0L9Ddr4;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9A36B00AE
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:42:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8F7DC01B3
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:51 +0000 (UTC)
+X-FDA: 84991277742.13.A29EEC0
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8F1374000A
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=DJW4sjrd;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784126562;
+	s=arc-20220608; t=1784126569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3l0XyTdKPP5hBOW6Vzm0DCbWsUBNUYrq9eqhYnO/icQ=;
-	b=wjQbMDAbQ837g5gMeXJgSTJaLPoqtBgSoOzjWQ93wyS+RCOO8JumFYWLLL4pa9qYzewOyu
-	szxsWrie5otPl6X6rr+Hu7g/FnLnQCdDs+JlHj5z805vcTrZqiN5/zkBqmeFngWjHXNN+c
-	EzRozK5lBGwRIrnArR6gBdphyJOzBUM=
+	bh=zxylkB/9Q330ZTK+3xtMFXAr8pY156LcQll6mFT3qQU=;
+	b=0BKcqHX/mUQCIYm9z8SElC0yNv8HMVOXERwGzKYbwhbeETrNLtn9stgy3+vMTYt8isXvBp
+	drvArxIr0+2nCTMxGVb1Ssq/AxVK7Zttkarcg2jvGq0dM9lC59JUfJNCupgsovHmFP8dvY
+	HC7Wd0QB48oMkPuIJg+d201kveAivv8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="E HFI4Kw";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=C0L9Ddr4;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=DJW4sjrd;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.221.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784126562;
-	b=FLZdYEBQ9wWDA0THZR1k1HeWBQn/5m7rolqBBA6Bc000Cf00ruBYzAs2dm9jVCQcR755Kh
-	f1A4MzXYIIqrzpdBiwnXSPlpdkGY2dnZTPf2tAMZQO0c6nyWc7RGMFYf3tHvluuZFdLiOp
-	86GzEdj8RS1zrk4DtKo6zJeQZhQ8Y6s=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id BC2CC7A00A2;
-	Wed, 15 Jul 2026 10:42:41 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 15 Jul 2026 10:42:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1784126561; x=
-	1784212961; bh=3l0XyTdKPP5hBOW6Vzm0DCbWsUBNUYrq9eqhYnO/icQ=; b=E
-	HFI4Kw7WoTNLWubLoH5iL4Kob2LwYAo/ezxVE04Ij8OuLCrgdmXh2XMlnAiF5AL0
-	U5gZgnCNsxIRIuxNAMEClRnwTLTupIkyCE/gHaTL4ymV695XhW3eRqjkUEltnElt
-	I5U4lP3JA7t26RicNjt4W8AqoRC8+O526pfZgow2ImJ8Te+U3vV+yGukHpa6w69X
-	cgt1D5yrN4EDFhENBwCjOE4TkVOAfuaWnMKDDUtMP3WsIXPo9KONrHkIcO3jtzdM
-	mBPNueOzSlWiw52FvuStfTFtul2gbF4iGTLz4qIZqMl/L7DyRpNQ2nfNQPdOfXiE
-	RTBuxGzqOrF9r6w8uYzUw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1784126561; x=1784212961; bh=3
-	l0XyTdKPP5hBOW6Vzm0DCbWsUBNUYrq9eqhYnO/icQ=; b=C0L9Ddr4whDFo59u2
-	NVhLZ2w1+DV39e9SRndWby97xxTjIVe/F4LWHt2zzyouWNPQurWqp6RIC5u2vn23
-	q1czZtDZREkSQ0yH97LsVXNdK4ahIV7smgNbygFcKRKC7LZw9R/ZpLw33nFRQIzw
-	Nq68TtMTkXJ+g00zx+RAAI5ZHD9eImYCqthY1l3cLF/jaUICmxIigi5GfLJtxrtu
-	o79g6N8ekerqaVh4b0FQ3ohW65/t7hH4DFc3Mzj6TcPHGzVzVJTdt4xx2bmYIzFo
-	+M23JusCUVd9S+TCSJsuuIZK/91JWWA8jzlZ3BI0A348n3igS232keIbWuOf5MV0
-	f/Q+Q==
-X-ME-Sender: <xms:YZxXaqwA7p7LKIHO6-zoTCWpRU9VaNFDuv4FlRxLT7d8QMoEKhRuYw>
-    <xme:YZxXaiIghCJicXG9L60yehCsAAbnMH1TNz6ctmpQV716HO4ryhlOB6Mua1NhuiiHR
-    RFGsGbM6Aof7FIH6sS0iCkKU655l0xaHvQx6nmUSarj1UnUCTiXDMU>
-X-ME-Received: <xmr:YZxXan0hjItO3ioQbcMilHHaK-B_vf8EJu0gd1eHyKxhe2hho7gOEKJVcOgt_A>
-X-ME-Proxy-Cause: dmFkZTEr6Zm/HMNxfsNW/iezKuhtKtrCalV88quZrbEDABDdD3m9hYcYGhu1/0jgY0mEAr
-    sDUumFR+I0fgMm5tFKkir+Gxq0Uv1DpOxUMI0WLzmBurypAOVcnwwlGk5Tk6YJyP4W4LJj
-    a5MadW8FxxEAP1jz87bKlPC+2ZH+KYsfqVXt+HqGnx3SF8rzaGHL74vzjXVnsiR+WdtG9w
-    pwvNy3UezTTxROXIgW04Z/k6vPmQcVxT0hS3LweBnBPmAR/9befwPxJnbqkfu3ZhJCreth
-    Dt2wnyQXE6Mxst6SIo7a4+2Hv7YcgFwpFMxFGWDzC4hyW2dxkPtxAKABuSsV/FBv0eZGCQ
-    nVBWit7wFtpeaKLi49iad9uxVS6EQc0JVo2pnLKBlinK/8Va2jWVqDNaEBfZ/RwI1BzO1/
-    XPblA4/UH95biD+qvhvWWsRq19FZ071pDZ/72cPqwuX7Ar2fl+xVOuni6NaHPWJLMHzmbu
-    5LV0BV83bGlCA/9oMvRLIe6r94SkBsbbeta0UgLzpcUTmTYbUe1cHmRZI8/IKUU6PsuFxE
-    gtmiq+r9hT1iYga7oxFCH4e2IHM76L7elVjdzBdapr1gYCntfYM0IGEhZLLfAy63d6xUHw
-    W0OHBNeOOZY1EG9etNMCEamYsHfT3h3ZTb9XjcLz/YajyyYMP9aedh6jptEQ
-X-ME-Proxy: <xmx:YZxXakd6b-mp2NYg4Y0Q8tHjeFZsnA0iQLqTq617Pb9dK0HpQz-YeA>
-    <xmx:YZxXaj6TMlNzS8wENBoYoiTAYYwkCxGuQ_uuseMErgfDYZKNlTTRzA>
-    <xmx:YZxXav_7VR5EM9X6XwftO0yWdg69KRU29nX7H7ezwecmNif3o3mkLQ>
-    <xmx:YZxXaiKH4aWHCBriEvpJ06Lj6lUb-M4sQu_Rl_Om5jsVwJNDNbbS1g>
-    <xmx:YZxXaq8HML6NbFLJT4FYBK-BaRI99Esc-G_Z4PuEMC2OxXfg9ei1Bbog>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Jul 2026 10:42:40 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org
-Cc: usama.anjum@arm.com,
-	peterx@redhat.com,
-	liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	david@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	zenghui.yu@linux.dev,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	stable@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v5 2/2] selftests/mm: add PAGEMAP_SCAN test for THP PMD holes
-Date: Wed, 15 Jul 2026 15:42:34 +0100
-Message-ID: <20260715144234.442721-3-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260715144234.442721-1-kirill@shutemov.name>
-References: <20260715144234.442721-1-kirill@shutemov.name>
+	t=1784126569;
+	b=fGhmuLzjjf6CLmlOIFHc65TGlMfEmAlZ5qh+EP3Rc4kbxwKkdpA3YFTeNWeyn2QHPXaMzA
+	ZqVAdXaKe91joIBkWjw3LBgYkVRFk/aJccAeRVgCpSbDMHNNukrlorEXfMUQW9ckB2lPA4
+	thcTvZ033g/koFpA3nNQ1B1nY6ayZTI=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47d6c634f45so3164979f8f.3
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 07:42:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1784126568; x=1784731368; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zxylkB/9Q330ZTK+3xtMFXAr8pY156LcQll6mFT3qQU=;
+        b=DJW4sjrdGllq/Ch5VKjeMSO0RJP0G6/hOCIIsJkzm3c2FJDXimNO3K/vVC8mjfo73j
+         t1hf0MnCuXggdCv20giaaviCoEjZ7gN7+6w4SiqhDk6FmGYCP8otdI7s1BO4pYYDrLzp
+         S6/6J+VyfhZpgqZ6uUJoLA0sgmcKOPcPLTxWXx8w1vWPIgZR3KEVhFyP3Y5MVHZJBSJW
+         qWqN4KYrhfQoBuSGhZxo4l41YNupFfZufH6bexYJucyN+3FM32cAwEunj227UEqCalhU
+         I766tt92JCyecKSLaVc1VuEkpO8BqGSeFdwqok2HvcN93GFxIXUu8oZoTK93UiV00/GA
+         1beQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784126568; x=1784731368;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zxylkB/9Q330ZTK+3xtMFXAr8pY156LcQll6mFT3qQU=;
+        b=YCE4Aa/Um4JmrM2FR8TPQqCuEfVpwTDK8URLnUf1/5itIMk+7Qd5woC9bxxBYzN+mz
+         QtdMWQXeO7vnz4nbCXVj9sGQC3Fd4k2NttnPiiif0FK6gVP51AagOE/P+iXxyKAUuNou
+         KEr1U2aJmOuVeZai7vGf6xedJHAwlgfOT7vvEjvqPHiI3EYCQ8+0WTceaK9djy9NxK40
+         dLCUUximROvbqBB19x3pgbilib6GzpbN2z6kCLCsrKIsIuaJXQ9OJaBRyrR+OWUyMJPT
+         4jYq1NbMNZy9Y8i+kf8H7sYCpWJRPxCAIZjau4dUB+05BTIMZmA1Tnc1QH6BK+Pflodk
+         u0qQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrGqCjdTvkZAHi0bqMLYvmfaMlOSpqjmKvMG+wDfH3KpFf/JjAdIwFLMb0KyLd7tlq/bdf1pqjGaw==@kvack.org
+X-Gm-Message-State: AOJu0YxmAzhRbVFscuzIxK2zGW3FkGIhz80+L4uZQW9Q+EaQS5b8GE/K
+	oH+zRh7IAlLFk3nwdlYD1LPqBQpvRmgqgFPS1+WQKnGUyCoSm2FQJmD+o9phOHDVl2s=
+X-Gm-Gg: AfdE7clhL6HCdVpJQAYE9lSo+9NSS1bm0NFuMk4I5DeSZaFnSBdDdFFdDlV0NE3xhxu
+	xLGA6EDc6CQas59f8S7+qdUI1/nxmVdKWmWozdMTGQdQmjCDry4eLK6ibrxrY8j40Bk1/dDl77x
+	2JjCyfVU3pKYYQs/FigcT82xUYRf4bAEkBzsd3T/Asr7guQccAGeaKWYZHtWYktxc1CMvb8LkZR
+	ouymv/G7oGJ8bPxNJkogKq9c9EhCN8IwIqbFK9xaLIOlOjArMd8ULgaCMetqTQnHK3UICtwdmJs
+	4pSOkCmipRe7VWBa5qGQiy0Qqeq3fG8Z9Qk25SEQXO2ex88MkYFRnNF2CbjROpvtysJUeqCN4d3
+	zU4kEHxXtF/xDCdldyAozmFZl7ZOC+l+TbW4PEC7GvxWHeL/rfB71/hJG5vLz0E54ywaWoNZREy
+	o4NLLC0xGgkC/foA==
+X-Received: by 2002:a05:6000:25c8:b0:462:d07e:4bc4 with SMTP id ffacd0b85a97d-47f4886edd1mr8716611f8f.7.1784126567792;
+        Wed, 15 Jul 2026 07:42:47 -0700 (PDT)
+Received: from localhost ([2a02:8071:8280:d6e0:1353:8eb8:c84a:b6d4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464c4320sm16428786f8f.32.2026.07.15.07.42.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 07:42:43 -0700 (PDT)
+Date: Wed, 15 Jul 2026 16:42:38 +0200
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Altan Hacigumus <ahacigu.linux@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmscan: clear hopeless kswapd when global direct
+ reclaim makes progress
+Message-ID: <20260715144238.GR276793@cmpxchg.org>
+References: <20260711043946.68421-1-ahacigu.linux@gmail.com>
+ <20260713112001.GE276793@cmpxchg.org>
+ <CALjTKDkFG651PbreBkDjB_=rKXOrek4b1WJpDjfTY=385z__VQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9tp8mj6r5waszxg941eiuza69x31otp5
-X-Rspamd-Queue-Id: C66C7100003
+In-Reply-To: <CALjTKDkFG651PbreBkDjB_=rKXOrek4b1WJpDjfTY=385z__VQ@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784126562-806124
-X-HE-Meta: U2FsdGVkX19lkaayN4UNcAgbxeDCYY2pZqHisV/FodORmcP+jXYo9d1faQM+O7riG60jEFPplK0R045FZzMWH4/7L9mJRnYWLv486MtbQVZ+lXbxYg/9SOyM5CNvWZvjgVnoDsZUFtQE28Bzc7WwWBen4ToF0ysJuzVw7i35YCIdMP3Kzha8T5PjStjlW4PbsszBqv5I4IlEFuMKoFysw9c2v0Il+Xr2al1sI+r0SLHJO6rPNPA7+UuvnM4KsS+VAfPhB149jt+h8dW5TqLTVeDhR2z+T3ljWEtU75A44PRg3UTdm71z+FNxpQyYe7nxx9SFHJumpcZq2lOGosiZIxIUlM1h4JtOMgnFqO9a8Afy/ozktXDEVF2MVADJ1sVCrhFbdX8vhlzDalCzcLNUzYf2MfmjE26trWTIJ/4emEPp2oeB9EBD0VtWY3hKcBMi06MqeQPgRbceoYzukzJwuXuIybU3xXUbShhQruRQXiGT7abUuZ3xDmdLF87pHbvUm7gSvbjSG6G8+X1Ur0rJmI4ywcMRv5UrWHMUJJkd/2IJ0WSIGYNvLBEELGgYH4Wr1SY3P8aPE9x+++jhAPgLlaYeGqGoJ+q57inNAGNDwRm709Ifo5KMFgcXeS5IReGPXOwvivvQOOcSz8aIXR+i9fh3ZxPwHZpVWiNazIX/+r5YemsARDQ4hQmQmSqDP29HJtUIva/3fF6WPhoifNAs1uvCN/MEYdI3XVtm1Oc/c/cfI+UU/mJqabV9f3m8WDz6ZEYtImB1V0AZbuEoB9M4qQWBczaY4VmZeDySflK59mlI6FfDax9x7OGstcFJ3N/8mg0Q2gTTrR+JFKLh4X8BQBza3x+gkHo82yOxQWWxrDsB0sFbYu2OjtZ7YWczmzK8BJS1UzsyRJ+XdliC/dVurxLh2xAX2t+2yOiCMcw6V+1/9mEUknk4V1C/AK5Qq/0ECZ1bkEGFuqsPB3WYjAY
- VeUibvlu
- LFIcXGZlDMY/uSNCeDZJnpSnjFzQma2VEV9Y86BDsGCBWHe0YPgo0mb/G9nKc3T5CoVH6e89to1hfPiVifekXDoBZ2dnQb1UM01QyP2iGX8sXj8fUIJxvi21NhSWSOqhagPKbCt3hUzKlvxBaKeeTLPcT5hP9VPi9PiKv2kE1VWpLZXlQT+lpZEMEwiz1o60nzPGCF7vI4V6MhYhNuPyskGmUl8YuGMMpR2bfyW7OYuvGmE/0N9GMatV0dtj5JvKRS0ZNqlv0TC744AXO4quAWv//SQ+X1S6WRDqx5gdxWN2TtX2vazunZ7xCcYpg0gyHKHx0fkU79QAYgjUB/jiIih95UtVBQFP1T1nodq9404sQpieRb2VZFKCPdeVR3BVy/v/E8pZhghL/byGySxP1rrmJFuaRdtiZq67SdPpXrvM+3fx4l8z4Vn1GPlWgRuKOpy/l01TFsckCaLMVp7jLaMRik9Ucn4Ik8N2ENm5jkynYlTfPzhMnFyiux7MmMQF9phlXvKYIPpWzp+DhSUTPfT+uNlA++SbwMJUUdDH8fB2icXOzrBngJSEYwCkSvinaiMqRDaFHVkr02wM=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8F1374000A
+X-Stat-Signature: pp1r9owgtg43wffc1te9j1ahwyhtct57
+X-HE-Tag: 1784126569-179646
+X-HE-Meta: U2FsdGVkX19NTvNN2olrTBeZW1FRvPTjQbutkj7mDsF4I3dfI3OK0xTRRsLTkLaginfkINKREkO+hlod7Sm3YJ5r/Aw0OVeEMAOq3BYadMkIa2+DX9aSJkJhii0z5KIlxZZ5bELCVeYW2aelZMwqH3ANvGvmEN4upIcOvalMhD6UBZ1Ei9oFjSC9WnqNtfn2ts39SS8Cknjrg6wpogh+y+1EwMFtXVNXG98Wueg8MEZ2P9p1La6LYDEpMSe74P40CORuA0v3cUNuNe7gHpH0nTZ8vtzBXEV9Wrh2jEmUQJ4TLJOuUBmiHeklz7gzC4JUtCRJMxr6MapAjmSqGdUf7ibhXmSOG5dht5BVuPUDtocXNdMpazXHyOpvGlKuvbgQgUyQHCHY2agqnkP/mKUEXRbNxzDiIHDX8czt+uFw0LejEUSpcz+D+d4mTua4yZzZJf8qIen8R15cNDCwQ7JcP3HclGbdkUpC3rTfjOVQiGCmB4586syztjyYK3KfGt0FY4RMPc4Y+X3zVJPtY2V7nX2YVtrUNiXG0USxDSrNwdb5OBWuAgqn2+x/7HUI1wpphUSb085xms88Is5PSvduMSd7l/O4MBJdlGDiEY5h2oYemIigmvQ1bi/zIIdWSrvcY4L3ge1/s/IPW5BJNc90syJ6B/gf7ZLzYwULrOzbEVUjetD8RoOJCUumTRjU6zZWkqW0vLS+NBpFkfbzN0CnZrn+mPrUgqb1i7KFwZ2QxrDOlOQ0un5Oc3WntZzlRFQyCG6+vV/YynTkTGBMXrJ+ZvC3reGQmcQXA88VAK+cWot7OC0w9xI61qYV7+IDt43vpVYFlGkznwoLdKwam/qimeYzxWMhcWZxfUNrACBDClyPLCaxKjK14lPdZ5gOOH/+4Pchj4hp22NfVJ/RrP1KIhGhhtADD8jFyfZsRrrApiKdb4g7aSaz8g5WVE1FwkluFOH1TiPSPAYQ1Hdx2IP
+ 6CcAhGC0
+ YvKq0BnMwjyG/vZ0H1aOfa+kzRFlk4SjejpgRsBwtS2F+yW1dDIIN/fVQBzzyizrKU7Cxi5dG19Iqm/v+rbW5nS7dHH+oVWLySd8pa03CGGTJvGIRaELZYdcLUmhG34BMFa1dwyfd2A5po2kmh5ZKpVfPlk15ShsvBfjcaaOS88dsDtvDYNqfPJszeoqzh2GJtvwl48GxHC7nD9ocxQSTuZg2oO6NP0ApxXoKO4upGeDNHaEySjOV9lD3YxoaAzZpNmun7iIYce9T37ddKPwpJL2cY5J2ZBRe4NSFO0rWBYeha19+/QTtURs+qBQ/hbWuwjP0/yBUPoOgtpWvD9kXn6SlPhiPd1ics9RYCuHx6I23k/3ltV1cN6pY+Fd0NkthRc/oeYsvbNKFT4reINREBwbw71XMaD4JgE0Vghxva/ftJQ8iHbIFFoz8Ip3s59v0MpHfkHDYH6/tUqj41YmMXjbTC+mZLaQTPDT/qUAO+3b6yV1MlD6lM7kSTaxfs96QX6P3yDd1Hoo7jr476ke2loarCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,127 +136,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Tue, Jul 14, 2026 at 07:30:12PM -0700, Altan Hacigumus wrote:
+> On Mon, Jul 13, 2026 at 4:20 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> >
+> > On Fri, Jul 10, 2026 at 09:39:46PM -0700, Altan Hacigumus wrote:
+> > > Direct reclaim clears the hopeless kswapd state only once the node
+> > > becomes balanced - added by commit dc9fe9b7056a ("mm/vmscan: mitigate
+> > > spurious kswapd_failures reset from direct reclaim") so that cgroup
+> > > memory.high reclaim cannot repeatedly revive a kswapd that is unable to
+> > > balance the node. Before it, any reclaim progress revived kswapd.
+> > >
+> > > However, this restriction also prevents global direct reclaim from
+> > > reviving kswapd. Under sustained memory pressure, global direct reclaim
+> > > may continue making progress without the node ever reaching the high
+> > > watermark, leaving reclaim to allocating tasks.
+> > >
+> > > The effect is visible on systems where a database workload mlocks most
+> > > of memory and the remainder is under continuous pressure: allocations
+> > > stall long enough that ordinary tasks (e.g. ssh) become slow or
+> > > unresponsive, while kswapd sits idle.
+> > >
+> > > Unlike memcg reclaim, global direct reclaim follows the same node-wide
+> > > reclaim path as kswapd. Clear the hopeless state when global direct
+> > > reclaim makes progress, while continuing to require a balanced node for
+> > > memcg reclaim. kswapd_try_clear_hopeless() becomes static since struct
+> > > scan_control is private to vmscan.c.
+> > >
+> > > On a workload with most memory mlocked and the remainder under sustained
+> > > churn, with swap enabled, comparing the same 60s window:
+> > >                               base       patched
+> > >   allocstall (all zones)    413441          6532
+> > >   pgsteal_direct          15889552        255619
+> > >   pgsteal_kswapd                 0      26079382
+> > >   PSI memory full avg60     13.10%         9.37%
+> > >
+> > > Direct reclaim was already reclaiming many pages in the baseline;
+> > > this change lets kswapd resume doing that work asynchronously.
+> >
+> > But does kswapd actually stop?
+> >
+> > I don't see how you avoid re-introducing the issue described in
+> > dc9fe9b7056a. Direct reclaim picking up a few pages is no guarantee
+> > that kswapd is able to restore the watermarks and stop running.
+> >
+> > The distinction between global reclaim and memcg reclaim seems
+> > handwavy to me. Either can free a couple of pages on the node. Who is
+> > doing it has little bearing on the question whether kswapd can balance
+> > the node and go to sleep?
+> 
+> kswapd still stops for the same reason as before. Its own reclaim
+> progress never clears the hopeless state; only pgdat_balanced() does.
+> If it stops making progress, it reaches MAX_RECLAIM_RETRIES and parks
+> again. This change only allows successful global direct reclaim to
+> revive it. Whether a revived kswapd can rebalance the node is not
+> guaranteed - nor required: under sustained pressure the change is about
+> who performs the reclaim, kswapd asynchronously instead of every
+> allocating task synchronously.
 
-Add coverage for the PMD-hole case fixed by "fs/proc/task_mmu: fix
-PAGEMAP_SCAN written state for PMD holes": a MAP_PRIVATE|MAP_ANON THP that
-is uffd-wp'd and then dropped with MADV_DONTNEED leaves a pmd_none hole
-with no page table, which PAGEMAP_SCAN must still report as written --
-checked via both the fast and generic query paths, mirroring
-unpopulated_scan_test().
+This is exactly the bug described in dc9fe9b7056a: A single direct
+reclaimer gets lucky, which kickstarts a very aggressive burst of
+kswapd activity.
 
-Include <linux/mman.h> for MADV_COLLAPSE; <sys/mman.h> lacks it on older
-glibc (e.g. 2.34). Same approach as commit fd5295afae91 ("selftests/mm:
-hmm-tests: include linux/mman.h to access MADV_COLLAPSE").
+Sure, the commit lists memcg reclaim as a trigger, but there is
+nothing in that scenario that would make this memcg specific. The
+observation is simply that a single direct reclaimer getting lucky
+does not mean that kswapd can now balance the watermarks.
 
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-fable-5
----
- tools/testing/selftests/mm/pagemap_ioctl.c | 66 +++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+Trivially true if your unreclaimable set exceeds memory - high_wmark.
 
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index 550d1f2c059b..ffa3328185e6 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -8,6 +8,7 @@
- #include <errno.h>
- #include <malloc.h>
- #include <linux/types.h>
-+#include <linux/mman.h>
- #include <linux/memfd.h>
- #include <linux/userfaultfd.h>
- #include <linux/fs.h>
-@@ -1102,6 +1103,68 @@ static void unpopulated_scan_test(void)
- 	munmap(mem, mem_size);
- }
- 
-+/*
-+ * Like unpopulated_scan_test(), but the range is a MAP_PRIVATE|MAP_ANON THP
-+ * that is uffd-wp'd and then dropped with MADV_DONTNEED. That leaves a
-+ * pmd_none hole with no page table, which pagemap_page_category() never sees;
-+ * PAGEMAP_SCAN must still report it written via pagemap_scan_pte_hole().
-+ */
-+static void unpopulated_thp_scan_test(void)
-+{
-+	struct page_region regions[16];
-+	long fast = 0, slow = 0, ret;
-+	int npages, i;
-+	char *area, *mem;
-+
-+	if (!hpage_size) {
-+		ksft_test_result_skip("%s THP not supported\n", __func__);
-+		return;
-+	}
-+	npages = hpage_size / page_size;
-+
-+	/* Over-allocate so a PMD-aligned, THP-sized range fits inside. */
-+	area = mmap(NULL, 2 * hpage_size, PROT_READ | PROT_WRITE,
-+		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (area == MAP_FAILED) {
-+		ksft_test_result_skip("%s mmap failed\n", __func__);
-+		return;
-+	}
-+	mem = (char *)(((unsigned long)area + hpage_size - 1) & ~(hpage_size - 1));
-+
-+	wp_init(mem, hpage_size);
-+
-+	/* Populate, collapse to a THP, then drop: a pmd_none hole, no marker. */
-+	memset(mem, 1, hpage_size);
-+	if (madvise(mem, hpage_size, MADV_COLLAPSE) ||
-+	    !check_huge_anon(mem, 1, hpage_size)) {
-+		ksft_test_result_skip("%s could not form a THP\n", __func__);
-+		goto out;
-+	}
-+	if (madvise(mem, hpage_size, MADV_DONTNEED)) {
-+		ksft_test_result_skip("%s MADV_DONTNEED failed\n", __func__);
-+		goto out;
-+	}
-+
-+	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
-+	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
-+			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
-+	for (i = 0; ret > 0 && i < ret; i++)
-+		fast += LEN(regions[i]);
-+
-+	/* Generic path: same query expressed via category_anyof_mask. */
-+	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
-+			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
-+	for (i = 0; ret > 0 && i < ret; i++)
-+		slow += LEN(regions[i]);
-+
-+	ksft_test_result(fast == npages && slow == npages,
-+			 "%s pmd-hole reported written by both paths (%ld, %ld of %d)\n",
-+			 __func__, fast, slow, npages);
-+out:
-+	wp_free(mem, hpage_size);
-+	munmap(area, 2 * hpage_size);
-+}
-+
- int sanity_tests(void)
- {
- 	unsigned long long mem_size, vec_size;
-@@ -1610,7 +1673,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 	if (!hugetlb_setup_default(4))
- 		ksft_print_msg("HugeTLB test will be skipped\n");
- 
--	ksft_set_plan(118);
-+	ksft_set_plan(119);
- 
- 	page_size = getpagesize();
- 	hpage_size = read_pmd_pagesize();
-@@ -1790,6 +1853,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 
- 	/* 18. Unpopulated pte scan-path consistency */
- 	unpopulated_scan_test();
-+	unpopulated_thp_scan_test();
- 
- 	close(pagemap_fd);
- 	ksft_finished();
--- 
-2.54.0
+> The distinction is mechanical rather than "handwavy"; global direct
+> reclaim follows the same reclaim path with the same protection rules as
+> kswapd, whereas memcg reclaim does not: reclaim targeting a cgroup
+> ignores that cgroup's own memory.min/memory.low protection (see
+> mem_cgroup_unprotected()), so it can succeed where kswapd cannot. Thats
+> why the patch gates the reset on pgdat_balanced() for memcg reclaim, but
+> not for global direct reclaim.
 
+I don't think the distinction is meaningful in this case. The
+memory.low/memory.min aspect just makes a bad signal worse. It doesn't
+make the global reclaim signal good.
+
+Please take a look at the history of the hopeless kswapd concept. You
+have to follow the patches past the recent "hopeless" naming because
+the mechanism has been around for longer. We have moved trigger points
+around a few times now, and you're very likely to just reintroduce a
+problem somebody fixed recently.
 
