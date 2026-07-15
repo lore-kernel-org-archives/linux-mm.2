@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A552EC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 21:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6156C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 21:20:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D887D6B0096; Wed, 15 Jul 2026 17:20:41 -0400 (EDT)
+	id 06A116B0098; Wed, 15 Jul 2026 17:20:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D615E6B0098; Wed, 15 Jul 2026 17:20:41 -0400 (EDT)
+	id 041B26B0099; Wed, 15 Jul 2026 17:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C27C46B0099; Wed, 15 Jul 2026 17:20:41 -0400 (EDT)
+	id D87986B009B; Wed, 15 Jul 2026 17:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 89AFD6B0096
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:20:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 168B2A02E0
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:20:41 +0000 (UTC)
-X-FDA: 84992280282.25.A8BBEE4
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2ED39C0007
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:20:39 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aq72rxGF;
-	spf=pass (imf22.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id A45386B0098
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:20:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16549A02E0
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:20:42 +0000 (UTC)
+X-FDA: 84992280324.08.FE74CA6
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 473491A0003
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:20:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kX3k6J1Z;
+	spf=pass (imf19.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784150440;
+	b=O0xLeg+pJcKy1qznniG7/zlnx7ocdqoJYUPgV1gmDQkMhaS9AdiO/Rkcsbe1LG0mO2Sovr
+	2azw4dnwvDvCMZt2r0XGHyEI5U4z03HkT8Q5bY8oTXF9k7pZS/zikW7A4u0XNVhBpag8Oq
+	pAnFerVvMpOjNouJVPPk1w1fRAgAKFE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kX3k6J1Z;
+	spf=pass (imf19.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784150439;
+	s=arc-20220608; t=1784150440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I4/w1PFAlDDnNDEoj+FOvtFg06IZcqV0NzLqb9Lu6qM=;
-	b=V40nGTL1XFHKTVdKRSSivXPXkcXoz9g8FCJaYoMmh6FyLiYZnfmD+VVF31CR6aCQ/ReRAb
-	G8NGdM+H8xMx139rNssvogEE1a7OD1Patv55kfB7/h+HjbAnj3iFwxvJlt8y6LbeIOMP0O
-	OD8MmEHRHco9lM+JPWaNVE871Q0FNfk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aq72rxGF;
-	spf=pass (imf22.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784150439;
-	b=odOJJlS2Bg6rYtSnW3JgZFMQPy1gCzuRvHYtKgg2dR0iYICoQxZnP4IfXFTGPD7CEFICe6
-	ScobacEr7AIbTJswVHQ37DTsxy/4BX2GaiS2Bzy293NSa3PLCXFHPXQK6s0XcCIuixW82c
-	M6XCeqHBDey6RC5iYASMJSLUf4T9XY4=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c9c26a5fb98so1697053a12.0
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:20:38 -0700 (PDT)
+	bh=MTYN1EdnS3u+jFml+k8yDF3B5yGEfxNc1Hkem9/96js=;
+	b=W8ti1zJwU+/bXmxMn/pWMnsZPjhoZTuBUP+BZ5NuN5gOdOgAt7yiwWa6Dps4DvjAej9rmw
+	hoXVckqNhm7oxU88txK3CCbvOMFzdxvKSkwKQF3rhFYb6Z9vsuZ04Xh94grktjM7BMCgV2
+	tQ9hxED/MNVyRzI7+c9v1q6lv0HxOoo=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c89636920a3so1542407a12.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:20:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784150438; x=1784755238; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784150439; x=1784755239; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=I4/w1PFAlDDnNDEoj+FOvtFg06IZcqV0NzLqb9Lu6qM=;
-        b=aq72rxGFOMyhJxKNDRBkYZ2fdSlIaTfyKI/9MbGFuKDP2DJ1aUqJL/2YoNFLPEz8JW
-         LcxGP49b0NvSSC1x7PFwBLtDtB769/32NG9kYTJvfq7+jUlhByuiWUxajzrI8do5qS6e
-         a3BuDF8v2EkR2k6evwc8d05//LbC2ySMHu/u4jhK4jfhjerk3FpU+BNt6n8thFDYUOj/
-         CalavDElyduB0X82FWYib9zrWJoKUqDBPxlyg6b5vjF0OL2iw4LOKJIC+ayuXe/0Xopc
-         DloleXkVTx6fRapof4evl4q1AVMmbpZEoM0or8eIe/7AmywCXIGFfPhsY5kYOFfWBtAN
-         XDog==
+        bh=MTYN1EdnS3u+jFml+k8yDF3B5yGEfxNc1Hkem9/96js=;
+        b=kX3k6J1ZhtiUbygWxurh38SZbUwhQP2BYHXe/ShTwGounRjZY5oJ3Ysf3Wa3gxhwfS
+         Flaf/Kq8UjGB3O0BzkfVKWOWMuDzbDj2uIsCZ71dQ/cjzO27JtgbYO7aHAeerFLAl4bn
+         6+eTmzi11f+3QskzFA5Zu2RX6rmAY9JL+H1kBm7WF3T3klhmoDvzT+8Y0t5pz2vfgEDS
+         Qb8uPq7cxmhDjC+wWDnhqZNAb4bB2Gv79oYVj98XLBMxyhAocXKA5jPaG45V75DmmUDe
+         w9HTHul19D/0YUZ0l2yQvLXpeNGGiHtiu8E2JSn5zAvvSNmqdcM9yYGOytwl6cE8qNPD
+         CbBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784150438; x=1784755238;
+        d=1e100.net; s=20251104; t=1784150439; x=1784755239;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=I4/w1PFAlDDnNDEoj+FOvtFg06IZcqV0NzLqb9Lu6qM=;
-        b=bZa8XJeZ+L9EyCx33ifAPuMkmTkdhq+hfMUHjlPtCNJd3YoaQIVwKUP/QMhHaV1Jce
-         p2AAcUishkLni0DLAtk2wbrp+7612P6SA48uDvNMaEKY5tkT1GRKVSIk+ODuwZpBbgLF
-         d7gIhamXwpr9NGX+UTeEi74oPV4Wuw+ZKEnmA3ZQP/MgEhRaAy6cZxwTZywImS+2Nj86
-         pC2KN6pV3Xd+4ZxbaxRzaJKp//xmc9UB62N097HD7aOIFsK4fCZC5ycLUpWCCykIkHao
-         cGpEzbMejwFwMP4qVodBI5O/IWVR0+vcSF2PPRpCsupRDioFra0LtCBKdDQgMTD7or0n
-         W3Cg==
-X-Forwarded-Encrypted: i=1; AHgh+RpxD6/8cqVSlB/ePmJyRvUAg0TSm0bXzwgU/IjQVw4o+QFlBi1fk1JsFJHcfwfLa8GCGsR0vzN64w==@kvack.org
-X-Gm-Message-State: AOJu0Yw4/7lW/wjbb3YKPkdOp7o7W1VOMBPty7B+R/S9d0V5CmfZQbZc
-	SMVnv57/08Bgqtf5sHBUmNdJvNmA7EpJ692kdFHPBucNG4V5AZgh221E
-X-Gm-Gg: AfdE7clj1sV10ZyOUr6JcDXKxJOgUvw6dckLsndHpQrd6HqwnZBcgdDnNXRmKVoE5zD
-	nY81QRQBv0pNnaPrzFt8Dg9Nz4xSaHruMKNcZl+wC3vZ1C2LuWs2RKKjsKSmQZkcfMZ5X8PhOtf
-	ANl+aYO9vk3UY28hIvSYgX6pSDGmg2m45OKHMoDPGAIhcj25clxkmXpiyZoN/kaomYV2FldTkfK
-	gAzlQ/6pwEwmq+WYddIdv0bAJpMrZPL7N5fNA4rGVDfbuwQ7vtWj735k9OHDcRc9oBa7nL0mdkV
-	VR6hll0QD+YfaxeLf/iWNX4TJH9PZ4iOIbfwM+sdMLYMcErGA+y671QzVbKi4SRg6r89tB7kAgU
-	TO+uzz91K8gnCfr1ecK9Fa1LRJnSbAf1Nhw1DRx7MUpo/C4VCzEjOu/MG4HUzyDROBpqRZapC8E
-	ZSgsZDXjV/HyKhItBXOV9bxzBGH4s0Rhg/YdRkorxPEBhaa3BB/DPRO8g3XQ==
-X-Received: by 2002:a05:6a21:4508:b0:3b4:8c67:51d4 with SMTP id adf61e73a8af0-3c384e1a96bmr1002656637.39.1784150437690;
-        Wed, 15 Jul 2026 14:20:37 -0700 (PDT)
+        bh=MTYN1EdnS3u+jFml+k8yDF3B5yGEfxNc1Hkem9/96js=;
+        b=TNDglp6cOPnTlK8mSTmuD2NPKhgL6BfolVTjBgCmkZpuiGV2cMRsMdUMwhUkrPN7nY
+         yC07Hf61Uz03YCo29K6gXZjOil357VZDW/LtRn/ALPSsYHSJt2vBK63w3oQWZI89jHHu
+         BArIjftwj3llXEr72R1xc1npRkgVyPglJqlWkTeXmdvbtxcM9Iw7jjBzkeWTvpHtzqSI
+         b4D3xUriej8zUKqILeAT6ocO0HUCwpAbIJZ2i2eMq5dj4XOaVVFZdjs5pHAOlymR273p
+         CTLQxFmyqkIbYgKd39HohYajxcQVm1Mnb3D29lv9KLnJrUPuyT2reF29mkFjCfpKTua8
+         2ApQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoatwzKNr4reyYBGgJdljB1TrSdCehB28o26q6InIkfimZQJqL+hO/uWio2FcfVD4fJ6wORIBn1lg==@kvack.org
+X-Gm-Message-State: AOJu0YzsXQINDR1AOyRgM0c1i7v0GGK+qEpbb2YtjXmoqIF4DNdf4t32
+	c0QBEF+4G6v0BFeK5diRNd8G4PSbb6hK5lh2bb10RoPlfq5P9O4O0VRN
+X-Gm-Gg: AfdE7cn50eAX9byYCMycmti9SFLfKzU0d0i0zy3HXaCBd/8lNjVYhDF0KgTYaLq4Rzc
+	q085i42drvuX/OxY+YF5wQd8J0Sl6B8fTq0FCt3wRcO0GLpX7IByYagMJ447HJSIV2TznK6dhE3
+	iz73uLkNNkklzkkiJFgkuMPX66DlzeVqoIB6gJTtdi9hgSA89+L4U1L9llSV0/5j5OtacjJUX1P
+	ooZYpxUbXUjE3FxzyjDjJFqS8OGruGcNM7gffnHNFV/ITfN6+ybaepCsX/mnTZRyXzXVaUTFk5q
+	0QFl/crorqAc/5gHK6y3tge7xdlFI7rhdOoHxNvndkz6lcA522TnT5+gzsgTwH32ISOTUSfur+Q
+	XIqgV3q4aDuvDJNpAu4wxoctliW7e6yogG9xUBiBgRTJqgaKSUPnNQPzcjudqKlu0SvAvFEyna6
+	+7ap58+0I//bJVpsPj49mA5h3t0ejX/55gWNbsj9GfMoQj8l8xcU5Q6U6qWw==
+X-Received: by 2002:a05:6a20:431a:b0:3c0:b766:7500 with SMTP id adf61e73a8af0-3c110bd8c49mr20507246637.68.1784150439126;
+        Wed, 15 Jul 2026 14:20:39 -0700 (PDT)
 Received: from pop-os.tail4adac7.ts.net ([129.210.115.107])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd403a7f7sm4126844c88.0.2026.07.15.14.20.36
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13cd403a7f7sm4126844c88.0.2026.07.15.14.20.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 14:20:37 -0700 (PDT)
+        Wed, 15 Jul 2026 14:20:38 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: Andy Lutomirski <luto@amacapital.net>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,22 +99,22 @@ Cc: Kees Cook <kees@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	Cong Wang <cwang@multikernel.io>
-Subject: [PATCH v6 2/8] mm: add __do_mmap() and vm_mmap_remote()/vm_munmap_remote()
-Date: Wed, 15 Jul 2026 14:20:01 -0700
-Message-ID: <20260715212007.2382846-3-xiyou.wangcong@gmail.com>
+Subject: [PATCH v6 3/8] seccomp: introduce SECCOMP_IOCTL_NOTIF_PIN_INSTALL
+Date: Wed, 15 Jul 2026 14:20:02 -0700
+Message-ID: <20260715212007.2382846-4-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260715212007.2382846-1-xiyou.wangcong@gmail.com>
 References: <20260715212007.2382846-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2ED39C0007
-X-Stat-Signature: swyuk1p4fxn4fpm51nsqqsqnbgnr661c
-X-HE-Tag: 1784150439-773692
-X-HE-Meta: U2FsdGVkX1+Khb0Pah8OtBHClMRqgSbtoVwuQtqbguGHQ+38ueSz2aSqwl3gBXxJPJrcE8s8LyZvKghLibpfKkrn6cV3UNEo1xsiFj4n5LBYN3zVRIXnaJLOUJs1+Lwwffy2OzQzwJRalUbxdWLtQ4asqraPhZGrvnob5X5BFw3PnGcb9reTbBZjBCjcNOuTAOM3EnrV2Yl/X3CXTg+elceuxXADzbrLntbOfMOdCLr5Lc9hCpDJga49KcPAticWw+G2UmwmEopmhtSExpE2oC7F1dN3OLEvAwZLzASKIag2XcDpMFbBMiSrmdhQsZfX45YMRGHdFgk+KNyxZBC11gBN9VA847OPCrDQLeW4MkHZfBow+EH9RpvcojvMY00Vp0tOfjpro5ZEgmO1ufuEv1WRNfTOMlFaZnfKffbEu3yT0hJk/cdnNFSD6Ea4A+5QUgst2Z9Yb9+M62byiiL06Ga/mtp+J0ipLy9xH1lllTinM3tPc97irumZg0U7NoSMrqokQvofxEBSiMkJ+Jho5uk9YvlHR/eXgXZwHOHmeI3iJnWtJ0f9DE4vlr+12hSIsVkHASNrB10/rcRGdL33zEY9etdlqpsmU9CRFAKnxYENTJuOnVYemRyN42S2c6iutu6O6RA+FJ6h93+lRGmul8NOTIcMgOHm4aMD/vOfGlVypRG7Ge8iFKUSe0zvX5n9QwYYwF3Oq1sOnO6dGJms+jTE2hsfO0AFoKR6WCy4NKgaU4J6eyWAOMBVDf4RKfhqGUUd/a7hrnF5sjBdK+lSJplZmBTH22Oc9EHTT8bmH5ToLq4VK6c9gwAe//sRxWnC6W3vmXDi1rxWUiKPMUkli/wG15WBTc6RdLT/tUu7cxy7COhZGCwqwQnQ41aT1TtwE7lCVDAxH03orT1edw/AEQtFx8r8SM7aviQVLAu9LAjoLHZj7wptDb0Q1IPM4YPRuQduH2v3psLlywk7CqS
- XcOwbqs9
- FSxtVkU7MdqFdRGprmCBpG1kRDsCVfI6UuByLe8x7EzjMZwbrNCATOtZClef4V9Wd+aGIwpk0ZNyAf0QecjCLujtCzyTlGfNRQ4Raz8xF0KGQdamx5X5CcDsJfb9raZCbAGdPovlqaA4GiQzMv632O9DKro0UKWitwSQdEFb1/94L+1uM/XqeV91O4d702CSqz7Mrb5T7IoigDNu/vsoHfxbporZzUrYatL7WBUp069mmSTbv/vFwTX4VUx+HVP5+bT/27UGhgNtNncrChhH92L2A7UhKuAA4YwWj/J+fFDwNH04tuT3XtticLHkUeDxsT9mM9acg4azRCfGeFXWnNiVAPYj7OMNfBIVbQHIfKNsrbM7LhQPzGtmU2HSCXCrOQTxTDDGYVPEcwB9hADoT+qnDsW1SailM+kMwbkBpwoNJT4baNVE2ufgpS4ZEKR26LgonQArMGVuDP3olnh4J5HqVytCwhVlhAPKtIcQIrdd0Xh4NZJekjMhWDw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 473491A0003
+X-Stat-Signature: qgozdchfh4r4fcj34jzo7qpzwj5ghaes
+X-HE-Tag: 1784150440-817536
+X-HE-Meta: U2FsdGVkX18Spv5yJZXX6NYzkZXcDGnzaI+lk9AtWxsHJt3htunJjhupfm4OJX/lBtLR1JOGQ1fSlzxxEJDxorDhb1tAMEEG9HvGc/F0B31fMvUvuKoPs18fYosl5Yi3+oZq6cAfFO1jgNkAYthEy2lviNpJG9PcFYs0FmMvHaXSXLv/799isSQT4kgXePv/zBR/kmUjgf11hrO0egsSN4HEAIa6q1pu0fi8wg4U0LBN/1G211himlsHcQVPGrMWzOycyNN5FxpmiuBspJeZ1OefdDdy1+BTJztZGDMOfQhAAS4EXCB7t0SJcPNr/nzEC/wdltpPpw5Eg3IY/g7onZWaH2Bm21CMcW6Dy0b0rMyI0dMmmTdYJDNcBZqq5ABdjpN2rd4WEVVTRQUEORrB8KcDVul7ahM95mh7/GQ44m5PSg+jDoyh29vvAVIdFxyen8C506/YBhikwhXVFNz/rqx6GA83DAgDPzK8j0wexZHg7jM5pJISz+tcpD/CqPNWmft+gEE7MqvIjs2ggVOPFaCakIYKpldZvOTJr9MGEdUPd654AoADfcOSNWwFhsXoG4U064PYzM2oTiXLs2W0F8PrnJfeALTMTdegKo4pcFlvZZNptfGUYjPKgZN01zBKN+01Lm9pWBc5n1kE7Bm+Ij9rbNXP7MJVvyko1AS1frAHFyDLxxUbkFxsGJjaHwZjPIyV34BLtEMpCDU1Yf66wgnT1+YYZeZao4Qu/OzE//vFEPVq5rMUcKelw0YK6KQ5fsXrUFWak/BsootI0wWkFnLGVo5Jx7ZfCZdFUXKw32qaINsfFrFHkU3pLetUEcLq7fRPMR/v7O1TBEbjFQlH8kIH5SkxBgfWN9DVaHgsUE+a89sv5pFoaR++tHVHnIiwpnBgQtUc/34XjwmMVg/UI86P5lUjc+FT1h4lnVpLO9x1dwjNlDu8XUBItqYX2d5t8UNTriwpaPZvI0P6G7s
+ aENTTExy
+ /0jo1GxdrR6Dr1j2GEOL2PHfTGhqvlctwXyESdWQpbYMU4ls20pl1y+mvNz6W33VNJ/ua5CcvWrCQatq6SNPN21kXxDTjMBaKllEb9220R6Ea7iAq3Ci0QPxB16CSKPWpDURAinT5+8gzMHR4EkWIGZ2iRzCCR6BgS++G76MdvMOD1frJCSDCza7V4+EFLVEvdaTLCFW84O0XiU5BoMzbzuA7GhdRs82Fy0RMSB7DnbUAJbXX5SRGg9ZBig4s9H47ToIJ6zTgjXYqf8rGvYWSFmFYRuv3HwFE2jVlf5o5czXr7sCfPnXBzFsXZCq6ARvKdAEFbjdzJOJ/FzZgHgjDQUR0GDQUlk/nJIx3y1qMBIW+x3M3NC0Y8GhDR1ROvj7oc9jkQRStokExzr9KCjkXD11UYTPbj8QOWKBYGYfzK6ERnah9WQjmQySvyOdYSAGD/PY72nPpbGxdqvCEKtnk1e7O+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,573 +124,244 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Cong Wang <cwang@multikernel.io>
 
-Add __do_mmap(), a variant of do_mmap() that installs the mapping into
-a caller-supplied mm rather than current->mm; do_mmap() becomes a
-wrapper passing current->mm and keeps the current-task READ_IMPLIES_EXEC
-handling. mmap_region()/__mmap_region() gain an mm argument so the
-target mm reaches VMA insertion.
+SECCOMP_IOCTL_NOTIF_PIN_INSTALL maps a supervisor-owned @memfd at
+@target_addr in the trapped task's mm via vm_mmap_remote(),
+PROT_READ, MAP_SHARED, MAP_FIXED_NOREPLACE and VM_SEALED. Because the
+mapping is sealed, neither the target nor a CLONE_VM peer can munmap,
+mremap, mprotect or MAP_FIXED-stomp it; its contents are immutable from
+the target's side while the supervisor retains write access through its
+own mapping of the same memfd. The install needs no target-side
+cooperation, which is what makes the feature usable for fork+execve
+sandbox wrappers (Sandlock, Firejail, Bubblewrap-style) that have no
+trusted post-exec window to install their own mappings.
 
-On top of that, add vm_mmap_remote() and vm_munmap_remote() in mm/util.c:
-entry points that install / remove a mapping in a caller-specified mm
-without target-side cooperation. The intended user is the seccomp
-unotify syscall redirect.
-
-Kernel-chosen placement resolves through __get_unmapped_area() against
-the target mm, so (via the previous patch) the file's own
-->get_unmapped_area() runs and file-specific placement is honored. The
-result is bounds-checked against the target's mm->task_size, and the
-munmap machinery is likewise threaded with the target mm so counter
-bookkeeping and range checks apply to it rather than current->mm.
-vm_munmap_remote() delivers the target's UFFD_EVENT_UNMAP.
-
-Both are MMU-only and guarded with CONFIG_MMU, with -EOPNOTSUPP stubs so
-NOMMU keeps linking. LSM/fsnotify hooks run against current, the
-supervisor, paralleling pidfd_getfd(); cross-task authorization is left
-to the caller.
+The pin is just a sealed VMA owned by the target's mm: it persists until
+the task execve()s or exits (a sealed VMA cannot be unmapped piecemeal),
+and the kernel keeps no per-pin bookkeeping. A supervisor reuses one
+region across many redirects.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Cong Wang <cwang@multikernel.io>
 ---
- include/linux/mm.h |  19 ++++++++
- mm/internal.h      |   6 +++
- mm/mmap.c          |  49 +++++++++++++--------
- mm/mprotect.c      |   2 +-
- mm/nommu.c         |  22 +++++++---
- mm/util.c          | 106 +++++++++++++++++++++++++++++++++++++++++++++
- mm/vma.c           |  46 ++++++++++++--------
- mm/vma.h           |  12 ++---
- 8 files changed, 212 insertions(+), 50 deletions(-)
+ include/linux/seccomp.h      |   5 ++
+ include/uapi/linux/seccomp.h |  34 ++++++++++
+ kernel/seccomp.c             | 117 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 156 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 560bc369a54c..fa1d96bc379d 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4155,6 +4155,25 @@ extern unsigned long do_mmap(struct file *file, unsigned long addr,
- 	unsigned long len, unsigned long prot, unsigned long flags,
- 	vm_flags_t vm_flags, unsigned long pgoff, unsigned long *populate,
- 	struct list_head *uf);
-+#ifdef CONFIG_MMU
-+unsigned long vm_mmap_remote(struct mm_struct *mm, struct file *file,
-+	unsigned long addr, unsigned long len, unsigned long prot,
-+	unsigned long flags, unsigned long pgoff, vm_flags_t vm_flags);
-+int vm_munmap_remote(struct mm_struct *mm, unsigned long start, size_t len);
-+#else
-+static inline unsigned long vm_mmap_remote(struct mm_struct *mm,
-+	struct file *file, unsigned long addr, unsigned long len,
-+	unsigned long prot, unsigned long flags, unsigned long pgoff,
-+	vm_flags_t vm_flags)
-+{
-+	return -EOPNOTSUPP;
-+}
-+static inline int vm_munmap_remote(struct mm_struct *mm, unsigned long start,
-+	size_t len)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
- extern int do_vmi_munmap(struct vma_iterator *vmi, struct mm_struct *mm,
- 			 unsigned long start, size_t len, struct list_head *uf,
- 			 bool unlock);
-diff --git a/mm/internal.h b/mm/internal.h
-index 181e79f1d6a2..fd3d39f6b4c4 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1436,6 +1436,12 @@ extern unsigned long  __must_check vm_mmap_pgoff(struct file *, unsigned long,
-         unsigned long, unsigned long,
-         unsigned long, unsigned long);
+diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
+index 9b959972bf4a..a91d1fc8a2b8 100644
+--- a/include/linux/seccomp.h
++++ b/include/linux/seccomp.h
+@@ -16,6 +16,11 @@
+ #define SECCOMP_NOTIFY_ADDFD_SIZE_VER0 24
+ #define SECCOMP_NOTIFY_ADDFD_SIZE_LATEST SECCOMP_NOTIFY_ADDFD_SIZE_VER0
  
-+unsigned long __do_mmap(struct mm_struct *mm, struct file *file,
-+	unsigned long addr, unsigned long len, unsigned long prot,
-+	unsigned long flags, vm_flags_t vm_flags, unsigned long pgoff,
-+	unsigned long *populate, struct list_head *uf);
++/* sizeof() the first published struct seccomp_notif_pin_install */
++#define SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER0 32		/* up to @size */
++#define SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER1 40		/* adds @offset */
++#define SECCOMP_NOTIFY_PIN_INSTALL_SIZE_LATEST SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER1
 +
+ #ifdef CONFIG_SECCOMP
+ 
+ #include <linux/thread_info.h>
+diff --git a/include/uapi/linux/seccomp.h b/include/uapi/linux/seccomp.h
+index dbfc9b37fcae..d3249294788b 100644
+--- a/include/uapi/linux/seccomp.h
++++ b/include/uapi/linux/seccomp.h
+@@ -137,6 +137,37 @@ struct seccomp_notif_addfd {
+ 	__u32 newfd_flags;
+ };
+ 
++/**
++ * struct seccomp_notif_pin_install - have the kernel install a sealed
++ * MAP_SHARED mapping of @memfd into the trapped task's mm at @target_addr.
++ *
++ * The supervisor owns @memfd and the kernel installs the mapping without
++ * target-side cooperation. It is read-only and VM_SEALED, so the target and
++ * any CLONE_VM peer cannot munmap, mremap, mprotect or MAP_FIXED-stomp it.
++ * @memfd must be write-sealed (F_SEAL_WRITE or F_SEAL_FUTURE_WRITE, -EINVAL
++ * otherwise) so its bytes cannot be rewritten through any other reference to
++ * the same memfd.
++ *
++ * @id: The ID of an active seccomp notification on this listener,
++ *      identifying the trapped task whose mm receives the pin.
++ * @flags: Reserved, must be 0.
++ * @memfd: Supervisor-side fd for the backing memfd. Must be write-sealed.
++ * @target_addr: Page-aligned address in the trapped task's mm to install at.
++ *               If non-zero it is MAP_FIXED (no existing mapping may overlap
++ *               [@target_addr, @target_addr + @size)); if zero the kernel
++ *               picks a free area. The actual address is written back here.
++ * @size: Size of the pin in bytes. Must be page-aligned.
++ * @offset: Page-aligned byte offset into @memfd to map from.
++ */
++struct seccomp_notif_pin_install {
++	__u64 id;
++	__u32 flags;
++	__u32 memfd;
++	__u64 target_addr;
++	__u64 size;
++	__u64 offset;
++};
 +
- extern void set_pageblock_order(void);
- unsigned long reclaim_pages(struct list_head *folio_list);
- unsigned int reclaim_clean_pages_from_list(struct zone *zone,
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 54915ac478ab..f379a065a8e6 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -277,7 +277,7 @@ static inline bool file_mmap_ok(struct file *file, struct inode *inode,
- }
+ #define SECCOMP_IOC_MAGIC		'!'
+ #define SECCOMP_IO(nr)			_IO(SECCOMP_IOC_MAGIC, nr)
+ #define SECCOMP_IOR(nr, type)		_IOR(SECCOMP_IOC_MAGIC, nr, type)
+@@ -154,4 +185,7 @@ struct seccomp_notif_addfd {
  
- /**
-- * do_mmap() - Perform a userland memory mapping into the current process
-+ * __do_mmap() - Perform a userland memory mapping into @mm's
-  * address space of length @len with protection bits @prot, mmap flags @flags
-  * (from which VMA flags will be inferred), and any additional VMA flags to
-  * apply @vm_flags. If this is a file-backed mapping then the file is specified
-@@ -307,8 +307,11 @@ static inline bool file_mmap_ok(struct file *file, struct inode *inode,
-  * start of a VMA, rather only the start of a valid mapped range of length
-  * @len bytes, rounded down to the nearest page size.
-  *
-- * The caller must write-lock current->mm->mmap_lock.
-+ * The caller must write-lock @mm->mmap_lock. do_mmap() is the common
-+ * wrapper that targets current->mm.
-  *
-+ * @mm: The mm_struct to install the mapping into. The caller must hold a
-+ * reference and write-lock its mmap_lock.
-  * @file: An optional struct file pointer describing the file which is to be
-  * mapped, if a file-backed mapping.
-  * @addr: If non-zero, hints at (or if @flags has MAP_FIXED set, specifies) the
-@@ -333,13 +336,12 @@ static inline bool file_mmap_ok(struct file *file, struct inode *inode,
-  * Returns: Either an error, or the address at which the requested mapping has
-  * been performed.
-  */
--unsigned long do_mmap(struct file *file, unsigned long addr,
--			unsigned long len, unsigned long prot,
--			unsigned long flags, vm_flags_t vm_flags,
--			unsigned long pgoff, unsigned long *populate,
--			struct list_head *uf)
-+unsigned long __do_mmap(struct mm_struct *mm, struct file *file,
-+			unsigned long addr, unsigned long len,
-+			unsigned long prot, unsigned long flags,
-+			vm_flags_t vm_flags, unsigned long pgoff,
-+			unsigned long *populate, struct list_head *uf)
- {
--	struct mm_struct *mm = current->mm;
- 	int pkey = 0;
+ #define SECCOMP_IOCTL_NOTIF_SET_FLAGS	SECCOMP_IOW(4, __u64)
  
- 	*populate = 0;
-@@ -349,16 +351,6 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 	if (!len)
- 		return -EINVAL;
- 
--	/*
--	 * Does the application expect PROT_READ to imply PROT_EXEC?
--	 *
--	 * (the exception is when the underlying filesystem is noexec
--	 *  mounted, in which case we don't add PROT_EXEC.)
--	 */
--	if ((prot & PROT_READ) && (current->personality & READ_IMPLIES_EXEC))
--		if (!(file && path_noexec(&file->f_path)))
--			prot |= PROT_EXEC;
--
- 	/* force arch specific MAP_FIXED handling in get_unmapped_area */
- 	if (flags & MAP_FIXED_NOREPLACE)
- 		flags |= MAP_FIXED;
-@@ -557,7 +549,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 			vm_flags |= VM_NORESERVE;
- 	}
- 
--	addr = mmap_region(file, addr, len, vm_flags, pgoff, uf);
-+	addr = mmap_region(mm, file, addr, len, vm_flags, pgoff, uf);
- 	if (!IS_ERR_VALUE(addr) &&
- 	    ((vm_flags & VM_LOCKED) ||
- 	     (flags & (MAP_POPULATE | MAP_NONBLOCK)) == MAP_POPULATE))
-@@ -565,6 +557,25 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 	return addr;
- }
- 
-+unsigned long do_mmap(struct file *file, unsigned long addr, unsigned long len,
-+		      unsigned long prot, unsigned long flags,
-+		      vm_flags_t vm_flags, unsigned long pgoff,
-+		      unsigned long *populate, struct list_head *uf)
-+{
-+	/*
-+	 * Does the application expect PROT_READ to imply PROT_EXEC?
-+	 *
-+	 * (the exception is when the underlying filesystem is noexec
-+	 *  mounted, in which case we don't add PROT_EXEC.)
-+	 */
-+	if ((prot & PROT_READ) && (current->personality & READ_IMPLIES_EXEC))
-+		if (!(file && path_noexec(&file->f_path)))
-+			prot |= PROT_EXEC;
++#define SECCOMP_IOCTL_NOTIF_PIN_INSTALL	SECCOMP_IOWR(5, \
++						struct seccomp_notif_pin_install)
 +
-+	return __do_mmap(current->mm, file, addr, len, prot, flags, vm_flags,
-+			 pgoff, populate, uf);
-+}
-+
- unsigned long ksys_mmap_pgoff(unsigned long addr, unsigned long len,
- 			      unsigned long prot, unsigned long flags,
- 			      unsigned long fd, unsigned long pgoff)
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 9cbf932b028c..02e90577db25 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -939,7 +939,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
- 			break;
- 		}
+ #endif /* _UAPI_LINUX_SECCOMP_H */
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 066909393c38..12135c5df9b1 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -37,12 +37,18 @@
+ #ifdef CONFIG_SECCOMP_FILTER
+ #include <linux/file.h>
+ #include <linux/filter.h>
++#include <linux/memfd.h>
+ #include <linux/pid.h>
+ #include <linux/ptrace.h>
+ #include <linux/capability.h>
+ #include <linux/uaccess.h>
+ #include <linux/anon_inodes.h>
+ #include <linux/lockdep.h>
++#include <linux/mm.h>
++#include <linux/mman.h>
++#include <linux/mmap_lock.h>
++#include <linux/sched/mm.h>
++#include <linux/task_work.h>
  
--		if (map_deny_write_exec(&vma->flags, &new_vma_flags)) {
-+		if (map_deny_write_exec(vma->vm_mm, &vma->flags, &new_vma_flags)) {
- 			error = -EACCES;
- 			break;
- 		}
-diff --git a/mm/nommu.c b/mm/nommu.c
-index d6393bd2844e..15390ef5b784 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -1009,7 +1009,8 @@ static int do_mmap_private(struct vm_area_struct *vma,
  /*
-  * handle mapping creation for uClinux
-  */
--unsigned long do_mmap(struct file *file,
-+unsigned long __do_mmap(struct mm_struct *mm,
-+			struct file *file,
- 			unsigned long addr,
- 			unsigned long len,
- 			unsigned long prot,
-@@ -1024,7 +1025,7 @@ unsigned long do_mmap(struct file *file,
- 	struct rb_node *rb;
- 	unsigned long capabilities, result;
- 	int ret;
--	VMA_ITERATOR(vmi, current->mm, 0);
-+	VMA_ITERATOR(vmi, mm, 0);
- 
- 	*populate = 0;
- 
-@@ -1049,7 +1050,7 @@ unsigned long do_mmap(struct file *file,
- 	if (!region)
- 		goto error_getting_region;
- 
--	vma = vm_area_alloc(current->mm);
-+	vma = vm_area_alloc(mm);
- 	if (!vma)
- 		goto error_getting_vma;
- 
-@@ -1191,7 +1192,7 @@ unsigned long do_mmap(struct file *file,
- 	/* okay... we have a mapping; now we have to register it */
- 	result = vma->vm_start;
- 
--	current->mm->total_vm += len >> PAGE_SHIFT;
-+	mm->total_vm += len >> PAGE_SHIFT;
- 
- share:
- 	BUG_ON(!vma->vm_region);
-@@ -1199,8 +1200,8 @@ unsigned long do_mmap(struct file *file,
- 	if (vma_iter_prealloc(&vmi, vma))
- 		goto error_just_free;
- 
--	setup_vma_to_mm(vma, current->mm);
--	current->mm->map_count++;
-+	setup_vma_to_mm(vma, mm);
-+	mm->map_count++;
- 	/* add the VMA to the tree */
- 	vma_iter_store_new(&vmi, vma);
- 
-@@ -1247,6 +1248,15 @@ unsigned long do_mmap(struct file *file,
- 	return -ENOMEM;
- }
- 
-+unsigned long do_mmap(struct file *file, unsigned long addr, unsigned long len,
-+		      unsigned long prot, unsigned long flags,
-+		      vm_flags_t vm_flags, unsigned long pgoff,
-+		      unsigned long *populate, struct list_head *uf)
-+{
-+	return __do_mmap(current->mm, file, addr, len, prot, flags, vm_flags, pgoff,
-+			 populate, uf);
-+}
-+
- unsigned long ksys_mmap_pgoff(unsigned long addr, unsigned long len,
- 			      unsigned long prot, unsigned long flags,
- 			      unsigned long fd, unsigned long pgoff)
-diff --git a/mm/util.c b/mm/util.c
-index af2c2103f0d9..2b5254106d15 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -588,6 +588,112 @@ unsigned long vm_mmap_pgoff(struct file *file, unsigned long addr,
+  * When SECCOMP_IOCTL_NOTIF_ID_VALID was first introduced, it had the
+@@ -1823,6 +1829,114 @@ static long seccomp_notify_addfd(struct seccomp_filter *filter,
  	return ret;
  }
  
-+#ifdef CONFIG_MMU
-+/**
-+ * vm_mmap_remote - install a file (or anonymous) mapping into @mm, without
-+ * target-side cooperation.
-+ * @mm: Target mm; caller holds a reference (e.g. get_task_mm()).
-+ * @file: Backing file, or NULL for an anonymous mapping.
-+ * @addr: Page-aligned address. If non-zero it is used as given (honoring
-+ *        MAP_FIXED/MAP_FIXED_NOREPLACE in @flags); if zero, the kernel
-+ *        chooses a free area in @mm and returns it.
-+ * @len: Length in bytes.
-+ * @prot: PROT_* protection bits.
-+ * @flags: MAP_* flags.
-+ * @pgoff: Page offset into @file.
-+ * @vm_flags: Extra VMA flags to OR in (e.g. VM_SEALED), or 0.
-+ *
-+ * The general form of the remote install primitive: a supervisor places a
-+ * mapping into a remote task's address space. LSM/fsnotify hooks run against
-+ * %current (the installer), paralleling pidfd_getfd()'s cross-task install;
-+ * cross-task authorization is the caller's responsibility. The foreign mm is
-+ * not mm_populate()d.
-+ *
-+ * Kernel-chosen placement (@addr == 0) resolves through
-+ * __get_unmapped_area() against @mm, so the file's own
-+ * ->get_unmapped_area() runs and file-specific placement (hugetlb page
-+ * size, THP PMD alignment, SHMLBA cache coloring, device dax alignment)
-+ * is honored exactly as for a local mmap().
-+ *
-+ * Returns the mapped address on success, or a negative errno.
-+ */
-+unsigned long vm_mmap_remote(struct mm_struct *mm, struct file *file,
-+	unsigned long addr, unsigned long len, unsigned long prot,
-+	unsigned long flags, unsigned long pgoff, vm_flags_t vm_flags)
++static unsigned long seccomp_install_pin(struct mm_struct *mm,
++					 struct file *memfd_file,
++					 unsigned long target_addr, size_t size,
++					 unsigned long offset)
 +{
-+	loff_t off = (loff_t)pgoff << PAGE_SHIFT;
-+	unsigned long aligned_len = PAGE_ALIGN(len);
 +	unsigned long ret;
-+	unsigned long populate;
-+	LIST_HEAD(uf);
 +
-+	if (WARN_ON_ONCE(!mm))
++	if (!VM_SEALED)
++		return -EOPNOTSUPP;
++
++	/*
++	 * Install a sealed, read-only mapping. A fixed request (@target_addr
++	 * != 0) is MAP_FIXED_NOREPLACE: an existing mapping yields -EEXIST
++	 * rather than being silently clobbered. A request of 0 lets the kernel
++	 * pick a free area in the target mm.
++	 */
++	ret = vm_mmap_remote(mm, memfd_file, target_addr, size, PROT_READ,
++			     MAP_SHARED | MAP_FIXED_NOREPLACE,
++			     offset >> PAGE_SHIFT, VM_SEALED);
++	if (IS_ERR_VALUE(ret))
++		return ret;
++	if (target_addr && ret != target_addr)
++		return -ENOMEM;
++	return ret;
++}
++
++static long seccomp_notify_pin_install(struct seccomp_filter *filter,
++				       struct seccomp_notif_pin_install __user *upin,
++				       unsigned int size)
++{
++	struct seccomp_notif_pin_install pin;
++	struct seccomp_knotif *knotif;
++	struct task_struct *target;
++	struct file *memfd_file;
++	struct mm_struct *mm;
++	unsigned long addr;
++	int seals;
++	long ret;
++
++	BUILD_BUG_ON(sizeof(pin) < SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER0);
++	BUILD_BUG_ON(sizeof(pin) != SECCOMP_NOTIFY_PIN_INSTALL_SIZE_LATEST);
++
++	if (size < SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER0 || size >= PAGE_SIZE)
 +		return -EINVAL;
 +
-+	ret = security_mmap_file(file, prot, flags);
-+	if (!ret)
-+		ret = fsnotify_mmap_perm(file, prot, off, len);
++	ret = copy_struct_from_user(&pin, sizeof(pin), upin, size);
 +	if (ret)
 +		return ret;
 +
-+	if (mmap_write_lock_killable(mm))
-+		return -EINTR;
++	if (pin.flags)
++		return -EINVAL;
++	if (!pin.size || !IS_ALIGNED(pin.target_addr, PAGE_SIZE) ||
++	    !IS_ALIGNED(pin.size, PAGE_SIZE) || !IS_ALIGNED(pin.offset, PAGE_SIZE))
++		return -EINVAL;
++	if (pin.target_addr + pin.size < pin.target_addr)
++		return -EINVAL;
++	if (pin.offset + pin.size < pin.offset)
++		return -EINVAL;
 +
-+	/*
-+	 * Resolve kernel-chosen placement up front and pin it with
-+	 * MAP_FIXED, so the mm->task_size check below runs before the
-+	 * mapping is installed. The file's own ->get_unmapped_area()
-+	 * performs the search against @mm.
-+	 */
-+	if (!addr) {
-+		addr = __get_unmapped_area(mm, file, 0, aligned_len, pgoff,
-+					   flags, vm_flags);
-+		if (IS_ERR_VALUE(addr)) {
-+			ret = addr;
-+			goto unlock;
-+		}
++	memfd_file = fget(pin.memfd);
++	if (!memfd_file)
++		return -EBADF;
++
++	seals = memfd_get_seals(memfd_file);
++	if (seals < 0 || !(seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))) {
++		ret = -EINVAL;
++		goto out_fput;
 +	}
 +
-+	if (aligned_len > mm->task_size || addr > mm->task_size - aligned_len) {
-+		ret = -ENOMEM;
-+		goto unlock;
++	ret = mutex_lock_interruptible(&filter->notify_lock);
++	if (ret < 0)
++		goto out_fput;
++
++	knotif = find_notification(filter, pin.id);
++	if (!knotif) {
++		ret = -ENOENT;
++		goto out_unlock;
++	}
++	if (knotif->state != SECCOMP_NOTIFY_SENT) {
++		ret = -EINPROGRESS;
++		goto out_unlock;
 +	}
 +
-+	if (!(flags & MAP_FIXED_NOREPLACE))
-+		flags |= MAP_FIXED;
++	target = knotif->task;
++	mm = get_task_mm(target);
++	mutex_unlock(&filter->notify_lock);
++	if (!mm) {
++		ret = -ESRCH;
++		goto out_fput;
++	}
++	addr = seccomp_install_pin(mm, memfd_file, pin.target_addr,
++				   pin.size, pin.offset);
++	mmput(mm);
++	if (IS_ERR_VALUE(addr))
++		ret = addr;
++	else if (put_user(addr, &upin->target_addr))
++		ret = -EFAULT;
++	else
++		ret = 0;
++	goto out_fput;
 +
-+	ret = __do_mmap(mm, file, addr, len, prot, flags, vm_flags,
-+			pgoff, &populate, &uf);
-+unlock:
-+	mmap_write_unlock(mm);
-+	userfaultfd_unmap_complete(mm, &uf);
++out_unlock:
++	mutex_unlock(&filter->notify_lock);
++out_fput:
++	fput(memfd_file);
 +	return ret;
 +}
 +
-+/**
-+ * vm_munmap_remote - unmap a range from @mm, mirroring vm_munmap() but
-+ * targeting an explicit mm.
-+ * @mm: Target mm; caller holds a reference (e.g. get_task_mm()).
-+ * @start: Start address of the range to unmap.
-+ * @len: Length in bytes.
-+ *
-+ * Returns 0 on success, or a negative errno.
-+ */
-+int vm_munmap_remote(struct mm_struct *mm, unsigned long start, size_t len)
-+{
-+	VMA_ITERATOR(vmi, mm, start);
-+	LIST_HEAD(uf);
-+	int ret;
-+
-+	if (mmap_write_lock_killable(mm))
-+		return -EINTR;
-+	ret = do_vmi_munmap(&vmi, mm, start, len, &uf, false);
-+	mmap_write_unlock(mm);
-+	userfaultfd_unmap_complete(mm, &uf);
-+	return ret;
-+}
-+#endif /* CONFIG_MMU */
-+
- /*
-  * Perform a userland memory mapping into the current process address space. See
-  * the comment for do_mmap() for more details on this operation in general.
-diff --git a/mm/vma.c b/mm/vma.c
-index 9a6cb0338ed8..788c2a0f35ec 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -1333,7 +1333,7 @@ static void vms_complete_munmap_vmas(struct vma_munmap_struct *vms,
- 	struct vm_area_struct *vma;
- 	struct mm_struct *mm;
- 
--	mm = current->mm;
-+	mm = vms->mm;
- 	mm->map_count -= vms->vma_count;
- 	mm->locked_vm -= vms->locked_vm;
- 	if (vms->unlock)
-@@ -1544,10 +1544,11 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
-  * @unlock: Unlock after the operation.  Only unlocked on success
-  */
- static void init_vma_munmap(struct vma_munmap_struct *vms,
--		struct vma_iterator *vmi, struct vm_area_struct *vma,
--		unsigned long start, unsigned long end, struct list_head *uf,
--		bool unlock)
-+		struct mm_struct *mm, struct vma_iterator *vmi,
-+		struct vm_area_struct *vma, unsigned long start,
-+		unsigned long end, struct list_head *uf, bool unlock)
+ static long seccomp_notify_ioctl(struct file *file, unsigned int cmd,
+ 				 unsigned long arg)
  {
-+	vms->mm = mm;
- 	vms->vmi = vmi;
- 	vms->vma = vma;
- 	if (vma) {
-@@ -1591,7 +1592,7 @@ int do_vmi_align_munmap(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	struct vma_munmap_struct vms;
- 	int error;
- 
--	init_vma_munmap(&vms, vmi, vma, start, end, uf, unlock);
-+	init_vma_munmap(&vms, mm, vmi, vma, start, end, uf, unlock);
- 	error = vms_gather_munmap_vmas(&vms, &mas_detach);
- 	if (error)
- 		goto gather_failed;
-@@ -1634,7 +1635,8 @@ int do_vmi_munmap(struct vma_iterator *vmi, struct mm_struct *mm,
- 	unsigned long end;
- 	struct vm_area_struct *vma;
- 
--	if ((offset_in_page(start)) || start > TASK_SIZE || len > TASK_SIZE-start)
-+	if ((offset_in_page(start)) || start > mm->task_size ||
-+	    len > mm->task_size - start)
+@@ -1847,6 +1961,9 @@ static long seccomp_notify_ioctl(struct file *file, unsigned int cmd,
+ 	switch (EA_IOCTL(cmd)) {
+ 	case EA_IOCTL(SECCOMP_IOCTL_NOTIF_ADDFD):
+ 		return seccomp_notify_addfd(filter, buf, _IOC_SIZE(cmd));
++	case EA_IOCTL(SECCOMP_IOCTL_NOTIF_PIN_INSTALL):
++		return seccomp_notify_pin_install(filter, buf,
++						  _IOC_SIZE(cmd));
+ 	default:
  		return -EINVAL;
- 
- 	end = start + PAGE_ALIGN(len);
-@@ -2426,7 +2428,7 @@ static int __mmap_setup(struct mmap_state *map, struct vm_area_desc *desc,
- 
- 	/* Find the first overlapping VMA and initialise unmap state. */
- 	vms->vma = vma_find(vmi, map->end);
--	init_vma_munmap(vms, vmi, vms->vma, map->addr, map->end, uf,
-+	init_vma_munmap(vms, map->mm, vmi, vms->vma, map->addr, map->end, uf,
- 			/* unlock = */ false);
- 
- 	/* OK, we have overlapping VMAs - prepare to unmap them. */
-@@ -2731,11 +2733,10 @@ static bool can_set_ksm_flags_early(struct mmap_state *map)
- 	return false;
- }
- 
--static unsigned long __mmap_region(struct file *file, unsigned long addr,
--		unsigned long len, vma_flags_t vma_flags,
-+static unsigned long __mmap_region(struct mm_struct *mm, struct file *file,
-+		unsigned long addr, unsigned long len, vma_flags_t vma_flags,
- 		unsigned long pgoff, struct list_head *uf)
- {
--	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma = NULL;
- 	bool have_mmap_prepare = file && file->f_op->mmap_prepare;
- 	VMA_ITERATOR(vmi, mm, addr);
-@@ -2809,14 +2810,16 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
- 
- /**
-  * mmap_region() - Actually perform the userland mapping of a VMA into
-- * current->mm with known, aligned and overflow-checked @addr and @len, and
-+ * @mm with known, aligned and overflow-checked @addr and @len, and
-  * correctly determined VMA flags @vm_flags and page offset @pgoff.
-  *
-  * This is an internal memory management function, and should not be used
-  * directly.
-  *
-- * The caller must write-lock current->mm->mmap_lock.
-+ * The caller must write-lock @mm->mmap_lock.
-  *
-+ * @mm: The mm_struct to install the mapping into. The caller must hold a
-+ * reference and write-lock its mmap_lock.
-  * @file: If a file-backed mapping, a pointer to the struct file describing the
-  * file to be mapped, otherwise NULL.
-  * @addr: The page-aligned address at which to perform the mapping.
-@@ -2830,18 +2833,19 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
-  * Returns: Either an error, or the address at which the requested mapping has
-  * been performed.
-  */
--unsigned long mmap_region(struct file *file, unsigned long addr,
--			  unsigned long len, vm_flags_t vm_flags,
--			  unsigned long pgoff, struct list_head *uf)
-+unsigned long mmap_region(struct mm_struct *mm, struct file *file,
-+			  unsigned long addr, unsigned long len,
-+			  vm_flags_t vm_flags, unsigned long pgoff,
-+			  struct list_head *uf)
- {
- 	unsigned long ret;
- 	bool writable_file_mapping = false;
- 	const vma_flags_t vma_flags = legacy_to_vma_flags(vm_flags);
- 
--	mmap_assert_write_locked(current->mm);
-+	mmap_assert_write_locked(mm);
- 
- 	/* Check to see if MDWE is applicable. */
--	if (map_deny_write_exec(&vma_flags, &vma_flags))
-+	if (map_deny_write_exec(mm, &vma_flags, &vma_flags))
- 		return -EACCES;
- 
- 	/* Allow architectures to sanity-check the vm_flags. */
-@@ -2857,13 +2861,13 @@ unsigned long mmap_region(struct file *file, unsigned long addr,
- 		writable_file_mapping = true;
  	}
- 
--	ret = __mmap_region(file, addr, len, vma_flags, pgoff, uf);
-+	ret = __mmap_region(mm, file, addr, len, vma_flags, pgoff, uf);
- 
- 	/* Clear our write mapping regardless of error. */
- 	if (writable_file_mapping)
- 		mapping_unmap_writable(file->f_mapping);
- 
--	validate_mm(current->mm);
-+	validate_mm(mm);
- 	return ret;
- }
- 
-@@ -2983,6 +2987,8 @@ unsigned long unmapped_area(struct mm_struct *mm,
- 	if (low_limit < mmap_min_addr)
- 		low_limit = mmap_min_addr;
- 	high_limit = info->high_limit;
-+	if (mm != current->mm)
-+		high_limit = min(high_limit, mm->task_size);
- retry:
- 	if (vma_iter_area_lowest(&vmi, low_limit, high_limit, length))
- 		return -ENOMEM;
-@@ -3043,6 +3049,8 @@ unsigned long unmapped_area_topdown(struct mm_struct *mm,
- 	if (low_limit < mmap_min_addr)
- 		low_limit = mmap_min_addr;
- 	high_limit = info->high_limit;
-+	if (mm != current->mm)
-+		high_limit = min(high_limit, mm->task_size);
- retry:
- 	if (vma_iter_area_highest(&vmi, low_limit, high_limit, length))
- 		return -ENOMEM;
-diff --git a/mm/vma.h b/mm/vma.h
-index d0a45718deb9..0c0b9d9c5248 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -32,6 +32,7 @@ struct unlink_vma_file_batch {
-  * vma munmap operation
-  */
- struct vma_munmap_struct {
-+	struct mm_struct *mm;           /* The mm being operated on */
- 	struct vma_iterator *vmi;
- 	struct vm_area_struct *vma;     /* The first vma to munmap */
- 	struct vm_area_struct *prev;    /* vma before the munmap area */
-@@ -459,9 +460,9 @@ bool vma_wants_writenotify(struct vm_area_struct *vma, pgprot_t vm_page_prot);
- int mm_take_all_locks(struct mm_struct *mm);
- void mm_drop_all_locks(struct mm_struct *mm);
- 
--unsigned long mmap_region(struct file *file, unsigned long addr,
--		unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
--		struct list_head *uf);
-+unsigned long mmap_region(struct mm_struct *mm, struct file *file,
-+		unsigned long addr, unsigned long len, vm_flags_t vm_flags,
-+		unsigned long pgoff, struct list_head *uf);
- 
- int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *brkvma,
- 		 unsigned long addr, unsigned long request,
-@@ -732,11 +733,12 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift);
-  *
-  * Return: false if proposed change is OK, true if not ok and should be denied.
-  */
--static inline bool map_deny_write_exec(const vma_flags_t *old,
-+static inline bool map_deny_write_exec(struct mm_struct *mm,
-+				       const vma_flags_t *old,
- 				       const vma_flags_t *new)
- {
- 	/* If MDWE is disabled, we have nothing to deny. */
--	if (!mm_flags_test(MMF_HAS_MDWE, current->mm))
-+	if (!mm_flags_test(MMF_HAS_MDWE, mm))
- 		return false;
- 
- 	/* If the new VMA is not executable, we have nothing to deny. */
 -- 
 2.43.0
 
