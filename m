@@ -4,142 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C17DFC44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:33:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7352C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:33:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 814266B00C4; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
+	id 554F76B00C6; Wed, 15 Jul 2026 09:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EB816B00C5; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
+	id 506526B00C7; Wed, 15 Jul 2026 09:32:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6166F6B00C6; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
+	id 41B416B00C8; Wed, 15 Jul 2026 09:32:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 415746B00C4
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:49 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 16955120196
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:22:51 +0000 (UTC)
-X-FDA: 84991076142.16.5B97DBB
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B4BC614000C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:22:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PhE+jxTO;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 06B3C6B00C6
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:32:54 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40DC31A0197
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:16:37 +0000 (UTC)
+X-FDA: 84991060434.02.2F7F705
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5D2B8C000E
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:16:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ok3JXN6g;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784121768;
+	s=arc-20220608; t=1784121395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vIFo0YrK5esCG67Dm/2h5j9Bki/Ly61qdMaw02Uu8MM=;
-	b=rvZUXEEjNTtwGG7ygEtscauy1BjtJra7mQTIdmJNLZ50lMONNzZOYSGd7cZ27lYB8DNJ4Q
-	wZfvNioV4AhfsVAs7xb1k6NhR2M8Zhi2lUEfUIYO0nQrF0tw0y2p0j4dwkHuyNuQvnJwzz
-	EiKPEXRTt3hZzcKEIdG/ROQVvhGkv1k=
+	bh=L/blMt7c0/x/SOLABbbNCJG/CCPLnSKvmx9YqzzFQVA=;
+	b=mgPloh+5eWTRepMR91eKoabTMJ6/LzuOJNVDqJDJx/yYZ8xjQ8x7q1g2R1BpN4IupWwFyO
+	8NPqdDrUzxq7FVuMPa53zDTTDz/rouOgsZ5O0vCQP++SOeBqaxWSPurcZeneC3jOVxeWD3
+	8FI7UEChTyHH98z7+bMdARUfp0WyQrY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PhE+jxTO;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ok3JXN6g;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784121768;
-	b=kVO3VmKzPMuMYhjoyQOHlpbjxxQ8vburLYnX86MJE7CHYk266fxxlxWhAGKrovUZZ5qxad
-	Jm9sOycTcE50PS/6WTWxDobOM4KtER0fbvfUyifk1YPlkUKlHu9Ick1I+dtommpTRF435t
-	0vecE1kkQnUpsgbhbl/XoBHulGuGq9Y=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66FBfwpS4179583;
-	Wed, 15 Jul 2026 13:22:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=vIFo0YrK5esCG67Dm
-	/2h5j9Bki/Ly61qdMaw02Uu8MM=; b=PhE+jxTOXGB8BQ4QyyMswmDciwBbYrj1k
-	rPANFzDHOzHLz47e5EJTVtG4q4Fh/c6uiMHLQsZYJoRG9136twRe72xzIj0OSRIA
-	dDYxP0J/qv127hYyiZ2vo6ImoJZ043nwlG9Z5PdyYffvdGvU3bZqvJ9HGVZ76NLG
-	5ZP90coqDU3K94gMkr5mPlAH5SWG2LT0trPEPYXCFMlKqW9bNDBsIDT/6P5NJGvZ
-	eumsEMmv3WVxJ9YwuBu4o9YsCrm6fwQ8v3nGc7kv1rsiyQ2LQX51zw9jsQtxfUI9
-	zKsacZlJlp9+YBv31Ir2aVeDInNYWxfptn9MVd2Bdq5/a01UbfhNg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbexwu31m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 13:22:43 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66FDJevV025139;
-	Wed, 15 Jul 2026 13:22:43 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc0hw8an2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 13:22:43 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66FDMdp940960292
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Jul 2026 13:22:39 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 16A082004B;
-	Wed, 15 Jul 2026 13:22:39 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DCF3320043;
-	Wed, 15 Jul 2026 13:22:38 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 15 Jul 2026 13:22:38 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id C454B16267D; Wed, 15 Jul 2026 15:22:38 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-        Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH v6 3/4] mm/kasan: Introduce helpers for lazy MMU mode sanitizer
-Date: Wed, 15 Jul 2026 15:22:37 +0200
-Message-ID: <a5bf7ac327864193bb7c95d8575d6ce1f6a9576c.1784121418.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1784121418.git.agordeev@linux.ibm.com>
-References: <cover.1784121418.git.agordeev@linux.ibm.com>
+	t=1784121395;
+	b=yUvSwIWQ22VxHJhl5dWmKpRM+KTGsm5PZv61WzR1NTKjlgvu4BKgXEtWJufslvQU1JPlZm
+	Cdj0gNiulitxeiZHsQBiPkc1+/MnJVnJozQ8iGKxlfdmSKrxsidGIPwfK8IUv7q2tcRikQ
+	INVQu/6aCK6Wo2BxdZEBOlORFehc2XM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DB7F06001A;
+	Wed, 15 Jul 2026 13:16:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5106F1F000E9;
+	Wed, 15 Jul 2026 13:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784121394;
+	bh=L/blMt7c0/x/SOLABbbNCJG/CCPLnSKvmx9YqzzFQVA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ok3JXN6gpujiV3WYE7zP0r0lt52trOjQDdcE9kNKvTHziuUZHP3P4fzdSoFmnaqQS
+	 jOkSXWvZPIfENSuklm7MShw6mNUQEosX9cteCzZKvFlab6DjYc27FmT16HaVRcN3e6
+	 wHrPVvSQNCVRKXbzh7NMwRN++gjPwOKO6MAYrTCqX4rdLA6l3cVycxT3rz4RizFbbM
+	 RKxa0OFzfReAQ7iRnxMCkjz5JR3QYN+cShFG0hjbYv38Hk/NG6lMMijhaWC09xwgDz
+	 Yf4iZ3zlV7bW8eEYbUpy3ye+L1QxYG86m6QfismhI/EWkC9MoZ0rT/ysFdQ5Osu0I6
+	 DRMUAcWKev7Vw==
+Message-ID: <ad397b95-bb3b-4f8f-b1e0-cbe204530721@kernel.org>
+Date: Wed, 15 Jul 2026 15:16:28 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 2ZgdxkD_DYSdg9jm7Pp6y5oNH5YOUkHx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDEzMSBTYWx0ZWRfXwrK7eiK2dknl
- 51QHOgXzU39lTsIxK9u9LCfMzbI4qgTtRmhhyG5FAVTwfEmWxmJYbU4q2zFLIjWSGvus23wtqU8
- roC1X+wiXxX56BswANoX4v0pm5GrqEgZSgaMSqSmUCbPFkJbVGkhnFjCHR6HA9JoiV7tDV7LlH5
- VBy8Ybnu4q4MAKKt4OR8gW1I7+D0w94BrANMDGlQE4+4vrLo8Cm0BctlW18gOe8MppJzRv0ixrk
- hM4o+Omul91T15izPsT7db63Z6OhuM+hdGJosA5PMdXlZZiY/Mzqg1RQnOseTIruSREnHjs6QFM
- JrVFjdK7qY5+VV0iKIA58BbKRq2xZuVXsH+MrCt1MkhnxhWmK5hlWmXqQdkwpClMv3SDDW8P4Ar
- NrGOQ/8ZW4MgEZN29NpWay4ccT2NIJp8pijkydyOIrz9dwGC3Oo4eHoq33agFghFZ39JZvQ9Rbg
- tlWvfgASLia0IaqZuqw==
-X-Authority-Analysis: v=2.4 cv=XJoAjwhE c=1 sm=1 tr=0 ts=6a5789a4 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=IbWDVZlrxelGz4sJbtUA:9
-X-Proofpoint-ORIG-GUID: FE-uiVEGEwD2-Wux2TSiwKAzgMqSIBSs
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDEzMSBTYWx0ZWRfXyYt7UqZQ06T/
- rBvOxOuNJCamh4xOpMiPJJW7nukNzFcGbangxtz5EIWDHthw7llQba4INI1kgxRPZVuOhNn2nqq
- ZX5HCFF3uVAaStAKg7ae/DXtpFKeUm4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-15_02,2026-07-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 clxscore=1015 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607150131
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B4BC614000C
-X-Stat-Signature: u3unoii93azk86fjbfq1swsx7y8fdpkm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] cgroup/cpuset: update some comments about the page
+ allocator
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Waiman Long <longman@redhat.com>, Ridong Chen <ridong.chen@linux.dev>,
+ Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-rt-devel@lists.linux.dev
+References: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
+ <20260715-spin-trylock-followup-v3-2-fc4d246f705d@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260715-spin-trylock-followup-v3-2-fc4d246f705d@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1784121768-212770
-X-HE-Meta: U2FsdGVkX1+Wkxk3pUtIKg2gDd16mbQkFUCSf2ZvcA29VBV0vOvvNNqcFrJeLdQpb9JvkxxXCl4lSyz5kRHa6Jak+EBUvr0ndqz2JTvC/gOSQOijWMZmddBDrHOApCg2/SmZn6sUnjh7CF/SFJzrSk+4lUKvWiwyUBA8o78kHI4h+mBD6rkYZ0YBMl17tQ2vr5MzYiK+zcgf/ouZ7V675q6PdwR7rFdyAXYrvsTldy8bjGjRe4uQ1/N6jNnj73ux8piggi90F2sPrLTpsD5sEq+HAf6dQqHZ4ncu+Zy0gvVdo428BgEWUOmrkWAC5QvnbkwbkFYhCZNfteejPmyl8E5MlUB8/SCODEZRAce1mH8qrA/P+MSUkXJ4Wyv1jRuPr9yiAb708SaiiIeJVgfXAUJUEi9IhCJ12KxtsMFaRTDXbdUiYSWao1OVB00AGuzV/NMMgZ/j/qbDVjnt7mVv0G3L+5baVL3VPOC2nCmw28SwJd3et8n1X/1QkoJbzZLT6CrTfKqksrxUyd2kXTrYV+oTEAjR1z56w2/8tVbvWIO+HNoNZcvZ1TCJG9sfMUru4779DtVL9XIt4k/yorXjbbMWVU4jIEKQ+dwoKeSeXlUF1OGxRJ74njeFyr7sUBPXEXSdyA0AhOGvE0mKWX5P+KQZPKDWz/MYLIb4Q+yKq4ikZtj+TVHFBeuSQAoqHUwGsZ5GiJ4BYu1lEyAEQOxC1kavIf750Xki3p0mRfs2foD34qcPqBi6/0WmHHr8ktLnFGDyKcdpZUIwsqMj18BwaEvsAx6zzZHoLRfLkTBm1k2P3sPmrAoVpOvhWl1cXLxA//OFiaXO1wmnzz/mUToBmq1eLT0UwA1KgHLaeW44OCsLYM1fKnVAaTJJEbjm2i9nlO+Ou4FsgfiAmvGiWN5oVNDGeGc20ZmXrlq4vV6TvKgmNgOiEm05IUH0R8Owz+RwgMyQlfh5cTyzDqyKgpV
- 6qgWRx9H
- U0I5E8x0zX4F24fw6PbvRYV67qKl/e/jg2kzBwjjUWG0afeZKom3eCKIUF1KhBKdAWyj3u0HxPumXWxSIPdzilrkl3nFA4iGZsWbXREQ+MCSYe0xibmXyydrYyFWH6KFA7Y/IhN5KG2+wlf7e/qwUTwG/XvAPv2OFHkn+gJYlryzzgXdF0tqTt5jTFIwEQb0Uwoqm8mvnX3mOsw14Ta9fawXwxkG8US8jJ6z3Mo/k5qcgZ0+Qd1VgOXIFpo2Tl8tA6OO7eVgEKI/wS8CmAHJ9Em3iGA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5D2B8C000E
+X-Stat-Signature: an467npzs4zqmzruy4bt7u6agjd38czk
+X-HE-Tag: 1784121395-634967
+X-HE-Meta: U2FsdGVkX1+0mtXQND3+1YUDafakOZuxNJjRXh5AoPClByKQg9a8JZqsGkyfkv1gCPNj0lLCFbTzlPr9boJbEm1xa51zUk2nIDhX7Cbt9h7FuSeGZK3vuBjrK6Hqq8dE5ZxPb0a05V/4RWhYBNGz2uamaugilaGu7MPH9U+86jMQm2Xcf29z7df7Heowa9kJG3sAMFq1rfOx5HXaKGLzQ7Vzi404FH561Cxhy+47/Kh9+rTFh9wtzs6r8qz8thhSFoy4piqeDb56v3Q2caI47J95qit7ZhaguOKoV/94MUmnx+U8Gtco2YXgfIW7k1To907DjY3EoaSucDdJDE4L5qtXfXSYQvwVVOYwZjeiUGOJ+Jl+Zcuk0Yr9NEg4mq4kWTDEOlWVg6Z8LLU6ulwPo5rVAmCP3ajSsdwCfcNOxsX4BjVfxq0axvxL0RBQzYbRll3krDOh3LXYG7aawht6aTBqvO41WllMTDHTci5sNcUDSG4DQ2FtYEV59ZFkUth1tYf3uR73yMq6SLtssuQAbq9goghflK2bTMBddXhfyksNfwSD8Cn6hzo+6brvNBiaJDi61Ev+3v0RnPopBcud85DblT4yNaL1WhjjMmqpZEzkSsDBV/qaToJrjJomyDvZWsFOrCD81nFsHVTPZZTygu7EqSEr3m7G8EUO63AAHxMPEmX5VRBBoaxQBUgOir36hfnItRcXyse13wjRyz99tO3sMKGY/3S3iQKaBy791Dx69dxOl6OTADYyGtQCAObq/ZVvUTcCoblJP2ItEoGyP95UIPo+bCT3rfKLKhLk7oZoODe3ckzzMflWT1X0RxUlwPxQg4aVOPtIszAUv9oSw7CnUYT3HrdXPw2qcErRwdW6GUFD+oyJcgabqKJsoNhlFyn26KCQBrgh2ZEj1uCCGaf6ZV8aVbDDFgRTs41AJbxFi66UTqxywhJ7tM8YYWPs8zuG/cN3eZL9uPiBVB5
+ 1gMFfELA
+ +UAWa3yfl9Twg8asRmV6jnJzGBtZd8SnvLcLsKivhpXz3YisfNu8B0/f6p851TsiQU+8Q2McNGu0cv0XeaMCtFsSbXkvvCUdM0oqg1ukoC6S9bW6fwofOHBDTCWUr3j5+PgUxDoqWeGdDUHWn3Uah2bs42IOAhLAXfq57JOcOEDLlKPKN9oyT4BHuxjHDpTuFDe8zVsPhGO54fFPsGXblDj0yo/MS1iSHVtEzlKoga7442aW5kH/JjlE86rdqwq95XA4u++ltXZOFpRyjNn/MrNHe15++Mc/i8Nk0uwd325HoixAGKp2P1paJJY9MpmyNqmzGn421+yRxuAw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,130 +144,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide helpers that allow architectures implement
-illegitimate PTE direct accesses while the lazy MMU
-mode is enabled, such as:
+On 7/15/26 13:03, Brendan Jackman wrote:
+> These comments describing the page allocator are out of date:
+> 
+> - __alloc_pages() is no longer a public API and has no business being
+>   described outside of mm/.
+> 
+> - The `wait` variable is gone.
+> 
+> It may be out of date for other reasons too but this patch is just
+> fixing the issues that stood out.
+> 
+> To fix it:
+> 
+> - Instead of referring to a specific function, instead to "the page
+>   allocator"
+> 
+> - Completely drop out-of-date details of that function's internal
+>   behaviour, since they were irrelevant anyway.
+> 
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Link: https://lore.kernel.org/all/DJP11T5V7BDW.2FZZZ8R6LOY4I@nvidia.com/
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-	pte_t pte =3D *ptep;
-	*ptep =3D pte;
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-By contrast, these would have to be:
-
-	pte_t pte =3D ptep_get(ptep);
-	set_pte(ptep, pte);
-
-The direct PTE accesses pose a real issue on s390.
-
-Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- include/linux/kasan.h     | 16 ++++++++++++++++
- mm/kasan/common.c         | 14 ++++++++++++++
- mm/kasan/kasan.h          |  2 ++
- mm/kasan/report_generic.c |  3 +++
- 4 files changed, 35 insertions(+)
-
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index bf233bde68c7..deadf566b84a 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -134,6 +134,20 @@ static __always_inline void kasan_poison_slab(struct=
- slab *slab)
- 		__kasan_poison_slab(slab);
- }
-=20
-+void __kasan_poison_pte(pte_t *pte, int nr);
-+static __always_inline void kasan_poison_pte(pte_t *pte, int nr)
-+{
-+	if (kasan_enabled())
-+		__kasan_poison_pte(pte, nr);
-+}
-+
-+void __kasan_unpoison_pte(pte_t *pte, int nr);
-+static __always_inline void kasan_unpoison_pte(pte_t *pte, int nr)
-+{
-+	if (kasan_enabled())
-+		__kasan_unpoison_pte(pte, nr);
-+}
-+
- void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)=
-;
- /**
-  * kasan_unpoison_new_object - Temporarily unpoison a new slab object.
-@@ -414,6 +428,8 @@ static inline bool kasan_unpoison_pages(struct page *=
-page, unsigned int order,
- 	return false;
- }
- static inline void kasan_poison_slab(struct slab *slab) {}
-+static inline void kasan_poison_pte(pte_t *pte, int nr) {}
-+static inline void kasan_unpoison_pte(pte_t *pte, int nr) {}
- static inline void kasan_unpoison_new_object(struct kmem_cache *cache,
- 					void *object) {}
- static inline void kasan_poison_new_object(struct kmem_cache *cache,
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index b7d05c2a6d93..94d106094989 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -163,6 +163,20 @@ void __kasan_poison_slab(struct slab *slab)
- 		     KASAN_SLAB_REDZONE, false);
- }
-=20
-+void __kasan_poison_pte(pte_t *pte, int nr)
-+{
-+	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
-+		kasan_poison(pte, sizeof(*pte) * nr, KASAN_LAZY_MMU_PTE, false);
-+}
-+EXPORT_SYMBOL_GPL(__kasan_poison_pte);
-+
-+void __kasan_unpoison_pte(pte_t *pte, int nr)
-+{
-+	if (IS_ALIGNED(sizeof(*pte), KASAN_GRANULE_SIZE))
-+		kasan_unpoison(pte, sizeof(*pte) * nr, false);
-+}
-+EXPORT_SYMBOL_GPL(__kasan_unpoison_pte);
-+
- void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)
- {
- 	kasan_unpoison(object, cache->object_size, false);
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index fc9169a54766..1a2d18cdb21d 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -144,12 +144,14 @@ static inline bool kasan_requires_meta(void)
- #define KASAN_PAGE_REDZONE	0xFE  /* redzone for kmalloc_large allocation=
- */
- #define KASAN_SLAB_REDZONE	0xFC  /* redzone for slab object */
- #define KASAN_SLAB_FREE		0xFB  /* freed slab object */
-+#define KASAN_LAZY_MMU_PTE	0xFD  /* direct pte access in lazy mmu mode *=
-/
- #define KASAN_VMALLOC_INVALID	0xF8  /* inaccessible space in vmap area *=
-/
- #else
- #define KASAN_PAGE_FREE		KASAN_TAG_INVALID
- #define KASAN_PAGE_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_FREE		KASAN_TAG_INVALID
-+#define KASAN_LAZY_MMU_PTE	KASAN_TAG_INVALID
- #define KASAN_VMALLOC_INVALID	KASAN_TAG_INVALID /* only used for SW_TAGS=
- */
- #endif
-=20
-diff --git a/mm/kasan/report_generic.c b/mm/kasan/report_generic.c
-index f5b8e37b3805..489d4a8d6902 100644
---- a/mm/kasan/report_generic.c
-+++ b/mm/kasan/report_generic.c
-@@ -113,6 +113,9 @@ static const char *get_shadow_bug_type(struct kasan_r=
-eport_info *info)
- 	case KASAN_SLAB_FREE_META:
- 		bug_type =3D "slab-use-after-free";
- 		break;
-+	case KASAN_LAZY_MMU_PTE:
-+		bug_type =3D "lazy-mmu-pte-access";
-+		break;
- 	case KASAN_ALLOCA_LEFT:
- 	case KASAN_ALLOCA_RIGHT:
- 		bug_type =3D "alloca-out-of-bounds";
---=20
-2.53.0
+> ---
+>  kernel/cgroup/cpuset.c | 13 +++++--------
+>  1 file changed, 5 insertions(+), 8 deletions(-)
+> 
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index 24ea2d09cdbdb..dfd0f827e3b92 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -4193,7 +4193,7 @@ static struct cpuset *nearest_hardwall_ancestor(struct cpuset *cs)
+>   * nearest enclosing hardwalled ancestor cpuset.
+>   *
+>   * Scanning up parent cpusets requires callback_lock.  The
+> - * __alloc_pages() routine only calls here with __GFP_HARDWALL bit
+> + * page allocator only calls here with __GFP_HARDWALL bit
+>   * _not_ set if it's a GFP_KERNEL allocation, and all nodes in the
+>   * current tasks mems_allowed came up empty on the first pass over
+>   * the zonelist.  So only GFP_KERNEL allocations, if all nodes in the
+> @@ -4206,11 +4206,8 @@ static struct cpuset *nearest_hardwall_ancestor(struct cpuset *cs)
+>   * come before the __GFP_HARDWALL check, otherwise a dying task
+>   * would be blocked on the fast path.
+>   *
+> - * The second pass through get_page_from_freelist() doesn't even call
+> - * here for GFP_ATOMIC calls.  For those calls, the __alloc_pages()
+> - * variable 'wait' is not set, and the bit ALLOC_CPUSET is not set
+> - * in alloc_flags.  That logic and the checks below have the combined
+> - * affect that:
+> + * The second pass through get_page_from_freelist() doesn't even call here for
+> + * GFP_ATOMIC calls.  That, and the checks below have the combined affect that:
+>   *	in_interrupt - any node ok (current task context irrelevant)
+>   *	GFP_ATOMIC   - any node ok
+>   *	tsk_is_oom_victim   - any node ok
+> @@ -4327,8 +4324,8 @@ void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask)
+>   * should not be possible for the following code to return an
+>   * offline node.  But if it did, that would be ok, as this routine
+>   * is not returning the node where the allocation must be, only
+> - * the node where the search should start.  The zonelist passed to
+> - * __alloc_pages() will include all nodes.  If the slab allocator
+> + * the node where the search should start.  The zonelist used by
+> + * the allocator will include all nodes.  If the slab allocator
+>   * is passed an offline node, it will fall back to the local node.
+>   * See kmem_cache_alloc_node().
+>   */
+> 
 
 
