@@ -4,135 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39EA3C44507
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 19:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38CEAC44507
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 19:59:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 382806B0093; Wed, 15 Jul 2026 15:58:30 -0400 (EDT)
+	id 1D7336B0095; Wed, 15 Jul 2026 15:59:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35A036B0095; Wed, 15 Jul 2026 15:58:30 -0400 (EDT)
+	id 1AEE86B0096; Wed, 15 Jul 2026 15:59:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24C816B0096; Wed, 15 Jul 2026 15:58:30 -0400 (EDT)
+	id 0C6386B0098; Wed, 15 Jul 2026 15:59:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBFC86B0093
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:58:29 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6FCB0802AF
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:58:29 +0000 (UTC)
-X-FDA: 84992073138.24.2243E14
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 523E580002
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:58:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="U1Q5/qZ4";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D43E76B0095
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 15:59:06 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 657E01202B7
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:59:06 +0000 (UTC)
+X-FDA: 84992074692.02.83AFE7A
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 987451A0003
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:59:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OPq56Wja;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=skhawaja@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784145507;
+	s=arc-20220608; t=1784145544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i7g5eqdlgx0iQFnR80osVPUiBhoOkK3DmjgOgLSkYmw=;
-	b=KpmC7WnuRzbXj3JNfSV2uQQMAxrL7JSYfowzaC/IQh0hsXfuj4yH0N/7JMkeIglx1AmQPp
-	kNBXkF2qwa3zu2IAur3sr1JhEEfId4L4i44URdToEC20dJM02xsMamnwLA+3A2UPkjNhFv
-	5Uc77hOJG6FVeE3bCVUN7THyht50luI=
+	bh=IV+eVU/BHEvjC83dTcoXEiFif2QrI2TpFVMZfUeCzig=;
+	b=nOToQtGnmJsIn2e1xDP8MdSWy/nZry0R8bKx9WKFQlHl0dfOtMw/IM1O1Ro/GIxN9K4InO
+	Iui4nSKHhxR/pggERQK570rw6dfJyzMsaIqz9ZAtzS0IofV5+ZPcXZ7mJV2i8UbFzPuD79
+	dPZXTF60nFtYYj3a/wkBEvqDpNvRmEs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="U1Q5/qZ4";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OPq56Wja;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=skhawaja@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784145507;
-	b=xXJ6tuL6YXMulcrbeM/c+sJX9V9rqT2jXJyHAjz0UyRTyemRX7a9NlWscacR8Sg6/NCTWI
-	nWDUaC4J+3SWP0Iny/tEyvUEE/IvcVfjOB0bpaxjBqbnc18qGkfYqGJpD0sAO1/VM4LsIU
-	ce0FFXZwg10tkkxa1BFT3AeR2yeWd+8=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493f0ae9572so24182955e9.3
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:58:27 -0700 (PDT)
+	t=1784145544;
+	b=wMosqlIgc9BtHzCVwDL0IQ01/Zc+QG3DxxMl6WMubvR5lT35ZG/oEcTfJ0g7iDdCS3aKwG
+	UaEASyQuK5jbAStOcRC6rp0EXR9PYVfgPUH4BsIX4Lu+P4uoaCRSdgH0g1HTwvICg+cUhS
+	5wMlSHwNZaRDo34JnKp7HmLZxQfL3mE=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cacef7d299so2775ad.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:59:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784145506; x=1784750306; darn=kvack.org;
+        d=google.com; s=20251104; t=1784145543; x=1784750343; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=i7g5eqdlgx0iQFnR80osVPUiBhoOkK3DmjgOgLSkYmw=;
-        b=U1Q5/qZ4bF1tKOhEBz9ET2G9ahAocHb1bY0ou+LuqkJ0B3OGDaKAapK5qncMku8o9R
-         nRjOBUxh6SdockHz6cCAw3DAflY6wwbd0WHZZb66BmQ/20o1XUaurestuOVC5NpZOjZG
-         O9zVDI5gCBg0/Vbf7X7WEt6+VYnAcjU/xz5v8IF+AM3CDzJEbTwAIfmzaycYiAzSODRF
-         IHLEm/9eTYR3w9rdQG7PGAnz91/J5yYCLW1sh9M/JcaMShspVWV/cSmKWHNM3x8EjzVH
-         LoMLC413Pxtg/ZoyC0AJMU6DFC/mE8ubcCFEmdzFHvx/Yhmm2J1yAyH+fR5h+ar8fcLl
-         R8wg==
+        bh=IV+eVU/BHEvjC83dTcoXEiFif2QrI2TpFVMZfUeCzig=;
+        b=OPq56WjaxaGilRzW/JRoTWEQNS5T/sMwyqUMqmT5hDSHFkzzJLythGEMIGPhlzSqYi
+         qsWhOxgCfSbdqKwsEyhG3qL+/tu8bbaPx3ZpvSyZD/BFf5l+PV1OvkF313AW7ZIzCTyW
+         R2Vs/1cuU66i6UgRuQown5IaCrWBp6etNjHxGIHWbFfGr8KXbFWqX/XFwF05pSq6pSK6
+         JiW4AgfwDK5rj9aWWBxDSERBzpDfJfbMpCT8CmT3SHfr0cP1UWtbNYoD2SUDLDkZZz52
+         kGbSWMpNOfunabQ+Yvc1FZGXK6Icc+DJ5RK2iKV5OnRk1hAaQK7N3A3TAJEnM9T+/L46
+         xegw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784145506; x=1784750306;
+        d=1e100.net; s=20251104; t=1784145543; x=1784750343;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i7g5eqdlgx0iQFnR80osVPUiBhoOkK3DmjgOgLSkYmw=;
-        b=VMCtrYjboxKuJ2BNgilxRMXdKRTxZzFzpQ0tAvzn4yuY2H56MRCcVrdlCrbpXFnB2B
-         PLROvZZy8CYE+3H3rWNwdUei/MvDbRSJJ8FdJ/bQiPbEd3AAcU77b527xOOpIiBd8Jr9
-         rON0uSUn0eLfRUAtmiU2LWrVpEGPAKt7n0iV3ba7zZhVEKGAKjqi/LdldB9ki0rkk26E
-         1aEx/SSim0ORSmcVf617lsRUTHAqzNWDNfWXZQBxfVQgdrnec2Xh1nRdMfptE5iTWAIu
-         jtLg2h5VD3tk4goL92GuTjhipiUkniju1KtD+fbgs8vffio+N1vmFXzhGB2aDDPn0Mtp
-         UgtQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roveev7/p7EqY0KiwrnzoB/8dOK+UQxnuplfAdm53AvFVpm9xrkFZmidNJXBh4zzmaZHxlSGer62Q==@kvack.org
-X-Gm-Message-State: AOJu0YxxmZmyMQ2BiCMKqRIIkXj+djX3Y6CEKf3Tti+YpVhGd7Lrdb7l
-	v49m1HC60PPl/LmF0/3MBdseFeiga+2hEICaccxaNkfQFFWoVotGChxZfI50xJDjy7w=
-X-Gm-Gg: AfdE7ckm3LH41jekWAWo6JPmxMfJgbkuvXL2IV48aGTAGk94/psJnMMCYaC4NwoXM6v
-	x+Fapawqm7+nNcZopVRxN5HFiYnKcgkoBKCfh7dqDKhJczjg6OF37piKFfivfNXNTcUiKZ55ba1
-	TH3t710LqM7MiPLdmLAXSSU5U7Tv3pDv68W/1y2gRX9JJoGF54LpMXuxsI/zoP5aSNiuL+MMOMY
-	6c6mYpuzcp5BpZS0B7vA8kcRdToIfZkfrkWfgUAtyKhdV1DbqPr9Vh4aDX0cF3S81uTbgqYQ/rZ
-	EeYboGCYxrtXuH1LaQ7tQhkayPDP4+1iEEc942Pf+C4k2XbtH/yL3q/XvNJ4buJMQ4oMVb5MDmB
-	Tw+LRNj2mqFYsuzUbssx/QqNIaud9OCNBxjjbHaepxpZzu4tfyOdcRKRcX8ZU4zzqw8FRFWroHA
-	vfM4ywOy8eNfTOEo8MEy/D20oFnQ==
-X-Received: by 2002:a05:600c:6285:b0:493:c42c:7e87 with SMTP id 5b1f17b1804b1-4953c2800b3mr44437405e9.33.1784145505792;
-        Wed, 15 Jul 2026 12:58:25 -0700 (PDT)
-Received: from localhost (109-81-95-153.rct.o2.cz. [109.81.95.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e7d21fsm6718995e9.2.2026.07.15.12.58.25
+        bh=IV+eVU/BHEvjC83dTcoXEiFif2QrI2TpFVMZfUeCzig=;
+        b=reqAE3A7P/C8USTmk1+ZZWnuApMdyto5+qQ9rZy9vVKR9IC/tr7s7qAWGCdfhHiYPw
+         2iuS5n7jdipG/7RwwSsOKwmaosc0nE2KcuAs8ign5f4+9QED/MbIjGkmf4y/nUJk2fIA
+         31Spvxcc8KnHWCUeI2H1sYcpEPG3zbocCtmqXKpVx/avFD488UGxu3AEfOd1XVUHRn9Q
+         5afCwCvKjPL0ntYCOWLvb2nQqggVE57yWygO6SPRIOWxTdlQMqfQhp7deK9STVEdFwKb
+         HS+apGRhxjVEG04GuZgvc06NJIcgVhQIh/x66W08LyczWnVoCWAbMZ0FusFlKXRR2rxr
+         tc6A==
+X-Forwarded-Encrypted: i=1; AHgh+RrvpeLSszzcY1wHeVzx0TGkmK7mHyqfmQsCKe1diCmXQ8czCGUUf2x64rbJkf4IDh4XI1anyTT2NQ==@kvack.org
+X-Gm-Message-State: AOJu0YxhVCtdrd2uBEHvaTG51biWEa/12p4hD9y6s8OAmDcNmICuSlIt
+	ITXaDLBP5wpZBngWeZJRNycwmGA3CSyqi0OsaviS4lXYCd829FEM1RiWxtdqQ2Zn2A==
+X-Gm-Gg: AfdE7cl2Nwji00+kwVZNXcjYHSlAEpX27VNYGY1oBMQG2zOv0OOdZBoteISdGUC8iUy
+	yXMkWiMVycGjcms1Eyl7V+PCtGokO1OJUndZQ6Tr5HcPlsXcm/aAP72NpvaY8kjnviT5qr34AXd
+	qRhZBbzOCN0OuS0h58oj00JvAZnrEJy4WoY0Yme5QCNVcuEJo2mU8Z1bQkXa0zaQzfowhWFhew/
+	0Ye9JXYUrffzydLe++GobDKOfBwJRRCpaTb0wjtAAjpEVo4MMyynDMED6No1IUlSh+Ba5mErOwL
+	Ms7UyVnZQJ62GgMak3i+H2W0vbfU2oemPZqFGaZWwTgy7Ren0rlIvBRJolMyIlIu2TFT0pPCI9d
+	HbYEyXY0aKS0X378n+QBbPV1jSX79VwDil7HVld/Jp6KSNoc1Dk/qUVowgg8kPEab8qk0Ky1Agu
+	CD/03zqNJae3H3JFcmCHbp5N4S0u2FkeVYwH86yguF9Se2dnFF7BbIyRZDSsfNOpsJSYILg4fHx
+	oDXa8B+hYw=
+X-Received: by 2002:a17:903:2b0d:b0:2c6:cbcb:bc72 with SMTP id d9443c01a7336-2cf1abf6570mr468465ad.23.1784145542863;
+        Wed, 15 Jul 2026 12:59:02 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e2a06182csm807385a91.0.2026.07.15.12.59.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 12:58:25 -0700 (PDT)
-Date: Wed, 15 Jul 2026 21:58:24 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Richard Chang <richardycc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"T . J . Mercier" <tjmercier@google.com>,
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: vmscan: abort proactive reclaim early when
- freezing for suspend
-Message-ID: <alfmYBUxZOhFY30r@tiehlicka>
-References: <20260709072231.3163082-1-richardycc@google.com>
- <ak-OyACkE8lLaRRS@tiehlicka>
- <CALC_0q8O1uw18aWM8w8be60TxW02Os90AKSOLFoqubYAbLjkrA@mail.gmail.com>
- <alCQ28gBclWOFF4_@tiehlicka>
- <CALC_0q93iheF=Y36SSTg-XCoKgHrhxk88LqcQkDd-O3ymMVmxw@mail.gmail.com>
- <alYqVPEyZ2ySrdAm@tiehlicka>
- <alYuKYnHgAaOFz-z@tiehlicka>
- <CALC_0q_9DamACOEyXeevWvq-6D9dQZ6NNt=iBN7gkOQRM9xqfw@mail.gmail.com>
- <aldJnz0u1YyoCyGr@tiehlicka>
- <alfHuSTW8sPAl9l3@redhat.com>
+        Wed, 15 Jul 2026 12:59:02 -0700 (PDT)
+Date: Wed, 15 Jul 2026 19:58:57 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, iommu@lists.linux.dev, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [RFC PATCH v2 03/10] dma: contiguous: Add API to check if an
+ allocation is from CMA
+Message-ID: <alfmVTYNgoP1GHQY@google.com>
+References: <20260708234854.4044652-1-skhawaja@google.com>
+ <20260708234854.4044652-4-skhawaja@google.com>
+ <20260715062116.GA21348@unreal>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <alfHuSTW8sPAl9l3@redhat.com>
-X-Stat-Signature: suwgs9req6rb4jzzp1ieyetbue7ktpjq
-X-Rspamd-Queue-Id: 523E580002
-X-Rspamd-Server: rspam01
+In-Reply-To: <20260715062116.GA21348@unreal>
 X-Rspam-User: 
-X-HE-Tag: 1784145507-801451
-X-HE-Meta: U2FsdGVkX19RSTy8RiyixRbvENM7E6LKaN3uVGaRv/BuanFhdyjclCN+Y2jSzy2PfhmC07cvzPan+0Pqqb7fOCrbMSDNwMq1Gh1gsxLkCzk4zpnHjZs4jKSMBNXJjjR9xVMr8qQdFB5uR7d6sVkhCaZQO1uTofTyLYu7D9KOmmyS4Ac6Kmh1DTAxDhAJ0KCaT3/eeOFuznN6JwPZwRWTZ5ZdHo06JBN6p4GKjMZfyDxgndD/x6eLqiLOS6dN/gs9y9e24FIt8eofMxDwKGc1S6dBw3OFf6Q2mlJMZLz92phtfyaJgTV5xJPEoAwisJQMXg3tSLuw73GVQFARrDhOMFJLMRlhKZym3a5ZJIt9LEd3HRw8qoztrsryPa55+ddCIX4gkxjZe0f71+/flbgVjQdOLzdjnWmzdDMrU7AK3jr65hFkEufGgsu3Y2udQ/GHJw5wnhOXfjz7RJZco5PVrqx0+p5hq+wdtgLNJdF/kSI25XppKuQ1ZadYjsZ0tQ4Gk/iFophyRXWIMKcfa+cYbqOfM2jxgEm03LvOPEkJEwen93YJMyXM8OH+wC268eFTs7GzrePM9skygi3nDeZ6tIhyQL6AJsKh06Ju752yQTNuSAqvTlIiqTHGPRFPfRD0Xs1//yJf4a6bTPrhFfd58ZxZLBKwfrMfCFnfeacrSnLtOP1oBL7Bt6M7sI/YJk1BacTeCV1LIkEzAiOz1mUSHU6lX2K8iSYSYm+MjZmwbO8+zrcPIoEa5cctd/YsI0r399Vms+8G0GmkuZDpWSaApkNn2bv2MYL1X+2pVVBzqm6iEO3YX7/DuL/PNr9lb8xnNAm34PWSCIQKwRFr4L1CZKdSUvfmx0XvuS3DgPUytl91AyH1k2t7mPkPK99Zr+vRk9H1xq2GUn/eIntTKPnuNFrLKuv+TiFtaP9kAfSBt3QpS94OhiFB0Wf9S9Ijy4fiNxsO9nBjnj10TQ5WvO8
- AVG68wRe
- VfqQsKFY0/4xVVdDUnuYAmmwtLR21cWGBKUHXjkpi1Jq3WNmrwY4PPp0jUzFuc3X7VhkNU4A/rFtUiN1Alx+8rmz6yClldpR9ElC2P5rYI7j/EyA4Cc0BW9FEiLJhv9UUJneqLkAQsmXn51UnMzHtEiiVYxSfh6GOLZIOP++lkQD7+qrY9ovUaPFHkWrrINkdmNULKA9/ZREgpAQpyU6/br8nlpKfeDcg43fkG9eCjxqfkGjBxrpsgip3f45bNaUM5WqKTn6fUNofTflZjaKse7NfRH587xRirNlZJ1wJ1l9GdPcpwN3WsnseNA/LsLfBrv0T2i7obrlsh2MbSzd3i8ci0PW/S54UEKXcScYQo332QzU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 987451A0003
+X-Stat-Signature: 6fkzetdrjd6ap7qmjsmw9ochwtc94nzd
+X-HE-Tag: 1784145544-190786
+X-HE-Meta: U2FsdGVkX1/0KWC3fBvP05iTCcKDnYvHScXbDRykewlnakYzYhJ4R2NvvcAn6AndVgi9URME3PG1RnGwPU4tfDhLLWzP9ykDXouApnX8oR1ZHdiF/mHV0UVcmeueGdeasIXu4c5JkBwHwJsuo8thweWcxyC2B7k0KraA2rkKHMwpN+7ludjMmWOCeB8NAyq4YeYBcUe9oYZmUTRYRaWjFAuoSkqw/I33UzlIzQwbZicHKLVGSvkRfHAtN6Fy1PMoJxuTtRXsstEtuaDPPgbc00SvVEJGFy+SzIhjojJdIuG1nU5rT4mxZSvlhph2BRamo6Ct3upg8id5CNbLO2dIhOwTJSFB+tD834HP73CpR8em0DXEGJCpLiPbpJYCte/8Y/P6K6omokAgmcQv1i1HTDKFRQkoKLzkutBcg3owj0UcOrEKXUcIYrsuosQh+TXWRjlden4hPpR4qOq1C0dHqRGua7FDAevBbvi3oCHPsOLPdAFNxF3QIBx03sYyXEXA9EMuwBKrS2ubx49aN6786tx+MMOOEB/7aVHFPVu5OgIkqxxYr9yCU+UMEnsSiyTH6jao9GennzZrfcAs1PFUKYczYRe5uuLTv/aGV9yRQtfmY7CQdB8R4Clmkm2U7pwQHh8uZqxV8RaSBTaNAmZtxJGHtZk2O+1OFu69rV3GF4TdZVu+dkHWGups8/844qovK3SFhfIINf4Xa2u/5RxUuHmkdcy/kLfkjxullPQlplViiq0ur2wFWh60UT6kTivxKcfEJyWGu/Io/v7ZhH4mRN/gS3gQ1MGt+qNsng3Th1JFXW8aDMLmo8EDEdvTOxYBj0ohb9cfLLbQlFJwJ3bQFWSSnTSCHL6hegk1qKMPFf2iQgi2R3USQdGoUHCiZEj8JSJsPvIOScORvtVPLQTN8I1ZTM+eO2QWm16kC5doplQI43rCOSjTQEBgY4o+NZ7ofmN2A92jIuEDpybO3KZ
+ PlcxCIDH
+ BctqCIhNgN2gYoJDIyse21NrgpX4T8Rkj8MJ2Xb21XPLhEy7i/t5gLm+0ILoz/J5S+2fo/tGPUN4CbmFhss6JlhTZgKq/CB5VIMiyrwWDgHHK93oBkwIfhFDjgnVBg/vXI7eoGrs+DuKsCU7t+THABt0GZRBV8OlT/sIkSUpUAC0tZpS7/rk3s7lIQdxbPTsdky/KV8UjYbIGqmKMQ82T9dCkMbi5e4nkVSys+nV0dJvQ0nwLWgLZ/dd5qj+1cckZBpN144y+9XNG+4/oF+wIP3ujhC0YkTVIHVPBOTSGJQK5+5bZ7/zJoT8hbcdTQFiR+tXpxpa6+fbk/QKRi8C/lYiFHx07gnrLdKvCGumoQhfyDwlKP/soDyvtYSbs510LwRy2oG9HIk7xerbkq7o2L1REkbZn3sAf/Sn8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,66 +128,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 15-07-26 19:47:37, Oleg Nesterov wrote:
-> Hi Michal,
-> 
-> On 07/15, Michal Hocko wrote:
-> >
-> > Oleg you haven't been CCed from the top of the thread but TL;DR is that
-> > we need to freeze a user task performing pro-active memory reclaim that
-> > might take long.  Currently we are calling signal_pending to bail out
-> > but that leaks EINTR which is bad as freezing task has a side effect of
-> > terminating it.
-> 
-> Sorry, I guess I don't understand the problem...
+On Wed, Jul 15, 2026 at 09:21:16AM +0300, Leon Romanovsky wrote:
+>On Wed, Jul 08, 2026 at 11:48:47PM +0000, Samiullah Khawaja wrote:
+>> Add an API that uses cma_for_each() to check whether a DMA allocation is
+>> from a CMA region.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  include/linux/dma-map-ops.h |  6 ++++++
+>>  kernel/dma/contiguous.c     | 24 ++++++++++++++++++++++++
+>>  2 files changed, 30 insertions(+)
+>
+><...>
+>
+>>  #ifdef CONFIG_DMA_DECLARE_COHERENT
+>> diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+>> index 03f52bd17120..0b1702bf39ca 100644
+>> --- a/kernel/dma/contiguous.c
+>> +++ b/kernel/dma/contiguous.c
+>> @@ -130,6 +130,30 @@ struct cma *dev_get_cma_area(struct device *dev)
+>>  }
+>>  EXPORT_SYMBOL_GPL(dev_get_cma_area);
+>>
+>> +struct dma_cma_check_data {
+>> +	phys_addr_t start;
+>> +	phys_addr_t end;
+>> +};
+>
+>If this series is retried, use "struct phys_vec" here instead of
+>declaring a new structure:
+>https://elixir.bootlin.com/linux/v7.1.3/source/include/linux/types.h#L173
 
-the problem is that `echo $AMOUNT > $CGROUP/memory.reclaim' can take
-quite some time and therefore block freezer. Appart from Richard's fix
-to bail out on pending_signal deep in the MGLRU reclaim we have this
-signal_pending in user_proactive_reclaim which would leak EINTR if the
-source of the signal was freezer. This is IMHO undesirable. The proposed
-change below tries to address that problem.
+Sure this sounds great.
+>
+>Thanks.
 
-Makes more sense now?
-
-> 
-> Yes, unlike EINTR, ERESTARTSYS should not leak to the caller (just in case,
-> debugger can see this error code).
-
-Yes, I guess this is a general constrain to any signal_pending() caller.
-
-> But I am sure you know this. And the patch looks fine to me.
-> 
-> Oleg.
-
-Thanks!
-> 
-> > 
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 35c3bb15ae96..336af76d2a28 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -7909,8 +7909,13 @@ int user_proactive_reclaim(char *buf,
-> >  		unsigned long batch_size = (nr_to_reclaim - nr_reclaimed) / 4;
-> >  		unsigned long reclaimed;
-> >  
-> > +		/*
-> > +		 * Make sure that we enter freezer without delaying much and
-> > +		 * leaking EINTR when that happens but also take care of 
-> > +		 * fatal signals to terminate.
-> > +		 */
-> >  		if (signal_pending(current))
-> > -			return -EINTR;
-> > +			return -ERESTARTSYS;
-> >  
-> >  		/*
-> >  		 * This is the final attempt, drain percpu lru caches in the
-> > -- 
-> > Michal Hocko
-> > SUSE Labs
-> > 
-
--- 
-Michal Hocko
-SUSE Labs
+Sami
 
