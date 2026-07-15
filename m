@@ -4,113 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E2ADC44508
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:37:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B458CC44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 14:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34F5F6B008C; Wed, 15 Jul 2026 10:37:07 -0400 (EDT)
+	id 753896B009F; Wed, 15 Jul 2026 10:42:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 300636B0096; Wed, 15 Jul 2026 10:37:07 -0400 (EDT)
+	id 7047F6B00A0; Wed, 15 Jul 2026 10:42:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF4C6B0098; Wed, 15 Jul 2026 10:37:07 -0400 (EDT)
+	id 5CF2E6B00A3; Wed, 15 Jul 2026 10:42:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E11106B008C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:37:06 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 766211401C4
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:37:06 +0000 (UTC)
-X-FDA: 84991263252.07.3561D40
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AEDBDA000B
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:37:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eTT7jjpO;
-	spf=pass (imf15.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2E68A6B009F
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 10:42:40 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92563140118
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:39 +0000 (UTC)
+X-FDA: 84991277238.02.5261B19
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BC07B140009
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 14:42:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=zoyBLhW8;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=oLTF8C6b;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784126224;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZT6vdOdhwC/AsmQEkeWpnNcH/bprH+MunGvD8DHMRhw=;
-	b=0kzxBLRcLfswDelXcrCLRWyhTuP7zG3DlXo3V1NjWugPYsKst91u5m5rFRtV9LnzPCb666
-	4cb2r9C3ClpuQ7tAdTY0QZIlS6yPW89UBmc/kJJPIw3D25uWLg3+Pnc6eTbhvIJQFcSfyY
-	I1gjq5kg7dCH5/vzpmXBrlttQcaj8zs=
+	s=arc-20220608; t=1784126557;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=O4fAs88PU8PfSDLqf7jj03THLume/iu33/P+wiz3f2I=;
+	b=oaXo5Fn9cXSx5UySPTyJ2zEt1Hr4PIPJQnsMsSsfkwF/8p2z79TfxzTT3gbJ0/PTFeEE9B
+	Or2/RoOfdARR2IQFC46DKvRC++WKFDHiN5KT935topf5rRecSw71sQo4PHcxU6ipAVEMdL
+	hAMgMnK7SX1YXkrBZ3K6Eql98+t34So=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eTT7jjpO;
-	spf=pass (imf15.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=zoyBLhW8;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=oLTF8C6b;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784126224;
-	b=hj55HxA/JH0bCnrsR4Rly7pBUFdK3QbKLimFz6XrD90RxQ+iCWdU71tV+9HSUmp7IQGN/n
-	tJ3bWA6AtN/9vUK2Ewhc8SZbLc6P6ZyhJrvTZd7UFPD3eARsi1alw8QSYUS3jcd0nOiDFe
-	hP/iM6sV4lpDH3goCJ4nkMLQ37BcRfc=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8485b358552so6113291b3a.2
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 07:37:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784126223; x=1784731023; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZT6vdOdhwC/AsmQEkeWpnNcH/bprH+MunGvD8DHMRhw=;
-        b=eTT7jjpOlpr1tnSMN/Zy6sV7iFeBtCtFiFTM/RxeFzzwTWaEkqPzOY6/9h9qj2F7Kp
-         +LSIj2Rze40YoNRzPXFbdthDrjScc1F6b06/EPJ38Nuxg2fCMaysnLqMtnv3oXxxMYDl
-         VYWDtcTR/dE5toPlcMr8PoyCS20cS/7vSqV42vp5eMVvqHQ3XopXA5nAEU2pXXp3I3iO
-         /C5tQZOn2rZXzA1LIlOlgzBtOcM4d46Iq9v7TSCATf/vc96PBs11vIcHaM/XGe63qTCF
-         PzD6dWD+5wQrqbqLLDs1wp1r7SQ0IkKaWVLc64RhjhYdXjWxQW6wlIhDCFuIpKdSJoyc
-         RC5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784126223; x=1784731023;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:sender:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZT6vdOdhwC/AsmQEkeWpnNcH/bprH+MunGvD8DHMRhw=;
-        b=nZSc6EcAiEsiAdSQUBIPb9nmL7WXiKVVqJrH7vNcpsl+6N4o5mqY65oMLZd/iud6NY
-         vHlkypyqv+AYTYWgjmcV8cW3B7K0EEcZjKKianYIGZsLXiC5AHmuZIty6ki/m4sHkT9E
-         hTinOWK5yH52Ny5SoSWu7cY3OyWP7WYKVUSGamnPZOsE3B/8y2NZSYQLX5QJQePYQj3O
-         zH9aQ/J9BjIvDKYOheZ/QKMd/h4kCA7D9LOeqt4lmvFOPKNxLYc7TqNE8gUJPGgUJ5EL
-         wjbYBjolvzs19bJRMObVcrpyNcVAQh3dP1oJ6uN1cFlARTNOMWtOmME5eW/hcx94jGzJ
-         YgJw==
-X-Forwarded-Encrypted: i=1; AHgh+RqzzumBN8mP6sPO2bn9MYQSKtMBSe2Mhwq4PEx9MMfVdDet7wTKGKvl9Yq6KUiLJsiwJYSvgbvt+g==@kvack.org
-X-Gm-Message-State: AOJu0YzrLjycYPuh5VK9OINHxbtZbfLKCAfZNlPWe1ruW6JHeRbmD5n8
-	kXk8CaNEb8pWNXPb7fQvTx33rRUzj8xUQ0Y/04vWCBrr/Xb/+5PuISJh
-X-Gm-Gg: AfdE7cndBiB6LwCI2ZoPtghBOHQaz7etAGth08y8oahb7LA0l9sJ+4rNBoVWM295Byo
-	o2a1bm/FeR0J/ow576KDl6wrLlYYC1Ueiui1fky/H5pinfaGx0TaBMPdCdYc0dd6OGkr7P8Wxef
-	kmnJ/YBtmXznrbJJr5xyNd1GZvD41HJlrsW3YazotDXiK2X2hDXMSjf3ptjTHwZwIuuwZAHbj4A
-	eCFUTDziHuUsun2ik82FyYfZ4S7WcXMuvgn9ZJQeLMHRHk4OqBg21eoxjL6gvb7GM8Q3VkKi/pC
-	qvS8sSmlRSI8/moxDfpMbjpInNLTQhE5H050j7loPjTzwr9UNH5hccF4K9Z1y8MCfHX/x1I5S7C
-	w+2HdzWJgcjpexDCVZyQc2QapeajYyk9SgsCZSU1GobsW3JIxgn5j+es8oAG6yzB9QSvodV75My
-	EBMJSNdDffhr1nn0nE8X8GTPunvyp3g7ZUhHF7fvtDHTInjub7Eb0=
-X-Received: by 2002:a05:6a21:610f:b0:3bf:6c08:fb9c with SMTP id adf61e73a8af0-3c35754eddbmr8066746637.48.1784126223500;
-        Wed, 15 Jul 2026 07:37:03 -0700 (PDT)
-Received: from localhost.localdomain ([2406:7400:90:2db1:3066:c473:74d2:497d])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3140e4fd3e9sm2020161eec.1.2026.07.15.07.37.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 07:37:02 -0700 (PDT)
-From: deepakraog <gaikwad.dcg@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
+	t=1784126557;
+	b=CwuS9uVWyE/cfmVyT3Vwf/cQWda97um7QmfwhWx1jW2Gd9QBf9c274qiR6IW8QPLU0VJLH
+	00xmesqL9yRHZ5acfG7EfvMhiQZlcGy3PeITQ6wi28/oHTg6tngos7sm2VMwORQMqeL96l
+	gcgynal69gP/GemjC9VcwmoECa1OpDk=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 855837A0086;
+	Wed, 15 Jul 2026 10:42:36 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 15 Jul 2026 10:42:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm3; t=1784126556; x=1784212956; bh=O4fAs88PU8
+	PfSDLqf7jj03THLume/iu33/P+wiz3f2I=; b=zoyBLhW8Dyb63VF18W2n5sJeVh
+	2DkBdw62n9c7peMRioObqRsMJU+binOkxO4ATRTwwvJVw5HlQSGeYzRA52iUOQR8
+	lLZZlN2vGT/8ipr2gR8CsUAHa+V53sIu/6H5pommo/yfCYLe7uApOfz4Js7KLlQh
+	ermSCm0NnmWm6tRbt3Xc3MU5yd2uPLLGu0rNyOnYxPhgvSSYXN+x5Jox9YN4P7B2
+	YTLkyBQM9S1m1P1RbPdRtSgIvOBg1+e3+G1+OZf0+fH3EaZNcAO9ARDtCBaJ+OUw
+	KRPC/ppPaW4T49TV7T82TIgT0ZBSu0M5Hva/3wVDhW1RBzkppiFz8TVRq/6Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784126556; x=1784212956; bh=O4fAs88PU8PfSDLqf7jj03THLume/iu33/P
+	+wiz3f2I=; b=oLTF8C6bdjQWAfFZq5MjRbcBj9Q62IwxoUS9hdu6dk7fFXISb4i
+	G4iYf25B8xBYVBYk9TIUOWTHiqZ72QGdCM2eBFN/I9mRaQtAuVK1wy5cEIpcH/iQ
+	ixrnKvDEAhHJ/ajGzgaMdy3t5czVdLK+91KrPvpsEN0NqzZB83mHOp4hVz5RWWWh
+	btxJBqPxQXDkGLYaIQRAZVseyN9o37c+ws0tbsb9GE6UZwgT7T49E+GVPF+MbkHM
+	zYH86qb6UrQZh2dpUnuyEm6c+Te9i0+N4XC/PLtaduiBq3Iac7ckyiVYEEwCxwcc
+	Jz1JHnb2v3L1wjqGbbyx3kah1nwbL284vnQ==
+X-ME-Sender: <xms:XJxXajmxfaRO-iqmHoYzg9lFDhU-5Gl9Yxt50tAsvQGE1dhDlmEYyg>
+    <xme:XJxXaiv6TKEpB-JrY1NnSvEkUGf-mWGKH4Z34CLQfzl3lVRN6o5HDDeN77Xg5Gue_
+    FqBlcYraZQaZh7TV3QmXhWm0lEEqTrv-f32JLckdi6xAJ0pDRxRJt4n>
+X-ME-Received: <xmr:XJxXalINQckga0XBIco3o1De2T63ZqD-FKkkkwHQU6dPLUXdRbs5wzJOiASasA>
+X-ME-Proxy-Cause: dmFkZTEG1jEV0FcsqtAU48Y3TLxFVDgAUFXicFOqtxZWeQi2NNrOkI/0gy+tQRavLR9UFO
+    00xLocveBGJCh8tsP0C0qGuOeiDfcfpgGVloAAwET/E3i817oggIs66tBP/lKoY49rvJKm
+    iF5Opm3WbNBDLwR3ZymnFRYNzURG+ejz8yI+XnG8zGyH7SQf89KyMoJN1j/EMv5UGsfED2
+    13EXmDiswQfIlvflUVH2dr5ATUu7WR6leXGCw2aVd64eSyDTEGWT4vsmLRaoe6y5PWOPfz
+    ZYnw4YoYqOhkJgBryC2cXYoZ5QveER5whbamXQnbUQQQL9jkfAJPw0Ag+P75n4TGjCJAD2
+    DGjA61sdAIufyWsv8Hu4W/mNNyjAY9oODIe/mLrq1KjReVi1y4w1dntGazIhBl0DcPre9F
+    2jfEUSdJHkyBHn2GOC7O0Pp98I6vFRIvJOgZs+iIuavEK1QHTFXniOC7WbZwgmd5lQvinG
+    DuSHavyv+3u4uRLwKODRINgvOSDBeNpmI0EUPfU+y93qElAgQkx9iukyVT8wKitbtX+9E4
+    xrJ1QV0xNDHvTxUS5jwqQWLDPRLsDlhUhPNpj3CE4dWhupKZN6A+JsnAyaoJhPeacBQt5L
+    eVsW0oeqz45uB60b+AsSMkRyfKxN5Zf+BwWoMEf4FIRVR2tLmek9nTet5CfQ
+X-ME-Proxy: <xmx:XJxXavhBtdll9C2IFgRq_8XwOc2zAQKJ_0xU4fn41HiWLMMcr_vKDQ>
+    <xmx:XJxXapuffedjRT2JcnVC0seRXAVsmzpc7UHfjvzv9EvOkrskAa37VQ>
+    <xmx:XJxXapjNIbvQxwM6iAq9IhcnCb80x62lgpwcMHC6iw9Rgyg0yxkZcw>
+    <xmx:XJxXakc7BW4Nyp5gOi5w1OC-AygmGyb3Xj4vgWRZXiN9LnVL3tVz8Q>
+    <xmx:XJxXas7qJyYIYaYEP3ScfB6UaH9852M7eRCPdkxqqkLzfeqY8B2CyH8L>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 15 Jul 2026 10:42:35 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: akpm@linux-foundation.org
+Cc: usama.anjum@arm.com,
+	peterx@redhat.com,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	david@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	zenghui.yu@linux.dev,
+	shuah@kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] mm: vrealloc: grow vm_area mappings in place
-Date: Wed, 15 Jul 2026 20:06:43 +0530
-Message-ID: <20260715143646.15828-3-gaikwad.dcg@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260715143646.15828-1-gaikwad.dcg@gmail.com>
-References: <20260715143646.15828-1-gaikwad.dcg@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v5 0/2] fs/proc/task_mmu: fix PAGEMAP_SCAN written state for PMD holes
+Date: Wed, 15 Jul 2026 15:42:32 +0100
+Message-ID: <20260715144234.442721-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7w8g9z1xpd1uoza1hpsoomf7o8mufjx3
-X-Rspamd-Queue-Id: AEDBDA000B
+X-Stat-Signature: bx3tw4x43jzutk6mqr4sba3duaaznnkm
+X-Rspamd-Queue-Id: BC07B140009
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1784126224-697849
-X-HE-Meta: U2FsdGVkX1+Y+ihqK7/iXzGaGe8UKJSRUcmpdxhtNlaJSFqV5PDX8eiQwN/CKUpj16LtrlP+oF6uLaZMDQnXRbNUwjV4tAmvty/3EEoOOjCep0Kw+ipa2gDyYa8m4khyWW/BQl5jdmy7wp7d/CizblbtLEyATmaFPWUcLz0UfiGyRSsogcX3p6Y3NvCfa6FwaSwVuNaze3IDFA0cZezYbJT2DMfVBPV+3ll3NA55m5H2BpkSb46JDaQYdDFs5H2SLiex/OZdxgbn8A5yUIlRTIOzMPc2tLrrc9ZZokpaMltDU/jGA44ASdE3auwB15ROSw75DMR9hUwG+aLfRIuVYd2oqW4OW3pt7xArOpDLTY3wSI88NLLmFnEzQiySYGzifDX2kwPJFPXHn3Ya4lpiK8/O/xLqrdVesslNgICI1dtTCpAw+UcUdT+Ak1uu7ZyntT5ol4VvP9rVMWuboGEP80UQT1BQxmycs2VSNEboVnAbfPk9yXoEAo+2yz7w5j4MUJmdKBpRL8gBm2bRGK+BeOlsN9tg6JoZClaSKriTKJfxF05sqKbCk/0V0fnE2K5VgMo1MBl4/1zM568oRBW68mpPPvP9YfDWqcZ/bJ6gai1lHI7oLiln3O7S0aAM0F25cO/M48/CWyTiQtU06AiwD/miFxZl26IjpD18Uiu8nfxGlMLVgxH6zOYcQt7yu67ku1tzatMU7RmqOr0NP5eVtWOgDdIE97Ax3F+7abtz97S4LQR0ps3uj56aCQsnrUk6JUquE51hrB19t06Nq2hh2cnFxbjuBHuWBsZdvUxv1ReUU5wIsrOT/1IptQqdj9SgdVUDTO6rYJ19oLJPN5uFYx2Ze7vMA6AxBlr0chawS+pApenUQDdC+mAaDUd5hCOUDD676tHY29Ah+FXq5zs8YZDlNnYxS+aosreRdGIO9hQnPGmKSeH9tH/8bw2PB+rXBN7j7qkdJKBt4i3ljDZ
- Lu3kG0ol
- 1+ITiSnSKU7Bc4pc2pzphjLOto5Ml5VVIHlab1t2lXYZF4LqPosYt5/zrn+gevaDy0ilJ7tJIa8X2+ejFK05TmT256F9rq7Hp5pnrCHJm32a+MuH50moWFj6iK0ggvRbtun8eV2hS+B2N12J7mWoqEYRgYoSL5CbIOVegqO+XleW0IhuJDajKBPXv4j4TrD2RnhnZLgroDbA1eJh1IAaYs14w0rpDyz6wccCXiulXMiyInyVoJmuXfByG62wcOvhEYR3g0lI4qCTZ/5jOF2GfBkMdAuYaox/kfSwgPjRdqNbXp/mz5CCYy3QnX+GOzmZD73RSUOFbCe3TcuKiG7yqnO+RXv/WSdwplPYKZZFrIbELQSxKDcldSd11Q4ErtdzQ5t9u25uE1dv5R6MoIum9WVm4u90BA3CRyJQcqkOvgfelk2XquGzZdU9omEtdDS9Fp40EU8TEHWUL2GYOquxZqSb+8N4OCJQvHIZztfyHGrwM5Bq+A6qBMh68WA==
+X-HE-Tag: 1784126557-874750
+X-HE-Meta: U2FsdGVkX1/Gd92BNwS4y52NS6nLiHK484cXVs1G0FoZaJ6/Dn3IB5gSrNNK2xJoq9njnLO88P4+LreQxUbX+kigtN3WSfeZup24u43G/KKJcTpEJv2oMiO/L0BA1GxAW/ZNtol4SOTRuZvZsI28bGtWc43rBnjkelzuJ/XtnGDO5qDSrOg7LL2z0flGuJB2PGsEPd5HHYYzpM00eFtHFnZiHR0qzPwALqpVSWChwTh+8Ys2y6yLy2lnpsIQdvRn/UHor1Aea/bFFLTu2P30FGdrLf13ln4s/N11cltxHoYiq8AxSsQyoGKBWeLP63WxR1EOff8TLIMSKWtQJk1nWzNbrYDYgwM4MHEoSCS6Ui0dclFEcGzTVZ01NWaOq1F+htd5CkWccbvToXeeY/P4WKIAIFd1U4oWKX9AEu99eZvz0YktqLGpp562WflSBoSbY3ltLwxqof8JhG1vLhGc2jWMZ9ry376HDO6Gri6wlZuvZBA7GXq6zl4HML2T/jKMKHdPjEiVVUDZqsp6o0e3qe2KlGSQB82aOHPJPgVfYsgGUZhVANvOQsCR7Or1yRUbnK7EPe7Xza/DaZwHU2ZYY2krQgrZMqrXkMTZKRKBQ3sYxeqBVIoh+H5WD1qUCEYiiSvMbWL1vghFFDdNIyvB4v35ZJ2TFgiCec6YZ8Eo8eE64FSZRkfKebFv7yrzQNyvZB7VpXllXV1j7DiqnWBC7/uLSxO38DY5RyzisFQ6NhJQ5ATkA/7thPm6ZoL2aTaxVUhUGfvCVTqp9VE2GfaiFbtsKpEJUqKc89Hgb3LxSsP9eVpnpKcvya8L6+P2+DN4/g0V8tLCmnDeo/IBeeRHXOSlzDNS/89A0Ef9MAAavtc+ytRxwtWsAOyQMs84eZUq/MEk2MNsE+RxsKo0gQFggDeOnsxjGsXl0ImZbAMf/t4rE/QahIMDs2BkaL7JLtfTEnezclTjPLg24omHRzx
+ FFLqVM1/
+ YalgDZB6zPrYuKiPAqP7HMckfUAfc0nMwzNX3VaKTICk6JkSgQVtUvPXwqWAlz5tKWRo8mS25klurA2YUn4L9o7YD/DYOHXmqsp6KNvvN+TruH2qTfk+690KdrIiz95KND0EVQavgeL9PYFUIPJ4eW/vFhvGjF8D+mdCv7P54EFug5JhyCZoMJMOiNLaCWBLg8dmXMkLFzxHpKz1M+Mgzp+tKODwSMlcPkyqRsnxQwkPe95s5+oRjP2zuOZZFgVEbwKHpPHeuQFKd6iOlXWwBkLjMmo9XzI4WlW8dNqD7vQv4N3m3qIcV/nEosNfavbmbkF84GuNhU3e+JT5ZROCjJxaraUXh5BLtQOYPTv6Gz0crPO45iCUg+eaOWi00oL4r9b/bbu9XoJYdfxuE1GZAk+Jq62Do8b0M6Nf+CoDblIKTVeYkvmtbYXrSfmWDVCF5/hZr11IHw2yBCO4N8nENidKLUoXz8BA/9o6z7oq55tHHGg3P5wnnGq0Cgg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,79 +141,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When vrealloc() needs more pages than are currently mapped, allocate and
-map additional pages at the end of the existing vm_area instead of
-always allocating a new area and memcpy()'ing. Fall back to the
-existing realloc path when in-place grow is not possible.
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Signed-off-by: deepakraog <gaikwad.dcg@gmail.com>
----
- mm/vmalloc.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
+Patch 1 fixes PAGEMAP_SCAN reporting a PMD hole in a uffd-wp VMA as
+not-written (Cc stable). Patch 2 adds the selftest, split out so it is
+not backported.
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 1afca3568..46cf10c62 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4426,8 +4426,56 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 		return (void *)p;
- 	}
- 
-+	{
-+		unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
-+		unsigned int old_nr_pages = vm->nr_pages;
-+
-+		if (new_nr_pages > old_nr_pages && !vm_area_page_order(vm) &&
-+		    !(vm->flags & (VM_FLUSH_RESET_PERMS | VM_USERMAP)) &&
-+		    gfp_has_io_fs(flags)) {
-+			unsigned int extra = new_nr_pages - old_nr_pages;
-+			unsigned long addr = (unsigned long)kasan_reset_tag(p);
-+			struct vmap_node *vn = addr_to_node(addr);
-+			struct page **pages;
-+			int ret;
-+
-+			pages = kvmalloc_array(extra, sizeof(struct page *), gfp);
-+			if (!pages)
-+				goto need_realloc;
-+
-+			if (vm_area_alloc_pages(vmalloc_gfp_adjust(gfp, 0), nid,
-+						0, extra, pages) != extra) {
-+				kvfree(pages);
-+				goto need_realloc;
-+			}
-+
-+			spin_lock(&vn->busy.lock);
-+			ret = vmap_pages_range(addr + ((unsigned long)old_nr_pages
-+						       << PAGE_SHIFT),
-+					       addr + ((unsigned long)new_nr_pages
-+						       << PAGE_SHIFT),
-+					       PAGE_KERNEL, pages, PAGE_SHIFT);
-+			spin_unlock(&vn->busy.lock);
-+			if (ret < 0) {
-+				free_pages_bulk(pages, extra);
-+				kvfree(pages);
-+				goto need_realloc;
-+			}
-+
-+			memcpy(&vm->pages[old_nr_pages], pages,
-+			       extra * sizeof(struct page *));
-+			kvfree(pages);
-+			vm->nr_pages = new_nr_pages;
-+			vm->requested_size = size;
-+			kasan_vrealloc(p, old_size, size);
-+			if (want_init_on_alloc(flags))
-+				memset((void *)p + old_size, 0, size - old_size);
-+			return (void *)p;
-+		}
-+	}
-+
- need_realloc:
--	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
-+	/* Fall back to a fresh vm_area when in-place grow is not possible. */
- 	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
- 
- 	if (!n)
+Changes since v4 [1], addressing David's review:
+  - Split the selftest into a separate patch (2/2); only the fix (1/2)
+    is Cc stable.
+  - Rework the commit message and shorten the code comment.
+  - Rework the test: mirror unpopulated_scan_test(), skip-and-continue
+    on setup failure, rename to unpopulated_thp_scan_test().
+
+[1] https://lore.kernel.org/all/20260713091710.206548-1-kirill@shutemov.name/
+
+Kiryl Shutsemau (Meta) (2):
+  fs/proc/task_mmu: fix PAGEMAP_SCAN written state for PMD holes
+  selftests/mm: add PAGEMAP_SCAN test for THP PMD holes
+
+ fs/proc/task_mmu.c                         | 20 ++++++-
+ tools/testing/selftests/mm/pagemap_ioctl.c | 66 +++++++++++++++++++++-
+ 2 files changed, 83 insertions(+), 3 deletions(-)
+
+
+base-commit: 9795ad96d277c4af049fe30de1cebd4e39d7bcbe
 -- 
-Deepak Rao Gaikwad
+2.54.0
 
 
