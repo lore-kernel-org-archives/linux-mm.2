@@ -4,97 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC7BC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 21:17:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7CF0C44507
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 21:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D82736B0088; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
+	id 6A9406B008C; Wed, 15 Jul 2026 17:19:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D330F6B008A; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
+	id 6598D6B0092; Wed, 15 Jul 2026 17:19:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4B846B008C; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
+	id 5498A6B0093; Wed, 15 Jul 2026 17:19:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 992156B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:17:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F28871A0305
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:17:41 +0000 (UTC)
-X-FDA: 84992272722.21.6E50974
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2739EC000A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:17:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lw1aE0Rl;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 299D16B008C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 17:19:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A9C49A0366
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:19:48 +0000 (UTC)
+X-FDA: 84992278056.03.2D1D8A3
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5DCF5C0002
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:19:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ndcNodN9;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784150260;
+	s=arc-20220608; t=1784150387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UU+zPW9iRvCJbBM3XKZCH/KKzyu8mkExGEFSmL1gNYg=;
-	b=TQAksjy5EBGcroJdaT6Frkzxt3yDbKsUM4let6GeWMlQgA3x39ZA27YezLesaspfVBj67E
-	hEfFuWDJrBHoF2CqerWxVK6HtMLjrWBXF4Op94HRyxL0/QvdqrTH0XhyJzwOwQ9poi6F59
-	yp5nYBMIWXc1MKK09xRmd7qOjbkk634=
+	bh=F4Wch7h5bGb2mJ7phUTBuKN4sBgWUpS//Phrn4g4iYY=;
+	b=jKe1pKh2SeI7YuGZdMk+JCAwcnwfZXddnE/moVkj4oYYa76oY89eUd0QXjpEtSlAbbliUL
+	c1D+4DXaG8qb5ovDPegBDt7lQWrQrqRGcSr4mycIW1j9/7c+Q8M+AMoG8A9dtg5Jmkfwub
+	c9oVXH5EkulRDphrrGaPLkP7Wv51xNo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lw1aE0Rl;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ndcNodN9;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784150260;
-	b=7zCpnNFGLmjLmZluDUEUYwcD2NRp1digyZOMplbSXwkEdTPFlP8Jd0CS5yJW8VskD3XW77
-	ZO/u4TJ+DNgkGRJSKE8hECb6JElAifGYpQw5dxhvU0l8QU1eYTcdpvgay93o9UdGA5FbbF
-	3luvImbaZc3QHu433xiv+9YhVvNaTPU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19A494028F;
-	Wed, 15 Jul 2026 21:17:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56601F000E9;
-	Wed, 15 Jul 2026 21:17:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784150259;
-	bh=UU+zPW9iRvCJbBM3XKZCH/KKzyu8mkExGEFSmL1gNYg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=lw1aE0RlWxmrVX1SBFRJgy1UyPRTg4K6nP+DEjnY9dlEAsFMk2L2RNTreb0d+vs/k
-	 1gYgzd2yzaN3XobC7uyRdh1AW0rjf0Olb3qRLd+W/Q1HYfJhedn8GiXr9Nt0CNftbb
-	 PL/NA8rFtyplykMr0XbJ7OZgExm1aHBfS+hm1Ecw=
-Date: Wed, 15 Jul 2026 14:17:37 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Stanislav Kinsburskii <skinsburskii@gmail.com>
-Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, corbet@lwn.net,
- dakr@kernel.org, david@kernel.org, decui@microsoft.com,
- haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org, kys@microsoft.com,
- leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
- longli@microsoft.com, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
- mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
- nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
- rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
- skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
- vbabka@kernel.org, wei.liu@kernel.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v9 0/8] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
-Message-Id: <20260715141737.4097a5c7d74953ffd8ed66c9@linux-foundation.org>
-In-Reply-To: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
-References: <178413903133.1155966.3904063656020521607.stgit@skinsburskii>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	t=1784150387;
+	b=qRNR0Bzq3o0PO826zLD/UjFwRnwDWVhV0J1HdLFK72NwsZps62COZiwgwBi9BauyE0xfwg
+	oR+WWV+ddqn0lSpvrTlWnjZpcQto7D3dcKy8rjXt6+c2GaMr2FXjD8INi5cneiI7NWz+5B
+	QBV+oPF1ma0PlYccWVL6tbUiPj1ckks=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=F4Wch7h5bGb2mJ7phUTBuKN4sBgWUpS//Phrn4g4iYY=; b=ndcNodN9bX18zzzSX7ez/6W5VV
+	1L7shNryZ52R9d/L70Yw6Ch+Tw8EN5wFoANpRVRsx05HEhBRTfxfB5q4nWa1z5vacmyLf+ALLcqGV
+	RIIHKiztXxUuABPuQrpmEIZgkLn3xs5LQVHBnAQ47Ma+Ywfu2ZMeqDVq0RGHbdP3oG/mI8h3QJRYI
+	oMb2R9+V91DE4JHARBpdZAmIkDdzNSPsS11wLK+GoGBroEV3jiFvOEpVRYRon+Mp836bRtCW5cr8A
+	KEPylQj2k6ojeeYXQw1geIqsUJZ/FqkDIMDXKtCpbdsveosFLJ8WafOoPX4vH/bFq0vfX3f6d/rPg
+	sy5Yxy9Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wk711-00000000yiu-2mZq;
+	Wed, 15 Jul 2026 21:19:39 +0000
+Date: Wed, 15 Jul 2026 22:19:39 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Usama Arif <usama.arif@linux.dev>, Jiaqi Yan <jiaqiyan@google.com>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>
+Subject: Re: [PATCH v2 06/10] memory-failure: Prevent UAF in raw_hwp_page list
+Message-ID: <alf5a0HI-vkEGUEz@casper.infradead.org>
+References: <20260709184740.1286561-7-willy@infradead.org>
+ <20260710150204.1887475-1-usama.arif@linux.dev>
+ <alEpBqExnyvBnnxi@casper.infradead.org>
+ <alZw5EdYVYCRNyj4@casper.infradead.org>
+ <3251bb16-be46-f752-a6ff-a6c3181f49b2@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3251bb16-be46-f752-a6ff-a6c3181f49b2@huawei.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2739EC000A
-X-Stat-Signature: ddsitz8rj9ydc6yihpoaucngxjj1fxre
-X-HE-Tag: 1784150259-611760
-X-HE-Meta: U2FsdGVkX19C8DlqVJOLenfuHOAplsz3PGcSOXpjrJtfBQyUurGWkPPJaYf/Jfi+LY+nwdF1TPhWyFDgoywIh/BEy7/jis/Elf8VX50gTaujmBRIq1Jd6kJOUdCHxI0nFliLZfhTtduYZGxwmCKAEtvkeZ96TynemB/mN3btk69vjIwWCQre/No4Bo4mON9rmt3zjIg/88Z5NSjkG7FHl4K4Vp29QwGGwrBjPy4Ql2zS2U7Hcr1CKuxlvCuPJ0PIkHBczX8BBfQZN3Q+m0vPil/7deJkYwu0XEl0EMFqFTmncqjhd0rICUVLL9fr12XX9lHgt/fqe3AVbXs8mp8rGkwk9QAnbRztX+0ujUfcZQTf64Mtu42zeY8vsVLsmfJY2u2lmCnhoaOmvPv5WwebWPPXVJC4Ty7yMVbgAt1y8jeJD6VYYLVtQrto/zdEcew+GK24XZ5fmliHeiyl/3Ep41IQquec4ODwgLd8MPGVrirYvsYsa+iCMVCMTSIdv3iT/34l/AFDHh95Z7U/aDTtdrBQtuQVjEfWezOMVvVhVvr06aJWwXJWMfHoXZhExCLs5PQnMlfWcml8vjM+gLU4l8Ctw44hIh62gHtdUVXbfieauiaH3WvXnj0Nytp4iZJ0lIMOrKTrnjIy+GQW6IBf2c+TXrrMbyMdGZmSdVyWZqYPZYM8cua6wPJj99gbpCnpYi5VH9njmlVwLUbOi+D/IXpS0vWOweagFLqT8n42fyXo2zcjk1pUdhhYWNV+H79z0/vSP5vFc+LoOigerEAg8H5pff5l+ZZ+hdT9Ur2vQhO1HblvVs0JmiN567PqROvL1qwb83rnTRkh6D5wRoCdbPhCWzUpeNWUu/hZVb49nHj0HMZHTjWzymCAYxxq545lvwaNXnH5bEGhoUvQIptjE+9oUlxFJZIuEwDyDY07qxPUnAd+BtixsRxrj5+UAvMGVKyBJNxJlD8Gh33NM7K
- gI8y0O36
- MIGMvHl1P4gKRVwek9thiZtIRy3op+QZHxy6f6DP/K3SQywjCzn29jXu8PYjsdH2riCgt43FFZDq9ivB9q02SwVCpoFcyA0/D0KopdlfMGHXWPGMI/XV/6FI6afsqqYUDb1SUInzNS6ocUk/AzavRKfLpieM6IqIxuisAjHlXcvg6GDXdXwtTmWHpE5BaMuc2PxM9CObEpX6xh4pTLp+JNmmnvqioyfa1Q3USGVa35YQd2iS0Uol1ZZ45dbmmD01an7Mg1k++pdDXZHvYZMpbrqmejmPXH3niO7Ck8JTjUyRl0gk=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5DCF5C0002
+X-Stat-Signature: 51wjsdy7nxp9daupmc3fsrie1suwmoee
+X-HE-Tag: 1784150386-884991
+X-HE-Meta: U2FsdGVkX1+QI+PTovSxJGYy5N+EV3Qt4s6TKk6bj5DYxvLSlB8A3J38gFqJ2cRNk6XS91khXLBxaaDAwVnFh4QBFO+Kez9Mq0uQde6v1nIZElYaPm+Y6LvoApUlKB/b94jaI98IMTxtAo7ty+hC1i1SKbl0ATG7JVzcAkV3Sk2/7hBc7vzfZnQUGniOc/VipDqR5zi6oUtX69T0PIGWWQ5T3C3HO6SqXUZ2HswRRX6swPRZvPEfauZkZ4bnAlX71qfxR/W2OV7WenFuanxj9O5IMAJ/Hz4Cg0n2pagqK1T7drr6DSQZax7aTeQE+NXgxJLwH9blmkFRoGTZwIanR/Td9YVG5K9IyS5viyCBSqppeN6TrUIBXm1HvNfdHgqb3iuYCn1lhU0F8FAqm+0JesrtkWVfiziNtHW/k1hHLtyQ2cImlNBDuWPXBvBldGF9bLfW0RgzdYWj559tqO15YxvryNbMvztFvRJHRZahM0r0CRQ1Qy9/iahOC2fu5jx77rwNTEz/Dhydnk4tIAL5h2yv3VRlbo8qP1LC3Mt2SJum+/AyyG5V3DDzczWqqWQ/Tp2bOHJ6ZY4Gex0Iznuo9r3d2ZOeAnq9LlVc7zQK05mOPn8BCSYR0D4OUCMH+kCIjfn6jYxhLcEafWm5FKzpxfE2fZ2R1rDyOXCRUjiavTnm4G+Quw59PlMp2uAHDhMxLD4MVU4IHJmd5k8dEaTb3B3/4gzl+OyaevoRg4ng9lkFPlE1byxrFJanITsV9yYTkSE9ob/xLZVV2CkSMtB5Vy6wSeGY1hxhTW5vqQV0zYRKki9z8zMkrRSwQWZUc9vcWhCk6RmmlqHCZzRCKD0v9GS8Ffkb7/Y4PBYZU+wc/NTpazpmUKEIvEvzRh5l808EFQVFAjLIarofpksVee7UQNfmF+daUdZJaEDwpFdc8jZ+BbvwZHUKEZZRf7uP3BoCawJPLq99hO7GfSJgYfH
+ KIXwd1bM
+ QT6qQgu5C3nmn9Ll5DTQYHB8Q3/DWdnMty1URbbDQfJB939Nxsc1sp3PEyUfviiECPhs8XMbHJy7QJpkKcd3IMSFeZsaVZLiLXumrLuJQT5p5Y8WRa0eSes8PUkQjp37h4GzGyMLM/vCL3c+uY/OD/I59wy2WkuHB6l7JtfIKAMYivYwW8SSwP70A5gsLvWE2vpWnMBqypNbDIVE8uXKXatmhP9smucjLiKNbfVB6jvQemXXWMnfvownYEd9SQHoa9GtAnbbT3OnbzXRab2DAzVTyrAcc81yAFZPs/+KlouGqxkydo3wCbzKmJKFyH4VIOKO74a67cCxjXIr2//CGo/s8PFMJFUnkcd8x07TK5T81NLloqdjorUeiuB2As/XWTQo2eVIqejK9XrM/yDOUZjcqEqVIvOqUlTUHukzKHnso4kg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,25 +100,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Jul 2026 11:15:50 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
-
-> This series extends the HMM framework to support userfaultfd-backed memory
-> by allowing the mmap read lock to be dropped during hmm_range_fault().
-
-Thanks, updated.
-
-> Changes in v9:
+On Wed, Jul 15, 2026 at 11:19:59AM +0800, Miaohe Lin wrote:
+> > Since we don't have a refcount on the folio, it can be freed at any
+> > time, and the hwpoison list head can be reused for literally anything.
 > 
->   - Folded the fixups into the full 8-patch series instead of sending a
->     separate fixup series.
->   - Clarified that the HMM timeout bounds repeated HMM/mmu-notifier retry
->     attempts, with the helper refreshing range->notifier_seq internally.
->   - Kept nouveau’s explicit outer deadline because its retry loop runs in a GPU
->     fault worker and cannot rely on fatal signals from the faulting process.
->   - Converted amdxdna, and GPU SVM callers to pass the shole timeout budget to
->     hmm_range_fault_unlocked_timeout().
+> Sorry for late but could we hold hugetlb_lock here so hugetlb folio won't be freed
+> after we fetch the lock? We can recheck that the folio is still hugetlb and hwpoisoned
+> once we've got the hugetlb_lock.
 
-These are all in your fixups for v8, so the v9 series made no
-alteration to mm.git.
+Hm, but we still take the mf_mutex in is_raw_hwpoison_page_in_hugepage(),
+and we don't usually like to sleep in predicates like this.
 
+We could introduce a spinlock to protect the raw_hwp_page list.  Any
+objection to that?
 
