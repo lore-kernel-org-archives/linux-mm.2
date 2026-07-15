@@ -4,97 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98553C4450A
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 04:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF71CC4450A
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 04:32:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90C8A6B0092; Wed, 15 Jul 2026 00:22:15 -0400 (EDT)
+	id A0F7E6B0005; Wed, 15 Jul 2026 00:32:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BDBC6B0093; Wed, 15 Jul 2026 00:22:15 -0400 (EDT)
+	id 9C0036B0088; Wed, 15 Jul 2026 00:32:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 785346B0095; Wed, 15 Jul 2026 00:22:15 -0400 (EDT)
+	id 8D6426B008C; Wed, 15 Jul 2026 00:32:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 38A306B0092
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:22:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 967611C05FC
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:22:14 +0000 (UTC)
-X-FDA: 84989713788.10.391B0E0
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C617620006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:22:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S16VRBcE;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 63EE46B0005
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 00:32:27 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5EAAA05CF
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:32:26 +0000 (UTC)
+X-FDA: 84989739492.08.E38D010
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CC02B100004
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 04:32:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DazQEg7h;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784089332;
+	s=arc-20220608; t=1784089945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=rj7YPHT03jZbIOMeN6+aBaVgV/U4EklLIXykuG91lqg=;
-	b=nzkXiuqxXPp84Irtd488rnL2TCFuVJehcoLDw48Wc08/5ZrgJu+AcYKsHCAzQ9m69aEG/D
-	2OI2TYeTSAdh2eq5FPvtKXw5/X7e2RTuyn+R+CHpcUFTb0YmkOLV6PdM2C7GJiV0LsKVdt
-	nXM6U9MDGatkd1hrINzo33tfbJNj9l8=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gJb00IhM4AP9SQyu/uM8pi/lNywYn049J8+hhjcsJ20=;
+	b=3NgLZ/6qCWuOp3TOUymEwpdVmAY/lagmlNqvZkshf+eThVkvaPvval5JGBvgLdESqj7K1h
+	F5YylJuHWGQ/3K2VtT5NQi1IRwYwC7MTGsRexJjGuOjaPa0wnFd4BkK/KTieJU0KCuoS4X
+	1VS3cM8PhMyHZMY2HfVH5/ZNnvBBYH8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S16VRBcE;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DazQEg7h;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784089332;
-	b=MRjTC43Xzl3Z8IBJpLbxcT8PYvXhI9FwWonpBAKjli+hOuusQCXIrrjxilXKyIZlUiTtwz
-	0BHQ3qqpN6zPJjC6tRJhny/Su5wOVXa2MSg73OCOwMwewEs1PsgTZnKaxYqjPIxFIx+eid
-	BqAoZBKUbk+6Y4Bca4uyV1yGiNwmM6o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784089332; x=1815625332;
-  h=date:from:to:cc:subject:message-id;
-  bh=yOkM685yJQdbKVpHEhMOVPwInqzc8Xw3E5+TywZRXT0=;
-  b=S16VRBcEEmlnGG9vVspSGQ3R+CqnZdUtJPr+J5pM6bYEb2cVH0xxeD6F
-   w1wEayop/agxabawg2UzUL0ZkRojrxo2SxpnMaadC1vBL27hMVdxwaxvh
-   k06NNMx92a/ED81w1EXhzq4QjuumQ1lmJYc52tu0PfBtQBDsiALNvGeiD
-   g5JTR+z2bZDNYU3zDu9LJIfPZtwVDXJ2sMG/cZtVSpj3z4k/0NujCORVb
-   ACx4QozNOlXvdL/7VaERPe2R4fUM9bHgilmipguqFFz7K0cIxu0BBHszW
-   fDhF2huNZdTmXjuazfC1G5db7wNlWqdHKlaQwY+1Q/h8LSaK2A2bbRrIX
-   g==;
-X-CSE-ConnectionGUID: mpgBB8S/TPKY5IYP5VIuUg==
-X-CSE-MsgGUID: Phj2UQhlQkOHWEVmqrVEQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84571733"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="84571733"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 21:22:10 -0700
-X-CSE-ConnectionGUID: hvNO03mgQV+d0iWYqg69PQ==
-X-CSE-MsgGUID: uN6TXpdmQpuBO0IRmGbeag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="252662372"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 14 Jul 2026 21:22:08 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wjr8H-00000000NHb-2tuv;
-	Wed, 15 Jul 2026 04:22:05 +0000
-Date: Wed, 15 Jul 2026 12:21:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- linux-media@vger.kernel.org, linux-scsi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD REGRESSION
- cc2b5f627e8ccbae1188ef2d8be3e451d7f933a5
-Message-ID: <202607151249.N5niNXKX-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: yzp5zg99dekigak519s9m6r8sopq7zwx
-X-Rspamd-Queue-Id: C617620006
+	t=1784089945;
+	b=uRv0VhG4l8Pac0HPHtSysAw71DLTvSNMHfGzs/mhshNV+9yMvU5hdBReIrwem7RKkK4k4f
+	1ifzHDU8NFyQQ4JlXvJkVqVO5RaouhcWBzjxadWCvVvG1U3PYa9iOd8iymfu4X6Ry3p5Pd
+	m4hv05rdsvn77KWqPe0Nxejo65w2LME=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 28492600BB;
+	Wed, 15 Jul 2026 04:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55B61F000E9;
+	Wed, 15 Jul 2026 04:32:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784089943;
+	bh=gJb00IhM4AP9SQyu/uM8pi/lNywYn049J8+hhjcsJ20=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=DazQEg7h5SLtFuAzos91uz6fXTBxBU4y/9fMfNWCFSv1Hy3rHXw2c/pPjuVoWqT5I
+	 gnriYzJYQS4Ln0YWiMG5BrtP1O/vjwlH+ZYabPJuSp2pq9poh7onsgM3Tg9vkVyfQ1
+	 xyd6/GYCnLXktkQdxKaxAFhLqtnnSGIcLNNfuuzk=
+Date: Tue, 14 Jul 2026 21:32:23 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, usama.arif@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Qi Zheng
+ <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH] mm: shmem: make unused huge shrinker memcg aware
+Message-Id: <20260714213223.9a03d78f4aba252c512e01b9@linux-foundation.org>
+In-Reply-To: <20260714031918.308-1-qi.zheng@linux.dev>
+References: <20260714031918.308-1-qi.zheng@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784089331-628564
-X-HE-Meta: U2FsdGVkX19LlM8GpUijJgwQQsKU27M5YatXZod17EFqD+LXWrU/WOVrHdidliKLdn28vY9FwUfGofRbPQeHR6ooOvBzgC7HTQBZfGkGJ1A6d20y1KJ4lv+M0v30S4FvsdHt0+5nwBnUb7B0GQbsTjM/i3nEJplbT3foYR8o8ynDSBA3y0i4L0bR2Urs2IoVMUyxilTLvWpIUYiU9rWHNYPDiZ7VZ2xoUR36zhm7Q7cvKlhezHytxR1GdDr1SoyuZCCHSu2CYRAcxz0t9xJMU22dr7O1xXa8+fnO96ga2v4lQ02N0lug6tSjq4nr8ghMPIjxZm5PmQGLA2JP4IlDQAZltIOfxErv1Ownyb6OtVluoAbVcxKlsKNy0UoqQYiZmkPu2NW8eQjz3u9aWFxN1oAjgY9bg/dllA84YHGjHNiNqRj7hiRGZqXdXE7ysULfWVp0xRJDX+weMxKaGOAfBJrNEBfZkFhYkXj0+6JqJsDHNe0jVlYgCGeHcFes4MJTWiykE5Dwuhgf5rQkyba/2i/iqThfCV2sZD69CcTjINU7te7aS5yqBSrnjpwHEaJiojgMwqnJpc2iNDiNyYoARvoJ2YmowYevTTjjHaIk1awLfglQhBPcjHdgD0o0ulaqZokGgAe1iqqWK4fZmIcq7GH4W3QrjutpNdY9FJGmh5t3wL+SEBkvKzwUYevBVuNlmri0y/I4k9U3yV/O9Dj0hjuONqCW1BhD13YgscQanQwcVNdqi0hdv0bGdmO2BZoVND0FZcT0aBK3B8mF3Dp6VqpXi1PhnKlY+LMgMqbf2QmlJinsrBaY74bGD/9iIYtkWxs//wjLR/fA9HIXk/4GZ34eDFDeD5OtszCf9JEzVzh6wWjdyj0gmLyCIvIyE62et1X01mkook4w70Ghdbk/ZUAuT29XMgRlZNv8pRl7cnQYAZjUOLfKoeUvHpXpkvJVbOSQHuMrOTF+8i6NdI2
- uAXFBRgz
- 7vTIncO0bXt17NHxp/PggyRDWJ4O3nfscVGuegOCBZHJ0P9n+KMIxpaz8gWDm3jkCxDt0kTcq4Na4+SroBZpZNFgel5dSnhjyRp7RXjVg8NrXT1GQ0iASSGv1dmqDReQnTeyU/uWxKaf0HotbXLcxmtjPPMbhVGCOz0a2SIwRPiUORKsWoue2cUlvT1CYtv8QqlWv8UgVel9CvhzxAA0NdCGmhYbGFu1cryMK
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CC02B100004
+X-Stat-Signature: m954zraqmme6qbwhatcgycf5hz1ybymj
+X-HE-Tag: 1784089944-692155
+X-HE-Meta: U2FsdGVkX19KZXnI+cpUaisnqdpthuVSacOKFqAVMwBSA5nHI08p7ybjtLx4TRQIa29JZmfE8ZzrKX0DrwtavCDfrfWh9s9DN8WkuGceR4oQhaxlLaSmWZRCTEqyB+5ZESM+ZZRx2glLPeLdpNZHNyft9cIiunvX1UNl855btU9VqY3wu5oHlQ2LJ3DVBkRYb4PZRhqTYjNNq26+03QaUXdQU2TtlSTwBL1R37eyNyMPTDc+Qht6Om1L2G8tTRruK182dYxvgx9Hoaz28pIfDGZ/SRrgH5Va+W52wlmxHQhUnKTR7eVBIzW35y3UqQhP8sLLYau+XDvD/pcTlO+RmiLqlCxDd5B/pE0b9sbaeA812KYRdh1YbEmafigl5qPzYkSFtaEJWWmhQFHcT4ZKdJh5AtxDzoOt+ugIhBvq9U2rHHDYA1GpNszs3VqFSTZrejTCmFGrMXRjZqRptzGvoSdhzCeu7KMduz0+5El3fWusWlg5Nk9GtgCo0CtmGCNU3nJRXdSlilvqHJZ3lsbPUs19Z9mVs1/bTin3YQ+hfvnDfNkimoyMuG5IoEFFuypHPH1Mw4H3mLA9sSNNEo2lO5dEyr0NzuUZJYAUcf60g3rLgo4WHQ/pRXwWHo3HrfukyHX3sKrsc9afIHJHvSYmCev+zdo6MNZuzKF823y53+q/SUgqY7w3y9lP58iORXt4N14xHe2a00FDkxtsPTvGve6tDKg1VNYhJCE2bTDXvVOrk7iAydrDyFAOoz4XadlKgKHGpED4WuQHvLVH/3FBvfajKQDNugki5rdGZvBb8IhngpqHZ2iUSmnFpj1ybAbp09PwhWNSVXqKszup52VMkns3S57OqPSt4dav06462vAGE8nrXcdwegMabTIbxdvln6blXHuyzxdkHNOOZoVdppty0efv3vTr0kvDdks+Tnn/Kjit9/DKYU5moom5O3vuSRtCJab9hUKjDyAUJVK
+ d/upVgqD
+ XWFyKL2br2nmQTS7cPTDRuYa4TeRGr3ch69GT8eyys749Iv3IjjZ1LgQ4HOI+YKFV7s3nQLGVCYM/onjCl+4/R2dRCkz/cN1hVq22LZCcfhD+tzIynEwNpZintZeBZ4D7WfUoAIzbmiircD48rIl9AKMu5qway5bir9GQ+cxtQk5lNrtB2oa32AWd0Mh4ZQzo7hoEOoSgYw6x/Y3hCU7V5c6jWizuzdhRPboA20Kg+gHPqyR2yPDkcJur7k1dyKQCMRip9gavhSvWrEavihgoNStU/4sjJb+FbOUWxhUcvhBu1o1gHFUbe91dheheWYvK1CtAqBobctxowCO7S0QMWQecEWo6JaLgHbLP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,323 +90,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: cc2b5f627e8ccbae1188ef2d8be3e451d7f933a5  Add linux-next specific files for 20260714
+On Tue, 14 Jul 2026 11:19:18 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-Error/Warning (recently discovered and may have been fixed):
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> The shmem unused huge shrinker keeps a per-superblock list of inodes whose
+> tail huge folio extends beyond i_size. Since that list is not memcg aware,
+> reclaim triggered by one memcg can scan inodes from the whole superblock
+> and split shmem huge folios charged to unrelated memcgs.
+> 
+> Convert the shrink list to a memcg-aware list_lru. Queue each inode on the
+> list_lru sublist matching the memcg and node of the current tail huge
+> folio, so non-root memcg reclaim only walks candidates charged to the
+> reclaiming memcg. Global reclaim, root memcg reclaim and shmem quota
+> reclaim keep global semantics.
+> 
+> The list_lru still tracks inodes while the actual split target is the
+> current tail huge folio, so validate the folio memcg/node during scan. If
+> the folio no longer matches the reclaim context or splitting cannot
+> proceed, requeue the inode according to the current tail folio; if the
+> inode is no longer shrinkable, drop the scan entry.
+> 
+> This can be tested with the shrinker debugfs interface by allocating 32
+> tmpfs tail THPs in each of two memcgs, then scanning the sb-tmpfs shrinker
+> with memcg A's cgroup id:
+>
+>                before A scan        after A scan
+>   base         A=64M, B=64M         A=0,  B=0
+>   patched      A=64M, B=64M         A=0,  B=64M
 
-    https://lore.kernel.org/oe-kbuild-all/202607150709.CagVDeyK-lkp@intel.com
+Sashiko said a thing:
+	https://sashiko.dev/#/patchset/20260714031918.308-1-qi.zheng@linux.dev
 
-    drivers/scsi/gvp11.c:444:51: warning: missing braces around initializer [-Wmissing-braces]
-    qcom_scm.c:(.text+0x41cc): undefined reference to `of_address_to_resource'
+> This patch is based on next-20260701 because it doesn't include this patch:
+> 
+> https://lore.kernel.org/all/20260609123047.1948242-1-usama.arif@linux.dev/
+>
+> Later on, Usama will consider moving this restriction down into the fs callback.
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+I'm not understanding.  Was Usama's above patch ever included in
+anything?
 
-    https://lore.kernel.org/oe-kbuild/202607150800.r5xDoCDS-lkp@intel.com
+> -	unsigned long shrinklist_len; /* Length of shrinklist */
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +	struct list_lru shrinklist; /* List of shrinkable inodes */
+> +#endif
+>  	struct shmem_quota_limits qlimits; /* Default quota limits */
+>  	struct simple_xattr_cache xa_cache;
+>  };
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b06c1ae2f50c3..a17150e6107c6 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -724,50 +724,252 @@ static const char *shmem_format_huge(int huge)
+>  }
+>  #endif
+>  
+> +static inline struct mem_cgroup *shmem_get_and_clear_memcg(struct shmem_inode_info *info)
+> +{
+> +	struct mem_cgroup *memcg = info->shrinklist_memcg;
+> +
+> +	info->shrinklist_memcg = NULL;
+> +	info->shrinklist_nid = -1;
+> +
+> +	return memcg;
+> +}
 
-    ERROR: modpost: "power_supply_reg_notifier" [drivers/usb/dwc3/dwc3.ko] undefined!
-    ERROR: modpost: "power_supply_unreg_notifier" [drivers/usb/dwc3/dwc3.ko] undefined!
-    arm-linux-gnueabi-ld: core.c:(.text+0x23c0): undefined reference to `power_supply_unreg_notifier'
-    core.c:(.text+0x1c60): undefined reference to `power_supply_unreg_notifier'
-    core.c:(.text+0x220c): undefined reference to `power_supply_reg_notifier'
-    drivers/media/i2c/imx678.c:1152 imx678_init_controls() error: buffer overflow 'min_hmax_4lane' 8 <= 64
-    drivers/media/i2c/imx678.c:905 imx678_write_common() error: buffer overflow 'link_freqs_reg_value' 8 <= 64
-    ld.lld: error: undefined symbol: power_supply_reg_notifier
-    ld.lld: error: undefined symbol: power_supply_unreg_notifier
+Explicit inlining shouldn't be needed - gcc will figure it out.
 
-Error/Warning ids grouped by kconfigs:
+> +
+> +static void shmem_unused_huge_add(struct inode *inode, struct folio *folio,
+> +				  gfp_t gfp)
+> +{
+> +	struct shmem_inode_info *info = SHMEM_I(inode);
+> +	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+> +	int nid = folio_nid(folio);
+> +	struct mem_cgroup *memcg = NULL, *old_memcg = NULL;
+> +
+> +	memcg = shmem_unused_huge_alloc_lru(sbinfo, folio, gfp);
+> +	if (IS_ERR(memcg))
+> +		return;
+> +
+> +	spin_lock(&info->lock);
+> +	if (!list_empty(&info->shrinklist)) {
+> +		if (info->shrinklist_nid == nid &&
+> +		    info->shrinklist_memcg == memcg)
+> +			goto unlock;
+> +
+> +		list_lru_del(&sbinfo->shrinklist, &info->shrinklist,
+> +			     info->shrinklist_nid, info->shrinklist_memcg);
+> +		old_memcg = shmem_get_and_clear_memcg(info);
+> +	}
+> +
+> +	list_lru_add(&sbinfo->shrinklist, &info->shrinklist, nid, memcg);
+> +	info->shrinklist_memcg = memcg;
+> +	info->shrinklist_nid = nid;
 
-recent_errors
-|-- arm-randconfig-004-20260715
-|   |-- arm-linux-gnueabi-ld:core.c:(.text):undefined-reference-to-power_supply_unreg_notifier
-|   |-- core.c:(.text):undefined-reference-to-power_supply_reg_notifier
-|   `-- core.c:(.text):undefined-reference-to-power_supply_unreg_notifier
-|-- hexagon-randconfig-002-20260714
-|   |-- ld.lld:error:undefined-symbol:power_supply_reg_notifier
-|   `-- ld.lld:error:undefined-symbol:power_supply_unreg_notifier
-|-- loongarch-randconfig-r073-20260714
-|   |-- drivers-media-i2c-imx678.c-imx678_init_controls()-error:buffer-overflow-min_hmax_4lane
-|   `-- drivers-media-i2c-imx678.c-imx678_write_common()-error:buffer-overflow-link_freqs_reg_value
-|-- m68k-allmodconfig
-|   `-- drivers-scsi-gvp11.c:warning:missing-braces-around-initializer
-|-- m68k-defconfig
-|   `-- drivers-scsi-gvp11.c:warning:missing-braces-around-initializer
-|-- mips-randconfig-r072-20260715
-|   |-- ERROR:power_supply_reg_notifier-drivers-usb-dwc3-dwc3.ko-undefined
-|   `-- ERROR:power_supply_unreg_notifier-drivers-usb-dwc3-dwc3.ko-undefined
-`-- s390-randconfig-r062-20260714
-    `-- qcom_scm.c:(.text):undefined-reference-to-of_address_to_resource
+Totally pointless style thing: it's nice to fully initialize the object
+before adding it to the list.
 
-elapsed time: 764m
+> +	memcg = NULL;
+> +unlock:
+> +	spin_unlock(&info->lock);
+> +	mem_cgroup_put(old_memcg);
+> +	mem_cgroup_put(memcg);
+> +}
+>
+> ..,
+>
+> +static enum lru_status shmem_unused_huge_isolate(struct list_head *item,
+> +						 struct list_lru_one *lru,
+> +						 void *arg)
+> +{
+> +	struct shmem_unused_huge_scan *scan = arg;
+> +	struct shmem_inode_info *info;
+> +	struct inode *inode;
+> +	struct mem_cgroup *memcg = NULL;
+> +
+> +	info = list_entry(item, struct shmem_inode_info, shrinklist);
+> +	if (!spin_trylock(&info->lock))
+> +		return LRU_SKIP;
 
-configs tested: 262
-configs skipped: 7
+Why the trylock?  Please add comment explaining its use.
 
-tested configs:
-alpha                             allnoconfig    gcc-16.1.0
-alpha                            allyesconfig    gcc-16.1.0
-alpha                               defconfig    gcc-16.1.0
-arc                              allmodconfig    clang-23
-arc                              allmodconfig    gcc-16.1.0
-arc                               allnoconfig    gcc-16.1.0
-arc                              allyesconfig    clang-23
-arc                              allyesconfig    gcc-16.1.0
-arc                                 defconfig    gcc-16.1.0
-arc                   randconfig-001-20260715    gcc-10.5.0
-arc                   randconfig-002-20260715    gcc-10.5.0
-arm                               allnoconfig    clang-17
-arm                               allnoconfig    gcc-16.1.0
-arm                              allyesconfig    clang-23
-arm                              allyesconfig    gcc-16.1.0
-arm                                 defconfig    clang-23
-arm                                 defconfig    gcc-16.1.0
-arm                   randconfig-003-20260715    gcc-10.5.0
-arm                   randconfig-004-20260715    gcc-10.5.0
-arm64                            allmodconfig    clang-23
-arm64                             allnoconfig    gcc-16.1.0
-arm64                               defconfig    gcc-16.1.0
-arm64                 randconfig-001-20260715    gcc-16.1.0
-arm64                 randconfig-001-20260715    gcc-9.5.0
-arm64                 randconfig-002-20260715    gcc-15.2.0
-arm64                 randconfig-002-20260715    gcc-16.1.0
-arm64                 randconfig-003-20260715    clang-23
-arm64                 randconfig-003-20260715    gcc-16.1.0
-arm64                 randconfig-004-20260715    gcc-11.5.0
-arm64                 randconfig-004-20260715    gcc-16.1.0
-csky                             allmodconfig    gcc-16.1.0
-csky                              allnoconfig    gcc-16.1.0
-csky                                defconfig    gcc-16.1.0
-csky                  randconfig-001-20260715    gcc-16.1.0
-csky                  randconfig-002-20260715    gcc-13.4.0
-csky                  randconfig-002-20260715    gcc-16.1.0
-hexagon                          allmodconfig    clang-23
-hexagon                          allmodconfig    gcc-16.1.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-16.1.0
-hexagon                             defconfig    clang-23
-hexagon                             defconfig    gcc-16.1.0
-hexagon               randconfig-001-20260714    clang-20
-hexagon               randconfig-002-20260714    clang-23
-i386                             allmodconfig    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-16.1.0
-i386                             allyesconfig    clang-22
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260715    clang-22
-i386        buildonly-randconfig-002-20260715    clang-22
-i386        buildonly-randconfig-002-20260715    gcc-14
-i386        buildonly-randconfig-003-20260715    clang-22
-i386        buildonly-randconfig-003-20260715    gcc-14
-i386        buildonly-randconfig-004-20260715    clang-22
-i386        buildonly-randconfig-004-20260715    gcc-14
-i386        buildonly-randconfig-005-20260715    clang-22
-i386        buildonly-randconfig-006-20260715    clang-22
-i386        buildonly-randconfig-006-20260715    gcc-14
-i386                                defconfig    clang-22
-i386                                defconfig    gcc-16.1.0
-i386                  randconfig-001-20260715    clang-22
-i386                  randconfig-001-20260715    gcc-14
-i386                  randconfig-002-20260715    clang-22
-i386                  randconfig-003-20260715    clang-22
-i386                  randconfig-003-20260715    gcc-12
-i386                  randconfig-004-20260715    clang-22
-i386                  randconfig-004-20260715    gcc-14
-i386                  randconfig-005-20260715    clang-22
-i386                  randconfig-006-20260715    clang-22
-i386                  randconfig-006-20260715    gcc-14
-i386                  randconfig-007-20260715    clang-22
-i386                  randconfig-007-20260715    gcc-14
-i386                  randconfig-011-20260715    clang-22
-i386                  randconfig-011-20260715    gcc-14
-i386                  randconfig-012-20260715    gcc-14
-i386                  randconfig-013-20260715    gcc-14
-i386                  randconfig-014-20260715    clang-22
-i386                  randconfig-014-20260715    gcc-14
-i386                  randconfig-015-20260715    clang-22
-i386                  randconfig-015-20260715    gcc-14
-i386                  randconfig-016-20260715    clang-22
-i386                  randconfig-016-20260715    gcc-14
-i386                  randconfig-017-20260715    gcc-14
-loongarch                        allmodconfig    clang-19
-loongarch                        allmodconfig    clang-23
-loongarch                         allnoconfig    clang-20
-loongarch                         allnoconfig    gcc-16.1.0
-loongarch                           defconfig    clang-23
-loongarch             randconfig-001-20260714    gcc-16.1.0
-loongarch             randconfig-001-20260715    gcc-16.1.0
-loongarch             randconfig-002-20260714    gcc-14.3.0
-loongarch             randconfig-002-20260715    gcc-16.1.0
-m68k                             allmodconfig    gcc-16.1.0
-m68k                              allnoconfig    gcc-16.1.0
-m68k                             allyesconfig    clang-23
-m68k                             allyesconfig    gcc-16.1.0
-m68k                                defconfig    clang-23
-m68k                                defconfig    gcc-16.1.0
-m68k                            mac_defconfig    gcc-16.1.0
-microblaze                        allnoconfig    gcc-16.1.0
-microblaze                       allyesconfig    gcc-16.1.0
-microblaze                          defconfig    clang-23
-microblaze                          defconfig    gcc-16.1.0
-mips                             allmodconfig    gcc-16.1.0
-mips                              allnoconfig    gcc-16.1.0
-mips                             allyesconfig    gcc-16.1.0
-mips                        bcm63xx_defconfig    clang-23
-nios2                            allmodconfig    clang-20
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-23
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260714    gcc-11.5.0
-nios2                 randconfig-001-20260715    gcc-16.1.0
-nios2                 randconfig-002-20260714    gcc-11.5.0
-nios2                 randconfig-002-20260715    gcc-16.1.0
-openrisc                         allmodconfig    clang-20
-openrisc                         allmodconfig    gcc-16.1.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-16.1.0
-openrisc                            defconfig    gcc-16.1.0
-parisc                           allmodconfig    gcc-16.1.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-16.1.0
-parisc                           allyesconfig    clang-17
-parisc                           allyesconfig    gcc-16.1.0
-parisc                              defconfig    gcc-16.1.0
-parisc                         randconfig-001    gcc-8.5.0
-parisc                randconfig-001-20260714    gcc-13.4.0
-parisc                randconfig-001-20260715    clang-23
-parisc                         randconfig-002    gcc-12.5.0
-parisc                randconfig-002-20260714    gcc-11.5.0
-parisc                randconfig-002-20260715    clang-23
-parisc64                            defconfig    clang-23
-parisc64                            defconfig    gcc-16.1.0
-powerpc                          allmodconfig    gcc-16.1.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-16.1.0
-powerpc                        randconfig-001    gcc-10.5.0
-powerpc               randconfig-001-20260714    clang-17
-powerpc               randconfig-001-20260715    clang-23
-powerpc                        randconfig-002    gcc-8.5.0
-powerpc               randconfig-002-20260714    clang-17
-powerpc               randconfig-002-20260715    clang-23
-powerpc64                      randconfig-001    clang-17
-powerpc64             randconfig-001-20260714    clang-17
-powerpc64             randconfig-001-20260715    clang-23
-powerpc64                      randconfig-002    clang-23
-powerpc64             randconfig-002-20260714    clang-23
-powerpc64             randconfig-002-20260715    clang-23
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-16.1.0
-riscv                            allyesconfig    clang-23
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-16.1.0
-riscv                 randconfig-001-20260715    clang-17
-riscv                 randconfig-001-20260715    gcc-15.2.0
-riscv                 randconfig-002-20260715    gcc-15.2.0
-s390                             allmodconfig    clang-17
-s390                             allmodconfig    clang-23
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-16.1.0
-s390                                defconfig    clang-18
-s390                                defconfig    gcc-16.1.0
-s390                  randconfig-001-20260715    gcc-12.5.0
-s390                  randconfig-001-20260715    gcc-15.2.0
-s390                  randconfig-002-20260715    clang-23
-s390                  randconfig-002-20260715    gcc-15.2.0
-sh                               allmodconfig    gcc-16.1.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-16.1.0
-sh                               allyesconfig    clang-17
-sh                               allyesconfig    gcc-16.1.0
-sh                                  defconfig    gcc-14
-sh                                  defconfig    gcc-16.1.0
-sh                    randconfig-001-20260715    gcc-15.2.0
-sh                    randconfig-001-20260715    gcc-16.1.0
-sh                    randconfig-002-20260715    gcc-15.2.0
-sh                    randconfig-002-20260715    gcc-9.5.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-16.1.0
-sparc                               defconfig    gcc-16.1.0
-sparc                 randconfig-001-20260715    gcc-16.1.0
-sparc                 randconfig-002-20260715    gcc-16.1.0
-sparc64                          allmodconfig    clang-20
-sparc64                             defconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260715    clang-23
-sparc64               randconfig-001-20260715    gcc-16.1.0
-sparc64               randconfig-002-20260715    clang-20
-sparc64               randconfig-002-20260715    gcc-16.1.0
-um                               allmodconfig    clang-17
-um                                allnoconfig    clang-17
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-16.1.0
-um                                  defconfig    clang-23
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260715    clang-23
-um                    randconfig-001-20260715    gcc-16.1.0
-um                    randconfig-002-20260715    gcc-14
-um                    randconfig-002-20260715    gcc-16.1.0
-um                           x86_64_defconfig    clang-23
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-22
-x86_64                            allnoconfig    clang-22
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-22
-x86_64      buildonly-randconfig-001-20260715    clang-22
-x86_64      buildonly-randconfig-001-20260715    gcc-14
-x86_64      buildonly-randconfig-002-20260715    gcc-14
-x86_64      buildonly-randconfig-003-20260715    gcc-14
-x86_64      buildonly-randconfig-004-20260715    gcc-14
-x86_64      buildonly-randconfig-005-20260715    clang-22
-x86_64      buildonly-randconfig-005-20260715    gcc-14
-x86_64      buildonly-randconfig-006-20260715    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-22
-x86_64                randconfig-001-20260715    clang-22
-x86_64                randconfig-002-20260715    clang-22
-x86_64                randconfig-003-20260715    clang-22
-x86_64                randconfig-004-20260715    clang-22
-x86_64                randconfig-004-20260715    gcc-14
-x86_64                randconfig-005-20260715    clang-22
-x86_64                randconfig-006-20260715    clang-22
-x86_64                randconfig-006-20260715    gcc-14
-x86_64                randconfig-011-20260715    clang-22
-x86_64                randconfig-012-20260715    clang-22
-x86_64                randconfig-012-20260715    gcc-14
-x86_64                randconfig-013-20260715    clang-22
-x86_64                randconfig-014-20260715    clang-22
-x86_64                randconfig-015-20260715    clang-22
-x86_64                randconfig-016-20260715    clang-22
-x86_64                randconfig-071-20260715    gcc-14
-x86_64                randconfig-072-20260715    gcc-14
-x86_64                randconfig-073-20260715    gcc-14
-x86_64                randconfig-074-20260715    gcc-14
-x86_64                randconfig-075-20260715    gcc-14
-x86_64                randconfig-076-20260715    gcc-14
-x86_64                               rhel-9.4    clang-22
-x86_64                               rhel-9.4    gcc-14
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-22
-x86_64                          rhel-9.4-func    gcc-14
-x86_64                    rhel-9.4-kselftests    clang-22
-x86_64                    rhel-9.4-kselftests    gcc-14
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-22
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-16.1.0
-xtensa                           allyesconfig    clang-20
-xtensa                           allyesconfig    gcc-16.1.0
-xtensa                randconfig-001-20260715    gcc-14.3.0
-xtensa                randconfig-001-20260715    gcc-16.1.0
-xtensa                randconfig-002-20260715    gcc-12.5.0
-xtensa                randconfig-002-20260715    gcc-16.1.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +	if (info->shrinklist_isolated) {
+> +		spin_unlock(&info->lock);
+> +		return LRU_SKIP;
+> +	}
+> +
+> +	inode = igrab(&info->vfs_inode);
+> +	if (!inode) {
+> +		/*
+> +		 * This inode is being evicted, just drop its stale active LRU
+> +		 * entry.
+> +		 */
+> +		list_lru_isolate(lru, item);
+> +		memcg = shmem_get_and_clear_memcg(info);
+> +		spin_unlock(&info->lock);
+> +		mem_cgroup_put(memcg);
+> +		return LRU_REMOVED;
+> +	}
+> +
+> +	info->shrinklist_isolated = true;
+> +	list_lru_isolate(lru, item);
+> +	memcg = shmem_get_and_clear_memcg(info);
+> +	list_add_tail(&info->shrinklist_scan, &scan->list);
+> +	spin_unlock(&info->lock);
+> +	mem_cgroup_put(memcg);
+> +
+> +	return LRU_REMOVED;
+> +}
+> +
+> +static bool is_shmem_unused_huge_readded(struct inode *inode)
+> +{
+> +	struct shmem_inode_info *info = SHMEM_I(inode);
+> +	bool readded;
+> +
+> +	spin_lock(&info->lock);
+> +	readded = info->shrinklist_isolated && !list_empty(&info->shrinklist);
+> +	spin_unlock(&info->lock);
+> +
+> +	return readded;
+> +}
+
+The return value is out of date as soon as the lock is dropped?  A
+comment explaining why this is OK would be helpful.
+
+> +static bool is_shmem_unused_huge_match(struct folio *folio,
+> +				       struct shrink_control *sc)
+> +{
+> +	struct mem_cgroup *memcg = NULL;
+> +	bool match;
+> +
+> +	/*
+> +	 * Only non-root memcg reclaim needs to match the folio charge against
+> +	 * sc->memcg. Skip the folio memcg check for the following cases:
+> +	 * 1. shmem quota reclaim (sc == NULL)
+> +	 * 2. global shrinker reclaim
+> +	 * 3. root memcg reclaim
+> +	 */
+> +	if (!sc || !sc->memcg || mem_cgroup_is_root(sc->memcg))
+> +		return true;
+> +
+> +	if (folio_nid(folio) != sc->nid)
+> +		return false;
+> +
+> +	memcg = get_mem_cgroup_from_folio(folio);
+> +	match = memcg == sc->memcg;
+> +	mem_cgroup_put(memcg);
+> +
+> +	return match;
+> +}
+>
+> ...
+>
+
+Generally speaking, the code seems a bit thin on comments explaining
+why functions exist, why the code is doing a partucular thing, etc.
+
 
