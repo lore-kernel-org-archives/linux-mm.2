@@ -4,103 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C6E8C44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:44:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD247C44501
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 13:44:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 040296B00D0; Wed, 15 Jul 2026 09:44:38 -0400 (EDT)
+	id 325906B00DB; Wed, 15 Jul 2026 09:44:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 017966B00DB; Wed, 15 Jul 2026 09:44:37 -0400 (EDT)
+	id 2D6196B00DD; Wed, 15 Jul 2026 09:44:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E975A6B00DC; Wed, 15 Jul 2026 09:44:37 -0400 (EDT)
+	id 177A56B00DE; Wed, 15 Jul 2026 09:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C1FA6B00D0
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:44:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7113E8013C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:19:14 +0000 (UTC)
-X-FDA: 84990764628.13.22977B0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D0EC6C0006
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 11:19:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cMFHUiae;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784114352;
-	b=YrccoXMlWJLg58UKpzcqazWQk6CQ3obcgGVMwrPVuQzQUDqQpCUnA1WrJHdPPdJ7AqUyGM
-	EV44kygfabvGaoBgfxWqr62udnSpcSWa/oOnm28j3C+dIytE4A9EUePlyCCndMKXblJJEn
-	SJmcbP/1yOA0lvf+8PD1/ojtfg3i+kI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cMFHUiae;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C9B996B00DB
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:44:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 794EC1A01AC
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:44:37 +0000 (UTC)
+X-FDA: 84991130994.07.197E399
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DCDF1C000D
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 13:44:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxyFpBfK;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784114352;
+	s=arc-20220608; t=1784123075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g8HQK3j+hj9rSYQBF4yJj28ze8bkepKp+VZQL5j+x+Q=;
-	b=KUAaoeDPSdoD/+/HgBUowRSArmDPlfGOKnaPyctpo87p21MzGiJSuu6xJsu2HSkSlgXewJ
-	rL90mCN3zBsZ2FDNy5+F0qzbJh94+3IkuGO0lqv5/dWxg3kdJ8aTD3iU5tbCBuYmCUXXM7
-	kGwcfNPUAmgSyBrlmC4WcTuoB0w38io=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9139153B;
-	Wed, 15 Jul 2026 04:19:07 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EBA483F915;
-	Wed, 15 Jul 2026 04:19:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784114352; bh=+o9DpSGseXucY8pTcFbS+W9IBHMvf3AT4jdAayQBJ8o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cMFHUiaeqiLmMlN8BYlKnh6OjgLR9tKyb3ltisY+8hUHTgVbih7101lm/gflcV05s
-	 aK+QLl9e+84ArIvxO/iHsUkLoj8mfp9CmE7xTuFSSUpzMRuCkkprSSvhYSYcCuxIMl
-	 yoBAn5gFAkv7F+upQWY0lmCysJeHP6wuXfi+kueM=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: Dev Jain <dev.jain@arm.com>,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	riel@surriel.com,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH 3/3] mm/rmap: batch unmap file folios belonging to uffd-wp VMAs
-Date: Wed, 15 Jul 2026 11:18:36 +0000
-Message-ID: <20260715111839.1667914-4-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260715111839.1667914-1-dev.jain@arm.com>
-References: <20260715111839.1667914-1-dev.jain@arm.com>
+	bh=9NxeIMCQLUALFB3p9cZLEOe/ZyRxY6DXqkHXVUWxObw=;
+	b=55e83hQhAFFL9ecevGkr4OCs9cjEsXMZfWn4P10/9aZxCJfJ0Ti/adiLh25SKlsUzke7+h
+	cBDgHwdx48gzc5AnKaVgAuumkDUfm0sFJnuqx65utFE7JcyeWosPBv7QSmXHnjvjhaU94o
+	e//4BUPF9DYPXBVPaJ5vIs/gsQQQmW8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxyFpBfK;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784123075;
+	b=06mQ7h3Y4dCmI0NQivk8g92v5Gq5ORi/wzJAPLSGk2992A7pDvj+X2FJ2VGWtoPFK82ZIg
+	efALsrBJiqRQQCI3dQaUNmzIqSPRzSMH/m8p1z5cG0yG6C/+1l3qDVhFRhPqfVGsgHQeHw
+	GysuxOcgNYdzLopT7D/8ckgvnqAH3S0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F1AD74342D;
+	Wed, 15 Jul 2026 13:44:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318791F000E9;
+	Wed, 15 Jul 2026 13:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784123074;
+	bh=9NxeIMCQLUALFB3p9cZLEOe/ZyRxY6DXqkHXVUWxObw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AxyFpBfKq5QOyikTyDSfvnH6Lvyt7riHpVkft1Wf5lTr1Omc9BJjA3kSwGI5RLKoU
+	 ehCwOZjqLog2K13vsrhH0E/+d5D6ai59yo72ODnyXor0lGMl9gNx8Z0u1G9Hb+LsJe
+	 yJNZ2sbm13kY7qkdAepORJyOpMC0rsG5v7VL4Az7YDbsg3M1rcbX3F47FcZ6ZCzK70
+	 XXLAeoiJnCPqwxn0Vk0A7RrvpO6YmYF4DiCC9UZTJ2g8kuBreFke3CuK3RFsJpuF8i
+	 IfHx9DcCEXpu4KX9lR5fs+4tzVAp9YCr09yFH0LtlO+1aNSm7LBQL8+n5qlfsmL8bR
+	 3JVKmyhAjPp+w==
+Date: Wed, 15 Jul 2026 16:44:28 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
+Message-ID: <aleOvBtB3WCSsqEd@kernel.org>
+References: <20260703-secretmem-highmem-v1-1-30d5ff944664@google.com>
+ <20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org>
+ <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev>
+ <akpBWmnujSnj1ZEE@kernel.org>
+ <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
+ <DJZ3TQV3GPDO.6AN321FGTTX@linux.dev>
+ <aldv8U-lzCn0SCBL@kernel.org>
+ <7e7f20de-c43d-40f7-82d3-8d05ceb3656b@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7e7f20de-c43d-40f7-82d3-8d05ceb3656b@kernel.org>
+X-Stat-Signature: 3xzsryypwqtys81yiszcig143qf7ed94
+X-Rspamd-Queue-Id: DCDF1C000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D0EC6C0006
-X-Stat-Signature: 4u4zwnmexx59k5mgs3pfcd9mu5ts4df7
-X-HE-Tag: 1784114352-745454
-X-HE-Meta: U2FsdGVkX1/BqzubXnWbjbpfK7jSXbnblyy2Ow2j52adn9tIxR6rtDZcC1I+54ZDQv1N/IF+cECGw1ysTCyWq0aW9XPVe/h3sgXtgKmP1YSXxy2cHd7nd0xmnaVdcftvr4DoJz6MIsm2rFpJMQ0uYTB0MzX5d0OZ2twb69hI+gEN+N4wXbRB6rCtQG4S4ob3F8XFzSmLBZXAwMkf85GAj5NaZ/2o/Yab9egKA3ym4iX30B5e7gFUmkZwcgoWwiO59pD3zgX8u7OMp7JEpxdJJ7CxNiSxqJs0Gt/E7ulkZMqkGgZ62hXY65LkL0qdzq5Uck3bcONprER5ApP8PvE5xV5bZRMIlthtsXtSW7ZbuteFZHd4Q6UQTTyL7K5LPodxlnCPQPISv1oB2g3gixCKNxm4CcT29TB28VAHcrP0lsoq4yPH0Bu8atcxrqOBJiJvP1XrE4+KRbh083Ib6pOB2tUYbeUV9ZMuqsMiVSdwJQX5UoEnw3ud4fJkbRXXPCKzm0NYjIgsw+RN0q4Y8fWWsON5UnkrPAVc2nbO/f2HgEQzF97UsQsxIy+L3ZsO1NTN/p53ADL6UMFzKIgSzaBIKYeCbDyfK92UgXFGlQ6InnDZ3CC3AeUN2+9bL8ZkWErOPlvZTTmb4BqXtOt/SeDHMq7y3P2khmrfc8VT5+RkayrJ6VjwUZZfIGl28TrVUihu5xQLZBY2w6LPLvKYPdm8qqZI1NnwRnE4dw1HKaPeKYNptF0P5xFU5T56Xu+vnsihneYdChzIeq25UXE0/aLRH2imNzQZr3mv3vP8Ylu7jtSOShfDfGoxsB3dBzw4wPbiWN4zZYcKhkfWh0Bxe+Whe8hp4E0gpIguUkUiWirl64jzMa2I6yi4kaBv25xgkJDib699k9pkcBlf6xW02hX0MPMYnxr+WZuJoK2ZzfUkr/XSNkC00eru04mVL6UluPwdnH+kEiyFF/4WxNCnw0W
- os7HFCya
- wrAu+PKSS/ckn/PlLuOzPk6J1cFmxCjyXOV3sC5MQ5mQ5LuhjsGdebFiq2Xl2IvnZPuAICcGRV+io0YiPMflE5wbplynChf/D0j316dHDKYwbOKkfT9WAZ6+wZaKlb293GS1gW+I3z6xRoUoAT1P/ddKLDx7XBfiIV1GCZPi9MwdXuAkn1GjaV3EuqfL5u09cz1j3B+o/hPAF5RKHUcqUpFeltu8/PqyPtCYlWY7YuENe66uNmX0v2J9h/fy+mySm8dd14beXg5ZXAha0EhTfgc23u7ra4ALb5KTvMDr2AcH72ZE=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784123075-101120
+X-HE-Meta: U2FsdGVkX193nFbyV5TvHHdLPitenN2fx/qcMIbtm/F1U6og7NucdZoEzlLOwjH2/q/Wo7qat9zFtwvD/3tJavGClUbRXImFJ8cXQETbOIBJX5ukW/muTY11crLIvorQ7fH//PEK68AcsrsRAgp4smiY8Usp8dFsarl1hZiXZL8WzA/iFFmGid8zt7uUXPuOXO4oynB2H1cXfsMpvEgZr9YpYplDO4UssjcowCQOqWPx5B3/7vm+Gi+lQ1+uXpbmrUqxs7iaCtv1Fc1LwYOZwGiAHgyPh813FI9My3fn5iWLOqTS1jz7atoqjaI0CP9t6+E2gYKeIOlWM3Bo1VANuHbkCQWUQOpRtEblv0840LFTNPEsRYvEVSPq/7pjR3CbR/g9UVNm74M9WuN+CygyCF+httr2FegSIDdoS2KPBc9jF5lf6acs3fFAJ+5ehSfKEsuWozYuczaCloxVQ5ZstDYNGnzIbIHHuuJP9qPV+iaoyGK2LAzVQ5CNwNzRjiWepNiqelH2ivldU5alTvizyo+HQhx2plhPXsZGQZdu8/hKEd6x3CeLM3goP9bnKcdz3dKp06t/ng67vAQwqSRtIhaWQrlSyCGmUNYVD4cbwmvFK/A046aP5lZFA5Pa+lI6vZYCgyx9eq5O/R+3PpslQ9PSz+CVKtHS+/XDxTiSbDtz4dgg+yPvFFfR8bsPsGNB6kTUhi32fPK22flTndieDKvkytltXwLlAd9z5yB5FimjdWyMJCN3O/GrLQxG2aL++tduVAoMZnSx9QbmK9Ew4MRTHCoWjmqkcEKrYeV7zFeZwPVvRkkk+loqTwIwJpKZZjvrvXtbcrWAIROOlZzVOzveTdq7TQz4kyMq4cjBF+dQG1Noe+q2MQOORslx83KcugGVxeUc1dpop8YiOiOcf2xsHkVBCgPYshqpduayLl0uT91DwsUKjHYBD42cXOofLhLxgH8gD1MVPC7l4P1
+ lks3fSba
+ BIkqpnykXnhgNjGeUz319oBF/ik+sazpu3eemHQeNc13hJLP6YlD5hjww8QNBmYKmxJltuztRHrJrIaeYRNVr3F9PJTOETXrh3NtO7jFOYTUINfbIR8pNKq+CdFyiqd7nEFIeNz/4j0fg1tXvdT6jSNFa1XUwXmX0V8mdxIgmf2lf4HiVZ91XtiGl3P9GBNGbwcgdYAXJwjL7kwh9WvXcR4Qq3sxs4sHpg8MxPC8HhBUlj1rxEjZlSyQx+sQPUnRaDq0z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,67 +104,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit a67fe41e214f ("mm: rmap: support batched unmapping for file large folios")
-extended batched unmapping for file folios. That also required making
-install_uffd_wp_pte_if_needed() support batching, but that was left
-out for the time being, and correctness was maintained by stopping
-batching in case the VMA the folio belongs to is marked uffd-wp.
+On Wed, Jul 15, 2026 at 02:31:08PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/15/26 13:33, Mike Rapoport wrote:
+> > On Wed, Jul 15, 2026 at 11:22:33AM +0000, Brendan Jackman wrote:
+> >> On Mon Jul 6, 2026 at 8:42 AM UTC, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> Right.
+> >>>
+> >>>
+> >>> We could even limit it to 64BIT ;)
+> >>
+> >> I fear this in limbo, we have quite a wide range of opinions from "fix
+> >> the broken configuration" all the way to "disable secretmem completely on
+> >> 32bit". I'm not passionately committed to any one answer but I do think
+> >> we need to pick something.
+> >>
+> >> Mike's position seems to be roughly "in the middle" of the spectrum, and
+> > 
+> > Right :)
+> > Supporting 32-bit without HIGHMEM is easy, so I don't think we should limit
+> > it to 64BIT at this point.
+> 
+> You mean
+> 
+> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> index 4877c262cb1f6..d29865075b6ea 100644
+> --- a/mm/secretmem.c
+> +++ b/mm/secretmem.c
+> @@ -202,7 +202,7 @@ static struct file *secretmem_file_create(unsigned long flags)
+>         if (IS_ERR(file))
+>                 goto err_free_inode;
+> 
+> -       mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+> +       mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
+>         mapping_set_unevictable(inode->i_mapping);
+> 
+>         inode->i_op = &secretmem_iops;
+> 
+> 
+> then?
 
-Now that we have a batched version called cond_install_uffd_wp_ptes,
-simply call that. folio_unmap_pte_batch() ensures that the original state
-of the ptes is either all uffd or all non-uffd, so we maintain
-correctness.
+No, I mean what Brendan's patch did:
 
-If uffd-wp bit is there, we have the following transitions of ptes
-after unmapping, for a file folio:
+ config SECRETMEM
+        default y
+        bool "Enable memfd_secret() system call" if EXPERT
+-       depends on ARCH_HAS_SET_DIRECT_MAP
++       depends on ARCH_HAS_SET_DIRECT_MAP && !HIGHMEM
 
-present -> uffd-wp marker
-
-We must ensure that these ptes are not reprocessed by the while loop -
-if the batch length is less than the number of pages in the folio, then
-we must skip over this batch.
-
-The page_vma_mapped_walk API ensures this - check_pte() will return true
-only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the pte.
-There is no pfn underlying a uffd-wp marker pte, so check_pte returns
-false and we keep skipping until we hit a present entry, which is where
-we want to batch from next.
-
-Note that for the uffd-rwp case, we already do not make a uffd marker in
-cond_install_uffd_wp_ptes.
-
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
-Dropped David's ACK due to the uffd-rwp changes.
-
- mm/rmap.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 2f938d0ac6953..ac88673600fa0 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1965,9 +1965,6 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	if (pte_unused(pte))
- 		return 1;
+We can change gfp_mask as well for the sake of pedancy
  
--	if (userfaultfd_protected(vma))
--		return 1;
--
- 	/*
- 	 * If unmap fails, we need to restore the ptes. To avoid accidentally
- 	 * upgrading write permissions for ptes that were not originally
-@@ -2345,7 +2342,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 		 * we may want to replace a none pte with a marker pte if
- 		 * it's file-backed, so we don't lose the tracking info.
- 		 */
--		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, 1);
-+		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval,
-+					  nr_pages);
- 
- 		/* Update high watermark before we lower rss */
- 		update_hiwater_rss(mm);
+> -- 
+> Cheers,
+> 
+> David
+
 -- 
-2.43.0
-
+Sincerely yours,
+Mike.
 
