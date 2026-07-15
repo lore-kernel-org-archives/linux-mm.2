@@ -4,102 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA33BC44501
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 16:13:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C14D0C44508
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Jul 2026 16:13:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 817C26B0088; Wed, 15 Jul 2026 12:13:34 -0400 (EDT)
+	id C86A06B008C; Wed, 15 Jul 2026 12:13:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77A716B008A; Wed, 15 Jul 2026 12:13:34 -0400 (EDT)
+	id C36186B0092; Wed, 15 Jul 2026 12:13:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66BDD6B008C; Wed, 15 Jul 2026 12:13:34 -0400 (EDT)
+	id B01886B0093; Wed, 15 Jul 2026 12:13:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 006C46B0088
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:13:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 634BA1A023C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:13:33 +0000 (UTC)
-X-FDA: 84991506306.19.5742EA2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8042B140013
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:13:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=olxKOGZg;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784132011;
-	b=wzSOQ9m4M1+vN2HVIVlknh53dI2d66f0XAnUIIUKHwpRWvYaFZbeYoEVV+ylgpIAU6Se0L
-	1JtFLQ6rYM5tbMyuKJQWEazD9uyx29nSkYInKSArXoiVyDZOsZe07/hh8mE1fpkTvU/pmd
-	6hXFq9EmP5+fd7NUREzRjZr9vVedFRg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=olxKOGZg;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784132011;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DA7F6B008C
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 12:13:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E626E160215
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:13:52 +0000 (UTC)
+X-FDA: 84991507104.03.F9838A3
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 00138100010
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:13:50 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bGgHnknG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784132031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lu5Q8dLhMuRIjKNUUM4Rh5PJ281PWU4rUxfHtkQFTB0=;
-	b=lajNCbjmU+NBYX5fB8xI41Ksvlg7faoSOaGMcQbYCPiYcB5eaDh04FEk5Vxsjh4/gc+hPn
-	tYbTS9fc9ehOQwzo/Yl08ygZ22vNz1jAcY7YeCG+bKwzczokkvHOpTgGLnqHPhMFlTibLW
-	YOhiXuZHbhlFG4BZqXnJ58Bh0J5nXHg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C42960054
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:13:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DEF1F00A3E
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 16:13:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784132010;
-	bh=lu5Q8dLhMuRIjKNUUM4Rh5PJ281PWU4rUxfHtkQFTB0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=olxKOGZgyCmb6FPVTij4JCmNrk2owXUCIAWnWPKNseikRFdnhIYMoBd3d6tJHPyFz
-	 SRHG3hcV2rKsXoZGdBNVz/z2NDcQX8SCg4BSWs0zoUAGzJWVFjMcdHFMAdWuiPInZC
-	 R9M2DBPGzqaYEw2HholgDD81jEc2C7O5Zg4mRwOvv0BooWlAbj6Erj/oqa6jVb9m9S
-	 6AC5O0S5o5XOPfB0G1ckSckYS1uNT3LaqE/ruy2iM1Nmk/ROA7DGkC/KkBTUHtBF1U
-	 gT8iRpg13v/8l0K6YTJ6rPH7eQAGqsEMm3Ka6HX2o/WR+Oyx4KAXxR/B5sb5D+jPzw
-	 hRqF3dNupGZ/w==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6984169c126so10386497a12.1
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:13:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqggCn8y2AqQ7uNU70jVXwgc1XwKtRBnaoOnC+SWw//kpUGvF2jdilF321KsfMo3I7NZFvCZUzohg==@kvack.org
-X-Gm-Message-State: AOJu0Yxd1XpcdDCq9EGLM2S3olXdWXzQ7ebNRAbkT99/jdLbtGJcHG8l
-	6gBgxMU+Brb44ISEj1YyAnik/97VxX2mHvsjce7HFvRtlF2M9VjheizndYpxQTEv+C/P3T4h0Le
-	LmS0OdO0gHGN9/1vXq8aJz8Rf//WPuso=
-X-Received: by 2002:a17:907:6d04:b0:c12:8c41:3beb with SMTP id
- a640c23a62f3a-c16794a90e1mr255601966b.50.1784132009676; Wed, 15 Jul 2026
- 09:13:29 -0700 (PDT)
+	bh=NzrlbG1i1Z2grnBug4mVQe2iSrEhqBzyFP6w96GEH0Q=;
+	b=1RKBOCxWORBq0xYadhnyniaevM/9seZlVy7eiJAghEr9Arcxea/Kv7bbxM3nvvCePdbmbu
+	r0kSaOxYB6KtFg0brLyc6+h7WRB2yQj0cQi11Oi5qYkIgWrNeA/kdb7w2+T6t+IlwUkfEN
+	Ml8eqsBnnOp7Rg5uYTKTQxnwxpd1CNo=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bGgHnknG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784132031;
+	b=ygM+qiUnBSHj9Y558R8rfbl/Z1zY94ErVVW1eehRV7fl85dwgouM89VyIwUqVBSXR7KnZv
+	sSp1u6o9fShV1TTngRYBoFLi1osAU/yYx923pRWzrMhRcirxKjibuQksmSAXdYcgNH0nXt
+	SMWMDP7AQoaH6rW+vTMUBWK0FfOyZes=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c01c79467so243191cf.0
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 09:13:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784132030; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mPCDdYB6hargIJECSbK1kjR/bQvjiYYX5/gytoUAiCzYtxdgf2HCNdNrurEJWmrDWg
+         t75CoJwR1hnkqUqIaa7Gto7pZcMPrBaRi59YN0UIUDO9Mke2f57JRfMw+7LHWi1/cGtj
+         Zm0iJquq0sJdNV1jbwTMofTkvMwPpXX7mofQqVUYN7PmITH0FBeuW0h7TrPf023ZMIBJ
+         ZdTf9GhlZvG4aefsd8HueVCOMjPuq93NSU26CsjNeNmgzdh4luOK6IIzIrgFJZUimkbQ
+         ZcQhEaGt5Q4IDTD2ObFQwnEx4FW0FE2uOiXaXs+22U8g02+vJBn1RXAlhlsH93VT2kja
+         OQAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NzrlbG1i1Z2grnBug4mVQe2iSrEhqBzyFP6w96GEH0Q=;
+        fh=nxufOlSWkVDBgfWLyKX1begNdmqSG2AFFMDTUIUQlg8=;
+        b=QcdRwmZ4Sf65JNA4IWarl2YPg48IRUBC5PL6JLyZx4CpStUtk57hdGffvELNQVKlMx
+         QyU5cICYgmnbuCJ1iFdXu1aDpi18eeXZCUOc5kgslBEoGfBiyZs507NObS7JW6Qjx6Xg
+         K9R2WwO1wQ71z8iUTr3GpWybMj4wgKgfuoeooy5cDBB0JN5UcIcpuV5aLugW7bHhRWp6
+         bvHYdT6qdrvFVhNcxhJrT9BUyRx8+6d+GlG1KiZ+6kDdkFV9s7cOrxvaYHJc3zUIyDDj
+         0WUBOxVVTpTEMAWS6cb3LRdqub0dVbnoWS9TJEFnelGkfFUHFlQ5b1qFILpBzocYBv/Y
+         r1iA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784132030; x=1784736830; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NzrlbG1i1Z2grnBug4mVQe2iSrEhqBzyFP6w96GEH0Q=;
+        b=bGgHnknGBrONEBofLYEM2bE/AKwNl6D/Ba3hNxFODvQ8WSUTQ39CDCDBoc5UJabb8E
+         g29p13yAl06nHeM30Ue0SaF5LzH0hDn/vmop3NBlqpZewQ3+yw/os1E31M5j9N+53eE0
+         ItCijNnq109POHcCGirYgy0pSfeQgO6JRSn2OIzshoKcrgUcalu8a5IqY9S7b/3ZLpsC
+         zxdnZThGhDIAAFHWsh4+MKYe29qpI1f2aI31YYZLCSwJ0JMdurYXftQvy7CzpKkD3Xwk
+         TKAIakM2Q1C4oR0yFtevUh5kMM5tpUwYtgFzoxvKm8fF8sPu1vhVSVGgWZkR8k71xQ5h
+         gXsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784132030; x=1784736830;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NzrlbG1i1Z2grnBug4mVQe2iSrEhqBzyFP6w96GEH0Q=;
+        b=KPj2cRgrqsBCxuN8Dt6JZ3iW6M1yY8vQkJ3BzaCkRQ4VDl9r3BeddYlQ30406YXOjk
+         vPXJKZh+dt/NwIkMcgq/JPFMmLUv/QSrD/FyaL7yKuPp/zdZjwh5oukx994GJtwtURez
+         tPolUvVJ8BWnMTPNz5aNeRbDEm+IJL6NnkyZ6jLwXKrL3wybbqVh9QGDF1kgKcXSswsv
+         BYI4CW+oQbXW95zAA3im1kIYZH02Jv4ui0V121T1nJ4x1NUdmo7nbw4rCVjRzJjxcgms
+         6Z9uwePeXgWu4OP8e1BbVi9CcIVQdsPNJlaUGczXrB6Paf6xr1dEJYDJSoFkwvZWGTYf
+         eeuw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro8bNwk3w6J4gBCLdMjB6wNzVuS+24yGv7lNkkNsysvkIkftBF/pW8oR3SN94fOYHELgxs/hUKoMQ==@kvack.org
+X-Gm-Message-State: AOJu0YyF8PoN4a5um2sGsWYwXUoPuZ2mbzFpip4i9OkdT9Bpe/9kAE0N
+	SCqjS3gBQZwy34krYjdYcH6lH5K8cLudkKvfxjGOf/Lk4YhifjN/3+Fxn2lqh22IMYAKB0XOmAd
+	aReyLyxL+K2TwuMn/X8d5l2M7bZ/9qFrWT31CKgXl
+X-Gm-Gg: AfdE7cn+jupJ1kF+YanI0aShyE9FbVMr6cnRzMcEb0NL1jGlkwi4i0XQknUJsR0usnO
+	hoN2O8X0EBJd4/8xL8Gw1UGnOE1zTUb+TezhDECszyNqx1dtyU8bY1kEI2M4yXjDpt912sxLgTL
+	Mq+djoUcCe193ElBU0EX68LP59BDVnn2vKGux6X4qtj0Snf5VAyEJLbaATGT0hAZFhcS4JXOjDm
+	BCXg3Ql35Bvbu5ypTZDtr56RAfJAiXrbClgJuEYjfUHQbwzndUPgm2arR3EauKe6tgqdh15II3T
+	ZklHK8V4Gnw1eeKo2yJMHPEFCmE=
+X-Received: by 2002:ac8:7fd6:0:b0:51c:523:9540 with SMTP id
+ d75a77b69052e-51d7bd7292emr28840051cf.18.1784132029139; Wed, 15 Jul 2026
+ 09:13:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
- <20260714081510.16895-2-jiahao.kernel@gmail.com> <CAO9r8zM5nzDqNcx5UoDgGexvR6jf8MmJV9SomM4AS7n-rZ2o5Q@mail.gmail.com>
- <20260714193129.f81711f516504b659d544741@linux-foundation.org> <7a1fe347-7ca6-4768-9308-420bf1251f54@gmail.com>
-In-Reply-To: <7a1fe347-7ca6-4768-9308-420bf1251f54@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 15 Jul 2026 09:13:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMDndmoxi_XvQv3rkkhCfb+aW3=8JdE3gAv2YOKiyiFSA@mail.gmail.com>
-X-Gm-Features: AUfX_mwya7L56YQEsogBNZLgTsBSd6kz9fOgJ7y2xnvr3Ptih0l9NoLzTiD9lJs
-Message-ID: <CAO9r8zMDndmoxi_XvQv3rkkhCfb+aW3=8JdE3gAv2YOKiyiFSA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/zswap: Fix global shrinker when memory cgroup is disabled
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, nphamcs@gmail.com, tj@kernel.org, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org> <20260715-b4-objext_split-v1-2-9a49c4ccf4c3@kernel.org>
+In-Reply-To: <20260715-b4-objext_split-v1-2-9a49c4ccf4c3@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 15 Jul 2026 09:13:36 -0700
+X-Gm-Features: AUfX_mzWQymAiWtZQlBJB582QbB-RDSaqmDhzME45pNGf0-qJx6G_e02yGRYqOo
+Message-ID: <CAJuCfpE1P=8RiSwm1FV2TCpM2FPo3A4VH5izpKR=J9F-_h5Y_Q@mail.gmail.com>
+Subject: Re: [PATCH RFC 02/12] mm/slab: remove objs_per_slab()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: j93eqhf3dkuw9n9s7ihgngkxop8fgsz1
+X-Rspamd-Queue-Id: 00138100010
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8042B140013
-X-Stat-Signature: n4uafkxtgwwaf9kr3eg3af8ma1g1u8qx
-X-HE-Tag: 1784132011-316781
-X-HE-Meta: U2FsdGVkX1/U409qL2Ulolhj2EJfTneRa+b7RnxSIKMVjx/iZ9i5VnKJdA6fvCUS7g+9WoBq4znAX7ykQ5FdD404qL9oFd0eoQr3m/BcA+Ipa01wDcGuT19i6QynydBk7qaXyu1D9PH+275Nrs06mmN6QMlJOjf0UCRDmXa1A0ugxbAKsaUx/LLTbJaTvvVaJInUtSMRA9FnlKLiR+U8anNQFU+s43MazQ/0Kr9U1kA4r9v5on6kBv1a9hUVu5cKJDR5V6EgG6ffi7RavNBHBioXKaOqtl2KulITcW68/WlMu9w8fKksETlLAxNhep4P0sYfuug+RE6VY4exs+42F21v+ac10Qqy/zxcBZ89pa6JbJGR8kAReHYRcHLTtGx34VhfAAHAXoXp4X04b3tVkB/avVHgBrH0yQz/b31QGORvNLEfVMUlGRA8YovzLt5y6lrXhiWpcopJ6tV9CFRAnu5KGqU7yUidkkyJKV/euSYRkDWpITvD/U885V6MNGS7kykVShF5nRMcGiGISd2C+HB87ROfkkvc20quDd22W7fUKxSkpUVyL2d3oFsJOJgJNWYnbXTI4wgPouZua02itVGVQUzpz8AYz2rAMjm+nQTFF8MSa3XUGG1A1h+MsiDWtB9oD6Pnek6C66BfOQEU9VEoKcmjm4TPQFFR/O/kQH8NbYufXypOLIwGp1qtLlk8vA/d3ZkEx4JSaK/VDiXMM8jsvRI6wH9Cj024Bge45L1FtkCOmOksKOP2ps3EaHWiarTGMxmNbH1nyDk4B+XREghzEjNm8VQ/Ce5gbPlyspboXfzVdK3Xr1rBXN9QK7laYuqZaSHM7qZ/jr03seAW01P11OWf7DMCy6wGP+Uu2S/cIa3dDQz1+rG1ln3EbvTxA9QfQMNTBZINbKQCUaOxkujt2/KCBXnlxb0OgEjXuIg2ZHk8lBMTuNBYzOJlzXn1Vj32IRxw6ZuD9NUbItc
- BDV6OYHM
- hmz9Ht4o0065Eyteh8sJBdVkzyny4wKpX9FyE4KFLtPuZ4ZZOyZYiq7ayvhzumO/W192Yn1aBcG4TACa/PAJLGOgXSSl2zyBMJ9GQV2bZj2zcXsAc9oblCpPeGT3S/kVSSsoD2clIQNj3wG2AtyytDX561+KvN+yub7F+5iyHjD0d+IBgBP77lgLE6xrKQw6/J2C0jKlJF8xK1UwnhwMMkUgDjfgvHYMSwHq2wEkhRSaV7jYPtNYJCoHek6ED22BRJOXFl3XREomuuWX5wwRFrIqFs5NrTdQUSsTGyaPJBlJvfz3nNvlLnqLamvshc77tFcbtYAETaoDgsf/stTpVNdW2zpcds2SMBoeMV4NWxpDAXydWdI6TO1T1Wu8qfvaE/DkFeVP+NLrc4zGSjURPyPM1clQHsNzZQEs5Dg8nmaHxzWLZX6odd4pusX7nkN2iSbVYy9ykCu5uvz3YJnS/fhcank1X9WlHGP4KLAuWAwRUDYYHFzInhXwjLPLn+I7I22v2u7oLvr7VZzk=
+X-HE-Tag: 1784132030-766493
+X-HE-Meta: U2FsdGVkX18fd7887QKp6ibziPdKF1KZNpcj2X8evZpNB/HcIJ7IUVBe7D0GF3xxbGGqKbGQ/Z6T0PLTJFK74BTuAoOjHA+0CtLlCi1Kxt+3e3AB+Eq6pLTWEqc8oEvC89QcDbfJRdhuywoq9thT+Ed+CizAXEvnh+/8+cHIYi7kRcKkbpDDxdFr+bO0BLNLl5H3aR0rmNw3keVK/ZwFdCfRpMst/Q2P2MmT5MVcoFpkcz3t7puW6ZoQEtRA+ZLRCE43dlyLNPB0Z5jrfy7P0LeCvzoWvcCBcsjCAGWG7iLH7qJ9lPpiOjSQ8XfsP2Z/19Q46oLT6pRcG7TdDWXOtiP/EPUtZ5M5n6+TMH5KQ2XcIKF/NQWavHArr693qBbbNTtOkaUlcPRNhafyv/FJeNmUj3G5GShaXLLxYx5ky3FsRzvbtmdW8USM7atdSjNIAkmg9Y+8GxonGhQEUb0dyfWU6g8gbGCRJDDZDpbHfmZ9nL2m0ZzT4n94mAkcHUm/OFlJUk/Sv73ZKfsYmHLZVZmKE6ZclMURyJP1lz60BHL4xlWGPScwLeYM5mhY4m+md2b4ci77VDxEIKu53rlC6QB1zCxYPNB9AH8UqZ8Txu1zpA5Ud8rKyaBr+mr4bF4sS8vfV9Nz5IR2q8VtEDbrE/kM+kPHlgd2vA04lspE9iGNSppjLEaAuulr6cepzigJZ59T6+FRkYu8TxMPpiF9w6vV5PEOBo4V3AwCY4CeaCH1UqF0XpDDOZVCRBOxXoseqj94U4OKb9ntRafWJbKashR+vbckJwY6cvkeDrnmoD9Ih2hGfRACP/mPYDXc8B7Ai0dlNYuiu9vysWldHTmg9KUD3Z+lgwvhBrk/6qg0JYiDndkpGLbGpXcYcnDcYEWG2b2HKUBguneh9/T4eXZaYlYSuVbqaurPNUhNIjB8P4MgBa1XvuqeN6NTZaSMdALuVShG5me78quN80FSogs
+ 9+lnZ1jk
+ f2ezbqDJ3rPIrUmO9fbDO3eSzKuIz44WjPSxIr4hRdGpoNMMz+mKMQ9jfHHw87IVGNrzHK32/bjnlnSOwwvje8zoB22S2Sum+z6uKAVj5IgPpaBTpp4KlrsAOvBw4tmPk5yYM1L8bncDaT/lQkWNqlocnKHbMvwFIY4uPG0HZvnhWFUF/+MA+9pkwJatUq7QJG9TVSw5rnaIHN8IWvR/1/zh304CcjCIG9TXsWxd31Kv3GSeD5rukl+pqMxKnyxFifFZi+m0AGV+JX5NPmTGFwE6AlBXoBRxQtw1Iuh+Geujrt+v7SiGjW9exsXq8tC9w+tad/eETn4570O4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,85 +143,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 5:31=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> w=
-rote:
+On Wed, Jul 15, 2026 at 3:10=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
 >
+> The function has an unused kmem_cache argument and almost nothing uses
+> it anyway; doing slab->objects is simpler. Remove it with the last two
+> users. KUNIT_EXPECT_EQ() needs a cast to avoid "error: =E2=80=98typeof=E2=
+=80=99 applied
+> to a bit-field" but we don't need to keep a wrapper just for that.
 >
->
-> On 2026/7/15 10:31, Andrew Morton wrote:
-> > On Tue, 14 Jul 2026 09:52:59 -0700 Yosry Ahmed <yosry@kernel.org> wrote=
-:
-> >
-> >>> When memory cgroup is disabled, mem_cgroup_iter() always returns NULL=
-.
-> >>> Therefore, the global shrinker shrink_worker() always takes the !memc=
-g
-> >>> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply give=
-s up,
-> >>> so it fails to write back anything.
-> >>>
-> >>> Therefore, when memory cgroup is disabled, fall through with the !mem=
-cg
-> >>> branch and shrink the root memcg directly.
-> >>>
-> >>> With memcg disabled, shrink_memcg() only returns -ENOENT when the roo=
-t
-> >>> LRU is empty, which means the total pages are already below thr. The
-> >>> loop then safely bails out via the zswap_total_pages() <=3D thr check=
-.
-> >>> For any other return value from shrink_memcg(), the loop is guarantee=
-d
-> >>> to terminate, either after MAX_RECLAIM_RETRIES failures or once the
-> >>> threshold is met.
-> >>>
-> >>> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
-> >>> Cc: stable@vger.kernel.org
-> >>> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> >>> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> >>> Acked-by: Yosry Ahmed <yosry@kernel.org>
-> >>> Reported-by: Yosry Ahmed <yosry@kernel.org>
-> >>> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHi=
-ZZeLc=3DeyTPKPVQgX4g@mail.gmail.com
-> >>> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
-> >>
-> >> Patch 2 doesn't really depend on this one, right?
-> >>
-> >> If that's the case I think this can (and should be) picked up
-> >> separately as a hotfix. Andrew, WDYT?
-> >
-> > Please update the changelog to clearly describe the userspace-visible
-> > effects of the bug, thanks.
->
-> I am not entirely sure if my understanding is correct here, but maybe I
-> should add something like this to the commit message?
->
-> When cgroup_disable=3Dmemory is used (or with CONFIG_MEMCG=3Dn), the glob=
-al
-> shrinker fails to write back any pages. Consequently, the zswap pool
-> fills up to its limit and rejects further storage, preventing memory
-> pressure from being offloaded to the backing swap device.
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-I think you can simply write that zswap writeback when the limit is
-hit is broken when memcg is disabled.
+Reviewed-by: Suren Baghdasayan <surenb@google.com>
 
+> ---
+>  mm/kfence/kfence_test.c | 2 +-
+>  mm/slab.h               | 6 ------
+>  mm/slub.c               | 3 +--
+>  3 files changed, 2 insertions(+), 9 deletions(-)
 >
-> > Also, AI review has flagged several possible issues, all appear to be
-> > serious:
-> >       https://sashiko.dev/#/patchset/20260714081510.16895-1-jiahao.kern=
-el@gmail.com
+> diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
+> index de2d0f7d62b1..9867c03ef0ae 100644
+> --- a/mm/kfence/kfence_test.c
+> +++ b/mm/kfence/kfence_test.c
+> @@ -295,7 +295,7 @@ static void *test_alloc(struct kunit *test, size_t si=
+ze, gfp_t gfp, enum allocat
+>                          * memcg accounting works correctly.
+>                          */
+>                         KUNIT_EXPECT_EQ(test, obj_to_index(s, slab, alloc=
+), 0U);
+> -                       KUNIT_EXPECT_EQ(test, objs_per_slab(s, slab), 1);
+> +                       KUNIT_EXPECT_EQ(test, ((unsigned int)slab->object=
+s), 1);
 >
-> For AI review comments on this patch:
-> I suspect this scenario might only exist in theory. For zswap LRU to be
-> empty while zswap_total_pages() > thr holds true, it would require a
-> prolonged state where there are always more than thr zswap entries on
-> the zswap LRU whenever zswap_total_pages() > thr is evaluated, yet the
-> zswap LRU happens to be empty during shrink_memcg(root_memcg).
+>                         if (policy =3D=3D ALLOCATE_ANY)
+>                                 return alloc;
+> diff --git a/mm/slab.h b/mm/slab.h
+> index f5e336b6b6b0..01535e1e2d3c 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -330,12 +330,6 @@ static inline unsigned int obj_to_index(const struct=
+ kmem_cache *cache,
+>         return __obj_to_index(cache, slab_address(slab), obj);
+>  }
 >
-> If we want to fix this, perhaps we could do something like this?
+> -static inline int objs_per_slab(const struct kmem_cache *cache,
+> -                               const struct slab *slab)
+> -{
+> -       return slab->objects;
+> -}
+> -
+>  /*
+>   * State of the slab allocator.
+>   *
+> diff --git a/mm/slub.c b/mm/slub.c
+> index a4be70d080fb..9e25f2dce7a6 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2127,7 +2127,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct k=
+mem_cache *s,
+>                         gfp_t gfp, unsigned int alloc_flags)
+>  {
+>         const bool allow_spin =3D alloc_flags_allow_spinning(alloc_flags)=
+;
+> -       unsigned int objects =3D objs_per_slab(s, slab);
+>         bool new_slab =3D alloc_flags & SLAB_ALLOC_NEW_SLAB;
+>         unsigned long new_exts;
+>         unsigned long old_exts;
+> @@ -2183,7 +2182,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct k=
+mem_cache *s,
+>  #endif
+>  retry:
+>         old_exts =3D READ_ONCE(slab->obj_exts);
+> -       handle_failed_objexts_alloc(old_exts, vec, objects);
+> +       handle_failed_objexts_alloc(old_exts, vec, slab->objects);
 >
-> Yosry, Nhat, what are your thoughts on this?
-
-Do we need to do this? The last paragraph in your changelog explains
-why this can't happen because zswap_total_pages() should be 0 in this
-case. Did I miss something?
+>         if (new_slab) {
+>                 /*
+>
+> --
+> 2.55.0
+>
 
