@@ -4,112 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6601BC4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9F1DC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B1386B00B6; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
+	id 81DC96B00B7; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3880B6B00B7; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
+	id 7A6DC6B00B9; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29D686B00BA; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
+	id 647A06B00BC; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9A7F6B00B6
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:21 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC213140161
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:22:18 +0000 (UTC)
-X-FDA: 84994552356.28.2DFB373
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 472F910000F
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:22:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=g35KrwmO;
-	spf=pass (imf14.hostedemail.com: domain of pedrodemargomes@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 20FD56B00B9
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4E6114012B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:10:45 +0000 (UTC)
+X-FDA: 84994372050.23.ED61A42
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2CB7FC0011
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:10:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IME58BGp;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784200244;
+	b=kg2MLvX2dUge2kNKhUPxcPrBBlefm0jAvzHD3mkkD1URZWfnpW90PaDBMgGCZtfpwiZ5eH
+	t9xU+6oVWRJjPFZ7cg1SvvJgVW1C3JsOyZ+fFxKbeqRJosw+Po2F0n/YytrkQcPywYB8Q0
+	QL3VMbO8q+ZmbvZ1i1X3sW0+bG7Q5uw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IME58BGp;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784204537;
+	s=arc-20220608; t=1784200244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rpGdWJFpIUEvAvYjxewkkqgZyu1hAM+6SDZkgbpU9xg=;
-	b=YLGDU/peYuCiCX53y5q3xLLS9zWCuWSQgMzgAcvhf6Nup1C9R7uAM8bqX6ZQOlFb6EF6Ki
-	V97ZacxU+Cof6tAXtE1GBIPA+l5nHr2r5HDzSBBVHbSZgiO0ECbM3vPXlhvjNxhqhi3VMb
-	sUHS6BKsXbHNMK0Qak98pts/HKfQO7E=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=g35KrwmO;
-	spf=pass (imf14.hostedemail.com: domain of pedrodemargomes@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784204537;
-	b=NEvdr+zC52JeKbb8sSXf2dh2RNwIk1IUBYSPEIivbHjEpY4pVIaKwcW3TqXLgKA+ZkKq4r
-	6q0qfxUTfoNlxj3H0ums4FX5cKVuQe9Ek4lDhO/Ia+Law9M/o1lbUAyNnS4u2NjUlcKJAs
-	a58v2793gAGxTV7uZZbJeNkOkCDQBtQ=
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-668296d0ff3so731432d50.0
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:22:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784204536; x=1784809336; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rpGdWJFpIUEvAvYjxewkkqgZyu1hAM+6SDZkgbpU9xg=;
-        b=g35KrwmO7Cx4W52RAbnI3IbRJIWo9o+S8TfvdD1h+BhN0nS3og/k0g46LaugoL5TE6
-         mNjnjqW3RTsqC43+76IynFp2pXJ4kCndMJTTg4krvzUkmmU/0CYBblNWKFIuJHMPEXfa
-         sumTAlugA2rISauq2jycsJ3257eA+rBp3T8/GgwhP1QuJFzSiYvCdZ3wK79Z3nVFOm/n
-         TcqSvoAMyoY61jx+eE0WJVElqWtP7wTyd2n9vi003gQTcgM5EmPpGVUY6enpo25Y6mOW
-         3LY0GhQm3JDvlADSHCzboMWWrr1NBb0noa1f0yZa2NPgA4kXZtzWK08lkhXSJ4RNunAp
-         JjTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784204536; x=1784809336;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rpGdWJFpIUEvAvYjxewkkqgZyu1hAM+6SDZkgbpU9xg=;
-        b=JcT2hAiMa7MNTIzB+csS0PndhDfK5vjB3s+QRoAuILAU2dOsURvg2qMk8W5J1JO+C5
-         Xs/RUa7hH9Baqr8PHyaBer94IKdWNpcoQga/NieMcKIMCbTGXhxpSP4AhfgUrrohedMB
-         +E/lUzyGCyUdKOaUN3Z2qDun+T9IwDINMDGQXzqq215bmcibGjd5yDs6h85gI9A/0lT5
-         z7vJ/MFnFUFTv5Z5EQu11tHbVJxJXOLDmC40imbn4yA8aDMhE8JW/bi5jziLwLyUWLAg
-         LJN+fQXNY9IzR6IPsrtudY5eTHNRQaNwQrhEKIYIbppHkObslh5KtjYeumvhNIAJC1HS
-         LKJA==
-X-Gm-Message-State: AOJu0YyI/5hz8xdClbm74aFnnQ6s/rdphFebqF4dj7lcUqsIOZdJYTTK
-	jHdUB4WZZVvdUXnqeoIbI9uioIe+5OFYBh0W0NN2TljiN7aXu7/po6S4
-X-Gm-Gg: AfdE7cmPucuri02zyeoMDCeGe2ZFhZOgNzKDZtJrAYqradeHBm42Emq3MvBdMaCiCDj
-	I+wlynYk2WQo3LLjcjBWWI1oBmvCEBe59jhMjlrWZCq6qR9FxjWYSp48okozN6P/91RRNZLoczn
-	d74UOeIxikgfot3gCMTTudUMewqKe2yWLAk38+uHZmfndc35xdHsoo6gfl8yhiQUnemGfxQcWSz
-	4HLZxGm1WunXafa/y0olgANcwIPXn+Jmmry4SfLMftd+xM8sKTHnVlmZihZ4yugiJBZ8VSqN9OW
-	TZfNru8fYKbU4Ixixcm5xfe8MOG0w+WgPrzd4efjUids0YnX2NJd8C76+aiqLgEs485Lb0WwZQ+
-	ktVDjFhE20QY8lhwyyRRlztlcZIWj92jWKPBn/5FvZJyZNNJArbz8FceggUT3mZVcMmYBQUGyIG
-	cJKlrs59+al/0ewmuuTp4zVMog8NOUlrMEeDr+1g==
-X-Received: by 2002:a05:690e:4312:b0:664:ef34:4b with SMTP id 956f58d0204a3-6681347ed35mr4069141d50.76.1784204535115;
-        Thu, 16 Jul 2026 05:22:15 -0700 (PDT)
-Received: from fedora ([2804:30c:1f53:aa00:1495:7d0a:c9fe:c63a])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6681fc49cf2sm3165524d50.9.2026.07.16.05.22.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 05:22:14 -0700 (PDT)
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Subject: [RFC PATCH] mm/ksm: use checksum to speed up page comparison
-Date: Thu, 16 Jul 2026 09:20:39 -0300
-Message-ID: <20260716122039.679173-1-pedrodemargomes@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jmPPDuiYXTng8WxmgDueZEPnjNUhF5XqoTiTiA+PltM=;
+	b=ckB3EfGmFXJSOHxs0cjmPuzr0CsxIJD0o6nL/rVfVyJr+iu8CsR7YH+yOvBkaV0rONZ4a7
+	+zKPDvLjod++Z+UpcKnE0IBDI51G+/7MTjMHowDf7b11c8Qpkl4pNSRHub94OJCfFI96W0
+	h/371FtB9NOUlJqn3uzeyD7ulAzFR0c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A1C4B6001A;
+	Thu, 16 Jul 2026 11:10:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5D21F000E9;
+	Thu, 16 Jul 2026 11:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784200243;
+	bh=jmPPDuiYXTng8WxmgDueZEPnjNUhF5XqoTiTiA+PltM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IME58BGp+4VoXUsAiKFtPTar/BWz6xqDCOl6H1G++hdJbXGomex8JvqFdnl5AYWFh
+	 IKpFdkzzBQx42d2q4Z+wbhDbCy79GFK99CluePEU7ywNJHcs3iah/x54b0GZzrFKA6
+	 1LdhWEoh3Ik9uf0BpFV+iVoEQR9u0FE12zRLCZKj+pRFVmoofGNKe6zSdVNQsS4I0r
+	 BrHvm1togaouelHFOds5Xi8U5JLcI2xfLBWOVRWk1RcIAQm9iXx8/sfXOZ61WojUcw
+	 4HV1+wsEeRB3pKr1+0GYembo0QynfBRkXlOlMvYWCqr81dtu4ucVmIMz0yQoW0xQX/
+	 BBlIH1IZu4sfg==
+Message-ID: <a00664d4-01a0-413c-bc33-71c86cce7894@kernel.org>
+Date: Thu, 16 Jul 2026 13:10:38 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm: mglru: promote mapped executable folios after
+ first usage
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, hannes@cmpxchg.org
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, mhocko@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
+ <7e3a5f6bdf70e0237027025f4593a3874d411f65.1784197559.git.baolin.wang@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <7e3a5f6bdf70e0237027025f4593a3874d411f65.1784197559.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 472F910000F
-X-Stat-Signature: ec7966pk5x68heabgzir6qcmggfi9gmn
-X-HE-Tag: 1784204537-413207
-X-HE-Meta: U2FsdGVkX1+t9ulnjX79PTY7mbvp8xGeb44LVKKLLat0np3pDiOwXVqS8tSDIhmnrhEe+MLp8RtTrl0DKMXFh09RGxbjlWX1KdQcbF1Hsxfcv8ZwrhTIu2lTXK6hzXAGk9NT9iGSew54lRsWJUn/49kGqOonvpL6MnjkBIR/pNib0TVN4uo9q1kWkdP7ab38M3qOuObL5olPGo1KpIWteyf8W8m7/UE8m6ibnZMUaFooKZ6DW3ng6bTw2on4i0owumj39c5t/mqA0EuI5D0AfbKA8SUKLJ67mUzQr2moX5Z/YQpHgy8cJvOd9XGyZ1+E1aiFHllOuII6OAix8TcTicGdbhVaH2SuDlSZaDAfXT39sODSLSbo1RQ1GlBMCU3K5WMfO1fiMb+RxWwsfOburOim82rC08K1wyu5bN6dTtWsf7nXOOQU352kcNLxQVrWNzajQ+KJejgKAwTo5WqwPkT2tSSgctAVy93GWdZQQn7Z1dYWWGL+K6rofXa25mJPAZNitlQCPftrzO1disgZAomJ4X65FbHelTdotDBYLIscJeCj/An31kxFmiis70UfMIP4JBqF5WC+RiYuz5IfHJJyShLEyw7r0IQ6V93M6diJYBMp6Dj86recFsvqznql16GBpXEvz/s1LOM03oSsp1Ykj5lPHhJnl8f6VpCS4je9Quhnu2jEmCrXJgsCtO+tp3oFU8oIF3hlLjnRk7sL6K0qhY6V3pvZC+43EAwt4aNMzN7w3krh+CxG4FoOAUHUcZCVStbSzWSihTNGFfX++XI9NRpGgISp2sFyhdACHnysSiMeVvD4kp+zXfKwRIQR1gRcpJQV0C7nDn2MFh0w1Tu5Id0nmBJ2W6/UHDAiytYBSmq92kipQ3TzkWHz9Fek/xiMoabTBuRCX/HTaXR4lPDvoPge/Q/F3Ww4PLePVI8UYM9OGO6YfUiUB+9j4ejgKHbVzxxyjxQxNk8eXy0
- Nzvyyq6d
- PWIblhjnhfyEbcgIMXq9KJ/PPYuAzNROyObDN8+8OCwciZVa9cnQSHvYeMBCb292UDd0lTJGpRHMMb8nv3yQuNMQtLuS1ohsXDWxBF3p7IGhk1lWaFkTvcQbL5gvffpAVJr1Kl91nuffMT8ScyrPcZoRMOf9mq1laYvAqZwnvbxQ+Cu0XGs0cl6TJUS3kdpjSvoCDmMtSsX02bbfwwaS3gq97x/afGwwU+cL5QHMgPpCKm6FE3ZWqAmBNTSJGH5ER5IQhjTYIc+hHAhPiA4cl4B5nA/FG1dW2r3qFkWIwf9N0aYETdyjHiFtxqMSaRpVRDmwCPkZXWBRiHoeR2v1SmIR/0yuHCdddR+hMEmPixcrDqkRoPO1a9CRXz7cCSwSQ70Sgu+p02AS9xXXmlJpyAwmaWTetdbSwmTyt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2CB7FC0011
+X-Stat-Signature: 1319pioa6s31gffrimcitsua1p4s6xdf
+X-HE-Tag: 1784200244-5477
+X-HE-Meta: U2FsdGVkX186OggmHfRNPvcIWkblW2dhskM/lmi4Bv0Xo2YFmCTge1ZQOKfk6tk4Jm/H+y9vgr2GUD/CbI9jYDeWaEq9IV7YJmmejsa7nt32crjqAw0qzHRjNjdmX3BKvHzCKeT1V4iDlKBwS/KXVTy+yOY9ilcd2hMAD1IYWKoXs2nXtEO7M4540XjnDaQEiU/78xfrM/2eLRg9MkkTkvSaqve7yvxJ1z+qLQBE9a+Gffi4smV+b/oNC5PT6yz9U0CrkNCGrJLTSC4tYzbomiViBpbcD514bYk6uFaIhiaODv9BZsYqHH841HdQElUPnfFh8rCLSKJYbHsFBMRxdUq3j0Q8mheEAaVwTeMTaFRo256ZzI+4MMZ9c4SMtztDPSq65mYxP1xmRms2YH/2hvbbaWgHC1goFDoITa1PKhFfZpl6RFW18HhNsj2H8QDA3xAFKlqgXDO72Luoz2QdNfw7FW+6ZrdxG+XesKSKygT38epcY68HNSLL44lpHpiqagkEZ8qxCmhCjPsd2f7eN8FcQxMuzooXfIEpqN+4g+2FqhtSepztNKINYhdpogLMc7my8g8X4cXJ4b6x0pOewESkyq5PKtsXios7EZkrtIXgT+OUplBfn/3kwflW+9USt0NOJlO7GjAi3cBR8WjWnbbzpd9jL43HQz7IrjtXwXfq9LiQkfylTatlbab3mWAOGMV6jtEWnEEl4mMCaRnXTwHR+VyNTsbP+MLMSr0etp674J/tJ2nUS3D3PYRGW0AIlGKN8A5Nfxjpc1VP/FbPFiRYedeuUiJuT07Qj1CpvIW+KK24n/QdFA0LNl93XeF4osTYvgt3XHfUdo1s3w1OdErpLM2NVQ/JtKRifbJYp43nAG5YOtZkRD1bnCFe5jGgpyUhuOC3u1tzREXqqiTQk3uAAvDIjy3opecwMEeoMRYVSo1BFOxmCM76DA8nsGFTi7wZ2Hv3FXISWta15dK
+ KbK3r/z1
+ qMS/2WwWmXkhAhrA7RlkPq97o1pgr0wg/d6pC9yw2j0769hBLhoO3EyrL6YW5FV9veUB6ATeamaQJ6ujMArrcvtbv6g66u4wszOtc6sHQUweZRxKT7kjHScCEyas5fW8xWYw93n+udIXkgP0i2oFakFWKrLJNaTL9M86J4wnorU6TUi/HelHGD06GZkywOPxzNPVs2IcBSGDujV5yGwN2UpcEebtgKRa0U0zd8+lVq4E9NTDmN44Nf6ey2gIljNrRzfDAch4j2Pf7X1zgqZPmqriE8T2YCQFncGys
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,383 +144,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use page checksums as the primary ordering key when traversing the stable
-and unstable trees and fall back to memcmp_pages() only when checksums
-match.
-Since struct ksm_stable_node does not have a checksum field, create one
-in a union with migration list fields, so when we encounter a migration
-page while scanning an address space we have to recalculate the page
-checksum. This avoids increasing the size of struct ksm_stable_node,
-which is maintained at 64 bytes, as show below.
+On 7/16/26 12:46, Baolin Wang wrote:
+> Classical LRU protects mapped executable file folios through commit
+> 8cab4754d24a0 ("vmscan: make mapped executable pages the first class
+> citizen") and commit c909e99364c8 ("vmscan: activate executable pages
+> after first usage"), giving executable code a better chance to stay in
+> memory, avoiding IO thrashing and improving workload performance.
+> 
+> However, MGLRU's protection of mapped executable file folios is less
+> reliable. Although shrink_folio_list() checks references, the access flag
+> of mapped executable file folios may have already been checked and
+> cleared by lru_gen_look_around() or walk_mm(). Additionally,
+> folio_update_gen() or lru_gen_set_refs() only sets the 'PG_referenced'
+> flag for mapped executable file folios, which causes shrink_folio_list()
+> to ignore the first usage of these mapped executable file folios and
+> reclaim them easily.
+> 
+> Follow the classical LRU's logic, promoting mapped executable file folios
+> after their first usage in folio_update_gen() and lru_gen_set_refs(),
+> giving executable code a better chance to stay in memory.
+> 
+> On my 32-core Arm machine, with the memcg limit set to 2G, running
+> 'make -j32' to build kernel showed some improvement in sys time.
+> 
+> base			patched
+> 9248.543s		7861.579s
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  include/linux/mm_inline.h |  6 ++++++
+>  mm/vmscan.c               | 41 ++++++++++++++++++++++++---------------
+>  2 files changed, 31 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index b5c4dc0f3fe3..30fdf1056312 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -30,6 +30,12 @@ static inline int folio_is_file_lru(const struct folio *folio)
+>  	return !folio_test_swapbacked(folio);
+>  }
+>  
+> +static inline bool folio_is_exec_file(const struct folio *folio,
+> +		const vma_flags_t *vma_flags)
+> +{
+> +	return vma_flags_test(vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio);
+> +}
 
-pedro@fedora:~/tmp/linux$ pahole -C ksm_stable_node ./vmlinux
-struct ksm_stable_node {
-	union {
-		struct {
-			struct rb_node node __attribute__((__aligned__(8))); /*     0    24 */
-			unsigned int checksum;           /*    24     4 */
-		} __attribute__((__aligned__(8))) __attribute__((__aligned__(8)));       /*     0    32 */
-		struct {
-			struct list_head * head;         /*     0     8 */
-			struct {
-				struct hlist_node hlist_dup; /*     8    16 */
-				struct list_head list;   /*    24    16 */
-			};                               /*     8    32 */
-		};                                       /*     0    40 */
-	} __attribute__((__aligned__(8)));               /*     0    40 */
-	struct hlist_head          hlist;                /*    40     8 */
-	union {
-		long unsigned int  kpfn;                 /*    48     8 */
-		long unsigned int  chain_prune_time;     /*    48     8 */
-	};                                               /*    48     8 */
-	int                        rmap_hlist_len;       /*    56     4 */
-	int                        nid;                  /*    60     4 */
+I don't quite like a generic folio_is* helper to consume vma flags. Whether it
+is executable depends on the VMA. When called from a non-exec VMA it would just
+give a wrong answer.
 
-	/* size: 64, cachelines: 1, members: 5 */
-	/* forced alignments: 1 */
-} __attribute__((__aligned__(8)));
+Not sure if something like "is_executable_file_folio()"/"is_exec_file_folio"
+would be better, to distinguish from the actualy folio_is* helpers that are
+independent of context.
 
-To evaluate this change it was used two benchmarks, bench1.c and
-bench2.c. The first one allocates 8G of pages with different content,
-and the second one allocates 8G of pages where the first 4G are the same
-as the last 4G. The two benchmarks and the system ksm configuration are
-presented below.
+Also, can this helper just go to vmscan.c?
 
-bench1.c:
-
-int main() {
-	size_t size = 8ULL * 1024*1024*1024;
-	unsigned long long int numpages = size/PAGESZ;
-	char *pages = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-	// Generate #numpages pages with different contents
-	for (unsigned long long i = 0; i < numpages; i++) {
-		*((unsigned long long *) &pages[i*PAGESZ]) = i;
-	}
-
-	if (madvise(pages, size, MADV_MERGEABLE) != 0) {
-        	perror("madvise MADV_MERGEABLE failed");
-        	return 1;
-    	}
-	printf("Wait...\n");
-	getchar();
-	return 0;
-}
-
-bench2.c:
-
-int main() {
-	size_t size = 8ULL * 1024*1024*1024;
-	unsigned long long int numpages = size/PAGESZ;
-	char *pages = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-	// Generate #numpages pages with different contents
-	for (unsigned long long i = 0; i < numpages/2; i++) {
-		*((unsigned long long *) &pages[i*PAGESZ]) = i;
-		*((unsigned long long *) &pages[(numpages-i-1)*PAGESZ]) = i;
-	}
-
-	if (madvise(pages, size, MADV_MERGEABLE) != 0) {
-        	perror("madvise MADV_MERGEABLE failed");
-        	return 1;
-    	}
-	printf("Wait...\n");
-	getchar();
-	return 0;
-}
-
-Configuration:
-
-echo never >  /sys/kernel/mm/transparent_hugepage/enabled
-echo 1 >  /sys/kernel/mm/ksm/sleep_millisecs
-echo 100000 >  /sys/kernel/mm/ksm/pages_to_scan
-echo 0 >  /sys/kernel/mm/ksm/use_zero_pages
-echo 1 > /sys/kernel/mm/ksm/smart_scan
-echo 1 >  /sys/kernel/mm/ksm/run
-
-It was used the following bpftrace command to measure the scan time and
-compare the numbers of the vanilla and patched version of the two
-benchmarks:
-
-bpftrace -e 'tracepoint:ksm:ksm_start_scan { @start_ns = nsecs; }
-tracepoint:ksm:ksm_stop_scan {
-    $elapsed = nsecs - @start_ns;
-    printf("KSM scan finished in %llu ns\n", $elapsed);
-    delete(@start_ns);
-}'
-
-The number of scans and the sum of the scan times of bench1:
-
-bench1: 58 scans
-	PATCHED		121847114611 ns
-	VANILLA		416445370473 ns
-	SPEED UP	3.4177
-
-In bench2 ksm takes two scans to merge all 4G of memory. So comparing the scan
-times of the first two scans:
-
-bench2: 2 scans
-	PATCHED		58344341937 ns
-	VANILLA		84007052386 ns
-	SPEED UP	1.4398
-
-This patch is based on commit
-'d9031030ac19defb229537d22ad53e9bb4303ccc'.
-
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
----
- mm/ksm.c | 112 ++++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 78 insertions(+), 34 deletions(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 7d5b76478f0b..c79b0328d5ca 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -147,6 +147,7 @@ struct ksm_scan {
- /**
-  * struct ksm_stable_node - node of the stable rbtree
-  * @node: rb node of this ksm page in the stable tree
-+ * @checksum: checksum of this ksm page
-  * @head: (overlaying parent) &migrate_nodes indicates temporarily on that list
-  * @hlist_dup: linked into the stable_node->hlist with a stable_node chain
-  * @list: linked into migrate_nodes, pending placement in the proper node tree
-@@ -158,7 +159,10 @@ struct ksm_scan {
-  */
- struct ksm_stable_node {
- 	union {
--		struct rb_node node;	/* when node of stable tree */
-+		struct {
-+			struct rb_node node;	/* when node of stable tree */
-+			unsigned int checksum;
-+		};
- 		struct {		/* when listed for migration */
- 			struct list_head *head;
- 			struct {
-@@ -847,6 +851,7 @@ static struct ksm_stable_node *alloc_stable_node_chain(struct ksm_stable_node *d
- 		INIT_HLIST_HEAD(&chain->hlist);
- 		chain->chain_prune_time = jiffies;
- 		chain->rmap_hlist_len = STABLE_NODE_CHAIN;
-+		chain->checksum = dup->checksum;
- #if defined (CONFIG_DEBUG_VM) && defined(CONFIG_NUMA)
- 		chain->nid = NUMA_NO_NODE; /* debug */
- #endif
-@@ -1816,6 +1821,18 @@ static __always_inline struct folio *chain(struct ksm_stable_node **s_n_d,
- 	return __stable_node_chain(s_n_d, s_n, root, false);
- }
- 
-+static __always_inline int ksm_memcmp_pages(struct page *page1,
-+					    unsigned int checksum1,
-+					    struct page *page2,
-+					    unsigned int checksum2)
-+{
-+	if (checksum1 < checksum2)
-+		return -1;
-+	if (checksum1 > checksum2)
-+		return 1;
-+	return memcmp_pages(page1, page2);
-+}
-+
- /*
-  * stable_tree_search - search for page inside the stable tree
-  *
-@@ -1825,7 +1842,7 @@ static __always_inline struct folio *chain(struct ksm_stable_node **s_n_d,
-  * This function returns the stable tree node of identical content if found,
-  * -EBUSY if the stable node's page is being migrated, NULL otherwise.
-  */
--static struct folio *stable_tree_search(struct page *page)
-+static struct folio *stable_tree_search(struct page *page, unsigned int checksum)
- {
- 	int nid;
- 	struct rb_root *root;
-@@ -1869,7 +1886,8 @@ static struct folio *stable_tree_search(struct page *page)
- 			goto again;
- 		}
- 
--		ret = memcmp_pages(page, &tree_folio->page);
-+		ret = ksm_memcmp_pages(page, checksum, &tree_folio->page,
-+				       stable_node->checksum);
- 		folio_put(tree_folio);
- 
- 		parent = *new;
-@@ -1946,6 +1964,7 @@ static struct folio *stable_tree_search(struct page *page)
- 	DO_NUMA(page_node->nid = nid);
- 	rb_link_node(&page_node->node, parent, new);
- 	rb_insert_color(&page_node->node, root);
-+	page_node->checksum = checksum;
- out:
- 	if (is_page_sharing_candidate(page_node)) {
- 		folio_get(folio);
-@@ -1973,6 +1992,7 @@ static struct folio *stable_tree_search(struct page *page)
- 			rb_replace_node(&stable_node_dup->node,
- 					&page_node->node,
- 					root);
-+			page_node->checksum = checksum;
- 			if (is_page_sharing_candidate(page_node))
- 				folio_get(folio);
- 			else
-@@ -1989,6 +2009,7 @@ static struct folio *stable_tree_search(struct page *page)
- 			list_del(&page_node->list);
- 			DO_NUMA(page_node->nid = nid);
- 			stable_node_chain_add_dup(page_node, stable_node);
-+			page_node->checksum = checksum;
- 			if (is_page_sharing_candidate(page_node))
- 				folio_get(folio);
- 			else
-@@ -2027,6 +2048,7 @@ static struct folio *stable_tree_search(struct page *page)
- 	VM_BUG_ON(!is_stable_node_dup(stable_node_dup));
- 	VM_BUG_ON(page_node->head != &migrate_nodes);
- 	list_del(&page_node->list);
-+	page_node->checksum = checksum;
- 	DO_NUMA(page_node->nid = nid);
- 	stable_node_chain_add_dup(page_node, stable_node);
- 	goto out;
-@@ -2048,10 +2070,12 @@ static struct ksm_stable_node *stable_tree_insert(struct folio *kfolio)
- 	struct rb_node *parent;
- 	struct ksm_stable_node *stable_node, *stable_node_dup;
- 	bool need_chain = false;
-+	unsigned int checksum;
- 
- 	kpfn = folio_pfn(kfolio);
- 	nid = get_kpfn_nid(kpfn);
- 	root = root_stable_tree + nid;
-+	checksum = calc_checksum(&kfolio->page);
- again:
- 	parent = NULL;
- 	new = &root->rb_node;
-@@ -2076,7 +2100,9 @@ static struct ksm_stable_node *stable_tree_insert(struct folio *kfolio)
- 			goto again;
- 		}
- 
--		ret = memcmp_pages(&kfolio->page, &tree_folio->page);
-+		ret = ksm_memcmp_pages(&kfolio->page, checksum,
-+				       &tree_folio->page,
-+				       stable_node->checksum);
- 		folio_put(tree_folio);
- 
- 		parent = *new;
-@@ -2116,6 +2142,7 @@ static struct ksm_stable_node *stable_tree_insert(struct folio *kfolio)
- 
- 	folio_set_stable_node(kfolio, stable_node_dup);
- 
-+	stable_node_dup->checksum = checksum;
- 	return stable_node_dup;
- }
- 
-@@ -2150,43 +2177,52 @@ struct ksm_rmap_item *unstable_tree_search_insert(struct ksm_rmap_item *rmap_ite
- 	while (*new) {
- 		struct ksm_rmap_item *tree_rmap_item;
- 		struct page *tree_page;
--		int ret;
- 
- 		cond_resched();
- 		tree_rmap_item = rb_entry(*new, struct ksm_rmap_item, node);
--		tree_page = get_mergeable_page(tree_rmap_item);
--		if (!tree_page)
--			return NULL;
--
--		/*
--		 * Don't substitute a ksm page for a forked page.
--		 */
--		if (page == tree_page) {
--			put_page(tree_page);
--			return NULL;
--		}
--
--		ret = memcmp_pages(page, tree_page);
- 
- 		parent = *new;
--		if (ret < 0) {
--			put_page(tree_page);
-+		if (rmap_item->oldchecksum < tree_rmap_item->oldchecksum) {
- 			new = &parent->rb_left;
--		} else if (ret > 0) {
--			put_page(tree_page);
-+		} else if (rmap_item->oldchecksum >
-+				tree_rmap_item->oldchecksum) {
- 			new = &parent->rb_right;
--		} else if (!ksm_merge_across_nodes &&
--			   page_to_nid(tree_page) != nid) {
-+		} else {
-+			int ret;
-+
-+			tree_page = get_mergeable_page(tree_rmap_item);
-+			if (!tree_page)
-+				return NULL;
-+
- 			/*
--			 * If tree_page has been migrated to another NUMA node,
--			 * it will be flushed out and put in the right unstable
--			 * tree next time: only merge with it when across_nodes.
-+			 * Don't substitute a ksm page for a forked page.
- 			 */
--			put_page(tree_page);
--			return NULL;
--		} else {
--			*tree_pagep = tree_page;
--			return tree_rmap_item;
-+			if (page == tree_page) {
-+				put_page(tree_page);
-+				return NULL;
-+			}
-+
-+			ret = memcmp_pages(page, tree_page);
-+
-+			if (ret < 0) {
-+				put_page(tree_page);
-+				new = &parent->rb_left;
-+			} else if (ret > 0) {
-+				put_page(tree_page);
-+				new = &parent->rb_right;
-+			} else if (!ksm_merge_across_nodes &&
-+				page_to_nid(tree_page) != nid) {
-+				/*
-+				 * If tree_page has been migrated to another NUMA node,
-+				 * it will be flushed out and put in the right unstable
-+				 * tree next time: only merge with it when across_nodes.
-+				 */
-+				put_page(tree_page);
-+				return NULL;
-+			} else {
-+				*tree_pagep = tree_page;
-+				return tree_rmap_item;
-+			}
- 		}
- 	}
- 
-@@ -2271,6 +2307,14 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
- 		if (stable_node->head != &migrate_nodes &&
- 		    rmap_item->head == stable_node)
- 			return;
-+		/*
-+		 * If stable_node is in migrate_nodes list its checksum field
-+		 * is not valid, so calculate it here
-+		 */
-+		if (stable_node->head == &migrate_nodes)
-+			checksum = calc_checksum(page);
-+		else
-+			checksum = stable_node->checksum;
- 		/*
- 		 * If it's a KSM fork, allow it to go over the sharing limit
- 		 * without warnings.
-@@ -2295,15 +2339,15 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
- 		if (!try_to_merge_with_zero_page(rmap_item, page))
- 			return;
- 	}
--
- 	/* Start by searching for the folio in the stable tree */
--	kfolio = stable_tree_search(page);
-+	kfolio = stable_tree_search(page, checksum);
- 	if (kfolio == folio && rmap_item->head == stable_node) {
- 		folio_put(kfolio);
- 		return;
- 	}
- 
- 	remove_rmap_item_from_tree(rmap_item);
-+	rmap_item->oldchecksum = checksum;
- 
- 	if (kfolio) {
- 		if (kfolio == ERR_PTR(-EBUSY))
 -- 
-2.54.0
+Cheers,
 
+David
 
