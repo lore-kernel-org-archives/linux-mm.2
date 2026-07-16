@@ -4,120 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDE07C44516
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:04:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA9AFC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:06:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B5E26B0126; Thu, 16 Jul 2026 11:04:37 -0400 (EDT)
+	id 97EDC6B0118; Thu, 16 Jul 2026 11:06:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 840566B0128; Thu, 16 Jul 2026 11:04:37 -0400 (EDT)
+	id 956026B0128; Thu, 16 Jul 2026 11:06:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 755D46B0129; Thu, 16 Jul 2026 11:04:37 -0400 (EDT)
+	id 86EC76B012A; Thu, 16 Jul 2026 11:06:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DFB76B0126
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:04:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A5D5540203
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:04:36 +0000 (UTC)
-X-FDA: 84994961352.21.332EE93
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C4C091A0004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:04:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=KlPRBD5C;
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784214274;
-	b=xzHArVwpOrOgQIc3lOf5yWollG+Eedmwdt6NIHUWgvTGlIa1Wg97plGsPGaE3C7Uf6xszO
-	TZoG4iylpGIgn0DVQfi1Ooq+WwY+NJRbvYyF2jKkwpu38pDqNRTXcv/2j+WZV29Ocw4dUV
-	FMttiOeBjeIxfdSOoJszGppAJyauCgw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=KlPRBD5C;
-	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id 567C06B0118
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:06:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DCF1B1A01DF
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:06:27 +0000 (UTC)
+X-FDA: 84994966014.15.7A3C772
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C5F2780003
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:06:25 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ikMIH4Ic;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="MNxsDl/3";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Vp74B/0y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ko63zMhl;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784214274;
+	s=arc-20220608; t=1784214386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESEHmQjCMBnGaENVOX4xB1tescWaluk9TL1CPIBeov4=;
-	b=shfU4ikAxob80VNVdzO+RogmSA3rMRnGcLEeYaBYULZdR4W0i5Y3TyAfc5YA/S6BL0vgv0
-	Yhw5AE72PDRW/JFN59C8th6k4flfeLpwTZplcey0I/F6Oig8H9S36Q6RCZ0R+/DczNQhlX
-	5dyRlCCa5wVlssrda9pnUslbo9N1RCc=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-81ec29f1d07so34966547b3.1
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:04:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1784214274; x=1784819074; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ESEHmQjCMBnGaENVOX4xB1tescWaluk9TL1CPIBeov4=;
-        b=KlPRBD5CFc+U14Cq1AeOKm5yTMgh/cZT9sNS9OpBSpIod4+onZBQFTnFJlXTyZz1ZI
-         NP+YP63f+mdLW3zU92WrmjfO7tQ+iXcJAgOxwC0DSnHEq1xum5/QbjKIQwm9jLO7nl4q
-         3/87+tIQoeAu2azkn8cjtjuTp142BnlxWqVhUhEOgyzJ1PcV1uc7zeDfREvvXyX/UXPR
-         zo6x6MemgdBwsv3Bgk6/oDbXXvwDkbRnkQ/SM8QMpESdcHkl2X/DT1RrgEr579VDpUJ9
-         vpRtbwsNdxT8vS+YFlP+OO/w//17+yoKPVQ2ebuKEg447Bc9rzbI6UN4GNNj5K/E623F
-         aHiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784214274; x=1784819074;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ESEHmQjCMBnGaENVOX4xB1tescWaluk9TL1CPIBeov4=;
-        b=KJjGufteciyCG3mECgXun4tVx7YR4pbMX42x7Z3uKaE61nmjj4ETakQsbSFAUGtHvh
-         CDg2CuPG2/8S0rkNxSXLrYVJaTSjfOfHiyvPuc8vdnTmVwx9vSL9NOoTCFNkdTY/hvvN
-         inxMBmH4g+aW895pytOIqFQePGjIPJ+9duvGNmURtUpQ012gShUs1RrSnTucgZzulBxN
-         hDJHDqTXIgfo+oNKrYmovhEIs7Wj9VQlWYCjXgR+sRam/+C9xUX6UtGnYmo2P90nr5jP
-         mJpubHtHSB00Bw6cYBQT46tUQe9Tsplfqm/CsM2qGq2AYB/k4072EIkqClei4WOIxNKU
-         WNhw==
-X-Forwarded-Encrypted: i=1; AHgh+RrYeahHE3pIO4zA4vNUd2/N5wwhjdztRvgv1zFlU3BO6PPzAxJLVfPl6iKiyWxctfs62Cu3n3eonQ==@kvack.org
-X-Gm-Message-State: AOJu0YzAnch1JT9uCsymnsQyi02imujILkd4zjbBjTCEjrLuiY/srFZ3
-	MQpycv3z8V/7aBmFNG0uUtY3vMHOew2VB9hCVYEVcZQCErW+P4x3ix9aJIsFpRVjQmg=
-X-Gm-Gg: AfdE7cmowcyD576Ux3axNmiX5iqkGPshphC9gRff9lI/JGegankAKCfRlMnmcvCc9Xw
-	DfyGMNhlkiM3XLKvhxfbLWccs5G2OFzR0G8WRv13m9VtmOImF9iGWLV8qqRHoWYHGAQCSqaJ2ah
-	VChPgTBnHVA6Pg+yddqkYt5AxLOHKNyyLCDVv9fALbb652s4L3TYUAScC15Pmqp4jbs6n8oXgrf
-	eoV+cG81Fa1b8NC99M/0nMMqYfH/LswJ/dReLpRD3V/L+oKADuSsd4uP65dF50PcmGtMjzL2qTT
-	q3Ms8ww3iRuLmXJSt0U77GiPzV34YqsVZ263uyTcNV/2+FGcBIlazQ4WfEsiQsy1qGnVNXxcQiV
-	1lLxa/aloqdI6pw2sfzceqShGi0fVjitoiN6mU3CxwVSU2hV4rEaVL/U9ZsD93s2PWQCaCpPgqJ
-	DDUhRimFigIgiSsccpXIaAFgBe9PmikZEkPANNoo2H/enRXsemcoyfvb2apCeCDhcxvmtNnS1ki
-	gQVTw6P+fxf
-X-Received: by 2002:a05:690c:22c9:b0:7f8:7e50:6390 with SMTP id 00721157ae682-81ebb28d493mr96938907b3.50.1784214273078;
-        Thu, 16 Jul 2026 08:04:33 -0700 (PDT)
-Received: from google.com (138.200.150.34.bc.googleusercontent.com. [34.150.200.138])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e6c23d1afsm198963407b3.47.2026.07.16.08.04.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 08:04:32 -0700 (PDT)
-Date: Thu, 16 Jul 2026 11:04:31 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Michal Clapinski <mclapinski@google.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Evangelos Petrongonas <epetron@amazon.de>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] kho: align kho_scratch to MAX_ORDER_NR_PAGES pages
-Message-ID: <aljy_-Y7OT6s0kj0@google.com>
-References: <20260714205111.2497151-1-mclapinski@google.com>
- <178409777790.255896.16691338963510282908.b4-review@b4>
+	bh=HujAVb6RxLv5hlDKjw4a52J9PZBMkT3MwEYBIBN7m8g=;
+	b=CqgMDAWtAmuZ5eEwGFfnrdt+1sgw8/75iExBO9/KZeGOc6BPMSYAW+ze0xTrguzQo6nncW
+	TgtJSi6HqcGn1X/aK6lQZrCfm67pBRK8UqdNI41el55b1xPtdDPkJru2iRrNo6+NhhUucW
+	oKAy7KGLqg77L3eAZXiyXqYVWRS84Jg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ikMIH4Ic;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="MNxsDl/3";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Vp74B/0y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ko63zMhl;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784214386;
+	b=1iNOeBJMCP+mOceciJmG90a0hmK4tvi8Nu5jvN3ZuHcIjEtDRCpxC6qmoAkHHFxgrYko6P
+	PuxEUxSRZvHXCEOVHRtkKhtF0QGI5X7ztVNoT8YsbxIlgHl3i3heAVuxXYJO5dRfnUzR7v
+	M50c5VWQk5fnTZwD9YSHaiM9ALtG8BM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EBD4D3E2F;
+	Thu, 16 Jul 2026 15:06:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784214384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HujAVb6RxLv5hlDKjw4a52J9PZBMkT3MwEYBIBN7m8g=;
+	b=ikMIH4IcJlUgiCWe6Ktqow1P47x4dTtfrGnNl57lvOAK14l/CccNBlYLznxl4hfWYYdWU/
+	buiXPf9ZKxqb3EUJMU9e7DOmYW6LavsklXFMbVpM6aF4tiJx6f83Ml7v6jFbemqGmxVauj
+	iTGZ/WmvYNux3CAAD/aR1uyq5xFyz2U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784214384;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HujAVb6RxLv5hlDKjw4a52J9PZBMkT3MwEYBIBN7m8g=;
+	b=MNxsDl/3q0Y0Mvld+ztegXhsQVycpelLl0EwVsI+5AP1FCgVle9Q9l7LdsSzcGp4SySBdJ
+	kSK+w28+S0TbmGBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784214382; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HujAVb6RxLv5hlDKjw4a52J9PZBMkT3MwEYBIBN7m8g=;
+	b=Vp74B/0yTUhb5X27/u9G11wU+b2wXaxylCbXAg3OB7INHoy1pRLTVizpxnnddzeEw45O0m
+	ghLhBGMGQC4l83VQFQK0WlJQplysJaKdxHrkvHAORbkJ34U07ckZ9dR1f0geqgUjmGwjmY
+	a+vfRUKBjCNFHpoJk+WiGf1+xlDTNu0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784214382;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HujAVb6RxLv5hlDKjw4a52J9PZBMkT3MwEYBIBN7m8g=;
+	b=ko63zMhle94/EcBCSuJjv6zUQFuaUI9Jg9G7vfuB0cZBKO9uG3Z5J16psxiUwR6Z9ZW4i/
+	fIG9aQXP489gU+Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D6653779AD;
+	Thu, 16 Jul 2026 15:06:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id tcMhMW3zWGpmaAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 16 Jul 2026 15:06:21 +0000
+Date: Thu, 16 Jul 2026 16:06:20 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm/mseal: limit scope of mseal address zero to
+ address zero
+Message-ID: <aljyYdgzRZW1kIhs@pedro-suse.lan>
+References: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
+ <20260716-mseal-fixups-v1-2-3a9609bf041b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178409777790.255896.16691338963510282908.b4-review@b4>
+In-Reply-To: <20260716-mseal-fixups-v1-2-3a9609bf041b@kernel.org>
+X-Rspamd-Action: no action
+X-Stat-Signature: yo3gxb4rrgto9ukypgj7iu5ms757tbsy
+X-Rspamd-Queue-Id: C5F2780003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C4C091A0004
-X-Stat-Signature: qz5jzc4hz9bx8m65i7whph13cbeob8cn
-X-HE-Tag: 1784214274-662739
-X-HE-Meta: U2FsdGVkX1+tHNadEWLSk1Jyr/AvNV05HetywIVfH85IawkLlOdxH61BoeqIAd09OeUJaneGO6MH5usahLEPQNEcQRuh8dfzey/NvqpNWcWUXtSBHg50f7Jce6YRC4lKjdOdf7qd884WIOr2FJDqz8ypfx0BXBCWB6dafdElrjtMLqL/h9aXWc3zvx280IomBQICAevdhgJulZ+GQGC00UMjeeQ9UlO1cAinW+pF5ZEB1+kngyDhd4dvlL79BbGx5bb2hNxwj//Vrn04n4t5/S2R1czVP+FSZIxqHFC2hhS7L3CSB8z0+ZFomA/+HaNpPxycjfyvTsVAOq1ZXLyEi0MR0NiRwOa2MNzp/pDmo8A0nQQRpGhZFiEI5MIEgFnjpuleUcQRTGa9TLxy7/ZYzA8Y0iZFSUUdy4lJOJ8Oh9uk9mZxpqjfiXFNQnlr7kAHQdZZ9Uk/ywxdLPyfx4N0rzl7O29FFbksA+ENYppfieRiXx14NiCHT4B+DYjjJjMKBxs2zLsmRwssb85pQTm8rl7BhdVvkVzJocBhMwZm/DnEA34OU5PMrS75wxU4z1O1VII4JpetnvLHsCESs/ryvb8xxz8KS9pDxpLA8d/uthzBcHVJHvOJul9Lv0XVTR3v/74sCZR0kbF6MUptn089pDnBgPcnY5+dl70HPV83n/UHq7/koMSpKy2sunzfdte/30jeOKaZfsNVClSZCdprK/4G6YUqzsLUxIrPsKvP/4sDboxc+DoV1YK5qI81oJPJL7A/cR1WgOlXffqav7gMZb+K6uA3KV3VKCYQqU6F5zcXh74JStoDazq1pw393KAbUVlWm/LUneu4coaYstZEXmDzXuP5S4N1gZN/6G834K99ICMSRhH154TwvbKi9j3iXxixWcdjHKaOdEe/TSS2yCL/UMTr75wOthOZ8qES2dk0oomparn8shLTX1lrRr8VQahiRaHCNdsOex+sfoF
- MqGGv+2U
- LkxHSVP9dau7a0c+FmKp6+BjRaOLIJ9+Pq2BMYo+v0Lloq2WbD7J9+QHecbSfsaJP1BPuJs8UORBQ0JvVQS0KxfnCUo/tTvFIEdefSEtAKo+VBqz6KMirG6IQPnlqnAUvSLwcSAYy8e43bb9yXCRWGUo3rGk98XPNIaySVJetPfizzG8C5LqcRBrpiCZ0UQg4fBDX/b+69Pp1D+9nKr5wvuMKSjG2kMHYPB3NQTu1CglAFXVTtHZP2RRxBbgp7SZG6sHavL6rPZRysA6WyVgSnBxpE0DCKdMG43xq3ge1mhLs0hkqyg6O9FlioQ9ehcWhZxX/YNZd24IsFSXDxRHkIjuw3UyA2YCg4k4BopbbJy05CCxhY2T2N3k4SA==
+X-HE-Tag: 1784214385-798665
+X-HE-Meta: U2FsdGVkX1/waOBi8bJDj2IV6wtZ1fsSa+603ckrEtXMn8/+ZXrEB7J3nBt76absYJ/LOZ3QvmRARIu0sOOxImZ9UxB+vB5Z9Y/0PtMZ5SoBXmkKiqPA3mKoGxYG7SU9P/HTneUfxUY/Z/sx8aEbpB1RZMdrLayB+Wok/VAd+rYOHA4vT05sIJPe7B8meoNxF6EfuQI/8A4DdTPKMOwOenXLvi1N6WnWbR99laLnFi7EhgPhOkRrg79+X31q5yoU2fk3D5wl456mGvYHWLS6/uytdPryEZs0cm49UYTUcMgb06woccbnJ0wTWzrOotJy5rF9KMkcRP/xMoNJO05s9W6ImwSFGcfwZnhGOjwUIVh1X8PNPjR9D1btjW7XoqXgj9M70rv1QVNtGvMFHjaxJo9YVcfV96kZfrDxmdkLa/Q5y/UE6doE6s36I64pVnIdliETU6AxXpFIWyl7tUlAUQZF1TKdEttQBH6FAUng2hzHjFhI0AgQU06pIm6l1evmWCiNMSAwKUgw6VckN1Dg1lxhY1wu6wmqy6gA7HH8GAw9rjsWnpGE63SZjUqwezrAKS1i0JPWY5F3O4VK5L0xRqUlE6RXvKNeg16G7CHYTysSDKpia6eiynkY0YIUQ1BIHPk6CsY338i9mbKgIzquDzOT1Zk/BeCzJJc4sG8yUvCrNzYYUavQCp/ngGga69pPDi3uIVKWd4kKCGOC/nq0u4vH+Kt0hL3LnemgGMCu06tByFiCMLS5t2YAwpq/iGq9+g3sN4ryhBKjEQzsUYPMrKiONk8kAEZkhrzLKcSu6Ahshdth95UnhBWbjiAi/pwrYQ2K2veqJEtYYQawfU9KxVfgvq5yFOVdJHHWLiGetREIqqAR8lIkhlP6yaV52pCuyXFtietdTKEN7hKbagDaAM1kFT1AS96jpDq5JAWgJaoANeqP9yWA50mpYlX7lDoK96TD7YCjEIuJkgDoO21
+ yLe+cYqH
+ hmDZIhrBOooQAo8+1hdF+PJXS6+TnOZA0sFEvHs7HrRPndA69WX6b8oNj3fh5TGCGIhoYYIQ2uIuKpEqImFB8q6eT0RITwNeNMeOtwfzdjxOmVav+SIq+7CE8okk2xNg0YxXBD2hZa7WNopBd2ukpWgIoRrJmD+24HMtDSi0c/dAqYoJ0uL9m5qFgfT8nuNbOTo0CmczYFEsQyRdzSIoVSWCM/0Q1wTWATmma1fxeRv9D8igaRTE7+ER3R++AGRGrlwdA6RmJi4YP+rmQ5RrhdWtBp4BFKkMp6rn4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,72 +137,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07-15 09:42, Mike Rapoport wrote:
-> Hi Michal,
+On Thu, Jul 16, 2026 at 02:43:10PM +0100, Lorenzo Stoakes (ARM) wrote:
+> Commit 44f65d900698 ("binfmt_elf: mseal address zero") unconditionally
+> provided do_mseal() to any internal kernel caller in order to address a
+> corner case slated for possible removal.
 > 
-> > I caught this crash:
-> > BUG: unable to handle page fault for address: ff19164fffff8328
-> > RIP: 0010:__free_one_page+0x1a1/0x6b0
-> > Call Trace:
-> >  <TASK>
-> >  [<ffffffff913208bf>] free_one_page+0xaf/0x240
-> >  [<ffffffff93973288>] deferred_free_pages+0xa8/0xd0
-> >  [<ffffffff93971b4f>] deferred_init_memmap_chunk+0x10f/0x1b0
-> >  [<ffffffff9396e265>] padata_mt_helper+0x65/0xa0
-> >  [<ffffffff90fac402>] process_scheduled_works+0x202/0x410
-> >  [<ffffffff90fae739>] worker_thread+0x1f9/0x2d0
-> >  [<ffffffff90fb62fd>] kthread+0x27d/0x2f0
-> >  [<ffffffff90fae540>] ? __pfx_worker_thread+0x10/0x10
-> >  [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
-> >  [<ffffffff90efdc55>] ret_from_fork+0x145/0x280
-> >  [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
-> >  [<ffffffff90e2e46a>] ret_from_fork_asm+0x1a/0x30
-> >  </TASK>
-> > 
-> > deferred_init_memmap_chunk() works fine without KHO because free
-> > regions will never be neighbors. However, with KHO, free memory
-> > will be split into (free && scratch) and (free && !scratch).
-> > KHO scratch is aligned to CMA_MIN_ALIGNMENT_BYTES (which on my setup
-> > is equal to 1 << 9 pages) but buddy can look at the neighborhood of
-> > MAX_ORDER_NR_PAGES pages (which is equal to 1 << 10 pages).
-> > This sometimes crashes when one half of the neighborhood is being
-> > initialized but the other part is yet to be initialized.
-> > 
-> > To fix this, let's just align KHO scratch to MAX_ORDER_NR_PAGES pages.
-> > 
-> > Fixes: c6073743d0c7 ("kho: make preserved pages compatible with deferred struct page init")
-> > Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> >
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> > index 4834a809985ab..50928aaa33710 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -38,6 +38,16 @@
-> >  #include "../kexec_internal.h"
-> >  #include "kexec_handover_internal.h"
-> >  
-> > +/*
-> > + * This is the minimal alignment required by deferred struct page init.
-> > + * deferred_init_memmap_chunk frees memory to the buddy allocator, which looks
-> > + * at the neighboring pages (up to MAX_PAGE_ORDER) to merge them.
-> > + * If KHO scratch is not aligned to that value, buddy can access uninitialized
-> > + * struct pages, which can cause a crash.
-> > + */
-> > +#define SCRATCH_ALIGNMENT_BYTES (1 << (PAGE_SHIFT + MAX_PAGE_ORDER))
-> > +static_assert(SCRATCH_ALIGNMENT_BYTES >= CMA_MIN_ALIGNMENT_BYTES);
+> It also incorrectly attempts to mseal() without checking to see whether the
+> mapping even succeeded.
 > 
-> Maybe make it a variable and set it at runtime?
-> We won't need to worry about different confugurations that override
-> MAX_ORDER and potentail divergence of pageblock size from MAX_ORDER in
+> Restrict the scope to the corner case by providing mseal_mmap_page_zero()
+> which asserts the MMAP_PAGE_ZERO personality.
+> 
+> Avoid unnecessary checks in the start, end range by abstracting the actual
+> mseal()'ing to mseal() and have mseal_mmap_page_zero() call that instead.
+> 
+> Only try to seal the VMA if we mapped the VMA.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  fs/binfmt_elf.c    |  7 ++-----
+>  include/linux/mm.h |  8 ++------
+>  mm/mseal.c         | 48 +++++++++++++++++++++++++++++++++++-------------
+>  3 files changed, 39 insertions(+), 24 deletions(-)
+> 
+> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> index 16a56b6b3f6c..e3131a311995 100644
+> --- a/fs/binfmt_elf.c
+> +++ b/fs/binfmt_elf.c
+> @@ -1353,11 +1353,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
+>  		   emulate the SVr4 behavior. Sigh. */
+>  		error = vm_mmap(NULL, 0, PAGE_SIZE, PROT_READ | PROT_EXEC,
+>  				MAP_FIXED | MAP_PRIVATE, 0);
 
-Do those architectures reduce MAX_ORDER when they override it? I would 
-hope we could set the alignment once and make it large enough to work 
-everywhere, rather than depending on dynamic changes even during boot...
+I think pedantically load_elf_binary() should error out on mmap error, no?
+Not that this personality is used in the big 2026 however...
 
-> the future.
-> 
-> -- 
-> Sincerely yours,
-> Mike.
-> 
+> -
+> -		retval = do_mseal(0, PAGE_SIZE, 0);
+> -		if (retval)
+> -			pr_warn_ratelimited("pid=%d, couldn't seal address 0, ret=%d.\n",
+> -					    task_pid_nr(current), retval);
+> +		if (!error)
+> +			mseal_mmap_page_zero();
+>  	}
+>  
+>  	regs = current_pt_regs();
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 550fb92957d1..87feaa5a2b78 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5291,13 +5291,9 @@ int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *
+>  int reserve_mem_release_by_name(const char *name);
+>  
+>  #ifdef CONFIG_64BIT
+> -int do_mseal(unsigned long start, size_t len_in, unsigned long flags);
+> +void mseal_mmap_page_zero(void);
+>  #else
+> -static inline int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
+> -{
+> -	/* noop on 32 bit */
+> -	return 0;
+> -}
+> +static inline void mseal_mmap_page_zero(void) {}
+>  #endif
+>  
+>  /*
+> diff --git a/mm/mseal.c b/mm/mseal.c
+> index 207fea89c61e..5930551d84f2 100644
+> --- a/mm/mseal.c
+> +++ b/mm/mseal.c
+> @@ -32,7 +32,7 @@ static bool range_contains_unmapped(unsigned long start, unsigned long end)
+>  	return prev_end < end;
+>  }
+>  
+> -static int mseal_apply(unsigned long start, unsigned long end)
+> +static int __mseal(unsigned long start, unsigned long end)
+
+Why? I think the previous name is perfectly cromulent.
+
+>  {
+>  	struct vm_area_struct *vma, *prev;
+>  	VMA_ITERATOR(vmi, current->mm, start);
+> @@ -66,6 +66,38 @@ static int mseal_apply(unsigned long start, unsigned long end)
+>  	return 0;
+>  }
+>  
+> +static int mseal(unsigned long start, unsigned long end)
+
+I don't like that you go start - end on a function called "mseal". The actual
+system call goes start - len. It just looks confusing :) So either rename it
+to mseal_range(), or make it take a start, length pair.
+
+The overall spirit of the change LGTM however. 
+
+-- 
+Pedro
 
