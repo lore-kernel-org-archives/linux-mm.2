@@ -4,93 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 274E2C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C500C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:39:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02BDC6B013A; Thu, 16 Jul 2026 11:38:30 -0400 (EDT)
+	id 0F0FB6B0144; Thu, 16 Jul 2026 11:39:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1E596B0144; Thu, 16 Jul 2026 11:38:29 -0400 (EDT)
+	id 0A1B66B0148; Thu, 16 Jul 2026 11:39:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE6D56B0147; Thu, 16 Jul 2026 11:38:29 -0400 (EDT)
+	id EAD3B6B0149; Thu, 16 Jul 2026 11:39:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5706B013A
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:38:29 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 256C01201C8
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:38:29 +0000 (UTC)
-X-FDA: 84995046738.08.53B1ABF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8993318000A
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:38:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lR0erwDg;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B6A3D6B0144
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:39:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F7B5A0038
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:17 +0000 (UTC)
+X-FDA: 84994325514.26.DD97700
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 85A874000C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EwMfacw+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784216307;
+	s=arc-20220608; t=1784199135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a26FW5P9+YzyWC6sUoMal5XZ31S+uAd68vV2bOiyX1I=;
-	b=KZMQvZcEHEuSmHd4ScoHyS1/sU7QdMIMvSkKXy0GUhkDoQ+WWdUXTgJpp/ZyLXFaATLjir
-	EJrJm3UiYxWKE0dlgDNqHHZ7UMXgBEtWs6ktAwJsRCvr2JECoYXNRX+ngqT643ZnVO7y4a
-	T9HaSrNKxA3qYVbSmGjCr8elPUH3xFU=
+	bh=N1dZhaci75OOFUtgLVVRnN9/6lCyWljyWs7u1S9B35o=;
+	b=ZsJByFHO3WQmd4nkrjH7SrueLTRZBNwsdbJTrTmyP2DyufAj3RuXrr9r6WGi2y1oVRt39a
+	6LP7q1NGA6bbupP5QJ8t4NJLgpMouG0iMHEcsZMAt8nODPgyqnDJl4aC0xu3Bk72h6ZHiV
+	K2HscKnEJTkYYIjm6pBeFcalingk5JQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lR0erwDg;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EwMfacw+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784216307;
-	b=bM9BER+5/uY6uMLoRXRa9UATkIM/giRMUDh+tlTrvryZ5fuzlG6CiTWAP8xHGED3mkWV3L
-	+D1EaQPjlRj3pEHnuxZfbtBf8QmJq/JREuyCCVkg4CWcCY4ZEIGwpD34eMyc2P5Iw4/ck7
-	VaKjubO6q6bPi3/0OujB9J3HZe84naw=
+	t=1784199135;
+	b=EU/RVOtJEAQhkd4ceTBmIB0RqvKwq1Ge1JkvszaUNhUjUoeL8bm0do0e2ZzltLoyUkbEiR
+	gkEPgnFmpyWBK0fAvhTOwlVy/t78T1UH/1+XICToLOOwL5W3ZE1Tguz0a3wR8SE/vekX/6
+	x3c4UBtMreesOTbG7B/l/5ahtsSvAAM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EA93C60A5E;
-	Thu, 16 Jul 2026 15:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3469C1F000E9;
-	Thu, 16 Jul 2026 15:38:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B2EB541433;
+	Thu, 16 Jul 2026 10:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC871F000E9;
+	Thu, 16 Jul 2026 10:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784216306;
-	bh=a26FW5P9+YzyWC6sUoMal5XZ31S+uAd68vV2bOiyX1I=;
+	s=k20260515; t=1784199134;
+	bh=N1dZhaci75OOFUtgLVVRnN9/6lCyWljyWs7u1S9B35o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lR0erwDgzrfV/VW+jOFdV1LMajh/Lxr9kj6PHtGJ2ocf8UYF7Iiev7SR8A9tEWCgQ
-	 sGQtqYw2ORhpBucNtP8LdQbJ2LzOyaiGIT6GaPRxahcGCnJYvfk2zIa2QDQdELHN+q
-	 LDPB97EOuYOxIXGpx3SApeYztROlPB3s165Mf1Ebdkc8MxtMhYw0Qg7ZigGsuTDNt+
-	 4MaV3BwpOvKoQ8ZSXNh6PVvDFHOyQvSa42Au5ELtabRp418yDLMNKvbV2FwXbBCEHB
-	 pEHEJMklR5yaZnxH7xQJ0j+dYjktwFbJkpFZQ2YSOIlpfPGyMlcDbq6rW8IO8Ibksx
-	 J7LMo5ew01Djw==
-Date: Thu, 16 Jul 2026 16:38:12 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm/mseal: limit scope of mseal address zero to
- address zero
-Message-ID: <alj1Cyt4JvbVM7tB@lucifer>
-References: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
- <20260716-mseal-fixups-v1-2-3a9609bf041b@kernel.org>
- <aljyYdgzRZW1kIhs@pedro-suse.lan>
+	b=EwMfacw+t3M1nVnMvXcSkTLhb7ECqpM6mrFlUioo6asDz+YjPbKC1ub+NtAfrx7u8
+	 1ynT0ekjL/5ik3NX/uJAZFcHZuhtWm0AVgOcotWUw2ELLAvKpwlaE8S4ldzeuLDyPM
+	 9j3nP6Ejf1OsM1+aYkRk9sUBMJUWVjQ6Cbt/HmmTPjdjKgE5zyTsvCvifvUxgZysKT
+	 LoQXziTmY9uIneobZMg1mnweASBTi0DiYJAIOXH4KH4v8atBYnYlQd/uJ2QwsGbIoS
+	 8It1wYZVBvLYY662ntSp+foyJ73CA9Yg27Eqx60KpvRT9f7g0KLI+QcgOGq5mlPOl0
+	 ZUy8BGcy2RwCw==
+Date: Thu, 16 Jul 2026 13:52:07 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
+Message-ID: <ali3162voYNVFl0p@kernel.org>
+References: <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev>
+ <akpBWmnujSnj1ZEE@kernel.org>
+ <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
+ <DJZ3TQV3GPDO.6AN321FGTTX@linux.dev>
+ <aldv8U-lzCn0SCBL@kernel.org>
+ <7e7f20de-c43d-40f7-82d3-8d05ceb3656b@kernel.org>
+ <aleOvBtB3WCSsqEd@kernel.org>
+ <21e7746b-9bc2-4643-b0ca-c59e0c77f810@kernel.org>
+ <alef-_LMykiBQ2qP@kernel.org>
+ <5653474e-6692-4353-b5d6-e57b6ab76eaf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aljyYdgzRZW1kIhs@pedro-suse.lan>
+In-Reply-To: <5653474e-6692-4353-b5d6-e57b6ab76eaf@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8993318000A
-X-Stat-Signature: dqnrhduj6hs1k1uhswn57zhe8serdhnd
-X-HE-Tag: 1784216307-301565
-X-HE-Meta: U2FsdGVkX1+spImdVRUNx0fmoicZbmqMftY6KzmeR0XOjt66+w3hzIqtX6m9C4BJpi3BQK69gJQjOSgASHHdF5SgPRHZA8lr994fbLAohLHHlXx+ivFGMmTGrvmYUU3W4x8QIY6lQBSqIBNIhDy1kAtXRPVjxk8YdLDDAp2RX95rb8pGuonyxqFFPYlC1HUnm8gYClcUZdynq/LHE5TUd3KVXJZSMXmKBGClrp51KwuKD/9BQ7eci1OtcB1+WGWsuGdicQGyETc4zQqM9UcIiB2X2o4aw/U4OA0TSbmnDosanhhHGNihOI7nDckw9O0W6QN0Ylkiki+WuEy4GZ8tSaKOosGhMPJogMc1uC4XnZVyNVfXh/kCvbur1wVMorAqmoGHG45dhrg6ZmuQZSoiUMO5a3IERFQTeKiZpUhHZAB/fZB7rwhUlfee9vLg9E9X910q/xVpiKTOM33Vvr/YaOqTHOaJl/VLgVttx/Wy96tPCK+8w00/IoEpf4Uj/srEJyTZUmfi4KE8viKHEdIAR2TQXFFubVEuDbv255zt7n+inXfyANIza72JmyuNox+fVOkDHGJwRZCm3YYguHZS0lIEUA1A75F0HJPUCIqvmgnoYIlsM43xBL2/YXSXZL0WF2GB/sx6QmRVuR4f6cSw7ZJoAIbYbIvQofEtKoTOHYc9Kdn07IIbsDXftr8wJ4+4zsOKS1Spsk4kmB5OXS/ucUHDw6nqWW2akL6XdWCnc2qGdGd5LuObC2h4bSpTl5QKg9B+mR6yXW9Tn50QehtbWNuKMsww2OZYQ6VGhTTtYI9OPstn58vTaHqAAnZ58W4U0DIlkCt7vodoIemcaPZ9PT8GvpUK9QYtVeuy9sMsYXJwGsX+FEXlNVQD4uGU9tDQZX+JhpkAWuJzRpjvx9Jo/bq/cNLQocs2LyYC0gxYmoZXq7NkVHsuAmyF5WB33jVI8ArVk4feuVNZ+kb+Qk/
- /oBu5fb2
- +QfhC5a97gRS4B8T0gxAeUsj1b1i5huupBXTIzQAPxuztB/hO/ewfkElACgApfYd7v4Ywxe0LKZwXRCpE/1l6HpmzHXZedDQza3hfFwH4B0vIEUvjAKXX69Cm1g5wpMJ1nIu9ccJMpJqqe5j9qYvWdxI0KWUIngZhO36WSUWGB2RjwitpW+DMQFZkdUuruWdedrEdn77u1+fJmGZ3/4xvDSUaQ1g5MIz6xoXJH8EQXPzJsbSVO99zT1H7RLs00Se3TndymJLP5Ry/eYOs1Bnk/goQtA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 85A874000C
+X-Stat-Signature: i7o7cjf7ogji8rx8kinuh4jnoz7zjstg
+X-HE-Tag: 1784199135-430401
+X-HE-Meta: U2FsdGVkX1/D8W27iOWxSXg0Ye5ioqMtpJBMvkCSHV+RSaPfcesenSdJM1MN8w1FsNOMZr6OzcJPSvdwBZa3wVWCXtjzPWrB8ZO4r8tXkYY+GRn6mBWx8i2+htWK0L0lrofG6WSCea9oPYCAnXug8HRwcAR0xPnQan8tQOIJn2+SCLqc7m5Lt6KMb3dUtofcgi4k4ReVP1jB2OLdmF4s92BijrpgzfztFq5NUZmn2OhcKkUGB7gbisvISqDzOwE+RG6grL7W6WBOwgNGFYX24v2IkA6gMVwgRkphnqjvg1hspO/Hrrl7bPVu/KFvbB/HrFFnXYrd2xp7SJ9YDYJPRmPDF5mSrNSOJM4GNWkhoWAher5845MV6hWIJ8GZDG+KO+M4H9Ol83rIcXncAlXVtHdTXBkXOU+lonW01cQgXiQtuhLxuR38NRbLjpsB0uYNejfd9AR4paRMwMyCxMp5xGCiBGj2V7gAMZcXHrmH2Nsi112R/HqhGzgIRZ/mOYrZfRMceCelsChKh5gTfS7z7LQ9K5UiD265WjZR2eshanXNh7S9o3KNMUqw7eB9F8iirAE64HLxns/VOVAI3wc0+ZeNIEpfsis2kGui54zIHO3GszL57qhJQZkbzq5JqQBguGvzg7HpXtUBtOjPMNXcSY5CMM4JpncUrmYxcCK+2lMzY+kfXw1AP52DAG7cbYtOVgNqzl/bOzLn/Vo/IkhEDTzUgZh+2NF8kJ5cgByPhBdGB4BJUsJpFuVzcNhhOQ1OJMjwGxVBBjWb7ToeYNMKdmI+RijdaEEiOPXLyrFlzTFibk/Dmf16Ssgu9LV6YDLVMWMOOaKXbsZ1FvSXuA7uouG29yc6yH+4AJo7QXdvf6Ouq1OFOvhvcjcGXOMp/JXtdqlOk4rNBQUd4DzjyeH7Ehp+DPs4VIvJAmytVliQalVCPb6VpwYN6z3BHIeaC8byxhJOfjDPOxSo00Ho+Ug
+ H/+KoqOD
+ BVJO6dLeHv8VuCMvfySeAbfYgh1FN+UI9b1Vzma47Pw2IyUMEDgo9u+ZVSaB4iY5A3KvrkLNVHcvXFr24PNz5lVZnuCOsTbHH+Wwyk54lyf/KrttqwbezSzOgqSJnCsJ0eeN97Isci31G8T3Tdz4AYQcyP4YwPagGdCTAKc4c2iTClyebVhO0wZBSUBsg6P5JlWIYIl6h4h1GnCdpSqFmowd3l1QscgrNVAmSpcirFijM/x7WHxo4dwmM9UgcL5MnRHmO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,136 +106,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 04:06:20PM +0100, Pedro Falcato wrote:
-> On Thu, Jul 16, 2026 at 02:43:10PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Commit 44f65d900698 ("binfmt_elf: mseal address zero") unconditionally
-> > provided do_mseal() to any internal kernel caller in order to address a
-> > corner case slated for possible removal.
-> >
-> > It also incorrectly attempts to mseal() without checking to see whether the
-> > mapping even succeeded.
-> >
-> > Restrict the scope to the corner case by providing mseal_mmap_page_zero()
-> > which asserts the MMAP_PAGE_ZERO personality.
-> >
-> > Avoid unnecessary checks in the start, end range by abstracting the actual
-> > mseal()'ing to mseal() and have mseal_mmap_page_zero() call that instead.
-> >
-> > Only try to seal the VMA if we mapped the VMA.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  fs/binfmt_elf.c    |  7 ++-----
-> >  include/linux/mm.h |  8 ++------
-> >  mm/mseal.c         | 48 +++++++++++++++++++++++++++++++++++-------------
-> >  3 files changed, 39 insertions(+), 24 deletions(-)
-> >
-> > diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-> > index 16a56b6b3f6c..e3131a311995 100644
-> > --- a/fs/binfmt_elf.c
-> > +++ b/fs/binfmt_elf.c
-> > @@ -1353,11 +1353,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
-> >  		   emulate the SVr4 behavior. Sigh. */
-> >  		error = vm_mmap(NULL, 0, PAGE_SIZE, PROT_READ | PROT_EXEC,
-> >  				MAP_FIXED | MAP_PRIVATE, 0);
->
-> I think pedantically load_elf_binary() should error out on mmap error, no?
-> Not that this personality is used in the big 2026 however...
+On Thu, Jul 16, 2026 at 12:08:07PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/15/26 16:58, Mike Rapoport wrote:
+> > On Wed, Jul 15, 2026 at 03:49:39PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 7/15/26 15:44, Mike Rapoport wrote:
+> >>>
+> >>> No, I mean what Brendan's patch did:
+> >>>
+> >>>  config SECRETMEM
+> >>>         default y
+> >>>         bool "Enable memfd_secret() system call" if EXPERT
+> >>> -       depends on ARCH_HAS_SET_DIRECT_MAP
+> >>> +       depends on ARCH_HAS_SET_DIRECT_MAP && !HIGHMEM
+> >>>
+> >>> We can change gfp_mask as well for the sake of pedancy
+> >>
+> >> Why not change the gfp mask only then?
+> > 
+> > Citing myself from a few emails back: 
+> > 
+> >>> But still with kmap() and friends not being an NOP the promise "kernel does
+> >>> not map this memory" does not hold.
+> 
+> So you're saying that kmap() would perform a mapping for a non-highmem page?
+> 
+> static inline void *kmap(struct page *page)
+> {
+> 	void *addr;
+> 
+> 	might_sleep();
+> 	if (!PageHighMem(page))
+> 		addr = page_address(page);
+> 	else
+> 		addr = kmap_high(page);
+> 	kmap_flush_tlb((unsigned long)addr);
+> 	return addr;
+> }
+> 
+> I'm missing something important.
 
-I'm not sure I implied otherwise?
+Yeah, you are right, GFP_USER should do.
+ 
+> -- 
+> Cheers,
+> 
+> David
 
-But yes I'm aware, the point is to not try to mseal() an unmapped range knowingly.
-
-The fact we 'get away with it' now is irrelevant.
-
-I can update the commit message if a respin is necessary to spell this out (I
-thought it was obvious).
-
->
-> > -
-> > -		retval = do_mseal(0, PAGE_SIZE, 0);
-> > -		if (retval)
-> > -			pr_warn_ratelimited("pid=%d, couldn't seal address 0, ret=%d.\n",
-> > -					    task_pid_nr(current), retval);
-> > +		if (!error)
-> > +			mseal_mmap_page_zero();
-> >  	}
-> >
-> >  	regs = current_pt_regs();
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 550fb92957d1..87feaa5a2b78 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -5291,13 +5291,9 @@ int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *
-> >  int reserve_mem_release_by_name(const char *name);
-> >
-> >  #ifdef CONFIG_64BIT
-> > -int do_mseal(unsigned long start, size_t len_in, unsigned long flags);
-> > +void mseal_mmap_page_zero(void);
-> >  #else
-> > -static inline int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
-> > -{
-> > -	/* noop on 32 bit */
-> > -	return 0;
-> > -}
-> > +static inline void mseal_mmap_page_zero(void) {}
-> >  #endif
-> >
-> >  /*
-> > diff --git a/mm/mseal.c b/mm/mseal.c
-> > index 207fea89c61e..5930551d84f2 100644
-> > --- a/mm/mseal.c
-> > +++ b/mm/mseal.c
-> > @@ -32,7 +32,7 @@ static bool range_contains_unmapped(unsigned long start, unsigned long end)
-> >  	return prev_end < end;
-> >  }
-> >
-> > -static int mseal_apply(unsigned long start, unsigned long end)
-> > +static int __mseal(unsigned long start, unsigned long end)
->
-> Why? I think the previous name is perfectly cromulent.
-
-Because this is what actually mseal()'s, the _apply is not really useful.
-
-The __ is because it's unlocked.
-
-The point here is to eliminate useless indirection, so calling the function that
-mseals, 'mseal' seems sensible.
-
->
-> >  {
-> >  	struct vm_area_struct *vma, *prev;
-> >  	VMA_ITERATOR(vmi, current->mm, start);
-> > @@ -66,6 +66,38 @@ static int mseal_apply(unsigned long start, unsigned long end)
-> >  	return 0;
-> >  }
-> >
-> > +static int mseal(unsigned long start, unsigned long end)
->
-> I don't like that you go start - end on a function called "mseal". The actual
-> system call goes start - len. It just looks confusing :) So either rename it
-> to mseal_range(), or make it take a start, length pair.
-
-I'm not sure I really understand the confusion (I suppose you're equally
-confused by the lack of flags parameter?),
-
-I find it silly that we avoid function names because a system call of the same
-name exists.
-
-But I guess I can rename it to mseal_range() since I don't want the series
-blocked on silly naming issues.
-
-The reason for passing end (which was already the case) is that the syscall
-already calculates it and we need it to do the actual mseal.
-
->
-> The overall spirit of the change LGTM however.
-
-OK.
-
->
-> --
-> Pedro
-
-Thanks, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
