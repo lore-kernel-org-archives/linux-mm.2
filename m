@@ -4,154 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E99CC44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:22:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9650BC44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:25:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22D266B0116; Thu, 16 Jul 2026 11:22:21 -0400 (EDT)
+	id 898816B0119; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 201246B0119; Thu, 16 Jul 2026 11:22:21 -0400 (EDT)
+	id 870CD6B011B; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11D916B0116; Thu, 16 Jul 2026 11:22:21 -0400 (EDT)
+	id 785E76B011F; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D5C7D6B0116
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:22:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 499F96B0119
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 578A61201F2
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:22:20 +0000 (UTC)
-X-FDA: 84995006040.09.185E336
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9331EA000B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:22:18 +0000 (UTC)
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5B351C010B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:24:58 +0000 (UTC)
+X-FDA: 84995012676.09.AC53FF0
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id ECA5BA0008
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:24:56 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MhItb7t5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784215338;
-	b=gYv2q38Ntu/NCeax6ycnOSZ/o4gCaQWzvbnnwNn43GL1k8f92qZ3dWngPM3/1pAKa99gqY
-	9GidWEuP/uJc/Y7dr0EDzf2v2BrIZkVgiVlL/DUy6DPRC1SFy23dY0UbY8vDEPyoit4YrF
-	ZJzY/mSyKlUz4CdDFSlNoXndqkqgtDs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MhItb7t5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784215338;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N2ZubBt1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784215496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9iUKaKWQgUmhoByo8PPUUf8IwOUE3JnNHfIAyoMta5w=;
-	b=NN1hAeOZR/zSDa6NUs2UWoYM+dO58MkKlqa3Vg8iCqM4oLl6lwI5bo+S01u2LkWcqBJEMj
-	BAs1a5S8oM7i+Ho7BPS72CiWdOH1h6aFHhAAG8/rzsPtgcyRdmHFHM2FjgFx63SUo3vdmV
-	JmJ6vzNDDU68pqqxDgf8AtIXtxFDk5s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1599160A5E;
-	Thu, 16 Jul 2026 15:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FB81F000E9;
-	Thu, 16 Jul 2026 15:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784215337;
-	bh=9iUKaKWQgUmhoByo8PPUUf8IwOUE3JnNHfIAyoMta5w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MhItb7t5ytZUlRsU1B0Bk/pzL+kLJfVLF6hJZHugPO4vEngLOFShgLkBy/n1TDXIA
-	 g3DCLjmgWeIMhcCrnZDrYeVh15CoaJkgIurVoX/7Ndo4WFvwiPdBsCI3kFYEqh/Uia
-	 AW6egms8Hv2+ShjUIBdIlEqqE8XCMI+i6sWcZxUQ2F7LUStZf6VS0goN+HF3ZrnFjv
-	 KdZ7ZpMBP1f1MaT1ZUC4eBJwAiKmIXWgxG+2KDB6u0kA6Q5Zp+eEczO2IX7LF3Ip2x
-	 SqMIe+3nvJwy6/gpWEFiicWbPp4qM0Pm7tPHhRZB0+cNw8v6QrWUUAjWtsMX7KtBOk
-	 /LtacDoJduqww==
-Message-ID: <73d3c545-dd8a-4131-9826-1a7096dd619a@kernel.org>
-Date: Thu, 16 Jul 2026 17:22:06 +0200
+	bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
+	b=kwMfPiCCLC71HmInWTOynExkOnOLuvaOlRyRanQN94O1RdRcSZBKJuQWrTQR2X5dUtf0lS
+	V7KHXUH7UKW3CJs9TOUdalQxC4tjUhUjMzkT1bX8IRV60C8lLLqAsuiZrFd9l6TSic3FXM
+	pxwe6MmX8VUdF2d6kINWDQD4kbtUxSI=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=N2ZubBt1;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784215496;
+	b=Dg6dVwsnzuS1P6oo78j2YBv6uw0K81UvNDPPOfA3lJdMWBc26O8b59moRpEz/1Uh8BSUjo
+	EKDE7z9hfCzeqgvQR1ghcMEk9ubht4q/hG4Sk80R143OF6TOf9GOFxnQCLLZtH+7+w11Cl
+	tKMAExBlY1exVQ/wgo5IcDDH7M39wGo=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10ed63c0so30841cf.1
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:24:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784215496; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hfJv+14m9g2wG+pWo+4ZtqSrWi2oiWFpgyc6vgvQUzoeCOvDKCoymzk9bIx8Y63Ku1
+         qWc4T/bvswd1Dv6BdxiYvMaSjOxl8HvbIPYFpGtE6abf++MRPd4ZX8Jn9MFBTgYyhbyO
+         JkyPKszV47+V37Su7WHNaI1nVzlq6KH3hQKhbNVaKVrECafSVGJLckVoa/mIsKCgNmAi
+         e8qWkLUO7REUC45LZ9QL/X6Qj7DWxAnO0S0EslFaUeAQ2twVQ8x+FehGXnEzXLM0rX07
+         nbNcFJnIg+ZWxfR5Vu3iv3UljdyfUfh95nY+Pj0dV9wpMelwg0GKgY65IveBu+s8ceG1
+         1TEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
+        fh=b0EJS569PJpsdjQTJ/FSBnKYbz+TZKNL56cLf+wf1nM=;
+        b=e5gJ6pQOc91RVJh4RaNIaVQR2Ub24LD8sZM9f6w0NE6Z9r7/UFwzC4taXVYOv4bSMh
+         UPfnzcfnkE7MDSS7yJKhRnWIgx5919nOfK/LPB1hd2VPF5J86VjQIXnZkaPjREUfp3Xm
+         4iu2GyK5BaWPRQ05dFieQDu9hZ3lXMjeXQ9b0js1TSaNBymAavv9170s9dIYe9w6ArPr
+         6Fmsm+etjCxXUa8lCRMdvA6e0Ax8eIrJRsN5kO3UnOMOkGG9Q9r6fj/r5Qr6K73oOkXh
+         fveFCSMzogzevKY9nPsdag2c0qVPZRJy3spS4Jq7/racZMf2sHPGqFNyNma78GDw5Io4
+         /qRQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784215496; x=1784820296; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
+        b=N2ZubBt1ypMKIopNcqlEZaAs4Ftu7o94tSbFN3slo4df+k6vBunQBRL0b0/RksLFie
+         d9LHu9MpQWCqp5Ai6nfLP+4dfZO2WSgJkW3zyCK9Jdnqm6ocwRQBuMUpp8BOxIXZmtJV
+         jHNCPXFCvxuNMzi+EAp0y2ewt+6NTI6W+mim54Bcp298fgEfzqbOm2sPQY0Da+OCig33
+         qiv0RdKkYR2e7KGn8d+KBzCD3JJwLG+uHTvNmIqkL1kUE3Mp/Qnr8e6G8YwyVLmQDBj4
+         mHF8gUmOCwuNz/aW0uDFbkru/kMe5r9NjDq+T24AqE5PCOinBY/8FTeIjdc2ayHCAJWF
+         Ni/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784215496; x=1784820296;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
+        b=aBg1pFYcHVitSCyxUbtOSnchKSHokxjbzDmNhEgrsj5KiJHnImLuZ+C9Bm3rLtVi6K
+         9SYEk9TuzI00HW2qsG1JDkw6mvj2lrpWmaqb6sElcHUW8aSOodwOEAWC+mRckBuixe0T
+         Mp0T6+tQ13UrWeu1RQcQlQOKoKrbTKtL1oHK71VPYHR/xbzN8AfiXPmwKkoBFciYnuoP
+         yllZc+Zdcid+eE90mQ/ORtNawTiCkDvttvCX0NgPc+1GkSDYhQFIMWlYJm0ZrY3Qdn+V
+         rFyEC+MeAkfr5FuFMBmsjO3dY/YgKdhofnvJi8F51qvjZUifD4u3EvUxCwa9Zu3N4Pnx
+         aNmw==
+X-Forwarded-Encrypted: i=1; AHgh+RobdxIym8X6ghiVEGzNyhET+4r4qPKpZ8iQ60cmJH61F+QkfQCDp2KrxdNxyXgH+229hOmXkT/tyg==@kvack.org
+X-Gm-Message-State: AOJu0Yzm7/xZYJzJaNehPOl64jo/ZfujY99CKcGiNLIC0XwMW+AvP1Tz
+	1cTjY1lefE5OBaVs5MCTXbdLNQSbzLt0min7Yb2Wx3dInA+M3YAHqJuvBPiLVHywOvqC5TWv8Aa
+	SiuaFz8BiiXHJSeaCVQI/TVY625zbYS1cYvsDvNgzLRRp1dX+Okq2KO6mOAo=
+X-Gm-Gg: AfdE7cmOKSYjRUEwoMlfEaOh6N/i5t8ACaxptgkWi6bauVGZ/WMuakvveaKJhbLAe1I
+	v9ra60gzWUftSugflX7H0P0heDU4wd7m3ES0PiZxcVzoNk+vY6iPI+KOuZi/afAWCO3K4Efkay4
+	4O9xe0J2C6t0L4VTaeocZXsJs8y6/SDKzSr+5nQlvgY3tE/E9a0nbq39QMgNuC/Ej/HRkICASW2
+	t+EG1oclbxvVLCe5uAUkjeZMriLBlI2g0Ho35R+NwvBCMFUs5jx3ENXtFnzHhUXlyVPw/cu/OGQ
+	NI+NBpiFDgzRbtM=
+X-Received: by 2002:a05:622a:4d95:b0:51b:fd21:c077 with SMTP id
+ d75a77b69052e-51fa50ac9f9mr8409571cf.21.1784215495436; Thu, 16 Jul 2026
+ 08:24:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
- header
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>,
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev,
- loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, netdev@vger.kernel.org
-References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9331EA000B
+References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
+ <20260715-b4-objext_split-v1-1-9a49c4ccf4c3@kernel.org> <CAJuCfpHgMwM7SK-sanGpEyCxCi-T+gDqFJHnV_AMt=S-x5oynw@mail.gmail.com>
+ <ab9782bf-d3dd-4cb5-ae66-127b3a16330b@kernel.org>
+In-Reply-To: <ab9782bf-d3dd-4cb5-ae66-127b3a16330b@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 16 Jul 2026 08:24:43 -0700
+X-Gm-Features: AUfX_myqpLnbRL2quNm_tjL_Hd-IYL14KeopYjkYUcXz5awHSzMzA6UH-PT2010
+Message-ID: <CAJuCfpG3SWhrow=wScgsFe5orhKz8Djf8MHvFBH+T7uTG+AUJQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 01/12] mm/slab: skip kfence objects in allocation profiling
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: xt74x8ob85767t64x6r4h5jtng56q1f6
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784215338-981591
-X-HE-Meta: U2FsdGVkX18K4IBMFfB2+8zrfC29c4U8gYApoLb0Jk4l3mUx0z8z2U80n5EEWwvqVY9QGmpPqDHcFNW/qpEqemEZZOAamTArsNX+YlEl6+wXe98dAQnjDci/SMvGMPEdxnCw6eqpRaUynglgm4xcyhpH2t+k5n8fx2h8tn5uuD2geb1JQOMTFginsw6A+KwySs48pI5sdhsWVljLcD0OKGswAEhFYnRcY9oLBwI/4jbmFuI5X9DavkFfsA17dGYQh9hsvJvue6w2qifRhGV8wRA2knqjkTBZw02gOVSFDUx84IyMJH/jDonSC20hE1NvrNYIjyP866Na+JnNW6k17azEOpbvLvKIF9N800TleduS7Kh+ro1HaWkx9IN1aQB0VHKkBQHB9gll3pXJ++N+chB4gfPRqZA0h6+JakenXPkEp+wxd7uw5VtSSjs+Lcyy5lRyDgza77m7bRM0T52H9KyUNG6rDLHWRxWgCF/Vqsmr4ALJ+O7xQE5Kc4otnqYJ4EmLVPElJQswxxaQxpRJ0BY3qhUuPAzcyayOs1KhJpVMTU4oOO+eKU3qmlHIurDl8SVFCtYyTQyNEIWooki5vXtX1udIp9CvdYd0m/PP2YcUpiQqIU4jpIhwqo/k9cV6NIQkriSfV6KhD/6lymt4l//g5Rktvbiav0/PSdRuFaduEXuD6AGM2VbNCTh5ib5iFOB7BVEtK2EJI7yKWFefVyGO+us0WvdKvnf336MdgziM7wn21kwnRgs0xrvmn1UWgoGZj0HVC7JDrOddiVMxwHFkLrnxC0JYde4fD49wsQKn04tdY1x0j9UNy3jqF/CyNI6rYBFkS/4mzFyjW6VekScx4vZYE0qUja6OADSejSlFv0SMlY8Iy5BNxOwamNM7NqTKgo/gYsX6NHm+nnl05iJl7rHxTDOsG0YLk1VTWIk4KNXv1GDjkaZAmtFrYmfL0R3ymwO/H2hGHpL+TeC
- x0cDZNGc
- E6sApjuguCxoqeSozg6/tMbE/2EruV18FPhV+aDJ4wSJwmpPGIBUdq7ic+4ECFvUO5U6aEhp6JgqzQfnGpbTcjLztpuf2q68nsW8RpFY6P7XFyLCqWm/VsHcy6duVZOaawQ+2azrUbuTMkxpbcRGBKdDbdr7J8om28ZWnzfktHn4hvroAHudyL9e69pff9W9/pLMnmIMiCdzOCQj1Libu5jbMwWkGvdjntl5LBIs0XMmuSILUaMprWTO7zeFylWrYZBTWXE2lOrknOUs6iIUhnTG+/C9BN+/pRJauJoan+9V++w2xOKgdhPeLld5DargrIL43bLBEOdI0PmuhDdulUEEJxmBt0zlDo3jjiQfWM+e6HLs=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ECA5BA0008
+X-Stat-Signature: 6n7b5ik5pegkdeimx7onz48pypc5nzef
+X-HE-Tag: 1784215496-201674
+X-HE-Meta: U2FsdGVkX19negH5QbXoj3ZWuVrIDO5xhRWTPwCQrw2x9qJ2bg7b/WrdoprAjd1yeLkF3FOnHW/Vl/xNcMfajUFyy4XLpQpOKA884sZEe91nHWftLiXhVfXja/aDWieeWsxooZGi7n+oDREfxVea/DjOeOiWDgtZqomJUljOmaVcWj0pOAgtoIopkueVUI6+mN87hoLOuOPAdtSNiuzD3UqfZ4VrRhcRC7adOBivWuEqaeUiHnMooqqeEzce4crrpqASBQKmu2UUDgxXee1wf7hljS0LAKjZgLh+v98eJNbkupPbFHY+JpZkFPKQR2jdJOQqkFc5ULMqSqfEnicLnq4yfVch768MizjVEQTaS5X4yO0mZmlmIgypL0P1meXAEIz4v0TLW6DEqvgBs9QoUwNv+O7V44Vk7EQ1GKqQvG9jku5pIJovM/pTyTfzZqfuIMJ4PCGzyghXHfO+FJTzIZsndzxcB+Dh9aALJM7P2zTc6/ZvtEdnMiol8Mcu3roxDXp1Om/42wlNGehzPWmvgEQbCqDmlKo9xt0ys12GfBj3ZDO2rf6gaYH3j5ZuyjQoGlQo9mCunwRuxtX1lm0boso+/4SLhfiuxG8sri0ce/92Y2wMy2cCRQ5BoDnXp+uabZrEntD/dY2p9ZqzUvblULjwz9IgVk4OnTTtDjfYPKwbQI1BMKIhss3VXpMGcRt0E0979f3YA5DV5BTwIx6rQz4+zeaN1HGAixVMvUHIXcA0va0YT3mV6yA269ncylkbn1HpBLuu6wHNA9K0o8TnjqCqPuXuB/mFMCG9qEJ5q1dZlEy7umLrG4VKdsyLA5YZkd6w7n3K81z+3NXki883XyHd6pdnguSpdEq2OVyjopUomjGkIVQmDxEcUYYMrYDEBx1+9XDSjYqoF0PfJm5qICE40qew1a5JP7zzH8KlCBbjvUK903v6Zt8WrtfNI0ruBdiW+HbpakELGW4QgWz
+ oTRNsvJZ
+ nxN6Wn6g+wASNvPcD9zFgGTOZQPvabqtXDMSfUbZRStS+pjxDA8p1oZjwRkjAcc+nBpjpaPbXXz3xSz0K27aa8uoK4ddo2y8A7c+pYTNC0hh6S5GeVyRKm4l9EsMXbU+Tm9fXvpGJHZmqutq48/u+wCePu4WCjkFk8srQFhB3IbfjAHMXT6TQZQ0F9cg3cfJ6sHfcMLRxNvmYxwNnx0hkDxdPjFTDC1C0TzFZXolxbqzNOnf5khA2IGAip5XFscpfgmnVnoRoUa+2XmM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,178 +145,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/16/26 16:30, Brendan Jackman wrote:
-> There are no external users for this surface, reduce the scope.
-> 
-> Ulterior motive: a later patch will add an alloc_flags arg to some parts
-> of this.
-> 
-> Note it might seem like this could just go in internal.h, since it's
-> pretty small, but actually it will eventually need to import
-> page_alloc.h, we don't want to import that from internal.h so best to
-> proactively created this header now.
+On Thu, Jul 16, 2026 at 2:11=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> On 7/15/26 18:02, Suren Baghdasaryan wrote:
+> > On Wed, Jul 15, 2026 at 3:10=E2=80=AFAM Vlastimil Babka (SUSE)
+> > <vbabka@kernel.org> wrote:
+> >>
+> >> struct kfence_metadata only has obj_exts with CONFIG_MEMCG.
+> >
+> > I don't quite understand this statement. obj_exts are allocated when
+> > either CONFIG_MEMCG or CONFIG_MEM_ALLOC_PROFILING is enabled.
+>
+> See in mm/kfence/kfence.h
+>
+> struct kfence_metadata {
+> ...
+> #ifdef CONFIG_MEMCG
+>         struct slabobj_ext obj_exts;
+> #endif
+> ...
+>
+> then in mm/kfence/core.c kfence_init_pool()
+>
+> #ifdef CONFIG_MEMCG
+>                 struct slab *slab =3D page_slab(page);
+>                 slab->obj_exts =3D (unsigned long)&kfence_metadata_init[i=
+ / 2 - 1].obj_exts |
+>                                  MEMCG_DATA_OBJEXTS;
+> #endif
+>
+> So the slab kfence fakes only has this pre-inited obj_exts
+> with CONFIG_MEMCG.
+>
+> What happens if we run memalloc profiling without MEMCG and this
+> fake slab doesn't have a pre-assigned obj_exts? I guess
+> __alloc_tagging_slab_alloc_hook() will allocate it via
+> prepare_slab_obj_exts_hook().
+>
+> But it's something that was done consciously and probably
+> just accidentally works.
 
-Hmm, maybe it could just go to page_alloc.h then? After all this is just
-bunch of internal page allocation functions, which just take the mempolicy
-pointer?
+Ok, I see. Maybe you can expand this description to explain the
+details more thoroughly? This whole kfence.obj_exts deal is not very
+intuitive.
 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
->  MAINTAINERS         |  1 +
->  include/linux/gfp.h |  9 ---------
->  mm/filemap.c        |  2 ++
->  mm/mempolicy.c      |  1 +
->  mm/mempolicy.h      | 31 +++++++++++++++++++++++++++++++
->  mm/shmem.c          |  1 +
->  mm/swap_state.c     |  1 +
->  7 files changed, 37 insertions(+), 9 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8813d5d7eb0c1..9cde99c259639 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17068,6 +17068,7 @@ F:	include/uapi/linux/mempolicy.h
->  F:	include/linux/migrate.h
->  F:	include/linux/migrate_mode.h
->  F:	mm/mempolicy.c
-> +F:	mm/mempolicy.h
->  F:	mm/migrate.c
->  F:	mm/migrate_device.c
->  
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 872bc53f32ec8..e4e974a6e5f90 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -11,7 +11,6 @@
->  #include <linux/sched.h>
->  
->  struct vm_area_struct;
-> -struct mempolicy;
->  
->  /* Helper macro to avoid gfp flags if they are the default one */
->  #define __default_gfp(a,b,...) b
-> @@ -274,8 +273,6 @@ struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order
->  #ifdef CONFIG_NUMA
->  struct page *alloc_pages_noprof(gfp_t gfp, unsigned int order);
->  struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order);
-> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
->  struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct *vma,
->  		unsigned long addr);
->  #else
-> @@ -287,11 +284,6 @@ static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
->  {
->  	return __folio_alloc_node_noprof(gfp, order, numa_node_id());
->  }
-> -static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> -		struct mempolicy *mpol, pgoff_t ilx, int nid)
-> -{
-> -	return folio_alloc_noprof(gfp, order);
-> -}
->  static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
->  		struct vm_area_struct *vma, unsigned long addr)
->  {
-> @@ -301,7 +293,6 @@ static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
->  
->  #define alloc_pages(...)			alloc_hooks(alloc_pages_noprof(__VA_ARGS__))
->  #define folio_alloc(...)			alloc_hooks(folio_alloc_noprof(__VA_ARGS__))
-> -#define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
->  #define vma_alloc_folio(...)			alloc_hooks(vma_alloc_folio_noprof(__VA_ARGS__))
->  
->  #define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 1dbb4c6f824e9..0dd8e2a15d746 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -52,6 +52,7 @@
->  
->  #include <asm/tlbflush.h>
->  #include "internal.h"
-> +#include "mempolicy.h"
->  
->  #define CREATE_TRACE_POINTS
->  #include <trace/events/filemap.h>
-> @@ -63,6 +64,7 @@
->  
->  #include <asm/mman.h>
->  
-> +#include "mempolicy.h"
->  #include "swap.h"
->  
->  /*
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 5720f7f54d942..31c4e9f49b5e9 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -119,6 +119,7 @@
->  #include <linux/memory.h>
->  
->  #include "internal.h"
-> +#include "mempolicy.h"
->  #include "page_alloc.h"
->  
->  /* Internal flags */
-> diff --git a/mm/mempolicy.h b/mm/mempolicy.h
-> new file mode 100644
-> index 0000000000000..d80fe4c559786
-> --- /dev/null
-> +++ b/mm/mempolicy.h
-> @@ -0,0 +1,31 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * mm-internal API for mempolicy.c. Public API lives in
-> + * include/linux/mempolicy.h.
-> + */
-> +#ifndef __MM_MEMPOLICY_H
-> +#define __MM_MEMPOLICY_H
-> +
-> +#include <linux/gfp.h>
-> +#include <linux/mempolicy.h>
-> +
-> +#ifdef CONFIG_NUMA
-> +struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *mpol, pgoff_t ilx, int nid);
-> +#else
-> +static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> +		struct mempolicy *mpol, pgoff_t ilx, int nid)
-> +{
-> +	return folio_alloc_noprof(gfp, order);
-> +}
-> +#endif
-> +
-> +#define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
-> +
-> +unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
-> +				unsigned long nr_pages,
-> +				struct page **page_array);
-> +#define  alloc_pages_bulk_mempolicy(...)				\
-> +	alloc_hooks(alloc_pages_bulk_mempolicy_noprof(__VA_ARGS__))
-> +
-> +#endif /* __MM_MEMPOLICY_H */
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 5071177059a96..69f561332bb93 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -41,6 +41,7 @@
->  #include <linux/swapfile.h>
->  #include <linux/iversion.h>
->  #include <linux/unicode.h>
-> +#include "mempolicy.h"
->  #include "swap.h"
->  
->  static struct vfsmount *shm_mnt __ro_after_init;
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 5be825911e645..8ccd03c39a407 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -24,6 +24,7 @@
->  #include <linux/shmem_fs.h>
->  #include <linux/sysctl.h>
->  #include "internal.h"
-> +#include "mempolicy.h"
->  #include "swap_table.h"
->  #include "swap.h"
->  
-> 
+>
+> >> If it's
+> >> enabled, it does also work for allocation profiling, but there's littl=
+e
+> >> value recording tags for KFENCE objects.
+> >
+> > Unless we are leaking them, right?
+>
+> Well if there are leaks in a particular callsite, we should see that from=
+ all
+> the allocations that don't end up in kfence (as kfence allocations are ra=
+re).
+> So we are very unlikely to miss a leak due to this.
 
+Ok, makes sense. Thanks for the explanation!
+
+>
+> >> Furthermore it would complicate
+> >> the upcoming changes, so just skip them in the slab hooks.
+> >
+> > Ok, I can understand that. If we do this, we should document that
+> > kfence objects are no longer tracked.
+> >
+> >>
+> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> >> ---
+> >>  mm/slub.c | 6 ++++++
+> >>  1 file changed, 6 insertions(+)
+> >>
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index 0337e60db5ac..a4be70d080fb 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -2352,6 +2352,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cach=
+e *s, void *object, gfp_t flags,
+> >>         if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
+> >>                 return;
+> >>
+> >> +       if (is_kfence_address(object))
+> >> +               return;
+> >> +
+> >>         slab =3D virt_to_slab(object);
+> >>         obj_exts =3D prepare_slab_obj_exts_hook(s, slab, flags, alloc_=
+flags, object);
+> >>         /*
+> >> @@ -2399,6 +2402,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache=
+ *s, struct slab *slab, void **p
+> >>         for (i =3D 0; i < objects; i++) {
+> >>                 unsigned int off =3D obj_to_index(s, slab, p[i]);
+> >>
+> >> +               if (is_kfence_address(p[i]))
+> >> +                       continue;
+> >> +
+> >>                 alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref,=
+ s->size);
+> >>         }
+> >>         put_slab_obj_exts(obj_exts);
+> >>
+> >> --
+> >> 2.55.0
+> >>
+>
 
