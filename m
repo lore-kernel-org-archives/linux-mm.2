@@ -4,108 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0ADC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:03:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85062C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:04:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4473A6B011C; Thu, 16 Jul 2026 11:02:56 -0400 (EDT)
+	id 92B956B0121; Thu, 16 Jul 2026 11:04:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41D336B011E; Thu, 16 Jul 2026 11:02:56 -0400 (EDT)
+	id 902986B0122; Thu, 16 Jul 2026 11:04:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 333796B011F; Thu, 16 Jul 2026 11:02:56 -0400 (EDT)
+	id 7F2316B0123; Thu, 16 Jul 2026 11:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA4036B011C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:02:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D3FD1A0137
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:33:14 +0000 (UTC)
-X-FDA: 84994579908.21.BB86DA3
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D7C83A000E
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:33:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NnjrMzY6;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784205192;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 505286B0121
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:04:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 64353140194
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:46:06 +0000 (UTC)
+X-FDA: 84994763532.20.3F985C4
+Received: from mail-vs2-f0.google.com (mail-vs2-f0.google.com [74.125.227.0])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6CCA34000F
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:46:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fdsREzzQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.227.0 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784209564;
+	b=21m8lMkGhY/1e1n3ir1H2xn/vd1v4/T8hMWtk5Sgf4l2H1S99EgVwTzewZJXSZDXyNzuzN
+	qim+RRLVk2WPl5sH+DckiQvtigMiDDO9U4Lub174rLPgtbng+C9pX897hz+p920RF2A+Mg
+	g0i5Y1A0k+DG6moShse9avp3xtaDTBI=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fdsREzzQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of jaeyeon.lee.dev@gmail.com designates 74.125.227.0 as permitted sender) smtp.mailfrom=jaeyeon.lee.dev@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784209564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fZIciaIvh3Ed9MSVOrmBY/FCqel8pMMjbwP7rG1cjtg=;
-	b=KySs+aazbqqHFBU4WP5huBHwVOyn1tjK9xWVRO8sffcjQmPuYfvjo9vqBjSwo3Pkhcnosd
-	qb72EpDVOSlZ4brggHwXHHNfxHFMWOIdHuGPX8pfX86Om9wPX66Fvc9MRRMoih9vF0dIZ6
-	79Ccuth3PyYIFC/sPrAtRtQd2Fzsz+w=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NnjrMzY6;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784205192;
-	b=tNyPGA5oFLjOlyveG5w+Pij/u7QTz+91GM1mgCyrhP8C5Zkyi99MO+qMtw4eCsZEvC/UPB
-	oZft7eMaqgbaSlxprbM37xWVvESysq73L2RLghyoSOh72jDPOeoehSPkTeR6apR5dIVlEl
-	p4hYFrnHlMI4PFryA8CRBtjAHE1NY3E=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B98CA1691;
-	Thu, 16 Jul 2026 05:33:05 -0700 (PDT)
-Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8FC6B3F7B4;
-	Thu, 16 Jul 2026 05:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784205189; bh=DBJv/0ksG+vCGfmd3BGRAFUPsj0u9YdtLegB9ZTgoP8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnjrMzY6XcFv8CCluji1WTRp19GQ1fDhykXaujz++4nzPjc1kjBX18NxaFWP720a5
-	 6918geC/hVmFMUouXfzZ/E4iqIBkCSyv1TRATPoImry7k7iqbDqfiALubj6mSIj7T8
-	 /RMthXI2OqZo0YnW1AvZLUEpqVXtVkk/yZRnHqrU=
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Mark Brown <broonie@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v5 2/5] tools/lib/mm: add shared file helpers
-Date: Thu, 16 Jul 2026 18:02:23 +0530
-Message-ID: <20260716123226.197736-3-sarthak.sharma@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260716123226.197736-1-sarthak.sharma@arm.com>
-References: <20260716123226.197736-1-sarthak.sharma@arm.com>
+	bh=QxAFuQ5xZZyrvLrkS+Zmn99zGko7SEm0ZPZdWZNa3q0=;
+	b=4URNyR9gGb3mRvemZj4uEEkyWUWuDSvcmf6AF3fXjWy7IRVnB5J/VWT0rdcMMA017rZiwa
+	AHVLmPwPsLQI3czRMTXWDjvoNhUvuJGXdHCW8rBVCjDmmhcgBhO38UJcgTFv5bgT4fErui
+	tGAcCn0RdT2SqUpe6h+KTUFPFZgeS5I=
+Received: by mail-vs2-f0.google.com with SMTP id ada2fe7eead31-736e73a5fc2so5557537137.1
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 06:46:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784209563; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r3OPn7df+v35CGBTF+cRiruO6h2r9ZDWpyb0TbkjiSFfphUSWqQ7aH4wYy979pfyUF
+         b6Hx8sE5iFliXesyI6i9/PCt/DY1F6ZGy7BUwBZUn/Tw6Rrhp2i9IKmvm49Pg9RdBXP3
+         Mivj2U9ERBh99uPmqFXqw8HwLEiYDpoSmc7Yc7whGEJ7wAZ9yx/O6kT6UEGp8j03XSjo
+         LBXRf5PXiLm1TDZgaGPujCInsSkU6QkLDWLvoV/5IEk0Y1vyJgtbUBGzbwetmOlhGz2K
+         LwMtUw76R5spDZ5MNXt5SOUaH+LDZw/Nra6zra/pB8WF2btYFiOejlyE5OiqweRCRDM2
+         J98g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QxAFuQ5xZZyrvLrkS+Zmn99zGko7SEm0ZPZdWZNa3q0=;
+        fh=bAeE0pSChUQjGmZmfh3RJ0eiuHNggMOk5ObZnGicYCk=;
+        b=Azn1ZnLEv7od1TjWyLmkfmpVeFh0ER322EpGDE0vDQ7/W5O14XFoyZCl9Ag5ueNk+H
+         Kiir5iE/zlsgB/EonktytJZMtB3xAAhqMbxMZcOTWNu/TJDSHqVmtdD/koevz2wa6As3
+         6XNlPk1QK5DUScfoAIdfVTxbqBSj2Cy1FcJP5u7xdfJLbygQCnfZZnQLSpyAIc2C3vYJ
+         qa9e7Tf9AEjmMZuYGe8pDW/BaK899p/PO97nEr1grr7edGzLPy5XcJrvK8Wt3CA9MORy
+         lROQP+fF+DhCVyJoFkWK7jVijJ3y+gAcg+EFGaJZnGj8iqQzXYsqrh9lINDn7/uN0XhU
+         W+4Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784209563; x=1784814363; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QxAFuQ5xZZyrvLrkS+Zmn99zGko7SEm0ZPZdWZNa3q0=;
+        b=fdsREzzQlTTVRhd5Bi5jBmWb02jdveuFWkuDLgVKiT+Hykz7Pr4Fjm2K8X++MNyY7C
+         gPTCWyS5F/tQJqDXVtbq9M7h/8y+aoUqhplNdRAIs78h1BRpLUMvvDsILIHd2V6bhbu7
+         Lp4fkPNNS6N7H2MaxSROWxbJ+cRwwTX21dlRMcOJXOI0uYVSnvvgDX21GBM2HTJFdF8/
+         /hk6B8aL9bGzAN31jXWwLzK1Lb+csr+ta5iqiq60qCv4nAZEvWWyLrCTfbyarSFhoVqK
+         H+tzLF3KjREfemz8G0Q4eMYhMcegWKoc/QgNf/2nIcJa/dX4GUykw6ehi76E83631pFz
+         kKdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784209563; x=1784814363;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QxAFuQ5xZZyrvLrkS+Zmn99zGko7SEm0ZPZdWZNa3q0=;
+        b=c/5U5ZPrFtcjI22aUJByujLcsj10FL9ObYDulQq5nfWDhjkp5fHs9hHkDYTDXlcmCn
+         dA7xcIFGvl1mPGZmJvLvDX8aoAnHvDKF2Nu+ecOs/57yVmqmqe+HYyKbsTO2UKPK8KvU
+         y2ATsH9Veu74L/8IQeeev9Iy1fqNDDqyRTrNApghIbzXEcPduPrxcuWgKN903WUby7FE
+         N6K5whxOi16UIi4PlcDzjnEkpHpaT4mHRAT+Ucb8C0xZeeNu9blEPpSLqXwD0nywMCwm
+         HgRfiOxfjK5qnj0USr+QEwYyMeq9Idkxde7RBFEhB5+2Ac2A9ezyZNGlJoEkSxik1YW6
+         3B+A==
+X-Forwarded-Encrypted: i=1; AHgh+RpxOcfEwMsnaGg7fHbfg63Wj+6qjQ2BSItE7mPqlvkQqNgwYEGsdZ23+pq9b2wu4fX5wpcHO/hPtw==@kvack.org
+X-Gm-Message-State: AOJu0YxDA9Hiuc+Ugz/AQhR4QJSDKdVKJqVweio4bEkzkFMuIvStJC9f
+	Oy8yzFVxnKAef6DKoCklY0lwqJH7jQO1JLhQ6L1OL4gzBs0hGbcyXfoRH5HcDL8wvnmYtrAz4Ec
+	W1hivVhB87e9xq99OsZNBWZG1tcDHMdk=
+X-Gm-Gg: AfdE7clAy4DOD3VqGZriWQ+nnU8ucseXlvtiiBOCeJl7RCOiQEbMTuZQEv4w0bRC7X6
+	CiddnhGS6J9XEfPCoCHb2117cRFhQEdo7vnI1pPF0VigwrwFEGYBJ/GFALNoOGpVVMvmPZSK78n
+	ix+5M3XuJO6halpY01M50t5aVcVt9BppBJNsMHPu7houipiU3sRDxMmu4fUmeoA1ujspo/sy5iY
+	eSBo/DEwQH2Trg/M6HzUWrK4FWCaRG0mJQVqA6XEdf/Cgwum1P5CC9DwZRZ/AnetKB2bD6JFgUW
+	ab1HMz6cSqgAZxdcIn494Mn4H90xXg==
+X-Received: by 2002:a05:6102:5e93:b0:738:9c79:7507 with SMTP id
+ ada2fe7eead31-7458754907fmr6687137137.21.1784209563424; Thu, 16 Jul 2026
+ 06:46:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D7C83A000E
-X-Stat-Signature: gjpp89istfghysrtrwpwuo3cxswcaaz1
+References: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
+ <4b6904b5-81f9-4e27-8ac5-5bd7e7174c5d@kernel.org> <6c474ce7-8f1d-4e85-8587-8a60983cec03@arm.com>
+ <0c278b69-3ecd-4ec3-b418-dea84e043732@kernel.org>
+In-Reply-To: <0c278b69-3ecd-4ec3-b418-dea84e043732@kernel.org>
+From: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+Date: Thu, 16 Jul 2026 15:45:52 +0200
+X-Gm-Features: AUfX_mxaZp1KmD29X-ZII3zTTTVur5EMlazjDkqL0QNPD91M51xZ8UzVLh_5paA
+Message-ID: <CAD+X6aB79DQCVZgp7ZkcS1qRuFC8Ypjc2MvTrJy6qhbryri88Q@mail.gmail.com>
+Subject: Re: [PATCH] selftests/mm: khugepaged: skip swap tests when swap is unavailable
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6CCA34000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784205191-600139
-X-HE-Meta: U2FsdGVkX1+Azb6XIXyumRDw7wqn8G1qsQ7ZwWzptgr1FhLNVtG/x0nu6kkKdEKQRAXcxt6nTIPwmXn0ENpuwBFyDU57CuJKjRE9aexIOL6er9jBYcFXuK9jVpoJHcBc8NUSvdlGTQup031EwpZDWMjnxPFslLY4fIJnu5AVIt1DPSh9rHmq1L3M0KzXwsxwLcUtEquAX7mFJIHHiNQ/nglA9iT8hK3c34mYb/k1T+Px1fDr9Yim4vuDAou5G3Sx/5+R/46gYGYtrAX+a8bjyxMZKroKWDZPNcZZImST69sMkAjcOqiQwrG3uys4fVqy3C/hlwieIyu0kIADnwWPUF6D3adyPoS0BIAphakmDWoQkHqfr2gULsqsbu2CD4cWpcSsJ8Mp5rjmgey6Kt2f+nBL6T13szSiirhVqdRIJPMqdeVeTAN+pIhw4BiuOKI9Vfn+L8bHGl2EcvvLK1NsWncUBuh6E0RzkKapH61FikZPI4bKLq7b0DvrjP2uM58h5OAxt3wAB6Ej5jOQRgG5GM6dsTgSEczhCLScJYzRlmFHadcyFNTGHr661KDn3VQoOifs1imMNt2y+lLjRNLRtnxeSMspYvergf/1Lhvybw7HChVnzFNNUH7pW+4okEQoNMXEIheB0ewXhZhSQMbturLapwIkSEGMyaLzYTixbaDmrG3pw64gNe9ANJhQK1ndvsbZFMh/1tT8QkYUYOxj388raoK6iQcuhHeDpuRg5/P8GGEaM6ATsJvX9iQ1ISZQ1Zbztfp4XDfBLyNh7KHH4dMoZfByiU0FG5khXmm52aN/Ksh7AvrQ2XBw+T9Oc1TohsM/dcCe0dNWOGdrGLt5jyfKo+u93ODJpnwsZtyPdjSxYsGD07RdzRh7IH4hkc5xpzHfQ2sWV1keZHGo4qDMxjN6CyxLQfdHGw1/bHWbEiyOPoDvEx3KqyIT9vUFJJVnaywVASnWzxdRJGl+tyT
- 763U67nB
- 4XcQubh7i5353YV2O4kMLbPeTnDWBdtqP3SFjj7T+EUDEMH8knj3XA78yb2Lbv0YJIpdtOkmxRg0qdO8IBg0tZXdcZu05JapSr0/RF2jbWjHCghJQ5NSGPjn1Xh4PjyWeZHKegSBe6kqSoNVG9iwtzmrVV064LSjshkqFuqjrIvzpfV5bI6qEXu6WjE5KKKbIMHXCLhwVrtv6NWq8NM53SkR0KsMrUIQ1GDyPBd28ZZMeIEtdbDv3Ye9zxQ==
+X-Stat-Signature: 1dfecmsdr4x5qpr1raafr3d8e7kt8yzd
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784209564-509159
+X-HE-Meta: U2FsdGVkX1+NrS9aj5mRZgaNyU5iEiys6ORk9qPrkMEh4cWS23hxk1UpVwoSiPFw1SYYzqUa5zJX/gO4jaH7wrgZbiObmaVPDWQnFB48NT8iIkylRSV70SZ8WXwmWfFddIOvnHvco5VL4N9eGUBzZ/9dZFgtlvYUgdqveADgFfBRvCjyknplGtVoXbejkxKgpsyAzH7DhrGUuCRYPnCfB9vP4nQUgj3BGj5Kzm923RHoKP3wH6Es8hSDkaiLINMf5sdoY61tPSfy3Ayoqb3B++IpuTZHF/6mduyV83gUNsyvgJd1MKmdbFNYwy7L/W6rAwiUaFdGBRxF5xmZllymeXBEs9+d/5udgCLFxYwfrNCwXc/PiADBhLy/JcWZMys2bYg4mF7Nfp6ntYK/brCi6K0FccLz/L0VGWGwf8LWXMESQnZlGU+GH5194ajhS/GyG5sRFtxqtHxlp/q3UXbRpK0vV0jF3OBE3u8Z0199PzKapPdCtxs/Od6FPg29PAxuFGqPx9i9xXUiQIeQJOVLGDaSI9EB9/Y5gCVmw697uAwGhuHAEzMj/gvo59jD/nQO1reR81K0q7FV6C1edHdR9dBkj9ty40cpT/I1A28lVUvpX2s7VNjTIAVeuhao4eBlE1VUe6Px6RJ71YGRYeyGejK6sLSsXEcdgktbhD6AUqJLLOMmszT1IX7eG/XYE6KVG//TUcHkCD1obmyukET3twDBSBhissstNHOSKl0EjkOuPRcGc992lLPLs3WSX3ZmRZ1L0KvWKy3vSPxSRh8tZa+o0uZ67SVku3W/zQNKRrJP8ukgt6z7e56lk9G3pp2XFJsJN8QOgL7PRN8j9ECZObxGwShWZfaxvwuajTw0pz0MB1m4mdGNb5d48ok8rNMV4meui9ykOX/HtUBXML+2GdBO0KLOGoFRKuPI7mZVnJhK2Ms1jl7uxsr046aadW6Lq3OzU3huXVj+BBu8A7Q
+ rSBOJnur
+ 6NWq1Ud5/7FTArHdzDB9Y8xEN1M7N2fsDWhposMESa1yr6eyrdkRX8e2m7o6E7kOKFYnqc9IPyv4asFdvCg2RyEEOavWaDpSo/PcUrLwNxkShWygWKyZ4K5q0JylbE15k3QxW6nlj8RX/G2ieOBVIHBhjTMdqLy8cCHJc/reDJNMo0vAEi9wTGXbBcOHLysop81NBvK/Dn1WHbbKjzc26HThjh3hY8oAFbO0G9x5DQWaCI/t87cdvmPdWa/KMoRykPYMCV+04XuClDBZsnnL/vFKIx7XYebvn3/BD8RmdOpIF3ByA30Hvdhv5yeXXs0WWULCkLOh8pxSG/3njKA+CkLIuevF9pnLbTeX8cnK595FA/O+Njmyr3J9khf3KHPfEvmT6lL1hfc/PNngBnLfSZYCuifSBhmVw/9zL8640B2rkkgD5aurXFCoFMw0eTAfi7pLzh1GYP6uZl2Rmc6lPP8Np284bwWnSgt41
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,379 +142,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move read_file(), write_file(), read_num(), and write_num() out of
-tools/testing/selftests/mm/vm_util.c into a new shared helper under
-tools/lib/mm/.
+> I would not pack a "let's test if swapping in the system even works" into=
+ a
+> khugeapged test.
+>
+> I think we can reasonably assume here "swap subsystem is not completely b=
+roken".
 
-These helpers are used by mm selftests today and will also be needed by
-shared hugepage helpers in subsequent patches. Move them to a generic
-location so they can be reused outside selftests as well.
+I understand the point. I won't pursue this further.
+Thank you for taking the time to review.
 
-Keep the helpers exposed to mm selftests through vm_util.h by including
-the new shared header there, and link the new helper into the
-selftests/mm build.
 
-Update the explicit x86 protection_keys 32-bit and 64-bit build rules
-to preserve prerequisite paths, now that file_utils.c is built from
-tools/lib/mm.
-
-Add tools/lib/mm/ to the MEMORY MANAGEMENT - MISC entry in MAINTAINERS.
-
-Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
----
- MAINTAINERS                          |   1 +
- tools/lib/mm/file_utils.c            | 119 +++++++++++++++++++++++++++
- tools/lib/mm/file_utils.h            |  12 +++
- tools/testing/selftests/mm/Makefile  |  11 +--
- tools/testing/selftests/mm/vm_util.c | 109 ------------------------
- tools/testing/selftests/mm/vm_util.h |   6 +-
- 6 files changed, 139 insertions(+), 119 deletions(-)
- create mode 100644 tools/lib/mm/file_utils.c
- create mode 100644 tools/lib/mm/file_utils.h
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 806bd2d80d15..26b06d80ab45 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17128,6 +17128,7 @@ F:	mm/memory-tiers.c
- F:	mm/page_idle.c
- F:	mm/pgalloc-track.h
- F:	mm/process_vm_access.c
-+F:	tools/lib/mm/
- F:	tools/testing/selftests/mm/
- 
- MEMORY MANAGEMENT - NUMA MEMBLOCKS AND NUMA EMULATION
-diff --git a/tools/lib/mm/file_utils.c b/tools/lib/mm/file_utils.c
-new file mode 100644
-index 000000000000..792f4b4db625
---- /dev/null
-+++ b/tools/lib/mm/file_utils.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include "file_utils.h"
-+
-+int read_file(const char *path, char *buf, size_t buflen)
-+{
-+	int fd;
-+	ssize_t numread;
-+
-+	fd = open(path, O_RDONLY);
-+	if (fd == -1) {
-+		int err = errno;
-+
-+		printf("# %s: %s (%d)\n", path, strerror(err), err);
-+		return -err;
-+	}
-+
-+	numread = read(fd, buf, buflen - 1);
-+	if (numread < 1) {
-+		int err = numread ? errno : ENODATA;
-+
-+		close(fd);
-+		printf("# %s: %s (%d)\n", path, strerror(err), err);
-+		return -err;
-+	}
-+
-+	buf[numread] = '\0';
-+	close(fd);
-+
-+	return (int)numread;
-+}
-+
-+int write_file(const char *path, const char *buf, size_t buflen)
-+{
-+	int fd, saved_errno;
-+	ssize_t numwritten;
-+
-+	if (buflen < 2) {
-+		printf("# %s: %s (%d)\n", path, strerror(EINVAL), EINVAL);
-+		return -EINVAL;
-+	}
-+
-+	fd = open(path, O_WRONLY);
-+	if (fd == -1) {
-+		int err = errno;
-+
-+		printf("# %s: %s (%d)\n", path, strerror(err), err);
-+		return -err;
-+	}
-+
-+	numwritten = write(fd, buf, buflen - 1);
-+	saved_errno = errno;
-+	close(fd);
-+	if (numwritten < 0) {
-+		printf("# %s: %s (%d)\n", path, strerror(saved_errno),
-+		       saved_errno);
-+		return -saved_errno;
-+	}
-+	if (numwritten != (ssize_t)(buflen - 1)) {
-+		printf("# %s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
-+		       path, (int)(buflen - 1), buf, buflen - 1, numwritten);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+int read_num(const char *path, unsigned long *num)
-+{
-+	unsigned long val;
-+	int err, ret;
-+	char buf[21];
-+	char *end;
-+
-+	if (!num)
-+		return -EINVAL;
-+
-+	ret = read_file(path, buf, sizeof(buf));
-+	if (ret < 0)
-+		return ret;
-+
-+	errno = 0;
-+	val = strtoul(buf, &end, 10);
-+	if (errno) {
-+		err = errno;
-+		printf("# %s: %s (%d)\n", path, strerror(err), err);
-+		return -err;
-+	}
-+
-+	if (end == buf || buf[0] == '-') {
-+		printf("# %s: invalid numeric value\n", path);
-+		return -EINVAL;
-+	}
-+
-+	if (*end == '\n')
-+		end++;
-+
-+	if (*end != '\0') {
-+		printf("# %s: invalid numeric value\n", path);
-+		return -EINVAL;
-+	}
-+
-+	*num = val;
-+	return 0;
-+}
-+
-+int write_num(const char *path, unsigned long num)
-+{
-+	char buf[21];
-+
-+	snprintf(buf, sizeof(buf), "%lu", num);
-+	return write_file(path, buf, strlen(buf) + 1);
-+}
-diff --git a/tools/lib/mm/file_utils.h b/tools/lib/mm/file_utils.h
-new file mode 100644
-index 000000000000..38576790a342
---- /dev/null
-+++ b/tools/lib/mm/file_utils.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __MM_FILE_UTILS_H__
-+#define __MM_FILE_UTILS_H__
-+
-+#include <stddef.h>
-+
-+int read_file(const char *path, char *buf, size_t buflen);
-+int write_file(const char *path, const char *buf, size_t buflen);
-+int read_num(const char *path, unsigned long *num);
-+int write_num(const char *path, unsigned long num);
-+
-+#endif
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index e6df968f0971..70d6a9ccf9c9 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -37,7 +37,8 @@ endif
- # LDLIBS.
- MAKEFLAGS += --no-builtin-rules
- 
--CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
-+CFLAGS = -Wall -O2 -I $(top_srcdir) -I $(top_srcdir)/tools/lib
-+CFLAGS += $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
- CFLAGS += -Wunreachable-code
- LDLIBS = -lrt -lpthread -lm
- 
-@@ -187,8 +188,8 @@ TEST_FILES += write_hugetlb_memory.sh
- 
- include ../lib.mk
- 
--$(TEST_GEN_PROGS): vm_util.c hugepage_settings.c
--$(TEST_GEN_FILES): vm_util.c hugepage_settings.c
-+$(TEST_GEN_PROGS): vm_util.c hugepage_settings.c $(top_srcdir)/tools/lib/mm/file_utils.c
-+$(TEST_GEN_FILES): vm_util.c hugepage_settings.c $(top_srcdir)/tools/lib/mm/file_utils.c
- 
- $(OUTPUT)/uffd-stress: uffd-common.c
- $(OUTPUT)/uffd-unit-tests: uffd-common.c
-@@ -217,7 +218,7 @@ $(BINARIES_32): CFLAGS += -m32 -mxsave
- $(BINARIES_32): LDLIBS += -lrt -ldl -lm
- $(BINARIES_32): $(OUTPUT)/%_32: %.c
- 	$(call msg,CC,,$@)
--	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
-+	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $^ $(LDLIBS) -o $@
- $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-32,$(t))))
- endif
- 
-@@ -226,7 +227,7 @@ $(BINARIES_64): CFLAGS += -m64 -mxsave
- $(BINARIES_64): LDLIBS += -lrt -ldl
- $(BINARIES_64): $(OUTPUT)/%_64: %.c
- 	$(call msg,CC,,$@)
--	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
-+	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $^ $(LDLIBS) -o $@
- $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-64,$(t))))
- endif
- 
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index bfe0efbe517e..f276eee57680 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -698,115 +698,6 @@ int unpoison_memory(unsigned long pfn)
- 	return ret > 0 ? 0 : -errno;
- }
- 
--int read_file(const char *path, char *buf, size_t buflen)
--{
--	int fd;
--	ssize_t numread;
--
--	fd = open(path, O_RDONLY);
--	if (fd == -1) {
--		int err = errno;
--
--		printf("# %s: %s (%d)\n", path, strerror(err), err);
--		return -err;
--	}
--
--	numread = read(fd, buf, buflen - 1);
--	if (numread < 1) {
--		int err = numread ? errno : ENODATA;
--		close(fd);
--		printf("# %s: %s (%d)\n", path, strerror(err), err);
--		return -err;
--	}
--
--	buf[numread] = '\0';
--	close(fd);
--
--	return (int)numread;
--}
--
--int write_file(const char *path, const char *buf, size_t buflen)
--{
--	int fd, saved_errno;
--	ssize_t numwritten;
--
--	if (buflen < 2) {
--		printf("# %s: %s (%d)\n", path, strerror(EINVAL), EINVAL);
--		return -EINVAL;
--	}
--
--	fd = open(path, O_WRONLY);
--	if (fd == -1) {
--		int err = errno;
--
--		printf("# %s: %s (%d)\n", path, strerror(err), err);
--		return -err;
--	}
--
--	numwritten = write(fd, buf, buflen - 1);
--	saved_errno = errno;
--	close(fd);
--	if (numwritten < 0) {
--		printf("# %s: %s (%d)\n", path, strerror(saved_errno), saved_errno);
--		return -saved_errno;
--	}
--
--	if (numwritten != (ssize_t)(buflen - 1)) {
--		printf("# %s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
--		       path, (int)(buflen - 1), buf, buflen - 1, numwritten);
--		return -EIO;
--	}
--
--	return 0;
--}
--
--int read_num(const char *path, unsigned long *num)
--{
--	unsigned long val;
--	int err, ret;
--	char buf[21];
--	char *end;
--
--	if (!num)
--		return -EINVAL;
--
--	ret = read_file(path, buf, sizeof(buf));
--	if (ret < 0)
--		return ret;
--
--	errno = 0;
--	val = strtoul(buf, &end, 10);
--	if (errno) {
--		err = errno;
--		printf("# %s: %s (%d)\n", path, strerror(err), err);
--		return -err;
--	}
--
--	if (end == buf || buf[0] == '-') {
--		printf("# %s: invalid numeric value\n", path);
--		return -EINVAL;
--	}
--
--	if (*end == '\n')
--		end++;
--
--	if (*end != '\0') {
--		printf("# %s: invalid numeric value\n", path);
--		return -EINVAL;
--	}
--
--	*num = val;
--	return 0;
--}
--
--int write_num(const char *path, unsigned long num)
--{
--	char buf[21];
--
--	sprintf(buf, "%lu", num);
--	return write_file(path, buf, strlen(buf) + 1);
--}
--
- static unsigned long shmall, shmmax;
- 
- void __shm_limits_restore(void)
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 28c3d7c1faed..d45135283732 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -8,6 +8,7 @@
- #include <unistd.h> /* _SC_PAGESIZE */
- #include "kselftest.h"
- #include <linux/fs.h>
-+#include <mm/file_utils.h>
- 
- #define BIT_ULL(nr)                   (1ULL << (nr))
- #define PM_SOFT_DIRTY                 BIT_ULL(55)
-@@ -164,11 +165,6 @@ int unpoison_memory(unsigned long pfn);
- #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
- #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
- 
--int read_file(const char *path, char *buf, size_t buflen);
--int write_file(const char *path, const char *buf, size_t buflen);
--int read_num(const char *path, unsigned long *num);
--int write_num(const char *path, unsigned long num);
--
- void shm_limits_prepare(unsigned long length);
- void __shm_limits_restore(void);
- 
--- 
-2.39.5
-
+On Thu, Jul 16, 2026 at 1:20=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 7/15/26 16:47, Dev Jain wrote:
+> >
+> >
+> > On 15/07/26 7:39 pm, David Hildenbrand (Arm) wrote:
+> >> On 7/15/26 15:34, Jaeyeon Lee wrote:
+> >>> The collapse_swapin_single_pte and collapse_max_ptes_swap tests use
+> >>> MADV_PAGEOUT to swap out pages before verifying khugepaged collapse
+> >>> behavior. On systems without swap configured, MADV_PAGEOUT succeeds
+> >>> but the pages are not actually swapped out, so check_swap() returns
+> >>> false and the tests report a failure.
+> >>>
+> >>> These tests cannot run meaningfully without swap, so a missing swap
+> >>> area is an environment limitation rather than a test failure. Detect
+> >>> the absence of swap via /proc/swaps and skip the affected tests
+> >>> instead of failing them.
+> >>>
+> >>> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+> >>> ---
+> >>>  tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++++++=
+++
+> >>>  1 file changed, 25 insertions(+)
+> >>>
+> >>> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/=
+selftests/mm/khugepaged.c
+> >>> index 10e8dedcb087..f9b4ebe733ce 100644
+> >>> --- a/tools/testing/selftests/mm/khugepaged.c
+> >>> +++ b/tools/testing/selftests/mm/khugepaged.c
+> >>> @@ -100,6 +100,22 @@ static void skip(const char *msg)
+> >>>     exit_status =3D KSFT_SKIP;
+> >>>  }
+> >>>
+> >>> +static bool swap_available(void)
+> >>> +{
+> >>> +   char buf[256];
+> >>> +   bool ret;
+> >>> +   FILE *fp =3D fopen("/proc/swaps", "r");
+> >>> +
+> >>> +   if (!fp)
+> >>> +           return false;
+> >>> +
+> >>> +   fgets(buf, sizeof(buf), fp);
+> >>> +   ret =3D !!fgets(buf, sizeof(buf), fp);
+> >>> +
+> >>> +   fclose(fp);
+> >>> +   return ret;
+> >>> +}
+> >>> +
+> >>
+> >> That doesn't mean that swapout will succeed.
+> >>
+> >> Take a look at cow.c where we use pagemap_is_swapped() after MADV_PAGE=
+OUT.
+> >
+> > That suffers from the reverse problem - in case of a real swap bug, cow=
+.c
+> > will skip the test and anyone running the test won't bother.
+>
+> Yes, because there could be other reasons why MADV_PAGEOUT would not be
+> successful (speculative page references, out of swap space).
+>
+> >
+> > I think this patch idea is reasonable, we need a way to say "swap defin=
+itely
+> > won't succeed because there is no swap device, so skip" vs "swap failed=
+,
+> > need to dig in!" .
+>
+> I would not pack a "let's test if swapping in the system even works" into=
+ a
+> khugeapged test.
+>
+> I think we can reasonably assume here "swap subsystem is not completely b=
+roken".
+>
+> And if we want to check for that, have a separate test that stresses swap=
+ping,
+> if available.
+>
+> --
+> Cheers,
+>
+> David
 
