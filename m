@@ -4,137 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8894C44507
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 01:28:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D5D8C44507
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 01:42:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF47C6B0092; Wed, 15 Jul 2026 21:28:41 -0400 (EDT)
+	id 4B0126B0088; Wed, 15 Jul 2026 21:42:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCC826B0095; Wed, 15 Jul 2026 21:28:41 -0400 (EDT)
+	id 461276B008A; Wed, 15 Jul 2026 21:42:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB7C6B0096; Wed, 15 Jul 2026 21:28:41 -0400 (EDT)
+	id 3504A6B008C; Wed, 15 Jul 2026 21:42:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D5866B0092
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:28:41 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1ADD2A04D4
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:28:41 +0000 (UTC)
-X-FDA: 84992905242.26.5B00EF0
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1A7E640005
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:28:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GOuDJifm;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784165319;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 035D66B0088
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:42:50 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 856DB1C02C8
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:42:50 +0000 (UTC)
+X-FDA: 84992940900.30.7BB97B4
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 74AED1C0004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:42:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ftree1wa;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784166168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IyOfq6DxdgNPKsg0G50iBSVfW8A77Y1qMZ8SK8Dxrvk=;
-	b=qmwwQz9jVaGrdGRoEhVF68yEwC37QFbXyMZsiEqKGNylFFUCQsTI/XmCpkMeJdxheXhUaM
-	N1nEvbpKsRWMcffqfUok5HcG90TkbEsYmXFOu3jmoPOvjHJzvlazvVv9RZr0afUjIKbpxK
-	8UwZGb65SlR2colSH+FZVBbkGrVu3oM=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=GOuDJifm;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784165319;
-	b=KEivRii2n6TKmzFu0dhhxlFILcuRBLHgSgSW4osnII1Dr527dV0j4cMJlQNR++XJnEd2pA
-	XDw4CRtLcPqSFM31OmnMP/aLBGO2oxW+Rkh2uU55zSDObBrhfYiQ0MoXpkuhpkBlAnPJ5Z
-	4jXp3AKKSDpnVHLY2TEx55J4Kn7MhkU=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10ed63c0so82681cf.1
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:28:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784165318; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aeHis9nlNEsHsCJ1Alzo8Q4g1bUmihKANLs0lglqvz9Gl6TanyvT9H/RT4gRbOfd0a
-         ajBLOtqtRSHn7EBUYQw/9nG2v4kyRSagnrqZ3kGhirq+Lstn9zf0yua/ssUb55rm5sro
-         Bk/uaP3UUeJrn9IgoZRuruhI+Zc/pWNv/01d7K6lPT7TmfxQnTnV+q87W1BU1JAcjCiu
-         ECDltOUO32NYUOqVbQMjoJ80LdrWyeoYMyq3n3juA5mTs7pB3TFLENy4wX4Ox11gCZDf
-         rL3c0AYga5UTaYXxn5Gxe3pDsAJxoc1GACkVt/vS9Z4pDQ9iWBKJLUsjOPzVOmjlLZJA
-         ZLCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IyOfq6DxdgNPKsg0G50iBSVfW8A77Y1qMZ8SK8Dxrvk=;
-        fh=DcLoVyHKf6YYldK6WcmPQAf2hhE22fdqVAuk3DPYiHg=;
-        b=U1mdBpl4G/QRBlB2+RsEAykEz374kJ+eCN9rBqLPSWW8dN428mB+hIVBUC0GVOqW7N
-         skov0Hn42ue9KKtpkaq+vkFHcsxc3zSoA/JocczCtTR8YvC5+1XW5wM3D+Hb/g9ix7Sd
-         hfhniNLFXuOECvKKafA1oPOBLqTU2gkkbxFDrRwua2qed34WCX47U/zVzxSRpQp3aj5+
-         mLBIu22vEn9A0gTQGem1TiSWvf+fnGP0DD326w7QsXF5ELSHkQcSdUyyrVwJX71dwGNm
-         +h8/IOKWfmS+Tvy8ADUTxbhHqsLSXlRyHik7SS9tveFILy3kRgkGAX/pGqsA0QPYog75
-         kGkg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784165318; x=1784770118; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IyOfq6DxdgNPKsg0G50iBSVfW8A77Y1qMZ8SK8Dxrvk=;
-        b=GOuDJifmbb4TvfslPnZgkpKPYgDm24W0Xfho/vrysNjkucIffKFaS0OAb/fr5aiFRF
-         aIjGL+mDFvQfvL7Jhe6eYqdwRJ8xaN9FWkT7pgZBA7U3Bx7KfJLo7HU4C45+WeJXynar
-         wJ1CeFBb4cSpKqCyf4v7W4QmDSHHb7WiErYYVCmlelO8EdRVNw3+8L/gs+U2x2+snF/k
-         eUxh9/v6qnLhqbfv/nni8WdaNackPoU+93DFuixSFYuZxw/IGwTuq1wlaBNkSzyNpR7Y
-         UWt9BeRsFztOKsHdaIUatAXdmBmPC+zxgQ/2Wk08nDltvlEIGeWEExduRaAmpiA9v6KZ
-         0ijQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784165318; x=1784770118;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IyOfq6DxdgNPKsg0G50iBSVfW8A77Y1qMZ8SK8Dxrvk=;
-        b=aD2QxnCvWa7DPpL4vAXYPnI+OaEujBlA5jTXRQP60JOdYsSJ8CHvoLJtG+aw2RuuWX
-         sDBzOe46bDbkc4rUL1ZW7zaR/EKYgDpkxaGN02A7BYwZ73sd3F7VuAVpBuRXpRJWd5uD
-         BlWuAPRy3sfFSgk0FuWR45B1bJssQNQTApHnVqm1iZmNouj/YphVrtBS45gXh0y91D8j
-         /jlbjj/tvkj4FAsct443SPnCK4Tm5bsD53kF6WG1QOIOl6IKgWSoiX9JEnctZbHH/PFp
-         W6jyFJy9fEaw7kSFqeOHhmSjn4NKtwJuSkgtyDo4eo9YoNjzi27Mbylx7CoaD0aEy2NB
-         vHpw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2awaeU0jO+gQhrPn+qDkietwSQIbEEEyLhbeqyU8VSZ7WiOTB88VJXYhHlF8/4/YhWdbRwvUaKA==@kvack.org
-X-Gm-Message-State: AOJu0YxYRjyKlIiugRnLMT8Q+9WVIawIa0iBLahFGDFG66vXx3lE4+gw
-	FVJ0Mle4b2DZHXitWsHKgQAPImIyKJLp7Em8oC9VSBIMFkWw8I0MKrvDJBg8+mBwodX5dC4jMPQ
-	LGQaIclww5aM+Yp4Euk/ivet68WFiQKW3M1+PRMqM
-X-Gm-Gg: AfdE7cmYibahqZydVasjMgD0BlsW6Q4JNqxhsyCaRXVZKO2HZK8Fd1vGuUeH446kuQh
-	NJsw0HG1R3trGPtUxrq1PtFp8MJ08fcKdiTR38cdqYe0xF25X48TA2YuLhSgGj0bf/jzKgUWhmz
-	nbWx4hJ3NTuAapK5IUawLXBPGaV09ksvBlIWSQysYyJBblvFHVtf+Yz4ebL/G0nJOgJlwJWhUyr
-	n1b94APT/TCzOg/zx/Y7USYN5QEbbC9EobM+f3JqNWsSh5cDddscceAHm+do2vm92wER38=
-X-Received: by 2002:a05:622a:1246:b0:51c:ba4f:9d19 with SMTP id
- d75a77b69052e-51fa4eac1dfmr2460461cf.19.1784165317618; Wed, 15 Jul 2026
- 18:28:37 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0YLltPeizTaHD27Fn9ffDythfCLu2l1zT8h2w1jiMvo=;
+	b=i4tHf/J6pBeripUOQYGCyf57YB0H5vWJizBbP37Q+mqSymilnUBc/5O4yzbna5tciCakZX
+	DhP00FbOAWYjOcLg8ylYUisQkID+BsBvNvGJfkPaZXimNamxW9kfJH18Si9zQWxiRfYK2q
+	eRJM+L6YPCcr1UsNdHHpU72GJkal+JI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ftree1wa;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784166168;
+	b=iDyPL0KRqL4Xq6WIrVd0Yft4KiyHpfgs1TL5+YUsDnU2o1aMt3F0ZGJphkbof8XhUgCdla
+	O9Zwx7At6JjLWX8C39ZtsWMVdrJMeSSf1cd6OVN8AbYBcbqKbeNjm7SjNdPu7ujrx99plr
+	ZNSAIRbs5UMllVo+yb9uNJzUwmsna2Q=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=0YLltPeizTaHD27Fn9ffDythfCLu2l1zT8h2w1jiMvo=;
+	b=ftree1watZKga8gU6wNb3X37dDAZx5DBaRpXyIo8dK0PIG+r09OhTLrWbAP+EFMyiLl/mhOg9
+	wvg47lyIbLvIW25CzZlR/ByYnfIQdNM0i837uVWZP+z0naeGcDqad6oLoyLkpVWq/iwXfJUX62J
+	QYVKNY6oWx7GuSbjyXwVDFc=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4h0wXv2KqQzLlXT;
+	Thu, 16 Jul 2026 09:33:19 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 14F3940572;
+	Thu, 16 Jul 2026 09:42:38 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 16 Jul 2026 09:42:37 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <linux@armlinux.org.uk>, <ljs@kernel.org>, <akpm@linux-foundation.org>,
+	<xiqi2@huawei.com>, <david@kernel.org>, <linusw@kernel.org>,
+	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <will@kernel.org>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <liaohua4@huawei.com>,
+	<lilinjie8@huawei.com>, <sunnanyong@huawei.com>, Xie Yuanbin
+	<xieyuanbin1@huawei.com>
+Subject: [PATCH v4] ARM: mm: acquire mmap write lock around show_pte() for user faults
+Date: Thu, 16 Jul 2026 09:40:22 +0800
+Message-ID: <20260716014022.2823-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org> <20260715-b4-objext_split-v1-6-9a49c4ccf4c3@kernel.org>
-In-Reply-To: <20260715-b4-objext_split-v1-6-9a49c4ccf4c3@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 15 Jul 2026 18:28:25 -0700
-X-Gm-Features: AUfX_mwQH8Mlxnc5oTVolGJX11YQsGRkdly9lMd9axGSJ4lMqluk9IRUY26sPCQ
-Message-ID: <CAJuCfpFDhV=O+TS2+A6s+gXagrNBnG3fWuFcS9Jk3g2BHLU8YA@mail.gmail.com>
-Subject: Re: [PATCH RFC 06/12] mm/slab: abstract slabobj_ext.ref access
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Stat-Signature: net49kcd7t5dfzegpmg5ybf44bw3cp94
+X-Rspamd-Queue-Id: 74AED1C0004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1A7E640005
-X-Stat-Signature: j5pmto6ic846mmmt8f5u7u5bq9nyfrde
-X-HE-Tag: 1784165318-411086
-X-HE-Meta: U2FsdGVkX1/5R+Mtl4XCPNxVRb5+vopEhOkDuIby9W3NncEbZi6+UD9iLub13ZNgPNPRLDDCdWAu0zVYwyNCXRRUPNbn6oJ898Wg2mmBlUl2jt5Rw/BBbk1QjFol76KL8vJrnzT1A5uRR2k1LTBHBdRx96vDoa2CzJgamKb/Fc0cnIALNa7RMOOXMKkrCqPio/ucYCD2b6lc49c4GDq1tHL67XfRY9yHNuFEI0n37QBb8jR5a4+DDWrEYnwUvQkH2H+wwmKpfW0ww1z1ugeE+zYYSpOyAtGUaXYS/cYU8XRrMKwkwQh0k1SSbveAJ6Fm7i4QxsCHyfAR+5ahJxmEQo9VjSl00LNXzuq92+/7e2sEPl1KUUgApZZEqHXwppa9tZMTrtEAfKzdhJiI6dZdRmFFtTmF6kuQw9z4SqmMJi+GXdpRa5ZlVsVZXnC0Z3bSGDZS5Lndpq6grw/GLDZYX+LxCjmamFUUnC/2iI6A9FPtEvwMFO4h+v/zGkjJGZHNO8z/IDbPp0Jr3PhltSDBSNc/eZwOUi232Z8kyhMvmCWRjMWZ39ufwOW0x/iHadDglA1duDHqtRzAydQO5dXsmzDM6xDtxWlFAevyEijZuiMf+0boDdw27epR2oLM2khrRy/H1+yGwYRtHhZfwqFB5zz6zdreZAbxKXeJVthvbgMB1AZ3IChf/2d+wvOOubsF7YSUtuJY+18oU8bXW9zWaCk/aGb9sWUBIHh90hFPvYGZHa00BRe/6uPKfWqj4gzWZEYlF0ptAnRK2dkaDh1F+vzAVIhL0uijCJbrVJT7cAYbMStRgcoNe/uYw8W6zJoacgz7qu0JVW5ZI2QbAtVDJbg3y3o8nVtzDqHIz7lPUXxTsKbMHSEr5uHdG419sVl5OKlDdouCVJiHJTwh9MBpwdje+GQ44HPDPROScEH3+3yHsWV0FiWuSbhij/i8+pRUsB/9LBE7vUWpAP/rD46
- spmMHsgr
- wLms9RteBWlOTryFa9b4GsMFrbLyHg6J/lmmzwxhUEKEXyprUD5vA9AiopPlZV4CabYMSaoCmkKZ+wZxkD9GRTB7gTgDgM9FK3eAilWBObO55KLgo4MGTFJ94urqZ2xO0KWdencTApN1y4xeA0Q2JQbELFdRcScNC3+CwydcwxTE7WK2JCtqZJ7LOc4Wf35fFYr4H2HRoYGby867/cFaZ24Fvg0+U6PhOZzWBMzKfK/Kukv52pGqpmvfumQXq9BjCpbg5XMaFZWVU2iNONk0IyLKFuksXFzDb0EjvHPAhRica8YrKOqFijHWvbwZ5CNlcdEnT0gHTvXS/wnU=
+X-HE-Tag: 1784166167-856233
+X-HE-Meta: U2FsdGVkX18LdQax4Sg598CNTJV78c7yJDyKJyuiOiFKL/sUPeSoFymuB6NvLibUM1ebf6tjbxobRNgrTimQcruTJEQCCSWdqyHT7hQNyq4zwKDw6fcR5FsPPeAaUDG7ZGpaJ/M7J8C6OibVieV1vIaO+lE8rczqZIKvhsaHWvfcnQmgH7KMbALWZQbo7xNehos1SfydtMnRdZvCVTSu4FC+ELo+HTGYITd5smBmPpZ7+OsnsbXw1TGqsaFFM79EMK+KYSOOrtJ+g1LvCXHRzfXp2QrtNXyvpNE20csZSYivMOn+UPCJE8wG22Y+WeYCk23R6um37btcYToVMlC7PPrKyCiCgffv8QJ/aoUNcWvFAF57ZtUmPdb1tOM9ab1D0Ju0KwRUBz5HF31In+eOMwEahvcAickQepjd/Q6tWdy8JLdWA2clKhvs/3LvZ0NHyybRhvlY8e50fAjykg207LWvaKYu0/LwFXLUE20rVRK5gkUIY3fZN9OBNMiXabXoPWD5VwE1TFGlvqAsfHDcdD5vBiOq2k3RimJMcMQHrmy/kxgvzAiSbKDCzS9QD4+f6lZtCAczTY8mFUD8AZsvNMSCNgo6xHJGWyGvppbJEDwG4gUfw/hgnMAG7+3dgHjFRdtgTl3z5mST87LxVA0Pb9i3iieWJ6YxnWOAOKNEIH9P/SxQY3cWgvBQETXzaXl4unfzH2XHXcIkDV6pwDoTkp9ma8G5OfvET5DQUbT8EUdnc4KH23iZod1H3QdtpTu0Yqkhogko4xMqKOgUSiqHi+p/N6iOHbwHIzvnw8qg0Ulpa2gq/f5LwPWL9mXgT6x5zuNk/DPKWtJqu6NAilNQE/muFkt1HoRHGIQaaHDwgnUHKuEY8xfoDcxPxx31FKbxBoVpILd/Ty5wWIu7EGzL+4MZ45lxBcyNZZUtTezLf8gq4DPtdOSQlJEIopdCWsEgG5QkzjX1fghVmWzHL5i
+ WHHxnZ4J
+ YZcUTv/3KGaFzLTdZjelDubRf925bLciWKewEqt/Zy1DADNZ8MQYf86L4a+XC1xNKtna9k1YMT5haIy3yAR0uOWYns7yz+ZeFOFQa+nwrAMhsiiekv8H0lPt31t3T9D0vJJaMWPNmFx/0yeeMxnkxrQSK/Vx7iWMjSI+KoGGNwdUCjxNS/QZZ3lCKXlDrFzuIf/D33awtvjRyFhBPkZBV84Gho8IKxsO9UvlAySA5qlyexRylzPTAWNee58NVFPsagOBtJKGXZz7F2t29UI/BRBIojuXlloqBcQvhWamRfUwUvHzQvUbuzlS0g4T7KjFwWbQehiNo4EL+wWUaE5VX+gobOXRQrSOasHkWtiaaIrD8ZqWuVAHPhV0uZDYxf0PVgmCfj7k3Afhw/OL/4PERUYKRwgc6pzJCj09R/Fpi6Dnzxaw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,176 +99,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 3:11=E2=80=AFAM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
->
-> In preparation for changes to the structure, abstract access to the ref
-> field with a slab_obj_ext_codetag_ref() function. Rename the field to
-> _ctref to make an unexpected direct access a compile error.
->
-> No functional change intended.
->
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+When CONFIG_DEBUG_USER=y, and cmdline "user_debug=31" is set,
+a user fault may trigger show_pte() without any lock.
+If another thread in the same process concurrently calls munmap(),
+the page table pages may be freed while show_pte() is still traversing
+them, causing a use-after-free in show_pte().
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+If CONFIG_ARM_LPAE=y, this may cause a kernel panic if the pages table
+of PMD are freed when show_pte() is running.
 
-> ---
->  mm/slab.h | 10 +++++++++-
->  mm/slub.c | 42 ++++++++++++++++++++++++++++--------------
->  2 files changed, 37 insertions(+), 15 deletions(-)
->
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 789bd292075f..e3f8e42070f1 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -558,7 +558,7 @@ struct slabobj_ext {
->         struct obj_cgroup *_objcg;
->  #endif
->  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> -       union codetag_ref ref;
-> +       union codetag_ref _ctref;
->  #endif
->  } __aligned(8);
->
-> @@ -668,6 +668,14 @@ static inline struct obj_cgroup **slab_obj_ext_objcg=
-p(struct slabobj_ext *obj_ex
->  }
->  #endif
->
-> +#ifdef CONFIG_MEM_ALLOC_PROFILING
-> +static inline union codetag_ref *
-> +slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_ext)
-> +{
-> +       return &obj_ext->_ctref;
-> +}
-> +#endif
-> +
->  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->                         gfp_t gfp, unsigned int alloc_flags);
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 48e10198a3ce..2bfcabc4c51a 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2071,18 +2071,20 @@ static inline void mark_obj_codetag_empty(const v=
-oid *obj)
->         slab_exts =3D slab_obj_exts(obj_slab);
->         if (slab_exts) {
->                 struct slabobj_ext *ext;
-> +               union codetag_ref *ref;
->
->                 get_slab_obj_exts(slab_exts);
->                 ext =3D slab_obj_ext(obj_slab->slab_cache, obj_slab, slab=
-_exts, obj);
-> +               ref =3D slab_obj_ext_codetag_ref(obj_slab, ext);
->
-> -               if (unlikely(is_codetag_empty(&ext->ref))) {
-> +               if (unlikely(is_codetag_empty(ref))) {
->                         put_slab_obj_exts(slab_exts);
->                         return;
->                 }
->
->                 /* codetag should be NULL here */
-> -               WARN_ON(ext->ref.ct);
-> -               set_codetag_empty(&ext->ref);
-> +               WARN_ON(ref->ct);
-> +               set_codetag_empty(ref);
->                 put_slab_obj_exts(slab_exts);
->         }
->  }
-> @@ -2092,19 +2094,22 @@ static inline bool mark_failed_objexts_alloc(stru=
-ct slab *slab)
->         return cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL) =3D=3D 0;
->  }
->
-> -static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-> -                       struct slabobj_ext *vec, unsigned int objects)
-> +static inline void handle_failed_objexts_alloc(struct slab *slab,
-> +               unsigned long obj_exts, struct slabobj_ext *vec)
->  {
->         /*
->          * If vector previously failed to allocate then we have live
->          * objects with no tag reference. Mark all references in this
->          * vector as empty to avoid warnings later on.
->          */
-> -       if (obj_exts =3D=3D OBJEXTS_ALLOC_FAIL) {
-> -               unsigned int i;
-> +       if (obj_exts !=3D OBJEXTS_ALLOC_FAIL)
-> +               return;
-> +
-> +       for (unsigned int i =3D 0; i < slab->objects; i++) {
-> +               union codetag_ref *ref =3D slab_obj_ext_codetag_ref(slab,=
- vec);
->
-> -               for (i =3D 0; i < objects; i++)
-> -                       set_codetag_empty(&vec[i].ref);
-> +               set_codetag_empty(ref);
-> +               vec++;
->         }
->  }
->
-> @@ -2112,8 +2117,8 @@ static inline void handle_failed_objexts_alloc(unsi=
-gned long obj_exts,
->
->  static inline void mark_obj_codetag_empty(const void *obj) {}
->  static inline bool mark_failed_objexts_alloc(struct slab *slab) { return=
- false; }
-> -static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-> -                       struct slabobj_ext *vec, unsigned int objects) {}
-> +static inline void handle_failed_objexts_alloc(struct slab *slab,
-> +               unsigned long obj_exts, struct slabobj_ext *vec) {}
->
->  #endif /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
->
-> @@ -2181,7 +2186,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct k=
-mem_cache *s,
->  #endif
->  retry:
->         old_exts =3D READ_ONCE(slab->obj_exts);
-> -       handle_failed_objexts_alloc(old_exts, vec, slab->objects);
-> +       handle_failed_objexts_alloc(slab, old_exts, vec);
->
->         if (new_slab) {
->                 /*
-> @@ -2361,9 +2366,15 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache =
-*s, void *object, gfp_t flags,
->          * check should be added before alloc_tag_add().
->          */
->         if (obj_exts) {
-> +               union codetag_ref *ref;
-> +
->                 get_slab_obj_exts(obj_exts);
-> +
->                 obj_ext =3D slab_obj_ext(s, slab, obj_exts, object);
-> -               alloc_tag_add(&obj_ext->ref, current->alloc_tag, s->size)=
-;
-> +               ref =3D slab_obj_ext_codetag_ref(slab, obj_ext);
-> +
-> +               alloc_tag_add(ref, current->alloc_tag, s->size);
-> +
->                 put_slab_obj_exts(obj_exts);
->         } else {
->                 alloc_tag_set_inaccurate(current->alloc_tag);
-> @@ -2395,10 +2406,13 @@ __alloc_tagging_slab_free_hook(struct kmem_cache =
-*s, struct slab *slab, void **p
->
->         get_slab_obj_exts(obj_exts);
->         for (int i =3D 0; i < objects; i++) {
-> +               struct slabobj_ext *ext;
-> +
->                 if (is_kfence_address(p[i]))
->                         continue;
->
-> -               alloc_tag_sub(&slab_obj_ext(s, slab, obj_exts, p[i])->ref=
-, s->size);
-> +               ext =3D slab_obj_ext(s, slab, obj_exts, p[i]);
-> +               alloc_tag_sub(slab_obj_ext_codetag_ref(slab, ext), s->siz=
-e);
->         }
->         put_slab_obj_exts(obj_exts);
->  }
->
-> --
-> 2.55.0
->
+Acquire mmap_write_lock() around show_pte() for user faults to fix the
+contention.
+
+For user faults, additionally restrict that show_pte() is called only
+when the addr is a user-space address (addr < TASK_SIZE). This is because
+the lock of tsk->mm only protects the virtual memory of user address space,
+furthermore, dumping the page tables of a kernel-space address for user
+faults is unnecessary and may have security implications.
+
+Keep everything unchanged for kernel faults, because the kernel is
+already in the "oops" state, acquiring a lock may risk a deadlock.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 6d021b724481 ("ARM: dump pgd, pmd and pte states on unhandled data abort faults")
+Depends-on: <20260629123349.134224-1-xieyuanbin1@huawei.com>
+Depends-on: 59e4f3b45b96 ("ARM: ensure interrupts are enabled in __do_user_fault()")
+
+Cc: Russell King <linux@armlinux.org.uk>
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+Co-developed-by: Qi Xi <xiqi2@huawei.com>
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+---
+For __do_user_fault(), it must be a user fault, so the
+judgement of user_mode(regs) can be omitted.
+
+For do_DataAbort(), it may be a user fault or a kernel fault. If it is
+a kernel fault, it must be a kernel oops, the kernel will die soon.
+Also, a user program may be constructed to trigger
+do_DataAbort()->show_pte(), as described in this mail:
+Link: https://lore.kernel.org/20260625100031.25088-1-xieyuanbin1@huawei.com
+
+For user faults, it is safe to acquire mmap_write_lock(), because
+we never return to user with mmap lock held or pagefault disabled.
+
+Note that, due to the lack of ARMv4T for testing, this patch does not
+fix the issue in baddataabort()->show_pte().
+
+V3->V4:
+  - Keep nothing change for kernel faults.
+  - Change mmap read lock to write lock.
+  - Restrict that show_pte() is called only when the addr
+    is a user-space address (addr < TASK_SIZE).
+
+ arch/arm/mm/fault.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index c68677503532..0a09d4ff7718 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -174,21 +174,25 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
+ 	struct task_struct *tsk = current;
+ 
+ 	local_irq_enable();
+ 
+ #ifdef CONFIG_DEBUG_USER
+ 	if (((user_debug & UDBG_SEGV) && (sig == SIGSEGV)) ||
+ 	    ((user_debug & UDBG_BUS)  && (sig == SIGBUS))) {
+ 		pr_err("8<--- cut here ---\n");
+ 		pr_err("%s: unhandled page fault (%d) at 0x%08lx, code 0x%03x\n",
+ 		       tsk->comm, sig, addr, fsr);
+-		show_pte(KERN_ERR, tsk->mm, addr);
++		if (likely(addr < TASK_SIZE)) {
++			mmap_write_lock(tsk->mm);
++			show_pte(KERN_ERR, tsk->mm, addr);
++			mmap_write_unlock(tsk->mm);
++		}
+ 		show_regs(regs);
+ 	}
+ #endif
+ #ifndef CONFIG_KUSER_HELPERS
+ 	if ((sig == SIGSEGV) && ((addr & PAGE_MASK) == 0xffff0000))
+ 		printk_ratelimited(KERN_DEBUG
+ 				   "%s: CONFIG_KUSER_HELPERS disabled at 0x%08lx\n",
+ 				   tsk->comm, addr);
+ #endif
+ 
+@@ -632,21 +636,29 @@ do_DataAbort(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 
+ 	if (!inf->fn(addr, fsr & ~FSR_LNX_PF, regs))
+ 		return;
+ 
+ 	if (likely(user_mode(regs)))
+ 		local_irq_enable();
+ 
+ 	pr_alert("8<--- cut here ---\n");
+ 	pr_alert("Unhandled fault: %s (0x%03x) at 0x%08lx\n",
+ 		inf->name, fsr, addr);
+-	show_pte(KERN_ALERT, current->mm, addr);
++	if (likely(user_mode(regs))) {
++		if (addr < TASK_SIZE) {
++			mmap_write_lock(current->mm);
++			show_pte(KERN_ALERT, current->mm, addr);
++			mmap_write_unlock(current->mm);
++		}
++	} else {
++		show_pte(KERN_ALERT, current->mm, addr);
++	}
+ 
+ 	arm_notify_die("", regs, inf->sig, inf->code, (void __user *)addr,
+ 		       fsr, 0);
+ }
+ 
+ void __init
+ hook_ifault_code(int nr, int (*fn)(unsigned long, unsigned int, struct pt_regs *),
+ 		 int sig, int code, const char *name)
+ {
+ 	if (nr < 0 || nr >= ARRAY_SIZE(ifsr_info))
+-- 
+2.53.0
+
 
