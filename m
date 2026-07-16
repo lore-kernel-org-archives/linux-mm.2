@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F6BC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1051AC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:51:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A3F66B00C7; Thu, 16 Jul 2026 10:51:32 -0400 (EDT)
+	id DC82D6B00C8; Thu, 16 Jul 2026 10:51:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22D0D6B00C8; Thu, 16 Jul 2026 10:51:32 -0400 (EDT)
+	id D9F2E6B00C9; Thu, 16 Jul 2026 10:51:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11BEF6B00C9; Thu, 16 Jul 2026 10:51:32 -0400 (EDT)
+	id CDC316B00CA; Thu, 16 Jul 2026 10:51:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCFCE6B00C7
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:51:31 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6646AA0057
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:51:31 +0000 (UTC)
-X-FDA: 84994928382.26.017032A
+	by kanga.kvack.org (Postfix) with ESMTP id A757B6B00C8
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:51:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 384DFA00B8
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:51:36 +0000 (UTC)
+X-FDA: 84994928592.29.3795D98
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C17C0160005
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:51:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MVucWdgV;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9A4E718000C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:51:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kpNW5sTJ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784213489;
+	s=arc-20220608; t=1784213494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lX1TFiP6xIbjy9evrHNZox00I5e7bkCckKcJldvVME4=;
-	b=U+qWhst32V9A9ltKX6voWQ1PAhxMsVDsVKuqstBFn8moyZJeb++8a75PBgPkEoiyHG7QRB
-	OygzKNwDueO7EJeZ+OAH5lqZiAv1eyJ45Jfa0jPTdFjmUAztJH/b/lKvCQ7RllZ9q3yZUx
-	QbMRy9j9gmxzHSZH30Yu0iKV6zFsP24=
+	bh=8LTuIGe8Io4Hp0JGGsyty7Bh+5p268Vyx6JhVPmlFxs=;
+	b=XMWlTKmIuVp7P6/+MPgRBM8lJXVzAzyI46wj1Lspg8QOiMiU4DhkvAd3cxfb4DG+59ezVP
+	2gz+T8bdElNOczIv+rWd3MdfWAK1483wIYga4KkTgNCNmFMxfgcvYKkiMtO4t56XUcJuOV
+	OROe1PxEoqQu7kVmxjsxNginD3BBZZQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MVucWdgV;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kpNW5sTJ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784213489;
-	b=ifFWwGdgRqJncAF2FAijRClhu9/xFFTO6v6Fj7BtLGLLajiz4r9jYCz8S0nvAtSkrBTOTY
-	4Eqnw0WMfZpMCwXBapzittfYwzl959GjOKm/kuSCEKxcvcwMbTRYLP0pI0rCQ3wOfvFg2d
-	dtYuw1kUovPSt1K3YZW83NtluGlH2FY=
+	t=1784213494;
+	b=QlcCZrxgD06NvCvF7Wa9DgVzUKBBWpLefapj8h78ZnLupn+NAl8unHGT+6I7UYKWjE6J3/
+	atCJNW7jKJsfCHXDKpYP8d5KUG/HGIezYw7iZmxzM+eOPbxpM8P+bCDo2uWPNqkmE4H0vH
+	hCyRPOZcBP0zV1bYTGCF79hD0sl0vfg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6370F600B1;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D42F60204;
+	Thu, 16 Jul 2026 14:51:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755701F00A3D;
 	Thu, 16 Jul 2026 14:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE771F00A3E;
-	Thu, 16 Jul 2026 14:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784213489;
-	bh=lX1TFiP6xIbjy9evrHNZox00I5e7bkCckKcJldvVME4=;
+	s=k20260515; t=1784213493;
+	bh=8LTuIGe8Io4Hp0JGGsyty7Bh+5p268Vyx6JhVPmlFxs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=MVucWdgVB3uHkthYYg4NX8x7GsFBKVscGgVa3g/uHHXEAeYf8FperTLXsPRKNBKQI
-	 LS3dPrUJ+oFBauuHY6ef3I8QQjvOJTbNW8vccNpP5NVIMJy20MooRkImJnPP05FWKf
-	 CIp+s3x3F1p7sEeFYDWskJJ29o/iW6cB90NVqln618zouzDsORVOkljdc0vz90fGW3
-	 CNNJEW8dY782Is74iDs02CzWGU5EfZUYJUrZ5xtYYAfLnk3IkN0UhUyUzk3NF73C2T
-	 wFLu1i0M9T6BMeh8DKIBHFtzPgPuMJDyhVi5QtsgC6iM6bAd3SIpxnp0onizUfxkLc
-	 7YZV8IDYnrf2A==
+	b=kpNW5sTJx/u9c2MEqIOUVccXD5xnbPluojNAHtABf3edyEU1lpAsaRfDV7oPtunry
+	 XOyIS0lbUr0g5QE2bRkA/ONFQcJITWJ8R1NpULOTqPYuVcVKR+hWcXVwz9tlUkdVtB
+	 LB+FwbK8KGdBd589G5b4s53GA7AZksZD6HeBVpLa/MqktsDfcpKkFEoMKdcFX4jGAS
+	 Z7UEdNdsnbqrnmLGsutF+/yLwgo+ig80d/tvurqSewRUJ8SE8eidxQdkpo3qjkm/9A
+	 ud/FON5uINp7cQhCKVnw40CozW7MXoPCMlm1YRjEbpCqspTV/3aHYvDX6mdvuYu3LY
+	 XroHJr6x/P9Vg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 16 Jul 2026 16:51:01 +0200
-Subject: [PATCH v2 02/10] mm: provide free_reserved_pages(), removing x86
- variant
+Date: Thu, 16 Jul 2026 16:51:02 +0200
+Subject: [PATCH v2 03/10] s390/mm: use free_reserved_pages() in
+ vmem_free_pages()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260716-bootmem_info_part2-v2-2-4afc76c73d61@kernel.org>
+Message-Id: <20260716-bootmem_info_part2-v2-3-4afc76c73d61@kernel.org>
 References: <20260716-bootmem_info_part2-v2-0-4afc76c73d61@kernel.org>
 In-Reply-To: <20260716-bootmem_info_part2-v2-0-4afc76c73d61@kernel.org>
 To: Dave Hansen <dave.hansen@linux.intel.com>, 
@@ -92,14 +92,14 @@ To: Dave Hansen <dave.hansen@linux.intel.com>,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  linux-s390@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.15.2
+X-Stat-Signature: d9m5thbnqa4c5nzpt6mbjpsg6edwczkg
+X-Rspamd-Queue-Id: 9A4E718000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C17C0160005
-X-Stat-Signature: 9bwh4zeqqubst51i8i5iit7f894df753
-X-HE-Tag: 1784213489-890005
-X-HE-Meta: U2FsdGVkX1/96bZxvXRVIB/qO9H3YgC5zjLZHiuOELQqtgR6iTOYq/DB73Trc9apm+CkLSDkKMaKnPUJ7GjdmYtylaZLn5iFO0w6KKIA/QQHRhlSabi1EEkVdQ+6AVYCsyyDOjZ69oXzMYf1JlRRz3ngiScD+h8RDm+Em3uuQs7AGex5AHfJsy3GCEf8ruLS8EY9aDCM5Iwcp+PShVhk/6kfvdhRyxDxPmAcxtgmq/lVzO12NUYWdb8qCv3n8/0YkaOhV69pY3YlG4Qx/AfUwwbTuztGTA49fmcpSmyuUjk65mG+8N/GXsyvRGGrwd1R1+DHNu1Z6UyR0OP4rAaDtrWAv/c4A36HiDqMPsb8gBwNfysapzSzN5MnKjg5504fj+WZC0zGj0LC499V9pKfvsxkwbFIoPr+GHHL64vl2cquTy9NO4y9Jnb3mzhXV0kAe6HWZeBC6EhJfudO4k8RQp0yXV13mTrPQsBgvl+VfArLfcM76ANFdNLk65LCfqPO5Qkq8jrIp4+gluiptLA3NXQlHfxkS1i78ybdTU+RU/CTD6XKEMjKQFih/+ck2m66ykyzWRffNYjRg5U8DwnnH1Nra5i1eIbShje84oE1R8xLVYcae05YvNsFt6o/LbjXCljbvy7XzGCtK2+PI/ZCLHGht7No8MgWAXfk0gHMUrDTfM1hxYn1wdTiYzrEdwNuBMqsq7A02TIX5Fs70aiH/2bdmFC3+VvUDnszAkeYceghOYGklg0JcmdOw7zbi61efhztrmoh8zScCnI1f/oUn6wS4Sken0LinLBXkpMTymsUok42JcoJww/jCWVJDc83kKRcgEc+e5LmKYjXJdcj9BuqC7VqEvd0gonkQTuJ+81GZ3m2Cv57z7bd2hY+afhrWz2IUej/5U1QdWintRvDEW/mIAjKOnSE8vx6iqqYn20TliCFRYTnNg9Oi2zoMO7kRycDXH0jrRerFaRPXnz
- scXwLAiL
- NEapdzfGRXZvhCE1/n5xtUvpZRpjsot3I8y8UqAhTNxCcV5a2+bbyv30DBAggijHneZ14asmEyxOCBshkRt7at+QJDEtvLq6DBYlRy7zhaUGosDttAfFBTwYNsQj0IJj1gDtyjZAnWo52IuUN+rlP/3N53tcx7UaAkTi23cN5oaKdezhK1twZYk/obDakWhyJLlxXiEChgmUrmZYfyZzeb5vvS95Zb8zw1kS13koKY41aXA7eEGU1wLRjKwrpPdHHVe5xrupJy5sgNHYvcpMrEl8wvZgVFyZJc4e6
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784213494-653637
+X-HE-Meta: U2FsdGVkX1+MMDDe2dLVa8zCsI413dmQ0OP2GGf7wd3aoLl0WFF0u80zSjeVhSI4RAmN8USBOGb6uSNg5oJ/xlHCgml0bkkc0mAGdFPjI5zDuqUbTFXnm/M1kw0cHc+eWag+adyEetUc24A9rlFIRRBzL8lbRiJxy67j1YdVll48OqJ3G13kPVsnOEFDczHSJpS6YIW8b8/F8x6e4wWTJFpriw3/EBR6C6Yw1Rt1NSTSZwKXVMfVQPnkcbgihtdYABO8IzhOtWigYv8opVLLqUDGoiXGcdmYyUW3hL0MSM0NenPE/8o+i1n/4+dtRRTvxFeYwgjJm4OsFU0s9u7FTqMv798uuhiEzYC6511atmniVsSwH+C0uKXGmRfpuXyjywPB7O5u8niObrYCVGjxmRKcVJzL8EkIJm5WTNRj6ba2CGyroymi40X2+YHwT2vCCTiP0+pcsS2KVVj+qjFnx+Rb3Q38lDdLk+1SpBRVmeLGkPk/8vLKBg8STMbbXoKiun/gLlzabZA3rku5MJkCDnRK15PX8I5SFhm9r25AR1evgbVBHH8g9rajMdwUrSVUA0uzmIEMafEsnpkbQ5OskCnpWftTFhTm+Sc9bzAM6/VtLj5qwRsLycNevmz8IibqDCe1DYtUT450av7/4EEy0ZdYr7A+UxHgqHbXlppQbcMHPe0UAKvE+IG6wRziXohvhbx9oNYu56ZMvc4tquyatwIC1NMZXCWtrd11A4B5FxsVqR6e/qS3V3oUCU7yTsPMl59FtO1J77FCPPYm45ruUOLPzgKhVRk4uNYzzHlJ5L940ANUzNOLntDhcfQGSYeajSOnBFqjg9Inj/1I/R0fWQurnALlrn3K+/Ztm0XoxHQMzZDmm1XKfG02pzNYbK1mn/MjKweFf073BxdjVV6PN8mgUQJv8KqLOaMrECMn6rdzI/DKHKAvEHf7+EcP6dq2eE1QJiX51+gDh33DlRZ
+ 9aOZNXN2
+ pncR9lRKcaGz6jiYmBfMzm9RjCO8zSvugQvNY1iebCaX1A/174A9AzdUj51rlb3Vw/0bDUrHmJn0ZeZmOFhHTdasSsg3OlsFUufBFDle0aXTzx2vEaTTG0Nan7PUtbktKbxOxgBxv/xyEF+40qLa4skCa4/uyXX7jXa2Nwva2J5VmxeSV+e1tlYoUaIXFWwmycmA8z4FjJ4Kn6roXxYe4LaxtLnYNOBXTCxGETqEW+qq5W6F8j/4zYfEVNyd0fqe4F3fQlx0Joi5Dj67jBcKLhcHcKWB1gMRChQ/Qzi7GOFQ77D32GmK4lEPojRryXQuo7Wdm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,122 +107,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's extend free_reserved_page() in page_alloc.c to free_reserved_pages(),
-dropping the custom x86 variant. The common-code variant will consume an
-order, so adjust the x86 callers accordingly.
+Let's use our new generic helper.
 
-Make free_reserved_pages() assume that we are freeing ordinary
-high-order pages, just with the special "reserved" flavor. The target
-use case for now is freeing vmemmap PMD pages.
-
-Set the refcount directly to 0 (instead of 1) and call
-__free_frozen_pages(). Set the page count to 0 before clearing
-PG_reserved, so someone checking PG_reserved (and not finding it set)
-to then try grabbing a ref would not suddenly have that ref be dropped.
-That is arguably cleaner and safer than the old way of doing it.
-
-Add some kerneldoc. Use a single adjust_managed_page_count() call.
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- arch/x86/mm/init_64.c |  8 +-------
- include/linux/mm.h    |  8 ++++++--
- mm/page_alloc.c       | 33 ++++++++++++++++++++++++++-------
- 3 files changed, 33 insertions(+), 16 deletions(-)
+ arch/s390/mm/vmem.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 69e36f02a663a..320e742b0bb3f 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1000,12 +1000,6 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	return add_pages(nid, start_pfn, nr_pages, params);
- }
+diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
+index 94ee06ae89134..d2879ce860a13 100644
+--- a/arch/s390/mm/vmem.c
++++ b/arch/s390/mm/vmem.c
+@@ -39,7 +39,6 @@ static void __ref *vmem_alloc_pages(unsigned int order)
  
--static void free_reserved_pages(struct page *page, unsigned long nr_pages)
--{
--	while (nr_pages--)
--		free_reserved_page(page++);
--}
--
- static void __meminit free_pagetable(struct page *page)
+ static void vmem_free_pages(unsigned long addr, int order, struct vmem_altmap *altmap)
  {
- 	/* bootmem page has reserved flag */
-@@ -1038,7 +1032,7 @@ static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
- 			while (nr_pages--)
- 				put_page_bootmem(page++);
- 		} else {
--			free_reserved_pages(page, nr_pages);
-+			free_reserved_pages(page, order);
- 		}
+-	unsigned int nr_pages = 1 << order;
+ 	struct page *page;
+ 
+ 	if (altmap) {
+@@ -49,8 +48,7 @@ static void vmem_free_pages(unsigned long addr, int order, struct vmem_altmap *a
+ 	page = virt_to_page((void *)addr);
+ 	if (PageReserved(page)) {
+ 		/* allocated from memblock */
+-		while (nr_pages--)
+-			free_reserved_page(page++);
++		free_reserved_pages(page, order);
  	} else {
- 		__free_pages(page, order);
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 113e1752548c2..62b261cccf16f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3993,8 +3993,12 @@ extern unsigned long free_reserved_area(void *start, void *end,
- 
- extern void adjust_managed_page_count(struct page *page, long count);
- 
--/* Free the reserved page into the buddy system, so it gets managed. */
--void free_reserved_page(struct page *page);
-+void free_reserved_pages(struct page *page, unsigned int order);
-+
-+static inline void free_reserved_page(struct page *page)
-+{
-+	free_reserved_pages(page, 0);
-+}
- 
- static inline void mark_page_reserved(struct page *page)
- {
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index a63733dac659e..2e17243ff604f 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6381,15 +6381,34 @@ void adjust_managed_page_count(struct page *page, long count)
- }
- EXPORT_SYMBOL(adjust_managed_page_count);
- 
--void free_reserved_page(struct page *page)
-+/**
-+ * free_reserved_pages - free reserved pages
-+ * @page: First page to free.
-+ * @order: The page order to free.
-+ *
-+ * Free pages allocated through memblock during boot, letting the buddy
-+ * manage them from now on.
-+ *
-+ * @page must be naturally aligned to the order and the order must not
-+ * exceed MAX_PAGE_ORDER. All pages must be reserved.
-+ */
-+void free_reserved_pages(struct page *page, unsigned int order)
- {
--	clear_page_tag_ref(page);
--	ClearPageReserved(page);
--	init_page_count(page);
--	__free_page(page);
--	adjust_managed_page_count(page, 1);
-+	const unsigned long nr_pages = 1UL << order;
-+	int i;
-+
-+	VM_WARN_ON_ONCE(!IS_ALIGNED(page_to_pfn(page), nr_pages));
-+	VM_WARN_ON_ONCE(order > MAX_PAGE_ORDER);
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		clear_page_tag_ref(page + i);
-+		set_page_count(page + i, 0);
-+		ClearPageReserved(page + i);
-+	}
-+	adjust_managed_page_count(page, nr_pages);
-+	__free_frozen_pages(page, order, FPI_NONE);
- }
--EXPORT_SYMBOL(free_reserved_page);
-+EXPORT_SYMBOL(free_reserved_pages);
- 
- static int page_alloc_cpu_dead(unsigned int cpu)
- {
+ 		free_pages(addr, order);
+ 	}
 
 -- 
 2.43.0
