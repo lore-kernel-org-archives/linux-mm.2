@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D05F5C4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:54:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64A5C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:54:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F9616B00F3; Thu, 16 Jul 2026 10:54:34 -0400 (EDT)
+	id 89F9C6B00F5; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D15A6B00F5; Thu, 16 Jul 2026 10:54:34 -0400 (EDT)
+	id 802A86B00F7; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E6CB6B00F6; Thu, 16 Jul 2026 10:54:34 -0400 (EDT)
+	id 6A25D6B00F8; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E55B76B00F3
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:54:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C0B5C019B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:36:35 +0000 (UTC)
-X-FDA: 84994890750.06.B992B51
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CABC6B00F5
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49DEB801C7
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:47:03 +0000 (UTC)
+X-FDA: 84994917126.26.7B39F38
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5AC6E4000C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:36:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=MxkEnFl7;
-	spf=pass (imf04.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4BA31C0007
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:47:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=qsOZlAFy;
+	spf=pass (imf10.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
 	dmarc=pass (policy=none) header.from=linux.beauty;
 	arc=pass ("zohomail.com:s=zohoarc:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212593;
-	b=ZTmGdmrzCdG3sZ4Ho6HhK+z4qF3IoVeWg4X/aQA1Av1bXxFJvcZxuFILlEAbuzuFiablx5
-	fUSZ+dpkBvN8fy3L7Uf8hOLmSE1qJ5sERykpH25+Tv0CGETr39ueg8Eh938GxMLjxoVtXN
-	nDkwCZ3YCLtjZ+tHZh7+aT1MCcT24YU=
+	t=1784213221;
+	b=x8XSM3VMa9b0kBYZ/q0XPyiyIcq6k2i2plAApWb06mjcxZjV4Cj9lQmhcfmZaypJN+Fw8G
+	VCmI6/jTCHIx3iYAO04uAXsyHuwzP9fASn0yaWiPQMq1PFg7U9jXHZydpoYZswsrVodj7s
+	PrV5p1MZzMGhd8SDpwNW6kWOu6/jSMg=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=MxkEnFl7;
-	spf=pass (imf04.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=qsOZlAFy;
+	spf=pass (imf10.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
 	dmarc=pass (policy=none) header.from=linux.beauty;
 	arc=pass ("zohomail.com:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212593;
+	s=arc-20220608; t=1784213221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yb6Cwm/3woTUAoheO4z7KKKAu6lXR9oCBGtztGfVAug=;
-	b=5JLwMANIAR5csARzZDRtsZ0lFM9knKBMH3n0M7J2zw/ggb4a+oKk8AL0iflN3n3CNnodj1
-	Ca2j3iyK+6hdJPwRvCEwkQAvuh7aIJH0MhkMf9EKaQix1jakJj1dXzyzNBNoDwroQIwZOs
-	itIAYYk7TOZ60do51PSR61wK7wXe8zc=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212403; cv=none; 
+	bh=ZxeHj8hO5oq7dr0XeLl4vE0l10KI0S0QKZO8mwMoyxs=;
+	b=sc2hGQALuOzrz+EolMAe/HBK6ZFV7fzYvSijk4PHLSJrvnzIXuKM3mLqWEY4fJVqqxml+2
+	QFP1CuIzvSb4GzKklSzayTgs2t/9yVwAVX9TmHN4OISI+SuBhzP9dTBMq80p2SzglPL0eR
+	ACHvFfJOpJNyeBiyRsyJAp08GP0mnIM=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212572; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=dMV9ZN1HA5HIBvY4+WV4YpiNJFU3cvQjedrufXW1PYD+fjRhIzE1dZfMAM3bdTLIoKSMyAcGdOc8C1mbDETJORaIOoaiFXJsTJExVmYIdldJgYYgPJqW9xMAmz9H8VCR9beMpQXu2HapXvo9Ka38/rg++NrvrwsvKZ94HsrGPlw=
+	b=HSng2g83+OJhIZUv23KRy4zcnv6vd9QLcFZUWMU2r7qY7AArUJMfMr+4FdOPnIb6uKWEn+C1GqXHyT1p7jecD7ur2r+BBsq9/PK/jeuPrmwYIZWQNwaYedEs7AOgRNlTn9HPx8IaCcXgzuiyh258Nmvd1B8fuXjJJ7nk2Kc2VY8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212403; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yb6Cwm/3woTUAoheO4z7KKKAu6lXR9oCBGtztGfVAug=; 
-	b=cfYMuO7L2esHwoKyzWcFcEY0/CiF/Pq+Qv68PEy+L77nPyCCoulRNcQfY9Y086LvBx6Xemug3ccOfPEuKi/SdUJdiJFIKi7XxoO31q9fV8VtmoEaWMSJNwLGkuB9ckQwWSuPnCXy1pXRrYkAC7G/uQq2i5Bp/ZmLiYdDcRBJV7s=
+	t=1784212572; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZxeHj8hO5oq7dr0XeLl4vE0l10KI0S0QKZO8mwMoyxs=; 
+	b=NRNo6jPM8WNUPj+Sz0GRbIndB4pJoj1h4aBAd5oeWJv9tDWgSUu936fhq+ymKuO38Qu2M5AlzQ+Un+PKE+QF2rIWLHxem31I/ijQuPGdj6VEvLMy985fvNaBiGXMjfm+qU62UiwOs0AJkKhamGXMI8GE11L3NA1XuEbCX9XOlNc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212403;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212572;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=yb6Cwm/3woTUAoheO4z7KKKAu6lXR9oCBGtztGfVAug=;
-	b=MxkEnFl7cfoArhzoENi4PknhrlsAuitJVyM04IyV0ygMcamDMbtLCiPRIyNRQoZY
-	K0Q623GvfSSRvYsApqZ4muOcfMJSRvYdjMO04lveUVm1vCLLQHqtueHI6PYucgfKhwz
-	IklWLzpodiO2DFjS+MApJH6Ofa/OyqiAGXs7O+jQ=
-Received: by mx.zohomail.com with SMTPS id 1784212400577476.8024498506385;
-	Thu, 16 Jul 2026 07:33:20 -0700 (PDT)
+	bh=ZxeHj8hO5oq7dr0XeLl4vE0l10KI0S0QKZO8mwMoyxs=;
+	b=qsOZlAFyesYeOFNzL602w6sydaHJw7z934zNhJHn/XHrOHLS2015UuZAr+fAM6/b
+	ZnMn85YBMJn4kotXigL9X9Bz4Y75XATVcxuHIaLRJyHDFT6UFYHz/ZcpJSs5nAQTd4H
+	zbgriKm78rljhyyNnFEDVr/frdNdV2o0y6UDQdF8=
+Received: by mx.zohomail.com with SMTPS id 1784212568808726.4671094867332;
+	Thu, 16 Jul 2026 07:36:08 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,9 +99,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 07/24] fork: expose vfork completion helper
-Date: Thu, 16 Jul 2026 22:31:33 +0800
-Message-ID: <daf1064397a3f3ccd11f65f07683edf493e4a435.1784204592.git.me@linux.beauty>
+Subject: [RFC PATCH 24/24] Documentation: describe pidfd spawn builders
+Date: Thu, 16 Jul 2026 22:31:50 +0800
+Message-ID: <7e385d39490520666cbb613e50968e8bf2242269.1784204592.git.me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1784204592.git.me@linux.beauty>
 References: <cover.1784204592.git.me@linux.beauty>
@@ -109,13 +109,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5AC6E4000C
-X-Stat-Signature: qduj5di4w8d8aadprenihk8o6i55yk6o
-X-HE-Tag: 1784212593-517817
-X-HE-Meta: U2FsdGVkX19+ZWmvTB80SrxSlUBDrD2ZFMyPYmoEcXUYXufp4t75ZvtA5AGXkb0yXNgQr7OJXQg37XEHlp/PHPt6DmBtC2vQaczp1V3zOEiSMJ2SwW63fL5TQ48vD3JQ//pd304rVKieW85IRdIHnq/2rO/fK2E3r1RHmxlAfgUWMzsa0wTzoRuy5U8DupRE5V301DYUV9sDqfoI8GzxCuYt4rtaWEMQrtFtAF4HMwyg6J8EAAdhl4Hjg3/Gg2HGzd3xLzb7Ml8mMIxu+eu3v43COSIRy4Z9hn2/MXSSErHDkfOusVcDvyDbh0O8yFPluJD43rlMR9oiPgQFK3iZ8NA1sXiuo7DaZCGakB6yiNHL0oZs+7PtJs1Pf2pVzphKp55cGpujduHF2b411ikgr18J4Isy1Al30ND8r9ZE1fIvgAVMDnwC1QSOyvKTVqnmeVADiogW+MCusUEDck491xyeQDuLLs19hKcnvIVF9kxFDAipwXuZqCh5wEgpk6qvMG6KHH3Bfaa1f5pH9JCBM5Xmyvek1UqMFDtZb1wVSjP47LmSuX5Cn1VJFncdGRMQ1j4ml0h0X51p3fjpnfOB9GA8Btjxd3o52QrGk9Coaaoo76Q5XUU0Sn26bMTIyRQH8x89ZTJoJlBHWj9tIrwfTg/J8BmZzdlY2tWqcTlwfQAJyGGOQ0VmX3L7s4yOkiANkwMLqmau8gS5NOQweyZ6QFksiEovXPUbl3gi4344h4Gw8shoNz9ouK+SVtovjXVGvq6gMoqEkufAkyIM+pBerGHlXilHb4kwqKVz7tuoSajQmqy4N2rFgM6e+uUCNWBymDMUnPDG6pGZaUqpjhHsln/umf1EWbHm2P2FOfH6y1MS1fnaXiKDMZL86usyy1KSezhM/kBC6ukr55nzNQfD4tFESN9to9StJKJ9PvWTLya3LUvyjl7jPwNt54AChdeEAAMwQfKoEjD5kTfblYV
- p3lJhzFL
- Tf5oELDNG2r+PlQRPn8/w1/MBpXjaHxVlzPhPQoBWIyvSqCii9njRZ027s5DHZRDgq5ZiraqDNCPC0sAFrQJud5tHj4utnv6VggDRcuOjgUbhJj5MXcZ3qXSNpIKvXJpzZ8q4ABB2HwrbGPriernWLi75V3s9O2/1sXbye2sxgFfZcl4us8DoeLFXFJ02HsvK7B3GndFlk7Ro4JYKsBAVqQJ134Jqwj4mNtnfMzTYhexuPg8A05Pvsw6yww/AQxCUEJC402ShiNtbvLpVaVNSEnseIc9F62j3fPVcHwJ3EuZT5Wii4TVDM4y8z8f+aNi/dfMvHR8Q3iHDZjzxTbeZaAP9SQ8jiHmKcH6q/Qhmh5zwB3ujBD4N6DUTRIQmYfw4oHDc5SZfIXgvD//RdT9ZxNqZXbn09pJz3uJhmltdmAAWWLI1ukDGVYw7Ri5bbVEzY8uv
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4BA31C0007
+X-Stat-Signature: t7ug4681bw3pzu4hmtooe6e8o3pkdz6x
+X-HE-Tag: 1784213221-727997
+X-HE-Meta: U2FsdGVkX19qKH90apzNunJq3KIdQuqQILrRC+MxBygWkN1xsDrAhjI7fvUKG16V0pVOIw1pbsWJ+q3O4PACBJnUPmcYkTZshXUqXCkF0pwGxpsAMdwB4MdKHuaxkgAlID7/9BdjwkPI0EANhrt7fwMHbx6rbt8YjSnunah/8B3AFehTR0/0IccVsET9zLLv1gkWdd6tO4Xt6Pn3MNtKomTRdMrm4f3dcAFZjOASA0h7NkHQQ3cbh3dtC+oyqgg578d9OrU93HkcoCXaZ3j9UMpJkT6I3kYlIpZGbB1pgOzDnMIbpkysv/f/pFRaK0Vq89zCzc2sHZ65b5Y9vURig2uJ23rAOjEr6QKBe/Go6wMoh9TGlTxjL9QHzvNAZjoqMLfuz5fIjFfZSOVlHncK+UhVD0wf3eHoFGYnw6FDtbhQcewsJsMFDCrrA7F4iLiPHbtELndXYD+4qCbYlud3NF/ht5RBrTsSahgtz3ZqD5YvoGm7I7of8InGR/cI0fyDf92MNmJQe+iVHkQn64rWhRM8LzcB94D7dhkRr28ortU5PieinqExeiO0sRvbDTTd25AD2SgtX1NowB8F96DrWTsmLZD5giAEg/w1Lop4Mw2RQGjJPw5iJW3o4eiM5AVERm1X4NC6ULe/O/PjSgjxTXdDxFgP4wHPzmi8iv2HsCoec7LCeJCzvA663i529BQo+8h0hkuOFdld6jpu/kzOJuvId0SHRZcKzlaEiO1wh/TA6ufLh9V1xPFX66o2j12isZaBn2iVJvhCIf3w1ZHTh++sd59fn+Fg5Y2euS64HyBWdQ0vNQ7P+Jebi2Kke049Sc9xywddAM2rjvl6oysWH3/cCETcbLGnsn+Tu/WS3qWlLwBHIBDyzqZUTcna9ZL6wpHA6htauxvsmY1eqWSyKl7cL8SAvrubXrx8O8wnQqG7wYGSIlXHsQx2hoFdpMxLJLZ4niolHFaQlSWcmAR
+ Yo3f4ybG
+ 5ouYpwTLiHn03ZC3jl8fHTI3JGrxkrhxCVBMFj5Q8gSI/s0j4Qou2ov27xwbA09fO2BHr7DC+YEBtETEuOC/1f/rAiyagSEtcF49DVm+oQxYSLXm0WUW8S8fP4nCsRp4g1mBJyIKHHY/OJD90TBIs71VVYpgkHcqaQAnROsZ05PpjDkvYb2/bpYRA68STAakp59XOUJd2E0Bq6EcyVuJl6zQIaX4gV0G6T2IY+lrDcJ93PPABGllu+EnGLBB0H6wdM0sbgWvjmvXL6MgK2zPgRoa9ceoBnH+XlNT2ov02R/KOcO/PDu6VTSrz3ZIVL6BQb/pA1mDYHzHvhZw0OGx9JuvWTBBP1PypEf/X6QkopqfetsvlKVXzJidGYyPM2SHoiUpHatolMCv7yEKT6ctJXsip+IcBvXroMPPfsQ4eYtHRVbwOggQI+HQUKYDLxpLKrga59z/gBeW2qyWCQl/O+mLMpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,52 +123,300 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Allow process builders that call copy_process() directly to attach and
-wait for the existing vfork completion without duplicating its signal
-and task-reference handling.
+Document the taskless pidfd lifecycle, source-state and authority
+model, optional path configuration, run and file-action ABI, one-shot
+failure classification, and embryonic process visibility.
+
+Describe policy and audit interactions, current accounting behavior,
+and the features still missing from the initial interface. Add the
+document to the userspace API index and PIDFD API maintenance entry.
 
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- include/linux/sched/task.h | 3 +++
- kernel/fork.c              | 3 +--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ Documentation/userspace-api/index.rst       |   1 +
+ Documentation/userspace-api/pidfd_spawn.rst | 247 ++++++++++++++++++++
+ MAINTAINERS                                 |   1 +
+ 3 files changed, 249 insertions(+)
+ create mode 100644 Documentation/userspace-api/pidfd_spawn.rst
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index e0c1ca8c6a188..92b4e3bc31e66 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -14,6 +14,7 @@
+diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
+index a68b1bea57a85..28da6a4da7c78 100644
+--- a/Documentation/userspace-api/index.rst
++++ b/Documentation/userspace-api/index.rst
+@@ -21,6 +21,7 @@ System calls
+    ebpf/index
+    ioctl/index
+    mseal
++   pidfd_spawn
+    rseq
  
- struct task_struct;
- struct rusage;
-+struct completion;
- union thread_union;
- struct css_set;
- 
-@@ -99,6 +100,8 @@ extern void exit_itimers(struct task_struct *);
- extern pid_t kernel_clone(struct kernel_clone_args *kargs);
- struct task_struct *copy_process(struct pid *pid, int trace, int node,
- 				 struct kernel_clone_args *args);
-+int wait_for_vfork_done(struct task_struct *child,
-+			struct completion *vfork);
- struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node);
- struct task_struct *fork_idle(int);
- extern pid_t kernel_thread(int (*fn)(void *), void *arg, const char *name,
-diff --git a/kernel/fork.c b/kernel/fork.c
-index f3f378a85be4c..970810a01bbf6 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1435,8 +1435,7 @@ static void complete_vfork_done(struct task_struct *tsk)
- 	task_unlock(tsk);
- }
- 
--static int wait_for_vfork_done(struct task_struct *child,
--				struct completion *vfork)
-+int wait_for_vfork_done(struct task_struct *child, struct completion *vfork)
- {
- 	unsigned int state = TASK_KILLABLE|TASK_FREEZABLE;
- 	int killed;
+ Security-related interfaces
+diff --git a/Documentation/userspace-api/pidfd_spawn.rst b/Documentation/userspace-api/pidfd_spawn.rst
+new file mode 100644
+index 0000000000000..2aaf5db85f13b
+--- /dev/null
++++ b/Documentation/userspace-api/pidfd_spawn.rst
+@@ -0,0 +1,247 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++====================
++Pidfd spawn builders
++====================
++
++Pidfd spawn builders create a new process image with kernel-mediated setup.
++They do not expose a userspace child stub between process creation and exec.
++
++The interface is::
++
++    int fd = pidfd_open(0, PIDFD_EMPTY);
++
++    /* Optional executable-path staging. */
++    pidfd_config(fd, PIDFD_CONFIG_SET_STRING,
++                 PIDFD_CONFIG_KEY_PATH, path, 0);
++
++    pidfd_spawn_run(fd, &args, sizeof(args));
++
++The same fd starts as a taskless pidfs object and becomes the child's pidfd
++when a task is created. The current implementation supports an executable
++path, argv, envp, and ordered ``DUP2``, ``CLOSE_RANGE``, and ``FCHDIR`` file
++actions.
++
++Opening a builder
++=================
++
++``pidfd_open(0, PIDFD_EMPTY)`` returns a close-on-exec builder fd.
++``PIDFD_NONBLOCK`` may be combined with ``PIDFD_EMPTY``. Other flags are
++rejected. ``PIDFD_EMPTY`` is rejected for a nonzero pid.
++
++Opening the builder allocates a pidfs inode and builder state. It does not
++allocate a ``struct pid`` or task, and does not charge ``RLIMIT_NPROC`` or the
++pids cgroup controller. PID allocation and process-count accounting occur when
++``pidfd_spawn_run()`` calls the normal task-creation path.
++
++The pidfs inode has a stable identity before and after task creation. A pidfd
++opened from the eventual numeric pid refers to the same pidfs inode. A poll or
++epoll registration made while the fd is taskless remains attached across
++publication and can report the child's eventual exit.
++
++Process-dependent pidfd operations return ``ESRCH`` while the builder is
++taskless. This includes signal delivery, ``pidfd_getfd()``,
++``PIDFD_GET_INFO``, namespace ioctls, ``setns()``, process memory operations,
++and process-dependent pidfs xattrs. Argument validation may fail before the
++taskless-state check. ``poll()`` reports no event while the builder may still
++publish a task. After a terminal taskless failure, ``poll()`` and ``epoll``
++report ``POLLERR | POLLHUP`` and wake registrations made before the failure.
++Inode-only operations such as ``FS_IOC_GETVERSION`` remain available.
++
++The builder state follows the lifetime of the pidfs inode. Duplicated or
++reopened descriptors and VFS references to that inode keep it alive. Releasing
++the final reference before a run discards the taskless builder without
++creating a process.
++
++Source state and authority
++==========================
++
++The current mode is source-based. The child is created from the calling
++process at run time. State changed after ``pidfd_open()`` but before
++``pidfd_spawn_run()``, including the current directory and file descriptor
++table, is therefore visible to normal process creation. Non-close-on-exec file
++descriptors remain available to the new image unless a file action changes
++them. The exec path applies ``FD_CLOEXEC`` normally.
++
++File and filesystem state are private child copies before file actions run.
++The current backend shares the address space only for its internal
++vfork-style setup and replaces it during exec. Applications must not depend on
++that backend detail.
++
++Configuration and run authority is bound to the mm, exact credential object,
++and child PID namespace recorded when the builder is opened. Passing the fd
++through ``SCM_RIGHTS`` or another fd-passing mechanism does not by itself
++delegate authority to configure or run it. A rejected authority check does not
++consume the builder.
++
++Configuring an executable path
++==============================
++
++The optional configuration command is::
++
++    pidfd_config(fd, PIDFD_CONFIG_SET_STRING,
++                 PIDFD_CONFIG_KEY_PATH, path, 0);
++
++The command copies ``path`` into builder state. Calling it again before a run
++replaces the staged string. The key and value must be valid NUL-terminated
++userspace strings, and ``aux`` must be zero. Unknown commands or keys return
++``EOPNOTSUPP``.
++
++Staging is not required when the run arguments provide ``path``. Supplying a
++run-time path when a path is already staged, or supplying neither form,
++returns ``EINVAL``. This selection is validated before a run-time path pointer
++is dereferenced, so a staged-path conflict takes precedence over a fault in
++that pointer. Relative paths are resolved after ordered file actions from the
++child's resulting working directory. Without an ``FCHDIR`` action, that is
++the working directory copied at run time. The kernel does not search ``PATH``.
++
++Run arguments
++=============
++
++Version 0 of ``struct pidfd_spawn_run_args`` contains:
++
++* ``path``: an optional executable-path pointer;
++* ``argv``: a required argument-vector pointer;
++* ``envp``: an environment-vector pointer, or zero for an empty environment;
++* ``actions``, ``nr_actions``, and ``action_size``: an optional ordered
++  file-action array.
++
++``flags`` and all reserved fields must be zero. The syscall size must be at
++least ``PIDFD_SPAWN_RUN_SIZE_VER0`` and no larger than ``PAGE_SIZE``. Unknown
++trailing bytes in a larger structure must be zero.
++
++``path``, ``argv``, ``envp``, and ``actions`` are full-width userspace virtual
++addresses stored in ``__aligned_u64`` fields on every ABI. Native calls must
++fit the native pointer width. Compat calls must fit ``compat_uptr_t``; nonzero
++upper bits are rejected with ``EFAULT`` before task creation. Entries read
++from compat argv and envp arrays are compat pointers.
++
++File actions
++============
++
++When ``nr_actions`` is zero, ``actions`` and ``action_size`` must also be zero.
++Otherwise ``actions`` must be nonzero and ``action_size`` must be at least
++``PIDFD_SPAWN_ACTION_SIZE_VER0`` and aligned to eight bytes. A larger element
++is accepted only when its unknown tail is zero. The complete action payload is
++limited to 64 KiB; the interface does not impose a fixed action count below
++that byte limit.
++
++Actions execute in array order against child-private file and filesystem
++state before exec:
++
++``PIDFD_SPAWN_ACTION_DUP2``
++    Duplicate ``fd`` onto ``newfd``. If both numbers are equal, clear
++    ``FD_CLOEXEC`` on that descriptor. ``flags`` and reserved fields must be
++    zero.
++
++``PIDFD_SPAWN_ACTION_CLOSE_RANGE``
++    Apply ``close_range(fd, newfd, flags)``. ``newfd`` must not be less than
++    ``fd``. Only ``CLOSE_RANGE_UNSHARE`` and ``CLOSE_RANGE_CLOEXEC`` are
++    accepted.
++
++``PIDFD_SPAWN_ACTION_FCHDIR``
++    Change the child working directory to ``fd``. ``flags``, ``newfd``, and
++    reserved fields must be zero.
++
++An unknown action type returns ``EOPNOTSUPP``. Invalid fields or arguments
++return ``EINVAL``. Errors from applying an otherwise valid action are reported
++as run failures after task publication.
++
++One-shot execution and results
++==============================
++
++After fd type, creator authority, and source ptrace checks succeed, the first
++``pidfd_spawn_run()`` attempt atomically claims the builder before copying its
++run arguments. Argument faults, validation errors, memory-allocation failures,
++process limits, and task-creation failures after that claim are terminal.
++Later configuration and run attempts return ``EBUSY``.
++
++Checks that fail before the claim do not consume the builder. These include an
++invalid fd type, creator-authority mismatch, or an already traced source.
++
++On successful setup and exec, ``pidfd_spawn_run()`` returns the positive child
++pid as seen in the caller's PID namespace. The pidfd remains the stable process
++identity.
++
++A failure before task creation returns a negative error and leaves the fd
++terminal but taskless. Ordinary pidfd operations continue to return ``ESRCH``.
++``poll()`` and ``epoll`` report ``POLLERR | POLLHUP``. The builder cannot be
++retried; a caller must open a new builder.
++
++A setup or exec failure after publication returns a negative error, leaves the
++same fd as the child's pidfd, and makes the child exit with status 127. Normal
++``SIGCHLD``, ``SIG_IGN``, and ``SA_NOCLDWAIT`` rules determine whether it must
++be reaped. ``PIDFD_GET_INFO`` with ``PIDFD_INFO_EXIT`` distinguishes this case
++from a terminal taskless failure.
++
++Internal restart errors after the claim are returned to userspace as
++``EINTR``. The kernel does not automatically restart a consumed run and
++replace its first result with ``EBUSY``.
++
++A fatal signal delivered to the published child determines the child's exit
++status if it wins during setup. It is not reported as an exec setup error, so
++the run can return the positive child pid even when that child exits from the
++signal.
++
++Embryonic process state
++=======================
++
++After task publication and before successful exec completion, the child is in
++an embryonic exec state. It is not yet a normal userspace process image and
++does not have a valid userspace register frame on every architecture.
++
++During this interval:
++
++* direct ptrace access and ``pidfd_getfd()`` are denied;
++* procfs PID lookup and iteration treat the task as absent to other tasks,
++  preventing access to the source address space temporarily shared by the
++  implementation; the embryonic task may resolve its own procfs entries for
++  executable and interpreter lookup;
++* ``PIDFD_GET_INFO`` reports ``PIDFD_COREDUMP_SKIP`` when coredump state is
++  requested;
++* ordinary pidfd identity, signal, wait, and poll mechanisms operate on the
++  published task as their normal permission checks allow.
++
++Successful exec releases the embryonic state before exec event publication. A
++failed setup never exposes the borrowed pre-exec frame to userspace; the child
++exits instead.
++
++Security policy and audit
++=========================
++
++File actions and exec run inside the child kernel path. They do not appear to
++seccomp as separate ``dup2()``, ``close_range()``, ``fchdir()``, or
++``execve()`` syscalls. A source-side seccomp filter can reject
++``pidfd_spawn_run()`` before the builder is claimed. A policy that intends to
++prevent this operation must filter ``pidfd_spawn_run()`` itself; denying only
++the syscall numbers corresponding to its file actions or exec does not mediate
++the equivalent in-kernel work. In particular, an exec-only denylist that
++allows unknown syscalls does not block the initial spawn exec; it must add
++``pidfd_spawn_run()``. A syscall allowlist does not permit the new operation
++until it adds that syscall. Seccomp state inherited by the child remains active
++after exec. LSM checks, including Landlock executable access, still mediate the
++underlying exec.
++
++Audit records the source syscall transaction and a separate
++``AUDIT_PIDFD_SPAWN`` child transaction for executable lookup and exec
++arguments. The child does not emit a synthetic second ``AUDIT_SYSCALL``
++record. The child transaction is selected using the originating
++``pidfd_spawn_run()`` syscall number, so an existing exit rule that names only
++``execve()`` or ``execveat()`` does not select it. Such rules must also select
++``pidfd_spawn_run()`` with the current audit model. File actions are not
++emitted as decoded per-action audit records.
++
++An already traced source is rejected before the claim. The current backend
++does not implement ptrace auto-attach events for the created child.
++
++Current limitations
++===================
++
++The interface does not yet implement the full ``posix_spawn()`` surface. It
++lacks open and close file actions, resetids, signal mask and default controls,
++scheduler attributes, affinity, process groups, sessions, explicit cgroup
++placement, ``PATH`` search, and exec by fd.
++
++It also does not provide pristine or no-source process creation, executable
++metadata caching, or reusable spawn templates. The current implementation is
++source-based and uses the existing vfork/exec machinery internally.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 85b1306cb2ff3..0b6d466787a60 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21288,6 +21288,7 @@ M:	Christian Brauner <christian@brauner.io>
+ L:	linux-kernel@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git
++F:	Documentation/userspace-api/pidfd_spawn.rst
+ F:	fs/pidfd_spawn.c
+ F:	include/linux/pidfd_spawn.h
+ F:	include/uapi/linux/pidfd_spawn.h
 -- 
 2.52.0
 
