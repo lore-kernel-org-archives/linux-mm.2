@@ -4,140 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9F69C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:28:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39532C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:32:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B11A86B013C; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
+	id F13126B0117; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE9DF6B013F; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
+	id EEA866B011B; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DB806B0141; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
+	id E01E46B0136; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FBAF6B013C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2D80140216
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:28:31 +0000 (UTC)
-X-FDA: 84995021622.27.50768D4
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf03.hostedemail.com (Postfix) with ESMTP id ED95D20005
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:28:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="f1/1nOax";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784215709;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B1C886B0117
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61895A0168
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:03:48 +0000 (UTC)
+X-FDA: 84994656936.26.9711A51
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6922214000A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:03:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j TYnDFj";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ow5lc6kz;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784207026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
-	b=FXJ1PHMXBPWJMYNHbJ/p1Wi2J9e2liCcFehnAMwXHSxktPPWhxVT6kHmu3glcj/NCHHN6S
-	n1RxPjiWKhODi12YzzfO2mvsr2Ok6v2CHQFhc3s8NcyXM3ej6qDwQ4MSJ0r9RiX+OAH1gj
-	uQb2RF9uNYO5oRQsUXAp9FrUnTrWeJ8=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="f1/1nOax";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784215709;
-	b=5IDSsWUZfcvYSS171rDBkwL4AdTYKLJJJbQ6v+gpK5RqTQiu6vTbSNR1s3imuWdkxNXOOV
-	yYIEKJ3/lRFxHUexD1a0h4qW2iXtbZyjbbdcgo9mM5B81GPFAwEqXjcD3oXBHiOWXOTP23
-	tWdpSoWKuQCzRGiRBGsGXZG/tdEkrA0=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c10e86e52so30481cf.1
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:28:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784215709; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WmqQ9pzTBCfhthUr2mQ8/AILtVM+7UQhS4w8AReA+ud7RLXiwm9l2vLrkvzI2gxDX2
-         57NNVfNa7/DoslgZ2Nt+m9afzgoXYOstccvaXyuJ21FCYP0tK2y+D7Yz49UiWGPIMBsB
-         kFP+MCkrDItglClFJFUwqTZwzywTe/ZHFxQtfMDuq5ODv3MOMHg4g/PHhwLMl3a1w2oS
-         d6nBX3IE7qs5F6WIE8wN7W7z+3ruZ+VjVEW7rbg7iQuS1Bj+nWnqYcOWfQASPc7fFnuk
-         MYXcM8OSVbS2gCg1XRSCF0eQVYabGw+xlLqFBOCD8Q0JmlsE8C+sEgdRtr/1n4IM6DuC
-         aLig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
-        fh=xkI95bapSSrnNNh70/GK7J4v0quP+qso3sxH+iTs2IE=;
-        b=kd9LRXnqLTD+2RM84SiNwAFC2ARwIw9t/gWOgp5FRiDHzHGz7U1PZhAG1TwgjZlJcZ
-         mGQxkVPM+iIzMJtQTZEUIzipMhOI+3RVgJD8+tQeL4cZbwHuuLmDLjJUgu0j7vyo1IT7
-         KqyKpYbFVXI2W7fPktkT9y1MNgDl2HKq/2ct4qpXoT9nPZ7bxusE4daqa0upblRDZpsk
-         LixJZLk6Uw6bSFNc94KF5sa5LiNv17NxALJdiwTe5azR26aK/byIBGIdu6Wcg5cbAR6V
-         qaMDxFrQ2PSNO2OWNnwil7rKSohbzq7tnbNVIcibIerdDRLalYJiYhJfLRy2laEjXzD0
-         V7jg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784215709; x=1784820509; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
-        b=f1/1nOaxG9E6Ci39RCdyi3phQU9t0qfnJVEefCQMozCDBAYfDL0JDFs14C2yjh7QLL
-         7f5Uiszo4qrWczBEYbnDNS0+OxGLyj2xDYmYGTE6Z6s4bCYfFTFOYaOtPHBKFhKvAWhy
-         L+rH7lbE+FciG4ryyqWL1VcKcx6RHrBz1DmE2El4qPQiPc5jPR3ycF1Y0dO5zHQleoyD
-         VwZGijaC9mmcHv1ydx06oEM1EZK9gtFQwFkS2jNE3cMkcf7Xl0Vpai6Cq/hxq3GGrhyT
-         YSV4orczyZ0b8vsrRmUMM0K1xMaon/cNPVAV6t0Wx4+WWfzOcKYkwIwZCu1dWJLVSaSg
-         OJOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784215709; x=1784820509;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
-        b=hdA3TEEdVQ/juwoVCRvJ+DGTHZtPfmeyVCm+rOFQVQrWjr7iqi81ZFgq+ZJvy/qFWr
-         w9B7sHPhjcjni9jf322uJbC811a4I75bPIL1WbX14d9A885HxJFdecGlb1AcmvNQxLfq
-         ZAbQSiUevBlQ3t6rieUvnSTu2gr3mWHCHX1f5yeyh0K89yWFg5p3SqxWTWDRp922mObe
-         Jy9RCxC1S8cCMp2pZkqHjNg7/tSpg43QH9SDOdYexQWIDXqZcT/VhNxnsqM28WcK+5vz
-         kJDxfIHosiWuOtRBkxY+Rvjc2z4/heofsiMw4EaVJ0kRoMpUr2LRaWqkAuWnjpqeoMJi
-         kRJw==
-X-Forwarded-Encrypted: i=1; AHgh+RqvkVnYEI3VzhcoWzeyDPEqx9pYuyA81EESIK36FgeRpDDmStdtSRMkeV7e9qk6TJ2NnMTWxX7YZA==@kvack.org
-X-Gm-Message-State: AOJu0YyFzzJpphx84IXdmTQAJLq4/9deRIKO9igL/v81Rzn5xrSthlKG
-	Mi7FOGDoWOo/VsUvNrsEf33jZQCpIzZcEkDnwRwWX7VL2nTMpFo2qBJlq5XsK5CncSZJBfhoEB4
-	RxA2SnJwQK8k6psz7fta3YVffnyCIcJWlhwoT/3rX
-X-Gm-Gg: AfdE7ck/98sl2Ln500y6aivLc25FEgtmSVcw1Op9KlFcdgrc2OaYSTwKouKA+y4RM2Q
-	dFuKjS6kHg1mc1LHUew9DPS4jGxXRntcn+jykRltDNRIHUiH6Cp5AsB5mZ7x6kNNgfJBovfVO7Q
-	IVd5tq/CmX0M09XnWBK6FSLZ7hJaCuqyVe2siUEXQMxqJCzAWseIdNtyFG6HEzgGe6eSGSqDWju
-	s5A1jeAG168Cyfj5OjZsa3VfDKXuGUSAvUx7pRzMIY+g3oLLxSZcWDmF10iPkWL/09VBlHo7GU2
-	TP1/zNcey8baOU0=
-X-Received: by 2002:a05:622a:2618:b0:51c:e80:9e88 with SMTP id
- d75a77b69052e-51f7f3ca787mr11136661cf.16.1784215708609; Thu, 16 Jul 2026
- 08:28:28 -0700 (PDT)
+	bh=P4sPOn37OCBYFsXI0lvLOBbwI6X5nF8OaGmm6rn9AWM=;
+	b=wRAKYrqbNPhxyaphEzR3HtkJfgRfZVoxWifMzkF/0NQk/ZKHcDcP4WPySvXTaAbYwK76Oa
+	O9eyC7BlgPkyfTQmAsCfjtx+hHeaZ3+D+o3FNHqFpwvs5tVzADihSmYkoo6tS3vidf5Rzh
+	WNnp9cdpNqV6MzULZMeDSAWR/6lWL4M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j TYnDFj";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ow5lc6kz;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784207026;
+	b=Nf72eBvzsi6Zfr1yHg6bSxg1TZk4LDqeMU091ogdbjNX5dSPgcRTdAbLyzQQJKYgIzIb+l
+	BKzEU6Mur4VEQFagapG4wruquHj+WlEe6SSbXPJZFjjRrXR+E3Wg0/ztke1lyZgTHysIic
+	UEwXxuYgKD8koHlaxwOyPxiKWWZrODY=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id D2A31EC0067;
+	Thu, 16 Jul 2026 09:03:45 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 16 Jul 2026 09:03:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1784207025; x=
+	1784293425; bh=P4sPOn37OCBYFsXI0lvLOBbwI6X5nF8OaGmm6rn9AWM=; b=j
+	TYnDFj5l/0k7n7PZwMoqsOgQ4u4i/hW4zdZFItnbM629AIDubwH3b5BtNRe+OEIv
+	uamf9S0WOpPHFgwol0F9ue4funs2FQV6lL/3Wc9GvWlHJ5iOHRhVKKZV5e/qq5Ub
+	8eEiGAYqXffNj9spaH4mN9UuTuBhC1C9jqUqomGZt0mC1Admy+LXUnnhuUjJdcNJ
+	nqSiSbJjcvXdNZU0LK57u/q4lpbYxqYnl3nvTbU77pfI+yH8c5Z8UvwuCldjZamU
+	3eCaBz8ZvvX1rDCbi/o7BlxCi1Rz9hq085VFMEEJKDYTtndb1LvYblo/UvYmQw+e
+	sRSFkxQkG89y0F7iBgT4w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784207025; x=1784293425; bh=P4sPOn37OCBYFsXI0lvLOBbwI6X5nF8OaGm
+	m6rn9AWM=; b=ow5lc6kz+SWys7geQb2rl9HIYyQN0kVKxnJTqtcbFQJlS+ZjY1W
+	KciOlDa2gjbiC94b671dEASbSWxtVmfzznTAuIAQpEMVz6paw4IfgnA+Jg7yVd+X
+	rBhbIeiIoxgTAgyGM42yUX5fU8/vsvCso55BH+HA/m7tJ4YnOCf18NUAdnQmWOHO
+	0CdDXgPx2pjFC01ZxsJ77a9YJZ9xOyuVM9ZS6XxSLqiZl1Nx6eFd9mstcF5pdAmV
+	8LPvptocKdPMipdTr6JjGuSV/q8To5799Z6W5FoyLHFOsDzGwycWPRi3ZAxQt2Cc
+	82F7eS3VfY8zFKsY9P+f6hryVjIQkuEnC1w==
+X-ME-Sender: <xms:sdZYaoZDwq_r20f9uYAxPBXBWJ5gN2Kf75SdKFI1VAAbRjM_aS-dfA>
+    <xme:sdZYapgHdM9dBoECMOaHVkHw6KLubVaSu6MlCNoj85ohsjVKPxJ_8_6nQRGa7igzb
+    x39VPS8U0S58-CKSiSI2Wsd9VFEwio6IWv79ziGDcFceK1eBPDaDsI>
+X-ME-Received: <xmr:sdZYapd9iy0fmgyetcUkYijNjtL7TjawVMyumobgbL3hj_c3N_D7QnoQ6BlpQA>
+X-ME-Proxy-Cause: dmFkZTGHiYKfxGpE1R0pHf/Rslp7BzHpXTJCYOqmlxtwcXGk43FrFfU5piPux8EZF8hSz3
+    LqiC4rKTBdoYR3TxWLCFn/tSr178V8YFCLbeAi0Ho7nRsg2ZdvOK7Wov5he7YY93S6h/SM
+    V1CWg/B8B6c5OEdsoFFSnuxXOVLag+/HcaMqGRmPCAtk7JIJSTnlfhkptC1paC1SolajWL
+    O0jTVTY6EjGDxU1XOtWb0aA6A95L+VnA7XjKwZUT3LFjbHOAhUkhnfdKhCHn8XNvHMHxvr
+    JOaPIggA4Ck3RaXTG1JhceF+fF1a/C7hplt7Rj4M/4mTINyTqla1LzzlN+NU92gNZKgCOW
+    hYUQ1HIwC9KYiKVAKgco/LdwrgVzH6sbDKmwrkdaX48l5IXWfvCkAq9i+pS/Gc3h+Hnuxi
+    TCTpfKfzq6nrgcO/ZNpXiOva60wN6S/bS5M8KBc5uweVI02nsxh6Oze7Efx1Tv9kkJ/vE5
+    j0uyTm2mvWd+zwYJE1zdMeVjXhY4QW8ny5OiYmix+4WZBVEpUyM/Igc+c4Paw4OiHvdEMJ
+    SerdkM4Y+7E8uamTtXZAFaSttr9BMd5LiF6GI42Pj7s2UFaOD1uyi58+upZrPxi3UwechH
+    CaVqsliLnNgu/PLagGAt9kN8KM6JZk20bHMHrsxzh3mtnvJa2EnIKgcA0nXA
+X-ME-Proxy: <xmx:sdZYasq4BkH5khn6G8vzsFc9UYh_6aIsyYGSik-njYkEjRzKCNASWg>
+    <xmx:sdZYanRJIRMXdWEmF_P1cr0jK-B3eqi3HXO-8BW0tczBxtMyeXo0FA>
+    <xmx:sdZYaj7njaC2Wa3IK3Y7OearxWnU2rsWz50BQc_EGs6qcPJHEIL6QA>
+    <xmx:sdZYajPQAl7LdMohp-DDxcjAI6e4e2LPB5ny0SPkjtOEgmen6uaY0A>
+    <xmx:sdZYahqRATdttG8IF8P7cMVCABOEBKZhhFPgl-TcL3JVvZ3_JmZSC6md>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 16 Jul 2026 09:03:44 -0400 (EDT)
+Date: Thu, 16 Jul 2026 14:03:43 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, usama.anjum@arm.com, peterx@redhat.com, 
+	liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, jannh@google.com, 
+	pfalcato@suse.de, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	zenghui.yu@linux.dev, shuah@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 2/2] selftests/mm: add PAGEMAP_SCAN test for THP PMD
+ holes
+Message-ID: <aljWYfPRCVc6IB2b@thinkstation>
+References: <20260715144234.442721-1-kirill@shutemov.name>
+ <20260715144234.442721-3-kirill@shutemov.name>
+ <714bdcbb-92cd-4dde-820c-e3761cbbaf07@kernel.org>
 MIME-Version: 1.0
-References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
- <20260715-b4-objext_split-v1-8-9a49c4ccf4c3@kernel.org> <CAJuCfpGq3Yv8Dq=2mPgR5LGC=40VSNTA6mg4BjTRE0ADXMZkbg@mail.gmail.com>
- <01aa6803-e6a7-4172-94ef-043914e2f794@kernel.org>
-In-Reply-To: <01aa6803-e6a7-4172-94ef-043914e2f794@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 16 Jul 2026 08:28:17 -0700
-X-Gm-Features: AUfX_mxXFm8bI5YPQvcEPkQ_QsAl3HLbXj-fL32BvT9M-JPrvDl12nUblHbqJTo
-Message-ID: <CAJuCfpGDzsoTp0Byg5QzeiOOJKoPWNXYcADOXC4hieHLNu1HQg@mail.gmail.com>
-Subject: Re: [PATCH RFC 08/12] mm/slab: change struct slabobj_ext to a union
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <714bdcbb-92cd-4dde-820c-e3761cbbaf07@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ED95D20005
-X-Stat-Signature: 199mpgcby1p6jk9r3wksrpcobwwbyozp
-X-HE-Tag: 1784215709-330567
-X-HE-Meta: U2FsdGVkX1/3afP5N6WwUN/uQ6WIjDZjBR5MpMQSUd0/YXCURt/DTMkwH8fEFHVlpXr1EMd3vRb3i3NMeSa6y4u7Fw0yP+mQ34oTWiU+QKvskZHq49LUtQMPrqNeBRyImm5CKC1elmdTjtZHQCpD1b3amtw5rwKOLpSVZcbRq6/zr6MeRDz7AJ4GPcIGdL1idG/Mn0vq4jNwFrNZBmx/hQFLjJP6fiiNjewkWAdx7J34FRKKw0ibHUf3KFyXcaHrj5Y+zqxRqaIjDgqhnGcjFxzEUgo8lSidVEhrQ6csaPBOLS3vAVAQ40jvEYx5Wftg+c77igDctifVzkNUJVtaiCvIC57Ah72RTSVixotB4IIaE0gtHzXK1dTRfmfk0AXDK4RuxK8u0Wa7wBfr1e5Yg8goyq6+HTlHruTzMCcrgSMZsHaImSi9mlgViw+MKZcNQFobWUqB4vg2PtjbfQbKb5k/lneJp1dPEFN0vlw88dPVw2z0XKQF1T/HJZ/LA3/rNPCrv69t8ccxpVO4pRpsm4z+75dEa00nuz68CBjfoBLqIHK0QZ806VzaH1Wos6MqiyRrExzJ6HO25ojD550bp5oIEyMCiynsxyUU5EaXcbNjWuWlDbu7G2VT7Iz9Fhhh0106JF9wSTzRGkifqFrhZHUePJ2Y4PW/XmLwMUtw6IFia1e17OClruz2EvAPI4BYzLpd9gV5Lze6CC5qib+TLWQebOkeOFGGaWEZ/U/4+rowIwDoG7Kka/XzlopNy9PunXB0z5uMG7cArWNVrOv7Mclyx/Tt+aGk2lwMVsus5v1mMfUPklDkBnfOZhcl0iLe8fIwAo8A05SHxo6114MttaJjxWG59WXiqDscjnui7B0rAUNzsgX9uyGKS1PRPtc4acHA2okHDl6Wsqj0FTUVaOCa3IiDwjDJ2m0/ApP0By1uV+9AyJrRunFtGBIXzEQ+IACDdhSi5SlI5OtO04m
- I5a4hbym
- n1dMdfEQ3WPaK+UBa2PGNghSzh83/TKya32tvcAX0tLuXz5DPd1twxQlpAsnUVN/z0wtsAZiOFkVDaWXKGplnn3fNM8TwMjVOti5xL00sT6PWup7PFiU7UzUPqOnDeUEGNaMcVUX2HBNlX7tpH9DTOIblt0+Bg1TqLhJ8nRYAUlQwqwyhLNgwAKF+qKRM+arc6a9w2wsLCHp3sUfglsqtR9YXyqk8BAmAxKOLz8gTcvpmDpVZkkrMuiV+muHxGTUx8tAlpTxSE1LXQ2M67XmoPLMckWwpMmZ3U+X8gHr+wV/8VVy+O/vWicz0TuhEipY5LDzUiCv4lLb/YpI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6922214000A
+X-Stat-Signature: naw3ouwja3myhd8izze6a39qj7wu4j4e
+X-HE-Tag: 1784207026-641603
+X-HE-Meta: U2FsdGVkX1+NYMA5j5Ml6yfmo10n+kaZqPngaceOcQrN5wzvvGKKuTHq9BbC8RwKD2CRUMffhMmrsJco3BIL+Nj/jEEUOZyJujVUmOE4/f8MhDzjaUP7GssRKn2hLKRYDoAqRJLvC+dQHHZMjgfXR0nplRoGZHlDhu6Uo/85Xmpj414Bf302ByeJQd7sFY5cxcR+x9OgWXyRoi+E6CTZ6Gc3Pi6+4fa/YpoULX8aUbZSWlmHaUvRAhn8RbfdeUsy0UJ0G7uohULP8nlqiCFXI5OuluZOj+GDzIdzgW4w77xA8oQB+4ibo04aTSZCWpqHQYLAxE1tVWEKreHiCU6a00stGDyZzcUBVygbPVV4muBg8572OIyb21Lq8rcwGx/Of5ji3YjJeDkVx0HezYJ765aehTPrCANM43rRdIMy5qhZfV41sfjy3diE2RiBGx4hgYnKsjX4R7w5ZdqX6sTO8S2VhcaCllL8o5IL5bBE2lSW/5m+JXrT46Dl84EpOAWfHP0UB8oOfBP5v9AL7GgJn9LKoZvWHIbUMQeoKlLYiRCw3hAdIpBclhTk/VxJz3oc7QGWPxJtypfQVqONIIo3uGh4xL3Qj9KBy0yzpo8kYp8Z9gUWP3Wkncna4VCAJK9TCaiZsxeP/7UVRkDKnJA7Xy05iaBBEzYTkvLkVrqQ4MaOM69AtVFkrWJDXg/vN20PXXWM0WmiZ0kzuKjRy6mrXkwcJMgErdeVX97aiuPUs0FwQEeOxAi3lg4Jc94WBP72In8N1mLVTuNJhMYNmo/PBuhukMO22ikpuGYub33/URpZclQ9kFwC9ReJbSZmZcSi+ZMw5JwFZplHQGaWrHDAm+XG3SvYHRuFZRqcOO5LEyoHOXsLfyzZS8Wpp7Jl5pdsARTnavSTfV0KC+MeJ8bmwmj+rITIkBI2x7zCj6MdgKyWCGTh41hU1BtDz9uHKRFdDK02HiDh4xiNoTRQ5Pn
+ 75yPy9Lr
+ G7HR00H4sOP/H6vJ1Ehc1Yk1Opmjbn3GllByC3tKpv/VFnx9ibcmqs/zumtYkOm7UVojRYvHVlwrNV9sVkJxny1QtqUHIau3Gx8849LiFbDVI3h3WfhN2Din3k8AV/OrG2i9Gl3aLQtJSGMgPeBlLP6eEEotEqHc/NvviH0P3OoML8RGiN42hfnaNiOe8RSaSfCNuZIEp+VpJByx1TEOJ+j+A71i1twj6cptL3Ihs4raLxNYCCBg7pNYUoJZCH8Qo3jMC+pDXUBxdCS5V+qJVuQQQioP3+UzinMgWWSOW1jApt07wiakCVIGVPxLLl+b3PMOnm0AJqxSt3O36L0SwxgLjmDuLsY6v1ZXVqoJ3WlaO/12IgNS33ltf1POeaVTi+tqgz08uqv28YoMV5IzygFGQT8LReBx3rek+jUG9e01rQBz8KeJNhcS9m0wlWpZYz/cJger+67nZuV3pP6HSY9vpRDKOWTWhaHR8gZAB9C7CE2MdjhK/yzE/2iz/4N1/wAs491CR0I4FJTw4Mdtn6zbJe8H0fY4Nsea1RF+HgZXyY2YgjSBHopM4Fd+PKpu9M4XJW6zHKB366bz87Mdko4zeP+vAilOpxIHR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,67 +134,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 7:43=E2=80=AFAM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
->
-> On 7/16/26 06:11, Suren Baghdasaryan wrote:
-> > On Wed, Jul 15, 2026 at 3:11=E2=80=AFAM Vlastimil Babka (SUSE)
-> > <vbabka@kernel.org> wrote:
-> >> No functional change intended, the layout is still effectively static.
-> >>
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >
-> > This is much cleaner than what I was preparing. Nicely done!
-> >
-> > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->
-> Thanks!
->
-> >> ---
-> >>  mm/slab.h | 41 +++++++++++++++++++++++++++++++++--------
-> >>  mm/slub.c | 17 +++++++++--------
-> >>  2 files changed, 42 insertions(+), 16 deletions(-)
-> >>
-> >> diff --git a/mm/slab.h b/mm/slab.h
-> >> index 3ad9777ad600..359ab8caf61e 100644
-> >> --- a/mm/slab.h
-> >> +++ b/mm/slab.h
-> >> @@ -554,14 +554,34 @@ static inline bool need_kmalloc_no_objext(void)
-> >>   * if MEMCG_DATA_OBJEXTS is set.
-> >>   */
-> >>  struct slabobj_ext {
-> >
-> > Perhaps we should add a comment here stating that every element of
-> > this union should be pointer-sized?
-> >
->
-> OK, how about this?
->
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -550,10 +550,14 @@ static inline bool need_kmalloc_no_objext(void)
->  }
->
->  /*
-> - * Extended information for slab objects stored as an array in page->mem=
-cg_data
-> - * if MEMCG_DATA_OBJEXTS is set.
-> + * Extended information for slab objects stored as a pointer to an array=
- in
-> + * slab->obj_exts (aliasing page->memcg_data) if MEMCG_DATA_OBJEXTS is s=
-et.
->   */
->  struct slabobj_ext {
-> +       /*
-> +        * All elements of the union should be pointer-sized to avoid mem=
-ory
-> +        * waste
-> +        */
+On Thu, Jul 16, 2026 at 01:25:22PM +0200, David Hildenbrand (Arm) wrote:
+> 
+> > +	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
+> > +	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
+> > +			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
+> > +	for (i = 0; ret > 0 && i < ret; i++)
+> > +		fast += LEN(regions[i]);
+> > +
+> > +	/* Generic path: same query expressed via category_anyof_mask. */
+> > +	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
+> > +			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
+> > +	for (i = 0; ret > 0 && i < ret; i++)
+> > +		slow += LEN(regions[i]);
+> > +
+> > +	ksft_test_result(fast == npages && slow == npages,
+> > +			 "%s pmd-hole reported written by both paths (%ld, %ld of %d)\n",
+> > +			 __func__, fast, slow, npages);
+> > +out:
+> > +	wp_free(mem, hpage_size);
+> > +	munmap(area, 2 * hpage_size);
+> > +}
+> 
+> Sorry if I wasn't clear. I think unpopulated_thp_scan_test() can actually reuse
+> bits of unpopulated_scan_test().
 
-Perfect. Thank you!
+Ah. Make sense.
 
->         union {
->  #ifdef CONFIG_MEMCG
->                 struct obj_cgroup *_objcg;
->
+Here's my take on this. Looks good?
+
+-- >8 --
+Date: Thu, 16 Jul 2026 13:24:29 +0100
+Subject: [PATCH v6 2/2] selftests/mm: add PAGEMAP_SCAN test for THP PMD holes
+
+Add coverage for the PMD-hole case fixed by "fs/proc/task_mmu: fix
+PAGEMAP_SCAN written state for PMD holes": a MAP_PRIVATE|MAP_ANON THP that
+is uffd-wp'd and then dropped with MADV_DONTNEED leaves a pmd_none hole
+with no page table, which PAGEMAP_SCAN must still report as written.
+
+Factor the populate/drop/scan-both-paths sequence out of
+unpopulated_scan_test() into a helper, and add unpopulated_thp_scan_test()
+that reuses it with a THP.
+
+Include <linux/mman.h> for MADV_COLLAPSE; <sys/mman.h> lacks it on older
+glibc (e.g. 2.34). Same approach as commit fd5295afae91 ("selftests/mm:
+hmm-tests: include linux/mman.h to access MADV_COLLAPSE").
+
+Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Assisted-by: Claude:claude-fable-5
+---
+ tools/testing/selftests/mm/pagemap_ioctl.c | 118 +++++++++++++++------
+ 1 file changed, 83 insertions(+), 35 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+index 550d1f2c059b..693030f1e631 100644
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c
++++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -8,6 +8,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <linux/types.h>
++#include <linux/mman.h>
+ #include <linux/memfd.h>
+ #include <linux/userfaultfd.h>
+ #include <linux/fs.h>
+@@ -1058,50 +1059,96 @@ static void test_simple(void)
+  * the generic path (reached e.g. via category_anyof_mask) must report every
+  * page written.
+  */
++/*
++ * Populate @mem (optionally collapsing it into a THP first), drop it with
++ * MADV_DONTNEED, then check PAGEMAP_SCAN reports the whole range written via
++ * both the fast and generic query paths. A dropped THP leaves a pmd_none hole
++ * with no page table, exercising pagemap_scan_pte_hole(); a base-page range
++ * leaves pte_none entries.
++ */
++static void unpopulated_written_test(const char *name, char *mem, long size,
++				     bool use_thp)
++{
++	long npages = size / page_size, fast = 0, slow = 0, ret;
++	struct page_region regions[16];
++	int i;
++
++	wp_init(mem, size);
++
++	/* Populate, optionally collapse to a THP, then drop it. */
++	memset(mem, 1, size);
++	if (use_thp &&
++	    (madvise(mem, size, MADV_COLLAPSE) ||
++	     !check_huge_anon(mem, size / hpage_size, hpage_size))) {
++		ksft_test_result_skip("%s could not form a THP\n", name);
++		goto out;
++	}
++	if (madvise(mem, size, MADV_DONTNEED)) {
++		ksft_test_result_fail("%s MADV_DONTNEED failed\n", name);
++		goto out;
++	}
++
++	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
++	ret = pagemap_ioctl(mem, size, regions, ARRAY_SIZE(regions), 0, 0,
++			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
++	for (i = 0; ret > 0 && i < ret; i++)
++		fast += LEN(regions[i]);
++
++	/* Generic path: same query expressed via category_anyof_mask. */
++	ret = pagemap_ioctl(mem, size, regions, ARRAY_SIZE(regions), 0, 0,
++			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
++	for (i = 0; ret > 0 && i < ret; i++)
++		slow += LEN(regions[i]);
++
++	ksft_test_result(fast == npages && slow == npages,
++			 "%s unpopulated range reported written by both paths (%ld, %ld of %ld)\n",
++			 name, fast, slow, npages);
++out:
++	wp_free(mem, size);
++}
++
+ static void unpopulated_scan_test(void)
+ {
+-	int npages = 16, i;
+-	long mem_size = npages * page_size;
+-	struct page_region regions[16];
+-	long fast = 0, slow = 0, ret;
++	long mem_size = 16 * page_size;
+ 	char *mem;
+ 
+ 	mem = mmap(NULL, mem_size, PROT_READ | PROT_WRITE,
+ 		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+-	if (mem == MAP_FAILED)
+-		ksft_exit_fail_msg("%s mmap failed\n", __func__);
++	if (mem == MAP_FAILED) {
++		ksft_test_result_skip("%s mmap failed\n", __func__);
++		return;
++	}
+ 
+-	wp_init(mem, mem_size);
+-
+-	/* Populate, then drop: the ptes become pte_none without a marker. */
+-	memset(mem, 1, mem_size);
+-	if (madvise(mem, mem_size, MADV_DONTNEED))
+-		ksft_exit_fail_msg("%s MADV_DONTNEED failed\n", __func__);
+-
+-	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
+-	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
+-			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
+-	if (ret < 0)
+-		ksft_exit_fail_msg("%s fast scan failed\n", __func__);
+-	for (i = 0; i < ret; i++)
+-		fast += LEN(regions[i]);
+-
+-	/* Generic path: same query expressed via category_anyof_mask. */
+-	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
+-			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
+-	if (ret < 0)
+-		ksft_exit_fail_msg("%s generic scan failed\n", __func__);
+-	for (i = 0; i < ret; i++)
+-		slow += LEN(regions[i]);
+-
+-	ksft_test_result(fast == npages && slow == npages,
+-			 "%s unpopulated ptes reported written by both paths (%ld, %ld of %d)\n",
+-			 __func__, fast, slow, npages);
+-
+-	wp_free(mem, mem_size);
++	unpopulated_written_test(__func__, mem, mem_size, false);
+ 	munmap(mem, mem_size);
+ }
+ 
++/*
++ * Same as unpopulated_scan_test(), but the range is a THP: a full-PMD
++ * MADV_DONTNEED leaves a pmd_none hole with no page table.
++ */
++static void unpopulated_thp_scan_test(void)
++{
++	char *area, *mem;
++
++	if (!hpage_size) {
++		ksft_test_result_skip("%s THP not supported\n", __func__);
++		return;
++	}
++
++	/* Over-allocate so a PMD-aligned, THP-sized range fits inside. */
++	area = mmap(NULL, 2 * hpage_size, PROT_READ | PROT_WRITE,
++		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (area == MAP_FAILED) {
++		ksft_test_result_skip("%s mmap failed\n", __func__);
++		return;
++	}
++	mem = (char *)(((unsigned long)area + hpage_size - 1) & ~(hpage_size - 1));
++
++	unpopulated_written_test(__func__, mem, hpage_size, true);
++	munmap(area, 2 * hpage_size);
++}
++
+ int sanity_tests(void)
+ {
+ 	unsigned long long mem_size, vec_size;
+@@ -1610,7 +1657,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
+ 	if (!hugetlb_setup_default(4))
+ 		ksft_print_msg("HugeTLB test will be skipped\n");
+ 
+-	ksft_set_plan(118);
++	ksft_set_plan(119);
+ 
+ 	page_size = getpagesize();
+ 	hpage_size = read_pmd_pagesize();
+@@ -1790,6 +1837,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
+ 
+ 	/* 18. Unpopulated pte scan-path consistency */
+ 	unpopulated_scan_test();
++	unpopulated_thp_scan_test();
+ 
+ 	close(pagemap_fd);
+ 	ksft_finished();
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
