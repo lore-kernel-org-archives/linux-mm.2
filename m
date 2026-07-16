@@ -4,123 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5C6DC44507
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 02:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9B0EC4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8607B6B0005; Wed, 15 Jul 2026 22:54:59 -0400 (EDT)
+	id 818DA6B0005; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8124E6B008A; Wed, 15 Jul 2026 22:54:59 -0400 (EDT)
+	id 7C9256B008A; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DC446B008C; Wed, 15 Jul 2026 22:54:59 -0400 (EDT)
+	id 691F46B008C; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 398E96B0005
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 22:54:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B980C80392
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:54:58 +0000 (UTC)
-X-FDA: 84993122676.08.64BFB25
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E56491C0002
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:54:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXVyJLt4;
-	spf=pass (imf21.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784170496;
-	b=BNxYKcBVOdmka62qDLC+eWUYFe9oDr0V0i4MjOko18iWyEJ/2sDk3s7tzOLChf/pxcBpHO
-	4CqCzyYRLqg5lyzCU8rR1OnzXxITTeikQrfTHSoZ2axbJAuQ5968d7HJbBmGplKpf30aYb
-	9+dxYOfzNVTftZ7b1BmAsqyAp72bWOU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXVyJLt4;
-	spf=pass (imf21.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784170496;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 32E846B0005
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 87E6A1C003D
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:40:19 +0000 (UTC)
+X-FDA: 84994900158.09.E0F81E4
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 97A978000B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:40:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=qxn+h0ds;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf02.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784212817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O+M+DkQSkCWTSLDLxTihHDZGPSSRCJtMCVMSJqC4VhU=;
-	b=xMbK+Hze3sjfN+u2BBKmu9sIsAd8sEURP9SqNm2GVxH7RVJRkHD/wBdscGf7ytaVu/AZZ8
-	ach6CI297TCUKi+boMW7oQiD4ENtEJ+rOcQgtbC11vqBCR/+6jSi5l7494My+gQlP/b2is
-	IUo446Rp9sHZIaNIMbqf2bvVtANJsjc=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c6b67d5fa1so101568725ad.2
-        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 19:54:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784170496; x=1784775296; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=O+M+DkQSkCWTSLDLxTihHDZGPSSRCJtMCVMSJqC4VhU=;
-        b=sXVyJLt49N8txpt43wL9hVfxrrJ41elXMja8sb3R45IlWEwzmjp3biUdkUHdjZI3aZ
-         5wfPc+cUsUhHZiFfp0LPCnZBTOFZ0sZj1M/MZQ0SvzkHEYAWL+w1+xhLaaQNCHri1SSB
-         GCV0Tj3O87tF4dWhIQXfpqBp6VjJTIXf2iFY8cu7gVSIllEvGy64d/czP69puRb9p6fV
-         kTKlvGZ61UtSGAEVT3GBKpsvqHwrsfNhvAJcUv+S7iqdfoNuinFpBnTjjvlAYVgHpobk
-         /aNELxCEQj7rg70UFSPfzhSqoLaHpCiD0L5/Cb75hgaHLCPMGAPe94kti7myU0y4NjZd
-         Nxow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784170496; x=1784775296;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=O+M+DkQSkCWTSLDLxTihHDZGPSSRCJtMCVMSJqC4VhU=;
-        b=IGGLjVBlJEPnQb1I9dEOKIA+Dgu/eAj6uIiBYsWMFHJDEW7ydWbIYKR981tJ3Lgew0
-         VWIm9pIWdcwkJtFjyo+xGvOAmoHMx3hG4nekG7p0J68gE7k2PNUGL9oaHE5O1F9+z+Vq
-         hnhqqEFY35jBcopSBCSXHceKxrlT9MEbPB8LEa0kHInGfKseb0ZDfxkyhkBH3QWTjRl+
-         HFOC0Be7nFiXDPiq1ylfaQkAXicBrLSRgqr3kWSmjEjd50Tpor2zhqip4dy/efDDOTv2
-         PMkiCXS5zVdbiJbXAv0S5zH5Rys0F188vcCy34jbWp9vU25liJI0CS1nJfYzXxVXNtzN
-         opmA==
-X-Forwarded-Encrypted: i=1; AHgh+RodPAGjHm69rTHfEyEnDHKXCD2Q8mANIKSp7/jQPMZwpifXAhinvbtcD81aKUMu5Jjq7NnRKXPAFw==@kvack.org
-X-Gm-Message-State: AOJu0YxAPXimJfhNc12A2W2Rj+DbPVht5F2aq7NCZuHUPN2mgj+MlxLv
-	MkkRZhH8g9MqsLLVJDoSj+vrcwPYn1o5/Spc4BGoZRp4b9gpt7Hv54N8
-X-Gm-Gg: AfdE7cmAuG+IzSvGQYdnHML6fiVBCEQE9MT6s44hj4+wKrOEmi2DAyydN/cmUbba5aC
-	AEMf9et0n7XKyYagQfGpHMuO7f7wECGddmi/5Ygth0/EcWM3Lls6pWubYtnoJaYAq6rmnqfPqDP
-	EinZ+3DSBaicGdWcjSv4R1MRfXrLdA6LYsXyag4hahdKhDfEEW8SdhARCbwxfhzAXDBQNDqLIbj
-	2f91MM4akMUML0O4Dh2uyFr4aQBACQjTih1OzhEgbjdWs1fZbqu3YrZKVIos2MH+r2ZrRbZ2HjP
-	/8DgtUBS6C+gUHjnCoXsAquCuKJZNIbA3+avuUgNYgD7GLZVLYzOQO1q+FbsZGpLowYI2GthiJq
-	d9KIbqESBQHC01ZNiZaewZhabt4/NyEcx6rI12w0dClQHVBHWokUN81+GrMz9GbQG3H8t+wU+1C
-	y4o2Q4ZekP1H5CLlL03wePm4A=
-X-Received: by 2002:a17:902:cec9:b0:2ca:1bd2:d57b with SMTP id d9443c01a7336-2cef10f538bmr91527655ad.0.1784170495560;
-        Wed, 15 Jul 2026 19:54:55 -0700 (PDT)
-Received: from [10.125.192.114] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf10161ef2sm11913255ad.35.2026.07.15.19.54.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jul 2026 19:54:55 -0700 (PDT)
-Message-ID: <b910e870-9583-a2f5-b681-e69edb9af290@gmail.com>
-Date: Thu, 16 Jul 2026 10:54:37 +0800
+	bh=/Ls7aI2YsKMrYCfbCVyA0Gxy3SdWzDVHyfYWUOskaec=;
+	b=x9+Mg3nVAggD2rWu+SUo1ogxymzP+Cs8X/L85ZjozYNuJim6qjcEsIXjKxxQYpAq+/UuUO
+	qHwi4Mk6ynUvrljiY1I4aGUV7gABTW6cuQVDARKrcR/fc/fK9k38GsUtEAT95KkhB5nHZE
+	YC7VEVkMvr3IGcw705tEHyU3LTmsu2M=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=qxn+h0ds;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf02.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784212817;
+	b=ZQsnysufp/IhgeOtePf9rpomYCWaxPdPheh9jr8Wes8p0m/8Z5EVx9NeXIM6gc8ESDnMJ6
+	jY+MSLRy/g8X5loMpC/EwDiq2SsDxBZf182pKamCLIsWQX6simngYYedWXawlf6XfHd7m8
+	oeLYooNagbLzN3432CAeKy64RBKPHLU=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212472; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SQCSCmadAAHdXAGgv5VfGXJwPklN1QCdZMEouWgQBUbB6OvLfeN8d7vgPJIq3BTy2OSa2sASTbG5hNNApdAoYMRnuuytyx/wDltVNBoHqNdBrIJump3TYMKsc7KmRp+aXoKyNBAx+BHXOlFZS8XkLlRNGFumQxkLy20Mq5Ve2Fk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1784212472; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/Ls7aI2YsKMrYCfbCVyA0Gxy3SdWzDVHyfYWUOskaec=; 
+	b=b/2lj6767VDIqcCN6CWeRzUZwDpPf4/pl95bufrTfW23gCGnWFSAQS2x5/yXhxFFwc76YybzwvV1JCwA8M9bdKTv+x6Xy2kSG1lcjNg4POvjcnbHVZtlkTY5QtzyyiXxWVzHKCh92DpB9HhN3qLngrorna3Dym4t1dgoIUAAQn4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212472;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=/Ls7aI2YsKMrYCfbCVyA0Gxy3SdWzDVHyfYWUOskaec=;
+	b=qxn+h0dslvw6oMfd/2dt0iQrHdSMBAk98HreekQ2RjLChX2fY2YCs/Ft/kydrVm7
+	mGSNLiICeCBGXsTtSRrlA3pcQkhLI2kEWjXwcUBQnEdUkvNyH/xMy+gKZrWu0BCGKgD
+	IUaieW66Po9dFMQ0vCi/OXdojRG9FGEc+hSUUWK0=
+Received: by mx.zohomail.com with SMTPS id 1784212468515488.1212460986567;
+	Thu, 16 Jul 2026 07:34:28 -0700 (PDT)
+From: Li Chen <me@linux.beauty>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	John Ericson <mail@johnericson.me>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Eric Paris <eparis@redhat.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	audit@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	Li Chen <me@linux.beauty>
+Subject: [RFC PATCH 14/24] pidfd: create and execute spawn builder tasks
+Date: Thu, 16 Jul 2026 22:31:40 +0800
+Message-ID: <8d58bce916b3f13da1ef7f2c7eee13cd7cb78a4c.1784204592.git.me@linux.beauty>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1784204592.git.me@linux.beauty>
+References: <cover.1784204592.git.me@linux.beauty>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 2/2] mm/zswap: Support batch writeback in shrink_memcg()
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
- <20260714081510.16895-3-jiahao.kernel@gmail.com>
- <CAO9r8zNiT63LUHx8X5i_aboX1UWuGkcFf+p9ch-pekURUuDdXg@mail.gmail.com>
- <2bc8e4f6-46a0-5b74-6eaa-59e7aef9227e@gmail.com>
- <CAO9r8zOFg_mnNGbFFd_h8FAwRCbQ9vXk47EF5f1CLg1cDVGB5Q@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAO9r8zOFg_mnNGbFFd_h8FAwRCbQ9vXk47EF5f1CLg1cDVGB5Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E56491C0002
-X-Stat-Signature: h3iqhigductdc7irt1fs6b4zchcq8bot
-X-HE-Tag: 1784170496-133641
-X-HE-Meta: U2FsdGVkX18rA4KwHeOVqpOTKPdjIVarMwXZIdtDLCyqJHfwq2bVg5zU6tuJYTNYOPOhP8MHrFr6zqBOLrriCoKucAWzS45prHhAPWYIrxRdh3PDVzWKPutwdgs3/4loZOatzbtmZ/BUsZys0qyazXh+paInip1d8Q6YV+6Zyp5syfc9cJnuurWxcpdbNLEGCp+vpA1+iGueFF9jZyMDKYCJzwEHpoHwXVdkjac2MpIw6jKREfk3bpM2lUtB59EilQEAx0oj6PQa1o6OGIE3Rap/SqAbL1+mSE41cpoXHRUkG4HxRNGVFAoM+li/FKDqJa2HrSzfTdyOnIRbwfCmXRqMHR7SQDmYOX8ydodYcKHIs1azOsihjNXXMIJoEKhZYNQYne7/0qxYFOjT97RsQHSNAwf69EtjXXrnOY8v/HnmTOVKcXiEOEQf2JVSrxzPjBCnrXQYEfLwDAH+Q11QUjZlqQ4cBwSOHcJQR38N9f/I567J9FZBlqCXuDVurDm+jc3MHNM6OWsa7pQImN5CSZnBtWcZc4dHWTXyuEtmEAhMuol7JevSnwnebUasbhjxsi+mXN9QNG0Jl8hK+chMGgSukKh5G0sAslfIiLfCPrTGbQtMkO5MSVl0AVx6XZKyCt/rouCaKqhlTf4nLlTzJL8VsJ3G+wWKgFwSMLDU5yyXltr1ax/L25TUomZBvqcaFfXmo4/O51FIlzbGb0hg229dzCpytrrfv5hYq7yFX885Mb0SJKHjLJ6psRLSixeLBvp75Ed4bfr/ZSeXYwCzdWyYdJGwhT+4bcTBuJg9Wba0gQ1ItKJc68V9fOXrbRIWVKJcbAH0AmAtlpQXziGq8ISmy3yuFUmqn+s/Eh/sLjVY4j6tgxNOQT+zqL3LLiA3np7rN6OVKr4WCGu66RcnIr9BCpSezpiOnABXn2uiu99jGIQvPslAFiea3JY/H5kGFQnvKgzaipjZgyn5AKM
- 5OZPQMeR
- roUwNw1rt7wVXfC58cow6KFgX3d3dyJvNQQiSiQN3psFf/kM8JOLyeOHfZErz2v8vUNtkx9vdKLLvV70iL2VJZUsWNDKd32ljudTo4Dp42BQyRbjC1YrB14TbRCQeIbewgkzRJ0xL5f3ugqwfXEICNNcudSD9YQyDmJ0YWrIO+Faro/RWNsVw0JcK5VkjcJYcIxduT15+fxWW8Qt7RnY0HeROcnCX7a3oI5gg66L9XdB35okZoY5zPo1/OTgoVpn9UPeh2O/vKeJtleTby9raw8ObWUNreP/N91uVB24NTAbRB/O01KANRi75mAMaUGqC7OMHav6yG5RsjG+plKWZJ6niT7aF1Fp1Pq0AxRfHdnYDvzsZVOdQgfARqGeBDO2TpGmb3BvlwwVKxe06OJvOwxJORq1pV7s+08HlD2e4Ss6SO+B94wt8vQNo1kVl8jpYjqakxQQXsEhCScSgdcsvpCOOKzJydqnDPADrZgMN1BeBLFk=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 97A978000B
+X-Stat-Signature: 78itpx37cusy5k34k9kxch5oa4wy9tny
+X-HE-Tag: 1784212817-966851
+X-HE-Meta: U2FsdGVkX18GXfvbOCYS+S1AbYzDeTEmCXq8B/6HhPkATYArRQ37otAQCJy5JcCxBbk1DffZy+dxVmzPbCVCzKPz1pDEx7qdmsGholNVK8DWta99N2zS5iy3e9LRzKRA7kFvUjErjp3gl0PoRnMOzafRr8cczXrOtK6wKJYYlqxjTW9QPOEh02v8IK2HVws1y111xu3QxK1l78oXyRKWJM8IqLde3CD+YGY62aOgX1nLwn0/7JyjYgGFZxnsQNF5Lb/XC2Ya6NsH7gJVrK/OhBgT6SJbq7Ey/UGfj0q2A7cmZjE/qbr9NbW6gMijl36AsLYTbxWKaFnLZ+e4oYgd0NXCLW5GP1uEpREwa6Sli0Vtg5SsufR9hfW+qAXNqF5Kmpb9dHzMJeM4XwKYLZ6Pwy6CQ8aaGxgmZwdkXGA1toxZvbnM1FpQ0fugtFrgY77sC3+XQyA5fELgolcnCnOI/OgM9fUSfSNRwdckQnwxb755pHp5fjsvm1Rh2WTp2+468rbFGaAHPlKJyIdMxLjQV6B5IIlFDiN1RbJ7zzB6/fRvMrqRywdcra/sb/TDNwkX6xB2F8TUP1mapba7W/iszZFbPMYLvs6gztGBcjfAT6Un7ZATC/EASMt+zKnESc2iRe+BuQyOPhPK9h8vBKIS29Hab0m3qgThMUVdiD3zk+nCWTQFQ448LCacYt/lc63Q9zZD2WXkIFXOCUOa89N92mzWrLB9xxPUc8s/xZWauzBeY5B+QEgzQjVetZd7zceIGoCJr73OZn0KKwSw76xON4pPvklokmPRcRBf+k3qLDdnPYJwUxLVKQWitrAK7wLobSQf6MsEOSWdAOSUoKC8AZxIjqlRE+gc/8dE2LWtOxwTSWeTt1cSikfAv4BNxppNK0zGljuJ8W3obUGxrJhX0Cx+zypH8hAnNhoXZN6j8QcG4ZAHd91qlPdPJkr0eJFo0QnfPWQu2WSXwCpL8gt
+ PbQgHg7N
+ FKw6Vq+5FoTiwz34EWzzwxLd9jafEFHKp57QxF6tV5pN3ZsACGG62wMPFO0xLNXJjS2z7Zl0ilo8eZ24UCs8+zsh7b+F1GRl1txHFwvX0dC6mXpv1m1+zOMhrfD5Ew249Uw/+gpJLIlvsJBVesRZPWHjByVDqRm1IJJDuOdRyK4VR1hZJvfiMS60Bs5XTGX9y7mXtuj+OwhZY/bQ/iBMiKlRMXPmzAm2AIlMh0aJwuWiYI3fmh8t4tA1UfIPvghGvAN55cI1Hmkjb/rw/4NWthX5dwvTO21qrzyCpXDXucM/F2zR+hFMpL5ADy9wZwe+UILroEaInDfVyUHW2oVn5GgulJwrgYHPrI1pPZUXGiSEcEZO0CET/vdb2e6jTtM0daPNRH3e9dE34zay9XOQLDI7j0160xgrgbhnIByzQl/MtBo5ZfOrKtwbKqSp3rxolCljMrfcc+W+07kw7HgGCtI4tAx+ImELtL+DVC6VfI9IC56IQiabqlQgw2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,90 +123,530 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Add pidfd_spawn_run() for a taskless builder. Validate the versioned run
+payload, including native and compat pointer-container widths. Allocate a
+numeric pid with the reserved pidfs identity. Create the child through the
+existing vfork backend.
 
+Publish the same future pidfd as the child pidfd before waking the child.
+Queue setup as initial task work so no kernel callback pointers are carried
+through architecture register state. Keep the task embryonic until exec has
+installed a valid userspace image and register frame.
 
-On 2026/7/16 00:14, Yosry Ahmed wrote:
->>>> Test Setup:
->>>> Total memory: 32 GB.
->>>> zswap settings: max_pool_percent=1, accept_threshold_percent=50,
->>>> shrinker_enabled=N.
->>>> Allocate 512MB of anonymous pages and fill them with random data (to avoid
->>>> compression), then use cgroup memory.reclaim to force a large amount of
->>>> anonymous pages into zswap. At an interval of 2ms, allocate a 4K anonymous
->>>> page where the first 4 bytes are random numbers and the rest are zeros, and
->>>> then trigger a reclamation of this 4K anonymous page through cgroup
->>>> memory.reclaim. When the pool threshold is reached, shrink_memcg() will
->>>> be triggered.
->>>>
->>>> The test data after running for 120s is as follows:
->>>>                              Baseline         Patched
->>>> shrink_worker wakeups          5363             85
->>>> shrink_memcg calls       11,345,012        188,264
->>>> written_back                  40214          40275
->>>>
->>>> Conclusion:
->>>> Under the same workload and run duration, the patched kernel shows a
->>>> significant reduction in both shrink_worker wakeups and shrink_memcg calls.
->>>
->>> Please also include data from the case where zswap store failures are
->>> observed and pages go to disk, and compare before and after this
->>> patch. I think that part is also really important.
->>
->> I retested and added some collected information. Perhaps
->> `pool_limit_hit` and `pswpout` can explain that batch shrinking of zswap
->> can reduce the number of pages that fail to be stored due to the pool
->> limit, allowing zswap to skip zswap and go directly to disk.
-> 
-> Oh I meant the other test case with high memory pressure where we saw
-> a lot more writeback with this patch. Do you have similar data from
-> that test case?
-> 
+A failure before task creation initially leaves the builder configurable.
+Once a task exists, return setup errors after the child exits. A later
+state-machine change tightens the pre-task path to a one-shot claim.
 
-Below are the results from stress-ng (high memory pressure case), which 
-lead to a similar conclusion:
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Li Chen <me@linux.beauty>
+---
+ fs/pidfd_spawn.c | 406 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 402 insertions(+), 4 deletions(-)
 
-                               Baseline      Patched
-shrink_worker wakeups         5,640           987
-shrink_memcg calls        8,481,500     2,504,818
-written_back pages               260       768,576
-zswap_store calls           2,742,756     2,301,414
-   store succeeded (ret=1)     934,640     1,308,686
-   store rejected (ret=0)    1,808,116       992,728 <-
-   store reject rate            ~65%           ~43%
-pool_limit_hit delta        1,181,310       101,593 <-
-pswpout                     1,808,376     1,761,304
-pswpin                      4,288,497     3,902,658
+diff --git a/fs/pidfd_spawn.c b/fs/pidfd_spawn.c
+index 99e3ef56ecfa3..c0e95c2ddbe6e 100644
+--- a/fs/pidfd_spawn.c
++++ b/fs/pidfd_spawn.c
+@@ -3,6 +3,7 @@
+  * pidfd-backed process spawn builders
+  */
+ 
++#include <linux/completion.h>
+ #include <linux/cred.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
+@@ -13,14 +14,50 @@
+ #include <linux/pid_namespace.h>
+ #include <linux/pidfd_spawn.h>
+ #include <linux/pidfs.h>
++#include <linux/random.h>
+ #include <linux/refcount.h>
++#include <linux/sched/mm.h>
+ #include <linux/sched/signal.h>
++#include <linux/sched/task.h>
++#include <linux/security.h>
+ #include <linux/slab.h>
+ #include <linux/syscalls.h>
++#include <linux/task_work.h>
+ #include <linux/uaccess.h>
+ #include <uapi/linux/pidfd.h>
++#include <uapi/linux/wait.h>
++#include <trace/events/sched.h>
+ 
++#include "exec_internal.h"
++
++static inline void __user *pidfd_spawn_user_ptr(__u64 p)
++{
++	return u64_to_user_ptr(p);
++}
++
++static inline bool pidfd_spawn_user_ptr_fits(__u64 p)
++{
++#ifdef CONFIG_COMPAT
++	if (in_compat_syscall())
++		return p == (__u64)(compat_uptr_t)p;
++#endif
++	return p == (__u64)(unsigned long)p;
++}
++
++static inline struct user_arg_ptr pidfd_spawn_user_arg(__u64 p)
++{
++#ifdef CONFIG_COMPAT
++	if (in_compat_syscall())
++		return compat_arg((compat_uptr_t __user *)
++				  u64_to_user_ptr(p));
++#endif
++	return native_arg(u64_to_user_ptr(p));
++}
++
++#define PIDFD_SPAWN_EXIT_FAILURE	(127 << 8)
+ #define PIDFD_SPAWN_MAX_CONFIG_KEY_SIZE	256
++DEFINE_FREE(pidfd_spawn_dismiss_filename, struct delayed_filename,
++	    dismiss_delayed_filename(&_T))
+ 
+ enum pidfd_spawn_status {
+ 	PIDFD_SPAWN_CONFIGURING,
+@@ -31,14 +68,20 @@ enum pidfd_spawn_status {
+ };
+ 
+ struct pidfd_spawn_state {
+-	/* Serializes configuration and payload teardown. */
++	/* Serializes configuration, launch, cancellation, and payload teardown. */
+ 	struct mutex lock;
++	struct completion done;
++	struct callback_head task_work;
+ 	refcount_t count;
+ 	struct pid *pid;
+ 	struct mm_struct *creator_mm;
+ 	const struct cred *creator_cred;
+ 	struct pid_namespace *creator_pid_ns;
++	struct delayed_filename filename;
+ 	char *staged_path;
++	struct user_arg_ptr argv;
++	struct user_arg_ptr envp;
++	int result;
+ 	enum pidfd_spawn_status status;
+ };
+ 
+@@ -80,6 +123,10 @@ pidfd_spawn_configuring_error(const struct pidfd_spawn_state *state)
+ 
+ static void pidfd_spawn_free_state(struct pidfd_spawn_state *state)
+ {
++	if (!state)
++		return;
++
++	dismiss_delayed_filename(&state->filename);
+ 	kfree(state->staged_path);
+ 	if (state->creator_mm)
+ 		mmdrop(state->creator_mm);
+@@ -136,11 +183,73 @@ pidfd_spawn_state_get_file(struct file *file)
+ 	return state;
+ }
+ 
++static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
++				      struct filename *filename, int result)
++{
++	const struct cred *creator_cred;
++	struct mm_struct *creator_mm;
++	struct pid_namespace *creator_pid_ns;
++	char *staged_path;
++
++	/*
++	 * Run data is one-shot. Detach it under the lock, then drop refs
++	 * after the child no longer needs the shared setup payload.
++	 */
++	mutex_lock(&state->lock);
++	creator_mm = state->creator_mm;
++	creator_cred = state->creator_cred;
++	creator_pid_ns = state->creator_pid_ns;
++	staged_path = state->staged_path;
++	state->creator_mm = NULL;
++	state->creator_cred = NULL;
++	state->creator_pid_ns = NULL;
++	state->staged_path = NULL;
++	state->argv = native_arg(NULL);
++	state->envp = native_arg(NULL);
++	state->result = result;
++	pidfd_spawn_set_status(state, PIDFD_SPAWN_SETUP_DONE);
++	mutex_unlock(&state->lock);
++
++	putname(filename);
++	if (creator_mm)
++		mmdrop(creator_mm);
++	if (creator_cred)
++		put_cred(creator_cred);
++	if (creator_pid_ns)
++		put_pid_ns(creator_pid_ns);
++	kfree(staged_path);
++}
++
++static bool pidfd_spawn_same_pid_ns(struct pidfd_spawn_state *state)
++{
++	return current->nsproxy->pid_ns_for_children == state->creator_pid_ns;
++}
++
+ static bool pidfd_spawn_same_creator(struct pidfd_spawn_state *state)
+ {
++	/*
++	 * Holding the pidfd alone is not enough authority to configure or start
++	 * this builder. A caller must also share the creator's mm, credential
++	 * object, and child PID namespace.
++	 *
++	 * The child PID namespace is part of the builder authority even though no
++	 * numeric PID is allocated until run.
++	 */
+ 	return current->mm == state->creator_mm &&
+ 	       current_cred() == state->creator_cred &&
+-	       current->nsproxy->pid_ns_for_children == state->creator_pid_ns;
++	       pidfd_spawn_same_pid_ns(state);
++}
++
++static int pidfd_spawn_check_startable(struct pidfd_spawn_state *state)
++{
++	int ret;
++
++	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
++		ret = pidfd_spawn_configuring_error(state);
++		if (!ret && !pidfd_spawn_same_creator(state))
++			ret = -EPERM;
++	}
++	return ret;
+ }
+ 
+ static struct filename *pidfd_spawn_get_path(const char __user *value)
+@@ -153,6 +262,31 @@ static struct filename *pidfd_spawn_get_path(const char __user *value)
+ 	return no_free_ptr(name);
+ }
+ 
++static int
++pidfd_spawn_get_delayed_path(struct delayed_filename *delayed,
++			     const char __user *value)
++{
++	struct filename *name __free(putname) = NULL;
++
++	name = pidfd_spawn_get_path(value);
++	if (IS_ERR(name))
++		return PTR_ERR(name);
++
++	return putname_to_delayed(delayed, no_free_ptr(name));
++}
++
++static int
++pidfd_spawn_get_delayed_kernel_path(struct delayed_filename *delayed,
++				    const char *value)
++{
++	struct filename *name __free(putname) = getname_kernel(value);
++
++	if (IS_ERR(name))
++		return PTR_ERR(name);
++
++	return putname_to_delayed(delayed, no_free_ptr(name));
++}
++
+ static char *pidfd_spawn_copy_path(const char __user *value)
+ {
+ 	struct filename *name __free(putname) = NULL;
+@@ -173,14 +307,14 @@ static int pidfd_spawn_state_set_path(struct pidfd_spawn_state *state,
+ {
+ 	char *path __free(kfree) = NULL;
+ 	char *old __free(kfree) = NULL;
++	int ret;
+ 
+ 	path = pidfd_spawn_copy_path(value);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 
+ 	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
+-		int ret = pidfd_spawn_configuring_error(state);
+-
++		ret = pidfd_spawn_configuring_error(state);
+ 		if (ret)
+ 			return ret;
+ 		if (!pidfd_spawn_same_creator(state))
+@@ -243,6 +377,230 @@ SYSCALL_DEFINE5(pidfd_config, int, fd, unsigned int, cmd,
+ 	return ret;
+ }
+ 
++static void pidfd_spawn_finish_child(struct pidfd_spawn_state *state,
++				     struct filename *filename, int result)
++{
++	pidfd_spawn_drop_run_data(state, filename, result);
++	complete_all(&state->done);
++}
++
++static void pidfd_spawn_child(struct callback_head *work)
++{
++	struct pidfd_spawn_state *state =
++		container_of(work, struct pidfd_spawn_state, task_work);
++	struct filename *filename;
++	int ret;
++
++	filename = complete_getname(&state->filename);
++	if (IS_ERR(filename))
++		ret = PTR_ERR(filename);
++	else
++		ret = 0;
++
++	if (!ret)
++		ret = do_execveat_common(AT_FDCWD, filename,
++					 state->argv, state->envp, 0);
++	if (!ret)
++		task_clear_embryonic_exec(current);
++
++	pidfd_spawn_finish_child(state, filename, ret);
++	if (ret) {
++		pidfd_spawn_state_put(state);
++		do_group_exit(PIDFD_SPAWN_EXIT_FAILURE);
++	}
++	pidfd_spawn_state_put(state);
++}
++
++static int pidfd_spawn_copy_run_args(struct pidfd_spawn_run_args *kargs,
++				     struct pidfd_spawn_run_args __user *uargs,
++				     size_t usize)
++{
++	int ret;
++
++	BUILD_BUG_ON(sizeof(struct pidfd_spawn_run_args) !=
++		     PIDFD_SPAWN_RUN_SIZE_VER0);
++
++	if (usize < PIDFD_SPAWN_RUN_SIZE_VER0)
++		return -EINVAL;
++	if (usize > PAGE_SIZE)
++		return -E2BIG;
++	ret = copy_struct_from_user(kargs, sizeof(*kargs), uargs, usize);
++	if (ret)
++		return ret;
++	if (kargs->flags || kargs->reserved0 || kargs->reserved[0] ||
++	    kargs->reserved[1])
++		return -EINVAL;
++	if (!kargs->argv)
++		return -EINVAL;
++	if (kargs->nr_actions || kargs->actions || kargs->action_size)
++		return -EINVAL;
++	if (!pidfd_spawn_user_ptr_fits(kargs->path) ||
++	    !pidfd_spawn_user_ptr_fits(kargs->argv) ||
++	    !pidfd_spawn_user_ptr_fits(kargs->envp) ||
++	    !pidfd_spawn_user_ptr_fits(kargs->actions))
++		return -EFAULT;
++
++	return 0;
++}
++
++static struct task_struct *
++pidfd_spawn_create_task(struct file *file, struct pidfd_spawn_state *state,
++			struct kernel_clone_args *clone_args)
++{
++	struct pid *pid;
++	struct task_struct *task;
++	u64 ino;
++	int ret;
++
++	ino = pidfs_future_file_ino(file);
++	if (!ino)
++		return ERR_PTR(-EBADF);
++
++	pid = alloc_pid_with_pidfs_ino(current->nsproxy->pid_ns_for_children,
++				       NULL, 0, ino);
++	if (IS_ERR(pid))
++		return ERR_CAST(pid);
++
++	ret = pidfs_future_file_set_pid(file, pid);
++	if (ret) {
++		free_pid(pid);
++		return ERR_PTR(ret);
++	}
++
++	refcount_inc(&state->count);
++	task = copy_process(pid, 0, NUMA_NO_NODE, clone_args);
++	add_latent_entropy();
++	if (IS_ERR(task)) {
++		pidfd_spawn_state_put(state);
++		pidfs_future_file_clear_pid(file, pid);
++		free_pid(pid);
++		return task;
++	}
++
++	trace_sched_process_fork(current, task);
++	get_task_struct(task);
++	return task;
++}
++
++static void pidfd_spawn_publish_pid(struct file *file,
++				    struct pidfd_spawn_state *state,
++				    struct task_struct *task)
++{
++	struct pid *pid = get_task_pid(task, PIDTYPE_PID);
++
++	pidfs_future_file_publish_pid(file, pid);
++	/*
++	 * Publish only after the inode identity, pidfs attributes, and exit-wakeup
++	 * forwarding are ready. Pair with the acquire loads in pidfd resolution
++	 * and poll so readers that observe @pid can use ordinary pidfd operations.
++	 */
++	smp_store_release(&state->pid, pid);
++	pidfs_future_file_notify(file);
++}
++
++static void pidfd_spawn_attach_vfork_done(struct task_struct *task,
++					  struct completion *vfork)
++{
++	init_completion(vfork);
++
++	task_lock(task);
++	task->vfork_done = vfork;
++	task_unlock(task);
++}
++
++static void pidfd_spawn_wait_for_child(struct pidfd_spawn_state *state)
++{
++	wait_for_completion(&state->done);
++}
++
++static int pidfd_spawn_finish_vfork(struct pidfd_spawn_state *state,
++				    struct task_struct *task,
++				    struct completion *vfork)
++{
++	int ret;
++
++	ret = wait_for_vfork_done(task, vfork);
++	if (ret)
++		return ret;
++
++	mutex_lock(&state->lock);
++	ret = state->result;
++	pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTED);
++	mutex_unlock(&state->lock);
++	return ret;
++}
++
++static int pidfd_spawn_start(struct file *file,
++			     struct pidfd_spawn_state *state,
++			     const struct pidfd_spawn_run_args *kargs)
++{
++	struct delayed_filename filename
++		__free(pidfd_spawn_dismiss_filename) = {};
++	struct delayed_filename drop_filename
++		__free(pidfd_spawn_dismiss_filename) = {};
++	struct kernel_clone_args clone_args = {
++		.flags		= CLONE_VM | CLONE_VFORK | CLONE_UNTRACED,
++		.exit_signal	= SIGCHLD,
++		.task_work	= &state->task_work,
++		.embryonic_exec = true,
++	};
++	struct completion vfork;
++	struct task_struct *task;
++	int ret;
++
++	if (kargs->path) {
++		ret = pidfd_spawn_get_delayed_path(&filename,
++						   pidfd_spawn_user_ptr(kargs->path));
++		if (ret)
++			return ret;
++	}
++
++	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
++		ret = pidfd_spawn_configuring_error(state);
++		if (ret)
++			return ret;
++		if (!pidfd_spawn_same_creator(state))
++			return -EPERM;
++		if (state->staged_path && kargs->path)
++			return -EINVAL;
++		if (!state->staged_path && !kargs->path)
++			return -EINVAL;
++		if (state->staged_path) {
++			ret = pidfd_spawn_get_delayed_kernel_path(&filename,
++								  state->staged_path);
++			if (ret)
++				return ret;
++		}
++		state->filename = filename;
++		INIT_DELAYED_FILENAME(&filename);
++
++		state->argv = pidfd_spawn_user_arg(kargs->argv);
++		state->envp = pidfd_spawn_user_arg(kargs->envp);
++		pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTING);
++		reinit_completion(&state->done);
++
++		task = pidfd_spawn_create_task(file, state, &clone_args);
++		if (IS_ERR(task)) {
++			ret = PTR_ERR(task);
++			drop_filename = state->filename;
++			INIT_DELAYED_FILENAME(&state->filename);
++			state->argv = native_arg(NULL);
++			state->envp = native_arg(NULL);
++			state->result = 0;
++			pidfd_spawn_set_status(state,
++					       PIDFD_SPAWN_CONFIGURING);
++			return ret;
++		}
++
++		pidfd_spawn_publish_pid(file, state, task);
++		pidfd_spawn_attach_vfork_done(task, &vfork);
++	}
++
++	wake_up_new_task(task);
++	pidfd_spawn_wait_for_child(state);
++	return pidfd_spawn_finish_vfork(state, task, &vfork);
++}
++
+ int pidfd_empty_open(unsigned int flags)
+ {
+ 	struct pidfd_spawn_state *state;
+@@ -257,7 +615,13 @@ int pidfd_empty_open(unsigned int flags)
+ 		return -ENOMEM;
+ 
+ 	mutex_init(&state->lock);
++	init_completion(&state->done);
++	init_task_work(&state->task_work, pidfd_spawn_child);
+ 	refcount_set(&state->count, 1);
++	/*
++	 * Remember the creator so later builder operations cannot be delegated
++	 * just by passing the pidfd through SCM_RIGHTS or similar fd passing.
++	 */
+ 	mmgrab(current->mm);
+ 	state->creator_mm = current->mm;
+ 	state->creator_cred = get_current_cred();
+@@ -282,3 +646,37 @@ int pidfd_empty_open(unsigned int flags)
+ 	fd_install(pidfd, pidfile);
+ 	return pidfd;
+ }
++
++SYSCALL_DEFINE3(pidfd_spawn_run, int, fd,
++		struct pidfd_spawn_run_args __user *, uargs, size_t, usize)
++{
++	struct pidfd_spawn_run_args kargs;
++	struct pidfd_spawn_state *state __free(pidfd_spawn_state) = NULL;
++	int ret;
++
++	ret = pidfd_spawn_copy_run_args(&kargs, uargs, usize);
++	if (ret)
++		return ret;
++
++	CLASS(fd, f)(fd);
++	if (fd_empty(f))
++		return -EBADF;
++
++	state = pidfd_spawn_state_get_file(fd_file(f));
++	if (IS_ERR(state))
++		return PTR_ERR(state);
++
++	scoped_cond_guard(mutex_intr, return -ERESTARTNOINTR,
++			  &current->signal->cred_guard_mutex) {
++		if (READ_ONCE(current->ptrace))
++			return -EPERM;
++		ret = pidfd_spawn_check_startable(state);
++		if (ret)
++			return ret;
++		ret = pidfd_spawn_start(fd_file(f), state, &kargs);
++	}
++	if (!ret)
++		ret = pid_vnr(state->pid);
++
++	return ret;
++}
+-- 
+2.52.0
 
-
-pswpout = store rejected + written_back pages
-Note that pswpout comprises two parts: the store rejected count (where 
-we skip zswap and go directly to disk) and the number of pages written 
-back by shrink_memcg().
-
-Therefore, we can directly leverage store rejected to evaluate the 
-scenario where zswap is skipped and pages bypass it to disk. This 
-provides a much clearer picture than looking at pswpout alone.
-
-Do we need to include both sets of test results along with the 
-comparison data in the final commit message?
-
-Thanks,
-Hao
-
->>
->>                                 Baseline      Patched
->> shrink_worker wakeups         5,363            85
->> shrink_memcg calls       11,373,201      180,928
->> written_back pages            40,212       40,236
->> zswap_store calls            161,190      168,741
->>     store succeeded (ret=1)    102,743      127,644
->>     store rejected (ret=0)      58,447       41,097
->>     store reject rate            ~36%         ~24%
->> pool_limit_hit delta          55,826       14,062
->> pswpout                       98,659       81,333
->> pswpin                            2            1
->>
->>
->> Thanks,
->> Hao
 
