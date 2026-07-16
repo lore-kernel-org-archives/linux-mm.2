@@ -4,95 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF4BDC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:47:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D008C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:49:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFC7B6B014A; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
+	id 5266F6B0114; Thu, 16 Jul 2026 11:49:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD3C26B0148; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
+	id 4FDA46B0145; Thu, 16 Jul 2026 11:49:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4EC56B014A; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
+	id 413F96B0148; Thu, 16 Jul 2026 11:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 995FF6B0145
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BCA912010B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:58:34 +0000 (UTC)
-X-FDA: 84994341348.16.AAA485F
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A09ED40004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:58:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b03CyX1d;
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 071886B0114
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:49:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B4F5A0026
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:00:17 +0000 (UTC)
+X-FDA: 84994345674.13.094144D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B2A3C80006
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:00:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AFytKY3O;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784199512;
+	s=arc-20220608; t=1784199615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A9J2mfzReK0vZRJuzRH9sZHoLpDeO+iBwK/xyDsq7Kc=;
-	b=uu5W+dmCQJN1/paN4LyEIjGoXxoPDuRYugnHglzlL5VHKCyMjAN/QW+ezFZ4ImbN6/OI+H
-	H+40Hc00f/XN/3lMilm+Gau27hruU/IiTHGVHvaMfPbBzWP2XhqrWeCWgAbEeiiqbL/E6V
-	7rBpd5AzpQgRpd5B0jTGX6KdKsDDzb8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b03CyX1d;
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=AfseT8FwWqXuan8YHEwURooC335qSNz5uU0JSBPXilw=;
+	b=6UiGD27cZ23CyP7+/FTTyJUPVH520ThsOJYYxnYcMyEu5bb88nAauo4oqz9qfgbjr395B6
+	Sl9IpikftgwXu4u99xw9PuBk5ied4ERU0rN88amGZA/akv4puM8W1UNa21NHA7uxsg44D1
+	A2MIiqjQPg06Bzt31HpH8/lUG1osN5s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784199512;
-	b=kCtEnHC6D+bA3QdyYt2hBeW2K1PLhudPToeECecu6JhQIaA/+HGeH0Wa48zJu/pBGqcj9f
-	wqKTAxxiW5xEtl8RjA95cvsRZKBB2wE2BWAe5ehsGKkJe7Vd0XPJA69FWm3xyBfDGAFb6i
-	I0R28QnSghL50eMS5WBqaPO57pNr5J4=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784199507;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A9J2mfzReK0vZRJuzRH9sZHoLpDeO+iBwK/xyDsq7Kc=;
-	b=b03CyX1dRHhr7QK7K8Bi+z9V2blADechNztWBv2EwWnhnkb7K2qCMQZFZJo4CN+5PaAtZ1
-	B2vktp/6aXOjpw4h+ftljMkWMCP7OaSNHlzh8Wj5FBD6NMM7196ofRGOkRdQgh9UzxNAPl
-	hFoXhmbaJ5BgN8egRmGkldkt6rsjqOc=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 02/17] mm/sparse-vmemmap: track compound page order in
- struct mem_section
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260716101559.2e640e99@pumpkin>
-Date: Thu, 16 Jul 2026 18:57:57 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>,
+	t=1784199615;
+	b=q55v0S/MSdAhYLdnD2wzWaQNxlR5UjVmPJ0QtIaexSGg2l8dQ/QR4aOUXBoAdKadQOs1nL
+	dw2F+EfTvhNg5jSfAln1fXE8XLKwp5BAVdlKWrs/RHo0P7i7gFPqQ/zaQR7/rvvPb4j3JV
+	6MlFI+XXBJv4vTx6jPokeueSNFFic7M=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AFytKY3O;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 96AEC4192C;
+	Thu, 16 Jul 2026 11:00:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C2C1F000E9;
+	Thu, 16 Jul 2026 11:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784199614;
+	bh=AfseT8FwWqXuan8YHEwURooC335qSNz5uU0JSBPXilw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AFytKY3Ohrp2yYDlX6dudTnL4wYLO3viAskODGRFsFvLeDw1nBCiPU9IrjYxbapLs
+	 N99/1xfZK6oyyOHvsl30L44+P+9x+rhvbeQrugJ47g386+9eYJWQhnCM3xsMe9TFZ4
+	 DLgwfg7EDTMoFiawCSzAqxIyJVOc4qPPJLtqKQRB3ZlZJfT3xt6273oaI4u4QDAtJ4
+	 7+PkONgGHVhMA/hEZtzGZngwmzTg367bibR1Wb3CTmhKb91x8Tk2tWfBW0k1odm6Sk
+	 jxW3DGH21ALGkwudl0FG+I4IWgiVUAI9S/o2n6gsuo5D0H7aFhz/Suhxgjvj/M8vwy
+	 sVD+t1pyojccQ==
+Message-ID: <4a6a76ab-ce81-4645-acfa-f204c1260a35@kernel.org>
+Date: Thu, 16 Jul 2026 13:00:10 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm: vmscan: convert folio_referenced() to use
+ vma_flags_t
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, hannes@cmpxchg.org
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, mhocko@kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7BE734F3-4B0A-4990-9511-C2274C1CFA51@linux.dev>
-References: <20260702093821.2740183-1-songmuchun@bytedance.com>
- <20260702093821.2740183-3-songmuchun@bytedance.com>
- <20260716101559.2e640e99@pumpkin>
-To: David Laight <david.laight.linux@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 9xca4krp56845xioybo4br9ajq7t66ui
-X-Rspamd-Queue-Id: A09ED40004
+References: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
+ <5f2c0400e6a58ad2e61cf355c310a37b208fe1db.1784197559.git.baolin.wang@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <5f2c0400e6a58ad2e61cf355c310a37b208fe1db.1784197559.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784199511-69194
-X-HE-Meta: U2FsdGVkX18XB2elkxQW6kNAc6vdTq1UdZqAPP1hESoLIoVS3FLguOZbT2Kn3wJtTmP25GrkdOcffOEnzf1aXNlx5hNY4Y3p13QAP1MrrkZM35Qx3GE+EYIDPVQLhyU04zxcGxfYHU0wHLYDUtDF6Rnmyszu23Vq9cf8ZH1coMOK3pjEsuWTWBJVKILonyvwWbt9WvYtSbKyMtKhNWxuBXD4uxRzWXzeTnsejH6ZqxIO82uWBVHWpT2nNvihdDCgvE3H6+Lh878bgw3R7egUy/XEyfVnRAGewApYoMGFrJ//EVVD8uTChvnUQYD1131N8YwFfi1/g5IsSLekraG2PUM8ELv+r1JS5/wMlqQePb6oNbJn36z+EOxKzdpchXs5/OUHux6O0QRUbSM7Z5snmnl7+/OHsWastCeNlwiuh5/3h3U6nTUxdz7082IXKa1aRrOVyCHDdkK0hE+hjgDQEM46j1d7wg7wHQasPc+sedy+y4H/Kvruyhj3T6g97G81sQOyT487K8BZYimZZGMt9BWE9zZgexk1tvzHgiZX5qRTYtqI4Glxl92yfyO+K0bkSMgtEInXV8v/q6Xj5Pgr8V9LkAJztg/bOMPFtT7TPvgfbcoo4FHowaafdpSKqQsJrxnGHMB1dDBr+PwQozLJmX6gtj5rmeOzlvV1Jw6tlOsOo0bYm3j6kE4d11alZ+IDq1ig28B0s8s3EMakC2sKUDOcz+Zu7WX0gajA6Z1eJxoB5TiSQznzVI0gTNOSViEkxRbNi7M9tN+dxfDFiLtjblQvyF4goKhYcZX6n80JeHrfbl91jnTjlOJC/DRDP3nvMMyeKstcphngx3VWhQkansIlM0DeTV3oG8XfMNaDAZ3P8rd2wH1SMgEOkW5Je4WQqxweSPNaOBIAuzm8FHYN7xTc6IDNLKvXngsbkhsBC4egxgXs9WL0jY/mdZI/DsIcpUrAH6omZzwkhPw1eVB
- 7zxVO7P+
- HQSj0OOedejE4kPb4IH99QwTOGzAJu1Uh0kSkFEIwQgKe7vOtnhn8jbtOARExq6c7zAAcpaeHs+k4+ulTydGAj7n9PzmZSzovLjyWkhxRrRXhzAGHykeG9PS4MC55nBWZdAfHj176ry0kB4+v5pUQCq1/F1czqecH5keVZw3Qg8EuFJFhuMq4gsQRbhYVX6SzYrbDf8r/z4f6/rRZuz60u9yMD2D6dngphz7A4nnIRCzcyqAnP76kiYVxCm0uXTu2NEEd+Q9Ff0v0HRpIXYwcIcKypCRc3LAe/jFiBoDfV0owuLXo/PudKXR0arDF+GJ6tSGT0GZ6qogqS2xmNP1CXFG8IQYYpy27aqAEYP+XtWD2T8nVB4LdOwJpW19vhBGDlMRVilJJAZcOYpXorw1DqN0Xcw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B2A3C80006
+X-Stat-Signature: aca4d8fkb5e4ehup14jma9seyhtiiebq
+X-HE-Tag: 1784199615-404809
+X-HE-Meta: U2FsdGVkX19fLU80lxKAdZdvOwWKiSlrgqICxMvqjg7Vf02Hfb/TEk3MB8JMoNRJK6cqpgz7j2VEDTIupXIFl0N6HM99vAmWc991YUvKmoY6NKEUpIGAbo0buejhL5MQvJs6kgMsuu8qYkj+ijF6TqA0Vt4zIyHRDPX/DxCkOM9J5gy+Qq/yQSLhkhFn0z1cVxY/jNrVk1AvtrZVT3S8lGTrTBA39kSsOFYUmibsbSxMuIWkCq4wBUsr6xnmoEamAstyeFJOIdDSJSvjJ6NlHyYNwr4Eio6xJ3LQ7Bju3YbDWmDnpbasN4RNSFlCVF5QqfNqw/KOqn92Tzq5Xy7zaN2M4pOGkYqHcvsxVKceb0Sh++rDMCh3JxwC9NAGh+u82+UFec925Oj4hTydyMZ+JIxhfy8+uuPeL4s1fUQ/k/A2rC8byxk8Bw584Ig4douCE+GY5tFEtMp6+POnpUREZ9QMQktbqnCBBk9cODjLqc2cZ/ShYulizTu3sav9hQnWp2EbiWSKnUBzq8/5z2t2V9WCsYuH/IbHTG5tPEBHuqCAX4r6jsiXXx8cu+NuvP9TF0BsgJImp9NWy70Rc4hQvdCkN3jviMq598JIZPVuDiBeaD2RAhBd5xaR57ucQKaQTd++CXJFdoBWs69D+qtOxtnaVrddkqPK9/UoZX3QtBtgmv0LV8pPt5QXYTOFsLXo/jYproxzAdCz4DtzNhn01sH2VOHW2hiSflUYjHsPJ0C/zEJYkfjv53ix62Aehcg2wSh0LqO5nMtQkwFldlMTddEbjUW42kYOUNtr8BvL2NM0tHJCafuCEOUnJce6M4dn4spuptl+1NT6bwIE/KWS/D/KEpUtq9moR+376PoQnqLKiTQbNqEws3vOt63csAPYFcLLZBBibNkJKQBjbk8s9OIvKOTZKKJ8BL4T4Rq1/OYl+bH4r5IxVWA61YcH5Xxla2yfoaJV5HpJFEAhflM
+ M4t2JxrN
+ 41mqKw11hlgLFcOOLWvEXRWG5dkYqSHdlwUkkwN7L5Q5BlcDOs+34ftmVMmtGavjspe8m0D9o12fQCshPf4uIuizOA34f0PIG0icAMW0iN8c3WPiV84B7323Ll4DoCWiUPfXEbat3meAChj/g04XdJD3rJHEK4NjrsrCf3F987FsUxn9DNJFfH8+XnryfoQyRasy72TcDoKb2HfjDdAFYOTPnaw8zHPOFM9Id1ZAgqinEqLsxuaqS0oPs7pfbz6kSgAEnIh39+T61b8RZtSW423MmGksPmjM6oXFg+Xs9ikyygCwq51iCuvvI8/01ozACMa5fhnpdyshLUacnASijQkVfDCDIB2/dx4pQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,117 +144,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/16/26 12:46, Baolin Wang wrote:
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values for
+> folio_referenced() and related logic. This is also a preparation for the
+> following changes.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
 
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> On Jul 16, 2026, at 17:15, David Laight <david.laight.linux@gmail.com> =
-wrote:
->=20
-> On Thu,  2 Jul 2026 17:38:06 +0800
-> Muchun Song <songmuchun@bytedance.com> wrote:
->=20
->> HugeTLB and DAX both rely on vmemmap optimization, but sparsemem does
->> not record what compound page order a section is populated with.
->>=20
->> As a result, code that needs this information has to open-code
->> separate handling across users of vmemmap optimization.  It also
->> prevents other memory management code, such as struct page
->> initialization, from skipping initialization of shared vmemmap pages
->> when needed.
->>=20
->> Track the compound page order in struct mem_section and provide small
->> helpers to access it.  A compound page larger than a section =
-naturally
->> carries the same order across all covered sections.
->>=20
->> This is a preparatory change for consolidating vmemmap optimization
->> handling and for letting later code make initialization decisions
->> based on the section's compound page order.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> include/linux/mmzone.h | 32 ++++++++++++++++++++++++++++++++
->> 1 file changed, 32 insertions(+)
->>=20
->> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->> index 1353bcf7b712..bacd89572c5c 100644
->> --- a/include/linux/mmzone.h
->> +++ b/include/linux/mmzone.h
->> @@ -2015,6 +2015,14 @@ struct mem_section {
->>  */
->> struct page_ext *page_ext;
->> #endif
->> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
->> + 	/*
->> + 	 * The order of compound pages in this section. Typically, the =
-section
->> + 	 * holds compound pages of this order; a larger compound page =
-will span
->> + 	 * multiple sections.
->> + 	 */
->> + 	unsigned int order;
->> +#endif
->> };
->=20
-> That increases the size of the structure by 8 bytes for a value that
-> would fit in one (or 16 bytes to maintain power-of-2 size).
-> I'm pretty sure this array is big - so that is significant.
->=20
-> I've looked up some constants...
-> On x86-64 each section is (1 << 27) bytes or 128M.
-> A page contains 256 small 'struct mm_section' so covers 32GB of =
-physical address.
-> That is pretty much the memory limit for a 'normal' system.
-> So even doubling the structure size only uses 2 pages for 32GB memory.
-> Even packing the structure (or making it 48 bytes) would still use 2 =
-pages.
-> Of course there are the big servers with TB of memory...
->=20
-> A more interesting problem is the size of the 'page pointer' array.
-> That is sized for physical addresses right at the top of the 52bits
-> supported by 5-level page tables.
-> I make that 52-27-8+3 =3D 20 bits or 1MB, doubling to 2MB if struct =
-mem_section
-> is increased to 32 bytes.
-> However, in practise, I suspect that the actual upper limit for =
-physical
-> addresses is much lower.
+-- 
+Cheers,
 
-That was a truly excellent analysis. It is clear that the memory used by =
-the
-mem_section occupies a very small percentage of the overall system =
-memory.
-
->=20
-> It is also worth noting that CONFIG_PAGE_EXTENSION is a debug option.
-> It probably doesn't matter about efficiency if it is enabled.
->=20
-> You could change the code to use % instead of & - makes no difference =
-if
-> the size is a power of 2. That is generally safer.
-
-No problem. My patch 1 has already handled that.
-
->=20
-> Then do:
-> #if defined(CONFIG_PAGE_EXTENSION) || defined =
-(CONFIG_SPARSEMEM_VMEMMAP)
-> 	struct page_ext *page_ext;
-> 	unsigned int order;
-> #endif
-> With an extra comment about keeping power of 2 size for effifiency.
-
-Thanks for the suggestion! I'll use this approach to ensure men_section
-is aligned to a power of two again. I'll also add a comment here to =
-explain
-the reasoning behind this implementation.
-
-I really appreciate your detailed analysis and insights.
-
-Muchun,
-Thanks.
-
->=20
-> David
-
-
+David
 
