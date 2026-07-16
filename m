@@ -4,103 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C10C6C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:02:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB1EC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:02:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE70A6B011A; Thu, 16 Jul 2026 11:02:44 -0400 (EDT)
+	id 72CC96B011B; Thu, 16 Jul 2026 11:02:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBDE76B011B; Thu, 16 Jul 2026 11:02:44 -0400 (EDT)
+	id 703F96B011C; Thu, 16 Jul 2026 11:02:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFB5A6B011C; Thu, 16 Jul 2026 11:02:44 -0400 (EDT)
+	id 61AC96B011D; Thu, 16 Jul 2026 11:02:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C39A6B011A
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:02:44 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48DEFA0194
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:43:37 +0000 (UTC)
-X-FDA: 84994757274.13.A6B07B2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 74C8540007
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:43:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d5HI6GNh;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 359EF6B011B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:02:50 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 783474011A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:25:31 +0000 (UTC)
+X-FDA: 84994409262.08.F410735
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B5DC840007
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:25:29 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RryvzxVo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784201129;
+	b=yCU6huaq3QNucHw1hv+cGNJsZTk4eMDLXURIFLK7jaUtAZdXu7ZLLnkwlgNfNOIAiZSCDI
+	YyEdRYlYHLjEBZFauzCuPeyaNbK1kUu1tuf70GtoyqgzCXPZQ4MrUKTigAKWsc7mhEm/TG
+	4EcZEiSgF56LXHjFMbTMdcC3xDbaaew=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RryvzxVo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784209415;
+	s=arc-20220608; t=1784201129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+H1mNZK4mHGJRYK6baWPpFykIVXk8y/VtJFIxD1CBjE=;
-	b=6Dt0Ih/OdQ50sXVWl3d3D7vxa3RR5xVDE3iYIjLy1cCDDhWlXpB9B/2Sw/8gC2xj2FR+jL
-	Std4Sjvj8hIXJ7ID6jl5KNRFSubvMnWZHlOF1lmiwhK2oXI1AoKrLGBYz60m3JBwZzC0lP
-	iO5FZtweIR1QoszXx72dFaTP/o6JNVo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d5HI6GNh;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784209415;
-	b=NL1001s9LvsYiFwYsHX/y+nu2Fk2kGXJVFYzPeBIPmXv9B14b4jC54PU1EZPJR5cpOkZPL
-	V3/HsDnFxBDyyiQgaRzJ+AjnAhqnYJOC6vqx8eGIpmTpPM4Pp9kvEQ1jOFyV5533Eab2jk
-	J5p7yw0OuMPA5X4Oup4T10J/v9hhuA0=
+	bh=HY5mAISzRjDuaOGCSRr9WBJLo0EMBFc5Iz9GfShRj10=;
+	b=1tU5LwXYKxYcvxUIAgfHmjAwoYmOAfG+CXv/pEMDcSSi+3W4nrel1QEwQJGi+LzjlWn+Fi
+	DMNTz1FOzx1xuVWGWU18I6kDje1XgK1Av9S8e+oibx/51uxASzbdIp4IVz3Okrc1Lr3NcF
+	gvc/rt+Pu3+1XCKqITPflJ9zkvsZL3U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7916C43E8E;
-	Thu, 16 Jul 2026 13:43:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82D31F000E9;
-	Thu, 16 Jul 2026 13:43:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FAC46001A;
+	Thu, 16 Jul 2026 11:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81E01F000E9;
+	Thu, 16 Jul 2026 11:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784209414;
-	bh=+H1mNZK4mHGJRYK6baWPpFykIVXk8y/VtJFIxD1CBjE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=d5HI6GNhbQ/GL2/WgLgxsxRnCCGpvu3Ixr3MEAOZbjWhOYL+Qmu7X6MLActJufiCX
-	 FDh0DsWSxkdlZ0wCg2TB0rljgajZjrsTXq9KGreNF18CSoiwsc00C/o3USRY8r2zLU
-	 pKcuxwvHICk9KgHSHTWhT8vW0aGiwWwzmIg3MboWMTeAMz7sTRhUwl9Z/tf6mkVY1D
-	 QoxPx33rqkx5xz2rBEhChwJv7qr/anvgn/AUm85E67QFbGryS+i/ylXC9xw37ApxJP
-	 tbXDq2KWY8BXxhtY6XKabzwKu+t/FKCcQiV/Kngn6cKHK4mXYjQeHqDmsqr3b5xbpv
-	 ktoxcWmr4AvXQ==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 16 Jul 2026 14:43:10 +0100
-Subject: [PATCH 2/3] mm/mseal: limit scope of mseal address zero to address
- zero
+	s=k20260515; t=1784201129;
+	bh=HY5mAISzRjDuaOGCSRr9WBJLo0EMBFc5Iz9GfShRj10=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RryvzxVodQXnTn9xCQPXMltWlXFJUlt2CgjGTaFdlp3t47wbs06NkPGko17Gn7EwB
+	 inEpa3tjRZt+nKqmvwvEn4W4IOvpPi3ky4isPC0Garl3xZURW0gnMQlH18zP2x4aGL
+	 yfHqHhECqm+Kcs5e2l1vfdvdfcB+7XJG1IK4HylWDb30WtB10Qrfdl0zRId2e59FaA
+	 KaST5P/UgZBvneg1skrfBzPDE8nobSWcxndU+OLP9ccVo0LQ7GLJ6eav3t/6NCYslB
+	 MUlLjJ0z0zYd8A0a5ossTczuz+JyrsCA143s9mbyGmMjwi1gvWhJLrWrtu1b7Smhit
+	 OXfmJyJ7KgTOQ==
+Message-ID: <714bdcbb-92cd-4dde-820c-e3761cbbaf07@kernel.org>
+Date: Thu, 16 Jul 2026 13:25:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] selftests/mm: add PAGEMAP_SCAN test for THP PMD
+ holes
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org
+Cc: usama.anjum@arm.com, peterx@redhat.com, liam@infradead.org,
+ ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, zenghui.yu@linux.dev,
+ shuah@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org, kernel-team@meta.com
+References: <20260715144234.442721-1-kirill@shutemov.name>
+ <20260715144234.442721-3-kirill@shutemov.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260715144234.442721-3-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260716-mseal-fixups-v1-2-3a9609bf041b@kernel.org>
-References: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
-In-Reply-To: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4346; i=ljs@kernel.org;
- h=from:subject:message-id; bh=bCnbZ236ttt9+tsOYrHXuwG+hplvEL93BRAGDdBCf/Q=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIi7n86mzzdwW33t98/WI8kz2T8GZwX69x4N7nh7qK/9
- 3b9tIna0VHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJbNvD8N/zaJnitIe8mv6q
- h6a1LT7e1Pm49+eBHFNzV27zJbpGQhKMDO/mHp/z4uWhcM1dHTcK7zqEZ2qfec3d9DZuxYJs8zW
- e7mwA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Queue-Id: B5DC840007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 74C8540007
-X-Stat-Signature: hmb8mb5hoa6395pmhrncmeirm7gxymnr
-X-HE-Tag: 1784209415-707748
-X-HE-Meta: U2FsdGVkX1/PRwduwxYIeS8pA5WHbiUj7o853yEIeBbNgAmbKDDXezuncmKePLzt5CcnKK2T0GXjwr39VwapuGcH++sBJnSucEXvU+qwqS+IrZEAsl+rbaFZ1E2cDSMBwf0/O5FZiIY8n+WMRaYwo2WPLuvpxy5OK2Z3HukbI26OWTYszTm9M7d780t1KReT2qrpcgOgZCnPWZxdLtdCUvlJ41AS/Vlys9bYy9jwPNWTj+ChqJhJFSlv1DD+u+nMoShKaZv/wyNdKCDT0g8HnXD9twd3lF9AVsarWQg4q8Z3tysx2o9RoKGto0L+KKPxfbpgmlY89GAZe5uURkp6v/Oo28iPchXMvBcDJBCFyP9v1EfSU5tAZjZmxvOzYBPJDF8iftyXsI9TrgrQvtOBMvQwKaPN9+MZHnwi1WTImBYFAeGGomZJ4UAof0SSlclkWrLFahqdobEG4eID8+7tWpcu3LMLW82pAAd1Rc1n7D34fuxuFz4QfXr9K7N/sIle8OItavMGP/Z9IZNxnB25MU+Nm6Zs8RKYYt1SsXLITmBHgtEg/m2V4/zIorE1xUkwIBXsHwjbEElPTjoA7mMBTiclX4b1bB7UApWSeLeoVCxMgZdlb18QS8yC43OG1+27y3PGeYkHKLl/c3wzDVCLspqkThj6j3xsmkDZ1/sz1gxOjA3WhA7INhvf3asFozCqYNesfnMVNSlA1D4nes4XoatE55P4FL5Gdczq+firVbmMh+ngVay7k+OqvCN6Xpq2pz7BEM+j68iiS6tVHspAVNzzD9vvWuC7V53RnpafXQQKZEQY72oPzpvQ34UrTvIg2qiKk29X0+vtUxB0cXnagDj1P3tTCs/SoGe33V8Og+p7w2RTrPAeWXFmQKsetE1oEi96pl1EjrIWvGQtIy/cXz4IgoH+dV1RykSQQv3U86BDBaqlu5EZIh8SlbrnQgfzu4rU4U95L0UzUI3GEkG
- HXgDz+ok
- kr5FkcwUWwGLpGJMJp1JpkVhgEp5HoAgMruYCyam4JuO9jAFQrz/XOhxA/phq5KThoTdSzOwJDxeVLHs9DVsnoP4ZIDsxAmf6MUquIUZ0Glw94jrFD/fiypKloHLXfodGZhzvOMdw0+CmDVrWEufWl6CwlgeNxoZ5nxwuHNDq/HLUDroX3/XKZhHpFLpuTrxvEfG3jDAL6E5BIHucJAtJGpIOr8pveRdB4x5HAlO8ofGe0DC+iYzuDjN0gjbeLoxzQPmJO7sR+xRvvgOngerGUbiH6Q==
+X-Stat-Signature: pyekyc33aqmu8ejpdsbxxht8r6fbew3g
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784201129-517827
+X-HE-Meta: U2FsdGVkX1/uwY7zulFCCnLb47hf1RcuowLm0NO63/MdIMmPrhTPUTMtHjFlgjTgUDp0ou9XNiBnDZQ+fqPdn8VNVDZkkxaxoTVtaZ+abc7asf2cpiicW5xKA5RDT+hE5kZ39ezIhhJjwW8R20bnM7GADdeMkl9ITEIS45nUZ2OQU7EChfNdST40NWjqV6UKiRVBKcD2BIKtuPjz++8Yz1mxKp47tw5YseBx17WiBUQJtVYgqTvgNBUWUXdKCn1uCN5zRgJLZ1i4FSNXQGyGvmaVrO94e4zoYcWaWUvfv6ftHCwAQCd61n4LRk627vnTGaidEQ3EUHEVOms4hk73rU7ckEgUd5D2MaqoN+DimMS1CA8Wgfj0ezDED5rSJxkPQ2doN1+SNCrn1jKYZI1UjVFT4AnXpP8jNq+Q943iGH9LqOZN7zDMfkaqDkbbkmG/BXt684KMrh0M1Wx8x8gJqn5vRPLsWeiBcCrHfI2Rej7O9n7zPvGCVAL0/3+kChAEKiKg2qf07fakRk1DmmBS6VTMjsFOQE9gCmeAq+zEf0E6yT2mR5cexHe9cEuKZIilxDXbNrHc6tq87N4YYFrbHKwSARNaaOsv42RX8JwO5fyJKmIVi915ciRh+OUSo+SqJcnJU6tcZCicUKXx6EpexkI5vfDJSU8tc8gzli+ulyMRl2PDU3uAefii0W1v84YoWVvpXoyJjZ+KSFjRuGFh698ihMQUgwfPM6+T7zEWEjKxka5q7rlSNtwwC/hUhuMPb5HzMsafMR6kkIXwH96zdQAjxkUVNy3L607INkUsP8f/JSyBmvZq3QXDFvtFDj26ZQo2I89wjRYPN5qFYCYVEZZV3vtUz5iLQoksWHclF7sfkbx5JaqhaMlcj3F4DGM2t4RRM+hZ9tqR8O+5RRaxEM4Oq7HivkWYXaYrPQjEWX/Ov4wkcRnGBw1sqE+3dcwLl4m4flyevqHkPKOG61v
+ 0Wh1QecL
+ KPJgtrstspwUZbNcgLLyy33kKa7NykwL4VkaSrwoWrU62IWqN2GT69+Njp9ebB+pOcC4+3Gyzf/1rew9ZfvSgtZ1V5vVAk6qD1dX5xUmQcHHU8+b6Wd6NECmPqwGJ6JIUNOITZNhmHCZBaXmEP6PJ8f6L+9J9QeKSiuwe2ishXcO159XYtgqNj91cdERTG+/c30Ayzqd26PLp8m2fNp3oQX65eJKqSWXNvHvcJ5gl6MjLlPd+dk24BHq4h73gnFbdtQDSzpSu+Pd29Po4YXAiUI1lhKPKXQtknKSQNfUxSvCxJraFLPLWR9uwVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,150 +143,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 44f65d900698 ("binfmt_elf: mseal address zero") unconditionally
-provided do_mseal() to any internal kernel caller in order to address a
-corner case slated for possible removal.
 
-It also incorrectly attempts to mseal() without checking to see whether the
-mapping even succeeded.
+> +	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
+> +	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
+> +			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
+> +	for (i = 0; ret > 0 && i < ret; i++)
+> +		fast += LEN(regions[i]);
+> +
+> +	/* Generic path: same query expressed via category_anyof_mask. */
+> +	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
+> +			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
+> +	for (i = 0; ret > 0 && i < ret; i++)
+> +		slow += LEN(regions[i]);
+> +
+> +	ksft_test_result(fast == npages && slow == npages,
+> +			 "%s pmd-hole reported written by both paths (%ld, %ld of %d)\n",
+> +			 __func__, fast, slow, npages);
+> +out:
+> +	wp_free(mem, hpage_size);
+> +	munmap(area, 2 * hpage_size);
+> +}
 
-Restrict the scope to the corner case by providing mseal_mmap_page_zero()
-which asserts the MMAP_PAGE_ZERO personality.
+Sorry if I wasn't clear. I think unpopulated_thp_scan_test() can actually reuse
+bits of unpopulated_scan_test().
 
-Avoid unnecessary checks in the start, end range by abstracting the actual
-mseal()'ing to mseal() and have mseal_mmap_page_zero() call that instead.
+Either by having a magical "use_thp" parameter or by factoring stuff out into a
+helper.
 
-Only try to seal the VMA if we mapped the VMA.
-
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- fs/binfmt_elf.c    |  7 ++-----
- include/linux/mm.h |  8 ++------
- mm/mseal.c         | 48 +++++++++++++++++++++++++++++++++++-------------
- 3 files changed, 39 insertions(+), 24 deletions(-)
-
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 16a56b6b3f6c..e3131a311995 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1353,11 +1353,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 		   emulate the SVr4 behavior. Sigh. */
- 		error = vm_mmap(NULL, 0, PAGE_SIZE, PROT_READ | PROT_EXEC,
- 				MAP_FIXED | MAP_PRIVATE, 0);
--
--		retval = do_mseal(0, PAGE_SIZE, 0);
--		if (retval)
--			pr_warn_ratelimited("pid=%d, couldn't seal address 0, ret=%d.\n",
--					    task_pid_nr(current), retval);
-+		if (!error)
-+			mseal_mmap_page_zero();
- 	}
- 
- 	regs = current_pt_regs();
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 550fb92957d1..87feaa5a2b78 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -5291,13 +5291,9 @@ int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *
- int reserve_mem_release_by_name(const char *name);
- 
- #ifdef CONFIG_64BIT
--int do_mseal(unsigned long start, size_t len_in, unsigned long flags);
-+void mseal_mmap_page_zero(void);
- #else
--static inline int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
--{
--	/* noop on 32 bit */
--	return 0;
--}
-+static inline void mseal_mmap_page_zero(void) {}
- #endif
- 
- /*
-diff --git a/mm/mseal.c b/mm/mseal.c
-index 207fea89c61e..5930551d84f2 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -32,7 +32,7 @@ static bool range_contains_unmapped(unsigned long start, unsigned long end)
- 	return prev_end < end;
- }
- 
--static int mseal_apply(unsigned long start, unsigned long end)
-+static int __mseal(unsigned long start, unsigned long end)
- {
- 	struct vm_area_struct *vma, *prev;
- 	VMA_ITERATOR(vmi, current->mm, start);
-@@ -66,6 +66,38 @@ static int mseal_apply(unsigned long start, unsigned long end)
- 	return 0;
- }
- 
-+static int mseal(unsigned long start, unsigned long end)
-+{
-+	int err;
-+
-+	err = mmap_write_lock_killable(current->mm);
-+	if (err)
-+		return err;
-+	if (range_contains_unmapped(start, end))
-+		err = -ENOMEM;
-+	else
-+		err = __mseal(start, end);
-+	mmap_write_unlock(current->mm);
-+	return err;
-+}
-+
-+/**
-+ * mseal_mmap_page_zero() - If the MMAP_PAGE_ZERO personality is set, mseal()
-+ * the page mapped at address zero.
-+ */
-+void mseal_mmap_page_zero(void)
-+{
-+	int err;
-+
-+	if (WARN_ON_ONCE(!(current->personality & MMAP_PAGE_ZERO)))
-+		return;
-+
-+	err = mseal(0, PAGE_SIZE);
-+	if (err)
-+		pr_warn_ratelimited("pid=%d, couldn't seal address 0, ret=%d.\n",
-+				    task_pid_nr(current), err);
-+}
-+
- /*
-  * mseal(2) seals the VM's meta data from
-  * selected syscalls.
-@@ -118,10 +150,9 @@ static int mseal_apply(unsigned long start, unsigned long end)
-  *
-  *  unseal() is not supported.
-  */
--int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
-+static int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
- {
- 	size_t len;
--	int ret = 0;
- 	unsigned long end;
- 
- 	/* Verify flags not set. */
-@@ -144,16 +175,7 @@ int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
- 	if (end == start)
- 		return 0;
- 
--	if (mmap_write_lock_killable(current->mm))
--		return -EINTR;
--
--	if (range_contains_unmapped(start, end))
--		ret = -ENOMEM;
--	else
--		ret = mseal_apply(start, end);
--
--	mmap_write_unlock(current->mm);
--	return ret;
-+	return mseal(start, end);
- }
- 
- SYSCALL_DEFINE3(mseal, unsigned long, start, size_t, len, unsigned long,
+Or am I missing an important point why that would not work or be really ugly?
 
 -- 
-2.55.0
+Cheers,
 
+David
 
