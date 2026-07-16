@@ -4,99 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF44FC4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39574C44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 012F86B0005; Thu, 16 Jul 2026 10:54:03 -0400 (EDT)
+	id 9D5686B00E7; Thu, 16 Jul 2026 10:54:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2C0A6B00E7; Thu, 16 Jul 2026 10:54:02 -0400 (EDT)
+	id 986E56B00EA; Thu, 16 Jul 2026 10:54:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1B3A6B00E9; Thu, 16 Jul 2026 10:54:02 -0400 (EDT)
+	id 8267F6B00EB; Thu, 16 Jul 2026 10:54:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA0466B0005
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:54:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DA004A0035
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:17:22 +0000 (UTC)
-X-FDA: 84994388724.02.5BE3269
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E55321A0005
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:17:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="iw2ftw/N";
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784200641;
+	by kanga.kvack.org (Postfix) with ESMTP id 561686B00E7
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:54:03 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17596A01D1
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:44:24 +0000 (UTC)
+X-FDA: 84994910448.12.04D37E1
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 241A9160006
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:44:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=WP2UrJUb;
+	spf=pass (imf08.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784213062;
+	b=ojoKPum/pNZ+etO7EyZ2d5bboB8LY598D6nhPTFFMiQ2kFK2/MOzk1XKqc1TqBfNgXUWxm
+	NBA93ODyYzh7K2jQRCBQ4v2F66wpU91Bg7T+5FFo2+fqNsiQSz4B/SM216j/Y6MxhhT/nH
+	WVYgSgZZWrAF9i1jx8pPtruyQS++mZ8=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=WP2UrJUb;
+	spf=pass (imf08.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784213062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hTG6hGzVl0dWfit8w/MB62E4ZbeaEHmlylI6bepXRC8=;
-	b=4Nx4tBJDej5q7MJ6H9I7HJLsYlM3IvpWmGHf1nTPLm5+9K/llMovkKuPg9fX52KFzXXCDo
-	OTc/TdWIza+Woou2FvNv7kqUynJ6G/xDKLgVG9ILUWE8Z1gbJda7TKuz46tAoi9OmRvn3Z
-	mmfIany1CliIfGZqDI+PzNs850DGGXg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="iw2ftw/N";
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784200641;
-	b=6wSuL/aFqJTg1FgVmv0Y6bxrTTScIq/ushAcXc3TyUy1ecrjz7zmjP8RTgm6k0PWAPTFfe
-	H+LykOs7Mt4JSX2m8PR3lLu9rwc8B6L8yLf1hkwierOl4ETTc0LSbbddMpp90ddm8jTwmE
-	jCxI2YEutPMbpTXstTNFCeyoMudpCLQ=
-Message-ID: <65305712-8598-46aa-822b-914298277b64@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784200638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hTG6hGzVl0dWfit8w/MB62E4ZbeaEHmlylI6bepXRC8=;
-	b=iw2ftw/NK2C6aLDREmrqRB3OjKsp0m0NcDAUexkCvaS+1CoWYFdLyp3g94WH+U7yxEgSiM
-	lGZoR+GtGUfnBlAM39TYcBixAEmtd9mi5XewkykQWHEgkw7LVMayH0akxk3gu2SaXH9Sp5
-	w0xjNbEHkRdLLMISoubCAbwZcP3ZMYQ=
-Date: Thu, 16 Jul 2026 19:17:03 +0800
+	bh=290s3lUtxsTRNn8ivro74GnBQQOXcWg9/LqGiGBD/JE=;
+	b=UDYZQWuiuK/K4li74vPwIXvG8wAPXmPtSJxT7l2AyMSSThz639bNS0Y5tv3Z4mfpIO4HLI
+	akJDy4tUH9+tJXdSKgsas4Cahcs0aqx6wMDWUv/DHzJWHyvjPA4KPl0lEsvNvBYY8GbNt0
+	iwj2tZGoX57WIgqamBt9qzxtDIG5nK8=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212539; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Y1A6Pt+xHHCc6RftA1oxacOJWFGI+BHSGYSSzIilKYi44zxyibzMlZx+JFgjaCuIl2X+tsTcOTLhp1njQqNdEHT8eBjIZK/5vpVn3BlfBCJvxx9gns/ezgXVmn9AwLSiXgijV3/rUK/XWdnpYOXaKz/r/OkNMJIB4rMKDbrv9Bg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1784212539; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=290s3lUtxsTRNn8ivro74GnBQQOXcWg9/LqGiGBD/JE=; 
+	b=fR/XaeXfTU1N2cLozyBjs81xrzUG8XtAbAXU1CLc7XyNeNhn3/NDG8wxlc7uU2sJlcvh3OFbX4UlI7pN3jSg3SHD+OsFxLJNYVKDZ1vp2sk84WCcyLnXeGQJBXgmDgjf+RvXXBm8DRDnL7QoXMEFgJ06+hpNWLKCny4pkjVfqZc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212539;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=290s3lUtxsTRNn8ivro74GnBQQOXcWg9/LqGiGBD/JE=;
+	b=WP2UrJUbiLu8S5BIoqWeQ3oKsAnfg+6GHKQe1Uj+MZYX0v39zEVjgf7nqHdgyson
+	6Jfto1cKV4coKRtOlwQ19kWrICdvnYj4O/K8/CvgBvKXOGewhe4bjk5Cco/p4rEsyFG
+	jMBRYBMg/7dGS0djGkyHDfjrTuj1KI2cpNs9ka6Q=
+Received: by mx.zohomail.com with SMTPS id 178421253796522.239109081508104;
+	Thu, 16 Jul 2026 07:35:37 -0700 (PDT)
+From: Li Chen <me@linux.beauty>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	John Ericson <mail@johnericson.me>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Eric Paris <eparis@redhat.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	audit@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	Li Chen <me@linux.beauty>
+Subject: [RFC PATCH 21/24] pidfd: consume spawn builders on the first run attempt
+Date: Thu, 16 Jul 2026 22:31:47 +0800
+Message-ID: <efb77493eead572a22228a917066917c0a40ba7c.1784204592.git.me@linux.beauty>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1784204592.git.me@linux.beauty>
+References: <cover.1784204592.git.me@linux.beauty>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 2/2] mm: vmscan: fix node reclaim ignoring swappiness
- parameter
-To: Qi Zheng <qi.zheng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>
-Cc: Muchun Song <muchun.song@linux.dev>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Davidlohr Bueso <dave@stgolabs.net>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ridong Chen <chenridong@xiaomi.com>, stable@vger.kernel.org
-References: <20260716031729.1064007-1-ridong.chen@linux.dev>
- <20260716031729.1064007-3-ridong.chen@linux.dev>
- <7ddf3eee-5fe2-45f7-8614-c8936a039e04@linux.dev>
- <a5eb5433-cf6c-40ee-b14e-128a8bcc85bf@linux.dev>
- <94a489d5-8b02-46e6-92d2-ccb85f556769@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <94a489d5-8b02-46e6-92d2-ccb85f556769@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: bays7q1fk4gjw7ewd8xqnf5h1kqem5g7
-X-Rspamd-Queue-Id: E55321A0005
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784200640-864514
-X-HE-Meta: U2FsdGVkX1+9lwffGcoRdpjpHRStS1EYUJTz5pv5BrfmW2Rv1bc4vqgX0UwMAGQBU6XLVL3ZWVDa+/3252KYCJVrOBHMtScRtDayeQFDHLodwwoYgCP8sr4IDeOlQN+REND8O57moASXLQEGzPkWxvpE4Ez/LFKH/+bHqugbyN+vStAtW/+KTtELs+IK8NfkJgV6bixc3BaPPaPnocLctgfyyhwgywn02Ru/5eji4jkKXajO0bEw7nWh4U2gBYD9/IpbM6TgesB4oSucqACx33wyoRpQdjmbizEXvGwTCP649HCdAyQvMJOKwucijf9WdeGACMjaI50xFpvXrQpMz5ATikybTg8uZ/l/XildN3f9ZMMc3l/FIS5HzGxoC6s78NXkigZtcBUOkV4XW6VOBmtR+08lnSKHQd31GYlnOpJDHIr3p0vV8MY9+zaikPPSaBJo7XKYJ8TpAYzvu8WubcPorUkcrb60UbnEc94AxI+zmiFnzG9QdtbNpLw7Z5/EzbDW2Yt+Tup/UVOfUOHHaBeV20piMsGz9eaeXF8X5amRiBviAvDsfKKixqXbabI9SraV3nkjfERM4T5obEygB+J9AeSL4dqPKuFHfXNanHLA6yA2BmHP0Dp5OZSujEX6IkT+50rZfIYE7KoOQmdVojKz21jpXEFxVD8VHBpdGrIbzmu1u3B5F2HFHkcIJ8OzGeVQ4zPANrOPzN7XQITLQyJxEOmmnwfWvY57Eufj0hX7q5g7Vvm1pJwkGcyR5oto3i2aEz/q1MJi753+ogIUlA8OIHos/CiuTaNGmommYZl7Sc/pNAGRGZDjTzFq9ulxUlw0VlQ+9YQP6VQ+1UiYZNwQ1R58e95UGgGbf1fssmDQ0B+TSw/MhsLsP4VyZUQGIhsQ91QsuxSsfI3nIMFhOTK11ys2ubQpUlnbJbWAYw9228N+rZFqjptA1CrHorz4h6UH4J/jXhhz2Oe4YkE
- JRJrRH7J
- 6k5Zfj7FpDUrzd5EAvb+/sVEJEzt/DpszDFUS7I7pkDhD9AZR3+F2ioG0lrmk5yKovBk5LKmIehVeWQhsGo+sjr7k34O+T5uMHfzGwblWfDXntJqSloymEVtJp1Oy79kkv1imXd49XqNF1OVT099LpAOzKVlAewte6WhaDnMUrsEpu/9UWhL3Li7Tyb5D/LBSY5p3WdVeueuTsqZO33ONueIXms8+6HBSPrnFKj/AfmawTYkYqhSMF5yh2yxeuikpQItS7l5fiMFB+78=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 241A9160006
+X-Stat-Signature: tbrpurzk8mxagysymwjw49t4p41bdtue
+X-HE-Tag: 1784213061-654201
+X-HE-Meta: U2FsdGVkX19oN7oweN25K74u2ugzqaGkAjbElpi+djAVlVTsOZy0ZmNoxbXjsZchU2LqP8vDsyJNHUUjySdYYEJsryTD8hNAb/2nxJQH9FXq07EH33Xobm0m39FMnwsIyVgAnQw3In1AjII3v577lxBtZbi6/CTtPUsyfaf6d+dfNArtINrcUvkvd/l6m9T91eg0fCAwYXNhKFc9Lu2I01afbgcIf1pTne1cVDnrTJIM2lRxqqLpRs/lDgiF8UCsMvazpXjS6Q4NvpZnNDZDk6Xm8JgZd+g/YWFoX11CK09mMB9dcMCacqw1xiaR4ZrFYBlEbdpE0FuPvzFwnlg2pDdQDXFYfSApIg+wBJReDPoBUmm0blblT7NinkPoIAe6KdkWlMP/F7S3d5l6CLOLyUNrOLu3txIilO/mzEWUXkYjmOXQUtnke1/f1LcmqRbZo3fhyNAAqH+e02P82/vsmnUcqSW3a0bPq7BEYsPyOP7Eu/pZMwr1MR03vUIZTYnmPmw1rTmlbzaOwtGaoPSiCAViFmSSn8Umxyhv43t655y1z/O9kxuwCeX32cQienCXbeGFBvb+FXaUtIU4/5nNn+BYuJMenwxyZYK+dMTdcGnoZVx8pRrckTXqU5lnKBPENIH8ruI8kIoQ208j4/xAaWI7gFpvgUvXJqhneJFzIawSner3E1VdzwimYypnr7YkkrcYZl1dxechoxL8Ig9uBy1NGzPDKC1+lidQwOBCszsqdLjaMIUYbyfgWtkReiQ5bHTdn6rk2MmImC7dF4wPI4ps9Ba7MvjJzoQMhkqa9PaCNqwcsl6gl/z3bEyndK5RRhEXCO01QEFoEVdicX6yhiJkN3hKPCDBz8B4aMtWHecEEQG0lDr73vP/s9CjaxJhVO4VWCDhPAxed6ZiBd2jxrU52odpWmdQ9dCxnLT+TEIp4W1/KKoA6fPsTaVN5jEQufKAzqHCHHuS96Ye3k4
+ A67jsZHt
+ I9HsT+ayoHpe5smnx3GCncpN4lbt2F6ZKyCWThqdSwRwGjRjeISyet1CP14U+lSdqx5EP3YtBE2aeLDRpwdRpYgW81mlCRq/QDUw/xvYROdS+Vp7gj1FfnzABeOJe7B2u5eySgo6bI8QuVXYJ8A8bRCgyCdQGlV5VJ37RpzK9ZLVv7hbWWq+lEwJAWaPqP9D8EGM6dgSclrCZcSc/KAo68q4TV5FPWYKhcdMNf+6zF3OicyZl7uk7bDOVr5hBn8HdfJEqLyk3PnvmRci5F4c025vipP/CitfLhpA4KHn0MGbK2I0U8V+j+NMyFoKh1P9Gx2jbohtBGCrLXx7h4ovtp4XQRWL97OS4GXTCEDj5cO+RWMTOYBfNPV1ZE8x29Xdo+gdnbEZGkjmdsIljzmvkkgK/CGz43kPPmK/q+BJrsfSIVQOkhxi/1kAkFHVHXSjNc6BB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,140 +123,314 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+A pre-task run failure currently returns the builder to CONFIGURING. A
+second thread can then publish another invocation before the first
+caller probes the pidfd, making the observed process state ambiguous.
 
+Claim the builder after type, authority, and ptrace checks but before
+run argument access. Any later validation, uaccess, allocation, or
+task-creation failure leaves a terminal taskless builder. Later config
+and run operations return EBUSY, while process-dependent pidfd
+operations return ESRCH.
 
-On 7/16/2026 4:42 PM, Qi Zheng wrote:
-> 
-> 
-> On 7/16/26 4:21 PM, Ridong Chen wrote:
->>
->>
->> On 7/16/2026 11:58 AM, Qi Zheng wrote:
->>> Hi Ridong,
->>>
->>> On 7/16/26 11:17 AM, Ridong wrote:
->>>> From: Ridong Chen <chenridong@xiaomi.com>
->>>>
->>>> sc_swappiness() had two separate definitions depending on
->>>> CONFIG_MEMCG. The !CONFIG_MEMCG variant simply returned
->>>> vm_swappiness, ignoring the proactive_swappiness value passed
->>>> through scan_control. This caused the swappiness parameter
->>>> written to /sys/devices/system/node/nodeX/reclaim to have no
->>>> effect when CONFIG_MEMCG is disabled.
->>>>
->>>> Fix this by consolidating sc_swappiness() into a single definition
->>>> that checks sc->proactive_swappiness first, then falls back to
->>>> mem_cgroup_swappiness() which already handles both CONFIG_MEMCG
->>>> and !CONFIG_MEMCG.
->>>>
->>>> Before fix (swappiness=max ignored, mostly file pages reclaimed):
->>>>
->>>>      # cat /proc/sys/vm/swappiness
->>>>      60
->>>>      # cat /proc/vmstat | grep pgsteal
->>>>      pgsteal_kswapd 0
->>>>      pgsteal_direct 0
->>>>      pgsteal_khugepaged 0
->>>>      pgsteal_proactive 1840
->>>>      pgsteal_anon 25
->>>>      pgsteal_file 1815
->>>>      # echo "64M swappiness=max" > /sys/devices/system/node/node0/ 
->>>> reclaim
->>>>      # cat /proc/vmstat | grep pgsteal
->>>>      pgsteal_kswapd 0
->>>>      pgsteal_direct 0
->>>>      pgsteal_khugepaged 0
->>>>      pgsteal_proactive 18013
->>>>      pgsteal_anon 337
->>>>      pgsteal_file 17676
->>>>
->>>> After fix (swappiness=max honored, anon pages reclaimed as expected):
->>>>
->>>
->>> By the way, in get_scan_count(), it seems we still reclaim file pages
->>> without swap space, even if swappiness=max (SWAPPINESS_ANON_ONLY) is
->>> set.
->>>
->>> This behavior appears to contradict the semantics of
->>> SWAPPINESS_ANON_ONLY, which probably needs a fix as well.
->>>
->> Thanks, Qi.
->>
->> You're right. Currently, when can_reclaim_anon_pages() returns false, 
->> the reclaim logic falls back to scanning file folios even if 
->> swappiness == SWAPPINESS_ANON_ONLY is set:
->>
->> ```
->> static void get_scan_count(struct lruvec *lruvec, struct scan_control 
->> *sc,
->>                 unsigned long *nr)
->> {
->>      ....
->>      /* If we have no swap space, do not bother scanning anon folios. */
->>      if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat- 
->> >node_id, sc)) {
->>          scan_balance = SCAN_FILE;
->>          goto out;
->>      }
->>
->>      ...
->>      /* Proactive reclaim initiated by userspace for anonymous memory 
->> only */
->>      if (swappiness == SWAPPINESS_ANON_ONLY) {
->>          WARN_ON_ONCE(!sc->proactive);
->>          scan_balance = SCAN_ANON;
->>          goto out;
->>      }
->>      ...
->> }
->> ```
->>
->> The !can_reclaim_anon_pages() check above takes precedence over the 
->> SWAPPINESS_ANON_ONLY branch, making the latter effectively unreachable 
->> when anonymous pages are deemed non-reclaimable.
->>
->> To fix this, could we move the SWAPPINESS_ANON_ONLY check up before 
->> the can_reclaim_anon_pages() check?
->>
->> ```
->> static void get_scan_count(struct lruvec *lruvec, struct scan_control 
->> *sc,
->>                 unsigned long *nr)
->> {
->>      ...
->>      /* Proactive reclaim initiated by userspace for anonymous memory 
->> only */
->>      if (swappiness == SWAPPINESS_ANON_ONLY) {
->>          WARN_ON_ONCE(!sc->proactive);
->>          scan_balance = SCAN_ANON;
->>          goto out;
-> 
-> For SWAPPINESS_ANON_ONLY + !can_reclaim_anon_pages, perhaps we should
-> just return directly instead of goto out, since no pages can be
-> reclaimed in this situation.
-> 
+Normalize every internal restart error after the claim to EINTR so the
+architecture cannot restart a consumed invocation and replace its
+result with EBUSY. Preserve normal restart behavior before the claim.
 
-Much better.
-Would you mind if I send a separate patch to fix this issue?
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Li Chen <me@linux.beauty>
+---
+ fs/pidfd_spawn.c | 164 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 109 insertions(+), 55 deletions(-)
 
-> 
->>      }
->>      ....
->>      /* If we have no swap space, do not bother scanning anon folios. */
->>      if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat- 
->> >node_id, sc)) {
->>          scan_balance = SCAN_FILE;
->>          goto out;
->>      }
->>
->>      ...
->> }
->> ```
->>
-> 
-
+diff --git a/fs/pidfd_spawn.c b/fs/pidfd_spawn.c
+index 3e46a12c0ba07..1309fe99ec091 100644
+--- a/fs/pidfd_spawn.c
++++ b/fs/pidfd_spawn.c
+@@ -73,6 +73,7 @@ DEFINE_FREE(pidfd_spawn_dismiss_filename, struct delayed_filename,
+ enum pidfd_spawn_status {
+ 	PIDFD_SPAWN_CONFIGURING,
+ 	PIDFD_SPAWN_STARTING,
++	PIDFD_SPAWN_FAILED_TASKLESS,
+ 	PIDFD_SPAWN_SETUP_DONE,
+ 	PIDFD_SPAWN_STARTED,
+ 	PIDFD_SPAWN_CANCELLED,
+@@ -100,6 +101,14 @@ struct pidfd_spawn_state {
+ 	enum pidfd_spawn_status status;
+ };
+ 
++struct pidfd_spawn_resources {
++	struct pidfd_spawn_action *actions;
++	struct mm_struct *creator_mm;
++	const struct cred *creator_cred;
++	struct pid_namespace *creator_pid_ns;
++	char *staged_path;
++};
++
+ static struct pid *
+ pidfd_spawn_load_pid(const struct pidfd_spawn_state *state)
+ {
+@@ -183,8 +192,16 @@ static struct pid *pidfd_spawn_file_pid(void *data)
+ 	return pid ? pid : ERR_PTR(-ESRCH);
+ }
+ 
++static bool pidfd_spawn_file_terminal(void *data)
++{
++	struct pidfd_spawn_state *state = data;
++
++	return pidfd_spawn_get_status(state) == PIDFD_SPAWN_FAILED_TASKLESS;
++}
++
+ static const struct pidfs_future_file_ops pidfd_spawn_future_ops = {
+ 	.get_pid = pidfd_spawn_file_pid,
++	.is_terminal = pidfd_spawn_file_terminal,
+ 	.release = pidfd_spawn_state_release,
+ };
+ 
+@@ -199,31 +216,47 @@ pidfd_spawn_state_get_file(struct file *file)
+ 	return state;
+ }
+ 
++static void
++pidfd_spawn_detach_resources(struct pidfd_spawn_state *state,
++			     struct pidfd_spawn_resources *resources)
++{
++	resources->actions = state->actions;
++	resources->creator_mm = state->creator_mm;
++	resources->creator_cred = state->creator_cred;
++	resources->creator_pid_ns = state->creator_pid_ns;
++	resources->staged_path = state->staged_path;
++	state->actions = NULL;
++	state->creator_mm = NULL;
++	state->creator_cred = NULL;
++	state->creator_pid_ns = NULL;
++	state->staged_path = NULL;
++	state->nr_actions = 0;
++}
++
++static void
++pidfd_spawn_put_resources(struct pidfd_spawn_resources *resources)
++{
++	if (resources->creator_mm)
++		mmdrop(resources->creator_mm);
++	if (resources->creator_cred)
++		put_cred(resources->creator_cred);
++	if (resources->creator_pid_ns)
++		put_pid_ns(resources->creator_pid_ns);
++	kfree(resources->staged_path);
++	kvfree(resources->actions);
++}
++
+ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
+ 				      struct filename *filename, int result)
+ {
+-	const struct cred *creator_cred;
+-	struct pidfd_spawn_action *actions;
+-	struct mm_struct *creator_mm;
+-	struct pid_namespace *creator_pid_ns;
+-	char *staged_path;
++	struct pidfd_spawn_resources resources = {};
+ 
+ 	/*
+ 	 * Run data is one-shot. Detach it under the lock, then drop refs
+ 	 * after the child no longer needs the shared setup payload.
+ 	 */
+ 	mutex_lock(&state->lock);
+-	actions = state->actions;
+-	creator_mm = state->creator_mm;
+-	creator_cred = state->creator_cred;
+-	creator_pid_ns = state->creator_pid_ns;
+-	staged_path = state->staged_path;
+-	state->actions = NULL;
+-	state->creator_mm = NULL;
+-	state->creator_cred = NULL;
+-	state->creator_pid_ns = NULL;
+-	state->staged_path = NULL;
+-	state->nr_actions = 0;
++	pidfd_spawn_detach_resources(state, &resources);
+ 	state->argv = native_arg(NULL);
+ 	state->envp = native_arg(NULL);
+ 	memset(state->audit_args, 0, sizeof(state->audit_args));
+@@ -235,14 +268,7 @@ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
+ 	mutex_unlock(&state->lock);
+ 
+ 	putname(filename);
+-	if (creator_mm)
+-		mmdrop(creator_mm);
+-	if (creator_cred)
+-		put_cred(creator_cred);
+-	if (creator_pid_ns)
+-		put_pid_ns(creator_pid_ns);
+-	kfree(staged_path);
+-	kvfree(actions);
++	pidfd_spawn_put_resources(&resources);
+ }
+ 
+ static bool pidfd_spawn_cancel(struct pidfd_spawn_state *state,
+@@ -291,16 +317,44 @@ static bool pidfd_spawn_same_creator(struct pidfd_spawn_state *state)
+ 	       pidfd_spawn_same_pid_ns(state);
+ }
+ 
+-static int pidfd_spawn_check_startable(struct pidfd_spawn_state *state)
++static int pidfd_spawn_claim(struct pidfd_spawn_state *state)
+ {
+ 	int ret;
+ 
+-	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
++	scoped_guard(mutex, &state->lock) {
+ 		ret = pidfd_spawn_configuring_error(state);
+-		if (!ret && !pidfd_spawn_same_creator(state))
+-			ret = -EPERM;
++		if (ret)
++			return ret;
++		if (!pidfd_spawn_same_creator(state))
++			return -EPERM;
++
++		pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTING);
+ 	}
+-	return ret;
++	return 0;
++}
++
++static void pidfd_spawn_fail_taskless(struct file *file,
++				      struct pidfd_spawn_state *state, int result)
++{
++	struct pidfd_spawn_resources resources = {};
++
++	mutex_lock(&state->lock);
++	if (WARN_ON_ONCE(pidfd_spawn_get_status(state) !=
++			 PIDFD_SPAWN_STARTING || pidfd_spawn_load_pid(state))) {
++		mutex_unlock(&state->lock);
++		return;
++	}
++	state->result = result;
++	pidfd_spawn_detach_resources(state, &resources);
++	state->argv = native_arg(NULL);
++	state->envp = native_arg(NULL);
++	memset(state->audit_args, 0, sizeof(state->audit_args));
++	state->audit_syscall = 0;
++	pidfd_spawn_set_status(state, PIDFD_SPAWN_FAILED_TASKLESS);
++	mutex_unlock(&state->lock);
++
++	pidfd_spawn_put_resources(&resources);
++	pidfs_future_file_notify(file);
+ }
+ 
+ static struct filename *pidfd_spawn_get_path(const char __user *value)
+@@ -718,7 +772,7 @@ static void pidfd_spawn_child(struct callback_head *work)
+ }
+ 
+ static int pidfd_spawn_copy_run_args(struct pidfd_spawn_run_args *kargs,
+-				     struct pidfd_spawn_run_args __user *uargs,
++				     const struct pidfd_spawn_run_args __user *uargs,
+ 				     size_t usize)
+ {
+ 	size_t actions_size;
+@@ -873,6 +927,13 @@ static int pidfd_spawn_start(struct file *file,
+ 	struct task_struct *task;
+ 	int ret;
+ 
++	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
++		if (pidfd_spawn_get_status(state) != PIDFD_SPAWN_STARTING)
++			return -EBUSY;
++		if (!!state->staged_path == !!kargs->path)
++			return -EINVAL;
++	}
++
+ 	if (kargs->path) {
+ 		ret = pidfd_spawn_get_delayed_path(&filename,
+ 						   pidfd_spawn_user_ptr(kargs->path));
+@@ -881,15 +942,8 @@ static int pidfd_spawn_start(struct file *file,
+ 	}
+ 
+ 	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
+-		ret = pidfd_spawn_configuring_error(state);
+-		if (ret)
+-			return ret;
+-		if (!pidfd_spawn_same_creator(state))
+-			return -EPERM;
+-		if (state->staged_path && kargs->path)
+-			return -EINVAL;
+-		if (!state->staged_path && !kargs->path)
+-			return -EINVAL;
++		if (pidfd_spawn_get_status(state) != PIDFD_SPAWN_STARTING)
++			return -EBUSY;
+ 		if (state->staged_path) {
+ 			ret = pidfd_spawn_get_delayed_kernel_path(&filename,
+ 								  state->staged_path);
+@@ -903,7 +957,6 @@ static int pidfd_spawn_start(struct file *file,
+ 		state->envp = pidfd_spawn_user_arg(kargs->envp);
+ 		state->actions = *actions;
+ 		state->nr_actions = kargs->nr_actions;
+-		pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTING);
+ 		pidfd_spawn_save_audit_context(state);
+ 		*actions = NULL;
+ 		reinit_completion(&state->done);
+@@ -921,9 +974,6 @@ static int pidfd_spawn_start(struct file *file,
+ 			memset(state->audit_args, 0,
+ 			       sizeof(state->audit_args));
+ 			state->audit_syscall = 0;
+-			state->result = 0;
+-			pidfd_spawn_set_status(state,
+-					       PIDFD_SPAWN_CONFIGURING);
+ 			return ret;
+ 		}
+ 
+@@ -1002,17 +1052,13 @@ int pidfd_empty_open(unsigned int flags)
+ }
+ 
+ SYSCALL_DEFINE3(pidfd_spawn_run, int, fd,
+-		struct pidfd_spawn_run_args __user *, uargs, size_t, usize)
++		const struct pidfd_spawn_run_args __user *, uargs, size_t, usize)
+ {
+ 	struct pidfd_spawn_action *actions __free(kvfree) = NULL;
+ 	struct pidfd_spawn_run_args kargs;
+ 	struct pidfd_spawn_state *state __free(pidfd_spawn_state) = NULL;
+ 	int ret;
+ 
+-	ret = pidfd_spawn_copy_run_args(&kargs, uargs, usize);
+-	if (ret)
+-		return ret;
+-
+ 	CLASS(fd, f)(fd);
+ 	if (fd_empty(f))
+ 		return -EBADF;
+@@ -1020,19 +1066,27 @@ SYSCALL_DEFINE3(pidfd_spawn_run, int, fd,
+ 	state = pidfd_spawn_state_get_file(fd_file(f));
+ 	if (IS_ERR(state))
+ 		return PTR_ERR(state);
+-	ret = pidfd_spawn_copy_actions(&actions, kargs.actions,
+-				       kargs.nr_actions, kargs.action_size);
+-	if (ret)
+-		return ret;
+-
+ 	scoped_cond_guard(mutex_intr, return -ERESTARTNOINTR,
+ 			  &current->signal->cred_guard_mutex) {
+ 		if (READ_ONCE(current->ptrace))
+ 			return -EPERM;
+-		ret = pidfd_spawn_check_startable(state);
++		ret = pidfd_spawn_claim(state);
+ 		if (ret)
+ 			return ret;
+-		ret = pidfd_spawn_start(fd_file(f), state, &kargs, &actions);
++
++		ret = pidfd_spawn_copy_run_args(&kargs, uargs, usize);
++		if (!ret)
++			ret = pidfd_spawn_copy_actions(&actions, kargs.actions,
++						       kargs.nr_actions,
++						       kargs.action_size);
++		if (!ret)
++			ret = pidfd_spawn_start(fd_file(f), state, &kargs,
++						&actions);
++		if (ret) {
++			ret = pidfd_spawn_normalize_result(ret);
++			if (!pidfd_spawn_load_pid(state))
++				pidfd_spawn_fail_taskless(fd_file(f), state, ret);
++		}
+ 	}
+ 	if (!ret)
+ 		ret = pid_vnr(state->pid);
 -- 
-Best regards
-Ridong
+2.52.0
 
 
