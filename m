@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D457FC4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F31C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D27EB6B00BF; Thu, 16 Jul 2026 10:49:34 -0400 (EDT)
+	id ADC296B00C2; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0436B00C2; Thu, 16 Jul 2026 10:49:34 -0400 (EDT)
+	id A6BB96B00C4; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8EA46B00C3; Thu, 16 Jul 2026 10:49:34 -0400 (EDT)
+	id 86AC76B00C5; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 51F1E6B00BF
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:34 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57720C01D7
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:32:35 +0000 (UTC)
-X-FDA: 84994880670.29.60B941C
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4A9E6180003
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:32:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 463C76B00C2
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BB0E80154
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:29:58 +0000 (UTC)
+X-FDA: 84994722876.14.49FCA43
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 54E4218000C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:29:56 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=N4AokULL;
-	spf=pass (imf06.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212353;
-	b=anE4P1hv9K9lZAgwdGA5Ybb3Ua3SpbfETT1lnTT9EM06vvukYWUy8IQuEk/EagDD5CuqSf
-	KUeZQELes84rwjMIwHoV2YeCduaXouUnEwe6egqn/W1/4pXY9WVfLmYQQLehm0DAl/CO+W
-	Rnw/n4xdE8IjuNwhziMjM5KFgdGB4JI=
-ARC-Authentication-Results: i=2;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzgQwrsv;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784208596;
+	b=MqUoBjo7v5t/yyKwJ1CyLXt8sFDW0s4j86b2EfI22oTe1aTqac5wzYGYL3NwuZjk4VfKyI
+	7WGn0EEvNlAnZY/Qxup9U+K1mxKX/Kn2xbnyWOuuMYWthuH2jNui5PJWbykFtAWIrds8c/
+	1iIkhVHR9ZD0jw5iFvJ6Pvvut/TNl64=
+ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=N4AokULL;
-	spf=pass (imf06.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212353;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzgQwrsv;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784208596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5oCdwe2KWEGMRTpHEX8MzuIoOidrsrJEQ6Hx6ATmCPI=;
-	b=qGcV5cEnHieg1Ltw7kwzez34pzuIijYUGlbMLCQPkhgT5HVcZSieoqV1HCWhMERW0aEyyn
-	HZS1Zfr3T3baWbWhKdU14sH8sZx/bOLSvj29nAABOa4XV7gYW1fIJ+F8AsuT3DY0MZgCK9
-	gexi0LGZNU+kY4Bs1UPQLn4uzwz7FnQ=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212336; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=fZCIBYJFR2T1GZORZZ84y0hqKpA/34zUnKSZwzkphIVuYmkrRhUdfXRsO8Pbc9A83TfXCJ8nac8Ds8iqRSVNQZ0H88vhPEqud3CRULPWgZnZ/k5AzXIXFegcWelBtw4bgRHmt5o7McK04G1+1xnUob4Y2/W28MwKX07Vda+CR5g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212336; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=5oCdwe2KWEGMRTpHEX8MzuIoOidrsrJEQ6Hx6ATmCPI=; 
-	b=MfVsHkw0i5Wb/dMkMNhDCgRsN8i0su2QCG0Q3V5Xx5VNICtohIDANpP+5xmRaHXCKU9GcMQvUwoXl66UTCump4BCZayoeSvdEdQ4GkzubjkyyftJ/TYQWQpys9hK+ec4GQz46/det+8cij5/2nWuMmInfxOgT+t9AZIfqqlpq3M=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212336;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=5oCdwe2KWEGMRTpHEX8MzuIoOidrsrJEQ6Hx6ATmCPI=;
-	b=N4AokULLXMzramfa4Qwvgx87YW5ak5NKY5sxmc59Wmono8RbzWZvxq9cL6jp4Vh5
-	P/n/xkQaRTpbIbcF7MNHyjS/LU3zcd2S3Yah0w4sQblDit9SIyY/fxxjAr1OZpa5BxD
-	h+Dnf+UTQao3VVbhKI7BSteq3GqKAgzb2xxAObKs=
-Received: by mx.zohomail.com with SMTPS id 1784212333383352.21801644814866;
-	Thu, 16 Jul 2026 07:32:13 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Eric Paris <eparis@redhat.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	audit@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 00/24] pidfd: add a minimal process spawn builder
-Date: Thu, 16 Jul 2026 22:31:26 +0800
-Message-ID: <cover.1784204592.git.me@linux.beauty>
-X-Mailer: git-send-email 2.52.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uli8kho+St3ZUL1DO6L5W7brqtkQjA+CdGhvrx1RaxY=;
+	b=4vy4ok4R/+17cTuCLQ3XeTrQDJRkEXHObK+8usvnD1bT9ViyDWeCXleXA+q4nB06LUqKsv
+	Wa5DeQv0Oo5MWb6lI7i1k3xIgTndMQuTVty9EqLktKCFrgJP5GtBDvjjiWQJr3Z7vbiTzI
+	XA5W2zgpU0GlX6+8hWxX+gDYMcteUxI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1AA6F41331;
+	Thu, 16 Jul 2026 13:29:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6201F000E9;
+	Thu, 16 Jul 2026 13:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784208595;
+	bh=uli8kho+St3ZUL1DO6L5W7brqtkQjA+CdGhvrx1RaxY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jzgQwrsv3V/tDXNyLUdumBIOaI+5zsaZdpbH1TEEgiTvTUjS1xpWTti1WSyDULhFc
+	 hJ295rAXchnFta6Mg8D7uV7YH5SVfO5a+iueHgHssi0racSeYBmIRBjp7ThZI+FtLr
+	 7XPO4AmdVTGji5tve+AryuvbNf6ET1dMOSnuOXByxXUVdBOp/dY0jzjav0Mn/a+oJs
+	 l1Ut3b+Q29v+wex5p6/jiaj9QKMDiH/JFPNxSjrNAlUIYNKFWwqvU8uoJ/wIZTuY8x
+	 LUH9+cXpct9LlCkOHXR/YtZFDRsD4fQISQOgDLa21EQGtJaZtvhfcOgtUp3MLMNT4P
+	 A4cGgcn/WXtkA==
+Date: Thu, 16 Jul 2026 14:29:38 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Toshi Kani <toshi.kani@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+	abarnas@google.com
+Subject: Re: [PATCH mm-hotfixes v3 2/4] x86/mm/pat: acquire mmap lock on page
+ table free to avoid ptdump UAF
+Message-ID: <aljb7hoFxL7aUZvG@lucifer>
+References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
+ <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
+ <alemS7vxeRB7NcBO@willie-the-truck>
+ <alesCtwXdIqH6bOP@kernel.org>
+ <178419641178.59347.17339330762419756196.b4-reply@b4>
+ <aljBF-am7dqqG8Gd@willie-the-truck>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aljBF-am7dqqG8Gd@willie-the-truck>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4A9E6180003
-X-Stat-Signature: zqs58ztkczarryyidxapoenwsfm59yua
-X-HE-Tag: 1784212353-775185
-X-HE-Meta: U2FsdGVkX18NP5u4BzIvbOXKj97E9Y8b+iZ3E95ngLbEvb6kjy2AaXwTZwfm4w+G3OAVe7zFHrIYvd4ioILkwHgeUhEDut8ANNT9tuUGCO1svFUpdpr6Z0/G7j/riSgaLexbMc4DNIxgH1WFEFpAVSC2kWOLenZXJUhdhRQhNoTKUrG0NnECYfCwDW3FR4sFdC+4Acvp8Mhslv7WSAlPqbFFvqjWtYR88Fhm+5csrPeHgBTmw+nAH5VwcwZewaZYqf052wAkqNopt0Gi8wlKbwoZQIj2R/ET4EkQSQ15nzex7Oe9BjAfzdI2oXMBHQo+Un3D/Ifpgo8VffyDHl8eLvZfRLut7A7RWSfSf4cq4t2zIIC7UTatycYioQDmGkuTq0NQK2V2JrdQ94QHXv5sN79D9+Z8xJXRlUDNreRg+rHaDEzO1ez+9n14ko8UQzgp6efxt+cOUUT4J1qcUeJQJhQe041ieZEAI2tj/1oSWfy596zYysxIB3q6GD7AQMvoZKiMerUAwW1T/9P9HA5Pf1E+OyZ5V01HCq/a+QnauER9lobIS9QrdifoC1X4mdWo6RORoKrAdtST9BSoMvMRCqkWbvQgSjn5rsflpVOwTDWKPBqVuY+/TozGNqwlq8+AQn3XwP3svkjv3Uzk9mMRzvxcXMfQ5Csdhd/2G/QOIptETblR0Xwvs3Pab5bkw4r++ONbQ25IT/m78HziHbNz76Npz2m5RfT3mSTSr9mrbjA7q85w34oFb7IIn5mksULJnI9BWEtce1vOnVh5n8TcE9EVmyf0imd07gw4dp9NR3kuA0jinnmPkRIsoLi/2pxutPYNfIzCJSwnFWhJfm1DMg1MkFw9WQnCHp5Wr5Hca+/1Jl5ReyPKDkcLtxEUub9vtZqf9bdReXIUP1GHqvmbmWq9pXXcubzBeMF69btAaGTqOwbbbunEXkSV4o5lniOZgVk2M50XF3x85Hg6aKF
- F3iQidlQ
- 4gx2Jhb1jjTQsnxT6shnSO80kOx1B4yOuX7iNJx4Tt/G10Ep6N3xEZV9QlMv99ZP53f6xQ91YqbLAKu+RTUsxj/yAccIF/8y8l8bX5DHYdsk+3XayvC1vQ24JSs4RIAGzvoK0EztLtoSo4D3xHf77yl1x36uCUWMy0srrrO76E55SPhBsXnFWI5tw5iD3ayG+7UDw64TWRDSKocLoimT7Hh6pG47vB+fn1M2eVDhzDM1omQNYnGpZMq5O+h3TIsfm2SN79lv9yJ7z111X11Bytg19Tv+iI+i4e3uPWMUpXmmMJvxOoLJoUA2JfrIcJsYd5O1L+mR0xZwiBvF5Jt+d+c/5EzKzG1iUup9omGjjmHoEFt5U4n7x8kGKDkHAj6TyEkS4Q10lzj4JCMxzhwfoDoFIDVZDCmnb7XXCj79bQ5t2BlJNJjhUFWncu4QFkKJNAvvmofJhqtOC23LGxw09O/cVgpHvB1laeBsQ1lK2p+9ckAFceZQ431jAIi8KytGzm0onq1HF3K8aNiFhuWMS2Lxm8QMI8uRbokz7l9Tez4kEnTpFCH/aMu2JTL1G4Y8R46AajCeCuDdQcYX344VZkKPL5bNmXIgGTGXr0gI2QQPGiN1gUMqxm60y0tzpbctU4pZxSeIsu+Iu3ln0OHJicJiuW++ULAlqjw6AW7kOv/ZY065+eIWsDp6OWfj7fVhoCp9xZJE99i7nCYyyW4s21XLpUFbBolbEBW316RflwV4R/edGa7GewnaBMw==
+X-Rspamd-Queue-Id: 54E4218000C
+X-Stat-Signature: c81ukkrxggd7abnfg6qwimyko7q1dtc6
+X-HE-Tag: 1784208596-660082
+X-HE-Meta: U2FsdGVkX18gHddUEL6FKockr5Joz9v//8cAOM97JneYrFK+3fMGLiq0aq6y6SppFAHwy4zLZV19beJfnd3J0YINrjsT3aqHTczvjVHfyTHUX7AzAujzvJ9uwxj4t0yqRZy6HhqrHONNukXT2wut3SMDRQjosX9CCZz59geYITgRbnBJFUPRsBBYp0gHXU6pTdF4OtpJJjAdJUFSibKBQM3Aj5PoHVhU9OMttAQDxETKIKV043nGMeueIchL12CNdrI2eQyrnhQKMpubirgbwI2izG9kzHrUXZFCyJItfZ04aLo4aJYgsrjO3oekE5OxoxIYUEihajOYzd7IgSLnRIMW1SQQiVxahZ1t4Q20djFOY1WHN4BBWcTs82t1v4mvpDaJ3jyus9d7uCbtKwB72nwvhxO18soeK/sNkLgiTPPf69UVn/GAUpARD2Kvuu14EA1Y9qMnu6YRv10egvoamAmqn7drCMZSh5jkTJu9S2uBS0gVZIJnNfV7IWWhQf3dfPWdb6NGsvO1SOovy9oQcX/kpRGeQr7UVjzqTqr5rA4NwatVPf4Y3w8Wll7VOMr9Xn3pUQ5FyJofKY1+mwm7gEEKOFfpr22usxRzIO7LhmFaVXIPwWzKQFU0zJN2GTTLXDqb6EyB2xkxJcfUO22bY6wGLAAKMI1ygRpwgBoxd0VD3w7LpcDxBVWQrF58f9an2JjLwllOyApX0Al5nfA/d+jextlQjtIw1+qUWrFri9366ACZ14E3/I9dnF98Jmv6tchukl7tUi61eYAOogWh5Z3ncBof16K/UxxV/bZPpBDXk16KrQ7/rNDpOMTKU/zw7w+jJmrhBoXWTCa/ntitxsJDAcKx8rrN31NnQOQfdRZ1L+LQsRakl+u1IvkG1MWiVTdOvDWXkVh6g4CIFDfFvWpocOJiyCtOXYmyL1CyLiNLw2+bjton3qMCCYrGtTDIyBctZ9hJxVSaPchiPsG
+ mSYpm3hc
+ PJ6kXTx9rJVYIAVyz+4+aBiivt4LZLjcHkI2hvoldhm5ATd8UQZ0n5lhUmr5lxQjyrZ3G+n277SDoT3sE5L3qBg0GQxlcUGxr9bA6CkvXgAUReO7Q9t8KAeeSXMJczIcrIzCMjmvRLfKuxhCBty0ZmDaKfEMbI+NnAyXZLnYQllBpVtuoSpGFO20Y5XWNsOvyZRb2Th/NfECz3CGRmnN2EzPEq6zHySZfjgJL6XWBAOEiw4V5or+5cDqu4L7NC18Wxz6fQDAtBPIxWyCPQy7qCga7J+2YiSA2WOS3J/aLLQkfFq1s4lQwxnqmyvGlGqPz9K2IOUDUKdX5e75JxMkOHrKxNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,275 +108,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Thu, Jul 16, 2026 at 12:31:35PM +0100, Will Deacon wrote:
+> On Thu, Jul 16, 2026 at 11:06:51AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On 2026-07-15 18:49 +0300, Mike Rapoport wrote:
+> > > On Wed, Jul 15, 2026 at 04:24:59PM +0100, Will Deacon wrote:
+> > > > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> > > > > index d023a40a1e03..4c4b8244502f 100644
+> > > > > --- a/arch/x86/mm/pat/set_memory.c
+> > > > > +++ b/arch/x86/mm/pat/set_memory.c
+> > > > > @@ -22,6 +22,7 @@
+> > > > >  #include <linux/cc_platform.h>
+> > > > >  #include <linux/set_memory.h>
+> > > > >  #include <linux/memregion.h>
+> > > > > +#include <linux/cleanup.h>
+> > > > >
+> > > > >  #include <asm/e820/api.h>
+> > > > >  #include <asm/processor.h>
+> > > > > @@ -436,9 +437,16 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+> > > > >
+> > > > >  	flush_tlb_all();
+> > > > >
+> > > > > -	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
+> > > > > -		list_del(&ptdesc->pt_list);
+> > > > > -		pagetable_free(ptdesc);
+> > > > > +	/*
+> > > > > +	 * ptdump might read these page tables, so avoid a use-after-free by
+> > > > > +	 * acquiring the mmap read lock on init_mm (ptdump acquires the mmap
+> > > > > +	 * write lock).
+> > > > > +	 */
+> > > > > +	scoped_guard(mmap_read_lock, &init_mm) {
+> > > > > +		list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
+> > > > > +			list_del(&ptdesc->pt_list);
+> > > > > +			pagetable_free(ptdesc);
+> > > > > +		}
+> > > >
+> > > > As I understand it, the argument for taking the read lock is that we're
+> > > > operating on a region that we "wholly own" and therefore we can happily
+> > > > run concurrently with CPUs walking distinct parts of the page-table.
+> > > > However, from what I can tell, the CPA collapse logic will operate on
+> > > > regions outside of the address range being manipulated by its caller
+> > > > because it rounds up to the PMD size.
+> > > >
+> > > > As a made-up example, imagine I have a 2MiB aligned region where the
+> > > > first 1MiB is read-only and the second 1MiB is in the default r/w state.
+> > > > If one CPU calls set_memory_rw() on the first 1MiB while another CPU is
+> > > > walking the second 1MiB (via some other API that doesn't take cpa_lock),
+> > > > it looks to me like the first CPU can collapse the page-table and free
+> > > > the unused pages under the feet of the other CPU. What prevents that
+> > > > from happening?
+> > >
+> > > Nothing, and there's a patch to fix that that synchronizes
+> > > cpa_collapse_large_pages() using cpa_lock:
+> > >
+> > > https://lore.kernel.org/all/20260626163213.2284080-1-den@openvz.org
+>
+> Hmm, but that relies on all concurrent walkers taking cpa_lock, no? Surely
+> that's not generally the case.
+>
+> > Thanks Mike!
+> >
+> > >
+> > > This still won't be enough to sync with ptdump though.
+> >
+> > Yeah, so this patch is still necessary.
+> >
+> > But that patch conflicts with this one as it holds a spin lock over the page
+> > table freeing, which prevents taking an rwsem... :/
+> >
+> > Anyway I think this one is still fine as it seems there's not a consensus over
+> > there as there was discussion about just removing the locking anyway ([0])?
+> >
+> > So can kick that can down the road and just get these ptdump bugs fixed :)
+> >
+> > >
+> > > > If all concurrent walkers have interrupts disabled, I guess the TLB
+> > > > invalidation logic would do it, but it would be good to call this out in
+> > > > the commit message because it's not clear to me why the read_lock is
+> > > > sufficient for the collapsing case.
+> >
+> > Yeah, so this patch is _only_ fixing the ptdump case. Any existing bug must be
+> > addressed separately.
+>
+> Up to you folks, but if you took the write lock during collapse wouldn't
+> that fix it for all concurrent walkers and we wouldn't need another patch?
+>
+> I would argue that using the read lock here directly contradicts the
+> rationale for why this is safe, because this is an occurence of code
+> that operates on a range that it doesn't wholly own. It seems bizarre
+> to me to go to the effort of adding locking, but then not adding
+> sufficient locking for all concurrent walkers.
 
-This RFC follows feedback on my earlier spawn_template RFC [1]. That
-proposal made caching the primary interface; this one starts with general
-process construction. Christian suggested a pidfd/pidfs exec builder
-modeled after fsconfig(), with enough semantics for userspace to implement
-posix_spawn() [2], and Kees agreed [3].
+Yeah good point, we could avoid the cpa spin lock altogether and guarantee that
+we're the only writer by using an mmap write lock instead.
 
-This RFC is based on linux-next next-20260710 and depends on two pidfs
-fixes that I sent separately:
+We have to take a write lock in the ptdump reader because of non-VMA ranges for
+some architectures + munmap downgrades to a read lock on teardown (having
+already removed the VMA ranges hence non-VMA the only ones we are concerned
+about).
 
-  * pidfs: preserve thread pidfds reopened by file handle
-    https://lore.kernel.org/all/20260716052726.1032092-1-me@linux.beauty/
-  * pidfs: handle FS_IOC32_GETVERSION in compat ioctl
-    https://lore.kernel.org/all/20260716052822.1034228-1-me@linux.beauty/
+We take read locks for stabilisation here + in vmap code because that suffices,
+but so does a write lock.
 
-The initial implementation is source-based. The executable path can be
-provided with the final run request:
+I'll post on that thread and do a respin with that then.
 
-    struct pidfd_spawn_run_args run = {
-        .path = (unsigned long)"/usr/bin/rg",
-        .argv = (unsigned long)argv,
-        .envp = (unsigned long)envp,
-    };
+>
+> Will
 
-    fd = pidfd_open(0, PIDFD_EMPTY);
-    pidfd_spawn_run(fd, &run, sizeof(run));
-
-Alternatively, the path can be staged before the final run step:
-
-    struct pidfd_spawn_run_args run = {
-        .argv = (unsigned long)argv,
-        .envp = (unsigned long)envp,
-    };
-
-    fd = pidfd_open(0, PIDFD_EMPTY);
-    pidfd_config(fd, PIDFD_CONFIG_SET_STRING,
-                 PIDFD_CONFIG_KEY_PATH, "/usr/bin/rg", 0);
-    pidfd_spawn_run(fd, &run, sizeof(run));
-
-pidfd_open(0, PIDFD_EMPTY) creates a taskless future pidfd with a stable
-pidfs inode, but no task, PID, or process-count charge. pidfd_spawn_run()
-creates the task and PID; after publication the same fd is the child pidfd,
-and a numeric pidfd resolves to the same inode. Live-task operations return
--ESRCH before publication. A terminal pre-task failure wakes poll/epoll
-with POLLERR | POLLHUP.
-
-Source-based mode follows posix_spawn-style defaults. At run time it
-samples the caller's cwd, root, umask, fd table, signal dispositions and
-blocked mask, and namespaces.
-Non-FD_CLOEXEC descriptors remain unless an action changes them; file and
-filesystem state are private child copies before actions. Configuration and
-run stay bound to the creating mm_struct, exact credential object, and
-child PID namespace, so SCM_RIGHTS does not delegate launch authority.
-
-The first authorized run claims the builder before copying its payload, so
-later failures are terminal. Pre-task failure leaves the fd taskless;
-setup or exec failure leaves it as the child pidfd and exits the child with
-status 127. PIDFD_GET_INFO with PIDFD_INFO_EXIT distinguishes them.
-Success returns the positive child PID in the caller's PID namespace.
-
-The RFC supports ordered DUP2, CLOSE_RANGE, and FCHDIR actions in
-extensible UAPI records. This exercises child-private fd and cwd setup, but
-is not the complete posix_spawn() action or attribute surface.
-
-Between task publication and successful exec, the child is explicitly
-embryonic and may not have a valid userspace register frame. Ptrace and
-pidfd_getfd() are denied, procfs treats the PID as absent to other tasks,
-and coredump information reports PIDFD_COREDUMP_SKIP. The child can use its
-own proc entries during executable lookup. Setup runs as initial child task
-work, and successful exec releases this state before exec events are
-published.
-
-Seccomp sees pidfd_spawn_run(), not separate file-action or exec syscalls,
-and cannot inspect the path or action records behind the run pointer. An
-exec-only denylist that allows unknown syscalls therefore does not block
-this initial exec; policy must filter the builder syscall as a unit. Should
-later expansion provide an immutable restriction profile or action mask
-that seccomp can reason about, or is the coarse syscall boundary
-preferable?
-
-LSM exec checks and inherited seccomp state remain active. Child setup uses
-a dedicated AUDIT_PIDFD_SPAWN transaction, not a synthetic AUDIT_SYSCALL.
-Should it be selected through the source pidfd_spawn_run() exit rule? An
-existing rule naming only execve() or execveat() does not select it.
-For source/child correlation, could an auxiliary record carry
-the source PID plus the stable pidfs inode? An already traced source is
-rejected before the claim; ptrace auto-attach is not implemented.
-
-The implementation still uses CLONE_VM | CLONE_VFORK plus exec internally.
-Mateusz suggested that an initial implementation might start with vfork to
-get the API off the ground [4]. That is what this RFC does. It does not yet
-construct a pristine target process without first inheriting source state.
-
-Missing posix_spawn() pieces include open and close file actions, resetids,
-signal masks/defaults, process groups, sessions, scheduler attributes,
-affinity, cgroup placement, PATH lookup/posix_spawnp(), and exec by fd. The
-RFC also does not include pristine/no-source creation or the executable
-metadata/template cache from my earlier work.
-
-John Ericson described a real, partially initialized process that remains
-unscheduled while callers install its state, and linked an exploratory
-FreeBSD proc_new()/proc_setfd()/proc_start() refactoring [5]. This RFC
-implements the source-based mode first; a lower-authority pristine/no-source
-mode would be explicit follow-up work.
-
-Direct process construction is not unprecedented. XNU's posix_spawn path
-does not inherit the parent's address space [6], and Windows
-CreateProcess() accepts explicit startup state [7]. Josh's io_uring_spawn
-LPC slides list "set up process from scratch" as future work and provide
-useful performance context [8]; I am not using those numbers as a claim for
-this RFC.
-
-If the direction is acceptable, I plan to continue toward:
-
-  * the complete file-action and attribute set needed by posix_spawn();
-  * pristine target-process construction and an explicit no-source mode;
-  * PATH/posix_spawnp support, if it belongs on the kernel side; and
-  * an optional executable/template layer for workloads such as agent tool
-    calling and compiler drivers.
-
-The exposed UAPI surface is intentionally limited so the state model and
-kernel/userspace boundary can be reviewed first. If maintainers would
-prefer more posix_spawn semantics or backend work in this RFC, please say
-so and I will adjust the split.
-
-Codex GPT-5.5 and GPT-5.6-sol provided substantial assistance across design
-conceptualization, implementation, patch splitting, code review, development
-of self-test cases, and test planning and execution.
-
-Thanks to Christian, Kees, Mateusz, Gabriel, Josh, Andy, John, and others
-for the review and direction.
-
-[1]: https://patchew.org/linux/20260528095235.2491226-1-me%40linux.beauty/
-[2]: https://lore.kernel.org/all/20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner/
-[3]: https://lore.kernel.org/all/202606011254.5FCBD65@keescook/
-[4]: https://lore.kernel.org/all/vealb52tv5suireenkke4lul2l3wbnaul2rp3ea545ly5wa5ty@yk3aksvp7skt/
-[5]: https://lore.kernel.org/all/ce71d6df-6851-4e4b-9603-1d55d8d522b8@app.fastmail.com/
-[6]: https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/kern_exec.c#L4039
-[7]: https://learn.microsoft.com/en-us/windows/win32/procthread/creating-processes
-[8]: https://lpc.events/event/16/contributions/1213/attachments/1012/1945/io-uring-spawn.pdf
-
-
-Li Chen (24):
-  pidfd: add spawn builder uapi
-  libfs: allow custom validation of stashed inode data
-  pidfs: add taskless future pidfd inodes
-  pidfd: create taskless spawn builders
-  pidfd: add spawn builder path configuration
-  exec: expose execveat internals to process builders
-  fork: expose vfork completion helper
-  pidfs: attach pids to future pidfd files
-  fork: let process builders supply preallocated pids
-  pidfs: publish future pidfd files
-  pidfd: add spawn builder state tracking
-  fork: let kernel callers create embryonic tasks
-  fork: let new tasks start with task work
-  pidfd: create and execute spawn builder tasks
-  fork: keep embryonic tasks hidden until exec completes
-  audit: add pidfd spawn child contexts
-  pidfd: audit child spawn execution
-  pidfd: make spawn builder execution signal-safe
-  file: expose spawn file-action helpers
-  pidfd: add initial spawn file actions
-  pidfd: consume spawn builders on the first run attempt
-  pidfd: expose spawn builder system calls
-  selftests/pidfd: cover pidfd spawn builders
-  Documentation: describe pidfd spawn builders
-
- Documentation/userspace-api/index.rst         |    1 +
- Documentation/userspace-api/pidfd_spawn.rst   |  247 ++++
- MAINTAINERS                                   |    6 +
- arch/alpha/kernel/syscalls/syscall.tbl        |    2 +
- arch/arm/tools/syscall.tbl                    |    2 +
- arch/arm64/tools/syscall_32.tbl               |    2 +
- arch/m68k/kernel/syscalls/syscall.tbl         |    2 +
- arch/microblaze/kernel/syscalls/syscall.tbl   |    2 +
- arch/mips/kernel/syscalls/syscall_n32.tbl     |    2 +
- arch/mips/kernel/syscalls/syscall_n64.tbl     |    2 +
- arch/mips/kernel/syscalls/syscall_o32.tbl     |    2 +
- arch/parisc/kernel/syscalls/syscall.tbl       |    2 +
- arch/powerpc/kernel/syscalls/syscall.tbl      |    2 +
- arch/s390/kernel/syscalls/syscall.tbl         |    2 +
- arch/sh/kernel/syscalls/syscall.tbl           |    2 +
- arch/sparc/kernel/syscalls/syscall.tbl        |    2 +
- arch/x86/entry/syscalls/syscall_32.tbl        |    2 +
- arch/x86/entry/syscalls/syscall_64.tbl        |    2 +
- arch/xtensa/kernel/syscalls/syscall.tbl       |    2 +
- fs/Makefile                                   |    2 +-
- fs/coredump.c                                 |    4 +-
- fs/exec.c                                     |   30 +-
- fs/exec_internal.h                            |   40 +
- fs/file.c                                     |   11 +-
- fs/internal.h                                 |    3 +
- fs/libfs.c                                    |    5 +-
- fs/open.c                                     |    7 +-
- fs/pidfd_spawn.c                              | 1095 +++++++++++++++
- fs/pidfs.c                                    |  478 ++++++-
- fs/proc/base.c                                |   11 +-
- fs/proc/internal.h                            |   18 +-
- include/linux/audit.h                         |   31 +
- include/linux/pid.h                           |   13 +
- include/linux/pidfd_spawn.h                   |    9 +
- include/linux/pidfs.h                         |   28 +
- include/linux/sched.h                         |   21 +
- include/linux/sched/task.h                    |    6 +
- include/linux/syscalls.h                      |    7 +
- include/uapi/asm-generic/unistd.h             |    8 +-
- include/uapi/linux/audit.h                    |    1 +
- include/uapi/linux/pidfd.h                    |    1 +
- include/uapi/linux/pidfd_spawn.h              |   49 +
- kernel/audit.h                                |    1 +
- kernel/auditsc.c                              |  105 +-
- kernel/fork.c                                 |   26 +-
- kernel/nsproxy.c                              |   11 +-
- kernel/pid.c                                  |   41 +-
- kernel/ptrace.c                               |    4 +
- kernel/signal.c                               |    2 +-
- scripts/syscall.tbl                           |    2 +
- tools/include/uapi/asm-generic/unistd.h       |    8 +-
- tools/include/uapi/linux/pidfd_spawn.h        |   49 +
- .../arch/alpha/entry/syscalls/syscall.tbl     |    2 +
- .../perf/arch/arm/entry/syscalls/syscall.tbl  |    2 +
- .../arch/arm64/entry/syscalls/syscall_32.tbl  |   11 +
- .../arch/mips/entry/syscalls/syscall_n64.tbl  |    2 +
- .../arch/parisc/entry/syscalls/syscall.tbl    |    2 +
- .../arch/powerpc/entry/syscalls/syscall.tbl   |    2 +
- .../perf/arch/s390/entry/syscalls/syscall.tbl |    2 +
- tools/perf/arch/sh/entry/syscalls/syscall.tbl |    2 +
- .../arch/sparc/entry/syscalls/syscall.tbl     |    2 +
- .../arch/x86/entry/syscalls/syscall_32.tbl    |    2 +
- .../arch/x86/entry/syscalls/syscall_64.tbl    |    2 +
- .../arch/xtensa/entry/syscalls/syscall.tbl    |    2 +
- tools/scripts/syscall.tbl                     |    2 +
- tools/testing/selftests/landlock/audit.h      |    6 +-
- tools/testing/selftests/pidfd/.gitignore      |    9 +
- tools/testing/selftests/pidfd/Makefile        |   25 +-
- tools/testing/selftests/pidfd/config          |    6 +
- .../pidfd/pidfd_spawn_accounting_test.c       |  428 ++++++
- .../pidfd/pidfd_spawn_actions_test.c          |  474 +++++++
- .../selftests/pidfd/pidfd_spawn_audit_test.c  |  521 +++++++
- .../selftests/pidfd/pidfd_spawn_common.c      |  512 +++++++
- .../selftests/pidfd/pidfd_spawn_common.h      |   59 +
- .../selftests/pidfd/pidfd_spawn_compat.c      |  221 +++
- .../selftests/pidfd/pidfd_spawn_exec_test.c   |  301 ++++
- .../selftests/pidfd/pidfd_spawn_policy_test.c |  294 ++++
- .../selftests/pidfd/pidfd_spawn_race_test.c   |  923 ++++++++++++
- .../pidfd/pidfd_spawn_security_test.c         | 1242 +++++++++++++++++
- .../selftests/pidfd/pidfd_spawn_test.c        |  550 ++++++++
- 80 files changed, 7938 insertions(+), 81 deletions(-)
- create mode 100644 Documentation/userspace-api/pidfd_spawn.rst
- create mode 100644 fs/exec_internal.h
- create mode 100644 fs/pidfd_spawn.c
- create mode 100644 include/linux/pidfd_spawn.h
- create mode 100644 include/uapi/linux/pidfd_spawn.h
- create mode 100644 tools/include/uapi/linux/pidfd_spawn.h
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_accounting_test.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_actions_test.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_audit_test.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_common.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_common.h
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_compat.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_exec_test.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_policy_test.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_race_test.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_security_test.c
- create mode 100644 tools/testing/selftests/pidfd/pidfd_spawn_test.c
-
--- 
-2.52.0
-
+Cheers, Lorenzo
 
