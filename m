@@ -4,123 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4089C44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:27:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9F69C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:28:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E7166B0128; Thu, 16 Jul 2026 11:27:39 -0400 (EDT)
+	id B11A86B013C; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BFC76B013C; Thu, 16 Jul 2026 11:27:39 -0400 (EDT)
+	id AE9DF6B013F; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ADAB6B013D; Thu, 16 Jul 2026 11:27:39 -0400 (EDT)
+	id 9DB806B0141; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB8D36B0128
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:27:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 582DB1A0202
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:27:38 +0000 (UTC)
-X-FDA: 84995019396.29.BEE54E5
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6C35E40006
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:27:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OFdfO8le;
-	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FBAF6B013C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:28:32 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2D80140216
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:28:31 +0000 (UTC)
+X-FDA: 84995021622.27.50768D4
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id ED95D20005
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:28:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="f1/1nOax";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784215656;
+	s=arc-20220608; t=1784215709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1F/olKLrWB4qqHnjLjJSF9FomuDg/Zv/XEA7HymFvKM=;
-	b=XHUADL5yfVNqsvBZXI+ZjzhlXh/0mdN3EG7KYZ85jScwpzOB1nS71YFzJ+nK9mE/wQkui7
-	skc/WwZj0kUChhUrlzuqwW0jZ0blQMuZSXkJsusEXzanCjSO/LJyoUxBOT3Exo9z0c2bd6
-	6cdVdFe20K0EHoXWo1klnOt+z5nVCL4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784215656;
-	b=1vs43GXrdSp2h75H/UGxj/oYAuN6kfHm3BW8Nk+s0zu3v0cDMdLGg629u6K+hd6Y5XE4Nn
-	g1xldYRCYE7K1X4PjtabQCCw0vv1UZ/dI4fNc0WXNdzB9u8qF5/EnKRZtTQCqVsBArZ9D1
-	i6+zZqeh5bz9HCVSZ5t0fA02rdW3TIc=
+	bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
+	b=FXJ1PHMXBPWJMYNHbJ/p1Wi2J9e2liCcFehnAMwXHSxktPPWhxVT6kHmu3glcj/NCHHN6S
+	n1RxPjiWKhODi12YzzfO2mvsr2Ok6v2CHQFhc3s8NcyXM3ej6qDwQ4MSJ0r9RiX+OAH1gj
+	uQb2RF9uNYO5oRQsUXAp9FrUnTrWeJ8=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OFdfO8le;
-	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10e86e52so29911cf.1
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:27:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784215656; cv=none;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="f1/1nOax";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784215709;
+	b=5IDSsWUZfcvYSS171rDBkwL4AdTYKLJJJbQ6v+gpK5RqTQiu6vTbSNR1s3imuWdkxNXOOV
+	yYIEKJ3/lRFxHUexD1a0h4qW2iXtbZyjbbdcgo9mM5B81GPFAwEqXjcD3oXBHiOWXOTP23
+	tWdpSoWKuQCzRGiRBGsGXZG/tdEkrA0=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c10e86e52so30481cf.1
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:28:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784215709; cv=none;
         d=google.com; s=arc-20260327;
-        b=W8vBNOq8Njtq0ePWkIgzB0N5A6gK1T+biy+SsUHUBu7qjwn7n8ISgja8UHZv9ucr5X
-         HM0Qb/QSGZgtz9lNdrISsVCpd9AVzN3YjH7NAMY9zjUy2zxag5Wy9O8jXUm2W/ViS5jh
-         4JQhTm9xCuCjXP/Rwj8Q2Skced8ef7Q+pJY6nzd5OmY/VfgeX1J1g6ScMWbKs7rU0b3C
-         5h0XFCbKV+yNvsBBwChIBlPGOEG9gQBm9mXi95+ePe2JGZb2k6GbFZwmZE2x2ANAYJJq
-         Hl+zHJyFb3EnYVI/xogkpHhr7k4b8LisxjmIEvbBPMDpw3tSmpbXDPaQG41wAxQdBmLA
-         Eo+A==
+        b=WmqQ9pzTBCfhthUr2mQ8/AILtVM+7UQhS4w8AReA+ud7RLXiwm9l2vLrkvzI2gxDX2
+         57NNVfNa7/DoslgZ2Nt+m9afzgoXYOstccvaXyuJ21FCYP0tK2y+D7Yz49UiWGPIMBsB
+         kFP+MCkrDItglClFJFUwqTZwzywTe/ZHFxQtfMDuq5ODv3MOMHg4g/PHhwLMl3a1w2oS
+         d6nBX3IE7qs5F6WIE8wN7W7z+3ruZ+VjVEW7rbg7iQuS1Bj+nWnqYcOWfQASPc7fFnuk
+         MYXcM8OSVbS2gCg1XRSCF0eQVYabGw+xlLqFBOCD8Q0JmlsE8C+sEgdRtr/1n4IM6DuC
+         aLig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=1F/olKLrWB4qqHnjLjJSF9FomuDg/Zv/XEA7HymFvKM=;
-        fh=ejXlgl8hy9vFbJLTcQPpsook/tpRNAgtia39Oucu3E4=;
-        b=MgWonVR5eAbQ0GLWntB81WRJG9brfl094fKjtDVd0Lj6t/V19RE5b5hSCn3oVteTrr
-         kmcBZb546gZcJPCMesMeptjheRvQJJDU92tHUgJosbUaH+YpTh+/PkJxf2CmHpMh+/3a
-         /Nh0rzFwNc2CRa5V5vYnOVHTXUrtAHF2UwrtRi9DWh0HiF5VERcGFi4KPEGwQit0kmn0
-         HhkESN0tliVqKvP4XBXPtNXTSy1cbIC4UmlwUTC5eWg1n6y6u+wLR2Dd3I3kze/Sr6nf
-         RUZmCE3k128P9fGkyIi//JFKLGE42E5W2dN4lyDoU14SydWP7gcj6U7JcsqnoJqhzDUh
-         ix6A==;
+        bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
+        fh=xkI95bapSSrnNNh70/GK7J4v0quP+qso3sxH+iTs2IE=;
+        b=kd9LRXnqLTD+2RM84SiNwAFC2ARwIw9t/gWOgp5FRiDHzHGz7U1PZhAG1TwgjZlJcZ
+         mGQxkVPM+iIzMJtQTZEUIzipMhOI+3RVgJD8+tQeL4cZbwHuuLmDLjJUgu0j7vyo1IT7
+         KqyKpYbFVXI2W7fPktkT9y1MNgDl2HKq/2ct4qpXoT9nPZ7bxusE4daqa0upblRDZpsk
+         LixJZLk6Uw6bSFNc94KF5sa5LiNv17NxALJdiwTe5azR26aK/byIBGIdu6Wcg5cbAR6V
+         qaMDxFrQ2PSNO2OWNnwil7rKSohbzq7tnbNVIcibIerdDRLalYJiYhJfLRy2laEjXzD0
+         V7jg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784215656; x=1784820456; darn=kvack.org;
+        d=google.com; s=20251104; t=1784215709; x=1784820509; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1F/olKLrWB4qqHnjLjJSF9FomuDg/Zv/XEA7HymFvKM=;
-        b=OFdfO8leocvZE3yYKnxx5s8tOXZ/ADQQ1WGZbbP4Yi9aKbbkU08ffhXVPBcRABwU0T
-         h1QX4dttaSthV7QT9tNkFO1WVXHIycavgeFatZGJpZyPOhCD57QIDNi6trr1S4Ux9GdN
-         6w9KvkboS75CSP8dQQ5nFX4zMgv9Vs6QzvCu7iUY15lqpZ8eUFa+JUxLjRLPbrsbVNvq
-         bFA8yqpRc4ZrmUCwrgleGHQlHgHExPwSTOwf2z2ixzDJ8IU8r8HGUQPErLbjAGVaiUuz
-         UD4Ix5X4kxI12CsdnDdMEaCCVMPYPZK1mSWfVwZMuKcs9sJo6o7dYT+dAvegchXrYf33
-         sj3Q==
+        bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
+        b=f1/1nOaxG9E6Ci39RCdyi3phQU9t0qfnJVEefCQMozCDBAYfDL0JDFs14C2yjh7QLL
+         7f5Uiszo4qrWczBEYbnDNS0+OxGLyj2xDYmYGTE6Z6s4bCYfFTFOYaOtPHBKFhKvAWhy
+         L+rH7lbE+FciG4ryyqWL1VcKcx6RHrBz1DmE2El4qPQiPc5jPR3ycF1Y0dO5zHQleoyD
+         VwZGijaC9mmcHv1ydx06oEM1EZK9gtFQwFkS2jNE3cMkcf7Xl0Vpai6Cq/hxq3GGrhyT
+         YSV4orczyZ0b8vsrRmUMM0K1xMaon/cNPVAV6t0Wx4+WWfzOcKYkwIwZCu1dWJLVSaSg
+         OJOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784215656; x=1784820456;
+        d=1e100.net; s=20251104; t=1784215709; x=1784820509;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1F/olKLrWB4qqHnjLjJSF9FomuDg/Zv/XEA7HymFvKM=;
-        b=KtLOveGvdBQta/HX1h2D5G/Fq1DBvmcZJIl/J8QwJJaHZNiEm8a8g+lKWYJg6REB4b
-         vWoDB+JjeaLl6gaqqeszL39KqQLJMIQARJ45zBswn+GpYpMH+QCxS8snznQHke0VkFPo
-         wfJEnsJf900SYmE9xM77lmyLKOmrwawYt7yYvSvYtKYLPe5mUR8QCPAfW7QcR7V0PfKT
-         oWw2xW5R8tdgmwEWKLSWTbdhXzPgJdNE9MIVBOBG6HPL1jwg1zzlf/W/Vip65hxFiiuf
-         OElR+YKfAThGJ5cgXXc/PE2xqCl+T+LG1t/0eyxRFFOkh9m3uVSXDRJCrTPb9JEAcDg/
-         saYw==
-X-Forwarded-Encrypted: i=1; AHgh+RqZvImqI/6BllIoKoemVzovSnk4FmL35cIOKZjLtRz4MkaW6NGHv6uQVP/Nm6FYaFfh19II4g6vSQ==@kvack.org
-X-Gm-Message-State: AOJu0YwzMF8XTqKFKi75ajzgbXw6dlB8+oHjx/fT3Bb+haclkqYg7XJE
-	hi25//L9tq72v3M1cuZIbUvMV9C6wRiVira84iOnVsG5NF9bWddmnYhJXGt3HTEqnMsjBglBzww
-	LECiN+sQZ28KT+MSZi23TckqlEGuAoJiixWgVjh/m
-X-Gm-Gg: AfdE7clBFNtFl0emXSfcPm7lUHBUTBdBI0qtG9czE4IqWmjn0fMzQ6X5j1lAuc3BtZX
-	QtP5pNBNY4BCwIRZSgXRjT0534Qy7G6A4bBpsouWSwRyqFped/yS5m8X7OByTQTaN3ee9y5Zx30
-	ClFWz+w2RRkXFhOfzdse96C6hHZ0CbxYHJj2Ve53m+usTNCRKaSbP4ajnDG4waZ2VG/0sir7osc
-	GMHBzbi5A0dxOOffADyTCV9VqbScn6OMWT9FVYIM4+SNTjY8Sf97698o1SlQ1lGgKLoY3MjL5tF
-	x3SHknOcgb/bock=
-X-Received: by 2002:a05:622a:94:b0:517:6010:7c71 with SMTP id
- d75a77b69052e-51f7d273976mr9799081cf.4.1784215654893; Thu, 16 Jul 2026
- 08:27:34 -0700 (PDT)
+        bh=9MTmsp7P9R6NbE0jd3nKRTx/bls+aSkmj63tjPdkby8=;
+        b=hdA3TEEdVQ/juwoVCRvJ+DGTHZtPfmeyVCm+rOFQVQrWjr7iqi81ZFgq+ZJvy/qFWr
+         w9B7sHPhjcjni9jf322uJbC811a4I75bPIL1WbX14d9A885HxJFdecGlb1AcmvNQxLfq
+         ZAbQSiUevBlQ3t6rieUvnSTu2gr3mWHCHX1f5yeyh0K89yWFg5p3SqxWTWDRp922mObe
+         Jy9RCxC1S8cCMp2pZkqHjNg7/tSpg43QH9SDOdYexQWIDXqZcT/VhNxnsqM28WcK+5vz
+         kJDxfIHosiWuOtRBkxY+Rvjc2z4/heofsiMw4EaVJ0kRoMpUr2LRaWqkAuWnjpqeoMJi
+         kRJw==
+X-Forwarded-Encrypted: i=1; AHgh+RqvkVnYEI3VzhcoWzeyDPEqx9pYuyA81EESIK36FgeRpDDmStdtSRMkeV7e9qk6TJ2NnMTWxX7YZA==@kvack.org
+X-Gm-Message-State: AOJu0YyFzzJpphx84IXdmTQAJLq4/9deRIKO9igL/v81Rzn5xrSthlKG
+	Mi7FOGDoWOo/VsUvNrsEf33jZQCpIzZcEkDnwRwWX7VL2nTMpFo2qBJlq5XsK5CncSZJBfhoEB4
+	RxA2SnJwQK8k6psz7fta3YVffnyCIcJWlhwoT/3rX
+X-Gm-Gg: AfdE7ck/98sl2Ln500y6aivLc25FEgtmSVcw1Op9KlFcdgrc2OaYSTwKouKA+y4RM2Q
+	dFuKjS6kHg1mc1LHUew9DPS4jGxXRntcn+jykRltDNRIHUiH6Cp5AsB5mZ7x6kNNgfJBovfVO7Q
+	IVd5tq/CmX0M09XnWBK6FSLZ7hJaCuqyVe2siUEXQMxqJCzAWseIdNtyFG6HEzgGe6eSGSqDWju
+	s5A1jeAG168Cyfj5OjZsa3VfDKXuGUSAvUx7pRzMIY+g3oLLxSZcWDmF10iPkWL/09VBlHo7GU2
+	TP1/zNcey8baOU0=
+X-Received: by 2002:a05:622a:2618:b0:51c:e80:9e88 with SMTP id
+ d75a77b69052e-51f7f3ca787mr11136661cf.16.1784215708609; Thu, 16 Jul 2026
+ 08:28:28 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
- <20260715-b4-objext_split-v1-5-9a49c4ccf4c3@kernel.org> <CAJuCfpEJV=OgCmQ9=tuMHOjMMh8bgHrpFe1gLtTXjagAenKZsg@mail.gmail.com>
- <eb3fc4d3-c8bd-44e9-88ba-7fb974a58aa3@kernel.org>
-In-Reply-To: <eb3fc4d3-c8bd-44e9-88ba-7fb974a58aa3@kernel.org>
+ <20260715-b4-objext_split-v1-8-9a49c4ccf4c3@kernel.org> <CAJuCfpGq3Yv8Dq=2mPgR5LGC=40VSNTA6mg4BjTRE0ADXMZkbg@mail.gmail.com>
+ <01aa6803-e6a7-4172-94ef-043914e2f794@kernel.org>
+In-Reply-To: <01aa6803-e6a7-4172-94ef-043914e2f794@kernel.org>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 16 Jul 2026 08:27:22 -0700
-X-Gm-Features: AUfX_my_bAm9pMs_cq2llYbd6SUBazq-pBVNFKSQG59fVdB5bXaPSKf2ohfyPJ4
-Message-ID: <CAJuCfpFX-9Cahs5ZCTU+P2g5eLnhR_2mhrUR9JhF8ZG6cj8=AA@mail.gmail.com>
-Subject: Re: [PATCH RFC 05/12] mm/slab: abstract slabobj_ext.objcg access
+Date: Thu, 16 Jul 2026 08:28:17 -0700
+X-Gm-Features: AUfX_mxXFm8bI5YPQvcEPkQ_QsAl3HLbXj-fL32BvT9M-JPrvDl12nUblHbqJTo
+Message-ID: <CAJuCfpGDzsoTp0Byg5QzeiOOJKoPWNXYcADOXC4hieHLNu1HQg@mail.gmail.com>
+Subject: Re: [PATCH RFC 08/12] mm/slab: change struct slabobj_ext to a union
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
@@ -131,13 +131,13 @@ Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6C35E40006
-X-Stat-Signature: zfc7kesppfii7phzj7o1jtunib8npqik
-X-HE-Tag: 1784215656-312838
-X-HE-Meta: U2FsdGVkX1+srrU5cgmD1RH+yz/6xzH7OW3UauCyEQ0FWl9UYpp5jWEjfyShmylpQ/RTFyV2LEWV3TJsPzBcIoP7xPXvo3D80ST7xLhzxwqL4LEaSGLrVOCNYx7GW8aGqvHb3iC094RUmpWNS5OUh43u4nDLU9rsXARpYhyZV2iN+5zoaU689FrM/7Aw4+1qMakcARci5RzBAJGFQRHDklRyPyyjc+nBUwG0THvQ3V5JZFwuODUCuBgL/JzlUaNoPDzazngmen0owQ/9MpJLAXFtj2+eic2cIXvv6M7+vQy/ATVf9LzyX/7ufIVC7onjnjB+YlCIBT/QSB6V1uPTtW/SkFdUWiEy4Smd+NUdoD/AZU6RPeCg3r4uwvQTwJJsHw6OBShHbbbvN8VJl6JvwaLttVoqbH4wvwjlBZI4DQTgJchHRMAabze6dkYd8ZQjNHR1XC4qzPt+g60xKFPLZnJp3lr3Qj+GKXFq4uqAtOaF8gqEMoaf1QHic8Sg+TH42mapzmLqaOwvu3C87J7J5yWirRCZWFPLE7UAgaW7GHuhXtaIGEAmMJ3HpjnRRP7XU32t//BX+BXuuDcqt0ZH26WV3GVK5Q0SqhRBVnT4dOP6yNczgjlKGrGp2v5m2km7uZc/6U6KnqVpyZ12qHuTFd0OH7p48Fatyn0q+5JkWWoXbvqotR8V+Etutaxjj6qRLIWAjlYbfKRtb5QRp6qtejl3GqfZjsQvGgqDnRBW2O3jNNlbghUDMzg4Pv+kgUCSofDZ6P/eS29wJuFN7OQHzEgJuMrR6LI8Fhi8LZ3cntH6pN0/BmXirKVbiByOP58/D4Mbb3TZ56TIIQuZS5+nSZ5CHL+O3z6OSsxhv8fILYg7aZexI/xhxOZ5QhxPkhsJYlJW9GIeckizKqSjp48wxxlx9EBuEHXLJpH88SY2s5i7imRFNc8Fcu5FLkYTIUHkKIXqksPcPLjiihXVQmj
- eVb+MRlB
- VKYzyY7x8Qz1KhwtgsTNkrAf7dmSsUcmWmOk5kGbE65GCm6No9UH2vkg8RdBGTy4B3mSTF2IoLHu/XIhnwK3rtaQpa6hahdxq+fN586fbhY4f6dtzbgegAg6L/TwWULH2G1JxWZycOKmKiRnW9j1vzGIWKhMtvYfR/P7BwZzXFx8/3IrBADAX9kyoZKe78Ajc4LHCjoYFqk9mcPwPPSs7IRCDpW58FcjxKR7ooHpD/286kN5be+bpSsYS0r5VjLqJLrELq71H+FLVp6V4hnuLleho1PKcMTDr24f4s8FXegj5FPX7koqRsKWATg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: ED95D20005
+X-Stat-Signature: 199mpgcby1p6jk9r3wksrpcobwwbyozp
+X-HE-Tag: 1784215709-330567
+X-HE-Meta: U2FsdGVkX1/3afP5N6WwUN/uQ6WIjDZjBR5MpMQSUd0/YXCURt/DTMkwH8fEFHVlpXr1EMd3vRb3i3NMeSa6y4u7Fw0yP+mQ34oTWiU+QKvskZHq49LUtQMPrqNeBRyImm5CKC1elmdTjtZHQCpD1b3amtw5rwKOLpSVZcbRq6/zr6MeRDz7AJ4GPcIGdL1idG/Mn0vq4jNwFrNZBmx/hQFLjJP6fiiNjewkWAdx7J34FRKKw0ibHUf3KFyXcaHrj5Y+zqxRqaIjDgqhnGcjFxzEUgo8lSidVEhrQ6csaPBOLS3vAVAQ40jvEYx5Wftg+c77igDctifVzkNUJVtaiCvIC57Ah72RTSVixotB4IIaE0gtHzXK1dTRfmfk0AXDK4RuxK8u0Wa7wBfr1e5Yg8goyq6+HTlHruTzMCcrgSMZsHaImSi9mlgViw+MKZcNQFobWUqB4vg2PtjbfQbKb5k/lneJp1dPEFN0vlw88dPVw2z0XKQF1T/HJZ/LA3/rNPCrv69t8ccxpVO4pRpsm4z+75dEa00nuz68CBjfoBLqIHK0QZ806VzaH1Wos6MqiyRrExzJ6HO25ojD550bp5oIEyMCiynsxyUU5EaXcbNjWuWlDbu7G2VT7Iz9Fhhh0106JF9wSTzRGkifqFrhZHUePJ2Y4PW/XmLwMUtw6IFia1e17OClruz2EvAPI4BYzLpd9gV5Lze6CC5qib+TLWQebOkeOFGGaWEZ/U/4+rowIwDoG7Kka/XzlopNy9PunXB0z5uMG7cArWNVrOv7Mclyx/Tt+aGk2lwMVsus5v1mMfUPklDkBnfOZhcl0iLe8fIwAo8A05SHxo6114MttaJjxWG59WXiqDscjnui7B0rAUNzsgX9uyGKS1PRPtc4acHA2okHDl6Wsqj0FTUVaOCa3IiDwjDJ2m0/ApP0By1uV+9AyJrRunFtGBIXzEQ+IACDdhSi5SlI5OtO04m
+ I5a4hbym
+ n1dMdfEQ3WPaK+UBa2PGNghSzh83/TKya32tvcAX0tLuXz5DPd1twxQlpAsnUVN/z0wtsAZiOFkVDaWXKGplnn3fNM8TwMjVOti5xL00sT6PWup7PFiU7UzUPqOnDeUEGNaMcVUX2HBNlX7tpH9DTOIblt0+Bg1TqLhJ8nRYAUlQwqwyhLNgwAKF+qKRM+arc6a9w2wsLCHp3sUfglsqtR9YXyqk8BAmAxKOLz8gTcvpmDpVZkkrMuiV+muHxGTUx8tAlpTxSE1LXQ2M67XmoPLMckWwpMmZ3U+X8gHr+wV/8VVy+O/vWicz0TuhEipY5LDzUiCv4lLb/YpI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,78 +145,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 6:58=E2=80=AFAM Vlastimil Babka (SUSE)
+On Thu, Jul 16, 2026 at 7:43=E2=80=AFAM Vlastimil Babka (SUSE)
 <vbabka@kernel.org> wrote:
 >
-> On 7/16/26 03:27, Suren Baghdasaryan wrote:
+> On 7/16/26 06:11, Suren Baghdasaryan wrote:
 > > On Wed, Jul 15, 2026 at 3:11=E2=80=AFAM Vlastimil Babka (SUSE)
 > > <vbabka@kernel.org> wrote:
+> >> No functional change intended, the layout is still effectively static.
+> >>
+> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> >
+> > This is much cleaner than what I was preparing. Nicely done!
+> >
+> > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>
+> Thanks!
+>
+> >> ---
+> >>  mm/slab.h | 41 +++++++++++++++++++++++++++++++++--------
+> >>  mm/slub.c | 17 +++++++++--------
+> >>  2 files changed, 42 insertions(+), 16 deletions(-)
+> >>
+> >> diff --git a/mm/slab.h b/mm/slab.h
+> >> index 3ad9777ad600..359ab8caf61e 100644
 > >> --- a/mm/slab.h
 > >> +++ b/mm/slab.h
-> >> @@ -555,7 +555,7 @@ static inline bool need_kmalloc_no_objext(void)
+> >> @@ -554,14 +554,34 @@ static inline bool need_kmalloc_no_objext(void)
+> >>   * if MEMCG_DATA_OBJEXTS is set.
 > >>   */
 > >>  struct slabobj_ext {
-> >>  #ifdef CONFIG_MEMCG
-> >> -       struct obj_cgroup *objcg;
-> >> +       struct obj_cgroup *_objcg;
-> >>  #endif
-> >>  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> >>         union codetag_ref ref;
-> >> @@ -661,6 +661,13 @@ slab_obj_ext(struct kmem_cache *s, struct slab *s=
-lab, unsigned long obj_exts,
-> >>         return kasan_reset_tag(obj_ext);
-> >>  }
-> >>
-> >> +#ifdef CONFIG_MEMCG
-> >> +static inline struct obj_cgroup **slab_obj_ext_objcgp(struct slabobj_=
-ext *obj_ext)
 > >
-> > I understand why you need to return obj_cgroup** but maybe instead we
-> > can have a separate setter function and just return a pointer here?
->
-> Yeah I rewrote it now and it looks better. Thanks! It ended up like this =
-due
-> to some previous attempt I made.
->
-> > That would also help catch cases when someone wants to set
-> > obj_ext._objcg that was optimized away (for that the setter would need
-> > an additional parameter to identify whether we allocated optimized
-> > objext vector).
->
-> It would need passing the slab parameter to assert
-> slab_obj_ext_has_codetag() in debug mode. I don't think it's worth it giv=
-en
-> the get/set is only called from few specialized places.
-
-Sounds good.
-
->
+> > Perhaps we should add a comment here stating that every element of
+> > this union should be pointer-sized?
 > >
-> >> +{
-> >> +       return &obj_ext->_objcg;
-> >> +}
-> >> +#endif
-> >> +
-> >>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
-> >>                         gfp_t gfp, unsigned int alloc_flags);
-> >>
-> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> index 5e3f53bcd0d3..48e10198a3ce 100644
-> >> --- a/mm/slub.c
-> >> +++ b/mm/slub.c
-> >> @@ -2523,7 +2523,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags=
-)
-> >>         if (obj_exts) {
-> >>                 get_slab_obj_exts(obj_exts);
-> >>                 obj_ext =3D slab_obj_ext(s, slab, obj_exts, p);
-> >> -               if (unlikely(obj_ext->objcg)) {
-> >> +               if (unlikely(*slab_obj_ext_objcgp(obj_ext))) {
-> >>                         put_slab_obj_exts(obj_exts);
-> >>                         return true;
-> >>                 }
-> >>
-> >> --
-> >> 2.55.0
-> >>
+>
+> OK, how about this?
+>
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -550,10 +550,14 @@ static inline bool need_kmalloc_no_objext(void)
+>  }
+>
+>  /*
+> - * Extended information for slab objects stored as an array in page->mem=
+cg_data
+> - * if MEMCG_DATA_OBJEXTS is set.
+> + * Extended information for slab objects stored as a pointer to an array=
+ in
+> + * slab->obj_exts (aliasing page->memcg_data) if MEMCG_DATA_OBJEXTS is s=
+et.
+>   */
+>  struct slabobj_ext {
+> +       /*
+> +        * All elements of the union should be pointer-sized to avoid mem=
+ory
+> +        * waste
+> +        */
+
+Perfect. Thank you!
+
+>         union {
+>  #ifdef CONFIG_MEMCG
+>                 struct obj_cgroup *_objcg;
 >
 
