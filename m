@@ -4,113 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF995C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4CC9C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36C626B0154; Thu, 16 Jul 2026 11:34:16 -0400 (EDT)
+	id D42C76B0158; Thu, 16 Jul 2026 11:34:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2930F6B0158; Thu, 16 Jul 2026 11:34:16 -0400 (EDT)
+	id D1ABC6B015B; Thu, 16 Jul 2026 11:34:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 133076B0159; Thu, 16 Jul 2026 11:34:16 -0400 (EDT)
+	id C57E26B015C; Thu, 16 Jul 2026 11:34:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DB77D6B0154
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:34:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2134416013F
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:58:26 +0000 (UTC)
-X-FDA: 84994492212.02.D706E3A
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 57CF9C0004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:58:24 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 915036B0158
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:34:37 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F28EB80114
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:40 +0000 (UTC)
+X-FDA: 84994311360.11.6F4D784
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 69197C000B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:35 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="o2t9/oQM";
-	spf=pass (imf28.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784203104;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=toaUztrSvNj3kdZ0hYHuWC4I9HtWac7I1kBUHNoUIdY=;
-	b=28D6IUKQDGS4VgX9UqwHaPmPb3mQFWNlhkCDilm/Tt2pDQYlvMr/TCwhR82DQ5S5cBxr9i
-	lYYVXuc0LOtkhZjMhxa0G5ZF7++zHBBRgcME80nGvmMrAISLCV5IkSiZUiTIGL6GQRlBxt
-	hIzV+ZWi4L3No+N7vSE+DRnDwsBkNzA=
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wS1W7Jwe;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784198797;
+	b=HmoLZQA26McwiyPxjhOSxE/DCIXJvzl1G9ilKj4p4am77p/kl/Jw0GvWdRoAh+/bLDEnsC
+	E6Gm1ND376q/aVSXPBywAkh9VhKU2aiixkxACT1wbeYF8/fklnMk57Fqadlq44cZi2X7z2
+	XE6qV5wRpX8JbvwrR4m5l6pzvpu0uI8=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="o2t9/oQM";
-	spf=pass (imf28.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784203104;
-	b=LrHPhnYLl++2Rmer7B4A4k+WDFVZ0Dszl1ThwQa6isY3DOHITILIapLert2F1rwjuKOXim
-	0/QGxKibOCTPXGRaJbWl7ht0KXPVBOQeMc8sPjK/4RLl4hzfARbRRHSrIJqQrpEbsRPzIf
-	gzdFdowAK2Vz1LI6/CRDi0sNxNkCwDg=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38dcbade417so4712924a91.1
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 04:58:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784203103; x=1784807903; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:sender:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=toaUztrSvNj3kdZ0hYHuWC4I9HtWac7I1kBUHNoUIdY=;
-        b=o2t9/oQMBhskS9ogJCVOvYgPAp6mq1NMZJP7b8HqwtEIOa0rG5FPUzcNjhF42sYu3J
-         xpXbWGkD1J3tE+BpqJNCQ1yRRK+raer0cRMykE/0U752JMhODvu9/C1x+UyVSVjTu4BJ
-         f348TTwFgWRznoeiF2icPYdVMJIIHbY+lQZrG7UxwmxkvTgNT9l+8IrTOU5nCy747Tnf
-         V0AlzecFWkrvVkUtALXFV+mLTQDxjdklBGPE0lXJSbKz6xAFKM61qX0z3BmyS6p2yOHw
-         edydtEmre8/P4H+FqpwSGaGYgU/xRotvuF3S3qxEnQrvl3D6hlKn2zgPsRrCRZwtiWko
-         4QDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784203103; x=1784807903;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=toaUztrSvNj3kdZ0hYHuWC4I9HtWac7I1kBUHNoUIdY=;
-        b=TYTPcx2zXfpG97zJxejv6hwPRdkQo9LjNNKOiDd2PTGa70juqOUD39wQ0Hi6FxzI/v
-         tK3dQwIZxg/FRlWaaqr2z0JHRIsivx/f1IQbb1el4LNdm5DHr7Fo81hj6B8k0ITHMB9R
-         IY8HFWwLWLskDkZPJqWtEYCbof677bYepPsICRxxr9PlRoey34eslW3bCPwNvS4A+iEu
-         F7q7E4r4gp6/7kvWBY7bp680OAkCCLJoymzy6QI5h5WeNvG5w6GtmdgIf1Zd06GquE3v
-         7AU/SKBQXvsSz154cr0I3sKMzI9Zz7cbY/4HQ+WLHAWV8Bq+Vx8q9kLjJln4DnFCgugQ
-         BOyA==
-X-Gm-Message-State: AOJu0YwuJwP3DIBw6BewZHoefO9wwgV1st+pNJp6AUG9sMrwx6ZrIVdl
-	xEAZ+WCYKVJjcDpVrLitXIHLaC2aKfsQZY6JbjqiKQFWh1EoKrWEs9wU
-X-Gm-Gg: AfdE7ck+uc2Sf+biwWrE2J78FBsbXdpigOogOafF8AMpnrOuvf3iNQD8i/XJAMGy/Lj
-	hdnb5KPKbAkvSv49Lfi+X+Idp4pu3v4oQTbNPp5OhFiq+5xClbbhifIJXPyEEf9WD/d++RDmHOJ
-	GrjERWSeQVsP0D0OKaEaQGWwCeNp90FRtmcc16sEbjKC4b6aVHJPh/zQkqgOF/2nQ5iIKyW1QhV
-	xw96mAPkX9E9m8BfVemE2vW/3DPpkfpCdyfzqpkt176f2Xhv9OFbMTOJvfYP1gW3u3IozJIDf2y
-	81Aec3LiXyPAGgpmfzcnZS1Y083ZrF3qh6DjjhORibc+CwgPDvFrXcwBQ8xg7rCAtTYwj7avxa4
-	DEz5AQpph4unBtOzfVw2nLsOREsmo5zWjJfLHb4Ln0HRSl6vx/jx1TTQe43LLDMgbSlUnGzhZmr
-	O89lbe0P4rJnILaDAQqZNZa+JrbLR1yDfwaw4LJ5iJ
-X-Received: by 2002:a05:6300:8941:b0:3bf:ba2a:6a8e with SMTP id adf61e73a8af0-3c34d583230mr14643765637.21.1784203103217;
-        Thu, 16 Jul 2026 04:58:23 -0700 (PDT)
-Received: from localhost.localdomain ([2406:7400:90:2db1:9c31:f107:8086:4204])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3140e4fcd26sm10685491eec.5.2026.07.16.04.58.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 04:58:22 -0700 (PDT)
-From: deepakroag <gaikwad.dcg@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: linux-mm@kvack.org
-Subject: Re: build error in vrealloc gfp/flags (fixed in v2)
-Date: Thu, 16 Jul 2026 17:28:17 +0530
-Message-ID: <20260716115817.81400-1-gaikwad.dcg@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <202607160153.yE2uZTbP-lkp@intel.com>
-References: <202607160153.yE2uZTbP-lkp@intel.com>
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wS1W7Jwe;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784198797;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=z2e24JcVi84RXCgGQTG7+PHh4Tj/SHur87NM9gxSnaA=;
+	b=Y2a1K5TBA0EE60w5sF8QTBpfsYcyAeT2w3USF2pG9Rn1VPjw4TqAW99Qy3I5narpuaB9xW
+	uWa+QB8wliPIX9mR22eu4yCIMEJi20K99vEoT7WuUj0p4mStXzpyYImziWoJZMc9ZBrfJW
+	gwuM2vUxJFpSL31nTpEUmZtogCoaW/k=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784198792; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=z2e24JcVi84RXCgGQTG7+PHh4Tj/SHur87NM9gxSnaA=;
+	b=wS1W7JweTWegguOkn3GZiVxiZaCY9pjiaarls7ZBoyObIJ1H3kqhhbG9PE1uNUNglNCpf8DYwSaMaRFHGvII4j1+d/WKqJiEgdcGA0OI1S2fQf4XLZvpUVcUK1sjby+cZQH1siKWFswgF7u/h4pfSMlQXTUCt20tb1VLLDofMKw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X7E6b9Q_1784198789;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7E6b9Q_1784198789 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 16 Jul 2026 18:46:29 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	hannes@cmpxchg.org
+Cc: riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	mhocko@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] mm: vmscan: convert folio_referenced() to use vma_flags_t
+Date: Thu, 16 Jul 2026 18:46:18 +0800
+Message-ID: <5f2c0400e6a58ad2e61cf355c310a37b208fe1db.1784197559.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
+References: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5y8ujr8i11whub1yydyepqwk97kdwyop
-X-Rspamd-Queue-Id: 57CF9C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784203104-897620
-X-HE-Meta: U2FsdGVkX19RGjO1g1FIVIJDLTJeYxtg8Qtn+Km2wYHNZvrEBZsXynNUJwqRDAb7fcqhQ6WbCEZfJGKAoJlipDtyDAzzhbJR0Vamy91QpIJhX98LzrbEMlrdQWIjiOPYaxS2J+fDXJ4QoT9pgqcPMRUCEUCyifCxJOAK7Yrlxp+3IzAvk0F/bP9DOmuLTWM5GpD2UbqiZ4ZWpTlM3Hh65W2rBJL6p1VWR8fjwLdhyQM7nfNTkC9a8BG4//RJh0PftHFQ3OJbOOWBHQIR3LxOvNBSvnQ+lwlgnKmVDydKxfS0kWhMzc8uI/eXPYDr1AjG+z4nngMhApsOI1BRpmQYzWj++xazKHfyaAtmd0pIZteqZB1phBWO7lPWD+vGRq2sOP3vCkPowvSFgL99StiwYhfUleMAKXHWq7GU0O3+3ht4OWWuIkJylta4leWJN19lA89LMv5Su/6Oz5M7bWg38UpGLGpeCriSuhPhSbNo1R2VF8q64Hn0jq0c912hZD9LZ/tTEpVF1sQWsEVBkyd2KvZH6899k3h2ADfkXKKGoILcHLmJ3I5D8ahev0kDzQ7MaLUJ2WqVfxd/yN8NkF4ReFgGyiOUvY2CjLiBnq4OOx60L0TmQqRfgNxJBjX4NtNI1kOXblnWbTf72k+ywZszNw5kjstQtiSTVZWhd7seF131vXesZ4K85kC/uyb6LtEW6Yc5HpBmFkQsY3bui22KLHN4zCOjJnLOgJ4TSiZeW9p2X3ayGYENRrjoUSKWL3h10ShPojGHQbXZtraxk6CEMvbHN3MBhpUjUZFGmfTtJ/lZSjs0O7amyqAlAQxLgeP3r9SHrHfmI/RKDTKF9Bcm8+pWRFzAyXMSvyYKtaU4rmB6kU1nssZ0MyHbYD34p6cfnAjJw+98z3+H1oOyLZeCnMr4VhNYVhjqIRy4sz4vfPQB0PUtk9NmLqr3ncp4AESVs8aeB069ILsP/ScY1vW
- r4zfjOsJ
- ESwj2p2KApH2jak5aJA8I4kZ5Y39bces8mKv0dtBSakEsN/zzAzZiR4TrLQwpRgIE7lSs7EvxqiehqTux3TtPrEnXTlPxjWfT2RUNcPkrMpPMx8tBnJkV+RsHZd8lPDxJkJLFrh+0CGc4nVKr7nWPbdsWRA6M4VC6dcgt7xz3o9ArawnCm2m4utY1Br36m9GY66YtMbgvG0lpnVMRy5gfX3g48FzEdCqOESEeL7xIIl/jYBKxKiJFQibeWZKdayXqbbYz5Z7Qbm76x+tpySDgItfbvdWrOMdDKxBNsSic7DGAssRaOOkzXoSL+PuIesI62y+4OU8RSHzG8b/wfaMTsDpDAWtTNIa8GbiIDHEBOCZq5oEccIFJt6hdSKy+4FYxYLdjO+Wy+k7mzWD67FmDiE8PD38RJshGZenQ/cDpyIgtvloHvW3VhWND22H3UygApXbPxkBuqrhWJ3/ceFBGdjlU19PCwLiTRlmmWdor+dUq5jk8hfC9IHLtJBWFuK7957L3XwbQ23Yn6iRUzCN0ybkVYH9LPCF/9GMC65yH/F5ft5ZxsHvItG9XHw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 69197C000B
+X-Stat-Signature: kpjhzaipyppy8fdydfr7cxh9egs9d8b3
+X-HE-Tag: 1784198795-85687
+X-HE-Meta: U2FsdGVkX1967k6+AM4qPi9eOWAO69eybdOtb5OjBbGRqEZIGErvxZk55jK2kmIJ9LfiQzc55QslLmVFrlfv/Pb0d5EUBIS9ThmmVr0p88MkSMDEvihZb7ACtArm6z2vzOVdu01sKCGnQxM/bsuzVXSpfjWWJ3vByqQE5/Y3k4ZB7D8DDDkAT2LtRcleV7gtFX6OCYI9zinN9wvj/YqS9+RmPPWVCliTqOcPrnEu1uQBZRrxSN6Y9MGBzicUsdTe2RZmAIBcwB3sRZO40snx6np+9MeOZy/VuefDpN5hUBXzCC4pWQ367gK+jq7ok9QtKHkAXnEuPUqoEVPtvAewN+H3dZS7nuDlNe3EhCBZNHYizNer3WLsgOYMq1sffNE99zcJce5SS//s5bKA3UYwRd0SS0RunVRvyrfaAUb2eJF61IrxyZyvFw85izQ4hIQnVENEW1UIiPtD84KFKSbgGrD6ldaQazBRAzXNjjDcs/dV1V/Tlo5fOLRrRJ4+F6J7r4VrsYMJPYtJBcXeatf092iEL/sECJJykgXrOe1CdhyRELaGXLHqE8N0AD46Z0iOVWxZyCYIbQ3rcDZCL10lideCqFl9RiyyLZyoDF7x9/O9f9TQvwsq64PCHF6PA1N0XNyrqdwuwu1bBj+JNozldIqBJxEcJU0fhJZtaPo+MjOc/AAus6EWg99T10oDObPkKSdhRcpbQCkw1dQnHGypYYJoCwONbweUH8jnjuYzNqG/3tIyiLuDVbzDEo9+Dm79JvOsIVV6NcnyefpKz8tUuu3o3A2j2oe0lD0VFo504PB/IQzcf5v4L4gMYi5nu0pvcQsI5K/k72jqX5dGy7pxSXguj5Qsu0l+QNL9b2g9PtGtqmW7sCaCemWfG0ctLfBsXTka3PpW8Ux4K8FL/hf1hOYquoB5M21cTG+7XYzKl4kNCoHurXjGIRFvdxwC4gT57edKIi9CNF88jNjIvHw
+ VGSAmTds
+ 5+tAMKey7OISIdb+VRacoBvlNFvZ1T15Cwykl+lKQLEqxTh8AwRzVBK+/1G8lhUxjbbqMi5LiahaX4HRH6u1tHlrnb6BtYplpuS7nuVBDLkCAhFmftOKbh+aUWToEickIE6flnlxVRRFAL8LV73vkg9wr2xcsBtz8m7aSuXKanyiroW8g4boC2T+kIRjsUWzu37yBX4l7+dMh+dzUUXn8f6P4gJnbCe4TNV6HGloZftGQNkF11FqKGyYO4sjl9fND8b/3hMhUK0RTZrxAUiIGQInkjNwFWwM/AF7gRiVz8Tl4Vds=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,13 +102,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 07:23:53 +0000, kernel test robot wrote:
-> build error in vrealloc in-place grow path
+Replace use of the legacy vm_flags_t flags with vma_flags_t values for
+folio_referenced() and related logic. This is also a preparation for the
+following changes.
 
-Fixed in v2 — gfp→flags compile error squashed into patch 3/3.
+No functional changes.
 
-Link: https://lore.kernel.org/linux-mm/20260716115734.80909-1-gaikwad.dcg@gmail.com/
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ include/linux/rmap.h |  7 +++----
+ mm/rmap.c            | 19 +++++++++++--------
+ mm/vmscan.c          | 14 +++++++-------
+ 3 files changed, 21 insertions(+), 19 deletions(-)
 
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f00..e090aa09825d 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -843,7 +843,7 @@ static inline int folio_try_share_anon_rmap_pmd(struct folio *folio,
+  * Called from mm/vmscan.c to handle paging out
+  */
+ int folio_referenced(struct folio *, int is_locked,
+-			struct mem_cgroup *memcg, vm_flags_t *vm_flags);
++		struct mem_cgroup *memcg, vma_flags_t *vma_flags);
+ 
+ void try_to_migrate(struct folio *folio, enum ttu_flags flags);
+ void try_to_unmap(struct folio *, enum ttu_flags flags);
+@@ -975,10 +975,9 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
+ #define anon_vma_prepare(vma)	(0)
+ 
+ static inline int folio_referenced(struct folio *folio, int is_locked,
+-				  struct mem_cgroup *memcg,
+-				  vm_flags_t *vm_flags)
++		struct mem_cgroup *memcg, vma_flags_t *vma_flags)
+ {
+-	*vm_flags = 0;
++	vma_flags_clear_all(vma_flags);
+ 	return 0;
+ }
+ 
+diff --git a/mm/rmap.c b/mm/rmap.c
+index e854679553b9..4085540b6a25 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -907,7 +907,7 @@ pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address)
+ struct folio_referenced_arg {
+ 	int mapcount;
+ 	int referenced;
+-	vm_flags_t vm_flags;
++	vma_flags_t vma_flags;
+ 	struct mem_cgroup *memcg;
+ };
+ 
+@@ -926,7 +926,7 @@ static bool folio_referenced_one(struct folio *folio,
+ 		address = pvmw.address;
+ 		nr = 1;
+ 
+-		if (vma->vm_flags & VM_LOCKED) {
++		if (vma_test(vma, VMA_LOCKED_BIT)) {
+ 			ptes++;
+ 			pra->mapcount--;
+ 
+@@ -947,7 +947,7 @@ static bool folio_referenced_one(struct folio *folio,
+ 			/* Restore the mlock which got missed */
+ 			mlock_vma_folio(folio, vma);
+ 			page_vma_mapped_walk_done(&pvmw);
+-			pra->vm_flags |= VM_LOCKED;
++			vma_flags_set(&pra->vma_flags, VMA_LOCKED_BIT);
+ 			return false; /* To break the loop */
+ 		}
+ 
+@@ -1015,8 +1015,11 @@ static bool folio_referenced_one(struct folio *folio,
+ 		referenced++;
+ 
+ 	if (referenced) {
++		vma_flags_t vma_flags = vma->flags;
++
+ 		pra->referenced++;
+-		pra->vm_flags |= vma->vm_flags & ~VM_LOCKED;
++		vma_flags_clear(&vma_flags, VMA_LOCKED_BIT);
++		vma_flags_set_mask(&pra->vma_flags, vma_flags);
+ 	}
+ 
+ 	if (!pra->mapcount)
+@@ -1054,7 +1057,7 @@ static bool invalid_folio_referenced_vma(struct vm_area_struct *vma, void *arg)
+  * @folio: The folio to test.
+  * @is_locked: Caller holds lock on the folio.
+  * @memcg: target memory cgroup
+- * @vm_flags: A combination of all the vma->vm_flags which referenced the folio.
++ * @vma_flags: A combination of all the vma->flags which referenced the folio.
+  *
+  * Quick test_and_clear_referenced for all mappings of a folio,
+  *
+@@ -1062,7 +1065,7 @@ static bool invalid_folio_referenced_vma(struct vm_area_struct *vma, void *arg)
+  * the function bailed out due to rmap lock contention.
+  */
+ int folio_referenced(struct folio *folio, int is_locked,
+-		     struct mem_cgroup *memcg, vm_flags_t *vm_flags)
++		struct mem_cgroup *memcg, vma_flags_t *vma_flags)
+ {
+ 	bool we_locked = false;
+ 	struct folio_referenced_arg pra = {
+@@ -1078,7 +1081,7 @@ int folio_referenced(struct folio *folio, int is_locked,
+ 	};
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(folio_is_zone_device(folio), folio);
+-	*vm_flags = 0;
++	vma_flags_clear_all(vma_flags);
+ 	if (!pra.mapcount)
+ 		return 0;
+ 
+@@ -1092,7 +1095,7 @@ int folio_referenced(struct folio *folio, int is_locked,
+ 	}
+ 
+ 	rmap_walk(folio, &rwc);
+-	*vm_flags = pra.vm_flags;
++	vma_flags_set_mask(vma_flags, pra.vma_flags);
+ 
+ 	if (we_locked)
+ 		folio_unlock(folio);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 986dde8e7429..de62899c108d 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -861,16 +861,16 @@ static enum folio_references folio_check_references(struct folio *folio,
+ 						  struct scan_control *sc)
+ {
+ 	int referenced_ptes, referenced_folio;
+-	vm_flags_t vm_flags;
++	vma_flags_t vma_flags;
+ 
+ 	referenced_ptes = folio_referenced(folio, 1, sc->target_mem_cgroup,
+-					   &vm_flags);
++					   &vma_flags);
+ 
+ 	/*
+ 	 * The supposedly reclaimable folio was found to be in a VM_LOCKED vma.
+ 	 * Let the folio, now marked Mlocked, be moved to the unevictable list.
+ 	 */
+-	if (vm_flags & VM_LOCKED)
++	if (vma_flags_test(&vma_flags, VMA_LOCKED_BIT))
+ 		return FOLIOREF_ACTIVATE;
+ 
+ 	/*
+@@ -914,7 +914,7 @@ static enum folio_references folio_check_references(struct folio *folio,
+ 		/*
+ 		 * Activate file-backed executable folios after first usage.
+ 		 */
+-		if ((vm_flags & VM_EXEC) && folio_is_file_lru(folio))
++		if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio))
+ 			return FOLIOREF_ACTIVATE;
+ 
+ 		return FOLIOREF_KEEP;
+@@ -2065,7 +2065,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ {
+ 	unsigned long nr_taken;
+ 	unsigned long nr_scanned;
+-	vm_flags_t vm_flags;
++	vma_flags_t vma_flags;
+ 	LIST_HEAD(l_hold);	/* The folios which were snipped off */
+ 	LIST_HEAD(l_active);
+ 	LIST_HEAD(l_inactive);
+@@ -2109,7 +2109,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ 
+ 		/* Referenced or rmap lock contention: rotate */
+ 		if (folio_referenced(folio, 0, sc->target_mem_cgroup,
+-				     &vm_flags) != 0) {
++				     &vma_flags) != 0) {
+ 			/*
+ 			 * Identify referenced, file-backed active folios and
+ 			 * give them one more trip around the active list. So
+@@ -2119,7 +2119,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ 			 * IO, plus JVM can create lots of anon VM_EXEC folios,
+ 			 * so we ignore them here.
+ 			 */
+-			if ((vm_flags & VM_EXEC) && folio_is_file_lru(folio)) {
++			if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio)) {
+ 				nr_rotated += folio_nr_pages(folio);
+ 				list_add(&folio->lru, &l_active);
+ 				continue;
 -- 
-Deepak Rao Gaikwad
+2.47.3
+
 
