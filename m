@@ -4,118 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9B0EC4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76918C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:47:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 818DA6B0005; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
+	id 273BF6B0095; Thu, 16 Jul 2026 10:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C9256B008A; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
+	id 1AE566B008C; Thu, 16 Jul 2026 10:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 691F46B008C; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
+	id 0765C6B0093; Thu, 16 Jul 2026 10:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 32E846B0005
+	by kanga.kvack.org (Postfix) with ESMTP id D04436B008C
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 87E6A1C003D
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:40:19 +0000 (UTC)
-X-FDA: 84994900158.09.E0F81E4
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 97A978000B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:40:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=qxn+h0ds;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf02.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212817;
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1311D1C0025
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:11:29 +0000 (UTC)
+X-FDA: 84994373898.28.86B77F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5F9F1180004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:11:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ApHxBAhg;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784200287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Ls7aI2YsKMrYCfbCVyA0Gxy3SdWzDVHyfYWUOskaec=;
-	b=x9+Mg3nVAggD2rWu+SUo1ogxymzP+Cs8X/L85ZjozYNuJim6qjcEsIXjKxxQYpAq+/UuUO
-	qHwi4Mk6ynUvrljiY1I4aGUV7gABTW6cuQVDARKrcR/fc/fK9k38GsUtEAT95KkhB5nHZE
-	YC7VEVkMvr3IGcw705tEHyU3LTmsu2M=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=qxn+h0ds;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf02.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212817;
-	b=ZQsnysufp/IhgeOtePf9rpomYCWaxPdPheh9jr8Wes8p0m/8Z5EVx9NeXIM6gc8ESDnMJ6
-	jY+MSLRy/g8X5loMpC/EwDiq2SsDxBZf182pKamCLIsWQX6simngYYedWXawlf6XfHd7m8
-	oeLYooNagbLzN3432CAeKy64RBKPHLU=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212472; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SQCSCmadAAHdXAGgv5VfGXJwPklN1QCdZMEouWgQBUbB6OvLfeN8d7vgPJIq3BTy2OSa2sASTbG5hNNApdAoYMRnuuytyx/wDltVNBoHqNdBrIJump3TYMKsc7KmRp+aXoKyNBAx+BHXOlFZS8XkLlRNGFumQxkLy20Mq5Ve2Fk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212472; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=/Ls7aI2YsKMrYCfbCVyA0Gxy3SdWzDVHyfYWUOskaec=; 
-	b=b/2lj6767VDIqcCN6CWeRzUZwDpPf4/pl95bufrTfW23gCGnWFSAQS2x5/yXhxFFwc76YybzwvV1JCwA8M9bdKTv+x6Xy2kSG1lcjNg4POvjcnbHVZtlkTY5QtzyyiXxWVzHKCh92DpB9HhN3qLngrorna3Dym4t1dgoIUAAQn4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212472;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=/Ls7aI2YsKMrYCfbCVyA0Gxy3SdWzDVHyfYWUOskaec=;
-	b=qxn+h0dslvw6oMfd/2dt0iQrHdSMBAk98HreekQ2RjLChX2fY2YCs/Ft/kydrVm7
-	mGSNLiICeCBGXsTtSRrlA3pcQkhLI2kEWjXwcUBQnEdUkvNyH/xMy+gKZrWu0BCGKgD
-	IUaieW66Po9dFMQ0vCi/OXdojRG9FGEc+hSUUWK0=
-Received: by mx.zohomail.com with SMTPS id 1784212468515488.1212460986567;
-	Thu, 16 Jul 2026 07:34:28 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Eric Paris <eparis@redhat.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	audit@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 14/24] pidfd: create and execute spawn builder tasks
-Date: Thu, 16 Jul 2026 22:31:40 +0800
-Message-ID: <8d58bce916b3f13da1ef7f2c7eee13cd7cb78a4c.1784204592.git.me@linux.beauty>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1784204592.git.me@linux.beauty>
-References: <cover.1784204592.git.me@linux.beauty>
+	bh=ZlEsIsMy+xiqP+sE0QJNQFS6r7wucHYdEueItdqzztY=;
+	b=xwp15nqK07ibyil2mVRW7kANpw+wTM36Rs+nqR9Ia5weoiTXtjUWesYzgQdqxt82OjeIIw
+	iHXxr79FEt3skdiptpY6UAsrXca9WySkXM6UhyGpdoMNkwnLUhP8iCczf0e1SxamZP2DV2
+	YaVmjXOnYnqLmbHUG3Kg0jtoye212kM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ApHxBAhg;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784200287;
+	b=OcBtmcc0lO9x9YTM6F2uxywtgCfcXAra/iTXVXH8s8btFcaYFbo7Oo1W3AZ0KDtBb+GbD4
+	fajSxBO5pI7uCY2mbnyjTkNkqr9yM7ylHpNbwNOoQBAIGALFoOeYdrDti2pdVaGfj1i654
+	5U23C42f715j8LQwFTj8e3cFR/eBBPo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F14C9600AB;
+	Thu, 16 Jul 2026 11:11:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341361F000E9;
+	Thu, 16 Jul 2026 11:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784200286;
+	bh=ZlEsIsMy+xiqP+sE0QJNQFS6r7wucHYdEueItdqzztY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ApHxBAhgxK4rZgVAUKVSLikt7oCZykDg0dWIqcOcJzhXm1INviLh3+uA0MVJVjaUM
+	 QfuDd6LggOdh1jHMvQqki1nhHzSIhWMGYdiXz0trCU5m4gsMPOlMnKldweAE4XJcIf
+	 7KrnW6I2pk1naFH5bhozl0QgZwD9tPOyFrXval70wa9tA3qMNRFL4Q7HbhJ4CH9YD9
+	 zqYDuMu70q0j4bIkDyYoIgd3W5ImW8GeEYdz+1naH4hvkHYYMso1B2ROTjF3bneBoQ
+	 2u0p+Jb5pHvACMNIRfzEHw8ZDphquf8918mWsqMHpE9hJKkryG2kKq9PEsk5jwq3BK
+	 UePj6+DalNZOA==
+Message-ID: <e1c542fb-fb77-4d51-89dd-60b4991c3e0c@kernel.org>
+Date: Thu, 16 Jul 2026 13:11:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm/huge_memory: drop dead split helper variants
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+References: <20260716100345.473473-1-kirill@shutemov.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260716100345.473473-1-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 97A978000B
-X-Stat-Signature: 78itpx37cusy5k34k9kxch5oa4wy9tny
-X-HE-Tag: 1784212817-966851
-X-HE-Meta: U2FsdGVkX18GXfvbOCYS+S1AbYzDeTEmCXq8B/6HhPkATYArRQ37otAQCJy5JcCxBbk1DffZy+dxVmzPbCVCzKPz1pDEx7qdmsGholNVK8DWta99N2zS5iy3e9LRzKRA7kFvUjErjp3gl0PoRnMOzafRr8cczXrOtK6wKJYYlqxjTW9QPOEh02v8IK2HVws1y111xu3QxK1l78oXyRKWJM8IqLde3CD+YGY62aOgX1nLwn0/7JyjYgGFZxnsQNF5Lb/XC2Ya6NsH7gJVrK/OhBgT6SJbq7Ey/UGfj0q2A7cmZjE/qbr9NbW6gMijl36AsLYTbxWKaFnLZ+e4oYgd0NXCLW5GP1uEpREwa6Sli0Vtg5SsufR9hfW+qAXNqF5Kmpb9dHzMJeM4XwKYLZ6Pwy6CQ8aaGxgmZwdkXGA1toxZvbnM1FpQ0fugtFrgY77sC3+XQyA5fELgolcnCnOI/OgM9fUSfSNRwdckQnwxb755pHp5fjsvm1Rh2WTp2+468rbFGaAHPlKJyIdMxLjQV6B5IIlFDiN1RbJ7zzB6/fRvMrqRywdcra/sb/TDNwkX6xB2F8TUP1mapba7W/iszZFbPMYLvs6gztGBcjfAT6Un7ZATC/EASMt+zKnESc2iRe+BuQyOPhPK9h8vBKIS29Hab0m3qgThMUVdiD3zk+nCWTQFQ448LCacYt/lc63Q9zZD2WXkIFXOCUOa89N92mzWrLB9xxPUc8s/xZWauzBeY5B+QEgzQjVetZd7zceIGoCJr73OZn0KKwSw76xON4pPvklokmPRcRBf+k3qLDdnPYJwUxLVKQWitrAK7wLobSQf6MsEOSWdAOSUoKC8AZxIjqlRE+gc/8dE2LWtOxwTSWeTt1cSikfAv4BNxppNK0zGljuJ8W3obUGxrJhX0Cx+zypH8hAnNhoXZN6j8QcG4ZAHd91qlPdPJkr0eJFo0QnfPWQu2WSXwCpL8gt
- PbQgHg7N
- FKw6Vq+5FoTiwz34EWzzwxLd9jafEFHKp57QxF6tV5pN3ZsACGG62wMPFO0xLNXJjS2z7Zl0ilo8eZ24UCs8+zsh7b+F1GRl1txHFwvX0dC6mXpv1m1+zOMhrfD5Ew249Uw/+gpJLIlvsJBVesRZPWHjByVDqRm1IJJDuOdRyK4VR1hZJvfiMS60Bs5XTGX9y7mXtuj+OwhZY/bQ/iBMiKlRMXPmzAm2AIlMh0aJwuWiYI3fmh8t4tA1UfIPvghGvAN55cI1Hmkjb/rw/4NWthX5dwvTO21qrzyCpXDXucM/F2zR+hFMpL5ADy9wZwe+UILroEaInDfVyUHW2oVn5GgulJwrgYHPrI1pPZUXGiSEcEZO0CET/vdb2e6jTtM0daPNRH3e9dE34zay9XOQLDI7j0160xgrgbhnIByzQl/MtBo5ZfOrKtwbKqSp3rxolCljMrfcc+W+07kw7HgGCtI4tAx+ImELtL+DVC6VfI9IC56IQiabqlQgw2A==
+X-Rspamd-Queue-Id: 5F9F1180004
+X-Stat-Signature: ijmxmg8orap1k3gmbszsb1an9n85ip5g
+X-HE-Tag: 1784200287-384483
+X-HE-Meta: U2FsdGVkX18T4o6A1eGazWS76SPLoLAYaQqyzNBPnlsNmEvRKz6akDfKLDdRn8u5sYw3GI7EeIfeWcyYxeQzfUWnK79PtanVXRW9SmL3i3MLMhlpwPL6MGoLf2lAwDmCOgJAhuvb3Js+LQM9l3jXSKDNgTt8WHwsSb6d2aXTu/ZHZKudk8gudQN4Uotcq1pf6TWFaHUhBbePIVZmCz56BT0yyRx/UI789Q+pIrfgRQ2flpuFreZxRSKFwdXdtC7udBGr4hBmkvtdvANb/WgTqU71R22tuhENFYawubsUNjFCMKk3acMPAIBMTghfSo2V6lNOpoAFvFTWo1eiv9/YgOn46mpXZBceY+/aKU5yiiRPFZFVke6IQj+Gk61Y+3z4eAF+5Yst1xOXIq8ZLtkYBYgS7LUwaaykawRyT+sA4L54bfe7Qkti479ZY32PAzUFd1PH7P21/HFm+sRbPJFG/CEQFtJSce7L8RgOaREHdeVXp1jADudGDbdLFDzCKh9LQRFxdo5p1QVJyfEWcZLHt9Sb+95641X7noD4M+XbXDQEuGU43kj/Cf7CKaXKlKPeWMlp961LRnK7M2aGF+jlRoGaASD5Ao4z++AJiu2b6Ba5WcypIZFLMUj4BIeci0IT8fxN36zuxMkzwE7G9is984eKsAnRww+9OLdgM4oV05yC3QHZ/3eCfwRGAznieqcKXOa6YIG4Q5ZGFzjtEbGld/twWHURsAW/CO4w/PFOe+2ML4zAhhoi5XTChpyEWKwUCso9tdP82UT5YN0XjZAQWfqImIZcrYGMzAZmsUf0UhmDH6doebECiNDoWyxnYmsZazCAoPnVq/pB3D/iMMrQzm/g5NQJ4qP7/JnW8VLe1bF/ax8t/+k72yH8/oFU3cHdzlEv0tkjKUpVqvJWGbfx9Rj9WUEo7l45Aucro2l/Tl314jFeK/9Epmd+R7EiBWyZO4d7uWIzuBypFkXtGWq
+ tVvnLsc1
+ f2ZYVJ+DtMgNAXlyIxRsh5y96vL2reaNxq59kFUqzIk+5JUtvI3pO31MLvUhxtI+gq6OdvxPfZ5gStZTvMq2hlRzAm0TB/ulVq36QkIYw39EXED84gE8N9Fv//a//6Zrmsm/F1Wz/ysrL71rAxVNblFK/8VHsD/9xQvBsvXapLIXa+n3gP2DEzRTFcoVPD07fgj1dhywv0tsLGXaoUVWLQOXyZF7tM+EwJOWf5cTm2nJxITDxcCC71MmueA2fc+YCTIe3va2FVycjpisdvyodepl3igf8SfMhCuRhJnFf20zqcR9c2P9Wr5zJB9AMIMIzLPETqpdU9UH8QIg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,530 +142,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add pidfd_spawn_run() for a taskless builder. Validate the versioned run
-payload, including native and compat pointer-container widths. Allocate a
-numeric pid with the reserved pidfs identity. Create the child through the
-existing vfork backend.
+On 7/16/26 12:03, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> Two trivial cleanups in the folio split API, found while auditing the
+> split helpers for the inode UAF fix [1]:
+> 
+>  - can_split_folio() is dead: only the !THP stub remains, no definition
+>    under CONFIG_TRANSPARENT_HUGEPAGE and no callers. Leftover from an
+>    earlier cleanup.
+> 
+>  - split_folio_to_list_to_order() has no direct callers; its only user
+>    is split_folio_to_order(), which always passes a NULL list. Fold it.
+> 
+> These were 4/5 and 5/5 of the withdrawn series [2], rebased without the
+> memory_failure() dependency. 3/5 (removing split_huge_page_to_order())
+> is dropped: with the UAF fixed by [1] instead, memory_failure() keeps
+> using it. The syzbot ci failures against [2] were all caused by its
+> patch 1, which is gone.
+> 
+> No functional change.
 
-Publish the same future pidfd as the child pidfd before waking the child.
-Queue setup as initial task work so no kernel callback pointers are carried
-through architecture register state. Keep the task embryonic until exec has
-installed a valid userspace image and register frame.
+Thanks!
 
-A failure before task creation initially leaves the builder configurable.
-Once a task exists, return setup errors after the child exits. A later
-state-machine change tightens the pre-task path to a one-shot claim.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Li Chen <me@linux.beauty>
----
- fs/pidfd_spawn.c | 406 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 402 insertions(+), 4 deletions(-)
-
-diff --git a/fs/pidfd_spawn.c b/fs/pidfd_spawn.c
-index 99e3ef56ecfa3..c0e95c2ddbe6e 100644
---- a/fs/pidfd_spawn.c
-+++ b/fs/pidfd_spawn.c
-@@ -3,6 +3,7 @@
-  * pidfd-backed process spawn builders
-  */
- 
-+#include <linux/completion.h>
- #include <linux/cred.h>
- #include <linux/file.h>
- #include <linux/fs.h>
-@@ -13,14 +14,50 @@
- #include <linux/pid_namespace.h>
- #include <linux/pidfd_spawn.h>
- #include <linux/pidfs.h>
-+#include <linux/random.h>
- #include <linux/refcount.h>
-+#include <linux/sched/mm.h>
- #include <linux/sched/signal.h>
-+#include <linux/sched/task.h>
-+#include <linux/security.h>
- #include <linux/slab.h>
- #include <linux/syscalls.h>
-+#include <linux/task_work.h>
- #include <linux/uaccess.h>
- #include <uapi/linux/pidfd.h>
-+#include <uapi/linux/wait.h>
-+#include <trace/events/sched.h>
- 
-+#include "exec_internal.h"
-+
-+static inline void __user *pidfd_spawn_user_ptr(__u64 p)
-+{
-+	return u64_to_user_ptr(p);
-+}
-+
-+static inline bool pidfd_spawn_user_ptr_fits(__u64 p)
-+{
-+#ifdef CONFIG_COMPAT
-+	if (in_compat_syscall())
-+		return p == (__u64)(compat_uptr_t)p;
-+#endif
-+	return p == (__u64)(unsigned long)p;
-+}
-+
-+static inline struct user_arg_ptr pidfd_spawn_user_arg(__u64 p)
-+{
-+#ifdef CONFIG_COMPAT
-+	if (in_compat_syscall())
-+		return compat_arg((compat_uptr_t __user *)
-+				  u64_to_user_ptr(p));
-+#endif
-+	return native_arg(u64_to_user_ptr(p));
-+}
-+
-+#define PIDFD_SPAWN_EXIT_FAILURE	(127 << 8)
- #define PIDFD_SPAWN_MAX_CONFIG_KEY_SIZE	256
-+DEFINE_FREE(pidfd_spawn_dismiss_filename, struct delayed_filename,
-+	    dismiss_delayed_filename(&_T))
- 
- enum pidfd_spawn_status {
- 	PIDFD_SPAWN_CONFIGURING,
-@@ -31,14 +68,20 @@ enum pidfd_spawn_status {
- };
- 
- struct pidfd_spawn_state {
--	/* Serializes configuration and payload teardown. */
-+	/* Serializes configuration, launch, cancellation, and payload teardown. */
- 	struct mutex lock;
-+	struct completion done;
-+	struct callback_head task_work;
- 	refcount_t count;
- 	struct pid *pid;
- 	struct mm_struct *creator_mm;
- 	const struct cred *creator_cred;
- 	struct pid_namespace *creator_pid_ns;
-+	struct delayed_filename filename;
- 	char *staged_path;
-+	struct user_arg_ptr argv;
-+	struct user_arg_ptr envp;
-+	int result;
- 	enum pidfd_spawn_status status;
- };
- 
-@@ -80,6 +123,10 @@ pidfd_spawn_configuring_error(const struct pidfd_spawn_state *state)
- 
- static void pidfd_spawn_free_state(struct pidfd_spawn_state *state)
- {
-+	if (!state)
-+		return;
-+
-+	dismiss_delayed_filename(&state->filename);
- 	kfree(state->staged_path);
- 	if (state->creator_mm)
- 		mmdrop(state->creator_mm);
-@@ -136,11 +183,73 @@ pidfd_spawn_state_get_file(struct file *file)
- 	return state;
- }
- 
-+static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
-+				      struct filename *filename, int result)
-+{
-+	const struct cred *creator_cred;
-+	struct mm_struct *creator_mm;
-+	struct pid_namespace *creator_pid_ns;
-+	char *staged_path;
-+
-+	/*
-+	 * Run data is one-shot. Detach it under the lock, then drop refs
-+	 * after the child no longer needs the shared setup payload.
-+	 */
-+	mutex_lock(&state->lock);
-+	creator_mm = state->creator_mm;
-+	creator_cred = state->creator_cred;
-+	creator_pid_ns = state->creator_pid_ns;
-+	staged_path = state->staged_path;
-+	state->creator_mm = NULL;
-+	state->creator_cred = NULL;
-+	state->creator_pid_ns = NULL;
-+	state->staged_path = NULL;
-+	state->argv = native_arg(NULL);
-+	state->envp = native_arg(NULL);
-+	state->result = result;
-+	pidfd_spawn_set_status(state, PIDFD_SPAWN_SETUP_DONE);
-+	mutex_unlock(&state->lock);
-+
-+	putname(filename);
-+	if (creator_mm)
-+		mmdrop(creator_mm);
-+	if (creator_cred)
-+		put_cred(creator_cred);
-+	if (creator_pid_ns)
-+		put_pid_ns(creator_pid_ns);
-+	kfree(staged_path);
-+}
-+
-+static bool pidfd_spawn_same_pid_ns(struct pidfd_spawn_state *state)
-+{
-+	return current->nsproxy->pid_ns_for_children == state->creator_pid_ns;
-+}
-+
- static bool pidfd_spawn_same_creator(struct pidfd_spawn_state *state)
- {
-+	/*
-+	 * Holding the pidfd alone is not enough authority to configure or start
-+	 * this builder. A caller must also share the creator's mm, credential
-+	 * object, and child PID namespace.
-+	 *
-+	 * The child PID namespace is part of the builder authority even though no
-+	 * numeric PID is allocated until run.
-+	 */
- 	return current->mm == state->creator_mm &&
- 	       current_cred() == state->creator_cred &&
--	       current->nsproxy->pid_ns_for_children == state->creator_pid_ns;
-+	       pidfd_spawn_same_pid_ns(state);
-+}
-+
-+static int pidfd_spawn_check_startable(struct pidfd_spawn_state *state)
-+{
-+	int ret;
-+
-+	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
-+		ret = pidfd_spawn_configuring_error(state);
-+		if (!ret && !pidfd_spawn_same_creator(state))
-+			ret = -EPERM;
-+	}
-+	return ret;
- }
- 
- static struct filename *pidfd_spawn_get_path(const char __user *value)
-@@ -153,6 +262,31 @@ static struct filename *pidfd_spawn_get_path(const char __user *value)
- 	return no_free_ptr(name);
- }
- 
-+static int
-+pidfd_spawn_get_delayed_path(struct delayed_filename *delayed,
-+			     const char __user *value)
-+{
-+	struct filename *name __free(putname) = NULL;
-+
-+	name = pidfd_spawn_get_path(value);
-+	if (IS_ERR(name))
-+		return PTR_ERR(name);
-+
-+	return putname_to_delayed(delayed, no_free_ptr(name));
-+}
-+
-+static int
-+pidfd_spawn_get_delayed_kernel_path(struct delayed_filename *delayed,
-+				    const char *value)
-+{
-+	struct filename *name __free(putname) = getname_kernel(value);
-+
-+	if (IS_ERR(name))
-+		return PTR_ERR(name);
-+
-+	return putname_to_delayed(delayed, no_free_ptr(name));
-+}
-+
- static char *pidfd_spawn_copy_path(const char __user *value)
- {
- 	struct filename *name __free(putname) = NULL;
-@@ -173,14 +307,14 @@ static int pidfd_spawn_state_set_path(struct pidfd_spawn_state *state,
- {
- 	char *path __free(kfree) = NULL;
- 	char *old __free(kfree) = NULL;
-+	int ret;
- 
- 	path = pidfd_spawn_copy_path(value);
- 	if (IS_ERR(path))
- 		return PTR_ERR(path);
- 
- 	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
--		int ret = pidfd_spawn_configuring_error(state);
--
-+		ret = pidfd_spawn_configuring_error(state);
- 		if (ret)
- 			return ret;
- 		if (!pidfd_spawn_same_creator(state))
-@@ -243,6 +377,230 @@ SYSCALL_DEFINE5(pidfd_config, int, fd, unsigned int, cmd,
- 	return ret;
- }
- 
-+static void pidfd_spawn_finish_child(struct pidfd_spawn_state *state,
-+				     struct filename *filename, int result)
-+{
-+	pidfd_spawn_drop_run_data(state, filename, result);
-+	complete_all(&state->done);
-+}
-+
-+static void pidfd_spawn_child(struct callback_head *work)
-+{
-+	struct pidfd_spawn_state *state =
-+		container_of(work, struct pidfd_spawn_state, task_work);
-+	struct filename *filename;
-+	int ret;
-+
-+	filename = complete_getname(&state->filename);
-+	if (IS_ERR(filename))
-+		ret = PTR_ERR(filename);
-+	else
-+		ret = 0;
-+
-+	if (!ret)
-+		ret = do_execveat_common(AT_FDCWD, filename,
-+					 state->argv, state->envp, 0);
-+	if (!ret)
-+		task_clear_embryonic_exec(current);
-+
-+	pidfd_spawn_finish_child(state, filename, ret);
-+	if (ret) {
-+		pidfd_spawn_state_put(state);
-+		do_group_exit(PIDFD_SPAWN_EXIT_FAILURE);
-+	}
-+	pidfd_spawn_state_put(state);
-+}
-+
-+static int pidfd_spawn_copy_run_args(struct pidfd_spawn_run_args *kargs,
-+				     struct pidfd_spawn_run_args __user *uargs,
-+				     size_t usize)
-+{
-+	int ret;
-+
-+	BUILD_BUG_ON(sizeof(struct pidfd_spawn_run_args) !=
-+		     PIDFD_SPAWN_RUN_SIZE_VER0);
-+
-+	if (usize < PIDFD_SPAWN_RUN_SIZE_VER0)
-+		return -EINVAL;
-+	if (usize > PAGE_SIZE)
-+		return -E2BIG;
-+	ret = copy_struct_from_user(kargs, sizeof(*kargs), uargs, usize);
-+	if (ret)
-+		return ret;
-+	if (kargs->flags || kargs->reserved0 || kargs->reserved[0] ||
-+	    kargs->reserved[1])
-+		return -EINVAL;
-+	if (!kargs->argv)
-+		return -EINVAL;
-+	if (kargs->nr_actions || kargs->actions || kargs->action_size)
-+		return -EINVAL;
-+	if (!pidfd_spawn_user_ptr_fits(kargs->path) ||
-+	    !pidfd_spawn_user_ptr_fits(kargs->argv) ||
-+	    !pidfd_spawn_user_ptr_fits(kargs->envp) ||
-+	    !pidfd_spawn_user_ptr_fits(kargs->actions))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static struct task_struct *
-+pidfd_spawn_create_task(struct file *file, struct pidfd_spawn_state *state,
-+			struct kernel_clone_args *clone_args)
-+{
-+	struct pid *pid;
-+	struct task_struct *task;
-+	u64 ino;
-+	int ret;
-+
-+	ino = pidfs_future_file_ino(file);
-+	if (!ino)
-+		return ERR_PTR(-EBADF);
-+
-+	pid = alloc_pid_with_pidfs_ino(current->nsproxy->pid_ns_for_children,
-+				       NULL, 0, ino);
-+	if (IS_ERR(pid))
-+		return ERR_CAST(pid);
-+
-+	ret = pidfs_future_file_set_pid(file, pid);
-+	if (ret) {
-+		free_pid(pid);
-+		return ERR_PTR(ret);
-+	}
-+
-+	refcount_inc(&state->count);
-+	task = copy_process(pid, 0, NUMA_NO_NODE, clone_args);
-+	add_latent_entropy();
-+	if (IS_ERR(task)) {
-+		pidfd_spawn_state_put(state);
-+		pidfs_future_file_clear_pid(file, pid);
-+		free_pid(pid);
-+		return task;
-+	}
-+
-+	trace_sched_process_fork(current, task);
-+	get_task_struct(task);
-+	return task;
-+}
-+
-+static void pidfd_spawn_publish_pid(struct file *file,
-+				    struct pidfd_spawn_state *state,
-+				    struct task_struct *task)
-+{
-+	struct pid *pid = get_task_pid(task, PIDTYPE_PID);
-+
-+	pidfs_future_file_publish_pid(file, pid);
-+	/*
-+	 * Publish only after the inode identity, pidfs attributes, and exit-wakeup
-+	 * forwarding are ready. Pair with the acquire loads in pidfd resolution
-+	 * and poll so readers that observe @pid can use ordinary pidfd operations.
-+	 */
-+	smp_store_release(&state->pid, pid);
-+	pidfs_future_file_notify(file);
-+}
-+
-+static void pidfd_spawn_attach_vfork_done(struct task_struct *task,
-+					  struct completion *vfork)
-+{
-+	init_completion(vfork);
-+
-+	task_lock(task);
-+	task->vfork_done = vfork;
-+	task_unlock(task);
-+}
-+
-+static void pidfd_spawn_wait_for_child(struct pidfd_spawn_state *state)
-+{
-+	wait_for_completion(&state->done);
-+}
-+
-+static int pidfd_spawn_finish_vfork(struct pidfd_spawn_state *state,
-+				    struct task_struct *task,
-+				    struct completion *vfork)
-+{
-+	int ret;
-+
-+	ret = wait_for_vfork_done(task, vfork);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&state->lock);
-+	ret = state->result;
-+	pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTED);
-+	mutex_unlock(&state->lock);
-+	return ret;
-+}
-+
-+static int pidfd_spawn_start(struct file *file,
-+			     struct pidfd_spawn_state *state,
-+			     const struct pidfd_spawn_run_args *kargs)
-+{
-+	struct delayed_filename filename
-+		__free(pidfd_spawn_dismiss_filename) = {};
-+	struct delayed_filename drop_filename
-+		__free(pidfd_spawn_dismiss_filename) = {};
-+	struct kernel_clone_args clone_args = {
-+		.flags		= CLONE_VM | CLONE_VFORK | CLONE_UNTRACED,
-+		.exit_signal	= SIGCHLD,
-+		.task_work	= &state->task_work,
-+		.embryonic_exec = true,
-+	};
-+	struct completion vfork;
-+	struct task_struct *task;
-+	int ret;
-+
-+	if (kargs->path) {
-+		ret = pidfd_spawn_get_delayed_path(&filename,
-+						   pidfd_spawn_user_ptr(kargs->path));
-+		if (ret)
-+			return ret;
-+	}
-+
-+	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
-+		ret = pidfd_spawn_configuring_error(state);
-+		if (ret)
-+			return ret;
-+		if (!pidfd_spawn_same_creator(state))
-+			return -EPERM;
-+		if (state->staged_path && kargs->path)
-+			return -EINVAL;
-+		if (!state->staged_path && !kargs->path)
-+			return -EINVAL;
-+		if (state->staged_path) {
-+			ret = pidfd_spawn_get_delayed_kernel_path(&filename,
-+								  state->staged_path);
-+			if (ret)
-+				return ret;
-+		}
-+		state->filename = filename;
-+		INIT_DELAYED_FILENAME(&filename);
-+
-+		state->argv = pidfd_spawn_user_arg(kargs->argv);
-+		state->envp = pidfd_spawn_user_arg(kargs->envp);
-+		pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTING);
-+		reinit_completion(&state->done);
-+
-+		task = pidfd_spawn_create_task(file, state, &clone_args);
-+		if (IS_ERR(task)) {
-+			ret = PTR_ERR(task);
-+			drop_filename = state->filename;
-+			INIT_DELAYED_FILENAME(&state->filename);
-+			state->argv = native_arg(NULL);
-+			state->envp = native_arg(NULL);
-+			state->result = 0;
-+			pidfd_spawn_set_status(state,
-+					       PIDFD_SPAWN_CONFIGURING);
-+			return ret;
-+		}
-+
-+		pidfd_spawn_publish_pid(file, state, task);
-+		pidfd_spawn_attach_vfork_done(task, &vfork);
-+	}
-+
-+	wake_up_new_task(task);
-+	pidfd_spawn_wait_for_child(state);
-+	return pidfd_spawn_finish_vfork(state, task, &vfork);
-+}
-+
- int pidfd_empty_open(unsigned int flags)
- {
- 	struct pidfd_spawn_state *state;
-@@ -257,7 +615,13 @@ int pidfd_empty_open(unsigned int flags)
- 		return -ENOMEM;
- 
- 	mutex_init(&state->lock);
-+	init_completion(&state->done);
-+	init_task_work(&state->task_work, pidfd_spawn_child);
- 	refcount_set(&state->count, 1);
-+	/*
-+	 * Remember the creator so later builder operations cannot be delegated
-+	 * just by passing the pidfd through SCM_RIGHTS or similar fd passing.
-+	 */
- 	mmgrab(current->mm);
- 	state->creator_mm = current->mm;
- 	state->creator_cred = get_current_cred();
-@@ -282,3 +646,37 @@ int pidfd_empty_open(unsigned int flags)
- 	fd_install(pidfd, pidfile);
- 	return pidfd;
- }
-+
-+SYSCALL_DEFINE3(pidfd_spawn_run, int, fd,
-+		struct pidfd_spawn_run_args __user *, uargs, size_t, usize)
-+{
-+	struct pidfd_spawn_run_args kargs;
-+	struct pidfd_spawn_state *state __free(pidfd_spawn_state) = NULL;
-+	int ret;
-+
-+	ret = pidfd_spawn_copy_run_args(&kargs, uargs, usize);
-+	if (ret)
-+		return ret;
-+
-+	CLASS(fd, f)(fd);
-+	if (fd_empty(f))
-+		return -EBADF;
-+
-+	state = pidfd_spawn_state_get_file(fd_file(f));
-+	if (IS_ERR(state))
-+		return PTR_ERR(state);
-+
-+	scoped_cond_guard(mutex_intr, return -ERESTARTNOINTR,
-+			  &current->signal->cred_guard_mutex) {
-+		if (READ_ONCE(current->ptrace))
-+			return -EPERM;
-+		ret = pidfd_spawn_check_startable(state);
-+		if (ret)
-+			return ret;
-+		ret = pidfd_spawn_start(fd_file(f), state, &kargs);
-+	}
-+	if (!ret)
-+		ret = pid_vnr(state->pid);
-+
-+	return ret;
-+}
 -- 
-2.52.0
+Cheers,
 
+David
 
