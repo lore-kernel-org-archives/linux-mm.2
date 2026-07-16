@@ -4,109 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16F1FC44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39F91C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:09:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73BA76B013B; Thu, 16 Jul 2026 11:09:35 -0400 (EDT)
+	id B33C66B013D; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C68B6B013D; Thu, 16 Jul 2026 11:09:35 -0400 (EDT)
+	id ABCED6B0140; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 517DF6B013E; Thu, 16 Jul 2026 11:09:35 -0400 (EDT)
+	id 9AC346B0141; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 02B746B013B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:09:34 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6FDCEC0119
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:31:46 +0000 (UTC)
-X-FDA: 84994425012.30.8087419
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id BDF44140014
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:31:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CU8PyQnp;
-	spf=pass (imf09.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 455DA6B013D
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C6B4C8014F
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:42:54 +0000 (UTC)
+X-FDA: 84994604268.26.0D388FF
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3AF89180004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:42:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=GzYocpH+;
+	spf=pass (imf24.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784201504;
+	s=arc-20220608; t=1784205772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZhTPrG3YQEfBVn0yyzrLN6C3o96SAGlfQ2/4r1lWCWQ=;
-	b=TsoCAbWgD+eGCUTeJ3oJIbYPRqhFDDv6YRM+zJY0sIPfWKKjREen8T5sm9DAYu/rFZWP+J
-	bdjK2SjAqDmNKqhNTjSed7uGMtLdFaPYFecdX6b666CFercfPH1TVSsN6qLm+8ZZYDGlq7
-	82ePGbb0lZu+l4aQZ0joJLPdIiw6A3U=
+	bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
+	b=bMFVusVmFQEsUgklFE2avRbswVtw1GPO8Sv8O0bQi9r9JFyLLIXv1AdfXf2dpTvO0DDSPp
+	t1LCLYd9dFHo+bLSjENR/Pgiy7vI4ZfLacW9PcCe24wsZ9Rfl5eLCB0b50+cUXvay72jIC
+	D8ts42QzP0SZJIuISqu63sg5VjEL/l8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CU8PyQnp;
-	spf=pass (imf09.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=GzYocpH+;
+	spf=pass (imf24.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784201504;
-	b=BbeGSwi6kmtSJyVwv0G2DiKyvFjlKld3DcKyQkRJjdzFIDFEGT9jWm5zwhn3QGb84eW4yu
-	EGEADB9IQir+6bq6FH06jcBkayGyyHVY8Aar+0yb3b/AWNqE4+eTBlLe3jtx4sOoRpeTSc
-	2cDRqcos+aIBC1SqO2tNxD3jI945Tac=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6FC84186F;
-	Thu, 16 Jul 2026 11:31:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECA71F00A3A;
-	Thu, 16 Jul 2026 11:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784201503;
-	bh=ZhTPrG3YQEfBVn0yyzrLN6C3o96SAGlfQ2/4r1lWCWQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CU8PyQnpbvCRE3vUmMHtzieTpGX2UBTMwb0mi88LgLxkSs8B/ksftCcM5iz3NUd7A
-	 fb8sHvnwCl7Rr4+CQEHwLGQjWOD3HXM5jPd5Cc8rCwwABcs8eQ+BKe0BjntQ/EVekx
-	 dCYd2NVN2TxTIh+bleHc9Mrq3zRtYkVxaE0UqGfb4CkNFltxw8JAppM9iqDmYpCTt0
-	 gr4x6uAHVmNLV4MlaNFHizKmi/tvmxJdDgxQqcFCa06FzxAgCNdY51pKLaGwJPAlOY
-	 1KPwHyfp5KJywmQSfRSQ0QHUlhb6Srefcz+e9NxqkaeYr/Q75MW2N2bjgJnsxF9rfo
-	 ndpfdliuZ0loQ==
-Date: Thu, 16 Jul 2026 12:31:35 +0100
-From: Will Deacon <will@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>,
-	Toshi Kani <toshi.kani@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	abarnas@google.com
-Subject: Re: [PATCH mm-hotfixes v3 2/4] x86/mm/pat: acquire mmap lock on page
- table free to avoid ptdump UAF
-Message-ID: <aljBF-am7dqqG8Gd@willie-the-truck>
-References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
- <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
- <alemS7vxeRB7NcBO@willie-the-truck>
- <alesCtwXdIqH6bOP@kernel.org>
- <178419641178.59347.17339330762419756196.b4-reply@b4>
+	t=1784205772;
+	b=5B4gYtoA2Sl5lbAmvQOBIi/RLoCe4cMb7ZCjx89ML43/4Yu6ItqiEDmUqHV2xf/XLRHcQY
+	yhgq9lkAhCFRp7wiJT1hh0yda6edWrLYPKO5ZXAmapJfwjzpT5OkSUssxiKbsIWwb86y67
+	3aZWMjKg1f1oubo+hZ6oRXFAU51dNlk=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9e7391839cso2949572a12.0
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:42:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1784205771; x=1784810571; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
+        b=GzYocpH+u5Blp3Ju38cAwqd2SV2BC2HHEfE6dFKGOkzAF7KkPUgKQHP5Nn/dHNVyza
+         33CgSS276uac4n1l5w1G6PkCw3wuoTxmdkp9Aq55XgdhqwZ4X29GB9rs97n6Je/4OW07
+         Q+C7g7kSx87mOw9rv7e4BnX4dB6FONA/cC6wDAmlDbJz3ZDZsADdwb8P7m0XGtVx0wF6
+         qrFcvdsu9pniOg9p3CcB07wxsGMfLiJsmSKeqXgTks159F3AqB5HwSsQzvMV2h5CcwT0
+         1DLX6VZPatzF0nhLWO9S26YMEdFJq0S1ydD2D5PHVnnP/8P5hIBlOumW4OgqizaraqPd
+         x3sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784205771; x=1784810571;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
+        b=Jfsn6zR1Yd69I3tByZiuvQ5goGoUAPuKpgUndtFISo6w36+cPmrH2mq8H9w2YCY66F
+         8vaoyOHWTXEt9k57zXqjs/m6KDpLwcZ+lZQo1CfWrVXiQganpqHybK0y0RQlo44cE30n
+         AINtmt9X9jPudSIJz4CXajZxFpPK/sAByPPa3aU8FVvzYGp4uhJDoA4ut//AgpK7VzJC
+         tR3uFQxkZ9pm2d4f7jV+8Gt+3lxnjvfsS/tUzxG8kB0aKM0R0YpoFoh538qYgHHax8IZ
+         6CT8Utf+tT7N6TF8suf6tQ3YlfjdW+jwnZplqCxREdegfP9ctr2eP8fZlq0zU3CciSnv
+         v4kw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro7p6PvEZ2fDSdIwUoMNWQddR3ePu1ffV/PV0uPvTl4TNBMyCE61iSFD7cfBVfNlY+OP4gOZZznFg==@kvack.org
+X-Gm-Message-State: AOJu0YyTCVHj7ofqp+UBQFyernIufrGG7ABROgFQR7H/Hi88Za2NeWhb
+	RtWo8YGOYVc4NkU97rOqN4Ewcz7F46elffAsPPJ1yjeSowG8P6rfIX6o1VW7tDJqAGw=
+X-Gm-Gg: AfdE7cnDDuFLufMRqye+SRbccm0a3DfzstZjNvPpeRWEyizlANlL8c485Ld5Sd9Nc6n
+	XkSgvSf1KHbJZuuHMGkZUdyuFMPIX1v4KAwO+G0PLU7dp9tJFLHGYL3V6l6WgPTGd6501jIm6Mb
+	kmOtjUfkazPjBKIW0C3bltw9ESW+OTonAje4glizkYybBffjj012fnKF08PFd1LtM9E6Beb75ux
+	tlQQzSXjeL0RQXd6Mb6/5ZtJ4V8ykaMmsUoYI5hRSYgmQMBzbAvlXJ+4V0cbRcJjm0HzJ0DA9YY
+	z1qlK1fXvmZS9LmDV/sT2W6ezjt89I+x9d0fGWVsjqhs8YA/LhrxpUJhjWc04+tDaNwdi9wFoGS
+	EsrCdS8mO481T8b5kRE1UKeyeqWsJbikZcUUT6J8OsYP7+hZv4QrBeyPX4fnzahAKDo4lsmVUqr
+	Qi94hmJTmTo8tPKbMMRDMZTizZbm1tnbybwA==
+X-Received: by 2002:a05:6a21:10b:b0:3bf:b1d3:393e with SMTP id adf61e73a8af0-3c110009b76mr25226010637.2.1784205770620;
+        Thu, 16 Jul 2026 05:42:50 -0700 (PDT)
+Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.42.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 16 Jul 2026 05:42:50 -0700 (PDT)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: linux-riscv@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-efi@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	Yunhui Cui <cuiyunhui@bytedance.com>
+Subject: [PATCH v2 01/15] riscv: introduce raw PTE helpers
+Date: Thu, 16 Jul 2026 20:41:36 +0800
+Message-Id: <2bde82cde4c262d35663d386e8a16455c76ec3e6.1784201104.git.cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
+References: <cover.1784201104.git.cuiyunhui@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178419641178.59347.17339330762419756196.b4-reply@b4>
-X-Stat-Signature: pojfeeyaub69yn3jcff4j7hwcn8xqpqz
-X-Rspamd-Queue-Id: BDF44140014
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: q1iyc5g99schhkwuxk4hkfb5qtnoghis
+X-Rspamd-Queue-Id: 3AF89180004
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1784201504-330380
-X-HE-Meta: U2FsdGVkX19hMJoQikiLVMp5ewJK5WbO9wuL39zAzTO0dp4KnO5fNyRLZufbsEJgSbDkR74GS2qwjcb3GBjYmTubJP5vxuSlDjKjQONa5CP6qTZI3UN58COHYrHQpQb1pArd5fJM22h1YRsMPDy4/MID9FiLUku/9rFV5XUnXI/iXHWXwXI0Hx+4lPvjoxW+ByjX/tXsO9riv+GRw3jmgkC2i7ULqfL/AevbYJIKv9p8cTQUeVa22TMzFlnyFoVNHHL372+IJ5qbZbb5Pm/zoz/s4G1jhiJ5NzE0yOHHVuVX9FMQONdk/ZYIvQ8qkoDcA+h4gy9nhCCrAd6hvh38NdNUbSy6MpUBJNzcfpbNH14e8hx1FZqO72SFrFdbemPmoDDRP2AwoNyYz65WzKEbhbZb/zpJXUqDZeqfJt6+H21sNit31uBJAAZDhHa3/iW8B5Nu57QqNIRf613Iok0wysIP2B/Y71nNjuPMik09nvYN292fZrsK07BQO683nzkwC3wgYSkm62bWMSXG2lv+Otg34aeuVvs1hYeqVc78JFl22mCC9IzHHYRXSaiaONQkzaepN8m96LRgB+uLILTTXonKCoH5fVaUAQmhEJmBrMYYAS3Xe9Op94VDzq9N8UnNR+2S3xXW++wspSD7j7VKmKB+dzdzZyNWwy+M2T47O74QTErLlBMgyNsecJcawSaUEkAo6o+h05Rs+0RdtLwl+tO2S9i/pT80GGbDrrm9KqZJAJb8I8Avx2eeZLo0RdBSZrLMpcWuM/o0PEhDP5bPGNP13Ob86KZOLUNkUGBK6/sK97yg+oR6tElvLD2XlxyItA4hLHmKyoBOkqN3GTBqqCZZ3m0x5SECG5+0iNd9J8Vw6IBwy/ZD25kUKG97o8v9Y41X6CkDDzOblehXSOHFBDTaR34BbLd65CGCwYmwL0DJ8DXoaIdp9OtTmmLbAs6tdq+5Nb0GZ1MHHYVLqt3
- AyPntZA3
- sxX/v1CGcdnINqRpv82K7Gvxu8edpE++Z30y/g0biyqAuxuCcpCYasugGH+bDM1w0c+hrJYcmPiha8U3LtkLxtemdQ4oQkihL8SsGQE9qDIAuwiNJwO4EWTekqKjqigT8mQJpbSWidKVlgnGPWpNOwjdfbyCGL2YksPdIbqfvkit8X0f606xZ0VoXcLfBOCe1FJT8oKvtD0xkeOQg4vVhfQR0wA1HKUoCEyk5j70atPj660dpkuQFQfDmLSNR2u/A51SOzFjIumHAwEoEw2RtmwbUqOrqGyuKme0dpC2IVwg639DReLbverkC2tXP/RcnMnS1TYBrHCEkDHoPiomFZYygag==
+X-HE-Tag: 1784205772-411369
+X-HE-Meta: U2FsdGVkX18LeIG1Eu041nZIrqKQtZQ2VgEA3AmhTJz++dti2as9olf8EUe0Vo9gEmbqCBxyTAgWwarpGgMsbYpzKxDeUpGOWlqes+F0rrs8v4CqzyGfYn8Njnou0BZrsVl8DHMLaRa2FmRp+fgtMZcduU5oQYHLDcVSVml5Zr74Ab9n4P3e2QWfqFQpKskoVBTUtuYJSvK2IPuV94YP+wdUTdgXoT57Ej2luQzHXCfAaiu7LsRhJ134Hmkgaz+zTYbh85K5zZ3/9nuTrnGV9bmCfphX+k0ijfnHZsQasXgajWugiWH2qiMhlO2oDSe/1aGp/QKFI0azfX4HSQI4+mmO7GfwziIDmj7B5KLzLh8x3HHT6q7bwvsiFwwk7cSKcpyrhG69uEac14MVGDfXzn141pzL9H+Pu0q8sBKSJ1Ydma8eW5+9mA8or8ldHTkQ/zE6nc1sNdQ11/1cpmpSdqlACqHePc59krlRaLDKpDWTQYDZ2JNkdQjHrdmfPSnmD1OfzGaO4/CYaMdJHpXyqoq9T3XiiWshWfEDBxMAbi/wpaXa3O352ZGSR8YzWRbYJn76yGR2md7zQQvBZ12HJLj+WLUlvR6f6/3eJvZSKYZ6kFTAb+A5uC3Q91FtsYkv80owHbCsIkEPh6NrXxgcUsn/+17Ds/S9JivGlbWSG+qjvX5Tr7ki+9CwWsNjtPTVQh9MrMSQrL496qCKYgZkSI266+ygl8RorjFYXcy1M/cbb3uZOp7LLVFG9tposkn2yH5drb9io2Fqec/JrscMYGfx0jBEsdwmzXRKP3n12UZikhJwsztFELGkKjXOyidTnhmWk2f/TXmrMkqsuya/sNzqp8RtTl6cxFNTBbg3v4v5RjmycDxDpDYZvtLcrtjtlIUPt/zyxE07IYUNVgPWL4Sa6nF1J2pf7wyd+PmAl+Z1a/uzCWFH5AzPEgKnmRvYGSVSJBd4PWFazYc0HXI
+ 2zXDbAov
+ wy3V7FT3ehm/fb9gDMrOKDmB5FSjcIUVWwf1/gVL3vvbyD1yPAw38ZA7qAJKAakaUEfup63EiRNK3ObDLver40jv6gmsIxrtyWrqwN4Z0PBhdwZ6V58mWYc+dgJmRZoP1wyGm4ggvwpXnUq3VbSb91ONfUnw2KMAVcqj2qwEnWE3YYFB8lxbuPj1Ua1pW+XOb+lil6CbW1byhPqMeExIRJRcWTtp9PhmWEmIvSEzLdc08tDdT5kVkHSNc5llD7OBrhRgVGprU6ivVYLX9PQaVA4mOSYsYka926WgAVeHWTHie3bQlhWRHUmFnZdY9rxlm8330bS3CrCW42c2ZMLNJK2caGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,94 +125,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 11:06:51AM +0100, Lorenzo Stoakes (ARM) wrote:
-> On 2026-07-15 18:49 +0300, Mike Rapoport wrote:
-> > On Wed, Jul 15, 2026 at 04:24:59PM +0100, Will Deacon wrote:
-> > > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > > > index d023a40a1e03..4c4b8244502f 100644
-> > > > --- a/arch/x86/mm/pat/set_memory.c
-> > > > +++ b/arch/x86/mm/pat/set_memory.c
-> > > > @@ -22,6 +22,7 @@
-> > > >  #include <linux/cc_platform.h>
-> > > >  #include <linux/set_memory.h>
-> > > >  #include <linux/memregion.h>
-> > > > +#include <linux/cleanup.h>
-> > > >
-> > > >  #include <asm/e820/api.h>
-> > > >  #include <asm/processor.h>
-> > > > @@ -436,9 +437,16 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
-> > > >
-> > > >  	flush_tlb_all();
-> > > >
-> > > > -	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
-> > > > -		list_del(&ptdesc->pt_list);
-> > > > -		pagetable_free(ptdesc);
-> > > > +	/*
-> > > > +	 * ptdump might read these page tables, so avoid a use-after-free by
-> > > > +	 * acquiring the mmap read lock on init_mm (ptdump acquires the mmap
-> > > > +	 * write lock).
-> > > > +	 */
-> > > > +	scoped_guard(mmap_read_lock, &init_mm) {
-> > > > +		list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
-> > > > +			list_del(&ptdesc->pt_list);
-> > > > +			pagetable_free(ptdesc);
-> > > > +		}
-> > >
-> > > As I understand it, the argument for taking the read lock is that we're
-> > > operating on a region that we "wholly own" and therefore we can happily
-> > > run concurrently with CPUs walking distinct parts of the page-table.
-> > > However, from what I can tell, the CPA collapse logic will operate on
-> > > regions outside of the address range being manipulated by its caller
-> > > because it rounds up to the PMD size.
-> > >
-> > > As a made-up example, imagine I have a 2MiB aligned region where the
-> > > first 1MiB is read-only and the second 1MiB is in the default r/w state.
-> > > If one CPU calls set_memory_rw() on the first 1MiB while another CPU is
-> > > walking the second 1MiB (via some other API that doesn't take cpa_lock),
-> > > it looks to me like the first CPU can collapse the page-table and free
-> > > the unused pages under the feet of the other CPU. What prevents that
-> > > from happening?
-> >
-> > Nothing, and there's a patch to fix that that synchronizes
-> > cpa_collapse_large_pages() using cpa_lock:
-> >
-> > https://lore.kernel.org/all/20260626163213.2284080-1-den@openvz.org
+Svnapot needs RISC-V to distinguish between two PTE views: the raw encoded
+entries used by architecture code, and the logical per-page PTE view that
+will later be exposed to generic MM paths.
 
-Hmm, but that relies on all concurrent walkers taking cpa_lock, no? Surely
-that's not generally the case.
+Split the low-level RISC-V PTE operations from the public helpers so the
+raw helpers can keep operating on the hardware encoding, while follow-up
+changes build the Svnapot-aware public view on top.
 
-> Thanks Mike!
-> 
-> >
-> > This still won't be enough to sync with ptdump though.
-> 
-> Yeah, so this patch is still necessary.
-> 
-> But that patch conflicts with this one as it holds a spin lock over the page
-> table freeing, which prevents taking an rwsem... :/
-> 
-> Anyway I think this one is still fine as it seems there's not a consensus over
-> there as there was discussion about just removing the locking anyway ([0])?
-> 
-> So can kick that can down the road and just get these ptdump bugs fixed :)
-> 
-> >
-> > > If all concurrent walkers have interrupts disabled, I guess the TLB
-> > > invalidation logic would do it, but it would be good to call this out in
-> > > the commit message because it's not clear to me why the read_lock is
-> > > sufficient for the collapsing case.
-> 
-> Yeah, so this patch is _only_ fixing the ptdump case. Any existing bug must be
-> addressed separately.
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+---
+ arch/riscv/include/asm/pgtable.h | 129 +++++++++++++++++++++++++++----
+ 1 file changed, 114 insertions(+), 15 deletions(-)
 
-Up to you folks, but if you took the write lock during collapse wouldn't
-that fix it for all concurrent walkers and we wouldn't need another patch?
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index a810655ce8f9b..8ca5da9534967 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -9,6 +9,7 @@
+ #include <linux/mmzone.h>
+ #include <linux/sizes.h>
+ 
++#include <asm/cmpxchg.h>
+ #include <asm/pgtable-bits.h>
+ 
+ #ifndef CONFIG_MMU
+@@ -628,11 +629,13 @@ static inline int pte_same(pte_t pte_a, pte_t pte_b)
+  * a page table are directly modified.  Thus, the following hook is
+  * made available.
+  */
+-static inline void set_pte(pte_t *ptep, pte_t pteval)
++static inline void __set_pte(pte_t *ptep, pte_t pteval)
+ {
+ 	WRITE_ONCE(*ptep, pteval);
+ }
+ 
++#define __set_pte __set_pte
++
+ void flush_icache_pte(struct mm_struct *mm, pte_t pte);
+ 
+ static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
+@@ -640,13 +643,13 @@ static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
+ 	if (pte_present(pteval) && pte_exec(pteval))
+ 		flush_icache_pte(mm, pteval);
+ 
+-	set_pte(ptep, pteval);
++	__set_pte(ptep, pteval);
+ }
+ 
+ #define PFN_PTE_SHIFT		_PAGE_PFN_SHIFT
+ 
+-static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+-		pte_t *ptep, pte_t pteval, unsigned int nr)
++static inline void __set_ptes(struct mm_struct *mm, unsigned long addr,
++			      pte_t *ptep, pte_t pteval, unsigned int nr)
+ {
+ 	page_table_check_ptes_set(mm, addr, ptep, pteval, nr);
+ 
+@@ -658,24 +661,85 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		pte_val(pteval) += 1 << _PAGE_PFN_SHIFT;
+ 	}
+ }
+-#define set_ptes set_ptes
+ 
+-static inline void pte_clear(struct mm_struct *mm,
+-	unsigned long addr, pte_t *ptep)
++#define __set_ptes __set_ptes
++
++static inline void __pte_clear(struct mm_struct *mm,
++			       unsigned long addr, pte_t *ptep)
+ {
+ 	__set_pte_at(mm, ptep, __pte(0));
+ }
+ 
++#define __pte_clear __pte_clear
++
++#define __ptep_get __ptep_get
++static inline pte_t __ptep_get(pte_t *ptep)
++{
++	return READ_ONCE(*ptep);
++}
++
++#define __ptep_get_lockless __ptep_get_lockless
++static inline pte_t __ptep_get_lockless(pte_t *ptep)
++{
++	return __ptep_get(ptep);
++}
++
++static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
++					   unsigned long addr, pte_t *ptep,
++					   pte_t pte, cydp_t flags)
++{
++	pte_t old_pte;
++
++	do {
++		old_pte = pte;
++
++		if (flags & CYDP_CLEAR_YOUNG)
++			pte = pte_mkold(pte);
++		if (flags & CYDP_CLEAR_DIRTY)
++			pte = pte_mkclean(pte);
++
++		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
++					       pte_val(old_pte),
++					       pte_val(pte));
++	} while (pte_val(pte) != pte_val(old_pte));
++}
++
++static inline void __clear_young_dirty_ptes(struct vm_area_struct *vma,
++					    unsigned long addr, pte_t *ptep,
++					    unsigned int nr, cydp_t flags)
++{
++	pte_t pte;
++
++	for (;;) {
++		pte = __ptep_get(ptep);
++
++		if (flags == (CYDP_CLEAR_YOUNG | CYDP_CLEAR_DIRTY))
++			__set_pte(ptep, pte_mkclean(pte_mkold(pte)));
++		else
++			__clear_young_dirty_pte(vma, addr, ptep, pte, flags);
++
++		if (--nr == 0)
++			break;
++		ptep++;
++		addr += PAGE_SIZE;
++	}
++}
++
+ #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS	/* defined in mm/pgtable.c */
+ extern int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+ 				 pte_t *ptep, pte_t entry, int dirty);
++int __ptep_set_access_flags(struct vm_area_struct *vma,
++			    unsigned long address, pte_t *ptep,
++			    pte_t entry, int dirty);
+ #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG	/* defined in mm/pgtable.c */
+ bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+-		unsigned long address, pte_t *ptep);
++			       unsigned long address, pte_t *ptep);
++bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
++				 unsigned long address, pte_t *ptep);
+ 
+ #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+-static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+-				       unsigned long address, pte_t *ptep)
++static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
++					 unsigned long address, pte_t *ptep)
+ {
+ #ifdef CONFIG_SMP
+ 	pte_t pte = __pte(xchg(&ptep->pte, 0));
+@@ -690,9 +754,24 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+ 	return pte;
+ }
+ 
++#define __ptep_get_and_clear __ptep_get_and_clear
++
++static inline pte_t __ptep_clear_flush(struct vm_area_struct *vma,
++				       unsigned long address, pte_t *ptep)
++{
++	pte_t pte = __ptep_get_and_clear(vma->vm_mm, address, ptep);
++
++	if (pte_accessible(vma->vm_mm, pte))
++		flush_tlb_page(vma, address);
++
++	return pte;
++}
++
++#define __ptep_clear_flush __ptep_clear_flush
++
+ #define __HAVE_ARCH_PTEP_SET_WRPROTECT
+-static inline void ptep_set_wrprotect(struct mm_struct *mm,
+-				      unsigned long address, pte_t *ptep)
++static inline void __ptep_set_wrprotect(struct mm_struct *mm,
++					unsigned long address, pte_t *ptep)
+ {
+ 	pte_t read_pte = READ_ONCE(*ptep);
+ 	/*
+@@ -705,9 +784,11 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm,
+ 			((pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) | _PAGE_READ));
+ }
+ 
++#define __ptep_set_wrprotect __ptep_set_wrprotect
++
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+-static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
+-		unsigned long address, pte_t *ptep)
++static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
++					    unsigned long address, pte_t *ptep)
+ {
+ 	/*
+ 	 * This comment is borrowed from x86, but applies equally to RISC-V:
+@@ -724,9 +805,27 @@ static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
+ 	 * shouldn't really matter because there's no real memory
+ 	 * pressure for swapout to react to. ]
+ 	 */
+-	return ptep_test_and_clear_young(vma, address, ptep);
++	return __ptep_test_and_clear_young(vma, address, ptep);
+ }
+ 
++#define __ptep_clear_flush_young __ptep_clear_flush_young
++
++#define ptep_get __ptep_get
++#define ptep_get_lockless __ptep_get_lockless
++#define set_pte __set_pte
++#define set_ptes __set_ptes
++
++static inline void pte_clear(struct mm_struct *mm,
++			     unsigned long addr, pte_t *ptep)
++{
++	__pte_clear(mm, addr, ptep);
++}
++
++#define ptep_get_and_clear __ptep_get_and_clear
++#define clear_young_dirty_ptes __clear_young_dirty_ptes
++#define ptep_set_wrprotect __ptep_set_wrprotect
++#define ptep_clear_flush_young __ptep_clear_flush_young
++
+ #define pgprot_nx pgprot_nx
+ static inline pgprot_t pgprot_nx(pgprot_t _prot)
+ {
+-- 
+2.39.5
 
-I would argue that using the read lock here directly contradicts the
-rationale for why this is safe, because this is an occurence of code
-that operates on a range that it doesn't wholly own. It seems bizarre
-to me to go to the effort of adding locking, but then not adding
-sufficient locking for all concurrent walkers.
-
-Will
 
