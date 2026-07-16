@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D67CEC4451A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE6A8C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B0D26B0098; Thu, 16 Jul 2026 10:47:50 -0400 (EDT)
+	id 35EB86B0096; Thu, 16 Jul 2026 10:47:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139F76B0096; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
+	id 29BD66B009E; Thu, 16 Jul 2026 10:47:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6F3F6B009E; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
+	id 029836B0099; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 83D836B0099
+	by kanga.kvack.org (Postfix) with ESMTP id 82EB96B0096
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C4AA1201C8
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:39:15 +0000 (UTC)
-X-FDA: 84994897470.10.23F0BF9
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1851C1201D3
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:41:57 +0000 (UTC)
+X-FDA: 84994904274.08.E1E5D17
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 787DA40009
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:39:13 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=XNl61S6r;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 39B6520002
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:41:55 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=ZBwgMILz;
+	spf=pass (imf31.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
 	dmarc=pass (policy=none) header.from=linux.beauty;
-	spf=pass (imf12.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784212915;
+	b=3pW0ERuJpo6cKf+yq8hBpSGQ7FON2+Dv6sj0QkjzIHCCfJcizHbJCEIv1zcqGYqyo7+Y8f
+	+isy2vYPwXOSUGZ5ZBW5O/H8+b1L8hefll2E/+AEy0e/MgNSQ5lwVfuNX7z7seZEcdqvPy
+	OTMchj+e0XpvU8a62F5J3VMfQwxu6Q8=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=ZBwgMILz;
+	spf=pass (imf31.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty;
 	arc=pass ("zohomail.com:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212753;
+	s=arc-20220608; t=1784212915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cw1rlTuFfFp7SknXN1+aFGRpA9XFW1cANtJlt4dCukU=;
-	b=1DXZm9GcWBEBxaiygZvvPoG39paNFVsao1obdgdg2FMoTa7mTb/dXnpS3WB5qy3ZsgP8x6
-	BFHoMbivpoDqsAjvoqYh2fdqiwK6QtE++j2xeCHf5T8et+NPaq7BwaSJ378EPjcrgN1SZ0
-	z6AHBfrzEAeHfy+o3styRM6daKu2YdQ=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=XNl61S6r;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	spf=pass (imf12.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212753;
-	b=5+AowHxFx3ETaLop5nHELeoDOMmwF9b6HtRcKTrYra0faRWpBdbKKnfWjFHN+d0qCfoE73
-	z1RfvXGLX4EIEbczQ3r6A1TzkJKoYiFfOjavBl4UzWW8Rx+eq9kXhhX56M6aJcJ1wuDQG8
-	2Btf7EsG6jENcrGAEIzuCf4KASOX/J4=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212452; cv=none; 
+	bh=yoK4SvsjwMeieg8o4bmFNUXZwhKfXanw0pGvrr4f5Qw=;
+	b=A0E7+I1leibkeh2osvLYccxTCgVgDaPsyLaileTEq5rpgb4nusgy1G/VfsT0JbkgyyvaBo
+	yy1ngrJOBqLsEW2jx2lOwQ4MYicepUTN7E3bogxUFR5xoLYtrIjNVufDT8PK726a9RXhYy
+	+elC4RlaHgPa7I6ctLk0N+M1Q4vrPzk=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212501; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=hy5rDNBZast0eykBaCv6ufiedcfgKRjR6aygvTFCz9TLz+7Ex+FiiuXoE/pX23/5DZINbhepeFFqaDX0bTciMNF6kgyMzXJ2rxo79QmKi6mZoAeFbwyWPEKUiesziMmE9V4zMMQoHdimz8mGwPppX7sfJ/I+RUZauyKckPdC3vI=
+	b=nu1K5fhyZ84BrranuLaPmdTdPYfLMNoVfqxjZVOEDlsCLoSILd2b6p7FBWjyRMnnVxAVgiJMzqzjUrTsQrI6EqbwTfOeRmduFAdjnEued9yZ2rGfJk7hPvsaoGRa/UuY1BimEwsnamw98SnbNQiobm9Po4lupS0jq89f03LAQe8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212452; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Cw1rlTuFfFp7SknXN1+aFGRpA9XFW1cANtJlt4dCukU=; 
-	b=n3i/Q8R4YmNAYHsFnpboyZz1ATCWLh+wgymzuF0CEIN6OSt258N/S8SssncUoaMCKr4iwDtCYIzxpLAJi4rjawMfUxN+AUw6OilC1CAS2erp62FSZiWLuxNmlhp8PH3MEe7nbW7kQ/G1+AQHDkvMjXaFVlTdMn0+8JXsAdx3I/0=
+	t=1784212501; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yoK4SvsjwMeieg8o4bmFNUXZwhKfXanw0pGvrr4f5Qw=; 
+	b=dk0WC6SoV2kLryLQGqSjCHYc8x6pN2bpOBCDJHFH6Q0InYDdkEaSk1/lUH2u+3sVqvUVQwdo+f/GAgBMzrKMomp9eFCbwncjZSFVkW8eFmEmkDPwV/Hs7H1/viELmAdpJ56cpzfY1Gq0GpNhGsK6kN6E15lmf7cVQX6ZkAXRkL8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212452;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212501;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=Cw1rlTuFfFp7SknXN1+aFGRpA9XFW1cANtJlt4dCukU=;
-	b=XNl61S6rk5rPBadEXOlRistorXRQ0OvlSyV1M08qb4pTY/UKcLfDPAu54kD5xlB0
-	QXZxQZIQvg8WNBdNoNvXg4Ti4Nd92jFkLHa3EKrfowi1Fth/KzX8rRDKIPaq6r8Dvpk
-	0meql2eoflsNpcBn/2EqTkKAUWhgQocgDFQ0Vr2U=
-Received: by mx.zohomail.com with SMTPS id 1784212448529805.8984322688145;
-	Thu, 16 Jul 2026 07:34:08 -0700 (PDT)
+	bh=yoK4SvsjwMeieg8o4bmFNUXZwhKfXanw0pGvrr4f5Qw=;
+	b=ZBwgMILzjl5G63fDstUVtBkp8heqJiXzCOdKrgW63x/RQYv5US6IasXIoEcZHpxU
+	UPtlNvrG5JJnrivIKEk7WsN4l4hqRGZ++4P4YPYiNBrOSnLBYa0lduxMelHrc3Bb3Y/
+	a0m+7YUDJ7Y1F2iEvrXAhAhENxqtJTcGgc7rSWcM=
+Received: by mx.zohomail.com with SMTPS id 1784212497833640.4955217561878;
+	Thu, 16 Jul 2026 07:34:57 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,23 +99,23 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 12/24] fork: let kernel callers create embryonic tasks
-Date: Thu, 16 Jul 2026 22:31:38 +0800
-Message-ID: <538e494dd8fcc677da24ec985c6e90dde554e7f3.1784204592.git.me@linux.beauty>
+Subject: [RFC PATCH 17/24] pidfd: audit child spawn execution
+Date: Thu, 16 Jul 2026 22:31:43 +0800
+Message-ID: <f12dd4088017f2718bcaf4b2796426f16ba486cd.1784204592.git.me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1784204592.git.me@linux.beauty>
 References: <cover.1784204592.git.me@linux.beauty>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Stat-Signature: cgojmxq87zsbeu7m6hrur9f8mir7uia5
-X-Rspamd-Queue-Id: 787DA40009
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784212753-299406
-X-HE-Meta: U2FsdGVkX18Rb0uOseq5uK3idzogigbdeqTB9be70vRtbPXcJGyrrtw12aANX//HRPhZ+wqs0NbJfCJcNwa6Bl0RSH1AYdxVErXx/r3uNDz4NFs+9q2nvrRo57gP8r8BZ+I9rq+L/t+9WM5xUgNwAWVraviklqIXzdzZOD4FrjnE7/vxVk2j2M9SVgwXKilvfJfL/eV1BQ+Kv5V8d8YMAcixXVH06tRLtkcUxxxyCNPjiVAm0KyzVW0u4gr0a2NBBB+/XAuN3kUbR2vPwICn2TVk+ISQdeT8OGI+pTfCBZ2E3ceNjdL7SsCTOgnvrNz8tlTW+XbOYdWa1IK0O/fpJjMUQB2TOQZE/Hyjs/wK5xrlZgNmUIZv8X/6YMgbY+Na2WZqPR+JqEcEzt6zb6LnRMdfcRxxVlMZUY+w6CHmfiyhIRaK2ECvGR9Emv3ioWBGqrJlcKOV5wyfNd8AvRaXZScxmUhHRFsK6ObCNh7+HDXIYbfxwFi1VS3FhK7JbVqPBaZutZDncI+X4+6ScHMdoxCJ63zLfKXt+aSYs/DxcMW0ynx8a9KKE6M+ncBHFavSb2mN14qBSZGtA9dJTSCekHe4rOpTqMptHpwMakVVgx+LABbYYiZy6jB8hUMXjajBOZ1Yx8X/O1iDlmtiIXjpsy0PbXZXek2/HJZctqmpDVJvi4Vnq0QXCTyNp42LkjHjgq8RYQbmGsftToarfVaHJ9GfdeVe5XT2NZKpBa6rgsBFASUpNG1zmW3m2IymIR1TeE4HabicRYhLXu5yFRGOJ4n8BcnAkf/dJLExwA8UeBC/LkLeL/oAizUGlFOg5LX+cYL6zVm3pMwj+9P8vMWAHnhOLvVtCBfxd+nh8floKRwzy8DKBhdvBXIKCMd1hNx3ftrwP+ktaH3bKf+MjP2B8WrD8WjA3ob/uae7LcMPu2r182sebZGTHCA+pxnASRJOFW+jQI3nE9lfdhnGKxG
- kwiwe5JA
- k4EVxVZXDCwFIh8xbYkCK6ID2jd13n1DfYqOAgEBnm/7/oNzK/H0fkLMgGyLnppTHxvJS8WIQIN25KIZatnffvklYuEHFygD3JTzMY2azDYMgWrCnVBnaVXDKRSUEUUfCc+FjS+KUlE4UywQceYMnk2SI9AZh5nrSQqHB+EEuOmSz+dD1OXogBBGGZsnlxWk2m0pygEULPAMZBWzLp2hPLh/k+Pl4gK5lSXgS+4AXIIP6mcL4XgfGoUYIX0kiL7Cyzg+CU0yyILomPGtwY2cPv89XOfrkEIdCRxzspkLw3gr6aRwxWT9j/0mLPZKu8OC4Vb7TxrJmKVxKk4AbFPw3ezn9IBLN8Y0MrKMeDRCpm7GV4KKIRF0JfOnYGMKEQp0GsPI7rRfqTjSfNw+eB2qDk+fhEZ1EpZrF2fvcJTlVzX3Shi9CWl7Z+8roZBCGxKvl8vIF2ufIgjFF/2DAtmkOoDp8deieT/UrEsQCwGw9udXKne4l9MotOjUD6Q==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 39B6520002
+X-Stat-Signature: 7ztxugxcnkbfabugorez7mbg4dcdmzwx
+X-HE-Tag: 1784212915-964606
+X-HE-Meta: U2FsdGVkX1/k6nTU8WmrV8rW4gLmrn6J4h98tDbuYVVXaxb1b1V+EK8ILsM7+7ogjIRkypZjlPIebpp+cdjoPpG9/oQvDz4W6YKLQHEwzfm8aAt6zrgfvWsZ012JouWKFDI50rXANANJGUsdwO0zQ+rNuXSRRtFwatuftxAqe99HNbfnZMHTFxqs8aVMYF7Od5qkMSIbU5s7n7nWU/1VzFN6EJkersgOt5qDLGJN0B9XHULcz3gx72ZUuB7l2Dpk6wQ2shKG53oLid/yctFhhOSA3X51jbQD9fh5b2eop5lhCcKzSQSG4MZE8qiUgeWBO2vLg66LoKIyPbqY3WQ3ZZhH+ewJaXgIBUghRUjMf0j0gY+VaLJmVGCTouodDOvOIi0NtI9F0dkiHQmcjPMCEEVOzA4niUl3lmgGiVx45O7ip0Tvt6s2fmBEHWAMflUBPElUPvEWhyiOKmFg2So2f2BAJ2RRWTTyhFDFf/G/GHGR0YFwlAg+7YfUYrXLQxY+6iL3MYT32PNlPOCpZ6E9X99jcNcu2nTBAG3/ct4ktIJEjnMXhIEBhWB2s1oxdt5hdRrrKXl1bv7cQL0otWOneNds0PherpVVWOvteopVnVutBBbMxX13oa5zn4cxUfzhBgX4gGPxt5S5RIQUu53wAlvrNvEJ8s+a0miFz9CGrHar3UrYCo1rNuZWk4mutiJeHGYD+tOWndbSu04hp6XNQ9YSR7WLH6uLZXyyC2L7tRjkthKsZ7XE7MpI3kwoLcXy2reXaMOAWOHThPo7GmRUo2GSidSNms3aiRcqcwcoPmWhWWhJ2XDN4ZpQTylyVa9755+Wxq33obZRDnmwsfLcYndrvP8qypaZ3ZPfRDkBcTonkirxdFhjkAkrJt+hPmHaizpxinup1kL3LnGxzWaSoa1BtyRzqtQBMdCAvKrOA7X+9K43aYJc9k9zPylW8KZWo9hrXkc+HpLabCnOcIm
+ /99g5Ld2
+ pGMauEp1QBCKcVfKRxkQAgyS/+kmTKiFUAV0IGlt9PzSQ8uUVZfNCybl7r0ZZDd02gr/RiTMAxEE7csRCeVijG6ihup+nIFHeuks0N8IBsbQFij7XKHvoywtOu3/nShg5SCQVEmaLN28kBpIlyXS/TOm4Q64AFKF4nTqDd0q2VgFAoUR8kE5qCHPEjDMEm2C+BZ5Q5f1Kz2sPbJqyn8+M67MUi5372t5veLg0LUI08olE+fcp/53zY7FxQWguzr5aVdPXVGnnq1Hzm/a7pVZcXAc4a/5ASVWP38/++L1xk73Do1qvlOsgX+77j8Cum+oFlRErI28/JDu9sESbJknSVFP4DfEJE78yS9Ye03L1+EA0AvH53HEg2kDXcxduYyLnNncTcHEYYx86DU4vXvw1aKiMXotL0qwr2YBvegFeUjrSFPKHK1oHmCkRdVtt6oU/+Oe4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,112 +123,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A kernel-created task can become visible before it has installed a new
-executable image or a valid userspace register frame. Exposing such a task
-through ptrace can disclose kernel setup state.
+The child exec path runs outside the caller's audit context. A delayed
+filename can leave a name-only record in the caller transaction, but inode
+metadata and exec arguments are otherwise lost because the new task starts
+with an unused audit context.
 
-Add a task-local embryonic flag and an internal clone argument for callers
-that need this lifecycle. Reject ptrace access until the creator clears the
-flag. Clear it with release ordering and observe it with acquire ordering.
-This orders visibility of the completed exec state with the transition.
-
-Existing fork, vfork, clone, and kernel-thread callers leave the argument
-unset and retain their current behavior.
+Start a dedicated AUDIT_PIDFD_SPAWN transaction before executable lookup so
+audit rules can observe child identity, EXECVE arguments, and inode-backed
+PATH records. Close it explicitly with the child setup result.
+Task work does not enter through a userspace syscall frame, so do not
+synthesize one.
 
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- include/linux/sched.h      | 21 +++++++++++++++++++++
- include/linux/sched/task.h |  1 +
- kernel/fork.c              |  1 +
- kernel/ptrace.c            |  4 ++++
- 4 files changed, 27 insertions(+)
+ fs/pidfd_spawn.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 908aff695ef86..031ae92884c3c 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1863,6 +1863,7 @@ static __always_inline bool is_user_task(struct task_struct *task)
- #define PFA_SPEC_IB_DISABLE		5	/* Indirect branch speculation restricted */
- #define PFA_SPEC_IB_FORCE_DISABLE	6	/* Indirect branch speculation permanently restricted */
- #define PFA_SPEC_SSB_NOEXEC		7	/* Speculative Store Bypass clear on execve() */
-+#define PFA_EMBRYONIC_EXEC		8	/* No valid user register frame */
+diff --git a/fs/pidfd_spawn.c b/fs/pidfd_spawn.c
+index 41d5cbb49a0f7..5586926988406 100644
+--- a/fs/pidfd_spawn.c
++++ b/fs/pidfd_spawn.c
+@@ -3,6 +3,8 @@
+  * pidfd-backed process spawn builders
+  */
  
- #define TASK_PFA_TEST(name, func)					\
- 	static inline bool task_##func(struct task_struct *p)		\
-@@ -1905,6 +1906,26 @@ TASK_PFA_CLEAR(SPEC_IB_DISABLE, spec_ib_disable)
- TASK_PFA_TEST(SPEC_IB_FORCE_DISABLE, spec_ib_force_disable)
- TASK_PFA_SET(SPEC_IB_FORCE_DISABLE, spec_ib_force_disable)
- 
-+/* Clearing this bit publishes the register and security state from exec. */
-+static inline bool task_is_embryonic_exec(struct task_struct *p)
-+{
-+	return test_bit_acquire(PFA_EMBRYONIC_EXEC, &p->atomic_flags);
-+}
-+
-+/* The task is private during copy_process(), so no publication barrier. */
-+static inline void task_init_embryonic_exec(struct task_struct *p, bool set)
-+{
-+	if (set)
-+		__set_bit(PFA_EMBRYONIC_EXEC, &p->atomic_flags);
-+	else
-+		__clear_bit(PFA_EMBRYONIC_EXEC, &p->atomic_flags);
-+}
-+
-+static inline void task_clear_embryonic_exec(struct task_struct *p)
-+{
-+	clear_bit_unlock(PFA_EMBRYONIC_EXEC, &p->atomic_flags);
-+}
-+
- static inline void
- current_restore_flags(unsigned long orig_flags, unsigned long flags)
- {
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 92b4e3bc31e66..5b7facf12b33b 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -45,6 +45,7 @@ struct kernel_clone_args {
- 	void *fn_arg;
- 	struct cgroup *cgrp;
- 	struct css_set *cset;
-+	bool embryonic_exec;
- 	unsigned int kill_seq;
++#include <asm/syscall.h>
++#include <linux/audit.h>
+ #include <linux/completion.h>
+ #include <linux/cred.h>
+ #include <linux/file.h>
+@@ -81,6 +83,8 @@ struct pidfd_spawn_state {
+ 	char *staged_path;
+ 	struct user_arg_ptr argv;
+ 	struct user_arg_ptr envp;
++	unsigned long audit_args[4];
++	int audit_syscall;
+ 	int result;
+ 	enum pidfd_spawn_status status;
  };
+@@ -206,6 +210,8 @@ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
+ 	state->staged_path = NULL;
+ 	state->argv = native_arg(NULL);
+ 	state->envp = native_arg(NULL);
++	memset(state->audit_args, 0, sizeof(state->audit_args));
++	state->audit_syscall = 0;
+ 	state->result = result;
+ 	pidfd_spawn_set_status(state, PIDFD_SPAWN_SETUP_DONE);
+ 	mutex_unlock(&state->lock);
+@@ -377,6 +383,22 @@ SYSCALL_DEFINE5(pidfd_config, int, fd, unsigned int, cmd,
+ 	return ret;
+ }
  
-diff --git a/kernel/fork.c b/kernel/fork.c
-index d16405c037c2f..e3ade83b2d4e2 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2138,6 +2138,7 @@ __latent_entropy struct task_struct *copy_process(
- 	retval = copy_exec_state(clone_flags, p);
- 	if (retval)
- 		goto bad_fork_free;
-+	task_init_embryonic_exec(p, args->embryonic_exec);
- 	p->flags &= ~PF_KTHREAD;
- 	if (args->kthread)
- 		p->flags |= PF_KTHREAD;
-diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-index d041645d9d17d..36eb9b154a397 100644
---- a/kernel/ptrace.c
-+++ b/kernel/ptrace.c
-@@ -56,6 +56,8 @@ bool ptracer_access_allowed(struct task_struct *tsk)
- 	guard(rcu)();
- 	if (ptrace_parent(tsk) != current)
- 		return false;
-+	if (task_is_embryonic_exec(tsk))
-+		return false;
- 	es = task_exec_state_rcu(tsk);
- 	return READ_ONCE(es->dumpable) == TASK_DUMPABLE_OWNER ||
- 	       ptracer_capable(tsk, es->user_ns);
-@@ -312,6 +314,8 @@ static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
- 		WARN(1, "denying ptrace access check without PTRACE_MODE_*CREDS\n");
- 		return -EPERM;
++static void pidfd_spawn_save_audit_context(struct pidfd_spawn_state *state)
++{
++	struct pt_regs *regs = current_pt_regs();
++	unsigned long args[6];
++
++	syscall_get_arguments(current, regs, args);
++	state->audit_syscall = syscall_get_nr(current, regs);
++	memcpy(state->audit_args, args, sizeof(state->audit_args));
++}
++
++static void pidfd_spawn_audit_entry(struct pidfd_spawn_state *state)
++{
++	audit_pidfd_spawn_entry(state->audit_syscall, state->audit_args[0],
++				state->audit_args[1], state->audit_args[2],
++				state->audit_args[3]);
++}
+ static void pidfd_spawn_finish_child(struct pidfd_spawn_state *state,
+ 				     struct filename *filename, int result)
+ {
+@@ -391,6 +413,7 @@ static void pidfd_spawn_child(struct callback_head *work)
+ 	struct filename *filename;
+ 	int ret;
+ 
++	pidfd_spawn_audit_entry(state);
+ 	filename = complete_getname(&state->filename);
+ 	if (IS_ERR(filename))
+ 		ret = PTR_ERR(filename);
+@@ -403,9 +426,11 @@ static void pidfd_spawn_child(struct callback_head *work)
+ 
+ 	pidfd_spawn_finish_child(state, filename, ret);
+ 	if (ret) {
++		audit_pidfd_spawn_exit(0, ret);
+ 		pidfd_spawn_state_put(state);
+ 		do_group_exit(PIDFD_SPAWN_EXIT_FAILURE);
  	}
-+	if (task_is_embryonic_exec(task))
-+		return -EPERM;
++	audit_pidfd_spawn_exit(1, 0);
+ 	pidfd_spawn_state_put(state);
+ }
  
- 	/* May we inspect the given task?
- 	 * This check is used both for attaching with ptrace
+@@ -575,6 +600,7 @@ static int pidfd_spawn_start(struct file *file,
+ 		state->argv = pidfd_spawn_user_arg(kargs->argv);
+ 		state->envp = pidfd_spawn_user_arg(kargs->envp);
+ 		pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTING);
++		pidfd_spawn_save_audit_context(state);
+ 		reinit_completion(&state->done);
+ 
+ 		task = pidfd_spawn_create_task(file, state, &clone_args);
+@@ -584,6 +610,9 @@ static int pidfd_spawn_start(struct file *file,
+ 			INIT_DELAYED_FILENAME(&state->filename);
+ 			state->argv = native_arg(NULL);
+ 			state->envp = native_arg(NULL);
++			memset(state->audit_args, 0,
++			       sizeof(state->audit_args));
++			state->audit_syscall = 0;
+ 			state->result = 0;
+ 			pidfd_spawn_set_status(state,
+ 					       PIDFD_SPAWN_CONFIGURING);
 -- 
 2.52.0
 
