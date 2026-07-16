@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F191C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3D86C44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:14:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 460E36B00F1; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
+	id BB6096B015A; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39C366B0159; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
+	id B3CC36B015C; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 264E36B015A; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
+	id A7A5E6B015B; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E05706B0159
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:14:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E5BA80159
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:49:25 +0000 (UTC)
-X-FDA: 84994620690.01.D8CC690
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A79D210000F
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:49:23 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBTnCvJ9;
-	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784206163;
-	b=ELujNY0GH1reRMI/guHCItjwOqaUVE3nLKCV1TqYjNrquGPC+j46BqG2oXX6rAIop8+ibh
-	cMHfnlU/SiAG45A4Olw0kwo0MtmLyykKSYwqobpX0qu72C2USwk7vAw9rHJdaH//eiDWTz
-	BoIVtIzuZ2Xj+PAmAKymk3XC7ofupRk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBTnCvJ9;
-	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7CA946B0159
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9603580156
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:45:20 +0000 (UTC)
+X-FDA: 84994610400.20.F44BF88
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E47BE18000C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:45:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CpVTrgCI;
+	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784206163;
+	s=arc-20220608; t=1784205919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPC4/bkySYuEIDm7sSNDHaTK4nJg9WPIz/TBHjyeJK0=;
-	b=WMR4AW/e/HG18QFMLuwnmjZcz5qctB8aeBYlq310+bluH08kvMtfJTj4nFD8m7QsxGSdNy
-	lWFKLcbuwjOjEWLgU53xs93ECUZy6+IVf8FMxP5lWDplUkuE/JqHbpnXne5clug+Nkffbd
-	LxY5WWJkazovGyFjo1auoU7lX3np1hA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75DC0438DB;
-	Thu, 16 Jul 2026 12:49:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8401F000E9;
-	Thu, 16 Jul 2026 12:49:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784206162;
-	bh=hPC4/bkySYuEIDm7sSNDHaTK4nJg9WPIz/TBHjyeJK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EBTnCvJ9LBKnvWT6txkoqJfPx80j2qmCPPgtys2eexys61AqRBL/PikdcJ6hRJAu9
-	 N/7/eAlmSuk+e3pdfg1br9QTOhJW2GGB9kHXTsWQFNTHz0JCZ97PbPUW/LdJ4+wRy/
-	 +XTaRU6ByVV8cgDQ/Y8URNaE9ixhEq3zlBP78l090NnAF3jztLYymQ9AP81piPIYAS
-	 +eLW/SudvgS/2t8T899cAQ7pEdr9DwlUjvvFQEk6oEwv3wdptotD0TLRa6MM1FffAR
-	 YHD2d42XYxRErp70skW71CAatVzJVw6VUlhs8jh9r8ff+ImW/liW57cAnWmulaWueU
-	 l0WsUaQ0QduBw==
-Date: Thu, 16 Jul 2026 13:49:12 +0100
-From: Will Deacon <will@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
-	ljs@kernel.org, liam@infradead.org, riel@surriel.com,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, apopple@nvidia.com,
-	rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
-	nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
-	pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
-	jpoimboe@kernel.org, catalin.marinas@arm.com,
-	linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
-	anshuman.khandual@arm.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
- addresses
-Message-ID: <aljTSN3yGRv1OoUN@willie-the-truck>
-References: <20260703114202.365553-1-dev.jain@arm.com>
- <20260703114202.365553-2-dev.jain@arm.com>
- <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
- <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
- <4b4e8007-3747-457a-85cc-d1003e1c8fe2@kernel.org>
- <39a13445-dc6f-4a75-92b8-f4a122c63b89@arm.com>
- <7ac558fd-1081-456b-b997-c7321241cf8c@arm.com>
- <2b9d60a2-8698-46b0-80ae-b8747a66a85b@kernel.org>
+	bh=rxWBQiwgJMv8m9ergC38r1JkaLkub3PyBl4jNFNbnUk=;
+	b=vqp4aby0Aoltes32l5RV77l314Zj6MYbbb0rrHO+3RnS+1ayBmd3T1f3JKtr7/LxEdJCtF
+	Z0LZMflcPlO6bRobbJ98ENr9eRTSHyV5MjefPGIgOasCsioyT0YDA4BbnHb9e9Td3/sa2x
+	B8F+34Op8MUb6GBnbQCfmkVEL6uwoBU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CpVTrgCI;
+	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784205919;
+	b=ZMN6BvR/ss/77y1h6jjeJIhfl3y6kFEbrf3H8JIjXQNk5faT2nYGBy/mxLaNyJPOYsJ3ZB
+	S5HGXbrWNDeX9j9JXLXozCbDglwtOjXfdKHdkWIlgedyuLdcYj2CJLM3eUUunIB7sJ2klu
+	KimAqSX8oKBeeHheWpE219Y9lkAj8Xg=
+Message-ID: <1d9d6fe5-3414-43c6-9073-d4d6508ac6a8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784205914;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rxWBQiwgJMv8m9ergC38r1JkaLkub3PyBl4jNFNbnUk=;
+	b=CpVTrgCIFahzrsWip7msymPoq5jnFXWdkYRoRtrdbLC8GoAWnGzbHWJ3WweVXX0njIkjUP
+	xjfOi9cHO59ZUJ/UDi4vA4BE0NG/8pRNllmBEtTQWBwPb+PE8fj100rlMoq58PVUDSxwAE
+	KjJN4FPaDYb6vqNwGTUhb/+LHJqzB6M=
+Date: Thu, 16 Jul 2026 20:44:51 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2b9d60a2-8698-46b0-80ae-b8747a66a85b@kernel.org>
+Subject: Re: [PATCH] mm/swap: Fix swap_cluster_lock() !CONFIG_SWAP stub
+ signature mismatch
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org,
+ youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>
+References: <20260716085131.68378-1-hongfu.li@linux.dev>
+ <CAMgjq7BRSaueYLXa22Q=OvGj3w0wJKVA9+qF0+Z4MPtnjosw=w@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <CAMgjq7BRSaueYLXa22Q=OvGj3w0wJKVA9+qF0+Z4MPtnjosw=w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: e94s4mm7h1kw795do4cscpj55e9yaixs
+X-Rspamd-Queue-Id: E47BE18000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A79D210000F
-X-Stat-Signature: 6akgb4j9bs4iqfcmmyw8kkixiyqftf56
-X-HE-Tag: 1784206163-417933
-X-HE-Meta: U2FsdGVkX19Kkh78VQ3l9qqiJddphXbVhiK9RO5/r9XjvlQNtMxQHHCMMJcfvJkN9Wrke7Fp660xyW+8Q39PG09vyHUayEhcfmWX31d/cZArQ+y6vxnUGHptc5zKH7cOWJdHPCyjz8KG7R19Wm9D1QitwMhoAQInFZ2XKBhXWcTXe+Ot0gdtJEOt1/N3G4tcaVocjD5rSsREuWkosGfRH5rrZFEZls1622JsEPpPpvroepl20KZUFK94oeQmE8rH23gIzT7/NuRgj6Sjgq/5siMxKNTG90dfYFdW/F0WZ8IQFIDvQF6dbJ87C8GbiZBUvQUqGegDuQPsECeYzjIyO0Se8nEqE61QXxt12Oev4PXxGMb7y7AA5B0Tz+dAiL+NTuzvUVqvQ/bzFTIUPtK6SPSFgaU4PPwJN6yoOVhUwkA4++SZ1txlJDz+TgMIFD570TKnwEipPdRKxQTgtfF570xmcb64eisdgHlykBm6KYZnqdRZysmdnRKBQyXBCkRWAdZcAGXgUPTTKoRVzZxaklxreCXp+9Vvj4D3WfNFYcWtGPFuWKBV/nAcnjl9l7PiiiL9BNqqjHjdQCpRamsD3ITpSWrueWfNGJ9Fz/5/rXIYsywwsdR8wavuK/9CKXIgVnX8ECv0sAWIo24i/z06QB8oK4nmPf8IUGgmVTEJUKXAehT9hEnCTEPW6pwwAKRX2aD7eT9vRAguLum2sY4fAjIe4INOT8Z+AT7FPq1I0Njgkh9sH0KhT6wFerAnoIuShSZW3buuUCbZXjJffvxcynXIBDYlh8iBIhBf+OkAVb+vRcY5X/+S/v+85F/hOyzdH69HISo9AFvwlxJdmycMSHhb5dIOODEHUuLGcLT45vLMP4hOeZBchI3YwqJcrzQ1JGk8vuJAP9b9rXP9et+KliO3F/U0f+lOhGheK+1Qtfxk1sUpTLo6zL6QbHoKyj8+4ym0ry3ISDCyBP826eR
- U0yRSfvw
- wsnYVL6yadAraHKHBfhG4exjsRdzj9HHqCWSu3Xviq9rNG5DumZnj2tEwMaQAH64t573sCH6cPSNM7jRqNQcSrxl3+n/dQHSlz/Z62KLkRZHCPc/qbDVNsqy6SuHi0pIiT2oLiF/qAlf4bRDNwAgMqLD+OxTpJPBLqlvdcNqns/WsHvZ8iqvyYospsbQjyJcDoLTVc3/+VooD0KEdI5f+xr4ttSEqgKtK59hH38sB/2DlQG3aM3AiuOzBlL7jxlkKCDcKqV6plvwQd9BepDN2SeR6acJkz98pVHgaZCBGhHRFOO1QcjeXEZbO0bEGKcAosvnZKrd3dm4R3WO1w8osfVdRWRKhUvC0ocxk0TkAfmq+eYj4ajTkj22DgA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784205917-486803
+X-HE-Meta: U2FsdGVkX18VShSGwpAkIjLmDx84rp6Eo8I5ceEd1z54Dph52EFXQ2PZHzm4kY/6CHP3+NGjp4Y1JCD7mkpVPf26D/3wAxP4GbFIx8YN9D9vRtu1fElnq0fZE/SNRyRBtk4UdJQCPyM9aSO6c/do+Um2O0jVhHUWNwWFrjOZyiIZT82LmqJhmJ9crlvapLgfhTq0/ZztV3f1gtCIgQZ4j2eX1qc0B0zdePqhtBYQfZUJfy4EuAu0+92eoZcGoD6FqOR6miTqfil3m9pZ7/0m1VodPxnUdG2V3yILEf85McK/UvISUdb71WZSwQdq6GAR+QTWXJEINtFcXmmdQzB9nDy490PtwBzkLlVw/b+ATkncps/DaSxE48fBagHs7r/XkV3QG/Agx8hgoNpFTGPGxvQ1sPX8G1hZ8wTeYVvgiylmPn+MRMILZ7iQHdQC0dtvVb560lbRfUC+BB6PaVAKXsZn93DgNOmV+pVzXTCulyPEAtsG05T2+k82a8m0mEiZInXdxCmuY6lw05SIZ5nYnxQx1mZrEE4igzt9qAtu6qE01W2n4Ffa3YtTKU1yU99jkG6d6Lg0MUhZQzIzoST7HUn67DekYknbMnKcWhKDAe6L3WAJq/NdNUyi3bP8Z9Wma/PQ1q8EVro0iUqkgTMOp3H6sxLyIA9QkJ6uq0W/SnMpOEFWGznD8gVuYlQ4gD52x+MwBWji3nAivPjJjRvHwAV3s1eORVgItdDGGF8uELL42YFJFvwdVydE7UfGscJk8/KKB8V3/CVz+6QaAcrBr0sJ+mFs1ml9KY3AVUNxcv+vfDHDojOFArzuSk4d9TKxYrxkbPjJ8bwtuMVXlBBQJXZ5wXJZEK9NmM2+7uQFMP3z45JCmuP/LlqBwefVvgqOWfGLJfJTYz4uHgW9G22wqzIWzVPC8KXBQF4E/r/J3Jw3z7HHEobbL0xkjPCK9lkkJ5egfw52rXDAT6hkAb8
+ KZMCGuaX
+ MABp09+mfV6hsJ2nSUdbdO9tosMrwd20RiOvjgqlE0XX/BZS+EKiCEnH5BAh9trlKaiTuFZHKTna1nT50bRf9FxwWVPHiHwSwL8ZAvsplERSEX2YQ6pBj14wzjH/fTd1Gq63htElrlJKq+gF0PD8xs2kWozr0Y4LNMLxsp5wt7y9Nt9TR+mDA0wltlPkO0GpN8sW/nAnx8Ew4uSRsIDw4nlVG7P6Xv9oBJVuZTmgO4FmMPajlpAKRd9yzNinfl+9mCGfTyXIH5CGk7OAH3buKxZTe5gVlR3N/2NgNpa1bG7Lf6Ju2JyFmo1HoSlmTu/ob8lx6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,47 +92,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 04:04:40PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/6/26 12:54, Dev Jain wrote:
-> > 
-> > 
-> > On 06/07/26 4:22 pm, Dev Jain wrote:
-> >>
-> >>
-> >> On 06/07/26 2:15 pm, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> Even worse, right? We could walk 128 entries, when we really should just walk 16
-> >>> (IIRC) entries, possibly reading garbage or even worse, into a memory hole at
-> >>> the end of memory?
-> >>
-> >> Hmm I was thinking that the checks pte_dirty() and pte_young() wouldn't care whether
-> >> the pte is garbage. But, we could actually dereference a ptep pointer not having
-> >> backing memory at all.
-> >>
-> >> Does the following sound good?
-> >>
-> >> "On systems where CONT_PTES != CONT_PMDS (meaning page size is 16K), we could collect
-> >> excess a/d bit state, meaning extra work for the kernel. Even worse, we may iterate
-> >> beyond the PTE table and dereference a garbage ptep pointer to access physical
-> >> memory we don't own. Since the ptep pointer is a linear map address, we may run off
-> >> the end of the linear map, dereference a VA not mapped into the kernel pgtables and
-> >> cause kernel panic."
-> >>
-> >> Although I checked on arm64, there is no case in which there is a hole after the
-> >> linear map, but still that assumption shouldn't be made.
-> > 
-> > Oh but we could access a linear map address which corresponds to a DRAM hole, meaning
-> > there is no entry in the kernel pgtable.
-> 
-> Yes, exactly. With debug-pagealloc and things like that we might have many holes
-> in the direct map.
 
-I think this one patch should go in as a fix.
+在 2026/7/16 17:47, Kairui Song 写道:
+> On Thu, Jul 16, 2026 at 4:56 PM Hongfu Li <hongfu.li@linux.dev> wrote:
+>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>
+>> The !CONFIG_SWAP stub for swap_cluster_lock() has mismatched prototype:
+>> it has an extra unused irq argument and uses pgoff_t instead of unsigned
+>> long for offset. All callers are under CONFIG_SWAP so the extra parameter
+>> is dead.
+>>
+>> Sync the stub signature with the real function.
+>>
+>> Fixes: 8578e0c00dcf ("mm, swap: use the swap table for the swap cache and switch API")
+>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+>> ---
+>>   mm/swap.h | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/swap.h b/mm/swap.h
+>> index 77d2d14eda42..2c4667662601 100644
+>> --- a/mm/swap.h
+>> +++ b/mm/swap.h
+>> @@ -337,7 +337,7 @@ static inline unsigned int folio_swap_flags(struct folio *folio)
+>>   #else /* CONFIG_SWAP */
+>>   struct swap_iocb;
+>>   static inline struct swap_cluster_info *swap_cluster_lock(
+>> -       struct swap_info_struct *si, pgoff_t offset, bool irq)
+>> +               struct swap_info_struct *si, unsigned long offset)
+> Thanks, nice catch. I didn't see any build failure report, it seems
+> swap_cluster_lock is never used with !CONFIG_SWAP? In that case we can
+> just delete this redundant declaration.
 
-Andrew, do you mind if I pick it via arm64? If you'd rather manage the
-whole lot, please can you send just this one as a fix for this cycle?
-
-Thanks,
-
-Will
+Agreed. |swap_cluster_lock| is never referenced under |!CONFIG_SWAP|, so 
+this
+declaration is redundant. I will drop it in v2.
 
