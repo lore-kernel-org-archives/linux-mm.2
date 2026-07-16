@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A10C44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:54:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7EF9C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63ED56B00D4; Thu, 16 Jul 2026 11:54:35 -0400 (EDT)
+	id B27146B00CA; Thu, 16 Jul 2026 11:58:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C86F6B00E0; Thu, 16 Jul 2026 11:54:35 -0400 (EDT)
+	id AD8136B013B; Thu, 16 Jul 2026 11:58:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 505FB6B0145; Thu, 16 Jul 2026 11:54:35 -0400 (EDT)
+	id A16346B0145; Thu, 16 Jul 2026 11:58:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 210546B00D4
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:54:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B30BC0139
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:24:58 +0000 (UTC)
-X-FDA: 84994710276.01.043B572
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0033E20009
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:24:56 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjcQz7HV;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 69D626B00CA
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:58:16 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D253FC0119
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:58:15 +0000 (UTC)
+X-FDA: 84995096550.23.4EA03A3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D3E9DC0006
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:58:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OWOPc18D;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of luto@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=luto@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784208297;
+	s=arc-20220608; t=1784217494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a91UqFOrJkNtKkfZIBS7Wu0Dr1ZR+NGPxSwxh4ZZj9w=;
-	b=Gfr+YtUtTLQr8x6E7vZoVmW/O92mYzjrXCvc6LoP/ucEJhx65NalGXHR7OT7kvZyjyOYgN
-	BqLrcOH2MlBMWyarn4MVxKKeA5rv23UHzFbtQ5Tkt+MC92K1CuZhifWZeyser/gEBHbQK6
-	Y26obvh4osg3cuCvi3Xygv3DmDalUiw=
+	bh=g6oSqoiMEa7OzZXyjPnpquDQDeAESj15pX4ZUB9li/c=;
+	b=LFyoHvi0h95+X69CEW1FMfGWcYwtiVvJDEZL3xOcmJBLARqnFm7AtPAPjKLt8B0m1Bd79p
+	zF71dWBz944/h2vzND3J/Gu0cQYRyK+CsdjNPvV3Qj8xvxqd0i6daaCz+pEHCAuJUPYr7l
+	BWsldRJUryz3c9M3BG8QygDk5ERQWms=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjcQz7HV;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OWOPc18D;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of luto@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=luto@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784208297;
-	b=cfFmAmg0gTxvMGWarhI5Q5MCRmm2QbhBmuV+/ZwybjCYW6r2Xz/XAp4E8ZvC2T8P8JJGBP
-	TYls9V8CxTep7FHYDdCx8CrWv73S4kXvwY/0c9Cni6xQ1MkGBO1HPV390Ige+55aRJ4YqK
-	jhUnAb/oVURdvSHZ78UUYWnhTWIfDIY=
+	t=1784217494;
+	b=QvVxqDzlEW7+zRfr3ZIJrwxQB306Bh8/nFhaIoldbMYFi9svf7KebbK5Th+4xHW+uT6i1C
+	ClzzhVKQtbAJG7SXbpBm6t7+Kv+oC4rMIuwLiJDzCo5tKDWpKa0yShfVaA0+1pBdqUrHk0
+	1KSM5IjvfD3SrJFG1BN8yJgXpRYf3kc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6678860054;
-	Thu, 16 Jul 2026 13:24:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3191F000E9;
-	Thu, 16 Jul 2026 13:24:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A98E94137A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:58:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1321F0155B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784208296;
-	bh=a91UqFOrJkNtKkfZIBS7Wu0Dr1ZR+NGPxSwxh4ZZj9w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VjcQz7HVRDr2rTsmFnvhua47DsM5+SJx6W9ZZ9NdzxwyOo8IIUTPezCEnhhaqEgiz
-	 SL5xHr3Y71AMfFgGCupo0Mlq6OIdJiR5d+acbKQoTd0c7nxQMKKfEt/W5x+eh510zI
-	 Yy0BsLlCNcCztJ9NMOOftnqjtpK2DXXebW9kaS1fMvGnIfRfIPwn5hldoCVuiUX1Wc
-	 z5FQUC+skSeKdsxqfU6bYe/ApHrdR0HrA7nm8sv7Im6s0AX+uI5dYQPHct2ZtFHKFz
-	 QkExgSNyk/I5ZZoFi+E7kqS4W/uMaV91g/E/q2LMv5qNu4Fmg6cWSkXcoQB2XXci5x
-	 sGfNTE6Oe1JfQ==
-Date: Thu, 16 Jul 2026 14:24:42 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: deepakroag <gaikwad.dcg@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] feat: scale vmpressure window with machine size
-Message-ID: <aljYxLusTzZkTfnH@lucifer>
-References: <20260716115734.80909-1-gaikwad.dcg@gmail.com>
- <20260716115734.80909-2-gaikwad.dcg@gmail.com>
+	s=k20260515; t=1784217492;
+	bh=g6oSqoiMEa7OzZXyjPnpquDQDeAESj15pX4ZUB9li/c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OWOPc18DUN5kQHrt+xLBtV2PjEZdVi69MM0+NpTl/NYFqRkmVq7sgKSbBUJyppKyr
+	 tktDa2H5OLMRJY9fgw77kBkND0XQCSxoVGfsUWBqMLgr3olYo5q705QCWsC84Kz7lG
+	 bUZsYA2uTK72J/d8YIx26+d5PnOEou2YboEW0P33zbpj/HtSFLhu8xtc2dUpHX6AWj
+	 QRXBynl87zcZl/2F5t17zJM4hrp9eoKy11agItqqqz6js/nESyrVRp9WLk51YXvVQz
+	 GOtXvB96ERTiQKX47jzJjE9WW0kC3MFhVgLi3EWtQgacnVqrN4SdqLaPz4E4GRIxcN
+	 sHtsksHvmzyvQ==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aeae350e0aso7607661e87.1
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:58:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqAQ0dgKuma55OJnY/GskSrL73TQ9xvlnW1s3H04HK7451THzXzqwQu0LQbWGf7j18ZypaKC7Pjww==@kvack.org
+X-Gm-Message-State: AOJu0YyrmJnLcdRwSX69KjQ7XWYJsh1DTC+nfrtsWkylXW6xRoQOW0M+
+	rxbUQ/IhByOmzJxJ7bITsLYnTXZ0o6S+0To7Dn9lH9h8DykbhJXYxu9TzHVJHlS2fnLXi/3imBG
+	ziEgs79tfaJqcR0S2NNcH9Aa2rxo7WU2Lw3P1kqUR
+X-Received: by 2002:a05:6512:64e4:b0:5b0:1b78:497a with SMTP id
+ 2adb3069b0e04-5b15d7b2ccbmr1132556e87.46.1784217490875; Thu, 16 Jul 2026
+ 08:58:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260716115734.80909-2-gaikwad.dcg@gmail.com>
+References: <cover.1784204592.git.me@linux.beauty> <538e494dd8fcc677da24ec985c6e90dde554e7f3.1784204592.git.me@linux.beauty>
+In-Reply-To: <538e494dd8fcc677da24ec985c6e90dde554e7f3.1784204592.git.me@linux.beauty>
+From: Andy Lutomirski <luto@kernel.org>
+Date: Thu, 16 Jul 2026 08:57:58 -0700
+X-Gmail-Original-Message-ID: <CALCETrU2sCf_Ab2oDcUuJV53mhaDHTtf7QNqPJuFxV_ESHkbtg@mail.gmail.com>
+X-Gm-Features: AUfX_mxAk_l8G-Iv8v_7CV1_wrfRphfDpCG9qyDjwBEY1AgFD3q_hB2zypmmUZY
+Message-ID: <CALCETrU2sCf_Ab2oDcUuJV53mhaDHTtf7QNqPJuFxV_ESHkbtg@mail.gmail.com>
+Subject: Re: [RFC PATCH 12/24] fork: let kernel callers create embryonic tasks
+To: Li Chen <me@linux.beauty>
+Cc: Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Gabriel Krisman Bertazi <krisman@kernel.org>, Josh Triplett <josh@joshtriplett.org>, 
+	Mateusz Guzik <mjguzik@gmail.com>, Andy Lutomirski <luto@kernel.org>, John Ericson <mail@johnericson.me>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Oleg Nesterov <oleg@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Paul Moore <paul@paul-moore.com>, Eric Paris <eparis@redhat.com>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-api@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	audit@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 7ehpcctehku6nsukey4977z5rg4aqfh9
+X-Rspamd-Queue-Id: D3E9DC0006
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0033E20009
-X-Stat-Signature: yhmohy847hef4ymmemohjz11hqo9kmdr
-X-HE-Tag: 1784208296-909148
-X-HE-Meta: U2FsdGVkX1+MdxWJJpjJFpZN1DD+5D9QfFZYiEV/CwBYBKgsxpfUnkF61M+EXrrCaczDNceSIMH2N6QByqfc7KCXioFYgD7dS2JGfoLVymDWybFM8bnvqEjblgjgs89mAMwJKKlQd9HXcQcGkNLPFhBH8fssVYBLkA0J7IaNY4rfapoclk/kwGZQ+dgH4uXut0zlZCwGG/KeEXfbwKc5Irsh6G+AI+x4EaP8m/DwPjKBALZMIicjb5HRgDjGYb1mDkSS5pmyXdj/pcsXSke2s7O3Xs99F7uEUd1UW/5W9DM4lC1yTBNdC86dSRaTigFyib/yfd2DuqwFrxojI4VCyNXLhD34w1E5ZGkaG51TzRKIhb/bqc7WwOaV1CKy46JdsyMZ0TnxYg0NGZSnfJSy3V/jsJZW/U3FpW+jzArYPSqehkyq4TlyHZs6YRoYIcgiymuf5dR12DRKqRVMgXX+SyO4V6u+dUjb8caPfgv6CBwBGFiS9goRWDZF+SGbw2C5o2Mec9H7rTn0KtUvvGK+Nodu/HchGTdY6LnYj1vgd3Iy5H5zIGcXW3ggqx/DU8qzMfoCNnsWEdnRnYAdLT+D52dBflLHyjzJLAxMU3eS0iikbpoLb3vw3+tGyM0jTSU6RXQX/jvzwMj8LXzHmeLX88GKlYLO+1wN3oz5K+EEJoEYBTu8P9ylyclIC7/d87dwW7BUCPu17pSEwkkFcmtjMVdsgEnnZRCodfYyHSxt+lFwl/8vGar+uLeQXa9girxVbi5AZxmXwbWwKWjFv0CEuQbSY8ktZ496pOTiY/F2TVAvVDFjsVIU3Jkb9j4/Wf4q4YldjTH2WxRcISkgoMJHf8qLM+yujzGBnQ5Ou8ypk8LSL5zomMm6fsSXaFV+Xfc0pA5a/cddDSIhwYkAdow+jxiP+IXX1tloZvj1bUdbxAupMOpDe+MuGhKlLnPBsVlpSBQKbMZA3WXvK7SOBjA
- d9t3iZqW
- iXblxAp8maR0I/sT5XX6mfYsT2GXXTSK7lbSNH9hL2HO2PbMuqFDvOjyH8Zh6ZGHRtDCey+XuEjuY0pd986Mm9YB+L/Xmw8iJhBQuOX8LGmOsSMt49tx2yhmakMG+2ceHmRLREg7x/X8tP7ZHZcNrj8ZaHibK/nqK4ThYpEKrFR4xaozbTlA4ubtUjxFFiGb6TrVSNvNzscr3C2nbe7x8vGrmJOUaxJqYw7rx6qqfNRleT80DM9HRUxpBI5mMm3kG2QvTWfIEj+6B/UajxHfWsKyNow7uRkv1erXCqJBk3vtrRfI76o1y/Qr5BggagMyGc5axMl57x/ApAjafP1LMg9uYHwOFo8B5Ff7IVvorseURx/tBMn/Ww7eb/r+oZtREFsRJN7nrnsa9CWPYaZ0hRNQIc9HcaamII30es17maFIpaKkFUf9ohc5YEw==
+X-HE-Tag: 1784217493-873330
+X-HE-Meta: U2FsdGVkX19hFpOogwHPEHb54+sXTYjRMmjjXHBP8uL/aysnFMKRQUtH1ifV/M7iIrPhF+z4LHACRI6ak8aEQf3cBtxyvm/cT4xPKvCZQT9GHMBIOsxjuYKnf2S8wubXJfyeGJAB3e2q2AXax0/net4KoEZbpMQ9mCdYwcHEHVC1+XUR13Xk1yp8HaxbQ7HvS+1a9D6gpzSOsrhRX1B/0PoZGWRpgtBoEPqCYZshGxkvSuTNEYn/zPlwNQVQaujL4WaGKgs52BpezKyAFCh+gHsQvM5+2WNyoTX/U7rfDYcsEUpG/OFCo3msVmVf2R55bf8PYyPbd3idlWlt2dfEsBOH5RWc5Bh7kZL+IdlstQVC430yySMwzVrZpiQ6uiRALenN/craqNNpIwxTchWDRGDdbJ/xXQam+ffKFzJ8zFYwzLEFhSrL2Ya0TZHs13IlT3HhhvUNJzshzUN7p8LIYOGYQr6CV5luMOK9I6P94sc/SWD7D5QYCFMcjypLFsXd4RRZkrhsNZif3BASrEWnCd03342qnkxyOdBzJa5QFPZkyrdPni5oshgTr11a0LCmkGvt6s+E6zxAsy8+jghMcw9eCHemKgI6WAvHRw6wOBOG4QPY4PXqRMYnLJjjLNodyhrEcDvB87JZPqCnW9AdlSF9efZsUPrlBoqNZKXmBp6xUyuTJGexOo7aym6YDGl0gr2nDIyLXa2jaNs1i6p+Tfik4rEKpFH/EEDK03Yhc4EwegDzjhCVbic+xIk2sabkiJGqv3Y9Tpwv7rUTlJ4LRgqwg1WJVXtzZCuJeEniSLVqwk12EnUHQxtToYDnKKahdtFhXHxCG7du98Yo47+OzSvJLMrc4xrRN/3dePKIrBJvsxBx1ovS+U6zHALWCMTEo9NJifmZsvqmMcQLG8EMwSjacFhbEGFevMDmc9V2t9pSPlKEvPJXRSte5dXrYru5/GONABVOHzQQlKHmKr6
+ idN9KLH/
+ 6nZeuequA8MaIhXUG8tzT1VrnpLTM4vIKxPK0yHnSuDYGY49TAVTYEzs6RF0q+RQ0nFDkZXukc9OSngF2hsvOzW+ZynoQNoy4XGPmtuk2/C8Ugv3c8yqp+DJUA8FlOE7wTao2CA0hLLOzJIhalDjK884AxQLFQYDm5W9MmRmBXTM4QR0lNQk2eB3psr2azXoZjeri8F3yit7YVnh7/j783VzYO2tVQeUYCVtpfTUOB17Ku0djuMH2MhJk4u4/s3PdRhRjU1NaRg1Sr19NClRVG/l9W8rmn3l0gZbMoFxaHBV4VeI3xYaz0MQ7Rg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,83 +113,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NAK.
-
-I'm not sure what you're doing here but this looks suspiciously like you're
-taking somebody else's (previously rejected) work and putting your name to it?
-
-And you're sending a v2 without having sent a v1? What?
-
-You're also getting basic process wrong here. We don't prefix with 'feat'. You
-only cc'd key people on 1/3 patches.
-
-There doesn't appear to be a cover letter. You are sending random vmalloc
-changes along with this too?
-
-On Thu, Jul 16, 2026 at 05:27:30PM +0530, deepakroag wrote:
-> Replace the fixed 512-page vmpressure window with a boot-time value
-> derived from total memory and CPU count, clamped between 128 and 2048 pages.
-
-So you're just making stuff up here? Clamp between 128 and 2048 because why not
-I guess? And no mention about the rest of the logic?
-
+On Thu, Jul 16, 2026 at 8:52=E2=80=AFAM Li Chen <me@linux.beauty> wrote:
 >
-> Signed-off-by: deepakroag <gaikwad.dcg@gmail.com>
-> ---
-
-There was already a patch for this in [0] which looks suspiciously close to what
-you're doing here (modulo clamping without using a clamp macro),
-unacknowledged.
-
-I hope you understand plagiarism is completely unacceptable?
-
-In any case it was rejected then for various reasons, you re-sending the same
-idea without crediting that changes nothing.
-
-Cheers, Lorenzo
-
-[0]:https://lore.kernel.org/all/20260227221555.29969-1-mcq@disroot.org/
-
->  mm/vmpressure.c | 24 ++++++++++++++++++++++--
->  1 file changed, 22 insertions(+), 2 deletions(-)
+> A kernel-created task can become visible before it has installed a new
+> executable image or a valid userspace register frame. Exposing such a tas=
+k
+> through ptrace can disclose kernel setup state.
 >
-> diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-> index f053554e5..8925d4ad3 100644
-> --- a/mm/vmpressure.c
-> +++ b/mm/vmpressure.c
-> @@ -33,9 +33,29 @@
->   * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
->   *
->   * TODO: Make the window size depend on machine size, as we do for vmstat
-> - * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
-> + * thresholds. Scales with CPU count and total memory at boot.
->   */
-> -static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
-> +static unsigned long vmpressure_win;
-> +
-> +static unsigned long __init vmpressure_window_size(void)
-> +{
-> +	unsigned long win;
-> +	int mem;
-> +
-> +	mem = totalram_pages() >> (27 - PAGE_SHIFT);
-> +	win = SWAP_CLUSTER_MAX * (unsigned long)fls(num_online_cpus()) *
-> +	      (1 + fls(mem));
-> +	win = max(win, SWAP_CLUSTER_MAX * 4UL);
-> +	win = min(win, SWAP_CLUSTER_MAX * 64UL);
-> +	return win;
-> +}
-> +
-> +static int __init vmpressure_win_init(void)
-> +{
-> +	vmpressure_win = vmpressure_window_size();
-> +	return 0;
-> +}
-> +core_initcall(vmpressure_win_init);
+> Add a task-local embryonic flag and an internal clone argument for caller=
+s
+> that need this lifecycle. Reject ptrace access until the creator clears t=
+he
+> flag. Clear it with release ordering and observe it with acquire ordering=
+.
+> This orders visibility of the completed exec state with the transition.
 >
->  /*
->   * These thresholds are used when we account memory pressure through
-> --
-> Deepak Rao Gaikwad
+> Existing fork, vfork, clone, and kernel-thread callers leave the argument
+> unset and retain their current behavior.
 >
+
+> --- a/kernel/ptrace.c
+> +++ b/kernel/ptrace.c
+> @@ -56,6 +56,8 @@ bool ptracer_access_allowed(struct task_struct *tsk)
+>         guard(rcu)();
+>         if (ptrace_parent(tsk) !=3D current)
+>                 return false;
+> +       if (task_is_embryonic_exec(tsk))
+> +               return false;
+>         es =3D task_exec_state_rcu(tsk);
+>         return READ_ONCE(es->dumpable) =3D=3D TASK_DUMPABLE_OWNER ||
+>                ptracer_capable(tsk, es->user_ns);
+> @@ -312,6 +314,8 @@ static int __ptrace_may_access(struct task_struct *ta=
+sk, unsigned int mode)
+>                 WARN(1, "denying ptrace access check without PTRACE_MODE_=
+*CREDS\n");
+>                 return -EPERM;
+>         }
+> +       if (task_is_embryonic_exec(task))
+> +               return -EPERM;
+
+Would it be better to use a different error code?  -ECONNREFUSED?
+After all, this isn't a permission failure per se.
+
+There's a not-locally-obvious gotcha here: reading other process
+attributes prior to calling task_is_embryonic_exec may result in
+(security-relevant!) data races.  This should at least be documented
+-- it's critical to check task_is_embryonic_exec *before* trying to
+read credentials.  Also, I think /proc and many pidfd APIs have the
+same issue.
+
+--Andy
 
