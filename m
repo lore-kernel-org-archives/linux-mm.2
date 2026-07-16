@@ -4,120 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48023C44517
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF55BC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:13:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D84A76B0150; Thu, 16 Jul 2026 11:12:56 -0400 (EDT)
+	id A51CA6B00F2; Thu, 16 Jul 2026 11:13:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE6ED6B014F; Thu, 16 Jul 2026 11:12:56 -0400 (EDT)
+	id A03196B014F; Thu, 16 Jul 2026 11:13:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEC716B0150; Thu, 16 Jul 2026 11:12:56 -0400 (EDT)
+	id 8CA866B0151; Thu, 16 Jul 2026 11:13:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 61D156B014B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:12:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 237831A0142
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:44:52 +0000 (UTC)
-X-FDA: 84994609224.24.1CA1009
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6F4E380008
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:44:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=fQwlPuBD;
-	spf=pass (imf02.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784205890;
-	b=XgIslmfUMBMUMGLxw7/Hb2vm2VwxeEgfUbtCnWZSjjYNuieEhCcpopwABg+mGg9SEMjplq
-	7BBp1ACgaTYn9qqE36EwxbiJG6OaF/BEkHLPw/IA+gprLDHt7+LgPqdWZsOnHiVOYq3yCL
-	Wk2XnfCOIKt7MBFYTs0cPkd+J5ycok4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=fQwlPuBD;
-	spf=pass (imf02.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EC716B00F2
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:13:22 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC9521C0143
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:13:21 +0000 (UTC)
+X-FDA: 84994983402.28.2478482
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 44E4E18000C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:13:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KsI1yLU7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784205890;
+	s=arc-20220608; t=1784214800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P62EVeZeD6Lr+EK73ByExkJlzskm2POoZpW1kwtVtAQ=;
-	b=YUJRhj3xFkbraWgs29Fjh0pmHS13D9BK8VDqQtTr3tw6gYIUbJktDVqt3YrAd+8RxXcdGo
-	Y8XlrPOC2oryvUlEG3JV8ZZGRkUNNwFObYnE6w3OeATCmtzpND/dyDtyIzQZX62yde0XwF
-	YnYLekcBsfVJnPaQ+ubWWv6G069eaCg=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c9eefcf9175so2825958a12.3
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205889; x=1784810689; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P62EVeZeD6Lr+EK73ByExkJlzskm2POoZpW1kwtVtAQ=;
-        b=fQwlPuBDa3V26o9wWoN7yPiO1yT/gml6gHECFWnVgloGeNxjU83UnHqWDItuUtaNrI
-         zLKP8c14aN1LKF6H0TD1Bs86ReegLVEwIC31EQYF2pMrdRxE65p4ipWxYoeYmpTf8TYS
-         8O79BHpGpKS6YQRYvmuqq1hMCWJEW3XkiLQHBeQ/WPOEa4A1Qs0ZyK2mGSxSophGgE9+
-         l1Iy06ktvvHwkYytfGD0ZCeOiUO2RRHdzL7gRYcp3AYZqW7NiKktCGeiwBDRIxR5P6J2
-         GqPiLggM0og0ATnc3KNGUGgqbsrfgFNUUgHO0FMKk33yW05lqxt0FwQUIOnniC2pZge7
-         54Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205889; x=1784810689;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P62EVeZeD6Lr+EK73ByExkJlzskm2POoZpW1kwtVtAQ=;
-        b=XsJaLHkuFTPcU+Igqd0AEl2W5f0pwxlpe+mAc2gKPLSuFPReKoQqDcfv8E77UqSxuT
-         smQMe4poC3FSqUfLuFQ7vA7XBppPX1U1Mkm4EQCPDUW6mjwUXzyTdQfPdyM6c1kJDoRy
-         34Qu72V9RQO4cCzQ3ig1oKCtAUYg+W3v5pUcawDbMPIzVC9HGAr7GPDHNgRQAWWR8BW0
-         Ofp5aZcdVOk0SU9oVaRnHqgrf7ZliJk4kksTL2mhdqRrpJww0pC6EOHLwAJ8j7ahFseD
-         kcJx+KiQ+QWBratOe7iLpBJ6lMYAvbRUiP8+gm8iJBSidGJRfxgVDhxsPrI9BFlLRc+p
-         aFPA==
-X-Forwarded-Encrypted: i=1; AHgh+RoXy6w+iuIBV3JZGF9YylumTrT64PZ5i4DnzOTziCrQdHkZmDZMOrPTDWshakZF1Qiza1LwEoM1Rg==@kvack.org
-X-Gm-Message-State: AOJu0YzOYoPlab9oVuE7ZnXO6AUwFcjEL8dvEXs3M3m8ENUwjzENEtak
-	xFp9R2iVa+tTUsZVmn5neI+OXjXdkw6Mhm8JVnl+V4nHzcK+E8mQwHFHj+nJ8WPEhUE=
-X-Gm-Gg: AfdE7ck60H5t9TTrKApIqUSImvv+tSgooXgLUSxwfEFzyzUNpUYXaING+hErG4jdf2i
-	bWygOIO4P2icKaiLJB9epAWsh2M7QnOLyPawzgKJhq3hpfjnn9Pica29q4snx+SOK/w2TWQHhTp
-	sE+jc3qk8XgxAalfGPBPLgjohH7zAAlAYTg2rAJiC0RhHkanQaAGthtxWFTsYpGhM6cRfaYAS6j
-	AijO0wr3YNCCxGfvwlkWdodxW5JjHgUvLciRAeGMCH7NYEHC1UJRb4sdSArDeiN8rvWQ0NVhNej
-	dFaLWgZOUdVhkCDwLe7e57UTKmbAg5i15oxaRpvKAZE64fcQZ3t7usYOzpXhQb+/UfBwMfgSxNL
-	vcj6ddyrdQCGu+xyxEyQ4nvFrOnHRd9g8H2F18BEP++qT0VV4A++DynKYXF4sz4UOHjS4p4b7cD
-	fsFrxT3Kj4Veqg+6VP6EE/Yy4=
-X-Received: by 2002:a05:6a21:7117:b0:3c3:89ce:b5bc with SMTP id adf61e73a8af0-3c389ced5b6mr3647677637.15.1784205889298;
-        Thu, 16 Jul 2026 05:44:49 -0700 (PDT)
-Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.44.41
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:44:48 -0700 (PDT)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: linux-riscv@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: linux-arch@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-efi@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 14/15] riscv/mm: optimize mprotect for Svnapot mappings
-Date: Thu, 16 Jul 2026 20:41:49 +0800
-Message-Id: <8b79ddc3311e1dc32b150b7efbaed5a187ee5ccd.1784201104.git.cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
-References: <cover.1784201104.git.cuiyunhui@bytedance.com>
+	bh=mZcIKy0sKnwiVTiIn1xnQqul/iC9zSIy0vEYFOh5eLM=;
+	b=VCUO7LXJZxcpmxZMV9lXWUCftnTUL5p0IPoOTA7XrszIszmUBCENnroWivta7WQJnWaWtF
+	TehlqyQcfgfc/YbRtsruqVLXxUuVEla0CubAlnQikxp/vV7IZjbuebi9cvBKOkLDakpMMY
+	8tzmDFaUmpYaCpoN+twSDe8uOsAFHfI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KsI1yLU7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784214800;
+	b=5tQHgh6zgFHEhJecppJ0YveO5kXr9s069y8eU2kpE+ZhJosqTjw89r9KYFgHwHpLBLWQAA
+	UE3Slj1YatVrPoRcr74drRKNW4TSm/GbaOTPEvGvqJGk52fwXhzOo6mug4ttCrDqsIEX+3
+	UIdyPvp//rAXR99/afa803NCv+6fRb8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 617A140E4E;
+	Thu, 16 Jul 2026 15:13:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082A81F000E9;
+	Thu, 16 Jul 2026 15:13:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784214799;
+	bh=mZcIKy0sKnwiVTiIn1xnQqul/iC9zSIy0vEYFOh5eLM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KsI1yLU77HcEbaUDL1hSrDTf3zwMw/qpIqrIgSG/O9oRVSo8fW4BNS4MCTWT7fXas
+	 J8kZj/b638mvvaWJyB/d7e5QR071mfNahmSxOgjSpAr5/BzAnSvHZxczE++LMgDY74
+	 TBGjqLDh6CK2v0FTHngXee55oEV7bNAL/xar5n5aoRdqnl7OIvaOYbz5BZGocLcpXP
+	 zkoDEmRL5ACkAj9tkUS4AhG/dP1DZlr5RtrDtf3WP/ko3hh1wWugvKyoCHv94sDrNr
+	 bRbAOWkOsnKjR2VDpBWelHdNVxsv6Kw1gzLzkE6grf3+lUq9dAjIUSoxyb/ngAGHpm
+	 bf91edPL2OBkQ==
+Date: Thu, 16 Jul 2026 16:13:05 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 3/3] mm/mseal: remove further superfluous comments,
+ do_mseal()
+Message-ID: <alj02XcxXC6kQGnK@lucifer>
+References: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
+ <20260716-mseal-fixups-v1-3-3a9609bf041b@kernel.org>
+ <aljzdCwWzyvTDgmv@pedro-suse.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aljzdCwWzyvTDgmv@pedro-suse.lan>
+X-Stat-Signature: 64ufgk96bicqwxd414nbr14qfkr7tmbj
+X-Rspamd-Queue-Id: 44E4E18000C
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6F4E380008
-X-Stat-Signature: w17h4xafmc1fge1d5rwtggajhgp1ct6w
-X-HE-Tag: 1784205890-129598
-X-HE-Meta: U2FsdGVkX1/e8J//JcAtpjdKH25JrIDkJxy/UYy4/zyF/+taIfpBMegw6aSheA086oMa+i0SuU3RUbuwsxrpvzuh4WEAQ8TiSaOqKQ70qz9p++zY9zMIgii+iz06be3cJGy+ddWZykECUxsDiYrnBPblkpJcknsP4Rf/uHbMTTGQHBL/Nk/U7QoFJqHWLH8emDgNpaQ5eJ7bCQvYT8ftH6QlSFJLHSpVTjXQyiTpP9l9rl74DunSjsSUROnVAOSp6PFsCfUa27a8NtMC8rNS9aOQG24cO6rHgoE2qSOhkTE3QKbXzhr/69KZkxeESaGeM9lWo0gXgFBmNNXMIrPIGkD1y3zTsQa9II43GTNyiOLmIhS7RRGSGGMEa2E/5NLiThSJV4wlrdQjEtxzFKoprG9ML0+mqd+XRbGiDYNYkWlp/uuMmeGl1pYZd0kr+GU+7s6J011SbPKi9D+/M83BTVpDcZiQMl2dizo1GsbRI4CsFEeauQt0PpIIUETuQ+JzXu4x0fl5P59LECvL//F0+ZBsvEb5K6bQwqKcVyftxbJCL5KqurHYijjxY/k7hajfbV+KXunXE1oQlz8ezOuOmRTuVJcJnVSVk8wohYZKlOalqZcYZReO3XOv4I57gtEu63C1OvY1Taquu815WAETj0JDAsUmlyy0DxsMekfBJDj11jgYkK0hGRckBUPiu054a58aPwt98tO+gjM97BGH0H3Rt/pmPLmQPKJNEFm9W0aVPxkP8qxocPNyr0AsjyKasNxSHiEycKSFV++U8Vri/PtfXdJBhC6oGpDNDbTmtlSEsivjq4n45dloynDA3TfxARA+h1Ba1sx7ny9flmQ3gTpfWYhAhTmIe0kTSkiLVb4RK4cadbRIW0BWSYTJGpn/qWkW+c0UMhQnaMIaJc6Q7Gv1dnU3ntzsvZMpXRndDChYsyB7YGd5V8jNNrNzdn3V3BHJd9dDybqU5f+JQVW
- mU4pCwM6
- Hzw6gzewJt7jwkdE5O24pUhA0AG7sMen9ZNmSmE+bVMHXgJxETNfmqH/l0k6NmlXEQRbK9vN2af0/k7krHKTsxTix0ky3xaYNGLOkWD4Y9jQgaJrP5Aad5YbRqCo0Z41GHu36dXuc+iWp1rbnRcBquk0aKTzBp13NCm31FdCPwprgDto5IJUulQQ8hrC0l1a5QbKbRypVTBcCXqPKae0ECJ2AnQ8rsg0emsJhHsLNnC9Gtx5hxTlyENWBqpgRv88vNb/OGmxOH2Z4hWEDS6Knryx3IZViRDKR7C5Pn6E2BdUM5/7xtpp3eRq0rcK3o9mKC1+C
+X-HE-Tag: 1784214800-542721
+X-HE-Meta: U2FsdGVkX18oEV/rGwhwcF0ByKyxPHiabf4XtLCK0QarrHqfcfe+UE1Jkg/b7GKrifzrsBrcjLC0yNHiEgDLDiGE7TywmGVkZxGgKTQ4gig6mOBKfTcoKu76SaKDWMzWHtQztqTAritxw42nf1zjONxcGdEQiL0ysUPKvJK0yXIbVOAljf5CxZklBwumPMeQk5Zh5p95NX9iBZMxLMEDShfrTmwc3CIH5EGCV/y+djJVGnycbsn3cXr12mugo+UVuNvt6W5F7OLOIUG/8doRX5yK31mBwXzEO5rgMTwdO2AZtpJEtGlB7mFcJ3xkBtAVruU6Ke+RwOyErxjljVqeggq8/SWn93is+qjzg2bPea9PT7/6golOIwVZo2AbuqhqY6+q2AnbnGaaTIzM/KyM2p1/IUpPpn/4cZ3B6jDcZ3dhsual4ougteGSxix6hrqRKtlLCwxEd/jO+DNX1jNqMQNPNs+9m7ozC/E1SXRIHBICLDR817+ADHlMhuu/RD6tCvhsIko4Wfdfl+G/JgKMb0Fd9ySR/A9EvuAxfvBHVprBbNIN+AGM2Ladfpoh7qQRJQmFzFLwHfyqlQ5V98S8aj6cdGXyQsdk4CXHq5v8ftRhDex+golQ6UNepY2JmOuAU/HmkQ+8rQYWS8fBV0SwdBXds0yrPUDzvm1cWKUSwVfj3zqTpW570CQTBfiXDFVghdRRp6KTEP6zjPewI4wQc48pB/gSkZkpfPyaR3LS2g+wOOGI2SEGOG3MnpQ7Dji+4u6E1bIh+OXce7JItgcv4jT5z9sKDUKvt8urNsDMdYFD1sfAXersE+zMRvWAYrY3/4tnFfAD0rdrbe4EcsWvlvnIm++vAlLl92mFeEbzcbW6F46kbhogRYYGxAxONpzgjRJ+7QJP84GvExWNTjPwxMlbWHd4S/RUZOolF5Uw25bDkl8567vnz9ewkZ8k8iHlMR/JJ74xzWYzW3rCT/0
+ kEYASeW9
+ nV0mgRwzvt9RhfFfpCBTvDYLUQ0bUHtEmyUk56fhsGalSHQKhBxVEmtZAQB9Fnsu6iVoaHxXmA9DHoM4/Azc7wyoVxAABtaMk1J28plrrYWdQE+lW56yFE7kB3dgbjfUWx0iR7pUItBYahP6FCdwKA3hQlOh6jLlsrNSiLJ430FOOnv+SJB4JdKDP5VsMqwQ0JKmoC0BJK6PM9CdXrHsLpKhh70j6fNe8yrmWjbi4BcEYvrnCTZrdAop6XYJUfgQ/FJ/5cIPMYTP5b2mL6jdwoItj08FhP85oQF8ZDCYQSDpdTpfuC1dsp5g0PkgbEbcrHBNQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,137 +98,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Svnapot represents a naturally aligned range as a block of base PTEs, but
-generic mprotect() still processes a full block one base PTE at a time.
-For a full-block permission change, that repeatedly clears and reinstalls
-the same logical mapping and then has to reconstruct the folded Svnapot
-block afterwards, making the operation unnecessarily expensive.
+On Thu, Jul 16, 2026 at 04:09:14PM +0100, Pedro Falcato wrote:
+> On Thu, Jul 16, 2026 at 02:43:11PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > There's no need to abstract do_mseal() any longer so put the system call
+> > implementation in the system call declaration.
+>
+> This looks great!
+>
+> >
+> > The comment around do_mseal() is strangely formatted, overly long and adds
+> > a lot of superfluous information that the code already provides, so boil it
+> > down to the essentials.
+>
+> But I would much rather we delete the whole comment (like Leon's patch did,
+> per my request). Do you disagree?
 
-Use the batched protection transaction hooks to handle a full Svnapot
-block as one operation. The fast path is restricted to user mappings
-where hardware Svnapot is supported, the range is exactly one aligned
-Svnapot block, and every sub-PTE is consistent with the block PTE. The
-generic per-PTE fallback remains in place for partial, unaligned, special,
-non-user, or otherwise inconsistent mappings.
+I would like us to retain the information I added yes. Removing that is not
+really helpful I don't think.
 
-libMicro mprotect median latency improves on the full-block cases:
+>
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+> Anyway,
+>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-  mprot_tw4m   (-l 4m   -w -t -f /dev/zero): 40.4 us -> 4.3 us
-  mprot_tw128k (-l 128k -w -t -f /dev/zero): about 15-16% faster
+Thanks!
 
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- arch/riscv/include/asm/pgtable.h |  8 ++++
- arch/riscv/mm/contpte.c          | 76 ++++++++++++++++++++++++++++++++
- 2 files changed, 84 insertions(+)
+>
+> --
+> Pedro
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 3727c148fa0fc..b546e6614c558 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -619,6 +619,14 @@ int napotpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
- 				       unsigned long address, pte_t *ptep);
- int napotpte_ptep_clear_flush_young(struct vm_area_struct *vma,
- 				    unsigned long address, pte_t *ptep);
-+#define modify_prot_start_ptes modify_prot_start_ptes
-+pte_t modify_prot_start_ptes(struct vm_area_struct *vma,
-+			     unsigned long addr, pte_t *ptep,
-+			     unsigned int nr);
-+#define modify_prot_commit_ptes modify_prot_commit_ptes
-+void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long addr,
-+			     pte_t *ptep, pte_t old_pte, pte_t pte,
-+			     unsigned int nr);
- #endif
- 
- #ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
-diff --git a/arch/riscv/mm/contpte.c b/arch/riscv/mm/contpte.c
-index 8289f39d6e188..6a1156629d115 100644
---- a/arch/riscv/mm/contpte.c
-+++ b/arch/riscv/mm/contpte.c
-@@ -190,6 +190,82 @@ napotpte_is_batch_consistent(pte_t pte, pte_t batch_pte, fpb_t flags)
- 	       pte_val(batch_pte);
- }
- 
-+static bool napotpte_can_modify_prot_block(struct mm_struct *mm,
-+					   unsigned long addr, pte_t *ptep,
-+					   unsigned int nr, pte_t *raw_pte)
-+{
-+	pte_t raw, pte;
-+	unsigned int i;
-+
-+	if (!napot_hw_supported() || !mm_is_user(mm))
-+		return false;
-+
-+	if (nr != napotpte_pte_num())
-+		return false;
-+
-+	if (addr != napot_align_addr(addr) || ptep != napot_align_ptep(ptep))
-+		return false;
-+
-+	raw = READ_ONCE(*ptep);
-+	if (!pte_present_napot(raw) || pte_special(raw))
-+		return false;
-+
-+	for (i = 0; i < nr; i++) {
-+		pte = READ_ONCE(ptep[i]);
-+		if (!napotpte_is_consistent(pte, raw))
-+			return false;
-+	}
-+
-+	*raw_pte = raw;
-+	return true;
-+}
-+
-+pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
-+			     pte_t *ptep, unsigned int nr)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	unsigned long ptent_addr;
-+	pte_t raw, pte, ptent;
-+	unsigned int i;
-+
-+	if (napotpte_can_modify_prot_block(mm, addr, ptep, nr, &raw)) {
-+		pte = pte_mknonnapot(raw, addr);
-+
-+		for (i = 0; i < nr; i++) {
-+			ptent_addr = addr + i * PAGE_SIZE;
-+			ptent = __ptep_get_and_clear_noptc(ptep + i);
-+			page_table_check_pte_clear(mm, ptent_addr,
-+						   pte_mknonnapot(ptent, ptent_addr));
-+			if (pte_dirty(ptent))
-+				pte = riscv_pte_mkhwdirty(pte);
-+			if (pte_young(ptent))
-+				pte = pte_mkyoung(pte);
-+		}
-+
-+		return pte;
-+	}
-+
-+	pte = __ptep_modify_prot_start(vma, addr, ptep);
-+	while (--nr) {
-+		ptep++;
-+		addr += PAGE_SIZE;
-+		ptent = __ptep_modify_prot_start(vma, addr, ptep);
-+		if (pte_dirty(ptent))
-+			pte = pte_mkdirty(pte);
-+		if (pte_young(ptent))
-+			pte = pte_mkyoung(pte);
-+	}
-+
-+	return pte;
-+}
-+
-+void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long addr,
-+			     pte_t *ptep, pte_t old_pte, pte_t pte,
-+			     unsigned int nr)
-+{
-+	set_ptes(vma->vm_mm, addr, ptep, pte, nr);
-+}
-+
- static inline pte_t
- napotpte_normalize_batch_pte(pte_t *ptep, pte_t orig_pte, fpb_t flags)
- {
--- 
-2.39.5
-
+Cheers, Lorenzo
 
