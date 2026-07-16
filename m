@@ -4,85 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4546AC44501
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 02:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 940FAC44507
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 02:31:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AC4E6B0093; Wed, 15 Jul 2026 22:30:38 -0400 (EDT)
+	id 76B896B0095; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25D756B0095; Wed, 15 Jul 2026 22:30:38 -0400 (EDT)
+	id 742286B0096; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19A986B0096; Wed, 15 Jul 2026 22:30:38 -0400 (EDT)
+	id 633B86B0098; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D45BF6B0093
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 22:30:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4D574120339
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:30:37 +0000 (UTC)
-X-FDA: 84993061314.05.180A70C
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CD553A0008
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:30:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Rtq47d/B";
-	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D63E6B0095
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC7001403A5
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:31:54 +0000 (UTC)
+X-FDA: 84993064548.20.FB07F88
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1301A140009
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:31:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=arYbAtWK;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784169113;
+	b=c09HJFaMjBD8VuXI5E8qcaFkKfwM0xwtD0n6TDY05yFCDLWM6PnhArXnromeiKZwH9nHtg
+	NmmdYaWd/7ZzsoIo7ohZvbOkP95EXrPu6XZOVgDiLy4nLouPvvZK+AGg/TTU0+Kvw2Qf1N
+	nkItEQxx2gqEGANhth+CMWR/YKKrTYE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=arYbAtWK;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784169035;
+	s=arc-20220608; t=1784169113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LNqDS6Sst+3PphAHyUf5zrIect6KbXwTAMVNSLXGdEo=;
-	b=7o+jg6ywifWmeGkDP/Ihf/TZ55uDjAR4dku9MoFoKbV7PdWa4G/jNcZl4n/cRI2YNLr/rN
-	9PcH/JlfwrOpSi5OBa8uH1pQywdFNJIumpokERpn6a1MOmYnn8guBhrw/wOt8k5QrGeCFZ
-	Jze5/id87KkRGV/b9TAZbb2pRtHA1Po=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Rtq47d/B";
-	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784169035;
-	b=UY3siYaaWfqknfniZijzyLskopfw0dvVsbCabU/WDEak6DH5SPJ57tXnykEH2ckjL7oDXB
-	dmR2bj7JsphjUeRhquVvlUIavp/Vue9y7LobwL4NUf7Vk3OdkvUGkvDKCMFtp2Uu6GJQXc
-	+BDyoZf9Y625y/MyQNARempnbPfHng8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784169030; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=LNqDS6Sst+3PphAHyUf5zrIect6KbXwTAMVNSLXGdEo=;
-	b=Rtq47d/BzreaeFfC2kpUoEnxOTBWAHD1VdsaTbBARA7eSjmhTzSTVY5PtJK9xFuT+DBe+Nciww7RgcOOKw4LuiQKjyRrpJB/nlfmGTpAaTtlOG+O7XPNNBeRvuSYfdIljYjLEXlFP2efJUDWUbht2P9v3fC9XCeeVcwdRz7Iyb4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X7B-Pz1_1784169028;
-Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7B-Pz1_1784169028 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Jul 2026 10:30:28 +0800
-Message-ID: <4067606d-2b39-4b17-a3c6-be8f09c6bf96@linux.alibaba.com>
-Date: Thu, 16 Jul 2026 10:30:27 +0800
+	bh=ynGIyMuoCcAD8NaeJqodKE7wCOdyZZLepombpmz0j20=;
+	b=oWxWNkOvTJVgTssH+4gOJo9sUZ236RNRfUcOCsc3GzNT78n9BhiXAq0ALYbUdrj9dQqHDw
+	8XQFfYNQSMzzt1OLIw+iCOQPuxmTfgCSBDpizY5Bc+5rKyx4YmpURpmWDodKlUGBQoGBFI
+	zW1n9aIF+Jq0z7+/rcSAlf2pSBPlt58=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 831CE6001A;
+	Thu, 16 Jul 2026 02:31:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCADC1F000E9;
+	Thu, 16 Jul 2026 02:31:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784169112;
+	bh=ynGIyMuoCcAD8NaeJqodKE7wCOdyZZLepombpmz0j20=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=arYbAtWK4LRZHodP80tz03WZeyNNdKPJq+lxECSV5GryUBNFR5Gk4F6+APA2CQnOb
+	 08c5nJ7fZJCbIMppyZmV/AqhU5CfENRjMb9CqkND87C9YH+JPlEafl1lhYR23Le9dW
+	 d7zZYG6LcET4EoWG/1qg2n9J9np9e++xKP6F6sxNRxGqDwRulzu0s16W676NdNWQ5N
+	 qAIwZNqBZnfQ1X+GoYYhmmmEt/I44c+WNrchLy/Mm7RlGEXSNHLSkJY78+XhmOflSy
+	 EbUXzEig/dVOJvqrLh+J3egH77K1PgPo2mzv8evsi+pBbV5b/rbLkhzFWLL8bF6V03
+	 q9GVYEU79wMAQ==
+Message-ID: <093c6dbe-6ca3-47cd-bf8d-3cc85c13f7ac@kernel.org>
+Date: Thu, 16 Jul 2026 11:31:45 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: mglru: promote mapped executable folios after first
- usage
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, david@kernel.org, mhocko@kernel.org, ljs@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <4b921ed528c483e13c9e22d1ae44ba58b4a15b0b.1784096432.git.baolin.wang@linux.alibaba.com>
- <CAMgjq7C47i-n-e=EGWoBvydp8mT3n-ZFeiLFpY=iTVDayucTRQ@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7C47i-n-e=EGWoBvydp8mT3n-ZFeiLFpY=iTVDayucTRQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH slab/for-next-fixes v3 1/4] mm/slab: fix a memory leak due
+ to bootstrapping sheaves twice
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-1-47c7bd138de7@kernel.org>
+ <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------fEYtHpWT6oe3c0X3dvhfUDl0"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CD553A0008
-X-Stat-Signature: 7gjqdeb5ig9u46hrrf6d8jtjm6t1wfsw
-X-HE-Tag: 1784169033-752153
-X-HE-Meta: U2FsdGVkX19TZK60kdeC2FciGZ8/jFgpnRmGX4Zy/WeB8XJklNvv54DXbeM102B8iGiCghFO7KwCdRTHqXmRHCFckZzJf/Pc1dHYZPrWdkc7HvkIiQ0xTb5Sv6qIP0P1etbJ4oklfKg0JQaYuFqJDMIiHzgcL9nDkc1xdBfdvPscPVpAiz2E1hybJsXIdzKELpnjlDKyOe4WtBLhFijpJZp4+y7tVVf7wIBCPg0K7XF6yqdZsoxAM/lne9cu0SMqoNDQn+u1phHasAru/w/uT2FuLnRr2GfHNsjBKEOzUYGkTwlvUtbjTlPWLWB39HXLit6G9wVPPgIYOQcilloyVzD4DVsjzRNBaE8w3tg/KDNQCRKD6KhkaRNX1DVusmLfEU9sBMnrAJOndTEzgZwB8LFh6BFs+91LC/jvj5EcO4s+mQOaquzTtfXT/1w9G8qMH+PBy76R45zdhuTApFx7v5uq+3hpo++iWTaFj2CqUih7hTwQnvjxHGidPTPYxgThn+WcawQVlLmVKVM+ZT7n8V0K2yV8Zi82QtwdRSlDJdQRvIMGL4QtqcpIkmWKjAJCn2ugcCHLSyWW83RYfFmcO2cSySz0d86453eGtYrhj+z7RPDhQwyQRV1B1+MPatz8pxLdoSa6Dro0NedV3n5r+JuVuCfqiQqizoZ0ssJ+rZsqEc56vYX4VBFL/e+vExxd2vk8CsjKf1BuBIAtm25OMmlzwAipVKbEBFtjSedHNU3ZeYTSZfnhjydbtS9r2dvIPyIhtsXYQJcP0Q6FQxZ5XHQ4SVxp5AHGY98bjXL6gGnAfX5d+/B7Dj1ZVhvG0vGgeUbXTwOGUBOII02OBAG2RamEaYhMZIc+Gjt7hsP+TpSc9hGV2eJ1mMCRX04gHiJe+E6SRHRDx2Ih1/S/Pcb7Mq9n36rEGZDCNM7Q9ldLH44gfxOwyBJSu6P4+PHP9VIBKkLCegb9yGPIvsZboao
- E6jGXNO2
- TMWvp7cj37MHMAfU7t1aeuYb66k4X1b27asXZyB2ZrZtOxeY90OTVs9CTn9qj1Kzd0KUJnyQEp+oLa1gesTlKi49DVkxx+gn3rKJJotZvGUqVL/GxP3HVICuB2kHPmx7gdzZfKEmSHsXKfJTPGkDDN92YhAiB448aKXSi0CbFvq3J7HAiIFQIRSuNEUDFHtIecNWpJGxN1mnxU61Lb5yy/R+wW9GKW3WKidyGCvirjFomqlB0frXMUwQTlMNzKhXxrbqKKUYxp5hdzEGRM7C3xP35Q70P2dRwRJErP5/kHXUltbVKVdKFb5k9YRvViwo9Oi7HhG3tiLMdDSl7n6NXHZMjSJ1NMbLDK7LA
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1301A140009
+X-Stat-Signature: iy9bqdh3i6f8cjafjwr4dmbw8ap9u9ba
+X-HE-Tag: 1784169112-430879
+X-HE-Meta: U2FsdGVkX19u2eVSDa0EUe55dOUS+gIsOH865vlj2lpZRsxY1r5yKyyzIsQ4eEFzIYDeHXdDCP5AFj02WT1fHh0sX6TBqVoYMMJNyRbl39nomS4VSOBgcgHQAeLbux89yM/tsngFUw0U81U2Qhiju84VnPtK14ge5nFQTZPlkoQHoJmvmLjhIwxZT4/GQlv+3f33byKKEAColkYDTGBkUDELEho/TvGtjg9um3v5f+W2oxFIDOCH0CR7D0TT7/IZ4mUm2Xvn0h2ydDnCO6YIUaxBamCinkXIo0tsaRDQmT9iZqgYYfC0TUaCDp8CWeQOTXTf32jFTA6AHaFlT2LIf1tUmoamD11QbDTMdrbmAv6hWdRtcRrFdgAjpzumdTBvrHmdGoSvggl0sd8ruOzXU5i1ogMWacEd75JwoUyvbYFgcXSi6s4fuAhLX9+ZulwN9hNORn0wjLiOHnbWBqIbwFNtQNywaNBRkQjBO034dRRvBLIFlkXS1zf6gvpRYEqkGy0KynTt79ps3RMhX9kesaNIrNw2stabOP7MgZG96CBAQQ6zacLfmqxS/2W0GD3uVgOmO+oWqcanEl8yfioj8fdPMU/q2TI92bZjaE9aqTsEjdrHxRwPg74R3kfq2Y3Tb/1FSg2TbQZ/s33dadNA/bbyURhYBhE6CrnMOqUYCQjtLw4KMgoLqctKWw2Au8YMFugvlgSUXi+ToA0fbaKAp8WUzIHKe8ZlbpNLGB6uZT0p2GoxvQzngqSMdmWiou2Y59VjTucWxfjP6DivE7TwnFsc/wKGroOcNxxxLac/xlwh6ifpxL30oSTM+SWputmh6s15J/kS3W/cP6XJRcFMnKeLhShSrv8AUl850/z9POn2Ns7nEcQ8CQhCviA0KJfGPRcIbNJB9TIMK5dwxYRFxCqro/kAdCjmqQ5UGdtabXw+SegokL+jcOmM92QYSnceJKQfg0K90TTaYVMoI2i
+ 6or3XQly
+ qAn9bdDg/czHGPjWvn/ZbU+UJWXBEXayVR9p3nmlQPqeBLUQZoy2lxRwWNHORjaiMw7QUX6fbtcNsBRzPYXF2rEq5zpY0z/WJg6st4fYSbWkGhGCDrOhbERodaN3oSScp9CMifxU5kUpFMJa/0OIToFUfXReHXsHcQVv0RbJThMLip2gk0aQ9BAVE04nKCa26Y+QSbn86CKgP3IoVp/N2GGYtcLo7TczCxFcw6qAm5mjO4hJ8yvcZoms43jT5pw7iTzCXjQZKtm8kYuuWMpJHCkxIEZiTcZqWhbKoSbB7y2IeFS4LOqcu0IMiEbMXMtXl0pVgnjl9vKGyA6MhDyN2cipEZ2sy2ftIOpFMx8lvABTDnuGU094FR0SGG295RxIAxzOOzMU74MwuxPQHvrLs46okSBhahds/mQEa/eGA3QD2NP7ZH0mcn6uD++1viYqwTJCz75rJNd1TmEz1B45LB/oC3IPkL/Ta5U/DtOsq3NskWpODkFXv26gIHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,85 +103,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------fEYtHpWT6oe3c0X3dvhfUDl0
+Content-Type: multipart/mixed; boundary="------------vbeyTvd6sxOFnT8cjLtWNjuj";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <093c6dbe-6ca3-47cd-bf8d-3cc85c13f7ac@kernel.org>
+Subject: Re: [PATCH slab/for-next-fixes v3 1/4] mm/slab: fix a memory leak due
+ to bootstrapping sheaves twice
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <20260713-kmalloc-no-objext-v3-1-47c7bd138de7@kernel.org>
+ <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
+In-Reply-To: <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
+
+--------------vbeyTvd6sxOFnT8cjLtWNjuj
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-On 7/16/26 12:50 AM, Kairui Song wrote:
-> On Wed, Jul 15, 2026 at 2:33 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
-> 
-> Hi Baolin,
->>
->> Classical LRU protects mapped executable file folios through commit
->> 8cab4754d24a0 ("vmscan: make mapped executable pages the first class
->> citizen") and commit c909e99364c8 ("vmscan: activate executable pages
->> after first usage"), giving executable code a better chance to stay in
->> memory, avoiding IO thrashing and improving workload performance.
-> 
-> That's really a long history for those two commits :)
->>
->> However, MGLRU's protection of mapped executable file folios is less
->> reliable. Although shrink_folio_list() checks references, the access flag
->> of mapped executable file folios may have already been checked and
->> cleared by lru_gen_look_around() or walk_mm(). Additionally,
->> folio_update_gen() only sets the 'PG_referenced' flag for mapped executable
->> file folios, which causes shrink_folio_list() to ignore the first usage
->> of these mapped executable file folios and reclaim them.
->>
->> Follow the classical LRU's logic, promoting mapped executable file folios
->> after their first usage in folio_update_gen(), giving executable code a
->> better chance to stay in memory.
-> 
-> Yeah I think that's mostly an ideology issue, recently upstream tends
-> to treat all folios fairly if there is no particular reason.
-> Personally I also agree that some folios are more special compared to
-> other though.
 
-OK.
+On 7/14/26 12:30 AM, Suren Baghdasaryan wrote:
+> On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@kerne=
+l.org> wrote:
+>>
+>> When kmalloc caches are aliased, multiple cache pointers reference
+>> the same kmem_cache. As a result, iterating over kmalloc indices and
+>> bootstrapping sheaves can bootstrap the same cache more than once and
+>> leak memory.
+>>
+>> Currently, this could happen when the architecture specifies
+>> minimum alignment for slab caches that is larger than
+>> ARCH_KMALLOC_MINALIGN.
+>>
+>> Bootstrap sheaves only when the cache does not have them already.
+>> Add a warning when bootstrap_cache_sheaves() is called for a cache
+>> that already has sheaves enabled.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 913ffd3a1bf5 ("slab: handle kmalloc sheaves bootstrap")
+>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>=20
+> nit: Don't know if we really need a warning...
 
->> On my 32-core Arm machine, with the memcg limit set to 2G, running
->> 'make -j32' to build kernel showed some improvement in sys time.
->>
->> base                    patched
->> 9248.543s               7861.579s
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>   mm/vmscan.c | 25 +++++++++++++++----------
->>   1 file changed, 15 insertions(+), 10 deletions(-)
-> 
-> MGLRU used to favor and put all map faulted memory at head, so could
-> this be related to a recent change in any way?
-> https://lore.kernel.org/linux-mm/20260526130938.66253-1-baohua@kernel.org/
+Hehe, at least the warning allowed me to confirm that this is not an
+oversight and the patch fixed it :)
 
-I haven't tested Barry's patch yet. Personally, I don't think this is 
-closely related to Barry's patch. Though we put the faulted folios into 
-the secound youngest gen before, after aging, the mapped exec folios are 
-still not protected like in Classical LRU, and can be easily reclaimed.
+> I would just do an
+> early return from bootstrap_cache_sheaves() if cache_has_sheaves() is
+> true. But that's not critical.
 
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 986dde8e7429..429857852bdb 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -3188,7 +3188,7 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
->>    ******************************************************************************/
->>
->>   /* promote pages accessed through page tables */
->> -static int folio_update_gen(struct folio *folio, int gen)
->> +static int folio_update_gen(struct vm_area_struct *vma, struct folio *folio, int gen)
->>   {
->>          unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
->>
->> @@ -3196,10 +3196,15 @@ static int folio_update_gen(struct folio *folio, int gen)
->>
->>          /* see the comment on LRU_REFS_FLAGS */
->>          if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
->> +               /* Activate file-backed executable folios after first usage. */
->> +               if (vma_test(vma, VMA_EXEC_BIT) && folio_is_file_lru(folio))
->> +                       goto promote;
->> +
-> 
-> Do you think it's a good idea to extract this into a helper e.g.
-> folio_is_executable_file?
+But yeah, no strong opinion on this.
 
-Good point. Will do. Thanks.
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
+Thanks!
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------vbeyTvd6sxOFnT8cjLtWNjuj--
+
+--------------fEYtHpWT6oe3c0X3dvhfUDl0
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalhCkQAKCRCGXBN6rc5S
+1nsaAQCpaAuH8Gtt1L7sSRp6NLtXdS3rymXJGVx8TEl7PzJAMQD/f0VpUHt3Q/Xa
+GgIaG4fD6fiQReheoPjiIEKi+SYxpQ4=
+=y4X0
+-----END PGP SIGNATURE-----
+
+--------------fEYtHpWT6oe3c0X3dvhfUDl0--
 
