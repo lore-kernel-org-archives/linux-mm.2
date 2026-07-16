@@ -4,83 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8709C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E99CC44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:22:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68C1A6B0160; Thu, 16 Jul 2026 11:17:50 -0400 (EDT)
+	id 22D266B0116; Thu, 16 Jul 2026 11:22:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 663906B0161; Thu, 16 Jul 2026 11:17:50 -0400 (EDT)
+	id 201246B0119; Thu, 16 Jul 2026 11:22:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57CDC6B0162; Thu, 16 Jul 2026 11:17:50 -0400 (EDT)
+	id 11D916B0116; Thu, 16 Jul 2026 11:22:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 187BC6B0160
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:17:50 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6CA40120198
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:58:26 +0000 (UTC)
-X-FDA: 84994794612.04.8E2479D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 928A240007
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:58:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J3QpNxlK;
+	by kanga.kvack.org (Postfix) with ESMTP id D5C7D6B0116
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:22:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 578A61201F2
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:22:20 +0000 (UTC)
+X-FDA: 84995006040.09.185E336
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9331EA000B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:22:18 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MhItb7t5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784215338;
+	b=gYv2q38Ntu/NCeax6ycnOSZ/o4gCaQWzvbnnwNn43GL1k8f92qZ3dWngPM3/1pAKa99gqY
+	9GidWEuP/uJc/Y7dr0EDzf2v2BrIZkVgiVlL/DUy6DPRC1SFy23dY0UbY8vDEPyoit4YrF
+	ZJzY/mSyKlUz4CdDFSlNoXndqkqgtDs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MhItb7t5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784210304;
+	s=arc-20220608; t=1784215338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZVvwb5gue2Pu5bCd5TzfBGCtT03YhDYvhjRxQgTOBY=;
-	b=KRAArTCqzCvyFmpfEJfxI8bTIIe5lnjbdjMaslkJ/5La8XVB2D3BmFSaZT7qOBtTrm6LDG
-	DMX57xYygjzPqsR9F0sULBT0OUNwSZumppz9Fi2qYxZvF6k0tChY9241uhoSSh339qN8ol
-	tqLGnkZXFIS4OijtvnSZpodWlEnkIew=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J3QpNxlK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784210304;
-	b=IVWrk4ljOoDKcU1iHbBOf86oDLEfHDbA2jXLQ0AjucGwD3gl6x6jKqVaGcRB/GMwEwGIfh
-	Tpm0xig3dXGJUtC0Kqs5hUMx+MWtClWgFwo6TqEj9jupN8CVBtDqwWmFFxV515eYz3/UWP
-	QrN4FnhRGn7hfxGzcrfFDKdQgkv8IAI=
+	bh=9iUKaKWQgUmhoByo8PPUUf8IwOUE3JnNHfIAyoMta5w=;
+	b=NN1hAeOZR/zSDa6NUs2UWoYM+dO58MkKlqa3Vg8iCqM4oLl6lwI5bo+S01u2LkWcqBJEMj
+	BAs1a5S8oM7i+Ho7BPS72CiWdOH1h6aFHhAAG8/rzsPtgcyRdmHFHM2FjgFx63SUo3vdmV
+	JmJ6vzNDDU68pqqxDgf8AtIXtxFDk5s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C32AD43A6D;
-	Thu, 16 Jul 2026 13:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B711F00A3A;
-	Thu, 16 Jul 2026 13:58:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1599160A5E;
+	Thu, 16 Jul 2026 15:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FB81F000E9;
+	Thu, 16 Jul 2026 15:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784210303;
-	bh=vZVvwb5gue2Pu5bCd5TzfBGCtT03YhDYvhjRxQgTOBY=;
+	s=k20260515; t=1784215337;
+	bh=9iUKaKWQgUmhoByo8PPUUf8IwOUE3JnNHfIAyoMta5w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=J3QpNxlK+VfRxOQBqJ3Un2Zp2XZu+SBFJoDzQKLY+1pcxm5h5JkuCmJePpKOi+bV4
-	 FcmoPvyk+dtTe+rj/Sgm5BobMog+m8r01RYWJmkuIOv+y4gep+fqYziq43dFNUuz08
-	 lLyDEkcWlpC6SlWuyKtQIEO8wMa0Bj15QBwbmJLBSleZ56WMyiWv9K9b4vJFYfwSJc
-	 ZsEXhYV9Hl9MkVd7PMqi9AWwi1zYmgK3uH6Yc3HURviDObyLSXClZp2D/pc8IZU6Uw
-	 cTlTiafXjZZVXG2b4SciG2SOTAWlJX6xnavIdMVZezkTWpn7jQ8fiMfbMCtI7hWExJ
-	 AErWQyHw/crHA==
-Message-ID: <eb3fc4d3-c8bd-44e9-88ba-7fb974a58aa3@kernel.org>
-Date: Thu, 16 Jul 2026 15:58:19 +0200
+	b=MhItb7t5ytZUlRsU1B0Bk/pzL+kLJfVLF6hJZHugPO4vEngLOFShgLkBy/n1TDXIA
+	 g3DCLjmgWeIMhcCrnZDrYeVh15CoaJkgIurVoX/7Ndo4WFvwiPdBsCI3kFYEqh/Uia
+	 AW6egms8Hv2+ShjUIBdIlEqqE8XCMI+i6sWcZxUQ2F7LUStZf6VS0goN+HF3ZrnFjv
+	 KdZ7ZpMBP1f1MaT1ZUC4eBJwAiKmIXWgxG+2KDB6u0kA6Q5Zp+eEczO2IX7LF3Ip2x
+	 SqMIe+3nvJwy6/gpWEFiicWbPp4qM0Pm7tPHhRZB0+cNw8v6QrWUUAjWtsMX7KtBOk
+	 /LtacDoJduqww==
+Message-ID: <73d3c545-dd8a-4131-9826-1a7096dd619a@kernel.org>
+Date: Thu, 16 Jul 2026 17:22:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 05/12] mm/slab: abstract slabobj_ext.objcg access
+Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
+ header
 Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
- <20260715-b4-objext_split-v1-5-9a49c4ccf4c3@kernel.org>
- <CAJuCfpEJV=OgCmQ9=tuMHOjMMh8bgHrpFe1gLtTXjagAenKZsg@mail.gmail.com>
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>,
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev,
+ loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, netdev@vger.kernel.org
+References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+ <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -121,17 +141,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <CAJuCfpEJV=OgCmQ9=tuMHOjMMh8bgHrpFe1gLtTXjagAenKZsg@mail.gmail.com>
+In-Reply-To: <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 928A240007
-X-Stat-Signature: rbfdtui6371w6uzmc6ks4kno6hwsftoi
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9331EA000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784210304-827576
-X-HE-Meta: U2FsdGVkX18Vc88b47PP5KBJ5jgGfFdG6bCcnfxedhVp+3l9+gcX93K90Wobq8PQOx5AaZjLdAkrZiUbL9cJGSkctOc//DYg5O1cMNu+wDJakIgfTWKh++7YSqonpxrtd9kGgSPyOHvZeFXFzqn2yhzdZQeDNBHxcZEI0mEqMPwB5vuJwOvECdl4aPpQ/LG3s9VjRJoAa0vk206m1HezAqkKJo798KHzKlrEFvDO/mQLF6t3WKcp3UIY12Wm/V2k2pSE9RA97bwflDdYEh37xvOs4AMuhNp38osth7f/i+g61QkFXayZPLNPGr55pFic4rLidTosE4orVzLXxr/+sfHHpm8snmcMhpMiokZ7WOa6yBssNtpOWF+Aa1SAopj183WEijllVz6ex92elJ3zgrU2oSxyjCWjagJkXCdBoLviZyw383bOh7dKgnhmJ1fcElfZKgNDBLPClmVci1d5N+VZm77j1s6IQhfN8e7hi+RzMr1J8tdHWS7VzRnb4F1CiodCOu/9rK3ufHN4rrhDg0TawqlFutF00X9ZXf+8tJ/tl9NMhdBwFVlUjtBzhOR/Lmr5q6+mobEOxs4PgT7Cam/zJxdgOVDdbg+o7nTdFlGGT1p1wXoOUEdNEBj4EWCiy6kz30sHSNrMxP0cC90KJof8okW37jpSyTB6haqoVYBi9zmg65lfglg9PYkdAPtT+A1e/PVd49gF2nkXN8P987aTPpXaP2o5PFFKj+hV4QQwqQTMgr4wC/e0oS6vL325qSaxAnUUpV3xv+boqyiwyfj0J2/bg6vKAbauIbOLV/2jrngNzznORO6cPSdu9FVM128ueeHisNFp27RacOCx3Uf53mjKL+oRhnSG/XrZOBd+ruzIkqkAbjj2HFdMQIgaDbZtYjhl5ZUgRQIqYHyY1DXSasgtptlNKuimAoK+5DKJOu1lbOJDXlECgSc1DhBBJR1ZNRtmI20UyZpJ1f6
- OuCArImC
- agxereMejCtSmMPCcWgaTGeJuzUAaq7sCcYECpz6u5S1lAgS1kBB8UUgLU3ETH8zyUxfVGB1LzPUWHZfOQ+dODN54jt9GvQIp7kNqoCKGyINrpvEGmniUdc75tyeBiyzYCaYZV+/gCEkxcQdthRIzUjl09O9EFFUv5MkH1wxQcj+NCiksol9g0pUCTovVada0DM3NCD7HvF8Q9FExRFyeIFaUXuADanoSwG6DR9thRPvKTCsZxsnH0aPguV89FFAcKuS+GaaOAr4qGwMRXGb11bwSX2kCWsbn3ttznuqAtJA84B6tyJOm71hUsxLPR3QzMi+d2O2tz5RJHqruE61VPlnE+goilz7/g/r0
+X-Stat-Signature: xt74x8ob85767t64x6r4h5jtng56q1f6
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784215338-981591
+X-HE-Meta: U2FsdGVkX18K4IBMFfB2+8zrfC29c4U8gYApoLb0Jk4l3mUx0z8z2U80n5EEWwvqVY9QGmpPqDHcFNW/qpEqemEZZOAamTArsNX+YlEl6+wXe98dAQnjDci/SMvGMPEdxnCw6eqpRaUynglgm4xcyhpH2t+k5n8fx2h8tn5uuD2geb1JQOMTFginsw6A+KwySs48pI5sdhsWVljLcD0OKGswAEhFYnRcY9oLBwI/4jbmFuI5X9DavkFfsA17dGYQh9hsvJvue6w2qifRhGV8wRA2knqjkTBZw02gOVSFDUx84IyMJH/jDonSC20hE1NvrNYIjyP866Na+JnNW6k17azEOpbvLvKIF9N800TleduS7Kh+ro1HaWkx9IN1aQB0VHKkBQHB9gll3pXJ++N+chB4gfPRqZA0h6+JakenXPkEp+wxd7uw5VtSSjs+Lcyy5lRyDgza77m7bRM0T52H9KyUNG6rDLHWRxWgCF/Vqsmr4ALJ+O7xQE5Kc4otnqYJ4EmLVPElJQswxxaQxpRJ0BY3qhUuPAzcyayOs1KhJpVMTU4oOO+eKU3qmlHIurDl8SVFCtYyTQyNEIWooki5vXtX1udIp9CvdYd0m/PP2YcUpiQqIU4jpIhwqo/k9cV6NIQkriSfV6KhD/6lymt4l//g5Rktvbiav0/PSdRuFaduEXuD6AGM2VbNCTh5ib5iFOB7BVEtK2EJI7yKWFefVyGO+us0WvdKvnf336MdgziM7wn21kwnRgs0xrvmn1UWgoGZj0HVC7JDrOddiVMxwHFkLrnxC0JYde4fD49wsQKn04tdY1x0j9UNy3jqF/CyNI6rYBFkS/4mzFyjW6VekScx4vZYE0qUja6OADSejSlFv0SMlY8Iy5BNxOwamNM7NqTKgo/gYsX6NHm+nnl05iJl7rHxTDOsG0YLk1VTWIk4KNXv1GDjkaZAmtFrYmfL0R3ymwO/H2hGHpL+TeC
+ x0cDZNGc
+ E6sApjuguCxoqeSozg6/tMbE/2EruV18FPhV+aDJ4wSJwmpPGIBUdq7ic+4ECFvUO5U6aEhp6JgqzQfnGpbTcjLztpuf2q68nsW8RpFY6P7XFyLCqWm/VsHcy6duVZOaawQ+2azrUbuTMkxpbcRGBKdDbdr7J8om28ZWnzfktHn4hvroAHudyL9e69pff9W9/pLMnmIMiCdzOCQj1Libu5jbMwWkGvdjntl5LBIs0XMmuSILUaMprWTO7zeFylWrYZBTWXE2lOrknOUs6iIUhnTG+/C9BN+/pRJauJoan+9V++w2xOKgdhPeLld5DargrIL43bLBEOdI0PmuhDdulUEEJxmBt0zlDo3jjiQfWM+e6HLs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,67 +159,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/16/26 03:27, Suren Baghdasaryan wrote:
-> On Wed, Jul 15, 2026 at 3:11 AM Vlastimil Babka (SUSE)
-> <vbabka@kernel.org> wrote:
->> --- a/mm/slab.h
->> +++ b/mm/slab.h
->> @@ -555,7 +555,7 @@ static inline bool need_kmalloc_no_objext(void)
->>   */
->>  struct slabobj_ext {
->>  #ifdef CONFIG_MEMCG
->> -       struct obj_cgroup *objcg;
->> +       struct obj_cgroup *_objcg;
->>  #endif
->>  #ifdef CONFIG_MEM_ALLOC_PROFILING
->>         union codetag_ref ref;
->> @@ -661,6 +661,13 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
->>         return kasan_reset_tag(obj_ext);
->>  }
->>
->> +#ifdef CONFIG_MEMCG
->> +static inline struct obj_cgroup **slab_obj_ext_objcgp(struct slabobj_ext *obj_ext)
+On 7/16/26 16:30, Brendan Jackman wrote:
+> There are no external users for this surface, reduce the scope.
 > 
-> I understand why you need to return obj_cgroup** but maybe instead we
-> can have a separate setter function and just return a pointer here?
-
-Yeah I rewrote it now and it looks better. Thanks! It ended up like this due
-to some previous attempt I made.
-
-> That would also help catch cases when someone wants to set
-> obj_ext._objcg that was optimized away (for that the setter would need
-> an additional parameter to identify whether we allocated optimized
-> objext vector).
-
-It would need passing the slab parameter to assert
-slab_obj_ext_has_codetag() in debug mode. I don't think it's worth it given
-the get/set is only called from few specialized places.
-
+> Ulterior motive: a later patch will add an alloc_flags arg to some parts
+> of this.
 > 
->> +{
->> +       return &obj_ext->_objcg;
->> +}
->> +#endif
->> +
->>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->>                         gfp_t gfp, unsigned int alloc_flags);
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 5e3f53bcd0d3..48e10198a3ce 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -2523,7 +2523,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
->>         if (obj_exts) {
->>                 get_slab_obj_exts(obj_exts);
->>                 obj_ext = slab_obj_ext(s, slab, obj_exts, p);
->> -               if (unlikely(obj_ext->objcg)) {
->> +               if (unlikely(*slab_obj_ext_objcgp(obj_ext))) {
->>                         put_slab_obj_exts(obj_exts);
->>                         return true;
->>                 }
->>
->> --
->> 2.55.0
->>
+> Note it might seem like this could just go in internal.h, since it's
+> pretty small, but actually it will eventually need to import
+> page_alloc.h, we don't want to import that from internal.h so best to
+> proactively created this header now.
+
+Hmm, maybe it could just go to page_alloc.h then? After all this is just
+bunch of internal page allocation functions, which just take the mempolicy
+pointer?
+
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  MAINTAINERS         |  1 +
+>  include/linux/gfp.h |  9 ---------
+>  mm/filemap.c        |  2 ++
+>  mm/mempolicy.c      |  1 +
+>  mm/mempolicy.h      | 31 +++++++++++++++++++++++++++++++
+>  mm/shmem.c          |  1 +
+>  mm/swap_state.c     |  1 +
+>  7 files changed, 37 insertions(+), 9 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8813d5d7eb0c1..9cde99c259639 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17068,6 +17068,7 @@ F:	include/uapi/linux/mempolicy.h
+>  F:	include/linux/migrate.h
+>  F:	include/linux/migrate_mode.h
+>  F:	mm/mempolicy.c
+> +F:	mm/mempolicy.h
+>  F:	mm/migrate.c
+>  F:	mm/migrate_device.c
+>  
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index 872bc53f32ec8..e4e974a6e5f90 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -11,7 +11,6 @@
+>  #include <linux/sched.h>
+>  
+>  struct vm_area_struct;
+> -struct mempolicy;
+>  
+>  /* Helper macro to avoid gfp flags if they are the default one */
+>  #define __default_gfp(a,b,...) b
+> @@ -274,8 +273,6 @@ struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order
+>  #ifdef CONFIG_NUMA
+>  struct page *alloc_pages_noprof(gfp_t gfp, unsigned int order);
+>  struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order);
+> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
+>  struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct *vma,
+>  		unsigned long addr);
+>  #else
+> @@ -287,11 +284,6 @@ static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
+>  {
+>  	return __folio_alloc_node_noprof(gfp, order, numa_node_id());
+>  }
+> -static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> -		struct mempolicy *mpol, pgoff_t ilx, int nid)
+> -{
+> -	return folio_alloc_noprof(gfp, order);
+> -}
+>  static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+>  		struct vm_area_struct *vma, unsigned long addr)
+>  {
+> @@ -301,7 +293,6 @@ static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+>  
+>  #define alloc_pages(...)			alloc_hooks(alloc_pages_noprof(__VA_ARGS__))
+>  #define folio_alloc(...)			alloc_hooks(folio_alloc_noprof(__VA_ARGS__))
+> -#define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
+>  #define vma_alloc_folio(...)			alloc_hooks(vma_alloc_folio_noprof(__VA_ARGS__))
+>  
+>  #define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 1dbb4c6f824e9..0dd8e2a15d746 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -52,6 +52,7 @@
+>  
+>  #include <asm/tlbflush.h>
+>  #include "internal.h"
+> +#include "mempolicy.h"
+>  
+>  #define CREATE_TRACE_POINTS
+>  #include <trace/events/filemap.h>
+> @@ -63,6 +64,7 @@
+>  
+>  #include <asm/mman.h>
+>  
+> +#include "mempolicy.h"
+>  #include "swap.h"
+>  
+>  /*
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 5720f7f54d942..31c4e9f49b5e9 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -119,6 +119,7 @@
+>  #include <linux/memory.h>
+>  
+>  #include "internal.h"
+> +#include "mempolicy.h"
+>  #include "page_alloc.h"
+>  
+>  /* Internal flags */
+> diff --git a/mm/mempolicy.h b/mm/mempolicy.h
+> new file mode 100644
+> index 0000000000000..d80fe4c559786
+> --- /dev/null
+> +++ b/mm/mempolicy.h
+> @@ -0,0 +1,31 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * mm-internal API for mempolicy.c. Public API lives in
+> + * include/linux/mempolicy.h.
+> + */
+> +#ifndef __MM_MEMPOLICY_H
+> +#define __MM_MEMPOLICY_H
+> +
+> +#include <linux/gfp.h>
+> +#include <linux/mempolicy.h>
+> +
+> +#ifdef CONFIG_NUMA
+> +struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> +		struct mempolicy *mpol, pgoff_t ilx, int nid);
+> +#else
+> +static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> +		struct mempolicy *mpol, pgoff_t ilx, int nid)
+> +{
+> +	return folio_alloc_noprof(gfp, order);
+> +}
+> +#endif
+> +
+> +#define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
+> +
+> +unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
+> +				unsigned long nr_pages,
+> +				struct page **page_array);
+> +#define  alloc_pages_bulk_mempolicy(...)				\
+> +	alloc_hooks(alloc_pages_bulk_mempolicy_noprof(__VA_ARGS__))
+> +
+> +#endif /* __MM_MEMPOLICY_H */
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 5071177059a96..69f561332bb93 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -41,6 +41,7 @@
+>  #include <linux/swapfile.h>
+>  #include <linux/iversion.h>
+>  #include <linux/unicode.h>
+> +#include "mempolicy.h"
+>  #include "swap.h"
+>  
+>  static struct vfsmount *shm_mnt __ro_after_init;
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 5be825911e645..8ccd03c39a407 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/shmem_fs.h>
+>  #include <linux/sysctl.h>
+>  #include "internal.h"
+> +#include "mempolicy.h"
+>  #include "swap_table.h"
+>  #include "swap.h"
+>  
+> 
 
 
