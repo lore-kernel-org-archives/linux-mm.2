@@ -4,140 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5D05C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:33:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC4FDC44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BC876B0106; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
+	id E2B626B014C; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9932D6B012E; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
+	id DDBB66B014D; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 883086B013F; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
+	id CF20A6B014F; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EBE56B0106
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D29B4401DD
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:33:10 +0000 (UTC)
-X-FDA: 84995033340.05.08D2DB1
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D1A7D40009
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:33:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NfE0CG6a;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784215988;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9956B6B014C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6795CA0079
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:54 +0000 (UTC)
+X-FDA: 84994490868.15.EE80FD3
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8FBBFC0002
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=scY77mWO;
+	spf=pass (imf10.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784203072;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
-	b=BX+KgkvNsXAfQ9UFkYm4yJBNeBzYKKNPsCXTnCbDpgZiLU+xl7x3SzHMCfsnz4emhtArYT
-	lwgasFU4AjDjJUtX3LMvsyykCTAppnTuYztT0sJQH8DiBBYzwsnewaywTKIyQIaEg5Kf08
-	3V8MhDOWjKJrMri9JzWNu2tEgPnJQEg=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NfE0CG6a;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784215988;
-	b=IY8O0zhfwl0D2wkQlENkoOcZJuDHhHhMNaMG56SSY2kLPxpSpsocxo4PH6+xusuUmEi0Bv
-	Yh75cS7s0a63zWVtffqkd5nJQ4CUP8zzWq6qFLRjk+GrceY6eXQ2/WPQ+d/0H2ZsWZQc0+
-	W0Q6G25L7mvREywjVqUlCl575Z1e9p8=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10ed63c0so35391cf.1
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:33:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784215988; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DjwYL+VmIwihOf850UXGHq9/pWXEMYqdfv0G7uQfbzWcka5aKYfF5dTUdh5Ir2TtDY
-         JJwkkdH0Ftpzsmkziuw6bajjjdmWvc2yn7n3zhJjx2k7Z4yGfY4IlY/e8LmdcDSxyDZG
-         vdCRXZFwimuHV4g61tjgq/tF3sSi651+DsK7AO8ZRvals5DPFbjL7qJ3JlEOtQO6f4nZ
-         kvwxgMMVLTrf4v8JkLkYcxb7wvDK/+2MU0x2fdpu8+t4pT/Ye3PdfCMavthnGxV+DLoh
-         +Pco4ESA8grRz8nBm6iizut19QBArczwiLWuZFf6Gx6eJ0lZ/bSPM2IEe8FYh0BRsn1h
-         9abw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
-        fh=JxyN4PMFXY5mk9th7iFhoZloAvVfAg+aYE8I2Xei6Rg=;
-        b=JwI7iyrnkXHsN5No/iDIdbjuYIufEafZAyWesQOdV/hTRyYKeSNnF3+Mape9mo+QUW
-         XythUNDq6AqBP5z0aKEJLQ8sS1APNPjlyVwUsTCIVi8EclL0RZ3NnJJZc/qD+5cyVPuM
-         D+zHrcmdCaXlt05YrYey0NvbAwbwahIsXGAkkQwlQGVfOP6QRegOXXnf/zr69JF1E2ze
-         boU2VrqM/wKYbybI9EdLetqc8I1wmIwzFD+KRQlO8At7RuR7i3ZXY//yL6s661HJTJWR
-         j7bAuUstGn/ze2cv+2viRYxpaVH8aXfoGjQ/NHWhW9irRYNgDEAK7iAwrCBJvAsLCA6B
-         m+VA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=rmpnw2WuwVbYt2i5mxyglNWbYuNa8vu1yBDcpvt+bw8=;
+	b=LY9lOAw6YED0GfXMgD1IOe4ZYCUOuJmfIffbit5mAXArAISk7Yr/tuo6S8rnjMXpoFC6U7
+	auxSOyi1w59r7n3zf/ZBVNpITws0GcP7S/llyjLZ488f/bJa7mEuq9wptjxMn2FZ912ehG
+	GMLARsYfi7Ltc7qilbssEOezUD30rYo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=scY77mWO;
+	spf=pass (imf10.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784203072;
+	b=hLrvag3wvk2cTkTqNgvKUg85r+cLB/jjSaEA29BFheca3bsmwSEJG2E0sXOAh4QlRFLTtv
+	mk+9P++5IiQUjYiU+0vGpCr4ipIGPWnDsXQUPQHRtmwW+gp/dwIhsreh5hXWgIOMnkjtj3
+	Vn0xnHskCBuTFqNIBsR9EGaCtZ1lPI0=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-384c94c9414so2670161a91.3
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 04:57:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784215988; x=1784820788; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
-        b=NfE0CG6aics15Kbi0PYIrzowXUWarSYHwvbwVTJjJlW6zGLjhBW8p3kIqjImVGoNuD
-         4T6OwTQXUrYBz7xiPZ5ZlAa0esFuMgmtXS8LsWXtd+kw/cHjPQTUIdF7QLggEq73o3ss
-         Cz53QeNjfLYmxKNuhqC2tEMFa3VhiWDP+GtOuONvd+W/TX+wEa9CANX5g0Ix67G7iJC8
-         QX1gFOfIXHF4aupLcuT080c6WTuU0xUJEz85OYd2j3OzPzLBQ4yIWlaWBIzAtRhlCfZP
-         qnkUUDv2yPfWEPQ2aJ/fNOJ8rzTrjUhbuxO9CVJd8s0wWLwwFGwhyeX1js3KF8Rso4aO
-         FneQ==
+        d=gmail.com; s=20251104; t=1784203071; x=1784807871; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:sender:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rmpnw2WuwVbYt2i5mxyglNWbYuNa8vu1yBDcpvt+bw8=;
+        b=scY77mWOZU5MJ6CDym2LowwXCzH9mgS0HSK1v1rfU8oAX7rY8LuwopGfWnmQwIcD2A
+         5FeowsP6zZoNl8fnNzIKr5uME9HMMq5OMMDusE8HGMQYq9lodUemgYdJNjpXGZ8Bu5mU
+         Errjm95CZpLRenW3LUsuEwu6jcevMuMNIeh88aefsMvSaxUifjSKVpdkpfnoeL8E3onB
+         lvxTyS8dLzHsFGOXhuc2p6yKqoiv8aNG9fwIQm24FwNUuHVok0juV1r7JqyXB+HXndow
+         hSvl93RXdfdw3ExgwHRdM5YKl9QKC9+ScgUbOZuk++jmu7hXuvklTi4BonYHb8UzMjN1
+         Sw7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784215988; x=1784820788;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
-        b=dJz0mJbvmF1n4oLsh00NxcYpONA2tUmbGpMJZ+O7OyM1H58s9mFQvrZ8wh2qIX5YQr
-         MyfDGddShIwvQM8c1bx9wehO9J8VmbCdzZCjli8UoLdtKPAmh8FhIbisGr7IA12CAGB4
-         naP5iM+ugsBGk79+UPs5pwDcxEzfyVDRSRkbSdn9a4s7z4lcFP0lCMP4G/FPZoytXYOR
-         dGobW0n91EjOGBbc+WKuH/vOXgw3Brn3U/aKoXCOL8i6AkbtZQVU+vUXgHkMs8MV/BcZ
-         DmtdLAT54hfOKi5EpfUxSxbgpMzoOrOB3B9+S5BkMFB8t80arxZMOgVaGSQ3Ldg8E+ln
-         0Tyg==
-X-Forwarded-Encrypted: i=1; AHgh+RpbL+3ndX7g81sREfCGsCCi52VdjysXseN8uejh94hYBb0mPE0ujJFVbYNWY9V67dyPqHOEzYID3g==@kvack.org
-X-Gm-Message-State: AOJu0Yw5fQTLzO7zaLdbecVeReiPWaBb03ZVYN+zbWGmuXO5AtCDISBJ
-	cqOqSem3j0stkZcEFmezRAaiSOxYLCqEzU5G7QIVbtTjy1oLDPUWdsADAcPzq5I8x9y6KNcD1Tq
-	UG+qj49KAxqiH834vUABne372cPlHkR3BUKlaDzQ2
-X-Gm-Gg: AfdE7cmlG+gDuHouHoek28SiDC1/Oh/j6HeZwJF+fbYl7iFmgeb8FrqZQ6jFXEFqCJN
-	1zOBWsiqvURrU9h9aeDM4vDyKPcRHGMcZ8z/qBoVdnLzcOzcIm2BCFh2sGMzNik80Pn8y/S0XR4
-	p6HiEc9bv/WETpkl9E0GI9rkfofqpoR93DnTrZToX74zuGfeiSG8FkLKFFPKzFB5QPxPx+xW60U
-	sIuPRVhvELxqrQKp2Rcgw+i50ZDyfSCrHkEVzc/po91mv5NM70+QCa/bZUhlPJ9ZBQwhzgNbKlG
-	u4oqXxqibii5PQleaMlh8/QWOw==
-X-Received: by 2002:ac8:5996:0:b0:517:5e32:2d14 with SMTP id
- d75a77b69052e-51f7e705596mr9599801cf.10.1784215987211; Thu, 16 Jul 2026
- 08:33:07 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784203071; x=1784807871;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:sender:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rmpnw2WuwVbYt2i5mxyglNWbYuNa8vu1yBDcpvt+bw8=;
+        b=m4GhdJGnejYOV9aXcLSik01spD1nrsRcM9NmsErX0nTB4LPvPTiFQwbSq+ohF4xtFO
+         MALvsaPsiu53dZTbh4YNnlCizDr/e6ERsm4YdbHgblf4YZ0kfu5cKE6nXDhU4KYsW6sw
+         cKEvZBw6uRTgy1Q47VjRuzJ5HvB180Zlt8xJ5p12EtCuDgH1G+vBWS2ZQWbPIlomJGmB
+         ioJcUmzeLAUyVnskjLBsVjmzJw9Tcmi0i3/866f7vV0CeZkHErdYjpupdgrhyZN7GsrA
+         0d/3mbDKEkhewKULGKfRFd9sn6KpxRjuvfW96WuU3wd7KiL7W/22ZNlPwlkZ03lwfqfC
+         aM9A==
+X-Forwarded-Encrypted: i=1; AHgh+RqtR0PpF9V/ggERSbQP+xYbFE9ycuaG3NEGTGyWadhEJ75lRnAKQRI3/o97rOz83Vt1ApzJOKYYlQ==@kvack.org
+X-Gm-Message-State: AOJu0YxAHMNa9OWkcAt4Xoi8MPZzkctS/Udebl3A+p+ynWjZBFoFjHFY
+	jGqSIOVsCY5syKEZPxMORSVHNpxwJrUGhy5XcaKq8eJTpnkCUrkMK+KN
+X-Gm-Gg: AfdE7cnq9DzFFKOgt4LOer5bpn5JB+rRZez12raEG+0g7uvGjLbw0hF3pj8FkZWENlN
+	LvmFrGV16h0/Qb2AvtamRSlPWHitpNEaQbsdIJpcMY8oJOGqZEmAndTCZor0euZlSDNGWw0AYon
+	r8pJFwoXCmxKtrZEJ0VPR9pHJgGcSLNxQ0FpCQPS31O98zG62amzMsczX6FSeF8S9CbXuPF2bQy
+	SDO+be6BjSrCE3+82GQGnE+jA5ydXJeuYFb5QTeK7I7oqfGdJPmS0zNZMfkQmxil3AizXF/g99p
+	wf8gmS5OCY3W/Wk5mXQPMw29b6NMlky8RGtvHAISt5IVL2Ez9b1Y+qmB7XIU6CuGN6p6TKoewdC
+	AopWJlQWv6PQ23y8CiQSw4Ot5XAOuLAvKhNqJVWJb1CuqSny1VhO+EUP+8L1B4qOSJznfwfMqyl
+	DPsOE45UOLFdRH5hSjNRLHjX+a/ild2rt0oHz4kDLg
+X-Received: by 2002:a17:90b:1d0e:b0:38e:250b:122f with SMTP id 98e67ed59e1d1-38e250b1428mr6967576a91.16.1784203071478;
+        Thu, 16 Jul 2026 04:57:51 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:90:2db1:9c31:f107:8086:4204])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3140e6ebe98sm10920690eec.26.2026.07.16.04.57.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 04:57:51 -0700 (PDT)
+From: deepakroag <gaikwad.dcg@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 3/3] feat: grow vrealloc vm_area mappings in place
+Date: Thu, 16 Jul 2026 17:27:32 +0530
+Message-ID: <20260716115734.80909-4-gaikwad.dcg@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260716115734.80909-1-gaikwad.dcg@gmail.com>
+References: <20260716115734.80909-1-gaikwad.dcg@gmail.com>
 MIME-Version: 1.0
-References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
- <20260715-b4-objext_split-v1-12-9a49c4ccf4c3@kernel.org> <CAJuCfpHuXu3BDf93zeBQWSW_k5wApegp44rHoZwk5Ym6xxbqEA@mail.gmail.com>
- <e126d6b1-bed7-46bb-a8a3-cc555707b516@kernel.org>
-In-Reply-To: <e126d6b1-bed7-46bb-a8a3-cc555707b516@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 16 Jul 2026 08:32:55 -0700
-X-Gm-Features: AUfX_mwOlgPh2vQsFfJAl8XC3VAb0x-hSX4wZUGMP4QuR9xJ87PvP5NzdSVYcPQ
-Message-ID: <CAJuCfpFicmMa54V5qVY7BYQuNih9u+-bQ+x51VDza7zWPK_mOg@mail.gmail.com>
-Subject: Re: [PATCH RFC 12/12] mm/slab: stop allocating objcg pointers when unnecessary
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D1A7D40009
-X-Stat-Signature: h34e11i3xfa5bt8r3urstcupk3hboeyu
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kt81hmf6ecptrdehak8b8zu8zq7r1gne
+X-Rspamd-Queue-Id: 8FBBFC0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784215988-935864
-X-HE-Meta: U2FsdGVkX1/d9ICC6O4Ow4/4Wsd2/9v95hkz17LwHLcrT6zXS+lwEO8hWZWQPKMvj7BXDs4GAE7HA3pVlzywM1M2/6pSECc4ejdQgPpeshdsSOWzf7KGUu2chcZ8nXacX8yc0dqghVFFPviXlU5D2vfV9pG1LS6VrSlYhqaf1N/ty3VO914H6VBVeKqpo8ZjDPGUjYrHr+Xe3fml+kgEsginRtkLR4VcZUIQb8bKnifLpQ9ngP4a3L0hyTVHjvNuW6FZPLYuE8cauFOqQCO/0jLPUrxWQAnPyPEq/c82mvB0rlqSjOFjptJ+qjiTgOGfoFiAwDqjKNoxrtqYtMNd+t7VCDpvEBTOrElqWSsHmc/K/avxPnSwDLoXeSDl/WZfQS3fOVsS7H/9xl4JV4xd7stX4cONBF1LMQM/yiMXflGENIuPxXTNYBz7hALxWA1UmEHsWVj7MdAzHSEpVa1lIFe6uCvPmVlVkfeIicDKZPNjZHt9hbEn9WD7ddQDQj8Bh4r3+yotA4DoX1+SpNYcjtEG5B1EgSUf/94CL2WC5fNSaTk3igT7rU/xCJaMEbNx6nRKOfqlwnTUCbCq/EN1+63Yfmi9ETuFjQFYIIEK8rjMrTqLr8oU2rdd+FN/lCkOTi8AC1pbsacQQ188ps9KiXZiPRi6dB2SxKe2KY6xYlhyb/6C+aYsP4ZbZwotDqX6dD7k9QLnOWAMdtnlr+EDjeqjdjxIipsg15ot+8eqX0gNEMsd1xfW/tRRM6hulSRCw2/8BL2425RVBgdLMIL9+3Tp19++KGk3STPzZyxeKdHaUIX0lcwCrMgw4A4ZFLdsxI5uDRBJfn/REGWwyhn+RKU4dBae5PEWGarWisWp2WDEDz7KhQK5Q1eulBKp7Q6eXh4IyH5Pf9uVGX3a2p3Dp5GExyAmynvw8HZVkZUuo00i5WE+bT/MBxskmgUSkzT/ViodfsePWsZe05Gp2dI
- it2Oh2R3
- POCxR2+dQmi7ye/rNWvEPRlmsJitHs1/ml4vniOxe7cCxQHpOtVD+NMN25xbpCB2FG12JHCNeK51rovaHsWl0xHNZWV+FzjaqV+/K29nD+n7Vw7FksOueHH7rTf2JSEVT1gyA7GDxC2gDl6sfLXkEHPIyFtOfkcUo0hKS3bmBVimy9fvy8f3mB+Fhsf5+fbRXxu+xUjbjvfcvLr+X+u37eh0Lu4acIl3v3S3yOAOVe8+HOaspUzWORUvOxuCFmzDUeIqrHODOx95B01M=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784203072-984932
+X-HE-Meta: U2FsdGVkX18vW1/uFLhu4ixRVIZf1UJKclMRrAlm01GzX3jwuL1zhUzjPk/OKtJ4K2ivt5bgFbLhbCQKTWyQnvcHsoj7Rp0g5R78vbUkkZwyc3nQRLXTvoIibN+GRKMF523assIX/bpFfx10vkcbEjJbNlA0/Ei/a18WN6ju6KPY8ycRkFAg1wPgIWP1kYHHtH93v/LYJEQCEDoY366qXX/VWI4+jxScXZzP+mIODeDnZY3mB1eSpnKPfuANCiVk5iVBA6ZRtjlFkNg+VnTJKfG8zsJqk5kRUY/tP56dShmlYTMt3iE1TbjZ1qbHt3bWEo2YF7vxwLJsBKnnbikhxqk6Gz4buymACU9CweOOTEZMHGpYvJ8W4aVHBqzyYwK8UL7rIujSOJzTJOvdV/kDDg22pzDiD/ZfEUnlYEXZUXFGXyBMptAxXvKjH00pB8QruEI4KW9zG7uC/qhrcQwmpiIi146htrUZUhqKL6n7u8PXvaLRxUb2ROtoCJnUaxwFNJYm5pixPowiRvKI0EljCEKiJBXBE1uZHUOt8hOAkGDl2U+Tzg4uhheqmb325thVade2BI6Jq3zI10AmR93jU1+sYoMEkoB7EoeZSPmuOHJkErfrbv17dpJBr75gxyN11LOXfcUHp+uAwiSkxgSK5SUFsclozvb7CJ65UtLYMkCZ64qcbD/JWUASAVzzyj9EiuRv+zeRVgbxM/KKWb6/2JSEMB2VBcKeg7j459avVUjtvF+8CrqGaHTfN7MjHJa7NO+SsEZvKj3auXUR1BSRnde8+BLjUTyRtS3cU0slF7c+JQKjhBXfouu6JlP/MGvkMdDeunV/lZrj8NRUY9h/0VAVSg70dcR9RSolhlGOe4XgzBFvbABdHQ7176B9FUN2TgHJY/ZL6ZJCIlJPrRTPSVmZ+euvf7ubdDplrnF0SHR7YKAj9mN7CCWSZ7Gf3PFU8T/fMEUAog/OFq1DaLC
+ uaMnNVhq
+ yuJ+BrJb4sto7TaUUd+JPDAx4eU6QY6b72d4xl+oPoHXZyUaCQeKdxzsExmu74HITN3jCjQYHXnR3LyynFA5d4IceoHMKyb1BDR4htS9qbDh6X4vDX9sku4Zrv6SbEfvCj8REc2zF+8JZkLjVNyKPD2GwXq5SW57VoiTS6ePR+D9KQvqUdKGuEfZ1aPzF21HZfVTl7xqB9srqywQLbeQ+LI+ToKHYjzG2zkVOCHLy0bWL2BKsLKVsqekyD1bAW1dlaEsH+nx5MLh1rVjMvsBRtM6w6k7cSem2dus2WVf9jz09D8F340A8kIL3ha3zVFGvzIGcejHoVvm+xPH9JIhdL9Rh6zP9AO5LC4A07kHUzFdc4EJADM6ZuXqtZrcK4bxwmkGzA8B1zjRcc9/l0SGE+BcR0dt1pGRAeM7GeVl7OJ/zQdh0FfPhGk8093HpYrixBlTYJu6JhO9eACm44P499l/Ab9z9+1JVEkgvlXpazcUkhFyww3Bi4avarA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,90 +118,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 8:08=E2=80=AFAM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
->
-> On 7/16/26 06:46, Suren Baghdasaryan wrote:
-> > Maybe now we should rename static_obj_ext_size() to
-> > static_obj_ext_max_size() as it reflects the max possible size of
-> > slabobj_ext?
->
-> Hm with _max_size() it doesn't have to be called static_ anymore?
+Allocate and map additional pages at the end of an existing vm_area when
+vrealloc() grows past mapped pages, falling back to the memcpy path
+otherwise.
 
-Yeah, static_ is an implementation detail anyway.
+Use flags (not gfp) in the in-place grow path for kvmalloc_array and
+vm_area_alloc_pages.
 
->
-> But maybe we can get rid of it completely.
->
-> The only caller is calculate_sizes():
+Signed-off-by: deepakroag <gaikwad.dcg@gmail.com>
+---
+ mm/vmalloc.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
-I was thinking the same but either way sounds fine to me. Keeping
-obj_ext_max_size() would be a bit more self-documenting I think.
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 1afca3568..1eff71240 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4426,8 +4426,56 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+ 		return (void *)p;
+ 	}
+ 
++	{
++		unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
++		unsigned int old_nr_pages = vm->nr_pages;
++
++		if (new_nr_pages > old_nr_pages && !vm_area_page_order(vm) &&
++		    !(vm->flags & (VM_FLUSH_RESET_PERMS | VM_USERMAP)) &&
++		    gfp_has_io_fs(flags)) {
++			unsigned int extra = new_nr_pages - old_nr_pages;
++			unsigned long addr = (unsigned long)kasan_reset_tag(p);
++			struct vmap_node *vn = addr_to_node(addr);
++			struct page **pages;
++			int ret;
++
++			pages = kvmalloc_array(extra, sizeof(struct page *), flags);
++			if (!pages)
++				goto need_realloc;
++
++			if (vm_area_alloc_pages(vmalloc_gfp_adjust(flags, 0), nid,
++						0, extra, pages) != extra) {
++				kvfree(pages);
++				goto need_realloc;
++			}
++
++			spin_lock(&vn->busy.lock);
++			ret = vmap_pages_range(addr + ((unsigned long)old_nr_pages
++						       << PAGE_SHIFT),
++					       addr + ((unsigned long)new_nr_pages
++						       << PAGE_SHIFT),
++					       PAGE_KERNEL, pages, PAGE_SHIFT);
++			spin_unlock(&vn->busy.lock);
++			if (ret < 0) {
++				free_pages_bulk(pages, extra);
++				kvfree(pages);
++				goto need_realloc;
++			}
++
++			memcpy(&vm->pages[old_nr_pages], pages,
++			       extra * sizeof(struct page *));
++			kvfree(pages);
++			vm->nr_pages = new_nr_pages;
++			vm->requested_size = size;
++			kasan_vrealloc(p, old_size, size);
++			if (want_init_on_alloc(flags))
++				memset((void *)p + old_size, 0, size - old_size);
++			return (void *)p;
++		}
++	}
++
+ need_realloc:
+-	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
++	/* Fall back to a fresh vm_area when in-place grow is not possible. */
+ 	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
+ 
+ 	if (!n)
+-- 
+Deepak Rao Gaikwad
 
->
-> #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
->         if (slab_args_unmergeable(args, s->flags) &&
->                         (aligned_size - size >=3D static_obj_ext_size()))
->                 s->flags |=3D SLAB_OBJ_EXT_IN_OBJ;
-> #endif
->
-> We don't have slab pointer to pass to static_obj_ext_max_size().
-> But we should be able to figure it out from the cache via
-> cache_needs_objcg().
->
-> So we'd need cache_obj_ext_size()?
->
-> The static max size here works, but may prevent SLAB_OBJ_EXT_IN_OBJ
-> needlessly if padding can only fit codetag_ref and not objcg, but
-> we don't need objcg.
-> Which is probably only theoretical at this point as kmalloc_normal
-> caches (that have no objcg) have no padding, at least without
-> slab_debug. But still.
-
-Maybe keep it simple as is for now and then we can optimize it further?
-
->
-> >> +       size_t sz =3D 0;
-> >> +
-> >> +       if (slab_needs_objcg(slab))
-> >> +               sz +=3D 1;
-> >> +
-> >> +       if (slab_obj_ext_has_codetag())
-> >> +               sz +=3D 1;
-> >> +
-> >> +       return sizeof(struct slabobj_ext) * sz;
-> >>  }
-> >>
-> >>  #ifdef CONFIG_SLAB_OBJ_EXT
-> >> @@ -741,7 +749,7 @@ static inline struct obj_cgroup **slab_obj_ext_obj=
-cgp(struct slabobj_ext *obj_ex
-> >>  static inline union codetag_ref *
-> >>  slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_e=
-xt)
-> >>  {
-> >> -       if (IS_ENABLED(CONFIG_MEMCG))
-> >> +       if (slab_needs_objcg(slab))
-> >>                 obj_ext +=3D 1;
-> >>
-> >>         return &obj_ext->_ctref;
-> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> index 771d73abacb6..09c4931e5435 100644
-> >> --- a/mm/slub.c
-> >> +++ b/mm/slub.c
-> >> @@ -2503,6 +2503,9 @@ void memcg_slab_free_hook(struct kmem_cache *s, =
-struct slab *slab, void **p,
-> >>         if (likely(!obj_exts))
-> >>                 return;
-> >>
-> >> +       if (!slab_needs_objcg(slab))
-> >> +               return;
-> >> +
-> >>         get_slab_obj_exts(obj_exts);
-> >>         __memcg_slab_free_hook(s, slab, p, objects, obj_exts);
-> >>         put_slab_obj_exts(obj_exts);
-> >>
-> >> --
-> >> 2.55.0
-> >>
->
 
