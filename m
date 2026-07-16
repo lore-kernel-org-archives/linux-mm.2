@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E10DC44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:52:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E0A4C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:52:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73A716B00DF; Thu, 16 Jul 2026 10:52:49 -0400 (EDT)
+	id EB47C6B00E1; Thu, 16 Jul 2026 10:52:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C3EB6B00E1; Thu, 16 Jul 2026 10:52:49 -0400 (EDT)
+	id E3DD86B00E3; Thu, 16 Jul 2026 10:52:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D98F6B00E2; Thu, 16 Jul 2026 10:52:49 -0400 (EDT)
+	id CB7B66B00E4; Thu, 16 Jul 2026 10:52:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2376A6B00DF
+	by kanga.kvack.org (Postfix) with ESMTP id 9A3F66B00E1
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5C1F1201CE
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:33:16 +0000 (UTC)
-X-FDA: 84994882392.05.16EF21C
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2F1D12014A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:43:00 +0000 (UTC)
+X-FDA: 84994906920.24.84D604D
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C66A21A000E
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:33:14 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=N24KOIlz;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf19.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1564E80002
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:42:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=dQsbi3Vk;
+	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784212979;
+	b=3T148ORxwh50KvKE8HV7mOOQVG06mmxSA7fsUkuQu302Op9RAVxkM/oIBfiZvewk5XMcOx
+	helrEybFP4BIzFne3KDTgDFY/50iGSszGR+KSUt/BeeAzWtuZCvY1riMc7sTA8i3n8d09L
+	8/xXtuDwdoicadwMGU+SNwHhjjFRMO8=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=dQsbi3Vk;
+	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212395;
+	s=arc-20220608; t=1784212979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLgQRvjkegtFxDHYyQzzA8SOU5y1blwPrChppwxjEAg=;
-	b=AVZufl7OSk2U7hPEB/hYezqiUxdZtpCegR1z/P0LhH4hrbOTr0nqNqs7TEJJcCp6C258iR
-	nd6tO4Nv3EvROVK3hukFCUcDspi25SI/8Im0bBR/DdJS53rGbx9eZd0OV4KcTFMW87K8ZY
-	lqNizN0IfZa6ggHHPq4jrPXmE0V0P5M=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=N24KOIlz;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf19.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212395;
-	b=0+vCLmDg58SRbgNWZfvQeRBXGmJ82iZJQX5CWxf//MyiUIPMIhPSip917Pz4SV5SpQrKr+
-	MgkcSj3oYr1InKsOCSSF9R2cFz375xO5g0d7ylb6Q4PFEnwSuoomiiZTx12HkojGyVaJMh
-	tiJykA5Xl8UtapfYr2Kh3ljouq929po=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212346; cv=none; 
+	bh=l4c5dTszoqEm6NDTThmAIzODAGvFqwPJuKg6pJyF2JU=;
+	b=j1GK1HDcvayUxdc8ahQPYhTHHn33ipGRDYeOuewClivH7QYebhOkZc5ZhxsTAWEV5AMhNu
+	M1zOoiGv7f2RK5Oy6qO4nw3/OGaQ7Cyf38+MC3SuPt0gUOw1rOXAgJ9EIp3kNphZFzwGPo
+	UCVsvd/ZX62Y33Zl60njO/4qKG6TJFM=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212519; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ZdJsE/0vEBbNiFKex0KPVSttsR7Q+XLYM59HOOE6NnjfxN48EVscoT6PFAvUOUryJjUioA7U6axJMNlhQQZD3nhTnEH2zd5mNrGamY2NeJZnHiLflFYF50/ig3Yr2knfOsCIKvBTHMpnIrmmQc83p2KLtaC+4q/9SmMOhZY3rN4=
+	b=jivl9Si2tzrgW2TWRxYTEgSGTrd9fIckk2zQgqpkmOpsYSl0qFMW1jESl/jSN8Gdx1yy/zW9ujsPO6U/Z+j84IUWuuTLjcbsJBk1fBLScDoqhYIoEvn7bJ2WYmlkKzsYcSk5e9R2h7sugIZLWas1C99LzPEL8IKBu0iZ1hJda2w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212346; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vLgQRvjkegtFxDHYyQzzA8SOU5y1blwPrChppwxjEAg=; 
-	b=nhOZOHQHgLC1lNxfAHlk5pJPevjCQBbZ1J8SVcVZRKzn1Bagho0HIQcPC55DCHubIo5qoldoxW1hh+gCuLWnpZKPGes0Q7KVxPh1dyBHmx9f5K+KWbWb5E3GT1Bxz66laJ2uM20ImuoYczTK6vE6FQl+vpil1zY75d5YVLAO0Mw=
+	t=1784212519; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=l4c5dTszoqEm6NDTThmAIzODAGvFqwPJuKg6pJyF2JU=; 
+	b=UlOIo6zIxvMm6ZvPr1oDZyFLQlspxpdfJ7AdvTLjPFYNMOtYMaErrEqov10/42UllktxPz98FNh5x9dcmSTqhxpZk1k+ijvgqLxvmmVWAMZjyjKGV9gJE/C2oEo59KyjOt0GkYBV211oniciVPU4+LdBjTPO0L2roPaZu1z2zcg=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212346;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212519;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=vLgQRvjkegtFxDHYyQzzA8SOU5y1blwPrChppwxjEAg=;
-	b=N24KOIlzocgoLAYjb7tmRFLoKMnyOcUpMYFTPduMUo0Fy6nZgVA9KukniwBxo1lc
-	WDDXubl2fxzluRy1cfdN6UXul6Ow7OQFtJduxPRZhtXtdJpElaiGM5Vgc8Q4VfD6B8v
-	eaqdWXyfueurVyHM/vnJXsPRUYr7Zizo8pysCBQE=
-Received: by mx.zohomail.com with SMTPS id 1784212343415557.0920836372659;
-	Thu, 16 Jul 2026 07:32:23 -0700 (PDT)
+	bh=l4c5dTszoqEm6NDTThmAIzODAGvFqwPJuKg6pJyF2JU=;
+	b=dQsbi3VkI6jCoAjM5LNwtScRr+BQ10uZztyd9ethvs6BQ1bO7Va6o8QVjej7FyCr
+	K9j/0ErAl5wQJvdioQ2YC2zf7xVwoQ5gxOHkcplaMkzJ9oxTWgAckgKgCJzcUK5Mwv8
+	1xlm5c94CTysq10GjBXGRlpwds6xFZxBI5D/tGVg=
+Received: by mx.zohomail.com with SMTPS id 1784212516958201.0119212011324;
+	Thu, 16 Jul 2026 07:35:16 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,9 +99,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 01/24] pidfd: add spawn builder uapi
-Date: Thu, 16 Jul 2026 22:31:27 +0800
-Message-ID: <0ee77dd90ea5d00b66a3e017488ab64f610cf41a.1784204592.git.me@linux.beauty>
+Subject: [RFC PATCH 19/24] file: expose spawn file-action helpers
+Date: Thu, 16 Jul 2026 22:31:45 +0800
+Message-ID: <0ef568259d4e7b0ec79e81ee16e0f38bfdab0483.1784204592.git.me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1784204592.git.me@linux.beauty>
 References: <cover.1784204592.git.me@linux.beauty>
@@ -109,13 +109,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C66A21A000E
-X-Stat-Signature: 84qzcrcsm5jegyq6z59f8hk9gifnt1n9
-X-HE-Tag: 1784212394-417660
-X-HE-Meta: U2FsdGVkX19RcESH/vCr0bSpZmRAXb/HHikG2R5BTZAZ4BNIvcq7hmzJGzPgFig2/8uf5TyG8QAXTPxYxuvQpd6XyC6a6FEFKjWjMJD92hHOGEAKeNtpoHYX8jk5eWO01kyYMJU4y9fKgaPdZf3e2VSjSmSZPpEz6F6FK39o14NL6YqzvzR63JsD0/7UkACG41Dsyw2UKtswxbJa4vvZypAOt109WOkV1wCW84zpuhagqN3NJKkwCAeHDi+42d2h0rdlvLXcahXTVkS3VfnHDhXFa0ejAa+V1DOiEP1nNvZ94pmb6711mFEzMwRpQ+5GpiKqhfFLPoyJuvXebf7VsS8zGEqOOZ65YIaIjYF+IoCQD2V8K43RinWHBg9asz2aNDP8j+zZ1TfC3F4KEhTy4eZEU67NEjOpvrPDuHZj8FONuBeM3KB9RUEbbSLiwR3LiBL49hfwyGGWqFSSGjzgXibeLsMVnu1XgusLtpVWaizPHFUKZEakfN/wQia7tSaqqQaxqADAjW9nMLKhD+QfH6foEj8DCynWZCtFQHqZWRGV+YgJv03s/0H2//B+SIG+rsONOFQw4LALF6D6Gi5c5YWpp+lobNCQsBBMfoEEbfmYM4z7QqREY/ePGvgxtX0foXPKYvXFMHC92yrmTwWUePXd3wEST3OEiVmI2wWmbXhS9e/KvTdT+gtdXLIVDMI2FERP9V8Jfl9qjhHHmpFkKXlFsLmd89mErjF7f8PEcsAv/fo3PZbe3YwUcBH/pRFWRHXRy57714TeHQY2Pa6hmZkiMdUwuRB5WDifTW8TaiGIHo4ux+Uvh25H+AgRUWoWYu7jBKCNxdr6uCEAcvFWFHj9tmC4bbZqCA15Ug/HfLKsFlpuQtqi6muuDhU5UNPnS9L+SBaekSC+1XU9+MTH8/iQEEeyQBLLjUGPpRVUPDfxFtGywIv0bbfrKlUq+7fAA+uzsYtg73ALbHK/L2J
- wVquM931
- +hFs2l8Bi7vL7tdjJSNi7du3W8l/wc6wSg4qJCUdQfaSpuyNsGpAl+MQZKqOAlCT2fTR/GIi3sHKMys/Wf9w2eoj+75YJdA6ttZRYCTYTz5N5DuToMQ3XjfvTixqwmWYne6oKQyJ3MFqdqu910skcSSb297tgWFS2E8PJmkTZZYihGl/xerN0zRVNi+i4beNEiyZi05z6riQgh2CthkHCZfgk8yFZZYLmpuoK47y714dXV4ORkT6MLDhbjHhstyZQYiHdV7LFoUybjGNDi2wf0Gopn6s9OWWv8fU0EGWBL/LWKEi3gyO0PI2Yd/FK8MYX9D998cSS6BlrdFTWH2PyCieDvaAyoLEXImLtTXWCX3FgHTgnEhqo7QtBgriv2jFL+D30aQj5cdfzEiPLKD8TwTheXcW4CyxZCLmEu7t/Sni+G5ohD64p//FNtrKiHotlhNaLWYjl4ipHPrwY4q4Ycm6LPg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1564E80002
+X-Stat-Signature: h36ifkyhhe45s7qkm3cxixr9bei7hjop
+X-HE-Tag: 1784212978-819127
+X-HE-Meta: U2FsdGVkX1+rRoc1XSn4S9haMvEQ1inLALo7qgNvb1Jp8n8vF7cM5kEbR8WQDuaDdQoT6ibkbP5u7jaCVw5MtP4Q5QncGvNHYZ81ZVm3pvNg8nH5gyRPyb8C9IeFivypip5ZyCgUDuYFGwLsBWqQmtA/7yGU1AwhXskJ2tvx1fOselnVGp5eAz0KybQFtKztz7EM3VLQmExcQtE6NobRuEAc/qRXmB0tvXvUt6fVHVYxZJWmQgqzhjvO5IzSAI4x/9LJyIs9OG0iSF1ca5XT7BjmOMTWAju6Gw/7lwCam/QfrwoAXDWs08oF7VoXp70kWPs8nJ5M5O4iOd/g9+Y33Bh46R+EoJDtPR5ADjcIwQaqfci44fI0wVn88ulXrr+CDCgA4QcPFUfnf1uBq4Liqa6Qk6FT+IWVVnOuIbJjQ+NHKdCX9MYV4P+VY8i/gy/sGOaxFci3yEWDrOjmcWBa3INx4Za7teTXl/2O9CQX1AHbLdrrvhQX2OcwhogiBGIO9DA92buZKKVEvqI/AsPjFWE+zp2a5EFrjljS0ayMlKVAXMBy6wrZAnpV/4HC3GPn68SIhvCd2CtywR+K7/+XYCWckzYxX9AxAfDKNfodT7RfPV5Zd14hqViG/rSnbtjOmBfTB3YtTAqus1qlo38W9J12gEDf5OJxp0rcZWoHD/eNGT4CSVf/aYSATEpR2dCqCp1qR9a/4Wwy9pqoWspKgelI8TBwgSnHPy+zgEnTD4Ekt2f3Q3hu3AR3IWiiGtu8ljvWagaDd/R8ZKWCbmOUoZtvrUvovkrnxYaZZZwzSt8DcuMqMQmRb3xgcHtmw0k6F9xPPmfARzCm6bqAM1RbiJnQ6548wBTKD+ZzpWbwTmQM1BJJ/nPo+XQvbLBhvWMzp1KDtGjQn3esWyl364lao4bF9dCr6EQX0LJhnRG0EKvq7gxsHfSSzrOKh5d39yr/mVlMADhhGE2SEJ9E6Xo
+ ov0OEHuv
+ EF+u6HDCM2PtshqAc5vTOmBDazySXiJDkdiwdp1URUK9XsuKRowNoscEGkt0JRm0Kg0nloXsVz1TJKkpDg5+smT2xBqqYtMAN4tVfIcCfi/61AzK0IQn4saRjJ2gyPo4VVJPw+sHQmxRzCQZM3W/8G4XYZFnn+csf/rwR9Luxqvvxgs0x2521tK9vIO42k3BgK5zjHYMZ3tveTLtVlIZbcZGI4bOWhPUqb0gCvqEKR0Qv1XtFcWeG5fvugcGLK1HPjWpkKpcH5A0D9YdmsfHGxsfXXewewIvdkYag/NKMW/BQJeD/0+1PpgfCLTtWPOAWkbJ8HRAt448BhmWivD+M2iTEtaovjxB0+ZdFZjSsk0Gcg/NSk1q4WA2Mrq7FCb6+PB3ZlJYVTVfujtCYRGOOQmg2AtKUtXq5biYfd4zM3g80qY+NO5aZok9tLcRnGfeVxl8T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,162 +123,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Define PIDFD_EMPTY, the fsconfig-style configuration command and path
-key, and versioned run arguments for pidfd spawn builders. Add the
-initial ordered file-action records.
+Process builders need to apply close_range() and fchdir() while
+preparing a child. Split the syscall bodies into internal helpers so
+callers in fs can reuse existing validation and state updates. Keep the
+helpers internal to fs rather than adding new global interfaces.
 
-Store userspace pointers in full-width aligned containers on every ABI.
-Keep flags and reserved fields zero so later kernels can extend the
-structures without changing their initial layout.
-
-Suggested-by: Christian Brauner <brauner@kernel.org>
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- MAINTAINERS                            |  2 ++
- include/uapi/linux/pidfd.h             |  1 +
- include/uapi/linux/pidfd_spawn.h       | 49 ++++++++++++++++++++++++++
- tools/include/uapi/linux/pidfd_spawn.h | 49 ++++++++++++++++++++++++++
- 4 files changed, 101 insertions(+)
- create mode 100644 include/uapi/linux/pidfd_spawn.h
- create mode 100644 tools/include/uapi/linux/pidfd_spawn.h
+ fs/file.c     | 11 ++++++++---
+ fs/internal.h |  2 ++
+ fs/open.c     |  7 ++++++-
+ 3 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8729cea57c3dd..b63bc1ee0171f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21287,7 +21287,9 @@ M:	Christian Brauner <christian@brauner.io>
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git
-+F:	include/uapi/linux/pidfd_spawn.h
- F:	samples/pidfd/
-+F:	tools/include/uapi/linux/pidfd_spawn.h
- F:	tools/testing/selftests/clone3/
- F:	tools/testing/selftests/pidfd/
- K:	(?i)pidfd
-diff --git a/include/uapi/linux/pidfd.h b/include/uapi/linux/pidfd.h
-index 0919246a1611c..cad5b722e9f0e 100644
---- a/include/uapi/linux/pidfd.h
-+++ b/include/uapi/linux/pidfd.h
-@@ -10,6 +10,7 @@
- /* Flags for pidfd_open().  */
- #define PIDFD_NONBLOCK	O_NONBLOCK
- #define PIDFD_THREAD	O_EXCL
-+#define PIDFD_EMPTY	(1U << 27)
- #ifdef __KERNEL__
- #include <linux/sched.h>
- #define PIDFD_STALE CLONE_PIDFD
-diff --git a/include/uapi/linux/pidfd_spawn.h b/include/uapi/linux/pidfd_spawn.h
-new file mode 100644
-index 0000000000000..46d61e72435cc
---- /dev/null
-+++ b/include/uapi/linux/pidfd_spawn.h
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+diff --git a/fs/file.c b/fs/file.c
+index 628ca07dc4b17..4f4cb1d5752c2 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -805,7 +805,7 @@ static inline void __range_close(struct files_struct *files, unsigned int fd,
+ }
+ 
+ /**
+- * sys_close_range() - Close all file descriptors in a given range.
++ * do_close_range() - Close all file descriptors in a given range.
+  *
+  * @fd:     starting file descriptor to close
+  * @max_fd: last file descriptor to close
+@@ -815,8 +815,7 @@ static inline void __range_close(struct files_struct *files, unsigned int fd,
+  * from @fd up to and including @max_fd are closed.
+  * Currently, errors to close a given file descriptor are ignored.
+  */
+-SYSCALL_DEFINE3(close_range, unsigned int, fd, unsigned int, max_fd,
+-		unsigned int, flags)
++int do_close_range(unsigned int fd, unsigned int max_fd, unsigned int flags)
+ {
+ 	struct task_struct *me = current;
+ 	struct files_struct *cur_fds = me->files, *fds = NULL;
+@@ -867,6 +866,12 @@ SYSCALL_DEFINE3(close_range, unsigned int, fd, unsigned int, max_fd,
+ 	return 0;
+ }
+ 
++SYSCALL_DEFINE3(close_range, unsigned int, fd, unsigned int, max_fd,
++		unsigned int, flags)
++{
++	return do_close_range(fd, max_fd, flags);
++}
 +
-+#ifndef _UAPI_LINUX_PIDFD_SPAWN_H
-+#define _UAPI_LINUX_PIDFD_SPAWN_H
+ /**
+  * file_close_fd - return file associated with fd
+  * @fd: file descriptor to retrieve file for
+diff --git a/fs/internal.h b/fs/internal.h
+index 71cc43e72b33e..25492194e2883 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -198,6 +198,8 @@ extern struct file *do_file_open_root(const struct path *,
+ extern struct open_how build_open_how(int flags, umode_t mode);
+ extern int build_open_flags(const struct open_how *how, struct open_flags *op);
+ struct file *file_close_fd_locked(struct files_struct *files, unsigned fd);
++int do_close_range(unsigned int fd, unsigned int max_fd, unsigned int flags);
++int do_fchdir(unsigned int fd);
+ 
+ int do_ftruncate(struct file *file, loff_t length, unsigned int flags);
+ int chmod_common(const struct path *path, umode_t mode);
+diff --git a/fs/open.c b/fs/open.c
+index 408925d7bd0b7..bf9d7bdcf487c 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -568,7 +568,7 @@ SYSCALL_DEFINE1(chdir, const char __user *, filename)
+ 	return error;
+ }
+ 
+-SYSCALL_DEFINE1(fchdir, unsigned int, fd)
++int do_fchdir(unsigned int fd)
+ {
+ 	CLASS(fd_raw, f)(fd);
+ 	int error;
+@@ -585,6 +585,11 @@ SYSCALL_DEFINE1(fchdir, unsigned int, fd)
+ 	return error;
+ }
+ 
++SYSCALL_DEFINE1(fchdir, unsigned int, fd)
++{
++	return do_fchdir(fd);
++}
 +
-+#include <linux/types.h>
-+
-+#define PIDFD_SPAWN_RUN_SIZE_VER0	64
-+#define PIDFD_SPAWN_ACTION_SIZE_VER0	32
-+
-+/* Commands for pidfd_config(). */
-+#define PIDFD_CONFIG_SET_STRING	0
-+
-+/* String keys for pidfd_config(). */
-+#define PIDFD_CONFIG_KEY_PATH	"path"
-+
-+struct pidfd_spawn_run_args {
-+	__u32 flags;
-+	__u32 nr_actions;
-+	/* The next four fields are full-width userspace virtual addresses. */
-+	__aligned_u64 path;
-+	__aligned_u64 argv;
-+	__aligned_u64 envp;
-+	__aligned_u64 actions;
-+	__u32 action_size;
-+	__u32 reserved0;
-+	__u64 reserved[2];
-+};
-+
-+enum pidfd_spawn_action_type {
-+	PIDFD_SPAWN_ACTION_DUP2 = 0,
-+	PIDFD_SPAWN_ACTION_CLOSE_RANGE = 1,
-+	PIDFD_SPAWN_ACTION_FCHDIR = 2,
-+};
-+
-+struct pidfd_spawn_action {
-+	__u32 type;
-+	__u32 flags;
-+	/*
-+	 * DUP2 uses fd as the source and newfd as the destination.
-+	 * CLOSE_RANGE uses fd as the first and newfd as the last descriptor.
-+	 * FCHDIR uses fd as the directory descriptor and requires newfd to be 0.
-+	 */
-+	__u32 fd;
-+	__u32 newfd;
-+	__u64 reserved[2];
-+};
-+
-+#endif /* _UAPI_LINUX_PIDFD_SPAWN_H */
-diff --git a/tools/include/uapi/linux/pidfd_spawn.h b/tools/include/uapi/linux/pidfd_spawn.h
-new file mode 100644
-index 0000000000000..46d61e72435cc
---- /dev/null
-+++ b/tools/include/uapi/linux/pidfd_spawn.h
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+
-+#ifndef _UAPI_LINUX_PIDFD_SPAWN_H
-+#define _UAPI_LINUX_PIDFD_SPAWN_H
-+
-+#include <linux/types.h>
-+
-+#define PIDFD_SPAWN_RUN_SIZE_VER0	64
-+#define PIDFD_SPAWN_ACTION_SIZE_VER0	32
-+
-+/* Commands for pidfd_config(). */
-+#define PIDFD_CONFIG_SET_STRING	0
-+
-+/* String keys for pidfd_config(). */
-+#define PIDFD_CONFIG_KEY_PATH	"path"
-+
-+struct pidfd_spawn_run_args {
-+	__u32 flags;
-+	__u32 nr_actions;
-+	/* The next four fields are full-width userspace virtual addresses. */
-+	__aligned_u64 path;
-+	__aligned_u64 argv;
-+	__aligned_u64 envp;
-+	__aligned_u64 actions;
-+	__u32 action_size;
-+	__u32 reserved0;
-+	__u64 reserved[2];
-+};
-+
-+enum pidfd_spawn_action_type {
-+	PIDFD_SPAWN_ACTION_DUP2 = 0,
-+	PIDFD_SPAWN_ACTION_CLOSE_RANGE = 1,
-+	PIDFD_SPAWN_ACTION_FCHDIR = 2,
-+};
-+
-+struct pidfd_spawn_action {
-+	__u32 type;
-+	__u32 flags;
-+	/*
-+	 * DUP2 uses fd as the source and newfd as the destination.
-+	 * CLOSE_RANGE uses fd as the first and newfd as the last descriptor.
-+	 * FCHDIR uses fd as the directory descriptor and requires newfd to be 0.
-+	 */
-+	__u32 fd;
-+	__u32 newfd;
-+	__u64 reserved[2];
-+};
-+
-+#endif /* _UAPI_LINUX_PIDFD_SPAWN_H */
+ SYSCALL_DEFINE1(chroot, const char __user *, filename)
+ {
+ 	struct path path;
 -- 
 2.52.0
 
