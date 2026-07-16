@@ -4,95 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E27C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF995C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:34:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63C7C6B0153; Thu, 16 Jul 2026 11:34:15 -0400 (EDT)
+	id 36C626B0154; Thu, 16 Jul 2026 11:34:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 613A86B0154; Thu, 16 Jul 2026 11:34:15 -0400 (EDT)
+	id 2930F6B0158; Thu, 16 Jul 2026 11:34:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 551136B0155; Thu, 16 Jul 2026 11:34:15 -0400 (EDT)
+	id 133076B0159; Thu, 16 Jul 2026 11:34:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 339866B0153
+	by kanga.kvack.org (Postfix) with ESMTP id DB77D6B0154
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:34:15 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9F1F160113
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:36 +0000 (UTC)
-X-FDA: 84994311192.21.4D0EDD9
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CFC40120007
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="HdT/UraE";
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784198795;
-	b=szQTG8oAAaXXkRgwHrV3jzOi18FzFpYg9lxGyQ90i3BkcWpg2BmOPa/ae40zP8MXTPnOgs
-	qWf3AhAOKLDE5rHLIyAiOva5GsGgqeH4QYTi2q5Qn0yoZ8zo3H8EOCNTDuPg6gSvEcd8CS
-	i1/vcJjpXfVDO9is08KNdR9t1EgXoKw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="HdT/UraE";
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2134416013F
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:58:26 +0000 (UTC)
+X-FDA: 84994492212.02.D706E3A
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 57CF9C0004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:58:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="o2t9/oQM";
+	spf=pass (imf28.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784198795;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1784203104;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lS+8PcrmibxtgubJdgtpEr1BolM0XkzQscvdMqvtB5k=;
-	b=uT0lA6K/UEVl/ZHLYzYiNjXWiGsj2Rh0w98CumHLwEZT0kOpgjiU25kQfY7pwMRB884E0i
-	EGVmz/V5OsMgIpDClovdfkjBGA0fdnv7YEISxJkKnMj0LhgYSJjNfD66AcxHtqB1SukcbP
-	mvxVf6CJwwW6W/KYaUZwOaFuqSDakms=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784198790; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=lS+8PcrmibxtgubJdgtpEr1BolM0XkzQscvdMqvtB5k=;
-	b=HdT/UraEGktqBjfhkgW38h/csTyl8Ph6kCTJS7zWgSf9326jrOJyLdm4IFtaS7o6VJ0l/kv/1Oe8aQhD4evPM+h3bP+Dn8Ecvkf/T4wT6aGpJIShGtXIqUYP9w4dIv1KkgjTMOiOrHYat5itDJhNzYeCi6IThYVXq7ncHM2Tl44=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R631e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X7EAGcn_1784198788;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7EAGcn_1784198788 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Jul 2026 18:46:29 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	hannes@cmpxchg.org
-Cc: riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	mhocko@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] promote mapped executable folios after first usage for MGLRU
-Date: Thu, 16 Jul 2026 18:46:17 +0800
-Message-ID: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=toaUztrSvNj3kdZ0hYHuWC4I9HtWac7I1kBUHNoUIdY=;
+	b=28D6IUKQDGS4VgX9UqwHaPmPb3mQFWNlhkCDilm/Tt2pDQYlvMr/TCwhR82DQ5S5cBxr9i
+	lYYVXuc0LOtkhZjMhxa0G5ZF7++zHBBRgcME80nGvmMrAISLCV5IkSiZUiTIGL6GQRlBxt
+	hIzV+ZWi4L3No+N7vSE+DRnDwsBkNzA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="o2t9/oQM";
+	spf=pass (imf28.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784203104;
+	b=LrHPhnYLl++2Rmer7B4A4k+WDFVZ0Dszl1ThwQa6isY3DOHITILIapLert2F1rwjuKOXim
+	0/QGxKibOCTPXGRaJbWl7ht0KXPVBOQeMc8sPjK/4RLl4hzfARbRRHSrIJqQrpEbsRPzIf
+	gzdFdowAK2Vz1LI6/CRDi0sNxNkCwDg=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38dcbade417so4712924a91.1
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 04:58:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784203103; x=1784807903; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:sender:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=toaUztrSvNj3kdZ0hYHuWC4I9HtWac7I1kBUHNoUIdY=;
+        b=o2t9/oQMBhskS9ogJCVOvYgPAp6mq1NMZJP7b8HqwtEIOa0rG5FPUzcNjhF42sYu3J
+         xpXbWGkD1J3tE+BpqJNCQ1yRRK+raer0cRMykE/0U752JMhODvu9/C1x+UyVSVjTu4BJ
+         f348TTwFgWRznoeiF2icPYdVMJIIHbY+lQZrG7UxwmxkvTgNT9l+8IrTOU5nCy747Tnf
+         V0AlzecFWkrvVkUtALXFV+mLTQDxjdklBGPE0lXJSbKz6xAFKM61qX0z3BmyS6p2yOHw
+         edydtEmre8/P4H+FqpwSGaGYgU/xRotvuF3S3qxEnQrvl3D6hlKn2zgPsRrCRZwtiWko
+         4QDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784203103; x=1784807903;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=toaUztrSvNj3kdZ0hYHuWC4I9HtWac7I1kBUHNoUIdY=;
+        b=TYTPcx2zXfpG97zJxejv6hwPRdkQo9LjNNKOiDd2PTGa70juqOUD39wQ0Hi6FxzI/v
+         tK3dQwIZxg/FRlWaaqr2z0JHRIsivx/f1IQbb1el4LNdm5DHr7Fo81hj6B8k0ITHMB9R
+         IY8HFWwLWLskDkZPJqWtEYCbof677bYepPsICRxxr9PlRoey34eslW3bCPwNvS4A+iEu
+         F7q7E4r4gp6/7kvWBY7bp680OAkCCLJoymzy6QI5h5WeNvG5w6GtmdgIf1Zd06GquE3v
+         7AU/SKBQXvsSz154cr0I3sKMzI9Zz7cbY/4HQ+WLHAWV8Bq+Vx8q9kLjJln4DnFCgugQ
+         BOyA==
+X-Gm-Message-State: AOJu0YwuJwP3DIBw6BewZHoefO9wwgV1st+pNJp6AUG9sMrwx6ZrIVdl
+	xEAZ+WCYKVJjcDpVrLitXIHLaC2aKfsQZY6JbjqiKQFWh1EoKrWEs9wU
+X-Gm-Gg: AfdE7ck+uc2Sf+biwWrE2J78FBsbXdpigOogOafF8AMpnrOuvf3iNQD8i/XJAMGy/Lj
+	hdnb5KPKbAkvSv49Lfi+X+Idp4pu3v4oQTbNPp5OhFiq+5xClbbhifIJXPyEEf9WD/d++RDmHOJ
+	GrjERWSeQVsP0D0OKaEaQGWwCeNp90FRtmcc16sEbjKC4b6aVHJPh/zQkqgOF/2nQ5iIKyW1QhV
+	xw96mAPkX9E9m8BfVemE2vW/3DPpkfpCdyfzqpkt176f2Xhv9OFbMTOJvfYP1gW3u3IozJIDf2y
+	81Aec3LiXyPAGgpmfzcnZS1Y083ZrF3qh6DjjhORibc+CwgPDvFrXcwBQ8xg7rCAtTYwj7avxa4
+	DEz5AQpph4unBtOzfVw2nLsOREsmo5zWjJfLHb4Ln0HRSl6vx/jx1TTQe43LLDMgbSlUnGzhZmr
+	O89lbe0P4rJnILaDAQqZNZa+JrbLR1yDfwaw4LJ5iJ
+X-Received: by 2002:a05:6300:8941:b0:3bf:ba2a:6a8e with SMTP id adf61e73a8af0-3c34d583230mr14643765637.21.1784203103217;
+        Thu, 16 Jul 2026 04:58:23 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:90:2db1:9c31:f107:8086:4204])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3140e4fcd26sm10685491eec.5.2026.07.16.04.58.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 04:58:22 -0700 (PDT)
+From: deepakroag <gaikwad.dcg@gmail.com>
+To: kernel test robot <lkp@intel.com>
+Cc: linux-mm@kvack.org
+Subject: Re: build error in vrealloc gfp/flags (fixed in v2)
+Date: Thu, 16 Jul 2026 17:28:17 +0530
+Message-ID: <20260716115817.81400-1-gaikwad.dcg@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <202607160153.yE2uZTbP-lkp@intel.com>
+References: <202607160153.yE2uZTbP-lkp@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 5y8ujr8i11whub1yydyepqwk97kdwyop
+X-Rspamd-Queue-Id: 57CF9C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CFC40120007
-X-Stat-Signature: m77xe7nota1h8q6bsnmkp3to4f84q7ie
-X-HE-Tag: 1784198793-727498
-X-HE-Meta: U2FsdGVkX1/IGBCXKnbrD71AUZXGOmvqlO6GPB+LgATMv30IQT4IOkaQCsoZOjKRGnKuSdVj+RO6+GGY7bdiOtPvi0pXGmSBmQCObjQA9VUpPARW8XEl5bx43vAaEhbsq3M+hVm132qqTvJH6wVO3QEcP7dnV6MMIABSGMXhrFdRRVle6AQklJLOSf6sTJi0uA13rPk/TA5P4Paz+HTP2YP3lT5dy0uoHU7w3NTqzuLnTP1jVjg/6PKaxMD2iZWEcp/yqE1UE8iCD8rLvfEqGnWt5xuAEQriYwoHOlIhidam2WgUN7OPJ+Yj0fCRGD45Nvdt73YKcseUEiMKNBVMwLkLXK2GDbNZHcW1RVlzH0Uom+qKFXQNX5g1u9boDoQpVWm7lHQ6BwJko549XQ73faYkrj7kmvVdaxeZ+zumWbC0vEBJbLWthLp41hupieBslcM653ecJbigeMew2FGGQSUWNcp5XJRO9poM3QequjSnoDUnSj2o8QpPfSKTTib5qmsQQBJlOZDKA+wmt20Dzy9sGBgBPO0iFIrJ629sR49dy5iREX9ie309Idga8fVPEKSwSTvxgrA1bM/gw8wwVFrBpVz2MdLAST7XNDMn5fPnfam8kTYlOJlsjg8Hjy4zQY+rS26SCvBzVr/eaQEzR/AKKsCEa1pidxuETbpgKA1RrU5Wm/oOTSTXRjxJaNhPh9A/8nct0ldAPsBxTl2ZHKdAtdMh1XmTLnBPRTLdLEzpHYKpNvlsQp3DCK9tFSXUoOsg1N3Z5Bx7egSnD7hbcOpxTVc/kyvDvP2vWqXSxQN3wZhqahXpAh/KyTVmAzN0W67IkT1wDcT/A6LPqbLY7C6/VDjqLN5jBzIFUEGJFwTDNEWjxsKKsd7fzE/rtKK7FYO+HV7dfXz+0nk0736fp0WlLTBeSTs0bb9aXQ8G97sWX6Z+WruV75aru9vBmadzZ5kBUDQ78AhS5VGbs3/
- CwLh8DZT
- kTszcV7vl5OAnV+LS2Y88xBgYgdgKMUNYy6cCJ4FRr4OEEZwAWZTvzPXbM2ZlK2nlcoCEUaR4Pp1KR3hPHyJJqd+VtMMzX220j0i0YSLSWF7bdL/LhKv1mWJF7MrUAjF704FkzecigEKiRjDSvZd1ilIdHb8VyLKg4Pw5d1Pl0y/9pX7WdRqKpdfqeYbW5fjng0H53pVjCgb2+PgU+9HZQ6+rPgV7hdUapoId53XM6XOmXk2iXMNkEvzov7b3jt5YIBili2oSWg5oUEQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784203104-897620
+X-HE-Meta: U2FsdGVkX19RGjO1g1FIVIJDLTJeYxtg8Qtn+Km2wYHNZvrEBZsXynNUJwqRDAb7fcqhQ6WbCEZfJGKAoJlipDtyDAzzhbJR0Vamy91QpIJhX98LzrbEMlrdQWIjiOPYaxS2J+fDXJ4QoT9pgqcPMRUCEUCyifCxJOAK7Yrlxp+3IzAvk0F/bP9DOmuLTWM5GpD2UbqiZ4ZWpTlM3Hh65W2rBJL6p1VWR8fjwLdhyQM7nfNTkC9a8BG4//RJh0PftHFQ3OJbOOWBHQIR3LxOvNBSvnQ+lwlgnKmVDydKxfS0kWhMzc8uI/eXPYDr1AjG+z4nngMhApsOI1BRpmQYzWj++xazKHfyaAtmd0pIZteqZB1phBWO7lPWD+vGRq2sOP3vCkPowvSFgL99StiwYhfUleMAKXHWq7GU0O3+3ht4OWWuIkJylta4leWJN19lA89LMv5Su/6Oz5M7bWg38UpGLGpeCriSuhPhSbNo1R2VF8q64Hn0jq0c912hZD9LZ/tTEpVF1sQWsEVBkyd2KvZH6899k3h2ADfkXKKGoILcHLmJ3I5D8ahev0kDzQ7MaLUJ2WqVfxd/yN8NkF4ReFgGyiOUvY2CjLiBnq4OOx60L0TmQqRfgNxJBjX4NtNI1kOXblnWbTf72k+ywZszNw5kjstQtiSTVZWhd7seF131vXesZ4K85kC/uyb6LtEW6Yc5HpBmFkQsY3bui22KLHN4zCOjJnLOgJ4TSiZeW9p2X3ayGYENRrjoUSKWL3h10ShPojGHQbXZtraxk6CEMvbHN3MBhpUjUZFGmfTtJ/lZSjs0O7amyqAlAQxLgeP3r9SHrHfmI/RKDTKF9Bcm8+pWRFzAyXMSvyYKtaU4rmB6kU1nssZ0MyHbYD34p6cfnAjJw+98z3+H1oOyLZeCnMr4VhNYVhjqIRy4sz4vfPQB0PUtk9NmLqr3ncp4AESVs8aeB069ILsP/ScY1vW
+ r4zfjOsJ
+ ESwj2p2KApH2jak5aJA8I4kZ5Y39bces8mKv0dtBSakEsN/zzAzZiR4TrLQwpRgIE7lSs7EvxqiehqTux3TtPrEnXTlPxjWfT2RUNcPkrMpPMx8tBnJkV+RsHZd8lPDxJkJLFrh+0CGc4nVKr7nWPbdsWRA6M4VC6dcgt7xz3o9ArawnCm2m4utY1Br36m9GY66YtMbgvG0lpnVMRy5gfX3g48FzEdCqOESEeL7xIIl/jYBKxKiJFQibeWZKdayXqbbYz5Z7Qbm76x+tpySDgItfbvdWrOMdDKxBNsSic7DGAssRaOOkzXoSL+PuIesI62y+4OU8RSHzG8b/wfaMTsDpDAWtTNIa8GbiIDHEBOCZq5oEccIFJt6hdSKy+4FYxYLdjO+Wy+k7mzWD67FmDiE8PD38RJshGZenQ/cDpyIgtvloHvW3VhWND22H3UygApXbPxkBuqrhWJ3/ceFBGdjlU19PCwLiTRlmmWdor+dUq5jk8hfC9IHLtJBWFuK7957L3XwbQ23Yn6iRUzCN0ybkVYH9LPCF/9GMC65yH/F5ft5ZxsHvItG9XHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,27 +118,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now MGLRU's protection of mapped executable file folios is less reliable.
-Follow the classical LRU's logic, promoting mapped executable file folios
-after their first usage to give executable code a better chance to stay in
-memory and improve workload performance (See patch 2 for more details).
+On Thu, Jul 16, 2026 at 07:23:53 +0000, kernel test robot wrote:
+> build error in vrealloc in-place grow path
 
-Changes from v1:
- - Add a new patch to clean up vma flags as preparation.
- - Add a new helper to check exec file folios (per Kaisui).
- - Promote exec file folios in lru_gen_set_refs (Per Sashiko). 
+Fixed in v2 — gfp→flags compile error squashed into patch 3/3.
 
-Baolin Wang (2):
-  mm: vmscan: convert folio_referenced() to use vma_flags_t
-  mm: mglru: promote mapped executable folios after first usage
-
- include/linux/mm_inline.h |  6 +++++
- include/linux/rmap.h      |  7 +++---
- mm/rmap.c                 | 19 +++++++++------
- mm/vmscan.c               | 51 +++++++++++++++++++++++----------------
- 4 files changed, 50 insertions(+), 33 deletions(-)
+Link: https://lore.kernel.org/linux-mm/20260716115734.80909-1-gaikwad.dcg@gmail.com/
 
 -- 
-2.47.3
-
+Deepak Rao Gaikwad
 
