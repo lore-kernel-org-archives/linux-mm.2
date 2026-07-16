@@ -4,103 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60E10C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:02:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0ADC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 001316B011D; Thu, 16 Jul 2026 11:02:56 -0400 (EDT)
+	id 4473A6B011C; Thu, 16 Jul 2026 11:02:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F21C06B011F; Thu, 16 Jul 2026 11:02:55 -0400 (EDT)
+	id 41D336B011E; Thu, 16 Jul 2026 11:02:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E56E26B011E; Thu, 16 Jul 2026 11:02:55 -0400 (EDT)
+	id 333796B011F; Thu, 16 Jul 2026 11:02:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB4326B011C
+	by kanga.kvack.org (Postfix) with ESMTP id EA4036B011C
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:02:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECE66401A0
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:43:32 +0000 (UTC)
-X-FDA: 84994757064.06.7403391
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3D89720004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:43:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZndhMEV4;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D3FD1A0137
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:33:14 +0000 (UTC)
+X-FDA: 84994579908.21.BB86DA3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D7C83A000E
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:33:11 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NnjrMzY6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784209411;
+	s=arc-20220608; t=1784205192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Sj/M25oVbH+rWO7PSpE7fI/tkji4kX40FPXf3ZlljY=;
-	b=e6jloebTCxWfNk+X7lR4F6hPYCTIAH8aEsKm+muOqnvNR37OrsM1R3DyxxSJZkVVXj6y9Q
-	B41YwaNyDXbPfauS5JcKlBR5nKXsL0ZvBgegls02xZKZu34L97Z3eTgU8U4MgDkkU2PGtB
-	Qo2frccvy1mhPgNsrs7ERbfAZepVw1Y=
+	bh=fZIciaIvh3Ed9MSVOrmBY/FCqel8pMMjbwP7rG1cjtg=;
+	b=KySs+aazbqqHFBU4WP5huBHwVOyn1tjK9xWVRO8sffcjQmPuYfvjo9vqBjSwo3Pkhcnosd
+	qb72EpDVOSlZ4brggHwXHHNfxHFMWOIdHuGPX8pfX86Om9wPX66Fvc9MRRMoih9vF0dIZ6
+	79Ccuth3PyYIFC/sPrAtRtQd2Fzsz+w=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZndhMEV4;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NnjrMzY6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784209411;
-	b=2V9bgHiCZsvzxooe6SLBOWIUxcq74aCKKY9NwneEU0vG02KykoWrqOK6BsAmIv/McjwLTI
-	EabTJmlfWMPWP3jFJvZ8F9YaEqoQzr5PKI8n8/L9Em7gZlTtevUMXeCZ+CARr8eMzm8qO6
-	NGbOGgSSh47Chjmoe3FxZGjR8f19bB0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BE60A6136C;
-	Thu, 16 Jul 2026 13:43:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0763E1F00A3E;
-	Thu, 16 Jul 2026 13:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784209410;
-	bh=8Sj/M25oVbH+rWO7PSpE7fI/tkji4kX40FPXf3ZlljY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZndhMEV4yXOR6uNgwH7/Yu7m/bBTKhQxI9l2/KGYfYj3sBtF5tnwNJOTXnwJipmPA
-	 VcMu+NnjqrdT+xJ+sH/DN1I7Hcu011RnzjyxWUPZAYD5fvy21omYi/9+FrNp+jmIyX
-	 PTm13cGymX6UBlZXC1C2iTYMQGZek5Fz158O9hHJXv654tNbE7QDq6+3AFurFPuVU0
-	 OZveC0rkxatzoD8hnNkeh+mC5Tw9nWzVpcz6q8Ds8mcQC9KOfK2rGKaJNakK9hKrzH
-	 rHAwyOO4knuImOwmEDflobCq3ftAg6uC/bKphsVJsZBKPkDzM/E6+AtfTGbhPjNk82
-	 kNK03QGsCS6CA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 16 Jul 2026 14:43:09 +0100
-Subject: [PATCH 1/3] mm/mseal: remove superfluous comments, fix confusion
- around mm
+	t=1784205192;
+	b=tNyPGA5oFLjOlyveG5w+Pij/u7QTz+91GM1mgCyrhP8C5Zkyi99MO+qMtw4eCsZEvC/UPB
+	oZft7eMaqgbaSlxprbM37xWVvESysq73L2RLghyoSOh72jDPOeoehSPkTeR6apR5dIVlEl
+	p4hYFrnHlMI4PFryA8CRBtjAHE1NY3E=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B98CA1691;
+	Thu, 16 Jul 2026 05:33:05 -0700 (PDT)
+Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8FC6B3F7B4;
+	Thu, 16 Jul 2026 05:33:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784205189; bh=DBJv/0ksG+vCGfmd3BGRAFUPsj0u9YdtLegB9ZTgoP8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NnjrMzY6XcFv8CCluji1WTRp19GQ1fDhykXaujz++4nzPjc1kjBX18NxaFWP720a5
+	 6918geC/hVmFMUouXfzZ/E4iqIBkCSyv1TRATPoImry7k7iqbDqfiALubj6mSIj7T8
+	 /RMthXI2OqZo0YnW1AvZLUEpqVXtVkk/yZRnHqrU=
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Brown <broonie@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH v5 2/5] tools/lib/mm: add shared file helpers
+Date: Thu, 16 Jul 2026 18:02:23 +0530
+Message-ID: <20260716123226.197736-3-sarthak.sharma@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260716123226.197736-1-sarthak.sharma@arm.com>
+References: <20260716123226.197736-1-sarthak.sharma@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260716-mseal-fixups-v1-1-3a9609bf041b@kernel.org>
-References: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
-In-Reply-To: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3144; i=ljs@kernel.org;
- h=from:subject:message-id; bh=JEKI5OwncHBGRVO2u9xfmyB4w0tHgvkQ1WO1V8Kh+So=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIi7n/M1bye0Ojznz8pYLrszfC+B7v0a8U4D6e9+rp+z
- V5rXquYjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEykrp2RYeOBxUbdL953TMux
- 4lW7ELFuo/pJLRZd61AFFj2dmXc9pRn+19kYn4+3OzvhRJ2Fc49jjOh0xxfXRdoW+UlFvdr3/Pt
- 3bgA=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: sqr9edw5jg7w4ngpcday1dxkadhhijyc
-X-Rspamd-Queue-Id: 3D89720004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D7C83A000E
+X-Stat-Signature: gjpp89istfghysrtrwpwuo3cxswcaaz1
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784209411-257356
-X-HE-Meta: U2FsdGVkX19vH/ngAGAziCrbRm7vaxdUI7N/S11JGnXoOwzP84sE7YIgtLq6+tzlzK/c6kHt4Q92OPKvmXi2BYj2GMZsgkGOjq+B8tXAwAhkLMwUpquU6+CA8wNIOabTRVpcyWVHZpLL8DzijMoFt5xvXBOGDkCKAxFRj/cDKwsUDLyAnLRymlfNn2KH/WclFcfb8isqJqZTkklcJyRLUdX+KH9QQ6vdht8iZfh9eLOLs1d8JkL1CiviSkYpKGpiRrLQj3Gg/qWWylKZpweedJlKw28LAGHF5MaFHgN/HlMdbB0GOerj87s73p0/HGHsDoq31+hlM1FuEdXbtiHS5S7NOVAcbeJlat99Piqn1CgCrHAuSRBO7JrEd2E5em1+K8NkNWfBc2X25s5AveDZXl9bYqQXgtTtNltzXMwpMsngIrYGBEbtOG77e5qjYYHSxtCUBnZ1VYZ9UGwL1PZD6ZjvB18es3uj8nWytPrFM26bCzbygktWGK4umBT+1yXaTqAkkXii+W5Gqapx3Og2LEIPU7AS7wBGlDbuBVT4t5hcisj/9x492Si+IrSAFn0pfbnD6I5JGSCojd5Vk+HlJniNwvU+K2kqV5gB25uLI8bVGj79yeLDq84sxGaKlPRKjkLotw2HyTT0fkiR0+WRU/KvbNIvhQq9gzoDbU+V7wQ6mAlP4i+OAB3GJv3MSKIyzrsEHr+wf5LNCK+GVmt4YwlXyIu3700fhaO31wgVxPePuJYD9EWih+jH/O/3KWGMvIrwmdPRR+1/wcS05seG8/tNXGI1NQ3ErnxBUVITBMNeekyH4dv23QfbEcgwZ0Hb8Sq06kZHNoDNANfnS9hK57myuUhQDoZtOW1pS7XB3TdQZEVVyQ9R++DInD8qTL730VSk1wU3r+O7xGd8GUMwR+OMDKxO/Q2U6M936cAPczSvuktfYkcahcPV6e9bFYX5xspk5WIK8ZtOWRMoDfo
- 1RJhoshB
- ukEx3h7VZUeWl1E/PVfIbEPMCaOZPYj0TSEZGCHJ1ddlnT80cK5SIP33NQwN32Hcs+T4Rou/nd/z0A5D4cgVWhCrrWiC7DhPm0LOaP+BdgikxACb7cCrid8YPslgRMg+mMuTFqPUT4Sae7VtwTEQWMGCDIXA5Xc84A33VS3+Pf32nXFwBSCOmZv6DqdsV1ZN/h3LUuBassA20PnWw0Q73KPo4kR4MUJoINMHmzabbS97++PO0wsKjBjr+5Q==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784205191-600139
+X-HE-Meta: U2FsdGVkX1+Azb6XIXyumRDw7wqn8G1qsQ7ZwWzptgr1FhLNVtG/x0nu6kkKdEKQRAXcxt6nTIPwmXn0ENpuwBFyDU57CuJKjRE9aexIOL6er9jBYcFXuK9jVpoJHcBc8NUSvdlGTQup031EwpZDWMjnxPFslLY4fIJnu5AVIt1DPSh9rHmq1L3M0KzXwsxwLcUtEquAX7mFJIHHiNQ/nglA9iT8hK3c34mYb/k1T+Px1fDr9Yim4vuDAou5G3Sx/5+R/46gYGYtrAX+a8bjyxMZKroKWDZPNcZZImST69sMkAjcOqiQwrG3uys4fVqy3C/hlwieIyu0kIADnwWPUF6D3adyPoS0BIAphakmDWoQkHqfr2gULsqsbu2CD4cWpcSsJ8Mp5rjmgey6Kt2f+nBL6T13szSiirhVqdRIJPMqdeVeTAN+pIhw4BiuOKI9Vfn+L8bHGl2EcvvLK1NsWncUBuh6E0RzkKapH61FikZPI4bKLq7b0DvrjP2uM58h5OAxt3wAB6Ej5jOQRgG5GM6dsTgSEczhCLScJYzRlmFHadcyFNTGHr661KDn3VQoOifs1imMNt2y+lLjRNLRtnxeSMspYvergf/1Lhvybw7HChVnzFNNUH7pW+4okEQoNMXEIheB0ewXhZhSQMbturLapwIkSEGMyaLzYTixbaDmrG3pw64gNe9ANJhQK1ndvsbZFMh/1tT8QkYUYOxj388raoK6iQcuhHeDpuRg5/P8GGEaM6ATsJvX9iQ1ISZQ1Zbztfp4XDfBLyNh7KHH4dMoZfByiU0FG5khXmm52aN/Ksh7AvrQ2XBw+T9Oc1TohsM/dcCe0dNWOGdrGLt5jyfKo+u93ODJpnwsZtyPdjSxYsGD07RdzRh7IH4hkc5xpzHfQ2sWV1keZHGo4qDMxjN6CyxLQfdHGw1/bHWbEiyOPoDvEx3KqyIT9vUFJJVnaywVASnWzxdRJGl+tyT
+ 763U67nB
+ 4XcQubh7i5353YV2O4kMLbPeTnDWBdtqP3SFjj7T+EUDEMH8knj3XA78yb2Lbv0YJIpdtOkmxRg0qdO8IBg0tZXdcZu05JapSr0/RF2jbWjHCghJQ5NSGPjn1Xh4PjyWeZHKegSBe6kqSoNVG9iwtzmrVV064LSjshkqFuqjrIvzpfV5bI6qEXu6WjE5KKKbIMHXCLhwVrtv6NWq8NM53SkR0KsMrUIQ1GDyPBd28ZZMeIEtdbDv3Ye9zxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,107 +113,379 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove comment blocks that don't add value and eliminate any confusion
-about whether or not we permit mseal()'ing of remote mm's by explicitly
-referencing current->mm consistently.
+Move read_file(), write_file(), read_num(), and write_num() out of
+tools/testing/selftests/mm/vm_util.c into a new shared helper under
+tools/lib/mm/.
 
-Also avoid ugly goto by using an else branch.
+These helpers are used by mm selftests today and will also be needed by
+shared hugepage helpers in subsequent patches. Move them to a generic
+location so they can be reused outside selftests as well.
 
-No functional change intended.
+Keep the helpers exposed to mm selftests through vm_util.h by including
+the new shared header there, and link the new helper into the
+selftests/mm build.
 
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Update the explicit x86 protection_keys 32-bit and 64-bit build rules
+to preserve prerequisite paths, now that file_utils.c is built from
+tools/lib/mm.
+
+Add tools/lib/mm/ to the MEMORY MANAGEMENT - MISC entry in MAINTAINERS.
+
+Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- mm/mseal.c | 48 ++++++++----------------------------------------
- 1 file changed, 8 insertions(+), 40 deletions(-)
+ MAINTAINERS                          |   1 +
+ tools/lib/mm/file_utils.c            | 119 +++++++++++++++++++++++++++
+ tools/lib/mm/file_utils.h            |  12 +++
+ tools/testing/selftests/mm/Makefile  |  11 +--
+ tools/testing/selftests/mm/vm_util.c | 109 ------------------------
+ tools/testing/selftests/mm/vm_util.h |   6 +-
+ 6 files changed, 139 insertions(+), 119 deletions(-)
+ create mode 100644 tools/lib/mm/file_utils.c
+ create mode 100644 tools/lib/mm/file_utils.h
 
-diff --git a/mm/mseal.c b/mm/mseal.c
-index 9781647483d1..207fea89c61e 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -16,28 +16,7 @@
- #include <linux/sched.h>
- #include "internal.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 806bd2d80d15..26b06d80ab45 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17128,6 +17128,7 @@ F:	mm/memory-tiers.c
+ F:	mm/page_idle.c
+ F:	mm/pgalloc-track.h
+ F:	mm/process_vm_access.c
++F:	tools/lib/mm/
+ F:	tools/testing/selftests/mm/
  
--/*
-- * mseal() disallows an input range which contain unmapped ranges (VMA holes).
-- *
-- * It disallows unmapped regions from start to end whether they exist at the
-- * start, in the middle, or at the end of the range, or any combination thereof.
-- *
-- * This is because after sealing a range, there's nothing to stop memory mapping
-- * of ranges in the remaining gaps later, meaning that the user might then
-- * wrongly consider the entirety of the mseal()'d range to be sealed when it
-- * in fact isn't.
-- */
--
--/*
-- * Does the [start, end) range contain any unmapped memory?
-- *
-- * We ensure that:
-- * - start is part of a valid VMA.
-- * - end is part of a valid VMA.
-- * - no gap (unallocated memory) exists between start and end.
-- */
--static bool range_contains_unmapped(struct mm_struct *mm,
--		unsigned long start, unsigned long end)
-+static bool range_contains_unmapped(unsigned long start, unsigned long end)
- {
- 	struct vm_area_struct *vma;
- 	unsigned long prev_end = start;
-@@ -53,11 +32,10 @@ static bool range_contains_unmapped(struct mm_struct *mm,
- 	return prev_end < end;
+ MEMORY MANAGEMENT - NUMA MEMBLOCKS AND NUMA EMULATION
+diff --git a/tools/lib/mm/file_utils.c b/tools/lib/mm/file_utils.c
+new file mode 100644
+index 000000000000..792f4b4db625
+--- /dev/null
++++ b/tools/lib/mm/file_utils.c
+@@ -0,0 +1,119 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <errno.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "file_utils.h"
++
++int read_file(const char *path, char *buf, size_t buflen)
++{
++	int fd;
++	ssize_t numread;
++
++	fd = open(path, O_RDONLY);
++	if (fd == -1) {
++		int err = errno;
++
++		printf("# %s: %s (%d)\n", path, strerror(err), err);
++		return -err;
++	}
++
++	numread = read(fd, buf, buflen - 1);
++	if (numread < 1) {
++		int err = numread ? errno : ENODATA;
++
++		close(fd);
++		printf("# %s: %s (%d)\n", path, strerror(err), err);
++		return -err;
++	}
++
++	buf[numread] = '\0';
++	close(fd);
++
++	return (int)numread;
++}
++
++int write_file(const char *path, const char *buf, size_t buflen)
++{
++	int fd, saved_errno;
++	ssize_t numwritten;
++
++	if (buflen < 2) {
++		printf("# %s: %s (%d)\n", path, strerror(EINVAL), EINVAL);
++		return -EINVAL;
++	}
++
++	fd = open(path, O_WRONLY);
++	if (fd == -1) {
++		int err = errno;
++
++		printf("# %s: %s (%d)\n", path, strerror(err), err);
++		return -err;
++	}
++
++	numwritten = write(fd, buf, buflen - 1);
++	saved_errno = errno;
++	close(fd);
++	if (numwritten < 0) {
++		printf("# %s: %s (%d)\n", path, strerror(saved_errno),
++		       saved_errno);
++		return -saved_errno;
++	}
++	if (numwritten != (ssize_t)(buflen - 1)) {
++		printf("# %s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
++		       path, (int)(buflen - 1), buf, buflen - 1, numwritten);
++		return -EIO;
++	}
++
++	return 0;
++}
++
++int read_num(const char *path, unsigned long *num)
++{
++	unsigned long val;
++	int err, ret;
++	char buf[21];
++	char *end;
++
++	if (!num)
++		return -EINVAL;
++
++	ret = read_file(path, buf, sizeof(buf));
++	if (ret < 0)
++		return ret;
++
++	errno = 0;
++	val = strtoul(buf, &end, 10);
++	if (errno) {
++		err = errno;
++		printf("# %s: %s (%d)\n", path, strerror(err), err);
++		return -err;
++	}
++
++	if (end == buf || buf[0] == '-') {
++		printf("# %s: invalid numeric value\n", path);
++		return -EINVAL;
++	}
++
++	if (*end == '\n')
++		end++;
++
++	if (*end != '\0') {
++		printf("# %s: invalid numeric value\n", path);
++		return -EINVAL;
++	}
++
++	*num = val;
++	return 0;
++}
++
++int write_num(const char *path, unsigned long num)
++{
++	char buf[21];
++
++	snprintf(buf, sizeof(buf), "%lu", num);
++	return write_file(path, buf, strlen(buf) + 1);
++}
+diff --git a/tools/lib/mm/file_utils.h b/tools/lib/mm/file_utils.h
+new file mode 100644
+index 000000000000..38576790a342
+--- /dev/null
++++ b/tools/lib/mm/file_utils.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __MM_FILE_UTILS_H__
++#define __MM_FILE_UTILS_H__
++
++#include <stddef.h>
++
++int read_file(const char *path, char *buf, size_t buflen);
++int write_file(const char *path, const char *buf, size_t buflen);
++int read_num(const char *path, unsigned long *num);
++int write_num(const char *path, unsigned long num);
++
++#endif
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index e6df968f0971..70d6a9ccf9c9 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -37,7 +37,8 @@ endif
+ # LDLIBS.
+ MAKEFLAGS += --no-builtin-rules
+ 
+-CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
++CFLAGS = -Wall -O2 -I $(top_srcdir) -I $(top_srcdir)/tools/lib
++CFLAGS += $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
+ CFLAGS += -Wunreachable-code
+ LDLIBS = -lrt -lpthread -lm
+ 
+@@ -187,8 +188,8 @@ TEST_FILES += write_hugetlb_memory.sh
+ 
+ include ../lib.mk
+ 
+-$(TEST_GEN_PROGS): vm_util.c hugepage_settings.c
+-$(TEST_GEN_FILES): vm_util.c hugepage_settings.c
++$(TEST_GEN_PROGS): vm_util.c hugepage_settings.c $(top_srcdir)/tools/lib/mm/file_utils.c
++$(TEST_GEN_FILES): vm_util.c hugepage_settings.c $(top_srcdir)/tools/lib/mm/file_utils.c
+ 
+ $(OUTPUT)/uffd-stress: uffd-common.c
+ $(OUTPUT)/uffd-unit-tests: uffd-common.c
+@@ -217,7 +218,7 @@ $(BINARIES_32): CFLAGS += -m32 -mxsave
+ $(BINARIES_32): LDLIBS += -lrt -ldl -lm
+ $(BINARIES_32): $(OUTPUT)/%_32: %.c
+ 	$(call msg,CC,,$@)
+-	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
++	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $^ $(LDLIBS) -o $@
+ $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-32,$(t))))
+ endif
+ 
+@@ -226,7 +227,7 @@ $(BINARIES_64): CFLAGS += -m64 -mxsave
+ $(BINARIES_64): LDLIBS += -lrt -ldl
+ $(BINARIES_64): $(OUTPUT)/%_64: %.c
+ 	$(call msg,CC,,$@)
+-	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
++	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $^ $(LDLIBS) -o $@
+ $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-64,$(t))))
+ endif
+ 
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index bfe0efbe517e..f276eee57680 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -698,115 +698,6 @@ int unpoison_memory(unsigned long pfn)
+ 	return ret > 0 ? 0 : -errno;
  }
  
--static int mseal_apply(struct mm_struct *mm,
--		unsigned long start, unsigned long end)
-+static int mseal_apply(unsigned long start, unsigned long end)
- {
- 	struct vm_area_struct *vma, *prev;
--	VMA_ITERATOR(vmi, mm, start);
-+	VMA_ITERATOR(vmi, current->mm, start);
- 
- 	/* We know there are no gaps so this will be non-NULL. */
- 	vma = vma_iter_load(&vmi);
-@@ -145,7 +123,6 @@ int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
- 	size_t len;
- 	int ret = 0;
- 	unsigned long end;
--	struct mm_struct *mm = current->mm;
- 
- 	/* Verify flags not set. */
- 	if (flags)
-@@ -167,24 +144,15 @@ int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
- 	if (end == start)
- 		return 0;
- 
--	if (mmap_write_lock_killable(mm))
-+	if (mmap_write_lock_killable(current->mm))
- 		return -EINTR;
- 
--	if (range_contains_unmapped(mm, start, end)) {
-+	if (range_contains_unmapped(start, end))
- 		ret = -ENOMEM;
--		goto out;
+-int read_file(const char *path, char *buf, size_t buflen)
+-{
+-	int fd;
+-	ssize_t numread;
+-
+-	fd = open(path, O_RDONLY);
+-	if (fd == -1) {
+-		int err = errno;
+-
+-		printf("# %s: %s (%d)\n", path, strerror(err), err);
+-		return -err;
 -	}
 -
--	/*
--	 * Second pass, this should success, unless there are errors
--	 * from vma_modify_flags, e.g. merge/split error, or process
--	 * reaching the max supported VMAs, however, those cases shall
--	 * be rare.
--	 */
--	ret = mseal_apply(mm, start, end);
-+	else
-+		ret = mseal_apply(start, end);
+-	numread = read(fd, buf, buflen - 1);
+-	if (numread < 1) {
+-		int err = numread ? errno : ENODATA;
+-		close(fd);
+-		printf("# %s: %s (%d)\n", path, strerror(err), err);
+-		return -err;
+-	}
+-
+-	buf[numread] = '\0';
+-	close(fd);
+-
+-	return (int)numread;
+-}
+-
+-int write_file(const char *path, const char *buf, size_t buflen)
+-{
+-	int fd, saved_errno;
+-	ssize_t numwritten;
+-
+-	if (buflen < 2) {
+-		printf("# %s: %s (%d)\n", path, strerror(EINVAL), EINVAL);
+-		return -EINVAL;
+-	}
+-
+-	fd = open(path, O_WRONLY);
+-	if (fd == -1) {
+-		int err = errno;
+-
+-		printf("# %s: %s (%d)\n", path, strerror(err), err);
+-		return -err;
+-	}
+-
+-	numwritten = write(fd, buf, buflen - 1);
+-	saved_errno = errno;
+-	close(fd);
+-	if (numwritten < 0) {
+-		printf("# %s: %s (%d)\n", path, strerror(saved_errno), saved_errno);
+-		return -saved_errno;
+-	}
+-
+-	if (numwritten != (ssize_t)(buflen - 1)) {
+-		printf("# %s write(%.*s) is truncated, expected %zu bytes, got %zd bytes\n",
+-		       path, (int)(buflen - 1), buf, buflen - 1, numwritten);
+-		return -EIO;
+-	}
+-
+-	return 0;
+-}
+-
+-int read_num(const char *path, unsigned long *num)
+-{
+-	unsigned long val;
+-	int err, ret;
+-	char buf[21];
+-	char *end;
+-
+-	if (!num)
+-		return -EINVAL;
+-
+-	ret = read_file(path, buf, sizeof(buf));
+-	if (ret < 0)
+-		return ret;
+-
+-	errno = 0;
+-	val = strtoul(buf, &end, 10);
+-	if (errno) {
+-		err = errno;
+-		printf("# %s: %s (%d)\n", path, strerror(err), err);
+-		return -err;
+-	}
+-
+-	if (end == buf || buf[0] == '-') {
+-		printf("# %s: invalid numeric value\n", path);
+-		return -EINVAL;
+-	}
+-
+-	if (*end == '\n')
+-		end++;
+-
+-	if (*end != '\0') {
+-		printf("# %s: invalid numeric value\n", path);
+-		return -EINVAL;
+-	}
+-
+-	*num = val;
+-	return 0;
+-}
+-
+-int write_num(const char *path, unsigned long num)
+-{
+-	char buf[21];
+-
+-	sprintf(buf, "%lu", num);
+-	return write_file(path, buf, strlen(buf) + 1);
+-}
+-
+ static unsigned long shmall, shmmax;
  
--out:
--	mmap_write_unlock(mm);
-+	mmap_write_unlock(current->mm);
- 	return ret;
- }
+ void __shm_limits_restore(void)
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index 28c3d7c1faed..d45135283732 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -8,6 +8,7 @@
+ #include <unistd.h> /* _SC_PAGESIZE */
+ #include "kselftest.h"
+ #include <linux/fs.h>
++#include <mm/file_utils.h>
  
-
+ #define BIT_ULL(nr)                   (1ULL << (nr))
+ #define PM_SOFT_DIRTY                 BIT_ULL(55)
+@@ -164,11 +165,6 @@ int unpoison_memory(unsigned long pfn);
+ #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
+ #define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
+ 
+-int read_file(const char *path, char *buf, size_t buflen);
+-int write_file(const char *path, const char *buf, size_t buflen);
+-int read_num(const char *path, unsigned long *num);
+-int write_num(const char *path, unsigned long num);
+-
+ void shm_limits_prepare(unsigned long length);
+ void __shm_limits_restore(void);
+ 
 -- 
-2.55.0
+2.39.5
 
 
