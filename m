@@ -4,120 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76680C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:09:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16F1FC44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:09:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 566BF6B0139; Thu, 16 Jul 2026 11:09:34 -0400 (EDT)
+	id 73BA76B013B; Thu, 16 Jul 2026 11:09:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53F506B013B; Thu, 16 Jul 2026 11:09:34 -0400 (EDT)
+	id 6C68B6B013D; Thu, 16 Jul 2026 11:09:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 431026B013C; Thu, 16 Jul 2026 11:09:34 -0400 (EDT)
+	id 517DF6B013E; Thu, 16 Jul 2026 11:09:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CAF16B0139
+	by kanga.kvack.org (Postfix) with ESMTP id 02B746B013B
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:09:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B53DC014B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:43:41 +0000 (UTC)
-X-FDA: 84994606242.28.AD7D3C5
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0D1914000A
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:43:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=HZwuvgRs;
-	spf=pass (imf07.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6FDCEC0119
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:31:46 +0000 (UTC)
+X-FDA: 84994425012.30.8087419
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BDF44140014
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:31:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CU8PyQnp;
+	spf=pass (imf09.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784205819;
+	s=arc-20220608; t=1784201504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z21FwdUtYh7DDT6q0cWRgWwFAJ8AfleqYSoyR88c720=;
-	b=airj7Q7sSIH6VMPZvwCfS0H42kOUtE9pcMO++SDae3wy+pRZtJiBoEJSrJwmyMO5nQzQGX
-	yjSkfbtUoCxg3AEL0iEBtIyeMCNnf4DadCDcgcCnvlSg0GRzywmx96Gi8C04xbD6uvTWf5
-	FPUGHdPnx4OQqLmVx7wCUaRMffNiUNo=
+	bh=ZhTPrG3YQEfBVn0yyzrLN6C3o96SAGlfQ2/4r1lWCWQ=;
+	b=TsoCAbWgD+eGCUTeJ3oJIbYPRqhFDDv6YRM+zJY0sIPfWKKjREen8T5sm9DAYu/rFZWP+J
+	bdjK2SjAqDmNKqhNTjSed7uGMtLdFaPYFecdX6b666CFercfPH1TVSsN6qLm+8ZZYDGlq7
+	82ePGbb0lZu+l4aQZ0joJLPdIiw6A3U=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=HZwuvgRs;
-	spf=pass (imf07.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CU8PyQnp;
+	spf=pass (imf09.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784205819;
-	b=avTcPIEX6P2wRC30kwtRaqAi/LGiTWoVSF+xBVAZKDyVy3KF96FwizmZkRZFd/AI7NITcH
-	/o5C5vHiYDB8vUg65Lcs2lA1Hk5VAq0vsp3Uqx4uL32yuOGUesbmyQ7bRaqT6MsVlkMad+
-	FvC0Owqt5Gvw7jA5MlFCTgfDKYm37Qk=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca2fad0ae38so5145477a12.3
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:43:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205818; x=1784810618; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Z21FwdUtYh7DDT6q0cWRgWwFAJ8AfleqYSoyR88c720=;
-        b=HZwuvgRsX+RPwhgi6wP7iDCBcneE+4E7lL6WgtY9qgeXsJEpARtpL5cabPW7Dl6A4C
-         pwBzdODkEGBxpo5UU9nz9gr8DWe/D5/UcI3Wwnj1uvCkp8JOKoCc8nlcuHwlw8yMxNB1
-         g/bEC/ru2Sbi/odY6BQ/mgrA//z+BLbUmwa28EIHtFL9EIQjf9JBziS5SxiAR30ePDTt
-         K2JH9CNFzdF6uYViM5kxb1bVrUxDhkNAus4WiV4xaePhCt0TXolXsms02D/JQyTrG20X
-         KiEePS2bomV6MOz0gcYTxUvqn0FdpyoxOv4aLdTg8EQYOysLu3e515HjLHl9i4+bXKGJ
-         w8Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205818; x=1784810618;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z21FwdUtYh7DDT6q0cWRgWwFAJ8AfleqYSoyR88c720=;
-        b=MvZLfyHqccALwuBMi9mPUwbZT1+Hm+jIwP+hq2RQfbtsG35cPByQa0AkGtSTTiyG72
-         8Hscfr++tDgG9qCUpp3df7bDibmegwNamzIUmqIfak3/MFPwes4EjtPQEWwpApY/Xswy
-         +iTfSzS/Dl/RNlO+CIJCtKSV0tnblibKJtt3mbEvtr6cJUekwnQKYU5Gqx+5MS1+zxUY
-         N0lvputAtdmHKmKOuhIH9Dbtgy2aPu9r+gU+o/nDrRZurQ8NIAAIIWnBZln5KaEjbfmO
-         99ODFhQsYQQbWPWWpBxEI0Y5NRN+Dtpg9XMbHE5aanq6G6HmbfwUnaSrz9cgfhFLVUB+
-         VJeg==
-X-Forwarded-Encrypted: i=1; AHgh+RohuR9goangiJPp9eEaHRWrkqKaMVrQGGK0gS5eTkxCdfsARZOenhHu/9dWLvN8lyOV2hL/YAwXAg==@kvack.org
-X-Gm-Message-State: AOJu0YxlzXOrHhExKsvk0Dz/cA//MC9URDkzWKkyNOOxGee7gXjjSy34
-	19XB9o3P2Ai9Af9EukOHU8z7rQIbNod7d17knyjwaKfLrj4ycNoeA6VIgvs0IZmi48M=
-X-Gm-Gg: AfdE7clGQlbcX1EG3gEjdncOqBpNSjpMWcYFtmo+8LenP7PK2Xk/CfTprHlEVFDk85e
-	Z3X6GwKdSAf4dLhkwUW+b6M1F9UfmQu+8e9kxNLdO2/nJBj+9qe+nNKlaANsyoly5umbbORqCvi
-	sVaLhKO1BG0XBhqKkv8/uXH8H/1nYHHgB68XV/amugF1AuxruHQu7yDxaCV5Dls9i0E1ecHkyQh
-	DeA4e/FWcA3TXlL2QMnJaS/OSV1ZfSrocFYbpG83d/J51Nmosvr1UCzSt8bTtuKLeFH0EfEmfIj
-	Hc+8o0+/KdzxjDLhAxF5kNfC46VhDTRmLk7psrpG+F2a6fYRLe2rU83iOCztgYzdg4W6byXVS/9
-	KaNlmBoXTYTOk3Wf62aMAJnkpA+J2DRH5lETTQ2Blk/CTbvAg+H0IzQovRwTztCsaftUXmuOeM+
-	InsROCWJGtuuv7BR7cqczYsMM=
-X-Received: by 2002:a05:6a21:a98:b0:3bf:6c08:fb88 with SMTP id adf61e73a8af0-3c36c3e7638mr7532060637.56.1784205817786;
-        Thu, 16 Jul 2026 05:43:37 -0700 (PDT)
-Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.43.29
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:43:37 -0700 (PDT)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: linux-riscv@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: linux-arch@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-efi@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 06/15] riscv: make pte_batch_hint() honor folio batch flags
-Date: Thu, 16 Jul 2026 20:41:41 +0800
-Message-Id: <40bc1db57d1fdad482a32ca6aa95031f7d5676e1.1784201104.git.cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
-References: <cover.1784201104.git.cuiyunhui@bytedance.com>
+	t=1784201504;
+	b=BbeGSwi6kmtSJyVwv0G2DiKyvFjlKld3DcKyQkRJjdzFIDFEGT9jWm5zwhn3QGb84eW4yu
+	EGEADB9IQir+6bq6FH06jcBkayGyyHVY8Aar+0yb3b/AWNqE4+eTBlLe3jtx4sOoRpeTSc
+	2cDRqcos+aIBC1SqO2tNxD3jI945Tac=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E6FC84186F;
+	Thu, 16 Jul 2026 11:31:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECA71F00A3A;
+	Thu, 16 Jul 2026 11:31:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784201503;
+	bh=ZhTPrG3YQEfBVn0yyzrLN6C3o96SAGlfQ2/4r1lWCWQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CU8PyQnpbvCRE3vUmMHtzieTpGX2UBTMwb0mi88LgLxkSs8B/ksftCcM5iz3NUd7A
+	 fb8sHvnwCl7Rr4+CQEHwLGQjWOD3HXM5jPd5Cc8rCwwABcs8eQ+BKe0BjntQ/EVekx
+	 dCYd2NVN2TxTIh+bleHc9Mrq3zRtYkVxaE0UqGfb4CkNFltxw8JAppM9iqDmYpCTt0
+	 gr4x6uAHVmNLV4MlaNFHizKmi/tvmxJdDgxQqcFCa06FzxAgCNdY51pKLaGwJPAlOY
+	 1KPwHyfp5KJywmQSfRSQ0QHUlhb6Srefcz+e9NxqkaeYr/Q75MW2N2bjgJnsxF9rfo
+	 ndpfdliuZ0loQ==
+Date: Thu, 16 Jul 2026 12:31:35 +0100
+From: Will Deacon <will@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>,
+	Toshi Kani <toshi.kani@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
+	abarnas@google.com
+Subject: Re: [PATCH mm-hotfixes v3 2/4] x86/mm/pat: acquire mmap lock on page
+ table free to avoid ptdump UAF
+Message-ID: <aljBF-am7dqqG8Gd@willie-the-truck>
+References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
+ <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
+ <alemS7vxeRB7NcBO@willie-the-truck>
+ <alesCtwXdIqH6bOP@kernel.org>
+ <178419641178.59347.17339330762419756196.b4-reply@b4>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178419641178.59347.17339330762419756196.b4-reply@b4>
+X-Stat-Signature: pojfeeyaub69yn3jcff4j7hwcn8xqpqz
+X-Rspamd-Queue-Id: BDF44140014
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0D1914000A
-X-Stat-Signature: pgp4pirzjiuwanyqwfbdki9uym15w58g
-X-HE-Tag: 1784205818-988303
-X-HE-Meta: U2FsdGVkX18wDBhSi4yO+Y60RsCKGaDAFH4hPOBdUNPCU3JkyCGHz3woqES5zOLpnntIjjmQfZK6uQk9yaKxcEyYBRihRhKQJDFp5MOOu/NH+jhhlzUWPaPE46MzuM2UPbkDdxGVOzObj6/sKP6RGyPAJWrhyGINKCsaFTZB0isSQ++aZPT2HIgic6vVuj/nUAwddO7+22He6ar6jZuryDQslhFWBvJ2vtcEyLPdAIPs4dYlMn0DRJW60v1JmcKUssh/gb3sAgLDRRqQmbTHermlXaMnqes1CxbDBvQjeNNNOljKVn2RwRPwD+cAKWiIbqjmZ0gMOp4cWn9XwrdSA9yFqi9vdUg57Ata2WlwKqkZvQyH/Ehm6pmejRq/zcElSQQ/6ZlFtqjCiH/m+NlkRyrFgigD0jrTibsZcbm7XxXuuM+QuLsbzw5nUaCbmGPQlwMhORkEYowbNKZv0J5Xs6B34xlPnit80zhosgMrFO2gSUrRxoGPYbQYmzfbxk3xsU3dqyZU6D4hxg7stSiNvdcqhR1D5tdW6Yskv05kRPqPP+6CrQE+pa6474clvRekUBSIk5mPyi12q+4sm//YZjguMjlMRDLNm9C3RXCxlMBPHed1oVDRUvs++TIlGcRVazpdHTKQkkL1+cbvLAkXEZmEjNc8GlycjjmE5YOLQ001nO4qJfD+7XbvxMTQdPYKgipRAyYf/x7uyFHQrBg1K1HBV4Lod8RxNOxsQ9canXMjaxjRiwaWteB8NI6vwN6bfq+otWsyY2HcqMyTMTBWnqN/S6fCQFQxj/FUtEe0969nCYvkWvQCUQooh52A5bKYMxYmvr56fu1IPpK9pC5zZCT9bJA4l6qq9Wl2zQdr425X5De8HVhO8YHBT4xglkDVmGRPWprIadA5CEP3CUWf4JCrcq1Vr/zejyFfPglvMQuxGqJVSqmFIgfzk09QSzsjf2TgxpKD/qQwVJMeV+q
- wNV8lbtt
- mW3DPcjPCqxkU9/aoZbSZA+RBfqbhjFyYGzxk2F+aXIKlICatggY7atMkrXRmvwMohZiPjwsGJ4d/kTNvQphN3pO6R9kSNskEBN5YssJIv64OWVxbIf2KZpx563/BiLH0sYlKyO3rt31Hrvxzg7gRTdvULoqmWwj0uuUhlmSBPnC8VGrqH9Meh+sNVlF5VQ7vLpuHPE07ZZDdRvzFYaesNf7Mcgr67LWl2YDQ/pLgS9LyN1IjWq6hcunhz4Q0IxXw3j2+L3ZZvSpMt7x3v/L3nnns+Z3eAScoPHq4VGL9OmnHDCEB4N29fLZuV1IdZdpUtH7nsBSQNpKtnFuutF+c5jhjGI++qtuWWAI7R2GceixN7YAzs++an1wwkw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784201504-330380
+X-HE-Meta: U2FsdGVkX19hMJoQikiLVMp5ewJK5WbO9wuL39zAzTO0dp4KnO5fNyRLZufbsEJgSbDkR74GS2qwjcb3GBjYmTubJP5vxuSlDjKjQONa5CP6qTZI3UN58COHYrHQpQb1pArd5fJM22h1YRsMPDy4/MID9FiLUku/9rFV5XUnXI/iXHWXwXI0Hx+4lPvjoxW+ByjX/tXsO9riv+GRw3jmgkC2i7ULqfL/AevbYJIKv9p8cTQUeVa22TMzFlnyFoVNHHL372+IJ5qbZbb5Pm/zoz/s4G1jhiJ5NzE0yOHHVuVX9FMQONdk/ZYIvQ8qkoDcA+h4gy9nhCCrAd6hvh38NdNUbSy6MpUBJNzcfpbNH14e8hx1FZqO72SFrFdbemPmoDDRP2AwoNyYz65WzKEbhbZb/zpJXUqDZeqfJt6+H21sNit31uBJAAZDhHa3/iW8B5Nu57QqNIRf613Iok0wysIP2B/Y71nNjuPMik09nvYN292fZrsK07BQO683nzkwC3wgYSkm62bWMSXG2lv+Otg34aeuVvs1hYeqVc78JFl22mCC9IzHHYRXSaiaONQkzaepN8m96LRgB+uLILTTXonKCoH5fVaUAQmhEJmBrMYYAS3Xe9Op94VDzq9N8UnNR+2S3xXW++wspSD7j7VKmKB+dzdzZyNWwy+M2T47O74QTErLlBMgyNsecJcawSaUEkAo6o+h05Rs+0RdtLwl+tO2S9i/pT80GGbDrrm9KqZJAJb8I8Avx2eeZLo0RdBSZrLMpcWuM/o0PEhDP5bPGNP13Ob86KZOLUNkUGBK6/sK97yg+oR6tElvLD2XlxyItA4hLHmKyoBOkqN3GTBqqCZZ3m0x5SECG5+0iNd9J8Vw6IBwy/ZD25kUKG97o8v9Y41X6CkDDzOblehXSOHFBDTaR34BbLd65CGCwYmwL0DJ8DXoaIdp9OtTmmLbAs6tdq+5Nb0GZ1MHHYVLqt3
+ AyPntZA3
+ sxX/v1CGcdnINqRpv82K7Gvxu8edpE++Z30y/g0biyqAuxuCcpCYasugGH+bDM1w0c+hrJYcmPiha8U3LtkLxtemdQ4oQkihL8SsGQE9qDIAuwiNJwO4EWTekqKjqigT8mQJpbSWidKVlgnGPWpNOwjdfbyCGL2YksPdIbqfvkit8X0f606xZ0VoXcLfBOCe1FJT8oKvtD0xkeOQg4vVhfQR0wA1HKUoCEyk5j70atPj660dpkuQFQfDmLSNR2u/A51SOzFjIumHAwEoEw2RtmwbUqOrqGyuKme0dpC2IVwg639DReLbverkC2tXP/RcnMnS1TYBrHCEkDHoPiomFZYygag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,168 +114,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Svnapot folded mappings may be exposed through a logical per-page PTE
-view instead of the raw encoded block entry. Generic folio batching code
-already defines which PTE bits are ignored when comparing entries, and
-folded mappings need to use the same comparison rules. Otherwise RISC-V
-can reject a batch that generic MM would consider equivalent simply
-because the hint path compared a different view of the same mapping.
+On Thu, Jul 16, 2026 at 11:06:51AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On 2026-07-15 18:49 +0300, Mike Rapoport wrote:
+> > On Wed, Jul 15, 2026 at 04:24:59PM +0100, Will Deacon wrote:
+> > > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> > > > index d023a40a1e03..4c4b8244502f 100644
+> > > > --- a/arch/x86/mm/pat/set_memory.c
+> > > > +++ b/arch/x86/mm/pat/set_memory.c
+> > > > @@ -22,6 +22,7 @@
+> > > >  #include <linux/cc_platform.h>
+> > > >  #include <linux/set_memory.h>
+> > > >  #include <linux/memregion.h>
+> > > > +#include <linux/cleanup.h>
+> > > >
+> > > >  #include <asm/e820/api.h>
+> > > >  #include <asm/processor.h>
+> > > > @@ -436,9 +437,16 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+> > > >
+> > > >  	flush_tlb_all();
+> > > >
+> > > > -	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
+> > > > -		list_del(&ptdesc->pt_list);
+> > > > -		pagetable_free(ptdesc);
+> > > > +	/*
+> > > > +	 * ptdump might read these page tables, so avoid a use-after-free by
+> > > > +	 * acquiring the mmap read lock on init_mm (ptdump acquires the mmap
+> > > > +	 * write lock).
+> > > > +	 */
+> > > > +	scoped_guard(mmap_read_lock, &init_mm) {
+> > > > +		list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
+> > > > +			list_del(&ptdesc->pt_list);
+> > > > +			pagetable_free(ptdesc);
+> > > > +		}
+> > >
+> > > As I understand it, the argument for taking the read lock is that we're
+> > > operating on a region that we "wholly own" and therefore we can happily
+> > > run concurrently with CPUs walking distinct parts of the page-table.
+> > > However, from what I can tell, the CPA collapse logic will operate on
+> > > regions outside of the address range being manipulated by its caller
+> > > because it rounds up to the PMD size.
+> > >
+> > > As a made-up example, imagine I have a 2MiB aligned region where the
+> > > first 1MiB is read-only and the second 1MiB is in the default r/w state.
+> > > If one CPU calls set_memory_rw() on the first 1MiB while another CPU is
+> > > walking the second 1MiB (via some other API that doesn't take cpa_lock),
+> > > it looks to me like the first CPU can collapse the page-table and free
+> > > the unused pages under the feet of the other CPU. What prevents that
+> > > from happening?
+> >
+> > Nothing, and there's a patch to fix that that synchronizes
+> > cpa_collapse_large_pages() using cpa_lock:
+> >
+> > https://lore.kernel.org/all/20260626163213.2284080-1-den@openvz.org
 
-Install a Svnapot-aware pte_batch_hint() implementation. If the caller
-passes a logical sub-PTE instead of a raw NAPOT entry, rebuild the
-corresponding block PTE first, apply the same folio batch flags as the
-generic batching code, and only return a multi-entry hint if the
-remaining raw PTEs in the folded block still match.
+Hmm, but that relies on all concurrent walkers taking cpa_lock, no? Surely
+that's not generally the case.
 
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- arch/riscv/include/asm/pgtable.h | 26 +++++++++++++
- arch/riscv/mm/contpte.c          | 66 ++++++++++++++++++++++++++++++++
- 2 files changed, 92 insertions(+)
+> Thanks Mike!
+> 
+> >
+> > This still won't be enough to sync with ptdump though.
+> 
+> Yeah, so this patch is still necessary.
+> 
+> But that patch conflicts with this one as it holds a spin lock over the page
+> table freeing, which prevents taking an rwsem... :/
+> 
+> Anyway I think this one is still fine as it seems there's not a consensus over
+> there as there was discussion about just removing the locking anyway ([0])?
+> 
+> So can kick that can down the road and just get these ptdump bugs fixed :)
+> 
+> >
+> > > If all concurrent walkers have interrupts disabled, I guess the TLB
+> > > invalidation logic would do it, but it would be good to call this out in
+> > > the commit message because it's not clear to me why the read_lock is
+> > > sufficient for the collapsing case.
+> 
+> Yeah, so this patch is _only_ fixing the ptdump case. Any existing bug must be
+> addressed separately.
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 771faabb2b00b..da7ffea0dcd98 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -6,6 +6,13 @@
- #ifndef _ASM_RISCV_PGTABLE_H
- #define _ASM_RISCV_PGTABLE_H
- 
-+#ifndef __ASSEMBLY__
-+#ifndef __LINUX_FPB_T
-+#define __LINUX_FPB_T
-+typedef int __bitwise fpb_t;
-+#endif
-+#endif
-+
- #include <linux/mmzone.h>
- #include <linux/sizes.h>
- 
-@@ -591,6 +598,8 @@ void napotpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
- 				     unsigned int nr, cydp_t flags);
- void napotpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
- 			     pte_t *ptep, unsigned int nr);
-+unsigned int napotpte_pte_batch_hint_from_pte(pte_t *ptep, pte_t orig_pte,
-+					      fpb_t flags);
- int napotpte_ptep_set_access_flags(struct vm_area_struct *vma,
- 				   unsigned long address, pte_t *ptep,
- 				   pte_t entry, int dirty);
-@@ -1033,6 +1042,16 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
- 	return napotpte_ptep_clear_flush_young(vma, address, ptep);
- }
- 
-+#define pte_batch_hint pte_batch_hint
-+static inline unsigned int
-+pte_batch_hint(pte_t *ptep, pte_t pte, fpb_t flags)
-+{
-+	if (!pte_present(pte))
-+		return 1;
-+
-+	return napotpte_pte_batch_hint_from_pte(ptep, pte, flags);
-+}
-+
- #else /* CONFIG_RISCV_ISA_SVNAPOT */
- 
- #define napotpte_ptep_set_access_flags(vma, address, ptep, entry, dirty) \
-@@ -1095,6 +1114,13 @@ static inline pte_t __get_and_clear_full_ptes(struct mm_struct *mm,
- #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
- #define ptep_clear_flush_young __ptep_clear_flush_young
- 
-+#define pte_batch_hint pte_batch_hint
-+static inline unsigned int
-+pte_batch_hint(pte_t *ptep, pte_t pte, fpb_t flags)
-+{
-+	return 1;
-+}
-+
- #endif /* CONFIG_RISCV_ISA_SVNAPOT */
- 
- #define set_pte __set_pte
-diff --git a/arch/riscv/mm/contpte.c b/arch/riscv/mm/contpte.c
-index 3f8a0a2970afb..9ffdffdc2b0c0 100644
---- a/arch/riscv/mm/contpte.c
-+++ b/arch/riscv/mm/contpte.c
-@@ -176,6 +176,32 @@ static inline bool napotpte_is_consistent(pte_t pte, pte_t orig_pte)
- 	       pte_val(pte_mask_ad(pte)) == pte_val(pte_mask_ad(orig_pte));
- }
- 
-+static inline bool
-+napotpte_is_batch_consistent(pte_t pte, pte_t batch_pte, fpb_t flags)
-+{
-+	return pte_present_napot(pte) &&
-+	       pte_val(__pte_batch_clear_ignored(pte, flags)) ==
-+	       pte_val(batch_pte);
-+}
-+
-+static inline pte_t
-+napotpte_normalize_batch_pte(pte_t *ptep, pte_t orig_pte, fpb_t flags)
-+{
-+	unsigned long pfn;
-+	pgprot_t prot;
-+	unsigned int off;
-+
-+	if (pte_present_napot(orig_pte))
-+		return __pte_batch_clear_ignored(orig_pte, flags);
-+
-+	off = ptep - napot_align_ptep(ptep);
-+	pfn = pte_pfn(orig_pte) - off;
-+	prot = __pgprot(pte_protval_no_pfn_no_napot(orig_pte));
-+
-+	return __pte_batch_clear_ignored(pte_mknapot(pfn_pte(pfn, prot),
-+					     napotpte_order()), flags);
-+}
-+
- static bool napotpte_all_subptes_same(pte_t *ptep, pte_t expected_pte)
- {
- 	pte_t *start;
-@@ -328,6 +354,46 @@ pte_t napotpte_ptep_get_lockless(pte_t *orig_ptep)
- }
- EXPORT_SYMBOL(napotpte_ptep_get_lockless);
- 
-+unsigned int napotpte_pte_batch_hint_from_pte(pte_t *ptep, pte_t orig_pte,
-+					      fpb_t flags)
-+{
-+	pte_t batch_pte, pte;
-+	pte_t *start;
-+	unsigned int i, nr, off;
-+
-+	if (!napot_hw_supported())
-+		return 1;
-+
-+	if (!pte_present_napot(orig_pte) && !pte_present_napot(READ_ONCE(*ptep)))
-+		return 1;
-+
-+	/*
-+	 * @orig_pte may be either the raw NAPOT entry read from the page
-+	 * table or the logical sub-PTE returned by ptep_get(). In the latter
-+	 * case, the public view has the NAPOT bit stripped and the PFN adjusted
-+	 * by the slot offset within the folded block.
-+	 *
-+	 * If the caller passes a logical sub-PTE, rebuild the corresponding
-+	 * block PTE first. Then apply the same folio batch flags as the generic
-+	 * batching code, and only return a multi-entry hint if every remaining
-+	 * raw PTE in the folded block still matches.
-+	 */
-+	batch_pte = napotpte_normalize_batch_pte(ptep, orig_pte, flags);
-+
-+	start = napot_align_ptep(ptep);
-+	nr = napotpte_pte_num();
-+	off = ptep - start;
-+
-+	for (i = off; i < nr; i++) {
-+		pte = READ_ONCE(start[i]);
-+		if (!napotpte_is_batch_consistent(pte, batch_pte, flags))
-+			return 1;
-+	}
-+
-+	return nr - off;
-+}
-+EXPORT_SYMBOL(napotpte_pte_batch_hint_from_pte);
-+
- static void napotpte_try_unfold_range(struct mm_struct *mm,
- 				      unsigned long addr, pte_t *ptep,
- 				      unsigned int nr)
--- 
-2.39.5
+Up to you folks, but if you took the write lock during collapse wouldn't
+that fix it for all concurrent walkers and we wouldn't need another patch?
 
+I would argue that using the read lock here directly contradicts the
+rationale for why this is safe, because this is an occurence of code
+that operates on a range that it doesn't wholly own. It seems bizarre
+to me to go to the effort of adding locking, but then not adding
+sufficient locking for all concurrent walkers.
+
+Will
 
