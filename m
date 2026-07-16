@@ -4,118 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0FB5C4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:47:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FE45C44516
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:47:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 366096B008C; Thu, 16 Jul 2026 10:47:39 -0400 (EDT)
+	id B758E6B0093; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 271FF6B008A; Thu, 16 Jul 2026 10:47:39 -0400 (EDT)
+	id B26A06B009E; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EB216B0092; Thu, 16 Jul 2026 10:47:39 -0400 (EDT)
+	id 950576B009D; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFD3F6B008A
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:47:38 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2E2D1C0126
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:41:23 +0000 (UTC)
-X-FDA: 84994902846.23.DB8CF15
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EB9BE4000D
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:41:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=lsr4e9mo;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf11.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212882;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 54A676B0092
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD1A0120197
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:30:21 +0000 (UTC)
+X-FDA: 84994875042.27.E330F15
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0C85BC0013
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:30:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EHxBUtMQ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3-upYaggKCI00rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3-upYaggKCI00rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784212220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MnKSghhM4T6Z1xfA6Jwi8vqE/9OZUSpMDE8lVv8sYoo=;
-	b=QugFe7Gvp13j9kJNRhZAKi/cPF4LKXjNF1cFz5SNfGABHiVtxu1x3cqky8TYuojebMJiX4
-	NN306GeAT4pOMVZXLCkH0A+nebFN0QP9YvAD/T7PToWAgAC1wof15+JEtWk4NaY4nUhJ59
-	5Jr5oKocXiMfK+LhhLLK5GkFMgMeEcQ=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=lsr4e9mo;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf11.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212882;
-	b=WsG6+CmxUsA+XmAFPLIBgVGcaP67fWmXBbpSuR6YfznqsdSDIEnSjfgwzTxQ7TG9FfLqRH
-	tI4LlTACCExPgzDCeIrlc6/fJBlinTmNlKav/NVtT5i3x6Ig4MfhbWU9i5qhmlytgIR2WW
-	IbRVw0usyFxqz9yv1+IcMZX3ZrKvAZM=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212490; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=i8zpP5LHxDjWUFBIMr9F5Ya5iUzpShu0G/C/ob2EOSvkT2jCeBAP4A0ZzGriMJp8Uy25XvwuSX0aZL1MJNSjnoaS2Gzfv2/1wYL833wu+syUlHsOrs//gmLz6sOdbMyY0pnzR4811uCMkbV5OJRkrJExY7SmU9ERZiER9Xxq7GU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212490; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=MnKSghhM4T6Z1xfA6Jwi8vqE/9OZUSpMDE8lVv8sYoo=; 
-	b=Plm8AiIgQKoll2Ww/X9nACYiP0diWUbpkTElyptvVyzJmJ+LJ1x/4/umpdhweZSMK4VJ3nAVcM+LH/dE0tNJUE0sjIWJUmI3U+R8lhHXTUjzp/Y3L7nY51+8hJvsRee7LWU26vZgA7CF9WPfXR/y/0Gr3wGhaez8KRF9+vTPess=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212490;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=MnKSghhM4T6Z1xfA6Jwi8vqE/9OZUSpMDE8lVv8sYoo=;
-	b=lsr4e9moWNYb4eSaOYGeAMWDT08MXzfzOP3JE+aiPMgys2Zyax40I+ygqRb+rOsE
-	J3AiCfVuuFYdMtRDXuqE86DOqBWrFrcJ9LOI90Lq0MsIQLEOWfIkufAwV6uD7hMKw0E
-	jDdPsySbY4ZeN27r/us/PDk1/dT9b07EFrGWEfjM=
-Received: by mx.zohomail.com with SMTPS id 1784212488400857.4930366975865;
-	Thu, 16 Jul 2026 07:34:48 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Eric Paris <eparis@redhat.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	audit@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 16/24] audit: add pidfd spawn child contexts
-Date: Thu, 16 Jul 2026 22:31:42 +0800
-Message-ID: <3d54188702aa809839b24210cf0cd77de897f1e3.1784204592.git.me@linux.beauty>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1784204592.git.me@linux.beauty>
-References: <cover.1784204592.git.me@linux.beauty>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Stat-Signature: c7aqci7xdoewsoamqb94a8wb3khzqcry
-X-Rspamd-Queue-Id: EB9BE4000D
+	bh=pYdU4t2+gE6AXuv8NtGQXs6INIroF6XnwJU0+W2hmSY=;
+	b=klzE4CS5t8X+E1RowixDdcPEFNMx/2XEdY+y6rXHn+WisnSIvR6Se3RoRCoNmyMv1prVnC
+	nlCOCB8CrHInfrBKF9XkbB1IXvuLYCmDjT+AZCyjIWO2Dtw+eNABLRfiv+xoua0rS2w7yv
+	byGH8D09Jy1H9wC91WfsMGx4RzvJFNQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=EHxBUtMQ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 3-upYaggKCI00rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3-upYaggKCI00rt13r4sx55x2v.t532z4BE-331Crt1.58x@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784212220;
+	b=ij3qKRU8UTiiY0dIV6faDmkMzigVJv6Fc9rlvxlF+PmOuADz7iBrYzF/90JIcaxVfAPT49
+	cSRr+pesnFlRhVm2djl8fgFM+D8+QpgxPz2qUXDy+e/JCA5/8z+5uOFuEcb4knS5vFLiy8
+	qTq7ycsewI4pSysnISBZfxnmiDNc7Ko=
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-c15d4bd2afeso669942166b.3
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 07:30:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784212219; x=1784817019; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pYdU4t2+gE6AXuv8NtGQXs6INIroF6XnwJU0+W2hmSY=;
+        b=EHxBUtMQUa9Anqjf5nyJBCboOoxX1QcYDXZtolQhwOBEQ0M5QMgXDC4jo6NV9S+6fk
+         Wm6c/foSBjqrIB1lxmqMj0CxzLxdm6i9MedTpy1DBXjMMRvlzLN5JRiAF29DeyemBQ8O
+         ZvHevVVRJGKLFH4DN6M70Po2ljzDUvqLm2xn+AU+GF3GeSFnInOJshR1iywQslHPMtIC
+         zOzVW2M9mG4Dp/4vxb3SIIPNwgOq8a7bdpfjbemKbdOPG69qdOjU7WIrPqXhUn442Jcj
+         L5gVvJfzj6wskCd2TqeVGnR4wb6TSLPoRCBUi0kznI7SbP4CFhUfyx0hC5mNhD8YXnz4
+         5Z0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784212219; x=1784817019;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pYdU4t2+gE6AXuv8NtGQXs6INIroF6XnwJU0+W2hmSY=;
+        b=OhiLaoDt4U0hxCDCSmL17rlFQZa1e2HWuYFrA1U6UDspyUq3kU5htdyh0FdLBJil5u
+         piHrA0xXtndT+z88WGPIW1+SA6284UuUvmSRshyZDcYaI7Qx78UPd5hGgN95yKSHcjAh
+         9Z6Nc8fgZGdDwHyJpbZ/9xQmOF/AwpKPQq3c7XzLDM+HJr+m611ingayp7cw0gmGjqle
+         93XEghL37YCk737cB7QuMvIjeT8bOURj5faI4sGwoQgBhD8/J6mqBS/5aTjGZSxw/FzV
+         3ENLCg5jjzVbwrPZXeJWISPxK/s7GdSyLPozknpYVtepZgqXMdf85EOoyghqG6RaEBCN
+         kGSA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr1Mit8aGoLrqBgRGRzFpmCT9GDHnxCt6Z5PlqB/KVyeSE0Qizat1KUy9PNeEbA0CW0DxupzSfWGg==@kvack.org
+X-Gm-Message-State: AOJu0Ywv/RVqT0tLBfPzuYU9ERbU4idMkkDOuKhLwWBeU/Ue5aAC+ls+
+	CMjvodNhYdeyh7Ckl6XeLQgY48EQ/0JEN3OCAuJ7GR3+2bGqf3H/PQazyzo8QQcdTECH8uzVAB0
+	RVYETucVZ5Qw8og==
+X-Received: from ejfz17.prod.google.com ([2002:a17:906:ad1:b0:c12:6e77:2fb7])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:a710:b0:c12:6584:c1 with SMTP id a640c23a62f3a-c1667a6921dmr585573666b.40.1784212218007;
+ Thu, 16 Jul 2026 07:30:18 -0700 (PDT)
+Date: Thu, 16 Jul 2026 14:30:11 +0000
+In-Reply-To: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+Mime-Version: 1.0
+References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+X-Mailer: b4 0.15.2
+Message-ID: <20260716-folio-alloc-cleanups-v1-2-5363b8e92d33@google.com>
+Subject: [PATCH 2/3] mm, treewide: replace __folio_alloc_node() with folio_alloc_node()
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev, 
+	loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Stat-Signature: n6o97xfgmytr3bxqcdc3fpxo449irziz
+X-Rspamd-Queue-Id: 0C85BC0013
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784212881-103615
-X-HE-Meta: U2FsdGVkX19GAqEwbHIJ+k46QqBbNCXTOfSYZixzFxJOp690lzdS7Kdx8m/Y1INLp0Uq+tGSQ5z0J26UMXvNqkwQuLL4CO9uNx42O5q4xeY0Zdmu8xouC0NqnQPfE20LVuRKph2kyZb+qhPTL+lqlmdqQH4nEMkOZbB4VF77//wd0oiBEwnB+PgHti8CtlJnc/XKH8OiDeeGk8gLppJ/Am1JQztH8+inM8c9tq73KnbWVjo5qNon2dDToF+74RK7W/KE2uUC1/aFZIQOICtsteHOfjrmWKfQsyH4y6hDH5bX39uIfVe5OOy9nJAHqBUV4eRY4gWii8Wyns/bwfmR9MVxUbdf4pssoRqRkGwVOiaQ5a1bEQCDS1pJkDo60+yYDJU9q1po9bsePzXBEwcywXekd7PIpuoQBdf9vCvuXKcBB8A5+n6zMR7RSJrjUHxXLjY1zekQgMBPAXw0yw+L5xzFNUfMYtx/EXgnkdWWF/OjLA+8kzfHsvyh9hPjP2soEDaKHlpGPFgdYxCKg4Vq8t7lP0hAZfFtXFvkWQTyeQmGZt90zwdosT4j4mt3Mh2R5rmtA9HCtqKQ6JFedtYnLx3wiZTf0oEPmhyIXHcwlkwVCbpp6phrPO4Ljblv/Xy9W7tE/U1wQH4vqQDb11pmriU2R4kLsX9ddsiefk0CzwRlzrkUntvKwqaHdTHcaH34h1flV7QfUfvSdzk5Xn9yvl2O6LyEMQQLuhRd6vv43/fOoIrQJH7re9ITVtOE35TDokp0dF/EBMtkHmzqTxVYo3fg8Mcyu5+fZv4MsCbwHxOiOPJyCEnT+/eogyiWML0onwBFyVUe6bS2pka+aWVrmKtCbG1GOuWrmkFgu4KxUm9x/aof1JMsUYYB8LCkz7Ryo9BNzBp7WEadhLb+8ChOoEf2I0Mn03CacnOyQIhjtJhUbqLZiX8MorUO5uZMxKrtZ+6sGXf8tnJlt/5NTSE
- opA3lBmR
- ptWxBzmE1VDGVj8hUS12+QKLgxf2fn0fJxYnGq7cu9GwTduNRuZJ0La61+SFnzzCEGytLYY2Tn98rjNoCjUIw5juvWjlcMkFoEleVi1A0WU1BVEMiyeKsbBXFDfnmMpgfTb3B4ahsWrp1oNdzcO4+Baqez4advrGI+ACjkWok0LtunuI/Pj+SUOqWl/MyHOKhi4Wy3WRlo8NiXNlTxZpNguYjpyiUdSEx3GAy/jSOpt1xy8OEYyyLoxmMsVI6992NuNnkxR0RUAzONH0WGUTniU+4p6PqUDQMmyXXMct5IhAH0zSWNxc1K8riR8XfuOAHfjtDHM3wY9m0akyz9kOTwGUN3rvhw9OujPMDC4sK4n92gg8TSUDXv+reYNKSDS3OQ2dEZGnL+SwboaWthI0UHZB94kRaHMhFGSgeLcHaXms0ymDQIVLuaZkdb8EqzqgfNa7L
+X-HE-Tag: 1784212219-405547
+X-HE-Meta: U2FsdGVkX1/60te9x/yeKdzu3OxMNzyP0x/ZzLvPh1nMZbgFkf+7uV3OQ/MLJMMer0jqVL8AjhhJ03A3SmfgL3kXgns5ivyHIqztTR9PzYttzWLrPdNNMxmsjyndTYveAZ03geRvgL1D3eIZZuxzUIkGojEv/s2A0R3AvBZMy4LazPn31XdBQdslJ9vAtsluBSO7NC1sdrs//F4jolNCF9moj18uwnD1AGIHd78gNpdnR/MHgeiSaeNqkcmvS8uVsnrvNqTMVM6pDM2lPT0MBae5z1Le4bVcoc9Is4GJdmKHNt1VtSLj92GewH7R5j0OdUwB0TbU4c5odk4Q6yHKYr6amnBfWnfSCawmomwoZamj3Io5Iwt2dSXXqv1KNDnMIyRa7tr1dpuJICinA45ZWnELbzDI5akI7VwLOX9sEAhvo5Myl7g4Kr/awkjtt4OExLLl/FlZQwqGnmQNDjnNTsV8sfOFfm9sdPhi39P8ULgEUH5yicdzBwdG/LGKLxjKxZzpUQGMA0dnaL05jvVKF8ax11rWz7kF3qEWXnuUyyhEAYJ4i4OO6IHxlxx4Kt9KClGWM21pZpMboEPWSrPAKBUfEVJgQZ49j2R+ZVP+RgvlAM88zCn9JfzIufMyb4XVSDk6rOnyhQRYQBclaq/6BgMqxAxaje34EC89EyUDuzrGuML1IJem5ewtbH4e+YJni4jn4NpvJWkjQhuIL7hkMl0PyQ5S+JfrwXI3fGrjxa3QrthP+LKoELYy41ZULdI6K29BVf6xpTpO1CRiweZMZWIfjSAiz8Zw0+jI9qtK0AzqYGnyPNILzBDok+8q8Ybh/+yQt2Jxs4pNYqZCe9GlGD4cRvhNfle7UEODsbllSnvFmhiFUJNBV6O07St+1RbdNgr3iRYiZ2rWPUvhlto3ur+2udBZrqVujrlFADIByB24kLvKSeQrsC7jyzsHt4obW16hXqalDWHwTI6AFZJ
+ jZhpyqVM
+ xRnBwfOfR9v54crkSMS0XJ+C6p87NfXYQOnqNUel4u13bHlx3KSRGC3gfLfdqiQdlmNeIlUAycxJwHnxqnEBS4tlWg0O00TDDIp3Mcv12aD9qDL62c0m7dBBXCzXaYBZdaaLCkA2YvDgjAOSs4MAaPvINppVqpxY8Z85pB+A7MUNKU5UOgSvabuU4gDVOE0bwCtPoTGW3Nj1FzOXEjbNFJq13CzRNRXOauSMBZwsQbtRRrIAAGjH2iD/sm4Tljvf2XvlSuH1U3plAFiJKNE1dWyqCljL3MR/RmexpY0ZJcsNK/ZKY0GquNfyCfIe1lFqeWJfbVLZ5WiEPIt24vcZ65ONiszOmRteN6rBgj4/DVTgRuiMH1pPf5+S5NiSvYhmWkyemMZjR8h5U3MIp5fk8bdROTjL4psvDZzKABQmuDHAamQZBA2WPtV1SP/bWFNqnOI99X+uEUQ08aRwr07aax5ERiuN5Ef4Ov5xhTk0embXimiE4Cg9Zxq1gvKVy9F1s3fribYd6rehvqS/L1iwx1Tsew62RkiQqoTdRyJm6tshAi2+6hEeFIMepALy3IVkeDRmXiDs+AHvobqq/CepkEcOzD8G4rizLfiPoxc5emEdk/I87lA/BYLvAhTW9zgNSKeOZ2Jn4YCpf/jH9pVL+hfrkYfOyajMVfgRkhjpcUt4Mm+UO+55/M6kJLAD2arjzjK/mz4AO9M5EloY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,262 +129,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kernel-mediated spawn executes file setup and exec from initial child task
-work, not from a second syscall entry. Representing that work as another
-AUDIT_SYSCALL record duplicates the source pidfd_spawn_run transaction and
-invents a syscall that the child never entered.
+Commit 5b584d2d22dca ("mm: remove __alloc_pages_node()") removed the __
+variant of alloc_pages_node(), after users had been migrated off it,
+since it just complicates the API (requiring users to handle
+NUMA_NO_NODE, or risking hotplug bugs) for no real benefit.
 
-Add a dedicated audit context and AUDIT_PIDFD_SPAWN record. Carry the
-originating syscall number and arguments. Existing syscall exit filters can
-then select the child transaction. CWD, PATH, and EXECVE records remain
-correlated with it. Let the child close the transaction with an explicit
-result instead of rewriting an architecture syscall-return frame.
+This patch brings __folio_alloc_node() into line too for exactly the
+same reasons (including the ulterior motive of freeing up the __ variant
+for use as an internal API).
 
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Li Chen <me@linux.beauty>
+This time, it's done as a single patch because A) the users are fewer
+and B) folio_alloc_node() does not already exist like
+alloc_pages_node() did.
+
+No functional change intended.
+
+Suggested-by: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Link: https://lore.kernel.org/all/ed4572f4-0074-45c5-993d-7b6533eddc31@kernel.org/
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- include/linux/audit.h      |  31 +++++++++++
- include/uapi/linux/audit.h |   1 +
- kernel/audit.h             |   1 +
- kernel/auditsc.c           | 105 ++++++++++++++++++++++++++++++++++++-
- 4 files changed, 136 insertions(+), 2 deletions(-)
+ drivers/iommu/iommu-pages.c        |  9 +--------
+ drivers/irqchip/irq-loongarch-ir.c |  4 ++--
+ include/linux/gfp.h                | 12 +++---------
+ mm/filemap.c                       |  2 +-
+ mm/migrate.c                       |  2 +-
+ mm/page_alloc.c                    | 17 +++++++++++++++--
+ net/sunrpc/svc.c                   |  2 +-
+ 7 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index 45abb3722d304..872624a9fba08 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -323,6 +323,9 @@ extern int  audit_alloc(struct task_struct *task);
- extern void __audit_free(struct task_struct *task);
- extern void __audit_uring_entry(u8 op);
- extern void __audit_uring_exit(int success, long code);
-+void __audit_pidfd_spawn_entry(int major, unsigned long a0, unsigned long a1,
-+			       unsigned long a2, unsigned long a3);
-+void __audit_pidfd_spawn_exit(int success, long code);
- extern void __audit_syscall_entry(int major, unsigned long a0, unsigned long a1,
- 				  unsigned long a2, unsigned long a3);
- extern void __audit_syscall_exit(int ret_success, long ret_value);
-@@ -373,6 +376,22 @@ static inline void audit_uring_exit(int success, long code)
- 	if (unlikely(audit_context()))
- 		__audit_uring_exit(success, code);
- }
-+
-+static inline void audit_pidfd_spawn_entry(int major, unsigned long a0,
-+					   unsigned long a1,
-+					   unsigned long a2,
-+					   unsigned long a3)
-+{
-+	if (unlikely(audit_context()))
-+		__audit_pidfd_spawn_entry(major, a0, a1, a2, a3);
-+}
-+
-+static inline void audit_pidfd_spawn_exit(int success, long code)
-+{
-+	if (unlikely(audit_context()))
-+		__audit_pidfd_spawn_exit(success, code);
-+}
-+
- static inline void audit_syscall_entry(int major, unsigned long a0,
- 				       unsigned long a1, unsigned long a2,
- 				       unsigned long a3)
-@@ -380,6 +399,7 @@ static inline void audit_syscall_entry(int major, unsigned long a0,
- 	if (unlikely(audit_context()))
- 		__audit_syscall_entry(major, a0, a1, a2, a3);
- }
-+
- static inline void audit_syscall_exit(void *pt_regs)
- {
- 	if (unlikely(audit_context())) {
-@@ -611,10 +631,21 @@ static inline void audit_uring_entry(u8 op)
- { }
- static inline void audit_uring_exit(int success, long code)
- { }
-+
-+static inline void audit_pidfd_spawn_entry(int major, unsigned long a0,
-+					   unsigned long a1,
-+					   unsigned long a2,
-+					   unsigned long a3)
-+{ }
-+
-+static inline void audit_pidfd_spawn_exit(int success, long code)
-+{ }
-+
- static inline void audit_syscall_entry(int major, unsigned long a0,
- 				       unsigned long a1, unsigned long a2,
- 				       unsigned long a3)
- { }
-+
- static inline void audit_syscall_exit(void *pt_regs)
- { }
- static inline bool audit_dummy_context(void)
-diff --git a/include/uapi/linux/audit.h b/include/uapi/linux/audit.h
-index e8f5ce677df73..e09fb5222293a 100644
---- a/include/uapi/linux/audit.h
-+++ b/include/uapi/linux/audit.h
-@@ -122,6 +122,7 @@
- #define AUDIT_OPENAT2		1337	/* Record showing openat2 how args */
- #define AUDIT_DM_CTRL		1338	/* Device Mapper target control */
- #define AUDIT_DM_EVENT		1339	/* Device Mapper events */
-+#define AUDIT_PIDFD_SPAWN	1340	/* pidfd spawn child operation */
+diff --git a/drivers/iommu/iommu-pages.c b/drivers/iommu/iommu-pages.c
+index 3bab175d85571..47e0759f0e0ae 100644
+--- a/drivers/iommu/iommu-pages.c
++++ b/drivers/iommu/iommu-pages.c
+@@ -56,14 +56,7 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size)
+ 	 */
+ 	order = get_order(size);
  
- #define AUDIT_AVC		1400	/* SE Linux avc denial or grant */
- #define AUDIT_SELINUX_ERR	1401	/* Internal SE Linux Errors */
-diff --git a/kernel/audit.h b/kernel/audit.h
-index 92d5e723d570b..2f740df7beecf 100644
---- a/kernel/audit.h
-+++ b/kernel/audit.h
-@@ -112,6 +112,7 @@ struct audit_context {
- 		AUDIT_CTX_UNUSED,	/* audit_context is currently unused */
- 		AUDIT_CTX_SYSCALL,	/* in use by syscall */
- 		AUDIT_CTX_URING,	/* in use by io_uring */
-+		AUDIT_CTX_PIDFD_SPAWN,	/* pidfd spawn child operation */
- 	} context;
- 	enum audit_state    state, current_state;
- 	struct audit_stamp  stamp;	/* event identifier */
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 6610e667c728a..8f6d84a902239 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -1649,6 +1649,30 @@ static void audit_log_uring(struct audit_context *ctx)
- 	audit_log_end(ab);
+-	/*
+-	 * __folio_alloc_node() does not handle NUMA_NO_NODE like
+-	 * alloc_pages_node() did.
+-	 */
+-	if (nid == NUMA_NO_NODE)
+-		nid = numa_mem_id();
+-
+-	folio = __folio_alloc_node(gfp | __GFP_ZERO, order, nid);
++	folio = folio_alloc_node(gfp | __GFP_ZERO, order, nid);
+ 	if (unlikely(!folio))
+ 		return NULL;
+ 
+diff --git a/drivers/irqchip/irq-loongarch-ir.c b/drivers/irqchip/irq-loongarch-ir.c
+index 21c649a89a706..427f7fd3cad42 100644
+--- a/drivers/irqchip/irq-loongarch-ir.c
++++ b/drivers/irqchip/irq-loongarch-ir.c
+@@ -384,7 +384,7 @@ static int redirect_table_init(struct redirect_desc *irde)
+ 	unsigned long *bitmap;
+ 	struct folio *folio;
+ 
+-	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, IRD_TABLE_PAGE_ORDER, irde->node);
++	folio = folio_alloc_node(GFP_KERNEL | __GFP_ZERO, IRD_TABLE_PAGE_ORDER, irde->node);
+ 	if (!folio) {
+ 		pr_err("Node [%d] redirect table alloc pages failed!\n", irde->node);
+ 		return -ENOMEM;
+@@ -410,7 +410,7 @@ static int redirect_queue_init(struct redirect_desc *irde)
+ 	struct redirect_queue *inv_queue = &irde->inv_queue;
+ 	struct folio *folio;
+ 
+-	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, INV_QUEUE_PAGE_ORDER, irde->node);
++	folio = folio_alloc_node(GFP_KERNEL | __GFP_ZERO, INV_QUEUE_PAGE_ORDER, irde->node);
+ 	if (!folio) {
+ 		pr_err("Node [%d] invalid queue alloc pages failed!\n", irde->node);
+ 		return -ENOMEM;
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index e4e974a6e5f90..572605d84e30e 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -251,15 +251,9 @@ static inline void warn_if_node_offline(int this_node, gfp_t gfp_mask)
+ 	dump_stack();
  }
  
-+/**
-+ * audit_log_pidfd_spawn - generate an AUDIT_PIDFD_SPAWN record
-+ * @ctx: the audit context
-+ */
-+static void audit_log_pidfd_spawn(struct audit_context *ctx)
-+{
-+	struct audit_buffer *ab;
-+
-+	ab = audit_log_start(ctx, GFP_KERNEL, AUDIT_PIDFD_SPAWN);
-+	if (!ab)
-+		return;
-+	audit_log_format(ab, "arch=%x syscall=%d", ctx->arch, ctx->major);
-+	if (ctx->return_valid != AUDITSC_INVALID)
-+		audit_log_format(ab, " success=%s exit=%ld",
-+				 str_yes_no(ctx->return_valid == AUDITSC_SUCCESS),
-+				 ctx->return_code);
-+	audit_log_format(ab, " a0=%lx a1=%lx a2=%lx a3=%lx items=%d",
-+			 ctx->argv[0], ctx->argv[1], ctx->argv[2],
-+			 ctx->argv[3], ctx->name_count);
-+	audit_log_task_info(ab);
-+	audit_log_key(ab, ctx->filterkey);
-+	audit_log_end(ab);
-+}
-+
- static void audit_log_exit(void)
+-static inline
+-struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+-{
+-	warn_if_node_offline(nid, gfp);
++struct folio *folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid);
+ 
+-	return __folio_alloc_noprof(gfp, order, nid, NULL);
+-}
+-
+-#define  __folio_alloc_node(...)		alloc_hooks(__folio_alloc_node_noprof(__VA_ARGS__))
++#define  folio_alloc_node(...)		alloc_hooks(folio_alloc_node_noprof(__VA_ARGS__))
+ 
+ /*
+  * Allocate pages, preferring the node given as nid. When nid == NUMA_NO_NODE,
+@@ -282,7 +276,7 @@ static inline struct page *alloc_pages_noprof(gfp_t gfp_mask, unsigned int order
+ }
+ static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
  {
- 	int i, call_panic = 0;
-@@ -1687,6 +1711,9 @@ static void audit_log_exit(void)
- 	case AUDIT_CTX_URING:
- 		audit_log_uring(context);
- 		break;
-+	case AUDIT_CTX_PIDFD_SPAWN:
-+		audit_log_pidfd_spawn(context);
-+		break;
- 	default:
- 		BUG();
- 		break;
-@@ -1782,7 +1809,8 @@ static void audit_log_exit(void)
- 		audit_log_name(context, n, NULL, i++, &call_panic);
+-	return __folio_alloc_node_noprof(gfp, order, numa_node_id());
++	return folio_alloc_node_noprof(gfp, order, numa_node_id());
+ }
+ static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+ 		struct vm_area_struct *vma, unsigned long addr)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 0dd8e2a15d746..1cf91970a6850 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1007,7 +1007,7 @@ struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
+ 		do {
+ 			cpuset_mems_cookie = read_mems_allowed_begin();
+ 			n = cpuset_mem_spread_node();
+-			folio = __folio_alloc_node_noprof(gfp, order, n);
++			folio = folio_alloc_node_noprof(gfp, order, n);
+ 		} while (!folio && read_mems_allowed_retry(cpuset_mems_cookie));
+ 
+ 		return folio;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 222c8c15f782f..b7836b02f32db 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2682,7 +2682,7 @@ static struct folio *alloc_misplaced_dst_folio(struct folio *src,
+ 			__GFP_NOWARN;
+ 		gfp &= ~__GFP_RECLAIM;
  	}
- 
--	if (context->context == AUDIT_CTX_SYSCALL)
-+	if (context->context == AUDIT_CTX_SYSCALL ||
-+	    context->context == AUDIT_CTX_PIDFD_SPAWN)
- 		audit_log_proctitle();
- 
- 	/* Send end of event record to help user space know we are finished */
-@@ -1818,7 +1846,8 @@ void __audit_free(struct task_struct *tsk)
- 	if (tsk == current && !context->dummy) {
- 		context->return_valid = AUDITSC_INVALID;
- 		context->return_code = 0;
--		if (context->context == AUDIT_CTX_SYSCALL) {
-+		if (context->context == AUDIT_CTX_SYSCALL ||
-+		    context->context == AUDIT_CTX_PIDFD_SPAWN) {
- 			audit_filter_syscall(tsk, context);
- 			audit_filter_inodes(tsk, context);
- 			if (context->current_state == AUDIT_STATE_RECORD)
-@@ -1967,6 +1996,78 @@ void __audit_uring_exit(int success, long code)
- 	audit_reset_context(ctx);
+-	return __folio_alloc_node(gfp, order, nid);
++	return folio_alloc_node(gfp, order, nid);
  }
  
-+/**
-+ * __audit_pidfd_spawn_entry - start a pidfd spawn child audit context
-+ * @major: originating pidfd_spawn_run syscall number
-+ * @a0: originating syscall argument 0
-+ * @a1: originating syscall argument 1
-+ * @a2: originating syscall argument 2
-+ * @a3: originating syscall argument 3
-+ */
-+void __audit_pidfd_spawn_entry(int major, unsigned long a0, unsigned long a1,
-+			       unsigned long a2, unsigned long a3)
+ /*
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 37a3c1c00e169..86922270df157 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5435,12 +5435,25 @@ EXPORT_SYMBOL(alloc_pages_node_noprof);
+ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
+ 		nodemask_t *nodemask)
+ {
+-	struct page *page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
+-					preferred_nid, nodemask, ALLOC_DEFAULT);
++	struct page *page;
++
++	if (preferred_nid == NUMA_NO_NODE)
++		preferred_nid = numa_mem_id();
++
++	warn_if_node_offline(preferred_nid, gfp);
++
++	page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
++				    preferred_nid, nodemask, ALLOC_DEFAULT);
+ 	return page_rmappable_folio(page);
+ }
+ EXPORT_SYMBOL(__folio_alloc_noprof);
+ 
++struct folio *folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
 +{
-+	struct audit_context *context = audit_context();
-+	enum audit_state state;
-+
-+	if (!audit_enabled || !context)
-+		return;
-+
-+	WARN_ON(context->context != AUDIT_CTX_UNUSED);
-+	WARN_ON(context->name_count);
-+	if (context->context != AUDIT_CTX_UNUSED || context->name_count) {
-+		audit_panic("unrecoverable error in audit_pidfd_spawn_entry()");
-+		return;
-+	}
-+
-+	state = context->state;
-+	if (state == AUDIT_STATE_DISABLED)
-+		return;
-+
-+	context->dummy = !audit_n_rules;
-+	if (!context->dummy && state == AUDIT_STATE_BUILD) {
-+		context->prio = 0;
-+		if (auditd_test_task(current))
-+			return;
-+	}
-+
-+	context->arch = syscall_get_arch(current);
-+	context->major = major;
-+	context->argv[0] = a0;
-+	context->argv[1] = a1;
-+	context->argv[2] = a2;
-+	context->argv[3] = a3;
-+	context->context = AUDIT_CTX_PIDFD_SPAWN;
-+	context->current_state = state;
-+	ktime_get_coarse_real_ts64(&context->stamp.ctime);
++	return __folio_alloc_noprof(gfp, order, nid, NULL);
 +}
++EXPORT_SYMBOL(folio_alloc_node_noprof);
 +
-+/**
-+ * __audit_pidfd_spawn_exit - finish a pidfd spawn child audit context
-+ * @success: whether child-side setup succeeded
-+ * @return_code: child-side setup result
-+ */
-+void __audit_pidfd_spawn_exit(int success, long return_code)
-+{
-+	struct audit_context *context = audit_context();
-+
-+	if (!context || context->dummy ||
-+	    context->context != AUDIT_CTX_PIDFD_SPAWN)
-+		goto out;
-+
-+	if (!list_empty(&context->killed_trees))
-+		audit_kill_trees(context);
-+
-+	audit_return_fixup(context, success, return_code);
-+	audit_filter_syscall(current, context);
-+	audit_filter_inodes(current, context);
-+	if (context->current_state == AUDIT_STATE_RECORD)
-+		audit_log_exit();
-+
-+out:
-+	audit_reset_context(context);
-+}
-+
- /**
-  * __audit_syscall_entry - fill in an audit record at syscall entry
-  * @major: major syscall type (function)
+ /*
+  * Common helper functions. Never use with __GFP_HIGHMEM because the returned
+  * address cannot represent highmem pages. Use alloc_pages and then kmap if
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index ae9ec4bf34f72..74350a2e07036 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -711,7 +711,7 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
+ 	rqstp->rq_server = serv;
+ 	rqstp->rq_pool = pool;
+ 
+-	rqstp->rq_scratch_folio = __folio_alloc_node(GFP_KERNEL, 0, node);
++	rqstp->rq_scratch_folio = folio_alloc_node(GFP_KERNEL, 0, node);
+ 	if (!rqstp->rq_scratch_folio)
+ 		goto out_enomem;
+ 
+
 -- 
-2.52.0
+2.54.0
 
 
