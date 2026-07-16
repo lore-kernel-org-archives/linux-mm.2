@@ -4,141 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EEBCC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 17:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8098C44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 17:36:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 444726B0102; Thu, 16 Jul 2026 13:33:39 -0400 (EDT)
+	id 9069A6B00A0; Thu, 16 Jul 2026 13:36:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C6F6B0104; Thu, 16 Jul 2026 13:33:39 -0400 (EDT)
+	id 8DDA56B00FD; Thu, 16 Jul 2026 13:36:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30BA16B0105; Thu, 16 Jul 2026 13:33:39 -0400 (EDT)
+	id 7F64B6B0104; Thu, 16 Jul 2026 13:36:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 057396B0102
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:33:38 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A28740295
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:33:38 +0000 (UTC)
-X-FDA: 84995336916.25.FF4F733
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D0F53140010
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:33:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hsLt6yTt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784223216;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49DA66B00A0
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:36:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C5A7E16026E
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:36:18 +0000 (UTC)
+X-FDA: 84995343636.09.321C388
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011040.outbound.protection.outlook.com [52.101.57.40])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C01B710000B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:36:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aNMnSwyZ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of noren@nvidia.com designates 52.101.57.40 as permitted sender) smtp.mailfrom=noren@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784223375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2q8FzZfR4mwloD+avLyHIbdhXjifcrgRRf6/0HEL3BI=;
-	b=H5r92cTCtOyOU0pxDYDx38zIK0TekvCg+AOQjovENhFXamYIvVtceM0Ug0gyEaGiNsbBMI
-	4fTS88nlhN4W9y79wYzfkfKxWChspelefnbF9lfw0kKavB9edc7PJBLC0R+mCXK7KPTh/R
-	fbeqDe20c3O+MMKnZYbe5x6kCkjqBFc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hsLt6yTt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784223216;
-	b=YHgw6YCspoHQki7Fz0yTwed+WBYGxp9aj3qjIceSA0CUpkm1OB1o8Tx26O4bA3wOQRUuOu
-	ZKbxcdUoKq/fce565EVN/UW4Otip9MiK2x00LiehEjcYfAub8h/c5ZKh+IFTbeMabxQBCb
-	VQrBLhq+oZXVEa4FyNHYsLjJsNTn9bA=
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7ea9c6ea7deso4609275a34.3
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:33:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784223216; x=1784828016; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2q8FzZfR4mwloD+avLyHIbdhXjifcrgRRf6/0HEL3BI=;
-        b=hsLt6yTtjAgJsbYUyR7RTo/P4INmSFKkuBskClltG2CTrA3r2uvm9YW+STaipPUYIe
-         A5JzLGvDcWqNScoulXJke1I0qtWs8gnSigFroxRF5GqcmaXseA61l/JBo2Ikzo2TwTLI
-         f9wcYzika4kBkLmDpGKsaWYFfBherquYOmQda0WScidabnhcXgug2G37AFbN1GsF5LG7
-         D82i2OcX+LrHZgG/aUjvheiljePzQl375zMd9zg5pTCi178wM58jbO/klzxtYC7e1/fH
-         OCovbDwyZDhD89OMry0ZhcSctH2TXDLY0eCiBljCf3QaC7AltKu3rLbf51EtDIUThjrb
-         5A9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784223216; x=1784828016;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2q8FzZfR4mwloD+avLyHIbdhXjifcrgRRf6/0HEL3BI=;
-        b=rUa8F/qzEJOF1VYYek/y4Q7A4kVnXrwYVfhYB7bzF40E4/F/uX+g7fxI+XrajQ0qWM
-         q7FmjHCu7C4fBwhuZLkxDkcIR08qRM7W+lsm7n3kqLfx4eCG71Z7mlYMnlweHrhe61Qj
-         prQB+IAQp7EIYDhZXP1+yYubut6Urop5MKkCEDQc8+pc5HLWW+MEc+ek9pRHPrg/oxkH
-         crxmZdkb26LhRgNUIqxKwrFFKXnHGS28To0FS8d2u+olOQvZMhi/PLusIraS+qjZBcrW
-         STzGFSs/upmrzbgo5iRNg0U2MdFGBJKOhWnpHdiVRKNbLlyBvLKhFe582tCu7merBuBN
-         UjWw==
-X-Gm-Message-State: AOJu0YxBynffFyaazAZWa8pna2Xz6OegZ/26x4i0N27yaOeJjVi2qvjF
-	2fkAdTlOd/OT3hVwkadBvRkt2fj7AmUkBTp1nRXDCVDZ8ViMvQijgwAq
-X-Gm-Gg: AfdE7cnhMxFvogJF47yxRwicmhq6qDuDh3yNcFdl+ggKBHicQMJPXfiLa8tFoyB29A/
-	N7++fYmwWDKSE/jFHr70NyKxNan87aT7i3/cggNFa+n0nNU++XviS+XaDN5MV1EzH++C3lV00wP
-	FwvFiIaNus6rgoYTogjEvkm9U5jceb/y8ZDY9uQUkBhQidIChQHLzXbMPwDGYEm70MbLMAnYLjn
-	kkJKwWP2igUOJyLdf27nAeDnuyB3kBsycgV/d68Wiy9tfjunyxUIL0Q5k5RMQ+AU/HNrD3o/be0
-	AmQvbZUzl+GyZhD3W1L+YTOJ+nuw1Ri9roRzn302OaJT6vT7QIR0wOU5xvEeAjCMOUnwOaGYxgd
-	2QBtGZXxp6q3Wkq4VWZGPrdySouIzgLxljVhSArYrGPB0JdnHn30IDK16mbq2LZR25Gt+o57+xN
-	W2ryno35N1JViWMNdGc129kdYu8TGRY52t
-X-Received: by 2002:a05:6820:4ccb:b0:6a3:a54a:367 with SMTP id 006d021491bc7-6a3c6007e30mr8115803eaf.14.1784223215792;
-        Thu, 16 Jul 2026 10:33:35 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:4f::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-455b767413dsm12696507fac.3.2026.07.16.10.33.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 10:33:35 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Koutny <mkoutny@suse.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
-	David Rientjes <rientjes@google.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [RFC PATCH 0/9 v2] mm/memcontrol: Make memory cgroup limits tier-aware
-Date: Thu, 16 Jul 2026 10:33:32 -0700
-Message-ID: <20260716173333.1413857-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <a8a0e540-414b-4174-a9f9-2c501fb46130@kernel.org>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=knyP9Hij3wAxmwOgQtefrprZZasyE8hTckFnPpgVV54=;
+	b=ofCxgb+vBC5zk12zUBKoI3ZGi7gwSoOUyY7KaWD1jYglakQ5qMb/WkR1kyIEwysyXJ3sx1
+	4YwcEcDeAFijYRCLN17THiHpNAewCPwbmBybTV6zCjgsrt6YtMbP21dOekIxJwsQ6OMn//
+	YE7aek2YllINr5I6YGQhoAbsOFOk27c=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aNMnSwyZ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of noren@nvidia.com designates 52.101.57.40 as permitted sender) smtp.mailfrom=noren@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784223375;
+	b=eZLT2BQNcpIdXmFcym6dFfd+Iaysvq1W1RjV/BVpJ3OxpXCikYQks3XxYjFaxJZzmS80fg
+	j8TtBP30oATD+W41tCo2cqI0oE8cbZSWz7iNO3CRYlD41qzckB7yoXykEAc54CsffAMXYb
+	tV5RBCmZpyC3TRxviqBhEGQ30k9U8jc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CjXBdBUYitRWbHZx+HjxQyuq9lSTMmS4Vzk8ClNpXP2g85BdEEyOUZnLsOEQwuDbtdQ2IqsJwOPH3cIWEv8fZESBrI4ftUUYOwrHS3vVgbP1LT1CFAxTfNzxNBL/a09/q64G2KvDctmHMmCA7gIr1jATCZ5ho/mbfNFYyMLlcAPQrHsAWOf9qUsWyFf5SGIp0haufJjVt1k5kNt+oET7zxTdMKOKoYgUdj7hyxj7JRf8OQhFKtuqnDQrYVJGHIFj4XZrmzKAM2dnC12x0IptpMdWHBSAxXdT+w30I33qf9Tr00o3oQD+GNiTE8CoeiCFdfDU4/di8Eje2enM3wm4/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=knyP9Hij3wAxmwOgQtefrprZZasyE8hTckFnPpgVV54=;
+ b=UmlZvGawnFUZpj04UYTe4rooPIaPuYZ8KVlVZWNoE5yqa9qRb9acwLTuS3v5SI0taJWGgCUsif93rFTKxJEWsyYTS60h/BJp9mNcBGZuU5Wxmqo97ZcksUJ8k/1AesxcyvyiG4XrwU0//KFNYySAHZYthe1WRcmzcUmWtCGeH3vKBPjh/Y0LN1lLtBAaOWpCmqHuL+uO3DhyaiTbhKM/lPC2f22qzS+Rky39PdY9G6SprUY2eldQkIAZ1/nPr4Tqsvw9oZh+B2WKl1zc4HuZZ7kCSU3WMU4X7cl0r6sOeu2q04xUkOeEcGOeGxQiRL70vKzuZQE0gniNTsjMwaoPog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linux-foundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=knyP9Hij3wAxmwOgQtefrprZZasyE8hTckFnPpgVV54=;
+ b=aNMnSwyZpIQ2ICcLjs0761NL4vTIf3579gUc8nj5NEepmMGc67P4sdmVpwYVkbU45wlpwc/1GRD9oa/a/JHjdpQQPKKdExNxwiHZXckbZQ+ztCQVqbREnU/FjTJXEKNUcVdbf0efHqkTL4sS7HTBX2HrtZnwqKOUERVrjRYuML0WZ8gQycwgjf+vEnMxHf3hTvY6gxi33MmW2p37J9KmOyQWCFrJLkBwD3DgaYoCYwaGIbTATaPeYG1iYxb85I/ki2X1hGQpMeojftNT/XwbW+D1gyphDeO/nsnfRiB4YpmgeXmW0Qj61TWFdLSYcr9++QQ01noxuIV++iVCfBrYDA==
+Received: from BN0PR04CA0161.namprd04.prod.outlook.com (2603:10b6:408:eb::16)
+ by BY5PR12MB4067.namprd12.prod.outlook.com (2603:10b6:a03:212::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Thu, 16 Jul
+ 2026 17:36:10 +0000
+Received: from BN3PEPF0000B06A.namprd21.prod.outlook.com
+ (2603:10b6:408:eb:cafe::59) by BN0PR04CA0161.outlook.office365.com
+ (2603:10b6:408:eb::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.12 via Frontend Transport; Thu,
+ 16 Jul 2026 17:36:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN3PEPF0000B06A.mail.protection.outlook.com (10.167.243.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.245.3 via Frontend Transport; Thu, 16 Jul 2026 17:36:09 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 16 Jul
+ 2026 10:35:46 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 16 Jul
+ 2026 10:35:46 -0700
+Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com (10.129.68.10)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 16
+ Jul 2026 10:35:42 -0700
+From: Nimrod Oren <noren@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+	<usama.arif@linux.dev>, Liu Song <liusong@linux.alibaba.com>, Hao Peng
+	<flyingpenghao@gmail.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Nimrod Oren <noren@nvidia.com>
+Subject: [RFC PATCH] mm/khugepaged: cap pageblock contribution to min_free_kbytes
+Date: Thu, 16 Jul 2026 20:35:04 +0300
+Message-ID: <20260716173504.760369-1-noren@nvidia.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: twahg9qnpemoda7feouskkrk1t98etqc
-X-Rspamd-Queue-Id: D0F53140010
-X-Rspamd-Server: rspam01
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06A:EE_|BY5PR12MB4067:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1705b121-c06f-4e91-3065-08dee360b915
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|82310400026|1800799024|7416014|376014|18002099003|13003099007|6133799003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	KQpTvcTn7sNHHJFPEcNR9kaUDIYUwmIm0e/GL96EpYhcCCtYZmt6s2CS29fjdH2ddEyFXK5K25U4+7MlEjHarro6MG3qGpPrurkN2wVFaS8rjoDx9JWKuFCGAtpIupwYvvkg6M2aJrq8Ic7wY/G6pD5QLqFvEhD9BuZaETiNqbsPJpofwaQXXjmHqoPry1rSHmVxcU0iBdXD2oIw7I1aShbLC8usxWnDiWwXvCkW1xYkTA5edPDSTxhJo7RM/9sItYBe8yxFaHoWU/8e0LgJz6sbkfAbvfveADgdQ0nmfUEmn1UWT+QwwDqjFmrdZC/RnfBKYOng+MfcyfSfBVyhVPj1WSa1JZxBkNHyIC9ZTkj4TlYO6tQQ7Q+qLRAwRBjCMjlx0sGlpCZUNg6np3Ioz7eR6NrInyzAeChdomfXo8EWiFsm+quZ2JbRsU9lYTliAILXBDINdcpHLanUmKZbDPxYFQZeU/xtX8whxzjGE1pcwuWVGOqbUSTQqjyDPase3Q6XvWKsQK0yPN4F4h9avlgQu1yAnEPRB4greiZKIgzQ6Xrcpa+OW4q++D55V8K3sEB/xVmeYEU0OfCPoYtcVvBCaT1YdDdtJRwXAkyteejqRLveOK/ulhTkQFRAeW3jaEQHQQalNNVPM31usXP0Wu9g9CtFcHZ5tISEMQGFL34+8A95o46AmI0YVirp0Ugyo60JY5NulJBDmQov8KaEaw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(1800799024)(7416014)(376014)(18002099003)(13003099007)(6133799003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	v6L6RaDUG3hwhbsF/BcgCVqFKvl0BeYJ3kXrxxQRFAIx+IrObf4XWvvhH/GX1AqDaUZocu/WxGYS5lBFxNyEP2+g3CFu1VFGnAVSFDCf0Rbu05OhIJnj5ZvRxgZsJcgMeBoYZ2U/P+4qZ9U7WaNZ2m6fQGY8d3RrG9Qor0VKiCUr0yc7GEkF0ZgGw8vAusBDN7VBM0bHOH2IduR2EsItrs1ju8f9t5OIA7z0yQSFWDrD0Ib7+Q+jF2Vw/cNBO2sWUtGJYX/+I+A+pVDv7ZCeJIjBHncFhTx1bNGZ2lCsrSjlPoJik4+NSuwuok+bK7dcSYAX2AKRQmj31kTGavjfbmmh2JXq0X/+QRShn/lNJwDP64LuvFiaqSwbFXbkjvQks5faodzn1LW2RX7zDnMfDDF+zI2NY2svEZpCJKFV0dsqt5mBcht/FkpBBIgNMY+d
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 17:36:09.2719
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1705b121-c06f-4e91-3065-08dee360b915
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B06A.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4067
+X-Stat-Signature: 7mzbgcccixw4b86urftk5uwd5jrf9j3m
+X-Rspamd-Queue-Id: C01B710000B
 X-Rspam-User: 
-X-HE-Tag: 1784223216-252475
-X-HE-Meta: U2FsdGVkX1/qsQCku0X2PUgRFSvD50+I2BPLKGHtfAEhQNb/tkg4LPKL4D4gTUsBzJ8F5oWyFqw9WydurgS1Nf8Hzc7PHsamL0AWSHDbUl45vfSoxhVQgglvgNs1gRtTb46coExrMHRtPzm982oK04bHKRJ2GS7Gceb0WGV3S/TdQEer1f9JmwV8PwM6c/BZRUg/EcmzbcGO2caMQA0FyiacCsn199QSaomRGOrzV7DXgnGjnXDjTu2Bzw3+kurx2uAbT09XyqV9Z4akFLw7+R+bSWFuctrn6TfWWg4E1vur3Z8saunyYhU2blKDiApjHFGK3bqu2zSRGbks6ScIWBIXk6AR7D5+4hymS6hoEw/LIRePq0jRXLtEIO5a36mpXLYvSyZZL8nXZUAY9h5dFC+Mbix5gA+RlpBUcpQ9HHLaBABe+AibU1AvxMMTGBHsJs1oI2TpvxjGcypz4ERTeJSZa2cnbhWXwXlOo+/SIWpT+QR+In7Cd36xOUwGuKXQe20WIlqzHPhv0ahcVRJRe77lW0AkmnmEcYYJMUxO3arFMKjYWd6oFvKUKz7FrZLC0/s8lCbe5eAOpK28id25mPrlmOZKT5Rl6ISCLsy4pPsXxpZxK9NL1fOh2HpYncFrQBukjordy6PNZLMwxEerjbfM1h0672g7SrhwovK1luIO7J1IDgsAOVaMwcpjontsKGvnsx2h8aFoyhnmz3rnx4t1T9uuCX/XG97mjblXkG2OGDwKiUX+JEPt8tdhjFxHv/IAS+fazTc2c4ydUu/y0Vvq+Bwbw5MczdLghwjs2XRfoivf/sZYHI9k9lc4NH6XhG4OfK4s2Rz5PqRBaKoZXzcK/TFnFH0APPiTpc9de2bsmm+xDb/3j6kdWHsgxJ4Beo+FC9M99Dk16/GsTbFobEJM77z+ll87njETQwR4P8vcvxIE3Ir6Univgzi5uhYZj2nFK9mRj5v7phFomdo
- 7AGifMrI
- D95iwNPRXp6pwCN0j3vZgn84HJkqb7F0TXmohpASXTwI9d9khkTycrJD77uOd/U9gouQjrqk9ebOs1UYT69z04Bkutv1e60VOFLdlw4K4qepD8jWDX7uzvo+CSUb1KWKvqLOB0KYuIBhX6Rbw6A3cnE5WPJBTV2Yp6XwMbOTAG5ZpCiFLCRCW2KnaXgyc2G9d0mY1V8cQST30kFi9CGglcBNNnwOKoZ6WGxJ878ET8DMVf7RNn+yCrSmlToi/VIkynmhNVbpqnr5WPWPbJWRqM7Pg8iA4/ErUCpKkrbzGELfwvhqVu74SHdl96RiVXV7NDGM6eXjOe4Ha0hnMvDk+8ttQCAEkCNKbPD1QLea7Mhkp9oLW2QCNaObmFTCd3ulXdZ5pB135n2T8ZWUcEJKPKQF0FwU5aIGPiIcHoIyjz/TR47UFkWtFVZ8ED3c6ZUhir1Wh3bXqFZokjVFe65vtKP7IrwWDSZ7o+QLeKgdN/LkuMI2xK/Xwv4Aam9vVq2tERldC3EM6apAGrUgTcuNxIzsG7nRLxsLcbsq2oU7t9MAlLLZr3M0dchbp/g==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784223375-839626
+X-HE-Meta: U2FsdGVkX18iUQxWSn8iGIo1hoUeszGfU0fRU95n4l3V9v91vCW1xy+cIyF4nCByuAq6OuDp9SNWQRp0nnhcQgYEzRdIzvaYNDSjbXfnU0YWgoStVx6uVv8FtEUIojuEhktV9utkuozySu1/Woxs1cAlw0OwPZ7J9QnMfD6sH4pjGMl9947ot3xJviX5Sto+6tXPMULPWjpYDT0BTNRguL6p0Z1l2DV334sDYPrPPFTGQeNnANP5zwWnCBgmWp/g3obCvcAR8ovYQ+YSOKdzmLYpy1WPnfxkcV3Y5a2TLDRWaNG9H+Q/B7/NyeELGtV8ek8DXBmFiUMOwjcikOWZK6ZWK8uzsJ45s7uv043NprDdQ9T7O7OcFMA/N2aex2yM90g9Bd/DhjPe0zRG4DbDwqj0hAnSmEJtpjZ+CFJDHUIFB+F/92X0YN86i0vR8akSZi+KanxW6sD26DBo2KfSLN7UASM4FYbE6+/lHHahB9VmEC+pCEAdnT7qAzl3CCJc/2mNgNFhyENz/S69sMHkXendXNtf0lPDgRurdgoh610F+TqvG/BKK7SIYN5wVmOSztcr7g/ysECJ0LtjR/vuKZFWwxu7WsCK9+hewF/WQiA9bf90H/EC/iSvdk6e8wVZa8dLzXwS4jRTrJBgA3N9mzlSOvjpMQUb5RqqACiyZjYokqUIvTf8MUUvOnxcjo4HsjB0QpLmrUdT8p4KA77iYsL5LHwElpOk8zaTFINDvjTCE8cqbRWQFHAyn1BZNbwStd9b1BKmXZLEkh5+WSvHMndgb4W46+A7B7+pmLLh9k1NX+QbxCFoPKUjWYVcv6+WQFLqb2nLYUin7ISB/WwjYLZT7rP3/ZuEc1XzrfEIHI6itrY8QR59ZoYM6gDsPpheoFthoc0yGGXYod74v7pUxoo96Xd818unOJI4Yj5xyLvjvZHfyUUCDAavItGE4RJvUxohGXPpYKVM3xREUap
+ dCSYu0Df
+ D2RpQIUazUl7hPTZjzVD0sitR0g5j0tnd5PwydMfnNbh2OfSgl+lx68isrkId4M3gwFHngCzJnzo1bBkq6WSqzT8h53tUA7Z15aH4TbxrDSH3d6+K+8Hdgw02jUALoVxqUzPn6I/BRIR7ykD+WCBXNtKqwGI1xCWN17YY7TsX/L6DGb9O5cpUwK0J+Sx/yRkSjJJSys5ELvMwd1TPwGVooBjIfXLneYenQishewJnZ4FNLJtPs7QmwoX4VqVOfsyeQmOWqyk9Lff+nic8nhqQSuVzKTZj0RLDnwwQEgI7mMJUws8CK4qtzd9kcNd5i9JXQnWOp0VuLgxQrVrZ0FowHeaRTYQRgaQwja2bdwgKNyoqehRMbZXNT+KpDv+CTppRamVhR/T7gVHbNwUOIWXQ62uj147jyf5TiE5/CipxoIWDtBvJypTj/3IiQpROTLpECwgD0JZ/4xihFJc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,125 +156,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry, re-sending because linux-mm didn't get added to the reply when I
-sent it out.
+When THP is enabled, khugepaged can raise min_free_kbytes through
+set_recommended_min_free_kbytes(), using a heuristic that scales with
+pageblock_nr_pages. With MIGRATE_PCPTYPES equal to 3, the formula
+accounts for 11 pageblocks for every eligible populated zone before
+capping the result at 5% of low memory.
 
-> Sorry for the late reply :) Yes, hopefully talk to you in person next time!
+This is reasonable when a pageblock is 2MB, as on common 4KB page
+configurations, but scales poorly with larger base page sizes. With
+the default arm64 pageblock sizes, the contribution per eligible zone
+before the 5% cap is:
 
-Hello David, no worries! Thank you for taking the time to consider this
-series again.
+  4KB pages:   2MB pageblock,   22MB per zone
+ 16KB pages:  32MB pageblock,  352MB per zone
+ 64KB pages: 512MB pageblock,  5.5GB per zone
 
-> >> Assume you have a bigger hierarchy (HBP, DRAM, CXL), or assume you have multiple
-> >> NUMA nodes with a hierarchy each.
-> >>
-> >> Your proposal doesn't really seem to be very versatile, or am I wrong?
-> > 
-> > Let me address these comments separately!
-> > 
-> > First, for the multi-numa-per-tier case, I think this is already pretty well
-> > handled by my series. Once we realize that a memcg is consuming too much memory
-> > from a tier, we trigger reclaim from that memcg via
-> > try_to_free_mem_cgroup_pages,
-> > which as far as I can tell already handles the multi-numa per memcg case.
-> > Other than restricting the scan_control's nodemask to target the nodes
-> > from that tier, I don't think there's anything else to be done.
-> 
-> I am not really sure about the "toptier" notion, in particular if your memory
-> hierarchy is not static.
-> 
-> Imagine that you have only DRAM in your system. Then you hotplug some slow CXL
-> memory. The you hotplug some HBM CXL memory.
-> 
-> The meanting of "toptier" changes, which is rather confusing to me.
+The 5% limit does not make this harmless. On an arm64 system with
+128GB of RAM and 64KB pages, the current calculation resulted in
+roughly 6.3GB for min_free_kbytes. The corresponding aggregate min, low
+and high watermarks were 6.3GB, 7.8GB and 9.4GB.
 
-While I do agree with the idea that tiers in general are not stable, I think
-that for the most part the "toptier" node is generally stable through hotplugging
-nodes. In your example above, the DRAM will always be the toptier node, right?
-In any case, I think if we are to support 3+ tiers I have to change the
-semantics to distinguish between higher and lower tiers instead to be
-generic anyways, so I will change the wording to reflect this!
+Automatically maintaining multiple GB of additional free memory to
+improve the probability of 512MB THP allocations seems disproportionate
+for an opportunistic background optimization.
 
-> > Next for the 3+ tier case, I think this is a lot more scalable than it seems
-> > at first. This series depends on another RFC that I sent out [1],
-> > which pushes the concept of "stock" from memcg to page_counter, which means
-> > that it is more scalable to just add more page counters to each memcg.
-> > This means that each tier would just need another page_counter to track its
-> > memory usage, and we trigger selective reclaim on the tier that is being
-> > targeted via the scan control nodemask we introduce in this series.
-> > 
-> > At my talk in LSFMMBPF, Usama noted that the user-visible API should probably
-> > remain the same, no matter what. The way I have currently established the
-> > memcg files aren't really scalable, so Usama suggested turning the
-> > "memory.toptier_XXX" sysfs files to "memory.tiered_XXX", which would include
-> > a newline-separated / space-separated list of per-tier limits. Something like:
-> > 
-> > $ cat memory.tiered_max
-> > tier_0 20971520
-> > tier_1 31457280
-> > ...
-> 
-> memcgs are currently not NUMA aware, so this could be one possible direction.
-> 
-> But is "tier" the right abstraction? I really don't know.
+This RFC proposes capping the pageblock contribution to the
+recommendation at 2MB. This would limit the contribution to 22MB per
+eligible zone while leaving configurations with pageblocks of 2MB or
+smaller unchanged.
 
-From my Pov after working on this for a while, I think tiering is the grouping
-that makes the most sense. It is my understanding that memory present in
-different nodes, but belonging to the same memcg are fungible; memory from 
-one node isn't more or less scarce than the other node.
+Earlier proposals to resolve this problem involved disabling default
+THP on affected systems [1], adding a knob to disable the
+recommendation [2], or deriving the recommendation from the largest
+enabled THP order [3]. A fixed cap requires no new knob and avoids
+large changes to global watermarks when THP policy is changed at
+runtime.
 
-However, if the system has multiple tiers then the memory is no longer
-fungible, and memcgs will be competing for the same scarce resource. So I think
-it makes sense to limit how much a memcg can make.
+Reducing PAGE_BLOCK_MAX_ORDER remains possible, but it is a build-time
+policy that changes pageblock granularity globally. Its effects extend
+beyond the scope of adjusting min_free_kbytes.
 
-> Are tier numbers really what we want? I don't know.
+[1] https://lore.kernel.org/all/CAPm50aLPxJCiVTqqwiz00oMNiqHggB84sXB3x=tv_HUAd5UktQ@mail.gmail.com/
+[2] https://lore.kernel.org/all/20230817035155.84230-1-liusong@linux.alibaba.com/
+[3] https://lore.kernel.org/all/20250606143700.3256414-1-usamaarif642@gmail.com/
 
-If this doesn't make sense, I can change this to just tiers 0-3 (MAX_NR_TIERS
-is currently hardcoded to 4 across all architectures).
+Signed-off-by: Nimrod Oren <noren@nvidia.com>
+---
+ mm/khugepaged.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-> We'd really need some feedback from memcg folks.
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 27e8f3077e80..c0570bbb1f4e 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -23,6 +23,7 @@
+ #include <linux/ksm.h>
+ #include <linux/pgalloc.h>
+ #include <linux/backing-dev.h>
++#include <linux/sizes.h>
+ 
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -3066,6 +3067,7 @@ void set_recommended_min_free_kbytes(void)
+ {
+ 	struct zone *zone;
+ 	int nr_zones = 0;
++	unsigned long capped_pageblock_nr_pages;
+ 	unsigned long recommended_min;
+ 
+ 	if (!hugepage_enabled()) {
+@@ -3084,16 +3086,23 @@ void set_recommended_min_free_kbytes(void)
+ 		nr_zones++;
+ 	}
+ 
+-	/* Ensure 2 pageblocks are free to assist fragmentation avoidance */
+-	recommended_min = pageblock_nr_pages * nr_zones * 2;
++	/*
++	 * Limit the pageblock contribution to 2 MiB. Larger pageblocks can
++	 * otherwise make min_free_kbytes disproportionately large.
++	 */
++	capped_pageblock_nr_pages =
++		min(pageblock_nr_pages, SZ_2M / PAGE_SIZE);
++
++	/* Ensure 2 capped units are free to assist fragmentation avoidance */
++	recommended_min = capped_pageblock_nr_pages * nr_zones * 2;
+ 
+ 	/*
+-	 * Make sure that on average at least two pageblocks are almost free
++	 * Make sure that on average at least two capped units are almost free
+ 	 * of another type, one for a migratetype to fall back to and a
+ 	 * second to avoid subsequent fallbacks of other types There are 3
+ 	 * MIGRATE_TYPES we care about.
+ 	 */
+-	recommended_min += pageblock_nr_pages * nr_zones *
++	recommended_min += capped_pageblock_nr_pages * nr_zones *
+ 			   MIGRATE_PCPTYPES * MIGRATE_PCPTYPES;
+ 
+ 	/* don't ever allow to reserve more than 5% of the lowmem */
+-- 
+2.45.0
 
-That would really be awesome : -)
-
-> > So we have a way to make both the user-facing side stable, and the internals
-> > also more scalable.
-> > 
-> > With that said, I've opted to leave the internals to 2 tiers for now -- I think
-> > it is not too late to add the generalization series when we start seeing
-> > 3+ tier systems out there in the wild. My goal was to introduce tieredness,
-> > and we can work towards generalization in a future work.
-> > 
-> > On that note, it seems like in general mm is aware of 3+ tiers, but most of the
-> > existing work revolves around distinguishing between toptier/everything else.
-> > I got this impression from reading mm/memory-tiers.c -- but please feel free
-> > to correct me if you feel like I have the wrong idea here : -)
-> 
-> I assume you're right, but it's something different if we end up providing a
-> proper memcg API towards the users.
-> 
-> > So perhaps the generalization work would benefit from first introducing more
-> > general tier awareness (not just toptier vs. rest) in memory-tiers.c.
-> > 
-> > What do you think? Does this approach of introducing toptier restriction for
-> > now, and then generalizing in future work make sense to you?
-> 
-> I'd suspect that we'd want to support multiple tiers from day one -- especially
-> get the interfaces right.
-
-So I think the interface that I have at the moment (in the v3) is stable across
-any number of memory tiers. My idea was to land something with a stable API
-and then as future work support 3+ tiers. But if it makes more sense to land
-the scalable tiered memcg work as the first iteration then I can work on that
-too.
-
-I've been working on v3 for a while, I will send it up sometime soon so that
-I can start the discussion on this again. I really want to discuss with memcg
-maintianers and migration maintainers to get some confirmation on whether
-the series's direction looks good and whether they are happy with my
-vision for the series.
-
-And then in v4, I will add the scalable tiers.
-
-How does that sound? : -) Again, thank you for coming back to this.
-It means a lot!
-Joshua
 
