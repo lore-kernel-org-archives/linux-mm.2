@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F31C4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E1DC4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:51:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADC296B00C2; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
+	id 0A8CB6B00C4; Thu, 16 Jul 2026 10:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6BB96B00C4; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
+	id 059026B00C6; Thu, 16 Jul 2026 10:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86AC76B00C5; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
+	id E8CA16B00C7; Thu, 16 Jul 2026 10:51:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 463C76B00C2
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:37 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BB0E80154
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:29:58 +0000 (UTC)
-X-FDA: 84994722876.14.49FCA43
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 54E4218000C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:29:56 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzgQwrsv;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784208596;
-	b=MqUoBjo7v5t/yyKwJ1CyLXt8sFDW0s4j86b2EfI22oTe1aTqac5wzYGYL3NwuZjk4VfKyI
-	7WGn0EEvNlAnZY/Qxup9U+K1mxKX/Kn2xbnyWOuuMYWthuH2jNui5PJWbykFtAWIrds8c/
-	1iIkhVHR9ZD0jw5iFvJ6Pvvut/TNl64=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzgQwrsv;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B80346B00C4
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:51:22 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 400DA1C0025
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:51:22 +0000 (UTC)
+X-FDA: 84994928004.21.FCEAE72
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 974B24000B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:51:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0LDeiCv;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784208596;
+	s=arc-20220608; t=1784213480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uli8kho+St3ZUL1DO6L5W7brqtkQjA+CdGhvrx1RaxY=;
-	b=4vy4ok4R/+17cTuCLQ3XeTrQDJRkEXHObK+8usvnD1bT9ViyDWeCXleXA+q4nB06LUqKsv
-	Wa5DeQv0Oo5MWb6lI7i1k3xIgTndMQuTVty9EqLktKCFrgJP5GtBDvjjiWQJr3Z7vbiTzI
-	XA5W2zgpU0GlX6+8hWxX+gDYMcteUxI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Zz+36yUziYF15DNC+aOn3O6eA/aUkcC+mnFUaLJ5lGc=;
+	b=PkPLjETIZu4T0SFVvd1dQBbiHISoOBkirv6gFWDIdFavKWjiHyDBqQLPVY9+HbrUHPIMbt
+	NbQ9/xzznQlJaDOj9w2u0V3v/9Euf4nDuzsBBz8Uu1qIOK1HcPYqyP3tuaAFy8ymsL2zBi
+	Y/uiQMfN8cuHZBFI33pSDwB+WyK7iXc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D0LDeiCv;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784213480;
+	b=v23zGqxUIeoXorx/aW830cHIhYZI6hKnTBgEd9Jw/dVqe77cxiE2jb4CfSSe6fv6t6mPGx
+	BfI2z3bZrxlbB4ZOsZb/5F+aJNbJIJYekfZUP26cYhHeyBTrNzEE2CPeMeQYnDEM1cibEt
+	wBJaQsmyZOlq2deh+BSyBG2/Fy4CV90=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1AA6F41331;
-	Thu, 16 Jul 2026 13:29:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6201F000E9;
-	Thu, 16 Jul 2026 13:29:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7BD3600B1;
+	Thu, 16 Jul 2026 14:51:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C26E1F000E9;
+	Thu, 16 Jul 2026 14:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784208595;
-	bh=uli8kho+St3ZUL1DO6L5W7brqtkQjA+CdGhvrx1RaxY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jzgQwrsv3V/tDXNyLUdumBIOaI+5zsaZdpbH1TEEgiTvTUjS1xpWTti1WSyDULhFc
-	 hJ295rAXchnFta6Mg8D7uV7YH5SVfO5a+iueHgHssi0racSeYBmIRBjp7ThZI+FtLr
-	 7XPO4AmdVTGji5tve+AryuvbNf6ET1dMOSnuOXByxXUVdBOp/dY0jzjav0Mn/a+oJs
-	 l1Ut3b+Q29v+wex5p6/jiaj9QKMDiH/JFPNxSjrNAlUIYNKFWwqvU8uoJ/wIZTuY8x
-	 LUH9+cXpct9LlCkOHXR/YtZFDRsD4fQISQOgDLa21EQGtJaZtvhfcOgtUp3MLMNT4P
-	 A4cGgcn/WXtkA==
-Date: Thu, 16 Jul 2026 14:29:38 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Toshi Kani <toshi.kani@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	abarnas@google.com
-Subject: Re: [PATCH mm-hotfixes v3 2/4] x86/mm/pat: acquire mmap lock on page
- table free to avoid ptdump UAF
-Message-ID: <aljb7hoFxL7aUZvG@lucifer>
-References: <20260714-series-vmap-race-fix-v3-0-b812eccfa0f9@kernel.org>
- <20260714-series-vmap-race-fix-v3-2-b812eccfa0f9@kernel.org>
- <alemS7vxeRB7NcBO@willie-the-truck>
- <alesCtwXdIqH6bOP@kernel.org>
- <178419641178.59347.17339330762419756196.b4-reply@b4>
- <aljBF-am7dqqG8Gd@willie-the-truck>
+	s=k20260515; t=1784213479;
+	bh=Zz+36yUziYF15DNC+aOn3O6eA/aUkcC+mnFUaLJ5lGc=;
+	h=From:Subject:Date:To:Cc;
+	b=D0LDeiCvT5iqD9YtMclprsJ7AvnZHg7GHs6EAfLO2QhyV0hIf2J4bJTCQPtwSSEYs
+	 o2g+22Eehz/QPe1n4FEU34dGtWBcXwRGMIve8e2icBn3Eu1vhw10RwStIc49paCsqU
+	 zdA7nZnUQNCssIe4UYt3HWDiqT/ePC6LYALmtRjHBeiIbeGiJsizjZhL+6cUAIgZJ/
+	 vV7bGB3xRJOoqP02Bc0/jlKgnfMZys6osYRN/Dsv5Q4OL4uUxxltXWBU154sZ64QR7
+	 R4K7WgEDAbr3eEeOJs3h+uDCVZX1YgoIdIGvsBxcpzBs2ldbZIwtFVF1fKBBBf03hM
+	 DcaDqNQx3fu2A==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH v2 00/10] mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE (Part 2)
+Date: Thu, 16 Jul 2026 16:50:59 +0200
+Message-Id: <20260716-bootmem_info_part2-v2-0-4afc76c73d61@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aljBF-am7dqqG8Gd@willie-the-truck>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANPvWGoC/22NQQ6CMBBFr0JmbU2pBYGV9zCEUBhgorRk2hAN4
+ e5W3Lp8L/nvb+CRCT1UyQaMK3lyNoI6JdBNrR1RUB8ZlFS51KoQxrkw49yQHVyztByU0MYYrbO
+ +NJce4nBhHOh1RO915Il8cPw+Ptb0a3+5q/ybW1MhRZrlHeqyyLOyuD2QLT7Pjkeo933/AMHki
+ uq1AAAA
+X-Change-ID: 20260428-bootmem_info_part2-4bbb445d9b3d
+To: Dave Hansen <dave.hansen@linux.intel.com>, 
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-s390@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 54E4218000C
-X-Stat-Signature: c81ukkrxggd7abnfg6qwimyko7q1dtc6
-X-HE-Tag: 1784208596-660082
-X-HE-Meta: U2FsdGVkX18gHddUEL6FKockr5Joz9v//8cAOM97JneYrFK+3fMGLiq0aq6y6SppFAHwy4zLZV19beJfnd3J0YINrjsT3aqHTczvjVHfyTHUX7AzAujzvJ9uwxj4t0yqRZy6HhqrHONNukXT2wut3SMDRQjosX9CCZz59geYITgRbnBJFUPRsBBYp0gHXU6pTdF4OtpJJjAdJUFSibKBQM3Aj5PoHVhU9OMttAQDxETKIKV043nGMeueIchL12CNdrI2eQyrnhQKMpubirgbwI2izG9kzHrUXZFCyJItfZ04aLo4aJYgsrjO3oekE5OxoxIYUEihajOYzd7IgSLnRIMW1SQQiVxahZ1t4Q20djFOY1WHN4BBWcTs82t1v4mvpDaJ3jyus9d7uCbtKwB72nwvhxO18soeK/sNkLgiTPPf69UVn/GAUpARD2Kvuu14EA1Y9qMnu6YRv10egvoamAmqn7drCMZSh5jkTJu9S2uBS0gVZIJnNfV7IWWhQf3dfPWdb6NGsvO1SOovy9oQcX/kpRGeQr7UVjzqTqr5rA4NwatVPf4Y3w8Wll7VOMr9Xn3pUQ5FyJofKY1+mwm7gEEKOFfpr22usxRzIO7LhmFaVXIPwWzKQFU0zJN2GTTLXDqb6EyB2xkxJcfUO22bY6wGLAAKMI1ygRpwgBoxd0VD3w7LpcDxBVWQrF58f9an2JjLwllOyApX0Al5nfA/d+jextlQjtIw1+qUWrFri9366ACZ14E3/I9dnF98Jmv6tchukl7tUi61eYAOogWh5Z3ncBof16K/UxxV/bZPpBDXk16KrQ7/rNDpOMTKU/zw7w+jJmrhBoXWTCa/ntitxsJDAcKx8rrN31NnQOQfdRZ1L+LQsRakl+u1IvkG1MWiVTdOvDWXkVh6g4CIFDfFvWpocOJiyCtOXYmyL1CyLiNLw2+bjton3qMCCYrGtTDIyBctZ9hJxVSaPchiPsG
- mSYpm3hc
- PJ6kXTx9rJVYIAVyz+4+aBiivt4LZLjcHkI2hvoldhm5ATd8UQZ0n5lhUmr5lxQjyrZ3G+n277SDoT3sE5L3qBg0GQxlcUGxr9bA6CkvXgAUReO7Q9t8KAeeSXMJczIcrIzCMjmvRLfKuxhCBty0ZmDaKfEMbI+NnAyXZLnYQllBpVtuoSpGFO20Y5XWNsOvyZRb2Th/NfECz3CGRmnN2EzPEq6zHySZfjgJL6XWBAOEiw4V5or+5cDqu4L7NC18Wxz6fQDAtBPIxWyCPQy7qCga7J+2YiSA2WOS3J/aLLQkfFq1s4lQwxnqmyvGlGqPz9K2IOUDUKdX5e75JxMkOHrKxNw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 974B24000B
+X-Stat-Signature: zagrxt9qem31huqwrsg4bf43jdtjtqyi
+X-HE-Tag: 1784213480-876076
+X-HE-Meta: U2FsdGVkX19ohd9E7bJvmcRLAt/4duvR0httLcTmMb5rWjLeejYsHbjdaDJ+4lzI7zg/9rgWNfzqIHIGcpZreL8udsiFMUD/qI8Wsg6DCScuHzunUh9Xv6qVJZyDVJm+GuQ+cp5gO7dFDUPwyHtlzA0LlmbXFEuD0EQTylkXvIy0im/z/oNPFeyDL19LXA9bV4oDvLfaRaIOw1kQZjROIscrapdUsNkvvEor1VIxLklDQedoY+6EXEWZ7Xyx3E41VAwhRXqVn8pFpcryTrvsNdUMTBl4M7iJXRjqYGJCZ15/w7HKKXl9su9byTZ5y8+o6HzDHWpWCoIYd47ZOv3RGKM71I222WDbbFzwdwOZyIE9dV6CAR5n227xN2XC5rfAzi+nkOA9kTlLAlpN9c/9Xwu3mZVnfaHg1mhRzrcQEbAUZjc3kVUg6Bjj6mwxZKP7CS7Vle+1zApM0e04MJJLdK8Sd1rYmFk5gB9TkWI8JtYxIOIB5BQqChArEBX2zPt/jpNGfqo5FzOe7C1HbdU/fCZmyK817/0QBIdVDrvwMqxjD1d6UkT8Mc5kyealQUSc+g55fK1i9b7q06CdKq8xVOBGgDEfhfebhpAI/+rLQ5mmLlv0DRcak5TR/rhbGvMvqOL5m1b6fh6QEW788QnqSZ+BL/pPvG6ETc1U5YpzFbxGC+yA/9PkwKBRbWznJrj/c9YS4tnw0R4SqVE6At7S8Do9MOYIxabxHEv6jo3b7lM3KjLMPOuxHzN+vpRHukHqk8XYCehPgsTgle94NCyKY25e1zBwE37uC70eAK1zc9iqXlqGdVx2r15Ck+F0HutKf7E0+wz3J2MnmDGAxXd5Cx1LiIAtt4zBdmWRlIwCmImRZDoBa3qcfLhZo1JKh4TdrJK7UCEuaoBIgtdXvD2Owdflzu4/3BQy+6BRP42u8RkOZY5atou0j3gJ4OsSIzI1gabxJCTf3XnNQWnqYWu
+ YxAXZdF6
+ t6MjJui7X6CWM70zK7+X8tPRBZzSzxgI+VgSrGBiEMheYsAMPx5XnpgSfepbdFiRnJp0NGu5c1XWtrmB0nTdpgDu6gajtdML2VXdWL6xze0Y+x3SDMMO9kIOGpxQQ74JjnTrP+2nRV3qfw6h38QUKjAxr4gd7P6SutCjfgx78mR4LkR3+oVpqvhhG8lYvBvPXJLYddbzlqzdQ45O7Ok++tWl9ZAF9rp8g1iabVAfsFaM61rwcqBXOH/dFOMCqefE3/g/KT31r7LVsa5nsJBQjFr27ZngOMioI7EKrcrWkRpHyRoApNuur6BKTyz6SnJcEGVQWvb9nY+PXjjGsG+wvPcxUTOUBUOKAn15HQsLDon5Lu9hKz9jQcKtKaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,111 +108,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 12:31:35PM +0100, Will Deacon wrote:
-> On Thu, Jul 16, 2026 at 11:06:51AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On 2026-07-15 18:49 +0300, Mike Rapoport wrote:
-> > > On Wed, Jul 15, 2026 at 04:24:59PM +0100, Will Deacon wrote:
-> > > > > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > > > > index d023a40a1e03..4c4b8244502f 100644
-> > > > > --- a/arch/x86/mm/pat/set_memory.c
-> > > > > +++ b/arch/x86/mm/pat/set_memory.c
-> > > > > @@ -22,6 +22,7 @@
-> > > > >  #include <linux/cc_platform.h>
-> > > > >  #include <linux/set_memory.h>
-> > > > >  #include <linux/memregion.h>
-> > > > > +#include <linux/cleanup.h>
-> > > > >
-> > > > >  #include <asm/e820/api.h>
-> > > > >  #include <asm/processor.h>
-> > > > > @@ -436,9 +437,16 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
-> > > > >
-> > > > >  	flush_tlb_all();
-> > > > >
-> > > > > -	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
-> > > > > -		list_del(&ptdesc->pt_list);
-> > > > > -		pagetable_free(ptdesc);
-> > > > > +	/*
-> > > > > +	 * ptdump might read these page tables, so avoid a use-after-free by
-> > > > > +	 * acquiring the mmap read lock on init_mm (ptdump acquires the mmap
-> > > > > +	 * write lock).
-> > > > > +	 */
-> > > > > +	scoped_guard(mmap_read_lock, &init_mm) {
-> > > > > +		list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
-> > > > > +			list_del(&ptdesc->pt_list);
-> > > > > +			pagetable_free(ptdesc);
-> > > > > +		}
-> > > >
-> > > > As I understand it, the argument for taking the read lock is that we're
-> > > > operating on a region that we "wholly own" and therefore we can happily
-> > > > run concurrently with CPUs walking distinct parts of the page-table.
-> > > > However, from what I can tell, the CPA collapse logic will operate on
-> > > > regions outside of the address range being manipulated by its caller
-> > > > because it rounds up to the PMD size.
-> > > >
-> > > > As a made-up example, imagine I have a 2MiB aligned region where the
-> > > > first 1MiB is read-only and the second 1MiB is in the default r/w state.
-> > > > If one CPU calls set_memory_rw() on the first 1MiB while another CPU is
-> > > > walking the second 1MiB (via some other API that doesn't take cpa_lock),
-> > > > it looks to me like the first CPU can collapse the page-table and free
-> > > > the unused pages under the feet of the other CPU. What prevents that
-> > > > from happening?
-> > >
-> > > Nothing, and there's a patch to fix that that synchronizes
-> > > cpa_collapse_large_pages() using cpa_lock:
-> > >
-> > > https://lore.kernel.org/all/20260626163213.2284080-1-den@openvz.org
->
-> Hmm, but that relies on all concurrent walkers taking cpa_lock, no? Surely
-> that's not generally the case.
->
-> > Thanks Mike!
-> >
-> > >
-> > > This still won't be enough to sync with ptdump though.
-> >
-> > Yeah, so this patch is still necessary.
-> >
-> > But that patch conflicts with this one as it holds a spin lock over the page
-> > table freeing, which prevents taking an rwsem... :/
-> >
-> > Anyway I think this one is still fine as it seems there's not a consensus over
-> > there as there was discussion about just removing the locking anyway ([0])?
-> >
-> > So can kick that can down the road and just get these ptdump bugs fixed :)
-> >
-> > >
-> > > > If all concurrent walkers have interrupts disabled, I guess the TLB
-> > > > invalidation logic would do it, but it would be good to call this out in
-> > > > the commit message because it's not clear to me why the read_lock is
-> > > > sufficient for the collapsing case.
-> >
-> > Yeah, so this patch is _only_ fixing the ptdump case. Any existing bug must be
-> > addressed separately.
->
-> Up to you folks, but if you took the write lock during collapse wouldn't
-> that fix it for all concurrent walkers and we wouldn't need another patch?
->
-> I would argue that using the read lock here directly contradicts the
-> rationale for why this is safe, because this is an occurence of code
-> that operates on a range that it doesn't wholly own. It seems bizarre
-> to me to go to the effort of adding locking, but then not adding
-> sufficient locking for all concurrent walkers.
+Let's remove the remaining pieces of CONFIG_HAVE_BOOTMEM_INFO_NODE,
+performing some smaller cleanups around freeing of reserved vmemmap
+pages on the way.
 
-Yeah good point, we could avoid the cpa spin lock altogether and guarantee that
-we're the only writer by using an mmap write lock instead.
+Tested on x86-64 with hugetlb vmemmap optimization in combination with
+KMEMLEAK. Heavily cross-compiled.
 
-We have to take a write lock in the ptdump reader because of non-VMA ranges for
-some architectures + munmap downgrades to a read lock on teardown (having
-already removed the VMA ranges hence non-VMA the only ones we are concerned
-about).
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Changes in v2:
+- In patch #2, reverse the order of setting the page count and clearing
+  PG_reserved, and modify the patch description accordingly.
+- Link to v1: https://patch.msgid.link/20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org
 
-We take read locks for stabilisation here + in vmap code because that suffices,
-but so does a write lock.
+---
 
-I'll post on that thread and do a respin with that then.
+David Hildenbrand (Arm) (10):
+      x86/mm: drop order parameter from free_pagetable()
+      mm: provide free_reserved_pages(), removing x86 variant
+      s390/mm: use free_reserved_pages() in vmem_free_pages()
+      mm/bootmem_info: allow calling free_bootmem_page() on pages without a bootmem_type
+      x86/mm: stop marking vmemmap as SECTION_INFO
+      x86/mm: stop marking page tables as MIX_SECTION_INFO
+      x86/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
+      mm/hugetlb_vmemmap: remove bootmem_info leftovers
+      mm/sparse: remove bootmem_info.h include
+      mm/bootmem_info: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
 
->
-> Will
+ MAINTAINERS                  |   1 -
+ arch/s390/mm/vmem.c          |   4 +-
+ arch/x86/mm/init_64.c        | 134 ++++---------------------------------------
+ include/linux/bootmem_info.h |  89 ----------------------------
+ include/linux/mm.h           |   8 ++-
+ mm/Kconfig                   |   8 ---
+ mm/Makefile                  |   1 -
+ mm/bootmem_info.c            |  72 -----------------------
+ mm/hugetlb_vmemmap.c         |   8 +--
+ mm/page_alloc.c              |  33 ++++++++---
+ mm/sparse.c                  |   1 -
+ 11 files changed, 46 insertions(+), 313 deletions(-)
 
-Cheers, Lorenzo
+---
+
+base-commit: d11ba1f570615ec8d4814d6313ee1d7075a33787
+
+change-id: 20260428-bootmem_info_part2-4bbb445d9b3d
+
+--
+
+Cheers,
+
+David
+
 
