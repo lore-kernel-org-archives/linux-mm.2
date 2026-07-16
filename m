@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39F91C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B21C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B33C66B013D; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
+	id DF27D6B013F; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABCED6B0140; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
+	id D7EAC6B0140; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AC346B0141; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
+	id C42F06B0142; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 455DA6B013D
+	by kanga.kvack.org (Postfix) with ESMTP id 7A2C66B013F
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:09:37 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C6B4C8014F
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:42:54 +0000 (UTC)
-X-FDA: 84994604268.26.0D388FF
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3AF89180004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:42:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=GzYocpH+;
-	spf=pass (imf24.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E9BB80153
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:43:32 +0000 (UTC)
+X-FDA: 84994605864.26.8AFBCBA
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 34E8540003
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:43:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=b3SUbbhk;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf11.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784205772;
+	s=arc-20220608; t=1784205810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
-	b=bMFVusVmFQEsUgklFE2avRbswVtw1GPO8Sv8O0bQi9r9JFyLLIXv1AdfXf2dpTvO0DDSPp
-	t1LCLYd9dFHo+bLSjENR/Pgiy7vI4ZfLacW9PcCe24wsZ9Rfl5eLCB0b50+cUXvay72jIC
-	D8ts42QzP0SZJIuISqu63sg5VjEL/l8=
+	bh=qNKb6kLr/7ftZXllrSyALai0ySExbjYkU3LL0V9fZEA=;
+	b=jbOnBfDhUPfFwVc/Dfkq4Pd5Nxt0ShG1mUWVSndf6clzL71ryM5/G1IvKAJDZZfcJv1FOY
+	t8fylo9/dHbo9sZ8ZoBdVctZZnAOB8uFH4gMwZKGA09ABP8ytZpXVm0sxMsCN9uudtnATz
+	AarHs16vxhSkCGR+gm3039KekZN3xmM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=GzYocpH+;
-	spf=pass (imf24.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=b3SUbbhk;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf11.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784205772;
-	b=5B4gYtoA2Sl5lbAmvQOBIi/RLoCe4cMb7ZCjx89ML43/4Yu6ItqiEDmUqHV2xf/XLRHcQY
-	yhgq9lkAhCFRp7wiJT1hh0yda6edWrLYPKO5ZXAmapJfwjzpT5OkSUssxiKbsIWwb86y67
-	3aZWMjKg1f1oubo+hZ6oRXFAU51dNlk=
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9e7391839cso2949572a12.0
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:42:51 -0700 (PDT)
+	t=1784205810;
+	b=xZ0lBPhN0tzts6gFZhvN+jAlUTYGLWLCILp9CKptvcxlwT4b4KdaHFqQPQ7ONX9hkzTmv6
+	tyct+vJQS5EG9LerTIW2DJ07TgkhxjuSZCEjdw7D7prhYW6JA4BtK1UFAJHFoiWqsEHht0
+	5E0JDoAFmK0ANHmP4MZmdaUR2rBwfgM=
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso4724186a12.0
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:43:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205771; x=1784810571; darn=kvack.org;
+        d=bytedance.com; s=google; t=1784205809; x=1784810609; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
-        b=GzYocpH+u5Blp3Ju38cAwqd2SV2BC2HHEfE6dFKGOkzAF7KkPUgKQHP5Nn/dHNVyza
-         33CgSS276uac4n1l5w1G6PkCw3wuoTxmdkp9Aq55XgdhqwZ4X29GB9rs97n6Je/4OW07
-         Q+C7g7kSx87mOw9rv7e4BnX4dB6FONA/cC6wDAmlDbJz3ZDZsADdwb8P7m0XGtVx0wF6
-         qrFcvdsu9pniOg9p3CcB07wxsGMfLiJsmSKeqXgTks159F3AqB5HwSsQzvMV2h5CcwT0
-         1DLX6VZPatzF0nhLWO9S26YMEdFJq0S1ydD2D5PHVnnP/8P5hIBlOumW4OgqizaraqPd
-         x3sg==
+        bh=qNKb6kLr/7ftZXllrSyALai0ySExbjYkU3LL0V9fZEA=;
+        b=b3SUbbhkcNLW7rbgIMz86gxbR/Z+dogZ+Ao8/h7oRX4KcoymQUnywuS/PPTC1Yu+dZ
+         OOdG0DZBIPafnMaVwI0nvB3Ru+NbIxRBRt/6InCqWZ4IdXjcacyjeSXq5eL9XDy7L++h
+         C9d2yJ24KWDKhOs8Nq3DsWfGTupvIc8BdWp+P7lOXraBFCkVcCTCFYTqyLOwHECl2PJy
+         mHGeRY1Yxt9FenpHB76ANXL+8WisfqSXvA5G4x5mf2CRcGtMTXN9Be+pWqpq/oDxNIJZ
+         RQHCQ3P+gwZT+UAtgru9bckvoy1RR+BqbOju0k2g38ecl4X6lV4ME/vULSH+CNnqR+bQ
+         Pb8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205771; x=1784810571;
+        d=1e100.net; s=20251104; t=1784205809; x=1784810609;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
-        b=Jfsn6zR1Yd69I3tByZiuvQ5goGoUAPuKpgUndtFISo6w36+cPmrH2mq8H9w2YCY66F
-         8vaoyOHWTXEt9k57zXqjs/m6KDpLwcZ+lZQo1CfWrVXiQganpqHybK0y0RQlo44cE30n
-         AINtmt9X9jPudSIJz4CXajZxFpPK/sAByPPa3aU8FVvzYGp4uhJDoA4ut//AgpK7VzJC
-         tR3uFQxkZ9pm2d4f7jV+8Gt+3lxnjvfsS/tUzxG8kB0aKM0R0YpoFoh538qYgHHax8IZ
-         6CT8Utf+tT7N6TF8suf6tQ3YlfjdW+jwnZplqCxREdegfP9ctr2eP8fZlq0zU3CciSnv
-         v4kw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7p6PvEZ2fDSdIwUoMNWQddR3ePu1ffV/PV0uPvTl4TNBMyCE61iSFD7cfBVfNlY+OP4gOZZznFg==@kvack.org
-X-Gm-Message-State: AOJu0YyTCVHj7ofqp+UBQFyernIufrGG7ABROgFQR7H/Hi88Za2NeWhb
-	RtWo8YGOYVc4NkU97rOqN4Ewcz7F46elffAsPPJ1yjeSowG8P6rfIX6o1VW7tDJqAGw=
-X-Gm-Gg: AfdE7cnDDuFLufMRqye+SRbccm0a3DfzstZjNvPpeRWEyizlANlL8c485Ld5Sd9Nc6n
-	XkSgvSf1KHbJZuuHMGkZUdyuFMPIX1v4KAwO+G0PLU7dp9tJFLHGYL3V6l6WgPTGd6501jIm6Mb
-	kmOtjUfkazPjBKIW0C3bltw9ESW+OTonAje4glizkYybBffjj012fnKF08PFd1LtM9E6Beb75ux
-	tlQQzSXjeL0RQXd6Mb6/5ZtJ4V8ykaMmsUoYI5hRSYgmQMBzbAvlXJ+4V0cbRcJjm0HzJ0DA9YY
-	z1qlK1fXvmZS9LmDV/sT2W6ezjt89I+x9d0fGWVsjqhs8YA/LhrxpUJhjWc04+tDaNwdi9wFoGS
-	EsrCdS8mO481T8b5kRE1UKeyeqWsJbikZcUUT6J8OsYP7+hZv4QrBeyPX4fnzahAKDo4lsmVUqr
-	Qi94hmJTmTo8tPKbMMRDMZTizZbm1tnbybwA==
-X-Received: by 2002:a05:6a21:10b:b0:3bf:b1d3:393e with SMTP id adf61e73a8af0-3c110009b76mr25226010637.2.1784205770620;
-        Thu, 16 Jul 2026 05:42:50 -0700 (PDT)
+        bh=qNKb6kLr/7ftZXllrSyALai0ySExbjYkU3LL0V9fZEA=;
+        b=Gj5nSh/vix2BKipsqsT7DpAY/TDVuZSzapCoelrxtaxeWTU+oiOL7ILYVZZ361yhWy
+         H4pyKcKe0LBSbM97CenD5F6DtzSbJ35RW+q4b1icVNsuiZhLFx6TOdG4zyC2t1sysJlW
+         p6aAxypdjQSjhFploDRoDT7mrG1MctIqoh4/N+UJml++GljBr/Q9n/MJlX7ifctAKL5+
+         7k3N0RyuwcHs1GqpJDpoeAj9bCwEWZygOddk9nshj3DlPKdsuTyMUh2DVsyK0DuFTTp/
+         gTKKvuJTN1DPy8rPZ2CDJ4lhrf/mEX0Yr3vPUpqqnq8Z8YfZV58kVTxGhTqUJ7R0TTtA
+         nAqA==
+X-Forwarded-Encrypted: i=1; AHgh+RrjZ5a3l8MSTAMJV7gCuNECoCIje3KA9XBaKtcSGpk1+TrQghHDmasdpAuLEsFLZ4P2vN/xzSRqSA==@kvack.org
+X-Gm-Message-State: AOJu0YygrBaU0sAtcIKXAGzc9ruQoXx6In5Zgz9UVM99ulkbUi8J8GX1
+	Iejs/6iJ3FeGYSnTsFmGraZWUHwrB6jfG6EpwRKKfRWrKSb6u6JKPUYPjxwYwPTyn2g=
+X-Gm-Gg: AfdE7cnI1or+yCUZyQqF8zitRbCRGsmUs3F/k7ShUs9+JEttvEFDTp3wx62a0WZQWEl
+	eGK3/FwNFjxaObuLbCs/yNhzhQ9G9lqHlipEtJE/jFQBXKIERs2YTvQGjEFc2tesNLaN334E3mJ
+	94QESJ8lPuG22oZxRG3SsTwPLJDGVV2N+IaF1TsTkhPTI/HxZykxp/1DbcKTf3tespqO9JHJLTt
+	3FsbXcKomoTcp9FNT0fSooohGChr7TR/E6/rEZcqVaM77UCmr/gqFhJ8hM4wMi/IE4Vh6exOBJO
+	VnobGPKlwtmjBb70g/MLsLeHL/clFn7KIktmSd7I69AQREt3f04Ab+9j78Z33CEqTaDl7ir26Ec
+	/JIkRfjgZ7VHs/Y+wEDv906ysGupvnvd1M8J9VUMmaVOC4z2Q/6puKquHHY6P6eVHeW41SAdvaG
+	8/kz1Y1cJcO1iiBRzlRSm2Dx4=
+X-Received: by 2002:a05:6a20:e615:b0:3c0:9c19:6590 with SMTP id adf61e73a8af0-3c3576c37f6mr12231332637.74.1784205808961;
+        Thu, 16 Jul 2026 05:43:28 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.42.42
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.43.19
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:42:50 -0700 (PDT)
+        Thu, 16 Jul 2026 05:43:26 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org,
@@ -102,22 +102,22 @@ Cc: linux-arch@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 01/15] riscv: introduce raw PTE helpers
-Date: Thu, 16 Jul 2026 20:41:36 +0800
-Message-Id: <2bde82cde4c262d35663d386e8a16455c76ec3e6.1784201104.git.cuiyunhui@bytedance.com>
+Subject: [PATCH v2 05/15] mm: extend pte batch and leaf-size helpers
+Date: Thu, 16 Jul 2026 20:41:40 +0800
+Message-Id: <e821b31e023ee0e5b1c54daed253034bd4da0398.1784201104.git.cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
 References: <cover.1784201104.git.cuiyunhui@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: q1iyc5g99schhkwuxk4hkfb5qtnoghis
-X-Rspamd-Queue-Id: 3AF89180004
+X-Rspamd-Queue-Id: 34E8540003
+X-Stat-Signature: g3qi1xcr4oxpjfka5z93h7hrhemdzk7s
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784205772-411369
-X-HE-Meta: U2FsdGVkX18LeIG1Eu041nZIrqKQtZQ2VgEA3AmhTJz++dti2as9olf8EUe0Vo9gEmbqCBxyTAgWwarpGgMsbYpzKxDeUpGOWlqes+F0rrs8v4CqzyGfYn8Njnou0BZrsVl8DHMLaRa2FmRp+fgtMZcduU5oQYHLDcVSVml5Zr74Ab9n4P3e2QWfqFQpKskoVBTUtuYJSvK2IPuV94YP+wdUTdgXoT57Ej2luQzHXCfAaiu7LsRhJ134Hmkgaz+zTYbh85K5zZ3/9nuTrnGV9bmCfphX+k0ijfnHZsQasXgajWugiWH2qiMhlO2oDSe/1aGp/QKFI0azfX4HSQI4+mmO7GfwziIDmj7B5KLzLh8x3HHT6q7bwvsiFwwk7cSKcpyrhG69uEac14MVGDfXzn141pzL9H+Pu0q8sBKSJ1Ydma8eW5+9mA8or8ldHTkQ/zE6nc1sNdQ11/1cpmpSdqlACqHePc59krlRaLDKpDWTQYDZ2JNkdQjHrdmfPSnmD1OfzGaO4/CYaMdJHpXyqoq9T3XiiWshWfEDBxMAbi/wpaXa3O352ZGSR8YzWRbYJn76yGR2md7zQQvBZ12HJLj+WLUlvR6f6/3eJvZSKYZ6kFTAb+A5uC3Q91FtsYkv80owHbCsIkEPh6NrXxgcUsn/+17Ds/S9JivGlbWSG+qjvX5Tr7ki+9CwWsNjtPTVQh9MrMSQrL496qCKYgZkSI266+ygl8RorjFYXcy1M/cbb3uZOp7LLVFG9tposkn2yH5drb9io2Fqec/JrscMYGfx0jBEsdwmzXRKP3n12UZikhJwsztFELGkKjXOyidTnhmWk2f/TXmrMkqsuya/sNzqp8RtTl6cxFNTBbg3v4v5RjmycDxDpDYZvtLcrtjtlIUPt/zyxE07IYUNVgPWL4Sa6nF1J2pf7wyd+PmAl+Z1a/uzCWFH5AzPEgKnmRvYGSVSJBd4PWFazYc0HXI
- 2zXDbAov
- wy3V7FT3ehm/fb9gDMrOKDmB5FSjcIUVWwf1/gVL3vvbyD1yPAw38ZA7qAJKAakaUEfup63EiRNK3ObDLver40jv6gmsIxrtyWrqwN4Z0PBhdwZ6V58mWYc+dgJmRZoP1wyGm4ggvwpXnUq3VbSb91ONfUnw2KMAVcqj2qwEnWE3YYFB8lxbuPj1Ua1pW+XOb+lil6CbW1byhPqMeExIRJRcWTtp9PhmWEmIvSEzLdc08tDdT5kVkHSNc5llD7OBrhRgVGprU6ivVYLX9PQaVA4mOSYsYka926WgAVeHWTHie3bQlhWRHUmFnZdY9rxlm8330bS3CrCW42c2ZMLNJK2caGw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784205810-196203
+X-HE-Meta: U2FsdGVkX194gyyR4lq9Mitw980QXu0PxLL3M5E4wr0++Mz40r0AIiKUZRsGJ25CuWiAfiOCSmGDl7LFQE8E2EaKBgnM1MxDloAI1o1jnGEQsPzGn86RI8GKI9nhruMMMw49MJh0tXR08pWW0k+bkcu1V28DBvtMHgDPtOmasjJ2X3xhylXgRNH8pxED9mxlZUFM6To3wxgF8Jzaae6VXGgHGbEuveHrZLK0WDm8/Be+l7U2c4HcI20QW5kPAEgvxvwcp8bLoLgj99YGLzjSIEjy4nryc2SP1hTUqx0AIBMJOn347+lIJHDJ7Uv3Fz2W676BIHib7Iu4q6pLWXr1Zei5Nk7lfUfpT6pu8EGstNSzpwPnWiof9Nva8k8ms9fHwhpmf0EdAujC8GCMTxhDjmIPknGQBxXdpCuonAwoGJEP4ARQZCNb9l3Dae57BlKYJCwhi55UgWHBmU10OoZ7h2N7BlofUOhMiRoZMwW3Vm+2VfDB9zL4uQpqCHOB42Yi1z5gc0RoyxtpxVymDsLQ5WbIX5LY5GNSgj2c7e5O8wXCMTLgC9aGcodGmru4WrB7vowQK1SNsGUK/dogWh3vFIzRBmk2EDirQeBdtJN00WhMV1Me2cB8Kdfo0CK8DNx/8x/YDnvTSAjBPbosWkGFuxL2lYyoYgI9PfTNwrGuXSTABb7Me8DF7tadJ/HBxO99yIwiTD/0d2vCLC1S+AGgTxoBUni/DMMGyIi5u1OlIQ9rwdQQqnyqABOk/K9Sy5a4vvOrBgA9OTxyQxOA2x2EIE776kSuMHTDOaiJBDgMqdMVKGfxR29mTu7ReWyoPrw1xyo2e6wjiLTXwVCoqVboaoEPJF4mLaKEMv3VphMt2a+0yE2/7WBA1HFd2/2jmgRDSMvvujAGXYH1ZfTWYo35XpOIMlT91EQTt+tisQKHDY4u6mwW0IZMjr+75cCbRrO4MmxYhfsrZxl7Rf4kSgl
+ cUBPTNzx
+ w7G62fsZjyfl9ielzECoux7GG73phvGnPp6ZDnR1pEapjiUbEeqoeyKAycX+A/qp3hOCj3f0ABeXjE9EFXSaAal8kTlPAqJ/u2q8tMAKacAHNMgEm71ZbwAemVI7sox96y0HJS45V1f6dZ77d+HP5VIjCOCRi0U1AQ9wDp1h2Dy5bk2qtVOCjsHw6/xdwcdKf7x87SJ6WeBdYzCvQ90KqrcBE1r8e3SBOf1PBNaR7Bjh52NBJ4cr8sFce78IMM4vUZkLVvOtNidM+a2utE2qW0fXiKYlhNpluEvpiE3hQtzk4eYdm5ZY1b8P62jKDRjoky1lq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,225 +125,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Svnapot needs RISC-V to distinguish between two PTE views: the raw encoded
-entries used by architecture code, and the logical per-page PTE view that
-will later be exposed to generic MM paths.
+Folded mappings such as RISC-V Svnapot need two extra pieces of generic
+MM support.
 
-Split the low-level RISC-V PTE operations from the public helpers so the
-raw helpers can keep operating on the hardware encoding, while follow-up
-changes build the Svnapot-aware public view on top.
+First, architecture pte_batch_hint() implementations need access to the
+same batch flags and normalization rules used by folio_pte_batch(), so
+folded ranges can participate in batching with semantics consistent with
+generic folio comparisons.
+
+Second, leaf-size users may need the original PTE pointer instead of the
+public ptep_get() view. For folded mappings, the public helper can return
+a logical per-page sub-PTE, while the effective leaf size still depends
+on the raw encoded entry in the page table.
+
+Move the batch flag helpers into pgtable.h, extend pte_batch_hint() to
+take the batch flags, add __ptep_leaf_size(), and update the generic
+callers to use the new interfaces.
 
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- arch/riscv/include/asm/pgtable.h | 129 +++++++++++++++++++++++++++----
- 1 file changed, 114 insertions(+), 15 deletions(-)
+ arch/arm64/include/asm/pgtable.h |  9 +++++-
+ include/linux/pgtable.h          | 53 +++++++++++++++++++++++++++++++-
+ kernel/events/core.c             |  2 +-
+ mm/internal.h                    | 39 ++---------------------
+ mm/mincore.c                     |  2 +-
+ mm/mremap.c                      |  2 +-
+ 6 files changed, 65 insertions(+), 42 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index a810655ce8f9b..8ca5da9534967 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -9,6 +9,7 @@
- #include <linux/mmzone.h>
- #include <linux/sizes.h>
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index a2681d7553584..018781a1fcbee 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -5,6 +5,13 @@
+ #ifndef __ASM_PGTABLE_H
+ #define __ASM_PGTABLE_H
  
-+#include <asm/cmpxchg.h>
- #include <asm/pgtable-bits.h>
++#ifndef __ASSEMBLY__
++#ifndef __LINUX_FPB_T
++#define __LINUX_FPB_T
++typedef int __bitwise fpb_t;
++#endif
++#endif
++
+ #include <asm/bug.h>
+ #include <asm/proc-fns.h>
  
- #ifndef CONFIG_MMU
-@@ -628,11 +629,13 @@ static inline int pte_same(pte_t pte_a, pte_t pte_b)
-  * a page table are directly modified.  Thus, the following hook is
-  * made available.
+@@ -1705,7 +1712,7 @@ static __always_inline void contpte_try_unfold(struct mm_struct *mm,
+ }
+ 
+ #define pte_batch_hint pte_batch_hint
+-static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
++static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte, fpb_t flags)
+ {
+ 	if (!pte_valid_cont(pte))
+ 		return 1;
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 8c093c119e5a8..da14328093a86 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -3,6 +3,35 @@
+ #define _LINUX_PGTABLE_H
+ 
+ #include <linux/pfn.h>
++
++#ifndef __ASSEMBLY__
++#ifndef __LINUX_FPB_T
++#define __LINUX_FPB_T
++typedef int __bitwise fpb_t;
++#endif
++
++/* Compare PTEs respecting the dirty bit. */
++#define FPB_RESPECT_DIRTY		((__force fpb_t)BIT(0))
++
++/* Compare PTEs respecting the soft-dirty bit. */
++#define FPB_RESPECT_SOFT_DIRTY		((__force fpb_t)BIT(1))
++
++/* Compare PTEs respecting the writable bit. */
++#define FPB_RESPECT_WRITE		((__force fpb_t)BIT(2))
++
++/*
++ * Merge PTE write bits: if any PTE in the batch is writable, modify the
++ * PTE at @ptentp to be writable.
++ */
++#define FPB_MERGE_WRITE			((__force fpb_t)BIT(3))
++
++/*
++ * Merge PTE young and dirty bits: if any PTE in the batch is young or dirty,
++ * modify the PTE at @ptentp to be young or dirty, respectively.
++ */
++#define FPB_MERGE_YOUNG_DIRTY		((__force fpb_t)BIT(4))
++#endif /* !__ASSEMBLY__ */
++
+ #include <asm/pgtable.h>
+ 
+ #define PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
+@@ -397,6 +426,7 @@ static inline void lazy_mmu_mode_resume(void) {}
+  * pte_batch_hint - Number of pages that can be added to batch without scanning.
+  * @ptep: Page table pointer for the entry.
+  * @pte: Page table entry.
++ * @flags: Flags that control PTE normalization for batch comparisons.
+  *
+  * Some architectures know that a set of contiguous ptes all map the same
+  * contiguous memory with the same permissions. In this case, it can provide a
+@@ -407,7 +437,7 @@ static inline void lazy_mmu_mode_resume(void) {}
+  *
+  * May be overridden by the architecture, else pte_batch_hint is always 1.
   */
--static inline void set_pte(pte_t *ptep, pte_t pteval)
-+static inline void __set_pte(pte_t *ptep, pte_t pteval)
+-static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
++static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte, fpb_t flags)
  {
- 	WRITE_ONCE(*ptep, pteval);
+ 	return 1;
  }
- 
-+#define __set_pte __set_pte
+@@ -1855,6 +1885,7 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+ 	return pmd;
+ }
+ #endif
 +
- void flush_icache_pte(struct mm_struct *mm, pte_t pte);
- 
- static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
-@@ -640,13 +643,13 @@ static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
- 	if (pte_present(pteval) && pte_exec(pteval))
- 		flush_icache_pte(mm, pteval);
- 
--	set_pte(ptep, pteval);
-+	__set_pte(ptep, pteval);
- }
- 
- #define PFN_PTE_SHIFT		_PAGE_PFN_SHIFT
- 
--static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
--		pte_t *ptep, pte_t pteval, unsigned int nr)
-+static inline void __set_ptes(struct mm_struct *mm, unsigned long addr,
-+			      pte_t *ptep, pte_t pteval, unsigned int nr)
+ #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
+ static inline int pte_soft_dirty(pte_t pte)
  {
- 	page_table_check_ptes_set(mm, addr, ptep, pteval, nr);
- 
-@@ -658,24 +661,85 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_val(pteval) += 1 << _PAGE_PFN_SHIFT;
- 	}
+@@ -1917,6 +1948,17 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
  }
--#define set_ptes set_ptes
+ #endif
  
--static inline void pte_clear(struct mm_struct *mm,
--	unsigned long addr, pte_t *ptep)
-+#define __set_ptes __set_ptes
-+
-+static inline void __pte_clear(struct mm_struct *mm,
-+			       unsigned long addr, pte_t *ptep)
- {
- 	__set_pte_at(mm, ptep, __pte(0));
- }
- 
-+#define __pte_clear __pte_clear
-+
-+#define __ptep_get __ptep_get
-+static inline pte_t __ptep_get(pte_t *ptep)
++static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
 +{
-+	return READ_ONCE(*ptep);
++	if (!(flags & FPB_RESPECT_DIRTY))
++		pte = pte_mkclean(pte);
++	if (likely(!(flags & FPB_RESPECT_SOFT_DIRTY)))
++		pte = pte_clear_soft_dirty(pte);
++	if (likely(!(flags & FPB_RESPECT_WRITE)))
++		pte = pte_wrprotect(pte);
++	return pte_mkold(pte);
 +}
 +
-+#define __ptep_get_lockless __ptep_get_lockless
-+static inline pte_t __ptep_get_lockless(pte_t *ptep)
-+{
-+	return __ptep_get(ptep);
-+}
-+
-+static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
-+					   unsigned long addr, pte_t *ptep,
-+					   pte_t pte, cydp_t flags)
-+{
-+	pte_t old_pte;
-+
-+	do {
-+		old_pte = pte;
-+
-+		if (flags & CYDP_CLEAR_YOUNG)
-+			pte = pte_mkold(pte);
-+		if (flags & CYDP_CLEAR_DIRTY)
-+			pte = pte_mkclean(pte);
-+
-+		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+					       pte_val(old_pte),
-+					       pte_val(pte));
-+	} while (pte_val(pte) != pte_val(old_pte));
-+}
-+
-+static inline void __clear_young_dirty_ptes(struct vm_area_struct *vma,
-+					    unsigned long addr, pte_t *ptep,
-+					    unsigned int nr, cydp_t flags)
-+{
-+	pte_t pte;
-+
-+	for (;;) {
-+		pte = __ptep_get(ptep);
-+
-+		if (flags == (CYDP_CLEAR_YOUNG | CYDP_CLEAR_DIRTY))
-+			__set_pte(ptep, pte_mkclean(pte_mkold(pte)));
-+		else
-+			__clear_young_dirty_pte(vma, addr, ptep, pte, flags);
-+
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+}
-+
- #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS	/* defined in mm/pgtable.c */
- extern int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
- 				 pte_t *ptep, pte_t entry, int dirty);
-+int __ptep_set_access_flags(struct vm_area_struct *vma,
-+			    unsigned long address, pte_t *ptep,
-+			    pte_t entry, int dirty);
- #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG	/* defined in mm/pgtable.c */
- bool ptep_test_and_clear_young(struct vm_area_struct *vma,
--		unsigned long address, pte_t *ptep);
-+			       unsigned long address, pte_t *ptep);
-+bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
-+				 unsigned long address, pte_t *ptep);
+ #ifndef __HAVE_PFNMAP_TRACKING
+ /*
+  * Interfaces that can be used by architecture code to keep track of
+@@ -2414,6 +2456,15 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
+ #define __pte_leaf_size(x,y) pte_leaf_size(y)
+ #endif
  
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
--static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
--				       unsigned long address, pte_t *ptep)
-+static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
-+					 unsigned long address, pte_t *ptep)
- {
- #ifdef CONFIG_SMP
- 	pte_t pte = __pte(xchg(&ptep->pte, 0));
-@@ -690,9 +754,24 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 	return pte;
++#ifndef __ptep_leaf_size
++#ifndef __ASSEMBLY__
++static inline unsigned long __ptep_leaf_size(pmd_t pmd, pte_t *ptep, pte_t pte)
++{
++	return __pte_leaf_size(pmd, pte);
++}
++#endif /* !__ASSEMBLY__ */
++#endif
++
+ /*
+  * We always define pmd_pfn for all archs as it's used in lots of generic
+  * code.  Now it happens too for pud_pfn (and can happen for larger
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 51c1200ea3fdd..37b860abe9e61 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -8551,7 +8551,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
+ 
+ 	pte = ptep_get_lockless(ptep);
+ 	if (pte_present(pte))
+-		size = __pte_leaf_size(pmd, pte);
++		size = __ptep_leaf_size(pmd, ptep, pte);
+ 	pte_unmap(ptep);
+ #endif /* CONFIG_HAVE_GUP_FAST */
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index 874be94cf2570..aff00a3fdff50 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -343,41 +343,6 @@ static inline int anon_vma_prepare(struct vm_area_struct *vma)
+ 	return __anon_vma_prepare(vma);
  }
  
-+#define __ptep_get_and_clear __ptep_get_and_clear
-+
-+static inline pte_t __ptep_clear_flush(struct vm_area_struct *vma,
-+				       unsigned long address, pte_t *ptep)
-+{
-+	pte_t pte = __ptep_get_and_clear(vma->vm_mm, address, ptep);
-+
-+	if (pte_accessible(vma->vm_mm, pte))
-+		flush_tlb_page(vma, address);
-+
-+	return pte;
-+}
-+
-+#define __ptep_clear_flush __ptep_clear_flush
-+
- #define __HAVE_ARCH_PTEP_SET_WRPROTECT
--static inline void ptep_set_wrprotect(struct mm_struct *mm,
--				      unsigned long address, pte_t *ptep)
-+static inline void __ptep_set_wrprotect(struct mm_struct *mm,
-+					unsigned long address, pte_t *ptep)
- {
- 	pte_t read_pte = READ_ONCE(*ptep);
- 	/*
-@@ -705,9 +784,11 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm,
- 			((pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) | _PAGE_READ));
- }
+-/* Flags for folio_pte_batch(). */
+-typedef int __bitwise fpb_t;
+-
+-/* Compare PTEs respecting the dirty bit. */
+-#define FPB_RESPECT_DIRTY		((__force fpb_t)BIT(0))
+-
+-/* Compare PTEs respecting the soft-dirty bit. */
+-#define FPB_RESPECT_SOFT_DIRTY		((__force fpb_t)BIT(1))
+-
+-/* Compare PTEs respecting the writable bit. */
+-#define FPB_RESPECT_WRITE		((__force fpb_t)BIT(2))
+-
+-/*
+- * Merge PTE write bits: if any PTE in the batch is writable, modify the
+- * PTE at @ptentp to be writable.
+- */
+-#define FPB_MERGE_WRITE			((__force fpb_t)BIT(3))
+-
+-/*
+- * Merge PTE young and dirty bits: if any PTE in the batch is young or dirty,
+- * modify the PTE at @ptentp to be young or dirty, respectively.
+- */
+-#define FPB_MERGE_YOUNG_DIRTY		((__force fpb_t)BIT(4))
+-
+-static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
+-{
+-	if (!(flags & FPB_RESPECT_DIRTY))
+-		pte = pte_mkclean(pte);
+-	if (likely(!(flags & FPB_RESPECT_SOFT_DIRTY)))
+-		pte = pte_clear_soft_dirty(pte);
+-	if (likely(!(flags & FPB_RESPECT_WRITE)))
+-		pte = pte_wrprotect(pte);
+-	return pte_mkold(pte);
+-}
+-
+ /**
+  * folio_pte_batch_flags - detect a PTE batch for a large folio
+  * @folio: The large folio to detect a PTE batch for.
+@@ -430,7 +395,7 @@ static inline unsigned int folio_pte_batch_flags(struct folio *folio,
+ 	max_nr = min_t(unsigned long, max_nr,
+ 		       folio_pfn(folio) + folio_nr_pages(folio) - pte_pfn(pte));
  
-+#define __ptep_set_wrprotect __ptep_set_wrprotect
-+
- #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
--static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
--		unsigned long address, pte_t *ptep)
-+static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
-+					    unsigned long address, pte_t *ptep)
- {
- 	/*
- 	 * This comment is borrowed from x86, but applies equally to RISC-V:
-@@ -724,9 +805,27 @@ static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
- 	 * shouldn't really matter because there's no real memory
- 	 * pressure for swapout to react to. ]
- 	 */
--	return ptep_test_and_clear_young(vma, address, ptep);
-+	return __ptep_test_and_clear_young(vma, address, ptep);
- }
+-	nr = pte_batch_hint(ptep, pte);
++	nr = pte_batch_hint(ptep, pte, flags);
+ 	expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
+ 	ptep = ptep + nr;
  
-+#define __ptep_clear_flush_young __ptep_clear_flush_young
-+
-+#define ptep_get __ptep_get
-+#define ptep_get_lockless __ptep_get_lockless
-+#define set_pte __set_pte
-+#define set_ptes __set_ptes
-+
-+static inline void pte_clear(struct mm_struct *mm,
-+			     unsigned long addr, pte_t *ptep)
-+{
-+	__pte_clear(mm, addr, ptep);
-+}
-+
-+#define ptep_get_and_clear __ptep_get_and_clear
-+#define clear_young_dirty_ptes __clear_young_dirty_ptes
-+#define ptep_set_wrprotect __ptep_set_wrprotect
-+#define ptep_clear_flush_young __ptep_clear_flush_young
-+
- #define pgprot_nx pgprot_nx
- static inline pgprot_t pgprot_nx(pgprot_t _prot)
- {
+@@ -447,7 +412,7 @@ static inline unsigned int folio_pte_batch_flags(struct folio *folio,
+ 			any_dirty |= pte_dirty(pte);
+ 		}
+ 
+-		cur_nr = pte_batch_hint(ptep, pte);
++		cur_nr = pte_batch_hint(ptep, pte, flags);
+ 		expected_pte = pte_advance_pfn(expected_pte, cur_nr);
+ 		ptep += cur_nr;
+ 		nr += cur_nr;
+diff --git a/mm/mincore.c b/mm/mincore.c
+index 53b9828037713..e23ef3f270db6 100644
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -191,7 +191,7 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ 			__mincore_unmapped_range(addr, addr + PAGE_SIZE,
+ 						 vma, vec);
+ 		else if (pte_present(pte)) {
+-			unsigned int batch = pte_batch_hint(ptep, pte);
++			unsigned int batch = pte_batch_hint(ptep, pte, 0);
+ 
+ 			if (batch > 1) {
+ 				unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 384ef4cc2195b..f8b585e59771d 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -184,7 +184,7 @@ static int mremap_folio_pte_batch(struct vm_area_struct *vma, unsigned long addr
+ 		return 1;
+ 
+ 	/* Avoid expensive folio lookup if we stand no chance of benefit. */
+-	if (pte_batch_hint(ptep, pte) == 1)
++	if (pte_batch_hint(ptep, pte, 0) == 1)
+ 		return 1;
+ 
+ 	folio = vm_normal_folio(vma, addr, pte);
 -- 
 2.39.5
 
