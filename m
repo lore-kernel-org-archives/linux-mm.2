@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F70C44514
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 20:35:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2AF8C44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 21:06:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 679056B008C; Thu, 16 Jul 2026 16:35:53 -0400 (EDT)
+	id E37316B00AF; Thu, 16 Jul 2026 17:06:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 629646B00B9; Thu, 16 Jul 2026 16:35:53 -0400 (EDT)
+	id DE7FE6B00B0; Thu, 16 Jul 2026 17:06:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F2936B00BA; Thu, 16 Jul 2026 16:35:53 -0400 (EDT)
+	id CD9D06B00B1; Thu, 16 Jul 2026 17:06:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED55F6B008C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 16:35:52 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6F8D71C0224
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 20:35:52 +0000 (UTC)
-X-FDA: 84995796144.26.A36E465
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 95BA040004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 20:35:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=on85Wbbu;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A0A5D6B00AF
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:06:32 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B38940307
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:06:32 +0000 (UTC)
+X-FDA: 84995873424.13.E40CE62
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6F093100008
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:06:30 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mOC8CeGi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784234150;
+	s=arc-20220608; t=1784235990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VRWx41NRFgTecmM6KmOP+beLAPd4keVAZx1WV12sXws=;
-	b=37MeTu4ExYMVfdt18NWVjYp4klL4Jdl2wgugMvnb5+9wJ3Dwed0/quioR9Ov8WD1KC4pj+
-	z/kdrVwTOVZPxJFTX5/0xnfAcuzweYfPG076HUcQqGxz1JX1yCP5Be+EJzNVCkEckX/mGq
-	9ONDrL84xrUzeVzGZa98Z2TWUe3PmF4=
+	bh=oucStQnRyawORtPI7Wj+qEZX9FA99Twpl/PrB1SpiMs=;
+	b=zXmsmJgOpM8QMxQOO2u377dNaKD9mo42y6bCBj3WFuQAI/yAWVMuL6KvfPGGRm448B+X27
+	a/zKUE+7KDNuDUr0qR44MQulLY5GEXNoNBWgTEbtJMT5P+fQC+Orenth1tHxeVSbkE5Sln
+	qcEbjeNFz2E69yjabZeq4Q6eMmM46ks=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=on85Wbbu;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mOC8CeGi;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784234150;
-	b=RXL+25mXXljvhvVEjh/amaOB/8bmjkLkDmaAUjel8TKskDlNEJ6rLNVoPgsUciEdFPNzQ4
-	/nSwFe5spbgpxwGz5BQSR6FkprZk2YToPCc1YtszyO6SJX3CoxI4Gr+1bS4lqvTY3ODjA8
-	djORUHlnjWN8p6UaghF/KQR2mm3ujUs=
+	t=1784235990;
+	b=EoOMv3XIYiGC4/hRPZ23cq9sc8BERRlk5JLEc1o5+0u4zVZ9s/Zs1pb2qQifThB4nfnRTy
+	YNu0DlE9uFZ8iQI/m703ajBYVUI1ScH+Ha/qBWoAsuH5XOveSVCKCI+K86jd1xkGZl9G7G
+	P+XcMDami0nltKOfEtVF0Z0veYlvixM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C1C2D60A6B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 20:35:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DC41F00A3F
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 20:35:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C40A411FD;
+	Thu, 16 Jul 2026 21:06:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859721F000E9;
+	Thu, 16 Jul 2026 21:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784234149;
-	bh=VRWx41NRFgTecmM6KmOP+beLAPd4keVAZx1WV12sXws=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=on85WbbuidISrNOBZAzYZIuanG1MWPgiEexydexAg7nvc5+evnbEqJAvCIJa/QfAR
-	 Op88aHpQzsmqNWHobMNCD+sCF0k0jpuSZqo2HZsDBjQiXeoUIK+nC1Uzj7fCEcz2ki
-	 pDixRm4nsFYkYjUCP5ngH66fXjqBm49SL/HBU4EzA+IULRdO56Z2lDd1K/S7+w18GF
-	 fKxop6AE2/FG3mrIP9I+Cc272GtbZST63shlT3fe7qtmvjC/e5RqnKsmk1jVZz89YX
-	 wj6UZKB7LTBEIG/UXx9kCWzv66GMsQ7N2110COMKhBWLgr0M47fdkO6VAHFXH+tuoD
-	 +ZWTkpXvupm5g==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1677c91969so299299966b.1
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:35:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rr/A1g5GDAS5NPbYkD53vQpExi6ApIEDN0BEmtYxekmep+4p7r77M+dui8igeMi3b9MD1bWmntSsw==@kvack.org
-X-Gm-Message-State: AOJu0Yx23izFCh+EEtTsEkBurYS89ciH1fFUgJLRhydcj10BZUFnGeyw
-	zikAzcR85dtagCg2/QxZreJnIkOEnWq2WpvndaJriIbj+d3g9BZ7XFNkiqIs4dQ5PRkUsXK8caW
-	Zr8xV6NpDjtiVMjKqvmpAvBjd7SqwxqI=
-X-Received: by 2002:a17:907:3e05:b0:c16:aad4:2d55 with SMTP id
- a640c23a62f3a-c16aad43b3emr62858566b.3.1784234148367; Thu, 16 Jul 2026
- 13:35:48 -0700 (PDT)
+	s=k20260515; t=1784235989;
+	bh=oucStQnRyawORtPI7Wj+qEZX9FA99Twpl/PrB1SpiMs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mOC8CeGi42U+SdUKidcJPeWP6ZY4+ga7NyPiOUDh79HKDJUjX0/fAvYuU4zHGvfR5
+	 HQCjCcs8mYgluWNtJzcWXoGF996LfTAFtzmJ5jFHo63T7NRCIw9CxmGePcNdTPdEMR
+	 OMaak/ENhnvrB1SlY/b+v/QVqL3/mxpe0HG+pb2j17Y+j198b2SRNxecu3PWemJuXe
+	 yWYrK66ibJzgTJdjdJq+7dUWCs57xiGlurrXoJkgWIJQA6/J1Jfh20qQs+81U22lEe
+	 29I0zLtHNmMyabxgk6lApS7oubGAZvAiAn9D3VXdFj705DLbr+H4zKIbd5oibckO5A
+	 hlYWVxCVcMH4A==
+Date: Fri, 17 Jul 2026 00:06:22 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Michal Clapinski <mclapinski@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Evangelos Petrongonas <epetron@amazon.de>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kho: align kho_scratch to MAX_ORDER_NR_PAGES pages
+Message-ID: <allHznJ3EyI-dytV@kernel.org>
+References: <20260714205111.2497151-1-mclapinski@google.com>
+ <178409777790.255896.16691338963510282908.b4-review@b4>
+ <aljy_-Y7OT6s0kj0@google.com>
 MIME-Version: 1.0
-References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
- <20260714081510.16895-3-jiahao.kernel@gmail.com> <CAO9r8zNiT63LUHx8X5i_aboX1UWuGkcFf+p9ch-pekURUuDdXg@mail.gmail.com>
- <2bc8e4f6-46a0-5b74-6eaa-59e7aef9227e@gmail.com> <CAO9r8zOFg_mnNGbFFd_h8FAwRCbQ9vXk47EF5f1CLg1cDVGB5Q@mail.gmail.com>
- <b910e870-9583-a2f5-b681-e69edb9af290@gmail.com>
-In-Reply-To: <b910e870-9583-a2f5-b681-e69edb9af290@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 16 Jul 2026 13:35:37 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMLGMpsQ+HbLA5SFSMEc_ctuZoScJMkybnXMp+_0MW-yQ@mail.gmail.com>
-X-Gm-Features: AUfX_mwTGzvIQNQhF060UOLCh2zaMJh59HMirX7aHamE1mBFkxh5HCs1pt2xGHk
-Message-ID: <CAO9r8zMLGMpsQ+HbLA5SFSMEc_ctuZoScJMkybnXMp+_0MW-yQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/zswap: Support batch writeback in shrink_memcg()
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aljy_-Y7OT6s0kj0@google.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6F093100008
+X-Stat-Signature: ernw6awgdqxwpija5sz78riaysc9a9zg
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 95BA040004
-X-Stat-Signature: fq3m3fqxffkewc54m9hbn18zpdk3ok9t
-X-HE-Tag: 1784234150-3013
-X-HE-Meta: U2FsdGVkX1/WnKlW23tfT9+sHj1oRqooct4OlObcncMSdDX+j9FDVghbiY1JbDAMi19fEvuY6EbsQURusJuOVPjQRtIAtlJ0EIswepHhnEb2NKQgLvn6hNUIqaHfleOS6CF277pt1REOdbulabAtOmTruNY3JQ5rNJxzEU8pjI3GfqsAC4/uyMsX8iUUHdSTuCUjsflWHqGlBHGVGuAcJv9MIRi6mzHFRD5Yt4IrGxfUJEnwCDFpdF2N0eykbb8YmfsfHHlY08BijZ8Y8zGuv8TdtitB5sMdnFmwGe8YgoQQxsjISOJSWyIAkblHlJ200t0j2akn+Gdyvx0SIt4bVD7fKrudDM3dQ/Zlamk4hsY0fG4rptrgU1MtWlqovKXlXnWMG+buTcSxIuXT2jwtsRJk1K9wh2wg69r9w0GJjINlRrNbn+03ERoIj7yDJFelUwzhI/hD7lWq1lgc32cfBuqRVJJrtjEs0S4S1KwJVWzCCA1e3Hwf87EaclJUdzitYVA65yjvaauN95/MhXf+e4x0jwY9rt84rFp2AChekWzcq3qGF2vU6/53Pm4/gAlthYpJZJESSOYMb5zDmjelJvyTAHJDXdCgtg+AVj4SHCVJIJTcEgqj03jI/PvwoGu4ECt8Had2lbGBs9isglZ+3/Ye+Dddmhnzd9E6NZQBaFzLN3ujzhR5crJPOk2EdmH0wX+P5m+mZz14HKgOD1D7v9Zxxj1NtaH1pyK7rmgc+C6Kw/i8A7z1zn70nmSAHpFoM4cyBrOzQ7nRTFLX58dbC1KwKHGEZ4rLB2jItyCnqLrxZMWEqiHz66fl4RIgUcqGawfpStwODtUx24U2i1e5vwFtc/pGZaeVfUBKQpA1nqyCfLB8YMjypkXhj5thSkU2q/xlcBBUbm6aQNWe54o9IfihPXC8atoQoVE9WIu5l0jW9hFUThvupNd/g4sPxdAMA/FxRxO6u0Z3dFY8eTL
- dUYCmqKC
- xb2lPke0Q+T5j6PQVSeXKOgWPrrsRGLLoiSA4DpyS24DGNKwtm8zGTHjVBFMjkNikPsJQD51Qx/CEXIDk1o+uQWG1OU+5lKnuQzmozldN7fNvjShpoZq7JCVniOY3p56dZKm6+/tQapllBCE39qzluO8R9PJDWabtCO1ym6z9V/OEXw6TkjhjZbogOTr7/yjWPD/wD1If8LP8WKSNCmp6y7CfHjpGzhUd4b3gv5xvP2O6pt+xstoWhN5dcBS/Z5mR5rD4TA+jK+9M/nNWciNrys9T/i7lO4pzMu1uZCPIWpqCTGnq+qbjIocQ/DJLw+p0prR2iN8JJPpwRnnuLEwEWGii8TUNPPtDFPcV7PvOx15U693LmWMK2qnzcMW3ne1ijekUllkpHMvW3TxIFBDAwEq7CQSAs+SU+KohMH/HEED4qf1mcMI/H9RcWw==
+X-HE-Tag: 1784235990-733639
+X-HE-Meta: U2FsdGVkX19SKCa5FQpH6XweKebOl1f8FW+HtcJKi/fyfE8uVQJIijyTm4bzZFs6ak4zp4DanryPJlYxDiW95O2YsFLqaJXKyo6FS/5rWw5XRg80ka2Ak/P3htm5VhM0sg7nCxEQdzgrGDObycaVMCOrujZrFDeUiIsWbaUDcFA8J36gULT46gMrtrtq3dF/5/Lko1UC8edgcpmKFm0DSw3pLLmfzTYedDc+jbMfy3rjZtSMcsI88q3qBX4/RtV9QFcDC2Wb33xUc+yC1pYPbdCAgreF4zxEHmKRr13lW62D0ZWVTx/I2rWRmUAw+63stxwjPtC1SexB3bGr4YpQLETaprTNHtXFkt02drunJS/2Fk5HxMc61jTQa/zaXNGWaWpAR6aIg6FRKyFiJ4RwRR7t18aG/0CPb/3XMQ90qVpSaDNLXXGdPwysvirpNQ7hDYpmt2oWee/HL4+g7LPJkM/ZCI7yHudUUx0Kcji35PmgAusoTtgMIoD4YPe5mWJhmJLQy6Vf1P7wqVxH6YBTI7mSinbJO7cJwoW8y6dHNNLohneIPpuI1nEIk4stmoq6XCWDgDknHkPOHcFYJJ+x8rcojqSf9oRhwESBvwvCicoiR1qxSzLzG+4MlL7zEzmZqMp43n0kX7mB4PrOU4daB3gmAYDcvzHLl09S6d7uG/MhzbqN+3oS1T6RAMOS/wE2zCtkPuKUZyLR6DayWhm9sGWc5NszgBMpETJG9LKc0h/m4GfZqNA9y8sx5RV2wjMgR1/D2QjANiiyKjvBxmIuQc5Don/6dNQ7wv2O+BafvJ/kll8tO50jHYlq8DP/AbRWUp/tFyL3f4wZxce6HP3rcH9PdxrcriRF2kmdkPf9yMxnpKglPm9oR0QY23qpT+T308jCHP5Ph8EXckfBLI03seFY8o32Cnf1owFJVrP6u5cXRl9dBi2HDRG12EVddoI91uaDxqkirbfkFC9SB1E
+ jPD0b4Bg
+ sTKZpj7bpzTqS/PPmTcveif5m6G47EVxS1DYpGHtp8gEPDqjFYYPJ0jSiWCmxcRH90TfPm7Otl9tkEaXmxtRsgTJbO5zX4pQDzpKZa5AscnYBsuI/9F4AwQ2c+DwhKzv1MZ/O0zYDqKvP3zL5Tz14Oe0XtixkoaXgG1vaL9HMgTH8S+E8BW9ViDyeSZgsELKMOFr+FApBMBPFXlxlqsGO1AmgGQPL5XH1iial74UbCcGxdgrjR5FcGQp/q4n/QJZC2NUW39WN/+Q2lGMoJbZ/OCG1Sp2X7xTj6v6IBGzP2V3zulBjQdOJ0jYX3hdS+RiA+iah
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,91 +96,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 7:54=E2=80=AFPM Hao Jia <jiahao.kernel@gmail.com> w=
-rote:
->
->
->
-> On 2026/7/16 00:14, Yosry Ahmed wrote:
-> >>>> Test Setup:
-> >>>> Total memory: 32 GB.
-> >>>> zswap settings: max_pool_percent=3D1, accept_threshold_percent=3D50,
-> >>>> shrinker_enabled=3DN.
-> >>>> Allocate 512MB of anonymous pages and fill them with random data (to=
- avoid
-> >>>> compression), then use cgroup memory.reclaim to force a large amount=
- of
-> >>>> anonymous pages into zswap. At an interval of 2ms, allocate a 4K ano=
-nymous
-> >>>> page where the first 4 bytes are random numbers and the rest are zer=
-os, and
-> >>>> then trigger a reclamation of this 4K anonymous page through cgroup
-> >>>> memory.reclaim. When the pool threshold is reached, shrink_memcg() w=
-ill
-> >>>> be triggered.
-> >>>>
-> >>>> The test data after running for 120s is as follows:
-> >>>>                              Baseline         Patched
-> >>>> shrink_worker wakeups          5363             85
-> >>>> shrink_memcg calls       11,345,012        188,264
-> >>>> written_back                  40214          40275
-> >>>>
-> >>>> Conclusion:
-> >>>> Under the same workload and run duration, the patched kernel shows a
-> >>>> significant reduction in both shrink_worker wakeups and shrink_memcg=
- calls.
-> >>>
-> >>> Please also include data from the case where zswap store failures are
-> >>> observed and pages go to disk, and compare before and after this
-> >>> patch. I think that part is also really important.
-> >>
-> >> I retested and added some collected information. Perhaps
-> >> `pool_limit_hit` and `pswpout` can explain that batch shrinking of zsw=
-ap
-> >> can reduce the number of pages that fail to be stored due to the pool
-> >> limit, allowing zswap to skip zswap and go directly to disk.
-> >
-> > Oh I meant the other test case with high memory pressure where we saw
-> > a lot more writeback with this patch. Do you have similar data from
-> > that test case?
-> >
->
-> Below are the results from stress-ng (high memory pressure case), which
-> lead to a similar conclusion:
->
->                                Baseline      Patched
-> shrink_worker wakeups         5,640           987
-> shrink_memcg calls        8,481,500     2,504,818
-> written_back pages               260       768,576
-> zswap_store calls           2,742,756     2,301,414
->    store succeeded (ret=3D1)     934,640     1,308,686
->    store rejected (ret=3D0)    1,808,116       992,728 <-
->    store reject rate            ~65%           ~43%
-> pool_limit_hit delta        1,181,310       101,593 <-
-> pswpout                     1,808,376     1,761,304
-> pswpin                      4,288,497     3,902,658
->
->
-> pswpout =3D store rejected + written_back pages
-> Note that pswpout comprises two parts: the store rejected count (where
-> we skip zswap and go directly to disk) and the number of pages written
-> back by shrink_memcg().
->
-> Therefore, we can directly leverage store rejected to evaluate the
-> scenario where zswap is skipped and pages bypass it to disk. This
-> provides a much clearer picture than looking at pswpout alone.
->
-> Do we need to include both sets of test results along with the
-> comparison data in the final commit message?
+On Thu, Jul 16, 2026 at 11:04:31AM -0400, Pasha Tatashin wrote:
+> On 07-15 09:42, Mike Rapoport wrote:
+> > Hi Michal,
+> > 
+> > > I caught this crash:
+> > > BUG: unable to handle page fault for address: ff19164fffff8328
+> > > RIP: 0010:__free_one_page+0x1a1/0x6b0
+> > > Call Trace:
+> > >  <TASK>
+> > >  [<ffffffff913208bf>] free_one_page+0xaf/0x240
+> > >  [<ffffffff93973288>] deferred_free_pages+0xa8/0xd0
+> > >  [<ffffffff93971b4f>] deferred_init_memmap_chunk+0x10f/0x1b0
+> > >  [<ffffffff9396e265>] padata_mt_helper+0x65/0xa0
+> > >  [<ffffffff90fac402>] process_scheduled_works+0x202/0x410
+> > >  [<ffffffff90fae739>] worker_thread+0x1f9/0x2d0
+> > >  [<ffffffff90fb62fd>] kthread+0x27d/0x2f0
+> > >  [<ffffffff90fae540>] ? __pfx_worker_thread+0x10/0x10
+> > >  [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
+> > >  [<ffffffff90efdc55>] ret_from_fork+0x145/0x280
+> > >  [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
+> > >  [<ffffffff90e2e46a>] ret_from_fork_asm+0x1a/0x30
+> > >  </TASK>
+> > > 
+> > > deferred_init_memmap_chunk() works fine without KHO because free
+> > > regions will never be neighbors. However, with KHO, free memory
+> > > will be split into (free && scratch) and (free && !scratch).
+> > > KHO scratch is aligned to CMA_MIN_ALIGNMENT_BYTES (which on my setup
+> > > is equal to 1 << 9 pages) but buddy can look at the neighborhood of
+> > > MAX_ORDER_NR_PAGES pages (which is equal to 1 << 10 pages).
+> > > This sometimes crashes when one half of the neighborhood is being
+> > > initialized but the other part is yet to be initialized.
+> > > 
+> > > To fix this, let's just align KHO scratch to MAX_ORDER_NR_PAGES pages.
+> > > 
+> > > Fixes: c6073743d0c7 ("kho: make preserved pages compatible with deferred struct page init")
+> > > Signed-off-by: Michal Clapinski <mclapinski@google.com>
+> > >
+> > > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> > > index 4834a809985ab..50928aaa33710 100644
+> > > --- a/kernel/liveupdate/kexec_handover.c
+> > > +++ b/kernel/liveupdate/kexec_handover.c
+> > > @@ -38,6 +38,16 @@
+> > >  #include "../kexec_internal.h"
+> > >  #include "kexec_handover_internal.h"
+> > >  
+> > > +/*
+> > > + * This is the minimal alignment required by deferred struct page init.
+> > > + * deferred_init_memmap_chunk frees memory to the buddy allocator, which looks
+> > > + * at the neighboring pages (up to MAX_PAGE_ORDER) to merge them.
+> > > + * If KHO scratch is not aligned to that value, buddy can access uninitialized
+> > > + * struct pages, which can cause a crash.
+> > > + */
+> > > +#define SCRATCH_ALIGNMENT_BYTES (1 << (PAGE_SHIFT + MAX_PAGE_ORDER))
+> > > +static_assert(SCRATCH_ALIGNMENT_BYTES >= CMA_MIN_ALIGNMENT_BYTES);
+> > 
+> > Maybe make it a variable and set it at runtime?
+> > We won't need to worry about different confugurations that override
+> > MAX_ORDER and potentail divergence of pageblock size from MAX_ORDER in
+> 
+> Do those architectures reduce MAX_ORDER when they override it? I would 
+> hope we could set the alignment once and make it large enough to work 
+> everywhere, rather than depending on dynamic changes even during boot...
 
-Yeah, I think you can include a summarized version of both sets of
-results. I think the important part to highlight here is that batching
-results in a great reduction in store rejection rate, which translates
-to significantly more writeback, as the LRU ordering is maintained
-more correctly. We are also doing a bit less swapping from disk
-overall if I am reading this correctly, which means we are placing
-less hot data on disk as expected.
+They could, e.g. arm64 has this:
 
-It is a bit alarming that the store rejection rate is still 43% with
-batching, but we can worry about this later :)
+config ARCH_FORCE_MAX_ORDER
+	int
+	default "13" if ARM64_64K_PAGES
+	default "11" if ARM64_16K_PAGES
+	default "10"
+ 
+> > the future.
+> > 
+> > -- 
+> > Sincerely yours,
+> > Mike.
+> > 
+
+-- 
+Sincerely yours,
+Mike.
 
