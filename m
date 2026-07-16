@@ -4,83 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83518C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:42:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82836C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C1416B013F; Thu, 16 Jul 2026 11:42:50 -0400 (EDT)
+	id 6CFD66B00A2; Thu, 16 Jul 2026 11:47:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8737A6B0141; Thu, 16 Jul 2026 11:42:50 -0400 (EDT)
+	id 6A7526B00A7; Thu, 16 Jul 2026 11:47:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 763336B0143; Thu, 16 Jul 2026 11:42:50 -0400 (EDT)
+	id 595C76B013B; Thu, 16 Jul 2026 11:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 37BDE6B013F
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:42:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C56F640194
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:15:12 +0000 (UTC)
-X-FDA: 84994685664.28.9620C6E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EEA4A1C0002
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:15:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HjjAU7Lc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FA4D6B00A2
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:47:38 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6F3CD1C0021
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:58:03 +0000 (UTC)
+X-FDA: 84994340046.19.A3DF254
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B7CC040004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:58:01 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SV+2jgHv;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784207711;
+	s=arc-20220608; t=1784199481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/lsASfKlsXWiF9RuzVML0SRkC5laAid8xApepofB1/4=;
-	b=O08ohjf5CFd5B1zDtUaiwN1jDv48HKroFpMfiDeZAZSYJOjLUxbP4KfjvV3C2+kHx0foJQ
-	R0/tIXjrcKf6obVoYwahWquiXdG3f+C7QCZ2DcQDLV/ppFKnYItLiog/Eg3G2bmSy5iaLC
-	3lN3ITVmbeif9mtHGOCuHwxRKbEjtgI=
+	bh=B3DV0QU7OKveHee7CAK9wnIsCiPz/cIhJ0JoXZwda3Q=;
+	b=sZdbWv77lwwvUPW99Q9dsJkfQQvopZSA6OdqvAuWI0WTM3T5K3nBg+qxzSJQsRUR2yoUTY
+	GmJ3VGCSPwgECw9Y3I3jni5GWhkXKs4AbIyMrdAPZPOMEYgJe1Uo7yhnal2Jeb2m4p4xC2
+	Qx0M2LT9c6vcqWxQbgrpjhsDkNByQso=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HjjAU7Lc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SV+2jgHv;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784207711;
-	b=kfwlniPKALaeBDYHOX48Dn8Qp9FLHZbzx+WjSiitzKgi74fvM4PznMu2AvEVCURL272xti
-	Dh/aWZ4K9BF9O0/VKO0rCbErG31Je/X3wl47OJCNscAdH+au2CUYpO0JSmGMRQVgs1G0nx
-	jYPsoUzONn+Wa+trt1GdBNOQQ8ZfKC0=
+	t=1784199481;
+	b=Y4Yy3yMqs5Ru/fGb4O9CxJuQq1zxynW3DBzZ/saPrAEjKhC3ZxmpxMnHFLxuyFXcp7Ov2i
+	2xy5oEtmraBz+YCg/2S0LoIOzkS3OGDj3jpS1YusphcIfaZYeO7FW60B/+oUlllukxcASq
+	w5N090S/XKwTbYhzKpLOiuNqjig+Ryw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C51F43A36;
-	Thu, 16 Jul 2026 13:15:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205BA1F000E9;
-	Thu, 16 Jul 2026 13:15:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 376F76001A;
+	Thu, 16 Jul 2026 10:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039F51F000E9;
+	Thu, 16 Jul 2026 10:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784207710;
-	bh=/lsASfKlsXWiF9RuzVML0SRkC5laAid8xApepofB1/4=;
+	s=k20260515; t=1784199480;
+	bh=B3DV0QU7OKveHee7CAK9wnIsCiPz/cIhJ0JoXZwda3Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HjjAU7LclXzVZCbBv4yWUXrpvXmOeEJxBkXUGa1OwiBGoxx14m1l/v7xRhIDnfbQ7
-	 rmOQyWrUoWzSrmdkUkUIq7L5X3Dt9Qxus9nhvIP/GputsO3vz0kS+Y+N4ec7570Dmb
-	 7nZmuEb8B73Sls/0RoYAoKB2h1Dg9MxjOpNVIkpI3EDKDIX8JqlV+LKXsQbkWCHflC
-	 FUyWrFocfTdC1f1QVK6jKlnEGCvMN5HM7JnBxPXXhuIuZ29JiiKAorI9Eptp/K2T65
-	 ahS3oOaV1KORLPvQsNi15DOqd3UMEUkP2HYOoynlNFFOQ1RLVRn4OSswvhpg0Yay26
-	 GBwJAt+GTeV+A==
-Message-ID: <1612d4cf-b725-4ecf-8618-51a33537f59d@kernel.org>
-Date: Thu, 16 Jul 2026 15:15:06 +0200
+	b=SV+2jgHvm3cwka/ZjzR2gidMyixp8Rio6myMlJOZLyWHcM0oROEbzQoQOnBlNLzSq
+	 vm6JyMEUc7KkReP/iP+qRPbroYuXeflQUqDVlHyKo1EaicuWMCLcuDnSfe6y+onhx+
+	 6VgRHotFPAVmjA7+ujWfdHANeIz3L/YFCouQTnXxrob7Vr4So92cXSVzgrne/L1A/T
+	 jyRw10Zy4mb9OZHB8tYIBU+Wrm30llgjMzNbZiVirOa2BwFASbyN9qto4/FJ+LS+xf
+	 ApAHOENnTasusWGq38crDF4Bc8I5MF0qc9d5nqnFmmmSrtywP0sfTWtsFWqn2NAlWb
+	 ZkbzU4xIvtfng==
+Message-ID: <fbea7f50-ee00-4466-8788-1cc78303f5bc@kernel.org>
+Date: Thu, 16 Jul 2026 12:57:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 0/5] Migrate on fault for device pages
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260525084524.139868-1-mpenttil@redhat.com>
+Subject: Re: [PATCH v7 6/7] mm/vmalloc: map contiguous pages in batches for
+ vmap() if possible
+To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org
+Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
+References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+ <20260715120813.3609949-7-jiangwen6@xiaomi.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260525084524.139868-1-mpenttil@redhat.com>
+In-Reply-To: <20260715120813.3609949-7-jiangwen6@xiaomi.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EEA4A1C0002
-X-Stat-Signature: xfckjk3fbsakzm9s7c6fkux5zgosqqbh
+X-Stat-Signature: khj9o9q94j19ssm36urb9xfobhn8sfeh
+X-Rspamd-Queue-Id: B7CC040004
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784207710-333565
-X-HE-Meta: U2FsdGVkX1+O7jAT7g5eFgvAOmfhi4M2UOHsCO/oFo6NPJTE8koWQPxTeC8VQVTVYC8e0AtZmKoQqR+zKWMqW4yyfGPSASeJgmE4YY5Hc3eON//OxmyiXxrhhZONn1Qr2vqksh0TEegFDkAm9PNjpDWXQU5iqShrq9RxtxB0Eru5ZVOI43sjs+6WY2AccgK3qhuV6GcL+WbFrsxSzPp9TBvjcUKp3Iq0PvVAjp5xXtMX9u+1cr5ot+2GXAuLGxKE+RWVf2GWlQFNwd1XsjRUTz6AsXvHifADn9aIdA+QO+FO7vJT8GgIb0rPzBwWQDAraJtmmnoja2cmne4pHTNVhs2KnBKHORi9Eyld+2jTmxhvZiNZ+jIpX9Nrk9RGKPywCPYBEtnGAiQONDAq1YlCtTn/YcPHi7a+TzE9S04Y/g64T5jPUFXBZhTASTvxsHZiIKBOpuzKL2A5pBTWFZ1ieuA60NzGx5FFWTpRkAZoO5EV2gOhyWU88QAbjZZEUgJF0SglNM+zugtSBBYLkaAboikF0sNXYlEJpBnxvQiO+rhP60FC3W2TZLQjCeQxjNKQGA/JM/h+ifx3FZrf8cHC652FOGe2WY9OVhsMhILdI7aMRHyQwnxEXPK6tyoW8GBCXXbcCs/gfxWhN5V4tKjZPNFv5KcUe0JM4R6zkFR5WlG0Bs2nfpWlT7iCTJd9yeZNqrGc6g1sXjHUzPCGfYLcw17VHPAwsRFcQf5Zt9ha0xi63sFz+GV2wwk43CO0ELIzX+j3FvKMuCFoN8SV1IIu9MFau3dWvUI4oyeoz/t8MBzWhcqY1bu7GgBP6oJfR6jjbbaz758cL1WQhdfTAQADo8g6nlcpWZrLEtzo1RgJCCs2KwGBtKBrK8oNAw3b9Ta8F0qb2kLS/nIE8w/4A4Ndr1ofYkVnv7TH/s9EXU0zqjdbgYtfm8jw8nBwFWZ16YBApXvQx+/7QZAHfJwzp6p
- OBPZ2scF
- DSZcl+pNqA9aBPXnTvlWfnwSFMS3mRyglXjtfKttQuPHHAw7cFTy/mgsLScRySmdRErw2EZUnIOe4auxqkCB64jbS4sbfXszDLpk0tQgSf4ZO1Vlljyoi+iYwIafv5BeqBw26KOTIB/BMeWCUbW4JEgzVpz/8ZAx00HeRICc1xVUJCIpYngI+wP9I/Tpz0ZEMuKWc+cw6QVJl4jNqHuWZ91RNfVEl9p79Qbqzo4vAQCcULJlQiYY+E2ebIDvQBhUqRPSz4WimOGP3luEEH1qwzfXgaCSMgXUrXWBurfREO+0B+AuSawvfAWBF+8fhmm+2G+BxPRm4pkLIfyf9b/1v1EwHs6SYFzuLAF/ld5ztWPFMecCphgnULt3uHCDXzdohl5Jac1z5DLjHt4xNyaN6T+N69wvOXz+35jA4n6KEFtAV6e2D22sGDT4eR34fsTGZf4Vf6gT9/twA1I94pS0n+4iK/5tbuLUPlG2sge6ll3WU3Dvxts3FZxyrFAB5XUQdAKzpC0COukXDUfrApAhY2lyqZ8e3DQ5akCkpYJEkmzVnuvwxIBAgKWSU1DvyANFBRivOcD1TG96ZJtd5iWcFKg95i0waNvO8pLrI9yokgOXTBNAfAShZ8TyTJcW7b8lpRCqZ5eG29VpdaNsZM/AGReTzBfvENDpfE5xR9A6Y8THmz54=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784199481-907137
+X-HE-Meta: U2FsdGVkX19iQ3iJW1BJ7xjSWt3+C4A6Xkx3DiAw6/LLPbW009XeGrkICWGvHPiFWvOI8kt93XXgVk/h54ctyRK86wkE8abi5ItgudmmxkYuU4gOnIj+Cd6CGo3soAyBDOAwV3krwozwBmjYibNXQCUvpI86/2EPSlxZOJ0k4xTkFuMyWds/b3cOv1qV0rIhgdaR7JKJaMdGF57rAfxo8LEH3eUOBV3Ifpi1qmenH3odMxWUVJQIyELRU9CnD3XebD5n9knJ2BJPyvCzib/jRUJ9jBcT7Ow8zoCfOKgLZ2HlQ1llx/G+/S/jitiWQ7v0SDiBehcT9JpKxM0yHSBC7jp2lflKXlLsYB+13sFb2gnWAzsLQ4svSLpj8YWIe1OY+RSfY2tGFCEIN989rk3VtpiH5sLIRCYPHoeJ7ktJifIe3Hd6co62Df6i2WGNpBCQINbCFTOx7ynC4fKMX9UNBTE93N6EkWuvUcci1rSfYs0Fsg7VePcTh7V43Py8MWEB23EkAzc6RP2rWuGOkywBlWWKGJMnxbFG+nviDwIglICbjpWXAvUSfD2yqCas1xwN1rP1t2kCfYmNkIzhn5ADABqmaqEw3mqrTG813Cb4lPrjiHpHsWNdYkvYVSw1KDzlu0m3MtT/H72Oi6cJ4d3xVlNIRa3G2KIycAEY1fseU5SfvlmW6glEIv5+s/mWgsfDFYcUnAcSX5btzj7KDzoFWjwWaM1iaEPqZNnDw5RBonXd9cgavU2s6BaMU6Xf0+K3Tnq/cK5v8D4o3v9k4T64FSJivCGEZ1PJ830wmharBblYZyEMUQcE1qVpUzfDj143i/i4l5gidPAafd2N4gPCtITJlYhlEcuIv5O6MJZBa74A4u0bTRXcZefBTKBLLyhvhqhzM9F0XhQ7qcxMRvp4W+yK0gaAAwB9lN4hkuKqzKrz4LwFz/OSROt7anjnqL+hjKshzjZfprt4G/Plojd
+ BYzBhwPz
+ r6Gby1yxA+SpAQUU6Q+RDxTMCcH5ycefcAaBQODczTYXjyfa1lyB0NbG0vpeUHLWzoauSpt3Mq3Ss1fqGgIO1wneBRD1XXi6AqpiYEaKdSfqdaelDYSHU8X6vJ9xPpmAPtrTdN3NnZT84XDI7kkdOEwl3PEO76zXHCjaI6+9uVvBuJz4vSvyOv61JNMcrpkBIXmAm+RB+xwMvIpBDgwosA2zYBZOc0VhI++VP6ek7VS0nrdUKeK2RPgY5pXikJRWcGSeyPMTIHnhdwTs0URnnOFv7zC/m0s9kqRqhmpmNgJ3gWHgbBQgsLGlopT/niBWLlmtG0AUxTKV+X3PGA2NjIxBjxuMY7mIJ78yM1dCYZllqIrtu4xuGj7WbPBs2nh7QekyCgTYZUVpAqG5U7BZhfe/bimuT1/4hTlWmVbkJ5f0kJ8OY1yKTnDGY5DlJYCGuUkw9lHTB3pYwMdqyvvnEtE66FdJtspSJoiVbEH8UW0CjAN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,180 +143,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/25/26 10:45, mpenttil@redhat.com wrote:
-> From: Mika Penttilä <mpenttil@redhat.com>
+On 7/15/26 14:08, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
-> Currently, the way device page faulting and migration works
-> is not optimal, if you want to do both fault handling and
-> migration at once.
+> In many cases, the pages passed to vmap() may include high-order
+> pages. For example, the systemheap often allocates pages in descending
+> order: order 8, then 4, then 0. Currently, vmap() iterates over every
+> page individually—even pages inside a high-order block are handled
+> one by one.
 > 
-> Being able to migrate not present pages (or pages mapped with incorrect
-> permissions, eg. COW) to the GPU requires doing either of the
-> following sequences:
+> This patch detects physically contiguous pages (regardless of whether
+> they are compound or non-compound) by scanning with
+> num_pages_contiguous(), and maps them as a single contiguous block
+> whenever possible. The mapping order is determined by taking the
+> minimum of the contiguous page count and the pfn alignment, allowing
+> graceful degradation when pfn alignment is less than the contiguous
+> range.
 > 
-> 1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
-> 2. migrate_vma_*() - migrate the pages
+> Pages with the same page_shift are coalesced and mapped via
+> vmap_pages_range_noflush_walk() to avoid page table rewalk.
 > 
-> Or:
+> As users typically allocate memory in descending orders (e.g.
+> 8 → 4 → 0), once an order-0 page is encountered, we stop scanning
+> for contiguous pages since subsequent pages are likely order-0 as well.
 > 
-> 1. migrate_vma_*() - migrate present pages
-> 2. If non-present pages detected by migrate_vma_*():
->    a) call hmm_range_fault() to fault pages in
->    b) call migrate_vma_*() again to migrate now present pages
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Tested-by: Leo Yan <leo.yan@arm.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/vmalloc.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 80 insertions(+), 2 deletions(-)
 > 
-> The problem with the first sequence is that you always have to do two
-> page walks even when most of the time the pages are present or zero page
-> mappings so the common case takes a performance hit.
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index a1e025120e9df..92f9cd5e9def5 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3557,6 +3557,84 @@ static inline unsigned int vm_shift(pgprot_t prot, unsigned long size)
+>  	return arch_vmap_pte_supported_shift(size);
+>  }
 > 
-> The second sequence is better for the common case, but far worse if
-> pages aren't present because now you have to walk the page tables three
-> times (once to find the page is not present, once so hmm_range_fault()
-> can find a non-present page to fault in and once again to setup the
-> migration). It is also tricky to code correctly. One page table walk
-> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
-> 
-> We should be able to walk the page table once, faulting
-> pages in as required and replacing them with migration entries if
-> requested.
-> 
-> Add a new flag to HMM APIs, HMM_PFN_REQ_MIGRATE,
-> which tells to prepare for migration also during fault handling.
-> Also, for the migrate_vma_setup() call paths, a flag, MIGRATE_VMA_FAULT,
-> is added to tell to add fault handling to migrate.
-> 
-> One extra benefit of migrating with hmm_range_fault() path
-> is the migrate_vma.vma gets populated, so no need to
-> retrieve that separataly.
-> 
-> Tested in X86-64 VM with HMM test device, passing the selftests.
-> For performance, the migrate throughput tests from the selftests
-> show similar numbers (within error margin) as unmodified kernel.
-> Tested also rebased on the
-> "Remove device private pages from physical address space" series:
-> https://lore.kernel.org/linux-mm/20260130111050.53670-1-jniethe@nvidia.com/
-> plus a small patch to adjust with no problems.
-> 
-> Changes v11-v12
->   - Fix for issue found by Intel CI in patch 3
-> 
-> Changes v10-v11
->   - Fix nested mmap_read_lock in test suite
->   - Addressed review comments from David
-> 
-> Changes v9-v10
->   - Fix for issue Intel CI found, forgotten pte_unmap() before
->     migration_entry_wait()
-> 
-> Changes v8-v9
->   - rebase on drm-tip
->   - fixed uaf around  migrate_vma_split_folio() usage
->   - added missing pmd unlock
-> 
-> Changes v7-v8
->   - rebase on 7.0
->   - fixed subject in two patches
->   - enhanced commit messages
->   - squashed patch 6 into patch 4 to fix kernel test robot warning
->   - readded dropped Cc block from cover letter
->   - fixed white space
-> 
-> Changes v6-v7
->   - rebase on 7.0.0-rc6
->   - added documentation and comments
->   - denote to be migrated zero page as HMM_PFN_MIGRATE alone
->   - got rid of HMM_PFN_INOUT_FLAGS movement in patch 2
->   - picked up Acked-By from David for patch 1
->   
-> Changes v5-v6
->   - rebase on 7.0.0-rc4
->   - use range based TLB flushing while unmapping ptes
->   - gate migration behind HMM_PFN_REQ_MIGRATE for fault and
->     migrate paths
->   - always infer migration flags from migrate->flags only
-> 
-> Changes v4-v5
->   - rebase on 6.19
->   - fixed David's email address
->   - fixed link issue without CONFIG_TRANSPARENT_HUGEPAGE
->   - refactored into smaller commits
->   - added more comments to code
-> 
-> Changes v3-v4:
->   - rebase on 6.19-rc8
->   - fixed issues found by kernel test robot with random configs
->   - fixed typos
-> 
-> Changes v2-v3:
->   - rebase on 6.19-rc7
->   - fixed issues found by kernel test robot
->   - fixed smatch issues reported by Dan Carpenter <dan.carpenter@linaro.org>
->   - fixes to lock handling (pmd/pte) on errors
->   - added assertions for pmd/pte lock states
->   - other issues discovered by Matthew, thanks!
-> 
-> Changes v1-v2:
->   - rebase on 6.19-rc6
->   - fixed issues found by kernel test robot
->   - fixed locking (pmd/ptl) to cover handle_ and prepare_ regions
->     parts if migrating
->   - other issues discovered by Matthew, thanks!
-> 
-> Changes RFC-v1:
->   - rebase on 6.19-rc5
->   - adjust for the device THP
->   - changes from feedback
-> 
-> Revisions:
->   - RFC https://lore.kernel.org/linux-mm/20250814072045.3637192-1-mpenttil@redhat.com/
->   - v1: https://lore.kernel.org/all/20260114091923.3950465-1-mpenttil@redhat.com/
->   - v2: https://lore.kernel.org/all/20260119112502.645059-1-mpenttil@redhat.com/
->   - v3: https://lore.kernel.org/all/20260126111939.1332983-2-mpenttil@redhat.com/
->   - v4: https://lore.kernel.org/all/20260202112622.2104213-1-mpenttil@redhat.com/
->   - v5: https://lore.kernel.org/linux-mm/20260211081301.2940672-1-mpenttil@redhat.com/
->   - v6: https://lore.kernel.org/linux-mm/20260316062407.3354636-1-mpenttil@redhat.com/
->   - v7: https://lore.kernel.org/linux-mm/20260330115611.347988-1-mpenttil@redhat.com/
->   - v8: https://lore.kernel.org/linux-mm/20260414041226.1539439-1-mpenttil@redhat.com/
->   - v9: https://lore.kernel.org/linux-mm/20260505051658.2219537-1-mpenttil@redhat.com/
->   - v10: https://lore.kernel.org/linux-mm/20260505184421.2324798-1-mpenttil@redhat.com/
->   - v11: https://lore.kernel.org/linux-mm/20260525050830.100254-1-mpenttil@redhat.com/
-> 
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>
-> Cc: Leon Romanovsky <leonro@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> 
-> Mika Penttilä (5):
->   mm/Kconfig: changes for migrate on fault for device pages
->   mm: Add helper to convert HMM pfn to migrate pfn
->   mm/hmm: do the plumbing for HMM to participate in migration
->   mm: setup device page migration in HMM pagewalk
->   lib/test_hmm: add a new testcase for the migrate on fault
-> 
->  include/linux/hmm.h                    |  19 +-
->  include/linux/migrate.h                |  26 +-
->  lib/test_hmm.c                         | 118 +++-
->  lib/test_hmm_uapi.h                    |  19 +-
->  mm/Kconfig                             |   2 +
->  mm/hmm.c                               | 843 +++++++++++++++++++++++--
->  mm/migrate_device.c                    | 583 +++--------------
->  tools/testing/selftests/mm/hmm-tests.c |  54 ++
->  8 files changed, 1086 insertions(+), 578 deletions(-)
+> +static inline int get_vmap_batch_order(struct page **pages,
+> +		pgprot_t prot, unsigned int max_steps, unsigned int idx)
 
-What's the status of this?
+Why pass in pages, idx when you can really just pass pages+idx?
 
-Patch #3+#5 are extremely hard to review, I wonder if there could be a better
-way to split this up better so we get smaller changes that can be more easily
-reviewed.
+And just call it "nr_pages" instead of "max_steps".
+
+> +{
+> +	unsigned long pfn;
+> +	unsigned int nr_contig;
+> +	int order;
+> +
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+> +		return 0;
+> +
+> +	nr_contig = num_pages_contiguous(&pages[idx], max_steps);
+> +	if (nr_contig < 2)
+> +		return 0;
+> +
+> +	order = ilog2(nr_contig);
+> +	pfn = page_to_pfn(pages[idx]);
+> +
+> +	/* Limit order by pfn alignment */
+> +	if (pfn > 0)
+> +		order = min_t(int, order, __ffs(pfn));
+
+Wouldn't it make sense to determine that before you call num_pages_contiguous?
+Because then, you can just scan to that maximum instead of the given nr_pages.
+
+> +
+> +	if (vm_shift(prot, PAGE_SIZE << order) == PAGE_SHIFT)
+> +		return 0;
+> +
+> +	return order;
+> +}
+> +
+> +static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+> +		pgprot_t prot, struct page **pages)
+> +{
+> +	unsigned int count = (end - addr) >> PAGE_SHIFT;
+
+"nr_pages" ? Also, can be const.
+
+> +	unsigned int prev_shift = 0, idx = 0;
+> +	unsigned long map_addr = addr, batch_end = addr;
+> +	int err;
+> +
+> +	err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
+> +					     PAGE_SHIFT, GFP_KERNEL);
+
+Is the indentation on the second parameter line off?
+
+> +	if (err)
+> +		goto out;
+> +
+> +	for (unsigned int i = 0; i < count; ) {
+> +		unsigned int shift = PAGE_SHIFT +
+> +			get_vmap_batch_order(pages, prot, count - i, i);
+
+Having two indices, i and idx, is just confusing.
+
+The whole function is a bit overly complicated. Does it really buy us much to
+batch over vmap_pages_range_noflush_walk() calling with the same shift?
+
+> +
+> +		if (!i)
+> +			prev_shift = shift;
+> +
+> +		if (shift != prev_shift) {
+> +			err = vmap_pages_range_noflush_walk(map_addr, batch_end,
+> +					prot, pages + idx, prev_shift);
+> +			if (err)
+> +				goto out;
+> +			prev_shift = shift;
+> +			map_addr = batch_end;
+> +			idx = i;
+> +		}
+> +
+> +		/*
+> +		 * Once small pages are encountered, the remaining pages
+> +		 * are likely small as well.
+
+"small pages" is odd. Maybe
+
+"Once we fail to batch pages, we expect to fail batching for all remaining
+pages, so just give up."
+
+> +		 */
+> +		if (shift == PAGE_SHIFT)
+> +			break;
+> +
+> +		batch_end += 1UL << shift;
+> +		i += 1U << (shift - PAGE_SHIFT);
+> +	}
+> +
+> +	/* Remaining */
+> +	if (map_addr < end)
+> +		err = vmap_pages_range_noflush_walk(map_addr, end,
+> +				prot, pages + idx, prev_shift);
+> +
+> +out:
+> +	flush_cache_vmap(addr, end);
+> +	return err;
+> +}
+> +
+>  /**
+>   * vmap - map an array of pages into virtually contiguous space
+>   * @pages: array of page pointers
+> @@ -3600,8 +3678,8 @@ void *vmap(struct page **pages, unsigned int count,
+>  		return NULL;
+> 
+>  	addr = (unsigned long)area->addr;
+> -	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
+> -				pages, PAGE_SHIFT) < 0) {
+> +	if (vmap_pages_range_batched(addr, addr + size, pgprot_nx(prot),
+> +				pages) < 0) {
+
+Nit: single line would make that nicer to read.
 
 -- 
 Cheers,
