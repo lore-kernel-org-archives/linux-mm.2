@@ -4,118 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C89B3C4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ABF4C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6200A6B00AA; Thu, 16 Jul 2026 10:49:03 -0400 (EDT)
+	id 9CA636B00AE; Thu, 16 Jul 2026 10:49:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F7786B00AB; Thu, 16 Jul 2026 10:49:03 -0400 (EDT)
+	id 953466B00AF; Thu, 16 Jul 2026 10:49:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BF496B00AE; Thu, 16 Jul 2026 10:49:03 -0400 (EDT)
+	id 7F3BB6B00B0; Thu, 16 Jul 2026 10:49:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E7496B00AB
+	by kanga.kvack.org (Postfix) with ESMTP id 3A9CA6B00AC
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:03 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2E76A0219
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:42:26 +0000 (UTC)
-X-FDA: 84994905492.08.2EB94BD
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EA87E180002
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:42:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=Z47C+ajA;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf16.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212945;
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 999DEA01AE
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:30:18 +0000 (UTC)
+X-FDA: 84994874916.11.D849F6C
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E4AD91C0009
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:30:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=I0XeFRQX;
+	spf=pass (imf20.hostedemail.com: domain of 39upYaggKCIkwnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=39upYaggKCIkwnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784212216;
+	b=EJrfytajixwCtgy5ZppnMB34DT+pTFrorK+y7XHvhh3Dc9TLCqyT+HpUw1/lHyOu/BqBwi
+	6oHoW1ooF3z4OZl5gYIcuihuKcWknTiCfbZ+ufIryQ/N4IW8bgjw5EtdncfwkkAAgbfmCY
+	pK/QIRIvdZPKA5j/LFMpsIgbBvRiwH0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=I0XeFRQX;
+	spf=pass (imf20.hostedemail.com: domain of 39upYaggKCIkwnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=39upYaggKCIkwnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784212216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cp63P58EqhNMliQrQZQ8Q/9YAZ3f8xxYXqwfnDAFFKc=;
-	b=DOeUTGQPM85Lss8w4dCGMNk7R+jzMB6Zp0fchtgQsdvVCYCzjCEDZv6DvQ7pWC8nLv2lKL
-	COm8/FYtvB1t4V28PdCOTA6GCkr2avZMssXWDrkzl9AEkGB+qB5K08nqDjgP72kmWIU1fn
-	BOS156qsQ/As8VSgfayVT5zFnkKPskU=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=Z47C+ajA;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf16.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212945;
-	b=hsjB09uIfjNQWPKJyfB/2fYNx1OW34Z9zlEh5P32CAFcUPea+Lu7ptzJBDoniweFZ43Ks3
-	SZZBrwozwE82It0J1DqLm0k9Y9MaodRsheCLEfB2Dsql/gGGWSQxq2nGdtecF6qO88sPOI
-	kUTC8SDJkQf2nZVtXxUrQYNTTKlBt7s=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212509; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=WnufU84/GEgtpIBGEeik9vP9s0BAzuJ7ev6IvIGA6iA9Zd9YHdMx52tIFRXNerGqAjgTcFwERIZjk/lRB5gTqCbghz/qUGQWmKvhulqJX4QAEVkruttdPAN1wnY8/qrhAygUBwOW1twWZkr7l8TAKrdR9Z4rbgEsCxn0mwEdOcs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212509; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=cp63P58EqhNMliQrQZQ8Q/9YAZ3f8xxYXqwfnDAFFKc=; 
-	b=btpuqHAYbrWq+/gjrhjNrLaB2NMUJwoWyq7SQW7+A0i9alf/vU2eA3jImbgAVNx2ghJihFIRcst4SdiYrYFdcZrSji/lr3mgAL1/fk6zLcH2Lpx0ZaDL7u7vbF6Y2YHMqe1frlOyWUD9Z1XkrLJ+tUpcjexizw4pmtu2IpXfZeA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212509;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=cp63P58EqhNMliQrQZQ8Q/9YAZ3f8xxYXqwfnDAFFKc=;
-	b=Z47C+ajA0NslEJATMGE6sw6Pu/nXEAH4kow1xkWyUD+8Ki/hOqu3EtOJsR//9utK
-	qto1QZ/oCo8IP9oSNax70Lf7Cgi5x3L7j5T6tHlPRwXShZROEaiSLgVwuaS9ihzg98X
-	pHkZQ3XGF0DSJduNdQ4+jgkkwV7vubKDAIlcifvU=
-Received: by mx.zohomail.com with SMTPS id 1784212507685649.0367584656693;
-	Thu, 16 Jul 2026 07:35:07 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Eric Paris <eparis@redhat.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	audit@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 18/24] pidfd: make spawn builder execution signal-safe
-Date: Thu, 16 Jul 2026 22:31:44 +0800
-Message-ID: <9689970b5b584db83756cb38608027876154b92a.1784204592.git.me@linux.beauty>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1784204592.git.me@linux.beauty>
-References: <cover.1784204592.git.me@linux.beauty>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KK1D0Jn0y9eqfBTpCLM4Znrw9w5QYL14n9pJHOvIIK8=;
+	b=5e4MX1lMsIOZ6IJnyWf0+HV0oXpaA2SLWRZJOtisfhJpZvpuw4MOxrpCKczpTN5ZSnqTVA
+	G6x051czElb3hZKq4ybbwKuJu/P+CagPnT+zC1tQ7knlsnkxEfcN3FonNdXHnDsNQFA3g5
+	l9CJ0Xe6hClz9XaF41ackGUqHkGaKJ0=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-474170b59dfso3844674f8f.3
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 07:30:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784212215; x=1784817015; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KK1D0Jn0y9eqfBTpCLM4Znrw9w5QYL14n9pJHOvIIK8=;
+        b=I0XeFRQXBQqH/RrMQvtjDiP7gyMwAom9U+wwWYm65sl1ZeEMrB/8DyYMlaSve+FzWS
+         Dg2HLj9/eiKSCRiF8oRDnE6Hhiggq4c1iHr/5pX6CdljkoMpFXO6Zbc6PG/z9BQC+eXO
+         0X2oq525d2n5IdtXTFC5GXwb+/VYQ/4Od5d6XLAVITZ8K4q9ApWl4VkgYPcsd7Ri8UAN
+         o9BpCVa8Y9R69iCQbvty6Zm4vLqq8n2I2lc/neIoAfPDDnzbkDurxeQUWiRXE60GBN22
+         y0kXoWl7VNJMjLEUMVKz6OVXWNjK2WXlPGx7Yqu6ySnbe1QFRdKoElZziV0rGOundXtl
+         5qeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784212215; x=1784817015;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KK1D0Jn0y9eqfBTpCLM4Znrw9w5QYL14n9pJHOvIIK8=;
+        b=pGDsvaHw5ounO0yn2REUT9PAYuZVVpeNbNtCw3E5DYaN4gd2RfSNfWAIxlQwJWIz4F
+         VMdF5DRAMOqvSNwMQ320/QE0cJMzW4whS6r9M2sA4mtTou9cojwg8b4uixbAk7XinSEA
+         6TiM5bIIOTzr/9nB6qFkfTxtXwSKjWUPuOzluuT3HWcsHQL8K2ATavUL+4j2j/Ls0JUh
+         zyWsVxL7+RP1nR4DmO3jqcszgu6jpwzlc/BG+P8RUTZbCzaz2P4PlOuojKRLzPL6j9X1
+         oboiuSstq4vxf9duk3JRCOSbKJfWhbpLFTBnJUbF1hSBZ6kwxK3qaQyK01d2rXqMCbGY
+         ppWg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrv9KILDZlBTQ+znVaUJ3+ot+1BvaGoN/dNKyorLpl0WZo/i6+SZ9NbOhxH3M2Tx4O69PgKN5GZnw==@kvack.org
+X-Gm-Message-State: AOJu0Yz3Tb5eBaS05q50bvHbOow49RcZUl3oevIrJ6AoEfaZFWGwzsSq
+	O60tYOlzcP1mNErGchweukDCqH8kn2IiV4PbPmDUe79RlBM3MrcWRbT2U0UuRHahBwf8acZjQ4I
+	0MPpFJ5nZFV6soA==
+X-Received: from wmbdr12.prod.google.com ([2002:a05:600c:608c:b0:490:b58a:2c80])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a4a:b0:495:3e81:770f with SMTP id 5b1f17b1804b1-4953e817874mr72103905e9.15.1784212214740;
+ Thu, 16 Jul 2026 07:30:14 -0700 (PDT)
+Date: Thu, 16 Jul 2026 14:30:09 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPHqWGoC/yXMQQqDMBBA0avIrDuQRFDbq5Qu4nSiIyGRTC2Ce
+ Pem7fIt/j9AuQgr3JoDCr9FJacKe2mAZp8mRnlWgzOuM73tMOQoGX2MmZAi+7StiiZwa6/jMFh yUNO1cJD9t70//tZtXJhe3xec5wfuKVxBeAAAAA==
+X-Change-Id: 20260716-folio-alloc-cleanups-0fe319b881c2
+X-Mailer: b4 0.15.2
+Message-ID: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+Subject: [PATCH 0/3] mm: yet more cleanups for page_alloc APIs
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev, 
+	loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EA87E180002
-X-Stat-Signature: 9du58xwemuzees89h16ycmub9jiqop6z
-X-HE-Tag: 1784212944-107265
-X-HE-Meta: U2FsdGVkX198D4gmXsrMHoiZDi6xmq/k7I9nRmiIw8GQ3oW0Oib72VP+8FLbty2sAG7HxBoaO0atseuDHMTeMA9ETjYJlxPzYkVT/1pE60WLh2cq9K5G7Zjq23pqp+16oFcTuCVR62U9DkgeAY+HJ6toadsZrvspp3odwYp2Dp4vSXSdWYmaQu4MvkiwZkd/Ld+6mlIRx2LIqNhwqeONMJQHaoRysCj9m0iXkYw2jD9itDOW2Dq4VSTgpbkN2lNIWWsAOsFr3x98IwDVyuLEcpfHKxN9GiPmaxNHc1p+DdXWMfLWE5UAlAV3WmfqzWD27NaMni2eF2n9YVnrBcA1HvhoObBJpxeSe3yDg98mS0HqLHv2v91GrEFK/SeBhK+Gr23S/vmugfVDLd2PmdFSBhqtaaGgNEUKe/wgF69zehjrfw7vyeh6EY5UJjGORnoMUgYROxGW6XXD/BMZxovqeQi0jp+ZKI545xGktE87sy/b5egGA73WGxz4xkAmZXKa+UqzcM8K/i55D3UErSbd4lmqqDSc0Gr+4aPDBZUiosdzJXcry9qUQO7cPYZJCF/YR/8IyeNS4euFwFPjcYXD31cgvydD5BP6cN5UHC8DcP+hZHWVqaR1jpBn1vQoDnjnevS/PgSDdhRojsBikG6lsaGhsO4MFr4Sp92TMrAxltCrZTZf7m49zNHEtVsDz3KHdmr30zqz02OLpCvvCi86+u81LZ5qF/HceDZm1UPOqlQbw168cNGoegKCaT3WLLNBgCi5YHraJDRw0LvRAK8fa7XvzD2icHDRUkv7lIL8Ck2fMCSezif2rS2t5GCCUtXaJqos4Mh3xdJQ4nawNasmE9fiMSTSXyUm7/2o2794YIpJvoTXdwEbuuxdUeJKxTIYcid6o+JyaKcJ6zeUz+Crr0aMSEJW8z6fBklrHXrR+1RAupu1+Ir+fmX9WaRJecSWlSuC0UdKNSEszGys3aq
- +InwLorj
- F8PxdCzfMi/w6n/7eK4XGNsROOLBM+r7dNImJdW1vMqH+80lEDAStiPbU/wURiMy5rUtVCVF79SxfzrX8u0dhrzvJ5mTxJxl8UjFPtVESOOWaCMcoUqZHh2A3C1KJatv7u62lhrIGv5iFTEZKftvQkJeBb+j6HK4OGxJVakRyDG/2NJblMbg8FcCOYKnI8g1GIuOYhSPU5Uo+P03dl0Z+7irILIh8WG/dQmmqQUceya76yC3nUr4pmCEJXyzBdLzVZ9ZeRx3o0VE5hqIwsTO+VLwos343BVlCy3tvWlhnoD2gbF8zpNggBkZUDOlbziMZF8Qu/+OxsuVfMSrvAvRzE1/L+Jz1zpcnnuIMLUEqy7ldYzT2AAcDyPKsJZpYVLQ+pUDmD454Czo+lIRynCPqOim7Xn2Wv8CK7EXtCWppNtUAEroMbrUAAg8zjMt4rvb3RJva
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E4AD91C0009
+X-Stat-Signature: kascu8choak17xhq7eo16sb1fdngqq8f
+X-HE-Tag: 1784212216-781890
+X-HE-Meta: U2FsdGVkX1/d1L/ebGKDadD0whKfsdaGJ9tsYktkUo6MhJXPyJ7gLEq9vwunb58qqOOMDX2ytsXMOdpQNa8FKSV69TD89f8Hkzf/hANJmXE6upvud4sNeDkZQ5gzJm8AcMH2N5L3MWNwtuXvcGc+yvtaYIaptFvVcauoSdg5XX/A8pq31czXpe+VtOf9OZ69Ou9miPQpdOirSSjyOokYnURFUvw3PBMx1TxPgmSJtU6/HQnFxiuZzgME5sGsgAbsJHDw7Wz+tJNST5O9uocmiGExeYv2sBMrlXSPPeVWMn6X5ko7XTM2uFQ1/Rd9mgDZMZ+qKEHj6B03JB21xlyz+GgMobj+5MkTd+SK9u2kY/eXKTSHaV+7nQO6+UdQfK1OahvZgjNliX67lWDAX8zFCqXWKGK+p4bLZ3QCr63QDOnQPKXIFfmXU1ESMF9C7JCyWyQPTRBRHyQabbE2H64KCoGjKRVHRfJxhH7bkvVryyJ9q6CNuIGK6u1ek7OCDnSXdutq7CmojwGao05ekZtw3rG2sRbtJHfQYehUq4LgzZEe11pifwEOc7KV0et7XCjvMT2QJRQGreMCWSfUzj/cIKJxtwlp6LEKVHg5c9PpRqvmtBVFoYeFQi9FmmsS1AlSoGWPoY4uq+311d6T5aZLNpPPo24eQ6rzX1KmoET+yKIdLUc24Dwr+yL4cEFOVixUZ3e+0RTq+kLteyoob9d7hbAwiuTrc3praCugKDpmTzKtgQgKW1wHyeh5DETp5TzdghUjhTLVuFhOLaZyTkTLxWcubynECWMFBq08TYNrVnEwc44IL16D4Uk6acboqtCbtkhhhDKSIOAiTppHtgjGMSRlu6l7qcqDRsFRxIMkcgNWbJGKup0E//pXgsIhc7DlRgtlcUoUwA6eJemH6gQCiouznmsam0msCYZa5J1uSvl91uA1c1GX6TbNsw4TvEnLS970WytWAp0pHfysAfe
+ Qihf6bZR
+ QA4b+fYgPnib91mK2qt8TpECSIavttTb9m+GwEcbaRn10pKcoBWEWj+26eotm+1Hv6GGYsly7GuUfCVZzYr9T/8nZOJ7vyGH1eCgl1UzvAew9k/fPgXtb8d2x2j1iLHjUgj1aoSxnMxLoP5o0THn/OtUu2IM3hJJDpbxvp1x4/DQIwJroiOKBFk6nLRZvpWWlMByVzQJs0AQkGFCnYEek88RSBb/YgTDDRP3sR0iOLezoeEfqKkiowBHm5tc8ajzeeFbVunu/pBCiKQ/6D4c6LwOIsD/yTMdgcbQXUnT9XqXscBIqJF3VcA9YnlIkXiBXL+yrwSrWgmq8otUq63ETYIbIHRojoShfAya6e8l1mT3TfRkJODqkgJl4ZVXE/Q2qb9lw3K4ABGmwG9hsJdTVdKjoPT8Z2nIGx3DMnTaHSnESLL3Fv/D1FKvnsORo01MRPzgD1K8opbekBAr8aCfSKfLddC/s8htw+NBGjmz81JJJaMthpitVmZo6oB/Tk6jik1aNJN9FQCvkCaAgOt+3NCv8+e5Q0qjsZ0UMi33BKR7CpOdCiLZ68si6go/dOusXQqzkYBPmWOZbgcpFyC9axx8Tu/kwLw+KlyUQqVLCnUGjreaM1IIgCoSf0qp6XuuyxuO4k94wp5YvtTvB23DEOJSkTCAy++2WwwvE2Gg2VDyGR8Eu6hWNXMIf8JQ/4yMh93Uu8q7Jwg6/HLY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,302 +128,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Wait for child setup in a killable and freezable state. If the caller
-is interrupted after task creation, cancel a child that is still
-setting up and normalize restart errors because the spawn operation is
-not idempotent.
+Based on mm-new.
 
-Preserve externally delivered fatal signals over setup errors. Complete
-the builder and audit transaction before entering the signal core
-directly, so the callback never returns through an invalid userspace
-frame. The task work can run from an outer get_signal(), so fatal delivery
-deliberately nests get_signal(); the inner path exits and never returns to
-the outer call. The child remains embryonic and nondumpable until exec
-installs a valid frame and mm.
+Align some APIs with recent cleanups [0][1], and hide more mm-internal APIs
+from public headers.
 
-Reject an already traced caller while holding cred_guard_mutex across
-the spawn operation. This prevents CLONE_UNTRACED from becoming an
-escape from an existing ptrace supervisor.
+Part of this was also proposed by Vlastimil right as I was writing it:
+https://lore.kernel.org/all/ed4572f4-0074-45c5-993d-7b6533eddc31@kernel.org/
 
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Li Chen <me@linux.beauty>
+And just like with my other recent patches, this has the ulterior motive
+of enabling later incoming patches to add alloc_flags arguments to these
+internal functions. (But, I do think these are justified as cleanups in
+their own right).
+
+[0]: https://lore.kernel.org/all/20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com/
+[1]: https://lore.kernel.org/all/20260703-alloc-trylock-v5-0-c87b714e19d3@google.com/
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- fs/pidfd_spawn.c | 189 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 183 insertions(+), 6 deletions(-)
+Brendan Jackman (3):
+      mm: move internal mempolicy APIs to new internal header
+      mm, treewide: replace __folio_alloc_node() with folio_alloc_node()
+      mm: move __folio_alloc() to page_alloc.h
 
-diff --git a/fs/pidfd_spawn.c b/fs/pidfd_spawn.c
-index 5586926988406..0e52503976c0c 100644
---- a/fs/pidfd_spawn.c
-+++ b/fs/pidfd_spawn.c
-@@ -5,6 +5,7 @@
- 
- #include <asm/syscall.h>
- #include <linux/audit.h>
-+#include <linux/cgroup.h>
- #include <linux/completion.h>
- #include <linux/cred.h>
- #include <linux/file.h>
-@@ -212,8 +213,10 @@ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
- 	state->envp = native_arg(NULL);
- 	memset(state->audit_args, 0, sizeof(state->audit_args));
- 	state->audit_syscall = 0;
--	state->result = result;
--	pidfd_spawn_set_status(state, PIDFD_SPAWN_SETUP_DONE);
-+	if (pidfd_spawn_get_status(state) != PIDFD_SPAWN_CANCELLED) {
-+		state->result = result;
-+		pidfd_spawn_set_status(state, PIDFD_SPAWN_SETUP_DONE);
-+	}
- 	mutex_unlock(&state->lock);
- 
- 	putname(filename);
-@@ -226,6 +229,32 @@ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
- 	kfree(staged_path);
- }
- 
-+static bool pidfd_spawn_cancel(struct pidfd_spawn_state *state,
-+			       struct task_struct *task)
-+{
-+	bool cancelled = false;
-+
-+	mutex_lock(&state->lock);
-+	if (pidfd_spawn_get_status(state) == PIDFD_SPAWN_STARTING) {
-+		/*
-+		 * Establish SIGKILL group-exit state before publishing
-+		 * cancellation. The child also takes state->lock before committing
-+		 * its setup result, so it cannot return from task work before the
-+		 * signal is pending.
-+		 */
-+		if (WARN_ON_ONCE(do_send_sig_info(SIGKILL, SEND_SIG_PRIV, task,
-+						  PIDTYPE_PID)))
-+			goto out_unlock;
-+		state->result = -ECANCELED;
-+		pidfd_spawn_set_status(state, PIDFD_SPAWN_CANCELLED);
-+		cancelled = true;
-+	}
-+out_unlock:
-+	mutex_unlock(&state->lock);
-+
-+	return cancelled;
-+}
-+
- static bool pidfd_spawn_same_pid_ns(struct pidfd_spawn_state *state)
- {
- 	return current->nsproxy->pid_ns_for_children == state->creator_pid_ns;
-@@ -383,6 +412,35 @@ SYSCALL_DEFINE5(pidfd_config, int, fd, unsigned int, cmd,
- 	return ret;
- }
- 
-+static bool pidfd_spawn_child_cancelled(struct pidfd_spawn_state *state)
-+{
-+	bool cancelled;
-+
-+	mutex_lock(&state->lock);
-+	cancelled = pidfd_spawn_get_status(state) == PIDFD_SPAWN_CANCELLED;
-+	mutex_unlock(&state->lock);
-+
-+	return cancelled;
-+}
-+
-+static bool pidfd_spawn_setup_done(struct pidfd_spawn_state *state)
-+{
-+	bool done = false;
-+
-+	mutex_lock(&state->lock);
-+	switch (pidfd_spawn_get_status(state)) {
-+	case PIDFD_SPAWN_SETUP_DONE:
-+	case PIDFD_SPAWN_STARTED:
-+		done = true;
-+		break;
-+	default:
-+		break;
-+	}
-+	mutex_unlock(&state->lock);
-+
-+	return done;
-+}
-+
- static void pidfd_spawn_save_audit_context(struct pidfd_spawn_state *state)
- {
- 	struct pt_regs *regs = current_pt_regs();
-@@ -399,6 +457,52 @@ static void pidfd_spawn_audit_entry(struct pidfd_spawn_state *state)
- 				state->audit_args[1], state->audit_args[2],
- 				state->audit_args[3]);
- }
-+
-+static int pidfd_spawn_normalize_result(int result)
-+{
-+	if (result == -ERESTARTSYS || result == -ERESTARTNOINTR ||
-+	    result == -ERESTARTNOHAND || result == -ERESTART_RESTARTBLOCK)
-+		return -EINTR;
-+	return result;
-+}
-+
-+static int pidfd_spawn_pending_fatal_signal(void)
-+{
-+	struct sighand_struct *sighand;
-+	sigset_t pending;
-+	unsigned long flags;
-+	int fatal = 0;
-+	int sig;
-+
-+	/*
-+	 * fatal_signal_pending() only recognizes pending SIGKILL. A default-fatal
-+	 * coredump signal remains pending as itself, but must still win over a
-+	 * setup error. Inspect the same pending sets and default dispositions as
-+	 * get_signal() without dequeuing the signal.
-+	 */
-+	sighand = lock_task_sighand(current, &flags);
-+	if (WARN_ON_ONCE(!sighand))
-+		return 0;
-+
-+	sigorsets(&pending, &current->pending.signal,
-+		  &current->signal->shared_pending.signal);
-+	sigandnsets(&pending, &pending, &current->blocked);
-+
-+	for (sig = 1; sig < _NSIG; sig++) {
-+		if (!sigismember(&pending, sig) || sig_kernel_ignore(sig) ||
-+		    sig_kernel_stop(sig) ||
-+		    sighand->action[sig - 1].sa.sa_handler != SIG_DFL)
-+			continue;
-+		if ((current->signal->flags & SIGNAL_UNKILLABLE) &&
-+		    !sig_kernel_only(sig))
-+			continue;
-+		fatal = sig;
-+		break;
-+	}
-+	spin_unlock_irqrestore(&sighand->siglock, flags);
-+	return fatal;
-+}
-+
- static void pidfd_spawn_finish_child(struct pidfd_spawn_state *state,
- 				     struct filename *filename, int result)
- {
-@@ -406,11 +510,40 @@ static void pidfd_spawn_finish_child(struct pidfd_spawn_state *state,
- 	complete_all(&state->done);
- }
- 
-+static __noreturn void
-+pidfd_spawn_deliver_fatal_signal(struct pidfd_spawn_state *state,
-+				 struct filename *filename, int sig)
-+{
-+	struct ksignal ksig;
-+	sigset_t blocked;
-+
-+	/*
-+	 * The callback frame is not a valid userspace signal frame on every
-+	 * architecture. Complete the spawn transaction, then enter the signal
-+	 * core directly instead of returning through the callback trampoline.
-+	 *
-+	 * The embryonic task state prevents ptrace access and coredumps until exec
-+	 * installs a valid userspace frame and private mm. Block other catchable
-+	 * signals so the selected default-fatal signal remains terminal. If the
-+	 * signal core unexpectedly returns, exit without exposing the frame.
-+	 */
-+	pidfd_spawn_finish_child(state, filename, 0);
-+	audit_pidfd_spawn_exit(0, -EINTR);
-+	pidfd_spawn_state_put(state);
-+
-+	sigfillset(&blocked);
-+	sigdelset(&blocked, sig);
-+	set_current_blocked(&blocked);
-+	get_signal(&ksig);
-+	do_group_exit(PIDFD_SPAWN_EXIT_FAILURE);
-+}
-+
- static void pidfd_spawn_child(struct callback_head *work)
- {
- 	struct pidfd_spawn_state *state =
- 		container_of(work, struct pidfd_spawn_state, task_work);
- 	struct filename *filename;
-+	int fatal_sig;
- 	int ret;
- 
- 	pidfd_spawn_audit_entry(state);
-@@ -420,9 +553,27 @@ static void pidfd_spawn_child(struct callback_head *work)
- 	else
- 		ret = 0;
- 
-+	if (pidfd_spawn_child_cancelled(state)) {
-+		ret = -ECANCELED;
-+		pidfd_spawn_finish_child(state, filename, ret);
-+		audit_pidfd_spawn_exit(0, ret);
-+		pidfd_spawn_state_put(state);
-+		do_group_exit(SIGKILL);
-+	}
-+	fatal_sig = pidfd_spawn_pending_fatal_signal();
-+	if (fatal_sig)
-+		pidfd_spawn_deliver_fatal_signal(state, filename, fatal_sig);
-+
- 	if (!ret)
- 		ret = do_execveat_common(AT_FDCWD, filename,
- 					 state->argv, state->envp, 0);
-+	ret = pidfd_spawn_normalize_result(ret);
-+	if (ret) {
-+		fatal_sig = pidfd_spawn_pending_fatal_signal();
-+		if (fatal_sig)
-+			pidfd_spawn_deliver_fatal_signal(state, filename,
-+							 fatal_sig);
-+	}
- 
- 	pidfd_spawn_finish_child(state, filename, ret);
- 	if (ret) {
-@@ -531,9 +682,16 @@ static void pidfd_spawn_attach_vfork_done(struct task_struct *task,
- 	task_unlock(task);
- }
- 
--static void pidfd_spawn_wait_for_child(struct pidfd_spawn_state *state)
-+static int pidfd_spawn_wait_for_child(struct pidfd_spawn_state *state)
- {
--	wait_for_completion(&state->done);
-+	unsigned int wait_state = TASK_KILLABLE | TASK_FREEZABLE;
-+	int ret;
-+
-+	cgroup_enter_frozen();
-+	ret = wait_for_completion_state(&state->done, wait_state);
-+	cgroup_leave_frozen(false);
-+
-+	return pidfd_spawn_normalize_result(ret);
- }
- 
- static int pidfd_spawn_finish_vfork(struct pidfd_spawn_state *state,
-@@ -544,7 +702,7 @@ static int pidfd_spawn_finish_vfork(struct pidfd_spawn_state *state,
- 
- 	ret = wait_for_vfork_done(task, vfork);
- 	if (ret)
--		return ret;
-+		return pidfd_spawn_normalize_result(ret);
- 
- 	mutex_lock(&state->lock);
- 	ret = state->result;
-@@ -624,7 +782,26 @@ static int pidfd_spawn_start(struct file *file,
- 	}
- 
- 	wake_up_new_task(task);
--	pidfd_spawn_wait_for_child(state);
-+	ret = pidfd_spawn_wait_for_child(state);
-+	if (ret) {
-+		int interrupt = ret;
-+
-+		if (pidfd_spawn_setup_done(state)) {
-+			if (pidfd_spawn_finish_vfork(state, task, &vfork))
-+				return interrupt;
-+			return 0;
-+		}
-+		if (!pidfd_spawn_cancel(state, task) &&
-+		    pidfd_spawn_setup_done(state)) {
-+			if (pidfd_spawn_finish_vfork(state, task, &vfork))
-+				return interrupt;
-+			return 0;
-+		}
-+
-+		/* Drop the stack-based completion without waiting for child setup. */
-+		wait_for_vfork_done(task, &vfork);
-+		return interrupt;
-+	}
- 	return pidfd_spawn_finish_vfork(state, task, &vfork);
- }
- 
--- 
-2.52.0
+ MAINTAINERS                        |  1 +
+ drivers/iommu/iommu-pages.c        |  9 +--------
+ drivers/irqchip/irq-loongarch-ir.c |  4 ++--
+ include/linux/gfp.h                | 25 +++----------------------
+ mm/filemap.c                       |  4 +++-
+ mm/mempolicy.c                     |  1 +
+ mm/mempolicy.h                     | 31 +++++++++++++++++++++++++++++++
+ mm/migrate.c                       |  2 +-
+ mm/page_alloc.c                    | 18 +++++++++++++++---
+ mm/page_alloc.h                    |  4 ++++
+ mm/shmem.c                         |  1 +
+ mm/swap_state.c                    |  1 +
+ net/sunrpc/svc.c                   |  2 +-
+ 13 files changed, 65 insertions(+), 38 deletions(-)
+---
+base-commit: 512c82e906fe2c26023e307c7951d53e90910b57
+change-id: 20260716-folio-alloc-cleanups-0fe319b881c2
+
+Best regards,
+--  
+Brendan Jackman <jackmanb@google.com>
 
 
