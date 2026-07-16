@@ -4,161 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78AD5C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 17:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA530C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 17:21:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D9CA6B00A3; Thu, 16 Jul 2026 13:20:11 -0400 (EDT)
+	id ABB2E6B0109; Thu, 16 Jul 2026 13:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 389A06B00A4; Thu, 16 Jul 2026 13:20:11 -0400 (EDT)
+	id A91FB6B010B; Thu, 16 Jul 2026 13:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 251F16B00A7; Thu, 16 Jul 2026 13:20:11 -0400 (EDT)
+	id 9D02F6B010E; Thu, 16 Jul 2026 13:21:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E65EE6B00A3
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:20:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8042B1A0274
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:20:10 +0000 (UTC)
-X-FDA: 84995302980.13.82FB3B1
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8EE1AC000E
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:20:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=enHa4MAu;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784222408;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 76CA36B0109
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:21:36 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D155C026D
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:21:35 +0000 (UTC)
+X-FDA: 84995306550.16.C564D6A
+Received: from latitanza.investici.org (latitanza.investici.org [185.218.207.228])
+	by imf13.hostedemail.com (Postfix) with ESMTP id EDA4E20005
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:21:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b="DIe/BNk9";
+	spf=pass (imf13.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784222493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hDpH4vLaInenlGkSSwc32ERdxUXfDeJnyW2zrivGsV0=;
-	b=7gw98FxkNJPyTFErjv31mzyJjG1Q9ZZ/cIFcKAyolzvjuC7BnM0dNza6akW/bhMZM2qYtu
-	mS07rokC+/PqVBisQJbtKd137odlY+N7P1s20oyJrmG9Chy3iWeUlP3+z7shcbEMdxLSwM
-	TpbWcwXXK/YG+8ZmP7+c+0+JWIf3CX8=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=enHa4MAu;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784222408;
-	b=eJFPtZNDvC3heNVEwQznIhCUjgelsDiXionLkcE6MU5WXzr0JoVEk6z317cG1HJjrOc+dM
-	CW9LTnh4HA2uYHaosmu4XaQ89y5nTOqRvD8HfR+2STRVdY14/ZgqvvrsJQtD8RuNSJ/4By
-	2741enzurkqkhqmlYIT5UEa+tn8yMSY=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso2313552a12.2
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:20:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784222407; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fZlAv60DI/92St/0NPdCZJZfxdY19VJPNU/si9OSow1HtS5rpCn5YZrtN9HFWC+kwm
-         LXtFIr3nAHi8No3ElkdpjIvGfyu26zhNKe0ApfvltIDLRWIwpGfeiGvbQ0YMFq3+q4Ob
-         eo0IDKZCgxaKU2DwdeFtbqzMUHpq1szToWPnqcFe0oawl4RTRdNEqMjI9lhpmFocir0R
-         7rWvRZrSAAqgCcbqJhA0gctyRXIcb2sfSh/veNZaHbOvBXy6Li4fLUBvuW1e/b7bl7m7
-         zowR+9oKn7+d1T8iEX5UkbIAC+E5futhloFihhXSnU+dzHtqlxKBQydBBtA63KI1PErp
-         5ZHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=hDpH4vLaInenlGkSSwc32ERdxUXfDeJnyW2zrivGsV0=;
-        fh=FRRJ4RqIh40/RicqYK0bYwcbED4gPHN8NzOTetkaigw=;
-        b=WaDPVYV2XVL8Me9VyRsZr88Awoui15YBHAjTeg0sBPvhHzh05QJR9auVoTHyAA1dYs
-         43PpYcxZ6yEaXtDl9yz4UFDkaQxG46h85HiBLhnkH8vtIsLsf6FFTLIhRSh91NOL2EA9
-         BDH4lsosXqkr0c6GVlkXO2RtJzIrdhYpmZrAxrN5M7mEXmt7oThykw+3B2xJs6YziEvp
-         Tpyyncwa+0jSJ4l5zkvs5NKpNK4W9+GiSlRS8AQT/41ndw7nnieIsn2lj26Hh+uFAt4a
-         2D0ovhNHAoLwIJz55bFiy8tDNi8CmGhZQSV1x9DurGW0Zt4ncuYvoEqGaHoVYumWJR5w
-         q28A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784222407; x=1784827207; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hDpH4vLaInenlGkSSwc32ERdxUXfDeJnyW2zrivGsV0=;
-        b=enHa4MAu0dN2dNyRF/NIDL8qu4XOCLKTvlgUY+VJ0nAc4pr3I3iaxaNuYRjjoX1qgR
-         m6WyIGjyXMY7rHI8qFwuyuJLkqRQMLb2I7sgy7Z60bwyQC7sXKgi7KVhX7nUeg4vyErx
-         jLVPFRm3ddlCUsVNCWu6FVc0nYKhIgiuCEcdmz0lkxo2db8csafT7urFwfHsKIHQhuyB
-         NgBulGt66d2DO6+eg3VGh3MtApdFHmN0EfBH1kfWEnuHAIO7hv4f+aYFyz3ONqwxJAwv
-         9pR17sHgTxFlg+v7c7G0rK3Ez5r28FtbcAaVaN3+j6C0RlJnTAU0w5pdIJuMLgMuISDu
-         3WhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784222407; x=1784827207;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hDpH4vLaInenlGkSSwc32ERdxUXfDeJnyW2zrivGsV0=;
-        b=S6awER3JT0X7jpIXH/jH+43rvJj3/ke2keTdnsKNhOYXKIW9S0+J2OUIvSkwQfrcxw
-         72ZVYEZ2twW1eVK58jfwvvd8U1G5KL0p+ZtEL+gETW6UCk/yRsVTb6SHodZOj8q/yR1F
-         rROYN03Ksqn1LYeO1RqaecvG0iEepJ/Dm5NQNpLg4ICy4lsVh3mkbln2ZYeQtXOLij9p
-         XP59RosiBFGR2fBrHbEN1wtNYqL/bU2wuGvNVVTBQHh7pEFeXFtyJmViKC7xn2/lWSsq
-         yY0QfauhsCP+vbh+u4LNVqh7L3fdt5SWXJQs5XHAXuBp1eSkaUg946WgbLMoEtrhs//x
-         dhJQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpj0hKPMN+U8FAgeS2xbv1owpSDqzkzC1iJn9eGmp6fx5oyAVBUnY+lBfp33qsc5uMlp868hRvqDw==@kvack.org
-X-Gm-Message-State: AOJu0YyAplKCTnH/1RnFUVRzbejR/6HyxcK0dJjgc1cOBMdTtyGCR5Dz
-	w3nxdki7wMrJeZTxWFpYOaarT+MeaqFQCwYgAoRlMNUg4k0ocd7jvWDEwAq5/oS2o96WomPIovu
-	kPfYmMvpIxrEwdyG3GmM6hbJTPeo+I7a/LLQgqDPK
-X-Gm-Gg: AfdE7cmb+jKzU/WIL0Nv/ixmVDowDBkwdfRIlcCC6D15VtvB5QNZQnCOLOtt+oEBXsM
-	sLus+C4z5W1BCRFwmhmhUlPsZ9CK0iTiIvgubRDnXDIcFfnT+sm8aouUsBZ/p4+nv4cAche7wvA
-	hc0rjxBakF1AEtVhGqn4T7L7WwyECAKOKBxJwCFS8LjYWydZngFEFSmzHP9wh5qvmHPqXmt2Nwt
-	BQmx77cLG911D/KgYQ3/WLE9tLT3TnUjThn0p05pJnIeRP5sL2tY8h/T3xXNBO3ZoXwVMBZhoTw
-	V18QvZ3bOVMFlZVFRU2TJKp7VleN/aKV6lpPYua41fEQT9ql
-X-Received: by 2002:a05:6a21:7482:b0:3bf:6c08:2b2d with SMTP id
- adf61e73a8af0-3c3a5e7a4fdmr21247637.53.1784222406715; Thu, 16 Jul 2026
- 10:20:06 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 16 Jul 2026 10:20:05 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 16 Jul 2026 10:20:05 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <1b59fec2-a464-4429-8532-880394912af5@linux.intel.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com> <1b59fec2-a464-4429-8532-880394912af5@linux.intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=ApDe3kfU1jAQMqDNaJGKXEBL8IhnJAtrM+hYn5C+hVY=;
+	b=v5T2NVDnrTTw8Nfry4irHEZPzMMkwrtpGlVYRLscLjZnA2DpO50lWbloCRfHp1GX/LP0+B
+	bbirvhroxc8Q539gjN8hbAPQhOtv5ipvU1ymUpWNilr0gJkCY7MYqHfFZTnsVL9MgW9L0O
+	4eW9qQ6uVPWHIPXplxzpbi2CbkXp4k8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=grrlz.net header.s=stigmate header.b="DIe/BNk9";
+	spf=pass (imf13.hostedemail.com: domain of include@grrlz.net designates 185.218.207.228 as permitted sender) smtp.mailfrom=include@grrlz.net;
+	dmarc=pass (policy=reject) header.from=grrlz.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784222493;
+	b=6SG2dN2POaH4Z6SnPgrAJNR7aBo4KTEENh/E3nZWeuFEBhFLO9pECQ85MdNvDL4bLXt00R
+	YpEhq1Ca3mEkFP7FbzoXYMcftvb6ICEwZgPyRN0oSpjGUpP5FJxYvtNEaxX3XZEKmijrcb
+	3e4Wu516tAOC3j+MA3/LyQn9VGPePA4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grrlz.net;
+	s=stigmate; t=1784222490;
+	bh=ApDe3kfU1jAQMqDNaJGKXEBL8IhnJAtrM+hYn5C+hVY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:From;
+	b=DIe/BNk99fYaSF06zppIGPO1lpg9YTVb3vRUd3MWMtg46xEYSTpijwUm4+Efs+LWx
+	 yFPU6LgasmMFobdnEvTsdPLftiYa+FgI0C1c+GqiqqrFL/scBOPKn31z3J+7GXe+ux
+	 7+BDquAqqA/gMoJFbqW9jYvaisPeqaPQtrJgrGhk=
+Received: from mx3.investici.org (unknown [127.0.0.1])
+	by latitanza.investici.org (Postfix) with ESMTP id 4h1KZy4hrrzGpPF;
+	Thu, 16 Jul 2026 17:21:30 +0000 (UTC)
+Received: by mx3.investici.org (Postfix) id 4h1KZy22FLzGpNk;
+	Thu, 16 Jul 2026 17:21:30 +0000 (UTC)
+Date: Thu, 16 Jul 2026 18:21:30 +0100
+From: Bradley Morgan <include@grrlz.net>
+To: kmehltretter@gmail.com
+CC: akpm@linux-foundation.org, kees@kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mingo@redhat.com, peterz@infradead.org,
+ vbabka@kernel.org
+Subject: Re: [PATCH] fork: Honor task_struct's declared alignment
+In-Reply-To: <20260710123957.31774-1-kmehltretter@gmail.com>
+Message-ID: <5AA3EBDE-29ED-4E04-8D8E-43DEC9FD5988@grrlz.net>
 MIME-Version: 1.0
-Date: Thu, 16 Jul 2026 10:20:05 -0700
-X-Gm-Features: AUfX_mxBIq-fm92f37AIysrX2Jjvm6RrlF5jRh7Q3ctlrGsM_3yjDZToekOalgI
-Message-ID: <CAEvNRgEjPA5pi1RqpQWgp_hH2HmSnGhWaNiXtVBJb_VVdKD7qg@mail.gmail.com>
-Subject: Re: [PATCH v8 09/46] KVM: guest_memfd: Introduce function to check
- GFN private/shared status
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8EE1AC000E
-X-Stat-Signature: xbjspy9nxeue4bqh9w4g6qtcomdqd679
-X-HE-Tag: 1784222408-638490
-X-HE-Meta: U2FsdGVkX18TMFYVNePxRVwhOcHrNyGqmoekInOL9QUUxSjebtln50NLZclDr46xQKxx5sNMN9jaBgcvvUaH4hmiVjkdCR7xaQQKFoTf6cjOe+KqeaBNXnZqSkcuZCfeKJ5p27HlaDssObUWoNivOSDkznTylQ0M9TwWi5ERPfwH6d0MthQCRsQQfgDLMadHSRFRPpylBQXwkpqXlYdbs+yqh4+lrg3HBz7A/oO/OnOyzbjyo2R1SwWOIm4ljy1bzroz1RealkUgF5n4b732gi1UsyilkuJ0ZJtBKmb6ftwi1Q6tp/Ec3VYPIsfwcCNuyiNYMs6NjHTwR5io/0sLBdcSH6jKULv5p6PQiHniiBe/EICDetUGzfPGSUQQiqvz9aJTfFX/NK1tZi9/zxG7soWjAM8xBtbSpNW/a/ofxK7vupZnNg1F0VoITajBvkfDPrJHZxdSFjJ5UsARTyhUmoZ5vdD5B7a2OctPkWG0fOadAucSaqiz4KvG1FrvK9nUNQKUqJyk+OYGYsWAMACRP1LY4AtTkdBDNhcqoXLLh9IE1f6wRbgOCMdpB+mzSue+KOlvuEk+FH5etJO4HP76+K7MLrwnRzE/mZiTP5vUzittKLbQxsi9h3gnEp47y0fHDT6nAPZ2YDXUiqAEgczeIzN+k5cdRjUScsw50xTWSR3owSTTcgrsitWpV0/R84vAgQnuAORp02U3i1u+JlJOilKIXG6blaOStqdhXSVKT4h3BPXSDh6oxb+0YtwGPfCRMYiEkilO7sGtruTaEftkYhj92skyfoRVuFEkW5mIiL7VEXC8s2xPIMdtmtTwB6IYe7oCDYpZwWWg/suHnI30BA+fJHydLAmsI6DN9oejMyRgO6tp0njGhYZdlQoLG3P2bnL0BXKeE05g8a/jvbXZ7Hwn4cVyvUwUcE/opsrTqgLOUBBwCdQZzg70jhLCTiJYPNMaSTcYKfSqkchUju3
- WVTyar24
- WbfdhAREZGfexCraQ6KQrNmTxBMNMqmMz7zNGOJWxoBDGeZgT1pGE3SEvhS0DPHSG81tv+5YyRdY3qsphYj4CjvG0/yYPVPdSaBAp+/OBniL9Q3DBrBSkB1JiIyWyLER4fbOm2WH6x/AEa2LJy6EnqcaeTKZOqUVIGoK7SzW5LmBpk7Qp7sl8Jt0JkBgUhkSnUSI873gQ0C2Q/l1XEoXuVWESy2b6IXmvb1OsCUddK5y1JZSxaHQ04DTp6V1QjFYgJFspDxgqarGZe4RhNrTAFc6YhQFxzWQ19d6VCNFua90I1IanQFX32p5sVO6NnWjsyAyMydc+tlB4MOh6B1sIlcaWnvy0oTfkT9kAicnwAHG87zOYVtRqAFDGwp4FNF3C/GJ3cAmawEULGvM=
+X-Rspamd-Queue-Id: EDA4E20005
+X-Stat-Signature: 9oo5yzgrmw6fmudz81r8u5poi96qc6h4
+X-HE-Tag: 1784222492-730353
+X-HE-Meta: U2FsdGVkX1+ASrAf9whVqhP7wjDy9Fw4LHsR6tWXHwMpXAV8P1cnLUY5e45lB18U/yyG/eHkV/E8FODL+D0EXm9eU9OERD0adl7UScBOlnVo1M6JiNwvnVqeR+wnHrnCjItYWY1rj6N1boInYKwN3UT1SPxzQwbS9aibVRP1mq5/nG50QpX9YVdZNYffxziyjTjsESTUI0N41iumO8ywNJxiX2ql+h6JGuNobrfZbiIpQ9ToY1F6XJxjSXTaM/VDcyff4O/EBU8D5SbW4zjXMHz+Nvx1DsEFK5UbaFghJbLbBPmC8eKF2h48rc/wrmCtAXTo/ENOGLdknFA0oCquOcawoKntVyoVdicYerMzF2oybomFG5TYQeFFaQJV5uzrw2D+dONig+mkI/zULKNjQup4PmlUJuCAT9slGMwYxM8wIqAV5ivUU8zt7hyypngeKwM5S94DP48yeSkVxNo5qvmBi4rRr4EHm5hsKkZe8/BEVAuMJ9JhvOTtgQi5pQAU2nVvhxwYD0M8KWMfAH5jLSlWeDFUE0If4T3T5d8xhTdusXNanNeqDfodffDcl+sHRHUgM8IU6u0yMVSoN+M8U+9p7PhUvkAnphPmtA1uU8HvOmhfZ+Z21X7Ekp82yji3N+D5JC95Yb3TkOj9NeShXQp6j1ZpnXTng7gIwypT/5LWYUypkSo8l5yyurKgXm0fvLwtaKO+AncwynW5S2kjx0BTirq0LLz5QRHNzz1Dk86LNrPQad/h0LyI6vLXV5PHP7QJZVQ9onJc+K4qhTqspxW7nxPmp9I6j+ada23PnHX1OhSleigyS2EW057WV+6DhxO2+jeg2EvuXBEBonk2v1VgzFVx33LDHdgzRt5PTIbKhjboPuOdhYdLapaRnzoea1ijiKWY4mGVsXRbYZV/aJY/2btX/JXUAInXb8sy692l1y7dFQwcqR0nOgWhiueWiy9rNVAFBvOphK6bdgC
+ Ls8IffNS
+ U/rdlXTaCUSIsMJxagnAp+cWVrVJ8a872JvbMjectWlsYtiz1yIdR+A0d/xKpdqfVMOw8+dS/qz7uUmMFCkSde3zBH9ISDABt2seu5zbrQWHU71pRSccmxCj2a++CbJGmgWHoIN22O7NFmkHW8fi9mI8sXQZVuLZB1xSjp9TKpg67Yx+XEVnnFtwjxszE5fluf6HNGzUxaLF4oK/6AmdzihTBESfMtu7ZVeK6BpEAWP+lBJOGonz3xxxY3Ce8A8hj9d+9iTMoTfTE1Mbt91netR61RdlOpJhXCFJB74P/N7vmck3b0ujqse1uHe54Nu2qtKIjFK7450KTK20=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,22 +89,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Binbin Wu <binbin.wu@linux.intel.com> writes:
+> Since commit cb7ca40a3882 ("x86/fpu: Make task_struct::thread constant
+> size"), struct task_struct is declared __attribute__((aligned(64))) on
+> all architectures.
+>
+> But fork_init() still sets the task_struct slab cache's alignment to
+>
+> 	align = max(L1_CACHE_BYTES, ARCH_MIN_TASKALIGN)
+>
+> which is smaller than 64 on architectures whose cache lines are below
+> 64 bytes: e.g. 32 on ARMv5.
+>
+> In practice plain SLUB happens to hand out 64-byte-aligned objects
+> anyway. With CONFIG_SLUB_DEBUG_ON the red-zone padding shifts objects
+> to the requested alignment.
+>
+> With CONFIG_UBSAN_ALIGNMENT=y a boot on QEMU versatilepb (ARM926EJ-S,
+> v7.2-rc2, gcc 13.3) floods the console with reports like:
+>
+>   UBSAN: misaligned-access in include/linux/sched.h:2087:9
+>   member access within misaligned address c295d7e0 for type 'struct task_struct'
+>   which requires 64 byte alignment
+>   CPU: 0 UID: 0 PID: 15 Comm: pr/ttyAMA-1 Not tainted 7.2.0-rc2 #1 VOLUNTARY
+>
+> Set the slab alignment to at least the type's declared alignment.
+>
+> Fixes: cb7ca40a3882 ("x86/fpu: Make task_struct::thread constant size")
 
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
->> From: Ackerley Tng <ackerleytng@google.com>
->>
->> Introduce function for KVM to check the private/shared status of guest
->            ^
-> Nit:       a
->  > memory at a given GFN.
->>
+Nice!
 
-For v9, I added the "a" in the commit messsage body but retained
-"Introduce function" in the header (save characters, and make it sound
-like a headline).
+Please add 
 
->>
->> [...snip...]
->>
+Reviewed-by: Bradley Morgan <include@grrlz.net>
+
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+>  kernel/fork.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index f0e2e131a9a5..b85cf1343329 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -857,7 +857,8 @@ void __init fork_init(void)
+>  #ifndef ARCH_MIN_TASKALIGN
+>  #define ARCH_MIN_TASKALIGN	0
+>  #endif
+> -	int align = max_t(int, L1_CACHE_BYTES, ARCH_MIN_TASKALIGN);
+> +	int align = max3(L1_CACHE_BYTES, ARCH_MIN_TASKALIGN,
+> +			 __alignof__(struct task_struct));
+>  	unsigned long useroffset, usersize;
+>  
+>  	/* create a slab on which task_structs can be allocated */
+> -- 
+> 2.39.5 (Apple Git-154)
+
+Thanks!
 
