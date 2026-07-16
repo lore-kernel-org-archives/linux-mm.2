@@ -4,119 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0546C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:37:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 274E2C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:38:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B5576B0137; Thu, 16 Jul 2026 11:37:50 -0400 (EDT)
+	id 02BDC6B013A; Thu, 16 Jul 2026 11:38:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83E996B013A; Thu, 16 Jul 2026 11:37:50 -0400 (EDT)
+	id F1E596B0144; Thu, 16 Jul 2026 11:38:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E01B6B013B; Thu, 16 Jul 2026 11:37:50 -0400 (EDT)
+	id DE6D56B0147; Thu, 16 Jul 2026 11:38:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5656B0137
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:37:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E72D4010C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:48 +0000 (UTC)
-X-FDA: 84994490616.19.916CE89
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6FCFE1C0009
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HchRbsDx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AD5706B013A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:38:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 256C01201C8
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:38:29 +0000 (UTC)
+X-FDA: 84995046738.08.53B1ABF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8993318000A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:38:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lR0erwDg;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784203066;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1784216307;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T7BZuoI307tBezRmKGV6QjCvxEl1tGf+05F5S3uKZHA=;
-	b=I6YXKGT8wVhKvT+R/HVdYxht9QP+/znkcwHyNcQOb3QuydUw8OJu7cYVSUiJn+ctHxlaOA
-	+iZmWKYeoX5z084Tl4jxZ5rpCOxGKoO/YmrDNNCOwlV0mAOkhr/07RGPK4sFSx5M3nmerU
-	+AbX7OFt5RJUWVCD2vosqj7HKOVuqHw=
+	bh=a26FW5P9+YzyWC6sUoMal5XZ31S+uAd68vV2bOiyX1I=;
+	b=KZMQvZcEHEuSmHd4ScoHyS1/sU7QdMIMvSkKXy0GUhkDoQ+WWdUXTgJpp/ZyLXFaATLjir
+	EJrJm3UiYxWKE0dlgDNqHHZ7UMXgBEtWs6ktAwJsRCvr2JECoYXNRX+ngqT643ZnVO7y4a
+	T9HaSrNKxA3qYVbSmGjCr8elPUH3xFU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HchRbsDx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lR0erwDg;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784203066;
-	b=rIVjf6tvKA4JxBk1Xd+0qkrXUW9951I9jLTwr+zl/ETJUssW/m7KwP2JDmm2knIM6U40Yz
-	UUmIJxjuWiWRGWxTxigskTF/1+5I1XEHF7uLQLRsovK4k6L/Vwj7YvtCDDIow2OQxUS8qI
-	F+iwbAF5CsCc3q0G1UDMvi3izwg3vjA=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38de840f2f0so3353826a91.0
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 04:57:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784203065; x=1784807865; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=T7BZuoI307tBezRmKGV6QjCvxEl1tGf+05F5S3uKZHA=;
-        b=HchRbsDx+0abYFhA+oFGDD0+zQYSsp9V9KapoUVAYdMKUI1gWf9aVL6FArtd95bGzE
-         DvzBG2QVj8Y5uCnjCeFkw3PdIF25ZLg444T0uowRCyR5E/1Loggd06E4GfktU/gyKQkU
-         ttSSuQ1wJX/+YnQy5uI+05jh43ji++yXew7+qvFv37tKKycOsaKfzeA9RbLiCw9Mxknj
-         4Ie+sniE+PnDYjnok7yF97IsBwk3hEQQiPyAjJYS9tYk9kTQAj/O4XQxXJTkj9g+m0+p
-         inQ59oEkaBQ4idrhZxdhfAnOGn18hE/QdF4+v85xbc3/AFnMwGQ+FlUAd6zxCHAEKLEm
-         wNYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784203065; x=1784807865;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:sender:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T7BZuoI307tBezRmKGV6QjCvxEl1tGf+05F5S3uKZHA=;
-        b=QpIdrDk/Rb+qxcOMYB5T8Hg9WUK7Jk/pH/noo0kArMBQB+LcyWm++UvRE9CyWvP++G
-         3AnlJH/1CkakMUT1aOEmGqWcFYHNT+ZH6LlaWmz1jLrq0j02DB8jKfi1lXWPIQzwlug7
-         P+SYqBUf7NHNxgoR+M1j8KO2pSKTM6C2SneB+fh9XTYta044HUFQxCQbH49VvpfwaWno
-         x8u0sPU4gM+YdwP/2tmIvJK8r3e5VgvrPOt9Cx6iIjnE+GD7fV1yMxE5hpnbaF5+0gZB
-         ozAj6SOnLiPR1jSImdq9WZwbQoZ9Ltkga0kfhnad7xRgvZ+2MBxXtTNuovy4D1DS0yvP
-         XS/w==
-X-Forwarded-Encrypted: i=1; AHgh+RoxGDuZ8QcBewkkrCAizQUWJdp0BrJ7BiV43F1+MELKbRNYPtfKZW9yplAllsQISYJT98btlidBAQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy4pGxVZDe0Jaoo0oSFVrU7lWZxBxCdYiHZQeWwVVrfoRChVOM3
-	MA+5bDmxhLwq2h2TcufrauI4wk6by8uaXrbtQGnpISICCkZzqo0vLExM
-X-Gm-Gg: AfdE7cnA7yXzrtrvvr6uA2vjvggxDk4cU5R5+b4WL61/CLIJ3WL5ZjsfCqyfRuLPuBK
-	nsl3TnfeAPvJJ11sX8POTdy1BL7rXH2oMgDxnPmaTh4DB63x2TGdv0X8n7HICVo5NkDCg+TrqBN
-	igayZxRwIyhKkC+CI0HY1+ZGSm7hxvB/45x3y9uCxMo+/1mYpEppN0J3Im/gXU6TNUu66HR1KCl
-	Gnq1FCA7X8xgy5NXRO+cI4XP+tuIxk+JFghILazx1EDcna82W2/pQS1B6ZtGfvWy0TdL07GfyHg
-	P0csK4q5Sbvr6BWDQDMoK+o/t4fDjlFy1a3bFs+AlrEuElZW27EDIPYa553jG/dbGq1WOqmHuWm
-	Z4ahQLkzSP1bKS4jf3uQlI+X6GlAdbI00ocW4I2zjjkkGQKa4xX3o58wpoZzIxyRP4p/RVBHZrs
-	X2Ajr21K+LMLX1obNSW31LOYKl/Ac/lh6J6TmmRGCl
-X-Received: by 2002:a17:90b:2f8b:b0:382:3dcc:1487 with SMTP id 98e67ed59e1d1-38dc7b3f5demr19684631a91.25.1784203065127;
-        Thu, 16 Jul 2026 04:57:45 -0700 (PDT)
-Received: from localhost.localdomain ([2406:7400:90:2db1:9c31:f107:8086:4204])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3140e6ebe98sm10920690eec.26.2026.07.16.04.57.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 04:57:44 -0700 (PDT)
-From: deepakroag <gaikwad.dcg@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/3] feat: scale vmpressure window with machine size
-Date: Thu, 16 Jul 2026 17:27:30 +0530
-Message-ID: <20260716115734.80909-2-gaikwad.dcg@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260716115734.80909-1-gaikwad.dcg@gmail.com>
-References: <20260716115734.80909-1-gaikwad.dcg@gmail.com>
+	t=1784216307;
+	b=bM9BER+5/uY6uMLoRXRa9UATkIM/giRMUDh+tlTrvryZ5fuzlG6CiTWAP8xHGED3mkWV3L
+	+D1EaQPjlRj3pEHnuxZfbtBf8QmJq/JREuyCCVkg4CWcCY4ZEIGwpD34eMyc2P5Iw4/ck7
+	VaKjubO6q6bPi3/0OujB9J3HZe84naw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EA93C60A5E;
+	Thu, 16 Jul 2026 15:38:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3469C1F000E9;
+	Thu, 16 Jul 2026 15:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784216306;
+	bh=a26FW5P9+YzyWC6sUoMal5XZ31S+uAd68vV2bOiyX1I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lR0erwDgzrfV/VW+jOFdV1LMajh/Lxr9kj6PHtGJ2ocf8UYF7Iiev7SR8A9tEWCgQ
+	 sGQtqYw2ORhpBucNtP8LdQbJ2LzOyaiGIT6GaPRxahcGCnJYvfk2zIa2QDQdELHN+q
+	 LDPB97EOuYOxIXGpx3SApeYztROlPB3s165Mf1Ebdkc8MxtMhYw0Qg7ZigGsuTDNt+
+	 4MaV3BwpOvKoQ8ZSXNh6PVvDFHOyQvSa42Au5ELtabRp418yDLMNKvbV2FwXbBCEHB
+	 pEHEJMklR5yaZnxH7xQJ0j+dYjktwFbJkpFZQ2YSOIlpfPGyMlcDbq6rW8IO8Ibksx
+	 J7LMo5ew01Djw==
+Date: Thu, 16 Jul 2026 16:38:12 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm/mseal: limit scope of mseal address zero to
+ address zero
+Message-ID: <alj1Cyt4JvbVM7tB@lucifer>
+References: <20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org>
+ <20260716-mseal-fixups-v1-2-3a9609bf041b@kernel.org>
+ <aljyYdgzRZW1kIhs@pedro-suse.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ejdtu6r4xnsq1seoicz6fbrd7jsqydpp
-X-Rspamd-Queue-Id: 6FCFE1C0009
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aljyYdgzRZW1kIhs@pedro-suse.lan>
 X-Rspam-User: 
-X-HE-Tag: 1784203066-728921
-X-HE-Meta: U2FsdGVkX18ITgrcGgXz78/7VzVVt4rSuBxErF2qDxYeKCjneQ9fWvXQQmJmHSCf3O5StSVL23WOAkxBGedteaQQEgGkmCmJnJRnQAdKexrZZJgIi2QuwqjtXzvrYTxQ7iWk0rIbUQaYDPlwrdMk16QHAFFfUqZsXN5C1q6pu7/PH3vSIR5h+2RBR+vOpSVocY48gWuXedsKGnYGXcFaLFWHGuDl6vRs09lNQc2MZHzHCHKMh37Sr1LnwtJAagdXIql5B1tDLnBEqeE8XH5QRi/inbUerEbtHmhkQ6JVyKULO6xlftRcvcFqEQpfx2BNcho3hk37ELTbgKzapySPAsI3+/wNzgYGPqHE/TSgVZ3v/LWWuwpKwPl1YaJbklWKa0+ooJBFr2LCc0wQTaq0BKFL4C1fQ3ovB9nrxVuPQkZDPxpUT3i46AtbXepc4aWPhskJ4S3zdH/ynKyuG/xkjN714fTlwBtH74D8aJQNztJ1CpnWOY4W9cQQMJXw9XClWL0Ovo/C5y/7f6ffwKIFBUntpEyXJskQPXft/EJOMyivVm2MeaNQlCeHPhcG9yQyNToOUKJM5K7y982JY8kALo4kN8t+ef6UBBCp7A9DRsdRXmy7i38+x3pGKcVLXv78iKJCveUykx1rNVUP4PMZ4/FJvv3h9dLO7Sxb0yBPXfzh+HrIDGG8IGPKDL3ok5QKeVr6zH67It1DY8T3B2GP0e8k6eFY7pPJ4++Ab+3HrwhtowjLJAIqHRvfu4fAMsWLdyVjV0vh0LivyF3kdz3x3zQXGjCroi1aVXf6ZmQz1UNkq8EgUsANrrtlGzKZP/eIzdRReqt6F1QDqwm6LBlrTTA5PqaJC655C3q0dJ2KqrgguADonvoZnhT7BfQvkD1Dp3LOPclB5jh6gkw+taueVljpghLcCTqAT+zvDXqkR+J43DIEPPlgKq0Zu2gcbEBGj1B61MvqLQEZ8yD0keq
- wKvtrnxP
- FaYJPror1OJem4IWxVosv0EMUzBXVlsSMCk6+joTrtwUbZwX5cpvMKFHsNP2PE3cso693nKYlrFq00zkUnlyPrP35Ee7kPC9Nqp48O54VV/kYcjDW+7tLZItINetTjry0vTjMPhoGQ+5be/fAADYc5/Vr+TydY934O72Ax/IGTddTIHaeUG2vsrypUVZvz4pgOPWv8G2TC7HpbDbDW9DGESZsW4HHJSvNCz25M+GTYesFiU/Ey3exlfQMG0HojzoyeflH3Xxlmm990aE+TBIHd4mEbvr95tdpaGKY5iqFiwgELP1mcU65aZv4j8NEUmdDUjy0QJIv4joGuLtwE5I6d/WlGdTXlCSelJva36GnVXzMuUCP797xHjTQ0RJyZxVvDADo1vlM/aDCgJEU5JxLjlTMIN1KOgv+p7SbG4bhj+4c64c5DHp1Vy0UMF0xTWlXz1fw1Rvlu5GbH40=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8993318000A
+X-Stat-Signature: dqnrhduj6hs1k1uhswn57zhe8serdhnd
+X-HE-Tag: 1784216307-301565
+X-HE-Meta: U2FsdGVkX1+spImdVRUNx0fmoicZbmqMftY6KzmeR0XOjt66+w3hzIqtX6m9C4BJpi3BQK69gJQjOSgASHHdF5SgPRHZA8lr994fbLAohLHHlXx+ivFGMmTGrvmYUU3W4x8QIY6lQBSqIBNIhDy1kAtXRPVjxk8YdLDDAp2RX95rb8pGuonyxqFFPYlC1HUnm8gYClcUZdynq/LHE5TUd3KVXJZSMXmKBGClrp51KwuKD/9BQ7eci1OtcB1+WGWsuGdicQGyETc4zQqM9UcIiB2X2o4aw/U4OA0TSbmnDosanhhHGNihOI7nDckw9O0W6QN0Ylkiki+WuEy4GZ8tSaKOosGhMPJogMc1uC4XnZVyNVfXh/kCvbur1wVMorAqmoGHG45dhrg6ZmuQZSoiUMO5a3IERFQTeKiZpUhHZAB/fZB7rwhUlfee9vLg9E9X910q/xVpiKTOM33Vvr/YaOqTHOaJl/VLgVttx/Wy96tPCK+8w00/IoEpf4Uj/srEJyTZUmfi4KE8viKHEdIAR2TQXFFubVEuDbv255zt7n+inXfyANIza72JmyuNox+fVOkDHGJwRZCm3YYguHZS0lIEUA1A75F0HJPUCIqvmgnoYIlsM43xBL2/YXSXZL0WF2GB/sx6QmRVuR4f6cSw7ZJoAIbYbIvQofEtKoTOHYc9Kdn07IIbsDXftr8wJ4+4zsOKS1Spsk4kmB5OXS/ucUHDw6nqWW2akL6XdWCnc2qGdGd5LuObC2h4bSpTl5QKg9B+mR6yXW9Tn50QehtbWNuKMsww2OZYQ6VGhTTtYI9OPstn58vTaHqAAnZ58W4U0DIlkCt7vodoIemcaPZ9PT8GvpUK9QYtVeuy9sMsYXJwGsX+FEXlNVQD4uGU9tDQZX+JhpkAWuJzRpjvx9Jo/bq/cNLQocs2LyYC0gxYmoZXq7NkVHsuAmyF5WB33jVI8ArVk4feuVNZ+kb+Qk/
+ /oBu5fb2
+ +QfhC5a97gRS4B8T0gxAeUsj1b1i5huupBXTIzQAPxuztB/hO/ewfkElACgApfYd7v4Ywxe0LKZwXRCpE/1l6HpmzHXZedDQza3hfFwH4B0vIEUvjAKXX69Cm1g5wpMJ1nIu9ccJMpJqqe5j9qYvWdxI0KWUIngZhO36WSUWGB2RjwitpW+DMQFZkdUuruWdedrEdn77u1+fJmGZ3/4xvDSUaQ1g5MIz6xoXJH8EQXPzJsbSVO99zT1H7RLs00Se3TndymJLP5Ry/eYOs1Bnk/goQtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,51 +98,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the fixed 512-page vmpressure window with a boot-time value
-derived from total memory and CPU count, clamped between 128 and 2048 pages.
+On Thu, Jul 16, 2026 at 04:06:20PM +0100, Pedro Falcato wrote:
+> On Thu, Jul 16, 2026 at 02:43:10PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > Commit 44f65d900698 ("binfmt_elf: mseal address zero") unconditionally
+> > provided do_mseal() to any internal kernel caller in order to address a
+> > corner case slated for possible removal.
+> >
+> > It also incorrectly attempts to mseal() without checking to see whether the
+> > mapping even succeeded.
+> >
+> > Restrict the scope to the corner case by providing mseal_mmap_page_zero()
+> > which asserts the MMAP_PAGE_ZERO personality.
+> >
+> > Avoid unnecessary checks in the start, end range by abstracting the actual
+> > mseal()'ing to mseal() and have mseal_mmap_page_zero() call that instead.
+> >
+> > Only try to seal the VMA if we mapped the VMA.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  fs/binfmt_elf.c    |  7 ++-----
+> >  include/linux/mm.h |  8 ++------
+> >  mm/mseal.c         | 48 +++++++++++++++++++++++++++++++++++-------------
+> >  3 files changed, 39 insertions(+), 24 deletions(-)
+> >
+> > diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> > index 16a56b6b3f6c..e3131a311995 100644
+> > --- a/fs/binfmt_elf.c
+> > +++ b/fs/binfmt_elf.c
+> > @@ -1353,11 +1353,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
+> >  		   emulate the SVr4 behavior. Sigh. */
+> >  		error = vm_mmap(NULL, 0, PAGE_SIZE, PROT_READ | PROT_EXEC,
+> >  				MAP_FIXED | MAP_PRIVATE, 0);
+>
+> I think pedantically load_elf_binary() should error out on mmap error, no?
+> Not that this personality is used in the big 2026 however...
 
-Signed-off-by: deepakroag <gaikwad.dcg@gmail.com>
----
- mm/vmpressure.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+I'm not sure I implied otherwise?
 
-diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-index f053554e5..8925d4ad3 100644
---- a/mm/vmpressure.c
-+++ b/mm/vmpressure.c
-@@ -33,9 +33,29 @@
-  * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
-  *
-  * TODO: Make the window size depend on machine size, as we do for vmstat
-- * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
-+ * thresholds. Scales with CPU count and total memory at boot.
-  */
--static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
-+static unsigned long vmpressure_win;
-+
-+static unsigned long __init vmpressure_window_size(void)
-+{
-+	unsigned long win;
-+	int mem;
-+
-+	mem = totalram_pages() >> (27 - PAGE_SHIFT);
-+	win = SWAP_CLUSTER_MAX * (unsigned long)fls(num_online_cpus()) *
-+	      (1 + fls(mem));
-+	win = max(win, SWAP_CLUSTER_MAX * 4UL);
-+	win = min(win, SWAP_CLUSTER_MAX * 64UL);
-+	return win;
-+}
-+
-+static int __init vmpressure_win_init(void)
-+{
-+	vmpressure_win = vmpressure_window_size();
-+	return 0;
-+}
-+core_initcall(vmpressure_win_init);
- 
- /*
-  * These thresholds are used when we account memory pressure through
--- 
-Deepak Rao Gaikwad
+But yes I'm aware, the point is to not try to mseal() an unmapped range knowingly.
 
+The fact we 'get away with it' now is irrelevant.
+
+I can update the commit message if a respin is necessary to spell this out (I
+thought it was obvious).
+
+>
+> > -
+> > -		retval = do_mseal(0, PAGE_SIZE, 0);
+> > -		if (retval)
+> > -			pr_warn_ratelimited("pid=%d, couldn't seal address 0, ret=%d.\n",
+> > -					    task_pid_nr(current), retval);
+> > +		if (!error)
+> > +			mseal_mmap_page_zero();
+> >  	}
+> >
+> >  	regs = current_pt_regs();
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 550fb92957d1..87feaa5a2b78 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -5291,13 +5291,9 @@ int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *
+> >  int reserve_mem_release_by_name(const char *name);
+> >
+> >  #ifdef CONFIG_64BIT
+> > -int do_mseal(unsigned long start, size_t len_in, unsigned long flags);
+> > +void mseal_mmap_page_zero(void);
+> >  #else
+> > -static inline int do_mseal(unsigned long start, size_t len_in, unsigned long flags)
+> > -{
+> > -	/* noop on 32 bit */
+> > -	return 0;
+> > -}
+> > +static inline void mseal_mmap_page_zero(void) {}
+> >  #endif
+> >
+> >  /*
+> > diff --git a/mm/mseal.c b/mm/mseal.c
+> > index 207fea89c61e..5930551d84f2 100644
+> > --- a/mm/mseal.c
+> > +++ b/mm/mseal.c
+> > @@ -32,7 +32,7 @@ static bool range_contains_unmapped(unsigned long start, unsigned long end)
+> >  	return prev_end < end;
+> >  }
+> >
+> > -static int mseal_apply(unsigned long start, unsigned long end)
+> > +static int __mseal(unsigned long start, unsigned long end)
+>
+> Why? I think the previous name is perfectly cromulent.
+
+Because this is what actually mseal()'s, the _apply is not really useful.
+
+The __ is because it's unlocked.
+
+The point here is to eliminate useless indirection, so calling the function that
+mseals, 'mseal' seems sensible.
+
+>
+> >  {
+> >  	struct vm_area_struct *vma, *prev;
+> >  	VMA_ITERATOR(vmi, current->mm, start);
+> > @@ -66,6 +66,38 @@ static int mseal_apply(unsigned long start, unsigned long end)
+> >  	return 0;
+> >  }
+> >
+> > +static int mseal(unsigned long start, unsigned long end)
+>
+> I don't like that you go start - end on a function called "mseal". The actual
+> system call goes start - len. It just looks confusing :) So either rename it
+> to mseal_range(), or make it take a start, length pair.
+
+I'm not sure I really understand the confusion (I suppose you're equally
+confused by the lack of flags parameter?),
+
+I find it silly that we avoid function names because a system call of the same
+name exists.
+
+But I guess I can rename it to mseal_range() since I don't want the series
+blocked on silly naming issues.
+
+The reason for passing end (which was already the case) is that the syscall
+already calculates it and we need it to do the actual mseal.
+
+>
+> The overall spirit of the change LGTM however.
+
+OK.
+
+>
+> --
+> Pedro
+
+Thanks, Lorenzo
 
