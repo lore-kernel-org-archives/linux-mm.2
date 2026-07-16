@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBEE2C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:47:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77F31C44516
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5B8A6B009B; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
+	id 053E66B0092; Thu, 16 Jul 2026 10:47:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3C26B0092; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
+	id E59846B0098; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B73CB6B0092; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
+	id C365B6B009B; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F8416B0093
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 835A56B0098
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:47:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 919AD1201CD
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:39:48 +0000 (UTC)
-X-FDA: 84994898856.02.D3E90D1
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 395E6401BF
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:38:43 +0000 (UTC)
+X-FDA: 84994896126.06.D0C224F
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B664C1C0004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:39:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=lUOjiNEA;
-	dmarc=pass (policy=none) header.from=linux.beauty;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3C18B4000F
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:38:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=lGJLlnnk;
 	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf18.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
+	spf=pass (imf17.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212786;
+	s=arc-20220608; t=1784212721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=arLEymkUVoitQLqfzvX2ap3GpzLfAGuJIPCpZdsJGXY=;
-	b=lJByco1x1YGhb0pLYRKVnA+X9jBGntjsNrY0oBzNCbS+6/b7v3O/45HEZMzXnB/m99OAnU
-	S5uW2ty9pOtxBogEK7RsCApU/mTmN+Hs1sAG/GLb3DunWZBjZuFIp6DsNqpashjezG7NkP
-	hbwbyyzSa+Xz2NqN0Z6IlunfZuBUZAY=
+	bh=Ya4G86ANygOaWUOVa7w62N+5O+59ZsUYvR63syVDoH0=;
+	b=mVqPChfpPsh7cL7C58BGel5ZyPj4Aq3rbiyDzSJ1bVeZKfahU16ckwB6wwWHul1PKzUDSC
+	I8JrTt5FsFZORC8numWkt+HeSpGxrogJYhEzVM3p9dJMOtNKED9jd7frtufwpIm6t4wymi
+	ucz3tEM6VqqpFnHAYXFPuj2oiqp3CnA=
 ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=lUOjiNEA;
-	dmarc=pass (policy=none) header.from=linux.beauty;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=lGJLlnnk;
 	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf18.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
+	spf=pass (imf17.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212786;
-	b=5bl+DiUPPABBRZbMCfHB2T/ygCtwBUvOPkvHBlY6oS/Vg+oormAyfbJ0nM9e1z5sl6LH/U
-	4JdM5jRb2ZME7A4PrvDw2lxt+YAUuKsflGltzS1k3sxG3RZl85G97mty90KCpOc6tKFpvL
-	rHWqioxra42YDhXmD0OvvnR9JCug6vc=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212462; cv=none; 
+	t=1784212721;
+	b=b42uT1dZCqFLhDUVeXPXtaN0Bd4xdsxQos635+wk0i7AXKLwkz28XC7PXrVY0esLhyRqXE
+	uzSpQxjCUp7iCInRjbgflPUI3CdMjnbNCaPPXIty9k7VO2ThrDklJJg1M5W19Io0PFIJ8v
+	QwC5zFrjp2Y69pQFZre/by1ueOhBGBg=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212442; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=NL5sCBLc0dzSrKk0ctGJxf6xVg7GcEWBWgOTLSiTytPv37cluDJagT9/MuM7186bcBLQyxsMrZpgqVPNe4mklAJqFEnAdRUUFcpSdIUGii0q0NYX5EMysk44mKrtPcpV6J5v5bOOKb3lt5R5j6tE3j8XuGgy9EQ0NRN8NH0536U=
+	b=PcmXxNM116ujYktl2B8PgN5Fb2vWu5zbR65PNCo1Gh6e8D8pnRZrZp537ovK4kpVsSf0//E6UrJFBKhLNpewOAFmpRm1RIyMeXxCGpN1PTKlEhHwWQRfSL8McbjWzLbctXfmL6UMtn17Sqmd4roAONLPAxI3hw6hEm4FLg7LWW4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212462; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=arLEymkUVoitQLqfzvX2ap3GpzLfAGuJIPCpZdsJGXY=; 
-	b=KUm1VnpBfYK9SXe+mGXg+Qn3vvLnCACE1XIX1crfmJzmqMUW3W3kke8dmBu/5FgSSNZGJ+nnJeQGSvPpeGrbYMcfStJDCn8NpVIvbrf/PjixfByOh6h3ALtCxOttShGaOfhKoLRNQR/rjCBu2u3xguFN0yW2+Yd+D2LbnbxboN8=
+	t=1784212442; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Ya4G86ANygOaWUOVa7w62N+5O+59ZsUYvR63syVDoH0=; 
+	b=CXEujvq1A7pk+uPqgahtMdBLptpfgKaCrfdsnkslZr7dwacljmH+h14u/3urOldxAaMa+T4GweHy1IJM933Tx1ynElD0vsbCElctMURPoPeZB9fCApmtNFhdfYYr7z49XYgPUCFziO4qH0M7H7Lh7OFv6GdpkBzTx4SzqatPIjs=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212462;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212442;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=arLEymkUVoitQLqfzvX2ap3GpzLfAGuJIPCpZdsJGXY=;
-	b=lUOjiNEAs6gVFsKJ7ywvKHQj6bgQShhP9SBhiAd2VMu3l7Ql7s3RfxW1DptBI0CP
-	49ibTx/3SwuBWhvFvcqhWYc+mdU7WGi1PfJOzrBX8g9dP1KfROPORzf+n0VoF5T/xAB
-	ZXtnxpMJqC6Zlzdxg3QescLRlZH2IuiCV70W7H3E=
-Received: by mx.zohomail.com with SMTPS id 17842124595011012.3223632220755;
-	Thu, 16 Jul 2026 07:34:19 -0700 (PDT)
+	bh=Ya4G86ANygOaWUOVa7w62N+5O+59ZsUYvR63syVDoH0=;
+	b=lGJLlnnk1l68wegebseYTGhaS7a/4IJ25ceMPX+dWJlVkOqso7Y1M+m3r2v6nFt8
+	7ozdGp3BAhINZmmHSuU/JjDrUEmoaNaSmqIWSKLBEUmFnmuyCeZXv4ULG03WxubL4uT
+	wLphikbx40W26kFF/RoLofgQutFQUD45REflaRCA=
+Received: by mx.zohomail.com with SMTPS id 1784212439389523.0177283934667;
+	Thu, 16 Jul 2026 07:33:59 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,23 +99,23 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 13/24] fork: let new tasks start with task work
-Date: Thu, 16 Jul 2026 22:31:39 +0800
-Message-ID: <6a841a3d1ca2e4c5dfeccf1863d4e07290d33351.1784204592.git.me@linux.beauty>
+Subject: [RFC PATCH 11/24] pidfd: add spawn builder state tracking
+Date: Thu, 16 Jul 2026 22:31:37 +0800
+Message-ID: <9f04647b62927055673942e0d4e1ef93fd4c41f3.1784204592.git.me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1784204592.git.me@linux.beauty>
 References: <cover.1784204592.git.me@linux.beauty>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Rspamd-Queue-Id: B664C1C0004
-X-Stat-Signature: regw1h9ckscpraj8868hozt6utje93rg
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784212786-102890
-X-HE-Meta: U2FsdGVkX1+Bb3WkvVHrgs13B1v1PehG835ESMAcSUAW/VyJ+iWX8bUdpJPsoUbuHOkbKX1Zn2jv+o+Tmn1NMpm2nXil2XtfAyKDY8ILiJvo0WTlzLR3AYnGmlngFsjwb20zJIgGqe/OEpuYX4uJUFG7dfBq4WHC6QI5fdAFOXZabxRKX3Cm9923oH9aKaNZ73BTvijZ2gQl3l8svS0OQdrOiE5HXSELu8mHgG3QklYs43Xu1ppQjNobTxFIBOKPt0OFPbW1KeYxkw0iskv5RAx/swVjcLe8/6OrPvBmKNWCUtIFGdPYu52aQ/KrNjAZr4yUI8w+k7Z12fFQxwLxiEu8lGINeWKX+uEAFaIk73sc1U01TwuNwYu1BvadLj2c5Ex8CtUTPiqOoNI/aZEHiCD7xG6JR/ou9D6WaiIFZINbjbuQnN8M1Tp71u0rDQIWkfHQN6LcbCnQ2FJ6NwyYk4W5dK+QqrAZ8StoHHhYBTi8HIB6uL0fJoAXFdZ9cMS5zAUCZVhAaTqOZN8biwu5hdZozWDUvY14CdWyilTOO8Z8wm3SLMXgNMqzt0zdSZjZ2m1xREy/M/GhD/MHrwb+Sn2bnzGf+y+6md1X/qGRVH4LKoFHDZaZ9lfeo+FEUsIns7drRQd0wzzxEnQWM4+caCW5J29tgHRjG4sQ1zG5Ugk0ntGewRA4U5Z6+9qjMbRTqUtWtSZ0BMKCAQTwoUf23za1HehR/fRmRp8aAORuvxwvakFbchNgwB1kR2Q5SbHEdNlPUhjc+mYzrc5Y3cg/GLZ9nT7NV5mTzh1KYeJlHJqtD12ZHP4MxHypuQRCIr+BSYoAZAXPKgoXWujn7p8BgAa3+VTL61ySSwMRsFO1bMbBufRuhF1rxxLT4dvuiRS7Lc+NtbnRykLXktRSRzb8XpKYYp25gbm4QFDflEVgUAMYZkKP2ui7LxeZA1S0g/A/8gu7G8QGW3nbBia6oJc
- xldRcUuu
- 1TVE4zKmtOWCBsf2aUiCR4z7t1Pu1gPrLF9LTGNmOIM4dWFtPp5NWDW7BiwFy94QKJQlel0yBTdObaWDQVP6uLxWLPGFAWlOaoY5oDSJOKMHuobp11DPS9P+hyiCC8yp8IxWI4Irr4aCEBFSGSBEDgfBAsFxmKqrzXdXu44FiRpT1hJ7QEkLNOZOkM5F4r5kTAMJMvWI2Vx+JI/zvFcGKGTdCoFdITyzlpiTjVr09zYOIldybTirXhxvYgfBzLBYgQHK6rGHIH+voHnsMX6G+ht9RpYIV9826d//GSiZ8uvM/t0Nsn3VidWKTnWUYNEAneydfoAkpTmNq1fkAqjT3RiBuVzujmkjJNmdw2rEqBzhCmn7nxQB5RCpPttuLpmIEau+3+lyvDBPeb+DLTvPoCf9BSZA182rfQ4mImt/sHyany6YLqw3f6li00vwwggIR1Ozx
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3C18B4000F
+X-Stat-Signature: ztfnckhf359b7bw3bmiaiku6mbu8dr3g
+X-HE-Tag: 1784212721-320517
+X-HE-Meta: U2FsdGVkX1+cWFg0pLzjmmqhoZm+LpcAe7zzQTmSsiMRyfy9iiWe+awItTzb3RPAYD9aFnKaEY4b9iOJM3VuXPUPQ9gPR9N/KDMzMemcrTb+u+Qx4DgCZyoCPPs6yIFdy1uMoCkLGO3WmB0RreJx+GmQwqeFFOjFtgUEqbGyFRfE8FE0rJIUwEmylZdDpUNibX6mf3pVxJhL3RstgV/LKxrwi4Ub5ZCX7KkVMoIscX/h/5Ue5CfU58+xrDonw3/d9vlbQ5f+NM1/vhIAeEqPIdKuyCoActe2hRAIOpX5BdtahCOnWpLtp4orG2BqsI9SuKrV+pH1NExOW6XMKPd1HUi/Db2l82L05EfpSRsR6S8ba3V81B32uaQhZszFv7ZW7RnB1nv64JWmra56jUrK6H0wyvSyISNP5jKLnolls1ywfq3dXOG6ggszzorgiWo09Z6BghD6hDYc2P7jbR8AaPMMZhjIvPHM/eFgKyRDH6hs5KOhL4nx1c59IcyN58hfQ79InlwLXFBOJxF764JuTC2Vb8bkhG7IdP2waUrC/9X3OnvliJK+c7BZPInafrL/6dUL3K4aShQdt2fZ63ISVK8yzTrF1TkO3lMbv+jxL+u6NLKycNXkuTSUkCjl0V1y4AnuI3QIaR3+Kc6t5mr+POyGW99xC7dD3mptsKtC7yf2wBIhV7GVD7zRYWKNgVRZrJldZ0PHZHS50ivJ+LLom9576o1kazH9E9XcMMNDhqJ5Q/kg690PLLx18ygxt8QYCAiq8qDgMqkjm5Z2dQA8GNZFw87qTBqzEDdzIxTpD4YQBZHhreBIYjykIOCvsHdazu4cVx7A0610UeHLMJ9cSY5jzsaZHA6ih/7teMvDYkuAI+P7L3H3ToDaI9KzNzHDYylM5tMksK2C8lsNNpmszRx7y3F7p5YEQl1eX2uralj6Kd1bfp6014Vj0F0M3w4/Ufzx8bk840Bxd2FjCZ1
+ lr5g7PfY
+ LhZYMlSSw+j4XwMpXU30Bos4UK8IRfrAvD9B9fUGoPuCg0NXaCUYTwz5i6LJmBGXCf35OLigkegWIDpuk7eMYgakDIj5nnsNzvjJKOGvKE4vFeUoBsg6kORNHNIpZqdz5L5XWcf8yiTKYRGalPFNhhllG9PYC3jV1qvu2ttF1u+ewclie2CZniSDtgtRrTU0IySfhzCoY/ahFIdle4MS+yEJyjOfOV+7V28YdNwsQt7rzTsVy09nHxswjGzAXVN6VFKDjkuch6Oeem4R88rLFGLxUe1gom1XJGsgSnVUfyo7LSsrsMCu4X+o6KNAKEMS31SrZEm+9AI96PHOcbbJ4jbJ8jS2vtOUkWOH8P2G2Tpe+tJnSfyVwLN87WQGxe1mVpOqGBZiEdNfmmrDpxGPLwjByNHNOaTjq4jZOG5nvb3Jw2ioCZn2EGJVTVGcRaXx/ENR4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,58 +123,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Process builders need to run setup in the child before its first return
-to userspace without storing a kernel callback in architecture-specific
-saved registers.
+Add explicit configuring, starting, setup, started, and cancelled
+states. Serialize configuration and launch transitions with the builder
+mutex so configuration cannot change after task creation starts.
 
-Allow an internal clone caller to supply task work. Queue it after the
-last ordinary fork failure check, while the child is still TASK_NEW. A
-NULL work pointer leaves existing clone callers unchanged.
+Publish the eventual pid with release and acquire ordering. This state
+machine also provides the boundary for later one-shot claim and
+cancellation semantics.
 
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- include/linux/sched/task.h | 2 ++
- kernel/fork.c              | 6 ++++++
- 2 files changed, 8 insertions(+)
+ fs/pidfd_spawn.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 5b7facf12b33b..830de99aabaed 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -43,6 +43,8 @@ struct kernel_clone_args {
- 	int idle;
- 	int (*fn)(void *);
- 	void *fn_arg;
-+	/* Run before the new task first returns to userspace. */
-+	struct callback_head *task_work;
- 	struct cgroup *cgrp;
- 	struct css_set *cset;
- 	bool embryonic_exec;
-diff --git a/kernel/fork.c b/kernel/fork.c
-index e3ade83b2d4e2..c0584eaa74711 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -109,6 +109,7 @@
- #include <uapi/linux/pidfd.h>
- #include <linux/pidfs.h>
- #include <linux/tick.h>
-+#include <linux/task_work.h>
- #include <linux/unwind_deferred.h>
- #include <linux/pgalloc.h>
- #include <linux/uaccess.h>
-@@ -2504,6 +2505,11 @@ __latent_entropy struct task_struct *copy_process(
- 		retval = -EINTR;
- 		goto bad_fork_core_free;
- 	}
-+	if (args->task_work) {
-+		retval = task_work_add(p, args->task_work, TWA_RESUME);
-+		if (WARN_ON_ONCE(retval))
-+			goto bad_fork_core_free;
+diff --git a/fs/pidfd_spawn.c b/fs/pidfd_spawn.c
+index 46207c8e8139f..99e3ef56ecfa3 100644
+--- a/fs/pidfd_spawn.c
++++ b/fs/pidfd_spawn.c
+@@ -22,6 +22,14 @@
+ 
+ #define PIDFD_SPAWN_MAX_CONFIG_KEY_SIZE	256
+ 
++enum pidfd_spawn_status {
++	PIDFD_SPAWN_CONFIGURING,
++	PIDFD_SPAWN_STARTING,
++	PIDFD_SPAWN_SETUP_DONE,
++	PIDFD_SPAWN_STARTED,
++	PIDFD_SPAWN_CANCELLED,
++};
++
+ struct pidfd_spawn_state {
+ 	/* Serializes configuration and payload teardown. */
+ 	struct mutex lock;
+@@ -31,10 +39,45 @@ struct pidfd_spawn_state {
+ 	const struct cred *creator_cred;
+ 	struct pid_namespace *creator_pid_ns;
+ 	char *staged_path;
++	enum pidfd_spawn_status status;
+ };
+ 
++static struct pid *
++pidfd_spawn_load_pid(const struct pidfd_spawn_state *state)
++{
++	/* Pair with the release publication in pidfd_spawn_publish_pid(). */
++	return smp_load_acquire(&state->pid);
++}
++
++static enum pidfd_spawn_status
++pidfd_spawn_get_status(const struct pidfd_spawn_state *state)
++{
++	return READ_ONCE(state->status);
++}
++
++static void pidfd_spawn_set_status(struct pidfd_spawn_state *state,
++				   enum pidfd_spawn_status status)
++{
++	WRITE_ONCE(state->status, status);
++}
++
+ static void pidfd_spawn_state_put(struct pidfd_spawn_state *state);
+ 
++static int
++pidfd_spawn_configuring_error(const struct pidfd_spawn_state *state)
++{
++	switch (pidfd_spawn_get_status(state)) {
++	case PIDFD_SPAWN_CONFIGURING:
++		return 0;
++	case PIDFD_SPAWN_CANCELLED:
++		if (!pidfd_spawn_load_pid(state))
++			return -ECANCELED;
++		fallthrough;
++	default:
++		return -EBUSY;
 +	}
++}
++
+ static void pidfd_spawn_free_state(struct pidfd_spawn_state *state)
+ {
+ 	kfree(state->staged_path);
+@@ -73,7 +116,7 @@ static struct pid *pidfd_spawn_file_pid(void *data)
+ 	struct pidfd_spawn_state *state = data;
+ 	struct pid *pid;
  
- 	/* No more failure paths after this point. */
+-	pid = READ_ONCE(state->pid);
++	pid = pidfd_spawn_load_pid(state);
+ 	return pid ? pid : ERR_PTR(-ESRCH);
+ }
  
+@@ -136,6 +179,10 @@ static int pidfd_spawn_state_set_path(struct pidfd_spawn_state *state,
+ 		return PTR_ERR(path);
+ 
+ 	scoped_cond_guard(mutex_intr, return -EINTR, &state->lock) {
++		int ret = pidfd_spawn_configuring_error(state);
++
++		if (ret)
++			return ret;
+ 		if (!pidfd_spawn_same_creator(state))
+ 			return -EPERM;
+ 
+@@ -216,6 +263,7 @@ int pidfd_empty_open(unsigned int flags)
+ 	state->creator_cred = get_current_cred();
+ 	state->creator_pid_ns =
+ 		get_pid_ns(current->nsproxy->pid_ns_for_children);
++	pidfd_spawn_set_status(state, PIDFD_SPAWN_CONFIGURING);
+ 
+ 	pidfile = pidfs_alloc_future_file("[pidfd_spawn]", state,
+ 					  &pidfd_spawn_future_ops,
 -- 
 2.52.0
 
