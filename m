@@ -4,136 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A8EC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD51C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:57:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 943A56B00FC; Thu, 16 Jul 2026 10:57:38 -0400 (EDT)
+	id C28F56B00FF; Thu, 16 Jul 2026 10:57:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91A9E6B00FE; Thu, 16 Jul 2026 10:57:38 -0400 (EDT)
+	id BDAAF6B0100; Thu, 16 Jul 2026 10:57:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8304E6B00FF; Thu, 16 Jul 2026 10:57:38 -0400 (EDT)
+	id AEF736B0101; Thu, 16 Jul 2026 10:57:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 549DC6B00FC
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:57:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C04781C0039
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:20:50 +0000 (UTC)
-X-FDA: 84994397460.20.EEE99F1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 11B6E4000C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:20:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ULJ8jTJL;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 87F126B00FF
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:57:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55C64A0188
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:42:37 +0000 (UTC)
+X-FDA: 84994754754.18.D36DBE0
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9A438C0003
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:42:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PJtGmJv0;
+	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784200849;
+	s=arc-20220608; t=1784209355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iohMITS/mr9qDiRkI+rGRUr759u+rXGlGlDEwpj+fhU=;
-	b=XkOTOdyaJNThhwbkCDEFVcrcGTdra6iOjkoh3WpSldYZugmfQKynGze8yrR5LPZ/ddE9h5
-	53sU0GL7qsMnEoWCl5iT0HG4WyB8R8ZYCcEWF0lXKOWg3bCOTs/JCzU71ukBoulGIhefTS
-	yat+jicy3Mt+De2YZldgJm1xcaXuJ8M=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MtdjGmLT0xt5rMnJR8PCtisC7e2MD/SvK2a/9gGKrV4=;
+	b=GDh1u5kPM7DxqZ5y3GoWz5MzNGjsmr8aU/KN8qk+HMG1q7FWL4Ru8aKZdbekxum7Ap7ZpY
+	Yd9EYozfIGm8g3Qr/pXZbDW4jHR3TteE5wjkxCc9zl3L17TjXGG/hbaLdM3CSV0tQ8I6D5
+	y5CEoZN3DjuSnCaGAUmZdDekKuNJhpA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ULJ8jTJL;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=PJtGmJv0;
+	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784200849;
-	b=3lF1wy8BThAxLUizrqMdpGGrsrC/YMs/MMInzOr0v2drOxVwhhHcqfO6pysdh2BMJ6nMzE
-	lONDTTdomoVws0bjKV9mKnDPg6g8XehFi/JQuk4cWiRBe/TFFFlz8iv/PHLqzNXbN75/Cj
-	EdZkJkfnNArDWDy8+r6oaUsLWIi7/xM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A1CA600AF;
-	Thu, 16 Jul 2026 11:20:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22731F00A3A;
-	Thu, 16 Jul 2026 11:20:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784200848;
-	bh=iohMITS/mr9qDiRkI+rGRUr759u+rXGlGlDEwpj+fhU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ULJ8jTJL674cLd5oJIqYzCX17btEY5HF91TfblR8ew2LU3w2GS1H8qpYVf+Ss+vYa
-	 A4kPjTsJPQcIq0ZhsQvwyxrUv1aoJE2X/5vZv4WNyPyDYs7quFjED/Aaw8NFKpB2TT
-	 7MWIIwG0eLp2UyYHic9Ix8F3s2XnZlUGX1584c/xpCOlkdUEeooD4LRHnoOQU6DLxR
-	 9pp7/6d6UvA8aaNkL8MqGEA9g+Tncqanp9i97hDdqwCABUrTWW/23hhjFLIW5uUbxT
-	 lAFu++ONA29JTBj6BAUInoCpeJa5B+uqqSiGLXUbRmmvbU62WXI6+bIAyzWPP59ka8
-	 J/5pwZXkY5Ofg==
-Message-ID: <0c278b69-3ecd-4ec3-b418-dea84e043732@kernel.org>
-Date: Thu, 16 Jul 2026 13:20:45 +0200
+	t=1784209355;
+	b=MO50lXHKDu24Wiuq45Qdgo2J5p9+PFokp3NvD2so17xfSTtvRJmf1R8Kl/0GioUvUnKM1Q
+	3HVnfajwqpw3+DB74wxspbhVcQhyIPM5PKCPcouER0wmmdFP6qViY3ds3y9NTQYaO9Ugh1
+	fQekLYzR3H9bOAxKCaIwhJE4PmYfwWw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=MtdjGmLT0xt5rMnJR8PCtisC7e2MD/SvK2a/9gGKrV4=; b=PJtGmJv0Ua40atV3ewnSERxsNR
+	1dsgVmixvVTNJz1outxIMgkjfOP245nFazjkLZwnup7oyutYHdLymiFBtbMrwqmrSRv5vTUn2qPxp
+	2MV9oeBGV/lI278BhyA+S+OHXsIePAGd4puaSGcdhwkAsuPgTCtIZYh7az9unRIJC8UCipZuayVdE
+	0bh0kTGFF7glT5557VBsTeRD9uCHDfNMlJDZ46Cu1P+qXMjF7zR3SUEeGjjPt49gDo7FqZnwH7Qc5
+	N2oH7EOvXZ4XCgxCtIpy5JnY98NgKIOxKFUzNmer9xA19Ev+jLnq6f1hqoPlVx6fSyvXYN2hMQnRi
+	BKvdGe0w==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wkMMB-003rWL-1G;
+	Thu, 16 Jul 2026 13:42:31 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 16 Jul 2026 06:42:18 -0700
+Subject: [PATCH v2] mm: memcg: initialize *locked in memcg1_oom_prepare()
+ stub
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: khugepaged: skip swap tests when swap is
- unavailable
-To: Dev Jain <dev.jain@arm.com>, Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260715133418.170386-1-jaeyeon.lee.dev@gmail.com>
- <4b6904b5-81f9-4e27-8ac5-5bd7e7174c5d@kernel.org>
- <6c474ce7-8f1d-4e85-8587-8a60983cec03@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <6c474ce7-8f1d-4e85-8587-8a60983cec03@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260716-memcg-oom-uninit-locked-v2-1-63631d878eb4@debian.org>
+X-B4-Tracking: v=1; b=H4sIALnfWGoC/4XNQQ6CMBBA0as0s2ZMW6SkrLyHYQHtABOlJS0SD
+ eHuRi7g9i/e3yFTYsrQiB0SbZw5BmiELgS4qQsjIXtoBGipjTTa4EyzGzHGGV+BA6/4jO5BHit
+ ytfXDcC2tgULAkmjg9ynf20LAxHmN6XOONvWr/81NocJOSlVXtjR9aW+eeu7CJaYR2uM4vlSZL
+ 2C/AAAA
+X-Change-ID: 20260626-memcg-oom-uninit-locked-5ec79dff4396
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>, cgroups@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ stable@vger.kernel.org, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ SeongJae Park <sj@kernel.org>, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2364; i=leitao@debian.org;
+ h=from:subject:message-id; bh=2nY+Iq6/8VzBLEajE4I0ru/SZDDX3gzUmQW+p4wy440=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqWN/Dp97T9AqgyJAixlK0EYy/uzxI1gYRwj0LV
+ T+tPYLJUJ6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaljfwwAKCRA1o5Of/Hh3
+ bdhuD/9RMDX/TQB0TIXan2SW1ILowW4i9xqF+dCqiN4JL4VHM4AEK47BfKlg6vXjmvHWsPVlsSI
+ gTZsT8p6yiT2O6WDrMh0vVmWLPfj8SygfKSFYxFNKh/hlx8vGSmVBn/RVxvSg8oF7XvsnGNWS1N
+ KQpyZH/jJaWwEHJGM9KYco1alSy3l3PJeJdbww6eKHCSbhB4pRK+UW0gduK6ECSRz9VWu85dXui
+ GsvqFzfHwqK9aTKwHFGiASNxebqEtZtAQA9xNsAAQE+w7EvtJFq/0lqSOqIL0/txcXttZVrlJKk
+ DBSykJyMMIWZ+X3ppCuILAlsx6M9Rh52ml9t79iOm00gRx9kPDsssU3Ny4Fu9/tdDzTtaGKwr/n
+ OUUlCDfPV7b+U+OCprmVNH6g51Y1jF0Ow+HmbhtmTrJvgg48oJeysUxw0UT3cyTQLn9lnVI/500
+ y/bRiHpdvEVP1s4C8N8ASPupuguJBxk5o4MHH8KUSgz5M+DQdoiZbBh120mxv0dBFmbtNcBbccm
+ AzZ35B2x4iRzuxf2wNdXHJYfcjqlufl/7yb2LSrhrQuzSYu1tYxm8/LEFVhNcHTamS+L1ykL7bd
+ WXyKRXGq1EapdIudlVAr9c4QQlMtpVRKhqIOiKBlrCQ0K5nWs46upe/0kAFyeMPDs0WC2CGPk4R
+ pw0o2O9iMAZEtzw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 11B6E4000C
-X-Stat-Signature: wsjm1h768a3dfxwt9buo1hb9to1ug64h
-X-HE-Tag: 1784200848-328335
-X-HE-Meta: U2FsdGVkX1+kuxJzU8/oSRBFsJqRzF6PjoC4A08s9qj6+HaDMCg4M65hFO0ZeYVF3g1LT7TrUsoDGsrkBdE5MRgSkOd0izGWeLFQYlqcKkwyNodeBOSeZa/ZX5X0ifjQwO82ndqsFpoWtQfeRR0sD7Nu+x1Hi0sAeUxQAYgLp4E4gEMDs3cHWKL7P3FlPUek30zTn/JyIgw5WnUU8mWuMDcGULjgE0zKcfb8TdYPuRXi1unZePPRFUfIvC7CggmK1ZQovZSud1mkS8NDpn2RK6rcdu96wi/dtZovLYu4+Qk8TuSh4arN9/lK9PfOxixqiWkpZfr8GyRrYKGKnFFw+K96RvZ2jQxddGPqWaKZ76L8h2PadVFM1J14D0fIQUHjWtaEllHukwNeKE6nf/Ygi2yCKZBafo0jSTYsIc7EQf3GaOvssBpakmj9+xPZVu4R5A7kt/s8Sc0rtAYICLQ3gkBJhd8odaWaOeOzaXCrkyhYs5zN4S2IENGVeVQFrU4J3Vtle+L5NiusBjUryVzvDgTJfJMx3k29M4q4m31Y+WYe7UJ5IGfRkFQXex4WPT8qTDSRdXnvLErp4DCtP5PhxamyJTdL+S/IN3SjJFEZuVqR5q7R8x1lRGbV3316P9rQVvM1ER4o/XczwTw0iXNr4khox1Eg9xz3ZZvi7mmaac2CH8TIvU1yng6y2UkUum24qSa9Xr8j89C4Tr7B018dc+n7Ct+6E7zmnzOcTaNLHuNgCkfUH/FI6LsmbqndomWR3T0UsI3jYWsUpM+hJ/nbfxf7fkeJYKBMD/RVEpw82VyiX7QLaOoe57IoHruHHO5HdQ+vGkOfQh9t+k0JNLVcdZbHS23utt1GVPRwueDXyPqT+nu+Z3+GrlKwReoJDGWOyr9XuIgg6PBcztpgC8k6mLdqBYypcs47kzZiL5YaNehrKwqSFYQVHuyAbPmWU80kY3DFWmJmKWaSQzUe4KH
- BPHUZahR
- XqzzAJFq0ZsGFY5xJb50zrsLOjJoAgfV1qa/T6mP/0AtREltSgOuZWpdouuFSxNFx8BAvhTMPxbQenLcEN5HsgbzMY4kCm9lDXnzvhCJ94GHDKPAYy5F9wqQJ4tuHBhl1rzb4aTcQYJZulPvvPRgQeG5N5oNltlKGmXnE4ysfvqQSW8hIVnIXweYEMLxlF9ueZ8IDtgA6hNQvBZ7h/zjsB+oITLN/4ZARLSQRYX6SanGR3Nx2/641f1dBnRTmY/+bAhwwX6DH3KAzrQ6cR6f7llUVC9vUUt3kKeKl+AmK/ccIx8PbFYYCODyUjwupi/lV6IAKnouxyygd8bKMfHCtlvftekwlhT1zwaaB
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9A438C0003
+X-Stat-Signature: h6qt4bb716bd7sz6jghbkekzfrwddqfm
+X-HE-Tag: 1784209355-15798
+X-HE-Meta: U2FsdGVkX1/yMj9+bPk+VrXLBj5zEudaIfMVdX5ZKWmnQ/bLW+4KatKIQEBYZHxsQ5y+ndaoX4L6PQe2raKT+LVApv1qQR0TyBAzoabe616wYRqFBSfF+auWsO4FxAoFejBhKdxIYRnEMLdl8G8kANbElcsFwWML9Fsh/VZaw8h5QuvkAlP+lE4BI7wE8CQFq+n7jzgKHPgDiUWD8h7M72wjSvH+Un02Ko9pfE9Xa71iVhCGPEiyAAzM/0ZxI9SH6Z3/VDYCEJvie2LlraS3qzyTgAkt9pzpUznx+wDo0FkJimnCbgPsYrhD/hUM5lnqpqmeLVM/Yre3eZK+pyB7Epz8zTmbzE5psWcssVHqyDsIoA4qAQ0P7LZybvwgiCogLroel3y/B1ux6MKuh1AMrXZCWyV31lAwaRlPGexnIxLTA3rOWRihTOXWkVqhHsj0caYszi8vHh63832DioWhRx7IlT2zDctwtm+5G7qz4EIiFG2etfu3/zW2IwmM7gA5rt5/eU5CVDoONPeIDqcw3ObDG+5tJhdbpwU5UBGjgVKyzBuV0R0C36A9jLYfWhnQsUtXwM7jVg4QXHaEY/AgVw8om2YLW6wix99uRa84+/Nm3Yu1osF4hAcmR6rOTRxljZDWtDu9bgxzlm0JG3NHOUOLickOA0lbyxUX6xDtEeyHihL7S/qGyEmpLM299gbc/fc5J/ICM9/p1KWtij05L+x8vW2f7FeHcfqDmZc704s614P2ElvCuGYqI6E16BRxoYOsxQUS4vxcdabrySDHE9cIg+NwI6QVN7lqoOI6c1ozct1fSQlo61ut2cKHObZ8Qr+SRoRs6OXh8X8/emoS9ro7gHUhHcsrVCLlgIMHLj2K+PvkYPd8WAH50H4Xe1vC9LoYvaY6A47bkGiqgnnMISpM1tYLARTC7X9If7i3CxaTNULxBN1Sp/zDnkL+gJuYR7obycBJeWZWuID/6aa
+ GQ1sgwpQ
+ K762uksqNMWx7LomO5o9QhlmnIL2OYYHCWSd2qq58sKDGFGHbPLfVNRSdbIOpXyccaVTuoglQQoGDSEKZQz0MQQX7F6ySY/O12PYyiDr0QtvwaggAOpA8USj/F9csA7HPAXFyRn/qzWkg7Au6ACfpFDSEYQUJWLlOkV7sc8snvBlP0XQtyg4b3zyorMxJvvvRUz+xWWlXGDlSDCkla+4FT1lkYLrmKwUw2y1tGLC6DERi0LxKx1lhQbPZcBAkLN2S/GkGFY+yMD80Ti00ku6/Py4yJfERq3KkyuPVYfcbwRUc81uzYz8q4Pnvle0VOOLvFRMsAPbS8Ug/Ped1skJhNOhufW9lGHrJ8EHjsfzYkXOR/yO0iQMrZ+zgtcYUuEHadrBbMfJ5Y7HS/A4x7TqgpQWUchsK+47UW4O0TCJHAFoLJ3u9r9zD2mYyQcN7v1UWottePVLf6XWizv/aMRbRy+dA/Sg4AITwtoKElAJoy8maxe8de2mOC1c2DTHhEtUkkjJ6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,77 +118,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/15/26 16:47, Dev Jain wrote:
-> 
-> 
-> On 15/07/26 7:39 pm, David Hildenbrand (Arm) wrote:
->> On 7/15/26 15:34, Jaeyeon Lee wrote:
->>> The collapse_swapin_single_pte and collapse_max_ptes_swap tests use
->>> MADV_PAGEOUT to swap out pages before verifying khugepaged collapse
->>> behavior. On systems without swap configured, MADV_PAGEOUT succeeds
->>> but the pages are not actually swapped out, so check_swap() returns
->>> false and the tests report a failure.
->>>
->>> These tests cannot run meaningfully without swap, so a missing swap
->>> area is an environment limitation rather than a test failure. Detect
->>> the absence of swap via /proc/swaps and skip the affected tests
->>> instead of failing them.
->>>
->>> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
->>> ---
->>>  tools/testing/selftests/mm/khugepaged.c | 25 +++++++++++++++++++++++++
->>>  1 file changed, 25 insertions(+)
->>>
->>> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
->>> index 10e8dedcb087..f9b4ebe733ce 100644
->>> --- a/tools/testing/selftests/mm/khugepaged.c
->>> +++ b/tools/testing/selftests/mm/khugepaged.c
->>> @@ -100,6 +100,22 @@ static void skip(const char *msg)
->>>  	exit_status = KSFT_SKIP;
->>>  }
->>>  
->>> +static bool swap_available(void)
->>> +{
->>> +	char buf[256];
->>> +	bool ret;
->>> +	FILE *fp = fopen("/proc/swaps", "r");
->>> +
->>> +	if (!fp)
->>> +		return false;
->>> +
->>> +	fgets(buf, sizeof(buf), fp);
->>> +	ret = !!fgets(buf, sizeof(buf), fp);
->>> +
->>> +	fclose(fp);
->>> +	return ret;
->>> +}
->>> +
->>
->> That doesn't mean that swapout will succeed.
->>
->> Take a look at cow.c where we use pagemap_is_swapped() after MADV_PAGEOUT.
-> 
-> That suffers from the reverse problem - in case of a real swap bug, cow.c
-> will skip the test and anyone running the test won't bother.
+mem_cgroup_oom() passes an uninitialized "locked" to memcg1_oom_prepare()
+and reads it back in memcg1_oom_finish():
 
-Yes, because there could be other reasons why MADV_PAGEOUT would not be
-successful (speculative page references, out of swap space).
+	bool locked, ret;
+	...
+	if (!memcg1_oom_prepare(memcg, &locked))
+		return false;
+	ret = mem_cgroup_out_of_memory(memcg, mask, order);
+	memcg1_oom_finish(memcg, locked);
 
-> 
-> I think this patch idea is reasonable, we need a way to say "swap definitely
-> won't succeed because there is no swap device, so skip" vs "swap failed,
-> need to dig in!" .
+This relies on memcg1_oom_prepare() setting *locked whenever it returns
+true.  The CONFIG_MEMCG_V1=y version does, but the stub used when
+CONFIG_MEMCG_V1=n returns true without touching *locked, so
+memcg1_oom_finish() consumes an uninitialized value.  On a memcg OOM this
+is reported by UBSAN:
 
-I would not pack a "let's test if swapping in the system even works" into a
-khugeapged test.
+  UBSAN: invalid-load in mm/memcontrol.c:1932:27
+  load of value 0 is not a valid value for type 'bool' (aka '_Bool')
 
-I think we can reasonably assume here "swap subsystem is not completely broken".
+Initialize *locked to false in the stub; with cgroup v1 compiled out
+there is no OOM lock to take.
 
-And if we want to check for that, have a separate test that stresses swapping,
-if available.
+Fixes: e93d4166b40a ("mm: memcg: put cgroup v1-specific code under a config option")
+Cc: stable@vger.kernel.org
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v2:
+- added the reviews and acks.
+- Link to v1: https://lore.kernel.org/r/20260626-memcg-oom-uninit-locked-v1-1-a00175936b39@debian.org
+---
+ mm/memcontrol-v1.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
--- 
-Cheers,
+diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+index d3ed5b93290fb..0f703f239c80f 100644
+--- a/mm/memcontrol-v1.h
++++ b/mm/memcontrol-v1.h
+@@ -101,7 +101,11 @@ static inline void memcg1_remove_from_trees(struct mem_cgroup *memcg) {}
+ static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg) {}
+ static inline void memcg1_css_offline(struct mem_cgroup *memcg) {}
+ 
+-static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked) { return true; }
++static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked)
++{
++	*locked = false;
++	return true;
++}
+ static inline void memcg1_oom_finish(struct mem_cgroup *memcg, bool locked) {}
+ static inline void memcg1_oom_recover(struct mem_cgroup *memcg) {}
+ 
 
-David
+---
+base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
+change-id: 20260626-memcg-oom-uninit-locked-5ec79dff4396
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
