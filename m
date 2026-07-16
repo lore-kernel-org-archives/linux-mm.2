@@ -4,140 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9650BC44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE29EC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:27:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 898816B0119; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
+	id B0F876B0125; Thu, 16 Jul 2026 11:27:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 870CD6B011B; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
+	id AE7BA6B0128; Thu, 16 Jul 2026 11:27:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 785E76B011F; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
+	id 9B0586B0129; Thu, 16 Jul 2026 11:27:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 499F96B0119
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:24:59 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5B351C010B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:24:58 +0000 (UTC)
-X-FDA: 84995012676.09.AC53FF0
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ECA5BA0008
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:24:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=N2ZubBt1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784215496;
+	by kanga.kvack.org (Postfix) with ESMTP id 758AB6B0125
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:27:37 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7EF181C00A9
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:58:47 +0000 (UTC)
+X-FDA: 84994644294.03.BBAF225
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010017.outbound.protection.outlook.com [52.101.69.17])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9194D140008
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:58:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=psHehe13;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=psHehe13;
+	spf=pass (imf26.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.69.17 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784206723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
-	b=kwMfPiCCLC71HmInWTOynExkOnOLuvaOlRyRanQN94O1RdRcSZBKJuQWrTQR2X5dUtf0lS
-	V7KHXUH7UKW3CJs9TOUdalQxC4tjUhUjMzkT1bX8IRV60C8lLLqAsuiZrFd9l6TSic3FXM
-	pxwe6MmX8VUdF2d6kINWDQD4kbtUxSI=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=N2ZubBt1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784215496;
-	b=Dg6dVwsnzuS1P6oo78j2YBv6uw0K81UvNDPPOfA3lJdMWBc26O8b59moRpEz/1Uh8BSUjo
-	EKDE7z9hfCzeqgvQR1ghcMEk9ubht4q/hG4Sk80R143OF6TOf9GOFxnQCLLZtH+7+w11Cl
-	tKMAExBlY1exVQ/wgo5IcDDH7M39wGo=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10ed63c0so30841cf.1
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:24:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784215496; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hfJv+14m9g2wG+pWo+4ZtqSrWi2oiWFpgyc6vgvQUzoeCOvDKCoymzk9bIx8Y63Ku1
-         qWc4T/bvswd1Dv6BdxiYvMaSjOxl8HvbIPYFpGtE6abf++MRPd4ZX8Jn9MFBTgYyhbyO
-         JkyPKszV47+V37Su7WHNaI1nVzlq6KH3hQKhbNVaKVrECafSVGJLckVoa/mIsKCgNmAi
-         e8qWkLUO7REUC45LZ9QL/X6Qj7DWxAnO0S0EslFaUeAQ2twVQ8x+FehGXnEzXLM0rX07
-         nbNcFJnIg+ZWxfR5Vu3iv3UljdyfUfh95nY+Pj0dV9wpMelwg0GKgY65IveBu+s8ceG1
-         1TEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
-        fh=b0EJS569PJpsdjQTJ/FSBnKYbz+TZKNL56cLf+wf1nM=;
-        b=e5gJ6pQOc91RVJh4RaNIaVQR2Ub24LD8sZM9f6w0NE6Z9r7/UFwzC4taXVYOv4bSMh
-         UPfnzcfnkE7MDSS7yJKhRnWIgx5919nOfK/LPB1hd2VPF5J86VjQIXnZkaPjREUfp3Xm
-         4iu2GyK5BaWPRQ05dFieQDu9hZ3lXMjeXQ9b0js1TSaNBymAavv9170s9dIYe9w6ArPr
-         6Fmsm+etjCxXUa8lCRMdvA6e0Ax8eIrJRsN5kO3UnOMOkGG9Q9r6fj/r5Qr6K73oOkXh
-         fveFCSMzogzevKY9nPsdag2c0qVPZRJy3spS4Jq7/racZMf2sHPGqFNyNma78GDw5Io4
-         /qRQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784215496; x=1784820296; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
-        b=N2ZubBt1ypMKIopNcqlEZaAs4Ftu7o94tSbFN3slo4df+k6vBunQBRL0b0/RksLFie
-         d9LHu9MpQWCqp5Ai6nfLP+4dfZO2WSgJkW3zyCK9Jdnqm6ocwRQBuMUpp8BOxIXZmtJV
-         jHNCPXFCvxuNMzi+EAp0y2ewt+6NTI6W+mim54Bcp298fgEfzqbOm2sPQY0Da+OCig33
-         qiv0RdKkYR2e7KGn8d+KBzCD3JJwLG+uHTvNmIqkL1kUE3Mp/Qnr8e6G8YwyVLmQDBj4
-         mHF8gUmOCwuNz/aW0uDFbkru/kMe5r9NjDq+T24AqE5PCOinBY/8FTeIjdc2ayHCAJWF
-         Ni/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784215496; x=1784820296;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xaD9c48fHMgNy3q+I/Rbm0Bfm/gP8epzzG1NNo6X0eA=;
-        b=aBg1pFYcHVitSCyxUbtOSnchKSHokxjbzDmNhEgrsj5KiJHnImLuZ+C9Bm3rLtVi6K
-         9SYEk9TuzI00HW2qsG1JDkw6mvj2lrpWmaqb6sElcHUW8aSOodwOEAWC+mRckBuixe0T
-         Mp0T6+tQ13UrWeu1RQcQlQOKoKrbTKtL1oHK71VPYHR/xbzN8AfiXPmwKkoBFciYnuoP
-         yllZc+Zdcid+eE90mQ/ORtNawTiCkDvttvCX0NgPc+1GkSDYhQFIMWlYJm0ZrY3Qdn+V
-         rFyEC+MeAkfr5FuFMBmsjO3dY/YgKdhofnvJi8F51qvjZUifD4u3EvUxCwa9Zu3N4Pnx
-         aNmw==
-X-Forwarded-Encrypted: i=1; AHgh+RobdxIym8X6ghiVEGzNyhET+4r4qPKpZ8iQ60cmJH61F+QkfQCDp2KrxdNxyXgH+229hOmXkT/tyg==@kvack.org
-X-Gm-Message-State: AOJu0Yzm7/xZYJzJaNehPOl64jo/ZfujY99CKcGiNLIC0XwMW+AvP1Tz
-	1cTjY1lefE5OBaVs5MCTXbdLNQSbzLt0min7Yb2Wx3dInA+M3YAHqJuvBPiLVHywOvqC5TWv8Aa
-	SiuaFz8BiiXHJSeaCVQI/TVY625zbYS1cYvsDvNgzLRRp1dX+Okq2KO6mOAo=
-X-Gm-Gg: AfdE7cmOKSYjRUEwoMlfEaOh6N/i5t8ACaxptgkWi6bauVGZ/WMuakvveaKJhbLAe1I
-	v9ra60gzWUftSugflX7H0P0heDU4wd7m3ES0PiZxcVzoNk+vY6iPI+KOuZi/afAWCO3K4Efkay4
-	4O9xe0J2C6t0L4VTaeocZXsJs8y6/SDKzSr+5nQlvgY3tE/E9a0nbq39QMgNuC/Ej/HRkICASW2
-	t+EG1oclbxvVLCe5uAUkjeZMriLBlI2g0Ho35R+NwvBCMFUs5jx3ENXtFnzHhUXlyVPw/cu/OGQ
-	NI+NBpiFDgzRbtM=
-X-Received: by 2002:a05:622a:4d95:b0:51b:fd21:c077 with SMTP id
- d75a77b69052e-51fa50ac9f9mr8409571cf.21.1784215495436; Thu, 16 Jul 2026
- 08:24:55 -0700 (PDT)
+	bh=oZV/TlEPUcCZjtQEfzTsrUOXphHuDJRHG0HWd09xWIg=;
+	b=xe1LMbL4Iw5MeJ2uQnU9WmJIsVKToCadrHFkTQiVmR7z8DLvAfYV+GKgPUNE49TgUyVqdd
+	SnM5Ob7qSRU8nQRA4A57P0d9eyidCwrgcDfzAhmFCYMobSu4O9HLYHyV0ok6g23AE/jyWP
+	QsVLCunonmQwcLPbU/th+H9dhWreO9g=
+ARC-Seal: i=3; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784206723;
+	b=EmXhYJDKvlYzWdW1y4qk9RX28NAG3ESh0PjHYLCV4u2keP/3KK2wxWelbeqxZHhM76LsXf
+	0w4AhlkhtHcSbBJfxUkSEX4atZjnr+QtQ/J9OQKmITKMYFAu1cC6O0VMZyUhPigJTXW5CE
+	bgiXHUwBZ5akfgoRVpT1aZMQx+SdwIA=
+ARC-Authentication-Results: i=3;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=psHehe13;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=psHehe13;
+	spf=pass (imf26.hostedemail.com: domain of Usama.Anjum@arm.com designates 52.101.69.17 as permitted sender) smtp.mailfrom=Usama.Anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=UFEyIma2yavEggHLvpwcaPg0draNF1IYJU84qV60fL792/fIfv8vNRbvH5XYxzyOMmO+/jJcZOCbZMddbSWmfOnDVM7NG3Vu80ApRPt7NynuXDTArJxBsNIBn3hR9Ej/9CYuSQVAO8zTsqdAak849HAm0vcqenGVaAlm+tTyRYxi9wOCcJqqrXtquH76k7ab2dzXDdieA6mKfYK5nEKe+iv0TLoTpkMo03NFCP8Mm3LBAOr+ci35W4h91KjvVVpYu1wkaFBEjeTzAjwxOeswQpnjWVk8WktVcWtdBYXUy4+S68Boplnn89YTlmpuF8IG04YeF11nBskYJGIWHuxiWQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oZV/TlEPUcCZjtQEfzTsrUOXphHuDJRHG0HWd09xWIg=;
+ b=QJsIBPMOfV8imIo/AaaAKDl+Zs5abps7PJWN0FpbLj6M42raeuV+yHRnxxgJ6hqYG8/MdFVdU5lc38PF10l1vjfUMaixxSUFu47nFUAK3TQ5SuSKoFhSf8b+40rA5OOwcpjujT2FyGRr5DnKSeRR34GvcB63K4edbBWIavLlcCto9fd+3Tm2l2BbpLy1z3B2oARHRtNM4onxXCWdvJaOMY0swYtkv8a/42j5ZjJBxpC0Hwr42DM5wiRPFwee7V/vMOx3YBjHpwgOunI9gqKcu+zJMUnBnqgz8GhvwjEH4agKNeSD5geL6P1kZqkQSWHGXt6wFRmE9+qKUSw8hMmfGA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=shutemov.name smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oZV/TlEPUcCZjtQEfzTsrUOXphHuDJRHG0HWd09xWIg=;
+ b=psHehe13yoGtPtGL7NQaKYv70nS9eUQ4DhJQwJtjae3tWwaiD3N1SV15+b7Xrg34BglrKyfX0jE63dSpo1EeQedCklHNSI3HiJkqj4eOWKRbVtzWY54uYkMZHUTLccQ0+O++NEXt2d+blRp3HOvAJm0+jJ72F0r2Av1cQ6T00g0=
+Received: from AM0PR02CA0161.eurprd02.prod.outlook.com (2603:10a6:20b:28d::28)
+ by GV1PR08MB8237.eurprd08.prod.outlook.com (2603:10a6:150:5d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.9; Thu, 16 Jul
+ 2026 12:58:35 +0000
+Received: from AMS0EPF0000019D.eurprd05.prod.outlook.com
+ (2603:10a6:20b:28d:cafe::90) by AM0PR02CA0161.outlook.office365.com
+ (2603:10a6:20b:28d::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.12 via Frontend Transport; Thu,
+ 16 Jul 2026 12:58:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AMS0EPF0000019D.mail.protection.outlook.com (10.167.16.249) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.5
+ via Frontend Transport; Thu, 16 Jul 2026 12:58:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cELjA9+GME57Gl9pttI1xyArZHB51/denr/a8e5ZIE06lTO5711vgNC5PeRBRxBxB6lH3N1vJzIjNZJLPPiAFgJO1vHBaD23OhN72590WmDTf/VjQ2c7xf/2oM2jhzrv3TpXr0NIsvYKQHraNc4OlvUsAQp/3yBkDN9ZB1NHwkgzq0tCILraROe3407+DlBC1qA84YGd32LNXHAXWIDiRuHaZhXc1WIqyM7+urWW8G2icm10A1WqrawjZrp9sb+pd6zAjbMZhABEgwPi8PQPuOVhh8pMxmdTwT1IU/k7XifPrTcJT2dKs4XRy8cvNS02AIc+kVJVRMshCbixlzbWIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oZV/TlEPUcCZjtQEfzTsrUOXphHuDJRHG0HWd09xWIg=;
+ b=V4/wm0Pa2Mj9E/bVm+t55KGi3rt93dE8ecOH0TKm47Hod1GoJyECx0lKXDtYDr4eXbckX9XPRR/w5+1WMdYzPdaFQ2qPqDgL6yMxddYBLT8oK4QgculX1Rg1QGUPdxzIeTodXFtxzkHuVkwKnSVHvKDaYLyyveDFppCEHZKne3ivm+8qNGZ73i/G6enj4YsUJKdnhE719K1eqNIMRJv3DRM3Y1zFVdCIBTaXIxcoL1XTqosQIn/Do9i6TruQRYzO5WsfSOQz1d1ZSGkdm5W5bHEUPCEB9pRsltfIrZufMMMEXkQa6nXDk6gQDIUUpi6JubdV0+xXxFjSClSsAmrX6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oZV/TlEPUcCZjtQEfzTsrUOXphHuDJRHG0HWd09xWIg=;
+ b=psHehe13yoGtPtGL7NQaKYv70nS9eUQ4DhJQwJtjae3tWwaiD3N1SV15+b7Xrg34BglrKyfX0jE63dSpo1EeQedCklHNSI3HiJkqj4eOWKRbVtzWY54uYkMZHUTLccQ0+O++NEXt2d+blRp3HOvAJm0+jJ72F0r2Av1cQ6T00g0=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com (2603:10a6:803:80::16)
+ by DB4PR08MB8176.eurprd08.prod.outlook.com (2603:10a6:10:380::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Thu, 16 Jul
+ 2026 12:57:29 +0000
+Received: from VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4]) by VI1PR08MB3421.eurprd08.prod.outlook.com
+ ([fe80::e079:6bd:fbe0:89b4%3]) with mapi id 15.21.0202.018; Thu, 16 Jul 2026
+ 12:57:29 +0000
+Message-ID: <17fa8583-07c9-4a0d-b428-102bd169ee8f@arm.com>
+Date: Thu, 16 Jul 2026 13:57:27 +0100
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@arm.com, peterx@redhat.com, liam@infradead.org,
+ ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
+ david@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ zenghui.yu@linux.dev, shuah@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 1/2] fs/proc/task_mmu: fix PAGEMAP_SCAN written state
+ for PMD holes
+To: Kiryl Shutsemau <kirill@shutemov.name>, akpm@linux-foundation.org
+References: <20260715144234.442721-1-kirill@shutemov.name>
+ <20260715144234.442721-2-kirill@shutemov.name>
+From: Muhammad Usama Anjum <usama.anjum@arm.com>
+Content-Language: en-US
+In-Reply-To: <20260715144234.442721-2-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0192.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:311::20) To VI1PR08MB3421.eurprd08.prod.outlook.com
+ (2603:10a6:803:80::16)
 MIME-Version: 1.0
-References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
- <20260715-b4-objext_split-v1-1-9a49c4ccf4c3@kernel.org> <CAJuCfpHgMwM7SK-sanGpEyCxCi-T+gDqFJHnV_AMt=S-x5oynw@mail.gmail.com>
- <ab9782bf-d3dd-4cb5-ae66-127b3a16330b@kernel.org>
-In-Reply-To: <ab9782bf-d3dd-4cb5-ae66-127b3a16330b@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 16 Jul 2026 08:24:43 -0700
-X-Gm-Features: AUfX_myqpLnbRL2quNm_tjL_Hd-IYL14KeopYjkYUcXz5awHSzMzA6UH-PT2010
-Message-ID: <CAJuCfpG3SWhrow=wScgsFe5orhKz8Djf8MHvFBH+T7uTG+AUJQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 01/12] mm/slab: skip kfence objects in allocation profiling
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-TrafficTypeDiagnostic:
+	VI1PR08MB3421:EE_|DB4PR08MB8176:EE_|AMS0EPF0000019D:EE_|GV1PR08MB8237:EE_
+X-MS-Office365-Filtering-Correlation-Id: 49bea733-2a66-4a6f-08ff-08dee339f239
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|18002099003|22082099003|4143699003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info-Original:
+ uT5PBPnP1Pji13SRRMO4aP9kyel87bnxLLXIlhEgb2xgpZZBF5R+DhgRZ00B2ytb4J9b860tDxRjWKL4pFUJnRS+Uqr6FDuNr5AF8qB14UvpSsyM3zHW7ma8Th8J96P7m47pJX295NFTZigVNr7hXrYjImrN/wv5JvUfKTnFhdQIWSPoMU4hO5BSlZwC8vu4OreNRX/lfkHrXV/ZYaT06jWyYw8XGXD2vgmur5u25sOLec16cjLgNyRGha/gd5jl8qr/1c3Onz9kU7DF5dDDTuRO5ZcMANB1J+0Ss0r/ANIQ/0w2U7tvtYICZXQFTt2k3nd7pU1vIqxEa05saqtyQ4HTa7kUqtarcFPpZ7tjWnvJD/zwKgRG8BOpErOMJrZk3cXh9/blFtGLCfmgeFmeKg6aGdMz6x/4BWPBWyoBgHXif5T0H6N2SIu4LghdARjpanvWXWd9y5PLTgbUvpaF8Pa+MPO14XYTd8N0BhX1Gy5y63h3dtrMmhLMcaqjTVZ4Ji3gMn9S7U5ZKMfEhZ35Yeo6RBXRw1X4yn/98c59uhk3rTl8OL7rRKCOWIi9J25VtbK0L1qq7nITNY3fA/moDVuZpbiYeJrgCbehsSN+77E=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB3421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ Knk9YwCwW8xruUieRHegi2axBAFhSaSkiWjp613zwOhx+aMkw1nYth0cq8Ov02nwQLVlkLDehB2kywulxAa2Ir14n9G+DqmHMkueWrkvMLkuZvwRm60jrmQbGFfWCJ2U/Z36+Jbs2D8Hd6v+9C2s20Thg+lPpCIv3QrWcr3Jz+tpMTcWUh6RvX9g3WnvdL4F4v/FUUuBiuM/h8nMfATJLYjWLDTLITvYTlaOY0x/kneQp73bAQ7XAZR8NAOF9234kiJ/r8VJ+UCmGCctBzkmruYzAmA9wz+JJMkjq1lncSHEvaMkIQUnw8tiJxbQswkwA30MguHn5f3ibM6/fbM2Bg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR08MB8176
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AMS0EPF0000019D.eurprd05.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	df632075-ef11-43af-590e-08dee339cac3
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|82310400026|376014|14060799003|35042699022|7416014|1800799024|18002099003|22082099003|4143699003|56012099006|11063799006|10067099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	M59ctEyB9psLEhk5QCq2nX4FoSNQffABx8TGHuMobG+C71b32lkFSY0b/XxBXQ7sVTLPmManjDeGzgZf+T2BBh3FEGJOiECEupJ1lM8pskC0DGL3BbSsWFgP/efG2K0/InnnwCsRJ6VopYeyh8MqbZ96kmVmBuLhygfrncnFS+d4b+RXOD+ueg5hjr6T2UMyZMdJNFzMvyXm3O689fOTicFf+w1+M5QCLTfIsFGVDZ6HFqFv+aS20UGZ/kCdIC9gXH3yrqxKcSDCzYXTFvqlD+3F/9TAxzHtKuv5QwJVXIB9zfSQwI+x5M5PCceF/EuIbbgVWPLrW7zKvPE6sC2tvkCdlgH31eU1Mx+ck7Z16FyXwCv4Ie/ReEpQOGuOejuC7ip+s5ogVFnAbyC3o4/sivI+ZMYVPtu+iKz6+aPYATUdiXa7Ln6LqfRh0TOJQwT64EcGGgqJeGOIo2JsUzYjgCjNrQaDm6FST2gKk1A/lkU9rGGDJB4PZ2rdfBbqphxdIs/oagK/ps5ZjehKvKGWUgXj7MmgLAI9xiXtDSVOfJr2blWxNmM/z5OLew9kn/1EmKKDC9xSS4rTsVoFzBvrjs9YzN+/cNG6TBWnEzTU4GPNA+Xv/cFwfEDZ1nKD4DCyfVnDKb148ESloHM2i2PGsA==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(82310400026)(376014)(14060799003)(35042699022)(7416014)(1800799024)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006)(10067099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	bJtlGd/KqpzMlCP3bc0I1I4gKLas+iJjLdLFzzTHBj0XN0eDFXUau00W8vBitU+VoPeYhiKMJXuufSMdyTm6WUL/dzX5OywF3VbVEW88a3x2X/FIF8XuvpPgMNtGSfH3GO56R0mG1I1nE5an7o2QI4Fe+htEEn8YTfV0UMdsZdqJ3Zzc+3iXs4ESI1rb/uurydWY/kSvkrFgM8A/yoMgX9Kbak+BnkujUlScgpE+fuR0s++e0rXth5DBUYxOPF8FUJB4Z2OWezTUZxjYqHUU17vG7eFpu02YgHHV5bYAtMYBFuNQAUIuqqUuME1xbCZBhAI/+uuepJ/Eu5rGJg1YZCOksTCx5WHXIXqqwHUQOyxJjfRxWpTeZAP0c3GA55iMLWSlJFDx+fXxm/1+Rj1piCmvC2Rd6SBiHxLRCe8e98XhH0AuZHeIdyh0CKoleWVU
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 12:58:34.8648
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49bea733-2a66-4a6f-08ff-08dee339f239
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF0000019D.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB8237
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: ECA5BA0008
-X-Stat-Signature: 6n7b5ik5pegkdeimx7onz48pypc5nzef
-X-HE-Tag: 1784215496-201674
-X-HE-Meta: U2FsdGVkX19negH5QbXoj3ZWuVrIDO5xhRWTPwCQrw2x9qJ2bg7b/WrdoprAjd1yeLkF3FOnHW/Vl/xNcMfajUFyy4XLpQpOKA884sZEe91nHWftLiXhVfXja/aDWieeWsxooZGi7n+oDREfxVea/DjOeOiWDgtZqomJUljOmaVcWj0pOAgtoIopkueVUI6+mN87hoLOuOPAdtSNiuzD3UqfZ4VrRhcRC7adOBivWuEqaeUiHnMooqqeEzce4crrpqASBQKmu2UUDgxXee1wf7hljS0LAKjZgLh+v98eJNbkupPbFHY+JpZkFPKQR2jdJOQqkFc5ULMqSqfEnicLnq4yfVch768MizjVEQTaS5X4yO0mZmlmIgypL0P1meXAEIz4v0TLW6DEqvgBs9QoUwNv+O7V44Vk7EQ1GKqQvG9jku5pIJovM/pTyTfzZqfuIMJ4PCGzyghXHfO+FJTzIZsndzxcB+Dh9aALJM7P2zTc6/ZvtEdnMiol8Mcu3roxDXp1Om/42wlNGehzPWmvgEQbCqDmlKo9xt0ys12GfBj3ZDO2rf6gaYH3j5ZuyjQoGlQo9mCunwRuxtX1lm0boso+/4SLhfiuxG8sri0ce/92Y2wMy2cCRQ5BoDnXp+uabZrEntD/dY2p9ZqzUvblULjwz9IgVk4OnTTtDjfYPKwbQI1BMKIhss3VXpMGcRt0E0979f3YA5DV5BTwIx6rQz4+zeaN1HGAixVMvUHIXcA0va0YT3mV6yA269ncylkbn1HpBLuu6wHNA9K0o8TnjqCqPuXuB/mFMCG9qEJ5q1dZlEy7umLrG4VKdsyLA5YZkd6w7n3K81z+3NXki883XyHd6pdnguSpdEq2OVyjopUomjGkIVQmDxEcUYYMrYDEBx1+9XDSjYqoF0PfJm5qICE40qew1a5JP7zzH8KlCBbjvUK903v6Zt8WrtfNI0ruBdiW+HbpakELGW4QgWz
- oTRNsvJZ
- nxN6Wn6g+wASNvPcD9zFgGTOZQPvabqtXDMSfUbZRStS+pjxDA8p1oZjwRkjAcc+nBpjpaPbXXz3xSz0K27aa8uoK4ddo2y8A7c+pYTNC0hh6S5GeVyRKm4l9EsMXbU+Tm9fXvpGJHZmqutq48/u+wCePu4WCjkFk8srQFhB3IbfjAHMXT6TQZQ0F9cg3cfJ6sHfcMLRxNvmYxwNnx0hkDxdPjFTDC1C0TzFZXolxbqzNOnf5khA2IGAip5XFscpfgmnVnoRoUa+2XmM=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9194D140008
+X-Stat-Signature: dg89ks6j1yic4iqpix8otssa5dxhyym5
+X-HE-Tag: 1784206723-265025
+X-HE-Meta: U2FsdGVkX19e7vqPAq72QYkV/ish7ZjjLVvuLp7IRT1IQn3JCDJQtDyuOaqrnId1wjc+PRWkuUyXmV2B1DRUgnSRADdAdoQlCSUpLhmVMUBunhiboG3RqDYjbiIITUIi3Y2Ynsnjf3DjtoqWwNwk98kAUby6xQaZnDhSJtrz8WWonc8KMy0a2hxthXTZy2BGfIHYt/KDBfri2Jr9UMe0I9uyto/ASdel3SXSFzhJFXsAGi5SeXwAS42IGOK8ENGxgWQfaLiGTCWrSeWzm8XjK74lmBe+0FRCPbmiZaqzzvNlBs7bvPps7HmGVlStffNaNy+nusDYR+EXHWCQwaLAskgRzwuks7pAiECt9M9foS9vIfrkGnEDEiDG6I7f6wyHYKj8dhhAPlrrrW4CVlJaZG6YNV9E+cCaDpqxN4Cuv9ytg+0n8G0FAJJ/BoDlZwNCGbWH/NB0pgSqK5GHpF+vKgsupp0qBNd8SzZLonQ5uf2lEXkzvsIWECVYhwSge8OZyZfWZ0TdsrJbuiZVeGwDrmy9JbzOQmEX/pdlZSXh9mGJ6eXBGmtGl3XvxdpDirhjoPNPpGbUL1DU6DI5r/4iq0geoTo+qA/x/dSOM68pCNN3Em8+T5WpAyIm049h/rJIIcrDpXu8+cmySM7C3rtsvTlqPBkLbTm3SRZ9cz0/FSCtb/vpx02NABf8Pn6NsKGDxVwbl8yd2RPhqx+PrAQ9eMJeuQ0U6pymguV6/Tet+SpgjcT9upV+BruxF1gELsQkLl62sG0JWzzXMUSHhZvXnUquYxG8ZNecVBUqLYI0KVf7jQW30kenhh//kRlOJuRm6DsUE2gly8XKNtz6jiOnM4CFwaQURd+Qai/ehmwo6rBN3cMLgpzw868dxdAWFDFfCWIt5+p5AcradZpJD2wnjPYQpNC9O7FqVuvberF3ZVQ6q5Ht3zZ7ZNR4CMdeph4rNgZtWIm1uJfnjjhQRk/
+ Ty83XY4T
+ oSepfBWZGb2IMQr35fvr27JcEoNTSMPhF3PGGgcm+gHvZ40uaLCbBGVYSAFmBTZoInc/yEtsT5AKyluBdqgtHPK8n7x48C28cwIVvoCvtn+hIifVppCxCVPaweqV1ASyiGbg+x/X3e8uPD78T2ye2Ok048YDcS+0DTl5CIUma0RKr74cyiyxMeXSBIiaaAb2XS0GG9LoqIytkfDXuesvpclGchxYLqx0ApujLgOoTWWBuOajVlY8sAA5mtZPxuJPVknijYdY3Z6zuic+bepZ9JjTvg2YhnRECWV38wpdKIhIm9YDetycmXtoL/n5ZfblXMvJBfqy0Q+RBc2HT084cs0n5irtVbsJJyFJxop+sKYWBtuWUmWjl5RgnN/1u9q9Obj79cZZmhKtzwHGiGZqLNkeaMANMWlN3iTDu3QXAy5thMb/5MKNDkJdQBn9DOhqaC7Ni2Fx8+eP25UtAJ8EJ5a5jZ/rF/UeVsB4y2GAFepSkoR8boPnjKwHAt2r12rmCdC0HLs9VoTfne9c8YquJFceNAFebmD6dit1J8ekKuZKZOCJx4BV6Ik9xUl/sOJkoGoi/nxT4CfK/8CO5FoTGXqi7rfkQpku4MK7XFhr98t+eaLCRjLrhySJRz9hxthZJYyqYBTlEoT5J1erl6sDY1vfOwovfr+LKWBMIzzQr33UW2BRw8V2uI/XpAHCD/7c7MRMHwjxZRaVgct1ENLrGYJxHeHto030F7oSD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,111 +195,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 2:11=E2=80=AFAM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
->
-> On 7/15/26 18:02, Suren Baghdasaryan wrote:
-> > On Wed, Jul 15, 2026 at 3:10=E2=80=AFAM Vlastimil Babka (SUSE)
-> > <vbabka@kernel.org> wrote:
-> >>
-> >> struct kfence_metadata only has obj_exts with CONFIG_MEMCG.
-> >
-> > I don't quite understand this statement. obj_exts are allocated when
-> > either CONFIG_MEMCG or CONFIG_MEM_ALLOC_PROFILING is enabled.
->
-> See in mm/kfence/kfence.h
->
-> struct kfence_metadata {
-> ...
-> #ifdef CONFIG_MEMCG
->         struct slabobj_ext obj_exts;
-> #endif
-> ...
->
-> then in mm/kfence/core.c kfence_init_pool()
->
-> #ifdef CONFIG_MEMCG
->                 struct slab *slab =3D page_slab(page);
->                 slab->obj_exts =3D (unsigned long)&kfence_metadata_init[i=
- / 2 - 1].obj_exts |
->                                  MEMCG_DATA_OBJEXTS;
-> #endif
->
-> So the slab kfence fakes only has this pre-inited obj_exts
-> with CONFIG_MEMCG.
->
-> What happens if we run memalloc profiling without MEMCG and this
-> fake slab doesn't have a pre-assigned obj_exts? I guess
-> __alloc_tagging_slab_alloc_hook() will allocate it via
-> prepare_slab_obj_exts_hook().
->
-> But it's something that was done consciously and probably
-> just accidentally works.
+On 15/07/2026 3:42 pm, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> PAGEMAP_SCAN reports an unpopulated PTE in a uffd-wp VMA as written, but
+> a range with no page table at all -- a PMD hole -- is skipped:
+> pagemap_scan_pte_hole() tests p->cur_vma_category, which never carries
+> PAGE_IS_WRITTEN, so the hole is neither reported nor (under
+> PM_SCAN_WP_MATCHING) armed.
+> 
+> In a uffd-wp VMA, WP_UNPOPULATED installs uffd-wp markers when protecting
+> a range, allocating page tables as needed, so an unpopulated slot is
+> treated as written -- see the pte_none() handling in
+> pagemap_page_category(). A missing marker therefore means the range was
+> zapped, e.g. via MADV_DONTNEED. This applies to anon and shmem VMAs.
+> 
+> An anonymous THP is write-protected in place as a huge PMD, so a
+> full-PMD MADV_DONTNEED clears it to pmd_none -- a hole with no page table
+> -- and pagemap_scan_pte_hole() misses it. For a MAP_PRIVATE|MAP_ANON
+> mapping MADV_DONTNEED has fill-with-zeros semantics, so a write-tracking
+> checkpoint/migration tool (e.g. CRIU) treats the range as unchanged and
+> keeps its previous contents; after restore or live migration the process
+> reads stale data instead of zeroes -- data corruption.
+> 
+> Report a hole in a non-hugetlb uffd-wp VMA as written, matching the
+> pte_none handling in pagemap_page_category(); the existing
+> PM_SCAN_WP_MATCHING path then arms it via uffd_wp_range().
+> 
+> hugetlb is excluded: pagemap_hugetlb_category() reports an empty hugetlb
+> entry (huge_pte_none) as not-written, unlike pagemap_page_category(),
+> which reports pte_none as written. pagemap_scan_pte_hole() fires for a
+> hugetlb slot only when it has no page table; keeping that not-written
+> matches how an allocated-but-empty hugetlb entry reads, so the hole and
+> the empty-entry cases agree within the VMA.
+> 
+> Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260707151349.92143-1-kirill@shutemov.name
+> Fixes: 2bad466cc9d9 ("mm/uffd: UFFD_FEATURE_WP_UNPOPULATED")
+> Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-fable-5
+Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-Ok, I see. Maybe you can expand this description to explain the
-details more thoroughly? This whole kfence.obj_exts deal is not very
-intuitive.
-
->
-> >> If it's
-> >> enabled, it does also work for allocation profiling, but there's littl=
-e
-> >> value recording tags for KFENCE objects.
-> >
-> > Unless we are leaking them, right?
->
-> Well if there are leaks in a particular callsite, we should see that from=
- all
-> the allocations that don't end up in kfence (as kfence allocations are ra=
-re).
-> So we are very unlikely to miss a leak due to this.
-
-Ok, makes sense. Thanks for the explanation!
-
->
-> >> Furthermore it would complicate
-> >> the upcoming changes, so just skip them in the slab hooks.
-> >
-> > Ok, I can understand that. If we do this, we should document that
-> > kfence objects are no longer tracked.
-> >
-> >>
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> ---
-> >>  mm/slub.c | 6 ++++++
-> >>  1 file changed, 6 insertions(+)
-> >>
-> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> index 0337e60db5ac..a4be70d080fb 100644
-> >> --- a/mm/slub.c
-> >> +++ b/mm/slub.c
-> >> @@ -2352,6 +2352,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cach=
-e *s, void *object, gfp_t flags,
-> >>         if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
-> >>                 return;
-> >>
-> >> +       if (is_kfence_address(object))
-> >> +               return;
-> >> +
-> >>         slab =3D virt_to_slab(object);
-> >>         obj_exts =3D prepare_slab_obj_exts_hook(s, slab, flags, alloc_=
-flags, object);
-> >>         /*
-> >> @@ -2399,6 +2402,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache=
- *s, struct slab *slab, void **p
-> >>         for (i =3D 0; i < objects; i++) {
-> >>                 unsigned int off =3D obj_to_index(s, slab, p[i]);
-> >>
-> >> +               if (is_kfence_address(p[i]))
-> >> +                       continue;
-> >> +
-> >>                 alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref,=
- s->size);
-> >>         }
-> >>         put_slab_obj_exts(obj_exts);
-> >>
-> >> --
-> >> 2.55.0
-> >>
->
 
