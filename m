@@ -4,130 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EAA9C44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 16:56:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2F19C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 16:58:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A3656B010D; Thu, 16 Jul 2026 12:56:04 -0400 (EDT)
+	id 929A76B010B; Thu, 16 Jul 2026 12:58:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 554516B010E; Thu, 16 Jul 2026 12:56:04 -0400 (EDT)
+	id 8DACC6B010E; Thu, 16 Jul 2026 12:58:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 444B86B010F; Thu, 16 Jul 2026 12:56:04 -0400 (EDT)
+	id 7A4C56B010F; Thu, 16 Jul 2026 12:58:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A1D36B010D
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:56:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87EE6401CD
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 16:56:03 +0000 (UTC)
-X-FDA: 84995242206.19.E784FA5
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf04.hostedemail.com (Postfix) with ESMTP id ADA1240008
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 16:56:01 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="tfe0dR/n";
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BDA96B010B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:58:07 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B06A0120257
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 16:58:06 +0000 (UTC)
+X-FDA: 84995247372.29.2494A5B
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C3F9D140008
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 16:58:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NzoLBRtD;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784220961;
+	s=arc-20220608; t=1784221085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=08EQSxLVtNW+I2h2PWuzuRsz9aErjHxxHAiZ5/B9N7Y=;
-	b=yYZ6pW3hov3cZN3EwuBWSbBoCbMyWPQZVTpsjsK19ZcXPCr5DY3DOYkzunSPPmCmZ0xuK5
-	WyNvdm+LDTyciJItsevlDO9XS4rAYroEZcMWrNXkJkJzc3chEfRrD3q5GxGa6BctrMN0lB
-	Wiq5XOX0wXUQ+aqDTnEIdJxls3TaolQ=
+	bh=jC4p4Ne6/jLWSLskeAq6PhK3LdwKo4FxILlpTyonIAI=;
+	b=1LnPuftR/h5Qi81alQ1sPap19fVVLGWD4rcaptQjmws7+B4aozNK4rVQxC88JGXzsPOWzM
+	w549LUz5XW80VJOGY9Oo9wc5fzD9e/s8im4qDA/cWpIobguHsfq/JrTK9ledKhw5q53S6A
+	PL0bopzQxkzbQzw7fLFRFYfRm9vmjRE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="tfe0dR/n";
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NzoLBRtD;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784220961;
-	b=8KDEI2bPLYKMMdLWeMBZ14Ua4GFFBmjbWDEgwcAzLQT7Toj3CPM+j72us1KZsALtWo109P
-	w2nG9DoC6XjmcL7dNdYECdHDe2KsD/cBlrLutcFeH92CWbZGAuofSgABpkLK2P+L2FK8/T
-	KKHPmd5iQkWHEKnqZE8ucNOMiSlwNNQ=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92e5c92c389so382589185a.3
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 09:56:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784220961; x=1784825761; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=08EQSxLVtNW+I2h2PWuzuRsz9aErjHxxHAiZ5/B9N7Y=;
-        b=tfe0dR/njQeNejsQIj9LA/HjRJ/NfnykhtLKvJh5Ttv/KwWR3W7sIeOhZxth5t4g9G
-         c11HM7YOe2r1yhsuDml8OmljpJqj91YWxiAn/y0XuvysGV2V5y41AZs27YSB4VJ/pSCx
-         V9Et/vhXNWw6iPAYLkk7KTVSWdyvJOfO/hYRcaScMYFd1iUcPMJh2yO8zMKjttUe+Hbm
-         zwvwWUjUZFj7znY/u7M4ZsHxBAwMbWZklWb8Pocel4G17JGk+Wwi7tFRk/CuK432PQxe
-         momnFDLI/GfMEmzbXAXvJrytIDDbE2OfBpYzXE4PP4xGBvPQLVyreQsSaBoqFf9azk3Z
-         xSSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784220961; x=1784825761;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=08EQSxLVtNW+I2h2PWuzuRsz9aErjHxxHAiZ5/B9N7Y=;
-        b=Ms1a5K3mmlKUU2pLn9N7viMWDGL0xozADKSVndxzHCh63+3jPsmWRM7+GjXn7ptRD1
-         QHDjgY/LEo6ar4JkSmcviR8xWBT10Yiul0+QK1paZA5t4keaAIU4wNER3VD9qwCmTlkD
-         lCpJTUDYQM0kPRDmsWXSZoRTKhFEpUKBzdcTA+rKq+j80PpWafKsQn9zoBb8CDbugQZT
-         +PplQLBBJYJveBZ5S0Z5MZTtA80a8U4NEp6LLIbawS/v0O4pSrUEf3da19/tLxwMMVFR
-         InV5SphOUcs1kWmzkvRgKoSm3hOR5glBHWk6Xw90+DLYrpHPFWRfL9jGqG2wv6EshOxL
-         OGTg==
-X-Forwarded-Encrypted: i=1; AHgh+RpsnpaVTmewNAqDA8sx0XGnmWLe5IAbHLCsC+8QADBXqcFNHobWtaQ9zrB7qRWUtFlk9X5ukNgUnQ==@kvack.org
-X-Gm-Message-State: AOJu0YxQlJORIgv1frqOBU9THv5FFelBjO/hWYt1mi8k7Z0cNmJUtFYJ
-	0WTzX+R13g/uecyXYan2xznF/S4d9zL7C1C6zYa89TuT3zBShuWkSpDtyhc7KHtLJd4=
-X-Gm-Gg: AfdE7cm9jdjZ0JL336TwDIQGB3eqyax7UNYvp8sHXiEA0bp5FsnkoEMIzQ/yYW1nu+3
-	XHJwTYPo0OMQL4WEiBoqQIxNodTMdy0PvI8MTwn/LGZNJkLj/15WZmSXlLbHX7iqHibaFfKWzuG
-	9/TDlG/Ycc/ykU502nkNuOpSHPf9wNBd2fI1ISAfjnl9lRnhNSElXBIde+ZfEjeVqR5Q/tLW//w
-	wyZl9d5/6/GRXJrN9P3N+ElEycAx3ttcGMtSIz2MYdvUUFbAIR8izcJ2y3Aun2CIvGf1L9oUMxj
-	JFBSo8mK0QPkKvTj1tVKv95de2U9fDKDrwgNsiy8JykcVxr1r2KFFSB5EA8Dw40rODV3aXOdqig
-	GHk8rdducNALZCuP6X3PN3KnukpV4527YvfjNZ1YboLeJSvNnFt+AXU/mQM8KfL8Ao0A/QX2y6N
-	JKlbhNh0XVzqNpveA4cm2aFeqJNB5WB0a2Any43ZO3WSsVG5nxFdxtuFaM9A==
-X-Received: by 2002:a05:620a:262a:b0:92e:6b16:6a09 with SMTP id af79cd13be357-93086be1fefmr1190451185a.49.1784220960589;
-        Thu, 16 Jul 2026 09:56:00 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930759c63fbsm956033285a.22.2026.07.16.09.55.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 09:55:59 -0700 (PDT)
-Date: Thu, 16 Jul 2026 12:55:55 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, linux-mm@kvack.org, 
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Koutny <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kaiyang Zhao <kaiyang2@cs.cmu.edu>, 
-	David Rientjes <rientjes@google.com>, Yiannis Nikolakopoulos <yiannis@zptcorp.com>, 
-	"Rao, Bharata Bhasker" <bharata@amd.com>, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [RFC PATCH 0/9 v2] mm/memcontrol: Make memory cgroup limits
- tier-aware
-Message-ID: <alkB4tnJxOLyVCi2@gourry-fedora-PF4VCD3F>
-References: <20260423203445.2914963-1-joshua.hahnjy@gmail.com>
- <3ff8b23a-479d-46e8-b820-a23697587f01@kernel.org>
- <CAN+CAwPK4cW6k6LazZsbuvewswOwzM8VJgPvcg0jef7FwfF1qg@mail.gmail.com>
- <a8a0e540-414b-4174-a9f9-2c501fb46130@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a8a0e540-414b-4174-a9f9-2c501fb46130@kernel.org>
+	t=1784221085;
+	b=2iLYALsCDahHhUhSozljYwYtQLifrMTKewXUpr4d1PLlbaLV75DV4fm4HFhFg9RUawD8Np
+	Csp+nbzMGnQEAxqY/6tx1wvMcEUpAgbKNZGG59gUJW+qrAU6r+AuOarHMkicsI6MJVIEwi
+	Drvqm98QgGCL4pSsIyMpMgS27UZ7DCE=
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784221082;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jC4p4Ne6/jLWSLskeAq6PhK3LdwKo4FxILlpTyonIAI=;
+	b=NzoLBRtD+O2u9AcgHZtfKMgXcga+qLhFKthO1GlzTLVouCV2Aq05/j9oIk+2lQHxV40PwN
+	0CZS3G9sfJCFe61gaEjL1Q7fJWRNA4sS+jMvmZvl8bmFZnpaizzIf57h2e2ss7V/vBGwCw
+	47u9tjpdeInTvHDJ/D2zx4vURd9rMGQ=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 16 Jul 2026 16:57:37 +0000
+Message-Id: <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Zi Yan" <ziy@nvidia.com>, "Jan Kara" <jack@suse.cz>, "Joshua Hahn"
+ <joshua.hahnjy@gmail.com>, "Byungchul Park" <byungchul@sk.com>, "Gregory
+ Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Chris Li"
+ <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Kemeng Shi"
+ <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Baoquan He"
+ <baoquan.he@linux.dev>, "Barry Song" <baohua@kernel.org>, "Youngjun Park"
+ <youngjun.park@lge.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, "Will
+ Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Huacai
+ Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Chuck Lever" <cel@kernel.org>, "Jeff Layton"
+ <jlayton@kernel.org>, "NeilBrown" <neil@brown.name>, "Olga Kornievskaia"
+ <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey"
+ <tom@talpey.com>, "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker"
+ <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
+ <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-fsdevel@vger.kernel.org>, <iommu@lists.linux.dev>,
+ <loongarch@lists.linux.dev>, <linux-nfs@vger.kernel.org>,
+ <netdev@vger.kernel.org>
+Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
+ header
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Matthew Wilcox" <willy@infradead.org>, "Brendan Jackman"
+ <jackmanb@google.com>
+References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+ <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
+ <alkLSzQvzT9zJbY1@casper.infradead.org>
+In-Reply-To: <alkLSzQvzT9zJbY1@casper.infradead.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: C3F9D140008
+X-Stat-Signature: c1ob7tfkfddjdib3bnbrpce6zp47nu33
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ADA1240008
-X-Stat-Signature: 9mmfy19mh3ohjfssa6yjjkzkh5g1ockt
-X-HE-Tag: 1784220961-922167
-X-HE-Meta: U2FsdGVkX1/yfUR0zArp0E+IwMGabMz7drHjtzcTOQk3MhNBu6jKjkFXqsmnANwfkLe0Cb9kmfhPTeWrC4Vd3zJAamU9k6B4DzvHX0V+LcmUUVzvm/mzTp2VFWjzZL6Na2NcfSm3LCddG+St8kV2mKIf/qhT0gx3xK49iA+DZacc+8KWZ+UJ7y4b5vMoGWJg59nvU6J2gpB35uDgIFEKobysWlQZ6nNnX8omerYozoHsmuaMygz2VROpuxSPt+QaYhQe2J/YAYBgeLbsnd6j/bc6sVmR8aHF5YQorTZsYzV0qho3cJNseBM3chtbQuoa/6vaGHafRVfoyPpxgLcGnS+9x0yiRvmuC2wvuJu+fAXAcAExAx0brjGqoDXt/2kAZPIoAULVW82UIiKbEDUHdawrFf9aARoYEUzT1O90lzWg8szvKyNunle0GLWtCDFw1r1ghow8D9TJFIYgxxg4BgqXcGSQ5r/uIu5MUVcZb3EzBGly7wFyX5mWuqSOIu2ofqOyzuBHbyp8PsguU80P6HgyXdN98QthVFSjhCSA0OtK5bwb1cBqq0zuXKU/UIAcUjEqipOTq89zVb5DYoGU8oPzH26JP1ACT2vLzRhzx1nH3Z3yLoCEfnAvLS/9aaw6o+01G0tLlkLycusmW4eUpvZSGGjwAwptBFlDi77Z3ovAWyb5tEo68fAUkXvJVTFp1Ig/M35Db82LgXnQ5Sktci9VeO2fgKzV2GN9JqcvmOop/NYn1ydTlW2jwRkbTkPNDumIUXgqBv7z2Mxr/EJHU+47VTS//mz1AQ5HRQY9qhDIg+Kflylk7ThwPdZ6Xu+eND9H3N41R3IazKz7SQ8OhvBcwbBGFvR+yPh0BBK3b5HncD1X49iimnG55l4UbjJ4wCfNUnIjBug34pnQdoJM2FzMgi70VyXI9Z564mzBsJvBHwosVDXc7G7qOxZ3H5ZzBp1/St7gW9xbVP9c6jX
- JBUAr/e1
- 8P5r2J1wXn6DouvZRW1xbw6/g3OzuLTMssXJtA4OUrdWy3t8sgsDhWi0lGBi6zc+PcVRwI+veVg3SoF4WbOeORhNsCxN4SEuG9BInOtJaCV0dsi0mqTrsVJbaICHvLai6cVYmXFcQ966EOd9YE27lmkdT1HgHbepHUKYE65Zh8cRg7Vpz+bYn7236Hwe07wmkU4FDC6EpHB4lGMs9c6zEXhG1Wi4K9IZRKSoWXUaxlvjFPmPbwLiCJF40dZT1q3KZZNAqP1GzN4wCXAkAe2Q8r/+eN9NG8N8eLqJlKxQvum4n5Awa/jukTkKCvK/AONTR85Iq8/uzzaBxtajW/nyPxNoUamfY/8LIAXkI1qci3Cq2fxl0ane4sXE+8kC+NY6KnKFym9lUBubsNaD3qWooIMFgaA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784221084-646637
+X-HE-Meta: U2FsdGVkX18b3/uZyZsLEh+s23O9ffmt8nom20y2X3zGQRwMpnLN1oDEscOYamWi460+T2LsjZ/XX2GvwMk5Jl+XVAieDjhkhGD990YMc65cxx0g9O8cDxWTzB0qXpcK6mahrjjnAERQQJ9460IUlsKtIsN8gU78Bp/dLdY3oehwwpScdWtXN7USaKCYnpDoJYYsbjbqhSsfzFc3Hzvk4qsqCRbv6BJyoSbEQ9dtr8Hh1kmYuYVlG98rkvBS2Gi82DEnQxcJD+jsu+N4y+v/h8jcFKN7ZkfL/duDxznBSYVRaBkEnrE5gKufKlp6miFdkDRUDQ1nyPpdefpzo1esbIQqeiViyxk7SYUBwtWKOxf3+oz8bS5LtlbvRWVBbPSSOHk3eesykigev6J75MnQtPskzla5K8Wntyqyh48hML8AO4C+XZqFgfrgtJ2VNqtuPFGYxGv2fRhKOdAkd4KOUa9SraLroMODgiPlLotW0raI+QDksU7puscjwTX/vytiFj4u7yFQb3KJPcRktkoFyUb8R36XdvmjOTKRd97ZYXtv/S/cfdkdIhKnL4EjUeO6S7chFBjAm8Ur767IFh13IZ28XeywaszefmaIxSTk1EpksKAgdft/63dRMbDR/tS8biwJ/vz7gCuzuxx4z1XHk5BUqzurQWLpahZAdAgamSCl0xM5Hzf84/iWnfomARoOOUW02nByvsdV8THUx4j7s9oaAUTTukKkjR1QdwJEEuOKb1MQWUcSrx3+H1bFvA5U0+w2ac+l6aVpPqh4EAgoII98TAMx44OO55FgwBw+fDBFcsp3UxYNT68GhQIhStxsH1k67ZK6Y0oRqDjUkNgr0ZPj2cMi2n6/y/IxqhxjPLk5I13hL8K6vVTP8pQnei1/O++reE3NpfKTbtEx33mBS8Xt65k5DqmTncHeeZAdj5oCfgafrNrItTxkq6xAmt0vaHKVmtw5PgOfTPCJ5dt
+ +jvKHvHq
+ 2/Qjaq67vJpBHorRe0qz1efu41z10QKf6HToCd22JxYz8wauFuyV9clYi6tofezCS8J4CYwnBpsvMXI/hXs6VAoW3AK/Txhd7AmyuofE1iugmJCRvaQjStT47bSNF+h/aGlLGKJQIdBL4spcI2Hu6Yroz9FLit82RMyMQN7fJB9Yb3Ig+n1djl6XlPMsF7L2MCfiiGIwMykLCRuGVellB+TfCIyEvGyzo45elU88drrvvr/3O1OeLlDBeT83jfXnTyh4mZlKY2mnxa+cvtH40IQhcTgAyARcF+2ATWwwCAZ6VRAV4dSzoJDLl+ifes/xEK/emWefSdukU+KfOP773ox4S8jSvdnHMikq1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,75 +117,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 03:11:30PM +0200, David Hildenbrand (Arm) wrote:
-> > 
-> > First, for the multi-numa-per-tier case, I think this is already pretty well
-> > handled by my series. Once we realize that a memcg is consuming too much memory
-> > from a tier, we trigger reclaim from that memcg via
-> > try_to_free_mem_cgroup_pages,
-> > which as far as I can tell already handles the multi-numa per memcg case.
-> > Other than restricting the scan_control's nodemask to target the nodes
-> > from that tier, I don't think there's anything else to be done.
-> 
-> I am not really sure about the "toptier" notion, in particular if your memory
-> hierarchy is not static.
-> 
-> Imagine that you have only DRAM in your system. Then you hotplug some slow CXL
-> memory. The you hotplug some HBM CXL memory.
-> 
-> The meanting of "toptier" changes, which is rather confusing to me.
-> 
-
-I think this is a naming problem.
-
-Maybe we should start calling this "initiator tier" or something.
-Maybe tier is even the wrong notion here, but it's the best we have.
-
-But I agree "toptier" naming doesn't generalize to complex systems.
-
-> > 
-> > $ cat memory.tiered_max
-> > tier_0 20971520
-> > tier_1 31457280
-> > ...
-> 
-> memcgs are currently not NUMA aware, so this could be one possible direction.
-> 
-> But is "tier" the right abstraction? I really don't know.
+On Thu Jul 16, 2026 at 4:48 PM UTC, Matthew Wilcox wrote:
+> On Thu, Jul 16, 2026 at 02:30:10PM +0000, Brendan Jackman wrote:
+>> There are no external users for this surface, reduce the scope.
+>> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+>> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
 >
+> Hm.  So what we're saying is that allocations which respect mempolicy are
+> only for core mm and not for, eg, device drivers to do.  Is that really
+> what we want to say?  I don't think so, because that's inconsistent
+> with having just widened __filemap_get_folio_mpol to allow guest_memfd
+> to specify a mempolicy.
 
-Really I think we're trying to classify 3 general pools of memory
+Yeah I agree, mempolicy definitely seems like a "public concept".=C2=A0 All
+I'm saying here is this specific function doesn't have any external
+users so it doesn't need to be an external header.=20
 
-- Precious:      HBM
-- Preferred:     DRAM  (initiator preferred targets)
-- Non-Preferred: CXL   (fallback and demotion targets)
+... With the ulterior motive that I want to add a new parameter to it
+that actually _is_ mm-internal. Namely, alloc_flags, so I can add
+ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration of
+[0]. So basically this is
+about trying to extend the allocator without creating a GFP flag.
 
-HBM nodes are already weird in terms of fallback ordering, but ignoring
-that for a moment.
+So I'm envisaging if an external user arises for it later, we'd slap two
+underscores on the beginning of the internal one, (with the alloc_flags
+arg), and then bring back the public one as a wrapper.
 
-Non-preferred "tiers" are slightly different than preferred "tiers".
+Does that make sense?
 
-Under normal operation (assume no mempolicy or cgroup weirdness):
-
-1) Direct reclaim NEVER targets non-preferred tiers (kswapd only)
-2) Promotion NEVER targets non-preferred tiers (promotion -> toptier)
-3) Under total system pressure (direct reclaim on top tier), we swap
-   directly from the preferred tier out to swap
-
-So non-preferred tiers don't have the same reclaim behavior associated
-with them.  In fact i'm pretty sure we could summarize non-preferred
-tiers as being managed hyper-lazily in the current scheme.
-
-(if there's space, have at it - otherwise you have to wait for kswapd).
-
-In my head, I think what we mostly want is:
-  - Precious      - controlled entry,  Private node?
-  - Preferred     - semi-precious, fairness desired
-  - Non-preferred - not precious, lazy managed, no fairness
-
-Just some food for thought.  I've been poking at making non-preferred
-tiers less lazily managed, and I'm just finding this results to massive
-regressions.
-
-~Gregory
+[0]: https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com=
+/
 
