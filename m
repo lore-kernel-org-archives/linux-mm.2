@@ -4,125 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A15C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C874EC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:32:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85BC56B0136; Thu, 16 Jul 2026 11:32:49 -0400 (EDT)
+	id 65FF56B013E; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834B06B013E; Thu, 16 Jul 2026 11:32:49 -0400 (EDT)
+	id 5E9956B0143; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7705D6B013F; Thu, 16 Jul 2026 11:32:49 -0400 (EDT)
+	id 4FD196B013E; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 219B36B0136
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:32:49 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BD33120114
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:44:07 +0000 (UTC)
-X-FDA: 84994304934.16.EB61A64
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 410C7180007
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:44:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=MSTbwqnb;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf06.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	by kanga.kvack.org (Postfix) with ESMTP id 159B96B013E
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E34D5120118
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:38 +0000 (UTC)
+X-FDA: 84994311276.12.9C08642
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C6B0CA000D
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="j51R/kiM";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784198645;
+	s=arc-20220608; t=1784198797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4NOe5ksl2vlSwjo56KjbWsmML1a42hyFiwBD/c9eZDU=;
-	b=B0mH2GP4G5JzwOQj123+W9F+m4C2Ep2DJn29pyYg94v3kJiA1z33vJ1sg2NGmmJfOGqcxX
-	Zl/gToSxdDgu1maUd+Mc4sz8i7oVGZHbnnaIeUBXySlpWFR5UxWXbBfuJLdr/Z5L6tMUZ7
-	3XGnUXB5uSp37/oFc0oQzUCBPIRjKBI=
+	bh=Y8dvsppUCclol6edmZSY/pkLFvmywa1k8Hyk3xrw9tY=;
+	b=R7byqAHVq38H7ELgoIyxeBDq2QC2iTNS0TR+1Vc/ubB5dBhPwHd+NQQpfxZYKtPG/MoyGm
+	mQJQXngXpd6j494Gh5Of6F3CojzEW+IrgNCY4Ow7Ww/t2mB0bMu5FVDqYOcIfqWQAx1j2d
+	+HxQloQ5vvPHMcHbi01e7Q53cqsaq8Q=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=MSTbwqnb;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf06.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="j51R/kiM";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784198645;
-	b=qr8fFPthEVv5PPVQ0Suagai/xlcCYtnNpV7/TSwmtRbh+SvG3ieBnrR8AF2jsb/eEtr1z5
-	afel6Jw+RXISRNUsmUdmboLu5WOQ6/tdlyn9rNLOEOhqQKShbRnnDVUAjqXFpvYETpH7Ek
-	bsH2AYOv5DHOfi/sqJ4bG1lG+cK+erU=
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260716104401euoutp0162896187b46659a20abee1581481c5cc~CvzYh7gBq1199711997euoutp01Z;
-	Thu, 16 Jul 2026 10:44:01 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260716104401euoutp0162896187b46659a20abee1581481c5cc~CvzYh7gBq1199711997euoutp01Z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1784198641;
-	bh=4NOe5ksl2vlSwjo56KjbWsmML1a42hyFiwBD/c9eZDU=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=MSTbwqnbrDKyLKGraNwvsA+y4j51U4MbSsUqWrLD7zYBuseQk2jHYvQzKWIBHlqF3
-	 POTrMf4g8ZRPRjBC3B//DjIkSnL2hCqPkA9P1ECuexq2YdaXf+5B3xWtrCF/91gL8O
-	 xIohKEswRPMt4SaVihbMOLSt8JqgZ1C22LyTuDUo=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260716104401eucas1p1f2c155f5f3a4655c82e831bffdeeece7~CvzYOfJRQ0283202832eucas1p1K;
-	Thu, 16 Jul 2026 10:44:01 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260716104357eusmtip2cc624be619bcd0856727825883ac67e0~CvzVIUrCg2851928519eusmtip2d;
-	Thu, 16 Jul 2026 10:43:57 +0000 (GMT)
-Message-ID: <1eec88e6-1ea8-4525-bb17-e41444d715dc@samsung.com>
-Date: Thu, 16 Jul 2026 12:43:56 +0200
+	t=1784198797;
+	b=idJZhTCyjCFQBPM1MjoJIojwBZSuEm2tJe009DCfKNpiszDOfjjoVyuqBawdXTppvUMdVa
+	9J0iU/pgeDfworq+FaZVleGUZcJKx/8/YmgXE2MgoAwb3TGIDIlz33320g53FMU7tQiY+0
+	AJv/9/FUQMFym/rfjps0Urdrwa3/avA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784198791; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=Y8dvsppUCclol6edmZSY/pkLFvmywa1k8Hyk3xrw9tY=;
+	b=j51R/kiMoovbkMwu6kO7e6jHxV/WembdYi8x7HfJoGZ3CPaGOpcN1XWXV6cQ6HzEfob+FBCoSZfmN1wi2CcV44JJ8LiJT4F4rMxvc24hjgUEItJXJ1WCCJLj3+0Hd/snw62LrOGoudLYUIVBjtyUMZ6GubGvzAsIknk+frNU4hQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X7E4pTJ_1784198790;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7E4pTJ_1784198790 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 16 Jul 2026 18:46:30 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	hannes@cmpxchg.org
+Cc: riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	mhocko@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 2/2] mm: mglru: promote mapped executable folios after first usage
+Date: Thu, 16 Jul 2026 18:46:19 +0800
+Message-ID: <7e3a5f6bdf70e0237027025f4593a3874d411f65.1784197559.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
+References: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v3 06/11] mm/cma: Allow dynamically creating CMA areas
-To: Thierry Reding <thierry.reding@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, Mikko
-	Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, Rasmus
-	Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>,
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
-	<gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
-	Gorbik <gor@linux.ibm.com>, Christian Borntraeger
-	<borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew
-	Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
-	Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
-	Hocko <mhocko@suse.com>, Robin Murphy <robin.murphy@arm.com>, Sumit Semwal
-	<sumit.semwal@linaro.org>, Benjamin Gaignard
-	<benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>,
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
-	Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org, linux-trace-kernel@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <ak_E4UxfnFJywJa7@orome>
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260716104401eucas1p1f2c155f5f3a4655c82e831bffdeeece7
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260701160902eucas1p1214af933ba0f54b85630a3a4e5a4689c
-X-EPHeader: CA
-X-CMS-RootMailID: 20260701160902eucas1p1214af933ba0f54b85630a3a4e5a4689c
-References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
-	<CGME20260701160902eucas1p1214af933ba0f54b85630a3a4e5a4689c@eucas1p1.samsung.com>
-	<20260701-tegra-vpr-v3-6-d80f7b871bb4@nvidia.com>
-	<3f47aeab-33b1-4966-a5ce-5d6d5261e0e2@samsung.com>
-	<e212caac-6c30-448a-9e10-32fff8b842f6@kernel.org>
-	<83e5e74d-7106-4e14-9d10-56438372f6a3@samsung.com> <ak_E4UxfnFJywJa7@orome>
+X-Rspamd-Queue-Id: C6B0CA000D
+X-Stat-Signature: yw4wdeguqi1rnhdtfiuufg51198yuudw
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 410C7180007
-X-Stat-Signature: 8or3bmfihpfk5wkxe9gauwz8k8yinah4
-X-HE-Tag: 1784198644-303210
-X-HE-Meta: U2FsdGVkX1+KpIQOnBmM1Bz0tkRbZTXS4wKwtn2X1sUVRiXJJekB6KCh7NIflUp/lq9fPXozZOGUcX/rEnSDO6JEZrkBgYPB8hcS+eL331m6ZjVHqPJr6nxVTRagDIWobzuveRGNosH4kvUgcZT+1wc86liRW5urqS/Rw0oUT0x+hiBHC4UJULc7s8vRc/oEp6DgNS4zpMvZahH+t8seOPa33OVX0YB/PqgE3PyL7OulBcWNwwR4PbnnYk2BCjpXnmfdoaRDA176Gu8HAYKt9oh9isSWjaH3Ge8QH9Mn/E2XYrOJkdj3iQZzN2VWbn0OmoKUhtCGevW2G1zdaG/xupjNtWx+k5ZPjIt1c2xKMWRblH/W/4GgtnYvxA7Pcsb9cp6c/V1/O9dOX3ZWkX0BjcNXazE75UYwo9UmKKCX7RMIN72Ya41wEZLDujbeg1MYmMhx4yhXEQkfY0VOn2E7VTPeECqwrHlCxDn7byXMryUhrA36u6NtW+EOY0Yr8hISvHWwV7ShE6qrZvXyiuVEnHIEDIS/ce9davM8ZHEHIvyHwvyXfYIDUvY5HrEJtE3O3hqc6Gx0dT2zBcOsjmVHlb4zs/jMV5PnTJqB4V/Bi2BwE/q1tMFiD3XxsMIBNwYJzQ6K8m+WZ/L0NXsjBRPiwzV70xWXeZeez55foIOk3dm/PlwzUxactrW0GM8Cps0Q8MpOtqjkKZOeAMe7DHhdF8Muz8XrUlWgrna6hX3Pj+7FKOrDNrBba4vlqRpYtXDK6jfBSMngPJQKO15NNxnYk4LiU7H6glYvH9tROgFk3NICJ/bePvrl47RchbMO1WbUAVmgqi7Gy2ctsYnobOkEc6livMPP4fmyVJYmygef6AjSODERr7ADV+0gpa6BZ+iPaWhVr/zx5onBrulA03jzdrBfyucLhmWAVsVnSeEugT6SN7jCSspiBtUht7gkX6i7bLsVSNc1Z+NzxVd8G8K
- 9MwIHsjz
- 10B3rtbTNdi7hm5j5r7Ntd/zR1NlcFDExgN0AWsZEUUzBm4viYVa90OaK+Zy2cFscDHfZnizhrXfInHblbmxrdJAk56DJLXBBn7ie+1KLLnPuzUXQqONdfnP27f/Tr8/TamGsbiN5vmT32W9xAROJwVDmSbwcBXDi6Z3bRwjvGhYZXVc=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784198794-236729
+X-HE-Meta: U2FsdGVkX1/2/Sb5D7/ChkvALlUosts/qp1LdZID1SAeAmGHy5EsuatG/Cfq9Zd7fmWNSc2lM7j8fIwl7ZvuHqQ7doVcVmXml3zulWJZJaOHUpnbixwNOLCE6R/bYHdB9h66vKKQI7miQr6wSB5WxmahvjCKUDsQ0E6esVEFdO6lrOFi2kWsbto15uhdVoBa1ZqDydcxgNyZ5oCwkI5LtFtZQZt07wkIF7lJ8cmqflVAzbk9mj6Ag3YowluTSNEuaCAidOdyDQYggHDYLMNinmnUsgHkTH9NPtmPG+I5BSboglvMNHBQf7TFCh+AHRFv3grRjYJ/QS/quXlbEwKr2EUUdtH29pVzvc4/AO5kJVhni4EEuokEPmRY2pGLSQepF9R/gi0yH/GlnhSvfHXEnGLSkJsJqla4dm7S3T9EHxek9bLTx09ccKFGGmWJ38SkgxGMvE2f5X7d7dBj6NQFWuy+xO9XprtYYDdcEO8tZ/CIk1smsuGyMv8HQw7zy7GjSlBlKOEpyMqNOZ4VPgaN/Tp7o2Lal84h31VOa2rCh7UFzJwkFiVggLz4+vDNbp1pXWC1M0SuVVALRLISVzR11WHDIDAjyuqoxbt4cKLaDo64qeQJ+PiFZelow62/u4cOaS4sVlfg6LABHV8FwcAOYzwr0bOolLS6oENmhL7gxg2nW6PQcZg9+HBELY8jRH1PahBMBsgde8VwbYUAuZQuxsvRp+3nIktpMnA3szhCMvcbjAUtvjPDuAnXIYow6UBrwW867G7xvw96H69RAVC3a+k07cd3NbZY61SiGRvqtTWt/uGFiCQq84O0+m8Fkjy4V2BJb/CN/FcgYy11vlMpsXxtKApZMwAB/yUD6iOcYtDJ/lM3A5Q3pkeqZ53RQGfN8eOj2XZFfb7RzL1t+TpNldShxY1Yye97bkulqaC6l/QMfZvsZ+RvFlyog9zRgTo2HkVFvsHg7BQshkdb0S9
+ wijCtP2g
+ AL6h5eSCdzv196AXynfA/OFJs1YTQ7pu424seD2liwzq3xKRDOATqANzRNF6sJRgKgfcUYuX0GgAYb8RiDWYpl/Fb3KSKBr3GdLf4ZxaAOnVzBDTEiBB+yGHXZ1ESMcm6Yqa6GjzR+OsntOLC0L/KOgJaQRbpivm/xQ/c9G7RZoYbLEfuDYsjh2YtctydgVQJbnhFQne8mwUNO5PHnMb2IFcjFiIjUZcWaTSWQiq/089EWsKX7PZVEpTsdqWQf2KIQqIN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,61 +102,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.07.2026 17:59, Thierry Reding wrote:
-> On Thu, Jul 09, 2026 at 07:56:45AM +0200, Marek Szyprowski wrote:
->> On 08.07.2026 10:35, David Hildenbrand (Arm) wrote:
->>> On 7/7/26 12:02, Marek Szyprowski wrote:
->>>> On 01.07.2026 18:08, Thierry Reding wrote:
->>>>> From: Thierry Reding <treding@nvidia.com>
->>>>>
->>>>> There is no technical reason why there should be a limited number of CMA
->>>>> regions, so extract some code into helpers and use them to create extra
->>>>> functions (cma_create() and cma_free()) that allow creating and freeing,
->>>>> respectively, CMA regions dynamically at runtime.
->>>> Well, the technical reason for not creating cma regions dynamically at
->>>> runtime is that on some architectures (like 32bit ARM) the early fixup
->>>> for the region is needed to make it functional for DMA.
->>> Can you point me at the code that does that? Thanks!
->> Check dma_contiguous_early_fixup() and dma_contiguous_remap() in 
->> arch/arm/mm/dma-mapping.c. Those functions ensures that the CPU mappings for
->> the CMA reserved region in linear map are remapped with 4k pages instead
->> of the 1M sections, so later, it will be possible to alter the mappings and
->> change them to coherent when needed (altering 1M sections is not possible,
->> because each process has it's own level-1 array even for the kernel linear
->> mapping).
->>
->>
->>
->> However, in the use case in this patchset the reserved region is only shared
->> with buddy allocator by using the CMA infrastructure, not registered to the
->> regular DMA-mapping API, so it would work fine. I'm not convinced that this
->> is the right API to use for this though.
-> Are you saying you're not convinced that CMA is the right API to use for
-> this? Or something else?
-I read this again and indeed CMA seems to be right solution. I only wonder
-why do You want to create the CMA areas dynamically? Imho it would work if
-You just create large enough CMA area on boot, what would automatically
-share the memory with buddy allocator and then allocate dynamic VPR regions
-with cma_alloc(), potentially unmapping or marking the allocated region as
-reserved in linear kernel mapping to avoid any potential speculative access
-to the protected memory.
+Classical LRU protects mapped executable file folios through commit
+8cab4754d24a0 ("vmscan: make mapped executable pages the first class
+citizen") and commit c909e99364c8 ("vmscan: activate executable pages
+after first usage"), giving executable code a better chance to stay in
+memory, avoiding IO thrashing and improving workload performance.
 
-In both cases You will probably won't need the DMA-mapping API on top of
-it, although it might be even possible to partially use with by
-registering custom dma_ops for the devices using the protected region
-(assuming that it would support only DMA_ATTR_NO_KERNEL_MAPPING
-allocations).
+However, MGLRU's protection of mapped executable file folios is less
+reliable. Although shrink_folio_list() checks references, the access flag
+of mapped executable file folios may have already been checked and
+cleared by lru_gen_look_around() or walk_mm(). Additionally,
+folio_update_gen() or lru_gen_set_refs() only sets the 'PG_referenced'
+flag for mapped executable file folios, which causes shrink_folio_list()
+to ignore the first usage of these mapped executable file folios and
+reclaim them easily.
 
+Follow the classical LRU's logic, promoting mapped executable file folios
+after their first usage in folio_update_gen() and lru_gen_set_refs(),
+giving executable code a better chance to stay in memory.
 
-> I certainly don't think we want to get the DMA-mapping API involved for
-> this because that always implies that we perform cache operations, which
-> we specifically don't want for this memory.
->
-> Thierry
+On my 32-core Arm machine, with the memcg limit set to 2G, running
+'make -j32' to build kernel showed some improvement in sys time.
 
-Best regards
+base			patched
+9248.543s		7861.579s
+
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ include/linux/mm_inline.h |  6 ++++++
+ mm/vmscan.c               | 41 ++++++++++++++++++++++++---------------
+ 2 files changed, 31 insertions(+), 16 deletions(-)
+
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index b5c4dc0f3fe3..30fdf1056312 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -30,6 +30,12 @@ static inline int folio_is_file_lru(const struct folio *folio)
+ 	return !folio_test_swapbacked(folio);
+ }
+ 
++static inline bool folio_is_exec_file(const struct folio *folio,
++		const vma_flags_t *vma_flags)
++{
++	return vma_flags_test(vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio);
++}
++
+ static __always_inline void __update_lru_size(struct lruvec *lruvec,
+ 				enum lru_list lru, enum zone_type zid,
+ 				long nr_pages)
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index de62899c108d..fa808721b64d 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -835,11 +835,15 @@ enum folio_references {
+  * with PG_active set. In contrast, the aging (page table walk) path uses
+  * folio_update_gen().
+  */
+-static bool lru_gen_set_refs(struct folio *folio)
++static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
+ {
+ 	/* see the comment on LRU_REFS_FLAGS */
+ 	if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
+ 		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
++		/* Activate file-backed executable folios after first usage. */
++		if (folio_is_exec_file(folio, vma_flags))
++			return true;
++
+ 		return false;
+ 	}
+ 
+@@ -851,7 +855,7 @@ static bool lru_gen_set_refs(struct folio *folio)
+ 	return true;
+ }
+ #else
+-static bool lru_gen_set_refs(struct folio *folio)
++static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
+ {
+ 	return false;
+ }
+@@ -886,7 +890,7 @@ static enum folio_references folio_check_references(struct folio *folio,
+ 		if (!referenced_ptes)
+ 			return FOLIOREF_RECLAIM;
+ 
+-		return lru_gen_set_refs(folio) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
++		return lru_gen_set_refs(folio, &vma_flags) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
+ 	}
+ 
+ 	referenced_folio = folio_test_clear_referenced(folio);
+@@ -914,7 +918,7 @@ static enum folio_references folio_check_references(struct folio *folio,
+ 		/*
+ 		 * Activate file-backed executable folios after first usage.
+ 		 */
+-		if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio))
++		if (folio_is_exec_file(folio, &vma_flags))
+ 			return FOLIOREF_ACTIVATE;
+ 
+ 		return FOLIOREF_KEEP;
+@@ -2119,7 +2123,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ 			 * IO, plus JVM can create lots of anon VM_EXEC folios,
+ 			 * so we ignore them here.
+ 			 */
+-			if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio)) {
++			if (folio_is_exec_file(folio, &vma_flags)) {
+ 				nr_rotated += folio_nr_pages(folio);
+ 				list_add(&folio->lru, &l_active);
+ 				continue;
+@@ -3188,7 +3192,7 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
+  ******************************************************************************/
+ 
+ /* promote pages accessed through page tables */
+-static int folio_update_gen(struct folio *folio, int gen)
++static int folio_update_gen(struct folio *folio, int gen, const vma_flags_t *vma_flags)
+ {
+ 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
+ 
+@@ -3196,10 +3200,15 @@ static int folio_update_gen(struct folio *folio, int gen)
+ 
+ 	/* see the comment on LRU_REFS_FLAGS */
+ 	if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
++		/* Activate file-backed executable folios after first usage. */
++		if (folio_is_exec_file(folio, vma_flags))
++			goto promote;
++
+ 		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
+ 		return -1;
+ 	}
+ 
++promote:
+ 	do {
+ 		/* lru_gen_del_folio() has isolated this page? */
+ 		if (!(old_flags & LRU_GEN_MASK))
+@@ -3428,8 +3437,8 @@ static bool suitable_to_scan(int total, int young)
+ 	return young * n >= total;
+ }
+ 
+-static void walk_update_folio(struct lru_gen_mm_walk *walk, struct folio *folio,
+-			      int new_gen, bool dirty)
++static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struct *vma,
++		struct folio *folio, int new_gen, bool dirty)
+ {
+ 	int old_gen;
+ 
+@@ -3442,10 +3451,10 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct folio *folio,
+ 		folio_mark_dirty(folio);
+ 
+ 	if (walk) {
+-		old_gen = folio_update_gen(folio, new_gen);
++		old_gen = folio_update_gen(folio, new_gen, &vma->flags);
+ 		if (old_gen >= 0 && old_gen != new_gen)
+ 			update_batch_size(walk, folio, old_gen, new_gen);
+-	} else if (lru_gen_set_refs(folio)) {
++	} else if (lru_gen_set_refs(folio, &vma->flags)) {
+ 		old_gen = folio_lru_gen(folio);
+ 		if (old_gen >= 0 && old_gen != new_gen)
+ 			folio_activate(folio);
+@@ -3518,7 +3527,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+ 			continue;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, last, gen, dirty);
++			walk_update_folio(walk, args->vma, last, gen, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -3531,7 +3540,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+ 		walk->mm_stats[MM_LEAF_YOUNG] += nr;
+ 	}
+ 
+-	walk_update_folio(walk, last, gen, dirty);
++	walk_update_folio(walk, args->vma, last, gen, dirty);
+ 	last = NULL;
+ 
+ 	if (i < PTRS_PER_PTE && get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
+@@ -3609,7 +3618,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 			goto next;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, last, gen, dirty);
++			walk_update_folio(walk, vma, last, gen, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -3623,7 +3632,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 		i = i > MIN_LRU_BATCH ? 0 : find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
+ 	} while (i <= MIN_LRU_BATCH);
+ 
+-	walk_update_folio(walk, last, gen, dirty);
++	walk_update_folio(walk, vma, last, gen, dirty);
+ 
+ 	lazy_mmu_mode_disable();
+ 	spin_unlock(ptl);
+@@ -4258,7 +4267,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 			continue;
+ 
+ 		if (last != folio) {
+-			walk_update_folio(walk, last, gen, dirty);
++			walk_update_folio(walk, vma, last, gen, dirty);
+ 
+ 			last = folio;
+ 			dirty = false;
+@@ -4270,7 +4279,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 		young += nr;
+ 	}
+ 
+-	walk_update_folio(walk, last, gen, dirty);
++	walk_update_folio(walk, vma, last, gen, dirty);
+ 
+ 	lazy_mmu_mode_disable();
+ 
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.47.3
 
 
