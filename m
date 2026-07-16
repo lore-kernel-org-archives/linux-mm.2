@@ -4,118 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B23E3C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5326C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:49:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA03C6B00B0; Thu, 16 Jul 2026 10:49:15 -0400 (EDT)
+	id 02E2F6B00B4; Thu, 16 Jul 2026 10:49:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B77B66B00B4; Thu, 16 Jul 2026 10:49:15 -0400 (EDT)
+	id F21696B00B7; Thu, 16 Jul 2026 10:49:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3F176B00B5; Thu, 16 Jul 2026 10:49:15 -0400 (EDT)
+	id D73056B00B8; Thu, 16 Jul 2026 10:49:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 601ED6B00B0
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C51DB1601E7
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:33:50 +0000 (UTC)
-X-FDA: 84994883820.23.544C35E
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E0D9620010
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:33:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=QQNQb9T4;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf03.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212429;
-	b=53aZbSatf9gt+5hZX1LyJUKt8A0hdnwh9aVjf/kqweJ3d6ZpKFR0fwNDy+7pZUYtj7jXoB
-	sJnGmQg9gx3QPl/uqffXK6+eTPwaNplbIfIMa6Y/H2tdw96jMrqq/dhRsYfQ+pcKpJbW2+
-	6A8ySC0el4jCTYVIl89kBvpx43fiq/Q=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=QQNQb9T4;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf03.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212429;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 959726B00B4
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:49:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E4941401DD
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:30:21 +0000 (UTC)
+X-FDA: 84994875042.05.E375716
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CF0A6A0008
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:30:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=WHweq6s6;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of 3-OpYaggKCIsyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3-OpYaggKCIsyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784212219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u8MPSkeEXoEUBttnnhXtqn7icL18NVEhqR4kh84n23M=;
-	b=HLi3Vp0kyXBfucVaouhFUFsNC0VhIv6A7AKMZYuYxqu4eHvq1dBPpCAxYID+snB7kBjYc1
-	eWzMI4qSWOoqsi9Zt3IiG5RfVfvLLFTPC4GNanMOe6207dH9oCr3HiAaIQJ3DKWPRu4rZj
-	1fkCb/CQvzlLTFcUl22UxO8vIda1zpE=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212356; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=nonvSaIyCSTzbD9P3g5e1pzJYnJYHF8DJ0MfQLtZOfsLzYLfKeUKLqdaYAGqKyKQCIj+eZP3k2jMi/So92N8phqovTBI+z4z9xqlhMl+yP1MatS6eoc0j6bl3r0Bc/Tjt7Rf4UQZUTRhFP7w0BMTLA9OI/gv9BJh6qwQuZBhTVc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212356; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=u8MPSkeEXoEUBttnnhXtqn7icL18NVEhqR4kh84n23M=; 
-	b=lQ4ol/fovBU1oPUkcYPEN6VJlz5o0ubYZEwslFVcPvux/9AZzgfW68+gc2NZ5NlWBj3WKdykuhuNrSz3vQ4WPJibfQ3wOZbvC3LjLtRnBPfKYTvx68RS6A6Khcenx8wmnJaBOOq/DxM0VZ64nV8RQuZCSfnwaoPFcI9Bwj4hOm4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212356;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=u8MPSkeEXoEUBttnnhXtqn7icL18NVEhqR4kh84n23M=;
-	b=QQNQb9T47bra1c/5bj2A9ONcpperFj01d9a8pitGmBE0QFlPgiLmwBBI3+pw8Nw9
-	tJ5qeRwA2nOA5wvT+nxm5hJa7R1OZdPkgQTsJUkgYdgqHVLW3d14RmFtGyg64OSlOHH
-	QRvUwsmOiMZ87zD89hU7Tqb458YXmMBE73k5IHak=
-Received: by mx.zohomail.com with SMTPS id 1784212353185462.13311224881875;
-	Thu, 16 Jul 2026 07:32:33 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paul Moore <paul@paul-moore.com>,
-	Eric Paris <eparis@redhat.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	audit@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 02/24] libfs: allow custom validation of stashed inode data
-Date: Thu, 16 Jul 2026 22:31:28 +0800
-Message-ID: <32a639e0eed4fce9c68424748e46ec3b8f575b38.1784204592.git.me@linux.beauty>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1784204592.git.me@linux.beauty>
-References: <cover.1784204592.git.me@linux.beauty>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: E0D9620010
+	bh=qXj/ylmXdmqbjEPyQgiWZrVSrCcZeklAgzKFbFtJ76k=;
+	b=X+mwDBP6ouUYjYN52rdupIfgpJh4rfedcxCa3/+Q2iAw+blfR/GmJwIZLt1G6/T3S4i7R4
+	eIsG2tuxYy7+uTZliARAYzS4IcSb5PO3krJyzCTrx5+RhrGXv4pjO6DGReg96bkoUrbq4k
+	Lx8JeY2IOw5fX6xQGz5MLn7E+Tus1jg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=WHweq6s6;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of 3-OpYaggKCIsyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3-OpYaggKCIsyprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784212219;
+	b=KgNzloSyKxmYSM7RumA1i3OGvumwMvyhpMEamdiukmHq/ZpdyDlWcPxi7ZNGEmcrca2xmB
+	67OSSfgOV0WM7kzs2pYNk6pfnIFabz6NxoGiLJ8i1ct5nmNDII4xSXj6+dH0DFhppZIsjY
+	K03t56csijVJ1JIoeUOPFY1CnKtqpVY=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493e94719e7so44583195e9.0
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 07:30:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784212218; x=1784817018; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qXj/ylmXdmqbjEPyQgiWZrVSrCcZeklAgzKFbFtJ76k=;
+        b=WHweq6s6Q0X1E4vOrfX9S3MnJ7sMYhr6eIhX36KKomTomnQpazpq1i29PemXWqGYCK
+         qNnpblQcx4p/dRbVDI9+LEUqhAwe6mCJfO8Pv3tzXqr01cU1euK9THI8Gc6cw9ZLw2tH
+         WSbhvgWTEhYhZKKeLYMWw9Kn6I21Fno8yS3z4ayPdSjNHZfxCsEsrJl9d9BGeQ1K7mTL
+         zik8r/zzwFy7NcTxDFJxifm4rl+YqTMtwrptP8+ZwY4vpLVdoNFSuzCTf2qveF2yiBqT
+         4fE9z4JGvZvjbWTz8lZLjHblQEJW1XXynKj0QxFK4SacvMC6n2aIv09Aa6OkCOPomY4l
+         4pQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784212218; x=1784817018;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qXj/ylmXdmqbjEPyQgiWZrVSrCcZeklAgzKFbFtJ76k=;
+        b=cuUN/uCTCjpRQQ5EXM+xTV5LoikF+MX/izISJvvlXoCVwdt7btNYoqeMBrR4PiNewN
+         EAJJ93TPY/b/XB/a1X3quLtdmlYELLl8Lye8bTc/hvKK72yWAgYurfMWfJwjmgfc2YBR
+         TGmhrMRPusDwob14rE4WESuAQQEbTfnFQ1uChAvCLZJdKaLmDCosE6YOikVSiJSuO3BX
+         SqhocryVFZV522ImZSVtyUHBLAFHETvThk0Dqnpi0AHfBkKkgfBirtwM239nzPYIulUE
+         oP7M3QJWNEirUvrvc50wH0pey8deZVsVOoJCtIeIG63mi9hjZDYicMge3wcQ9X1Jctct
+         cZhg==
+X-Forwarded-Encrypted: i=1; AHgh+RpQPkOu7gU/NPhRCahJdziBPWpNXyHtyl8VY/hsY1fYBdNv4mV1uZcISZcODZ4cxRxjdsHFt4CcPg==@kvack.org
+X-Gm-Message-State: AOJu0Yya5cSmGFzbd8bb6AhdH+ny32eBGGUokFxDSrzLiAQseDbSHfPS
+	z+MIZBKi8I4+s/ncEmHOctTsLfnZLFyQKRhJf8Ka0s0BUSnyAvjEAjMJ4oG5o3C0ny+KuXNTJt3
+	PCQbs24QyMHnS6w==
+X-Received: from wmbdr10.prod.google.com ([2002:a05:600c:608a:b0:495:4728:580])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:628f:b0:493:d305:b8f3 with SMTP id 5b1f17b1804b1-49538ff827dmr104868985e9.3.1784212216047;
+ Thu, 16 Jul 2026 07:30:16 -0700 (PDT)
+Date: Thu, 16 Jul 2026 14:30:10 +0000
+In-Reply-To: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+Mime-Version: 1.0
+References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+X-Mailer: b4 0.15.2
+Message-ID: <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
+Subject: [PATCH 1/3] mm: move internal mempolicy APIs to new internal header
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev, 
+	loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Stat-Signature: 3ix331dwkzqwb9ywtcbazbmmt7r3zr8u
+X-Rspamd-Queue-Id: CF0A6A0008
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Stat-Signature: ry5zzziqxkte8tb74mrigny785heoaoo
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784212428-145869
-X-HE-Meta: U2FsdGVkX1/vrhBNaNeeioeFOdhbISx4S/J+Jjqt2tKwsC2ifjX4zaxwm4aFNnYuj+EQKX/FtDP1GtF2SrNb65HvPqZj+U83L5EktE4IHyEH4ALQ6KZdRiRVlkRnAuonXSYv4ORZdxhIxpuWz+5cGBB5se95JK5cBUQSBIqN6SvU0Bp8sB/NV+vvFiJz5XLe1QLJN3B7Q7iSCmhrPO+poo3cvr33l4OpL2QCgZTXojEHS+92uw6m0IS3b2QwCiQSy0GQXiZrGxTM+Zn744g2S2VrWHs2qvJx3ZZ4LpeCNewSJYaERbngNzuBYo3NJYUEF/GsPWuWHkvbNXxHVHmPWiasyuFU2rCMhMW99IOd4gYiiyFfY9Moy8eAzYSF98G9rrkLXDDvYdH46m801l4+bp84cXlNtNApFdM+7wm16Gn3gQs72pIijvQJZKdo9lBdNX3wekozQ9P0Uh3NtXoV+blGgcS7okfr4w28lqlM5YcrmXcHEGQBTozqpbGJHCzLz+/laV63br8dEO/ElwUCIWRu3eR8uMTPIgn8yDvzeh+0vgBRBo8iOGEARoPg+DLdLraZcPcm+9NpR7rcnjv1WdyzXnr1aau/N8Q6vjfufLp65XXeUOgBpFqsVqe1j7XWUtpWLjBSwFAXh2kOMOvE4YU8bjE4Vw5qfuSSerA0YRKiWrRLAIdni3tTekDEyMZSZDUP4T+aD3CkLir9zH74OKOJJOM18ioeDB7fheI3/gOA8VKn3QsWOMDaVa/Y0Mv+yP8rdz3ssXBwNKDPeSbyZngP4fT911btKV/7gtHeYOHGKqqCCRVMDju6JesEzo9+aVLBm+ejmykZgQ/00aG3YZMVyrkc7YTO6Xv0rLMenbQEdJNE8lE9JTipCa5QvB12VGWNvix4ZrtuldvwvulO4d2/BFXh8fh4Lwc0wv1dZub6WZjVRVephqfFVozrbLBvIBE0/lWa54QTPfQi0bp
- 1IsuzEbr
- j8k47VN1hKUrsdDEudSkQP5SNogt809DoD7KAiyY8PaPVur/VBnMfooqqllsGBK/yN+7COPmDJj0Whr1uIh6iTmIFbszA4ZFDSH7LpHDmGugJPlMkK88Mk7nQ9/xxUlo8NcHPpROaZmHzyV0OHeNvAH2qKog9PoaTOQxuhtGWR6oum889z/4mIuay82d6gwS3aQhwduiFlDuXuyUgpyoip0H/Yfdv6vshwfDLGJlTX3ey5EC3GgK3UrrytUurXQ7sLXHdDHK2Rym9JSCHWorX1P5fdqHoWcdrjNbRvQLFnAe2JJ2pW5AupVw8yjMNr2kjwAeyyxHks4A4B45qiBzTRCwyKvX2v2g/0G+eRCKkAqdunJlfLf+m+CaD214L3V37x4ECDpYb9yVhV6PbNKU4XVwrrKO9apAVdmF0spOsKB/0YE3JBjGR5wU37TwFplMySYfH
+X-HE-Tag: 1784212219-192520
+X-HE-Meta: U2FsdGVkX1/x2v9YX7eAvQ7CDbeVnZjqR3PskkF8PfWsmD/WnOeHIAC5e9mp14J5nV/3WqK3+h3ZqBcVCuVVdbogkXOCmeLorDh1k69rOUi8QLsdfYIN6nmLORmwIlg6geMZyRzPV74ygSP5pixKFU26wOHE+tA1W/JqBIUpV9iU6ypZkD8fS11Gic9VpKnO5gk31T8zRuaJX9Hf9Ecax+8STtKCKQo4QMdXl7c+ffhwDXZ1INw/yg//KGqtQxUW3GT22Fix9aH0YxhrNacy1Rbm+GxLPb9HeROLvLQOVxLLioXU3eawmAytdXyyk/blt88Sf6YUgTOKmC8v6/gUbRfM+406CDNnMFamDK9J9W7nSE6YkHx7XYxCD/5OzJC2T8C+mvQI+gDIrw5GsdCvr+6AoPGr11dB1BB6bauhhbJ8YtPgop8s6i0V3Tudo4amRhYC2jteZhjFhS+jOKvgouB7pckCqYOWLamRMt7Dm12N4jo0zJv/YtgT9DGVmSzaS5UUOH6sk7jUlKcU/+TphMX4l+VvVkH4AaYlpxoGvQPXeda683IPwbvNnS50mUZkYZ0vKl3CPJhLxsoLWV6LqxLxdtyG5kLPobIXzWwqPTnHD9kND7O5XDvzBHsEukG1y0v+eryAOF56DcT/Vxjjl2nhGGt9OXEnoLxbA3jtFTYhorbJkOfBk3EX43QQJuSLza2T18aLF7CGObH838lVLmMA27TYIGTP3JcndEYa2Z+DGerQne5vBfpTcvrtRD8wIwapJ0wQ81CUZsnQ+LalrfocOucrmywklbC3gy/cntDNFVAgUlwGNHBDsaB53qtjEQTkr0uyNu1ktCwmuY/RLZ2aCvzXrBDaXJJqKJki5rTovikdGzTd5OE9GGLuWCZVbcaaBUEMxryPzxYzrXX97YScMlzm6Acc4bgLSwCaXGtk1mtAMSX5FWzYQszzycYUJY12OdfYdSykJ0OgRoc
+ FP3SmJtm
+ SHWoFFB0sXhJuO8jOsrKYaJ9ubyvsSI3kJSiQe7Q6YUf57kNlgdURfMgHDe0fiqoj+v1OKmDC10Pzbn5fXyfM650wNG0SsquH9imO/58RfV06qoje+WgttDyh01MP9Jbg+51y/JX7gU9MZQwaUzvwAUtqfSKJMCCn24UK44HfwZcylN3QBxZUwA6Zuvt7rGqDEom5NeB3IWk+IHikR7KHhbmIzJRtZB0UhQjzUpBFOwkGiRfrGnQYH9uz5gXqE+usekE9b/SVMD7j2CegeRhK+ebK3QRdstXq52zLLSrnFZsnR6iLR/P7lf1eFwsCFDy2aEPVFFr2vgxuweWBh4rVp+NeS5Gdjyh04y3/KMfBJAt5hN2nVihlJYI4PcVxlYDCWWEpMI1tmhPA6s68yfhmf0aXRhcTQQjwA+I+2wHYeNZrC5fliR2NkUDETKDQBVv1leGLxpDTf4BiuUC4siYyHn78+pv8EPX/Ipx1sgwZsCHh4nark+nXVXSX1Mg35FAVL5y/7HtDS61wZ0i9cgnEdBnBrd4KPh4Mi7FVm9xXA48GpNmB7FqbvFb0uljTUhrAPGy0P2NIW6nSGQdEnoLNRYuaR8WE5kI4ji0sxhTbK/dPD2gAvttsgP+aBCnFu6GVJoJs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,49 +129,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-path_from_stashed() assumes that inode->i_private is identical to the
-caller data used to find or create a dentry. That is too strict for an
-inode whose stable identity can later resolve through another object.
+There are no external users for this surface, reduce the scope.
 
-Add an optional data_matches() callback to stashed_operations. Existing
-users retain the pointer-identity check when no callback is provided.
+Ulterior motive: a later patch will add an alloc_flags arg to some parts
+of this.
 
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Li Chen <me@linux.beauty>
+Note it might seem like this could just go in internal.h, since it's
+pretty small, but actually it will eventually need to import
+page_alloc.h, we don't want to import that from internal.h so best to
+proactively created this header now.
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- fs/internal.h | 1 +
- fs/libfs.c    | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ MAINTAINERS         |  1 +
+ include/linux/gfp.h |  9 ---------
+ mm/filemap.c        |  2 ++
+ mm/mempolicy.c      |  1 +
+ mm/mempolicy.h      | 31 +++++++++++++++++++++++++++++++
+ mm/shmem.c          |  1 +
+ mm/swap_state.c     |  1 +
+ 7 files changed, 37 insertions(+), 9 deletions(-)
 
-diff --git a/fs/internal.h b/fs/internal.h
-index 174f063575558..71cc43e72b33e 100644
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -334,6 +334,7 @@ struct stashed_operations {
- 				       struct dentry *dentry);
- 	void (*put_data)(void *data);
- 	int (*init_inode)(struct inode *inode, void *data);
-+	bool (*data_matches)(const struct inode *inode, const void *data);
- };
- int path_from_stashed(struct dentry **stashed, struct vfsmount *mnt, void *data,
- 		      struct path *path);
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 5a0d276379d13..68cc1671b4699 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -2260,7 +2260,10 @@ int path_from_stashed(struct dentry **stashed, struct vfsmount *mnt, void *data,
- 	path->dentry = res;
- 	path->mnt = mntget(mnt);
- 	VFS_WARN_ON_ONCE(path->dentry->d_fsdata != stashed);
--	VFS_WARN_ON_ONCE(d_inode(path->dentry)->i_private != data);
-+	if (sops->data_matches)
-+		VFS_WARN_ON_ONCE(!sops->data_matches(d_inode(path->dentry), data));
-+	else
-+		VFS_WARN_ON_ONCE(d_inode(path->dentry)->i_private != data);
- 	return 0;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8813d5d7eb0c1..9cde99c259639 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17068,6 +17068,7 @@ F:	include/uapi/linux/mempolicy.h
+ F:	include/linux/migrate.h
+ F:	include/linux/migrate_mode.h
+ F:	mm/mempolicy.c
++F:	mm/mempolicy.h
+ F:	mm/migrate.c
+ F:	mm/migrate_device.c
  
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index 872bc53f32ec8..e4e974a6e5f90 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -11,7 +11,6 @@
+ #include <linux/sched.h>
+ 
+ struct vm_area_struct;
+-struct mempolicy;
+ 
+ /* Helper macro to avoid gfp flags if they are the default one */
+ #define __default_gfp(a,b,...) b
+@@ -274,8 +273,6 @@ struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order
+ #ifdef CONFIG_NUMA
+ struct page *alloc_pages_noprof(gfp_t gfp, unsigned int order);
+ struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order);
+-struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+-		struct mempolicy *mpol, pgoff_t ilx, int nid);
+ struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct *vma,
+ 		unsigned long addr);
+ #else
+@@ -287,11 +284,6 @@ static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
+ {
+ 	return __folio_alloc_node_noprof(gfp, order, numa_node_id());
+ }
+-static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+-		struct mempolicy *mpol, pgoff_t ilx, int nid)
+-{
+-	return folio_alloc_noprof(gfp, order);
+-}
+ static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+ 		struct vm_area_struct *vma, unsigned long addr)
+ {
+@@ -301,7 +293,6 @@ static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+ 
+ #define alloc_pages(...)			alloc_hooks(alloc_pages_noprof(__VA_ARGS__))
+ #define folio_alloc(...)			alloc_hooks(folio_alloc_noprof(__VA_ARGS__))
+-#define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
+ #define vma_alloc_folio(...)			alloc_hooks(vma_alloc_folio_noprof(__VA_ARGS__))
+ 
+ #define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 1dbb4c6f824e9..0dd8e2a15d746 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -52,6 +52,7 @@
+ 
+ #include <asm/tlbflush.h>
+ #include "internal.h"
++#include "mempolicy.h"
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/filemap.h>
+@@ -63,6 +64,7 @@
+ 
+ #include <asm/mman.h>
+ 
++#include "mempolicy.h"
+ #include "swap.h"
+ 
+ /*
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 5720f7f54d942..31c4e9f49b5e9 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -119,6 +119,7 @@
+ #include <linux/memory.h>
+ 
+ #include "internal.h"
++#include "mempolicy.h"
+ #include "page_alloc.h"
+ 
+ /* Internal flags */
+diff --git a/mm/mempolicy.h b/mm/mempolicy.h
+new file mode 100644
+index 0000000000000..d80fe4c559786
+--- /dev/null
++++ b/mm/mempolicy.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * mm-internal API for mempolicy.c. Public API lives in
++ * include/linux/mempolicy.h.
++ */
++#ifndef __MM_MEMPOLICY_H
++#define __MM_MEMPOLICY_H
++
++#include <linux/gfp.h>
++#include <linux/mempolicy.h>
++
++#ifdef CONFIG_NUMA
++struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *mpol, pgoff_t ilx, int nid);
++#else
++static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *mpol, pgoff_t ilx, int nid)
++{
++	return folio_alloc_noprof(gfp, order);
++}
++#endif
++
++#define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
++
++unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
++				unsigned long nr_pages,
++				struct page **page_array);
++#define  alloc_pages_bulk_mempolicy(...)				\
++	alloc_hooks(alloc_pages_bulk_mempolicy_noprof(__VA_ARGS__))
++
++#endif /* __MM_MEMPOLICY_H */
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5071177059a96..69f561332bb93 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -41,6 +41,7 @@
+ #include <linux/swapfile.h>
+ #include <linux/iversion.h>
+ #include <linux/unicode.h>
++#include "mempolicy.h"
+ #include "swap.h"
+ 
+ static struct vfsmount *shm_mnt __ro_after_init;
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 5be825911e645..8ccd03c39a407 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -24,6 +24,7 @@
+ #include <linux/shmem_fs.h>
+ #include <linux/sysctl.h>
+ #include "internal.h"
++#include "mempolicy.h"
+ #include "swap_table.h"
+ #include "swap.h"
+ 
+
 -- 
-2.52.0
+2.54.0
 
 
