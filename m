@@ -4,94 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A151C44501
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 02:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4546AC44501
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 02:30:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25BD66B008C; Wed, 15 Jul 2026 22:29:22 -0400 (EDT)
+	id 2AC4E6B0093; Wed, 15 Jul 2026 22:30:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 232F26B0092; Wed, 15 Jul 2026 22:29:22 -0400 (EDT)
+	id 25D756B0095; Wed, 15 Jul 2026 22:30:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14BBD6B0093; Wed, 15 Jul 2026 22:29:22 -0400 (EDT)
+	id 19A986B0096; Wed, 15 Jul 2026 22:30:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6F66B008C
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 22:29:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64CE2C0354
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:29:21 +0000 (UTC)
-X-FDA: 84993058122.17.21BB1FB
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 55CB8160003
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:29:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rdhgnoOF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D45BF6B0093
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 22:30:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4D574120339
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:30:37 +0000 (UTC)
+X-FDA: 84993061314.05.180A70C
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CD553A0008
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:30:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Rtq47d/B";
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784168959;
+	s=arc-20220608; t=1784169035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ahnMBpv0EUvokoPv1D+yV8tvyG49SF0lRDVbaeWeWVs=;
-	b=0JQZB98BX3wxDl/6E+3K8FoMvOQ4zeHfymQ2SipyHIwSTgpbcGZTK/6O6xA2KsEtZRNeQG
-	3BZ78OgesYzS8RrikZhyPWob1vEQ3bmk3ZSDufx6GtEwPhqfmzN66AYXmHr4h204C8bXna
-	D1HPAAu3Lp5umcJ+ERG7zj0yR40mW00=
+	bh=LNqDS6Sst+3PphAHyUf5zrIect6KbXwTAMVNSLXGdEo=;
+	b=7o+jg6ywifWmeGkDP/Ihf/TZ55uDjAR4dku9MoFoKbV7PdWa4G/jNcZl4n/cRI2YNLr/rN
+	9PcH/JlfwrOpSi5OBa8uH1pQywdFNJIumpokERpn6a1MOmYnn8guBhrw/wOt8k5QrGeCFZ
+	Jze5/id87KkRGV/b9TAZbb2pRtHA1Po=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rdhgnoOF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Rtq47d/B";
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784168959;
-	b=Kv03825M6vb6TcPybHZ3KCmX0PmXl6d8rHptNfGCbq5fiieQJF21vdAnAfXqPBrJ5LbaeB
-	0BfeVCqo0i3U/q4XPs7SaKcS+uCWMKHV9VcZIN+yb5yh9/IOnLG7lEekZ3apmDzvRIiE1X
-	7Mk5P71IHv7/UI7rbgAp3Q1DK+DK2rQ=
-Message-ID: <c01c77ed-9ce2-43e6-8ab8-dc2a8fb43b4b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784168956;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ahnMBpv0EUvokoPv1D+yV8tvyG49SF0lRDVbaeWeWVs=;
-	b=rdhgnoOFQ2JyOJedrMszmsV7Mi67qyVefKSeNc3lWKTFc7BzvHcnYtOXXripbmfmKojmrs
-	GJUtvcy7tx5/ao03jBE38WEBH9y2TKUAOfObVKwOJjxDI1yrdAf1acx6LQ3rkQcGARhDmI
-	N6wEFt9JzW3qSVST6xCRXxHEvI+EdsU=
-Date: Thu, 16 Jul 2026 10:29:02 +0800
+	t=1784169035;
+	b=UY3siYaaWfqknfniZijzyLskopfw0dvVsbCabU/WDEak6DH5SPJ57tXnykEH2ckjL7oDXB
+	dmR2bj7JsphjUeRhquVvlUIavp/Vue9y7LobwL4NUf7Vk3OdkvUGkvDKCMFtp2Uu6GJQXc
+	+BDyoZf9Y625y/MyQNARempnbPfHng8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784169030; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=LNqDS6Sst+3PphAHyUf5zrIect6KbXwTAMVNSLXGdEo=;
+	b=Rtq47d/BzreaeFfC2kpUoEnxOTBWAHD1VdsaTbBARA7eSjmhTzSTVY5PtJK9xFuT+DBe+Nciww7RgcOOKw4LuiQKjyRrpJB/nlfmGTpAaTtlOG+O7XPNNBeRvuSYfdIljYjLEXlFP2efJUDWUbht2P9v3fC9XCeeVcwdRz7Iyb4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X7B-Pz1_1784169028;
+Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7B-Pz1_1784169028 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 16 Jul 2026 10:30:28 +0800
+Message-ID: <4067606d-2b39-4b17-a3c6-be8f09c6bf96@linux.alibaba.com>
+Date: Thu, 16 Jul 2026 10:30:27 +0800
 MIME-Version: 1.0
-Subject: Re: [RFC v2 0/3] mm/mglru: proactive aging via memory.aging
-To: "T.J. Mercier" <tjmercier@google.com>,
- Zicheng Wang <wangzicheng@honor.com>
-Cc: akpm@linux-foundation.org, yuanchu@google.com, tj@kernel.org,
- hannes@cmpxchg.org, mkoutny@suse.com, corbet@lwn.net, kasong@tencent.com,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org,
- axelrasmussen@google.com, weixugc@google.com, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
- muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- willy@infradead.org, denghaojie@honor.com, baoquan.he@linux.dev,
- kaleshsingh@google.com, tao.wangtao@honor.com, zhangji1@honor.com,
- wangzhen5@honor.com
-References: <20260714121529.2237261-1-wangzicheng@honor.com>
- <CABdmKX3y841t4Oqg3RRHTGXWP-LMMSi_exDuxAc4jR9v9ChD2g@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CABdmKX3y841t4Oqg3RRHTGXWP-LMMSi_exDuxAc4jR9v9ChD2g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: mglru: promote mapped executable folios after first
+ usage
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, david@kernel.org, mhocko@kernel.org, ljs@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <4b921ed528c483e13c9e22d1ae44ba58b4a15b0b.1784096432.git.baolin.wang@linux.alibaba.com>
+ <CAMgjq7C47i-n-e=EGWoBvydp8mT3n-ZFeiLFpY=iTVDayucTRQ@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAMgjq7C47i-n-e=EGWoBvydp8mT3n-ZFeiLFpY=iTVDayucTRQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 55CB8160003
-X-Stat-Signature: wjsihirf57rbc5gnrqy8af7qkkhaeiwj
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784168959-682505
-X-HE-Meta: U2FsdGVkX1/q5JpIR/CiDzDryE69RMs/3mvaV6770+zHPwHkGV0BzUDkS4Df0rPlPP0CyY/gx0KifUqZH+oU67PGIlgILEVU+krFZRDLM3dgY5n3tmA7B34c0ob+KVuVtND09NwdXovaGWRfGlElN12NqNj4xUqkmpl57T7EkdWdxXSqrusJDsYcbPE8E8iT2yAwab7oX5rPXj2YM9PCRukr74rvXiVp4zsMMaUokpBOtrb4cwlRNvMd0gWjf9WWyETN3z+WXBE0yALawp5hg9fJ2iYECqw0j5DOrGnbiuvOIaASv3tmMM/gXDAEwKlTYaTJVUH/+L1gOF8FsMSrvd40vyRqXru6QZ8+Cey5T+Zx2+t0kmQ0GNJp3fThNhemOGGeBQB6JnseeJRbBh+k6Qlfst0VGFs7w7BZQ+v1Qv9UhR5UIo9/WnQorp1qpGiQM7ke2JNVEcdvYyG0LOvJKkbkiZ9tWsFXbJKipVPYA/8u1mKUD4aQA3QzoTVqQqgdSPb81tzrvifb1VxjOAcVzuhz8u4NUj3w1PaSUj7SAmfD5O1Da/v69aYPtklVc1WClANbMDAvd7mjApjulAbgbWZqWU06BT2+AkI900dJMXfIFCncvYxbdhtDnxfJTb2aNJrzfDFwhXQcdLtNrBg38C65em/rTYEWu2vad8kMQ7/9Sbk+2CTeZmtK73hU0A5KLNk52pt5+aqL0vG3Ng71Pof/XjrwUuk29DOmIK38esmr283tPUADN6TUcicLYc2OwiaklzPTzPVmE7zQyJIxi9l7DUEG//PvUxGurvDBpnh3Yapcxqq2gcbsSB/5KAKGEEtzbpPLIGT2e4G3VhmM08RbqB15pUY+G3+mDshZ+AKUFFzVxd6pnex++dWHJDZAt5S9ZCJqu65bH6dI2LZDtec1gHbwFrzXl+1wTwmUK6ghYqzkMXgM7oXT2R5N0TIo6pm2j5hCIOkOdRk3og/
- m8BMaAHN
- /mpmHk7Mou/tQyPxG0BKWCBodkNeVP7SkaOFfooem7hXIDkpoH7W6NtDYLF+8NqfLXiLyLsLCCFOIcbSwiCxdkj8QNaiux3gSL0qd8TiDbQaZ9Mjw3lwqR5mWsN2yzW7bsyWnOVx7TVkW+qheYz6q/oU0eUC+C/5Bwr+l7xrN1QiSBKMD1abcxNnvQggRb4onaLFHyAb7MIhttR9P1QHXkjEDa0jhbchUuvamUtuFcMFrSAdyTuMtwKiNMaWWjnzbhxqOxgEOrdag/oBZ3aUS25eWFFBTh/b420cRNFLE1L1qIk6wJwsLcVe822yiJJ/jQDEo
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CD553A0008
+X-Stat-Signature: 7gjqdeb5ig9u46hrrf6d8jtjm6t1wfsw
+X-HE-Tag: 1784169033-752153
+X-HE-Meta: U2FsdGVkX19TZK60kdeC2FciGZ8/jFgpnRmGX4Zy/WeB8XJklNvv54DXbeM102B8iGiCghFO7KwCdRTHqXmRHCFckZzJf/Pc1dHYZPrWdkc7HvkIiQ0xTb5Sv6qIP0P1etbJ4oklfKg0JQaYuFqJDMIiHzgcL9nDkc1xdBfdvPscPVpAiz2E1hybJsXIdzKELpnjlDKyOe4WtBLhFijpJZp4+y7tVVf7wIBCPg0K7XF6yqdZsoxAM/lne9cu0SMqoNDQn+u1phHasAru/w/uT2FuLnRr2GfHNsjBKEOzUYGkTwlvUtbjTlPWLWB39HXLit6G9wVPPgIYOQcilloyVzD4DVsjzRNBaE8w3tg/KDNQCRKD6KhkaRNX1DVusmLfEU9sBMnrAJOndTEzgZwB8LFh6BFs+91LC/jvj5EcO4s+mQOaquzTtfXT/1w9G8qMH+PBy76R45zdhuTApFx7v5uq+3hpo++iWTaFj2CqUih7hTwQnvjxHGidPTPYxgThn+WcawQVlLmVKVM+ZT7n8V0K2yV8Zi82QtwdRSlDJdQRvIMGL4QtqcpIkmWKjAJCn2ugcCHLSyWW83RYfFmcO2cSySz0d86453eGtYrhj+z7RPDhQwyQRV1B1+MPatz8pxLdoSa6Dro0NedV3n5r+JuVuCfqiQqizoZ0ssJ+rZsqEc56vYX4VBFL/e+vExxd2vk8CsjKf1BuBIAtm25OMmlzwAipVKbEBFtjSedHNU3ZeYTSZfnhjydbtS9r2dvIPyIhtsXYQJcP0Q6FQxZ5XHQ4SVxp5AHGY98bjXL6gGnAfX5d+/B7Dj1ZVhvG0vGgeUbXTwOGUBOII02OBAG2RamEaYhMZIc+Gjt7hsP+TpSc9hGV2eJ1mMCRX04gHiJe+E6SRHRDx2Ih1/S/Pcb7Mq9n36rEGZDCNM7Q9ldLH44gfxOwyBJSu6P4+PHP9VIBKkLCegb9yGPIvsZboao
+ E6jGXNO2
+ TMWvp7cj37MHMAfU7t1aeuYb66k4X1b27asXZyB2ZrZtOxeY90OTVs9CTn9qj1Kzd0KUJnyQEp+oLa1gesTlKi49DVkxx+gn3rKJJotZvGUqVL/GxP3HVICuB2kHPmx7gdzZfKEmSHsXKfJTPGkDDN92YhAiB448aKXSi0CbFvq3J7HAiIFQIRSuNEUDFHtIecNWpJGxN1mnxU61Lb5yy/R+wW9GKW3WKidyGCvirjFomqlB0frXMUwQTlMNzKhXxrbqKKUYxp5hdzEGRM7C3xP35Q70P2dRwRJErP5/kHXUltbVKVdKFb5k9YRvViwo9Oi7HhG3tiLMdDSl7n6NXHZMjSJ1NMbLDK7LA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,31 +92,83 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/16/2026 1:55 AM, T.J. Mercier wrote:
-> On Tue, Jul 14, 2026 at 5:15 AM Zicheng Wang <wangzicheng@honor.com> wrote:
->> The benefit is workload-dependent: file-cache-bound servers gain from
->> aging, anon-bound servers do not, so no kernel default is correct for
->> all.  The kernel also cannot know when to age: on Android the right
->> moment is the foreground-to-background transition, when the app's pages
->> are cold but their PTE accessed bits are still accurate from foreground
->> execution, a framework concept.
+On 7/16/26 12:50 AM, Kairui Song wrote:
+> On Wed, Jul 15, 2026 at 2:33 PM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
 > 
-> When an app transitions and becomes cached, we attempt to reclaim its
-> entire workingset. We basically cat memory.current > memory.reclaim
-> and freeze the cgroup.
-> https://cs.android.com/android/platform/superproject/+/android-latest-release:system/core/libprocessgroup/task_profiles.cpp;drc=65bd7ab941a709bf049871406981022b988e1721;l=706
+> Hi Baolin,
+>>
+>> Classical LRU protects mapped executable file folios through commit
+>> 8cab4754d24a0 ("vmscan: make mapped executable pages the first class
+>> citizen") and commit c909e99364c8 ("vmscan: activate executable pages
+>> after first usage"), giving executable code a better chance to stay in
+>> memory, avoiding IO thrashing and improving workload performance.
 > 
-> File / anon balance vs hotness and generational placement doesn't
-> matter in that scenario because we want to get rid of all of it. So I
-> don't really understand how you'd want to use an aging knob.
+> That's really a long history for those two commits :)
+>>
+>> However, MGLRU's protection of mapped executable file folios is less
+>> reliable. Although shrink_folio_list() checks references, the access flag
+>> of mapped executable file folios may have already been checked and
+>> cleared by lru_gen_look_around() or walk_mm(). Additionally,
+>> folio_update_gen() only sets the 'PG_referenced' flag for mapped executable
+>> file folios, which causes shrink_folio_list() to ignore the first usage
+>> of these mapped executable file folios and reclaim them.
+>>
+>> Follow the classical LRU's logic, promoting mapped executable file folios
+>> after their first usage in folio_update_gen(), giving executable code a
+>> better chance to stay in memory.
 > 
+> Yeah I think that's mostly an ideology issue, recently upstream tends
+> to treat all folios fairly if there is no particular reason.
+> Personally I also agree that some folios are more special compared to
+> other though.
 
-When the app becomes the foreground app again, reclaiming all of its 
-background memcg memory may increase refault data, which may in turn 
-slow down warm-launch performance.
+OK.
 
--- 
-Best regards
-Ridong
+>> On my 32-core Arm machine, with the memcg limit set to 2G, running
+>> 'make -j32' to build kernel showed some improvement in sys time.
+>>
+>> base                    patched
+>> 9248.543s               7861.579s
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   mm/vmscan.c | 25 +++++++++++++++----------
+>>   1 file changed, 15 insertions(+), 10 deletions(-)
+> 
+> MGLRU used to favor and put all map faulted memory at head, so could
+> this be related to a recent change in any way?
+> https://lore.kernel.org/linux-mm/20260526130938.66253-1-baohua@kernel.org/
 
+I haven't tested Barry's patch yet. Personally, I don't think this is 
+closely related to Barry's patch. Though we put the faulted folios into 
+the secound youngest gen before, after aging, the mapped exec folios are 
+still not protected like in Classical LRU, and can be easily reclaimed.
+
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 986dde8e7429..429857852bdb 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -3188,7 +3188,7 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
+>>    ******************************************************************************/
+>>
+>>   /* promote pages accessed through page tables */
+>> -static int folio_update_gen(struct folio *folio, int gen)
+>> +static int folio_update_gen(struct vm_area_struct *vma, struct folio *folio, int gen)
+>>   {
+>>          unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
+>>
+>> @@ -3196,10 +3196,15 @@ static int folio_update_gen(struct folio *folio, int gen)
+>>
+>>          /* see the comment on LRU_REFS_FLAGS */
+>>          if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
+>> +               /* Activate file-backed executable folios after first usage. */
+>> +               if (vma_test(vma, VMA_EXEC_BIT) && folio_is_file_lru(folio))
+>> +                       goto promote;
+>> +
+> 
+> Do you think it's a good idea to extract this into a helper e.g.
+> folio_is_executable_file?
+
+Good point. Will do. Thanks.
 
