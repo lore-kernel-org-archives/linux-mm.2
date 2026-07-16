@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C306DC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDDF0C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:52:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C92356B00D9; Thu, 16 Jul 2026 10:52:38 -0400 (EDT)
+	id CE0136B00DD; Thu, 16 Jul 2026 10:52:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6AF46B00DB; Thu, 16 Jul 2026 10:52:38 -0400 (EDT)
+	id CB7016B00DF; Thu, 16 Jul 2026 10:52:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B34E76B00DC; Thu, 16 Jul 2026 10:52:38 -0400 (EDT)
+	id BCCAE6B00E0; Thu, 16 Jul 2026 10:52:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D5996B00D9
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:38 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1235D1C0105
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:34:25 +0000 (UTC)
-X-FDA: 84994885290.18.8908EC2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EFA86B00DD
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EC29BA01CD
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:43:34 +0000 (UTC)
+X-FDA: 84994908348.13.DD85ED9
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 15B504000C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:34:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b="L5/Ksxx2";
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf07.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
+	by imf18.hostedemail.com (Postfix) with ESMTP id 147BD1C000C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:43:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b="rF//SdgF";
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	spf=pass (imf18.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212463;
+	s=arc-20220608; t=1784213013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R+66Hk3P5OQ2E30mtMifPx8I419shGND6XXMWm0+TK0=;
-	b=n/3niNivyq/ZWAH+J5lEbdK0ZNvKFpkxAOz5Xx87pnmaOMK/oAf72Z95lO98FNRglrScUt
-	DR37x8tV2xMNNW5lSPcWXMB2aXhRs3cENf2mXdUJ2is1/C9yinRNqAVpy/LSr/busjVv7b
-	Q14LN8jlNO1EVrscTIFbsdJWZcJet0c=
+	bh=bGGGL3d8SQPrkB1m/EUNgroSarrv1D2lcVuouiN3SxY=;
+	b=tmroVsyzXq3NnSCTasyoDZKo9NggcCqHI2oFhFOtDUvB5PkWC6YFY38g7BNbgSexv6rqYM
+	6AzYxsRqfh7CRG2bgMn5Zk7Z14U3xQRnsj2bT+dczoWa+usERSQGYR4ocSy68yMbzb37pz
+	NgoBPN9SayDbhqFgLGKWKYsaJ+Z0k98=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b="L5/Ksxx2";
-	arc=pass ("zohomail.com:s=zohoarc:i=1");
-	spf=pass (imf07.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b="rF//SdgF";
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	spf=pass (imf18.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212463;
-	b=mO0V62+ijDnIAikGcXwJEkn79xACHCx1SJKphD+EcxW5vWhus1H/4XQ88xsWwjqwOPHVK+
-	j8IgMYFs8r9PPzIrsJtw6NO6FYz9XhlbtBKczekHMrntL+uz2yVR2H2lDx6dWBYjAYZOFw
-	bMgSKvowiEaHdF3tNuBxe/d7qmCM15s=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212366; cv=none; 
+	t=1784213013;
+	b=tLDmXluQT1cUspY3RuGIt1au8rCr6W3PrOCGdJoqbG+Tn1F6OKFe/NPeT3+ODZ0iNRtuox
+	vd/ulvzVD9Hzz3PeAhxlyT/G19fbvUSumCZ/09l7yjyZB0Kdt/vdyTQQ1dqV9ZSlPHiUw1
+	A0IH7Jq7rForwrem6Q0bTZ6kfwRx7YI=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212529; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=LSCm0FXS6pTpDd80pgcCSlZZ9DRgtAQVdDw0tUlMTjQx796FrRBHIAGMYI/QNUQBitRAcSzamsTr4qhGgF8hMiIAfWnxyjqVT/zJg/os3Ganr9+Z1NZBqoVst6KrYjCGiwTKSBANWJEnbgd5Ofk5V1CWInqQt2u1LSFeCyOS3Dw=
+	b=APwL2Kory6LxGwxE2Np0jQSgi3eymN5zy/9IRRYXqP6sbLiMmYLJmdcTj42oHQMlryKZNCY9pnHw/2rGZDr+06bNDBUDHK2Ykx/+J4+yXLHA/KZnKu+6pVYla+3EpJBGeIdNtIqSmtz93FiHY+NWgMPObvuTaBTl+16WUhH7BVI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212366; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=R+66Hk3P5OQ2E30mtMifPx8I419shGND6XXMWm0+TK0=; 
-	b=B6Bf2BDrgJ81BLAAxDodmQuRr44cTF5rZ7qZvpomg2yTeNltYLefCOtnNwUkXnGBLaS3mUrv3hju2/W9Vl9DFbmSlO7fE2iqjEONYlt9TUUe6Ij777QrlQJLgnEZ8IL0oTfAr0PujUwvEZC8XgSsWJDAs0fIZd24O32D0MDzz+E=
+	t=1784212529; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=bGGGL3d8SQPrkB1m/EUNgroSarrv1D2lcVuouiN3SxY=; 
+	b=hX/f7XuKg42bXQtPuPQtqwB49lcC7bjGkt7HmNbB887UObR8oTVUG9+l088Dq+e3vzw5LRM/4tCxMqxKgKbOtwxCZRunrJ9n++txhjG5plj8W3bycnq+26jm5G/cOjSPWwz4RqqHw9aY8lCb03q2aUl0UGBRjoEdwuyV5EmJ5hU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212366;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212529;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=R+66Hk3P5OQ2E30mtMifPx8I419shGND6XXMWm0+TK0=;
-	b=L5/Ksxx2qsSfR7lIJwR0Ln28svMHuFZSetawrEI3uJtZ0JsvWJKMcM0foWfQeOeA
-	JuBKMJ68jKLjI+L7hIiF9jE82PdVWHCu9XRvPNusdoJBYXpUYh7w9GnlDc/h6mR18VU
-	9IHWRT9rvlEH5nT9AtCnsD0AyUFxQR6z13TYvsuQ=
-Received: by mx.zohomail.com with SMTPS id 1784212363492855.4721543764033;
-	Thu, 16 Jul 2026 07:32:43 -0700 (PDT)
+	bh=bGGGL3d8SQPrkB1m/EUNgroSarrv1D2lcVuouiN3SxY=;
+	b=rF//SdgFtcD9t/RheCbrjsFCmf/0Fu8DJx5xVxIwgwIrA01PiReAGKNXw+a9cTFf
+	DpkWjeenzLpKdxvf3pKG6HqICeiZhvsJ4TFLSBFBMfAKoHLav+MFeL66yo6t00sylSi
+	Xegr3Ll7xJDyY7W2lOD5sTeSL426kIL4EWBI9DMM=
+Received: by mx.zohomail.com with SMTPS id 178421252661435.43741550150605;
+	Thu, 16 Jul 2026 07:35:26 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,23 +99,23 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 03/24] pidfs: add taskless future pidfd inodes
-Date: Thu, 16 Jul 2026 22:31:29 +0800
-Message-ID: <249610d94eb7bba17d625a84786a6b12c517f559.1784204592.git.me@linux.beauty>
+Subject: [RFC PATCH 20/24] pidfd: add initial spawn file actions
+Date: Thu, 16 Jul 2026 22:31:46 +0800
+Message-ID: <263bb4b019eea28c71fdf66d70bf069fc6ed4d41.1784204592.git.me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1784204592.git.me@linux.beauty>
 References: <cover.1784204592.git.me@linux.beauty>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
-X-Stat-Signature: o6orwhcki8ct5h8gqad68gfgbwznt5g3
-X-Rspamd-Queue-Id: 15B504000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784212462-513960
-X-HE-Meta: U2FsdGVkX19Y8kl2tvNd1xDgA6BrAVGpMCPInlGIbAJwYZVNJwZj+V5fSPcluoU7TDQGGtaEGl1NHG/3pPbAQMWkcJLMMBp17x1MnHJMH6uNdo34sWI/lwy4QJ6kWkNaXzncv3ZDLvGxh7A10TAu62vMfagYRk/BOdRYq7izf2cfRTuSyQzR4SaNlB3jwAj35zojW8eciUoeeZPuS85gJKHWsD6CIofNXbxErLGej708SnUG7d/eVWb0Byw2mpenvBQ3FDXMPGLxCxxAjOhCxxvy54nBPAhd1Mo+WVwrcEsZmQ8p+piNKbjIc1aOZC7qBjeBhlECycJphDIvrBXYwEXPlsUISEfTq1dgBul4QozLNIPNjbxKZoLQD9HzT3x/kbLEQnl3ve414c04+w38uibSS6Wp0O3Sxcu9POvbJnxH+oCqFiAAVUytBNsheO3Au0M2fdE6DVjBrAAGaE4g7YG4gANvIchskMx+67hfod/mObL1gWuXwPw93dwKt8LL/fwkrcAZiQrHOXEIO7nw84L2DhsfCQhl4m8/DhoxK6QnIF5fyPer4smP1tctZxB4svSGeSn2ZgGzlL6GDsRgxAIRnVCZS2fiXpQosneH59UdWnr/YQJr8OoVBHUfyVfAA1RI7Gr2k8bDi7RWrUs1/dRMRXPUQa9BCcerqe3mCYGCFJucYZVRfiJIi5prlb+Etcm2+z+nMgDJZNZpSSfdEZ7nvl3rXgPCzeFCprioCI823UIytRcox756YLn9ZMjTZDFnkaaF3TYNC3LxDFWqfly2tzD1Zq1Teg7iyz4DgaQJQYZhHXIXsEqjOCXL5HVKVKZkEGfNvGok4j+4eb0NRhe1UIrcvDwKlJoK/MPcnV8rTDrktU3yZSyUUaY4X0drCzbNkXkIv4Hp476RNhHxJMpyzwOjswNm6QDKfBaxf+ueOmWfqymnUJ+HYm0zea0/5Orfjrp++bo1AuoRz/P
- sj2AVOV4
- qdSEcS2d8/gbcg42Hydfp5k7thjHc1P9fyGlzjsmcjxcbaHq6nm4T68nbnUmKhCfgATqHrHxlF2jXLlwhdSEgch7XmYTgb5NKHRvK1SiWjguDVUxgf1X39+IHA8C7rSRlrEkfsOoJNCrzIad5LRp3oz0eanwSP50HNZtalgUUAcXpicOZaGUP51KT6OraOAJmjrhPH/1Yvr8bOvGM3XpNTBZfQj4jHiDDKlXUSqJXjBp3bukJstborrh89Sx2pIO+Anffp8dE6D8Pxyp952/4fQTcc2997HdqiOzxkUBTSzWMDwQ3vywpYSGSqBukHeWQ6L5190eSZ9TVpiNoJi9JcxGjwIMehFGZU9mHPIHkBJNpFoDfkv6u6ETaJICiW2Aws5idIbfP+8AmRDt5O3zrZiJ1G7srrid5wjVM0UpVSyp29JwEXLQHeN5+gd/UJMD7LDTK
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 147BD1C000C
+X-Stat-Signature: omcepwux9ph71dxou1qburhi4d55zfpf
+X-HE-Tag: 1784213012-940818
+X-HE-Meta: U2FsdGVkX1/F7KXGxBS+5sp50tzueMOaRpn37z24FkIOvmtVGYm017yFkyz4tRIiZ+CQP8z2RckZHOXqFRGI8bhbL4a2mhH9d3udJ+NaOzCSi/CeAZlph/P6q29v33QTPr/SQsxI+KVc63ozUq76SB+yeqRpTCyGwUS42r+yMJRUBgDRQt+3Iz5VWHOI+t+VagsjCHlah5HFsZTEhXrS5r3QVNHfYco8SJwVRUc0xPo0YJuXUfx8ri8o+Ff602oC+qj81NCIJCCCnjhGSHnSrHC9aGh8NLkiLCz/K81ayP9Qdv/hEJTHOizZPBUpsuLBPuIZ3KUzHDx+52PWUc/8tssdsPm5diU68R595CoaUD2naF6R9bQvb8ZRChr1Hjx6AYb/1d5/Zcx9hpWZbMXX4PU4NZAXDVALM9WoWuVOaewHVSgl6K48TukTZX+4Zq0vkXH1rKqY68jV97//TMFvg/nDd8iTzZ2tnam2l29eiLEpeVtaz2b5aEuiGUPRdu3EDhxjIlGmkc6zUrhZOxOkqqXYnL6ySAYASZI0KHik7O6X/DZ9Jlh9gZAsHgn7A4dn4kPULTWNhLLqZDzvyYIBViei3cNZjPkXQrEQ61J8hHbqF1lwK5akYNnAotcSX3zS133OR5OaF3GbmyRq9CTuBsP3Qq01iK8OBxPBbBZkx5BT38oi4uQGjI+NZKRyRxnzDJRLOujKZ+wnBKuJX5ivbZSdsReE19oQEOmXMjxRBypd8vUQKWnlYTNB2u+nRh4NEVGJ7xheTN6Oe6KQ79L+XLTIArK8uC8au9csR2Jqx+7DpmoF6E3LLG1KnLm9Ndnv9sSwAfvW7zO9fPwa1tJw+nB7pL5QOx26yY1xD8TC4qXc0Kc9fOnrDFI4FRmLzDwjl9tgVdi+pDyS6mK6jy/DIR2J2zCJXmC7NxNgm7rqZEpo1tA75KksxubQFXHbb4TcsB7P9LceaFhrEdifMeb
+ C567khqO
+ E9+FoHwq9GNCWrXns7sXJJI9eXXwDnIb5XYoIyfIopzFMZGQ51VBUHLm/MruMfyLjWFSYDk9x1uyESkal8EswWoDNxkz0BiW4plObnalfgm6LwgdQYowCSsL0mag/aEGhZ5uLto7evmlf//lbyWTGeF5AkqBiWMvEVdeytl66bTOngMf4iHsV5W33+O/+shtXLZzT52sqSzx+PgVOsyTJjKXC5MRlM/Zs/PQrhcitp/xYgteW7xKE4LfVn4EQnpP3DNlj/Zbo+uS/bHS1QsExZunRLxqNRPHxeE3XDuuY94bPPc6Bbbd0XSUOnHL/DSs7noPsNUpU/b7U4AHgelxtFKISBQ2mtQvVTl/fozUHrzGr7Qa03UvUn4ArjS36Mp6BKxVlBC1b6DI0amkafVN2nplwe9eUCY6INW5qimKHlwlTFBDE5AoaFdxOmS03Z0FdRf1cYBXD5Arx1bwoXk8qa+ri4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,526 +123,367 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Teach pidfs inodes to represent either a struct pid or a typed future
-object. Use the ordinary pidfs file operations for both kinds and
-resolve a future object through its callback.
+Allow pidfd_spawn_run() to apply an ordered list of DUP2, FCHDIR, and
+CLOSE_RANGE actions before exec. Copy and validate the complete action
+list before creating the child so malformed input cannot leave a
+partially started process. Use a versioned action stride so userspace can
+pass larger future records. Bound the payload by 64 KiB instead of a fixed
+action count, keeping allocation bounded without imposing an arbitrary
+limit on small records.
 
-Allocate a stable inode identity without allocating a task or struct
-pid. Ordinary pidfd operations return -ESRCH until the future producer
-publishes a process, while inode-only GETVERSION remains available.
+Apply actions before completing the delayed executable name. This makes an
+FCHDIR action establish the cwd used by both relative executable lookup and
+the child transaction's AUDIT_CWD record.
 
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- fs/pidfs.c            | 254 ++++++++++++++++++++++++++++++++++++++----
- include/linux/pid.h   |  10 ++
- include/linux/pidfs.h |  21 ++++
- 3 files changed, 262 insertions(+), 23 deletions(-)
+ fs/pidfd_spawn.c | 171 ++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 163 insertions(+), 8 deletions(-)
 
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index c55f46c32801d..ebd8cc463811b 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -25,6 +25,7 @@
- #include <net/net_namespace.h>
- #include <linux/coredump.h>
- #include <linux/rhashtable.h>
-+#include <linux/security.h>
- #include <linux/llist.h>
- #include <linux/xattr.h>
- #include <linux/cookie.h>
-@@ -35,6 +36,8 @@
- #define PIDFS_PID_DEAD ERR_PTR(-ESRCH)
+diff --git a/fs/pidfd_spawn.c b/fs/pidfd_spawn.c
+index 0e52503976c0c..3e46a12c0ba07 100644
+--- a/fs/pidfd_spawn.c
++++ b/fs/pidfd_spawn.c
+@@ -5,9 +5,11 @@
  
- static struct kmem_cache *pidfs_attr_cachep __ro_after_init;
-+static const struct file_operations pidfs_file_operations;
-+static struct vfsmount *pidfs_mnt __ro_after_init;
+ #include <asm/syscall.h>
+ #include <linux/audit.h>
++#include <linux/close_range.h>
+ #include <linux/cgroup.h>
+ #include <linux/completion.h>
+ #include <linux/cred.h>
++#include <linux/fdtable.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
+ #include <linux/mm.h>
+@@ -23,15 +25,18 @@
+ #include <linux/sched/signal.h>
+ #include <linux/sched/task.h>
+ #include <linux/security.h>
++#include <linux/sizes.h>
+ #include <linux/slab.h>
+ #include <linux/syscalls.h>
+ #include <linux/task_work.h>
+ #include <linux/uaccess.h>
++#include <linux/vmalloc.h>
+ #include <uapi/linux/pidfd.h>
+ #include <uapi/linux/wait.h>
+ #include <trace/events/sched.h>
  
- static struct path pidfs_root_path = {};
+ #include "exec_internal.h"
++#include "internal.h"
  
-@@ -106,6 +109,64 @@ struct pidfs_attr {
- 	};
- };
- 
-+struct pidfs_future_file {
-+	struct pidfs_node node;
-+	void *data;
-+	const struct pidfs_future_file_ops *ops;
-+	struct pidfs_attr *attr;
-+	u64 ino;
-+};
-+
-+static struct pidfs_node *pidfs_inode_node(const struct inode *inode)
-+{
-+	if (!pidfs_mnt || inode->i_sb != pidfs_mnt->mnt_sb ||
-+	    inode->i_fop != &pidfs_file_operations)
-+		return NULL;
-+	return inode->i_private;
-+}
-+
-+static struct pidfs_future_file *
-+pidfs_future_file(const struct inode *inode)
-+{
-+	struct pidfs_node *node = pidfs_inode_node(inode);
-+
-+	if (!node || node->type != PIDFS_NODE_FUTURE)
-+		return NULL;
-+	return container_of(node, struct pidfs_future_file, node);
-+}
-+
-+void *pidfs_future_file_data(const struct file *file,
-+			     const struct pidfs_future_file_ops *ops)
-+{
-+	struct pidfs_future_file *future;
-+
-+	if (file->f_op != &pidfs_file_operations)
-+		return NULL;
-+	future = pidfs_future_file(file_inode(file));
-+	return future && future->ops == ops ? future->data : NULL;
-+}
-+
-+static struct pid *pidfs_inode_pid(const struct inode *inode)
-+{
-+	struct pidfs_future_file *future;
-+	struct pidfs_node *node;
-+	struct pid *pid;
-+
-+	node = pidfs_inode_node(inode);
-+	if (!node)
-+		return ERR_PTR(-EBADF);
-+	if (node->type == PIDFS_NODE_PID)
-+		return container_of(node, struct pid, pidfs_node);
-+
-+	future = pidfs_future_file(inode);
-+	if (!future || !future->ops || !future->ops->get_pid)
-+		return ERR_PTR(-EBADF);
-+	pid = future->ops->get_pid(future->data);
-+	if (WARN_ON_ONCE(!pid))
-+		return ERR_PTR(-EBADF);
-+	return pid;
-+}
-+
- #if BITS_PER_LONG == 32
- 
- DEFINE_SPINLOCK(pidfs_ino_lock);
-@@ -166,6 +227,7 @@ static u64 pidfs_alloc_ino(void)
- 
- void pidfs_prepare_pid(struct pid *pid)
+ static inline void __user *pidfd_spawn_user_ptr(__u64 p)
  {
-+	pid->pidfs_node.type = PIDFS_NODE_PID;
- 	pid->stashed = NULL;
- 	pid->attr = NULL;
- 	pid->ino = 0;
-@@ -275,7 +337,7 @@ static void pidfd_show_fdinfo(struct seq_file *m, struct file *f)
- 	struct pid_namespace *ns;
- 	pid_t nr = -1;
+@@ -59,6 +64,9 @@ static inline struct user_arg_ptr pidfd_spawn_user_arg(__u64 p)
  
--	if (likely(pid_has_task(pid, PIDTYPE_PID))) {
-+	if (!IS_ERR(pid) && likely(pid_has_task(pid, PIDTYPE_PID))) {
- 		ns = proc_pid_ns(file_inode(m->file)->i_sb);
- 		nr = pid_nr_ns(pid, ns);
- 	}
-@@ -305,11 +367,15 @@ static void pidfd_show_fdinfo(struct seq_file *m, struct file *f)
-  */
- static __poll_t pidfd_poll(struct file *file, struct poll_table_struct *pts)
+ #define PIDFD_SPAWN_EXIT_FAILURE	(127 << 8)
+ #define PIDFD_SPAWN_MAX_CONFIG_KEY_SIZE	256
++/* Bound allocation without imposing a fixed number of action records. */
++#define PIDFD_SPAWN_MAX_ACTIONS_SIZE	SZ_64K
++
+ DEFINE_FREE(pidfd_spawn_dismiss_filename, struct delayed_filename,
+ 	    dismiss_delayed_filename(&_T))
+ 
+@@ -82,9 +90,11 @@ struct pidfd_spawn_state {
+ 	struct pid_namespace *creator_pid_ns;
+ 	struct delayed_filename filename;
+ 	char *staged_path;
++	struct pidfd_spawn_action *actions;
+ 	struct user_arg_ptr argv;
+ 	struct user_arg_ptr envp;
+ 	unsigned long audit_args[4];
++	unsigned int nr_actions;
+ 	int audit_syscall;
+ 	int result;
+ 	enum pidfd_spawn_status status;
+@@ -139,6 +149,7 @@ static void pidfd_spawn_free_state(struct pidfd_spawn_state *state)
+ 		put_cred(state->creator_cred);
+ 	if (state->creator_pid_ns)
+ 		put_pid_ns(state->creator_pid_ns);
++	kvfree(state->actions);
+ 	put_pid(state->pid);
+ 	kfree(state);
+ }
+@@ -192,6 +203,7 @@ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
+ 				      struct filename *filename, int result)
  {
--	struct pid *pid = pidfd_pid(file);
- 	struct task_struct *task;
- 	__poll_t poll_flags = 0;
-+	struct pid *pid = pidfd_pid(file);
+ 	const struct cred *creator_cred;
++	struct pidfd_spawn_action *actions;
+ 	struct mm_struct *creator_mm;
+ 	struct pid_namespace *creator_pid_ns;
+ 	char *staged_path;
+@@ -201,14 +213,17 @@ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
+ 	 * after the child no longer needs the shared setup payload.
+ 	 */
+ 	mutex_lock(&state->lock);
++	actions = state->actions;
+ 	creator_mm = state->creator_mm;
+ 	creator_cred = state->creator_cred;
+ 	creator_pid_ns = state->creator_pid_ns;
+ 	staged_path = state->staged_path;
++	state->actions = NULL;
+ 	state->creator_mm = NULL;
+ 	state->creator_cred = NULL;
+ 	state->creator_pid_ns = NULL;
+ 	state->staged_path = NULL;
++	state->nr_actions = 0;
+ 	state->argv = native_arg(NULL);
+ 	state->envp = native_arg(NULL);
+ 	memset(state->audit_args, 0, sizeof(state->audit_args));
+@@ -227,6 +242,7 @@ static void pidfd_spawn_drop_run_data(struct pidfd_spawn_state *state,
+ 	if (creator_pid_ns)
+ 		put_pid_ns(creator_pid_ns);
+ 	kfree(staged_path);
++	kvfree(actions);
+ }
+ 
+ static bool pidfd_spawn_cancel(struct pidfd_spawn_state *state,
+@@ -441,6 +457,114 @@ static bool pidfd_spawn_setup_done(struct pidfd_spawn_state *state)
+ 	return done;
+ }
+ 
++static int pidfd_spawn_validate_action(const struct pidfd_spawn_action *action)
++{
++	if (action->reserved[0] || action->reserved[1])
++		return -EINVAL;
 +
-+	if (IS_ERR(pid))
-+		return PTR_ERR(pid) == -ESRCH ? 0 : EPOLLHUP;
- 
- 	poll_wait(file, &pid->wait_pidfd, pts);
-+
- 	/*
- 	 * Don't wake waiters if the thread-group leader exited
- 	 * prematurely. They either get notified when the last subthread
-@@ -376,6 +442,8 @@ static long pidfd_info(struct file *file, unsigned int cmd, unsigned long arg)
- 
- 	BUILD_BUG_ON(sizeof(struct pidfd_info) != PIDFD_INFO_SIZE_VER3);
- 
-+	if (IS_ERR(pid))
-+		return PTR_ERR(pid);
- 	if (!uinfo)
- 		return -EINVAL;
- 	if (usize < PIDFD_INFO_SIZE_VER0)
-@@ -532,6 +600,7 @@ static long pidfd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 	struct task_struct *task __free(put_task) = NULL;
- 	struct nsproxy *nsp __free(put_nsproxy) = NULL;
- 	struct ns_common *ns_common = NULL;
-+	struct pid *pid;
- 
- 	if (!pidfs_ioctl_valid(cmd))
- 		return -ENOIOCTLCMD;
-@@ -544,11 +613,15 @@ static long pidfd_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 		return put_user(file_inode(file)->i_generation, argp);
- 	}
- 
-+	pid = pidfd_pid(file);
-+	if (IS_ERR(pid))
-+		return PTR_ERR(pid);
-+
- 	/* Extensible IOCTL that does not open namespace FDs, take a shortcut */
- 	if (_IOC_NR(cmd) == _IOC_NR(PIDFD_GET_INFO))
- 		return pidfd_info(file, cmd, arg);
- 
--	task = get_pid_task(pidfd_pid(file), PIDTYPE_PID);
-+	task = get_pid_task(pid, PIDTYPE_PID);
- 	if (!task)
- 		return -ESRCH;
- 
-@@ -673,11 +746,14 @@ static long pidfd_compat_ioctl(struct file *file, unsigned int cmd,
- 
- static int pidfs_file_release(struct inode *inode, struct file *file)
- {
--	struct pid *pid = inode->i_private;
-+	struct pid *pid;
- 	struct task_struct *task;
- 
- 	if (!(file->f_flags & PIDFD_AUTOKILL))
- 		return 0;
-+	pid = pidfd_pid(file);
-+	if (IS_ERR(pid))
++	switch (action->type) {
++	case PIDFD_SPAWN_ACTION_DUP2:
++		if (action->flags)
++			return -EINVAL;
 +		return 0;
- 
- 	guard(rcu)();
- 	task = pid_task(pid, PIDTYPE_TGID);
-@@ -705,9 +781,9 @@ static const struct file_operations pidfs_file_operations = {
- 
- struct pid *pidfd_pid(const struct file *file)
- {
--	if (file->f_op != &pidfs_file_operations)
-+	if (unlikely(file->f_op != &pidfs_file_operations))
- 		return ERR_PTR(-EBADF);
--	return file_inode(file)->i_private;
-+	return pidfs_inode_pid(file_inode(file));
- }
- 
- /*
-@@ -797,8 +873,6 @@ void pidfs_coredump(const struct coredump_params *cprm)
- }
- #endif
- 
--static struct vfsmount *pidfs_mnt __ro_after_init;
--
- /*
-  * The vfs falls back to simple_setattr() if i_op->setattr() isn't
-  * implemented. Let's reject it completely until we have a clean
-@@ -820,7 +894,10 @@ static int pidfs_getattr(struct mnt_idmap *idmap, const struct path *path,
- static ssize_t pidfs_listxattr(struct dentry *dentry, char *buf, size_t size)
- {
- 	struct inode *inode = d_inode(dentry);
--	struct pid *pid = inode->i_private;
-+	struct pid *pid = pidfs_inode_pid(inode);
-+
-+	if (IS_ERR(pid))
-+		return PTR_ERR(pid);
- 
- 	return simple_xattr_list(inode, &pid->attr->xattrs, buf, size);
- }
-@@ -833,10 +910,25 @@ static const struct inode_operations pidfs_inode_operations = {
- 
- static void pidfs_evict_inode(struct inode *inode)
- {
--	struct pid *pid = inode->i_private;
-+	struct pidfs_future_file *future;
-+	struct pidfs_node *node = pidfs_inode_node(inode);
- 
- 	clear_inode(inode);
--	put_pid(pid);
-+	if (!node)
-+		return;
-+	if (node->type == PIDFS_NODE_PID) {
-+		put_pid(container_of(node, struct pid, pidfs_node));
-+		return;
++	case PIDFD_SPAWN_ACTION_FCHDIR:
++		if (action->flags || action->newfd)
++			return -EINVAL;
++		return 0;
++	case PIDFD_SPAWN_ACTION_CLOSE_RANGE:
++		if (action->newfd < action->fd)
++			return -EINVAL;
++		if (action->flags & ~(CLOSE_RANGE_UNSHARE |
++				      CLOSE_RANGE_CLOEXEC))
++			return -EINVAL;
++		return 0;
++	default:
++		return -EOPNOTSUPP;
 +	}
-+	if (WARN_ON_ONCE(node->type != PIDFS_NODE_FUTURE))
-+		return;
-+
-+	future = container_of(node, struct pidfs_future_file, node);
-+	if (future->ops->release)
-+		future->ops->release(future->data);
-+	if (future->attr)
-+		kmem_cache_free(pidfs_attr_cachep, future->attr);
-+	kfree(future);
- }
- 
- static const struct super_operations pidfs_sops = {
-@@ -854,15 +946,24 @@ static char *pidfs_dname(struct dentry *dentry, char *buffer, int buflen)
- 	return dynamic_dname(buffer, buflen, "anon_inode:[pidfd]");
- }
- 
-+static void pidfs_dentry_prune(struct dentry *dentry)
-+{
-+	if (dentry->d_fsdata)
-+		stashed_dentry_prune(dentry);
 +}
 +
- const struct dentry_operations pidfs_dentry_operations = {
- 	.d_dname	= pidfs_dname,
--	.d_prune	= stashed_dentry_prune,
-+	.d_prune	= pidfs_dentry_prune,
- };
- 
- static int pidfs_encode_fh(struct inode *inode, u32 *fh, int *max_len,
- 			   struct inode *parent)
- {
--	const struct pid *pid = inode->i_private;
-+	const struct pid *pid = pidfs_inode_pid(inode);
-+
-+	if (IS_ERR(pid))
-+		return FILEID_INVALID;
- 
- 	if (*max_len < 2) {
- 		*max_len = 2;
-@@ -974,22 +1075,36 @@ static const struct export_operations pidfs_export_operations = {
- 	.permission	= pidfs_export_permission,
- };
- 
--static int pidfs_init_inode(struct inode *inode, void *data)
-+static void pidfs_init_common_inode(struct inode *inode,
-+				    struct pidfs_node *node, u64 ino)
- {
--	const struct pid *pid = data;
--
--	inode->i_private = data;
-+	inode->i_private = node;
- 	inode->i_flags |= S_PRIVATE | S_ANON_INODE;
- 	/* We allow to set xattrs. */
- 	inode->i_flags &= ~S_IMMUTABLE;
--	inode->i_mode |= S_IRWXU;
-+	inode->i_mode = S_IFREG | 0700;
-+	inode->i_uid = GLOBAL_ROOT_UID;
-+	inode->i_gid = GLOBAL_ROOT_GID;
- 	inode->i_op = &pidfs_inode_operations;
- 	inode->i_fop = &pidfs_file_operations;
--	inode->i_ino = pidfs_ino(pid->ino);
--	inode->i_generation = pidfs_gen(pid->ino);
-+	inode->i_ino = pidfs_ino(ino);
-+	inode->i_generation = pidfs_gen(ino);
-+}
-+
-+static int pidfs_init_inode(struct inode *inode, void *data)
++static int pidfd_spawn_copy_actions(struct pidfd_spawn_action **actions,
++				    __u64 uactions, unsigned int nr_actions,
++				    unsigned int action_size)
 +{
-+	struct pid *pid = data;
-+
-+	pidfs_init_common_inode(inode, &pid->pidfs_node, pid->ino);
- 	return 0;
- }
- 
-+static bool pidfs_inode_data_matches(const struct inode *inode,
-+				     const void *data)
-+{
-+	return pidfs_inode_pid(inode) == data;
-+}
-+
- static void pidfs_put_data(void *data)
- {
- 	struct pid *pid = data;
-@@ -1044,9 +1159,11 @@ int pidfs_register_pid_gfp(struct pid *pid, gfp_t gfp)
- static struct dentry *pidfs_stash_dentry(struct dentry **stashed,
- 					 struct dentry *dentry)
- {
-+	struct pid *pid = pidfs_inode_pid(d_inode(dentry));
- 	int ret;
--	struct pid *pid = d_inode(dentry)->i_private;
- 
-+	if (WARN_ON_ONCE(IS_ERR(pid)))
-+		return ERR_CAST(pid);
- 	VFS_WARN_ON_ONCE(stashed != &pid->stashed);
- 
- 	ret = pidfs_register_pid(pid);
-@@ -1060,15 +1177,19 @@ static const struct stashed_operations pidfs_stashed_ops = {
- 	.stash_dentry	= pidfs_stash_dentry,
- 	.init_inode	= pidfs_init_inode,
- 	.put_data	= pidfs_put_data,
-+	.data_matches	= pidfs_inode_data_matches,
- };
- 
- static int pidfs_xattr_get(const struct xattr_handler *handler,
- 			   struct dentry *unused, struct inode *inode,
- 			   const char *suffix, void *value, size_t size)
- {
--	struct pid *pid = inode->i_private;
-+	struct pid *pid = pidfs_inode_pid(inode);
- 	const char *name = xattr_full_name(handler, suffix);
- 
-+	if (IS_ERR(pid))
-+		return PTR_ERR(pid);
-+
- 	return simple_xattr_get(&pidfs_xa_cache, &pid->attr->xattrs, name, value, size);
- }
- 
-@@ -1077,10 +1198,13 @@ static int pidfs_xattr_set(const struct xattr_handler *handler,
- 			   struct inode *inode, const char *suffix,
- 			   const void *value, size_t size, int flags)
- {
--	struct pid *pid = inode->i_private;
-+	struct pid *pid = pidfs_inode_pid(inode);
- 	const char *name = xattr_full_name(handler, suffix);
- 	struct simple_xattr *old_xattr;
- 
-+	if (IS_ERR(pid))
-+		return PTR_ERR(pid);
-+
- 	/* Ensure we're the only one to set @attr->xattrs. */
- 	WARN_ON_ONCE(!inode_is_locked(inode));
- 
-@@ -1158,6 +1282,90 @@ struct file *pidfs_alloc_file(struct pid *pid, unsigned int flags)
- 	return pidfd_file;
- }
- 
-+/**
-+ * pidfs_alloc_future_file - allocate a taskless pidfs file
-+ * @name: anonymous file name used by LSM initialization
-+ * @data: producer data retained for the inode lifetime
-+ * @ops: callbacks that resolve and release @data
-+ * @flags: file status flags
-+ *
-+ * Ownership of @data transfers to the returned file on success. One serialized
-+ * producer owns all later association and publication transitions. It may
-+ * associate one preallocated pid with
-+ * pidfs_future_file_set_pid(), publish its pidfs metadata with
-+ * pidfs_future_file_publish_pid(), make @ops->get_pid() resolve that pid, and
-+ * finally wake waiters with pidfs_future_file_notify().
-+ *
-+ * A task associated with the future pid must not become runnable before
-+ * publication metadata and exit-wakeup forwarding are installed.
-+ *
-+ * Return: A new pidfs file on success or an error pointer on failure.
-+ */
-+struct file *pidfs_alloc_future_file(const char *name, void *data,
-+				     const struct pidfs_future_file_ops *ops,
-+				     unsigned int flags)
-+{
-+	struct pidfs_future_file *future;
-+	struct inode *inode;
-+	struct file *file;
-+	u64 ino;
++	const char __user *uptr;
++	struct pidfd_spawn_action *kactions __free(kvfree) = NULL;
++	unsigned int i;
 +	int ret;
 +
-+	if (!ops || !ops->get_pid)
-+		return ERR_PTR(-EINVAL);
++	if (!nr_actions)
++		return 0;
 +
-+	future = kzalloc_obj(*future, GFP_KERNEL_ACCOUNT);
-+	if (!future)
-+		return ERR_PTR(-ENOMEM);
-+	future->attr = kmem_cache_zalloc(pidfs_attr_cachep, GFP_KERNEL_ACCOUNT);
-+	if (!future->attr) {
-+		kfree(future);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+	INIT_LIST_HEAD_RCU(&future->attr->xattrs);
++	BUILD_BUG_ON(sizeof(struct pidfd_spawn_action) !=
++		     PIDFD_SPAWN_ACTION_SIZE_VER0);
 +
-+	inode = new_inode_pseudo(pidfs_mnt->mnt_sb);
-+	if (!inode) {
-+		kmem_cache_free(pidfs_attr_cachep, future->attr);
-+		kfree(future);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+	/* Preserve the anonymous-inode creation check for future pidfds. */
-+	ret = security_inode_init_security_anon(inode, &QSTR(name), NULL);
-+	if (ret) {
-+		iput(inode);
-+		kmem_cache_free(pidfs_attr_cachep, future->attr);
-+		kfree(future);
-+		return ERR_PTR(ret);
-+	}
-+	ino = pidfs_alloc_ino();
-+	simple_inode_init_ts(inode);
-+	pidfs_init_common_inode(inode, NULL, ino);
++	uptr = pidfd_spawn_user_ptr(uactions);
++	kactions = kvmalloc_array(nr_actions, sizeof(*kactions),
++				  GFP_KERNEL_ACCOUNT);
++	if (!kactions)
++		return -ENOMEM;
 +
-+	file = alloc_file_pseudo(inode, pidfs_mnt, name, flags,
-+				 &pidfs_file_operations);
-+	if (IS_ERR(file)) {
-+		iput(inode);
-+		kmem_cache_free(pidfs_attr_cachep, future->attr);
-+		kfree(future);
-+		return file;
++	for (i = 0; i < nr_actions; i++) {
++		ret = copy_struct_from_user(&kactions[i], sizeof(kactions[i]),
++					    uptr + (size_t)i * action_size,
++					    action_size);
++		if (ret)
++			return ret;
++
++		ret = pidfd_spawn_validate_action(&kactions[i]);
++		if (ret)
++			return ret;
 +	}
 +
-+	future->node.type = PIDFS_NODE_FUTURE;
-+	future->data = data;
-+	future->ops = ops;
-+	future->ino = ino;
-+	inode->i_private = &future->node;
-+	return file;
++	*actions = no_free_ptr(kactions);
++	return 0;
 +}
 +
-+u64 pidfs_future_file_ino(const struct file *file)
++static int pidfd_spawn_do_dup2(unsigned int oldfd, unsigned int newfd)
 +{
-+	struct pidfs_future_file *future = pidfs_future_file(file_inode(file));
++	struct file *file __free(fput) = NULL;
 +
-+	return future ? future->ino : 0;
++	file = fget_raw(oldfd);
++	if (!file)
++		return -EBADF;
++	if (oldfd == newfd) {
++		set_close_on_exec(newfd, 0);
++		return 0;
++	}
++
++	return replace_fd(newfd, file, 0);
 +}
 +
- void __init pidfs_init(void)
++static int pidfd_spawn_apply_actions(struct pidfd_spawn_state *state)
++{
++	unsigned int i;
++	int ret;
++
++	for (i = 0; i < state->nr_actions; i++) {
++		const struct pidfd_spawn_action *action = &state->actions[i];
++
++		switch (action->type) {
++		case PIDFD_SPAWN_ACTION_DUP2:
++			ret = pidfd_spawn_do_dup2(action->fd, action->newfd);
++			break;
++		case PIDFD_SPAWN_ACTION_FCHDIR:
++			ret = do_fchdir(action->fd);
++			break;
++		case PIDFD_SPAWN_ACTION_CLOSE_RANGE:
++			ret = do_close_range(action->fd, action->newfd,
++					     action->flags);
++			break;
++		default:
++			ret = -EOPNOTSUPP;
++			break;
++		}
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
+ static void pidfd_spawn_save_audit_context(struct pidfd_spawn_state *state)
  {
- 	if (rhashtable_init(&pidfs_ino_ht, &pidfs_ino_ht_params))
-diff --git a/include/linux/pid.h b/include/linux/pid.h
-index ddaef0bbc8ba3..a29ffe2a5fa8e 100644
---- a/include/linux/pid.h
-+++ b/include/linux/pid.h
-@@ -50,6 +50,15 @@
+ 	struct pt_regs *regs = current_pt_regs();
+@@ -543,24 +667,32 @@ static void pidfd_spawn_child(struct callback_head *work)
+ 	struct pidfd_spawn_state *state =
+ 		container_of(work, struct pidfd_spawn_state, task_work);
+ 	struct filename *filename;
++	bool cancelled;
+ 	int fatal_sig;
+ 	int ret;
  
- struct pidfs_attr;
- 
-+enum pidfs_node_type {
-+	PIDFS_NODE_PID,
-+	PIDFS_NODE_FUTURE,
-+};
+ 	pidfd_spawn_audit_entry(state);
++	cancelled = pidfd_spawn_child_cancelled(state);
++	fatal_sig = 0;
++	ret = 0;
++	if (!cancelled) {
++		fatal_sig = pidfd_spawn_pending_fatal_signal();
++		if (!fatal_sig)
++			ret = pidfd_spawn_apply_actions(state);
++	}
 +
-+struct pidfs_node {
-+	enum pidfs_node_type type;
-+};
-+
- struct upid {
- 	int nr;
- 	struct pid_namespace *ns;
-@@ -59,6 +68,7 @@ struct pid {
- 	refcount_t count;
- 	unsigned int level;
- 	spinlock_t lock;
-+	struct pidfs_node pidfs_node;
- 	struct {
- 		u64 ino;
- 		struct rhash_head pidfs_hash;
-diff --git a/include/linux/pidfs.h b/include/linux/pidfs.h
-index 0abf7da9ab236..6b7fbc54ab388 100644
---- a/include/linux/pidfs.h
-+++ b/include/linux/pidfs.h
-@@ -5,8 +5,29 @@
- #include <linux/gfp_types.h>
++	/* FCHDIR must establish the cwd captured by audit_getname(). */
+ 	filename = complete_getname(&state->filename);
+-	if (IS_ERR(filename))
++	if (!ret && !cancelled && !fatal_sig && IS_ERR(filename))
+ 		ret = PTR_ERR(filename);
+-	else
+-		ret = 0;
  
- struct coredump_params;
-+struct file;
-+struct pid;
-+
-+/**
-+ * struct pidfs_future_file_ops - callbacks for a taskless pidfs file
-+ * @get_pid: Return the published, borrowed, non-NULL process identity, or an
-+ *	error pointer while the producer is still taskless. The producer must
-+ *	keep the returned pid alive for the future inode lifetime.
-+ * @release: Optionally release producer-owned data when the pidfs inode is
-+ *	evicted. If provided, this is called at most once.
-+ */
-+struct pidfs_future_file_ops {
-+	struct pid *(*get_pid)(void *data);
-+	void (*release)(void *data);
-+};
+-	if (pidfd_spawn_child_cancelled(state)) {
++	if (cancelled) {
+ 		ret = -ECANCELED;
+ 		pidfd_spawn_finish_child(state, filename, ret);
+ 		audit_pidfd_spawn_exit(0, ret);
+ 		pidfd_spawn_state_put(state);
+ 		do_group_exit(SIGKILL);
+ 	}
+-	fatal_sig = pidfd_spawn_pending_fatal_signal();
+ 	if (fatal_sig)
+ 		pidfd_spawn_deliver_fatal_signal(state, filename, fatal_sig);
  
- struct file *pidfs_alloc_file(struct pid *pid, unsigned int flags);
-+struct file *pidfs_alloc_future_file(const char *name, void *data,
-+				     const struct pidfs_future_file_ops *ops,
-+				     unsigned int flags);
-+void *pidfs_future_file_data(const struct file *file,
-+			     const struct pidfs_future_file_ops *ops);
-+u64 pidfs_future_file_ino(const struct file *file);
- void __init pidfs_init(void);
- void pidfs_prepare_pid(struct pid *pid);
- int pidfs_add_pid(struct pid *pid);
+@@ -589,6 +721,7 @@ static int pidfd_spawn_copy_run_args(struct pidfd_spawn_run_args *kargs,
+ 				     struct pidfd_spawn_run_args __user *uargs,
+ 				     size_t usize)
+ {
++	size_t actions_size;
+ 	int ret;
+ 
+ 	BUILD_BUG_ON(sizeof(struct pidfd_spawn_run_args) !=
+@@ -606,8 +739,17 @@ static int pidfd_spawn_copy_run_args(struct pidfd_spawn_run_args *kargs,
+ 		return -EINVAL;
+ 	if (!kargs->argv)
+ 		return -EINVAL;
+-	if (kargs->nr_actions || kargs->actions || kargs->action_size)
++	if (kargs->nr_actions) {
++		if (!kargs->actions ||
++		    kargs->action_size < PIDFD_SPAWN_ACTION_SIZE_VER0 ||
++		    !IS_ALIGNED(kargs->action_size, sizeof(__u64)))
++			return -EINVAL;
++	} else if (kargs->actions || kargs->action_size) {
+ 		return -EINVAL;
++	}
++	actions_size = array_size(kargs->nr_actions, kargs->action_size);
++	if (actions_size > PIDFD_SPAWN_MAX_ACTIONS_SIZE)
++		return -E2BIG;
+ 	if (!pidfd_spawn_user_ptr_fits(kargs->path) ||
+ 	    !pidfd_spawn_user_ptr_fits(kargs->argv) ||
+ 	    !pidfd_spawn_user_ptr_fits(kargs->envp) ||
+@@ -713,10 +855,12 @@ static int pidfd_spawn_finish_vfork(struct pidfd_spawn_state *state,
+ 
+ static int pidfd_spawn_start(struct file *file,
+ 			     struct pidfd_spawn_state *state,
+-			     const struct pidfd_spawn_run_args *kargs)
++			     const struct pidfd_spawn_run_args *kargs,
++			     struct pidfd_spawn_action **actions)
+ {
+ 	struct delayed_filename filename
+ 		__free(pidfd_spawn_dismiss_filename) = {};
++	struct pidfd_spawn_action *drop_actions __free(kvfree) = NULL;
+ 	struct delayed_filename drop_filename
+ 		__free(pidfd_spawn_dismiss_filename) = {};
+ 	struct kernel_clone_args clone_args = {
+@@ -757,8 +901,11 @@ static int pidfd_spawn_start(struct file *file,
+ 
+ 		state->argv = pidfd_spawn_user_arg(kargs->argv);
+ 		state->envp = pidfd_spawn_user_arg(kargs->envp);
++		state->actions = *actions;
++		state->nr_actions = kargs->nr_actions;
+ 		pidfd_spawn_set_status(state, PIDFD_SPAWN_STARTING);
+ 		pidfd_spawn_save_audit_context(state);
++		*actions = NULL;
+ 		reinit_completion(&state->done);
+ 
+ 		task = pidfd_spawn_create_task(file, state, &clone_args);
+@@ -766,6 +913,9 @@ static int pidfd_spawn_start(struct file *file,
+ 			ret = PTR_ERR(task);
+ 			drop_filename = state->filename;
+ 			INIT_DELAYED_FILENAME(&state->filename);
++			drop_actions = state->actions;
++			state->actions = NULL;
++			state->nr_actions = 0;
+ 			state->argv = native_arg(NULL);
+ 			state->envp = native_arg(NULL);
+ 			memset(state->audit_args, 0,
+@@ -854,6 +1004,7 @@ int pidfd_empty_open(unsigned int flags)
+ SYSCALL_DEFINE3(pidfd_spawn_run, int, fd,
+ 		struct pidfd_spawn_run_args __user *, uargs, size_t, usize)
+ {
++	struct pidfd_spawn_action *actions __free(kvfree) = NULL;
+ 	struct pidfd_spawn_run_args kargs;
+ 	struct pidfd_spawn_state *state __free(pidfd_spawn_state) = NULL;
+ 	int ret;
+@@ -869,6 +1020,10 @@ SYSCALL_DEFINE3(pidfd_spawn_run, int, fd,
+ 	state = pidfd_spawn_state_get_file(fd_file(f));
+ 	if (IS_ERR(state))
+ 		return PTR_ERR(state);
++	ret = pidfd_spawn_copy_actions(&actions, kargs.actions,
++				       kargs.nr_actions, kargs.action_size);
++	if (ret)
++		return ret;
+ 
+ 	scoped_cond_guard(mutex_intr, return -ERESTARTNOINTR,
+ 			  &current->signal->cred_guard_mutex) {
+@@ -877,7 +1032,7 @@ SYSCALL_DEFINE3(pidfd_spawn_run, int, fd,
+ 		ret = pidfd_spawn_check_startable(state);
+ 		if (ret)
+ 			return ret;
+-		ret = pidfd_spawn_start(fd_file(f), state, &kargs);
++		ret = pidfd_spawn_start(fd_file(f), state, &kargs, &actions);
+ 	}
+ 	if (!ret)
+ 		ret = pid_vnr(state->pid);
 -- 
 2.52.0
 
