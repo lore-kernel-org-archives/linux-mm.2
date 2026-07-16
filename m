@@ -4,89 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABABAC44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:47:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF4BDC44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:47:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F3DC6B013B; Thu, 16 Jul 2026 11:47:44 -0400 (EDT)
+	id DFC7B6B014A; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CAC56B0141; Thu, 16 Jul 2026 11:47:44 -0400 (EDT)
+	id DD3C26B0148; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E15B6B0145; Thu, 16 Jul 2026 11:47:44 -0400 (EDT)
+	id C4EC56B014A; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 595556B013B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:47:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0003A0138
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:11:24 +0000 (UTC)
-X-FDA: 84994524888.28.6F894AF
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 093CB20009
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:11:21 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="xoM//Jwk";
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784203883;
-	b=4ie8A4+h75Gq7NgbdK6HnjpfCSpY635U5TwPwVgq1n2e+UmyRFXlkbz7E6XS+HLwfU/r6e
-	zXaxk7mZaNIuVfbGu4yb0Do/gjCaO6VJk7k3PT0tAF06y4OzGXbzhpkoiGpghKkORNkMGu
-	c/lG9qVPyJz52TJRIyi1Gqlm4S/F1pI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="xoM//Jwk";
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 995FF6B0145
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:47:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BCA912010B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:58:34 +0000 (UTC)
+X-FDA: 84994341348.16.AAA485F
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A09ED40004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:58:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b03CyX1d;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784203883;
+	s=arc-20220608; t=1784199512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=22TDE33CcMaK/6oJLmhRk6PtkOBzLjo6hgniVsSgp+Q=;
-	b=TdmFDnNvEsgqzSHnX57rkPJndT4USZ9Ez8+D5w6vW4lgYJmYmXcoDpWH/gzq3cCBw+tKmE
-	3HpPPcx9PPFKAXUJrM6U/iIZ9vNMaRhaYj2PKbgArBhpG3mW4kE+tXoQeK2ClylvE7dWb/
-	9gFnOtotw32xqoN4wrH1N6KSV1VuKnQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784203877; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=22TDE33CcMaK/6oJLmhRk6PtkOBzLjo6hgniVsSgp+Q=;
-	b=xoM//JwksrfXMsHakxHrGdYRHyOht7GNE4aSAaeo1pHNHMM15qw4Udm4hVyuC/GjZSLjQqIwr/MfDqYwdhapZNEdB4COuP/JEaMvwJ6OTesqUFhS69PWjt6ojwxqOxPqx2hOh8AkqNzyW0oGoFsHTxhiBUfNqfZXd+ATQKp9Bgs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X7ENwPT_1784203874;
-Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7ENwPT_1784203874 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Jul 2026 20:11:15 +0800
-Message-ID: <358e6938-9505-422c-8765-d8244f4c875f@linux.alibaba.com>
-Date: Thu, 16 Jul 2026 20:11:13 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm: mglru: promote mapped executable folios after
- first usage
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org, hannes@cmpxchg.org
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, mhocko@kernel.org, linux-mm@kvack.org,
+	bh=A9J2mfzReK0vZRJuzRH9sZHoLpDeO+iBwK/xyDsq7Kc=;
+	b=uu5W+dmCQJN1/paN4LyEIjGoXxoPDuRYugnHglzlL5VHKCyMjAN/QW+ezFZ4ImbN6/OI+H
+	H+40Hc00f/XN/3lMilm+Gau27hruU/IiTHGVHvaMfPbBzWP2XhqrWeCWgAbEeiiqbL/E6V
+	7rBpd5AzpQgRpd5B0jTGX6KdKsDDzb8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=b03CyX1d;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784199512;
+	b=kCtEnHC6D+bA3QdyYt2hBeW2K1PLhudPToeECecu6JhQIaA/+HGeH0Wa48zJu/pBGqcj9f
+	wqKTAxxiW5xEtl8RjA95cvsRZKBB2wE2BWAe5ehsGKkJe7Vd0XPJA69FWm3xyBfDGAFb6i
+	I0R28QnSghL50eMS5WBqaPO57pNr5J4=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784199507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A9J2mfzReK0vZRJuzRH9sZHoLpDeO+iBwK/xyDsq7Kc=;
+	b=b03CyX1dRHhr7QK7K8Bi+z9V2blADechNztWBv2EwWnhnkb7K2qCMQZFZJo4CN+5PaAtZ1
+	B2vktp/6aXOjpw4h+ftljMkWMCP7OaSNHlzh8Wj5FBD6NMM7196ofRGOkRdQgh9UzxNAPl
+	hFoXhmbaJ5BgN8egRmGkldkt6rsjqOc=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 02/17] mm/sparse-vmemmap: track compound page order in
+ struct mem_section
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260716101559.2e640e99@pumpkin>
+Date: Thu, 16 Jul 2026 18:57:57 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ linux-mm@kvack.org,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
  linux-kernel@vger.kernel.org
-References: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
- <7e3a5f6bdf70e0237027025f4593a3874d411f65.1784197559.git.baolin.wang@linux.alibaba.com>
- <a00664d4-01a0-413c-bc33-71c86cce7894@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <a00664d4-01a0-413c-bc33-71c86cce7894@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7BE734F3-4B0A-4990-9511-C2274C1CFA51@linux.dev>
+References: <20260702093821.2740183-1-songmuchun@bytedance.com>
+ <20260702093821.2740183-3-songmuchun@bytedance.com>
+ <20260716101559.2e640e99@pumpkin>
+To: David Laight <david.laight.linux@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 9xca4krp56845xioybo4br9ajq7t66ui
+X-Rspamd-Queue-Id: A09ED40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 093CB20009
-X-Stat-Signature: aiq4grkz1jfijw3ts8d8qypdeddhxzeo
-X-HE-Tag: 1784203881-421078
-X-HE-Meta: U2FsdGVkX1/UQiNXns+nZm4Z0/iCKmBbKDWDOaeaQiA1nCw7+NAkbQeTvJoqqQkJ6OetrKyifcqP4EOy6quCh4EP0VHrub90dIbX7HmIhmt4//6Q3pVnmyj9Msq3NdlzmDTmMIAo89LcuLsm5XN4FSMIN3QewGCaAKmXOwum6dUVJ7wE1zwl0+igiSRcVoZvuoqn/3I6gTZF8bj4U2u24K3fZfe0eJPus/Ncm9D0+dVA+yHGNllhPmgxpBOv+mk6xOVCMbnvI6/kfbMJJu5wSFKD85UiUl35YAeduFF+8RaOugMRhQIegQoVtHfpOrt0fZVxrMegeLdpRRJ42f8t+QSnvCkeA5JCtFM1qIkpDal8XDbRg+9WyLTm66xEgx2QoLnYhJGDs+v6pfsWTfc8AYW1fY/POBs3A80UinCgoSkzOCQNvpgMyC63MTyuJYkWZj+2t+H5DhVe6cu65tFCKm53FkW4pKTipXsSMi4wGOR4RojlprtN6JHx35lqqKccPVs8O8TKSQGZI8oeTuTsy/OxtABOo44qxPKR19cYBxWmkvvpEFhXgC8twDn/at8Yj2zUa3R3meFWMmOAHVsLWxUUxvGih0jxPoy+h7aj5zix65YlRERAPLHwV7jNCCw+47BQSvD4WVPPWoTQrUhs5k4eM4MYv3Ht5U7wy9oHNZOhemkVV2SVHgXg2xAuL7BMpxT3uxABwwQrgC/8jKoqi6ztJ7n2ctH/N2TlAghiHWxDUD2AAaLC4moXdNC1MwXjfwuNBTbDZHdilMG/RBu9H6gcRen/HR1yVhT1twgcI7yWwXMdti7VFafrAhEJ8jxr0a3MMjlPrf8qXrLgjQpk3I92WiY5hIbaO6EakY96CTJ2qXlfVHgOF2bPgOsR5VoKBSuA5P376VA2DOik1Qa7sVANaIlVZgvoPAr4J6pTlgvXuv6Ghtd+OSo/YNvb4DX+N4PJZD6tXmPJ5DhZcMS
- GlyS4wxe
- CPCaiMpxJzbF+hLY84iH0kKXkKPd+PYTPQs8B39BdZPQAR19aGr/m5bV8dD6qdIhPdGNolidvsgUh6wv/rpyKLARZIRUvxaPbo8hrsLIgTkJZfefpr8Aq84yBPYv0oakcpLg+u8WY/zp7p1QoesGTaiPoMtn6xTnuaPkQBXKs6lEz2jRz5CXdThGQ6piNCplkR25gC52ctgYreiVG3kIM4HO9kpvvzNtZru324FhG63MG7ql728532GSdiA11u4f0n2hA+5U3GGG8LhKBZUXrNgk08oJrti07yF1iq2vsnST3gtM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784199511-69194
+X-HE-Meta: U2FsdGVkX18XB2elkxQW6kNAc6vdTq1UdZqAPP1hESoLIoVS3FLguOZbT2Kn3wJtTmP25GrkdOcffOEnzf1aXNlx5hNY4Y3p13QAP1MrrkZM35Qx3GE+EYIDPVQLhyU04zxcGxfYHU0wHLYDUtDF6Rnmyszu23Vq9cf8ZH1coMOK3pjEsuWTWBJVKILonyvwWbt9WvYtSbKyMtKhNWxuBXD4uxRzWXzeTnsejH6ZqxIO82uWBVHWpT2nNvihdDCgvE3H6+Lh878bgw3R7egUy/XEyfVnRAGewApYoMGFrJ//EVVD8uTChvnUQYD1131N8YwFfi1/g5IsSLekraG2PUM8ELv+r1JS5/wMlqQePb6oNbJn36z+EOxKzdpchXs5/OUHux6O0QRUbSM7Z5snmnl7+/OHsWastCeNlwiuh5/3h3U6nTUxdz7082IXKa1aRrOVyCHDdkK0hE+hjgDQEM46j1d7wg7wHQasPc+sedy+y4H/Kvruyhj3T6g97G81sQOyT487K8BZYimZZGMt9BWE9zZgexk1tvzHgiZX5qRTYtqI4Glxl92yfyO+K0bkSMgtEInXV8v/q6Xj5Pgr8V9LkAJztg/bOMPFtT7TPvgfbcoo4FHowaafdpSKqQsJrxnGHMB1dDBr+PwQozLJmX6gtj5rmeOzlvV1Jw6tlOsOo0bYm3j6kE4d11alZ+IDq1ig28B0s8s3EMakC2sKUDOcz+Zu7WX0gajA6Z1eJxoB5TiSQznzVI0gTNOSViEkxRbNi7M9tN+dxfDFiLtjblQvyF4goKhYcZX6n80JeHrfbl91jnTjlOJC/DRDP3nvMMyeKstcphngx3VWhQkansIlM0DeTV3oG8XfMNaDAZ3P8rd2wH1SMgEOkW5Je4WQqxweSPNaOBIAuzm8FHYN7xTc6IDNLKvXngsbkhsBC4egxgXs9WL0jY/mdZI/DsIcpUrAH6omZzwkhPw1eVB
+ 7zxVO7P+
+ HQSj0OOedejE4kPb4IH99QwTOGzAJu1Uh0kSkFEIwQgKe7vOtnhn8jbtOARExq6c7zAAcpaeHs+k4+ulTydGAj7n9PzmZSzovLjyWkhxRrRXhzAGHykeG9PS4MC55nBWZdAfHj176ry0kB4+v5pUQCq1/F1czqecH5keVZw3Qg8EuFJFhuMq4gsQRbhYVX6SzYrbDf8r/z4f6/rRZuz60u9yMD2D6dngphz7A4nnIRCzcyqAnP76kiYVxCm0uXTu2NEEd+Q9Ff0v0HRpIXYwcIcKypCRc3LAe/jFiBoDfV0owuLXo/PudKXR0arDF+GJ6tSGT0GZ6qogqS2xmNP1CXFG8IQYYpy27aqAEYP+XtWD2T8nVB4LdOwJpW19vhBGDlMRVilJJAZcOYpXorw1DqN0Xcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,67 +102,115 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/16/26 7:10 PM, David Hildenbrand (Arm) wrote:
-> On 7/16/26 12:46, Baolin Wang wrote:
->> Classical LRU protects mapped executable file folios through commit
->> 8cab4754d24a0 ("vmscan: make mapped executable pages the first class
->> citizen") and commit c909e99364c8 ("vmscan: activate executable pages
->> after first usage"), giving executable code a better chance to stay in
->> memory, avoiding IO thrashing and improving workload performance.
->>
->> However, MGLRU's protection of mapped executable file folios is less
->> reliable. Although shrink_folio_list() checks references, the access flag
->> of mapped executable file folios may have already been checked and
->> cleared by lru_gen_look_around() or walk_mm(). Additionally,
->> folio_update_gen() or lru_gen_set_refs() only sets the 'PG_referenced'
->> flag for mapped executable file folios, which causes shrink_folio_list()
->> to ignore the first usage of these mapped executable file folios and
->> reclaim them easily.
->>
->> Follow the classical LRU's logic, promoting mapped executable file folios
->> after their first usage in folio_update_gen() and lru_gen_set_refs(),
->> giving executable code a better chance to stay in memory.
->>
->> On my 32-core Arm machine, with the memcg limit set to 2G, running
->> 'make -j32' to build kernel showed some improvement in sys time.
->>
->> base			patched
->> 9248.543s		7861.579s
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> On Jul 16, 2026, at 17:15, David Laight <david.laight.linux@gmail.com> =
+wrote:
+>=20
+> On Thu,  2 Jul 2026 17:38:06 +0800
+> Muchun Song <songmuchun@bytedance.com> wrote:
+>=20
+>> HugeTLB and DAX both rely on vmemmap optimization, but sparsemem does
+>> not record what compound page order a section is populated with.
+>>=20
+>> As a result, code that needs this information has to open-code
+>> separate handling across users of vmemmap optimization.  It also
+>> prevents other memory management code, such as struct page
+>> initialization, from skipping initialization of shared vmemmap pages
+>> when needed.
+>>=20
+>> Track the compound page order in struct mem_section and provide small
+>> helpers to access it.  A compound page larger than a section =
+naturally
+>> carries the same order across all covered sections.
+>>=20
+>> This is a preparatory change for consolidating vmemmap optimization
+>> handling and for letting later code make initialization decisions
+>> based on the section's compound page order.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 >> ---
->>   include/linux/mm_inline.h |  6 ++++++
->>   mm/vmscan.c               | 41 ++++++++++++++++++++++++---------------
->>   2 files changed, 31 insertions(+), 16 deletions(-)
->>
->> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
->> index b5c4dc0f3fe3..30fdf1056312 100644
->> --- a/include/linux/mm_inline.h
->> +++ b/include/linux/mm_inline.h
->> @@ -30,6 +30,12 @@ static inline int folio_is_file_lru(const struct folio *folio)
->>   	return !folio_test_swapbacked(folio);
->>   }
->>   
->> +static inline bool folio_is_exec_file(const struct folio *folio,
->> +		const vma_flags_t *vma_flags)
->> +{
->> +	return vma_flags_test(vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio);
->> +}
-> 
-> I don't quite like a generic folio_is* helper to consume vma flags. Whether it
-> is executable depends on the VMA. When called from a non-exec VMA it would just
-> give a wrong answer.
-> 
-> Not sure if something like "is_executable_file_folio()"/"is_exec_file_folio"
-> would be better, to distinguish from the actualy folio_is* helpers that are
-> independent of context.
+>> include/linux/mmzone.h | 32 ++++++++++++++++++++++++++++++++
+>> 1 file changed, 32 insertions(+)
+>>=20
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index 1353bcf7b712..bacd89572c5c 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -2015,6 +2015,14 @@ struct mem_section {
+>>  */
+>> struct page_ext *page_ext;
+>> #endif
+>> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+>> + 	/*
+>> + 	 * The order of compound pages in this section. Typically, the =
+section
+>> + 	 * holds compound pages of this order; a larger compound page =
+will span
+>> + 	 * multiple sections.
+>> + 	 */
+>> + 	unsigned int order;
+>> +#endif
+>> };
+>=20
+> That increases the size of the structure by 8 bytes for a value that
+> would fit in one (or 16 bytes to maintain power-of-2 size).
+> I'm pretty sure this array is big - so that is significant.
+>=20
+> I've looked up some constants...
+> On x86-64 each section is (1 << 27) bytes or 128M.
+> A page contains 256 small 'struct mm_section' so covers 32GB of =
+physical address.
+> That is pretty much the memory limit for a 'normal' system.
+> So even doubling the structure size only uses 2 pages for 32GB memory.
+> Even packing the structure (or making it 48 bytes) would still use 2 =
+pages.
+> Of course there are the big servers with TB of memory...
+>=20
+> A more interesting problem is the size of the 'page pointer' array.
+> That is sized for physical addresses right at the top of the 52bits
+> supported by 5-level page tables.
+> I make that 52-27-8+3 =3D 20 bits or 1MB, doubling to 2MB if struct =
+mem_section
+> is increased to 32 bytes.
+> However, in practise, I suspect that the actual upper limit for =
+physical
+> addresses is much lower.
 
-OK. 'is_exec_file_folio' sounds better to me.
+That was a truly excellent analysis. It is clear that the memory used by =
+the
+mem_section occupies a very small percentage of the overall system =
+memory.
 
-> Also, can this helper just go to vmscan.c?
+>=20
+> It is also worth noting that CONFIG_PAGE_EXTENSION is a debug option.
+> It probably doesn't matter about efficiency if it is enabled.
+>=20
+> You could change the code to use % instead of & - makes no difference =
+if
+> the size is a power of 2. That is generally safer.
 
-Yes. I originally expected this helper might be used by other callers, 
-but for now it's only used in vmscan.c, so will do.
+No problem. My patch 1 has already handled that.
 
-Thanks for taking a look.
+>=20
+> Then do:
+> #if defined(CONFIG_PAGE_EXTENSION) || defined =
+(CONFIG_SPARSEMEM_VMEMMAP)
+> 	struct page_ext *page_ext;
+> 	unsigned int order;
+> #endif
+> With an extra comment about keeping power of 2 size for effifiency.
+
+Thanks for the suggestion! I'll use this approach to ensure men_section
+is aligned to a power of two again. I'll also add a comment here to =
+explain
+the reasoning behind this implementation.
+
+I really appreciate your detailed analysis and insights.
+
+Muchun,
+Thanks.
+
+>=20
+> David
+
+
 
