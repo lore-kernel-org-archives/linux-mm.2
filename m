@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B175AC44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1B66C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68F776B0142; Thu, 16 Jul 2026 11:12:44 -0400 (EDT)
+	id CE8716B0146; Thu, 16 Jul 2026 11:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 608BF6B0146; Thu, 16 Jul 2026 11:12:44 -0400 (EDT)
+	id C71BC6B0149; Thu, 16 Jul 2026 11:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E6F26B0144; Thu, 16 Jul 2026 11:12:44 -0400 (EDT)
+	id B61116B0148; Thu, 16 Jul 2026 11:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E833E6B0142
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:12:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A762AA0156
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:43:58 +0000 (UTC)
-X-FDA: 84994606956.16.A8E0975
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BFDCC4000B
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:43:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=ADfOhONr;
-	spf=pass (imf17.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 886CB6B0145
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:12:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B1551A0153
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:44:17 +0000 (UTC)
+X-FDA: 84994607754.29.46017B4
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0B3A2C0002
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:44:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=ETS84PG4;
+	spf=pass (imf10.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784205836;
+	s=arc-20220608; t=1784205855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wO7rgHUMjvOOREbomqim3hRFXtwbnBvZKsCnDiin3lw=;
-	b=gZZAe3jYIdCel2Hj882myUmh8q1mb/vwfcaMo6i9ZIv+vHPeNVu3OE2g25mDrTMDCRpAiD
-	Q4SCRX/YT53WCop1ekPVDN2JSHRl92prbnAhtMuWb46AQwepLeF45jlRb5vkZ7zaVmKcbs
-	LdVgwd9TBoVJO//zDt1uMT9hKp6vhuk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784205836;
-	b=LzF8jwgbGyOvO8/d7y3gE/nrR7LNMQZ5wzUW9C0r8Janls8gPA49S97R+kRPpn6US/QJmn
-	2Dnk2nKsLUOWeeZqnDqRbkWXJfEcQiyQG4Wcr7PZ8WQLxBgCVt3MS4FoVk25cbQFTxtc1Y
-	bI9RHWKDePjEED2MD65vAfXTJEGStJE=
+	bh=ZqzuyyB7zI40Qj8rdd4/j/Hz77YcBH2L+r/0EHWbI6M=;
+	b=M6KpDz945/JJ88VUykYEYVxx0XJWu3TwgNsVA3uDZzxzR0MR4T1XNdgUFsqQ98vwwdH2dp
+	gFQrx0xT/ylskgaWHAgnFhnpanVhoBbh4/BXnXu6KAvE8FbNf5jgDiwQ6Ec0q9V2Zl8PfO
+	k2Ca0a5b1P3u1QscXn1CWfQ8QmuRyRY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=ADfOhONr;
-	spf=pass (imf17.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=ETS84PG4;
+	spf=pass (imf10.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cabc0a1ab6so75751285ad.0
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:43:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784205855;
+	b=BXPfhKi6eGT4ADAnY3jJlNj7+aRpEdVbRiX38WNbkNlAz+YOxvTYCr2msx4q3mE/eQFQMO
+	9med8iQRGqXl3cgTyIDU3mneZ8BMw4RQzqajIRW6i/VbDJIceZwdMHpl2Bu6OfXJ6S2Kun
+	K4kJQR9zPj50gqbeJ777nqCLcQMu2Dw=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8423f236418so2681232b3a.1
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:44:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205835; x=1784810635; darn=kvack.org;
+        d=bytedance.com; s=google; t=1784205854; x=1784810654; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wO7rgHUMjvOOREbomqim3hRFXtwbnBvZKsCnDiin3lw=;
-        b=ADfOhONrFVLsgHXQCrcJOTXx+g+NN6vm4NLzhLmo2R3jH4VddNjzpyjU8bPC2YtahZ
-         xgFXa60C+zA+9d+/Eha2RAVwo0PHjjHvcDBs3OYRj+TJe309PCwHp+6Bp3lAzh3lSpQU
-         j+z02HEd35LM1ewo9RkcoRVV2Fhu4sHj+4SZnykVqJotyZ+HLPVZ8AGHNj/0YyZikY30
-         QlcHi2IGk65YyK+XVrdWo4Mj42D7WwgytLZ03aHKnWNR+9YE/u4FAeuet0qDDfu2qAD+
-         MSX3wwdI7WzWNweXneXQ4PSGL1qC4/4CVfZ2ra8ejtC3Vx2dXzCVE7SY3vYhzUl6a5l0
-         GCYA==
+        bh=ZqzuyyB7zI40Qj8rdd4/j/Hz77YcBH2L+r/0EHWbI6M=;
+        b=ETS84PG4u/FD4Aq3LnvlGy9FtDvtYgvDG9MyLKM4S9lnZqD3SaA48+6siBYgndP7GQ
+         2RaTYQIaWMcpN1ZFm0PRMoWKVd+Dp1/9W46Jw0F9IVx6SIWQA5pxSHN8izZMr4J8z1C3
+         prZGgmapn0GeU7gbwCtt8sTAPjVnTWtUOJZcs1XYLZ6+dJ/J0pDGwHqGAc1KAqcOicxh
+         iDJIosroEYPwN/Pr7JtuUmSTOM1oZSFSFQq383Wr4UPkpiZUc05zNL4mrUHR96K0IbPj
+         dp3suyjl5DkEITysmXzfc+fs8ansc/7jZhikSpY+Px+/5+uHa27RYHi8Z5oaQTZb8bYn
+         C5kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205835; x=1784810635;
+        d=1e100.net; s=20251104; t=1784205854; x=1784810654;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wO7rgHUMjvOOREbomqim3hRFXtwbnBvZKsCnDiin3lw=;
-        b=FpqLfcfwuLb8YVL1D4UxHHYZOjVYyFgter5ZSDOIGgUR7jm8hpwAH9ozjs76BjzPgu
-         DUd8Ghzpg3KqdQ3aQK7uJWpnl7pj0DiP9TKM5bNJRuiiRj1NsUoMqEJNs8oLbrfmTjG5
-         scDe0Zxdgadh82d4RGfehwDQz7iNLP6/zg/dpX0GXFj1O2V3hSesG9aPguNF6ukouQmv
-         vrlbjSCznvpAjS7J2cuXxV4cGqwowLa/P1OBv7kfDW9UXKcal8EYpwrw6zFO5hTGOVyc
-         yEyUyCNOrLf70tcRwhpV9x7Z+rfyNxA1aKroSkUX/4wgqzh7CdrNC19i8QIy3Yq4pKTo
-         MRag==
-X-Forwarded-Encrypted: i=1; AHgh+RoJ8Ld1s1oAEiEJwICNykJ72UDh5S8NdWBuc6hJ15JLo/gmstJEJjHzPT0yXkLSN4pF5BtQRZgaIw==@kvack.org
-X-Gm-Message-State: AOJu0YxyA1et0v4wTEcKccl2Bo8b5+qmqubX+yJhqIOstRkX3hMy5pUI
-	huWrMXPjt2WMsY7Elxe6mr1n70XQ51/Wc8y77aa/d8ubAWXJwlPHGSXapZaFGtu5qH4=
-X-Gm-Gg: AfdE7ckR92MbDhBXFENud2ceXHMGzpofUh8pV+Gum86CuXkAlsxk0XoyiLPecZQFhOp
-	eKLYvAWbLRBWWiX4Hyxn5QgXS9mHblHmv348eZuYFwL8bTT964A33BJUd5UH98u4iblRNyIDpo7
-	JfdZhDwcZAMZD2wirThOP/cYREL3Bor5EE66zRMIvRZ961WhbLVsJVF8BJrYS41DklXDsNT4U6l
-	iqgkcvNgxi4jFnUoIG/15CDmRQWHF0PS0+gOoJYkc9X8eLz55b30U9kLhEL8xp33Hdv+hBRBQ6a
-	Yu/QuBMMKFvlngDOA3lDTb5V3YVnuP4lbFDYkXweyHeYhnvypKC3PC1lkLBbDqnvi6b12Q6aI+6
-	neEEhRolneJm5Nd3s9AiKEMdxc4+37jNQCafuHZWukmn1m8HmxLMND6yGFvKEcUKOXN8T7RWafp
-	19UNQxt5NekpqHxFgluawKOjUHt/fr+Pwq4Q==
-X-Received: by 2002:a05:6a20:20c3:b0:3c3:859b:c20c with SMTP id adf61e73a8af0-3c3859be277mr3653741637.15.1784205835267;
-        Thu, 16 Jul 2026 05:43:55 -0700 (PDT)
+        bh=ZqzuyyB7zI40Qj8rdd4/j/Hz77YcBH2L+r/0EHWbI6M=;
+        b=FHZ4VPcNQsdfRUVc+aKAoWJMD/DVHeLPT5Wzk+SgFUQrSQftUsDyv65Qwu9deLbCmN
+         ho4p6a/4aqrexjRkCwd47E457Y3uNPEYhKiEnUT3Hm/hyasL/2gGZX1LfvecjLK0IlcZ
+         tiFPA8nqZRkFpY3hE+pIIJ7gee3x6Y4z8fbTrmerqlbmybeCOJ8zJ/WMro0YMHZRqiq4
+         3Zyo0qrJyBtO5KZCPnkFXhAN0HEzXmYdrW5wcUg1t5Pj+3Ox8ENmQK+e6JJDa2IMuQx3
+         rxvGwUkAEYyJ+oqedERZxbh8wVZs36J9pgtwODR2tSTqgWACoram7WfJXija96T5k28R
+         w9OA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpiurn6PK6bkDbJt13Kf7ORQghDKgmt6ghuV0htY8nSrF9WNRpvVZreVimI5XOOmmZdG8uyHz++gA==@kvack.org
+X-Gm-Message-State: AOJu0YytEhMIGH8udv0udwnvQwmRnRKO6qC0nI0bcN4lFQQpRA9sLn6Y
+	gp0ob3r9UIrEmqPnS/5mQsmduW43STVzXPTyoWrZ06+pvSDWMnXx6TkTsLHuJcOVYvM=
+X-Gm-Gg: AfdE7clNp3RO3SJdyKiwBWvB4AIGuIGEJuRcsvRM3PVCcqRM/q9IwVC82zU3mAYt+Hj
+	Uis7vmt4f4BkVUgE1O0itjx5sHnP2uM4anmuPL7te8UZxhsNXkojLhUYLxAQJjodYLVF/UD1jDQ
+	Y7qaE8hzyEBqBsjic8IxLwsbAVvzgEw6W79toA/taJ/mizq51Xu8OD6Sv4bSO3XrYwzTsNJXVC5
+	cqVg2ClraImOD5YifL5reNwiINAe6MKm0DT3yFK+YBjgJtHxEEo+PcX3arBStuQb36j1lGcjq7U
+	jqE5Fyl4Km9j8R6Tg6MEBAS98t77UDXdj6sOUWEcTl2TNJzaO+mTrqJ6EncBZfFW7Yt89VrAgqY
+	9SLv/KOUqGrm0eKRP8NSDJbflH3HUQSB0Gc7gWd5dnq88m9jgFtfAX5wsSmbXz6K9+1h43AOsT4
+	k9eYIc+VBUi8P34Qhc5mg2SIQ=
+X-Received: by 2002:a05:6a00:21d2:b0:845:c6fc:2821 with SMTP id d2e1a72fcca58-84889604f51mr19555102b3a.22.1784205853705;
+        Thu, 16 Jul 2026 05:44:13 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.43.47
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.44.04
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:43:54 -0700 (PDT)
+        Thu, 16 Jul 2026 05:44:12 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org,
@@ -102,22 +102,22 @@ Cc: linux-arch@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 08/15] riscv/mm: avoid redundant Svnapot A/D aggregation
-Date: Thu, 16 Jul 2026 20:41:43 +0800
-Message-Id: <66e43057442a0f37e0c7348016ccef382387898d.1784201104.git.cuiyunhui@bytedance.com>
+Subject: [PATCH v2 10/15] mm/gup: add fast-GUP specific lockless PTE helpers
+Date: Thu, 16 Jul 2026 20:41:45 +0800
+Message-Id: <138d74aa9863ae8ff445e16a2798d062895b75bc.1784201104.git.cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
 References: <cover.1784201104.git.cuiyunhui@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BFDCC4000B
-X-Stat-Signature: hsropquegam7jyo3wk4srn9bfnfy49bs
-X-HE-Tag: 1784205836-737776
-X-HE-Meta: U2FsdGVkX19/dTiwtNfhnuzrLjdm2sBufdBplDZbGuEF6meisD7/NrWhFMV5wbLaYcIFPV7iBzUAUMAQRgkOa2cDZc/GBT2mn2NJtcK8YGR1s7/BoFQdY/2bbfuqvdn7CKEKTILpsMLiofUIi2HkbvsEs58jtX2eGjZNhzf9ax9vxBk8+gdWiwBOzg/Bfw9Y1voXMsHcWojKNdinfm392AAVNTZu0J9SBQZ9Y8YDptO9+JTvto6VMM5eD44N1zWhFRH4Vm4+rC+gnS6yij0HhN7LSWa1W4eLzur0AgeBjDzH06jcs7hCFmZJieDH4eTMDMriniL+7/WaEASU6PxE7TzrHNi675OaVxx2f52BQni2/FRVEBoqABIt7zC8TE610KrQSXQA/ZbEJEDnIqx8SxueOIf6BN9y3DLow38yZS+BtIdLTrnLeAVZ8P2i6/Lheu6eRhHhv7ORyB94nmAC0TiQhy9NTTgwiQselOX6JEVwarn3MeQ2rWmDPcPiLT7SIcURcunzYmu2eM/KJOGsH+do91bOHIikADjXLlybBB5EShffMDCwJzCamMUgSNuDEDp3kvNf0o9zN7pEBgTs7v6ExOvnV3Brm5CnjDpgHq5gkolHOVG9nK6GdxUP5NgvDzp9u/+QZOiJXOOE8hNdlyZXlbLofw3gVnhIuUd5wKJGQIJHwuZpw8UEW37URovXmj6VmPqh9GrsUeIlz6U5Bl9jutBr/H1VEnpZG4PIqQaMA1+S8SaDkwF0nM/ZPiRC4bv/2BrD/g3F2NJklGZjtOOGtfGPNHvYjhAjt9P+0JIi+IW0WnzSWeEVdDlvXyFQcCszOBtmiEQ0CtPlAmOf8cdcUGqVzJb0JLxCp1AP5L0eZPA0Hrows/2OGTKEtzxqQLpD6XFyUWDI+JFBjiToQ2J/qg935W7f7LkccVhXc2G10tDFAIxfoyfyfYK6HAMn5s05t8kyHE8a2SFQBxW
- iDLrrSLi
- KFig94D3pbCMhQL1A7Bkvxt2lZG33Kj3YQufbLP7+V4QvCX/HNsBt7wUJ314sxHgM//COgKOpoS4K2layoajmvKwB30Ez1DpVOhqfhO9q4JChOebiofbAkgmffqZVwdesD1n3/wr15JEiDBRW/t9V5EAE1OQsdXGPZpMIhq2amA70awDT5j0GyvhR7V9OOJ2BKlTCru5slA/evTEs77p3WUcdemihqD5UCUERjga0Fw91grdRgMUrPmp4RpZdKvLx5R+5CeJ+hN5a6D/KagAA3WF1/9TLOegADtX3YmJDztehi2V59wDPiMXpcdo3UQ812v4U
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0B3A2C0002
+X-Stat-Signature: xpstutmdncckme5fpuw4xpox5mzysseb
+X-HE-Tag: 1784205854-65639
+X-HE-Meta: U2FsdGVkX18U4wdRGfYGJ2oqNekYEdHbi4nYzRDZyrGTR3oQnrRmjV/bSFGAs4m/OrtO/06P1n8qABNvtxVmy0QDa5USOSxRrASr/CIDsfq4xMqrjxF50o1ujSwQLyQxfEHyW4LJst4Bzsx2wcYIJ6XIBSiuKUp+ioHuRUt9K5OSmH5MijcEqrRjkuw6Fx3EQKT7FKg3ZdPnGojVwgKOQsvM9Qqb7CswSBm5QVNV5K0P5ecDL/5FBgxuoneLfn3oshsJ+Ut+AMEbRU2K4jN1/lIoIiOoOOKc+ZT/4uSP/gay/Y6rFXUGcFuNQqPkm7omdC2zCqNEMsxWQwYYy2f2+ISzLvSGx0Lqtw03Rc8xbGnFcC/FbSn08qP0dCGjcJJQLOhxBu/h/uN2EQcIDRj5rYd+Kc3T3k4aIfSAxNp9DiNOt5isa+MThVROTx97Rny58mNx9sGrAImVWOBdVk2eIUnkH2NkHwu05A6G7QoKld8ZD3mFWqECdAMkqmiAzkwGEIPXjQeq+ENNuKfct/IH6LzBwwVgyJwpzQTatAain+8BbiEAROCbuUXEeCgOlN3RAn8d23Qp1aSPrknoHm/khrNYo50wwKEY0zBU8YIpRcpoJE8Zi+7VzxJI+rXjr0mursaxvfu3kjXdg9DdkEGZbeJqizTxxFVWajK/y7xszE+/Yf9Qof9FjdFBccCKFxNdWXBhx6rD/Ar/cI/cyBAPlnWNjTV4yBreqb73F83hNQKDdWF52mLKZbvNZz2b5NKCcKSqLP2C5iCSNUP1mHVcLLeqIls1EQ/4O3hyhoLsMN+6VZ5B5QUTlEN82mYY30kG/GQXsdsgs3+ptqwoSbeKz5ZLLSxy18PcfFlc4tRbVB3vzUNocQsPMGKX6/BZlr87UWk5u+TCgXJ2tkWWgIZPKU2wuC6pXnOdzaw+cPrOQwkPiiCL/Vj2xMntwTBuY0olSDbMFwFXjPJgprH/Z38
+ 3wFnSqzA
+ j0+NuBMdy9hdf1j5cT8W/ZO5j5bPrx+S2gFLnmq4YjItWTS/UqxAs7BmhSj49cpbyn6k+aadnQ0Rj7pAs+YLbmt285sToBsjXLUtR9t82f0O8XiTMxTsV/2sU0Xcal5QwiNp/F56/aKb+huHdZxrFdenCe0DXdMsCir2Rgo2HWx7FbZt8jaY3In+I/A27J4F0Q20kn2pCsjUNx4nGXEWBqb3dA4aYtFd7yVaFTuAqMhGC1Q+d/6pBJSs6LgwxShzuorItL8Css55Vim3jsQqqIcgAiuPcm4X+OzJicXqUvNaKkpuE8hdpUfzl817Eq5f0IPFG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,107 +125,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Svnapot mappings encode a 64KB range as a NAPOT PTE block, while the
-public getter returns a logical base-page PTE. To preserve that PTE view,
-the getter folds accessed and dirty information from the whole NAPOT block
-into the returned PTE.
+fast-GUP snapshots a PTE without holding the PTL, pins the page, and
+then revalidates that the PTE did not change. Keep both reads under the
+same lockless PTE semantics by defaulting the fast-GUP revalidation to
+ptep_get_lockless().
 
-This aggregation is an OR-style operation. Once the returned PTE has both
-accessed and dirty state set, later entries in the block cannot change the
-result. Avoid reading the rest of the block in that case.
-
-The lockless getter still validates each entry before consuming its A/D
-state, so it preserves the self-consistent range requirement while also
-avoiding reads that cannot affect the returned PTE.
+Introduce fast-GUP specific PTE snapshot and revalidation helpers. The
+default implementation preserves the existing ptep_get_lockless()
+semantics, while allowing architectures to override the helpers when the
+public lockless getter provides extra semantics that fast-GUP does not
+consume.
 
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- arch/riscv/mm/contpte.c | 60 ++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 56 insertions(+), 4 deletions(-)
+ include/linux/pgtable.h | 18 ++++++++++++++++++
+ mm/gup.c                |  6 ++++--
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/mm/contpte.c b/arch/riscv/mm/contpte.c
-index 9ffdffdc2b0c0..70f9a0668b50c 100644
---- a/arch/riscv/mm/contpte.c
-+++ b/arch/riscv/mm/contpte.c
-@@ -309,10 +309,34 @@ pte_t napotpte_ptep_get(pte_t *ptep, pte_t orig_pte)
- 		cur = READ_ONCE(start[i]);
- 		if (!napotpte_is_consistent(cur, orig_pte))
- 			return napotpte_subpte(ptep, orig_pte);
--		if (pte_dirty(cur))
-+		if (pte_dirty(cur)) {
- 			pte = riscv_pte_mkhwdirty(pte);
--		if (pte_young(cur))
-+			for (; i < nr; i++) {
-+				cur = READ_ONCE(start[i]);
-+				if (!napotpte_is_consistent(cur, orig_pte))
-+					return napotpte_subpte(ptep, orig_pte);
-+				if (pte_young(cur)) {
-+					pte = pte_mkyoung(pte);
-+					break;
-+				}
-+			}
-+			break;
-+		}
-+
-+		if (pte_young(cur)) {
- 			pte = pte_mkyoung(pte);
-+			i++;
-+			for (; i < nr; i++) {
-+				cur = READ_ONCE(start[i]);
-+				if (!napotpte_is_consistent(cur, orig_pte))
-+					return napotpte_subpte(ptep, orig_pte);
-+				if (pte_dirty(cur)) {
-+					pte = riscv_pte_mkhwdirty(pte);
-+					break;
-+				}
-+			}
-+			break;
-+		}
- 	}
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index da14328093a86..62943fcbf7046 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -813,6 +813,24 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
+ }
+ #endif
  
- 	return napotpte_subpte(ptep, pte);
-@@ -343,11 +367,39 @@ pte_t napotpte_ptep_get_lockless(pte_t *orig_ptep)
- 		if (!napotpte_is_consistent(pte, orig_pte))
- 			goto retry;
++#ifndef gup_ptep_get_lockless
++static inline pte_t gup_ptep_get_lockless(pte_t *ptep, pte_t *rawp)
++{
++	pte_t pte = ptep_get_lockless(ptep);
++
++	*rawp = pte;
++
++	return pte;
++}
++#endif
++
++#ifndef gup_ptep_revalidate
++static inline bool gup_ptep_revalidate(pte_t *ptep, pte_t raw_pte)
++{
++	return pte_val(raw_pte) == pte_val(ptep_get_lockless(ptep));
++}
++#endif
++
+ #ifndef pmdp_get_lockless
+ static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+ {
+diff --git a/mm/gup.c b/mm/gup.c
+index 99902c15703b0..72fb147193e55 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2842,10 +2842,12 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+ 	if (!ptep)
+ 		return 0;
+ 	do {
+-		pte_t pte = ptep_get_lockless(ptep);
++		pte_t raw_pte, pte;
+ 		struct page *page;
+ 		struct folio *folio;
  
--		if (pte_dirty(pte))
-+		if (pte_dirty(pte)) {
- 			orig_pte = riscv_pte_mkhwdirty(orig_pte);
-+			for (; i < nr; i++, ptep++) {
-+				pte = READ_ONCE(*ptep);
++		pte = gup_ptep_get_lockless(ptep, &raw_pte);
 +
-+				if (!napotpte_is_consistent(pte, orig_pte))
-+					goto retry;
+ 		/*
+ 		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
+ 		 * pte_access_permitted() better should reject these pages
+@@ -2871,7 +2873,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+ 			goto pte_unmap;
  
--		if (pte_young(pte))
-+				if (pte_young(pte)) {
-+					orig_pte = pte_mkyoung(orig_pte);
-+					break;
-+				}
-+			}
-+			break;
-+		}
-+
-+		if (pte_young(pte)) {
- 			orig_pte = pte_mkyoung(orig_pte);
-+			i++;
-+			ptep++;
-+			for (; i < nr; i++, ptep++) {
-+				pte = READ_ONCE(*ptep);
-+
-+				if (!napotpte_is_consistent(pte, orig_pte))
-+					goto retry;
-+
-+				if (pte_dirty(pte)) {
-+					orig_pte = riscv_pte_mkhwdirty(orig_pte);
-+					break;
-+				}
-+			}
-+			break;
-+		}
- 	}
- 
- 	return napotpte_subpte(orig_ptep, orig_pte);
+ 		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
+-		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
++		    unlikely(!gup_ptep_revalidate(ptep, raw_pte))) {
+ 			gup_put_folio(folio, 1, flags);
+ 			goto pte_unmap;
+ 		}
 -- 
 2.39.5
 
