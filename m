@@ -4,97 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C874EC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:32:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5D05C44511
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65FF56B013E; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
+	id 9BC876B0106; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E9956B0143; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
+	id 9932D6B012E; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FD196B013E; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
+	id 883086B013F; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 159B96B013E
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:32:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E34D5120118
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:38 +0000 (UTC)
-X-FDA: 84994311276.12.9C08642
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C6B0CA000D
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:46:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="j51R/kiM";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784198797;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EBE56B0106
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:33:11 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D29B4401DD
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:33:10 +0000 (UTC)
+X-FDA: 84995033340.05.08D2DB1
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D1A7D40009
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:33:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NfE0CG6a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784215988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y8dvsppUCclol6edmZSY/pkLFvmywa1k8Hyk3xrw9tY=;
-	b=R7byqAHVq38H7ELgoIyxeBDq2QC2iTNS0TR+1Vc/ubB5dBhPwHd+NQQpfxZYKtPG/MoyGm
-	mQJQXngXpd6j494Gh5Of6F3CojzEW+IrgNCY4Ow7Ww/t2mB0bMu5FVDqYOcIfqWQAx1j2d
-	+HxQloQ5vvPHMcHbi01e7Q53cqsaq8Q=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="j51R/kiM";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784198797;
-	b=idJZhTCyjCFQBPM1MjoJIojwBZSuEm2tJe009DCfKNpiszDOfjjoVyuqBawdXTppvUMdVa
-	9J0iU/pgeDfworq+FaZVleGUZcJKx/8/YmgXE2MgoAwb3TGIDIlz33320g53FMU7tQiY+0
-	AJv/9/FUQMFym/rfjps0Urdrwa3/avA=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784198791; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Y8dvsppUCclol6edmZSY/pkLFvmywa1k8Hyk3xrw9tY=;
-	b=j51R/kiMoovbkMwu6kO7e6jHxV/WembdYi8x7HfJoGZ3CPaGOpcN1XWXV6cQ6HzEfob+FBCoSZfmN1wi2CcV44JJ8LiJT4F4rMxvc24hjgUEItJXJ1WCCJLj3+0Hd/snw62LrOGoudLYUIVBjtyUMZ6GubGvzAsIknk+frNU4hQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X7E4pTJ_1784198790;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7E4pTJ_1784198790 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Jul 2026 18:46:30 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	hannes@cmpxchg.org
-Cc: riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	mhocko@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] mm: mglru: promote mapped executable folios after first usage
-Date: Thu, 16 Jul 2026 18:46:19 +0800
-Message-ID: <7e3a5f6bdf70e0237027025f4593a3874d411f65.1784197559.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
-References: <cover.1784197559.git.baolin.wang@linux.alibaba.com>
+	bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
+	b=BX+KgkvNsXAfQ9UFkYm4yJBNeBzYKKNPsCXTnCbDpgZiLU+xl7x3SzHMCfsnz4emhtArYT
+	lwgasFU4AjDjJUtX3LMvsyykCTAppnTuYztT0sJQH8DiBBYzwsnewaywTKIyQIaEg5Kf08
+	3V8MhDOWjKJrMri9JzWNu2tEgPnJQEg=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NfE0CG6a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784215988;
+	b=IY8O0zhfwl0D2wkQlENkoOcZJuDHhHhMNaMG56SSY2kLPxpSpsocxo4PH6+xusuUmEi0Bv
+	Yh75cS7s0a63zWVtffqkd5nJQ4CUP8zzWq6qFLRjk+GrceY6eXQ2/WPQ+d/0H2ZsWZQc0+
+	W0Q6G25L7mvREywjVqUlCl575Z1e9p8=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10ed63c0so35391cf.1
+        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 08:33:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784215988; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DjwYL+VmIwihOf850UXGHq9/pWXEMYqdfv0G7uQfbzWcka5aKYfF5dTUdh5Ir2TtDY
+         JJwkkdH0Ftpzsmkziuw6bajjjdmWvc2yn7n3zhJjx2k7Z4yGfY4IlY/e8LmdcDSxyDZG
+         vdCRXZFwimuHV4g61tjgq/tF3sSi651+DsK7AO8ZRvals5DPFbjL7qJ3JlEOtQO6f4nZ
+         kvwxgMMVLTrf4v8JkLkYcxb7wvDK/+2MU0x2fdpu8+t4pT/Ye3PdfCMavthnGxV+DLoh
+         +Pco4ESA8grRz8nBm6iizut19QBArczwiLWuZFf6Gx6eJ0lZ/bSPM2IEe8FYh0BRsn1h
+         9abw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
+        fh=JxyN4PMFXY5mk9th7iFhoZloAvVfAg+aYE8I2Xei6Rg=;
+        b=JwI7iyrnkXHsN5No/iDIdbjuYIufEafZAyWesQOdV/hTRyYKeSNnF3+Mape9mo+QUW
+         XythUNDq6AqBP5z0aKEJLQ8sS1APNPjlyVwUsTCIVi8EclL0RZ3NnJJZc/qD+5cyVPuM
+         D+zHrcmdCaXlt05YrYey0NvbAwbwahIsXGAkkQwlQGVfOP6QRegOXXnf/zr69JF1E2ze
+         boU2VrqM/wKYbybI9EdLetqc8I1wmIwzFD+KRQlO8At7RuR7i3ZXY//yL6s661HJTJWR
+         j7bAuUstGn/ze2cv+2viRYxpaVH8aXfoGjQ/NHWhW9irRYNgDEAK7iAwrCBJvAsLCA6B
+         m+VA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784215988; x=1784820788; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
+        b=NfE0CG6aics15Kbi0PYIrzowXUWarSYHwvbwVTJjJlW6zGLjhBW8p3kIqjImVGoNuD
+         4T6OwTQXUrYBz7xiPZ5ZlAa0esFuMgmtXS8LsWXtd+kw/cHjPQTUIdF7QLggEq73o3ss
+         Cz53QeNjfLYmxKNuhqC2tEMFa3VhiWDP+GtOuONvd+W/TX+wEa9CANX5g0Ix67G7iJC8
+         QX1gFOfIXHF4aupLcuT080c6WTuU0xUJEz85OYd2j3OzPzLBQ4yIWlaWBIzAtRhlCfZP
+         qnkUUDv2yPfWEPQ2aJ/fNOJ8rzTrjUhbuxO9CVJd8s0wWLwwFGwhyeX1js3KF8Rso4aO
+         FneQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784215988; x=1784820788;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gqP+mYqeDojLhRDbRbXpVEiCGBcqs/tKJr25Bs+t6+0=;
+        b=dJz0mJbvmF1n4oLsh00NxcYpONA2tUmbGpMJZ+O7OyM1H58s9mFQvrZ8wh2qIX5YQr
+         MyfDGddShIwvQM8c1bx9wehO9J8VmbCdzZCjli8UoLdtKPAmh8FhIbisGr7IA12CAGB4
+         naP5iM+ugsBGk79+UPs5pwDcxEzfyVDRSRkbSdn9a4s7z4lcFP0lCMP4G/FPZoytXYOR
+         dGobW0n91EjOGBbc+WKuH/vOXgw3Brn3U/aKoXCOL8i6AkbtZQVU+vUXgHkMs8MV/BcZ
+         DmtdLAT54hfOKi5EpfUxSxbgpMzoOrOB3B9+S5BkMFB8t80arxZMOgVaGSQ3Ldg8E+ln
+         0Tyg==
+X-Forwarded-Encrypted: i=1; AHgh+RpbL+3ndX7g81sREfCGsCCi52VdjysXseN8uejh94hYBb0mPE0ujJFVbYNWY9V67dyPqHOEzYID3g==@kvack.org
+X-Gm-Message-State: AOJu0Yw5fQTLzO7zaLdbecVeReiPWaBb03ZVYN+zbWGmuXO5AtCDISBJ
+	cqOqSem3j0stkZcEFmezRAaiSOxYLCqEzU5G7QIVbtTjy1oLDPUWdsADAcPzq5I8x9y6KNcD1Tq
+	UG+qj49KAxqiH834vUABne372cPlHkR3BUKlaDzQ2
+X-Gm-Gg: AfdE7cmlG+gDuHouHoek28SiDC1/Oh/j6HeZwJF+fbYl7iFmgeb8FrqZQ6jFXEFqCJN
+	1zOBWsiqvURrU9h9aeDM4vDyKPcRHGMcZ8z/qBoVdnLzcOzcIm2BCFh2sGMzNik80Pn8y/S0XR4
+	p6HiEc9bv/WETpkl9E0GI9rkfofqpoR93DnTrZToX74zuGfeiSG8FkLKFFPKzFB5QPxPx+xW60U
+	sIuPRVhvELxqrQKp2Rcgw+i50ZDyfSCrHkEVzc/po91mv5NM70+QCa/bZUhlPJ9ZBQwhzgNbKlG
+	u4oqXxqibii5PQleaMlh8/QWOw==
+X-Received: by 2002:ac8:5996:0:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-51f7e705596mr9599801cf.10.1784215987211; Thu, 16 Jul 2026
+ 08:33:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C6B0CA000D
-X-Stat-Signature: yw4wdeguqi1rnhdtfiuufg51198yuudw
+References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
+ <20260715-b4-objext_split-v1-12-9a49c4ccf4c3@kernel.org> <CAJuCfpHuXu3BDf93zeBQWSW_k5wApegp44rHoZwk5Ym6xxbqEA@mail.gmail.com>
+ <e126d6b1-bed7-46bb-a8a3-cc555707b516@kernel.org>
+In-Reply-To: <e126d6b1-bed7-46bb-a8a3-cc555707b516@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 16 Jul 2026 08:32:55 -0700
+X-Gm-Features: AUfX_mwOlgPh2vQsFfJAl8XC3VAb0x-hSX4wZUGMP4QuR9xJ87PvP5NzdSVYcPQ
+Message-ID: <CAJuCfpFicmMa54V5qVY7BYQuNih9u+-bQ+x51VDza7zWPK_mOg@mail.gmail.com>
+Subject: Re: [PATCH RFC 12/12] mm/slab: stop allocating objcg pointers when unnecessary
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D1A7D40009
+X-Stat-Signature: h34e11i3xfa5bt8r3urstcupk3hboeyu
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1784198794-236729
-X-HE-Meta: U2FsdGVkX1/2/Sb5D7/ChkvALlUosts/qp1LdZID1SAeAmGHy5EsuatG/Cfq9Zd7fmWNSc2lM7j8fIwl7ZvuHqQ7doVcVmXml3zulWJZJaOHUpnbixwNOLCE6R/bYHdB9h66vKKQI7miQr6wSB5WxmahvjCKUDsQ0E6esVEFdO6lrOFi2kWsbto15uhdVoBa1ZqDydcxgNyZ5oCwkI5LtFtZQZt07wkIF7lJ8cmqflVAzbk9mj6Ag3YowluTSNEuaCAidOdyDQYggHDYLMNinmnUsgHkTH9NPtmPG+I5BSboglvMNHBQf7TFCh+AHRFv3grRjYJ/QS/quXlbEwKr2EUUdtH29pVzvc4/AO5kJVhni4EEuokEPmRY2pGLSQepF9R/gi0yH/GlnhSvfHXEnGLSkJsJqla4dm7S3T9EHxek9bLTx09ccKFGGmWJ38SkgxGMvE2f5X7d7dBj6NQFWuy+xO9XprtYYDdcEO8tZ/CIk1smsuGyMv8HQw7zy7GjSlBlKOEpyMqNOZ4VPgaN/Tp7o2Lal84h31VOa2rCh7UFzJwkFiVggLz4+vDNbp1pXWC1M0SuVVALRLISVzR11WHDIDAjyuqoxbt4cKLaDo64qeQJ+PiFZelow62/u4cOaS4sVlfg6LABHV8FwcAOYzwr0bOolLS6oENmhL7gxg2nW6PQcZg9+HBELY8jRH1PahBMBsgde8VwbYUAuZQuxsvRp+3nIktpMnA3szhCMvcbjAUtvjPDuAnXIYow6UBrwW867G7xvw96H69RAVC3a+k07cd3NbZY61SiGRvqtTWt/uGFiCQq84O0+m8Fkjy4V2BJb/CN/FcgYy11vlMpsXxtKApZMwAB/yUD6iOcYtDJ/lM3A5Q3pkeqZ53RQGfN8eOj2XZFfb7RzL1t+TpNldShxY1Yye97bkulqaC6l/QMfZvsZ+RvFlyog9zRgTo2HkVFvsHg7BQshkdb0S9
- wijCtP2g
- AL6h5eSCdzv196AXynfA/OFJs1YTQ7pu424seD2liwzq3xKRDOATqANzRNF6sJRgKgfcUYuX0GgAYb8RiDWYpl/Fb3KSKBr3GdLf4ZxaAOnVzBDTEiBB+yGHXZ1ESMcm6Yqa6GjzR+OsntOLC0L/KOgJaQRbpivm/xQ/c9G7RZoYbLEfuDYsjh2YtctydgVQJbnhFQne8mwUNO5PHnMb2IFcjFiIjUZcWaTSWQiq/089EWsKX7PZVEpTsdqWQf2KIQqIN
+X-HE-Tag: 1784215988-935864
+X-HE-Meta: U2FsdGVkX1/d9ICC6O4Ow4/4Wsd2/9v95hkz17LwHLcrT6zXS+lwEO8hWZWQPKMvj7BXDs4GAE7HA3pVlzywM1M2/6pSECc4ejdQgPpeshdsSOWzf7KGUu2chcZ8nXacX8yc0dqghVFFPviXlU5D2vfV9pG1LS6VrSlYhqaf1N/ty3VO914H6VBVeKqpo8ZjDPGUjYrHr+Xe3fml+kgEsginRtkLR4VcZUIQb8bKnifLpQ9ngP4a3L0hyTVHjvNuW6FZPLYuE8cauFOqQCO/0jLPUrxWQAnPyPEq/c82mvB0rlqSjOFjptJ+qjiTgOGfoFiAwDqjKNoxrtqYtMNd+t7VCDpvEBTOrElqWSsHmc/K/avxPnSwDLoXeSDl/WZfQS3fOVsS7H/9xl4JV4xd7stX4cONBF1LMQM/yiMXflGENIuPxXTNYBz7hALxWA1UmEHsWVj7MdAzHSEpVa1lIFe6uCvPmVlVkfeIicDKZPNjZHt9hbEn9WD7ddQDQj8Bh4r3+yotA4DoX1+SpNYcjtEG5B1EgSUf/94CL2WC5fNSaTk3igT7rU/xCJaMEbNx6nRKOfqlwnTUCbCq/EN1+63Yfmi9ETuFjQFYIIEK8rjMrTqLr8oU2rdd+FN/lCkOTi8AC1pbsacQQ188ps9KiXZiPRi6dB2SxKe2KY6xYlhyb/6C+aYsP4ZbZwotDqX6dD7k9QLnOWAMdtnlr+EDjeqjdjxIipsg15ot+8eqX0gNEMsd1xfW/tRRM6hulSRCw2/8BL2425RVBgdLMIL9+3Tp19++KGk3STPzZyxeKdHaUIX0lcwCrMgw4A4ZFLdsxI5uDRBJfn/REGWwyhn+RKU4dBae5PEWGarWisWp2WDEDz7KhQK5Q1eulBKp7Q6eXh4IyH5Pf9uVGX3a2p3Dp5GExyAmynvw8HZVkZUuo00i5WE+bT/MBxskmgUSkzT/ViodfsePWsZe05Gp2dI
+ it2Oh2R3
+ POCxR2+dQmi7ye/rNWvEPRlmsJitHs1/ml4vniOxe7cCxQHpOtVD+NMN25xbpCB2FG12JHCNeK51rovaHsWl0xHNZWV+FzjaqV+/K29nD+n7Vw7FksOueHH7rTf2JSEVT1gyA7GDxC2gDl6sfLXkEHPIyFtOfkcUo0hKS3bmBVimy9fvy8f3mB+Fhsf5+fbRXxu+xUjbjvfcvLr+X+u37eh0Lu4acIl3v3S3yOAOVe8+HOaspUzWORUvOxuCFmzDUeIqrHODOx95B01M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,215 +145,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Classical LRU protects mapped executable file folios through commit
-8cab4754d24a0 ("vmscan: make mapped executable pages the first class
-citizen") and commit c909e99364c8 ("vmscan: activate executable pages
-after first usage"), giving executable code a better chance to stay in
-memory, avoiding IO thrashing and improving workload performance.
+On Thu, Jul 16, 2026 at 8:08=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> On 7/16/26 06:46, Suren Baghdasaryan wrote:
+> > Maybe now we should rename static_obj_ext_size() to
+> > static_obj_ext_max_size() as it reflects the max possible size of
+> > slabobj_ext?
+>
+> Hm with _max_size() it doesn't have to be called static_ anymore?
 
-However, MGLRU's protection of mapped executable file folios is less
-reliable. Although shrink_folio_list() checks references, the access flag
-of mapped executable file folios may have already been checked and
-cleared by lru_gen_look_around() or walk_mm(). Additionally,
-folio_update_gen() or lru_gen_set_refs() only sets the 'PG_referenced'
-flag for mapped executable file folios, which causes shrink_folio_list()
-to ignore the first usage of these mapped executable file folios and
-reclaim them easily.
+Yeah, static_ is an implementation detail anyway.
 
-Follow the classical LRU's logic, promoting mapped executable file folios
-after their first usage in folio_update_gen() and lru_gen_set_refs(),
-giving executable code a better chance to stay in memory.
+>
+> But maybe we can get rid of it completely.
+>
+> The only caller is calculate_sizes():
 
-On my 32-core Arm machine, with the memcg limit set to 2G, running
-'make -j32' to build kernel showed some improvement in sys time.
+I was thinking the same but either way sounds fine to me. Keeping
+obj_ext_max_size() would be a bit more self-documenting I think.
 
-base			patched
-9248.543s		7861.579s
+>
+> #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+>         if (slab_args_unmergeable(args, s->flags) &&
+>                         (aligned_size - size >=3D static_obj_ext_size()))
+>                 s->flags |=3D SLAB_OBJ_EXT_IN_OBJ;
+> #endif
+>
+> We don't have slab pointer to pass to static_obj_ext_max_size().
+> But we should be able to figure it out from the cache via
+> cache_needs_objcg().
+>
+> So we'd need cache_obj_ext_size()?
+>
+> The static max size here works, but may prevent SLAB_OBJ_EXT_IN_OBJ
+> needlessly if padding can only fit codetag_ref and not objcg, but
+> we don't need objcg.
+> Which is probably only theoretical at this point as kmalloc_normal
+> caches (that have no objcg) have no padding, at least without
+> slab_debug. But still.
 
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- include/linux/mm_inline.h |  6 ++++++
- mm/vmscan.c               | 41 ++++++++++++++++++++++++---------------
- 2 files changed, 31 insertions(+), 16 deletions(-)
+Maybe keep it simple as is for now and then we can optimize it further?
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index b5c4dc0f3fe3..30fdf1056312 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -30,6 +30,12 @@ static inline int folio_is_file_lru(const struct folio *folio)
- 	return !folio_test_swapbacked(folio);
- }
- 
-+static inline bool folio_is_exec_file(const struct folio *folio,
-+		const vma_flags_t *vma_flags)
-+{
-+	return vma_flags_test(vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio);
-+}
-+
- static __always_inline void __update_lru_size(struct lruvec *lruvec,
- 				enum lru_list lru, enum zone_type zid,
- 				long nr_pages)
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index de62899c108d..fa808721b64d 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -835,11 +835,15 @@ enum folio_references {
-  * with PG_active set. In contrast, the aging (page table walk) path uses
-  * folio_update_gen().
-  */
--static bool lru_gen_set_refs(struct folio *folio)
-+static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
- {
- 	/* see the comment on LRU_REFS_FLAGS */
- 	if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
- 		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
-+		/* Activate file-backed executable folios after first usage. */
-+		if (folio_is_exec_file(folio, vma_flags))
-+			return true;
-+
- 		return false;
- 	}
- 
-@@ -851,7 +855,7 @@ static bool lru_gen_set_refs(struct folio *folio)
- 	return true;
- }
- #else
--static bool lru_gen_set_refs(struct folio *folio)
-+static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma_flags)
- {
- 	return false;
- }
-@@ -886,7 +890,7 @@ static enum folio_references folio_check_references(struct folio *folio,
- 		if (!referenced_ptes)
- 			return FOLIOREF_RECLAIM;
- 
--		return lru_gen_set_refs(folio) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
-+		return lru_gen_set_refs(folio, &vma_flags) ? FOLIOREF_ACTIVATE : FOLIOREF_KEEP;
- 	}
- 
- 	referenced_folio = folio_test_clear_referenced(folio);
-@@ -914,7 +918,7 @@ static enum folio_references folio_check_references(struct folio *folio,
- 		/*
- 		 * Activate file-backed executable folios after first usage.
- 		 */
--		if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio))
-+		if (folio_is_exec_file(folio, &vma_flags))
- 			return FOLIOREF_ACTIVATE;
- 
- 		return FOLIOREF_KEEP;
-@@ -2119,7 +2123,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
- 			 * IO, plus JVM can create lots of anon VM_EXEC folios,
- 			 * so we ignore them here.
- 			 */
--			if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio)) {
-+			if (folio_is_exec_file(folio, &vma_flags)) {
- 				nr_rotated += folio_nr_pages(folio);
- 				list_add(&folio->lru, &l_active);
- 				continue;
-@@ -3188,7 +3192,7 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, struct ctrl_pos *pv)
-  ******************************************************************************/
- 
- /* promote pages accessed through page tables */
--static int folio_update_gen(struct folio *folio, int gen)
-+static int folio_update_gen(struct folio *folio, int gen, const vma_flags_t *vma_flags)
- {
- 	unsigned long new_flags, old_flags = READ_ONCE(folio->flags.f);
- 
-@@ -3196,10 +3200,15 @@ static int folio_update_gen(struct folio *folio, int gen)
- 
- 	/* see the comment on LRU_REFS_FLAGS */
- 	if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
-+		/* Activate file-backed executable folios after first usage. */
-+		if (folio_is_exec_file(folio, vma_flags))
-+			goto promote;
-+
- 		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
- 		return -1;
- 	}
- 
-+promote:
- 	do {
- 		/* lru_gen_del_folio() has isolated this page? */
- 		if (!(old_flags & LRU_GEN_MASK))
-@@ -3428,8 +3437,8 @@ static bool suitable_to_scan(int total, int young)
- 	return young * n >= total;
- }
- 
--static void walk_update_folio(struct lru_gen_mm_walk *walk, struct folio *folio,
--			      int new_gen, bool dirty)
-+static void walk_update_folio(struct lru_gen_mm_walk *walk, struct vm_area_struct *vma,
-+		struct folio *folio, int new_gen, bool dirty)
- {
- 	int old_gen;
- 
-@@ -3442,10 +3451,10 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct folio *folio,
- 		folio_mark_dirty(folio);
- 
- 	if (walk) {
--		old_gen = folio_update_gen(folio, new_gen);
-+		old_gen = folio_update_gen(folio, new_gen, &vma->flags);
- 		if (old_gen >= 0 && old_gen != new_gen)
- 			update_batch_size(walk, folio, old_gen, new_gen);
--	} else if (lru_gen_set_refs(folio)) {
-+	} else if (lru_gen_set_refs(folio, &vma->flags)) {
- 		old_gen = folio_lru_gen(folio);
- 		if (old_gen >= 0 && old_gen != new_gen)
- 			folio_activate(folio);
-@@ -3518,7 +3527,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 			continue;
- 
- 		if (last != folio) {
--			walk_update_folio(walk, last, gen, dirty);
-+			walk_update_folio(walk, args->vma, last, gen, dirty);
- 
- 			last = folio;
- 			dirty = false;
-@@ -3531,7 +3540,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
- 		walk->mm_stats[MM_LEAF_YOUNG] += nr;
- 	}
- 
--	walk_update_folio(walk, last, gen, dirty);
-+	walk_update_folio(walk, args->vma, last, gen, dirty);
- 	last = NULL;
- 
- 	if (i < PTRS_PER_PTE && get_next_vma(PMD_MASK, PAGE_SIZE, args, &start, &end))
-@@ -3609,7 +3618,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 			goto next;
- 
- 		if (last != folio) {
--			walk_update_folio(walk, last, gen, dirty);
-+			walk_update_folio(walk, vma, last, gen, dirty);
- 
- 			last = folio;
- 			dirty = false;
-@@ -3623,7 +3632,7 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
- 		i = i > MIN_LRU_BATCH ? 0 : find_next_bit(bitmap, MIN_LRU_BATCH, i) + 1;
- 	} while (i <= MIN_LRU_BATCH);
- 
--	walk_update_folio(walk, last, gen, dirty);
-+	walk_update_folio(walk, vma, last, gen, dirty);
- 
- 	lazy_mmu_mode_disable();
- 	spin_unlock(ptl);
-@@ -4258,7 +4267,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 			continue;
- 
- 		if (last != folio) {
--			walk_update_folio(walk, last, gen, dirty);
-+			walk_update_folio(walk, vma, last, gen, dirty);
- 
- 			last = folio;
- 			dirty = false;
-@@ -4270,7 +4279,7 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 		young += nr;
- 	}
- 
--	walk_update_folio(walk, last, gen, dirty);
-+	walk_update_folio(walk, vma, last, gen, dirty);
- 
- 	lazy_mmu_mode_disable();
- 
--- 
-2.47.3
-
+>
+> >> +       size_t sz =3D 0;
+> >> +
+> >> +       if (slab_needs_objcg(slab))
+> >> +               sz +=3D 1;
+> >> +
+> >> +       if (slab_obj_ext_has_codetag())
+> >> +               sz +=3D 1;
+> >> +
+> >> +       return sizeof(struct slabobj_ext) * sz;
+> >>  }
+> >>
+> >>  #ifdef CONFIG_SLAB_OBJ_EXT
+> >> @@ -741,7 +749,7 @@ static inline struct obj_cgroup **slab_obj_ext_obj=
+cgp(struct slabobj_ext *obj_ex
+> >>  static inline union codetag_ref *
+> >>  slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_e=
+xt)
+> >>  {
+> >> -       if (IS_ENABLED(CONFIG_MEMCG))
+> >> +       if (slab_needs_objcg(slab))
+> >>                 obj_ext +=3D 1;
+> >>
+> >>         return &obj_ext->_ctref;
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index 771d73abacb6..09c4931e5435 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -2503,6 +2503,9 @@ void memcg_slab_free_hook(struct kmem_cache *s, =
+struct slab *slab, void **p,
+> >>         if (likely(!obj_exts))
+> >>                 return;
+> >>
+> >> +       if (!slab_needs_objcg(slab))
+> >> +               return;
+> >> +
+> >>         get_slab_obj_exts(obj_exts);
+> >>         __memcg_slab_free_hook(s, slab, p, objects, obj_exts);
+> >>         put_slab_obj_exts(obj_exts);
+> >>
+> >> --
+> >> 2.55.0
+> >>
+>
 
