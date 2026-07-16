@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74D58C44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:53:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A42D1C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:53:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7138A6B00E3; Thu, 16 Jul 2026 10:52:50 -0400 (EDT)
+	id 4A3BB6B00E5; Thu, 16 Jul 2026 10:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ECA76B00E5; Thu, 16 Jul 2026 10:52:50 -0400 (EDT)
+	id 47A9B6B00E7; Thu, 16 Jul 2026 10:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58BD26B00E7; Thu, 16 Jul 2026 10:52:50 -0400 (EDT)
+	id 3696F6B00E8; Thu, 16 Jul 2026 10:52:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F5846B00E3
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:50 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C883401E7
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:36:03 +0000 (UTC)
-X-FDA: 84994889406.16.6807CCB
+	by kanga.kvack.org (Postfix) with ESMTP id 0284C6B00E5
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7BFE1A01EF
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:37:41 +0000 (UTC)
+X-FDA: 84994893522.11.A7DDFE8
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6B0391A0008
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:36:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=Ye3rs0MS;
-	spf=pass (imf19.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784212561;
-	b=qYfFhHrUPjK7tiXCRbL/jgkixodhzoL/mD4qMXRBJSMJEPWbK0o2suULp6nx72AHE/MIee
-	GJVpUcn73LjXkVLWvtaxTFehGTm+lSt2NEq5PSWNEYnxKENVT10PSWSFELUxi3l5WbbaRl
-	dsGmvG5CyRWSMz9lHvnVuu8I041RyIc=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=Ye3rs0MS;
-	spf=pass (imf19.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0A8A180003
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:37:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=XS7JAmBc;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784212561;
+	s=arc-20220608; t=1784212660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4WlGJlssUl95Sy+7ZPm60xZZ+Av02JpGkVDZJY42NWU=;
-	b=Y//N8YL5gZ8W706vrmnrSNnoGoJW+tCHnEcfxOcsRi2gGtB3+XNeSpWPxjcwk+ZkKLiPnH
-	SjTMk4P8j4x/sBwNItIj9wTNxxOhMQxkn1vi4Llfy23zmcLwcg+xpf5HOShqygCRdF/47J
-	Qb5Cs3dH/ACdl8916rAuibpZsamqIFE=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212392; cv=none; 
+	bh=csZJqwFw/LF9jvJifU7Wr9Kub+l+N/C7ZLf6/P48CP4=;
+	b=GsNGDS5aBEyAuUDPxSkiNeyHmF0NVTzPWZpqS5q0jBYkvVAjfjk5KX95uFPHYyzZr9uCty
+	4dBGN5mjT7USajb6ZCNh2tXu3OenIvLbj60M1t+ePkpQymg0ZwLdaMAQrd7grAF7v6Sm1C
+	uH+KDaX+akYOgDX7Jbp60m+wEnLdOAc=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=XS7JAmBc;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784212660;
+	b=DPmUSTypT1WphlXG/+IP8rzA2BGeMbxl++n7aYAl8WvACbwts3Mgkl+YtqYVjgVGfzs6wS
+	7bhXtF1bOh4kvcfxcSoC9H+B+2h+Esi6c9ALcWZdozxsZPiuBbN0yK3wmd7HAkJneeEOrK
+	l5+ptwCvmv18ta6agZBYnCj7tzEiUQU=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212423; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=jznrEKQdfJK9XlXLcrwXp+M8yZtQRw2PwL7zl54fcjtEVz6vmhH8bl0X+MXWpJRmWfCboECKYLXqtNARRLsmfdXi3brdOq6Promtrd0y2F4BlrHokWOsTFd4/Orz/69DXccypqrEurxZ7tNUYSAcpYwJ3i7YJP9tlZST0Q5/O+w=
+	b=mP5Bo8nEM9S+Mw6KA6uiFRlAqKu176gQr+zRP8YXoU73ULcPYeuNuHcwNoAkPaL3v6C/W89/4YaHhryK+wmtlgLBwLRpZGkPr4YTLbh9AYrLcJsOMmmn40Ix5DuBqJTtzLt0g2w37NQbPF7LZr9L7fe9y3r8pfLvvdsNtwQjvig=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212392; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=4WlGJlssUl95Sy+7ZPm60xZZ+Av02JpGkVDZJY42NWU=; 
-	b=Xkelz1J9SKXGI1ETZ7bxCTxKBpH53gqotNR/jBZjWm0bNQcP0Zp1nZ/m+pRm2NRriNMae33rGCEg4jXMgpkaEMyHP13mAMilGNDq3ewpAe7JFtV01FH0U1KbgUYf4qw49Ed4lChBM9z5T5zaYykg2e+U+3OSmfABS4R4clGuZV8=
+	t=1784212423; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=csZJqwFw/LF9jvJifU7Wr9Kub+l+N/C7ZLf6/P48CP4=; 
+	b=gYMXR3sey9S5i81vhtgYUlnAbvQH+FABm9cEuPB2FO2PiJZsTp7Ba8tiyMYE5VnuDYbLEXQNONua+D0WqevLpikCMyTn//L/gOnlKwYIS+5xckf+LJd8+/2xjs5v3i3ebFe51zGpxBLGarakg7agJNEDmrhzjuoUBEK/rR4COMs=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212392;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212423;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=4WlGJlssUl95Sy+7ZPm60xZZ+Av02JpGkVDZJY42NWU=;
-	b=Ye3rs0MS2ukDX+2xyNEMYeevu/o4eWER+D22wvIpwNj1OeTLZYWEJDP6z6/ijY0F
-	sQGMAIOUEUfdNZnL9rP0A6OJnGPU/ervlYSefajfn/w4dJMHer5zULGF2HwEa/qoP3y
-	FG5jUxQdbY8XSQe+/uAyWimxw2ApcipNIRHWj05c=
-Received: by mx.zohomail.com with SMTPS id 1784212390537743.799194073505;
-	Thu, 16 Jul 2026 07:33:10 -0700 (PDT)
+	bh=csZJqwFw/LF9jvJifU7Wr9Kub+l+N/C7ZLf6/P48CP4=;
+	b=XS7JAmBc4/sJx8XPkI0/vBhiJxXrqgfyFb0OLS/umUzn0lGKtGl/JzEc4Padd895
+	rMMYGbAPFVb1zgbPNCcvFj1nMZ0KKvfy8cyBeJYKr73sd6XcDRqTuUcRArmydCKGy7k
+	V8LvQMeRsOiLcisUxN4RhP8fDYgkyiDJLUnsIdFs=
+Received: by mx.zohomail.com with SMTPS id 17842124204621023.6986145207051;
+	Thu, 16 Jul 2026 07:33:40 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,9 +99,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 06/24] exec: expose execveat internals to process builders
-Date: Thu, 16 Jul 2026 22:31:32 +0800
-Message-ID: <35cbc4c456675c2613ed4682d88aad8af83370cf.1784204592.git.me@linux.beauty>
+Subject: [RFC PATCH 09/24] fork: let process builders supply preallocated pids
+Date: Thu, 16 Jul 2026 22:31:35 +0800
+Message-ID: <129eedc78affaf85e4d552daae1460a43057fb39.1784204592.git.me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1784204592.git.me@linux.beauty>
 References: <cover.1784204592.git.me@linux.beauty>
@@ -109,13 +109,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6B0391A0008
-X-Stat-Signature: 3hrqfofc9gqgsm33i4c8s4g9o4xj6tqs
-X-HE-Tag: 1784212561-402320
-X-HE-Meta: U2FsdGVkX19xvXpJcFbmKkycpDVgjJq96n8oLrowGqkjL0Q/h8xkjPfsJSNGAORUpkNTrLP6PnPFvRHPBMSJyxd89ZLqLvn3fvXbSnPUta8fgOf3qEkRB865L+RTzBiBIX7Ezf+zYqcJ1d8ASUUki4DbHiokqEfDUK+FZrODWTgrh0rDBsqVTM0ZtOX49JFnqIXXEAn4zgAfCBk7mGxDyRIpf+K11uOHye8ljXL7GPYMFfDUwgtzVvoiXUWCVN7tXw9gLNWWARWktm7aoo2iGUS6XE/MIlkDUiFah2s3raNn396t3qwWFjt3bFYcySfdeRoZGsW9ShxiYAc87couylvkEd64mGtWwur/kX6aRE7aNEIs20g41cf0H0ngM7m+1n+u0MuN5+IoEtcmNYPoicTcpyAbxd12QT1GouXXmmmnuQ7LYWXc1BtGFSW0X+Dj3C/5tsbsKE3JKGo+tF1slAm9DzOdTP0QdS/1bHcfjVTZFJz6WfhXRE068MGbKG+miNeg+Iqjlfe3nMsYafcJhdSgLu83BoBoz30126eJ2IJiFWXDgEPbzrTighGWMOesCnwg+n/NshA4+GIBl1E8O2ueTOvtBYsXj5jlChQj6674NTHIMGubzOrZB/8BTjGtSbhaqRXmNSzxtPPXTdYOdAuhPFA2i+6h23yZJU9GL4pgMib4e0L32XS6ilvGNIeP8xtm70ZO0iF3dHkSbO6GKla+1WHhpqG7UONfwzSwTVBzq9dk2YfJZXBnididbYMnVyKb4GAeynVWKWr1f/CiWzkPTMsKyGTUYSZEy5T6N8xKDWr5zI8PI9LDkLAfjCycTvYm2sItehkR3uOQYCseNLODdljFlhFRbXuYYCjS/b7XMvjY/jGF8y7fWgIYvA+Rm7jKBpsFcDjsqChVE/lwDvyftcnbbNNNrOnlsUZzjxeoiVHwKnMKgirZ2jC9GS4xT34x0Cj476tFpFXhunY
- hRQ5Olya
- c0oFoClvYnw9iFB/jqpgwu/iOI5xNbW3ZS2mVuDejfbmymC5ccvCOMylWie5IcZzUcBAi9cw7elNRxgDbNX7t9ukDSA2xKO+Ee4RMaDJuWxVoeBGrl0TKdeBtGsHDrTvJrCgxani1/K2s2sbMUPEfk91bWs13zThmNdVwkND1O9+lRE/QL4pO10kboI9VzuiEl9jM0HA/gdJZEo/Wf28gXhN5d3ke2DMVOB3lh4wnZRXmtvxnN8q/S/cEEBBgywzvFrtbyx8UISeQD9EKxVjTvD6gp/3kM1RVOquz3kqFLX3XcjTBPl+qMdr9gz+hTJx30ObEV7JRMViuWO9RJaCYLRhIZGjIMT5kSfRrAL8kyTu6Fyq/JdIET+geVKxPEvCcbKZtC02ccfAUXwfcf6opAIFF7CkT3FCQucXOw3kqGnrInA6ERxGvmGrvKANoVm0yzFvn
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0A8A180003
+X-Stat-Signature: oeh3iok7fuj8ng1z3iwpuzpzpgm74rtj
+X-HE-Tag: 1784212659-149522
+X-HE-Meta: U2FsdGVkX18DsvFWWU5BSAfHwnopcAmXLKaIZww+APqEG+br5QFuoghbaAWlktSE68W4QO9Gwc76UZM2ZyvxmLrwoJUmM8js4JmDxuv0fRoTScoBN6k+Vay1WwOx9PkWbSI7lv0RF6BFb6UPtCulvOb+0zvrdeBOKhYcydaxyUmCge/smusL752V0WL2gsgVwsMeriQkGvzq2Z4t3N2ipTe6N3LdJ0D+hCBEVKHitOUuPf+h3yHQXmXV8xKFSg2DnYBpIjUlFlw7qWvx6+zpsXcwT5nzhS7uJvCh+FdTrIuoolLDR65pdY8ADgyP2jk6UvPEPiio6XfsDH0aKfNW8E1DjePbgYsgrXw3C5J5IyW8QaTicG08CyJ35lTXeNwsGkO4/Aa+PE93G0Cqks2KN/ADS1IYwnPYBc3xP1ULDVojzmaIlzaLMS5CnJPoL1wLLWwqhv5nzoj2Yk5HQR1faZmQ2QSdXQTBbbdii42cmQ8U3uJ6AwaX0p0NONfP2asD4J/kAOmPCEexCiaHuxmECkVeYaLA2Mtg/PqRaMF2tYb47MmwlsgSgmGsXa2YImteERyOoJzkCAGe7qHhZHBVUu3dC0ioaS2dyrlgasI2o0cqPok+TyLoaJWn9Vx5hY5xfALU81FRPlz1o8Px732Y8l+0IH351KKAKgAqLogJ+k54vuCdTkDyvUVpzYaO/cshB7dpUMFENXBzSfe2MPOg1hSFsfiaLJyTQPTfLmLnuEd2hjcDzYOQAIzaG70VjFfm8nMG9hXfMcpAwgAKZFKjqcX0W1zlO1UJyaPBS2F3cnAHOcxpnmD8C6lOAO0fGTLg/RAvbHBY53hsd5m3kSRML+bVTWd+EFw55qrs9wJX1/uEDZeSPL5OsVRuHyjLb9+KyBzjx4WtByMHxz57GoLq05gYSXkmt+9uom48zeDv7ELrwCjCvvUXiN98Lgou0xN0rQzLfbCTk0MnZymOVRI
+ aqB0G6MW
+ v9INjZGnUkk3KZJeFvb4lGhC7VVvuXEzeIY/RKAdKxCCnL6p20MTCmBOYrdeSEVOSTqLDmg8MvJP0c0BJaKu3iCf2tYoXEAXNzz6SlJ2mp4QsMRtdz0uilBIs+vWab8wrNz9Tf9wsKMUCbUnsw7Qunn2lnM4tQ9X4htJTHqo67tN8hOLAQF+aMM2lM2mWuUbf2kOjRfbymWwcpHouWlI6cJd5/5DA3e9VpuKwLZdDMNfO1hoCslmveD7VUMvhQJn8xUaaCAeYVAY02+cd1JuBe1m27junm2WqqLrPJ0j1oY4eSLZMn9sxXvUjp2lE2U/q7DoLZbrSDgwIezwKpa+UJvi9SV5+GYe5EZASaI5o34FEi/I6dGecfI9VZzLF6JidWjPo9Vq4Dxx9SBm5/MCzhFyUzRxy8aSqG1SHlqBnq0LhcBdDjhW46QSZ3DFtmrgJqY1b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,145 +123,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move struct user_arg_ptr and its native and compat constructors to an
-fs-private header. Expose do_execveat_common() within fs so a process
-builder can enter the normal exec path without synthesizing a userspace
-execveat() syscall.
+Process builders can reserve a pidfs identity before copy_process()
+makes a task visible. Add an alloc_pid() variant for a reserved pidfs
+inode, and let copy_process() consume a caller-provided struct pid on
+success.
+
+Keep caller ownership on failure. The legacy NULL-pid path continues to
+allocate and free its own pid. Validate the target PID namespace before
+using a preallocated identity.
 
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- MAINTAINERS        |  1 +
- fs/exec.c          | 28 ++++------------------------
- fs/exec_internal.h | 40 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 45 insertions(+), 24 deletions(-)
- create mode 100644 fs/exec_internal.h
+ include/linux/pid.h |  3 +++
+ kernel/fork.c       | 16 ++++++++++++++--
+ kernel/pid.c        | 22 ++++++++++++++++++++--
+ 3 files changed, 37 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8d7f94f09f414..85b1306cb2ff3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9757,6 +9757,7 @@ F:	Documentation/userspace-api/ELF.rst
- F:	fs/*binfmt_*.c
- F:	fs/Kconfig.binfmt
- F:	fs/exec.c
-+F:	fs/exec_internal.h
- F:	fs/tests/binfmt_*_kunit.c
- F:	fs/tests/exec_kunit.c
- F:	include/linux/binfmts.h
-diff --git a/fs/exec.c b/fs/exec.c
-index d5993cedc829a..1a256ba26425e 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -76,6 +76,7 @@
+diff --git a/include/linux/pid.h b/include/linux/pid.h
+index a29ffe2a5fa8e..fa8acae336f7c 100644
+--- a/include/linux/pid.h
++++ b/include/linux/pid.h
+@@ -142,6 +142,9 @@ extern struct pid *find_ge_pid(int nr, struct pid_namespace *);
  
- #include <trace/events/task.h>
- #include "internal.h"
-+#include "exec_internal.h"
+ extern struct pid *alloc_pid(struct pid_namespace *ns, pid_t *set_tid,
+ 			     size_t set_tid_size);
++struct pid *alloc_pid_with_pidfs_ino(struct pid_namespace *ns,
++				     pid_t *set_tid, size_t set_tid_size,
++				     u64 pidfs_ino);
+ extern void free_pid(struct pid *pid);
+ void free_pids(struct pid **pids);
+ extern void disable_pid_allocation(struct pid_namespace *ns);
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 970810a01bbf6..d16405c037c2f 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2006,6 +2006,9 @@ static bool need_futex_hash_allocate_default(u64 clone_flags)
+  * It copies the registers, and all the appropriate
+  * parts of the process environment (as per the clone
+  * flags). The actual kick-off is left to the caller.
++ *
++ * Except for init_struct_pid, a caller-supplied pid reference remains owned
++ * by the caller on failure and is transferred to the new task on success.
+  */
+ __latent_entropy struct task_struct *copy_process(
+ 					struct pid *pid,
+@@ -2017,6 +2020,7 @@ __latent_entropy struct task_struct *copy_process(
+ 	struct task_struct *p;
+ 	struct multiprocess_signals delayed;
+ 	struct file *pidfile = NULL;
++	bool allocated_pid = false;
+ 	const u64 clone_flags = args->flags;
+ 	struct nsproxy *nsp = current->nsproxy;
  
- #include <trace/events/sched.h>
+@@ -2317,13 +2321,21 @@ __latent_entropy struct task_struct *copy_process(
  
-@@ -291,17 +292,6 @@ static int bprm_mm_init(struct linux_binprm *bprm)
- 	return err;
+ 	stackleak_task_init(p);
+ 
+-	if (pid != &init_struct_pid) {
++	if (!pid) {
+ 		pid = alloc_pid(p->nsproxy->pid_ns_for_children, args->set_tid,
+ 				args->set_tid_size);
+ 		if (IS_ERR(pid)) {
+ 			retval = PTR_ERR(pid);
+ 			goto bad_fork_cleanup_thread;
+ 		}
++		allocated_pid = true;
++	} else if (pid != &init_struct_pid) {
++		if (args->set_tid_size ||
++		    ns_of_pid(pid) != p->nsproxy->pid_ns_for_children ||
++		    WARN_ON_ONCE(pid_has_task(pid, PIDTYPE_PID))) {
++			retval = -EINVAL;
++			goto bad_fork_cleanup_thread;
++		}
+ 	}
+ 
+ 	/*
+@@ -2587,7 +2599,7 @@ __latent_entropy struct task_struct *copy_process(
+ 		put_unused_fd(pidfd);
+ 	}
+ bad_fork_free_pid:
+-	if (pid != &init_struct_pid)
++	if (allocated_pid)
+ 		free_pid(pid);
+ bad_fork_cleanup_thread:
+ 	exit_thread(p);
+diff --git a/kernel/pid.c b/kernel/pid.c
+index f55189a3d07d4..010f80177cac8 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -156,8 +156,8 @@ void free_pids(struct pid **pids)
+ 			free_pid(pids[tmp]);
  }
  
--struct user_arg_ptr {
--#ifdef CONFIG_COMPAT
--	bool is_compat;
--#endif
--	union {
--		const char __user *const __user *native;
--#ifdef CONFIG_COMPAT
--		const compat_uptr_t __user *compat;
--#endif
--	} ptr;
--};
- 
- static const char __user *get_user_arg_ptr(struct user_arg_ptr argv, int nr)
+-struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+-		      size_t arg_set_tid_size)
++static struct pid *__alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
++			       size_t arg_set_tid_size, u64 pidfs_ino)
  {
-@@ -1805,10 +1795,9 @@ static int bprm_execve(struct linux_binprm *bprm)
- 	return retval;
+ 	int set_tid[MAX_PID_NS_LEVEL + 1] = {};
+ 	int pid_max[MAX_PID_NS_LEVEL + 1] = {};
+@@ -198,6 +198,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+ 	init_waitqueue_head(&pid->wait_pidfd);
+ 	INIT_HLIST_HEAD(&pid->inodes);
+ 	pidfs_prepare_pid(pid);
++	pid->ino = pidfs_ino;
+ 
+ 	/*
+ 	 * 2. perm check checkpoint_restore_ns_capable()
+@@ -358,6 +359,23 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+ 	return ERR_PTR(retval);
  }
  
--static int do_execveat_common(int fd, struct filename *filename,
--			      struct user_arg_ptr argv,
--			      struct user_arg_ptr envp,
--			      int flags)
-+int do_execveat_common(int fd, struct filename *filename,
-+		       struct user_arg_ptr argv,
-+		       struct user_arg_ptr envp, int flags)
- {
- 	int retval;
- 
-@@ -1935,10 +1924,6 @@ void set_binfmt(struct linux_binfmt *new)
- }
- EXPORT_SYMBOL(set_binfmt);
- 
--static inline struct user_arg_ptr native_arg(const char __user *const __user *p)
--{
--	return (struct user_arg_ptr){.ptr.native = p};
--}
- 
- SYSCALL_DEFINE3(execve,
- 		const char __user *, filename,
-@@ -1963,11 +1948,6 @@ SYSCALL_DEFINE5(execveat,
- 
- #ifdef CONFIG_COMPAT
- 
--static inline struct user_arg_ptr compat_arg(const compat_uptr_t __user *p)
--{
--	return (struct user_arg_ptr){.is_compat = true, .ptr.compat = p};
--}
--
- COMPAT_SYSCALL_DEFINE3(execve, const char __user *, filename,
- 	const compat_uptr_t __user *, argv,
- 	const compat_uptr_t __user *, envp)
-diff --git a/fs/exec_internal.h b/fs/exec_internal.h
-new file mode 100644
-index 0000000000000..bf6a873e98426
---- /dev/null
-+++ b/fs/exec_internal.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _FS_EXEC_INTERNAL_H
-+#define _FS_EXEC_INTERNAL_H
-+
-+#include <linux/compat.h>
-+#include <linux/compiler_types.h>
-+#include <linux/types.h>
-+
-+struct filename;
-+
-+struct user_arg_ptr {
-+#ifdef CONFIG_COMPAT
-+	bool is_compat;
-+#endif
-+	union {
-+		const char __user *const __user *native;
-+#ifdef CONFIG_COMPAT
-+		const compat_uptr_t __user *compat;
-+#endif
-+	} ptr;
-+};
-+
-+static inline struct user_arg_ptr
-+native_arg(const char __user *const __user *p)
++struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
++		      size_t arg_set_tid_size)
 +{
-+	return (struct user_arg_ptr){.ptr.native = p};
++	return __alloc_pid(ns, arg_set_tid, arg_set_tid_size, 0);
 +}
 +
-+#ifdef CONFIG_COMPAT
-+static inline struct user_arg_ptr compat_arg(const compat_uptr_t __user *p)
++struct pid *alloc_pid_with_pidfs_ino(struct pid_namespace *ns,
++				     pid_t *arg_set_tid,
++				     size_t arg_set_tid_size,
++				     u64 pidfs_ino)
 +{
-+	return (struct user_arg_ptr){.is_compat = true, .ptr.compat = p};
++	if (!pidfs_ino)
++		return ERR_PTR(-EINVAL);
++
++	return __alloc_pid(ns, arg_set_tid, arg_set_tid_size, pidfs_ino);
 +}
-+#endif
 +
-+int do_execveat_common(int fd, struct filename *filename,
-+		       struct user_arg_ptr argv,
-+		       struct user_arg_ptr envp, int flags);
-+
-+#endif /* _FS_EXEC_INTERNAL_H */
+ void disable_pid_allocation(struct pid_namespace *ns)
+ {
+ 	spin_lock(&pidmap_lock);
 -- 
 2.52.0
 
