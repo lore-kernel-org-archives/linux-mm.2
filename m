@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 956CDC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 21:31:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12B50C4450A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 21:32:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 793756B00AE; Thu, 16 Jul 2026 17:31:57 -0400 (EDT)
+	id 0B65E6B00B0; Thu, 16 Jul 2026 17:32:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76A426B00B0; Thu, 16 Jul 2026 17:31:57 -0400 (EDT)
+	id 065FF6B00B3; Thu, 16 Jul 2026 17:32:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6598D6B00B2; Thu, 16 Jul 2026 17:31:57 -0400 (EDT)
+	id EBEA06B00B4; Thu, 16 Jul 2026 17:32:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 36F5D6B00AE
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:31:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A62081A0308
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:31:56 +0000 (UTC)
-X-FDA: 84995937432.17.5C5C1AB
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BE73C6B00B0
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 17:32:03 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A85412031D
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:32:03 +0000 (UTC)
+X-FDA: 84995937726.28.D65A7E4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DA9B5A0003
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:31:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HVcYQQqp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7C865C0002
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:32:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GYgZQmvm;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784237515;
+	s=arc-20220608; t=1784237521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Op085aHgq7EGWjw704qIT6T5yZRCkSyhbHQ1mSMEI8s=;
-	b=U6kMd4y85Qv6gsP6khWZ0YLM/3uhlbisbAxryFwfn9C+Zz/5shFRabYuUwhHyY8OVKpbfh
-	hCD8NzF8aLmBJOHbtlXy1m8HHp0jKFuSBdXpMPLGZSlBebIiktJHusvmUKm/bT0WEuo8Rd
-	SihrLpQ8g4V+bo3sVRJzXimJE7lT9bY=
+	bh=4TmiXyJvQ92TKxUnkF2EBAbSx4BVAEx8E3qvkE5M06w=;
+	b=nqa+fOrizgSqMZLoy84ShFA52p6lS+EueIULhLNecrFI4ckPrTgr5J3fHXwvG9v+a+BRUg
+	sCUQ9BM30J/HnkArt6C6fen8ZE9+cakd0yX5Fgfu+7aH9MAyE9GZJ3NJ/DeicqnaQ2JxpY
+	ztzIiy+dT2pYMJFBJiW3YvsUUc+e2LI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HVcYQQqp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GYgZQmvm;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784237515;
-	b=7Nsn1CWZ50cgKxkVccpebGzOY7uDWmHkY497jSf7KpDhsPjx/smMDhFJ2lYLR4Nv9cLKxT
-	xMZ19A/WKNq1opyDNKTv3/iEQVbcDFeu971x4cy4OcAb4SMFnCaKeN0blmkjjTqL3AHb8J
-	zyn6tBrSsNIfr+rLYaMokVmla+9mSS0=
+	t=1784237521;
+	b=EBt9eTka1bxwLAZ0Msnp3NVohSnS97Q7Ee7JN6Frx1yi6W4HlNTUWHhT4gqbyStei8jtFt
+	E5L03ep64ezKDcUPnxuO1mTHzIXOWqPJSyJqWoRJxxG1vFy85KWt8/bCoyjNK4rK6bg5kD
+	Cf1NXbmb9BBHkiriGwsDWAIKHzUltUg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 367B64051C;
+	by sea.source.kernel.org (Postfix) with ESMTP id C888342D81;
+	Thu, 16 Jul 2026 21:32:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECAE1F00A3A;
 	Thu, 16 Jul 2026 21:31:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E601F000E9;
-	Thu, 16 Jul 2026 21:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784237514;
-	bh=Op085aHgq7EGWjw704qIT6T5yZRCkSyhbHQ1mSMEI8s=;
+	s=k20260515; t=1784237520;
+	bh=4TmiXyJvQ92TKxUnkF2EBAbSx4BVAEx8E3qvkE5M06w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HVcYQQqpLoh6Q92sYkqOm0bXJh+/09opzvs/PvUscy8+isf3kIAL8ZxMw8DPBpRUZ
-	 sElAaONNpmvFtREwnkiCc9thHVE3vOzVGkgrqTF4A0CPCLUZSGGqQ/JIlBymedlrth
-	 Qabki4DyCOSHdyGgt/kNhbk06oxFYVqN5CslunAP6MEv8eyO5mPTDVbCRuRDINEf93
-	 q5tq93tz5Rg6gIrfqN9mCUOqHTDFydtEEEN49/0tCFjZnFebXrQGXpc9PWnem0oe0z
-	 P4nn+geMJHZJgprDbxzA+3wgXHpaQi2xvxFL8Ybima+1iG4mArdAkJQ9wRXlPQ3iH5
-	 t2o8ckdjevp0Q==
+	b=GYgZQmvmtJSCVwlxmpjDgZpiPmaoPOUEQojBo7h8SSWNVzSGj11N/GUGKOHB/4X7E
+	 xjyPpfeJfxld/9aBWN4fwcoHpUX+rynA8+i1bnLjwmsTf1Dn3tQf0ldvNMYAOJ3T+g
+	 ZYr19KOkbGbG3bwcoR43r0vZOR9u/ENab3upSYP1tLsLhaU5z9woe4i3Vv9e1ZRora
+	 iZW4tyHUfHzthiX+ve4ZGiM+50GiUG9l/3ow+618/ct2YyCbuNXjqRtNyjwymX+5oS
+	 /kTxJlA8i/wPaUpCmiRfbpO4XiuFMRJncNBkmpIftb1iLfatGaI/pp2BbHa+qq1gny
+	 p6Jb+93YStcmQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 16 Jul 2026 22:31:13 +0100
-Subject: [PATCH mm-hotfixes v4 2/4] x86/mm/pat: acquire init_mm write lock
- to avoid UAF
+Date: Thu, 16 Jul 2026 22:31:14 +0100
+Subject: [PATCH mm-hotfixes v4 3/4] mm/ptdump: always stabilise against
+ page table freeing using init_mm
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260716-series-vmap-race-fix-v4-2-8c108c4317df@kernel.org>
+Message-Id: <20260716-series-vmap-race-fix-v4-3-8c108c4317df@kernel.org>
 References: <20260716-series-vmap-race-fix-v4-0-8c108c4317df@kernel.org>
 In-Reply-To: <20260716-series-vmap-race-fix-v4-0-8c108c4317df@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -92,22 +92,22 @@ Cc: David Carlier <devnexen@gmail.com>, ljs@kernel.org, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, "Denis V. Lunev" <den@virtuozzo.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3954; i=ljs@kernel.org;
- h=from:subject:message-id; bh=Tr/TB2AVwbvv7zzaS9pkOVNBodaCW3bWJxJVOhSXA9M=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIifdeu/9y1Rs3Jfe1W7Rldp5bbKgfO8/reO2mZU871y
- nuTn5RpdZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiE4sZ/lfu/fMi2iYgTWL3
- lP9NRxWPKwf2N4e7PlYOv9JRLV8oFMzwv0Blc0TXr6sXurTN5dUy+k2SD8lnn55fvj+K+YqCfm8
- KHwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3325; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=VITXU838ytmI5wjkeVjJjzJ76fi6Ga2j8Ljay/OkRtw=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIifdeK1H72/9qooXMh7OxZvidbk/uXLSj4tneKLMPTC
+ Ya+NpmbOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjARTkFGhjPp5b9fLnBdf+/V
+ qrsRtnMETV8qZqkLlsdxxuhvz93xRISR4YmPyWsx52chzOyJO2bXi16zvJtqLaHdqDpniUxxyfd
+ 4bgA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: DA9B5A0003
-X-Stat-Signature: xxfafqkf943hmsrh5apeu46aannrxfof
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784237514-220832
-X-HE-Meta: U2FsdGVkX18rZEy1HO6Gm2Pj2vU369mnf0KsBfOVBdmkRUM2nkZDriUHIcTSIKq9UT3FeUWP1Yv7wu2eopmlYJSj3RvHXpSRe9soIGL840AZFF6UgsKjSaIB59xMjPKNVzw41V51Vg0LpaTPZ5Ln6uJCLe1AWDLjFE0EOGXftzynmLTlYvT3Q/O/jd7cFTjTI7qYMF0WsR4SwLRAl1fqvL5XQvYfpiExs1nsqvv1sun2lBpERBJGy4bhV1xIMLuuGeLor5ZmB7avVlRWa3YXBMsferY6+0qdWHlPvDQiRMkowsSDTcoiUa3uGORKPuRJ0DjTbPh9wlW3kTC6p1NeZbUoyX60YdXNMtFbnyuU3mX+3gGfIFEqvFBTmcKLv3Opae0hIU+mZxRWQ+NPhsi3U4s/hOayjb94B3RuolWJV3d1J3mlZLvfFbRld2WuLDHuYRXmvixpxtxKHQTmGJeb5Wiht9K81kcuGg+XFhWflsT+VDgt4i6x5lHpSH6hzCQR9XTEQIt/bM7B97pg7RmDLnDxeEtmSrpfYkeEAg9+ugybN3skU1TJ8g5X6gVYPaymD6AALePWywsXFHulSZzdV/EtaAs5oZ5Uh0uMgUKamBFEKittN6EulHblb8i43ATMz8fZzSD2q0pa4NRet+xgsefD90hylEYconcwScFWSoT8j5OV+6XJcRnNP5Wgl6ZfAtAfeMdjIP/oPSqq5vcfNt6zEDLEIsjAN2jIgyKr3Wh+lUfZyaoM8Y/wbTNHzR8kPl0ZeAXWcipFxBufcAWoZCdxABjZx01AeHYZiOKB8LGU5Q1ubI2ntcoB0NwiFYvIB8o3UP7UuhocLms4hy7H/O9Z7izGxOg8LG08W+5J8U8Tdc3PJbKu/bxhxx5cfj2orxRN78ti5GOfjSJWwXNeWE/k2TSHN4uRsGaKr9F5TIIo7IOqNVa2j0g9zoJOaUoUaIII0YelNfXfX1rJejB
- xUGVQFnq
- DcLwgYybP1+v58AjLplkKjIc5kK1qNjG14Gj1TT7dPyayDZUbRzGoFGVDQ4flVYnNwY3fOfhv5vUvPgJO65YnAXbqQr4SSjhTDx17QKftSOAQO/tgo0Tk+X2WGNQayO3JvY8FhTTodMfKUTiGgBhz4U7JKV6W64kvnuXmYaEwxOnfoDY91ZmtpYTh/1DJMrrxRlLAc0U5JW4g7bUoft9wafMbV9mYZMpupCBrfDyZmVQPyxUp72HPZG6V899Ro/8eCMRJuKnzSHMqgD8iXjfGxxmGLuuObgD7SXoyIeHgAuGfje0wIzRJcEw91/hcnjQ8EApP
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7C865C0002
+X-Stat-Signature: 84iowu4ywakc4m7mrxd5hxh6u9fniuyj
+X-HE-Tag: 1784237521-391760
+X-HE-Meta: U2FsdGVkX18KwGXVOGxOYkfFc1mtDYm9M7glHYcl6FkSmA37z86IoEAdcjL4eBLJQSYigkPmcB+O9JpDp2LybptLRYoo18wXXVFBeuCCuQDWIyL85a+w4WDhlbvapuHzww3l9Vukstv/QUHaozij4YJS9bo50r9G6LKqJlSaqP5nJ4LlAyGQ1dRdS/b0bvDfrIOmJnWR58fJjDdDO+k2K9WI73soxcHKUxGv+8NIdM5VliXJ+xZPizliKFLD8n8robY5QId/ZE6XKMGNVBKivsYso4A0/yV+Vhu2Z4+a0xC3VJ+ctbKotCFpmasFJsMTKCkIfpOO7o6n4YziGPVHl6x62dVd1DRSj1MQBaxT9sNmMGTnsJYSiOevynmxUkPtEG51kWmak1MXJYgmC0VUwHxkr3D6rvmlDy9rAApIjnsRjl7UwpRbuUGO4ak596sIh48lvoND4LNRzUGva8aHjsz4tRRMFeew8iCWucXlr7QlhgR9asTdC3dSzfgBrHKm1JHjoKxzw8b2DvhTxoKkwwnOuroUbcwoe+vNEKFgu+/3JnPfpfMqn93shPmu9tu6NQDAsy20wNCA/JGfsFq7mlwL8khIWFnoE/bCvqq0dRI8MZ0ZqbWuUZEfO/pUjdb9mShTArfFrOSzG6n5ona8hdYaQZSdh7cFmya0IMHZ0HWIroslH9QtYr/pjLJnV1JDTczCYkRrI7AygLgC03UuH0gopuIGwKHyinTwi6nHtfSHDI1IPLfjdXkDIoDbB7yOqF1QBjs19oeBc2kW2+kagRvAqLG4t3D3BXJ1QxJQ3tmkdBk2IYiNQu53+trvWGQuqnKe3WPaPVWkjeD+8WobfTIyzPVCyAI1aiAZ5aW0E9brEAMz9NRfkzUgq4UnWgy57FJ2OyviNa0OdEivPuzacEcKXuswer8m97r0YWL1QyUrlittS6y+2+fD/F7R6H/8CpF6wqx15bxLlYJAjGx
+ WDL5RiLc
+ vS0d5zY362S8O7asTvphtT5ZAmySVFqiGTjrNb/lS2I/EcQShC0gGIAwz0kIoMjS0oXah5eNaF9MZTPjGXDpBB7qSH1NK6UVF43sbv/9kqLrGLgM9CqYqpPdXimZ+uAicKoLDk8no0L6MlwY4PaoyygVCEnVmB8IrH4Zit0vV/KaFiZVuvPa0kxlrkGfJMTqZJgI2CRiZD4XeeA95SQlY3/A87a0kTcN3LXbJ5gZ15IiCbaA2vYeev6v4bxLFd/RH/qrQT+WDSGdSde2zB5N/VTtYwNrT0IhvIjjhZKx6t9quGg8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,111 +115,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-x86 implements page attribute modification using its Change Page
-Attributes (CPA) mechanism.
+Previous commits have established the invariant that kernel page table
+freeing is performed while an mmap read lock on init_mm is held, which
+fixes races between ptdump and kernel page table freeing over init_mm.
 
-This tracks properties of ranges such as cache mode through x86 page
-attributes, and as part of that logic manipulates kernel page tables.
+However, x86 and arm64 can perform a ptdump over an mm other than init_mm
+via ptdump_walk_pgd() and since kernel memory ranges are shared across
+non-kernel mm's, this means that the race still exists for these cases.
 
-Since commit 41d88484c71c ("x86/mm/pat: restore large ROX pages after
-fragmentation") ranges of kernel page table entries can be collapsed into
-huge page table entries as part of this logic.
+Fix this by acquiring a nested mmap write lock for init_mm in
+ptdump_walk_pgd().
 
-As part of this collapse, it frees the page tables which the collapsed
-entries previously pointed to, and it does so without any relevant locks
-being held to preclude concurrent kernel page table walkers.
+This is safe as we take this after mmap write locking the mm, and nothing
+acquires the init_mm lock first before locking an arbitrary mm, so no
+deadlock is possible.
 
-The only way this code can be reached is if CPA_COLLAPSE is specified, and
-this is only set in set_memory_rox() via:
+Also update walk_page_range_debug() to assert that init_mm is write locked,
+add a comment explaining why and remove some redundant code, and eliminate
+the unnecessary and confusing invocation of walk_kernel_page_table_range().
 
-set_memory_rox()
--> change_page_attr_set_clr()
--> cpa_flush()
--> cpa_collapse_large_pages()
+We can safely remove the non-NULL check for walk.mm, as the mmap lock
+asserts would NULL pointer deref if it was (and of course no callers do
+this).
 
-Notable users of this are execmem and bpf when manipulating executable
-mappings.
+The first point at which ptdump can race kernel page table freeing is
+commit b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page
+table"), so we target this in the Fixes tag.
 
-However, this is problematic for ptdump as it walks ranges it does not own
-and thus runs the risk of a use-after-free on page tables freed underneath
-it.
-
-In addition, concurrent CPA collapse operations are possible which can also
-cause races.
-
-Resolve the issue by acquiring the mmap write lock on init_mm across the
-whole operation.
-
-It is safe to acquire a sleeping lock as all the callers invoke
-set_memory_rox() from process context and in any case,
-change_page_attr_set_clr() calls vm_unmap_alias() which ultimately takes a
-mutex, disallowing atomic context here.
-
-Fixes: 41d88484c71c ("x86/mm/pat: restore large ROX pages after fragmentation")
+Fixes: b6bdb7517c3d ("mm/vmalloc: add interfaces to free unmapped page table")
 Cc: stable@vger.kernel.org
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 15 ++++++++++++++-
- include/linux/mmap_lock.h    |  2 ++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ mm/pagewalk.c | 14 +++++++++-----
+ mm/ptdump.c   |  7 +++++++
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index d023a40a1e03..d1e63f7d267f 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -22,6 +22,7 @@
- #include <linux/cc_platform.h>
- #include <linux/set_memory.h>
- #include <linux/memregion.h>
-+#include <linux/cleanup.h>
- 
- #include <asm/e820/api.h>
- #include <asm/processor.h>
-@@ -410,7 +411,7 @@ static void __cpa_flush_tlb(void *data)
- 
- static int collapse_large_pages(unsigned long addr, struct list_head *pgtables);
- 
--static void cpa_collapse_large_pages(struct cpa_data *cpa)
-+static void __cpa_collapse_large_pages(struct cpa_data *cpa)
- {
- 	unsigned long start, addr, end;
- 	struct ptdesc *ptdesc, *tmp;
-@@ -442,6 +443,18 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
- 	}
- }
- 
-+static void cpa_collapse_large_pages(struct cpa_data *cpa)
-+{
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index bbcfd68d0907..5d87c632a255 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -702,12 +702,16 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+ 	 * to account for page table freeing on vmap huge page mapping.
+ 	 */
+ 	mmap_assert_write_locked(mm);
 +	/*
-+	 * Take the mmap write lock on init_mm to:
-+	 * - Avoid a use-after-free if raced by ptdump (which takes its own
-+	 *   write lock on init_mm).
-+	 * - Serialise concurrent CPA walkers.
++	 * x86, arm64 ptdump allow walks of efi mm's and x86 ptdump allows walks
++	 * of arbitrary mm's.
++	 *
++	 * However, they both must also hold the init_mm lock to account for
++	 * concurrent kernel page table freeing.
 +	 */
-+	scoped_guard(mmap_write_lock, &init_mm)
-+		__cpa_collapse_large_pages(cpa);
-+}
++	mmap_assert_write_locked(&init_mm);
+ 
+-	/* For convenience, we allow traversal of kernel mappings. */
+-	if (mm == &init_mm)
+-		return walk_kernel_page_table_range(start, end, ops,
+-						    pgd, private);
+-	if (start >= end || !walk.mm)
++	if (start >= end)
+ 		return -EINVAL;
+ 	if (!check_ops_safe(ops))
+ 		return -EINVAL;
+diff --git a/mm/ptdump.c b/mm/ptdump.c
+index 973020000096..5851096e6f65 100644
+--- a/mm/ptdump.c
++++ b/mm/ptdump.c
+@@ -178,11 +178,18 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+ 
+ 	get_online_mems();
+ 	mmap_write_lock(mm);
++	/* To stabilise kernel page tables we must hold the init_mm lock too. */
++	if (mm != &init_mm)
++		mmap_write_lock_nested(&init_mm, SINGLE_DEPTH_NESTING);
 +
- static void cpa_flush(struct cpa_data *cpa, int cache)
- {
- 	unsigned int i;
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 6b5c2390cc30..047f5f5e2c34 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -621,6 +621,8 @@ static inline void mmap_read_unlock(struct mm_struct *mm)
+ 	while (range->start != range->end) {
+ 		walk_page_range_debug(mm, range->start, range->end,
+ 				      &ptdump_ops, pgd, st);
+ 		range++;
+ 	}
++
++	if (mm != &init_mm)
++		mmap_write_unlock(&init_mm);
+ 	mmap_write_unlock(mm);
+ 	put_online_mems();
  
- DEFINE_GUARD(mmap_read_lock, struct mm_struct *,
- 	     mmap_read_lock(_T), mmap_read_unlock(_T))
-+DEFINE_GUARD(mmap_write_lock, struct mm_struct *,
-+	     mmap_write_lock(_T), mmap_write_unlock(_T))
- DEFINE_GUARD_COND(mmap_read_lock, _try, mmap_read_trylock(_T))
- 
- static inline void mmap_read_unlock_non_owner(struct mm_struct *mm)
 
 -- 
 2.55.0
