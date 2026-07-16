@@ -4,121 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06E3DC44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F191C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:14:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4C8C6B0127; Thu, 16 Jul 2026 11:14:33 -0400 (EDT)
+	id 460E36B00F1; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD4E06B0159; Thu, 16 Jul 2026 11:14:33 -0400 (EDT)
+	id 39C366B0159; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC4E76B015A; Thu, 16 Jul 2026 11:14:33 -0400 (EDT)
+	id 264E36B015A; Thu, 16 Jul 2026 11:14:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A78916B0127
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:14:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 303E7C0133
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:45:01 +0000 (UTC)
-X-FDA: 84994609602.11.64E3DA5
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5BAD1180004
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:44:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XkbxuPDZ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf16.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E05706B0159
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:14:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E5BA80159
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:49:25 +0000 (UTC)
+X-FDA: 84994620690.01.D8CC690
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A79D210000F
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 12:49:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBTnCvJ9;
+	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784206163;
+	b=ELujNY0GH1reRMI/guHCItjwOqaUVE3nLKCV1TqYjNrquGPC+j46BqG2oXX6rAIop8+ibh
+	cMHfnlU/SiAG45A4Olw0kwo0MtmLyykKSYwqobpX0qu72C2USwk7vAw9rHJdaH//eiDWTz
+	BoIVtIzuZ2Xj+PAmAKymk3XC7ofupRk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EBTnCvJ9;
+	spf=pass (imf14.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784205899;
+	s=arc-20220608; t=1784206163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=igNuDXnwdUCT2dm/vIcI/M9kQJ6fMwWaxma7wgKaCpI=;
-	b=lS72pCflfclzjWRCKfFyTsMQTLus2JsQLNI5PNB/BgV2LtpFLTk4iYjxQ1+msoJLLQ3Lqt
-	MosMohcVstjSh6TkOOwmL8sULQpBLSjLkqST/Ao1hbmpw1rMaxuGZTI+BwxFidPJDS9D3b
-	pNiCZy6SwgGG98qxbGuoj/Iut4T4N5c=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XkbxuPDZ;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf16.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784205899;
-	b=TxVDPCFQ82CWAZORPnpsSvZVHDT3y8jlWf/Z/7jKKOD45K8DlFCJ12DMNo22WakpkCdidh
-	DD/2bWwY1yVDiPiyjmtApfVS1TD+78wwnN58xKvU5xCS/8ucVmYjZjO1pbxJao4qb4ZoYU
-	dG21FsO+twunclAuS1E2GBTsxaggKi4=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c85b73ffb52so3794464a12.3
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 05:44:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205898; x=1784810698; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=igNuDXnwdUCT2dm/vIcI/M9kQJ6fMwWaxma7wgKaCpI=;
-        b=XkbxuPDZzIDTzPKHpibV9if5N+Nu8n8oEsQgzkObnhBK0sO4nwQ+zfpYPDN0mdYZIV
-         PrIokJti061SMd7wLTjslpoqHodApg4dkenjuURChVo7jp+3EEk1TKFA43KkE2eoiatz
-         Af2qNWuruoSMSWeLLJbA2UIUj02DFSCBydhrJ+oaQWsNgc1wg3wVWmGVc46bQBqb74Fk
-         kyR7BZAjgqq+xyY+sAbl3/fAUZN0pg54PKAIRvrAxvpL6F/NB/c+DUNtln5CNXcX9cAF
-         rqkcir2rxkFhf63tXRUbhVnHkuPymnTgY2HdWYNIZgdsBHM4RL9+coVBT9P9+2FbKWDX
-         Kanw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205898; x=1784810698;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=igNuDXnwdUCT2dm/vIcI/M9kQJ6fMwWaxma7wgKaCpI=;
-        b=D4isLPQctR29KdoTIrgHiW8UmQo4usKX4NcAQ1eCsRcFMXuBQqcqjaqUIjbYpSa0g4
-         B/Dtxrq/W1d3V6Iz/i9pGEdy1jRH8Fnp85xTFlA4xWE2MgDS56MkT3g1q/59zd+bIhh6
-         B4KXcpgeUfkO7Nr44XQ1TTZLJ85ICTL7y1vMKmA+mbj6u0arIYvKuyvbNkfTc4lLlyyC
-         pgTv3Ilc/XzZ2+epudYHtTmTgt7H8Y7nFMGoH491dhWf88r7BEaoaqpHlgwUktvc6u4n
-         DeTfXYaI19J1+iTaEbXVG/7EquFqUQ14Xi2M9H/tLPxGFdu9qhlrW0fK6KP28aKMHEbT
-         N1RQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqJ+/YqHrj6AG+wixhZerJldDGzSnG7JiocRnhOLPurCQmWrDJJfjnh604EcDqw8vsrpUP7PDOKtw==@kvack.org
-X-Gm-Message-State: AOJu0YxFMFOErqPhgtNjAUqolsEcw404TIxOAcLCm77KvxM6gZhhZtCK
-	w65IXJzQddZ2CBCXPoUZRCcpDtEunqA4a59rs7JhOF4fFHjxAnGbwPWGo3o6hmzcHY6Usmus7s8
-	bTjukhV0=
-X-Gm-Gg: AfdE7cmEsd5d+pZLlK45uswQpIG/CbDmrWhWmKGu3wXIAkzqn0uUlvlZIBeJ0VRg8X6
-	6DgSD2oxK9EFwFQdvcWtDu6zKt6P7fedxchKLUd2cyrEYrB4HZ3Yp+ZoNsKi+dnfsM/j7PV4IsP
-	aQwWUA67PIuu/jJrJqGK1t1OgtsFpq3Fm5AI8WFrasCRzEULZ+Nki+xB47mnMS8aiAR3QlqEEVa
-	HepJbbzT9DuZBARuoyaD0hfNYdYNoOrrhWb2sdtrWrbxvwMhA+eGl4gE+gkDAz0RTIhEQUgzI4d
-	rBrKPX7Ta163aTPUA+PE0naNhISgrsEGcZ3rqWHNkiLzhZwOJ7QlkEotx0od23GQaqeDnTONUp3
-	1Wob1oq0IYbP+5Pr9VQoaOq54a/+txq5tZojQrVpMpd30HOBPvP0B8pi0EBIKwBdh1eV5vVEaFg
-	90Rzb2tb12vANi1FH0Ft2XkaI=
-X-Received: by 2002:a05:6a21:7318:b0:3bf:a881:4094 with SMTP id adf61e73a8af0-3c36c35d245mr7182183637.50.1784205898111;
-        Thu, 16 Jul 2026 05:44:58 -0700 (PDT)
-Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.44.49
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:44:57 -0700 (PDT)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: linux-riscv@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: linux-arch@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-efi@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 15/15] riscv: mm: Request large exec folios for Svnapot
-Date: Thu, 16 Jul 2026 20:41:50 +0800
-Message-Id: <88438f09b79ceab1548aff17384814b7f699a43d.1784201104.git.cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
-References: <cover.1784201104.git.cuiyunhui@bytedance.com>
+	bh=hPC4/bkySYuEIDm7sSNDHaTK4nJg9WPIz/TBHjyeJK0=;
+	b=WMR4AW/e/HG18QFMLuwnmjZcz5qctB8aeBYlq310+bluH08kvMtfJTj4nFD8m7QsxGSdNy
+	lWFKLcbuwjOjEWLgU53xs93ECUZy6+IVf8FMxP5lWDplUkuE/JqHbpnXne5clug+Nkffbd
+	LxY5WWJkazovGyFjo1auoU7lX3np1hA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75DC0438DB;
+	Thu, 16 Jul 2026 12:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8401F000E9;
+	Thu, 16 Jul 2026 12:49:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784206162;
+	bh=hPC4/bkySYuEIDm7sSNDHaTK4nJg9WPIz/TBHjyeJK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EBTnCvJ9LBKnvWT6txkoqJfPx80j2qmCPPgtys2eexys61AqRBL/PikdcJ6hRJAu9
+	 N/7/eAlmSuk+e3pdfg1br9QTOhJW2GGB9kHXTsWQFNTHz0JCZ97PbPUW/LdJ4+wRy/
+	 +XTaRU6ByVV8cgDQ/Y8URNaE9ixhEq3zlBP78l090NnAF3jztLYymQ9AP81piPIYAS
+	 +eLW/SudvgS/2t8T899cAQ7pEdr9DwlUjvvFQEk6oEwv3wdptotD0TLRa6MM1FffAR
+	 YHD2d42XYxRErp70skW71CAatVzJVw6VUlhs8jh9r8ff+ImW/liW57cAnWmulaWueU
+	 l0WsUaQ0QduBw==
+Date: Thu, 16 Jul 2026 13:49:12 +0100
+From: Will Deacon <will@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
+	ljs@kernel.org, liam@infradead.org, riel@surriel.com,
+	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+	lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, apopple@nvidia.com,
+	rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
+	nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
+	pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
+	jpoimboe@kernel.org, catalin.marinas@arm.com,
+	linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+	anshuman.khandual@arm.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
+ addresses
+Message-ID: <aljTSN3yGRv1OoUN@willie-the-truck>
+References: <20260703114202.365553-1-dev.jain@arm.com>
+ <20260703114202.365553-2-dev.jain@arm.com>
+ <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
+ <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+ <4b4e8007-3747-457a-85cc-d1003e1c8fe2@kernel.org>
+ <39a13445-dc6f-4a75-92b8-f4a122c63b89@arm.com>
+ <7ac558fd-1081-456b-b997-c7321241cf8c@arm.com>
+ <2b9d60a2-8698-46b0-80ae-b8747a66a85b@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r63aimi7j7h4t7cqfj8ezwbbmiwhajyu
-X-Rspamd-Queue-Id: 5BAD1180004
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2b9d60a2-8698-46b0-80ae-b8747a66a85b@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1784205899-821526
-X-HE-Meta: U2FsdGVkX1+wuP9D8oL8JDJVDVpl6z3gkDqmeiu6dcKriWQfWeDqB6dUtRq1QbVgKATnIf04avStHouh94gZPjkobhYvNEGUqKK11TYImkwSCqL9pmn/hveYvh9WoPwgWWSYcOiTupGAfOby3zcrEKArvyiakrzF3YRILzaQKF0bUFmKa4pqNzarOiYAjDXb0Vt68annCSt/sHQrdQUxJNsNODi89KF02imMY8R7F76qKw532PaXAHmMRkG3LEae+U9p96GP7UmMcjeC7koafNDjEHhN38X8+Yu0BOTwdYyJWtJmBLAhFYAuR+Ps/gAhfwWCA52bU/r2ZeTG6vqp8Nz/J1HXLNdIIDULnE/4ZQf7GbKjd9Wa4leN/P6jBZa3q8pxj4Me+0Cf1N12H5M7C2ZNysV8wDO9D6wlXbEBVjsIcAI/8iKsEXBwDhynHi7lJYdf7d7ffnrghgImbIJ37AYChDwmigs4JEc/+Le+NySuCiUGY6axd51E7cEaKSI7b6dxDzfYuntle9jszXujRK/0HHt3Me8FCDBwkNn1qiOsiKZ6isMnYg0US+B1qWpAGJro1J+YS5pj/u7gvYOQWGYc3kjCC8LXtJZvnB2mV/u5rhe6Db1BY7OJ/rLmN0JVHxFn9k7UG8ypjQQmNu8f5hTPCl3jr7fDB4ABuEYCRW6DjQQLyKOVpDDofGx5z9vvAUkZSo4q58ZgFWsR2TPDY+Tj/n/KNd4c4/3umjny9CqdMM0CQL8g5j5nLFbllQk0WjP5JisRW6vc2pUwaRjxKW/uZ/HZyTEQ1JUK3J6YDHi8GrpsPzheAeX++oo+qXJiJ5VBDTuw3AVTvsK1f3qTgtcibb4ZVCpnYvz/rkh811dMEx7AjbTZHB84Slo6e3ZRdXSdFPsRN7KegJBFWxkjnNcZu8UkOMrkytz9jLUKAnaXpJLy9HpystbZ8OQLPyvGyVKzWZUwerfJKP7e3p3
- BgkAjvHh
- p+SEJN4Me4K3iGmm1Pt7kEAs2+Y+Af6vy1CgCjYMA3pHjYuCTxfRGEqaksz5hsGGMf4UPsRuUWic2rCr6tddJrFR0huPPLhWThKHL/oOBtnEJTsClU0f/PvdLjjngIwcd2PDAbzvss9trT7dzK5QlFBqa8UA2DhIyatFa9zAGaTqAz8fomdqdgtPsIxvkGeqCoO6fNmd2Wlk1Jy2gNWUWOHxH+HXps3zg/hcahlpmSIfZ/jdkySzGmMYAH1pSc60/kuG5+4bMEFleLLKh5exvh5VyvqXM9LdwHAv+q/4NURG14RgWoZ2t8rPgPbaFH8wO8zB4
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A79D210000F
+X-Stat-Signature: 6akgb4j9bs4iqfcmmyw8kkixiyqftf56
+X-HE-Tag: 1784206163-417933
+X-HE-Meta: U2FsdGVkX19Kkh78VQ3l9qqiJddphXbVhiK9RO5/r9XjvlQNtMxQHHCMMJcfvJkN9Wrke7Fp660xyW+8Q39PG09vyHUayEhcfmWX31d/cZArQ+y6vxnUGHptc5zKH7cOWJdHPCyjz8KG7R19Wm9D1QitwMhoAQInFZ2XKBhXWcTXe+Ot0gdtJEOt1/N3G4tcaVocjD5rSsREuWkosGfRH5rrZFEZls1622JsEPpPpvroepl20KZUFK94oeQmE8rH23gIzT7/NuRgj6Sjgq/5siMxKNTG90dfYFdW/F0WZ8IQFIDvQF6dbJ87C8GbiZBUvQUqGegDuQPsECeYzjIyO0Se8nEqE61QXxt12Oev4PXxGMb7y7AA5B0Tz+dAiL+NTuzvUVqvQ/bzFTIUPtK6SPSFgaU4PPwJN6yoOVhUwkA4++SZ1txlJDz+TgMIFD570TKnwEipPdRKxQTgtfF570xmcb64eisdgHlykBm6KYZnqdRZysmdnRKBQyXBCkRWAdZcAGXgUPTTKoRVzZxaklxreCXp+9Vvj4D3WfNFYcWtGPFuWKBV/nAcnjl9l7PiiiL9BNqqjHjdQCpRamsD3ITpSWrueWfNGJ9Fz/5/rXIYsywwsdR8wavuK/9CKXIgVnX8ECv0sAWIo24i/z06QB8oK4nmPf8IUGgmVTEJUKXAehT9hEnCTEPW6pwwAKRX2aD7eT9vRAguLum2sY4fAjIe4INOT8Z+AT7FPq1I0Njgkh9sH0KhT6wFerAnoIuShSZW3buuUCbZXjJffvxcynXIBDYlh8iBIhBf+OkAVb+vRcY5X/+S/v+85F/hOyzdH69HISo9AFvwlxJdmycMSHhb5dIOODEHUuLGcLT45vLMP4hOeZBchI3YwqJcrzQ1JGk8vuJAP9b9rXP9et+KliO3F/U0f+lOhGheK+1Qtfxk1sUpTLo6zL6QbHoKyj8+4ym0ry3ISDCyBP826eR
+ U0yRSfvw
+ wsnYVL6yadAraHKHBfhG4exjsRdzj9HHqCWSu3Xviq9rNG5DumZnj2tEwMaQAH64t573sCH6cPSNM7jRqNQcSrxl3+n/dQHSlz/Z62KLkRZHCPc/qbDVNsqy6SuHi0pIiT2oLiF/qAlf4bRDNwAgMqLD+OxTpJPBLqlvdcNqns/WsHvZ8iqvyYospsbQjyJcDoLTVc3/+VooD0KEdI5f+xr4ttSEqgKtK59hH38sB/2DlQG3aM3AiuOzBlL7jxlkKCDcKqV6plvwQd9BepDN2SeR6acJkz98pVHgaZCBGhHRFOO1QcjeXEZbO0bEGKcAosvnZKrd3dm4R3WO1w8osfVdRWRKhUvC0ocxk0TkAfmq+eYj4ajTkj22DgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,42 +109,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The Svnapot MM support in this series allows generic MM paths to operate
-on folded 64KB executable mappings while preserving a per-page public PTE
-view. To benefit from that more often, executable file-backed mappings
-should be faulted in with a folio size that can be folded into a Svnapot
-range.
+On Mon, Jul 06, 2026 at 04:04:40PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/6/26 12:54, Dev Jain wrote:
+> > 
+> > 
+> > On 06/07/26 4:22 pm, Dev Jain wrote:
+> >>
+> >>
+> >> On 06/07/26 2:15 pm, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> Even worse, right? We could walk 128 entries, when we really should just walk 16
+> >>> (IIRC) entries, possibly reading garbage or even worse, into a memory hole at
+> >>> the end of memory?
+> >>
+> >> Hmm I was thinking that the checks pte_dirty() and pte_young() wouldn't care whether
+> >> the pte is garbage. But, we could actually dereference a ptep pointer not having
+> >> backing memory at all.
+> >>
+> >> Does the following sound good?
+> >>
+> >> "On systems where CONT_PTES != CONT_PMDS (meaning page size is 16K), we could collect
+> >> excess a/d bit state, meaning extra work for the kernel. Even worse, we may iterate
+> >> beyond the PTE table and dereference a garbage ptep pointer to access physical
+> >> memory we don't own. Since the ptep pointer is a linear map address, we may run off
+> >> the end of the linear map, dereference a VA not mapped into the kernel pgtables and
+> >> cause kernel panic."
+> >>
+> >> Although I checked on arm64, there is no case in which there is a hole after the
+> >> linear map, but still that assumption shouldn't be made.
+> > 
+> > Oh but we could access a linear map address which corresponds to a DRAM hole, meaning
+> > there is no entry in the kernel pgtable.
+> 
+> Yes, exactly. With debug-pagealloc and things like that we might have many holes
+> in the direct map.
 
-Request 64KB executable folios when Svnapot is available, so executable
-text mappings are more likely to be installed as folded Svnapot blocks
-and benefit from lower iTLB pressure. Keep the default order-0 behavior
-when Svnapot is unavailable.
+I think this one patch should go in as a fix.
 
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- arch/riscv/include/asm/pgtable.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Andrew, do you mind if I pick it via arm64? If you'd rather manage the
+whole lot, please can you send just this one as a fix for this cycle?
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index b546e6614c558..6801ba135c483 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -296,6 +296,14 @@ static __always_inline bool has_svnapot(void)
- 	return riscv_has_extension_likely(RISCV_ISA_EXT_SVNAPOT);
- }
- 
-+/*
-+ * Request executable file-backed mappings to be read into 64KB folios when
-+ * Svnapot is available. A naturally aligned 64KB folio can be folded into a
-+ * Svnapot PTE range, reducing iTLB pressure for executable text.
-+ */
-+#define exec_folio_order() \
-+	(has_svnapot() ? NAPOT_CONT64KB_ORDER : 0)
-+
- static inline unsigned long pte_napot(pte_t pte)
- {
- 	return pte_val(pte) & _PAGE_NAPOT;
--- 
-2.39.5
+Thanks,
 
+Will
 
