@@ -4,96 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94A9AC44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 551A9C44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:48:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F2656B009E; Thu, 16 Jul 2026 10:47:56 -0400 (EDT)
+	id 422856B009F; Thu, 16 Jul 2026 10:48:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A25C6B009F; Thu, 16 Jul 2026 10:47:56 -0400 (EDT)
+	id 3FA176B00A0; Thu, 16 Jul 2026 10:48:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 644426B00A0; Thu, 16 Jul 2026 10:47:56 -0400 (EDT)
+	id 2E67B6B00A1; Thu, 16 Jul 2026 10:48:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C2496B009E
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:47:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DFB611A01BC
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:32:01 +0000 (UTC)
-X-FDA: 84994728042.22.D92401D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED01C6B009F
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:48:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7EE5C1C012B
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:48:01 +0000 (UTC)
+X-FDA: 84994919562.19.6FC660C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 10D45C0007
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:31:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KbqUptLj;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id B1A7840007
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:47:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="o3qex/Op";
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784208720;
+	s=arc-20220608; t=1784213279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yS9bNunJIYcGp7pM+GGsfoUYEDKOWl8+J/XHzg82dRU=;
-	b=FuaM9SjISHcOCyf7vqwnbn4rYfI5vWCsZInYpPUZAZK0OZgJ1V68YSZpDtZ0p35z0KG3ft
-	7lz/5x2Nd3O8pyaXPf1Eq+75peYnw/0+pYqzh8fzsCH26VE3UIAhPTeBPF5b3Ersgt+IJd
-	ZXG7kHG27POkZIOu06yhCKlHOBhRJvA=
+	bh=gqih1PWPLfrxUcGFx1xd859LCOuVLJkxmPXs0LVVK3E=;
+	b=g4G2DLGzf4/nR83NHgmKMWTw1fNFJmNqHaRb6/nfNG+w15cXUbUrOVIYaMznchcFynuRMN
+	y9IKFnjm0Gx0T/+TYjb1dRa/ChjUv3fo81kVdi2ougD8lbVpycuz7RN7blrEUL7azzdP84
+	y9eL69LwwkuEv8yweaoanv9Fb3Wu3pk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KbqUptLj;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="o3qex/Op";
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784208720;
-	b=6tP2XNJp96wUFdYVwyfh33+/cAz1SJ4AHPBCt725IIBWyT8BhQkF/QckKqNVS/lA3kwPID
-	96cX6NB7ocW5sA0YJe3kLzBrQuqRkF3BtO+7Fd0lcYVQc2QtibYoI8VN1C3MJ/r21HdK7d
-	0KwWYWtudEmra+7WJ32z/U7hVlQJYBg=
+	t=1784213279;
+	b=7TRAqhXqV6nrn1IYK2yWCRjWIk1mwBX/uPiZLEednq1CEez5F9gZ77IFghcS9wtYK7TyNT
+	/WMFVhFcp3zbGQl+aoGnY0sr0XdrQBlCl4qP+dWMCjhKZ67H1W9awrLrcOUSzarOSL1EU1
+	Wx0mQ0ifWcw7ZHtkXGWI9nTQtHj00eE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 432BB40743;
-	Thu, 16 Jul 2026 13:31:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905941F000E9;
-	Thu, 16 Jul 2026 13:31:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 80BAB41680;
+	Thu, 16 Jul 2026 14:47:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95B61F00A3E;
+	Thu, 16 Jul 2026 14:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784208719;
-	bh=yS9bNunJIYcGp7pM+GGsfoUYEDKOWl8+J/XHzg82dRU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KbqUptLjSwHbPDnl6EODLgtr0+4G+Vr/GtLsN8uL1R0gJIbcJrT9INA5Bsp48xFc7
-	 uBGW/ISebTiRPnsimApzUl9NclYX2xh1l1X4NXZZjnAeSSSFNYTRMypcY/rUhyl+X1
-	 /7F6szx0dZdEkzpjdZXEZE5GDp4nGDRMG6wLJU1JgK7vImT0swvx9wF8O4ht7g3joe
-	 kDDXkZm0rqfhR/CQny+02fMgaTBpKdu49C8Yx2xuJ87zFpVlntVhAzq2XjsDAJ5/eD
-	 MgCdvius755vFAuRCD11n+E/RU74UcgR42ez7mpfqR5l5mHGTHiYGsp1W8i6LKucW6
-	 B2mW+krILaKHg==
-Date: Thu, 16 Jul 2026 14:31:43 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev, iommu@lists.linux.dev, 
-	kasan-dev@googlegroups.com, linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	Russell King <linux+etnaviv@armlinux.org.uk>, Ackerley Tng <ackerleytng@google.com>, 
-	Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCH v2 00/33] mm: make VMA page offset handling more
- consistent
-Message-ID: <aljdJD9TNWYCQ3HL@lucifer>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <c2fd5114-74d0-4996-8035-311ba976b3eb@amd.com>
+	s=k20260515; t=1784213278;
+	bh=gqih1PWPLfrxUcGFx1xd859LCOuVLJkxmPXs0LVVK3E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=o3qex/OpMM8/2lZGb3DNxYt2UeWKGoolYnOmw3tnZp1VaRLMON3v9nZusDk1IO1Cl
+	 79sp7ZYixCuEMwQ154T9Z+DDLUH+ApRnc/HyOgpySTOy0xTOtetN0DYx6NHwDfKKyw
+	 bwFh2sslOwUNVzmOGtSmmKozYC6N5q6nGCxi48yXEzLTO0fxYza2oSpEW43Nk1KOOs
+	 CaoMfA4O/ElaZP9OVJMi1CTJcMhrQoxTdeuZOe97vQ3Oi9/OkQOhh1uA2yZfHX3bXM
+	 JYzuNJNw3uzMn/nD1sAG+HLMCx3eJZfngyMlvxDZ7noiuYfTOVKsWbUxuQce4u6xEY
+	 VQFN3QiVgX3hg==
+Message-ID: <076dc6ce-4895-41d7-b9c1-9ec872e7c8b8@kernel.org>
+Date: Thu, 16 Jul 2026 16:47:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 09/12] mm/slab: introduce slab_obj_ext_has_codetag()
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
+ <20260715-b4-objext_split-v1-9-9a49c4ccf4c3@kernel.org>
+ <CAJuCfpGkpe=5O_vW9VKqKFxrBO+QquCD+mXth_qeUSqcWcW6hA@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <CAJuCfpGkpe=5O_vW9VKqKFxrBO+QquCD+mXth_qeUSqcWcW6hA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c2fd5114-74d0-4996-8035-311ba976b3eb@amd.com>
+X-Stat-Signature: 771qo867uztw84j9hxadnufhkijbdsxo
+X-Rspamd-Queue-Id: B1A7840007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 10D45C0007
-X-Stat-Signature: w89mnrp1qrxfmbqxemyuwtqf6qpq5s5r
-X-HE-Tag: 1784208719-449385
-X-HE-Meta: U2FsdGVkX19rs97S22S5P0DP5YGY/vdQcgxXTp+6VsjYf++U4/oQQVbAfq2X3eQ5eZusv8pcpokqUZWOvoZ3HrWB3LapZNsEKlo7shCYHwBOLpixhMICgUB1f7bj6mLIjuggWw6gJ6+YcvbYJx2JMJCuGdc8nlqXx1w1Wx4pB0fHNiSoQoPpEIrHpBn4J+9BXK5e65NYiUwwprBtXfw3ffjmDvsFij/8F0Yl6xSlKbldWCCZQ6udvfQrEE0Q5jOVfyf3PcZ2dEPf4Mb4HZP9BaYjC3IPKs7f47uBx4T4T/jm25G8/mkaJbms0hNtqE6Avcn73uQTocMfIZps6hUxnS289J08VJvTHm3LIxnUKuacK0X47rDleoSF49kBLFsQPl5t/aFe3Wry/vOg6+aJlf7MgEarQt73AZUXiJRj0vP2pOmEQNyexxPUDahA8fB0PqvX0W23eQFxZTnUhVQPCWoXHkz2JHhfAVi3qvfwZ6E4fq3oAZs4bN8Hgb6Q2fAHYdXeHVsAueINsu4CurHcD9kRuLQYGgTY8nWre5apPllii7kdL7aBG6Gi7iou6kEDQA4LBBwf1yXZfQO5llwiByt1C1DPe6rIoX6bw2U+Z89jROE0cOEYPyFz6yD53yaQjhVy0cRjf1eQEiscCXyNQRusdW8Hv3DBy5KmOhOFThKRSIEGxFVaRJKTAut1NBbQdTlbl/12Doc6+nvgB0CIvFYVW+fxks7nrFlmZX45Oh59K8xcD0Uf+bsCp3TP6MNpJOeUU1pDDWcqLAjb7PHEMJvt0vrFOFKKz6oI6MDXOcsIOumfPGtDKU8eHf0dHSP11elVUNWPMRXPrFLL4V6Lj8dlHqp7yvv3F9ljrqoRKd1jAGlqI3yxG7iZZQvbqYM7PC58JtjM4gpul5rMjFj4fvivYgF+v6xptyigIVFJTO8+TtA2ush9i1PAF4r4IDcG/CSHs9oZzg4k4xw4084
- M+K6rXWR
- M7yFztgWK/uO3D5Pr1BtkIkZozG5UYt7GBsHS3Xfz6MIh7hDHPO0p1yeIr1OeIuCGUJJGPshsxujWwKrBJ1RPn5HnbyWmiy6H+gBRwSAWGrkxAGzcj83FNKfRU32UvcK4CLNHc+8r81iNH4ohLBxafXkYxIK9x8t94eRKtaEn1gJCwGUQhfGIrLIqXPVir4ukHzfYqoiNy5mBXw3JcbnRdsz/hRHIykbsySN94McB9/uojeezd1MXm0t2OXDwbviTWj4mtHMf3PjVcNaW6M8zhU6vptKbBfaNrjxmni49VMVn2V2Fw7nPQseR+XQY0mEIsBnX9o7EWWxOEFxJQSi96E5VVWP4/lKcdSDEwgOkJZdD3TVKc3Y9UjhH+6zKi+SzNySP/2CJrg3saZdrbYwa66sXgaNdoD5m5X/H
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784213279-37316
+X-HE-Meta: U2FsdGVkX19weE07DeqrPJkapKqG867TcTaQcxCUZnO0pGLm2BWVKGGQKdsjHEJPuwCnlSyl+P0YBAptzJmsLLsDG4rbHN1pIXOPDwL+TBKrS8IGU6/pJAfMfVj0B8d0/2LlfUmWyQ0Owc1vjBrKzCDbEdi1ZHAbA5mO4xkXHDwNwgsNTSGawopvDPlFQQf3JYBlnc0XNI2+B0zC1Fomlw1Sg4lE04ZorROQkTTL56gPx5+UfgWDArttWR2yaf0QM8ECF+YGRHH4V1sQnQdqjccUUQ9Y5hbvR4t/WTegXocXEyOkrusj13/GRCFKVetMKNUsAPPjdKL76vifL9qJpa15snVDtneymFDN9zrTSyJVzCsBxlBluobtfhaUZ8RQdGvYKNvIw2is4BmTgYoX4Fr8z+8FtLzewwJw/DF7HvIOupw/NHGuDO+P45I5OW3d+SVevrFaq5XYvVGfognOTmX0S4+xlQLiv0pU6VNyJkXdVzz1pvGTYm4wYq/3sCj566RbmUUgW6S8F9/0tXGS0/TzHOY7OYfBLOzp5CbZ7ogwpAUtpcoo+Z+dhXDADS6s8nPgrNRhjUsnPv/Om/3tB6UVA9vxps/t7Ux0OpfqsEFC3M+PeHagvHG+wzOUWzrLt2WHPOJfiU3p/iiRxsgeANLqNIM5xtO+tLwKJhpbb5zZOdTFukRl8LK3vcArtY/i1sqky0MkgUWYo8911V34wge2EkgWu2JDUZePPYpsQXJMa/27GVsg2nC8aPhp6hMlnO9rUXpXiozbdzNXD+AR/RplMr2DKm0POHec6ob//soyrXiUPmPzlMQ1mH5xONU3BY4M3ai/hLoGvJVzU/egX5vo2rY50w8jazQ79OI0c+G8PFmnDDq3+T7DPDiHcm+llyRRc1U8q8kUImLBufSfvZY4SGdwThLQxlugLhwiVS9/f6Wuln61yUr9xvQNCBHFajJP87vETRcnzbIUBd5
+ CT0VSWKx
+ PjDd43a8Pekoj90ubE+laCYT+3Yrzf601fGRpd1EnEKMSgQCcRibNVVzgx77kVfc28ne5dsQ7OgHKC/6piek4kXDBJdubG7zpfjqYQ8ZcdcW6Vy6DUgVIf4uY2sL/Fl3fsEZDGoUbMnRZ/9C7Gg5dkM2heK5s16qBTmFygjJvTdSihdoxenZFg+Z54RS1ImFKYYNfgLSa8RZ4rkeRaPB97+XF3SEQ9FZQZ63rjxYltPraUMiytBrj4bu3c8uUtefveoo55u9OQiN3lOQkgo2Y61wKTOFwtxkaV4mfEU2i7tww3LAq2PBfU04VawGLQh19YhoHxvtkJkA1ml8EAKqoIO5fIUg+QzRujKc+cvG5HAGrGmEOfeerXUhxBhkWuahNNIw7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,18 +139,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 12:03:41PM +0200, Christian König wrote:
->
-> I only skimmed over the set but should there be any changes required to DMA-buf, amdgpu or radeon driver feel free to add
->
-> Acked-by: Christian König <christian.koenig@amd.com>
->
-> and merge upstream through any branch you feel fit.
->
-> Regards,
-> Christian.
+On 7/16/26 06:25, Suren Baghdasaryan wrote:
+> On Wed, Jul 15, 2026 at 3:11â€¯AM Vlastimil Babka (SUSE)
+> <vbabka@kernel.org> wrote:
+>>
+>> mem_alloc_profiling_enabled() allows evaluating (with a static key) if
+>> memory profiling is currently enabled. mem_profiling_support is a
+>> variable where false means it's not possible to enable it anymore,
+>> because the system was booted with "never" or it was later shut down.
+>> This is possible to query by mem_alloc_profiling_permanently_disabled().
+>>
+>> To make slabobj_ext array size handling dynamic, we need a snapshot of
+>> mem_alloc_profiling_permanently_disabled() early in boot, so that's not
+>> affected by a later shutdown. We also need it to be static key based for
+>> performance. Neither mem_alloc_profiling_enabled() nor
+>> mem_alloc_profiling_permanently_disabled() satisfy this.
+>>
+>> Therefore introduce slab_obj_ext_has_codetag() with an underlying static
+>> key for that use case. Its state is made to reflect the result of
+>> mem_alloc_profiling_permanently_disabled() during kmem_cache_init(),
+>> which does happen after setup_early_mem_profiling().
+>>
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> 
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Thanks :)
+Thanks!
 
-Cheers, Lorenzo
+>> +/*
+>> + * Make sure the static key used by slab_obj_ext_has_codetag() reflects the
+>> + * value of !mem_alloc_profiling_permanently_disabled()
+>> + *
+>> + * Any later mem alloc profiling shutdown won't be reflected in the static key
+>> + * because obj_exts with codetags might already exist.
+>> + */
+>> +static void __init slab_obj_ext_has_codetag_init(void)
+>> +{
+>> +       bool key_enabled = IS_ENABLED(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT);
+> 
+> nit: This seems a bit indirect. Reader needs to remember that
+> slab_obj_ext_has_codetag_key is initialized based on
+> CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT. Wouldn't below code be
+> simpler?:
+> 
+> bool need_codetag = !mem_alloc_profiling_permanently_disabled();
+> if (need_codetag != static_key_enabled(&slab_obj_ext_has_codetag_key)) {
+>         if (need_codetag)
+>                 static_branch_enable(&slab_obj_ext_has_codetag_key);
+>         else
+>                 static_branch_disable(&slab_obj_ext_has_codetag_key);
+> }
+> 
+> It might be less performant but who cares, it's __init function used
+> only one time.
+
+Good idea, will do!
+
+
 
