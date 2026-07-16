@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64A5C4450A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B3A2C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:54:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89F9C6B00F5; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
+	id BFB2A6B00F6; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 802A86B00F7; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
+	id BAA526B00F7; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A25D6B00F8; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
+	id A4AAB6B00F9; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CABC6B00F5
+	by kanga.kvack.org (Postfix) with ESMTP id 5CB4A6B00F6
 	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:54:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49DEB801C7
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:47:03 +0000 (UTC)
-X-FDA: 84994917126.26.7B39F38
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74720801CA
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:45:11 +0000 (UTC)
+X-FDA: 84994912422.28.8BE0F61
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4BA31C0007
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:47:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=qsOZlAFy;
-	spf=pass (imf10.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8094A80004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:45:09 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=mACiqZj1;
 	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784213221;
-	b=x8XSM3VMa9b0kBYZ/q0XPyiyIcq6k2i2plAApWb06mjcxZjV4Cj9lQmhcfmZaypJN+Fw8G
-	VCmI6/jTCHIx3iYAO04uAXsyHuwzP9fASn0yaWiPQMq1PFg7U9jXHZydpoYZswsrVodj7s
-	PrV5p1MZzMGhd8SDpwNW6kWOu6/jSMg=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.beauty header.s=zmail header.b=qsOZlAFy;
-	spf=pass (imf10.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
-	dmarc=pass (policy=none) header.from=linux.beauty;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784213221;
+	s=arc-20220608; t=1784213109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZxeHj8hO5oq7dr0XeLl4vE0l10KI0S0QKZO8mwMoyxs=;
-	b=sc2hGQALuOzrz+EolMAe/HBK6ZFV7fzYvSijk4PHLSJrvnzIXuKM3mLqWEY4fJVqqxml+2
-	QFP1CuIzvSb4GzKklSzayTgs2t/9yVwAVX9TmHN4OISI+SuBhzP9dTBMq80p2SzglPL0eR
-	ACHvFfJOpJNyeBiyRsyJAp08GP0mnIM=
-ARC-Seal: i=1; a=rsa-sha256; t=1784212572; cv=none; 
+	bh=qdqO/dqsF7yjZrH4mg7qpw1lf9OYQ69PUl21BjI0kUE=;
+	b=wZySov1c+csqNL47fl/gRO/ugb2mSL4ILBMM5moOrtSW+nTftIUdRao2ag4jRIuvZIAkEY
+	/IIy1ylAgw//p3t8sxzTxHwIoCAtPhwP3muCcmITu8ggFNwulywF6jVUz9U+K2D63vE/Mw
+	iusK/VrqzZQvh1/ubQIxNgUgvwRk9kY=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=mACiqZj1;
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf30.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784213109;
+	b=r3vUKBJ3xT+DsIuGleEV/qe6VCPvNYL8nWJVAbjE2AtRWq5qa0WMuFrZhU1FqHaeO9B9eB
+	+d4DLrhUhbfBWsTEytjQ957hmshRgdoa8GBbFWaajxMNC+6ImOuQRnE9DI8/ZOZ+9IJD/z
+	BM6Hb4iH5cEO26akruIw1AmNAIwfxGE=
+ARC-Seal: i=1; a=rsa-sha256; t=1784212550; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=HSng2g83+OJhIZUv23KRy4zcnv6vd9QLcFZUWMU2r7qY7AArUJMfMr+4FdOPnIb6uKWEn+C1GqXHyT1p7jecD7ur2r+BBsq9/PK/jeuPrmwYIZWQNwaYedEs7AOgRNlTn9HPx8IaCcXgzuiyh258Nmvd1B8fuXjJJ7nk2Kc2VY8=
+	b=JduyLb3z7uuZZIJZ/tG0Z6jN9XDjUExC/qvVKxwFUtJdijdpmAGGXX2igRxnJRNtp1KiGWvbhfWiSGv8tQhUwPg4qXGgqLV9H1InoXgATIjl/B5ipwYI0t3obyv5YPyrcFPhhOoTpxj2lp2LQEuB0Tri13MWZdF/UWcgoFxaHig=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784212572; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ZxeHj8hO5oq7dr0XeLl4vE0l10KI0S0QKZO8mwMoyxs=; 
-	b=NRNo6jPM8WNUPj+Sz0GRbIndB4pJoj1h4aBAd5oeWJv9tDWgSUu936fhq+ymKuO38Qu2M5AlzQ+Un+PKE+QF2rIWLHxem31I/ijQuPGdj6VEvLMy985fvNaBiGXMjfm+qU62UiwOs0AJkKhamGXMI8GE11L3NA1XuEbCX9XOlNc=
+	t=1784212550; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=qdqO/dqsF7yjZrH4mg7qpw1lf9OYQ69PUl21BjI0kUE=; 
+	b=jcyjrgoqasGbc8y4GB6LkaqE3TWMjVAXvKl2dAy/eF0aoStzCvI1VFkqqZDdCltojGgg3nS0W+jUE2I/ky+w5wqf1ZnymFCgyota9rucOFwReqdn6iOwmqaKb4xdih9zN+SQe7b5cDSb40UcdyS2DYa9TD6UOiKPY27hK8LtuHw=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=linux.beauty;
 	spf=pass  smtp.mailfrom=me@linux.beauty;
 	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212572;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784212550;
 	s=zmail; d=linux.beauty; i=me@linux.beauty;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=ZxeHj8hO5oq7dr0XeLl4vE0l10KI0S0QKZO8mwMoyxs=;
-	b=qsOZlAFyesYeOFNzL602w6sydaHJw7z934zNhJHn/XHrOHLS2015UuZAr+fAM6/b
-	ZnMn85YBMJn4kotXigL9X9Bz4Y75XATVcxuHIaLRJyHDFT6UFYHz/ZcpJSs5nAQTd4H
-	zbgriKm78rljhyyNnFEDVr/frdNdV2o0y6UDQdF8=
-Received: by mx.zohomail.com with SMTPS id 1784212568808726.4671094867332;
-	Thu, 16 Jul 2026 07:36:08 -0700 (PDT)
+	bh=qdqO/dqsF7yjZrH4mg7qpw1lf9OYQ69PUl21BjI0kUE=;
+	b=mACiqZj1Qjc+gUj8Ys01AfNp6e12wk1ed/pzwjDhkRJERJYp6TCmd38aQFgoTXgt
+	kyLlaxBZCMWmXSPX3sLCXpJTjIUAoKqcaX75aVly9Erb10J1FRqk1O9OxLIIf7tDHjE
+	TJVjevIqIMB4M+95XXLCggMqNK+q6HWCUq962sFQ=
+Received: by mx.zohomail.com with SMTPS id 1784212547429642.3160082187562;
+	Thu, 16 Jul 2026 07:35:47 -0700 (PDT)
 From: Li Chen <me@linux.beauty>
 To: Christian Brauner <brauner@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,23 +99,23 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Chen <me@linux.beauty>
-Subject: [RFC PATCH 24/24] Documentation: describe pidfd spawn builders
-Date: Thu, 16 Jul 2026 22:31:50 +0800
-Message-ID: <7e385d39490520666cbb613e50968e8bf2242269.1784204592.git.me@linux.beauty>
+Subject: [RFC PATCH 22/24] pidfd: expose spawn builder system calls
+Date: Thu, 16 Jul 2026 22:31:48 +0800
+Message-ID: <08700c80bff699de86def3904a5b6e91d09ffe19.1784204592.git.me@linux.beauty>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1784204592.git.me@linux.beauty>
 References: <cover.1784204592.git.me@linux.beauty>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 8094A80004
+X-Stat-Signature: f5z4mtz3y6iu1ptp9pnd1akutqj3xi1p
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4BA31C0007
-X-Stat-Signature: t7ug4681bw3pzu4hmtooe6e8o3pkdz6x
-X-HE-Tag: 1784213221-727997
-X-HE-Meta: U2FsdGVkX19qKH90apzNunJq3KIdQuqQILrRC+MxBygWkN1xsDrAhjI7fvUKG16V0pVOIw1pbsWJ+q3O4PACBJnUPmcYkTZshXUqXCkF0pwGxpsAMdwB4MdKHuaxkgAlID7/9BdjwkPI0EANhrt7fwMHbx6rbt8YjSnunah/8B3AFehTR0/0IccVsET9zLLv1gkWdd6tO4Xt6Pn3MNtKomTRdMrm4f3dcAFZjOASA0h7NkHQQ3cbh3dtC+oyqgg578d9OrU93HkcoCXaZ3j9UMpJkT6I3kYlIpZGbB1pgOzDnMIbpkysv/f/pFRaK0Vq89zCzc2sHZ65b5Y9vURig2uJ23rAOjEr6QKBe/Go6wMoh9TGlTxjL9QHzvNAZjoqMLfuz5fIjFfZSOVlHncK+UhVD0wf3eHoFGYnw6FDtbhQcewsJsMFDCrrA7F4iLiPHbtELndXYD+4qCbYlud3NF/ht5RBrTsSahgtz3ZqD5YvoGm7I7of8InGR/cI0fyDf92MNmJQe+iVHkQn64rWhRM8LzcB94D7dhkRr28ortU5PieinqExeiO0sRvbDTTd25AD2SgtX1NowB8F96DrWTsmLZD5giAEg/w1Lop4Mw2RQGjJPw5iJW3o4eiM5AVERm1X4NC6ULe/O/PjSgjxTXdDxFgP4wHPzmi8iv2HsCoec7LCeJCzvA663i529BQo+8h0hkuOFdld6jpu/kzOJuvId0SHRZcKzlaEiO1wh/TA6ufLh9V1xPFX66o2j12isZaBn2iVJvhCIf3w1ZHTh++sd59fn+Fg5Y2euS64HyBWdQ0vNQ7P+Jebi2Kke049Sc9xywddAM2rjvl6oysWH3/cCETcbLGnsn+Tu/WS3qWlLwBHIBDyzqZUTcna9ZL6wpHA6htauxvsmY1eqWSyKl7cL8SAvrubXrx8O8wnQqG7wYGSIlXHsQx2hoFdpMxLJLZ4niolHFaQlSWcmAR
- Yo3f4ybG
- 5ouYpwTLiHn03ZC3jl8fHTI3JGrxkrhxCVBMFj5Q8gSI/s0j4Qou2ov27xwbA09fO2BHr7DC+YEBtETEuOC/1f/rAiyagSEtcF49DVm+oQxYSLXm0WUW8S8fP4nCsRp4g1mBJyIKHHY/OJD90TBIs71VVYpgkHcqaQAnROsZ05PpjDkvYb2/bpYRA68STAakp59XOUJd2E0Bq6EcyVuJl6zQIaX4gV0G6T2IY+lrDcJ93PPABGllu+EnGLBB0H6wdM0sbgWvjmvXL6MgK2zPgRoa9ceoBnH+XlNT2ov02R/KOcO/PDu6VTSrz3ZIVL6BQb/pA1mDYHzHvhZw0OGx9JuvWTBBP1PypEf/X6QkopqfetsvlKVXzJidGYyPM2SHoiUpHatolMCv7yEKT6ctJXsip+IcBvXroMPPfsQ4eYtHRVbwOggQI+HQUKYDLxpLKrga59z/gBeW2qyWCQl/O+mLMpA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784213109-291035
+X-HE-Meta: U2FsdGVkX1+wEQVYzH6MZmz//IAMIu7z/N+QdlLlSlWmbToLm7djHK8M/G66zT7oPFvUUPSYyJ3YDeL8GoNBFFDSfYXry7j/6MhiRakIw8AtHoJ9ol2dsMFo3b26ZrQq4ixFfOrREMXmLh9FNC4cwnJPiC8+rXw2XcHa6TYHAVqauHJ5dBwAORmFfEYOrpRzpNjIO9kViYaoveG2vxBpweLFAi3Rw0RUWC1mCIRbt7P8J0P3q5RswgJ97EU1akV80Yb+Z38tbjDylQznO2dIyH4GJ6+ox9EN8H06q2+/zQvoiEdPzEboWgNehvudArFR5f7pWKtydrBsCv1PU6NHhT1esx+646bF0ElfEfaAhEMPxxgwpt/vr3cZQCch68DSjoZO8KENEX83uGMo3NsmC9k2xLmjNoZ2v7JW031PBskpPnn7LNOK4RqC05qb9TWPmkXc4Tcb0ef4y8295eZq9NK5XqsCXgR5A4rOk+iRqjg8eH43jOpR4/8pK0P3916oPBMa9YlsAKeg151bKISVtX/6if2qGhwc/+s8AaU2fyWMEnw18P+LF6XOlObzo7ehHuojsa/kQRUH/Uq7Q4uL8ugV02qncjc7b71Y1TXEofjTWR4gs7h94cMNA1TQ3O+y1GhMox4fBNlxN/ktQLOQrGz0bYX6M55SLAJ8ohK2c1PiJ3b1esODAb+1NGX7wknKCIIvfIr22jK48K7F/0MtS/i75gaCK5lpYTQ/MWpICWm91bdckl/IrG4So+JyPk0xw6jaBu1sPSID1iugEF7RFL7H/Q/VHu3JHFU8GOMkGKwH8BY4HrhJuBvJEC0Z7hZ6odp0z5LhjzUlKbDaznFfyw0flTS6R3s06ozF5Sph+0wrDEKMmsCXOc7L6YBMoA+G45o5ip7I3yfjtm9I2r2cJdFljm0+jioOZIFKPXt2c/rSqyiFwzZlvHehI/7RQdXXT8aubDB3JqU8q8HEXDo
+ puuVfXVb
+ WOCeU4pnisRXIEEzXhyEHS+j2OBY/JsVdL9BPqc6eu6zVgJOzTBLIuq1QtNRiFlUrptzAiOnLmJUVGeym1uGhSFH0G0xkdDObvSnRJUzOkTY5f+LY0igsGOCwoxhV++/XHSAJJ1c99bdLfSjtkAqT1Ox1URnClQ182bWFTH9qNKuuHaxmokqNuMw5zsyVZjkn/+toglI4/t92UmNErJbWHBHhg7GbQFcp8GSTJ2JHEfIbRw22mVLxeya/4iKNCek2Q55B4H+w9772AgOIaHS5lfv6VLD/ZIdW9kOjsZgyPvqIBmFrjWqQJwQwRVRcoARMK4A0YC3ca3+6sLRxeMqd+6a4T2Ywx+WFSyqdnfzMAQKDceb/mn5o8fa0XocL0LGQzEQbLmGH6QbDcfQ5b2H/bB1EINViNvjZdabCtRr2JtW/4LMUw5f/9sIIfdL9TLqhiyOf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,300 +123,476 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document the taskless pidfd lifecycle, source-state and authority
-model, optional path configuration, run and file-action ABI, one-shot
-failure classification, and embryonic process visibility.
+The preceding commits define the future-pidfd lifetime, configuration, and
+run state machine without making them reachable from userspace. Each
+preparatory step therefore remains bisectable without exposing a partial
+process builder.
 
-Describe policy and audit interactions, current accounting behavior,
-and the features still missing from the initial interface. Add the
-document to the userspace API index and PIDFD API maintenance entry.
+Make pidfd_open(0, PIDFD_EMPTY) create a taskless future pidfd and expose
+pidfd_config() and pidfd_spawn_run(). Add the syscall declarations and
+table entries together so the complete initial interface becomes reachable
+at one commit boundary. Synchronize the lagging arm64 AArch32 perf mirror
+through the current syscall table while adding the builder entries.
 
 Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: Li Chen <me@linux.beauty>
 ---
- Documentation/userspace-api/index.rst       |   1 +
- Documentation/userspace-api/pidfd_spawn.rst | 247 ++++++++++++++++++++
- MAINTAINERS                                 |   1 +
- 3 files changed, 249 insertions(+)
- create mode 100644 Documentation/userspace-api/pidfd_spawn.rst
+ arch/alpha/kernel/syscalls/syscall.tbl        |  2 ++
+ arch/arm/tools/syscall.tbl                    |  2 ++
+ arch/arm64/tools/syscall_32.tbl               |  2 ++
+ arch/m68k/kernel/syscalls/syscall.tbl         |  2 ++
+ arch/microblaze/kernel/syscalls/syscall.tbl   |  2 ++
+ arch/mips/kernel/syscalls/syscall_n32.tbl     |  2 ++
+ arch/mips/kernel/syscalls/syscall_n64.tbl     |  2 ++
+ arch/mips/kernel/syscalls/syscall_o32.tbl     |  2 ++
+ arch/parisc/kernel/syscalls/syscall.tbl       |  2 ++
+ arch/powerpc/kernel/syscalls/syscall.tbl      |  2 ++
+ arch/s390/kernel/syscalls/syscall.tbl         |  2 ++
+ arch/sh/kernel/syscalls/syscall.tbl           |  2 ++
+ arch/sparc/kernel/syscalls/syscall.tbl        |  2 ++
+ arch/x86/entry/syscalls/syscall_32.tbl        |  2 ++
+ arch/x86/entry/syscalls/syscall_64.tbl        |  2 ++
+ arch/xtensa/kernel/syscalls/syscall.tbl       |  2 ++
+ include/linux/syscalls.h                      |  7 +++++++
+ include/uapi/asm-generic/unistd.h             |  8 +++++++-
+ kernel/pid.c                                  | 19 ++++++++++++++++++-
+ scripts/syscall.tbl                           |  2 ++
+ tools/include/uapi/asm-generic/unistd.h       |  8 +++++++-
+ .../arch/alpha/entry/syscalls/syscall.tbl     |  2 ++
+ .../perf/arch/arm/entry/syscalls/syscall.tbl  |  2 ++
+ .../arch/arm64/entry/syscalls/syscall_32.tbl  | 11 +++++++++++
+ .../arch/mips/entry/syscalls/syscall_n64.tbl  |  2 ++
+ .../arch/parisc/entry/syscalls/syscall.tbl    |  2 ++
+ .../arch/powerpc/entry/syscalls/syscall.tbl   |  2 ++
+ .../perf/arch/s390/entry/syscalls/syscall.tbl |  2 ++
+ tools/perf/arch/sh/entry/syscalls/syscall.tbl |  2 ++
+ .../arch/sparc/entry/syscalls/syscall.tbl     |  2 ++
+ .../arch/x86/entry/syscalls/syscall_32.tbl    |  2 ++
+ .../arch/x86/entry/syscalls/syscall_64.tbl    |  2 ++
+ .../arch/xtensa/entry/syscalls/syscall.tbl    |  2 ++
+ tools/scripts/syscall.tbl                     |  2 ++
+ 34 files changed, 108 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
-index a68b1bea57a85..28da6a4da7c78 100644
---- a/Documentation/userspace-api/index.rst
-+++ b/Documentation/userspace-api/index.rst
-@@ -21,6 +21,7 @@ System calls
-    ebpf/index
-    ioctl/index
-    mseal
-+   pidfd_spawn
-    rseq
+diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+index f31b7afffc345..8dd0b22a407c5 100644
+--- a/arch/alpha/kernel/syscalls/syscall.tbl
++++ b/arch/alpha/kernel/syscalls/syscall.tbl
+@@ -511,3 +511,5 @@
+ 579	common	file_setattr			sys_file_setattr
+ 580	common	listns				sys_listns
+ 581	common	rseq_slice_yield		sys_rseq_slice_yield
++582	common	pidfd_config			sys_pidfd_config
++583	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+index 94351e22bfcf7..9830c4600fc78 100644
+--- a/arch/arm/tools/syscall.tbl
++++ b/arch/arm/tools/syscall.tbl
+@@ -486,3 +486,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/arm64/tools/syscall_32.tbl b/arch/arm64/tools/syscall_32.tbl
+index 62d93d88e0fef..9c3281b3612c2 100644
+--- a/arch/arm64/tools/syscall_32.tbl
++++ b/arch/arm64/tools/syscall_32.tbl
+@@ -483,3 +483,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+index 2489342571014..2db719475e061 100644
+--- a/arch/m68k/kernel/syscalls/syscall.tbl
++++ b/arch/m68k/kernel/syscalls/syscall.tbl
+@@ -471,3 +471,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+index 223d263036272..41ead93dba5c4 100644
+--- a/arch/microblaze/kernel/syscalls/syscall.tbl
++++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+@@ -477,3 +477,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+index 7430714e2b8f8..b6bfca9ddedc6 100644
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -410,3 +410,5 @@
+ 469	n32	file_setattr			sys_file_setattr
+ 470	n32	listns				sys_listns
+ 471	n32	rseq_slice_yield		sys_rseq_slice_yield
++472	n32	pidfd_config			sys_pidfd_config
++473	n32	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+index 630aab9e54259..229a1a5bff0e9 100644
+--- a/arch/mips/kernel/syscalls/syscall_n64.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+@@ -386,3 +386,5 @@
+ 469	n64	file_setattr			sys_file_setattr
+ 470	n64	listns				sys_listns
+ 471	n64	rseq_slice_yield		sys_rseq_slice_yield
++472	n64	pidfd_config			sys_pidfd_config
++473	n64	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 128653112284b..4ee804186e399 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -459,3 +459,5 @@
+ 469	o32	file_setattr			sys_file_setattr
+ 470	o32	listns				sys_listns
+ 471	o32	rseq_slice_yield		sys_rseq_slice_yield
++472	o32	pidfd_config			sys_pidfd_config
++473	o32	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index c6331dad94613..ff6760df2dc51 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -470,3 +470,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 4fcc7c58a105d..021b334a8e1a0 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -562,3 +562,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	nospu	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+index 09a7ef04d9791..eea88f94a7624 100644
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -398,3 +398,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+index 70b315cbe710c..37166286c4045 100644
+--- a/arch/sh/kernel/syscalls/syscall.tbl
++++ b/arch/sh/kernel/syscalls/syscall.tbl
+@@ -475,3 +475,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index 7e71bf7fcd14f..70f2165b9cfb3 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -517,3 +517,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index f832ebd2d79b0..b2eeddbe99be9 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -477,3 +477,5 @@
+ 469	i386	file_setattr		sys_file_setattr
+ 470	i386	listns			sys_listns
+ 471	i386	rseq_slice_yield	sys_rseq_slice_yield
++472	i386	pidfd_config		sys_pidfd_config
++473	i386	pidfd_spawn_run		sys_pidfd_spawn_run
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index 524155d655da1..f0952f34c10a5 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -396,6 +396,8 @@
+ 469	common	file_setattr		sys_file_setattr
+ 470	common	listns			sys_listns
+ 471	common	rseq_slice_yield	sys_rseq_slice_yield
++472	common	pidfd_config		sys_pidfd_config
++473	common	pidfd_spawn_run		sys_pidfd_spawn_run
  
- Security-related interfaces
-diff --git a/Documentation/userspace-api/pidfd_spawn.rst b/Documentation/userspace-api/pidfd_spawn.rst
-new file mode 100644
-index 0000000000000..2aaf5db85f13b
---- /dev/null
-+++ b/Documentation/userspace-api/pidfd_spawn.rst
-@@ -0,0 +1,247 @@
-+.. SPDX-License-Identifier: GPL-2.0
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+index a9bca4e484dec..45dd80ab94cf9 100644
+--- a/arch/xtensa/kernel/syscalls/syscall.tbl
++++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+@@ -442,3 +442,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 874d9067a43b5..ec90454d01214 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -79,6 +79,7 @@ struct mnt_id_req;
+ struct ns_id_req;
+ struct xattr_args;
+ struct file_attr;
++struct pidfd_spawn_run_args;
+ 
+ #include <linux/types.h>
+ #include <linux/aio_abi.h>
+@@ -908,6 +909,12 @@ asmlinkage long sys_clock_adjtime32(clockid_t which_clock,
+ asmlinkage long sys_syncfs(int fd);
+ asmlinkage long sys_setns(int fd, int nstype);
+ asmlinkage long sys_pidfd_open(pid_t pid, unsigned int flags);
++asmlinkage long sys_pidfd_config(int fd, unsigned int cmd,
++				 const char __user *key,
++				 const void __user *value, int aux);
++asmlinkage long sys_pidfd_spawn_run(int fd,
++				    const struct pidfd_spawn_run_args __user *uargs,
++				    size_t usize);
+ asmlinkage long sys_sendmmsg(int fd, struct mmsghdr __user *msg,
+ 			     unsigned int vlen, unsigned flags);
+ asmlinkage long sys_process_vm_readv(pid_t pid,
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index a627acc8fb5fe..9ab8ae5100ec1 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -863,8 +863,14 @@ __SYSCALL(__NR_listns, sys_listns)
+ #define __NR_rseq_slice_yield 471
+ __SYSCALL(__NR_rseq_slice_yield, sys_rseq_slice_yield)
+ 
++#define __NR_pidfd_config 472
++__SYSCALL(__NR_pidfd_config, sys_pidfd_config)
 +
-+====================
-+Pidfd spawn builders
-+====================
++#define __NR_pidfd_spawn_run 473
++__SYSCALL(__NR_pidfd_spawn_run, sys_pidfd_spawn_run)
 +
-+Pidfd spawn builders create a new process image with kernel-mediated setup.
-+They do not expose a userspace child stub between process creation and exec.
+ #undef __NR_syscalls
+-#define __NR_syscalls 472
++#define __NR_syscalls 474
+ 
+ /*
+  * 32 bit systems traditionally used different
+diff --git a/kernel/pid.c b/kernel/pid.c
+index 010f80177cac8..a1d05ce10ac25 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -43,6 +43,7 @@
+ #include <linux/sched/task.h>
+ #include <linux/idr.h>
+ #include <linux/pidfs.h>
++#include <linux/pidfd_spawn.h>
+ #include <net/sock.h>
+ #include <uapi/linux/pidfd.h>
+ 
+@@ -715,10 +716,26 @@ SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
+ 	int fd;
+ 	struct pid *p;
+ 
++	/*
++	 * pidfd_open(0, PIDFD_EMPTY) is the spawn-builder entry point.
++	 * It creates a future pidfd instead of looking up pid 0.
++	 */
++	if (pid == 0) {
++		if (!(flags & PIDFD_EMPTY))
++			return -EINVAL;
++		if (flags & ~(PIDFD_EMPTY | PIDFD_NONBLOCK))
++			return -EINVAL;
 +
-+The interface is::
++		return pidfd_empty_open(flags & PIDFD_NONBLOCK);
++	}
 +
-+    int fd = pidfd_open(0, PIDFD_EMPTY);
++	/* PIDFD_EMPTY is only meaningful for the pid == 0 builder form. */
++	if (flags & PIDFD_EMPTY)
++		return -EINVAL;
+ 	if (flags & ~(PIDFD_NONBLOCK | PIDFD_THREAD))
+ 		return -EINVAL;
+ 
+-	if (pid <= 0)
++	if (pid < 0)
+ 		return -EINVAL;
+ 
+ 	p = find_get_pid(pid);
+diff --git a/scripts/syscall.tbl b/scripts/syscall.tbl
+index 7a42b32b65776..29248f0ac1a07 100644
+--- a/scripts/syscall.tbl
++++ b/scripts/syscall.tbl
+@@ -412,3 +412,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
+index a627acc8fb5fe..9ab8ae5100ec1 100644
+--- a/tools/include/uapi/asm-generic/unistd.h
++++ b/tools/include/uapi/asm-generic/unistd.h
+@@ -863,8 +863,14 @@ __SYSCALL(__NR_listns, sys_listns)
+ #define __NR_rseq_slice_yield 471
+ __SYSCALL(__NR_rseq_slice_yield, sys_rseq_slice_yield)
+ 
++#define __NR_pidfd_config 472
++__SYSCALL(__NR_pidfd_config, sys_pidfd_config)
 +
-+    /* Optional executable-path staging. */
-+    pidfd_config(fd, PIDFD_CONFIG_SET_STRING,
-+                 PIDFD_CONFIG_KEY_PATH, path, 0);
++#define __NR_pidfd_spawn_run 473
++__SYSCALL(__NR_pidfd_spawn_run, sys_pidfd_spawn_run)
 +
-+    pidfd_spawn_run(fd, &args, sizeof(args));
-+
-+The same fd starts as a taskless pidfs object and becomes the child's pidfd
-+when a task is created. The current implementation supports an executable
-+path, argv, envp, and ordered ``DUP2``, ``CLOSE_RANGE``, and ``FCHDIR`` file
-+actions.
-+
-+Opening a builder
-+=================
-+
-+``pidfd_open(0, PIDFD_EMPTY)`` returns a close-on-exec builder fd.
-+``PIDFD_NONBLOCK`` may be combined with ``PIDFD_EMPTY``. Other flags are
-+rejected. ``PIDFD_EMPTY`` is rejected for a nonzero pid.
-+
-+Opening the builder allocates a pidfs inode and builder state. It does not
-+allocate a ``struct pid`` or task, and does not charge ``RLIMIT_NPROC`` or the
-+pids cgroup controller. PID allocation and process-count accounting occur when
-+``pidfd_spawn_run()`` calls the normal task-creation path.
-+
-+The pidfs inode has a stable identity before and after task creation. A pidfd
-+opened from the eventual numeric pid refers to the same pidfs inode. A poll or
-+epoll registration made while the fd is taskless remains attached across
-+publication and can report the child's eventual exit.
-+
-+Process-dependent pidfd operations return ``ESRCH`` while the builder is
-+taskless. This includes signal delivery, ``pidfd_getfd()``,
-+``PIDFD_GET_INFO``, namespace ioctls, ``setns()``, process memory operations,
-+and process-dependent pidfs xattrs. Argument validation may fail before the
-+taskless-state check. ``poll()`` reports no event while the builder may still
-+publish a task. After a terminal taskless failure, ``poll()`` and ``epoll``
-+report ``POLLERR | POLLHUP`` and wake registrations made before the failure.
-+Inode-only operations such as ``FS_IOC_GETVERSION`` remain available.
-+
-+The builder state follows the lifetime of the pidfs inode. Duplicated or
-+reopened descriptors and VFS references to that inode keep it alive. Releasing
-+the final reference before a run discards the taskless builder without
-+creating a process.
-+
-+Source state and authority
-+==========================
-+
-+The current mode is source-based. The child is created from the calling
-+process at run time. State changed after ``pidfd_open()`` but before
-+``pidfd_spawn_run()``, including the current directory and file descriptor
-+table, is therefore visible to normal process creation. Non-close-on-exec file
-+descriptors remain available to the new image unless a file action changes
-+them. The exec path applies ``FD_CLOEXEC`` normally.
-+
-+File and filesystem state are private child copies before file actions run.
-+The current backend shares the address space only for its internal
-+vfork-style setup and replaces it during exec. Applications must not depend on
-+that backend detail.
-+
-+Configuration and run authority is bound to the mm, exact credential object,
-+and child PID namespace recorded when the builder is opened. Passing the fd
-+through ``SCM_RIGHTS`` or another fd-passing mechanism does not by itself
-+delegate authority to configure or run it. A rejected authority check does not
-+consume the builder.
-+
-+Configuring an executable path
-+==============================
-+
-+The optional configuration command is::
-+
-+    pidfd_config(fd, PIDFD_CONFIG_SET_STRING,
-+                 PIDFD_CONFIG_KEY_PATH, path, 0);
-+
-+The command copies ``path`` into builder state. Calling it again before a run
-+replaces the staged string. The key and value must be valid NUL-terminated
-+userspace strings, and ``aux`` must be zero. Unknown commands or keys return
-+``EOPNOTSUPP``.
-+
-+Staging is not required when the run arguments provide ``path``. Supplying a
-+run-time path when a path is already staged, or supplying neither form,
-+returns ``EINVAL``. This selection is validated before a run-time path pointer
-+is dereferenced, so a staged-path conflict takes precedence over a fault in
-+that pointer. Relative paths are resolved after ordered file actions from the
-+child's resulting working directory. Without an ``FCHDIR`` action, that is
-+the working directory copied at run time. The kernel does not search ``PATH``.
-+
-+Run arguments
-+=============
-+
-+Version 0 of ``struct pidfd_spawn_run_args`` contains:
-+
-+* ``path``: an optional executable-path pointer;
-+* ``argv``: a required argument-vector pointer;
-+* ``envp``: an environment-vector pointer, or zero for an empty environment;
-+* ``actions``, ``nr_actions``, and ``action_size``: an optional ordered
-+  file-action array.
-+
-+``flags`` and all reserved fields must be zero. The syscall size must be at
-+least ``PIDFD_SPAWN_RUN_SIZE_VER0`` and no larger than ``PAGE_SIZE``. Unknown
-+trailing bytes in a larger structure must be zero.
-+
-+``path``, ``argv``, ``envp``, and ``actions`` are full-width userspace virtual
-+addresses stored in ``__aligned_u64`` fields on every ABI. Native calls must
-+fit the native pointer width. Compat calls must fit ``compat_uptr_t``; nonzero
-+upper bits are rejected with ``EFAULT`` before task creation. Entries read
-+from compat argv and envp arrays are compat pointers.
-+
-+File actions
-+============
-+
-+When ``nr_actions`` is zero, ``actions`` and ``action_size`` must also be zero.
-+Otherwise ``actions`` must be nonzero and ``action_size`` must be at least
-+``PIDFD_SPAWN_ACTION_SIZE_VER0`` and aligned to eight bytes. A larger element
-+is accepted only when its unknown tail is zero. The complete action payload is
-+limited to 64 KiB; the interface does not impose a fixed action count below
-+that byte limit.
-+
-+Actions execute in array order against child-private file and filesystem
-+state before exec:
-+
-+``PIDFD_SPAWN_ACTION_DUP2``
-+    Duplicate ``fd`` onto ``newfd``. If both numbers are equal, clear
-+    ``FD_CLOEXEC`` on that descriptor. ``flags`` and reserved fields must be
-+    zero.
-+
-+``PIDFD_SPAWN_ACTION_CLOSE_RANGE``
-+    Apply ``close_range(fd, newfd, flags)``. ``newfd`` must not be less than
-+    ``fd``. Only ``CLOSE_RANGE_UNSHARE`` and ``CLOSE_RANGE_CLOEXEC`` are
-+    accepted.
-+
-+``PIDFD_SPAWN_ACTION_FCHDIR``
-+    Change the child working directory to ``fd``. ``flags``, ``newfd``, and
-+    reserved fields must be zero.
-+
-+An unknown action type returns ``EOPNOTSUPP``. Invalid fields or arguments
-+return ``EINVAL``. Errors from applying an otherwise valid action are reported
-+as run failures after task publication.
-+
-+One-shot execution and results
-+==============================
-+
-+After fd type, creator authority, and source ptrace checks succeed, the first
-+``pidfd_spawn_run()`` attempt atomically claims the builder before copying its
-+run arguments. Argument faults, validation errors, memory-allocation failures,
-+process limits, and task-creation failures after that claim are terminal.
-+Later configuration and run attempts return ``EBUSY``.
-+
-+Checks that fail before the claim do not consume the builder. These include an
-+invalid fd type, creator-authority mismatch, or an already traced source.
-+
-+On successful setup and exec, ``pidfd_spawn_run()`` returns the positive child
-+pid as seen in the caller's PID namespace. The pidfd remains the stable process
-+identity.
-+
-+A failure before task creation returns a negative error and leaves the fd
-+terminal but taskless. Ordinary pidfd operations continue to return ``ESRCH``.
-+``poll()`` and ``epoll`` report ``POLLERR | POLLHUP``. The builder cannot be
-+retried; a caller must open a new builder.
-+
-+A setup or exec failure after publication returns a negative error, leaves the
-+same fd as the child's pidfd, and makes the child exit with status 127. Normal
-+``SIGCHLD``, ``SIG_IGN``, and ``SA_NOCLDWAIT`` rules determine whether it must
-+be reaped. ``PIDFD_GET_INFO`` with ``PIDFD_INFO_EXIT`` distinguishes this case
-+from a terminal taskless failure.
-+
-+Internal restart errors after the claim are returned to userspace as
-+``EINTR``. The kernel does not automatically restart a consumed run and
-+replace its first result with ``EBUSY``.
-+
-+A fatal signal delivered to the published child determines the child's exit
-+status if it wins during setup. It is not reported as an exec setup error, so
-+the run can return the positive child pid even when that child exits from the
-+signal.
-+
-+Embryonic process state
-+=======================
-+
-+After task publication and before successful exec completion, the child is in
-+an embryonic exec state. It is not yet a normal userspace process image and
-+does not have a valid userspace register frame on every architecture.
-+
-+During this interval:
-+
-+* direct ptrace access and ``pidfd_getfd()`` are denied;
-+* procfs PID lookup and iteration treat the task as absent to other tasks,
-+  preventing access to the source address space temporarily shared by the
-+  implementation; the embryonic task may resolve its own procfs entries for
-+  executable and interpreter lookup;
-+* ``PIDFD_GET_INFO`` reports ``PIDFD_COREDUMP_SKIP`` when coredump state is
-+  requested;
-+* ordinary pidfd identity, signal, wait, and poll mechanisms operate on the
-+  published task as their normal permission checks allow.
-+
-+Successful exec releases the embryonic state before exec event publication. A
-+failed setup never exposes the borrowed pre-exec frame to userspace; the child
-+exits instead.
-+
-+Security policy and audit
-+=========================
-+
-+File actions and exec run inside the child kernel path. They do not appear to
-+seccomp as separate ``dup2()``, ``close_range()``, ``fchdir()``, or
-+``execve()`` syscalls. A source-side seccomp filter can reject
-+``pidfd_spawn_run()`` before the builder is claimed. A policy that intends to
-+prevent this operation must filter ``pidfd_spawn_run()`` itself; denying only
-+the syscall numbers corresponding to its file actions or exec does not mediate
-+the equivalent in-kernel work. In particular, an exec-only denylist that
-+allows unknown syscalls does not block the initial spawn exec; it must add
-+``pidfd_spawn_run()``. A syscall allowlist does not permit the new operation
-+until it adds that syscall. Seccomp state inherited by the child remains active
-+after exec. LSM checks, including Landlock executable access, still mediate the
-+underlying exec.
-+
-+Audit records the source syscall transaction and a separate
-+``AUDIT_PIDFD_SPAWN`` child transaction for executable lookup and exec
-+arguments. The child does not emit a synthetic second ``AUDIT_SYSCALL``
-+record. The child transaction is selected using the originating
-+``pidfd_spawn_run()`` syscall number, so an existing exit rule that names only
-+``execve()`` or ``execveat()`` does not select it. Such rules must also select
-+``pidfd_spawn_run()`` with the current audit model. File actions are not
-+emitted as decoded per-action audit records.
-+
-+An already traced source is rejected before the claim. The current backend
-+does not implement ptrace auto-attach events for the created child.
-+
-+Current limitations
-+===================
-+
-+The interface does not yet implement the full ``posix_spawn()`` surface. It
-+lacks open and close file actions, resetids, signal mask and default controls,
-+scheduler attributes, affinity, process groups, sessions, explicit cgroup
-+placement, ``PATH`` search, and exec by fd.
-+
-+It also does not provide pristine or no-source process creation, executable
-+metadata caching, or reusable spawn templates. The current implementation is
-+source-based and uses the existing vfork/exec machinery internally.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 85b1306cb2ff3..0b6d466787a60 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21288,6 +21288,7 @@ M:	Christian Brauner <christian@brauner.io>
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git
-+F:	Documentation/userspace-api/pidfd_spawn.rst
- F:	fs/pidfd_spawn.c
- F:	include/linux/pidfd_spawn.h
- F:	include/uapi/linux/pidfd_spawn.h
+ #undef __NR_syscalls
+-#define __NR_syscalls 472
++#define __NR_syscalls 474
+ 
+ /*
+  * 32 bit systems traditionally used different
+diff --git a/tools/perf/arch/alpha/entry/syscalls/syscall.tbl b/tools/perf/arch/alpha/entry/syscalls/syscall.tbl
+index 74720667fe091..a20f81b950349 100644
+--- a/tools/perf/arch/alpha/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/alpha/entry/syscalls/syscall.tbl
+@@ -502,3 +502,5 @@
+ 570	common	lsm_set_self_attr		sys_lsm_set_self_attr
+ 571	common	lsm_list_modules		sys_lsm_list_modules
+ 572	common  mseal				sys_mseal
++582	common	pidfd_config			sys_pidfd_config
++583	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/arm/entry/syscalls/syscall.tbl b/tools/perf/arch/arm/entry/syscalls/syscall.tbl
+index 94351e22bfcf7..9830c4600fc78 100644
+--- a/tools/perf/arch/arm/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/arm/entry/syscalls/syscall.tbl
+@@ -486,3 +486,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/arm64/entry/syscalls/syscall_32.tbl b/tools/perf/arch/arm64/entry/syscalls/syscall_32.tbl
+index 9a37930d4e26f..9c3281b3612c2 100644
+--- a/tools/perf/arch/arm64/entry/syscalls/syscall_32.tbl
++++ b/tools/perf/arch/arm64/entry/syscalls/syscall_32.tbl
+@@ -474,3 +474,14 @@
+ 460	common	lsm_set_self_attr		sys_lsm_set_self_attr
+ 461	common	lsm_list_modules		sys_lsm_list_modules
+ 462	common	mseal				sys_mseal
++463	common	setxattrat			sys_setxattrat
++464	common	getxattrat			sys_getxattrat
++465	common	listxattrat			sys_listxattrat
++466	common	removexattrat			sys_removexattrat
++467	common	open_tree_attr			sys_open_tree_attr
++468	common	file_getattr			sys_file_getattr
++469	common	file_setattr			sys_file_setattr
++470	common	listns				sys_listns
++471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
+index 630aab9e54259..229a1a5bff0e9 100644
+--- a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
++++ b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
+@@ -386,3 +386,5 @@
+ 469	n64	file_setattr			sys_file_setattr
+ 470	n64	listns				sys_listns
+ 471	n64	rseq_slice_yield		sys_rseq_slice_yield
++472	n64	pidfd_config			sys_pidfd_config
++473	n64	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/parisc/entry/syscalls/syscall.tbl b/tools/perf/arch/parisc/entry/syscalls/syscall.tbl
+index 66dc406b12e44..88311785913f8 100644
+--- a/tools/perf/arch/parisc/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/parisc/entry/syscalls/syscall.tbl
+@@ -461,3 +461,5 @@
+ 460	common	lsm_set_self_attr		sys_lsm_set_self_attr
+ 461	common	lsm_list_modules		sys_lsm_list_modules
+ 462	common	mseal				sys_mseal
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+index 4fcc7c58a105d..021b334a8e1a0 100644
+--- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+@@ -562,3 +562,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	nospu	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/s390/entry/syscalls/syscall.tbl b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
+index 09a7ef04d9791..eea88f94a7624 100644
+--- a/tools/perf/arch/s390/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
+@@ -398,3 +398,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/sh/entry/syscalls/syscall.tbl b/tools/perf/arch/sh/entry/syscalls/syscall.tbl
+index 70b315cbe710c..37166286c4045 100644
+--- a/tools/perf/arch/sh/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/sh/entry/syscalls/syscall.tbl
+@@ -475,3 +475,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/sparc/entry/syscalls/syscall.tbl b/tools/perf/arch/sparc/entry/syscalls/syscall.tbl
+index 7e71bf7fcd14f..70f2165b9cfb3 100644
+--- a/tools/perf/arch/sparc/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/sparc/entry/syscalls/syscall.tbl
+@@ -517,3 +517,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
+index f832ebd2d79b0..b2eeddbe99be9 100644
+--- a/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -477,3 +477,5 @@
+ 469	i386	file_setattr		sys_file_setattr
+ 470	i386	listns			sys_listns
+ 471	i386	rseq_slice_yield	sys_rseq_slice_yield
++472	i386	pidfd_config		sys_pidfd_config
++473	i386	pidfd_spawn_run		sys_pidfd_spawn_run
+diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+index 524155d655da1..f0952f34c10a5 100644
+--- a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -396,6 +396,8 @@
+ 469	common	file_setattr		sys_file_setattr
+ 470	common	listns			sys_listns
+ 471	common	rseq_slice_yield	sys_rseq_slice_yield
++472	common	pidfd_config		sys_pidfd_config
++473	common	pidfd_spawn_run		sys_pidfd_spawn_run
+ 
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+diff --git a/tools/perf/arch/xtensa/entry/syscalls/syscall.tbl b/tools/perf/arch/xtensa/entry/syscalls/syscall.tbl
+index a9bca4e484dec..45dd80ab94cf9 100644
+--- a/tools/perf/arch/xtensa/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/xtensa/entry/syscalls/syscall.tbl
+@@ -442,3 +442,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
+diff --git a/tools/scripts/syscall.tbl b/tools/scripts/syscall.tbl
+index 7a42b32b65776..29248f0ac1a07 100644
+--- a/tools/scripts/syscall.tbl
++++ b/tools/scripts/syscall.tbl
+@@ -412,3 +412,5 @@
+ 469	common	file_setattr			sys_file_setattr
+ 470	common	listns				sys_listns
+ 471	common	rseq_slice_yield		sys_rseq_slice_yield
++472	common	pidfd_config			sys_pidfd_config
++473	common	pidfd_spawn_run			sys_pidfd_spawn_run
 -- 
 2.52.0
 
