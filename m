@@ -4,141 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0C73C44515
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 18:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFFFC44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 19:05:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 544296B0092; Thu, 16 Jul 2026 14:19:02 -0400 (EDT)
+	id CFE3E6B00DA; Thu, 16 Jul 2026 15:05:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51C296B00A6; Thu, 16 Jul 2026 14:19:02 -0400 (EDT)
+	id CD54B6B00DB; Thu, 16 Jul 2026 15:05:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E7E56B00F1; Thu, 16 Jul 2026 14:19:02 -0400 (EDT)
+	id BEAFA6B00DC; Thu, 16 Jul 2026 15:05:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A33B6B0092
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:19:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 880311C0226
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 18:19:01 +0000 (UTC)
-X-FDA: 84995451282.27.489462D
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9501A40002
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 18:18:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L3YbmIne;
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784225939;
-	b=rNRi0u72w957plPGVOnXWKmB7wm+vbX+CmmYYTRr7jf5o8QF6dWLvWy3jQ9oSaYtwJ9Re5
-	JVQ0HZai1TneY62xOxWCbUtC4hGLmS8wjpHvcszv2mVtGQCftQy1029Sq1+8VMktbJ8Q8z
-	x+Lk/M3hbFCEQe9HA06ceOG2drUbrgw=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L3YbmIne;
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784225939;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B5196B00DA
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 15:05:13 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6FB9A023F
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 19:05:12 +0000 (UTC)
+X-FDA: 84995567664.09.FDD09E8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D5BF914000C
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 19:05:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gqrSwabc;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784228711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RCJWw44Yt9QfTMjmF/5pzznV1wMqLVnfAfzAdUp6RWc=;
-	b=1bNyT75ZaPPUFIiXYdJHODtRAY39WTV9vQk/We11gTK4Ik3wN/dKikEioBRwHDkYdf/wzj
-	TGz7JrifrJa24nOXETbuQaKmcFd4pm7P3LrkPYehpLpGpEoasVGub/+NCGV1AOVcVe7+oR
-	rs7wH4bczaJaS7NQoQ7T+gleGAOmvs0=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4728c12ba97so3327011f8f.0
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:18:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784225938; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xtal1WsLO/QR3iP+tscIXAk7NRZ+1LD5W8uRxUqCs/WMP0f56+eUHVcAwyXR6mFky6
-         Mt5EgmfmmNDxDKQauUvKqQV9PpLaSNGmgEKOY0TAYbn9d9BXQgtoAg7OWs1VaP5S+lTi
-         vH5Ztf22EB4mGoBeltcs/PkZ6bdXYkldZSzC1/iFTN/UV7pbPpK/ojeV8LoGQa9TqMJS
-         FcmFYa4jJswW9AnuFJQG11cH3J30h2dlrAGWgEVCjN7gtRaBqRyBcwmrEZsX8sBMkTUN
-         ySr6vBUiPbW7mjVyHcp3qbrAJwNjCMCwjYG5ku9/7d2q4jsrGF99bptxIvuBEjqqdbwJ
-         reJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RCJWw44Yt9QfTMjmF/5pzznV1wMqLVnfAfzAdUp6RWc=;
-        fh=obN9tHy8GTBVxbfGQbhskyhcnqPH0EbrTQhbdnp4wRo=;
-        b=JzxAY3UheS+04vnCgmg/Ey1awO4Ic+xPuWzODGD84HJTI0Hd//FLDTFxHOP1RhU8k2
-         oeC4Uk255WFra/N7GiF2QRc7VmEwEC6cjQU+KFtHfg+GZSn1RZubWUOB8ybNVevhqGfM
-         pNWMEzG/Dt8Fmxd+kQmjtEyD/bwrkUo911AhV0CvNBTTzzn+Ky4gI2kbRozykFdrr+01
-         sYwL1Gqbx37UNxZQIyHI/dyNOpMLwpA50xK5QEGNfWMSKWUfOjR3KAV+tkvsXOZcEnzY
-         pI990W+QRRTLOHyGd0ydCRe9v7cnrEYlWXWwPkKEYfUODbVhiL4JEnyCdNOEn4hnjms8
-         orFg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784225938; x=1784830738; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RCJWw44Yt9QfTMjmF/5pzznV1wMqLVnfAfzAdUp6RWc=;
-        b=L3YbmIneyHAv10LuXFLHJ9d7uyAKS1+3CrEDjQgcyOWlPUV2ZNtfwLRXh2As2dmaus
-         QlnkL/3kJqNcRfOrbcGrtFFK5Ez9Y8DdhZN1dg0UtHeHoEekWaxPrZ93hZ+/3n2VbBul
-         2IfO1B4ePNkFNV9jCYu1u+NBfh8H5BZOes/2i55B5ZZIwzC8QKa6zVPm0TG/nAe2RA5c
-         keKB89M8Su5+QyvV/KiWYLIEl6CZYohiL0RWfxyvSm/9KflezvI3Lcfo+g3KwqScxYGI
-         7zvGRpzCvX1s6xtXBo2TBCCy7L7BhVzht5v32gI/Vlvs3+j5qFQlUbpAmnR2+bmZS74z
-         3nlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784225938; x=1784830738;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RCJWw44Yt9QfTMjmF/5pzznV1wMqLVnfAfzAdUp6RWc=;
-        b=ILnEzaa93+C0vvYaMLGUGq1U/q+M5QDZal1aXFr1AaWNJtblKXWSqxoowUXHbUr1At
-         n30XTeUrEJx96LEZ8feKuAyDKbPJw4di5XdVvyyUZkKqzv0C5lK/flLoi0qqVhWt0vom
-         GqC+5W9d5w44DX920ynlRYWoV8m3V7P84cefrz9WjMWymUkmPcaUx2hM3oO0tU3asoIr
-         a3ODWbzSBKvjmwFZcQgeCU7ynMoGBi/9NwuMXBoqo6gUmmJ6SJgHzcKAMOQcLNqxPrd0
-         yJ0kj43Yp7sqbEJi8w8ZmDnzEJ0Fo+wsxN0PHi7xdHlx+b/J645HA2CXPT4RKrAqmLHE
-         dvlA==
-X-Forwarded-Encrypted: i=1; AHgh+RquVPsP8zEYvoeLn9HPENgN6BHxPqd8+26qs56dA98VBt3S/K+kdLc16dWJC8HoBwWoiZifrLWhNw==@kvack.org
-X-Gm-Message-State: AOJu0YwHoQygMa7k3rQF7/jVgLKXE6nOw9SNEeRA9cG2Ykx9unghiQPB
-	vhKMmYNT87zxvCGnO+YP00VOv8bE5Zlfo8yEI9SpeB5naWfjFSczQScO1qgzKGCgrv2+3Kggkjl
-	sKyovz3Uk3k36prqER+FwY757lhGlaQ4=
-X-Gm-Gg: AfdE7cmGqX5uV4X8+7zEvBPfpAQ0i2WTMP9D99Kgo7pYoRSy0BY8hW5041ifmK1BJRK
-	VUlkMBjPyllfGSkLR06uYaOQxve9MwnAEcyyh0n6mrgDRMOSLnh7x+tpSB07hFU+sr81WD6Pvu1
-	AsfMIdvATz+6V3V602pzrSR/IiunWdLrPYezqoYQsQzUSSKKC8CFVwkNSuHQG2zTmaS6xe6038o
-	z3/D/BzsovSfC4b/a6GrlsiuW/wPM8UjP4iaoDGDYwFaxtUtg2Xn87hS8LjaiVclus0AUzzwQ7N
-	znxEkABHn/dW/EnI9ySRUjqapTQtROU0qw==
-X-Received: by 2002:a05:6000:490d:b0:47d:ec60:657e with SMTP id
- ffacd0b85a97d-47f4fcd91c0mr9789980f8f.39.1784225937975; Thu, 16 Jul 2026
- 11:18:57 -0700 (PDT)
+	bh=mbGqQ9kUGDYUcGELgHwYoCyqJQeL0ln3eyr2xFBUGKA=;
+	b=FIaBPwVQaCJIBdcqMNIk7cY9tPPzjdCujwhX01mRp5zAlkCI9Hx4Qlwd6uFv6cKz6745hr
+	Mj3X3TwiDymS/qnJDV+Ww031mf5SfFxaF6NJjb2yYRFNHlgNZWukLFNKsMrYkQLwxFddsk
+	3XUV/pUFnJf9tCe0tkZQzkTkmLYDb5U=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gqrSwabc;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784228711;
+	b=ClLUmKbGKN7Px4S3ZwE1iLETH/ZcwZ36Pr2/ZPfEPD/SaO9dA0iV1UD9dFXx8JJqI+Mygq
+	PukxH8k+W4TSnExdkCdGrXiowzvVk5v1pvNxDpPX4P/R15urOYNlS+inGpcwXxBk70gUjf
+	rtpaJoA5var7j0tsFDSHuU4tarAa+b4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C1121477;
+	Thu, 16 Jul 2026 12:05:05 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 138523F66F;
+	Thu, 16 Jul 2026 12:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784228709; bh=f1ULhbuK1iL4hbXSB2hrLrFezeJ/gE3hgeZAl2sOvUs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gqrSwabcapydV8BcaRXrJ+3InJ/tYr8/7EQjfec8M11rV1LYtTO+i0hHOG3fWMVI8
+	 dzyFvALZUm6i3TwmO5xjMl+fdsthUr0DH07IaBF30UE5oiJvESqOEKP1mAzb+bHmtc
+	 WHJaM3g6tBoTuQz7uLK9ZM2XZRplDibEbr4kfqX4=
+Date: Thu, 16 Jul 2026 20:04:56 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Pedro Falcato <pfalcato@suse.de>, Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	Linux-Arch <linux-arch@vger.kernel.org>,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	x86@kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com,
+	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+	linux-m68k@lists.linux-m68k.org,
+	"linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	"Kirill A. Shutemov" <kas@kernel.org>, zhangtianyang@loongson.cn,
+	wangyuli@aosc.io, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Lorenzo Stoakes <ljs@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rohan McLure <rmclure@linux.ibm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Tejun Heo <tj@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>,
+	Anup Patel <anup@brainfault.org>, atish.patra@linux.dev,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>, qi.zheng@linux.dev,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>, chaitanyas.prakash@arm.com,
+	Ard Biesheuvel <ardb@kernel.org>, guoren <guoren@kernel.org>,
+	yang.li85200@gmail.com, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	"schuster.simon@siemens-energy.com" <schuster.simon@siemens-energy.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>, junhui.liu@pigmoral.tech,
+	Muchun Song <muchun.song@linux.dev>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Nam Cao <namcao@linutronix.de>, Pavel Machek <pavel@kernel.org>,
+	djbw@kernel.org, yu-cheng.yu@intel.com,
+	Baolu Lu <baolu.lu@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Coiby Xu <coxu@redhat.com>, Andreas Larsson <andreas@gaisler.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Stafford Horne <shorne@gmail.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+Subject: Re: [RFC PATCH 02/34] ARM: mm: make 2-level pgd_t a scalar
+Message-ID: <alkrWNECXmoxkrUC@e129823.arm.com>
+References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
+ <20260713135614.1618183-3-yeoreum.yun@arm.com>
+ <alYL7B0HAvmLVHGU@pedro-suse>
+ <b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
 MIME-Version: 1.0
-References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
- <20260714081510.16895-2-jiahao.kernel@gmail.com> <CAO9r8zM5nzDqNcx5UoDgGexvR6jf8MmJV9SomM4AS7n-rZ2o5Q@mail.gmail.com>
- <20260714193129.f81711f516504b659d544741@linux-foundation.org>
- <7a1fe347-7ca6-4768-9308-420bf1251f54@gmail.com> <CAO9r8zMDndmoxi_XvQv3rkkhCfb+aW3=8JdE3gAv2YOKiyiFSA@mail.gmail.com>
- <7b35fd4e-7662-10ae-159b-303350e4e59c@gmail.com>
-In-Reply-To: <7b35fd4e-7662-10ae-159b-303350e4e59c@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 16 Jul 2026 11:18:44 -0700
-X-Gm-Features: AUfX_mxIpAby5cOyODbdsd_vYnsokVJLS1QcOfP3fFXU1u6G5EgnSr-TbOWYryE
-Message-ID: <CAKEwX=Ob9shetuJK4y=NZods3KkT=U_3W4S_ALzxX3EDLomWEA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/zswap: Fix global shrinker when memory cgroup is disabled
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, tj@kernel.org, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D5BF914000C
+X-Stat-Signature: s57ouwip4zxpspue8s8ni996jr868acb
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9501A40002
-X-Stat-Signature: 79wt7y6637g14ao9jk4hg1qsshwy1mzu
-X-HE-Tag: 1784225939-455854
-X-HE-Meta: U2FsdGVkX18f1Zl0PvpgSw32yPCDJqHTsIrPd6SWsHJ6bjCy6HK0vfYQ8gVw8XCwT+6NBZg+BvIb8zLuoPOnCaUO6k98jM0Nq/gYF3aQEmzzOZ2Pm+gU7UFdxlxP4TbOUGtVM8pbMhWozC4LVVzPUldIpd9rbUs2rcH2zzx6YiIsZa3vLYozabl+zctNVwTj26k3gu6iw5/QOIa12j/5ZbHy8BD4gyixvWS1Rtm6a8Z+UzI2fQEEfPmGdIrHGJ3FOfghmVWgLcPI+IUq/LHk5X2IByUHfJP0XYY8MDe6ikbaFpEbQK1bJC51El7emGlcS+ZWLhJZ13HEOK3o0tneKTab+1Pd8oFpdjX4GCiuz7UJDQidZLqnAUF3Dh9lsPPY/wRKAZf+BacJ1kWpzUBqO0/iXQczOi7aGIbIfJEYnGCtbyyxRq84aD+WJjUeMKqqmW0/ugugmIpMnH5sCVOLOObuJqimHSNI03Io/LHK7oeoMaGriytZYNqnjq/1gqMiwKTdL4xgn2B7nUltHYrU1TEnTWU/j3JpoGlYFr0kx7xFDftKjhuDj71DlwxaNhfjY9BVQJTtcmRlDKBIa2dsSYbswMbXnxf7Ug6ks6U4UT/gRNsod10Eme2ec83GpBRc5c1FEWSDDcKswbVgZGVlQlqTA8aFUf+LmUQtKOyOlOOTue+RQDIBhAGzX07jNzjbaoh7j5BtusxNdq2hKOR1le1DgdU0NuzEMeo1X30pNnwl4ZwFha3m1oxnphx2MCZZA24JLWODp6jrowPO+Bhp/5VHaQY4+g+c/kwBUst8kHjN7HUBXNB4t4XIx6hkqCuBcwmNlJZYXTA42vxzEEzsdCBQAPuzUTGXBDxYsEHMUqdvoj1iJEo8IDnY/dffjNpkOY4PwQ5A+sxa6h9i3WOhF8a32Ur/PC2vsxuUIzplS459PiSE2TVuH191l6ET9w37IoHUxmd4vk5BSg3mG7z
- p/TORYot
- GSCPg130eRj1WFG4NOy+Edb0U6W/zoCxf/VUUFjAkw7XZ1+MPS07gEUSCPOnIIwzJrBy3qmQGySMe4IY2w5fYr47wgOZ3xVC3Swdk5PY7du9ULloDb8zzZ6PZk7orfl60kqmNBnB3896AKtVi2c3vtsoy4WHMJtMY+tZppdwVVadgLhQMWSQhpMeTJejTP/8rMtj0nwn36LdfTy9YC52aaZxXdMGw1/WpkWuIA2rC+XER7vHhXZyCyMkxk7dPARem7z6n5r2vlReNpVD2Iz7A62RX8GGrC4nlXBGoisVGFTMOS4akk3/e7JnM/eD7a9dlqf97pkmMMEbJfckkmUuUpHU9d2KFQrQLY4G/rEwc1F/P6sQIRO7oEJYMtsVW10nqxG8WWT1WTTechSyYFP/dIwsLmirnextqke847pceuYC+KC9x9QC1f8pvO/J4MzqG5iwcBgvEyYwIxZ2GncVFFR2s93+05C3qtp56busiYdvltlv12hJKHzUJO036FoTipAAuH3jrvIN9hzvciPhnY8SAtPRjAN0PCU5Ig4m1P0Pt99PBvEJq8IGB0vdeY0Yu3aki0uNQdFjGzzM1fYm+DXiNbwP8zNwZCmJZ
+X-HE-Tag: 1784228710-184859
+X-HE-Meta: U2FsdGVkX18j4M+RGV3JYbsEF840AaZya7QvN3F/VFvbA/EoDxCxoBkF+QJsvKXtIVzPt/WsWVJ05YyWfyMmW4I//VEIUX3tqtRIRHOFr5TQvy7hr6jke/Rkpq4wurdRBLDDJriZmSTEn4iktMlLCe4QKX2PkT+2y0y278ThkdHMNWvA7XJ8723Smp/n5SLhCISxwWX7G0GjyNZjjzniI1UsMSy3nKqdjMm8kNP6UEbw1fYrpMZRjw+auFzgeRSO12do6L0tnuLPUyh8UimDxF5bEcz3OwbQvn/0joV64SS4a4HAl670fXaV1OyOc3vwGJCRH4bnPd3RKwwFyh401ZeuMgAR/Tib+QRrdhmmPUm90Z8WKZP9WMhFPLn8Gu9BRlrhRfDXVtpN5WQd7jGZwupDTHa5WeY6C4+p5xaVw5dX70k3xP8BSDInU5y6LIlFv3AVbIaO1toiiRgxk0ZEyX9Z4tkQ4302ZDvrFrMOVt6CJ6TtDR0bEgepvNWN9iFDlGF+hFYI0zltUAax0Skg52kB02EU6GYfcxHytEtMLsUqUnTTre01XE9+/NAmSPfkM4AlBpCK9zSCQ3dCljQqBhBWgKCgwjj/QwCVQ0WIvRLtMdBKn1buSCi/rWkqvKcMmgritNWRsO8TtDqicl6M4BiwAelVbfT5IJ7wkiCxgMAlDxSCOhIv4xOksBswPA5pIsESyqCvvmf9EJmSbHpCtU6JNa9XaYqkERVDp+FJJWN8I9C63n1PFhwHjQuisOP7hIcYC7yO7KbAdUVH96/2r38XdiY5eyE9YHJ2pCmLlpX2l+Lm+HKvYPtOa16x6Fdn+B95YaVW0sdPs/7+he8+o1oJ6Qg2/8XeyjVTO/ygXy+HlP9e0FMlyQb2CBBg1HxBdDzOUKbaWtoLHNrzqqhnzcO5j+cGc/zCik3v1bxNgDgFSOYcW2XRYSu2VyP/hxpPnJjZNS9IMDDBHss5xMe
+ 6G7O20o7
+ nG9IUg/gcwrCoW//+Y1GejLEnHC4jG64mQUIYlg5NSL9nexfuhalKv7m2Bj3jJM9py/AaLbzILe+iUizANILXxcKzoAMUJzjh0NHFp9r50aPos5kixHVYGr6WUg7qakXU8ma6am4nf3RZ+0Sk+pVRvcP7OKInnyxIJC+LmWOm1OyaWzdOqtJpRy7p3zRuXCh5aN6wL1D5x09B9D5KZ60XimCJ2ZB3lqyKC7J7gjZ15YR3u0yNaueCq15MM/QcTbt6gUqqIHK9kiGTm4pUMc5Met5BiC9eG1OWWhk1qyYHiFlNXLQxy+AZkfRQHWLcvYkBf06TE2VewhUCmLb0+nxC12J1dzXnw+dZ35v8sIpev21qrckF8Z9zeAMntroxEGcp0v3/q0sTldLn4b4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,117 +156,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 15, 2026 at 7:21=E2=80=AFPM Hao Jia <jiahao.kernel@gmail.com> w=
-rote:
->
->
->
-> On 2026/7/16 00:13, Yosry Ahmed wrote:
-> > On Wed, Jul 15, 2026 at 5:31=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.co=
-m> wrote:
-> >>
-> >>
-> >>
-> >> On 2026/7/15 10:31, Andrew Morton wrote:
-> >>> On Tue, 14 Jul 2026 09:52:59 -0700 Yosry Ahmed <yosry@kernel.org> wro=
-te:
-> >>>
-> >>>>> When memory cgroup is disabled, mem_cgroup_iter() always returns NU=
-LL.
-> >>>>> Therefore, the global shrinker shrink_worker() always takes the !me=
-mcg
-> >>>>> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gi=
-ves up,
-> >>>>> so it fails to write back anything.
-> >>>>>
-> >>>>> Therefore, when memory cgroup is disabled, fall through with the !m=
-emcg
-> >>>>> branch and shrink the root memcg directly.
-> >>>>>
-> >>>>> With memcg disabled, shrink_memcg() only returns -ENOENT when the r=
-oot
-> >>>>> LRU is empty, which means the total pages are already below thr. Th=
-e
-> >>>>> loop then safely bails out via the zswap_total_pages() <=3D thr che=
-ck.
-> >>>>> For any other return value from shrink_memcg(), the loop is guarant=
-eed
-> >>>>> to terminate, either after MAX_RECLAIM_RETRIES failures or once the
-> >>>>> threshold is met.
-> >>>>>
-> >>>>> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
-> >>>>> Cc: stable@vger.kernel.org
-> >>>>> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> >>>>> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> >>>>> Acked-by: Yosry Ahmed <yosry@kernel.org>
-> >>>>> Reported-by: Yosry Ahmed <yosry@kernel.org>
-> >>>>> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVr=
-HiZZeLc=3DeyTPKPVQgX4g@mail.gmail.com
-> >>>>> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
-> >>>>
-> >>>> Patch 2 doesn't really depend on this one, right?
-> >>>>
-> >>>> If that's the case I think this can (and should be) picked up
-> >>>> separately as a hotfix. Andrew, WDYT?
-> >>>
-> >>> Please update the changelog to clearly describe the userspace-visible
-> >>> effects of the bug, thanks.
-> >>
-> >> I am not entirely sure if my understanding is correct here, but maybe =
-I
-> >> should add something like this to the commit message?
-> >>
-> >> When cgroup_disable=3Dmemory is used (or with CONFIG_MEMCG=3Dn), the g=
-lobal
-> >> shrinker fails to write back any pages. Consequently, the zswap pool
-> >> fills up to its limit and rejects further storage, preventing memory
-> >> pressure from being offloaded to the backing swap device.
-> >
-> > I think you can simply write that zswap writeback when the limit is
-> > hit is broken when memcg is disabled.
-> Will do. Thanks!
->
-> >
-> >>
-> >>> Also, AI review has flagged several possible issues, all appear to be
-> >>> serious:
-> >>>        https://sashiko.dev/#/patchset/20260714081510.16895-1-jiahao.k=
-ernel@gmail.com
-> >>
-> >> For AI review comments on this patch:
-> >> I suspect this scenario might only exist in theory. For zswap LRU to b=
-e
-> >> empty while zswap_total_pages() > thr holds true, it would require a
-> >> prolonged state where there are always more than thr zswap entries on
-> >> the zswap LRU whenever zswap_total_pages() > thr is evaluated, yet the
-> >> zswap LRU happens to be empty during shrink_memcg(root_memcg).
-> >>
-> >> If we want to fix this, perhaps we could do something like this?
-> >>
-> >> Yosry, Nhat, what are your thoughts on this?
-> >
-> > Do we need to do this? The last paragraph in your changelog explains
-> > why this can't happen because zswap_total_pages() should be 0 in this
-> > case. Did I miss something?
->
-> The loop would require the following sequence to repeat indefinitely:
->
-> 1=E3=80=81zswap_total_pages() > thr evaluates to true.
-> 2=E3=80=81During shrink_memcg(root_memcg), the zswap LRU is concurrently =
-drained
-> to empty.
-> 3=E3=80=81Before zswap_total_pages() > thr is evaluated again, the zswap =
-LRU is
-> heavily refilled such that zswap_total_pages() > thr holds true once more=
-.
->
-> For our case to manifest, it would require zswap_total_pages() and the
-> zswap LRU state to repeatedly hit this exact window with perfect
-> alignment over a **prolonged period**. Therefore, I suspect this
-> scenario might only exist in theory.
+[...]
 
-Yeah seems very artificial indeed.
+> > Ugh. This isn't correct C code. It only works because the kernel passes
+> > -fno-strict-aliasing.
+> 
+> I think the bigger problem is the code dereferencing the pgd
+> pointer in the first place: Since the pgd pair is written in
+> 32-bit units in __pmd_populate(), anything reading it would
+> technically have to operate on both entries.
+> 
+> As the kernel relies on -fno-strict-aliasing, the type mismatch
+> is less of a problem than actually doing the potentially wrong
+> thing.
+> 
+> As far as I can tell, we are however saved by pgd_val()
+> only ever being used for debug prints, where printing
+> the first entry is likely all that is needed to analyse
+> the real bug.
+> 
+> > I would recommend either forcing a struct here, or
+> > using a u64 with bitmasks/shifts.
+> 
+> That would require extra complexity for the big-endian
+> case though.
 
-If we want to be extra careful here, maybe we can put a cond_resched()
-there or replace the continue with goto resched or sth?
+Agree. And since the users of pgd_val() mostly uses with
+pmd_pfn(), pmd_page() and etc. I think it doesn't matter to return
+lower pmdval_t or higher one.
+
+Therefore, without considering endianess, it's enough with downcast
+like:
+
+   #define pgd_val(x)      ((pmdval_t)x)
+
+Could we apply this in next version?
+
+-- 
+Sincerely,
+Yeoreum Yun
 
