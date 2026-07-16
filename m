@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 940FAC44507
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 02:31:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A6CAC44501
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 02:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76B896B0095; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
+	id 17D306B0096; Wed, 15 Jul 2026 22:35:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 742286B0096; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
+	id 12EC96B0098; Wed, 15 Jul 2026 22:35:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 633B86B0098; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
+	id 020366B0099; Wed, 15 Jul 2026 22:34:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D63E6B0095
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 22:31:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC7001403A5
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:31:54 +0000 (UTC)
-X-FDA: 84993064548.20.FB07F88
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1301A140009
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:31:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=arYbAtWK;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784169113;
-	b=c09HJFaMjBD8VuXI5E8qcaFkKfwM0xwtD0n6TDY05yFCDLWM6PnhArXnromeiKZwH9nHtg
-	NmmdYaWd/7ZzsoIo7ohZvbOkP95EXrPu6XZOVgDiLy4nLouPvvZK+AGg/TTU0+Kvw2Qf1N
-	nkItEQxx2gqEGANhth+CMWR/YKKrTYE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=arYbAtWK;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C9AEC6B0096
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 22:34:59 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49DD91403A8
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:34:59 +0000 (UTC)
+X-FDA: 84993072318.09.F17D77D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 90B531A0003
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 02:34:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUeHue2T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784169113;
+	s=arc-20220608; t=1784169297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ynGIyMuoCcAD8NaeJqodKE7wCOdyZZLepombpmz0j20=;
-	b=oWxWNkOvTJVgTssH+4gOJo9sUZ236RNRfUcOCsc3GzNT78n9BhiXAq0ALYbUdrj9dQqHDw
-	8XQFfYNQSMzzt1OLIw+iCOQPuxmTfgCSBDpizY5Bc+5rKyx4YmpURpmWDodKlUGBQoGBFI
-	zW1n9aIF+Jq0z7+/rcSAlf2pSBPlt58=
+	bh=AplusJcTTIVCbe9CwBy+/wj8nodbLNnKMROAKeKy5HA=;
+	b=LrQM+Q6h+3exqkP9rbiJ/u8l+wyPjj9f18sG764D0FmrQUd//kZ/ZVBIZf2A+YAEdfYCUE
+	DNuKrDJx4pE9l9AB2eMEOyMUCmYWRlj3vBV/XFrvzgIdcJRKtgMlUQoVQiKnv+NI0Lrjez
+	qCXCQcXbd2MroX89TBZLpGeteDiHqSI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LUeHue2T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784169297;
+	b=hAWCQZ1jPcl3/zRGBOv/k7BKMy7zzhCNUTUIus71RRvENcGNYhOMsPNCnYYfsaIVSz9AN3
+	wGsSQPlmXVPHNR3dcLv3yIS5HSaka5kjckWGCUulteoKIBl0O/yPUPMIwWlY5EWyhmKHYu
+	2CKASgD2tbF7eYsIWSNYiWOwjtKCBYo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 831CE6001A;
-	Thu, 16 Jul 2026 02:31:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCADC1F000E9;
-	Thu, 16 Jul 2026 02:31:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D8ED402DB;
+	Thu, 16 Jul 2026 02:34:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425301F000E9;
+	Thu, 16 Jul 2026 02:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784169112;
-	bh=ynGIyMuoCcAD8NaeJqodKE7wCOdyZZLepombpmz0j20=;
+	s=k20260515; t=1784169296;
+	bh=AplusJcTTIVCbe9CwBy+/wj8nodbLNnKMROAKeKy5HA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=arYbAtWK4LRZHodP80tz03WZeyNNdKPJq+lxECSV5GryUBNFR5Gk4F6+APA2CQnOb
-	 08c5nJ7fZJCbIMppyZmV/AqhU5CfENRjMb9CqkND87C9YH+JPlEafl1lhYR23Le9dW
-	 d7zZYG6LcET4EoWG/1qg2n9J9np9e++xKP6F6sxNRxGqDwRulzu0s16W676NdNWQ5N
-	 qAIwZNqBZnfQ1X+GoYYhmmmEt/I44c+WNrchLy/Mm7RlGEXSNHLSkJY78+XhmOflSy
-	 EbUXzEig/dVOJvqrLh+J3egH77K1PgPo2mzv8evsi+pBbV5b/rbLkhzFWLL8bF6V03
-	 q9GVYEU79wMAQ==
-Message-ID: <093c6dbe-6ca3-47cd-bf8d-3cc85c13f7ac@kernel.org>
-Date: Thu, 16 Jul 2026 11:31:45 +0900
+	b=LUeHue2TdDv8VmLTTI4CmXrR4tw7d1yV0CCDTQ1YH/nnkTBxIVCnHwMyVpG+OjkLA
+	 qsVzAQ3Rd0EmQTeZFkC8qqySTrgniv3ArGNtzk5yUB2FlTRShycyeQ3iwhHocnU/Am
+	 v3LdU3ypT0a/DtvhjyDQ+KeZJYHfdxJOLcazRd9FYHw9Qkh4iRUcFaaxIU3pPwR6CY
+	 HlrPQYK5Jd34WuG1WueooMPV4pxV1wY4HewRrmalRbaOQBoU54vlBKFU+sjJ/1+IfC
+	 V0bugSAltncCFUO4mScPCT3WDCyfzifjPgpLTWVzE9S7SGsdYbRAzdiAu8+G0H0Zjq
+	 y5Ffum7bJc+Iw==
+Message-ID: <3dee7d67-c8e8-49e1-83f9-54aeeb699442@kernel.org>
+Date: Thu, 16 Jul 2026 11:34:50 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab/for-next-fixes v3 1/4] mm/slab: fix a memory leak due
- to bootstrapping sheaves twice
+Subject: Re: [PATCH slab/for-next-fixes v3 3/4] lib/alloc_tag: introduce
+ mem_alloc_profiling_permanently_disabled()
 To: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>,
@@ -80,22 +80,25 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
  Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
- <20260713-kmalloc-no-objext-v3-1-47c7bd138de7@kernel.org>
- <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
+ <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org>
+ <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
+ <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org>
+ <34af7126-0a19-4da7-a3dc-4e6e0ae01ca7@kernel.org>
+ <CAJuCfpHYbTobe04+Mm_CRMv2SkUuT_9j8T7ByEyv=cJU+YZZCg@mail.gmail.com>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
+In-Reply-To: <CAJuCfpHYbTobe04+Mm_CRMv2SkUuT_9j8T7ByEyv=cJU+YZZCg@mail.gmail.com>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------fEYtHpWT6oe3c0X3dvhfUDl0"
+ boundary="------------lOxC8w6OqcKZOEPosUCaHYgt"
+X-Rspamd-Queue-Id: 90B531A0003
+X-Stat-Signature: x79p1gz4tts3inn93jb4eg1hbw5shern
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1301A140009
-X-Stat-Signature: iy9bqdh3i6f8cjafjwr4dmbw8ap9u9ba
-X-HE-Tag: 1784169112-430879
-X-HE-Meta: U2FsdGVkX19u2eVSDa0EUe55dOUS+gIsOH865vlj2lpZRsxY1r5yKyyzIsQ4eEFzIYDeHXdDCP5AFj02WT1fHh0sX6TBqVoYMMJNyRbl39nomS4VSOBgcgHQAeLbux89yM/tsngFUw0U81U2Qhiju84VnPtK14ge5nFQTZPlkoQHoJmvmLjhIwxZT4/GQlv+3f33byKKEAColkYDTGBkUDELEho/TvGtjg9um3v5f+W2oxFIDOCH0CR7D0TT7/IZ4mUm2Xvn0h2ydDnCO6YIUaxBamCinkXIo0tsaRDQmT9iZqgYYfC0TUaCDp8CWeQOTXTf32jFTA6AHaFlT2LIf1tUmoamD11QbDTMdrbmAv6hWdRtcRrFdgAjpzumdTBvrHmdGoSvggl0sd8ruOzXU5i1ogMWacEd75JwoUyvbYFgcXSi6s4fuAhLX9+ZulwN9hNORn0wjLiOHnbWBqIbwFNtQNywaNBRkQjBO034dRRvBLIFlkXS1zf6gvpRYEqkGy0KynTt79ps3RMhX9kesaNIrNw2stabOP7MgZG96CBAQQ6zacLfmqxS/2W0GD3uVgOmO+oWqcanEl8yfioj8fdPMU/q2TI92bZjaE9aqTsEjdrHxRwPg74R3kfq2Y3Tb/1FSg2TbQZ/s33dadNA/bbyURhYBhE6CrnMOqUYCQjtLw4KMgoLqctKWw2Au8YMFugvlgSUXi+ToA0fbaKAp8WUzIHKe8ZlbpNLGB6uZT0p2GoxvQzngqSMdmWiou2Y59VjTucWxfjP6DivE7TwnFsc/wKGroOcNxxxLac/xlwh6ifpxL30oSTM+SWputmh6s15J/kS3W/cP6XJRcFMnKeLhShSrv8AUl850/z9POn2Ns7nEcQ8CQhCviA0KJfGPRcIbNJB9TIMK5dwxYRFxCqro/kAdCjmqQ5UGdtabXw+SegokL+jcOmM92QYSnceJKQfg0K90TTaYVMoI2i
- 6or3XQly
- qAn9bdDg/czHGPjWvn/ZbU+UJWXBEXayVR9p3nmlQPqeBLUQZoy2lxRwWNHORjaiMw7QUX6fbtcNsBRzPYXF2rEq5zpY0z/WJg6st4fYSbWkGhGCDrOhbERodaN3oSScp9CMifxU5kUpFMJa/0OIToFUfXReHXsHcQVv0RbJThMLip2gk0aQ9BAVE04nKCa26Y+QSbn86CKgP3IoVp/N2GGYtcLo7TczCxFcw6qAm5mjO4hJ8yvcZoms43jT5pw7iTzCXjQZKtm8kYuuWMpJHCkxIEZiTcZqWhbKoSbB7y2IeFS4LOqcu0IMiEbMXMtXl0pVgnjl9vKGyA6MhDyN2cipEZ2sy2ftIOpFMx8lvABTDnuGU094FR0SGG295RxIAxzOOzMU74MwuxPQHvrLs46okSBhahds/mQEa/eGA3QD2NP7ZH0mcn6uD++1viYqwTJCz75rJNd1TmEz1B45LB/oC3IPkL/Ta5U/DtOsq3NskWpODkFXv26gIHA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784169297-773337
+X-HE-Meta: U2FsdGVkX1/sJQP+le3ko+M8qTpQpBcEfy980QMibW3DplDPe15EKH/qx6PIu9737f/UfBvrsEgSnQ+/8LfevJEXoW9SYCUkzZZjYPBM+VxYvzWSyCGaLmXLD7SqGXIZjXvaDQBjb2oiIvs/S6mKmo55h+Fbjn+Q048XSE1Fs+at7JRlIJ4+8nXytMUemcJCOhUEu3ejobHwRN1REMIYx1wjihpE6YSI3iBQqrT0dkBXrGTnQq000CQzPb2KtI4DPJiKEFFtvQReT+EeaNOVBP4M1dqKceqrkL6wDSgxzFV+LAG+5sEOmgco+vYlwC9poZPB8l+P0FRXWtNsuKMDoXIfl1QDiqiG10VxEyTfY25AntapwyyBrM1dDx5q/UY80qsClC9kw2e1SazPITcupSjJ+nXs1rHTHbUnhAa6bdDAHjFzeVV1t3FYyyL/CQTSqYzHRZjDKabtmTrWbPynJ7Pnm+fMiSHGTs7ciqsnt6h69noomMm0eSAzhRKetdbrsiGZ5dlUHP48jNppf3Uemz2eFCgLxs3n7le8lw2NCTi3rlahn198YChfcfDv+arlKiCqUpsm3wwLECL28TpKplipEpYkWv+2vyGjYwzzc2ipKnv2llLVM3HEW9t/VBJ46YznANyYgrq7xNeHFZajoKoSVr5HXnZw2/ZVVs+gtn4mS2UdS8K8gWrwFpllkt7Clahtcq1c2L/qF1x1UT1RFayMRQsOSaco8oIizESZT0oNCtBP/oZSMp6CVEVm8dp5qIIPBRM+d7VDYIkwB4K1lKHnArMRADpf/Fdoda972AY0lYv7Yc29UXG0LDmY6a/7VYe8OzoL8oDHTMGeTdLX5uk+Mmoc7dH5OQUFzuNrd85W0WVNf+GBbq37a23Kw6T34MMhii6bT2ZRQ3ydrQ/z5Fo4eM4+e2jQz+scY1smPKGlDZQcdbGINdlWCRlSzDpXAjnEW/VfNhVizQaH3ai
+ 7hx4L9Zi
+ Ror3yqGLojwLUUXavKMc5/I725H12ms8FdMjQE7Kz6Bgy+VWg9BZZWXoVl00vRtb/OsMre/XOzP+RiyKC490bynt5clBiU3T+AM7/GQsQ1qONxi6YQlzp+kQVPZGl5HH/7lUh95f5IKXfPZr7H0DhPMq3O8IybAV9bYSywMgEUiY+JB4vE9P1Nom8F9t5MjFn71BVCbCSQ4Mfx6K0FXR955zVx5Oes+/v4dcMfc9J7H8/OJ+0GXXz4tWQCYeBPit020cJB+uwJMpGXFv3to7MvGP0SobSzigG0U+qEh8XLI8Tk/G7elRvNJuWIg+rd0KzABE3kFBnYi3qH2quIgrYB1A3v+KH67v2Udtw9yk/TfwbEsY4Alkhk3sS3cxWkdpAXtq37eSbJLidUm+lxSkGZcK/uOUJEzzxC7h+nLbSPElJMsevvMtYHS1JYL8dVWNmHUpOSXn3P6dlhiBwp2Nv6BObHf4xNz6b0rixAJfmDUWnO0REMlHXalkD8f42H0g6uMmPoFApXZ8B67s0odcTwbSDyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,12 +107,12 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------fEYtHpWT6oe3c0X3dvhfUDl0
-Content-Type: multipart/mixed; boundary="------------vbeyTvd6sxOFnT8cjLtWNjuj";
+--------------lOxC8w6OqcKZOEPosUCaHYgt
+Content-Type: multipart/mixed; boundary="------------p0ORmjYoU6jt0zrPNhwgnPpM";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
 To: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>,
@@ -118,74 +121,98 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
  Shakeel Butt <shakeel.butt@linux.dev>,
  Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-Message-ID: <093c6dbe-6ca3-47cd-bf8d-3cc85c13f7ac@kernel.org>
-Subject: Re: [PATCH slab/for-next-fixes v3 1/4] mm/slab: fix a memory leak due
- to bootstrapping sheaves twice
+Message-ID: <3dee7d67-c8e8-49e1-83f9-54aeeb699442@kernel.org>
+Subject: Re: [PATCH slab/for-next-fixes v3 3/4] lib/alloc_tag: introduce
+ mem_alloc_profiling_permanently_disabled()
 References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
- <20260713-kmalloc-no-objext-v3-1-47c7bd138de7@kernel.org>
- <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
-In-Reply-To: <CAJuCfpF3vRftgrQGYhRZk7B9Z+GuG9eM5Cx7HehBaaafH+R==Q@mail.gmail.com>
+ <20260713-kmalloc-no-objext-v3-3-47c7bd138de7@kernel.org>
+ <CAJuCfpG=Dk6PRWy-8wR4j0UreSsa=fdiFWvBYpOkSZE0zV2Z4A@mail.gmail.com>
+ <fcee1dbe-1109-44c8-a3dc-8aebc5569c73@kernel.org>
+ <34af7126-0a19-4da7-a3dc-4e6e0ae01ca7@kernel.org>
+ <CAJuCfpHYbTobe04+Mm_CRMv2SkUuT_9j8T7ByEyv=cJU+YZZCg@mail.gmail.com>
+In-Reply-To: <CAJuCfpHYbTobe04+Mm_CRMv2SkUuT_9j8T7ByEyv=cJU+YZZCg@mail.gmail.com>
 
---------------vbeyTvd6sxOFnT8cjLtWNjuj
+--------------p0ORmjYoU6jt0zrPNhwgnPpM
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 7/14/26 12:30 AM, Suren Baghdasaryan wrote:
-> On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@kerne=
-l.org> wrote:
+On 7/14/26 11:37 PM, Suren Baghdasaryan wrote:
+> On Mon, Jul 13, 2026 at 9:28=E2=80=AFAM Harry Yoo <harry@kernel.org> wr=
+ote:
+>> On 7/14/26 1:15 AM, Vlastimil Babka (SUSE) wrote:
+>>> On 7/13/26 17:43, Suren Baghdasaryan wrote:
+>>>> On Mon, Jul 13, 2026 at 7:29=E2=80=AFAM Harry Yoo (Oracle) <harry@ke=
+rnel.org> wrote:
+>>>>>
+>>>>> mem_alloc_profiling_enabled() tells whether memalloc profiling is
+>>>>> currently enabled. However, even when this function returns false,
+>>>>> it can be enabled later.
+>>>>>
+>>>>> However, this is not enough. Some optimizations can be applied only=
+ when
+>>>>> memalloc profiling is permanently disabled. For example, to skip th=
+e
+>>>>> creation of KMALLOC_NO_OBJ_EXT caches at boot time, mem_profiling m=
+ust
+>>>>> be set to "never", "0" w/ debugging on, or have been shutdown so th=
+at
+>>>>> it can no longer be enabled.
+>>>>>
+>>>>> Introduce mem_alloc_profiling_permanently_disabled() for this purpo=
+se.
+>>>>
+>>>> nit: I would call it mem_alloc_profiling_supported() but this name w=
+ould do.
+>>>
+>>> I wouldn't like that name, because _supported to me sounds like those=
+
+>>> CONFIG_ARCH_SUPPORTS... things and not something that was just disabl=
+ed.
 >>
->> When kmalloc caches are aliased, multiple cache pointers reference
->> the same kmem_cache. As a result, iterating over kmalloc indices and
->> bootstrapping sheaves can bootstrap the same cache more than once and
->> leak memory.
+>> Agreed!
 >>
->> Currently, this could happen when the architecture specifies
->> minimum alignment for slab caches that is larger than
->> ARCH_KMALLOC_MINALIGN.
+>> Actually, last year I wasn't sure what "_support" in
+>> mem_profiling_support means and had to look at the code while fixing a=
+
+>> bug [1].
 >>
->> Bootstrap sheaves only when the cache does not have them already.
->> Add a warning when bootstrap_cache_sheaves() is called for a cache
->> that already has sheaves enabled.
+>> This year I forgot what it meant and had to look at the code again :)
 >>
->> Cc: stable@vger.kernel.org
->> Fixes: 913ffd3a1bf5 ("slab: handle kmalloc sheaves bootstrap")
->> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>>> I suggested mem_alloc_profiling_unavailable(), but it's not ideal eit=
+her,
+>>
+>> Hehe, in terms of 'the meaning is obvious without reading the code',
+>> it's not very straightforward...
+>>
+>>> naming is hard.
+>>
+>> Agreed!
 >=20
-> nit: Don't know if we really need a warning...
+> I'll let you pick one :)
 
-Hehe, at least the warning allowed me to confirm that this is not an
-oversight and the patch fixed it :)
-
-> I would just do an
-> early return from bootstrap_cache_sheaves() if cache_has_sheaves() is
-> true. But that's not critical.
-
-But yeah, no strong opinion on this.
-
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
-Thanks!
+Haha, I'm honored! ;)
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------vbeyTvd6sxOFnT8cjLtWNjuj--
 
---------------fEYtHpWT6oe3c0X3dvhfUDl0
+--------------p0ORmjYoU6jt0zrPNhwgnPpM--
+
+--------------lOxC8w6OqcKZOEPosUCaHYgt
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalhCkQAKCRCGXBN6rc5S
-1nsaAQCpaAuH8Gtt1L7sSRp6NLtXdS3rymXJGVx8TEl7PzJAMQD/f0VpUHt3Q/Xa
-GgIaG4fD6fiQReheoPjiIEKi+SYxpQ4=
-=y4X0
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalhDSgAKCRCGXBN6rc5S
+1hcnAQD3nYQVAKHZ3hfmxXfyxI1L/pYM8ir0KVNZM9xSNtSPWQEAgwc55+yK9mth
+1O9U56aSWA7yIYwDafELZ7j9tOAzpwM=
+=KQXf
 -----END PGP SIGNATURE-----
 
---------------fEYtHpWT6oe3c0X3dvhfUDl0--
+--------------lOxC8w6OqcKZOEPosUCaHYgt--
 
