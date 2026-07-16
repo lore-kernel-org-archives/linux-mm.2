@@ -4,129 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39532C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:32:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 133D9C44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:32:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F13126B0117; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
+	id 1CC186B0116; Thu, 16 Jul 2026 11:32:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEA866B011B; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
+	id 1A1186B011B; Thu, 16 Jul 2026 11:32:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E01E46B0136; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
+	id 06B7C6B0136; Thu, 16 Jul 2026 11:32:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B1C886B0117
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:32:43 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61895A0168
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:03:48 +0000 (UTC)
-X-FDA: 84994656936.26.9711A51
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6922214000A
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 13:03:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j TYnDFj";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ow5lc6kz;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id ABFA86B0116
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:32:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20FFAA0134
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:19 +0000 (UTC)
+X-FDA: 84994489398.18.936F860
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D87931C0005
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=AJNb6aDx;
+	spf=pass (imf20.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784203037;
+	b=8EyORe1/LHvzUtk/iycAiQINawJvbdGyL/Q1Ier/iAuJtllYld1QHmueaPMC2JEsgUWVW2
+	jj1NMr+0kQTlsFGkMmy2nvx6PvlrcWeKFCPwZXwen4xWTos39gG51mydwnlqojlv2jcCPm
+	Li3TFBgGMRYGrL7kdCyW76PmHK0NiZU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=AJNb6aDx;
+	spf=pass (imf20.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784207026;
+	s=arc-20220608; t=1784203037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P4sPOn37OCBYFsXI0lvLOBbwI6X5nF8OaGmm6rn9AWM=;
-	b=wRAKYrqbNPhxyaphEzR3HtkJfgRfZVoxWifMzkF/0NQk/ZKHcDcP4WPySvXTaAbYwK76Oa
-	O9eyC7BlgPkyfTQmAsCfjtx+hHeaZ3+D+o3FNHqFpwvs5tVzADihSmYkoo6tS3vidf5Rzh
-	WNnp9cdpNqV6MzULZMeDSAWR/6lWL4M=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="j TYnDFj";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ow5lc6kz;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784207026;
-	b=Nf72eBvzsi6Zfr1yHg6bSxg1TZk4LDqeMU091ogdbjNX5dSPgcRTdAbLyzQQJKYgIzIb+l
-	BKzEU6Mur4VEQFagapG4wruquHj+WlEe6SSbXPJZFjjRrXR+E3Wg0/ztke1lyZgTHysIic
-	UEwXxuYgKD8koHlaxwOyPxiKWWZrODY=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id D2A31EC0067;
-	Thu, 16 Jul 2026 09:03:45 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 16 Jul 2026 09:03:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1784207025; x=
-	1784293425; bh=P4sPOn37OCBYFsXI0lvLOBbwI6X5nF8OaGmm6rn9AWM=; b=j
-	TYnDFj5l/0k7n7PZwMoqsOgQ4u4i/hW4zdZFItnbM629AIDubwH3b5BtNRe+OEIv
-	uamf9S0WOpPHFgwol0F9ue4funs2FQV6lL/3Wc9GvWlHJ5iOHRhVKKZV5e/qq5Ub
-	8eEiGAYqXffNj9spaH4mN9UuTuBhC1C9jqUqomGZt0mC1Admy+LXUnnhuUjJdcNJ
-	nqSiSbJjcvXdNZU0LK57u/q4lpbYxqYnl3nvTbU77pfI+yH8c5Z8UvwuCldjZamU
-	3eCaBz8ZvvX1rDCbi/o7BlxCi1Rz9hq085VFMEEJKDYTtndb1LvYblo/UvYmQw+e
-	sRSFkxQkG89y0F7iBgT4w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1784207025; x=1784293425; bh=P4sPOn37OCBYFsXI0lvLOBbwI6X5nF8OaGm
-	m6rn9AWM=; b=ow5lc6kz+SWys7geQb2rl9HIYyQN0kVKxnJTqtcbFQJlS+ZjY1W
-	KciOlDa2gjbiC94b671dEASbSWxtVmfzznTAuIAQpEMVz6paw4IfgnA+Jg7yVd+X
-	rBhbIeiIoxgTAgyGM42yUX5fU8/vsvCso55BH+HA/m7tJ4YnOCf18NUAdnQmWOHO
-	0CdDXgPx2pjFC01ZxsJ77a9YJZ9xOyuVM9ZS6XxSLqiZl1Nx6eFd9mstcF5pdAmV
-	8LPvptocKdPMipdTr6JjGuSV/q8To5799Z6W5FoyLHFOsDzGwycWPRi3ZAxQt2Cc
-	82F7eS3VfY8zFKsY9P+f6hryVjIQkuEnC1w==
-X-ME-Sender: <xms:sdZYaoZDwq_r20f9uYAxPBXBWJ5gN2Kf75SdKFI1VAAbRjM_aS-dfA>
-    <xme:sdZYapgHdM9dBoECMOaHVkHw6KLubVaSu6MlCNoj85ohsjVKPxJ_8_6nQRGa7igzb
-    x39VPS8U0S58-CKSiSI2Wsd9VFEwio6IWv79ziGDcFceK1eBPDaDsI>
-X-ME-Received: <xmr:sdZYapd9iy0fmgyetcUkYijNjtL7TjawVMyumobgbL3hj_c3N_D7QnoQ6BlpQA>
-X-ME-Proxy-Cause: dmFkZTGHiYKfxGpE1R0pHf/Rslp7BzHpXTJCYOqmlxtwcXGk43FrFfU5piPux8EZF8hSz3
-    LqiC4rKTBdoYR3TxWLCFn/tSr178V8YFCLbeAi0Ho7nRsg2ZdvOK7Wov5he7YY93S6h/SM
-    V1CWg/B8B6c5OEdsoFFSnuxXOVLag+/HcaMqGRmPCAtk7JIJSTnlfhkptC1paC1SolajWL
-    O0jTVTY6EjGDxU1XOtWb0aA6A95L+VnA7XjKwZUT3LFjbHOAhUkhnfdKhCHn8XNvHMHxvr
-    JOaPIggA4Ck3RaXTG1JhceF+fF1a/C7hplt7Rj4M/4mTINyTqla1LzzlN+NU92gNZKgCOW
-    hYUQ1HIwC9KYiKVAKgco/LdwrgVzH6sbDKmwrkdaX48l5IXWfvCkAq9i+pS/Gc3h+Hnuxi
-    TCTpfKfzq6nrgcO/ZNpXiOva60wN6S/bS5M8KBc5uweVI02nsxh6Oze7Efx1Tv9kkJ/vE5
-    j0uyTm2mvWd+zwYJE1zdMeVjXhY4QW8ny5OiYmix+4WZBVEpUyM/Igc+c4Paw4OiHvdEMJ
-    SerdkM4Y+7E8uamTtXZAFaSttr9BMd5LiF6GI42Pj7s2UFaOD1uyi58+upZrPxi3UwechH
-    CaVqsliLnNgu/PLagGAt9kN8KM6JZk20bHMHrsxzh3mtnvJa2EnIKgcA0nXA
-X-ME-Proxy: <xmx:sdZYasq4BkH5khn6G8vzsFc9UYh_6aIsyYGSik-njYkEjRzKCNASWg>
-    <xmx:sdZYanRJIRMXdWEmF_P1cr0jK-B3eqi3HXO-8BW0tczBxtMyeXo0FA>
-    <xmx:sdZYaj7njaC2Wa3IK3Y7OearxWnU2rsWz50BQc_EGs6qcPJHEIL6QA>
-    <xmx:sdZYajPQAl7LdMohp-DDxcjAI6e4e2LPB5ny0SPkjtOEgmen6uaY0A>
-    <xmx:sdZYahqRATdttG8IF8P7cMVCABOEBKZhhFPgl-TcL3JVvZ3_JmZSC6md>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Jul 2026 09:03:44 -0400 (EDT)
-Date: Thu, 16 Jul 2026 14:03:43 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, usama.anjum@arm.com, peterx@redhat.com, 
-	liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, jannh@google.com, 
-	pfalcato@suse.de, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	zenghui.yu@linux.dev, shuah@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	stable@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v5 2/2] selftests/mm: add PAGEMAP_SCAN test for THP PMD
- holes
-Message-ID: <aljWYfPRCVc6IB2b@thinkstation>
-References: <20260715144234.442721-1-kirill@shutemov.name>
- <20260715144234.442721-3-kirill@shutemov.name>
- <714bdcbb-92cd-4dde-820c-e3761cbbaf07@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <714bdcbb-92cd-4dde-820c-e3761cbbaf07@kernel.org>
+	bh=w7po/hPV41ebN4SVCqHfXqnGtA3i/KcvpBhmzyD+bII=;
+	b=QgWbmbcb4Zbk94926NO6sgSWks6lq7q8n198j8f9A9JXAEkth0KYNSIAlYXbP3Z5BI1vsd
+	aOLijijayWYq+8r6Ca35WRNEEXQzo9i7rJt0e0a4jbcm7+rrLoqKKqKZYdwV77Em6vVbyF
+	0Wdkiei+p7ac70n0+0x+V5wBMBT9+zQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1784203032; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=w7po/hPV41ebN4SVCqHfXqnGtA3i/KcvpBhmzyD+bII=;
+ b=AJNb6aDxv0WDBNphnYixnCKDK1hE4Ty1BsgmdMn7dK7QsFkTOIKivRtq98pkrHpQkPvrxT
+ aaxPvQzU+nUQ6m/wPE26CNbqLye8mFIIGEKxwqyi4kwHIi3U7A60IXvFCpMisxDwCDnZ0b
+ E9NQFZTy+uLnBjXlsCXbVo7nKa6+TqzzTMK5/+Q/lH/0FCunF28Je+Pazkx2bEZmmkvmb2
+ AQF61Ugp4RdgzjuBit/jH34f/U5IM+nqo2plwhDOciWjQupnakv8mdtjtm8MNr3kbHEi8+
+ v73qGNlLwWfCpux8Ym35wHIhN3mW8/3P4gC8orIG4whIqlAJMjHnMJSjvctiuA==
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
+	<akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
+	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
+	<rppt@kernel.org>, <tglx@kernel.org>
+Subject: Re: [PATCH v6 8/8] mm: use memcpy_nt() in zone-device template copies
+Message-Id: <2e4ecb6f-4c9d-45b6-8ae1-3c165110c9ad@bytedance.com>
+References: <20260709112520.24857-1-lizhe.67@bytedance.com> <20260709112520.24857-9-lizhe.67@bytedance.com> <04f5b50a-a526-4644-b9f0-c54a0d6db702@linux.dev> <67BC9BE5-A201-4DED-B847-8C74BF30B16D@linux.dev> <fcfe93e4-e7fc-4d77-bce5-d027c597e556@bytedance.com> <10E87709-2116-46E3-96E2-6BC4E6F69952@linux.dev>
+User-Agent: Mozilla Thunderbird
+X-Lms-Return-Path: <lba+26a58c716+ac34ec+kvack.org+lizhe.67@bytedance.com>
+In-Reply-To: <10E87709-2116-46E3-96E2-6BC4E6F69952@linux.dev>
+To: "Muchun Song" <muchun.song@linux.dev>
+Date: Thu, 16 Jul 2026 19:56:48 +0800
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6922214000A
-X-Stat-Signature: naw3ouwja3myhd8izze6a39qj7wu4j4e
-X-HE-Tag: 1784207026-641603
-X-HE-Meta: U2FsdGVkX1+NYMA5j5Ml6yfmo10n+kaZqPngaceOcQrN5wzvvGKKuTHq9BbC8RwKD2CRUMffhMmrsJco3BIL+Nj/jEEUOZyJujVUmOE4/f8MhDzjaUP7GssRKn2hLKRYDoAqRJLvC+dQHHZMjgfXR0nplRoGZHlDhu6Uo/85Xmpj414Bf302ByeJQd7sFY5cxcR+x9OgWXyRoi+E6CTZ6Gc3Pi6+4fa/YpoULX8aUbZSWlmHaUvRAhn8RbfdeUsy0UJ0G7uohULP8nlqiCFXI5OuluZOj+GDzIdzgW4w77xA8oQB+4ibo04aTSZCWpqHQYLAxE1tVWEKreHiCU6a00stGDyZzcUBVygbPVV4muBg8572OIyb21Lq8rcwGx/Of5ji3YjJeDkVx0HezYJ765aehTPrCANM43rRdIMy5qhZfV41sfjy3diE2RiBGx4hgYnKsjX4R7w5ZdqX6sTO8S2VhcaCllL8o5IL5bBE2lSW/5m+JXrT46Dl84EpOAWfHP0UB8oOfBP5v9AL7GgJn9LKoZvWHIbUMQeoKlLYiRCw3hAdIpBclhTk/VxJz3oc7QGWPxJtypfQVqONIIo3uGh4xL3Qj9KBy0yzpo8kYp8Z9gUWP3Wkncna4VCAJK9TCaiZsxeP/7UVRkDKnJA7Xy05iaBBEzYTkvLkVrqQ4MaOM69AtVFkrWJDXg/vN20PXXWM0WmiZ0kzuKjRy6mrXkwcJMgErdeVX97aiuPUs0FwQEeOxAi3lg4Jc94WBP72In8N1mLVTuNJhMYNmo/PBuhukMO22ikpuGYub33/URpZclQ9kFwC9ReJbSZmZcSi+ZMw5JwFZplHQGaWrHDAm+XG3SvYHRuFZRqcOO5LEyoHOXsLfyzZS8Wpp7Jl5pdsARTnavSTfV0KC+MeJ8bmwmj+rITIkBI2x7zCj6MdgKyWCGTh41hU1BtDz9uHKRFdDK02HiDh4xiNoTRQ5Pn
- 75yPy9Lr
- G7HR00H4sOP/H6vJ1Ehc1Yk1Opmjbn3GllByC3tKpv/VFnx9ibcmqs/zumtYkOm7UVojRYvHVlwrNV9sVkJxny1QtqUHIau3Gx8849LiFbDVI3h3WfhN2Din3k8AV/OrG2i9Gl3aLQtJSGMgPeBlLP6eEEotEqHc/NvviH0P3OoML8RGiN42hfnaNiOe8RSaSfCNuZIEp+VpJByx1TEOJ+j+A71i1twj6cptL3Ihs4raLxNYCCBg7pNYUoJZCH8Qo3jMC+pDXUBxdCS5V+qJVuQQQioP3+UzinMgWWSOW1jApt07wiakCVIGVPxLLl+b3PMOnm0AJqxSt3O36L0SwxgLjmDuLsY6v1ZXVqoJ3WlaO/12IgNS33ltf1POeaVTi+tqgz08uqv28YoMV5IzygFGQT8LReBx3rek+jUG9e01rQBz8KeJNhcS9m0wlWpZYz/cJger+67nZuV3pP6HSY9vpRDKOWTWhaHR8gZAB9C7CE2MdjhK/yzE/2iz/4N1/wAs491CR0I4FJTw4Mdtn6zbJe8H0fY4Nsea1RF+HgZXyY2YgjSBHopM4Fd+PKpu9M4XJW6zHKB366bz87Mdko4zeP+vAilOpxIHR
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D87931C0005
+X-Stat-Signature: 5cz6i6iipqwo98sg611osu1osr55cj56
+X-HE-Tag: 1784203036-208238
+X-HE-Meta: U2FsdGVkX1+NcuroECJusYt3KlDNpr22b8vlAJKJXCj+JPER8n78PHeVPuz+bbhy4spgRmar8Uas5gPdzpDvzYrpOywxbEOtTFRdUMm0Z26zAkVxr6tPT5A9vxWFNQUTT8hDhHNTRWt40n7+3wlxF37HUeaYjtcxERnKg7zO4Qmf48b8VulDSzre9SC4ggBFRTnWmdS4Vcsl/syhhL4kXUTwAbMykFv0JDCHzq7txDGCxRrx/xerqjgcy00GruzfbKjvjPFQYZRwHLhgRaamgmjm/JFefjN0w/r6LsPSqKwgyCx5fWTHtocG8O8SZXKFOtU2lCyDwyWTyjj8DDkZKMIT0aV/NZ99/bqp50lq1sZNsf7smiwYqweRu0ZmuUzcX0Dnnm3Vpz3YZJbX5IbLuBNgXxHaawfojArY0TJa4hl1sIDmvvyfoR4YwqkDHLsNXdnDbckxl4nnRJgcEEYEEVYP0UcWY8P3oTPQjslqSyoq8D3bgf/Lxfr85JzZ92/BDZeKzp9LOG+dvIiqI1nn3GYJ6PTfI+M9u/ohQ8mAuk91AmaOdGznNQWdRJmx20UEKSp74AB9aKNmp1JpdAmaktdvVfMKrnB+IDeNnkmCAGXmBoCYDyEif4/l64Gza+4ngctrdGanVt0l3c0JoDUziDWlKYlMHqdMmLHluHxvb8c0+tQOXbs3E0l0dH15t0BFVcoaXBGBfcmaX6mfxefKmucPUv16RVW2LoYDR45eVIvpi5T8qn35Wly+K5EKdRsHSun3dJnNxhFjgZj4rR5rLqHz+ZXMj69Cy+Ks8//EGkgIW8BVfV3/idYPImzHNOQw/J7KVl6ogrXsc//PBLkoYfiIM4KQzJi1LPX+QgjV/sQUyWX5uBMEvNAvIKC0TyHqpbycPwL9HQiFRzLk1ZRTRkrdSJp/ARqrGRsmAd/72G/ViJCc4aQf7jalBYjw3DRvV2SMrUplC/VWMvHFGj9
+ aLpOKjvD
+ kHCnueYMwaxUnUXLw8oCojs7s5R9SPWNzW4XQoWtHe9i8OMO+CzJGnGCxoGMeNFPO2AZxXQ+mxwQVaKJM/FKmc8H56j5vk2qTjsclYdTHS8GmN8ZRpkpFJi8AHt3+gggHPOZ7iOeoMu7Ag6ojhKQCSLCcITeF/TqfLnJBI/aa5mf8QTQqf9E79wnW+nRGezen2Qj9kVGoJHUiOpqfTMVTN6NnT4XvkjA3kxeGkQWxI/r42iVhQ0Ca4W4UDODxyqdA4Gu2S9Pl3EtRnhjeFq3G9SajfpiK+EemD7g7ZpPogarZY3h4Bci6incAM/GLl2u/bEHLaGdg+6ApUSv97P2fPoEWU02feMhGT+lR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,221 +93,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 01:25:22PM +0200, David Hildenbrand (Arm) wrote:
-> 
-> > +	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
-> > +	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
-> > +			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
-> > +	for (i = 0; ret > 0 && i < ret; i++)
-> > +		fast += LEN(regions[i]);
-> > +
-> > +	/* Generic path: same query expressed via category_anyof_mask. */
-> > +	ret = pagemap_ioctl(mem, hpage_size, regions, ARRAY_SIZE(regions), 0, 0,
-> > +			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
-> > +	for (i = 0; ret > 0 && i < ret; i++)
-> > +		slow += LEN(regions[i]);
-> > +
-> > +	ksft_test_result(fast == npages && slow == npages,
-> > +			 "%s pmd-hole reported written by both paths (%ld, %ld of %d)\n",
-> > +			 __func__, fast, slow, npages);
-> > +out:
-> > +	wp_free(mem, hpage_size);
-> > +	munmap(area, 2 * hpage_size);
-> > +}
-> 
-> Sorry if I wasn't clear. I think unpopulated_thp_scan_test() can actually reuse
-> bits of unpopulated_scan_test().
+On 7/15/26 5:45 PM, Muchun Song wrote:
+>
+>> On Jul 15, 2026, at 14:30, Li Zhe <lizhe.67@bytedance.com> wrote:
+>>
+>> On 7/14/26 7:22 PM, Muchun Song wrote:
+>>>> On Jul 14, 2026, at 17:45, Muchun Song <muchun.song@linux.dev> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2026/7/9 19:25, Li Zhe wrote:
+>>>>> The template fast path currently uses memcpy() for the actual struct
+>>>>> page copy. Switch zone_device_page_init_from_template() to memcpy_nt()
+>>>>> and add memcpy_nt_drain() before memmap_init_compound(), before
+>>>>> prep_compound_head() updates overlapping tail metadata, and before
+>>>>> returning from memmap_init_zone_device().
+>>>>>
+>>>>> ZONE_DEVICE memmap initialization is largely write-once: each struct
+>>>>> page is populated once, and most destination cachelines are not expected
+>>>>> to be reused immediately afterwards. On x86, a regular cached memcpy()
+>>>>> can therefore incur write-allocate traffic by pulling destination
+>>>>> cachelines into the cache before writeback, and can populate the cache
+>>>>> with data that has little near-term reuse. Using memcpy_nt() lets this
+>>>>> path request non-temporal stores for that copy pattern, which can reduce
+>>>>> cache pollution and avoid part of the associated write-allocate
+>>>>> overhead, while architectures without a specialized backend still fall
+>>>>> back to memcpy().
+>>>>>
+>>>>> When memcpy_nt() maps to non-temporal stores, order those stores before
+>>>>> memmap_init_compound(), before prep_compound_head() updates overlapping
+>>>>> compound metadata, and before returning from memmap_init_zone_device().
+>>>>>
+>>>>> Keep sanitized builds on the slow path so KASAN/KMSAN retain their
+>>>>> instrumented stores.
+>>>>>
+>>>>> Tested in a VM with a 100 GB fsdax namespace device configured with
+>>>>> map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
+>>>>> server.
+>>>>>
+>>>>> Test procedure:
+>>>>> Rebind the nd_pmem and dax_pmem driver 30 times and collect the memmap
+>>>>> initialization time from the pr_debug() output of
+>>>>> memmap_init_zone_device().
+>>>>>
+>>>>> Base(v7.2-rc1):
+>>>>>    First binding for nd_pmem driver: 1456 ms
+>>>>>    Average of subsequent rebinds: 244.28 ms
+>>>>>
+>>>>>    First binding for dax_pmem driver: 1462 ms
+>>>>>    Average of subsequent rebinds: 273.31 ms
+>>>>>
+>>>>> With this series:
+>>>>>    First binding for nd_pmem driver: 1272 ms
+>>>>>    Average of subsequent rebinds: 96.79 ms
+>>>>>
+>>>>>    First binding for dax_pmem driver: 1354 ms
+>>>>>    Average of subsequent rebinds: 119.04 ms
+>>>>>
+>>>>> This reduces the average rebind time by about 60.4% for nd_pmem and
+>>>>> 56.4% for dax_pmem.
+>>>>>
+>>>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>>>> ---
+>>>>>   mm/mm_init.c | 39 +++++++++++++++++++++++++++++++++++++--
+>>>>>   1 file changed, 37 insertions(+), 2 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>>>> index fb855bb0437a..addb4969587e 100644
+>>>>> --- a/mm/mm_init.c
+>>>>> +++ b/mm/mm_init.c
+>>>>> @@ -1067,11 +1067,21 @@ static void __ref zone_device_page_init_slow(struct page *page,
+>>>>>
+>>>>>   static inline bool zone_device_page_init_optimization_enabled(void)
+>>>>>   {
+>>>>> + /*
+>>>>> + * Keep sanitized builds on the slow path so their stores stay
+>>>>> + * instrumented.
+>>>>> + */
+>>>>> + if (IS_ENABLED(CONFIG_KASAN) || IS_ENABLED(CONFIG_KMSAN))
+>>>>> + return false;
+>>>> It is not a major concern if struct page initialization lacks KASAN or
+>>>> KMSAN instrumentation. To keep things simple, let's just entirely remove
+>>>> zone_device_page_init_optimization_enabled() to simplify the code.
+>>> BTW, If you really want to properly support KASAN, you should integrate
+>>> the check directly into memcpy_flushcache() via kasan_check_write(), rather
+>>> than treating it as a special case here.
+>> I agree that proper KASAN-aware support, if ever needed for
+>> memcpy_flushcache(), would belong in the low-level helper itself rather
+>> than in this caller.
+>>
+>> That said, for this series I would still prefer to keep the local check
+>> in zone_device_page_init_optimization_enabled(). The goal here is not to
+>> add full KASAN support to memcpy_flushcache(), but simply to keep
+>> sanitized builds on the existing instrumented slow path.
+>>
+>> When KASAN/KMSAN is enabled, performance is usually not the priority for
+>> that configuration, while preserving the instrumented store path is.
+>> Keeping the check local here avoids broadening the scope of this series
+>> into a generic memcpy_flushcache() change.
+> However, there is an even simpler approach: just don't do any special handling
+> for KASAN. In fact, many callers of memcpy_flushcache don't handle it at all.
+>
+> So I'm curious, why are you keen on handling KASAN as a special case here?
+>
+> Thanks.
+I agree that this is a simpler direction.
 
-Ah. Make sense.
+If we do not need to keep the sanitizer case on the non-template path,
+then there is little value in keeping a separate
+zone_device_page_init_optimization_enabled() helper either. The template
+path can be the only initialization path, and the old non-template helper
+code can be removed.
 
-Here's my take on this. Looks good?
+If this looks good to everyone, I plan to do that as a separate cleanup
+patch in the next version, likely as patch 9. The reason for keeping it
+separate is that patches 4 and 5 introduce the template initialization
+logic, while patch 8 only switches the copy primitive used by that path.
+Dropping the remaining non-template fallback is a follow-up cleanup made
+possible by this discussion, so a separate patch should make the change
+easier to review: first add and use the template path, then remove the
+now-unneeded fallback code.
 
--- >8 --
-Date: Thu, 16 Jul 2026 13:24:29 +0100
-Subject: [PATCH v6 2/2] selftests/mm: add PAGEMAP_SCAN test for THP PMD holes
+Thanks,
+Zhe
 
-Add coverage for the PMD-hole case fixed by "fs/proc/task_mmu: fix
-PAGEMAP_SCAN written state for PMD holes": a MAP_PRIVATE|MAP_ANON THP that
-is uffd-wp'd and then dropped with MADV_DONTNEED leaves a pmd_none hole
-with no page table, which PAGEMAP_SCAN must still report as written.
-
-Factor the populate/drop/scan-both-paths sequence out of
-unpopulated_scan_test() into a helper, and add unpopulated_thp_scan_test()
-that reuses it with a THP.
-
-Include <linux/mman.h> for MADV_COLLAPSE; <sys/mman.h> lacks it on older
-glibc (e.g. 2.34). Same approach as commit fd5295afae91 ("selftests/mm:
-hmm-tests: include linux/mman.h to access MADV_COLLAPSE").
-
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-fable-5
----
- tools/testing/selftests/mm/pagemap_ioctl.c | 118 +++++++++++++++------
- 1 file changed, 83 insertions(+), 35 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index 550d1f2c059b..693030f1e631 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -8,6 +8,7 @@
- #include <errno.h>
- #include <malloc.h>
- #include <linux/types.h>
-+#include <linux/mman.h>
- #include <linux/memfd.h>
- #include <linux/userfaultfd.h>
- #include <linux/fs.h>
-@@ -1058,50 +1059,96 @@ static void test_simple(void)
-  * the generic path (reached e.g. via category_anyof_mask) must report every
-  * page written.
-  */
-+/*
-+ * Populate @mem (optionally collapsing it into a THP first), drop it with
-+ * MADV_DONTNEED, then check PAGEMAP_SCAN reports the whole range written via
-+ * both the fast and generic query paths. A dropped THP leaves a pmd_none hole
-+ * with no page table, exercising pagemap_scan_pte_hole(); a base-page range
-+ * leaves pte_none entries.
-+ */
-+static void unpopulated_written_test(const char *name, char *mem, long size,
-+				     bool use_thp)
-+{
-+	long npages = size / page_size, fast = 0, slow = 0, ret;
-+	struct page_region regions[16];
-+	int i;
-+
-+	wp_init(mem, size);
-+
-+	/* Populate, optionally collapse to a THP, then drop it. */
-+	memset(mem, 1, size);
-+	if (use_thp &&
-+	    (madvise(mem, size, MADV_COLLAPSE) ||
-+	     !check_huge_anon(mem, size / hpage_size, hpage_size))) {
-+		ksft_test_result_skip("%s could not form a THP\n", name);
-+		goto out;
-+	}
-+	if (madvise(mem, size, MADV_DONTNEED)) {
-+		ksft_test_result_fail("%s MADV_DONTNEED failed\n", name);
-+		goto out;
-+	}
-+
-+	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
-+	ret = pagemap_ioctl(mem, size, regions, ARRAY_SIZE(regions), 0, 0,
-+			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
-+	for (i = 0; ret > 0 && i < ret; i++)
-+		fast += LEN(regions[i]);
-+
-+	/* Generic path: same query expressed via category_anyof_mask. */
-+	ret = pagemap_ioctl(mem, size, regions, ARRAY_SIZE(regions), 0, 0,
-+			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
-+	for (i = 0; ret > 0 && i < ret; i++)
-+		slow += LEN(regions[i]);
-+
-+	ksft_test_result(fast == npages && slow == npages,
-+			 "%s unpopulated range reported written by both paths (%ld, %ld of %ld)\n",
-+			 name, fast, slow, npages);
-+out:
-+	wp_free(mem, size);
-+}
-+
- static void unpopulated_scan_test(void)
- {
--	int npages = 16, i;
--	long mem_size = npages * page_size;
--	struct page_region regions[16];
--	long fast = 0, slow = 0, ret;
-+	long mem_size = 16 * page_size;
- 	char *mem;
- 
- 	mem = mmap(NULL, mem_size, PROT_READ | PROT_WRITE,
- 		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
--	if (mem == MAP_FAILED)
--		ksft_exit_fail_msg("%s mmap failed\n", __func__);
-+	if (mem == MAP_FAILED) {
-+		ksft_test_result_skip("%s mmap failed\n", __func__);
-+		return;
-+	}
- 
--	wp_init(mem, mem_size);
--
--	/* Populate, then drop: the ptes become pte_none without a marker. */
--	memset(mem, 1, mem_size);
--	if (madvise(mem, mem_size, MADV_DONTNEED))
--		ksft_exit_fail_msg("%s MADV_DONTNEED failed\n", __func__);
--
--	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
--	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
--			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
--	if (ret < 0)
--		ksft_exit_fail_msg("%s fast scan failed\n", __func__);
--	for (i = 0; i < ret; i++)
--		fast += LEN(regions[i]);
--
--	/* Generic path: same query expressed via category_anyof_mask. */
--	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
--			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
--	if (ret < 0)
--		ksft_exit_fail_msg("%s generic scan failed\n", __func__);
--	for (i = 0; i < ret; i++)
--		slow += LEN(regions[i]);
--
--	ksft_test_result(fast == npages && slow == npages,
--			 "%s unpopulated ptes reported written by both paths (%ld, %ld of %d)\n",
--			 __func__, fast, slow, npages);
--
--	wp_free(mem, mem_size);
-+	unpopulated_written_test(__func__, mem, mem_size, false);
- 	munmap(mem, mem_size);
- }
- 
-+/*
-+ * Same as unpopulated_scan_test(), but the range is a THP: a full-PMD
-+ * MADV_DONTNEED leaves a pmd_none hole with no page table.
-+ */
-+static void unpopulated_thp_scan_test(void)
-+{
-+	char *area, *mem;
-+
-+	if (!hpage_size) {
-+		ksft_test_result_skip("%s THP not supported\n", __func__);
-+		return;
-+	}
-+
-+	/* Over-allocate so a PMD-aligned, THP-sized range fits inside. */
-+	area = mmap(NULL, 2 * hpage_size, PROT_READ | PROT_WRITE,
-+		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (area == MAP_FAILED) {
-+		ksft_test_result_skip("%s mmap failed\n", __func__);
-+		return;
-+	}
-+	mem = (char *)(((unsigned long)area + hpage_size - 1) & ~(hpage_size - 1));
-+
-+	unpopulated_written_test(__func__, mem, hpage_size, true);
-+	munmap(area, 2 * hpage_size);
-+}
-+
- int sanity_tests(void)
- {
- 	unsigned long long mem_size, vec_size;
-@@ -1610,7 +1657,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 	if (!hugetlb_setup_default(4))
- 		ksft_print_msg("HugeTLB test will be skipped\n");
- 
--	ksft_set_plan(118);
-+	ksft_set_plan(119);
- 
- 	page_size = getpagesize();
- 	hpage_size = read_pmd_pagesize();
-@@ -1790,6 +1837,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 
- 	/* 18. Unpopulated pte scan-path consistency */
- 	unpopulated_scan_test();
-+	unpopulated_thp_scan_test();
- 
- 	close(pagemap_fd);
- 	ksft_finished();
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+>> Thanks,
+>> Zhe
+>>
+>>>> Thanks.
+>>>>
+>>>>> +
+>>>>>    /*
+>>>>>    * The template fast path copies a preinitialized struct page image.
+>>>>>    * Skip it when the page_ref_set tracepoint is enabled.
+>>>>>    */
+>>>>> - return !page_ref_tracepoint_active(page_ref_set);
+>>>>> + if (page_ref_tracepoint_active(page_ref_set))
+>>>>> + return false;
+>>>>> +
+>>>>> + return true;
+>>>>>   }
+>>>>>
+>>>>>   static inline void zone_device_tail_page_init(struct page *page,
+>>>>> @@ -1110,7 +1120,7 @@ static void zone_device_page_init_from_template(struct page *page,
+>>>>>    * to the destination page.
+>>>>>    */
+>>>>>    zone_device_page_update_template(template, pfn);
+>>>>> - memcpy(page, template, sizeof(*page));
+>>>>> + memcpy_nt(page, template, sizeof(*page));
+>>>>>   }
+>>>>>
+>>>>>   /*
+>>>>> @@ -1179,6 +1189,15 @@ static void __ref memmap_init_compound(struct page *head,
+>>>>>       &template);
+>>>>>    }
+>>>>>    }
+>>>>> +
+>>>>> + /*
+>>>>> + * When the template path is enabled, order the preceding tail-page copies
+>>>>> + * before prep_compound_head() updates the overlapping compound metadata
+>>>>> + * in the first tail-page descriptors. If memcpy_nt() fell back to
+>>>>> + * regular cached stores, memcpy_nt_drain() may be a no-op.
+>>>>> + */
+>>>>> + if (use_template)
+>>>>> + memcpy_nt_drain();
+>>>>>    prep_compound_head(head, order);
+>>>>>   }
+>>>>>
+>>>>> @@ -1238,10 +1257,26 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>>>>>    if (pfns_per_compound == 1)
+>>>>>    continue;
+>>>>>
+>>>>> + /*
+>>>>> + * When the template path is enabled, order the preceding head-page copy
+>>>>> + * before memmap_init_compound(), which immediately updates compound-head
+>>>>> + * metadata. If memcpy_nt() fell back to regular cached stores,
+>>>>> + * memcpy_nt_drain() may be a no-op.
+>>>>> + */
+>>>>> + if (use_template)
+>>>>> + memcpy_nt_drain();
+>>>>> +
+>>>>>    memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
+>>>>>        compound_nr_pages(pfn, altmap, pgmap),
+>>>>>        use_template);
+>>>>>    }
+>>>>> + /*
+>>>>> + * Ensure any prior template copies are ordered before returning.
+>>>>> + * On architectures where memcpy_nt() used regular cached stores,
+>>>>> + * memcpy_nt_drain() may be a no-op.
+>>>>> + */
+>>>>> + if (use_template)
+>>>>> + memcpy_nt_drain();
+>>>>>
+>>>>>    pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE);
+>>>>>
+>>>>> --
+>>>>> 2.20.1
 
