@@ -4,96 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F264C44501
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 01:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24A2C44501
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 01:28:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264B36B008A; Wed, 15 Jul 2026 21:24:43 -0400 (EDT)
+	id 85F9A6B0093; Wed, 15 Jul 2026 21:28:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 214F26B008C; Wed, 15 Jul 2026 21:24:43 -0400 (EDT)
+	id 837186B0095; Wed, 15 Jul 2026 21:28:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 105DD6B0092; Wed, 15 Jul 2026 21:24:43 -0400 (EDT)
+	id 74E1E6B0096; Wed, 15 Jul 2026 21:28:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CCEF56B008A
-	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:24:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47273C0322
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:24:42 +0000 (UTC)
-X-FDA: 84992895204.11.4E2F1D6
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E1F1D40005
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:24:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dK5P+oqz;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784165080;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 445AA6B0093
+	for <linux-mm@kvack.org>; Wed, 15 Jul 2026 21:28:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C50A340375
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:28:01 +0000 (UTC)
+X-FDA: 84992903562.02.3034881
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf12.hostedemail.com (Postfix) with ESMTP id CF2FF40004
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 01:27:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=b5Y5F4f4;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784165279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2BN+QYnQWtB57fvjRZtapEPLHI2ra+Tc8MDvGL8FkvU=;
-	b=QqKyUmfXM9fOsySgYk0OwWkmqQObAwhQ5+Sla+BdhSY5seLe51EU8//CUXVRn+s1oulLSs
-	H9/22panY/ggFe4GCEwO+mDn6D4TPVrGtSkOvr5OATuktPWZmvOFGCNuGzOnTMB0Nsaxyx
-	Vv9kV47usxT3NEQ77f3snh3iKr0Kfao=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dK5P+oqz;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784165080;
-	b=1cdrxN45Gap10UdyBd5Y/uf46y/W4kndqGaziwsxtN2mie230rws6eEvgzZUgBaWMpeBJ/
-	dRnRUW9ptQN7EMh8WoNZK/DwsHcWQRoFrf/Ek2JUEImH7/z/6/RQYarBl6GUOmLqpKFNZS
-	wkuEGPi9psFSTfXcwOlZHahATWXTsGI=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784165075; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=2BN+QYnQWtB57fvjRZtapEPLHI2ra+Tc8MDvGL8FkvU=;
-	b=dK5P+oqzg2JpyVD/2afhbVOnrUqS818M/kT2cUX85dGAy0/htyCwnOLfmt0YkcO7+T9/Rjx/6OdfVaxBzgwASQaNz4SaYbsUwiayWk5WWzLq2aSSqwd77nCEjuXlORrZ0IoBlS6kE2lc46yI4Hfb1G8m4JpowmrYE613Xj9qUx8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X7AyyF9_1784165072;
-Received: from 30.74.144.123(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7AyyF9_1784165072 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Jul 2026 09:24:33 +0800
-Message-ID: <c7b29638-69c9-45f9-a9cd-21dea1460848@linux.alibaba.com>
-Date: Thu, 16 Jul 2026 09:24:32 +0800
+	bh=PA3pRdy5RNxLjfQOxJNOKUt8+gHRxgp3izrKjNvAOI0=;
+	b=AwCaUArzQfcIzy1Cq7QysYd30C828r3puB0xFpYoPzZ9KKdXFQL1V7clUHrLFU4/oYxXZJ
+	bVmW18LKOwvE25v2RPen1b9dxtNV6m2txP6flXEgQBCdmdx8iRjyJd3x/gSXDhLIeqyrr2
+	iRaWQTXVKcKgXlv3mu5WGuCb585lZwQ=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=b5Y5F4f4;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784165279;
+	b=YRN4UXs57P33uHNM5S4GVPGVZPq1iPTVAaEaKF5KNaQqO1sYMdrcTVOB9eS511IFJPkhKp
+	1LlMKj0S85l7TqOl0TP4t4dbA+tVl4uK9iWVs7L9SqEq+9e5e0MJvYdjm75XDLxeSVH8kd
+	qJMJO4sfPypQUkbUTnGi4lvNWavy2Rs=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51c10e86e52so79411cf.1
+        for <linux-mm@kvack.org>; Wed, 15 Jul 2026 18:27:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784165279; cv=none;
+        d=google.com; s=arc-20260327;
+        b=l4wYyZCzawX5qMhCQD8YQM3nn2gUmjqY1R9r4UdBAzDJbPIirWvXYSZtPiWEzl7fUZ
+         ax19SbQUS1Anm/jEe7AmjB0b2alEVyRRoeUIxsYPlxOEiq5knELqksBunn7+cybVB/my
+         qtc8ZIC8Sd/cPv7xgM2DlA4wtjabiuKyoNPcWohNBXalPB4+onFuWn2StT9EJuzwVD3t
+         +0/nvmSmtmbPzbIOuEZeCREy18sp2NEq9/tCNnb101wZIqVY+64DPt379xZsElQ4v0GS
+         ozjqzc+LX/yiNg1OQoKWviMIuCwdV3ehYBlE1o9Ny4l9iSfauVemMyUo/zEDN8P5R9Gp
+         JQaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PA3pRdy5RNxLjfQOxJNOKUt8+gHRxgp3izrKjNvAOI0=;
+        fh=ma5qIAYPeU4uP8VL8pSDOArjSGqcZbIRIanJ6U3I1HY=;
+        b=m1ZfH9oi6pkP7wr3fzGoxZ6ITO6ri/qdo2MjyAiVidBe/qbwOp4KAp7GqSn0ZjBxc/
+         /XFT4Cm2Y6aQBQuBc2tr6P+hZA4ZTE8aFGgw/LTTuzxjfyKQETDZ0pGlMPzFyZZnZYHd
+         RtEUfHaZNvQZeRIZA9P/1T5/kWWjeRTXOwFNnC8EOCJiUSqdmIde0MObe1TGvb2y3wax
+         XtKC7lhXTMrmekxMejWRlO1tTg5BkM3ymZaLu4SYoo2haeliGcZO0jjYaMe3oHPob2zg
+         egTWHvt7Ty//thUT3PMlrAsR40vHw5ILXPduTwKMZHSSNSp9aVi6CaES1ZvhKH+mJ/Ot
+         POuQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784165279; x=1784770079; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PA3pRdy5RNxLjfQOxJNOKUt8+gHRxgp3izrKjNvAOI0=;
+        b=b5Y5F4f4/1DPNti5BLpwDUsxuYFPu9+pRupjBza4XTMAL6tchswXlQusTgFEnLb2DE
+         LPN2i5fT4KrZPcWgKsoEjsTGdNXw/WGmY7rFVhhA2MAPDrw+e3+to4Kiiew83nJ978e/
+         95qerfcIKGDfdAq/SO9wte4vTpfWXtUIp5Gzv8LuLtaEEvTWc81mbV568enDbYtcOdPG
+         HVy9/thgdTPbW5NMO8HS3kV4TIK4VeGqCIgZHKcayZZ8znUiUkmwBQgq448ESBxMAtfG
+         MIWud7eTbt78LNGALC9OI1hOTdRWU2/TWIz1ovH8FOqHETOdYh/zOyfxlX3dtvJSCAXm
+         cfKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784165279; x=1784770079;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PA3pRdy5RNxLjfQOxJNOKUt8+gHRxgp3izrKjNvAOI0=;
+        b=EmvRIv1ecw5EbUIIYfRxIhxDhJ9vt4UCykCQeH7zYpUv8HRGri/uc7DSTpTB3apYz9
+         MhKKOA+SPKBUAbxl0SUlSdSfd9eZkBz+hPdgnq+u2LJ54/uQo3lVlPhgKoeVgSGrPPQk
+         XuCmyzClnDbG4VSf2lWaYJeBGKDpxgIjVkqhE8spoB6kYRY49C8/4F3eUlBzFcw/TFoP
+         bksVFNKImOGOWHgM8x7jFOOaE3AYbxHWqUc1Eh2amvhh73jx539ojNyvUO/wPyJF5thz
+         TtbTC/hlGdCvXcESfKkjefS+hUmftbJbaQjz2DBvlV+hG3LGAfTFzWXrBu95jWR00YYm
+         k+HQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqATek6l7nmQxfKjo3OvBEhPLPOABerBw7RT3iiX3ZOlTRkDyBGAthCofcLOlkRtdYUoNu3NRUnXg==@kvack.org
+X-Gm-Message-State: AOJu0YySnVx3eSMDw4Og7PJMDyfylXtD6Lkf9VJOhrg3u0g5feEjntOQ
+	VhOpNzp5oVNUY9kry3wslvVp6oluQFdN0OuZWLaiPg9+3ThRar4XZTN9QcK+F/WBLxatf9EjThL
+	8mt7G6IkITkyHoLuNQGR96EGEWNbMyBMcA4v7SnpI
+X-Gm-Gg: AfdE7cnQ2XZJ14KD4wiT7G4eY4QuMOWHf3vPuMF4MsAn9Mobr18NonF+A3GwaKalpHU
+	WqaLKt6k5MufYASp+7M2goW0BviM4XjnuwGlAXdsOzN1imRXdqCSGPYkUmDtmaVnC6RAp2G/hYw
+	7u8WRR4IOs5pkEoi8luGkM+JS6iECl9RR4GVf4YWRn2tir3YEGYTZnEqUiM4QSmrK4TKPqoUxfN
+	RKL3YR3BYQTakbTsdIeEvBw0yhuBJsqPxngv9359GDF72x+ah1EQYEkdq/q
+X-Received: by 2002:ac8:57cb:0:b0:50e:5eba:cadd with SMTP id
+ d75a77b69052e-51f7d272648mr4128911cf.2.1784165278136; Wed, 15 Jul 2026
+ 18:27:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm/memory-failure: keep the folio, not the
- poisoned subpage, locked across split
-To: Kiryl Shutsemau <kirill@shutemov.name>, Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, "Liam R . Howlett" <liam@infradead.org>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Hao Zhang <zhanghao1@kylinos.cn>, Hao Zhang <hao_zhang_kdev@163.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260714122344.351895-1-kirill@shutemov.name>
- <20260714122344.351895-2-kirill@shutemov.name>
- <c4aa63df-30ab-464d-bd0b-48dc37c8e6ba@kernel.org>
- <alZNYYsybKZA0eJb@thinkstation>
- <18fe5529-2ad5-4330-a362-708a152bacee@kernel.org>
- <66A57599-EDA0-4E99-B073-F2AE0B2ED708@nvidia.com>
- <alZljHr4Nk3FOpCP@thinkstation> <DJYH202OLKZF.432DAJWF2MGA@nvidia.com>
- <aldjhtfVByHDQXe6@thinkstation>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aldjhtfVByHDQXe6@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E1F1D40005
-X-Stat-Signature: dcpb4ezmgnkop5at86mexrr985m8r6g3
+References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org> <20260715-b4-objext_split-v1-5-9a49c4ccf4c3@kernel.org>
+In-Reply-To: <20260715-b4-objext_split-v1-5-9a49c4ccf4c3@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 15 Jul 2026 18:27:47 -0700
+X-Gm-Features: AUfX_mw0hxBE87l_puhHNr7S0k7RJO-VLoBt5DLKGkywTu7tTOxb6OYu6XzRYSU
+Message-ID: <CAJuCfpEJV=OgCmQ9=tuMHOjMMh8bgHrpFe1gLtTXjagAenKZsg@mail.gmail.com>
+Subject: Re: [PATCH RFC 05/12] mm/slab: abstract slabobj_ext.objcg access
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784165078-227222
-X-HE-Meta: U2FsdGVkX1//Au7QNAFR9VgBPs+yX/bWtxw1O+8s3G0emX/OSau/JS7FICIFhlRVYaXc9uv+iAn9+H5cyvDoCTWVQmXTP4eBGlo2NSHkgurGx7ZNvtLI6fBP8lYPPzK/dzIS1p85CJSEzr77sjYrSeXV+ng4MEmC6IGlb/gjz7PZDZAhCvBc96Ybl4gQhrgIUlqbwsvkKcVC7SI+weJXXdDcZVQTaOdmJTOO8//X66FHBMitsPA3CuGevHWGWqStayB02RSFGw/vhbs+fIBCoxVEFRtuRiEoeQhakqrfMy+xFJJivhfloHFr4tVazSoZ2+lb5qp9dfi6K9rFpuq9DEX9jlgJNFrzPwHKK1z/UKyDdneyZeUgubeEcyQoW21bYtdiGX78Rux07wvkIp+b0+5N6E0UR0ZMZ+11lZjfp7k87gpiD4dd6+wy6yf3cljG5YqT8JrOrbD3oI7xbpREc/3aN5EQqp6dSQjlLY0VBv5Kt/wZvk/ibr6ChblbwvdGvvVKcN8Y7rHVtj6SnnCs3Dg67d5Dc1n1YPSDyZ7FN9Eo9ZQGkQT1Tc4bRU39LjR692gap/CcLYFCsIAL2SKZof6vG6+1A4fAUZYCMJmrBiU911nfxhyQs5ocp1u/0rNmvRiEYs8fTuKUXvhiUfYQUVForAYymyLO5ztfAhy358lNzvh6bsy4miueZ6Oetn4QMteHkobfLsY9j9fCDYNi5cWVoUmUDWn7z+OJAWFbmNxW8zkb7WFXpHcIzFsk+p/b7Qn3w3izaroa735ABTOMaqUjBu+2SfPAiZtL9Dza7n4AsX7BBBIx40u/BAMoyDezpoz83PkdqfMZ+my+++jPxRrDaQmDuk19c0S27OHVfswkepA1fCB/brY1XZYUf7v5pTGDKM3nXx873KQS7QfoK4Avq4YWgSoPbi551pKkLbiUl/sWJvpsefWLmuctRLIvcklstGYgXv470htfIb7
- 2/b6/ahr
- 3wpHN/F6UaGvQ6M5lH0g4kXEIpUIeq7vr/lo7np1ZKMLCA90ipw0E81nebh+T3hELtFZCplK8zo0535zQ1GILzko6/xIinNfqBfP2oKlR5Puc+/mtawsJbaamieu++NYfOgesscCoal3P18DGGtW7T4aoJIncLRBV15b/8KiEEF4CFm316VW7ykiHfb2RIo6Y/iy+wdjHRacRj1+Ubu9vak8bILy+yCvee8alSgbdY4JHSrjrcC9TKMv5uZFz/o5YCktFkRTpfoQbaHA5pETFFrrdXZx7fHHOb6Q1BMbS5ta5eMqbOlnL0Yc8AoctInAsbYEVVYhWIPLeYf/kK0DRTYPu9nJw3pSDU53jK/lXn7OrAqb32ICv/sSzM09pK2SSVvSt621jsd3ICM+dN8zGFT+Wlw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CF2FF40004
+X-Stat-Signature: 1oy5udrs5831szdbsjee8wsm9nas7s37
+X-HE-Tag: 1784165279-981687
+X-HE-Meta: U2FsdGVkX1+/jAtNYCHo6ga4wETewhRrbqp/ulBrwvgSkMFP/YgTCvvVNpQWlYEOruPEZTbjtouqsrCyXOaBdhFaSU+VjGmlps6Tdqh34VzamgpQ7r7xWIQZ6VnOFYFy7M5Y0zBVr2mrJh0/qdx6fjbLETlAvfol9K8ZQ9LNEVbB8IClRmLYBxoEn6yCKywDev3JVsZhSaNgTvuyAlWDnHuk2cOItNKmubiSNafKghG6Hhec9+a3COzshPVVRQYs7FzJglZfygdf9VSgSmOQdePdvQ37iQFHhDQYDVBm3PnIDEH3yGWW9pAXgVcKOGaEl25twKTFpqnXU2GC0h8Bi29F/MwACHLirs84YWDbJxtblbqxAcRnZisDWSSRgKzBkjEPylise3FTzrWgfXSQaGcD+3PUoLypUXQ75BUhKqOMI/gNiqxfaNQTrzkmjhSwYkyMwATMIU1gnHllO6on7TyvX3g27V1x+oYn+ewgbraWEE1qHfINLGYDex8I5Xr0+pXeIDeACZVxVv1ujGtNdReCRXaAoCZJkW3fLkjXP2Fnemu6yFrtcnA/Ki/KhUqIU0BeIJ/PtsZGu/t/wuj3qI0hDKJOAdbW28emzb/5M543TJ1J1gJfVhQxWjsAAblxfHQUs+mjoJgBYavTFWlhnM19QkqpFb/WqjvCxS5c2mrM2swrZi/YNDhV4Pg7+AjcObdWMkQZ0/Z2FGx6H5lp9V9LAdwnh//iyHHNFpf9VMjQRsu2qqZHgcBhi+uEbDSgNxDD0F/Zwv13Y+5A2eGz/qBTm0Blh8IIlqNQdsfgLpslsEZK+11WGhRuwFJcoqKJFtgTkJ4rs95uZkSLpmshyXDlenoA94qIg9tMA/hbkHZhq4IN74k6kx4NvgLq4/dTzkIccyKvWyt5wWI2oSeidJpW1QTJe6U4k2XJUpIwhKjmaYkFxk+WgrJAfwN1o8XfKcNBe2SknpY1NS2s6hc
+ UHhWrjMQ
+ agNIQoMre+UGqS+7HAlZhz5oFrfe9n1FnYB+wQf+fa7dwKE0bk1L2YvdMIP3pYIWTIL21VdaJco7JPwPht5vaQ/bLhFScGjYc1yIzpgkXHN5Y7KOUThMkZHGudo6kNVvqCi8ORxZT2x9yV6L5KCwpmEpMJ13WmPOlRl1Tpxeh0HGHjzJzeUB2NzMx0C7svUeKFrv0v+PHf5g6KaY68H5nJic3B4SAl/QcsOvMqUTsWSfnRx0D4LAlrIT5t67r0k4/z0T7qeBfUy6Mg+2eUqkR0eYuD34TW1jvvKlH8VPAPUXkOcMWqEmk/J3qKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,129 +142,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/15/26 6:42 PM, Kiryl Shutsemau wrote:
-> On Tue, Jul 14, 2026 at 01:31:54PM -0400, Zi Yan wrote:
->> On Tue Jul 14, 2026 at 12:40 PM EDT, Kiryl Shutsemau wrote:
->>> On Tue, Jul 14, 2026 at 11:44:39AM -0400, Zi Yan wrote:
->>>> There is an alternative, only igrab() when @lock_at is at or beyond the EOF,
->>>> as I was bouncing ideas with Codex.
->>>
->>> I saw this option too, but I wound rather not go this path.
->>>
->>> iput() still can lead to inode eviction an bunch of random filesystem
->>> complexity under us. I don't think we want to think about other
->>> fs-related locking issues in split context.
->>
->> Your reasoning makes sense to me. Let's ignore this option.
->>
->> For your patch 2, we might want something like below to avoid over
->> rejecting splits. WDYT?
->>
->> offset = folio_page_idx(folio, lock_at);
->>
->> if (split_type == SPLIT_TYPE_UNIFORM)
->> 	lock_at_index = folio->index + round_down(offset, 1UL << new_order);
->> else
->> 	/* @lock_at in non uniform split is always @folio */
->> 	lock_at_index = folio->index;
->>
->> if (lock_at_index >= end) {
->> 	ret = -EBUSY;
->> 	goto out_unlock;
->> }
->>
-> 
-> Right. With the -EBUSY condition growing this hairy -- and having to stay
-> correct for non-uniform splits too -- just moving i_mmap_unlock_read() out
-> of the window looks more attractive.
-
-Agree.
-
-> This is really Hao's original patch with the reasoning corrected, so I kept
-> him as author. v3 below.
-> 
-> ----------------------------------------------------------------------
-> 
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> Subject: [PATCH v3] mm/huge_memory: unlock i_mmap_rwsem before releasing
->   after-split folios
-> 
-> __folio_split() keeps dereferencing the mapping after the split:
-> shmem_uncharge(mapping->host) and remap_page() while the folios are still
-> frozen/locked, and i_mmap_unlock_read(mapping) at the very end, after the
-> after-split folios have been unlocked and freed.
-> 
-> Nothing holds an inode reference across that. The split relies on @folio
-> -- which the beyond-EOF drop loop never removes, as it starts at
-> folio_next(folio) -- staying locked and in the page cache to hold off
-> eviction. But the unlock loop unlocks @folio before i_mmap_unlock_read()
-> runs. If the caller's @lock_at is a tail beyond EOF, as memory_failure()
-> passes when splitting a poisoned tail of a shmem THP that reaches past
-> i_size during truncation, it too is gone from the page cache; so once
-> @folio is unlocked no locked, in-cache folio pins the inode, and a
-> concurrent final iput() can evict and RCU-free it before
-> i_mmap_unlock_read() touches i_mmap_rwsem:
-> 
->    BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
->     i_mmap_unlock_read include/linux/fs.h:537 [inline]
->     __folio_split+0x732/0x1640 mm/huge_memory.c:4100
->     try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
->     memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
-> 
->    Freed by task 4601:
->     shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
->     evict+0x57f/0xac0 fs/inode.c:870
-> 
-> Do every mapping dereference while @folio still pins the inode: drop
-> i_mmap_rwsem right after remap_page(), before the loop that unlocks and
-> frees the after-split folios, and clear @mapping so the exit path does not
-> unlock it again. shmem_uncharge() and remap_page() already run before that
-> point, so after this nothing past the unlock loop touches the inode or the
-> mapping.
-> 
-> This is now a rule the split depends on, alongside keeping @folio frozen
-> until the page cache is updated: no inode or mapping dereference once the
-> after-split folios start being unlocked.
-> 
-> Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
-> Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
-> Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
-> Cc: <stable@vger.kernel.org>
-> Co-developed-by: Hao Zhang <zhanghao1@kylinos.cn>
-> Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+On Wed, Jul 15, 2026 at 3:11=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> In preparation for changes to the structure, abstract access to the
+> objcg field with a slab_obj_ext_objcgp() function.
+> Rename the field to _objcg to make an unexpected direct access a compile
+> error.
+>
+> No functional change intended.
+>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
-
-LGTM. Thanks for the analysis.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
->   mm/huge_memory.c | 12 ++++++++++++
->   1 file changed, 12 insertions(+)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2bccb0a53a0a..abaea34ef558 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4109,6 +4109,18 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
-> 
->   	remap_page(folio, 1 << old_order, ttu_flags);
-> 
-> +	/*
-> +	 * Drop the mapping while the inode is still pinned. @folio stays
-> +	 * locked and present in the page cache until the loop below, so
-> +	 * eviction cannot free the inode yet; @lock_at is not enough, it may
-> +	 * be a tail beyond EOF that the split already dropped from the page
-> +	 * cache. Nothing past this point may touch the inode or the mapping.
-> +	 */
-> +	if (mapping) {
-> +		i_mmap_unlock_read(mapping);
-> +		mapping = NULL;
-> +	}
+>  mm/kfence/core.c |  2 +-
+>  mm/memcontrol.c  | 23 +++++++++++++++--------
+>  mm/slab.h        |  9 ++++++++-
+>  mm/slub.c        |  2 +-
+>  4 files changed, 25 insertions(+), 11 deletions(-)
+>
+> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+> index 6577bd76954e..717e8baf7e5d 100644
+> --- a/mm/kfence/core.c
+> +++ b/mm/kfence/core.c
+> @@ -1249,7 +1249,7 @@ void __kfence_free(void *addr)
+>         struct kfence_metadata *meta =3D addr_to_metadata((unsigned long)=
+addr);
+>
+>  #ifdef CONFIG_MEMCG
+> -       KFENCE_WARN_ON(meta->obj_exts.objcg);
+> +       KFENCE_WARN_ON(*slab_obj_ext_objcgp(&meta->obj_exts));
+>  #endif
+>         /*
+>          * If the objects of the cache are SLAB_TYPESAFE_BY_RCU, defer fr=
+eeing
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 4e427286a88a..6303a2b1a9d0 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2865,6 +2865,7 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct =
+slab *slab, void *p)
+>          */
+>         unsigned long obj_exts;
+>         struct slabobj_ext *obj_ext;
+> +       struct obj_cgroup *objcg;
+>
+>         obj_exts =3D slab_obj_exts(slab);
+>         if (!obj_exts)
+> @@ -2872,9 +2873,8 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct =
+slab *slab, void *p)
+>
+>         get_slab_obj_exts(obj_exts);
+>         obj_ext =3D slab_obj_ext(slab->slab_cache, slab, obj_exts, p);
+> -       if (obj_ext->objcg) {
+> -               struct obj_cgroup *objcg =3D obj_ext->objcg;
+> -
+> +       objcg =3D *slab_obj_ext_objcgp(obj_ext);
+> +       if (objcg) {
+>                 put_slab_obj_exts(obj_exts);
+>                 return obj_cgroup_memcg(objcg);
+>         }
+> @@ -3577,6 +3577,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache=
+ *s, struct list_lru *lru,
+>                 unsigned long obj_exts;
+>                 struct slabobj_ext *obj_ext;
+>                 struct obj_stock_pcp *stock;
+> +               struct obj_cgroup **objcgp;
+>
+>                 slab =3D virt_to_slab(p[i]);
+>
+> @@ -3612,10 +3613,15 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cac=
+he *s, struct list_lru *lru,
+>                 unlock_stock(stock);
+>
+>                 obj_exts =3D slab_obj_exts(slab);
 > +
->   	/*
->   	 * Unlock all after-split folios except the one containing
->   	 * @lock_at page. If @folio is not split, it will be kept locked.
+>                 get_slab_obj_exts(obj_exts);
+> +
+>                 obj_ext =3D slab_obj_ext(s, slab, obj_exts, p[i]);
+> +               objcgp =3D slab_obj_ext_objcgp(obj_ext);
+> +
+>                 obj_cgroup_get(objcg);
+> -               obj_ext->objcg =3D objcg;
+> +               *objcgp =3D objcg;
+> +
+>                 put_slab_obj_exts(obj_exts);
+>         }
+>
+> @@ -3628,16 +3634,17 @@ void __memcg_slab_free_hook(struct kmem_cache *s,=
+ struct slab *slab,
+>         size_t obj_size =3D obj_full_size(s);
+>
+>         for (int i =3D 0; i < objects; i++) {
+> -               struct obj_cgroup *objcg;
+> +               struct obj_cgroup **objcgp, *objcg;
+>                 struct slabobj_ext *obj_ext;
+>                 struct obj_stock_pcp *stock;
+>
+>                 obj_ext =3D slab_obj_ext(s, slab, obj_exts, p[i]);
+> -               objcg =3D obj_ext->objcg;
+> -               if (!objcg)
+> +               objcgp =3D slab_obj_ext_objcgp(obj_ext);
+> +               if (!*objcgp)
+>                         continue;
+>
+> -               obj_ext->objcg =3D NULL;
+> +               objcg =3D *objcgp;
+> +               *objcgp =3D NULL;
+>
+>                 stock =3D trylock_stock();
+>                 __refill_obj_stock(objcg, stock, obj_size, true);
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 36d067d6e7c0..789bd292075f 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -555,7 +555,7 @@ static inline bool need_kmalloc_no_objext(void)
+>   */
+>  struct slabobj_ext {
+>  #ifdef CONFIG_MEMCG
+> -       struct obj_cgroup *objcg;
+> +       struct obj_cgroup *_objcg;
+>  #endif
+>  #ifdef CONFIG_MEM_ALLOC_PROFILING
+>         union codetag_ref ref;
+> @@ -661,6 +661,13 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab=
+, unsigned long obj_exts,
+>         return kasan_reset_tag(obj_ext);
+>  }
+>
+> +#ifdef CONFIG_MEMCG
+> +static inline struct obj_cgroup **slab_obj_ext_objcgp(struct slabobj_ext=
+ *obj_ext)
 
+I understand why you need to return obj_cgroup** but maybe instead we
+can have a separate setter function and just return a pointer here?
+That would also help catch cases when someone wants to set
+obj_ext._objcg that was optimized away (for that the setter would need
+an additional parameter to identify whether we allocated optimized
+objext vector).
+
+> +{
+> +       return &obj_ext->_objcg;
+> +}
+> +#endif
+> +
+>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>                         gfp_t gfp, unsigned int alloc_flags);
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 5e3f53bcd0d3..48e10198a3ce 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2523,7 +2523,7 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
+>         if (obj_exts) {
+>                 get_slab_obj_exts(obj_exts);
+>                 obj_ext =3D slab_obj_ext(s, slab, obj_exts, p);
+> -               if (unlikely(obj_ext->objcg)) {
+> +               if (unlikely(*slab_obj_ext_objcgp(obj_ext))) {
+>                         put_slab_obj_exts(obj_exts);
+>                         return true;
+>                 }
+>
+> --
+> 2.55.0
+>
 
