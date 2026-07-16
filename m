@@ -4,102 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81950C44512
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37410C44515
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 14:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 712326B00D7; Thu, 16 Jul 2026 10:52:10 -0400 (EDT)
+	id 391C86B00DB; Thu, 16 Jul 2026 10:52:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E95E6B00D9; Thu, 16 Jul 2026 10:52:10 -0400 (EDT)
+	id 341756B00DD; Thu, 16 Jul 2026 10:52:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D8F06B00DA; Thu, 16 Jul 2026 10:52:10 -0400 (EDT)
+	id 258ED6B00DE; Thu, 16 Jul 2026 10:52:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2150D6B00D7
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:10 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DE13A01DD
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:52:09 +0000 (UTC)
-X-FDA: 84994929978.28.32CEC6D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 04CE720007
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:52:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaMrdrUW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id EBFA96B00DB
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 10:52:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 725AFA0125
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:35:16 +0000 (UTC)
+X-FDA: 84994887432.11.4CD0A8A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BB8B82000A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 14:35:14 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TYlxmFvG;
+	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784212514;
+	b=dqkjrUl0EBcFwSTkBucowmMSXa3XfIweYRsMFTdLBJqte8ffbzp81JEsCLlk32jmeHWT+/
+	hV8s6xdvEPjdZRVLlzSec3FMTBsQ4P7Xcvn8xK7pNUS5h2KajBfhehi/5vU3BGFWb+Lj2S
+	ShxoAczJUoz7qx6jGsMx9O5w7wNF/2Y=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TYlxmFvG;
+	spf=pass (imf03.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784213528;
+	s=arc-20220608; t=1784212514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tbCxj31fTIebgYa+mqqrVgf086GoCNJGRtKDlCIEv+M=;
-	b=HyfyAjF+8lwgyy9KYxlCzeA9uoOvQv0QYUnyJYzgAc/egJjsQstoumGakYVHApPU5GDsbE
-	LGp3vlaGeA+ttpTHWpej6XdU3O1EfBOZDBN9LdLrwqNENxidtNsWAEGxQFVXBDLuhR+wZS
-	z+pzLXFOu5ksGGBX9R/YizTTSiP1Ml4=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaMrdrUW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784213528;
-	b=0CxNBTPfbvP1nnhph5XQfVvxyMuxwLABHmIcCyRg6vkNbDzQ//EqkphAX8omxStwDjiOTp
-	e9zreDuK8rnKhpSqVCDJSxD+9x63gctIhcd/PvczU/fohMerO6NUFM3IL6mcXEFmcpgDs+
-	oxw+/a9OuNvgLmw0oa5n8yAVHXq8h80=
+	bh=owL0nd8B/GkhADkuaO+4Eg/4RAiod9IX3PPfyfCcTxk=;
+	b=7SPPlA1zJElr5EvYr8PmivK8NU0Q9pb8zzv3lZOZEX8b/+fAWIPgp7T6Q6CsGfIYys0p85
+	GwuI0g7yMAEraJcnrjY4LG+dv2N0ZZEh6lfPNkYvxqz0pVtDVgT186W8I8AQcIOJ0CYTSS
+	KBQDuNOMnzai5nsVYsLPQQgD6B+BXKA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A1AEA6001A;
-	Thu, 16 Jul 2026 14:52:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1711F00A3E;
-	Thu, 16 Jul 2026 14:52:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E54084025B;
+	Thu, 16 Jul 2026 14:35:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D751F00A3A;
+	Thu, 16 Jul 2026 14:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784213527;
-	bh=tbCxj31fTIebgYa+mqqrVgf086GoCNJGRtKDlCIEv+M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UaMrdrUWy3G9h8W138mbxDTjLhKljYComAtLwyWn7DB7CBKuy+9ZqtTDHvHzaSKHB
-	 xcnjHtvdSuhxXASY+xBBaaHvA/32ILqO1E9STq9p/xGC7PSsYVeuAyzca/upojynWX
-	 jk+XPSTwDttKoTx/lkxSGnT7W86RQNJoOVOt0QMFtEHjdw+zKZPaR3xgzvU9kSuOX+
-	 WnQPWZEmYAsbxB1PnhStHe3k9Hup2yE3reimdVygRDIeDeI9luq3aApqcwbNT2hc1i
-	 IJ/5VQKXbCGkylui3d3sFbS4CG5MztNJUb/xlvLXK3RhK0dLO1mW5bU08QzWXnZRvw
-	 P9OnfMIV6ICfA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 16 Jul 2026 16:51:09 +0200
-Subject: [PATCH v2 10/10] mm/bootmem_info: remove
- CONFIG_HAVE_BOOTMEM_INFO_NODE
+	s=k20260515; t=1784212513;
+	bh=owL0nd8B/GkhADkuaO+4Eg/4RAiod9IX3PPfyfCcTxk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TYlxmFvGLxHWeT01YkmwxlcgTHqg69p9kYqzkpfVWAyU/yPb54wA0i73F2a96tCJ5
+	 LGjAT/oucnWqtZufo0UFt0+B+76fr6OQ3DKvtHsAPZgI4AeEHZs6BCGeizthUniTQo
+	 qHp8bxcCi/YnqiiFwp+Rj1lx3ZyUg0FMr9CAAx1uyKaFWytHu84pzRLn4gMuniMeTO
+	 I5bd+ZZnWjRJKhr451fMyYjmw983hJvfVYZMiEAStxwRTZ8ncyASF1+PjVX7ipokGa
+	 A/7Bu75qciiIuHD9sO7gy1Ft33Jn+OW5xJ8Nz0scRRZ6bt6JNWxFjl+Md+Alc94CTi
+	 xMH8O2h0ExKIQ==
+Date: Thu, 16 Jul 2026 15:35:01 +0100
+From: Will Deacon <will@kernel.org>
+To: Yin Tirui <yintirui@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Juergen Gross <jgross@suse.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Peter Xu <peterx@redhat.com>, Luiz Capitulino <luizcap@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Rohan McLure <rmclure@linux.ibm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Baoquan He <bhe@redhat.com>, Thomas Huth <thuth@redhat.com>,
+	Coiby Xu <coxu@redhat.com>, Dan Williams <djbw@kernel.org>,
+	Yu-cheng Yu <yu-cheng.yu@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Rik van Riel <riel@surriel.com>, wangkefeng.wang@huawei.com,
+	chenjun102@huawei.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH mm-unstable RFC v4 2/7] arm64/mm: use PTE-level pgprot
+ for huge PFN helpers
+Message-ID: <aljsFdYEH1CvYhft@willie-the-truck>
+References: <20260526145003.88445-1-yintirui@huawei.com>
+ <20260526145003.88445-3-yintirui@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260716-bootmem_info_part2-v2-10-4afc76c73d61@kernel.org>
-References: <20260716-bootmem_info_part2-v2-0-4afc76c73d61@kernel.org>
-In-Reply-To: <20260716-bootmem_info_part2-v2-0-4afc76c73d61@kernel.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-s390@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 04CE720007
-X-Stat-Signature: c9aq99yjbfgpca33zzdnaobhbhb5figs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526145003.88445-3-yintirui@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1784213527-114169
-X-HE-Meta: U2FsdGVkX1/PZhmRLj6cXc6kM99T8fQuILi+Lv2k7xIvzmBOifWwoAEUPRGpkWhUBK869PKSVVrXnIEIPXKjf95gVbVrwuiWt8kL6zIWNx5eUQDMQW7ZQlqpK1vyvJ1Vc7OS0QePUe+OSqt/wk/QQIT431+8sU79deNuTqr8WhMu9uADQkTdKfhpVwRZCuCvkY9NVC3vXBB5pliQV+H4vP7XJ6EBVNFI8QQOQRipY9f6wXYZ1of8zaqZRZ43Q/iwr1E7QI6lI4PoCT7Hr8ViRdA9/UmHDrwnKV9+RBlCUbnH+iXCRck9AhmTS5n851GIyKeNQm2TbedAlFFREgxI6ni/LrCck0jtGoPFBifH2nFlEAtDkVrVOaStyw+5S7G6Rqu0oP+/vHZubniCjeHOypBY0b7oAjUN4vDp06KAI3X7TmPBV7d85FQa5tyxI9sn9cyX1zUB74fwmcguWb7Gk+pTht/Twoa2UUePBHz2hZ3RliTTAOY9iB8RIuYAIvDADMIC3xy5jtNHC40HOFdA58oaPdlqkqhYQkpO4uf048QD6KweIvkyu5SEVu2/yum+x9kyNJzDD1ff9UsDzy65RwRRmiHuEkuX9eHUcYP93Bt8KBmtipvIjKPfKrIN4JYqGmZgBuyqfIE1WUO/6xlYuHAIh4bidnd78oRaLMPkdas+KAQZK5VH4cp7ip109Fp/am1/I2dkN8tiapg8ZrxZ6qJ9ZCbud+wdOiL/c0+YouYNAtUHoQABVfi7mJsryrrBMNpqPGdcalZ9r3slNcI55lHYEHu3Dqd/5UitA30IpjvFJF9MF4Fc8jYN7jwY+o7S+UfUnPrRx2ZyNleVDp5iYOSs0h/ilsUNjRlvtMDJCDvKUxnett3OCkUBiNB6cPG7OyfERVee/ZUHOlewfPqkOkAa06q3G4eraJWptMTKSy4Gusz0FJz/UZ915GiroBxbm7mBD69tJstkjdd6yuY
- rdEYhaGP
- vR9Ze9UJqxk2hZNvCb0uFSMJcfQTYdVoIb8/VagJmK6FtWBU4gRQ5ahidR5iIKxS2riD/p2RbslHLjMwlx2+RH/iaSiHaAFFRAU0D9N+5uqBVTqJfOBRZv1ZNl10pAegWKJSNIvIJ+vKQvCPRk/vsvVPDFsQ9nDo/xjdO9ibTNGee60UVHTjFwWJkL3g7keMe53l2AO4ruM/PzlDxna5kHGad+l6wJN3vVqO14lgyTeEM2ehgII6KapCBkK0kd+A6hYEd3PeOeFUW9R1ThBHKl25PjPZMPEwK/Q+CLfUSvuFjkn99i0oimvLjIQMB606VuYPw
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BB8B82000A
+X-Stat-Signature: dj8sp7wyib6i1xosmoc8je8n1e1r58wk
+X-HE-Tag: 1784212514-781189
+X-HE-Meta: U2FsdGVkX1/kO/6x6zLU46cTNu41kialSiM28QCdCwMKeCRvDINWw2JBNEOodLmNrGZ1hE+n+jHDFHoIPmldVl37h5x6OiTHR5COGWuN7PgNKZdxl/4XaAKUkKhUAEhJObYlqyxQOAf+26O/cp0tmgH+91FHRlZ3732NWCG8+w8n2yVlsuBtMN5gC4akmYXRqEu6OXTGdxY98Ajnqj47GazWyer9u1+88/8b+LuEFmLBxMGRk/dOHHG9c/RLvEDFTURUP3JpzjUEedkEcbn7ucUn3xPnDLbdvLM8a/f7t0Vgo5fyDrSbd3NOhX4Mv+r++/G/OgEi9DAxpaQAHhZntZTULT3ke/dbWUpria9nV49kQTqkeLxIroOtBsNcdmQTsM4qCx+FNtpl7I58gu2fA5/UX4NPW8pl95+fSF/3UHxr6LrnPLc5ZeLkpA5hdcdOS67sjgJ745jQAfI/kl+ytSIyE8PdpkfCA/AWayw5yU/9wH1T8RsmN1vp9EIk5q7n9r2VVy7oRTiheCSGEnZv3X88r2RCrFd0BB9cpS9CX+vvOyDMuGvpJGnF8xPoYpyj0jDfb17npMXjliEd2PE9UD/RBpPsKEwgKDpA8T0qFKwrHOdvXdIKdfCVeLcB1sx3p2WsbxFNEpASDQeBQLtr7Tp1aBLosA8VF+e+2Emv5VhN/x0bSKrTy9CP9uZ6TaC6ODmT402utNabr13j+ywkAZ9Qww+Pd6X0AnvfobZX3HyGqaVYkxeqeZ9nicHwwUrdjNF1jUbwzZCeAvIwPA1ChWiLCY03jaYxR54J5JRv9JymuD0nS6BDTvjLI1TN5UO26LzpBdSnP0t4A3lAQLbHPyDKJX8KDxt2ASRsOgqLzVrZr/w/+sVqhdZP5scPl1dc6Fsby1TdZ7MWiSNtdkvoeVLNp7OOnJJUiXFQ5a5ijLdjICkYH+NJgsZm5oaqL9Iehl8rKGYZ2zJaZKeg4/i
+ 7c/Schhk
+ hhnjxM2e1ELUHJFJIFZlzEmKA+0Ph1MbzhUwKek9II2nCmRs6zhhxVcU8JSDr7m1Tsvh3UYq+dkLHoNxN3baj+Ay1WtQ74fPb6l7WFYa0IpUWMuJPVrH4sM1GPfod6xrXOIgqDSHIZI7hQCWrxsEWe/Z/PLa15g/9hU/oJYDzhwL8f1OXAWwDpcY1e94VKrVv0sj9UXJsDufMIl141WjEi+kyZbXKaAC4UYWc0Iu0C98H3fVxACB4hs01Et+yLesyOgyU7VbapUq1L574DgiL8QpUyamKTRLrlEf5A6s6MJPy5Z06Lw0EUqYm305N2bWShx30CxWsJ3fhQef4TrDXgMp1VzTx/YcKa/kmHe/6cdpxOYVFw1O3FsIrIuHzxfBWnY1FoDdXwNks132O4L0aKsAGog9tyYJls3U7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,237 +132,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The whole infrastructure is unused now. Let's remove the config option
-along with mm/bootmem_info. + include/linux/bootmem_info.h.
+On Tue, May 26, 2026 at 10:49:58PM +0800, Yin Tirui wrote:
+> Make the arm64 PMD/PUD PFN helpers use PTE-level pgprot_t as the basic
+> format.
+> 
+> pfn_pmd() and pfn_pud() now translate PTE-level attributes into block
+> entries. pmd_pgprot() and pud_pgprot() translate block descriptor
+> attributes back into PTE-level attributes.
+> 
+> Remove mk_pmd_sect_prot() and mk_pud_sect_prot().
+> 
+> Signed-off-by: Yin Tirui <yintirui@huawei.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h | 48 ++++++++++++++++++++++----------
+>  arch/arm64/mm/mmu.c              |  4 +--
+>  2 files changed, 36 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 4dfa42b7d053..c3ee12e14f86 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -511,16 +511,6 @@ static inline pmd_t pte_pmd(pte_t pte)
+>  	return __pmd(pte_val(pte));
+>  }
+>  
+> -static inline pgprot_t mk_pud_sect_prot(pgprot_t prot)
+> -{
+> -	return __pgprot((pgprot_val(prot) & ~PUD_TYPE_MASK) | PUD_TYPE_SECT);
+> -}
+> -
+> -static inline pgprot_t mk_pmd_sect_prot(pgprot_t prot)
+> -{
+> -	return __pgprot((pgprot_val(prot) & ~PMD_TYPE_MASK) | PMD_TYPE_SECT);
+> -}
+> -
+>  static inline pte_t pte_swp_mkexclusive(pte_t pte)
+>  {
+>  	return set_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
+> @@ -628,7 +618,13 @@ static inline pmd_t pmd_mkspecial(pmd_t pmd)
+>  #define __pmd_to_phys(pmd)	__pte_to_phys(pmd_pte(pmd))
+>  #define __phys_to_pmd_val(phys)	__phys_to_pte_val(phys)
+>  #define pmd_pfn(pmd)		((__pmd_to_phys(pmd) & PMD_MASK) >> PAGE_SHIFT)
+> -#define pfn_pmd(pfn,prot)	__pmd(__phys_to_pmd_val((phys_addr_t)(pfn) << PAGE_SHIFT) | pgprot_val(prot))
+> +static inline pmd_t pfn_pmd(unsigned long pfn, pgprot_t prot)
+> +{
+> +	pmd_t pmd = __pmd(__phys_to_pmd_val((phys_addr_t)pfn << PAGE_SHIFT) |
+> +			  pgprot_val(prot));
+> +
+> +	return pmd_mkhuge(pmd);
+> +}
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- MAINTAINERS                  |  1 -
- include/linux/bootmem_info.h | 89 --------------------------------------------
- mm/Kconfig                   |  7 ----
- mm/Makefile                  |  1 -
- mm/bootmem_info.c            | 72 -----------------------------------
- 5 files changed, 170 deletions(-)
+There's a slight potential difference in behaviour here, in that the old
+mk_pXd_sect_prot() helpers would always return a pgprot_t with the valid
+bit set, whereas pXd_mkhuge() preserve it from the input prot.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d19822d574fd4..9a67ae0f7865e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16877,7 +16877,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
- F:	Documentation/core-api/boot-time-mm.rst
- F:	include/linux/kho/abi/memblock.h
- F:	include/linux/memblock.h
--F:	mm/bootmem_info.c
- F:	mm/memblock.c
- F:	mm/memtest.c
- F:	mm/mm_init.c
-diff --git a/include/linux/bootmem_info.h b/include/linux/bootmem_info.h
-deleted file mode 100644
-index 486acc6127039..0000000000000
---- a/include/linux/bootmem_info.h
-+++ /dev/null
-@@ -1,89 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __LINUX_BOOTMEM_INFO_H
--#define __LINUX_BOOTMEM_INFO_H
--
--#include <linux/mm.h>
--#include <linux/kmemleak.h>
--
--/*
-- * Types for free bootmem stored in the low bits of page->private.
-- */
--enum bootmem_type {
--	MEMORY_HOTPLUG_MIN_BOOTMEM_TYPE = 1,
--	SECTION_INFO = MEMORY_HOTPLUG_MIN_BOOTMEM_TYPE,
--	MIX_SECTION_INFO,
--	NODE_INFO,
--	MEMORY_HOTPLUG_MAX_BOOTMEM_TYPE = NODE_INFO,
--};
--
--#ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
--void __init register_page_bootmem_info_node(struct pglist_data *pgdat);
--void register_page_bootmem_memmap(unsigned long section_nr, struct page *map,
--				  unsigned long nr_pages);
--
--void get_page_bootmem(unsigned long info, struct page *page,
--		enum bootmem_type type);
--void put_page_bootmem(struct page *page);
--
--static inline enum bootmem_type bootmem_type(const struct page *page)
--{
--	return (unsigned long)page->private & 0xf;
--}
--
--static inline unsigned long bootmem_info(const struct page *page)
--{
--	return (unsigned long)page->private >> 4;
--}
--
--/*
-- * Any memory allocated via the memblock allocator and not via the
-- * buddy will be marked reserved already in the memmap. For those
-- * pages, we can call this function to free it to buddy allocator.
-- */
--static inline void free_bootmem_page(struct page *page)
--{
--	enum bootmem_type type = bootmem_type(page);
--
--	if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
--		VM_WARN_ON_PAGE(page_ref_count(page) != 2, page);
--		put_page_bootmem(page);
--	} else {
--		free_reserved_page(page);
--	}
--}
--#else
--static inline void register_page_bootmem_info_node(struct pglist_data *pgdat)
--{
--}
--
--static inline void register_page_bootmem_memmap(unsigned long section_nr,
--		struct page *map, unsigned long nr_pages)
--{
--}
--
--static inline void put_page_bootmem(struct page *page)
--{
--}
--
--static inline enum bootmem_type bootmem_type(const struct page *page)
--{
--	return SECTION_INFO;
--}
--
--static inline unsigned long bootmem_info(const struct page *page)
--{
--	return 0;
--}
--
--static inline void get_page_bootmem(unsigned long info, struct page *page,
--				    enum bootmem_type type)
--{
--}
--
--static inline void free_bootmem_page(struct page *page)
--{
--	free_reserved_page(page);
--}
--#endif
--
--#endif /* __LINUX_BOOTMEM_INFO_H */
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 592003a258bad..169a3ba12a255 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -509,13 +509,6 @@ config EXCLUSIVE_SYSTEM_RAM
- 	def_bool y
- 	depends on !DEVMEM || STRICT_DEVMEM
- 
--#
--# Only be set on architectures that have completely implemented memory hotplug
--# feature. If you are not sure, don't touch it.
--#
--config HAVE_BOOTMEM_INFO_NODE
--	def_bool n
--
- config ARCH_ENABLE_MEMORY_HOTPLUG
- 	bool
- 
-diff --git a/mm/Makefile b/mm/Makefile
-index 4fc713867b9bd..52428a3d3ae14 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -141,7 +141,6 @@ obj-$(CONFIG_MEMFD_CREATE) += memfd.o
- obj-$(CONFIG_MAPPING_DIRTY_HELPERS) += mapping_dirty_helpers.o
- obj-$(CONFIG_PTDUMP) += ptdump.o
- obj-$(CONFIG_PAGE_REPORTING) += page_reporting.o
--obj-$(CONFIG_HAVE_BOOTMEM_INFO_NODE) += bootmem_info.o
- obj-$(CONFIG_GENERIC_IOREMAP) += ioremap.o
- obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
-diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
-deleted file mode 100644
-index 0fa78db7fbc0b..0000000000000
---- a/mm/bootmem_info.c
-+++ /dev/null
-@@ -1,72 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Bootmem core functions.
-- *
-- * Copyright (c) 2020, Bytedance.
-- *
-- *     Author: Muchun Song <songmuchun@bytedance.com>
-- *
-- */
--#include <linux/mm.h>
--#include <linux/compiler.h>
--#include <linux/memblock.h>
--#include <linux/bootmem_info.h>
--#include <linux/memory_hotplug.h>
--#include <linux/kmemleak.h>
--
--void get_page_bootmem(unsigned long info, struct page *page,
--		enum bootmem_type type)
--{
--	BUG_ON(type > 0xf);
--	BUG_ON(info > (ULONG_MAX >> 4));
--	set_page_private(page, info << 4 | type);
--	page_ref_inc(page);
--}
--
--void put_page_bootmem(struct page *page)
--{
--	enum bootmem_type type = bootmem_type(page);
--
--	BUG_ON(type < MEMORY_HOTPLUG_MIN_BOOTMEM_TYPE ||
--	       type > MEMORY_HOTPLUG_MAX_BOOTMEM_TYPE);
--
--	if (page_ref_dec_return(page) == 1) {
--		set_page_private(page, 0);
--		free_reserved_page(page);
--	}
--}
--
--static void __init register_page_bootmem_info_section(unsigned long start_pfn)
--{
--	unsigned long section_nr;
--	struct mem_section *ms;
--
--	start_pfn = SECTION_ALIGN_DOWN(start_pfn);
--	section_nr = pfn_to_section_nr(start_pfn);
--	ms = __nr_to_section(section_nr);
--
--	if (!preinited_vmemmap_section(ms))
--		register_page_bootmem_memmap(section_nr, pfn_to_page(start_pfn),
--					     PAGES_PER_SECTION);
--}
--
--void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
--{
--	unsigned long pfn, end_pfn;
--	int node = pgdat->node_id;
--
--	pfn = pgdat->node_start_pfn;
--	end_pfn = pgdat_end_pfn(pgdat);
--
--	/* register section info */
--	for (; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
--		/*
--		 * Some platforms can assign the same pfn to multiple nodes - on
--		 * node0 as well as nodeN.  To avoid registering a pfn against
--		 * multiple nodes we check that this pfn does not already
--		 * reside in some other nodes.
--		 */
--		if (pfn_valid(pfn) && (early_pfn_to_nid(pfn) == node))
--			register_page_bootmem_info_section(pfn);
--	}
--}
+I couldn't find any places that cared about this, though, so:
 
--- 
-2.43.0
+Acked-by: Will Deacon <will@kernel.org>
 
+Will
 
