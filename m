@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC4FDC44511
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9CE0C44512
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Jul 2026 15:34:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2B626B014C; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
+	id D1D2C6B014D; Thu, 16 Jul 2026 11:34:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDBB66B014D; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
+	id CF92A6B0150; Thu, 16 Jul 2026 11:34:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF20A6B014F; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
+	id C074D6B0151; Thu, 16 Jul 2026 11:34:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9956B6B014C
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:34:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6795CA0079
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:54 +0000 (UTC)
-X-FDA: 84994490868.15.EE80FD3
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8FBBFC0002
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:57:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=scY77mWO;
-	spf=pass (imf10.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 937006B014D
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:34:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88ACCA006A
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:54:37 +0000 (UTC)
+X-FDA: 84994482594.24.5DF1D24
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 938161A0002
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 11:54:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=MJTWhNQe;
+	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784203072;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	s=arc-20220608; t=1784202875;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rmpnw2WuwVbYt2i5mxyglNWbYuNa8vu1yBDcpvt+bw8=;
-	b=LY9lOAw6YED0GfXMgD1IOe4ZYCUOuJmfIffbit5mAXArAISk7Yr/tuo6S8rnjMXpoFC6U7
-	auxSOyi1w59r7n3zf/ZBVNpITws0GcP7S/llyjLZ488f/bJa7mEuq9wptjxMn2FZ912ehG
-	GMLARsYfi7Ltc7qilbssEOezUD30rYo=
+	bh=Zb47wRi4sOHO/8LTR4EG3esNvOTJsaH8noXff1aeIwg=;
+	b=6BUS/Tb/fpvgLS3d4Hmlp4u1HKE/FwFMkhnen3iIpYHPuqnCTJFrS3jm1DrCcsNVvs27/J
+	rt+tY40vKMyo3uNMT+08HIW+QuLpg14QmifET81yp9aeS+LsmhYMwQCSs3zAMwcVJAwOlv
+	4pW8W17ndC7pmeDjEZKr1/b2t96Ufo4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=scY77mWO;
-	spf=pass (imf10.hostedemail.com: domain of gaikwad.dcg@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=gaikwad.dcg@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=MJTWhNQe;
+	spf=pass (imf19.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784203072;
-	b=hLrvag3wvk2cTkTqNgvKUg85r+cLB/jjSaEA29BFheca3bsmwSEJG2E0sXOAh4QlRFLTtv
-	mk+9P++5IiQUjYiU+0vGpCr4ipIGPWnDsXQUPQHRtmwW+gp/dwIhsreh5hXWgIOMnkjtj3
-	Vn0xnHskCBuTFqNIBsR9EGaCtZ1lPI0=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-384c94c9414so2670161a91.3
-        for <linux-mm@kvack.org>; Thu, 16 Jul 2026 04:57:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784203071; x=1784807871; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rmpnw2WuwVbYt2i5mxyglNWbYuNa8vu1yBDcpvt+bw8=;
-        b=scY77mWOZU5MJ6CDym2LowwXCzH9mgS0HSK1v1rfU8oAX7rY8LuwopGfWnmQwIcD2A
-         5FeowsP6zZoNl8fnNzIKr5uME9HMMq5OMMDusE8HGMQYq9lodUemgYdJNjpXGZ8Bu5mU
-         Errjm95CZpLRenW3LUsuEwu6jcevMuMNIeh88aefsMvSaxUifjSKVpdkpfnoeL8E3onB
-         lvxTyS8dLzHsFGOXhuc2p6yKqoiv8aNG9fwIQm24FwNUuHVok0juV1r7JqyXB+HXndow
-         hSvl93RXdfdw3ExgwHRdM5YKl9QKC9+ScgUbOZuk++jmu7hXuvklTi4BonYHb8UzMjN1
-         Sw7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784203071; x=1784807871;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:sender:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rmpnw2WuwVbYt2i5mxyglNWbYuNa8vu1yBDcpvt+bw8=;
-        b=m4GhdJGnejYOV9aXcLSik01spD1nrsRcM9NmsErX0nTB4LPvPTiFQwbSq+ohF4xtFO
-         MALvsaPsiu53dZTbh4YNnlCizDr/e6ERsm4YdbHgblf4YZ0kfu5cKE6nXDhU4KYsW6sw
-         cKEvZBw6uRTgy1Q47VjRuzJ5HvB180Zlt8xJ5p12EtCuDgH1G+vBWS2ZQWbPIlomJGmB
-         ioJcUmzeLAUyVnskjLBsVjmzJw9Tcmi0i3/866f7vV0CeZkHErdYjpupdgrhyZN7GsrA
-         0d/3mbDKEkhewKULGKfRFd9sn6KpxRjuvfW96WuU3wd7KiL7W/22ZNlPwlkZ03lwfqfC
-         aM9A==
-X-Forwarded-Encrypted: i=1; AHgh+RqtR0PpF9V/ggERSbQP+xYbFE9ycuaG3NEGTGyWadhEJ75lRnAKQRI3/o97rOz83Vt1ApzJOKYYlQ==@kvack.org
-X-Gm-Message-State: AOJu0YxAHMNa9OWkcAt4Xoi8MPZzkctS/Udebl3A+p+ynWjZBFoFjHFY
-	jGqSIOVsCY5syKEZPxMORSVHNpxwJrUGhy5XcaKq8eJTpnkCUrkMK+KN
-X-Gm-Gg: AfdE7cnq9DzFFKOgt4LOer5bpn5JB+rRZez12raEG+0g7uvGjLbw0hF3pj8FkZWENlN
-	LvmFrGV16h0/Qb2AvtamRSlPWHitpNEaQbsdIJpcMY8oJOGqZEmAndTCZor0euZlSDNGWw0AYon
-	r8pJFwoXCmxKtrZEJ0VPR9pHJgGcSLNxQ0FpCQPS31O98zG62amzMsczX6FSeF8S9CbXuPF2bQy
-	SDO+be6BjSrCE3+82GQGnE+jA5ydXJeuYFb5QTeK7I7oqfGdJPmS0zNZMfkQmxil3AizXF/g99p
-	wf8gmS5OCY3W/Wk5mXQPMw29b6NMlky8RGtvHAISt5IVL2Ez9b1Y+qmB7XIU6CuGN6p6TKoewdC
-	AopWJlQWv6PQ23y8CiQSw4Ot5XAOuLAvKhNqJVWJb1CuqSny1VhO+EUP+8L1B4qOSJznfwfMqyl
-	DPsOE45UOLFdRH5hSjNRLHjX+a/ild2rt0oHz4kDLg
-X-Received: by 2002:a17:90b:1d0e:b0:38e:250b:122f with SMTP id 98e67ed59e1d1-38e250b1428mr6967576a91.16.1784203071478;
-        Thu, 16 Jul 2026 04:57:51 -0700 (PDT)
-Received: from localhost.localdomain ([2406:7400:90:2db1:9c31:f107:8086:4204])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3140e6ebe98sm10920690eec.26.2026.07.16.04.57.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 04:57:51 -0700 (PDT)
-From: deepakroag <gaikwad.dcg@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] feat: grow vrealloc vm_area mappings in place
-Date: Thu, 16 Jul 2026 17:27:32 +0530
-Message-ID: <20260716115734.80909-4-gaikwad.dcg@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260716115734.80909-1-gaikwad.dcg@gmail.com>
-References: <20260716115734.80909-1-gaikwad.dcg@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kt81hmf6ecptrdehak8b8zu8zq7r1gne
-X-Rspamd-Queue-Id: 8FBBFC0002
+	t=1784202875;
+	b=wf1oyPwMS8neNoIlE1h+cKzB000w3JDA29B+AQHD2Q7BZW42qV/h0zRZfe8rSah4X7hFkF
+	rMhKMziAxPF8Ox0xsEzPoBCwcXH67nQSDbCGb/EBw0coNxBK6VpnuMhloZ6Yos7I9Fbzru
+	X8QOirCKXHO+NxJrSycCNdoWj/a3UP4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1784202868; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=Zb47wRi4sOHO/8LTR4EG3esNvOTJsaH8noXff1aeIwg=;
+ b=MJTWhNQew6v0eZvRbbfNeS+Vp8cKNtK1qj+MRg5zVU2UWui8OZ2/RLCTrziOi9i3k90KNG
+ NP/yOlVKqVw+39ymBCgo2aLs9AhG+OAf7goiBaImNUm2ne4HQqk5MVuDPnpM3SJP1RkK5m
+ Ys2DQNtsHrjrxCcSjraHu1SeEABHatb08cml5TFKmLwwWMrKMNycFh3oTe5x7MzQ22jkSG
+ 4oXA6w43Lorz0Xg/AI2qqj/8PSrMsF1DL/BVc/Mn+j3dh7XqbCSkGI6t9ceQEObXHXgpmq
+ jNYnHlTtlTxPG4gM+TQl5Ju9wKjY7wNtjCLRVg8MWbOKIodqH45riJ8H11AfvA==
+Subject: Re: [PATCH v6 6/8] string: introduce memcpy_nt() helpers
+User-Agent: Mozilla Thunderbird
+From: "Li Zhe" <lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <20260709112520.24857-1-lizhe.67@bytedance.com> <20260709112520.24857-7-lizhe.67@bytedance.com> <7bfb13a0-8f4a-4f4b-9df4-da842169f8f1@linux.dev> <abd1f6da-a6f4-40ed-923f-94201bba4690@bytedance.com> <80A0AAC8-DC3C-4FB7-8CE3-EF2EC96EB47F@linux.dev>
+Message-Id: <fb1795f0-7dd0-4518-9760-2f14cc3107f8@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Date: Thu, 16 Jul 2026 19:54:05 +0800
+Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
+	<akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
+	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
+	<rppt@kernel.org>, <tglx@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+26a58c672+ba8062+kvack.org+lizhe.67@bytedance.com>
+In-Reply-To: <80A0AAC8-DC3C-4FB7-8CE3-EF2EC96EB47F@linux.dev>
+To: "Muchun Song" <muchun.song@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784203072-984932
-X-HE-Meta: U2FsdGVkX18vW1/uFLhu4ixRVIZf1UJKclMRrAlm01GzX3jwuL1zhUzjPk/OKtJ4K2ivt5bgFbLhbCQKTWyQnvcHsoj7Rp0g5R78vbUkkZwyc3nQRLXTvoIibN+GRKMF523assIX/bpFfx10vkcbEjJbNlA0/Ei/a18WN6ju6KPY8ycRkFAg1wPgIWP1kYHHtH93v/LYJEQCEDoY366qXX/VWI4+jxScXZzP+mIODeDnZY3mB1eSpnKPfuANCiVk5iVBA6ZRtjlFkNg+VnTJKfG8zsJqk5kRUY/tP56dShmlYTMt3iE1TbjZ1qbHt3bWEo2YF7vxwLJsBKnnbikhxqk6Gz4buymACU9CweOOTEZMHGpYvJ8W4aVHBqzyYwK8UL7rIujSOJzTJOvdV/kDDg22pzDiD/ZfEUnlYEXZUXFGXyBMptAxXvKjH00pB8QruEI4KW9zG7uC/qhrcQwmpiIi146htrUZUhqKL6n7u8PXvaLRxUb2ROtoCJnUaxwFNJYm5pixPowiRvKI0EljCEKiJBXBE1uZHUOt8hOAkGDl2U+Tzg4uhheqmb325thVade2BI6Jq3zI10AmR93jU1+sYoMEkoB7EoeZSPmuOHJkErfrbv17dpJBr75gxyN11LOXfcUHp+uAwiSkxgSK5SUFsclozvb7CJ65UtLYMkCZ64qcbD/JWUASAVzzyj9EiuRv+zeRVgbxM/KKWb6/2JSEMB2VBcKeg7j459avVUjtvF+8CrqGaHTfN7MjHJa7NO+SsEZvKj3auXUR1BSRnde8+BLjUTyRtS3cU0slF7c+JQKjhBXfouu6JlP/MGvkMdDeunV/lZrj8NRUY9h/0VAVSg70dcR9RSolhlGOe4XgzBFvbABdHQ7176B9FUN2TgHJY/ZL6ZJCIlJPrRTPSVmZ+euvf7ubdDplrnF0SHR7YKAj9mN7CCWSZ7Gf3PFU8T/fMEUAog/OFq1DaLC
- uaMnNVhq
- yuJ+BrJb4sto7TaUUd+JPDAx4eU6QY6b72d4xl+oPoHXZyUaCQeKdxzsExmu74HITN3jCjQYHXnR3LyynFA5d4IceoHMKyb1BDR4htS9qbDh6X4vDX9sku4Zrv6SbEfvCj8REc2zF+8JZkLjVNyKPD2GwXq5SW57VoiTS6ePR+D9KQvqUdKGuEfZ1aPzF21HZfVTl7xqB9srqywQLbeQ+LI+ToKHYjzG2zkVOCHLy0bWL2BKsLKVsqekyD1bAW1dlaEsH+nx5MLh1rVjMvsBRtM6w6k7cSem2dus2WVf9jz09D8F340A8kIL3ha3zVFGvzIGcejHoVvm+xPH9JIhdL9Rh6zP9AO5LC4A07kHUzFdc4EJADM6ZuXqtZrcK4bxwmkGzA8B1zjRcc9/l0SGE+BcR0dt1pGRAeM7GeVl7OJ/zQdh0FfPhGk8093HpYrixBlTYJu6JhO9eACm44P499l/Ab9z9+1JVEkgvlXpazcUkhFyww3Bi4avarA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 938161A0002
+X-Stat-Signature: y648dzcg6qpr7u8itmktcsyyomctk14h
+X-HE-Tag: 1784202873-366858
+X-HE-Meta: U2FsdGVkX1/VKrs/6r1fcGRqi+csj9ht97M+8nQbbdn9A/3J0v8Iiez/PfcvuLA12h5/3AARyfQs11V6k18j0WgoFNcLan7Gj8A/Epepvr3FFrFpkss5Hbn8MLCGpH7viai/s0fKpYqN7Xx2139tKPGhlUcqeUKY15VatErVZQ/XMiCFy2xF83UyGeXpAiy+0myiDsAnkQLXWC02Dz/1HMFtCkKQJV7MknrWfA0TYMIUMAnpQQZUTw+KLw2nf3eccXqmK1Uk1V9+a7zWkYBfOhH1aHQ68wqLn1tfnNSEL4lfoAJ+goWnXh2gJGF58tURKE9ErQhhMJ4vNJpofIMBpYiWImuuk++h5Q9qFWeW4OiHwmPkvlN5LKuWsl6Q0Mj1bPTvFMlPJmu0Bz2a8B0pAvi8Cvq0c3Xtff5wG6gRArtqvmTvHhJGHMApiV2rcQZ/bzXbzwXXeRDYs/4QfxSREECProOlPf5pK9chWiV4FmG+/N/Cn8aoOfqQoL/0JwBri1Rj0Luse9f3aWhVty0Xl0dJn735kcJpIKznwF8I682ZsRfnITxP8UxWj/vK/6TwJkEaPFmIp/UaZr4utRENDtcz5O4YuLy4+LU2smQw5LXLTe2HxTRpqng/sZGUm1uMFesl7HW3pYcRdsMmZ6dHztvsHpCaehJnQp9kSnmw7D6rNUHsPUjjDF5yI4YXOl/ZLT2kv11GHWQewtOjCnScWE8WpzfgsrDk/KmIHVNr//TuJ5nPKr/sKlFyjmUpOaelHYoJ4SiyQnkXIFssI/bCA61QOLSV3631wMsTfAXXQbyc0miqxjhO55wLOLN2zWeTltra59VDNTnxJiEhAFdBLjJKiw27via39cN3boKPqkiY/NoArXU3HyY3CklbgUijS0j6Z22F2DNDoAYClAZc35UbmeeMPrMYD6QOiVyx8unIkJ/BwyVKigHVttW7W6PhvSBD7tHmsXpcmqK77xu
+ oDyBM2Es
+ 1viT4tcp/b8N8FKw5EDh6WTfjOOHeAmuPSl7ddEZoMAoIZ6r6moN+4D528ttJ3/UOIKynLjJPxAkbc3B/Eyj8/vHs7PAGxsUSQ4/WJxFngwM+4ij7CCqLBR/fc4IOG6es6Zk0OwEEJ9d60fCsTGn+2eAXaVRKrlPq5a+jfl5nYjMIUP02ORzErgvYsT1qv0YsrZRtSgr/AMzuTeEYWri9A+Ke32YjSnizx84mQ2ii1Kn+gR9UEFMr8+K0xMoQbECph3lEJJ/x5kTHoWPPBs9dLe0Wrh9MrcZClmwjJQ4XFBquVSUyEj5DPiLQWNbEptukuK9fT9d4P/2ZzB7SReVaaQOY2E94Hko63eoFuKZLo/8qKcIY+94NMvp+3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,81 +93,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Allocate and map additional pages at the end of an existing vm_area when
-vrealloc() grows past mapped pages, falling back to the memcpy path
-otherwise.
+On 7/15/26 5:33 PM, Muchun Song wrote:
+>
+>> On Jul 15, 2026, at 14:18, Li Zhe <lizhe.67@bytedance.com> wrote:
+>>
+>> On 7/14/26 5:24 PM, Muchun Song wrote:
+>>>
+>>> On 2026/7/9 19:25, Li Zhe wrote:
+>>>> Introduce memcpy_nt() and memcpy_nt_drain() for write-once copy sites
+>>>> that want a named non-temporal copy primitive plus an explicit drain
+>>>> step.
+>>>>
+>>>> On x86_64, override both helpers in arch/x86/include/asm/string_64.h
+>>>> using the usual self-macro pattern, next to the existing
+>>>> memcpy_flushcache() backend that memcpy_nt() wraps. The x86_64
+>>>> implementation maps memcpy_nt() to memcpy_flushcache() and uses wmb()
+>>>> for memcpy_nt_drain(), because that backend issues MOVNTI stores and
+>>>> callers need an ordering point before later normal stores that depend
+>>>> on those writes becoming visible.
+>>>>
+>>>> include/linux/string.h provides the generic fallback under
+>>>> memcpy_nt() as plain memcpy() and leaves memcpy_nt_drain() empty, so
+>>>> architectures that do not override memcpy_nt() do not pay an
+>>>> unconditional barrier. Architectures that later grow a specialized
+>>>> memcpy_nt() backend can override memcpy_nt_drain() with whatever
+>>>> drain primitive their memory-ordering rules require.
+>>>>
+>>>> The immediate user is the ZONE_DEVICE template-copy path. It populates
+>>>> struct page descriptors in a write-once pattern, so a regular cached
+>>>> memcpy() can incur avoidable write-allocate traffic and cache
+>>>> pollution for data with little near-term reuse.
+>>>>
+>>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>>> ---
+>>>>    arch/x86/include/asm/string_64.h | 22 ++++++++++++++++++++++
+>>>>    include/linux/string.h           | 23 +++++++++++++++++++++++
+>>>>    2 files changed, 45 insertions(+)
+>>>>
+>>>> diff --git a/arch/x86/include/asm/string_64.h
+>>>> b/arch/x86/include/asm/string_64.h
+>>>> index 4635616863f5..6cb9e0ac7fa0 100644
+>>>> --- a/arch/x86/include/asm/string_64.h
+>>>> +++ b/arch/x86/include/asm/string_64.h
+>>>> @@ -4,6 +4,7 @@
+>>>>
+>>>>    #ifdef __KERNEL__
+>>>>    #include <linux/jump_label.h>
+>>>> +#include <asm/barrier.h>
+>>>>
+>>>>    /* Written 2002 by Andi Kleen */
+>>>>
+>>>> @@ -100,6 +101,27 @@ static __always_inline void
+>>>> memcpy_flushcache(void *dst, const void *src, size_t
+>>>>        }
+>>>>        __memcpy_flushcache(dst, src, cnt);
+>>>>    }
+>>>> +
+>>>> +#define memcpy_nt memcpy_nt
+>>>> +/*
+>>>> + * Reuse the existing x86 flushcache backend as the nt copy primitive.
+>>>> + * Callers pair it with memcpy_nt_drain() when later stores must be
+>>>> + * ordered after the copy.
+>>>> + */
+>>>> +static __always_inline void memcpy_nt(void *dst, const void *src,
+>>>> size_t cnt)
+>>>> +{
+>>>> +    memcpy_flushcache(dst, src, cnt);
+>>> Why not use memcpy_flushcache() directly in device dax path? I don't
+>>> understand the necessity of introducing memcpy_nt here.
+>>>
+>> The reason for introducing memcpy_nt() is to give generic MM code a
+>> named non-temporal copy primitive, instead of hardwiring the x86
+>> memcpy_flushcache() backend into a generic caller.
+>>
+>> On x86, memcpy_nt() maps to memcpy_flushcache() today. On other
+>> architectures, memcpy_flushcache() may have different semantics, and we
+>> also do not know whether its implementation would provide the same
+>> optimization opportunity as on x86. Using memcpy_nt() lets the generic
+>> caller express the intent while leaving the backend choice to each
+>> architecture.
+> Got it. But the 'nt' suffix is overly abbreviated and not direct enough.
+> Therefore, I suggest avoiding uncommon abbreviations and instead keeping
+> things as explicit as the 'flushcache' suffix in memcpy_flushcache.
 
-Use flags (not gfp) in the in-place grow path for kvmalloc_array and
-vm_area_alloc_pages.
 
-Signed-off-by: deepakroag <gaikwad.dcg@gmail.com>
----
- mm/vmalloc.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
+Thanks, that makes sense. The abbreviated "nt" name came from Boris'
+earlier suggestion to keep the naming focused on non-temporal stores and
+to abbreviate that as "nt":
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 1afca3568..1eff71240 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4426,8 +4426,56 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 		return (void *)p;
- 	}
- 
-+	{
-+		unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
-+		unsigned int old_nr_pages = vm->nr_pages;
-+
-+		if (new_nr_pages > old_nr_pages && !vm_area_page_order(vm) &&
-+		    !(vm->flags & (VM_FLUSH_RESET_PERMS | VM_USERMAP)) &&
-+		    gfp_has_io_fs(flags)) {
-+			unsigned int extra = new_nr_pages - old_nr_pages;
-+			unsigned long addr = (unsigned long)kasan_reset_tag(p);
-+			struct vmap_node *vn = addr_to_node(addr);
-+			struct page **pages;
-+			int ret;
-+
-+			pages = kvmalloc_array(extra, sizeof(struct page *), flags);
-+			if (!pages)
-+				goto need_realloc;
-+
-+			if (vm_area_alloc_pages(vmalloc_gfp_adjust(flags, 0), nid,
-+						0, extra, pages) != extra) {
-+				kvfree(pages);
-+				goto need_realloc;
-+			}
-+
-+			spin_lock(&vn->busy.lock);
-+			ret = vmap_pages_range(addr + ((unsigned long)old_nr_pages
-+						       << PAGE_SHIFT),
-+					       addr + ((unsigned long)new_nr_pages
-+						       << PAGE_SHIFT),
-+					       PAGE_KERNEL, pages, PAGE_SHIFT);
-+			spin_unlock(&vn->busy.lock);
-+			if (ret < 0) {
-+				free_pages_bulk(pages, extra);
-+				kvfree(pages);
-+				goto need_realloc;
-+			}
-+
-+			memcpy(&vm->pages[old_nr_pages], pages,
-+			       extra * sizeof(struct page *));
-+			kvfree(pages);
-+			vm->nr_pages = new_nr_pages;
-+			vm->requested_size = size;
-+			kasan_vrealloc(p, old_size, size);
-+			if (want_init_on_alloc(flags))
-+				memset((void *)p + old_size, 0, size - old_size);
-+			return (void *)p;
-+		}
-+	}
-+
- need_realloc:
--	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
-+	/* Fall back to a fresh vm_area when in-place grow is not possible. */
- 	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
- 
- 	if (!n)
--- 
-Deepak Rao Gaikwad
+https://lore.kernel.org/all/20260607190804.GAaiXBlGO2eRcfs1oB@fat_crate.local/
 
+But I agree that, for a generic string helper, spelling this out is
+clearer. I will rename the helper to memcpy_nontemporal() in the next
+version.
+
+>>>> +}
+>>>> +
+>>>> +#define memcpy_nt_drain memcpy_nt_drain
+>>>> +static __always_inline void memcpy_nt_drain(void)
+>>>> +{
+>>>> +    /*
+>>>> +     * Order the prior MOVNTI stores issued by memcpy_flushcache()
+>>>> +     * before later normal stores.
+>>>> +     */
+>>> I also have a question here: why are we using wmb to guarantee visibility
+>>> at this stage?
+>>>
+>>> Since we are still in the very early phases of memory initialization
+>>> (specifically,
+>>> struct page initialization), since we are still in an intermediate
+>>> initialization
+>>> state, this shouldn't be visible to other CPUs anyway.
+>>>
+>>> Thanks.
+>> The drain is not about exposing the intermediate initialization state to
+>> other CPUs.
+>>
+>> It is there to order the earlier non-temporal stores before the later
+>> normal stores on the same control path, for example before
+>> memmap_init_compound() / prep_compound_head() update overlapping
+>> compound metadata.
+> For a single core, out-of-order execution is invisible to developers.
+> Therefore, I'm curious about your reasons for preserving the order? What
+> would be the consequences of not maintaining it?
+>
+> Thanks.
+You are right. My previous explanation overstated the need for this
+ordering point.
+
+For the intended ZONE_DEVICE callers added later in the series,
+memcpy_nontemporal() is used while the struct page metadata is still
+being initialized and before that memmap is published for normal use.
+The later ordinary stores to the compound metadata are also part of the
+same initialization sequence. So those callers do not need a generic
+drain helper just to order the non-temporal copy against later local
+initialization stores.
+
+I will drop memcpy_nt_drain() from the generic interface and remove the
+drain calls from the ZONE_DEVICE user.
+
+Thanks,
+Zhe
+
+
+>
+>> On x86, memcpy_nt() maps to MOVNTI-based memcpy_flushcache(), so
+>> memcpy_nt_drain() uses wmb(), which maps to the required sfence there.
+>>
+>> Thanks,
+>> Zhe
+>>
+>>>> +    wmb();
+>>>> +}
+>>>>    #endif
+>>>>
+>>>>    #endif /* __KERNEL__ */
+>>>> diff --git a/include/linux/string.h b/include/linux/string.h
+>>>> index 5702daca4326..a109b2f86ca6 100644
+>>>> --- a/include/linux/string.h
+>>>> +++ b/include/linux/string.h
+>>>> @@ -278,6 +278,29 @@ static inline void memcpy_flushcache(void *dst,
+>>>> const void *src, size_t cnt)
+>>>>    }
+>>>>    #endif
+>>>>
+>>>> +#ifndef memcpy_nt
+>>>> +/*
+>>>> + * memcpy_nt() requests a non-temporal copy when the architecture has a
+>>>> + * suitable backend. Architectures that do not override it fall back to
+>>>> + * memcpy().
+>>>> + */
+>>>> +static inline void memcpy_nt(void *dst, const void *src, size_t cnt)
+>>>> +{
+>>>> +    memcpy(dst, src, cnt);
+>>>> +}
+>>>> +#endif
+>>>> +
+>>>> +#ifndef memcpy_nt_drain
+>>>> +/*
+>>>> + * Callers use memcpy_nt_drain() before later normal stores that
+>>>> need to
+>>>> + * be ordered after memcpy_nt(). Architectures without a specialized
+>>>> + * backend can leave it empty.
+>>>> + */
+>>>> +static inline void memcpy_nt_drain(void)
+>>>> +{
+>>>> +}
+>>>> +#endif
+>>>> +
+>>>>    void *memchr_inv(const void *s, int c, size_t n);
+>>>>    char *strreplace(char *str, char old, char new);
+>>>>
+>>>> -- 
+>>>> 2.20.1
 
