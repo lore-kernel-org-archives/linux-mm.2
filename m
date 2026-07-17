@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB9DFC4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:04:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8DFC44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBC786B00B8; Fri, 17 Jul 2026 13:04:37 -0400 (EDT)
+	id 8EAE26B00B2; Fri, 17 Jul 2026 13:14:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6C356B00CA; Fri, 17 Jul 2026 13:04:37 -0400 (EDT)
+	id 89B4D6B00B4; Fri, 17 Jul 2026 13:14:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA9B26B00CE; Fri, 17 Jul 2026 13:04:37 -0400 (EDT)
+	id 73BE86B00B5; Fri, 17 Jul 2026 13:14:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A38BC6B00B8
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:04:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DDE8E80180
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:56 +0000 (UTC)
-X-FDA: 84998515392.01.B1D2740
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 588E140003
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E1VkfEE7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 495A56B00B2
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:14:16 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF4AEA01E2
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:14:15 +0000 (UTC)
+X-FDA: 84998916870.26.E17EED4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CC16D1C0002
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:14:13 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XMgmXh8v;
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784308454;
+	b=OKw6ZqJ1IWAGUL1wGXmYc0LYxOdx7A+E80Wd5cG367Ro8ByRm+350NHvdXU0gnwQr5eJfy
+	ojpaJUWiCV7fUxYO7uQ9FqUC6z9yNJubZePNoVljapFsPOF7tGqtIa/hq0vcgwK9DdddRv
+	DsFy55kcx/MfongavvSpjf4EHfyLS/0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XMgmXh8v;
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784298895;
+	s=arc-20220608; t=1784308454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jqlH4wneWbMAf8JjBiLX1bTl/sVQqX7skPWoj8yoesY=;
-	b=cvgf0UbfGEa+IOQTU9CptoNMmTvaR9j1JfV1h6qqeBNsXunpKUmpeHUU8Rh1h6FqvaInfL
-	jxOc6VHaASyZeAx4EHzOfwuQfLHf2vkQMpWIcJy3acLeJizV3f7zeEodx72YuzXegVVyv9
-	BkSly346lYjOCCSL709u6yMmDdKFS4Q=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E1VkfEE7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784298895;
-	b=pcuc7AHuR/ou8aIctd3r2u34HlHOGDqNxQ92+3V7Kf2AmJdMGU/yvsWVeo+f0g+o0ZbzmC
-	UKJQwXNrsvdEa5V+hzQaqN3AhkCSg2mQbrYtqT1ABwHxzLl/rhTlD8H7B7mfZuSquHtJ+5
-	AZBqMG7iU2f5ahhmB7P0MePUGzvJpAI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7738160A59;
-	Fri, 17 Jul 2026 14:34:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50911F00A3D;
-	Fri, 17 Jul 2026 14:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784298893;
-	bh=jqlH4wneWbMAf8JjBiLX1bTl/sVQqX7skPWoj8yoesY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E1VkfEE73Ld52yTp8XyAQnrJXqTiZfuPBrpHJg+wQgO+3sNQ0Iyu8PFiSyJKuDbfW
-	 3LWPnW+dMyu7SVgLfgHiFoaZGVFY8xNd8VJu2HvUcIds2AT64Af4X2wpvGjjAIlYWr
-	 CLrl4T0i7m2CYniO15KQb6ZXzke4uxN7QXT/oY2PnJYdnfys+nwsgv85juPh4Gh1Dl
-	 ZGuVYrxhMsoNjjfaeFcQpFodyLIDvCoIsJDoyIgBeDLnLsDS68WGxSyzPhsTDCixx5
-	 BFb0yKZ04XxR4H3Ii52aoGoEW7pZF983iz5p3Rmu7pdCgZ9Fi8s6OdJ93u6AalQbzP
-	 r6ZQ95HO5A2CA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 1/7] mm/damon/core: initialize damos->last_applied
-Date: Fri, 17 Jul 2026 07:34:38 -0700
-Message-ID: <20260717143445.91207-2-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260717143445.91207-1-sj@kernel.org>
-References: <20260717143445.91207-1-sj@kernel.org>
+	bh=r6oit8yhuXpcPuY80F3MemWaYa5clX84cYfxKDBIo3w=;
+	b=VjPobRlrViBjDgN45VrXSAbKm552Ihhmp4uD4jm6WxXbrXyAwlOxlBC4FgACDnc64RVlVc
+	kHvqrxrwXBeVpf8ggIFpRnISUjT7xnO0FBZ9Fxk2+w58fg+nhg513ex19it+TeBwr+FSIh
+	QBI2Ey2NjxPIq1kxBGue5JfbyernBkU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 951EF1476;
+	Fri, 17 Jul 2026 10:14:08 -0700 (PDT)
+Received: from [10.57.85.89] (unknown [10.57.85.89])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3DA383F7B4;
+	Fri, 17 Jul 2026 10:14:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784308452; bh=fKLHwWDsT70IOS55zp9+fmUR6rNub3TYSs84mX6aGQY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XMgmXh8vex+m4K9cZzlZq5WNmdeN7osWAy3/rAp/i38LfeLs3WdrJ/U9pQyVJkstU
+	 krj44fzOAE2k2Jfrk88DCDtSb3O3ZifhZP16RZY6pDcDUzZfEFEC7pjIHcz6BHWctT
+	 sImLifnPM3U8WdiTuuoESC7WmL5WTokCGSjsWXRY=
+Message-ID: <b44e071d-7c9d-4e7e-a84d-4af3499a5a05@arm.com>
+Date: Fri, 17 Jul 2026 19:14:02 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1i938bkysi4hao647t6uhn1kguub57ws
-X-Rspamd-Queue-Id: 588E140003
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/4] mm: use proper PTE accessors in madvise() and
+ mremap()
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, Chris Li <sparse@chrisli.org>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-sparse@vger.kernel.org
+References: <cover.1784292223.git.agordeev@linux.ibm.com>
+ <3c4d3c768ebf9cc7bbc7667e0e08bf5ad2fe8729.1784292223.git.agordeev@linux.ibm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <3c4d3c768ebf9cc7bbc7667e0e08bf5ad2fe8729.1784292223.git.agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1784298895-122314
-X-HE-Meta: U2FsdGVkX1+O53V7TF9qY3rUDDvVjwN1sHPMfYcMFWHs/7V8Rl93xfQTJ4si+uRxvQZ2cXc4Fqri2ZqJxcEaXY8NdwqN9ZEYRdI8kTBf9oZeaNtPbOzQP440QCDw1kR/tGU1Wvj3+TEQs4YGExwvfHalbuXL0Bvfkn4VYXuWS2vW3b7H7L/ChbnWz33vIqma3eoZFCxyZukd2qdZkwKQVBezEQR7vvP9SAGkWAVp7oriKroa/tC93XnmNFh3syPJYaFaSLwp/NIupcqu9W5Ch2udbjmI4UQzp2nKYUgRrK4V8XCOxcmkuIk0L4v0FU87yKow5GIeWN4CH6J0eYoWr+gzCAy53WNBaM2kwnZF24jif9FptWRXE3H576ub3f9KRcNTtTl1kpGTjsVSiDRqoI3+JySfscetfLdhlaxszg+iIcx2lTeT6TRY+c7HXykSFYBfq8p8FRaeaMr/EanHk16qoHSZ1LM6QqJp7UyemTPD9VqACgpn9xI/OmB4610jV4KnfqGAGbxH//sirLnLuLegdi+Ot2gfbwGPo2ZHLFPnGpT3zDWCv6z0hIcz7uzeSmWOc//uFssm0ViHIspzPgqoB1EjZBaJy3gC2mMjdei2tpDvlzJD1Nht4IHdg7OhUdccQ23KB3w9MjnloG0wOwn7bjw2/Cqi2A1n5XSckzJT8lTRlGaj7p0GV6CEfuKvwMbb3m6pXqd7joN3flpiwhkQqBf3JpjGtO3178vrNm0hHlNIXI8UOkcokAC/k8Ywj40Y75U7YIUuD4upB5tbQX7OCKUJSdVgFt9zotlj2+YrdFKluWT+aXVIrRfap7wW2UzNzRrTTvtoyRMkvcBZ4RHx3tNVlnEiyjrjyJEAD3tEVa3/MTq15Se3gHqLgpz9cWi0rOYblgrqeobpTCrq0/tMD2Kx4XdvGeg29uYhNAFza+ZHlXZ5gn6rS2NJCla7OfnHyRjPe1N7N7KXowt
- Jo3I/oXH
- 6vXbABVIcCS3Jk4JjguWyePsN8hVJBRCoDXEk50iTEprgo66op3N5mHov4PON1+XxKvp6Fko1Dp6f+cK1tyvOBlxDcCCoh80fP0tHIAGtLXTzz0iynmNFYRodYukmxHoWapUBA4JQRMovz896yN8mYyNQBA+JJWLr8d8w4iu6mlOBt1dRdvU2cHE768XAZcUvQuR3rriz1eLh72WBFQlqFIfsIlGwoXw+c5snOO2vbyUrfTnR3jW4cEDyI/0vP38Jll6GrFwHO+KGkG1U9e6VRPhstZIDryD/Wlkv
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CC16D1C0002
+X-Stat-Signature: d9kqfqj5bjez7a564fijmhrbdd3s7717
+X-HE-Tag: 1784308453-145396
+X-HE-Meta: U2FsdGVkX18Yz4hI/wTNq/sJ1C7+CVFeprDFL8iR5GrDeFDRFhEOueR+92enquHKbpNkQKcYyO//vWOI2R3DIcKPzqNCOOT2nLldgpdg4t4GNANV/IbBAsaVmVFuhrQffoWjobdP5Ym+4IY8vb6H4aCAww6zkMQ7OGxpUdW4Eh4zvnYappXCntYosPHaEXVLE1FmQ8d7SCCTQoJxpEzMel+kGVHh6p2sqIJ/2J2kAzl8cOHYK1Dk72xcwDJqD06zQUr7JaQph54zFXdPv+4J+hB8X2ZnqQpDn2xOO7JzWYN/BVOxAcJj0CiEl151O5uYzen6827BxmSu1IAmCI+H+IvfPEbDGrkxGVllnKS1g6au5qz7QfLmtvoAjang7XT3kpTOXOJO36vVFblkyLTfUWOd1Mou8pDzBaR7p07IL/Os8tEp4BvQA3K/Zvdw5q5aNCp9a/yMa5OIbSdh63ECOZGmh9o6+56sPiNCD3HGQXH8aMbcd3KlK5rm8ktCTWXUv9Xb9bKfl2q6x2psMTuGMzBu+LM+PeiWI6zhQPN0eGZzcJYscMfDBkOnJVvAbLVgRlghzrq1PbqP0L8S7V1IfLNnju5AUiBLi5SFMl0n+BUo2EP5g/ebo4X934JOaP2WP+/Yg2Mm/95eaZ5av5t354TNOZojxQYve0OMRppLHiC+A6tmkx449ewfjUHyzLRC40SwiBi+kOUd3pgctk4wxpv+UQNRiQdAY7T12cZtAroQxIgeRLaVQJJU+io4PsW6iElrL/wf8+/Z1K6YvOFz8STf2c4Zwdx4BLIP6FJ30+MzKPN3Wa16Yhnh+T5+N8/A+8FD+k/FSfGG0b2h+eiJHEMwWOrxE6uwHb+1+s/BMck3PHeW/yOBKhwKiow/cceyUaX1TVU6vWm3f2advlPWZ+TEFtsjNrDexDZzzIPWv13PmGIf0Jd9IwG2LK8SAuyQ6y4sdtYf1WmnTrhlxQy
+ ZE+IqpPk
+ DoitdkWq81Ci5nVRDUCWM4OKzOQsAyf4bhvWOl9ILu1xwbn3Fk16TobIoA1f/V+g+b+mzsI74HU/EUqx1gg770q6HMF1N1lOy2plRSFqFoBcTsxbsZU1P10XMrpWzHcpPdwuYqS2X+zHdRkW8/Fj/SwsS/0ERzGaSxpSe3EIfu+vTo18z1ru4YhCyMZ05SaSS/xYhPWrLPN5hbGxtJIZAHgKALp5j8ELDpqiCt6BSdH3HttPvJznDH3fwAyWC2Ctf47SVNjtyiH+nuGUzM4w7JKt9Q3tZsiX80ARZt1rXPy5OZS+srlGQCB6haXh5ICSeRJogr8C4fw71+he2wmkcJx9Q+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,48 +97,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Multiple DAMON regions could exist across a folio.  If they fulfill the
-condition to apply a DAMOS scheme, the scheme could be applied multiple
-times to the folio.  To avoid this, each DAMOS scheme stores the folio
-that the scheme was applied to last time in the damos->last_applied
-field and skips repeatedly applying the same scheme to the same folio.
+On 17/07/2026 15:32, Alexander Gordeev wrote:
+> Follow the pattern established by commit c33c794828f2 ("mm:
+> ptep_get() conversion") and use proper accessors instead of
+> direct pointer dereferences.
+>
+> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> ---
+>  mm/madvise.c | 2 +-
+>  mm/mremap.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 77552b03d318..7d369b1ff8e5 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -1106,7 +1106,7 @@ static int guard_install_set_pte(unsigned long addr, unsigned long next,
+>  	unsigned long *nr_pages = (unsigned long *)walk->private;
+>  
+>  	/* Simply install a PTE marker, this causes segfault on access. */
+> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
+> +	set_pte(ptep, make_pte_marker(PTE_MARKER_GUARD));
 
-The field is being used without initialization, though.  Hence, the
-mechanism could wrongly skip applying a scheme to a folio at the very
-first time of DAMOS run.
+AFAICT ptep is not pointing to a real page table entry, but a local copy
+- see walk_pte_range_inner().
 
-The user impact is trivial.  DAMON might unexpectedly skip applying
-DAMOS action for one folio for the first time per scheme.  In the
-DAMON's best-effort world, this is never a real problem.  No critical
-consequences such as kernel panic or memory corruption happen.
+Such direct write to page tables are prevented by the pkeys-based
+mechanism I proposed [1], and I can confirm that the guard-regions mm
+kselftests do not cause any crash with that feature enabled.
 
-It is a clear bug, though, and the fix is straightforward.  Fix the
-issue by initializing the field in DAMOS scheme creation function,
-damon_new_scheme().
+- Kevin
 
-The issue was discovered [1] by Sashiko.
+[1] https://lore.kernel.org/all/20260526-kpkeys-v8-0-eaaacdacc67c@arm.com/
 
-[1] https://lore.kernel.org/20260714055436.120034-1-sj@kernel.org
-
-Fixes: 94ba17adaba0 ("mm/damon: avoid applying DAMOS action to same entity multiple times")
-Cc: <stable@vger.kernel.org> # 6.15.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index f464b4f0976c3..60255f5cd715e 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -705,6 +705,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
- 	INIT_LIST_HEAD(&scheme->ops_filters);
- 	scheme->stat = (struct damos_stat){};
- 	scheme->max_nr_snapshots = 0;
-+	scheme->last_applied = NULL;
- 	INIT_LIST_HEAD(&scheme->list);
- 
- 	scheme->quota = *(damos_quota_init(quota));
--- 
-2.47.3
+>  	(*nr_pages)++;
+>  
+>  	return 0;
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index e9c8b1d05832..fc3b90274a57 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -264,7 +264,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+>  
+>  	for (; old_addr < old_end; old_ptep += nr_ptes, old_addr += nr_ptes * PAGE_SIZE,
+>  		new_ptep += nr_ptes, new_addr += nr_ptes * PAGE_SIZE) {
+> -		VM_WARN_ON_ONCE(!pte_none(*new_ptep));
+> +		VM_WARN_ON_ONCE(!pte_none(ptep_get(new_ptep)));
+>  
+>  		nr_ptes = 1;
+>  		max_nr_ptes = (old_end - old_addr) >> PAGE_SHIFT;
 
