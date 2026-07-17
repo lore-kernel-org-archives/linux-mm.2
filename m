@@ -4,139 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E7A7C44516
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 22:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29FA4C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 23:16:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41DED6B00E4; Fri, 17 Jul 2026 18:38:30 -0400 (EDT)
+	id 290DE6B00E7; Fri, 17 Jul 2026 19:16:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F5326B00E6; Fri, 17 Jul 2026 18:38:30 -0400 (EDT)
+	id 242256B00E8; Fri, 17 Jul 2026 19:16:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E4926B00E7; Fri, 17 Jul 2026 18:38:30 -0400 (EDT)
+	id 130E86B00E9; Fri, 17 Jul 2026 19:16:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC2B66B00E4
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:38:29 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C36B1A02A6
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 22:38:29 +0000 (UTC)
-X-FDA: 84999733938.20.0A093F9
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C0029A0010
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 22:38:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm1 header.b=Q6ij4R8I;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="k 3p91yg";
-	spf=pass (imf25.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.151 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D0B8C6B00E7
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:16:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D35EA06FA
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 23:16:32 +0000 (UTC)
+X-FDA: 84999829824.05.38CAF3E
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4928940006
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 23:16:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=St5upEjM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of shermanpauldylan@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=shermanpauldylan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784327907;
+	s=arc-20220608; t=1784330190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lzde1ha+q0b3f53Hnca6aQ3EBESk3P8v7XvgdM60Feg=;
-	b=GQA51xFymz0RTHQnZ0gm7Dsed/x5b9H+S41XDwMOYS1VtYyaPqxoKNgGYibphqmJVM3Wqo
-	LoMLOyGI6Gm/zpDJzL9W9Cq4eETsocrAISYCoK6d22qYa+tMYtV5Idiltt+5OwRFIRRD5n
-	12s1Z5df3avh3XmMCmQ8MEOh7qGZaY4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Whm4jZa43igZwN7cS/CfJYk9DtbneKig663jvNEluns=;
+	b=uSgVajFFYnRmmjGWb7fQ0ONvuZ31I2zCkCuXJQgPwiBX/8nakH3Rnk6KnrvxrKdPwbkIuX
+	Pt3HySd8E6cskSvPbWt9NHrxB3E/cnDdz7sfrdyR8nOwNXNc/GYFbNw1I42NG/T91+hw7j
+	YNNQhR+Xuc9PQsMJjIaR4cRLpGeWyHc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm1 header.b=Q6ij4R8I;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="k 3p91yg";
-	spf=pass (imf25.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.151 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=St5upEjM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of shermanpauldylan@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=shermanpauldylan@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784327907;
-	b=RoG6mdwOSbUNq5WCKw0APUVpKs2BQR8Gi3vWDGbfnTro24I8zQQM0shGNEofaudv2F8rQ1
-	PRLx4xg6W5/Bd1dkJuIp00Pe1RST6UGrifUqzsqPhwka4SbqCb7AQHwJwXUxuLn2MBe1/u
-	26HgEobnqlqzPaIMlPZn53V/D8RIg7E=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 49F5F1D000D3;
-	Fri, 17 Jul 2026 18:38:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 17 Jul 2026 18:38:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784327905;
-	 x=1784414305; bh=lzde1ha+q0b3f53Hnca6aQ3EBESk3P8v7XvgdM60Feg=; b=
-	Q6ij4R8I96GjEjcUD1qZKp+MktX/se/U67ruWFXVdRaCcuep0Hzsq0TptKEBdQ1k
-	BbaUQZRd3kGFDFShK3JAyN3CAJUZp05WQeRgrsX+oXSmhODXf+gmzFO4k73+T8IT
-	tvb++PH3ocHu7i8+drrSM9PqIL3/VN1hpPpn2GK6PX0YZMvjW2PleKtFfCpa9JZe
-	ZpNKYcI/9DNAFjMaGR5zfayIPxn4VeEap2uoS7UqtigbgKNKLQEevJ6oDpBn4H7d
-	W+91wm1iw1CnWBmsL3K03cMVPEtuErgCy6wNJ3yuTKZqeyBM8v5DZFRajTzN/Rr8
-	SVl/ZSWu4nmtD96mnaTE9Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784327905; x=
-	1784414305; bh=lzde1ha+q0b3f53Hnca6aQ3EBESk3P8v7XvgdM60Feg=; b=k
-	3p91ygZHntREhMvwRvvg1Nd6p8Yy82IesJEqGKKmouz8AY0GCqunTdJNaAoK2Izd
-	gX27XhdWtrEcbyyF0b5ULRVNOb7NpiEF+HkGuCPh9a+vNP/Sml4kXsVaN6eGL/DZ
-	mDYTKzZvsESQnYGnpAkYDcJrenv4en0xKRqT1fLLK9Kq0zSyXztvFMzjviSKEnKn
-	f2v+DgameSBhsyR9gRn7L0cDQ4jt4kBnavidzvmYjwPmmXT4kOcEAQ1jLYEQyFkC
-	Ps5fKiVy7O4euSm2Cp3A0jsFzlbRLwx2NrHGGRxz3pX5knstd90i/L30mwsPfmrU
-	x0f/mfqvnulJfzMswgjzQ==
-X-ME-Sender: <xms:4K5aasDFJxf8OJ9HwrQvkbL3nz_k-D9y0ERPa60Chq_o1nrerKIHOw>
-    <xme:4K5aauqSodIH1QgfhPde-nISWSQrkHiq0g5aTcSniaa3Loa2yP-GiSAHAkVxM4OmS
-    QETNl2eUvDe8v5EXh_tXC3K4bgcN0IkAVlz2poE_In7Ox0V_S7rxf8>
-X-ME-Received: <xmr:4K5aatYnWC8LdcmOZrSzhCBQ4J7_G7UsMC1yNED7CRfNG5NR66QFF_xVA3s>
-X-ME-Proxy-Cause: dmFkZTGm3qs5+aEcYkfakpq+2uLa99h4ajh2qJDjfxZgK/kLOg+NCtE9Xvz+Bhj3dMCVeG
-    Iw9OAvLLQOBef102C9CcWY9KFqr31YULKXWz7tTVH/9L0r3O8EFnXB6mx22NULLeTdT4jR
-    7YyhGf/7/zlHCdn9qcNeEbW1dGitA6XPDqWKaKaSLfsRIHa47ZmRAwCu/HK0tLf9EzcH6J
-    mrXjVXzFge3aTWOYrJ8BV1WW+FlEXo356jBxCU/ddBc45zydnrQ/OFaKikfgE5MXr2hUSm
-    qivErpgstzhVNhWpsbEp/HjC3trwdQqnxIg3F3fBPXme/bWnJbnRbmJ1IoE7xjyGX8ciMn
-    NLkqwZEJY9vN1jLTYco6vz9m/oKknXVpe4cimgXmyi71Tz3zw90wQLPatMv0uythQlAFHI
-    siDsOq04rZ8KC7P/N5IKixERGDlXwr2nDee2QXJL16P5A97LDoe8ij/WvPHOdgqQErQBp7
-    2qh1L4FEcxl0oRjEIbc1cA5156yEJIg6jz/FUFOOeYSqKIqgBCiY/BjgF6d6eJhywXH2Wb
-    di7DE9KTauaQKU2jiAMqCMesbMe93WPD0RH+Ko6ZJH9eORiCm5lho/LYAMlGyQv8Vd8D7s
-    Dm3+bOx2kd0cxpUZNVlu21VpRgek0q9oT6X6hbADH6goWPsiBbg3eWlEy3qQ
-X-ME-Proxy: <xmx:4K5aanB5kD0EYGoIaM4DDZ0vTQFilDsP--MwNer7HMw1YyoSd9BfsQ>
-    <xmx:4K5aavcC-HAX6KVYAQS0nIgyIJxU4jrz27bJGCe6jG_NyrEAL-QqFQ>
-    <xmx:4K5aas8gfYkzLwYExzLPNBb72kPXQsB3BzGO0uaNxonp5Bj0P9CzEw>
-    <xmx:4K5aanEYB5o6L-2-emvdTEbuBXbU4hevweZU1IYJCUEHLrpOQro-0w>
-    <xmx:4a5aakPRm9ooV6NOF6i9FVYfpIf8SW4TZedXWnnZEgXY4Zo8wPg2K4hV>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Jul 2026 18:38:22 -0400 (EDT)
-Date: Fri, 17 Jul 2026 16:38:20 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, Jacob
- Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon
- Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike
- Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
- Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, William Tu
- <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, alex@shazbot.org
-Subject: Re: [PATCH v7 03/12] PCI: liveupdate: Track incoming preserved PCI
- devices
-Message-ID: <20260717163820.6bc8c13b@shazbot.org>
-In-Reply-To: <20260710212616.1351130-4-dmatlack@google.com>
-References: <20260710212616.1351130-1-dmatlack@google.com>
-	<20260710212616.1351130-4-dmatlack@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	t=1784330190;
+	b=OxJSdmkmYx0lFOz+ncPJZTNkqIcPLPk9fRiF3ob5KLSI09j973fbgZI8WoBKXo2VkAe3Iy
+	5SIl4H9mAkogfm3/ubBm94WDeFvIP57BnC7C85xJC/r+oZyD1RgA8JaSnEyhZ/3utvlT0u
+	pGiIN4k6gIdDKFLuBPVGW/a7Wv4Re0o=
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-80814edb536so52738107b3.2
+        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:16:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784330189; x=1784934989; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Whm4jZa43igZwN7cS/CfJYk9DtbneKig663jvNEluns=;
+        b=St5upEjMF3rD5dIcQq8FhQxwApC+yKLJgtX/bGuFpqZxAScSW7Gu4mTo1pbSnOY09b
+         QQvI+wbOUnWLVJKjVeF67CZlBhe04M6JBuJqAvix969DAluztcThZcRvDiT3Nsh7GBG0
+         CAzHOWmQkFQdIx+yzHNuiYxj1IR16TkGMRo3u/xYGn4C+qu0Gz1+Uojt8L6kZfyKLpwd
+         1nPyDjkY8PYPaUHhW+t+e7jGkN2cCUcW9aOlyM05kTVlWAANimSsPD1ClfXZE9E+c0yH
+         dH2mrn0rrFmSxpB1ufdRqmBAhZYIUiCWzVoPx1jHhmpH0MwbpbaQ2GSxKvRUh6++mofg
+         iymQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784330189; x=1784934989;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Whm4jZa43igZwN7cS/CfJYk9DtbneKig663jvNEluns=;
+        b=sMuK5OH0L+iHIdKCCiTPaj4pQ8+masvy7jK9Huryxc2iRy1INJoRuW400vPx/SYU65
+         mQx1LXHQYu6Xi+oCWlCrH402MzQneE/H4Fz2DQ3v2zElcdH3Fqzoggo+zp51lQiuh0YD
+         kn8u/+zUtVpMR0EVHWErx5yxLqzamH6hQJp27HJfW7aguMXDmWX49LulHDvY2S35AiaT
+         6v/aS+Keyi5PRLrIb8oQWrdB0VmvP7MPtPLTSKcRkg/UFGAgJJ5m+VmcRvQNbI8XqJHx
+         xzf3+96DaDPIkdIzLuYgFK+3K91wkkNZMB0Kn+klcf+lHn7izS7iRO4tgpAHxGDP6hjW
+         r4+w==
+X-Gm-Message-State: AOJu0Ywoufk483dnAxIUh7HH1AkYfYp17rNHtuOqi9LE3M+TklA6L74i
+	v3bFqHYaoHkxdPZ36CEw6HEhWBr2DGL3oJex3dz6R2iw6yt+dcRDdm0pOMxUp5TY
+X-Gm-Gg: AfdE7cm/ZE0RIdZj9q4aDgxnvPvtwNU7sn/MTf4nxjRNjPVCjcx4h3hcqXb7gu6x8nc
+	VpB0J59X1a/BTyYRw0kCd1Hzo4m3w1qpU2jGtpBFv+fOuau6GsvJXEcaEQ/Iusg+SI3MLS6ckpF
+	92oithcuoyNIeogOWc6mxRLtNMPev+qeG/eB4fT1MM6wXMDxt0iZnYfLQvwqw2teN+VeCNVJeko
+	9OlGtMnDPHP1XzpzBvKq3H9s12nakpSQXLnEqJhO6E0dXAEsYHEZINVMhkLlHCH6Y6BnptJrm0h
+	3HMXpH4i2Se8vLtFBasgfCEMZwY/6dzZf3FLN7hWSTfzNgfuuNMLwbv49BeLlq2cBPYFSIrGmk9
+	zvFW7H2ctHILof+F+6cXqhFfDn9cEx3gBERULSFrCOf94vU1FpwptFFoXnxYhQOCZBayBtN5W8E
+	/3gOq0I+CoAy5Ul5eTCG97zyxv3IqKRVRySzu37jf7LG09dq5EPE6rjyQ=
+X-Received: by 2002:a05:690e:154b:20b0:667:b57b:8697 with SMTP id 956f58d0204a3-6683bd2fa43mr1100245d50.61.1784330189257;
+        Fri, 17 Jul 2026 16:16:29 -0700 (PDT)
+Received: from localhost.localdomain ([107.198.84.185])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6683b5645a3sm2597231d50.6.2026.07.17.16.16.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 16:16:28 -0700 (PDT)
+From: Paul Sherman <shermanpauldylan@gmail.com>
+To: linux-mm@kvack.org
+Cc: tj@kernel.org,
+	vbabka@suse.cz,
+	dennis@kernel.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Paul Sherman <shermanpauldylan@gmail.com>
+Subject: [PATCH] mm/percpu: allow embed allocator when total size fits in vmalloc
+Date: Fri, 17 Jul 2026 16:16:16 -0700
+Message-ID: <20260717231616.9126-1-shermanpauldylan@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4928940006
+X-Stat-Signature: d89kwsb7qu3dokb1ahtompmmdrsknqeq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C0029A0010
-X-Stat-Signature: ufc9cmshom4dn9scb63br6yhej5i46bd
-X-HE-Tag: 1784327906-760578
-X-HE-Meta: U2FsdGVkX1/QYtzdCNChFSz/arxjzZCr5qTdHUaIqEO4PLvnLlaXXXck2SFrvKZNyyI5FAaldU+thRDhK6Bjs85qMklosVp4YLudrHoag0LuSO4H/4N1BgNNytlw7/GhR3si1r0ex+9LCrVdwP0YP8VR6LpbOb1j0P9HzV0UBv2QWE8qxrdwL/1j2neR5BWxaix4Rx+eMDs1RYlvADftBqb1lrZN0aK1d+BoS7+HyQVJVBH72KhaaOTZNYIS+euVuG0hPbvT3Yfn71QbU4sFQRWkqpX8CGo4b/5Zb1OU8KdBUxY5FyX0RoyEL9k3iWZIrG33sTEJlL3krbEB8uXIfTJFb5IJG0fi2745uyI1suljRGcqrbKBmJF8uC/EM5yWjJMflmTeHeHW0cyOjeB+xfypWTQslC9hojwM1vTwlsoSLADkrtf2CFKGKQRL+ukjxVdRM21qkkzIwPhoNIExe5V/FIVe3TLS6Wh5Cf1zZl5rWuOWGDM/wQcTPwGbI/9/0lvVVH2Mb60VHq6cskLEGBsH3nk7+oHGBXPtdeC2Cte+ztC015HwNckBWoC8erY/cFxHJwdXgSCCDF0p/b6yJHhSBCkGWd8lsmwe3CYWUhPVfpaCP9cZKIGWjedbP2V2s3EI99BE11WUR2K4C+fHydzyYGE8coqHxCY5A/aKf58Epd93K5VVHV815OT+YVCyW2WcPNHkWRKlhbHxIj1zKDe7BzQRRAWim1lsyET3klUykNnQP6EDDD2JZyD9DIpJwdFJlwwmzusBPkcUCaUK3hP3AiiYkR8lihi+oB2P47D+/CMiyZJvEejRTlWQgBc8QrKKy2HOxGObFeddcTKkXy7pj4KbvNqe9Wvim9p2JFKuc94ac8+Sj7aM4fcLDi+6FLJE1c6YaoUmQeI2SYRnOI3b7p9VVnKyGmVi+9xB5Y9TZxOjhsgRnMaTvYm43JByVaSAJDTuF9Nrfwik8Re
- RFLOzXKg
- piDGdVuf5rfQ6Y9xpH26Mm/zTrsW5r2ZqYxd5srEZvrFzOBtN9fEKlxyY/eznHVCtNXDCM368oEfyJoOEkWaeTbdOBVomLK8/36c8oDYPgz1PHD+9xROL/JpfCOTfTT1oKAIx8845UKHuEGgKSfB+N8WUYE8lKqXKNKWSXSpLyEwd2YKa3XO0yYZeflFguWqeitWExCdZZA6f14xiCFiIaBfugHZIr2GG3Y+x8LmrShqh/xk9oK+OAA256gwcGaE60T1MBGxNLboGGgLfMtRdmInqCKsRrprDel41T+m9tLUDcAlU0Zk8HMHbwov0fbz3H+RmSiCx8Ayv9JwKA/pfw2M/PkpDERkelMWF
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784330190-121696
+X-HE-Meta: U2FsdGVkX1/DkP5TUJUh6cFtnqD/6b3LO4M8D4K6qv+vTeLxU3OJu6OYJU6KIQyZUkL9hLdPM38c+WcCh4wyuder5oGgDQ1y4fr15B3VqHO6dHxrItGlvLy2NNRYng5UIgtx6FSOe5KpYI1bVksHwjgf4A2HYENJjDoMil95HdaKu1FaylSxW5mxhovwqCVx7ZcsLMbLY19WFQSSrEGWvEgGecKpq6pmOn7r6NR7k+/Zlmcm5EXqjp0pjCA/JwZrVe3v4lAheF/DnlVwQO9wqn+nV8iVDGsjIlAOEMi5crSexiQPuBDvPC05CrwmAaealVqN2knuYN7ok4ZHrKDP+UOOUiesKA/Z+rW9CPKYdv/gRg6s/nk5qqGfXWKI79bpKaw+7mLu/QjyBfWn3niI+czG9BO4ODBPNOo5S456MLJYQ05uE4qRgu4BilYiYKgPf6wWvR5uUiW5uuMKukB42jBnOmNqaYwgDuFXLQoql5oQJKnjKgbKx3J7fpb+70rG8JyaanSE39oTzR0uUnbXkApXNREZWyfl01ji9zYGCJ7sAi8KZMZmSjigNGcbFCiYc70Z3met40QB+CUhy/wWlO7o28UrMYjbqEXI0Ia7nM6BUSidu8Ivev1kJcf4W92H+dRD83wn2UbDwtbT1HIyzw/tATn2zxom0x1C4s91m34DmSGAFLHbAyN953wWX40cOevLn+zG7mVIkvm1boolRho5f8fioOgOtwADO3op/bLqZsnfl7LsuiiF9wBwNu0fnFFuV6ADKepj9qh8xRP+aicODbGZWUYi5eM0OXBaYDsJcf2yr9zXxlKAY0IabQIwmtCQdX2aQLdrBm08mzaANquNRjzXc1in0LdvIvtJklmMx21+ZGUtgfdI9THTrUKdKTBrMhV8nTXRfLCGNOg8y41DhwZQXq83r9A4YBd/IUdOK2y8ednCBVkGGmiNdznE4gV3WsIrJw2capoDpyl
+ KrQgPdLf
+ WDVJ+WFPKvCOgGpCfC/Kal3ptKDr3Pw7wq+jGirTEXDSz8AGyJmFtahqHCP897vUjWVogNwFHvNjQVYiJZfEoerMHQtHllipniKsP02P/vP8t0kv26Cc+BpvhwcTxoG6kM37Nt5A8Mbw8CRuiiDz1g4aT5n/eZYiezec3aZLR7SsC2UesSE3y/VKRf4PXb55R6USntlpp4kygaW9ed3NlZrWAxBasj4rTsSbq0HMj0/HyGJ4eaGP3rI20IRkZAvvFjbb9gC+FLD2nurTXAp38MOg+SnExtZ5IIPlxZCx88n5VI4rkGaCUF2ujBELYjdYYZ5FkxeIfQQ36S+OavoK5nx84T1M4EtZ5JU0SkM3YHbmZveAF6EsQxVsqtyWfnLtyC3xxKINLwjK47vi/bo9w6MEkwXrJRLJpQAxa4f7zdW2HzujknsFZcEBVoTZakzw9hU0dMeNSk7S7x1KodnmwJSSTGoBmL1ljBSGI0Supk/Cfs3w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,67 +117,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 21:26:06 +0000
-David Matlack <dmatlack@google.com> wrote:
+On large NUMA systems (e.g. 4-node 128GB), the physical span between
+NUMA nodes may exceed 75% of vmalloc space even though the total percpu
+allocation is tiny (e.g. ~6MB for 64 CPUs).
 
-> @@ -298,6 +377,87 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev)
->  }
->  EXPORT_SYMBOL_GPL(pci_liveupdate_unpreserve);
->  
-> +static struct pci_flb_incoming *pci_liveupdate_flb_get_incoming(void)
-> +{
-> +	struct pci_flb_incoming *incoming = NULL;
-> +	int ret;
-> +
-> +	ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&incoming);
-> +
-> +	/* Live Update is not enabled. */
-> +	if (ret == -EOPNOTSUPP)
-> +		return NULL;
-> +
-> +	/* Live Update is enabled, but there is no incoming FLB data. */
-> +	if (ret == -ENODATA)
-> +		return NULL;
-> +
-> +	/*
-> +	 * Live Update is enabled and there is incoming FLB data, but none of it
-> +	 * matches pci_liveupdate_flb.compatible.
-> +	 *
-> +	 * This could mean that no PCI FLB data was passed by the previous
-> +	 * kernel, but it could also mean the previous kernel used a different
-> +	 * compatibility string (i.e. a different ABI).
-> +	 */
-> +	if (ret == -ENOENT) {
-> +		pr_info_once("No incoming FLB matched %s\n", pci_liveupdate_flb.compatible);
-> +		return NULL;
-> +	}
-> +
-> +	/*
-> +	 * There is incoming FLB data that matches pci_liveupdate_flb.compatible
-> +	 * but it cannot be retrieved.
-> +	 */
-> +	if (ret)
-> +		panic("Failed to retrieve incoming FLB data (%d)\n", ret);
-> +
-> +	return incoming;
-> +}
+The 75% check was designed for pcpu_get_vm_areas() used by dynamic
+percpu chunks, where vmalloc congruency is required. The embed
+allocator uses the linear map directly for the first chunk -- physical
+addresses are accessible as virtual addresses without vmalloc mapping.
+The relevant constraint is total percpu size, not physical span.
 
-I'm having trouble following the error escalation here.  What's
-fundamentally the difference between FLB data being provided and not
-compatible (subtle log message) versus FLB data being provided and
-compatible but we cannot access it (panic!)?
+Replace the unconditional fallback with a total-size check: if the
+aggregate percpu allocation fits within 75% of vmalloc space, proceed
+with embed regardless of physical NUMA span. Systems where total percpu
+size genuinely exceeds the vmalloc bound retain the page allocator
+fallback.
 
-Don't both suggest devices are running but we can't get their FLB data
-to continue letting them run?
+Tested on Sophgo SG2042 (64-hart, 4-NUMA, 128GB DDR4, RISC-V Sv39):
+  percpu: embed: span 0x17def7a000 > vmalloc 75% but total 0x5c0000
+          fits -- linear map used
+  percpu: Embedded 23 pages/cpu s54168 r8192 d31848 u94208
 
-The errno interpretation is also slightly different than the comment
-above liveupdate_flb_get_incoming():
+Link: https://lkml.iu.edu/hypermail/linux/kernel/1707.3/00337.html
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dennis Zhou <dennis@kernel.org>
+Signed-off-by: Paul Sherman <shermanpauldylan@gmail.com>
+---
 
- * Return: 0 on success, or a negative errno on failure. -ENODATA means no
- * incoming FLB data, -ENOENT means specific flb not found in the incoming
- * data, -ENODEV if the FLB's module is unloading, and -EOPNOTSUPP when
- * live update is disabled or not configured.
+This fix is inert on systems where the original check never fired;
+it only activates when physical span exceeds 75% of vmalloc but total
+percpu size does not.
 
-Thanks,
-Alex
+Architecture analysis:
+
+  Architecture   | vmalloc      | phys span    | total percpu | result
+  ---------------|--------------|--------------|--------------|--------
+  RISC-V Sv39    | ~88 GB       | ~102 GB      | ~6 MB        | fixed
+  RISC-V Sv48    | ~88 TB       | ~102 GB      | ~6 MB        | unaffected
+  RISC-V Sv57    | ~44 PB       | ~102 GB      | ~6 MB        | unaffected
+  ARM64 large    | ~248 TB      | varies       | tiny         | unaffected
+  32-bit NUMA    | ~128 MB      | varies       | may exceed   | correct fallback
+
+Tejun Heo noted in 2017 [Link] that the only constraint is vmalloc
+size relative to NUMA node distances, and that making vmalloc bigger
+would be the best fix. On RISC-V Sv39 with 88GB vmalloc and 102GB
+physical NUMA span that is not an option -- but the embed allocator
+does not need congruent vmalloc mapping for the first chunk anyway.
+
+ mm/percpu.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
+
+diff --git a/mm/percpu.c b/mm/percpu.c
+index b0676b8054ed..72695778872c 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -3069,13 +3069,32 @@ int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
+ 
+ 	/* warn if maximum distance is further than 75% of vmalloc space */
+ 	if (max_distance > VMALLOC_TOTAL * 3 / 4) {
+-		pr_warn("max_distance=0x%lx too large for vmalloc space 0x%lx\n",
++		pr_warn("percpu: embed: max_distance=0x%lx too large for vmalloc space 0x%lx\n",
+ 				max_distance, VMALLOC_TOTAL);
+ #ifdef CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK
+-		/* and fail if we have fallback */
+-		rc = -EINVAL;
+-		goto out_free_areas;
+-#endif
++		/*
++		 * The embed allocator uses the linear map directly for the
++		 * first chunk -- physical addresses are accessible as virtual
++		 * addresses without vmalloc mapping. The 75% check was designed
++		 * for pcpu_get_vm_areas() (dynamic chunks) where vmalloc
++		 * congruency is required. On large NUMA systems, physical span
++		 * between nodes may exceed vmalloc bounds even though total
++		 * percpu size is tiny. Check total size, not physical span.
++		 */
++		{
++			unsigned long total_size = 0;
++			for (group = 0; group < ai->nr_groups; group++)
++				total_size += (unsigned long)ai->unit_size *
++					ai->groups[group].nr_units;
++			if (total_size > VMALLOC_TOTAL * 3 / 4) {
++				rc = -EINVAL;
++				goto out_free_areas;
++			}
++			pr_info("percpu: embed: span 0x%lx > vmalloc 75%%"
++				" but total 0x%lx fits -- linear map used\n",
++				max_distance, total_size);
++		}
++#endif /* CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK */
+ 	}
+ 
+ 	/*
+-- 
+2.53.0
+
 
