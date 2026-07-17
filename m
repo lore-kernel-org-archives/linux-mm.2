@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1F40C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:01:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C29DEC4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:01:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 095B26B00AE; Fri, 17 Jul 2026 13:01:14 -0400 (EDT)
+	id 466206B00AF; Fri, 17 Jul 2026 13:01:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 047246B00B3; Fri, 17 Jul 2026 13:01:13 -0400 (EDT)
+	id 417476B00B3; Fri, 17 Jul 2026 13:01:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDC6C6B00B6; Fri, 17 Jul 2026 13:01:13 -0400 (EDT)
+	id 2B78C6B00B6; Fri, 17 Jul 2026 13:01:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F9BD6B00AE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F2AEE6B00AF
 	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:01:13 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2A12FA01EF
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 833621C015C
 	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:13 +0000 (UTC)
-X-FDA: 84998884026.29.AD6E703
+X-FDA: 84998884026.24.CA80CC8
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5A10AA0017
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YwGl7lBV;
-	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784307671;
-	b=pAF0axUZx71KCtdLiiXRT1UImScBf4TS2xPYWqDevApPi9bQjUZ/NHawABlP72p67sj4FE
-	3gACMt1VFAXT3C+zNlWDtE1SDP8l5Hqcgg1+v6a93srccV1LiGX3CUUXkvRC8WnRjWeHgq
-	VAKPO0N8jo7PzGBlSKcEZX4Nhqt7pOk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=YwGl7lBV;
-	spf=pass (imf25.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id DDC081A0003
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=fUvzVVVA;
+	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784307671;
@@ -44,27 +34,37 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ycByTKs8w8BOZ5CAU6T2CUK+Z0yZNJ7KHC7qxhBjQcQ=;
-	b=NgBbucOx7y+wtu083oey3N1ESno82DKx5fIbLO28H5iQL5VI8UcOaqtI1QqebbhlwTfQTZ
-	qB1HV8oB+ZFateBjcbIdQXzKM44ziPi9rdVG3SfJ+LBKHt6uae+2itVIOiVvdceFYdJJ+j
-	1gsSbOXQ+jpe/xFasiitzgnqoTjCueM=
+	bh=phv1B9Yxat6YIEopEPUTNjYYzL54eFSY9r4GoCdruM0=;
+	b=l+AJ3kTa0hfqZezPZ6j9POi42IksAmgTmlCFeezHmQ0e9R7oZ/Aqyi1F2jkmouoD8+U1C4
+	APFVKKA0Y4NjNjsW9YVoGrEajSiVPXWEuj/C0fuH4N+xLR45j3UPZKwcA/axmjbM2YdlpX
+	Pr8TzBUlZ9R1Wd8EAEgvC0V1W4LjPKc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=fUvzVVVA;
+	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784307671;
+	b=F0KwzcQg/u2xPlCaLf1TBF8FOp4jMraEpaboDFc1xPyNf/SNPUDXMs/SAiO3jlVhO4wQfp
+	4Hwjl8VRW+Ox5/VhxlIGW5fj5XqxUPFZlleh894pPy6OlSVVvF742S93j5WPac3chNld6N
+	qn8AQNuuzc0106eb6cbbJvHnzM2Ejts=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=ycByTKs8w8BOZ5CAU6T2CUK+Z0yZNJ7KHC7qxhBjQcQ=; b=YwGl7lBV2zuCG+dru6ABU02zCv
-	kThElr5XZ7lupziDRBBDtKp7AZtHCZO3yQz7E7joKYB55GnFv90sh2j3JFGBsZhA/nJyRhMrFq9Tj
-	dFmUuGqmU+SKzII0pvT5SZa7ltrrHB2ZYeTN8zYjs9zp9gKHDCY7LaXjprvTnQqVnfkyEK4d4ojMD
-	yM7dNPxeHvaGSfvxHCl1x8B6bSEQpZhuTScC6OVNSpG67THBOXvra38Jj/BkI+LRCW8Tw3o1rcyGZ
-	XT+RzyFY33EzAHmLjZOYCGNrJwG+UWJ9U3qkDiI02GbsgsNJffpllUBuIk/ZBur3l0a3qjwQWtggj
-	jofxVLOQ==;
+	bh=phv1B9Yxat6YIEopEPUTNjYYzL54eFSY9r4GoCdruM0=; b=fUvzVVVApRtKUdaKQ2JXL1FOSt
+	P8LOocD9dNPQdTPWaFrOPMhbGyafnfbs/WBFs5ZfDMBbRXr8K05WR5fH0Z36lT1BR22jJnMaub5EU
+	AMT7eivQQ9grDNDwPxeMXmIw6JkNAGLKM7T0UxfdFKEznNCh3OYKCAPolg9J78JZvmH4CMMGtrCAK
+	44UejHZ6A78Sz6fs8j5HZ1q9fdMbbsLAuUIMFf1nq2RJSL4b4l86iYqDlF8NMykYSgAm2Nh0X7J25
+	+r2Q0U/mXEgVjlcLibOlQkJ42708lC0+0Sy7MmCnQxSQ4zH/Kjgy7zf53CpP+vX6ALUUcegly8pP1
+	6vbTt4+g==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wklvS-000000001w4-0WyJ;
+	id 1wklvS-000000001w4-0k4V;
 	Fri, 17 Jul 2026 13:00:38 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org,
@@ -79,25 +79,24 @@ Cc: kernel-team@meta.com,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>
-Subject: [PATCH RFC v3 4/6] mm/gup: add get_user_page_vma() to fault in a page under a held lock
-Date: Fri, 17 Jul 2026 13:00:34 -0400
-Message-ID: <20260717170036.743149-5-riel@surriel.com>
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH RFC v3 6/6] selftests/mm: cover /proc/pid/mem access to VM_PFNMAP memory
+Date: Fri, 17 Jul 2026 13:00:36 -0400
+Message-ID: <20260717170036.743149-7-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260717170036.743149-1-riel@surriel.com>
 References: <20260717170036.743149-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5A10AA0017
-X-Stat-Signature: pgmcxtrq3am4ujmj3a8cuyayubasrwwg
-X-HE-Tag: 1784307670-854698
-X-HE-Meta: U2FsdGVkX1/Eun2Tko+auVPJCbZ9MSU3u6P+ac4AJHmZNIj71D5VTAH2hSkSzR3zwBRXRMlMorJ/FY/GJ6Ia92KcuzKG7iuB9PEGxf0CpjUC+5bTqU/yXxcgN3bS1KM9Pp5RpycTeDQ5KOHKYz3bKtZ8MZPbCLBKZVjX9/YgEXIBSP/fHJtleDhCPugqpLsizudttx0FDrmp0Z1u/VPJwvMHVxVOm8OO7r5n3MHIuvLRdZ9uEQZCuYJ8UrTZkAu4uZejDv7sDvQStnb0qPpSqKBIlOacoNhOtuui5NwRygoAytHwpBu64MgFG6Z2VmnylAxrfgwuVOjbeVhegTwyZxHurF60rB0dMvZY9rr1hZIbNsAf7yrhkDhnlmWrpPRW8UDs3c2+gbkTjCUqdCslsdOid/ID7xDRNUNitBm+ykNpFDRPkX1OJCVUeydfwt6RXjfbDNwk8edJlTl+hPBUB3iXTCWR35UWL3twkRz9SsQ+B9qyO4V3ZsAezNahodze3TvjtripIQHsGp01K0vP9fDs5auoo2QcD4pN4Olxv+cG+L45wjuSzvLl6mDMvRbbG5gFXU3v3TiF7PL94a7osUVgW7H66V6LMGvzL3cch5T8tCWcvSqiWSRCZb8kke92SDGnVlqVzGy1e/iz8RVerZmn8sa1Dg5T3eFvIT1Ug40AJrD+VMx8RGMosYea75C6qHSnb1r2Fkk5qHXtjVbq6FK+rmpletmnGS38/bkqg+1kFN8df93dY0kA8/qaeMeXGpCV6DwlwOE3hOnX5+iNBza6bCdMFd2luiTC/l2NXovWsK6oX1WPgx7QYBKt3LfJzl9C8yOki8xiYqzWVc6atvuwUdxSIRR4t0g3IC85Wg8RLpy51rfvbBL0NTBU6Qtlyi411Lzz8Z8OsnZr9YRujBfq7t2mPwt8VW4ZVR3gcBywtacWeYZCm+6oMmjLW5BG7GAgd+l6HT8qqW9ARFI
- A+zxanNe
- sKzZKpzXXzZgu9fLDyk4EzezYGJRNEqY9aRQggpxtR4Yq2t2wqu5LMLq25ZFeuOgWVrHfyctUQylpVYHq9DTUJKO96Q5vPrMA4AssJD0AZZ4mdAdiTCFjqYmAwFKHAzgMkAifynfYpAnux1d5bLLT4oxwn1ON9a4pJQezPZB1ZQe+UgclxvqW7R5I+li3L5pci24ia99rPV6maB5sFxFhzTynLn+4jxEL8wdxTj7TqFhSEttcADAppYzdQsEhho3A6pV/AXN9zhrGSTxMySyf/N7PmzvbHUok3hrGHwAoa4wFif/RXLUst86DJsqMjzqktvCq
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DDC081A0003
+X-Stat-Signature: gursykwzbgj9copmshrch1dzsb7gznej
+X-HE-Tag: 1784307671-357585
+X-HE-Meta: U2FsdGVkX1+R41be5/b5s9R7kySGXk+d/7ZyaCNHnQB6LMPtyJTDJo0aLIn5MlxiPxo0przT60JqM50HximyErt096CeejSZnD43xWgIcdgmsEsxQS87rwRnujkI4sVF4TgVcsFuqI9kh++HhMl8+cnkgBfyRsW/zOq+vGtzu1XYSwqfq+PtNYJo3lJln06yr+FLLGf1AXCcxBtbNIFecL6npCb2telERkooMaNJ4ALPEDAQ747CV2Bg7xQRq2zKdG2TwtjR+buGz5VaWjc1l8uHimiNHbQcUgNqvZPAfkMvcBMV681HaluMJq/8kGtCg2U4pTa63iAljn9Df9I5sJHW/9LD+EJQ2Cn/qLlhnTlaubPoukyjokLNhHfbrnUHDOC1QLebT9lR0Cl8OEVv/KHNyureIe6jxtgKKdZJj1uFcGaxhqPJdGKxC0sEBEkYK+h5eyBiKR/QjMiydYb2nR7k42HyhEz/ObsdAp17M0bsLrzua41o38saD6ORkOKavQIyjKY8DV+zcxHgBvAw0Sx3tF/lVwh40/JDFBIRfvQwBUlgujB0lfl7u4nbmnY7m95pv7xXL2g8Xd0FRQp5ljo292F/WP+NaOjCuJ7B8fGbtXb3dch7eIGFDkGlr/XTjfXXdsC7/4quRRptTH0s+2FZ/Z22zugP66P3yH6eG+r2Era7dbCKIBwLJr65p8hunDRm+H/+C0KbwD6yHexmhdyNKJcWxi5MBVNsKnnjr7ePi0zTOkk/agvGpat1lUz+9RvNBz23zwlIPVRBnoFGF9SAuLrUS1uwRLXhBDEzeTR32e/7cRV30NeHzcCbJC8Sm3viDubQft3N+eBS/Gmw+x4Xzjj3C6k5aLJHGhzgGkIJGcWH83I9h0jmp9d4UrIElaEvBQe6HgoDDAntynLleiNwYrh+rIbUIVBylIKnPz88otHKU3rdwxZFiIvLzBLmbwU5Jkj3vwwc/XEMqYo
+ 8ibGQ7TD
+ JMQ6CYlWxUPUESrsODuo++8NN4yu36nv/9cnQphY6YlEI0avzih5zZ3E7H/JDlBUobeW8WkwxCxfvAc9OwI6zCnjsQSfvDytnlECmzX2iBL2Zu9x7A9GNHie7zJNdYg/z3zPVkmGblGQfc3u1s4UPMWJfL/n14OphOgZZS4yKIxMyMdNvael2sIl5DElh1qDAb1WO7zy6Vs6Rs1wOEWvhB7uGGre7or1y+LTplJnDI39xKw5K3ADcPYmpA0V9J021fyooHHYS0aFOQRYTQU3v77JW8O8yL3sVOu3M/4szXfMtXfIJwhWixmAbpBfvmZvXHUZZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,268 +104,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__access_remote_vm() needs a single page from a VMA it has already
-looked up and locked, faulting it in when necessary, under either the
-mmap lock or the per-VMA lock. get_user_pages_remote() does not fit: it
-hard codes the mmap lock and re-looks-up the VMA, neither of which is
-wanted here.
-
-Add get_user_page_vma(), a simplified __get_user_pages() that walks the
-page tables with follow_page_mask(), faults a missing page in with
-faultin_page(), and on success returns it with a reference and the
-caller's lock still held. Like __get_user_pages() it runs
-check_vma_flags(), so callers need not pre-check the VMA.
-
-A VM_IO/VM_PFNMAP VMA is the exception to that check: it can still hold
-COWed pages that have a struct page, so follow_page_mask() is allowed to
-look for one. Memory with no struct page -- a raw PFN, or a present PFN
-reported as -EEXIST -- is returned as -EFAULT, so the caller can reach it
+Reading a VM_PFNMAP mapping through /proc/pid/mem exercises
+__access_remote_vm() two ways: a COWed page has a struct page and is
+returned by get_user_page_vma(), while a raw PFN has none and is reached
 through vma->vm_ops->access().
 
-The caller sets FOLL_VMA_LOCK when it holds the per-VMA lock rather than
-the mmap lock, which reaches the fault code as FAULT_FLAG_VMA_LOCK.
+Add two tests to pfnmap.c, both reading VM_PFNMAP memory through
+/proc/self/mem.
 
-Anything that cannot complete under the per-VMA lock -- a dropped fault,
-a userfaultfd VMA (uffd assumes current is the faulting task), a hard
-error, or ->access() memory -- releases the lock and returns -EAGAIN,
-so the caller retries under the mmap lock.
+procmem_cow_read maps the file MAP_PRIVATE and writable, writes to COW a
+page, then reads it back. Without the struct-page path in
+get_user_page_vma() this read is short: the access falls back to
+generic_access_phys(), which ioremaps the PFN, and ioremap of a COWed RAM
+page is rejected.
 
-faultin_page() reports these retries as -EAGAIN for both lock types;
-only the mmap caller records the dropped lock in *locked. A
-VM_FAULT_ERROR that decodes to no errno warns and returns -EFAULT
-rather than BUG(), since the mmap-lock retry produces the definitive
-result.
+procmem_pfn_read reads a raw PFN back through ->access(). ioremap rejects
+RAM, so it runs only for genuine device memory and is skipped for the
+default /dev/mem System RAM target.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- mm/gup.c      | 154 +++++++++++++++++++++++++++++++++++++++++++-------
- mm/internal.h |   6 +-
- 2 files changed, 139 insertions(+), 21 deletions(-)
+ tools/testing/selftests/mm/pfnmap.c | 66 +++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 0692119b7904..69b834a71708 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1082,7 +1082,13 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
- /*
-  * mmap_lock must be held on entry.  If @flags has FOLL_UNLOCKABLE but not
-  * FOLL_NOWAIT, the mmap_lock may be released.  If it is, *@locked will be set
-- * to 0 and -EBUSY returned.
-+ * to 0 and -EAGAIN returned.
-+ *
-+ * The return value does not depend on the lock type: a fault that made
-+ * progress but needs a retry (VM_FAULT_RETRY / VM_FAULT_COMPLETED) is reported
-+ * as -EAGAIN for both the mmap lock and the per-VMA lock (FOLL_VMA_LOCK). Only
-+ * the *@locked side effect is lock-type specific, as the per-VMA lock path has
-+ * no unlockable mmap_lock to drop.
-  */
- static int faultin_page(struct vm_area_struct *vma,
- 		unsigned long address, unsigned int flags, bool unshare,
-@@ -1097,6 +1103,8 @@ static int faultin_page(struct vm_area_struct *vma,
- 		fault_flags |= FAULT_FLAG_WRITE;
- 	if (flags & FOLL_REMOTE)
- 		fault_flags |= FAULT_FLAG_REMOTE;
-+	if (flags & FOLL_VMA_LOCK)
-+		fault_flags |= FAULT_FLAG_VMA_LOCK;
- 	if (flags & FOLL_UNLOCKABLE) {
- 		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
- 		/*
-@@ -1125,41 +1133,147 @@ static int faultin_page(struct vm_area_struct *vma,
+diff --git a/tools/testing/selftests/mm/pfnmap.c b/tools/testing/selftests/mm/pfnmap.c
+index 4f550822385a..6ff5d1029517 100644
+--- a/tools/testing/selftests/mm/pfnmap.c
++++ b/tools/testing/selftests/mm/pfnmap.c
+@@ -31,6 +31,7 @@ static sigjmp_buf sigjmp_buf_env;
+ static char *file = "/dev/mem";
+ static off_t file_offset;
+ static int fd;
++static int target_is_ram;
  
- 	ret = handle_mm_fault(vma, address, fault_flags, NULL);
- 
-+	/*
-+	 * A fully completed fault (VM_FAULT_COMPLETED) or one that needs a retry
-+	 * (VM_FAULT_RETRY) has released the lock it was holding. Report both as
-+	 * -EAGAIN so the caller retries: the mmap lock caller retakes it here,
-+	 * the per-VMA lock caller (FOLL_VMA_LOCK) falls back to the mmap lock.
-+	 *
-+	 * Dropping the mmap lock is recorded in *@locked. There is no such lock
-+	 * to drop under the per-VMA lock, where @locked is not used, so leave it
-+	 * alone in that case.
-+	 */
- 	if (ret & VM_FAULT_COMPLETED) {
--		/*
--		 * With FAULT_FLAG_RETRY_NOWAIT we'll never release the
--		 * mmap lock in the page fault handler. Sanity check this.
--		 */
--		WARN_ON_ONCE(fault_flags & FAULT_FLAG_RETRY_NOWAIT);
--		*locked = 0;
--
--		/*
--		 * We should do the same as VM_FAULT_RETRY, but let's not
--		 * return -EBUSY since that's not reflecting the reality of
--		 * what has happened - we've just fully completed a page
--		 * fault, with the mmap lock released.  Use -EAGAIN to show
--		 * that we want to take the mmap lock _again_.
--		 */
-+		if (!(flags & FOLL_VMA_LOCK)) {
-+			/*
-+			 * With FAULT_FLAG_RETRY_NOWAIT we'll never release the
-+			 * mmap lock in the page fault handler. Sanity check this.
-+			 */
-+			WARN_ON_ONCE(fault_flags & FAULT_FLAG_RETRY_NOWAIT);
-+			*locked = 0;
-+		}
- 		return -EAGAIN;
+ static void signal_handler(int sig)
+ {
+@@ -113,6 +114,7 @@ static void pfnmap_init(void)
+ 		if (err)
+ 			ksft_exit_skip("Cannot find ram target in '/proc/iomem': %s\n",
+ 				       strerror(-err));
++		target_is_ram = 1;
+ 	} else {
+ 		file_offset = 0;
  	}
- 
- 	if (ret & VM_FAULT_ERROR) {
- 		int err = vm_fault_to_errno(ret, flags);
- 
--		if (err)
--			return err;
--		BUG();
-+		/*
-+		 * VM_FAULT_ERROR always decodes to an errno; a zero here would
-+		 * mean handle_mm_fault() returned an unexpected combination.
-+		 * Report -EFAULT rather than crash: under the per-VMA lock the
-+		 * mmap lock retry produces the definitive result.
-+		 */
-+		VM_WARN_ON_ONCE(!err);
-+		return err ? err : -EFAULT;
- 	}
- 
- 	if (ret & VM_FAULT_RETRY) {
--		if (!(fault_flags & FAULT_FLAG_RETRY_NOWAIT))
-+		if (!(flags & FOLL_VMA_LOCK) &&
-+		    !(fault_flags & FAULT_FLAG_RETRY_NOWAIT))
- 			*locked = 0;
--		return -EBUSY;
-+		return -EAGAIN;
- 	}
- 
- 	return 0;
+@@ -271,6 +273,70 @@ TEST_F(pfnmap, fork)
+ 	ASSERT_EQ(ret, 0);
  }
  
-+/*
-+ * get_user_page_vma - get one page from @vma, whose lock the caller already
-+ * holds: the mmap lock, or (with FOLL_VMA_LOCK) the per-VMA lock. Walks the
-+ * page tables, faulting the page in if needed, and on success returns it with
-+ * a reference and the lock still held.
-+ *
-+ * Runs check_vma_flags() like __get_user_pages(), so callers need not pre-check
-+ * the VMA; most rejections are returned as their error. A VM_IO/VM_PFNMAP VMA
-+ * is the exception: a COWed page with a struct page is returned, while a raw
-+ * PFN has none and yields -EFAULT, to be reached via vma->vm_ops->access().
-+ *
-+ * Under FOLL_VMA_LOCK, anything that cannot be finished under the per-VMA lock
-+ * (a dropped fault, userfaultfd, a hard error, or ->access() memory) releases
-+ * the lock and returns -EAGAIN, so the caller retries under the mmap lock.
-+ */
-+struct page *get_user_page_vma(struct vm_area_struct *vma, unsigned long addr,
-+			       unsigned int gup_flags)
++TEST_F(pfnmap, procmem_cow_read)
 +{
-+	bool vma_locked = gup_flags & FOLL_VMA_LOCK;
-+	unsigned long page_mask;
-+	struct page *page;
-+	int locked = 1;
-+	bool pfnmap;
-+	int ret;
++	char *priv, *buf;
++	ssize_t rc;
++	int mem_fd;
 +
 +	/*
-+	 * Validate the VMA up front, like __get_user_pages(). A VM_IO/VM_PFNMAP
-+	 * VMA is not rejected outright: it can hold COWed pages that have a
-+	 * struct page, so let follow_page_mask() look for one, and treat only
-+	 * its struct-page-less PFNs as unreachable. Any other rejection
-+	 * (secretmem, bad permissions, ...) is final.
++	 * A COWed page in a VM_PFNMAP mapping has a struct page, so reading it
++	 * through /proc/self/mem -- __access_remote_vm() -> get_user_page_vma()
++	 * -- returns it directly, instead of routing to vma->vm_ops->access(),
++	 * which ioremaps the PFN and cannot reach a COWed RAM page.
++	 *
++	 * Map the file MAP_PRIVATE and writable, write to COW a page into anon
++	 * memory, then read the page back through /proc/self/mem.
 +	 */
-+	ret = check_vma_flags(vma, gup_flags);
-+	if (ret && !(vma->vm_flags & (VM_IO | VM_PFNMAP)))
-+		goto fail;
-+	pfnmap = ret;
++	self->size2 = self->pagesize;
++	self->addr2 = mmap(NULL, self->size2, PROT_READ | PROT_WRITE,
++			   MAP_PRIVATE, fd, file_offset);
++	if (self->addr2 == MAP_FAILED)
++		SKIP(return, "Cannot create a writable private pfnmap mapping");
++	priv = self->addr2;
 +
-+	for (;;) {
-+		if (fatal_signal_pending(current)) {
-+			ret = -EINTR;
-+			goto fail;
-+		}
-+		cond_resched();
++	/* COW the page and stamp known bytes into the anon copy. */
++	priv[0] = 0x42;
++	priv[self->pagesize - 1] = 0x24;
 +
-+		page = follow_page_mask(vma, addr,
-+					gup_flags | FOLL_TOUCH | FOLL_GET,
-+					&page_mask);
-+		if (!IS_ERR_OR_NULL(page))
-+			return page;
++	buf = malloc(self->pagesize);
++	ASSERT_NE(buf, NULL);
 +
-+		/*
-+		 * No struct page: a raw PFN of a VM_IO/VM_PFNMAP VMA, whether
-+		 * seen by the up-front check (@pfnmap) or reported as -EEXIST
-+		 * for a present PFN. Return -EFAULT so the caller reaches it
-+		 * through vma->vm_ops->access().
-+		 */
-+		if (pfnmap || PTR_ERR(page) == -EEXIST) {
-+			ret = -EFAULT;
-+			goto fail;
-+		}
-+		/* A hard error from the walk itself. */
-+		if (page && PTR_ERR(page) != -EMLINK) {
-+			ret = PTR_ERR(page);
-+			goto fail;
-+		}
++	mem_fd = open("/proc/self/mem", O_RDONLY);
++	ASSERT_GE(mem_fd, 0);
++	rc = pread(mem_fd, buf, self->pagesize, (off_t)(uintptr_t)priv);
++	close(mem_fd);
 +
-+		/*
-+		 * The page is not present, or needs unsharing. A remote fault
-+		 * under the per-VMA lock cannot deliver userfaultfd (which
-+		 * assumes current is the faulting task), so fall back for those.
-+		 */
-+		if (vma_locked && userfaultfd_armed(vma)) {
-+			ret = -EAGAIN;
-+			goto fail;
-+		}
-+		ret = faultin_page(vma, addr, gup_flags | FOLL_REMOTE | FOLL_GET,
-+				   PTR_ERR(page) == -EMLINK, &locked);
-+		if (ret == -EAGAIN)
-+			return ERR_PTR(-EAGAIN);	/* fault released the per-VMA lock */
-+		if (ret)
-+			goto fail;
-+	}
++	ASSERT_EQ(rc, (ssize_t)self->pagesize);
++	EXPECT_EQ(buf[0], 0x42);
++	EXPECT_EQ(buf[self->pagesize - 1], 0x24);
 +
-+fail:
-+	/*
-+	 * Under the per-VMA lock the caller cannot reach ->access() or act on a
-+	 * hard error (both need the mmap lock), so release the lock and have it
-+	 * retry there; the mmap-lock pass produces the definitive error.
-+	 */
-+	if (vma_locked) {
-+		vma_end_read(vma);
-+		return ERR_PTR(-EAGAIN);
-+	}
-+	return ERR_PTR(ret);
++	free(buf);
 +}
 +
- /*
-  * Writing to file-backed mappings which require folio dirty tracking using GUP
-  * is a fundamentally broken operation, as kernel write access to GUP mappings
-diff --git a/mm/internal.h b/mm/internal.h
-index 181e79f1d6a2..0899a37907c1 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1595,6 +1595,8 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
-  */
- int __must_check try_grab_folio(struct folio *folio, int refs,
- 				unsigned int flags);
-+struct page *get_user_page_vma(struct vm_area_struct *vma, unsigned long addr,
-+			       unsigned int gup_flags);
- 
- /*
-  * mm/huge_memory.c
-@@ -1641,11 +1643,13 @@ enum {
- 	FOLL_UNLOCKABLE = 1 << 21,
- 	/* VMA lookup+checks compatible with MADV_POPULATE_(READ|WRITE) */
- 	FOLL_MADV_POPULATE = 1 << 22,
-+	/* caller holds the per-VMA lock, not the mmap lock */
-+	FOLL_VMA_LOCK = 1 << 23,
- };
- 
- #define INTERNAL_GUP_FLAGS (FOLL_TOUCH | FOLL_TRIED | FOLL_REMOTE | FOLL_PIN | \
- 			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE | \
--			    FOLL_MADV_POPULATE)
-+			    FOLL_MADV_POPULATE | FOLL_VMA_LOCK)
- 
- /*
-  * Indicates for which pages that are write-protected in the page table,
++TEST_F(pfnmap, procmem_pfn_read)
++{
++	char buf[64];
++	ssize_t rc;
++	int mem_fd;
++
++	/*
++	 * A raw PFN of a VM_IO/VM_PFNMAP mapping has no struct page, so
++	 * __access_remote_vm() reaches it through vma->vm_ops->access()
++	 * (generic_access_phys()). That ioremaps the PFN, which is rejected for
++	 * RAM, so this only applies to genuine device memory.
++	 */
++	if (target_is_ram)
++		SKIP(return, "Target is System RAM; ->access() cannot ioremap RAM");
++
++	mem_fd = open("/proc/self/mem", O_RDONLY);
++	ASSERT_GE(mem_fd, 0);
++	rc = pread(mem_fd, buf, sizeof(buf), (off_t)(uintptr_t)self->addr1);
++	close(mem_fd);
++
++	ASSERT_EQ(rc, (ssize_t)sizeof(buf));
++}
++
+ int main(int argc, char **argv)
+ {
+ 	for (int i = 1; i < argc; i++) {
 -- 
 2.53.0-Meta
 
