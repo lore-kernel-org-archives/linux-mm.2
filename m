@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C95FFC4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 18:24:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF18C44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 18:24:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD70C6B00D8; Fri, 17 Jul 2026 14:24:05 -0400 (EDT)
+	id 2FDE66B00DB; Fri, 17 Jul 2026 14:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BADB26B00DB; Fri, 17 Jul 2026 14:24:05 -0400 (EDT)
+	id 2D43E6B00DD; Fri, 17 Jul 2026 14:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC4546B00DC; Fri, 17 Jul 2026 14:24:05 -0400 (EDT)
+	id 1EAEB6B00DE; Fri, 17 Jul 2026 14:24:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7972F6B00D8
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:24:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0551340130
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:24:05 +0000 (UTC)
-X-FDA: 84999092850.25.0A95C64
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DA65E6B00DB
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:24:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4016EC0218
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:24:14 +0000 (UTC)
+X-FDA: 84999093228.24.751B313
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4A3878000F
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:24:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=odkRKlJj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9A15A1C0007
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:24:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nok5y9V7;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784312643;
+	s=arc-20220608; t=1784312652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AMXMZPPGRWd9Xw8i5HYWkiF0Bq2ZcnqCXrjlidS4hik=;
-	b=chXyiOOGNnsDA39RZop9cCjcI+hShLxIoeydQkw17NKvAFX1xO1krfKOa6N+tpxSKd5Z4y
-	K/v0X/SGs59ejtESQeaASNYVy4Ba755fGS6Ao7O9O9P4w6gm0h3Fha3mNwgVZ5UgUSuWHd
-	bRGP5z7ecMyYPTkiydPPk9nxQL0OgkU=
+	bh=KkiX41oRUtbyELsD72Aha5EOEJUotYzdMaBBIICRLMU=;
+	b=0KeSAHZiqIK1G/rfU9C2qdfxuoXkPZT/of+3+ntII5oXGgFZ0UAsHc//T4/lAqXg1GUdKR
+	VqryHM6IoZ6dD2eV6q8nSozaMxe0nrkhqGiPPCZEhtDHgYbXyxBUw7C22zonW42zRFWkvY
+	kREvMAFSnNOXbbplQ8z05RiQU0SivhY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=odkRKlJj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nok5y9V7;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784312643;
-	b=nUjHVse70vyfmRstlKtjIrySnKzps85UqoFDorVnSZZF/DQXaMJzUhG40EKMgC12ja71hY
-	f2pVDPsWH8lanrt8M9MyrNXcOujMS154AejXVCKIVRHblVt/xOiBDSBLA+3X7Rf4lqmqRs
-	he4xindFvtEnx31JFWyOGhAldOD/GiY=
+	t=1784312652;
+	b=jZ/r6uh2/ZWgAe7T+LHZX8l8EftAe13THjiXEF7B1SfJ18vYrarOFMSQBjklIDGlDagR7f
+	OcknfQbLBaX6BwQ349DXlgtzEymtgVIII918YmEhOw2epWO4YZFvGCCqnOlVHQ+LPvptNc
+	mEtSbuTglIs+y8pZzMMRipdT0VpPF14=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD8EF60A74;
+	by tor.source.kernel.org (Postfix) with ESMTP id 270E560A79;
+	Fri, 17 Jul 2026 18:24:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0311F000E9;
 	Fri, 17 Jul 2026 18:24:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31EB1F00A3D;
-	Fri, 17 Jul 2026 18:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784312642;
-	bh=AMXMZPPGRWd9Xw8i5HYWkiF0Bq2ZcnqCXrjlidS4hik=;
+	s=k20260515; t=1784312652;
+	bh=KkiX41oRUtbyELsD72Aha5EOEJUotYzdMaBBIICRLMU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=odkRKlJjGCbmUafVPgYl86ptaM4bULyKnomTxwVv6fOeiTnjQV945B301hF7qZsHd
-	 ckdjpBgNXQYY6Zq2c2G1UQIo5+TffcppfpHiAErGoz3l8soQ9NVDcxD5s3ugi/8Un7
-	 42nBwEuAkoE6M2UkQyAsJRq0AyNHhzE052DIRJqEB+o+7cMfdkqHL+rLU9bW7lQN/0
-	 RgcLWReYD8LNeeYwCQ7MbjNg8KM21a7NkxUa/6N0s655halOIB9hsQhzJOEMpet7xn
-	 y4qEnEEPiSedlrJZc79XLDTfrkBqyUbWQArVD1TIw6ZNQqkZZ2jp187OcABa2Kzf0O
-	 kebbKXvGg6tew==
+	b=Nok5y9V7uz97J68uVLNxkH9lWj0x2uAj7uK5VE0cKXSiIYTR/bogQ4ikpvYEEJnXz
+	 NrVinhIg3yTbgiWfyStlcb8GWIt6LRFzjNX0iRmVzJSZpyO02oJLyo8hHnMTP/UFKs
+	 +91eaKvRooR1qs76/DtIuE+9w1whqb86KouOz754CZmJt/64FB8mFMBrXfxx1qES/w
+	 nplHl1qI86bWKKMhcsdLFVSGVMaWJZYrsXllxvcsfJofyLaQNGmDiiSUCAs1ZzqPBI
+	 uMHsMSsJUtBE2mv18kPAIUeSscuCfo7hLx+rZb7BFYEY11dvgtciWupXWzDPg7Hd2F
+	 DBCsiaKDltn9Q==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 17 Jul 2026 19:19:50 +0100
-Subject: [PATCH 12/15] mm/vma: only permit MAP_PRIVATE /dev/zero to be
- mapped anonymous
+Date: Fri, 17 Jul 2026 19:19:51 +0100
+Subject: [PATCH 13/15] mm/vma: make MAP_PRIVATE-mapped /dev/zero mappings
+ truly anonymous
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260717-b4-scalable-cow-virt-pgoff-v1-12-cf24910ef094@kernel.org>
+Message-Id: <20260717-b4-scalable-cow-virt-pgoff-v1-13-cf24910ef094@kernel.org>
 References: <20260717-b4-scalable-cow-virt-pgoff-v1-0-cf24910ef094@kernel.org>
 In-Reply-To: <20260717-b4-scalable-cow-virt-pgoff-v1-0-cf24910ef094@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,22 +100,22 @@ Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7326; i=ljs@kernel.org;
- h=from:subject:message-id; bh=efwTnIHzkKX0RplIWXulhNQpbVQxVROQFPLdI6z77uY=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKiivbZxV65PsvQ7eQ/v50PLQRT1V9m1xm82xq40yxZx
- WqDjOPdjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzkkS4jw7l94f/FtS4vthdm
- 8bXWfX/nbPKsv1NVtauTY1+9dt9bJcnIcHjnB2cFsQ05Lu7H380JP864Tm2Z7c53p2e9eO9sZ77
- oNDsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4776; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=C4IaEx/DcAW96RFPFZ/bWWEFrGWe3/+6S/w8PUQQWRk=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKiivZ9VN962Us85H6JBdP+UpEo98o/NdE83AdOdbfWm
+ kSFr7fpKGVhEONikBVTZHn+RXx/kEjYvM4L/m4wc1iZQIYwcHEKwEQOTmb4X/Dc+NG7De5Mf6KD
+ Kk5G/ORgOGrvUKZ0/vNhs/xgzbBZcxj+u66a+ml1oLxcv+X5TKF/JyNjpmR+L18cFrtzb/2lVXZ
+ bGQA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: ar4fhwgpfxkrzrp3ymm3fsrbdb85y47o
-X-Rspamd-Queue-Id: 4A3878000F
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784312643-598272
-X-HE-Meta: U2FsdGVkX19AYt83u8MCFihDAn2WlOblsBugd1YvzIjOdqwRSxgHQFNBQVDdVdSrsLLDi55DT2K629NmzXhZHmYwnEf4D8Sf7wjNvYcaLLrZO+g8ZBmSD5VWeq9pW9H1d4uOC/u4C+lTFjFJJLxhj38DH6RWYzCfcbp0/0hwl7glHcrPJ97aL5C7rO5rWC0FrE/9C1SWx6P+kVU+nfbonA5f8R6+y3/9CjduBdOrk5fALJPVqr4IJoXoiSEyzAZrfC+d+1l06gxKpi/3yX6xitKSq19we/BIIfdYnzPoBN04vBf6p9fKj/PRHGRkK934cVPrWekKV847dM5c6C05yYdMJZrXnad9ySKqC4AqtTvaKusz60E7fmQ0+j0rIUJ2upWTibALTdRhxvz2LICBpSd6CQz6RjxLRI/idD5aGk/FfJ3fIlmyYy5U3vksa1NXAKiztILGTzjXlyl1/TzDjUVxMYILxTv4Qlk686G9SfXMmdpKAG5fxpl8qKSrciYq6qt8hdp3KQ5X4+aOvByx37GpGEyApZN1U5pR4wl1rCy27Taw0lLROMX/H2rgD3hg2Of+KH1MuQjyctMZtD4nSq7SOs739JcnKevH3nCsgUZpm3sDrK/jE/p4yHoksCPsPNRXfFuFE3qZ7k6p+NauKI8tP8hH+I+LCgt2/sgJ+cmdW6yz4fw3paKv+DFJzZntGWN8s9gdSdJrlFXlRTr2OEfvyKVSdLiFlxj5nBkg2pTDz2CkpBGc5VcqrktxsMlF7Nd3ZfT24o4cIh2NNsL2/Ne4GM4BxORZCVVRnIzp/Y8ViIrEfJ+JoIKggC1ZnpmHWp7XV59H7i6COYTAE7P4oguPh8oakjHSifPZ2dOymHR95ONgc6qnSPlaVFdCPoP46qBo59mzSz3jV24e8zwmzq3JNC4Tjz4CjagVVbEiDwCvIht1NSTaMbuBgAjFAqTuX7oeutXLf1Uj5jCTW/r
- 40to+ns4
- ahjeU1rzfvVMtBI5S32weR2+cTwyJ1ZfRKiZiujw1XGEK7/qG1Xn71NwnEarMvYK7ia+gYSNQXzbpN30prcufTKjO1iRD39MJMOnBUizB2Dgm91lbCY349GmjAlPbvwkk1vrS6esLFHAP1dLf6RS/PVt664Vnkxvw/iZMAKRBJSr1JjeFVTdfPeF7XSVg7Dy7lgZrCxg+GwOhejXXGJWtzWpARUJ+T+SaA6Ebow3ywI8BPLkFYQ7TQG0jGrLGnBdg70V+VjMtpQwTYvyWj/eku/AZ+EXVNaI0GYuaOP2P5+um5WjPkEZRf13aAzyIK2do1bfyB9kalVkgelqC2hdcTC/uErHKIp2721wOijWcJSn+UzPZmYCCzrw9+g==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9A15A1C0007
+X-Stat-Signature: umridtpgpmtbq4jn3j666nbo8wm9pd8y
+X-HE-Tag: 1784312652-853268
+X-HE-Meta: U2FsdGVkX1/snNQkiQRyeYrrzYoypbIHS91PTT7U1cCcFL5c5MqupNT3eG6/fyPxF0MJAqnSYYtVKR025H+MTt8t5KrTX9eOYxTnTil9aCj08sgoMxchvgjtZRHE44CLfwOZv1OvrfowUgc/8gOIWyaiOubg9gutOHtVwDLiw3ZL3nKxDjW5ioM/e/lMEaSXSgFSiXagbWS0qoKzN3y7t58dpfh9Fkhmzw9HlvGT9EPxImlgPJWV4QP+gwcH8fb3T8otG4JXvIl/nFam5VSHXtM63a1nlqCIlnyDT0uY5NwHMKF397zrL9cvHG3OTpg5i2r/ZpKShU2F2NVFouGC8D+dZ1igltfs7kLoPRg7wtLVCR9y7GpbPUIQigtDamHAauaOi7eJJ6WGsagAG+yyk02rFhHn29tq6GWWMyHW7xl5TwL7SZvhUBl3fqWtP1z6mSoHFMb7wSa0dSBPf9Uhe6hbY1KZQuW6sFb2L/D/TitB4cIWXHhSD3MNCs+M1D45uBiZtQTZFqtlSoJbTtkALlQ693Kerxqar08V0wcvYxGxn1OKXEyiFEOkGP/DUrJrHvwo1xrz1y7Iavczu5toJNWoyTa4aPU9Pf7fofPZFeKs7ycRVcJMPZ0FrdNFxkhku/ccv76/9kGyzQhv/VFQlxxE0NdO+cc5Kv8L+cyc68ZACoZISxNb3d+C67dpUTocKmH+OZQ+OHVuZNKyFLRpO+Db28JNhEULK2KYetGQy9KkoQwXoRa0zgeA8b9x3joy/Ln7f4lnpwUpASdZ3uYYYCPvHPK+H4NQr6uDWaehb10u63rHn/vfbM161AQiCce20HxRGTTbEdATLhH9p6jzyByOKoik7hNR5+wsp+3D9j4ZEGk7dwtzkqJcrWqYq7hKXbjBQQthT+ZYsnrkOuT48RwYlSdeRSLtXY+jUl3WjTf4zsyqcvZINtVjHJmslsC6xI7A3+zyrOSGs+wAKZl
+ 7M7JWec1
+ eXPopOBeqav345CMtiW78eg7N25JnokIFb5tguHk8tQ7KRdPd3LApkLmiG7Z0m19nVgQV9JliJvoUfE85gpZsFtPLuKRnUYZ5qMwZXofC3BlFn8HUlvsvuKcx/q2CnvdN7jo7RGx5gEuLKjL+f9vdHUWFbTZ9/52hDfARJON+WGwu4wjBcOt87VDLUT4zoqloJ1PSc2G44wqo4XqbRZC1YCY8lqNS0Q3oCgmmnBw2YStYMX64q+I73Et0dix4MjUwLO22ioRfzYKSxBR0GcpPw8zVm5xsQFcEPKgSEVnIahWmRyteqNACtDXDBx5htwlRWgnakvjP7l1r5dIV/1jujmnicyBluV0Qk48ue1hDtB3bZVHxXHONdhoohg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,230 +123,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to use mmap_prepare() with MAP_PRIVATE mappings of /dev/zero
-without the success_hook hack we explicitly permitted mmap_prepare handlers
-to set NULL vm_ops.
+When mapping /dev/zero with MAP_PRIVATE, one ends up with strange VMAs
+originating from Linux's distant past.
 
-However this is dangerous and we really only want to allow this for
-MAP_PRIVATE-mapped /dev/zero.
+These have vma->vm_file set but NULL vma->vm_ops, meaning they satisfy
+vma_is_anonymous() but otherwise resemble a file-backed VMA.
 
-Make it possible to explicitly identify /dev/zero by setting a global
-DEVZERO_MINOR device minor number then explicitly check for this in mmap
-code for a MAP_PRIVATE mapping and only set the VMA anonymous if we have
-positively identified it.
+The introduction of virtual page offsets and their subsequent use as
+indexes for MAP_PRIVATE-file-backed mappings mean the rmap does the right
+thing with these but we are left with inconsistencies.
 
-Then remove all ability for mmap_prepare or mmap hooks to set a VMA
-anonymous and update mmap_zero_prepare() to leave it to the core mmap code
-to mark the VMA anonymous.
+The vma_start_pgoff(vma) == vma_start_virt_pgoff(vma) invariant is true for
+all other anonymous VMAs, but not these.
 
-Note that this disallows nested MAP_PRIVATE-mappings of /dev/zero
-regions. Doing this would be broken in any case.
+These VMAs are also observable as files in /proc/<pid>/[s]maps but
+otherwise behave like anonymous mappings.
 
-We therefore do not need to update the mmap_prepare() compatibility layer
-to reflect these changes, as the mmap hook check suffices to disallow this
-behaviour.
+Therefore let's make these VMAs actually anonymous at mapping time which
+will activate the anonymous code path for mappings.
 
-Also update the VMA userland tests to reflect the change.
+This means we no longer have to account for this discrepancy anywhere and
+no longer have to think about these at all.
+
+A previous commit gave us map_is_dev_zero() to positively identify these
+mappings, so we expressly only do so for these alone.
+
+The impact of this change should be low as likely very few are relying upon
+this in any case, and in using them are asking for anonymous memory, so no
+longer seeing these as file mappings in smaps should have no meaningful
+impact.
+
+Update assert_sane_pgoff() and the comment for vma_start_pgoff() to reflect
+the change.
+
+We make this change in call_mmap_prepare() alone as /dev/zero has been
+converted to an mmap_prepare hook and we do not permit nested MAP_PRIVATE
+mapping of /dev/zero.
+
+We also remove the now defunct vma_desc_set_anonymous().
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- drivers/char/mem.c              |  8 ++------
- include/linux/mm.h              |  3 +++
- mm/internal.h                   |  4 ++++
- mm/vma.c                        | 33 +++++++++++++++++++++++++++------
- mm/vma_internal.h               |  1 +
- tools/testing/vma/include/dup.h | 28 ++++++++++++++++++++++++++++
- 6 files changed, 65 insertions(+), 12 deletions(-)
+ include/linux/mm.h | 10 ++--------
+ mm/vma.c           | 21 +++++++++++++++++----
+ mm/vma.h           |  3 ---
+ 3 files changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-index 63253d1de5d7..dcfd896b733d 100644
---- a/drivers/char/mem.c
-+++ b/drivers/char/mem.c
-@@ -506,11 +506,7 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
- 	if (vma_desc_test(desc, VMA_SHARED_BIT))
- 		return shmem_zero_setup_desc(desc);
- 
--	/*
--	 * This is a highly unique situation where we mark a MAP_PRIVATE mapping
--	 * of /dev/zero anonymous, despite it not being.
--	 */
--	vma_desc_set_anonymous(desc);
-+	/* MAP_PRIVATE semantics are taken care for us by core mm. */
- 	return 0;
- }
- 
-@@ -698,7 +694,7 @@ static const struct memdev {
- #ifdef CONFIG_DEVPORT
- 	[4] = { "port", &port_fops, 0, 0 },
- #endif
--	[5] = { "zero", &zero_fops, FMODE_NOWAIT, 0666 },
-+	[DEVZERO_MINOR] = { "zero", &zero_fops, FMODE_NOWAIT, 0666 },
- 	[7] = { "full", &full_fops, 0, 0666 },
- 	[8] = { "random", &random_fops, FMODE_NOWAIT, 0666 },
- 	[9] = { "urandom", &urandom_fops, FMODE_NOWAIT, 0666 },
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index b6503b5f0010..7614afe99c96 100644
+index 7614afe99c96..7fabe6c66b4b 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -740,6 +740,9 @@ static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
- 	{ FAULT_FLAG_INTERRUPTIBLE,	"INTERRUPTIBLE" }, \
- 	{ FAULT_FLAG_VMA_LOCK,		"VMA_LOCK" }
+@@ -1554,11 +1554,6 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
+ 	vma->vm_ops = NULL;
+ }
  
-+/* /dev/zero minor device number. Special due to MAP_PRIVATE semantics. */
-+#define DEVZERO_MINOR	5
-+
- /*
-  * vm_fault is filled by the pagefault handler and passed to the vma's
-  * ->fault function. The vma's ->fault is responsible for returning a bitmask
-diff --git a/mm/internal.h b/mm/internal.h
-index 22f63cb85bd3..41561fdeb56d 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -240,6 +240,10 @@ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
+-static inline void vma_desc_set_anonymous(struct vm_area_desc *desc)
+-{
+-	desc->vm_ops = NULL;
+-}
+-
+ static inline bool vma_is_anonymous(const struct vm_area_struct *vma)
  {
- 	int err = vfs_mmap(file, vma);
- 
-+	/* Hooks cannot mark themselves anonymous. */
-+	if (WARN_ON_ONCE(vma_is_anonymous(vma)))
-+		err = -EINVAL;
-+
- 	if (likely(!err))
- 		return 0;
- 
+ 	return !vma->vm_ops;
+@@ -4352,9 +4347,8 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
+  * If @vma is a MAP_PRIVATE file-backed mapping, then this returns the
+  * page offset within the file.
+  *
+- * Edge cases: nommu does not abide by these, MAP_PRIVATE-/dev/zero satisfies
+- * vma_is_anonymous() but has file-backed page offset, and MAP_PRIVATE-pfnmap
+- * regions have their page offset set to the first PFN in the range.
++ * Edge cases: nommu does not abide by these and CoW MAP_PRIVATE-pfnmap regions
++ * have their page offset set to the first PFN in the range.
+  *
+  * Returns: The page offset of the start of @vma.
+  */
 diff --git a/mm/vma.c b/mm/vma.c
-index 6dc095d03382..6ccd097b8813 100644
+index 6ccd097b8813..f8001d5c23aa 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -2612,6 +2612,27 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+@@ -2620,6 +2620,14 @@ static bool map_is_dev_zero(const struct mmap_state *map)
+ 	return imajor(inode) == MEM_MAJOR && iminor(inode) == DEVZERO_MINOR;
+ }
+ 
++static void map_set_anon(struct mmap_state *map)
++{
++	map->file = NULL;
++	map->file_doesnt_need_get = false;
++	map->pgoff = map->addr >> PAGE_SHIFT;
++	map->vm_ops = NULL;
++}
++
+ static bool map_is_private(const struct mmap_state *map)
+ {
+ 	return !vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
+@@ -2627,10 +2635,7 @@ static bool map_is_private(const struct mmap_state *map)
+ 
+ static bool map_is_anon(const struct mmap_state *map)
+ {
+-	if (!map_is_private(map))
+-		return false;
+-
+-	return !map->file || map_is_dev_zero(map);
++	return map_is_private(map) && !map->file;
+ }
+ 
+ /*
+@@ -2808,6 +2813,14 @@ static int call_mmap_prepare(struct mmap_state *map,
+ 	map->vm_ops = desc->vm_ops;
+ 	map->vm_private_data = desc->private_data;
+ 
++	/*
++	 * MAP_PRIVATE-/dev/zero mappings are an ancient way of getting
++	 * anonymous mappings. Rather than allowing these mappings to be odd
++	 * outliers, simply make them truly anonymous.
++	 */
++	if (map_is_private(map) && map_is_dev_zero(map))
++		map_set_anon(map);
++
  	return 0;
  }
  
-+static bool map_is_dev_zero(const struct mmap_state *map)
-+{
-+	const struct file *file = map->file;
-+	const struct inode *inode = file_inode(file);
-+
-+	return imajor(inode) == MEM_MAJOR && iminor(inode) == DEVZERO_MINOR;
-+}
-+
-+static bool map_is_private(const struct mmap_state *map)
-+{
-+	return !vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
-+}
-+
-+static bool map_is_anon(const struct mmap_state *map)
-+{
-+	if (!map_is_private(map))
-+		return false;
-+
-+	return !map->file || map_is_dev_zero(map);
-+}
-+
- /*
-  * __mmap_new_vma() - Allocate a new VMA for the region, as merging was not
-  * possible.
-@@ -2625,8 +2646,7 @@ static int __mmap_new_file_vma(struct mmap_state *map,
- static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
- 	struct mmap_action *action)
- {
--	const bool is_anon = !map->file &&
--		!vma_flags_test(&map->vma_flags, VMA_SHARED_BIT);
-+	const bool is_anon = map_is_anon(map);
- 	struct vma_iterator *vmi = map->vmi;
- 	int error = 0;
- 	struct vm_area_struct *vma;
-@@ -2768,6 +2788,10 @@ static int call_mmap_prepare(struct mmap_state *map,
- 	if (err)
- 		return err;
- 
-+	/* Hooks cannot mark themselves anonymous. */
-+	if (!desc->vm_ops)
-+		return -EINVAL;
-+
- 	err = call_action_prepare(map, desc);
- 	if (err)
- 		return err;
-@@ -2790,10 +2814,7 @@ static int call_mmap_prepare(struct mmap_state *map,
- static void set_vma_user_defined_fields(struct vm_area_struct *vma,
- 		struct mmap_state *map)
- {
--	if (map->vm_ops)
--		vma->vm_ops = map->vm_ops;
--	else	/* Only /dev/zero should do this. */
--		vma_set_anonymous(vma);
-+	vma->vm_ops = map->vm_ops;
- 	vma->vm_private_data = map->vm_private_data;
- }
- 
-diff --git a/mm/vma_internal.h b/mm/vma_internal.h
-index 4d300e7bbaf4..385c0ab13777 100644
---- a/mm/vma_internal.h
-+++ b/mm/vma_internal.h
-@@ -23,6 +23,7 @@
- #include <linux/ksm.h>
- #include <linux/khugepaged.h>
- #include <linux/list.h>
-+#include <linux/major.h>
- #include <linux/maple_tree.h>
- #include <linux/mempolicy.h>
- #include <linux/mm.h>
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 51605ade06fb..93049241b297 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -15,6 +15,15 @@ struct task_struct *get_current(void);
- #define MMF_HAS_MDWE	28
- #define current get_current()
- 
-+#define MINORBITS	20
-+#define MINORMASK	((1U << MINORBITS) - 1)
-+
-+#define MAJOR(dev)	((unsigned int) ((dev) >> MINORBITS))
-+#define MINOR(dev)	((unsigned int) ((dev) & MINORMASK))
-+
-+#define MEM_MAJOR		1
-+#define DEVZERO_MINOR	5
-+
- /*
-  * Define the task command name length as enum, then it can be visible to
-  * BPF programs.
-@@ -45,6 +54,9 @@ struct address_space {
- 	unsigned long		flags;
- 	atomic_t		i_mmap_writable;
- };
-+struct inode {
-+	dev_t			i_rdev;
-+};
- struct file_operations {
- 	int (*mmap)(struct file *, struct vm_area_struct *);
- 	int (*mmap_prepare)(struct vm_area_desc *);
-@@ -52,6 +64,7 @@ struct file_operations {
- struct file {
- 	struct address_space	*f_mapping;
- 	const struct file_operations	*f_op;
-+	struct inode			*f_inode;
- };
- struct anon_vma_chain {
- 	struct anon_vma *anon_vma;
-@@ -1632,3 +1645,18 @@ static inline pgoff_t linear_virt_page_index(const struct vm_area_struct *vma,
- 
- 	return pgoff;
- }
-+
-+static inline struct inode *file_inode(const struct file *f)
-+{
-+	return f->f_inode;
-+}
-+
-+static inline unsigned iminor(const struct inode *inode)
-+{
-+	return MINOR(inode->i_rdev);
-+}
-+
-+static inline unsigned imajor(const struct inode *inode)
-+{
-+	return MAJOR(inode->i_rdev);
-+}
+diff --git a/mm/vma.h b/mm/vma.h
+index c1d65060071f..8caee3b4ba26 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -267,9 +267,6 @@ static inline void assert_sane_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
+ 	 */
+ 	if (!vma_is_anonymous(vma))
+ 		return;
+-	/* MAP_PRIVATE-/dev/zero is anon, non-NULL vm_file, but has file pgoff. */
+-	if (vma->vm_file)
+-		return;
+ 	/* If faulted in, could have been remapped. */
+ 	if (vma->anon_vma)
+ 		return;
 
 -- 
 2.55.0
