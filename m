@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08381C44515
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:02:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C44EC4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:02:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B23D6B00C0; Fri, 17 Jul 2026 13:02:38 -0400 (EDT)
+	id EA3BB6B00C6; Fri, 17 Jul 2026 13:02:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 662A66B00C2; Fri, 17 Jul 2026 13:02:38 -0400 (EDT)
+	id E79B06B00C5; Fri, 17 Jul 2026 13:02:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52ABB6B00C3; Fri, 17 Jul 2026 13:02:38 -0400 (EDT)
+	id D68B36B00C6; Fri, 17 Jul 2026 13:02:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 219676B00C0
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:02:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FD786B00C2
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:02:44 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F3D61C007B
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:57 +0000 (UTC)
-X-FDA: 84998515434.03.3F07357
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1959DA0002
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:56 +0000 (UTC)
+X-FDA: 84998515392.03.303191A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E4535C0010
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Npu9wM/T";
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784298896;
-	b=F3okYHb7rmmNeryOMTXUvsscZDmEZRbfS2DBN13IRh/+1sxRsY0PefEf0O0Lgk3rCjG+TC
-	5b1tqYESyP32AYH8fvzeqR0kAYnKiiZob5b5Sz4MSs75W8/iX8fioaBSDIVc3eqX/0SA8M
-	qaHlzV15848+m5screkmsdRPIbyuhdM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Npu9wM/T";
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6FD39180012
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:54 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bmloB99Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784298896;
+	s=arc-20220608; t=1784298894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VuPFx8TTNBzLXDK2qKBdCiBzn3J3hO3HBSaJVXSFOsw=;
-	b=1Rf/ntxHiUJ4J2m60P4LDDUuLPc2qpk5usXDkh54WeMCEJPsrtonrHWCVbhS4KPaUw92Ka
-	KmXqNUJE2dGRNWomsqRxsTaRAgqDxy7eM2PGBbPTWBbE/NC4Ll2cANhOQEATtH1twthdVw
-	utCc+0dAYsh2SQ74PMZG4kGVmzlWRgY=
+	bh=KyQzh9cAgWHiv+f51XfecFAFsLqN9MeOR+zzeRidaFs=;
+	b=GlagLzZyyQdEcHbpY/Pl/PtmFN7t1Twv3NpZokZgtDvZDj5hPXqDHSP2u9pH0dZ9uyGo66
+	U3uDAebr+/dKe1GP74OYpZKqx3kSwWFJpXi/3Yi0QnRFoON7Dg20umAlA7kU3geljq1eNc
+	Vb/ckq9b5PqCsv++Mw9++aC1YkVxNrU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bmloB99Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784298894;
+	b=YEF5EmWZ9hcsmvq340wu2OShOfN7IJuejSUpeeUhrOlL16ilnJ79ZHqw1dE932pthbiSlO
+	239WBEDQ3zdDJYFhX9osgzLFbzOl81kXchG312ToHFFvbrsMW/ou734VJDur5+q57dOMn3
+	DNUHoK9LG/h/3e6JARa+XxiRqOgr8cI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 34C164356A;
-	Fri, 17 Jul 2026 14:34:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27521F00A3D;
-	Fri, 17 Jul 2026 14:34:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C33594364F;
+	Fri, 17 Jul 2026 14:34:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DEE1F00A3E;
+	Fri, 17 Jul 2026 14:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784298895;
-	bh=VuPFx8TTNBzLXDK2qKBdCiBzn3J3hO3HBSaJVXSFOsw=;
+	s=k20260515; t=1784298893;
+	bh=KyQzh9cAgWHiv+f51XfecFAFsLqN9MeOR+zzeRidaFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Npu9wM/TLqqMdaAfSdeHwemKOKxjfT9xquH/SBQ26zMAMOE0gMCtf5t0szwG8Esb6
-	 poykFcwsr++2y3b61XYNM4ZtqCTntwWmry6eL45jnAM9cacxRqDddpe0DtP1L6h2kb
-	 Ox90FQzu37+vqQYUTEkt3oD2W3I5KlGsPqsrtPnrmuSuxEkXB81yTLuCTKo4joNX5G
-	 UrsHYdslhn9ry++WIowcwhKq0o1DjvQfjyW9i3nB08avw4UmYX4a72eqUcS8NJuKE+
-	 Wnek6HrXSIIdsWTYk+j1sAgQSrI8KKEgmzsM3TwgdXi6VSoS8Si4LFTC8tf1v9DHlj
-	 ni1I80XOT1qTQ==
+	b=bmloB99Ybx1WKgtIc+yxyRNZ4NVfaVa99uMGlmbik1P6sKwLzzUKxIgu2TG7hBFGt
+	 b7LMPjVozz0aZO5ICLqo1dC4+SHxox5Psc1/35wBHfgOelF9IiBkCrNr4DLLXat385
+	 JbLTB6ejQXMC1x0uNT/Vta7tNeePtD7wpZ4433zw6NochFM0OsU1ZrkTnLthIGXnY0
+	 afENsGXcK2SmtGyIAhqITzppKGuXMhYWRV3mHtdjKhwGOFnrMpfJjl/ge439/BwRXg
+	 vnLNrWh1dCNWKiy765pLRjX9qCXndU8tRfbhDUyx51IOHtATOwyMEJdW2Dqrz2fYMd
+	 PyRkMzt54ATXA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,27 +70,28 @@ Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@davidgow.net>,
+	SeongJae Park <sjpark@amazon.de>,
 	damon@lists.linux.dev,
 	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 5/7] mm/damon/core-kunit: skip wrong dest walk in commit_dests_for()
-Date: Fri, 17 Jul 2026 07:34:42 -0700
-Message-ID: <20260717143445.91207-6-sj@kernel.org>
+Subject: [RFC PATCH v1.1 2/7] mm/damon/core-kunit: check region count before testing in split_at()
+Date: Fri, 17 Jul 2026 07:34:39 -0700
+Message-ID: <20260717143445.91207-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260717143445.91207-1-sj@kernel.org>
 References: <20260717143445.91207-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 11xp4ccf5jp3n9pc877ot8dgb3y5p5os
+X-Rspamd-Queue-Id: 6FD39180012
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E4535C0010
-X-Stat-Signature: o8ii6f88sqx3up46ez9a8huem99kazrn
-X-HE-Tag: 1784298895-696168
-X-HE-Meta: U2FsdGVkX1+t0YNQ+C1KtRiKe91XqqLXd/2CrHd+T74gPRpcddS402P/Ntr2DYpgrAxenzArrduSSyZiHfj4TWi1FwtifX8KVceIulNqeJwSBVkqsH6MMOJw/j3Y8+aNY4CWue7Qyi42m7dDDjZ9xEHL2ytpDdTL63x2xDgcQMsmnxEHPI+CJuYLWFBEfEpCI7ED6QGmXUIxXwXgqfO+kwrPRejpZVHQ7qEEboaClGgF6DJUPRDvryw63aHxW1eYje7Jz9VdBmWF+wQjWMbfXf3tcj3tzJwSEIwOWm+yvaIoNN7KcB1I01FmNyYxuuCdGnRpozpws70bxwb2jDYV5oeDbhTuVivo7+bdMpnALUaIS6+sydL7KQqWN3wKKL4fflt3lZtrRKFa5nxoVcAzI+y68xQXh/hYsJx21n8pKeLWOkhjKZFwNWAUZ0URYd0DEw3Y7DEavp84ZfqUt7sJE/ikDrxuIZ8RV1kgg0h8yEeM9If9sKn3DwFEQUZkKsSyxZyLPmnFgMdOofe4hcNg/MS87GSa0eYnI+CejEo34zzoS13k4RSSmBfGhAuTUAYmzMbfcQRq8lzKXHNX4AW4Toutu6OBJgk184H0v9RsUQ1mBOE1bbxnoHZHmfylczFkMIBHgeVyFZR6FJ9kCgGRNSFW8gQsAnuTd3wZr+bIsBGLb/8d6oMQb2G0KnIa6ssPZYTlKUO8L11tfI0Y9A+539Xuxrewby7TQZfM52VjZs0gZLX5exfuB35cqNZz5T1q7hb9WOFiNlytkP5qi4vahD2i1x+79H7e6ZrOxTv39Wb2fUQawMAdSiGxG/dspIeipBMutTha7fwkCHbBSqMPAyUvtaTyIBTownnYoA8t02HnRmfP+5EIt0OFA9umQZXa4+x0VEoUylVhYTR632Bf7r28O4pk79y6vGoatZnht2E2YyV2Tx2npBkqZvuBsr0juaE/hVAj56y4KjRLPz8
- GP2aex69
- 1g6GCBMd/4H5jUqIjpdvR1px50ZWL5doPd+Knowp/potSVDUVX19AIVvmPgt7Vgwrtu95VUbg0rz1/h5mhTWGU/3Kpgy3WSeyRLfx26IJ2VUg43EAXkATKxT/kWD2ShzGXpbAVsJzvq3BkG5H08c4nXl18kNzF+jBW1tKXVaTpo4FFgIgogOKbzHvPNn2Eb5m2Mjn9s4Ck0yDWIkwO2rGOOPUBRY0JOVU0qwycguXAS3zoGvVPTG/jz7iu2mHTbGGfYBzJmY++IIW0RziGYaEZVTaQWbo1kpS7zh1
+X-HE-Tag: 1784298894-28699
+X-HE-Meta: U2FsdGVkX18kv5nHYzjxIYAVMCugTjRHXrWqwh5uNIYAIurEoApQ8gLj3NS6p9C54OLIi8XKsSB77pXHoVcRamIPDs8QnSV9BJPISe/miqAqaK6uuFK5O/1c2eMWxRM3d/4BpuV/ip2YY1sKSJZGz1xdqAr1eMMZaXDimlJj3yqXm/51Jy+iH8L2+Z0ZwPBqppJV7yzb7JkRItZAi/yCt1zNz0pEbVfN6Ft6i+g5iP55HalWCTp1pDGm6srwPp4xE5yfnzY75Y/AmozqQHI4ax0LHc47x+6iSATP+cUjxRB2lTiTKnXf5SQuGTYbPYKshD/+68T9/VRsF9U1xYUKrssleBJ4d8q18tcBL8Ucn2YlIqlFESjOlAUr80fA1OHrsOMq3vNO45JAKBPOjzZNrb0/9E6rt7GRrm05TZtSn14XMFL+c6l0MvikXcqMtqy6jegMXXY0aqWmrzkxYgOl1tU26hGIWfA1A2yWMgtwOIg6JNB/Ze3xARb7vc8h1TaGTtlupNT5ZKLla+ptm03gVD6nsK8Owt+oDm/TdXH+CwX4gZ6rTp4GXOkzkRidij5vLW6nz8algz8KiapxV+jyGp2O35NgTxbre7JgEVt4Ci2Ktj+rB3jcN/TQkvmJQegMCkwuw+uIJyL6UQVLSSRro//UISbAjbzQGFoWebMmu+VEkD+mQzi2AZImVfey7QZxZJGNTiYfDC7gQe2/+RcqLi1lexzTqqH4HTYmfXmP9AKlEhldnwPZDrClnhxaD3enT7I7ecLnt3Y3NtmpCkQL1OZ2LzVhQFXdMMat10iLcI7ywaWpoJntA5p03s/qzC72q1fJ0Km2zM3Baeb6ukgAKIY7m5ziQk8IMcvLX7J6oyisb6/TiPyDDt1jIyEYqNFNYKUE2opCBe97pm9s+1TIotiqH+ZDLNsOpFbjpIXzCWC8CqL6Z2MEJtdIifVubytgvz2igxLL8gwhmnMwmNz
+ ndyI1OIe
+ /6EeFitfZegJAtjj5TtRiMoJFIUcw+zXNKrYUFUfw1g87xvwF4K7oJ2ZaMZU/vJDf34VMuLbN59DhzXm9TSj9BEOBLZ/3kHMfHqYz6nzjBUqTnbWDgjeXUkGLDjMmm802knZkf1W83BvUjJCnj4Cz94q7Qf5LOAVqLCAq7FDE3JhyXq0Ue7WlsAH4maFJW/C0GEfGT0UJ5mzTACxZd70w1G3q0YmelKyQ7+Aprj50qKP6SsMS+hr3pJ/kL2d9TkZDYD+2OJEAMOfnzfEWwBACCclvPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,42 +99,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_test_commit_dests_for() traverse damos action destinations after
-damos_commit_dests().  It assumes damos_commit_dests() made expected
-numbers of destinations for source and destination structures.  It might
-not.  Because the traversal is made based on destination struct length,
-it could do out of bounds access for source value expectation.
+damon_test_split_at() test next region that is assumed to be created by
+damon_split_region_at() invocation.  But the split might fail.  In this
+case, the succeeding test may dereference invalid pointers returned by
+damon_next_region().
 
-The consequent user impact (out-of-bound access ) is quite bad.  The
-realistic user impact would be limited, though.  It would affect only
-test run setups.
+The invalid pointer may not cause a really bad user impact, because of
+the implementation detail.  It would only read wrong contents in the
+belonging damon_target struct.  Depending on the future change of the
+offset from the link header to the accessing field, this could also be
+really dangerous, though.  Still, the realistic user impact would be
+limited.  It would affect only test run setups.
 
-Fix it by exiting early for the number of regions test failure.
+Fix it by testing if the number of regions was also changed as expected
+and exit early for the failure.
 
 The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260713144757.39740-1-sj@kernel.org
+[1] https://lore.kernel.org/20260714142352.100478-1-sj@kernel.org
 
-Fixes: eec573b8dd65 ("mm/damon/tests/core-kunit: add damos_commit_dests() test")
-Cc: <stable@vger.kernel.org> # 6.19.x
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/tests/core-kunit.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index eddf3a0484583..9b8c20a50ad53 100644
+index eba643762132f..322a295ac2cec 100644
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -1008,6 +1008,8 @@ static void damos_test_commit_dests_for(struct kunit *test,
- 	skip = false;
- 
- 	KUNIT_EXPECT_EQ(test, dst.nr_dests, src_nr_dests);
-+	if (dst.nr_dests != src_nr_dests)
+@@ -155,6 +155,10 @@ static void damon_test_split_at(struct kunit *test)
+ 	r->age = 10;
+ 	damon_add_region(r, t);
+ 	damon_split_region_at(t, r, 25);
++	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 2);
++	if (damon_nr_regions(t) != 2)
 +		goto out;
- 	for (i = 0; i < dst.nr_dests; i++) {
- 		KUNIT_EXPECT_EQ(test, dst.node_id_arr[i], src_node_id_arr[i]);
- 		KUNIT_EXPECT_EQ(test, dst.weight_arr[i], src_weight_arr[i]);
++
+ 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+ 	KUNIT_EXPECT_EQ(test, r->ar.end, 25ul);
+ 
+@@ -166,6 +170,7 @@ static void damon_test_split_at(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
+ 	KUNIT_EXPECT_EQ(test, r->age, r_new->age);
+ 
++out:
+ 	damon_free_target(t);
+ }
+ 
 -- 
 2.47.3
 
