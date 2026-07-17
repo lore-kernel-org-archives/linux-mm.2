@@ -4,139 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1D1CC4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 15:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6154C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:02:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DE636B00A0; Fri, 17 Jul 2026 11:57:56 -0400 (EDT)
+	id 941C06B00A9; Fri, 17 Jul 2026 12:02:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B72A6B00A1; Fri, 17 Jul 2026 11:57:56 -0400 (EDT)
+	id 91A7F6B00AA; Fri, 17 Jul 2026 12:02:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A66C6B00A2; Fri, 17 Jul 2026 11:57:56 -0400 (EDT)
+	id 8311B6B00AB; Fri, 17 Jul 2026 12:02:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 241226B00A0
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 11:57:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DFAF41A0133
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:32:34 +0000 (UTC)
-X-FDA: 84998358228.21.BD62793
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 711DFC0007
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:32:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="BWGUdR/K";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf10.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784295152;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C5F56B00A9
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:02:29 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FD77A01D3
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:02:28 +0000 (UTC)
+X-FDA: 84998735976.01.7AA0779
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9C72E100017
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:02:26 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VjsBwWxd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784304146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hv3MCqUl10qHtcMMyBPEBq70OO1Ou5CXW72neiXa7f0=;
-	b=Sf9FwiZ5Fccz3ybqGEXcTYRk164YCueQxdyX7RKEsv1NiRs9BDGQMVRvXP3Jsf5Q6VlmPc
-	bOI9nE9ciiYPdwPU0LDp/ZV506Cbr+V8Drtvp95bTS++IAshJYRuh7BUMO6ZOPS2D5bPeA
-	PJKk3hgDiCtBc9N/ILKw2Q1UIvrtOow=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="BWGUdR/K";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf10.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784295152;
-	b=XBtTUHq8ctvyzzi8yp4Ix5Hi+vu+2FJBbpNiUIDCzUvvq3jIEmKKFjMYspegLWvWlI3KZc
-	5TyDl9/p9AVofkxnuZwox9CxljisPDrJwvry0Hv4VJ4jMuNDvMZYz9APQOg1WHo7EOCZXt
-	sdm20r43Uss5ONnk1dBgl88l2S/9Yig=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66HCg95O2057668;
-	Fri, 17 Jul 2026 13:32:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=hv3MCqUl10qHtcMMy
-	BPEBq70OO1Ou5CXW72neiXa7f0=; b=BWGUdR/KoyBCcKVqRpwUIrKMHJEXCpzo7
-	Fv9gye7RnnX9iAT1JZSvAkb9TmbiCawPjJ/iG2q2bP0F+qE2ZEdd46hxSqrsPmVj
-	JRuFQ7P0caExpO1zOtEpkBRsdx1BrtgBRsrWdCJ9kwZUu268FnHuhBKgmYOToA+p
-	f2bBCewoAxOEtn4lRYTOH87joGJ8EeNtwbOPGzLtZs9AXJrpv8ds4BmR2k6iShfW
-	ZoAP2GIAzxaNyKfKvuodBQQGXpbIG/LUOICX/Vxp49TTgHQIzyFWBoAhLzMFw75f
-	gzrAgAWfb92fEWe/3TRTjL+ZeqnMOMPYs7ekJ2UJ2u3akfp9k6smA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegtpqkj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jul 2026 13:32:27 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66HDJh9p002357;
-	Fri, 17 Jul 2026 13:32:26 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2cgsnus-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jul 2026 13:32:26 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66HDWNh050266490
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jul 2026 13:32:23 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E733720063;
-	Fri, 17 Jul 2026 13:32:22 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B7A932004F;
-	Fri, 17 Jul 2026 13:32:22 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Fri, 17 Jul 2026 13:32:22 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 9D76C162754; Fri, 17 Jul 2026 15:32:22 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>, Chris Li <sparse@chrisli.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-sparse@vger.kernel.org
-Subject: [RFC PATCH 3/4] mm: introduce __ptent sparse attribute
-Date: Fri, 17 Jul 2026 15:32:21 +0200
-Message-ID: <80bfffc76cb5a270aeabda26f50f65d10742a1df.1784292223.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1784292223.git.agordeev@linux.ibm.com>
-References: <cover.1784292223.git.agordeev@linux.ibm.com>
+	bh=4EpY7AJQ2z/UEGmxEkcHSNHDxA7dCAY+EM32t/GnvPo=;
+	b=rjfs8qw4T9k34bCKU/XeNXumXzVNdECF6LSTmfI45cspnuwyzA5IAOxoHO5rmWonkWoDwL
+	g8ViwebRwf1zO9sWXdH14qZlR5hjB5tbkvOaYTqf8ZgSl4AkBHHvmsKez3jV6ev0NMLwWu
+	KtFpghEYuOyukHCBJVrerK+u+muOxYY=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VjsBwWxd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784304146;
+	b=muY0xWPjW0JHkUYAiKf4XVixbtPcAtrJBo4oLEscVT3w+DItBvTVqPUpdyXCJuQC2058T4
+	tZyqU8Fae6BkjiZZRrtoc/QvzAz6KEc33d+sniiKmh9Y6jadZYdJllzdEdcPMA5PuBow8R
+	lf8yGrEtrF60eW0tNufOCfifiYxtvSs=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f633e6058so671540f8f.0
+        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 09:02:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784304145; cv=none;
+        d=google.com; s=arc-20260327;
+        b=REx8bAt+iywe+d/vuMeivGAjn49pnNCMow7jWjTknSvlLH5nUjLfV9RJuxX5ugneq3
+         7ca4KxxGbwBh+T1MGeTDva3JVxbccEugNLoVX5Tw/7fJOTe3AH7hD1Gr3ZUJAa+bb2xG
+         wMO7FqiMQguIDdsYkSCMM5J6Y8rHveN5dm0LY/ku9tUew+DT3gGgR0irImlBRWABkZi2
+         FnoeA1yYytRvXmFz9jb/Mx3vU6+lpD3+31IGQtmjAQIiiWiFJGpRVQ4X02rMonmLylzu
+         rRAiI9hzmFGXBVtFj47od+ZrgvH/q7VaBSAw3t3RbjQ6bOFe2Sj8iDMMiReyUb/LtRki
+         F54g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4EpY7AJQ2z/UEGmxEkcHSNHDxA7dCAY+EM32t/GnvPo=;
+        fh=h8RNFSscKaBMTvh8yfSBD2H9C31gZIZuPTManx8BEis=;
+        b=Twy887llttWgf9u2IUNo0/XOjarLpjcXQ9muFrbjw/KBJaCsxQvFt2qDHQDCeXZScm
+         hHV22iMz/WadI9n3sAkWZzVcK5/+lQvlibjGqZ1arYoLSafxfz9XcTEy8LFnm0I7rkAf
+         K6XeXTCIxubZ9QPAiDacfXq0xy4D91dP/WkiGSUcItkT82ouralIWCgzsg1P0nziDYiV
+         hfn2NOhKRRFWTvEjA1vOEN2NVX5K6qiixjGMNkIVFEqH0GZOssUm+AYkeHu2+us+/VC9
+         dSomn9ASfj6g6hpa685zHI732G2Bxkic9xnoNsIp6gkFykU3glusfu34yFylIR5cQESb
+         o3xg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784304145; x=1784908945; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4EpY7AJQ2z/UEGmxEkcHSNHDxA7dCAY+EM32t/GnvPo=;
+        b=VjsBwWxdP7FzoaWfmsogywWrX/3EJf/WzZxoPqtCaHs27S0uYjHXZDP8hFuMsKQwnH
+         JEgGjfXIylGoHUl/qJt73XN8Rn/mJZ+kqAIAxeDab4w9ET6YcGziD4yAMpJG6JCp4ulE
+         e5o44srjvENol0mZnERQ8pVmu9DMExxy9Jr9/mmmma1GrloGvwgrfHjjG8PEr0f647Rh
+         fFL3qBkfqe48o+3Q0dyjSXP8/DZHt1mzCCvyoS4YZOoSlZKeQ2i7GBfu1+jCzoAlh08I
+         muZDcYZEo/534Z5QrNH6bzMDlxlzuMr8CCMwEqA52BYITNX7SkZ1grLyxCmtWFrc9cL2
+         8rMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784304145; x=1784908945;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4EpY7AJQ2z/UEGmxEkcHSNHDxA7dCAY+EM32t/GnvPo=;
+        b=OnK5w9J/aGZjctKZEArmPe97K98leUjuDlBx3t8Z0gzX+VudNdKwRAYdGVpiLhVIvp
+         2CdqQuHIkru4Eux5RqvAKeOWc882QPOmk81/WfUNPDbPoRKVQQSSnWzIKC9rTvlGLxVm
+         s88eXxAHfZJfOCUkf0zsJMl7ksVCtQ3GISGpjqBHVt1K4/whi92CTUkvcdFAJoaI0xht
+         1JU9No6c6uWfQkUIjHYpPBEH8EqoaP6p6xUiuEXigA+0+fkXV8hg6iT/bVQ2QIXkQJP8
+         gJQKC8ciHWA+0ZXe7egcF/DxNxiy4eAuDfu0LkGYSN36JJCic9mdgA6DT9Arf9fE04ir
+         uDwA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7mFJBii88IA4dLNh1574ynrtS+aH/6AAZKonbiDYWRIx4JcxHuVt6QsAiGA6TLsoKM0FnwS7Zmw==@kvack.org
+X-Gm-Message-State: AOJu0YxKwo8BZlssQ0D8LJXNZagd1sRALmcMRfWcmgOniar1uoThHMqv
+	CoF8r7GAjjZNH10UXr4JPxhJC+Bs+HNVsPTJhmO/bolTOy6FyNqygm+23ckrW8z9ZoCBzim29hO
+	/b8+m0Eq5GhApDnp90k0rafpsSUyh7sk=
+X-Gm-Gg: AfdE7cmKEHSxLmgb1V/vRVP25X44XCwg+RSdXgdSQ/SVpvNvltk66H4ub3IuxKifkLC
+	PDzP1AthHfFQT3Y9lcXsDgFDayOwBK3whxGKRWz6GNOI01gQhEsIfjfVEj/GRDbqKFzmWeAQxJ2
+	MKpTNWVx3i5qXf2AudF/+FGlv8IzTk7iULkke8I3jRdqUgL8y94DXBqFKbZtkdNOHpAhcKweK/Y
+	0HxNxYHd0+sTACG8ZE57MjnQxPhnc9ARYAeAFY/FeQCyKy5+4LNxjtFC0C+yheN+eUPxiS8XGye
+	wjdXsGYkH+Z0mQQi4WJJsJOnysLPJc925wQsJuK3c8oe
+X-Received: by 2002:a05:6000:25f7:b0:47f:4fbf:7b21 with SMTP id
+ ffacd0b85a97d-47f622fcd69mr4322259f8f.12.1784304144768; Fri, 17 Jul 2026
+ 09:02:24 -0700 (PDT)
 MIME-Version: 1.0
+References: <20260707082614.95030-1-baoquan.he@linux.dev> <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
+ <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv> <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
+ <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv> <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv>
+ <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
+ <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com>
+ <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com> <alo7tuEKLjA0IZQe@MiWiFi-R3L-srv>
+In-Reply-To: <alo7tuEKLjA0IZQe@MiWiFi-R3L-srv>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 17 Jul 2026 09:02:12 -0700
+X-Gm-Features: AUfX_mwoPLG2cvvdwfPkYyjRN6pEPnbJyU3HWZ3Bhu4wEqgvsSFhKvl51W_U3mE
+Message-ID: <CAKEwX=Pm2=fdPYE6e0o8bO2sazACwGhKCpstii-P-8P2AxWGDQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
+ via Redirect entries
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org, 
+	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4icc14cu2ighxfl6FYrzqzdyrQx3mEWV
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDEzNCBTYWx0ZWRfX4Bm51xaL6rTi
- EoPU+wFi1ueRET11r1OsI8V/rbxrp0TbXSv/SuFljLrsDNIhjEoHQORIkWofKYC5a/ohNs6Idsr
- UaYO/00+2/vfJlZIkJtyJJ8uxlMJXkk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDEzNCBTYWx0ZWRfXxPMds4jv0n+H
- AeGHMJuxoDM7Lw50LDrxQbVuja2t7abTeOhr0aQJHg48fvY5yj15BCL8D7ncW2NAAWoLzIqn4+w
- mjcYTW/2GtwkXFJmlohKG7zuaf/73a5H8iJTtMFI1GtZu+Y6FF8UGiwIPdZ2cj1XXFhA0mrxOEg
- mQdetyOdo1xyH50Hd6z87t3NwtKS6lHhl0sF4a03XozRCIET7bmVvo5lXP/8x2InLw7v7SaviUm
- LxlOiI/OaWwCn6absDQtSMa9FLzFoCNRWtGyMqlBnxUABvJl/vkgi5/RRzkIjzYsyZyfa2filok
- hfveiTHpnBA6exlhuSoCBxxViVN/orDTdAS4hVn1BzCyTiqkXiDX61l69bZnQgQJIhAjF+0ZhEb
- jZNSDGogIm+ErAWXOhDJWXc8ck9FAHnD5/9N9Lope7r8amZ4lSlh6Xbc3Lqw9zjlPkg5/vOFqjY
- gid1QLCMR2ww2NU1IqA==
-X-Authority-Analysis: v=2.4 cv=IqMutr/g c=1 sm=1 tr=0 ts=6a5a2eeb cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=htX2hAWjaI0RTq2uS3kA:9
-X-Proofpoint-GUID: 4icc14cu2ighxfl6FYrzqzdyrQx3mEWV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-17_03,2026-07-17_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607170134
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 711DFC0007
-X-Stat-Signature: 7jic4q4x1n351wxr7qupsy3g3nxx3a5a
-X-HE-Tag: 1784295152-254901
-X-HE-Meta: U2FsdGVkX1/SNQVPV9tSM2tYlDPalTSMvct2+4kj7Htl36BULmRsTaVo01FuuCydft/Hqm169PVDY9b2IR+Du/ivg8NmNbFbEzdR5thRLAf4fbQy28yZuJ88y0lQMm8EOBWgTy9DjthvUFV6DO7syVhhYrzSQcsNekskT1qENIN0TM2bPPPNGXs0DJ0CEFInGRG/FQAVTYNi0c024pCSZCJqXsm3I5sNhwBbSiwZ8iQWw19fPZrsxD04vmcKrG330G3y/z9Du3tqMR/YZUE/IJC99UxpfwIIOJe0IiaRdlEBiGkGoyx2gT9oH/i/BTz8zRRWJzbBDhQ7ZUAi/Gj1zEdCF97vwNq/MVJLaxydAwG7zDTt0AqkymuyQp7ID5QLL/XzLDN473DExT7eVDlHtcSZYDpjiqMdLWP1bw3TYx55R6hOkf08HJVbzGqW2murIjJsauUZqVS7v2Ca22qBiFq9ZZPucvuMm8qGrE47Jzyz03nRXFxGXIUUp6fE59z7ypQZqWTgPLBaQ+LkLQIaLTN/TKp00kIWVCy6EVcOkDGUZt7FdzirKA3txu/eD2rezhIAbwRsP/XZGJhwTNWfozmBK0qZ3dc3GF6s34ydqtbSo/f5d66H5cx2VJYRqsEfXTagUlovAXhB712qZgtJ/lWCNdv0HhA2FYoKe14O+eMt+5Z6swF29UkZuPEQjr4b4c8ohibNxj7D0GmKyvBravcnu2m+NrOgCMQeSGticYgCyERuYzK0S38w4d6SD/Gn1nlWXbBYbbnwdU6T9qkopW3MCuWCK+oXd54h7I3y7xpk9+tFZnKBmwgSgc0ojyIecCvTkVu0o9rhYjgwRlpT1PzeOcZlUaF6Tos6eHlIB8WMwytof7bUIRENME0OTM+uORmziZmHWVxC5csMNETdMccj7f+17/0ha1BzAp5zo9V2a5MYjjbGZXOgJALPhtjIbU7d9j7juk2oTI9ohdI
- NSLzsUQI
- q4OOiYDkJYsREfY9Vv4DRufHmpkGwsWHJxRP7XFB1UBpuXqYOFlQtD6fNRZVkKqmKjmyY1O7fxdbUDFWvmGoQb8yfoJJX2kFYfxwlrjoBmn4/uCJCBgufMxsO4Ejhk9Q6aBSvKST61ppFsVaotSbfD09/ZDoG5qycdwBcW1m/84t97/E+rEWx8gE97vCXYDQVbPocGWuxu5im4ZzrWHQkuw6GkWEIgmqX9N7iy/5SJhOM4z5X5ctqXVuV7BJ1tiG2xGgdkunZGvjtZaR5vjFpPQPC1WOa49u9UU/4p1gUliJlmuUXEBq+tkArvUeeEGp4KLc5CWD2VkEYvDPwSHGzGNvRpA==
+X-Rspamd-Queue-Id: 9C72E100017
+X-Stat-Signature: obujpemahyruc6t9jeroq7grryy3ep6m
+X-HE-Tag: 1784304146-254922
+X-HE-Meta: U2FsdGVkX19gLvwOM96YuGxpySAEPImzykToIHzoUSzxXRski0x2/NQ8jp+geiSEvv8NMGukTqLCcKnqYp9gtsfALP0LhCopg7KfoJpg3VBQqZmtBFmeGRCTblkGK+NJE2A4f2MVcqwCqjuOe24ftS0fiUY0Kt9W+yKF7UcYkrO/LfvmzN8sj6T3eUu5PFbjgtJqkS7U34q98ou1hiBmM0eKBuF8C3cY4wgOlaTzQT/ED807gzB7UIv7fqympX15IiHvlagC1CTZ/UvszrDEVtzTu0jfmKtxspMrQIkb4G5IEMTvllNqLonvPVinK4S5kbOvylSFmF+j6xYlP3c66XWwlO7kWABHZEPWNk+sYK8QzgLRkpMWeusYUyeSG5PR3Jm7PvZE6uknyRkb/Y/zAPkaMC7UovgR3+bB/CTfJ6Sfz/l321EUfI/nZuIhbCIn0zLHemnQ6P6/UfxHpDy3zIS5noEjzFsU1OCeszOe51zKP2IKGYi9OhM2w7M4udf6D2nB3Krbk29GKo2MSNwKZN4Rc/eyJo32iZ6C9LmyrPeovJ1gh4Z3P7e0LOPXgjq3N7tooSeeLyD+z+/qlCVDElbrMG4/s3mkPYtqYUUUZZ+qo+hJKjzllcU1X3yAIVpByGUjz4vOyfQ1Eu0UwiudhyoDpWfT2JLxoLtvIvB3qTNk7mpf/454VYFHtClmpGKNanr7asDnEFCujrLn+yfBpmoAjWZZLRgQVq35RCv7Lp1M+24eW0LJzte4HJlc8sHOtns2JE1iHX/vaYNYPOWqeo8Yv3i8HKQs1+ooIlp3nkcCr8wcuwMFLAhPmGyKBE2KqRGwtbNyYOgMMxLlL1+hTFWkwUxbpFW7TMWRhdr6+Mk8sCFwCjydEVhNMPi41PCmob5LNS7A877xdGbvBaVdC7qXv9hvScKzP+uJmmoog9NFGgAsOnwW+/dE21JI43tf7GdoVISvSGcJvyQt2QI
+ uNjkQQNe
+ h1P2KoimHxB6Sr/+4JUz3dKaY6JRyEfkLq1dACAW8HqQVPZ7H4r5nUZ1mzxV+iMx39mYUyCvx7/LfewyTV8rXplYSH7whFeCKcn2X8C3njpNLRqUm4gptB1RUsouPSfqcmyZ/S3dD1pUnfZfT7ubffviAB7UIWnjr5/YPY7WhwsCHPcPW9gRlwoJyzqCngpRo3vUty915EW+RuytFGE3uoi8ZDoCPxUX3Byt5ddy9AeuB4msXZ1RWEaSTYmyXmmSvS6w5sM4Cq5z1S2Pz3JFycoztsA5zy5srcw5h++QlmPHMHRBrMyQsSCaMnPP83T6TzVLkvx/5sjX26m7jF5EyJQMuODHC4VEyKdeEw10bDTyuNZVYLnV1NvDM74NnU6DyyA7ghI5faM+7PzLOg8ehUzoZmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,44 +147,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new __ptent sparse attribute to enable type checking for
-page table entries. This attribute would mark architecture-specific
-pte_t type, whose pointers should only be accessed through proper
-accessors, such like ptep_get(), set_pte() etc.
+On Fri, Jul 17, 2026 at 7:27=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
+rote:
+>
+> On 07/16/26 at 09:49am, Nhat Pham wrote:
+>
+> Thanks for the thoughtful reply and the very constructive proposal.
+> Your suggestion about moving forward in small, incremental steps in
+> last mail is really appealing =E2=80=94 I think that's the right way to m=
+ake
+> progress on this. I need a little time to think it through more
+> carefully before giving you a proper response. Will get back to you
+> soon.
 
-The corresponding sparse tool rework for this attribute is required
-to cause the "dereference of PTE pointer" warning.
+Yeah let me know what you think. I'm planning to send out v3 with some
+more cleanups and fixes, but I'm happy to hear what you and Chris
+wants to make it as useful as possible for everyone.
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- include/linux/compiler_types.h | 2 ++
- 1 file changed, 2 insertions(+)
+Best,
+Nhat
 
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_type=
-s.h
-index c5921f139007..472af4fb2546 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -58,6 +58,7 @@ static inline void __chk_io_ptr(const volatile void __i=
-omem *ptr) { }
- # define __nocast	__attribute__((nocast))
- # define __safe		__attribute__((safe))
- # define __private	__attribute__((noderef))
-+# define __ptent	__attribute__((ptent))
- # define ACCESS_PRIVATE(p, member) (*((typeof((p)->member) __force *) &(=
-p)->member))
- #else /* __CHECKER__ */
- /* address spaces */
-@@ -78,6 +79,7 @@ static inline void __chk_io_ptr(const volatile void __i=
-omem *ptr) { }
- # define __nocast
- # define __safe
- # define __private
-+# define __ptent
- # define ACCESS_PRIVATE(p, member) ((p)->member)
- # define __builtin_warning(x, y...) (1)
- #endif /* __CHECKER__ */
---=20
-2.53.0
-
+>
+> Thanks
+> Baoquan
 
