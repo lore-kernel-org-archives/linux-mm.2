@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1E5BC44515
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 193B9C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:01:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A323C6B00AA; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
+	id BDFD86B00AB; Fri, 17 Jul 2026 13:01:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A09F16B00AB; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
+	id B90466B00AC; Fri, 17 Jul 2026 13:01:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91FB16B00AC; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
+	id A59416B00AE; Fri, 17 Jul 2026 13:01:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F7AC6B00AA
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E13F7C01F4
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:09 +0000 (UTC)
-X-FDA: 84998883858.21.29CCBE3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72CA26B00AB
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:01:12 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECCA61A01EA
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:11 +0000 (UTC)
+X-FDA: 84998883942.20.EDADB02
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A46942000A
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:06 +0000 (UTC)
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5A01420007
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:10 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=XMjTuISn;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784307668;
-	b=2kLii8NheXnt8NIRc7OR7KVu0atHQ83bR72psClYK94m3qGzjhki69fesP8s17M2DVgA2d
-	eBSkDApcgkUHv7jKimfg1BmpzWH1S+Nkg42yZZXe/uMkHmKPcDzjsF6x8bygpBkiZSDHkh
-	eMh/2RVL8KIAg77j3YLFJAYze4mLkN0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=XMjTuISn;
+	dkim=pass header.d=surriel.com header.s=mail header.b=eg8ad3Ri;
 	dmarc=none;
 	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784307668;
+	s=arc-20220608; t=1784307670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g3vbKYZxRsDMfVpHBxPVOyxjBlSbaKA9GcdBzuhy8/M=;
-	b=e2bYhlOwfZW5bfvMfwcOxNT/s7cd6DAqS5/C/j6l840/yV7Ym91rfswxNtL+F6i3Bmo7j1
-	tSH+tpEB1fH3cfaUE464FOVVtct9X2uyZAUYt121s4ZNKywe/RMw+PQEyuiogbK+plNVGl
-	V2/Nqq3IbjrMtDK56Dx5urzD4fbJBQI=
+	bh=PpNZRbQ47/WqGdrrUHhpvYqGIuM8bItP00+DgG6LDXo=;
+	b=tPW/wQa8EOF3y+9bc2y10aJEpHpaEkv2wcC9c+QN7DzET18BSstzrLNTCcPnKeXroIBNzp
+	dDZmQOlfZdYxzYx5Yyz+ZYf7XJFkrxzdt61H8XJAibmh00fzmiGpT+HXPqnxZvNWitOc1I
+	SzvK+k9qJiZnq1qcNcAztVM51tI2zGs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=eg8ad3Ri;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784307670;
+	b=Ki1q6P+2JcOHM+6KIhDVq+fRakc41kgFl1aRYM7NCMHRUT2SFmWNDP8bbvNaCnbzqJPrfn
+	6/54bwDQQzMYCJcrCcMGILDUabOrFBlvgRs9cMugrkepQRwl6P9jkqLjYOYNKYXZtMTxWt
+	Kkaorkr72LALQz+V1aLz9+hsSCxWUns=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=g3vbKYZxRsDMfVpHBxPVOyxjBlSbaKA9GcdBzuhy8/M=; b=XMjTuISn/VdlNzVWcRsravLbi+
-	hkm1J4NIe32NGtJ/rpWfaJWjH8D3byPUvCx2Ep3/yG+yt2xCVZMtqVpq8gZpHQsbh9iym/67wN+lA
-	AkBJFCYjoPUHE2exwMEyZUSMaW6xyxpezzSRV60t6ynJO4+YvOrGE33wfARHZm/ZxrvkfrcJr/H+w
-	AbBMHegmNPgTO24/Zh3o/6OKRsqZ5Q2svwFm82Ln5N9ol24MwTbvJ8pvmCZ1vrqnVqFrgXmtuKCnw
-	9i8ALaPLZqrixvZNaZsMgrrdjRL4569xiHMD+rtQKmSgjeKoTq7zLx2RCPLv5nJvr4iC//wmWo9qS
-	v9oLlYZg==;
+	bh=PpNZRbQ47/WqGdrrUHhpvYqGIuM8bItP00+DgG6LDXo=; b=eg8ad3RiFa8lAL5pChcMMgF1Si
+	LEbP5CZ1dBogtdyeKd+q0TUhTbit02LiVOpp6m6hBnGvr3J9MKzB6Gabf/w1RkeB/xjPyNSXCmw5n
+	9x33pv/WFy+Cz5on5MbJSN3T/Z45sBaO10W/t8w9GivVYQG03zc6Xa/DNv1fDl/uDl2quDe+ASJIr
+	08PV+2sy2+JnkIATDRgGx/E0LfZjXBGhUyOBCM4nxowH0d9AumHwwizfilLbnOyXaZdXf/Rwm9Mkf
+	puhrOFc1ywQuSWaJpvYYHdbml9Y+yFXm6E4fQBHczEfQ91zkLtR2xjQlUqzJwkLH0P84hz83lyxP/
+	etyWm5xg==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wklvS-000000001w4-0K81;
+	id 1wklvS-000000001w4-0RAd;
 	Fri, 17 Jul 2026 13:00:38 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org,
@@ -79,27 +79,38 @@ Cc: kernel-team@meta.com,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
 	linux-mm@kvack.org,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
-Date: Fri, 17 Jul 2026 13:00:32 -0400
-Message-ID: <20260717170036.743149-3-riel@surriel.com>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH RFC v3 3/6] mm: rename get_user_page_vma_remote() to get_user_page_lookup_vma()
+Date: Fri, 17 Jul 2026 13:00:33 -0400
+Message-ID: <20260717170036.743149-4-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260717170036.743149-1-riel@surriel.com>
 References: <20260717170036.743149-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A46942000A
+X-Stat-Signature: ds1zus1rtxts5zyss3b1cdtxpb6bnixa
+X-Rspamd-Queue-Id: 5A01420007
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Stat-Signature: wiuw9qdboisf118prrxeca7cznidk6go
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784307666-8535
-X-HE-Meta: U2FsdGVkX19p9YqPdCkfWC3eyMECGy4aj7hMkk5V5VRkCvgg79lbGv/DDK8GJfGfrVDxmN114hhJrJVwZXMoDTnyW8YQJODygWL+U5owm+iab5VvoaGh9cM0+agInDGVWZapJeyNsejJNlMduKj3YAvDB6dOKq/9puqd+yV4R7fvrE5ZD791YexV05xFgiU0JAis1outFCcTHX/CkFmZ7Qikbtg0SQiUfBgguETOBbkH++gjChS+FEHJJKH4t5Pr7faSjQ86Do1+FRWknU0XeJnY+zbjs9myB9yitVyo1dlSgDFi7TIfcubhRXsPWlKvvXr4UKBGE53rFMJZEyHZc1REpMmI/poAZfUmGTB2IyQXxa0Kgjyh5FgIIlrEIxR0KTfICAkvhqOgorg7ZQxR8alLozb0mZDyJFRGf3d2aDezNpNlernrODkfEwMKHkfhTzr0xl8OyuzP5u1HJHjHpdlNtisiqGpKDmeIGffd7bOQ3J0AZFBUtHyyxgxX82IOjqRhYzKj0xRA6Ea14EYxK6QbL5rmpmXPCzdYy9OO11Jcz7eoRmp0/EiuwtGoho+dnJFhqO8xatSJIC/1VHdT5VOKRxhmRDvXCwc3S9DQOG5XnKWxbw93YAM3SuMgv/SWb5RHh/ReIjnen3q1ExAkC4bvk7ROnDu9lNDXt6i/zSDESktzExqlxXNXWv/j+MV9dfYGbiD1yC3cKyt/IXl0QtB9+Ze7bcSK1keAZg7CT+msnPzFTgBO3OoD+v7DBTce/SkUcx3HpO5pb+OTKNVF/wG78opT8sF8nlp/mNUN/mZpLv3KVWsY1VFV7Tq5MR3HwYOpIxO0YxMaZBbFf9UgKS61Wb40p/fYLXenYtINN9roT6SHR5uKt9X8Dm7ApzrCssP8U/QmSowhR1nPvcYWfu3cqsdndzPrTSAipwAufk/f6bCr8vqMK4ctaOxVb7XrXKCH6H3arL2zFyD8tVS
- UG5YWN38
- omUiqoMeTbax8PqWTdzIEntLlhKdnDxW8Th+JCDucd3qb8FnOGTOm9uCZmGjpdINd9x3TbaQvZkjIu8IDS+0AehoXYQ528I7rXgllBcFtXPN6BGjzZvs4ZjwSe7oTE1cFF8bDnRqpgJtvE1XaOEIMSR2BYspFElOwA+7ZTyUvLsy4v3eOHbvnpp0a2C8AACIPf9iNkYhOrTcY5OVHb8eTsVd1l4jgXpSkEUSGDelJF7eRVPwpp5d4f7u1G4nOTNp/3HswxD4j3H+Q/sNx7BybuaVOlestfN6QWbfJ+i8wD233PoW8Q5nJKoHiEDUj/LkQwrpH
+X-HE-Tag: 1784307670-919902
+X-HE-Meta: U2FsdGVkX18v7mqKCzvTybDOguY8AXWpf2Ib3UsStScH+ZiDmmLLeWu6Anyf5a/r6YCYbYJqIYOE6BNHyMlVGxhiN9FgPzM/T0tH9Wrmqo6445jND5MUSx7cBF0SPKh7cT1foaYs5gBqJqNkQCWLiv9ilAKpb/bh4hAboi11BNZlbyX6hm1bujnTmnOUOKBymXlddfkvdZqfEn9wTWQhv/zp1i+kyaIY7ZHW9oZQUw2FVA4Foe6cf93UJnP2lkrRU8llW1kMr4G1utTHg42Sr9BbI0iJBG+0GMmCnAzgLlUudSsERLrZwmo0j2Xa5xsA37nQJfimpAmBJQ/a4cMCJxrxoIr4b4nB8cTHb0i4skH5UBEqkqEYN9wnlx1zcWFlLel9Tdr2Y7m5dze2Aky/ZFIAnrC4H7m2BkmMrb5a5BMtNPML9LOlqVYnJh8U6pLAcXq7eRyEeIudejJe31o1GJbnXrVHZvZbShPOkogvaARtjIaINQsa1bcFVWQ1hxwH7ceAlplvG7zBJkO1K+FMGUhpruaUVoWsI3/dytC6O1WWd/BsIm3OyUjW7kvHEydH/5NYhd6/Z5j0L6faFzuvMTN/h+K5+XnekTe5YPmV6YA2Y86hf5hmFa7U4vv+Jsu6GLxYMgU2tv9mMAcfg+GxukFVLoLFX553a6WLonSz3UIzbfcvfheMCxF/GaqWkC9g2oQOQVwW/j/290KC3C4GbrlWEujbRHtYXn8JoxOe8Z6mU92KCujxcAWs+VIK/6XHO+2vXPRyhJx65Iq3XO1nT30SFfdLnIxeGARLSUgiWgf5G98yk79OrFWZGd/g6LNtLRXUwZGEzDvwoO5krTox/cGtqwk2hKdtkDTePgLgo++MX8k4McqHhIQiAQgJ1iFaZ1DOylKfoByAnUWrHTCCA77is8p/OKXHUF4xjR9WPR92HpBm1JPtuOid7LhU+48HSSp0XgkThjiMVdygfsq
+ OoadT0eD
+ mgf5zEarFuG00tt9YZkpe4JQJHT+CDOv1+EFkKqG4HsM1ut+qRGFo7DvuKPODm38phmymLQ2VveccFSUzTabDab6TUaQIx6mRHV5MReEfBVqwbDljdxGlFWs8FDjkQrA9AjlOp6lr/+s9vVE1BD1+8zh9CV52NiBdyUimhH7MeZhwTEzwiLLI0U08RbLURbLwxLH0ZJx3+4oXM6OKkaAqQIXNqAskYqJ2ftDECmKvvFZoebS8Mi9wcfv8nE6Fc+13PYxxEgHqJzCuTtkhgXrWgXSsx0NDOR/7fJzRMZWGouYg8BbEn2jE5P0pjT33Y8rtm3zL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,118 +118,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__access_remote_vm() untags the remote address before looking up the VMA,
-now without holding the mmap lock. riscv defines untagged_addr_remote() but
-not untagged_addr_remote_unlocked(), so it falls back to the generic
-version, which untags with untagged_addr().
+get_user_page_vma_remote() faults in the page at @addr in a remote mm and
+also looks up the VMA that covers it, handing both back to the caller.
 
-That reads current->mm, not the target mm, so a remote access to a process
-using pointer masking would untag with the wrong mask.
-
-mm->context.pmlen is set only through PR_SET_TAGGED_ADDR_CTRL and is stable
-afterwards, so it can be read without the mmap lock, as it already is from
-untagged_addr() and mm_untag_mask().
-
-Add untagged_addr_remote_unlocked(), which untags against the target mm,
-and annotate context.pmlen accesses with READ_ONCE() and WRITE_ONCE() so
-the lockless reads are explicit and KCSAN-clean. untagged_addr_remote()
-keeps its mmap_assert_locked() and shares the code.
+This cleans up the name space for adding a get_user_page_vma() variant
+where the caller already has the vma.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Rik van Riel <riel@surriel.com>
 ---
- arch/riscv/include/asm/mmu_context.h |  4 ++--
- arch/riscv/include/asm/uaccess.h     | 10 +++++++---
- arch/riscv/kernel/process.c          | 12 +++++++-----
- 3 files changed, 16 insertions(+), 10 deletions(-)
+ arch/arm64/kernel/mte.c   | 2 +-
+ arch/x86/kernel/uprobes.c | 2 +-
+ include/linux/mm.h        | 2 +-
+ mm/memory.c               | 4 ++--
+ mm/rmap.c                 | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/include/asm/mmu_context.h b/arch/riscv/include/asm/mmu_context.h
-index dbf27a78df6c..3ce16796e5a2 100644
---- a/arch/riscv/include/asm/mmu_context.h
-+++ b/arch/riscv/include/asm/mmu_context.h
-@@ -21,7 +21,7 @@ static inline void activate_mm(struct mm_struct *prev,
- 			       struct mm_struct *next)
- {
- #ifdef CONFIG_RISCV_ISA_SUPM
--	next->context.pmlen = 0;
-+	WRITE_ONCE(next->context.pmlen, 0);
- #endif
- 	switch_mm(prev, next, NULL);
- }
-@@ -44,7 +44,7 @@ DECLARE_STATIC_KEY_FALSE(use_asid_allocator);
- #define mm_untag_mask mm_untag_mask
- static inline unsigned long mm_untag_mask(struct mm_struct *mm)
- {
--	return -1UL >> mm->context.pmlen;
-+	return -1UL >> READ_ONCE(mm->context.pmlen);
- }
- #endif
+diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+index 1a9aad6ef22a..7a6ecc3d9294 100644
+--- a/arch/arm64/kernel/mte.c
++++ b/arch/arm64/kernel/mte.c
+@@ -459,7 +459,7 @@ static int __access_remote_tags(struct mm_struct *mm, unsigned long addr,
+ 		struct vm_area_struct *vma;
+ 		unsigned long tags, offset;
+ 		void *maddr;
+-		struct page *page = get_user_page_vma_remote(mm, addr,
++		struct page *page = get_user_page_lookup_vma(mm, addr,
+ 							     gup_flags, &vma);
+ 		struct folio *folio;
  
-diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
-index 5d4ec15584cf..53806e0f7dcf 100644
---- a/arch/riscv/include/asm/uaccess.h
-+++ b/arch/riscv/include/asm/uaccess.h
-@@ -16,7 +16,7 @@
- static inline unsigned long __untagged_addr_remote(struct mm_struct *mm, unsigned long addr)
- {
- 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SUPM)) {
--		u8 pmlen = mm->context.pmlen;
-+		u8 pmlen = READ_ONCE(mm->context.pmlen);
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 3af979fb41d3..329efac0cfb3 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1036,7 +1036,7 @@ static int copy_from_vaddr(struct mm_struct *mm, unsigned long vaddr, void *dst,
+ 	struct vm_area_struct *vma;
+ 	struct page *page;
  
- 		/* Virtual addresses are sign-extended; physical addresses are zero-extended. */
- 		if (IS_ENABLED(CONFIG_MMU))
-@@ -33,12 +33,16 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm, unsigne
- 	(__force __typeof__(addr))__untagged_addr_remote(current->mm, __addr);	\
- })
+-	page = get_user_page_vma_remote(mm, vaddr, gup_flags, &vma);
++	page = get_user_page_lookup_vma(mm, vaddr, gup_flags, &vma);
+ 	if (IS_ERR(page))
+ 		return PTR_ERR(page);
+ 	uprobe_copy_from_page(page, vaddr, dst, len);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbdd..24ead14b4790 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3238,7 +3238,7 @@ long pin_user_pages_remote(struct mm_struct *mm,
+ /*
+  * Retrieves a single page alongside its VMA. Does not support FOLL_NOWAIT.
+  */
+-static inline struct page *get_user_page_vma_remote(struct mm_struct *mm,
++static inline struct page *get_user_page_lookup_vma(struct mm_struct *mm,
+ 						    unsigned long addr,
+ 						    int gup_flags,
+ 						    struct vm_area_struct **vmap)
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..3b86eeaf084f 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -7039,7 +7039,7 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+ 		void *maddr;
+ 		struct folio *folio;
+ 		struct vm_area_struct *vma = NULL;
+-		struct page *page = get_user_page_vma_remote(mm, addr,
++		struct page *page = get_user_page_lookup_vma(mm, addr,
+ 							     gup_flags, &vma);
  
--#define untagged_addr_remote(mm, addr) ({					\
-+#define untagged_addr_remote_unlocked(mm, addr) ({				\
- 	unsigned long __addr = (__force unsigned long)(addr);			\
--	mmap_assert_locked(mm);							\
- 	(__force __typeof__(addr))__untagged_addr_remote(mm, __addr);		\
- })
+ 		if (IS_ERR(page)) {
+@@ -7167,7 +7167,7 @@ static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
+ 		struct page *page;
+ 		struct vm_area_struct *vma = NULL;
  
-+#define untagged_addr_remote(mm, addr) ({					\
-+	mmap_assert_locked(mm);							\
-+	untagged_addr_remote_unlocked(mm, addr);				\
-+})
-+
- #define access_ok(addr, size) likely(__access_ok(untagged_addr(addr), size))
- #else
- #define untagged_addr(addr) (addr)
-diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index b2df7f72241a..6ae7552fed09 100644
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -357,13 +357,15 @@ long set_tagged_addr_ctrl(struct task_struct *task, unsigned long arg)
- 	if (mmap_write_lock_killable(mm))
- 		return -EINTR;
- 
--	if (test_bit(MM_CONTEXT_LOCK_PMLEN, &mm->context.flags) && mm->context.pmlen != pmlen) {
--		mmap_write_unlock(mm);
--		return -EBUSY;
-+	if (test_bit(MM_CONTEXT_LOCK_PMLEN, &mm->context.flags)) {
-+		if (READ_ONCE(mm->context.pmlen) != pmlen) {
-+			mmap_write_unlock(mm);
-+			return -EBUSY;
-+		}
- 	}
- 
- 	envcfg_update_bits(task, ENVCFG_PMM, pmm);
--	mm->context.pmlen = pmlen;
-+	WRITE_ONCE(mm->context.pmlen, pmlen);
- 
- 	mmap_write_unlock(mm);
- 
-@@ -394,7 +396,7 @@ long get_tagged_addr_ctrl(struct task_struct *task)
- 		break;
- 	}
- 
--	if (task->mm->context.pmlen)
-+	if (READ_ONCE(task->mm->context.pmlen))
- 		ret |= PR_TAGGED_ADDR_ENABLE;
- 
- 	return ret;
+-		page = get_user_page_vma_remote(mm, addr, gup_flags, &vma);
++		page = get_user_page_lookup_vma(mm, addr, gup_flags, &vma);
+ 		if (IS_ERR(page)) {
+ 			/*
+ 			 * Treat as a total failure for now until we decide how
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 1c77d5dc06e9..b36f2e219b8f 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2838,7 +2838,7 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
+ 	 * (non-device-exclusive) PTE and issue a MMU_NOTIFY_EXCLUSIVE.
+ 	 */
+ retry:
+-	page = get_user_page_vma_remote(mm, addr,
++	page = get_user_page_lookup_vma(mm, addr,
+ 					FOLL_GET | FOLL_WRITE | FOLL_SPLIT_PMD,
+ 					&vma);
+ 	if (IS_ERR(page))
 -- 
 2.53.0-Meta
 
