@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 363DBC4450A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 00:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04E7FC4450A
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 01:05:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29F656B00B8; Thu, 16 Jul 2026 20:39:54 -0400 (EDT)
+	id A05986B00A2; Thu, 16 Jul 2026 21:05:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2778F6B00B9; Thu, 16 Jul 2026 20:39:54 -0400 (EDT)
+	id 9DD676B00A3; Thu, 16 Jul 2026 21:05:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18E9D6B00BA; Thu, 16 Jul 2026 20:39:54 -0400 (EDT)
+	id 91B2B6B00A4; Thu, 16 Jul 2026 21:05:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EA1956B00B8
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 20:39:53 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69310A0340
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 00:39:53 +0000 (UTC)
-X-FDA: 84996411066.05.F7339D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C4CF5100003
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 00:39:51 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XfhikE3g;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6610C6B00A2
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:05:46 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4198403BA
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 01:05:45 +0000 (UTC)
+X-FDA: 84996476250.27.21FA6B8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 340D41C000C
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 01:05:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tt9MXMZ7;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784248791;
+	s=arc-20220608; t=1784250344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bSW5HxEFq+ITIVQonZ02kyA5U7MyDuFVOxWZi2QyV6k=;
-	b=I2g5Tdtrr1s2rAaP6Br8PCWTeU41o5rlWTqgHJz6nQEGWAcb5EcOlJvsxfi0urP2OEBFYO
-	0vik0oFnQsO5l3u978+Ni6U6GsLx+5+dj9qwtHd5Y7WgltKRbAPwmDSYpTpi6ICVnf4oSC
-	zVKasLcZuN7iuSkmaSN84Ke6qE5Im2Y=
+	bh=ogjg6JXEwNAVi6wkR63GVRchcCh3t5yDoHZWaPgOSMg=;
+	b=BjmL3SehXmIQLIs6FUtkw75FFUBOK+qBwYFTNc7qL4LukdKHSpG2JjSMbXGpG42y6OegyW
+	UMtj5Pn8/OQ7syWReu/3891SbiOT0WAGp2hYhWnwBVvONsjbJxWZF4U+2iZePfdkInX4+B
+	Hygz5+kLTJqXd5WOtp+E5U3nLp3Anuc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XfhikE3g;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tt9MXMZ7;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784248791;
-	b=acVof9mT3RcWC5qjzLehFmeimb9uV2Z4lzIDCtOB2GhKG8MXeTB6I/EL2orD/ykxLybKPm
-	trntXYawbUSqV4pFNc9M5cZQy8AycAhvfBPipccHXnBsh/mliC2nHBv+Vu2vtMciL0xsCy
-	Sjje8q6TRLKAZtap+wBcnvAjlmSlslU=
+	t=1784250344;
+	b=2zB4USDPScoJ0lE+1aNdI9Tr3X1PCRS3lfCOWcirHXEJUGz1PyVGIpKPeeGt7TCAYmaatr
+	+mP0fzS94vedRc9TeEdbrkHU4jlajpNsLksKw1LoLgX5o7zyAAd2K76Vh3fRkHgSchMzp3
+	ZYngpjd7oPFdlQTJCErLpoAOxDGrWw0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB54260204;
-	Fri, 17 Jul 2026 00:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340471F000E9;
-	Fri, 17 Jul 2026 00:39:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784248790;
-	bh=bSW5HxEFq+ITIVQonZ02kyA5U7MyDuFVOxWZi2QyV6k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XfhikE3guLBwj8Z869Wij09nEwSan5JaooHiPLP4Leq6MO2SJc831atjD+F4Q0D1s
-	 41WE4V2Pl3izSM02t9EfoEDrHbrKeZ+TWGGtTCqViezWxjdxI208UscWhFL1jtvKr8
-	 aRMzuCx5ZLfmFhzFUnLCD6z3enncwoeprrTN1qGk=
-Date: Thu, 16 Jul 2026 17:39:49 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Michal Hocko
- <mhocko@suse.com>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org,
- Joshua Hahn <joshua.hahnjy@gmail.com>, SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH v2] mm: memcg: initialize *locked in
- memcg1_oom_prepare() stub
-Message-Id: <20260716173949.0f87d0ab30c5eecb01067fce@linux-foundation.org>
-In-Reply-To: <20260716-memcg-oom-uninit-locked-v2-1-63631d878eb4@debian.org>
-References: <20260716-memcg-oom-uninit-locked-v2-1-63631d878eb4@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C4CF5100003
-X-Stat-Signature: fieuxau4cachgoz1ie7ibrcff684174m
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F8674046D;
+	Fri, 17 Jul 2026 01:05:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B5D1F000E9;
+	Fri, 17 Jul 2026 01:05:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784250343;
+	bh=ogjg6JXEwNAVi6wkR63GVRchcCh3t5yDoHZWaPgOSMg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Tt9MXMZ7UaIQGJ5YgFFiAgmg2HPQANPh9gIj501W+lsWeY7HACMtll2wRe9RlReY7
+	 JHu55b86htSwk3a+v1v5/nG1uMmHEBKPRBdbZkpuJLt4shx4k4U2VEiduNlz8iNsmT
+	 5rgEfgeaSvwRyVsqn0OP2HpYJEpJFM0NEDzqQChuouYDmnUA4FBM1sxl5MVq35ZPGs
+	 Or6EwYTPig2K3jjoyMi9dg3ZqgbsGzbFVtWQb+uN1h7DRJhft1uUINxh2F9XfjRXEv
+	 znJS85XcHauSiqhyoVtN+EsyDHdKF1bsifEmQWQrSMQ163T2124iN+dgTkNMRYZA4G
+	 6lKb9XC4myPEw==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	SeongJae Park <sjpark@amazon.de>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/7] mm/damon: fix uninitialized DAMOS field and kunit exec expectation bugs
+Date: Thu, 16 Jul 2026 18:05:33 -0700
+Message-ID: <20260717010533.120368-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260717003022.119437-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7krr1gr33gyec1r614ama1i78zzda6n4
+X-Rspamd-Queue-Id: 340D41C000C
 X-Rspam-User: 
-X-HE-Tag: 1784248791-515985
-X-HE-Meta: U2FsdGVkX1/VZoa6ji+7ethRNQcn5kCI2hVu/IEVRsowfXZte+2MgVODiUBKYgJF4uRI5us3yMd2dVi1EyKtzDyPl6gdGi5FoDzLK+wOW3drGgqMGgskaKwSot8loyWn5zPNHZ5SAMP5m+njXSbLGNixTIlcXYAr8gDdBJ/IkG252lBbnXW5rt8iEorPC9PYo60O8kOyXi/ISyEUSSpKxTdnAyFEqYC+1kSJf/37tU02VeDWODyHPMZbU9Ew8EJlJ3AESqHgO+YXhIuUQanzDlpiotiFP+fudjNR6RGPo40FTcchpgj/fG4FhzjHqcRPg4AwgzFzflEDZug1PTxaWAIC4+f0QavLPcM5iLWxJ9J643mv3D1oaO0wDI55mfHxkCt6hz3Qja0ttUFavpSIKn5oTtcXuZ3ShgXBfv+oMzFWxvmCi6wWMxtrCWXPeQZqkQRs0Hq/0Z6IHIZYO9hr7TJKcJYp1sQDCFewA4kycr3aOrHmGG60EefZ/X/Dz4jMKgMAEd30s9p8J0Rm2NAfxsY3kVC6eWFfsleXAXAgyNLxJHayR/5aInxOEq5F5CiIN9zO0o7euBZurvNCzzNTfKbyD4Y2nAYHoKfn3twbw9rx+dN3SEWDSQmMLYfNXE4cCar+uTc+ck4GUGY55Kck+6Iw9bzsHAr0WxbHpZ56BhcT1gqUtCXpgFT0bAWgAXNXCMxl2etWOLi7Rraq52JukWOrM9Ws4A0+gOYYkd+UG/On/Asm4OEfQHUn0w+SiFRjStKUk4HHZ2IemyDyOV0/lSvZe1thbtQjBqvzOMyoD+09rARB8qEgst3P5BBXRiNZSyOjr41XJ0WmWQ90lNrhiFxHkRzbIJpivWoWCFrz00XtA3UZT0W1xDMJ1eVLV9tD4TCHdBgXY9A8H7RB2VYXw1GcygWdPBW3bEbzaPLb2KDISGWFo0IrW1WSVoiCli0ws2a4GvV3FflXmkaiWa2
- lpbWJWaS
- gmag+iJjXDoIVcJe6izKf4JYKj6rGMcMfoOY2EMJL/07u3LRIR8XlXuv1Wz5vUoNNdWokEyP2jQNXlhiUkQuVbD6sYckG/V/pjFmdBKNEvHptudpC635b+Sb/y0kk7rMHUJ6tSE/1ZJYTRhygZcsG6HQn3E0/JXNKuUyQQvXbt2195qtNjZXrQaZ/SFWhwlZxWAU1fAnYNoE++OUSP05ALHCYJiEMwxPbwxL3SsEoNb8rwqlhqIfNmJ46pTjZ0vdFg8XJz3uuyh8Lfyl0FpaZyWw6QBFFTFsRhOdy1O3ZdgKaf3YTGKgOsLaWEyRGc7Tu4GN2EXbzVdEzmXZqMTp/f7lcJFVy+pHzIhUtHneMzCjB7l2wzHlAl0DtvDugPEH2A4UN1sSBhkXZYfb981x3NuhYe8nKN2Q7kpgFRZXbLDRaW78dZSBHUANB/5IpViRgXevUzvRxvRyEThg=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784250344-554774
+X-HE-Meta: U2FsdGVkX19qa1aXlb5DSqcVuH5X/S+LSZre/NxwC5ITkgbhpBIn/ReRmmp9pWdCi0ivyljhCqjvA/ka5ib50wdaX+YLQDooAZu55eFZ7WDj28ohTHk6oQYdf7kk1oq7aW7eF6kKb1CVD+QkqEAHuCch37RiwVBTqKpwHNreTpsX41uNPGLy6Y+yWf3nA211nJ6tauUwBuny6ULAmqNxDSD6SnZkgdoHzFGdH69yRDNxTPKCusYcxdPR0yvasIpSoZGfZ6z4Pp560hUzxeTecBI8Qj4p/U95K3Vql83/WEglYFH3PTRes9CkWYjYRLgqiX2Op1EEGshC3IBGRVkllB5wksQsHG8p/tADO8AxGaIPyZf5ttXE68UlqOXsnVKZwEgnDAfVQhDELNbJl/s1TzyQ5fOnSqBmY+dKvoFiPyVpTeDmwbRpRjUukOkfuCiz6FA2X3/e9BCYfRnZHsfrT72IPaE8wTFNgifWaPe05Ty1mA8AqGZVM2Jez8SIJ6XE9CS4S2Jp/wN1Z+zZfOFOzvdOeyTbVa5YsVVxxkvv+63vj9y8EIbkbYdDfi05FYjRPvtt2yjUPuWbWi+rmTshcXqmRtKbxBpvIKntYtWCs3+EIvTQXHQVxx0JZ1Z5OIIXhmoxx+4VEUJZRX6ir8PngyCF7SheHcxdmiHDxZNl+YlrwYCRJn04Pmot1OSHO+nwLl/PlkXwn4CDnwqN1M2v06haX++Wa5qZiI50zaCayNTrrG1ql4WYFHQjENw9Qm+OEEnA0Xf6Ax+KX6AZpjMMI8uY8u3KH5Ulqua7WgxZepk7OAv1OVZWs0Qiw3OzGqAsrBuqxb6eMwYYenCH6a3VNCZ9xCATacWGBY+uV08D0nKRW3HjgXBcacw1zsNbA5OHYnC0TzKsTlZYYelPoC5X7jhVU3rS7ZrQszj+TuaYdzKc38A4YKUjAj6mWnuSYry5mYZFJ7Ntxj/96/ZYrHv
+ YrTlZs4l
+ S8QKu+p1pHg3uhrhvWGi8gt9H9s+BADWPaWBo49FOG7zaqM2aGZ3x8YGUJkWEoDXpvQzxDaTDZdWBdJzGOKr3IJ9KtWfP7bo2EujNd5mr5yJAfadvY5OIxSP0zCwvlrWEz/bf6YlI4cBSJLXkrtyvezl54sB46Fmg50LmVS8FeFZD70l45wUfRSLxHMiJqe3UadzcQD6PU6QkF735vVy5OR5k67t4bPC7dwLVyt+E3zuXHc9F1rwRk+jUplf8LTClVebclHVdkQQsRy2WfTc6vu7+BQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +98,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 16 Jul 2026 06:42:18 -0700 Breno Leitao <leitao@debian.org> wrote:
+On Thu, 16 Jul 2026 17:30:14 -0700 SJ Park <sj@kernel.org> wrote:
 
-> mem_cgroup_oom() passes an uninitialized "locked" to memcg1_oom_prepare()
-> and reads it back in memcg1_oom_finish():
-> 
-> 	bool locked, ret;
-> 	...
-> 	if (!memcg1_oom_prepare(memcg, &locked))
-> 		return false;
-> 	ret = mem_cgroup_out_of_memory(memcg, mask, order);
-> 	memcg1_oom_finish(memcg, locked);
-> 
-> This relies on memcg1_oom_prepare() setting *locked whenever it returns
-> true.  The CONFIG_MEMCG_V1=y version does, but the stub used when
-> CONFIG_MEMCG_V1=n returns true without touching *locked, so
-> memcg1_oom_finish() consumes an uninitialized value.  On a memcg OOM this
-> is reported by UBSAN:
-> 
->   UBSAN: invalid-load in mm/memcontrol.c:1932:27
->   load of value 0 is not a valid value for type 'bool' (aka '_Bool')
-> 
-> Initialize *locked to false in the stub; with cgroup v1 compiled out
-> there is no OOM lock to take.
+> Fix a few Sashiko-found unurgent bugs.  Patch 1 fixes use of
+> uninitialized damos->last_applied field.  Patches 2-7 fix DAMON kunit
+> tests that do invalid memory access under test failures.
 
-Thanks.
+This was meant to be RFC, but I forgot adding the tag.  Andrew, please don't
+merge this as is.  Sorry for confusing people.
 
-Sashiko, as is its wont, reminds us that we all suck:
-	https://sashiko.dev/#/patchset/20260716-memcg-oom-uninit-locked-v2-1-63631d878eb4@debian.org
 
-Does this potential memcg issue look legit?
+Thanks,
+SJ
+
+[...]
 
