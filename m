@@ -4,128 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9955BC4451C
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 19:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF91EC44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 19:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78B516B00B8; Fri, 17 Jul 2026 15:42:43 -0400 (EDT)
+	id 865C26B009D; Fri, 17 Jul 2026 15:53:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73BDB6B00E0; Fri, 17 Jul 2026 15:42:43 -0400 (EDT)
+	id 816BD6B00A4; Fri, 17 Jul 2026 15:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62B0F6B00E2; Fri, 17 Jul 2026 15:42:43 -0400 (EDT)
+	id 705796B00A6; Fri, 17 Jul 2026 15:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 25AB96B00B8
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 15:42:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 900BC8023A
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:42:42 +0000 (UTC)
-X-FDA: 84999290964.10.C19DC55
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B502B4000C
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:42:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RBDf1Hlx;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 49CC76B00A4
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 15:53:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61584C023B
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:53:31 +0000 (UTC)
+X-FDA: 84999318222.11.281970D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 99631100004
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:53:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=A5uBCCgH;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784318009;
+	b=jhYBn/BlexkEbQlcvImqfqvLnjZdTTTAZCPSDNan/B0vZlRJ9nC+XV/pfLg/bzJubBhsmz
+	ZjMVOdF/PR1VzxdClbuqcTlRE4Efdd+v1LcCYyzuNREH067OZfq557SiruZ8Z8nwZvbRsL
+	HDOxgaNbNqIBNaIn+HSs1ByPsTtnk1c=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=A5uBCCgH;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784317360;
+	s=arc-20220608; t=1784318009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XwmOrmcqXQWfj6rtFo+8pLNSVXYkj7WYHrCbKkDrWe8=;
-	b=EHT1gzUsXtemUMbHCgaDTQY/a6sZ+bthi2tk5xRRkZ6Zp2QRQ1hhIUcoock4zvdY/HMygx
-	3SpfrO3eBkgtjiZyhkCY/wuKXqM5ZxLCwgOgyXYxYHpftZ2MZ8p9cpqvI5J2ODLSKCrGJw
-	zrwEWL3QKoOblGqrb0B1Tyvw1NTRqUU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=RBDf1Hlx;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784317360;
-	b=7m9gHPnEVTDs47gP6wHHDwqAR7z/txuA6QWWQNuUYfOYOSkfIbq0RoObiRYSR6aiZ8JHZR
-	9kjLTc+ldOW8capSL9sQ0SFGNKftc9QXudLfsBF4A7rTl7dFgxjn6y1Q1Xk6ZXiD4Etz5N
-	/javFYMpdbhqVxW+YA0dCVel0XmDZGw=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e53581361so625823185a.1
-        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:42:40 -0700 (PDT)
+	bh=FzGsMfjy3uVZeOrqXk8AeG/VbsEl/Z0QNXbp+sZJkN0=;
+	b=GGJgUcz2av5fbQGB9wzUGUhUOiANqiy8BuJ32AJfMsu/cV70xBIBAHgdsioOWwBbAjfnQf
+	JM0vca8r+Bp6ji/X2f4i0wO7ZyWO59U3OfnC9Dm+jTpzfR9y6rCWFBO3qQICe3LbDW8JK3
+	wsdcGHP73wtjKJ04Cwgs2Kaij+ldZEA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B27BB413CA;
+	Fri, 17 Jul 2026 19:53:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2991F000E9;
+	Fri, 17 Jul 2026 19:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1784317360; x=1784922160; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XwmOrmcqXQWfj6rtFo+8pLNSVXYkj7WYHrCbKkDrWe8=;
-        b=RBDf1HlxqpuzVXCRAdRSRrvemmOpoOfsFnHqrWb33Cdr8rWsSgDVV18AbEP3SPcjfx
-         kaalckrrad/4p8w0bILC+Sa8/M5SDuP1BUYHszH+Db+P711T7a5FzJxQPY6Yru5tuqCL
-         zCaaWA4Jc/H9lnsran94/e5TDtowrCehhHFdJFhKWSZR6ikWn+KbFku8Uo9WbufxmlKh
-         JIREre9+53C+naK5fncgv82cR6XJ0ga3W+dF5wg7U4oeg5eOlc+z60z44Jpz+syQD/iz
-         8KKd16R3urjXWNYXox+YBXMpFLW86qd3U/uZEydnCatxpNxMBnD4NKn+oRzSxzI24Zim
-         fQaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784317360; x=1784922160;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XwmOrmcqXQWfj6rtFo+8pLNSVXYkj7WYHrCbKkDrWe8=;
-        b=Bf9jFZZUIDV90cCfQwqQK85NxU9oeqZolm78XgktgMqmaK6HlRQujvlWDNbfe1PKXx
-         BMKSK/doT6Xb61wB5nDyvpphj4vuLUIUZyU88ZjILlQHCpH+NWdbQZg0amkxpPvLL5Eh
-         i0/gXNIwveBLJGdtIoXAYGFp9F8ttpI1rcgph4fNo1R1T4jq2nDL+ELqjIU2yFJAI9H7
-         Yh+84BueRGYxibQqqDKU+1r8qREOfGevEzkOvg8a5flBfnNF962TXdLqOOAyr/n4JOLt
-         b/d9Sh2e5/agssKswHpHE1yJBxmSH6E9QZtTJxqWXoYLM9BOxs19lSnstm/G/AdRn5wm
-         Ourw==
-X-Forwarded-Encrypted: i=1; AHgh+RrfO9PuQpxdU6Wd2/EZXilnRFBrWeebeDBPqVDV7yEtQ80YPxoz7T4KWEKr5/AtzfBbOC8azSfOlA==@kvack.org
-X-Gm-Message-State: AOJu0YwGcHVHCVw23nTMKdpYUeX+RM6C68sHSaG36vFDgMP7FDuFDh2R
-	Uo+PHbS0btF66Ia8pXCdtWrL3UD5mkESPQ+BQJVBon5v4GDStN7RYiror4LsEoIoJ3z7KTUrIx8
-	FazJ1
-X-Gm-Gg: AfdE7cnOdduOmxUK9XaJ4Zb//fXtYK22jqpvNp9g0FKYWS2yOJL6vDzVGsu82V9lxwr
-	u9dpgcoX/6a4407GDJoyuGZvF7fBOyAPMawIOhRlLYsiQkmeHWtkt117YK3QoM0MbVj2qlBiCba
-	DXyH78vSXC/Rd/4cVA/e75orODhJORGLZrRQ7W5BYoIUL1hhksCLK7F1XwPSMYqIJi8tIK9u1pr
-	Gcg+b65RPELqbP2MtARpifJwLxVEUpkszqXOYLV1t8zS03ElmPvUx44bZEp9EmOLzjmK7hSaIpF
-	+XyzCKw022TqcASD+rawq7IbZTKN2+sQMMSfz0zSetPkwQGFPwA0HbKRz8P3lgFN8l4voFa51V5
-	4AeS1FVbxAgJrOsuZsQUi8cXdqiMue17pMPaq16a/OT2Z1z0ka+0tJKIHzeU7MTZSdGv21hDzZj
-	FwJnxgrx5Zg4jqANlbnMBDZP7gOuM/3A==
-X-Received: by 2002:a05:620a:4691:b0:92e:e125:55bb with SMTP id af79cd13be357-930b3e9c541mr429942685a.4.1784317359852;
-        Fri, 17 Jul 2026 12:42:39 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b52dd3easm225279585a.3.2026.07.17.12.42.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 12:42:39 -0700 (PDT)
-Date: Fri, 17 Jul 2026 19:42:37 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, 
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v7 01/12] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <alqFcmDsFdjzNZQJ@plex>
-References: <20260710212616.1351130-1-dmatlack@google.com>
- <20260710212616.1351130-2-dmatlack@google.com>
- <178431652443.189683.17611165218179620081.b4-review@b4>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178431652443.189683.17611165218179620081.b4-review@b4>
-X-Rspamd-Queue-Id: B502B4000C
-X-Stat-Signature: cd473ekstfttuqw5z4xbspa7y6k7tj5b
+	d=linux-foundation.org; s=korg; t=1784318008;
+	bh=FzGsMfjy3uVZeOrqXk8AeG/VbsEl/Z0QNXbp+sZJkN0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=A5uBCCgHeNQvijKIEyvEb8DXl8uibvUySeNGJwOWcZY5IPzcru1rUI6ytmHrQo4g4
+	 i9/WjiT96/xL8Z/CWhjFzhog12yFLy0JR2RKK44H77o3wf8fYQXOH/ePH6HeMR+VEP
+	 hn0Rj1a8sWaXrvrwcOVXiEKznVfYgYrdFw8PcfnA=
+Date: Fri, 17 Jul 2026 12:53:27 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ridong <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Barry
+ Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, David
+ Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Zhongkun He <hezhongkun.hzk@bytedance.com>,
+ Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH 0/3] mm/vmscan: fix swappiness=max and clean up per-node
+ proactive reclaim
+Message-Id: <20260717125327.cd3e3cc4e6cc28b0855e6502@linux-foundation.org>
+In-Reply-To: <20260717113300.214717-1-ridong.chen@linux.dev>
+References: <20260717113300.214717-1-ridong.chen@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784317360-713150
-X-HE-Meta: U2FsdGVkX19z1AUEED/kWbFiqWkFcUr2D2GKsvdKNJf8/4+Y6PYlKC6maGo8xZtoZ8TSQsPouVNCG80rxPbWbO1irgYWo38gR5kPf+aBxWVnJ3VD/txUe8Z8CQ8k9hYn83VzrwjdP2Lb1JtJsHvFE0TN/Tljr6k2PpGC0dn1lpuQkchc0fh+8vKqubR9E4HwM1YDhopPmTy28kCJGcsen7O3qk2dX8po3j55NzwrFjXhh7WjScgQdvDCEvKZSEvrwzRrbM36YW6wCdAYKZXDxlS1usmAvCJQ3D5OMdj7xigIVjEJidCfQkpDHeV0RBIGjzlSfyGg9piQpSfJU1HDZD/DDqgm8Jip1Uy+jfVnNXsSix3c9ziFzrYqreh4JIqfl79ik5Yx+5zzVZ5uYVdNpxgTSazvd1XQsKthZb/Ujaik3A6XBphiYXM+kRHRseu6pblmmbF32mFZ4BmaAK1mSo2YsoLNBXCegrNukFbffZUvGiuqq0RHRYrRlmg2g329BLNUtHrh0jHb1FhnQ81sN6wU2Rp62vWbCsT0Y6P935+z1urN5rz9+382KmCMJoOKdYlt0ZtqqhyI5EEaQ5kXqrQgtSrsWug9S+yV1bG/jaAp4WWu7MEpKOFLXR8QBR/cba3P/Djz3Nd9Yi3rp9nr6GVkusC7StMyPyC2Quv0P16aaMmYph5uKajd0gLNeizBrkpmeU2YKMEi5veuMicbfYxQqUnE3ECK1JYDVQBW1iqNMFAUmRsV0d7rL3+d+RpbgJ9qzS+R3fPmdFWijSSlyWTv6JWmbx3x0Uup2Kxa4RVEDfbppVvuwuEzSN542iLsZQit+wm7DEM9LoPUtHLAneaKdKzWZuUyYLF7eZSTPJ8OaLO0sxBTar66fXLsNbY8Dfb6hRf6NzAzJge2vRY2BZfcGNEBybsltS0ytRpi0co+8s6tDaq6XGD6eMDYCc4K96sLkjS9fr4VRJrZRmM
- 5rKhr7g3
- +h2MeaGIhUHPQFY5GDZbpwm66cVCN710ffv7Fhjp1X8EYN4PvorRWxFhQR9Ot33RreNC2Y0EokvT6A7o9/5SMUTiE1Pmtxkbv4WGclELSXxnjnI4/3o39Edb1p8cCdVYO5FaBw5rDMOX7RfA0BNECQLjJqL32DwS9mstYd6d81K0412+47fVS4e2dxjKwPfjh2BC0x3oBxlRdTAj6PvpwVua21jbImpQxGj8qULhaQU46vSEN8+rK3c2Sul1qQEB8oMPVURh1NdFoTq5ymvsgEpBNKJKwdz4dvn17maJQQ7j59t6Dv+f2RRrZ8jqATfKzZcthrLmXkFCA4Wxe+Mq5sRGAb6i6iTdKDG+GpWJEaLB875GAclzlR19dpKP/0yL2sv69NJZVPiS8VFo=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 99631100004
+X-Stat-Signature: y8nw7ohudzm14z8kdbuow9hjqjukxesq
+X-HE-Tag: 1784318009-864558
+X-HE-Meta: U2FsdGVkX1/i2OKwmxlZkikfJx30Z6IeF9FONI6wnAxtIXEq5veFGrSKrlU8fqQ3U1JFGIXeNaFHmo/i+Xu3LR2uHp30P0ct0qe8acvLpzim7TRaKTrmvpxwZMsYDyBO8mXDHbN3ceWJhzI74//RPAtP3gOlVgVo6GrkXtEKU/D1aLZAS3EiXXvnMPayQHEiwbYuyYaPzK4DDZBf9hba68maLvhgR+zJS+SviuLIbDMnwOy/0SrrXE20vOZ5+qhzQ0NfArCxIGYgZehZXfOkhGoqk1Gyz7JFeZ0kw+p1XLM8LAepQR4Un7qApOqqlXdKJsG7gA6L5iCbq3vgScYzMa3fttyLwryUFhL8AjPeqKgCc0jz+/alym2qSA0aVrjqxZQXAjhiO3Xfi8PMJ1UnS7q2Ysle8NHk8iSk8n84QlTRguk9IeZdPgDmzgTVDBbH3sAmTffAMlWfVAMyZte7tw00iwEt3l7BaW1I8ed23sGgy0VI4RQLZyYmVkD2k5LVn5xkFf05Njfst30kk23UEhrOo0q5rZfK//CmrO+9sAi/NvXnMW2y9cAL1Si+UP6hBbyKJK77ATwspWnPfH6d+Uuj0E2PNUkErOpf7zEN1O+HaHdTkZTpGWuEp0l5QhT3FDXppb90/OSaJPtANOb3YTZJs5SU69sx+nUmPnrY2Esy7/awxAuIREg+ByLPB4f9zZG07S+l8t36b6iO7/QKgVK+DxNnbuL2FDikKZCNqiHGa40kYa2PgqYlQ1jKu6NtdzeNzvta/94PNcdOX0DlOmRlwypgrD++9cGPAbewh0k61vIk+ycL9ZuQ2GGgatmyXixY0D/RV1xI/ndifUqLx8HAXYS631F1HiO96PHAuIYeyZ6MNOpjh5e/Gq+UTG9V1F6h0horY0tbjcVxyBmdwaeD8ldVTyIqE08j3Ca1v2kMcgsxVfHRrDOR+A/kmjSp4YnJENiZ7xeNWK5CPMa
+ efSKeg/g
+ bD0ac9PImhLvAhqwrs3aec7ksOhzfKYiG+/sXqqU+FLvnKR5PPjA/r7W+R+sdxoqZQ6xXyl1Cwep30delNEyoWj/WYgM443lbKhSNxtddjKruiF/bQNnQ9gkECEGGJDuaEj7EjAPXIDLjLWYAU5PYUbsblJopSiItAKi6M0jdxhcheCxt1NFivI4Px1ZsFXDTjiK2BsS2yZ6XI0QE1HDNA4NhIvoOxDu2uaTxDDEb9XRSN+pPVho5GGQBhQY/+Kp+K7k/ULkszjF3rpWXZSqdj2KFx4eLy4BWux6Sr2zJROybd336Lt1MWo53I9raNN0hrSJ4gPdAZIQuRVtrCChyDT6CqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,87 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07-17 19:28, Pasha Tatashin wrote:
-> On Fri, 10 Jul 2026 21:26:04 +0000, David Matlack <dmatlack@google.com> wrote:
-> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> > new file mode 100644
-> > index 000000000000..899758883dd5
-> > --- /dev/null
-> > +++ b/drivers/pci/liveupdate.c
-> > @@ -0,0 +1,155 @@
-> > [ ... skip 50 lines ... ]
-> > +#include <linux/slab.h>
-> > +
-> > +/**
-> > + * struct pci_flb_outgoing - Outgoing PCI FLB object
-> > + * @ser: Pointer to the preserved struct pci_ser.
-> > + * @block_set: The KHO block set holding the outgoing devices.
-> 
-> AFAIK, these should be aligned after column:
-> @ser:       Pointer to ...
-> @block_set: The KHO block ...
-> 
-> > [ ... skip 26 lines ... ]
-> > +	ser->devices = 0;
-> > +
-> > +	outgoing->ser = ser;
-> > +	kho_block_set_init(&outgoing->block_set, sizeof(struct pci_dev_ser));
-> > +
-> > +	args->obj = outgoing;
-> 
-> Nit:
-> You could re-write the above:
-> 
-> args->obj = no_free_ptr(outgoing);
-> 
-> And declare outgoing like this:
-> struct pci_flb_outgoing *outgoing __free(kfree) = kzalloc_obj(*outgoing);
-> 
-> Also, remove kfree(outgoing) call.
-> 
-> >
-> > diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-> > new file mode 100644
-> > index 000000000000..de549016807a
-> > --- /dev/null
-> > +++ b/include/linux/kho/abi/pci.h
-> > @@ -0,0 +1,58 @@
-> > [ ... skip 30 lines ... ]
-> > + * @domain: The device's PCI domain number (segment).
-> > + * @bdf: The device's PCI bus, device, and function number.
-> > + * @refcount: Reference count used by the PCI core to keep track of whether it
-> > + *            is done using a device's struct pci_dev_ser. The value of the
-> > + *            refcount is equal to 1 when the struct pci_dev_ser is in use, and
-> > + *            0 otherwise.
-> 
-> I believe descriptions must be aligned.
-> 
-> > + */
-> > +struct pci_dev_ser {
-> > +	u32 domain;
-> > +	u16 bdf;
-> > +	u16 refcount;
-> > +} __packed;
-> > +
-> > +/**
-> > + * struct pci_ser - PCI Subsystem Live Update State
-> > + *
-> > + * This struct tracks state about all devices that are being preserved across
-> > + * a Live Update for the next kernel.
-> > + *
-> > + * @nr_devices: The number of devices that were preserved.
-> > + * @devices: Physical address of the first KHO block containing pci_dev_ser.
-> 
-> I believe descriptions must be aligned.
-> 
-> Nit: Please order the included headers alphabetically.
-> 
-> Nit: Please order the included headers alphabetically.
+On Fri, 17 Jul 2026 19:32:57 +0800 Ridong <ridong.chen@linux.dev> wrote:
 
-The above was supposed to be right after #include, but b4 had a mind 
-of its own.
-
+> From: Ridong Chen <chenridong@xiaomi.com>
 > 
-> -- 
-> Pasha Tatashin <pasha.tatashin@soleen.com>
+> Two fixes and one cleanup.
+> 
+> Patch 1 fixes "swappiness=max": the anon-only test in get_scan_count()
+> sat after the "cannot reclaim anon" check, so when no anon was
+> reclaimable the request fell back to SCAN_FILE and evicted page cache
+> instead.
+> 
+> Patch 2 fixes reclaim_store() collapsing every error into -EAGAIN, so
+> callers can no longer tell an invalid argument from a busy interface;
+> propagate the real error code, matching the memcg path.
+> 
+> Patch 3 drops the now-unused gfp_mask parameter from __node_reclaim().
+
+Thanks.  Sashiko want to know whether MGLRU should also be fixed:
+	https://sashiko.dev/#/patchset/20260717113300.214717-1-ridong.chen@linux.dev
+
 
