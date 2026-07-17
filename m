@@ -4,84 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB3F4C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:37:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1CB8C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:37:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A23426B0095; Fri, 17 Jul 2026 12:37:28 -0400 (EDT)
+	id D7FC76B00A3; Fri, 17 Jul 2026 12:37:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D48C6B00A0; Fri, 17 Jul 2026 12:37:28 -0400 (EDT)
+	id D57326B00A6; Fri, 17 Jul 2026 12:37:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EAED6B00A3; Fri, 17 Jul 2026 12:37:28 -0400 (EDT)
+	id C6E5C6B00A7; Fri, 17 Jul 2026 12:37:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 56F6F6B0095
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:37:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D9CF6401FE
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:37:27 +0000 (UTC)
-X-FDA: 84998824134.23.6BC7B16
-Received: from a6-53.smtp-out.eu-west-1.amazonses.com (a6-53.smtp-out.eu-west-1.amazonses.com [54.240.6.53])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8667C14000C
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:37:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=cialisactivesupers.com header.s=resend header.b=JzEmm3MD;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=Ac878ce8;
-	spf=pass (imf26.hostedemail.com: domain of 0102019f70f098c7-1b38bd0a-61ef-4c19-883a-52363eb6396a-000000@send.cialisactivesupers.com designates 54.240.6.53 as permitted sender) smtp.mailfrom=0102019f70f098c7-1b38bd0a-61ef-4c19-883a-52363eb6396a-000000@send.cialisactivesupers.com;
-	dmarc=pass (policy=none) header.from=cialisactivesupers.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B3AF6B00A3
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:37:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E3F81401C0
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:37:47 +0000 (UTC)
+X-FDA: 84998824974.04.AB49DD5
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf31.hostedemail.com (Postfix) with ESMTP id A28C020003
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:37:43 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HYtxESPZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784306246;
+	s=arc-20220608; t=1784306265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=/vYdlxSGxfj5oDOxEOcM5FXSQRq7jad0f16jdRO2OcI=;
-	b=OQRhMwvqqrSZf9aL7AIUG4XA3L1U+m134LpwgdYPpDlHcpFuMCd78dP2h4RTr9Dd+1J+J4
-	f2WKATt7eE5ecUrKlbWJCj4trYzXFn+YVw2B6PJ2L8gOnd8Z1Zy5dC3c33v79tzizVT4/j
-	caNoEh7NwKwIWTLyo3NAA9NP2n8S8kA=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vL/yhXHA9xDChnk74OgVrWXQ2aXe29pUqtPQN+eOWig=;
+	b=Kj0qhfd1C7L7dJ0cJmR+d42XVXRIj7NhVRH/lSOpuxXPio6vd2zCP9JgP/kGohlrJugjmP
+	Dt5yGv4l9h68kVaHHgKgfkPHTF9EQ4d9A4H2WTMnugS8SfPt7++UmXsT6lBXzWgPduoUU+
+	J3oOqM5JZo1hUe0dYI2hbZNNGrwB6II=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=cialisactivesupers.com header.s=resend header.b=JzEmm3MD;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=Ac878ce8;
-	spf=pass (imf26.hostedemail.com: domain of 0102019f70f098c7-1b38bd0a-61ef-4c19-883a-52363eb6396a-000000@send.cialisactivesupers.com designates 54.240.6.53 as permitted sender) smtp.mailfrom=0102019f70f098c7-1b38bd0a-61ef-4c19-883a-52363eb6396a-000000@send.cialisactivesupers.com;
-	dmarc=pass (policy=none) header.from=cialisactivesupers.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HYtxESPZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784306246;
-	b=t21S9oBG0O9rkWAfoMFTRWhYb/mgRR0fUDO3Sn7GvyPaVvQ0IC7guEWsqKxJJtNXW6i3dP
-	TjURhnuIiCOa+UnpbtgaWkxAkK4v9z/YjOK4NQ5CjhwNtazhFKRrU51qH+rRfh+QOq5zqP
-	xZQyGGeUXJWdb4b7eN5i9/Tk/Y/31sg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=cialisactivesupers.com; t=1784306243;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
-	bh=d49yu0j2BZ6qtddV1wfaaHIYieM2f4Rtg4ZnFHeZdfU=;
-	b=JzEmm3MDXdEjuVuvILar9nVRYgMpMm1uFXvu8PfHulUFwgE1M9l8QNG9e5OjsnrE
-	cmOrCM9wZSdvAo45ke3CkVaBXbGWr5EdQVlamjjMmz9cSqMbxp5PBhyvsLRPu8TTQG2
-	baMpPQzoGo4DJdaluaG1Gvv9kRMpG+cUl6SyM5Yo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1784306243;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=d49yu0j2BZ6qtddV1wfaaHIYieM2f4Rtg4ZnFHeZdfU=;
-	b=Ac878ce8IHeCzxqLZdJsliffwRLpCvJgSSk+PJLhTcr4ql08i3S8FWCKgeYVWUuI
-	1TjtEtBGLPkNd4rj3DDJzcF5metx70PP/bEu2B3lB5r9uv8r9U65A0IIEK2u+Duf5Ls
-	FhuHyq7x1dfay5AW3Le5nz7Kzy86GXslyHSg1zD0=
-From: Stephanie Gillet <contact@cialisactivesupers.com>
-To: linux-mm@kvack.org
-Subject: =?UTF-8?Q?J=27ai_essay=C3=A9=2C_vous_n=27=C3=A9tie?=
- =?UTF-8?Q?z_pas_disponible?=
-Message-ID: <0102019f70f098c7-1b38bd0a-61ef-4c19-883a-52363eb6396a-000000@eu-west-1.amazonses.com>
-Date: Fri, 17 Jul 2026 16:37:23 +0000
+	t=1784306265;
+	b=uVkr8Jqh085Ud9KaAfRlVtttuGQ7nSRhakB0FMaEqwOUPQfwMNlPC5d7Omx0gcOeWtL6HO
+	aluOEXDrgu2nQxkfZOolMxp9XaheWTmllB1+vxMb4n3d4NQlb73/R9B2I7CvSLUNZN18gO
+	Wa27bdnfg2PWxw7zOpaxsHHXoASyeO4=
+Date: Fri, 17 Jul 2026 09:37:29 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784306259;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vL/yhXHA9xDChnk74OgVrWXQ2aXe29pUqtPQN+eOWig=;
+	b=HYtxESPZoniA+M7wM1pV9JgLeuWl55BKmQOphRsUwI7f7HzHnFgPTtZUykxQLhKUpG2PGS
+	9TaS4NSZlmApRp7kCcrLYMAxZEXmR5f7Ek8XxN/T14McUo3lhld4n74EygjfOWiXLhR75T
+	AxBYp5MFj39fnqYJ1XipLYlkAHboSgk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Ridong <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zhongkun He <hezhongkun.hzk@bytedance.com>, 
+	Muchun Song <muchun.song@linux.dev>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH 1/3] mm/vmscan: fix anon-only reclaim evicting file pages
+ when swappiness=max
+Message-ID: <alpaJU7_NMgz5ie4@linux.dev>
+References: <20260717113300.214717-1-ridong.chen@linux.dev>
+ <20260717113300.214717-2-ridong.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="--_NmP-9997efa5caf5c66e-Part_1"
-Feedback-ID: :1.eu-west-1.yblHD/pDucztU5b58Q6xJXFGQZq+G1hEltHlFKcINzE/z3kQh/CRNeF7iAe/8sFnCcDsmCIKsa2f1/oqptygF51uO4uDQstezttAnNk7+3FQk7ipnhJj3ZgLRYscegHUgKEUIb5JUnvMqbxT/wm4CUxIkfBpTkPC7HelsO2b8/s=:1.eu-west-1.KEYBhYy5skZtLAf2ooWkoQwfhj0g1VAvm2T4fzvEpSk=:AmazonSES
-X-SES-Outgoing: 2026.07.17-54.240.6.53
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717113300.214717-2-ridong.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8667C14000C
-X-Stat-Signature: qhewx4fj4f7xbabaf8z9o9bii9hr84n8
-X-HE-Tag: 1784306245-629513
-X-HE-Meta: U2FsdGVkX1/fllQvIA3yXHUE5Sc43ba7/FozdHCMdfei/6D/XzYQgNGchLi7wiu/oxqy8xFdQXK1a8GSYEzYZ1UvsD8LqBiig6JJVY9wv8B2hJXZT4jqntFXQRJtgWgcS7xME/HcqPFgs02F11Un/NIwGa+6xu9k6YkiK0xrtZKG6BmwjmnyPohiQBnrM3PLb7D9drVXT79SOc1nrvWqUBTjToftTy5Lyu8PRJezWr4j7aGX8hVfpoAxAmDm/gRI80vVzj41GKIeYLEZNzmfw/yFsPI3JdytO7akuf1FRHUeazJm7VW3SWp8WMPKiFTaWT66BNLrnQsYP4HOQka+nzhnVIPzgVQtqY3EUQlZNCBqawHLc/HyYGa3JjIQokbA9qfRMp3kx7IT8C+X7UbeiKWddmuNsrThma6/FzGo9nkzzUk3vMjy9MbwYwkdT0FHp53NfxKVLNlx1RMNhyKxpHvidiKQ60zL/HzoOnwhiLy8uUYb55teLGA82a9rRLUn9Cw2WYC8J2D40vMCqmNUNFteCrhaY3APs/hDbg8UTmwk5v1b7FsZ3sDd6vJnKjlmRvHnrVRKu6HlDtvXdNjzWmN+k+dViKKJ2ZNxwtB1kbsdckuOHimF7RWEvmxXWP3pv4PHxbKIynedsmS+kTT4UUmcQFGGJQ8vi5eo9T3Ffxv3RrberjPeTC4GGYSjzSpi5fyAxT8ZkfrPzbXQ3MHSkycIqwdVcpvMujetK5Se7IPZ0NqLeByQ2GnDJr8CT7KgCh2XTii1pqAFYZxnw2tH7gv3rPvFwC79AKJ4OhLrTr+8rjq/9w/Vl1JOfztCr+lgTz34/TWH0ZVDvnQK7/bKDUuepFxeWerfw+BKloJ9Iqa7i+l9z7lmY9CNV+t86Rawle3eYxVlcd/ZwyYXzWySRazXRl3+cjSWd0rGnxiumo2NfsjVh5XP0J0TDDFGVJZb7jg6tIy1TXCuHyrE+Rf
- OTF7+zNv
- vWhKWmBoXow8G2o11Plo5rqVFX+fVh0Ii9oqzeOMqsV65jamueXEvSiz5oVBbKGEZq0fmxdcXXX0F24cSIhzqfRP1mzD5rFxazoKjjS+XHE5ScKN5pTfpFdi/lsHvmuLF6ZfZ0JTU/XWdPULSqBW/hMqAXQV2cx2l/Kp/DsRkrZKWGYt4Oo97IK6uzR2iExoDM0RnHy2qUCxqqZDCrTIySMWmyHOqIRl19W1opPYCt5bg/fzm9Dr2K+z3YsaNfKzN8UWLpPnA406M6/tpQokJShax+a4Mtpc2xiVWMKrMaA/E6XEXus+Ph1bOiLlkkZ7frDaXp7QJe8EzR+py+MrL7AwxanL9L7tUES+yG0I0YUoSzx9wBWxq8cKfNaMCGPtVv54aN7nV2JN/xLx2W52SVC3aZml0tC1UlGherLbeR4CzAo0O2VIp3bCEZ9gPWg1+v3kvctK8gZt3/H4V6x+0/EjOcSbOB2d6SPeMiOn8gPIos4fKh648DOcBAXIWAzRoPkB18YkPzOTCara70p5VNytRYrycVC4EPSBZTMNNHVa858DKk3T7JOP7vvgUFdl+/N/AbI85zKiVsUjdzjanhIpBc14CPsnVPNkzeoDUc4WrBlYL5qQU/Jb/NjnZbUgjN6EQxjREgFsyU22NDR8QVZyrAX8e8A13/gaqZDIBoKJUyHvVzwh33k/zkQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A28C020003
+X-Stat-Signature: rpz6pbmqw1t4ajsnj7prxim3g1o8ecji
+X-HE-Tag: 1784306263-314260
+X-HE-Meta: U2FsdGVkX1/j8sPeV859IRT9mseRt7vlfqYll6bBaN5/VVYdS3qQIkgzXscK80JwAQ2tImxJFDgB30euoLbkH1oOhkr6Os3F35IL73gshkoqnC1qlyjxlnaNkuayjisL4joN7v46iTjKRkWG7Na8BwCtTCjsTcG5kzZrK00Pi4lQSs774XbOjwE6ytYw9C2ed7hgJeIpMoKib0aBbW10i41Qcb1aeXee2PZrQ6WP0vYaxXg6V40lAMkSojM5tGk2J4CEtpX2kC/fu5/wuS1Ne3KrQrs+ieFkS9l61p20aVL5T4fHJgynh8SA6CoeEhx5xMSRiGif+iJe9OV9VxdrZkuHLChA8dTzlz8+BDHlmSkqYseNsl3QgBbrUW4qt3pu3EAGNUV7JLVdigmClw0HSLEM984/k9U10vBUXAQ4cz76cTe1FqUg2Ihe+Wd2NDvBlWQ7dlq1Mn4xIMsyMv2MFnFHHNYQEHI23j3wLWLqLCU9DbTDS8Onv4JQauCYCT1o20XqIXrko2baJaX+L1nk/3U1vH1J7pirHi09UW/63LY+b4+gCeuyX3u3ctzfR4jSzgxE20x/h+77CKbViHJrEeDlm8PEf04pOzw3CrWgtSSL3/EwUfTOTcax62I4deognTtckOE51A7XiwNjxmlyKZBXtlVL9Dp2LlecluJk+ewyJbe4wJKARMJAU396no1LpGadKz4tUgf17gpmOrLf/6AzH6TNNkYYpM11JzmsveJrzLMjojDeL4AFU+eCjo4S3QOehGL9zBT/GiTS4yXAS4kp+2ht500if7lZq5bhff2Sdz8tH1hFyn0+R6erKprNR+W59utoH/9F8TALM39yP3JPXWAedvY1EisHnNTLGi48Nn7dOZJANT/qPvgaP13TF03KN7Uud325cr7Wy2XunklGL88/iC0p6T675DG1hMB+cV1NuQtwTvYIO1xTEgQbrW0QajIVbaLZMrUf3y6
+ X9v2lltI
+ gtlDQOYRAmOP88eMURfMQmY4Lw42MugjZLg3GOQgyP/J8J8WVir8k9CAp7u4rNjFp8bAP7FtPX/qapoV8HJp3x9WG9R0b43PWHsowdf8voT60FmURJANRFnpPgMtUa/a1XEdhEFZ9X9gHOfX72jWvPEpDRTXvyS66pLytmCLtJHJlzD1farnCO3PND1Zj/4kiYK2GZAPB9exqDxWPnjm+ZZZSZYahLU1ciqj0lcoVSQcJof5yjxCQdSSrzGeARNWhrIhB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,119 +95,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-----_NmP-9997efa5caf5c66e-Part_1
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On Fri, Jul 17, 2026 at 07:32:58PM +0800, Ridong wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
+> the reclaim logic is expected to reclaim anonymous pages exclusively.
+> However, due to the current ordering of checks in get_scan_count(),
+> file pages may still be evicted if can_reclaim_anon_pages() returns
+> false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
+> 
+> Reproducer in a cgroup holding 64M of file cache, with no swap configured:
+> 
+>   Before (file cache is wrongly evicted):
+>     # cat memory.stat
+>     anon 196608
+>     file 67178496
+>     pgscan_proactive 0
+>     # echo "64M swappiness=max" > memory.reclaim
+>     # cat memory.stat
+>     anon 208896
+>     file 4096                 <- page cache evicted
+>     pgsteal_proactive 16400
+>     pgscan_proactive 16400
+> 
+>   After (file cache is left intact):
+>     # cat memory.stat
+>     anon 200704
+>     file 67178496
+>     pgscan_proactive 0
+>     # echo "64M swappiness=max" > memory.reclaim
+>     -bash: echo: write error: Resource temporarily unavailable
+>     # cat memory.stat
+>     anon 208896
+>     file 67178496             <- page cache untouched
+>     pgsteal_proactive 0
+>     pgscan_proactive 0
+> 
+> Fix this by bailing out early when SWAPPINESS_ANON_ONLY is set and no
+> anonymous pages are reclaimable, before falling back to file reclaim.
+> 
+> [1] https://lore.kernel.org/cgroups/7ddf3eee-5fe2-45f7-8614-c8936a039e04@linux.dev/
+> 
+> Fixes: 68a1436bde00 ("mm: add swappiness=max arg to memory.reclaim for only anon reclaim")
+> Suggested-by: Qi Zheng <qi.zheng@linux.dev>
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 
-Bonjour,
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Je vous ai pass=C3=A9 un appel il y a peu, mais je n=E2=80=99ai =
-pas pu vous avoir.
-
-Je me permets de vous contacter pour vous faire =
-=C3=A9couter la secr=C3=A9taire IA t=C3=A9l=C3=A9phonique que j=E2=80=99ai =
-configur=C3=A9e pour votre soci=C3=A9t=C3=A9.
-
-Elle r=C3=A9pond =C3=A0 100 =
-% des appels, y compris le soir et le week-end, et assure :
-=E2=80=93 l=E2=80=99accueil des appelants
-=E2=80=93 la collecte et la =
-transmission des messages
-=E2=80=93 l=E2=80=99organisation des rendez-vous
-
-Rien de plus parlant que de l=E2=80=99entendre par vous-m=C3=AAme.
-
-Prenez 2 minutes pour l=E2=80=99=C3=A9couter =E2=86=92 =
-https://acedigitalservices.com/stephanie-ia-4-v4-light.php?=
-telephone=3D03%2029%2008%2040%2030&nom=3DROLLIN%20JEAN%20PIERRE&adresse=3D1=
-80%20RUE%20VALLEROY&cp=3D88800&ville=3DHAREVILLE&dirigeant=3DROLLIN%20JEAN-=
-PIERRE&email=3Dlinux-mm%40kvack.org&r=3D4ro5pe
-
-N=E2=80=99h=C3=A9sitez pas =
-=C3=A0 me dire ce que vous en pensez ensuite.
-
-Stephanie Gillet
-Secr=C3=A9taire IA con=C3=A7ue pour votre entreprise
-
----
-Pour vous retirer de nos envois, : https://acedigitalservices.=
-com/desinscription.php?email=3Dlinux-mm@kvack.org
-Pour d=C3=A9clarer un =
-probl=C3=A8me : https://acedigitalservices.com/abuse.php?=
-email=3Dlinux-mm@kvack.org
-Ce mail a =C3=A9t=C3=A9 envoy=C3=A9 =C3=A0 : =
-linux-mm@kvack.org. Conform=C3=A9ment au RGPD, vos droits sont =
-exer=C3=A7ables =C3=A0 tout moment sur simple demande.
-----_NmP-9997efa5caf5c66e-Part_1
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE html>
-<html lang=3D"fr">
-<head>
-  <meta name=3D"viewport" =
-content=3D"width=3Ddevice-width, initial-scale=3D1.0"/>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
-  <title>J'ai essay=C3=A9, vous n'=C3=A9tiez pas disponible</title>
-  <body>
-    <div>
-    Bonjour,<br><br>
-
-   Je vous ai pass=C3=A9 un appel =
-il y a peu, mais je n=E2=80=99ai pas pu vous avoir.<br><br>
-
-    Je me permets de vous contacter pour vous faire =C3=A9couter la =
-<strong>secr=C3=A9taire IA t=C3=A9l=C3=A9phonique</strong> que j=E2=80=99ai=
- configur=C3=A9e pour votre soci=C3=A9t=C3=A9.<br><br>
-
-    Elle r=C3=A9pond =C3=A0 <strong>100 % des appels</strong>, y compris le=
- soir et le week-end, et assure :=20
-    <br>=E2=80=93 l=E2=80=99accueil =
-des appelants =20
-    <br>=E2=80=93 la collecte et la transmission des =
-messages
-    <br>=E2=80=93 l=E2=80=99organisation des rendez-vous
-    <br><br>
-
-    Rien de plus parlant que de l=E2=80=99entendre par =
-vous-m=C3=AAme.<br><br>
-
-    <a href=3D"https://acedigitalservices.=
-com/stephanie-ia-4-v4-light.php?telephone=3D03%2029%2008%2040%2030&nom=3DRO=
-LLIN%20JEAN%20PIERRE&adresse=3D180%20RUE%20VALLEROY&cp=3D88800&ville=3DHARE=
-VILLE&dirigeant=3DROLLIN%20JEAN-PIERRE&email=3Dlinux-mm%40kvack.=
-org&r=3D4ro5pe"
-       style=3D"color:#f97316; font-weight:bold; =
-text-decoration:none;"
-       target=3D"_blank">Prenez 2 minutes pour =
-l=E2=80=99=C3=A9couter</a><br><br>
-
-    N=E2=80=99h=C3=A9sitez pas =C3=A0 =
-me dire ce que vous en pensez ensuite.<br><br>
-
-    Stephanie Gillet<br>
-    <strong>Secr=C3=A9taire IA con=C3=A7ue pour votre =
-entreprise</strong><br><br>
-
-
-        <footer>
-        <p =
-style=3D"font-size:13px; color:#888; text-align:left;">
-          Pour vous retirer de nos envois, <a href=3D"https://acedigitalser=
-vices.com/desinscription.php?email=3Dlinux-mm@kvack.org" =
-style=3D"color:#e67e22;">cliquez ici</a>.<br>
-          Pour d=C3=A9clarer =
-un probl=C3=A8me : <a href=3D"https://acedigitalservices.com/abuse.php?=
-email=3Dlinux-mm@kvack.org">cliquez ici</a>
-        </p>
-        <span style=3D"font-size:12px;">
-          Ce mail a =C3=A9t=C3=A9 =
-envoy=C3=A9 =C3=A0 : linux-mm@kvack.org. Conform=C3=A9ment au RGPD, vos =
-droits sont exer=C3=A7ables =C3=A0 tout moment sur simple demande.
-        </span>
-      </footer>
-    </div>
-  </body>
-</html>
-----_NmP-9997efa5caf5c66e-Part_1--
 
