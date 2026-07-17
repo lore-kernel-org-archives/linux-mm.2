@@ -4,103 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35254C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:26:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84B5BC4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:27:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15F7F6B00B9; Fri, 17 Jul 2026 13:26:32 -0400 (EDT)
+	id 753056B00C1; Fri, 17 Jul 2026 13:27:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1355B6B00C1; Fri, 17 Jul 2026 13:26:32 -0400 (EDT)
+	id 72AC06B00C7; Fri, 17 Jul 2026 13:27:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 073876B00C3; Fri, 17 Jul 2026 13:26:32 -0400 (EDT)
+	id 667916B00C8; Fri, 17 Jul 2026 13:27:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CBA096B00B9
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:26:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5FFCF1601B0
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:26:31 +0000 (UTC)
-X-FDA: 84998947782.20.B4C7F15
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E6F06B00C1
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:27:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A496B801EF
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:27:33 +0000 (UTC)
+X-FDA: 84998950386.29.2FFB86F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C645020008
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:26:29 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eq8Ng3s9;
-	spf=pass (imf13.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id C4822140013
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:27:31 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jCAnQTOr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784309189;
+	s=arc-20220608; t=1784309251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RAK2U1t4VLrXzqivKyXPpAeDcpRK9SdlLlYcSqpm1Rw=;
-	b=PSW8NoOD78LCy6MFXtMe7+zEOII5rVR/V5tmRuycGI3PXuDofFjdxHeDDwF56nKoBWNdl6
-	wxqeYAR7nMs3QspF9cLDB3sz6YwBfG6iJPyyMlf1H1pAXvkCxYz//5uJSu+43IMIX9CFHh
-	IzURFitaUFJE0pcgZpQXx9kjsha4pYo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0O48kuedeadPtyYVMr3HodljE4FFFuatXpDbwuYN/VM=;
+	b=Brei05gWmqTvTW1IH4R2BZ77UsKEO2Ow87o1Q6DeXk4tR1boPbdzuv2hgDDmKGYQvMaEXM
+	N5d51a+ubPbt7wShUBxMdjl0k2nXnDI/I9PPYDB6bz/+Yk6++QHJM9Og0skUtPbuV9hG+7
+	ajyPAbK4UOZOHueyGaK7jGZ7GeIfZfU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eq8Ng3s9;
-	spf=pass (imf13.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jCAnQTOr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784309189;
-	b=oW2eQ/VF6C/yQPJ/ERufxBurVtoJSCmPEXJNIWbhAGZ3OWf7SJAyd+N/UoNOS5GmHmuEmW
-	4Vv+QDDRzIcLwHc7w6RKHkJn4SzVusl08TL7ZI+923xICrUZckRiwUom0FYZaY6oWmXstP
-	hLN5TDs1IBScGojV2n7b/Gg63txjC4I=
+	t=1784309251;
+	b=uRmwIaWjvftxMCOrySKim2r646wS/TcSAHLOwtHtkLEWv6jnYcNiHyXWh6FHCXOsBFv7QT
+	eBD4MQlht67RZwmGONHbvuO430VlZsLVqrvWlG0IvnmHSkHbOdIKLHdV5hGmWMNqIhUBPj
+	nvuXyBbbmP9YOnSIZZ9HLcnI5xfwqYQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0724642E10;
-	Fri, 17 Jul 2026 17:26:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C0A1F000E9;
-	Fri, 17 Jul 2026 17:26:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 102A241735;
+	Fri, 17 Jul 2026 17:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BAF1F000E9;
+	Fri, 17 Jul 2026 17:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784309188;
-	bh=RAK2U1t4VLrXzqivKyXPpAeDcpRK9SdlLlYcSqpm1Rw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eq8Ng3s9VOHlQriXV043RpXIKYLuUf9RjW4hvAtu6sDVA/4G9Mbxo/KnTh34NSH7x
-	 b/b+WY0eX/zEOqxb4W8NNh6MIhuokuqDduyk9ApGElOZdzhWymR4OUOUZrfJx5o1n+
-	 JMUDsDypZsONfslZznajb5UdJUfTcu0dS8xHfzanEWV7z2sIQH4S3SY5fcW2J9EWwQ
-	 y6rSV2CUq5XBSRJh+ec3PKt80A5XCUUSdAThy00dJ+rfDR+oy62Vi3V1B7fdXBzHDI
-	 4DLuHcOZyO5TJ7kHPkf60PybKmnptNzVFpuih2M0CYbOq8nYwI+Vwz4SllZyrf20Dg
-	 SdO2hpsuYlbSg==
-Date: Fri, 17 Jul 2026 07:26:28 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Waiman Long <longman@redhat.com>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v3 2/4] cgroup/cpuset: update some comments about the
- page allocator
-Message-ID: <alplxFeazzK_Ziie@slm.duckdns.org>
-References: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
- <20260715-spin-trylock-followup-v3-2-fc4d246f705d@google.com>
- <7f4e784ee2bbbc23b4b97913e144c0d9@kernel.org>
+	s=k20260515; t=1784309250;
+	bh=0O48kuedeadPtyYVMr3HodljE4FFFuatXpDbwuYN/VM=;
+	h=From:Subject:Date:To:Cc;
+	b=jCAnQTOrXc2yVCktE2fgCOUK5EpwHMMV6r+iIgfurcC4h/YjtIDoVFGYgNfEzmcqI
+	 5zuiF3d3pzNYXfUsMvPmxTE6FqFAfyjUiAJF623VdMsQCkvvXRRUHnbjEMC+r4pXYS
+	 LnbIS/orwSxTC//nhjeWaUo8M+cQKtQLbRVVPRGUKFmkB5e7rMwOAo35uQPeQI/p9L
+	 h5Cgy86sO5+1OfgSXLRZltyq5plxJHt+nMOuQ47jXFSOK1WTdPx6181/edxK2ejElu
+	 RVzrT+NNzKLZBN2WkwBchnBlNN7vTeuBXjGNb+Mbv6s1T0cVlJKIax/5L0BGwvkq5t
+	 jK103XFozxIYw==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v2 0/3] mm/mseal: further cleanups
+Date: Fri, 17 Jul 2026 18:27:08 +0100
+Message-Id: <20260717-mseal-fixups-v2-0-0daa0014b813@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7f4e784ee2bbbc23b4b97913e144c0d9@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOxlWmoC/3WNyw6CMBREf4XctTV9GExd+R+ERQsXqCIlvUA0p
+ P9ui2uXJzNzZgfC4JDgVuwQcHPk/JRAngpoBjP1yFybGCSXJb+Kkr0Izcg6915nYkIJ03KtdIs
+ S0mQOmJJDV9U/ptU+sFmyIzcGR4sPn+NvE7n3R70JxpkyuuTadvwi7P2JYcLx7EMPdYzxC562i
+ Jq7AAAA
+X-Change-ID: 20260716-mseal-fixups-131ad0939de2
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>
+Cc: ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2058; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=5qOAkI5geB9c2QJT+ZJuYGTf9tB6cnyrWqqOZSHtdhY=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKiUj+EWEUlbP0+1Vg9PzH18/bFZY+WbXnNxBkhb6f58
+ DO79xeVjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzEL5Hhf42d+QeFPzfXNzwX
+ OCbzav4XhxmzD+ycWPsqN/9ejqfpH0VGhkYvs2ZpxW13aw3bdETFBUOjKhYtZJx8Xd5uo1aE97K
+ nzAA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Queue-Id: C4822140013
+X-Stat-Signature: 5wqhzmu76g35q4grwh698if6n3c9o4om
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C645020008
-X-Stat-Signature: g13jq56pkjowe7br1dqafmhzohisyfk4
-X-HE-Tag: 1784309189-139939
-X-HE-Meta: U2FsdGVkX1/VdgNJGnaGLbC7u3/8nbDFQ9s9ppBqc0Pk7KImIAYvkih488I/astFSv9VbzknxE9s74pj7v16svEUKfXMPenml7vhC7kG0VOvf10YczvC7h5dgEdSgc0sOPSBBkD4EwGeLcTtGc2N85v0/FAhblLxVAldZ518mzrZezSEBUU0+HCXlDwJHIWdCEKN5JitJnBhHGzWtMNhr6azC5GwJBpsJ2bfoOECdY/tOb1Gv+E/eMsQEtJl4+rVd5FGN7sy6o+y50r0h6HmX7PY/V+GDnexFK0UlQlE/Sb7Bs5NenYF8ws2iZ2EY+IDZCjTAEcZUU5PQTvKdloniuQw2eeIsBsIBzWk0jg48ok14bdeWGMThTmKq1J109XR4CJHtPUNlAL9scz0im96AyXxhNEhVFHvsUcGK3ubsqH1xpHTstmuNhoKZcJ2YvBo3esYX7UTYqgYusRAKHp2cOPk46mzwpCpvmOozBrxU0LD8tg4RL/9269e1oijbvxFdyvh8449WFBdSVAlnijh/giFFSV62pqPlQDQIoqM6Jxbpkuu+/Zhglp3m8+Fo/QrjPkBCmKER4KAz8YhqieG6Uk6Zgn9kVybGEaJK7LjgyiD/PGgNfepWJUjlZoEWiIj1OEiGpMX4SR8P6ChBY8bX330syybvocbt2KUuPgLBIBoMGZ/EWgz5nZiC6I1HtmAxDGemie4tgN12qqNp0Hxblj121f/LmqCW9K7YvdS5tgplP7Geem+XeLLs8gkq7C7ZppJfLU6/7Dsc/2jHyj/G0XYzcZV04CyIoD06Mx01UF+nVwcFWA7EjpcaLkVYl+Kn+G4zMHQoIbDGsTBfVi2CCFDhclJNnPoF3x4dOFHUTa8hyAbDbJQSXG6tUh2fyRijojRwZlFTDljswB0H7apYuvNE36KnaErWCtZAJcLp0o9JAABeHzpcWfZtK8G3yeqiOZGPjZ/NPzlSy4sRaq
- L75fkdg7
- IRaXva64BO4k/4Kkd+qMJKeLd9WXjrgLxJEwSopsodbTlcghvgoTlNrI4J+hBTV2qR4THR/8xiAzHQFPxrADBL9AgND4m4vwwOY0SsUXsvrhK+N/A8cBmQNTpT7w3xtQjF1gqvyfv5xpf6zK5WWrSik4Pu69F/AX6mI1sF5ADjy8pnRXFpE24nPcq0j2pkbWTG2TT9T5di+t6wvfoCquFVmdRW15sQztP63C/MVg7y3NUDhQ=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784309251-397894
+X-HE-Meta: U2FsdGVkX1/SDgvH/eBef5AcwNkSHodi7NfkW9Zl8+pqljDxpVItcWCquUTjaow/DJOotrT48rb61Dq5+/w9Cs+GZ7uLaYZJ+Y1qKToXBe6eSDZ/kHYuTohhhfRdnRZvOGtHXi+iwrHRXQKbRhN/tLMQx4LPFev/KK+3zgLcidT3cQ1596C00GSnzooCSrSE3OVQWhB/M29Wr+FPfcFujOE89PuCNnAr1jB2yXJ0haLXLf2N3d4gt1elT/0RyyYvpEx+REVf4CfLmXgjEfwjnNOfpAIkmXmXGwJzgg3Xdr7AsU7rpiKYSJ496c2g9P/q+fs3SoZ17wMPiO/xAG20B6aQqIws7Y4Ba95bvazqnXhKFQ32gfELxyTz14OqRSuIqdUf4or4HT6+Vo2NU2mU2h3X5NuQj+6QyA2EGaDamvd27nTf0iwn4JvZg/v3Y+nkSu318kMmAWNDE1UPTKeLY1phiYjpv8VdOKw4P2/Lc7cKiIxvEmlYWW9740TRwZWik7ZE6ZvQWxtLftqhLnii7OD2w4fw1Y4Z0qh+Fo4covf1QZ5e0+f+pJ/+betm5KCerPphlraI/QPxnnvt22D/LSeqaQyI1zNg6TF+CGp3QoFxN1Rr96O9UOgk4yXr289PgQyMRYqUgrNtCORqGrIJhWr6EqF+ahSUSoLMmx4/tzGv34YvjBqxf4cKxncTKOPVf3kCHIjflzEqU4+aEsFaK6wd5njGQKVtxQYUPXIEQxfvkRC+Wabgg/MY4/8fGZocMg+LUAK2ExZ7nIFyJ20uZzDBNJ2zTOtun5ZNvDcyQAqE7dpw1wfkc3LDNRYeC4OGNSOBt1l5U8O4j7CvTdnkzsdrJuIXG5Ax8/xHXXI21B0MRVSqEYsJJp6ZfTYZ2VgQY4pkgqQChNd2FYkja1qREluMHomSUsAt1oLW4FebbM93tjEmMQlBST5QN8H5QojrufsoGcHreEIUzN193T9
+ Fktu4dQn
+ Yj13HoJe5d7oWPlAAY/vqipiv+xPEoQ7MEaBeXByUIWNxW4IW41JxsM5lOCeN7nsfGwkGRcqrx9xfBh0lCKowGwca3ur3E1l2Sjj5KTh+VhKrjQm20aYj9O92dJIqH864z1ogiNTUQ77MlWKZtLdftmvz2V+Uw4u/fFE0kQjmaEe3iCpfQd/NHBxafMFPX2Oit2+9AISSULcgZLwR0JSx2YY6wDl11Pb6RDfnBXk3cTMLxInnn5TD/OusVdWnyCYCZFh5Pq4svssFmkOG9zLBtmeibTxbSgZK8BB/k3X0yVZ8zIa6snYJg5LGAXXZAEi9YB4fg/5+BUG+/oOkuZDKePsT0QGQiRgBPbsRpeXL2/7j1nfXDSj1089RsaoGQv9ITTtC/7SDKeIeme4DT90UqugfiFcFPxZzkSUuaru1IFdkXforr+q/ZQKG2HLpNumQtrfM2nko9yjcqQKy/fny/DWeh6jwX81dwLWaHkIJWhCu0EVN+lOUgWN7vVKevRrAi1LH7SkrPGCo1eC7QACJX3KiKR4iu1wqZ003Xr+bv6JyJS9AQBO9OQucPH3qE6PIRRt9OunrE1ApZBXaJlLwTtiy7v1x7oFJUaX6iXpoc/9nF+65TqV1PLoLQJp4s8SmAvmh2znYXjtVJSo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,14 +109,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 07:23:58AM -1000, Tejun Heo wrote:
-> Hello,
-> 
-> Applied this one to cgroup/for-7.3 with Vlastimil's reviewed-by and
-> Waiman's ack added. Please drop it from the mm series.
+The mseal implementation is still rather confusing, so tighten things up a
+little.
 
-Never mind. I'll drop it from mine. Sorry about the noise.
+The only user of do_mseal() outside of the system call is the MMAP_PAGE_ZERO
+process personality - retain better control over how mseal is utilised by
+providing mseal_mmap_page_zero() for this instead.
 
+The comments are overly long and confusion, so cut them down so they're a lot
+clearer.
+
+Remove confusing mm_struct params (mseal can not be used on remote mm's) and
+wrap the actual system call logic into the system call declaration.
+
+---
+v2:
+* Added tags (thanks everyone!)
+* Abstracted mm as per David.
+* Renamed [__]mseal() to [__]mseal_range() as per Pedro.
+* Moved to reverse xmas tree declarations.
+* Tweaked commit message for 2/3.
+
+v1:
+https://patch.msgid.link/20260716-mseal-fixups-v1-0-3a9609bf041b@kernel.org
+
+To: Andrew Morton <akpm@linux-foundation.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Jann Horn <jannh@google.com>
+To: Pedro Falcato <pfalcato@suse.de>
+To: Alexander Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+To: Kees Cook <kees@kernel.org>
+To: David Hildenbrand <david@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: ljs@kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+
+---
+Lorenzo Stoakes (ARM) (3):
+      mm/mseal: remove superfluous comments, fix confusion around mm
+      mm/mseal: limit scope of mseal address zero to address zero
+      mm/mseal: remove further superfluous comments, do_mseal()
+
+ fs/binfmt_elf.c    |   7 +--
+ include/linux/mm.h |   8 +--
+ mm/mseal.c         | 160 ++++++++++++++++++-----------------------------------
+ 3 files changed, 58 insertions(+), 117 deletions(-)
+---
+base-commit: 59c684a9908d2e6f7a791f7f033eae57ec2b3a61
+change-id: 20260716-mseal-fixups-131ad0939de2
+
+Cheers,
 -- 
-tejun
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
