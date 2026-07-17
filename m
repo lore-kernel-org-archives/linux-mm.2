@@ -4,98 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81729C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 19:29:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B3DDC44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 19:31:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17D326B00DA; Fri, 17 Jul 2026 15:29:14 -0400 (EDT)
+	id 726B26B00DE; Fri, 17 Jul 2026 15:31:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 154EB6B00DE; Fri, 17 Jul 2026 15:29:14 -0400 (EDT)
+	id 6FD386B00E1; Fri, 17 Jul 2026 15:31:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091C46B00E0; Fri, 17 Jul 2026 15:29:14 -0400 (EDT)
+	id 5EEDD6B00E2; Fri, 17 Jul 2026 15:31:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C82C86B00DA
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 15:29:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 412B01C0198
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:29:13 +0000 (UTC)
-X-FDA: 84999256986.22.FC3E050
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E3BAD80005
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:29:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RBUssh5E;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784316551;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CBDD6B00DE
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 15:31:04 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC621A01FE
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:31:03 +0000 (UTC)
+X-FDA: 84999261606.28.E604912
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010019.outbound.protection.outlook.com [40.93.198.19])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BDBCE100006
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:31:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sl13eXxX;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 40.93.198.19 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784316660;
+	b=GQubPAjNM6miMznn8EOD/JCR+pMa/2Sh2Rmdoc9zjpHEAySYE1xcPe1ffFwLFr0eYJWY2v
+	Ho3z09VgnSodOe+mMjicWmBKu5lTKUbMCSR8ZNyArJktOA+az4o6zi9cfy0M/fOxWA4mzy
+	FsWmrqgDYtjpUzyjNfI3ZVky7BYSgbw=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sl13eXxX;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 40.93.198.19 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784316660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ui+ORj1/z8nhcz2rVBcwlFO5TeUDA1QRckff/Axxhfc=;
-	b=saqKycEdYoAFW6j3R0LbN25kUHbqWJqluIghROaPIGQRLwIY3xMajXDZyQu0YRk8PaSAw9
-	Pf+NfBEZ5EjzE/sVSAXBDp34Px8eX4v04MPcLMskTHtaMliN4JDNX0ZZDyTc1ifKpk0fmT
-	5K9x5Tg8QyMWNKu/PBtjqHkbTLrVgqE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RBUssh5E;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784316551;
-	b=3xwltjmJe0Dx2+OqZVUhVaHyzCEjxx8LCmmL7+l6UYKfFWriwhgKi2v+8E6ij4nMFbvUFY
-	BUb8yKk2/66E4YunCQPyiw03OZ/LICuJX1i+bnuK1pidx3rBtKzjGla6VmOIb+jjAWqSpt
-	U5a8u7LshP8AJalkY87fokKTcw7/+LU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30B99600DA;
-	Fri, 17 Jul 2026 19:29:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5171F000E9;
-	Fri, 17 Jul 2026 19:29:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784316549;
-	bh=ui+ORj1/z8nhcz2rVBcwlFO5TeUDA1QRckff/Axxhfc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=RBUssh5EaLehERy4Cgi0QGmJnAOAqgTzVfUX3zA0MRCL/hp/gU1KuyrB1kS6Q7wSc
-	 3CuE6RDTXx/8Yl95lAMi7m9NoXKXnJyX7bcJPQVkywGVvyBnHKTn7ZcFYO3itBGKP1
-	 rCb1/Gdr+DbERUhJfZim7lwhNLXLpKzROb62w/uo=
-Date: Fri, 17 Jul 2026 12:29:08 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Uladzislau
- Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, Catalin
- Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain
- <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, David Carlier
- <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, "Denis V. Lunev"
- <den@virtuozzo.com>, stable@vger.kernel.org,
- syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH mm-hotfixes v5 0/5] mm: fix UAF caused by race between
- ptdump and vmap pgtable freeing
-Message-Id: <20260717122908.3d9f4a8ad76a748d859b43f2@linux-foundation.org>
-In-Reply-To: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
-References: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=6PA+TdzZlrljfX2n/J8l2NaTi3Sp0X11AKY0ezcf8PM=;
+	b=pdlFhsxVVDamVeZnpKaqh4PvSqXEayVSCp2W9uGGfDRVlsZVgyD449vAfpjHPwAwf2g2G9
+	Ad1Buzuq/ug98sFzqo79cGTYrXNxPvJLt/gGL+2bF3qkj9eYOuCz+cA4qqQev5rX03yheq
+	Fs+1e+PDm0SblBS4D6633t/OFW31v80=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C6WIUEHooLVVv/uyisoWPzXRlcght4CTTjvVerg7nHkL3ObHyZBsC1Xncdy8vzbJSm8qn7AUw1HbLyaAcK32BHmJ46cRzmpVxd4RAwsWSrpe2khHcTVTUi5mu44KwyarafHHyvcasT9ryPBVTBtgznMQflWhlTO5elfzUVmf5RiXOwOKhk6AC8XtayCOJ8PQF5v3Uov70NHnEJ4vQN8ysu5Ct/dp3Gtbjl7TT3JTjtAFgRuKDRiiNu65eBj7IjnSLLhabFsqOwOznSY/vEuxFYcXzEudR4Y6+YE5cBzCW5j5Wm1PH1FkTgxom1SodWRmHcgfN5l72bdIR09+QN+yOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6PA+TdzZlrljfX2n/J8l2NaTi3Sp0X11AKY0ezcf8PM=;
+ b=rBRTeXpDml8UA5QngxD8tP8oS4wm6mOQc3kUA1ujf8f9KRfyWMwC80Z+D7tR9CdXixqY3At0EmHmE9kb22MW5pbUN1AHyGhPbXZS8+8WAtIZdhpnd3duumjAxnYZwIKppUhAQi2w/z85TwHoZVOYZLKA7h57DSaiCC65Gx2TNzNZPRQTXeFHvbvWBuPCbhL6KMeX33ldoufgs6WvM4WbKOnUmhvRXU8raDIk7490axju4xZrGuHY4fR0s+YNUEoFQjw9IOM5Rh+QYvB/up7KYaiFazPWAntkd26zRjGHCJ+jl9HU9i0dnwvJmovi0+BkI9/L3WLCYC1Ag2PvszLd7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6PA+TdzZlrljfX2n/J8l2NaTi3Sp0X11AKY0ezcf8PM=;
+ b=sl13eXxXjGmOEHCjsaVKTg5cbkDe0kI65hL7IITlQM0cBNU51sfM6uh/+vWTsdJTMs6twG92F1zgWNC2rZ4FHJuafmd4NYyywrix8YyFAbOeRfdyxXTAeOiBysq8iT66ARLzXoPbDDxAvYbYKJay1XzlKqNM5/q6mcXnwKb1a+V2436aOLGeqNOsHsi8Bi6vXicEpUfnXTYZwi/Afq1Oht99x+Hlaol3jH0sk1cvec/N/Qx8I/MVq7gVwlqtjnenGDvOvQbjeNh3TRtS1H7eLRLY3r12cWiKquxFv0mHZOHdb/7XSYfkVz2mPOTomyNwLx+2LGqh0WAGcvQw/dYArA==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by SA1PR12MB8723.namprd12.prod.outlook.com (2603:10b6:806:385::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.13; Fri, 17 Jul
+ 2026 19:30:56 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0202.014; Fri, 17 Jul 2026
+ 19:30:56 +0000
+Date: Fri, 17 Jul 2026 16:30:55 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v7 01/12] PCI: liveupdate: Set up FLB handler for the PCI
+ core
+Message-ID: <20260717193055.GD699082@nvidia.com>
+References: <20260710212616.1351130-1-dmatlack@google.com>
+ <20260710212616.1351130-2-dmatlack@google.com>
+ <178431652443.189683.17611165218179620081.b4-review@b4>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178431652443.189683.17611165218179620081.b4-review@b4>
+X-ClientProxiedBy: MN2PR05CA0051.namprd05.prod.outlook.com
+ (2603:10b6:208:236::20) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SA1PR12MB8723:EE_
+X-MS-Office365-Filtering-Correlation-Id: 405a94b2-8d9a-4d67-2d28-08dee439ec6a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|18002099003|22082099003|10067099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	D1BVNH8FiVHrz8lr4Mbhq1T0k6t953BUKzmhS3+ByV3kVrF8ntYuUypUzHlt2lg6e5yuhD7mD58gXm5dqaKwfqvU/AdTUQ23h0FltbtLMRwalA696HvvQhZD8kjxnKD/PBM58iHAClq2beI16NVem13x/Jv1duYHjPDeCLzriHRm2O488ZfCnvMG7o1LvasGBEQHXCMbFbXQckTHkiC3/lGegGZnmaVik7ubzbv1VD6CjPCR2XVRLb3/VaYmWHwWZCZn3Al5B/Y3KWSG17vGiEXYkLa4PakVNuqE8X+b1qSfoQepCkw8hW0Elo5bwpXFsfvWZGX0Vr9gTAAX4aMKcVe4mlaluPggjirctPzhfevLMDU81U/xhzlfLn0+dvKWCou03kkQGGCIztB2r9Tl0OkEpcNHVd0CZu1/E5A7U9JIkh9y4nVH0HxgxwbF/mjBrNLAhADKAiYwbwp8AqZy2Dkms6tfLXPjO7b+nIPFu8gN00LPL8YAxgQiPomCLUl0VK69v8SXiFd6MWTD8MvIvF5/s/drlCWbOPp71wyG/DH9tvgLp5Uv85MzmN5s0H+AgePE90VC4tPvu/+4UmFxTQ9xGQrTO6ZkkURI1Fezpkt/H3UDP5XIKIDcXn2fOGUtCysofn1L7fDQP/YAP8bdLzh0YubeFkR00xNKxa9CeLo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(18002099003)(22082099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZDRXUVFn64Ray6jmEfddl9eBSh263WCGOk21bymcIYiJYMXfWLf6hXFo7RRg?=
+ =?us-ascii?Q?da09Uz3Uur4FFFeB03iLU3YRUQJXSVteV7ojzKK/U0DaxqoxTILc7iNdDqk9?=
+ =?us-ascii?Q?4V2NZ4Xdp1qb/kFvcF/i+9xnrTN0xIT1afg7lj4xxZcn+PD3q+9Pi1ULIgxW?=
+ =?us-ascii?Q?NyhpCx8eegH7IrsvJ5ZDn4Og+tUwNrzsFXn5j0+FSJCD6y7y1EXAMI/MbJmu?=
+ =?us-ascii?Q?XNbO6pBhARAbb9QqOgviCbyANznXKqbCGfFvjhwFtiHf7Iek6DORv4cVnsNF?=
+ =?us-ascii?Q?Zz3ez9mV4LAgpDMOyBgyRl06yquzYwj/JzcNIZsL0wKQwklGAbbF1tzdoZjl?=
+ =?us-ascii?Q?WqDEnEaNKCdc/sAF2eTLDrx1Pi3IcOl6wMPJbOUCuZurGukFL9qR108fMdSs?=
+ =?us-ascii?Q?PBdAr4754HFZDpYGDBh+tW2mrP349MmpaR865wYbDPhv6RRQ3Ow3Le7/nMiT?=
+ =?us-ascii?Q?6FckSxBMTxQKB2Rvu8yePiH1Fty8O+GSmNXR8G4Sr5m6zS9Wd/Y9qbhgh2S4?=
+ =?us-ascii?Q?eO81A4rd1SILKvZqLMTnWUrIC6AK3K2PeIBo5RW5j/MXoLgez2GICkmOnuyZ?=
+ =?us-ascii?Q?u2W8o8NoYyzemZj7V1BqMYhTyy/KpoK+aj2m9pF/9WuBwY+WsqcLxPXN6iMV?=
+ =?us-ascii?Q?gj1xGw3LRU+L8xWLdWdD3BoiNtqkp2H7J6HjuWTQ99J1SCUnwrrqoKFnBYpp?=
+ =?us-ascii?Q?eUppRjPQSdOBeF3zDhzSNtvEnvD8VKQULNqMo/fH398p5nJrwcqRrBXv/ktk?=
+ =?us-ascii?Q?fClEcRqUPOaNKidiVkNPUY0JjZmOlatswLSqheIFvqZICuAf6d98DHloYsIR?=
+ =?us-ascii?Q?Y9z3ZfOXSy4oo16Ac00EhdCsyvb1wmog2ZQEngQ3rlmXk/VRwKObRMP9EIsW?=
+ =?us-ascii?Q?txGWPY5D53yoAfMBMm5hUZZy2ivVMBApX3NhcnuSc7S1Sitp/nFo3806EilL?=
+ =?us-ascii?Q?nnYWWB9tVtDOdqJpxLmAuoHXbktTE0LG00kar6qhfdpnJCeWSq949E/X00Gu?=
+ =?us-ascii?Q?FOkTufDlN4xXAVx8J5KdJGVE2j23qYm7xPEjqVUnUXumX1Yh4uB7KXMuGwRR?=
+ =?us-ascii?Q?qFzkEJtrCQ+fTY6dccTxIFidzdsnqUXJGRM8SIucGthljk0w7Qs7eNjfQaV0?=
+ =?us-ascii?Q?BeNE+PO7SZy378G+/2hOTCUUsdsEbgcCvzQNrVh3AYKw9uxNaEbI5Upn3LKh?=
+ =?us-ascii?Q?R0YXTIJhTQKoSWKhQnbcpTRuYTGsl8RnUJf2FjwWI6zfXurY3NeUYp7iUqMw?=
+ =?us-ascii?Q?5Q7Kh2y/+RgRJ9AViz+s4LZuo+jeexf1FoQEwIILvmM18JrrfyNWzPJr02wT?=
+ =?us-ascii?Q?OHuAY6XLWrK4OIJTDaB0QJ5qYlCwJETI1Gx0rZfWvF9RNBfVlsI51flAiTx3?=
+ =?us-ascii?Q?1FRepmkfAeR8lU8+azX5UjGeqqFEpSEgAbCS3lLI3i2EEihoTlyC01kvQpM7?=
+ =?us-ascii?Q?Q9L98qN/5Z2P6gZ9aFjlC2vgorqZtlPUiZI5GkWWaydM84I7nqUr8WJgKy/g?=
+ =?us-ascii?Q?cwGoskFbU3M6igsH+HFl/z4gZHrftznADK+H2h+Sb2P/sSOB8vDrH01l7V6a?=
+ =?us-ascii?Q?Pua9ydqPjQy5OiXDtoCy7qNjy8/dXbHczdBjuQBQeyxggGSGLUY+RwzKHSc3?=
+ =?us-ascii?Q?CNNcxCLNAKk6+maj6Z/Np+I97BJnOLeafkWgryjVWV8wAJYQGIJ42VjlfBLM?=
+ =?us-ascii?Q?HcH1BsALlEz2NhXayXwNeFniSI89pPGYxDP3qACIU7xUEsi2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 405a94b2-8d9a-4d67-2d28-08dee439ec6a
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 19:30:56.5693
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eD17RG3oDH95D7h6xbPxBh+AwJmKrfS0SjlHPZAEJIoI3ECZECOCeFxB9tPnaAAV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8723
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E3BAD80005
-X-Stat-Signature: kn33f9qpe55fmaxxh6s5gs898qh7ntiy
-X-HE-Tag: 1784316550-526456
-X-HE-Meta: U2FsdGVkX19NdvOYlg3/tklsyeMzKNtAyBRY1GHCQG+NPaDN17Mp/B6zhKAwMlOdykOGpkC+eslU/M8HwmDM3HWInAmeS7XTUqcLkW4J6ZGF/tPTJ7GOyPHjnHarrqA3uRlfhxa3k8N0C4CWAKIkToJ1eKhyjZ0HjVt7l2tJYGtDUmSznW54DQqDDs5DW6ixyE9yxxPgV2hKtREGL8unwmME5tK1M12gsOGDJPWkN536+hWPlc37e1i+ivZyMM1aJoCf/kaPZHtQzAKn65ypNoY50c9gdOSNtxDCAcdrgtE5Z1UeOYaQwo4DKE7QzZCuXfbg69nSCp1nasqDVOj4GXQvQMntv+xmllCQXMZCqeTK1dT3WMMZ8rVhMtc2fRKf3EwYBGzqatfMaMwdOGErKykw6dlUi1f7qwf88zw9tc8I7/Vbs+86R1tj5T+GJ1bWD4cPkvXvhoYVV9pjC4aDSrwCSu8a+n2a2YZRN+MlfjfEFWFfxpnpRkNM2aq/o4hYUCvPc3FDgkD94GGZKonP7HqxApxTCqSBn2E588SpEkiN34C0e6aUVFQjCXmg4NT2US2E9gaFqlKK8ewkSknhYVH5J+iskrb9uFD+ld/cC5WC37N/lFOD2xgfpTJdzWNdBqUO1rSsrHpX6ZgtEWlH7n3OTp4vvaKwaqGbADpb/vkhB3b080coFhqO4fYByAbT4ub/2slEqVJicIqP4IMNv4YBDifWV8wXYcqpRWOS/hgrg9ThN7jyme6LIOX1QINvWZxz+pXvX2h6BLft5NlWVV5eZ0NGL83GdoICj2z5/5J8PrtNeRL4Hnh+lDXlCP8OOw1fz1mY3X+w+eGzarQMMZ1qyGLVyiLd1L0vyRpgaHzx5o8P+ggJTsvlmYcePEqylbrdj3hwnA2lhj/CypzVeyFWoSzQ+sfg1PVWJWmT3RE2ottKwLv0geIk8tdtWh3LIYLBFDKzePGIsZxsxO7
- ipcJ/LeD
- d56gxVIJZT2hKD+bTuu7/aXWVAlMzv+8quoBc8eSQVHbafocawdQ8gAvyZTND5hRu+LF7egAF9dxRUEgO2ivswYbgJVLalfz7QQLM8jUkYLx1c28gDnAb+Y3tjS8Up4faBUwUK7QBRl6AyG87wktqZaw9/3kIuX1VpV+hfJ2mv2w7DqMTa+9iRw2s0leQq0mIfAVRq/z/y9dsbPvYFUyWjtcEwGytOoO3Q92driAgL7NH40LV/c6XET1pOqSP9yHrwDQ2xZ5wCB1p/AuiTQeQU8qVJtmpJ3IfuWeKQeozeLLFYbpM+yygMs61I3ZlyTCQ6eQAxIvdtAWbXLf7vqjUDYgMX/QiBo92MxNQbbPdimzyRf+rKQ7pXx7wTy7+JfsLbvxMtUGLKVBEu514W9troi/XYQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BDBCE100006
+X-Stat-Signature: c5ndcoamrcss45qf8yqct3upd6a58af6
+X-HE-Tag: 1784316660-504085
+X-HE-Meta: U2FsdGVkX1+ksjpZPv4E1paMdaPzafQw3t7zlaGwPXciTlBJC3kJc1hnzyx0/tfRec3g/F7/wCUrN3gcj2ao0bAqpdZWUDIlZm3+6milZBV38ZB3wplSSgtrN3emXwZFjg2NcC3QW5+3gs8sZN9bZ97c/1o+Wbd0pR0xqWz1+wgw0x5hrwBBTAPuZlfWk3wC7yn/y3KyO1xJpIAscQwco7TloYpeyeoJvZiwcNPj1Rr0nK39Lrww65KA/CU7fSsPo7tKtDubIqCTKiOY9VeZyMJTJuN1tbfSGBjIWeYwhXhqSb2fZJAGM85Ix+eZrHdYIoQPIHL485VsqdypWhj0i5hMuNuMfHUVpSFHo0gU6ktIEepdDpElsEA7WZ50nzS3K6ScmFbOR26Ey3iWwwSim9Bbz5VvCcbzfkL3UJobkbKSGcpfmfmmfwF2ZYllR+bmVinUDrro/dZVPTVtUNwf3GtgHDNrerHO5LyTccOH2IYrL47iUWJ/8nw5pXKJZOHDtCzxK8ZJ3QQJq66k0R4tFTeGwK6SSLX/nFmr3SmA8cWyZ0KZFt7zo8s2C+/sajvl+vqasrAZNp6zjafhEyxxvDvOMbIqcLC7bLuOEonvNlhs7+jJIAvhSVcemaPKKTUec2eV0WmmoQCeKbMCUWXrRRBdZYyFft3D6JKTtL6zdJtaDoFFxhV1q/JzVnrqxYMFOBXM+a4IS0EOr6eQZ6HXsbEln18u8PrlTizOBCGWS4qlIVY4rXD9/bXACLcnHetYr6+k01z2EDnvu14pW+IFoIydzuGRBpxqP4R57h8Mr+M/VBGWXOjgxNL8KwRcWoRWq9dNPmdmUscOBpi8yO1mOBKQdJtYg4mInnCWKyXlAFIGAjPoRf3aDWh8D/7olz1TXoaSvuC0yWo5LkCLgPOy76ugyWYBXDcXapROYdx1rby+0rBicZ1T1M8WxwzuDoyu35JyoV+QMLpkXuD4euk
+ VxRMeknh
+ fzP6GlUNBo79JDoP1eMp+39QpSbG+skpBTCLcqRUpyQJ71Mz0Ym70UJ7kLK/tKQP5k2mfFqXFR+pfP1HVbVFifFNlrOiAPnvXxVaL1lMz6s8c13lX99kzjNDlX2lqGLZI18jOioLZ9JLD7k9rcr2TFi+q+rvUvgvLUGTf8dFHdAIauaEwKHXFvqIAXqFa7aRamJbnOckG72alh9PTyWkw71ykgkySlqlhZ8Lo9eMxuuPofn9FSdQYDecyxEzbyGbO66HmjvN6LqYelwnrjoBpicymoD9XiddbwCY2tmRPF+lwgQFsJ+0AneKYpOJrFhfHduiqdtkSRv1kZQ5YswnqohujrH26XHjtyJG1IHdX5ljuuaWMpLaPUwW8SMjP4GnlgVO64NmSzRuOExzAI1pg1a/G0+kGM+FBkHcx2aTpfzy5WIdavnp+eZssQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,67 +177,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 18:30:06 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-
-> Kernel page table walkers fall into two broad categories - those ranges
-> where no exclusion is required via walk_kernel_page_table_range_lockless()
-> and those where exclusion is required via walk_kernel_page_table_range()
-> or walk_page_range_debug().
+On Fri, Jul 17, 2026 at 07:28:44PM +0000, Pasha Tatashin wrote:
+> On Fri, 10 Jul 2026 21:26:04 +0000, David Matlack <dmatlack@google.com> wrote:
+> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> > new file mode 100644
+> > index 000000000000..899758883dd5
+> > --- /dev/null
+> > +++ b/drivers/pci/liveupdate.c
+> > @@ -0,0 +1,155 @@
+> > [ ... skip 50 lines ... ]
+> > +#include <linux/slab.h>
+> > +
+> > +/**
+> > + * struct pci_flb_outgoing - Outgoing PCI FLB object
+> > + * @ser: Pointer to the preserved struct pci_ser.
+> > + * @block_set: The KHO block set holding the outgoing devices.
 > 
-> The former category is used only by arm64 arch code operating on ranges it
-> both wholly owns and does not concurrently write.
-> 
-> The latter category consists of kernel page table walkers operating on
-> ranges that are wholly owned (but which need exclusion against concurrent
-> writers).
-> 
-> The lock used for exclusion is the mmap lock, and for kernel ranges this
-> the mmap lock on init_mm.
-> 
-> ptdump is a special case being both the only user of
-> walk_page_range_debug(), and the only case in which it walks ranges it does
-> not own.
-> 
-> This presents a problem, as page tables may be freed under ptdump. And
-> indeed there is a use-after-free bug in the kernel as a result, which this
-> series addresses.
-> 
-> ...
->
-> This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
-> lock in vmap logic, then partially reverting commit fa93b45fd397 ("arm64:
-> Enable vmalloc-huge with ptdump"), keeping the enablement of huge vmap
-> support, and removing the ifdeffery with the partial revert patch.
-> 
+> AFAIK, these should be aligned after column:
+> @ser:       Pointer to ...
+> @block_set: The KHO block ...
 
-Thanks, I updated mm-hotfixes-unstable to this version.
+Gosh I hope not, I never do that. The horizontal alignment is such a
+PITA to maintain.
 
-> v5:
-> * Rebased on latest master of Linus's tree.
-> * Accumulated tags, thanks everybody!
-> * Added additional commit to fix race between CPA collapse/attribute set.
-> * Slight commit message tweaks.
-
-Here's how v5 altered mm.git.  This is from the addition of [3/5] - no
-other patches changed.
-
-
- arch/x86/mm/pat/set_memory.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
---- a/arch/x86/mm/pat/set_memory.c~b
-+++ a/arch/x86/mm/pat/set_memory.c
-@@ -2122,7 +2122,9 @@ static int change_page_attr_set_clr(unsi
- 	cpa.curpage = 0;
- 	cpa.force_split = force_split;
- 
--	ret = __change_page_attr_set_clr(&cpa, 1);
-+	/* Avoid race with concurrent CPA collapse. */
-+	scoped_guard(mmap_read_lock, &init_mm)
-+		ret = __change_page_attr_set_clr(&cpa, 1);
- 
- 	/*
- 	 * Check whether we really changed something:
-_
-
+Jason
 
