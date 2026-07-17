@@ -4,104 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2362C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1E5BC44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A01006B00B2; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
+	id A323C6B00AA; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B30A6B00B3; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
+	id A09F16B00AB; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0BE6B00B7; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
+	id 91FB16B00AC; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DDF56B00B2
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D64A6160195
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:13 +0000 (UTC)
-X-FDA: 84998871426.12.DDEA60D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 10DD940007
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MUi2FbPm;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F7AC6B00AA
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:01:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E13F7C01F4
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:09 +0000 (UTC)
+X-FDA: 84998883858.21.29CCBE3
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A46942000A
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=XMjTuISn;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784307668;
+	b=2kLii8NheXnt8NIRc7OR7KVu0atHQ83bR72psClYK94m3qGzjhki69fesP8s17M2DVgA2d
+	eBSkDApcgkUHv7jKimfg1BmpzWH1S+Nkg42yZZXe/uMkHmKPcDzjsF6x8bygpBkiZSDHkh
+	eMh/2RVL8KIAg77j3YLFJAYze4mLkN0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=XMjTuISn;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784307372;
+	s=arc-20220608; t=1784307668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YaHlt41/hvOJvLvitj/2kxV3NYCQuixNvOi36N10KU4=;
-	b=6CzjBWWXO5DpFpI9aNsI3iJ54MKH3JDnZDiHw+mAqTqyjYVEDCC3iySZ8K0rMdDf/FoMnf
-	vEKcY9S6M+pKCsgK4yQsPi7wkQtTFBR2Zwwa1DrYBP2vzipRolJBMaQQPJodXTQPC4X0Pc
-	2gWqinei5/PYydIpBfcVetW62g6klhM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MUi2FbPm;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784307372;
-	b=7KEypsDdqpCiETcx43b+M3uhDlMscRp3beynI+CvNEaLnCG9pS1N2psFqRzRU6j4Cu5h2u
-	Kkr0SwyERiTVMfg/kj3YIT+X8UM8Qn5Wu29VZuu3Ve4WcBib368inxhzxUFsaP1LcCu2j3
-	V7GYm3YF316ySAnDMoLnl1t+VpwtP5o=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6BC5860A72
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6C21F000E9
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784307371;
-	bh=YaHlt41/hvOJvLvitj/2kxV3NYCQuixNvOi36N10KU4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MUi2FbPm3fwo7a8P3d5fdAYLmDCQg3kxkoNN5vhp7ggx/WyX66s8yJlZ1SBJIvh7i
-	 a2OL+Rhs7B+NX5vt40G3lXMuMlqgIdtHFnEbwxIPTNEmpF/g0rXnLVARMGVkYeINDw
-	 yPI2b4sWELW3OKh/WnsYhjrBsEMqT8aWBc9dQnE5GqK5otRTG60vTIm/KsD3sjhAUh
-	 i5uXe2WDauDfCFarcaHpNcfbmT4Z83XNC0iB1vTjLbUKmAL7gjYKX9Ecu7FzHEamLC
-	 GJYVIBoP1HI/Z7EJ8u0g79yTbG1sAx/Twt8wwbQ4p87vjktQs2l8r8jMsu3zuf2NSL
-	 jlXTp4boWMofQ==
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92ed3993c1eso299860085a.1
-        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 09:56:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpxZO3I0SwtPGNqbus/hHC/4Ks9OBw6hgk2boXg3VIZb08rlXiOMUKa0ttDr2k+7/1PuSCPDFFRnQ==@kvack.org
-X-Gm-Message-State: AOJu0YwgymH8zVHO/xixq6oTNa5SJXplDiuck0hp8ej+OXgFL0BxPXCa
-	+z0wYWx1v9qxJLQdT2sH4Z4c9uzK56GoM74Kw1mWhLNBjloVref3xT3Q+qZsb47g9WVLfTDQ2JK
-	FV5wyZKWFwkBwechct9lC4OgejuXj2cM=
-X-Received: by 2002:a05:620a:1988:b0:92e:5259:1154 with SMTP id
- af79cd13be357-930b3ecc422mr401488385a.39.1784307370342; Fri, 17 Jul 2026
- 09:56:10 -0700 (PDT)
+	bh=g3vbKYZxRsDMfVpHBxPVOyxjBlSbaKA9GcdBzuhy8/M=;
+	b=e2bYhlOwfZW5bfvMfwcOxNT/s7cd6DAqS5/C/j6l840/yV7Ym91rfswxNtL+F6i3Bmo7j1
+	tSH+tpEB1fH3cfaUE464FOVVtct9X2uyZAUYt121s4ZNKywe/RMw+PQEyuiogbK+plNVGl
+	V2/Nqq3IbjrMtDK56Dx5urzD4fbJBQI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=g3vbKYZxRsDMfVpHBxPVOyxjBlSbaKA9GcdBzuhy8/M=; b=XMjTuISn/VdlNzVWcRsravLbi+
+	hkm1J4NIe32NGtJ/rpWfaJWjH8D3byPUvCx2Ep3/yG+yt2xCVZMtqVpq8gZpHQsbh9iym/67wN+lA
+	AkBJFCYjoPUHE2exwMEyZUSMaW6xyxpezzSRV60t6ynJO4+YvOrGE33wfARHZm/ZxrvkfrcJr/H+w
+	AbBMHegmNPgTO24/Zh3o/6OKRsqZ5Q2svwFm82Ln5N9ol24MwTbvJ8pvmCZ1vrqnVqFrgXmtuKCnw
+	9i8ALaPLZqrixvZNaZsMgrrdjRL4569xiHMD+rtQKmSgjeKoTq7zLx2RCPLv5nJvr4iC//wmWo9qS
+	v9oLlYZg==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wklvS-000000001w4-0K81;
+	Fri, 17 Jul 2026 13:00:38 -0400
+From: Rik van Riel <riel@surriel.com>
+To: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel-team@meta.com,
+	Rik van Riel <riel@surriel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
+Date: Fri, 17 Jul 2026 13:00:32 -0400
+Message-ID: <20260717170036.743149-3-riel@surriel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260717170036.743149-1-riel@surriel.com>
+References: <20260717170036.743149-1-riel@surriel.com>
 MIME-Version: 1.0
-References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
- <20260714081510.16895-3-jiahao.kernel@gmail.com> <CAO9r8zNiT63LUHx8X5i_aboX1UWuGkcFf+p9ch-pekURUuDdXg@mail.gmail.com>
- <2bc8e4f6-46a0-5b74-6eaa-59e7aef9227e@gmail.com> <CAO9r8zOFg_mnNGbFFd_h8FAwRCbQ9vXk47EF5f1CLg1cDVGB5Q@mail.gmail.com>
- <b910e870-9583-a2f5-b681-e69edb9af290@gmail.com> <CAO9r8zMLGMpsQ+HbLA5SFSMEc_ctuZoScJMkybnXMp+_0MW-yQ@mail.gmail.com>
- <CAKEwX=Patm4+gxtxwDYBFXFh+jfaOUSvtKtVZFvp=oQwNmdu1Q@mail.gmail.com>
-In-Reply-To: <CAKEwX=Patm4+gxtxwDYBFXFh+jfaOUSvtKtVZFvp=oQwNmdu1Q@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 17 Jul 2026 09:55:57 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP8L_4dOSVQT8v6v83uAN1ZG_7vTMxfp5jDME8U2sxEhw@mail.gmail.com>
-X-Gm-Features: AUfX_myUxG7G3wSjX3kFU7KHxWXdkDog2oSpDszGYJpxnIxoJbNXRcZjOxi9Vho
-Message-ID: <CAO9r8zP8L_4dOSVQT8v6v83uAN1ZG_7vTMxfp5jDME8U2sxEhw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/zswap: Support batch writeback in shrink_memcg()
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Hao Jia <jiahao.kernel@gmail.com>, akpm@linux-foundation.org, tj@kernel.org, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A46942000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 10DD940007
-X-Stat-Signature: xmzfxyb9p1ghs3n8mew1hpaemtt4nger
-X-HE-Tag: 1784307371-612078
-X-HE-Meta: U2FsdGVkX1+CKGHO31FxRO5ilz9bwBnBsWXXGvDQxVwjoxyekrFGyZ0e85ojs0QcnZDWOtaFdVseVNqiUjIRXokat7yZRqW0E+ynPESAB6M3AErE1jcVY3W4CV8E90nSa6dey6ePkLLK8+lJ64djrVz9t4Tkxtm5OefjMc2hY6rVBGM00lYBrwiybeFc5ySTyswtc63odF6DUkpQ7C49bvT1pr40dgv8VhWIYwisHKguD8LwqilJtCtj8sb13Q8EPYsTTVB/3mtUexcwj7/K4F67TCbv0pPdMUYUblQpNrHPuOcetNmmH7zMlLNN1VFyynrUxemFcsZV+juqQFF0kVFQnsbfmkOLNyZK8wo7irRl4R/bLDk0MjL4Rup+mXslUH5e4bT6DSYUrZ4gLWuTUMk1XJZSO6148svrA30rrXDGEORC5CgpAJs7kn+zbci7SPf5gra9l8qu/APlkUubZzDWws5L2S3p+X2Z2qxXOHbvs9G23MMejbBJg3oQWadd2QgEfHM6v/lAZmAEs30lQbnYsGMGNDOyYDrGmZGhufJWEqgzoEz53aSXOqiXb4l8XhJ/t//zqvRerJMwpl1KJu+Y1d/EMUyOCk3K4FXo9V2+q4uHmVLSFLxhmFinId+Ypfcjuurh/hCry++1THfogFGgJQw60dzGGZRo8GPT9kTOvnH81zxGsyXKhc3zbr+JF9CdC7LK0fw8DaX10ndkOICkqshB8vRv9P5vLbLe9ADPlHqOF2P7pwNn+3Q0Hgp/iihHxurrvB2yRgtozbbdnJqOJ/rvYlThi/NdLLrTkPjtTkwCdJJZB+kLk5ov4Xg3C4fbHATVKxZLJkOQa8LGPqw006ApWEe/WIvfDEtx73koYOBx7UxTUjhCFwzWhDkHkgL5LL1P9vYQTZ3BzFpplmhNddJ1cj6InRAFjGP6r3lTeLR7rCXreq0T9H+N4m+qp1DmTafNpUncmSf4mfA
- jpXC1pvH
- d3PTRly11HuETdsgdDbM+lDT7fQ+/8i0DF6ThwAMcg8YwOP51b7MaTf3f7kaEXT1mN8F2ZmMCHwYgq2aQKrROl7vh0ubRvFEHNHaQaxBiCd+62HHWayjXyZ05u0wpuekLQBWCrGyMZwR2FW2sL3GKlWCJvOVZugk+21/yYARjG76T+htTh1LvUpA4fwzZaF+fNUyGZ3UJZ9YRp16vxhg3Fhj8OouzzMWm29b9bU49g5LczFKmAxTJoFqOtGfy8/FEZdT7capmILMJck8u7ybg7CM8WglAUvu8fOrw0nl07K+wzuDvi38DMGcUcYdQfDfeFeZMlfGIUcxteMQZL//eAyfQweX2noTB0UpErvf89l+J8Tf2KkZa6K8aeUnmDVQjli0wLd5ZnCwnDtiPsvZtIzEyJ8YnPGLMOWJqLZr5c0RWly1jGGe7uM3Eut912tABiYLWiVNd2zUFtxXGyZtnNwzQ6APb3Xc3yOsM
+X-Stat-Signature: wiuw9qdboisf118prrxeca7cznidk6go
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784307666-8535
+X-HE-Meta: U2FsdGVkX19p9YqPdCkfWC3eyMECGy4aj7hMkk5V5VRkCvgg79lbGv/DDK8GJfGfrVDxmN114hhJrJVwZXMoDTnyW8YQJODygWL+U5owm+iab5VvoaGh9cM0+agInDGVWZapJeyNsejJNlMduKj3YAvDB6dOKq/9puqd+yV4R7fvrE5ZD791YexV05xFgiU0JAis1outFCcTHX/CkFmZ7Qikbtg0SQiUfBgguETOBbkH++gjChS+FEHJJKH4t5Pr7faSjQ86Do1+FRWknU0XeJnY+zbjs9myB9yitVyo1dlSgDFi7TIfcubhRXsPWlKvvXr4UKBGE53rFMJZEyHZc1REpMmI/poAZfUmGTB2IyQXxa0Kgjyh5FgIIlrEIxR0KTfICAkvhqOgorg7ZQxR8alLozb0mZDyJFRGf3d2aDezNpNlernrODkfEwMKHkfhTzr0xl8OyuzP5u1HJHjHpdlNtisiqGpKDmeIGffd7bOQ3J0AZFBUtHyyxgxX82IOjqRhYzKj0xRA6Ea14EYxK6QbL5rmpmXPCzdYy9OO11Jcz7eoRmp0/EiuwtGoho+dnJFhqO8xatSJIC/1VHdT5VOKRxhmRDvXCwc3S9DQOG5XnKWxbw93YAM3SuMgv/SWb5RHh/ReIjnen3q1ExAkC4bvk7ROnDu9lNDXt6i/zSDESktzExqlxXNXWv/j+MV9dfYGbiD1yC3cKyt/IXl0QtB9+Ze7bcSK1keAZg7CT+msnPzFTgBO3OoD+v7DBTce/SkUcx3HpO5pb+OTKNVF/wG78opT8sF8nlp/mNUN/mZpLv3KVWsY1VFV7Tq5MR3HwYOpIxO0YxMaZBbFf9UgKS61Wb40p/fYLXenYtINN9roT6SHR5uKt9X8Dm7ApzrCssP8U/QmSowhR1nPvcYWfu3cqsdndzPrTSAipwAufk/f6bCr8vqMK4ctaOxVb7XrXKCH6H3arL2zFyD8tVS
+ UG5YWN38
+ omUiqoMeTbax8PqWTdzIEntLlhKdnDxW8Th+JCDucd3qb8FnOGTOm9uCZmGjpdINd9x3TbaQvZkjIu8IDS+0AehoXYQ528I7rXgllBcFtXPN6BGjzZvs4ZjwSe7oTE1cFF8bDnRqpgJtvE1XaOEIMSR2BYspFElOwA+7ZTyUvLsy4v3eOHbvnpp0a2C8AACIPf9iNkYhOrTcY5OVHb8eTsVd1l4jgXpSkEUSGDelJF7eRVPwpp5d4f7u1G4nOTNp/3HswxD4j3H+Q/sNx7BybuaVOlestfN6QWbfJ+i8wD233PoW8Q5nJKoHiEDUj/LkQwrpH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,28 +107,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 9:50=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> On Thu, Jul 16, 2026 at 1:35=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> >
-> > It is a bit alarming that the store rejection rate is still 43% with
-> > batching, but we can worry about this later :)
->
-> Yeah I think it's unavoidable at the time the global shrinker is
-> awaken, unfortunately :( We need to kick off shrinking way ahead of
-> time if we want to avoid this, especially since the rate of zswap out
-> is going to be faster than the rate of writeback (CPU vs IO).
->
-> Sort of why we implement the proactive reclaimers :)
+__access_remote_vm() untags the remote address before looking up the VMA,
+now without holding the mmap lock. riscv defines untagged_addr_remote() but
+not untagged_addr_remote_unlocked(), so it falls back to the generic
+version, which untags with untagged_addr().
 
-Arguably, reclaim should wait for zswap writeback and retry, similar
-to how allocators wakeup kswapd and retry, instead of just skipping
-zswap. I was actually thinking about doing this at least for the memcg
-limit case, eliminate the sync shrink_memcg(1) call in zswap_store()
-and instead wakeup an async flusher and sleep.
+That reads current->mm, not the target mm, so a remote access to a process
+using pointer masking would untag with the wrong mask.
 
-A problem for another day I guess :)
+mm->context.pmlen is set only through PR_SET_TAGGED_ADDR_CTRL and is stable
+afterwards, so it can be read without the mmap lock, as it already is from
+untagged_addr() and mm_untag_mask().
+
+Add untagged_addr_remote_unlocked(), which untags against the target mm,
+and annotate context.pmlen accesses with READ_ONCE() and WRITE_ONCE() so
+the lockless reads are explicit and KCSAN-clean. untagged_addr_remote()
+keeps its mmap_assert_locked() and shares the code.
+
+Assisted-by: Claude:claude-opus-4.8
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ arch/riscv/include/asm/mmu_context.h |  4 ++--
+ arch/riscv/include/asm/uaccess.h     | 10 +++++++---
+ arch/riscv/kernel/process.c          | 12 +++++++-----
+ 3 files changed, 16 insertions(+), 10 deletions(-)
+
+diff --git a/arch/riscv/include/asm/mmu_context.h b/arch/riscv/include/asm/mmu_context.h
+index dbf27a78df6c..3ce16796e5a2 100644
+--- a/arch/riscv/include/asm/mmu_context.h
++++ b/arch/riscv/include/asm/mmu_context.h
+@@ -21,7 +21,7 @@ static inline void activate_mm(struct mm_struct *prev,
+ 			       struct mm_struct *next)
+ {
+ #ifdef CONFIG_RISCV_ISA_SUPM
+-	next->context.pmlen = 0;
++	WRITE_ONCE(next->context.pmlen, 0);
+ #endif
+ 	switch_mm(prev, next, NULL);
+ }
+@@ -44,7 +44,7 @@ DECLARE_STATIC_KEY_FALSE(use_asid_allocator);
+ #define mm_untag_mask mm_untag_mask
+ static inline unsigned long mm_untag_mask(struct mm_struct *mm)
+ {
+-	return -1UL >> mm->context.pmlen;
++	return -1UL >> READ_ONCE(mm->context.pmlen);
+ }
+ #endif
+ 
+diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
+index 5d4ec15584cf..53806e0f7dcf 100644
+--- a/arch/riscv/include/asm/uaccess.h
++++ b/arch/riscv/include/asm/uaccess.h
+@@ -16,7 +16,7 @@
+ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm, unsigned long addr)
+ {
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SUPM)) {
+-		u8 pmlen = mm->context.pmlen;
++		u8 pmlen = READ_ONCE(mm->context.pmlen);
+ 
+ 		/* Virtual addresses are sign-extended; physical addresses are zero-extended. */
+ 		if (IS_ENABLED(CONFIG_MMU))
+@@ -33,12 +33,16 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm, unsigne
+ 	(__force __typeof__(addr))__untagged_addr_remote(current->mm, __addr);	\
+ })
+ 
+-#define untagged_addr_remote(mm, addr) ({					\
++#define untagged_addr_remote_unlocked(mm, addr) ({				\
+ 	unsigned long __addr = (__force unsigned long)(addr);			\
+-	mmap_assert_locked(mm);							\
+ 	(__force __typeof__(addr))__untagged_addr_remote(mm, __addr);		\
+ })
+ 
++#define untagged_addr_remote(mm, addr) ({					\
++	mmap_assert_locked(mm);							\
++	untagged_addr_remote_unlocked(mm, addr);				\
++})
++
+ #define access_ok(addr, size) likely(__access_ok(untagged_addr(addr), size))
+ #else
+ #define untagged_addr(addr) (addr)
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index b2df7f72241a..6ae7552fed09 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -357,13 +357,15 @@ long set_tagged_addr_ctrl(struct task_struct *task, unsigned long arg)
+ 	if (mmap_write_lock_killable(mm))
+ 		return -EINTR;
+ 
+-	if (test_bit(MM_CONTEXT_LOCK_PMLEN, &mm->context.flags) && mm->context.pmlen != pmlen) {
+-		mmap_write_unlock(mm);
+-		return -EBUSY;
++	if (test_bit(MM_CONTEXT_LOCK_PMLEN, &mm->context.flags)) {
++		if (READ_ONCE(mm->context.pmlen) != pmlen) {
++			mmap_write_unlock(mm);
++			return -EBUSY;
++		}
+ 	}
+ 
+ 	envcfg_update_bits(task, ENVCFG_PMM, pmm);
+-	mm->context.pmlen = pmlen;
++	WRITE_ONCE(mm->context.pmlen, pmlen);
+ 
+ 	mmap_write_unlock(mm);
+ 
+@@ -394,7 +396,7 @@ long get_tagged_addr_ctrl(struct task_struct *task)
+ 		break;
+ 	}
+ 
+-	if (task->mm->context.pmlen)
++	if (READ_ONCE(task->mm->context.pmlen))
+ 		ret |= PR_TAGGED_ADDR_ENABLE;
+ 
+ 	return ret;
+-- 
+2.53.0-Meta
+
 
