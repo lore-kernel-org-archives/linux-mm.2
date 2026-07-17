@@ -4,148 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D197C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 19:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81729C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 19:29:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1069C6B009E; Fri, 17 Jul 2026 15:28:54 -0400 (EDT)
+	id 17D326B00DA; Fri, 17 Jul 2026 15:29:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B7686B00B0; Fri, 17 Jul 2026 15:28:54 -0400 (EDT)
+	id 154EB6B00DE; Fri, 17 Jul 2026 15:29:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE9986B00B3; Fri, 17 Jul 2026 15:28:53 -0400 (EDT)
+	id 091C46B00E0; Fri, 17 Jul 2026 15:29:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A23B96B009E
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 15:28:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33025140208
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:28:53 +0000 (UTC)
-X-FDA: 84999256146.11.EE568C7
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 29DB81C0004
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:28:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cGQ3un5e;
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C82C86B00DA
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 15:29:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 412B01C0198
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:29:13 +0000 (UTC)
+X-FDA: 84999256986.22.FC3E050
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E3BAD80005
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:29:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RBUssh5E;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784316531;
+	s=arc-20220608; t=1784316551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jiuq4RrEPSqzc2CjSOsVE6XMKzyT/WebTRpubajhs2o=;
-	b=6wXI1ZV0uj3ul/6/6qEW+RG559NevdLWTfTnJ84tLujBIM/GpERuuxmjRy5cfmY9wqa4/w
-	0USwHCEP+nviXYLT6rBQ+QlryTY+gm5SczEd2gPdqrE8tzYLRY8Zc954nWavMV6XfIqDIA
-	c+KEialRHxmHvuFyOLHiJ3FlNJCBPsU=
+	bh=ui+ORj1/z8nhcz2rVBcwlFO5TeUDA1QRckff/Axxhfc=;
+	b=saqKycEdYoAFW6j3R0LbN25kUHbqWJqluIghROaPIGQRLwIY3xMajXDZyQu0YRk8PaSAw9
+	Pf+NfBEZ5EjzE/sVSAXBDp34Px8eX4v04MPcLMskTHtaMliN4JDNX0ZZDyTc1ifKpk0fmT
+	5K9x5Tg8QyMWNKu/PBtjqHkbTLrVgqE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cGQ3un5e;
-	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RBUssh5E;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784316531;
-	b=Q8dVq/OFQpXpdN5mp1SxfGSWzaAPFiygVMayu+FidfB4oFfCdYs5WtPlyCTHQ7oUuxoVld
-	tWs88uLMdAyhYyI4MEkA6PDiXuinqRosTjD4jyWJH+8A3YFeohNRKCYstbTLoRfW1nFBWG
-	dfU8dM/sOKQxm5/8928cIvCAohKcZmA=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9305a2121a1so454711085a.2
-        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:28:50 -0700 (PDT)
+	t=1784316551;
+	b=3xwltjmJe0Dx2+OqZVUhVaHyzCEjxx8LCmmL7+l6UYKfFWriwhgKi2v+8E6ij4nMFbvUFY
+	BUb8yKk2/66E4YunCQPyiw03OZ/LICuJX1i+bnuK1pidx3rBtKzjGla6VmOIb+jjAWqSpt
+	U5a8u7LshP8AJalkY87fokKTcw7/+LU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 30B99600DA;
+	Fri, 17 Jul 2026 19:29:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5171F000E9;
+	Fri, 17 Jul 2026 19:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1784316530; x=1784921330; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Jiuq4RrEPSqzc2CjSOsVE6XMKzyT/WebTRpubajhs2o=;
-        b=cGQ3un5e/sYgx7luhOnrKOBmiyl+VftBC7TFfW55ONzLP1yLEY9r0Akkh5QdYrvnlC
-         lwx6wNZZy00WKx7BvhSDqfhcZK41nKpWwHGe1ixpN/cvp4/1XJsKmvkPDGc+sOjbefx2
-         XyvAhCGGj7J2CDrXHItuZUKrZyqarfb5NfAtJC3xZCiMO38YZ3HbYhOUs0n1TNUsJUg2
-         Ruzonkm0RH0yXgjEg2IeKkIOPlroXiufdRcOrUBtJaUy4M78PllqxMrxbbxY+yHF48Qf
-         1xPlIP/fLw8Rm6DG8qVB5lE5zpuFeBmyJ4FlqL3hF2PFL+WiMVhxBkhEzbFsWVbS5CI/
-         xmIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784316530; x=1784921330;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Jiuq4RrEPSqzc2CjSOsVE6XMKzyT/WebTRpubajhs2o=;
-        b=MliVBfr84AgDjP1BDY1wL9r1ebieesbSwIiAXQtHgGbt6ySdyrmZd0GNsqShQbsjm8
-         BOgyaUd1xLJ6uaqaaXlU/c4/jTmKJguzEJs/70pfdFnKYxx+twWTGtz5fHkt/D/EhvGJ
-         Bz0Nc6+QDNv0JtmrEzFAq2x3BuZgY3TewVKHL9o65zkfNstP5JsDGAjJG32z7hNF57R6
-         jXlPtKH/FnfH0vvOPQU5pDdm4JxrazUPkClCEgKl+9CpAF2M+4xqT7xd6FGqlxst9B3C
-         vFHfxGC1OBihfL/G8V+WsSMHCl8cy++BbSiGoFoTOkTweVvbJd2Qa1okNdg62Lj1lxWj
-         A37A==
-X-Forwarded-Encrypted: i=1; AHgh+RphEbAEifKlpgAMuhtxdMw2mt+weerWrvFWNPTHd2k3GcIWJvB7DpJIy/HwwqlaZGAAHLFFOFI1Ow==@kvack.org
-X-Gm-Message-State: AOJu0YwSYI4KnsoNTGpdOkIBnSE8rw/XESvY5l3K+7AZtcCLtYjIHxjk
-	sT8m2mApoYrK6NYMInFKDhAmWj/2E+SICxQYKqJKei0RI3h6Li56Yww4UVbezYbLm2s=
-X-Gm-Gg: AfdE7cloytXPNjbXaahY/8CUODtwwetxZIeFq2GtaCVCJfKZfFpaTByOSzig0nNIv5L
-	vnj9G5ajPAX2CpnoPFCdSWsfAzFn+S9T+fGZl5exCGSKck/HOxsxLchbxP9ZS3PPo6tK9UUZO2Z
-	E/6sILTElbo4364jwTUUO1xEtf70K71dWbFjVuVI0zRU5EhCcUd2kcgE7g92VuJiVvCtKoD5o+0
-	ejm2DSXvab9tM9wgmueSe3ikcp8+sZaUu/w0vkwzmmPfmXbyfYknEE6Pxw0Yw/r6C+sX2Y7bdtM
-	pQvrjJn8ZFS1nSxlXeArDzyt7blcu8sjaopQcH0zCaLm7xjCQGaZAk2uuE0r3S3Ogx0NmOCw8LY
-	Z43nCDa2gUt3Jji5Ydt9HZa1g29roqSs1dEmyrMPc3FDQBrmhwnPYgtUUmjmquSJ/306PjE/Ahh
-	n7pFm+JK/fUEqzJbhZivRkG3XxEiUyS02kto1N5+w=
-X-Received: by 2002:a05:620a:4014:b0:930:b7f3:6c6a with SMTP id af79cd13be357-930b7f36ef3mr332805385a.66.1784316530109;
-        Fri, 17 Jul 2026 12:28:50 -0700 (PDT)
-Received: from [127.0.1.1] ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b5304a99sm231909285a.20.2026.07.17.12.28.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 12:28:49 -0700 (PDT)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	d=linux-foundation.org; s=korg; t=1784316549;
+	bh=ui+ORj1/z8nhcz2rVBcwlFO5TeUDA1QRckff/Axxhfc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=RBUssh5EaLehERy4Cgi0QGmJnAOAqgTzVfUX3zA0MRCL/hp/gU1KuyrB1kS6Q7wSc
+	 3CuE6RDTXx/8Yl95lAMi7m9NoXKXnJyX7bcJPQVkywGVvyBnHKTn7ZcFYO3itBGKP1
+	 rCb1/Gdr+DbERUhJfZim7lwhNLXLpKzROb62w/uo=
+Date: Fri, 17 Jul 2026 12:29:08 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt
+ <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Uladzislau
+ Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain
+ <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, David Carlier
+ <devnexen@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, "Denis V. Lunev"
+ <den@virtuozzo.com>, stable@vger.kernel.org,
+ syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Subject: Re: [PATCH mm-hotfixes v5 0/5] mm: fix UAF caused by race between
+ ptdump and vmap pgtable freeing
+Message-Id: <20260717122908.3d9f4a8ad76a748d859b43f2@linux-foundation.org>
+In-Reply-To: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
+References: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 01/12] PCI: liveupdate: Set up FLB handler for the
- PCI core
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
- Adithya Jayachandran <ajayachandra@nvidia.com>, 
- Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
- David Rientjes <rientjes@google.com>, 
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
- Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pranjal Shrivastava <praan@google.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
- Samiullah Khawaja <skhawaja@google.com>, 
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <20260710212616.1351130-2-dmatlack@google.com>
-References: <20260710212616.1351130-1-dmatlack@google.com>
- <20260710212616.1351130-2-dmatlack@google.com>
-Date: Fri, 17 Jul 2026 19:28:44 +0000
-Message-Id: <178431652443.189683.17611165218179620081.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2399;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=WaZbN29Yb7QirGLZ6z5SCIc8GS0Y/8CnVePacwfjgX4=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqWoJwXimoKQnR5L+cGvO5hfmCHnc7/6Y+V/lnr
- /tiYHeaRyWJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCalqCcAAKCRC7dyhM23N6
- 3mp/D/9E7WlpCbODIzubvEP77KqJASqif+QIFU1RjVar0csfnfO/87C1moo0vCfIbC5Wp4vev5R
- Weg8hCZ2vLXDJz3lZXkA4+MsTgUcAAUyQQEjh6Qz8ByxS+sRPt3KLMkTEMLvpv/RizG0xuuOxQF
- 1MhV3yaBpkv3AqJR2aNw5bVIXcWGqdcGm4dwrzJQd1+mhwmw2ysi1ar4aCa91WcVxiPR5258FjR
- L6P9gv/F6g1QxuiohNcx/CYF+1WBiVYD5ElowzhhrrkWAlpbEyNU2WuMtDxB4Mk0UNqfL5d/HjP
- yvC16iyfwmfYtymywIPSxd+6EO5awcN1kN8GBHAgvqYdjGl/++zbvsYOhHeK0VSWNJ4r8ab03Yz
- saoGD2xsKkdhxtABu4cG0lWbRyKgCMc2jyvt4vYFCisgxPbIEVHpOE3ZdL5O9w0f6p9wglb0bd8
- o8lDkvrrVGsHSDlOgeiZel+Pah/XGVOb89wPQ5PnIhdyocdX/blr6+4xbeExmuVdcik4GWX3RC/
- OVRyYBeSlTJ+dIQxC/gyYJ6o7wcY28JEIbr/6z7yE0M2mJ7ZmuGjBoeX8sYSTxiFjR6Z0tfA9x/
- 0Br6X1vRHcwO1p/zpTdETR3bzl5yaXnL/fAKnCWt7OlQVnA6hyKsV7ro9T3/H8PswPl2AIfElFc
- 2EkAQsTiIeXe94g==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 29DB81C0004
-X-Stat-Signature: exg77hgggz7eyoa5c8j5mt9eog3mg35k
-X-HE-Tag: 1784316531-474589
-X-HE-Meta: U2FsdGVkX1+/CggRnVrNhI5u8AWWxcuicS7f3uDujqKhk2YA9y7sS/k10vTsd0kti96BSBCkvxHeZEA1uzYuV/CxFlUBvCfSkDMjVQ/IeeWn2FogBQJxounRoFxUji0+QbcTDCn5+QlZm11jxfCtsyZXbnS4P5XUJFjah0rxYRGZ9PLpCHp2+K8zgKpRAXSO1sctP/9AknKuyDX+EoWaYpD0bWQkuez1IDrgm+xJ4SBnapVoAdrLvvFVoWmHE5z8FFW5hVmEoELXWqN60ADymZtM4dOXJVhZLFZeLRW8Y9RNSzSeJd98/76DCEODj0CsST+aAIDa4ewzD/lGjurOYm+9n/kalKVba7REEZJ7qq9GyA+tU9nhYoR6WPVc1OxWnoB1SMHqc89yJzeru4h6SL1TFEmX87u0e0QKzYeNf/QkimVZYu8NMfxmJcZYzKQAX92ydLI7xpx0Jmne6AnTFSdMYNiwncHGJJbkeAQYg5PJV+gk1lln3lgNG5LWTvZ4mcRw0EJ+CT5sxZ3BUTKlowtuKldM2MFwGtSuqH30fplwSJcIVwHC5BmL2Zvf9gMRUcEKDz0RyURIXOZbgxRjidvBLVDSMLRBG3V4JXnlB0V735mX0SNcfVSXrQVh5jfeZi9Cs1pglW2lJmHdn+LR1A3fBxsAhqsYJ8BXmzYFMFbJ2dxlExGLV7bVbXL1jddAevcTO5vsvwN3pkTOdsyMAqzcOEZPRF0KUcRANAWSFzeOo8OqEliQqXrJuozKG47+SwKNBKvLHPZl8yLQiJ0+U4fBy9H1VCfleA4r5/YDICw7ilHmwE/tOdO0s/WJwpQocZConF3T+Yv8NnF7JxrhNjSEdm+PBjULPxKeDXJK0aIeIP3YM6+j2nxUCHHBv5mta9QBTlViO7xjfhOKHaw1I/VBxPo8OLUup15m65+IKjzBHaD7y4KQYQgW0B4fSTajv/lgtvlDPtBsqGZJR2V
- SAP7jz4U
- a9waj2YlcnFjI11pXimlGmW7T/dGWa5712wzn/w04gUPsbrcdEEswdxowBm5MEz44D9iNcdNnYWveoedtKBXSJWe17VvGvJfd/NfbEJexyE5J25tx8neZGIjrOyX7gEgyfkAgdgKc7TDn0QPACJJj1sWAYFwILf2U428O0cUklmJqIii5+r6hlcX3eo31R7IhiCDk5bh05SitNQvBSdvJIOrVH+/30oiSL7dnVpLyGP96MUwYTbPzMy6Dg8fyTWF9DA0HJK9i4bo0iPN55qIAsQTd9nxHiF1sPmtVGo5XWXl8LwDiT9I68OrY7bl0r0v6U5hrrcFmRkjaQVxVwF2hB4npw6TED1llTFBP1jeGKOWyKSQ=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E3BAD80005
+X-Stat-Signature: kn33f9qpe55fmaxxh6s5gs898qh7ntiy
+X-HE-Tag: 1784316550-526456
+X-HE-Meta: U2FsdGVkX19NdvOYlg3/tklsyeMzKNtAyBRY1GHCQG+NPaDN17Mp/B6zhKAwMlOdykOGpkC+eslU/M8HwmDM3HWInAmeS7XTUqcLkW4J6ZGF/tPTJ7GOyPHjnHarrqA3uRlfhxa3k8N0C4CWAKIkToJ1eKhyjZ0HjVt7l2tJYGtDUmSznW54DQqDDs5DW6ixyE9yxxPgV2hKtREGL8unwmME5tK1M12gsOGDJPWkN536+hWPlc37e1i+ivZyMM1aJoCf/kaPZHtQzAKn65ypNoY50c9gdOSNtxDCAcdrgtE5Z1UeOYaQwo4DKE7QzZCuXfbg69nSCp1nasqDVOj4GXQvQMntv+xmllCQXMZCqeTK1dT3WMMZ8rVhMtc2fRKf3EwYBGzqatfMaMwdOGErKykw6dlUi1f7qwf88zw9tc8I7/Vbs+86R1tj5T+GJ1bWD4cPkvXvhoYVV9pjC4aDSrwCSu8a+n2a2YZRN+MlfjfEFWFfxpnpRkNM2aq/o4hYUCvPc3FDgkD94GGZKonP7HqxApxTCqSBn2E588SpEkiN34C0e6aUVFQjCXmg4NT2US2E9gaFqlKK8ewkSknhYVH5J+iskrb9uFD+ld/cC5WC37N/lFOD2xgfpTJdzWNdBqUO1rSsrHpX6ZgtEWlH7n3OTp4vvaKwaqGbADpb/vkhB3b080coFhqO4fYByAbT4ub/2slEqVJicIqP4IMNv4YBDifWV8wXYcqpRWOS/hgrg9ThN7jyme6LIOX1QINvWZxz+pXvX2h6BLft5NlWVV5eZ0NGL83GdoICj2z5/5J8PrtNeRL4Hnh+lDXlCP8OOw1fz1mY3X+w+eGzarQMMZ1qyGLVyiLd1L0vyRpgaHzx5o8P+ggJTsvlmYcePEqylbrdj3hwnA2lhj/CypzVeyFWoSzQ+sfg1PVWJWmT3RE2ottKwLv0geIk8tdtWh3LIYLBFDKzePGIsZxsxO7
+ ipcJ/LeD
+ d56gxVIJZT2hKD+bTuu7/aXWVAlMzv+8quoBc8eSQVHbafocawdQ8gAvyZTND5hRu+LF7egAF9dxRUEgO2ivswYbgJVLalfz7QQLM8jUkYLx1c28gDnAb+Y3tjS8Up4faBUwUK7QBRl6AyG87wktqZaw9/3kIuX1VpV+hfJ2mv2w7DqMTa+9iRw2s0leQq0mIfAVRq/z/y9dsbPvYFUyWjtcEwGytOoO3Q92driAgL7NH40LV/c6XET1pOqSP9yHrwDQ2xZ5wCB1p/AuiTQeQU8qVJtmpJ3IfuWeKQeozeLLFYbpM+yygMs61I3ZlyTCQ6eQAxIvdtAWbXLf7vqjUDYgMX/QiBo92MxNQbbPdimzyRf+rKQ7pXx7wTy7+JfsLbvxMtUGLKVBEu514W9troi/XYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,82 +103,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 21:26:04 +0000, David Matlack <dmatlack@google.com> wrote:
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> new file mode 100644
-> index 000000000000..899758883dd5
-> --- /dev/null
-> +++ b/drivers/pci/liveupdate.c
-> @@ -0,0 +1,155 @@
-> [ ... skip 50 lines ... ]
-> +#include <linux/slab.h>
-> +
-> +/**
-> + * struct pci_flb_outgoing - Outgoing PCI FLB object
-> + * @ser: Pointer to the preserved struct pci_ser.
-> + * @block_set: The KHO block set holding the outgoing devices.
+On Fri, 17 Jul 2026 18:30:06 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-AFAIK, these should be aligned after column:
-@ser:       Pointer to ...
-@block_set: The KHO block ...
-
-> [ ... skip 26 lines ... ]
-> +	ser->devices = 0;
-> +
-> +	outgoing->ser = ser;
-> +	kho_block_set_init(&outgoing->block_set, sizeof(struct pci_dev_ser));
-> +
-> +	args->obj = outgoing;
-
-Nit:
-You could re-write the above:
-
-args->obj = no_free_ptr(outgoing);
-
-And declare outgoing like this:
-struct pci_flb_outgoing *outgoing __free(kfree) = kzalloc_obj(*outgoing);
-
-Also, remove kfree(outgoing) call.
-
+> Kernel page table walkers fall into two broad categories - those ranges
+> where no exclusion is required via walk_kernel_page_table_range_lockless()
+> and those where exclusion is required via walk_kernel_page_table_range()
+> or walk_page_range_debug().
+> 
+> The former category is used only by arm64 arch code operating on ranges it
+> both wholly owns and does not concurrently write.
+> 
+> The latter category consists of kernel page table walkers operating on
+> ranges that are wholly owned (but which need exclusion against concurrent
+> writers).
+> 
+> The lock used for exclusion is the mmap lock, and for kernel ranges this
+> the mmap lock on init_mm.
+> 
+> ptdump is a special case being both the only user of
+> walk_page_range_debug(), and the only case in which it walks ranges it does
+> not own.
+> 
+> This presents a problem, as page tables may be freed under ptdump. And
+> indeed there is a use-after-free bug in the kernel as a result, which this
+> series addresses.
+> 
+> ...
 >
-> diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
-> new file mode 100644
-> index 000000000000..de549016807a
-> --- /dev/null
-> +++ b/include/linux/kho/abi/pci.h
-> @@ -0,0 +1,58 @@
-> [ ... skip 30 lines ... ]
-> + * @domain: The device's PCI domain number (segment).
-> + * @bdf: The device's PCI bus, device, and function number.
-> + * @refcount: Reference count used by the PCI core to keep track of whether it
-> + *            is done using a device's struct pci_dev_ser. The value of the
-> + *            refcount is equal to 1 when the struct pci_dev_ser is in use, and
-> + *            0 otherwise.
+> This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
+> lock in vmap logic, then partially reverting commit fa93b45fd397 ("arm64:
+> Enable vmalloc-huge with ptdump"), keeping the enablement of huge vmap
+> support, and removing the ifdeffery with the partial revert patch.
+> 
 
-I believe descriptions must be aligned.
+Thanks, I updated mm-hotfixes-unstable to this version.
 
-> + */
-> +struct pci_dev_ser {
-> +	u32 domain;
-> +	u16 bdf;
-> +	u16 refcount;
-> +} __packed;
-> +
-> +/**
-> + * struct pci_ser - PCI Subsystem Live Update State
-> + *
-> + * This struct tracks state about all devices that are being preserved across
-> + * a Live Update for the next kernel.
-> + *
-> + * @nr_devices: The number of devices that were preserved.
-> + * @devices: Physical address of the first KHO block containing pci_dev_ser.
+> v5:
+> * Rebased on latest master of Linus's tree.
+> * Accumulated tags, thanks everybody!
+> * Added additional commit to fix race between CPA collapse/attribute set.
+> * Slight commit message tweaks.
 
-I believe descriptions must be aligned.
+Here's how v5 altered mm.git.  This is from the addition of [3/5] - no
+other patches changed.
 
-Nit: Please order the included headers alphabetically.
 
-Nit: Please order the included headers alphabetically.
+ arch/x86/mm/pat/set_memory.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
--- 
-Pasha Tatashin <pasha.tatashin@soleen.com>
+--- a/arch/x86/mm/pat/set_memory.c~b
++++ a/arch/x86/mm/pat/set_memory.c
+@@ -2122,7 +2122,9 @@ static int change_page_attr_set_clr(unsi
+ 	cpa.curpage = 0;
+ 	cpa.force_split = force_split;
+ 
+-	ret = __change_page_attr_set_clr(&cpa, 1);
++	/* Avoid race with concurrent CPA collapse. */
++	scoped_guard(mmap_read_lock, &init_mm)
++		ret = __change_page_attr_set_clr(&cpa, 1);
+ 
+ 	/*
+ 	 * Check whether we really changed something:
+_
+
 
