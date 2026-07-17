@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CC89C44507
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 07:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94213C4450F
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 07:11:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 600EC6B0095; Fri, 17 Jul 2026 03:07:22 -0400 (EDT)
+	id 4AA826B0093; Fri, 17 Jul 2026 03:11:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D87C6B0096; Fri, 17 Jul 2026 03:07:22 -0400 (EDT)
+	id 482DC6B0096; Fri, 17 Jul 2026 03:11:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CA3E6B0099; Fri, 17 Jul 2026 03:07:22 -0400 (EDT)
+	id 398C06B0099; Fri, 17 Jul 2026 03:11:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 248D26B0095
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 03:07:22 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9AE95120492
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 07:07:21 +0000 (UTC)
-X-FDA: 84997387482.25.6AA3373
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3942A180004
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 07:07:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FYcbXjoS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 148216B0093
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 03:11:41 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 84985C0302
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 07:11:40 +0000 (UTC)
+X-FDA: 84997398360.26.4611ED1
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DCBFEA000D
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 07:11:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TtyK9amO;
+	spf=pass (imf25.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784272040;
+	s=arc-20220608; t=1784272299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F0VorFQubA72e/tCA00Fb2KLrFZdh25LwjH5MvlC2w0=;
-	b=C5rn+huftJFzXRbSDu+sE9QnmPbaLnIsq8DG8Imwjl70x71Sm0OchYkoP/KB/dIFgIsA6X
-	SWHrohEJgsyS36JCwtdC9kRAWLIyoXVoMZI71d+5ejzOJkZRt7k0tm/VL87lLTiR+YncUw
-	Se5isBJH+dB9Huz/q8VTnjivb36ii7U=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kRja4aDlEGiiIQuTIJfrSCAb+ZicMh3kvGxb3+bkSi8=;
+	b=SpV3dPTbgHNM1jL7n251rdHCQ8SyA+/61d/HHtNNQWTtRMrgECXhX8wf0jgXP6ssjJRZle
+	8BVVKfoCyd7YkEYVCS4QiDCELVHlmA+w7fhXL3vTXGSMF/2q25CLhHmRy/g+rG8CFKd/Hb
+	YvOb5XKHi0nj174BI/uIMuZUuqvKa98=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FYcbXjoS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TtyK9amO;
+	spf=pass (imf25.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784272040;
-	b=VUwrk4Thl2gqF5L/e8vCrwckVNoDvjECPp5sDJX5SHj4Td+xrjn4O18nEYb9mHYF2bCUps
-	80t5sVytNJGWOWgEn6GRkGqpI4v5FqYu8BVUdgLqTHC516DZKEW48ZMdm5xK2tACwb1gNS
-	WqJrJtizT6Qf9dsmW+N6HdVOYG4IlJE=
-Message-ID: <4d7ee6c9-ea5d-40d5-9af0-5c15b3c2cab0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784272033;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F0VorFQubA72e/tCA00Fb2KLrFZdh25LwjH5MvlC2w0=;
-	b=FYcbXjoSXSnpuaPUdr5wOGZcmcE+/jk7JT8DQzKA+ZKQFQ3nafMenU+ozew9SvtnyWa6w6
-	oFfczig9lfYag1nidAQh9OO0xfrwQnRNPSZGoO12c2OuAUHUtmIEy36w1Z/wAV/XQiD3u5
-	/aKrCXzpCOj80LUY8XMujoxAlc4X86g=
-Date: Fri, 17 Jul 2026 15:06:52 +0800
-MIME-Version: 1.0
-Cc: hongfu.li@linux.dev, david@kernel.org, osalvador@suse.de,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] mm: add missing alloc_percpu() NULL check in hotplug init
-To: Mike Rapoport <rppt@kernel.org>
-References: <20260717052938.58447-1-hongfu.li@linux.dev>
- <alnPz-r76FU6t5Uc@kernel.org>
+	t=1784272299;
+	b=jf5/ffzOZvOcKx4AjqdkwQfgB7Zl564G+BT6BzwPxWbPC+1hN59ZwT9VAPJqXxquFnyiyT
+	L4gPRlkDOrZCCqlUV6u9n108SWBEg1Vrko+kuX0zRS5VkuyDx0WiFh6e3JO5hoZuQQDA/C
+	bablerNXfzaM7kaQsAU4WixNVM0u/nc=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784272296;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kRja4aDlEGiiIQuTIJfrSCAb+ZicMh3kvGxb3+bkSi8=;
+	b=TtyK9amOGWVxYf0MrPrrpAXP4jz/nVlsU5MqbHcDMUitw5Wo8spvtI7zbt3YHooV1T2y8U
+	Gqyv9E6b9GFlbL3rbUcI5070oV5k6RB0G/BqosOOXTM5NtyempSrPqDQOY8Wge2bViEDfJ
+	orTsOkQ0On3bG9M1uqQOpujTxAWMw4s=
 From: Hongfu Li <hongfu.li@linux.dev>
-In-Reply-To: <alnPz-r76FU6t5Uc@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	youngjun.park@lge.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	hongfu.li@linux.dev,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH v2] mm/swap: Fix swap_cluster_lock() !CONFIG_SWAP stub signature mismatch
+Date: Fri, 17 Jul 2026 15:11:04 +0800
+Message-ID: <20260717071104.73467-1-hongfu.li@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3942A180004
-X-Stat-Signature: 6fmnwp5x59yy7163y33r611fza88mecx
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784272038-167357
-X-HE-Meta: U2FsdGVkX19uQliQ6bV8WhAmin+bW+qyyDu3R+BfCdt0NrlNiECIF+gJxSLj/RHdNB4jQ11ZY7rB9SyNKsIXHuYMKDUVTZusMVP39BA/UleB2xZ1gvJToC76pVw1Jc5Pqt4Qb8jthSUbSBS3zNBh0Hqi9ItiQEK7lGHmvJz91WzLaVHC7WOPtxQjIbfNO+8LxPjKzyIyHMmkuSmd2G1JD8WqZ+HJakog61Q83DezW7ElyFqsOjBFZh9ymMR3GvdDl8XsHGpTa6xYbv/ThG613LLoOctBAhNuqUWkR7TuSaPtTf9IWlbngHhN9/bzJhRJ3M9zQCCC/NIP+F9kEF+QWdRV63aHY179JCIN9fx1AFYWb9gu2nvnK28KZU2WHdiqQuq0MxnAO5ip3qWOFHM+SwfTvyWLeuebzQb15eYDokPiSdaLC153QF3qlbExRK4Zo1lTcDvSGVnHASU5Vi3FyEqSPd8E8pTz7sUr9pwwD464pBR2AL2FTsnhEImYyDYA9+ZDnksR6EPMTuAn33OYNqQ468BJTpnZhC6ngiPxviuRPSwu6SCXJ7fYGJimimEI8sBd8/cn/76GYhpN1wxBCmBYrbZX3Ot5I7pK/LHkFFSm7gvwInbnPQrQxQd+FKxj0YAK2IXBrXWBbeyVXZOxn9bYQaImbzNWmtVIetQO+5IOgPzziV69YLyLz1mIAb7dB/q24WKwTrBEY9cTnXkpRUm1/cW2rAPtM3rG1fbwRCxUIZ/4PNUaRZZCgG3mGVfdpdD8Q2UmRcIuFJ3QU8kloVyOjuN1pdBFIQR37VCdrDbZPdxUCvJMpc0l781hMpHbwLwCOaEWaKbwMtZjIg2bUclDjw21b+lppbRvEjivfyZCs/ktlDkrcv85AhijqR+b5ykosxyILw/8m+3Gx+eA6zjMzNLxnRgY9iZk8+G/M1J+RH20tL90YpHDzNev2FwpqhXFhpT8g/FI24SSZX6
- M+9Yimxy
- lyQHcqwTIzekQSdkgI/cjyZP+bbpEBk1/xguClakoTdvbO8y01QIG0AHUA1lYMHFo+EQd330ph9yauQ6DXNTQuMP0J3cPV1qMFj0sHPjmI8XwM9AZ35TcKQi0K4usAWaHPJJWLvpGyGXm2eNd9cY2tFlLi4nEAhA1iy02mFouM+ZaKuKUGED2pV2PsetzXCTc5b+ovrrbg4i2jvJlm2xP+p/K948N+UkXobbF/OpZZINPH2TLgxLIMnjLCakxNYaX2KzwDZ3nUxsrP9QSXkJGvNREjzHAwILSMqU+aWhbFmRfhLk8Q3IljDoT45CXPPdeiZ+n/S8uprGaGZfFFeXGquU1fqUY232gDhV1UN5VAnQ0F2RnVHLrQupVjkJG1Fps8yfKz6qjZEjk6+0N845KjtzgDQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DCBFEA000D
+X-Stat-Signature: eiri9cchjgrqb3uj116a91mrbfycxuc8
+X-HE-Tag: 1784272298-621121
+X-HE-Meta: U2FsdGVkX19QRjEUdN7sQby0Kra3loahz1ks9XgBEqgyh6syMWDsuGUXxj51hQIATZ2QdcH/zx1nY7nRFzOquM8THfjNuqWI1TSrERmhK8PslsHKeLWG5JC48I9kQzuu0chTnOugXznRi8wyY3AxKQAaIutIAVOdXvD9Hw94MkLcpWqkfaqe5xw4F1vkrDT493aob4AvFlUo+gXq9WUH7KUVwWM4xcyavgMzklBG4W/MmAaI3JA7aAbMh5Jh8ycdDx6mkjJIWl2zZPguIjvHikM1JlToYuW14v5Ldq1yagoHIMKpSej8h1L7J/90LSVNsaH8CXL3YNfecXDsJ3M+w2AZeVoe++Hgjh+/l9d8SPSpLp1T3SfX+nVaYwhsoqrESafftcfe40XBetpuFFWSZcPWH/3mpcCaS4cTbkAZRKD4JCAWtRvOsF1F4LLKteYaFWO9KkMSWlUe62We/2AiSTaOtQDGrIXTDrU9zoV3r7imM8/OTTYOGftnCE1v+CXaMXA37Idhl6y9WnlCxWO/od/58fI879tDfLw+JRtzFLw3IEtU/0SIH35aaqnz7KhiTLvdKRpiyMBEdgosFakgz+SuYSMTAZWWDl3ADuy9A2VXo+oDODiCEJxRtFhVaOkjbap3+0U4s9Z+pV/LR0FhA+uFjFcDy61vGr6QuevIy8JlR3pVi2TLnj5+1KAGW7/grTGqo6wWgWb2q0vpIX46SyZuqKSRLNHhjJ3iN6/sp4xYcsq81/weWlaEOff8U5yA8YF8rsICcnBo/3y7zrf3pR3jIKZyLbfuArRdOjmRk/9/0sPBxKda5GtGkMOfgSSowzgGqL7+CVPtKmmWng84g0kyPpcI+ES+0CkN+7zdTJAP93Dxyi2lQcjOfkaLE52mLicq/vaqS3UsB+4BuOErCrvKbfVqhEz3YVm+pjKufXeHWIZ6qmD0Pz4T3wdHzTtRclREJbLsH/zwTogm7Rg
+ CWoDnI+3
+ qkB1ffkbk+QdcgruhNasm9YdXVvOd07Ve7X/qVnL1QpspQycspJp3BFBNPvx1kIe3AMHH1m8LKBgSzSC/R1q7nuPkiEfZ0yfj+wrFehouaJ2c/6Sx5TkHxBaYVNMx2V8/cevT3sc/kJI2dIfyhs9gqaFo/D5uEKAuxLi7dwwPV+p2CBhhV940/JQKeNVm7nJFFoPCeb/wozZ/KoT0qrdTtmxNavAY07TH316u/dbNlg3fRh7uEmK/r43219iJ3dp7QOTkGDlZBaONVJ3ahcsxKnZcj9gsD/BawWFX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,24 +92,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Hongfu Li <lihongfu@kylinos.cn>
 
-On 7/17/26 2:46 PM, Mike Rapoport wrote:
-> On Fri, Jul 17, 2026 at 01:29:38PM +0800, Hongfu Li wrote:
->> From: Hongfu Li <lihongfu@kylinos.cn>
->>
->> No NULL check is done for alloc_percpu() when initializing per-CPU
->> nodestats. Allocation failure leads to NULL pointer dereference
->> during later memset.
->>
->> Make function return int, check alloc_percpu() result and return
->> -ENOMEM on error. The caller chain already propagates this error
->> correctly.
-> I already applied a fix from Gregory:
->
-> https://patch.msgid.link/20260701221613.2818148-1-gourry@gourry.net
->
-> It'll be unstreamed soon.
+The !CONFIG_SWAP stub for swap_cluster_lock() has mismatched prototype:
+it has an extra unused irq argument and uses pgoff_t instead of unsigned
+long for offset. All callers are under CONFIG_SWAP so the extra parameter
+is dead.
 
-Got it, I'll drop this patch as Gregory's fix is already on the way 
-upstream.
+Delete the unused stub function entirely.
+
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+---
+v2:
+- Drop the stub entirely instead of fixing its signature. All callers are under
+  CONFIG_SWAP, so the stub is dead code. (Suggested by Kairui Song)
+- Add Reviewed-by tag
+- Update commit message
+---
+ mm/swap.h | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/mm/swap.h b/mm/swap.h
+index 77d2d14eda42..d7834888e0d2 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -336,12 +336,6 @@ static inline unsigned int folio_swap_flags(struct folio *folio)
+ 
+ #else /* CONFIG_SWAP */
+ struct swap_iocb;
+-static inline struct swap_cluster_info *swap_cluster_lock(
+-	struct swap_info_struct *si, pgoff_t offset, bool irq)
+-{
+-	return NULL;
+-}
+-
+ static inline struct swap_cluster_info *swap_cluster_get_and_lock(
+ 		struct folio *folio)
+ {
+-- 
+2.54.0
+
 
