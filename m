@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4DB2C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:01:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A9DC44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:02:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 419046B00B6; Fri, 17 Jul 2026 13:01:23 -0400 (EDT)
+	id BBE516B00BF; Fri, 17 Jul 2026 13:02:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A21E6B00B9; Fri, 17 Jul 2026 13:01:23 -0400 (EDT)
+	id B941D6B00C0; Fri, 17 Jul 2026 13:02:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DED06B00BA; Fri, 17 Jul 2026 13:01:23 -0400 (EDT)
+	id AAAAA6B00C1; Fri, 17 Jul 2026 13:02:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 01D2D6B00B6
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:01:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84F7F1601D4
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:22 +0000 (UTC)
-X-FDA: 84998884404.13.07C3452
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 17145160006
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:01:20 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=J2fN1h2p;
-	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 829386B00BF
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:02:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE46E1C0077
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:56 +0000 (UTC)
+X-FDA: 84998515392.24.03B0AF5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4F580180013
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:34:55 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jAmFrdPY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784307681;
+	s=arc-20220608; t=1784298895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WTV6N+XuYLQWmH3zDQ41ixHZSwmvPvsN1UZvS35Zb+k=;
-	b=WmfQcVrxhtmWEiyt4fBf+yM9tSxAzxG5LSh58fBd7tEdm4jJUBnhLAOsVSOJGbgGSXnj5R
-	dyLlXfJcHC6taybqDZYrNx1jdqWqiGp0tygqanonrdHsfI9U9PjErxzSWAuWMpqm4wHraO
-	X837XPznR/42YWMXi/AiN8Zh4jNQ6oQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784307681;
-	b=c1kKNHosX2VAvLGEWKUw6YwEmXLBz1N4SAtE/JgrHrRxL8LKa+FmFNXCbNqNUNGz8lvJai
-	ChDD4TtGOz6VSWohYZft38/HlUBZdbz7tmyBD6wqLgfT8oVo5yGhARo1UdNIG3QfPsLzkT
-	xgGg7VaqspAjKVoNRyz/R3FN4rEPHa4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BYUt77gOaLnD9RIh57O9y6iLCV8DgyWvyhX78FkqqnI=;
+	b=i+BTMS2MHJEpZNbB2VbjGQXg4hErnLykrIz1hEM+3awSmmB57gHNSCOYTXvwfc0aBqD01K
+	pa3wfahQuDBUGfvHzxVbwgZIWiRcYXtQPyrGJxI0vTdtSIwYkCLGL8I25c3w2AtUqlaYDY
+	ZqmDRwoNjJ4NE6taIAewvW8vO7X0OQE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=J2fN1h2p;
-	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=WTV6N+XuYLQWmH3zDQ41ixHZSwmvPvsN1UZvS35Zb+k=; b=J2fN1h2pzqesSntyVLo7mK6urB
-	LFylNWiNvN1EHSLKPlKiD/0/jEUxNHI5VrUEJBXwpzG37KuJNRv21FahpPBKDkemBzIbfuxDfH+88
-	WBG4mBW6iAUOzx1ur8A6XQD8mbUTR7SYSpJmvbqUug3zDHbiwDRkM+sePgr/rq4Tp8CPeQs3MMiuz
-	Ta679GAXyBCifxnFJwkpj+ZblqU6Yx7zyA6qdNoXc5LvOnYdScBr4200wCeP7+LoqXWzbfPdDmUhs
-	R9bRrXUpWdNBBRCMsNQo3mf7dBuiwHDqQyaOPjhb7ddqSGTQ5XKjn5H7Ue25J1Q8F3elRmO7GaQLZ
-	dwDy5Z9Q==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wklvS-000000001w4-01Ib;
-	Fri, 17 Jul 2026 13:00:38 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel-team@meta.com,
-	Rik van Riel <riel@surriel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jAmFrdPY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784298895;
+	b=lkXy8TFgfHgY4ccmIBVbC/vZsfCpGRNoJyWuGO4qgJjEJWxBCyLOr8UUC94afwxdPoq2iH
+	5BpeYH2Zvn2UJ/lSdeApbmxsns4ZgRmF3MtB9lMah8oEjAIeAPvNbi5gwdXedi0yAwg0rP
+	kRsynYXCq+cOIdE9O6yatiLNf/MXQG4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5792B60A69;
+	Fri, 17 Jul 2026 14:34:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE41B1F00AC4;
+	Fri, 17 Jul 2026 14:34:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784298894;
+	bh=BYUt77gOaLnD9RIh57O9y6iLCV8DgyWvyhX78FkqqnI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jAmFrdPY24XYQ5acDhq7jYcbFZYkwynaIqmqMPtnVezWvFejovFVxwCFlwpRvPx14
+	 06wZVFqeO37V8QGxAOu3+2PE/V95PPU/bId3A4HL5wH0Xt5ZjbDYX9eciKZd2vLRlm
+	 DsY2T580QzVOcjGrA13jhqCWtzdY4rj8IMGgkq5rK/87t2XSI5nVElYCsNqFnJ8szQ
+	 nCN9staruM05HlIJyLIwjwhBZx3aV+g2NBE8L7HthHO4oTaNX3fbwJ2VrVU5lvTlyE
+	 TgpxUiV3n4va0xkg+KOIwu3KzUJ7Z5C2c3YrBK5o1d2SqyPB3ikoFuOzew0AxisEKl
+	 ytjn4DAXvz8yw==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	SeongJae Park <sjpark@amazon.de>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 0/6] mm: access remote process memory under the per-VMA lock
-Date: Fri, 17 Jul 2026 13:00:30 -0400
-Message-ID: <20260717170036.743149-1-riel@surriel.com>
-X-Mailer: git-send-email 2.54.0
+Subject: [RFC PATCH v1.1 3/7] mm/damon/vaddr-kunit: check region count in three_regions test
+Date: Fri, 17 Jul 2026 07:34:40 -0700
+Message-ID: <20260717143445.91207-4-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260717143445.91207-1-sj@kernel.org>
+References: <20260717143445.91207-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 17145160006
-X-Stat-Signature: kday1mo5qtrb1zdgfy9mic7iyck5fh1t
-X-HE-Tag: 1784307680-925986
-X-HE-Meta: U2FsdGVkX1/CaCweKojEK7ymDj+z3FyOWosrmRG8waNLqInLepYqS7ldP7NY/w0kkYQX34ukxE4r+F2QRD4rT3/u41ojrLk6PlVUig5dlV/QrUExt809cLFtjOt6lb8DhzgGPoOIxZvkWXdox1+p5QQGHg18H6X2hUQQy0xan0ktDMkEouMLk1dFElU5+Z1D00ibji6j0+PCryHT87bjze8DfBsjimZSw3pS5MeAAcbb107Iru/AxRyCG2YKV9+rfW+NtPlYuX0glPNtIUs7zk4/iiua1M0K9M4MSVP7SXXob8B6cFF8Q7mYPDhhEwsjNycxzcTXi4qC0+yc5fitriAxk8uGehwdoP+/KCqERULFtO2iCVAdU+IUKe5ONzpWQpcquxs+rbdRaAqcmTpNJ+KLDs2Xbgg0oV3r6UB35eVk0IfvG2rycZYaaWcsRD6ADxls2eWpwUpn0h+BXooDOivGd29WDTb7SapMUpYUTTQc5ZEGd6R9rfbTKMOFWGpyGTMciqhDsQ+ioD1EKVU9HecAifNEQFK6+NQgoZvLyu8fBJsi57djHVbmhauzsPvuFUhmI+8lIJAxFT4T1zs8BPg7eIMPr4DBwcmEulxRpfTEX6xt1qIzex8Sql6F0RqquNWFrkFKut/+7jC6ZVhxwN0adtjJO+j01DqdVoTUvFiAJe0SZCNU91C7DTyt7aR07V58RfVdp28AK4w8rMD/rKf9jQP/FbzxEuli2kljuwJANWGAC8bnaVLYxv7+A2VpRLKSZVJNNxIXzQ+L7kSe4UeFRiRp1mc1bRkUIQGbrGuuJHxxlHezLbjxEGLDuYP11u5IiftA0i1dheYAcHJBb3i/AQFKKAR8h3app1HzUgrYFk5XsOr6XtNDoAr0juloJPhJkYzwTe7mshcHlyHspQggIz7iLyGQKgQ7cVQv28oTmdWovSEWAQ846kQTQKZW11Db1tp+Iezqz/Icsaw
- xlyMjJyi
- r6JTij1fMX7iuBJigXS1wtVm8nzPbqZcZKU1BnUZL0esJJrY55XkygbeNpObwRvWdjuJWwbORviV3dem6DoIPBO2qOWC8tdqWMDFDNRTIxJjzdituus9DV8jCJcutqyd8HB4XeVAP+u2uALWHAojOnNAlt2IL96puSdUZdr34K1g0iu2Qs/A8ZrgEQFkeFGwzXUW7rBVPWeXism5AzVnEuzvIwgqZnZ+N+a8K9zffGtttlCjFC8OwgO6HgfLr9pGr9ac1KicXcNC0/ZGZMOxr4ItYCtSy60+vu4PH4LIwC+ztWFM=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4F580180013
+X-Stat-Signature: csxoqppfjc136nhea6f7jb536pdh8497
+X-HE-Tag: 1784298895-242607
+X-HE-Meta: U2FsdGVkX19qEoFgulrd4wcJKSnNsPF+5GcD/pMHVtvNHFVMPD0c1q9gdZ7Ilbs46tUM4QgGGuCdYkr7WBnjIxyy1dvrC1norRurn23KcdthxkaqbdBempDQjC7bHPYI4ZWU1EBzfm18jPuSwkq6x05kVBOTRuKWYNjwOxhT2cAZ5ApDjtlGzTnNVaByPoAqPwxkbbfBLwxcM1bYKP+d2XJCxRxsYfZFQlb/2dA6BajwEnC4TcAoD9UIekpUowwNY6IkIbUMdmcH0M0RWDB8vNa0ED10W1onrHOCuNegb2JkJJr4ysFynxi139SZ2R7pt7ZV+hZGrLD8xe8hgxGDaOJKBhO/1EqZGxi9WSlGcAoznCIw+EJzzGqRu1yQPY8LvIkZ7MD8mfQJXZx0ptsWOBzI4bOLfni4QflZCRNcJcTeL8moZ5Fu87xqugm5+DsbyCdLZiCuUlKC3CJOxDbiVQmaJ/pOGrdBZxO7fDOiQeVTEwovWetQ0svCWlGfKNmXQiVDXzbc0a8VGdare/QX0oByUSl1WvzFo+/Zl9XjDbWJIjxllBx40LFBJ8kzYxz9+0bJ2mxYloKmAFiebvvrmNeciBjUa1vmKxJLgLnSqu1iUD5UXNh0GUHR/rQZ0TDwSdZSTnW/zY88UL/W+zZA4U9ejX4oka42wIROB9koNis/IEuitRfZZrEmz9RBBTbrf9Rnfk/HoX93tk5rK42Wt6f6qxnRIX7AqNHr7tIWilxWU7hC94faML0DmPcYt2a+a0wdluecizCBt+6SbaSSpkAjuRtgp/Crq58BN72mOXWbZ1zR7OZQbshor0fHzrje5Vd9BBzE+RXY2gmvi3ccrLFxyhSitccj+W4H0HuPy/LQHhA4SSnnSgQAVcWuvxm4g/JgIUgS0NtwHL8S5ZwEKq8dq+JGe3QyEXTMrklQK3i+K8bYaMgStIERGOkobdNUyjJnLVaTxU4+IzWKift
+ 4lXRfWG6
+ 0YLX+9Dm9fHQkapJQi/eS2Mf7zuLjVbZPcrDnHY9VdFB7ZB3WkTinrcGKGd0B4iujW3WSklo2hspXvlIpn0ZtUo3wWDdk/aLvKuBnkFX9pTCTrOpFp+LL36hBtHSaQW3uSyJ0wjeYOHg8r96jdxraR2RVmioI9wZ6tFXAYeY/JzkViv97HQSrVkn+bpPzX/cPJc0Vcy18GlO1wUH0dzUgqPTy8cEC0Cf5hCgjyY4nr3svhntR1wULLUBPJDhdZOvxec1vs9kw+OWl5ht2YKLdO23zPm0uefpBe3MXDjgRiFYuuLprEnVBK6uxi5I/muTmWiXK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,93 +99,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__access_remote_vm() holds mmap_read_lock() for the whole transfer. On
-large machines with large multi-threaded applications, the mmap_lock
-is often contended due to mixed accesses from readers and writers, like
-mmap and munmap. When a lock holder gets stuck, system monitoring software
-can get stuck behind that, resulting in a failure to log that the system
-is in trouble.
+damon_do_test_apply_three_regions() iterates regions after
+damon_set_regions() call assuming the function would succeed at setting
+the number of regions the same to the expected one.  It might have
+failed.  In this case, __nth_region_of() in the iteration could return
+NULL and NULL dereference can happen in the test.
 
-Take the per-VMA lock in __access_remote_vm() when the access falls
-entirely within a single VMA. Fall back to the mmap lock when the access
-crosses a VMA boundary, or when the page cannot be reached under the
-per-VMA lock: a dropped fault, a userfaultfd VMA, a hard error, or memory
-with no struct page that has to go through vma->vm_ops->access().
+The consequent user impact (NULL dereference) is quite bad.  The
+realistic user impact would be limited, though.  It would affect only
+test run setups.
 
-The bulk of the work is a new gup helper. __access_remote_vm() needs a
-single page from a VMA it has already looked up and locked, faulting it in
-when necessary, under either lock.
+Fix it by testing if the number of regions was also changed as expected
+and exit early for the failure.
 
-get_user_pages_remote() does not fit: it hard codes the mmap lock and
-re-derives the VMA. get_user_page_vma() walks the page tables, faults a
-missing page in, and returns it with a reference and the caller's lock
-still held.
+The issue was discovered [1] by Sashiko.
 
-The per-VMA path also closes a pre-existing gap. A COWed page in a
-VM_IO/VM_PFNMAP VMA has a struct page, but the old code routed it to
-->access(), where generic_access_phys() ioremaps the PFN and ioremap of RAM
-is rejected, so the read came up short.
+[1] https://lore.kernel.org/20260713144757.39740-1-sj@kernel.org
 
-get_user_page_vma() now returns that page normally. Raw PFNs with no struct
-page still reach ->access() under the mmap lock, as before.
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Cc: <stable@vger.kernel.org> # 5.15.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/tests/vaddr-kunit.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-The series is arranged as:
-
-  1-2: untag the remote address in the VMA lookup without the mmap lock,
-       on x86 and riscv.
-  3:   rename get_user_page_vma_remote() to get_user_page_lookup_vma().
-  4:   add get_user_page_vma().
-  5:   switch __access_remote_vm() to the per-VMA lock.
-  6:   add selftest coverage.
-
-Changes since v2 [1]. The per-VMA fast path is reworked to build on the GUP
-lookup+fault path instead of a custom walker, per David Hildenbrand's
-and Lorenzo Stoakes' review, and now faults pages in rather than only
-reading resident ones.
-
-  - Drop the folio_walk_start(FW_VMA_LOCKED) walk. Add get_user_page_vma()
-    in mm/gup.c (patch 4): a trimmed __get_user_pages() that walks with
-    follow_page_mask(), faults in with faultin_page(), and returns the page
-    with the caller's lock held. Safe under the per-VMA lock because page
-    tables are RCU-freed, so interrupts need not be disabled. (David)
-  - Fault pages in on the fast path. v2 fell back to the mmap lock for any
-    not-present page; now it falls back only on -EAGAIN. (David)
-  - Turn the v2 READ_ONCE/WRITE_ONCE untag_mask change into an
-    untagged_addr_remote_unlocked() helper (patch 1), and add the riscv
-    pointer-masking equivalent (patch 2), which v2 did not cover.
-  - Read COWed pages in VM_IO/VM_PFNMAP VMAs; raw PFNs still fall back to
-    ->access() under the mmap lock.
-  - Add the get_user_page_lookup_vma() rename (patch 3) and selftest
-    coverage for the struct-page and raw-PFN paths (patch 6).
-
-  [1] https://lore.kernel.org/all/20260625015053.2445008-1-riel@surriel.com/
-
-Rik van Riel (6):
-      x86/mm: add untagged_addr_remote_unlocked()
-      riscv/mm: add untagged_addr_remote_unlocked()
-      mm: rename get_user_page_vma_remote() to get_user_page_lookup_vma()
-      mm/gup: add get_user_page_vma() to fault in a page under a held lock
-      mm: use per-VMA lock in __access_remote_vm() for single-VMA accesses
-      selftests/mm: cover /proc/pid/mem access to VM_PFNMAP memory
-
- arch/arm64/kernel/mte.c              |   2 +-
- arch/riscv/include/asm/mmu_context.h |   4 +-
- arch/riscv/include/asm/uaccess.h     |  10 +-
- arch/riscv/kernel/process.c          |  12 +-
- arch/x86/include/asm/mmu_context.h   |   6 +-
- arch/x86/include/asm/uaccess_64.h    |  14 ++-
- arch/x86/kernel/process_64.c         |   4 +-
- arch/x86/kernel/uprobes.c            |   2 +-
- include/linux/mm.h                   |   2 +-
- include/linux/uaccess.h              |   7 ++
- mm/gup.c                             | 156 ++++++++++++++++++++++----
- mm/internal.h                        |   7 +-
- mm/memory.c                          | 171 ++++++++++++++++++++-------
- mm/rmap.c                            |   2 +-
- tools/testing/selftests/mm/pfnmap.c  |  66 +++++++++++
- 15 files changed, 375 insertions(+), 90 deletions(-)
-
-base-commit: 0f26556c5eeea62cc934fa8938b148aa5844a6b6
---
-2.47.0
+diff --git a/mm/damon/tests/vaddr-kunit.h b/mm/damon/tests/vaddr-kunit.h
+index 61f844336ffb5..6a95441d193ae 100644
+--- a/mm/damon/tests/vaddr-kunit.h
++++ b/mm/damon/tests/vaddr-kunit.h
+@@ -158,12 +158,17 @@ static void damon_do_test_apply_three_regions(struct kunit *test,
+ 		kunit_skip(test, "second damon_set_regions() fail");
+ 	}
+ 
++	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), nr_expected / 2);
++	if (damon_nr_regions(t) != nr_expected / 2)
++		goto out;
++
+ 	for (i = 0; i < nr_expected / 2; i++) {
+ 		r = __nth_region_of(t, i);
+ 		KUNIT_EXPECT_EQ(test, r->ar.start, expected[i * 2]);
+ 		KUNIT_EXPECT_EQ(test, r->ar.end, expected[i * 2 + 1]);
+ 	}
+ 
++out:
+ 	damon_destroy_target(t, NULL);
+ }
+ 
+-- 
+2.47.3
 
