@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67BDDC44515
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 23:32:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D78E0C44516
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 23:39:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A5636B00A1; Fri, 17 Jul 2026 19:32:22 -0400 (EDT)
+	id AA9DA6B00F0; Fri, 17 Jul 2026 19:39:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67CFA6B00A4; Fri, 17 Jul 2026 19:32:22 -0400 (EDT)
+	id A5BE46B00F1; Fri, 17 Jul 2026 19:39:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 571A06B00A1; Fri, 17 Jul 2026 19:32:22 -0400 (EDT)
+	id 949816B00F2; Fri, 17 Jul 2026 19:39:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B01F6B00A1
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:32:22 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC07E402AC
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 23:32:21 +0000 (UTC)
-X-FDA: 84999869682.09.415C909
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B0ECD180008
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 23:32:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="CNm1RyZ/";
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 67C976B00F0
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 19:39:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 03727A0274
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 23:39:02 +0000 (UTC)
+X-FDA: 84999886566.14.DCF0F78
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0A48418000A
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 23:39:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=a4WhAzAN;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784331139;
+	s=arc-20220608; t=1784331541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R+DUQOwOw2uIV4ajc2HeXFDWOg42tRR4f3JX3Z/V06A=;
-	b=iJAlysz5XD+C9fJv6MRU6HdSKz8AHShxEjZ943gBkRI4LmMn625cz2ygQw+yylNZoQoEtm
-	+4xVyOY+vlCklizT7dWN947P2E/308a1Usoi5Mu1hS00sT5KSzHYBJtcHk5jSztIyBdaw9
-	7brPEg5qzbIOsrihqzHLf/gQoCgSQrI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="CNm1RyZ/";
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	bh=jOQMW/VMMZhI1OvT3xpmRY3tlZwPV7fJgB6bntOIi38=;
+	b=lVOxvHNtOh3calWlB45PaFohDKXhwBIsnmAsN8PCj1UA75xli/3w02WMdbNhR3MWHzWSCU
+	JlJRRA97xGQ555Vsf7Huem29zVvWkuFx9odYNZcsY35yTZH9r+fae66/b7NqDG3lhdPlQ7
+	+0Kn8+zn5TIZxx9zliWmdRSA3g5ZKNI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784331139;
-	b=yTBY5U8JU0z7jy8nyB6eLbURR0WMwLeEo4pf+ppJSL4s3gdkndUqO2lRXzcJFu5MzYEJzh
-	39LpCS4FOr7jWI+iLVYtMBYxd4CI2Kb4jtABAu4Emml9lyGMDIp3Nl1Nra03ZzxgEhP1rr
-	NK7KlmPU05Yl7BXd4GO3KSOB3+vWHyM=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e6391b114so412204785a.3
-        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:32:19 -0700 (PDT)
+	t=1784331541;
+	b=sS/nLafImkmYL3B4a40yJfYtvvPBi76svIL1HNAv3DSEU2sl3/eHmtcvwmMa/GiKcUaeZW
+	cAcB9yVIZTeYO8hdPz+YoxbH/4ubCWftXQFEGQcacjdP8xNCz2JngPWEYHAxcscQg5u8s0
+	TuhXYvnZczPq9vpeyH2uK9mSjysNzVc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=a4WhAzAN;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-90004d2f7b7so107926626d6.1
+        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1784331139; x=1784935939; darn=kvack.org;
+        d=soleen.com; s=google; t=1784331540; x=1784936340; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=R+DUQOwOw2uIV4ajc2HeXFDWOg42tRR4f3JX3Z/V06A=;
-        b=CNm1RyZ/cvGZG+6FBPS5iJjtvYJxh3UgFlgbMreEGMisfA9se1ehdsk/txNRJngZVq
-         rzPAOfuiytwjQlR8fR6Tz68qR2GEacaG6i7kd525vZWFJLwIy+xEvWr/7ABNoM38udE3
-         Oz/LrXqWNTYFux5tfRzXOEvkEWB438n3B0knnQYaiIV6i4TIIspqd2nTB2LDzYR37UM9
-         h4Vp3yawMS1STsAYOOiZ0Z4MQw4aXyWTnbV9H5ojkWygaULb7wgKIvKyi097NAmtMI0/
-         q99bogUSqKPwHzA/zL+6uLM6fcIbsHO9SvnfP54v8ezUAK0+BVOfTLVEo34t5hExljug
-         8f3A==
+        bh=jOQMW/VMMZhI1OvT3xpmRY3tlZwPV7fJgB6bntOIi38=;
+        b=a4WhAzANtZ027JBaBbGWpvaDtZh5f2gjDXX/0drudBP79/GLaISjWR5meuHZQ+4uoR
+         52tNsuNrQsmAbW5+xSocPAkz5aGkZv1zVdfg92lMk9A7FhXPHgSc2TSeG840Yr1v21rs
+         uGub9/HnpVlJEmYw8Fld7BdWmXj6z4ow78gC5OGJz3AbXnmngxRqOPKpgwFDB56mMeqQ
+         gF5mqN5lNUtB/eo63Jrv30tpTB8o2EivV0kfOV1mlrkNRiUGk1akUUi0sZvPZcz3lq7I
+         uSJYnoHAFRBdRs49wYuJ7xRjvyNsw/Duw0YsESJSYF2eUDXGmP+QEGQBbcFaHwebw4lC
+         bb7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784331139; x=1784935939;
+        d=1e100.net; s=20251104; t=1784331540; x=1784936340;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=R+DUQOwOw2uIV4ajc2HeXFDWOg42tRR4f3JX3Z/V06A=;
-        b=KsKYqgI4Cw76GWX8ii6g7YXkGN8Guh9+GnfBs9q+1JoXbmiJMCntdkj4AkpVFaGEl/
-         hyG9DwuyIOniDYxcn330T9ADVRDG/+4SGDhoDmEYriqI1Z2837wCmgNKk0urFg0yMh2B
-         CVb3ICucOLcgF9FhrEGUSqr+cyIec2LTOA2ull2WE+mhJgJFYk8eFmbrK6Q7lCUM1SND
-         i0jIzTgYhe+AQyy39q7imnTW1DMJhXBkvc5hLoVA3sFpZ9W8+pvehQNGgKzZXvecASpc
-         F0K5RfVopghUvdpFiVXzR62eLQ2f8kpykZr58hPfW32DfcaQdpGZyyKJlD77GM1qsawF
-         cJrg==
-X-Forwarded-Encrypted: i=1; AHgh+RpOGFPVI3it1I+XkM3Hs+8lFymJmgZm5A8h+SWqBf1OOCruQK1p5Frp2p9LAmJ6wspuKEzQ40UeTw==@kvack.org
-X-Gm-Message-State: AOJu0YyjMPibQrPr2NqS5OwaeFf9f8UVXjVRw5tBxeY2XVgARFxTuUur
-	4Oopu2azbKgzaDx3LmzMur0kMcdZ5OAnMkugK4onoH8Izz8z9EmdMiebOYhV4mNkQzk=
-X-Gm-Gg: AfdE7cnKQ8iFR8/Z/wCmUAnglHBWCm/ZFJPueIsuMH6T5kaYuzvtQ26+jShqCgEQ+/2
-	1R7xshpswBedZt/yUqiJSOYmtuq/gZkc7cxja3pfZD/y+viVLirTcpH+epAZOsmhl6keh5ISzTn
-	1q6sCRHY2uDAUFRbOYG+UnMSq5zYlWJp1ZXF2kQ1cnqlhk07DWZmKBJYElJ4EJ/eUuX7kZ/Fmjt
-	Tumx/jzcZcChCBW4pLG6hTxO0FtjCdyvv+++zxC4IEsNAiNp0/gUgwk9matVYAVJewU0gISznaH
-	mxgdDMt9MMf8e8Veoa/YWubSYD45YMwQWo0IqbWhWeWjZ89SHS8g7Cn/+DOI5uyuVrvfvpCFykZ
-	NZ6j77GyXfKgKa5V2U9kTdkL8j0PDujB27nezYbWRBr73nOorIr1/cciOzD2FaqT3DBNIGKLJXM
-	zOUYfiVwrc1cRDBu6op71kuhhxFeGb0s/Uq18ltOM=
-X-Received: by 2002:a05:620a:472b:b0:92e:f3ca:2ecd with SMTP id af79cd13be357-930b41a0733mr524243585a.60.1784331138856;
-        Fri, 17 Jul 2026 16:32:18 -0700 (PDT)
+        bh=jOQMW/VMMZhI1OvT3xpmRY3tlZwPV7fJgB6bntOIi38=;
+        b=saqj4Hgt/sy5tjAWDHCJGHzuP6nD8D0rUB1PelITsJdl4wFgZkaw/puAT8ygLlPKcm
+         u6M6ZUy08dp2nCNjFeQpNKBuurs5Ogf+txIxMm0ihewUTuhGbfe2guxYH2/CaTysoTk7
+         7iS01Xcn6w+Oh41SkpfR57G2HzmvDnJR3XEU1jEt78keesWI6KWV/WwoT8snHOu/pHGQ
+         dq92dS+0Lbbs8SBSq6gQu6cu97JW61i+TmY+qNeYAukHMB7yVkyCx11ApZJJISy/rpLg
+         VxTlYwyQIHrBY9LgoSt535C5mlE0GqYUOmAZ8+SyhT1CpE/l7iuOgjk2pKzBDkCZB5K7
+         kbnw==
+X-Forwarded-Encrypted: i=1; AHgh+RolnVFzP0TvJ86pj/UfvDMjT6nPrQZVrCT6qbRzW4XIuycKEurBi9y9emJjoVQ/MOtbOpNN6FykLQ==@kvack.org
+X-Gm-Message-State: AOJu0YxwyxTL6a9a4kSZKUxSbenRJxAEIon16xIboxR/KLxYBRic0Lxx
+	AcRj17N7qRjE0aj2A3F4bbGdLSmM9REPVp0y1tusa4S8r/yjeZBmXP+v42kpaym1p6E=
+X-Gm-Gg: AfdE7cm9UBxbPROh6Ltp4hHOqB7z96nJbgTSxtya6QIBlXsFl+9fEfw3F0aqRQLsudH
+	ZrbMQBhO36z+3rArmChv1GGlmMZ64UM5OWOjQMk6aec/Sn7rdHCLvdrbliickcPeFz8JHdkzlwb
+	RuudprBPrZ4HMA1p+xXUu6LHKRhlWxEAz8K12mXcaLUv6Zatr87NA9T804vPExa+NqvrOjLJD0f
+	cMVBaeAVUTaW5QL6dK0JrSoRBwkhjwUEv5RJPtBnCPBZEvp7Rp8hvHCM47EoYSIJwDQJgEKYIt0
+	8/N1mvZnCEmL9oKNjDdeDlasYY0zR6iqR3DZl+ng9W5VlqlF5h1gFgfXC0Ga+X79cB0g98vbFpB
+	/rAkV4HyXQNu+mlV7uJOtFDZ7KDtp48CI1xAaPtY+J6QQ3aCc8TLW192pI95GJrPtWMCm6pPTlq
+	1IOmHJ/I5bBlTji5LOtObnUXcTuY9vHvTvAWw+u1o=
+X-Received: by 2002:a05:6214:5d08:b0:8f2:df9c:3322 with SMTP id 6a1803df08f44-9077832dd0emr59277606d6.14.1784331540051;
+        Fri, 17 Jul 2026 16:39:00 -0700 (PDT)
 Received: from [127.0.1.1] ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm279957485a.35.2026.07.17.16.32.17
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907786f79e1sm28353026d6.38.2026.07.17.16.38.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 16:32:18 -0700 (PDT)
+        Fri, 17 Jul 2026 16:38:59 -0700 (PDT)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 11/12] PCI: liveupdate: Do not disable bus mastering
- on preserved devices during kexec
+Subject: Re: [PATCH v7 12/12] Documentation: PCI: Add documentation for
+ Live Update
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: David Matlack <dmatlack@google.com>
 Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
@@ -115,37 +115,37 @@ Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
  Samiullah Khawaja <skhawaja@google.com>, 
  Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
  William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <20260710212616.1351130-12-dmatlack@google.com>
+In-Reply-To: <20260710212616.1351130-13-dmatlack@google.com>
 References: <20260710212616.1351130-1-dmatlack@google.com>
- <20260710212616.1351130-12-dmatlack@google.com>
-Date: Fri, 17 Jul 2026 23:32:15 +0000
-Message-Id: <178433113516.189683.9930130364443329744.b4-review@b4>
+ <20260710212616.1351130-13-dmatlack@google.com>
+Date: Fri, 17 Jul 2026 23:38:56 +0000
+Message-Id: <178433153669.189683.2878214157071313722.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=563;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=873;
  i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=s0LMm+OcoPpmqRB57FW8WPIACTHAgSpt/ofOePUvqwk=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqWruB0abwGG0XPrEN8HQE9RCrgd8/buD859gp2
- KaKebSgf3WJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCalq7gQAKCRC7dyhM23N6
- 3mj7EAC6bErgn8QbHlK63bz1p0Z8+rEQtPpeKYfyZoG2uWv9cDi5gkXPAA2cyXTEg8FWk+3dxwk
- y6gytV5WrSayDd6GSc5dQIvNqT/DfySvbzgAES3hjQEYplR6GGXtAvSOJrQm3brDRl3OO/+Jyt/
- RWwegnDu0EtMTwd45jI8iO64zYNbU6iXPDmoo6XX85I5an+0rvaOq2+751osnajpvrUctCRX6co
- rct8df07a7hqEr30tX3CdeA6FpiPhXcSZdcc7Y/mdkIvSPqDsKQWLerNa66FSM/YWQRJyQz75aK
- eh1RdPuqTNnMgn57asyEoYg5pPIxn2wSy1R2+6bmZnsj7Bfhs8kivkdPulT2cq/+tDvb/i1R8cg
- JRhN3kONqgHydgwy6TrTDZQzDKLE1v70UqFkEmihAIJqaxEBEeMylAu3uuCt/3Xf/N8ePqlq4p4
- Zl1+UFEzR12poe688gj93wg/k5DYz12wvCyUaVd1ftxDmqLc5IbkfD19MjDTMA2VHhZ2dygKp+5
- jBzpCI2Ct6WYvMfudLSRjaT4vueHL50oW8vh8gE2xIOaoOwkDXSTmru1jcXLEpWZBDxDnjbHWx2
- A8HHgGX6czH1+b8pT3wyIyMQzrFYbow7ruhbDMctEsSZ9cOZE5vkRTllxa+Bfy5AWxoJFldiSFq
- vnDsQy6niCySu6A==
+ bh=vSoFj0hBTT5p/CFJP12khF+A/hWJ+rXJdU4yKcto9Gs=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqWr0SpjC+L15xuM1whuQrxtevTro4lUduG+wQx
+ gZjJKCgnxeJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCalq9EgAKCRC7dyhM23N6
+ 3hr1D/9oIctf3jZFaNFf/Pf9J2Q7CfddVWZ2nNZ2arIAM0OUwhaxiAs+LtuvHStvp4Lzy79OaPC
+ MNsK4RZArZ79NaLPOR9S5E6dP8SihdNKm23FpYWS8kmNKUvlpnvUn96H2Bo1thrOScdtHk8KXo2
+ 7hSeP/+8USMLy/ZHr2ShtiB+g1UAd176dG+ifwhSmAAgPmd16B83riVzBB/kFOwP0PXrnOHWCVg
+ NoyCSnhFa7Oj1iHgWlBLPNUv1deka5wHUy7CtHqHc73wIsD+RDeq2t9Dnauotw051GQYm18pWKa
+ Ro4mNfaV4/bgXOl+EindmOYLeL4vmRfgF/9ZiKkyjLjZcj7FGt7HsIhCwwbT/u2+A8OkOyGoZYi
+ r1Iwow+abKmLmqHeqRIFjne6kQTJb22jxEEb/ezTHqlg26zjd2K/Z1L1frMnEuyd/6lmTpda2my
+ KRnfdxmtZtL9QDtYOyUNtLuaOuwzNTTdod6HZcSVYGSUrQl+jbcegXb4vAnwsS3vURMyxjiGKME
+ rn/hi18xZaZXcMv99T6EuayIMn8QHlfKaxv/XQG2mzCxdePpLOJp5QQlK322veGWDifJAyrkoRP
+ XWQu7Llfgoiq2whZiWSbBSEkh55X60dfTNM06+VWWl86F4nrUoLaQGJti/70J124jfGNFISbW/A
+ zR5q4Zf8lKCRE6g==
 X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
  fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B0ECD180008
-X-Stat-Signature: nofbokhr8ecizzq3h71rfzy79mudk35t
-X-HE-Tag: 1784331139-552856
-X-HE-Meta: U2FsdGVkX1+SQg2LQJ404uOS50/uFZXez7LT0NTGAzvu/e59vIzfpYPDAZ7VKb6tSeZyylsEuuB+Aygkd29Ni38KiOKF/uxiFUcbjMVfMOeeA65OPouz8E35c45WiBPxc98WwxK3NkTMTRK4oiuXLrLmOxiTglNMuSn8VQ9YAo37sGBIKQCzpQMSrdhT+9Z2s9hhjZIdUn30y/pBik2R8GVgHRgk24DiVaGlKr/hbBL2WoxHUCtshsiDfXLEeNGQ46J1l42CpR9wPkt+0YV1rGqJH1oltDXL3O305a4j5WJr2z4iry6QnSJsq7fIe1/ciEE0luOiHBKGlX7AR8bEd4vovYN3KVMfwtOu1XCKPGxum5Epdyn1FDbpbr07s4CP/fOfvE3qAvmuRuyRfomipGU8rgH+s5KdWqLHN3FGizc2tey7LHattgK0gYCFkE82DxJjvtCGFuqINRa8O1bWWk2wULUdmSs5XtXadReaHCmJSkAyBbHWxIEaR4JvR2q3cawQYu8DZ+xn9nxoMz58Q/XO9a7v2VE6BO/pwPKw9JWlL0YheQ/Jmue1bmGQXtHlSZQ2KL/FqeUTiEmlL2i5rJbk6LgEn1O7vMCOAm9v9h1gnbkVRjkXadnpzj1vXydeCSVJj77KNVGNe4s1YPxYaWN6dFPwTzOSQ5w21eKiorQCaukr+sh0dwsGtnMhQCdAT4K6BfLnIh4ARYU5SIoYrdkyDTCyTXF+tsQCvdr/vZ0qlH++kvmlj3yK8nT8d/NZ4hIAaC4ofbvU1fKhraity75v10dZyJWEzWY/DYVzbj3Zpip8rB5alpQPWTxNW2q1peHyQOZkayyBABLM0i3jiVbyXcDfz1Hb+WLWYIDx9AGJn8nEJDHrtkxL73J0tUAvRjM9LLZr/2bjkuSJ8eEb84liR5RkXyey8N4CB65kfJ1JDzMqj9HqWL2Yp+zbuLvatSZFno1TnKRWbSXwPOp
- LuTRGinq
- LyXZA0RlceG+EZ5eYFdTv5jGoNAxGugFLUJYntievPO8nWWhdsZJifDhNxcI8njD0v1zKR2oIBjZzVk3mVyAEnaDepEsx2xh8Zg4SEual6Q38O+Q2JRzxGOXeRlmYjsD18E39e1lWcDdTN+0pfAqSSCt089tNDa/FwsbQoMuXXC3u9+dHMsJjq8eH0qEZVQVU4Xf/TphBS9RqZHRkfR3idE6Lqhyhq9oR80/ddwdz6Df9e1Ks45DhYrHN3inc2xiwO+GMmbP2osOhorA8QueSk61YEidRqQt0luK4xPfbIjNymB/SxlyBpoTBPlbMJ2StlJlLexm65nVuOKWdIrA8/stnZWsBZfeFb8zvjBMYHRwA0nc=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0A48418000A
+X-Stat-Signature: sxgstme53im81u54yhf8fwpu9gqxhdkx
+X-HE-Tag: 1784331540-272265
+X-HE-Meta: U2FsdGVkX19QvqEVxLVLoxlWy5ZBuW7Yd5GgXupbeqhD+iptJirNIpj4EA8qamvIU9mGbuBzLuie/wDm3hzjRSx4zJm6H4xJIGZ9BdjeqI/zVuYCienws5i+XfLQ8zuovUI4G/KA7n7XbZ+uwzj2uVrszUnbyup/MoUcrHLA6BE5a4x727bdJQDtt01bvqPfNOITsppUoL36A2YFkrzyW/KqLBF1+JIIBWPSYDoygfFAWTWuruGCheG7yAoHobEzhv8hLWNb98PGvpJes8baL+G+dP53AWNaJqCUmST26uXRgR+rsL+0IY8ey4dklCmzb30ZNuyGcA3YBWUx6/XnNX9GXZPtB4+LgKzTRRqcuP85Ek0Ug1TaSr3fCtjY87Rnzts6qZqjWiT0dmvGYD1t1hm7yzvGwgFlgtOuu2J6tpuIZ2CXZJ73vcwhzVNwJCLojw86+yBfS5ssmSA/aezWlzlYBPWSqSQnTfTgN5YgHQbdDK0g71Zj3mTdLa3twjZCB19aGnA3Xg3Smw2ReBvm/AwmA6N9pC9NBm5PbzUqP8wLFS+AaY2J0v1d1IMGkSFVCoQTBbGYHlmeoUUnVZ6q6503eNkxT1gYDTgyjbIqvukY6TYAp22wvISHJlnCuC690OVI0ozUnoYGG1O1dMFzGWzuW5FaUAssQCB98ILJr+oHXv1Yox25oDKCUAVYsRTObR/iss8r9cqWoufC9m2wH82XfR/4BWa5rZb/u7SYiu5zI6kbbEA27ne/UZ0mVKmu2uQoqSxndxHBrSzcujrE8uDjBPPWsq2BVKAKMxkvJfNkmII5DZVy4i3NHcRbkGWd3KmgGpBFguGy/r+EAoHo3lIicP9utMkSbEahhUnvT1GaYgeqmqNttpqZWjWZwtZ8vQsgULAWY0hrUmjQcpzbX1vzfG1sc+ztL/iBsPfWzgjIQcA41HhhE7WuOXt5nN75CDLsqnSJtS9/ZPOldxa
+ 0sW2tO4m
+ YctUv4ghluhnhXlqet1NrZCLqm0i6614mWS5aMaaTuNT2qzTyR9xURkwUYRkV51w6+w/y39d0c0HTcVAGKyWvm9MgqzwxEt/kSk9uInXxQI9BBU8OtWHqZcuMzG0agaHoAZJSQAL9S6HKWrZ3PRQn6BPIXE8H7MNM/8CRkU3wqrxbTlYHvdkgyJcLEhg0Xi3kGltNXch6w7sRkb3HK9Hp3nlaYOx+ldIIGSjzGMwTNDut6vX/Xrl3pq1RmLirzdznf5ZZA5byR+NGTTM7Kz3SSMzAuBO/01ylm8+JgcWJacKh21lY7Wj0PpCjsIyGg557bczIftQaOpzIzbKRqGijGKA8a/bKdWXythqPdvhRyIGFkdo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,18 +153,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 21:26:14 +0000, David Matlack <dmatlack@google.com> wrote:
-> Do not disable bus mastering on outgoing preserved devices during
-> pci_device_shutdown() for kexec.
-> 
-> Preserved devices must be allowed to perform memory transactions during
-> a Live Update to ensure continuous operation.  Clearing the bus
-> mastering bit would prevent these devices from issuing any memory
-> requests while the new kernel boots.
-> 
-> [...]
+On Fri, 10 Jul 2026 21:26:15 +0000, David Matlack <dmatlack@google.com> wrote:
+> diff --git a/Documentation/PCI/liveupdate.rst b/Documentation/PCI/liveupdate.rst
+> new file mode 100644
+> index 000000000000..eba55f8a92ae
+> --- /dev/null
+> +++ b/Documentation/PCI/liveupdate.rst
+> @@ -0,0 +1,29 @@
+> +.. SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +===========================
+> +PCI Support for Live Update
+> +===========================
+> +
+> +.. kernel-doc:: drivers/pci/liveupdate.c
+> +   :doc: PCI Live Update
+> +
+> +Driver API
+> +==========
+> +
+> +.. kernel-doc:: drivers/pci/liveupdate.c
+> +   :export:
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+I think you need:
+
++Internal API
++============
++
++.. kernel-doc:: drivers/pci/liveupdate.c
++   :internal:
++
+
+In order to include docs for structs such as pci_flb_outgoing, etc.
 
 -- 
 Pasha Tatashin <pasha.tatashin@soleen.com>
