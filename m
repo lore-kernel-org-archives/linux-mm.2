@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F3D6C4450A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 00:30:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2734C44514
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 00:30:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEDFE6B00AB; Thu, 16 Jul 2026 20:30:34 -0400 (EDT)
+	id CA7BC6B00AC; Thu, 16 Jul 2026 20:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC71F6B00AC; Thu, 16 Jul 2026 20:30:34 -0400 (EDT)
+	id BFE906B00AF; Thu, 16 Jul 2026 20:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 992396B00AD; Thu, 16 Jul 2026 20:30:34 -0400 (EDT)
+	id A315B6B00AC; Thu, 16 Jul 2026 20:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 714566B00AB
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 20:30:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F01A04037B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78F1B6B00AC
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 20:30:35 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C726616026A
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 00:30:34 +0000 (UTC)
+X-FDA: 84996387588.11.8D6782D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3611040004
 	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 00:30:33 +0000 (UTC)
-X-FDA: 84996387546.01.2AE1CB3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 786DBC0009
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 00:30:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RuglQjDn;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BkibWEkx;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784248232;
-	b=7Hh2Ojnmnbp58Yn3+kLXQgvmouyb39K+HSkAdGHxqA+uwJdBu2nQaCvJJvAi8SSR9h0pQ2
-	UbtiYwPtn3V4LkPTTQHAfCI9iSMUAWDnPpvvgbgkaGDI1Y27ZoD3EIYtq0Th7g9vIsj38N
-	7OcwuJg+s/xermrSEJGz8JWu/DF5LDU=
+	t=1784248233;
+	b=5gAo/McN6UyZjz/UsPDO99FXU0KVoHDaEede6aRv7p0xrbUkFCbGOVBadvsiRwziRCGXoc
+	IWx5673F5OUy+k2yXkPxXkseaO6iz4b63seIjz7on7xEa8w7F0ZUaXu50APK8eOqXXG3qQ
+	Hr844VYFynhlNh2vUZHENaOSqrxCzNI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RuglQjDn;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BkibWEkx;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784248232;
+	s=arc-20220608; t=1784248233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xM5gDQraqqXBT37mFYIx8WuUHVtDjm2kQWuZX7uenPU=;
-	b=Ijb87NvJydaRtsCscvXAfpej+qjQKZm+mjzmr1hNIaIm7YpMzTLATTft8FvsNRcykrZfzR
-	9PbLIMVfwKCCvAaBOuIWidgLKZ/6ZPamOVv5c8xyLMysvfLCjcTmX0ucG7ez/w+f5YB/w3
-	7OWLeALlihQuO25qmBO0qvV1xjEOwCI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jqlH4wneWbMAf8JjBiLX1bTl/sVQqX7skPWoj8yoesY=;
+	b=b1pfx7ElUFRl6B6yYXqHAV9RrIHwGI6SrudAAMLVVCzdEi3E9D+jAf4WhX6dqqdl2TCipR
+	jNYXA6eeS11P4jAqNA+0vR7ulN6x3BT062v0vEsCEI8V2RrAc28i61TN0WoRaD3l9liri5
+	HQQ54L2vvgAxu47QBgR6XQPFsgMQkkE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D8E2160204;
-	Fri, 17 Jul 2026 00:30:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3C11F000E9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0EB6F40D78;
+	Fri, 17 Jul 2026 00:30:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951B91F00A3D;
 	Fri, 17 Jul 2026 00:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784248231;
-	bh=xM5gDQraqqXBT37mFYIx8WuUHVtDjm2kQWuZX7uenPU=;
-	h=From:To:Cc:Subject:Date;
-	b=RuglQjDn3bYdgeg6ncYPVDXHbOj7ciTiM64J4RZbSLqjMtlMwvz7yMWrfYdvIeOm5
-	 eFVRrwi8/McVixBoxsMIiXdjVOjlGsM0Y+Q1U3XRa7w6FWMExDLA04lNLgFrQrUO32
-	 Xd7InuA11qiY1xvn82GQyp/+Jb1HXcYkfLhLdsIj0laRWtfP1M/NgMeZbqnbSUN2EC
-	 +hWsHlRvOG92a7vu5kBIExeAVzDq8gPaD6TQpOfqzl1ELHDdVs9FivdGYlql5ATWFx
-	 T4cNEgTzw7xp0YXRNQ+BpOZJ6LpLKlSH9a1Blg/OYlLMwfK0MZghXQ3PchL3oDcEQX
-	 oA1Ovv72fRKgw==
+	bh=jqlH4wneWbMAf8JjBiLX1bTl/sVQqX7skPWoj8yoesY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BkibWEkxEb645+nXZzhJof8SmEPgjDXdHTbm45OKlK4kuD4YBOW8QQ43Va/dMG/p4
+	 F9153fCWi20R5wN2cEBvkAbpnBpJyylfMSfZbxFeXrzcvWGkcuS5ZuH0v1QqdNv8ZS
+	 Q/xpdyMEjE5nR0pBeOu+Te3l0SfopwLaxm5YgDAtkvaHs40Y5dJep+bDHv0RPXs0m5
+	 fILC0tOyXUFC5eT77uj/ncpUY4HmWBDVcI5dAbdgDNw8sPRn1ZRkHCWg/VuzzMrVEH
+	 AX+S+zY9m7RE8oXplZwANRRtHrhJyD15fDISQR35w5DkD+VXaSy8WOyVSZDITP0Y75
+	 DFDGZQUUX4FKg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,26 +70,27 @@ Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@davidgow.net>,
-	SeongJae Park <sjpark@amazon.de>,
 	damon@lists.linux.dev,
 	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/7] mm/damon: fix uninitialized DAMOS field and kunit exec expectation bugs
-Date: Thu, 16 Jul 2026 17:30:14 -0700
-Message-ID: <20260717003022.119437-1-sj@kernel.org>
+Subject: [PATCH 1/7] mm/damon/core: initialize damos->last_applied
+Date: Thu, 16 Jul 2026 17:30:15 -0700
+Message-ID: <20260717003022.119437-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260717003022.119437-1-sj@kernel.org>
+References: <20260717003022.119437-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 786DBC0009
-X-Stat-Signature: t3kfgcqmycfyzdn5r538ueeyfaj6tocp
-X-HE-Tag: 1784248232-635618
-X-HE-Meta: U2FsdGVkX1/Og3FrDXE/Tb/H650zUreBWZJ54ePvMR/8dVXx6o5+BoCN9TfOzDqCUOELNouBrmIipqe3KFKCJtoLNhaeLC7xVhAnKyhcq1lq0tdrJtGR5+YeEEdRagYdvAJgfrreUeUU0q3aZwxB4lgSGuaNWRPWyAnWqvjZZd9MHaxsmiEIs4RfZzxuHHi3O37wRTw9A202GECnvKoUduNpWvxc7wEpv4djU0c+0m0Iv8alnZB6FosBDspYWcWXCyucfCKEQ2PjP24jncCoDWNrL53o9Ih6Fsu5ODQdFYf1jv3KjPYWAumWQMKkzYspOcj8Pp3wavp5OdAT09hv/ZhagV/HcKUWSOtDA2AwFqOe+BMd6Tl5ZbN0oP13LO4+oHkZm1eguSoMvWkNEKKKnWyGdG5TqJ2ZQ6ppGf26KS+MGAzFqSyC04ZA1LL6vKlV/E1/MSO7hnxbxEUKY/F3cIz4KG5WGnnTrjFhK3llfO2wxWpK4qPihsOV0O4tEsCre8OBYk+lCS0JByb95aXyBLqsdp5pHkyMWn85o5+84N9wifBl8/Hn01eNPhTTZvzLyTenv4dBUjVqGU3jG20GtTGN576514o78coGhH3Ajpksr/xI1bivyXCIOAv60b9tMOC2PouZj1Jy/6oIpGIjzQd4RIkdgUlCXd7QxukErCoE2LHhjQ/ORFyh/3o0w6e0xh7jNbdir6mw1AEyc2Ef3fniuXZGuQ5/HQhaB4U57ftuIpQqDeTOZRVYwQFGpkhnhHJi8OgLITXVT546iCq2fDmqNs0F2djSvngq/tRmdS9qgxfTWGEDyKjfb9jb4Ht/n4X609FUVvas7j86PSDIpsQexUYlgUfFOxgDphwR8QJAH20h775hHdjFuGVmvhqi6jhvTpyp14hZd4gHUmgWciJgZ+ETWpDBiySNWAZ/5E+Frcy0dmy3lxe7ann/78WhKMKEGJFg7AEZHPSvVuL
- 8WMUQy7v
- pGz0znOTAYuKZFXAaD2ey1lhteEhPsJkzRtCJ5p7fckU7BSdfqNYZOll6zekMMK3dYHHQMsS9Z1+jLIr+hahVydh1FIp10dV0l10M+o7u3Zf1oU03L7naHxYXRdjQGKGju6xztR6+R/ZODRG2y5df2n9p8jij8Fny515vtK3LFvNY+TJGbwGAlgLEISOpqUxb/tszGCHSatzBvrM=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3611040004
+X-Stat-Signature: gms7exzfrm7cyxi14um9xtear48y38rn
+X-HE-Tag: 1784248233-351217
+X-HE-Meta: U2FsdGVkX1/OBtbGYhwtmCC+ceMslpdoDfrwwqdj/4Df7hr6lb8cy6bD0Ipa+d3g8TC1CsrxTiKR3ty+otvhDnLaUH5psAhdlpGi9p843mrp0nlpAAmwpzVgWczQBtGIxKax5FKLdd3FAY/647uxOg3xnNGmEcPuj2UsXETldEyZMWfQkWNpohCclRSiUCiaoH4uJlqSMQIq+VJidxKE2EwmsHahwQgD/koNYbdHdL9UaWOFF/Mk+v+Yu9vKFlDG9Bpnpl/2Ed1tJcwBqpURPVPAz0waguOD5MUeU75MBQ5axJBGS0Si9lLAvA26ZdgaYbibH7m9pzt95r8NA8CApMLvHPPC+5hRrEYVeVQYVFen1LiNSQQxTCe323Pvr7wCZm2xOmPjo9c75jawCaQq9gYd/Ef0kH1q5nD9cWyzfUsKBIu1qvpNzwQMZUNKqnkE1txYLxNtmitgKCWE8TuSj9lLhJzpK4LHWWTWxvHBnim8b6D+2Pi7/76UPVJgZFWchvaB5b/GORnOfJRvB6b6kbZADARfI7R2VoyRfHL+ramHWjeY5s1/udL85wHiYrcmE3AyAGIcG/6Mhrqw83aY0JPQjuG2LYmxuTAVnhj/KtRcXsurZEUfUj/p/4cA4U7JRPc1QVlmzWMtQXEn/A53LUA52iQI3OYTZfPAWQIDqkRx4HvcwJI4FiGvITHh3vbcmxJizrEHQFHH85WpB0tOpP6gHYdHjA+Iv+h7n2i4wJI1Ty+UGxZH58vzecEUcsn777Ap9u0apKQAtL9t61Q5RarJGR2tNnOOhPD1Wb+voUFXy9njfu7jVUpmv0ljD9N5W49Sk3+vUmsof90DH5LVEro2JwBab3vBTwQSo7qzcmokGbQzjDRVA0Y3/XzTPRhllZ1vEcqtwefdeFKoAXEBz3LYR58mAwVy4fyx+tGtLCrR/hDJ1nbrTsbxPXPIz6kfQ6InIn3QuS/n9QEUD92
+ Nnz+uJkt
+ 13hCKpuvtssRcDq5Pvz1Gghoj8MGVWk88i7jaqWcnG56Nbd7inDON83K5cPEy74ixD3JmW2gjtp4q9PnkwB7gz3uC3kcuE7kos6Ozw3UUYvvsJUe8pWYGe8ujVqPlisBwsl3gaMW29PV0IecTDRySEnWELU2sYsBI5JI1FEHpPr0xS8Kas7ZXNP1wOVmnAhPxokFUQ7cDKUqL9oafzlnnct7VMxNr71BjdQ27Ohy9e/zW/LhGnjkjS4TmgZmjfHPopPLKx2N/guGy3ZGtD3y7vmOyhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,33 +98,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix a few Sashiko-found unurgent bugs.  Patch 1 fixes use of
-uninitialized damos->last_applied field.  Patches 2-7 fix DAMON kunit
-tests that do invalid memory access under test failures.
+Multiple DAMON regions could exist across a folio.  If they fulfill the
+condition to apply a DAMOS scheme, the scheme could be applied multiple
+times to the folio.  To avoid this, each DAMOS scheme stores the folio
+that the scheme was applied to last time in the damos->last_applied
+field and skips repeatedly applying the same scheme to the same folio.
 
-The bugs are better to be fixed and eventually merged into stable@
-kernel.  That said, the fixes are arguably not urgent.  Patch 1 only
-introduces negligible DAMOS efficiency degradation in occasional
-cases.  Kunit fixes could introduce quite bad consequences but those
-are test code that affect only test run setups.
+The field is being used without initialization, though.  Hence, the
+mechanism could wrongly skip applying a scheme to a folio at the very
+first time of DAMOS run.
 
-SJ Park (7):
-  mm/damon/core: initialize damos->last_applied
-  mm/damon/core-kunit: check region count before testing in split_at()
-  mm/damon/vaddr-kunit: check region count in three_regions test
-  mm/damon/core-kunit: handle region split failure in filter_out()
-  mm/damon/core-kunit: skip wrong dest walk in commit_dests_for()
-  mm/damon/core-kunit: skip wrong quota goal walk in
-    commit_quota_goals()
-  mm/damon/core-kunit: skip wrong region walk in commit_target_regions()
+The user impact is trivial.  DAMON might unexpectedly skip applying
+DAMOS action for one folio for the first time per scheme.  In the
+DAMON's best-effort world, this is never a real problem.  No critical
+consequences such as kernel panic or memory corruption happen.
 
- mm/damon/core.c              |  1 +
- mm/damon/tests/core-kunit.h  | 28 ++++++++++++++++++++++++++--
- mm/damon/tests/vaddr-kunit.h |  5 +++++
- 3 files changed, 32 insertions(+), 2 deletions(-)
+It is a clear bug, though, and the fix is straightforward.  Fix the
+issue by initializing the field in DAMOS scheme creation function,
+damon_new_scheme().
 
+The issue was discovered [1] by Sashiko.
 
-base-commit: 1ce4cbd62f48552188b3f6fac8a14b709e97b7be
+[1] https://lore.kernel.org/20260714055436.120034-1-sj@kernel.org
+
+Fixes: 94ba17adaba0 ("mm/damon: avoid applying DAMOS action to same entity multiple times")
+Cc: <stable@vger.kernel.org> # 6.15.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index f464b4f0976c3..60255f5cd715e 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -705,6 +705,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
+ 	INIT_LIST_HEAD(&scheme->ops_filters);
+ 	scheme->stat = (struct damos_stat){};
+ 	scheme->max_nr_snapshots = 0;
++	scheme->last_applied = NULL;
+ 	INIT_LIST_HEAD(&scheme->list);
+ 
+ 	scheme->quota = *(damos_quota_init(quota));
 -- 
 2.47.3
 
