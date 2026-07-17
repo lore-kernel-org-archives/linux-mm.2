@@ -4,138 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C1C3C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8750AC4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A4036B00A0; Fri, 17 Jul 2026 12:12:49 -0400 (EDT)
+	id 7B7306B00A1; Fri, 17 Jul 2026 12:14:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62E3E6B00A1; Fri, 17 Jul 2026 12:12:49 -0400 (EDT)
+	id 767EA6B00A3; Fri, 17 Jul 2026 12:14:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51CFD6B00A2; Fri, 17 Jul 2026 12:12:49 -0400 (EDT)
+	id 6301A6B00A4; Fri, 17 Jul 2026 12:14:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F53E6B00A0
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:12:49 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8EFC0120125
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:53:19 +0000 (UTC)
-X-FDA: 84998561718.17.A5C0B37
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D1D3F40004
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:53:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EOKldVbv;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784299997;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 191E46B00A1
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:14:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3DBF3160171
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:58:59 +0000 (UTC)
+X-FDA: 84998575998.11.993D14C
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010002.outbound.protection.outlook.com [52.101.193.2])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 25BC7A0012
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:58:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pJSu7snz;
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.2 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784300336;
+	b=JJicGiD9qZqk4j1L1CHNmDuhQJUDeVmCaUG1KcpkaiOhNE7gDAOiOf55PKjZqlZA1r0RQd
+	/eEaJm1bCNY0NdOEmC5ESHshPfG6mgNw22hsvIBxSNW2lXtrbASQi+afKhv2LBF7L5z5wh
+	nJkO/szTpACn8BHQNaV1F5Zm1QvF+x4=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pJSu7snz;
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.2 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784300336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1/oJ5Qf/VbHfBWLAM64QZk53YNO+mKq9utgzR8uUk4E=;
-	b=zvVW1kfZdjBAhiswRJhP6Pm4gKVCVlZ7yzeSZ1JxivrfEYhVxDu6kBX4mAZMtZiL3Ptupl
-	hUOJNcXOQw8N6W1kuEXeKUf0V3vZjLASSdG2APbPdXDZzg6iWwxmC2MDDnLjfkGZNAcGGB
-	V1g3XDQ2v14WLkCGK7DgZ01DcWT/37k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784299997;
-	b=wWm7Gmsig9cKWudX+KOM5tdjJmulsDvGVUPZ54ZMFQP9D/DzWspKkcoUonPKnOfduit741
-	FpH36uiaeKAllMqB+UzPVa5S0JCC3w9UYFd+NNlBIbWmOnj/SCcm2MV/nC1TERrxMsxPfv
-	1Lmuv2L4gyseXRkef+IWpsQ2P4Cd7ec=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EOKldVbv;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2A7FF60A5E;
-	Fri, 17 Jul 2026 14:53:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1426A1F00A3D;
-	Fri, 17 Jul 2026 14:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784299996;
-	bh=1/oJ5Qf/VbHfBWLAM64QZk53YNO+mKq9utgzR8uUk4E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EOKldVbvIfdnaD+P7TdPswSLRN+O9HifxN6uWB8N8hdEVWGAf8uN3yVuRNuqRgRfe
-	 o81M2I5yAgWGhNB0EmRa1Isd2tZlGCfIFBKvn7Qw2sb3+emXasJS53nw3LwsJdAXEo
-	 W1Sbi5NBo8+rHcsbn39WHpiBv1Fhj6ig+C911jyaEgdEstRAPNcKythrdY5GoKmKHz
-	 BNndFan+L1ioUCt6RaHPT9JrrLZQPtm1Lv3TJ/t1dsj+fI1Y2af7/27oWKBYhpQZst
-	 p1MqjL3tU+iVijQvuSWMbtSiVvfO8G7TAI5EZ2TK8Izeip3tCPQz3pPsHHI7ryX8Qw
-	 0uRbih7+b2gfQ==
-Message-ID: <e50fb51d-72ac-4ace-b532-5cf32ecd80f1@kernel.org>
-Date: Fri, 17 Jul 2026 15:53:13 +0100
+	bh=FhZ/S/tTHHqHa2snbuLoPRs6BaukTB8jMMO0LkDQZGs=;
+	b=H3zDM19xidkknBfg6ph0sSRJk+Ufkl2x/faBP9+Ad/+2U9ZcgrKF0k8dYzo9i0xvGtIPkF
+	Hi/Hu4uMLmLKIxEQDQmoSKLNku8U/6yABIuCIeo7tbTHKaxFm1iE4F9JsUhnpS1Wsz6cPk
+	T+v9xANK0Fp7xmVawwwXyusegFmgmW0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bkwaZlXNjyd9PASzQbXIGlHMKO3VLB2+GcCtMi7srkyzEgJcnAZDAe/cG7Ym5b82KHXRR+Gtf6y2UUn8rPjEAr78395apPqOswBm8unzy5TuWaachpFr/vexPszEIg3vlh520W8d5OvSp8ZATlXlHJfY1xc7YpWVU9oN1lCEM5LQ1gReYSfgYQP37Hqs0Tlqh92CzMkSOqOrbur0O5fZwPmb8RsdH4i96L/3ni2iU0ttI28GHZOhyb/nhzBQyy8DMWi5amPorE82+8zuOncwuYemY7PL9SJuI2ZuLLmG1CQ938/YB1fS7AiVhWUwIdQ7nnDFhH6bAFufTQgv9+X1wA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FhZ/S/tTHHqHa2snbuLoPRs6BaukTB8jMMO0LkDQZGs=;
+ b=jHfJxSkTxkddY3Mn9gCg/AeyTcEMtNve733ttkkXBtxmudQV0tjN2Za8jalS/6zbJ11ZVmUkhj7w48L2aS93BuWpl5KsvSzK01cFXgnu1AbwkMMgSzYw+t1w+jRWF/ZKTMGp1aw0+2hmZGpB3O28BOSG6lZLUREvuXUsSwbKORmEKii6knICrSH6BFOg9VpHwNhAYZrYiYVAqGl+vVsDnOQyu4sJCp4s/BHA3eHBOVCAuFhoUa4BY49yBPeOxeoLlNUKJoJ7F3HnA6JNowy4W2veg/O7n69wrYe7Rv8QKOL0v79mxBJ1OSZGYMv8oxMsZWO0nETwH+sA/h2o7Dwbyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FhZ/S/tTHHqHa2snbuLoPRs6BaukTB8jMMO0LkDQZGs=;
+ b=pJSu7snzDd2BlPNLmyAe6kciAxSmp684m+5+EztWAv+zZi2SPbBvAXEj2ISjC+NwllqL4rTMr1fBHCL5cpsQPL6yJd5ojXjXe2n8c5l0w2JIWSsXFYKG+470YYZOFbuGpEr7mjGGN5UL/pvuNekn/xqoUdhLKxxOuF4nYS98DGYC5e5ZysfTLvUhqs0SKUTHF5brpuTkyAtrSF/wnC9FteW9Mlwkw9+lRilERyDpF/pF2+eNlu+4m4bqo4Z6RNI1Qq1CiNuMFW0nDfUAjguV1nCo7eDYGx1mNA3EN7y1azSxeBEk/AMpE3/j1Kz6yXz2bGjbxYB9cDBneqU5nxXvhg==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by PH0PR12MB8176.namprd12.prod.outlook.com (2603:10b6:510:290::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
+ 2026 14:58:48 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0223.008; Fri, 17 Jul 2026
+ 14:58:47 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Nimrod Oren <noren@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Liu Song <liusong@linux.alibaba.com>,
+ Hao Peng <flyingpenghao@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] mm/khugepaged: cap pageblock contribution to
+ min_free_kbytes
+Date: Fri, 17 Jul 2026 10:58:45 -0400
+X-Mailer: MailMate (3.0r7020)
+Message-ID: <8E9B69B5-0FBA-4CE5-B737-B83AD1FE52C3@nvidia.com>
+In-Reply-To: <alopMtyPYdn7vDoC@lucifer>
+References: <20260716173504.760369-1-noren@nvidia.com>
+ <alopMtyPYdn7vDoC@lucifer>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BL1P223CA0014.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c4::19) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/4] mm: introduce __ptent sparse attribute
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, Chris Li <sparse@chrisli.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-sparse@vger.kernel.org,
- Muhammad Usama Anjum <usama.anjum@arm.com>
-References: <cover.1784292223.git.agordeev@linux.ibm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <cover.1784292223.git.agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH0PR12MB8176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 072b36b7-0841-4461-4a0b-08dee413e757
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|56012099006|11063799006|6133799003|4143699003|18002099003|22082099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	ZpH+XiVjZBMJ6oQvyZE1R0Ga35OtJQR3ba6cyExFZ5KWniY6L9zj0NCrYl/G5AZ5XHdH8DgUXPyZGj5KVaOp5r9xs9SQhA94bzyCSF+PXBtJ5ClogLLCJyos9rZBmRwJ/DFQmu6FRnXsy83tNqjLe4KS+/Wz/xakcqQ6xZDxRQ4mPCbJLNO8WX+h2DGN19AtrEdBRp/PfSf6PdOuM+kfvfHQINwVmCRvzmsZZ9ggO/SBZU3/d6iNV+N9xaatB5TBqohD6C5jSR61VzSzAEv1B7nTZBGesYTOYtEB6J8Yn/+nkieCsAN4oV4vNFEGecJJEFNeycwBwwEeU+D1WPGErKx4fLl2UpEDnws5U4/w/JJB0GHdU+qyJz6nFh0kGEtLaH0yqGLFyiGrxhcKS4kOhZ8eTZrhVAG8p0IaJHgK80lY8t+5NkS4Oacx9G23AfpVovjXyOVG5nfCAk+GumqWTLNRpqCkxO2KQeVDw6+F2deQpjuTkaCsorl6udIWKcOh9HcMOx3Ox+bCp/QRVaBOxmIvfongjIt+QnDtT+mosrhgsac0j1dhHXLehbXaf/SA4eeo3pOBDTFoeTSOzXz+1hQ+h3kOYxDkgpVn6nVeNqN+cC1S8mtGDCV6Ijcsois0uRBZPSLrn8bhVogV9w/66rr6Dlu2/jkYZ17BqrBIiOU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(56012099006)(11063799006)(6133799003)(4143699003)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y33iEU19VVY6Q2DWAN0SRpB6E+qh/tmGj7O0di07txGS8WeqiKsf/icZHiMy?=
+ =?us-ascii?Q?Z81A61FZIkknV/qGf6NFWvPSHkOnl2eJrjaGHNEU6pPKxeq9XTs/4glrluOE?=
+ =?us-ascii?Q?yffyklRvpzf5kFukguKPmHD4ExvdWeIN9HK3tWJLvamWxAtF9e5SyKpZyKMs?=
+ =?us-ascii?Q?W/JIgYztRzApg+40xQiwE38H7QeTGTfRSTIvx/JenrjeKT3cpyif5OxC++TT?=
+ =?us-ascii?Q?aDuDcxG4AGytbATnPuZ9bQjPuS5lbYoF1zMpNvBlh+vHIsSZYGkUae0tlu3s?=
+ =?us-ascii?Q?RMHeVTn/FR9CfqM1c+xMEejc76wzyapmlJ4F90wrT+DTGYwz5riaVcMT4v0h?=
+ =?us-ascii?Q?bVEyMWhVygFm/Tm508DhmzNTio7kRbeVIljDLyVIL0xeYzfqUqZ5RysqTFTi?=
+ =?us-ascii?Q?n73P8k3saWA23l0Ot8AWdmk0benhNbxANC6vE2LpWFU48ciVPDycB0vOylbT?=
+ =?us-ascii?Q?a+ybMOfNG9A/QJl8NeLuj/44DBD/ebQZ1a/OsboZC+LwhWeHQ/8OOR1XbOoe?=
+ =?us-ascii?Q?Wj/y7p6Nq98U8fbtTgAEdggzTpP9xRKk8xRMm/U7/HvWYG4AA01QXafmEHYb?=
+ =?us-ascii?Q?QWEgAz749lZMEzXhBdegEdk0VEk0/XQwXHnxhsUFHv3FiL9SmO82Nm5NRl2T?=
+ =?us-ascii?Q?3gadbYlkl6quSbghXFb/BlAGV+93C4kUNlbtEBB676zs/R7TSrswcZg5mCzU?=
+ =?us-ascii?Q?E2uzBHApFUvPZ3pUxedUljwP3/Vxb4FRNZ+zHV1r7Ys4vFzZ0XXPFxp38U3d?=
+ =?us-ascii?Q?w7Aq5lvrr/zWSKXzr9eSKRFXLiDgywVowAfuxfLx4JXu5ZkUzA52Iti8w/1s?=
+ =?us-ascii?Q?ap22HiCeHBunnbKBmbX8ZDI66O0gRXNLznJOBYvTQY082VFdZMjS4LItjHab?=
+ =?us-ascii?Q?37sq0eDDWSjpIjlm6MVXnZExiczzz2zO6AeNBQCJeErWNyeVkApuLaotaVHl?=
+ =?us-ascii?Q?gyYc3gzcEDISk7G2PfVRy+LawC2mKZoOUnLNRSy0u0U3kHxGNmTOcpZNChiC?=
+ =?us-ascii?Q?rSDpFEEssL454heBI8uDPzlFh43/KXSvuFq0lENnh048iePB3YLJYlyhV1vt?=
+ =?us-ascii?Q?NeUMt8Dsa90gkYqk5AvgEaddW1LVrt2Sfb7kpguz2nsJMY9+itHfZysc8+Gn?=
+ =?us-ascii?Q?SPTuTjGYJIO7gLejbtwkccevTN3iQO6dy2IdGsRQaI+mxd1DTQLf2wNtzaLY?=
+ =?us-ascii?Q?2kK+pWMfBTIQuy1VCMs8WOCh/9HN+R4D7TMJft6mHvS1s/sZ5+3Ifsv16FMb?=
+ =?us-ascii?Q?prviRfXof7bLW2bVtmwwOuzc9B56ohKz/8ZNlq24BHcWM4LUUStw4Csfqy7V?=
+ =?us-ascii?Q?jtI+98Wb4e5ngyixJuSpUtCibsVpKkuAEI9/zBxPq5iGb2Pefk6/5xPjwPO3?=
+ =?us-ascii?Q?qdkAmKyKFI0ic4m8g7NSxnhEsYXCu0BDFft03OZzgCdrD5ipaMaLUuWAdyJ7?=
+ =?us-ascii?Q?ZDi06UZGQLQ67d/X8goLqgUJBAZ1BrWjdelb/TzmgDw1GJEsZUds3PH5ZZO7?=
+ =?us-ascii?Q?pwWKmFJpjQd57KaoNZZIJtZV+R016Vg8z1X7AyoU0obAntGcd1QWGiQh8iBY?=
+ =?us-ascii?Q?mCVihptHalqkAs+KdVR0183gLIARO6fbDcuOUNqTvuTxJJTJjquGIBlgxcNF?=
+ =?us-ascii?Q?C3gCVpljiNu9+OgaZ7wXCg8NlgDUftnsFUPM02QfRxhueWhNAmerTuVH1TlK?=
+ =?us-ascii?Q?9qqvVelj8hdLf0PD9UYlpq12W0wXmDqx331oC0L2Vt4kA/nr?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 072b36b7-0841-4461-4a0b-08dee413e757
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 14:58:47.2275
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AQm9AwZ4gAhkd7qr+3kvtDhiRd649loJhxC492m5XbkCX+eMxIVHrCF/Exh56Gf6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8176
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D1D3F40004
-X-Stat-Signature: fs7ucatiwxm6d3s8ytbmnc8rse6iwozc
-X-HE-Tag: 1784299997-216833
-X-HE-Meta: U2FsdGVkX1/mnaEuLAvjhlDbRqsp9pJB20SJm7WJmNZQiqbQAu9G+ESUPBZu562FJi1ax9OctDhA9HUB7LeePqHW2VJe9wlfQLd17AvbCbTHyvkeyUDprgAHzSPZP6aHnvwdTfb0MRsWI0GVfLJFb6BKmGgrozKzo6S+QNGmM/nNtaI0o+dT21mlPllTzJXRNit0ZXgsyRt4soG8rBWvnud+80BK9QNw5O81kP66Lf/38bomleOkdT+vZ+f+LPLmQrYJukZFZJAJki7ffdM7xdv2kCcgrdfi7LGd+M6NHqaA6sPEWbTalnZ5I0Bw5KcswzjpDNvsqgJGRlLmR6SIB3UNcej+6FpagIkOOwtVYMU20IoMMd720+KhXo4Cvtoy0eIxZWiS/iJmdeipJ2VB29FUNR0AhH2AjF8pcgpgc4jC2pKgh4mIyaOKRsRvuWjunPpqQi/0IOtadP72azGWxGD7uqm5K6LLJ1PWzjZZeMAqB6wr/Idncm6NWZG90ttDWYyzWp65HB8RO1XrckYmZzMYVBPJhxfdkmEYLi879GqfnP2EcMDItNmx0R7Buv/ysQ3jIQLrBWAoTxkw9wDUAh5LOd4L0jQBQSYfNFYgWnc3Scc7XSAGgLafVawSk2F0eRzSAKnRNV6vC/OCKjzkFwEkYBVIvDJnUwcGlQRnNzourl9xdyR9yjIa+V4MweOSczLZYX6mHe9iHOMZBStwgew2dnvIMHm0O47vJD+ouqe+ypOA5/mS+5tSoQGDz5/nyEB+BfGQn7VxwGqbNSaZWQ+Oq4lGyo5w9oRgs9SVP/Ub+TQxOrPU6FAAzybsufkjGHq0AvazcmIApSSXvCW5HRiKIVTTF3spzfyS3f5jgeZiPIE/NCiOa3Y1WWiMwmYWpJIvnkjwX9fvaW5+5dbvADP8FQhE5t9Km+If6M/zCLIQ0eA+f+KhV04n11L9t7H0E9ytfe9KGzxVcDUICJj
- oGwIgNP9
- HPWiu0wo/I8UOqGJTHqW2z7MYXnw21h9Rz+WcZdQwh0Jb02tWwvmFyilTmgh8puBONS/8gEqSsIuaYeiX1Fjtlg60mMGxTD35jYLzwzpG9JGRgPsJAoIB2POwNLaenGeU/2IJjk050RbnehBhPuV4dSCS3QiyERpK0b7ctY+i/STR2khJ8T0VDLLGpfqF1JLLApC/cUA3DPRE8AqBtK4ajsUYzlNhDBXY65pV48XO0uLDSv/J4u8AU9Iax4Vo0nknXvS66gw+8I5tHmGxU7KxNJErq2odsRZAcYgK6JmhxfPeMFs9BirtNcCCfFBd+GwaX+sYiIcaE9OvBEM4DHLRqJtDUFcJo7khPgmjbNT9fRH0Ebx9veUnmpcc2+f2xbaHfV2ubuSGa0Q0Uu0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 25BC7A0012
+X-Stat-Signature: edj3q7cnxgp4gm6eu6r4graxpdn7docr
+X-HE-Tag: 1784300336-835789
+X-HE-Meta: U2FsdGVkX1+M4abqlbzeDcP07ENc8eO6rX1kwSSn3rSvQZeg5l9Xwx+DpRYf/xznKdb70UsduEfUelbbnLfCbmLcc4CBuH3wYwKSZPXROvqj7rO3OtQJLBzoa3a7N9lHZSKDPgUbDrcTtcpbI6RDhJ7I5HGTnRmEdHNrlG8WZ3dL9qbPQZwJ4fXL/5T9SAjcbmweItj6NRWQPz9SRjg0EdOg4AWOID9ufT/m0cghHnwE2ZImgKRu2ynsQ5+hMMBIgf5HectT12gBop21ZeweYW0+BwlkwQkB6+uamW42gIxpUi2BFXnaZaxTZUmxeVQwg2sLBbziGGRtUElMpqAeVpWTXUxq/vjGFh+FK5BfjU1r5Q6lgoRex5KePOEix284saj/dxTWgchKI8+BvkbqTqO/uq7x3WZF0FQeicnnR2M1HYsdqeixhlPVE5uFlOVG4gDc2f4F6Np0FPbG333Of4cOikhtybcJQ5X+9cBEBKaxJ7Wp324UV7gqxsyE1BJrZ0Xc4f4dfKwIammzvI8kvxJvJl/T+ZMsdjw0gIM/t8CIbQjZmgse+lbClakwzg3DjrfCgawSux6ABxyipyxFaALWz5PwIljIeW/mHPsb6J3nAL8XiCl4fEVk2fJG361GveEgHIB+FgovIQp8RSXRvIJkFvCpNIpfNe5+6TWF1s2oAb1W/NPGtFIuYCjL3ge1kVq6ipsSUWPX/fuBm7lf6inqB7d4VQHtzaYB2c1xub1mZ6Q9qge1Qj3VTtAF5f7lqTfjiY65wPZWMkJRd/xszYa3VgMSBQKXzkjvV5piDk12HznZjr3I4e5FErqQGLNryQ4Iv48K7/01Hvqql3otfVldLrW4TyRi7kCcLKXOS/8Ta/KMVyotoxshM58xwoVE/i+LhsWIvgg8wMTj5AW23TSepAYIfCwWi2jQqhrSEdJfT2Ey9M+IBFEie8AXuO5QvULtzEIleuNnIEOMrQu
+ 74HBzBX6
+ pf4k+FAr1IVBIHmFfZAovPYSAt8BoDKkTe1QC44OBe2vBHRJs/ptFcH9BlDKLkEbcZWeyOV7eKU0PtHtMTsc0qi2KjLcwyQ1sTaerRbGNJWxlmqr+I7g5yb7lxcymyOvHUwYpYxeD3NqYfzhD0T5Vr8/2l9pX5LAhYnZ4vXiXF4ibxt19MP73H4W5m4r2pTM3NiqLLKC97dCmdHv/moDputaZlnu/k/sOYd7YOeDzP7AQ2ies5IksmsMzqxfdyB0siRyufu8XR6zEMZX50cQUtFP8buMCQ3EFBmy9aUVfIySe/ZR4Vv+BLV0LQDe81OyH2zuVjMHvCkw2uu6UcfCJTGI78HpCuoUMHPaD1pkfhcbv7s3qg+DJLbeP1fZTzIST02ggXy7gUX3KYM6zJ4PAFWJKBfWGrbUbyWaOlO2JSTpTnnjgB505BA6Xukk9UNOeWnTpqpNj8QR7U7BBAwf8wT6M9LmG/65J3pIQ4OsKR8G6VycIg6P+mm9uXDOfWb9fzOLi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,56 +169,257 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/17/26 14:32, Alexander Gordeev wrote:
-> Hi All!
-> 
-> This RFC is a result the implementation of lazy MMU mode on s390 [1].
-> 
-> Heiko Carstens requested some mechanism that would rule out direct
-> dereferencing of PTE pointers, which otherwise would bypass the per-
-> cpu cache on s390 and lead to catastrophic results.
-> 
-> This is an attempt to introduce __ptent sparse attribute similar to
-> __private, but to be applied only to pte_t type by architectures.
-> When used with C=1 the modified sparse "dereference of PTE pointer"
-> warning is emitted.
-> 
-> With using that new mechanism I was able to identify direct PTE
-> pointer dereferences, which should not have existed after commit
-> c33c794828f2 ("mm: ptep_get() conversion") (and its follow-ups).
-> 
-> In addition to ptep_get() and set_pte() accessors I suggest to
-> introduce ptep_get_nopgtable() and set_pte_nopgtable() variants
-> to use when a PTE pointer does not point to the page table, but
-> rather to a copy of the PTE. These would allow dropping unnecessary
-> checks on s390, but is already the case for folio_pte_batch_flags().
-> 
-> Patches 1,2 are independent from the sparse rework and are good to go AFAICT.
-> Patch 3 is the required change to be coupled with the sparse rework below.
-> Patch 4 is an example of how __ptent was implemented on s390.
-> 
-> I hesitate to post the sparse patch itself before the rework is is agreed,
-> but I am CC-ing the sparse mailing list.
+On 17 Jul 2026, at 9:36, Lorenzo Stoakes (ARM) wrote:
 
-Usama is working on something bigger, whereby we introduce the concept of pte_t
-and hw_pte_t in common code, and allow to decouple them on architectures that
-really need (IOW that implement it in their arch code).
+> On Thu, Jul 16, 2026 at 08:35:04PM +0300, Nimrod Oren wrote:
+>> When THP is enabled, khugepaged can raise min_free_kbytes through
+>> set_recommended_min_free_kbytes(), using a heuristic that scales with
+>
+> Nitty, but that makes it sound like khugepaged (the process) itself com=
+es in and
+> changes it, rather set_recommended_min_free_kbytes() sets it higher if
+> hugepage_enabled().
+>
+>> pageblock_nr_pages. With MIGRATE_PCPTYPES equal to 3, the formula
+>> accounts for 11 pageblocks for every eligible populated zone before
+>> capping the result at 5% of low memory.
+>>
+>> This is reasonable when a pageblock is 2MB, as on common 4KB page
+>> configurations, but scales poorly with larger base page sizes. With
+>> the default arm64 pageblock sizes, the contribution per eligible zone
+>> before the 5% cap is:
+>>
+>>   4KB pages:   2MB pageblock,   22MB per zone
+>>  16KB pages:  32MB pageblock,  352MB per zone
+>>  64KB pages: 512MB pageblock,  5.5GB per zone
+>>
+>> The 5% limit does not make this harmless. On an arm64 system with
+>> 128GB of RAM and 64KB pages, the current calculation resulted in
+>> roughly 6.3GB for min_free_kbytes. The corresponding aggregate min, lo=
+w
+>> and high watermarks were 6.3GB, 7.8GB and 9.4GB.
+>
+> Yeah this is an ongoing issue (as you note below). We definitely need t=
+o find a
+> better solution.
+>
+>>
+>> Automatically maintaining multiple GB of additional free memory to
+>> improve the probability of 512MB THP allocations seems disproportionat=
+e
+>> for an opportunistic background optimization.
+>
+> The fact it's in khugepaged.c doesn't mean it's just about khugepaged, =
+it's
+> about avoiding fragmentation for the purposes of obtaining THP pages wh=
+ich can
+> also be obtained from page fault and MADV_COLLAPSE.
+>
+>>
+>> This RFC proposes capping the pageblock contribution to the
+>> recommendation at 2MB. This would limit the contribution to 22MB per
+>> eligible zone while leaving configurations with pageblocks of 2MB or
+>> smaller unchanged.
+>
+> I guess you're trying to do the most conservative thing possible - but =
+it's a
+> bit of a cheat really.
+>
+> I mean does it really make sense to reserve 2 MB for the purposes of ob=
+taining
+> 512 MB PMDs? It's essentially giving up on the idea of getting PMD THP
+> altogether but pretending you are still doing so.
 
-On architecture that decouple both types, the compiler will do the type checking
-for us.
+Nimrod and I had a discussion about this. It seems that on 64KB base page=
 
-The prototype patches I saw looked pretty encouraging (at least for pte_t, pmd_t
-is more involved).
+systems, 2MB mTHP is more reasonable than 512MB. I also assumed that peop=
+le
+might use 2MB mTHP instead. min_free_kbytes targets getting PMD THP when
+under memory pressure, otherwise PMD THP still can be obtained.
 
-There is some information here:
+But I also now realize that capping pageblock size at 2MB might also hurt=
 
-https://lore.kernel.org/r/6110202c-057b-4701-8c04-1a76ee7bb9ab@arm.com
+other >4KB base page systems, like 16KB base pages, since its per zone
+reservation is 352MB, much bigger than 22MB.
 
-And I'm sure Usama can share some more details with you to give you a better
-idea if that would solve the problem for s390x as well.
+>
+> I wonder if it wouldn't just be better to explicitly check the page tab=
+le
+> size and to not even bother trying for > 4 KiB with a comment explainin=
+g
+> that it's not a worthwhile trade-off.
+>
+> I think that'd be the more honest version of this patch wouldn't it?
+>
+> Or maybe we need not be so concerneda bout scaling across zones...
+>
+>>
+>> Earlier proposals to resolve this problem involved disabling default
+>> THP on affected systems [1], adding a knob to disable the
+>> recommendation [2], or deriving the recommendation from the largest
+>> enabled THP order [3]. A fixed cap requires no new knob and avoids
+>> large changes to global watermarks when THP policy is changed at
+>> runtime.
+>
+> How often are people turning THP completely off or on again though?
 
--- 
-Cheers,
+Not only just turning THP on or off, but also enabling a new mTHP size
+or disabling an existing mTHP size. (e.g., anon_enabled_store() used
+by all mTHP anon_ctrl_attr_grp).
 
-David
+>
+>>
+>> Reducing PAGE_BLOCK_MAX_ORDER remains possible, but it is a build-time=
+
+>> policy that changes pageblock granularity globally. Its effects extend=
+
+>> beyond the scope of adjusting min_free_kbytes.
+>>
+>> [1] https://lore.kernel.org/all/CAPm50aLPxJCiVTqqwiz00oMNiqHggB84sXB3x=
+=3Dtv_HUAd5UktQ@mail.gmail.com/
+>> [2] https://lore.kernel.org/all/20230817035155.84230-1-liusong@linux.a=
+libaba.com/
+>> [3] https://lore.kernel.org/all/20250606143700.3256414-1-usamaarif642@=
+gmail.com/
+>>
+>> Signed-off-by: Nimrod Oren <noren@nvidia.com>
+>
+> Thanks in any case for taking a more pragmatic approach here.
+>
+>> ---
+>>  mm/khugepaged.c | 17 +++++++++++++----
+>>  1 file changed, 13 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 27e8f3077e80..c0570bbb1f4e 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -23,6 +23,7 @@
+>>  #include <linux/ksm.h>
+>>  #include <linux/pgalloc.h>
+>>  #include <linux/backing-dev.h>
+>> +#include <linux/sizes.h>
+>>
+>>  #include <asm/tlb.h>
+>>  #include "internal.h"
+>> @@ -3066,6 +3067,7 @@ void set_recommended_min_free_kbytes(void)
+>>  {
+>>  	struct zone *zone;
+>>  	int nr_zones =3D 0;
+>> +	unsigned long capped_pageblock_nr_pages;
+>>  	unsigned long recommended_min;
+>>
+>>  	if (!hugepage_enabled()) {
+>> @@ -3084,16 +3086,23 @@ void set_recommended_min_free_kbytes(void)
+>>  		nr_zones++;
+>>  	}
+>>
+>> -	/* Ensure 2 pageblocks are free to assist fragmentation avoidance */=
+
+>> -	recommended_min =3D pageblock_nr_pages * nr_zones * 2;
+>> +	/*
+>> +	 * Limit the pageblock contribution to 2 MiB. Larger pageblocks can
+>> +	 * otherwise make min_free_kbytes disproportionately large.
+>> +	 */
+>> +	capped_pageblock_nr_pages =3D
+>> +		min(pageblock_nr_pages, SZ_2M / PAGE_SIZE);
+>
+> Yeah this just feels like a hack, to be honest "let's pretend a page bl=
+ock
+> is 2 MiB" essentially :)
+>
+>> +
+>> +	/* Ensure 2 capped units are free to assist fragmentation avoidance =
+*/
+>> +	recommended_min =3D capped_pageblock_nr_pages * nr_zones * 2;
+>>
+>>  	/*
+>> -	 * Make sure that on average at least two pageblocks are almost free=
+
+>> +	 * Make sure that on average at least two capped units are almost fr=
+ee
+>>  	 * of another type, one for a migratetype to fall back to and a
+>>  	 * second to avoid subsequent fallbacks of other types There are 3
+>>  	 * MIGRATE_TYPES we care about.
+>>  	 */
+>> -	recommended_min +=3D pageblock_nr_pages * nr_zones *
+>> +	recommended_min +=3D capped_pageblock_nr_pages * nr_zones *
+>>  			   MIGRATE_PCPTYPES * MIGRATE_PCPTYPES;
+>
+> we're really getting into faking stuff out realms here - pretending a p=
+age
+> block is 2 MiB then doing calculations on it as if they were.
+>
+> We'd be better off (and more honest) with something like:
+>
+> -	if (!hugepage_enabled()) {
+> +	/* Avoid excessive memory reservation if page blocks are very large. =
+*/
+> +	if (!hugepage_enabled() || PAGE_SIZE > SZ_4K) {
+>
+> But that seems perhaps unwise.
+>
+> Maybe a simpler version would be to just attack the issue we actually h=
+ave
+> with it - it uses too much damn memory :)
+>
+> So maybe something like the attached? (you'd probably want to make this=
+ a
+> sysctl or at least a defined value of course)
+
+The approach below makes sense to me. In terms of the actual cap size,
+I asked Codex to check what possible pageblock_size and their reserved
+sizes:
+
+1. 1MB pageblock size (s390) and 11MB per zone,
+2. 2MB pageblock size and 22MB per zone,
+3. 8MB pageblock size and 88MB per zone,
+4. 16MB pageblock size and 176MB per zone,
+5. 32MB pageblock size and 352MB per zone,
+6. 128MB pageblock size and 1.375GB per zone,
+7. 512MB pageblock size and 5.5GB per zone.
+
+1GB makes sense to me. 512MB might also work.
+
+
+>
+> General idea is - if we're going to cap, let's just cap instead of
+> pretending that page blocks are of a different size.
+>
+
+Sounds good to me. Thank you for the suggestion.
+
+>>
+>>  	/* don't ever allow to reserve more than 5% of the lowmem */
+>> --
+>> 2.45.0
+>>
+>
+> Cheers, Lorenzo
+>
+> ----8<----
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 617bca76db49..d9e1e7de5494 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -3092,9 +3092,13 @@ void set_recommended_min_free_kbytes(void)
+>  	recommended_min +=3D pageblock_nr_pages * nr_zones *
+>  			   MIGRATE_PCPTYPES * MIGRATE_PCPTYPES;
+>
+> -	/* don't ever allow to reserve more than 5% of the lowmem */
+> +	/*
+> +	 * don't ever allow the reservation of more than 1 GiB or 5% of lowme=
+m
+> +	 * (whichever is smaller).
+> +	 */
+>  	recommended_min =3D min(recommended_min,
+>  			      (unsigned long) nr_free_buffer_pages() / 20);
+> +	recommended_min =3D min(recommended_min, SZ_1G);
+>  	recommended_min <<=3D (PAGE_SHIFT-10);
+>
+>  	if (recommended_min > min_free_kbytes) {
+
+
+Best Regards,
+Yan, Zi
 
