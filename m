@@ -4,191 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0249CC44507
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 06:18:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C40C44507
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 06:31:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4E256B0088; Fri, 17 Jul 2026 02:18:13 -0400 (EDT)
+	id 562DB6B0005; Fri, 17 Jul 2026 02:31:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FE3D6B0093; Fri, 17 Jul 2026 02:18:13 -0400 (EDT)
+	id 53BEF6B0093; Fri, 17 Jul 2026 02:31:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A2146B0095; Fri, 17 Jul 2026 02:18:13 -0400 (EDT)
+	id 452266B0095; Fri, 17 Jul 2026 02:31:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C7366B0088
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 02:18:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B3A578044D
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 06:18:12 +0000 (UTC)
-X-FDA: 84997263624.18.654CCB5
-Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B02D0A0003
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 06:18:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=qJurhs5J;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="S NFPT9E";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf15.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784269090;
-	b=XUmrB+5/MGG27IRcdXWPgSieawtTfyYhunKWAFgGSe5Z1SluG8mINdyPsJqIi0fXT0tYPv
-	1oDKCicMmoEQiz3xACM6SjiErcQTj2HXDXTN12iN/RgQrl2IqeueYfNojBvkey/B0XDWOR
-	XBzntOVgTG2HaUajYxNCosTr7J4Qdx8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=qJurhs5J;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="S NFPT9E";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf15.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.142 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 11F906B0093
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 02:31:29 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7699840467
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 06:31:28 +0000 (UTC)
+X-FDA: 84997297056.05.FCE90E1
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3464E180002
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 06:31:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iAvO9NTL;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784269090;
+	s=arc-20220608; t=1784269887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DIwsi7KwJyaKhQst6GtgDPKu/03zqC/ceJLNUsU0G7I=;
-	b=gOKa8rlI8qi0RkN6x24szgMLcIZaV+f2vDfJppZ00NnIAZ60t2lIkSbkdmeAilbsodaOjO
-	pNC/5xzS+1WaY4QL2mA4+JAzodgVCeqLClKCXDVAPvLyTtQfdDPmENpmzM6KDlFfKSVhh3
-	04mqc6iV1a+BoLy+i6bQa1zAd8guDDE=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id C9D6E1300108;
-	Fri, 17 Jul 2026 02:18:08 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Fri, 17 Jul 2026 02:18:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784269088;
-	 x=1784276288; bh=DIwsi7KwJyaKhQst6GtgDPKu/03zqC/ceJLNUsU0G7I=; b=
-	qJurhs5JdXDOPoUVTQH/c7wlS654Wk2iQcPnJ/CfxGI+lDliQ5WoXu9PkdWdggbW
-	4d8b/pP1UoIb+cUshsR429F+4jAmsqxfXulbery4qx9QQ9L3k+CuBjhMRAcJ508P
-	hkFpMA3/09yB51NIbjjASJyhc4gDS65tiI7/bPl+e6FpPcMswXKJWDAOkLhGoqnj
-	HfqcoQ3m4Kfmmvcx/bzssrZ+hwlg6Dm2Q58Y1+XLiXurzsv9XLe/lU2RHonAjrmT
-	Rv8BYN1KEYHV5Vnvxz9qEvOgjyUxplJIK+PqCHpYIathhx7GXGR9hFZ9zhMg6XKd
-	bY7i6Vl1mKinY8/PcRF8Pg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784269088; x=
-	1784276288; bh=DIwsi7KwJyaKhQst6GtgDPKu/03zqC/ceJLNUsU0G7I=; b=S
-	NFPT9EYrba01yD5+bxd0o86ReIuerWFEUX4KTVAPRJpdmcVvwba+/+L9NrYNYEqz
-	GNFOhIqqFlmQEic5XKMgufYnt51BOVzJ8oDuEigx6ZTwQNCDwNABsx0yaefvPyAq
-	OSVnT7Tk53WZGASdhTaErR5DhzAyaNihwPtUYvF8CprRClo4GENwngWSfd4DUaAQ
-	EMRcoeeFZRfQ650IbUBfrdYE669ijsQbPxh0v80NFCLXPm16uJm+D7nmUC9SBQ0g
-	dCX7TAfRWr6pfs/wSbK1bJr1MAJw50n1HthqFPfXnFg7BhG8N/GGqs/ei+tMgQeU
-	WuOo19ntWRmsneHGOshlQ==
-X-ME-Sender: <xms:HMlZagVQAqiQ2wrxcfzlM64OJgs_v7E5hozglxjLbZA3oFDx16Q4Sg>
-    <xme:HMlZavZjC5M5VU4vv_x6XA8Q9mGZD-v9gYlS1ZunodCNZxSELR3_B5xqo0NQQ1Kkk
-    S3Vnm8TCLvFoV9aetukmCzWBHrmtSXqTSyvspwykP4Js9EywzxWvA>
-X-ME-Proxy-Cause: dmFkZTEsnogHl3/584/D3E3UL21JNIJ0IpLGex2XJCrBcpEOIptBGsASC8eWXQmjmgrrA+
-    DsJi/6WKuBBi5F7OuvHSL+g/7EoKzEioTp1iZcObcFlCUdN9FQiLyhQ2WJckBsyhX/9Aho
-    5zQIT0Bvwp2+NRIJWoZWWMC8SmjxWARp06CdfI/xQXVcnw57hiZzQkOQc2pwFGFa0PD3Ig
-    VJ+Fd0xeZxtZewuZTM7xNyzpSHGuXpGq3mqq0soJ2shLfJD66nl9DGJFWVxpf76R9pb+Fn
-    JOiGB9PJjr5FAsfP8hraRM4k548vGuSqGP1eA/PLgcn2VY+22D2Q5gmScaUtFJHkQeGQl0
-    qOdJSMCXCOKVo2GYO0c8fM24yoitw5qkoNohPbWnf30vjF6onkva4ikrIgyRvIKEJvZNRA
-    2o7FLDlhqcoPYk1+SmVJ4d4YE9GOtue1HKQ96xeNVuknOhecYVmSMo0VsLMLmjY8/FISBD
-    gWTMCij41tnxpv39fvK9ULBw+8sWNQSqKe16iK2O+3X4VjSrm4lXzDGTiCUanjHSVT38ZI
-    vviFiqNWzxfI/YQs5BbNcV3zIA9lOiFNZ/YeaHhcz7lLGZ/gbDMi5asWUg1zuEVqw7zMyu
-    qV8v8QTwW2fXPoxCr2PY3YezqzuWa0Y6IrZCF0DlJYjYcHwuiRvpQbFeuHgw
-X-ME-Proxy: <xmx:HMlZatns8IaYGj1VLUytOw4spltodteAcr4k00MZgvzHgwqZMovQtA>
-    <xmx:HMlZahNXyXTuH2E6lbACeQcbmNWaNrYAiCMfDDD8K8uf2luwqFnldQ>
-    <xmx:HMlZat5qsP5jnznKN1zDwch0mVoi_kuQo9F-CYJkyvhZNwwUsQEKRA>
-    <xmx:HMlZaiL-pxHqt-gDvYbR-kuRnd0nkUgMhwofbEfTT8VK3P-i3s-mPw>
-    <xmx:IMlZakFwaTi3Bb2V5_o7u3qejYOcKPIj7XfIuyMLQ8lJxF0u_ZM4Y94W>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 0ADC3182007E; Fri, 17 Jul 2026 02:18:03 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dtmAsjOZRbEJt8owf9zTbDLUylJSS4K6ysbF5XED/rI=;
+	b=Rkh1N4cS1kzgU8iBVWBlcV5TUspfTW8j1Kdj8wkDHiT/JALi8YtC2qzbR3vLgCiN4cdF1K
+	01UFNoUdIr6ygsv0gw/cjlKryEgfK7xBIG0mq0FI/ZX8tqOULZxLm/YxXfUPSPczcgTbfL
+	BLjYQmJfBaZ22pInysNiYmG+zs+lrWc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iAvO9NTL;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784269887;
+	b=qDJSJPYKt3IqUMMELAcxeCih2wBkJO9CuR34nL7sVWGyMkKQ7hZUXKtfOpKqoAinnM1cub
+	YRN11TQpR32kHyiiSC18wIoub/narbeL+k/y61aC5Prv1dzXxInrSJ5jXKo8wyWYKkG0BN
+	gZApM22c/x042HqdO2QAb7TVOTmAZIQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784269881;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dtmAsjOZRbEJt8owf9zTbDLUylJSS4K6ysbF5XED/rI=;
+	b=iAvO9NTLFOK4wGbutvHypW4H3LqgyMz7jH7ChYnLbA1a/WW3fuZGVu8gEBVzvQ/eEJ84MB
+	MSCnUKkJxgUdDk1nIXK1SgnSg9+8ULO2/U3LtacoMyIdP9RbvNPJfbhl/aXdjrrHSK71Bg
+	CxTdNRpZVLcyW4kVejoPPvf7RBpjkrk=
+From: Ye Liu <ye.liu@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH] mm/thp: expose deferred split folio memory usage in meminfo
+Date: Fri, 17 Jul 2026 14:30:22 +0800
+Message-ID: <20260717063025.168436-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-X-ThreadId: ASU80-mPZ9gg
-Date: Fri, 17 Jul 2026 08:16:55 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Yeoreum Yun" <yeoreum.yun@arm.com>
-Cc: "Pedro Falcato" <pfalcato@suse.de>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- x86@kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- linux-m68k@lists.linux-m68k.org,
- "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Russell King" <linux@armlinux.org.uk>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "Mike Rapoport" <rppt@kernel.org>, "Magnus Lindholm" <linmag7@gmail.com>,
- "Christophe Leroy" <chleroy@kernel.org>,
- "Klara Modin" <klarasmodin@gmail.com>,
- "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
- "Kirill A. Shutemov" <kas@kernel.org>, zhangtianyang@loongson.cn,
- wangyuli@aosc.io, "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Will Deacon" <will@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Pasha Tatashin" <pasha.tatashin@soleen.com>,
- "Rohan McLure" <rmclure@linux.ibm.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Tejun Heo" <tj@kernel.org>, "Kevin Brodsky" <kevin.brodsky@arm.com>,
- "Anup Patel" <anup@brainfault.org>, atish.patra@linux.dev,
- "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Andy Lutomirski" <luto@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- "Johannes Weiner" <hannes@cmpxchg.org>,
- "Michal Hocko" <mhocko@kernel.org>, qi.zheng@linux.dev,
- "Shakeel Butt" <shakeel.butt@linux.dev>,
- "Kairui Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>,
- "Axel Rasmussen" <axelrasmussen@google.com>,
- "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
- "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Alexander Potapenko" <glider@google.com>,
- "Andrey Konovalov" <andreyknvl@gmail.com>,
- "Dmitry Vyukov" <dvyukov@google.com>,
- "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Anshuman Khandual" <anshuman.khandual@arm.com>,
- "Yang Shi" <yang@os.amperecomputing.com>, chaitanyas.prakash@arm.com,
- "Ard Biesheuvel" <ardb@kernel.org>, guoren <guoren@kernel.org>,
- yang.li85200@gmail.com, "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Dinh Nguyen" <dinguyen@kernel.org>,
- "schuster.simon@siemens-energy.com" <schuster.simon@siemens-energy.com>,
- "Vivian Wang" <wangruikang@iscas.ac.cn>, junhui.liu@pigmoral.tech,
- "Muchun Song" <muchun.song@linux.dev>,
- "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
- "Nam Cao" <namcao@linutronix.de>, "Pavel Machek" <pavel@kernel.org>,
- djbw@kernel.org, yu-cheng.yu@intel.com,
- "Baolu Lu" <baolu.lu@linux.intel.com>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- "Coiby Xu" <coxu@redhat.com>, "Andreas Larsson" <andreas@gaisler.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "Stafford Horne" <shorne@gmail.com>, "Jonas Bonn" <jonas@southpole.se>,
- "Stefan Kristiansson" <stefan.kristiansson@saunalahti.fi>
-Message-Id: <4c3067df-20f0-43e8-8e62-354888afac04@app.fastmail.com>
-In-Reply-To: <alkrWNECXmoxkrUC@e129823.arm.com>
-References: <20260713135614.1618183-1-yeoreum.yun@arm.com>
- <20260713135614.1618183-3-yeoreum.yun@arm.com> <alYL7B0HAvmLVHGU@pedro-suse>
- <b7dbc476-1477-4004-93b3-c5e667e24df8@app.fastmail.com>
- <alkrWNECXmoxkrUC@e129823.arm.com>
-Subject: Re: [RFC PATCH 02/34] ARM: mm: make 2-level pgd_t a scalar
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B02D0A0003
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: un8s34thx91yxukq549fh61u5onct67d
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784269090-987999
-X-HE-Meta: U2FsdGVkX185AyLHjXGTsYA0ZujkkEXwyQ+85AW3E0vczYgbzFMaat4XrxHM2871i00eq4bORBAYz1PPsMy0IiX9P6DQmYku/M1VD52wZKsSsBok/A7E4+absCvjGRkotUGTJ6uu36BJ4aerVFxu09tv0WIBhVdsQkA7fTRnw0/OuWFYvjClOQ/SRj/D/BvbdKvWrt3+IlrcdtyzYjurt+DVjH6aicbzHTPFbMuTs+VmgbMCWf/c4dIG7TuFihQpnIYCpO2O/4M3asbAY8rqEaZO4sVPaPasVWEArxl8YUoZy5h4rAqcALJ4l4rutCJZKjt4lp8qPbna87AIYjrn1cHaAFZ2A9RJuGytmReNC9Xe/VBsJ7fBdebvFwmjrALibhVQXID61C//brs/1xSwbIQQLMX/CF4a5blX5pPUt8ZF6JRT43tda0XiJ323+LUqeB5WbyF9C9Njg72pl8t5sfifHHwgCwcSdBYfJGppNEbWfkCzYMfE4NvvXnPa6xr1RQb28hzMTVFBp9Z+9wLFAYAqeJV0p8nyekiU+yMk/Wx/t+piya+MHCl6Myl//Mjk0RNbGaJdxE+oFspUPL90+JPfGhmSVNj5PBTZcTaEtmMvgKlnQM26vwe50A2yebXI7eApTI9KOc2o1wyi3wWsQz6m1jfdTJBQDKTxsB1nCoCL9xfKPqRla1InxJHfPj+Y44+DG6zmSiy/W97t4awjf5Jo4fYHlUyP6yvny7215COlsC5dtPkfoQmkug30E4eqNxJFo65aOxkA3yHRyMGHQ3YoTamukwD4F+/fJz2BuQYFBqRnFVwfZdqIiOZjzB1RxFk/xR3notRSJ7VSRrmEPMOsH031W1Kum5/DorPEp5YRrSsmZzOz9vrCBH+J4isLTFdQe3NXmPgq9JU3REwRTjG23Vrww/xt7DLYebJPkVqeN7yTQ+G5tCizvp9HbJ1N6I6NcdoQkjIbnXBQn6y
- RDi0SCwx
- mU4MJFLjFG4Y5vO+AjmQs6htIRrNffXCZ38bVEmu+QB50FJaoluIUeqGZUT11gU2x9QKWYE5cZB8EGPxtmXYm7H9ZZ/AeFTZYiCx9l67JHAWvbgV3k6AqiH6ip48wFuY3PJ1mP7EmMY5eIZYw41cT4w4ueEAj+xkySZtVVKaV69XPIOgqGWXaoToYrcu/FMdG4znCFpWq6WW384FQsk6C6baTH3ABQrHvMTtnvxrwllCage4zPaBfjdBIkr4qCv1mjrsY0/k6xq+0nhBF45VkLXijOgWzLUMKWY+S8iJPN8Eiwvntba2beM/4HEdpWNYKlvnEivUIiQehLmpHvnwaBGxzsWYxW/p3MyPtdMybRdw9YwqM5w4eRsqVgig48uN0J2ht
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3464E180002
+X-Stat-Signature: mg63xptuqwddx37iw8rf7ngfnrxhxm9r
+X-HE-Tag: 1784269885-513332
+X-HE-Meta: U2FsdGVkX1+qCVYMl43+4q7OLHg9D+69VIHE30o3VcMK8VzYZLGbJPffqsG5Hy+SIpjbtkDkyxKiLjOrBvtZ88+wWu/7FRZxIAWxBuNvJLBUoWzPxbWxJbcLJrUUUp5q+LtdB1P1/of4hKPXYE1R6hKKuGxYHmFSA/xW4acBxXmdm3ZWk0hgD+Yl2pUDpwHSsvxtX9fcnrasEL5hJq9saFX4aquusS+/KQpkK/mExuyK7FJ4JJajAt5hrUXIwx2+H9N1tKDISpgIDCqyUpFXRccDLd2C0CT+hEv5NYHvFNHlzJZWZQAElMwfuilUGNMpM7rbzxGH2XvXK3UzhLsT0nK8L5QLUKCDv06fdtMPZ//l8GulVh+0h213RQpto/XcBJScxaKiGPm8AEAKj7Gam4HOoM1AEGqhFEhorWtpysEWYuQ30qqgEq/oUDNQ7JovRLe5wVBk/VR++xsVZRCk11busCAcegGXO69U2gU6LvXvmR0wRmmH3+VdXF/ZlHtLSUyiy54P0M1A7ekkdms+LTVw78OfgTAfGGhE7fX4sASmwZEEeA7EFYNoBMlv+nFqWUlpET+ZJi2Ah6A4/uvMg9+VVqkFWY+5/R04g1kpm7n9+ccAY5S5KKoir7AD30IxnqR/29PNUq1Ng26Kqz+7VbMlrVpFVzy75JGeYTbFVEgGWjxKyEufyni1jsHHmG3m6unbroZN7qR0KmJTbx6GfoPgKlf+VVlwiMovp2huRyPSRH0JtgSpJLQihpjnn/gKy+jifPNuEFKlO7c1/aobvzGK+iLMBhGW8wKZ2nEFfx9p8VzY5cQIwfFgellS5B4Nx0evg7CXzQxDaCJyyUjTz6kcGaPw8cyc98KgXrpI3yloXP9bYFXBFI6fsq6vbCPe10RhzssGfMH71kgiUFHHNvuZcNLTeZ/OYtUlJ6mpRzCmotznXQuFa8ZSN7j+JrKKN1ufkoO9stnE055avyI
+ 1+NRw95G
+ jgJjEvGD2ETnshCl/RqX2r7+oQg4q4HQSUAgLbz0kFzqWSVRYRbipz8hkdxb4/dSqb7B35aUF/DlXxmu9Qg0o4BRcSCOI+QYVd9uyFOL7GR1znzUX3ElDJBHt5yTs9LrkXspGpR+D8wJy1CmsijVb1pXjLi4TNqcHYGptEdwM5TdyTd2WDjn5wPhII0Km5aIQwFWl8wrsB5B8tXE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,47 +110,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026, at 21:04, Yeoreum Yun wrote:
->>
->> > Ugh. This isn't correct C code. It only works because the kernel passes
->> > -fno-strict-aliasing.
->> 
->> I think the bigger problem is the code dereferencing the pgd
->> pointer in the first place: Since the pgd pair is written in
->> 32-bit units in __pmd_populate(), anything reading it would
->> technically have to operate on both entries.
->> 
->> As the kernel relies on -fno-strict-aliasing, the type mismatch
->> is less of a problem than actually doing the potentially wrong
->> thing.
->> 
->> As far as I can tell, we are however saved by pgd_val()
->> only ever being used for debug prints, where printing
->> the first entry is likely all that is needed to analyse
->> the real bug.
->> 
->> > I would recommend either forcing a struct here, or
->> > using a u64 with bitmasks/shifts.
->> 
->> That would require extra complexity for the big-endian
->> case though.
->
-> Agree. And since the users of pgd_val() mostly uses with
-> pmd_pfn(), pmd_page() and etc. I think it doesn't matter to return
-> lower pmdval_t or higher one.
->
-> Therefore, without considering endianess, it's enough with downcast
-> like:
->
->    #define pgd_val(x)      ((pmdval_t)x)
->
-> Could we apply this in next version?
+From: Ye Liu <liuye@kylinos.cn>
 
-I would just leave the original version here, at least it
-keeps the current behavior for something that is easy to
-get wrong. Taking the second entry on big-endian sounds
-counterintuitive, especially when you have a hugetlb
-mapping where the two don't just point to the same page.
+Folios on the deferred split list hold physical memory that is
+invisible in meminfo. When a THP becomes partially mapped, the
+unmapped pages are removed from AnonPages but remain physically
+allocated until the shrinker splits the folio. This creates a
+memory accounting gap where used memory cannot be attributed to
+any meminfo field.
 
-      Arnd
+Add NR_DEFERRED_SPLIT_PAGES to track the total memory consumed by
+folios currently on the deferred_split_lru, updated via
+mod_node_page_state() at all enqueue/dequeue points. The new field
+DeferredSplitPages is visible in /proc/meminfo, /proc/vmstat, and
+per-node /sys/devices/system/node/node*/meminfo.
+
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+ drivers/base/node.c    |  4 +++-
+ fs/proc/meminfo.c      |  2 ++
+ include/linux/mmzone.h |  1 +
+ mm/huge_memory.c       | 24 +++++++++++++++++++++---
+ mm/vmstat.c            |  1 +
+ 5 files changed, 28 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 3da91929ad4e..69463438300e 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -519,6 +519,7 @@ static ssize_t node_read_meminfo(struct device *dev,
+ 			     "Node %d ShmemPmdMapped: %8lu kB\n"
+ 			     "Node %d FileHugePages:  %8lu kB\n"
+ 			     "Node %d FilePmdMapped:  %8lu kB\n"
++			     "Node %d DeferredSplitPages: %8lu kB\n"
+ #endif
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 			     "Node %d Unaccepted:     %8lu kB\n"
+@@ -553,7 +554,8 @@ static ssize_t node_read_meminfo(struct device *dev,
+ 			     nid, K(node_page_state(pgdat, NR_SHMEM_THPS)),
+ 			     nid, K(node_page_state(pgdat, NR_SHMEM_PMDMAPPED)),
+ 			     nid, K(node_page_state(pgdat, NR_FILE_THPS)),
+-			     nid, K(node_page_state(pgdat, NR_FILE_PMDMAPPED))
++			     nid, K(node_page_state(pgdat, NR_FILE_PMDMAPPED)),
++			     nid, K(node_page_state(pgdat, NR_DEFERRED_SPLIT_PAGES))
+ #endif
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 			     ,
+diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
+index b2813ff13cb2..76dbf51ad1e0 100644
+--- a/fs/proc/meminfo.c
++++ b/fs/proc/meminfo.c
+@@ -149,6 +149,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+ 		    global_node_page_state(NR_FILE_THPS));
+ 	show_val_kb(m, "FilePmdMapped:  ",
+ 		    global_node_page_state(NR_FILE_PMDMAPPED));
++	show_val_kb(m, "DeferredSplitPages: ",
++		    global_node_page_state(NR_DEFERRED_SPLIT_PAGES));
+ #endif
+ 
+ #ifdef CONFIG_CMA
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 0507193b3ae3..1e75adb73d00 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -267,6 +267,7 @@ enum node_stat_item {
+ 	NR_FILE_THPS,
+ 	NR_FILE_PMDMAPPED,
+ 	NR_ANON_THPS,
++	NR_DEFERRED_SPLIT_PAGES, /* THP/mTHP pages pending deferred split */
+ 	NR_VMSCAN_WRITE,
+ 	NR_VMSCAN_IMMEDIATE,	/* Prioritise for reclaim when writeback ends */
+ 	NR_DIRTIED,		/* page dirtyings since bootup */
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c642bec967fa..1094b844675c 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -77,6 +77,14 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 					 struct shrink_control *sc);
+ static bool split_underused_thp = true;
+ 
++#define deferred_split_pages_add(folio) \
++	mod_node_page_state(NODE_DATA(folio_nid(folio)), \
++			    NR_DEFERRED_SPLIT_PAGES, folio_nr_pages(folio))
++
++#define deferred_split_pages_del(folio) \
++	mod_node_page_state(NODE_DATA(folio_nid(folio)), \
++			    NR_DEFERRED_SPLIT_PAGES, -folio_nr_pages(folio))
++
+ static atomic_t huge_zero_refcount;
+ struct folio *huge_zero_folio __read_mostly;
+ unsigned long huge_zero_pfn __read_mostly = ~0UL;
+@@ -3913,8 +3921,10 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+ 		struct lruvec *lruvec;
+ 
+ 		if (dequeue_deferred) {
+-			__list_lru_del(&deferred_split_lru, lru,
+-				       &folio->_deferred_list, folio_nid(folio));
++			if (__list_lru_del(&deferred_split_lru, lru,
++					  &folio->_deferred_list, folio_nid(folio)) &&
++			    folio_test_partially_mapped(folio))
++				deferred_split_pages_del(folio);
+ 			if (folio_test_partially_mapped(folio)) {
+ 				folio_clear_partially_mapped(folio);
+ 				mod_mthp_stat(old_order,
+@@ -4415,6 +4425,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ 	lru = list_lru_lock_irqsave(&deferred_split_lru, nid, &memcg, &flags);
+ 	if (__list_lru_del(&deferred_split_lru, lru, &folio->_deferred_list, nid)) {
+ 		if (folio_test_partially_mapped(folio)) {
++			deferred_split_pages_del(folio);
+ 			folio_clear_partially_mapped(folio);
+ 			mod_mthp_stat(folio_order(folio),
+ 				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+@@ -4473,6 +4484,8 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ 		VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
+ 	}
+ 	__list_lru_add(&deferred_split_lru, lru, &folio->_deferred_list, nid, memcg);
++	if (partially_mapped)
++		deferred_split_pages_add(folio);
+ 	list_lru_unlock_irqrestore(lru, &flags);
+ 	rcu_read_unlock();
+ }
+@@ -4524,8 +4537,11 @@ static enum lru_status deferred_split_isolate(struct list_head *item,
+ {
+ 	struct folio *folio = container_of(item, struct folio, _deferred_list);
+ 	struct list_head *freeable = cb_arg;
++	bool partially_mapped = folio_test_partially_mapped(folio);
+ 
+ 	if (folio_try_get(folio)) {
++		if (partially_mapped)
++			deferred_split_pages_del(folio);
+ 		list_lru_isolate_move(lru, item, freeable);
+ 		return LRU_REMOVED;
+ 	}
+@@ -4535,7 +4551,8 @@ static enum lru_status deferred_split_isolate(struct list_head *item,
+ 	 * isolate: folio_unqueue_deferred_split() checks list_empty()
+ 	 * locklessly, so once removed the folio can be freed any time.
+ 	 */
+-	if (folio_test_partially_mapped(folio)) {
++	if (partially_mapped) {
++		deferred_split_pages_del(folio);
+ 		folio_clear_partially_mapped(folio);
+ 		mod_mthp_stat(folio_order(folio),
+ 			      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+@@ -4596,6 +4613,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 					 &folio->_deferred_list,
+ 					 folio_nid(folio),
+ 					 folio_memcg(folio));
++			deferred_split_pages_add(folio);
+ 			rcu_read_unlock();
+ 		}
+ 		folio_put(folio);
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 3b5cb1031f72..ba71cc3e4c30 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1248,6 +1248,7 @@ const char * const vmstat_text[] = {
+ 	[I(NR_FILE_THPS)]			= "nr_file_hugepages",
+ 	[I(NR_FILE_PMDMAPPED)]			= "nr_file_pmdmapped",
+ 	[I(NR_ANON_THPS)]			= "nr_anon_transparent_hugepages",
++	[I(NR_DEFERRED_SPLIT_PAGES)]		= "nr_deferred_split_pages",
+ 	[I(NR_VMSCAN_WRITE)]			= "nr_vmscan_write",
+ 	[I(NR_VMSCAN_IMMEDIATE)]		= "nr_vmscan_immediate_reclaim",
+ 	[I(NR_DIRTIED)]				= "nr_dirtied",
+-- 
+2.43.0
+
 
