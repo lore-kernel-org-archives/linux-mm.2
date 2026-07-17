@@ -4,88 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE289C44515
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 21:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C36C44516
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 21:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A2F86B00C6; Fri, 17 Jul 2026 17:33:49 -0400 (EDT)
+	id 374B86B00CA; Fri, 17 Jul 2026 17:47:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9725B6B00C8; Fri, 17 Jul 2026 17:33:49 -0400 (EDT)
+	id 34A626B00CB; Fri, 17 Jul 2026 17:47:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83BD36B00CA; Fri, 17 Jul 2026 17:33:49 -0400 (EDT)
+	id 260266B00CD; Fri, 17 Jul 2026 17:47:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 555766B00C6
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:33:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B97A4120287
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:33:48 +0000 (UTC)
-X-FDA: 84999570936.13.42BDAE6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0A1374000F
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:33:46 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/K7sVXh";
-	spf=pass (imf17.hostedemail.com: domain of namhyung@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E3FFF6B00CA
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:47:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 75A708022D
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:47:02 +0000 (UTC)
+X-FDA: 84999604284.03.F92657C
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 74D0840009
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:47:00 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Yb4i1Jau;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784324027;
+	s=arc-20220608; t=1784324820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5pFCIT4SNwJq0lXNXSiPb7aTP435Cfu/ZjktQHShKLM=;
-	b=uBTSoi6J9zAOq5GsdT/FArArRDLMO0+Ou0gQwSRtNwOUMJE/BTLutPBjWctOTsRnW6r4lZ
-	oCORFh7Kbh/4yw9TbPP8jVeilxmzx86PsK7IFIZ+XGcXB/0pUPlPA7M5tiKcOKqVX1FpO/
-	FR2PPueBboWY9MdWff8aTHy4wEYJWHg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AgfKPfkfc4jyNoAXQ924zrK3vmVWU/VwnFCFChfwVj0=;
+	b=R8S16Bn1DmNWrjUvWFhuqdI4/E3T9c9CUJn3Kwr2EUzWNQg7co5HxK1SUQO/OkZuRuEoes
+	3veIW8Ap/ZEOE3Z1spMmXB9x3kCgnZeEJhfXgjiEdjSLL8WOGMNjD7/eUoXfUlELPevumN
+	LTLbBc8I+deJhyJGzo8EudEeWvKq6Wc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/K7sVXh";
-	spf=pass (imf17.hostedemail.com: domain of namhyung@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Yb4i1Jau;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784324027;
-	b=D9yq3SjfHpAIlQBzI9UFoYIeUfNuMJ4aKMLejlEJ8SNXdq2rRN7VC6IwhhCnsqgLtukg2H
-	fM1vKEfOsLfNuVkki7+odu4ffkfhSzdsGT3EJwUrAqdfiEfcgR7VFh5SPU2elkYFho0usL
-	GEQhU6CAiNZE+kyqSPwUdXrJIzN2ltE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C224141209;
-	Fri, 17 Jul 2026 21:33:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7583B1F000E9;
-	Fri, 17 Jul 2026 21:33:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784324025;
-	bh=5pFCIT4SNwJq0lXNXSiPb7aTP435Cfu/ZjktQHShKLM=;
-	h=From:To:Cc:Subject:Date;
-	b=D/K7sVXhBc59xquZXDMKGwBeKv6FrkYIodbLj1iUEz1NKtf69yRoDXTBzJ9Y+ZTcY
-	 aGWB2EBUKNnxeniVhT30ykgHaZUCHJzESfHUyWYParABd5y9djnVkiygNO3DvcPnNz
-	 8subYepgKLz9kBXV5FruejBVkQ9Pfai8GaQKoEssCsdX54/pIl3RAThV80qeyx2tQo
-	 KvRffD0aquZzioQwk3uKSoCE/gqZkh4CH3SE/Zmvtx4/qPBgwpaOB4M/jmbMHJwZEg
-	 FdGYzu2cisCROLbnk4pa0XNOYk4XszUQzQ7BE5wxAxCh4HST8nqz2zCEJE+qEcwxMl
-	 R/Coy3XT4vdLg==
-From: Namhyung Kim <namhyung@kernel.org>
-To: Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>
-Cc: linux-mm@kvack.org,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH] percpu: Add missing DECLARE_PER_CPU_DECRYPTED
-Date: Fri, 17 Jul 2026 14:33:43 -0700
-Message-ID: <20260717213343.200497-1-namhyung@kernel.org>
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+	t=1784324820;
+	b=RXdiSLn40QZ18R3VvNWkR4BeRlJo4iKM5+h8hmk5RGIgx6XKInqGKb0C5GoVpEoixX39P9
+	dwt5xfdnUytECEghAMFENNe2tZtbWwJ+t+lV7CXfktoCFtpXiC857k3asRZ7kOuKBh0dam
+	i/Kh2bhVeTmxghu4JgTTWn6ImCaCIUM=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-52192509869so6833781cf.1
+        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1784324819; x=1784929619; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=AgfKPfkfc4jyNoAXQ924zrK3vmVWU/VwnFCFChfwVj0=;
+        b=Yb4i1Jauc6hD9y5RHMdfB4YM4Ik7mokaj1DD+2rdQ3s95v9lDf2v/8ypn/lE9nSKd4
+         yl90Hl9RD1Lpql542iGN99RFzYke7/9jldckX7jldbGSu3VSJ7rJamyLue1+bGv2Pdvz
+         +WjqDPQaWm9thrPaw35JiWz2VvQX+7uacL6CUmcR6ku+kYHWJ1QwxBRrKMql5rpFDWzK
+         mzFZ7a3VTGciDB3dSRaOmzYF0yiDLc8Ygh8hwUrjh9Iuxw8UVz/SwoMx5ATQzouix3p4
+         MOMhFvCikykgAq6WaDLflHDXDT7cPX0LfLxBN5tQ/JN938mPTST+ORf7UAhRmiD5Zh2u
+         3EGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784324819; x=1784929619;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AgfKPfkfc4jyNoAXQ924zrK3vmVWU/VwnFCFChfwVj0=;
+        b=iWSM5jP0gwgkij+KM/+EYCqO6IaOT6bkS1gKUNF1P3m8/WqXKhlURH4mYVxITKje0r
+         1RAWRxJWUFtUrm3Yj6CRXx80/GhKNSoBRFDkbFRPKNMO32vCspEhdkljptx3eYrePqaf
+         BE8PvfBZKxuqQ5ublZVU1ekeGtUjEreM/gDwcwF/+x6EXeY0dvhQwirPyh6mNHVTBA3H
+         xZMnnoAmBSU22kFbLYPFo5SyiUBLv6OOHAfzJ4NO58Hy37psJHbOHhXF0y2nFw2L89V1
+         89+Xbs5b1DtmF14QPi+C89gBiJ6chtDlT6zyfwcPeTlj/58M74P6ocJLlloaLaIi5ctq
+         Gvqg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr5ZwXdRERAY5rquA/a+EnErtQsEfm65oS8ENDDmpUxvsUD+jOWVcX7cTXTOotDDxMWwYlJgWPQrw==@kvack.org
+X-Gm-Message-State: AOJu0YzkEYrDJXv6w7eCd5KJXicGx6eNQGpxB7Vi6bYeiJ+2fEwkL7vI
+	ZeqcgLHcSDphqfDOhpoWI1O0NblVJnblt2h9VYJZseGKHkigEwn/3LNAklP5BWgDyXo=
+X-Gm-Gg: AfdE7ck6ceIPe0pO+y6jhSGwC4+Y5uGPYYxhhJN0Y1WxiEaItsFFTYzbrr9/nY4wW6x
+	wErlr4nI4FUzkB8mnTAXuVCQBtUO8AUBJOSqdnsGq4xvHwvoXnZLVOJf1zkT/rHkzGvu1tWcpRK
+	aJRpujmEi3YtizDvCJe1trUyuBsLH9FoGo9ksaZKPXxKv0KDPr4CNcJgVm5OR6tVES55V13HqvC
+	GMRo9cB43zyc8XrLr5UxndF3+bDil7YtUJTSkrgVsTblMM3/TG+mVA2cFQubRJL9M3B9MsW5Ic4
+	lOb8lwpaV2q7Dpuv99dvSfNWrCPfwQ9mYbjckvwO9qdjWFCEQ2S6yWFYVUk4yAv0P9g4tLvrguP
+	Tmig7gxeKcZ0JekSTA7mFrqVYIMny44OjKbLskDSXkIJ8dDdM5vnmQVXHdLXUmjcuoehHHPZ2Cp
+	lzm/PIncFOsitXqtN2KvofLzqf8fm9sdBXMV6+fhWOttk+aOP/WA==
+X-Received: by 2002:ac8:5acc:0:b0:51a:8c97:fb93 with SMTP id d75a77b69052e-5213fc54d44mr43814441cf.60.1784324819586;
+        Fri, 17 Jul 2026 14:46:59 -0700 (PDT)
+Received: from [127.0.1.1] ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214c5cc8d5sm21955091cf.6.2026.07.17.14.46.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 14:46:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bt5xzpe8779hroqg375ozcx96qqepqn8
-X-Rspamd-Queue-Id: 0A1374000F
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v7 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+ Adithya Jayachandran <ajayachandra@nvidia.com>, 
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pranjal Shrivastava <praan@google.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20260710212616.1351130-4-dmatlack@google.com>
+References: <20260710212616.1351130-1-dmatlack@google.com>
+ <20260710212616.1351130-4-dmatlack@google.com>
+Date: Fri, 17 Jul 2026 21:46:52 +0000
+Message-Id: <178432481253.189683.3297727348836286619.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1380;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=ahWVhQAgslIBwnfpmx5X48jHe/0a44QV3IQwRfGz+iU=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqWqLRRsSwqC6u4RSv76ETLMmVCyhdUsVHiqEBy
+ IzSCQuBMK+JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCalqi0QAKCRC7dyhM23N6
+ 3vK4D/4oivNUuZbxrdZZJAOMVjLNn7oaWYDk2Y4dxn2IVLciov4pX+4V8SBAYA4KhEpyZKQ2mzg
+ B03dHNIKdFOpoPbLkuTRk9ZGugmK2ChP6tAHjBDG3RkOkva5OLSR6JBKmrLBG2GEATEY/EOLIZ6
+ eY/PqU+3F+O6j7iFegvOLxHq4AGPuXSVacvDtCjafit/axJj9LIZ8kF409sq6qgcKO5JKSa8Jea
+ R0CHNLN/rrFF9+PoaDcZ3B9yBydtITA6U5LOFg19G95jV2FYfsILSxxBbZrxUBXAadtzCS2F9wc
+ ojlbkyeQfKGhVsMnUf0jafSZJy8tlQ5ygLO7zUxGMxHU0yDSH9+T6zwkWpBoVu1DzV6CaJNE61t
+ UznWIUm+HsrUwRRGxWKvQ4wAZb7dT86JZoYl//i+SFOHLjV+15QOw7niAqqrMwWfQasB4V2Hxwt
+ eXCZu13O9+xov9pJgVNEtvYTQmPpi6xZlCFh5C0RT0QzDoNbZ/WnJZuT0M8/c8BHxvB3E/domK/
+ fmKpXprZCKUC0ZMdFx+RiHls3kZs/ypakbVXPUHyzfXsnIT6DxIFfXMfg5kTylkBxQPg2GwLoaZ
+ CRH5LGmNRRTuTgY1EFBAo8as9+ZfD4j3ydB1vBG6faS20lFZ3r8fycLqRoy2hUgcnWVKGbkEtVC
+ YOLWzX1kCSM2bCw==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784324026-531428
-X-HE-Meta: U2FsdGVkX19hYr4PMTojNVQK2vWZ95MAXzSaJ2dFC+N246m2Z2KTrAjQCeDijTljwld+CCdbdVzcMip65QzNQrZ9Q81mYnHfxCXgVLIzCB4NAcUWIMup9cFxUJhJ8N/53ydSoA1v5y9WPIKiGotE2zCd6tJud4k7SMUvfy2j0JZAeCfpB4fvEhgtuWo+Vkiu7jXPiCXs/Rl9+CXKNMqaj67bR7Ej6jF18GyZPw7T7eForyqdAihoQz2RckJrNDrgvsoIRtQgObv8yMqksrLiyLcMNPi/VxGjlLZu8386OusJ1IJqKRCH56OAxabbythoZEUvHEGOxgV4Q9MhS0e1EDN67STX2beeoorMO7TwvzwTHAeay+ucBTeqR+mx2sri2WggxMNjOXDU8t50DQSJTkbKGgf/vyWFZ+t3b2uNf95vxsdJcmHSLgzBbmMJOFM8uwkSuLIrLxCSw3tso569cVNVMWmG0lAq4gdyrPPlG57tFXTThshKbXAF3fIrxXwA5zauuGxWkTU6avNAW08bNgHv0jhdvzldk/en6WC/3mOjUb9JnF12IdUbP3BcDuAF9mMAh8mbbbar/B4DWOBomgLH/9b46y+9H4V6u2Q+uvMvIfsY0KD6lGE77iH3koE1XiJvBTcRyEVfaYkt9KBh+iCFvwaPEEDLY0OYIGB6IXFzAi8Y1vMMqJd9gcIczj93Co+UTD140xjaAWaTWPzXp1v4qrakzmxMGAmRwz7jkl/f9b0VWGoj1QX+ASy8gZbZilrJPCTOQuFkbSHo6T3hxgFvfWzioMUjFX0Tupef7hH5xmF87DPbBvB+lAVia+tq63g47hAXiLSn6s2Na6l/30ODgNNIBI6703h1kPL94P8Sl/Z/GJRqjDz/L4T1PYxGxnPm6677v4aSgsOg4Y8k4b4eMXfzzvYwDEq7VSpkvj/P4sCwroqY3zCxL5JQT5Y6GXqbyYwghFu8DfOpdeQ
- /NiYRscQ
- q4uWHeK4bsGCX0FhQvp2pjFOb38dfOefz1P43N5dT0/7l+/Yyaabh4+bFP8fltxyCKlmv+dLnnbgblKNTKF+caTpzm9lXTt80bonlExOYw0kSDa4gGzKJiHJzo5UHXJZk5T0FDCD+tkQIBmoDy93MVBNVyPCPSsCqul7tcGa7HEjaSRg9LOXfIDvfqMFggy/kePiSdJe31fKt9BmjqTbPqVuEg7cDHPqeX8b1hbYkPYGohJbRkzg/xgfgqk/O6AYP5xWZZtEaziptfPo0JL/gdnXLDDiqJxuIOpo8HSgpC3mYbRg=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 74D0840009
+X-Stat-Signature: m4z7858bshg1yb6x8aouggbh6q9hhde3
+X-HE-Tag: 1784324820-135730
+X-HE-Meta: U2FsdGVkX1+cEkZYcLuhkAb2sncClQilSp4zMGmaBVWarq9IKTBtpMjg/gtcvzpsd9OCnID35PJrBo1wGuqD9Aw6cGygDDwsAPfTRnQUpHYijLSEpyNz0wyQCtaKz7t8jujxvl/fCMucr7fFelNNSfrnpSif6s3hzGwWSmbWl6W+wFte3DLHPCjq9oSFZNu45I8nYhe8UQdYSGhkdLLF+mgmulboEOVzh/AtXZEmBfdiOku46EVLtKmjgLn1XUsaA1PRzTIuVZnWSNVZqGgHBSc/0C/LbpQwfK3zpVPjkPp29p2fgV0alHsYzAFefQGcSzeCguwnu3+tIISUCn1WTQaf8CQJQx/8oSDM2SUC7ypOK2Blgc7WtlFSihRL9jpyqRYeqVQeGbP0xwrBjMP7bKkDDdGWYOZuluR0hjfRF1LsTvH1+nyDNeIjfVPg8/vo5WcXoYlpLhJpjUHlO8Mw/NtYbNDavuCQT8OFn4hi8jBLRllxuejlTr0UGdNzHUuRzYNUYk4tZsKErQHMYMzI9M50jFWnruQeOKvRPlL71R+5CF17t1h+if861Cgo3lBktPYCtQs9n+cjgGCw8YXkyDcXOsvp0RaUHRRkTdyOqeqH/JAl2yaa+swM1rP5bYFTyjlDqwPQVqHrb3HZRRVU0xybxpM8xEX/fQJPUxLBfyU6SuEsMdvVGpXG5TNx2I5L7TdaEloTfsvOYctDdvJ5IUJAZ163e7Yafqp7qQCfRxt82M/QjxPqMhMAXOoyN3Ntp8KEeGT/8WwBcsULCucoihP2Za56d96Wx8irclBRwRPQWz0ZU5AwqhNuIfUtQChlSoAeFGdOUzqAjZKuNjRzVS5Uwlpa1lPIPltGRY5J5UMtRFsnzORHPRVkt2JTyvX1LRLPy2h1OBS2aWNDEs28l9CeCe7DFhN7oy1MwPDWt0tmpomV9KmXrdLj1iHEW4Rc9Zd+4ALVjKFe5C7CfEo
+ gXl59ZUw
+ pFdROQnOvL7KXIDYOHqc1Cb9Io+UYfS5vJGEr3Nlz5C98Rlg0i1g5NGG3qowz4MxJDgbz0tMI4fmfeANnyNNwLqmSK2rDcNqencnPDKyrIuEYve8+vqoaOCSiy14FdFFM03AZ8WmD7NeBcz5ThPBX1qyo1hlkl6Upok/76QaV+IpcNm9lXP98cGdvIyY0Y1pR1Fd/zjZ20iFH5ptYtMKmwiR2Gazsj9n57uLMUnLxg03ZY/3uPkGk/Ddfx43yV0hz6Uzn4zw7p4UqmHTiE/rlyoDUo8vAj/QQqPcRBHL8TIGzWfh0R3vbiypVDK3UvznqjAc/DA/rG4UYJ3g9JgVkrULYohd3QGjQ9hwGVMMFIWHXqPg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,30 +153,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The commit ac26963a1175 ("percpu: Introduce DEFINE_PER_CPU_DECRYPTED")
-introduced the DECLARE_ macro as well but it's not defined when
-CONFIG_AMD_MEM_ENCRYPT=n.  Let's add it.
+On Fri, 10 Jul 2026 21:26:06 +0000, David Matlack <dmatlack@google.com> wrote:
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index 03075ce06ac9..df6a02240aa4 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -298,6 +377,87 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev)
+> [ ... skip 76 lines ... ]
+> +	/*
+> +	 * Hold the ref on the incoming FLB until pci_liveupdate_finish() so
+> +	 * that dev->liveupdate.incoming cannot get freed while the PCI core
+> +	 * has a pointer to it. It's better to leak the incoming FLB than do a
+> +	 * use-after-free if driver does not call pci_liveupdate_finish().
+> +	 */
 
-Cc: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- include/linux/percpu-defs.h | 2 ++
- 1 file changed, 2 insertions(+)
+I am confused by this. Each preserved PCI device must have an associated 
+FD preserved with it via LUO. I.e., vfiofd would need to be preserved. If 
+the vfiofd was not reclaimed, and finish is not possible, that vfiofd 
+would still be owned by LUO, and therefore PCI FLB refcount would stay 
+positive.
 
-diff --git a/include/linux/percpu-defs.h b/include/linux/percpu-defs.h
-index 43c854a273c3aa4c..649f31e34e810eb9 100644
---- a/include/linux/percpu-defs.h
-+++ b/include/linux/percpu-defs.h
-@@ -184,6 +184,8 @@
- #define DEFINE_PER_CPU_DECRYPTED(type, name)				\
- 	DEFINE_PER_CPU_SECTION(type, name, "..decrypted")
- #else
-+#define DECLARE_PER_CPU_DECRYPTED(type, name)	DECLARE_PER_CPU(type, name)
-+
- #define DEFINE_PER_CPU_DECRYPTED(type, name)	DEFINE_PER_CPU(type, name)
- #endif
- 
+However, if finish is possible, and this is the last vfiofd that is 
+finished, FLB will be freed as soon as the reference count reaches zero, 
+which I would think is the expected behavior.
+
+What is the point of holding a reference here, instead of only for the 
+duration of FLB access, i.e. to make sure we are accessing a valid data?
+
 -- 
-2.55.0.229.g6434b31f56-goog
-
+Pasha Tatashin <pasha.tatashin@soleen.com>
 
