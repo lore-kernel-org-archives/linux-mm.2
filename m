@@ -4,96 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A03DC4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2362C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:56:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E66E96B00B5; Fri, 17 Jul 2026 12:52:52 -0400 (EDT)
+	id A01006B00B2; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E403F6B00B7; Fri, 17 Jul 2026 12:52:52 -0400 (EDT)
+	id 9B30A6B00B3; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D542E6B00B8; Fri, 17 Jul 2026 12:52:52 -0400 (EDT)
+	id 8A0BE6B00B7; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8175A6B00B5
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:52:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1BA740176
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:27:14 +0000 (UTC)
-X-FDA: 84998495988.21.CB4FDB9
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 395CF80006
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:27:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C6Yr8VoP;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784298432;
-	b=JgdQ/pU8Bl/kPRiCUnI4Lj6nuLVdMlP+puUT6dQJTripNrORHumvyan7Hel7c5nt5rb0EL
-	e5WNCkUJ1MRzQ5DeJUEb6nV6ZX0d+iA1NGJ6Ts7VlLUU95MGB+5OsCsO4CVwRQF6qi4Y2r
-	liOrFU02HtRg3p1Lnx2E3UIzFF83k7c=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C6Yr8VoP;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DDF56B00B2
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:56:14 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D64A6160195
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:13 +0000 (UTC)
+X-FDA: 84998871426.12.DDEA60D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 10DD940007
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MUi2FbPm;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784298432;
+	s=arc-20220608; t=1784307372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JwUlLLKebphfCZUI9OSd5TG1SsZvmuLzd82pDv18lMs=;
-	b=0xbClzdbtrcSKEcYyRsyR9k30+apC6l4rtKtfqn+SakbkbuH1RoiU8ejnGgvcutSjXU0aN
-	40tH/7l6i3bXgsb4eBNGlXBUi9ryKyTeLoy0EuD2c3r0tst1gqEuKsTC22aOUBl1N6Na1T
-	VFhOB+CQMt9GynQeFJOn3gXtla8bfsc=
-Date: Fri, 17 Jul 2026 22:27:02 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784298430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JwUlLLKebphfCZUI9OSd5TG1SsZvmuLzd82pDv18lMs=;
-	b=C6Yr8VoPlS770QJmaqAuRHD/59NVlN8Si9z7X7ViOB5SCH29GsqRZnrhM3MUgM1LjfvsGR
-	TbmRSEQYunl/+F6l1kGJPnzq/8BS4ZVfxLZaGb7C+4CSSf06FckT+ztdos9Vh+8dJDRHcI
-	ZNXv+TgO5D5vwjtx1bi1KLcQebsetUQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, baohua@kernel.org, youngjun.park@lge.com,
-	hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
- via Redirect entries
-Message-ID: <alo7tuEKLjA0IZQe@MiWiFi-R3L-srv>
-References: <20260707082614.95030-1-baoquan.he@linux.dev>
- <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
- <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv>
- <CAKEwX=PEgnJ4nGFZYUwMryjq+Yp4v8Op_HdZ6_xEJ4n_MrM0Yw@mail.gmail.com>
- <aldtS2S-TXc7ocsH@MiWiFi-R3L-srv>
- <aleW5xL2gYcU_Rl4@MiWiFi-R3L-srv>
- <CAKEwX=Pm_C6OD1jAo818wzFVVhLwgVFu-4bLdNrmUZ01URpLTQ@mail.gmail.com>
- <CACePvbV62T9LA894vTXzBZQ2PNh6iYZD7eH6=UjeFSWhUW2aDA@mail.gmail.com>
- <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com>
+	bh=YaHlt41/hvOJvLvitj/2kxV3NYCQuixNvOi36N10KU4=;
+	b=6CzjBWWXO5DpFpI9aNsI3iJ54MKH3JDnZDiHw+mAqTqyjYVEDCC3iySZ8K0rMdDf/FoMnf
+	vEKcY9S6M+pKCsgK4yQsPi7wkQtTFBR2Zwwa1DrYBP2vzipRolJBMaQQPJodXTQPC4X0Pc
+	2gWqinei5/PYydIpBfcVetW62g6klhM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MUi2FbPm;
+	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784307372;
+	b=7KEypsDdqpCiETcx43b+M3uhDlMscRp3beynI+CvNEaLnCG9pS1N2psFqRzRU6j4Cu5h2u
+	Kkr0SwyERiTVMfg/kj3YIT+X8UM8Qn5Wu29VZuu3Ve4WcBib368inxhzxUFsaP1LcCu2j3
+	V7GYm3YF316ySAnDMoLnl1t+VpwtP5o=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BC5860A72
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6C21F000E9
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:56:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784307371;
+	bh=YaHlt41/hvOJvLvitj/2kxV3NYCQuixNvOi36N10KU4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MUi2FbPm3fwo7a8P3d5fdAYLmDCQg3kxkoNN5vhp7ggx/WyX66s8yJlZ1SBJIvh7i
+	 a2OL+Rhs7B+NX5vt40G3lXMuMlqgIdtHFnEbwxIPTNEmpF/g0rXnLVARMGVkYeINDw
+	 yPI2b4sWELW3OKh/WnsYhjrBsEMqT8aWBc9dQnE5GqK5otRTG60vTIm/KsD3sjhAUh
+	 i5uXe2WDauDfCFarcaHpNcfbmT4Z83XNC0iB1vTjLbUKmAL7gjYKX9Ecu7FzHEamLC
+	 GJYVIBoP1HI/Z7EJ8u0g79yTbG1sAx/Twt8wwbQ4p87vjktQs2l8r8jMsu3zuf2NSL
+	 jlXTp4boWMofQ==
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92ed3993c1eso299860085a.1
+        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 09:56:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpxZO3I0SwtPGNqbus/hHC/4Ks9OBw6hgk2boXg3VIZb08rlXiOMUKa0ttDr2k+7/1PuSCPDFFRnQ==@kvack.org
+X-Gm-Message-State: AOJu0YwgymH8zVHO/xixq6oTNa5SJXplDiuck0hp8ej+OXgFL0BxPXCa
+	+z0wYWx1v9qxJLQdT2sH4Z4c9uzK56GoM74Kw1mWhLNBjloVref3xT3Q+qZsb47g9WVLfTDQ2JK
+	FV5wyZKWFwkBwechct9lC4OgejuXj2cM=
+X-Received: by 2002:a05:620a:1988:b0:92e:5259:1154 with SMTP id
+ af79cd13be357-930b3ecc422mr401488385a.39.1784307370342; Fri, 17 Jul 2026
+ 09:56:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=NXJ1LKQOA8Qy_4YOS6v+jGbAJnbD5K0=jNbgC8Da0iKw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20260714081510.16895-1-jiahao.kernel@gmail.com>
+ <20260714081510.16895-3-jiahao.kernel@gmail.com> <CAO9r8zNiT63LUHx8X5i_aboX1UWuGkcFf+p9ch-pekURUuDdXg@mail.gmail.com>
+ <2bc8e4f6-46a0-5b74-6eaa-59e7aef9227e@gmail.com> <CAO9r8zOFg_mnNGbFFd_h8FAwRCbQ9vXk47EF5f1CLg1cDVGB5Q@mail.gmail.com>
+ <b910e870-9583-a2f5-b681-e69edb9af290@gmail.com> <CAO9r8zMLGMpsQ+HbLA5SFSMEc_ctuZoScJMkybnXMp+_0MW-yQ@mail.gmail.com>
+ <CAKEwX=Patm4+gxtxwDYBFXFh+jfaOUSvtKtVZFvp=oQwNmdu1Q@mail.gmail.com>
+In-Reply-To: <CAKEwX=Patm4+gxtxwDYBFXFh+jfaOUSvtKtVZFvp=oQwNmdu1Q@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 17 Jul 2026 09:55:57 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zP8L_4dOSVQT8v6v83uAN1ZG_7vTMxfp5jDME8U2sxEhw@mail.gmail.com>
+X-Gm-Features: AUfX_myUxG7G3wSjX3kFU7KHxWXdkDog2oSpDszGYJpxnIxoJbNXRcZjOxi9Vho
+Message-ID: <CAO9r8zP8L_4dOSVQT8v6v83uAN1ZG_7vTMxfp5jDME8U2sxEhw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm/zswap: Support batch writeback in shrink_memcg()
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Hao Jia <jiahao.kernel@gmail.com>, akpm@linux-foundation.org, tj@kernel.org, 
+	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
+	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 395CF80006
-X-Stat-Signature: fxmgi81jbpyei4ur8mm4zssgd541qwim
-X-HE-Tag: 1784298432-704152
-X-HE-Meta: U2FsdGVkX19oq2lgVmPJPaQooq9tdYyHut9fPuhlHlPQaBxSY/kF6D+ifIbfmveerk5CRhWdTn6u5YO8vDxoDBFntO+BSGRUv2SdEHQre1s/PYflGIQlnBpcYyM65F3Bp3UnMzwc6zYHFObKMccZCLsYTlW9KRibYRlnsCQSQma1CdeyWnmRRTImBlw01PN54odayr/PnfWIiAj7wpzPb1v+aDbqa6PWPyL3dnE6QZN0o2DHAfqHXgyRjHWAqjF0KWBkSKxewHGgtTIUglW4r7sxDXbet46Cuqh9HjgG5okKvNqfAAA21QoBBC9hf16HIO/2J4IJRBcnuloRwWV9e1THWHdivMXZbWnWASoUoEnPXoJOCOynoTRiT9BbKgF2gX1VA7eI5Pa19jG0oFSOCzbLstDjjJAs61QGQ0NQ+9e3Kcz3QQHwZD3F234+FUQrSkm/X9IvhgIrrJzkeiZWB/GcA1rz3QiX7gd74IhWIhVynPK05w8YhSFI/HFcYQx7mkFaQOECtWdFT4497gjyUPdi7kecc07bWgRIH789DtWavOlAf/dxtZUJ6XACwV/pfIX/xWG7YduFFnGGmjBSDBAtK0l8aOPFiwHE4zR6cjtXJrM7hIkwUoey+LfIdqi3PtechmJeJ7KmuMTi9Xockltd+mCUKDZe/1F5l/sl96KFn0FgSpvL9cutk4Q0XprWsfaTI2KAnu/wjfRUtzUIOGy5Eb3JRYMnI/WIsH+5hB5tjM3xvrbnHaqrA4VKYmVOxeaaMmpnIvco2/VGnaCwRsha4Kp2U1Tm8gBoG8SydQwTxuXUveMQ+kiTeCRxSzgssnuRbFj1SL76RIZicp8Mow9BTtWH1FisdK/bXYUcNOyNo12tfUFm3p/mILGBct2YXCrA6l3+DliTVYS0cf0fN3KFAezsO9ufEScwqe7Lxfa+1V5k7kd1WKWsUJ3LlEB7c479Q5vhGiTJIdFrcyp
- d7YNBpQH
- EFX2fcuJot4X55HL7GgzoJz83g+vXEFY8RwkfDFmfmgU1VoGKUsYOvlw/OW3b58pnePKL4gKTSnmQEZ8w6IPEMQiYcXI7pS7PJ4uGll4ubF6Jj7mSdVKZxiHGBAYERggyDRmcqT9jxauILrDWbkE1fkd676CZPLm+N2lXn9puZgqvlG7Az6VXkwoI0XHKEjaYAGPZE8RgyXUNBtyH+NPXYQSkBhf4ncsaZ2hUd1NdUf3MJmGQ7XskR8wK7NvLor+xA2RzK9XbeAeyvIozOkgJL6J8FH8No5vlqVBnMUkHNHEGbNUtpgzMuIVSntYH712SX1pp
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 10DD940007
+X-Stat-Signature: xmzfxyb9p1ghs3n8mew1hpaemtt4nger
+X-HE-Tag: 1784307371-612078
+X-HE-Meta: U2FsdGVkX1+CKGHO31FxRO5ilz9bwBnBsWXXGvDQxVwjoxyekrFGyZ0e85ojs0QcnZDWOtaFdVseVNqiUjIRXokat7yZRqW0E+ynPESAB6M3AErE1jcVY3W4CV8E90nSa6dey6ePkLLK8+lJ64djrVz9t4Tkxtm5OefjMc2hY6rVBGM00lYBrwiybeFc5ySTyswtc63odF6DUkpQ7C49bvT1pr40dgv8VhWIYwisHKguD8LwqilJtCtj8sb13Q8EPYsTTVB/3mtUexcwj7/K4F67TCbv0pPdMUYUblQpNrHPuOcetNmmH7zMlLNN1VFyynrUxemFcsZV+juqQFF0kVFQnsbfmkOLNyZK8wo7irRl4R/bLDk0MjL4Rup+mXslUH5e4bT6DSYUrZ4gLWuTUMk1XJZSO6148svrA30rrXDGEORC5CgpAJs7kn+zbci7SPf5gra9l8qu/APlkUubZzDWws5L2S3p+X2Z2qxXOHbvs9G23MMejbBJg3oQWadd2QgEfHM6v/lAZmAEs30lQbnYsGMGNDOyYDrGmZGhufJWEqgzoEz53aSXOqiXb4l8XhJ/t//zqvRerJMwpl1KJu+Y1d/EMUyOCk3K4FXo9V2+q4uHmVLSFLxhmFinId+Ypfcjuurh/hCry++1THfogFGgJQw60dzGGZRo8GPT9kTOvnH81zxGsyXKhc3zbr+JF9CdC7LK0fw8DaX10ndkOICkqshB8vRv9P5vLbLe9ADPlHqOF2P7pwNn+3Q0Hgp/iihHxurrvB2yRgtozbbdnJqOJ/rvYlThi/NdLLrTkPjtTkwCdJJZB+kLk5ov4Xg3C4fbHATVKxZLJkOQa8LGPqw006ApWEe/WIvfDEtx73koYOBx7UxTUjhCFwzWhDkHkgL5LL1P9vYQTZ3BzFpplmhNddJ1cj6InRAFjGP6r3lTeLR7rCXreq0T9H+N4m+qp1DmTafNpUncmSf4mfA
+ jpXC1pvH
+ d3PTRly11HuETdsgdDbM+lDT7fQ+/8i0DF6ThwAMcg8YwOP51b7MaTf3f7kaEXT1mN8F2ZmMCHwYgq2aQKrROl7vh0ubRvFEHNHaQaxBiCd+62HHWayjXyZ05u0wpuekLQBWCrGyMZwR2FW2sL3GKlWCJvOVZugk+21/yYARjG76T+htTh1LvUpA4fwzZaF+fNUyGZ3UJZ9YRp16vxhg3Fhj8OouzzMWm29b9bU49g5LczFKmAxTJoFqOtGfy8/FEZdT7capmILMJck8u7ybg7CM8WglAUvu8fOrw0nl07K+wzuDvi38DMGcUcYdQfDfeFeZMlfGIUcxteMQZL//eAyfQweX2noTB0UpErvf89l+J8Tf2KkZa6K8aeUnmDVQjli0wLd5ZnCwnDtiPsvZtIzEyJ8YnPGLMOWJqLZr5c0RWly1jGGe7uM3Eut912tABiYLWiVNd2zUFtxXGyZtnNwzQ6APb3Xc3yOsM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,244 +109,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/16/26 at 09:49am, Nhat Pham wrote:
-> On Wed, Jul 15, 2026 at 4:04 PM Chris Li <chrisl@kernel.org> wrote:
+On Fri, Jul 17, 2026 at 9:50=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Thu, Jul 16, 2026 at 1:35=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
 > >
-> > On Wed, Jul 15, 2026 at 9:18 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> > >
-> > > On Wed, Jul 15, 2026 at 7:19 AM Baoquan He <baoquan.he@linux.dev> wrote:
-> > > >
-> > > > On 07/15/26 at 07:21pm, Baoquan He wrote:
-> > > > > Hi Nhat,
-> > > > >
-> > > > > On 07/12/26 at 05:02pm, Nhat Pham wrote:
-> > > > > > On Thu, Jul 9, 2026 at 4:39 AM Baoquan He <baoquan.he@linux.dev> wrote:
-> > > > > ...snip...
-> > > > >
-> > > > > Sorry, I won't reply to each comment individually. I'll just leave
-> > > > > a summary reply at the end.
-> > > > >
-> > > > > > > I think VSS goes beyond solving the "zswap without backing store"
-> > > > > > > problem — it is fundamentally an architectural restructuring of the
-> > > > > > > swap subsystem, with virtual swap as a first-class abstraction layered
-> > > > > > > above physical devices.  That is both its strength (comprehensive,
-> > > > > > > future-proof) and its trade-off (more invasive to existing paths).
-> > > > > > > I respect that.
-> > > > > > >
-> > > > > > > My goal with ghost swap is different: address the immediate pain point
-> > > > > > > with the smallest possible change to the existing infrastructure.  Both
-> > > > > > > approaches have value, and I hope the community discussion will help
-> > > > > > > identify the right balance.
-> > > > > >
-> > > > > > That's because I believe "zswap without backing store" just by itself
-> > > > > > is a bit narrow of a problem. It's certainly nice to fix, but it's
-> > > > > > more of a nuisance - you already have userspace hacks for it (as I
-> > > > > > mentioned above).
-> > > > > >
-> > > > > > The problem I'm trying to solve is to support:
-> > > > > >
-> > > > > > 1. Writeback.
-> > > > > >
-> > > > > > 2. Dynamicity.
-> > > > > >
-> > > > > > 3. Decoupled backends.
-> > > > > >
-> > > > > > all of which are motivated by real production issues, not some
-> > > > > > theoretical problems. I'm concerned that if we only focus on the third
-> > > > > > goal, we'll dig ourself into a hole that prevents us from solving 1
-> > > > > > and 2 efficiently down the line.
-> > > > > >
-> > > > > > >
-> > > > > > > Thank you again for the detailed review — it has already clarified
-> > > > > > > which parts of the design need more thought and documentation, and will
-> > > > > > > make the next version stronger.
-> > > > > >
-> > > > > > I really don't want to be antagonistic, but I hope you'd take the real
-> > > > > > production pains that we've had (and have tried to communicate in
-> > > > > > multiple mailing threads, across a timeline of almost 2 years at this
-> > > > > > point) seriously.
-> > > > > >
-> > > > > > Collaborations should go both ways. I've gone out of my way to try to
-> > > > > > address the concerns of various parties, from spending *multiple
-> > > > > > weeks* testing and investigating performance regression on zram
-> > > > > > backend (which my company does not use), to a rewrite/re-design of
-> > > > > > virtual swap to accommodate parties who wished to opt out of virtual
-> > > > > > swap for now.
-> > > > > >
-> > > > > > I hope you can extend the same good will to our needs :) I've included
-> > > > > > you (and other swap folks such as Chris and Kairui) in my cc-lists. If
-> > > > > > you have concerns, you could have commented. Instead, you decided to
-> > > > > > send a patch series, which is basically just the ghost swapfile, with
-> > > > > > a bit of afterthought to handle writeback and dynamicity, rather
-> > > > > > inefficiently (no dedicated per-CPU caching), and not even correctly
-> > > > > > (the lack of rmap means swapoff / swap-cache-only physical swap slot
-> > > > > > reclaim is broken).
-> > > > > >
-> > > > > > I respect you and Chris very much to assume bad faith, but please work
-> > > > > > with me rather than against me.
-> > > > >
-> > > > > Before I get into the technical discussion, I want to address something
-> > > > > you raised at the end of your reply — the concern that I'm working
-> > > > > against you rather than with you. Our paths in MM simply haven't crossed
-> > > > > much until now. I can't think of reason why I would want to target you
-> > > > > or your work.
-> > > > >
-> > > > > I respect the work you've put into VSS. I did check it. Honestly I am not
-> > > > > fan of it. In your v2: 2244 insertions, 250 deletions, 15 files touched,
-> > > > > a new 455-line header (vswap.h). While swap subsystem has just absorbed the
-> > > > > swap table series. Then another 2200 lines of architectural restructuring
-> > > > > on top is added. Not sure if anybody raise concern about your solution,
-> > > > > or anybody suggests other directions.
-> > >
-> > > Yes, it's a big patch series. But as you pointed out earlier, it
-> > > solves a larger problem with a single coherent design :)
-> > >
-> > > > >
-> > > > > I posted ghost swap because I saw a concrete, narrow problem that I believed
-> > > > > could be solved with a small change. It makes decoupling and dynamic
-> > > > > growth with the minimum possible mechanism.  Writeback is explicitly deferred
-> > > > >  — not because it's unimportant, but because it's a separate problem that
-> > > > > shouldn't block the common case. With my shallow knowledge, it's optimal
-> > > > > solution to the encountered problem. If you agree, you can change to
-> > >
-> > > The problem is not the lack of writeback support per se. I understand
-> > > that sometimes pieces of a design can be deferred to a follow-up patch
-> > > series.
-> > >
-> > > I'm more concerned that the ghost direction so far does not seriously
-> > > take it into account in the design at all, which might make it either
-> > > impossible or very hard to redesign around down the line. I don't want
-> > > to rip a huge chunk of it out down the line later - we just avoided it
-> > > with the swap table with Kairui's proposal.
-> > >
-> > > >
-> > > > Part of above sentence is missing. I meant if you agree on the ghost
-> > > > solution, you can change to take its way and continue, just add me to
-> > > > CC. Or we can work together.
-> > >
-> > > How about this - let's solve one piece of the puzzle together, one at a time.
-> > >
-> > > First, your optimization patch series. Have you taken a look at my
-> > > proposal ([1])? I believe that design should be cleaner, while still
-> > > allowing you to put it all you want to get (elimination of xarray
-> > > being the chief benefit), without requiring you to modify swap cache
-> > > and swap count operations (since you don't have to move the metadata
-> > > in and out of struct zswap_entry). It does require a bit more code to
-> > > dynamically allocated the backend array, but should be trivial IMHO.
-> > >
-> > > [1]: https://lore.kernel.org/all/CAKEwX=OvR7GbU_9f2h_MtU4m0g6s-esHmNQKYNhJz610M0P3Sw@mail.gmail.com/
 > >
-> > Hi Nhat,
-> >
-> > Sorry for the late reply. I've been busy and just saw this.  First
-> > impression looks promising, it is better than any previous version of
-> > VS. Thanks for incorporating Kairui's feedback. Please give me some
-> > time to sleep on it. I will get back to you on that.
-> 
-> Please take a look. I was waiting for your response as well :)
-> 
-> The patch series is large, yes, but it's an RFC meant to show case the
-> final end design.
-> 
-> >
-> > > Next, if you just want pure ghost swapfile without writeback support,
-> > > maybe something similar to the first 2 patches in my RFC? i.e up to
-> > > this patch:
-> > >
-> > > https://lore.kernel.org/all/20260612193738.2183968-3-nphamcs@gmail.com/
-> > >
-> > > I'm sure you could find issues/bugs in it too with some extensive
-> > > testing (a lot of my performance testing is done on the entire series
-> > > as a whole), but from a design point of view it should achieve what us
-> > > both want, no? It's literally just a ghost swap device - most of the
-> > > other design elements of vswap (the new charging behavior, rmap,
-> > > support for writeback) comes in latter patches. I think the difference
-> > > is:
-> > >
-> > > 1. It's transparently dynamic, whereas in your RFC it's driven by a
-> > > userspace knob. Do you think there are inherent values in a userspace
-> > > knob?
-> > >
-> > > 2. The address space can also shrink when swap usage drops at runtime.
-> > >
-> > > 3. The dynamic address space is backed by an xarray. Note that it's
-> > > structured differently than zswap's one (it's an xarray pointing to
-> > > clusters). If you have rationales or numbers to show that vmalloc
-> > > array is superior (while still support the kernel-driven expansion and
-> > > shrink), please let me know.
-> > >
-> > > If you have no faith in me and do not like my code, you can take the
-> > > code as a starting point, or just the idea, and drive it yourself. Or
-> > > let me know if you're unhappy with any piece of it - we can discuss
-> > > further.
-> > >
-> > > >
-> > > > > Otherwise, please continue to push virtual swap forward. I'll stop and
-> > > > > wait.
-> > >
-> > > Look man, I care about the problems being solved and I'm a sucker for
-> > > good ideas, but I'm not married to anything, be it my code or my
-> > > ideas.
-> > >
-> > > I have literally dropped my old code and adopted Kairui's suggestions
-> > > after playing with it and liking it, to make sure every party's
-> > > concern is met.
-> > >
-> > > If you have concerns, please let me know, or keep sending code if you
-> >
-> > May I add one wishlist item related to ghost swapfile here? I will
-> > reply to your VS thread for other feedback.
-> >
-> > For the ghost swapfile usage case (no writeback). Can VS support this
-> > usage case while maintaining per-swap-slot metadata usage comparable
-> > to the ghost swapfile implementation? If we have to put a number to
-> > it, let's say the increase in metadata is less than 1 byte per swap
-> > slot compared to the ghost swapfile implementation.
-> >
-> > We have large deployments of ghost swapfile in the fleet. I want an
-> > upstream aligned solution that does not increase the existing memory
-> > overhead compared to the current ghost swapfile deployment, for that
-> > usage. As you know, memory pricing and optimization pressure are high.
-> > The ghost swapfile patch itself is relatively simple. If VS can
-> > address this usage case, it will remove a lot of incentive to explore
-> > ghost swapfile-like solutions.
-> 
-> Hi Chris. I have some thoughts on this - let me know what you think.
-> 
-> I understand the memory overhead discussion here. In the case where
-> vswap slot is backed by a real swapfile, I have not figured out a way
-> to make the overhead disappear yet. The damn rmap is very annoying - I
-> have some strategies to get around it for certain operations, but none
-> of it can be done without a full fledged patch series of its own.
-> 
-> However, with the ghost zswap swapfile backend specifically, I think
-> the overhead is going to be negligible compared to the status quo
-> upstream (things might be different internally at Google - please let
-> me know!). This is because the main remaining per-slot overhead comes
-> in the form of one per-cluster array to store the "backend", here it's
-> going to store struct zswap_entry pointers. This is not extra overhead
-> though, because it basically replaces the xarray (that you added all
-> those years ago)!
-> 
-> The rest is small stuff here and there that is not O(slot) but rather
-> O(cluster). For example one struct rcu_head per cluster, xarray
-> overhead for the dynamicization - note that this xarray manages
-> cluster, not slot. I think that's all, unless I miss something.
-> 
-> So if you don't writeback, i.e no physical swapfile, then I think
-> there is negligible overhead (no rmap and all that jazz).
-> 
-> Does this sound acceptable to you?
-> 
-> Baoquan, what do you think?
+> > It is a bit alarming that the store rejection rate is still 43% with
+> > batching, but we can worry about this later :)
+>
+> Yeah I think it's unavoidable at the time the global shrinker is
+> awaken, unfortunately :( We need to kick off shrinking way ahead of
+> time if we want to avoid this, especially since the rate of zswap out
+> is going to be faster than the rate of writeback (CPU vs IO).
+>
+> Sort of why we implement the proactive reclaimers :)
 
-Thanks for the thoughtful reply and the very constructive proposal.
-Your suggestion about moving forward in small, incremental steps in
-last mail is really appealing — I think that's the right way to make
-progress on this. I need a little time to think it through more
-carefully before giving you a proper response. Will get back to you
-soon.
+Arguably, reclaim should wait for zswap writeback and retry, similar
+to how allocators wakeup kswapd and retry, instead of just skipping
+zswap. I was actually thinking about doing this at least for the memcg
+limit case, eliminate the sync shrink_memcg(1) call in zswap_store()
+and instead wakeup an async flusher and sleep.
 
-Thanks
-Baoquan
+A problem for another day I guess :)
 
