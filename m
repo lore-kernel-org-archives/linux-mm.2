@@ -4,148 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC2FEC44520
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 22:02:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B7D5C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 22:02:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 935AB6B00D3; Fri, 17 Jul 2026 18:02:43 -0400 (EDT)
+	id 145AA6B00E0; Fri, 17 Jul 2026 18:02:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90BB66B00D7; Fri, 17 Jul 2026 18:02:43 -0400 (EDT)
+	id 11CFA6B00E1; Fri, 17 Jul 2026 18:02:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FB156B00E0; Fri, 17 Jul 2026 18:02:43 -0400 (EDT)
+	id 033686B00E2; Fri, 17 Jul 2026 18:02:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 485D16B00D3
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:02:43 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7275A028C
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 22:02:42 +0000 (UTC)
-X-FDA: 84999643764.28.F961AF4
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DC81D140011
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 22:02:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=WQTXxWN8;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D423D6B00E0
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:02:57 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67E4D1A027E
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 22:02:57 +0000 (UTC)
+X-FDA: 84999644394.01.D06994E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CE35B18000C
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 22:02:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZlQ6ylS+;
+	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784325775;
+	b=yxe8L60JK9KfPxujNzT199h69S7KsVCJdaN2IWbpX1+ZM0tXibfOgebFeh3QNUsT8ZqMhk
+	SFwkK7ZD1LMH6fJ+RjAwSptAK9Py7dtq01DkYFE7ujxIw+IKXNyKAZmu5ZoLtVFWk4SGVR
+	I5+lzI3dMI2LDbQylwz3e+v+gq25ZUU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZlQ6ylS+;
+	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784325760;
+	s=arc-20220608; t=1784325775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HlCwb+1ZnQlT8KXH+VzgKgpVkzFEV+OYr4Ev43BkCgI=;
-	b=mycOgkBwVyitxzDfgR87L/12oRP6LVO3jA9lGmkC5j1SHR+xSVqWw4NF6bqn/C3YnBHhtx
-	VbcvOtgQfdqG44pxjb2SAtyejoT+q5mTNUGc9bw+qqEbpMLs9rP7OqoWEEkgiV5YXxb+F3
-	o22ES1EUe+5BnPmQTWovArjVg6xf73o=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=WQTXxWN8;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784325760;
-	b=BTTiKH447zBGm+syzRlT5glEKS0RuIHBOAIpw0apJdWwthke6sE6mPnqeCG+Q/CTdEt8/z
-	toE9wWkhz06A2orNI8QCQUevqlj2VhlbRhZ0RtuaX5RA7kBPFZZjqSLkWP4g77UiZ7HlVf
-	Hb/J1BbC5RwHg50Id6rA7axQGWQySdA=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c5382806fso41960641cf.2
-        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 15:02:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1784325760; x=1784930560; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=HlCwb+1ZnQlT8KXH+VzgKgpVkzFEV+OYr4Ev43BkCgI=;
-        b=WQTXxWN8BgT8qinY/kmkhMIWmY0YUqk/e1KrCCzVgO6IphYhUIAummxMbw8Gi0Ci6X
-         FNEXhoBEW768XrAulx2fRwB8T7sSaSR+nQ5OswgdB92Zi9PFx6w6wJ1Y4nv4B8zwqUQQ
-         eBbGq8kNpTrPpLZg3HaemvzBLjg6b1RlRyrb5duKabV7Z5MMg/qqEP6ClTl9bJnYQb/c
-         WImQP5sl8kPkDHuUzzgbsafNleYUtqFxKlsO6gmZja47JCAQ4fXjTBP/xm5EzKZxvmsr
-         NHrCcK71MoxsvdUSfw4OtXx/Q4i76DSg3jgnaaLZwr8QOsA1+1fqLWlFJfZAmtbf/x4m
-         N+pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784325760; x=1784930560;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HlCwb+1ZnQlT8KXH+VzgKgpVkzFEV+OYr4Ev43BkCgI=;
-        b=XQPOwBts9NeCfVGO2UAjcpY79r6U36hTbco4sQ3t/Zsp+4SPPz6NWbLL6YW75CTAAL
-         T59eETVpJUzZ6Qzc2ag+sLNGXtOsWKGxvjFHPLbc02rhZOoGFwNL7C+oilhLpkBrr8q9
-         FboG+GomM143rj0Mqx1WRFBeafx66q+rOV4OPHUunknb3AC5JbISuZopdTLEqS6uz7QA
-         3FHbQm1eYxb220sTJac+9lXPBofQoV/wANppattsCbm/Hl0qW5vBuJkzrLB2gzA30v8+
-         HMUs1mDfPVKgfoFpCXpAJv2bI0XioS3QPq3weStZnnemZ9V8wxc4cf7xvrp95cjH60EX
-         XI2w==
-X-Forwarded-Encrypted: i=1; AHgh+RrJD+E7kH30u9EnuXJLSQG5ef0EenCN8JpJrWRI3MPJ+g9yG4wrxTEMBQ9uI7A7VTL+9U76x72LBA==@kvack.org
-X-Gm-Message-State: AOJu0Yy3w0JNNQjVUtL00ceDcIwkQ9zLRMtagO1lvGKMBhnjseC1XLd1
-	Cm+xuFnCoqIjW/Zfunro3XWk0SwGuguWL/CQrXo2TQODju8pQNkhxTjl5X10EDxJRhc=
-X-Gm-Gg: AfdE7cnINsyFj7WnRLj+V6yYOZD3bq2knFGLyqsy6RcDhKuIq3lTWa9yLgfDFKyZnEW
-	xWHqoDpyYlLeX8jExKIry05uVMAwXP0Ak3NF3Ap5W0rk4JopTGIMnMPjegyEGe2EF1JVcyXcAdZ
-	UTKwoPthVTX+gPavjYouQv+YD1YTs/W0kQym1N1JRAY4U7Qy+3RTnHqJ3Co/VG0fkgPoKjAHBUX
-	ieb66ZGRNBNlJtBeEqt2XhcBn0hZjgYlZLe0BRbXQK1+bpQA6yzBF7rJt+QDH1suY2ELP5mU366
-	y+tlwF9WW/L6U6cdF3Yo1JepJrQ8D2Q2MASN1J33q3ten15ivhKLZof6MiVb4qF8gO/C+i1QWB5
-	8CAGn9n3gP+0+vxIQNZgHVSqb5GOa/O8+F6XSbzIT9rPIOheJeondKIkLBxpYiey7S0IhgNDa9c
-	uxNEMb9HwEQ7ChpBEBYVg5DlByDi0GnmpQJx5XQj4=
-X-Received: by 2002:ac8:5f06:0:b0:519:51af:febd with SMTP id d75a77b69052e-5213f668ee9mr42987041cf.46.1784325759954;
-        Fri, 17 Jul 2026 15:02:39 -0700 (PDT)
-Received: from [127.0.1.1] ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214f016aa5sm21849151cf.17.2026.07.17.15.02.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 15:02:39 -0700 (PDT)
+	bh=vK0V6XdCn3VZKyqGqo603HO8YlBOB9rJrE2Ye6IoQho=;
+	b=a14Ox/k/YgKFUBy9J1ybsQwdwf3Cj29Yxq8x8/WSEBxAKaR35Csrc6BJT0V2tuvXvbdJJO
+	NX13PO09I+WOvKTeJWqPDeftS2aUMfkIWlpSKK77hw7kbxCivhpppuSlhvXFB2n2QV5GdH
+	NNz3F68HHn4z6x5Zg+mRCgUGGvsw2v4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3143060A7B;
+	Fri, 17 Jul 2026 22:02:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B563B1F000E9;
+	Fri, 17 Jul 2026 22:02:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784325774;
+	bh=vK0V6XdCn3VZKyqGqo603HO8YlBOB9rJrE2Ye6IoQho=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZlQ6ylS+qxrpG6MP60Ak8CeNHceJEr9xO9SMOpxRvMGFW4sF3apaOdzJliGRruGc+
+	 uAA5I9+NtP33i6/eHULXIDlTL2cLk3X+FHzRpi9KlGLq2wavYN2oPWaLDo428h0RC8
+	 ro+YhgGhNaFM5IuFDMRWGg8eBrnmLmPd1D11HyIdG8HkterFOeqpCktX3+XQ0Q1zOF
+	 dlVDTWhRoqW44KpeTXQmbvfnAKKahYgbsuRC9XAwrBfHzOnOlNG7lb2m6WBhkTjLLH
+	 eiU/d7h2FDFPBv3mlTdDtW0pPM5KY5AFi7X0znL9g+vJHmDXDW7RPgvo1a3pL9s2WB
+	 Fok1KpRSmevgg==
+Date: Fri, 17 Jul 2026 12:02:53 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Brendan Jackman <jackmanb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Waiman Long <longman@redhat.com>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v3 2/4] cgroup/cpuset: update some comments about the
+ page allocator
+Message-ID: <alqmjd3pKWewxtWZ@slm.duckdns.org>
+References: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
+ <20260715-spin-trylock-followup-v3-2-fc4d246f705d@google.com>
+ <7f4e784ee2bbbc23b4b97913e144c0d9@kernel.org>
+ <alplxFeazzK_Ziie@slm.duckdns.org>
+ <20260717115348.9ff2498eafb8ea256a0cb504@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 07/12] PCI: Refactor matching logic for
- pci_dev_acs_ops
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
- Adithya Jayachandran <ajayachandra@nvidia.com>, 
- Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
- David Rientjes <rientjes@google.com>, 
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
- Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pranjal Shrivastava <praan@google.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
- Samiullah Khawaja <skhawaja@google.com>, 
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <20260710212616.1351130-8-dmatlack@google.com>
-References: <20260710212616.1351130-1-dmatlack@google.com>
- <20260710212616.1351130-8-dmatlack@google.com>
-Date: Fri, 17 Jul 2026 22:02:35 +0000
-Message-Id: <178432575544.189683.9290455764634301119.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=586;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=LxcbZe7BgnncPWKoPk5gxZGS/pQMdASC0LgCixjRw3Q=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqWqZ+Wxzq3jD2mMABNI1669A+3RszfBn3ErJXV
- Y50TeZzWEGJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCalqmfgAKCRC7dyhM23N6
- 3sVSEACDLPUH2+MHEoWyXAsDxYRkVARIRC+B2caZvvSgXaiLKmKi7pEnnql+8FPdsbwKkqRf9Jo
- dQ2qaVmpxf3l7ARpfkVXvpF8obibHQVOtxBKAkqoFNEHzWZzOBT2vYoywdcdcaiRGpZ8X12q8Tl
- TZ6s50Ini0rYTCvZ6zZ0zyslIqeoYN/w21C1mnmLJA5l/oSdh8oF+nocO9jyy1UkYfclKEmsVfS
- aASn9AyStUUOLNMQvuee3N/W+Er5iAx44Oxg/HGGBmN+ofL/MrxdUAodAIg6NbpN0q5+5fKvDvD
- 3KJcKOTnhHwhzxV3DvLnf1mAjYQ/jx4J4sTJYd8zPRCFQzvZ6IDSdiVzymUbhQvcVC66zvWuSgM
- zuzoedeSeAq72CoyoWiZ8xLA3hfJyhDVh4pzPcDA46ZJ0AgW7nAoqHiYNPJVCbtB2qPsQSNgU4G
- 1APtHXn0r5wICS6gPX7ZNcb7gNjnMcy6DZnrtpb/EgW7mEZr3zXxyuTeJrA6i3CogY5HCwl3avb
- k6g3LAvAnL5AhxIdAkfMb/JyCoo7fbWVvu3QdRJZoo4BTMU36Y41oNHHfuKo4IvKo+GpHaqe6jl
- t0fLRciM4UeB0Huvqd6ER6xDzWL/FjnnKjzHSJX4hp19xMTADl+jaeSlOdLUWzkPxqF+6X+8KBF
- zC29UAmi2lxznvA==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717115348.9ff2498eafb8ea256a0cb504@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DC81D140011
-X-Stat-Signature: rurohmu5jwqbky11apd7365cb67dahat
-X-HE-Tag: 1784325760-993842
-X-HE-Meta: U2FsdGVkX19xqJIv8s57iFrfnYeeDxO45HSgJqhh7iSxK+VNdx3JoSYkuY4rjgePhPcEoTBG4oS5DVfNA8e0pRkrKmuFeDu4gfXcalKeUfHodN/5X7ylk5mO9W+pjok3cQdpT7SYFLFbtSHSbBH7sAmoYyLVNY4Oj5ZPiLlqWLPrgJbWiXgtxuNK2TfpEUOc5vBcDlIyoaH7gIi7z5wJyLD8H3iMgvCA7dwCDLGyFR8vmc0gPYKzxpdaQt0sFuGeLUM0zzLqHBRPq92AUELGQX2qCuwb/+tgqpuRj+4bnwxJ+8IhxIBJhMTe23wB1b/rO8/iT/n58UTz32CzfhjmVD3Gvp7QzfCBE09NVPuuXpQDHurMS9D6+3dDA35nbHH44Lzp9j9WA9M723CF/9xg8L2fRzJwy/aYrTetxYTQJS0SMt/aHYMd9DRLcrnid4wpUcUcGz1/8B765svhO59gmNrAuZx/j2q3ThNp+PpFCKnumUnkjDbR9pJ96gF6e0uHJ6bNN/cjAFt6eExsSymX83FZU4Ovnxn0oYz6efC/XIHDU3SWZ1fdnkje6/RYbU7pWwSeYpliMVUz95MZII4tm7dUGgc253lzewTsX1nlvY/sgTRZsHMI1Z3p7XQ/O9lG5wqhGwJ5UPAE9NF84cp49PcQuupW7Vo2LDR1106DJWn78hRZOZcZqaPATQtvfOuCa2Q0BmMVd6mVdohhVGqNJAwa3ongsomGax4Sqf2F5/hqc3AOS0uRJkn9dqbXJvsW+h4/wesiwYAdkWLYY6fUx1YiWSi3nrEa9yRVjPe62YQsve/0wgyc2N+odWa8m1FnWycCoEEhxDCf1FvpckZZJKdCPF4LuQdSeO24lJAyM4HKv1ChcIHHEud1irhkRsqELOnmglrTYGopBJlNWONG5UZeS4aBObU9vheLjE9j28koRBYrwS1EniKp9iJMpke5Sz+Yvq4Q57Uc7Q8tWYu
- KcuLu01T
- UzWJtY5PaHfTcycQODo52CHovIxs4Y2+5HMaVRDqtYT3TTC5f7afJ2/nP1frGpKzvD7fmmHHZ75KdySUwcxaCcqAVcflcWgLnrNLxNioccz4A14Ub773JJiO0qSfE0ef5TRDZ8gHROunzU72DS4sphplgpJHxcHVlVCUqvfVvdpysM6XbxavwnTPiRhoHuwLREQ05dZPJ8mJ9zmN9w4xeGWxgjhqhyHMiucUUvnPCyOm9CBNaC0YLz7XVeTk1OgOSaLGemc1iDQTI/8KFgWDLt4zfglgaPzmFm3GVq6REvMtMIjZyTe8V/ZFyPth7bkjPZzAFPQYW0XX8E5g9AYNiGSkYnwWwlUFwFuiMh5qpNc6mhVOQva35QG7V5blHEh0snp6bTWJit2kgBFz7TmWdU0/AtRSEBaCjsatn
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CE35B18000C
+X-Stat-Signature: hz4ykyw5mqmwy5bghgo48akkajk4pp3d
+X-HE-Tag: 1784325775-284480
+X-HE-Meta: U2FsdGVkX19LhBy6h6upKWslH9kqnaTpKfUCYYaJ1nAl4BVa158z1wpYW4Wdr4L4JntK8cg3NKV2i5C3SLBbce1gT3BVx3cI9gm5WLkg6E/7wZQ5KssuHKbiBFQxkI0VG30gjgBrcV63y3vanuuxG2IqdL+vm6tOv8XDs8Zl+X/pRe5XOGXzlAJhvHV8VtYwyX+MdIzCO08CpGmWODfHkcBmNVXBI8RNddV2aHuEhysuyDOrl1LSzW6veYqDtEkFfYR3BqIx2WXsmfCqCJNdyZp4qjbPmWZipk13Bq9SiGdSv8/TaxQi+bguyGNku1qS6AhGV8jy2K8wSbcwRA13nxXiJzJfp0XEOYJ7ugfD8qYz/mRGSf3euKyTPGA4wkefvm/SHEKQXCH18U/O8knUyETToFIVCPIF6Mo/LbfUku+UNFH/MsSKZL8MLXuA/pmcNGIRx882NOtFOs/YnDWgDj8pHMP3AAC2GN4KdAEXuCi2dQ22Zg1n+wnJVzmdsrpJKq4KTauec7HGV7Fr4HR/4FyFr2m4lOaDcfyRiK1ukAKmjnwn9G8qDmQ+gv7j7VkyiuV1QIog+/WTyEsbOSIr3LqBeU517w+OzKMFxYf0QbpdmJHdPG+88pmFFSqQ8P+0+rLGv8tbrlFppaysDU+v8KVIvfbJGnDfDCSaeYho/w7ON4BepCCgSs2JvBV+yZ74i8qMnytviGZRVK3qm/1tsR9eeD3nNqrUJzROa4hhC0Nvp8Ky0cl1ADKiLGkwHvdOt/5QfK05abKFTQb5jy9r0/6rWolwhvHe2bK2vGjnRE0tjp4RQPuW3l5ZitPKN6p24YiJi8TzXAHByaTgUjVWvPvUAYNP/BpMip4MKFnw6tj8OtXVSYEieG5hHCuoYTh81mgEs5dmoUfoWR0cOx5kOW9cQXdn24HUDBTkyZ8tkX+UrPSJW0AYtgTsPdjsUb7DFSQlHvD3qqpQOLwg2/0
+ T2tHOUPp
+ 0Jp0LKlDYaPKd9aPIJww/3f1ngiLB/HIyn+fhmd+ob5aofov7suKGaIJKU+KJiPfxNt+r8IVZlsMCkZEmr4mgLAq1JQdkuHv7a6DWukX/NDMRo0iM6AgHeRO7wLpTJ2jf8NKq1qcCw50pAUHRBRFE2yCdbMQCb66nDcnw+Pfvxeo1ROSQ31o6B4auahGSc1XG+24J4+h8YaZky96n/MJlRtxCIO7TODENBlPygS5U+qNyuXE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,18 +110,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 21:26:10 +0000, David Matlack <dmatlack@google.com> wrote:
-> Refactor the logic to match devices to pci_dev_acs_ops by factoring out
-> the loop and device matching into its own routine. This eliminates some
-> duplicate code between pci_dev_specific_enable_acs() and
-> pci_dev_specific_disable_acs_redir(), and will also be used in a
-> subsequent commit to check if a device requires device-specific
-> enable_acs() during a Live Update.
+On Fri, Jul 17, 2026 at 11:53:48AM -0700, Andrew Morton wrote:
+> On Fri, 17 Jul 2026 07:26:28 -1000 Tejun Heo <tj@kernel.org> wrote:
 > 
-> [...]
+> > On Fri, Jul 17, 2026 at 07:23:58AM -1000, Tejun Heo wrote:
+> > > Hello,
+> > > 
+> > > Applied this one to cgroup/for-7.3 with Vlastimil's reviewed-by and
+> > > Waiman's ack added. Please drop it from the mm series.
+> > 
+> > Never mind. I'll drop it from mine. Sorry about the noise.
+> 
+> Thanks.  Plucking one patch from a 4-patch series is awkward.  Better to
+> retain this in mm.git with your ack(?).
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Yes, that was a tooling problem. Shouldn't happen again.
+
+ Acked-by: Tejun Heo <tj@kernel.org>
+
+Thanks.
 
 -- 
-Pasha Tatashin <pasha.tatashin@soleen.com>
+tejun
 
