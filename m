@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25965C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81729C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:22:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 019A86B009F; Fri, 17 Jul 2026 12:21:08 -0400 (EDT)
+	id 76F606B00A3; Fri, 17 Jul 2026 12:22:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F34006B00A6; Fri, 17 Jul 2026 12:21:07 -0400 (EDT)
+	id 747146B00A4; Fri, 17 Jul 2026 12:22:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E22E46B00A7; Fri, 17 Jul 2026 12:21:07 -0400 (EDT)
+	id 6364E6B00A6; Fri, 17 Jul 2026 12:22:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E2736B009F
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:21:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20BE8801E3
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:21:07 +0000 (UTC)
-X-FDA: 84998782974.24.0610851
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 490084000C
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 16:21:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=a12utA6z;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 136936B00A4
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:22:44 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46951A0152
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:55:13 +0000 (UTC)
+X-FDA: 84998415306.02.3E60ADB
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 097F31C0007
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:55:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=crNEzaop;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf21.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784305265;
+	s=arc-20220608; t=1784296511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MEBrAHUFnk2FiioO0VpLsJTiSrnUVA33Eunb1QkbnAs=;
-	b=B7OXT3t/yaeBsPkZqRW8qNENNouOoRm1jbYmELT4758N625KpNZIGe2anZcHsIfLGEoUHb
-	MIRg7K6DyrQUYLV/o1nnrTxvYRHLYs2n891oSTejpflQ90gnBEu4lPiGIZfOMTWphBGCm6
-	FkUj1VswRFZpbpkELQqO+yDtG06G0S4=
+	bh=TXBBgafLlIitdIEusehCJN5MB+jax7+RPOwi0bDdWNk=;
+	b=Ck0W2fM17idZ8XAn+MLZ9pZ7Xs8XNDKn5Km5zY0F64pzlXaCFRhP/hT4hNf8ZV8NAasYar
+	l8MXGvIedoPbMqoR5IDAf7pHbjAApapvv0Q07EZVKMXBrQTck/lXZBr0Z930aI6BeRFOeY
+	ya290Upgx1ifQu8nzfaGcWR192up1Mc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=a12utA6z;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=crNEzaop;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf21.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784305265;
-	b=qGfzlFNCJOFLQ2ihluW0w2HwoYArnwGUzyZKKR6NYrdEvYu/cjxIqn6XzhyPWMLkbz2nAi
-	CXpGE9QbwWDYDX8BR604ea2oSHwnL++8wT5cARK4ZxctoKY/gQpsdU45vN1fCz2PFSxyQ+
-	8jJNBc2ztpdwoUePOeoIKXxYCXV296s=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-80a123ef90aso31693297b3.0
-        for <linux-mm@kvack.org>; Fri, 17 Jul 2026 09:21:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1784305264; x=1784910064; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MEBrAHUFnk2FiioO0VpLsJTiSrnUVA33Eunb1QkbnAs=;
-        b=a12utA6zOe4Hj5jTF3IObQbwAgtGjPY+BNQIMHo146yMrJZoam3wtraVS6Oglb034h
-         vAweHBQROdFx+fGgVzCHMOG6qbkmaxq8GpuypoH2uHPs1ol3H2CHHBGvjZAURHQ82Ivc
-         JI5eSqYPOzEaFFQU8LzwgN/Yi3XIdb8ngoNBHIZwId8xjz+/kkiYUgIHoN3Fs4oOQ81l
-         1irAXUJiM294VLUVB7kcHgIZJ0bnpSxqgtwptGgSz+Jn1olzEMeZjqURMRHb/BeQ2q/G
-         roPtAO9wm9O2cBN07MefDVEAdEpWKAtiR9thl1d8sN22pZh4Fxlrrd9nKDTOCn1kkWvs
-         /+mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784305264; x=1784910064;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MEBrAHUFnk2FiioO0VpLsJTiSrnUVA33Eunb1QkbnAs=;
-        b=K7JVJLBEtdWzMvm/6XQzWXaZiBeRMGagGGMRjv5ewexHkvXn/5FFPrCLhQjBe56j/v
-         FCDD0EEVQlEeuERl236VEh6eOJz8y48T+zmhZf8qj9Xr7d50WLHnp4YSag1vwy5zwVVL
-         ytrsf0uhk+NECp4udF0dZ6chGVVGPT0SxseMKMroAG4ExdnKrq3OOpfEe4LoQQ3m6Qv8
-         CbBo/2O9aYsIXrGFcyF+sStUJ28MumIHL7Oq6gVsY/c0Tt1eD2w4xEuue2/4zWYGzdFy
-         pLQFOjXEfu2MZupt+NS2ERGtrG9W0noalM8KN14Ni2qX5cBHHyGX0Fwm4HZk1PDjxMkO
-         AYXA==
-X-Forwarded-Encrypted: i=1; AHgh+RqdY27LyMKDnsRPIC0HH7OXfDxXZBsZyXVC7Y3/ym/sA04oo5g4D2WqPQNSrx3oZ11FgJhX8cMzPg==@kvack.org
-X-Gm-Message-State: AOJu0YxLm5A3aMBxi+tLvVWcKJxU+BRT034lCmH9CYNhwVJxqCxLrC9z
-	IUHnXRGMmICPSKrKTFIJBzNYmFcSOCJRIoedTQJvzsdtrEO5pmjF86BG4WOLpOpm+Ks=
-X-Gm-Gg: AfdE7ckn1dmDAsn7FjuYX0EGi2+WJs2yF1REbepA7/94uq39Qczu+cLnJIxMAob92aE
-	6/KFNSbleVTxHY0BahwGpCykMz8rrBrii0hn3PBG2yt1smrT8Ep2mMLWP4og6LuHPPedvTBWwl1
-	yIrOyCnXKbMNwijiD3wS3XWUO7uH0tme5TmKPaDf8030M2qXx+O5Vh0j0Z82+0VJ/RqAsfwQJYU
-	qHzbcJG9ccjxa6kOJJkw2wGjvVyOTXGFddjEJw0Jq+ixTTnuUGHhHN6V4Snc0hogbjUXcDAfuWR
-	8ozQ0p7rtMtxmvLUD5IjAGASchggUygfhmSAFixwqkY9131oFa3wQBjGbubcEni3wrKDuKOZVV1
-	9QdSQGDwLfnmMDSSdGU4JlYZ+FflI9xOKqeu9d1kvWhuYGTpQsSlA/FpiHNm8HgZd+hVSgXCdMK
-	KDOiU688FhDUP2+dqELSMacdSzWX6pmpv1Q74w9k0G6HS7eydPkui0YDubzVCaLW0toTKR/Zr7a
-	/xlR469Z4go
-X-Received: by 2002:a05:690c:c4e7:b0:80c:88b8:2dd9 with SMTP id 00721157ae682-81ef15ea910mr12966957b3.35.1784305264127;
-        Fri, 17 Jul 2026 09:21:04 -0700 (PDT)
-Received: from google.com (138.200.150.34.bc.googleusercontent.com. [34.150.200.138])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81ef42e89e8sm13834677b3.44.2026.07.17.09.21.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 09:21:03 -0700 (PDT)
-Date: Fri, 17 Jul 2026 12:21:03 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Evangelos Petrongonas <epetron@amazon.de>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] kho: align kho_scratch to MAX_ORDER_NR_PAGES pages
-Message-ID: <alpWWFo1gnxVnP7T@google.com>
-References: <20260717134028.2880508-1-mclapinski@google.com>
+	t=1784296511;
+	b=H3hHXvJulOYfdyW1WkDHcUr5r5nmINxKDOdUAIjXeOQesLJ/3PtWeKUtX02hnavSVyqj6W
+	V19ZlRguS9c4/Dv+E2ag66mDvF38W/+xObUwOUzIyz56osxl0rrDlfZrJTu6tDYx0fsDmG
+	iVUiivcP+WYkN6mPEnq3NS5nc7hX7NE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:From:Reply-To;
+	bh=TXBBgafLlIitdIEusehCJN5MB+jax7+RPOwi0bDdWNk=; b=crNEzaopE/vY/f0zlVtxtjorsf
+	AAurL7zs+keZoRv5ny6rnajG1LQki2zFIsQdyDoLsuU8R9f84baoYCYkExhY4x5YqEg0NwPFrUkqI
+	2U8eN107afO7cISvzRcLEFllrxnhiXmWa03eVNTpQ1KUvNcmS/SGFPNeRRaWt6L93ehjCSCl7yByv
+	SBKJpvQFmDPAm1kzgrtbXpDLNKDQJJ5UmMUWva3KxwSrdgYt1jBu4tAmRIC4FPM8QBHn8a7E9LqI5
+	V2tShzJ7BT+c3kbLjyNSrguy51eOeeJZtLz58s19xsAHzD+Sp3q1YZNsVX+/F7OGYU2FmmsLW0f4L
+	vmsoAGaw==;
+Received: from [179.118.191.219] (helo=[192.168.15.100])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wkj1q-00GXeM-2N; Fri, 17 Jul 2026 15:55:02 +0200
+From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+Date: Fri, 17 Jul 2026 10:54:34 -0300
+Subject: [PATCH v4 1/6] treewide: Get rid of get_task_comm()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717134028.2880508-1-mclapinski@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260717-tonyk-long_name-v4-1-1fedfc870d21@igalia.com>
+References: <20260717-tonyk-long_name-v4-0-1fedfc870d21@igalia.com>
+In-Reply-To: <20260717-tonyk-long_name-v4-0-1fedfc870d21@igalia.com>
+To: Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, willy@infradead.org, 
+ mathieu.desnoyers@efficios.com, David Laight <david.laight.linux@gmail.com>, 
+ Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org, 
+ Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, 
+ arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>
+Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org, 
+ linux-api@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+X-Mailer: b4 0.15.2
+X-Rspamd-Queue-Id: 097F31C0007
+X-Stat-Signature: hany7t3izzhzyhmerd13udqj1d7ad5up
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 490084000C
-X-Stat-Signature: ac881s94cgrhdsdkgcp1tkh91b3fb4rf
-X-HE-Tag: 1784305265-7980
-X-HE-Meta: U2FsdGVkX18ad9d0xuZJNwIyuJ1AHM2Hc6mfxuj1x01Xfdw5H6FFUtYKm3kSaoUanjtzaTsHfhTlMdmmJCy+q1IKeoBsDulYkQPXEC3ADf7thTZrUJY62bRAGUsVq3pxD34Pgao52baZo4HsU7EIEBkxP3bTGYhh+kiGkOmOLq9V1hOKGtYuP/ST65HxgHWDnS1QJ4KGciSl+Td1GToqPnniKBJu3TqB5DRPQ3X+MlP3fgB+9UbjN1H+M/k5mDFs4H7yjQ86brBeVZaLb3MtkjWRDL6yzJ/OIRyRNfAbTq2o8H2GOwRrRHyFEebiwiYFqNL5r3VHsj5P+G9o5xrxgn7wGMXwcMHbeHCjCCAglEgieJiAwLtxRvbI7b3ywj0GIO4FBwLMq2j1q+3G77rQ7OTVD7+cyPk+BtPUsNCV0vVdbT7RqavH0KiU4Q55dWDa8jjEPFu0gHawYbZy7W1TG9EICbmRUcSOkg9a/yjo4h7dK9niT5JvVz+RcQsF53y7PIfUCWuYfhpYIa4OqF6rofuYmQ5F+62rq/F4S1GxnaOmvIHbMQSzEnhf6OXyGBYJTXtlG68CzziCvQzCRvY4ZKQjbFQPFlF0M54ZNybwj6yXJEamC7epVE4u5Qy/Y1vxlTUTMrl9xB+uQzI73IlKqt5cPgUdvdYpTv1FtsqPFbjySF+2lMT0Dsj6RfD9vK7ir4kg6HSGCiOL8vLKsJjyp+kzsJQ+tJTDvUvwYgkHRXGwKrLzswVtXVrwJixbklHaCj8YG2h1x46OVt/4IEChDFbhG+PJKlvkEaUCfyzjjKhJISqeTQvVgx60rhFC02kNZYqMkW7sxud9iMxzM1V17Ql06WLOkId1pY716D6f0c7WCsCwxbseAFQtBqIh1Q+4Bh0GyqVPH3x+Y9aIGpwRjo8NshWhPWquGBztConiTude7UGOk42dXNs0QZOB1DRdcKoGFDWeKAGpLNhPXyw
- K9EKLrf4
- mhMWseR3jsxItO5cyIhAmIm5z9xhEbKL0XTBLG0WC3BiziMJ5l1M2NtDEeEFi8hpnNfD9E7RIi7KwmFE357JQYgEFdiAfXNBXQrGrEU7MUWPfCwe1laRnxjIMJzSkLccomoAb5TjmtjRao936ymvUhJlRwrg+md7OxC82uiacAB99DYpPHGJIpIxKAqxpsrHtxswpic1u5v2Yc8MzP4zAR/ETbV493+d3ob+LWNjeVV4IAyUP/IenSbd/AA0fai2lD+88aJBB5HFK+dmkr0UDClAv/eReBiOMNciTMlj0t5CPK5QCFQHWeYcucHBzm65XExW2tBLHa9E40WYXXRocVinCE0LawBkwnlCN/0MANhjJGxTaT8uFFN+sMtkMOQ+x6Pur+ufYmwLvuVJEfamQKYRuFPC4Bswgp6i6
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784296510-966029
+X-HE-Meta: U2FsdGVkX1+IN/NNyZe5JJo4JFFMSR2hIBQ1EvtMBzicqMemUD+97nhK/8M80hIQMJQ1uUg4mmSm3gqjGC/nL/lf4lFzdi/W8h0umlScQJ0QMf/Rb4WBsy7iO0V5LjQggWALSro2sRE+MTKNxLjAivBaxIEhXl4aQOiSSnnTlJMxD2Yc37c/xQzjCRKpvgbY/YQOzhETmxzNK4qoLgyPeRO5Elran5CQRrgtQBA/C2KlNYnRP59MR520R9qZ0TkArOIqGHw0C/ShpxMcu32IRmyErwcGHtA6//NtgHwv9AhR25o0GgoT+7uin2h7mO9hp8q/VcE6b9zavErsDtn6Zs8+2nzhbe9WapXlHbjxn0fVVhy6SGNa53OZLeU8RsXMbjECB5na5inwxpuYulLa4mZf5iX4zxfZuT6O6iPoTy/TaII7h87XQ7UtfyQxU1k7g4qMAKy+Y5kV4kZTHQTG/8JaPlnIgG+Djj+D8DPsatXvVHoGfPZYl8g+MztBd9pm4V0ZDpfQ0M2wuV5441qBb9tkv5cy6w/b1LPcoSAEb89R1rB9WqEm2jsNWgF26UsP1ojLwJ1aCdayyuZ29kRtLBCDRezTvMheM6S1QiDLBNx2XtmkWHsifwh6camG5dRWaHxt/MMya2Y0RTcR/Vy6mqNzmI5DRJFSeKwc/Q1/yUVV785MAFyAaIcS21TW8xjLEkxIS587DKNYwNf+l5N3H1Q3tgaRWPMWM2z8TzCirxcwoMFTVieBuT2lYeKW90orUe+Wdqjl/OHZkXyHxrkstkJgzxDdWTmAWr0Mm4K/UNVCTiwQeBkQCiIncKEVu4JloR9ul83IhCokd+hTCRCdkjX3MxPy1lhflGNV0mzEHNeheXshMNk26P5+ePoxIMg+CVobIbEsTWb7gdxnrv+3FrbV1I05QP8whJ6aoFlWHmfFGR4paxENMYdaDGV3hqKaSqgm+xBs5Ot0o18wYsf
+ wkpGE4pB
+ MYAaxuGk+lvKf0m7DAFNF8RC2JWc0MihSBABt75lfoWlPz1pS2g5y2pTs0W3mXTbo/xBu/WztIom7kBx6jI9PZsP//1JW4m0oRd2SP/JzsM9CgPOMvzgCOShv8N2qya6svbdheqibpyRrSRVPU5r4BJs7TGg8/DcjQE3EQV5QdRM4oo/UBvCioiSfpjRNR5w+q9C7CNNriLZ7Sfprroh5Zylhy/5ZT3Q0Bn9eKXBjU5GECvaseoZhihMM9HlEelT4i2bIf22N3DS++8oRzfIRli10WctsRCBYsMndOAtcQbmcFlgDwzSt0KZKQLcq99dmLIKBPzBvQYvDZMljpy5aCRngWelGbyS7TuzqZNvxUqzcI3Q90AO/ujKEdxNR7mORQbdfx4PEMTNbvNL1tmjcTzZ+/vIhmqJMmxQvJrakCGlMqB/XVXygJiZ6NA/krH4apOXHfsRTf/uVwzqe/fist/hpVj3LbH0E1RybYDkMXxz9PIl5ngXoS2P94w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,134 +100,489 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07-17 15:40, Michal Clapinski wrote:
-> While booting with KHO, the following crash was observed:
-> 
-> BUG: unable to handle page fault for address: ff19164fffff8328
-> RIP: 0010:__free_one_page+0x1a1/0x6b0
-> Call Trace:
->  <TASK>
->  [<ffffffff913208bf>] free_one_page+0xaf/0x240
->  [<ffffffff93973288>] deferred_free_pages+0xa8/0xd0
->  [<ffffffff93971b4f>] deferred_init_memmap_chunk+0x10f/0x1b0
->  [<ffffffff9396e265>] padata_mt_helper+0x65/0xa0
->  [<ffffffff90fac402>] process_scheduled_works+0x202/0x410
->  [<ffffffff90fae739>] worker_thread+0x1f9/0x2d0
->  [<ffffffff90fb62fd>] kthread+0x27d/0x2f0
->  [<ffffffff90fae540>] ? __pfx_worker_thread+0x10/0x10
->  [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
->  [<ffffffff90efdc55>] ret_from_fork+0x145/0x280
->  [<ffffffff90fb6080>] ? __pfx_kthread+0x10/0x10
->  [<ffffffff90e2e46a>] ret_from_fork_asm+0x1a/0x30
->  </TASK>
-> 
-> deferred_init_memmap_chunk() interleaves initialization of struct pages
-> with freeing them. This works fine without KHO because free regions
-> will never be neighbors. However, with KHO, free memory will be split
-> into (free && scratch) and (free && !scratch), which can be neighbors.
-> 
-> KHO scratch is aligned to CMA_MIN_ALIGNMENT_PAGES pages but buddy looks
-> at the neighborhood of MAX_ORDER_NR_PAGES pages. These values are
-> configurable but CMA_MIN_ALIGNMENT_PAGES is always less or equal to
-> MAX_ORDER_NR_PAGES. In the crashing configuration they were set as
-> follows:
-> CMA_MIN_ALIGNMENT_PAGES = 1 << 9
-> MAX_ORDER_NR_PAGES = 1 << 10
-> 
-> So while freeing one chunk, buddy accessed uninitialized struct pages
-> from another chunk, tried to merge the blocks and crashed.
-> 
-> To fix this, let's just align KHO scratch to MAX_ORDER_NR_PAGES pages.
-> 
-> Fixes: c6073743d0c7 ("kho: make preserved pages compatible with deferred struct page init")
-> Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> ---
-> Unfortunately, this is very hard to catch, so I don't have a good
-> reproducer. But I run the code with the fix through extensive testing
-> and it seems fine.
-> I think I've never caught it before because enabling HUGETLB is what
-> causes CMA_MIN_ALIGNMENT_PAGES to be 1 << 9, instead of 1 << 10.
-> 
-> If this passes review, please cherry-pick it to 7.2 so we don't release
-> a broken kernel.
+Since commit 4cc0473d7754 ("get rid of __get_task_comm()"),
+get_task_comm() does just a redundant check for the buffer size and call
+strscpy_pad(). Replace get_task_comm() calls with strscpy_pad(), that will
+do the right thing if the buffers sizes doesn't match: zero-pad if it's
+bigger, and truncate if it's smaller.
 
-A changelog would be super helful here.
+Link: https://lore.kernel.org/lkml/CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com/
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+---
+Changes from v1:
+ - Fix for security/ipe/audit.c and net/netfilter/nf_tables_api.c
+---
+ drivers/connector/cn_proc.c                        |  2 +-
+ drivers/dma-buf/sw_sync.c                          |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c   |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c            |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c    |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c             |  4 ++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c       |  2 +-
+ drivers/gpu/drm/lima/lima_ctx.c                    |  2 +-
+ drivers/gpu/drm/panfrost/panfrost_gem.c            |  2 +-
+ drivers/gpu/drm/panthor/panthor_gem.c              |  2 +-
+ drivers/gpu/drm/panthor/panthor_sched.c            |  2 +-
+ drivers/gpu/drm/virtio/virtgpu_ioctl.c             |  2 +-
+ drivers/hwtracing/stm/core.c                       |  2 +-
+ drivers/tty/tty_audit.c                            |  2 +-
+ fs/binfmt_elf.c                                    |  2 +-
+ fs/binfmt_elf_fdpic.c                              |  2 +-
+ fs/proc/array.c                                    |  2 +-
+ include/linux/sched.h                              | 19 -------------------
+ kernel/audit.c                                     |  6 ++++--
+ kernel/auditsc.c                                   |  6 ++++--
+ kernel/printk/printk.c                             |  2 +-
+ kernel/sys.c                                       |  2 +-
+ net/bluetooth/hci_sock.c                           |  2 +-
+ net/netfilter/nf_tables_api.c                      |  4 +++-
+ security/integrity/integrity_audit.c               |  3 ++-
+ security/ipe/audit.c                               |  3 ++-
+ security/landlock/domain.c                         |  2 +-
+ security/lsm_audit.c                               |  7 ++++---
+ 29 files changed, 42 insertions(+), 52 deletions(-)
 
-Pasha
+diff --git a/drivers/connector/cn_proc.c b/drivers/connector/cn_proc.c
+index 0056ab81fbc3..c78243ed3c2a 100644
+--- a/drivers/connector/cn_proc.c
++++ b/drivers/connector/cn_proc.c
+@@ -278,7 +278,7 @@ void proc_comm_connector(struct task_struct *task)
+ 	ev->what = PROC_EVENT_COMM;
+ 	ev->event_data.comm.process_pid  = task->pid;
+ 	ev->event_data.comm.process_tgid = task->tgid;
+-	get_task_comm(ev->event_data.comm.comm, task);
++	strscpy_pad(ev->event_data.comm.comm, task->comm);
+ 
+ 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
+ 	msg->ack = 0; /* not used */
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index 8df20b0218a9..d501657ad801 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -312,7 +312,7 @@ static int sw_sync_debugfs_open(struct inode *inode, struct file *file)
+ 	struct sync_timeline *obj;
+ 	char task_comm[TASK_COMM_LEN];
+ 
+-	get_task_comm(task_comm, current);
++	strscpy_pad(task_comm, current->comm);
+ 
+ 	obj = sync_timeline_create(task_comm);
+ 	if (!obj)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
+index 6a364357522b..13c8857e4ffb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
+@@ -74,7 +74,7 @@ struct amdgpu_amdkfd_fence *amdgpu_amdkfd_fence_create(u64 context,
+ 	/* This reference gets released in amdkfd_fence_release */
+ 	mmgrab(mm);
+ 	fence->mm = mm;
+-	get_task_comm(fence->timeline_name, current);
++	strscpy_pad(fence->timeline_name, current->comm);
+ 	spin_lock_init(&fence->lock);
+ 	fence->svm_bo = svm_bo;
+ 	fence->context_id = context_id;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
+index f6b7522c3c82..046243e3a3cd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
+@@ -128,7 +128,7 @@ int amdgpu_evf_mgr_rearm(struct amdgpu_eviction_fence_mgr *evf_mgr,
+ 		return -ENOMEM;
+ 
+ 	ev_fence->evf_mgr = evf_mgr;
+-	get_task_comm(ev_fence->timeline_name, current);
++	strscpy_pad(ev_fence->timeline_name, current->comm);
+ 	spin_lock_init(&ev_fence->lock);
+ 	dma_fence_init64(&ev_fence->base, &amdgpu_eviction_fence_ops,
+ 			 &ev_fence->lock, evf_mgr->ev_fence_ctx,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index 764cd4950408..e60a470b57ec 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -4445,7 +4445,7 @@ int amdgpu_ras_init(struct amdgpu_device *adev)
+ 	}
+ 
+ 	con->init_task_pid = task_pid_nr(current);
+-	get_task_comm(con->init_task_comm, current);
++	strscpy_pad(con->init_task_comm, current->comm);
+ 
+ 	mutex_init(&con->critical_region_lock);
+ 	INIT_LIST_HEAD(&con->critical_region_head);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+index f74ad378e407..f41857473641 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -85,7 +85,7 @@ int amdgpu_userq_fence_driver_alloc(struct amdgpu_device *adev,
+ 
+ 	fence_drv->adev = adev;
+ 	fence_drv->context = dma_fence_context_alloc(1);
+-	get_task_comm(fence_drv->timeline_name, current);
++	strscpy_pad(fence_drv->timeline_name, current->comm);
+ 
+ 	*fence_drv_req = fence_drv;
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index bb99b7c3a010..84c0b310e9c1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2542,10 +2542,10 @@ void amdgpu_vm_set_task_info(struct amdgpu_vm *vm)
+ 		return;
+ 
+ 	vm->task_info->task.pid = current->pid;
+-	get_task_comm(vm->task_info->task.comm, current);
++	strscpy_pad(vm->task_info->task.comm, current->comm);
+ 
+ 	vm->task_info->tgid = current->tgid;
+-	get_task_comm(vm->task_info->process_name, current->group_leader);
++	strscpy_pad(vm->task_info->process_name, current->group_leader->comm);
+ }
+ 
+ /**
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 2a241a5b12c4..f8ce59d8587a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -563,7 +563,7 @@ static int amdgpu_vram_mgr_new(struct ttm_resource_manager *man,
+ 	}
+ 
+ 	vres->task.pid = task_pid_nr(current);
+-	get_task_comm(vres->task.comm, current);
++	strscpy_pad(vres->task.comm, current->comm);
+ 	list_add_tail(&vres->vres_node, &mgr->allocated_vres_list);
+ 
+ 	if (bo->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS && adjust_dcc_size) {
+diff --git a/drivers/gpu/drm/lima/lima_ctx.c b/drivers/gpu/drm/lima/lima_ctx.c
+index 68ede7a725e2..e8c5c3601bf1 100644
+--- a/drivers/gpu/drm/lima/lima_ctx.c
++++ b/drivers/gpu/drm/lima/lima_ctx.c
+@@ -29,7 +29,7 @@ int lima_ctx_create(struct lima_device *dev, struct lima_ctx_mgr *mgr, u32 *id)
+ 		goto err_out0;
+ 
+ 	ctx->pid = task_pid_nr(current);
+-	get_task_comm(ctx->pname, current);
++	strscpy_pad(ctx->pname, current->comm);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.c b/drivers/gpu/drm/panfrost/panfrost_gem.c
+index 3a7fce428898..11936c4d3573 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gem.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gem.c
+@@ -36,7 +36,7 @@ static void panfrost_gem_debugfs_bo_add(struct panfrost_device *pfdev,
+ 					struct panfrost_gem_object *bo)
+ {
+ 	bo->debugfs.creator.tgid = current->tgid;
+-	get_task_comm(bo->debugfs.creator.process_name, current->group_leader);
++	strscpy_pad(bo->debugfs.creator.process_name, current->group_leader->comm);
+ 
+ 	mutex_lock(&pfdev->debugfs.gems_lock);
+ 	list_add_tail(&bo->debugfs.node, &pfdev->debugfs.gems_list);
+diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
+index a1e2eb1ca7bb..ebb3664e4303 100644
+--- a/drivers/gpu/drm/panthor/panthor_gem.c
++++ b/drivers/gpu/drm/panthor/panthor_gem.c
+@@ -54,7 +54,7 @@ static void panthor_gem_debugfs_bo_add(struct panthor_gem_object *bo)
+ 						    struct panthor_device, base);
+ 
+ 	bo->debugfs.creator.tgid = current->tgid;
+-	get_task_comm(bo->debugfs.creator.process_name, current->group_leader);
++	strscpy_pad(bo->debugfs.creator.process_name, current->group_leader->comm);
+ 
+ 	mutex_lock(&ptdev->gems.lock);
+ 	list_add_tail(&bo->debugfs.node, &ptdev->gems.node);
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 298b046c95ed..81c4659c0d7b 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -3617,7 +3617,7 @@ static void group_init_task_info(struct panthor_group *group)
+ 	struct task_struct *task = current->group_leader;
+ 
+ 	group->task_info.pid = task->pid;
+-	get_task_comm(group->task_info.comm, task);
++	strscpy_pad(group->task_info.comm, task->comm);
+ }
+ 
+ static void add_group_kbo_sizes(struct panthor_device *ptdev,
+diff --git a/drivers/gpu/drm/virtio/virtgpu_ioctl.c b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
+index 3d8e4ccdb7c1..b10a0e1cb1ed 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_ioctl.c
++++ b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
+@@ -50,7 +50,7 @@ static void virtio_gpu_create_context_locked(struct virtio_gpu_device *vgdev,
+ 	} else {
+ 		char dbgname[TASK_COMM_LEN];
+ 
+-		get_task_comm(dbgname, current);
++		strscpy_pad(dbgname, current->comm);
+ 		virtio_gpu_cmd_context_create(vgdev, vfpriv->ctx_id,
+ 					      vfpriv->context_init, strlen(dbgname),
+ 					      dbgname);
+diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
+index f48c6a8a0654..c7715439964e 100644
+--- a/drivers/hwtracing/stm/core.c
++++ b/drivers/hwtracing/stm/core.c
+@@ -634,7 +634,7 @@ static ssize_t stm_char_write(struct file *file, const char __user *buf,
+ 		char comm[sizeof(current->comm)];
+ 		char *ids[] = { comm, "default", NULL };
+ 
+-		get_task_comm(comm, current);
++		strscpy_pad(comm, current->comm);
+ 
+ 		err = stm_assign_first_policy(stmf->stm, &stmf->output, ids, 1);
+ 		/*
+diff --git a/drivers/tty/tty_audit.c b/drivers/tty/tty_audit.c
+index d014af6ab060..d514a81d0a5c 100644
+--- a/drivers/tty/tty_audit.c
++++ b/drivers/tty/tty_audit.c
+@@ -77,7 +77,7 @@ static void tty_audit_log(const char *description, dev_t dev,
+ 	audit_log_format(ab, "%s pid=%u uid=%u auid=%u ses=%u major=%d minor=%d comm=",
+ 			 description, pid, uid, loginuid, sessionid,
+ 			 MAJOR(dev), MINOR(dev));
+-	get_task_comm(name, current);
++	strscpy_pad(name, current->comm);
+ 	audit_log_untrustedstring(ab, name);
+ 	audit_log_format(ab, " data=");
+ 	audit_log_n_hex(ab, data, size);
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 16a56b6b3f6c..d25922460b63 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1557,7 +1557,7 @@ static int fill_psinfo(struct elf_prpsinfo *psinfo, struct task_struct *p,
+ 	SET_UID(psinfo->pr_uid, from_kuid_munged(cred->user_ns, cred->uid));
+ 	SET_GID(psinfo->pr_gid, from_kgid_munged(cred->user_ns, cred->gid));
+ 	rcu_read_unlock();
+-	get_task_comm(psinfo->pr_fname, p);
++	strscpy_pad(psinfo->pr_fname, p->comm);
+ 
+ 	return 0;
+ }
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index 7e3108489c83..c4d4e59ff34d 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -1371,7 +1371,7 @@ static int fill_psinfo(struct elf_prpsinfo *psinfo, struct task_struct *p,
+ 	SET_UID(psinfo->pr_uid, from_kuid_munged(cred->user_ns, cred->uid));
+ 	SET_GID(psinfo->pr_gid, from_kgid_munged(cred->user_ns, cred->gid));
+ 	rcu_read_unlock();
+-	get_task_comm(psinfo->pr_fname, p);
++	strscpy_pad(psinfo->pr_fname, p->comm);
+ 
+ 	return 0;
+ }
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index 479ea8cb4ef4..905d910b598f 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -110,7 +110,7 @@ void proc_task_name(struct seq_file *m, struct task_struct *p, bool escape)
+ 	else if (p->flags & PF_KTHREAD)
+ 		get_kthread_comm(tcomm, sizeof(tcomm), p);
+ 	else
+-		get_task_comm(tcomm, p);
++		strscpy_pad(tcomm, p->comm);
+ 
+ 	if (escape)
+ 		seq_escape_str(m, tcomm, ESCAPE_SPACE | ESCAPE_SPECIAL, "\n\\");
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 373bcc0598d1..2714c81bc708 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2021,25 +2021,6 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
+ 	__set_task_comm(tsk, from, false);		\
+ })
+ 
+-/*
+- * - Why not use task_lock()?
+- *   User space can randomly change their names anyway, so locking for readers
+- *   doesn't make sense. For writers, locking is probably necessary, as a race
+- *   condition could lead to long-term mixed results.
+- *   The strscpy_pad() in __set_task_comm() can ensure that the task comm is
+- *   always NUL-terminated and zero-padded. Therefore the race condition between
+- *   reader and writer is not an issue.
+- *
+- * - BUILD_BUG_ON() can help prevent the buf from being truncated.
+- *   Since the callers don't perform any return value checks, this safeguard is
+- *   necessary.
+- */
+-#define get_task_comm(buf, tsk) ({			\
+-	BUILD_BUG_ON(sizeof(buf) < TASK_COMM_LEN);	\
+-	strscpy_pad(buf, (tsk)->comm);			\
+-	buf;						\
+-})
+-
+ static __always_inline void scheduler_ipi(void)
+ {
+ 	/*
+diff --git a/kernel/audit.c b/kernel/audit.c
+index 562476937fa7..1f0b44d4e5c7 100644
+--- a/kernel/audit.c
++++ b/kernel/audit.c
+@@ -1667,7 +1667,8 @@ static void audit_log_multicast(int group, const char *op, int err)
+ 	audit_put_tty(tty);
+ 	audit_log_task_context(ab); /* subj= */
+ 	audit_log_format(ab, " comm=");
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_d_path_exe(ab, current->mm); /* exe= */
+ 	audit_log_format(ab, " nl-mcgrp=%d op=%s res=%d", group, op, !err);
+ 	audit_log_end(ab);
+@@ -2476,7 +2477,8 @@ void audit_log_task_info(struct audit_buffer *ab)
+ 			 audit_get_sessionid(current));
+ 	audit_put_tty(tty);
+ 	audit_log_format(ab, " comm=");
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_d_path_exe(ab, current->mm);
+ 	audit_log_task_context(ab);
+ }
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index 6610e667c728..1d930f169856 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2877,7 +2877,8 @@ void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
+ 	audit_log_format(ab, " pid=%u", task_tgid_nr(current));
+ 	audit_log_task_context(ab); /* subj= */
+ 	audit_log_format(ab, " comm=");
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_end(ab);
+ }
+ EXPORT_SYMBOL_GPL(__audit_log_nfcfg);
+@@ -2900,7 +2901,8 @@ static void audit_log_task(struct audit_buffer *ab)
+ 			 sessionid);
+ 	audit_log_task_context(ab);
+ 	audit_log_format(ab, " pid=%d comm=", task_tgid_nr(current));
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_d_path_exe(ab, current->mm);
+ }
+ 
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 2fe9a963c823..019b11de262c 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2247,7 +2247,7 @@ static u16 printk_sprint(char *text, u16 size, int facility,
+ static void printk_store_execution_ctx(struct printk_info *info)
+ {
+ 	info->caller_id2 = printk_caller_id2();
+-	get_task_comm(info->comm, current);
++	strscpy_pad(info->comm, current->comm);
+ }
+ 
+ static void pmsg_load_execution_ctx(struct printk_message *pmsg,
+diff --git a/kernel/sys.c b/kernel/sys.c
+index df69bd71de03..74c22d6dded0 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2609,7 +2609,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 		proc_comm_connector(me);
+ 		break;
+ 	case PR_GET_NAME:
+-		get_task_comm(comm, me);
++		strscpy_pad(comm, me->comm);
+ 		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
+ 			return -EFAULT;
+ 		break;
+diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
+index 070ca388f9ac..4e66cb2d9549 100644
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -104,7 +104,7 @@ static bool hci_sock_gen_cookie(struct sock *sk)
+ 			id = 0xffffffff;
+ 
+ 		hci_pi(sk)->cookie = id;
+-		get_task_comm(hci_pi(sk)->comm, current);
++		strscpy_pad(hci_pi(sk)->comm, current->comm);
+ 		return true;
+ 	}
+ 
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index a9eaf9455c77..c5555eed1b62 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9718,9 +9718,11 @@ static int nf_tables_fill_gen_info(struct sk_buff *skb, struct net *net,
+ 	if (!nlh)
+ 		goto nla_put_failure;
+ 
++	strscpy_pad(buf, current->comm);
++
+ 	if (nla_put_be32(skb, NFTA_GEN_ID, htonl(nft_base_seq(net))) ||
+ 	    nla_put_be32(skb, NFTA_GEN_PROC_PID, htonl(task_pid_nr(current))) ||
+-	    nla_put_string(skb, NFTA_GEN_PROC_NAME, get_task_comm(buf, current)))
++	    nla_put_string(skb, NFTA_GEN_PROC_NAME, buf))
+ 		goto nla_put_failure;
+ 
+ 	nlmsg_end(skb, nlh);
+diff --git a/security/integrity/integrity_audit.c b/security/integrity/integrity_audit.c
+index d8d9e5ff1cd2..98060060929d 100644
+--- a/security/integrity/integrity_audit.c
++++ b/security/integrity/integrity_audit.c
+@@ -54,7 +54,8 @@ void integrity_audit_message(int audit_msgno, struct inode *inode,
+ 			 audit_get_sessionid(current));
+ 	audit_log_task_context(ab);
+ 	audit_log_format(ab, " op=%s cause=%s comm=", op, cause);
+-	audit_log_untrustedstring(ab, get_task_comm(name, current));
++	strscpy_pad(name, current->comm);
++	audit_log_untrustedstring(ab, name);
+ 	if (fname) {
+ 		audit_log_format(ab, " name=");
+ 		audit_log_untrustedstring(ab, fname);
+diff --git a/security/ipe/audit.c b/security/ipe/audit.c
+index 93fb59fbddd6..90a6acfb7cdf 100644
+--- a/security/ipe/audit.c
++++ b/security/ipe/audit.c
+@@ -145,7 +145,8 @@ void ipe_audit_match(const struct ipe_eval_ctx *const ctx,
+ 	audit_log_format(ab, "ipe_op=%s ipe_hook=%s enforcing=%d pid=%d comm=",
+ 			 op, audit_hook_names[ctx->hook], READ_ONCE(enforce),
+ 			 task_tgid_nr(current));
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 
+ 	if (ctx->file) {
+ 		audit_log_d_path(ab, " path=", &ctx->file->f_path);
+diff --git a/security/landlock/domain.c b/security/landlock/domain.c
+index 9a8355fccd26..b2fc7f722d69 100644
+--- a/security/landlock/domain.c
++++ b/security/landlock/domain.c
+@@ -102,7 +102,7 @@ static struct landlock_details *get_current_details(void)
+ 	memcpy(details->exe_path, path_str, path_size);
+ 	details->pid = get_pid(task_tgid(current));
+ 	details->uid = from_kuid(&init_user_ns, current_uid());
+-	get_task_comm(details->comm, current);
++	strscpy_pad(details->comm, current->comm);
+ 	return details;
+ }
+ 
+diff --git a/security/lsm_audit.c b/security/lsm_audit.c
+index 737f5a263a8f..a587ffecd985 100644
+--- a/security/lsm_audit.c
++++ b/security/lsm_audit.c
+@@ -276,8 +276,8 @@ void audit_log_lsm_data(struct audit_buffer *ab,
+ 			if (pid) {
+ 				char tskcomm[sizeof(tsk->comm)];
+ 				audit_log_format(ab, " opid=%d ocomm=", pid);
+-				audit_log_untrustedstring(ab,
+-				    get_task_comm(tskcomm, tsk));
++				strscpy_pad(tskcomm, tsk->comm);
++				audit_log_untrustedstring(ab, tskcomm);
+ 			}
+ 		}
+ 		break;
+@@ -417,7 +417,8 @@ static void dump_common_audit_data(struct audit_buffer *ab,
+ 	char comm[sizeof(current->comm)];
+ 
+ 	audit_log_format(ab, " pid=%d comm=", task_tgid_nr(current));
+-	audit_log_untrustedstring(ab, get_task_comm(comm, current));
++	strscpy_pad(comm, current->comm);
++	audit_log_untrustedstring(ab, comm);
+ 	audit_log_lsm_data(ab, a);
+ }
+ 
 
-> ---
->  kernel/liveupdate/kexec_handover.c | 22 ++++++++++++++++------
->  1 file changed, 16 insertions(+), 6 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 4834a809985a..175c08a6e41e 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -38,6 +38,16 @@
->  #include "../kexec_internal.h"
->  #include "kexec_handover_internal.h"
->  
-> +/*
-> + * This is the minimal alignment required by deferred struct page init.
-> + * deferred_init_memmap_chunk frees memory to the buddy allocator, which looks
-> + * at the neighboring pages (up to MAX_PAGE_ORDER) to merge them.
-> + * If KHO scratch is not aligned to that value, buddy can access uninitialized
-> + * struct pages, which can cause a crash.
-> + */
-> +#define SCRATCH_ALIGNMENT_BYTES (PAGE_SIZE * MAX_ORDER_NR_PAGES)
-> +static_assert(SCRATCH_ALIGNMENT_BYTES >= CMA_MIN_ALIGNMENT_BYTES);
-> +
->  /* The magic token for preserved pages */
->  #define KHO_PAGE_MAGIC 0x4b484f50U /* ASCII for 'KHOP' */
->  
-> @@ -640,8 +650,8 @@ static void __init scratch_size_update(void)
->  	 * Scratch areas are released as MIGRATE_CMA. Round them up to the right
->  	 * size.
->  	 */
-> -	scratch_size_lowmem = round_up(scratch_size_lowmem, CMA_MIN_ALIGNMENT_BYTES);
-> -	scratch_size_global = round_up(scratch_size_global, CMA_MIN_ALIGNMENT_BYTES);
-> +	scratch_size_lowmem = round_up(scratch_size_lowmem, SCRATCH_ALIGNMENT_BYTES);
-> +	scratch_size_global = round_up(scratch_size_global, SCRATCH_ALIGNMENT_BYTES);
->  }
->  
->  static phys_addr_t __init scratch_size_node(int nid)
-> @@ -656,7 +666,7 @@ static phys_addr_t __init scratch_size_node(int nid)
->  		size = scratch_size_pernode;
->  	}
->  
-> -	return round_up(size, CMA_MIN_ALIGNMENT_BYTES);
-> +	return round_up(size, SCRATCH_ALIGNMENT_BYTES);
->  }
->  
->  /**
-> @@ -692,7 +702,7 @@ static void __init kho_reserve_scratch(void)
->  	 * next kernel
->  	 */
->  	size = scratch_size_lowmem;
-> -	addr = memblock_phys_alloc_range(size, CMA_MIN_ALIGNMENT_BYTES, 0,
-> +	addr = memblock_phys_alloc_range(size, SCRATCH_ALIGNMENT_BYTES, 0,
->  					 ARCH_LOW_ADDRESS_LIMIT);
->  	if (!addr) {
->  		pr_err("Failed to reserve lowmem scratch buffer\n");
-> @@ -705,7 +715,7 @@ static void __init kho_reserve_scratch(void)
->  
->  	/* reserve large contiguous area for allocations without nid */
->  	size = scratch_size_global;
-> -	addr = memblock_phys_alloc(size, CMA_MIN_ALIGNMENT_BYTES);
-> +	addr = memblock_phys_alloc(size, SCRATCH_ALIGNMENT_BYTES);
->  	if (!addr) {
->  		pr_err("Failed to reserve global scratch buffer\n");
->  		goto err_free_scratch_areas;
-> @@ -721,7 +731,7 @@ static void __init kho_reserve_scratch(void)
->  	 */
->  	for_each_node_state(nid, N_MEMORY) {
->  		size = scratch_size_node(nid);
-> -		addr = memblock_alloc_range_nid(size, CMA_MIN_ALIGNMENT_BYTES,
-> +		addr = memblock_alloc_range_nid(size, SCRATCH_ALIGNMENT_BYTES,
->  						0, MEMBLOCK_ALLOC_ACCESSIBLE,
->  						nid, true);
->  		if (!addr) {
-> -- 
-> 2.55.0.229.g6434b31f56-goog
-> 
+-- 
+2.55.0
+
 
