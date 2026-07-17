@@ -4,96 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4A4C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:24:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C84EC44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:24:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3DB16B00B1; Fri, 17 Jul 2026 12:24:03 -0400 (EDT)
+	id 095AA6B00B3; Fri, 17 Jul 2026 12:24:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1BA16B00B3; Fri, 17 Jul 2026 12:24:03 -0400 (EDT)
+	id 0455F6B00B5; Fri, 17 Jul 2026 12:24:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B19066B00B4; Fri, 17 Jul 2026 12:24:03 -0400 (EDT)
+	id EC4DE6B00B6; Fri, 17 Jul 2026 12:24:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CE466B00B1
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:24:03 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1950AA0093
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:55:16 +0000 (UTC)
-X-FDA: 84998415432.14.D952E1C
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 477B140006
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:55:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=Ad9WYEbJ;
-	spf=pass (imf12.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784296514;
-	b=P6A3IFn5nbTIBErZTRAnPWzWBL5HXQwiM9zAJn4LtTMuXfFGWmESywaWP8LCQ3/UtBKQvw
-	6b3Vp+r86EvbJuOZAXAzDGFkcWl3SFA9SQct3jyzoY/Pg9bSG/rC0VezxYxJdalQy9a9bX
-	2VOklUpIkqBwHk2ztF2Ndo2ufH5eTww=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=Ad9WYEbJ;
-	spf=pass (imf12.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9E6A56B00B3
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:24:21 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9527B140149
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:58:24 +0000 (UTC)
+X-FDA: 84998423328.21.36738B2
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 944A412000D
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:58:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BQH8fDzN;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784296514;
+	s=arc-20220608; t=1784296703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mmJjuYl2j0CbtQpSnLCIuzFXwD7CgwyZsosTltumPjw=;
-	b=G+2ZK9pr41fH9qVfqyTjl7UGF3JO9NWYOgB/a/FGuHSA0yMMslC5mMrTnmTsbmXke+iHLx
-	CYNeDazwW8nL5I9hP4thNBHzPnC5PdK4gMf5y7Y+PbDhNO8gza/HAuQKgiMNj8UcF8jGiD
-	zBPAYKElBQMseRbcvTAtNj7d3q8vnis=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:From:Reply-To;
-	bh=mmJjuYl2j0CbtQpSnLCIuzFXwD7CgwyZsosTltumPjw=; b=Ad9WYEbJuyTDKIVqp56M2+AS+h
-	AG5dvsDJ5vvcyu5w01d6aqHS3ois0lhqDaTgeiVSHSnwFFXwC7jV2mxHAnQ1qRvQmHGRSV0AL2it/
-	6R6qoBkzYQncyUlZ9hGqGeJzXE34KeJtKiLaUe93UAVbMC5skN42+jhggNev7XlfiDkApYsQDeaXO
-	D9jRzsdJDXJOdHIgFaSKRSzfskvuhySed3G/i8Bz9ifvIbkwjEteewVnVagxwBZ1vB1gVvu6XJf+Q
-	KH0gX7IPd4Wh539K+Dlqx3IgUfDnEhUQjSfiL4JH4w0hwDN550K1cr4tiR0qsBh5+DFxbRuKFpdB3
-	rztoL1Eg==;
-Received: from [179.118.191.219] (helo=[192.168.15.100])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wkj1v-00GXeM-Bh; Fri, 17 Jul 2026 15:55:07 +0200
-From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Fri, 17 Jul 2026 10:54:35 -0300
-Subject: [PATCH v4 2/6] treewide: Replace memcpy(..., current->comm) with
- copy_task_comm()
+	bh=EqMnQVIkWoxb+RrEs+jMVyYBu0LSbT8WfW7w+P6K7uQ=;
+	b=n6Y1OQkPd7gtnvZqVIGCxni5g9UE+RvAb0uWgidTNVzvUKQLY89QBxOZ4qwoLo8b1daNU7
+	btZFsJtQlJiGUSJnpvjqiPxc94sCK7I7tvlgrxkXUPHRx93CYARvPoauFtF0zzRQK2enbC
+	9Xarau180PcDgTrQvDzJ3lJ6DJvrcLg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BQH8fDzN;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784296703;
+	b=R0VOU5NPJ9y0gQgPq7DNX5NkF0a8s6/smNBb4RhiyJe2BTUWfSgoAS7H/LMcOgwmg6yAKF
+	LLhNqGcxzeDiZYdZ7t0BfjaoAfMHVH31WMoUru+8pc+fQZJbKZzmMV03GsSGnMMRY3Da/r
+	pTBoSWV0yeuD51b6vpy7nYIxCfxz5ds=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784296700;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EqMnQVIkWoxb+RrEs+jMVyYBu0LSbT8WfW7w+P6K7uQ=;
+	b=BQH8fDzNw+7fX6l53zgJKMNPTm58Wps204K497VQJvc6p4JEudtm1C3FFC/osYBApzBJcT
+	Y3zHfGv2q5slUXb3D6pw4PUPHQSluLV1fSGLz2+HSeatRltowwRh/58hzw/vJomJjkCDol
+	P4t/o5az3Asty1gJGvenhqTKIikBRwo=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chrisl@kernel.org,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	rientjes@google.com,
+	kernel-team@meta.com
+Cc: Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v3 1/2] mm/vmstat, mm/memcontrol: add _monotonic vmstat readers
+Date: Fri, 17 Jul 2026 06:57:31 -0700
+Message-ID: <20260717135807.3476029-2-usama.arif@linux.dev>
+In-Reply-To: <20260717135807.3476029-1-usama.arif@linux.dev>
+References: <20260717135807.3476029-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260717-tonyk-long_name-v4-2-1fedfc870d21@igalia.com>
-References: <20260717-tonyk-long_name-v4-0-1fedfc870d21@igalia.com>
-In-Reply-To: <20260717-tonyk-long_name-v4-0-1fedfc870d21@igalia.com>
-To: Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, willy@infradead.org, 
- mathieu.desnoyers@efficios.com, David Laight <david.laight.linux@gmail.com>, 
- Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org, 
- Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, 
- arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>
-Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org, 
- linux-api@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-X-Mailer: b4 0.15.2
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: bm1qj1qswu9ewgdz5sto1918ftryuioy
+X-Rspamd-Queue-Id: 944A412000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 477B140006
-X-Stat-Signature: ytjr5iibfu4ttjnqeh15s6ndf5ru175o
-X-HE-Tag: 1784296514-662405
-X-HE-Meta: U2FsdGVkX1+W5oauR/XHo5PnUMWd8greyOS9QyDGCpZtv+ivWVu3eJZt/2lMjQRp90lzTKa9Wz4gWR0eNlLjCjHB2cTHPDdu0MibxkfSXcjKFlt72R+Npy4hi3b/IjSLljJefUaHGD6s/45sSCcYQDJJBHe/f5G/7F5J9s7EKlQgvblC+0svuyQbdl4ne3E7vBREwEFNuFcOgMKXA3uugEKNRiG8LHQg1nwsRBrDbNk16vTnioI4I6aQ4cfSrYRUjiaxKr7zEj1LhbAzSuDTz7JENEL/0seenjSb893OkKKlZLy+duPzoa//IAIiXRXtc+TMkwboJYJ08ttND/9HcJeOln1UTEhd1Gfe3A7AsV7GhWHjQTq1vVBmC3LRYLshD+awzvysJAx3Dq5ZDhCkg+wgWmFPsQGjhzc0tN9sBETOqEByhyP6/PRSNSngJOvFw/3frqaAT8SPij2FbrAJsjKphLNa80y0WXgM8Sk/0J3MMLRtlRvhMlG81FEBUBoPiuwqILaUDgQep9ptPOHLt/gcxhZItesGM47vLIf0ug9GEtsNmvTX9VuYAN4SfO/hmtcS9tnilMy28iaEsoyHE7Y4ISTT8GZeXorNq80MASVnbtsrJvIBNEsFqDHcPbLFrHDnu2NNGwXtPR2lbpnpFk4SgY2CnEGYM1KE1eE+3+xNW1AaMuUp/MSFhEz/vawSJEkNdbuLW6KU3JeGcSIOKLm9LG1SzHLtlxFJc1RtiFHh1ixH5L77KEYcXQ6PhHubzic3jsx8erz9feamkQsyGdELhlnrcfuTvA7g/NBFBQXdGgWiSLoetm4c53vBiVAMg4/BkygSxwU9dmvnIt0fbjs96aZuTZGNSgU0ZNjkTi5JwCc4u/wwjU0PTPqgn4P6ms82ks6bo7e8frXeCMpeHrD9SAP7U1VgPRkrnG91TwaiAl7zeWrUIG+8g+5CwDt3/RbrNQEz9R9RgNnARb6
- YPbPloSZ
- 94A6sIQivxdlP0uVdMuh9QzkrJOcHxdvRQctKH31y2p1/+eIGBrCExpHpm41vApSud+ysM6bn/pDJ2iAcYk9fCVNqep8ETKTBGvt9zH37FXqmfmCzhfK6eI59gTNmyWzO/VwoHlzprYl0N+q0TkTUEtbrGz/v8oCgNjhx0qpZLaDEhhYo8wZs0K8jYhNTgbuk7JQ3JZWwajrYFZHXqSaQGgSc5mLCggZ9rYhehN69CJKjgZ+UZl5JbV6WW0JH9h1Bwcuqt7FCQQ7nS11sJKPppCoLdB56q8W/DGGj1yHCQhWx55QsSjTosQMiGj1qbHlS0PnEvbt4cWrIb5bDAKc8ja+/yb4ZElU7E9Rh46PaD8pW2Gmw3/6/zsn9w8zLmbyu5eOfLfXo7T+gJJKTU1nabVym0F89EulI4pZIe5lWlq0cg/1GZVXOgjh1KBJMNvJt91K3dQkrAyIbMSs=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784296702-133871
+X-HE-Meta: U2FsdGVkX1+TbjZb/VRF19n78hWDrpQmR24jqO3QzaVczZqMLLxPhGi9iWpycQUPq8meDax6qV8jXRJ4ouiSrRiBb1k6hQpyhrioX6FtEjGbHUcevW5tH7qi5YOfPV/udfajm4v27h0/Xkhj2BtkqIn60X9TOfDPSJth+E9kgOd/67zVpu1om2fuzBo8ZBxo1ulxhFRo2sFqRn97csl8yGNzyUuvbqVXpW1Vzsja1wSG95qUAQBK2te40TLLoZRNo33ygHl3i7GUbHp5JFLUcvfWbU5ipZv04qiLX+EoQMia9q9RK7MHUgSPk29au7KPiOOjt0WMFo++9FXKjDIRpy/mW029NZRIC0TbqUMWE20b49et6OCw2gZhR13kpWHxarSQsCWI97opYR2TeVCFQLXUrq93cPH1VXBvUBNHoJZoludlQBETZHmaH/V0ISbnLHGnwD6sqXYpQc6Srm27UIsYYDxFaTrcmIYv9GjckvnAXdoQBaaBeQ61U+VM7MNmckgjBvlQbIEEC54ngmPJDWDfV3vRpKfFwmlh4amQfCzK7dZjoumT89nxcZgMQZTn7hHjVwA3axN0u3bJqpI539RI3UqsF3BVOh/rMtqLj26BkkwC9WAP66Q4Arf/IXA9yIXDm4W/j4MnCICnnivqN0hPttL0SoOEJxhGPWnjX5u5p65mn+NgoyHEmh489XN14vq1bZkHvXdFUFQNCsldz18X3JsWgUXzcR3RFvFmLuCdi4DUHvbMjdBZS0uBhi6JLAm9OHTROPda8p5XOMUON7qtHcsuBrUMoAlxH7j6Pm9/Ge5Z81GdAqS71HWO45QUBUEnl9YO3cm+N5Y8Hw9TaFWWr09kxw2yJ5MuCYakrK+5SUeqZhmzzKrAubNm7dTMBXk5Kpe5/9x5ZlBCxnReUAsLWHsHQlv18gPN69Wrd8boKqze4/qeaYxmZETsMRPD2urqJ51nBEsqiOwP/mF
+ kjEcy4Cr
+ xElSsjUUyW+aE6coT9NBCmuEPwHHIohzhv9qnDEh2V0IH9R7tm7RwmqLCiK6OCVV2mTb/zrm7zJxKq6G37IpyzKsR0WaU/nwhHcb/e/+2E20RvMk7+KfnghCDrR8bV35hl1077PvXryfzEzNwCLbJtw/m+0DyhwzDoGkG9r71PmgX6n4nong4EDKH5PkabSbDkwjTdcghyAj5r+wRlgaZngv+ZiuAJBQQyigoBrKRPV5I1w86lAEiZBDQTmMcM6GHUMvcwbKU1X7KZtwslXKGJouRwzuzYltjdWbp+jdvqXNJXGTqGjKKQLgw7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,311 +110,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to increase the size of current->comm[] and to avoid breaking any
-existing code, replace memcpy() with copy_task_comm(). This new function
-makes sure that the copy is NUL terminated. This is crucial given that the
-source buffer might be larger than the destination buffer and could
-truncate the NUL character out of it.
+lruvec_page_state(), node_page_state(), and global_node_page_state()
+all clamp negative reads to zero on CONFIG_SMP so that a transient
+per-CPU delta skew presents as zero pages rather than
+as a garbage unsigned value. This is the right behaviour for
+non-monotonic page-count readers.
 
-Signed-off-by: André Almeida <andrealmeid@igalia.com>
+It is however incorrect for callers that snapshot a monotonically-
+incremented event counter and compute a delta from two samples.
+Once the underlying signed long wraps past LONG_MAX, the clamped read
+drops to zero while the previously-recorded snapshot still holds the
+pre-wrap value; the unsigned subtraction then underflows into a
+~2^31 spurious delta for 32-bit architecture and corrupts the
+caller's accumulator.
+
+Add non-clamping siblings that return the underlying state value
+cast to unsigned long:
+
+  global_node_page_state_monotonic()
+  node_page_state_monotonic()
+  lruvec_page_state_monotonic()
+
+With both samples read via the _monotonic variant, unsigned modular
+subtraction stays correct across a signed-long wraparound as long
+as the true growth between two samples fits in unsigned long
+(< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
+practically-reachable one that motivates this helper.
+
+The variants are only safe for monotonically-incremented counters.
+Non-monotonic page-count readers must keep using the existing
+clamped helpers so transient negative reads still present as zero.
+
+This is a prerequisite for the following patch which
+replaces the producer-side anon_cost/file_cost accumulators with a
+read-side accumulator in prepare_scan_control() that samples
+monotonic per-LRU vmstat counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*,
+WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
+the unsigned modular delta into a per-lruvec cost_accum[].
+
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
-Changes from v3:
- - Simplify copy_task_comm() to a memcpy + NUL char at the end of buffer
+ include/linux/memcontrol.h |  8 ++++++++
+ include/linux/vmstat.h     | 16 ++++++++++++++++
+ mm/memcontrol.c            | 36 ++++++++++++++++++++++++++++++++++++
+ mm/vmstat.c                | 11 +++++++++++
+ 4 files changed, 71 insertions(+)
 
-Changes from v2:
- - Bring back custom function.
-
-Changes from v1:
- - New patch, dropped strtostr() from last version
----
- include/linux/coredump.h        |  2 +-
- include/linux/sched.h           | 11 +++++++++++
- include/linux/tracepoint.h      |  4 ++--
- include/trace/events/block.h    | 10 +++++-----
- include/trace/events/coredump.h |  2 +-
- include/trace/events/f2fs.h     |  4 ++--
- include/trace/events/oom.h      |  2 +-
- include/trace/events/osnoise.h  |  2 +-
- include/trace/events/sched.h    | 10 +++++-----
- include/trace/events/signal.h   |  2 +-
- include/trace/events/task.h     |  7 ++++---
- kernel/printk/nbcon.c           |  2 +-
- kernel/printk/printk.c          |  2 +-
- 13 files changed, 36 insertions(+), 24 deletions(-)
-
-diff --git a/include/linux/coredump.h b/include/linux/coredump.h
-index 7b38ee2e7913..dee82e3c350a 100644
---- a/include/linux/coredump.h
-+++ b/include/linux/coredump.h
-@@ -58,7 +58,7 @@ extern void vfs_coredump(const kernel_siginfo_t *siginfo);
- 	do {	\
- 		char comm[TASK_COMM_LEN];	\
- 		/* This will always be NUL terminated. */ \
--		memcpy(comm, current->comm, sizeof(comm)); \
-+		copy_task_comm(comm, current, sizeof(comm)); \
- 		printk_ratelimited(Level "coredump: %d(%*pE): " Format "\n",	\
- 			task_tgid_vnr(current), (int)strlen(comm), comm, ##__VA_ARGS__);	\
- 	} while (0)	\
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 2714c81bc708..9b6a413f6618 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2021,6 +2021,17 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
- 	__set_task_comm(tsk, from, false);		\
- })
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index e1f46a0016fc..b40bc4f6fe4a 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -931,6 +931,8 @@ unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+ bool memcg_stat_item_valid(int idx);
+ bool memcg_vm_event_item_valid(enum vm_event_item idx);
+ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
++unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
++					  enum node_stat_item idx);
+ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 				      enum node_stat_item idx);
  
-+/*
-+ * Copy task name to a buffer. Final result is always a NUL-terminated string.
-+ */
-+static __always_inline void copy_task_comm(char *dst, struct task_struct *tsk, size_t len)
+@@ -1378,6 +1380,12 @@ static inline unsigned long lruvec_page_state(struct lruvec *lruvec,
+ 	return node_page_state(lruvec_pgdat(lruvec), idx);
+ }
+ 
++static inline unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
++							enum node_stat_item idx)
 +{
-+	const char *_src = tsk->comm;
-+
-+	memcpy(dst, _src, len);
-+	dst[len - 1] = '\0';
++	return node_page_state_monotonic(lruvec_pgdat(lruvec), idx);
 +}
 +
- static __always_inline void scheduler_ipi(void)
+ static inline unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 						    enum node_stat_item idx)
  {
- 	/*
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index e0d838c9ce93..9b0094fa44c6 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -637,10 +637,10 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
-  *	*
-  *
-  *	TP_fast_assign(
-- *		memcpy(__entry->next_comm, next->comm, TASK_COMM_LEN);
-+ *		copy_task_comm(__entry->next_comm, next, TASK_COMM_LEN);
-  *		__entry->prev_pid	= prev->pid;
-  *		__entry->prev_prio	= prev->prio;
-- *		memcpy(__entry->prev_comm, prev->comm, TASK_COMM_LEN);
-+ *		copy_task_comm(__entry->prev_comm, prev, TASK_COMM_LEN);
-  *		__entry->next_pid	= next->pid;
-  *		__entry->next_prio	= next->prio;
-  *	),
-diff --git a/include/trace/events/block.h b/include/trace/events/block.h
-index 9c97a16850b9..1e3a9ded03bd 100644
---- a/include/trace/events/block.h
-+++ b/include/trace/events/block.h
-@@ -213,7 +213,7 @@ DECLARE_EVENT_CLASS(block_rq,
- 
- 		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags);
- 		__get_str(cmd)[0] = '\0';
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("%d,%d %s %u (%s) %llu + %u %s,%u,%u [%s]",
-@@ -410,7 +410,7 @@ DECLARE_EVENT_CLASS(block_bio,
- 		__entry->sector		= bio->bi_iter.bi_sector;
- 		__entry->nr_sector	= bio_sectors(bio);
- 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("%d,%d %s %llu + %u [%s]",
-@@ -493,7 +493,7 @@ TRACE_EVENT(block_plug,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("[%s]", __entry->comm)
-@@ -512,7 +512,7 @@ DECLARE_EVENT_CLASS(block_unplug,
- 
- 	TP_fast_assign(
- 		__entry->nr_rq = depth;
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("[%s] %d", __entry->comm, __entry->nr_rq)
-@@ -563,7 +563,7 @@ TRACE_EVENT(block_split,
- 		__entry->sector		= bio->bi_iter.bi_sector;
- 		__entry->new_sector	= new_sector;
- 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("%d,%d %s %llu / %llu [%s]",
-diff --git a/include/trace/events/coredump.h b/include/trace/events/coredump.h
-index c7b9c53fc498..fdd20bc46bb0 100644
---- a/include/trace/events/coredump.h
-+++ b/include/trace/events/coredump.h
-@@ -32,7 +32,7 @@ TRACE_EVENT(coredump,
- 
- 	TP_fast_assign(
- 		__entry->sig = sig;
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("sig=%d comm=%s",
-diff --git a/include/trace/events/f2fs.h b/include/trace/events/f2fs.h
-index 270c1a2c24c4..7d22650b4c78 100644
---- a/include/trace/events/f2fs.h
-+++ b/include/trace/events/f2fs.h
-@@ -2505,7 +2505,7 @@ TRACE_EVENT(f2fs_lock_elapsed_time,
- 
- 	TP_fast_assign(
- 		__entry->dev		= sbi->sb->s_dev;
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio;
- 		__entry->ioprio_class	= IOPRIO_PRIO_CLASS(ioprio);
-@@ -2558,7 +2558,7 @@ DECLARE_EVENT_CLASS(f2fs_priority_update,
- 
- 	TP_fast_assign(
- 		__entry->dev		= sbi->sb->s_dev;
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->lock_name	= lock_name;
- 		__entry->is_write	= is_write;
-diff --git a/include/trace/events/oom.h b/include/trace/events/oom.h
-index 9f0a5d1482c4..8bcdc4ffc8d3 100644
---- a/include/trace/events/oom.h
-+++ b/include/trace/events/oom.h
-@@ -23,7 +23,7 @@ TRACE_EVENT(oom_score_adj_update,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, task, TASK_COMM_LEN);
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
-diff --git a/include/trace/events/osnoise.h b/include/trace/events/osnoise.h
-index 3f4273623801..2cf047bb9fb7 100644
---- a/include/trace/events/osnoise.h
-+++ b/include/trace/events/osnoise.h
-@@ -116,7 +116,7 @@ TRACE_EVENT(thread_noise,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, t, TASK_COMM_LEN);
- 		__entry->pid = t->pid;
- 		__entry->start = start;
- 		__entry->duration = duration;
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 535860581f15..afb24e9dac91 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -152,7 +152,7 @@ DECLARE_EVENT_CLASS(sched_wakeup_template,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio; /* XXX SCHED_DEADLINE */
- 		__entry->target_cpu	= task_cpu(p);
-@@ -237,11 +237,11 @@ TRACE_EVENT(sched_switch,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->prev_comm, prev->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->prev_comm, prev, TASK_COMM_LEN);
- 		__entry->prev_pid	= prev->pid;
- 		__entry->prev_prio	= prev->prio;
- 		__entry->prev_state	= __trace_sched_switch_state(preempt, prev_state, prev);
--		memcpy(__entry->next_comm, next->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->next_comm, next, TASK_COMM_LEN);
- 		__entry->next_pid	= next->pid;
- 		__entry->next_prio	= next->prio;
- 		/* XXX SCHED_DEADLINE */
-@@ -346,7 +346,7 @@ TRACE_EVENT(sched_process_exit,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio; /* XXX SCHED_DEADLINE */
- 		__entry->group_dead	= group_dead;
-@@ -787,7 +787,7 @@ TRACE_EVENT(sched_skip_cpuset_numa,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, tsk->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, tsk, TASK_COMM_LEN);
- 		__entry->pid		 = task_pid_nr(tsk);
- 		__entry->tgid		 = task_tgid_nr(tsk);
- 		__entry->ngid		 = task_numa_group_id(tsk);
-diff --git a/include/trace/events/signal.h b/include/trace/events/signal.h
-index 1db7e4b07c01..8fffe6d9bdcc 100644
---- a/include/trace/events/signal.h
-+++ b/include/trace/events/signal.h
-@@ -67,7 +67,7 @@ TRACE_EVENT(signal_generate,
- 	TP_fast_assign(
- 		__entry->sig	= sig;
- 		TP_STORE_SIGINFO(__entry, info);
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, task, TASK_COMM_LEN);
- 		__entry->pid	= task->pid;
- 		__entry->group	= group;
- 		__entry->result	= result;
-diff --git a/include/trace/events/task.h b/include/trace/events/task.h
-index b9a129eb54d9..62b7df4d22d0 100644
---- a/include/trace/events/task.h
-+++ b/include/trace/events/task.h
-@@ -21,7 +21,7 @@ TRACE_EVENT(task_newtask,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, task, TASK_COMM_LEN);
- 		__entry->clone_flags = clone_flags;
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
-@@ -46,8 +46,9 @@ TRACE_EVENT(task_rename,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(entry->oldcomm, task->comm, TASK_COMM_LEN);
--		strscpy(entry->newcomm, comm, TASK_COMM_LEN);
-+		copy_task_comm(entry->oldcomm, task, TASK_COMM_LEN);
-+		memcpy(entry->newcomm, comm, TASK_COMM_LEN);
-+		entry->newcomm[TASK_COMM_LEN - 1] = '\0';
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
-diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-index 4b03b019cd5e..f4c5ae8a3530 100644
---- a/kernel/printk/nbcon.c
-+++ b/kernel/printk/nbcon.c
-@@ -952,7 +952,7 @@ static void wctxt_load_execution_ctx(struct nbcon_write_context *wctxt,
- {
- 	wctxt->cpu = pmsg->cpu;
- 	wctxt->pid = pmsg->pid;
--	memcpy(wctxt->comm, pmsg->comm, sizeof(wctxt->comm));
-+	copy_task_comm(wctxt->comm, pmsg, sizeof(wctxt->comm));
- 	static_assert(sizeof(wctxt->comm) == sizeof(pmsg->comm));
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..fb8c76289e02 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -194,6 +194,19 @@ unsigned long global_node_page_state_pages(enum node_stat_item item)
+ 	return x;
  }
- #else
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 019b11de262c..ec0c6734bbe1 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2255,7 +2255,7 @@ static void pmsg_load_execution_ctx(struct printk_message *pmsg,
+ 
++/*
++ * Non-clamping variant of global_node_page_state() intended for callers that
++ * snapshot a monotonically-incremented counter and subtract two samples.
++ * Returns the raw wrapping value so that unsigned modular subtraction stays
++ * correct across a signed-long overflow (a real hazard on 32-bit) that the
++ * clamp in global_node_page_state() would otherwise turn into a huge spurious
++ * delta. Do NOT use for non-monotonic page-count reads.
++ */
++static inline unsigned long global_node_page_state_monotonic(enum node_stat_item item)
++{
++	return (unsigned long)atomic_long_read(&vm_node_stat[item]);
++}
++
+ static inline unsigned long global_node_page_state(enum node_stat_item item)
  {
- 	pmsg->cpu = printk_info_get_cpu(info);
- 	pmsg->pid = printk_info_get_pid(info);
--	memcpy(pmsg->comm, info->comm, sizeof(pmsg->comm));
-+	copy_task_comm(pmsg->comm, info, sizeof(pmsg->comm));
- 	static_assert(sizeof(pmsg->comm) == sizeof(info->comm));
- }
+ 	VM_WARN_ON_ONCE(vmstat_item_in_bytes(item));
+@@ -259,11 +272,14 @@ extern unsigned long node_page_state(struct pglist_data *pgdat,
+ 						enum node_stat_item item);
+ extern unsigned long node_page_state_pages(struct pglist_data *pgdat,
+ 					   enum node_stat_item item);
++extern unsigned long node_page_state_monotonic(struct pglist_data *pgdat,
++					       enum node_stat_item item);
+ extern void fold_vm_numa_events(void);
  #else
-
+ #define sum_zone_node_page_state(node, item) global_zone_page_state(item)
+ #define node_page_state(node, item) global_node_page_state(item)
+ #define node_page_state_pages(node, item) global_node_page_state_pages(item)
++#define node_page_state_monotonic(node, item) global_node_page_state_monotonic(item)
+ static inline void fold_vm_numa_events(void)
+ {
+ }
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 56cd4af08232..b4a357c5f7e0 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -502,6 +502,42 @@ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx)
+ 	return x;
+ }
+ 
++/**
++ * lruvec_page_state_monotonic - non-clamping lruvec stat read for delta sampling
++ * @lruvec: the LRU vector to read from
++ * @idx: the node_stat_item to read
++ *
++ * Returns the raw state[idx] value cast to unsigned long, skipping the
++ * clamp-negative-to-zero step in lruvec_page_state(). Intended for callers
++ * that snapshot a monotonically-incremented counter and subtract two
++ * samples: unsigned modular arithmetic then yields the correct delta across
++ * a signed-long wraparound (a real hazard on 32-bit) that the clamp would
++ * otherwise turn into a huge spurious delta.
++ *
++ * Do NOT use for non-monotonic page-count reads where a transient negative
++ * reading from per-CPU delta skew must present as zero.
++ *
++ * XXX: This helper (and its node/global peers) exists because we place
++ * monotonically-incremented event counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*)
++ * into enum node_stat_item.
++ */
++unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
++					  enum node_stat_item idx)
++{
++	struct mem_cgroup_per_node *pn;
++	int i;
++
++	if (mem_cgroup_disabled())
++		return node_page_state_monotonic(lruvec_pgdat(lruvec), idx);
++
++	i = memcg_stats_index(idx);
++	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
++		return 0;
++
++	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
++	return (unsigned long)READ_ONCE(pn->lruvec_stats->state[i]);
++}
++
+ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 				      enum node_stat_item idx)
+ {
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f534972f517d..c4364f0eb08a 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1024,6 +1024,17 @@ unsigned long node_page_state(struct pglist_data *pgdat,
+ 
+ 	return node_page_state_pages(pgdat, item);
+ }
++
++/*
++ * Non-clamping variant of node_page_state() intended for callers that
++ * snapshot a monotonically-incremented counter and subtract two samples.
++ * See global_node_page_state_monotonic() for the rationale.
++ */
++unsigned long node_page_state_monotonic(struct pglist_data *pgdat,
++					enum node_stat_item item)
++{
++	return (unsigned long)atomic_long_read(&pgdat->vm_stat[item]);
++}
+ #endif
+ 
+ /*
 -- 
-2.55.0
+2.53.0-Meta
 
 
