@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F297EC44507
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 04:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C86C44507
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 04:10:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AAD46B00A2; Fri, 17 Jul 2026 00:09:49 -0400 (EDT)
+	id 206EF6B00A4; Fri, 17 Jul 2026 00:10:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 782156B00A3; Fri, 17 Jul 2026 00:09:49 -0400 (EDT)
+	id 1DDD86B00A6; Fri, 17 Jul 2026 00:10:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C1EB6B00A4; Fri, 17 Jul 2026 00:09:49 -0400 (EDT)
+	id 0F67A6B00A7; Fri, 17 Jul 2026 00:10:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 371856B00A2
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 00:09:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8306D1603E6
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 04:09:48 +0000 (UTC)
-X-FDA: 84996940056.14.2D1182C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D324D6B00A4
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 00:10:29 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4841280402
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 04:10:29 +0000 (UTC)
+X-FDA: 84996941778.03.50CE219
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F17AA20002
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 04:09:46 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WnsCwBS3;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id ABAD120006
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 04:10:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwm843R8;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784261427;
+	b=Y4fqeOXV1LVJKE1AsDPG5fGul+hWEnHDmAQEnLs2Oer2lpfATcckA4QgAvBHR2zJNM5LK1
+	G5MYPCX+ERI+DKRRtIqCUAlCal5iObKRgt0BRzyolcs4ElIgpUOZDaQ2zk078dNF0EqyFF
+	v045VKP2YulaV/oTUy3nhVUOz1TwEdA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwm843R8;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784261387;
+	s=arc-20220608; t=1784261427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=edGbSK8TjCQzoqJgD44mkiQBfxhpKtjMEjrxayeSpPo=;
-	b=Cu6CL/Gk+symZbzRssnzfgwoc9tCWodEfyyvjn0lplVghiBNTXEAVdpSkWWbgqvH2aAgpj
-	y2zhg0rFK2Hjp7nAPZEiWJKLYpQ0AIgWiRfEb3lZrZwYjAQhoT23jOVqhVSJG6LIge7Kxw
-	W/6/uDz4ScyClZpbyRt4FcR5vR1RHWk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WnsCwBS3;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784261387;
-	b=yUFbvVojHMA9bSXFJZhJ3RJkZM3hq8EZEC/K4ZJ9npB1zM8f9AFBSTitueCmkve0kWp3l3
-	QUDXMvgFGr+7CI7LiwsIzWcLZ1rMZktfE6dukdEQp92yJqlTfZwPZdkQ+ut5z4gxQXbUbx
-	XKoNlvQ1kGdBeS6dm2kKBis0MbjMK6E=
+	bh=oBPsEFnIuINeb0d59jQ1pc/qimL3dI1SLr0HV/mChCo=;
+	b=F+6f152fUY+QTkRewW19T4e9beFO4fPQkLaInQfLcPfkxUG03slayR7Nkpebu/cSRS0Qct
+	REtwc+ZEeisLDTqgkQkdsKOzXrJ1aFdqnUHC6Ea1lcSTUenRDjjUR+8ecSDD9Dyuy1X67W
+	DVwyWrTI/u1hsyu8OX6mFq5YP6X59r8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 76F9E60A5E;
-	Fri, 17 Jul 2026 04:09:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F201F000E9;
-	Fri, 17 Jul 2026 04:09:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4260060204;
+	Fri, 17 Jul 2026 04:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890781F000E9;
+	Fri, 17 Jul 2026 04:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784261386;
-	bh=edGbSK8TjCQzoqJgD44mkiQBfxhpKtjMEjrxayeSpPo=;
+	s=k20260515; t=1784261427;
+	bh=oBPsEFnIuINeb0d59jQ1pc/qimL3dI1SLr0HV/mChCo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WnsCwBS36OJEP3bzOpRdgkN9Rt6YpelKHYJxHxSpP6gjDw9UPV89RzQ+Pxry/c3Iw
-	 FhsE2r6SRCAQpdy1mnkvDUwXsWWbwhTwX8jHcqsfhy8Z28L7adsvGtprh6WVovXmCG
-	 OWRGjysCgfEBIBX/dZG5/xSmXPMGZstbn9RzT2DsuEX10FO9nvjN41vOdaGUtDSfws
-	 DwKtw6p5qODsdWl+wgElVTWFS2fmSISHopXe9K80SYJ5dH9hTUEtMtcLApjLyNyLfe
-	 bYcL9/HfYZXvP/KyfstIEU5f8JItU3hn+wKdyxSGJIX/Oy61DW9AVMMTdQbE2QoSky
-	 +/WeFSRdhIXAw==
-Message-ID: <eb9984b7-27e6-4747-8f7a-9408582c3acd@kernel.org>
-Date: Fri, 17 Jul 2026 13:09:31 +0900
+	b=fwm843R8EAtmzMgCpNAb3HbQdaDm9xpvY1IofxPb/8JC0UPXydHIHZetqSltF96qB
+	 kleWY1HtyfQmwglzof3U/7KmjqZunJreeG3WcXqDb0yrQiYZ67pQ6095B5NuVXdLWg
+	 57En1oGbgPZplni+H83IHT1WVT7KuQW2Rmu8YOzCOYsrN5w7o0U+x2iAAU9bD3vAjr
+	 zLjTEbr2tEtIhQGCcQHX8TPVI6Pp8YNEZ9tTvtqZICyy/3siJv5dfAJ9yjRBYgnH3/
+	 Cu+OtiwKnXcnhBy8kuvQnm2mrNpFbI6XFM2OTbzyBX89rSaUmPp1wDVZl1DiOb8/7W
+	 Ia4X2yCmFauZg==
+Message-ID: <2bbebbfc-fd00-4744-9775-5ba35788b535@kernel.org>
+Date: Fri, 17 Jul 2026 13:10:21 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH slab/for-next-fixes v3 0/4] mm/slab: fix unbounded
@@ -80,21 +80,21 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
  Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
- <alkdRqYW_Pg8r4sH@linux.dev>
+ <alkypcRUZa_r6uGV@linux.dev>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <alkdRqYW_Pg8r4sH@linux.dev>
+In-Reply-To: <alkypcRUZa_r6uGV@linux.dev>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------Jiwqshj8DHDXqCQJEX0Nuazd"
-X-Stat-Signature: 13983bxqsb3z1ezxdd3wntcxs11ukzdz
-X-Rspamd-Queue-Id: F17AA20002
+ boundary="------------97ang00oLjr0Br0NqNg0s6nx"
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784261386-495940
-X-HE-Meta: U2FsdGVkX18KupEBw0XpXaYsHCZ5kahGeyTIKckCUqaHHPDpsEON5/w9JngJV65jyYbbDUwkN2pjn2lB0uwsfs7ENyHNFBwVMFmXQ+S3adiMjHq/p6dXTGx4AGqIQSxxNj07CkDsdrFn+DIKRxrdjlGrMScfGVwPYA0jvDm/Ykvh1pRD6Z5aaPtdqBbt9h1GVra4Xng6hYK9AQpLSzUyLF96mFgJoTq1knT+sbBM07ICiw95bvYT27Ae+LIeUZg3RF4skdwiWjuTZYauZrrLtG0lk97BjhiJdoULIKokpL0l6MlIhVeGoCg93FxUe0vJqeENhe2CJpuhMXjjm7eG59wlVRIR3PNDI39JEKg5/jX7Ptt6r8Le2xuibFTe7/zQXhi6XEcAhV28Yw93zKTq4Y63s5PUIgKCSSm+e0hkabjq63uRifhuvkm5C7hx2xP2Ry+CdszjDCOWHVoZQIM8gqGnxxGcYlgghWu2rJcj+KnY0G3UVMki7t31BPOT+B6egeOWM4MMEk6toJiPGMvTpjSxj0YuYS0irWp1CaNwNxQSwdyWIENW/IstmMs78adR3MlruODlgVQSnaJVweYTW6C7n09vtb7usHlO+/LlKjHT1RkLK+jEnCR8YiLS68VFeuYdm3mqC2vSWCCFD+PVAXs7kMBxbZN3kPNAe8fIS8eLiUe3OSyuL1FjFTgAsCQAIoS4nV+hhBncdtdz1VF+AmcUZVuFRBDE/2kUHv6kz0iraWsr3j3t5Itw/Yr+96/Hx6WQ6+DcuNHS/KM7vw0EksjprSshDvthKtVgynFeE7a01skTsBX50cT5Se5Tr21phcYiY5ZmRVL3R186dRy2KeDOTjDiNBLgmGnoNh8rmpaXtEHSX1zUn2oK/cOeRtauTWAm1aZRu0Fvck2WRTtfoEv1lj5VrA72CIIn2clOh9XWCB9sCo8VnQWaUSJgaxcW+3wpLo/68myBbR1yaWV
- /5jAQ3px
- v2T/jBDVGSUKLFTne7NjUeuzmL4BvhNZua2H0/H6PnmZFhDsR6EH4flia1nsXk800GUNSavdOoL4SZGM+Ks/I3Q8UB13xKtDZ989Fj4lySVgqxALrs6m/BxoJlyeZir/DnUOmukCQbdIX6/UsK2muKWs754zBSrgRErUXDbIhyrRfKekVNXOIm/RmyynWz/wMX8MjsvKJhgHAJF3Y3x7rg6ezcjUWLMg08B+MsJbmYU1bBAWvQX9D7/9AuvgEd/VP8awmpXSlL/rU43rgMpGomnud486JcEsBkGIJeqGGP3CLc1m4SqNcecvSGxBDbJRMKG9iIOsaebbmhCV/hOuzueSaFUuxuy6d+HJpZArwr7KKPp1UGqTgD9cz7PRBCvFknMq5ChA/UQZZnL56aYDB9ikgFzE1Es9gFgsfNiCKk6aws7S8o+R9rBGDK4OYAoLCr7cCuCyWyX+ERsO7QQVYhybNchLpkUOcnSgT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ABAD120006
+X-Stat-Signature: e387qch7iwxzu5u8u1o9wo3jeczk1es1
+X-HE-Tag: 1784261427-2304
+X-HE-Meta: U2FsdGVkX18CM5KVhMky+2IAzas30KGESQJreQUZV4GImUAF1I4hSVv/BmRPWb7xYN0E0U12TqomaDMsQYD3oAuVm3UqH+I+SzeDFYIKMvMcjDj55fMPfGgDecUHf0bfqZJLJnVXtSUk09WNHzRsp7bIdBmb0Cr9i4nEnQ+ooKXG86x4MNZi61Wowig53Bxy0ewKOY4XD3GMHROrSBPRCKWW9zy+986fQTG3zgZ/au0VVkzkVWThmtMnwF2OJnMjg9NWJoor78/hAVU/XvfnGM2OjTT8nHoq9xr6A+rx5OgDtSpfO/X3cB3JIG/ZKTeM4bSuwstXtoSCdFd5l8Xp/M0s+yZlBh/CmrMCq2j7nDTL5AbCSyklkPKxNGu2cOYAJMIPYtN3CocNi35//xASfEIeMQ64bFIlaJdChhZImXz7uUy9Xorxu3+hooXzokxrXSSWEskJUwul2KnnMwQ/31vFI8Xai3QklKsKYzntPDwvYzbPLiFae41trUF6hgQfaD9gcdbK9jbio5U3mcqsJfrZg8ihV24M6Mth66maCfvzekQrznFG1R/GzEdN75Z1SEkyujEyU1IGBKJvbmAwMLcKLx4hhqC0OEFauWqNx0hzFFF5V6jwmVV96prcHjBuKRM1QBkOmdheAq9wc+AK4/lJQbSPMgj5rq+wUfEdQhwT+it2MKd97r9RHsn5PVb+G9Sobo8FEJ++8Ak9MzHFtHpOjLzg36e8gO7gD00jxXL73alln6q6Mjuxp+JW8MqIjrubeasI5DmVf7USAMoShNpLKhM/1Ed1TSftynWJJWHT83LQG6wdkKFoT8UDPl0WW3rvS6TbEemxRXnUCDHKIH1WbW0UPSVdWmZ6gXGR0r/6GYSopOC+F8dgp04F3DtkDhvZlbA056ngt3sXCiwxDHD3aNXu1aFrBdQOicFMDfUfuLJrV0OFgZkQKpnqbneut2fQz0eUTZbsAHTzDLV
+ S5S8GOvh
+ O9gKLBIUw8oTqnmmZrJ+F9eZ2Z1WqHDOTT2yLMNb/RSk6NKl0oWkT25mBNj3oaR1gvT5cJFrGX+04WsIdocrDmp0YK3HNa6HyBTWc/4U07cD7mO65VkDJwvD3euKqEZ9Va7X3hq4cBFseqXML8m3blWoL5iZZB7ICv05Hiw8/l5GD98yob0Qp89TergvmMpKpvejGOOwDLwUUU80bnIvuG94WXtXMM6ZjdLDWN4PYX167BhYfTYxgfkVyidxikh3TbqAC/JfI/LFNsu2mvq9R57vece+gNI7+cV6X2Ol0Q+V9QnfNL4rNrloTli4xOIzURtgWMgtTFDXO1WH95aq5joNhni/ps2+6Rf55xQGt+Whp+Al/p2Ew2W7A2ROrgV250rcO1evSW4N63vktDHGvYaXK2crFPrUn4RTkp3PVszhxytq6qHZf6qowV1LaKOzKIJiCcGnuZONucYIg/0fHJkJ8ncTwPlSBDvBoU+cr0BaY9YGTWKx/ZC5V2t4uLkGSDZDU3eazXrJ5elyB5FgMovyykpEmzWa4BKu0bx57xhp94QM7tjzAezc13xA9JFAZnfA76SKVUnKmw5CcCfmG9YoTw6N1i/v1WtWwHm1Fc8gRzpYqzFjgHGg1P8hW7hWNPSgTKv0JSQWh6VTeUz3LXWTfXYaC9fQb/ARPur8yy4IL1vzGmbrCYpY/suQqB6TvjtVeXoRVkcv6h/t1Agyt1gmfq9WjUDxmm6uY+vHriO+b7g1KNx/VuF5DEzDzY/jHc/vt/SsIUgZsgFtkC+93nxhs0Q6e/7IjFzwz2y5xDtaizqQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,8 +103,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------Jiwqshj8DHDXqCQJEX0Nuazd
-Content-Type: multipart/mixed; boundary="------------MKPm6oOgpMGWbq99AxRL9FA0";
+--------------97ang00oLjr0Br0NqNg0s6nx
+Content-Type: multipart/mixed; boundary="------------g0b90MwtWS09GVit4BpsCzPP";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
 To: Shakeel Butt <shakeel.butt@linux.dev>
@@ -117,20 +117,20 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
  Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
  Danielle Constantino <dcostantino@meta.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-Message-ID: <eb9984b7-27e6-4747-8f7a-9408582c3acd@kernel.org>
+Message-ID: <2bbebbfc-fd00-4744-9775-5ba35788b535@kernel.org>
 Subject: Re: [PATCH slab/for-next-fixes v3 0/4] mm/slab: fix unbounded
  recursion in free path with memalloc profiling
 References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
- <alkdRqYW_Pg8r4sH@linux.dev>
-In-Reply-To: <alkdRqYW_Pg8r4sH@linux.dev>
+ <alkypcRUZa_r6uGV@linux.dev>
+In-Reply-To: <alkypcRUZa_r6uGV@linux.dev>
 
---------------MKPm6oOgpMGWbq99AxRL9FA0
+--------------g0b90MwtWS09GVit4BpsCzPP
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 7/17/26 3:05 AM, Shakeel Butt wrote:
+On 7/17/26 4:37 AM, Shakeel Butt wrote:
 > On Mon, Jul 13, 2026 at 11:28:48PM +0900, Harry Yoo (Oracle) wrote:
 >> This is a follow-up fix after the recent discussion [1].
 >> See patch 4 for the detailed description on the bug.
@@ -162,36 +162,59 @@ k
 >> particularily challenging to backport it. Instead of a new slab alloc
 >> flag, we can use __GFP_NO_OBJ_EXT to select KMALLOC_NO_OBJ_EXT as
 >> kmalloc caches don't have sheaves in v6.18 anyway.
+>>
+>> [1] https://lore.kernel.org/linux-mm/9a139365-28e6-4f1e-b35b-7f6091e9a=
+a14@kernel.org
+>>
+>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/lo=
+g/?h=3Dkmalloc-no-objext-v3r1
+>>
+>> To: Vlastimil Babka <vbabka@kernel.org>
+>> To: Andrew Morton <akpm@linux-foundation.org>
+>> To: Hao Li <hao.li@linux.dev>
+>> To: Christoph Lameter <cl@gentwo.org>
+>> To: David Rientjes <rientjes@google.com>
+>> To: Roman Gushchin <roman.gushchin@linux.dev>
+>> To: Suren Baghdasaryan <surenb@google.com>
+>> To: Hao Ge <hao.ge@linux.dev>
+>> To: Kees Cook <kees@kernel.org>
+>> To: Pedro Falcato <pfalcato@suse.de>
+>> To: Shakeel Butt <shakeel.butt@linux.dev>
+>> To: Danielle Constantino <dcostantino@meta.com>
+>> To: Liam R. Howlett <liam@infradead.org>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 >=20
-> Hi Harry,
+> I tested next-20260716 which has this series against next-20260707 whic=
+h does
+> not have the fix. The reproducer were able to trigger the leak/recursio=
+n on
+> next-20260707 but not on next-20260716. So, you can add:
+>=20
+> Tested-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Hi Shakeel,
-
-> are you planning to send the backports to stable once this merges into
-> linus tree?
-
-If somebody wants to give it a try, that would be great! Otherwise I
-will send backports although it might take some time as I'll be
-working on and off for a while :)
+Thanks a lot for testing, Shakeel!
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------MKPm6oOgpMGWbq99AxRL9FA0--
 
---------------Jiwqshj8DHDXqCQJEX0Nuazd
+--------------g0b90MwtWS09GVit4BpsCzPP--
+
+--------------97ang00oLjr0Br0NqNg0s6nx
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalmq+wAKCRCGXBN6rc5S
-1qmHAQD+ufBk+XgySKJ85ury9U++anJWJL1IaC/8hVQx4p66pAEA8wo/1GOFFady
-eGF8ls3ggok50tIUz7P10M+D0UTQYwY=
-=RP2N
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalmrLQAKCRCGXBN6rc5S
+1kPKAP9TFo+AR+6tDlg03GS/N+FoSzBpaviqFJvipbg4oFlZxAEAtZLu/EoVUR9r
+MAnYJRYMCx8C8PuV8b1HVe2BQM9DEgY=
+=OwA8
 -----END PGP SIGNATURE-----
 
---------------Jiwqshj8DHDXqCQJEX0Nuazd--
+--------------97ang00oLjr0Br0NqNg0s6nx--
 
