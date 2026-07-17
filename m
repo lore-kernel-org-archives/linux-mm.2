@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E22E3C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 18:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C237C44515
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 18:23:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0D966B00C9; Fri, 17 Jul 2026 14:23:09 -0400 (EDT)
+	id 285396B00CC; Fri, 17 Jul 2026 14:23:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBD006B00CC; Fri, 17 Jul 2026 14:23:09 -0400 (EDT)
+	id 25DDC6B00CE; Fri, 17 Jul 2026 14:23:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B84D46B00CD; Fri, 17 Jul 2026 14:23:09 -0400 (EDT)
+	id 173326B00CF; Fri, 17 Jul 2026 14:23:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7565D6B00C9
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:23:09 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CBC0E6B00CC
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:23:18 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 09F1DA0443
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:23:09 +0000 (UTC)
-X-FDA: 84999090498.03.6BD0801
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57C4EC0133
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:23:18 +0000 (UTC)
+X-FDA: 84999090876.03.F299CB4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2F20414000C
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:23:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XishULLS;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 801E480007
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:23:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dU5t7A9x;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784312587;
+	s=arc-20220608; t=1784312596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XMjFEdTH6k3hj5Oy3hKgeo/PLhtrcN2I3TWsmNiCNVQ=;
-	b=jt98bWVADeHJbsBrewjReu/zRThhyY7+eMgYkK2drgPxxrLhBU/7laxXAZLsJBnRpH2N49
-	oOwDSLWARUlF/vz/6O58ZXD20R+Cv3m2YIMlyTqx43bO1msEkG/3TI4HHULDCGu6Uq1KUV
-	NAY9eRsE+kBH1BfVSYkSs7ek+tX/tEE=
+	bh=K9J65l4/3tAXQjoApUsRo6wpq7Iiti7b+Q54PqfKy2U=;
+	b=h/ttfcHavIBlGL1JfuhrBdmll5bj432QPvxDPuvLJAmEkc/xIcUNcfwDPaq6Ar1804aM5X
+	meDVF7R6vKNrlk9mR0HJiF3b2dNcV2wKjzaef741Rfqz6+pgDpFizUxWigTb7wh6rK3WHN
+	RuDEOA4Ux+0L+76tDGFmb6R0SjG2piY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XishULLS;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dU5t7A9x;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784312587;
-	b=j+vL96jrwYji3/ykfyyHvfY8tXqN1aqEBwugFC4QscoJNp45NIuz/PFN815TnX6+3iGvKU
-	ylHkaaCXXty18Iq7DOojUWq/IYRGlwDMxPkSNubLtUTqKS8DBA4EUEz8eRRM4x0KRZhWgf
-	OqQr7qt9HgzWzjpGW4InUDwUVh41Rig=
+	t=1784312596;
+	b=LB+D2zb7zscCcW1Y8o0mH9ttDbLPhyOGinazX4lRpJLvVVBHQeLe29DfpYmb3TUMMSRSMX
+	vqsGXE+k/e3bXr4Y3fTsGHEK6asIgoe22PrZUKA+dY2OEPd4KDgrJ3cGg2oOwfbUKjesdd
+	6tvNeFWDM8jpv4dB9E0qzmS3kixYCsk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C1274035E;
+	by sea.source.kernel.org (Postfix) with ESMTP id D64A243EEC;
+	Fri, 17 Jul 2026 18:23:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5601F00A3A;
 	Fri, 17 Jul 2026 18:23:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EE01F000E9;
-	Fri, 17 Jul 2026 18:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784312586;
-	bh=XMjFEdTH6k3hj5Oy3hKgeo/PLhtrcN2I3TWsmNiCNVQ=;
+	s=k20260515; t=1784312595;
+	bh=K9J65l4/3tAXQjoApUsRo6wpq7Iiti7b+Q54PqfKy2U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=XishULLSAFO4zVL2jpcFQSof4hhC7vwzkRRH+mIWJLtV/jseY8OXcWPZcrC2dooc4
-	 g4YwcQA3LFRZImEDmkbN8ak2IX/ZodpL2i9gyBsrk+yHqekF6w6wpjgcqjyRewrnNP
-	 Us5t27Fk9m/UJJJEibXWMsNe3xO9a18ud5/oSrrW7WrLQG4706XJNS7dDpsee3+5PH
-	 iptmCoqdgVNo18hmwlNgri4B37m+HqSRetlBZTrPJJgaUQJEKZ0NY1y/AlC1Il/Fwr
-	 msCjFcgiuDxdtxGe7WqC5ezmD3c76lKgMJlIqLscZ8wHfEsH/F/OdcGSlDRGbD378T
-	 LbhpcDLruRfcg==
+	b=dU5t7A9xxE1rqZ1PA5/5f+2Wu21cdQEJUSBHMauC5kMnYT1kDL/cyheogHKuFwzqj
+	 nvvku9uzuFSlcxKvF6cMFaQKmuQ+XEQbHDw76+48dB8c6jtLQ6mzA9yFY2jYf9S8Qk
+	 RMT42K1WAT+Rd9rPdoqum4UcK1jGG/mognui1GF0gBoawsjVNZlFz+ahHQKymI6PH/
+	 43xsPxmL5ftrK1PmXmi/TQzpS23MDE5C/fzN+mP39M2jWR0qKWuJ7gqIPvmeB9/JNy
+	 i6O/EuYQ7aNMaKns/e8vPC/7Yh18CEFXXoq/Ekqu/sxlQUiqneWIVkyE292QIejW/q
+	 dah186Oj1sn/w==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 17 Jul 2026 19:19:44 +0100
-Subject: [PATCH 06/15] mm: propagate VMA virtual page offset on map, remap,
- split + merge
+Date: Fri, 17 Jul 2026 19:19:45 +0100
+Subject: [PATCH 07/15] mm/rmap: track whether the page VMA mapped walk is
+ anonymous
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260717-b4-scalable-cow-virt-pgoff-v1-6-cf24910ef094@kernel.org>
+Message-Id: <20260717-b4-scalable-cow-virt-pgoff-v1-7-cf24910ef094@kernel.org>
 References: <20260717-b4-scalable-cow-virt-pgoff-v1-0-cf24910ef094@kernel.org>
 In-Reply-To: <20260717-b4-scalable-cow-virt-pgoff-v1-0-cf24910ef094@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,22 +100,22 @@ Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=21281; i=ljs@kernel.org;
- h=from:subject:message-id; bh=bAL004VzAX7A4Tw7tZ5pMBFAkxdI+imb7ffhtNnNsm0=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKiivYu/fu198umGkPfPOawjj3uZqpvdpfmqRyI/f7u7
- KcvcUJhHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiIfjYjw6ODz+a9fC6y4OrJ
- Zz3dt8pZJFreJAmp96Vf1pJKnPpM24KRYeYBKYftT7Xiv3tIuzA2h+sXlPxV/vFC+ePXkNC+CLN
- wDgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3223; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=M2DuEa+QMY+cZQChTlOi3eUq8pPFDxokrv+qbMEdb+c=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKiivblzmr2WeH22/fBFcFjy2Ou3tW+uCCw3bjgQOHjH
+ 0eXX1S06yhlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBE/MwZ/opfdj+rxXiu75RM
+ 47b+P7fu5Oz4s/ceV0vY+g871Itau4IZ/sfvNxJQ6JsxdS6DQqDQ/FbW4832Wlw/JYqdVn11E7q
+ txAIA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2F20414000C
-X-Stat-Signature: cwrry15mck17iw8r6srsek8wbjt7you6
-X-HE-Tag: 1784312587-304757
-X-HE-Meta: U2FsdGVkX1/J2k+Fy+puPI/qC+yxJIpWPdNYEBCxsYhR91Ww5I/iEuln+1F0AaOUL6rQ2nXtPN+y1sGVTAy0dXsMeIARMOajw2EYxBAlof8nQ0PbmDh3CTyo32uv0rvER/HsVmotiH1t57aET/qK32cCigTZzWghjbED8h9uMQCVGI+q0VrQ4jic3QIDKbRza9KkOmuRcAYRZWUV0iliAv+xMRgCe//uncdYU+xDOOfQf1v3sMI2L0578aQhmgtF+vFiPYwvyuw95aMsaGqlszaAsa6aAaCZasWUfHJNJzlMLWTQCQLYsjieJVm7f6xVUQoruV9LxmI6VfFZGTdp22hUlFC0hcg+9GttonXfIF5AJg2EePB6oO8c4gRyPcyn7qmgndbyno5AqzfXKqb95J0x7RQmD7BCD7xbTey24c/1Yur3/EteLCzo1xCbfLIA7+zjfYP2/6V4oYcXBAycsUSpX+3zJXAUEzYBxtMnYJ37mDi0F07HKsew2KUuJMHZdd2dkA2nQHZlQj4pOUkdD55/8Thx94qNsbeyGaFFU0IXzKU2tkFuD+mkwgCrcAOc5YFcAgDRWmTpL+ifH/1HKYD+unWmiruYwpG2v8NHL8qn01+DTkDWfQ+nE9PrUTGdqqK3gcrxHBMdrmQgDJI8J/tuJLWxMjzzuFzp62YUYqGDl+71rAO7MuIPZpPsbjTf8OxqkDI84pDAjQXrT+MgEpXUK6OEUX1HKWo9e+VCXwLsGlB9hm4FV9IMsTmMjb0pehDgvpZLka5vWwrPdIXVRcpuu/sKKvxpQ7zAqxkMmUP1o8qIKI3XkogBcBQZiGxpbwlRhcTwflTLA9uJm+aE5Adj2XJ7t4WyDh7hPMX0lJHPJ88KZJQtNlCKn7Dph+bCC7YCee22Um3GIzfL5JH/FYa10v6647Hq0FwJNUi7zlHL9J3OkkMZ35DjI7zij+RyhPUJzlMne1hSYdL2kGs
- zehpVf8a
- JVVCwGVZxPSxduntpYpaFByhdwJbj8rJMrbi7E5IgkjO0AG9nvXNll1FMNNx+Agk5lXoSQU7XSKiLM3NVg2cdE3Bl2g3Hpc2XOs6rNA2pdw7CehE22Dgo8jRibLgjRFkYpSfB7coLIS7D4nVB2L2+dxi1KIsksYGKlwjPbOIrVflNWUaL8OHSUlfPed2IHvwZ31Wi5B1yjjMigvTCMiVd/XGX1wp27ls/86PVpvQfqRsL41OAE83ci8NWO5A6UyoVZo6KUGK8/jjj4J3IjNBtwOTxHNQLGZUlOkUdDquTay67msv02T5Jgepue65MkZ3/IwQD
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 801E480007
+X-Stat-Signature: hd49xhwfxn1udig9f8cee5poycphq51k
+X-HE-Tag: 1784312596-242750
+X-HE-Meta: U2FsdGVkX18LAs843gWdjm8sWoYeKWfyEZKGSHQ+YIIfFQwHb5xIvn4mTbLwwfxvjMXHZqRC3jsaW4SfibK3O1uic9d2HSr+LyS8/WUn1ykvdBDXUR+B/voIIQANdCYJ1TKdSDv37H1AvPfM4ty7tYk8OllEeqShigNTjVNqisHFzoT+VlZMr98FpzzWD/xWLs72ZDAi3vdaAnV8EK10PgSzUn4VKJD+43f33QQpw2tcl6wTA+3omreiwTbwCsqJ0amio8epMcVMmbkVeKYH8PfqctiCDD0zxE6qRbVKce5EBOISu/Ondy0a/n95TtM0O2Gx9XrFKVhdQN42w6duAv4KQrkrTb7GcRrZeu6LLMvnhvluYgck1hX6Gs6itvN6MRgIbayrx+MGZSAg907yrkGiWnUt6+4ShlzT8EiFTfWswcIX8sfB2IE2uyJ7dqkEIvi+hqp9fe3PVARRuwuM+6bOWsvhzvql7dsyzArD7GB+e0Q36skFA3TGjngtEvtF7lRxXn/soMf95qKSk0vesAAzxSWqGU/73//O0YKVpJlDgKwoaQLU/44dOaxY3/DNiANTmobyBbrOxb12KRdqOG6mgJdbEz861cSnRTol2sU88IIHRsoLfExnR2sNH/YA3MeVAo/N05V5DW0WcXSyKVUP9q+e/d2r8APd0ylfsCpyRiRAvFJpnzNJNgzPXfSP/gbDFcSAL4cwyFM5Cz5Dns2JlvKMfdp5FBZnwTZdPcXYYzeTiEz1PKanux6y6sPM4kRyRvj1vGEZCCaOtIg94fKkzNtSGjtIO1bGSe2XAmTsQ05puVK+7FL+NEoG/X+vnACgaDk2V5NJQp0hRrWh3XJK0DRRpfUKLNhA2qiL/BpPBEfTKbaeMJO6ji0Ql81Ol5x/w4rfvohSRA4yeE0U8cXMxP7Rzq4TwY6Y8n8tJFv4ilbW/V+oeC8m05RvtaMOG92tKK5zbnd6YRqrfxf
+ U4wBAYpn
+ q2JwVNl3xYFJ6o6hO7hdN312t5Pao/RfjV6VtSaQ/wqAAOzFl+9KSlIGpoRP2nPQ1XQxyqtepCeZQek4X3wJZmSqAyvaSWXuKOB/5IgznGOnz/rls1Kk7iJN9IEfpW/1maYgZrmYtc0Jdb9ECinznStC+mJjp5QSn4XPE0dD8yWn9TvipC+SHN73ZMD7yMsU/xTwZXWqzNrYDcTQ661CwW/kyLqZBp0WUSGdJscu6JWXb5dM3lx8hg3ig+ByhMvyQIReUoNHZ/WM9zxuCEgveYNl4t2o6IpV3w9PKN2yYSQ6B4+n8YHwtmT65FhMskw2hbWdd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,580 +123,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We must correctly update VMA virtual page offset state on all VMA
-operations that would result in it changing, with special attention given
-to remapping.
+Update the page_vma_mapped_walk structure to track whether the walk is over
+an anonymous folio or not.
 
-We cover most cases by simply updating vma_set_range() to do so (with a new
-virtual page offset parameter), but also notably must update the merging
-and mapping logic to propagate this parameter correctly.
+This is necessary in order to determine the correct VMA page
+offset (virtual or not) in vma_address_end() ready for a subsequent change
+which adjusts which page offset to use depending on this parameter, and
+update the comment slightly.
 
-The remap logic remains the same - we may update the virtual page offset if
-the VMA is unfaulted, but now this applies to MAP_PRIVATE file-backed
-mappings too, so we update the code to reflect this.
-
-Note that we use __linear_virt_page_index() upon remap as the VMA may be
-shared, in order that we update the field consistently regardless of VMA
-type.
-
-Also while we're here, replace a VM_BUG_ON_VMA() with a
-VM_WARN_ON_ONCE_VMA().
-
-We also introduce vma_anon_pgoff_addr(), vma_start_anon_pgoff(), and
-vma_end_anon_pgoff() which differ from their virtual page offset
-equivalents in that a shared file-backed mapping returns its file page
-offset otherwise the virtual page offset is used.
-
-This means we don't predicate merges for shared file-backed mappings on
-virtual page offset.
-
-We simply ensure state is correctly propagated here, so no functional
-changes are intended.
-
-Finally, we update insert_vm_struct() to correctly set the virtual page
-offset on insertion of a VMA.
-
-Also update VMA userland tests to reflect this change.
+No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/mremap.c                      |   6 +-
- mm/vma.c                         |  56 ++++++++++++-----
- mm/vma.h                         | 127 ++++++++++++++++++++++++++++++---------
- mm/vma_exec.c                    |   2 +-
- tools/testing/vma/shared.c       |   3 +-
- tools/testing/vma/tests/merge.c  |   4 +-
- tools/testing/vma/tests/vma.c    |   4 +-
- tools/testing/vma/vma_internal.h |   1 +
- 8 files changed, 152 insertions(+), 51 deletions(-)
+ include/linux/rmap.h |  2 ++
+ mm/internal.h        | 13 ++++++++-----
+ mm/rmap.c            |  3 +++
+ 3 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index b64aa1f6e07e..f07fc4e3ef2e 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1265,7 +1265,9 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
- static int copy_vma_and_data(struct vma_remap_struct *vrm,
- 			     struct vm_area_struct **new_vma_ptr)
- {
--	const unsigned long new_pgoff = linear_page_index(vrm->vma, vrm->addr);
-+	const pgoff_t new_pgoff = linear_page_index(vrm->vma, vrm->addr);
-+	const pgoff_t new_virt_pgoff =
-+		__linear_virt_page_index(vrm->vma, vrm->addr);
- 	struct vm_area_struct *vma = vrm->vma;
- 	struct vm_area_struct *new_vma;
- 	unsigned long moved_len;
-@@ -1273,7 +1275,7 @@ static int copy_vma_and_data(struct vma_remap_struct *vrm,
- 	PAGETABLE_MOVE(pmc, NULL, NULL, vrm->addr, vrm->new_addr, vrm->old_len);
- 
- 	new_vma = copy_vma(&vma, vrm->new_addr, vrm->new_len, new_pgoff,
--			   &pmc.need_rmap_locks);
-+			   new_virt_pgoff, &pmc.need_rmap_locks);
- 	if (!new_vma) {
- 		vrm_uncharge(vrm);
- 		*new_vma_ptr = NULL;
-diff --git a/mm/vma.c b/mm/vma.c
-index b5bc3eec961c..e45d43493446 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -18,6 +18,7 @@ struct mmap_state {
- 	unsigned long addr;
- 	unsigned long end;
- 	pgoff_t pgoff;
-+	pgoff_t virt_pgoff;
- 	unsigned long pglen;
- 	union {
- 		vm_flags_t vm_flags;
-@@ -46,13 +47,22 @@ struct mmap_state {
- 	bool file_doesnt_need_get :1;
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f00..a48ae9575bd2 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -871,6 +871,7 @@ struct page_vma_mapped_walk {
+ 	pte_t *pte;
+ 	spinlock_t *ptl;
+ 	unsigned int flags;
++	bool is_anon_walk;
  };
  
--#define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, vma_flags_, file_) \
-+static inline pgoff_t map_anon_pgoff(const struct mmap_state *map)
-+{
-+	if (vma_flags_test(&map->vma_flags, VMA_SHARED_BIT))
-+		return map->pgoff;
-+
-+	return map->virt_pgoff;
-+}
-+
-+#define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, virt_pgoff_, vma_flags_, file_) \
- 	struct mmap_state name = {					\
- 		.mm = mm_,						\
- 		.vmi = vmi_,						\
- 		.addr = addr_,						\
- 		.end = (addr_) + (len_),				\
- 		.pgoff = pgoff_,					\
-+		.virt_pgoff = virt_pgoff_,				\
- 		.pglen = PHYS_PFN(len_),				\
- 		.vma_flags = vma_flags_,				\
- 		.file = file_,						\
-@@ -67,6 +77,7 @@ struct mmap_state {
- 		.end = (map_)->end,					\
- 		.vma_flags = (map_)->vma_flags,				\
- 		.pgoff = (map_)->pgoff,					\
-+		.anon_pgoff = map_anon_pgoff(map_),			\
- 		.file = (map_)->file,					\
- 		.prev = (map_)->prev,					\
- 		.middle = vma_,						\
-@@ -82,10 +93,11 @@ static void __vma_set_range(struct vm_area_struct *vma, unsigned long start,
+ #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
+@@ -881,6 +882,7 @@ struct page_vma_mapped_walk {
+ 		.vma = _vma,						\
+ 		.address = _address,					\
+ 		.flags = _flags,					\
++		.is_anon_walk = folio_test_anon(_folio),		\
+ 	}
+ 
+ static inline void page_vma_mapped_walk_done(struct page_vma_mapped_walk *pvmw)
+diff --git a/mm/internal.h b/mm/internal.h
+index 73f90aaa979d..7ed8bde7890d 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1079,22 +1079,25 @@ static inline unsigned long vma_anon_address(const struct vm_area_struct *vma,
  }
  
- static void vma_set_range(struct vm_area_struct *vma, unsigned long start,
--			  unsigned long end, pgoff_t pgoff)
-+			  unsigned long end, pgoff_t pgoff, pgoff_t virt_pgoff)
- {
- 	__vma_set_range(vma, start, end);
- 	vma_set_pgoff(vma, pgoff);
-+	vma_set_virt_pgoff(vma, virt_pgoff);
- }
- 
- /* Was this VMA ever forked from a parent, i.e. maybe contains CoW mappings? */
-@@ -812,7 +824,8 @@ static int commit_merge(struct vma_merge_struct *vmg)
- 	 */
- 	vma_adjust_trans_huge(vma, vmg->start, vmg->end,
- 			      vmg->__adjust_middle_start ? vmg->middle : NULL);
--	vma_set_range(vma, vmg->start, vmg->end, vmg_start_pgoff(vmg));
-+	vma_set_range(vma, vmg->start, vmg->end, vmg_start_pgoff(vmg),
-+		      vmg_start_anon_pgoff(vmg));
- 	vmg_adjust_set_range(vmg);
- 	vma_iter_store_overwrite(vmg->vmi, vmg->target);
- 
-@@ -982,6 +995,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 		vmg->start = prev->vm_start;
- 		vmg->end = next->vm_end;
- 		vmg->pgoff = vma_start_pgoff(prev);
-+		vmg->anon_pgoff = vma_start_anon_pgoff(prev);
- 
- 		/*
- 		 * We already ensured anon_vma compatibility above, so now it's
-@@ -1000,6 +1014,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 		 */
- 		vmg->start = prev->vm_start;
- 		vmg->pgoff = vma_start_pgoff(prev);
-+		vmg->anon_pgoff = vma_start_anon_pgoff(prev);
- 
- 		if (!vmg->__remove_middle)
- 			vmg->__adjust_middle_start = true;
-@@ -1022,12 +1037,14 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 		if (vmg->__remove_middle) {
- 			vmg->end = next->vm_end;
- 			vmg->pgoff = vma_start_pgoff(next) - pglen;
-+			vmg->anon_pgoff = vma_start_anon_pgoff(next) - pglen;
- 		} else {
- 			/* We shrink middle and expand next. */
- 			vmg->__adjust_next_start = true;
- 			vmg->start = middle->vm_start;
- 			vmg->end = start;
- 			vmg->pgoff = vma_start_pgoff(middle);
-+			vmg->anon_pgoff = vma_start_anon_pgoff(middle);
- 		}
- 
- 		err = dup_anon_vma(next, middle, &anon_dup);
-@@ -1137,6 +1154,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
- 		vmg->start = prev->vm_start;
- 		vmg->target = prev;
- 		vmg->pgoff = vma_start_pgoff(prev);
-+		vmg->anon_pgoff = vma_start_anon_pgoff(prev);
- 
- 		/*
- 		 * If this merge would result in removal of the next VMA but we
-@@ -1908,9 +1926,10 @@ static int vma_link(struct mm_struct *mm, struct vm_area_struct *vma)
+ /*
+- * Then at what user virtual address will none of the range be found in vma?
++ * At what user virtual address will none of the range be found in vma?
+  * Assumes that vma_address() already returned a good starting address.
   */
- struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 	unsigned long addr, unsigned long len, pgoff_t pgoff,
--	bool *need_rmap_locks)
-+	pgoff_t virt_pgoff, bool *need_rmap_locks)
+ static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
  {
- 	struct vm_area_struct *vma = *vmap;
-+	const bool is_shared = vma_test(vma, VMA_SHARED_BIT);
- 	unsigned long vma_start = vma->vm_start;
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct vm_area_struct *new_vma;
-@@ -1919,11 +1938,14 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 	VMG_VMA_STATE(vmg, &vmi, NULL, vma, addr, addr + len);
+-	struct vm_area_struct *vma = pvmw->vma;
+-	pgoff_t pgoff;
++	const struct vm_area_struct *vma = pvmw->vma;
++	const pgoff_t pgoff = pvmw->pgoff;
++	pgoff_t pgoff_vma_start;
+ 	unsigned long address;
++	pgoff_t pgoff_end;
  
- 	/*
--	 * If anonymous vma has not yet been faulted, update new pgoff
--	 * to match new location, to increase its chance of merging.
-+	 * If a vma has not yet been faulted, update its virtual pgoff to match
-+	 * the new location to increase its chance of merging.
- 	 */
--	if (unlikely(vma_is_anonymous(vma) && !vma->anon_vma)) {
--		pgoff = addr >> PAGE_SHIFT;
-+	if (!vma->anon_vma && !is_shared) {
-+		virt_pgoff = addr >> PAGE_SHIFT;
-+
-+		if (vma_is_anonymous(vma))
-+			pgoff = virt_pgoff;
- 		faulted_in_anon_vma = false;
- 	}
+ 	/* Common case, plus ->pgoff is invalid for KSM */
+ 	if (pvmw->nr_pages == 1)
+ 		return pvmw->address + PAGE_SIZE;
  
-@@ -1940,6 +1962,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 		return NULL;	/* should never get here */
- 
- 	vmg.pgoff = pgoff;
-+	vmg.anon_pgoff = is_shared ? pgoff : virt_pgoff;
- 	vmg.next = vma_iter_next_rewind(&vmi, NULL);
- 	new_vma = vma_merge_copied_range(&vmg);
- 
-@@ -1961,7 +1984,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 			 * safe. It is only safe to keep the vm_pgoff
- 			 * linear if there are no pages mapped yet.
- 			 */
--			VM_BUG_ON_VMA(faulted_in_anon_vma, new_vma);
-+			VM_WARN_ON_ONCE_VMA(faulted_in_anon_vma, new_vma);
- 			*vmap = vma = new_vma;
- 		}
- 		*need_rmap_locks =
-@@ -1970,7 +1993,7 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 		new_vma = vm_area_dup(vma);
- 		if (!new_vma)
- 			goto out;
--		vma_set_range(new_vma, addr, addr + len, pgoff);
-+		vma_set_range(new_vma, addr, addr + len, pgoff, virt_pgoff);
- 		if (vma_dup_policy(vma, new_vma))
- 			goto out_free_vma;
- 		if (anon_vma_clone(new_vma, vma, VMA_OP_REMAP))
-@@ -2612,7 +2635,7 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
- 	if (is_anon)
- 		vma_set_anonymous(vma);
- 
--	vma_set_range(vma, map->addr, map->end, map->pgoff);
-+	vma_set_range(vma, map->addr, map->end, map->pgoff, map->virt_pgoff);
- 	vma->flags = map->vma_flags;
- 	vma->vm_page_prot = map->page_prot;
- 
-@@ -2801,7 +2824,8 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
- 	struct vm_area_struct *vma = NULL;
- 	bool have_mmap_prepare = file && file->f_op->mmap_prepare;
- 	VMA_ITERATOR(vmi, mm, addr);
--	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, vma_flags, file);
-+	const pgoff_t virt_pgoff = addr >> PAGE_SHIFT;
-+	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, virt_pgoff, vma_flags, file);
- 	struct vm_area_desc desc = {
- 		.mm = mm,
- 		.file = file,
-@@ -2946,6 +2970,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		 unsigned long addr, unsigned long len, vma_flags_t vma_flags)
- {
- 	struct mm_struct *mm = current->mm;
-+	const pgoff_t pgoff = addr >> PAGE_SHIFT;
- 
- 	/*
- 	 * Check against address space limits by the changed size
-@@ -2970,7 +2995,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	 * occur after forking, so the expand will only happen on new VMAs.
- 	 */
- 	if (vma && vma->vm_end == addr) {
--		VMG_STATE(vmg, mm, vmi, addr, addr + len, vma_flags, PHYS_PFN(addr));
-+		VMG_STATE(vmg, mm, vmi, addr, addr + len, vma_flags, pgoff, pgoff);
- 
- 		vmg.prev = vma;
- 		/* vmi is positioned at prev, which this mode expects. */
-@@ -2990,7 +3015,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		goto unacct_fail;
- 
- 	vma_set_anonymous(vma);
--	vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
-+	vma_set_range(vma, addr, addr + len, pgoff, pgoff);
- 	vma->flags = vma_flags;
- 	vma->vm_page_prot = vm_get_page_prot(vma_flags_to_legacy(vma_flags));
- 	vma_start_write(vma);
-@@ -3382,6 +3407,7 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
- 		WARN_ON_ONCE(vma->anon_vma);
- 		vma_set_pgoff(vma, vma->vm_start >> PAGE_SHIFT);
- 	}
-+	vma_set_virt_pgoff(vma, vma->vm_start >> PAGE_SHIFT);
- 
- 	if (vma_link(mm, vma)) {
- 		if (vma_test(vma, VMA_ACCOUNT_BIT))
-@@ -3437,7 +3463,7 @@ struct vm_area_struct *__install_special_mapping(
- 
- 	vma->vm_ops = ops;
- 	vma->vm_private_data = priv;
--	vma_set_range(vma, addr, addr + len, 0);
-+	vma_set_range(vma, addr, addr + len, 0, addr >> PAGE_SHIFT);
- 
- 	ret = insert_vm_struct(mm, vma);
- 	if (ret)
-diff --git a/mm/vma.h b/mm/vma.h
-index 04c5c1c546f6..c1d65060071f 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -104,6 +104,7 @@ struct vma_merge_struct {
- 	unsigned long start;
- 	unsigned long end;
- 	pgoff_t pgoff;
-+	pgoff_t anon_pgoff;
- 
- 	union {
- 		/* Temporary while VMA flags are being converted. */
-@@ -237,11 +238,6 @@ static inline bool vmg_nomem(struct vma_merge_struct *vmg)
- 	return vmg->state == VMA_MERGE_ERROR_NOMEM;
- }
- 
--static inline pgoff_t vmg_start_pgoff(const struct vma_merge_struct *vmg)
--{
--	return vmg->pgoff;
--}
--
- static inline pgoff_t vmg_pages(const struct vma_merge_struct *vmg)
- {
- 	const unsigned long size = vmg->end - vmg->start;
-@@ -249,6 +245,11 @@ static inline pgoff_t vmg_pages(const struct vma_merge_struct *vmg)
- 	return size >> PAGE_SHIFT;
- }
- 
-+static inline pgoff_t vmg_start_pgoff(const struct vma_merge_struct *vmg)
-+{
-+	return vmg->pgoff;
-+}
-+
- static inline pgoff_t vmg_end_pgoff(const struct vma_merge_struct *vmg)
- {
- 	return vmg_start_pgoff(vmg) + vmg_pages(vmg);
-@@ -283,6 +284,16 @@ static inline void vma_set_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
- 	vma->vm_pgoff = pgoff;
- }
- 
-+static inline pgoff_t vmg_start_anon_pgoff(const struct vma_merge_struct *vmg)
-+{
-+	return vmg->anon_pgoff;
-+}
-+
-+static inline pgoff_t vmg_end_anon_pgoff(const struct vma_merge_struct *vmg)
-+{
-+	return vmg_start_anon_pgoff(vmg) + vmg_pages(vmg);
-+}
-+
- static inline void __vma_set_virt_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
- {
- #ifdef CONFIG_64BIT
-@@ -301,44 +312,102 @@ static inline void vma_add_pgoff(struct vm_area_struct *vma, pgoff_t delta)
- {
- 	vma_assert_can_modify(vma);
- 	vma_set_pgoff(vma, vma_start_pgoff(vma) + delta);
-+	vma_set_virt_pgoff(vma, vma_start_virt_pgoff(vma) + delta);
- }
- 
- static inline void vma_sub_pgoff(struct vm_area_struct *vma, pgoff_t delta)
- {
- 	vma_assert_can_modify(vma);
- 	vma_set_pgoff(vma, vma_start_pgoff(vma) - delta);
-+	vma_set_virt_pgoff(vma, vma_start_virt_pgoff(vma) - delta);
-+}
-+
-+/**
-+ * vma_anon_pgoff_addr() - Calculates the absolute anonymous page offset of
-+ * @address.
-+ * @vma: The VMA whose anonymous page offset is required.
-+ * @address: The address whose absolute page offset is required.
-+ *
-+ * If the VMA is a shared file-backed mapping, then the file-based page offset
-+ * is returned.
-+ *
-+ * Otherwise, the virtual page offset is returned.
-+ *
-+ * This means that shared file-backed mappings are correctly merged based on
-+ * their file page offset compatibility.
-+ *
-+ * Returns: The absolute anonymous page offset of @address within @vma.
-+ */
-+static inline pgoff_t vma_anon_pgoff_addr(const struct vm_area_struct *vma,
-+					  unsigned long address)
-+{
-+	if (vma_test(vma, VMA_SHARED_BIT))
-+		return linear_page_index(vma, address);
-+
-+	return linear_virt_page_index(vma, address);
-+}
-+
-+/**
-+ * vma_start_anon_pgoff() - Calculates the absolute anonymous page offset used
-+ * for purposes of merge compatibility.
-+ * @vma: The VMA whose anonymous page offset is required.
-+ *
-+ * See vma_anon_pgoff_addr().
-+ *
-+ * Returns: The absolute anonymous page offset of @vma for purposes of merging.
-+ */
-+static inline pgoff_t vma_start_anon_pgoff(const struct vm_area_struct *vma)
-+{
-+	return vma_anon_pgoff_addr(vma, vma->vm_start);
- }
- 
--#define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
-+/**
-+ * vma_end_anon_pgoff() - Calculates the absolute exclusive end anonymous page
-+ * offset used for purposes of merge compatibility.
-+ * @vma: The VMA whosse anonymous end page offset is required.
-+ *
-+ * See vma_start_anon_pgoff().
-+ *
-+ * Returns: The absolute exclusive end anonymous page offset of @vma for
-+ * purposes of merging.
-+ */
-+static inline pgoff_t vma_end_anon_pgoff(const struct vm_area_struct *vma)
-+{
-+	return vma_start_anon_pgoff(vma) + vma_pages(vma);
-+}
-+
-+#define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_, anon_pgoff_) \
-+	struct vma_merge_struct name = {					  \
-+		.mm = mm_,							  \
-+		.vmi = vmi_,							  \
-+		.start = start_,						  \
-+		.end = end_,							  \
-+		.vma_flags = vma_flags_,					  \
-+		.pgoff = pgoff_,						  \
-+		.anon_pgoff = anon_pgoff_,					  \
-+		.state = VMA_MERGE_START,					  \
-+	}
-+
-+#define VMG_VMA_STATE(name, vmi_, prev_, vma_, start_, end_)		\
- 	struct vma_merge_struct name = {				\
--		.mm = mm_,						\
-+		.mm = vma_->vm_mm,					\
- 		.vmi = vmi_,						\
-+		.prev = prev_,						\
-+		.middle = vma_,						\
-+		.next = NULL,						\
- 		.start = start_,					\
- 		.end = end_,						\
--		.vma_flags = vma_flags_,				\
--		.pgoff = pgoff_,					\
-+		.vm_flags = vma_->vm_flags,				\
-+		.pgoff = linear_page_index(vma_, start_),		\
-+		.anon_pgoff = vma_anon_pgoff_addr(vma_, start_),	\
-+		.file = vma_->vm_file,					\
-+		.anon_vma = vma_->anon_vma,				\
-+		.policy = vma_policy(vma_),				\
-+		.uffd_ctx = vma_->vm_userfaultfd_ctx,			\
-+		.anon_name = anon_vma_name(vma_),			\
- 		.state = VMA_MERGE_START,				\
- 	}
- 
--#define VMG_VMA_STATE(name, vmi_, prev_, vma_, start_, end_)	\
--	struct vma_merge_struct name = {			\
--		.mm = vma_->vm_mm,				\
--		.vmi = vmi_,					\
--		.prev = prev_,					\
--		.middle = vma_,					\
--		.next = NULL,					\
--		.start = start_,				\
--		.end = end_,					\
--		.vm_flags = vma_->vm_flags,			\
--		.pgoff = linear_page_index(vma_, start_),	\
--		.file = vma_->vm_file,				\
--		.anon_vma = vma_->anon_vma,			\
--		.policy = vma_policy(vma_),			\
--		.uffd_ctx = vma_->vm_userfaultfd_ctx,		\
--		.anon_name = anon_vma_name(vma_),		\
--		.state = VMA_MERGE_START,			\
--	}
--
- #ifdef CONFIG_DEBUG_VM_MAPLE_TREE
- void validate_mm(struct mm_struct *mm);
- #else
-@@ -520,7 +589,7 @@ void unlink_file_vma_batch_add(struct unlink_vma_file_batch *vb,
- 
- struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 	unsigned long addr, unsigned long len, pgoff_t pgoff,
--	bool *need_rmap_locks);
-+	pgoff_t anon_pgoff, bool *need_rmap_locks);
- 
- struct anon_vma *find_mergeable_anon_vma(struct vm_area_struct *vma);
- 
-diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-index 7af1260689b9..586c52155942 100644
---- a/mm/vma_exec.c
-+++ b/mm/vma_exec.c
-@@ -41,7 +41,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
- 	unsigned long new_end = old_end - shift;
- 	VMA_ITERATOR(vmi, mm, new_start);
- 	VMG_STATE(vmg, mm, &vmi, new_start, old_end, EMPTY_VMA_FLAGS,
--		  vma_start_pgoff(vma));
-+		  vma_start_pgoff(vma), vma_start_anon_pgoff(vma));
- 	struct vm_area_struct *next;
- 	struct mmu_gather tlb;
- 	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
-diff --git a/tools/testing/vma/shared.c b/tools/testing/vma/shared.c
-index bea9ea6db02a..f410bb6f858e 100644
---- a/tools/testing/vma/shared.c
-+++ b/tools/testing/vma/shared.c
-@@ -23,7 +23,8 @@ struct vm_area_struct *alloc_vma(struct mm_struct *mm,
- 
- 	vma->vm_start = start;
- 	vma->vm_end = end;
--	vma->vm_pgoff = pgoff;
-+	vma_set_pgoff(vma, pgoff);
-+	vma_set_virt_pgoff(vma, start >> PAGE_SHIFT);
- 	vma->flags = vma_flags;
- 	vma_assert_detached(vma);
- 
-diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
-index e357accc8499..48418b82b01d 100644
---- a/tools/testing/vma/tests/merge.c
-+++ b/tools/testing/vma/tests/merge.c
-@@ -45,6 +45,7 @@ void vmg_set_range(struct vma_merge_struct *vmg, unsigned long start,
- 	vmg->start = start;
- 	vmg->end = end;
- 	vmg->pgoff = pgoff;
-+	vmg->anon_pgoff = start >> PAGE_SHIFT;
- 	vmg->vma_flags = vma_flags;
- 
- 	vmg->just_expand = false;
-@@ -108,6 +109,7 @@ static bool test_simple_merge(void)
- 		.end = 0x2000,
- 		.vma_flags = vma_flags,
- 		.pgoff = 1,
-+		.anon_pgoff = 1,
+-	pgoff = pvmw->pgoff + pvmw->nr_pages;
++	pgoff_vma_start = vma_start_pgoff(vma);
++	pgoff_end = pgoff + pvmw->nr_pages;
+ 	address = vma->vm_start +
+-		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
++		((pgoff_end - pgoff_vma_start) << PAGE_SHIFT);
+ 	/* Check for address beyond vma (or wrapped through 0?) */
+ 	if (address < vma->vm_start || address > vma->vm_end)
+ 		address = vma->vm_end;
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 5798427d007f..cfd4195ff1ae 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1240,8 +1240,10 @@ static bool mapping_wrprotect_range_one(struct folio *folio,
+ 		.vma		= vma,
+ 		.address	= address,
+ 		.flags		= PVMW_SYNC,
++		.is_anon_walk   = false,
  	};
  
- 	ASSERT_FALSE(attach_vma(&mm, vma_left));
-@@ -1431,7 +1433,7 @@ static bool test_expand_only_mode(void)
- 	struct mm_struct mm = {};
- 	VMA_ITERATOR(vmi, &mm, 0);
- 	struct vm_area_struct *vma_prev, *vma;
--	VMG_STATE(vmg, &mm, &vmi, 0x5000, 0x9000, vma_flags, 5);
-+	VMG_STATE(vmg, &mm, &vmi, 0x5000, 0x9000, vma_flags, 5, 5);
++	VM_WARN_ON_ONCE(folio_test_anon(folio));
+ 	state->cleaned += page_vma_mkclean_one(&pvmw);
  
- 	/*
- 	 * Place a VMA prior to the one we're expanding so we assert that we do
-diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
-index 754a2da06321..7ca5289e0f95 100644
---- a/tools/testing/vma/tests/vma.c
-+++ b/tools/testing/vma/tests/vma.c
-@@ -38,7 +38,7 @@ static bool test_copy_vma(void)
- 	/* Move backwards and do not merge. */
+ 	return true;
+@@ -1317,6 +1319,7 @@ int pfn_mkclean_range(unsigned long pfn, unsigned long nr_pages, pgoff_t pgoff,
+ 		.pgoff		= pgoff,
+ 		.vma		= vma,
+ 		.flags		= PVMW_SYNC,
++		.is_anon_walk   = false,
+ 	};
  
- 	vma = alloc_and_link_vma(&mm, 0x3000, 0x5000, 3, vma_flags);
--	vma_new = copy_vma(&vma, 0, 0x2000, 0, &need_locks);
-+	vma_new = copy_vma(&vma, 0, 0x2000, 0, 3, &need_locks);
- 	ASSERT_NE(vma_new, vma);
- 	ASSERT_EQ(vma_new->vm_start, 0);
- 	ASSERT_EQ(vma_new->vm_end, 0x2000);
-@@ -51,7 +51,7 @@ static bool test_copy_vma(void)
- 
- 	vma = alloc_and_link_vma(&mm, 0, 0x2000, 0, vma_flags);
- 	vma_next = alloc_and_link_vma(&mm, 0x6000, 0x8000, 6, vma_flags);
--	vma_new = copy_vma(&vma, 0x4000, 0x2000, 4, &need_locks);
-+	vma_new = copy_vma(&vma, 0x4000, 0x2000, 4, 4, &need_locks);
- 	vma_assert_attached(vma_new);
- 
- 	ASSERT_EQ(vma_new, vma_next);
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index 4f6c5666ac07..8a48b231aa7a 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -53,6 +53,7 @@ typedef __bitwise unsigned int vm_fault_t;
- 
- #define VM_WARN_ON(_expr) (WARN_ON(_expr))
- #define VM_WARN_ON_ONCE(_expr) (WARN_ON_ONCE(_expr))
-+#define VM_WARN_ON_ONCE_VMA(_expr, _vma) (WARN_ON_ONCE(_expr))
- #define VM_WARN_ON_VMG(_expr, _vmg) (WARN_ON(_expr))
- #define VM_BUG_ON(_expr) (BUG_ON(_expr))
- #define VM_BUG_ON_VMA(_expr, _vma) (BUG_ON(_expr))
+ 	if (invalid_mkclean_vma(vma, NULL))
 
 -- 
 2.55.0
