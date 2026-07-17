@@ -4,114 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE4FC4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 18:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D503C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 18:53:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFE166B00DC; Fri, 17 Jul 2026 14:47:40 -0400 (EDT)
+	id 9EB1B6B0092; Fri, 17 Jul 2026 14:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAEC16B00DE; Fri, 17 Jul 2026 14:47:40 -0400 (EDT)
+	id 99C7C6B00B0; Fri, 17 Jul 2026 14:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9D8A6B00E0; Fri, 17 Jul 2026 14:47:40 -0400 (EDT)
+	id 8B1BC6B00B3; Fri, 17 Jul 2026 14:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A03436B00DC
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:47:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1644F1A014B
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:47:40 +0000 (UTC)
-X-FDA: 84999152280.08.C3F1CAA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CB2BDC0007
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:47:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EXxahEpy;
-	spf=pass (imf28.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D4A56B0092
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:53:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCD22C0218
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:53:52 +0000 (UTC)
+X-FDA: 84999167904.11.1025123
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0BF02140011
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:53:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="sEIVnUy/";
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784314058;
+	s=arc-20220608; t=1784314431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yUeLqfN2j1oB2MnjjL/LYb0sz/3GEuAWUl8u9/2q4Qg=;
-	b=obqaQ1qPIu/yBjV0A3m/W8Evp/Vh0LvgrXqJQFU8FLnlbRfP5ge0BlZiYC/Jb8qzyP4edY
-	+/cwMNjXQ+NFLYnODUmhBwzNm1qWjtC2ZTOAVysRIZgkm8dGKSdCdAFAcK0MnzOxZMeCCe
-	Gh8GZy9d9LySRagvV2i+en0gXI5laKA=
+	bh=EA5rWpqXq3j+AjVoHduxTotL9GnFGdK6qs7h9uZHdxY=;
+	b=4j3A6MOT9DU0oymj79gIWonXLYHbe6YaVID9nnFTdr2yZgcID0j3RLVVrck13qyQM3LSHf
+	rXUz7xBOK2lZ8MRUW2WvGSzPnWkwSfV+kREBhjpk1yGnxYN9Q2tFMyUsIcJkiUMqtu2WnH
+	HQoXkWJqOuZWH6VmkDKlV9xclRpIdzs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EXxahEpy;
-	spf=pass (imf28.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="sEIVnUy/";
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784314058;
-	b=nPUQy7H9Ab/WcnoWfi6KOxcc9b5i//j5g+DJfo4B/UBAZwZkhicTtEoQQvRWAr6G/1veWF
-	hUq9bpMsjcHA/EXFrHCm1X4SZ/1QNIJAwJHzqgYBIvmQivVoJGWpXxOTuh0wresAVcvMvH
-	NOGachumrzrkIZeu+dJCg8Gzw6WIe/w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784314057;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yUeLqfN2j1oB2MnjjL/LYb0sz/3GEuAWUl8u9/2q4Qg=;
-	b=EXxahEpy0einBlhoLUDMiVfiNrq9T/B9jaABxEiyjj5D6gyQ499PnQ5XmHhHJCQSp9z7Q2
-	9jkXEuq+yfwXQ8Q2aWFGs3MP9So2dsS0bmQ88p83/vz3e2N9B2EAM/mo0ez/vjwXXkejy5
-	78CM6hjrn24h1SfSj+tXw8XosugwqBA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-uC1irEO2MSSdc0hTf3nDcw-1; Fri,
- 17 Jul 2026 14:47:33 -0400
-X-MC-Unique: uC1irEO2MSSdc0hTf3nDcw-1
-X-Mimecast-MFC-AGG-ID: uC1irEO2MSSdc0hTf3nDcw_1784314051
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 41A57194510C;
-	Fri, 17 Jul 2026 18:47:30 +0000 (UTC)
-Received: from fedora (unknown [10.44.49.164])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 2C9F2D72;
-	Fri, 17 Jul 2026 18:47:22 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Fri, 17 Jul 2026 20:47:29 +0200 (CEST)
-Date: Fri, 17 Jul 2026 20:47:21 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Richard Chang <richardycc@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"T . J . Mercier" <tjmercier@google.com>,
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v3] mm: vmscan: abort proactive reclaim early when
- freezing for suspend
-Message-ID: <alp4ud1b9aX6rmXo@redhat.com>
-References: <CALC_0q8ntqjCwC6CBN_0h_z9-_+pDp8-pqQgZ39O2s8ke==9cQ@mail.gmail.com>
- <20260717181252.2277818-1-richardycc@google.com>
-MIME-Version: 1.0
-In-Reply-To: <20260717181252.2277818-1-richardycc@google.com>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: R_lkXtN9kW6dG8k6jjCeExVoexS4QjANkVtPZXO9VIE_1784314051
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+	t=1784314431;
+	b=1iZqhPFCzxsS3qIe+bC/CnVbodMlScgXg8LrIyZmuMXN+53ZlnCd8PZfC66b4rXXsiOdh5
+	tHOE6NMvvi23Jy9kpTANH0LW+l1/dxAWZ37MMiDMU09d4IlRTbFRznHqeR9opaS1hRQFS7
+	ysBEomSnZ/kAjascVKAvg7KdoQyHj2k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3FBF54400C;
+	Fri, 17 Jul 2026 18:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794E71F00A3D;
+	Fri, 17 Jul 2026 18:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784314430;
+	bh=EA5rWpqXq3j+AjVoHduxTotL9GnFGdK6qs7h9uZHdxY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=sEIVnUy/f4Ud1WPRQdcgob1uu67veaxZHP9/36k8ek7nc9E/da7QRRXfS2zvT4wJ5
+	 BF4AFZRLjmWpUuQEqlm3k5aqeW9sxYY1jUiLaIQ1r6qnzPG/fp1wOO7hzKUTnsJwzj
+	 3PT3PtkNrE3yBDCuYXjTQASpmKMUrX4T0z1DFsZs=
+Date: Fri, 17 Jul 2026 11:53:48 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Tejun Heo <tj@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
+ Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Waiman Long <longman@redhat.com>, Ridong Chen <ridong.chen@linux.dev>,
+ Michal =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v3 2/4] cgroup/cpuset: update some comments about the
+ page allocator
+Message-Id: <20260717115348.9ff2498eafb8ea256a0cb504@linux-foundation.org>
+In-Reply-To: <alplxFeazzK_Ziie@slm.duckdns.org>
+References: <20260715-spin-trylock-followup-v3-0-fc4d246f705d@google.com>
+	<20260715-spin-trylock-followup-v3-2-fc4d246f705d@google.com>
+	<7f4e784ee2bbbc23b4b97913e144c0d9@kernel.org>
+	<alplxFeazzK_Ziie@slm.duckdns.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CB2BDC0007
-X-Stat-Signature: gxjj986hncyokt8jw7t379obdzp5doej
-X-HE-Tag: 1784314057-983429
-X-HE-Meta: U2FsdGVkX1/6SHTSodPEUySxdbn9vuZPG0bwnK5+ErsNztLDqliw0BBTI80AHAA6K1PH4VVYhB3ImD5PGwp6tUl9G0Cytygvy43FO7n9DtBktqM/UV5R6LyKlplVYyfIzGGX1+Ms46pGNyj5V71KGeZLOxhvn+MT7FBGVtKz6INWHeuq0ekVJ1nUFC6Umocuvf0DgvGPPqCfYrXei4kM/oP4DLk5qKjXQ6kl2l+uyiccZ7Lu+u6bZbiXK/XaOmMRvLXc0x6HKWWiKkAN75der8SvGh3xQuCsqCwUhIEOK+U0CnHTcnTRy8Y/z1OBDFn4l8tWIMAym68I/ywspTGAf2UE1k/+mshvT/9b07PIHdUi1blwZj/fa/vdT26u5RpWSPiZ0HyHJupq1yTzqzBDVUqLcloLiSDevfN5z45W+V7KMRuBYVpinARWzYS6IlosY0gaQ9bpykm4C4JMiwUvOoywFtRh6X5HA24HaoAQQT5ElNDcGJXFbsH4neQvNBBx9YzoCOaQRjdaac5QVyPcI/io+hn4BP2bZPL5NJ+++J1gxH4RNdPyx68ZuN8hAE9hRTxrAFHmqXbjJtRU65FST3d2lGRWJqkwVyxd/AYbLxKty0I97Y9t1rsOp/Wl8MfCsofwedwY8RzjgTQXHTzcs/ihooxGstas6HYcz7GL+MpwidU4+PuGbPFUYqDr2vNvzMzV8sNRa8FDHEsgU5HnGJmV3MGMsHyYcfqznPUaOYuXhIWez0HYgYvQKM3a0oF7gxNNuIuRQoNQt2MILHF2Nrr/pnKByf41MpHrihG4cywuvSyZzs+2JAy1rtswqpwkPMDJVQjoVz4NF2MEovDMfSRn8p9Zi8kpwktGWfenvjnAeGHTakoCvQ/iePElxpY5vEDSQOgNlcgZyMiI0zVfUa+j0T9DYenuyisI3hO4G70y/l2aN1N908O8nWsZMe1ZT/+m72uoYgg7XZC5xbV
- t9Pm5nna
- MFGGegQggggy0AZ+iPibGmFwBNYwPSN+AiLNpoIInFqNluwuPBDzUjlyb8Cb6CSKReKSvBzXStYv4bZ4guFA9he2csXeEG7a3zwxaOgCEGjUAQjR7ZS/QvMxrs3v31wVWA/+4WB0xcsMDUbwCZxHhJ0AAKGxLw14NmY7TFK0Z1de06B7wkBvV6H9uwMUMyeqURQpu9YE+AFQ04hWNJgzP5fmZplRQPC3K1g/znu3+6JhdWKRcLcgE2muAIs0xR25cJBCHDMqG0fewVdFWNMsMufmc+mcoePc8+X5bpwq7mSxtxasFk3/a40a+RJpK0wpbqX5Ln7qgtnASKJGPDZQIYWMmC0bFFPHbTK/J
+X-Rspamd-Queue-Id: 0BF02140011
+X-Stat-Signature: wjkcnij58m767e3hieoxxnp7tqys149z
+X-HE-Tag: 1784314430-523460
+X-HE-Meta: U2FsdGVkX187mhX6cuzoBMtK1SmIFNIpusXq17KVfLf9d/JWM183EDefkCb9yH5rr+uz+r2Goln4cWqtGwRZxBIxuWyeJBgh6ieTsc50MPKE8sDN7p1mFRpRYOtITLs9v33qIfIfKdEFwEYocOdvA8VXtcqN8AJNcBT9CyWHmUDHKYvcD3ZqzJMEuYziUwueDpQ2N2khuGNdQjYVljqzUX9HGiazexyF+AdtIfpxNsUB+bxakuylK0iZNOR+oQksmu4mor6QWJNjn4m99nDhyugVKcqY/isD2XggpBOoBNvM44osMVRHGFHP5KjKB5kMOn9CT+Ak2WK1ikSMP0cnP1V6yV77EvhLUxdWeGc+nQthS8CUzB57Hd35WmsuAKp/zOiw+frBXTVf30CM6kcvPxV9YTCAYqxtrRRhVQsBWEaNgG02eqdsl4jbAIapGS7GBXMZnm/MpXgZbjgG8UKzGsH2JTIu05F2FwD+5cbR/0roL1EhN7JLZiLeaDZHZY0UJOzuHjYHk3Z1GLLysyjQNmexF/+DurX1z6CoZn4Af8wHYGmPvatW5YUUm6vEkfrI49fq0B/j3wRsuQzEEq2E7H6yuZUsnyOOoRJE253VMjUfy6K6O2xdlD1PDCe1VDPtcmvqrIKwRoe5N4HruCWrYUHsLaUh3Y1WFU7+jFGhur86QVEebIezot3mG8Ed2fOeeqTu+nYXaOZo2YHOZoHjBae8IBGRmO2rrN+7iXYanfQv9cWnUCSQfgm+IN+q1OZWyr/B325bN8VWF2ZWjAbIT9jNxT4QHDNQAH7DjWHSWjZsGiLaN5Y9C5SXJWjiXquAGvjsRHi1cuJ4wMuCOfPtoHBcWih1rrU42dDPWLsQo9j95GQ/vuaMYKd99jniWNrybLs1X3WGCx+rXouaVbLVy0EomYPiJ/RmG0JlLMO1I3hthDbRNgXZMSLCYICg1/2ge7OtQBMNmg9S9wVwEBc
+ cgVnDTBH
+ 6kcPJCiRQ/qrZ4s9lxNW/gYUWkW4s55LLypsWOngFrMFEgleCTZbGMXxyzzeAwJvEa1gqQPWqZuqVKR5KZrDaEPiCUww2N/FgWGwzdxfgRz68u5Yv0j6bDHKnhlXVPMlFKfN9yGAWrwXqJGRBRD1revIl9TdggRlV7kJtYj28gCs5H1C+He6WK5tQEJB4hM9PRbAO4edmLH85IIEL4JuqAN4PcoYbhLUv/XMfkgQFxYkI6A/EeMjugfuTW7Nyirrw2ETlqtoOGZR/mmzVcpTWzpNFATM8r8h4knpA9tQlr/lwrF4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,37 +102,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/17, Richard Chang wrote:
->
-> v3: Return -ERESTARTSYS instead of -EINTR in user_proactive_reclaim
+On Fri, 17 Jul 2026 07:26:28 -1000 Tejun Heo <tj@kernel.org> wrote:
 
-Yes, this change LGTM, but ...
+> On Fri, Jul 17, 2026 at 07:23:58AM -1000, Tejun Heo wrote:
+> > Hello,
+> > 
+> > Applied this one to cgroup/for-7.3 with Vlastimil's reviewed-by and
+> > Waiman's ack added. Please drop it from the mm series.
+> 
+> Never mind. I'll drop it from mine. Sorry about the noise.
 
-> +		/*
-> +		 * Return -ERESTARTSYS to allow the freezer to interrupt the
-> +		 * task. The syscall will be transparently restarted upon
-> +		 * resume. Real signals (e.g. SIGINT) will be automatically
-> +		 * converted to -EINTR by the signal layer.
-> +		 */
-
-... the comment looks a bit misleading...
-
-So, if the signal is "real" and has a handler, handle_signal() does
-
-		case -ERESTARTSYS:
-			if (!(ksig->ka.sa.sa_flags & SA_RESTART)) {
-				regs->ax = -EINTR;
-				break;
-			}
-			fallthrough;
-		case -ERESTARTNOINTR:
-			regs->ax = regs->orig_ax;
-			regs->ip -= 2;
-			break;
-
-If SA_RESTART is set, the syscall will be restarted after return from
-signal handler.
-
-Oleg.
-
+Thanks.  Plucking one patch from a 4-patch series is awkward.  Better to
+retain this in mm.git with your ack(?).
 
