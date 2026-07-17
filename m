@@ -4,87 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C04CC44512
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 01:35:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A942C44512
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 02:21:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B81E06B00A2; Thu, 16 Jul 2026 21:35:15 -0400 (EDT)
+	id A621A6B00A2; Thu, 16 Jul 2026 22:21:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B59196B00A3; Thu, 16 Jul 2026 21:35:15 -0400 (EDT)
+	id A135D6B00A3; Thu, 16 Jul 2026 22:21:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A959B6B00A4; Thu, 16 Jul 2026 21:35:15 -0400 (EDT)
+	id 951E46B00A4; Thu, 16 Jul 2026 22:21:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E44A6B00A2
-	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 21:35:15 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0E31A03A2
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 01:35:14 +0000 (UTC)
-X-FDA: 84996550548.22.EFC0484
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 066A4180002
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 01:35:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=thluSFv7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784252113;
-	b=E4IxA3filvwn74hO0t3YejjBWlIEutEOqGqInNBnez8xo4B9q6XNKufPtznUuHsCG9Z+Y2
-	XxRIKAnAB8FIhwUS70VySG/waC02MpvKmuXmP6sACobeNj0dTXJhY8fiSyb+gTnQeXFdwp
-	cVzTFVrVs6BXM0zVj+s1UFO2FWevq1M=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=thluSFv7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 676BE6B00A2
+	for <linux-mm@kvack.org>; Thu, 16 Jul 2026 22:21:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC7521603A5
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 02:21:52 +0000 (UTC)
+X-FDA: 84996668064.30.91E59F7
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 448E040002
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 02:21:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=jHfE2nrM;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf27.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784252113;
+	s=arc-20220608; t=1784254911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WEYuMCvX9cGWxVz0he6+RioCqg0TNaupBeoE5F9gTOI=;
-	b=XUXTF4CtmAE0V6Uf3hoFQhkbU2CeyjxWSMV+Tib/sq9Lio/NxBM1aGKDd49NDQ8sG3oKAB
-	0X0PDEtRDSlLj8K9cSw2hBafehpFc5zwQSovoGMx5OagSIGIE7LutBLpuY0rTRAzPk7atw
-	unkwuuIY5CFiJXAXvVaIeD1KJErpVgY=
-Message-ID: <cd922756-a4b5-4666-af7a-4071ef902375@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784252111;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WEYuMCvX9cGWxVz0he6+RioCqg0TNaupBeoE5F9gTOI=;
-	b=thluSFv77ZXB8LbpbColp+RfznUIzmfFkNANm6bFbZhCI0Mj7bHQYUrq1uBavmsQH6lmym
-	b+snr83+KaGxdSVXQgN6lCoKZvPITJ9DzIBQrX3z6BnfFHa0zj7EyUaogvYM4186wnIB9W
-	YRkjEiFWdLNlNCFx8/NShH9n0+vMsFI=
-Date: Fri, 17 Jul 2026 09:34:55 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CnFD2a75XZkuCjfZvvbN7bbGMHnNlnV2/TiIBDiQeIk=;
+	b=zTlI0od8WZPvQZcTdsFBBIOHHJxD0aYrM2UMeBhIhubl+hk1M40ZQOgJiW7SbX3e0mCFK+
+	6xj1F5n5gz2ICAF+y+hi3V3wFZrfasp5USf/hFEYdaVB4GiCbUH5WEVT5fhp/91//CX3WL
+	C2Ud+wR+19FLGoi8wo+nPQPMD2Fm/+Q=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=jHfE2nrM;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf27.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784254911;
+	b=6f6LucNl/1QzybVVWCGNSmdNTzeyeFx9ObRIvLUBdY2hsajrCUVz3snxk6VZpsymx2+Vv6
+	q/y4TG8z5q4/e3nuQ1s3BeKN2im7gMeUr3DT/haQu6fCkqD2GFvkH/7DXvVvftj7H4QYZp
+	xcTgAS/312jb1YM17NwYm4vBTwKB9Jg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=CnFD2a75XZkuCjfZvvbN7bbGMHnNlnV2/TiIBDiQeIk=; b=jHfE2nrMNchtMyFZvQt0b9m5it
+	XWfi9dP4XApYFj9vf3VveYzYbinakv4guA1cuSUMzwxjv6hXdAF5spXiym9XoVHb166aLO6DnaP29
+	BbjgfkRkVw/HobjyxzBoR/Deal6UzrkfKJFvH243s/HE9ZGRTSDmqOWLQ6HUfG+joQwpYMzU4kPKb
+	R6gzqaUjTlBvFbEKldbuGVYV30o+smZYtySgP26GY262VdGs9XiYHztcnqYfzrJzP0bkg6iSRZnsm
+	mE42JyAYETU6rqpCX822X3Ua/ytVAQ26qrnxlBcnjzWar3FrP/WjXXgak6GuD1MqCLi4w3jIjReaT
+	BaBH3u7w==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wkYCy-00000000xhm-2d0L;
+	Fri, 17 Jul 2026 02:21:48 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-mm@kvack.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Shivank Garg <shivankg@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] mm/migrate: add missing kernel-doc for @migrate_info
+Date: Thu, 16 Jul 2026 19:21:46 -0700
+Message-ID: <20260717022146.1290242-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Cc: hongfu.li@linux.dev, akpm@linux-foundation.org, liam@infradead.org,
- vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, david@kernel.org,
- jeffxu@chromium.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] mm/mseal: Fix range_contains_unmapped() ignoring its mm
- argument
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-References: <20260716093347.75055-1-hongfu.li@linux.dev>
- <alit0N1CBEllrD0U@lucifer>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hongfu Li <hongfu.li@linux.dev>
-In-Reply-To: <alit0N1CBEllrD0U@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 066A4180002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 448E040002
+X-Stat-Signature: 8caqqa3q9ghypta17kygos8hxmfeaj5t
 X-Rspam-User: 
-X-Stat-Signature: y4uxjgprzkb4d8zu88u3ygawjynor47r
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784252112-560849
-X-HE-Meta: U2FsdGVkX1/CvR6hf+zFTczkgzxMeoHadCkrOh8ATd/0fY+Xxl/XhGz3iHXyzWQEtMg54fFmzARySlPiBn2oqU2xSkxauyWC8o5bUU5+B3uTLJLSAOtWdlvp3llnVcwbJa6NFapnlpGq1M9OsYro4OUYwFNk5CXaWlj/XivwWHDhrvHJPBRsq4zQrpjPuXN8jIHU+q7DVgEilHcPKUcPh9O6l/SPDiLlSy1c2yM3k2XtcOcUGG0GGgqSTWtAauztNVdS8fScgoZV5W/Ad3Va+2b1o2e8ad51iAt3XvEOXH83pAvJ8wM9OWDeCWD273e2fWGlRspvgFBmtnzuEfgNg6XRWkri66qLR7liEmRa6uY/U/3CaCIhqYzrFcYft9oYYliTNNXna3A1KHJjSHsAfGB/tiSI3D2I7C/rT17hRk39Swk2mGC1EzISJ4A0LjXUf1xbUt7t2Xe3ZIWSvpWIvi+LEqtqPP9NKz1eXnIgQ0ENHRz6QrT4BIvZC/xOPtWDl/2H7G6Jm92yZfYeituQBdXQm/pYmEsKclZxyV16yNWXhVpqR6J/G6iW4OGJY0H8k8oASNJ5ioCuHOBqnXN2XlPwxAe48jxSKdscLwK6k3kbSo59AmrBmpoeKoMPwpE4FuhcxgdMu34BnszgM8FL21mWMjp7hCcon0vr3z3cXrrdqnZUgWgINl/AQZM5YkRVhQLGRfY/BW85n94vdpwL7RXb5K2FoLW27oayFHZlc8kuWszlK/fI7eQykAfURoVgtefxxKjkT2k2ps0a9QH9NUoaNZc4hsNyBFY700U8mmYNBIAiKfkfTKm6+fLCIovpvgfCS6siWzwamcL+8ZvV5hkVRPcUZEhIoGIIkOoI0HJvyH4rQFD+iTR/TGwnjojZU6X7ymFO1hU3aHpkf0G4/Xn1MW6yumEC0GjxywPtbhVXv5ecPiE+QR2kiRy3zTS6QePrNb86PancCHKS+Od
- Nx0m38Vg
- 0cppHkVR3sDmH9gExB4zDQEga0cc6j2KnrmBmVR1MHNzuQJ5Afyt3NxVHWwmwP+OtQGFccufB+Kr7PjYu00qXy9UBSGyWJftgjU9bdXjnVEGx1zktCVRZbhZqA76oJ1FA9r4D5E2ScLhashNB8yALGEaJwk/kTt64RMgi+0+uTEl02e+7XYCBv7Vuh7+VCMKpPzVNLDPfgyRcKmQksXz4BxSLFCXPtlrKV1NbDsJULcQe0e6Pdp2n+OXl9DxRyhAsUZAQ
+X-HE-Tag: 1784254910-338198
+X-HE-Meta: U2FsdGVkX19pJHY9GnOwS2Wknli/kZ9cq/COR+Gk8OZjGdHGKoOQsGGTG3mUQ7HJjHh2hvZOnJKpstyI9QiJ6Gre4uMvEU9aea/ka9NtN4m5RJPzrF+t5D9+G8ivrYTHOZK5hY6qy6UUG2IlayAEjUY4B/XqNb8NKVL5OaVmcp45dcl2QGJs1CLuGeZuzzt5cgFmF8JovoTojDvViCx2rUuQufwADqtTiczkzhBjQVaHlJvYoFVW6Dbxv90hTX5AOSXRUFZOk7deqe5LOgKG2e55j5SSQ2JIDbq+getHtkD7tIloO/rlkONkp9DTb1HroWfbuB0Hg3RsEGhrfO/B9QbcepJKf5eqiY6+pVQsvSYG8+K9vgqA6zEP3CZH+huhbBq//5TeOmk5SCA8xsXZeOJUsv9VUTmH3ONlAjYweFPfMvj7JvoldVoBe5ofhFt5D9zuKbv22WbT+2JXsNKQ1ei/HyoxruO5j+LbVgv2afhzWpuG1UoXDdXZt4n7jBJBih7xOHdtyYJIKlkkduTZkLfiF8q260kSgRPoU6JQFwO4MrVDLpEbncd3joNT0eeOyse1HgL7D1VkvChMnAdIRawpmhwe1HdeZbHkzvh66ytL1PQM1aLYgdUStObwW5i3VZhialUXt/PmuUsHE4XMVvHq+G7/GDnjIb5E+lqH1oJTo5a9wxZeO2XCLBasxCfLWlUbLJfY4G1QJrPFxE+gTIbpiIMbtT7kNm12hmlrnrwkwePCHNXhC19Z4HZJ0tfeVJPT+q9wsMYgnQqkrNZLH7IYCvBcxKnOMvZmC9mTeI9S30bNDnYmdCrQJuQ/U9xvrnk0pVtxPC+/JBxrnh/yJ5Pu0BPPvyafS2S18G8Pcm6laacSIr+2LQOsVQoJM/oMxe4aoGg7funzcZkGepS0zzHlXob3yeRj1sNTL5wMC6j7rgNA3x9gfRmBJhh/mzPz1jZ8gpC6Z17RwVOisqd
+ wClK8nwu
+ PhVojlt0Es/kmYIycVDOZmoh7sE5APHN9SgyfzdFFISnGqXS4klbhfYO07BKJI2QKY+oRom/qHCOr4v26UNWfUUAg1g0PZlbvCQC3xBn+bSAWQM0aZhHPKp/CTHi4R/2c9T81L6kPKZg9nAh0nIGjb4mPcZl900s9s3EwUbWSz8U4aoYfSRWhQdcmoXgsAHwyts1mAk1+LJrUgHe7u7u1j1mEWhyJ8aP6tHojtvOhMIfQj1m02aeEyoGR30+e66k7It2UOgNm/TjbnSXxhrZ+6H1PVjjYVpWPJN+pulh+OWpaYpAuP5S4XmGpD7l7C3FSFaU0NSZl2d7te/cBX4UEsGZKWbQyP7tKf4lpdH1iCfBfY26NjSEfJF/kVA4wFPx2SVmOTUsgYI27CBBsde4wC23F7IuwbflmIWKR+HumqtZOYXk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,50 +88,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Add a kernel-doc comment for @migrate_info so that kernel-doc won't
+produce a warning about it:
 
-On 7/16/26 6:19 PM, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Jul 16, 2026 at 05:33:47PM +0800, Hongfu Li wrote:
->> From: Hongfu Li <lihongfu@kylinos.cn>
->>
->> range_contains_unmapped() accepts an explicit struct mm_struct *mm
->> argument, yet hardcodes current->mm inside VMA_ITERATOR(), ignoring
->> the passed address space.
->>
->> Its only caller do_mseal() currently passes current->mm, so the bug
->> does not manifest right now. However this mismatch between prototype
->> and implementation is a latent bug.
->>
->> Replace current->mm with the passed mm parameter to match the
->> function prototype.
->>
->> Fixes: 530e09096413 ("mm/mseal: simplify and rename VMA gap check")
-> There's no point in a Fixes tag for something that's not a bug.
->
->> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->> ---
->>   mm/mseal.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/mseal.c b/mm/mseal.c
->> index 9781647483d1..8d82e50900ba 100644
->> --- a/mm/mseal.c
->> +++ b/mm/mseal.c
->> @@ -41,7 +41,7 @@ static bool range_contains_unmapped(struct mm_struct *mm,
->>   {
->>   	struct vm_area_struct *vma;
->>   	unsigned long prev_end = start;
->> -	VMA_ITERATOR(vmi, current->mm, start);
->> +	VMA_ITERATOR(vmi, mm, start);
-> We're never going to sensibly allow a remote mm here, and even suggesting so is
-> problematic.
->
-> Sorry but I think it's just easier if I send a broader cleanup patch to fix
-> things up here more clearly.
-Got it, thanks a lot for explaining the issue with remote mm. A unified 
-broad cleanup patch works better for this code path. I will withdraw my 
-patch and follow your series. Feel free to reach out if you need any 
-testing help later.
-Best regards,
-Hongfu
+WARNING: include/linux/mm_types.h:507 struct member 'migrate_info' not described in 'folio'
+
+Fixes: f3768940afdc ("mm/migrate: use migrate_info field instead of private")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+
+ include/linux/mm_types.h |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- linux-next-20260715.orig/include/linux/mm_types.h
++++ linux-next-20260715/include/linux/mm_types.h
+@@ -368,6 +368,8 @@ typedef unsigned short mm_id_t;
+  *    dax_associate_entry.
+  * @private: Filesystem per-folio data (see folio_attach_private()).
+  * @swap: Used for swp_entry_t if folio_test_swapcache().
++ * @migrate_info: Stores migration state (anon_vma pointer and
++ *    FOLIO_WAS_* markers).
+  * @_mapcount: Do not access this member directly.  Use folio_mapcount() to
+  *    find out how many times this folio is mapped by userspace.
+  * @_refcount: Do not access this member directly.  Use folio_ref_count()
 
