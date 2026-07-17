@@ -4,105 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CDE3C44515
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:27:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5428BC4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 16:29:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E38D6B009D; Fri, 17 Jul 2026 12:27:38 -0400 (EDT)
+	id 30D516B0088; Fri, 17 Jul 2026 12:29:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BBBE6B00A1; Fri, 17 Jul 2026 12:27:38 -0400 (EDT)
+	id 2E5526B00A2; Fri, 17 Jul 2026 12:29:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D2746B00AA; Fri, 17 Jul 2026 12:27:38 -0400 (EDT)
+	id 223E36B00AC; Fri, 17 Jul 2026 12:29:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFE116B009D
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:27:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E87F51C0028
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:58:28 +0000 (UTC)
-X-FDA: 84998423496.21.BB8BA01
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1A19840003
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:58:26 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NpX5IdEB;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA0366B0088
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 12:29:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 05C5DA0032
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:03:38 +0000 (UTC)
+X-FDA: 84998436516.15.2AA95E7
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1FD001C0006
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:03:35 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=CPkUm7bE;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784296707;
+	s=arc-20220608; t=1784297016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P959ZWV1wEGCZUtvMBgbLNqjJR/eDmNAV2WkUpF3dOM=;
-	b=vLaFCzsmcbEVK8RstXol2whQOvRTJQAX6Ck9r/jiKRT5/44Jqp5jozgrMfwm9pWx++otpu
-	CogiTyx01iw83ZyP7dLCUXyOqLyStk8vc2NnqQfJ+SmkHU3cThn0vpxV7tI3FR4+pvRpCa
-	DDeXpbitqTeEcSJxxIMboT7bdP3cw+Q=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NpX5IdEB;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784296707;
-	b=t96xoK0GLQOnx8DraUILHXNcsXkSbyqIw87YSRDw4bZ9FzmabC0/bjKUNAuYV1uzQW/4r8
-	R/zHmXFkABBhqASAHiH+KXA/9vQqTfw50AdfYrGehZnz/VUsM8ehVDqeIU9rfKIMc9x3X8
-	ArmqNA2d48NjVd1BObRdPqQKNsn9kLo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784296705;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P959ZWV1wEGCZUtvMBgbLNqjJR/eDmNAV2WkUpF3dOM=;
-	b=NpX5IdEBEQsTLEiplo5d+knGwVQgH2w1c2p9ylpMM4uhYsFp+lYBz86G05l01DQUniAXG0
-	y3TR9w+ZCTYhvO0DMHBLNmfNnXBDWugNX1IP2bdIoklz3mv/5/Rdz5vjOiGZe4mHnlPqXQ
-	r5gBPC1XCJ6WJATOglAcNbypxqoRh90=
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	chrisl@kernel.org,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	rientjes@google.com,
-	kernel-team@meta.com
-Cc: Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v3 2/2] mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance cost
-Date: Fri, 17 Jul 2026 06:57:32 -0700
-Message-ID: <20260717135807.3476029-3-usama.arif@linux.dev>
-In-Reply-To: <20260717135807.3476029-1-usama.arif@linux.dev>
-References: <20260717135807.3476029-1-usama.arif@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xLHoBAC97Z8vKvZnpYvz5TMDtvC87jPH3QPXAp2zb00=;
+	b=yY/46gx4E3CnrBsakqpQIS7miojfyJ96WoGNZ/rEJfvM4uQzJDNUXS6nSrSjf7wpeo3Fb0
+	bAziicAf24SHn4HdxQb2OphL1USRXtL/nKcroFUbKhRphIL4kE2LpmpaWmNKNmqncj0/f1
+	vn0M/AOyrorhMcyvAV90GuxWxVHQF3w=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=CPkUm7bE;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784297016;
+	b=tYTiGUcgl44zRnD/QlI+yhYaIf0FvuIddzjAzQHV1Z70swmRQhxwvo566NL6SlV5ujlQG7
+	GnNPDRdBH/5KdNspYcghDHcOsvM729ZhCScsqqdJbwrAXbhwtIhVQTIP0Ynf8iq5ksDMbI
+	/DK7pJgM3NODwqEMqaET/cZu22k/wSs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=xLHoBAC97Z8vKvZnpYvz5TMDtvC87jPH3QPXAp2zb00=; b=CPkUm7bEgxpkSeb9CZM34STENE
+	FEXFrMiLbqKqbQABw1a/ozpsCYvZLgSLBRYdYqlFsBr09VW9cUWfFT7CFSi4kTttCFlXg5nwKHMmi
+	LRH9CYsQKiO0KxpvaguyUakbKFDOF8r2//psUz6RR6eqGnt6VqRf/mBewEuoVeDYgVfyZjn5opo/P
+	mDw0d45oUXZAxTxvTuTwzfA1pJ4IUwWUudi8z9bf2bCSb6xeROtf2ulEnAdRifKoD6uuL3p+T3CBQ
+	FbdJUWSQcHTcJ0tKqKuik74juD7Z3f0msS1gC2SDDLkDujpZDaq5ry1Y0nK4iNIlwZXnqGJNA46nm
+	F2v3ED1A==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wkjA2-004eC1-01;
+	Fri, 17 Jul 2026 14:03:30 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 17 Jul 2026 07:03:04 -0700
+Subject: [PATCH RFC 2/3] efi: record hardware-poisoned frames into the
+ poisoned-memory table
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260717-hwpoison-kho-v1-2-9c5eda551998@debian.org>
+References: <20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org>
+In-Reply-To: <20260717-hwpoison-kho-v1-0-9c5eda551998@debian.org>
+To: kas@kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kexec@lists.infradead.org, rneu@meta.com, riel@surriel.com, caggio@meta.com, 
+ anilagrawal@meta.com, rmikey@meta.com, linux-mm@kvack.org, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6844; i=leitao@debian.org;
+ h=from:subject:message-id; bh=tVC3qjK2uT7R1b63jjn7gm8DEZPWnfi5O6+kdXwvQWg=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqWjYjmedAAxB69t9q8yvBYFMgnREjkexS1Y1MX
+ 25OxrVY+caJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalo2IwAKCRA1o5Of/Hh3
+ bWtHD/0YD4LUadpZ5uQnSghE+/YmW4gy5OYa5OHvbl13MYqcn687RTaEOMpbzHKm/M5P5Va3cUn
+ nG/rFRDO3Y/Au62KDx9N2YWXclmNQfmIxebaae1EMqKFZIAHbJ2hdGzz/6J82RcaIQsLRrtu1xo
+ vnP4I6169hUvVfc2gdiFz9WGEje5ir+dRgp7EXX3yZd1O1/xZT3I1t/WB+j5xpiqrTvosPY7d+d
+ fqmlLxqVJKwWfQBrA3v6qB0fOxEEtEm6IFyp+31I+BGzqxdkaGc2Js9tet3JDTkV/Wa34aZcDle
+ jcRPGNFrlPOCBUf0goF1FcJZXAYIquG9O7GtG31dWMmJAj1hbF9MsI1mgQAUPer9ranqDDVGAvl
+ gKGnRdZSIvZXg9agpFSZDLQp9MpySovgkJBrHUQ1hiYCCHlpwuv8+/jBMuv55J6zjH5YHHLw14Y
+ zB0eTDfDpLDcuxRpo+fEmkcEOlxBoZeRBCpvIf3aM3YTub4lgk5vQ+XDiGyCCE9axS1dpegff3y
+ Zpooc5zGBLMen1xK6M95pkSb3sG8rfJ6aCKvuhsXDvKc/blrkfWZ8D7Ii9tVGQvQzgRKFc29U8u
+ Z+r+oUtqUlxeUojYMwHFB5lmhvbwGbyPth53OAxt9DJkS82665X3bx52qYvXSHtX/kYwWWxx7Ed
+ L290f6k1JcU8mGA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1A19840003
-X-Stat-Signature: gxfmzz95t5zy1c4e4kxpb61fh8aa9usa
-X-HE-Tag: 1784296706-139397
-X-HE-Meta: U2FsdGVkX19ECBMksf2k7d8Lr++JCBoYk2RTONLdefuMZrJ87oVPT4KcowjSPJdGjqsEi1xliFon9qH0ctMlW8ySMp0P9hXKrWlQwwHAAGQjh1Kd4vtqzfTOgvpfL6st91IbLzfgHgTeAxQUD/zwlqAe2jiAkuVjt8nUhgNSNpX50GbYT4qsaVWTUDox9eeveTjBB0tVMzOSYp0dRXCEGUVj+PX3qHRRlQSUcnKPnMKktWFkDzyocuoReU252ClpxOYn0vGw8U5zYUQk4gvSpCXmExxYiQfNTQ/SngHDA1BYHo6BgM95vYSccjBXs2SOuZiuiTQN7SCf1X/jIJYeD94JMf1oaTrEg9HvfHKXLIJqltKTtRy9QM3BiUffAVWk0I9U6t0KIiXj8kHuhGsb07TA7YpLrieJLZxF6HJFg4WzRZGAtsJTRwbLEWRe/+5wT+DZ7cLN43yMIag1fqV3cKIyDWgFT3pZCsbIN7bDl7DIOIJAlt8UJGyW/5uTRodgNsnRQBVcI9sdouVlPw4RAcJL/GJmCW9lfdKg38SBbKG1V7C5ATeAidr+omSSO1vIvxzxgGHTwjMzuIC3YPn7teAzeV15sjiF3Sp7fsHBtHfSXgNCAgxAHTEjY65LCuKodoSrd6Zfg9krPMh+IzHZL6pW9nWvonLVhe9too+aGprgVbp1yQKU6fQBtlCCiZBS95DUJwxmzLjk6/Cf7uL62Z3EbHuJtbub9/43xLbmZUC17ftJPf/wscGVdgIhnJ1L5GAJuZ/NYmzELuce6cuwsqPSzqA8u94fXmHpkGR2geEPpWhm1GyBFoEtaKV+WLZWnEuqF+vpBYlwnzsgRmbFshMgeHCH53ZQThNtNyb7b5fZKtEOEAgUQV1a8i0CzBkX13HqBrllwEh8TVeUSAXQdoCOpJ4ynLD+RT79XYuUeVLOLYq0GVSlqhyHgaIVtp6h8Q9ATQYJD7UXbW1QSBs
- /A1Up1hp
- T6bY9gUkkv0zJcBXFnhYwUoEMdksZDGKoRIQfpEBEuuV30yZQpQJGR6S9BmbDDQ5vMiC4jfw+SV8J1ra6fIB+OQCU0GEZ/PBwBHnCZytt1OB+dvRncy+pITG/uCst3JCCU+NbCRGxSlTNI/ivDHCeHj+gdXTLeQ+PpNCUfUIhZr0XxECIGv2aw3nWwP+emtu5zczforsPgfYoANOhXX5+PfKoW3FOPFglm5G74+CpnZaveeT0Ldp+vh/lvg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1FD001C0006
+X-Stat-Signature: oofc3gygtfso7nkctziqzkggmok15grz
+X-HE-Tag: 1784297015-415686
+X-HE-Meta: U2FsdGVkX1/uqw4LdLwo4Z6du0379F/0Yizf6iTmU9l/rxzfsTYe8DFiSEegUIEmZXVrY8hBiMkda//82G6ngM1vk21QOccj1RQ9eTujteNG0whqlIJSVLpvmqdXj/laqrmcnK+zE0MPFXg+EVAUGtiWKnWTZb0gwDFFZWZXRKx9brBswjspsyg5q7TnhAlYgGHVt/gBuo39Qe5k1OxKBgUyTAepY2R1u/Vmg5c6AtM9ZBJKaT7oNklUiuXLEreeGbyLRkEzRTmqOVjuqnu7u9PSEnD03v1lwxbQHFVUr/jchaQ8kOctGhc+JNiekb9BHcq6tsfcQQbZoodlJ9rW8m5QhBl972Zsj/5eF0M3gqg10JtxjS0T5IXSvATqm9YDi0edbWnbCjqoeMSZ+SL35f1oWcMUQGA1H1ayRDw4HDs0MH7Bxvu4xSFjHN1nfEgChWEm1QLv1AvZJcahkvdg5X2T0PaSA7avcNfiAwiEoYYzV7tlPIad5L5oxt16PbRFj8gxk+Yaj5fC1SKuVfcb8NYPyycqh6sYXpWpxG4QBWB5O+a+6Rvw9HEfooy+3JfeJd3U/B1mgPkijIkYnYOtw3N8Jwyn6YMWqG7tBn36rETQkiARcsrRqlZREJPt6RSxr94mUTsaesVWZzhAJoDkO+afEicl34xBZA0O/CnDjGsk0zxe0Sz7VyWyVvlVyvxL5CSb6ImgaG6Pvq62goK7NicelZVZyhHKDph/NfhoUVnwpWm9cmQFx3nyObwY6zdkGl/QPGlp1LsqYwh9gUC8V2Ig7ihO6T44boUiAH6JGQwfbsTdQDuwyq+OY/y/9nVBoXMAR9ZSO8jgthp1YvOhE5j2lW2+l4+GPS47rmaDekSDXRqJACexEctQdFZm4MRBKHZftlNqs1tbvprrhrmzBc4UKYMlYkbEPD0zh10V7z5YtB2pi7UbWPvPDRlmWdWQmxZo5VwDiY3OX/z1UKH
+ 5R7DRH96
+ VtHaZslkz8KSUigOxWwZ1554MB68vQUiYPsyra12Vd95X/c/23yn8lUzXiOYNmbXSrue/bN4ZHI3hUqKxMuYW90Esfo/7R0oak6svx3buWOUZ2aavcJbhoHmHCBdN8G6xuZMyJWMWjciLLo72XYnpkFPzsOVf6jjXyw1NjIrEm3QjweSXbda+D301nuedcb6vZmJkFUsJ3RGw67lkzfR/j4IFI5nWDqqOj9+JDDzy709vr6tqOWoFgBWbZYYwX6CZ26E/RB4NGuS5bFnRLRCc9ua3NDEyDRFPjMWhFyEwmh5j8wlaUYH/h6ToKoXtvGtseGn2TZkZD+M5JrnvSvFITE+MGEQTd6wdXZJdJe3gPu95Yq0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,497 +117,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The anon/file scan balance in get_scan_count() is driven by two scalars
-in struct lruvec, anon_cost and file_cost, accumulated by every reclaim
-producer under lruvec->lru_lock. The acquisition sites for cost work
-specifically are:
+num_poisoned_pages_inc() and num_poisoned_pages_sub() are the single choke
+point for every poison and unpoison event. Hook them so each hardware-poisoned
+frame is appended to the LINUX_EFI_POISONED_MEMORY table, and each unpoison
+tombstones its entry so a frame that is good again is not carried forward.
 
-  - shrink_inactive_list() re-takes lru_lock at function exit purely
-    to call lru_note_cost_unlock_irq() with (nr_pageout, nr_scanned -
-    nr_reclaimed). One acquisition per inactive shrink.
-  - shrink_active_list() does the same with (0, nr_rotated). One
-    acquisition per active shrink.
-  - workingset_refault() takes the lock via folio_lruvec_lock_irq()
-    purely to record the refault cost. One acquisition per refault.
-  - prepare_scan_control() takes lru_lock just to snapshot the two
-    scalars into sc->{anon,file}_cost.
-  - lru_note_cost_unlock_irq() itself walks parent_lruvec and
-    re-acquires lru_lock on each ancestor to propagate the update,
-    adding O(memcg-depth) acquisitions per producer call.
+The append mirrors efi_mem_reserve_persistent(): claim a slot in an existing
+list entry, or allocate and link a new list page -- itself reserved via
+memreserve so it survives to the next kernel. memory_failure() has already
+taken the frame out of this kernel's allocator, so only the cross-kexec record
+happens here.
 
-This hurts because lru_lock is already a heavy contention point on
-memory-heavy workloads: every isolate_lru_folios(), move_folios_to_lru()
-and folio_add_lru() takes it. The cost work itself is trivial (two
-scalar bumps and one comparison), but it contends with and causes
-contention for actual LRU manipulation. The parent_lruvec() walk also
-multiplies cost-update overhead by memcg hierarchy depth.
-
-Replace the producer-side accumulators with a read-side accumulator fed
-from per-LRU vmstat counters. The old producer formula was:
-
-  cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated
-
-Reuse NR_VMSCAN_WRITE for reclaim-driven anon pageout submissions. It is
-already bumped by writeout() for the same successful outcome that fed
-reclaim_stat.nr_pageout. Reclaim does not submit filesystem folios from
-this path, so there is no file pageout term. Charge NR_VMSCAN_WRITE via
-lruvec_stat_mod_folio() and include it in memcg_node_stat_items so it can
-be sampled per lruvec and aggregated through the memcg hierarchy.
-
-Add explicit PGROTATE_{ANON,FILE} node_stat counters for the remaining
-producer-local input. They are bumped from shrink_inactive_list() by
-nr_scanned - nr_reclaimed and from shrink_active_list() by nr_rotated.
-WORKINGSET_RESTORE_{ANON,FILE} already captures the refault IO that
-lru_note_cost_refault() used to bill.
-
-In prepare_scan_control() the raw cost signals are recomputed without
-lru_lock as:
-
-  anon = PGROTATE_ANON +
-         (NR_VMSCAN_WRITE + WORKINGSET_RESTORE_ANON) * SWAP_CLUSTER_MAX
-  file = PGROTATE_FILE +
-         WORKINGSET_RESTORE_FILE * SWAP_CLUSTER_MAX
-
-The delta against a per-lruvec prev_cost[] snapshot is folded into
-cost_accum[]. Since one vmstat delta can cover many producer events
-between reclaim passes, halve cost_accum[] until the total is back
-within the lrusize/4 bound instead of halving only once.
-
-Moving accumulation and decay to the reclaim side also improves the cost
-model across reclaim gaps. With producer-side decay, events that happen
-while reclaim is idle still age each other before reclaim ever samples
-the costs. If a workload refaults a large anon set and then a smaller
-file set before reclaim runs again, the later file activity can age the
-earlier anon activity out of the cost model. The new scheme observes the
-whole between-reclaim delta and decays anon and file proportionally, so
-the scan-balance history better represents what happened since the last
-reclaim pass.
-
-A dedicated per-lruvec spinlock, cost_lock, serialises the prev_cost RMW,
-the accumulator update, and the halving check against concurrent
-reclaimers in the same memcg+node.
-
-Hierarchy aggregation is now implicit in the vmstat accounting. The
-producer-side parent_lruvec() walk and lru_reparent_memcg() cost splice
-existed only because anon_cost/file_cost were private lruvec fields. With
-the cost expressed as lruvec vmstats, rstat propagates the underlying
-counters through the memcg hierarchy and prepare_scan_control() consumes
-the same ratelimited rstat view as the surrounding reclaim heuristics.
-
-NR_VMSCAN_WRITE is accounted at writeout(), so reclaim_stat.nr_pageout is
-no longer needed and is removed.
-
-memcg-v1's memory.stat anon_cost/file_cost is now sourced from
-cost_accum[] instead of the removed lruvec anon_cost/file_cost fields.
-The reported values only refresh when prepare_scan_control() runs and
-are bounded at ~lrusize/4 by the halving loop; the scan-balance signal
-they express is unchanged.
-
-Under pure MGLRU the scan-balance signal itself is not consumed (both
-prepare_scan_control() and get_scan_count() are short-circuited on the
-MGLRU paths, and MGLRU's own type/tier selection comes from read_ctrl_pos()
-on lrugen->{avg_refaulted,avg_total,refaulted,evicted}, not from
-anon_cost/file_cost). NR_VMSCAN_WRITE naturally covers writeout from
-either reclaim implementation, and PGROTATE_{ANON,FILE} are bumped from
-evict_folios() so per-memcg observability of rotation-driven reclaim work
-stays consistent across both implementations.
-
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- include/linux/mmzone.h | 10 ++++-
- include/linux/swap.h   |  3 --
- include/linux/vmstat.h |  1 -
- mm/memcontrol-v1.c     |  4 +-
- mm/memcontrol.c        |  5 ++-
- mm/mmzone.c            |  1 +
- mm/swap.c              | 69 ----------------------------------
- mm/vmscan.c            | 84 +++++++++++++++++++++++++++++++++++-------
- mm/vmstat.c            |  2 +
- mm/workingset.c        |  5 ---
- 10 files changed, 87 insertions(+), 97 deletions(-)
+ drivers/firmware/efi/Makefile |   1 +
+ drivers/firmware/efi/poison.c | 127 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/efi.h           |   8 +++
+ mm/memory-failure.c           |   6 +-
+ 4 files changed, 141 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index ca2712187147..3ac467959e34 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -323,6 +323,8 @@ enum node_stat_item {
- 	PGSCAN_PROACTIVE,
- 	PGSCAN_ANON,
- 	PGSCAN_FILE,
-+	PGROTATE_ANON,
-+	PGROTATE_FILE,
- 	PGREFILL,
- #ifdef CONFIG_HUGETLB_PAGE
- 	NR_HUGETLB,
-@@ -763,9 +765,13 @@ struct lruvec {
- 	 * These track the cost of reclaiming one LRU - file or anon -
- 	 * over the other. As the observed cost of reclaiming one LRU
- 	 * increases, the reclaim scan balance tips toward the other.
-+	 * Updated and decayed at prepare_scan_control() time; cost_lock
-+	 * serialises that update.
- 	 */
--	unsigned long			anon_cost;
--	unsigned long			file_cost;
-+	unsigned long			prev_cost[ANON_AND_FILE];
-+	unsigned long			cost_accum[ANON_AND_FILE];
-+	/* Protects prev_cost and cost_accum. */
-+	spinlock_t			cost_lock;
- 	/* Non-resident age, driven by LRU movement */
- 	atomic_long_t			nonresident_age;
- 	/* Refaults at the time of last reclaim cycle */
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 6d72778e6cc3..d35a4761ebd7 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -309,9 +309,6 @@ extern unsigned long totalreserve_pages;
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index 8efbcf699e4ff..05d0a490923e5 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -43,4 +43,5 @@ obj-$(CONFIG_EFI_EARLYCON)		+= earlycon.o
+ obj-$(CONFIG_UEFI_CPER_ARM)		+= cper-arm.o
+ obj-$(CONFIG_UEFI_CPER_X86)		+= cper-x86.o
+ obj-$(CONFIG_UNACCEPTED_MEMORY)		+= unaccepted_memory.o
++obj-$(CONFIG_EFI_POISONED_MEMORY)	+= poison.o
+ obj-$(CONFIG_TEE_STMM_EFI)		+= stmm/tee_stmm_efi.o
+diff --git a/drivers/firmware/efi/poison.c b/drivers/firmware/efi/poison.c
+new file mode 100644
+index 0000000000000..ed3b8cee21ba6
+--- /dev/null
++++ b/drivers/firmware/efi/poison.c
+@@ -0,0 +1,127 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Runtime handling for the LINUX_EFI_POISONED_MEMORY configuration table:
++ * record and clear poisoned frames so the next kexec kernel can keep them out
++ * of its allocator.
++ *
++ * Copyright (c) 2026 Meta Platforms, Inc. and affiliates.
++ * Copyright (c) 2026 Breno Leitao <leitao@debian.org>
++ */
++
++#define pr_fmt(fmt) "efi: " fmt
++
++#include <linux/efi.h>
++#include <linux/io.h>
++#include <linux/mm.h>
++#include <linux/sizes.h>
++#include <linux/spinlock.h>
++
++static struct linux_efi_poisoned_memory *efi_poisoned_memory_root __ro_after_init;
++static DEFINE_SPINLOCK(efi_poisoned_memory_lock);
++
++static int __init efi_poisoned_memory_map_root(void)
++{
++	if (efi.poisoned_memory == EFI_INVALID_TABLE_ADDR)
++		return -ENODEV;
++
++	efi_poisoned_memory_root = memremap(efi.poisoned_memory,
++					    sizeof(*efi_poisoned_memory_root),
++					    MEMREMAP_WB);
++	if (WARN_ON_ONCE(!efi_poisoned_memory_root))
++		return -ENOMEM;
++	return 0;
++}
++
++static int __init efi_poisoned_memory_root_init(void)
++{
++	if (efi_poisoned_memory_root)
++		return 0;
++	if (efi_poisoned_memory_map_root())
++		efi_poisoned_memory_root = (void *)ULONG_MAX;
++	return 0;
++}
++early_initcall(efi_poisoned_memory_root_init);
++
++/*
++ * Record a hardware-poisoned frame so the next kernel can keep it out of its
++ * allocator. memory_failure() has already removed it from this kernel, so only
++ * the cross-kexec record is needed here.
++ */
++void efi_hwpoison_record_pfn(unsigned long pfn)
++{
++	phys_addr_t addr = PFN_PHYS(pfn);
++	struct linux_efi_poisoned_memory *pm;
++	unsigned long ppm;
++	int index;
++
++	if (!efi_poisoned_memory_root ||
++	    efi_poisoned_memory_root == (void *)ULONG_MAX)
++		return;
++
++	/* Try to claim a slot in an existing list entry. */
++	for (ppm = efi_poisoned_memory_root->next; ppm; ) {
++		pm = memremap(ppm, sizeof(*pm), MEMREMAP_WB);
++		if (!pm)
++			return;
++		index = atomic_fetch_add_unless(&pm->count, 1, pm->size);
++		if (index < pm->size) {
++			pm->entry[index].base = addr;
++			pm->entry[index].size = PAGE_SIZE;
++			memunmap(pm);
++			return;
++		}
++		ppm = pm->next;
++		memunmap(pm);
++	}
++
++	/*
++	 * No slot free - allocate a new list entry and link it in. The page
++	 * stays allocated for the rest of this boot, and the next kernel
++	 * reserves it while parsing the EFI configuration tables, so no
++	 * separate cross-kexec reservation is needed here.
++	 */
++	pm = (void *)__get_free_page(GFP_ATOMIC);
++	if (!pm)
++		return;
++
++	pm->size = EFI_POISONED_MEMORY_COUNT(SZ_4K);
++	atomic_set(&pm->count, 1);
++	pm->entry[0].base = addr;
++	pm->entry[0].size = PAGE_SIZE;
++
++	spin_lock(&efi_poisoned_memory_lock);
++	pm->next = efi_poisoned_memory_root->next;
++	efi_poisoned_memory_root->next = __pa(pm);
++	spin_unlock(&efi_poisoned_memory_lock);
++}
++
++/*
++ * A frame was unpoisoned (typically the hwpoison injector under test).
++ * Tombstone its entry so the next kernel does not reserve a now-good frame.
++ */
++void efi_hwpoison_unrecord_pfn(unsigned long pfn)
++{
++	phys_addr_t addr = PFN_PHYS(pfn);
++	struct linux_efi_poisoned_memory *pm;
++	unsigned long ppm;
++	int i;
++
++	if (!efi_poisoned_memory_root ||
++	    efi_poisoned_memory_root == (void *)ULONG_MAX)
++		return;
++
++	for (ppm = efi_poisoned_memory_root->next; ppm; ) {
++		pm = memremap(ppm, sizeof(*pm), MEMREMAP_WB);
++		if (!pm)
++			return;
++		for (i = 0; i < atomic_read(&pm->count); i++) {
++			if (pm->entry[i].base == addr) {
++				pm->entry[i].size = 0;
++				memunmap(pm);
++				return;
++			}
++		}
++		ppm = pm->next;
++		memunmap(pm);
++	}
++}
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 7787eb8d4e4c1..bd1b0934881fb 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1292,6 +1292,14 @@ struct linux_efi_poisoned_memory {
+ 	(((size) - sizeof(struct linux_efi_poisoned_memory)) \
+ 	/ sizeof_field(struct linux_efi_poisoned_memory, entry[0]))
  
++#ifdef CONFIG_EFI_POISONED_MEMORY
++void efi_hwpoison_record_pfn(unsigned long pfn);
++void efi_hwpoison_unrecord_pfn(unsigned long pfn);
++#else
++static inline void efi_hwpoison_record_pfn(unsigned long pfn) { }
++static inline void efi_hwpoison_unrecord_pfn(unsigned long pfn) { }
++#endif
++
+ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
  
- /* linux/mm/swap.c */
--void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
--		unsigned int nr_io, unsigned int nr_rotated);
--void lru_note_cost_refault(struct folio *);
- void folio_add_lru(struct folio *);
- void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
- void mark_page_accessed(struct page *);
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index fb8c76289e02..5b31d8e7ae40 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -20,7 +20,6 @@ struct reclaim_stat {
- 	unsigned nr_congested;
- 	unsigned nr_writeback;
- 	unsigned nr_immediate;
--	unsigned nr_pageout;
- 	unsigned nr_activate[ANON_AND_FILE];
- 	unsigned nr_ref_keep;
- 	unsigned nr_unmap_fail;
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index 765069211567..c7a52bb68f4c 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -1988,8 +1988,8 @@ void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
- 		for_each_online_pgdat(pgdat) {
- 			mz = memcg->nodeinfo[pgdat->node_id];
- 
--			anon_cost += mz->lruvec.anon_cost;
--			file_cost += mz->lruvec.file_cost;
-+			anon_cost += mz->lruvec.cost_accum[WORKINGSET_ANON];
-+			file_cost += mz->lruvec.cost_accum[WORKINGSET_FILE];
- 		}
- 		seq_buf_printf(s, "anon_cost %lu\n", anon_cost);
- 		seq_buf_printf(s, "file_cost %lu\n", file_cost);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index b4a357c5f7e0..8693aad26ca2 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -393,6 +393,7 @@ static const unsigned int memcg_node_stat_items[] = {
- 	NR_SHMEM_THPS,
- 	NR_FILE_THPS,
- 	NR_ANON_THPS,
-+	NR_VMSCAN_WRITE,
- 	NR_VMALLOC,
- 	NR_KERNEL_STACK_KB,
- 	NR_PAGETABLE,
-@@ -419,6 +420,8 @@ static const unsigned int memcg_node_stat_items[] = {
- 	PGSCAN_PROACTIVE,
- 	PGSCAN_ANON,
- 	PGSCAN_FILE,
-+	PGROTATE_ANON,
-+	PGROTATE_FILE,
- 	PGREFILL,
- #ifdef CONFIG_HUGETLB_PAGE
- 	NR_HUGETLB,
-@@ -518,7 +521,7 @@ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx)
-  * reading from per-CPU delta skew must present as zero.
-  *
-  * XXX: This helper (and its node/global peers) exists because we place
-- * monotonically-incremented event counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*)
-+ * monotonically-incremented event counters (NR_VMSCAN_WRITE and PGROTATE_*)
-  * into enum node_stat_item.
-  */
- unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
-diff --git a/mm/mmzone.c b/mm/mmzone.c
-index 0c8f181d9d50..17139db4d291 100644
---- a/mm/mmzone.c
-+++ b/mm/mmzone.c
-@@ -78,6 +78,7 @@ void lruvec_init(struct lruvec *lruvec)
- 
- 	memset(lruvec, 0, sizeof(struct lruvec));
- 	spin_lock_init(&lruvec->lru_lock);
-+	spin_lock_init(&lruvec->cost_lock);
- 	zswap_lruvec_state_init(lruvec);
- 
- 	for_each_lru(lru)
-diff --git a/mm/swap.c b/mm/swap.c
-index 588f50d8f1a8..74b281778cbc 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -272,73 +272,6 @@ void folio_rotate_reclaimable(struct folio *folio)
- 	folio_batch_add_and_move(folio, lru_move_tail);
- }
- 
--void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
--		unsigned int nr_io, unsigned int nr_rotated)
--		__releases(lruvec->lru_lock)
--		__releases(rcu)
--{
--	unsigned long cost;
--
--	/*
--	 * Reflect the relative cost of incurring IO and spending CPU
--	 * time on rotations. This doesn't attempt to make a precise
--	 * comparison, it just says: if reloads are about comparable
--	 * between the LRU lists, or rotations are overwhelmingly
--	 * different between them, adjust scan balance for CPU work.
--	 */
--	cost = nr_io * SWAP_CLUSTER_MAX + nr_rotated;
--	if (!cost) {
--		spin_unlock_irq(&lruvec->lru_lock);
--		rcu_read_unlock();
--		return;
--	}
--
--	for (;;) {
--		unsigned long lrusize;
--
--		/* Record cost event */
--		if (file)
--			lruvec->file_cost += cost;
--		else
--			lruvec->anon_cost += cost;
--
--		/*
--		 * Decay previous events
--		 *
--		 * Because workloads change over time (and to avoid
--		 * overflow) we keep these statistics as a floating
--		 * average, which ends up weighing recent refaults
--		 * more than old ones.
--		 */
--		lrusize = lruvec_page_state(lruvec, NR_INACTIVE_ANON) +
--			  lruvec_page_state(lruvec, NR_ACTIVE_ANON) +
--			  lruvec_page_state(lruvec, NR_INACTIVE_FILE) +
--			  lruvec_page_state(lruvec, NR_ACTIVE_FILE);
--
--		if (lruvec->file_cost + lruvec->anon_cost > lrusize / 4) {
--			lruvec->file_cost /= 2;
--			lruvec->anon_cost /= 2;
--		}
--
--		spin_unlock_irq(&lruvec->lru_lock);
--		lruvec = parent_lruvec(lruvec);
--		if (!lruvec) {
--			rcu_read_unlock();
--			break;
--		}
--		spin_lock_irq(&lruvec->lru_lock);
--	}
--}
--
--void lru_note_cost_refault(struct folio *folio)
--{
--	struct lruvec *lruvec;
--
--	lruvec = folio_lruvec_lock_irq(folio);
--	lru_note_cost_unlock_irq(lruvec, folio_is_file_lru(folio),
--				folio_nr_pages(folio), 0);
--}
--
- static void lru_activate(struct lruvec *lruvec, struct folio *folio)
+ /*
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index aaf14608b30e2..03fa921ef1b7a 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -43,6 +43,7 @@
+ #include <linux/sched/signal.h>
+ #include <linux/sched/task.h>
+ #include <linux/dax.h>
++#include <linux/efi.h>
+ #include <linux/ksm.h>
+ #include <linux/rmap.h>
+ #include <linux/export.h>
+@@ -87,13 +88,16 @@ void num_poisoned_pages_inc(unsigned long pfn)
  {
- 	long nr_pages = folio_nr_pages(folio);
-@@ -1164,8 +1097,6 @@ void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int
- 
- 	child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
- 	parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
--	parent_lruvec->anon_cost += child_lruvec->anon_cost;
--	parent_lruvec->file_cost += child_lruvec->file_cost;
- 
- 	for_each_lru(lru)
- 		lruvec_reparent_lru(child_lruvec, parent_lruvec, lru, nid);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index e8a90911bf88..515d913ed5dc 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -641,7 +641,7 @@ static pageout_t writeout(struct folio *folio, struct address_space *mapping,
- 		folio_clear_reclaim(folio);
- 
- 	trace_mm_vmscan_write_folio(folio);
--	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
-+	lruvec_stat_mod_folio(folio, NR_VMSCAN_WRITE, folio_nr_pages(folio));
- 	return PAGE_SUCCESS;
+ 	atomic_long_inc(&num_poisoned_pages);
+ 	memblk_nr_poison_inc(pfn);
++	efi_hwpoison_record_pfn(pfn);
  }
  
-@@ -1418,8 +1418,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 					sc->nr_scanned -= (nr_pages - 1);
- 					nr_pages = 1;
- 				}
--				stat->nr_pageout += nr_pages;
--
- 				if (folio_test_writeback(folio))
- 					goto keep;
- 				if (folio_test_dirty(folio))
-@@ -2043,10 +2041,10 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 	item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
- 	mod_lruvec_state(lruvec, item, nr_reclaimed);
- 	mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
-+	if (nr_scanned > nr_reclaimed)
-+		mod_lruvec_state(lruvec, PGROTATE_ANON + file,
-+				 nr_scanned - nr_reclaimed);
- 
--	lruvec_lock_irq(lruvec);
--	lru_note_cost_unlock_irq(lruvec, file, stat.nr_pageout,
--					nr_scanned - nr_reclaimed);
- 	handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
- 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
- 			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
-@@ -2152,9 +2150,9 @@ static void shrink_active_list(unsigned long nr_to_scan,
- 	count_vm_events(PGDEACTIVATE, nr_deactivate);
- 	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
- 	mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
-+	if (nr_rotated)
-+		mod_lruvec_state(lruvec, PGROTATE_ANON + file, nr_rotated);
- 
--	lruvec_lock_irq(lruvec);
--	lru_note_cost_unlock_irq(lruvec, file, 0, nr_rotated);
- 	trace_mm_vmscan_lru_shrink_active(pgdat->node_id, nr_taken, nr_activate,
- 			nr_deactivate, nr_rotated, sc->priority, file);
- }
-@@ -2303,12 +2301,63 @@ static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
- 	mem_cgroup_flush_stats_ratelimited(sc->target_mem_cgroup);
- 
- 	/*
--	 * Determine the scan balance between anon and file LRUs.
-+	 * Determine the scan balance between anon and file LRUs from per-LRU
-+	 * vmstat counters. The raw cost per side is:
-+	 *
-+	 *	PGROTATE	   - reclaim-driven rotations, bumped from both
-+	 *			     shrink_inactive_list and shrink_active_list
-+	 *			     (CPU work).
-+	 *	NR_VMSCAN_WRITE    - reclaim-driven anon pageout IO.
-+	 *	WORKINGSET_RESTORE - refaults of previously-workingset pages.
-+	 *
-+	 * The two IO terms are weighted by SWAP_CLUSTER_MAX to reflect the
-+	 * higher cost of an IO over a rotation.
-+	 *
-+	 * Reads are lock-free per-cpu sum collations, rstat-aggregated up
-+	 * the memcg hierarchy by mem_cgroup_flush_stats_ratelimited() above.
-+	 * Use lruvec_page_state_monotonic() so the unsigned subtraction
-+	 * `now - prev_cost[f]` yields the correct delta across a signed-long
-+	 * wraparound of the underlying counter (a real hazard on 32-bit that
-+	 * the clamp in lruvec_page_state() would otherwise turn into a huge
-+	 * spurious delta).
-+	 *
-+	 * The delta against prev_cost is folded into cost_accum, which is
-+	 * halved on both sides until their sum is within lrusize/4.
-+	 * cost_lock serialises concurrent reclaimers in the same memcg+node.
- 	 */
--	spin_lock_irq(&target_lruvec->lru_lock);
--	sc->anon_cost = target_lruvec->anon_cost;
--	sc->file_cost = target_lruvec->file_cost;
--	spin_unlock_irq(&target_lruvec->lru_lock);
-+	spin_lock(&target_lruvec->cost_lock);
-+	for (int f = 0; f <= 1; f++) {
-+		unsigned long now, delta;
-+
-+		now = lruvec_page_state_monotonic(target_lruvec, PGROTATE_ANON + f) +
-+		      lruvec_page_state_monotonic(target_lruvec,
-+						  WORKINGSET_RESTORE_BASE + f) *
-+				SWAP_CLUSTER_MAX;
-+		if (f == WORKINGSET_ANON)
-+			now += lruvec_page_state_monotonic(target_lruvec,
-+							   NR_VMSCAN_WRITE) *
-+				SWAP_CLUSTER_MAX;
-+		delta = now - target_lruvec->prev_cost[f];
-+		target_lruvec->prev_cost[f] = now;
-+		target_lruvec->cost_accum[f] += delta;
+ void num_poisoned_pages_sub(unsigned long pfn, long i)
+ {
+ 	atomic_long_sub(i, &num_poisoned_pages);
+-	if (pfn != -1UL)
++	if (pfn != -1UL) {
+ 		memblk_nr_poison_sub(pfn, i);
++		efi_hwpoison_unrecord_pfn(pfn);
 +	}
-+	unsigned long lrusize =
-+		lruvec_page_state(target_lruvec, NR_INACTIVE_ANON) +
-+		lruvec_page_state(target_lruvec, NR_ACTIVE_ANON) +
-+		lruvec_page_state(target_lruvec, NR_INACTIVE_FILE) +
-+		lruvec_page_state(target_lruvec, NR_ACTIVE_FILE);
-+	unsigned long cost_limit = lrusize / 4;
-+
-+	while (target_lruvec->cost_accum[WORKINGSET_ANON] > cost_limit ||
-+	       target_lruvec->cost_accum[WORKINGSET_FILE] > cost_limit ||
-+	       target_lruvec->cost_accum[WORKINGSET_ANON] +
-+	       target_lruvec->cost_accum[WORKINGSET_FILE] > cost_limit) {
-+		target_lruvec->cost_accum[WORKINGSET_ANON] /= 2;
-+		target_lruvec->cost_accum[WORKINGSET_FILE] /= 2;
-+	}
-+	sc->anon_cost = target_lruvec->cost_accum[WORKINGSET_ANON];
-+	sc->file_cost = target_lruvec->cost_accum[WORKINGSET_FILE];
-+	spin_unlock(&target_lruvec->cost_lock);
- 
- 	/*
- 	 * Target desirable inactive:active list ratios for the anon
-@@ -4815,7 +4864,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	struct reclaim_stat stat;
- 	struct lru_gen_mm_walk *walk;
- 	int scanned, reclaimed;
--	int isolated = 0, type, type_scanned;
-+	int isolated = 0, nr_isolated = 0, type, type_scanned;
-+	unsigned long total_reclaimed = 0;
- 	bool skip_retry = false;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-@@ -4827,6 +4877,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 
- 	scanned = isolate_folios(nr_to_scan, lruvec, sc, swappiness,
- 				 &list, &isolated, &type, &type_scanned);
-+	nr_isolated = isolated;
- 
- 	/* Scanning may have emptied the oldest gen, flush it */
- 	if (scanned)
-@@ -4839,6 +4890,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- retry:
- 	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
- 	sc->nr_reclaimed += reclaimed;
-+	total_reclaimed += reclaimed;
- 	/* Retry pass is only meant for clean folios without new isolation */
- 	if (isolated)
- 		handle_reclaim_writeback(isolated, pgdat, sc, &stat);
-@@ -4892,6 +4944,10 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 		goto retry;
- 	}
- 
-+	if (nr_isolated > total_reclaimed)
-+		mod_lruvec_state(lruvec, PGROTATE_ANON + type,
-+				 nr_isolated - total_reclaimed);
-+
- 	return scanned;
  }
  
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index c4364f0eb08a..87d4a6781367 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1300,6 +1300,8 @@ const char * const vmstat_text[] = {
- 	[I(PGSCAN_PROACTIVE)]			= "pgscan_proactive",
- 	[I(PGSCAN_ANON)]			= "pgscan_anon",
- 	[I(PGSCAN_FILE)]			= "pgscan_file",
-+	[I(PGROTATE_ANON)]			= "pgrotate_anon",
-+	[I(PGROTATE_FILE)]			= "pgrotate_file",
- 	[I(PGREFILL)]				= "pgrefill",
- #ifdef CONFIG_HUGETLB_PAGE
- 	[I(NR_HUGETLB)]				= "nr_hugetlb",
-diff --git a/mm/workingset.c b/mm/workingset.c
-index f351798e723a..7ac2b88c80ae 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -584,11 +584,6 @@ void workingset_refault(struct folio *folio, void *shadow)
- 	/* Folio was active prior to eviction */
- 	if (workingset) {
- 		folio_set_workingset(folio);
--		/*
--		 * XXX: Move to folio_add_lru() when it supports new vs
--		 * putback
--		 */
--		lru_note_cost_refault(folio);
- 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + file, nr);
- 	}
- out:
+ /**
+
 -- 
 2.53.0-Meta
 
