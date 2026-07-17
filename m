@@ -4,110 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31A38C4451B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 17:31:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D284C4451B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Jul 2026 18:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5F1B6B00DB; Fri, 17 Jul 2026 13:31:26 -0400 (EDT)
+	id E2E286B00BB; Fri, 17 Jul 2026 14:11:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E35286B00DC; Fri, 17 Jul 2026 13:31:26 -0400 (EDT)
+	id E05FC6B00BD; Fri, 17 Jul 2026 14:11:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D72536B00DD; Fri, 17 Jul 2026 13:31:26 -0400 (EDT)
+	id D1C0B6B00BE; Fri, 17 Jul 2026 14:11:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC65B6B00DB
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 13:31:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 491DC1601EF
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:31:26 +0000 (UTC)
-X-FDA: 84998960172.13.D37A4B3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 610F44000D
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 17:31:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wxu9zgqI;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784309484;
-	b=JSs7jXl3iGzZavjWvAUyQZEah7qNVc2G3yfJkfYoTfUaw/I2PV/c0W+WIhLHHK6uNictMO
-	yDrOCJgZokS32plOkMujdf8gRfpfHsHVuYCTC3Hwgruqdp6AoKnYhzgbwvwk6/eYfXLb9x
-	jfiChg4DGJu78LVLD2lDR0AYYKlPozk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wxu9zgqI;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8B0C6B00BB
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 14:11:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34BAFA0443
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:11:08 +0000 (UTC)
+X-FDA: 84999060216.01.C7C7535
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AF08D20004
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 18:11:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=IqJrUL7c;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784309484;
+	s=arc-20220608; t=1784311866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6tB+p5fpJihvWmKYtOqn6XBXbSKHjdM1g/8Wc7lnKAc=;
-	b=3awYGTxD5iWipjQgheA3zxckMK/B0tSE3avteRYFHYV0eD4wamcrsOLuBu2/OO0vh3B0y3
-	EKXdT903PFNpq44d75674wwJwftDZjocK67GmldIj3GAH9V9rvqWT1Zpti9Y+zv6k/DGZp
-	Pq1kloHVQ7m1BwFuG3XEAXqvoqtlj2U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0238B60A75;
-	Fri, 17 Jul 2026 17:31:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A7C1F00A3D;
-	Fri, 17 Jul 2026 17:31:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784309483;
-	bh=6tB+p5fpJihvWmKYtOqn6XBXbSKHjdM1g/8Wc7lnKAc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Wxu9zgqIph5rtq6bTKYeHsaiTgxmWpTOwq98kp7/FgXG55S4zw0mETpYJT0yfbyPq
-	 v4V5g+nDLg/ghKYBi5mk8rvjZlAhytiKJcx45c4Brl9l2yYq3Oq6NsJfFC417wfHzQ
-	 nEBMYY/F2Hn0ehBJGokTLjGbrdWaaUUhz4wU8dEmGho81WigKlnV7ujaEaUP1nKnn2
-	 9KjKwty8unA4lldmoJS4SwYuTYkCO8/kkwO6cuknvoWVtcbs1W8JJfUWjmO6QUDDLH
-	 dBZTx4vjOUiYj9omJD2y5FfAmxxaZXP1/vo2uMdE8m4CbzOsEyj2QKTHzh5//tJKCN
-	 LXQOR0tArV9qA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 17 Jul 2026 18:30:11 +0100
-Subject: [PATCH mm-hotfixes v5 5/5] arm64: remove redundant concurrent
- ptdump UAF mitigation
+	bh=bPmbqf9uyCcKnQQHBZ8qJ6WEarZSzlfc3+zUiESAp+U=;
+	b=qpHMcGGR2vnaJBxS8C5yWe259jQdB0Ce+UB2khm24jWgKn5oolEui9WtyDGwKMgUUWJQh7
+	hvgkkiOhnaFysTneDyx1wGutdXUt8pOFGW5ogqijNMHLaU6slnA9pFDBkOlp0LzjqdTQ0m
+	iugpw+gl761gsBiFXZvrmYHEVP6Zj1A=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=IqJrUL7c;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784311866;
+	b=haTYFq1tVfkWjh/oYK56FphSGWIPphhFa2i68qBVVDQjW0lNddCFt+I07ErjtAzq2+6VXM
+	FmdXSvLsAmxQcjOFNtY7kDOuuzA7lD1qUxav1cm1gXeXl6oLJmCGBLDjWpDWMaylN5qZ+d
+	jll0UHe2ThxolUCuDlqtvLqnGsd/cdk=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5AA9440E019E;
+	Fri, 17 Jul 2026 18:11:02 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id u8fFbPN4AXBQ; Fri, 17 Jul 2026 18:10:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784311852; bh=bPmbqf9uyCcKnQQHBZ8qJ6WEarZSzlfc3+zUiESAp+U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IqJrUL7cP7mIgpNONmTCu4WcE4TxmRVaFAl4dPpyzG+oV0TNzjMUDTrgieox7AbQ0
+	 BERvJrvSZK0HWtYOEbcvaH96YVV6j2mVMSozgcdwxNMWH1a39vphGkb98//AXYO3+y
+	 zu4Vc1XbDz2CiMLluP0tFABdFhidZpw99WP95WYs67lGgY8Xya+spL7kw4h8KNIDQ7
+	 Z8iGse3DNUXlVOj4b61XN+YhlR+gs5Qw1G2f9cSgHRnAou0MJoCEI6C2AoJtBzmaKw
+	 nkH+4fv8UqOInOt9toWCHKhYSLC0+58MScyBC3ITb42SMkHykE8oDYd/34I5e0wJbd
+	 ZUetXFu9XjWMYtpojw3F1B5xEjX4Rb+asflz6f+Jvizt2fRNotw3Dt8CYOc7TT/kxu
+	 uHQCnKviymZrUS+U/L478dk9CKDXl2jzEKgszWaY9y4TF79jDoFt+P1dovW3C1ZEWm
+	 i8X6BfckPOqBmKWq4o+B8Ihv6fsAfGhsFqwGAQ4U0Hlg53LJDFoDfGOvjMvIlikhoG
+	 mxdbxTqK8+IoL9FbzcA+p8KLtVvMX1LYhF9HgSD/u5t2bIZVEmjzDB0qUzJCXs0kCY
+	 qoEpjNMo7X3+jlCLAnsJKndoPJXOHKA3fSgpSgF+DdRZ0nIaTUI7M6ItOwneKTfCDP
+	 /3zT5ryLd6YHw269x00DqZc0=
+Received: from stx.tnic (unknown [165.204.77.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8ABD040E02B0;
+	Fri, 17 Jul 2026 18:10:23 +0000 (UTC)
+Date: Fri, 17 Jul 2026 11:10:04 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Jinchao Wang <wangjinchao600@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH v2 00/13] mm/kwatch: dynamic hardware watchpoints for
+ hunting memory corruption
+Message-ID: <20260717181004.GBalpv_MOaAflgFxgh@fat_crate.local>
+References: <20260717125023.1895892-1-wangjinchao600@gmail.com>
+ <91f3486b-3b85-4b43-b099-0a5325643352@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260717-series-vmap-race-fix-v5-5-606a0ac6d3e5@kernel.org>
-References: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
-In-Reply-To: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
- Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Carlier <devnexen@gmail.com>, ljs@kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, "Denis V. Lunev" <den@virtuozzo.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7063; i=ljs@kernel.org;
- h=from:subject:message-id; bh=kE9XtB6iyw7BSFNAuuPgI01clqwgzMyGQ2yqQHsLjJM=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLKi0rbPmiD/OZTXw4v7yvRv651ei/3cuKD+SZn7s71WQ
- nr3o9af7ShlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEHn1lZJhx43Hz5ID+kmJe
- 3r7zmyZwv3D7KhTYJX5kG2fK/jdH7mgw/GTkPXPjdkyIsd0f84dBtVY3N+yRF7h5eeHxcueUi5Y
- sW1gA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <91f3486b-3b85-4b43-b099-0a5325643352@intel.com>
+X-Stat-Signature: rtwbiwwazxf6hxpqebdwbf8hr8aiqs9m
+X-Rspamd-Queue-Id: AF08D20004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 610F44000D
-X-Stat-Signature: ko5s5ugjff89fo7s9ik7ogt9yw3zasjy
-X-HE-Tag: 1784309484-607411
-X-HE-Meta: U2FsdGVkX1/Oto6sDpEsp+wmmiEQ90reeSYyGmd3Ohwncs2aEhZHrF2TdQ/lI/y9onE328n2Z3ZBX1bY8a8l9AC7UtwDaiyIlefnNQ63jYdvyAhJ4KDXQV3kWhvBHE4DNQMDGLO+m19FuL1X1DLZVE29oThtGMmNDIcS9JcVCgU7U+7fCMs3aH3q+2M0fk9iajxrYuofG/cHYdaH7KT/botwV+bW9SU99tRpMNyoZen5hhdBVNbfk/bDxJDU4YCuSmbRzzMF23HtBtCVJCeVOMap3GjKOwCHNddidfz9PAoDi49d4jTNZk48Sy1vNk9/qEjckuTwYF7btPnxDk/7iNkVybpSCwYsoBsmFM9wwfmY+B0VA85OZ01cvcsQTl+PWEDjZJLDOXK3Z6W1pjQAfpayy4fqnHTDES1VGQ8F/r2n4N+vR77kBWsGC72jWtJm4AyG5YL5BOz9YfZIHLzYFImm+Fhp2ZS43q4fQJ9NMok5yU/SHt78ZHl/QuStC6wcTFKt5p2kji8PbTT3sL+UjmKeuZWd4qUs8tb1I7bMiScOS5df4nGxXFdvI5VA2kQu++ADF32g2IkAzKL7J8scaKfTnXI4apjhb8aXUUP4A9HYm4e0YWy3AF1UetavrhzLsGsHF13FYMjrc98H5O6QE24mv32cTgyCCJQAG8+ukhv+X+Vv/IixRW30aLQiK6orL7PPXmHBCs3pmiekyAM4RA7exgd6apV9tA+Z6X7tMOclubsol2MJV1LVDWOs6Lvp5YXuJskhxlaKGMSGBm5R+HizUPa5AQClt8eChCRc0SP/MT9KEn/EkDwwh9cE981J0UEP+3KRod35gwX1aWe1C+t9X9CSt9XFBOpwOjZXlbYPfSfoOgi2+VrtpvhM3/ZWOecKKJUd74gxHoyiXMTVEIFmtNYuYJYQvGFg5AWZI/o+Whqc7QgegvSKfMuLFlRy6CkLkwEbj7V4V8vsa1z
- PKdSftdV
- CrJj50xGByLlKMUOyZ/Q1Q5Y2AbmZXgrI1x9DYh6k65yVQvS76/9RyOF/wx55eusxrjlkKw+MAOaH9NSpHe3b1kEeg6sU7UKDHiVJUZxtBSGHELVpRHTIzlvNllNSHmGR319OStHc0z+/zIlCXN3hosDhSm63XWizw9DoujIpxpGyvICbea1A8UzoRfURQdRenLevptZT5id6/RQpOEworYyNL+VadkkVvCEdZBqUjinbd7Eeg72YNZX4XGFGqVt0zDWp/jUMoz3HzeS4Euk4IkEi7iFiifUrQjacFp8l7VabQw20jw6frRR99w==
+X-HE-Tag: 1784311865-110744
+X-HE-Meta: U2FsdGVkX191VTSVHDL4F8x5hD1+mMU2ET+39KxYvewSiTklgkHIMb6akGpdaaPgWSECw16efur3Gsc/ihKtxL8JxNjWdpRS0ENpgqL9fyGdAYp6g4li7m7QkbTNEkrURM1ci4EqcyRWheuS+h28SvD5GUkZwzKrmouCH9c8Go8uDMclNacizHYeXAbKbyPTBwLWSz1oPBU3hIdrcHtxtwAh1AEewkXRaU0AFa45PBbhYST79Ix5nHvlThpJtBBeQdvZXehWz1SqjqWunGpj6xBlLnpduFB+7Z9vP5dmw3upTlkgNDWheoqT/hYtKViVZN3MZc/BXv4I8RcX+jp6Ina7Lbmou+yjPbbvPfVsYn+8YJLtbTUaMVr7Gt8U1RpmABu+ICMJEPzWD4N4miQzpKJ4nRVjuO9tAnvik+8tMDMob9XGSFwEvwGf/fpLoeC1S0JT1lInKXiuBcyOQIHwYyy45an/aV+D5H6SmO3g5OZvm6eUS9n/CigUwpftmy9F/ZBKGAFLmtRGPLQiVe1ehTI/6PZBUCO/KrSJ5NWZX8rVhwvrfUBnPJAlHChuRNV35HHa6EseW0WqJGsDHmSERj39dfeEczm9/4xstjU8Y5FcXJQ7ofkdGsOSALgNWGtYCnXlUqRFET/VhOxKK/rbpZpZheV3pves4xlurSdWhArQBrjvIqESi71TGxsqBcyw94JBiL31QJaoqL7QCjB0inM/2Iq8N6JtLT8+aBdVrW58bCYCHxX9yb9Hk5erncMLAodOmpyrb7SgyP+mv9B+/Isevgk3i2u9eFaCfP8yKaWXUKgOV9AXiFNYI3XecbPnT+oBsZZZJHwat/Xp7n9TNG44+cWNt9nGYXzNEjghrb5+GM38gQgFkLXIwYqs8cfDDpEgflEtq1C/6uXZ10KJM6oVR1953KYnr4uJH7dwUSUzfCmdoVRLF1chizEyluKbxRumokRV5CCm1tCe1UX
+ sFYAd9kT
+ ImAxNnmi1QoDUj6qt74zbw2Tf4nkDCUgwsWSQx2Fx93pFVTA1gZpOtzna1mPEQCRGtcyQLl8ra9xID9PXKtms5YYxAlDHjbQ2Bwk6TQzLhRvyPXgd2uBZtFTAXpKrh9tKALayu+uiGT8mYZjzOz4YQcMrlu9ZqhLXtAybIgda4mZLICy6CnMz6FK9SoPAyBe+VKxPAIYOqiYsPymGcSpvBWDJ0lgj47b06jcKPjfz6LfWqL/gu1wywRK/eyQQdmj+EqH+i8f8/O05DzND3Te7S4dCVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,212 +125,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This partially reverts commit fa93b45fd397 ("arm64: Enable vmalloc-huge
-with ptdump"), retaining vmalloc-huge support but eliminating the now
-redundant mitigation against a race between huge vmap page table freeing
-and ptdump, as this issue has now been fixed at core.
+On Fri, Jul 17, 2026 at 06:41:49AM -0700, Dave Hansen wrote:
+> On 7/17/26 05:50, Jinchao Wang wrote:
+> >  24 files changed, 2115 insertions(+), 63 deletions(-)
+> Reading this, I wonder how many kernel debugging features we need. I
+> don't even think we have a centralized list of them. They all just live
+> in their own silos.
+> 
+> This one really seems like a super specialized tool. It has to be
+> enabled at compile time and specifically aimed at a specific function.
+> 
+> Maybe this should live off on the side for a while. If folks end up
+> actually needing it, they can point their friendly LLM over to its tree.
 
-We also simultaneously remove the arm64 if-deffery when acquiring the mmap
-read lock upon vmap huge page table promotion as it is no longer required.
+Right, and in my mbox right under this mail thread there's a
 
-Note that this patch relies on the preceding vmalloc patch, and should not
-be backported alone.
+https://lore.kernel.org/all/178429796992.157981.3393977217853767915.stgit@devnote2/
 
-Fixes: fa93b45fd397 ("arm64: Enable vmalloc-huge with ptdump")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- arch/arm64/include/asm/ptdump.h |  2 --
- arch/arm64/mm/mmu.c             | 43 ++++-------------------------------------
- arch/arm64/mm/ptdump.c          | 11 ++---------
- mm/vmalloc.c                    | 15 +++-----------
- 4 files changed, 9 insertions(+), 62 deletions(-)
+which Masami has been blasting almost every day this week which contains two
+of the patches from this set here...
 
-diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
-index 5b374a6ab34a..50a195eda8ed 100644
---- a/arch/arm64/include/asm/ptdump.h
-+++ b/arch/arm64/include/asm/ptdump.h
-@@ -7,8 +7,6 @@
- 
- #include <linux/ptdump.h>
- 
--DECLARE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
--
- #ifdef CONFIG_PTDUMP
- 
- #include <linux/mm_types.h>
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index a25d8beacc83..bd52fca6e872 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -49,8 +49,6 @@
- #define NO_CONT_MAPPINGS	BIT(1)
- #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
- 
--DEFINE_STATIC_KEY_FALSE(arm64_ptdump_lock_key);
--
- u64 kimage_voffset __ro_after_init;
- EXPORT_SYMBOL(kimage_voffset);
- 
-@@ -1864,8 +1862,7 @@ int pmd_clear_huge(pmd_t *pmdp)
- 	return 1;
- }
- 
--static int __pmd_free_pte_page(pmd_t *pmdp, unsigned long addr,
--			       bool acquire_mmap_lock)
-+int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
- {
- 	pte_t *table;
- 	pmd_t pmd;
-@@ -1877,25 +1874,13 @@ static int __pmd_free_pte_page(pmd_t *pmdp, unsigned long addr,
- 		return 1;
- 	}
- 
--	/* See comment in pud_free_pmd_page for static key logic */
- 	table = pte_offset_kernel(pmdp, addr);
- 	pmd_clear(pmdp);
- 	__flush_tlb_kernel_pgtable(addr);
--	if (static_branch_unlikely(&arm64_ptdump_lock_key) && acquire_mmap_lock) {
--		mmap_read_lock(&init_mm);
--		mmap_read_unlock(&init_mm);
--	}
--
- 	pte_free_kernel(NULL, table);
- 	return 1;
- }
- 
--int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
--{
--	/* If ptdump is walking the pagetables, acquire init_mm.mmap_lock */
--	return __pmd_free_pte_page(pmdp, addr, /* acquire_mmap_lock = */ true);
--}
--
- int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
- {
- 	pmd_t *table;
-@@ -1911,36 +1896,16 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
- 	}
- 
- 	table = pmd_offset(pudp, addr);
--
--	/*
--	 * Our objective is to prevent ptdump from reading a PMD table which has
--	 * been freed. In this race, if pud_free_pmd_page observes the key on
--	 * (which got flipped by ptdump) then the mmap lock sequence here will,
--	 * as a result of the mmap write lock/unlock sequence in ptdump, give
--	 * us the correct synchronization. If not, this means that ptdump has
--	 * yet not started walking the pagetables - the sequence of barriers
--	 * issued by __flush_tlb_kernel_pgtable() guarantees that ptdump will
--	 * observe an empty PUD.
--	 */
--	pud_clear(pudp);
--	__flush_tlb_kernel_pgtable(addr);
--	if (static_branch_unlikely(&arm64_ptdump_lock_key)) {
--		mmap_read_lock(&init_mm);
--		mmap_read_unlock(&init_mm);
--	}
--
- 	pmdp = table;
- 	next = addr;
- 	end = addr + PUD_SIZE;
- 	do {
- 		if (pmd_present(pmdp_get(pmdp)))
--			/*
--			 * PMD has been isolated, so ptdump won't see it. No
--			 * need to acquire init_mm.mmap_lock.
--			 */
--			__pmd_free_pte_page(pmdp, next, /* acquire_mmap_lock = */ false);
-+			pmd_free_pte_page(pmdp, next);
- 	} while (pmdp++, next += PMD_SIZE, next != end);
- 
-+	pud_clear(pudp);
-+	__flush_tlb_kernel_pgtable(addr);
- 	pmd_free(NULL, table);
- 	return 1;
- }
-diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
-index 1c20144700d7..5a76c59b5ada 100644
---- a/arch/arm64/mm/ptdump.c
-+++ b/arch/arm64/mm/ptdump.c
-@@ -283,13 +283,6 @@ void note_page_flush(struct ptdump_state *pt_st)
- 	note_page(pt_st, 0, -1, pte_val(pte_zero));
- }
- 
--static void arm64_ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm)
--{
--	static_branch_inc(&arm64_ptdump_lock_key);
--	ptdump_walk_pgd(st, mm, NULL);
--	static_branch_dec(&arm64_ptdump_lock_key);
--}
--
- void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
- {
- 	unsigned long end = ~0UL;
-@@ -318,7 +311,7 @@ void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
- 		}
- 	};
- 
--	arm64_ptdump_walk_pgd(&st.ptdump, info->mm);
-+	ptdump_walk_pgd(&st.ptdump, info->mm, NULL);
- }
- 
- static void __init ptdump_initialize(void)
-@@ -360,7 +353,7 @@ bool ptdump_check_wx(void)
- 		}
- 	};
- 
--	arm64_ptdump_walk_pgd(&st.ptdump, &init_mm);
-+	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
- 
- 	if (st.wx_pages || st.uxn_pages) {
- 		pr_warn("Checked W+X mappings: FAILED, %lu W+X pages found, %lu non-UXN pages found\n",
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index d5c4d2bb770b..f4fa227a8d7f 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -169,10 +169,7 @@ static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
- 	 * Concurrent read lock holders are safe: each exclusively owns
- 	 * the range it operates on and cannot reach this page table.
- 	 */
--#ifndef CONFIG_ARM64
--	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
--#endif
--	{
-+	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm) {
- 		if (!pmd_free_pte_page(pmd, addr))
- 			return 0;
- 		return pmd_set_huge(pmd, phys_addr, prot);
-@@ -229,10 +226,7 @@ static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
- 		return pud_set_huge(pud, phys_addr, prot);
- 
- 	/* See comment in vmap_try_huge_pmd(). */
--#ifndef CONFIG_ARM64
--	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
--#endif
--	{
-+	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm) {
- 		if (!pud_free_pmd_page(pud, addr))
- 			return 0;
- 		return pud_set_huge(pud, phys_addr, prot);
-@@ -289,10 +283,7 @@ static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
- 		return p4d_set_huge(p4d, phys_addr, prot);
- 
- 	/* See comment in vmap_try_huge_pmd(). */
--#ifndef CONFIG_ARM64
--	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm)
--#endif
--	{
-+	scoped_cond_guard(mmap_read_lock_try, return 0, &init_mm) {
- 		if (!p4d_free_pud_page(p4d, addr))
- 			return 0;
- 		return p4d_set_huge(p4d, phys_addr, prot);
+Looks to me like folks need to sit down and agree on strategy first.
 
 -- 
-2.55.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
