@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1560BC4451C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 12:34:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EC58C4451B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 12:34:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4DF86B0098; Sat, 18 Jul 2026 08:34:46 -0400 (EDT)
+	id 2E94D6B0099; Sat, 18 Jul 2026 08:34:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD7536B0099; Sat, 18 Jul 2026 08:34:46 -0400 (EDT)
+	id 272EC6B009D; Sat, 18 Jul 2026 08:34:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 978EE6B009D; Sat, 18 Jul 2026 08:34:46 -0400 (EDT)
+	id 113736B009E; Sat, 18 Jul 2026 08:34:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 625196B0098
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:34:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2085C036E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C82846B0099
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:34:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5880FA03D0
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 12:34:47 +0000 (UTC)
+X-FDA: 85001841414.01.7EF899A
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8A135180002
 	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 12:34:45 +0000 (UTC)
-X-FDA: 85001841330.08.5202D9E
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E0BC7C0003
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 12:34:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aYwlR3bv;
-	spf=pass (imf22.hostedemail.com: domain of liavalb@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=liavalb@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784378083;
-	b=gOK4Tr1ojt7TeYqJ5IHC/q90ZEDOiGbdiq1RiQxEibdFd9/gmaEnWhXtNwMeWFgCzsz//G
-	yK3khMa/iRjQzGBGaphiYEYU2LnDQWGe0Cmdmv2jKu2voFyCYWfqnGvmmFc5tTP2j1mBJ1
-	Rw/E9vFnkLL8XEb59etEp3cjQG/xbuY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aYwlR3bv;
-	spf=pass (imf22.hostedemail.com: domain of liavalb@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=liavalb@gmail.com;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Awt84QJq;
+	spf=pass (imf16.hostedemail.com: domain of liavalb@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=liavalb@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784378083;
+	s=arc-20220608; t=1784378085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2l4FYWFSpulqsw2d3VOSnee+AYUde051R9WsyPAffPM=;
-	b=X7x22M+4I5xLB1OGP4A358oSAL2MEVkmYiHuLdggAeT43UFkUiqiWY+JliTeizTSy6EzdT
-	x+zAnj873wyi8x6nmWambTyhccAg7gxrzw293xg7L8HA9j96zQ6xWx2qB8gkefeLOE0BK/
-	DRJPHlBJIlU+c4a/4ir7yAGJ/gtTzIM=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49548aebcd8so10542695e9.3
-        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:34:43 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fyK9obKyx21C+ZaaJV9CzkRR6fotaVHFrnIZl4e1n9w=;
+	b=kIG2wVajDU582WWnVaK+ZtqzWVoH54HjNUTbntK4fUXJ8nxgTK+Jqn6m1p7/kHFX9bGN1j
+	eAS57VuCroiRnLXImWbwyfiGXF/Arw/1bLkiI/XNHCrLm63UrH6Q4BkMeiqQvEw5S02awO
+	HFTPtamp9dMEmrMaLgP1ayFBPpcpzJw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Awt84QJq;
+	spf=pass (imf16.hostedemail.com: domain of liavalb@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=liavalb@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784378085;
+	b=w7wWmh6J4ilwrDK8McTaauRflmyuMpxBF1H0anoyXhnECNFpEFeRxj03uP8qxw2TdrMbfh
+	Nv56KvR+59uS96hUDrN7gJ6LE+dAyorA8w9NIcDXSEuDcwA0H83NS5PtQQWA5oao1rnUO4
+	hXooarU6ZCWTMJR2H3un8DNaJ6Rfi5k=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49555a0e68bso604095e9.2
+        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:34:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784378082; x=1784982882; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2l4FYWFSpulqsw2d3VOSnee+AYUde051R9WsyPAffPM=;
-        b=aYwlR3bv/Udwms0g5O4+Fm9IAQ3zlKRSAtjQA16aicbwr/IRXNj+rhUkpRtvumVTTR
-         huXmmlygWbsLpowhGVZa6WJzCWa68HDZ5By/Y7JpeFN4i9fDa7rSQVzMHoz9smGpNJE3
-         XzhJOz4Ydl+51lrEaMi7I0EzDeh1wHNQPqTZeHwntTogVfWBSeHnspXzK8aTDGHXB4HV
-         4PPaWh7w11hXNxHekDcnwSUEu6n62DU61sRu6dPtI3gx6HEYGzYdC2xmMqvdl6ugECvk
-         0wJg6d2QTO82AQmNleOcDjYLVVVlacdbMi7aOxgfyToNRR8As03WmwL4jdy+40PFPEc9
-         qx/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784378082; x=1784982882;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1784378084; x=1784982884; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2l4FYWFSpulqsw2d3VOSnee+AYUde051R9WsyPAffPM=;
-        b=iPR/9fJw5HnHMLSXsT0o94oordmdkpKqOcq7BSMFwbmxOnZPrWJkrVAAJZXg1/aOdZ
-         S0LgNqPTOACozE0F3YelFmOhgKXvdDDwHbpSHqMtE9auX/ZkC2Z7peYz4PO6R2FsPKRI
-         JzR9Nx69hwt7HGmK14f/UwVFgySPHkidj55x57PDdkr5fInm/609iWzMZHti2hxneOkh
-         7VFn3Gze59dhQON4fND6F7nFqM0I4i2wK+Hln9YXaBlx0kff/p5ylhZYoe9HGI5UTz24
-         PI2X3aLs4EbpL2G+q2KAU/wWzC/wrLqptsjceQhx0Eekz2Yf4+yJ2XLy6CpuFU6pJ988
-         MPvg==
-X-Forwarded-Encrypted: i=1; AHgh+RqZhlGXmGlNGCu2xRYx/uCfRfo2vRoUT1XW/oxO1g8+SoRF2JoW6fZiypcqwUiBv4mRkWCDiX/Ysg==@kvack.org
-X-Gm-Message-State: AOJu0YwGCAXk6ca85jnfclq5uDvH5uc5idjjNhgAthKL4rEHRtWGU8Et
-	3sVNsgcocQT02FnWrv6X+KJOTIQ+PYb9yaeeyVwC6/01C0qqyqHDsGTI
-X-Gm-Gg: AfdE7cmKZSxI3csI/ePuVoXT0Acx3i2X3Dpbq3JAHjkHcJrm2waazy4kkLrSYB2AU5D
-	fofEp8gDFCHXaOlJjELVXjjX9p05JAz8r4IGD80wSImA6onTFb8JiC9F4pOHYlIlPBoeNM9WDNE
-	76GwOgD2J4V7HA6rzLwLI3zDkeIcPDqvSn+yVy6Z1U/q7y/xE3u4k7jhiC/ANJD+oDxeGPyk0ay
-	iAZL6c4VBowIFHRJyH3I1qRq67RAZCsHZVxZed1FZZCNcZqkD4xLKiYdoPSPw1NoTAk2JISrIXN
-	78rOtZ4bE557SMdr70PsBvpIM9JiS+2t5IkmOHJmOV0o/74v15s0OKgrJY0phZNpnj7i6EKReIF
-	6oH/EOGAvZprxIxMwG4Wd//tiQdM+kruaMjV3uDLxaLBaJRNwqU5E4tbm9C9RD70jfEa5aDR58K
-	v3fR4WWK+u0Lw2
-X-Received: by 2002:a05:600c:6c91:b0:493:c337:db0e with SMTP id 5b1f17b1804b1-4954a402d87mr49546165e9.18.1784378082332;
-        Sat, 18 Jul 2026 05:34:42 -0700 (PDT)
+        bh=fyK9obKyx21C+ZaaJV9CzkRR6fotaVHFrnIZl4e1n9w=;
+        b=Awt84QJqSi0pju93Rp66jkkNu7iT1vvRELK060kFtVp528vAgyfawyJSWC9tFai7Eq
+         uQMvqnVB3z5YaKv47Vhu5kpZSvmdcq41BgV6wRpPht8axdZ99avAigYaUtqkv+7WGM1D
+         UdDTZ10HwKe5PdfnkCK7SlXUCCW3tkpuMF/cXUbb+7Cpay7NkQP+VxnFaqK0dzlgCEj7
+         lVIa2aS9QX9Ym3w8i8RMoOFbrTjWi7UaK787sC576+DvElLO/xU8Q0j6HdGKL6IsL9yO
+         84sVuVH0K7L+HITiaTSUKD0KjzHv2Z252FiKraVUKRv9OPP70ovN36KI+dK3/1WpAR1N
+         /yAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784378084; x=1784982884;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fyK9obKyx21C+ZaaJV9CzkRR6fotaVHFrnIZl4e1n9w=;
+        b=av3Jv9wWvOGoOZAGveZE4RFEDMl1CR5iJe6Zxpu/JF7hf3wzNizqadQPGVAtEwnj3/
+         HB5/OseGu2rtD6QZkQOAmrS+LS8ww3vAoxx8f/Qud5WfQTN4qxQ1UOqqs6nHQo75dDAL
+         FjKNMtY9XQxeYnB3eIbs5ykeQHjC8fRhM7P2CRCtf3gK/Es0o1yRoC+HqBoK1B3yfjPf
+         zbIToVUBPeo3CZxdqHYL241NobJqZtwXVDaqCeQdc6FzzJN4v61kaSwSuUBFFKWbWvLG
+         iVJpK9UCUgkFgsen7ZM9/yGAFJXRCfcOmYgFt829XrY7ZAWSn9tKqtSWVqgn64/FEWMT
+         vsYA==
+X-Forwarded-Encrypted: i=1; AHgh+RrXc2AM1pPU0SJAGyXKpIItcJpRChexRSwXW5hLAbuWeP+s4eYlziEW8SMREsKVVgc1JG4ErxSbXg==@kvack.org
+X-Gm-Message-State: AOJu0Yy5FyMr5gurtLa2R4bdX6SFSD463y0EQgpBNTFUffNkg5RDg4Wm
+	ITldm1k62P5CNmWXfU47nyL/OBVyICLX4bgg78X1dAEfYe1qmVQXN5of
+X-Gm-Gg: AfdE7clBzTXe+nTuSr2iw1meRIxSlIkg8VpXtVA6DJmg0tCBZ6KVKmGDmhOagNz4kKJ
+	Bq9qLyChZBx2HmPNQFzsOR0B9gGVy2GQHh58LqEx4xToAAWS3da8Ictk1s6DscpEhm1u2zO7xqq
+	6qSM5WUYoiWM8lSowthvaYAJrdGYueO0wrl6joniw7P+9fHS7EPcjzM8IRiP4o3vd/nFoNkFgXF
+	3C0Ale5hSzrs61pYOdssSxSFBQSTJzthU9zLF/6LhLY1nrO+14GTrMQ+r2ofPVBIlPNFU37YcuV
+	zq5KJ9PAKjj45ZAija27Tmhf/yU1NmrAawsHReEJq54ZlY/qni6PCy2ZJgnILm1T5UV24QRHsxX
+	vNrerYK/YspuriMG5bp4WlnHySEGZKl+WQy5BYBevA+RYYUya/9avTV5FneJOW3+asKb8VLnxWu
+	oKN5JXFHgiunz9
+X-Received: by 2002:a05:600c:c0c3:10b0:493:72d3:4a81 with SMTP id 5b1f17b1804b1-4954a3dc87bmr55989155e9.16.1784378084218;
+        Sat, 18 Jul 2026 05:34:44 -0700 (PDT)
 Received: from liavpc.localdomain ([2a06:c701:4900:1700:d578:12e4:b9d6:6e36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49549a35830sm129041165e9.3.2026.07.18.05.34.40
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49549a35830sm129041165e9.3.2026.07.18.05.34.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 05:34:41 -0700 (PDT)
+        Sat, 18 Jul 2026 05:34:43 -0700 (PDT)
 From: Liav Albani <liavalb@gmail.com>
 To: akpm@linux-foundation.org
 Cc: david@kernel.org,
@@ -103,20 +104,22 @@ Cc: david@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Liav Albani <liavalb@gmail.com>
-Subject: [PATCH 0/1] Fix an imbalanced file ref count in the mmap syscall
-Date: Sat, 18 Jul 2026 15:34:16 +0300
-Message-ID: <20260718123417.16339-1-liavalb@gmail.com>
+Subject: [PATCH] mm/vma: fix imbalanced file reference count, properly abort mmap_prepare
+Date: Sat, 18 Jul 2026 15:34:17 +0300
+Message-ID: <20260718123417.16339-2-liavalb@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260718123417.16339-1-liavalb@gmail.com>
+References: <20260718123417.16339-1-liavalb@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E0BC7C0003
-X-Stat-Signature: fnytbnz543er318gf41sosu6mcmcfkua
-X-HE-Tag: 1784378083-387605
-X-HE-Meta: U2FsdGVkX1+LiDr969nydLOjR6+IKn9080hQWdxcY9x3uEM74gGY9Y9GBoRoBnPeOPsevW6z7ty5w6MIA+j5LzaOIqoMGF/xZvtwwgl9CiZRIhiH2B7bKFAcQMqc9OzLuDzVr6LBLxBu99fO+Dog7xMcJ7c9iF4p9AF1i5ptTRdR6sdeOtKVlR7aGrEEn4mshqJcwPqeS8hDc12Ch1GS8GWFqIObVjdLikdcPQ11r9q1HrZLi2VOcHsx/6dgBfwodcmqz6ZG9KYaLvrWA67155wLDc16+x2oR56orVgR1ovCknyLHSngdgp58GTEIYIb7wRI/KLHc5c1Yev9VsIp60l5AP59KyAfockMxrybpcwQHI4yrBXiF3PNbLnbO0wHCNLEKLShit8KYkXYccy1+fhgkog0byVOkc33v2uy8esU3qq6FefptnFdNjKrxG+1Iz/1NJwU32C+7WCPKO9cl0AHRJ+dSkEd7zsno9K6MWI3haSz0KB37ajVnk8v4oyMgVpdzhkcnpfdEOxApoUu3Y7zewVeWZmd4rmF8pEEaE5nXXKOh75NOP47gKwQnllKm0a/0o4BF12xAUqpskp5X3KaB+fp/zzSxLoLUy+xObsdEp32rj5FrXUDFS8F0VRMrz7POrxnrDrXB5DtF3tsY+3fpY2QOdHyQLENVFid73OYDzF979Cg/v6ywlTYRHqLcmIqwUT7VYF3Oa3G3uxbgrBKNu6Mjb7CETKuRPE93LdnRRTOR7yslmbb3llVQVWaSqsVBiohFvxzBZXBS9JMh9sUkAuh/CuYQC5BxGfzT6L+BjB1i+HQEnclxrqyq+sWCKl4tvsbvokHOAcUhgZQWLOTw4Oe4pNDVi1EEw6/KzC7mz9Zd14sFOMSnD9MYoI/jzQ8EzZIXoxsYAFNeDg5jwIlds9d34YzRn0wwTJYo6o66xB8UxR4pFnkXUMAEMqAVfCiAK5NEzgNWb3hM+9
- B6nP6qXj
- YKhqT2pkqHcqcMwYxVl9Omms4Euql9px1xjLZpoNe9Imoi3o6Gh6VreSo7rRLkgbS1mRKCp3NxD5U2SbVX9wzIZoxgIYWkChknpDYl3hjdmjjJW1vtIFBXLhsMha4CR1pptbA7KhU0gMcOXBKs3q3WNsH/lNFQJGcQ7a+8KL4JIrSBT7yFeUFcO9QnXUJ5XMxloh8lO1LOAWRNz1a45wfVTK5Iknxyn+JLnvDQR5ggFJOGWhMhTUbFNCmLY6zvCvDg728ChmVNunbc01AeDVdpizKVboOK4+iwAC6SrrBQZXLj1mjZICa8vd9S8LzdYbHUCJj1ZRASgzP9dIlTzVi6OWIQ5k9QAVU0s/GQRsHZjLeNsEi1TqX7e1OobXkpqggwQQxtFGvhQbU8jSF0f7+gwRDWMDSMHWr/bLkYb0RH8NdsOm1YpnIvh4SwxSa7mpvmQ57dYNtXtSAbQM=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8A135180002
+X-Stat-Signature: m3dd6qaf8gxe3pz5n6i7skpr43f69m1j
+X-HE-Tag: 1784378085-565491
+X-HE-Meta: U2FsdGVkX19yxLAwAKmuYtX3UKJNb/K33/GBFzE8QNJIuFtzArOcV/pvdKvoipDqkItQoS+DmMW/EjJ5A6MIWzVnpZVkzu87TjCO+MoDUwDQfvEmnVJAP6Jk/a58CN3ORep1aMSYf73T8bMQTTfYkZomvUMeX5h3N7L62QmC08O9i95mxlYL46gqJDJFUjLJ/6SF1Iu2O2XNpQyD/h6q/H4jGV7wAmkWcUMyV8KWazhewqQY5Dkfy0yUCGaRJkg2KzyDow+Dfp/+8uUtm6ufQecTn4g4ZhBgVqMl2effi+wEf8xvrcKbcIGk4Ga/B+lVY4Mcf7OMY6h6YaEvQD87jtGGWCyNC1kEJVsN/2TP08/o8Gcp+7Y9zx4AEuqhN/bG5TI3mp6VDMoasB12cxkxfaSRWqAnocn4dnnb4BKNOZr7Kl3j+vdTz3wfZAGLFHMSkBBvbtn9NrkJZu0OXWHNx9cqm5kQbzuunlS6pqHucAk9n5BgXigjQiP8ApI4qmmdFebQ+oj2Tji1NqYvU6dndRcklOa0nC1X2e8/BW6q4Dbn3AckgVPKL6Ca3hrvovt6gfnE2J/HSL1CWd0o8w4bdnigam1WxvhYWZA1tDBxG1hTEWULs6ryDJMp9DVTIE3khd6kIx9yh8EY18Qm1929htTZJk5hKStsDgXTnK3C3TvE5mZJePy1siOJc1Q3UTBs38uqw+lRE4cMKdC1ZReR/U0moMpVVKdhcgWAcrzqI+Ig5nzUMvHVbZlVRdroXzOt5S/Yk6tzl4a9Yyob3OY/RpAR4P4UtpNDyfk5kc69oic3BbKMOeTaYnJNNyDHnMLCF/Rq3Oa4UtmV3cyOcUjyK6Q/fZt9K0eJZFBO3UnmVUVWogLSw8Dv13/x/7rNvhnOtmTX/WlhLn84xVcrQ2rod3tXnErCH4USVPo5pWkFR9Rr/W7sIhFEdidI4xw5lGTGIPn8hXLP0aejhF0zjag
+ mqWxFIpF
+ OpbrfBwu2hhnoYmMmKpKi5wGeJB0jXaMh1EwQzJmHBvkhBBq1Oa5VLaeRYNmI2KoKA38AETFrdN/e7VolKq6/ZAKcHw+9oxICOxCJoASslQ5GAhK+wK7H3h6CSznL54LXbwhOhW4BC4cUoqfHSgwRlprJFHFyZfPDXxxBIapV4g4gwVv1qBVgIDrf5aN2QjdpJe/S2NyFX+PbMpuGA6ggfx0u+Mf0ySXnDsSYMu97l9U9SqLuGzME5c8kfWA1rfJPeQm6jvNm2T7gm48JggeQKRK69URHI++rfH/YcimqzopncjHdCI+XapISXVlMAZ15Cm4+dO4jtI9pgloqOW99wpXF9KSpsi6eDyjMFkTx4rtei+GLxCvxWJACJMKZ8b5JvTuW9kVDUBdiLP0bujZshQpJVtW9nvatFlXC1vj4OH49YNhfjKToXXHrshDQ1rY1kgMDtM61bJ8kKZfWf5L4GsxK8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,40 +127,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
+Under the new `vm_area_desc` struct, a driver may change the vm_file
+to provide a different backing VM file.
 
-This is my first patch that I contribute myself to the Linux kernel.
-My apologize if there are issues, I tried to solve this issue in one
-evening and understand the call graph and what could go wrong.
+In such case, it became apparent during testing of this capability, that
+a remove_vma() may drop a refcount on a VM file that we didn't call
+get_file() upon.
 
-I work recently on a project of mine called nfiop, and specifically on a
-kernel module called ufedm - https://github.com/nfiop/ufedm .
+In addition to that, calling vms_abort_munmap_vmas when we didn't do
+actual work is wrong, because mmap_prepare hook is about preparing the
+mmap state and not performing any actual mapping (yet).
 
-The project has a driver that allows a userspace implementation to
-intervene in the write and read callbacks of an MTD device by spawning
-an upper MTD device that sends the data back and forth to userspace, so
-userspace can implement its custom ECC engine and send back the results.
+A kernel stack (before of this patch) could look like this:
 
-So far so good. I started working with kernel 6.18.8 on an Olimex A20
-board and then moved to my x86 linux machine with a nandsim simulation.
-When I started my project, I implemented a memory backing based on a
-shmem file for the shared memory buffer, that is expected to be mmap'ed
-from my custom character device.
-
-When I updated my host machine, the new kernel version was 7.x so I
-decided to update my module as well.
-Many changes were comsetic, but the major change was to implement a
-mmap_prepare hook.
-
-I wrote something simple, taking notes on the mmap_prepare rules and
-the guide from kernel docs.
-
-Then I started to test that my character device is at least working
-fine, so I have my unit tests for ioctls and mmap, and the mmap
-unit-test failed after the second-run.
-
-A kernel stack looked like this:
-```
 imbalanced put on file reference count
 WARNING: fs/file.c:36 at __file_ref_put_badval.isra.0+0x3f/0x60, CPU#1: test_proxy_mmap/116
 Modules linked in: ufedm(OE) virtio_net net_failover failover nandsim nand nandcore bch mtd
@@ -196,35 +178,89 @@ Call Trace:
  ? clear_bhb_loop+0x30/0x80
  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 RIP: 0033:0x440bcb
-```
 
-I started investigating this, and it became apparent that there's an
-issue with ref-counting of the vm_file - I changed it in my mmap_prepare
-hook, so it must be the cause, right?
-
-I also tried to artificially increment the ref-count of my shmem file
-when I create it (taking another ref), so the second attempt didn't fail
-but the third did...
-
-I looked at the stack trace, and the culprit is the fact that we do fput
-on a vm_file that we didn't pin - to fix this, I added a flag if we
-actually did get_file() on the vm_file or not, on the vma struct.
-
-When testing this patch, I've observed that the problem was completely
-gone.
-
-The mmap_prepare hook is still quite new, so presumably fixing corner
-cases like this one is a good candidate for upstream, for future drivers
-that might do the same as I do in my driver.
-
-Liav Albani (1):
-  mm/vma: fix imbalanced file reference count, properly abort
-    mmap_prepare
-
+Signed-off-by: Liav Albani <liavalb@gmail.com>
+---
  include/linux/mm_types.h |  1 +
  mm/vma.c                 | 24 +++++++++++++-----------
  2 files changed, 14 insertions(+), 11 deletions(-)
 
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index b18c2b2e7d2c..5db0894e6064 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -981,6 +981,7 @@ struct vm_area_struct {
+ 	unsigned long vm_pgoff;		/* Offset (within vm_file) in PAGE_SIZE
+ 					   units */
+ 	struct file * vm_file;		/* File we map to (can be NULL). */
++	bool vm_file_doesnt_need_put; /* Do fput only if we did get_file... */
+ 	void * vm_private_data;		/* was vm_pte (shared mem) */
+ 
+ #ifdef CONFIG_SWAP
+diff --git a/mm/vma.c b/mm/vma.c
+index 9eea2850818a..0c2e71fc09be 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -467,7 +467,7 @@ void remove_vma(struct vm_area_struct *vma)
+ {
+ 	might_sleep();
+ 	vma_close(vma);
+-	if (vma->vm_file)
++	if (vma->vm_file && !vma->vm_file_doesnt_need_put)
+ 		fput(vma->vm_file);
+ 	mpol_put(vma_policy(vma));
+ 	vm_area_free(vma);
+@@ -2487,6 +2487,7 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+ 	int error;
+ 
+ 	vma->vm_file = map->file;
++	vma->vm_file_doesnt_need_put = map->file_doesnt_need_get;
+ 	if (!map->file_doesnt_need_get)
+ 		get_file(map->file);
+ 
+@@ -2497,7 +2498,14 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+ 	if (error) {
+ 		UNMAP_STATE(unmap, vmi, vma, vma->vm_start, vma->vm_end,
+ 			    map->prev, map->next);
+-		fput(vma->vm_file);
++
++		/*
++		 * We set vma->vm_file to map->file, so if we didn't increase
++		 * the refcount, don't decrease it in this path.
++		 */
++		if (!map->file_doesnt_need_get)
++			fput(vma->vm_file);
++
+ 		vma->vm_file = NULL;
+ 
+ 		vma_iter_set(vmi, vma->vm_end);
+@@ -2757,7 +2765,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 	if (!error && have_mmap_prepare)
+ 		error = call_mmap_prepare(&map, &desc);
+ 	if (error)
+-		goto abort_munmap;
++		goto abort_mmap_prepare;
+ 
+ 	if (map.check_ksm_early)
+ 		update_ksm_flags(&map);
+@@ -2795,15 +2803,9 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ unacct_error:
+ 	if (map.charged)
+ 		vm_unacct_memory(map.charged);
+-abort_munmap:
+-	/*
+-	 * This indicates that .mmap_prepare has set a new file, differing from
+-	 * desc->vm_file. But since we're aborting the operation, only the
+-	 * original file will be cleaned up. Ensure we clean up both.
+-	 */
+-	if (map.file_doesnt_need_get)
+-		fput(map.file);
++
+ 	vms_abort_munmap_vmas(&map.vms, &map.mas_detach);
++abort_mmap_prepare:
+ 	return error;
+ }
+ 
 -- 
 2.55.0
 
