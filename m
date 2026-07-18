@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5628FC4451B
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 09:54:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B6D2C4451B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 09:54:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5266B009F; Sat, 18 Jul 2026 05:54:23 -0400 (EDT)
+	id 36D1F6B0095; Sat, 18 Jul 2026 05:54:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47C7A6B00A0; Sat, 18 Jul 2026 05:54:23 -0400 (EDT)
+	id 344206B0098; Sat, 18 Jul 2026 05:54:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 395D66B00A2; Sat, 18 Jul 2026 05:54:23 -0400 (EDT)
+	id 281096B00A0; Sat, 18 Jul 2026 05:54:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 14E736B009F
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:54:23 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8FE40A0361
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:54:22 +0000 (UTC)
-X-FDA: 85001437164.24.CBA05D6
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D305A14000A
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:54:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dcdhmu96;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F15356B0095
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:54:29 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F164C035D
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:54:29 +0000 (UTC)
+X-FDA: 85001437458.28.9DD592E
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AF2A320002
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:54:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SWJHGvIJ;
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784368460;
+	s=arc-20220608; t=1784368467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x3ltDvom3/qAw8FbUiS3p4apXbK6gN1G2ur4K5UNTpA=;
-	b=aP2eUMTlrTtUkSrvImIxL4mAOQiAPyl7/DKeF0CTv7XpGfPuWXdVET640JOW5aUQmP8AxP
-	sA1R+KjHJvC+9VW4be3LvAjnoYL1dVwXOIMHEVaKKEPc6H/awAbNWAKDfOaatbd+LTBMwd
-	GaR0pJ5KRNB/VrW1NzENey3KyCFinAg=
+	bh=jfS0xqNab+cGTBtcs71EybfPlueNPDuy0c1ubwCt214=;
+	b=S5PC5kjtj6R5aHiMd1Y5C0tb4K92pqGHlong/wN5pb0Y7aylzNpRb087yQhKHnUYKfUSwL
+	Gdlnt4jjWr9TidG1TQ1EmTcsyQbwhfWoS2eToFuSCIBd5vd0eeo7AL5J4h/NHd5CKmyIpM
+	IPNH4IlcmIsSXIOA5OTWc0gLdBCEQOw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dcdhmu96;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SWJHGvIJ;
+	spf=pass (imf31.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784368460;
-	b=cEONvTKJpnfeYiN4Os7UaUzc9l26rUdAPJ/SsBMSYn+ds396f5Z+2njDZxQTLSw0odQOT7
-	LTrAdchEj2y7nmxTSuM0cUQUqLvY3rGeUe1C1B2/CmQlxgo1JkI+k6FAt1Uepw1hFQ1iWf
-	5yAcP3J3Hah0IUvV7iO5FJrPEWflSCI=
+	t=1784368467;
+	b=8UY12upJAeSPFisXsF0ziNmmmp3AbA5ryI+AR1kUB1nFeric8QlMf8lqbWAkWbrvkGiCB+
+	Yc4nYzW1w69br7qiEqLTVubVcT+mC066syFpu+FV/cacsLc1ktkm/QiE4wqsmyHTc0oc1H
+	NWwJsyrY3bbck+wI84weH7c7pUN7TTw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784368459;
+	t=1784368466;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x3ltDvom3/qAw8FbUiS3p4apXbK6gN1G2ur4K5UNTpA=;
-	b=dcdhmu96Qo8lUZA4Nqrn4+MdC0HqrZoWIpF8V4mR4juUWJXtbnXjebaQ34mUNoFJcz2VsB
-	m9wmvCYR4Hrkh5fWtlsNOt7eyV4CG1L2CJ7FVqEBY4bSEXRbLzpyChRw4V7Um1ZregR+JQ
-	Y/fOp/x2m+X7tk6YsmTUXM2DP2drA0U=
+	bh=jfS0xqNab+cGTBtcs71EybfPlueNPDuy0c1ubwCt214=;
+	b=SWJHGvIJ9H9I0bqGkmj23ibjJvqGqlNWOEBHhA4KnGBBPZvA3QtZ8Nz1wb1lGiPDUJkbfH
+	36CyERNXQ6ER0t4rfRLfvQXJNonVLbbMSICCymcfge+4PV2bJOjAh1c/UYcvxOrKo4GXkA
+	uF/gu3WcHWS+QWfbjXJmFmK9+ZMHyjI=
 From: Ridong Chen <ridong.chen@linux.dev>
 To: akpm@linux-foundation.org
 Cc: hannes@cmpxchg.org,
@@ -80,22 +80,22 @@ Cc: hannes@cmpxchg.org,
 	linux-kernel@vger.kernel.org,
 	ridong.chen@linux.dev,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v2 2/4] mm: vmscan: propagate real error code from per-node proactive reclaim
-Date: Sat, 18 Jul 2026 17:52:49 +0800
-Message-ID: <20260718095251.82937-3-ridong.chen@linux.dev>
+Subject: [PATCH v2 3/4] mm: vmscan: drop unused gfp_mask parameter from __node_reclaim()
+Date: Sat, 18 Jul 2026 17:52:50 +0800
+Message-ID: <20260718095251.82937-4-ridong.chen@linux.dev>
 In-Reply-To: <20260718095251.82937-1-ridong.chen@linux.dev>
 References: <20260718095251.82937-1-ridong.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D305A14000A
-X-Stat-Signature: uw6otn8koi56rfpwc5pztb1ugur53j6p
-X-HE-Tag: 1784368460-89696
-X-HE-Meta: U2FsdGVkX19sbFS1S8XJG+DxAfTqaoun+PZJxtI8CmquUHnzBzJ1sWkr7G49lMNKH64Yvl+b+HXQnjxWZdt4nDZ+d5VPXNPispRIIPljO7ns7I4T7MFxPRgrqe+pEnOvg9a4/KYzYLLOaP6AFUav0bnEEQaYf6UCpsJ4gpBC3YjBNcGJmpFwoXDQOd3B2iwtMsgtG/GAgQsVb8PR1JK/ybvvNZQFbnFq146U+jNPheyzwBQl0SUD3sE65dhcBn8I+RtgaRu2nYWSBnM7FTo9+/QiR8Oz58qR/lezfNtKD2hNLlt2lSbv2g3IfZDSTuDAus513oFP/k77ti/nGMCouXkrBRAa4TmbXHHPIlmhr9u8GpR6hkhs40Su1jWCX4qJ6rPavPGi22IDb7FG4pYj9Dlv/pbSU1SgOqfb006771nJdk156EPTNd4HrTBx34DsPzd96fD2RBhZn1RZ+Wo3/HJZbeKpXq3w81sENNQExwDTK72Cx8RyMhDpyRPLpZf1i0wNC7CFD8Hx0eEvRshEOmOa5HC4cZzz1VqXXjswN2Rtj8M4Vdp0fcr/ieyxNgYYXzYtThKpPVeFVhkbINWXtYmJUm9w1Jj1GOndrz4tc0kX/Rygra02gXMC5EJ4Po8LJhIZIjk1gShzXoposlEecxUcLrKG0fzTM3cuzBiNOfdxyF3yXa1kQMARTuQNC460gBNMl3qT2PzdClDK3++dwEvvyQwLx/TQPKJB//p9mqjoWhA4djWfa9ZqDXTHXMl4WZOZwN5lxqbRr3L++ZMusEQkwM1LUVt0dCcLyaAaxkspAzLMm2MLxPGA9BEzctGt595/rK+yD1DjXgycF3TYdXihaS4FBs81mn0L/LsA1GruBoCO0iaPrkfoifiezDmQ2mIMvByU1N4DCt5CTFJMM37pnpoEuc/jU6gSBJ4jZPkn31t03+Kovx9Ii3JTadER+NEyHxjBFPzva7DlNYv
- bg1vAWmk
- dpjkOGENxLWBpikNcVTWgepKHeXb1fFoIzZGdX6L4gKATsDdK8ddjaz6IdnzB/7Ay5O7CTL8ZXBA7iZOfcJhI5jc0AjVyHXWFUAK86MVt2zpB+iM60Jwqt7xjeA3xoTVoQtX2DTEf/1P0Z62ieU3Xl8ZndvakJ2b9CG0g/Z8MCfMbooZvjjnxLTYYq5xEtnfRqiJbiQA2PJj/nFtF4C7HXTTNXPSbGiNLa5/RER6dli2PkM8U5Isp+akbluDi2RqjObndLDrem1cqKrBbxJ1+rjjPX2ID5ghtoj1GjtQtf3OmzLIgryhLJZi/Ig==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AF2A320002
+X-Stat-Signature: 6d693o885rknccn9h49wsrmwbu3jfqcs
+X-HE-Tag: 1784368467-840561
+X-HE-Meta: U2FsdGVkX18GYJv4V1KqnEADq2r0JzXth4ab0cIVZuGuMSeVR0tT5le1jfSoW806mzSMEbLA93jr0gqSjIanU6/q8Y0+MU3OU5DRI2Aly/LZ3tuedc1PdHk4meW4Haogsp/q9W8SDRWoseTL8Fl4LHwM8r7UJO6OOYaZuDECWoeTG1mOJqSd5FkPkAknIDK35BSbIauhkt64LUB4j6MZpXUE2+lHrJ6HD8kePTHgGYyGN0C+GqGF9J/PUS9yuIDkgDl4nmeJn8/DLc8QDMEr2Q2KkbWG14LSmcpoyoaGVmPB7pCyjPtd0i4nVSFyvhNPa/2syBZ5HMLL9OAuRlmWKyrdV58UhnOEprcBFRLl67ZHua0gZGrFE5rtHeqoPIbw6I3DrmkSh2uQTRjavKKNjW316IJ1/qmFDPjKLr8blMt/cNQN4EyXcBjq5xUiXDxkmruVxnf0nTTeasqQudYn4sfeQwYwB1l/0wUhPDOn4OBmuzvS5T12Lp+yvnAHSSmjw4OMJx9x2AfzFmnKkUvhF4iWxw3zjXxb1Lb+ZmBHej9nVWDIjzqnPvKCgPhhiJLWc1d+fTKG/6GGH6mjmtCH6y9oSCmb7OdrsAjnqeVa7VhWO800dkneWP2Qg8iSJBJGblEx+A4/+xfJX3UQlHVS8fwssHEyZ5fIWzqEqW1Dh/IFJvTqlMniwy3ULQaHe5J7edbvdN1LfY9Tp4rhTQnLnx3067vmdvWkvFyCmEz8fMJbh779u0ScCe/DapC+6btsnOMN/qcf8D/mqqxtpi8O/CP8GV+Fvz6l2fb5hS7LzYmFzOOutjUsvshIk+E0sDheC5kg6xV46YiPWWD20Ignltos0vHE3JS6E1ARoxBIfIijdrNL68wr4jEO5ku8NjVBI5ame+/LrSON/kmDa6kd8u4kXV4Fh6yt8zQtTbdrch9eqShxjXBCkgtd9T1Fe4X1YjOPiys75PNPZGwH7rD
+ yrc7Z5/k
+ drlgXBHfH97+dyhUHcRj1BO/m8L8O58/9kq4F9qa9ACFwPr/mlcfAoeBqpR7em65NPXeD9qomVFf//y4Ks/Dr6EZTphEVYbaiLGLu9+1qMPcXxWydm2KCvIiMlQDTiXUrtq6yS9thKkiIQEkjWC4+V/zmbDl7JLLnS8kQQPMl2xPtL1Hm4yQ3zp85xjLaY7vx7eFxzBFLQNX2X4U/4SnNfwFXh3YmwhN+5fLAHuRU7MTfhfrup+mGKwTx1SyjpoXEoEpTfhL3f/4LwKDLoMEKXuCg0F95v1CdRlU5vdfesuYAuoj85FZOVv61W7mLdeww3vMTvXTQtbE0uPE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,37 +105,62 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-It has been observed that per-node proactive reclaim always returns
--EAGAIN when any error occurs. As discussed in the mailing list [1],
-the interface should distinguish between cases where no reclaimable
-memory is left and where another entity is concurrently using the
-same interface. Propagate the real error code, consistent with how
-memcg proactive reclaim handles errors.
+Commit 57972c78e678 ("mm/vmscan: make __node_reclaim() more generic")
+moved the scan_control construction out to the callers and passed the
+struct in by pointer.  After that change every use of the gfp mask inside
+__node_reclaim() goes through sc->gfp_mask, leaving the gfp_mask parameter
+unused. Just remove the dead parameter and update the callers accordingly.
+No functional change.
 
-[1] https://lore.kernel.org/all/20250717235604.2atyx2aobwowpge3@offworld/T/#m3514718be82a31b05726a49da9b61fbfc69a589e
-
-Fixes: b980077899ea ("mm: introduce per-node proactive reclaim interface")
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vmscan.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index d6b383d96a0c..cfe4556c96d7 100644
+index cfe4556c96d7..e1ef6350a300 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -8017,7 +8017,7 @@ static ssize_t reclaim_store(struct device *dev,
- 	int ret, nid = dev->id;
+@@ -7742,7 +7742,7 @@ static unsigned long node_pagecache_reclaimable(struct pglist_data *pgdat)
+ /*
+  * Try to free up some pages from this node through reclaim.
+  */
+-static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
++static unsigned long __node_reclaim(struct pglist_data *pgdat,
+ 				    unsigned long nr_pages,
+ 				    struct scan_control *sc)
+ {
+@@ -7834,7 +7834,7 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
+ 	if (test_and_set_bit_lock(PGDAT_RECLAIM_LOCKED, &pgdat->flags))
+ 		return NODE_RECLAIM_NOSCAN;
  
- 	ret = user_proactive_reclaim((char *)buf, NULL, NODE_DATA(nid));
--	return ret ? -EAGAIN : count;
-+	return ret ? ret : count;
- }
+-	ret = __node_reclaim(pgdat, gfp_mask, nr_pages, &sc) >= nr_pages;
++	ret = __node_reclaim(pgdat, nr_pages, &sc) >= nr_pages;
+ 	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
  
- static DEVICE_ATTR_WO(reclaim);
+ 	if (ret)
+@@ -7847,7 +7847,7 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
+ 
+ #else
+ 
+-static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
++static unsigned long __node_reclaim(struct pglist_data *pgdat,
+ 				    unsigned long nr_pages,
+ 				    struct scan_control *sc)
+ {
+@@ -7949,8 +7949,7 @@ int user_proactive_reclaim(char *buf,
+ 						  &pgdat->flags))
+ 				return -EBUSY;
+ 
+-			reclaimed = __node_reclaim(pgdat, gfp_mask,
+-						   batch_size, &sc);
++			reclaimed = __node_reclaim(pgdat, batch_size, &sc);
+ 			clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
+ 		}
+ 
 -- 
 2.43.0
 
