@@ -4,91 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF707C4451B
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 10:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC52AC4451C
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 10:55:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3FAB6B0098; Sat, 18 Jul 2026 06:49:30 -0400 (EDT)
+	id 8E8BC6B008C; Sat, 18 Jul 2026 06:55:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F0606B0099; Sat, 18 Jul 2026 06:49:30 -0400 (EDT)
+	id 8C03C6B0095; Sat, 18 Jul 2026 06:55:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 904B46B009D; Sat, 18 Jul 2026 06:49:30 -0400 (EDT)
+	id 7D6A86B009D; Sat, 18 Jul 2026 06:55:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 648976B0098
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 06:49:30 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0C64A042A
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 10:49:29 +0000 (UTC)
-X-FDA: 85001576058.10.216B0C4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2A69F140008
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 10:49:28 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bSisULYs;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784371768;
-	b=bAqtxRxXuKT9Q2YP5X+kqMcEPxfMCYx3REwSjv442rJ8JYwMb+pTUA/ArSkihJFY2vgo/b
-	YWPKBXzJ1fLUtHkhuN+OrccuZMQfvlS6EU5KxspKhRte1oSESGu8hV5nZki4UeQ8zgXq85
-	nFlqz7dAv6HEZHtn1wNfq2Fft2CypUY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bSisULYs;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4259B6B008C
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 06:55:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C406F4041C
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 10:55:04 +0000 (UTC)
+X-FDA: 85001590128.24.34CFE4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3C12E4000A
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 10:55:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aiI8R0kP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784371768;
+	s=arc-20220608; t=1784372103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vqk+TTwBA0BAQzINyNQP7BgvRd3meLH2Js/umV4ohBg=;
-	b=gY81DJRJK38+rf4ybkRu05ZrzE2qbn70jorenB9dNOhH6MHgmpP0EkLnuIc3VosrJAwgHL
-	J4ycbm7N6aHFz6Obl+ieVI+SI1cnc3x+9y51fCg6i25TLk3Db/7sgQUm9XJ8F+6VgjPTuP
-	w3odQYcSqyUruZ06uvYhHMoQMCu9KTU=
+	bh=6Wk95nsyLty8ZIxsRyt5wCr5/RC7WWcTwZjDgbSZNSs=;
+	b=NMzJMOIgeUt38ePMxnf1hsCwlmUOR7nILRoa1++NZmF+DWGo4J7bWSKft2i7val+bzNi/A
+	r2Q8McipzMAcHNQuzpnz9C2iy/Afi7ds4FqxBM5rk4yi4OO5yY4qbeXYAGkSHA/Gf3cixG
+	WjkO0XLq6zJgeuT6cMiIevyhzHX1B9c=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aiI8R0kP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784372103;
+	b=xnTbGBeFhbQHWepMGu6eHe9RXOMCchpxmxQIagHIDWUHyLjJiM5zKTkm736D/Id236K6Jj
+	dWiMLZ1IYciY2xd2nkQkWqFEIrdpBWOMlwANIUnwJ2Y5tzMSPACtc5pSxlbEvL7t3D+RSS
+	dYQ8jCLIKFKkG7rqtqG+dt5wUDQNWp8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19C5D40212;
-	Sat, 18 Jul 2026 10:49:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F16B1F000E9;
-	Sat, 18 Jul 2026 10:49:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B6F460018;
+	Sat, 18 Jul 2026 10:55:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B31D1F000E9;
+	Sat, 18 Jul 2026 10:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784371767;
-	bh=Vqk+TTwBA0BAQzINyNQP7BgvRd3meLH2Js/umV4ohBg=;
+	s=k20260515; t=1784372102;
+	bh=6Wk95nsyLty8ZIxsRyt5wCr5/RC7WWcTwZjDgbSZNSs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bSisULYsLOn/RIwHZ2seWTgJldf9x7ukmTzzreF6gAbsILymCttWYom6Hu/btWb6E
-	 tJok3t24xn1w6Yt04xfpzF1LwaEsxyJNftWAx1gZXAReKt97z6wOms/zJMkRkwZwdO
-	 Tr1/e9VMbTJlzfXob44GXT8ROUOpZsbXFZPMG6p3m6/fOictlPAb2Xj/q5cuoPA+TC
-	 OxBuLfTRItORN7zEndcgqqGyuY8XZWTvftpYYp2oQjZVtPLhqpG4y2S0uHvSBWBKlZ
-	 W6DjNM3AQwc2gLvYO3Ncnrjx5dD3WC4iZC3JWuayvDHN82Rgy7A16VkN1UzGeTRfnR
-	 jx6lmcubMhUYA==
-Date: Sat, 18 Jul 2026 13:49:20 +0300
+	b=aiI8R0kPNLSytO43AkjaOcOjJhYehi+jiu0VA1Efoyqtg1kBLTrE0UTrpEjDlMu/K
+	 dnFZ5QtHXVwRiuDjw8yONGi0FSYk9RBir2PD/U99wZJ1Vb4q+9Q4RbVpWwNVcr91Yq
+	 r26wxPsubsi+R9hxTg+TqhAGi1e756ZR7odtaCpKb0PSYO/H5GFAFLy4cbmG5YQ0re
+	 pgLWdpkAR+xyXqa9zjTTRyaD6kK/ktq2b15gni9Bc+q78KU5jfhbAVk+s5GWZpn6Tg
+	 mzKAgRuA9T7wlRb+kZ1gwGzSToi43PYttqNOzzE6ePr5aWjBeK4df/8CUqk7vVM6BB
+	 us/qCDz52pdng==
+Date: Sat, 18 Jul 2026 13:54:50 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, brendan.jackman@linux.dev
-Subject: Re: [PATCH v2] mm/secretmem: don't allow highmem folios
-Message-ID: <altaMNQ-RDYTzMCv@kernel.org>
-References: <20260717-secretmem-highmem-v2-1-1f1a961ca91e@google.com>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>,
+	Toshi Kani <toshi.kani@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Carlier <devnexen@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	"Denis V. Lunev" <den@virtuozzo.com>, stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes v5 3/5] x86/mm/pat: acquire init_mm read lock
+ on attribute change to avoid UAF
+Message-ID: <altbeuTZ0HCz_7HS@kernel.org>
+References: <20260717-series-vmap-race-fix-v5-0-606a0ac6d3e5@kernel.org>
+ <20260717-series-vmap-race-fix-v5-3-606a0ac6d3e5@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260717-secretmem-highmem-v2-1-1f1a961ca91e@google.com>
+In-Reply-To: <20260717-series-vmap-race-fix-v5-3-606a0ac6d3e5@kernel.org>
+X-Rspamd-Queue-Id: 3C12E4000A
+X-Stat-Signature: dcrcambywpd16794cxhud7om6w43gyo9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2A69F140008
-X-Stat-Signature: ytudujihqhaqkpjosxga5uwg4dr1zyxm
-X-HE-Tag: 1784371768-208769
-X-HE-Meta: U2FsdGVkX18fOnvYwp6OCUVVXwo/Ayqs9WkdQMX20SRMGHw76h26FIb3PzHWQu3G9DnGnq4fxvCb0n041jG89HJUqcVPDOo3B21WkpF/zZizx1oqRSoNo/beONTKP64Mmou6okOD8L7Gzi5r6LHoG2C05tLZVVggFqWU7bOdVi51e3ixLPrsSJK/Mo+MhIyqfKEzqEgFf4SKLeLCJMfpWQQx6bUGrHA/YH57/+tiijHuNjjTI88EybzISwbwxUpCGgtWNNbwcCcXiOHYStzKUGRdFyYl/tSMV1SR+wIQkJKvrj3/nKf4F3cOI+QMTDRCGoi5zoeT9/yLQDLdYgNaKzoSdNEq8VWowX1G2QmVJnsOZoLGaxnuoG/sZVWK8rWsvEEw7gdUfNg0TmY1muaAvrKgdrEphw+wKqvuZt59Az74xo/moHhHk5SOmmBfqtAj50lpcROI+kD2ScJTy287oAaJ5Jc17AmN/s6Qd07c3Lmh0MBKfe9MAM82Ot8gfz90I84BNgcTtm72NeGZnOM5BGprEVdliDGdrDT3gM4ot2O/reqy9d3a8Y09JtAw7eqLdheR4OOSTwXMWwoRSH3MtQG2jRgTqOJV9tdFLBu/LeMcdj/pHPi7nhQSBjtfBTxwazFW3BsWYiIWuauOVlRuzdDwlP+wclLpRUUpd/JvTnoHqGuV1JX937F03QMW/n3EpUwfVcU76DF2x3sq47lkZbaxracwQG5vc3sssLsNay1H8RtdIAderXG8Y5nSbKzTrdAeJcXc18eoEqkAHaj1IvkDgsEJv12tMtqgkvzpH/f1t0TvPpj5PioYvZ7KaR8hq3QWBuZgug2mJxU4a8NQPCnWdHg4WTxmWa7sNTywSGmXGmVeGwMl5ngkj3AmvUjhfwbqCU5uR73Km24IRDbcLErVhQzV8wON8Rt+SuKJMrQOB8sPYCmkVwOdunp5xZM1Mpi5/V3am/rYc9mFROu
- YJNtcgQG
- wecTObH893KGI1V6AnvkCGVLVwHczQCLrC+KQGSsWIH4FESIZBYfUyh//rzsxVxV0snLGRUvecqtIglTAGfMSWrhQo0o86SV9COXpk0apOTk+AT1dQzI0ApMZmXt/45xqM35THB91eYKky4/mHhGDLwGJlx7GAbpAndHL9x0OuHiiWGAdBsB8C6cy2tww9w55+IStqnet1F1cw7bxCMo12Nwno25+c4GnD+w8gy8vhlEbVhcV1fOQ29KdaW8/b5zLxN0JjVMEtCgjsFPSwzvv+sdafWQijKvLMug7uZKM/DZohh3hBzo/xH7MEc63TnrbFt1fkXhNh+11yEsRLqkGaSWYpTTSW1KAdOG0pJ9OZmlm2W5u45Zpz+Z/9OX+3IStDZEssaMbd/gavcZb7bSyTutICg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784372103-615639
+X-HE-Meta: U2FsdGVkX1+yCKiiqzRoticH28HE1nM9WjwqlbjIYExcw1QnTDiK8ZNuw4EMZhwE7iylHzoHdWuXczmlJ7O0cegIXHwasNTlYc4pwzmA4xazZuxcFbXHbFdypCZ48vmGElCDe1SgU9cOH9VOlJNGf2C8IqCnC4LPCSQGjqtCXCT7U63WWUrClgJAwM8VQlQFWycE73qaS/hK7x2GxqkSCMuuYePLNjzFv10/7411ZGRyhgoyP9BuSIyqf37kAw7XLW1LxvRrJNlLZoNrI9Vu2CFF88eV+oTNHL+oMnxcCMMRN1lIZ68pijYUxzHRz/xLTf4l4tlU4dwV2uSA6kEyh+oZGT7D5Ej1PzDXXIUszhx4RUdKUrx46exIDgpAn+pARQyEl2iZmpN+estPDZtB1uNaYt837ewiGwnMiJqP1SAk51bpmz0iVOSgr6KydqBQWRoaZqXVzWYwWz2AHaWnzYDv9jiP24neR4KSE3xmCuc8KtHj+s4E1zcM5hYcBNnRw1Zc8Kln09YIDomV9/WoM7ow23mU6YitqCh9/7UQJrprd6ciXkIs10PDtTXfI0v/B4ZXm/lKZvEXY6D9CG6yMoWoyb8YtCfurnrsuq6kejdjwtTZ2wesDiAZo1kxWFlvH/Gn7YvFkdzoIHLGksJ4tUUh+EC4gfihebR3d+SdLRBBDV5DIyn3OpbpQkj0aOB75mPS8SjOsctld2V1KKcyj6o1fh6s1YNPuhUIxqQrX+UAB9mRCwQxDLzHh5XYJHzVJwUcQiFh1LRUCrnTt1t2aRnudaIyTtLQ63vWm/XKh4ew1x4LChYRO0IggANvJUOpd5EXLTsXa1Kd6wJQJ1OCiGCgvop27uGZ8wvjNMW6wKdks6g+bYl3YQTYiyyWZO8ntZWKkKwI3QOiOQLmIdJ9RmqN2Hk0jAM2YxiQPcw7B0Luh55YwySXJyQomQ+s21tmMxmi/hWjN51a6s8tRqc
+ bPZaB13v
+ +UZv/J00hV20mQc2TmSICPYNdowMcOKdWE/ubUvPa+hoQpsPSjLAOQkANA5YOTw8lJlZjruv6nUkhj8YULco9s9sj3U8ekFofNxfSxVrzOyg4TCU64gBH4aOVxhaUQ4P8OHz5jE95OpB3XkIdTuRvygspK550dP9v/d78CVspGIf/2+777lHQUQ7iiJeuLqpT8Wk8xP6Ad9oFCQmeDbYWXSHBpiolIahXgweg1sGP1bIxgHe3hqEuEiFqMrgQWx8PZIzKfPqI+bn4mbY2cCKMYfyvX7SrHcuqvALQKmpXR1IiOFqSWh5DoUJsBhBUVHsyFuQoHxV7G1I+HmmZifBpkZuDN8Fy8Uj30vlDFNBbIfnCfvPNg+AuHeJaKfcGtqrlGG6i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,21 +111,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 09:48:59AM +0000, Brendan Jackman wrote:
-> secretmem_fault() allocates a folio with GFP_HIGHUSER and then calls
-> set_direct_map_invalid_noflush() without checking folio_test_highmem().
-> This causes a warning and process crash (vibe-coded reproducer in Link
-> below):
+On Fri, Jul 17, 2026 at 06:30:09PM +0100, Lorenzo Stoakes (ARM) wrote:
+> A previous commit protected us against races between ptdump and CPA
+> collapse, however one still exists between attribute changes and collapse
+> as reported by Denis V. Lunev (linked).
+> 
+> When an attribute change arises, a lockless page table walker obtains a PTE
+> entry, which is later written to via set_pte_atomic():
+> 
+> ...
+> -> change_page_attr_set_clr()
+> -> __change_page_attr_set_clr()
+> -> __change_page_attr()
+> 	-> _lookup_address_cpa()
+> 	-> lookup_address_in_pgd_attr()
+> 	-> [ lockless page table walker ]
+> -> set_pte_atomic()
+> 
+> There is nothing preventing a concurrent CPA collapse which can free the
+> PTE that was retrieved here, resulting in a use-after-free.
+> 
+> With the mmap write lock taken on init_mm over CPA collapse, we can now
+> resolve this race by acquiring an mmap read lock on init_mm over
+> __change_page_attr_set_clr().
+> 
+> This locks across the whole operation over which the walk and the PTE entry
+> write occurs, solving the race.
+> 
+> It is safe to do this here, as no spinlocks are held upon entry to
+> __change_page_attr_set_clr().
+> 
+> The CPA_COLLAPSE flag is only set by set_memory_rox(), which exclusively
+> operates upon vmalloc ranges, and on x86 only within the module mapping
+> space.
+> 
+> This is important, because some callers directly invoke
+> __change_page_attr_set_clr(), bypassing this lock. However, none of these
+> operate within the module mapping space.
+> 
+> * cpa_process_alias() - a recursive helper called by
+>   __change_page_attr_set_clr().
+> * __set_memory_enc_pgtable() - operates on the direct mapping and (via
+>   __vmbus_establish_gpadl()) the vmalloc mapping space.
+> * __set_pages_[n]p() - called by set_direct_map_[invalid, default,
+>   valid]_noflush(), __kernel_map_pages() - operates on the direct map.
+> * kernel_[un]map_pages_in_pgd() - operates on EFI ranges.
+> 
+> This work is based upon Denis V. Lunev's excellent analysis of the bug with
+> gratitude.
+> 
+> Link: https://lore.kernel.org/all/20260626163213.2284080-1-den@openvz.org/
+> Fixes: 41d88484c71c ("x86/mm/pat: restore large ROX pages after fragmentation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  arch/x86/mm/pat/set_memory.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index d1e63f7d267f..301fb9e77d91 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -2122,7 +2122,9 @@ static int change_page_attr_set_clr(unsigned long *addr, int numpages,
+>  	cpa.curpage = 0;
+>  	cpa.force_split = force_split;
+>  
+> -	ret = __change_page_attr_set_clr(&cpa, 1);
+> +	/* Avoid race with concurrent CPA collapse. */
+> +	scoped_guard(mmap_read_lock, &init_mm)
+> +		ret = __change_page_attr_set_clr(&cpa, 1);
 
-... 
- 
-> Link: https://github.com/bjackman/limmat-kernel-nix/commit/7b2acba2d3a5ef01400d493a155beb1d135b6bb5
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Link: https://lore.kernel.org/all/20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org/
-> Fixes: 1507f51255c9f ("mm: introduce memfd_secret system call to create "secret" memory areas")
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+There's a small issue with this. debug_pagealloc_unmap_pages() ends up here
+and since it's called from __free_pages() it can be in an atomic context.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>  
+>  	/*
+>  	 * Check whether we really changed something:
+> 
+> -- 
+> 2.55.0
+> 
 
 -- 
 Sincerely yours,
