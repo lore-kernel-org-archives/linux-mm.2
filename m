@@ -4,146 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0244C4450A
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 21:17:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 483EEC4450A
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 22:20:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E5A46B007B; Sat, 18 Jul 2026 17:17:07 -0400 (EDT)
+	id D98C16B007B; Sat, 18 Jul 2026 18:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46F7E6B0088; Sat, 18 Jul 2026 17:17:07 -0400 (EDT)
+	id D49E66B0088; Sat, 18 Jul 2026 18:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35F806B008A; Sat, 18 Jul 2026 17:17:07 -0400 (EDT)
+	id C5F936B008A; Sat, 18 Jul 2026 18:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F31686B007B
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 17:17:06 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 624D11A0464
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 21:17:06 +0000 (UTC)
-X-FDA: 85003157652.26.EE2FF8C
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8516B20006
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 21:17:04 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uz15IP0o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of burak.emir@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=burak.emir@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784409424;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BFD76B007B
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 18:20:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 044B61C06E5
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 22:20:03 +0000 (UTC)
+X-FDA: 85003316328.20.070D494
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AE0F840005
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 22:20:01 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GqQjifQB;
+	spf=pass (imf17.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784413201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
-	b=UErwueLnPI3xQ/6AGv39pHTQYIW8lHBLngAANoHKnWr+j1ohjlJKXagt3eEyjWsLXgI2RP
-	v+pJIdV6jAvn/S99qRSbDHR7s3RERA+WowIhzAodjbkZBH6EPYKwQH34E87eI0uevLmw5x
-	t0JH1tssXdFFTsoBKHAY0IS3p9SwTx0=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uz15IP0o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of burak.emir@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=burak.emir@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784409424;
-	b=mseKt9xTsFIceSIuJMp7xOV2mM2+roNaU6h5bUx9vbZcgnfYZTbI2GBPDJFYvBDK9cg0JX
-	ZYISGg5Mj0XTPoPFyzBNfDtlXqryKGpEOCkri7YfzaLFW/yIlPn4D7wbM3zNntkkVZ4/YQ
-	mv4D/xxL5Qbz+ZQU/Gn5Jww6siYdKTg=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca12086c06eso7398868a12.0
-        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 14:17:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784409423; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ON5sg+mvhXmRJr2ITcEfvv5k5VkTRtd3zSJSJNCgp+VVXRnWZBBntzMsmXi/WIsK67
-         izUwrPd/Z7pczwLDDdSh2ghqlGOCZgEhSmYOifLwZJBJ34PUy/6QeMy60hsJY8u79TGL
-         SpgT04NH7slXTqJHik22kx0Kxi9VJ49BKeIs3W55bsscgKBikCRwEQdVXLE8Wpf3nbKf
-         BJGork3Wks9VnEckPJsE+ppcxqqgaG8mo5TbT7BL4U/MIpFF9lVTaJf6HK5Zza2MW4NK
-         jPl1zJqpEWKQlRu0xTWLib/RPw3rSrHDscnyuN3rLIEMphSPUZ4iXjfN3p0fbDRtvHZz
-         0d/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
-        fh=KAG3qZlPTHI5ACK83KYyfDSUuV8Ld8OZNSQ2pDzDSP4=;
-        b=VVO5vyjR6+GszXQ3GSsxGykhQh5fvbOVPFSGQPjEAV+v95P65fpD5g6AVQQPGWO8d9
-         znn+lCtfzGvB5dcYTwX4BXiJH6HYNipd5VWkMSk+fPyzlfokSiGkCfG0RUNbcfCWC8TD
-         7c7bGa2FRaexBFy8RDj0q425DmclblB/hxPgBJypf54kL/EK13UvSs9XLleRG5kiB4uA
-         PEr7C2hPwjED+Ck2Ok7pyyHyZRibmGaxdNK3lRuWvkq+Et+oGa7zfiI/pak/Sh8mMbqb
-         DS7/6tGVgeKG1tbPiINGEwLKPYjs6t1v8H0RwWPqoljUkAO455AvtiHu+KwSW0ypn6v7
-         DiVw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=r4fN35Xy0B8zaFzFTIutBvNuqSKDwsTPJ8Iqe7ZWG9g=;
+	b=lQpm0np4WvukUeV33NYeuKCMDjN0IcctnRiq2LFBNtQjX40jCw+i0433UI/NUl7o/y5oda
+	Tx7Gbb8tksaP6Xxqr3jFGfIwRxH/KCg6tuYlBZMKKuARXAR/lB3ff0h+WNkSzM184tt8Jb
+	4pohCezxs5aejntNDbQQbKW1sWNlemc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GqQjifQB;
+	spf=pass (imf17.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784413201;
+	b=OLh6oe61tnHKKOKpmp+elUR2CK0CQVjfENg6dOmlvU2bj91CKpvomrKjsxVn5LkL8ADAz8
+	4vz1I9B7tscTbEoTXi4YOLTgTqsztlM0y3xGYEBFJAJX0ohz6VUWVR7VMGayc+MyaKYJVX
+	53sFX0zCbpflcukt662tCankMwWI7Ds=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cede6375caso231825ad.0
+        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 15:20:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784409423; x=1785014223; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
-        b=Uz15IP0o6jX2wSAWtXuB4gKOyDOwsHgtagBWNUxshwY3bsaCnKqzccGmMMGimcvc34
-         y8oXJJ566RhwvPOLqu5au+/NZ05vYNkItoKpk9f6bqkI/usdm2CAwcO/jZV0tP1+7A74
-         vOSPBTE+CWh4IsVoV0dq99PsTbD0kFjTJ8NMhmxoqv7ZtlxMvw+9eminH+n3jLYkF5J7
-         okaD0xjYgBYL3PDnwbC64zdDx4pS7GfaOu/GNBSmIoAYdr/RBkVPcqHlDFBQSDeRpDy4
-         sQybsfoMGSaUA24WtCBBS61gCovNqwuYdDMx3RUVMJ01LBEWeO5oUtIQDPPdVg+xQ6HA
-         0YPw==
+        d=google.com; s=20251104; t=1784413200; x=1785018000; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=r4fN35Xy0B8zaFzFTIutBvNuqSKDwsTPJ8Iqe7ZWG9g=;
+        b=GqQjifQBDWazuGmys/cHTIPCh9KVwhEn14feUDgWzgo9sAyAl9Crnau/EDpPSwFeSy
+         diN9Iax58FtaCPHT1Nq9peI6lBOFdPXihmip/VwLCsCxBqdg7g57u+GPrJXDYSK6Ieaa
+         HYmM+R/GfyacWeWE8a/nEkRNE5hvikwgJwDbAgcpMuROo84BA9PWaVshxArTv7ypLp4a
+         hOotBN6yXsyUm0D5CRn5AqNUo2cZb1nnjm857RgPcJ0l5oa2E7LEg4oQVM2YAT4U9Nsw
+         QhQtclbHLoxxGJ2DtQjX9qfg7F8nJg4Q3PL6U7wod8vquy+zACobdFI0N61vdF7lqwy6
+         xTlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784409423; x=1785014223;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
-        b=Odz0M+mjtOddxkyB1gJ8PrnfDHNjT3r/VTzsYMwEhpoQcXyypDZaqc0pplJ+csJcCp
-         pClyTVijfSdPxvujk2A6PDOd1yj8atNgTuDy7yXHdf1IJPMf1cYxZpTENd+wdqy1u+8t
-         sY5Lj1X0coLGZt8j+yMulIz/gXxR9cJV+EdE+Hwy7tU12Zq2WDfxbn7YLlwfpKFE/YBK
-         iHx2htDC7x5TwBpr9KUTLBJiwgP+/IvELBHXxvBO4XqT2WyKqu4z3OCmzClfotk0ZeOy
-         hyUFyULMCO0kqN4RYZo92unalzEWGQNS7kWyqof9hZajrOYtlzhPqxZQ75tMqoMhh5Kn
-         w9lA==
-X-Forwarded-Encrypted: i=1; AHgh+RrAU+I0C6o1W4V3WW4aKsero4UfmfZDmGSpZM5Tknpi/D63cLnleOTVz50o2Mnd+akbFfn4gk323Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz3RcpAGX/nBO9xoVs1nFyI/oj7M32xCjMH9kPRh1wgqe+JDKDh
-	SvNNjW+IxTwu4wAwR2p30WBfB6CkgZ5GMSfjdHbNewyfM0j0oiONp7b7zqMTFTAIlvo0a7FZPw/
-	/izlS8Ts/P3DPh7M1jXZf4AUeyd+jHGA=
-X-Gm-Gg: AfdE7clu22Pg2vs0yh8Lb5VFhvtaIJDvc1eQGOtSCI+YzdxyMf2YfAVDLYPryDDHJP/
-	J5TlFUt6D8Agr2EDFEGNrDw3h/Wtw7EwNSmsUNiQq44/Gqm9BF7/E/kKvW/e0gqCAaDI1xhZp5v
-	dUAQt1/fjW3YRe96s/g/HL0L4bWlpsdvHCsxEYa+Tc75W0yiTPmefMEld9WE3bRdJrUw/tYeyKV
-	ekPPiY0PlB2VVRq203EIV3ji2jgj95Ia8QQaaUD1D1VFiXq8ga3iQqs5VjTNN1O3r3wlP63vJEJ
-	nRYHxcnUBi4pvKmArKtWwUcyvH4aGVQY0yqd94BmuYj1dicQ
-X-Received: by 2002:a05:6a20:2583:b0:3b4:605c:2163 with SMTP id
- adf61e73a8af0-3c3ad78de40mr9171821637.4.1784409423135; Sat, 18 Jul 2026
- 14:17:03 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784413200; x=1785018000;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=r4fN35Xy0B8zaFzFTIutBvNuqSKDwsTPJ8Iqe7ZWG9g=;
+        b=ga4GNOhwhia6a4XS4cvSdOPi06LLDylqFNfLIRqkSygkebEEPRYIUa0DlgLuPDDEAL
+         gEoyTrymj+dmKa/fnl9UmXrtotnUfnWDTwDNujbwyPmGnmelVAJ+cTfujt+E/4v3bhgs
+         PyUNSPMjyfUM3t1ClwCpoOtamupTbXlAUIG2G2j02ngQPojm86Q+v65wp+HjPG94xJwP
+         oFjC7FfEkf4XPpx6ef1SN66QBq6F0m8+xf1fXM5U1aW9dvpKNbAI1mGSfk4HZnBKRYKH
+         LdkKPDlJlOSqpNlN5LHpENMOEwDtqKGYFtuZCvWz9fjjwTY6ijFCsU/YCcGRtl3pUELw
+         rCvg==
+X-Gm-Message-State: AOJu0YyMBkUu+MgPPlzmPmKd+uiN5sor4t5B6E7KM5cPIA4bP7zXTFzt
+	2reZlHOeAsB+CorDawAb3qU73IgCIeYoXDnYTD7uGyHCPJFXjKeexaAyYRWlFOGQoQ==
+X-Gm-Gg: AfdE7cld2f51s+pnbbWbmFqCnY7uI2N5B/CbKqxsMVKHPOppMul842dxdzJCawi+NQ+
+	L7H2fX0b1GDN4K2llzcd8l2jPRJWkjAZMDqTsSXftiXD9emWAQ433J0UNrTU/VLOhy7EpSYZZag
+	4y/mxNH8un3Q3IZTSHHihbYxDKVOazE7LB/zMdmGH2va7XfD4myBxDcZ7uk0RzqJJMXa7Tdg+87
+	ylWrcLUXAyoRFZrQLCcfVN2XurVx1njmTve3PFvBCbr5FC8r1/fTJSA400ldiUb0w6ckeJVKAfU
+	B9I4uzIEWfiLwHfn50rtz5+ottYJsIRL7lpK5ws65qnibMhLSufqBxzienrNwTCgWRYD0uTy3A1
+	jfkuRKLoH+hi/iFSBgAWOdcS5XaGmRvie9DlpR2YdlyC1pPHk30u3VXwqve5EQ07Q5KQoTRzIbv
+	UaHwz+GClATn3qjXHq+lfrT1fB5wF2vAewtKZFX8J/HAQR5Y+HzO8sIvqsXN8VWLImMbjsQyST6
+	vC7Y6l+rAqoI1QrWwViT8Z00xIlLy+L
+X-Received: by 2002:a17:903:1b24:b0:2cc:a859:d404 with SMTP id d9443c01a7336-2cf4a4d5af2mr2606395ad.23.1784413199893;
+        Sat, 18 Jul 2026 15:19:59 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:5365:2f3e:9da8:d323] ([2a00:79e0:2eb4:9:5365:2f3e:9da8:d323])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf346da07csm32012185ad.52.2026.07.18.15.19.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2026 15:19:59 -0700 (PDT)
+Date: Sat, 18 Jul 2026 15:19:58 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+    Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from July 16, 2026
+Message-ID: <6e07d152-d746-ad9d-9426-bf51647338d0@google.com>
 MIME-Version: 1.0
-References: <20260711-id-pool-move-bitmap-v1-1-cd5b7efc2c12@google.com>
-In-Reply-To: <20260711-id-pool-move-bitmap-v1-1-cd5b7efc2c12@google.com>
-From: Burak Emir <burak.emir@gmail.com>
-Date: Sat, 18 Jul 2026 23:16:51 +0200
-X-Gm-Features: AUfX_mzD2A7tzRvT0wfJ4sImRRe5a5kmfvx8TKWr-iujwCqAP7VLhO6-tyToFZA
-Message-ID: <CABwQupMNO5mdq+nSg-gpMcgatnG0P=XYJN-bH96Jjzs-_b-6BQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: bitmap: encourage using xarray/maple_tree instead
- of id_pool
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: "Liam R . Howlett" <liam@infradead.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Eliot Courtney <ecourtney@nvidia.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Yury Norov <yury.norov@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Benno Lossin <lossin@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Lorenzo Stoakes <ljs@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8516B20006
-X-Stat-Signature: q1om9puoihh5rb6bpimeayekai7gt997
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1784409424-899370
-X-HE-Meta: U2FsdGVkX1+m+0pfozrhDzvQPaqQowKmd+KyQiKaiyOypwQQvkw7OShfTOn5y0xGxzkpDWpCQd/lVQzYDLvlrdSwYXJXTaHr8UKRtANfQvjoVNURtBo2YYlv/DrHQXFutiPchfUwJzaSXOeho8O604Hmf5qiBPnyKzRhAqyJiwJQfWJVRf4RnJqI5ytk1YMbCmzPPtWItlkILhMp6hSxVnj7HASe7jyDLi1sMpqHKpx2ogM+wtKRDyx73bA8fTWGX4GgGmZHveqUFsg+KeJRsaOQ96vqVZRInD9Ymbi78vCPx7GNT93ErJUXDXYK2Q5ES/Bx3zwoLPWfG74TrzWLcMeJVTXujlJDWz6ItJQeJ1MKBYC7FZ9Q0/GEIwbJg/ZdGZVY2CA3GrOmWyaWWLMbWC96tlh53W8Z8Sq1Cx4525pYPd1GKuq+l/wDbUUuUuVJPlORCAqdSZHN12MZ64kd/Fn4zUFxJlvuPMLK5GC+Qk6xBab1Q2ct7TmqZJhq6EgnekQNHvBQOhpxnVrRxPoHdaNhdNW2L0kvIi2b5oD8rRvlyDnNP7nsT7xoLhnZbZaulo6LHq29wq4+27cCw0WnPbs56xue2kaQ/oMjU8DJf5kl0mfkBReuqCQUKaE+T3sszisLkr3TKihPBZ+KiL7SX3qQQMS9CqrLR11+NCHcyslMhN1Rgi6+ZQO3LiHKNWQfGjO39el6dfWLTkGdnRO6AYsT7z61+jHyXJnwxtAJJTegTXaDlovwfi7gQ0gSm6A1MoWdcUlULE+8Ellta3Vd3QzqwU4t6+8GHnmbNaOgmCiuz1kTso3jAucbe+S3JPTROfoNK+s2KlF5VQDSAxH4dg+fW50hAxS2lcAjOIGJms2HZCm9EfV9cTqVgu25+3pLMeMjrjKoaaFdpLuPjq0tcsSARyobXtc9bctz2G8xzTip2hNk5XwpIbnFFQBc0938Qp1bUIGvn+eCnXlMsoR
- fYCP7TV+
- 3qtxOSQ5XDKVYUxtJAAlaPBy/iqkGF8NJ40jml6w4cIbcTDu7urtpxHmPN2xAxrZO7W0jEL8P5u3w1Sp5NZfr1mKBwNKnWECvg+miG/UZpBdg6Up6JWGZayCYhZT5SxTPCurLZtuhoV1nW8i2YXgZsXKkJuDRuceI6cf4uPZJR3RUXSI6GWVU8hMw9bfS0ZIJku2QyZSeTIKyj3KwhXCl7m9gh5eTUAH94zg6kw6VoEqqjLATjcTj9DjMe3Yl348ahhnneaB9QEmVC/nF5FF+CJss0jcsU/PKZCJw27XeO76VVTD/X3s2Kohqx1EcV9zL0ywnE9yvfG04ZjcWztBIh+ruNot8OCQCh7PIw6I853cIX+YCYzQzoZnk7U12NOAwlCICK8mejz+GA8N70x9CqkjJAl/ct/OfOgqvsOLkeGfRY/BFGphgq98QhJ4LfgQx1y9F9zexclZMnQwTfBJ474tBGop9dsSQ6ZQRlu0P8nbi/n7GdjD/xfQJFgLyBEVs3baY/2WCB+EPbcA6M2svPRRV2uPp98xFpaSgRs9E3nzuCwU/pY8/IqIJoAI5xKIL0kJDwQTZxjPI7Eo/k4cciZWK7pyAKwzIyHYBYphhDEGKgW8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AE0F840005
+X-Stat-Signature: hypid4ixjbwocp87qr78aaw81fgw8ooa
+X-HE-Tag: 1784413201-54482
+X-HE-Meta: U2FsdGVkX19WG2mHwyfj3qKzFwN73dBxItCQHTV3B7LMX0f6l6GDVv2IIqLAFjvezFZCpFifuxepIErOUlErp/Oue7T0ESy+J2JUEJsVY8h33ZfMDpUtKDHGk4pd2fL1JIPgTflbS2/IQXI9qGoHqry0CqUUAF6D1SngR+iZ0MDNWskA/GZJCsoo8/uJ3yiK7cDl3i6bWUpQ3w0/PYmJ0zgmNjGwDC/gjRjL/ZWVMNam9Y2waYEP9euuG5+6G2t5LH/IemcMC2W3ee1S7Q/6pEXdaY3bb/yRWUyYd3TCCA/GTCa1TVjB1reGDtuAKqVUS8Orus71GnMvk6lOk4rF2zE5lqUGySQeIBII1T2rmqdISl5I40D/JWQfCDex/x3LAI430Jli/r5en9AVPHRTpl5ZR+JJgGaO6XaZEF+otBJS2Pxameyer6BMFIQP4cMyg8AHi86Pe7Pzd+PZwuSBZpv8qm+wnhdWMljNQsNkc2htTMlcr34j1BMA6NwyS6k1KX7vjo/YUw+QidQd8jDxaeCqTw/+tzMiWCrSa8dSAu+UyhKSJwbC5Ua65YDtZDwGiUhZyp3NLnKIAJczdKsFYPHgJt/SKIfQJHPGKqH8Juxkl4wGiwTKhA5aaLQGDITQW3cIe8A9+ts8srieBeIHSjrpjw1oLpYQ2eXOPcfL3IJj4gJNixRc1JzwHBNNrQMOoFnotuOdGF4ZqTmoGWvw7WUnO2HU9QVbGV7eSDwNLpjAQ+eNLklpNc3mZx2E/M+2991ZMOM5HCo1dKjaTYeTJN7euein1ubpfna9K7WciUOxlDVNxrfrMdhdJ9H/F8gJxOEKNhAHthpc5JUhf6oJlorEovu8msJ9+i62O2Yb6U577dKyzutGgmjLdSQulNAPSpTzqZaOBO1C8yQw8dH8m0/EwUJeafRbjIgx1C6zmdKjn/uRO3oE/iemMFRYFGB1hEsafhjZKj0t7JwgBON
+ E1BhXYnN
+ askjpMc5QYkYMz/Ho9Mx5flgy82kQo4vUo7+b4q/ztZkh6mSMHlDqcvlgol/ypP+R15r99J70U5kxmsPJ31s4MAaBmBh6iEC00VknzoU4ruh3ELn4mnZcAN1jXEMZ2jQ09KtORAFLEoIrEdebujiGx5VMVp/5HaP3C46mTlsQzlpuapdE8gusksPLDctTIHkbWzCizKeCCh6U47hQRfbhBkN16QAkOVSv6XRR6mMXL9UQXkvb1L3BbjCCr+EgnoKGfbV+Ld700vnA5HS1phhQgS96lzXLzNCgjmADI3yxbaE5GEo0a1Xz7ODHZyJ0b5BL9MbFZju3Ebq30hjL5jVOeZ7NiOWgpG6Z6pakVREhqfIqUNcsTMle/ETWzwEkAtNRYtooFu0HJGaoZSy2d7isaMtZFqN2k3FFrmEzzsfWwQug5EqpRosrdcIqnEOUvKRkzu++UW5dWGVLyFC03CPgS0FfPuvY7XttSsPYY8wbniFCo5pSe+8N/olHHZ03Ydmi+p7rP3QUy+kAukMr01yREZD50j1Bre5toCModS+SfgFWdgOOLDSh9OM44eEQXF8NOPHfehKw+A+Y9Xo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,34 +117,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 11, 2026 at 3:13=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> The id_pool.rs file was added for use in the Binder driver, which is
-> using a bitmap rather than the normal IDR implementation due its
-> specialized needs and performance/spinlock requirements. However, its
-> current name as kernel::id_pool encourages using it over other IDR
-> solutions.
->
-> To discourage choosing this pool when you don't need it, move it to
-> kernel::bitmap and add a comment recommending the xarray or maple tree
-> for generic IDR use-cases.
->
-> Please see the below links for the discussion that prompted moving this
-> file.
->
-> Link: https://lore.kernel.org/rust-for-linux/2026070334-dollar-hexagram-e=
-49c@gregkh/
-> Link: https://lore.kernel.org/rust-for-linux/84bc8bd2-e292-4b84-9580-a1b5=
-df4c5bdc@nvidia.com/
-> Link: https://lore.kernel.org/rust-for-linux/20260711063602.426311-1-ynor=
-ov@nvidia.com/
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Hi everybody,
 
-Reviewed-by: Burak Emir <burak.emir@gmail.com>
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, July 16.  Thanks to everybody who was involved!
 
-Looks good. I built, ran the tests and checked the rustdoc.
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-cheers,
-Burak
+----->o-----
+Yiannis updated offline that he'll work on getting his non-temporal stores 
+patch series on the upstream mailing list in the next couple of weeks.  
+Huan also noted that would attend the next meeting to discuss the progress 
+on memory error handling for NT stores.  Wei noted that ARM memcpy should 
+not need this support, but Jonathan suggested that there actually were 
+specific instructions for this on ARM although all implementations may not 
+actually use it[1].
+
+----->o-----
+We discussed LPC in Prague for October 5-7.  The list of microconferences 
+was available on the website[2], there are both "device memory" 
+conferences as well as general MM.  Shivank noted that he and Zi were 
+collaborating on page migration offloads as well as rmap walk batching.  
+He is also proposing simplification of migrate_pages() and the ABIs around 
+that, including context information.  I was concerned that we'd be delayed 
+until LPC to make forward progress on this, Shivank was actively working 
+on this.
+
+Joshua noted that he had discussed tier-aware memcg limits at LSF/MM/BPF 
+so probably won't have a ton of new content for LPC.  Jonathan suggested 
+we may want to have a BOF simply for memory hotness and promotion work, 
+similar to what we talk about in this call.
+
+----->o-----
+Bharata updated on the status of his patch series.  He now is working on 
+finalizing v8 of the series that includes bug fixes.  There are some 
+behavioral changes that support NUMAB better and more closely support that 
+implementation.  He is collecting numbers on the patch series and, if 
+there are no issues, then he will send the series upstream next week.  He 
+is also working on supporting for the second instance of IBS that is 
+specific to memory access information.  This will also be included in the 
+v8 series to be sent upstream.
+
+----->o-----
+Shviank updated on his series of changes for migrate_pages(), now at v6 
+upstream.  He is continuing to post as an RFC for now and has addressed 
+Sashiko review and feedback from David Hildenbrand.
+
+Teja Vojjala had been testing on Zen3 hardware for PTDMA and has been able 
+to reproduce Shivank's numbers.  He had observed many context switches, 
+however, and suggested we should be able to optimize this.  He asked 
+Shivank if there has been testing done on SDXI.  Shivank confirmed this 
+and said that he can provide a patch to Teja for testing.  I asked how the 
+feedback should be provided, Shivank suggested feedback on the upstream 
+mailing list would show more interest in it and we should likely pivot 
+toward the SDXI use case.
+
+I suggested to Teja that we should be able to product a list of blockers 
+that are preventing us from productizing this support so we can iterate 
+through them and get on a path to using these in production.  Teja asked 
+if PTDMA is a legitimate use case and it is, but Shivank suggested 
+focusing on future platforms with SDXI.
+
+----->o-----
+Joshua sent out his latest series of tier-aware memcg limits to me and he 
+wanted to do more testing before sending it out to the upstream list 
+again.  I noted that we will try to find two engineers to look over the 
+patch series and provide feedback on the API and overall support, as well 
+as any potential gaps that we see based on prodution use cases.  I'm 
+especially interested in any blockers that would prevent us from 
+productionizing this.
+ 
+----->o-----
+Gregory noted he was investing time in looking at how to optimize 
+demotions and possible LRU inversions.  Once a lower tier becomes full and 
+there's memory pressure on the system, we start demoting to an even lower 
+tier directly.  He's been looking into better LRU ordering.  He is 
+continuing to work on this and will send it out to this group when ready.
+
+----->o-----
+Next meeting will be on Thursday, July 30 at 8:30am PDT (UTC-7),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+
+Topics for the next meeting:
+
+ - update on Yiannis's RFC for non-temporal stores enlightenment in
+   migrate_pages()
+   + update on Huan's support for memory error handling for NT stores
+ - v8 of Bharata's patch series, including new IBS memory profiler
+   support and benchmark numbers that were collected
+ - v6 of Shivank's series for enlightening migrate_pages() for hardware
+   assists and how this work will be charged to userspace, including for
+   memory compaction, and separating the first patches out into a non-RFC
+   series
+ - v2 of tier-aware memcg limits, including ABI changes to support more
+   than two tiers
+ - Gregory's investigation into demotions for multi-tiered systems and
+   LRU inversions
+ - first class support for virtualization based memory tier support, how
+   to leverge memory tiers in the guest
+ - discuss generalized subsystem for providing bandwidth information
+   independent of the underlying platform, ideally through resctrl,
+   otherwise utilizing bandwidth information will be challenging
+   + preferably this bandwidth monitoring is not per NUMA node but rather
+     slow and fast
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1] 
+https://developer.arm.com/documentation/ddi0602/2021-09/Base-Instructions/CPYPWN--CPYMWN--CPYEWN--Memory-Copy--writes-non-temporal- 
+[2] 
+https://lpc.events/event/20/contributions/?config=c513701b-9743-4b41-914c-c1f29ee2307f 
 
