@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EBD2C44520
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 01:16:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 083E4C44520
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 01:18:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 172D26B0116; Fri, 17 Jul 2026 21:16:45 -0400 (EDT)
+	id F0BEC6B0118; Fri, 17 Jul 2026 21:18:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1240D6B0117; Fri, 17 Jul 2026 21:16:45 -0400 (EDT)
+	id EE2FF6B0119; Fri, 17 Jul 2026 21:18:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 039936B0118; Fri, 17 Jul 2026 21:16:44 -0400 (EDT)
+	id DF9256B011A; Fri, 17 Jul 2026 21:18:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4D5F6B0116
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:16:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6204F1A02EB
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:16:44 +0000 (UTC)
-X-FDA: 85000132728.06.756C8EA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CF12F180005
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:16:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTm0b95q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB0556B0118
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:18:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2FA86C0314
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:18:44 +0000 (UTC)
+X-FDA: 85000137768.09.CC405AB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 12525C0007
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:18:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="O+aU/otj";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784337402;
+	s=arc-20220608; t=1784337522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=48yTB0Lmrlpk8mR2lJ0g6c6+HUj48QmCvaO5G2InBZY=;
-	b=Um9q21RvDHMVcF15Rz7rsQjXOrpbpU7Q3hI/af/G6DdK4gWmez2zu3/ehUYAne2c+jlGLc
-	ZXFSID610WqUqNHqFkx/cGrZ/gn/rjxxSC+Else1XOSOqsKnJUwleH9pqvg0MM3QVcbuWJ
-	DMbE8BHYn6cJEfgaFlYBxBLKDYlkPu0=
+	bh=jUNN70ODl1TFOBNZuY9TYjCOWJbM41bDJQxkkXv+zok=;
+	b=hcmb2cfO7l4m6jORoF3ZZkB6icFXRRAzqOq0G+HiEfnYo9tM5mr+LSO1HwwTvGKsh2TMqU
+	6HMdlfedZlSWfef2Oh3vMI0jrZ3l7F3gDByljR2ytciB58O7vBWPr8Ngp8L6uxB9RjFZjC
+	DR/A6nd9Kro9mU3KAHHKhv3MDoKQHas=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nTm0b95q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="O+aU/otj";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784337402;
-	b=XRe8m+SM0e66xUfgrZ944tf2uACKDbb7BE0fDfgaelcAnKgE5j41UTST38ZKHwxyw+eYLn
-	kNGrO353JfPp9hO6/J6KoGXGTr2zFgKFBZetvLg5BCFBWeFFYV9JwcbUZ68I9kMgJWO74z
-	uZZy4/SXZJyKfcGnA3CDR5ZEdJ3Quy0=
+	t=1784337522;
+	b=1pfZhPdFBqMj5/BhHcFRT7DfKp+1ZhZ1hi9zAsji2Rbo2FNzzAt2NBCjx0PUCwtaiNMSyT
+	Ak/IG+X19tpHHKIc6Vh1CVHRb/w+7NFvR6AVQ46W+1Xe0kuIF51m9FsqHD2EM0bCSjKDoA
+	l9/rWbR60+DLWYf4cwGBVGczb8mZSgo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C63460A7F;
-	Sat, 18 Jul 2026 01:16:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CCE1F00A3A;
-	Sat, 18 Jul 2026 01:16:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784337402;
-	bh=48yTB0Lmrlpk8mR2lJ0g6c6+HUj48QmCvaO5G2InBZY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nTm0b95qgrff+QxYQfesDPwKrrL3LF3vu3i5qbdg3GgNN5ixfYjsTPZ7bC+Uu9Jjl
-	 ex84bPnshtoXqo/05QEzk42b9UCM4g+JX6C3lvBV1AeIwG8B7pflym4wCUF0DOBQkc
-	 j8LcG+sklUYJ6v3qnwIkZWJM6VYZ051BddzuzKjGVQPWbf+RmQS/zvJcMttMeJyHVo
-	 psdeX80RhJcBO7i93RIsZAG1OfAeE4C2uiPMSRs6iyt4XixqiNVzE4ZTUFOlt863xp
-	 FEStjzTBRyEl8oeYSr47E8VOFH1XRqNypGOrJQt7SOTwS5i24EP2mknqueMLxLPnCu
-	 q/v/ycrABYj2A==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon/core: handle region split failure in apply_min_nr_regions()
-Date: Fri, 17 Jul 2026 18:16:34 -0700
-Message-ID: <20260718011634.94132-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260718010312.90397-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by sea.source.kernel.org (Postfix) with ESMTP id E16394373A;
+	Sat, 18 Jul 2026 01:18:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AB91F000E9;
+	Sat, 18 Jul 2026 01:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784337520;
+	bh=jUNN70ODl1TFOBNZuY9TYjCOWJbM41bDJQxkkXv+zok=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=O+aU/otjr3mP14zpdPZf+hIYDvWxg6wOLxUWemvdULEN3eYDWcaUxCCgsQao7lzyF
+	 YgAfKVx3fbkJNtQPosgZMmvDi6sSViANthXfcWMVSai1HlJySBgwuiCBTMJusmF+Yl
+	 RLyeQ8XFVu++/7Hu28BWjqwrdlTc7hwaLKg9058s=
+Date: Fri, 17 Jul 2026 18:18:39 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: tj@kernel.org, hannes@cmpxchg.org, shakeel.butt@linux.dev,
+ mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com, nphamcs@gmail.com,
+ chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Subject: Re: [PATCH v2 0/2] mm/zswap: Fixes and improves the zswap global
+ shrinker
+Message-Id: <20260717181839.c94d0335ccef0084707d3d85@linux-foundation.org>
+In-Reply-To: <20260717085151.22822-1-jiahao.kernel@gmail.com>
+References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CF12F180005
-X-Stat-Signature: jcphe37b7hsgb8xjxgztxy9xr9zbkqxt
-X-HE-Tag: 1784337402-349759
-X-HE-Meta: U2FsdGVkX18qBkmJ+j3gfydualMRxVD6ct46W9dMrrTIVTke7KkQL6XNVvIXAtDxWgESle2+z1d9lwQIra3rt9vFo7uomdipMJc45aIQ1+dQtlIpfDFxqmUyBWqtks1nNRqRfZunk4OuUDlMmYk+KXSPSCjlvs6WGr4tRyQ0emNfGtOIizuht7c1sKkhGiVzuXS9YYpbleWmnTJ3PvckvY8L/p1xKhYO8Jdt9KUX4D4NuMa+i5ktf3m873YF75VRIL7tj9hpPBKENRIxT7KSUmMIP8GjQf/BBqtcUVwSzMSgjUE0ZTV4Nh+Vfx+5AW+iJC9eZDyxhUR/YUIsRbX8P1C6+P8gsgJoPqwx/XGDRm2gB4rnJakg3AWMMzFFQ/dW/mJn70Oakv0ua+wm3pjGurAjqXn56nAtEK3KfHr14C2egDWSyBvtu1zC8pLrcgukc2hEZj8ETfcOytyow6in8XNabUvz1z68R7SgQonWSJLdqlIOCT7MskLQdLV251Xee3W+VZGu6zb9jUdifnm4Zb0WqdXzTky3B6PA4j55SwRMY8RpGZF3Uv78FNO2hjV9VYNEAArqyUT2yqeV+07YrCx3U055Db8pR+2Elyi/c8YxHXn+nlorQMfbI6j3TeM41PFv00pBGHM42MwWAO3Wj8/QjG91hCr4r3ivu+bWOWMz2HVl4QcU5SM52MBj2Ix70/xLYb5pf4ilyUVy/DYUINT6EmGJAhHQAwR0PB0ayJ8eBt2CnsRpSPvb0g9D4UBZYqT8/nS5UGrDg3pmnhKcEKFl/0OKn3KoM/nSbH7+lqWGq6ASR1F2qbGH9dLLMYpZcZO9+vp7mQHDaiGQ6/PrYCI6OaX6dcEVErsTi0XLqA2Wtas2baJcOtq273k6bAWZ0gYuyDGXaxLEIxsMvxAJHZvi7N85X82qhde4u+A56iAsiq9rsZyV6IqxTAVSs/ouwOzd1aQWKRYZwH9gHTS
- 5zvjrEc/
- GOa4WFk+PlucDqhkAGUpLmZxJmtB7WxFiwPhNZo5Ru2WpeKFqi1Yo7gY4Ax++4Ouv0jDKfJIsMDkO+mpksEkff2d+jhG0CoveakECc9N7ppkKqlwlpMHTViq7IhE1xg+ODyeERuP5lQMRHaTp5dxYH89CiVAnD7uWPw67swhK6XSHeolvyp193391Baar+4er3r5GTE+ajf1wBSoeiQtvYVqSl73/k6hSAlwVu+YD6dCcNNHJ007+ZAYJzqOS9OX+SIZeEpNnNPGd18ZTX1uQCJmS0w==
+X-Rspamd-Queue-Id: 12525C0007
+X-Stat-Signature: 5ouchmiox6e31dqfhpyznx98idyf7dut
+X-HE-Tag: 1784337521-586589
+X-HE-Meta: U2FsdGVkX180Y1ZEpIXD3nPbSyFB3zU0UheuLOWohtvM6t95H+EZtNQgFhpqOPBSKUvZ5R6fMGVr3DeoSbd7FRWW//ivwOTUbIpe93Cfyvx0yXvyh4VCHKGFZ269RTUEwoX00ONWdTwlywwVj1oqMMH1ffjBD8MBXK6mxq8W5aL2ycUxfNfOU6TwuQUi1fJt+BwpQVFg40SRB/47fPFesJzE81Nl/BHHeEmjdoVzel5xMRqdU/8aG49jTzfpPfvyjTQKd0X2cikjNt6BdhJvb6dqkOR29K79GH9/wLehrsC+0yhaFtsw7whnt0N3AdkHvGbn3raT+p5cQPtdgAoQYM1Gd/41c9QgQ3R+fGSiLtCHH6yt4T1+9FKexw9D1/aoy5QvcG+7PckuKHj1fsnSrcrCifnUh7hLP+uVmrOR6ES7/qLLQ1R+NX7CfVCX5V/2cv2i2NN71oqqQrnGsS4r+zSFgkt3rqUXNbqPI1R7OKiGl6oxYSWgFVmmHFLXCcYMDGEci/bf1eKvDY+5v/IuuZWzAiYpitQz0ddAIiEhOWsEefEeqL06loP3wRRq0KryX7K5jtBRzjCxS3UirgdlEgfCHaedn0k/RaLGLQxV6N1PU9AgKxqkrewFBfooyQerynhnqH04R0Nm5ltjG/cMiX2X0mngVpTYR8dMqblm8Yc7mHfA6zi8cSHGn5s2fRww5eaDEveU/6x8tVq3RnzsuQF7v3gTc20N7RSSzC3Y/6xLC6zGILvLYC922bW06BWUWrp+B8m+Zr8i2dOtQTaJjXZUgeyw6OpW+rTrBq8LWFFdilK9gaFXDg07udQzeNW17ayCPz+4R89l8wYjsRJFgsWouxu2KR0Ws7QVavh08686ZVVKjsWXaAUaBOBtS1267Lqkhw2siI9gLrOjCJo3QEv7ZHSmHqMxHxJCArNDWhlkgSBI+if6dzkJskZRTV0bo7GDg2VTudi1JO/+bdI
+ 3EdvH44n
+ 8BTJlP4NJjEfWpuRUyOc++E+CmNlaUjQEfK9/5CkRIufXjT3Oh3hQdxJUkHU21u+oQue4KJO78USv1T80uVRtRHsFR/MaHbhTswWB+BlfnsCtKxu6Ibn5W0xUhXWHBNph/r8T7epHCTly4Yo4RyOwpajqbhURc1mudVUH4oHWdPfL5IE6b8gByy3cMoJr7Wumnxoxf25R1jn6M7uXqr7cRi8Z5ew23G9W82QIcbfVhekK/noeniGmG4B3PTuR3T/CysQum8k0nmYlH+kxjKdg5viPWd5wftrXnuLTDX8pnATsXPghoqLQcj2uSjI7ieXJ1ImlEmg7rIS5XlBDdBMHu5SkdR50NBrZbweBX2602Cd2bSxbu6vbS47aigf3eWs/qvwVuzz9+gduLpisLg6Yhu/2//bJFLMgLYPC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,39 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 18:03:12 -0700 SJ Park <sj@kernel.org> wrote:
+On Fri, 17 Jul 2026 16:51:49 +0800 Hao Jia <jiahao.kernel@gmail.com> wrote:
 
-> On Fri, 17 Jul 2026 17:43:00 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > damon_apply_min_nr_regions() repeatedly split each region until its size
-> > becomes small enough to meet the user-defined low limit of the number of
-> > regions.  The loop assumes the split operation (damon_split_region_at())
-> > will always succeed and create the new region.  But the operation could
-> > silently fail for memory allocation failures, for example.  If such
-> > failure happens and the region was the last region, the linked
-> > list-based next region fetching returns invalid pointer.  As a result,
-> > invalid memory dereference and corruption could happen.  Fix by breaking
-> > the loop in the corner case.
-> 
-> Sashiko found no blocker for this series.  Sashiko sent findings to damon@
-> mailing list [1], and I replied to all the comments.  Please read those for
-> details.
+> This series fixes and improves the zswap global shrinker (shrink_worker()):
+> Patch 1: Fix missing global shrinker when memory cgroup is disabled.
+> Patch 2: Extend shrink_memcg() to support batch writeback and update its
+>          return value semantics, thereby improving the writeback efficiency
+>          in the shrink_worker() path.
 
-My intention was to add this reply to other mail[1] but I only mistakenly
-replied here.
+Thanks.
 
-This is true, though.  Sashiko found no issue in this patch.  But that means
-nothing since this is an RFC.  I will repost this patch after dropping the RFC
-and rebasing to latest mm-new, tomorrow.
+[1/2] is a cc:stable fix so it isn't really appropriate to combine this
+with [2/2] which doesn't fix any bugs.  Because the two patches may
+take different paths into mainline, with different timings.  But that's
+OK, I can deal with the splitup if needed.
 
-[1] https://lore.kernel.org/20260718011322.94001-1-sj@kernel.org
+The [1/2] changelog lacks a description of how the flaw impacts users. 
+Please describe this fully and maintain that info within the
+changelogging.  This info helps -stable maintainers and others
+understand why we're proposing a backport and helps myself and others
+with timing decisions.
 
-> 
-> [1] https://lore.kernel.org/damon/
+Finally, AI review might have found an issue:
+	https://sashiko.dev/#/patchset/20260717085151.22822-1-jiahao.kernel@gmail.com
 
 
-Thanks,
-SJ
-
-[...]
 
