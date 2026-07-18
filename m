@@ -4,93 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AD4AC4451B
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 19:05:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB0D2C4450A
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 19:24:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D159E6B007B; Sat, 18 Jul 2026 15:05:31 -0400 (EDT)
+	id 4FB2D6B007B; Sat, 18 Jul 2026 15:24:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CED156B0088; Sat, 18 Jul 2026 15:05:31 -0400 (EDT)
+	id 4D2FF6B0088; Sat, 18 Jul 2026 15:24:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C02EA6B008A; Sat, 18 Jul 2026 15:05:31 -0400 (EDT)
+	id 3EC146B008A; Sat, 18 Jul 2026 15:24:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 54CA36B007B
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 15:05:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA2E9A0391
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 19:05:30 +0000 (UTC)
-X-FDA: 85002826020.12.9DA7726
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1BBD8140008
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 19:05:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0989F6B007B
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 15:24:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E0101A03F5
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 19:24:04 +0000 (UTC)
+X-FDA: 85002872808.25.A0A5A3A
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7B412140005
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 19:24:02 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3eM5bagkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3eM5bagkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784401529;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bv6yVJpO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784402642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=0vmcegl3OOLgh38fBpJ4SPH/8D39XCHqiqIL39qmmnE=;
-	b=ww9Dy/y9fhSEAg7dxGRfC648YqVCKTJ06MVomvqs1JEaZqQxvWhBupR5Z4N3mvfnoHdws0
-	RZhLpSRSuAEbhpUWb/Zz6qXL9Bd92i5kTqNihR3sAZCoyDxcdmoB8SsuE15pp2xpSu0JCw
-	V3h4P1nzXMEl1K2OmsVnTIZkYNDcCnU=
-ARC-Authentication-Results: i=1;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HJyNAcyDjaN+fTO6jyorfeC57GOZoi24fbSsPWreW64=;
+	b=JDrR5Nx5KeSY+C0cXI0XpAihiCSVsrlA7G3AAzJKo63uVbrKH8cTYTzYtNTNboZxeYSBdk
+	AUQTN5IM7LJe2REPCsKWfqqzcyc4/79YZEaOcCqX7jLOPhX8NKCwvQmqOoU++VXEdyIMPl
+	oUOkLemhOCN9E6pHsv96zZVy1G8Kd0s=
+ARC-Authentication-Results: i=2;
 	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3eM5bagkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3eM5bagkbAN0RXYJ9KKDQ9OOHC.FNNFKDTRDQBNMSDMS.BNL@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784401529;
-	b=eldkihQ8btlKBY05yknJe0Fk3UWrshEvAPhPHVA5XpdqbSP1DxDSaAe3FEw3a1aif24Cbi
-	VGpa+oFjFdEjcuNXlFiVdn1d363dp6xVqo09aX7dHzaSxjzqlWjuIzh4Gj21GK691Yh7Sa
-	xCJaiXvvvjLDXDn4Y8uDyGmngVY24qs=
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a45b3f0bdfso8723411b6e.1
-        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 12:05:28 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bv6yVJpO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784402642;
+	b=BBPgtJJusXsPith3KvQj3UHVba7fAYBEQuliP5PU1Rq4MsHwCaUejjV/t1cHI3L3SKb0Ng
+	3QbRBRfBCBqeB/vMh5DnmhTWA9prWo3Qt29rlG7a0lMSJ7dm+rDHqCAzL/QJCHzOUj8J82
+	90uPTaL6BVtmU2qrNz9GekK8dX40EqA=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-699fbcd23ccso12728080a12.1
+        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 12:24:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784402641; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Nj9i4zsrU30UvwNNOU/cNUoApZ7t9EDYI44PxJSKgsBr5rQTUK44ulhiE0NYJ6uqm4
+         4nd57G4Rgs4tZj30UuC+o4MzDcuL1QdQ54WHhBoeGwBGDbFs2N3N8hS9wH4aE8zCLAdO
+         KLxhBJCkeux7RGJlEsYPxBiXxfExDPe4YFED3MaG8G/xbTn+dnenDSXtRcmEZtAvfeNm
+         LTg/OrUmCDBigEScTELJ3s0c25l4WKsvMA/5ga+xRWnQrcxzQdehoN4YsClrUO/RJgCK
+         ekqxsEXVMYA546HiTb8A0puUSIHH1LG7E9f+imzwfqFSNqXeAK+jr4ncdtPtK9h7rm+D
+         TB1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HJyNAcyDjaN+fTO6jyorfeC57GOZoi24fbSsPWreW64=;
+        fh=ADkH+kRZeix7avaYAdYF2ayiGXvHDmcw2gO5kWV2KMs=;
+        b=Az40x/SSbonJ4N0GRW5YTHn8TxBe5JaV+NOw9t49dwrgzU4tbZ8yHLz7Y/CBa4A1qC
+         bpU7yxcevhcaOJFMA6e4Pou5IlZCTRJulDIrIT3y26bdbBv57WxdLfraC3IrquFdTTmk
+         rbAEf4hXfM/4Tj970/xn8ukXsUZiAGZ+tXwfvuWfoFQbZvfx+L4g1lAIq+rl+9JNf7I8
+         Hb0XxIjPBwC/djbySuNVmh+MW+etqvG3HDQBD1fpOi38YIcIAGeS1Zsomi8wEB0keyDK
+         Wr0qpOf8KNveLJR3qUVMyZd980GJaLFH9OY8HS8kKuvHQnJ8wRPMe7Si6ARFi83l5MCd
+         n/7w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784402641; x=1785007441; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HJyNAcyDjaN+fTO6jyorfeC57GOZoi24fbSsPWreW64=;
+        b=bv6yVJpOschld8OQxS4/P4M4PX4TI13lrPuwkHt4uG44adErDHVVQS47kIUxIA2+eL
+         xvTfbAqdDL8qMVm2PdnCWhENRYo5fIgmWPKkLyXnRjhJmqFebtMEwYvhJOnRb6F9Mv4Y
+         DC0HLyv0dYSfC39wZhOD+82/LEiP2vLIqdlPNtup4e/Ow00rly3D3a3sieIMie+j6Qw0
+         N0EWb1bYZBFHaNGZ4ekGBCioGu/Xcf2GnCCnFcgFZqIy0S3xfKJ+XnY751AZkVxfprF9
+         0qYSai3B4Z7k6w4SRTNRa+xClxUId+8i0FxK6W7B03H4gjMEctvxS0MdwmFDj8l4H7ql
+         z+ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784401528; x=1785006328;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0vmcegl3OOLgh38fBpJ4SPH/8D39XCHqiqIL39qmmnE=;
-        b=Xo5ba2YUr9261dACAMcePOlDgQ85oP21Ghhkbehhx81LIHTh+zovYTWyAZo3PdgUv+
-         1CJ8DqQi20c3AGl+7C2JuP8JRkd8uMGb9+Ngu9mugzwvvtjlQzzbz6HyZKNhrz1Ywp6n
-         iPSNtQ4aGThgKSKFvNgBSPU4m9lkIC2DuKniWmxded9QxVT/7DXv6LriWOZTXrkityKt
-         ef+v5taqX4I1/UqLZLIGdZcR3NrpeM0bbZCnXq7SuhjfoutQiOt7BDjc3zFZ4LLni32z
-         VThvxhnxo1qfkzmrq2YVO2uWBEYLaCQWfiX51o3t00NIBhNTGS/GKpozkdXf4Ch/dc3e
-         mfvw==
-X-Forwarded-Encrypted: i=1; AHgh+RpTDWlYh+durHE0ljQR55+WPe8iK1PoREAVwaADEEYZrZE+LSgaohm5PBC1BDMKfclSkFZDj38lgg==@kvack.org
-X-Gm-Message-State: AOJu0YzQw28E5YkHejQOCwi/03lvWz3FgMsGC+i4FFK7hzbK89SsgLdA
-	Mndyp3Ohz+rUeDcpmiYZJC/1n0W4Qb39CcY5sQ41c5Vu38MJI2WBV+59CinHJ3CMX43Pi7jHlAU
-	i30HbZxiC9UjhCspzvJjaYmVPe126ilOyMS4Gve3Qs81K79Ww0UO4mgcvklc=
+        d=1e100.net; s=20251104; t=1784402641; x=1785007441;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HJyNAcyDjaN+fTO6jyorfeC57GOZoi24fbSsPWreW64=;
+        b=djHfKkebj7uqu5TBtqUat4NFp9wmHiVcQKhNzzuCkiPOTtu0UY89xZJelZBT1xmAgQ
+         33OhN8q/g1qTyJ3Xw5p3I8DLXf2NfVMeaYzFyk+Zdq9ItfUsbY8wN5xk3V37qRJDwy6e
+         b4ppzPS0BjvjfekID9i0Z8+N89lZ3nBoGYatm4a9dQ4mDRnfz/anwgLn7x76uvROG1rG
+         uhL36xxqz8YlxxRZvZY8+dJOgEadZRLUAMY0aqWOiyV5KSoYvks1pAhd7W/4c+Oy2qOu
+         +3l82mzSESxrkVVrdB1NoR1c17CTnkOwjMh7oxJ5Vf0ra9LNU7rN5dINtB8iwQcEDO0k
+         HKVw==
+X-Forwarded-Encrypted: i=1; AHgh+RqTF1B5ckAwv4g0aRW9eJecujArk3Lla6BL4239EElS2P4EAckaf+hBsfcPhcIyEli+hxb9gUZPLA==@kvack.org
+X-Gm-Message-State: AOJu0Yxx5JaKR1lGW3eJTYrFA9n5oZcBFcg4V9sZWRuiXORuIdaAh0Vo
+	EwhOhv2Z00ITYvs/aIUZX5r6LgrD/rCAiFZtotObj/4Q2UbhAXTzu2ZFSNugMb2EzkEqZqwrS27
+	v/zKPNVHAyBCah2Oe0P/nbzCJ9OhStIE=
+X-Gm-Gg: AfdE7cnpK7Ng269fY0859DzQpRyMObi/tigHW5+dgRS1rLEXdYQEr0TLNJlQ7vyKpK0
+	SbkKT0tT4XXKvI7GmxoPcDgcqGz6LIAReWWZsidfLbxFrdPxTLuU+/yl0qGi3KZZ+Fe85jlSu2b
+	+08Xzf362CqqizpGrt2qYQCvG+pnMB/VXv7B+22i5eDCzHwh4mir2jb9oUgDJwPKxLC6ernmhG8
+	1lArxfT4G6dnH69pcnFEgM3Hjm6E3+g0ElPGvcd/Y18oO6DqPomoYTuv9bdVnFn8TRT+56NYxrz
+	oQURFrcOEk4lTG7Y++A=
+X-Received: by 2002:a17:906:f587:b0:c15:df42:952c with SMTP id
+ a640c23a62f3a-c16b46f16ecmr337195466b.28.1784402640895; Sat, 18 Jul 2026
+ 12:24:00 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:170f:b0:495:fed9:a84f with SMTP id
- 5614622812f47-4a4d051ebc3mr3730981b6e.27.1784401528247; Sat, 18 Jul 2026
- 12:05:28 -0700 (PDT)
-Date: Sat, 18 Jul 2026 12:05:28 -0700
-In-Reply-To: <20260718123417.16339-1-liavalb@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a5bce78.f1649fcc.2a4208.0321.GAE@google.com>
-Subject: [syzbot ci] Re: Fix an imbalanced file ref count in the mmap syscall
-From: syzbot ci <syzbot+ci8a1a6021291643b0@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@kernel.org, jannh@google.com, 
-	liam@infradead.org, liavalb@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	rppt@kernel.org, surenb@google.com, vbabka@kernel.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <cover.1784268206.git.baolin.wang@linux.alibaba.com> <7db4d1975cf04e3e48157f98bdf398565ee189a4.1784268206.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <7db4d1975cf04e3e48157f98bdf398565ee189a4.1784268206.git.baolin.wang@linux.alibaba.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 19 Jul 2026 03:23:23 +0800
+X-Gm-Features: AUfX_mzGn-0idPGuxv7N90VW1l5CZJ4fw0XmM3Mep1puMEXDp2scjXVXcLdGbBc
+Message-ID: <CAMgjq7CkuWfPfrMe9jPypW4zibHG-nFCmH26xR7u0Z6zhOvQpA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm: mglru: promote mapped executable folios after
+ first usage
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hannes@cmpxchg.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, mhocko@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7B412140005
+X-Stat-Signature: 9kwo5zw5ruc6z4zu65bofphm4rd15s8c
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1BBD8140008
-X-Stat-Signature: e9t6uss8rydk9qftbmizc1qco3adhuhc
-X-HE-Tag: 1784401528-92363
-X-HE-Meta: U2FsdGVkX1+RueDJ8sYdVFzwFGSKM3i/wdXipPCBKHxTbxirAG6kdrzaShBHFbZCVr27aOKsAG1h7UxWnKUJtKPv0kaMOzEJwO5fA/SRry3GcP3fgqC92Yfodi0sRbteA6/2WPU7MsNO2gUpuRgCvPtewfelgPU+qTV1USJ5JTOSH9H5ya0q3cdYD7gZXHvqLH6K7TDhEAm4DFAjakBr81l0aA/uP+fXS5Vrj4SReFPUCq6X/nPgSEPcYQpPqga2KxPUg3PDHF6vKBwT5WzUbQfu8THUAI6pJbYSCGGa6o8dWnb2ffzFZ6OyPZDkFrL3r/D45gp8/RNvfQNmaFxGEvKciYk9URlGCVHwZSDn/dJuTX9rcqGb6vxOLjVGCHVCu6jW9bBDUQXtb513pdf1ets8M/MGMYaaeKuYOjWWe2VdBKrYCtGlmo0USk9i+Rx/ekTo/66KeHdfdbV2o47Vo6R+mbJTj70FvVIFbQnXO1EyCMBkeAkPOzUoqAIZmFJUBc3mubYZ4Z32pluzKgS3EaB7GyN4QKjbW0mq8G8vFbSlB7rZdoNDg73S+urCcHqNfaHnxp85PWBBjYALTRqkEwe7Eu/aiZoByRfsMk4D8biVxuXPsQdiJC4bQJGyDKZYUWHPooJGkbRajdrSVv8qygxYKuLoSBLaU5XHBLdtgcybyqL3l2ALC57JgtOLYICYVD9MMJ34r4NG2OBOsKRu7TAED44DF4v6OWl/SQKsgN8BHX6qWc9QxiqFjAIRiPzG0J1LGqM6LBvtMpWrc2zlemPEpy7JN/8hGJg0AaH0jzbVnqGMilFR+F2PnmuXv5DuSahMa/HCBE7EfiThx4ZZakm7H+Kyd0eqYwC8VZXFtjwbj/0RtPQYn7l9Qe7yudVKtmFMu5A6Pp7KC5J6uyfSUh8jUXJLbfBdzeR9vjkqZq5udxdPOLOR+iZ64FFcTqN86hyJLEWgKvc29utaAC6
- lNTGEtet
- sUGsokVYAOX9kxVoFI/EQod3Ib/doC8FiLOrTNQ/sTByTie/aBF6rpBiGhjt4I7pLhLXrN1b2diX1gR/udnTF58xEozv2CFyTWvDew+RV6BYKqGUL/9nQZgMFppjbwaEwKFu+vxrTTNZnYfGJN8YskwWF5Zoaa54Zw14zEEyUIsiVjBN+Mq/wUydazxpbpwmaCuhoQwz8AINn2fy/y/hQLVBdKhV49OkTLSuYZFJOqO92w5KMeILXTrup6ivHz1nOzyhFlhjP/h/iXoPf31AK8xYY2QnWk/ImQUcSzpjqgsU8HiM7iuqpiVDDNa8QOGSh7NadSYeTveCtKBTxCfNtu3FYDkIc9PY3xRgJjOfDIvj9Q/4sZpfLdMW7tgb7720p4bwMzP9gafQ5SZRnk3ahjzeLycBxaY902iORzYAnZ7b2toAowThSs/+2EYszFTo7W3n0kbmXafl+8X9CWezV3XE97ErMUHEzD1jB/XpfH7enFVWajHxVfEV8nm1TjzSwJHchJtF/72c3TKlbbegcZBptPuoETwgAOMAJwWgx+S1ijOzi50L2eUIAMd22SWOzRl7v/WDsiMy5+AgdY+hDVTkCFWsdMhWT+A/RUT4ujwmsHbkeamSWl9bF+Jbk0Z6R04XzN/iVlzlHrHyGEBFmEimhetfhDgGxtLSr0AXtrGbLxOAf/6jVrpejMLLy/6CrbaWo0VlXWjkg5cSKqBNrYP9RmwyZZ14E9QRA5Ihxeg+R0/SKCpY4SfaXltkQcV6YAlxHK/NNlpqAXRHJDROSkk2y2B+KmuPWqxGr8Lg7DxA4BgRixK2MVMi2eqvsZmfo0RMSJT2t4CF9crleG/XybXi04nTRxbAIZ7AKzrgWKB27YLlf8B3kvY2G18brIt6TC/WSwimG2cqkSTJanwwAMZYalzngYILZsdg8MzAC6rvSYjCBXJz30X3mHoqwcvs6PQ8n8Sq0bxh4Me0=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784402642-500566
+X-HE-Meta: U2FsdGVkX1/mflQuvA61z+5ER80pcyljOO8dz4L99tc90FzYYtQFwpwrJn9Lp6GTTJKsQrk5V+efbAy7fOLB+0IVoJZlDuDDjSQLu51ub/rjWvWNGeoYtXAj1FvJoss2XVPRMYhDs0THOd/K4oDmLx8IOO7+u5OOSnyJCVU9Kz7Q1e5WAKN96iNIUruMLaCINu55bPjv3girmqfjuySwBWfueZvU/rkHbY9Je8LWcgqq9biONue2O3vv0teFVbOOgIsRAa2V9xxXPoPCWPSNS/gLpEGwDmbtILyppMizpKMKQVvK5T/qA3zPmcM8cvWO7wMM9cW+9+8hw+ThKOSzJd1eNszOX25HXFT/tJw2gFQmb+xPVNZCjjauV0tOv7BSB1BrPwuz5X07EVjbW+X4IiR5FhI6L0GNJojWuONocwyFGVFxyf5FWyAB6615DAMt6PUVwcf8B+Yt8pQXy86kgGGi7sYH0eAvt4jyx+GWT4ZoEyeJ1jPh7va8FBqlmPpTgCmTNswZp7X+4ODOjjTQ339Th74WhmYYhjdUBqazOf12ElekzXsESXrWm7+zwkbp8/jAbidGGu3U4WVX1/EfvPLcHODvgkDwzzfoKnk0u57nX/dsIwEaRq2lACdri2okAzJsO61Q52JZhYfMEtmNZFuN6FJMRv2r3hC3m2dc36nPDXaCS43EgwE5i3i8bI8UqrS96F1MchK2JxIVsnRbe1F578wwXokuNhIohhLlrQ0f9p63xjgTNqt0WFx71ZtyIxHnIdgyPjwwf7OX8ctphCtnKFyCDuCNwk1ZgXobOOSQvfloGruRnj5h7HTfL5CwJysbjvH3raScGW1QrA0VZklurn5lQYQExGxE6ps9cWQZOGPbl2oxCI72CyOTxiac2hLDxPv6mhZmo+pHEUkhbT2PhsvVzzXX+zqSIuL0ozCtrNqKzhCciYQGcyh2Q8udx66G1hRpf3kFzKdzwEj
+ lDVVCG7Z
+ Bf7W+hrbWcL3u0M9Mw0Y13Xo5t/t1EMQ8OPvlmkdcAsEJIALhufgEOeR9mw/z18tV5h/aaMzyx8TJ0WzRhjNTpntTAx14F5Pl1CAvAabrXDpGV2Ved5VwMQ9DlJQb/TIFZIqKpmQEcPGK2zOs/BHWQgHvX1PbRXvsPrRDUwpgjQSezOMfe0681990S3GnKNHie6q3E8mJ5CCFfxUCEi0SJnRQMFqYUJdGc9dj22NjCS70fx8tNRJdH5z4u8KOyTyBT20+wq4u5hfiDVgeG666mE6UQs8CCKvM0hKVNPWsC4ltHtB9OOuKJ3Npd1a09LRdyevKGSiIcnnXiumhktLh1gVAlo73waNDColHvXpfF2yYJL7IK/shXBSsczOaGNoK7JMlr7ayH+dBb1DGjHPWLf4fjDDEwKHFrp7l3uiRQYNR0es=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,91 +144,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+On Fri, Jul 17, 2026 at 6:06=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+> Classical LRU protects mapped executable file folios through commit
+> 8cab4754d24a0 ("vmscan: make mapped executable pages the first class
+> citizen") and commit c909e99364c8 ("vmscan: activate executable pages
+> after first usage"), giving executable code a better chance to stay in
+> memory, avoiding IO thrashing and improving workload performance.
+>
+> However, MGLRU's protection of mapped executable file folios is less
+> reliable. Although shrink_folio_list() checks references, the access flag
+> of mapped executable file folios may have already been checked and
+> cleared by lru_gen_look_around() or walk_mm(). Additionally,
+> folio_update_gen() or lru_gen_set_refs() only sets the 'PG_referenced'
+> flag for mapped executable file folios, which causes shrink_folio_list()
+> to ignore the first usage of these mapped executable file folios and
+> reclaim them easily.
+>
+> Follow the classical LRU's logic, promoting mapped executable file folios
+> after their first usage in folio_update_gen() and lru_gen_set_refs(),
+> giving executable code a better chance to stay in memory.
+>
+> On my 32-core Arm machine, with the memcg limit set to 2G, running
+> 'make -j32' to build kernel showed some improvement in sys time.
+>
+> base                    patched
+> 9248.543s               7861.579s
+>
+> While we are at it, introduce a new helper to check mapped executable
+> file folios.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  mm/vmscan.c | 47 +++++++++++++++++++++++++++++++----------------
+>  1 file changed, 31 insertions(+), 16 deletions(-)
 
-[v1] Fix an imbalanced file ref count in the mmap syscall
-https://lore.kernel.org/all/20260718123417.16339-1-liavalb@gmail.com
-* [PATCH] mm/vma: fix imbalanced file reference count, properly abort mmap_prepare
+Hi Baolin, thanks for the update, looks good to me with two nit picks:
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index de62899c108d..1040bf9f96e8 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -268,6 +268,12 @@ static int sc_swappiness(struct scan_control *sc, st=
+ruct mem_cgroup *memcg)
+>  }
+>  #endif
+>
+> +static inline bool is_exec_file_folio(const struct folio *folio,
+> +               const vma_flags_t *vma_flags)
+> +{
+> +       return vma_flags_test(vma_flags, VMA_EXEC_BIT) && folio_is_file_l=
+ru(folio);
+> +}
+> +
+>  static void set_task_reclaim_state(struct task_struct *task,
+>                                    struct reclaim_state *rs)
+>  {
+> @@ -835,11 +841,15 @@ enum folio_references {
+>   * with PG_active set. In contrast, the aging (page table walk) path use=
+s
+>   * folio_update_gen().
+>   */
+> -static bool lru_gen_set_refs(struct folio *folio)
+> +static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma=
+_flags)
+>  {
+>         /* see the comment on LRU_REFS_FLAGS */
+>         if (!folio_test_referenced(folio) && !folio_test_workingset(folio=
+)) {
+>                 set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_refe=
+renced));
+> +               /* Activate file-backed executable folios after first usa=
+ge. */
+> +               if (is_exec_file_folio(folio, vma_flags))
+> +                       return true;
+> +
 
-and found the following issue:
-WARNING in tear_down_vmas
+This somehow missed the PG_workingset below?
 
-Full report is available here:
-https://ci.syzbot.org/series/63d42f9f-f249-4678-8916-5464a15accd6
+>                 return false;
+>         }
+>
+> @@ -851,7 +861,7 @@ static bool lru_gen_set_refs(struct folio *folio)
+>         return true;
+>  }
+>  #else
+> -static bool lru_gen_set_refs(struct folio *folio)
+> +static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t *vma=
+_flags)
+>  {
+>         return false;
+>  }
+> @@ -886,7 +896,7 @@ static enum folio_references folio_check_references(s=
+truct folio *folio,
+>                 if (!referenced_ptes)
+>                         return FOLIOREF_RECLAIM;
+>
+> -               return lru_gen_set_refs(folio) ? FOLIOREF_ACTIVATE : FOLI=
+OREF_KEEP;
+> +               return lru_gen_set_refs(folio, &vma_flags) ? FOLIOREF_ACT=
+IVATE : FOLIOREF_KEEP;
+>         }
+>
+>         referenced_folio =3D folio_test_clear_referenced(folio);
+> @@ -914,7 +924,7 @@ static enum folio_references folio_check_references(s=
+truct folio *folio,
+>                 /*
+>                  * Activate file-backed executable folios after first usa=
+ge.
+>                  */
+> -               if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_=
+file_lru(folio))
+> +               if (is_exec_file_folio(folio, &vma_flags))
+>                         return FOLIOREF_ACTIVATE;
+>
+>                 return FOLIOREF_KEEP;
+> @@ -2119,7 +2129,7 @@ static void shrink_active_list(unsigned long nr_to_=
+scan,
+>                          * IO, plus JVM can create lots of anon VM_EXEC f=
+olios,
+>                          * so we ignore them here.
+>                          */
+> -                       if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && f=
+olio_is_file_lru(folio)) {
+> +                       if (is_exec_file_folio(folio, &vma_flags)) {
+>                                 nr_rotated +=3D folio_nr_pages(folio);
+>                                 list_add(&folio->lru, &l_active);
+>                                 continue;
+> @@ -3188,7 +3198,7 @@ static bool positive_ctrl_err(struct ctrl_pos *sp, =
+struct ctrl_pos *pv)
+>   ***********************************************************************=
+*******/
+>
+>  /* promote pages accessed through page tables */
+> -static int folio_update_gen(struct folio *folio, int gen)
+> +static int folio_update_gen(struct folio *folio, int gen, const vma_flag=
+s_t *vma_flags)
+>  {
+>         unsigned long new_flags, old_flags =3D READ_ONCE(folio->flags.f);
+>
+> @@ -3196,10 +3206,15 @@ static int folio_update_gen(struct folio *folio, =
+int gen)
+>
+>         /* see the comment on LRU_REFS_FLAGS */
+>         if (!folio_test_referenced(folio) && !folio_test_workingset(folio=
+)) {
+> +               /* Activate file-backed executable folios after first usa=
+ge. */
+> +               if (is_exec_file_folio(folio, vma_flags))
+> +                       goto promote;
+> +
 
-***
+Will it be cleaner if we just:
 
-WARNING in tear_down_vmas
+/*
+* See the comment on LRU_REFS_FLAGS, and we protect the executable
+* parts to avoid typical IO thrashing from reclaiming.
+*/
+if (!folio_test_referenced(folio) && !folio_test_workingset(folio) &&
+    !is_exec_file_folio(folio, vma_flags)) {
+    set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
+    return -1;
+}
 
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      3827fe994db98623a5a619a72f15f57bf8274deb
-arch:      amd64
-compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-config:    https://ci.syzbot.org/builds/f57e989a-6273-4413-b35d-20dab5a41e92/config
-syz repro: https://ci.syzbot.org/findings/8f36751f-0976-460a-b5ab-de97c9074c0a/syz_repro
-
-------------[ cut here ]------------
-!vma_is_attached(vma)
-WARNING: ./include/linux/mmap_lock.h:435 at vma_assert_attached include/linux/mmap_lock.h:435 [inline], CPU#0: syz.2.19/5813
-WARNING: ./include/linux/mmap_lock.h:435 at vma_mark_detached include/linux/mmap_lock.h:455 [inline], CPU#0: syz.2.19/5813
-WARNING: ./include/linux/mmap_lock.h:435 at tear_down_vmas+0x381/0x520 mm/mmap.c:1261, CPU#0: syz.2.19/5813
-Modules linked in:
-CPU: 0 UID: 0 PID: 5813 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:vma_assert_attached include/linux/mmap_lock.h:435 [inline]
-RIP: 0010:vma_mark_detached include/linux/mmap_lock.h:455 [inline]
-RIP: 0010:tear_down_vmas+0x381/0x520 mm/mmap.c:1261
-Code: 48 89 df e8 01 46 16 00 48 8b 44 24 18 48 39 03 0f 87 e0 00 00 00 e8 ce a8 a8 ff ff 44 24 04 e9 9a fd ff ff e8 c0 a8 a8 ff 90 <0f> 0b 90 e9 2c ff ff ff e8 b2 a8 a8 ff 90 0f 0b 90 e9 94 fe ff ff
-RSP: 0018:ffffc90003cdf7e0 EFLAGS: 00010293
-RAX: ffffffff821dbb90 RBX: ffff888115e14b40 RCX: ffff888171f9bb80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc90003cdf920 R08: ffff888115e14b43 R09: 1ffff11022bc2968
-R10: dffffc0000000000 R11: ffffed1022bc2969 R12: ffff888115e14a80
-R13: 0000000000000001 R14: 0000000000000000 R15: dffffc0000000000
-FS:  00007f15b88e36c0(0000) GS:ffff88818dc1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9033eab095 CR3: 0000000173ace000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- exit_mmap+0x4ca/0x9f0 mm/mmap.c:1320
- __mmput+0x118/0x420 kernel/fork.c:1187
- exit_mm+0x221/0x2d0 kernel/exit.c:610
- do_exit+0x6cd/0x2360 kernel/exit.c:992
- do_group_exit+0x22d/0x2f0 kernel/exit.c:1147
- get_signal+0x121b/0x12c0 kernel/signal.c:3038
- arch_do_signal_or_restart+0xbb/0x860 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:66 [inline]
- exit_to_user_mode_loop+0x104/0x730 kernel/entry/common.c:101
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:230 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:318 [inline]
- do_syscall_64+0x353/0x580 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f15b799ce59
-Code: Unable to access opcode bytes at 0x7f15b799ce2f.
-RSP: 002b:00007f15b88e30e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-RAX: fffffffffffffe00 RBX: 00007f15b7c15fa8 RCX: 00007f15b799ce59
-RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f15b7c15fa8
-RBP: 00007f15b7c15fa0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f15b7c16038 R14: 00007ffe1b61d9f0 R15: 00007ffe1b61dad8
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
-
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
+If we use same check above we also get the PG_workingset?
 
