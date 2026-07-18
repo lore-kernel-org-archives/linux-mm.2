@@ -4,98 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA61C4451C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 09:54:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3368C4451B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 09:57:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D32296B00A0; Sat, 18 Jul 2026 05:54:37 -0400 (EDT)
+	id CE6EE6B00A4; Sat, 18 Jul 2026 05:57:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D08CF6B00A2; Sat, 18 Jul 2026 05:54:37 -0400 (EDT)
+	id C980C6B00A5; Sat, 18 Jul 2026 05:57:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1F8A6B00A3; Sat, 18 Jul 2026 05:54:37 -0400 (EDT)
+	id B86666B00A6; Sat, 18 Jul 2026 05:57:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E8406B00A0
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:54:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 31F5E1A0379
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:54:37 +0000 (UTC)
-X-FDA: 85001437794.05.2B6AA8C
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 924B34000B
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:54:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M7Vle5EV;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5836B00A4
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:57:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF4B9A099D
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:56:59 +0000 (UTC)
+X-FDA: 85001443758.08.2C8BA37
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5572240003
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:56:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fE6VzZVN;
+	spf=pass (imf11.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784368475;
+	s=arc-20220608; t=1784368618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lO66TrggiuQ7p/0nxBhsLlU4BVpMMd+j4O5LEqrNdrI=;
-	b=f9UQFaTV7R9761OC28el8qRErnaTOx+K38gxeOCFD/GRXJ0r3azap5fNnRPnD00PH0s5sv
-	fTC3+Canwg2QJyXGxB07B/cXkJOwnVhDIoI+4+eXzlcazZ/cupEOIRI8TihQbS1AehD7IV
-	HOAZPvfGh10aUrBSzPfxjg78qQ/TcT8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M7Vle5EV;
-	spf=pass (imf01.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:references:dkim-signature;
+	bh=XHtCFulTi7QuN+vcsXlI37N2cwZV1gauKNkUTz4LeTU=;
+	b=VSFq79WmN5/gATnhBfJVPOoHHDqVoDkxmc0UhKLwvKuwmFOdNUhWwzqIjnrDV81/3pe/lT
+	p/U5eYWDgaffUmwOXGo5TwBs84F/1GZHvoCoM5iu5Gs4whwpyAYJlLb3v0aOHdotG/koy0
+	jjxUfw69QmLfmyIYVDn16AGWYFvg2jc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784368475;
-	b=cTX/DbrX0null48gMks3dqo2nSqpZHKERFLP+STqDtywGHHMW92+NQsHUrpEisI3csecQI
-	g0QBVAVweARtjdmuWZ9TaTPlM8A/gQYq0G+Dx5Emb+k7wiUmign+KsTPGrAYkgjqb1yxOV
-	CfghfwPml5cdIzFyP9ceshGaGj335D8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784368474;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lO66TrggiuQ7p/0nxBhsLlU4BVpMMd+j4O5LEqrNdrI=;
-	b=M7Vle5EV7fSyEDSoDc+ub+hZJ3XzmI8D08hPQ1s2AY4Zl02x7O6gHYGeqlsko18gRj5k9U
-	IF4I4rqrl66FhbTOGVq5U8370Pr9XfmY3he+nMUypFBj2+o3+CBSqGulu8qQpPwkZtbEnk
-	rdM+9yOjIv+BB9DYU2Xmz9HTphMUJgQ=
-From: Ridong Chen <ridong.chen@linux.dev>
-To: akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hezhongkun.hzk@bytedance.com,
-	muchun.song@linux.dev,
-	dave@stgolabs.net,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ridong.chen@linux.dev,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH v2 4/4] mm/mglru: fix anon-only reclaim evicting file pages when swappiness=max
-Date: Sat, 18 Jul 2026 17:52:51 +0800
-Message-ID: <20260718095251.82937-5-ridong.chen@linux.dev>
-In-Reply-To: <20260718095251.82937-1-ridong.chen@linux.dev>
-References: <20260718095251.82937-1-ridong.chen@linux.dev>
+	t=1784368618;
+	b=6NrOt8SmvXrkmz8Vv6eCSeo0BsH82FcMJUBOiWVxFrElH/aaAgJizhRZUPh1fG1tkJcrpO
+	E6aJpJKydCd8VT+FTSgYbAk1FtULlmn/1H66A5H1p+za0C1ouPEp8mV8PkzUFuIyq4EDVw
+	kHyD/irwPRYKDenD0EE795ffkMTBk9w=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fE6VzZVN;
+	spf=pass (imf11.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38dd1cc8dc8so818005a91.0
+        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 02:56:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784368617; x=1784973417; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XHtCFulTi7QuN+vcsXlI37N2cwZV1gauKNkUTz4LeTU=;
+        b=fE6VzZVNvoKGhyAUCgKUjYrvv4pE3wmvjXd/XrpZAoMxpSpR6UANQxqmGMMa1g0ytg
+         wm3PHv4ySirK9WXaPBWq9QyzaNI0ohIG09ub6yyu18D9UDF7YeC5AgRx6Ul3uyy+LWIq
+         42EZaEuIZGrJsk2aJTvoZg7vonpflu5CSI/8Z+YR2swc8TDzz1uJab51/e31jeB8AIh4
+         7l7VXjf6XhvflK21UEfE0YG5mY/cSa9H0efJMHL1sacEWpUB7TthJjXP/isuX08RbZGG
+         AP9cFuwMzSA9LooJi/TvNfF4VAmXr5dNF3H+bkazDNdMA9L0Fg5H+yMvNLAWhXvWfIwm
+         uIJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784368617; x=1784973417;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XHtCFulTi7QuN+vcsXlI37N2cwZV1gauKNkUTz4LeTU=;
+        b=CDX2QyFwAz8Ut5vMlb49gNRU6ypRT/NBtC1E2w89HjwlSfwDlCNal8w1ulAKVebciq
+         lW8UYIwlqv8EZfY3BIZuCdT1lp/Cf+L+x5xRSw35YoFByXZ23xF01GFcWi3ZJeSTdwFN
+         BI0DBWn1T2iXv1lQlK0HECeukty2aNhxdYaRqN8nOChKU6SoCt3IYHPTiKjIdN9kS/hg
+         imx0XvdQe39tHTtCvrKU/O2o/p4N5pGsDyuT4Gu7oxGvOPNtY2XSpMpBbEFuWlsJKs58
+         0OrmOhnXUXycBKDHLg29glpzwwRoWUem72/l6WZ1NxBwde30+jwMxvjgvgrE1vB5iDfn
+         eCSg==
+X-Gm-Message-State: AOJu0Yxbd4ktY154A+2R/2rtiUoMjN+TmGSh6PpYjLNOM5Bx30AHrMYc
+	nEFOPlW4mdUa86r0KoVEmru0GZoO/Tqs5qomY8LafjhdsodQ9lfFCaKjckEEdqLtND5mXA==
+X-Gm-Gg: AfdE7ck+5zcU96yEqll31qKrZ6twInemUPzIUjHOq5i8Yl5DYH8zwJeeUMffBKQvfwZ
+	dakeFkH0YtPUtaIUgKd5sX/WICi564EuLAb0a8V54Cr1PA+gZeVZi2r/BQwIR3YrRox9lRt/07B
+	ZPAE0DTrNS59PkH2sXpuMQ08lSp/3Us33gJNRX8w1CFAOkahCYirl4ZyOLFHbNIRUn9d9Ochbxb
+	bWOsbefuC22P47KxBEvqF5cNuRDbFtZQDpW6E8iHvh9rhkXJRqXp5UVnQ+KHN++1viL8/9wihKZ
+	Kk1OYLP7OXz+JBYuH+PRS631g3sRWN8Dnz90/IBFRGr04JmTaSr5aim1wPUnqe8CuPptUmTiL//
+	4DI9TISJNdkPnkcUagwQzIuGYRMHbtTdshGPSWSLWadd8Do4tJKHM1FvCS5M3ehriyw0u3s4y1L
+	r0xzfW2mcDajB3olUC+tAoCynDThJFRTx99/AUoNTSE4ws
+X-Received: by 2002:a05:6a00:80e6:b0:842:5a15:6fa6 with SMTP id d2e1a72fcca58-84c294b7ad8mr3410940b3a.3.1784368616755;
+        Sat, 18 Jul 2026 02:56:56 -0700 (PDT)
+Received: from debian.lan ([240e:391:eb4:a240::1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af317c8sm2417248b3a.30.2026.07.18.02.56.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2026 02:56:56 -0700 (PDT)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Jann Horn <jannh@google.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [RFC PATCH v4 0/3] make persistent huge zero folio read-only
+Date: Sat, 18 Jul 2026 17:56:44 +0800
+Message-ID: <20260718095647.182592-1-xueyuan.chen21@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 924B34000B
-X-Stat-Signature: gby4eqs5tw54howexgi43xraongu95pw
-X-HE-Tag: 1784368475-721416
-X-HE-Meta: U2FsdGVkX1++ss0ur6irKgDVItqFmjoy7wxMHlYV8uz5bLbIDzkHOMmODaoKCUYU8T+3bV/sgqJuHIr6JbDHtIrvyf+UquZstj6aSB1grD81c6USUlfuWswg5JCDP/Sz8j+jWKs3Wn2tjm7TcXhpYaKk8PAtq1iMMIuYWAFtqQvYN8Q0O6i4yi2FTGjtOtgHREJ0efo97zD6OJ7Q/JbKL+in/R0fblevW0yf8TWM6Tdx5MILouDngfgsjAF2l2XN18SsTiVIcRhPNDzDLcuThSF4hICO/3xGeHyDhZCXIfYilttNxKvq+6NmaFPlolyDkaBFtcqwyVSVEoIth+/HRZyCXUZnntHxQ1XE9LI3CtOigKDUQugKEN9JokU43IOR3C1mN0s9ingTPT7ISjIXi7qQXWsJ+TF1vmrvA6rIwtmb4vBQh4EHq2mxOupPMsluEZYRkI3M0ARB7u/8QQ4duJ5Lroifh8zo9u+wWGciQDzYr/VnOV3waP1a/8tjKwHPupgppOM7yHgZZFIKmE8+b9/AJDQ5BJcqn4k31jhICQxu1zK/U7m3Oc5iYclX66Ykhom2k8jbbc6q9e8emwbNkpokvOLWRZvwrZg/wrzjiVLzSjt4g003o6+GeTYC9lO4TPkelwJ4HKHE+KqHANnadyGtliJN3R0dDHaZNFNY/28ZFCDyksQbN3fO9HH5Kj3dOceypRT8WbBYB2q0GiZerndDrvO2Oqoa/zRRwS7DU7rkkGJlPj6jE7A7GhQ6NppuVPt0YdfXUjLvLuX23Ra9I1aTUVnxtaJ6nFQy7Y4Pclk9xcZqKcqZ/KUbcr8JAlNBKLtBory0KOWFbh134kZoJWtr0T5F+xa2Ve/ZijSXJ6H1wazOJFhl0vHh5vRJkATkUc44PhyeXMVFkTUE2Q6XGu28s5Zj2P88JFXFJlLcbzT3s/T8uhPMXyVJmZyPnmRRM7rusD0QNXHpZd5Q405
- VIe1xQqe
- Bou6548mjLpFbQl86Ucjr6tLV4DGOyUil9xERL24U1G71pz+6HbTwG8+kfnticZmeen3hGtF+mm0fHW07pk6SKcV3EfYyeOR3W6YzXjj8kYe40bkOWQTFHfaI51EW8UqCLDFiyH0zZEA+OhdrshfsPwP+QwCLP1ysvTm1sjwmdK7GLcQNeXhFH67i00okgcelPhB+Rva3D0k7L804Y1PXSWUrazUPEMM6sROGw02gw45zXHdZdPwZ3SaUz5l9AWy3nndcGa/18MbIcvvQENZyzeG9QJxmi8QPEkg8
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5572240003
+X-Stat-Signature: kq5hro1cfz67tcphefimbxds14i3tutk
+X-HE-Tag: 1784368618-422838
+X-HE-Meta: U2FsdGVkX19yv/SGU3ooirDfIN7H9d+3pxl/IaWij4T90lXD13ojvxFL76PziFVWE0OHPPYLGvMl9aa0eSGKHrz8xcRtYqUZAYiyKmGNMdOU9DWrcFxE0Zs9XNp1/YhlJqAKMB6hPFWwrLmGNfE8WLND1BTpQNbhDanAkg5mtJpuC3Du0jpf5Wye7nFO8xDBW7bM4i1iTAWVMll075IV1VII5gZoRwFZghfoOGhJ/sHvY45zamPDqLk2a0xQX26aCk5V17ZMfySWOEwn6o7VplIkgGkhiqKMQ35JXt8+Kc70P/FLfrvLmMP+8+juKcN5ywalcDhwX58DgKXKLT5LsvbwvINrtLpOLUu/mU6uHZaq8xydbm01jiPgEkvEYshde+AguJMD8vcx/yu7wQr4a7NEeDIJxweZsMM5bU96swvn4IF7O+4gZBNHQrx/5osJh9uW4PsOf3Qv4tf96tek03T19NPfCwg5lpsfy3cWW3TQzkIY5hNHSZb6oo+UEjSSymEvgBmBeEfeDgDnxthL5EdJpmB/kiHiQhWLC11RxjAYiXkYfVvO44eAcLvzcVIJhRYNTPZGHNfIWUhi/1JH0I/bZLnsu7QdE4djVypAP8eCiuLnPU7qyvLXSdQ52BHBb0SkIhcpp9FivbW9Dj/gkZpipsefsWeMCvccQpIEz3Erisp51lwgPRrmmfJF1DHIUh9AtYdkZwT0bt753GREmfl08k/Q++6CyQiWfefzF8qyxP6ve8E4cMGUGj8wykPPuQnLfwv7T/BgUbfSSlFmUm2RFFRDhuu6VPc+ssyZgBFWqaTc6h+MJs3pvbd9sM+Rdl7gk4hJ/QwCrayWsY/N4CYPzkS44Hp6pyABtjFf2rgHRTQ0kKGi8toaDmiVTnf672dCojMygFMBHLjZfGWPAysmc0yC+5K3VEtrTii/8SNOlM7hlyXAoehswZkBIvJwPzYdnUIMYwqKGz55Hu/
+ oXA5OPVb
+ LxenV/4mYwT/idwKKw1WePx9MO7hZZyXcXYTW748xlJtoEOJ/egAxEI5rpsOQ1dH/89446cv6UaHyKmJj9VeWtWOx6oa/gqJrNuLe9l4hYEnktonqP0ztg6Pd7gW5QCa7pAK2rOHiof8Nw9IaYdlNCBPi0YOp10OENOCfcpUIe1aGixa4/mW8syEMp6JCaAdp7waYKW6DkgxE3YEWt6k3kt/ElCh890QcU4dmHdS9rvAfhqvHiBF7UpFEjhEoEVIiez6qMP4nZha6Kxaoblv57/XxJ4NWN9LNf4gQDZAbtEA2d2qtDNzvsnNMX0/DjZ6Vj0IovyEpRsvfOFmtIeeKzkCtcGZapFh1bvVzzs/Ay2lAMqNqsMIodMIoVq3L6t8MFyYyh4hzcBLEA5rT4fXqfN+I4nfhhUfDR/PSSZCXZ/azeyXnTxdVGDslJ1JmbDTfWrZTHZp1qFRsCgoG0FrZ70oLBpP/LRE6u8EJsYMRyPRG6B7UQDf/pq60B7g6HJmAwEj/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,101 +139,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
+The persistent huge zero folio is shared globally and should stay zero
+after initialization. As Jann Horn pointed out[1], kernel bugs have ended
+up writing to pages that were meant to be read-only, including in
+security-sensitive cases. Making the folio read-only in the direct map
+turns such writes into faults instead of silent zero-page corruption.
 
-The previous patch fixes this issue for the traditional LRU, which also
-exists in MGLRU [1]. Fix this by checking whether swappiness is
-SWAPPINESS_ANON_ONLY in get_swappiness() first, and returning 0 from
-get_nr_to_scan() when swappiness is SWAPPINESS_ANON_ONLY and anon pages
-cannot be reclaimed, to avoid useless work.
+This series adds set_direct_map_ro_noflush() so mm code can make a
+direct-map range read-only, then uses it for the persistent huge zero
+folio. The helper is direct-map specific, takes an address-based range as
+discussed for set_direct_map* helpers[2], and leaves TLB invalidation to
+the caller.
 
-The test result:
-Before fix:
+The folio is allocated and zeroed through the writable direct map before
+thp_shrinker_init() changes its permissions. thp_shrinker_init() is called
+from hugepage_init(), which is registered as a subsys_initcall and runs
+after SMP initialization. Writable TLB entries may therefore already be
+cached when the page-table permissions change. v4 flushes the exact
+direct-map range immediately after the noflush page-table update. Keeping
+the flush at the call site preserves the helper's explicit noflush contract
+and follows existing direct-map helper users such as secretmem and
+hibernation.
 
-  # cat /sys/kernel/mm/lru_gen/enabled
-  0x0007
-  # cat memory.stat
-  anon 204800
-  file 67108864
-  ...
-  pgsteal_proactive 0
-  pgscan_proactive 0
+Patches 2 and 3 add arm64 and x86 implementations.
 
-  # echo "64M swappiness=max" > memory.reclaim
-  # cat memory.stat
-  anon 208896
-  file 0
-  ...
-  pgsteal_proactive 16384
-  pgscan_proactive 16384
+[1]: https://lore.kernel.org/linux-mm/20260508-ro-zeropage-v1-1-9808abc20b49@google.com/
+[2]: https://lore.kernel.org/linux-mm/0e5b23a6-4895-454a-9dfa-6dc21adc2991@kernel.org/
+[3]: https://lore.kernel.org/linux-mm/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com/
 
-After fix:
+RFC v3 -> RFC v4:
+- Patch #01: Flush the direct-map range after changing it read-only, since
+  the folio was cleared through writable mappings after SMP initialization
+  (per Usama, thanks!).
+- Patch #01: Keep the flush in the caller to preserve the
+  set_direct_map_ro_noflush() contract and make the flushed range explicit.
+- Patch #01: Clarify the noflush API contract and the reason stale writable
+  translations must be invalidated.
+Link: https://lore.kernel.org/linux-mm/20260706130440.9295-1-xueyuan.chen21@gmail.com/
 
-  # cat memory.stat
-  anon 188416
-  file 67215360
-  kernel 1970176
-  ...
-  pgsteal_proactive 0
-  pgscan_proactive 0
+RFC v2 -> RFC v3:
+- Patch #01: Replace arch_make_pages_readonly() with
+  set_direct_map_ro_noflush() in the existing set_direct_map* family
+  (per Mike and David, thanks!).
+- Patch #01: Use a direct-map address and number of pages, and document the
+  direct-map-only and no-TLB-flush semantics (per David, thanks!).
+- Patch #02 and #03: Update the arm64 and x86 implementations for
+  set_direct_map_ro_noflush().
+Link: https://lore.kernel.org/linux-mm/20260609143801.7917-1-xueyuan.chen21@gmail.com/
 
-  # echo "64M swappiness=max" > memory.reclaim
-  -bash: echo: write error: Resource temporarily unavailable
-  # cat memory.stat
-  anon 204800
-  file 67215360
-  ...
-  pgsteal_proactive 0
-  pgscan_proactive 0
+RFC v1 -> RFC v2:
+- Patch #01: Drop the READONLY_HUGE_ZERO_FOLIO Kconfig option
+  (per Dave, thanks!).
+- Patch #01: Replace the huge-zero-folio-specific hook with a generic
+  page-range hook (per David, thanks!).
+- Patch #02 and #03: Update the arm64 and x86 implementations for the new
+  hook.
+Link: https://lore.kernel.org/linux-mm/20260527035607.14919-1-xueyuan.chen21@gmail.com/
 
-[1] https://sashiko.dev/#/patchset/20260717113300.214717-1-ridong.chen@linux.dev
+Xueyuan Chen (3):
+  mm: make persistent huge zero folio read-only
+  arm64/mm: add set_direct_map_ro_noflush()
+  x86/mm: add set_direct_map_ro_noflush()
 
-Fixes: 68a1436bde00 ("mm: add swappiness=max arg to memory.reclaim for only anon reclaim")
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/vmscan.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/set_memory.h |  2 ++
+ arch/arm64/mm/pageattr.c            | 10 ++++++++++
+ arch/x86/include/asm/set_memory.h   |  2 ++
+ arch/x86/mm/pat/set_memory.c        | 15 +++++++++++++++
+ include/linux/set_memory.h          | 29 +++++++++++++++++++++++++++++
+ mm/huge_memory.c                    | 16 +++++++++++++++-
+ 6 files changed, 73 insertions(+), 1 deletion(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index e1ef6350a300..240b04f0a21a 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2702,6 +2702,10 @@ static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
- {
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	int swappiness = sc_swappiness(sc, memcg);
-+
-+	if (swappiness == SWAPPINESS_ANON_ONLY)
-+		return swappiness;
- 
- 	if (!sc->may_swap)
- 		return 0;
-@@ -2710,7 +2714,7 @@ static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
- 	    mem_cgroup_get_nr_swap_pages(memcg) < MIN_LRU_BATCH)
- 		return 0;
- 
--	return sc_swappiness(sc, memcg);
-+	return swappiness;
- }
- 
- static int get_nr_gens(struct lruvec *lruvec, int type)
-@@ -4915,6 +4919,14 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
- 			   struct mem_cgroup *memcg, int swappiness)
- {
- 	unsigned long nr_to_scan, evictable;
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+
-+	/* Proactive reclaim: anon-only requested but anon is not reclaimable */
-+	if (swappiness == SWAPPINESS_ANON_ONLY &&
-+	    !can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
-+		WARN_ON_ONCE(!sc->proactive);
-+		return 0;
-+	}
- 
- 	evictable = lruvec_evictable_size(lruvec, swappiness);
- 
 -- 
-2.43.0
-
+2.47.3
 
