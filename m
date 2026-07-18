@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51290C4451C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 09:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FADFC4451B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 09:57:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5476E6B00A7; Sat, 18 Jul 2026 05:57:14 -0400 (EDT)
+	id F0AD76B00AA; Sat, 18 Jul 2026 05:57:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51BDE6B00AA; Sat, 18 Jul 2026 05:57:14 -0400 (EDT)
+	id EE2B96B00AB; Sat, 18 Jul 2026 05:57:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E5EA6B00AB; Sat, 18 Jul 2026 05:57:14 -0400 (EDT)
+	id DD1C16B00AC; Sat, 18 Jul 2026 05:57:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EC3A6B00A7
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:57:14 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8CC45A0342
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:57:13 +0000 (UTC)
-X-FDA: 85001444346.20.099CE03
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CDD8F180003
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:57:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LGTBj2w4;
-	spf=pass (imf16.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A65D86B00AA
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:57:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF2CA160385
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:57:19 +0000 (UTC)
+X-FDA: 85001444598.19.532F89E
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 04FC8A0006
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 09:57:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XAHW+fLJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784368638;
+	b=e1FDwz/Iw4QIgfbPDM4qVasQmputwZiecs888hwXVyEynfa6RK4qZ4/mXW+OEV0+CmZIja
+	3jsb5vsY0sDcKbwUtonkmF0/Vuk+9T4V3sNTllutKD/v6gB7owEsqGx2+TmTQgeJuq6UNS
+	o/t4rosFAy+MCe4DEwNEVOwyUZzZl/U=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XAHW+fLJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784368631;
+	s=arc-20220608; t=1784368638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ObdtBSjlBwpgFGsbg/wrosB7LM91UtGEZki+/E5+WZ0=;
-	b=h3mbcxOSM0/r/jD6MCOJa0vkogdalvhiTlVtHtqOUlfOHIvAA1gAOSoe6SFG1VA/GNPGE5
-	pABfmGixtw2DY+ef61lpIJmsYoMt1INaX5S0DGPjSh4+MnzZiXcUVNzG1j36xP8uRTilUF
-	LKXLDCtPwlBwhLYKdmN5t9C3YOQSohE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LGTBj2w4;
-	spf=pass (imf16.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784368631;
-	b=U8W8jQZYE7N3LY7xAjSeS1nzYd+f+NN1knrNZQht15LP0J27PfM0P2nPTxNDLVSYm7ThPD
-	6No4Hnq7XD7PSA6OPQNjUApo9+n6b67wP4ice2hzcClXKYKfdppPLsUAQjYTh6upq5FHt0
-	swd/fGa6VxWGlLSiZBNUBJQYzNovqbs=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cc7a269ca1so17989275ad.3
-        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 02:57:11 -0700 (PDT)
+	bh=5hdCu1wf2k5fVGlVM7jRlnxeinlriHXvmsiXxLfmcKs=;
+	b=ofCYSac+BeNeGPbkA2tG9Ls0HDfcQkt5lTZ67B9ogdBL5E32OtCyBAnV8Zg3bAV29SkHj8
+	ZuyaUJCSn9snBVzwcRBPaMw/8VvZtzImp9VnVk2124oWycPNGgQyCsWoqxl5zERbKesoPd
+	67vWE8EBQ2+4ciG41NaKofa+JBsf6os=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8423f52cd57so1185389b3a.2
+        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 02:57:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784368631; x=1784973431; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784368637; x=1784973437; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ObdtBSjlBwpgFGsbg/wrosB7LM91UtGEZki+/E5+WZ0=;
-        b=LGTBj2w44K9EWhEIEcBQAu+piPK4Bp6UmcmJxTSjP7POODQJsIdM1fqTn8WpNJttNN
-         Xt+Nkl+fwfdASy/a/Z5jzMrBcMbdhICdW4zPKaM0nVpJ98H1zL8/v5YeqoK4zj7vCrDh
-         4FeVZNi9I4E0Kq9qBW2FlFttQptyvMhrQJ1gU5/WOrKHJ5925dyGjZkLQfAga8FRFEcm
-         G3sok8MEm2/AM5vH00r9kZ7C1f8LfzSrGpjcWJTh2bLaPnJP/diGO5QIvccDfKhMCPc6
-         oe2blOfhMdinnwJOUu3Mr9jQdeJxc7RaTiQeZGYrFh1oG6093S/XXGSA7JgYIfb6JIsC
-         DXBw==
+        bh=5hdCu1wf2k5fVGlVM7jRlnxeinlriHXvmsiXxLfmcKs=;
+        b=XAHW+fLJGRXrd4BJvRGRA3ou9O43eE+cRS9IiZK0SdkD8jLZycS+QMVqMaAzfLD5dW
+         MuGhqmDnWnrh6Z8mmwyoyTXnUIRmLOEV5OMiTsT1RhJM3r94p8dNFNUEqWrh7vpoj4wA
+         7jeyYcLDv6TjHxDkvmnVhT9y2YXENjx3nKG5uCY/qVI/RkKERSbJuLNGXil18EmuoDzu
+         4eWwRoxgBWjJ6HsQgo1z8RYXfl3YuIqXAWXNLxmeKvTW1aSF3EmK/eOpqsu9oU0J15do
+         La6RVV9YpRxNaVRmf2MY2E3BGUAWNbQ2G3p4chasK2WbnBUrjcpRj5/nUbJpFH7s0uYm
+         kPZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784368631; x=1784973431;
+        d=1e100.net; s=20251104; t=1784368637; x=1784973437;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ObdtBSjlBwpgFGsbg/wrosB7LM91UtGEZki+/E5+WZ0=;
-        b=iRrJ+6rweoYVIqiWeQzCj2Pr56qf765u3+H94HV2NbzWS/PBxP+xcCizUCiFqDf0z9
-         dlr7qx6OJo0HFZADvLSIf+BNb4eAP6vOlZtmO4lcGyCd00bAOnCB1L0H5LpfKZjasiz1
-         yljvjcNYco66x6APakngAPTZjD9+Wt6I7jTVI3jpFInMPhlLrZNKz/QB6C+Z12oQjZcN
-         bf75rXlK5po5kf+iVWR8eZnsoMWWZQ+Ee1RAQvk9SVNM/A9yL3IKQgZvZN2BYa8Zl18l
-         Ha6lKM4sJhY74XY8t+KldGLoEZdiisHdsn+V0ex5un7A3wLySDLvzfSmgOdjtysWe1rd
-         GaKQ==
-X-Gm-Message-State: AOJu0Yw+hHz7Wp7j8ZEKoXs15uZrPXaGTZ9z34t05lochSUh+j9BsN33
-	lAuZDzoYLvFnhp75J/lBCpJjyxEc1NC0qR0QkjCbVx31bpcMdGcKustHqCHNkAFCMkDpeA==
-X-Gm-Gg: AfdE7cl+zk8x/+1gk1Q0OboKzJ9qXtzKZmg5PGl2H9RJN+6y0GLRujZR6ris347Tplv
-	TNTNCT1O4IhleNYdg0gI/pwwgwhti4hKfhaSfz94CWi237dpO2vxwc0Fzgxnv3EBqTFbk5p6YtO
-	NYxlm3kuFvu9Ym0KrBVnCVa/8RbBLEMEnOKCW9Hn9xNViGKtpx6XxcHZZxEEWWIUaWARX9BTcVz
-	IFt0CDNWu5zdEAZwUjHJ2aOMI3XYwb2wtHrgbDtGoDdnPlaQ6IJBmTvuc0f2Q3XxOhJq7MqCD70
-	gUPGnkUUBjNbvKdtFWe05SY412qh3EzBCwFnGjg8rKWV9J5puxbCe8GCvLcXhKzTWMO/RQ3tmsz
-	XOBIDh0cDQmPsUth5vqJ4g+GI/imCXQ+9j7hf/lmT/XgC0f4qs/Z0gYADAdZ7WTVJPKDB8BxQcx
-	5VDkLxY9t3aLG7/8Z/Id1BYwcgHvawi+UwbsUJNSWFvjQF
-X-Received: by 2002:a05:6a20:9397:b0:3b4:7aae:1eed with SMTP id adf61e73a8af0-3c3ad91f768mr4682057637.4.1784368630603;
-        Sat, 18 Jul 2026 02:57:10 -0700 (PDT)
+        bh=5hdCu1wf2k5fVGlVM7jRlnxeinlriHXvmsiXxLfmcKs=;
+        b=jRp6Z9yZvbLGsuUVaeZt2BHu9MQ7OYXakhsmT7l36TlbJ3DtUcO3XT3bNW9d5dzjkF
+         xXAXQb7jRsN9lew+1Dvg+te6joDy2uqkMbwWxQbYyG17IwNNRFz4sLJxPPN6JM+OWYBS
+         gzHjhDD34MUHvivWQmlATqvnFLVc3lSTyCwlURdyJFF2+E/0jGR+WjIsyuVXO5JnMC+S
+         TcwLuTYHB8+glbA7Gkn84nG/8E3Kw7h8puNoFSbbv8goNYUdqPmGQZ1u4LE1QLPXV/4q
+         t5oQu8Prxi8O/gMdiPmwcLscvd1cGi2pAl3hMGG6Ono/GF1NDUP+FTPabEQMuhHhZf5a
+         4i1g==
+X-Gm-Message-State: AOJu0YxsMCbXaKM8Sc9799+CfKHoBp1jIyh7ICNx07qEOVHldSu0CjqU
+	zWFl1Gv/dobGnOzcR+AQQQe+T+qfoc/vkYW+GXNX0dlYT1D0gkMYQ3ISj78LKepdPkJLZg==
+X-Gm-Gg: AfdE7clS+cXfJ8U+1aHyL1d6gu8q5AtlTmYrXGktLq/Og4O2i/g8IJIspufm4YQKSMi
+	hepOeb0t1Ky7rOe9EpcUfnqfMFwSZqZQUqf5tGkzwLJeWqQvy+ytHv89q50IByYUMhApsOuKZzS
+	ohHlY1oit9+muxi4b/z/R6ySx7xJvHvqVKCvAQzAs102Ix2SJYg5zd3wrnTkUjPggPENcAzdp6d
+	hNZhzVcw4V/KmprqnYbXPYtyp7WiTDi0uKKWKgu0bJij5apsgguBdndHOxs4GBAHpM3bsQW2TIF
+	lwQlKonXOT+upS2dTJyqx73Ce/yZ5dJ+NsC+9jIWN5HPSNUIcWB3c0Z95IY22aGo6BxxnZgSE7i
+	1mEBLINxe+tD6K87AesuVOFVhiyzl8b+PHmTtbf29VkBg5hjSkvDgYpYfBCug/tWLUXCOdgwjde
+	FHET2w7l6SmNCxl1eCDMvQbCmsD8GloAYjCecgWYyO7tdR
+X-Received: by 2002:a05:6a00:9499:b0:842:5a18:9af0 with SMTP id d2e1a72fcca58-84c2917f212mr4248164b3a.0.1784368636739;
+        Sat, 18 Jul 2026 02:57:16 -0700 (PDT)
 Received: from debian.lan ([240e:391:eb4:a240::1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af317c8sm2417248b3a.30.2026.07.18.02.57.04
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af317c8sm2417248b3a.30.2026.07.18.02.57.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 02:57:10 -0700 (PDT)
+        Sat, 18 Jul 2026 02:57:16 -0700 (PDT)
 From: Xueyuan Chen <xueyuan.chen21@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -119,22 +119,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Dev Jain <dev.jain@arm.com>,
 	Barry Song <baohua@kernel.org>,
 	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: [RFC PATCH v4 2/3] arm64/mm: add set_direct_map_ro_noflush()
-Date: Sat, 18 Jul 2026 17:56:46 +0800
-Message-ID: <20260718095647.182592-3-xueyuan.chen21@gmail.com>
+Subject: [RFC PATCH v4 3/3] x86/mm: add set_direct_map_ro_noflush()
+Date: Sat, 18 Jul 2026 17:56:47 +0800
+Message-ID: <20260718095647.182592-4-xueyuan.chen21@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260718095647.182592-1-xueyuan.chen21@gmail.com>
 References: <20260718095647.182592-1-xueyuan.chen21@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 04FC8A0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CDD8F180003
-X-Stat-Signature: gwhx9z1cd67dfqios8epba84auk5ggh1
-X-HE-Tag: 1784368631-589294
-X-HE-Meta: U2FsdGVkX1/Qe1FE5I/LvzKeTbHQVygabON3lqG7hu50ZxFAfICRJl31z9brJhtUsMPUPMbPROANXcHhU4YTpiSbLSbL91XUKd434Py4eFZvpdh7UPK8Hdcc4jMPKUP4+OLIj3LOCkaYKTK4NfQ1ROWsonTicnXcRH43fkhpAmALmxI6znAoibCHqtvP5wbU3CQxcJqqPisF0/i55H56fJgQ+L5Rnj/eRhBDpHGSaNkWlNfCMF60VE2ZovhyQkbcjCsFqYwC+v6kmfCbOwgvQWKguvgIPZDjL6AeMPZkiQnC16WZka/Cc5RMWvoiWDjYRRxL1f8MhHg6wg9gRPyvGh+EgnS3qlx9M4lAjMUfeVmk9ldNBsuRWWOvzQWb7sU9953FMR9eOPC2t9tvaQWn1w3nvP+TCEuuSVIgzH0eRu+IPdDXe+HOUYncXl4ldqtRO1rfYGVSfLv/UmYhy8zAez8N4255RqH1UAlSn23LlgW7WqZ0FVfBpdQlaKhXLxpu/PDdeoCbiY44O3aZHxXXGr5OX0vQ65qIZCpiqT6wiHzT41LRXAQW5GzxW1nTVT+g8DVjANxHNnwqz9msHn9SluFInqIULyCc0xv+jfV3c51YZouljpO4ecoZjs5lTZn+ExfFU/ZxHmyvKVB6YxG/yetejG1jT7aOemLd4Hj+ckkufxxyJ+iYA8R0eXng3uSt19HIge/Dd1Wz4lStymiyvPzcRpJ/trbURG/X5T0V8i0VFG9ethIZ8vdtu8U3bQmY6Jwmh+gYppGsvpcl/RXnfEgThtRVy/tBJ6y44xr1n4XMdaLmLIazk9wlBsiWJFTaTuEXF+uruhGaMWbjMEBD1ZG8tPo69USM/0dWJvP4PdaREEVYsH4pv0EjKD3ghJNaA/HxD/zrFcISM6zOF1Ek0H9nE3vSe4ZdE9bP116wAIY9dPkSPNYnAEz3rXqIWIlTEZj91DFC9ZXuYpSOe22
- 4JER6ywY
- GqUamvdL1+P5TK8lacHJMnYEC3p3BuDYxorx00XOyzVmYQqEovfPwef5XplzPJ2BrIGElhkadfvkBywhI4YjTC6xMuiKSaZVjMBFq1OcEWymQfhi/RQRyccwUUsbFImUJbxF+4zqSnjb368b142kf2YlOeIzlxKl7LzpLZ73rAU7OGiuGEVLaWx/bpaDTTZxdLbAr+pQmU6Ks1uTufcsF+MHOD4Qgb+obPeSupM5mbK1/n3eSQ3oD+0FeTY/xbrxH435xbtWWoRxBMNvSANnqeKFZJEE/FXdQzICD138MOV3bdz0C7sPkEi3e28SMBn57ItIxFB8JcHPBFlNurRrGRBgEZWeIY8+2xf4muu8cA4noL882RpMUksc232cdEtekXlcavx7ZeIEMp5qbKY/U2MpeEl/ZvTPNaJ+23SqNfdWkDSE9LRTudcMqZQh4e0l+p/GBWnwFSFvK1ImbCsJcQEzi3tMVMCd+i9ieD2wUz9t1aW9HYRLUjNGUKeos2MpCo6nkrccTVnJL5O9tncTrWID5jxFkJ5/rLd+9
+X-Stat-Signature: d61q5o8c9jpyb8idaqfshwtsrwqdgzqr
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784368637-516643
+X-HE-Meta: U2FsdGVkX1/6ctsE0U7y6CIrmBTp83XkdXaC9bWEINBy59lYrv6U886cU8yGCc4aWJz2fWFznbnwWvqoInAtvmYlV7+9TYMuKAYe1v8TH0wZprnqU/E15zK0xMUBpATKr+URe8pZAOzXrcb29GlTIh5WhXgapHP2m7J1qTioIAr1ExWbSW6+Z88XUu0+XprEQbPhwK32m3UjRRACQhnuG1pC6iAwb1ZPytsR3fuIVXj13GCslVVRvwbNJjD/D8SK8fS7B+0YzTnzRdOwdoTemgnqearqwUD8veeeuBxZ9NQezTFjjvtSaUu6zJUiTVOjHPC8IDbeUyHLa3FsYpr+NuhmnYqKafM3uUOuNcAhG821YAyU9IzqGJFUOoXMzMDfpdqiuiptrhR8mtuPrqH7HzSQBZPxDJSSoro0G4vbS0JTM5o7nt0op/FucB9iRCbc9PfVyDK8K6RjGMDj2cIGjw8QpLfjHVL2PlP4MVCyd6pVt7Vqee6qw4kTsV12j+HaSm+QjA0fVetjR+FoIJl9iT8/4MOCeI1Iqm/wZAnag2uhKjMKc/rElQm+kAkweLrtICY6hXCaDyaEQ2hJWHSOuY740ojit9mnrapBx63WJCaJPysqTMZF8B6Gj4a1OartBWaPqqBN85d7/6L49sqQ/RmrX4xXv1bN2mJ7V+oWCYOblZknskiZXqBRJAv0Zcn69qiPQrqYW/ENxVsXCxR4XodPPxeOrEzWCVTawLMyJ19ex0ME4SjIeavT7PD2GRCX/m02ORLTjtg4jXKWT98bTdHKl2Ll8JR6c66sJC0oZXz+6fIjNxtddy9cDBvZwn/1HymTCrcVJVSs9609xfoKZoi9O063NptVVHEqP99vlVoBquO6lLwA1Uzih50TvO8E3h0IymO9h0P144yiRtg1Ryd7ZHGkQmW7dujm5nXO/1wq12xErd86UbVtvt5w6JXJ2gbshgEqv0tkhs/7wIS
+ D8pzw/DU
+ e/hb3K08DgW8bdgJUFzuaHs6xArirTUBP6WgaUCTx/CKFVGGnddNG8O/NxqmMcefXNnA3SZ/QTCuWsly9m++/VfgwJ7fTkT37CavQBgTjL3QhUvX9RmaK7HTk6w7/7368GdKS750nhlaR/NDR/3/ltKDPzx8515Wpd/GF4H5gwZAEtjGLismT7Sne2ixesQaqxyCDpQIzweuU/FKOnuzpGlC9p27QNOxn6Yd3e2PX17oZhQWt0Tovsk5TCMnGHQxxCx6ORvgVA/Qryl9ex2jlEMXUH7d5WVmLOUZjYzYCZliZra/Axr8ZuleSlDAsANl29kSYEgPt+zGFvd8JA04gvmNqkzXgUz0C+h1kfbKWLHE/bNpnCzNtPU8ItN8JU0WGD1/WBNBy9X88TVD+S7JDUOZurFGpMsJA7BDmpOzNLNl608bkxhNFYsyQ19hQWnbyp8F/gUtqfcS4eZUbzAJBZ0tr+/OQoJkhdJXjL0ewMVlkQCgwpMkEuUFE19VwJcS+PeWKszySpGXJuTZUxijPVTXZB+JRz0tDWeH9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,24 +142,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement set_direct_map_ro_noflush() for arm64 with update_range_prot() on
-the linear map, setting PTE_RDONLY and clearing PTE_WRITE. Keep the
-existing can_set_direct_map() guard and leave TLB invalidation to the
-caller.
+Implement set_direct_map_ro_noflush() for x86 using CPA directly on the
+passed direct-map address. Clear _PAGE_RW and _PAGE_DIRTY, keep alias
+checks disabled like the existing direct-map _noflush helpers, and leave
+TLB invalidation to the caller.
 
 Co-developed-by: Lance Yang <lance.yang@linux.dev>
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 ---
- arch/arm64/include/asm/set_memory.h |  2 ++
- arch/arm64/mm/pageattr.c            | 10 ++++++++++
- 2 files changed, 12 insertions(+)
+ arch/x86/include/asm/set_memory.h |  2 ++
+ arch/x86/mm/pat/set_memory.c      | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-index 90f61b17275e..7083260303c3 100644
---- a/arch/arm64/include/asm/set_memory.h
-+++ b/arch/arm64/include/asm/set_memory.h
-@@ -14,6 +14,8 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
+diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+index 4362c26aa992..bd3817e06052 100644
+--- a/arch/x86/include/asm/set_memory.h
++++ b/arch/x86/include/asm/set_memory.h
+@@ -89,6 +89,8 @@ int set_pages_rw(struct page *page, int numpages);
  int set_direct_map_invalid_noflush(struct page *page);
  int set_direct_map_default_noflush(struct page *page);
  int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid);
@@ -167,28 +167,33 @@ index 90f61b17275e..7083260303c3 100644
 +#define set_direct_map_ro_noflush set_direct_map_ro_noflush
  bool kernel_page_present(struct page *page);
  
- int set_memory_encrypted(unsigned long addr, int numpages);
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index ce035e1b4eaf..c51236b61651 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -365,6 +365,16 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
- 	return set_memory_valid(addr, nr, valid);
+ extern int kernel_set_to_readonly;
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index d023a40a1e03..5987f4c84f6f 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2662,6 +2662,21 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+ 	return __set_pages_np(page, nr);
  }
  
 +int set_direct_map_ro_noflush(const void *addr, unsigned long nr_pages)
 +{
-+	if (!can_set_direct_map())
-+		return 0;
++	unsigned long tempaddr = (unsigned long)addr;
++	struct cpa_data cpa = {
++		.vaddr = &tempaddr,
++		.pgd = NULL,
++		.numpages = nr_pages,
++		.mask_set = __pgprot(0),
++		.mask_clr = __pgprot(_PAGE_RW | _PAGE_DIRTY),
++		.flags = CPA_NO_CHECK_ALIAS,
++	};
 +
-+	return update_range_prot((unsigned long)addr, PAGE_SIZE * nr_pages,
-+				 __pgprot(PTE_RDONLY),
-+				 __pgprot(PTE_WRITE));
++	return __change_page_attr_set_clr(&cpa, 1);
 +}
 +
  #ifdef CONFIG_DEBUG_PAGEALLOC
- /*
-  * This is - apart from the return value - doing the same
+ void __kernel_map_pages(struct page *page, int numpages, int enable)
+ {
 -- 
 2.47.3
 
