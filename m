@@ -4,142 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6788C4451C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 08:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC60C4451C
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 08:38:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E05D6B0096; Sat, 18 Jul 2026 04:03:39 -0400 (EDT)
+	id 43C586B0098; Sat, 18 Jul 2026 04:38:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B8786B0099; Sat, 18 Jul 2026 04:03:39 -0400 (EDT)
+	id 3EE7E6B0099; Sat, 18 Jul 2026 04:38:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A80B6B009D; Sat, 18 Jul 2026 04:03:39 -0400 (EDT)
+	id 304186B009D; Sat, 18 Jul 2026 04:38:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 397066B0096
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 04:03:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A2381203F2
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:03:38 +0000 (UTC)
-X-FDA: 85001158116.22.6298E7B
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013004.outbound.protection.outlook.com [40.93.196.4])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 669D040006
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:03:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=byBpDrt3;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.4 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784361815;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 05AD76B0098
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 04:38:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D1DAA037E
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:38:21 +0000 (UTC)
+X-FDA: 85001245602.19.062BFEA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 96451160006
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:38:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi4iKEHM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784363899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OVqs++Auuevkzyyg6xlAKDSGjZxnJRX0KVexVR8fmec=;
-	b=l6pxh8mLGc1HXgBCzZuoyyCaoiLcepgWAjMUE6IjYpJHNnGsDr0BMbGNctzo6Yc8l8IiuC
-	Osz7UNlACggHEsCd1juFkTJcgbS1aRXtwycACTKVADV1gbiLxozs/AQrzTJunf56ZnhzZZ
-	+ZOUzlOeoXGN6E1qn5UrRUNb0LZiip0=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=byBpDrt3;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.4 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784361815;
-	b=adt5EVvHvSJax77Z78HN5w6F7eVANqd1JeRz6lQp1J2dW5ZnY1sQ9u+04N6e6NoZku2W2E
-	yTGFwugIc1LHLbqze2mxXw3GpUnt/PBnxpyoNNbLgMu+UTnWaNiLqtW8qlQHuBlcY/O6eo
-	xyuXT7FNOdkI1tK/6b2mrCv88Idy96k=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ugeTnpvnXV+A+q3QB9S+dIimr/KFSvZO7B5c7RWBY0smiT4JF/wllYa5VA9SSdEAfwIRaFXPrvRFF38KtcVqNTco4PNA1/3AZHWRPTzbkmSeIn7dOrf57CaN5zYSFC0c+Kxq7U3fl1LV/WHrwuKax0HaoP3hp4KKwvNwTS/E65ESbtpnwxBWaRxcUJ7K6yKZr8W84ikmvx3o13sxOSsfFKtkOQInqdgmPgxcLH8wgWCt02OkVlkZIinjcCzT8J7fWMOIEvWnELw1lLgRamavSwfFcndeUkoZ5YSMOT/gS7lnpvrzIgz+9gUugFctHJ81c/AAJoGuaqK2NIHMQhblAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OVqs++Auuevkzyyg6xlAKDSGjZxnJRX0KVexVR8fmec=;
- b=xHGzn/idm5VyziPcX8s970skSz3UG2dLRFM1JOPm35jXXMuaDbGgOfff1fLYJ+jZx4cJPTSWSrI8ccevZl2067RAsJRQTaYYsRHPRgvUFMichZO3e2wsi2bN7y1mUhrLd3oexml6gWuUoxC9aZY+vZZ/uU/czuysQb5YTJo5EgEXEnu5BlfkyH1LwEacYW6X7vzSnYFcZK8leUrOHUPm28UbaVxyE62UnBgr4rSxD9Uqbdnnw1AtNx8m7LZxl7l/8qjgZgZEC5vreVaajqAvt8EQs9ga+1OVUh6ZRSSRpN8bT1dKZlrEEZgSlo5nDURFrFLEgyvirQmvoqt5yMEzDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=infradead.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OVqs++Auuevkzyyg6xlAKDSGjZxnJRX0KVexVR8fmec=;
- b=byBpDrt3IR4uK4uVUZFJuhcYlyvvIoSpbx3/opQ7s3XBNR17NWAgVCqZedRo7LXDXOCB1lOOrqb1zgREvPfAcEEtUWeJ8KFmBIcfumZs3MSNekbCYrF3LWvR+QbScXDp4npFmgwTxO1PqliqCdiPqTONs5A35Q+kzyuYrTUHqo4=
-Received: from BLAPR03CA0138.namprd03.prod.outlook.com (2603:10b6:208:32e::23)
- by SN7PR12MB8101.namprd12.prod.outlook.com (2603:10b6:806:321::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.13; Sat, 18 Jul
- 2026 08:03:29 +0000
-Received: from BL02EPF0002992D.namprd02.prod.outlook.com
- (2603:10b6:208:32e:cafe::a3) by BLAPR03CA0138.outlook.office365.com
- (2603:10b6:208:32e::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.13 via Frontend Transport; Sat,
- 18 Jul 2026 08:03:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0002992D.mail.protection.outlook.com (10.167.249.58) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.5 via Frontend Transport; Sat, 18 Jul 2026 08:03:26 +0000
-Received: from [172.31.34.103] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Sat, 18 Jul
- 2026 03:03:24 -0500
-Message-ID: <48321c18-45cb-4400-8ddb-fddae911eab1@amd.com>
-Date: Sat, 18 Jul 2026 13:33:22 +0530
+	bh=zqwjCLw2vDrdjdn06sas2daNCihv2UCAz/kTOrnOENA=;
+	b=6fH6d6R/8vdsv4UUSGd+48/qSd47PfAtsD8+9TII9DIpTwK6wU9hk7r0yu19cNCOpGS76k
+	ELPraY/m2m5N6xbR6JXiJ6J1t/yg/xFL2w580eRrFwBF/JxvfI3/1BzAhQCh1F9hq1Qn/Q
+	72CyGnC9MyVey0oIoJcBiqwC+p47Kho=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi4iKEHM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784363899;
+	b=MgLYk/Y9jH9eHa6yXULelGJg3Ps1WtMmGqkwJaQdBPNRVn0mMlitAriGAMM7xZjzHot6cB
+	fW1TlCg5XUaXzvQdzB04/+gf5p9zImtzT91Q+nMy4QmRsc5+HuJmoimu1i4u/kDo4+paH+
+	/ggmW6y/uswHkg5IZ0bEhn0MtK7nw9w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DB54436B8
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:38:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418AB1F000E9
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 08:38:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784363898;
+	bh=zqwjCLw2vDrdjdn06sas2daNCihv2UCAz/kTOrnOENA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Wi4iKEHMFc8gWoirCokKVy4m7RRYD66RpTh1yXZZM07WtpUp8GtVmEVcliijkJ/ai
+	 zidAut1kgf8dPRPIcZrQGoMbJQzsb/z2to9D/82DgVdeybuy0GnaIxiF6Kxes3u7A9
+	 L41uvYRRBcqVlSp5URBLdAQRQLsmg5JoNil0Kxs6b0ow/SHHL8t9Dct27gqPoe+DDL
+	 085FilV2BHmJ3gJ+mCU9+Q8vP3sm/1QmN+v9wOYARwd3iYGbYBcRnmWkrb6FXBp5Dy
+	 ZaVn0XxA3Pv8eMCk7TllxGTk1cKhgy8pGd/rHo0Cwvn5AaMD0PWL1cJCSLjTKzfUdL
+	 No2Ua/Rzg/Pfg==
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5218927884fso17902871cf.3
+        for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:38:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ron3x2YFwi8mazXmpEP5FjRx6cK4J3dPyIYyauvoR2Bu2VQI8xs4oc7QuCW6wiUKiwVAfxW2MWpxQ==@kvack.org
+X-Gm-Message-State: AOJu0YwSE+0z7+qdno601wsyuz6PM0QRI1eLAU7yybnFcCh1LH10//DN
+	Ht6rywJIbPyV2BKN8xG4BQ6WoXlM81+N+l4dCJs5w6g0mgIRPEIugB2Ol3fGUmoOnjZiH7fndMg
+	iBngjr4RuqPZ4RkaWXyCfkJeLl4tdf5A=
+X-Received: by 2002:a05:620a:a407:10b0:92b:6805:9192 with SMTP id
+ af79cd13be357-930b4336ae0mr464331685a.74.1784363897673; Sat, 18 Jul 2026
+ 01:38:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate: add missing kernel-doc for @migrate_info
-To: Randy Dunlap <rdunlap@infradead.org>, <linux-mm@kvack.org>
-CC: Andrew Morton <akpm@linux-foundation.org>
-References: <20260717022146.1290242-1-rdunlap@infradead.org>
-Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <20260717022146.1290242-1-rdunlap@infradead.org>
+References: <cover.1784268206.git.baolin.wang@linux.alibaba.com> <b9ef058305d1b5d6b811114830d17dd05980cef2.1784268206.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <b9ef058305d1b5d6b811114830d17dd05980cef2.1784268206.git.baolin.wang@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 18 Jul 2026 16:38:06 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4ybpWXvpmRDVRO8zvtAQE8sdSFqOyhH0gTkykPZY+UHPA@mail.gmail.com>
+X-Gm-Features: AUfX_mwiD6jyV4TQkA9ZCMlNcCpOG-WcWRrtVjBxyP0bQnPxXrukWbhGi9FT6YE
+Message-ID: <CAGsJ_4ybpWXvpmRDVRO8zvtAQE8sdSFqOyhH0gTkykPZY+UHPA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] mm: vmscan: convert folio_referenced() to use vma_flags_t
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hannes@cmpxchg.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, mhocko@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992D:EE_|SN7PR12MB8101:EE_
-X-MS-Office365-Filtering-Correlation-Id: 207a614b-25be-46e8-10fb-08dee4a30be3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|376014|23010399003|82310400026|10067099003|11063799006|56012099006|13003099007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	B12NqM3yJO1XOK19AQ6pqN9K5Mptr0MjdaSbeg08HRhYlq160lwzsIHSvlxrCpNsPtIGOr74O8Q/KduCpW8WZmNM031P6X6CI6iB5Hvff5BjV/I+eDb/W1/4bg5t2i+TM2/xS4uocQJP6+BDpp5fOxBJ4T/clykmuvJ7seHyJiysphlHyomk5CEE7sped+RI1NLxClBxdQKhIQItSCe9EXhfjQNWyF7PVWZwh2nqzm3+Vos3zr0uEOrk5I2IqhXOqfRdjo+C5qgUo9hZnCnZ20q3E40vQqgVRv3zvglBK3WcJZ/v/zIKWFBBSpbdMXjB6itoEqO4B8qjYZ9SH8UDl5myXKXxpJ/TVPGgWJC6/+c9WCZOmI4487lC6x9TIAUwBbBzVCKMbBiidSKzJCuclJxYK0MZMV/51EbR6zU//90Ygs0TkZFw2GYtKH6PfWd5aSiHLDcvc+siWT76JDCDYzvloYOryqL36i9oTqlvcYPSLVlD3cGVsthWtxGoWyu39qJf4nw9S5qQldhkx2+GJdeIB/rncv9CHukp4P+uxbN1Ky3Z0E+LGa/2OjYSMeNCFZ/7lqHYw1Ppl/R/RhSQClMxw5xWMXNHner54zMdbdW/xglYgKyZ++B+7psarzhf2px13nD3/FVSELmOBC6x/g==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(23010399003)(82310400026)(10067099003)(11063799006)(56012099006)(13003099007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	IKaRmwsO9S/Sdy562dEEdAMbhWpGjNwlNHKEHJjrFlDo00+Ezhav9xmRHXlSJzqv7lprhtczQ5LvSC2M36c0WNNbOrQrkefpMW0S1ulscoTK+vZGmeiSDpL5A0egVY20TND9doc08zpOzeEd/8QVeJoND43R9MEa5bD3zXjlTzNfVsgZUJGY2FtLnfuBbaiIltS54WvfMmSvq4jD9SQHMMg4DlJkRjqGgnp2g0Qy2Qu1TS9G+Y4aC0nEhN7SQW88dYluA/LFuyLyd6Xaa19NyeDJmBHkGfn/ndFxoWhYioVcrtoTCmnpI+5ZfZzqr82TilaWjSskgNhUewGG+pRYCqc4amMwYbZOMqoVJku0DshqYNw71w4ywZ6xax5BLYj8sLIGqAHHw5e+KPO3pS5lrqZBB57/lUiWSA5GRNiC+U3lc7NnanOxoJ2B1TVcpjYE
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2026 08:03:26.2991
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 207a614b-25be-46e8-10fb-08dee4a30be3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992D.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8101
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 669D040006
-X-Stat-Signature: dcsxkppu6kmja4asj86o79qh3qtuogz3
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 96451160006
+X-Stat-Signature: 5n8b8mgfwpa8q64mi19jzqbwzucdb9ow
 X-Rspam-User: 
-X-HE-Tag: 1784361815-844533
-X-HE-Meta: U2FsdGVkX1/ZAGYqiEeBFA4liEV+5jbXlv2Ay8+mu5uAZPwQNpMolmYrk3VrUhUseR3YAFhHkyaAR4zgWG/bWyyD3SwrauQ/KGqzLpGB7cobHQhmj/lLXfdsXvIgy2lCQgCeBGmsaqIV3z+mVVtDOfoCosLeZAvR+2b5JfIIB6hhr7qP3/0kml1gIFeitF3mJJtlHvdmQfBBAzdXe9AaaNSlmX6M/DqN1IG37NXj9szVhIwNdc+oYG6AqaajbmQuobqsVxmyPmhyIbsFjDui6Z3FnbqUohGZnNkTvBtfvdwF7OsPmbWbmUYzqA72ALqw347Tnt9KkCHgYdDiOx+h6zRbg2ie0fMvGC9BA6MiE9+hOzypcg8JacukYtQj5ECH0hyntNyd99Mmf/aT0/9K0F7qXTcAK4cuXrw7zWXb5Ts7qFtJhN2d2sksycN0odojawxfwP/EYXy1+nerc7n6Ww+ruMT0+Ina0KHwsqHUKRvnH0PlsBjTJqCrhT955WCf5Qv/fpkpppFJ7LdJCyTa6HW7nRI3GnCXgJL2MlSbu6xW3iAU7M9SjXd1Oee85s1eBeGrjDTG8afW6fC2OizJyCQEVnl+kzMwcp4zknm3tKncckkdd+rmNZgnmIYq1AK8s5eX1HUGoJFhPHYzmCFIRI/aFdjigo+TOJtpMD6+62KTAUbKskMb7vpGmFsyhhcZQKbcoysBl7Ix/EXx5Z40LuT9Tvh9i/+KW3sxZDCUJDaoZfjyKI3PHfohS90CMQ0lMGpG1Iqr3puZ1DeBaoRpsZhoibpnvqvMIyJpqSWDS4Bf9az66z6+IwteHQEdUqhZtqlSYtlaEOAqi+8SPI2oe2ElPFDjZgtqYlGxFDqbQG0NVAbEMF8Enwe9VEwiGXbMHqaN/+sYJl5QjUuiuEAjb/GULMgCyWqf+wuODAuMICUmEbDunlelzRDYlgGtGqrv0FuP67aVmTi6fLFlUMQ
- zDUAf+vI
- PDhlJcDaLNSx9c2Sd9oVkgamCJR/V7Vxf9xFvbMnESn6mzbN2ULXg2Rr3fU3tpojt7TYBfcLI+lKDL3ttuv5hGapZGUMTxvsOIrekoMthZsZQyhgQ6HOlugKbKyvlBJ8vLhYHlTDgTWwJ78Pb/LP+phptcpuP7UgsyzHRTFKd4L2vyWT5ANwnCmd0MsesisC1GC9tWX0eHJ/Reoew1aCZRm4UAp23PeIErTX7324DFBBujvzBu41BLEgE7Cr27mbEfj+KxOeEFrii4ai/gNbJ/1XigG93dCLjaJ+UezaldkwMHu/7RC1HNH5FegQTL5IwippjA7UtKlHCv8sBzoZQRDA7S6NhzcY5xZsN3jPObammtoB+eP+RimDBnWWuCeYzDcsZLOh4YLh6IKOgNLF+KC9kIvVuGbTUqOvrsYCGwjPq4nUtwBtJ9UOVJZKSBS8EOXYpyxhCS3g9xIefYqOTwMuHU97bQwMpNWks+rB7BtRbj0nl5P2Wjc6OQZtpk9gtPfmGnFQu7mIzemhrEVctLBonI0M/8TQ/J5ZmzZzHuC1UY/w9PMsnRdw2j4GlFraM3WeCavrgNC+PBqB2uD6fbHu9LyJ05WFRNztZkw+K+yG0gVMfkmT4PNjIH0P3biFh3EY2G6eziokxdbFWNamgf1a3a/6R58ftBWmi
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784363899-254102
+X-HE-Meta: U2FsdGVkX1+lipOU9iSge0tXehwyU5CYu2pgp07clQRiJekoLDUKCmaPMFvd8a5r+qZ2Ar9zTs5Q7hehauMV3uIp6W6u2WxxOb65+x3vQNeCGceUpD6HgFQf4WDCrj8Xd4/m2C/yHhSJDye20fmj/R3A4Sye2HdZ/WMcYyi4Ho5RS0urpH1QQA/pcPWxarJxvubunTlcSxIBZHodimvwWU0y4In8YZAG50fCujG4xTiqd6uDGzHGcuGOzJLgioXUxhvCrMqUcaxQsJ4AaoU/teR91P1+cHxZK7RvQQrMk6jZXJ4R9pdwlAmVRbQrzTeKsBDny+D9Rq04sDPpBqE1fxMbL2a2O4puBCiOUKTBgSYzw3f40trcKkEvw4qvN3NgPe6IJqYQpmw7zvDCJzDZpunXbfqs1rstQT/hekBBsMCs2zZ2OHiihhZnSsIlpCHyCL0kHmz4vAuwIvAly55HU7GH2qYfUR/XasxOYWb9c29xlpfX+vitCRBb9NCQwLdiDwB6bDZpjIgipIZCCOjQE+v8Er+5HsQo1ctKigrjjWvM3N0S4QaPyQlgy+4xchpnurHtMXT3i2ggh9yYaMyGGIvxzLjO0nyq8KqimLJBdc1VutATVDZAawokrLB15ssN+P+kBH2/Qv/4edZMbHc6fqhUNefyS4O7m1rvs0D9lnB1Vf5xuKph0ELBjloiq3qXym7YlJW1B3gAiUIIWLNypeP0AA/Wo+sHFhpuPPsM2pfbaOX7l2jtEEDImPYAL0N+uvjF5c4glaFDsUYyuwNzzf9wC9Tbv3/EtCnfjg1fG+IgYcOQoxTl6wQy0BPTGUP0UAfXwByCGZXEBOuC/Eq0SZdc5EN6xUIOG1DmfW60frj08cm2O+hgKS4XSuWrCyQqY95aOfjfVbXH1fqqsJGeU/92uANjj9wqMN5FPI0VxxJGBfdXvE5EmeE+Xpgd4d83HCPZgRu8m63Yl4A38rV
+ jXt7pGjQ
+ KlxQPrjH6TFwsxuBhjvPCPgwXOpWwXColpP4jaf55lXU0RR5j8q5rzRHmS27I8xspwhCD+RM69Q6JLCas2aVxhV2riKKp9XydKFF5dOqf++TwIKp7loHSxrcTaEq2Iv6IW4P2zxbRaO/nPeYII4jNcctY5UTrLBVU9c0PIGhUBjd7Y/HmtHWtjGoEViO89NlKPn3yXCWJ5Q84dgIPjbIx7wbVUHl0gy98T7hrzQTfH1NJc6ZQhwEK78dJnIIk7OxKh24+MfGsWt4vdelZ04zK1yys6su6XfusTzFcfQfdMBsZzedBzsN8A+h+iML8xdhSXBtYkVkRARHU99rIdpiJNWAY/bCmkqTCeNlJGVH3aJp7nG1oQtVJr4m6jV9eo57YYrKr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,39 +106,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Jul 17, 2026 at 6:06=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values for
+> folio_referenced() and related logic. This is also a preparation for the
+> following changes.
+>
+> No functional changes.
+>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
+LGTM,
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-On 7/17/2026 7:51 AM, Randy Dunlap wrote:
-> Add a kernel-doc comment for @migrate_info so that kernel-doc won't
-> produce a warning about it:
-> 
-> WARNING: include/linux/mm_types.h:507 struct member 'migrate_info' not described in 'folio'
-> 
-> Fixes: f3768940afdc ("mm/migrate: use migrate_info field instead of private")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
-> Cc: Shivank Garg <shivankg@amd.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> 
->  include/linux/mm_types.h |    2 ++
->  1 file changed, 2 insertions(+)
-> 
-> --- linux-next-20260715.orig/include/linux/mm_types.h
-> +++ linux-next-20260715/include/linux/mm_types.h
-> @@ -368,6 +368,8 @@ typedef unsigned short mm_id_t;
->   *    dax_associate_entry.
->   * @private: Filesystem per-folio data (see folio_attach_private()).
->   * @swap: Used for swp_entry_t if folio_test_swapcache().
-> + * @migrate_info: Stores migration state (anon_vma pointer and
-> + *    FOLIO_WAS_* markers).
->   * @_mapcount: Do not access this member directly.  Use folio_mapcount() to
->   *    find out how many times this folio is mapped by userspace.
->   * @_refcount: Do not access this member directly.  Use folio_ref_count()
+[...]
+> @@ -1015,8 +1015,11 @@ static bool folio_referenced_one(struct folio *fol=
+io,
+>                 referenced++;
+>
+>         if (referenced) {
+> +               vma_flags_t vma_flags =3D vma->flags;
+> +
+>                 pra->referenced++;
+> -               pra->vm_flags |=3D vma->vm_flags & ~VM_LOCKED;
+> +               vma_flags_clear(&vma_flags, VMA_LOCKED_BIT);
+> +               vma_flags_set_mask(&pra->vma_flags, vma_flags);
 
-Thanks for fixing this.
+I spent a couple of minutes tracing how vma->vm_flags ends
+up in pra, and it seems to be correct :-)
 
-Reviewed-by: Shivank Garg <shivankg@amd.com>
-
-Best regards,
-Shivank
+Best Regards
+Barry
 
