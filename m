@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD6A2C44516
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 00:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51A8FC44515
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 00:08:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74E726B00F2; Fri, 17 Jul 2026 20:00:17 -0400 (EDT)
+	id 3DD006B00F4; Fri, 17 Jul 2026 20:08:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FF546B00F4; Fri, 17 Jul 2026 20:00:17 -0400 (EDT)
+	id 3B3026B00F7; Fri, 17 Jul 2026 20:08:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6157B6B00F5; Fri, 17 Jul 2026 20:00:17 -0400 (EDT)
+	id 2C9916B00F8; Fri, 17 Jul 2026 20:08:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 352146B00F2
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 20:00:17 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 45032402C7
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:00:16 +0000 (UTC)
-X-FDA: 84999940032.27.A559361
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 029616B00F4
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 20:08:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 388301C02ED
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:08:19 +0000 (UTC)
+X-FDA: 84999960318.09.E35984D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 99BD6A0017
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:00:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CiHGZQni;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id AA1E8140009
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:08:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UdLOdCWX;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784332814;
+	s=arc-20220608; t=1784333296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vx/1W3ASfCVSI1+TnaFoLicuyre8k2pmNf54ghLrbFg=;
-	b=SE15fgjHbIGzuMRWSC4WV/gVGqYb9OX5L1Xn2vNpV+BCYIE+tZuUpoWBVY6NgOhAKJdcTC
-	3wpCS3oTxAeDSbRL8wX3QMIN+rv3BP05D0e4ew0KS0Z2aeakRXI7frVxuST4efv8bkOehJ
-	3fKjq+D2phREUkTEPPF0+y/NgXNlzKE=
+	bh=UUAY6n/JfAMYhXtH9Z07dgCHrHQqnGWfNgZZZ7aOKP4=;
+	b=AsHBIiN2seXzOKGwaLOwELmXnqKksnrYi3fN/hvxYWpeOWLQd8cPIlhUedGIi/bpcBMo7N
+	CaVmLOLOW/Y82RBLav9TwXvtNsOJiqSupxjQajjZkqz7UAdzdXb0gm7CdbyHnqW+Ogapwx
+	9eu4W0MZNpW58qTK0DEM9PRlUxAOj6E=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CiHGZQni;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UdLOdCWX;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784332814;
-	b=TNSYX+Je1lwWRAmCBGaPh3Y3OuXWj2m4OjEdcwmp7hWCjuvakhmKeU/6mSFTzNzkc0Ok3z
-	TWQiTnzVC9w0tUG7G3uTJ/TTN3WX+SQKVkNDjoLd+Z0RPX/LqVuOu6DDyBUzwNBEZ7gIBj
-	0f263IyALtcD7ShWE1iRF9awpSCU8u4=
+	t=1784333296;
+	b=v3SKC+/upn3KOJfwvUQUn1hF0r9FErrJNDkAn03YztI1EYtuZWkm41L500/CAewce6GRyy
+	HTlxgKCu8kMm54j0Cuk2WgZJnsHsdg9AYMeR5I4D6byrhf+MNwJBa0cEjrmDNwu2kqgxST
+	tuV2L+EBEffFBDcO0CLyar1b7m7Pbog=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D8B6B60AB5;
-	Sat, 18 Jul 2026 00:00:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117AD1F000E9;
-	Sat, 18 Jul 2026 00:00:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C0B4360DB5;
+	Sat, 18 Jul 2026 00:08:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BC21F000E9;
+	Sat, 18 Jul 2026 00:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784332813;
-	bh=vx/1W3ASfCVSI1+TnaFoLicuyre8k2pmNf54ghLrbFg=;
+	s=k20260515; t=1784333295;
+	bh=UUAY6n/JfAMYhXtH9Z07dgCHrHQqnGWfNgZZZ7aOKP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CiHGZQnihy/9CHtgE2dzXcNtjhnY8ODCogd+7UndlAkGpnJ2bb1JAElCFAbo0FHMK
-	 4VVFWkymezZgoYcdFBFTTJqFXRhPVI4b/M21qR6aAvCKVQsT0Gcav3gRLQtSPylB+j
-	 PMDwY2bEvzNmCcbdwL9aF7a8jVy/NNd9RbSNxVdFA5iY1Qy4+eOQ3GPvIaDl8yd6Ae
-	 x5GN3PygEIWU6v6lbSrCxbng3EbgUwISSxq+nbcrQ64K6RhGGJjDXpk+qWtIikFzCs
-	 537GY8yikzEGB6YZlso3AWqySHeeVj1RsXrRZVBGv36KC3Bg8slcyRkovweMfunv48
-	 Vr9cwPpywSmJA==
+	b=UdLOdCWX7v20VPzDmvLDlNZ+EoG0ewmJwN76lyLfkIAQtPrfMGNkjPUI3fkTe2Xs2
+	 0ySoZ0AG1E7kww/UCLp5/pRWdLMia+MiGgINiJqJOfy95OidMqkr0gSx9KMEKAnspL
+	 8dhxhbkd6OQUnJj281P6PYs7OjnD+RNsDT6q2RLgh2Ee2pi7E3pn1XziCl93aP1/Xj
+	 ffhVS6nEofXDn/IJNrT+0lA6UPi7aqrccB1oWYfkmuZshD6aaEb8rHwaB29ZocJAbm
+	 CNTiKY36GFKkI6IYtp2P738Ofx5bv2RZmzYb9oC/WVnBo12gwVpYxz8Ewx3W8/ZbSd
+	 3HUzpDlpIzJNA==
 From: SJ Park <sj@kernel.org>
-To: Hongfu Li <hongfu.li@linux.dev>
+To: Randy Dunlap <rdunlap@infradead.org>
 Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] selftests/mm: Fix BUG_ON checking wrong variable in mremap_dontunmap
-Date: Fri, 17 Jul 2026 17:00:09 -0700
-Message-ID: <20260718000010.85576-1-sj@kernel.org>
+	Shivank Garg <shivankg@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm/migrate: add missing kernel-doc for @migrate_info
+Date: Fri, 17 Jul 2026 17:08:06 -0700
+Message-ID: <20260718000807.85807-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260717070251.73212-1-hongfu.li@linux.dev>
+In-Reply-To: <20260717022146.1290242-1-rdunlap@infradead.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: msdowk9zcjp837d5nhegua473wrd3ht7
-X-Rspamd-Queue-Id: 99BD6A0017
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784332814-478447
-X-HE-Meta: U2FsdGVkX1/YF4JMq+5i7bqdDqFCVAqaAhMg5SfaGYXgX0F3BiyWnTJgF3UO3z8XTIJtRlABilQYuY35QaXchwnuXxlLZDstNvmituw9wqTPV3tolapIrR74LcaVqBQXINoSZnBx78hkbMkEuvVC8N86ZBpEcF27R4msaTYrJGJVhzY9giXmVpGi32V2Iq4L+1gX6X2qfeWNnkpbGCiQqLCDPX/k6SBB0j2G6y+zbPeloo6LA3ncNESy9eCe9uylJ84EEDHiUMNfF49C2I1czlSlsXz/9mZuxGTBTmqdSYtN6SHnktLLNqqWNKPYvz4p1vzkqbJnOGXGLIVVPtlToOn15J1EgXMM8ktFIeDKSF4+2g/8uniZO6BznHqGVK0hKdXTziVEw80SBPCm3K/20TpAl6/DER1VqZJF3GPoka5d7bbi0a8Y5pcTjNF4tWfNVnrcbG6CAEUj4euBNJ/jqj0zY7yEc47AqTePmLWCrGMXr5IM30PvwZLjSI71yybv+vqNdPUWYWKhGS/tVTsPVERdVarswhWf02Ag9w8ufd2xImrRKldHAgTkDGB/xPP8hv2I5icxspUgmCRexyfbTH2Ysk7i2nlsVi8WrcMKdgBCvF49ojXM5Oykrk0PWxUuhnLeL/6DZ2BqJYj/K1keQtcP/FilBxgI1GXmbByNQFm4AY2MAHZhCqvnWbwcJaSngyytmiBuf6PUT2JhBArp1TxRcKFU6PDfQ+lDWjowDJm1OutSFAidTcQuFW2UJn1d0q0wSYBoipeM6k62ZAhqmiZYPLGYqmSs7/IJNUUddq1ljnFXhYTw2HX7Br/q5qPgx+eo6+DWIP/EW6BXzRh0XdVrLvMph5hMj+qhX2pN6pBC2yTbYkhpl8y5m1QWOaC5T07tVVXoFIOnCruywbOF4ZUoTiqCaZtHyMKqJGSwO6m474zWawT053MfxVmXJs1qB/106mzRw7DK7sR0F/6
- hrfVMXAp
- kGld0g2yZlMUjnVmLCYfDLhXt20MVMbofj15YfWUQHtMidNilkOBBSNo2g42h+N2Svvb1mkBKYTEuC64mRk+CYIFsq/ccJYrlTXnuGCQ4grXg6qL4LXQB0aSYPUQit/LAdX2PMhIEs25oZYssk4h2gXjtDgzudcAh5Ti6NTHl6ArqNeSNkYJufGiCnoYbzsi6YgOUuo6f8Q/Bm8yeO4D7xFAUsVvdCTjjkuzrPkVhA/VW2h5Z16A3507LatDDFBk7Rs8E+lj70cbsKALxPT1mfe9VzYvyDfOOgyu8u+XKia/HaZRw0AWOUBuLhBhOwsDgkeLd
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AA1E8140009
+X-Stat-Signature: 61tgdmh1kcnm5hsfdipf3pdk4i8qp78t
+X-HE-Tag: 1784333296-750091
+X-HE-Meta: U2FsdGVkX1/L+POFNzZFDdsjG994X5+BtDVwJGoQ5DyjNY1rZ9OPs+KCE2/mI/gGL9VeycZBE5Ls2HSV5mQsues0aLRx9zNJG/tAG5IBB/cif2nXfh+wNBweosDhH4Jseufq4Smm0e/brlUR0k4QrRPb3H65GCke/nWPQqPVHnQD8+9IyYwcWLcd6/xmM7egK0x1XmzNLgdqmQ/a7RuiFuKpkIvYo/0862fnCaO656bwU0L6ClolrKRTlRxaob/MAfibsZIBfT5JQ1c3JhNj6B8g6/3TQ8zj/+LOEVcNTt1U+wWCyfdyzM0FHbMPoGLoIsysxC7ij9YB28+bk7s2cj2Wo6Wor0w2ucIwefuCLMv4bzTF0K6RAsR/HOEwh4Q4uCA/n3w85IGqfbBMDjNjg23pHyPaQO7Tf+30uLydz72GTc0klQbJ3A6a0bAJu9KZ9QGD7UBaHwpjB9FQ2nvAjP1ySiisCHO/9Kw1xt9BZkOmYBNwby0vIoN+k89w1yXM7e54Tv+VrtugWcKPIvbt7+m9AsMVM+1hWn+lIsQhIzB78lsfEeUWnTV//TdjXvL33gGk/BqPWVuqyfOCqhp0JoWs/h+dRK6frAXw3JkrgkDRiEujydlEA3wG0I56FaSXqRKC0hMacv38JWOOkGWCfA2W2t9CUEgBKWjABknf3bMFYditr3Qre2hZu3Hj/FykrdanlLocSiUrZ1oK0Uow545CKeo4dDUXsyZXZk5RxgeDimXDyrQvS8Sq2yvGJWBQxl2WFxw7rSDGoD6oM509WP1IaBhtl0LsFNILqGNEXtpv7qqiCTHGoxhEH6CIsWJ1OvP3v3VZuAYThto/TBVAKgLrlYGx1NzxGmjVQM0oMMshQ/zn2Dxxmre1BmFeZHXpZepLi2681kE/CboNV0cruP/JbFed7iHpfTJYkj+CWYWZTIRwNjBQYTgBlfY4EOsjkcOGO2iNrHh5aTtyh5R
+ m+P6TDPN
+ 7pN8u8jtDg5GrPrO+VOIvQvkd94mEfwsz58Lc2KmE/hma/f7HFUTQtqeZ2cm+uT3rT2drh+K0lsLxNNDJqaClclZHHsXsCLciXPMZ1j3Q/pT4AuTBcqXUWKDkTW+lLLTTEcIJ52u53gWKvDR5dbFDbEiyRUBSiS5EzwxXQoQFpIxpqNxRPZxkbBANxuXknQlEfQnIh3D1OTfHySn9SoZvfitZepgPd1ZsW54YKoLQMpPG9brqeXVCBMwFMYkAriHraRL19piXcipcgq3pulMe6Gv4FnNj4sjyk0phs3AYBY9w0V0I4Yu2P2+PWGR0gYHfaipdsm0JNPaNkTfKFO7QilYm8DI2oy6dDLgPiMPZhrGIfo8LJdb+lPl0ajse3dRnTlVBgiIQ5FHy7vVEfqUpfhDuHspleLT+Lzi+jKrc5Vprtldm79878rMyVlBfvyckvVGDqC2m5zznruZ8Q0aSVIonag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,25 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 15:02:51 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
+On Thu, 16 Jul 2026 19:21:46 -0700 Randy Dunlap <rdunlap@infradead.org> wrote:
 
-> From: Hongfu Li <lihongfu@kylinos.cn>
+> Add a kernel-doc comment for @migrate_info so that kernel-doc won't
+> produce a warning about it:
 > 
-> In mremap_dontunmap_partial_mapping_overwrite(), mremap() stores its
-> returned remapped address into remapped_mapping, while the BUG_ON
-> incorrectly checks dest_mapping instead.
-> 
-> If mremap() fails, dest_mapping still holds a valid pointer obtained from
-> the prior mmap() call, making this BUG_ON never trigger at all. Correct
-> the check to validate the actual mremap() return value stored in
-> remapped_mapping.
+> WARNING: include/linux/mm_types.h:507 struct member 'migrate_info' not described in 'folio'
 
-Nice catch.
+Nice catch!
 
 > 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> Fixes: f3768940afdc ("mm/migrate: use migrate_info field instead of private")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
 Reviewed-by: SJ Park <sj@kernel.org>
+
+
+Btw, get_maintainer.pl suggests adding below more recipients to this patch.  I
+guess they were intentionally not Cc-ed since this is a simple change.  And I
+think that's fair enough.  Just wanted to call out for a case.
+
+- David Hildenbrand <david@kernel.org>
+- Lorenzo Stoakes <ljs@kernel.org>
+- "Liam R. Howlett" <liam@infradead.org>
+- Vlastimil Babka <vbabka@kernel.org>
+- Mike Rapoport <rppt@kernel.org>
+- Suren Baghdasaryan <surenb@google.com>
+- Michal Hocko <mhocko@suse.com>
+- Huang Ying <ying.huang@linux.alibaba.com>
+- Zi Yan <ziy@nvidia.com>
+- Jonathan Cameron <jic23@kernel.org>
+- linux-kernel@vger.kernel.org
 
 
 Thanks,
