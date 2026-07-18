@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CFA3C44515
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 00:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C45C44520
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 00:22:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 609C06B0104; Fri, 17 Jul 2026 20:14:51 -0400 (EDT)
+	id 553496B00AA; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E1606B0107; Fri, 17 Jul 2026 20:14:51 -0400 (EDT)
+	id 504A86B00AB; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 458686B0104; Fri, 17 Jul 2026 20:14:51 -0400 (EDT)
+	id 41A1F6B00AC; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DD736B0104
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 20:14:50 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 227C01C036B
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:14:50 +0000 (UTC)
-X-FDA: 84999976740.21.F244577
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 87E4D40004
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:14:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DcZST0Jy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1451D6B00AA
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A34DB1C01C5
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:21:59 +0000 (UTC)
+X-FDA: 84999994758.27.333614F
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B0101C0003
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:21:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784333688;
+	s=arc-20220608; t=1784334117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hlaPqrC6aZ24tUVqmNoMgW7uRiUtt18MWvor7D56nnY=;
-	b=wkWtlKG16P6y3hSCVwPSgR2gtZaAnuBUYwqnYoEjsDOY6NIEcAk5GtRU94CYiocu04+KFY
-	l5q9TrY4prgO951H/DaaofleoghX7105TmQ9fqRBMgWrjZtlY7ZNrnPpYuzy6RO7oRnvlW
-	8yLeSkpUvcGf35gNnsa7TdmsfbHCFHo=
+	 in-reply-to:references; bh=QRWM+vXzo+aNWC2yHWozek15z0L/s0h6o9EA3tvNK38=;
+	b=CUi3UFLlVJ4DDosaI3TV1Lcay9nKV8Oyi8C+WWs9VgSn68ghu5oSALRTb7oWVyz2S2YDGz
+	MEmKch6ulBdwpa1V//WWQIHePX649jNUaGLfWEJdBcArCxM8qscEgy7NU6yo/5FQ4CSn8A
+	OZLAkuT0/pEXatc5dfueaV+QLqph+0w=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DcZST0Jy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784333688;
-	b=JczfBOoVknHLt3/+d9ouroYoiwmdy/UwXDSheRqWcBN6obgsmBBwdJ425C9O0/ak/h+Cqx
-	m2I4ZNasvTsmV6mSGr6dTcInsRdBA+19DqZyFhHiOTQLSG6GGC+hFBOkA9i+ImWrbKgqRd
-	ywUYYQphaKAZpqgsUp0YzZDLYsRsd0o=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 34B1E60DBA;
-	Sat, 18 Jul 2026 00:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9137D1F00A3A;
-	Sat, 18 Jul 2026 00:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784333687;
-	bh=hlaPqrC6aZ24tUVqmNoMgW7uRiUtt18MWvor7D56nnY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DcZST0JyZ+VsKqU9PvOID36E9CRrNSLnOGd8EFTWxNPgb/FkFEKw7G8fsXiPmcgtU
-	 Aw8pWXa/P+qt01XtysDSejd52LvREX3r51PgldBJAJkTI55yAnH92FgrZ0CkdVMnEb
-	 Vu6V6vKTRiMWDLz7evQItMSQZ5WPpAMRxFipilfAbj4fr7j+FmkqR18ef4u5lr6AoU
-	 b6fKlaC1YHNFVRf+en/jSKYQRAz6xfr3IJm/QmICHoIjDEfiRK5f1OGbBQy4v3NswL
-	 lStie6B8ySy71K8yKxdIn6i2qT1+Ok/VKVQ/N0o0O3PaqT+qtPQLncD3da9gsrxScq
-	 UjnGKstrcxxVg==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 7/7] mm/damon/core-kunit: skip wrong region walk in commit_target_regions()
-Date: Fri, 17 Jul 2026 17:14:41 -0700
-Message-ID: <20260718001442.87129-8-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260718001442.87129-1-sj@kernel.org>
-References: <20260718001442.87129-1-sj@kernel.org>
+	t=1784334117;
+	b=M4RJme9q8gc+hn67ePb6Ymtem55M/ujg0/MHa/Qk94jcYzctdB4ZhSWfRbt+UFfP73nVhD
+	Om9fpOvzuOerNWFo+vPzN29OtU8uWCViveL7QCcGPkIOnXAGYJ1rDla3SpQ+oXlvzZIbQh
+	XG4/JVute0VxFxmK9Jm8YPO0mr6eXF8=
+X-UUID: aa19a4de823e11f1aa26b74ffac11d73-20260718
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR, DN_TRUSTED
+	SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD_SPF, CIE_UNKNOWN
+	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:80970e74-c171-4c61-a9d4-aeb85d044d43,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.12,REQID:80970e74-c171-4c61-a9d4-aeb85d044d43,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:b73bf3d1b5b3b8f522fdafe3a7203f49,BulkI
+	D:26071717541216H8SQ0C,BulkQuantity:2,Recheck:0,SF:17|19|38|66|78|102|127|
+	865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,
+	QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+	,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: aa19a4de823e11f1aa26b74ffac11d73-20260718
+X-User: lienze@kylinos.cn
+Received: from ubuntu.. [(61.48.211.50)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 197839938; Sat, 18 Jul 2026 08:21:47 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH] mm/damon/ops-common: remove redundant local variable in damon_migrate_folio_list()
+Date: Sat, 18 Jul 2026 08:21:25 +0800
+Message-ID: <20260718002125.637104-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 87E4D40004
-X-Stat-Signature: zpriegahgthsjjmm5c5uo9rxa7o1qdcq
+X-Stat-Signature: xzmbbyjbxjixqmq1tzknj4nerbiegd34
+X-Rspamd-Queue-Id: B0101C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784333688-960821
-X-HE-Meta: U2FsdGVkX1/LF8woJQ7vayJ/YzCsUt2uIEp54TjwqoEuiZQU7z6pB0O4MebVosKC1AsNbg0U/o3G+VHewZ6ZOJ2mIGhCD0QU8dyf0riIFTSMkiWw7DR4BPmQ9oOjqTyYjjF1DjQZcc5egHGKq04yvADDt9430hEZxAudQpJ+9zZec5Tw/TX4BF1GwWMtfIHIIm/gbJqsLI61naZxe2JAPb/N8R9/hFOyIIJ8OTNAhYVjrlX9t2WjJqNNJhBbklhfg5QRlPNf6NTk9yc4zUHEUdNnJgpjfyFoM+wDrLB8TYy1sXEtVAf295klkuKK4HuRBJ+zclNq7Jz7EqotfNFcj2VvnXKHeDNpuboEo88tIvh5DUcN68zKjmHLGrvuR+yDr2GSzz1u2rmH8PKAOpKentUYMw1ru+X5UDXtpyjUbcaBMW+0eumXzkqPrYlHggW8rRu8wrjW7Oq78HeInQtqJqdSv+8KsDAQnUlEs/2mDsSR0A3ZrWNMnB9cWHCwxnbpiH+UOxDcqVOI4MJWEQjhz3g4YLcdDa94XAJtHYzD8SbUOIH6IrQfn6AIfr06a1hijEso67fB2ssQ3zj91NHtqKyNmPY1WoxRCZiVGJWcEiG1zS60921QzMfTxxUQ7qMu8mynF2ZLdt6NYxh7GP53hhxK5A0E8NasNP0jcJh0hfwqWtbWiH0EbubHNSoaliI/tpzsZrxUdug2kbz3MYdHaryqsGTa6RgFASIjebZSc+OrgrJARhImATiEw0AuhFcp+TKPrrKGViPq30RcSdsLrlPlDR0KvEPTmgsfp9tDALm8T6AgaMVVbvxZ7Y9dlm5iW4QYP/MI0ZH+kT9bNS+sC58dEbDPXjC+SacImoVVsweb3lqMFp1Rh7ndSTWOUtHP4WqVhydUcWzi/HluYGtbadDmQ7AT9ym13xwNJ4p1Mc+AUYGYEVXZO6wl7g3ROB/z1NF6bQRKf5zu3nsQXTF
- o2Ld82nZ
- g1ydoELyDbyG+Q01Hw5e/T9jG5Ike+FOVQIZcBIzgfbUcKERuEDHuoHWY9Z9whEJirdErGa16z90V4NfWe/6+aB88281xqZLXQqWva5pLw7NW3362A6cuVsBaE3802IgQscOIkpfkKTILPeb4h6nTRTcCwQTmpwSDonyNPtKV04wrkD5xIODna+9YkBrBd4QCwy/l0MPZzUO/9K+ou+f3b7QgNJelIdviM3GgQn2ZHbTWhpXB5etDM7WvdvwDKVA/Qxu1mxi+8XtrJCCo40MbuwwAKA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784334116-940487
+X-HE-Meta: U2FsdGVkX1+z6vN1G0waeiiOKpmLaeJxDXMvzabfYBK01qIsWnr9hp/kFVZ9RkH+w+YGuVyBGkcnx1raX/KV/LaeX7XVUF1mcKQv3cyjJ7FNm/X4C8j7og4tJGS2I+neOPOIHaBmUBFRHXouo6RiQ4DOBEiv0ADsRFNTJSgzNwxSuMXNgdomB7oLV2skhxbDyOV4q4KuRnunFvnakkphrlg3af8YkpTgcWih2qPytnAjXQqoD5zTcZHmqiTUPf4JFBwEX9Szc70WbR8uemHUiIRzglMiMWwC47jQ88Now+seHCVw5vjVWSdPjjXFBVJrzR1vIZ3tYXuKBHbZcM3TdnQL4VBkW2KKVnyRPuCkSHETXqrSMKuUkJSWsqrRoDH8muBP9CF28LyfIMPwdh7hdRVjhoJVBxW5PPx4JXApKuAbMI23GHt2lytyi97Gq6cTzhVSRquRlgwDJIRFGs831SEyPsaS6oREZrk+hNAOyt17v2FDkI1/v10itdSyhVAy2m+Ci3ZYQflp49oS7oh6VjjDJ9ber9kY3Hz58EvsaRe3z8u2Jrn5KFadUsAqyrtb5i2iWRbFDucn8UcrNxJtur9twBYuIHolZKAEhr9ysc7+8gxD9a0cgG+DMOLdwQ/x9UldQVSiJg7VarbmE2Ew3A0HT+SDNR6GjHV/c1xqpvNWHbOiLRz6plNwi+4rY4aP/ESzRl4f6wtY4+rU7He0x1AOvb2yTj7IvJUHXsljomWWH/tRqgSNOiX0uiYQYW0wrX8McEUV8ChDoOQ8jF60tnFILaF1u64nQrW163K1EAu3Xhiw7QTdRGYr7MgexUnKsd5iqRJndoAOxZiG6nsMJdB/EX2KD+AirgbDt/hraOCX6v9/H8XZmHutC1kJ1eEGVhk58JVVZkhdoQApKT8KaFe29TyLgyk/pZo0CnK6/gUwtRpmyVYF5063aQt2e7h9qvDQi6JIATqxU0TC2hP
+ 4++aaZ6z
+ jOHqmTkSMMiPk4gwga5SOeOXkREGwEtC9uvBXdVJeCF+9p2E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,56 +105,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_test_commit_target_regions_for() traverses expected values array
-after damon_commit_target_regions() call.  It assumes
-damon_commit_target_regions() made expected number of regions.  It might
-not.  Because the traversal is made based on the region count, it could
-do out of bounds access to the expectation value array.
+In damon_migrate_folio_list(), we're redeclaring folio inside the first
+while loop, but it just shadows the outer one.  Since the second loop
+uses the outer folio anyway, the inner declaration is pointless.
 
-The consequent user impact (out-of-bound access) is quite bad.  The
-realistic user impact would be limited, though.  It would affect only
-test run setups.
+Remove it to consistently reuse the same variable throughout the
+function and improve readability.
 
-Fix it by testing if the number of regions was also changed as expected
-and exit early for the failure.
-
-The issue was discovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260713144757.39740-1-sj@kernel.org
-
-Fixes: 603f67eb91e0 ("mm/damon/tests/core-kunit: add damon_commit_target_regions() test")
-Cc: <stable@vger.kernel.org> # 6.19.x
-Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Enze Li <lienze@kylinos.cn>
 ---
- mm/damon/tests/core-kunit.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ mm/damon/ops-common.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index fbf986aee2dea..4a536d41cdb2d 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1277,14 +1277,19 @@ static void damon_test_commit_target_regions_for(struct kunit *test,
- 		kunit_skip(test, "src target setup fail");
- 	}
- 	damon_commit_target_regions(dst_target, src_target, 1);
-+
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(dst_target), nr_expect_regions);
-+	if (damon_nr_regions(dst_target) != nr_expect_regions)
-+		goto out;
-+
- 	i = 0;
- 	damon_for_each_region(r, dst_target) {
- 		KUNIT_EXPECT_EQ(test, r->ar.start, expect_start_end[i][0]);
- 		KUNIT_EXPECT_EQ(test, r->ar.end, expect_start_end[i][1]);
- 		i++;
- 	}
--	KUNIT_EXPECT_EQ(test, damon_nr_regions(dst_target), nr_expect_regions);
--	KUNIT_EXPECT_EQ(test, i, nr_expect_regions);
-+
-+out:
- 	damon_free_target(dst_target);
- 	damon_free_target(src_target);
- }
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 89c694f6e4fa..e59f5268d503 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -339,8 +339,6 @@ static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
+ 	LIST_HEAD(migrate_folios);
+ 
+ 	while (!list_empty(folio_list)) {
+-		struct folio *folio;
+-
+ 		cond_resched();
+ 
+ 		folio = lru_to_folio(folio_list);
+
+base-commit: 5093dba1014c1d7f7e247fd118f0fa8f22136046
 -- 
-2.47.3
+2.43.0
+
 
