@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B0EFC4451C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 15:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8096C4451B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 15:13:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F8A26B0088; Sat, 18 Jul 2026 11:11:10 -0400 (EDT)
+	id 8F0A36B007B; Sat, 18 Jul 2026 11:13:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0606B008A; Sat, 18 Jul 2026 11:11:10 -0400 (EDT)
+	id 8A20B6B0092; Sat, 18 Jul 2026 11:13:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E68F6B008C; Sat, 18 Jul 2026 11:11:10 -0400 (EDT)
+	id 7B7726B0093; Sat, 18 Jul 2026 11:13:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E3C2A6B0088
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 11:11:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76A28120495
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 15:11:09 +0000 (UTC)
-X-FDA: 85002235458.13.F9A7AF8
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 307C04000D
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 15:11:05 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E3926B007B
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 11:13:21 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7C3D140360
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 15:13:20 +0000 (UTC)
+X-FDA: 85002240960.28.FB01C81
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 749FC160004
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 15:13:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=MdDV8tCy;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784387599;
+	b=LBbdz8Ma38ixOqytq++zvLPL/PV6T5yYbuhDKtIt1DOqanQU1IXxU2gidMqhC/xL6wvcDd
+	TxyyFMFswbvebyPCg6I+1IafvQlOAiMnacIk6K4aGpPnE9Hb1FpGzIAqoaOmKNwfj+u+/X
+	XMgrr1gygOKV5xT1Cewft12UKfWrwtU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=MdDV8tCy;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf08.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784387467;
+	s=arc-20220608; t=1784387599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C7WT9R+c7nsTlJzlDMI/p1qPrm6WanAXTz0UBS7CuaY=;
-	b=lmI6qwEekBzQcn1wxm3uUwPwTaCaitQy9U6hQvkL/d2F8vlGW/c30vGxGG13o7czJNZwQx
-	rC2fZSaMAVYac06OCETRT+m/jWwsWXj76c9zsZ9tw6yauUW8OCJFyOMrjZmzB8YZ0YFYU5
-	+oZ4+8ZVXrnPM2MbdhjBv2sPlzzBF34=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784387467;
-	b=Yzhx/izzQmPBHS6ucrKtTzcmysWxusnCqIDHJGt6qlgUbf7Mlv3Mv503pDiwIAu7Qxzvci
-	Yr+EkyF7VcRX8Mq4XOak5l2PejR9BlgMHJwgG0WcwBvt5iwEmXeJVl9iTvFADna2LxyYMP
-	HZs+zHRJOTmAiwCwuDNEOVPgZIdTblY=
-Received: from unknown (HELO lgeamrelo01.lge.com) (156.147.1.125)
-	by 156.147.23.52 with ESMTP; 19 Jul 2026 00:11:02 +0900
-X-Original-SENDERIP: 156.147.1.125
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.1.125 with ESMTP; 19 Jul 2026 00:11:01 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sun, 19 Jul 2026 00:11:01 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Yosry Ahmed <yosry@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org,
-	joshua.hahnjy@gmail.com, gunho.lee@lge.com, taejoon.song@lge.com,
-	hyungjun.cho@lge.com, baver.bae@lge.com, her0gyugyu@gmail.com
-Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-Message-ID: <aluXhRMXkbPRsPcM@yjaykim-PowerEdge-T330>
-References: <20260713025644.170839-1-youngjun.park@lge.com>
- <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
- <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330>
- <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
- <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330>
- <alae-LIRwEFUjgs1@linux.dev>
- <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mOrxs76HcHbX8sKHP7kCOZuuDQ6BQh8pFNy4vBZ32ZM=;
+	b=zbB0w+b+XDAIfB3bCNXK3qnpASjdbxgm/1gHxoV+0Z93Bxg0gm5GLiTeM81GNXI6qw0vuZ
+	6j1jkr83JKtcBNL1KeuMuoZYlSE1f4h/letYk885nZolW4klf4EVOeIbg9Sr1DlmKU9eg8
+	072HPibgQaoIj8M49haq98Es6Q9SrY4=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1205140E019F;
+	Sat, 18 Jul 2026 15:13:15 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id etNWueav3Hj4; Sat, 18 Jul 2026 15:13:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784387584; bh=mOrxs76HcHbX8sKHP7kCOZuuDQ6BQh8pFNy4vBZ32ZM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MdDV8tCyIrc/n6jaUatPzyTzBWQb/RKhtI/z1mMo06tAhtU4MkgzC6B8YquVw6I+H
+	 z518171qYK6Zjwj+onG0as18Xhc0FaslgvaJbxErGrLBYApCInYLK/OIJL4jnvEUVb
+	 Nn2QRqIT2pamoM5rOgcVmDkkKHeJ0TCQt8zxvkf40ekYWHKdime9ymWPxXXcVuzGCx
+	 W5Omqwg1CjPBj7dkxlpfXrU7U6hqpw+ytGnx4urDmAAdc1VCkiJmeZJ1fAgNUIbfEU
+	 EyKcL7+0mqmdmud0Kb64RzDsoXtcH3rG8Z8AT5OGyi201Xt/gIki85KUIkS97MOCir
+	 FgaBn8slnshBli7b6cMqh61yveSHqrpUeo5WCnXpP1a0r7q/x61c299XI6TjI8HeAk
+	 DoGHMgqHKymHsI+n/6RMsZ374zeyh/BoCtrRbviSNzl+oEhcTjrADjQgQc6Qg/NNou
+	 BJu+dNWvJseO3QFqnDjv2wLzmmTU6y4StMoh7ckJ3KysahDXIv1omEoEyX192pHZqr
+	 fY+yHHag31RP26tqLT6qHp0p/luRc++rsWfWTTo5j45CfHZGOOr/DoBEsmXrT3d3lB
+	 OtSZqKuylz1TkUtTlrkasuuFija5i2PnWEoafXU8lUt+S1bzIIgYoveqM7iLdoiu0/
+	 1t5eJeRkq1y36ZoLqcwW2vT8=
+Received: from stx.tnic (unknown [12.110.208.163])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 53F9440E0031;
+	Sat, 18 Jul 2026 15:12:27 +0000 (UTC)
+Date: Sat, 18 Jul 2026 08:12:24 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: shijujose2008@gmail.com
+Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
+	jic23@kernel.org, linuxarm@huawei.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
+Subject: Re: [PATCH v21 0/2] ACPI: Add support for ACPI RAS2 feature table
+Message-ID: <20260718151224.GBaluX2N0kM11Wb11C@fat_crate.local>
+References: <20260706000338.362421-1-shijujose2008@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com>
-X-Stat-Signature: 5jpj7oiicw7p6xnrch3ee6qmd4d4h6jz
-X-Rspamd-Queue-Id: 307C04000D
+In-Reply-To: <20260706000338.362421-1-shijujose2008@gmail.com>
+X-Rspamd-Queue-Id: 749FC160004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784387465-919976
-X-HE-Meta: U2FsdGVkX19wQ7kihmrkpl4jIoxL7+HB/SPy8nng1y+dPcz/8gszrLyUy1bfFhrJ5SaeUvJ6H1t78hkx58/46kS3wwhUHSW/nz5VMTV3jsv83JanPKWA/iuBod1NGu8CkL0FBWVYtiRJ2cv86zpcplcfKmvLBKjUkU4iR2ZuBfhBFjsHYZaRKY5L6aGDJc3arR9M7Djm6cUB13tjCyKjbG8GNScJCrxm6VpfDCtZ3Hiuy4Yrac9I0apmvQxgRSkE+Y+wOLQP9LAeDmD1cYYbsSjvH1RsYcxzHfsRAGB5C16AyuzHa2hIj+RaRF5/1d03OgAJ3sCel01/RT1gxUiDnBVGbT8Ij4JPm/3o/JmZ4DNnV2zwEXnAf7l8pT5NFb2uS0UFeP9NbltJN14JcXWHnav/wXymtmMvaIfDa8EBCohIsRkm0JyWc6au3rryir9KwNC6yEBO4h4YlrlXuCzFthfsT5YQmTNjRZiv17HejpRmyeCFf6tdlZ7ufaEG6cVXNW/BhmNobcKy3/hByKE6RWV9iNY53QR2FdHeykNdkyam9cDrjLWUjeyfRhsajdQfXrdvYW7AG4ZsZ7IEifU5F04Hv6xNjSsG1jrKwFSpCCuWONwCcCJu+e9A463fcOld2DxaVdtJ9iRVoZI+ydMWrA7HNJ8JlBfamPSLpx9NTyWpYIZ2IqogRsT/PDzMCGT8hUM8BWckbFUV4bQ2RMC7WI2BnMoDF9pZYNkEovGhMqeLf08VIeJEJlOVyPljlNRIshDRcIUx/Z5XN1Icand4e7rzrtwTqLPL8gE1LmvkcRjAfBWnY7QG8sCxlOc/G7MTFXqsRAr0o41dsBnz6jR09SeR26Imjw+XJJ94FcyPBm+FcwbvSo1Aqa4crGcVIV7aoWxo69QLomHMdRPW76HEU+4kgjP3PQNL9Aa4Ch2ril3KuB4/1Fapu/J2xsxys6zoEWTGYgIihdldSTdXIw3
- y4dAZCeZ
- PNUnzoVKck8uVVvdXLYysXRdAIvfu6PxK7h5gfTEg3+N5yNHNci/J3iEP/tFb1flMvcoyeNGte9W0keOFI/w4rM83BSHh5t46d9JlHceqpACEngs5PiEPBWWfZg1/BHrb9/LLF0OxTh1XN6S4Qn2ETH/Z9GijRTptbilZ/0fo8QyMoXS9GhunlFM8H9h9589gJ4awTREs/iwvVwHdcM2yDRtWWFuFjpoYcXF7f9l/OR84JltcSFOweEn8lJkAJ/3m7DcH
+X-Stat-Signature: 36ikzbatjjohgik5ijnm4cis3gnxi16y
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1784387598-967316
+X-HE-Meta: U2FsdGVkX1+BMyTT74IqhLQeNiY29Im4LCvVSIFe70u9tXBr8yYgC282DJZ1jXVpcNMOcZIEIi0ehtOkyyEd8tkFDdbqySAioUS0JbH2+biKMQD5RL/ccyvElsr+hpsfM1M9GScb154oLPNyU/FoSNqEHWplbP3v35fe07ny2HgqXTkvxeethBfGBcI/q9nT3Mn6ESH6RDmQtkWG7naGsckMvLeWa1SRtp5RtquRyGiKcBFVAXkv8FON1RRMnyQxxKP7J3ggTG6EtazCCoqUp1fXBiZ1rTCJET3MEbd3A/jvNYAtuZYwJypWGt5DNfvForxNC1qXkFTtuHT6TA5zqrZeT4S/B5nGVSqXrjnBVjyhxqJdGgXuFVKujVhrzSY8FNuI1C4IjNRnuA2bMalS7fPJd+OJLZy/MM6eMplChtO66RdCj/Xa3Lo9JdQZcCxgSsmdTjZ30RCahjyfFQBVstNzsyDC8a27cPK1lF2VtPnRPNs1d+R8hk+Vzxi3iYdWoW3R1bMKkWpDcN3ZmRzn4DIbzD4cl1xLcJtmN//qZ2VFWyTLH1FQOX8BK6OhWGZuXYo0PMMuH/B+WLdeKoVWeHcb44L6Hdfs1Z40qoVDSpeTNEK5IhazF0sYoeTdHijZxm7gM4QketFUWN9ECQIuPa0/r1umMihybrO/uthkNHULAbF15N4WnLQ2Jd1YryVWFRx0dOT/dWzifVlv/AV7ltQ7R79/yhCqMDSu3vG3DgCWU7rMTnAAxMCeyS4G7ZqwFYxSbXgqMBeiUAq9A+/LATyv6crQgl30mGwaGrkCDobrLlUxor9vKAueKQHZEYR/buXcxRM/dp8zLJs0zPNRW5/9I+4k5zeohSiTAfrM3jhT2iZLWqhQAOyILwoXsiIP3I1SqeJjW1gFAjPc61336J3YyOmM57CmV2cwT5cWhnFCE0y1JtET3QrxO3XX5MrsioWgl39RDn7OrqbUHL7
+ 851XAZ1L
+ QzlOfmfXFrMIv8ceSV3LggyAA3EiEEkBmzlEhhqiPB46jnlD8u1d1XsM/H3BfZMyZ9lqTB5+WvOOCi2Q+bI3yoEevgZBd/Ysn21nz9SyZsZjm4IOFrTpsOhoZb0VWRUFA8dsnGnIMPkbyoKYIVv6i6FtuQizlaLGl4wHCluvzTaCiyB6CUl8efBonQJNOf/AkyRIYp+GM68/h81uPb5byn3EngPBCHjodTP0W3nLkeKi6ixSrQxk/S+iHt4law0bt3yB0NPlMNLkgzaHAAb/8wtdlF4yC6ZM1o9pY7Y8gKb7Xydor/Rn1OCJSREAODXAgDjW3GEiH8zlKbtwPqRSDRN2ZCk/bNMQy8pV6J5OPIRl3Ancy1diRfVJeUm1eIsOvj4l8OzGNYIUYowv8p/qE0Lf9YuDLrbT/k8HVr+jqIAVIjBet1OaM9rXxkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,111 +114,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 14, 2026 at 01:52:14PM -0700, Yosry Ahmed wrote:
-> > > > >
-> > > > > Hello Yosry!
-> > > > >
-> > > > > This series does not cover zswap as a tier yet.
-> > > > >
-> > > > > My plan is to land the swap tier infrastructure together with the
-> > > > > first use case (cgroup-based swap control) first, and then follow
-> > > > > up with zswap tier support in a subsequent series, continuing the
-> > > > > discussions we've had above.
-> > > > > (I mentioned on cover letter, right above the overview section)
-> > > > >
-> > > > > Does that approach sound reasonable to you?
-> > > >
-> > > > How does swap tiering work with zswap in the current series? I assume
-> > > > zswap is just enabled for all devices in all tiers?
-> > >
-> > > Yes, that's correct.
-> > >
-> > > > I wonder if introducing zswap as a tier after the fact changes user-visible
-> > > > behavior. I guess if zswap will be introduced with a default "max"
-> > > > value it will more-or-less be the same behavior,
-> > >
-> > > Right, that's the plan.
-> > >
-> > > > but I would check all
-> > > > user-visible behaviors related to zswap (e.g. interaction with other
-> > > > zswap interfaces) to make sure nothing breaks or changes in a
-> > > > meaningful way when zswap is introduced as a tier later.
-> > >
-> > > Fair point. Let me review this more and get back to you!
-> >
-> > Please do report back what you find.
-> >
-> > Yosry, what is needed to enable zswap as a swap tier? What will be the minimum
-> > requirements for that?
+On Mon, Jul 06, 2026 at 01:03:36AM +0100, shijujose2008@gmail.com wrote:
+> From: Shiju Jose <shijujose2008@gmail.com>
+> 
+> Add support for ACPI RAS2 feature table (RAS2) defined in the
+> ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+> scrubbing feature.
 
-Hello Yosry, Shakeel,
+Sashiko is asking more questions:
 
-I have been working through this in detail at the implementation level.
-For now I am adding on/off control of zswap through the tier interface.
+https://sashiko.dev/#/patchset/20260706000338.362421-1-shijujose2008%40gmail.com
 
-> From zswap's perspective, we just need to skip zswap is zswap as a
-> tier is disallowed. Could just be a check in zswap_store() similar to
-> the check if zswap is enabled. I am assuming that if a swap tier is
-> disabled, nothing happens to the existing swapped out pages in this
-> tier, but new pages do not get swapped out to it. This is the same
-> behavior that happens if zswap is disabled at runtime.
+-- 
+Regards/Gruss,
+    Boris.
 
-This part works as you described, with no real issues.
-
-> From the tiering perspective, we need to accept "zswap" as a possible
-> tier, or maybe creating it as a tier by default if zswap is configured
-> would be better to avoid handling the case where the user doesn't
-> create a tier for zswap. We also need to disallow zswap being the only
-> tier as that combination cannot work without vswap.
-
-I tried to forbid this at the implementation level as you suggested
-, and that is where I ran into trouble. 
-A few code paths can end up with zswap as the only
-tier, and they are awkward to handle.  Below is each case and what
-handling it would take:
-
-1) A write turns off the last device tier while zswap stays on.
-   -> rejected with -EINVAL.  The write does not take effect.
-
-2) The last device tier is removed via /sys/kernel/mm/swap/tiers.
-   -> the file goes empty, so zswap is not shown either.
-
-3) A cgroup has zswap and one device tier on, and that tier is removed.
-   -> the cgroup's zswap entry is reset to 0, which the user never
-      asked for.
-
-4) A cgroup has zswap and device tiers on, and swapoff empties them.
-   -> the cgroup's zswap entry is reset to 0.
-
-So the problem is that in (3) and (4), memory.swap.tiers.max has to
-change on its own independently of what the user wrote 
-and it is not like just error handling situation as (1). 
-
-There is also a consistency point.  memory.swap.tiers.max already
-accepts a child enabling a tier that its parent has disabled: the write
-succeeds, no error is returned, and the difference is resolved
-internally.  The user's setting is kept as written, and only the
-effective behavior is constrained.  By that logic, accepting a
-zswap-only setting and guaranteeing only that it cannot do anything
-would fit how the interface already behaves.
-
-Having thought it over, I think one of these two directions would be
-better than enforcing the rule as above.
-
-1. Allow zswap-only in memory.swap.tiers.max.  As you say, it cannot
-   work without vswap, so today the setting does nothing and there is
-   nothing to prevent.  Once vswap/xswap lands it becomes meaningful on its
-   own, with no interface change needed.
-
-2. Expose memory.swap.tiers.max.effective, like cpuset.  We already
-   track the user-set and the effective-set separately.  Exposing
-   the effective one would show that a zswap-only setting is not in
-   effect, giving the user visibility instead of rewriting what they
-   wrote.  It would also help the parent-off/child-on case, where the
-   child could see from the effective value that the tier is off.
-
-What do you think? or any other ideas?
-
-Thanks,
-Youngjun
+https://people.kernel.org/tglx/notes-about-netiquette
 
