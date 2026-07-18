@@ -4,84 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9765DC4451C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 05:17:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BDDAC4451C
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 05:31:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44BD86B013C; Sat, 18 Jul 2026 01:17:49 -0400 (EDT)
+	id 4FC246B00F6; Sat, 18 Jul 2026 01:31:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F6466B013D; Sat, 18 Jul 2026 01:17:49 -0400 (EDT)
+	id 4ACE76B013F; Sat, 18 Jul 2026 01:31:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30C1C6B0140; Sat, 18 Jul 2026 01:17:49 -0400 (EDT)
+	id 3C3CE6B0140; Sat, 18 Jul 2026 01:31:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 034E86B013C
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:17:48 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 70B8E1C0405
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:17:48 +0000 (UTC)
-X-FDA: 85000740216.14.EB7A9A0
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DA1AD20004
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:17:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SftWW0xr;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 17E026B00F6
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:31:17 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C8FA16033C
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:31:16 +0000 (UTC)
+X-FDA: 85000774152.10.57DA08D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8138140007
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:31:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J8gwCtLN;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784351866;
+	s=arc-20220608; t=1784352674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+2By7Wa5qi3iopcH+ybIUXR/T+pRugUF9End73+3WiE=;
-	b=vClu3i3N+zv8G1zZGiaPUBvNZOI62zYWebHRFWO1+VFz7NbpR8onw+gvABStXGxpZQzJ/w
-	4KfJdhn5QoSHySbyTddAryJcUYcoJmyWxktn5QtSLqEm/RFF2CwU5kDxX1nXOSl2CeF2E0
-	GpCa9TLSMbZ2M2hQgX4q7+ZVKesGZH4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SftWW0xr;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	bh=2dLIszYNfsJNJUQOCH1B4wSKKzHLogHiFHjq0dxMjok=;
+	b=6c69fiyz07l9Cp6pw6N/4WJN7glEcPUT+KgsCmHXhb6YZtzEKKH7yNpuJ3ljGC1RH5oVv+
+	9zhlNwm/gKUJbdd1nuzJK2DAtcbF43729+/NEI4nJWbcD33vTBjDI2as6TU8MZiMMGeGl+
+	uKfIZA9bZe9R/Ic3VhnLWK5jiKyEUfA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784351866;
-	b=0Ni5Dq9b/UodTrpSBZXlVB+gl2bUTiVJGQtt+Mq4A7Mpw+jwz/cmhFAeeW0JqF57uzGiLM
-	j4snCVxhfYFkGiD/8k44mKK35SnoSnvmBKXcaKpVTjdaq1gi1UiaNBxFYXvHDOYJ82UAyi
-	MBK8y2es0u7+oefPc7wRFjN8xrRByEk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+2By7Wa5qi3iopcH+ybIUXR/T+pRugUF9End73+3WiE=; b=SftWW0xrLl25lB7Ga2LcEq+hMZ
-	zASO5adYOgD0Kkdc8kkhbNboCZA3wEyI02nrgFHPfwroqlmsSZiN68u3MHQQSzs4zIFZuZZET4yaX
-	A8o0+holVkq6RwJrbSW0B+RRjCZ8oebzUp/uPifIzNSgcXIo4p+pMLHV+bA/fXZk5PXhgt5BaRjPB
-	KToJZDlSPlZi/XQ674DlPENX8BcYH50o7ckIfZIqZtbFU/ZQvxkwkUj1LxJVRS4jT0DEK3LQ6Dfx8
-	EeQ/ozmV+cgxuJbxDpxVJiT7UlgDWjypCZW1zJ8YnHhMNumih8k8oGT1Vn4LaMTPNEXtkqBZ91BKH
-	31lYNsHA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wkxQl-00000006NT8-1Ozx;
-	Sat, 18 Jul 2026 05:17:43 +0000
-Date: Sat, 18 Jul 2026 06:17:43 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Ren Wei <enjou1224z@gmail.com>
-Cc: linux-mm@kvack.org, pasha.tatashin@soleen.com,
-	akpm@linux-foundation.org, vega@nebusec.ai, roxy520tt@gmail.com
+	t=1784352674;
+	b=GL1U0bdthkp/mawBi5cUCDZyAlR5eVNvYMFaT38tEwDx/4/VuxVkbXzmtFLpOx57h9LJkP
+	mjtdbBpEC8TrW3ZYnH0ZfFcPqSTvHczMx3sPLnePMz89ymC/JW759DkpVHj2iyrChj37yr
+	M2KdCSszWkz4atnfGWb0taRIIv9+e5k=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J8gwCtLN;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C0A460A68;
+	Sat, 18 Jul 2026 05:31:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607CB1F000E9;
+	Sat, 18 Jul 2026 05:31:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784352673;
+	bh=2dLIszYNfsJNJUQOCH1B4wSKKzHLogHiFHjq0dxMjok=;
+	h=Date:From:To:Subject:In-Reply-To:References;
+	b=J8gwCtLNwxCjxM7xkBVg8wShlNaphqxmHgcBPvvNUOVOuGjVFdsi82rdxowI8c4qJ
+	 /4IAgBfK1lvFevmpVAC2tvn71k5tVcccc0XL4XOMPeB0+QnEI+gvCK9thPBAYufmwB
+	 v4Zk9/WwRH9b6KCOwUDQiBzxzMwKz8qrJ8NTvUoU=
+Date: Fri, 17 Jul 2026 22:31:12 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ren Wei <enjou1224z@gmail.com>, linux-mm@kvack.org,
+ pasha.tatashin@soleen.com, vega@nebusec.ai, roxy520tt@gmail.com, Vlastimil
+ Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes
+ Weiner <hannes@cmpxchg.org>
 Subject: Re: [PATCH 1/1] mm/page_table_check: widen map counters
-Message-ID: <alsMd4aZKfhBE48Z@casper.infradead.org>
+Message-Id: <20260717223112.ba8646377b103cae717580c8@linux-foundation.org>
+In-Reply-To: <20260717221108.c6caf7dd11a47bd7c32aa6ff@linux-foundation.org>
 References: <cover.1784337674.git.roxy520tt@gmail.com>
- <b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
+	<b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
+	<20260717221108.c6caf7dd11a47bd7c32aa6ff@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DA1AD20004
-X-Stat-Signature: tsqq7636chxrnumau336bh8cekww6yu4
-X-HE-Tag: 1784351865-703633
-X-HE-Meta: U2FsdGVkX1/YTPp9AfT11giX0O/tqNxs+DBMV9oa+AL5K+qD97LKNvPomNS1NSa/qfkLIgILPd6trktdaLhR9RDTjp4YyCKf0XyRMJxSCK8nGLq5eMjLe7Z0AdKhmct58Czo92SHIQHuZBRsWt1kRnPmarwS+TogaESqyHJYBjZJtEvXCKpqX1HIyWqZdFsEZ1ndm+IHsS2TH1trg45Cj7471nDKWz7v8yK1RQd+N+VzJelDOUD/IlYPloVTR3xJot7Jt6Gh7mUaHf0LXB5UPCyDhIp0TxPfHzhNUnrpq25vxnuvSBXEBlV/K7Sss+onMeE2E+BWfLwpL1fsY9tLvOp/NmA2oLoa6C6nVsjI1hdE3A14Lc7lkHNlJpL+kF4YlhuLZiJ9eVzou/B3pmM9AUWVjTAQGtwulhR/DYBEAGh8QUVx4/n4IxCdE5EQI8Gcp+E6ebbreWT9Jf/YqJHYKgR6sudd/tI0+avDuu74NwH6GQ0ifkTVj5gkxbqtAjXaK65UsOpPW+WUjFTXYXB3aiuFfXB+ZYGju2XLnZu5cNvNCPAXV+A+juxRTWoo/g3OJiaZlSWNDVIah77A91X84GLLLDMaf9zy/QBeyotmFFfQMDrLqEmydz07qsEmBfIWoJiN5DJLyKHt9ONwx3uyEe67YfIGM8CHsAUUOJGH+tP5Gr+B+J9Mi0siRvwtCOsme41iKSiRz8RLenN5Y1iPIVwZGId9ylSYkbxsJ7tzenbQ9MywHzDtnutshlWKMFbbbaUjLhZyKDTI+SVQ+dyGbEnShZdhlvP9yxoqVa6ioSyvrWkoSvBp0vlarX9c6FFrxHW/kgOjNGtHpu8t2pj4izdJheKF3d/xPZnqdOkCAeee9HRGLXhmFZt58lUMBbjvpNBMcbHTgWAxCww1t57JmnAfwZJ1tRvpKaBk8IB3whx6kdy8vC8Tl0I4niK19dbKQMgj43f6NF02ix/4JWY
- GiEJUGYe
- THKjoB/o5Z7qJ3RPBPHiywqFM5oUORC11HghQApCxkguYfvzQCy1Dw8ZLz6LfRUaoQFxDMciWv/eJyGIHseX1STpyED9vtm8G/30vLBrTxFt4PbIJXutpuA8xsuhJRh03khX01eEm+dWC461jcLqXe9QmujCpheH27sE3dMAI331N/zQj5Pw/BCR/XNcKuJ0N9GeMa0oeVH6hO0lOrrFcDVnIPDbArG8kZrcU94lvK3YGBVeoEX3uOhlGRXd3l/jCfhEYLqWKCpgCgjOf9g+VifIxns9XFaGDXv+R
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8138140007
+X-Stat-Signature: e7xwr7sd7wgcyk6hamxc8oip5t4na6n3
+X-HE-Tag: 1784352674-414396
+X-HE-Meta: U2FsdGVkX19v+2mNqph6fXRCLVCwnNqa0eI9/YJCxJ1TjwskxYo3Y0lXXq+e291wRkLVR7qLlL5Acyt68Oj29/cYHndIUAg8YFTyEqw9fYqRytpmqaKQXqjdOFRTweX0iGFVHWq+1zTSnoNseKBJR1NNshR84GacKcePgqJ5jR9/r8z+R58QZj6zpnpse3LUR4xBd0sCkNNyXjBI6eWNwP4amvwYQjOtIohxVvjOlabOf4alVWA0X2n47EPZoawR7viij07sERr9dMurW3n5VZjY2z6F2Igmpg7sKzDdvLk2NJh9Q7/d0QoNdj9APoqfqe4iKAFzYNp2Qv5AaBXkLuNVOSs2jFgN5joXlJW84yvZALCpOyrBgi2m+IJgCUbM3KfGMv6mUmztDJbB6h28+IikJPAw5ldUI156HLOA8RfT9BZwLY6CF5z66HoHEdFWNuzJyJOFX2iu6CIVIu1YE+O2AdB38ihvWlt/87XMXNk/VwSo6jbRiVvtsOcPd80VvGmdQOPK2pGvJ87fcjQgWvXlgjBU9hxRWN6NpdJvwHVFGDgbPHbW2VaNknYixkAA2OZxTrsCgwNfLcnnU+b5Q3djLzDZzYfLflyIaMLz/aFOQrq6jGgsuU0KrT9QeTL0JipHLhslTIBYF5KNOt+TnKGJyprn3p8KEmEbCfRCHGx8SjmEPB1Gr9TQD7c1vvuk1t4yuzQO0ZLLz+PUjqCe23UV6Ybuw1h/YysRiF2N962LY2VETP/BZ3v8uAOyNRWFtcsKXUnIg7FFAp35/WjjZf6u8Xyio7xtXU9XqpvZ7STsdO1NSzYA+WzCX0/ItUtsUldchwxfYPeIcx8KqpnjARePLPlK8Z5XpnTOOFkRsfivTu+AyM8g0wUjSEYi0EjBDwGCVY2Zj/7BeUpUBFO2+5HTEWyvq2Hjxf4Hczi90qNqEXu2OLNSZ4fNHi+DLCxBFS04xA6v/PG6JYuSjUq
+ 4q4X9eS3
+ JZ4UgRUS8WMy02EK/Wl5IwNqcON7ZLsQ30ui2548jniBviAdycGpzH/yFHgBzMCfNcfBod/oRByPa9KQtip6/n9PGdOL0w71+Do/3ejiqc+evfVI1hEzT0gaeT5AO3HYlgFU826fq4M2l2WmDR1xEf8mBM4P3VfTO6EX0n3LLZPpbs79VhcYWD7frY2t2mvKHlccWxdpeP7K17BUPLw7VrcMxD6Nu6/lQmjEr60R3aqHKHY3/Veg7LCBcxsPcsXXEjc1nDf32k3OQbLnwujnT/buMd9WEi+IBk4eXwtDx2eK6xsWyYfXTpddZ4vE7U23mT/2mFSZQf+3xN0mqST3KFYCl8fGmvKZuOtfUivqsFWoOMNY4UAPJqjFTXgLahuUYZkPO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,17 +93,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 18, 2026 at 12:27:20PM +0800, Ren Wei wrote:
-> page_table_check_set() and page_table_check_clear() store per-page
-> anonymous and file map counts in signed atomic_t counters. A page can
-> have more than INT_MAX read-only mappings while still being mapped
-> legally.
+On Fri, 17 Jul 2026 22:11:08 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-No it can't.  mapcount is 32-bit.
+> Probably adding __aligned(sizeof(atomic64_t)) will address?
 
-> The global zero page is one example: repeated read faults on private
-
-You mean "is a special case".  page_table_check should handle this
-case specially.
-
+err, no.  I think page_ext code will need alteration for this.
 
