@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 318FBC4450A
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 04:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E913DC4451C
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 05:11:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4EC56B013B; Sat, 18 Jul 2026 00:40:35 -0400 (EDT)
+	id A0D756B013E; Sat, 18 Jul 2026 01:11:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D25F76B013C; Sat, 18 Jul 2026 00:40:35 -0400 (EDT)
+	id 9DD2C6B013F; Sat, 18 Jul 2026 01:11:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3EE56B013D; Sat, 18 Jul 2026 00:40:35 -0400 (EDT)
+	id 8A71A6B0140; Sat, 18 Jul 2026 01:11:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 972126B013B
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:40:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 01439160336
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 04:40:34 +0000 (UTC)
-X-FDA: 85000646430.10.937F7AB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 571116B013E
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:11:12 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D75F280356
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:11:11 +0000 (UTC)
+X-FDA: 85000723542.27.4194C26
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F123AA0003
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 04:40:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S3jQTGJ7;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id B0315C0006
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:11:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FP0GUH6S;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784349633;
+	s=arc-20220608; t=1784351470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7UwZwxfQIvF7dO45hR25SAXUiD5MyJStLQfF4eDcfik=;
-	b=4qMH024kkkN5AeEzXWvZkNx9zyYz0sW1+3WcDhlW+Ab8VPbQGs9FvmG0gamFE114/oNp2/
-	6MzkZaImGApTOm/ghrFwo5nHLg765vKB+sPFYCdNRxQ2lXhSFLtaCWdu9eDGvxytErOPBv
-	hiwYO9WG42gigYyjTKM/DV+6Hq1RHZM=
+	bh=W2vgqs5coeUIbHydmceWGGvDiG5E8fZEgppKDMGv9CM=;
+	b=zIgTYsM26ul/ydSgj6t0SJiQqtUC0c+55r3pwB66fgCpfIBels/qGOVolhFpQ0hzQuFHuu
+	EirOXZkWjsP6hFUFtb8GcA+u25vbsoUFA65P8DLExnuOQG28pcKaYgmKybJqxtODGSQ3Yf
+	Tc5ULmOy6x2/oMWLxxxpY1FIfjJ5NLo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S3jQTGJ7;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FP0GUH6S;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784349633;
-	b=mfCZ+PL6vUId1EwsYC36QEnPgaBpiZIXnjQAECpTzSF/oldNMpRL89F4Cj0Nv6VlorwjYV
-	a1cqHvb9FAieMVxP6ioH1VXYXDPP3jQcDV6eF7FPsvbaHI0W+AXE6iQf9pI9snu7SdjG4C
-	nkXmXNfr6IEMJXadqT2/+reSrK42pW8=
+	t=1784351470;
+	b=IYGC9pfm7n1rA4u3v3FGTaro1F1zvJv3y1xab7vYNou1zZmFvvBzKQeRfa0jwY0d9SO/3q
+	twtb6+w3B/dMuZyv79bgKZg6180Sgy7Ixei86tMNMRuqNfLzeFbA/zpumyd/LEk0kK5zsf
+	tXSxyjQdNE4UNZACHvmh8cocKBXa+Uc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F9ED60A68;
-	Sat, 18 Jul 2026 04:40:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3E81F000E9;
-	Sat, 18 Jul 2026 04:40:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 071D760A68;
+	Sat, 18 Jul 2026 05:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB761F000E9;
+	Sat, 18 Jul 2026 05:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784349632;
-	bh=7UwZwxfQIvF7dO45hR25SAXUiD5MyJStLQfF4eDcfik=;
+	d=linux-foundation.org; s=korg; t=1784351468;
+	bh=W2vgqs5coeUIbHydmceWGGvDiG5E8fZEgppKDMGv9CM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=S3jQTGJ7zouDEB1NTgPIkXFpQ70d9aGhVnHD2ckK1/Wz+T44mndburaP7EQWzQLlm
-	 SVFNIo+iUguCnmZtsmy35Xk85Ij7ASBe1remrOIyRX12uTKi7y1g2KD/hPpiNyIHBW
-	 aUtG3twcnC1vl4+h4EY11swlOSYHdFLEMUmuc+Dg=
-Date: Fri, 17 Jul 2026 21:40:31 -0700
+	b=FP0GUH6SagTE+JjlnB97/VNhyY4BnupLN1jU8MGQQVNJRvRmjS2RQk1YIYpUxcarN
+	 LDoIUqlLDSh82m5hhspcHQbgdyvm6VbvMQ5OCGZya5e9nsHNW9BuiQfV6PWjn+URDC
+	 +trchamr5RBVtbM2qzIS8ESWgD18BDJ3ExhJPr+w=
+Date: Fri, 17 Jul 2026 22:11:08 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Hao Jia <jiahao.kernel@gmail.com>, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-Subject: Re: [PATCH v2 0/2] mm/zswap: Fixes and improves the zswap global
- shrinker
-Message-Id: <20260717214031.8b22e9a37ea3b0c564b466f0@linux-foundation.org>
-In-Reply-To: <CAO9r8zOrXqsEaCEJUUAxbAhhN_OQb8ejogeUa6k8hX_JV8hxxw@mail.gmail.com>
-References: <20260717085151.22822-1-jiahao.kernel@gmail.com>
-	<20260717181839.c94d0335ccef0084707d3d85@linux-foundation.org>
-	<CAO9r8zOrXqsEaCEJUUAxbAhhN_OQb8ejogeUa6k8hX_JV8hxxw@mail.gmail.com>
+To: Ren Wei <enjou1224z@gmail.com>
+Cc: linux-mm@kvack.org, pasha.tatashin@soleen.com, vega@nebusec.ai,
+ roxy520tt@gmail.com, Vlastimil Babka <vbabka@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH 1/1] mm/page_table_check: widen map counters
+Message-Id: <20260717221108.c6caf7dd11a47bd7c32aa6ff@linux-foundation.org>
+In-Reply-To: <b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
+References: <cover.1784337674.git.roxy520tt@gmail.com>
+	<b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F123AA0003
-X-Stat-Signature: o8az4hmt3wg75h5qb85cabnb31qfbwcn
-X-HE-Tag: 1784349632-572897
-X-HE-Meta: U2FsdGVkX1+RhmAT5W11w7caeyKSqR5mk/i3sZvoLIoQ0M9sDFckE8e2cG5T6evsxon0mPff41wznudg9uDEYAv0s5F9NlyFG/hdyC//Orax0X7UpiE1nFJR216pt+G+NvsGMjeBLvRF4APVWAdkZKRSMQEfjmVksLw/c2DnP2ZoqK6B1K4Qp8ZyqXbOPqAiW6oOBOTAS1iMRv3Uas2Sl38fBTb67HI98Sk59yiRzWKSfOUZT0nmPe34hMd8NI0uCFehZyTk6pd4Q5+0Eij6F4Cu5wfZQCLWyfdSwdniI1EL0M5t11Ah87Vwu+9FflLP7T9rP0XseZnaq6udqg6ccNKLi8vOAz0bx/N1X8cAkNEtdU/ggIeSZ6BEa/xtqW9T71DksRE4gcwSTUxnbscx0giWesvMzYGQukY+DHyhdB6l7O7cZjgx6KEZlgvsYBM9G5uM7BGt9KUtGS916KlQwKZ1oRixPHxnoWNM1suaN5/RUb65rBLxJdJCOUA0zUMOuQHQCvyRnSIA4OfXpMhZ+Iea/Hr+vbeeYXL2RA7EVLJsZ4iyXK4OzXOa4zIGIHB9voNWlUAlwAivylVP9AeViQOv0Bqfsq7JVePJn2zVLM8LzzzCurEKfqijOhHhb+N32Vc+Yf14wPdAcFoSB2YnaZjSUFG8LxOuaTdOAdelEolxZeE6ETBKNwbfDxp7XptFy8LlZiORPFd9Ga6G26NDQBtxnaVHDIPNC/qecsFH0yq+t9QBnVX0AF10Z+2BwL97ZIPrm+Y1YJDI/LFPlZ636SkE5r8entvDkVmKteiCo93KqWU/klVqXLqc3Ghn9cZgn0JeN2eNc89ozQHPdqgszsOAiDZL75LP4YFqxJg8jahYbOYrCGe4HXA/mQqACPIK1QfhxICPEwv7S9OxCxlxGchIgur1eSvhcbiFXU7hdEOUg+kuqG8mjykaxGxgA5lYfpEfQyMnFllT6YsdJ3W
- c+3ColtY
- MxbTkR/yQL0R71hAuWoj8etodgo3O3PTy+MMp1Lq0bH8F5tJVC9hUXcwY+dKFcszExN88/YlXXG1xFDgwv4qyjM/f5nbrMKOf3e3KLqzwWyev8kG3UQt0BEhQT2x650CZdcZdPJpBXE6st8kicKNYwyQTHsMHXQtkWNMS+PfBHJ0Bv8j1uJfxs9+TvgOpMaN2sfsXtjvwpXQFvFxKT9sO12eeKzODLkcPZJqd1cus/r8BSUp4csX5CKAvdXkqu0pJBGi+XlhzOymigq0XNv3iYVBC1hYD1fgnVuIeuGnV7jlPPkkqCznfz+G/8aCXUCeDJPvf4AoHIxtmOAZh1B8v5NOjTBVCTrIpvUvB
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B0315C0006
+X-Stat-Signature: emrz7ac1o38dstwwi5a1q7ciad4jn1wo
+X-HE-Tag: 1784351469-402160
+X-HE-Meta: U2FsdGVkX1/2ZXa9gp6YGmgWKh6AE6sheIabavF4cv0moovJUAfnD/KBBdfGga2vfb6jgNHp42Bni4iGQXWdb+lSG6K/cyiMuWhyjpeuDDFV0ob7LbJuzDZxE8POo/ZThVUHhtuhbPbD2Gh1ZtLJ7Q0RbzXcJQFzZWweiADsAZ0MR+2x+JMTU+EvIOawp+zwliz7a58eqRh7fiujHhWU4fHDQf6RwqzrmWXGgFXKj/wYGZxoXIhgiPdNL8fDAtcnC3HmDp6dZndreX41gN2FXUlwWqkHpOuay/8Rh+k+22q9e1VBCRRFu7ZNZZ17ra/MWc9ZIP+5p7Oz/t2pN5Mr+xKiXTX/QxZbrRVRy1YWQAh5xRmstOxRt+oBX57T30fpasjQKjD6tUxCbVoCfgxM0MBcsrBq/NRr2g8eiCMl1opNG7G1F4zwOyLno4W5v+ORKLmqqBGgGUhhZkA26uRBJkQQ6TEdC1vO9gAb2M+jud6kfCKMf7DB+HH5hzmzgdpnxCF3skP4UNmlGTdd0L/sk7lhc7NRyO8ERR0dhx/U3LUEgpjpvp37tV/0jLDh5AxXkXlDeAfVykwNk8DS8vloPI0N2Fud6GJEpytKiArgNB0iTsFm0U+z+tBqPPLARWLprPYhTfO7Mj8rRs+ui5psA84ldpFqGmPXfqyHCUZSdlNWpkhip/ux62ekiEOA7xH0++zgsjFnyCSX0YahpbGWlgDkxWDqKeBtrlc51BiGdBZZKyYk/L3kR1M3fmfnRgPRRQiVCOSV6G3tl3g2xYW24H4ULnjRhXUw2SC3Tl1oD2fjZXDGJ0GP/uHhU5OqV//kK8o5EcAl8AoRjqH3CCrFPxOA2CPx1Rh9hyWfm/Kn7mAqFd8DIIP2pgUL4Cr7poahB23O9lyiy2ahXF5dSWbxKhQEZ7X52IMOWsFypolviFCGhsiMDNacfuEdYJpVMHsxjJLrmb8wd2ecuo8u8/4
+ ww4xc86Q
+ CM8PtQPBiLRCt8w8G9cXWuN2GfRhUKSZd227ugDHad1+gwqaMBRw2V5hTIKKgnGd9Qfse74GF/tw5Q4Bqr3NDUH/Q5gy3IMFCYyYNKkpV6YocqvXI1oHDKP6Nq924qyzYTpIMklClQ8EvURgyAN4zZ/q8JALZDZMdjPIH7xltK78B2N72HLG/bm9kNd93GRG02T2xKXHixQftp398LhQwB3N0J+pki0xPLBqrdnzPGU30P5aiz4+Eet4gIOr04ETZrKhqUn9SOSLAMdZxNm1G6+Zvp7iJXX8SDmDlKCwhej4uPxKzugtKNfUhzWVGrTTsxPpvzB0I5PasU7XHOEDK5/g4Q/PgEMA5uzdNaIxdcKbY86eWDEa1Gq3uuJxK6gCsHeCRCB2eIrGj0Otx1BnrPFqg4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,22 +92,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 18:28:04 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+On Sat, 18 Jul 2026 12:27:20 +0800 Ren Wei <enjou1224z@gmail.com> wrote:
 
-> >
-> > The [1/2] changelog lacks a description of how the flaw impacts users.
-> > Please describe this fully and maintain that info within the
-> > changelogging.  This info helps -stable maintainers and others
-> > understand why we're proposing a backport and helps myself and others
-> > with timing decisions.
+> From: Zhiling Zou <roxy520tt@gmail.com>
 > 
-> The first line in the changelog should be sufficient imo: "Zswap
-> writeback on hitting the pool limit is broken when memory cgroup is
-> disabled"
+> page_table_check_set() and page_table_check_clear() store per-page
+> anonymous and file map counts in signed atomic_t counters. A page can
+> have more than INT_MAX read-only mappings while still being mapped
+> legally.
+> 
+> The global zero page is one example: repeated read faults on private
+> anonymous mappings install read-only PTEs that are accounted as file
+> mappings. Once file_map_count wraps, the next set or clear observes a
+> negative count and trips BUG_ON(), allowing an unprivileged user to panic
+> a kernel with CONFIG_PAGE_TABLE_CHECK enabled.
+> 
+> Use atomic64_t for both counters so page_table_check can keep the same
+> type-conflict checks without overflowing at INT_MAX mappings.
 
-"broken"?  Perhaps this means "fails to occur".
+Thanks.
 
-But what is the userspace-visible impact?  IOW, why are we proposing a
-backport?
+> Fixes: df4e817b7108 ("mm: page table check")
+> Cc: stable@vger.kernel.org
+>
+> ...
+>
+> index 53a8997ec043..edd9d9edf6fc 100644
+> --- a/mm/page_table_check.c
+> +++ b/mm/page_table_check.c
+> @@ -14,8 +14,8 @@
+>  #define pr_fmt(fmt)	"page_table_check: " fmt
+>  
+>  struct page_table_check {
+> -	atomic_t anon_map_count;
+> -	atomic_t file_map_count;
+> +	atomic64_t anon_map_count;
+> +	atomic64_t file_map_count;
+>  };
 
+AI review suggest this might cause problems in, of all places, page_ext.c:
+
+	https://sashiko.dev/#/patchset/b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com
+
+My googling indicates that a 64-bit atomic op on a 32-bit-aligned
+address is probably usually OK, but it doesn't sound smart.
+
+Probably adding __aligned(sizeof(atomic64_t)) will address?
 
