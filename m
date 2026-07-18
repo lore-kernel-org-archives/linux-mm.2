@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055BEC44520
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 01:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBAEEC4451B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 01:13:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D22F36B0111; Fri, 17 Jul 2026 21:07:03 -0400 (EDT)
+	id A95876B0113; Fri, 17 Jul 2026 21:13:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF8C26B0113; Fri, 17 Jul 2026 21:07:03 -0400 (EDT)
+	id A6D9C6B0115; Fri, 17 Jul 2026 21:13:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C35C46B0114; Fri, 17 Jul 2026 21:07:03 -0400 (EDT)
+	id 983256B0116; Fri, 17 Jul 2026 21:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B8986B0111
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:07:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 09C6D1402BB
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:07:03 +0000 (UTC)
-X-FDA: 85000108326.13.BCA2EDB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5F25A1C0003
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:07:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Izo+5/qw";
+	by kanga.kvack.org (Postfix) with ESMTP id 6A5C86B0113
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 21:13:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4F24A08B3
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:13:37 +0000 (UTC)
+X-FDA: 85000124874.07.D4C70D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EE1BC80010
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:13:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZgRX3p3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784336821;
+	s=arc-20220608; t=1784337215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vk91zqmkPVUe7yFQkVR0enbUPDMSCZSzWC7GhPFYNJk=;
-	b=5gyf3i+BCSxTlR6CxK7EKC2kUaV02GQeRPkD171SqSFHbUzgAWqBTQtC7ySKr+Xj0yx0dh
-	vYTfr00nffmFgnd3zD6C8l93X3IuSGlI/VpAh0xslCI9Lmk38TbvApOasNYufAJaC8YjFk
-	Tv++guncdOVd1BaXen8ZVIKgK00RTbo=
+	bh=/W/YiWHxrSOQzbisnMj63FpwIA6fnyz9f+4A5f0FVFc=;
+	b=QEPiFJNFGS3fPHjTSGKtQULMlMktFp8qrn/fd2Mifzbm9F+ttwQD3SDLrroReKwPuN3dYk
+	xKKLrBX2E2Qti3QLozXPAv+korfPmjNAxNt/KtXiSh456EellQoCUaff8Y83yOgHvbJL18
+	LgzzksyNGFyEOlAmccOaORB3jdwabYQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Izo+5/qw";
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZgRX3p3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784336821;
-	b=GJ2lKp2ZKhFUqif9OC14Z9Vr3CZdd3e4/rwvI2+i07jx27CWE2hU07khvhBiiu0wYFth9I
-	G0J5nh+0ZTAyLsA3Dtw2ox4Z901Qbj7C0jT8wjtyz8p5Qvpy4pDf/n6crnOMMhdxv2HP0M
-	BA3kALhp96+a8Fslq3EFSW9ik9w8kXM=
+	t=1784337215;
+	b=eMFh+EDxV1uv7a3T8yhs7mCW0O4TEBu8QGRgFGooSvb3J8yIwa5kisZDqJ9+4VMdR3ljgC
+	88OkV66o9dwhocSVtpjns7RdADPh3J42oPb8pyP479nGDXW4w3pLsy/qIMXnMHSw7OMvaX
+	e3im/BcHUKlOg48GkoieLx2Z46JYFLE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D7FE42AE5;
-	Sat, 18 Jul 2026 01:07:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB611F000E9;
-	Sat, 18 Jul 2026 01:07:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B8AE60A7F;
+	Sat, 18 Jul 2026 01:13:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B6E1F00A3A;
+	Sat, 18 Jul 2026 01:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784336820;
-	bh=vk91zqmkPVUe7yFQkVR0enbUPDMSCZSzWC7GhPFYNJk=;
+	s=k20260515; t=1784337214;
+	bh=/W/YiWHxrSOQzbisnMj63FpwIA6fnyz9f+4A5f0FVFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Izo+5/qwMP0EU+kHudTvtcAvadEZX9z64+UjS6Fe3fAJfIZJumtZyi6troLLmGJr1
-	 /T5Vut5/Q5L0T3j9lKhtHoAY6E8KDAEyezaMSp4gtLxrdjGBGZKhxr+UhdoR0DXhAn
-	 UXFyymyuJmr4M8tlUi5TVS8Na5LfyYbLvx0F2AZ4R/nOb/3xdI7mIydmU+0nZXhY4C
-	 ZxGNCKMU5KXMXQL4XMldQ5HRpswHQNWhZ3Fh0WGXfzkG5g2FndcRv/Vrtc8SN6cct1
-	 wFJRYDefvfJ9HPvqX5AiZIydZJLQ42iH9fd8/zwHonnCRqutZJeywVfylNMgg7tHh9
-	 zlZ+0X7ha0w/w==
+	b=EZgRX3p3twD8Mf53Na7gn9w5HhL4x1Z9CEaA8WplCyEeU5KYw7hex7LTowSQ9cUvt
+	 I639bn0Mh9rBvMpcwTibzThaEgL6XoVi4jxLxcHZzeP0uTEVgDfuMbpm4ELTvhUr+C
+	 nKmV8sbuLohlH5vN80ktKBJT9dhdraPVICLZBElzhfc6q53hfFpJUYBKLgHnhNWvDR
+	 wTseY/yRDWxTCHlgEPaA3pLVsBcwvX+CoSVyPs/+/uFNhe0RrlchwrQaBSVI+ivqXk
+	 UrLevpeIybVMOAZoj2nnjSbM3hvyl/RgU0Lbn6SsDKv4YExF7Pfo5s1zcLtbL59VL1
+	 HI23ziv/BSnww==
 From: SJ Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	stable@vger.kernel.org,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	SeongJae Park <sjpark@amazon.de>,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/ops-common: remove redundant local variable in damon_migrate_folio_list()
-Date: Fri, 17 Jul 2026 18:06:52 -0700
-Message-ID: <20260718010652.92773-1-sj@kernel.org>
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/7] mm/damon: fix uninitialized DAMOS field and kunit exec expectation bugs
+Date: Fri, 17 Jul 2026 18:13:21 -0700
+Message-ID: <20260718011322.94001-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260718002125.637104-1-lienze@kylinos.cn>
+In-Reply-To: <20260718001442.87129-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5F25A1C0003
-X-Stat-Signature: mcnxzu7fyqn76qajuw354du163uk1rde
+X-Rspamd-Queue-Id: EE1BC80010
+X-Stat-Signature: hi6ixmtn37e11m1swtd9wyrdgqafcttg
 X-Rspam-User: 
-X-HE-Tag: 1784336821-699853
-X-HE-Meta: U2FsdGVkX18aMAT41pwIY+vSbiObCZ8oJA5i9bXaUpdahfiBfolCA8pTfil5ldfz00ibEF4WPwL67jySXrOD/qrwTST5Z7Gec3cLVcsEE9y2pWjdEziI5xytRh1uSN9ufrKef//Vmd8aOEwexlw963C/TDu3x8LZdOUYZPSYcLCNWvTIdKBMBjeu+3HCMc3BL68acC07EpeBpO44byrq6uYoE447+GIG10UfMES/qivDYloyayY93589rXG5FTmg7S5V737p9rNWcBL8vTm+tgHXMvVZej3WZHoV4lf8DDy9pt4au355tOP4Ntgyj5dJxPxhyiw3JWUsUrRHkuhDYHGKg+ANVLe6pANox48qs2xhOIEwezdG2UVRkhgD4neD23Tqw8a7L3KFGkDImd95x7YwoXEeWBERXQfySVquEXjMlwUHdsMO9gJ9NHOzn9qhBdyioL2cJKUbpj06+QP0N5IECW0uMOn7+m6FZwmYvZDQ2H727A4h63g9UeUi+h6istdRl8qSHqEHtytUy5Ut3t9S/SSPsaB/VHFIxnfGAcRwp4qwLf1D/y0lZb/KXN3vnI0xvkWGi41FJLI51HfQyd02uNb6rMRjDGqe0dlwlNJXbvyQ6dXq7HaPzQ3EOsVOqeChZrkAEPUWhUj8ga00qJ+DDS6Z+NDBxE8IFVrZE+FFtTWf0GIrPD7VDhrNGhIMCvApcN/um0u3W1XG51EnhpoIB6zibeS4gG+M+VUwT2/5A44VoOaxhGF7GjOFG2RH1IZ1JSCz1ZVzoVrw5/lTClr7wWik4qO1FIUAfZbsJ63dDMT2QJN1jFHh6NXhXDlh0ZEuLVz8rN099uADwfBj9XpxPVC9t31lZ9FPqCKDB3Kc13swh02RxOyNjjGke9KlmWtMSmAKoc1hRqsVHW2oY+NkAi60vF9m/CDH7TnKukOm2oCdxluEYClBQnmF0bFbuUfxqp2WeG7M4390cX4
- nd5PtuKx
- tzeKNGKhRPfy2ztxZc6PiEWYC8kYcbsK5t96qbitLvqbu1XeInHiikfE1UR2lxuJcBZCCFnE7erQulniRpn3N7TmXJn4tyrb8eUMnz36VSjJrqAaELSxZDR9ZVbLMYYIjQqofVAIrWwetM/hFKjqewZdUTntzw7Uk2mVfcJcVQBLfF1ALEMrpbS/wEfA0w9k+oTomPfc6qRVIvKz9YVuh3mJc5SfTBnGQ7V05LHF+kUgXTvd/A4QWgQKG3924MZShsP/5AFeE4oo/ZL08N63f/dKzeYXmY/7isVFMUJaNB9ySj0d62ghg2raouA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784337214-217881
+X-HE-Meta: U2FsdGVkX1+IcivewqSDepbNTnn+JStYrRCchquDiOkrWxPkzVA3uyGgSDtF677QQ7XDPXIacdPXytCdJID2VmVbgFJcCphRa+G0VT/nKqJpEOD/sBlPi100OWmFRBiGdzV16SPKjzT6Y7gL/Zo7tAeEerTrHjbwhZZrNUS/8yg0+k4OaFsp88xkl3bHXX1RvHHuAo1oJ42WZ5pcNs131cltL9SUNuJvBcH7tlAiydKWrRZ55FbEcBaLaGLg9Nh9XZybCgmvp54XRJBywL+BnWxscThNqYUCXU/52rQQkyMqbUkxAmU2//34CngXMhf5jIzHqH7LoQCmic1OEnhoz5xWAUgL++XcaV5tta3C8ZG3c5kvzmHpppZJrQ7OIAMpWFpWm9uKxNKtz8c2020BPNVatV78Z/e5UNmIXBVOuE679IrIJ9KF2xb137o387/rXRFKf3CT99p0FhV9EP0O6Lais+0QcVaLXOhEO1ZAoOnTmJheXZ5BDGyH2JHqbd8MPNzj+gV6fllv/OXUjPNoXfSonSZ/ufftdVTx6GQi5b2CwFTR9UyI3fQRCJEFXS0DTqoTN3+AC7Rc/p+l2A7JrxV6lLO0EoXiG5erOdibIie/UGrISNFMNL3w/sJMXQNCRkWFfzvzRFXzz+oKvRh22soOdiMFVEf7FY/zc85WCTSwWIUjLwEq9oSIpx+MeXo1CvHc+s95XJaOEYZEBxJs1DuDcWkuWnWJQSnMZ2MypXwaO2NzCrQqRWcTWWWmzYPu43+qB/Y4T6WmPFZFYVbnBNuFV49yBN1WG8HDM+UEMa7jJ8JAXQUcawFHxcb5K2RQ2ddd20dk7OifDCaxZ3u4NQdMAk74blwLWDOk2wW3KfPQIxww1g62Rr1MRUxAzyVDSx1cM7XkKka1E+bz2ETXUN3id9NO7juUxHA9yxN3PiU2wenwUip7JOOZtZxeMKMt2DWKDYDASH3y3Emy7EI
+ muos7XFW
+ IsTDS/MIYP3aG7gHFDTPD5r7EkQS5ZieifHuyCbXPD0LtmccX63NV1sp7r5rdgNydoawznD9ItAgdb5RTyQHrcfy1+7+pSvNpYjYh62+Wf7cDRQYBnMI9z0Yf1DDQtzB7oU7ZWXq7mOS03qRUtUnCSCBAJlUyw09s7OVMyKMaz1Etha5oLL5M+Xb3co2FMJLxSRqejwpkC+1mtUCi/BXTqZ/LpfdpAYrF7JFO60J9ZOs2Ja/VFxUjAzhiGoXmk2cEnVhB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +98,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Enze,
+On Fri, 17 Jul 2026 17:14:34 -0700 SJ Park <sj@kernel.org> wrote:
 
-get_maintainer.pl suggests to Cc linux-kernel@vger.kernel.org too.  Adding it
-to Cc list.
+> Fix a few Sashiko-found unurgent bugs.  Patch 1 fixes use of
+> uninitialized damos->last_applied field.  Patches 2-7 fix DAMON kunit
+> tests that do invalid memory access under test failures.
 
-On Sat, 18 Jul 2026 08:21:25 +0800 Enze Li <lienze@kylinos.cn> wrote:
+Sashiko found no blocker for this series.  Sashiko sent findings to damon@
+mailing list [1], and I replied to all the comments.  Please read those for
+details.
 
-> In damon_migrate_folio_list(), we're redeclaring folio inside the first
-> while loop, but it just shadows the outer one.  Since the second loop
-> uses the outer folio anyway, the inner declaration is pointless.
-> 
-> Remove it to consistently reuse the same variable throughout the
-> function and improve readability.
-
-Nice catch!
-
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+[1] https://lore.kernel.org/damon/
 
 
 Thanks,
