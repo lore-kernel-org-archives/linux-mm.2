@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6062DC4450A
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 05:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE4DC44524
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 05:33:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E3546B008C; Sat, 18 Jul 2026 01:33:01 -0400 (EDT)
+	id D653D6B00A6; Sat, 18 Jul 2026 01:33:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28D5C6B00A6; Sat, 18 Jul 2026 01:33:01 -0400 (EDT)
+	id D14CD6B0141; Sat, 18 Jul 2026 01:33:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 155626B0140; Sat, 18 Jul 2026 01:33:01 -0400 (EDT)
+	id BDEF46B0142; Sat, 18 Jul 2026 01:33:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C00566B008C
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:33:00 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 299B21C03ED
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0F76B00A6
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 01:33:03 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AD439401AC
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:33:02 +0000 (UTC)
+X-FDA: 85000778604.15.5FC3D48
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 99678A0005
 	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:33:00 +0000 (UTC)
-X-FDA: 85000778520.24.91EBA4B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5C41140008
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 05:32:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EOQtiaQ6;
-	spf=pass (imf01.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784352778;
-	b=KrlJC8qIHVMKN4w8gOGYqC6SOmVKgWup077bkJhgnQ9rTjGKyGls7fuFjNaXFZBqveb4fk
-	dJdwNpwAf1c9YkgszCICvCHBzpuTp8KKj9CoJdOer5x2iaZzMRmr2p+h9CJkEsszaUxfZG
-	sZzSSreaRux+o008BgscB2cOTUoHias=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EOQtiaQ6;
-	spf=pass (imf01.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LuAm/eZW";
+	spf=pass (imf15.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784352778;
+	s=arc-20220608; t=1784352780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kwtjjGmmiAFcJH+349xh1RmY0+cdYF3UnpCgzEY++n8=;
-	b=sqqggkgqcNUX2UbbdMH2Ut2NsMpRfudlbmUAwfjFmIgrWf78PwxbSIK1TKd92+9fSGyD8+
-	gQkPWMCm7NEbpY6gGmAG62FJVh0NnAD8jj/OHqDWVbkk9enGv0GeJCS+BbElRSvRaFfX0I
-	tHXbDcerlIa28id4gOmXC/hdnk45aAM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=siyOnS6l4OgE+SqBMQ+V/Oxq7Qn3CqbcWz13kbHYzvY=;
+	b=ra7G0QwsddDwP7nmdwU9MqQsKdvVMEDz83bzLtPkeA9DO90IsLD0uNFyLRQTRktxIPSMgd
+	2jDiQu+SdnGnZgftM2JXHi3XJPx/b+fQJHWBwmpxnqNqskEmKRU+LbfZroGDsS279dGfUi
+	aZEvdLLEoW5ifR+2gz31mv21H0FALh0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LuAm/eZW";
+	spf=pass (imf15.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784352780;
+	b=NYptxJzTqLDJoVGF1kqU5AsSNZSmKkm0ov7jwqIUTO24A8OXQn8anIf5Kl/2fZ9yXKIFft
+	aDPBPNQ5t6WwVnzaTuOVT7uROeLOl2eB5REjxqxzqJ65o0dyyfjZGFQtP2ZRqlU6ROjRlB
+	OTqNyMc8BvJH3woJgY18DcYM1ytkcw4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B3C55600BC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F57645180;
+	Sat, 18 Jul 2026 05:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015831F00A3F;
 	Sat, 18 Jul 2026 05:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9A11F000E9;
-	Sat, 18 Jul 2026 05:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784352777;
-	bh=kwtjjGmmiAFcJH+349xh1RmY0+cdYF3UnpCgzEY++n8=;
-	h=From:To:Cc:Subject:Date;
-	b=EOQtiaQ6nmW/x59ilsYVxtoSgBJj5WvdLTR4F05KRrRUGLktimBgD1StbpObcFt9j
-	 XXufM0cGb+rn5QRPxtgxqQY15aRP/45qMqzQyw6QkQjqa5rca+CcZzjVyMeKlCRiId
-	 x5bRucQYnwbsSs/4Hg+YaXG2pgUtZ6Lh7dx22ychuQgQYZSOx+1OuWyS1OGo5B4Bu2
-	 lFvNRHXO6z8qWFhah47bqUJLHcZg6xCqmzmZqYwfQ/Si9Vk3yLsnUFLpMLBuXpgZpF
-	 doZRxoWSeEx3rpAojEeimuJheITG7jxc1bIQUhXoYexbO78A7aWODd8YWKWasi28cQ
-	 nbBt+xSIEQdwQ==
+	s=k20260515; t=1784352779;
+	bh=siyOnS6l4OgE+SqBMQ+V/Oxq7Qn3CqbcWz13kbHYzvY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LuAm/eZWD7/asTYwGGHjQla5wF7zdbYTWEDTOJizwNsZJLFi/sxjExNO1OJhUp1/8
+	 EpTzxCSUXwpmLXkvJlQieQdLJiFgyDBDxZWXumLFrPWbufhiNw+mC4VW9/qFIPiTKw
+	 K5dhTCG0HyCwbbNr9TIU+oApgo/vUxvXUhoRt2TBZ8Y5OwrUJUo/RifwjOFTzBWkGk
+	 H9imvG+WKWk25X4xN3hk9v+pCznv7mhMQnbKGyZsn3+BX4BHfI8z+bHYKD2ki6B4LU
+	 9VgHrpC2mXlmtwC6vEWyi4TNWeAPDxirEJfQGf7jGNpjOpPYgt/s6GE9PypnPvv8FL
+	 A0a0gIg+9KuXA==
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3E035F40067;
-	Sat, 18 Jul 2026 01:32:55 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sat, 18 Jul 2026 01:32:55 -0400
-X-ME-Sender: <xms:BxBbauwHm1FcfFvmUjGng9huZPoSRclRePWS7b0VkA--cU2vHYh1YQ>
-    <xme:BxBbakFCAEwq9URGxa9JfhOhiNojXbKwwaJnWSuQjPDp00hUmDsuvlLK-vxfdwnEx
-    mxyIUtNaUa3_GZJKrz9srYzgVuUcrdzI3Ss0a04xMGZa13t7lWuvjo>
-X-ME-Received: <xmr:BxBbaryYUd35u1l0--7nv1GBJZf6twciiFCv0x18wAdN42Kyi_Co-2FMGerL7BbIlwSgvKBaduMWlD47rFdT4yVFmfGL7wQr>
-X-ME-Proxy-Cause: dmFkZTES8M4nCmmYKnGMqobh3TqhunEGFElLNM+viRad93RdmeJRGfaj0RUMOtFBg6bXs7
-    ypRH2PFkw0ks3z7mx1ng3QrV7lhgf1fSoT2136oH2jbEe9eoM7ag0CsJVTgNRR31HEuUg7
-    YaUSD28NyGPwedMfKZngj2o/+7VJZGW1f/u4fz7QhpD8PDjuuOxyPNmNaRuF+xecSzJNfh
-    u9MwMO+JdQEtSmeM/ZgcfqHqOtf5Ik3jzWJgBntXvL1J2CS8mFHvJZhx+DzRmfWOr1Mv9d
-    80lUu3lcp/F+8I7Vz6nFvx4UxoWaXhdO8e3rKesyTqFCQYvNgIDmw3KjYp8Kux0JHTJcjO
-    2GnoBLq6JKO5fF5OKZWIUK2LOvJ1RSiQMRWG3PqZfJkboQ9IoWIS+2e3nPa9gLGjyzzrGO
-    EctPrVXKnEzF2+RZf4WR7mkhGQNIUXxdvuwnETBLLwA6S9GK6qZWJGUIa3WILNk3JlS5zp
-    GfF5RHdxNfuM3+2TIKaNimuf+8WUiwPv3ARjlQZm2ZkB6c/jTDDec7tgJ6EYeoNvXJt5ss
-    Y0H0M4WKwFjhA0HRovQGmgCy4ykb6gLtsVkfaFoA5W2RvVDkaYwKbEhpMfVuI3S8zEkdqE
-    ajC9oE7GWZt30rlTAIOg01uzdJ4dngOidGReT9RsKS/FhiJUbQXFFOw/seww
-X-ME-Proxy: <xmx:BxBbag57_HwhpOYMVPGkzpr6q6_JGmFSzKcxr2VuqzGR4aOHtHe2rg>
-    <xmx:BxBbaq6-bfpiViAkVZVMbLud7Pb12b70zxBfx-5uUn5WlKXHT9q7fQ>
-    <xmx:BxBbapKXT52eXSePdRzpL6iW-nlhuCSaRF3ok0KtMGYtQdbuywxUZA>
-    <xmx:BxBbasEE9fe6KiG8C753GKmWtFz8EZAcPaDz08KImbAiXjQn-LHf8g>
-    <xmx:BxBbam2ISzee3hCoD0_v6Px5DeOx0mMncavCQ3yd-e1qXTntz5AqTcOU>
+	by mailfauth.phl.internal (Postfix) with ESMTP id 28E26F4006A;
+	Sat, 18 Jul 2026 01:32:57 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Sat, 18 Jul 2026 01:32:57 -0400
+X-ME-Sender: <xms:CRBbal0f4TF1GOEeTKlAucxG3TgzTOXYfgpLSEPu59HI6Tc8GITuNw>
+    <xme:CRBbal7DE12LmkHccLlpQ820yjKfEAARY9Oe80AeG_xkxhn126MxlmkcO0KCFyd4L
+    TSmMfk63SWs6t3ipV9tWTp23RzBwRBBwoL_Lor1MqkZIUdoddKwvw>
+X-ME-Received: <xmr:CRBbahWgW9Xkr8UqRbTsHe-5_P0teLekAC6T63o_xMq9R0IABzgJUr6C2b6RfOxKNackkdYI_zV7NTTFQnXKZCN1MVtuFZGE>
+X-ME-Proxy-Cause: dmFkZTE3j4lQBeju3HcweDJLEhgBazSdYdANC00q2qr0s4koYeBtdPShv70v8pi3tGI1gb
+    rI8gxibm6pg/EQlIbC5FCYfXYVoSlDO/lTkmwnSzTVXyDHp0bfUhA0XAFwbqJvrGefhv0r
+    XUnOrITJ3N4nqMI0h7+jzGq32g0S5vfV61f6E12mCvHFBAfvexQj6fIzJszAZ9rfBYqYfO
+    T6OIfII3tTQkjZZVd1g1QAoU9kPbui+CHn/TMFHwriLkDlU60ZMdQktApUZbVe8QEyUYr3
+    jVEpI07EG25Rz4jWtBQdqLQWlPbWtXp4KaGcuyKCPxFukwJtrryv/3hqo9da0SnjgWsXR5
+    r634v+PE6k1OOxPqJGPC6mLQ2SHFvEjMbkLTHDB2JAngHD5Xb2TlmvMt5+deZLEFky8MTp
+    +pZ6vDgd1ct7pb24/9mOaEE4bzmFLaxvMSjZqNWGE36StaJFzQ7OhQswbLfkdihoypCLJO
+    wVah/j4nT8Tv8JoxYMGrX08FYk3Vu3BOCb5PlbFyBTIg+gmWbN7az9X0FdnG6gtttdtOSO
+    ZfqnYHBkPgYnV2p1bQV0o85xip/4UU1y5gZplGT/oIUI0zqVr4nfnYtzGq9aRg4Pkk4A+b
+    gMq2pVnWbONZT/jamHXyJA/y6YTQ11zB6QsVeP78ZsiyEKnUDmeC7sew4kKg
+X-ME-Proxy: <xmx:CRBbavOR5w-PE2hjaET1N4mC_rEQwwAXGpoQV6--Xu6qZru9JXrrVQ>
+    <xmx:CRBbai88NHAJBu7GuF625FZR16YZM_J2opngYukSyE86TOhFeHLniQ>
+    <xmx:CRBban_tgKioVBwNrKAOkaex0m96IQEwTvjwWys4XCt3zC5MyM3O3Q>
+    <xmx:CRBbaqqIpcuB7cwxNDqP7OpfgefvXVsdQy2-PXWB9jtZDaraJXJG5g>
+    <xmx:CRBbaqIIw5gxJkKlso4-urSnPIlQAd_vIOUxQ8t-etRXm5ML03IbFEN6>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 18 Jul 2026 01:32:53 -0400 (EDT)
+ 18 Jul 2026 01:32:56 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: rust-for-linux@vger.kernel.org,
 	rcu@vger.kernel.org
@@ -127,20 +127,22 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,	Boqun Feng <boqun@kernel.org>,
 	linux-mm@kvack.org,	linux-fsdevel@vger.kernel.org,
 	linux-media@vger.kernel.org,	dri-devel@lists.freedesktop.org,
 	linaro-mm-sig@lists.linaro.org
-Subject: [RFC PATCH v2 0/4] rust: sync: Introduce Rcu*Box
-Date: Fri, 17 Jul 2026 22:32:43 -0700
-Message-ID: <20260718053247.25154-1-boqun@kernel.org>
+Subject: [RFC PATCH v2 1/4] rust: rcu: Add RcuBox type
+Date: Fri, 17 Jul 2026 22:32:44 -0700
+Message-ID: <20260718053247.25154-2-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260718053247.25154-1-boqun@kernel.org>
+References: <20260718053247.25154-1-boqun@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5C41140008
-X-Stat-Signature: f4n6i3ga1chaqe6bg43nirurse8oxroz
-X-HE-Tag: 1784352778-462844
-X-HE-Meta: U2FsdGVkX1/wlMSRAwyuO+4JaDT/32fC57Hgz+DqBZdeWhXfqhNF+5pBFd+XbePPq3f4mcFLoYnBsPW6yH/SVY01URIJLH17Y0WRNrrB2AYzzd40X0pv9uAbqxQeuNdv5/Zo7EtW8rRfXRrLItMUYOxbNrPenuGBROTx3dVAogFx10RU0+yqn3Y/vzRlU8JP03l9UPqkkeYYVMBxuU9o1esoB7jWujxzsLV9R8OqCRaQR6AKNzfAi119a3lrRXNJHdiL9yGn93/H+w3FRx8+/hbQz9CRguPhOuZHhDE6C2D4B07uUvar9lzFe6upaGzbw6xA/TMVwRG6z2tRuGIkYaV2Ua3/eqcAoEJk4dtrNj2f3m4CzY6Su3pAW7dbKG1SYiuh/sN4D/YXuG7/UDjRLPeIeGjV2wSAnJ7rtijPW+9Tmyngf88J/atXMumH5ZXCVRdsFb25AYcf8QJMDqNO/I/8gLEU3vMCkUPDbXjwcuEBGeiJjfhX7wuyUYpyq+exn16ZmhFbIDFILgYnMA/wJbOXh8zVTP5M4ngze3VAPsY1yxBFEFvcjOj4sJ8wwvZHm34mLMn5ErORb4ACYKVE6NMbLTaX1HBJCmx+YWiQk+n6BiOG2Av4UwK6GFNLA98+/u6AvWzIZoSfQ1qFDb7B8eVNN4tpO1vJFA2GgTPuVfQjoXeyHiKmH6Pg99mbKUQp1l6Fm24vB+BXKI5qkLxgKl3lH4B4HG2lMtIKS+Jz/WsQDAONU0QIh+cnczBPZW0fBCfUlbEqRWtQecjmJ36D6INN/BgeK0JvBpTN8jNbndlrwvzEL3CO26pK5v2VrMH2b25MbfWAgOs46s3YDFv6AYm+ppEjIJT0YyMtYAzzGit88hmgeofYpbS0yR7nYrJza7ohTKg1VDjAJ1C4XdFuwGVPKF38nSx/WQFgRW2oXfo3OiutRb3z9mIDTg62M9tPG83KaBmz6Xtii6/rpFw
- YqVAuJWF
- 1K4RRuEan+0JrK2YanV6f0kAsh3AJrtlh7pB8ppA1N1GILCvMnDheLgZXEp1+iHMsJ2Y9ixPpDWA+c2uZW9XmRAxKUjey6MXCsyPpDWGd1/HjABilpJU2PQYEA0RuIXFQpgc6c5le/YQKKWJIn7cUcTG4khQv0wX5p0sOiqACqZlZU1knrSS2mTLwvrKhBF+K0W33EZDdR4lidRxajGLhFndBQjOIarwSLsKXD91agbpt3Hsb46KIgzicRaZ14M+OPD7U0721go/X2uARk97nX5g4QVPKrHSuDhOwIO9iefWXxe4qPM2TXpJk65M2qAVimDWbDuxF8DqTRAfmr/hU+lnd8bYtqALSSxvwNbzym4ykTnBckOwBlEG42ylzj4i5zwD5V0JMvETpuXE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 99678A0005
+X-Stat-Signature: kep8pghmfn3nm7izyx56m1wofn47y166
+X-HE-Tag: 1784352780-763027
+X-HE-Meta: U2FsdGVkX1/Pwk1EYR5Jn12oXBG5q5pXe3ONZAzl/Pub8UIVsHoEijiEDVzIQUUEfE+DTegcZk2dVGpsvTTKD2gRiru25u1NqaddWt4lGg4SBuKctz5GSwlIRxLcHVIhHvGu7y2S/JtOEqBKXMswwHFHi+ukWXf/znr+O5vdoJ+wrO3z7GUFlZ/Zro0jr+G5W7sjNIf8TCJNI3TawIK+5jfD+Duw6k6t56elI4zh9BMCba1mLmN5U4VsXxp+Ew29jzH/JJx0ZFuT9naVieB17Bel6swNcrpp13S/XCyGwdDDLI49Wc5t4P+jCUFVpmQ8H4tmu3z17zalY219f/do6xDMMoSXTJyk7LyM9JeTSzvQ0pyXTpxyXPV30wrzUTlygTeL123uTQrSzkloYeinnr/RuE0VcYofOCBk209glyzt26X9edJ3rXBVTjr3l3XH8oFTTN09kVorKjJIrtxQi0l2tMNpFmYUK2/jOwVp1WpVbUf/gcx50r0ngb2++o8fyUHTi+/0CuF7LONcq3BXnzmitRYjBW2XefjUh0U3tpKEr3VERVjYMALqOQrv8l8MK6Yh11eLjA3fdw88bwC7eVnfLcLavDPo1/G/6ijzMXaYXlxZMPVV3/h/lRlXW5LM5w1AaYyDooNqpGiY4SBQefTnhkLqVDg9MUtLQ6M6w3FMFgq6sJ5/LGwHBXiwSeZyrjWuGCF/GEZ45ipWZojWRFXgmoBBwmTsqc1th7lcypH9SuXv7hcID+YxCp1+F75zg2eBS/GtBiYm7n3ijYNorVXuAoZQvLATaIvag7WaCgABZ7osMy60VTSzKgFRQr70fNfiS1dPJgCWRxD+1he8lBJ2zAGDJXbzjn0oSDwEpwCFRI88gZyeGSpwT4Gg40+tSXbPYbLXBNMi0xme5CvvWyJrwrYx8WNbwncFfbptEqjXRE+7hSbUNVAOaETN98hnNtovhs/I5CnMhV+7JKa
+ xNNbf+ju
+ CFHwjieZC7/bCOAjlDYYp/KoWs9nc4TiPPDeuVOnIMM+JTMF6ay1zlyU1QNkuxIG/mAMm/6XngPM0xvvI3HUGw+GQtXlb1ipDRb3ZRyiFSzSmEB02iqXmMLo7ysbRpYbz/e5B5X/nn6EXwV2+xNJbilpvOtP+OvnyVTzBNPyLaXIIuAqgbXbOzQ8o9HaNFqqvVuOF+nVaQzOB2LOTtkMtcGqm6y1iSB3OvJ+asF1/v18auX7DaPF1qquwkPKvz8Ve1bqVlgmvIxAwIjYy4IorXIwbCffuLYngkHWPEvbvBWq5XC9/73c9qANSxPxr1dy0GCtG+0salwVHdGFaAehQ91L7PHpyp3kbax03cPxdRmyYdWnXjaI5qkp2A6LJccvAC+fNBiUkCeZsV7YKv35hlkRcWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,41 +150,344 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-v1: https://lore.kernel.org/rust-for-linux/20260605133541.22569-1-boqun@kernel.org/
+From: Alice Ryhl <aliceryhl@google.com>
 
-Changes since v1:
+This adds an RcuBox container, which is like Box except that the value
+is freed after waiting for one grace period (via {kvfree_,}call_rcu()).
 
-* Rebased on 7.2-rc1
-* As Alice pointed out [5], RcuFreeBox::with_rcu() should return a type
-  that disallows extending the RCU read-side critical section to
-  outlive the guard. As for now, no user needs with_rcu(), hence remove
-  it.
+To allow containers to rely on the RCU properties of RcuBox, an
+extension of ForeignOwnable is added.
 
-* Includes a not-for-merge example based on Alice's patch.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+[boqun: Make RcuBox generic over Allocator and add tests]
+[boqun: Add type alias for Rcu*Box]
+[boqun: Adjust the ForeignOwnable changes on `T` not being `:'static`]
+Co-developed-by: Boqun Feng <boqun@kernel.org>
+Signed-off-by: Boqun Feng <boqun@kernel.org>
+---
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/sync/rcu.rs         |  36 ++++-
+ rust/kernel/sync/rcu/rcu_box.rs | 248 ++++++++++++++++++++++++++++++++
+ 3 files changed, 284 insertions(+), 1 deletion(-)
+ create mode 100644 rust/kernel/sync/rcu/rcu_box.rs
 
-v1's cover letter
------------------
-
-(this series is based on Alice's RFC [1] and discussion around Philipp's
-patches [2], [3])
-
-As an easy way to provide RCU-protected allocation, two major types are
-provided:
-
-- `RcuBox<T, A>`, inner T will be dropped and after a grace period.
-  Users: binder with maple_tree and dma_fence.
-- `RcuFreeBox<T, A>`, inner T will be cleaned up immmediately and freed
-  after a grace period. (Name suggestion is welcome). This is an attempt
-  to consolidate Alice's `PollCondVarBox` [4] into a generic
-  implementation, InPlaceInit support is still missing, but I want to
-  get some feedback on the trait `RcuFreeSafe`.
-
-[1]: https://lore.kernel.org/rust-for-linux/20260116-rcu-box-v1-0-38ebfbcd53f0@google.com/
-[2]: https://lore.kernel.org/rust-for-linux/20260530143541.229628-2-phasta@kernel.org/
-[3]: https://lore.kernel.org/rust-for-linux/20260520131725.266014-2-phasta@kernel.org/
-[4]: https://lore.kernel.org/rust-for-linux/20260523-upgrade-poll-v4-0-f5b4c747eac2@google.com/
-[5]: https://lore.kernel.org/rust-for-linux/aiLXWHg22P6OTb7O@google.com/
-
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 1124785e210b..3e3f1799a49f 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -81,6 +81,7 @@
+ #include <linux/property.h>
+ #include <linux/pwm.h>
+ #include <linux/random.h>
++#include <linux/rcupdate.h>
+ #include <linux/refcount.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/sched.h>
+diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+index 2bae76d229f0..42f6bbc83f71 100644
+--- a/rust/kernel/sync/rcu.rs
++++ b/rust/kernel/sync/rcu.rs
+@@ -4,7 +4,19 @@
+ //!
+ //! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdate.h)
+ 
+-use crate::{bindings, types::NotThreadSafe};
++use crate::{
++    bindings,
++    types::{
++        ForeignOwnable,
++        NotThreadSafe, //
++    }, //
++};
++
++mod rcu_box;
++pub use self::rcu_box::RcuBox;
++pub use self::rcu_box::RcuKBox;
++pub use self::rcu_box::RcuKVBox;
++pub use self::rcu_box::RcuVBox;
+ 
+ /// Evidence that the RCU read side lock is held on the current thread/CPU.
+ ///
+@@ -66,3 +78,25 @@ pub fn synchronize_rcu() {
+     // SAFETY: `synchronize_rcu()` is always safe to be called from process context.
+     unsafe { bindings::synchronize_rcu() };
+ }
++
++/// Declares that a pointer type is rcu safe.
++pub trait ForeignOwnableRcu: ForeignOwnable {
++    /// Type used to immutably borrow an rcu-safe value that is currently foreign-owned.
++    type RcuBorrowed<'a>
++    where
++        Self: 'a;
++
++    /// Borrows a foreign-owned object immutably for an rcu grace period.
++    ///
++    /// This method provides a way to access a foreign-owned rcu-safe value from Rust immutably.
++    ///
++    /// # Safety
++    ///
++    /// * The provided pointer must have been returned by a previous call to [`into_foreign`].
++    /// * If [`from_foreign`] is called, then `'a` must not end after the call to `from_foreign`
++    ///   plus one rcu grace period.
++    ///
++    /// [`into_foreign`]: ForeignOwnable::into_foreign
++    /// [`from_foreign`]: ForeignOwnable::from_foreign
++    unsafe fn rcu_borrow<'a>(ptr: *mut ffi::c_void) -> Self::RcuBorrowed<'a>;
++}
+diff --git a/rust/kernel/sync/rcu/rcu_box.rs b/rust/kernel/sync/rcu/rcu_box.rs
+new file mode 100644
+index 000000000000..cb1fd422480a
+--- /dev/null
++++ b/rust/kernel/sync/rcu/rcu_box.rs
+@@ -0,0 +1,248 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (C) 2026 Google LLC.
++
++//! Provides the `RcuBox` type for Rust allocations that live for a grace period.
++
++use core::{
++    marker::PhantomData,
++    ops::Deref,
++    ptr::NonNull, //
++};
++
++use crate::{
++    alloc::{
++        self,
++        allocator::{
++            KVmalloc,
++            Kmalloc,
++            Vmalloc, //
++        },
++        AllocError,
++        Allocator, //
++    },
++    bindings,
++    ffi::c_void,
++    prelude::*,
++    types::ForeignOwnable,
++};
++
++use super::{
++    ForeignOwnableRcu,
++    Guard, //
++};
++
++/// A box that is freed with rcu.
++///
++/// The value must be `Send`, as rcu may drop it on another thread.
++///
++/// # Invariants
++///
++/// * The pointer is valid and references a pinned `RcuBoxInner<T>` allocated with `A`.
++/// * This `RcuBox` holds exclusive permissions to rcu free the allocation.
++pub struct RcuBox<T: Send, A: Allocator>(NonNull<RcuBoxInner<T>>, PhantomData<A>);
++
++/// Type alias for [`RcuBox`] with a [`Kmalloc`] allocator.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::sync::rcu::{self, RcuKBox};
++/// let rb = RcuKBox::new(42, GFP_KERNEL)?;
++///
++/// assert_eq!(*rb, 42);
++/// assert_eq!(*rb.with_rcu(&rcu::read_lock()), 42);
++/// # Ok::<(), Error>(())
++/// ```
++pub type RcuKBox<T> = RcuBox<T, Kmalloc>;
++
++/// Type alias for [`RcuBox`] with a [`Vmalloc`] allocator.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::sync::rcu::{self, RcuVBox};
++/// let rb = RcuVBox::new(42, GFP_KERNEL)?;
++///
++/// assert_eq!(*rb, 42);
++/// assert_eq!(*rb.with_rcu(&rcu::read_lock()), 42);
++/// # Ok::<(), Error>(())
++/// ```
++pub type RcuVBox<T> = RcuBox<T, Vmalloc>;
++
++/// Type alias for [`RcuBox`] with a [`KVmalloc`] allocator.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::sync::rcu::{self, RcuKVBox};
++/// let rb = RcuKVBox::new(42, GFP_KERNEL)?;
++///
++/// assert_eq!(*rb, 42);
++/// assert_eq!(*rb.with_rcu(&rcu::read_lock()), 42);
++/// # Ok::<(), Error>(())
++/// ```
++pub type RcuKVBox<T> = RcuBox<T, KVmalloc>;
++
++struct RcuBoxInner<T> {
++    rcu_head: bindings::callback_head,
++    value: T,
++}
++
++// Note that `T: Sync` is required since when moving an `RcuBox<T, A>`, the previous owner may
++// still access `&T` for one grace period.
++//
++// SAFETY: Ownership of the `RcuBox<T, A>` allows for `&T` and dropping the `T`, so `T: Send +
++// Sync` implies `RcuBox<T, A>: Send`.
++unsafe impl<T: Send + Sync, A: Allocator> Send for RcuBox<T, A> {}
++
++// SAFETY: `&RcuBox<T, A>` allows for no operations other than those permitted by `&T`, so `T:
++// Sync` implies `RcuBox<T, A>: Sync`.
++unsafe impl<T: Send + Sync, A: Allocator> Sync for RcuBox<T, A> {}
++
++impl<T: Send, A: Allocator> RcuBox<T, A> {
++    /// Create a new `RcuBox`.
++    pub fn new(x: T, flags: alloc::Flags) -> Result<Self, AllocError> {
++        let b = Box::<_, A>::new(
++            RcuBoxInner {
++                value: x,
++                rcu_head: Default::default(),
++            },
++            flags,
++        )?;
++
++        // INVARIANT:
++        // * The pointer contains a valid `RcuBoxInner` allocated with `A`.
++        // * We just allocated it, so we own free permissions.
++        Ok(RcuBox(NonNull::from(Box::leak(b)), PhantomData))
++    }
++
++    /// Access the value for a grace period.
++    pub fn with_rcu<'rcu>(&self, _read_guard: &'rcu Guard) -> &'rcu T {
++        // SAFETY: The `RcuBox` has not been dropped yet, so the value is valid for at least one
++        // grace period.
++        unsafe { &(*self.0.as_ptr()).value }
++    }
++}
++
++impl<T: Send, A: Allocator> Deref for RcuBox<T, A> {
++    type Target = T;
++    fn deref(&self) -> &T {
++        // SAFETY: While the `RcuBox<T>` exists, the value remains valid.
++        unsafe { &(*self.0.as_ptr()).value }
++    }
++}
++
++// SAFETY:
++// * The `RcuBoxInner<T>` was allocated with `A`.
++// * `NonNull::as_ptr` returns a non-null pointer.
++unsafe impl<T: Send, A: Allocator> ForeignOwnable for RcuBox<T, A> {
++    const FOREIGN_ALIGN: usize = <Box<RcuBoxInner<T>, A> as ForeignOwnable>::FOREIGN_ALIGN;
++
++    type Borrowed<'a>
++        = &'a T
++    where
++        Self: 'a;
++    type BorrowedMut<'a>
++        = &'a T
++    where
++        Self: 'a;
++
++    fn into_foreign(self) -> *mut c_void {
++        core::mem::ManuallyDrop::new(self).0.as_ptr().cast()
++    }
++
++    unsafe fn from_foreign(ptr: *mut c_void) -> Self {
++        // INVARIANT: Pointer returned by `into_foreign, A` carries same invariants as `RcuBox<T>`.
++        // SAFETY: `into_foreign` never returns a null pointer.
++        Self(unsafe { NonNull::new_unchecked(ptr.cast()) }, PhantomData)
++    }
++
++    unsafe fn borrow<'a>(ptr: *mut c_void) -> &'a T
++    where
++        Self: 'a,
++    {
++        // SAFETY: Caller ensures that `'a` is short enough.
++        unsafe { &(*ptr.cast::<RcuBoxInner<T>>()).value }
++    }
++
++    unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> &'a T
++    where
++        Self: 'a,
++    {
++        // SAFETY: `borrow_mut` has strictly stronger preconditions than `borrow`.
++        unsafe { Self::borrow(ptr) }
++    }
++}
++
++impl<T: Send, A: Allocator> ForeignOwnableRcu for RcuBox<T, A> {
++    type RcuBorrowed<'a>
++        = &'a T
++    where
++        Self: 'a;
++
++    unsafe fn rcu_borrow<'a>(ptr: *mut c_void) -> &'a T
++    where
++        Self: 'a,
++    {
++        // SAFETY: `RcuBox::drop` can only run after `from_foreign` is called, and the value is
++        // valid until `RcuBox::drop` plus one grace period.
++        unsafe { &(*ptr.cast::<RcuBoxInner<T>>()).value }
++    }
++}
++
++impl<T: Send, A: Allocator> Drop for RcuBox<T, A> {
++    fn drop(&mut self) {
++        // SAFETY: The `rcu_head` field is in-bounds of a valid allocation.
++        let rcu_head = unsafe { &raw mut (*self.0.as_ptr()).rcu_head };
++        if core::mem::needs_drop::<T>() {
++            // SAFETY: `rcu_head` is the `rcu_head` field of `RcuBoxInner<T>`. All users will be
++            // gone in an rcu grace period. This is the destructor, so we may pass ownership of the
++            // allocation.
++            unsafe { bindings::call_rcu(rcu_head, Some(drop_rcu_box::<T, A>)) };
++        } else {
++            // SAFETY: All users will be gone in an rcu grace period.
++            // TODO: We are luckily since `kvfree_call_rcu()` works on both kmalloc and vmalloc,
++            // maybe a new `Allocator` method is needed.
++            unsafe { bindings::kvfree_call_rcu(rcu_head, self.0.as_ptr().cast()) };
++        }
++    }
++}
++
++/// Free this `RcuBoxInner<T>`.
++///
++/// # Safety
++///
++/// `head` references the `rcu_head` field of an `RcuBoxInner<T>` that has no references to it.
++/// Ownership of the `Box<RcuBoxInner<T>, A>` must be passed.
++unsafe extern "C" fn drop_rcu_box<T, A: Allocator>(head: *mut bindings::callback_head) {
++    // SAFETY: Caller provides a pointer to the `rcu_head` field of a `RcuBoxInner<T>`.
++    let box_inner = unsafe { crate::container_of!(head, RcuBoxInner<T>, rcu_head) };
++
++    // SAFETY: Caller ensures exclusive access and passed ownership.
++    drop(unsafe { Box::<_, A>::from_raw(box_inner) });
++}
++
++#[kunit_tests(rust_rcu_box)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn rcu_box_basic() -> Result {
++        let rb = RcuBox::<_, alloc::allocator::Kmalloc>::new(42i32, alloc::flags::GFP_KERNEL)?;
++
++        assert_eq!(*rb, 42);
++        assert_eq!(*rb.with_rcu(&Guard::new()), 42);
++
++        drop(rb);
++
++        let rb = RcuBox::<_, alloc::allocator::Vmalloc>::new(42i32, alloc::flags::GFP_KERNEL)?;
++
++        assert_eq!(*rb, 42);
++        assert_eq!(*rb.with_rcu(&Guard::new()), 42);
++
++        drop(rb);
++
++        Ok(())
++    }
++}
 -- 
 2.50.1 (Apple Git-155)
 
