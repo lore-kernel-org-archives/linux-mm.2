@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE563C4451B
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 16:37:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A09CC4451B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 17:22:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F37286B007B; Sat, 18 Jul 2026 12:37:21 -0400 (EDT)
+	id BE0736B007B; Sat, 18 Jul 2026 13:22:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0FF46B0088; Sat, 18 Jul 2026 12:37:21 -0400 (EDT)
+	id B91186B0088; Sat, 18 Jul 2026 13:22:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E284D6B008A; Sat, 18 Jul 2026 12:37:21 -0400 (EDT)
+	id AA6F16B008A; Sat, 18 Jul 2026 13:22:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B17076B007B
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 12:37:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D2B7160414
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 16:37:21 +0000 (UTC)
-X-FDA: 85002452682.27.6B0D591
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 833016B007B
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 13:22:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD375C044A
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 17:21:59 +0000 (UTC)
+X-FDA: 85002565158.11.7442F2B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9471340009
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 16:37:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otAS01m9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5802140007
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 17:21:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGNL6kXo;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784392639;
+	s=arc-20220608; t=1784395318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/NLv8lWlFLX8POfC/o9e/GmzCTrY3L3nsFmzwSxFA30=;
-	b=olTlQRAOa5MeeWvtdeCUuOouUYBtgNdq0XyaCsIv5ZRL/ta8JVRO81BZ6MBhb/qU478IgY
-	7LhbQSsfU3lMTCJmWnwSlxKhBgZyyvxA3NU2GNuURGlXcBDm+M2Cdq3UaCfDIh8VLVlHoV
-	WIcluiTYs60xQo0qdgDhxE11o4kEw1g=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=u3zF7fQwUKoNE5eqD36Ay9nz96+mxu218W1M+/Y5HIk=;
+	b=e0Qn40OglKBCC91YIgQOVdG/7yQg+sGVyd9e+94mvOrVwvlY1jILXCDz5gXQ7QcC7T+O0F
+	lnlk8s6pyyUjQOw/xtE56Z/24JeJGYXaLIK5McbNCxEMoRmf+1DlX7kxJtg6Unh7wtuwbp
+	ks004Jla/AGofKAozPiOkFr2nrHnOn8=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otAS01m9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGNL6kXo;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784392639;
-	b=7IYlhc89ml+tT9W4xg8kL+PvIrjingzOHetzZDEIYdjj8IROfzFW6qGDUjuk3/aN9i3bre
-	TDlt6AmVXsnx2zXxSCO2OcCrSDugzXuZodOdD2SLBEArgAUACCfKT9B9ddiV92kpwbFv5G
-	YD/D8SZzV444Gp+0MhI23jnQYAPGtrk=
+	t=1784395318;
+	b=U3ftbCQXy4MfqBMKdkr9fHst4sTn7rfn0AV0RTjXnclyZlIxlHBaOqDtI7GlqdFU6UmHcK
+	cWhMyBox2YV2tq2v6O4x8slIf2iWczsNkklE/JAoPP+lPaS18tKbn6A8YGS+64l9N6xWij
+	IAmgsrJ3dKsStCOkdp7TkRR6w1rN2gw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E8A5060018;
-	Sat, 18 Jul 2026 16:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3EC1F000E9;
-	Sat, 18 Jul 2026 16:37:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C546360018;
+	Sat, 18 Jul 2026 17:21:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82401F000E9;
+	Sat, 18 Jul 2026 17:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784392638;
-	bh=/NLv8lWlFLX8POfC/o9e/GmzCTrY3L3nsFmzwSxFA30=;
-	h=From:To:Cc:Subject:Date;
-	b=otAS01m9vVCzKAR6avi1M0LBz981e1I6CmxlFLclXf4D4yubOkFbJx2uk+H41ThxG
-	 ixiDFjMqhCKY3hNGMsOapGPFQqJzotsJEZzwCXR17J7HAFdTqdpySxmapZZBpnKfH5
-	 r8KtGH1fW/aN1rTzfH1JpNUXaIpoyGskUVABSvS6owPGRFyX1y3427OXninuv413nv
-	 +8xpHGOiPP7ZIpHthx4Zys9A9MQewzdPs05kCa7gE7hwYV8n1pf0DShO3fz45+3pxQ
-	 8NvX0rDZh7Z7Fx3qHlsp7kl2wn7LiOIZAY9vzQOoPeLFZBg3y4Ltl0qglXhezDrpLN
-	 ZozlD+WMIwUIA==
+	s=k20260515; t=1784395317;
+	bh=u3zF7fQwUKoNE5eqD36Ay9nz96+mxu218W1M+/Y5HIk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=UGNL6kXoOYwOpibJRxflDNDon+6aCUMlKuw6KGRZ7VHYzBolgaq9QxuQ/bNnbq0dQ
+	 /E/B8tzEMLtRj7NHuubbsnxi0UUrtuJAeFR8KIexOyCNAgkq9c4FvXhMbzF5qD0yvL
+	 u+tj1PyaXx0LjslbANxnJa51SMbUwqWdGTaML4QO5gVoVHG5FwOAPW2GMZalSUoMn8
+	 bMyhqq6+LoqxDSPNPBNdDlLR1T642dLY5efynodVIfD9oearsBEoGOdsIEE3XhAxWG
+	 cOo/dJjpFV3yiAzlQAoTAiny58zIWqvHcclSxaf1zMApW7vvCHQ6bVH2AZdRfnlBA6
+	 CmZZ5HJm96KwQ==
 From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	stable@vger.kernel.org,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: handle region split failure in apply_min_nr_regions()
-Date: Sat, 18 Jul 2026 09:37:06 -0700
-Message-ID: <20260718163708.84113-1-sj@kernel.org>
+Subject: Re: [PATCH] mm/damon/core: handle region split failure in apply_min_nr_regions()
+Date: Sat, 18 Jul 2026 10:21:46 -0700
+Message-ID: <20260718172147.87900-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260718163708.84113-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9471340009
-X-Stat-Signature: 4jgx5utcshr859q58b8g4o5y9e4xhtqr
 X-Rspam-User: 
-X-HE-Tag: 1784392639-901712
-X-HE-Meta: U2FsdGVkX19OKSIxoTBH9WwkUWuVYyX1X9Lqc5X9lTOaY6OijQkzl4nrHqgsJm7odxe4EFmCWkoD+oT0AINPvXeQhmv3fiWWZXWAnuKZBW94+aOVkFcF+lqsCJMubDUSnFFKngipi2txnf6h3ycdNDoQ6Sjxad/extsIfr5UKWgBPQtYkp4IbQhb9UNj3XI09Jvi0VLpAxAGzGNeOKE1wl8EY6d/PpRu5qbPN1A0QwzOIAfRqzqOeT1xcbjX0WEvqB/TYMPYFfwwNBSVNSkwCrreUUPLmIXybxvFwnAZRF1207f17eC9OFNl28tjVX4Bnaj1k0xzCFxDsMMZ9gpmEDb/TWWJDnDx/TJhYp23FDYQ/PZzs9V+SG8JlHT7bI+NYG4ByMofmhvJGhlxA8HWuq6tgBEvH0WAdUSmSdsNLmDk4GR8kLd5V8XFIiuXU3qCJ47q6P5iMwm9LiXKknW2zBtdCBAeXIrz2Bij3+9LBERncrWhDZmBx8is3iEIR8LU3RDlBJxUTp/LhjJh7KfSAzfTm8baSU7Nj5t5MUoH0CFx/0g9GN34hfQXVx/d0TD7/dXw63V3d2ZxE3v0HhHbWROgGDQj355wDVPlTBXrhFIYx/tcj86de8TmFXftTJhTo5RCeTIPndTQEg9UFycr1NDvR2AGshSKe3n9PhZF5kDY1/n8wyZmsjfCd3ZOKiRUbG7+lOXdeQgryPB6//KzlO3x4DJaTeK7/4ARcIV46GkPBs0Flh9q2vPwwQfOZD8WGCdCDqentyV4RwKyXzHKTpjwiy5Qoc/FxRw58ICWSlbAoiDZ1CHnZeGVuIr3C4WWr4Td9CyYoZ0SrHl32Ov8dZCBIyYCQPgrKIgNigSwDtjf+bW2Eq6m0OAB+4aXF3oL8Hssa6lNewzHkr+TST1LwU0g1cjzwwhF8f/dIlhG1EPBf6uzXIBSP7sSTXeBESgEe31+bVi52AZJqtiJeeu
- KPG14GJG
- mdUMQWhZB2D3s7dJF/+X1/q2FAEiJkCcwebqK6ZNXoKgQYVUm25u/eMYQKoUS7/rh6A+0VTH6FZyBKjPIP0o0AIgIqp2kh2Kf9md9ShK3Bt1nN3Av0rE/Ky+PAo9wKkzidf6aZm8NKCX/LDJ6RTEV/pD5NoQzxfWWPcJlHSGLczpIGoX5GX0h+7mY0JvglbgDrhJ1X57mLfsW9nZ0lZVmX+CNzyjFKE7XoSfWiC8BxyuSBNPz26HeuS+LEixaGfDxnOREpPE3CgeNNkCRX52sdnkhnA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5802140007
+X-Stat-Signature: rijrfkpnq5cunb8xeuxjkgm7t6msrmdu
+X-HE-Tag: 1784395318-134646
+X-HE-Meta: U2FsdGVkX19ri/ln/VR1MeLATs9Y1MMB7pzlz5aOai25JJonTVUOrWEHlJNxybVD+NEyst3G9QrXWE0Ff3gYYGnoBUaXO/RPZMQRCF/i3IGsjMWtdU3ar0pYPzRbDhxTh86r0iuilqp65pK0d9MbRFq3SzZw3+FsAuSgKlKsP2s75IN+R/6F2EknqXQMMajqVtIrLz8Y3jxBUX1VYUrjtMrZ6VqzPiYAusbqbTeZcnVt293UbN4CpjXurwSvAhJxOmAX6Yv/Q07LpaC35vBg4Idg3+3SsGuilYSkJgTSWEvIZoY4BO0MHD/qOirHc/kD/XbjjQnMS5r3Br6mTA3PS7KhqsVJsARuMiPVWYnlHtRD9fs3zRnIaVSSeEvO2IHOES/pzCh+mR21XSKFHg4Ws1ysWowdAfpKzPpe6nu8ZUASekLSOHc0dAaX4btOMQBpcA8m5OkrztNiXoQkp/WZNo645LdlWtd+u5tyaZ/Nk3c8HdSzGgBugFU5v6BpHK77TmG0ggxUyYyuLHMLAktknVb9FxBdxgosIrsey/DJnT1tUZa7qlZnON6FA6QxSewO7eoDJo6QI8FEGX0rqOAoKqRjtDgRuck4VcRLUE57ZenrdKRrKZp6wrFr4h7rzONSiQL+NoD1bPxCaNnUrpYcudcWolbGAUXf5/F5g8S/x75X2ru0I1zuAge2qV/Jv6BBdzkY6lPwjuJ+k2DlG2uEEL2q62S5mJGlwv/4M6uNjitGpBXkrMIsNP+/vuiDZmoMLWm9Zqdpp/nKJvGCgMtqqUDOQaciSnFqwZsPUONNyynfBdD241+q08Uw+n880eWWn9KG7S3tHWj+cQbIE96vFaimidG0phaxWJWuEl8Lg0TM6fCY1UhN4/nwpvtEq0PZznn+j3pKy8mT5m2tt2N9IIdL1LY9b4b7XvZybHudepdkQwgls4kkIn6AmxAW0Qomx5uP7WpLXWcC/MtqSjo
+ 7U5UNLsW
+ qERqeVzf2y+CDD3YwhTXpfqATCYXV8bNQ7AxO/IeTUeGwPzHVtbhCpAMxG7qKg6B7dbQXKRgLKimHbE0monbkZXRA6uEeQm+IMMN8D7fcMGbr7lf6i2dXmhr/tJop59e7K41fLJommutrF1pWYspU5xf934AVnpxFMWTITdHojJ5zWY7q9tp2rWmbbrbfXaaggVX1kiz31rI9IEIysY4L+37k98EsNCdRTPqf8qr9nHSLO9yujhx22VT1PTmEb89sIHfT6wepyNHemJofcNYsF8H88g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,52 +93,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_apply_min_nr_regions() repeatedly split each region until its size
-becomes small enough to meet the user-defined low limit of the number of
-regions.  The loop assumes the split operation (damon_split_region_at())
-will always succeed and create the new region.  But the operation could
-silently fail for memory allocation failures, for example.  If such
-failure happens and the region was the last region, the linked
-list-based next region fetching returns invalid pointer.  As a result,
-invalid memory dereference and corruption could happen.  Fix by breaking
-the loop in the corner case.
+On Sat, 18 Jul 2026 09:37:06 -0700 SJ Park <sj@kernel.org> wrote:
 
-The allocation failure is unlikely since it is arguably too small to
-fail.  But, it could still theoretically happen, and the consequence is
-very bad.
+> damon_apply_min_nr_regions() repeatedly split each region until its size
+> becomes small enough to meet the user-defined low limit of the number of
+> regions.  The loop assumes the split operation (damon_split_region_at())
+> will always succeed and create the new region.  But the operation could
+> silently fail for memory allocation failures, for example.  If such
+> failure happens and the region was the last region, the linked
+> list-based next region fetching returns invalid pointer.  As a result,
+> invalid memory dereference and corruption could happen.  Fix by breaking
+> the loop in the corner case.
 
-This issue was discovered [1] by Sashiko.
+Sashiko found a room to improve in this patch.  I will post a new revision with
+the improvement.  Please don't add this to mm-new.
 
-[1] https://lore.kernel.org/20260717011834.120715-1-sj@kernel.org
 
-Fixes: b1029f29eb1d ("mm/damon/core: split regions for min_nr_regions")
-Cc: <stable@vger.kernel.org> # 7.1.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC v1
-- RFC v1: https://lore.kernel.org/20260718004301.88883-1-sj@kernel.org
-- Drop RFC tag.
-- Rebase to latest mm-new.
+Thanks,
+SJ
 
- mm/damon/core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 20d267c615faf..3d829e0ad63b5 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1913,6 +1913,9 @@ static unsigned long damon_apply_min_nr_regions(struct damon_ctx *ctx)
- 		damon_for_each_region_safe(r, next, t) {
- 			while (damon_sz_region(r) > max_region_sz) {
- 				damon_split_region_at(t, r, max_region_sz);
-+				/* split might failed */
-+				if (r == damon_last_region(t))
-+					break;
- 				r = damon_next_region(r);
- 			}
- 		}
-
-base-commit: 5817557f6220462f0ca298b73e4b3f4bb91ccd1f
--- 
-2.47.3
+[...]
 
