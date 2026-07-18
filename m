@@ -4,100 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C45C44520
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 00:22:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF68C44520
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Jul 2026 00:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 553496B00AA; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
+	id 8164E6B010A; Fri, 17 Jul 2026 20:23:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 504A86B00AB; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
+	id 7EE686B010B; Fri, 17 Jul 2026 20:23:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41A1F6B00AC; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
+	id 707636B010C; Fri, 17 Jul 2026 20:23:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1451D6B00AA
-	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 20:22:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A34DB1C01C5
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:21:59 +0000 (UTC)
-X-FDA: 84999994758.27.333614F
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B0101C0003
-	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:21:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 47F756B010A
+	for <linux-mm@kvack.org>; Fri, 17 Jul 2026 20:23:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD23CA027F
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:23:50 +0000 (UTC)
+X-FDA: 84999999420.01.B9FDB02
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 17732180004
+	for <linux-mm@kvack.org>; Sat, 18 Jul 2026 00:23:48 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pGPyVGzQ;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784334117;
+	s=arc-20220608; t=1784334229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=QRWM+vXzo+aNWC2yHWozek15z0L/s0h6o9EA3tvNK38=;
-	b=CUi3UFLlVJ4DDosaI3TV1Lcay9nKV8Oyi8C+WWs9VgSn68ghu5oSALRTb7oWVyz2S2YDGz
-	MEmKch6ulBdwpa1V//WWQIHePX649jNUaGLfWEJdBcArCxM8qscEgy7NU6yo/5FQ4CSn8A
-	OZLAkuT0/pEXatc5dfueaV+QLqph+0w=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sT1lMmOrvNVAoIz5Gs7S2ofc6t5sDGbTcquhmwqvl/s=;
+	b=5OKOebdgTroYXikLYOIvjsdsQpHb2b4aH4Hjnx7+l0klAYFH4UUgUxuMJOYmddxPYumZBR
+	nn2jZ3/jm271Qvkclcy9jbhY1Nz50HyAqBDfqJQmAvqkDF1zM32DYsjEyzZ9u6yNcqODrc
+	dUtwnyJwhlnP48uufiUhCg5+mn72AQs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pGPyVGzQ;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784334117;
-	b=M4RJme9q8gc+hn67ePb6Ymtem55M/ujg0/MHa/Qk94jcYzctdB4ZhSWfRbt+UFfP73nVhD
-	Om9fpOvzuOerNWFo+vPzN29OtU8uWCViveL7QCcGPkIOnXAGYJ1rDla3SpQ+oXlvzZIbQh
-	XG4/JVute0VxFxmK9Jm8YPO0mr6eXF8=
-X-UUID: aa19a4de823e11f1aa26b74ffac11d73-20260718
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR, DN_TRUSTED
-	SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
-	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD_SPF, CIE_UNKNOWN
-	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:80970e74-c171-4c61-a9d4-aeb85d044d43,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:80970e74-c171-4c61-a9d4-aeb85d044d43,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:b73bf3d1b5b3b8f522fdafe3a7203f49,BulkI
-	D:26071717541216H8SQ0C,BulkQuantity:2,Recheck:0,SF:17|19|38|66|78|102|127|
-	865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,
-	QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-	,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: aa19a4de823e11f1aa26b74ffac11d73-20260718
-X-User: lienze@kylinos.cn
-Received: from ubuntu.. [(61.48.211.50)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 197839938; Sat, 18 Jul 2026 08:21:47 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH] mm/damon/ops-common: remove redundant local variable in damon_migrate_folio_list()
-Date: Sat, 18 Jul 2026 08:21:25 +0800
-Message-ID: <20260718002125.637104-1-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xzmbbyjbxjixqmq1tzknj4nerbiegd34
-X-Rspamd-Queue-Id: B0101C0003
+	t=1784334229;
+	b=IPijviav2w6PR+LQj3/ox0s8FcLnqINQl4xhpo8suLy6t12DriCJVOp+B4ydQnH35HVpPK
+	SLcA5RWcrKTpExuvi90EaUflPzNmr5LNhMyfHNEJLPNDQg3w4XC8esnEqui0kxKosTGBtS
+	m4atFNuczctirObduPLDxanu3m8qJW0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 834CC60AB5;
+	Sat, 18 Jul 2026 00:23:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086821F00A3A;
+	Sat, 18 Jul 2026 00:23:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784334228;
+	bh=sT1lMmOrvNVAoIz5Gs7S2ofc6t5sDGbTcquhmwqvl/s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=pGPyVGzQUsnyeLeRC5KIXdrpQnKuV8ByqqH2HF6O5KhmV5slfq7DDPW95iGZso3kO
+	 hINIOY1lG+QG6CzvXyUXY6/WLJnDp0vnMnljXHy0WmNIpI/I+Fl4/bQzxw/GwyoBO9
+	 Ri1cBv8WJE+ozFeyg7OmRK+6hppNZFRnSsgM1xk0=
+Date: Fri, 17 Jul 2026 17:23:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Paul Sherman <shermanpauldylan@gmail.com>
+Cc: linux-mm@kvack.org, tj@kernel.org, vbabka@suse.cz, dennis@kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/percpu: allow embed allocator when total size fits
+ in vmalloc
+Message-Id: <20260717172347.18b3c01b7553da75f6344c65@linux-foundation.org>
+In-Reply-To: <20260717231616.9126-1-shermanpauldylan@gmail.com>
+References: <20260717231616.9126-1-shermanpauldylan@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784334116-940487
-X-HE-Meta: U2FsdGVkX1+z6vN1G0waeiiOKpmLaeJxDXMvzabfYBK01qIsWnr9hp/kFVZ9RkH+w+YGuVyBGkcnx1raX/KV/LaeX7XVUF1mcKQv3cyjJ7FNm/X4C8j7og4tJGS2I+neOPOIHaBmUBFRHXouo6RiQ4DOBEiv0ADsRFNTJSgzNwxSuMXNgdomB7oLV2skhxbDyOV4q4KuRnunFvnakkphrlg3af8YkpTgcWih2qPytnAjXQqoD5zTcZHmqiTUPf4JFBwEX9Szc70WbR8uemHUiIRzglMiMWwC47jQ88Now+seHCVw5vjVWSdPjjXFBVJrzR1vIZ3tYXuKBHbZcM3TdnQL4VBkW2KKVnyRPuCkSHETXqrSMKuUkJSWsqrRoDH8muBP9CF28LyfIMPwdh7hdRVjhoJVBxW5PPx4JXApKuAbMI23GHt2lytyi97Gq6cTzhVSRquRlgwDJIRFGs831SEyPsaS6oREZrk+hNAOyt17v2FDkI1/v10itdSyhVAy2m+Ci3ZYQflp49oS7oh6VjjDJ9ber9kY3Hz58EvsaRe3z8u2Jrn5KFadUsAqyrtb5i2iWRbFDucn8UcrNxJtur9twBYuIHolZKAEhr9ysc7+8gxD9a0cgG+DMOLdwQ/x9UldQVSiJg7VarbmE2Ew3A0HT+SDNR6GjHV/c1xqpvNWHbOiLRz6plNwi+4rY4aP/ESzRl4f6wtY4+rU7He0x1AOvb2yTj7IvJUHXsljomWWH/tRqgSNOiX0uiYQYW0wrX8McEUV8ChDoOQ8jF60tnFILaF1u64nQrW163K1EAu3Xhiw7QTdRGYr7MgexUnKsd5iqRJndoAOxZiG6nsMJdB/EX2KD+AirgbDt/hraOCX6v9/H8XZmHutC1kJ1eEGVhk58JVVZkhdoQApKT8KaFe29TyLgyk/pZo0CnK6/gUwtRpmyVYF5063aQt2e7h9qvDQi6JIATqxU0TC2hP
- 4++aaZ6z
- jOHqmTkSMMiPk4gwga5SOeOXkREGwEtC9uvBXdVJeCF+9p2E=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 17732180004
+X-Stat-Signature: whksymbukyaxa58rz6ssngoekpo96czt
+X-HE-Tag: 1784334228-730984
+X-HE-Meta: U2FsdGVkX1/kJuWdVmCbgOMIZbjnRAcBmag+r7I26DfeTi1RHwMcLmD2VFcEjF3fS5b057YkQmQIMa+/VNxxGWHjUw8hq1xMMrwL5CeA8GtbsmLzEzPB8AtGs9qqPokhM03eIbrMMLQqk+3EsI2efg+DVFNntizOzI8PZDfZtfqGAv1/ZVJuvFbl4STUqfk1ChPwMufSQf4wX7C4OOGWkVCV+TAUUuKA785lnvWIH6xSWW4Lj/H1IPc00Ltnm+lvgOCWLTR4XXb1QvERpHI6Jg6yZh2q3nqdcolhmHj4zyIpnhpKUe9g9J7gP7xgwUx/dA7Nxtd3lFCJzzo+plvD13nI71IqYqyuUk/UPNMvx112gFEI+1OEwqlwuZyofyEoVRAlbIXEaypL3LiqiQPtYzvoRyRcgMsRbyziqCk4b9FQptw5qTZ0KK7K6PIZTAyXlFvsGkf7Ucs68gZpKB9x3FNpZn0H/2fen/V8aSSlyjg4B3hKC9/adB2/ff7rXwlxZNLgW3vaqDNhjWJFPecK6cpbkrwWFOpnWb6PaMqC7tGvWR/xApLnovj4o+GAWK/A0P0VMfA4AlexjHCz8+IkvdPjRfiGDKnUq2tg5W1YjcfVlZmfFIuKTLG914PIrDFiy3+owA7DsfuHjkYOOxz9bczaLRWQ11SasMOjpgulnw+4SMNPoZ+89JrlNzkacfpZePtgonTZVI7EqNkMGM2ofzzTi8QAmVmHpz6bM4+Nx/otCAhMEhzoIumYcRbmREFPa5vS6h6JPpnJKQwEclY8SoXljN3+njI8bC53Lf2CBuQMb7ucpxU/o+zu7wO+HdNB4k9va7xjGfDtAoh0NbLCozIXbvDpvZ+kw9EUM5elusgUp/cCEtfVOvgJdGsMibeqQdpCRD7QQ68SyPjVtI4SWSaK0A1qd46QLO7ALORiKyDAwnbIppycx6DvFADyvBOM+P6++LzGusnUtzKK1HV
+ VUJQwVAS
+ cYulhZvUImBRB5/NzPsJE13rhGEYX08l+ki7TBcGs99ZWOcNZAtEtdN4yWnnXUGTyZ4cgDQ5+9fuXIE7QXSbheDAfN/wDbqC67s4j3afXDvjWJXAIfnhUz0n4Ese2+pofwUT+DkeOQhPFZdCYf03n9CJpyT50jjuvvYeiXZ0YXJvzx0NmsE8HCgZquncK9udmtRcTgjge4fk5GhbFLLmbVkFeihPVYgAvKmu55GI8hk8nrT8dwn0ujlXnN/ojEbYA7tAKq3t6Fv3xJXhujbT9o4+b7klZ5v7dssRInh8wzj2NJFAOKh//mU5a5imFEn2XtfFWo+qclFa544rM8V97oPcUozTmjp61NznTwFoBAEisQ8MmB5nQ3zTRSZTNrORRhUc8uSeGeSR2my4fnMcGy0b4eA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,34 +90,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In damon_migrate_folio_list(), we're redeclaring folio inside the first
-while loop, but it just shadows the outer one.  Since the second loop
-uses the outer folio anyway, the inner declaration is pointless.
+On Fri, 17 Jul 2026 16:16:16 -0700 Paul Sherman <shermanpauldylan@gmail.com> wrote:
 
-Remove it to consistently reuse the same variable throughout the
-function and improve readability.
+> On large NUMA systems (e.g. 4-node 128GB), the physical span between
+> NUMA nodes may exceed 75% of vmalloc space even though the total percpu
+> allocation is tiny (e.g. ~6MB for 64 CPUs).
+> 
+> The 75% check was designed for pcpu_get_vm_areas() used by dynamic
+> percpu chunks, where vmalloc congruency is required. The embed
+> allocator uses the linear map directly for the first chunk -- physical
+> addresses are accessible as virtual addresses without vmalloc mapping.
+> The relevant constraint is total percpu size, not physical span.
+> 
+> Replace the unconditional fallback with a total-size check: if the
+> aggregate percpu allocation fits within 75% of vmalloc space, proceed
+> with embed regardless of physical NUMA span. Systems where total percpu
+> size genuinely exceeds the vmalloc bound retain the page allocator
+> fallback.
+> 
+> Tested on Sophgo SG2042 (64-hart, 4-NUMA, 128GB DDR4, RISC-V Sv39):
+>   percpu: embed: span 0x17def7a000 > vmalloc 75% but total 0x5c0000
+>           fits -- linear map used
+>   percpu: Embedded 23 pages/cpu s54168 r8192 d31848 u94208
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- mm/damon/ops-common.c | 2 --
- 1 file changed, 2 deletions(-)
+Nicely presented patch, thanks.
 
-diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index 89c694f6e4fa..e59f5268d503 100644
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -339,8 +339,6 @@ static unsigned int damon_migrate_folio_list(struct list_head *folio_list,
- 	LIST_HEAD(migrate_folios);
- 
- 	while (!list_empty(folio_list)) {
--		struct folio *folio;
--
- 		cond_resched();
- 
- 		folio = lru_to_folio(folio_list);
+> Link: https://lkml.iu.edu/hypermail/linux/kernel/1707.3/00337.html
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Dennis Zhou <dennis@kernel.org>
+> Signed-off-by: Paul Sherman <shermanpauldylan@gmail.com>
+> ---
+> 
+> This fix is inert on systems where the original check never fired;
+> it only activates when physical span exceeds 75% of vmalloc but total
+> percpu size does not.
+> 
+> Architecture analysis:
+> 
+>   Architecture   | vmalloc      | phys span    | total percpu | result
+>   ---------------|--------------|--------------|--------------|--------
+>   RISC-V Sv39    | ~88 GB       | ~102 GB      | ~6 MB        | fixed
+>   RISC-V Sv48    | ~88 TB       | ~102 GB      | ~6 MB        | unaffected
+>   RISC-V Sv57    | ~44 PB       | ~102 GB      | ~6 MB        | unaffected
+>   ARM64 large    | ~248 TB      | varies       | tiny         | unaffected
+>   32-bit NUMA    | ~128 MB      | varies       | may exceed   | correct fallback
+> 
+> Tejun Heo noted in 2017 [Link] that the only constraint is vmalloc
+> size relative to NUMA node distances, and that making vmalloc bigger
+> would be the best fix. On RISC-V Sv39 with 88GB vmalloc and 102GB
+> physical NUMA span that is not an option -- but the embed allocator
+> does not need congruent vmalloc mapping for the first chunk anyway.
 
-base-commit: 5093dba1014c1d7f7e247fd118f0fa8f22136046
--- 
-2.43.0
+I suggest all the above be moved above the "---" separator.  It's
+useful info for the permanent record.  (And replace "[Link]" with "[1]"
+in the usual fashion).
+
+>  mm/percpu.c | 29 ++++++++++++++++++++++++-----
+>  1 file changed, 24 insertions(+), 5 deletions(-)
+
+AI review asked a question:
+	https://sashiko.dev/#/patchset/20260717231616.9126-1-shermanpauldylan@gmail.com
 
 
