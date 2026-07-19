@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95ECFC4450A
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 06:10:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE57C4450A
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 08:56:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 064826B0088; Sun, 19 Jul 2026 02:10:05 -0400 (EDT)
+	id 31C1B6B0088; Sun, 19 Jul 2026 04:56:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F30656B008A; Sun, 19 Jul 2026 02:10:04 -0400 (EDT)
+	id 2CD036B008A; Sun, 19 Jul 2026 04:56:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF7CF6B008C; Sun, 19 Jul 2026 02:10:04 -0400 (EDT)
+	id 1E4266B008C; Sun, 19 Jul 2026 04:56:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E48D6B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 02:10:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F7E3C03F0
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 06:10:04 +0000 (UTC)
-X-FDA: 85004500728.09.F83148A
-Received: from smtp-42ad.mail.infomaniak.ch (smtp-42ad.mail.infomaniak.ch [84.16.66.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B095CC0002
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 06:10:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ik.me header.s=20200325 header.b=Sn8gWeuB;
-	spf=pass (imf22.hostedemail.com: domain of nadia.yvette.chambers@ik.me designates 84.16.66.173 as permitted sender) smtp.mailfrom=nadia.yvette.chambers@ik.me;
-	dmarc=pass (policy=reject) header.from=ik.me
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F2BE26B0088
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 04:56:04 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87A91A0561
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 08:56:04 +0000 (UTC)
+X-FDA: 85004919048.26.17B5198
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id F08011C0002
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 08:56:02 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UKlIHd3G;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784441402;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1784451363;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1TqRXL2F+WoFOo1zhQuZVV4kwMzRDU1o2kleB4U2hm0=;
-	b=YXxV7D7Qnl6GG1AF+A0AyZHzthcW1bK/JeK3L4nzoe/2KpWtjNu4NcsRwPVBZCLi+Jjbya
-	+DyZxAoqKWzNLSOS0AzvPe6Zuf7F3I41b3eNA0YsnVBLL4Ns8+F7tlu6+IzBM3/s/dgFkf
-	8Ms1il9UkRJlPpkC5+vzgeaK9v4x53I=
+	bh=2U5qRrAFa9bh5Xmu1DmWsyCaZmGr6MmPtt2A5WCS8eI=;
+	b=cqpsWVJpefYA07wtSizmJQ4jPgy6Ze14fCyatcGTQVTrI7VJwl7KOCxhwXEmP6MgSVebwy
+	9cHKiUPwmcGmXh2/ebYXyGd08ehBbZWIjGaD8Qxc593xXFiLeDJbq5JzO0/4sLeZwEQX/R
+	ESQN0tlKucW0W245lYMwThCUMhrWafo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ik.me header.s=20200325 header.b=Sn8gWeuB;
-	spf=pass (imf22.hostedemail.com: domain of nadia.yvette.chambers@ik.me designates 84.16.66.173 as permitted sender) smtp.mailfrom=nadia.yvette.chambers@ik.me;
-	dmarc=pass (policy=reject) header.from=ik.me
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UKlIHd3G;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784441402;
-	b=oL7QD6CYTX5ta4VC3xaECsV/SyANNPJsT08Bq2ZQKpAV/eUgcFvpQ7FgsMzETkBYbx1j/w
-	vfZbMaAKT/dxDu6a8TymcyUPSra3KQBm5BDIZHEhoPLTLoqCxjL6RikgaEoxqgRsoLc8wD
-	KNuW0HCUnhimhW/JvSA50mmkbzSMjY8=
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4h2tXl46ntznF5;
-	Sun, 19 Jul 2026 08:09:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
-	t=1784441399; bh=1TqRXL2F+WoFOo1zhQuZVV4kwMzRDU1o2kleB4U2hm0=;
-	h=Subject:Date:From:To:Cc:Reply-To:References:In-Reply-To:From;
-	b=Sn8gWeuBAu6i8Tkqja08LM7rIDP1TUyvxGkWnSxK03yfXUhUP6ObvApwM1Sjscn+y
-	 GzjD5r9wW6UOUWTmwiaNi10SoDepSwnPuE3otV9e4SULE/kdcCBcK4fsGZZJ4s7VVH
-	 ytQFjVhFFNYJeZv5x/hpCtHSrjV4re5X9ik50x3E=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4h2tXk6b2Hz7mS;
-	Sun, 19 Jul 2026 08:09:58 +0200 (CEST)
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-Message-ID: <8bdc154e-57e7-48d8-b1f7-5f0721ba57ba@mail.infomaniak.com>
-Date: Sun, 19 Jul 2026 08:09:58 +0200
-From: Nadia Chambers <nadia.yvette.chambers@ik.me>
-To: Hillf Danton <hdanton@sina.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Mike Rapoport <rppt@kernel.org>, Johannes
- Weiner <hannes@cmpxchg.org>
-Reply-To: Nadia Chambers <nadia.yvette.chambers@ik.me>
-X-WS-Location: eJxzKUpMKykGAAfpAmU-
-References: <20260719052309.576-1-hdanton@sina.com>
-In-Reply-To: <20260719052309.576-1-hdanton@sina.com>
-X-Mailer: Infomaniak Workspace (1.3.1305)
-X-WS-User-Origin: eyJpdiI6ImdBR1pLTWFEN3g1M0lRSEN0KzgwaWc9PSIsInZhbHVlIjoibVJxcTJETTluVFp1c3pmWWtoWHZidz09IiwibWFjIjoiYWJlMDBjN2RlMGE1OGRjZGFiM2U2MzI2MTRiNTNjYjNkMmFlYTBlODQ4YzcwN2YxNzQ1MjBiNTdjOWM0NDIyOSIsInRhZyI6IiJ9
-X-WS-User-Mbox: eyJpdiI6ImljSG92ZmdhWmxSaXJTeHZzRlNPTnc9PSIsInZhbHVlIjoiSzdLcW9lcGg3Q2ptTzNjNTYxd3hzdz09IiwibWFjIjoiNjZjOGRkNjBkOTEyZTU3YTE2MjEwNDAxYjA2YTFiZjdjOGU4YWQwMGIzNzk2N2RkNDJlNDlhZDNhMTI0MmE2YiIsInRhZyI6IiJ9
-X-WS-LOCALE: de_DE
+	t=1784451363;
+	b=daQ34gSqK50VAorA9N6g9goqiQUqK2v1ZtHi4NG8FX64Z0eMLCmps16LxooF4LyrH+I13D
+	t5Gy1y2ZH9h7ltx4YtF0UbPHd3y0KuGgcGzu9tI5yQjMfxOiwZpF/VxG7gX+UI7mkXaEZE
+	76VCaEl5nsDGnBbnTEFQ+GsEuRJ0cP8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 70087600AD;
+	Sun, 19 Jul 2026 08:56:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CAA1F000E9;
+	Sun, 19 Jul 2026 08:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784451362;
+	bh=2U5qRrAFa9bh5Xmu1DmWsyCaZmGr6MmPtt2A5WCS8eI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UKlIHd3GXV7IU3Wzd4zgNGbWboOz3yZfmmQ4qfqEiPSWD1qHhrj4/uqYPPX9vX8b9
+	 +R+xQOrMW7VIqDEg0DNU+UiuC0v849p7ryJ04TXG/C5rsbVME4u26eoM7/XOjhvXuS
+	 Gq+yd6Xh0+TLCsNtLXrs2suu8LIjACy+526imMnPBAF/8FeI4YZkeFnV1IR3AUbUTc
+	 716I8AShlrSiF3OVnjSrdRp1s+oMzwFZ/DcgQ/5Loto0FG0DZk2NqQJ1HvtxRHGibL
+	 IuwYTFgBf6X1CyzZysQ5JX7i746Mo0A6A1tRG/ZW63Xe0yPj61oHO9R39VflM/MY96
+	 HI6d5Zv98HXZg==
+Date: Sun, 19 Jul 2026 11:55:56 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>, linux-mm@kvack.org,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] mm/execmem: Print size, align and caller on
+ allocation failure
+Message-ID: <alyRHFN9T0FIDBl2@kernel.org>
+References: <20260717075715.25513-1-yangtiezhu@loongson.cn>
+ <20260717075715.25513-2-yangtiezhu@loongson.cn>
+ <20260717113730.787867964b1c3a7c645bb0e0@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary=fMvjoqQv
-Feedback-ID: :99fcc0409e571fb:ham:b89b32586f6d122
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717113730.787867964b1c3a7c645bb0e0@linux-foundation.org>
+X-Stat-Signature: t94ntpisn8dkjzzm95zk7m4a5csbeqz5
+X-Rspamd-Queue-Id: F08011C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B095CC0002
-X-Stat-Signature: bphgujkrgggg3m7bbmy6fm1sy9yrb58j
-X-HE-Tag: 1784441401-749525
-X-HE-Meta: U2FsdGVkX18xFjuF4eev6XP+zMMTpPWULR8wphFjpMPf45VebB5xIqib6yZOG2l9JKrRU0FLIuVQo/D7HapvSfGdq6hM+Of95Ebg5FPJ1Rjd9rhN2sYMhmHJbutpcBDuPDadjn5uS2+KhlOlM6mDAgPeECm2tGfXv1TOAEXe3/WuF4KRubFF/dqSCd29kl7i/4a3pEief5vjphHtXxWZ48oWLru0p0iatXoYW1eDPHaGpnqavHz2QOIoqIPIA9eD//idk9NgVyi00GI+WSm/t6dfulMVr4PjNvFYm4J9RCj8cjN81cl+mh5EhWM5/BBuKeF5iMW8C/URJqO0emiySYkhu7krpQa0aF2+cDx5tuG8YiudggaVpuzMPvMXKCrVyg6onQMu7sQZwgl4gd6Pb+iGagdM6FaCBuC260i356X3VlRgJ+7lv4Uhne4XGhHnx+oPmmr0aEISnoGji/W0NvuQixw/UaVezR5s23IYgzMEog6nMx/6Cn/Va5s8keX7QMTWm8TzPfomOU50EcYNZJoMhqEoaqlSiaLReuIeBBLujEm/k+tW2VJvCheK0SFA9T2pdPSTYhMmO3xtH2/tqpe3krF2NZjif2j05TDPQHsWE6V7YNkVx5Jb08nHepM64roeQG3O4wsQfCHWcQPJ3B234O/KqvRu8DKskOG2S9RXzjP06qoNpny+SYjaf2REqCPjMlZWX8ePqIIovjEthUtwt5wisedCQGFWa01wxp6DGuSKf/4rLUy+NbzBYppYtyv8L7uZKjvGd44liwVKRs5INGUKDyMxtX20zlqejDbFZpCRoPqAiJ2waGh69MwZpDdObcO3DRs3CeeNztYvwhqPsQ1FgP/uNXZ21SMiG2zTLt89tRMgTdWPUjxt5uggd8v0gAWhWSLy1vzXEZsWL3iFdKWjegsp8DBHiStVRQaa7dV84Oo7gZTpcczQEMpkF0inp23uabejgFnQins
- qF5Qv6bx
- 8OaIZImMuTigtXo7EMYs10eCGWCVEypRt9QGbL5ZrC4p1QtMjGgwxI5k9p2rPSz6eY8IQ+rUUw6Avs+EmwkLzyZXabg2Jr/QTlXM0INuH238+2mhpdE2GQA30K8XuVjXxGmvVhqaTBmvcU/o2Tm8+BiFICpuYehdF0z2R0qUGOUR5AFqgDBxbOJLUOtFQe/6GXSyZ+bH+2k4DwqpjmOpLm8AAwSNHHPo867XxbJsdTe/P27tchZpQ27IW5ioPuNIZDz7YwBQtssPwc5h8hOOoFS7SQkkmdqfLJwCfIlpacuvhBFo/UnZtdlcVe3mlYNV6kU9N3Jm/7xdIUrcBWRJvCp1NoqMTvtZQZjp9sd0riL41msOqfM67KJlfMg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784451362-749202
+X-HE-Meta: U2FsdGVkX18sI6JFlTFCvw2nPAxhjziTSPUzQaYKcQFS0bRnAeWretKls440rWtdcVijr4O6wwQptNy2EJ6i3ORVsVG+6HSqmaFQT1RMGrxbbE2VDxHxELIn8N/OKiPi1tIku2w4ebiN22GKB/T9dw4unrodiC8kZjcHvyfZg+yrOlMSji/uZSEEQF3DNd9KdOF5d+CzpFR2zZGGlzHm/bp6DbCYgC+3rVR2C/Gw0Wd/iXsHVFPkfrQXszQJm9GS0YHj8feGaXm9KgP4Fr1w6Pr4dbmae6u+u28vSP+5O716qKVUxZiVLcQSnxQjhQ1EMrpraqIhY9XClSwfnmYD3Xgtz1asQynql2rfHOW6DeLo342f7zfvTQGlzVw9g5moNAgoiSaFaDRWip1S30X9D9KSFunuHCJ8NBL6VZRSddoshpolZMrC8RNqf2JqxZclThcYpcTa6LdiHrHEt+Ms/kg9PbJclCQVIVDQfpzM2aJ1zvUk8UUFUPMbuBSmfkdmGkatkqBJMulyp1grVgbV73TAMZhfsRrWBqkWjssQcoYUVkCUl65PaUx1w+R3XY7L+9yE6JuQujZM3+Ri3JBB4uN5TjJfkpVAMGJwIc/P28r6ZKglYXTkhyJ3Fz/2gZHvxPao/ih/X+Z0WABhAgeToW/kh5P+PTIy9S2ZtsWdELdW5WOeQtfFuoYYvkIn5FYMfOexUS5Db7+RnFOk4LxJptKbMKvf7CqiWoxSknLLbj3Lc5EkP39ulVZVHp7G9Xmu54MSI3CWLYpfaeiZnZ7sCBeXTPBbndjoCEP4tZ5vRjTBOKf/UyKRHYITFdbTDNMsBFcCWaT+daaH268cb1gRzUVZuS/LP9Ts24Jj7JHmjhIMls8qw6PbLqgM6w+nyDppC65ctf25OdUrb0HQK7JGJIF2nVJwZ8Nad32m2VtYVT/NPTen3F8ETzAG4J8lTHNsQsdSQo/gp4bt8x4cFvD
+ FT42Ckom
+ Pb8WO001InVFBed3CxUKJChMEIf60uNwcleWSPOD1XEVmKJJSY8n1+pTdxwPJyzhU6juXfSx9ETuNa//dSxgzuMUCfZXGNw3YKUnhBGiX1nVSTwUwxJGscgMF3dkycL54XqRuHN3uJNzidoWmNHGOiCYJqqJr3+aiDtWD5YUpa4llJtASVN413VT4BA0J71NqTu7aGbOY1HZjkbcFFWafhtaRrPZl7ph4BC04WXTws8phzjyECBrWxXcLM+kuIoVH+qvO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,88 +94,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---fMvjoqQv
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On Fri, Jul 17, 2026 at 11:37:30AM -0700, Andrew Morton wrote:
+> On Fri, 17 Jul 2026 15:57:14 +0800 Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+> 
+> > The current execmem_vmalloc() function reports an allocation failure
+> > with a simplistic "unable to allocate memory" message. This notifies
+> > the user that an error occurred, but it acts as a black box during
+> > debugging.
+> > 
+> > Enhance pr_warn_ratelimited() within execmem_vmalloc() to explicitly
+> > print the requested allocation size, alignment constraints, and the
+> > symbolic caller.
+> > 
+> > This diagnostic visibility is valuable for analyzing the root cause
+> > of allocation failures and tracking misbehaving subsystems without
+> > inducing log pollution.
+> 
+> Have you actually encountered this?  GFP_KERNEL allocation failures are
+> supposed to be very rare.
 
-Am Sonntag, 19. Juli 2026 um 07:23, Hillf Danton <hdanton@sina.com>
-schri=
-eb:
+Looking at the second patch, it's quite possible. The allocation is limited
+to module addresses which was only 256M on loongarch and could have been
+exhausted.
 
->=C2=A0I=C2=A0dont=C2=A0think=C2=A0this=C2=A0discussion=C2=A0could=
-=C2=A0make=C2=A0forward=C2=A0progress=C2=A0without=C2=A0clearly
->=C2=
-=A0drawing=C2=A0the=C2=A0rule=C2=A0of=C2=A0thumb=C2=A0that=C2=A0which=C2=
-=A0page=C2=A0size=C2=A0is=C2=A0supposed=C2=A0to=C2=A0match=C2=A0what
->=
-=C2=A0RAM=C2=A0size,=C2=A0with=C2=A0the=C2=A0supported=C2=A0page=C2=A0size=
-=C2=A0put=C2=A0aside=C2=A0now,=C2=A0because=C2=A0I=C2=A0dont=C2=A0know
->=
-=C2=A0why=C2=A0128K=C2=A0page=C2=A0is=C2=A0needed=C2=A0in=C2=A0the=C2=A0xbc=
-/yz=C2=A0environment.
->=C2=A0
->=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0RAM=C2=
-=A0size=C2=A0=C2=A0=C2=A0=C2=A0page=C2=A0size
->=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A032G=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A04K
->=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0512G=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0128K
->=C2=A0=C2=A0=C2=A0=C2=A0=C2=A04T=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A02M
+> > ...
+> >
+> > --- a/mm/execmem.c
+> > +++ b/mm/execmem.c
+> > @@ -50,7 +50,9 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
+> >  	}
+> >  
+> >  	if (!p) {
+> > -		pr_warn_ratelimited("unable to allocate memory\n");
+> > +		pr_warn_ratelimited("unable to allocate memory, "
+> > +				    "size=%zu, align=%u, caller is %pS\n",
+> > +				     size, align, __builtin_return_address(0));
+> >  		return NULL;
+> >  	}
+> 
+> This seems to be duplicating the information which the page allocator
+> can emit.  Perhaps we should remove the __GFP_NOWARN in there?
 
-What is the theory behind what you're doing=
-? I would expect the most
-directly observable effects of varying page siz=
-es to be in situations
-other than your own. It does a variety of things, =
-but they seem likely
-to be second-order effects behind a lot of other iss=
-ues you're likely
-to have before boosting the page size would help. Do yo=
-u have more
-detailed descriptions or better yet profiling etc. data about=
- what
-you're trying to solve?
+Right, page allocator/vmalloc reports would be more useful, for example
 
--- nyc
+"vmalloc_node_range for size %lu failed: Address range restricted to %#lx - %#lx"
 
-Gesendet mit dem Nachricht=
-endienst von Infomaniak, The Ethical Cloud.
+was most probably the cause of allocation failures.
 
-=20
---fMvjoqQv
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+But we cannot remove __GFP_NOWARN unconditionally though, because execmem has
+fallbacks for some of the allocation failures and I don't think the
+complexity required to detect when __GFP_NOWARN should be cleared does not
+justify one-off case.
 
-<html><head></head><body><br><br><div ><br></div><div class=3D"ik_mail_quot=
-e">
- <div>Am Sonntag, 19. Juli 2026 um 07:23, Hillf Danton &lt;hdanton@sina.com=
-&gt; schrieb:</div><blockquote><pre style=3D"word-wrap: break-word; white-s=
-pace: pre-wrap;">I dont think this discussion could make forward progress w=
-ithout clearly
-drawing the rule of thumb that which page size is supposed to match what
-RAM size, with the supported page size put aside now, because I dont know
-why 128K page is needed in the xbc/yz environment.
+Besides, nowadays there are other tools (e.g. BPF based) except printk that
+allow debugging such issue, so I don't see much value in extending this
+error message or clearing __GFP_NOWARN sometimes.
 
-=09RAM size=09page size
-=0932G=09=094K
-=09512G=09=09128K
-=094T=09=092M
-</pre>
- </blockquote>
- <div>
-  <br>
- </div><div>What is the theory behind what you're doing? I would expect the=
- most directly observable effects of varying page sizes to be in situations=
- other than your own. It does a variety of things, but they seem likely to =
-be second-order effects behind a lot of other issues you're likely to have =
-before boosting the page size would help. Do you have more detailed descrip=
-tions or better yet profiling etc. data about what you're trying to solve?<=
-/div><div><br></div><div><br></div><div>-- nyc</div><div><br></div><div>Ges=
-endet mit dem Nachrichtendienst von Infomaniak, The Ethical Cloud.</div><di=
-v><br></div><div><br></div>
-</div></body></html>
---fMvjoqQv--
-
+-- 
+Sincerely yours,
+Mike.
 
