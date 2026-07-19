@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE57C4450A
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 08:56:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE0B5C44512
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 09:02:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31C1B6B0088; Sun, 19 Jul 2026 04:56:05 -0400 (EDT)
+	id 748A06B008C; Sun, 19 Jul 2026 05:02:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CD036B008A; Sun, 19 Jul 2026 04:56:05 -0400 (EDT)
+	id 6F9066B0092; Sun, 19 Jul 2026 05:02:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E4266B008C; Sun, 19 Jul 2026 04:56:05 -0400 (EDT)
+	id 60F5A6B0093; Sun, 19 Jul 2026 05:02:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F2BE26B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 04:56:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87A91A0561
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 08:56:04 +0000 (UTC)
-X-FDA: 85004919048.26.17B5198
+	by kanga.kvack.org (Postfix) with ESMTP id 36C786B008C
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 05:02:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0724A056A
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 09:02:01 +0000 (UTC)
+X-FDA: 85004934042.22.FE22406
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F08011C0002
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 08:56:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UKlIHd3G;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1A33E10000D
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 09:01:59 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxYrqDE3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784451363;
+	s=arc-20220608; t=1784451720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2U5qRrAFa9bh5Xmu1DmWsyCaZmGr6MmPtt2A5WCS8eI=;
-	b=cqpsWVJpefYA07wtSizmJQ4jPgy6Ze14fCyatcGTQVTrI7VJwl7KOCxhwXEmP6MgSVebwy
-	9cHKiUPwmcGmXh2/ebYXyGd08ehBbZWIjGaD8Qxc593xXFiLeDJbq5JzO0/4sLeZwEQX/R
-	ESQN0tlKucW0W245lYMwThCUMhrWafo=
+	bh=GE4nZxrWNILr4LFFRjNo6DdTk/Sh1KEFBm564eW9JxY=;
+	b=LhNAhyUXF9E/6NOJWjaDUZhBiX3KJSXa2b4qVLgv+jMKZmgo229szD40W82VVtlW4LpC4A
+	eFcvhmwb9MqhsSLsRgus5c2VmwtmwGGwMo3uvXS6DhNJe8kk2UJcxheeI7sjszTaLfNBbY
+	YsMYgDoLZ0Wk+DDoBvlp4HTWqn3ItA8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UKlIHd3G;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RxYrqDE3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784451363;
-	b=daQ34gSqK50VAorA9N6g9goqiQUqK2v1ZtHi4NG8FX64Z0eMLCmps16LxooF4LyrH+I13D
-	t5Gy1y2ZH9h7ltx4YtF0UbPHd3y0KuGgcGzu9tI5yQjMfxOiwZpF/VxG7gX+UI7mkXaEZE
-	76VCaEl5nsDGnBbnTEFQ+GsEuRJ0cP8=
+	t=1784451720;
+	b=63/B2+vDpp8/s0kyfMsm7ud/IVr15PMThaMrongMkU1rM1AHMvaKwAjKnA78fLK/uRbr85
+	I7lcNMWy6jfFD3DnHuR2qzkizaOnvoNXcuPMAzZZUu4gHCsR/osYLC9GG44PwhRZD3TYjN
+	UOPMOVRXbs6hNWxWv/P4G7R/QAiT0D4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 70087600AD;
-	Sun, 19 Jul 2026 08:56:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CAA1F000E9;
-	Sun, 19 Jul 2026 08:55:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 845C2600AD;
+	Sun, 19 Jul 2026 09:01:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232671F000E9;
+	Sun, 19 Jul 2026 09:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784451362;
-	bh=2U5qRrAFa9bh5Xmu1DmWsyCaZmGr6MmPtt2A5WCS8eI=;
+	s=k20260515; t=1784451719;
+	bh=GE4nZxrWNILr4LFFRjNo6DdTk/Sh1KEFBm564eW9JxY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UKlIHd3GXV7IU3Wzd4zgNGbWboOz3yZfmmQ4qfqEiPSWD1qHhrj4/uqYPPX9vX8b9
-	 +R+xQOrMW7VIqDEg0DNU+UiuC0v849p7ryJ04TXG/C5rsbVME4u26eoM7/XOjhvXuS
-	 Gq+yd6Xh0+TLCsNtLXrs2suu8LIjACy+526imMnPBAF/8FeI4YZkeFnV1IR3AUbUTc
-	 716I8AShlrSiF3OVnjSrdRp1s+oMzwFZ/DcgQ/5Loto0FG0DZk2NqQJ1HvtxRHGibL
-	 IuwYTFgBf6X1CyzZysQ5JX7i746Mo0A6A1tRG/ZW63Xe0yPj61oHO9R39VflM/MY96
-	 HI6d5Zv98HXZg==
-Date: Sun, 19 Jul 2026 11:55:56 +0300
+	b=RxYrqDE37oWsZLMfniRw2CAsWoYmOTNiL0RXsV18c8RcXGAzpdI+ErM4J5RUVWkqD
+	 JSymOjJOB+Hzx93sAkLLIsAgD3fHlZMLdclIHL3gnRh7mxZ4H+TKGizwC4Qz2W2eL7
+	 fSurb44UXOSGSxdhWFIPu+iYcsiHD4F+v6VBhWVoKTEdorMS5F11FuC2feCgYx8VrZ
+	 DY5gsGOwtzRi7UZZr+qwj776f4RE1sp05dFNqYngsJ/67jRpF/rdAyo2CIlG7bmE17
+	 caFEFeR4uJM7mHzdZ8d8unE9EtpvW4ts/VljZzgC6JgbIiewxk7y/pSr1Sc9edmEfQ
+	 h00A/dh2KsbRQ==
+Date: Sun, 19 Jul 2026 12:01:53 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>,
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Huacai Chen <chenhuacai@kernel.org>, linux-mm@kvack.org,
 	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] mm/execmem: Print size, align and caller on
- allocation failure
-Message-ID: <alyRHFN9T0FIDBl2@kernel.org>
+Subject: Re: [PATCH v1 2/2] LoongArch: mm: Expand modules virtual address
+ space to 2GB
+Message-ID: <alySgaaQen6ZtwSo@kernel.org>
 References: <20260717075715.25513-1-yangtiezhu@loongson.cn>
- <20260717075715.25513-2-yangtiezhu@loongson.cn>
- <20260717113730.787867964b1c3a7c645bb0e0@linux-foundation.org>
+ <20260717075715.25513-3-yangtiezhu@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260717113730.787867964b1c3a7c645bb0e0@linux-foundation.org>
-X-Stat-Signature: t94ntpisn8dkjzzm95zk7m4a5csbeqz5
-X-Rspamd-Queue-Id: F08011C0002
+In-Reply-To: <20260717075715.25513-3-yangtiezhu@loongson.cn>
+X-Stat-Signature: 38dpnfjnr4z5ox7terodbzr5f3agmh66
+X-Rspamd-Queue-Id: 1A33E10000D
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784451362-749202
-X-HE-Meta: U2FsdGVkX18sI6JFlTFCvw2nPAxhjziTSPUzQaYKcQFS0bRnAeWretKls440rWtdcVijr4O6wwQptNy2EJ6i3ORVsVG+6HSqmaFQT1RMGrxbbE2VDxHxELIn8N/OKiPi1tIku2w4ebiN22GKB/T9dw4unrodiC8kZjcHvyfZg+yrOlMSji/uZSEEQF3DNd9KdOF5d+CzpFR2zZGGlzHm/bp6DbCYgC+3rVR2C/Gw0Wd/iXsHVFPkfrQXszQJm9GS0YHj8feGaXm9KgP4Fr1w6Pr4dbmae6u+u28vSP+5O716qKVUxZiVLcQSnxQjhQ1EMrpraqIhY9XClSwfnmYD3Xgtz1asQynql2rfHOW6DeLo342f7zfvTQGlzVw9g5moNAgoiSaFaDRWip1S30X9D9KSFunuHCJ8NBL6VZRSddoshpolZMrC8RNqf2JqxZclThcYpcTa6LdiHrHEt+Ms/kg9PbJclCQVIVDQfpzM2aJ1zvUk8UUFUPMbuBSmfkdmGkatkqBJMulyp1grVgbV73TAMZhfsRrWBqkWjssQcoYUVkCUl65PaUx1w+R3XY7L+9yE6JuQujZM3+Ri3JBB4uN5TjJfkpVAMGJwIc/P28r6ZKglYXTkhyJ3Fz/2gZHvxPao/ih/X+Z0WABhAgeToW/kh5P+PTIy9S2ZtsWdELdW5WOeQtfFuoYYvkIn5FYMfOexUS5Db7+RnFOk4LxJptKbMKvf7CqiWoxSknLLbj3Lc5EkP39ulVZVHp7G9Xmu54MSI3CWLYpfaeiZnZ7sCBeXTPBbndjoCEP4tZ5vRjTBOKf/UyKRHYITFdbTDNMsBFcCWaT+daaH268cb1gRzUVZuS/LP9Ts24Jj7JHmjhIMls8qw6PbLqgM6w+nyDppC65ctf25OdUrb0HQK7JGJIF2nVJwZ8Nad32m2VtYVT/NPTen3F8ETzAG4J8lTHNsQsdSQo/gp4bt8x4cFvD
- FT42Ckom
- Pb8WO001InVFBed3CxUKJChMEIf60uNwcleWSPOD1XEVmKJJSY8n1+pTdxwPJyzhU6juXfSx9ETuNa//dSxgzuMUCfZXGNw3YKUnhBGiX1nVSTwUwxJGscgMF3dkycL54XqRuHN3uJNzidoWmNHGOiCYJqqJr3+aiDtWD5YUpa4llJtASVN413VT4BA0J71NqTu7aGbOY1HZjkbcFFWafhtaRrPZl7ph4BC04WXTws8phzjyECBrWxXcLM+kuIoVH+qvO
+X-HE-Tag: 1784451719-831749
+X-HE-Meta: U2FsdGVkX1/LnzPgCUKPhNsGzvT6P+Rb5Peod3yIsJWJj6v1QbrzO32JHsVJ/MxI3KcZqUoP2ZfaRg0xdl0yhCP/aNi+3HB5bfFyps+N52FANrEBPuNHJczI6PlGASTi6+z8V2jrlDdMcKOCD6rSkFUutYsMTdzc0ot3kG7QkMG0cZuN2dD9bofnwGGGvMf82IUg4/WlMTtDT34z2Gjs4Ps6YUZkGb+U/kFp08BWsjr1JgMhOJeZGn+OvpjOZ+zlxQGhhcn+94vyij3lZA3i26YYXyIAZR0mksaOGS0/nj+EYZJechuElpmvs40mYowLfq5sqeuRgPaVjKK8R2QizfM62X/7zZTskmRXccuANMrYTNfC9s/tyJ5nxo2+GcqEohtUH3M4tWuz/7sv7kJWXwNijycGOrgHdR74vjS/Lx5Gt9VRIfTHC5tActjoIaWm5y7ZmxyN+lfHGkOt2m+N/17MFJtGTtfPi7rwQEoH98bw0QtfroO3NowrqwqGf/6wt1RsgB6su807RWBovnvCa9MdxXTnV5zKt017MexwmSH7df78ODkWHqoJyEKAeEyYQWk2TqY3gFgbg0N62TgXUcBi7mOoG+HBtU37cwB1TzCoiI15g2TJKtGyHU0gyYNflx6miWgjpM8lSLHjdkOqr17pVWHNf/AbxFTvGXUbGKRcJPlIcwBQBmtbULSMHqFKw54ITSjUklVpCb76Vy0ALozzfzjG4aQxEGGCnA6qaLlKUFv/DlUplPsXJwMZ7tHxLWWRcwIldrLk1WfxeZYsXmB8kX8aBJdZdLekGkc0biv2rK3uAYENr02ZpCehT9xmW96auyXINWTcrH+ubBiypXUTl0bqPUcxNHw2mF8KY8YoYLyGw63Na7AxyrxHd1iibFac8NCDQDszLNrXpAc2oZd4qYNm+zsG0F/YgOcS1PGo6Fm4EWyir2aIXm/wsYBjFvSj2+3bSEWFVqBX1jO
+ KFLmtokU
+ iZBigHBxK2obCCDG2YQ/qY9GpkXKL0lD8Nw1Udzgu/tz7vTnIBB8DFX+MNjgMn9D2bSsAq0Ugz8WKURrDJ4+sFbO44LP688Y8DsDQfaQ1lDtH8NPyh14jiQn/8JZ1RL02HqWUJkVtVpsS55GxNgjMprw+YwRcVnLScg6XT/G2S4EqfGxXgm3zn5yPwKhPulSn1XyW7MO2yrjK072vm43Ni0dOkEahTQqr/5fJSTKRYkVxusm21dTiMasxBqtHaXQb1MDl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,61 +93,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 11:37:30AM -0700, Andrew Morton wrote:
-> On Fri, 17 Jul 2026 15:57:14 +0800 Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+Hi,
+
+On Fri, Jul 17, 2026 at 03:57:15PM +0800, Tiezhu Yang wrote:
+> Frequent "execmem: unable to allocate memory" warnings are observed
+> during kernel module loading when updating the latest kernel.
 > 
-> > The current execmem_vmalloc() function reports an allocation failure
-> > with a simplistic "unable to allocate memory" message. This notifies
-> > the user that an error occurred, but it acts as a black box during
-> > debugging.
-> > 
-> > Enhance pr_warn_ratelimited() within execmem_vmalloc() to explicitly
-> > print the requested allocation size, alignment constraints, and the
-> > symbolic caller.
-> > 
-> > This diagnostic visibility is valuable for analyzing the root cause
-> > of allocation failures and tracking misbehaving subsystems without
-> > inducing log pollution.
+> This is because the modules virtual address region on LoongArch is
+> tightly constrained to 256MB, while ARM64 and RISC-V are natively
+> configured with a spacious 2GB region.
+
+The constraint follows architecture ability to address kernel instructions
+and data from modules code.
+
+I don't know what are loongarch requirements, but I remember that arm64
+added a layer of relocation support to allow 2G module address space.
+
+> Expand the modules virtual address space to 2GB for LoongArch to
+> eliminate these allocation bottlenecks.
 > 
-> Have you actually encountered this?  GFP_KERNEL allocation failures are
-> supposed to be very rare.
-
-Looking at the second patch, it's quite possible. The allocation is limited
-to module addresses which was only 256M on loongarch and could have been
-exhausted.
-
-> > ...
-> >
-> > --- a/mm/execmem.c
-> > +++ b/mm/execmem.c
-> > @@ -50,7 +50,9 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
-> >  	}
-> >  
-> >  	if (!p) {
-> > -		pr_warn_ratelimited("unable to allocate memory\n");
-> > +		pr_warn_ratelimited("unable to allocate memory, "
-> > +				    "size=%zu, align=%u, caller is %pS\n",
-> > +				     size, align, __builtin_return_address(0));
-> >  		return NULL;
-> >  	}
+> This change only applies to 64-bit kernels (CONFIG_64BIT), 32-bit
+> kernels (CONFIG_32BIT) are entirely unaffected since they do not
+> define separate module address regions.
 > 
-> This seems to be duplicating the information which the page allocator
-> can emit.  Perhaps we should remove the __GFP_NOWARN in there?
-
-Right, page allocator/vmalloc reports would be more useful, for example
-
-"vmalloc_node_range for size %lu failed: Address range restricted to %#lx - %#lx"
-
-was most probably the cause of allocation failures.
-
-But we cannot remove __GFP_NOWARN unconditionally though, because execmem has
-fallbacks for some of the allocation failures and I don't think the
-complexity required to detect when __GFP_NOWARN should be cleared does not
-justify one-off case.
-
-Besides, nowadays there are other tools (e.g. BPF based) except printk that
-allow debugging such issue, so I don't see much value in extending this
-error message or clearing __GFP_NOWARN sometimes.
+> With this patch, there are no "execmem: unable to allocate memory"
+> warnings anymore for 64-bit kernels.
+> 
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> ---
+>  arch/loongarch/include/asm/pgtable.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
+> index 223528c04d73..e5952ecd6a73 100644
+> --- a/arch/loongarch/include/asm/pgtable.h
+> +++ b/arch/loongarch/include/asm/pgtable.h
+> @@ -96,7 +96,7 @@ struct vm_area_struct;
+>  #ifdef CONFIG_64BIT
+>  
+>  #define MODULES_VADDR	(vm_map_base + PCI_IOSIZE + (2 * PAGE_SIZE))
+> -#define MODULES_END	(MODULES_VADDR + SZ_256M)
+> +#define MODULES_END	(MODULES_VADDR + SZ_2G)
+>  
+>  #ifdef CONFIG_KFENCE
+>  #define KFENCE_AREA_SIZE	(((CONFIG_KFENCE_NUM_OBJECTS + 1) * 2 + 2) * PAGE_SIZE)
+> -- 
+> 2.42.0
+> 
 
 -- 
 Sincerely yours,
