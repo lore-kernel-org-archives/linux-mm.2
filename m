@@ -4,122 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54B45C4451B
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 15:21:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05BD8C4451B
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 15:28:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB55B6B0088; Sun, 19 Jul 2026 11:21:00 -0400 (EDT)
+	id 798466B0088; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E660B6B008A; Sun, 19 Jul 2026 11:21:00 -0400 (EDT)
+	id 748846B008A; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D54B26B008C; Sun, 19 Jul 2026 11:21:00 -0400 (EDT)
+	id 637936B008C; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AC9A56B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 11:21:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F4BF1A05F3
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:21:00 +0000 (UTC)
-X-FDA: 85005889080.27.107E53E
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5BB3FC0007
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:20:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XGwh7JxV;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FA116B0088
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 881C8A05FA
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:28:14 +0000 (UTC)
+X-FDA: 85005907308.11.459A932
+Received: from xry111.site (xry111.site [89.208.246.23])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D875AA000C
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:28:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=xry111.site header.s=default header.b=Y8kU9WkK;
+	dmarc=pass (policy=reject) header.from=xry111.site;
+	spf=pass (imf25.hostedemail.com: domain of xry111@xry111.site designates 89.208.246.23 as permitted sender) smtp.mailfrom=xry111@xry111.site
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784474458;
+	s=arc-20220608; t=1784474893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JhZZLYUy5JN9m5m76MdXV4K8Y/qprA9fzvyMV8e4T6k=;
-	b=QNGCMhDdh4LMDNuYREoj4WdttbQ9flGz9QuFHOahuZ3bklowC4kqgKUaRw5a+XcLUc99AS
-	CId1Xu7VrwmbrGYyMweilhnH6Ez/9ZOUz+frjCDGiS7x90wEpS6PAvQfWzjpXPoiBzLwQN
-	8pj2UYBp2GIa1+oeYUW2YHb6M3dZqFs=
+	bh=M9cLc5KCeavLvqvey8T3GJaSSlkbnhyK7B2xSlP36cQ=;
+	b=WikOAKtivywtfGy6K6NtctgqSQNCW4Fj5bXrSXZ/hGy0b2/Fye4REI9LsIhG8QkNfqA22G
+	uX9aCjp67fqwKfSUh/MS6ZavhVbwpGve71qNUyEgC2/ji0JxfE82xjkgDF8l7ITgtWbbkO
+	jnDOAf0iht/ninjgBo2CvzVebSyXhTY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XGwh7JxV;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=xry111.site header.s=default header.b=Y8kU9WkK;
+	dmarc=pass (policy=reject) header.from=xry111.site;
+	spf=pass (imf25.hostedemail.com: domain of xry111@xry111.site designates 89.208.246.23 as permitted sender) smtp.mailfrom=xry111@xry111.site
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784474458;
-	b=RfxLCaZ1++mVlVCUb7k43166Kshn7/MW2Z8DbMYRcNqILgTj0brF+KQATWMOdUSdQsXFoq
-	0wNL8G0lN7ApCoKyqekKwpjd2mQXJxLK9jTMq+v79HiwDIobg9BmIz1nnyQuZICOmC+ZnM
-	d3KtW+PXCyGuBUzcxWUjYM30swtc5Nc=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92e7632b193so644635985a.2
-        for <linux-mm@kvack.org>; Sun, 19 Jul 2026 08:20:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1784474457; x=1785079257; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JhZZLYUy5JN9m5m76MdXV4K8Y/qprA9fzvyMV8e4T6k=;
-        b=XGwh7JxVKULP0PhH+srAQ8sTG/P6m6SDRml2vCrjm3vl1qP629UEufBXmJqvZkHYEW
-         tS/ErtfJqsH8NAT2AnNEalhgYTRJPxs5S3kJcUC4w6b39MSzb7xOQgunme0Omq8LecJK
-         dPok5s/izsWWKPaIVrOiJNkKEEszaAs8WiGsXNeVylhsaPZ6ZsxExWXZUmdxx6HqqcPl
-         yq0uWq3ss73Xcn0axEhyh+C9G8wwcHRgxwqOXwoDIn5jNs9iWYZIDG6EvUKczciwV00q
-         QeZ/tb690Gyf7imn9Taoy5s/N21GQM/L24zveRlsCRgx6YNwVh1bhnwd+fFhqBcpNrGV
-         6wwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784474457; x=1785079257;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JhZZLYUy5JN9m5m76MdXV4K8Y/qprA9fzvyMV8e4T6k=;
-        b=hCn/NAXZVJ5wj1XEXStNH33FANohtGHy5FSgFp0FOVmrZQYF2yu7D7l3Ga//ChsIOn
-         6HY2bPt7nw/wuOMe16VtHBG5xyMPm3uIOWEdl1ptozCmAJCzwU9b/l/UTNyp59frbmvE
-         dgFZsFTbXugIx6uaQ+7iwPjYMyzDkeM79xwNcIN+oEbtnrbey24C0QRyso5CRiolQMYj
-         eQx+J4GdnYW4zOIaV8OCXVoFIeVBT6u5cuEbMbELB8mKo2W/0bMNr+yPyrKZVKmlNB9w
-         /J2zD+wuwH40h/yP6JWNjzbYbCMCkVRxvxGOPsM9uF92vByA4kyMrc4ClW//LYT4BM7w
-         YrBg==
-X-Forwarded-Encrypted: i=1; AHgh+RpKm6gV9ZwbxLuSxNk3k65iD5mITXGDwcGGYOpotuXV1Qno9P8If9J7CvBn1w9UzYnQyzNh0+H77Q==@kvack.org
-X-Gm-Message-State: AOJu0YwcvK8j6HFU/UG3MWEzv0Bmna0DAnlBJwKQ5qUaEXTS64zkStDd
-	OXU6W9TP5Mxyu52Za/NwldYtzgVp5QuYbgz2VA70LMnHPsMgNqaRjFNyKisiOo05UQg=
-X-Gm-Gg: AfdE7cnt2OEvrvRud6KQ8BFVc0WOOugP+qLYU2YMC+/Bm70fHjWnUrhaRV0NQq5YhGK
-	H+XaWvXscfnZYFZT6oLKyitXrpPGUiKXsLSdozT7fBP6YulLninrUDmjpdM2ljeJxSLZ/9CQHde
-	32vOmKPs2Du0OZesZoxc4Q2PTNyfWRqMCQtnRvcnNTo7tKMxXPxXet19p6j7cveJDgOWK3ITyK9
-	eh5piy9SDOy0phC65aDiAoYq6nwgJ1j/RIh0Imd2J0U3qFdnyA8iVigFV0afNdXHmgrHwBjBLS3
-	K9qnED/bZAzNVZywa5wEnfiOhYaPXmRsk0gk0uCL9/M9lz5RPckDsjBE3cbcemNRHBtObNttG+s
-	Twut116VldJWPmi6LOZRvSK41b0oTL47h/CgLfkzSTYccQGSMOaL0rQ4VlhhtjRn28NXS0YETY1
-	aLaodtn3gexw3lz0I3uWK48yfRneL4uQ==
-X-Received: by 2002:a05:620a:4081:b0:92e:94a7:16e8 with SMTP id af79cd13be357-930b3eda1a7mr1060127585a.15.1784474457417;
-        Sun, 19 Jul 2026 08:20:57 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b52e02desm673998585a.10.2026.07.19.08.20.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 08:20:56 -0700 (PDT)
-Date: Sun, 19 Jul 2026 15:20:55 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: tt roxy <roxy520tt@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Ren Wei <enjou1224z@gmail.com>, linux-mm@kvack.org, pasha.tatashin@soleen.com, vega@nebusec.ai, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH 1/1] mm/page_table_check: widen map counters
-Message-ID: <alzrI44_Wg_aTx_1@plex>
-References: <cover.1784337674.git.roxy520tt@gmail.com>
- <b4414b588418c52a99d959d35a40e064ae8b6e72.1784337674.git.roxy520tt@gmail.com>
- <20260717221108.c6caf7dd11a47bd7c32aa6ff@linux-foundation.org>
- <20260717223112.ba8646377b103cae717580c8@linux-foundation.org>
- <CALMqdkTUm=MBStkk85y=YAnQfHB_Jxis-BMZhcxfz=-YJfQDcg@mail.gmail.com>
+	t=1784474893;
+	b=W0Xn18WJMOGFrLLuWsvMUSpOSiXwJ8qVwMxKfiWzrgw4C6zMXCIXDdeQWe1T9T2vcgWzdv
+	+2+9uW8iWSrpsd0f5TQkO/LGjdwdJjTHtd8V/kV9tc5EPLNvU/WLZr94mqj1th0OlQnd2G
+	MI5dJoF4sluhMtp5509mYXeeQ1K5DV8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1784474890;
+	bh=M9cLc5KCeavLvqvey8T3GJaSSlkbnhyK7B2xSlP36cQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Y8kU9WkK+cdpVa1FWwTNo33TCNLbqs+CtsMBNDUsubka/GMmKe7voYk++QzGXo1L+
+	 JnXolGtLv2PvKOgNQ/Mu1ieUXJ0QLNEwPf3JkqXb28VssziLakwknNZRItJrAB7c75
+	 hbLVp5xY69RnooxwRJA47xHYIUpzfbP0Djr+5zYQ=
+Received: from [127.0.0.1] (2607-8700-5500-e873-0000-0000-0000-1001.16clouds.com [IPv6:2607:8700:5500:e873::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id E34CE65982;
+	Sun, 19 Jul 2026 11:28:08 -0400 (EDT)
+Message-ID: <ba8b2723b563cd290c5c00fb4ec2402626fba06c.camel@xry111.site>
+Subject: Re: [PATCH v1 2/2] LoongArch: mm: Expand modules virtual address
+ space to 2GB
+From: Xi Ruoyao <xry111@xry111.site>
+To: Mike Rapoport <rppt@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Huacai Chen
+	 <chenhuacai@kernel.org>, linux-mm@kvack.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Date: Sun, 19 Jul 2026 23:28:06 +0800
+In-Reply-To: <alySgaaQen6ZtwSo@kernel.org>
+References: <20260717075715.25513-1-yangtiezhu@loongson.cn>
+	 <20260717075715.25513-3-yangtiezhu@loongson.cn>
+	 <alySgaaQen6ZtwSo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALMqdkTUm=MBStkk85y=YAnQfHB_Jxis-BMZhcxfz=-YJfQDcg@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5BB3FC0007
-X-Stat-Signature: hrsb8k8yjadf8txtkcfyg78hobb1wm6j
 X-Rspam-User: 
-X-HE-Tag: 1784474458-413406
-X-HE-Meta: U2FsdGVkX1/RSHOHaTMocQChQaRn7UsIyflyzJyoz6upO675GAW9PRRJQsMWr8FIGBIWnKjJj8KZcaBr2jakuXD4itlgx+hVQK92z+a0gHkcVxBIzpXLNZCpQ2rZ9jtjnwwsekRzGvoW/Fdki3VHbvCNUFtMnnNltxXZRcciEx0f3urQu9yyb5p5Fve6tPn5kghnl+41zwRH827KPrnJ/IxMEil5MljDR71kkoWT//a7yLzFZN/DQJuvfVzd94Lf9QeHNaIqngmsPPgcBqeowfgM7txRvu541Hrb13FfAx07zP7JrXjT7DQjVEHzRyQQI2qjbYegeNJ2NdIEOW6Lzi9HVjtY4GVMg7o2H+r3FQMYUa2ieTicz+Cclf8v+gq4cQn/kxmq+2X1V9rvDjQG+FeRih0TrnVo9QXzpcGgbijvW48YXc90r7QlnJ8qLY5ZXH3zBvsnsFJQstI/8XH/JqlIi12Ca8PxEtuPl27uzOAkLw21ftBrz4QFnBRKmO0eo1xTOgq7Ga11DduaS6Jhv/uvCYFf8cFVqfiaFxmL/XVD15m82jrOS8sbJ6gkW9vonWp8Bi4k0A9m9oVl/ZB4tJ6LG+qVGNNAAIMAzUfwJyWBRSZSJ2uB7fRX4QchPE2VJ6c7901rFY6HTyQ5BjOnw5mgOxFnVxhAp+lrMARxrkr0+PetNsHj2MiIqwp9gv/wdWmw3lQLi6ObOF6KqmV81k5uMiBo1Nte8L2B5z/5E/RY61Db9isR4u78GU2IwmnFHzV9z3RZvUjfrAtWlmfjOmRFFo+5e3mISmMOSou8wZiGDq6lKepyyQKtSGF43J2FFvOFRt6Zn3+fTaZW+1acY6YX+b3KZIfAoWEmYm8zfgKvcE0N+neIbUUqSj4iAKyl3JvsHtENfDwxO4JToVsO05Dui8ApA0InLCWgOd8ewK26dkMpK+RgZyTc7M3PSzJXt+Ohgs+zCojE9b09wLl
- ubA2t4Ld
- JHDbFUJ4mkg0WeC7c/Q0G55SBB22yAb+HKVTU9tOY7sWRVfxNTVFWwdP53Y/QcEKRH3O1FvWFE1RkBbz1Js5Pg+i8pY15SEwBAICSecHIPoj35eqlNU5XfmoBc8L/p+x0b10yZClz/DINdmPM+P3iUk69Ae+mOXxmkA+aM8HJyCiru6b7hxmKetfGcu9xrUh+VcxJH6lH3W6M+FeSTHJmBYNkGa7lgEsZgKkFASTToYq2BsE4kWJgTothzhofuzjFIK6qRYuxJhcjjPdmW7hXxRNZ/tSq74poULV+UlHncePvjAPbfD9tDXSIeLj/Vv1dnyqlYGd2N03uQHGWe0SgWXiDPLin23LPMP3I6+IjbS1AJ9mz8A/yhr6QnKS3HUihoBEgj0ksTLL7hB3XLcDnN7eUAPjhKbfO1QILFCfpMu4SCOYwOqqWHcApJanl0lvMdaJKCOi/oLIkigLzmx96JfTeRw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D875AA000C
+X-Stat-Signature: 3r4f7ecittfg459ay73cxk3uhcbctg1d
+X-HE-Tag: 1784474892-697449
+X-HE-Meta: U2FsdGVkX1+U/gbHYr8QwGw4zEqPcWs38V0N6ZxT2e8sY5qCIflFhqbjVquG74z42gU0Ix+8iFIykClnWcnG5RJdlyhj7iHjrB271MXuoXA6rUApuTmfbHvBu7KB+3JZvIvn8i8TWSM451VJtyR3ilHEsKgKeraYjHfTyHW8Qd+V5eA6JDgqiPEqJ3AWT8S7wdGaPNPnhmiMQLqkkLh+SiCblKFg30QLHfXsHrr/D5CQvjeY2ChwhP73YLLgFxJhk3GQpdVclp9nWNTW9HStiAbBpkWV9Lrog0bAqvVvQFj9qJRaoT0XGv6Zba4TGX5Q6T0fDNcrGBd2jGtbqT+jI3J1QZOvX6T7r2tWzdxdrW7weB5ZspasK6yA7Ud46/ZBKK3+aZ6a7Sm6eJwTmxHDDoEG0qGGJcpk/oRQabq5PydOlgO40praSJCeD5p0YW3cEidGyLvS0DUBQoGkZ9rEAdvNERO8pLI//nttPsqOaA+VmUHhoGzAX15Di/IwIq43nJKUqrb/hAtiQPSImk8UT8LDEWn/lSwlEaxWlQ57iGOts/I99DObO8qzSvv/aJVFDniYhG5m3KruQ9agI26exc+IuKIJmrsMgS7HS8ZeVZ3I/RHhOE82RtrkT1W/IbugaU7rA98jdzAjfXzXWS9eixdWGA0gjVDI4AJab/sJnBu2qWvfq0Hib0iQtt9vyjKP1w/wJvzS9SuR0SxbPMH/TnkHRHnNbill9KqVkJdEKgOU0/s5JLQrPoWmO+QGo8BLeC0jg8g1he207PGqYITAR02VgFlH1z0fFgpTBFAFow8VHU8u/ZJrd1GwnvG2GMTSlu1dtZPlJFwXxW6d3iZZkrAuNw540Q8/wHfaoctG1GhbHcFyTloGcIlIgoRS1Fti1n3LurW9bYWTEvpBlK0iFEMf3aPJO+CDFe/PTvsG7Oz7wh1QuEQLMGeATgeEDIxd0RIDJIs+HPELTBKYral
+ sFvrBOEH
+ ZPudAC7LdOTErC5MR4rmLWq6F0lOZNZ1omUdijGiPMLw6bG2zdboSadjhdYCRr93HVGUAvJNzAfBREDTjf1U34BosFYODM6dte13N1d05f9w6ANcmFX8ga+gooiUhzN6qVT/lpslgJI6npnYsiICUIKwrkJjlpCEGl3i+ObYUqrPrnk/3ztydFMb7JE5jJ+MffJTwBTJdZdJfMd6mqlNPiriXbXlXqh8b3CQekOIi6f8YqVrkBc+UOlcjPYrPr7JSDlRAfT5TQFQY9DV1qUKC+dtOggwZ/loxJiKntuJQnuNiJ1DTL+oe5jfj99l2rWq7Mjhl48OJ+8JH7tjWi6X6ZgoNUHZ4i9wMgi6gvXx3iArTBDFo+OkyhfDpgTnqglxBNI4BA6CtOcZmqNl8xM/jHF10apdrJT04+kK+EuvpgQMp/PJy5QHKtv4Y8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,30 +95,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07-18 18:21, tt roxy wrote:
-> On Sat, Jul 18, 2026 at 1:31 PM Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> > On Fri, 17 Jul 2026 22:11:08 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> > > Probably adding __aligned(sizeof(atomic64_t)) will address?
-> >
-> > err, no.  I think page_ext code will need alteration for this.
-> 
-> Thanks Andrew and Matthew.
-> 
-> Agreed. Widening the counters is not the right direction: it changes the
-> page_ext storage/alignment requirements, and normal page mapcount is still
-> 32-bit as Matthew pointed out.
+On Sun, 2026-07-19 at 12:01 +0300, Mike Rapoport wrote:
+> On Fri, Jul 17, 2026 at 03:57:15PM +0800, Tiezhu Yang wrote:
+> > Frequent "execmem: unable to allocate memory" warnings are observed
+> > during kernel module loading when updating the latest kernel.
+> >=20
+> > This is because the modules virtual address region on LoongArch is
+> > tightly constrained to 256MB, while ARM64 and RISC-V are natively
+> > configured with a spacious 2GB region.
+>=20
+> The constraint follows architecture ability to address kernel instruction=
+s
+> and data from modules code.
+>=20
+> I don't know what are loongarch requirements, but I remember that arm64
+> added a layer of relocation support to allow 2G module address space.
 
-Also, double page table check overhead. So, I agree let's address the 
-special case instead of widening page_ext.
+IIUC on LoongArch the size of one module is limited to 256MB, but the
+total size of modules can be up to 2GB, as the module loader creates PLT
+entries for calls across the module boundary.
 
-Thanks,
-Pasha
+I'd seen the "execmem: unable to allocate memory" error loading the
+large amdgpu module.  But after I stripped the amdgpu module those
+warnings gone away.  To me this is very strange: shouldn't the module
+loader just ignore the debug info even if it's not stripped instead of
+requesting execmem for it???
 
-> 
-> I'll rework this around a zero-page-specific fix and send v2 after checking
-> the exact page_table_check paths.
-> 
-> Thanks for the review.
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
