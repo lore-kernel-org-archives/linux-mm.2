@@ -4,93 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FB66C4451B
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 17:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB79C4450A
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 18:55:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5DD56B0088; Sun, 19 Jul 2026 13:30:48 -0400 (EDT)
+	id 21C846B009D; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0E7F6B008A; Sun, 19 Jul 2026 13:30:48 -0400 (EDT)
+	id 1C6006B008C; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C24C76B008C; Sun, 19 Jul 2026 13:30:48 -0400 (EDT)
+	id 090276B009B; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C02B6B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 13:30:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 04D4180675
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 17:30:47 +0000 (UTC)
-X-FDA: 85006216176.20.751F7FC
-Received: from smtp-bc0c.mail.infomaniak.ch (smtp-bc0c.mail.infomaniak.ch [45.157.188.12])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9A8F1120008
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 17:30:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ik.me header.s=20200325 header.b=d94GS9Wq;
-	dmarc=pass (policy=reject) header.from=ik.me;
-	spf=pass (imf29.hostedemail.com: domain of nadia.yvette.chambers@ik.me designates 45.157.188.12 as permitted sender) smtp.mailfrom=nadia.yvette.chambers@ik.me
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784482246;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A2116B008C
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 14:55:26 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C84711C0853
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 18:55:25 +0000 (UTC)
+X-FDA: 85006429410.14.6020810
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7C496C0009
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 18:55:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=oSDCqezK;
+	spf=pass (imf10.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784487324;
+	b=0vVfLvMaztsjjE2yz5CR4cqMrvi5YAOatcz+igYf5ZZlWfkvZpTN49AyF2yYWdW9I3f8VY
+	CohGBtecotg5Z7vkfH8/aetOUwE2klhjVPi3arMYZYZCFxIPo75PI28IGML8bEKt1yNeK3
+	wA6dVkjab+56973Ug+SqiNdYxvGr5xQ=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=oSDCqezK;
+	spf=pass (imf10.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784487324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CgK7IvRxf3QPyJpb9n07JBZlc4fYKX+6CAGrsFf+HRs=;
-	b=cJOTsl5V0Y/a2P39AUOwsaThH8La3lPD4L6VknzHR5w4xIuOZW2gKcQZzncmOPJtac8j6i
-	BkV2nr1DA1XnY3ZkB1x/FZLvK5HRvx6Vz5IVulhhXUi+BO9sPcYmRgHjZmeimxp58NQUsn
-	p67J2RbHuvyPYi9i3ci9WND1SLf/RfM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ik.me header.s=20200325 header.b=d94GS9Wq;
-	dmarc=pass (policy=reject) header.from=ik.me;
-	spf=pass (imf29.hostedemail.com: domain of nadia.yvette.chambers@ik.me designates 45.157.188.12 as permitted sender) smtp.mailfrom=nadia.yvette.chambers@ik.me
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784482246;
-	b=Bb3KOZnKdN3QlBqMZ7WsSJHHOWQ/rVudB1NT27URXZLGHVYej8bLWejkapRAUAJWFSFXXI
-	br6QhQfZg8FhohjirVLMImqRKB6LghU28zPWVOjPdw0cSkRrssQrl6RScv6k98iIEQF3Zq
-	bvA7mMRXCVEYo9BduWfve7sBwBUtJ2c=
-Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4h39fC4vl2z9Pg;
-	Sun, 19 Jul 2026 19:30:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
-	t=1784482243; bh=CgK7IvRxf3QPyJpb9n07JBZlc4fYKX+6CAGrsFf+HRs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d94GS9WqCgEI36kwNvebR1DJQ296v1q57+j5IRMA8rsvjsh6+X8GHtI6OVRLX+8+h
-	 uHpr5z9GiOjEjF6vBtOEdTChSYJaBxAhVPhfzrQbsTUmQ9DiZv+Yo7TGdJHTlxZKPM
-	 LpqlJvE6J6jpggNkiFAToB7BvWl1ieqbpXp5dh3s=
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4h39f903D7z7NC;
-	Sun, 19 Jul 2026 19:30:40 +0200 (CEST)
-Date: Sun, 19 Jul 2026 19:30:39 +0200
-From: Nadia Chambers <nadia.yvette.chambers@ik.me>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Usama Arif <usama.arif@linux.dev>
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-Message-ID: <alzp5lvQho0nAoSS@ik.me>
-References: <aZcmlIF4bmG0twkp@thinkstation>
- <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
- <aZcxWsWO7AxQW6JC@thinkstation>
+	bh=XAzpNKpcNCtyrAHnItiN1RWU6bwJlMRMpPXgZD5jnVo=;
+	b=YTF06fr8Mz+D9r2/qYfvsC1XHWw9qS/xg1nkJuMwpkCamrVTNBg5H1AyMMfIkloQ6ilcY2
+	sOIjgR63Gw9kvnRXIGWCQUqVmSX/dTfOnoRcu72dF/W5XenQ2PDetMiP5wOVdHRVbMSNHE
+	VkKZqz/ps05y+f6bmjAyykXHH4y8Yu0=
+ARC-Seal: i=1; a=rsa-sha256; t=1784487289; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=McJqNokg8RJLtID0rDpHo9dZHGTcCImBNyjNUYGUNKx7Hy6zqpz3HtC81y5rc0sfXObKBS4Y+e3lTVp572kZ92nL9WRYPvz//dOHQDIeg+gxOl+WN+PHsSnsz52S5WD4bEC9Z53LbdghM0M9Ze7kQ74LRQEBinvoaEWzn3KnLUU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1784487289; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=XAzpNKpcNCtyrAHnItiN1RWU6bwJlMRMpPXgZD5jnVo=; 
+	b=Cj+k8yjMZlLPaVGvfAwb5N7TWBlR2uu0H1Y0tQi/gckdCPxFbiix3Cp0dsDTOk46SEZrU85QatitPy3wLhs10Y95LVTBNhmKcpn50pPxVFVfZJZJSJtjy7hcCFYBaZdsTEQt2QM4cCTszi4dKGTXQw5qoLu+mtPUxiEs+BoIrF4=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass header.from=<adi.sharma@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784487289;
+	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=XAzpNKpcNCtyrAHnItiN1RWU6bwJlMRMpPXgZD5jnVo=;
+	b=oSDCqezKKsi/qJYD/MBrcfiWX378g9IN6DcHLRiXs7+RN7K7Vq+gHxkoR4s4DpBV
+	L2JKMZvU1ciBmMO3VARq/OG04R6t+GbSS0nZ1/VSTzyqv/lZKKlM6vvNI9KpBKFEJV8
+	3guQw0Ax2RZ/tTah8w+9X8Z8wsJJ+ouXl2Xy2unc=
+Received: by mx.zoho.in with SMTPS id 178448728809969.40393444362564;
+	Mon, 20 Jul 2026 00:24:48 +0530 (IST)
+From: Aditya Sharma <adi.sharma@zohomail.in>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Cc: David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Kees Cook <kees@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imbrenda@linux.ibm.com,
+	Aditya Sharma <adi.sharma@zohomail.in>
+Subject: [RFC PATCH 7/7] exit: route exit_mm()'s final mmput() through mmput_exit()
+Date: Mon, 20 Jul 2026 00:24:09 +0530
+Message-Id: <20260719185409.409685-8-adi.sharma@zohomail.in>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260719185409.409685-1-adi.sharma@zohomail.in>
+References: <20260719185409.409685-1-adi.sharma@zohomail.in>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aZcxWsWO7AxQW6JC@thinkstation>
-Feedback-ID: :e0199cdf3b76464:ham:b89b32586f6d122
-X-Infomaniak-Routing: alpha
+X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9A8F1120008
-X-Stat-Signature: bikqkccujqpk3zcrmezg1k39kfkq5mn8
-X-HE-Tag: 1784482245-519374
-X-HE-Meta: U2FsdGVkX19WshkqqqKHx78NI4FF8xBgR08p3MykiI6fyvRIU2jDZ/Qztgyo1Z0Dg3AygbMzaBSBk3+NFNCwCeRIp0t/cSqxYSH8MqCUkFJpzHOppehTQlfEVFpvkivd+c3S+72XsDnhhdv+/pHRXbdUPSKpsMlvobC8W0gxyGhXHIntR3CLz8i1y0KMWVB0N8A46d2AzA7ZtMzq0MWa5l/wVnrivMN++EYqtbNg1/wMen+oaHRFc7Bmusbil8KpKx4SbKk40v4eAIbmxOtWJLIyFzAYu4/9WwF0wuUkQu7DJP27xnQDnX3n0s+N80jlLx+QaaAI5fFn9DVj4NaFR8HVtYvaRCNrDzMG9qKNZp4HQL4fLeu+wBtxq8JS20hjVgKDtw19Io6AN1sn1j5AboD80UoUhVUtZ58BjSYpqKLStJV+2V632Oty9DYYmbJmg9SmYecoQ6AN1e6AzdFNL8hvKxxfrS0oDkyAhUsZ25ASbKYj0aM20wi3Dv1CI/qT+c8yhQe9sAbkqb7mjOGqjN5kvUl0PEANf5jTiKKeMBVQKGJA/AzY8EZHXwVGoR7q8r9iA9eC50R9dNqFTAnJTnzy6Ry/UPPt3O0QT0nhFnRn7lxrDvybcAT2aCqN/9xT2oLMy8uJr/F8wC4+6Jf4Teir9kbLCe9OWqHtv80JbiDdjbt3MXHeUHbI4MZu6HAKc+Itl9C+4XjM+iB+5kULIKz3wvkrnxT3uooCQCtYD4SKEw6zSkIbG0KC8a/wJhQPLDFcNnqQtMYxAYnKWbslo88qtbZfgIx/njaxEQwMLuVYYOWZB9l3nX62ZGmUm4Y/ZCb0Gb3hdMjLLFLH2KxPWXWRCW6rHF1b1CT3n+xPz8KsRtjDmMz1LF1VcjwnTKUXUavBqqkqG1H7n6QPEHPHx7hlgoq5TsbS+O4I59Cxo5r0GQUTLSvPnAI4M6B6JpRz0Gw8AxFxzFL1Y0qUQ5T
- 8PNww/WV
- SxPDycResZWxitN/62obl9qQeZZEaARNyqEYn4gRBUteG1aIG3vcTWGhyW9j7Pl9Y1Vy9ePcn5dmzKrdsc1B0BQe1OO7tPY/4j7AbTWu7ZSIu4SR/m/drdvStWu+aPhOdgQK8noKeNVLyjwBcADwlpeTGDXVIPD30yZKglEbnN6aGHX0/vUNaISwjLbei6+PdeHMAN3PwfL7VhgWgKpuZjEVIS6mQiXHu5whww5IVH7Jzv5b9IWyOaan9Ipn5opPM4v7jXyr6kLdE7xGQmvcVDlWdMOBD14Kc+swVn7s3odKVbOaG6s31P3uUhzqQmXoiduJz9IpC4VNoPRue206kwglnWIbaNqauvLTJ+Kg1u9hGCwJ/qykqBRTKPyVGLbPeJAQgM/vUPrtHZxwpL6ukte0E3q4ZR2tDfFxtRBTltMxE3Rg=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7C496C0009
+X-Stat-Signature: omcaq9mnuhk9uqa74kzbp1w94w33fagn
+X-HE-Tag: 1784487323-974782
+X-HE-Meta: U2FsdGVkX18OlxwEfBdSCL+LC8Dhc5JvhNN6dGyZlpHyPa8t1eKXJQ7nqKDaj8wVoYcBp+UkaST/xz8j3IXQtLWWAMKrYK6kYEnsF8a7fkDaDceqVo9zscLufDAstiK453+4PisldnhrBKB+6KcqE2pv1828O8qiXPswfl9Ud33gyUNiZ6WTi0GyjrR3RJmbBKfF1oRT7lczpD+VoHq99jGURLJ6uU7BHpaFSOx0/40Bz1EfS9OsBtupE2n/cun76AjLzV1kSLrovdOF7uf9rv98OGdCPqZCeQ9WZJw7w6pbUer/StB56OHSJF+up3yyAfoK3Hztswp0J8wj1czjTHC2lI56JKemaKeJBZEYCcBNmtYfpTsR8sAALZiHZxpCRzBIZUzTDVhSDp2GU2ZYkTCAKgJAbQWr17w3A4pKizkwKouViEOWvUMtT9WmK2oo9H8SUc9SkU1mXAWG/pAj/V2GvBU7tppGq1UX5fN2bxu6fD8Fhr7sTkH4cp6SiIrnT2fojKiUznAc9XU3TtX9HQT6UE0Y9lqh6tY+kOWWuGeeH6sg1+YdXHnw1nIauNh+DjH9uUYze384A0dTsgYBYX5RIvThxxIWMrAg6erhHzUAEZGhufm6bW5QQ/dBIVRKPnEdYuDLkhpuOSYX/jGvdvqQY+jVEoi6jFWXNgAsPMrH5UryDKu2E/SQNBOcgeceG5zg1VB7axouEIcwEBGIr1Ttv2KihHRckMwDmChTY7fAuWpmcF26sifW8SyjOR62NngEKo7NcxKw/ZUYyxJ8f+EXC5vfkXgs2jTZcaZQnu7q8m77mVH4zgFs7xI5TdIZYlTNe8Z5Pe090M3SN5at7rkeec4agvsHEsS4NMVc1fKk3ZV5gZ5IF55VNhH9BmAROoaWpGZ9/87MEVq542PE8Mg5QBfVEIvRfzikYP9uCYc3IIIzNIPmfYc+mY3VF4EPmRJsFO+2Iyf6WGisLiT
+ x7z16ELA
+ mTYtRza3tkqMeJfEG2MJoWX1Ol+RSosBh1iO4s0WmXDVFhRLhd3RyziZvdvHkFQJZsRLaKFvh0Fi4V1Y92tCzTCo+n1f6X21GXWj7Rh0309pYldrWhH63VKrQY1/iIrE9B8v3FSeKk0rXeRA9FlITeiXvUcTiqzjEjJ5QC5scKN6MSi8rdJn3irK6tyI3N/E7JbVAmlMFjISkDUXbxS04S9R/ZB6f62KplOLlE11mRhzWfHno+4b8a652UvCs4oyusMptuUO6uBDFStqwvIbZ+LKAaf2sd8hLtI6ibA/WBiJ1osGb/lCgjavWwPYWUxy4uBOkM8Nn7AUFkPBk+id2e510eQOIkgCrGPIs5VA0WwPhl3Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,93 +126,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 04:39:34PM +0100, David Hildenbrand (Arm) wrote:
->> When discussing per-process page sizes with Ryan and Dev, I mentioned that
->> having a larger emulated page size could be interesting for other
->> architectures as well.
->> That is, we would emulate a 64K page size on Intel for user space as well,
->> but let the OS work with 4K pages.
->> We'd only allocate+map large folios into user space + pagecache, but still
->> allow for page tables etc. to not waste memory.
->> So "most" of your allocations in the system would actually be at least 64k,
->> reducing zone lock contention etc.
+This makes the series operative. So far, nothing called mmput_exit().
+Switch exit_mm() from mmput() to mmput_exit(), so the exiting task's final
+reference drop can defer the address-space teardown to mm_reaper
+instead of running exit_mmap() on the exiting CPU.
 
-Am Do, Feb 19, 2026 um 15:54:56 +0000, Kiryl Shutsemau schrieb:
-> I am not convinced emulation would help zone lock contention. I expect
-> contention to be higher if page allocator would see a mix of 4k and 64k
-> requests. It sounds like constant split/merge under the lock.
+Only the exit path is routed. Every other mmput() caller (get_task_mm()
+users like ptrace and /proc, kthread_unuse_mm(), etc.) still tears down
+inline, and if one of those ends up holding the actual last reference,
+behavior is unchanged -- the deferral applies only when the exiting
+task's own drop is the final one.
 
-Presumably because the higher-order allocations would lack the per-CPU
-special-case handling for order 0? IIRC LLFree is lock-free at all
-allocation orders, which would likely help the zone lock specifically.
-I suppose there's a sense I'm hoping my memory isn't out-of-date, but I
-would still be glad to see the improvement. Extending per-CPU freelists
-to small nonzero orders z.B. 4 might also help zone locks to allocate
-64 KiB case likely around as much as using PAGE_MMUSHIFT == 4.
+The deferral triggers only when all of the following hold, and falls
+back to inline __mmput() otherwise:
 
+- vm.async_mm_teardown=1 (static key, default off)
+- RSS >= vm.async_mm_teardown_thresh_pages (default 64MB)
+- the mm is not an OOM target (MMF_OOM_TARGETED) and has not already
+been reaped (MMF_OOM_SKIP)
+- charging the RSS to the pending budget stays under
+vm.async_mm_teardown_max_pending_pages
 
-On Thu, Feb 19, 2026 at 04:39:34PM +0100, David Hildenbrand (Arm) wrote:
->> It doesn't solve all the problems you wanted to tackle on your list (e.g.,
->> "struct page" overhead, which will be sorted out by memdescs).
+Results, bare metal, 32 CPUs / 32GB RAM (31 GiB usable), single
+NUMA node, performance governor, medians of 10 reps, THP off unless noted,
+vm.async_mm_teardown_max_pending_pages raised to 3/4 of RAM for the
+async runs (the RAM/4 default would reject a single 16GB mm on this
+box; see the cover letter's open question on the cap default):
 
-Am Do, Feb 19, 2026 um 15:54:56 +0000, Kiryl Shutsemau schrieb:
-> I don't think we can serve 1G pages out of buddy allocator with 4k
-> order-0. And without it, I don't see how to get to a viable 1G THPs.
+reap latency (SIGKILL -> waitpid() returns), async off -> on:
+1GB    18.01 ms  ->  0.14 ms
+4GB    73.71 ms  ->  0.14 ms
+16GB  282.16 ms  ->  0.15 ms
+16GB   27.68 ms  ->  0.13 ms   (THP on)
 
-memdescs are too recent for me to know about, but there is a comment to
-make about 1 GiB superpages: doubly exponential decays in availability
-are going to overwhelm the effects of any reasonable valud of
-PAGE_MMUSHIFT (your ilog(PG_SIZE/PTE_SIZE) which has no macro for it)
-long before 1 GiB. Bumping a small constant off the grand total of
-allocation orders isn't going to be an adequate strategy. ISTR Rik van
-Riel had code going round to partition RAM into something akin to
-pre-formed large z.B. 1 GiB superpages that's a far more meaningful
-approach to 1 GiB superpages than reducing the allocation order for
-1 GiB from 18 to 14 or 12. The double exponential makes orders above
-maybe 2 or 3 require migration or compaction and there's a cut-off above
-which you're going to need to be either be fresh off a virgin boot or to
-do something slow bordering on swsusp-style mass eviction.
+voluntary exit (_exit() -> reap) matches within noise:
+16GB  271.27 ms  ->  0.12 ms
 
-If memdescs, presumably from „memory descriptors“, are something like
-memory extents, I wholeheartedly endorse moves to more extent-based or
-extent-like memory management and can quibble about the details later.
+redis-server with a 16GB populated dataset (real heap, VmRSS ~16.2GB):
+      292.97 ms  ->  0.24 ms
 
-You can make an argument that scaling may need to take special steps to
-reduce the TLB entries for the smallest page sizes so they don't
-outcompete the real datasets when they proliferate. But buddy allocating
-(LLFree should be used instead) isn't going to be appreciably any better
-at orders 14 (PAGE_MMUSHIFT == 4) or 12 (PAGE_MMUSHIFT == 6) than 18, as
-with double exponential decays, it dropped to effectively zero onf.
-vmtl. 5 or 6, and values of PAGE_SIZE much larger than 64-256 KiB would
-likely require far more extensive efforts to address regressions driven
-by bitblitting latency and internal fragmentation than simple things like
-tail packing the page cache. If you're starting from an
-MMUPAGE_SIZE/PTE_SIZE of 64 KiB z.B. ppc64, it only really changes the
-story to cutting 14 to 10 or 8, but the net result of that with
-PAGE_MMUSHIFT == 4 is a PAGE_SIZE of 1 MiB and for PAGE_MMUSHIFT == 6 of
-4 MiB, which are clearly beyond the pale of what'll be tolerable for
-insb. network latencies for high-performance scenarios.
+32 simultaneous 0.5GB exits, tail until all reaped:
+      157.42 ms  ->  0.32 ms
 
-There is a case where those handfuls of buddy bitmap orders makes a
-difference: if you're trying to split the difference between z.B. the
-MMUPAGE_SHIFT/ilog2(PTE_SIZE) and PMD_SHIFT. That's not reaching 1 GiB,
-though. That's the only real benefit possible to offer in the trivial
-case of the sparse page size spectrum. Dense page size spectra like
-MIPS, LoongArch, RISC-V Svnapot, and Fujitsu M12 SPARC (I presume IA64
-has sadly been completely discontinued at this point) are more of where
-the benefits an argument can be made for are concentrated. In the
-desperation of the sparse page size spectrum case z.B. x86 page size
-growth increment / Sprungweite of 9 or some Apple M5 ARM systems' 11,
-trimming orders off of it might be worth it even after something in the
-vein of Rik's large superpage / „huge page“ -sized arenas, but with some
-devoted to the first superpage size as that's too many orders off from
-MMUPAGE_SIZE for naïve handling to work well.
+below-threshold 30MB process with the feature enabled:
+        0.56 ms  ->  0.60 ms   (sync path, within noise)
 
-To be clear, I am in favour of page clustering as per your pte_size,
-Andrea's hard-page-size, my pgcl (not genuinely distinct from Hugh's
-except via my being a far lesser coder than he), and Hugh's larpage.
-My objection is that the rationale you've given isn't sustainable.
+A CONFIG_ASYNC_MM_TEARDOWN=n build of the same tree reproduces the
+async-off column within noise (18.01 vs 18.01 ms at 1GB, 282.14 vs
+282.16 ms at 16GB), so the config itself costs nothing when dark.
 
+The work is moved, not eliminated: with async on, the 16GB region is
+fully back in the buddy allocator ~240 ms after the kill (vs ~283 ms
+when torn down inline), and the reaper spends ~1.18x the inline CPU on
+the same teardowns (nice-19 kthread, cache-cold on another CPU). The
+cover letter carries the full matrix: freeing-latency checks,
+backpressure fallback, OOM-killer interaction (an OOM victim is never
+queued, tracepoint-verified, including the CLONE_VM-sharer case),
+tmpfs inode eviction in reaper context, sysctl toggling under load,
+and a freezer cycle with a queued backlog.
 
--- nyc
+Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in>
+---
+ kernel/exit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 1056422bc..6f97d204f 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -607,7 +607,7 @@ static void exit_mm(void)
+ 	task_unlock(current);
+ 	mmap_read_unlock(mm);
+ 	mm_update_next_owner(mm);
+-	mmput(mm);
++	mmput_exit(mm);
+ 	if (test_thread_flag(TIF_MEMDIE))
+ 		exit_oom_victim();
+ }
+-- 
+2.34.1
+
 
