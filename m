@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05BD8C4451B
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 15:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF9DAC4451B
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 15:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 798466B0088; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
+	id 94FF76B0088; Sun, 19 Jul 2026 11:54:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 748846B008A; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
+	id 901006B008A; Sun, 19 Jul 2026 11:54:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 637936B008C; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
+	id 8171E6B008C; Sun, 19 Jul 2026 11:54:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FA116B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 11:28:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 881C8A05FA
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:28:14 +0000 (UTC)
-X-FDA: 85005907308.11.459A932
-Received: from xry111.site (xry111.site [89.208.246.23])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D875AA000C
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:28:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=xry111.site header.s=default header.b=Y8kU9WkK;
-	dmarc=pass (policy=reject) header.from=xry111.site;
-	spf=pass (imf25.hostedemail.com: domain of xry111@xry111.site designates 89.208.246.23 as permitted sender) smtp.mailfrom=xry111@xry111.site
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D1E36B0088
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 11:54:54 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4311120658
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:54:53 +0000 (UTC)
+X-FDA: 85005974466.17.AE3737A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5B51D20005
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 15:54:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KjNF2/0Q";
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784474893;
+	s=arc-20220608; t=1784476492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M9cLc5KCeavLvqvey8T3GJaSSlkbnhyK7B2xSlP36cQ=;
-	b=WikOAKtivywtfGy6K6NtctgqSQNCW4Fj5bXrSXZ/hGy0b2/Fye4REI9LsIhG8QkNfqA22G
-	uX9aCjp67fqwKfSUh/MS6ZavhVbwpGve71qNUyEgC2/ji0JxfE82xjkgDF8l7ITgtWbbkO
-	jnDOAf0iht/ninjgBo2CvzVebSyXhTY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=xry111.site header.s=default header.b=Y8kU9WkK;
-	dmarc=pass (policy=reject) header.from=xry111.site;
-	spf=pass (imf25.hostedemail.com: domain of xry111@xry111.site designates 89.208.246.23 as permitted sender) smtp.mailfrom=xry111@xry111.site
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KpBYAIEEhQYYNRww20xUWDkU0MM2Q4yUHB2q9Y6AtAk=;
+	b=xTX+fb5YUHD+kgUv/CJnFqHHeA1X6i4LDzQe0FBOLosUBDQcUJ4TN3PlqGPA9w4sU5lsdl
+	q3GE+tIXXTspoOdIievjIeZaiWCL91doOFRf9OtM+X1fPgKt/k/vH8cAa8KVLekawM6gqt
+	lI/srKfQ6y37+P19GPB9p0xufaHh2IY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784474893;
-	b=W0Xn18WJMOGFrLLuWsvMUSpOSiXwJ8qVwMxKfiWzrgw4C6zMXCIXDdeQWe1T9T2vcgWzdv
-	+2+9uW8iWSrpsd0f5TQkO/LGjdwdJjTHtd8V/kV9tc5EPLNvU/WLZr94mqj1th0OlQnd2G
-	MI5dJoF4sluhMtp5509mYXeeQ1K5DV8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
-	s=default; t=1784474890;
-	bh=M9cLc5KCeavLvqvey8T3GJaSSlkbnhyK7B2xSlP36cQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=Y8kU9WkK+cdpVa1FWwTNo33TCNLbqs+CtsMBNDUsubka/GMmKe7voYk++QzGXo1L+
-	 JnXolGtLv2PvKOgNQ/Mu1ieUXJ0QLNEwPf3JkqXb28VssziLakwknNZRItJrAB7c75
-	 hbLVp5xY69RnooxwRJA47xHYIUpzfbP0Djr+5zYQ=
-Received: from [127.0.0.1] (2607-8700-5500-e873-0000-0000-0000-1001.16clouds.com [IPv6:2607:8700:5500:e873::1001])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id E34CE65982;
-	Sun, 19 Jul 2026 11:28:08 -0400 (EDT)
-Message-ID: <ba8b2723b563cd290c5c00fb4ec2402626fba06c.camel@xry111.site>
-Subject: Re: [PATCH v1 2/2] LoongArch: mm: Expand modules virtual address
- space to 2GB
-From: Xi Ruoyao <xry111@xry111.site>
-To: Mike Rapoport <rppt@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Huacai Chen
-	 <chenhuacai@kernel.org>, linux-mm@kvack.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Date: Sun, 19 Jul 2026 23:28:06 +0800
-In-Reply-To: <alySgaaQen6ZtwSo@kernel.org>
-References: <20260717075715.25513-1-yangtiezhu@loongson.cn>
-	 <20260717075715.25513-3-yangtiezhu@loongson.cn>
-	 <alySgaaQen6ZtwSo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 
+	t=1784476492;
+	b=IKtC3tY9pxtDNqu5dRS5jZ66FgMIw0/VlxNTVcnU1239UV9ScOqfzerT17RFDyeF1rmk/S
+	a8pxYCL7EdhCFNvGU5PMnqotde6mJRFGzNSmR1+7d4iwn0HtGVgyulWY8d/BT4F2QzMBcd
+	bG/kYnmLCK5yp2upDG9iq6V9mbvCc+I=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KjNF2/0Q";
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AA8B060051;
+	Sun, 19 Jul 2026 15:54:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C7D1F000E9;
+	Sun, 19 Jul 2026 15:54:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784476491;
+	bh=KpBYAIEEhQYYNRww20xUWDkU0MM2Q4yUHB2q9Y6AtAk=;
+	h=From:To:Cc:Subject:Date;
+	b=KjNF2/0QuHjvI11h671X6m2vzeHGh2gybnN2uZLis4mVdkPe43kBLpeXWgH0mPpYS
+	 Oa//fnDGaKnC1r07nP9PVfe0DJG5Z7I3iKoYEAoZGZbcbvpcWMCd+7bjJ3H7jpPkq2
+	 1U2NZzdudIO7LlnH6vUxSJXZmShAcYES9SnyH7j+6n/Gb487Ul+BYiPWWzosmYQHw2
+	 lQ2/DDSC8m7toz/L3DBEXVGkdZfve8IN/8SZl1TxhHzPGkwY/MsOFZ4sr8AQr+kNub
+	 rGucIR8bbeLfVRBOvrM+dn/Gf4P8BwghLd6LNgIQdeq1mwxcCUf9P/F3EcWmaUB8G6
+	 nXXyTXx4bmyeQ==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v1.1] mm/damon/core: handle region split failure in apply_min_nr_regions()
+Date: Sun, 19 Jul 2026 08:54:40 -0700
+Message-ID: <20260719155442.88794-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D875AA000C
-X-Stat-Signature: 3r4f7ecittfg459ay73cxk3uhcbctg1d
-X-HE-Tag: 1784474892-697449
-X-HE-Meta: U2FsdGVkX1+U/gbHYr8QwGw4zEqPcWs38V0N6ZxT2e8sY5qCIflFhqbjVquG74z42gU0Ix+8iFIykClnWcnG5RJdlyhj7iHjrB271MXuoXA6rUApuTmfbHvBu7KB+3JZvIvn8i8TWSM451VJtyR3ilHEsKgKeraYjHfTyHW8Qd+V5eA6JDgqiPEqJ3AWT8S7wdGaPNPnhmiMQLqkkLh+SiCblKFg30QLHfXsHrr/D5CQvjeY2ChwhP73YLLgFxJhk3GQpdVclp9nWNTW9HStiAbBpkWV9Lrog0bAqvVvQFj9qJRaoT0XGv6Zba4TGX5Q6T0fDNcrGBd2jGtbqT+jI3J1QZOvX6T7r2tWzdxdrW7weB5ZspasK6yA7Ud46/ZBKK3+aZ6a7Sm6eJwTmxHDDoEG0qGGJcpk/oRQabq5PydOlgO40praSJCeD5p0YW3cEidGyLvS0DUBQoGkZ9rEAdvNERO8pLI//nttPsqOaA+VmUHhoGzAX15Di/IwIq43nJKUqrb/hAtiQPSImk8UT8LDEWn/lSwlEaxWlQ57iGOts/I99DObO8qzSvv/aJVFDniYhG5m3KruQ9agI26exc+IuKIJmrsMgS7HS8ZeVZ3I/RHhOE82RtrkT1W/IbugaU7rA98jdzAjfXzXWS9eixdWGA0gjVDI4AJab/sJnBu2qWvfq0Hib0iQtt9vyjKP1w/wJvzS9SuR0SxbPMH/TnkHRHnNbill9KqVkJdEKgOU0/s5JLQrPoWmO+QGo8BLeC0jg8g1he207PGqYITAR02VgFlH1z0fFgpTBFAFow8VHU8u/ZJrd1GwnvG2GMTSlu1dtZPlJFwXxW6d3iZZkrAuNw540Q8/wHfaoctG1GhbHcFyTloGcIlIgoRS1Fti1n3LurW9bYWTEvpBlK0iFEMf3aPJO+CDFe/PTvsG7Oz7wh1QuEQLMGeATgeEDIxd0RIDJIs+HPELTBKYral
- sFvrBOEH
- ZPudAC7LdOTErC5MR4rmLWq6F0lOZNZ1omUdijGiPMLw6bG2zdboSadjhdYCRr93HVGUAvJNzAfBREDTjf1U34BosFYODM6dte13N1d05f9w6ANcmFX8ga+gooiUhzN6qVT/lpslgJI6npnYsiICUIKwrkJjlpCEGl3i+ObYUqrPrnk/3ztydFMb7JE5jJ+MffJTwBTJdZdJfMd6mqlNPiriXbXlXqh8b3CQekOIi6f8YqVrkBc+UOlcjPYrPr7JSDlRAfT5TQFQY9DV1qUKC+dtOggwZ/loxJiKntuJQnuNiJ1DTL+oe5jfj99l2rWq7Mjhl48OJ+8JH7tjWi6X6ZgoNUHZ4i9wMgi6gvXx3iArTBDFo+OkyhfDpgTnqglxBNI4BA6CtOcZmqNl8xM/jHF10apdrJT04+kK+EuvpgQMp/PJy5QHKtv4Y8w==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5B51D20005
+X-Stat-Signature: wcio4oi8kw6wdgwk84g1sfyj66dis7ex
+X-HE-Tag: 1784476492-511655
+X-HE-Meta: U2FsdGVkX1+8J5rlf2OEq5Ig5iw/X4CiT3767c8EPPbgdy844+71G1DwkWfUTGrMJ2ttTwPA4/PXQqdcXK6tiJVolXTF4gvv5UerphA9itGmzlXDn4IhoGsWA/PJFTNklNg9KcQ7AMwihJeeuVJAKwixtBrosCxQRyucybn8R5uJS/CeQOr9e4SDphpPsKycVJX34fzORn5pfjs31pkOdCeKWo1kJS72bKqrwMAmXQPq6Z+JpNVLtDfpu8GMc90OddbVCi5Mv2GBSx6mA4+Ll27ANpjVJ05YwS2hIYIjsEBQp76zcQv9H0Vyrj9R45qdzZrCFsHBSaW8bgtmzwHmvISnSnJbnkLR9l8KKthB7DCJ7y6m3fuaoVQEemt3xQcOklZni+s85PvNImREKTqOzHxcSK85Oxe624gnMBHbQGOJnRAiVtt9OCDq9ENvFkwo5VDNeOLfQFeiyD7JqNHotrJGp2J7JMh3NaxsAvRgXGMwkwaA6uXC5XJ8luHqeW+hZBACpXep85SPiSvgGVPkywEGM5eZAWUfYFM/YgFHvDHFfZV9ZrSjmojDVK1h6jLG6VXvYQH2SFwZXnjZ4JiXpS66BksHLKvjHUyezLX/OKdUyjKImvy+mESNSJBI+1gjqUPm5oY44tRs0AlbX0xwMBF3RXWtftJKE8Y0zb+NKzBoIo11AJNaAvGUgdEBeUcJIAP1/PapuAh9/KsTs+xe/bvC/7a7M/3Z1gSfK5Z0/cwtS6DFfr9+V0Jp+SZoSlU0HiRIQS6DT0uOas2r8s7hYCIGDnUC3K1S9ogMKKl6kgs0ONjXfqCQmXaoyRsUthgVi7ziobshLti9OZT8TIt6BVsTob3DKDN4wdTLbp+iFDLVXwTxQPlTyCJLbwzvRmhJf+z/6mZ/DxaEwuzWw8WxDIAxRIR/sWJHDKPhxT7d6YXd+HEDc/ifMX7bNYvLagt+yTqRKDM1qVyx91TRRJ3
+ 8scqEAC3
+ NDilMbf2fuvCqZSi2kGpmy6OJKzccgaOI7ljnIxmAoAvR3shrPCx5iyc816KFeFXZnI8Aq2eqHOSN8yGucuvUt15q1yesHcGoi2L+5QQfwi3uBFwJjB+ghIfeT33VIvxYi0hjVBhgJCGi7km8GLkd2WOAUVGacX3PwCZw7nUs0U9JpACcUqCi3AijrgAXUVU9zm+6rVgI94DVC9kJUcTCxwtxlczml15u7ReLzka1BFqR6JGqfbSDwsFg3bEMzd9XAOeggQVNhGR3HUVkE6pf4DsWFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,32 +91,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-07-19 at 12:01 +0300, Mike Rapoport wrote:
-> On Fri, Jul 17, 2026 at 03:57:15PM +0800, Tiezhu Yang wrote:
-> > Frequent "execmem: unable to allocate memory" warnings are observed
-> > during kernel module loading when updating the latest kernel.
-> >=20
-> > This is because the modules virtual address region on LoongArch is
-> > tightly constrained to 256MB, while ARM64 and RISC-V are natively
-> > configured with a spacious 2GB region.
->=20
-> The constraint follows architecture ability to address kernel instruction=
-s
-> and data from modules code.
->=20
-> I don't know what are loongarch requirements, but I remember that arm64
-> added a layer of relocation support to allow 2G module address space.
+damon_apply_min_nr_regions() repeatedly split each region until its size
+becomes small enough to meet the user-defined low limit of the number of
+regions.  The loop assumes the split operation (damon_split_region_at())
+will always succeed and create the new region.  But the operation could
+silently fail for memory allocation failures, for example.
 
-IIUC on LoongArch the size of one module is limited to 256MB, but the
-total size of modules can be up to 2GB, as the module loader creates PLT
-entries for calls across the module boundary.
+If such failure happens and the region was the last region, the linked
+list-based next region fetching returns invalid pointer.  As a result,
+invalid memory dereference and corruption could happen.  Even if the
+corner case is handled, it imposes stress to the allocator by trying
+split regions for other targets.  Fix the issue by breaking all the
+loops for any region split failure.
 
-I'd seen the "execmem: unable to allocate memory" error loading the
-large amdgpu module.  But after I stripped the amdgpu module those
-warnings gone away.  To me this is very strange: shouldn't the module
-loader just ignore the debug info even if it's not stripped instead of
-requesting execmem for it???
+This means there could be a min_nr_regions violation.  It will only
+rarely happen since the allocation is arguably too small to fail.  Even
+if it happens, it is only temporal.  damon_apply_min_nr_regions() will
+be called again after the aggregation interval.
 
---=20
-Xi Ruoyao <xry111@xry111.site>
+The user impact of the issue should be minor, since the allocation is
+arguably too small to fail.  But, it could still theoretically happen,
+and the consequence is very bad.
+
+This issue was discovered [1] by Sashiko.
+
+[1] https://lore.kernel.org/20260717011834.120715-1-sj@kernel.org
+
+Fixes: b1029f29eb1d ("mm/damon/core: split regions for min_nr_regions")
+Cc: <stable@vger.kernel.org> # 7.1.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from v1
+- v1: https://lore.kernel.org/20260718001442.87129-1-sj@kernel.org
+- Break all loops for any allocation failure to reduce allocator stress.
+- Rebase to latest mm-new.
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260718004301.88883-1-sj@kernel.org
+- Drop RFC tag.
+- Rebase to the latest mm-new.
+
+ mm/damon/core.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 20d267c615faf..e0122376f43d4 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1886,7 +1886,7 @@ static unsigned long damon_region_sz_limit(struct damon_ctx *ctx)
+ 	return sz;
+ }
+ 
+-static void damon_split_region_at(struct damon_target *t,
++static int damon_split_region_at(struct damon_target *t,
+ 				  struct damon_region *r, unsigned long sz_r);
+ 
+ /*
+@@ -1912,11 +1912,13 @@ static unsigned long damon_apply_min_nr_regions(struct damon_ctx *ctx)
+ 	damon_for_each_target(t, ctx) {
+ 		damon_for_each_region_safe(r, next, t) {
+ 			while (damon_sz_region(r) > max_region_sz) {
+-				damon_split_region_at(t, r, max_region_sz);
++				if (damon_split_region_at(t, r, max_region_sz))
++					goto out;
+ 				r = damon_next_region(r);
+ 			}
+ 		}
+ 	}
++out:
+ 	return max_region_sz;
+ }
+ 
+@@ -3411,8 +3413,10 @@ static void damon_verify_split_region_at(struct damon_region *r,
+  *
+  * r		the region to be split
+  * sz_r		size of the first sub-region that will be made
++ *
++ * Return: 0 on success, negative error code otherwise.
+  */
+-static void damon_split_region_at(struct damon_target *t,
++static int damon_split_region_at(struct damon_target *t,
+ 				  struct damon_region *r, unsigned long sz_r)
+ {
+ 	struct damon_region *new;
+@@ -3420,7 +3424,7 @@ static void damon_split_region_at(struct damon_target *t,
+ 	damon_verify_split_region_at(r, sz_r);
+ 	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
+ 	if (!new)
+-		return;
++		return -ENOMEM;
+ 
+ 	r->ar.end = new->ar.start;
+ 
+@@ -3433,6 +3437,7 @@ static void damon_split_region_at(struct damon_target *t,
+ 			sizeof(r->last_probe_hits));
+ 
+ 	damon_insert_region(new, r, damon_next_region(r), t);
++	return 0;
+ }
+ 
+ /* Split every region in the given target into 'nr_subs' regions */
+
+base-commit: 1111bc7bc679131632fe9f436f4c990e8b86bee5
+-- 
+2.47.3
 
