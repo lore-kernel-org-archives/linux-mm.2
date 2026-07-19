@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE2E6C44512
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 18:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D1E7C44512
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 18:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BB506B0088; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
+	id 924BE6B008C; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 794526B008C; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
+	id 8805A6B0098; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 548AD6B0088; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
+	id 635266B0099; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66DD86B0088
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 888CF6B0092
 	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 14:55:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D5CC416061F
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DCDF8C05F9
 	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 18:55:25 +0000 (UTC)
-X-FDA: 85006429410.24.15A68A2
-Received: from sender-pp-o93.zoho.in (sender-pp-o93.zoho.in [103.117.158.93])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 847E380002
+X-FDA: 85006429410.05.80F2A65
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 82FD64000B
 	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 18:55:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=KxhcUFcb;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	spf=pass (imf02.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=YnW8pALY;
+	spf=pass (imf01.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784487324;
+	b=Ge5zEKfPr6oR9pWiCR24pvJ6M3fiJsNrboVUJczzN5OZXTOUwClB1bJkIwZObMEjYF+Fn1
+	WEqcPGaG+rAEa0tNv/eBD6Pb9eO/IDQdaeubdkAIBzHtCZ4gm5ipnA/P+R9dP2pYy9atL3
+	RxzX9QG8TuSpilc2pXgT4MvZEQ42Bwk=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=YnW8pALY;
+	spf=pass (imf01.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784487324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2WFeeZ7KFA8P2LraO+LyQSTzhNZOCYdC5G9o/v637Mc=;
-	b=TW9ujaAtgiFl5K8dGMRr5blDxOEPZO1Lz7oI1rd720R2HuyewcES2OpUXhqUQSmIqefNjw
-	cshRHXRtTSSWRrcqJwq0d9LqxH6wIjELF7v+L5csk+vX9KzrXatUkeTp/Tfm8QWTX6Cx6a
-	Ophas/KOVeuZb7LJCOzfguKTlc6VUe0=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=KxhcUFcb;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	spf=pass (imf02.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.93 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784487324;
-	b=i/CTxbajHls4VAEd9QGkjonbZAA1tWQ2RFUAfbMMhCEX1uBvy8pQmeF6vv/UCgnYpeLS3M
-	ZSyJ6wiZsPW7+OTBiDE2msYQi4PATNO/FiZA4/JofMFzFfxbCdY22BklyplgX2rpjJ1GU9
-	bzrH8TBkub7+l5fs1gGPoxs1BnH4pz0=
-ARC-Seal: i=1; a=rsa-sha256; t=1784487280; cv=none; 
+	bh=oj9fDzX1wMrErAiwiqiXxnM4cGXgD5lIVRx7urULVtQ=;
+	b=lmBIoVSdQenG8mQZjnaKHqOucSPl/DOo8/0OkiOtnTZcBlVb5htSN6UAv4cmHNGcHlzqNX
+	JMBbe6cPQuJDYErFO818YB/yN1v6jPGX9zKBbU3D4gnqE6mnvkHilg/1pFMdQlm8KWs9ac
+	NJpHRe6ve6j56eG7xrtC1cWc1UUH/YA=
+ARC-Seal: i=1; a=rsa-sha256; t=1784487288; cv=none; 
 	d=zohomail.in; s=zohoarc; 
-	b=XEiIyIz5mE0Bp26X0wV6jXA/VaVEDP0Vsd8y+wtWApSpa0QnNb1QflaNTLWFhUnGhhhtxzfJCuzo0fiHM9keOIa6/HZdzmITOPROxQGgPC+KqksvGbqDzNUa3EBFq+euvnUukms+YSB2J5UPUhW16rYMvfndG0EowDoBNKl6VhE=
+	b=Hg3KfhqrSbZ77reLafznqJhwV1LJSzO5mmcoXRp+JmqH1LlItiJruE8VW/W/1aDyRAoqh32F1e48HM1XC6ohw4TLFQjiziV78DYDC+bnMar0lNCcJK2p0MPrTBWUOPNklKb3SyVaCTNCvqhS7AxZdMjJFes5otKZ64i9Ee2gl2w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1784487280; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2WFeeZ7KFA8P2LraO+LyQSTzhNZOCYdC5G9o/v637Mc=; 
-	b=N/saLD1un8BAWR2AyHmL00UBCNQGgS9/mzsoMKFPls2nqPvcQd+TE66HlrKt8RGiL89qVR9M5f6W4l12uUOC2nvBrukr1+OWVMMtyIRcFb7CXatipTkE8sSZF+7gU4erUjorKMdKAeU6W7rF8Y7xqAnl9zXd6GUjmF2aCGtfdpU=
+	t=1784487288; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=oj9fDzX1wMrErAiwiqiXxnM4cGXgD5lIVRx7urULVtQ=; 
+	b=G/beN0jv6Q8FIOuAqbFFROOF1nkiv8xTb2iZishK3qidN0iSg/pHWKgLGCi2cSPRRcx/PoGu+D/Hc+EUabM3CYQA6LTskvx/cNIZAN2bvTTbmphlPzxx2NKKkjHZqVFiScJ0IqHidhneoVhmN3C2H+bfSgTH8Gm7dcMh+8nUiwo=
 ARC-Authentication-Results: i=1; mx.zohomail.in;
 	dkim=pass  header.i=zohomail.in;
 	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
 	dmarc=pass header.from=<adi.sharma@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784487280;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784487288;
 	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=2WFeeZ7KFA8P2LraO+LyQSTzhNZOCYdC5G9o/v637Mc=;
-	b=KxhcUFcbC6fZlSEYws8W0Ligew3B89Dy34756H9Y+FnvLbM3HTHSHcq86uuSw8oE
-	n0Ztxv6GW1uqGFGw83uoBxi03Di1KvQYhCIeLO3m80kIr5Uz1H/Sh6dVKWRaGyqsAVD
-	lbsjcFg5UpRN2pbF/Is6Fg7wpUjH+nwu2Tyjw80g=
-Received: by mx.zoho.in with SMTPS id 1784487278994775.8847779555358;
-	Mon, 20 Jul 2026 00:24:38 +0530 (IST)
+	bh=oj9fDzX1wMrErAiwiqiXxnM4cGXgD5lIVRx7urULVtQ=;
+	b=YnW8pALYKS+7BrhWfZSMS4owuUZYNoMgUCQiPgBceYMAA9mcp7oH2vkTqn7Azxuq
+	HATY+/+WkSG7WqveYQ/CJRAqclFelyYI+bNA/Ud7IurKaWNtDInCNL26LMPBf8xJEIN
+	hKMVys2fVq4gSF0M638PiWT2OJ7rM3PdtgMuUWV8=
+Received: by mx.zoho.in with SMTPS id 1784487286510813.0873877162367;
+	Mon, 20 Jul 2026 00:24:46 +0530 (IST)
 From: Aditya Sharma <adi.sharma@zohomail.in>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -102,9 +102,9 @@ Cc: David Rientjes <rientjes@google.com>,
 	linux-kernel@vger.kernel.org,
 	imbrenda@linux.ibm.com,
 	Aditya Sharma <adi.sharma@zohomail.in>
-Subject: [RFC PATCH 1/7] mm: add CONFIG_ASYNC_MM_TEARDOWN scaffolding for off-CPU exit teardown
-Date: Mon, 20 Jul 2026 00:24:03 +0530
-Message-Id: <20260719185409.409685-2-adi.sharma@zohomail.in>
+Subject: [RFC PATCH 6/7] mm: add tracepoints and vmstat counters for async teardown
+Date: Mon, 20 Jul 2026 00:24:08 +0530
+Message-Id: <20260719185409.409685-7-adi.sharma@zohomail.in>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260719185409.409685-1-adi.sharma@zohomail.in>
 References: <20260719185409.409685-1-adi.sharma@zohomail.in>
@@ -112,13 +112,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 847E380002
-X-Stat-Signature: g669d3gwh51tyeje1z8tktr1toitgxfp
-X-HE-Tag: 1784487323-796190
-X-HE-Meta: U2FsdGVkX1/SeMofqZsVCNJAWo2WEBMLHbSbw333CEriBxuBZfkqUmaIDtC8g5cHRHQ+Fi6gsxDUY/EzsXCM5hoDFEIn+aF7Lid4qAt6y5KxL8j+hN385Gg/XSHyV97R4294/qpyGdkAusM5Ab7AV1NX4dnpL7BHrByLKimRd17Z0S4uJB2TLzxggWSUORZMLlU43JkdAmlS1I9oKTvotvBMnB7SeJXAyhuTS3vV4ZPylhi+9+y3jBtoMXalEoLTy+87tUOnLUYm/2iBc0vHBj8Z56WnaYfi2GHtuAwkTndTy8yIyhbQZdyLpfhq+bjSCShRebGuIxX3PY7KW3zHSjG075U93skNjT1EP/LnX/lGWRhpR8wd6KIsS+e1IrtQnNpitdm1xCfltKhtnTa5df3FiyPCmbJEjtxaQgj+kF8MVUSjiRBrMIhzpAW22VWhe+n47YZjciT3YVvrWJM9pVgTp1Tr4cIHckbqUTVbIWY1nXC/rHLqBNhJJCC/K9MkSadvzHe1vOSdDHLga+B2Wlf4acZtAUpW9hf8LtbXx9rykh3VeP/dRItd6zxRg/5qqf2CCe+NUdag8t/dGJ12QnJ6IQsomGEuMHh8PJtmdBZVVIQCSLQnch5HZBp/cvYi/RWDgicifIG3OrdezAVTMuo/pkqf7fw3t2AYR5t+A7+KRcWLwpSyPxK85RHwGL8JoE/VShE+jE6IvUs32MKSqfMgAudJ4W37Rn0APCOBy1l46DogKqukJuxXzK0+1mt2pkZi9PekDdNoyz+9PKpacPPNsi8Sha2bFZn4u6DfcgZ//OadM93n2dFzV+wTs6JBEtebfzngnrHrlkQUybcjImNaBAqzPEIX9BWlJ//FF8xIn4hRHXthKrnWpbATFmx6AB6o+O8VDLdvJMjAo6O7vtWNqdL/2GfXYd47fpQJhHGj6TrRKhMeNB6IQ/Ax/LcP/QWtH5BNAznIAayCjkk
- 3Hh8uxVn
- WXuej1FTPO9r6Fb2NflEwSIeACwmO5CY3P3DLP0ec7F+fo4cyesZUrztXnoMZz1jb/h3VjNzICbXvifZbbitGiF0Wyt5dDZpRT62sRn91gM4ySj2TCFQQ4Y6iAdOz0FxgHvLF6/r9u4tNhLb3CSCF3v7DVG9ny2IbSAouB/OmudLudyJFaSlkzf8elj6R6kG75ALThuy8Kw5auBH5driFhRA5GPaOnUYtAp3JYZzTukQ5uiDoTSnAPrnJ0JH5Zm0cIvE7B+X6C+46zWlqy+yVcCj4t8hNULQDex2FpjeEZKILvP4HEm2qItc0P99JOM3GRBkd8gpZaBkmCEsn5Pd4DvP2WwhFYOm8mMFDCLxpAFgR88M=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 82FD64000B
+X-Stat-Signature: o83h45muw8ca15oh5u1uy8bdua77ihe8
+X-HE-Tag: 1784487323-292063
+X-HE-Meta: U2FsdGVkX183tiafs/72DQV7cbxW/LiaC/lpxfNZRZiaKKpuvVDn/LVnGm033OTE7U685fSPX6E+Hzw+fSgogeApIVN8Mk24g0qR1cD3KXK2s8XRl+zGLPjyibS6tPZz4T+2Kz4y/dHW+1XILNYz5r/24NzBWscqI3VTH69fWdh4ymX5lLmYZARLQLRL9QZejQomFZ7iOxFjMmIlCZLhgnX8XB2e6ljFxmK9yvxnHLwueUcvrqoJsNtzHnlYPaAikZwS1hvHttPUX7kFDIQiOx7+D5nucxh1vYc2lI71I+1Xb9Q+B0W7n7VWWR83QcuHcNb25hKT8RFY19GXVE3vTrR6e2N7bKj6Ios4tUae4nb8hF67LlmOuBnWSGb3EDOm2d7va9czjQ+OmWgsNwFItzH6WSoTQl0rdjXHGt5RXS+uEvlj29fy/0BMccalcYwhudgP0L92wQkDnAVO8j09PM9ee0gWgRaWceZKKt/x/jHbKxbQLetX4kPqYPt7zwAnUMdE4I5+Ak64d4svkm+RiRMnG+5qPSTtWAFMZyOA6v28tbzW7dL/9o52j0kPhNsN5iYvv/YByC5MWhY3aCWGj+3spOUk+XJt55y4xQ/UvCPkZcR+3P7b/ub2U7cmcJstA0yhw6OEDoPa0dyXN/m1XKcolGOdfDYw3UeMAPIgqHj58XhNJC6291ckwIEkWEvf0WKGbnbf/45OZK+VjT1v7dpz1s3LWj3Dv+SUfTc6ZHIdHjegpnMncmUuq0KTcUvV4EIvcqFE6uvQQLp2/NA0xMW8k4htOGyAQmmbYv3CRBpQeBUAgyZO857iQUwVbTF/wznoTaRyzQmBUUUTnxnhZ7tPJf8iRM4tH9bRNWKLIwBP337n+Zo1oLqkgRFKrC7RnjUl4yXhCTMsvYIJK/7zs3KxX09iBr+0i+ygmVVSjRTpjxuv+EdziSftDJAka50+n+kHVbSW1UZ4h3FRp1Y
+ Ih5syilv
+ aGmXa7OYUF7SG0w8uQ8rwswWbyf+R1s2LykiGHer8Md4ymC9qwWODpWrZbiN6ajWMnjnnfH2KtFKQF96Udl7OXu7Iys2Sv9WWClFEb+HwFnmm6VpJsJBjqvrRIdeuKbyDRGmLHqo2MJW5fRUFtLpV0Sh0Od1x1la+8mFbIVp1xUQxTvzZxOVJWIxOnj4qS494wzgxuzIcfHniw0+sjV7I4quO+GEQ5QWhKujiGru3wuot8dwyibXWyg+VDEUZdTWgcXwHb0LVpNMCGnrVxOUk0BTve+YoIk+Szc1I383G5UDwloEmYd9rk7tD+ENl8CGmehbJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,91 +126,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Address-space teardown on process exit runs synchronously in the dying
-task's context: exit_mm() -> mmput() -> __mmput() -> exit_mmap() walks
-page tables, updates rmap, frees the RSS and drops file refs, all on the
-exiting CPU.
+Add observability for the deferred teardown path:
 
-Add the scaffolding to later move __mmput() off-CPU for large exiting
-address spaces, with no functional change in this patch:
-  - new config ASYNC_MM_TEARDOWN (bool, depends on MMU, default n)
-  - struct mm_struct::async_reap_node (llist_node), CONFIG-gated, with
-    an explicit <linux/llist.h> include (it was only ever available
-    transitively via spinlock.h)
-  - mmput_exit() declaration, with a static inline fallback that is a
-    plain mmput
+  - vmstat (CONFIG_ASYNC_MM_TEARDOWN, in /proc/vmstat):
+    async_mm_teardown_queued   - deferred to the mm_reaper kthread
+    async_mm_teardown_sync     - torn down inline on the exit path:
+                                 feature off, mm below the RSS
+                                 threshold, MMF_OOM_SKIP or
+                                 MMF_OOM_TARGETED set, or rejected by
+                                 backpressure. Counts only teardowns
+                                 reaching mmput_exit(); final drops via
+                                 mmput()/mmput_async() elsewhere in the
+                                 kernel are inline but not counted here.
+    async_mm_teardown_rejected - subset of the above that was eligible
+                                 but lost to async_mm_teardown_reserve()
+                                 (counted for both this and sync, so
+                                 sync stays the total for the exit path)
+  - tracepoints in a new include/trace/events/mm_reaper.h:
+    mm_async_teardown_queue  at enqueue, and
+    mm_async_teardown_reap   when the reaper picks an mm up, just before
+                             __mmput(). queue carries the mm, its RSS,
+                             and the exiting task's pid/comm, captured
+                             while current is still that task, plus the
+                             node of the exiting task. reap carries the
+                             mm, the charged RSS (mm->async_reap_rss, the
+                             amount mmput_exit() reserved and what the
+                             pending-pages accounting releases), a fresh
+                             live RSS read taken just before __mmput(),
+                             and the node of the reaper. The gap between
+                             charged and live measures how much reclaim
+                             ate out of the queue before the reaper got
+                             to it.
 
-When the config is disabled mmput_exit() compiles to mmput() with zero
-delta, so nothing changes until the kthread and dispatch land.
+reap is emitted before __mmput() because the final mmdrop() inside
+__mmput() may free the mm.
 
 Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in>
 ---
- include/linux/mm_types.h |  4 ++++
- include/linux/sched/mm.h |  6 ++++++
- mm/Kconfig               | 11 +++++++++++
- 3 files changed, 21 insertions(+)
+ include/linux/vm_event_item.h    |  5 +++
+ include/trace/events/mm_reaper.h | 73 ++++++++++++++++++++++++++++++++
+ kernel/fork.c                    | 14 +++++-
+ mm/vmstat.c                      |  5 +++
+ 4 files changed, 95 insertions(+), 2 deletions(-)
+ create mode 100644 include/trace/events/mm_reaper.h
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 939b5ea8c..fffa285ef 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -7,6 +7,7 @@
- #include <linux/auxvec.h>
- #include <linux/kref.h>
- #include <linux/list.h>
-+#include <linux/llist.h>
- #include <linux/spinlock.h>
- #include <linux/rbtree.h>
- #include <linux/maple_tree.h>
-@@ -1367,6 +1368,9 @@ struct mm_struct {
- 		atomic_long_t hugetlb_usage;
- #endif
- 		struct work_struct async_put_work;
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 2628ccda0..de4dc20b7 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -179,6 +179,11 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		NRSWPIN,
+ 		NRSWPOUT,
+ #endif /* CONFIG_SWAP */
 +#ifdef CONFIG_ASYNC_MM_TEARDOWN
-+		struct llist_node async_reap_node;
-+#endif /* CONFIG_ASYNC_MM_TEARDOWN */
- 
- #ifdef CONFIG_IOMMU_MM_DATA
- 		struct iommu_mm_data *iommu_mm;
-diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index 10be8a54b..20aeb1d7e 100644
---- a/include/linux/sched/mm.h
-+++ b/include/linux/sched/mm.h
-@@ -147,6 +147,12 @@ extern void mmput(struct mm_struct *);
- void mmput_async(struct mm_struct *);
- #endif
- 
-+#ifdef CONFIG_ASYNC_MM_TEARDOWN
-+void mmput_exit(struct mm_struct *);
-+#else
-+static inline void mmput_exit(struct mm_struct *mm) { mmput(mm); }
++		ASYNC_MM_TEARDOWN_QUEUED,
++		ASYNC_MM_TEARDOWN_SYNC,
++		ASYNC_MM_TEARDOWN_REJECTED,
 +#endif
-+
- /* Grab a reference to a task's mm, if it is not already going away */
- extern struct mm_struct *get_task_mm(struct task_struct *task);
- /*
-diff --git a/mm/Kconfig b/mm/Kconfig
-index c52ab6afc..296b16ad4 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1500,6 +1500,17 @@ config LAZY_MMU_MODE_KUNIT_TEST
+ 		NR_VM_EVENT_ITEMS
+ };
  
- 	  If unsure, say N.
- 
-+config ASYNC_MM_TEARDOWN
-+	bool "Async off-CPU address space teardown on exit"
-+	depends on MMU
-+	default n
-+	help
-+	  Defer the address space teardown (exit_mmap()) of large exiting processes
-+	  to a kernel thread instead of running it on the exiting CPU. The feature
-+	  is off by default.
+diff --git a/include/trace/events/mm_reaper.h b/include/trace/events/mm_reaper.h
+new file mode 100644
+index 000000000..315bced7c
+--- /dev/null
++++ b/include/trace/events/mm_reaper.h
+@@ -0,0 +1,73 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM mm_reaper
 +
-+	  If unsure, say N.
++#if !defined(_TRACE_MM_REAPER_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_MM_REAPER_H
 +
- source "mm/damon/Kconfig"
++#include <linux/tracepoint.h>
++#include <linux/sched.h>
++#include <linux/topology.h>
++
++TRACE_EVENT(mm_async_teardown_queue,
++
++	TP_PROTO(struct mm_struct *mm, unsigned long rss),
++
++	TP_ARGS(mm, rss),
++
++	TP_STRUCT__entry(
++		__field(struct mm_struct *, mm)
++		__field(int, pid)
++		__array(char, comm, TASK_COMM_LEN)
++		__field(unsigned long, rss)
++		__field(int, node)
++	),
++
++	TP_fast_assign(
++		__entry->mm = mm;
++		__entry->pid = current->pid;
++		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
++		__entry->rss = rss;
++		__entry->node = numa_node_id();
++	),
++
++	TP_printk("mm=%p pid=%d comm=%s rss=%lukB node=%d",
++		__entry->mm,
++		__entry->pid,
++		__entry->comm,
++		__entry->rss << (PAGE_SHIFT - 10),
++		__entry->node
++	)
++);
++
++TRACE_EVENT(mm_async_teardown_reap,
++
++	TP_PROTO(struct mm_struct *mm, unsigned long charged_rss, unsigned long live_rss),
++
++	TP_ARGS(mm, charged_rss, live_rss),
++
++	TP_STRUCT__entry(
++		__field(struct mm_struct *, mm)
++		__field(unsigned long, charged_rss)
++		__field(unsigned long, live_rss)
++		__field(int, node)
++	),
++
++	TP_fast_assign(
++		__entry->mm = mm;
++		__entry->charged_rss = charged_rss;
++		__entry->live_rss = live_rss;
++		__entry->node = numa_node_id();
++	),
++
++	TP_printk("mm=%p charged_rss=%lukB live_rss=%lukB node=%d",
++		__entry->mm,
++		__entry->charged_rss << (PAGE_SHIFT - 10),
++		__entry->live_rss << (PAGE_SHIFT - 10),
++		__entry->node
++	)
++);
++
++#endif /* _TRACE_MM_REAPER_H */
++
++#include <trace/define_trace.h>
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 0976770db..4bdffa188 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -126,6 +126,9 @@
  
- endmenu
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/task.h>
++#ifdef CONFIG_ASYNC_MM_TEARDOWN
++#include <trace/events/mm_reaper.h>
++#endif
+ 
+ #include <kunit/visibility.h>
+ 
+@@ -3461,8 +3464,10 @@ static bool async_mm_teardown_reserve(unsigned long rss)
+ 	return true;
+ }
+ 
+-static void async_mm_teardown_queue(struct mm_struct *mm)
++static void async_mm_teardown_queue(struct mm_struct *mm, unsigned long rss)
+ {
++	count_vm_event(ASYNC_MM_TEARDOWN_QUEUED);
++	trace_mm_async_teardown_queue(mm, rss);
+ 	if (llist_add(&mm->async_reap_node, &mm_reaper_list))
+ 		wake_up(&mm_reaper_wait);
+ }
+@@ -3478,6 +3483,9 @@ static int mm_reaper(void *unused)
+ 		batch = llist_del_all(&mm_reaper_list);
+ 		llist_for_each_entry_safe(mm, n, batch, async_reap_node) {
+ 			unsigned long pages = mm->async_reap_rss;
++			unsigned long live = get_mm_rss(mm);
++
++			trace_mm_async_teardown_reap(mm, pages, live);
+ 
+ 			__mmput(mm); /* may free mm via mmdrop */
+ 			atomic_long_sub(pages, &mm_reaper_pending_pages);
+@@ -3515,12 +3523,14 @@ void mmput_exit(struct mm_struct *mm)
+ 
+ 			if (async_mm_teardown_reserve(rss)) {
+ 				mm->async_reap_rss = rss;
+-				async_mm_teardown_queue(mm);
++				async_mm_teardown_queue(mm, rss);
+ 				return;
+ 			}
++			count_vm_event(ASYNC_MM_TEARDOWN_REJECTED);
+ 		}
+ 	}
+ 
++	count_vm_event(ASYNC_MM_TEARDOWN_SYNC);
+ 	__mmput(mm);
+ }
+ 
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 4e26e5fd6..e3ff30027 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1494,6 +1494,11 @@ const char * const vmstat_text[] = {
+ 	[I(NRSWPIN)]				= "nrswpin",
+ 	[I(NRSWPOUT)]				= "nrswpout",
+ #endif /* CONFIG_SWAP */
++#ifdef CONFIG_ASYNC_MM_TEARDOWN
++	[I(ASYNC_MM_TEARDOWN_QUEUED)]	= "async_mm_teardown_queued",
++	[I(ASYNC_MM_TEARDOWN_SYNC)]		= "async_mm_teardown_sync",
++	[I(ASYNC_MM_TEARDOWN_REJECTED)]	= "async_mm_teardown_rejected",
++#endif
+ #undef I
+ #endif /* CONFIG_VM_EVENT_COUNTERS */
+ };
 -- 
 2.34.1
 
