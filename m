@@ -4,41 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB79C4450A
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 18:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EC96C44512
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Jul 2026 18:55:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21C846B009D; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
+	id 412A86B0093; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C6006B008C; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
+	id 34EDD6B009B; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 090276B009B; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
+	id 1518E6B0099; Sun, 19 Jul 2026 14:55:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A2116B008C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 79BCC6B008A
 	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 14:55:26 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C84711C0853
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF9C81405D8
 	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 18:55:25 +0000 (UTC)
-X-FDA: 85006429410.14.6020810
+X-FDA: 85006429410.30.3D7F405
 Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7C496C0009
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8426020008
 	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 18:55:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=oSDCqezK;
-	spf=pass (imf10.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=wu2EFQEi;
 	dmarc=pass (policy=reject) header.from=zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784487324;
-	b=0vVfLvMaztsjjE2yz5CR4cqMrvi5YAOatcz+igYf5ZZlWfkvZpTN49AyF2yYWdW9I3f8VY
-	CohGBtecotg5Z7vkfH8/aetOUwE2klhjVPi3arMYZYZCFxIPo75PI28IGML8bEKt1yNeK3
-	wA6dVkjab+56973Ug+SqiNdYxvGr5xQ=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=oSDCqezK;
-	spf=pass (imf10.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in;
+	spf=pass (imf31.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
 	arc=pass ("zohomail.in:s=zohoarc:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1784487324;
@@ -46,30 +35,41 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XAzpNKpcNCtyrAHnItiN1RWU6bwJlMRMpPXgZD5jnVo=;
-	b=YTF06fr8Mz+D9r2/qYfvsC1XHWw9qS/xg1nkJuMwpkCamrVTNBg5H1AyMMfIkloQ6ilcY2
-	sOIjgR63Gw9kvnRXIGWCQUqVmSX/dTfOnoRcu72dF/W5XenQ2PDetMiP5wOVdHRVbMSNHE
-	VkKZqz/ps05y+f6bmjAyykXHH4y8Yu0=
-ARC-Seal: i=1; a=rsa-sha256; t=1784487289; cv=none; 
+	bh=xzuHmVh+q9OHnLUm7h9D4LXtKeaYnS+MienvvkAwdTQ=;
+	b=3EmILF67+n2lvGnZ6DEEDBZvx41kvGB6x1ePIh/kBTfqaq+G2oGdbQcFMlpYDtTt8uESZU
+	xmSj/4aJbVyCAwJ4ZkdZw3gawqJp1K1Ax3Uy0J3OHE0w0tsyZYeYa0MgTlOFZgh8lbPT91
+	+miLd9d5Q06PuqXYnDSP4Zb12BcLCC0=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=wu2EFQEi;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	spf=pass (imf31.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784487324;
+	b=8OpIiwnNQ0FYplcZOnLmRQco+WfaaIWfPyQ7Nya71eMLpwCPKJKt++IZtfKBFpejDUjXTC
+	Lg/EAvLYrDudnm+d/XZeyfI0rbiPus3NHFhFmWGyVO7NMZwPkXzaCn/6V/jP6ni3nt1OCn
+	NmINxNvE65J83xfs/BJGF5b1YwGuUY0=
+ARC-Seal: i=1; a=rsa-sha256; t=1784487282; cv=none; 
 	d=zohomail.in; s=zohoarc; 
-	b=McJqNokg8RJLtID0rDpHo9dZHGTcCImBNyjNUYGUNKx7Hy6zqpz3HtC81y5rc0sfXObKBS4Y+e3lTVp572kZ92nL9WRYPvz//dOHQDIeg+gxOl+WN+PHsSnsz52S5WD4bEC9Z53LbdghM0M9Ze7kQ74LRQEBinvoaEWzn3KnLUU=
+	b=dLhc3+CEGqis5T4rqStjmYcL0cArClyv4uSj5dmJskdIDaS2dkoOkbI5gnFiAaPqppOKOGqybHO6sWjHZchibtxWosF6Siu60p3ZpRkEwteIe9BSQsiJyxpZ/5v9WKPW9VYmdgw0Y62QB/wlXHoOW6YxALeAcU0hIL4sMZbd4JM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1784487289; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=XAzpNKpcNCtyrAHnItiN1RWU6bwJlMRMpPXgZD5jnVo=; 
-	b=Cj+k8yjMZlLPaVGvfAwb5N7TWBlR2uu0H1Y0tQi/gckdCPxFbiix3Cp0dsDTOk46SEZrU85QatitPy3wLhs10Y95LVTBNhmKcpn50pPxVFVfZJZJSJtjy7hcCFYBaZdsTEQt2QM4cCTszi4dKGTXQw5qoLu+mtPUxiEs+BoIrF4=
+	t=1784487282; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xzuHmVh+q9OHnLUm7h9D4LXtKeaYnS+MienvvkAwdTQ=; 
+	b=WvfxIsfbFLFFfwp8Ho0Bg96cN63/PAHN/OsqkROcPTKeEL3ujIsYv/gt9Z1PPA5OnyPUbKHdYWLVK5cukKG9kY7HSOLLm1k1dRFe8WRtGMiFpab+Evceij4BJ6ZhWDCHswk3N28rgqKON34CIKlZdsoXVyg0lUOxOa+v8niJUo8=
 ARC-Authentication-Results: i=1; mx.zohomail.in;
 	dkim=pass  header.i=zohomail.in;
 	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
 	dmarc=pass header.from=<adi.sharma@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784487289;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784487282;
 	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=XAzpNKpcNCtyrAHnItiN1RWU6bwJlMRMpPXgZD5jnVo=;
-	b=oSDCqezKKsi/qJYD/MBrcfiWX378g9IN6DcHLRiXs7+RN7K7Vq+gHxkoR4s4DpBV
-	L2JKMZvU1ciBmMO3VARq/OG04R6t+GbSS0nZ1/VSTzyqv/lZKKlM6vvNI9KpBKFEJV8
-	3guQw0Ax2RZ/tTah8w+9X8Z8wsJJ+ouXl2Xy2unc=
-Received: by mx.zoho.in with SMTPS id 178448728809969.40393444362564;
-	Mon, 20 Jul 2026 00:24:48 +0530 (IST)
+	bh=xzuHmVh+q9OHnLUm7h9D4LXtKeaYnS+MienvvkAwdTQ=;
+	b=wu2EFQEihaI2ze8F242df+yReXM4jf25ryHY4KKKanZgjoR/bZpD3mWFA8kfKM0f
+	xR3+l3h/x55psY5nD93Hy8+QyEfe7mO4ZGfhk6o+TWuGgYFXpn8G0krpgYdiq7qy00E
+	UTwVTpV6p2zbO/LCM5UiqzVh8xk6KepwdUX3yG3k=
+Received: by mx.zoho.in with SMTPS id 1784487280644201.2764833788417;
+	Mon, 20 Jul 2026 00:24:40 +0530 (IST)
 From: Aditya Sharma <adi.sharma@zohomail.in>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -102,9 +102,9 @@ Cc: David Rientjes <rientjes@google.com>,
 	linux-kernel@vger.kernel.org,
 	imbrenda@linux.ibm.com,
 	Aditya Sharma <adi.sharma@zohomail.in>
-Subject: [RFC PATCH 7/7] exit: route exit_mm()'s final mmput() through mmput_exit()
-Date: Mon, 20 Jul 2026 00:24:09 +0530
-Message-Id: <20260719185409.409685-8-adi.sharma@zohomail.in>
+Subject: [RFC PATCH 2/7] mm: dispatch __mmput() to an mm_reaper kthread via llist
+Date: Mon, 20 Jul 2026 00:24:04 +0530
+Message-Id: <20260719185409.409685-3-adi.sharma@zohomail.in>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260719185409.409685-1-adi.sharma@zohomail.in>
 References: <20260719185409.409685-1-adi.sharma@zohomail.in>
@@ -112,13 +112,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7C496C0009
-X-Stat-Signature: omcaq9mnuhk9uqa74kzbp1w94w33fagn
-X-HE-Tag: 1784487323-974782
-X-HE-Meta: U2FsdGVkX18OlxwEfBdSCL+LC8Dhc5JvhNN6dGyZlpHyPa8t1eKXJQ7nqKDaj8wVoYcBp+UkaST/xz8j3IXQtLWWAMKrYK6kYEnsF8a7fkDaDceqVo9zscLufDAstiK453+4PisldnhrBKB+6KcqE2pv1828O8qiXPswfl9Ud33gyUNiZ6WTi0GyjrR3RJmbBKfF1oRT7lczpD+VoHq99jGURLJ6uU7BHpaFSOx0/40Bz1EfS9OsBtupE2n/cun76AjLzV1kSLrovdOF7uf9rv98OGdCPqZCeQ9WZJw7w6pbUer/StB56OHSJF+up3yyAfoK3Hztswp0J8wj1czjTHC2lI56JKemaKeJBZEYCcBNmtYfpTsR8sAALZiHZxpCRzBIZUzTDVhSDp2GU2ZYkTCAKgJAbQWr17w3A4pKizkwKouViEOWvUMtT9WmK2oo9H8SUc9SkU1mXAWG/pAj/V2GvBU7tppGq1UX5fN2bxu6fD8Fhr7sTkH4cp6SiIrnT2fojKiUznAc9XU3TtX9HQT6UE0Y9lqh6tY+kOWWuGeeH6sg1+YdXHnw1nIauNh+DjH9uUYze384A0dTsgYBYX5RIvThxxIWMrAg6erhHzUAEZGhufm6bW5QQ/dBIVRKPnEdYuDLkhpuOSYX/jGvdvqQY+jVEoi6jFWXNgAsPMrH5UryDKu2E/SQNBOcgeceG5zg1VB7axouEIcwEBGIr1Ttv2KihHRckMwDmChTY7fAuWpmcF26sifW8SyjOR62NngEKo7NcxKw/ZUYyxJ8f+EXC5vfkXgs2jTZcaZQnu7q8m77mVH4zgFs7xI5TdIZYlTNe8Z5Pe090M3SN5at7rkeec4agvsHEsS4NMVc1fKk3ZV5gZ5IF55VNhH9BmAROoaWpGZ9/87MEVq542PE8Mg5QBfVEIvRfzikYP9uCYc3IIIzNIPmfYc+mY3VF4EPmRJsFO+2Iyf6WGisLiT
- x7z16ELA
- mTYtRza3tkqMeJfEG2MJoWX1Ol+RSosBh1iO4s0WmXDVFhRLhd3RyziZvdvHkFQJZsRLaKFvh0Fi4V1Y92tCzTCo+n1f6X21GXWj7Rh0309pYldrWhH63VKrQY1/iIrE9B8v3FSeKk0rXeRA9FlITeiXvUcTiqzjEjJ5QC5scKN6MSi8rdJn3irK6tyI3N/E7JbVAmlMFjISkDUXbxS04S9R/ZB6f62KplOLlE11mRhzWfHno+4b8a652UvCs4oyusMptuUO6uBDFStqwvIbZ+LKAaf2sd8hLtI6ibA/WBiJ1osGb/lCgjavWwPYWUxy4uBOkM8Nn7AUFkPBk+id2e510eQOIkgCrGPIs5VA0WwPhl3Y=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8426020008
+X-Stat-Signature: 55e4uzc8au7b5iaxe43g1r4pwemugyeg
+X-HE-Tag: 1784487323-704712
+X-HE-Meta: U2FsdGVkX18ai6j2Nb9FuIiCbBHMGpjDG/UZMARSFf1jhvv7snJfJMZxk/DrWfjdcPpwn/MeilOCKPby+smJW6OSuLG0aZmTgHERIq1IDJ9pexnDCdBmFN3Oz9rxVId8KOdnCuvR3OYGhHJrwIlxb7xAIBdcbXZ5ufdaYC3GdTiwnGFQUIV0ehWMkiqv1EO+sGksqi2VZ7Nr4mJr9qazr9eOyFziR4JC9uV72LrZ2JSp08UL3O+AO+1wBcsfNol0MPxQmFuLmA9FoqxhQ/wDhdRdvS+Djddl1jl2n79FX658YaDv89rm8DrAZJSa39InRKKO6mFKLTovw2+qhZiCVNw2YbNPYEmEkHyU6Qjdlk96hTaTB/6XqQA3n2BBwCOVxq11vUy/W3ZaGfiSr/g/cRqJZ64B/3GBb2R49KjXTidzQSbW24kQ1+5rLhh76yh5qZGaysmtkn+z5STPg7CF++QW7bOd8S5gUqf+vHdL0xioS4sIZjghrQ8qyLX9HFEu72e7IG92wNUKkLUSJHnz08/bu/khKGmuV+8nkRH1xz/CEekdafpP0piBHCww++Am/x3BRDxOknSraytsRXNGMwTqOWDbi3IpTdXHbGcg3vtj0PFujDbbVbUwwiOtZj9O8u5WCic4yASyp/4MQVtK3qd7zgSFf0zNW9hD9r+LfO8c0pYDHsAzlnpzz+w/oW+aw3cQABm+OO18l7vQCUGi7uGrwM75CWPZj/+4e5b/gmuN8Kb88p2CKPax324vAKjYJvi+6fRF9XC37KIkcm8xz8XgOHRIzeJjhCRee2QDD800bJT7XO9AmcWJwPNc7EX5efZrPwHYVjnS0XTbD2UuEa9/NwsxdOSFror5mW+W5rQqKyf8kvR7icQA2hroFY0C+lvl++sEl8E1eQCMXdMii+/fFnEq8qkBU7AWKBNj4QYHwUwKNO9VA1Ux+FkWulqcqYFZVL7KDylbGrRcpkN
+ ZTiDesLb
+ jNAPZ0rATGxRPWOgp+tLY8YSLq+n1KEozJ01kn0EJLtHEg3qrEaqGPmm5Ayk6iqFDsE+xw0qzYuwFsc7bGgKU7EqofrIMF71SW9JWPCAUiLthktB3GfP5g7X15gBCrIxKIMrbvo7k5Dp0PgAtVpdGYTXlpgVSoZYSWgOHNbAwfQjCzikBdKcW7juNibavB6JBAcw/HOyEM23D6vYfYDewWijJEfnN/p4oX+h8HLePzH3RXWK6QLrzMdFvd54ud6w8lsuLCaiG1+z5hmGZQxgQf10x11g17j5aCnuP8sCPIbYvZWneEGWh+1I/n+vYSapQ3n3TrzLJBV7JTilMCOE7lHfWgSR7iLz3j5i139WSKzO4CPM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,83 +126,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This makes the series operative. So far, nothing called mmput_exit().
-Switch exit_mm() from mmput() to mmput_exit(), so the exiting task's final
-reference drop can defer the address-space teardown to mm_reaper
-instead of running exit_mmap() on the exiting CPU.
+Introduce a single dedicated, freezable, sleepable kthread (mm_reaper)
+modeled on oom_reaper, and the machinery to route the deferrable unit of
+teardown -- __mmput() -- to it through a lock-free llist plus waitqueue.
+mmput_exit() does llist_add() and wakes the kthread, which drains with
+llist_del_all() and runs __mmput() per entry with cond_resched(). The
+drain loop also calls try_to_freeze() after each entry, so a freeze
+request is honoured mid-batch rather than only at the wait point.
 
-Only the exit path is routed. Every other mmput() caller (get_task_mm()
-users like ptrace and /proc, kthread_unuse_mm(), etc.) still tears down
-inline, and if one of those ends up holding the actual last reference,
-behavior is unchanged -- the deferral applies only when the exiting
-task's own drop is the final one.
+Nothing calls mmput_exit() yet: exit_mm() is not routed to it, and there
+is no eligibility check or gate, so it would queue every final-drop mm
+unconditionally if invoked. This changes no behavior -- the function is
+built but unreferenced, the kthread receives no work, and __mmput() runs
+inline on the exiting CPU exactly as today. The exit_mm() hook and the
+eligibility/gating policy follow in later patches.
 
-The deferral triggers only when all of the following hold, and falls
-back to inline __mmput() otherwise:
+llist (rather than oom_reaper's spinlock+list) avoids a global lock on
+the exit path under many-core parallel exits. llist_for_each_entry_safe()
+caches the next pointer before __mmput(), so iteration is safe even when
+the final mmdrop() inside __mmput() frees mm.
 
-- vm.async_mm_teardown=1 (static key, default off)
-- RSS >= vm.async_mm_teardown_thresh_pages (default 64MB)
-- the mm is not an OOM target (MMF_OOM_TARGETED) and has not already
-been reaped (MMF_OOM_SKIP)
-- charging the RSS to the pending budget stays under
-vm.async_mm_teardown_max_pending_pages
+Lifetime: the mm_count reference that mm_users>0 stands for is released
+only by that final mmdrop() inside __mmput(). Deferring __mmput() keeps
+the reference held, so the mm_struct and its embedded async_reap_node
+stay alive until the kthread runs. No extra mmgrab() is needed, for the
+same reason mmput_async() needs none.
 
-Results, bare metal, 32 CPUs / 32GB RAM (31 GiB usable), single
-NUMA node, performance governor, medians of 10 reps, THP off unless noted,
-vm.async_mm_teardown_max_pending_pages raised to 3/4 of RAM for the
-async runs (the RAM/4 default would reject a single 16GB mm on this
-box; see the cover letter's open question on the cap default):
-
-reap latency (SIGKILL -> waitpid() returns), async off -> on:
-1GB    18.01 ms  ->  0.14 ms
-4GB    73.71 ms  ->  0.14 ms
-16GB  282.16 ms  ->  0.15 ms
-16GB   27.68 ms  ->  0.13 ms   (THP on)
-
-voluntary exit (_exit() -> reap) matches within noise:
-16GB  271.27 ms  ->  0.12 ms
-
-redis-server with a 16GB populated dataset (real heap, VmRSS ~16.2GB):
-      292.97 ms  ->  0.24 ms
-
-32 simultaneous 0.5GB exits, tail until all reaped:
-      157.42 ms  ->  0.32 ms
-
-below-threshold 30MB process with the feature enabled:
-        0.56 ms  ->  0.60 ms   (sync path, within noise)
-
-A CONFIG_ASYNC_MM_TEARDOWN=n build of the same tree reproduces the
-async-off column within noise (18.01 vs 18.01 ms at 1GB, 282.14 vs
-282.16 ms at 16GB), so the config itself costs nothing when dark.
-
-The work is moved, not eliminated: with async on, the 16GB region is
-fully back in the buddy allocator ~240 ms after the kill (vs ~283 ms
-when torn down inline), and the reaper spends ~1.18x the inline CPU on
-the same teardowns (nice-19 kthread, cache-cold on another CPU). The
-cover letter carries the full matrix: freeing-latency checks,
-backpressure fallback, OOM-killer interaction (an OOM victim is never
-queued, tracepoint-verified, including the CLONE_VM-sharer case),
-tmpfs inode eviction in reaper context, sysctl toggling under load,
-and a freezer cycle with a queued backlog.
+The kthread is started at subsys_initcall and set to nice 19 to minimize
+competition with other EEVDF tasks. Its affinity is expressed as a
+preference via kthread_affine_preferred() over the HK_TYPE_KTHREAD
+housekeeping mask, so it keeps off isolcpus= and cpuset-isolated CPUs
+without the hard binding kthread_bind_mask() would impose --
+PF_NO_SETAFFINITY would otherwise leave admins unable to re-affine it.
 
 Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in>
 ---
- kernel/exit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/fork.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 1056422bc..6f97d204f 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -607,7 +607,7 @@ static void exit_mm(void)
- 	task_unlock(current);
- 	mmap_read_unlock(mm);
- 	mm_update_next_owner(mm);
--	mmput(mm);
-+	mmput_exit(mm);
- 	if (test_thread_flag(TIF_MEMDIE))
- 		exit_oom_victim();
+diff --git a/kernel/fork.c b/kernel/fork.c
+index f0e2e131a..884e4e767 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -112,6 +112,7 @@
+ #include <linux/unwind_deferred.h>
+ #include <linux/pgalloc.h>
+ #include <linux/uaccess.h>
++#include <linux/sched/isolation.h>
+ 
+ #include <asm/mmu_context.h>
+ #include <asm/cacheflush.h>
+@@ -3407,3 +3408,56 @@ static int __init init_fork_sysctl(void)
  }
+ 
+ subsys_initcall(init_fork_sysctl);
++
++#ifdef CONFIG_ASYNC_MM_TEARDOWN
++static LLIST_HEAD(mm_reaper_list);
++static DECLARE_WAIT_QUEUE_HEAD(mm_reaper_wait);
++
++static void async_mm_teardown_queue(struct mm_struct *mm)
++{
++	if (llist_add(&mm->async_reap_node, &mm_reaper_list))
++		wake_up(&mm_reaper_wait);
++}
++
++static int mm_reaper(void *unused)
++{
++	set_freezable();
++	while (true) {
++		struct llist_node *batch;
++		struct mm_struct *mm, *n;
++
++		wait_event_freezable(mm_reaper_wait, !llist_empty(&mm_reaper_list));
++		batch = llist_del_all(&mm_reaper_list);
++		llist_for_each_entry_safe(mm, n, batch, async_reap_node) {
++			__mmput(mm); /* may free mm via mmdrop */
++			cond_resched();
++			try_to_freeze();
++		}
++	}
++	return 0;
++}
++
++void mmput_exit(struct mm_struct *mm)
++{
++	might_sleep();
++	if (!atomic_dec_and_test(&mm->mm_users))
++		return;
++	async_mm_teardown_queue(mm);
++}
++
++static int __init mm_reaper_init(void)
++{
++	struct task_struct *th;
++
++	th = kthread_create(mm_reaper, NULL, "mm_reaper");
++	if (IS_ERR(th)) {
++		pr_err("mm_reaper: failed to start kthread: %ld\n", PTR_ERR(th));
++		return PTR_ERR(th);
++	}
++	set_user_nice(th, 19); /* minimize competition with other fair class tasks */
++	kthread_affine_preferred(th, housekeeping_cpumask(HK_TYPE_KTHREAD));
++	wake_up_process(th);
++	return 0;
++}
++subsys_initcall(mm_reaper_init);
++#endif
 -- 
 2.34.1
 
