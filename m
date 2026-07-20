@@ -4,145 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A86C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 22:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFE1C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 23:08:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9B156B0093; Mon, 20 Jul 2026 18:44:37 -0400 (EDT)
+	id 268786B007B; Mon, 20 Jul 2026 19:08:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C592A6B0095; Mon, 20 Jul 2026 18:44:37 -0400 (EDT)
+	id 218916B008A; Mon, 20 Jul 2026 19:08:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B671E6B0096; Mon, 20 Jul 2026 18:44:37 -0400 (EDT)
+	id 0E33D6B008C; Mon, 20 Jul 2026 19:08:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 82E176B0093
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:44:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A51212031D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:44:37 +0000 (UTC)
-X-FDA: 85010635794.29.CB95BDD
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 24168180003
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:44:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CBC146B007B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:08:18 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DBED1A0332
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 23:08:18 +0000 (UTC)
+X-FDA: 85010695476.28.DC2CC0F
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5F94F180005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 23:08:16 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="gz/hD4Xb";
-	spf=pass (imf06.hostedemail.com: domain of sagis@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=sagis@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	dkim=pass header.d=google.com header.s=20251104 header.b=fDWAOExN;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784588896;
+	b=IGVaeCNWIaVhf1pXydKI5LgAxUO8B2BqKIYUYMyreYapYJ834k06IJoJVuYx/7U0SXttef
+	MyZCd0Cy7VF8mV4iOKayn4rDCDs+Y6Xn00K1Slw65stQlI8jqPHMxo2C7gazYTHyNZF6yo
+	+AZIjwWKdqT6MSdXJ0GV9XsIdMoIULc=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fDWAOExN;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784587475;
+	s=arc-20220608; t=1784588896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GHR4CbJ8loVD9XIgadhowB6w5bW/rYJvdw1lbbqKWNI=;
-	b=4ZkSR1lwkPDY2y0wFNq8i6aQ6xK3j2AJfia9/m5EL32TrGt5/HBVbDZTkWBihg0OgnmARh
-	BuMfnfq4qTTut8BafuMNWM3fxtDGfdJ4gzl3J/1FomgYhpNQcjj4w/lpgtdl+1IHM9Jyho
-	IGiwO1hb4dVJmq8D2rTUBUmpWF6O1f4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784587475;
-	b=I00YmVnneCuP+BJX0GHrHSyrHI+WVXfWmDgagtulS5E1C6uwfCb1UKfXdmKTUOZQRaYk5W
-	efrl5gPiFbndEc9fiB3bqy24sSJcuolEXZrN09OTctiWlUNElXfAkkN6NLBMC+UFGhS92Y
-	Z0xw0sZxvbsQCFjcakGPrfuN9SGGCJU=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="gz/hD4Xb";
-	spf=pass (imf06.hostedemail.com: domain of sagis@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=sagis@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c10ed63c0so1053821cf.1
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:44:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784587474; cv=none;
+	bh=mSz2hdMIpgZEgySIqZijvekD49+PJVVZ/pNOTGmHIyg=;
+	b=mnbZ4LcWVhFBnzXuVL+A9lismVyb5vc+5A3DwQfywePGjXoKcsrv/vSd5TgD0qwm6zzMvm
+	6xjqRTjwIyz4+FgxkyRtoduaE++jDy+agp6qh/GNEFm2SmpaX0uTzLmdG40XDx0OHDnw8r
+	U7JbMfNeeDIfNUltPCjcVR8hP9waqAg=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-385ea3ce80dso10771850a91.2
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:08:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784588895; cv=none;
         d=google.com; s=arc-20260327;
-        b=IhFc08ll3H8x4VvLPEQrXgidFB+Wm9rFG7+L8mAV1YCUqTiPfzdgg+XY6KsD0rJkLM
-         2AJB8zuOKMCFdbm3X5hySUCX18Ukwf77io4FcdQwW3fmaWIcHa7FQu7qpEDYzFHu8X2J
-         T5noivsGTgFBEFtw4KoXLM5UmE8kvpFkwociuEFP+juZPbmKt8kJwZ+bh5Sb4U5d4bS4
-         QtCzQjEIxyiV5dKo9L9uyhZ26JLM8tCZqHeR9JddjrjtMoWQA3Vywy2ejYVK2clE3L7e
-         kDYxTVcqCxW6MLgObyvTQSdclgCYSiQcIBhkgj71aHzyP/WGd40w9OFztfFPWQHGNd3W
-         u/4w==
+        b=sqINPsKyMTjMfb8R7Sje3OX1l/Nr+UDDokf5hHlf/7ayZ7vfK7Z8AtPP8/WNZiOzyn
+         y4PiJUCYLL5caUYAgR3L17zim36AXabywfO8Vr2Wz+wYOUaXzbnoWYrD7EXTtfkGqAgg
+         glhfo6heSdBrQ0Vg/DHRuH2jPxazpgTUxOQpuQ9B7ReZZKrlPr1ivmlH4h1WNRl1Nzzp
+         /ys17H3a332JstXqhNNnAvV1d1tvAnpgCRH7P3zMwN6R+viXNnr67EFQsq1wpwHgQsVS
+         Gkc3zuGZm2LhrixThry50WbagsTG/JfmEIqkRRSdgAzywQ6diP2c14wdkgJPU1etdwia
+         4x/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GHR4CbJ8loVD9XIgadhowB6w5bW/rYJvdw1lbbqKWNI=;
-        fh=A1OPsMpTf5PNX0BmoNWthwePBXrxGUC1+iS2ZvXNwrM=;
-        b=UA84O3P59/0/4WZQwvJ1Ix4oNqvwWoB0eloQ5kPPro67CYULvOrJT3wCFEa8Z22MY1
-         a+zEuW7faeHyiut85UxN/i4tl8lynbFHQXBwQmuTawNukvsv8+7T2sqnRXpNgzVnH9OF
-         rFR8sLyVdbdLGqnJwPiXROzf8qsn6CMLVceTw3bHs5zg5f3y14bCOQmkboRLiMiYxF0j
-         kFbd2kTVYkgeltMwUnV1/9mVwSQqO5uN+zh5evMKkUwPS0r33C6h1S8lnkg+ijgpBYKd
-         H1wZahmN0vbSzjbnQ2xOVhw5ts7a3XRcTQ3jnJV4MU+qPJJin/lSF5m3Eo/6xY46bd3D
-         h+oQ==;
+        bh=mSz2hdMIpgZEgySIqZijvekD49+PJVVZ/pNOTGmHIyg=;
+        fh=AoyYnkIBqiuuSm8GlMdCwMHUVTWm5MDHFXyi2FRuXgY=;
+        b=Frff+UFEhtUWE+IB8LGJNvDOphU0iZCGPmUXLm04BT+ZHRDAStk1iPQho/EBqkj20q
+         j7wfo7dpRP6j/I5H581EpDssnqngkyXy0kyZa9RmNlOUTcKXuaO7ikrHU1yJJ4ExLUBk
+         OEjAaKy5rQ0goKN+eEvc7YX7nFSoU2JUAn8XDUv5jupTM7z9RqnL8zxwUkTDm8cX6KFg
+         jNwD4IndY2G4nG2oBzZZaL0tqgSlMDLrujoBiuxVN+kCnk/qG6zT1ShacnrqCrLA2woK
+         N5Hx1u5kzh6GqqI64VJwtXHAMIuMR68p1OfImKrUlER9DOLUskb0AJ8ZBFJoe3tlGqFL
+         K+qw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784587474; x=1785192274; darn=kvack.org;
+        d=google.com; s=20251104; t=1784588895; x=1785193695; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GHR4CbJ8loVD9XIgadhowB6w5bW/rYJvdw1lbbqKWNI=;
-        b=gz/hD4XbhOybSmvd203r8ep5cftw14tt+CgyImzPU0h1TwbSfHeXa3X0GEwFa0BP3Q
-         AzRG1HMGqMkKkOo3xoMaAypm4lotW8vXhMFyBGG3LpviIHZszyIoUb7he49dTnboisbx
-         gIRNcfjP5YIvCy+eVDM9GJW21Tjk4dOUVeg13Fs2iibQb1lzFyO8Q217psPFuB5wVAfM
-         bSc2idjJ0ggfH9CXW2oNNZG0xEpuV1koUQBx9sB/d77dK3ZurFbtIAqycct1JllY8d6B
-         5uOOLMpIj3Bn0E22EIozgFGA4NKddVvnbfETxsSC4w/bIH4kHBPAP8GmE0TDJNyFCo2s
-         fJ/Q==
+        bh=mSz2hdMIpgZEgySIqZijvekD49+PJVVZ/pNOTGmHIyg=;
+        b=fDWAOExNF9PrTBBYmFuQeaB7ZEncOPcYeLCGvge6P2wExrs06jh1ku4QQxV4kEJcLR
+         5y+hbLPol+2bQop3BZAgV2PvkU93HO7rLke3o1pnqNtPA2o2TFyACXwHBKP7D51U2NFx
+         8uWtHfWrPda01nIdEAExtHWN2HuT88vNBnh9yYFQHE4T9III/ddeELGbFvTQrSiokHqx
+         2HFct5U6d56VWadZ497faMBol/LwHfFvHUOFm9tsgSfYsEO1fls5d5V+EjH8s8tGEoqc
+         CbXv+xy/smFkNyfDsxVnXWesvwK6BSpJ0LNRrW5l/HpkPLLhljP6n4VsRcpoRGAWogQt
+         N7mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784587474; x=1785192274;
+        d=1e100.net; s=20251104; t=1784588895; x=1785193695;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GHR4CbJ8loVD9XIgadhowB6w5bW/rYJvdw1lbbqKWNI=;
-        b=N03BQOMCIitc5du7+MkoOaD3Zl597S4Or+pNhY/BroEhnncXDvBOsrBxY1zW4qGeXs
-         tc0kSa2sEwclASdMWGONS8TS8d25iJmGUf7mcG0HIdm9dntBt+wi4qCbqDR+LPcPOFIx
-         Ggiv2dD8mCVlwYPRjKxg/MMHdxS7xaRORvHTQpYvp3hh+R34IKu4YQCgTFZ940Xqa1t2
-         GIlSXjk74xGCcRjIVbvJID1anUgi6QsgLCrWRhc1AuDFvWOoy2ohsFIApYa5iMxEIHEh
-         uIysilpxS5b4D8zjtAELuv55yY3WzmFLbCCAMfNkBArZZoTwf8+I34nwiQvdhJjx2H+y
-         OfTA==
-X-Forwarded-Encrypted: i=1; AHgh+RpMuavzikzfrhzTGhVlnZdcgUTHWPv68I5k2/H+V6RvA82iGojcM7geqgE8THLcZ2XycDF7967bGQ==@kvack.org
-X-Gm-Message-State: AOJu0YwT8Rj368qJxWGo6nBl/Ne4F2aN5ZT7yH8vN3dtXNqxaTcdYQGc
-	8vrOl1VT73vTu5kiFgitNKXN0yqBcTtLYMP8ASOtjKNKlHulApVOnZaEC1zv8ikr6tHahgF7lGS
-	vsxbz3WE4GIcV5YmRlCdjbpmoHhYlVcdYyhNntptH
-X-Gm-Gg: AfdE7cneRh+8X4E4YkJogmk4FFjQrskP9m18Th29Yj5dY0YxdTjFoc/gr2483LFe/Y7
-	eVB0pOg5fjzDMlxm9rzteWOBLT6DwJKBOG5hEC1whNKNl6BTbPX0++jNQbUA6+qVr/hbLrnFvfO
-	4MgXAia/9Mw/K5rKObroFIviLR0L3i33Xsa4iFrnXcHJE13HV+GhmBodi7PA/Sk1XRE1AbYA6Kc
-	IQaKhjpqQHAOwHO2kpHCeOc6SR/C59btpEXM2AZbHZGNo4LB4d0+CZuLhqezobHmd3wQPwLUu8V
-	xg+klaQMkaRJAilE+K4=
-X-Received: by 2002:a05:622a:134c:b0:510:f9b:fb5f with SMTP id
- d75a77b69052e-52601ff8d4amr6884401cf.16.1784587473744; Mon, 20 Jul 2026
- 15:44:33 -0700 (PDT)
+        bh=mSz2hdMIpgZEgySIqZijvekD49+PJVVZ/pNOTGmHIyg=;
+        b=TE89XTHIq306JiQ/N6fG4CVig29cMZYUACkbIHGGgaXnsINSRfHxw1ps68p0EsHFZS
+         8WjMRdOO7rAKZKrIMbdAI97oHMnwxOR70yaBKGzQri5pglBCaTWN1g1R0Ywxb6Ka90Du
+         EWAfm6AeH7Kdo+jBG/sqOyL3I1BLQkSNdftZmYEKW7iMwW+ZCuFPizibtoWC39VfzAx6
+         I72x4O6Ws/5JMP7mGmhCZGQ5NmdmAVl4/slApDO25C3pF+3i+TJFVuELhrO1Vm3FKTql
+         8rAvZsrB9+J6ijdBvv7Idd588ZtGHcgWBY9DgyY6UGHplqGuMnCwGnTYeQBeBs45NaFo
+         d5Jw==
+X-Forwarded-Encrypted: i=1; AHgh+RpQRxZVCVIvfjD/MPlXcc8e0RzDdxowlJGtvivCqZSkhqKM1NM6D3zuhqfgWPiqF4PA+oKRiAH2JA==@kvack.org
+X-Gm-Message-State: AOJu0Yxc5NUK/X5MjgS0b4GzoLz6IhlDV83dN/CdCJWL22TrwBDTOfbm
+	hNvvVktIGdiUVaGA6QC244CayP/zoMLn3oqxGMEG7bHtjoBqVZ4Lar2vxO0IyYoOmZyEtarrPYL
+	+6vTdD+FRaY2bfWva5VlPBGziP73AFTiWFun9Cuvk
+X-Gm-Gg: AR+sD126mx8cFsmv4d2aie45w+Le9Ps0ck5PCo0tSc0Vo+2X/IhoiJmwR+EPrSRVc8f
+	tMPuzqXvUNVlzQ99muQS8VAQkF9iF0Mi/02l6kxQBpJZCDGHrI2OAxbLuis2U0ET6SNMUkqK69q
+	i3icSC7fOsGN7RkU3RtEnZo7sK+klfa1m4BpAGNK29Hh1ZZbv1uLPwYREcW/FD24/77I00z/oVX
+	tfYR9WzawW8YPJCJkSltwGTJGyb7LUgD+lZzy1zCFolyj/Imxnn0wO20UIH9A==
+X-Received: by 2002:a17:90b:2703:b0:37f:9cdf:f0ab with SMTP id
+ 98e67ed59e1d1-38e4b53898fmr16254011a91.26.1784588894581; Mon, 20 Jul 2026
+ 16:08:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAAhR5DGpL6_ViMwQ0nKzTgOoziE_oq8JofpO-VtHBXK37uO-FA@mail.gmail.com>
- <aljw6vDaeEdhzZdy@google.com>
-In-Reply-To: <aljw6vDaeEdhzZdy@google.com>
-From: Sagi Shahar <sagis@google.com>
-Date: Mon, 20 Jul 2026 17:44:22 -0500
-X-Gm-Features: AUfX_myYvC4BfYam-0hvA_2hmsHjyNwwCFWWIdoxNvvrsMfeD0EQ_AZrXlkgCvo
-Message-ID: <CAAhR5DHNdoB7+8beLHHFOT90UrHWF3FTwMs44AwQH+-R+u=w6g@mail.gmail.com>
-Subject: Re: Preserving TDX module during kexec with live update
+References: <20260710212616.1351130-1-dmatlack@google.com> <20260710212616.1351130-4-dmatlack@google.com>
+ <178432481253.189683.3297727348836286619.b4-review@b4> <CALzav=e1Gcu-9TD7F--41cYqKBrStKOE4VqQ4K3PKdNuYnNmcQ@mail.gmail.com>
+ <178458744511.332171.13770778781241262180.b4-reply@b4>
+In-Reply-To: <178458744511.332171.13770778781241262180.b4-reply@b4>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 20 Jul 2026 16:07:47 -0700
+X-Gm-Features: AUfX_mw2b0MAZqdoOYi7muREPJHZr01uIkETTrQ-nKl4vTsYC1YtP48BRUt3g1Y
+Message-ID: <CALzav=fjTOnyg2++GFFe5B17rHqNCWW=afjsD0A=EEjycPW7Sg@mail.gmail.com>
+Subject: Re: [PATCH v7 03/12] PCI: liveupdate: Track incoming preserved PCI devices
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Alexander Graf <graf@amazon.com>, "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
-	Anthony Yznaga <anthony.yznaga@oracle.com>, Baolu Lu <baolu.lu@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, David Matlack <dmatlack@google.com>, 
-	"Heyne, Maximillian" <mheyne@amazon.de>, James Gowans <jgowans@amazon.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Praveen Kumar <kpraveen.lkml@gmail.com>, 
-	Vipin Sharma <vipinsh@google.com>, Vishal Annapurve <vannapurve@google.com>, 
-	"Woodhouse, David" <dwmw@amazon.co.uk>, Luca Boccassi <luca.boccassi@gmail.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Jork Loeser <jloeser@linux.microsoft.com>, 
-	Chenghao Duan <duanchenghao@kylinos.cn>, Zhu Yanjun <yanjun.zhu@linux.dev>, 
-	Sean Christopherson <seanjc@google.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>, linux-mm@kvack.org, 
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5F94F180005
+X-Stat-Signature: 5nwaytp77zu3ifb75tdnk1p3da6z4pd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 24168180003
-X-Stat-Signature: w6u1xocr8k81efgcf5f4q1goud7m47s7
-X-HE-Tag: 1784587474-692729
-X-HE-Meta: U2FsdGVkX1+MxAwAQuGk815Sw5cFpurgdpyUQfLFhjikOAdJNxM67bfc9Nh+KkU4+Xw/X0Vekcb1eOlyZ69PT2fwsgSiLBFReJCBTpB9OQhl+OUqgmM3h6uEnHqtV4URddhUQpfyjgE6KJRGvi890/U7kEPxFevafkfrllF47WXsCyZt97uPP5pU/gZ2f6vXREctuRPkOjjdpCsgOCjThFqhA14DTsfYzO4tXFPzfvFuY+gzl9tQD6kuDUIgkE1iq2XbxJl09Q8AWTmEuE+pErXKD/dXNV9EiJhRCOfKPjWCx8K7DdMNi+QUZ5xYinf96GfpjY06hJlDJ8pgV7fjtWWwmaS1nTtyU8eSj2h69OjPr60zgFkUuqywEJlUQD0C+T/dLADzlIE5prXkR3jXSEhnl3KWqhXYbBla++jogIkSbbpNFR1tnqMmkrJ89VvyatZJWCV04JHmA23uysDSoHHDdW/L4L3+MBdPlwgW9F+4V5Vtn3qEi4T86b4GLMvhNG3orH8/fLZCfSz6pLbsAL7LHc0BorZBMMKxjoxKh9IFPVCxMWchDlY711u7opmj/arSZUK3T0G/CZmiXswe8gXZbIRYn8HownIkiEWsrStZJ4iUboenLWCky+hImlhdVcE+kDHwsDfWpDqLkGm5cVj9TJY4/TlUovSqQcrAWxqG8A3qSxUrUgwBFPVQ/OGkD1KV5qYXy/hFI6GiY2nKynueiL88oDGdKYEfj00L8tL35XUt9G1Yb9liRWdmY5phQgjjpsaxa0/zogfy8ZeVQy5Fegfo1KYzyMf85+sJbp057EdfeMb2S9NnP+MgdFSqtwiMnS7kiZQrYe8r7jCCr3y+ltRTUuGtjvuZduVt8dgu2LRXEDRLS+o455QNBAtmr8GIuQdX6meiCIDC9HnWQscaOcLp4BmbBzNUSlzb35jZfrn5IiYLkkoU5azYjviWYtTonT+ppxNBbyn+Q3s
- 8vTsOWMl
- 9FFhVKHetiQc51mlPrIvn1DPy6b2fhj26Te3jH2BeHMN+btpmbJKGcGuoMWkuLHwluiQKKVfLEcDs5o1HhgFrJu7RglUpmKS3EO3BsYPLLd0+OMcn+yT9TXUeNyqfdWWXwFHpOG2cQXssanBydd0hCDUXFryGViwBIpFuJK+erFDdK+vphww7TiAx64v45Ow5qCnlk85GIC8mDsRKApOeAVu8OTC4Radpster9mtHvlW8FNLMKI6p2VUqmd365OzrNVcPwndm2SdvVzPbrysqEWp3fd7GUUe3RrHrEubIQW0riEe+TAukdJ6woqwfvPyQmojynXHlV6R/9uqkI9zrHGBYrF9G79wWmv620bHDqLyxW5s6B9lQaKQKYz/GEC4VdKpfXtNY8eKRz2xfEkUNYF6+LKNdouHJjKTg
+X-HE-Tag: 1784588896-828122
+X-HE-Meta: U2FsdGVkX1/tIkQqQAhq1a1ODdh02tJSDHIDd7ntWIRpW0aqnoI1DKdZWvwMTROzjTc1z5BJmpqK7l4chdLWXeJRthgpajMr9bnWscfzRTdAEaqdb7SLukLqwhWsPc1O6VtWLI+WCm40z5Q3/+wrwUmA+uhEQ6AsozETaa9qAyRjYGvY1TfZ5BNY8LCISefVJHy/Tlv5KCp2ODSuB8UBEmkTJ65h39UBL90Wdn/RiR6r1zWzuyt2NnDj2ejltn6aqGvnVM5/9O6PgSfuskKS8lqZRMNzSJHQel3cmiVGwrXbLZAx+m+3NxoLyNuQxZ8Y0j8poe5cN+q6Rua+VIX6UCrKwPf9wv7+QNSzN/arPSdUijQ7P62Ri/kO+C583xMGts2jaWA3DyjXh/FNE0VALsAIsiruSclp5lRFDnfL0Obpn6vgYb5qJQGsAOsuRi9P40avO3X3K2sHhMZZI0Ixdd33VXPrhC+Vdvb6X8qgAjYLo7FrbTwaMuQ2WVdQR3u2wtYCvBqo10Fi8DBeN4b7uOb8pYwOH1BZY5I8DhcxbhMN49MfSSJl451L5DYiRgeRd+o5a8Jq4JNzmnhzsKtPgBN6C/1AnWO4I59X7KtkU514fGi2zKejYqVVTJnYbVL4YpxaguXOOl3A77o3ozbb+mCVkqTaQT2KDkrlkK6dVJ34d1dXa6ARidyPnbAqhg6222vHLUkmUTHBZx7smJWFaKr4jvy9EqJgHxSsnejcqd2BH4W1t+Vum8BpZx29I4Tmfs7+6qoeg97yMXiekH6gCPOl8j9kxdjaFCGjd+baCwJQnWpTpd+WESRHzBB6z+HMAMaeFj9UJqcQfb+4cydBaYeRgsPrJtzFGx9CxudIiwP0J/m3Zm6L9Zm9p7JsgbteTH26dZcGg2/i5gu9kcoXeL4VRQuJG0e1E6lKM8dfTSwzLECyR8fJyAphXY1QUPPxLN+6KUoq0GM1UJ9mRyG
+ 0NrF1L3d
+ NVwMAIvRJP0kQRfvLXrQx0kGQCdOmUOZz0ueoaRjIVrBFblPiCqcDA/1XaykMiS7SdfHWQKI0lGCua4hID7BGYwVzqnuKvbflFzxnNMGSaBWznOpikdcvqg9OF57EO2udl2ATMPrCeG4p8Z2b+vFy9z2XdDXndFySzvHoiFoaxWnGyEzCI3yrOY5bnf82K2uVsssg54BSGKs3WZZNBkfk1xkGTYLZWHjqktbAh1H6Fd0LUonTTTqQ0HIWECH4YduND4hFCa4osDZUm054f5LoQOwYKAnvWhTARy+j1NMewIF1NJ+cAzWIVfldA76t8R5w3sXD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,69 +149,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 9:55=E2=80=AFAM Pasha Tatashin
+On Mon, Jul 20, 2026 at 3:44=E2=80=AFPM Pasha Tatashin
 <pasha.tatashin@soleen.com> wrote:
 >
-> On 07-15 18:28, Sagi Shahar wrote:
-> > Hi,
+> On 2026-07-20 14:54:51-07:00, David Matlack wrote:
+> > On Fri, Jul 17, 2026 at 2:47=E2=80=AFPM Pasha Tatashin
+> > <pasha.tatashin@soleen.com> wrote:
 > >
-> > I started looking into preserving the TDX module across live updates
-> > and I'm not sure what the best approach is. I tried looking into using
-> > flb as David M suggested but I don't think this approach works for the
-> > TDX module.
+> > > On Fri, 10 Jul 2026 21:26:06 +0000, David Matlack <dmatlack@google.co=
+m> wrote:
+> > >
+> > > I am confused by this. Each preserved PCI device must have an associa=
+ted
+> > > FD preserved with it via LUO. I.e., vfiofd would need to be preserved=
+. If
+> > > the vfiofd was not reclaimed, and finish is not possible, that vfiofd
+> > > would still be owned by LUO, and therefore PCI FLB refcount would sta=
+y
+> > > positive.
+> > >
+> > > However, if finish is possible, and this is the last vfiofd that is
+> > > finished, FLB will be freed as soon as the reference count reaches ze=
+ro,
+> > > which I would think is the expected behavior.
+> > >
+> > > What is the point of holding a reference here, instead of only for th=
+e
+> > > duration of FLB access, i.e. to make sure we are accessing a valid da=
+ta?
 > >
-> > Right now the way that TDX supports kexec is by disabling the TDX
-> > module on kexec and then reinitilizing it on the next boot [1]. This
-> > approach clears the TDX module state so any TDX VM from the source
-> > kernel won't be able to resume running on the destination kernel.
+> > The duration of the access is from here until pci_liveupdate_finish()
+> > because that it when the pointer (dev->liveupdate.incoming) is
+> > cleared. So that is why the PCI core holds the reference from here
+> > until pci_liveupdate_finish().
 > >
-> > In order to support live update while keeping the VMs alive we need to
-> > skip the TDH_SYS_DISABLE call and instead preserve pages used by the
-> > TDX module such as the TDMR pages from the source kernel.
+> > We could avoid this by deleteing dev->liveupdate.incoming and,
+> > instead, fetching the incoming FLB and doing the xarray lookup every
+> > atime the PCI core needs to access the device's incoming ser struct,
+> > but that would be inefficient.
 >
-> Agreed.
+> Thanks for the explanation. As I understand, the most straightforward
+> way to avoid holding the permanent reference is indeed to delete
+> dev->liveupdate.incoming entirely and perform an xarray lookup on every
+> access, like this:
 >
-> >
-> > From what I understand, using flb will tie the TDX module save/restore
-> > to the lifecycle of the VMs depending on it. This means the module
-> > will be restored too late during kernel boot, after the VMs are
-> > restored using the live update IOCTLs.
+> bool pci_liveupdate_is_incoming(struct pci_dev *dev)
+> {
+>         ...
+>         incoming =3D pci_liveupdate_flb_get_incoming();
+>         ...
+>         dev_ser =3D xa_load(&incoming->xa, key);
+>         ...
+>         pci_liveupdate_flb_put_incoming();
+>         return dev_ser && dev_ser->refcount > 0;
+> }
 >
-> That is not correct. FLBs specifically can be restored very early in
-> boot. We do that for HugeTLB preservation, for example.
+> However, as you note, this is inefficient because it affects every
+> single device and adds lookup overhead to every access (not sure about
+> the actual cost though, xarray access is pretty fast!).
 >
-> liveupdate_flb_get_incoming() does not require userspace to resume or
-> restore VMs. You can call it super early in boot to see if there is FLB
-> data present and, if so, change the way the module is initialized during
-> boot.
+> We can, however, still avoid tinkering with the lifecycle of the FLB,
+> and instead treat dev->liveupdate.incoming as a "hint" that we validate
+> on access with a fast, liveness check:
+
+Can you tell me more about your concern about FLB lifetime?
+
+The lifetime of the FLB will not be affected by this reference unless
+there is a bug in the driver where it fails to call
+pci_liveupdate_finish() during it's file handler finish callback.
+
 >
-Thanks Pasha, I also got a few pointers from Samiullah and think I
-should be able to make it work. I'm going to be on vacation for the
-next couple of weeks so I'm going to miss the next meeting but
-hopefully I can start working on it once I'm back.
-> >
-> > I'm thinking we should preserve the TDX module during the shutdown
-> > stage of the source kernel. Perhaps we can preserve the pages used by
-> > the TDX module as we allocate them on the source kernel and pass
-> > pointers and additional metadata during KHO. Then on the destination
-> > we need to pipe this information to where the TDX module gets
-> > initialized during the KVM module initialization.
+> 1. At Setup: In pci_liveupdate_setup_device(), we do the xarray lookup
+> once, cache the pointer in dev->liveupdate.incoming, and immediately
+> call pci_liveupdate_flb_put_incoming(). We do not hold a permanent
+> reference.
 >
-> Please don't invent another state machine; instead, use the existing
-> one.
+> 2. On Access: When an accessor runs, instead of doing a full xarray
+> lookup, it just validates the cached pointer's liveness by temporarily
+> securing the FLB:
 >
-> Pasha
+> static struct pci_flb_incoming *pci_liveupdate_get_incoming(struct pci_de=
+v *dev)
+> {
+>         struct pci_flb_incoming *incoming;
 >
-> >
-> > I haven't found a device that acts in a similar way so I'm not sure
-> > how complicated this will be or if there's a better approach.
-> >
-> > I would love to hear your thoughts and if you have any pointers on
-> > where this code can be implemented.
-> >
-> > Thanks,
-> > Sagi
-> >
-> > [1] https://lore.kernel.org/all/20260323-fuller_tdx_kexec_support-v2-0-=
-87a36409e051@intel.com/
+>         incoming =3D pci_liveupdate_flb_get_incoming();
+>         if (!incoming)
+>                 return NULL;
+>
+>         if (dev->liveupdate.incoming)
+>                 return incoming;
+>
+>         pci_liveupdate_flb_put_incoming();
+>         return NULL;
+> }
+>
+> * If get_incoming() returns NULL (the FLB has already finished/freed),
+>   the hint is invalid and the device is no longer incoming.
+
+This avoids the xarray lookup but still requires taking the incoming
+FLB mutex twice (once for get and once for put) on every access. And
+if there's no incoming PCI FLB, the LUO will iterate over all incoming
+FLBs under the mutex to find it.
+
+>
+> * If it returns a valid pointer, the FLB is guaranteed to be alive, so
+>   we can immediately use the cached dev->liveupdate.incoming pointer
+>   without xarray lookups. The accessor then puts the transient
+>   reference when done.
+>
+> 3. In Finish/Cleanup: We can simply clear dev->liveupdate.incoming,
+> and decrement ser->nr_devices.
+>
 
