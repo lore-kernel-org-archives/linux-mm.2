@@ -4,105 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB365C4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 05:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1502C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 05:23:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA01A6B0098; Mon, 20 Jul 2026 01:08:29 -0400 (EDT)
+	id B1ED66B008C; Mon, 20 Jul 2026 01:23:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B50806B0099; Mon, 20 Jul 2026 01:08:29 -0400 (EDT)
+	id ACEA86B0095; Mon, 20 Jul 2026 01:23:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A67FD6B009B; Mon, 20 Jul 2026 01:08:29 -0400 (EDT)
+	id 9C0C86B0099; Mon, 20 Jul 2026 01:23:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 830C76B0098
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:08:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 09B191C0A80
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:08:29 +0000 (UTC)
-X-FDA: 85007974338.09.758E450
-Received: from outbound.qs.icloud.com (qs-2006i-snip4-11.eps.apple.com [57.103.85.221])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1C57D140005
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:08:26 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b="pUdKd/7d";
-	spf=pass (imf26.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.85.221 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA4E6B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:23:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F18EE160386
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:23:10 +0000 (UTC)
+X-FDA: 85008011340.13.AE93383
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E91731C0002
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:23:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1uNvXdKp;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784524107;
+	s=arc-20220608; t=1784524989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p5HyYFMk+G/YKnBn8V0qp4YenxBWpgT+6vv4nWfMrPQ=;
-	b=j8UMkyNRq+oownKwkLhwHA2lRzRHz0cf1hQQ11cQb2iBlVfuEAmwg2K3JyWpveyUM9iK4K
-	MpuT5a9SIGN45u90TZUf4Ni9xfc3a+OxJe0ckl0iPfzyImiybvPJGs+vaimKhsW+aqe0H5
-	ByhKqbjabd4fiz7LtnJ84mmwws+55tI=
+	bh=yDfZH9hbjyh5mwCLdQi48sM2SkPYDPdFLyTByyg6de4=;
+	b=43cuA0H/v6KMGbJGyBZuRYrnJnCUtlNPnyjUeEMeyQRz1t5hsImAYHDU4C1E4bMLajpQWu
+	iFu+T51Ss/FQ30D9UnOCh2+97ieYkcvgctcuEaeLTHaH+/+Qmo9382YMHwIzbZI8lutr9j
+	B+wE2GP63NnqArGVmVpbPI6AzX+ZuzA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b="pUdKd/7d";
-	spf=pass (imf26.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.85.221 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1uNvXdKp;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784524107;
-	b=EIOV2l8WGsJy36+QCZwjoeGHUKXIKsFGDvgxjmur+OYx1i6rVwukRAwiFwMRYWwOgV7KSG
-	wtqutlB49fJrQntjMxgmDJkIe0G+kquyJuFNxorC/DWurxYZavIgTbc4IZg5HEc9gMwRO+
-	uIF6ZAyGuQrofrwSEw+GthO9Rq82Sig=
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPS id CA171180013D;
-	Mon, 20 Jul 2026 05:08:23 +0000 (UTC)
-X-ICL-RepId: 019f7dec-e043-74fb-9e93-c65bb5ca77ab
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhMHVwGXRxCCkEdXgBLVxQEAlodRw5AHVYWWAhOK1sTVRdGCRkIXR0ZHldQXgheH0wcHQ5YBhICWkUBXRcDVxxWRVwYQwldBVccHRxERVsTVRdGCRkIXR0ZCEcfCjADQg5WA0MHRQAtGRxXUF4IXh9MHB0OWAYSHVAcDlEFWwBGCU8BXRoJUwRaEB4ZWwkfFlUNQAUaHQddDFVXDw5fAREJHAMJAQlyGVoUXBhTRVEfVEYTGU4bV01QG18CQg8=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1784524106; x=1787116106; bh=p5HyYFMk+G/YKnBn8V0qp4YenxBWpgT+6vv4nWfMrPQ=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=pUdKd/7dRm/6yP4H6XvLXbgOKm9ud6pR7M/zuwXdYHFmheJkAtI80umHQAJFeiQWRoG7yOjoK/Dbfv/amK/oJz3IJWANDVkDjUD4GC2w6RDu5rY57wKKBtUE0cagorvn/PX+ls+T5U9P1zGqnK8UF0y7CYSNb8+gAKj30gT1upYolOgdmLvItQqDoRRo956YDAOSHn9WQe/0lO5kHQYHZKnsVUrJ3u7YX1yW6Z8k+xN+NA+nd+I26wCcougb7AZMaTIcoxS4aS7j2HPsCBHfQUNvuIheMuongNEiwyBfGUFlPvt5IC3QkIyrJomIR+ZeqeoWCFn1n7Bmi84SgZXVNA==
-Received: from [21.6.122.162] (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPSA id 5E84E180012E;
-	Mon, 20 Jul 2026 05:08:16 +0000 (UTC)
-From: Zhang Peng <zippermonkey@icloud.com>
-Date: Mon, 20 Jul 2026 13:07:42 +0800
-Subject: [PATCH v5 5/5] mm/vmscan: flush TLB for every 31 folios evictions
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-batch-tlb-flush-v5-5-db943a0d0d6b@icloud.com>
-References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com>
-In-Reply-To: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <qi.zheng@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, 
- Qi Zheng <qi.zheng@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>, 
- Zhang Peng <bruzzhang@tencent.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784524064; l=5688;
- i=zippermonkey@icloud.com; s=20260309; h=from:subject:message-id;
- bh=vRfWGSnXj1NRnsdshI2zRjQUulhC/QjmbpiKDROQvIQ=;
- b=EvGUlVN4y70BkfYRM2zX0HE1C0Yr+zYubCcxUThrRzZh/56vO9L1FCC5cpqFHfSBKXSks/K6x
- ab87sJ8slkXC8FC71/vMjQO1RI+QwEvN7iw8I9vdFs7xRGYx+2jvU/A
-X-Developer-Key: i=zippermonkey@icloud.com; a=ed25519;
- pk=tPCLpFnBfIyHsp0k7eaUTUREEa36bQNW/69X+NS8wBU=
-X-Proofpoint-ORIG-GUID: NROdlRa12C_BqvsJFnYbjXxtk8lK5x-b
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDA1NCBTYWx0ZWRfX9Qxm5rjC/Y+/
- Nyqv2bSDk/Ad1hz66wVCz5lEFOdq1ruTvxVh8zXnAitzw8Lioa4ihJjdbfn9toUKidIR8+jXm1T
- PYfDTm1JbV7+Bt7WNkH9dFnpHYsXTmjiV8Oc/ZQrpnVI6IqdHFN+MBbMi5LZRiEsSp2nzVLbGRF
- 5M7za2BW9HVDq/ecRgMVspYC/kvC2wRn67QlDRz3cUced4gnl6mqPOja5Xck3rXtAaZINeFpdFP
- C86P+xbvl3aaVLJ8GQL812k2UPb6Sx5DA79KlMWXKCqYiqYZWpaioaajzr5eOin97XWGzet02KK
- 9tcZL8xbjj1Mu0wWWRi
-X-Proofpoint-GUID: NROdlRa12C_BqvsJFnYbjXxtk8lK5x-b
+	t=1784524989;
+	b=74fUQ78jT6t8aL1rkfDpc4Nm/7B7HWIekT2qeexGNKRyWIsW6O5h1jJcVozM8R8X0QkbEf
+	0XYlS0pd9iFpwrJVEeWIRGRuDUJ4bcKYcKzCdoSd0E70QIEDn5l4WbeKgWrOK9to+cHf2a
+	EoUxzUKjT4crtjVKxkhx058OnKBsF9s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4452760103;
+	Mon, 20 Jul 2026 05:23:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580621F000E9;
+	Mon, 20 Jul 2026 05:23:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784524988;
+	bh=yDfZH9hbjyh5mwCLdQi48sM2SkPYDPdFLyTByyg6de4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=1uNvXdKpOtc7vRh5uAxqp/HXU6KrP771A5oZnX13aAu63VvCaCCHhTeoWZRWa39HJ
+	 nXhy4WHfTit2zix7KRAJ9yDplMUdez9FguVpnRx65hlgjlLzNNFSM7CdNjCA/8SR9E
+	 nmY9k5ujtU81GvTJdYtuFO/gmr3yBh+alegHWVGU=
+Date: Sun, 19 Jul 2026 22:23:06 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Richard Chang <richardycc@google.com>
+Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel
+ Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel
+ Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
+ Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, David
+ Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Suren
+ Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>,
+ Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Michal Hocko
+ <mhocko@suse.com>
+Subject: Re: [PATCH v4] mm: vmscan: abort proactive reclaim early when
+ freezing for suspend
+Message-Id: <20260719222306.540829de219e12e21396d260@linux-foundation.org>
+In-Reply-To: <20260720044103.905191-1-richardycc@google.com>
+References: <CALC_0q8rz7U-8x+syTFcWS6Nihxvzd00ruzOThb90P+cDqi=TA@mail.gmail.com>
+	<20260720044103.905191-1-richardycc@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1C57D140005
-X-Stat-Signature: 1oicn157rheocw9bda6ox4gfcrju69b6
-X-HE-Tag: 1784524106-365503
-X-HE-Meta: U2FsdGVkX19TIqRX1T4H5acOC7Zsv6RAxaXA2ioFSylUxpNvDeMHllP+fXWfnqnNwNS9SypTv9mv5sQTkEK1uA7MrcLC8qDUtwrAOfTWR4W4GwmJDYO58Mgzb4KXrjYz3rvdXkbqfNjWZpuI8erE2Tiy3Ic5B3TZ3GvLgTbYHa13DJR7NeXOoY0CtUmA5adw1fYCTu8Vx6p7S1ALEU4b7mQHu5iKOkA7OMMzYAuwvJCTMTzwY6eHDDBPOnZpYriB5oQYFTyAfDCUQXiDYZ2TfxHOYfN0NFi9ZWOy9i2hvLAPIrjXpLddzpWB2bxpTqB08EyQtoG7pMaz1sb+OH05svnSMQQhfAheIn7LSmGJxSwTAlDudxDZrq8ACVIbgJ9J1N0NWw8RB/J0AZnO7gmV2ZcKLZGaTevFykamyY5w+0LQBTx86CDIB8Nkix0xPnJwOwfR3UtRKhXRJtnm6J8npZd4iGQuKEf0teHvxVHBbKojrUWXKCr/0YOJoG5jVNBE/QJVZK4yhguaMi26a6uUPivZw4SxBTBh/GIC913HJMZMQrxXdq5gVEmkWnouZNxWFbmmjLKqCr4v/vQLnGz5ZA5L0OiQP6YOmz8XPxQmx884PpZCphXGEg4+sE1tYaYxK2/t9bb093pbeuq3fOuMCSii3q39ZBKqzJTApmU5FWu1KG7Kf74DdrlFvigVBTz0XkRIMLC5RsTeR63qgRkWlpQUCxvAtIm/h5XzauFCHGN2TILjn46+oOi6Vf70BaOpTvR+tEcyN4sgwvx0yIH6Xeihrd09/mVvlagOepXOPtkCNI62h3Bubb4PWbF/arOQqeb5KFmpOxeg4FByd9flkX2oUftsQ0p968w+vHvILEfPgc4XJQZjdwrdDOXIFF7hzH+Nqjz3D3LL8Zbfz87yFpXmQkMF52wGSW3jEsj5xo/znzzKDgjdehg1i2FIQEkPrRDW0xrCnzvHre2190N
- KZYhVNmu
- mxxXT/yJBj/K0mFcSTeUjJL6wur2BTYULZLQptHfld1ayne01WsgLF8ukziIBaBnc9GRx2v1Mhej2C2KqheAXsk2FtlFWa17rBa13pytN5+tA5UxCHHYK4CCqdnacp/IYFJDmKdcw191uPOUDPVY6QmpD6pw8elPKIQUWy1WwJWj3sFTPffIOhbRhjIDZJJNbHBCj/CP8iXtmSNmpdu7YkFhwwwSSpUw/jw9E2eXNw1zvaMog5MbHrf+4PFJ6y/tCJ+rccr+bHS99hoETa3NAdgtjyXnj2KQcEnX2tR+diXpz9YFx3YJl2FGLbqBP8xaRTkFd2mfRadtz0EM23MFFu24TmAjUtaxH2BBgJczjVTIgLpZZmKj2Jq+ruwGLE5vJdipSodl3t0MCKRcRrX55+7FtvVniRF4rX+HkwV9S6A0rfKEfPOQvX80GrQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E91731C0002
+X-Stat-Signature: f1h7od17ec4w43ajt5d31xewxshtuu65
+X-HE-Tag: 1784524988-846618
+X-HE-Meta: U2FsdGVkX18hLsFkPpOPUob9MAAjRchxvrO7iu4EotkGFcF7UX7Dud+AxVM6g1WZ4tBfeJCQD0gPGz0IWW0M/nlUFuvHEykMMlsuztw3War9sV6k7Wl63NYlDxKFFeVaXpnk+Ku0zXtY5RuelOh47NseUQ/0QC6n+ddK/RfkNepx1bQLGAjMAC/QC8ZvBQcyl3+WLQ44EWWAcBspwmfum1F0XhLRQAHov/LDUAgrenBhbMdOaeYmmZVGdf7lKT48SG2jjAJ/5fYgJy1iQppQqGLuahQ+GecNGDfhMAP+VPJGa0XQVvi4vjvW5sTj0PcsvheXcV9wKNPuXVlC58Ye2uyeLDW4ad6IPQPjzlj3zMtTlRoGUuJAedU/FcwVwC2zBqv1Rr9x4cSFTSQdIlRiSEAZ4hC+Pdxll31VzU98S2izgFzEk6K8QnSaVUI7Xc49M0mov0bQLlPjQNF+TNRjYkleg126rnxW+T4ppoMJ+34mYvlOoifaZdBWOmw8YrIRMcSZXdiWBnrjoKneSkrL5M5egRyZCM0q3myEDgcE4oFqhLwuiTMQxZGU72D143gf5xmLUEBIUgLZEicJoTX0CXyXoxqzVphqTG43po+Rd1mrmq9Pkfe8iUznVe2yjG70mnpjyHh4SWBjMEuInFzhb/iVKb+xaNxY4x+fJ+9wtlVxwlAG1L/L35OhtZFElQzM/aciTlk7hqH7ZQ4b41SlDVwNwXk0usfdZs4HDfYYu9Yn20CUi7qcIamAEJkhS9VCY0cAX4b3JRL7rtHWGPjJFO5rrwBaDlS/tYYUtVXvIL7G29GJWewvu7YOMpu/fHlBPe3qabmvA2qiH/Nz9vP9xlwCHQYUvqpX5nh8dDNrNuu/FTVTXlZN/ZYf45d8gqm2pP6gzQC/FX7z9fSn7hp5ScXHcIN8LPG+zWKzH7VQvSyv6uJKuyGCToRcYH/+ysIS9qnmYROAzeC9D6Vd2p4
+ 6asCMZQw
+ jOQCLvpeNMcmZOmsHLquscu7Q5XDFksO3U2FOYb2fqpoArHUOL1ii+EBFsJ9VlkowTzgKCQJJ/hszkLhq3gJ+AsMDP8VCDGYX86IzC7t3xD1LXYKjR7uYv0bSHD5/gTboFzoXEaJbVKp/UjMoZYDEnHjMcfzrE95YIp6q5NxCC5GXKV8Sr9cusidz3+JvN8c9nJbH7GuGWON5PYXmWmfYYCPAa+avdGVscBLeJo2hYEVm+ZbM31uuunLGMoCkVUhDu+gDEFPEhcvFHf/D0rRveAo2ehfD5P4mNOWxSXGeChzfi8LSpoPphjAPhESSa3TLKe+5SZgN80MgLmZz6v2QDRNv155Dqx0xPbSQvAW4Y5ukMGk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,164 +99,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently we flush TLB for every dirty folio, which is a bottleneck for
-systems with many cores as this causes heavy IPI usage.
+On Mon, 20 Jul 2026 04:41:03 +0000 Richard Chang <richardycc@google.com> wrote:
 
-So instead, batch the folios, and flush once for every 31 folios (one
-folio_batch). These folios will be held in a folio_batch with their lock
-released, then when the folio_batch is full, do the following steps:
+> Proactive reclaim (triggered via memory.reclaim or node sysfs) checks
+> for pending signals in its outer loop in user_proactive_reclaim().
+> However, the inner reclaim loops—specifically scanning cgroups in
+> shrink_many() and evicting/aging folios in try_to_shrink_lruvec()—can
+> run for a long time before returning to the outer loop, especially on
+> systems with many cgroups or large memory sizes.
+> 
+> During system suspend, the PM freezer attempts to freeze all tasks by
+> sending fake signals (setting TIF_SIGPENDING). Because the inner loops
+> do not check for pending signals, the proactive reclaim task can remain
+> stuck in kernel space for seconds, failing to enter the refrigerator in
+> a timely manner. This leads to suspend failures due to freeze timeouts,
+> a behavior observed on Android devices.
+> 
+> This latency issue is specific to proactive reclaim because of its
+> large, user-defined reclaim targets (could be gigabytes). Since commit
+> 287d5fedb377 ("mm: memcg: use larger batches for proactive reclaim"),
+> proactive reclaim uses larger decaying batch sizes (starting at 1/4 of
+> the remaining target) to maintain throughput. This keeps the task in
+> the inner reclaim loop for extended periods. In contrast, reactive
+> reclaim (global/memcg) uses small targets (SWAP_CLUSTER_MAX, typically
+> 32 pages), allowing it to return to the outer loop and check signals
+> frequently.
 
-  - For each folio: trylock - recheck still evictable (writeback, mapped,
-    dma_pinned). If no longer evictable, put back via ret_folios.
-  - Flush TLB once for the whole batch.
-  - Pageout each survivor via folio_try_pageout().
+So 287d5fedb377 led to suspend failures on MGLRU-using kernels.
 
-The recheck step is required because dropping the folio lock between
-shrink_folio_list() and pageout_batch() opens a window in which a
-parallel swapin (do_swap_page) can fully complete and install a new PTE;
-once mapped, a parallel GUP can pin the folio without taking the folio
-lock. Folios caught by any of these checks are put back via ret_folios.
+That's a regression which justifies a Fixes: and a cc:stable, don't
+people agree?
 
-Suggested-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
----
- mm/vmscan.c | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 84 insertions(+), 8 deletions(-)
+AI review asked a couple of serious-sounding questions:
+	https://sashiko.dev/#/patchset/20260720044103.905191-1-richardycc@google.com
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bb479ead1ee0..251535613336 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1220,6 +1220,71 @@ static bool folio_try_pageout(struct folio *folio,
- 	return false;
- }
- 
-+static void pageout_batch(struct folio_batch *fbatch,
-+			  struct list_head *ret_folios,
-+			  struct folio_batch *free_folios,
-+			  struct scan_control *sc, struct reclaim_stat *stat,
-+			  struct swap_iocb **plug, struct list_head *folio_list,
-+			  unsigned int *nr_reclaimed)
-+{
-+	int i, nr = folio_batch_count(fbatch);
-+	int count = 0;
-+	struct folio *folios[FOLIO_BATCH_SIZE];
-+
-+	/*
-+	 * Collect survivors into a local array: this avoids walking and
-+	 * mutating @fbatch in the same loop, so its invariant (only
-+	 * folios[0..nr) are valid) is preserved throughout.
-+	 */
-+	for (i = 0; i < nr; i++) {
-+		struct folio *folio = fbatch->folios[i];
-+
-+		if (!folio_trylock(folio)) {
-+			list_add(&folio->lru, ret_folios);
-+			continue;
-+		}
-+
-+		VM_WARN_ON_FOLIO(folio_test_lru(folio), folio);
-+
-+		/*
-+		 * Recheck what shrink_folio_list() verified before dropping
-+		 * the folio lock. Between that folio_unlock() and our
-+		 * folio_trylock() here, a parallel swapin (do_swap_page) can
-+		 * fully complete -- taking the lock, installing a new PTE,
-+		 * and releasing the lock -- after which a parallel GUP
-+		 * (O_DIRECT, vmsplice, RDMA, ...) can pin the folio through
-+		 * that PTE without taking the folio lock. Each flag catches
-+		 * one case:
-+		 *   folio_test_writeback   -- defensive guard.
-+		 *   folio_mapped           -- swapin installed a PTE.
-+		 *   folio_maybe_dma_pinned -- GUP pinned through such a PTE.
-+		 */
-+		if (folio_test_writeback(folio) || folio_mapped(folio) ||
-+		    folio_maybe_dma_pinned(folio)) {
-+			folio_unlock(folio);
-+			list_add(&folio->lru, ret_folios);
-+			continue;
-+		}
-+
-+		folios[count++] = folio;	/* keep lock held */
-+	}
-+	folio_batch_reinit(fbatch);
-+
-+	if (!count)
-+		return;
-+
-+	/* One TLB flush for the whole batch */
-+	try_to_unmap_flush_dirty();
-+
-+	for (i = 0; i < count; i++) {
-+		struct folio *folio = folios[i];
-+
-+		if (!folio_try_pageout(folio, free_folios, sc, stat, plug,
-+				       folio_list, nr_reclaimed))
-+			list_add(&folio->lru, ret_folios);
-+	}
-+}
-+
- static bool folio_try_unmap(struct folio *folio, struct reclaim_stat *stat,
- 		unsigned int nr_pages)
- {
-@@ -1261,6 +1326,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		struct mem_cgroup *memcg)
- {
- 	struct folio_batch free_folios;
-+	struct folio_batch flush_folios;
- 	LIST_HEAD(ret_folios);
- 	LIST_HEAD(demote_folios);
- 	unsigned int nr_reclaimed = 0, nr_demoted = 0;
-@@ -1269,6 +1335,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 	struct swap_iocb *plug = NULL;
- 
- 	folio_batch_init(&free_folios);
-+	folio_batch_init(&flush_folios);
- 	memset(stat, 0, sizeof(*stat));
- 	cond_resched();
- 	do_demote_pass = can_demote(pgdat->node_id, sc, memcg);
-@@ -1564,15 +1631,18 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 			if (!sc->may_writepage)
- 				goto keep_locked;
- 			/*
--			 * Folio is dirty. Flush the TLB if a writable entry
--			 * potentially exists to avoid CPU writes after I/O
--			 * starts and then write it out here.
-+			 * Drop the lock so swap faults finding this folio
-+			 * via swap cache lookup can make progress; the
-+			 * recheck that this necessitates is documented in
-+			 * pageout_batch().
- 			 */
--			try_to_unmap_flush_dirty();
--			if (!folio_try_pageout(folio, &free_folios, sc, stat,
--					      &plug, folio_list, &nr_reclaimed))
--				goto keep;
--			continue;
-+			folio_unlock(folio);
-+			if (!folio_batch_add(&flush_folios, folio))
-+				pageout_batch(&flush_folios,
-+					      &ret_folios, &free_folios,
-+					      sc, stat, &plug,
-+					      folio_list, &nr_reclaimed);
-+			goto next;
- 		}
- 
- 		if (!folio_try_reclaim_free(folio, &free_folios, sc, stat,
-@@ -1597,6 +1667,12 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		list_add(&folio->lru, &ret_folios);
- 		VM_BUG_ON_FOLIO(folio_test_lru(folio) ||
- 				folio_test_unevictable(folio), folio);
-+next:
-+		continue;
-+	}
-+	if (folio_batch_count(&flush_folios)) {
-+		pageout_batch(&flush_folios, &ret_folios, &free_folios, sc,
-+			      stat, &plug, folio_list, &nr_reclaimed);
- 	}
- 	/* 'folio_list' is always empty here */
- 
-
--- 
-2.43.7
+> To fix this, add a signal_pending() check to should_abort_scan() for
+> proactive reclaim paths. Since should_abort_scan() is called within
+> the inner scanning and eviction loops, this allows proactive reclaim to
+> abort early and return to the outer loop in user_proactive_reclaim().
+> 
+> Additionally, return -ERESTARTSYS instead of -EINTR in
+> user_proactive_reclaim(). When interrupted by system suspend, returning
+> -ERESTARTSYS allows the task to enter the refrigerator and automatically
+> restart the syscall upon resume, making the freezer transparent to
+> userspace. For real signals, the signal layer will either restart the
+> syscall (if SA_RESTART is set) or return -EINTR to userspace.
+> 
+> This fix specifically targets Multi-Gen LRU (MGLRU). Classic LRU's scan
+> targets per iteration are strictly bounded by get_scan_count(), which
+> ensures it returns to the outer loop more frequently.
+> 
+> The check in should_abort_scan() is limited to proactive reclaim
+> (sc->proactive) to avoid inadvertently affecting reactive reclaim paths,
+> and is wrapped in unlikely() as it is a slow path.
+> 
 
 
