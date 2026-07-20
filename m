@@ -4,136 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89595C4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:30:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F198C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:31:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 851E86B008C; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
+	id 399D96B008C; Mon, 20 Jul 2026 05:31:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 802E86B0092; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
+	id 34AFA6B0092; Mon, 20 Jul 2026 05:31:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 719376B0093; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
+	id 260D56B0093; Mon, 20 Jul 2026 05:31:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D4876B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C439EA07A7
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:30:09 +0000 (UTC)
-X-FDA: 85008633738.16.74A1116
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0148210000A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:30:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED7C56B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:31:53 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74AAD807DC
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:31:53 +0000 (UTC)
+X-FDA: 85008638106.25.360DE88
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EE8A4100006
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:31:50 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fyLxYwAI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784539808;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jiYeVsnBdIvFuQsIGCzuuAuxcFGL3XUJywevOqwgEe4=;
-	b=1SGYm9TvfNwzQPXGXnUEM4ff9hOtlIt8By4swxsa9jNBU5z4oJURbXjVV3l24VS0mYrCGn
-	Qn1atQaxHZ3xvClg8wCGLBiA13pm4zkcGmKRn9DggW5UgokicgLSSPCjPsmgFjvLdk8Gjt
-	A0IwfPPHDnXbrp8gdACnSXbmcR4mmRo=
+	dkim=pass header.d=bytedance.com header.s=google header.b=Rt7cl89u;
+	spf=pass (imf05.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784539911;
+	b=J/Au/3+L44KgFrEynTtsw69CQj2v/D+IhdzwkiwBWyhMHVgQ/t9tbxDtv9orLX75kQtn6i
+	q41ozQ+OWLWnnqRbS5NLCC44mhv3nEFUKRms8HsBbP3hNJhNmeLcbn0LywxghoROF8uMAh
+	Ui9E+858hOa/9z3R8V5DDf9hkJBAQrA=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fyLxYwAI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784539808;
-	b=s+6QBm0hc7A/2sCajTlmOR+B3GB8TxJlbe0ZIrg4erc+25p9mpayGjExbMKckUT9mH6l2Q
-	Y4K8/A8id9xSKf6oTa225bBEUMo8LDx1eW0aZ2h6gQcFS2gy9pI4JaeiLSXFIyMhFDOeEc
-	g/EWKke1rYFsHruRGvEmWxq92Qi0ktM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B15F435A8;
-	Mon, 20 Jul 2026 09:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AB91F000E9;
-	Mon, 20 Jul 2026 09:30:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784539807;
-	bh=jiYeVsnBdIvFuQsIGCzuuAuxcFGL3XUJywevOqwgEe4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fyLxYwAIg5Ni1Hk+A0p2yIhUb7gIsYKAJdb8yjiUhm8CLIdJ5Vh1hd96FbCNZLwm8
-	 5pUAFO+AygfYbbH0pW5ennR/j97lDiGgd3TAm0sZDRtqa6IB4/J+qF1QH+GtoQNe8M
-	 P3w+i6/wRs2FHfUOF7UkvcPSZlrTNo7MvWBIrDwugfBrQIropv3e4IRaEnlkqcX8BP
-	 yyJBXPb97xkn/l0eO4kTKcpNzzi4+T8r1y3YJu7bPFcu/n8PFohsRYw9hd0444di1p
-	 C9JIyU/OHWOM8pJVXrjlRMPEKZafOIb53Wky/6b11EUnAGpO8bhmkFzMUOKRTbt/6F
-	 /gsWbWCSXzcOQ==
-Message-ID: <1147ca8f-166a-4236-98b4-0a37442cae1d@kernel.org>
-Date: Mon, 20 Jul 2026 10:30:02 +0100
+	dkim=pass header.d=bytedance.com header.s=google header.b=Rt7cl89u;
+	spf=pass (imf05.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784539911;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yJVF6JbqogoY8HdXIsfRZ9+PMfuGJZF+sHMViUld/dU=;
+	b=zyS9hYl0krLtLKiAd0OEUV7o6uW0O18l/HZvSK+2upulYC1poWaQOS6IuSKe4pSnjNhzAV
+	fgJsqpiIX+eAo/cqn/oKg5Vqey3CuEj3ELRcJWuNlLetOGJ9mayGuefnwmreyKhJotgSS+
+	bHm/xnRtbIoxvibmbvqKs1eYYVRoOLw=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cad4170e8eso134023075ad.3
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:31:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1784539910; x=1785144710; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yJVF6JbqogoY8HdXIsfRZ9+PMfuGJZF+sHMViUld/dU=;
+        b=Rt7cl89uh+pTvZTAaxKYSBQjimNqAHV1IYtkSbKUn3vIhtGGLB2gh4gee74ERU8wAZ
+         rvYqAJLoqAwPDt4BzKTKq+54oI4hMGq4KMMc6LnRkvm2kupVx8ssxWYTk9fhYdipxXBc
+         rVfeNVKh3NQfyEYH6fA1iJr2IRaR2jnB4D9FNygQ9Ci4LejptPlvtOO7UIh57rhpSwp/
+         tfy7YfxlS970UXIH3zYKN382TPXS0JwYPwI/Hxu7S74Ec97u9cfpfWp54GTlwzj/5GSH
+         mw3ID+sZv2rlKTUo/JyYDC+SnyN/uWlC0CfMLXajLtV5thFt+n5jMNbsIT+vVE5XCUnF
+         zvww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784539910; x=1785144710;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yJVF6JbqogoY8HdXIsfRZ9+PMfuGJZF+sHMViUld/dU=;
+        b=EDUQSTDVGF3VESMk93HI6UMJuyN/MoVKzI2Pv4tzSF89cA7Rlql2r0vnfjAG8p7B7S
+         i57LF3Y8CnEiSGOIWpRAGBWPDvbCWDUEdTH2COSLBmhacfU4jtpipjvPUCPYQSosPFiC
+         IVTmpACl1f8Q0v1cBL/XZGys0b8CDrtz9VrASB3GW3U2OfYWxNnT0dNXv4A0kXFwVHLH
+         /jwKRbN9ftBnpEZtdFEtUTCY5FTHMcUfeiBvUpB+eLk7feePqq+dkoEOcBSE7BcBteq8
+         hY5CGJOi6e1Tow0U9BVO7dkEUKbgJ8zvVnqest5uAkXyGpF2EhsxJ/31zVbHTnyTmA/J
+         2sow==
+X-Forwarded-Encrypted: i=1; AHgh+RrKoFQAxUCst8AwYFk8vjFin+D1pr0BCG59xEFisLGvrxucyJQgfwEpGb8B27jADj6WomYWn9Uubw==@kvack.org
+X-Gm-Message-State: AOJu0YyBr01Y8Qz+LLbAaZQUhc+dko4ntfaryLOF7ZGh0aKoI3ka8yh3
+	1dxobHPLWcBE/nPpcEITS6OcTkZ+hLC/NEcnWrNKhkydmSzzvgtSBPhRCCvVN1mtkqI=
+X-Gm-Gg: AfdE7cmqK8eYIAgBY9K4vpdMuRLtCAOPBOH/aW1FcV+2+aP/iO2X1KDNTf77ZBw7AC4
+	1f1VSEmNLj8rEQnUo9R6MK3SN6AlyaiE3f0GD9i3/6Zt1zdrZmV3oq+858/XDECyxS83elLKtTv
+	MxytZXT7h+My1+66Rne8ykzjLiimIwKXMg33DvCg2Fepb/MzB4EzKgBJt1zpOvqCaddMtkBAVoa
+	glsKyrOQfX4I/eJ5YoAJd7s6IDBpFz1Rert4uryJzK5iUT/61xBedFgkAoapTMOZdPEWewRKqHR
+	Sok8ZgtmnN8xk47tCl/p/lUFzqrDphjvu5+EAqwzwlr0WvbgYTY242Vt7WEqu7RhTG5LH1r3jxv
+	bisaudRtK92tcvOrM+cwlgoyLrtdBSOh1uoXfMWHsHx1iplThS0fkxvmd68uWZ45cHLx3Lkl2nS
+	anU/1agwnAMjnqW/A/I/x/IYk5uUNITOHZ7A==
+X-Received: by 2002:a17:902:cf12:b0:2c9:97a7:71af with SMTP id d9443c01a7336-2cf349ed678mr136956245ad.42.1784539909607;
+        Mon, 20 Jul 2026 02:31:49 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.101])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf347a7c9fsm53136455ad.84.2026.07.20.02.31.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 02:31:48 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>
+Subject: [PATCH v2 00/17] mm: Introduce section-based vmemmap optimization for HugeTLB
+Date: Mon, 20 Jul 2026 17:31:10 +0800
+Message-ID: <20260720093127.540540-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] fs: stable_page_flags(): use folio_test_*()
- helpers
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- ziy@nvidia.com, luizcap@redhat.com, willy@infradead.org,
- linmiaohe@huawei.com, svetly.todorov@memverge.com, xu.xin16@zte.com.cn,
- chengming.zhou@linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260720033021.4091944-1-tujinjiang@huawei.com>
- <20260720033021.4091944-3-tujinjiang@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260720033021.4091944-3-tujinjiang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0148210000A
-X-Stat-Signature: 7y9qbp9ofcj6a9mikbqmdwabgwh5fybt
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1784539807-167725
-X-HE-Meta: U2FsdGVkX19OfPLpFhKgAIVxtkJyQr0omeym9s9CUEQsdB1iMydVc5nblO9aMU7KtTxULaXvLEakB7AZodD4PyQGPqZuLgNHbA7uuo34PMyJW0NQ3K48CXOt/Uaruxd7Mp3mzpbvjJMGNzDGyYVHykkMLpYXgswsykehK6wjUaq+PQiapGgZJiVCYq3b+bBznYSFkwjQSeRGjJuhmAZkm7Rkn4QUH3dhH1bBXOqgMhil4nEZDkPScMSP/XcUxWj3jqG1IkhHTHnrBC7hR0bDPfqLbcvxyg3NNP3AZrTzSAHPojUQuRUPnK7DNJSnJTVseHCtypY3/DOZd31ZmzyzoqvQaN5EPp5Z6KjzUsuvyxmtoYOcq6J2NXso1AGP2cy7L06LX35FTlGukzky6yIP1TXPssP7X8QfqKTIk5YD32xxjyAmTgYHZX36l6AkXUdYZ3yWfwgeEd7kltnNASasY32CcGEuRZaKJjQ20cgfd8VGChLEA8mE+zds+MJjBnD8aF8kdd58GN+Oh1Tf4qxtFrdIMHSQn6JdR1FPR9G4TvCaw9LFcvZjiiHD+VCrL9FTw7pLbZ2JXnvJyGM/c7VEv2oM8zaeP60qmEfRalNMfxZoY3IB20TsoWIuywZ6cI49RTSaNcr/Ih8UClURB2/Lj4yCNLUoKJoOAPEqndOY3H9bQIVaK8sRL8nwFM8tF7IsIF+MsQ7ngFXNpi4LQLDsgaKpj+Xt9JNPInsm68ySLdZgw6Lnba1PIvLqs0mj1UbamOdIpZ9KOjMRXd8JGOusEVdnn8Y4hZBVR7iA8zJNx6az8Nbc7GvdBbaTdwnXPgXvmcCF8OfqjANbl8ZUSiouuR1MyZNIbWFWJ2+/wswM5FJaTy0LUl9S++JaQea/bY1gfySQduJ2JAG+T6HBaBkrZ/j0k4WsdklZlR5qla6O48b40FlVSPEX4uASQApNdZgS+7p7HHGwg+GfS7bfoDj
- eeeRVi1S
- JbhpdoFpCXmUI9spJdyHWvFuZNwAEt9uOrlLAUbXotXzcDEjOs2qvaAYeMNjoFAwOvuZFg5m7wJl/nIJ8nWyfaYtqF90/NM2yfAoYs5hUReo3ugW9u6y7jpAlRcAci0aqNW8n6TC3txeiAF4vZm9Bftz4QdcLoT209TMO2eZ7sIDR9d2dC64BcWzpypMmJKv4w86LWe6VI+AKhYGQW5JCndMIP7cdHj3MFMr77Mf94tvCaOtfFRynNvwAa23xcnAcF47GuuPnDyedekdTEJUyuZ57oXVduiJNXVEHzbBZWAwmuOYcSNXmN+i1BjQT+ix/hpt5VJBz1LsBo7vohkjlbXFEVnrV1W4vhvi7
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EE8A4100006
+X-Stat-Signature: zms1xja1zuy5inubctctee3359xn7bg9
+X-HE-Tag: 1784539910-327090
+X-HE-Meta: U2FsdGVkX1/0xGapf9BNLh7GWAYMD3dDVTlyd7sfjiy9ZdLDRna6t5mcgZm2F2LCL/n1LvHS6NzokYCijDoLfTmSKI9aNmRkq4QlgQVONFO3OQD+jMivSYsMiB4Yie1Zm7D5pIlz6mBDUVk+Gu0jVoqVN6WKt9yMPC3aozcRLENiHLHlnF961tlqW8XVz2/gUZEFCr8gT6EZpjne9G8SwPG6wNrkXUMwa3cB1L4voUce128+A2iGMlVIH/f1oyFyi4LQMZvnhNwdY6MBE4Os3p+xBbPkbA6Xu6XZAmhbWs8dlhb19+zC92M98w6dV3dTuq13pmWATAG7aFvCZTpoMzwojyJbp8oD2SJRFywGTqGBFQ8TruAWV3YGVcVvCzOCGZyCwBC+GgvqADTmWfY9bDecWJX+B8mw6LC/DunsLy3o4tZzGUc/gapzuXe6ZpiJf4TTu1aujIvf3SX6VyAb1xyZk1Mt7ey+w+jtf6IlvET8GT4zxY1ys2fSTZL/+5Noml45sLxLK+0dQ/GYmqvplTE2OJkKatlQKYxUE7c+Vp4Gb3URgMAblzU9hPcxZJSY2L2Fz1CrNLKSbXfQ2Va7TgbiGj3U9Ga0YPYyhY8jaAoz4CExLUFmiAp9oWNil6JrRKe6+xkH3bqNu98NENj4bVXQx0EG7mGOsH77ysEgzHotIZwy1bJ1uHIQbD6LPpI0hLTwIrY3ttC6u0Rs6Gu0h/Len6+fse4kStzF/gm8N93RPSy45Taqm8D7311W3imWkdrzovIoejHP0ulXs+nNUUPhWiqveqXfpZ5J4eCjC+bKnGbhH2EjMD1ZX0qL/OS4p6r/A6tzAbkiWnKxqptz5k6KPno0pwAlHazZV0PybeOO0scptCz3O1aIcfutvlJ10DfZhHCGapK4Das5o+/3kQfbi5C8z6AZs3XfsxZY3RFMqDc4Hz7RcUSjg3TvokQ9yFmXIAd1ArD3eg7b211
+ WPISD+34
+ sV8SRbc8yB4yYKPe/3w52hEDQ2j21s1WUeh3w3vcWKc74m2/e8alGrs7m+O83heNwhHtwtTvhGyA6WqKGvKT/HfSkjtQOQXeESzbmGJtC6FbI1+pjr8WuBDz8vsrq8EBqPZrmNaaji8uIPlXgaeJuzbbUaN5EGA/cDxgiv5NYiZYLcC3EEbBU/pqgCFfm6S0siF+xaTK2Y5CscQhZTlBKzLFmS2sEpGoDK2LhYAmbDAFUkhdkqgxePlI/pv9mvo8E3rVO9fzq2Ym3JOS9XwIsQmnRd7jrDe+xyzL76sZlXmBAgctJYWkgNB0u8UrghGLivdDPuGX8vCJEz5H34MOlw1tRV8YkWG32HA1rez2rNvWUu0Rn2/6/R5q+W0Uu3wclgBXKYwTEXxclT2Deel5r41vggRjuU0P5UQBt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,39 +123,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/20/26 04:30, Jinjiang Tu wrote:
-> Since commit 304daa8132a9 ("maps4: add /proc/kpageflags interface"),
-> /proc/kpageflags directly operates on page->flags to determine page status.
-> Later, commit 177975495914 ("proc: export more page flags in
-> /proc/kpageflags") started using page helper functions when exposing new
-> flags, leading to a mix of both approaches.
-> 
-> For tail pages, the original code did not return corresponding status.
-> commit 0a71649cb724 ("/proc/kpageflags: return KPF_SLAB for slab tail
-> pages") and commit 832fc1de01ae ("/proc/kpageflags: return KPF_BUDDY for
-> "tail" buddy pages") made tail slab/buddy pages also return corresponding
-> status. Then commit dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
-> made all tail pages return the same status as their head page, except for
-> hwpoison and mapped flags. It also cached the folio's flags and operate on
-> the flags directly to avoid concurrency issues if using folio_test_*()
-> helpers.
-> 
-> Since commit 476d87d6a061 ("fs: stable_page_flags(): use snapshot_page()"),
-> we can now safely switch to folio_test_*() helpers instead of directly
-> operating on flags, which is more readable and consistent with the rest of
-> the kernel. Only convert cfolio-specific flags (i.e., anon, ksm, swapcache)
-> to folio_test_*() helpers, which reduces redundant code. Keep others
-> unchanged due to they aren't folio-specific flags or coverting them doesn't
-> cleanup.
-> 
-> No functional change is intended.
-> 
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+This series is split out from the earlier, larger series "mm: Generalize
+HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+vmemmap optimization across HugeTLB and device DAX, this subset addresses
+a single, self-contained step: making the generic sparse-vmemmap code
+section-based optimization aware and switching HugeTLB bootmem pages to
+this path.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+HugeTLB vmemmap optimization currently has its own early boot setup
+path. It pre-populates optimized vmemmap mappings before the normal
+sparse-vmemmap population code runs, and sparsemem carries
+SPARSEMEM_VMEMMAP_PREINIT only to support that special case.
 
+That makes the HugeTLB vmemmap optimization path harder to share with
+other users of sparse-vmemmap optimization and leaves a fair amount of
+HugeTLB-specific boot-time state in the generic memory initialization
+flow.
+
+This series introduces section-based vmemmap optimization support in
+the sparse-vmemmap code and switches HugeTLB bootmem pages over to it.
+Instead of having HugeTLB pre-populate optimized vmemmap mappings
+itself, HugeTLB now records the compound page order in the corresponding
+memory sections. The generic sparse-vmemmap population path can then
+allocate or reuse shared tail vmemmap pages based on section metadata.
+
+The patches are organized as follows:
+
+  - patches 1-2 prepare sparsemem and vmemmap optimization metadata
+  - patches 3-8 teach the common sparse-vmemmap paths to use that state
+  - patches 9-10 switch HugeTLB bootmem optimization to the
+    section-based path
+  - patches 11-17 clean up sparsemem and HugeTLB bootmem code that is no
+    longer needed after the conversion
+
+This is intended to be the second smaller step toward the broader HVO
+generalization. The device DAX conversion and the wider HVO
+consolidation are left for follow-up series.
+
+v2:
+- Kept struct mem_section aligned after relaxing lookup constraints
+  (suggested by David Laight).
+- Folded section order tracking into the first user instead of keeping
+  a standalone API-only patch (suggested by Mike Rapoport).
+- Renamed the HVO order macros with a VMEMMAP_OPTIMIZATION prefix
+  (suggested by Mike Rapoport).
+- Moved pfn_to_zone() before the sparse-vmemmap optimization changes
+  (suggested by Mike Rapoport).
+- Kept vmemmap accounting and population logic in sparse-vmemmap.c
+  (suggested by Mike Rapoport).
+- Renamed the early sparsemem helper to sparse_sections_init()
+  (suggested by Mike Rapoport).
+- Fixed the !SPARSEMEM stub name so SPARSEMEM=n builds compile
+  (reported by Sashiko).
+- Guard section_order() with CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP so
+  it returns 0 when HVO is disabled and lets the compiler optimize the
+  code as much as possible (suggested by Mike Rapoport)
+- Collected Acked-by tags from Mike Rapoport.
+
+[1] https://lore.kernel.org/linux-mm/20260513130542.35604-1-songmuchun@bytedance.com/
+
+Muchun Song (17):
+  mm/sparse: relax struct mem_section size constraints
+  mm/sparse-vmemmap: rename HVO order macros
+  mm/mm_init: skip initializing shared vmemmap tail pages
+  mm/sparse-vmemmap: initialize shared tail vmemmap pages on allocation
+  mm/sparse-vmemmap: support section-based vmemmap accounting
+  mm/mm_init: factor out pfn_to_zone()
+  mm/sparse-vmemmap: move vmemmap_get_tail() before PTE population
+  mm/sparse-vmemmap: support section-based vmemmap optimization
+  mm/sparse: initialize memory sections earlier
+  mm/hugetlb: switch HugeTLB to section-based vmemmap optimization
+  mm/sparse-vmemmap: remove SPARSEMEM_VMEMMAP_PREINIT support
+  mm/sparse: inline usemap allocation into sparse_init_nid()
+  mm/sparse: remove section_map_size()
+  mm/hugetlb: remove HUGE_BOOTMEM_HVO
+  mm/hugetlb: remove HUGE_BOOTMEM_CMA
+  mm/hugetlb: localize struct huge_bootmem_page
+  mm/hugetlb: localize HUGE_BOOTMEM_ZONES_VALID
+
+ arch/x86/Kconfig        |   1 -
+ fs/Kconfig              |   1 -
+ include/linux/hugetlb.h |   5 --
+ include/linux/mm.h      |   4 -
+ include/linux/mmzone.h  |  72 +++++++---------
+ mm/Kconfig              |   5 --
+ mm/hugetlb.c            |  64 ++++-----------
+ mm/hugetlb_vmemmap.c    | 103 +----------------------
+ mm/hugetlb_vmemmap.h    |  13 +--
+ mm/internal.h           |   7 --
+ mm/mm_init.c            |  62 ++++++++------
+ mm/mm_init.h            |   1 +
+ mm/sparse-vmemmap.c     | 176 +++++++++++++++++-----------------------
+ mm/sparse.c             |  94 ++++-----------------
+ mm/sparse.h             |  67 +++++++++++++++
+ scripts/gdb/linux/mm.py |   6 +-
+ 16 files changed, 253 insertions(+), 428 deletions(-)
+
+
+base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
 -- 
-Cheers,
+2.54.0
 
-David
 
