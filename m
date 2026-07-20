@@ -4,91 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A532C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CC4C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:26:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AB756B00A0; Mon, 20 Jul 2026 11:25:22 -0400 (EDT)
+	id 4AAD46B00A2; Mon, 20 Jul 2026 11:26:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25C316B00A2; Mon, 20 Jul 2026 11:25:22 -0400 (EDT)
+	id 45AD06B00A4; Mon, 20 Jul 2026 11:26:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19AC96B00A3; Mon, 20 Jul 2026 11:25:22 -0400 (EDT)
+	id 3719A6B00A5; Mon, 20 Jul 2026 11:26:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D705F6B00A0
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:25:21 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AF97D1601E8
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:25:20 +0000 (UTC)
-X-FDA: 85009528800.22.AAF3F6A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F153A40009
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:25:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XJaX/lI9";
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=FnXu=FO=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=FnXu=FO=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784561119;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F18776B00A2
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:26:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7B9F31401CD
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:26:42 +0000 (UTC)
+X-FDA: 85009532244.16.6A79A86
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 87530180003
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:26:40 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ok8OBzi/";
+	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=elver@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784561200;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H6yVyiE63yXcD/fvLI3hqIkx+vFonOcuLVo15lmuJ6Y=;
-	b=5/zZAp9V/WHqwLbllzoh52YIv/8AuY416VdD4HDAGwcNy4/B3S5Pq/rxc4Ydqo5Y94ZfFF
-	zaMygJDX61tebm1M9fUWuMB98VnIEsC2ltSYZtRs9OdN6fWNkzKvMzwmh8kSxNHKnxJCdE
-	STwxq+TWI8B5ihb75DVjyB6kZhA1vnQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784561119;
-	b=qGbTCx90v5qm1uGWuWvRJQtkDcNcc/bYLqSyEoIKM9iiUG/mHkGAY8F943k1FNcLThDoYZ
-	4DcBNt3Bl9s8laJb8utKsBBUXg/bm/hkSzoOVEG9U+voqd2kaXWq7gwku5mgSePflWoyCv
-	Zqow/QncIpJNUnrYn4hgOWbE0WSpjhI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XJaX/lI9";
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=FnXu=FO=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=FnXu=FO=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B169941AC4;
-	Mon, 20 Jul 2026 15:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941361F000E9;
-	Mon, 20 Jul 2026 15:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784561117;
-	bh=H6yVyiE63yXcD/fvLI3hqIkx+vFonOcuLVo15lmuJ6Y=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=XJaX/lI9ygdRmKcimsELCE6cxoMXHvXYspGuz9eSToSm0RMONx0IL4cHzeJh9nReI
-	 ou/0IyMyJj2UEVeaoAQXQJrI8W0iasCg9pU0JCJjcKbadwrXz2VReMwu4L/l1T6rJR
-	 ROxC93As7r0qhfIhwhKhvI2K5u2L6ZTk/2A7INZnibdbDVfAsC7mjuPwSx17jXTQFJ
-	 eHPVUVB5PxE0YAvAoNRMZii8Z2+RDZyIBdcfW0UNcziqe1MGr2ZM1PtLMg+1XvMNX5
-	 XtBf1t8rIdk6qvKbyPClHESk5vKn9jDy5FlDT/wPKMfTpMUHDnhFk0p6kXTYQ8cqdz
-	 MQTsCZxp5xJNg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 66ED3CE0C57; Mon, 20 Jul 2026 08:25:17 -0700 (PDT)
-Date: Mon, 20 Jul 2026 08:25:17 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>, puranjay@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
- the scan
-Message-ID: <8114f54f-b05b-489d-a3f1-7aa02d93cda0@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
+	bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
+	b=U26LTY95l+zyALkSgqUxKa+f9x2cVVZ0NqSKA5CxxWpZHUfcbrvS15NXHIYPA9LoGpmNAX
+	RoAs24gRUmnAOVwY3PAIQ3a8xpfVgP/SsojB65/u4EfQxYqurpPzasipbWS3/uMi6kkev9
+	IXyT0TeuP7HGNLuHGI36Jb5G7sLjjfw=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ok8OBzi/";
+	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=elver@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784561200;
+	b=JIo1S4TUOaE3K9uwCGuQyMSttukhpM8bzhq7/0prblDEiePMmQQjp86WGpumLYfqi+BlEa
+	SAR19+sk80eXLf0UKTEWpY0KCkKxzeB8da+vRkNwV2g2nfXaq7hH3hFpRJasqY6/h5Kx2o
+	P3JlGbNArHkvAEiRSwH9h++9koS5i+U=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381216921aaso9938353a91.1
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:26:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784561199; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HNEAUXMxBF5wtbvKwbTTCQsrOQuclXAtJYe2HBTUoR5vwhaoxYcWBf9XXPGYVy4w7V
+         TKOJmJv5Namd1xeG7HL4y4ZDpya/aqFZ+dL9NfKLF3qdOWkjtz5d8xlD3qbX1LoN4bfR
+         GCVkwHPEmJHYHaokWB1zkxNEBew2fDuiFX+u21ev5ejC/FGhpWoNblvj2AWxZ8CAbZwK
+         FAI0/t7jkEwaVRy/TzAHLTZpea5EEDTI+sFig7TGrUxDQbqI8G5KH2sl/4MSTeoposC0
+         ioejATJY7Q0usvtHKGYoqvFX1E++J05KTeF4r5AX4/samm8sAu5uzbHTSulOP4EZCvMg
+         nhDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
+        fh=tv1uX9FK3Ujl0JHd81Ah5C7goHqL/YhNMUD45xuxdpg=;
+        b=Tfb3+kn1v1ZMJFqHj72RuE8PopRRayGd9zOh8+VLDrXyWz5Xnw73AKs/IqS51xoDQy
+         RVnvDz91TqziQLW8lEJraPe+qLfb/SxhfHdaTHToBwjgNx1f8KvgVr64qQ3bxs7UddIK
+         qTl92ly1/r2SHIHG3Y0FzyvkjgSn5dHJz5RjTHlCB4hke+sGUd0B2QjNrSc3nQRb4eNn
+         mlE1TfZm34wxEpSIPiuGnpl/yY3VZV4Cpr2EMPqHKsZmqvuRv6++gv7ojtT901IJfcSI
+         j/atfyFdnra47GzmJ6eUgmCuxbDOSjwO6g3yhvqdlxuWuBZDO5HU+UgIYrA7ZQPUb0xa
+         bl1w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784561199; x=1785165999; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
+        b=ok8OBzi/ZU7J8YD7DWK1g00FCovq9Cy7+cU981UBHs8zGZ+COZj64+albVa7LnD87a
+         JKkbneJs3IeGfX0EcPPRsGaKi2MC1tMkrH8j43QdL7zXioKNXDRNnUEi3zkawyYkNGsk
+         XcXnEkpYcKk7gSHJ3NgbfEHSfopJX8xi/w2Gvto9V4mrD3Tvg7uIL3iZ9hh56xwtiQBo
+         klBDiQDA2bXe9hB4INRw532QXlrS4BBvzINNzgXEGOJdORpN36vXdyI4aExcFwZ1n+pw
+         znhtbAXpNil3fe5gsgXGAs06cmruuOgnkNTFPi+BT8GXhBztAe95oXzddUraQx94d5zm
+         oLzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784561199; x=1785165999;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
+        b=etoxq+ynaXEmLE+a/kapTAChDnq61OLtO1zcY48+VMPay4OZ1dxTSvKF4EdrjTHDiq
+         TIyNJPryFulInpV2B7880rs9+nnREckvNIOBwvuxQJYzPMcwzGoT+mJeDvwOIsykFnUS
+         l8tg+AvGke2LFL3yCVAKg3nNqJsrKlK01E/9KoFW/asfXnJxmZ8CC0622P47TxWHj8An
+         GAhhVMN+RHVCM3IEjvhAo3UklgXMMn3RFUsWm35iTGruZfapKT4MQ6fl/I+D1ztvDQaB
+         uosrWCkeh9ajOVChuhg3T7RsUrqCm9ar6lGdwi9273ZpcK7UOQtjOttIuJJNVMBN7t1d
+         sLkA==
+X-Forwarded-Encrypted: i=1; AHgh+RqfkixHrqQSbTKUP5mIVILHeZLUNSVHjuxAggiUR9O9usBCsWE2OuCaM8JNv/Jy4bLnQ70i2ehQQA==@kvack.org
+X-Gm-Message-State: AOJu0YyIudjMp+rI2T2hyUVxcdpE/0+UTPybAWTWy3mB/+7rKlD9RXvK
+	EWUss/8dzLcnGDDfID8a8lNR6Jsl08pAxCB6cykeb3WvzfkBN6UolxsTmUVZ7joDVlORBsvgnBw
+	jmJionhXgamfzjIwDYKn+WNTWBKp1gM9y/HpgnoGa
+X-Gm-Gg: AR+sD134hoNM1gDFBI/2FiLv7Gl+F/xGmLxK3uEGhbNQcKhzDW4zP5cg1x2qsi3MNCx
+	L/3T2AGFKfLW+8W3nofgtnyF7aXlwRScRoEiypSfBDHQH8fsVHo0n341IFlA2QE5I+losMCFDRx
+	SR5/xTtPBvIceycTq5k3kGU9XZjNFgWsIYOwjJCfcbwHcRRrIDj9hA4mESx0kaOrpimlU/bT9Yj
+	tqhwbGHPrLfscFvyzHlaLc+OQfdcydejFI54VL0mxHaj5MrbiGJaB+lat78E0FjppyaKKOGxQUT
+	f0dw1ICnt0DxpwhRJZl0hOBnqA==
+X-Received: by 2002:a17:90b:580c:b0:38e:2524:724f with SMTP id
+ 98e67ed59e1d1-38e4b410109mr15364918a91.12.1784561197991; Mon, 20 Jul 2026
+ 08:26:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F153A40009
-X-Stat-Signature: 7h9gau4uo7pjee9uhpc3qfmge71rkhd5
+References: <20260717125023.1895892-1-wangjinchao600@gmail.com>
+In-Reply-To: <20260717125023.1895892-1-wangjinchao600@gmail.com>
+From: Marco Elver <elver@google.com>
+Date: Mon, 20 Jul 2026 17:26:00 +0200
+X-Gm-Features: AUfX_mytGrClEjUL35sTA01mL-vDpdcepD52IC2sE_eAPBJUPR35g0y1m7pBRLg
+Message-ID: <CANpmjNMpKXxk2KsZORakwwdOpDG=pRbtJKi7doBt7QmQwUKdgw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 00/13] mm/kwatch: dynamic hardware watchpoints for
+ hunting memory corruption
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Randy Dunlap <rdunlap@infradead.org>, 
+	Alexander Potapenko <glider@google.com>, Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 87530180003
 X-Rspam-User: 
-X-HE-Tag: 1784561118-974782
-X-HE-Meta: U2FsdGVkX18X/Ko1KyDyephM+rKWrYh2Qd4megDYWhng1tQTDeAjKp9yEd33VjN4ILoMQaRKk4RCyEDr+cCziyxh/609y0Ur68cCugUfm73GJbrJoIU4Mkja8Rz/uwJ0ylVZvkiADwHLMo7sRdojOqY/H+qZvV6KIOQ48hjCY852P/+Pi0rCGSUrDf9MWnj9zCohPHC9wbLfYz3dWugZDnTUf+8JApGHQlvgHLZO1FVeduLG2VtXx4W/NntQqJQ7osEYlGuPX+pZa6zOtRYHK4yPY+tUNx9R98gtdUYyWQTtzyXgshyCz2RIjSSVkrZjotEah+H9tlusyHn2XI44TctsurmDxBjJxkNWBRauncEJqO7XHsOgZM6a4vJjXHj0QkVaOgLPZraIzAm7Cu6cqXnuyxEndRisWRhATtSCJsUT6eBiAWORZYuxmmwlzj6xDhNyTIth5glryvZ3ORe9t20y+rDpKWjAwlJTn7fmiTa/I0nFNE0HA00VanXx6fhm9INdK8V4spvzGW0CxwtFtOaVgsK9PzIv+RkzEkp6mqPGgf8+knij/V1FWLdmgq/pEU6RzNMLt5Viy/e7FCx9J39rWRTJy5WHoQuYcOwbYZO8tWJQ60KRCR7ytiKHrsNLxinsQLstn/8dBTdxOOeWpUm6aeqC0dRky/eGQuleeTxo1qbMvUFd9YhLtCVD+PL1++OKvlkq6Wj1A4IBSGPWnD6kJujPBHxGnjTBQjeZxJohUu1H771uV3huuMhB/OCOUL7NGbRw0VVtMXLRaU3IEBOT0WOQheUOOEGNU+HiyPnxlv/efpaq8Wwxx6y9AyqqQI9H4oQUEhHCuSF2gRwvdSK6WRxiSvafojbQvJHi7wJgM9VKgNFwGA29KCxuQYzr+nuqPZurNWaWY0SDKlPuUr9i91cOaJNl299x0TVlX0TyBD34sI/sXSPcQ8lDH8g9CqrEh8GME9qE0VVPmaP
- QU0LQlUU
- Bi/cwGj90fIlEJlagvP9fO6aTisdBvC4E1idualxt8JwC0eDbOatUHF1H9EhvQkZPVewtnz/5nA2hY/6JJw3DXGpm68mD/uCp73pjiGsPSOULIh8N+JcGFSCte7/YPfgU1G8TZ6q68Lsb/S8l9UuOH69dLqk2H0VptWWTLTjL3rYKG5fT/wYn+/zzVvkXIA/eotrXvuhLLSIWAVrA/MK4mR9W8gNKIXCxVgAwYrpxTPN//ZywYADHgoj2utW+9ot79muSgKikFTCYs5Qc4e0Yaid203vhSz2sUbTCSW4CGvS3g0QEO60Q1+XmVSuDXMO64BBHh1K0aKrxov/vK4/JkRUD+2AG/LYu4DbQkpjlSvTYUi07GedMOds5mxEpY7/ml8gfifsXEpNn6C461igHEzWn38YK1PGifYaavRBGwu7d7zYsldNDM0g4QxY45wWMHMyj+QzUDz3q3xSCUVO28guptLVnBWNvZYVQzO5dpUnnpznYMh8z40nYayJNDCSba8RoiPxvyL7FFFYy5Qu/bHti/uBVP59sJvpSXZ3t7/KKsImGkG1oF6wJ61RbUNkpl+pJdMNXMRKZui+f2Sra9y7yhqj/v/ALV/AULArPAVvN+DRztGeP0IkeaBGYoMovqyzSxBcsqnyhq4wL1en9mRnFPLFr8qHDNyZ9bnyC55MxChCYZqAnNpjS7b7X75OoQxhWh8T6yk5MKb6CxjT/8ncXig3E1ktDAkpl
+X-Stat-Signature: t9rbt3yxx13ce793y71z7zqkjkfwg8ye
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784561200-568528
+X-HE-Meta: U2FsdGVkX187LtrUEOPfNKB42FBIhCpuB6/VbvfFmeRiq8uL0U5mULzSBV8NtQA43mzHRfsg6sOdlFBhd1N7pd9z0l4cxugQDia5N+ZdgXWDeruNmEmMSPwBrVxtNjGNIkYH758Zx1w6if0Ww2JyoCNI+pSGpxawf+g8Df39DLQSz8zPeW097UPdDrpxirGnCuc+Z2N3Cq8I7ZUMq703Risns2z9rNXNMsQJZ7rEtmaxKeDwLNnRYOewQXiOvdrsfcF9VkPyKGeaIF3bQVYAES4eU1sXVwzAD8nYGoXSEatxj1saOcSF9xH9CDSj5UPJfbtRX5f0tTOQMG4zkg6eoxVEy5dzpE0yw5cnH4EmoV1cFhEjAN+Jqsc1Pf+tO3mZUNI8E0Puo+Jztc2QrfLP7c1Ukgg8+pUxfWmexEmnDlnsXfd6YAK5owajMQ3ndubFeohEjdJJlBqs2lHcGKVy4I71kmpjYBlSsGY/jG1uJqDhp0giZsHIrgXoffsUGNdqHEM/bPd88duz4dCZjG1PyU4GkqCMbCgXMROJHxEh2aqPooKt4LY8KcRCXISbo812iJHY3H0MJZjxhy6JynpCycdZ7TvHafpGaenXWNu+xlWpZdn851WCFsDMq6VYePs9OiOVN9ks/cxNNqGHU55/i7R9kIs9nYwjNlDDYJy2Rw40wCoOSAshKvJc/N7dF+jGJMfhcBpIzGCl4baJzJKS6GF/DZoaElEZpSbtDn/bfNv/pQBiHKL1RBpSLrbAlXknx0tpKn0SOG+Ns1EJhKeevr2C4QiygMMdgf4PhcXH5VggLM8ilzm3yq2KRjG+vZRVibQfgBe/kgYUygeTscwElw36vBgFcf0M0UbYtNYRiUBBoDXksjfyGOkCkEWOmwuIRZ4sv/R8+MqRlIGuS2bhApYki4JvJKsAKMfWgLO5x1QtC3Q97ObMbulFoXtnij/jz6sf1A4B0Z8pvZ20zYn
+ 1ZNpq9Tl
+ HIvyV79nPZC6W6Ryb1lLTjU9yK0bXi7Uz/jJdKVILPF4WnoXK6JniIvWdXTcv3ybu5EZBwTjc7M8SfFm6I2X4GPl8i7j/x/9Lct7G14hBTnQP73vNG3XyVlIM+rp3m0ymSqI+vl/ol0swrrxhwa9LYOTeqI/Y5IPUosy329hndneSnNqEzXI27jIWK9Em/GuBi9Cuo39/j5CNvRsBjDDdgscxBPyiRn717Sx3FzELaVHgoVDzlFeMK0wmGE/bl2dBQPYWvrxmmrfZ25MITMzbELPOCJiVc41sM68wyMVr9MeaXLrdsjSv6tveiOVqKJHkvEi1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,119 +146,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 06:23:45AM -0700, Breno Leitao wrote:
-> kmemleak_scan() can run for ages on large debug kernels. It was
-> causing some soft-lockups which I got fixed with commit
-> 3175fcfec8b16baeb ("mm/kmemleak: avoid soft lockup when scanning task
-> stacks") with our beloved cond_resched().
-> 
-> I've got the fix above deployed in the Meta fleet, and now I am seeing:
-> 
->   INFO: rcu_tasks detected stalls on tasks:
->     task:kmemleak state:R ... nvcsw: 274/274 holdout: 1 idle_cpu: -1/3
->      scan_block
->      scan_gray_list
->      kmemleak_scan
-> 
-> and, worse, blocks the callers waiting on that grace period. Here a BPF
-> struct_ops map free, which waits via synchronize_rcu_mult(call_rcu,
-> call_rcu_tasks), is stuck long enough to also trip the hung task check:
-> 
->   INFO: task kworker/...:bpf_map_free_deferred blocked for 122 seconds
->      __wait_rcu_gp
->      bpf_struct_ops_map_free
-> 
-> Then I've learned that cond_resched() is not an RCU-tasks quiescent
-> state, so, we need to use stronger primitives.
-> 
-> Use cond_resched_tasks_rcu_qs() at the scan reschedule points so the scan
-> reports an RCU-tasks quiescent state as it proceeds.
-> 
-> Inspired by commit b96285e10aad ("tracing: Have osnoise_main() add a
-> quiescent state for task rcu").
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Fri, 17 Jul 2026 at 14:50, Jinchao Wang <wangjinchao600@gmail.com> wrote:
+>
+> Motivation
+> ==========
+>
+> The hardest memory corruption bugs are the silent ones: a rogue writer
+> scribbles over a live object through a stale pointer or a race, and
 
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+The stale/dangling pointer (use-after-free) case is the main one you're after?
 
-> ---
->  mm/kmemleak.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-> index 85f18b17e79c4..f63dfacee7ca1 100644
-> --- a/mm/kmemleak.c
-> +++ b/mm/kmemleak.c
-> @@ -1586,7 +1586,7 @@ static int scan_large_block(void *start, void *end)
->  		if (scan_block(start, next, NULL))
->  			return 1;
->  		start = next;
-> -		cond_resched();
-> +		cond_resched_tasks_rcu_qs();
->  	}
->  
->  	return 0;
-> @@ -1623,7 +1623,7 @@ static void scan_object(struct kmemleak_object *object)
->  			scan_block(start, end, object);
->  
->  			raw_spin_unlock_irqrestore(&object->lock, flags);
-> -			cond_resched();
-> +			cond_resched_tasks_rcu_qs();
->  			raw_spin_lock_irqsave(&object->lock, flags);
->  			if (!(object->flags & OBJECT_ALLOCATED))
->  				break;
-> @@ -1645,7 +1645,7 @@ static void scan_object(struct kmemleak_object *object)
->  				break;
->  
->  			raw_spin_unlock_irqrestore(&object->lock, flags);
-> -			cond_resched();
-> +			cond_resched_tasks_rcu_qs();
->  			raw_spin_lock_irqsave(&object->lock, flags);
->  		} while (object->flags & OBJECT_ALLOCATED);
->  	} else {
-> @@ -1673,7 +1673,7 @@ static void scan_gray_list(void)
->  	 */
->  	object = list_entry(gray_list.next, typeof(*object), gray_list);
->  	while (&object->gray_list != &gray_list) {
-> -		cond_resched();
-> +		cond_resched_tasks_rcu_qs();
->  
->  		/* may add new objects to the list */
->  		if (!scan_should_stop())
-> @@ -1708,7 +1708,7 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
->  	raw_spin_unlock_irq(&kmemleak_lock);
->  
->  	rcu_read_unlock();
-> -	cond_resched();
-> +	cond_resched_tasks_rcu_qs();
->  	rcu_read_lock();
->  
->  	raw_spin_lock_irq(&kmemleak_lock);
-> @@ -1753,7 +1753,7 @@ static void kmemleak_scan_task_stacks(void)
->  			}
->  			put_task_struct(p);
->  		}
-> -		cond_resched();
-> +		cond_resched_tasks_rcu_qs();
->  	} while (pid && !stop);
->  }
->  
-> @@ -1935,7 +1935,7 @@ static int __kmemleak_scan(bool full)
->  			struct page *page = pfn_to_online_page(pfn);
->  
->  			if (!(pfn & 63))
-> -				cond_resched();
-> +				cond_resched_tasks_rcu_qs();
->  
->  			if (!page)
->  				continue;
-> 
-> ---
-> base-commit: 0718283ab28bc3907e10b61a6b4be6fefa1cbb2f
-> change-id: 20260720-kmemleak_rcu_task-6d3ea111b947
-> 
-> Best regards,
-> --  
-> Breno Leitao <leitao@debian.org>
-> 
+> the victim crashes in a code path far away from the culprit. Any
+> single developer hits such a bug rarely, but across the kernel's code
+> base and install base they keep arriving, and each one is
+> disproportionately expensive to localize. The question to answer is
+> "who wrote to this object, and from where?", and it is hard to get at
+> with the existing tools:
+>
+>  - The kernel's own reports - an oops on a clobbered pointer, a
+>    BUG_ON, a list-corruption warning - fire at the victim's access,
+>    not at the corrupting write.
+>  - KASAN/KFENCE catch memory-safety violations: out-of-bounds
+>    accesses and use-after-free. But they have a blind spot: a
+>    corrupting write can be fully memory-safe - a *valid* pointer, in
+
+Language-semantically speaking, a use-after-free write to recycled
+memory (be it in heap or stack) is NOT memory-safe. The detectors may
+not always catch these (KASAN relies on quarantine for that to
+increase the chances, but yeah, not guaranteed..).
+
+>    bounds, to a live object, written just at the wrong time or to the
+>    wrong place - and then they stay silent by design. And even for
+>    the bugs they can catch, KASAN's rebuild, overhead and redzones
+>    change timing and layout enough that racy corruption often no
+>    longer reproduces.
+
+There's also tag-based KASAN (KASAN_SW_TAGS or KASAN_HW_TAGS), of
+which KASAN_SW_TAGS has an x86 version based on LAM (not yet merged
+though? see https://lwn.net/ml/all/cover.1773164688.git.m.wieczorretman@pm.me/).
+
+One property of tag-based schemes (and any other lock+key detection
+scheme) is that upon recycling some memory, the tag (or key) to that
+location changes, and any previous pointer that still has the old tag
+will fault. The caveat with current pointer-tagging schemes is that
+entropy is relatively low (4 bit tags).
 
