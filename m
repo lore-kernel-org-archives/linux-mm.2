@@ -4,89 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC40AC44512
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 01:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D90B5C4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 02:19:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B564E6B008A; Sun, 19 Jul 2026 21:41:42 -0400 (EDT)
+	id 97A106B0088; Sun, 19 Jul 2026 22:19:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE09F6B008C; Sun, 19 Jul 2026 21:41:42 -0400 (EDT)
+	id 9530E6B008A; Sun, 19 Jul 2026 22:19:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F6766B0092; Sun, 19 Jul 2026 21:41:42 -0400 (EDT)
+	id 840586B008C; Sun, 19 Jul 2026 22:19:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C3336B008A
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 21:41:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B3446120745
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:41:41 +0000 (UTC)
-X-FDA: 85007453202.11.9BF5E06
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2E036C0008
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:41:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iCMNUkUf;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AAA96B0088
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 22:19:53 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8959160730
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:19:52 +0000 (UTC)
+X-FDA: 85007549424.08.068991F
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 49EB840004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:19:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ToxhVma+;
+	spf=pass (imf17.hostedemail.com: domain of chenyichong@uniontech.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784513990;
+	b=x/tsdV7mNng5eKAp5SYEjlNwkeJgbY1GGx+r3bJ59LwJvhkoWkUt8RX6LKqiBPMedxeASK
+	1cowxq+KPk9aduWefdcZ9w7fgX/NnCMFyQjZKbW6tquyk2IbrGSNprkNbFXj8ssdP/oZNb
+	oBNlN5+mwC7Gh8RMpk0s46+kwx/cW+c=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ToxhVma+;
+	spf=pass (imf17.hostedemail.com: domain of chenyichong@uniontech.com designates 54.204.34.130 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784511699;
+	s=arc-20220608; t=1784513990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R+0AGqwHLeIrrds4xiDUsGuVUjee2WmZWQHT4y4URdc=;
-	b=V0Zikd18SflASr0L6tJoOv8V2XXXthQVjd75PTRzQeGv5OmGMGBpT9yRvFoVoEirsXntld
-	oSqPEJ4vYRqKtkgCRt5fSJ0/SL0koTu1ArV0YTKL1k2Ef89Nnci4/yp27u8iqn1qRPrtKT
-	nDxla4x6E3eB7fcU08al5VSmkl51HLA=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=iCMNUkUf;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784511699;
-	b=z5d6xYUSWlLpNZqDcJLwHaElGL8BfWRkWHQmyxnQae4SU2KZelu/vKZl/K2Z0slwCtdzdj
-	+Q8+17SOBHyGMpvztJh6z774siReYabKPeyp5ANFYxXv1idK0Q32XkyvstjS9vGfGj5LV4
-	yXNo+LpBgRmgPI40pG/q2UaY39Mzc3o=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784511695; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
-	bh=R+0AGqwHLeIrrds4xiDUsGuVUjee2WmZWQHT4y4URdc=;
-	b=iCMNUkUfDAdqLC91M47a2QeZaAOf70XbcYtUfhB5J99NlEwdeF4coJaAM/TUw8lCgjIrvmYL9bZ9PDUxir67GVIvTLpjChuzzmYRgxI4IQjS9Uwk+7BgvMRmdWKVymcBjZqkQAbRBsDsF8EcNNYy97iQXXSerb2qWZjxXzES2SU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X7N2CD2_1784511691;
-Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7N2CD2_1784511691 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Jul 2026 09:41:33 +0800
-Message-ID: <a7f55437-88b8-4ea1-90e9-ab0f3f42ca2c@linux.alibaba.com>
-Date: Mon, 20 Jul 2026 09:41:30 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=FzSyefZBdWz21D7smw2UotnDXfr792MR7jwj4+8Nwfc=;
+	b=6Zhs0SURTOVzGqdDrGYmFzq2avffGlrhE2Zx2sH+qoZ6xIHEHHZVNyIzb9tuxiRhcp1wvZ
+	vkpAV3Qz1yKByLjF1R5cQJQHEs786FVafPnlD10uBlrWTCRPFpAYAHKKxcsfuW18z8PaLS
+	j3lm7TUe8da1I0B+mNqH38lKCPCjKQk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1784513968;
+	bh=FzSyefZBdWz21D7smw2UotnDXfr792MR7jwj4+8Nwfc=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=ToxhVma+QcOrKhIlgVCHFw/guEXd+fgI1a5X0bsPH4A9hl0h43dVzWwjlGwQfG6XH
+	 fvwwm9d/D1qCkA3ZqJwgPl7LXlXlt4dCy2GrwZXINTt6vhNHvsc12X1/510xEM86rg
+	 OpJcSS3o3eRsx7Lwrja7ruD2AaEg7E4SjevN/hd4=
+X-QQ-mid: esmtpgz10t1784513944t75e62dba
+X-QQ-Originating-IP: GN7JFQV9yrGdoYbSaIEJwawim7Nb4sbCkMWJto4qlcU=
+Received: from uniontech.com ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 20 Jul 2026 10:19:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 4858750843730928359
+EX-QQ-RecipientCnt: 8
+From: Yichong Chen <chenyichong@uniontech.com>
+To: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Yichong Chen <chenyichong@uniontech.com>
+Subject: [PATCH] hugetlbfs: release subpool on fill_super failure
+Date: Mon, 20 Jul 2026 10:18:59 +0800
+Message-Id: <20260720021900.1376309-1-chenyichong@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] mm: mglru: promote mapped executable folios after
- first usage
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- hannes@cmpxchg.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- mhocko@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1784268206.git.baolin.wang@linux.alibaba.com>
- <7db4d1975cf04e3e48157f98bdf398565ee189a4.1784268206.git.baolin.wang@linux.alibaba.com>
- <CAMgjq7CkuWfPfrMe9jPypW4zibHG-nFCmH26xR7u0Z6zhOvQpA@mail.gmail.com>
- <eb395442-0aad-428a-a5ac-9072d2d89060@linux.alibaba.com>
-In-Reply-To: <eb395442-0aad-428a-a5ac-9072d2d89060@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: smk5p3ioxa38qd5teifymc1ggwnd7w8m
-X-Rspamd-Queue-Id: 2E036C0008
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: OHgofOj2wgpBvrznB2Au4n3j0A5xBRbOuyomQ5dQsrslY1rUO/aSs4Mx
+	5BTi0elUyr2OE7NOJfd5z9KUpQwT+3dnvNMi2Lp/TUqViyUO7aHiDp/ZmIjeyC67/3jXmeT
+	R28lKQfMQ3mviZow+1uC2ja60sc0+bDHhl/lm0zPGqV0K0P9inSTKtnFmNqbziyAdAhtdK3
+	h++tBmJ+HaXVQehvoFef52vVaHdc0sVrgZemCEm3SSbIpsEOeXX+jpruYY9POBookcirpUz
+	KsmQmLQinkgOIhukCyEetYhoEDVIu2MD4+3yRIvK3+7thvx5dkVxXLinPAjwtLXXqJe2fUq
+	QUE64ckbwqkHUN/TQ0r9YHgCcJYtDM9FDyPfK+sLAliFZoJn4vmnTZ+IToUxaHaWeTYSBc6
+	7Vy/KugaFzKyDanAh4dsj2DkaFNR6g1+duC3CSVQffCscwXNWkrWV8jM66yaxdjROsSWvBG
+	Y9c42paQObQ0ZL4W9Z7ThWveEsvAJa6eBbUJa1h/pMopKjIUAroqNRW8g1oIyqCtIofDzLo
+	NWkYErCcPvgt+EEAs5KzWENSEZMD1oihbMPlCQDhrcBxxFbnUEBe/r6eYUMAspQfj4ORa6u
+	HYcIidDqVIx5+Yv2BTLX4yZ4PlzQ5amRtXBXis9NVJ/shXyiLe8Jl5vDnql9TTekGZQV7yu
+	bhJnDjBhmOGESfSUNanI2+Z4m3gleg0VJrX0EMq0+zL0M9pCprv0OyEfT5FqGSBb5v8gddj
+	EZSQHl+VH50i+vRMZrEnZLGskgQajaP3yOIDBIV0iW+gMDrOW3rDLfUYFHiM5yRcTsEYPnt
+	M8Hi7W1H/IvaKdbjQNWyqCDF0/AASZr2hrfQXg0qFvvrsxOuu8eYXdyAAthprmWLkwi5XeY
+	nuavEZIzuCM6kmViw/6bcO2AVuIQZp0LFH11vRT755Xpt2E2qktpjen2E9afRRztTuD5gOc
+	SqygGX3r6WfEmpEFNXX2xKRMrBQTtZ8UfVnOeTnexGrXI401kqp4KYgOb9q4M2davCKZID4
+	T9FX+akf8/ciD3sE2pNfDOdVtEGKG9a/Yn6Y4lUYZHH5iSZtmk
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784511697-719490
-X-HE-Meta: U2FsdGVkX1/9+wPyh0N/zFq0jLZEb4ddftVUzEsXEXGc/4hXKaUoOGUvSVmtD138mu2jBsANHtgH0Ps09tkpwsk/Q5tK/pOgdo1YziwlgupinUNoBeRZfj6nQkOtonpwXe77cp+7ozE/NjaW+wGimwqILRAMcQAZMLdbgPUNBuu8kTjUq+2diCYLH77O1VUiSkXsvRBrTGPOpOHO2ZOs+ndQIRrmbBmLGZdup2zK/SAcu1lwoRL6enSeb/K2xrjNwZwl7DAV7ecBJUYvhXrsIO7oTdajzanKBIRkhDfpNAKign8LfCds8rHIx1opxnXFup6zPOa/l9ilADQgm03F4A8vrAneNswc1E4VFjrhgOAGBKO8m3mD8o/VzaX1OdoaQuprg2DRt1OD0m4lrj9fdyQVo7Anvdb/wAcBNDLleUFBEm9PG6Ar6e+/wX7iqrBScI0c+FWQXUZyNxcPsJl42qL+7rOScwTmieYs89HDT5pJsUxbDWJqqjGcYw6jl6lr3WY9F2kmMHcthWgixQOI8JrwV5hJIh8HjtGyNHup8sXm3k10QK0eR8B5Sfp1MwVNLWSIQbEz9dTSHYEAlAfYtXH7KIiVd0/Kx41A8u+BYrcWT5TbYnc4Emk4gwTqjXDl/8oPGdmJN7hWOdNPo8dW557HpjzkIT/yguIEZ5yQPNjrrCx1gojflUIet/9QKWYvES956GS2eyNb1HrHNRWQMKJqhFcBOiEwYuHnKyU7+DjLHuJvu/EP/wWK9z5F5i+HXvgtByeeQvBxJFXlSO6qJjZWV3RaiTL5detmNCJo0sCzTdlqabft38OlGV32xVEpP1q9dTFdnGG9Y2KViFeXWVAqPkbFOe+0l2cfSVD4uPPtwSNsC8eWQybecj5N0DxNSmEVMW7LvW4oG1USrZfPWV8jOEJ41Sa/5lXUNXaCUhQl5UK5ArHEc7vx/ba1wwGYULA0nRPhEqsjgYTI5xA
- GxkNu0i0
- alV7ubBKJ1GLwPtiuAXxsPzgCuSnSzcd9dVSccD9oR/0bpy1my8prIH4ufQ2BRUV+taaN7GErxXrlo7QbRcAoJQ7J9B/mVNPeb46TkxVa5sheqNlmdqtNG9vJsnqfeSiCJa16yNI7XjRlHE/1vlzpsnFxpecnjzsqeXIpv+NM4pWKbZ/D2UuBCT1l3GBL23z+FIU24vTNIq/RrqtScYwL9aPLcyLq69f4oqNqVE6qJd2X/8ZY2yFlp0cE+dOTghNtqHBTkezbIFc4xtth5oQFQRoRlI1NaBlOE7Ml4PT88kZbQguVfPRkODH6pcE/bVGndBpo08L3LbCdXoI=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 49EB840004
+X-Stat-Signature: jnhywsusuo55itqon1rqqakimz4nweiq
+X-HE-Tag: 1784513988-853571
+X-HE-Meta: U2FsdGVkX1+Z+eDT+5W86FDjLM5u2ME/KYP9tEz+lccDesrIhfhl5Cy570d5tN3WRRtLwFBYZSm+fF/fpArxqjorDM3TMXsk7rcWCLzm5HevvJuyZgBBn//SZ1qq8/Vnkt5Gib/k2OutpUMYwNFS0DSApl8RdP6aeekCzS5DjyLw3ILtYqNYapkMNWDqfpdYBpZSDjhmBVJq/o1YwiDxXuh9c79zzsvaj8l3riDNg9wDIGaox/zlKs/xI1FnqKoVfpCl0CtVwvUJRoisCDz+DzW4kd32kcKXkAyQcp0lEsPCxt04EdhFhFeqMEF2wbZeYmXvB4UtT2FqnYKnpgCnVUtSHn9U1/8Imgn1XnLKRnkyvKr5LOhhb5qpq19gnXk/M2P0Uo42Pjm9LBIuqR2JptHx02JmnGaD7l57xRMTcM2346FUUuSsFnxvHswR3nGohP5gPA7602W7wncMohEy95D3Rt3DPjMOM9xjTcA7B7nuCwKjAQMGrWpUkhsVwr6mPkMumc6ElKm1QGYl5eGlWl+F8SArl/2fszCIDDKT/zDf6KMHZOGiR56r9bQKwIuXzhmmo1ZjRCO14vQXWgwUEVJ8KGlX6Phml00Ph/x++SITdbLyMPUbeDW5R7qobxLgdG84cKi6e5vB3s4nwla6u6/CV1qKcPeIM3gMrf8qBg35JxhACxX+ZVXNhWjWdsTDZ44v4H7NapcmHcX/Q3m9xmYnob7pLRrLL+TqKlGGvCA/18GekaXRFxFvrrNcIOdPWVS47JqaJ/93dj+9/PX19v3RJD1wVk1UcX1y7m9jVpV6r7RGP38pKgvowWZ9ZXShAGK2Z0Vz+NDsNvOCr/EVia0FgBEHhmJlmry5GCOuz/oPJOut3fLlQkNjFXdxtnAVb8oxsoMSp+z2Nl68rvli7z0hZ78dmSp4Lqpv4WlM8tbB+t+95ZePn4YToZi4S+u7dMT/s8CCkwhC+j7uNc4
+ CLNraAu+
+ Oazm6wg85GBln2SbDrIrbMccssgJHeUDhe11WCYED5ydtBSWdcSvl/jbqN1fVcA1MK54S+pTuG4mVT0JEfuPrWqHV7jTzKoqatVoFV2v0xivkHFCG89lSrNCStU69Bs/qH7mBuJcU68J184USG4R4C2Hpu+MAFz7I8tIcTk/5SHti1uOw6y9mr5zBWWUosUOU/Lh3jg07vNuR1yoxd5FGOzl7+fJEf/8jCRj6TTCfmCo+0t+LuL9A1BPvlnPK319pKo458gpGWMxAYBKpPeQOY9hcFsxCDqdvr08yedWrpHKU6xpUjvpvqQ9zeFb6MLBh/N1LGUqi4rRJV8iS5FqDuS5dFoh9JOiXAcI/2tGey8LnyHlItz2gPiaFb/ZvEsqZXNehIkMxJFCBoV4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,119 +114,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+hugetlbfs_fill_super() allocates a hugepage subpool when size or
+min_size mount options are specified.  hugepage_new_subpool() may also
+reserve huge pages for min_size.
 
+If root dentry creation fails after the subpool is created, the failure
+path frees the subpool with kfree().  This bypasses
+hugepage_put_subpool() and can leave min_size reservations charged.
 
-On 7/19/26 9:45 AM, Baolin Wang wrote:
-> 
-> 
-> On 7/19/26 3:23 AM, Kairui Song wrote:
->> On Fri, Jul 17, 2026 at 6:06 PM Baolin Wang
->> <baolin.wang@linux.alibaba.com> wrote:
->>>
->>> Classical LRU protects mapped executable file folios through commit
->>> 8cab4754d24a0 ("vmscan: make mapped executable pages the first class
->>> citizen") and commit c909e99364c8 ("vmscan: activate executable pages
->>> after first usage"), giving executable code a better chance to stay in
->>> memory, avoiding IO thrashing and improving workload performance.
->>>
->>> However, MGLRU's protection of mapped executable file folios is less
->>> reliable. Although shrink_folio_list() checks references, the access 
->>> flag
->>> of mapped executable file folios may have already been checked and
->>> cleared by lru_gen_look_around() or walk_mm(). Additionally,
->>> folio_update_gen() or lru_gen_set_refs() only sets the 'PG_referenced'
->>> flag for mapped executable file folios, which causes shrink_folio_list()
->>> to ignore the first usage of these mapped executable file folios and
->>> reclaim them easily.
->>>
->>> Follow the classical LRU's logic, promoting mapped executable file 
->>> folios
->>> after their first usage in folio_update_gen() and lru_gen_set_refs(),
->>> giving executable code a better chance to stay in memory.
->>>
->>> On my 32-core Arm machine, with the memcg limit set to 2G, running
->>> 'make -j32' to build kernel showed some improvement in sys time.
->>>
->>> base                    patched
->>> 9248.543s               7861.579s
->>>
->>> While we are at it, introduce a new helper to check mapped executable
->>> file folios.
->>>
->>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> ---
->>>   mm/vmscan.c | 47 +++++++++++++++++++++++++++++++----------------
->>>   1 file changed, 31 insertions(+), 16 deletions(-)
->>
->> Hi Baolin, thanks for the update, looks good to me with two nit picks:
->>>
->>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>> index de62899c108d..1040bf9f96e8 100644
->>> --- a/mm/vmscan.c
->>> +++ b/mm/vmscan.c
->>> @@ -268,6 +268,12 @@ static int sc_swappiness(struct scan_control 
->>> *sc, struct mem_cgroup *memcg)
->>>   }
->>>   #endif
->>>
->>> +static inline bool is_exec_file_folio(const struct folio *folio,
->>> +               const vma_flags_t *vma_flags)
->>> +{
->>> +       return vma_flags_test(vma_flags, VMA_EXEC_BIT) && 
->>> folio_is_file_lru(folio);
->>> +}
->>> +
->>>   static void set_task_reclaim_state(struct task_struct *task,
->>>                                     struct reclaim_state *rs)
->>>   {
->>> @@ -835,11 +841,15 @@ enum folio_references {
->>>    * with PG_active set. In contrast, the aging (page table walk) 
->>> path uses
->>>    * folio_update_gen().
->>>    */
->>> -static bool lru_gen_set_refs(struct folio *folio)
->>> +static bool lru_gen_set_refs(struct folio *folio, const vma_flags_t 
->>> *vma_flags)
->>>   {
->>>          /* see the comment on LRU_REFS_FLAGS */
->>>          if (!folio_test_referenced(folio) && ! 
->>> folio_test_workingset(folio)) {
->>>                  set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 
->>> BIT(PG_referenced));
->>> +               /* Activate file-backed executable folios after first 
->>> usage. */
->>> +               if (is_exec_file_folio(folio, vma_flags))
->>> +                       return true;
->>> +
+Use hugepage_put_subpool() on the failure path, matching the normal
+put_super path.
 
-[snip]
+Fixes: 7ca02d0ae586 ("hugetlbfs: accept subpool min_size mount option and setup accordingly")
+Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+---
+ fs/hugetlbfs/inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> Additionally, I think Barry's earlier patch[2] also has an issue: when 
-> lru_gen_set_refs() returns true to promote the folio, we should also 
-> clear LRU_REFS_FLAGS, rather than calling folio_mark_accessed(). So in 
-> my opinion, when we call folio_mark_accessed(), we should return false 
-> and should not promote the folio, so the logic shoule be:
-> 
-> static bool lru_gen_set_refs(struct folio *folio)
-> {
->      /* see the comment on LRU_REFS_FLAGS */
->      if (!folio_test_referenced(folio) && !folio_test_workingset(folio)) {
->          set_mask_bits(&folio->flags.f, LRU_REFS_MASK, BIT(PG_referenced));
->          return false;
->      }
-> 
->      /* Promote on second access */
->      if (folio_lru_refs(folio) > 1) {
->          set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, 
-> BIT(PG_workingset));
->          return true;
->      }
-> 
->      folio_mark_accessed(folio);
->      return false;
-> }
-> 
-> What do you think? I'd like to send a fix first to correct the logic here.
-I tested this fix for Barry's patch and see some performance regression. 
-I'll think more about how to fix it.
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 216e1a0dd0b2..6a1d7e778cb0 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -1419,7 +1419,8 @@ hugetlbfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		goto out_free;
+ 	return 0;
+ out_free:
+-	kfree(sbinfo->spool);
++	if (sbinfo->spool)
++		hugepage_put_subpool(sbinfo->spool);
+ 	kfree(sbinfo);
+ 	return -ENOMEM;
+ }
+-- 
+2.51.0
+
 
