@@ -4,97 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8CEFC44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6E8C4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:38:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F76F6B0088; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
+	id 83A6B6B0093; Sun, 19 Jul 2026 23:38:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A8596B008A; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
+	id 7C3E36B0095; Sun, 19 Jul 2026 23:38:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BDE56B0093; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
+	id 68B686B0096; Sun, 19 Jul 2026 23:38:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A3126B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8BA4C0665
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:35:04 +0000 (UTC)
-X-FDA: 85007738928.25.A94A878
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8BB2B20005
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:35:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=agYQBBVl;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BA606B0093
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:38:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B55C31C076C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:38:15 +0000 (UTC)
+X-FDA: 85007746950.01.C123932
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id ED0A720005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:38:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fPHNRiw7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of realwujing@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=realwujing@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784518503;
+	s=arc-20220608; t=1784518693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f2bP+bUhNIo7yhxzRHd509jBvMfe8gZ7euA6b6kD2xg=;
-	b=J06AorYj4XC0wonHMVfHUbSly39CCf+i2Ak3mgqSM7GLmY4UKAANXfGKfToSzDOQXJjhUp
-	YQOxuifvtZubv3rHuKE96qzPFG7UYXMPMj/ZLrtg+ULx4u0tXdMwpWH4tThYrsa8QPJckN
-	te1RHgoQtP/ZeUcm4dJp4qSPJWWbzW4=
+	bh=2IYPYAaWLt0mLcr+u21OpJLddua6jvE6TZ5CKvfA5kU=;
+	b=Loyvt+gdwTL/EkE+8zKYV83AgAZjq9+DDiQqa4PJ6Nqcyruqp+QdyUuDwHzfbsJBOfQe8m
+	hehq8rzQPC9CwtMsYdsedXBauLn5catfTfNdnpKh9LKw4aco+XWtfRIMwh1MsbTATnUCQp
+	19eXfcRBISZFfgm8+W6ih8vCfjmjyZg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=agYQBBVl;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fPHNRiw7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of realwujing@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=realwujing@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784518503;
-	b=0OZEREgXXYAh2wI/FnzqOrozMmrjEMAemUDv5tcOzzn7GI1i678lz4m3B5ePd+5fEldD6Q
-	vhLsuugkAr+I3Y1U+ItsfIBsGcCssPg+eLSJBrrRw63Lnpy2bTJzJlgU1uevJaJSH0JRF0
-	0kZTYKGnfUxDTmoU0rLjqqcEIPq+rTs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=f2bP+bUhNIo7yhxzRHd509jBvMfe8gZ7euA6b6kD2xg=; b=agYQBBVlNRJnYUiMEWq22PZtYA
-	FbrME6UYB/Hh4v6tnwhw26BbMaIN1s0PpetJvnOFa6P81uo/0u6ZiEr9bmu9DB+SGrFkVGGJrNJed
-	5N+QDWWHzWnLNwLpkSNyAvA2phocWOspIe5/XQwPcoVhPfyf31U4zQfz5Vzk3e6d9/dVDRTq4ka4n
-	GKIsiNSu9pxumiPOjjvbVlYZqc1mL3Ifx26jDC8I/yjfJvVMW28vAN1vts8Q85HJyT4WgHpXsO2yU
-	590YLRlm+jl+eEg/5q/+orZ0nJc04VJG19l8zo7zOHKImIwWwMcnd1c0oLBoizU9JDtTJGgPNRS/b
-	W7wsVm4Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wlem5-0000000A4lY-1EOT;
-	Mon, 20 Jul 2026 03:34:37 +0000
-Date: Mon, 20 Jul 2026 04:34:37 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>,
+	t=1784518693;
+	b=RIGLA8n0P9Wtk3L5ottJ6D9k0ErDisAPT6TRUu9SRug9LFq4LN+PruZWZ/imSPvV5z0GBG
+	vqhWP6BriJUciTjSiAHTHAYEMrmF4W/agY4+8Olppb7nMV86cMkZQUkgL7v2Dg3I1vjxYS
+	nPyyJHRcHSCz9EC24ZL1i93k83KEkSM=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2caed617615so106734055ad.3
+        for <linux-mm@kvack.org>; Sun, 19 Jul 2026 20:38:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784518693; x=1785123493; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2IYPYAaWLt0mLcr+u21OpJLddua6jvE6TZ5CKvfA5kU=;
+        b=fPHNRiw729/FDvNV2PHzAC8StgtvIap6E8PeoLTj63NLn/9wq80CAQGcsEOlLxc7G5
+         c/BwVL05z1B4J/9gEJl3KsIdyiyXirV7ytVQdRe9MBDdjINtCh0aa6v9CHCfcfEpe0wU
+         QN8EPAnQmdBWej+mDC2WgJN4dPMWpQJuf7pyGVWv+d1KMw/aWWgRyUjKPOJ8DUkJL4FF
+         RqoYd5y5DxdSCtnx3l1CucxE2C9hx6rNWzq0OlD+njm3PvJ4xSWUmotDnCFaOzwCpMen
+         ocyNWpcNOMnA5K1RVH4d3BYq7fJYUB93+2mZuc9vnmXvPZpI6OwNNj4sNQw2OObpJp/j
+         ZYfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784518693; x=1785123493;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2IYPYAaWLt0mLcr+u21OpJLddua6jvE6TZ5CKvfA5kU=;
+        b=ib9Bfa3WR8W1Xd8vm6cpnlfOM5icFkwi/3Z09HOMVR74WInnDvO20y3CCfz5oguF9d
+         EQb5dXAI9sBjhdEY9SfzQHfvhOyxD64sqX6wZOMJ+i7zDNlWxpeqhgxr6s9+EEGyxCRG
+         wOhdzK6fKf0ZCfpXrkNHQwsQ+6GfWAZEfPvjYceBdkgKC9IibnTbERyJ0MShoeHHNpkw
+         DKR6s3LD+JQRqs7cOQXw5R7FkfLj/z/JL2KjMdnhRMksSo30euHc/dL5l5hRlqeGro2T
+         EmPwUDiHkrMGxmsOPYk4N3uIZmqgICHEVfGTf5TQ4YuR+gvVnG5rsJylKrqnSlrbrQiO
+         u36Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpvDyJ4JA4XNKRGYpoGwzZAzNSpnnNHVupAV8BjKI+6C2oSQteeL07MqaEvk3S2JzIJ4L3Mx2lkjg==@kvack.org
+X-Gm-Message-State: AOJu0YxR/UYbWEYTI2bfaddjqt7EgRZ52/pZsb2bOAv1Q5c4s5EbKkT8
+	qiJ5aRCEhFmnH2Np/LJG58eQWWEEFdQhOp2p63xmKUWQTKx8PTFfHSGr
+X-Gm-Gg: AfdE7cnvkZLAUnv6Nwo5DudHwgIdfrNQOuY/Nzn9Jwv5XRLVdMRAWw5ba5dCVl8iFRI
+	bhmh7PeGvhp8L/01ezNXXzFJCzfgMXM0UCJtTm5+qDkojHazyw0qyA1lBdw0pice6ewkRxCcXCC
+	gfVHzz3Re5njQ8He/jWthB+wQibED98PFhjXYL2A63vCTMlBwkxjXkX/V0mPc7xmzBKJXMbl8d2
+	CknYoIS/bml7Xi1bbCjd4uB7KRtZnSWLP549d5VQYtBW/GujixqbXY8bFkogf3Q/mGm7SxDPfpK
+	P2tlsBOS82wZCdE0yc4DJxPqYHc9vUSzm41yLSm5tcABH3nCfapMc7/ZpMG3ComWLSvreHMUxKS
+	flt9ldbWwiYviSHvq5CSovKH/f0j0U9L9SyvQEJZapBb8ov9QEhSDMjyPLq+dgMWqL9qk7RA=
+X-Received: by 2002:a05:6a20:2583:b0:3c0:ac0f:6558 with SMTP id adf61e73a8af0-3c3ad677d0amr13026984637.2.1784518692673;
+        Sun, 19 Jul 2026 20:38:12 -0700 (PDT)
+Received: from ubuntu.. ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2ddfb35sm26535048c88.14.2026.07.19.20.38.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 20:38:12 -0700 (PDT)
+From: Jing Wu <realwujing@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Qiliang Yuan <realwujing@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
 	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>,
-	Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org,
+	SeongJae Park <sj@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, stable@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH v3] mm/huge_memory: unlock i_mmap_rwsem before releasing
- after-split folios
-Message-ID: <al2XTQLWB12sJQG5@casper.infradead.org>
-References: <20260716095424.471052-1-kirill@shutemov.name>
- <20260717195851.609269e143b4b9eb857f2a6a@linux-foundation.org>
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v10] mm/page_alloc: boost watermarks on atomic allocation failure
+Date: Mon, 20 Jul 2026 11:38:03 +0800
+Message-ID: <20260720033804.3862547-1-realwujing@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <e011c6a8-cda5-42ce-9d42-b23d1c81b26b@suse.cz>
+References: <20260214-wujing-mm-page_alloc-v8-v10-1-bdfea431fd97@gmail.com> <e011c6a8-cda5-42ce-9d42-b23d1c81b26b@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717195851.609269e143b4b9eb857f2a6a@linux-foundation.org>
-X-Stat-Signature: 56hbd9rfo5xtz6q6dbfxx5ogop15ddg5
-X-Rspamd-Queue-Id: 8BB2B20005
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: jyq1rmwo7b7e5uschxunycyseor9ypr3
+X-Rspamd-Queue-Id: ED0A720005
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784518502-939540
-X-HE-Meta: U2FsdGVkX19mDNwn4J9m3GTNgJ4mJJ9TgGJmy9DNb6YHmRjxAgRpykaWDr3RDL/u0q9kNqZGpmTqJWJlkEDfsjkq4ikQzGwLIcx7/1cZHKvQ2t2UrOqWteaUQRJGxIZQ5fcrXCgW3+xenN2egiDVTe+OXIjY244Qz4qztginkJYpFXJRxzhI/HJ7JWEsQJyHvvEd/FshAl+xy3fx6KOiqNOg2UXonW27/TYZuITHu33e3WDi3NlnfwGUbuSBnG4BDFNGVxu6GdWRaK2Cnl1mRR+bh5K7hs/TY2dxpm5PxnSPO6OxWy8qTYcNhaOitRz0IRQ1Ghad+GSbzZSnQrzrC2ymOOT6s3DVrce/tsbnKfX2RCYy8WAIwzAi/PiXIA6qciGR+75cBfgxuJ/dN5nGzGKw+r6uaa0F0oOIilW6YsIYn+wUS8HXTodU0xfXyI1OLIro3qsXNESg/dCE3WuIbE+KXDI1bwjHiUVe5MVF63hu+6/Zt34rFeQzpLVkstnTXom1LwjajGEM5FWFhb10t1BqsPGYYu5eiZbi1wcfR8/NVAPVdG9GxmCfK1TxJpPGwknt5KMpFJtSeqUmKYyhlUEuOyrqo5ahnhwZmA0MuUX0A7Lt6IpguI/g422imV1+d68hMOdDiZjYRFFQVEEB4OucuIb/IwhpZmg+E9OvExeadPmagNkCf3WUnDr/a2YNGd9Lz+/GgjoqyHbLBYBTyZWQQWjpawsOEFWv4Y9i7SeheHmCP+OBnOZgDL1bXq5uH71cUVNSy450iMdxIVGxf32WjucaldnIqQnBKCuC1H83yqEiH932GRjL8hxeFgEMIlcaAm/5uDtTW+A7/UuV6RwWu0ecD8yCCgtq0MbTLNOJ8xBTG7JYOQ6DWB3CzwbccZYTHHaX1QU+D1Tyt9Wv4KrwTKS5X7Z6Ry7heOz7JQqnyfJ1GTgkhlXsAhf10jWElkidnjfvBdsxrgSquQE
- mUIIUXLy
- rVqbsPN91WHrZQ4MluyKUXK03WQ+ShSi1W9IkvkaRSUJzKGJu2jmCPvUipGMeR4xQYwmBANbP1D6HwG+g11w+JxPgH0IApp4e/ejWy7LE4cU1Kj3WIuGfyBsN/lPyvMDXPsaYIaznDyi5EvUOLLgdR0re+gyXdZNCrzwXRTVB2N/yXRvDXT3wWSQpRi7EehG0nEosISEA9akGEwbs2HRKrh3rncK75Q6AB7mRVpXRNhwYLZDkWEFbR6o/N1Pq7J/+sMp4toIHjN6V7Vir9sUGFSSzP8kDLPsbX8t+C34a9v7Oqmpn0omtyO/jJ6kTyQ39o6jzDVi5PraLVW3dekpgejkLYUxECWnKdeGWtUxJ6EycBerRtmt2Tkk8UHq/6nZfgjsYZNI4rq+B3J0=
+X-HE-Tag: 1784518693-483630
+X-HE-Meta: U2FsdGVkX18iUqDm3YhuWEZSJqalsq2HyYJKp+zGiy9TxrSW0AtHYjlc9YylBG7bn4OqgPS/MRsSl15AtJ8CQCr2fu6ewQzoxsURxqNM24tH9sw+bKehISH4wU4hFSSCIUT4ZIcVP5KX+AjAyKeirZvPo9fEtKPuoaE/ZTCGjzxWbGy0FKXKGnXe/bHvFI2aE3/+5cI97t6wvxprJqCCpSJdoj7lZm89wgTmUWPdQYDPP0p6VxIFtilbYyl38IJ+buXYySIrJgjAmkbVP3Nc6OC+YOo5xfyCcznkaTZ0Cewe7HfhaaFS8YgnTcxO3m2i4PRwxauckucv1mBBXHnH3AZrd5CVlrWpRFj4zzYNR9ajr4JLXerJ8XZkzvGMOYzhYcBibTxM6owKIcL3WTYKyZMnEFXq7suAokKA6yZnbdU/ZxwKExKXC7GHfyl7SqIYFy1H+FV2+/UAGKVNxXGGurFWn6n7RfhE+JXGMhbLiAGmGMKLojp4p9FdYU2yGVvKUq4muRi9R3+P5HNk4eOplIeCVGS7N3dZk5Yma1ow3pgZts4iFQ96YTWkadzXNdeLPiV8/1k/Eyjak1QIUIIioCL4A9VvmstoX+gaHP4ZLnoOHP79t9D2E1EK1ifkLVW0A0zkTeJOl7pDi3z7uxJASe5zhqnDqory74tCp1SkdM21BRH7Xy0lZxppBTfcjX2Vpt3aq1aFguhuLnJT2wKk4T4iJ8eSpPNOyhh9x7y3d9CfuaTGjxAcmOBu21iikTiXqk6RVCC9OVhP47/52v3GqLGfzpad8uZT8Bio5k5ZKCF7di7fEGV1I5UaN0bfYA3vRS9tbc1j17Kk3qssczP/PWnPn+7RoXJojLH68EVBTn3GccPqKPyPydaJP6TDunYVzuHA0rRayjRdnXLDAFBS1mpmdwd0M4DBz6P6yppCcsr7//A5sVUvik0paJahMUY9dt4p6Nr/FvmPE0eZrP0
+ gAaFAstw
+ +wJ4EMGMdO6Qpn/C1c338tOqS3+V0jAoHGbFSsLbjkWslHGe+OjjEcHMMBCPcrnZQqn7qzqVn1Upv92xZ5M2dfmZI/fG3eKxYjzUWIqYDnScKmXDu87VuL8neuxysnqGLQ6yLS4UKQAWc+oKEttqVBzwxIOuCrye3wHKtUL/XFRRZOAd9ijMU0e3kFlbJ1MWwtfQs4hnhINp4/Xy5CYaMlWL3rpIgTl+rLgGMN5Mc0cL/OeNtcmAx+xEeZ4ZkkHd57DRI7SSoCyDOrpncit4YlDcnq212LmJ6tblGyOoAgdtQsRKTR0dmeJxLA6piZxKUBuG0M8UFP1+v79QmQ/x3K9AediKWqquJ7BoSbs2gG4Yt0RmLW9yaK3TIfvbejTODaZdwVXleCLTTYWsWjjetCfqIGUmTUYFjCNt4QVDnQ12cGhSe6bqU4e3bvapftN8fdKLizQrwSky41FFD3fsR9u2sXrFqnGNMjeWQ7ffCP4PdPrh3a7J1/ZcdTsbEkkVyZOq8EQtpBlmb7MqCWlnWZHx1Zg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,16 +134,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 07:58:51PM -0700, Andrew Morton wrote:
-> (why is mapping_set_update() a) a macro and b) undocumented?)
+From: Qiliang Yuan <realwujing@gmail.com>
 
-commit 62e72d2cf702
+Hi Vlastimil,
 
-    So make madvise(..., MADV_COLLAPSE) also call xas_set_lru() to pass the
-    list_lru which we may want to insert xa_node into later.  And move
-    mapping_set_update to mm/internal.h, and turn into a macro to avoid
-    including extra headers in mm/internal.h.
+Thanks for the review, and understood on taking the Ack back - the
+v10 changes were substantial, and I won't send v11 just to drop the
+tag. I'm folding it into an actual update instead. Let me answer your
+three points directly.
 
-Take it up with Kairui.  And whoever it was added that patch to
-linux-mm.
+1) The Ack
+
+Yours is dropped. I've kept SeongJae's for now since he hasn't said
+anything to the contrary, but I'll understand if he'd rather it not
+carry over either, given v11 also fixes a debounce race in the atomic
+path that nobody, including me, had caught in nine prior rounds:
+last_boost_jiffies was checked and updated outside zone->lock, so
+concurrent CPUs (e.g. a multi-queue NIC spreading GFP_ATOMIC
+allocations across several softirqs) could all pass the
+once-per-second check for the same zone before either updated the
+timestamp.
+
+2) Real-world benefit and side effects
+
+I don't have a clean before/after deployment number for this exact
+patch yet, and I want to be upfront about that. What I do have: a
+production host running a downstream 4.19 kernel logged 144 order-0
+GFP_ATOMIC failures over a 4h15m window, every single one through the
+same NIC driver RX softirq path (bnxt_rx_pages -> net_rx_action ->
+__alloc_pages_slowpath), across several unrelated network-facing
+services on the box. That's evidence the failure mode is real and
+ongoing - it is not evidence that this patch fixes it, and I don't
+want to conflate the two.
+
+On side effects: the mechanism is bounded by construction, not just by
+intent. Each zone accepts at most one boost per second (the debounce
+timer), and watermark_boost is clamped to _watermark[WMARK_HIGH] / 10
+per zone, independent of how many zones get boosted in a single
+slowpath call. Worst case this adds one extra kswapd wakeup per zone
+per second, and the ceiling on any single zone is 10% of its own high
+watermark - it can't run away or starve unrelated allocations past
+that. I've put this bound into the commit message itself so it isn't
+only visible in this thread.
+
+I know a bound isn't a measurement. If it would actually help, I can
+try to build a synthetic reproducer (fault-injected GFP_ATOMIC
+pressure under load) and come back with before/after numbers instead
+of leaving this as theory - let me know if that's the kind of
+evidence that would move this forward for you.
+
+3) netdev
+
+Cc'd this time, along with Matthew Wilcox, who asked for the same
+thing on v1 and was never followed up on. Sorry that took ten
+versions.
+
+Thanks for staying on this thread.
+
+Qiliang
 
