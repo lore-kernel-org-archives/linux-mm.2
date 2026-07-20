@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 504ABC4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D25C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:27:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F1DE6B0096; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
+	id 651C36B0088; Mon, 20 Jul 2026 05:27:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C9B66B0098; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
+	id 629AC6B008A; Mon, 20 Jul 2026 05:27:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DF386B0099; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
+	id 519176B0098; Mon, 20 Jul 2026 05:27:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DF266B0096
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5448C070A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:54 +0000 (UTC)
-X-FDA: 85008625548.15.EDC9712
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C9AEDC0009
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=awQg76Rh;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 223BE6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:27:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DBF940768
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:27:44 +0000 (UTC)
+X-FDA: 85008627648.20.EB074E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D1547140005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:27:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XuV8jZMv;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784539612;
+	s=arc-20220608; t=1784539662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M2jhTjNXwT/wFHT3j8aQ9cD9kDlxoHh0XcpFGsMlw9Q=;
-	b=xCu/cznH7R014PomEjeRYGQeE3lgezg8j+xK+YoIzvxZGXnD4kogZmI/fG4dNheGLiymCd
-	T08ShviWp94WQdQQsZjIp81MS5Z6Ohbo2wUzrI+g9o3PPDpWifF15X8oTo2mNlBefRans4
-	8WGol/66fri1CU1OlCDmPtjx7B3kB88=
+	bh=oMdIU9vjdAuXur3wP4WnM9rv00wH5avletuGlMTkduw=;
+	b=tyOPisRoo5a9qnMm+FXcQWsnzsQjO4WYiE7Rn1uQFtnBnTGuO9XfAj9BiFpMdjZxFU1uvU
+	uHQi/9I30wfoV3qG+pdgAGsU/5y0YWtRL2DfZ+natCGBtyjf2m/V0Br9FOkpfe1EpyCVVh
+	MJ7eCcqQwIC+N9cNgvncIiOWmzl0mHM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=awQg76Rh;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XuV8jZMv;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784539612;
-	b=OEUKIyXvQLoYby+nnfygvsmiOZpwNB5RWsheo0rYUsSoo3kfRzpBJjg7a9Si69jZ0BC1GD
-	Jyu+voN7dr/s256YfYGTbGp3y7cqWCdAsZqGWc8VM6cwX4yfcPJ0s7/DUUsWg+cDA53AhA
-	lvq5P5ZoVnOYcMasYIjEhNlJNrxROpA=
+	t=1784539662;
+	b=BL185yADgt7rn5mF+15ZQIgAaAGTfvGSxT7KtyW5QCGTqCpKQRV1RbCnKE8bJWYVIstJ2h
+	SfJJvrVdxAkhrkiUKkk6T0VkdeqcmabzVpVThImlLpTGnBBKbYfH7jPY304atUEckaoZO7
+	/pkPI6ZQ91h+6clAK5M6GnEx8XlB8d8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2814440BDC;
-	Mon, 20 Jul 2026 09:26:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC961F000E9;
-	Mon, 20 Jul 2026 09:26:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B2A160A78;
+	Mon, 20 Jul 2026 09:27:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5391F00A3A;
+	Mon, 20 Jul 2026 09:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784539612;
-	bh=M2jhTjNXwT/wFHT3j8aQ9cD9kDlxoHh0XcpFGsMlw9Q=;
+	s=k20260515; t=1784539662;
+	bh=oMdIU9vjdAuXur3wP4WnM9rv00wH5avletuGlMTkduw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=awQg76Rhu854IUVSU11q+je5cYfo8bHNwWQgLLF/pO852ZBP/q+a3Q1lKWb1bjV8M
-	 8I0BROcNAXpXWI3FIDE4eGGwxYsPswRkfPQ7x4h7F5jiGxs/IVAdn2k/qWJoxCeIjo
-	 1QjAuuGxatG2efRL5M95Vf0ph7C2/ZyqRvix8wh4RljauAWb/C4y9GZC2Ute+gVk/J
-	 0rZAFfqqrgXg402EdkMcjxwScIH6cKK55du6etmMXDM8pjwygZP3NnbmbDMXDPf+Lu
-	 bbS35ZaV4AfU09i6XyyoPq6Or72MusRfpJmMbyvrRULwttjHXTcQUC8bJgJ+hwzggF
-	 OFkYz7Apy0H8g==
-Message-ID: <cdddc4b1-53f5-4016-a74e-233db909c217@kernel.org>
-Date: Mon, 20 Jul 2026 10:26:48 +0100
+	b=XuV8jZMvZxGVHiWywg3YQeXAAxcigg/RKM9NE9u/NkLCc4Onure10tgxmPAwK0eFX
+	 wn/b7NMViYPN0XiJF2yXdokNHjZcpVmoJqljTGZBb8kGjV/+zrQczxc15nj3knwdTC
+	 3mnDTQMUOYIIGt/OkhUhRxNV3b/kJQYfN3eL9q8pZv3V5TPfCLm+xA1UpTIHAA2WIf
+	 O6FGxui/7S08CAyRfhSqIVaT/cUf5rKqhE3VNHmS3nDgU0KKbWb6CKSRv6sMQohlip
+	 qTLaZRrVUgSNG7e3ZOUJDkU3AsF9qtnPUixKi2BblxRVYxYwQHUpClZSnveYr2zZBr
+	 24OnXRebDjJBw==
+Message-ID: <133f3f9a-bd3a-432a-afc7-ccecc57d5099@kernel.org>
+Date: Mon, 20 Jul 2026 10:27:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] mm: mincore: remove special handling for VM_PFNMAP
+Subject: Re: [PATCH v3 5/6] mm: mincore: improve mincore_hugetlb()
 To: Kefeng Wang <wangkefeng.wang@huawei.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
@@ -76,7 +76,7 @@ Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
  Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
  Zi Yan <ziy@nvidia.com>
 References: <20260717091347.1144789-1-wangkefeng.wang@huawei.com>
- <20260717091347.1144789-3-wangkefeng.wang@huawei.com>
+ <20260717091347.1144789-6-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260717091347.1144789-3-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260717091347.1144789-6-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C9AEDC0009
-X-Stat-Signature: dwki6cj3wwaursx9d8pfeh7a8sy1rbqc
-X-HE-Tag: 1784539612-690720
-X-HE-Meta: U2FsdGVkX1/RRnvjLT612BPVEJpn7BJ7eOsVF3rIU4eLtGvPSDhYifGUvOSJSacrtlhtOk5B/DoQGvcbo82VhvE9SIcNSTBYml5JR0Cki22xjRBJuL5gYHbBE6vyMaPSiskzRHo30Dtg+6E2Yec444BlIVvQWE4tnAIC+Sl2zcKIRGeEvATMYCUKMdt3RY4XPPdoE2nm3KkOtsG1UV61/HV+zQxrV5aQyV3MBPZjjKRHoT929ywhiMwVgVRMMxDh+69xLe+OavIEchw4mbmPq0ohAiHsJRFxdvP6n8jsFNU6IIe1UANfSzQ/KpBmv4TIFf/2xOunkmxc6f7TqhGsRfUHp+GlbGET625cI85ZoROPc67mk5qsBKTHb+450v6Ged2ktWNi9e5+ymZ4BVH9dgtNl5batd1NmdUrBxtSjQnOA0k2sF9SSPV4gHM5ffAzuGQJk/wl4BVqkZaB+lShYiXUkOoxxcLn0AtJXhDd/UNxPgfXzst2ZKK+z2po71ELY6vMir2rKIEXWdg7LvjEEdG23YvoSH75yiL4zVEkX9qZLlJ3XgkM4fAxtmjs3x+O8AASsasSnylkcDbV7W+f94/Lw5+MQ4Bf515Ld2jwx/ZWX/ozCR/cF8hcib214fsYfaqiQ8ywV0A9dmNBdZNoY2YAGSNmg/7IztItNFJGF5CuWw+2wB/3fBDXsLZ8KR8aa+YV/kgXl/iXk0EDmFD87X743E1l5zOenHecJiALS7FwnIDxUYEU35yo5+apsdGvzKEu3vkyAoIVnkalzBrlLzGbIHv5fpYkxcBxXPnAC1ljfutepG/dD5tjXVa4IPrs+0Ytbv0c76hOe8u0c20vUsqLN4fEnYK2XCxeZ++K8z1R2T7gAo7vJ5fJcpmUbAvyHxJc3ERhMtk0ZEv8oPLkic0wd2hqTHKatYQ9LDX9/pOow6n/5JsWHEYcQ/QeVxEgOgBaAVR65LKK3Pt8r8z
- VpT65uGZ
- VKr1YRtd84j9Ri8Xx/WOv46Jg6HFo47v2Fh4Ko5KWJWIVLZAoiqXrk668YjNVSz7DlZOQl6jifOSCQo1FrkgUkn7CRrFHtZMV+9YU6eNoAwK6RCB1iGOx3rkhJGmbLJu6g5MWLDr3leIDQeOI0aqGnDov6RcJcx07PKjNW9WdSpbwvkSNxbw4A9nYBpcWxlDeT+3yjN6yn6QsOCs+jEXjfMdQ9t3JZA8saMSyGcx1qnlYZAmUQK5QO9TP0uFHff532fIN/FVsX6YsyQJGFJx5FZm1T+G6cxGrznj2wb5ytaWwpBkknUaqfFmawhaodhAmPFx9MrbxKqwsIr7zqK4/4CKahB+kD2wVbkfD6KFZMxntSP1uUqCDuK2PKduCTe8ProRS
+X-Rspamd-Queue-Id: D1547140005
+X-Stat-Signature: bj8mjekqqyrzkcufizac7xf5p46ys9w9
+X-HE-Tag: 1784539662-107558
+X-HE-Meta: U2FsdGVkX19XvU53iVqTJzGnPxceU9cXPfeMhfI6XAETDCf5rUzTkzQrMgaAK0pLRvFjxkTlOJjYJfsb2VpDoxgYyR0c2fRbLz01F1fj65ocKa28b2LiyM83Rz+koFKOUjEl5c8dbeigErviIlw0dGwkZlMsSWI+AASA0aYf+xQJqhpLWroW3npn0HXHTqpLp3L39a1rn2TDeeokO69VJEdbsNltjGUUIhW2o6okN1X28nDBLbONvHskQKrBenAEzeCdPjoFP4gaMYFGT66U4FgOyNOg39YDcvVyMteyKCQtXcrGnu5ZqTOCTPvdJwP6KoXofqM4mxCQ+haRyQvt/L3ohUj1FsAH+28ibdzKg+xD5HaiMtCfaIa5zucEyJ04vz/eRq2NrkV/slui9RZfwYr49PXnAkBfZGmVZmfbDwJKBlsiRFhFL9ztIpQVPSudVQuhYQkYbjbGUnhPHIoRSEpuy0qE9L5kMV/Ya/skOhBEy9LT1m01RzCwF9ZnY1ADuZXuiDZc0vT8rtUWr+Re6GC+i5Z/0GVpB02YHviE/QLT/wIiTufwFcJotO0grGRppfrWHziSnCiLcwnEoQFYZ2lVQNjZBtX/ykYNNBdILeAOxQQwjXj3yguOEU0JmTyRI9FUiH/RMBvSS5ztrwDU+k9Jq7WNmugjTs/+FwR9bQtYjWynhtOPWfTbVmT9U0YUHZ4/zXnW5JAGRPxLKpB3n5M+Vy6YddHTtYIwTGUuMwoyZMhoQ/1826yn3oqy04jFAWbtdxr0t3CMLp9FnjYpcfC3/f/nggpOrMoatbpcXUvjCTQfloFL+xb9jzq2BfF6JYKYK5tyOl8BWb7OncpXhBvCejTY4xanrumtHV0QkiWwfQ2/KhsBBGFTf19lVaUaiUkr9trVKxMl8IxXfkUXU28UCGF+bp9giYib4THpdQOZOxd5J2otfmaqBCi8B8UmHDy4lPj69Q5Mv6g+WMB
+ oLEVNNZ6
+ tl4uTgv1DjT7yVHst/qb1mJKfdDdv9vEO+Lp4fJiE9s+32tBgRCUHlYkFI28lzOxMpalRmTdginIFPqs8tLVhYY98OIvEHgP5eWCFQyrZ0BsVQLx8wXmSoUaBkCIeiAK9j0Nb+Gx0H/Pyb/QivfvTSIJFc8GePRP7gI0BjgQ9DfPcGx/Ibm05vlJqnoUemNmzE3EhPkEUJMaWStD+EjeerdnezTu1vZ87Cxd2uenEAQyihLiTLyuOfa/FJ5gT9K4ENj7KinEzxbf6SsmHCnky+sYvamUwEXWv0wwjjq9CXpL+VBeUSMoPywbM8HLFwk0djYxbd+ahfb8yxstLk/bU6wGAF0qEs3FzvgSl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,36 +142,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/17/26 10:13, Kefeng Wang wrote:
-> As David pointed out, "it’s hard to believe that someone depends
-> on pages in VM_PFNMAP to *not* be present", so remove the historical
-> behavior that always reports VM_PFNMAP pages as non-resident.
+> The walk_hugetlb_range() always passes a non-NULL pte, so remove the
+> dead NULL check. Replace the per-page iteration loop with memset()
+> for better performance.
 > 
-> Adding mincore_pud_range() allows the page table walker to traverse
-> the full page table hierarchy without splitting a huge PUD, enabling
-> much more precise identification of resident pages in PFNMAP VMAs.
-> 
-> Link: https://lore.kernel.org/linux-mm/0e619d71-1c3d-4534-8376-2982c7348c31@kernel.org/
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 > ---
->  mm/mincore.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
+>  mm/mincore.c | 27 +++++++--------------------
+>  1 file changed, 7 insertions(+), 20 deletions(-)
 > 
 > diff --git a/mm/mincore.c b/mm/mincore.c
-> index 53b982803771..3fccaa5c96f8 100644
+> index ba7d1fc320a3..e825d11a7c7e 100644
 > --- a/mm/mincore.c
 > +++ b/mm/mincore.c
-> @@ -160,6 +160,21 @@ static int mincore_unmapped_range(unsigned long addr, unsigned long end,
->  	return 0;
->  }
->  
-> +static int mincore_pud_range(pud_t *pudp, unsigned long addr, unsigned long end,
-> +		struct mm_walk *walk)
-> +{
-> +	if (pud_is_huge(pudp_get(pudp))) {
-> +		int nr = (end - addr) >> PAGE_SHIFT;
+> @@ -28,30 +28,17 @@ static int mincore_hugetlb(pte_t *pte, unsigned long hmask, unsigned long addr,
+>  			unsigned long end, struct mm_walk *walk)
+>  {
+>  #ifdef CONFIG_HUGETLB_PAGE
+> -	unsigned char present;
+> +	unsigned long nr = (end - addr) >> PAGE_SHIFT;
 
-Ah, and best to use an unsigned long here for consistency.
+Can be const.
+
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
