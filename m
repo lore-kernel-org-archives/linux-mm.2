@@ -4,104 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD702C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:40:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94D9CC44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:42:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61D706B008A; Mon, 20 Jul 2026 13:40:47 -0400 (EDT)
+	id 695776B0096; Mon, 20 Jul 2026 13:42:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A75C6B0093; Mon, 20 Jul 2026 13:40:47 -0400 (EDT)
+	id 61F146B0098; Mon, 20 Jul 2026 13:42:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46F1E6B0096; Mon, 20 Jul 2026 13:40:47 -0400 (EDT)
+	id 4BF016B0099; Mon, 20 Jul 2026 13:42:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A3A16B008A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:40:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C279140239
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:40:46 +0000 (UTC)
-X-FDA: 85009870092.08.52E9CB1
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7498FA0008
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:40:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ejRkfweg;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 14E776B0096
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:42:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8647EC025E
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:42:20 +0000 (UTC)
+X-FDA: 85009874040.26.1D88BED
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CE1BA180003
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:42:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=j1pacumg;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784569244;
+	s=arc-20220608; t=1784569337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=STnxksxeYU5ANSzKJlg5+nS1izTc7aC2ZhhV2DsN+ME=;
-	b=nVUbF7u0zirXnKuiHWVWlJJALNendknv/OY0Bg1NkAHnZpUunufwsuBBY2yraydgfMwnoo
-	UDpxCGqkVj5E9rICruOzVKGqAyxI1woh0KQLMJ2KiQ0crI3B6xMlt/fHPce4Sj1GUyB/uj
-	rqDmOfwxZ34ySQaCs5YNGrUKPmzi8IE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ejRkfweg;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=FEiCtTnsRTKK1dIfrBs2bZV/1x4AsbAJwsKiFa/5Flg=;
+	b=zCJz4gcG0hUfIXjJWkbjxAWmqoFAeIRdDU5wla9T+b9k3WGahpU1NIC4JN7C7jFDbMBl7r
+	R1+5Bp03JSRFPh4rZZK80bTsEFIWHqiy1JdsadMFmfQb4JpFMsyKSRJFLkpvWt/tb1L/qE
+	nYz5JIgK6G7NH2kkOhuSrImPx96gXu8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784569244;
-	b=rhWxZdA4ghACr63rIKNWru+AnlXn/ytYay0rcx2nzpKthTi1T67W8Dxj63CLjKIl1eR43Z
-	OWnzLJDWAyLUG2+xmpcG58fVwI5NbtbVzPqeKKUjqsS+aYMCdOZ6x9Y7sMU+mfkTPmseQb
-	uatxhbP3lbTSdtXINmDiHR5dh85zxPE=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8efef6533aaso71473556d6.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:40:44 -0700 (PDT)
+	t=1784569337;
+	b=xFkPvnfipHcZDT2+lEQeV/xvT4FOpQz7wlkdVLglewMJCaYmVcxcBeQCetYvAM8I6BATyU
+	TQqDGsLwJlTlcsclsoAONPZuXA00+66SdYeTETAiDAq888t1x0AI7RtnccFnnuhy6j1JWC
+	HmuT1nU1cyYuUq7aZFfP/EDus1E2SN8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=j1pacumg;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8f23e851626so111968456d6.3
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:42:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784569243; x=1785174043; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=STnxksxeYU5ANSzKJlg5+nS1izTc7aC2ZhhV2DsN+ME=;
-        b=ejRkfwegsRg00kz6DvuSCByKhbkAlE9exGkRovEA3H5SOjFv/6DC2OSzWk/SOpEWQ6
-         pRQzh4xw3ct0mmdlbridMJhbQxNnQejpKGyv5ny7mOKjjCpdiGjW8/z/COW/j03OHyjz
-         Rg2h3lJTt60rpCQYWkJUADanTnQRG5iQGuBMkaf55kc5ejje2wCh6L0Kw3jbQX96F9VO
-         2FO+F9JyGlzzu+isT2VpZWQ8BOOPHYNPwJ/p0REmmBNtaPM2g6PNJ1UCYwInAHcPpsuv
-         FUAC4KbnoRj1/fU09mWNd11ekOWvi6beCGtOiaRlA2ixmeh9FLnBHKmBf/Fzwl5lP8MW
-         YYOw==
+        d=gourry.net; s=google; t=1784569337; x=1785174137; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FEiCtTnsRTKK1dIfrBs2bZV/1x4AsbAJwsKiFa/5Flg=;
+        b=j1pacumgL0Au+ty9/lJ/k1nPxVFqkHaaIDCEAXwReWtv4ZMEnHK7CV4Kxjh2CrVhjo
+         uBxADcB6p2h4tXREs6o561XT29Mf/jAnjXrh+x0s3GWyMCBDTRLXpgZaGKWhl7Kfq5b0
+         HFS+VeCrYpvh0v+9WrMSztMvHLOlmuVJFEqbgCLiWlZGy/WrulrvCZ9wMMi1knT+iH+b
+         NyZuoIplXvTlVFRM3PYSlyqu9Oe6B2BiBdBeXk3I0KyBVx87+O2v2cCpMvkI0Woed5qh
+         pyjfj9JKD3o24v9wxphQzaBm6wLD659ShRNGy3F04fUg/p//PyI1YkQMMDpUyuN+hQOJ
+         /2tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784569243; x=1785174043;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=STnxksxeYU5ANSzKJlg5+nS1izTc7aC2ZhhV2DsN+ME=;
-        b=ABqY6abkyewnBd1ZZDtkLXHBr4OSOiVoVJSx3S23aLlsCsgvW6dBE/4E9lZkYkhr5R
-         3JMBHWU8ja2ROotXrffeW5JHBrxuq/I/aDwzrhNsAC+0t4l21Vd+FiIPErbYCXlZhCGp
-         Z9RaY8z7/qFCOut/ymCyB59DlqzK4cQ4sIAuxQuBygnJm06H8VCC5Jcn3WIS+xB1DppK
-         vPH9gp4QpMvUgeTh3aK6qTyrFh0JBO2WtQNyfC9WcWXLw+osnURP7+6727rWp+jSBIFn
-         4Cxig3VylsVxc+/5oTVrV6v/6LmSx5zjNh9n9KfWNxDEyzBQ7jSL6S06u3qS7bxIuQ63
-         oroQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpzMMFpxhqOzdaE30rcFH1n4i+gV3MQODWctBUlAwf4QYZNkYVpLZV9rPXNJB3gZY8tfYQKbu5XCA==@kvack.org
-X-Gm-Message-State: AOJu0Ywj+OwYDhU0rqqjhSR4RH1g03o4nWQ7AuG5IkJJSedF3pw3PmZT
-	ZP2v9MS79eyLrSXOYlb0JqILEYahkR5pI3XOwH4qwgk//QX6SgHT9QHkgEM5lM5ys0E=
-X-Gm-Gg: AR+sD11bkIL4tOEFPMNdyRFr3sXQAnbRDAN68lv9ih7gXCMDYWL5CUU9QvqW69Pm3QF
-	CjOCAukp4hq7pKYqWX2a51qpo0LBzzSOlrUe3xOQV09dli8WPqs/KSCUC0JMmKQX0YYENaKcaCB
-	5XcqnRQI4V7ZER3Y/WFVMq0ZOCc9wzgkQz0Ft21oPx5Vz8+9oqoX4pHFt4aR7WhaBk8Ss5XXElA
-	zUc71qntdmCtaaYd4R7dZsnqX/CVWKWbB1P4fJfEYKGGRcAO9ZFfACnZCGupchhprtcwrKAWLtp
-	0VlwSH8uycxhBrO45g/zi5YY6eujx4e7qH3NmCvsEW+w2r3EKgl0v5u5qSxEkpH/bR/PhIXNAkk
-	L90Xo+OE+ZNjRZJO4vbCoP58Zmb81MxKX+aA20i01Dz1MJBGI09XwJ2klF+F/O9nMhFdFc/GjZO
-	L41aqP3bxctilso7+HSo+0JvlB+Mk0NQmlEXXO3ZB3BplbDU7DNjId0eKsgw==
-X-Received: by 2002:a05:6214:54c8:b0:8e9:f62b:8f93 with SMTP id 6a1803df08f44-9077853b82amr163551916d6.57.1784569243441;
-        Mon, 20 Jul 2026 10:40:43 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784569337; x=1785174137;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FEiCtTnsRTKK1dIfrBs2bZV/1x4AsbAJwsKiFa/5Flg=;
+        b=rZ6DoR5XFD4dMmLN0GT/koscrJSWk/89OrXYGTd7qQ3lBkP8ErPxH2+nCnL/eMzkOl
+         ZjaNfd8WO6pNjnqwdXMUUhb5vmitFhH88fiqaVZ9xCIakl3Hv5TMzTPYI5rSetjB3mtR
+         uSI4SqkAyVVv6YOI7/1no2iMCMMrM/FPoqZS5N2Swn4GGAckzUxng5JoPEV310eJWJK4
+         UFH6OksVL4IR0I69tNrVWSTq5WTg9urFJpRHwE+opY90/9vWU7sySe2ER+rMDA/OiM0X
+         PINfhc8VeclsMo9K5WmouBmpLzBwwClK15RlDDreRWc+jU2a63xzIAaftttyryv5fq4Z
+         7SeA==
+X-Forwarded-Encrypted: i=1; AHgh+RoQmq7CrNH+EArjlwFhfTFmZDubk9qkddDvUXaumPyf4bbDCLxHzsgzckF2KVoX/lU7vFQwv07G5w==@kvack.org
+X-Gm-Message-State: AOJu0YxjiUr+Aly2EbWlG8bs1dXaHpRq5kRZbLYr/yF+N1AgC9Eujxhj
+	UxcjbGQlMIE0ymyUpCX9oMmPKv6P0FLE8VCx1lQH6/M11wu3ko3oernIjVm5Fz0wBLk=
+X-Gm-Gg: AR+sD10OguXpHCGMFp+r9lVAEBmSRAb+cRu6c+2rq4zwCbCeyg79PLydic9R/Fs/yi3
+	rpX8oKXON33Tu2K8yrp2wS+RozgfZhcMtEnWHOXrwz+0YQN73crHghQ/BrYONbkfFbIyQ1huNrL
+	X6HrUOnH8pajzq/PRtBPahxqoy9BsjIHcNIklOvyGB+38tqJbtRS5FQEUQZP8CozixHh9tljuzt
+	wPwl3mwr+nqvQCm6ixkxzNcJ1M6EpVQKKWSdz+cJD4akmsChrmZxYP8qq/udn2MqBvNuGg6aJSK
+	JNE4AHMx8Ue9LAlks4XvLMqMtMNaRl1Dek6CSJ0CuCevXqbEv+qGuEmrBSPQxlhS2HMuPr4nrl2
+	dsrZo+BcyBinFkBAvlYKWr+KcTVe3BABy/ronr7snyPKk5Bu4mIEF+lMO5W4nXhCcttuhJ+aKUK
+	bxS7RuiiT553EcT59ykmwa9V3PtRCyvs9MUPoBu3ixYxfjt5E/8cetVEY4hg==
+X-Received: by 2002:a05:6214:2349:b0:8ef:6b06:44c8 with SMTP id 6a1803df08f44-907783d1d3fmr150837746d6.48.1784569336788;
+        Mon, 20 Jul 2026 10:42:16 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907786ed2e2sm95014956d6.33.2026.07.20.10.40.42
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90778567f09sm95835516d6.15.2026.07.20.10.42.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 10:40:42 -0700 (PDT)
-Date: Mon, 20 Jul 2026 13:40:37 -0400
+        Mon, 20 Jul 2026 10:42:16 -0700 (PDT)
+Date: Mon, 20 Jul 2026 13:42:11 -0400
 From: Gregory Price <gourry@gourry.net>
-To: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Brendan Jackman <jackmanb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
 	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
 	Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
 	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
 	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
@@ -118,26 +116,23 @@ Cc: Matthew Wilcox <willy@infradead.org>,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
 	iommu@lists.linux.dev, loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, 
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
- header
-Message-ID: <al5cqn34Xq19f5HG@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH 2/3] mm, treewide: replace __folio_alloc_node() with
+ folio_alloc_node()
+Message-ID: <al5d1K9yHhT2-yVX@gourry-fedora-PF4VCD3F>
 References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
- <alkLSzQvzT9zJbY1@casper.infradead.org>
- <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
+ <20260716-folio-alloc-cleanups-v1-2-5363b8e92d33@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
-X-Rspamd-Queue-Id: 7498FA0008
+In-Reply-To: <20260716-folio-alloc-cleanups-v1-2-5363b8e92d33@google.com>
+X-Rspamd-Queue-Id: CE1BA180003
+X-Stat-Signature: t4befa4egqtsq1zjrr4w413ofrp4qipu
 X-Rspam-User: 
-X-Stat-Signature: 8g94rfcwe617h535dho7181yjwtkp7ag
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784569244-898760
-X-HE-Meta: U2FsdGVkX19xUDFblHzzOYYGNC8u+BPIlhCl0H9xsaqmplSsIo78JL9HwEZ+ZXpG6CUNiut0LYwiJpfLIvDZkK4LRrNEp2t3f+pXAF/Fc3C7bf0bwEwGSSygBrp/7yjuLqppaL07k3JAV8maz2ldBeqyrqXBteJVirXgJd4tpo7Z+Vxvp5pAUAYqg6EqgbUTKAAbvjqfJ0FlG/crLxAmkTX9mb+WHc6ddQZ9IVhcLNHSYXRGoE8aeWZEV+bd6ixjJbqqqx6+Fs4La2lA8/eieE27nVntBBBDMBo4LzwLh3RiuQzTu0jg6EWto1KCE94iEgYzmrxaYfjlcv0cJqKfYL4P0F4CYw+0xE0Pcx4/mGX0eD7Bp1r8FGLguws5OjcG26ag1FhDg1EKm6cc6gAaf6DDxAZPdSWXGWacbnRlvLuVbrutd1R5BipLPNTUYGjEkhLyZcHWUKkG3XRj333NPB8wNULKxeSNJhH1uYsxZj5+yp7PtVTM6pehYNLp4rbUQolx49cYlENRf//MzdFv47AJtsG0+8cKy32npRid1pcsAKZS9BEI0Vd50wVGlXy9IB8XXJZgSr8RHBfHXfACC52wVxCm4uvHDqQpcoOe4MFCKnKKyQnd4NJ+0RcAPYGwxd61yKlP/iC0Xow2ZM55FetgTB62/SCujFyEsi0Tppgp0o+748ELsOjXEZcJd8xg0v1E7uRJnkaQ2lgvogTL6LZkYFmef8vhPMd4If6/I/ycirZR9ITBQnhTpfpDGwvlZcYFfKWT6iqb2LJnCGfttRKxmRuRScbfAPlO8Ag9WkWmpUSCIAmb4Nz6M82vFtVAK+uvd3LR8HLc/68PSNJXjx597u0qvnMoD39xzR4YDB+zy4fwNWNEPHgScpM564hYaApKazFTliyHtk8NKokmkUyw4dEz5Mfu+8nMTVRwjMk0HE5frm79XXz7DPVTO1ubnssLSsNwV5/37EpYFZu
- Fm2Kkjyw
- i+8SHKDQb/RnByQ5FmqgZpJftqmLOiaWdznZRu3H48CIAwqJGVQp4fWTpUBZAhCr2lfsUF/Xk5ySlaGHOtYllBqd5IDGOSuHbVlO1iAZBMzu7/1WOLid4A3xNIjibW1+osGpRWHru90+FacCjf8jPbEz63V8CO15N6Y/bn4ZhY0O9v64Ucltl34rPojnbsQqn26tJzR91fwiUCqMWE6AxVNblPlLxBGOUEaFvAnf9ILj8Y+K3Mfi6OEFd26SL8ncejz04BdtF01InxOTlms6q08+P/wAQZgGs9HkB1DDZeYQUyk8/nu+L+JD4oE7ptsFMy25W62SF0cw5erbwpBfWCsI7rtwTwJvUAbpFyzodg3kaqmrbY8ojpwBTWdxIdctnU1SvedTaKM2CDWWKxwR66eIy9qr5UnbdBYbN4GZwL8+NBexMz2Vj/a6b6+gMR9zIwgBnnEGJpksufotYTLKK6maeYZsf2xI/Bww07gibMX81OSAbUYCtr+r7AA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784569337-911321
+X-HE-Meta: U2FsdGVkX19tTDbuMzEQMpm5CmVtcrZ1iKYZn/LXT19cVzGYOYktsG6I6NdEFJmdnntV2K4GcK+lgqTH26zph0l8klWzwY2Z4hLof8H8LHFVf21uBkYnAhlQv3X3ALuiELRePLm8Iq5G03lLzHiU/KluDJ6dqR4HE9cP5a6Sj8azJl7an/FmljmdbBd/gh/4RS2n2LLACWtcJZyKubKD88EP7QT4FIFX1mVuHGTHPDdBgXFxM9ikM4ykNBEmPaAqJq89VWoYVdxvqkvWwzsOGLMaUa1GPxGYqpjESWabJXLzdk8/u2Bj0D0ZyUqBL3C61Hab2G1x9tPX9ardFzXwhTH6YvUra9I9/k6SCNsw0rczhxQu2MBqiT9sroIF88ByUHJ4mDeFX9O2gJASDpYLnii3cOT0M1kUMYfw4QOUWsT0sPjHVwVsmgd7m2dgjwVpnJKHVCLYnaTrBrBWJtAnLUh+ny8jsGjhKGustROmM7jwCEmNX5uCurf0nIRzu+MnlD9iVM0jDOqupoU4rFbHQLU7gEzirb60V55m3HniR1KH2jzjqbP9F9NMO+AfV6katM+KUpy36IhIxvY+ueEbKq16zLCdlNxaoPKdxkIwuhZbbMx2xL8HLRMcQ/afz5tTIa2kfH0BYjFv7/beB5edDFmSlM2pABz9RoHztXTbd20L0IqdF+1zrQiSiEaEI8jozq18VbqfI1jsyyC1meDkpLsPsrudhbDcvYQOpUzOpap84OwnO74Zmu9yHw1lK3xeuFX206YGAx/eCJQQPFArKYqjxYFyj+Pqi5WYZj9zwnB2pjukd1+3x0+xemOduVs3rYwQTanj9TdlEOddilsH7vePKd8/fZ4BQaavrDcwd3agE+1j9BejcYQ70b8Lz/rD/80V7LnLQOHz9T+8E3hZuF0kV/P+HMZtb2BR5NsFx8ACONtmUxBM7RU6GQlv6SNfSYQab0QLYF4cxxkjX2u
+ 8uGnR6+Q
+ bca/IYg6meWgvnOYkL8hSMbge/UFtUiv0+GXB+xoTqe4I59NaYOdXLYpGKzOePzlC9XfFh3cNvvTj2RG0OtWIdz1F0an8Sq6T0p8YAFYUAE2JgpCtjRuECEsEGgGWLAR+az5XbhmIdiMaYmxpZLTUBiLB0EnkroMwK5bMiEZn1a2luqfEweGEh0VjDZN3IDumXwreAA/ZG36d+eXDwSi834cyQI3borNkdZtlyGYcEJzmwCZrg7Gpovk0pWs8yiWKg21+hNnfObvj6oSnxoGNI3IXGutA1/hyIDghpYf2ykASu/96hrZqV7jvVD01xDPEKJGlchY6zPVdho3h0PG2rtr/kipoW5k1idd0EmANkN5NyZMreO47C4QRTtkH6Z+04y+PEn1lEPzKAdCFPMyhsz8kAcn+maPkCcjRekIn7S9y3+vxx/fZ/GJ4AscU6K5XBfWHnGB8ziaaKQT1u5Vsi2mAsB2EZjSj12qWqI38PqJUiW5mbtfikP/M7H7OcT1p4TFDi6PNIAfe8YGC5xzMnvM6YD7rFhA8IbSIqFfDZQdhgIswkEtcFFayPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,53 +140,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 04:57:37PM +0000, Brendan Jackman wrote:
-> On Thu Jul 16, 2026 at 4:48 PM UTC, Matthew Wilcox wrote:
-> > On Thu, Jul 16, 2026 at 02:30:10PM +0000, Brendan Jackman wrote:
-> >> There are no external users for this surface, reduce the scope.
-> >> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> >> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
-> >
-> > Hm.  So what we're saying is that allocations which respect mempolicy are
-> > only for core mm and not for, eg, device drivers to do.  Is that really
-> > what we want to say?  I don't think so, because that's inconsistent
-> > with having just widened __filemap_get_folio_mpol to allow guest_memfd
-> > to specify a mempolicy.
+On Thu, Jul 16, 2026 at 02:30:11PM +0000, Brendan Jackman wrote:
+> Commit 5b584d2d22dca ("mm: remove __alloc_pages_node()") removed the __
+> variant of alloc_pages_node(), after users had been migrated off it,
+> since it just complicates the API (requiring users to handle
+> NUMA_NO_NODE, or risking hotplug bugs) for no real benefit.
 > 
-> Yeah I agree, mempolicy definitely seems like a "public concept".  All
-> I'm saying here is this specific function doesn't have any external
-> users so it doesn't need to be an external header. 
+> This patch brings __folio_alloc_node() into line too for exactly the
+> same reasons (including the ulterior motive of freeing up the __ variant
+> for use as an internal API).
 > 
-> ... With the ulterior motive that I want to add a new parameter to it
-> that actually _is_ mm-internal. Namely, alloc_flags, so I can add
-> ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration of
-> [0]. So basically this is
-> about trying to extend the allocator without creating a GFP flag.
+> This time, it's done as a single patch because A) the users are fewer
+> and B) folio_alloc_node() does not already exist like
+> alloc_pages_node() did.
 > 
-> So I'm envisaging if an external user arises for it later, we'd slap two
-> underscores on the beginning of the internal one, (with the alloc_flags
-> arg), and then bring back the public one as a wrapper.
+> No functional change intended.
 > 
-> Does that make sense?
+> Suggested-by: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+> Link: https://lore.kernel.org/all/ed4572f4-0074-45c5-993d-7b6533eddc31@kernel.org/
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+
+Reviewed-by: Gregory Price <gourry@gourry.net>
+
+> ---
+>  drivers/iommu/iommu-pages.c        |  9 +--------
+>  drivers/irqchip/irq-loongarch-ir.c |  4 ++--
+>  include/linux/gfp.h                | 12 +++---------
+>  mm/filemap.c                       |  2 +-
+>  mm/migrate.c                       |  2 +-
+>  mm/page_alloc.c                    | 17 +++++++++++++++--
+>  net/sunrpc/svc.c                   |  2 +-
+>  7 files changed, 24 insertions(+), 24 deletions(-)
 > 
-> [0]: https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com/
+> diff --git a/drivers/iommu/iommu-pages.c b/drivers/iommu/iommu-pages.c
+> index 3bab175d85571..47e0759f0e0ae 100644
+> --- a/drivers/iommu/iommu-pages.c
+> +++ b/drivers/iommu/iommu-pages.c
+> @@ -56,14 +56,7 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size)
+>  	 */
+>  	order = get_order(size);
+>  
+> -	/*
+> -	 * __folio_alloc_node() does not handle NUMA_NO_NODE like
+> -	 * alloc_pages_node() did.
+> -	 */
+> -	if (nid == NUMA_NO_NODE)
+> -		nid = numa_mem_id();
+> -
+> -	folio = __folio_alloc_node(gfp | __GFP_ZERO, order, nid);
+> +	folio = folio_alloc_node(gfp | __GFP_ZERO, order, nid);
+>  	if (unlikely(!folio))
+>  		return NULL;
+>  
+> diff --git a/drivers/irqchip/irq-loongarch-ir.c b/drivers/irqchip/irq-loongarch-ir.c
+> index 21c649a89a706..427f7fd3cad42 100644
+> --- a/drivers/irqchip/irq-loongarch-ir.c
+> +++ b/drivers/irqchip/irq-loongarch-ir.c
+> @@ -384,7 +384,7 @@ static int redirect_table_init(struct redirect_desc *irde)
+>  	unsigned long *bitmap;
+>  	struct folio *folio;
+>  
+> -	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, IRD_TABLE_PAGE_ORDER, irde->node);
+> +	folio = folio_alloc_node(GFP_KERNEL | __GFP_ZERO, IRD_TABLE_PAGE_ORDER, irde->node);
+>  	if (!folio) {
+>  		pr_err("Node [%d] redirect table alloc pages failed!\n", irde->node);
+>  		return -ENOMEM;
+> @@ -410,7 +410,7 @@ static int redirect_queue_init(struct redirect_desc *irde)
+>  	struct redirect_queue *inv_queue = &irde->inv_queue;
+>  	struct folio *folio;
+>  
+> -	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, INV_QUEUE_PAGE_ORDER, irde->node);
+> +	folio = folio_alloc_node(GFP_KERNEL | __GFP_ZERO, INV_QUEUE_PAGE_ORDER, irde->node);
+>  	if (!folio) {
+>  		pr_err("Node [%d] invalid queue alloc pages failed!\n", irde->node);
+>  		return -ENOMEM;
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index e4e974a6e5f90..572605d84e30e 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -251,15 +251,9 @@ static inline void warn_if_node_offline(int this_node, gfp_t gfp_mask)
+>  	dump_stack();
+>  }
+>  
+> -static inline
+> -struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+> -{
+> -	warn_if_node_offline(nid, gfp);
+> +struct folio *folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid);
+>  
+> -	return __folio_alloc_noprof(gfp, order, nid, NULL);
+> -}
+> -
+> -#define  __folio_alloc_node(...)		alloc_hooks(__folio_alloc_node_noprof(__VA_ARGS__))
+> +#define  folio_alloc_node(...)		alloc_hooks(folio_alloc_node_noprof(__VA_ARGS__))
+>  
+>  /*
+>   * Allocate pages, preferring the node given as nid. When nid == NUMA_NO_NODE,
+> @@ -282,7 +276,7 @@ static inline struct page *alloc_pages_noprof(gfp_t gfp_mask, unsigned int order
+>  }
+>  static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
+>  {
+> -	return __folio_alloc_node_noprof(gfp, order, numa_node_id());
+> +	return folio_alloc_node_noprof(gfp, order, numa_node_id());
+>  }
+>  static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+>  		struct vm_area_struct *vma, unsigned long addr)
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 0dd8e2a15d746..1cf91970a6850 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1007,7 +1007,7 @@ struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
+>  		do {
+>  			cpuset_mems_cookie = read_mems_allowed_begin();
+>  			n = cpuset_mem_spread_node();
+> -			folio = __folio_alloc_node_noprof(gfp, order, n);
+> +			folio = folio_alloc_node_noprof(gfp, order, n);
+>  		} while (!folio && read_mems_allowed_retry(cpuset_mems_cookie));
+>  
+>  		return folio;
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 222c8c15f782f..b7836b02f32db 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -2682,7 +2682,7 @@ static struct folio *alloc_misplaced_dst_folio(struct folio *src,
+>  			__GFP_NOWARN;
+>  		gfp &= ~__GFP_RECLAIM;
+>  	}
+> -	return __folio_alloc_node(gfp, order, nid);
+> +	return folio_alloc_node(gfp, order, nid);
+>  }
+>  
+>  /*
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 37a3c1c00e169..86922270df157 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5435,12 +5435,25 @@ EXPORT_SYMBOL(alloc_pages_node_noprof);
+>  struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
+>  		nodemask_t *nodemask)
+>  {
+> -	struct page *page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
+> -					preferred_nid, nodemask, ALLOC_DEFAULT);
+> +	struct page *page;
+> +
+> +	if (preferred_nid == NUMA_NO_NODE)
+> +		preferred_nid = numa_mem_id();
+> +
+> +	warn_if_node_offline(preferred_nid, gfp);
+> +
+> +	page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
+> +				    preferred_nid, nodemask, ALLOC_DEFAULT);
+>  	return page_rmappable_folio(page);
+>  }
+>  EXPORT_SYMBOL(__folio_alloc_noprof);
+>  
+> +struct folio *folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+> +{
+> +	return __folio_alloc_noprof(gfp, order, nid, NULL);
+> +}
+> +EXPORT_SYMBOL(folio_alloc_node_noprof);
+> +
+>  /*
+>   * Common helper functions. Never use with __GFP_HIGHMEM because the returned
+>   * address cannot represent highmem pages. Use alloc_pages and then kmap if
+> diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+> index ae9ec4bf34f72..74350a2e07036 100644
+> --- a/net/sunrpc/svc.c
+> +++ b/net/sunrpc/svc.c
+> @@ -711,7 +711,7 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
+>  	rqstp->rq_server = serv;
+>  	rqstp->rq_pool = pool;
+>  
+> -	rqstp->rq_scratch_folio = __folio_alloc_node(GFP_KERNEL, 0, node);
+> +	rqstp->rq_scratch_folio = folio_alloc_node(GFP_KERNEL, 0, node);
+>  	if (!rqstp->rq_scratch_folio)
+>  		goto out_enomem;
+>  
 > 
-
-fwiw i've been fiddling with a module side mempolicy interface for a bit
-to allow a clean guest_memfd() + mempolicy() interaction [0][1].
-
-I saw this and thought "maybe, maybe not entirely".
-
-there is definitely some oddities in the mempolicy uapi (internal-only
-flags that are exposed to the uapi is odd) that some of the interface is
-worth internalizing.
-
-(fyi i've converted my private node work on top of the alloc_flags
- addition + new zonelists, new rfc is being posted today, your recent
- merges were timely).
-
-~Gregory
-
-[0] https://github.com/gourryinverse/linux/commit/b25bb27602fe512733450a97ac31ef4387b7e727
-[1] https://github.com/gourryinverse/linux/commit/670f7dd81ef33a9385985a54b8ad6bc070b2d581
+> -- 
+> 2.54.0
+> 
+> 
 
