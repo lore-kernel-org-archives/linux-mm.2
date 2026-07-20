@@ -4,105 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 811AAC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 18:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428A0C44529
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 18:29:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58ADD6B008A; Mon, 20 Jul 2026 14:28:13 -0400 (EDT)
+	id 392216B0092; Mon, 20 Jul 2026 14:29:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53C136B008C; Mon, 20 Jul 2026 14:28:13 -0400 (EDT)
+	id 343D66B0093; Mon, 20 Jul 2026 14:29:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42E1B6B0092; Mon, 20 Jul 2026 14:28:13 -0400 (EDT)
+	id 235D66B0095; Mon, 20 Jul 2026 14:29:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 109DB6B008A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:28:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EA51C6B0092
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:45 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 994D0C027C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:28:12 +0000 (UTC)
-X-FDA: 85009989624.17.85336B1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AC6BC40008
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:28:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXU+1bw2;
-	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E141C160284
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:29:44 +0000 (UTC)
+X-FDA: 85009993488.17.F797529
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 22BC718000C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:29:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=d88fxvTa;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784572183;
+	b=fhTt5mWlyFC2hPZaiEOi4MXwadgehQIncjs8mb1TmG+UXENbPnuTUH5/+2lWWjYRr5CfD6
+	ryIoKLXF5Z0KCaVDyDUiDJUpU4PNd0D1KK+rDWoynmbLxXdZJrnPRMxpYfbTx/g3TL8F4o
+	awNLb/V/AxKnUfj1Gv9/3HrlLz24NVw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=d88fxvTa;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784572090;
+	s=arc-20220608; t=1784572183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mUeBkszSLZpLeY1vHXaZpZdp8DfNcwXz6wfLvsS0W58=;
-	b=h9OMR61GahrrKCjYr/LlFJLyWkcdTMJNdILjJ0QddAlDfJ5ek3hg+9GhNAeloBOg2StQZe
-	MsshBDsPtiXVWMAf+/tcyXqDZHnW3zuaMbBh9MXOmbZW8xq5prXt7rt7QgCZoPRbxS6ek5
-	R8gFrd8z2kWZbZ5OVFsKmhK72mqeUjs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784572090;
-	b=KOKfOJKGUVW5jAqAVWtjIGJzvP6p3TyTJSLgWttIxCH4hCB+zcLe5gdGhWLCwfXcHWAliX
-	9xT24IRpILv9zVvabmhdmCeMFh+vcNOTRqNgWDfeogleN0kWNddk6bOyqCUxktoqs8Xxh/
-	HlF4y0+1/FcaC1BFZqRCVUalNuYdyOI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXU+1bw2;
-	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DF7ED43F61
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:28:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0681F01560
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784572089;
-	bh=mUeBkszSLZpLeY1vHXaZpZdp8DfNcwXz6wfLvsS0W58=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bXU+1bw26GpVEQj8Red5SgxnSsTT441TVJj+/EQu9yxUKDrfqoW+6P6ayEDf//y86
-	 G89Zxf7JmdLA1isnRI8S7nnCi2WPrBVDSPrdeyv7kn8JsdTxHWssY6O0Es0nXoM7xP
-	 ZuxzeUptUJwEYK32I6SNA87KTKVawMZp+A0qChBecfvs8QxiH4OU54bSixg+BfcDxj
-	 a91aSMEIqmK5gnybeWLLZah128WDJGccZopRbZ87XhEBKrsHFNebqSq7ALSuEILllY
-	 85y+wtzew0S8ieNTqhp3/YggzY407OisbKAkUCgrAlvgZgvQdZrmwaDu7UnaXRvv34
-	 NDqsigfYGg8ZQ==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-698aa7ba3e6so9156126a12.1
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:28:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoCGeBlMR0qABPmXW24wZpWENeNQOLd8BmyuzDXwT8BNdeUaiulE3EZgC72UfBFJ1IhPr2qWcgEag==@kvack.org
-X-Gm-Message-State: AOJu0Yx3CIZUvuHdbQxtPgnLhcscoyZUuiJHvYPorfbp7/0dP38FkvHa
-	8k7x8YVH9jRM7CqSpB9DZBIXHUWkYOU737GuSsqtzgkfXYF0Y8V1G4TMzNkitwll705J4JPlgKY
-	ljWkiddRHE0SfSVVRrH+VPzrmOlRqdBo=
-X-Received: by 2002:a17:907:1c9d:b0:c16:a9e0:d5eb with SMTP id
- a640c23a62f3a-c16b4869776mr668320166b.56.1784572088428; Mon, 20 Jul 2026
- 11:28:08 -0700 (PDT)
+	bh=EvlY+ZnuMunvG4k74l6eGWIXWbaZN9lfqhpu+ESLMPs=;
+	b=zK1nQPI+Xjt/pe+CZG51mzsWfEUNbtX8g39FjGihoRcVMhuHhMyIzWVt3xkAiaPkB5YNmh
+	Nks32TF1TwuIh7SoVdJxz5XAVtnel+D+iDSjCwaJagrzzLQBsXxo2ayS37G1SuJiEelyOL
+	bHRWlG5F1VUb3W1iZIZBiv4JUJR13e0=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c0c45c580so90814121cf.0
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:29:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784572182; x=1785176982; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EvlY+ZnuMunvG4k74l6eGWIXWbaZN9lfqhpu+ESLMPs=;
+        b=d88fxvTags50Q5UY8Ka8lBoYLjue5p2Dr0XLw02LW2t6920NZHd8tFdNdOfaVHvfS4
+         wdZA2ytGbWPcKepBen3022yg4CzqdOZsvNSqJ6sa3G0WGzOf0D1nZWfdTEjQixsnpuOt
+         I9ysh0d2adLrUnhmaZcJo+LPKNKMYwSth6MRvWLDNdamkPUKdjCQ0QH2EzgsJtbHPVrT
+         fvEAzdW73IQAFYGe3VLPxQ/UrEYQ6kWl7zeTMpkcTEd8G56VWUnSJ0k1v/UROCTVmZ2M
+         FG3k9tTpJpgYyAM+RQdc7xyPyXa2HiPUptheAeGZnfZZp5ZFf85UuRUyVuaMqe4MIJOq
+         poyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784572182; x=1785176982;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EvlY+ZnuMunvG4k74l6eGWIXWbaZN9lfqhpu+ESLMPs=;
+        b=Bggt3ccepdVSJtqLFHtrHqPSufzMMai5pP0B4zOuDpAwn4PqfqFd+S03CCyuAKJ5jU
+         pOpEYtLNQc8siA857n6aH9jIn98rrhqzFIe1qImCkcaBiZ3nQAOVbsxthS0pvt4ceOZe
+         xyo6k4FNj4jk+ye1tIdEqXYxmAVgRKdCZ6cQS6DUQgyX6avvBy8kYBVpecfB/aZ/F5iK
+         foRCfzMYQFe2q2S5emT/jntGGDjb+AMJ5MkrOt78c9Z1mfBgEQfzfy7U34iDnVpxrP3s
+         pCg2gJXjSxgqUtGHbVquByD5vEuiiM89cfSvjk5u6PUAxXZGm961W6fGdkAaIZD4Vp5K
+         ymtQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpCnm6yOIQEms+bFwijQmK67En3TvFJrAh7L35QcTM2FTMLzYfYSbNsEU+x6CQWoS3H20quDznpMg==@kvack.org
+X-Gm-Message-State: AOJu0YxH8eeK+KOHqv0D27Ix6Y8MC0lnerZD9rWYas/g0QS8/N/5a1fO
+	dtXQqsErQKpjVj+IyTZogwMIVK7092ifgR7WH5m+hR5HcxFNcGF2CPmQnFk3uEIwuAI=
+X-Gm-Gg: AfdE7clupECLPpl/SV011a45h6V/CeTiuo+rOCmqtISst5V1D7x0HL3644Gxr95MHoi
+	jOkuey5tz6DnEZRoDUVfe8JHMO//6OvoewmY9L0bDkpJNOjVou/DO355ETSQO2e2aWwUPV2NxpS
+	l7gQACHHEEqlIC7Hfk9V+0JITxP5KO+cTmPQ7tEf0zNwpWbzArNe6e+84jXCNRR6bXtBbfrLqIp
+	uM5TgWjc4i7GnAeqgTeGMSD1Zzj8cZ0AxY1lGbZ/OpYpQwzt5XWIw2q76aUzUzPD4hkR+dlsftI
+	uKhQTGSUxv9QO+ZjTD1sKzHklbbgkad/x1w0NlwmZ7w6ZD8kXli7N9fPYykc5/QenD2NZX7a0TF
+	9MSZgQGT/Zu4JA1nh0yT+PT5GbhK3+ml5n1Kk0wT1BWlWBqBtt/OOFILHOPV4VZMHki4JO2RxQe
+	EC4j5XpfYdXOmBQ2du9OCN2AY+oyaPG6/mXRh2kGegNWbJx+0++/fTG8nnmuTHdxnIm93p
+X-Received: by 2002:ac8:5714:0:b0:51c:1857:b622 with SMTP id d75a77b69052e-5213e082210mr141591671cf.54.1784572182072;
+        Mon, 20 Jul 2026 11:29:42 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214c5cc8d5sm80304611cf.6.2026.07.20.11.29.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 11:29:41 -0700 (PDT)
+Date: Mon, 20 Jul 2026 14:29:36 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>, 
+	Brendan Jackman <jackmanb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	iommu@lists.linux.dev, loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
+ header
+Message-ID: <al5ldslYontDDKPJ@gourry-fedora-PF4VCD3F>
+References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+ <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
+ <alkLSzQvzT9zJbY1@casper.infradead.org>
+ <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
+ <al5gQgnBCjNCSD_4@casper.infradead.org>
 MIME-Version: 1.0
-References: <20260713025644.170839-1-youngjun.park@lge.com>
- <CAO9r8zNJfhirbzvJzDWRaBQOM7XZcf_Jk0Bz=Y4dB4QK4W-MwQ@mail.gmail.com>
- <alUK8DWRy4LPxTpY@yjaykim-PowerEdge-T330> <CAO9r8zPvWKgQ8+ABxSnVnC452-enyMqCjBTA4pfNDVxsoJr25g@mail.gmail.com>
- <alUQ0ksPP00PVwew@yjaykim-PowerEdge-T330> <alae-LIRwEFUjgs1@linux.dev>
- <CAO9r8zNfp-T19cYyZxKHBY-FnmQ_9=fbP4JYPPFgYtUCo5fZyg@mail.gmail.com> <aluXhRMXkbPRsPcM@yjaykim-PowerEdge-T330>
-In-Reply-To: <aluXhRMXkbPRsPcM@yjaykim-PowerEdge-T330>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 20 Jul 2026 11:27:56 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOK-3OzwsMQFY6GNv7foiw0Jnj2W6Cm0LCMmtX+2r5=nw@mail.gmail.com>
-X-Gm-Features: AUfX_mw9GHQtD5pj7EfdilJONa1y4rj2U6Pri3MtJr_pXGOknXtYE_h7WWAL0-Q
-Message-ID: <CAO9r8zOK-3OzwsMQFY6GNv7foiw0Jnj2W6Cm0LCMmtX+2r5=nw@mail.gmail.com>
-Subject: Re: [PATCH v10 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org, chrisl@kernel.org, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, joshua.hahnjy@gmail.com, 
-	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com, 
-	baver.bae@lge.com, her0gyugyu@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <al5gQgnBCjNCSD_4@casper.infradead.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 22BC718000C
+X-Stat-Signature: okjq7wisrbs8iihosir1jdhjn34zx7b3
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AC6BC40008
-X-Stat-Signature: 1jb1t7o9ddacwszwx5wfru61zuphjaot
-X-HE-Tag: 1784572090-392218
-X-HE-Meta: U2FsdGVkX1/U/rBMIwXEvLTdLf05aAvT5+gW7sjeyOpZF98LJ3+D5bMnQC4IU8g35WXOEquIfdzh8EU9tZepSJtKwLpzm2iCjZN99d1Q8jTRU14pb63Bo3EZUh8mQVlH2vO5uqMxKtIKqaEI3utRNFMb3dAcY2xb6x+xtOS157DYGqlckmXSXb3VETws2CG2hoLDm5QMKfNlhTLIgN88dB5dM9azZ6Bvrm4s9WZKljKa2RNJ7fmr5p8iZi/Lb6X/9kb7Iw85d0FgWvRxSnVcie6m6S1K3lzVI4MZVLi0NPLDaDVCsTTu3FXEnnL4h1cqKZfLes54pPqaAlApkPWQfMkVNG2rBXNvR1uk8UfaE7svbNcRvBiAD/R9ARYvLgc3UPi72pfJOWfFdG4f9rE2L4PXxmVhgcr+JwFC5PfaXu6v5yNWzcogkVbhuprP9tWIytum59Ky0A6URs/woJ+X3nyjiYRWvl/T07QwPQb6lZivVLHDDOEnILwk61qyobprAo/PaO6rX7LoL6BKBh7aum6W+IYQ1WMHq8m+NfjSzJM+DPF+EL4lqlCJROZSBfQGkrjZCAcs1cTkgXqwqqeEGMWjNoyoyla6gdOugsktiJnsA1QCYZPoqmEaqqcgix9Z8mONg83bwprHq+GZYf8irTVvFBB8YKvullgjdKgoxM3fBYFgwlMX5GnMMMFAXZvg+g6m8cAPxmh0RlCw1vLpF3N4ENYKkx/UFUu6HtOI6q2jKTeZc7yp17xsogGsyGO3FCwE2qYZXfATqmk4PH1f/2FuHThP6OejJKmv4wVC7PYGyfsIyzPD9uisE1L4cms69JrA6QawflKnZxGKHzyr34xx3ij6ux6ZRrZ3Kcc1iFt28tYKj5Xjig/891GpfyyoYE1sKgEZOMjpGN1ril6KcEKOPsSXUdSQp2TX4Cau7CPo/9wVsR+XA7somC1iark3YR7zZ0h2Pue4fFjZmE8
- 3U97GfMM
- YGZPTwkqL7jkINAVMij9ycBI8ij73kTfAMX2u1CP/LePRWj8/GdqI5ul3QiFivPkrvQHyZrU4K0TV8616F3MEcfaejHPwmi1cNFd6oHw91B/i3lSTq5wNCS+mmVAD7tpLgCli5hh6VF9fBhj6FmM4RDDCDkOGGwc2gpfSderFivO4RZmRE4yKR3WVuoVzMnq9TQd+J09HX9iyr29oRYt5ALHMix7ujYjGrJnx/acJgAIvn4iCwPexYecmS5/LAB60xZNIwl1xeyHadsuIjLV1L1ZQ19pFobbYlsDS1Ijan5dx9gQxQ/nETn6PpsMR9Bp6IULNMxEf+nQMbZp1G0f0TTdc4FErJVLKuw2sUXNeYuGWMEc=
+X-HE-Tag: 1784572183-354981
+X-HE-Meta: U2FsdGVkX1+24vs8klqOAT+1VF5q3S1Ss8knpgOvyt219DJ6HqPAQi3jb5GxBWw4bP+ASuMDcIHzWocsrAg1lMEkRY1YNKr9cWJTgJ26zzcWA3kH0SR2ZkG23Cd6uZeozHlAuo5fWrb6eGuriGXzRxrFrIbhPWcC6tyh9FpQ776Z0B7flgQ0TySktxyQsl7cl2MdLJS2OFeXDRRa/mYbfLX12DUBwog6pgoSlP58Eiri+4FycC7cbooV0CtvNoF133yTXbXr7ZO/qMpWtBL4YbgMhewaNalwMjAaujxMwsFQlHuZ/Ap06KVOByIjbk9EESqAafo+pwWh85nMPrIxZLqZyR2kiX+GFO+dS6v3dzSwh4HxJnXMUixCHIUFrfOG75O8HwIyyIOgJs+gI/jQjQwrAuUUQgdFD8NnrZqO18ZtGCBi5WsSouns/l6sO8wpXlaoX8y5kfZYYxiNZK3WZ7rU/Lzm4MAVotOjhEkdxQtl7YjjBC6Af/FJjCuLxdqZ3qImZGs3YrNsf9gSpEFWcYDfqxTB+6LPqtVGTx+Dao/Cer30SYb6CPhD+xoxihl1nAkGJTRidwvGuCsePzbqtJdJSZD6vY6fHYXloEIMX59tszwTDmwbzX+kotYPuGu/naNTGQl1J4YOHxGVD3oYIHm4AbhK6Qa0dWjd90TiV3+AdDTyGaiezHMSwjJU9J8+TcRuapBLusO2R+uA9hsJdMhRmxeS6fRDRGG6ch+vKzOusT85DAIJZfpDzGG7Isnm+HPM42dgMMyXSRnnP5362OWiLa85b5Yv/RAITW9k8C91xmcaXQhzrSjZDTomlZ+uo14nrBvCMWOyUgzt0AhsvqL8dvOTygazr6xt8hux/hqtkaifHLjdpJHwqoJepXllsbOJr9t/r3WjBNMJc6zLsnadQ1j+Uo+ljMkYZIK3r3i4n6QC3KqFlyjeiEOMIXOJOCoMz3LNNr8JJ5thVuj
+ lULf3pef
+ aqQ0gmyk0ky4EhXpKPUuA5XvsS7XOoHZbepZbfc8Pj8tr0pfOE8Fvdi8WbhtehyMLZ4FO3WTRc76oFS9+QnQ/gTQezJ+dFwE3h3+L/Cq7DXcH7bPaRruSNDs4Kz+uU5UtO5y4NY7yCcDuTkmuubuGH7Da22BuywLowNZ9W+pDdjc91dJCsdpcBLTfr9xra4BanqR6o0yAhKeNVHMy6O9ObmdZOEBxwDr1lBfp0Ty/TOy9Qw9jQYPnDMN95HEs47kAznyDiCrF+XKZI+bK2lhZViM/TiipdX4ddlfzPKCilk8DnG/SV7a7het0Vb5FX+DK8yjXZZD9f1TIGzZGI3VwQJ3lh4cmWiwLOLeIcFKHl6X4WEVpV3JSkoIwTBhlsX/naRG092eNnWC1a4Saw5793XA7Xg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,81 +144,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Hello Yosry, Shakeel,
->
-> I have been working through this in detail at the implementation level.
-> For now I am adding on/off control of zswap through the tier interface.
->
-> > From zswap's perspective, we just need to skip zswap is zswap as a
-> > tier is disallowed. Could just be a check in zswap_store() similar to
-> > the check if zswap is enabled. I am assuming that if a swap tier is
-> > disabled, nothing happens to the existing swapped out pages in this
-> > tier, but new pages do not get swapped out to it. This is the same
-> > behavior that happens if zswap is disabled at runtime.
->
-> This part works as you described, with no real issues.
->
-> > From the tiering perspective, we need to accept "zswap" as a possible
-> > tier, or maybe creating it as a tier by default if zswap is configured
-> > would be better to avoid handling the case where the user doesn't
-> > create a tier for zswap. We also need to disallow zswap being the only
-> > tier as that combination cannot work without vswap.
->
-> I tried to forbid this at the implementation level as you suggested
-> , and that is where I ran into trouble.
-> A few code paths can end up with zswap as the only
-> tier, and they are awkward to handle.  Below is each case and what
-> handling it would take:
->
-> 1) A write turns off the last device tier while zswap stays on.
->    -> rejected with -EINVAL.  The write does not take effect.
->
-> 2) The last device tier is removed via /sys/kernel/mm/swap/tiers.
->    -> the file goes empty, so zswap is not shown either.
->
-> 3) A cgroup has zswap and one device tier on, and that tier is removed.
->    -> the cgroup's zswap entry is reset to 0, which the user never
->       asked for.
->
-> 4) A cgroup has zswap and device tiers on, and swapoff empties them.
->    -> the cgroup's zswap entry is reset to 0.
->
-> So the problem is that in (3) and (4), memory.swap.tiers.max has to
-> change on its own independently of what the user wrote
-> and it is not like just error handling situation as (1).
->
-> There is also a consistency point.  memory.swap.tiers.max already
-> accepts a child enabling a tier that its parent has disabled: the write
-> succeeds, no error is returned, and the difference is resolved
-> internally.  The user's setting is kept as written, and only the
-> effective behavior is constrained.  By that logic, accepting a
-> zswap-only setting and guaranteeing only that it cannot do anything
-> would fit how the interface already behaves.
->
-> Having thought it over, I think one of these two directions would be
-> better than enforcing the rule as above.
->
-> 1. Allow zswap-only in memory.swap.tiers.max.  As you say, it cannot
->    work without vswap, so today the setting does nothing and there is
->    nothing to prevent.  Once vswap/xswap lands it becomes meaningful on its
->    own, with no interface change needed.
->
-> 2. Expose memory.swap.tiers.max.effective, like cpuset.  We already
->    track the user-set and the effective-set separately.  Exposing
->    the effective one would show that a zswap-only setting is not in
->    effect, giving the user visibility instead of rewriting what they
->    wrote.  It would also help the parent-off/child-on case, where the
->    child could see from the effective value that the tier is off.
->
-> What do you think? or any other ideas?
+On Mon, Jul 20, 2026 at 06:52:02PM +0100, Matthew Wilcox wrote:
+> 
+> > ... With the ulterior motive that I want to add a new parameter to it
+> > that actually _is_ mm-internal. Namely, alloc_flags, so I can add
+> > ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration of
+> > [0]. So basically this is
+> > about trying to extend the allocator without creating a GFP flag.
+> 
+> Yeah.  I'm not sold on the whole alloc_flags thing, but I'm too busy to
+> sit down and think it through properly to get involved in a proper
+> argument about how it should work.
+> 
+> My entirely unresearched and ill-considered opinion is that the __GFP
+> flags should _be_ the ALLOC flags.  We shoudn't be translating GFP flags
+> into ALLOC flags that are what the allocator actually uses, the
+> translation should be done at compile time.  So if GFP_KERNEL and
+> GFP_ATOMIC need to be composed of different flags with different
+> semantics, then we should do that, not invent a different set of flags
+> that special people can use for special purposes.
+> 
 
-Hmm yes, seems like enforcing this rule comes with a lot of complexity
-for little gain. It's possible today to enable zswap without adding
-any swap devices, which would render zswap useless anyway. I suppose
-in the same way, we can just do (1) and allow users to disallow all
-tiers except zswap for a cgroup, which would effectively disable zswap
-in the same way (albeit a bit less clear). We can document this
-clearly in the memcg docs.
+alloc_flags is putting me between a rock and a hard place.
 
-Shakeel, any objections to this?
+I figured out a clean isolation mechanism with zonelists (new rfc is
+posting today, i'm doing one last proofread), but it required me to
+extend some of the mm/ internal interfaces with a zonelist selector.
+
+Since Brendan's base work made it in mm-new, i decided to replace
+the zonelist selector with ALLOC_ZONELIST_PRIVATE as the selector
+to avoid *yet more* arguments.
+
+I'll be posting with ALLOC_ZONELIST_PRIVATE on top of mm-new, but
+the churn is getting painful.
+
+It really seems like we just want an mm/ internal interface that
+exposes struct alloc_context for specific *mm/* callers
+(see: compaction_context, migration_context, etc), and interfaces
+that keep this nonsense transparent for everyone else.
+
+Then if you want access to alloc_context interface, you need to get
+export approval for that component (similar to EXPORT_FOR_MODULES).
+
+Just spitballing here, but the churn is killing me.
+
+~Gregory
+
 
