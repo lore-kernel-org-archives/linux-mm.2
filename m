@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB165C4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:16:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D239C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:16:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 734806B0088; Mon, 20 Jul 2026 10:16:32 -0400 (EDT)
+	id 167DF6B008A; Mon, 20 Jul 2026 10:16:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70C8D6B008A; Mon, 20 Jul 2026 10:16:32 -0400 (EDT)
+	id 140FB6B008C; Mon, 20 Jul 2026 10:16:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FAEF6B008C; Mon, 20 Jul 2026 10:16:32 -0400 (EDT)
+	id 07C846B0092; Mon, 20 Jul 2026 10:16:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 29F516B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:16:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8C019C01D5
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:31 +0000 (UTC)
-X-FDA: 85009355382.06.E245DB5
+	by kanga.kvack.org (Postfix) with ESMTP id C9E0C6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:16:34 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3CC07C01C0
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:34 +0000 (UTC)
+X-FDA: 85009355508.14.2903473
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CF629C0002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z6fHflev;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 971D6140011
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M9l2/0LE";
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784556989;
+	s=arc-20220608; t=1784556992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rLtF0K+0TYJPvPF55k16nUXQBhEpGr25ARgvZmkoWNY=;
-	b=SOrqk/zT0f8IdM0fafH8w2xMGTob59Fh/YAASoaZfwB3OVSz0/VhZgp0aqFGPPcVM59M7Y
-	gYGHMTI101trEBPiFzifiq/1PV1S6bQFL04JJJj1xe5vxiMciWaTWf7KXG/4bC4PUjwsyE
-	YrW/hmBfn/RU3XnTt09ZCGquurc9oJA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784556989;
-	b=ab3Rl8Y9dvW0ux44EHylvniKPjUrOpcHf9vvfPOQ2rzXmyi3hF4lw6r8OmYKqjOcaonUvS
-	PATgtYDWv9pwkcEeJerZS5lspmvrd0+VoXmDU2hvNoKFndOZlR25NlrtFBd+i6J9Ku7LW3
-	z3yDVHj5EBcaxW+KFJmBTAPm3XoB7RU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bOrfQ3lYA2720DIdcg2lgwZAAppgr0gM7i8Eaojwjq8=;
+	b=C/Tvdr6y4aEgCySHXGWmSutd1g+FwPErqsknAwpI6dzc8e/ByKVAOhQBI7GBsx4T3iV51O
+	cOrZw8dnHOojyoNHydx853HpUB5sO+A+2DAAPLjtGt8jEpDTaNI8mpeR4LXMcRVboO0DZq
+	90K4/3poiEhjr10s53NGI60Saw+7aUU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z6fHflev;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="M9l2/0LE";
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784556992;
+	b=Q3kF9sNQEbMPS818H11u3YSv4RJ+ovE4S7MyxnxvPI0Atg6Vs2qCL4rj+h6p3rOBZVB3NP
+	AMNwvIMhfhHoBRIGHa6VhAxP5dxCK5yz8XWoYW26xhao0GFQp+f9oM5NLqWkB78CXkWHD9
+	NR3I7VFHqvuB3dJVlJ4mK1TRw7VBuUo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E50F601DE;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D73760A84;
+	Mon, 20 Jul 2026 14:16:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FBC1F00AC4;
 	Mon, 20 Jul 2026 14:16:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3C21F00A3F;
-	Mon, 20 Jul 2026 14:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784556988;
-	bh=rLtF0K+0TYJPvPF55k16nUXQBhEpGr25ARgvZmkoWNY=;
-	h=From:Subject:Date:To:Cc;
-	b=Z6fHflevYEGSDO7qqj7ml46G/+2s89a916N6PqXn3//NnfakNR9A4HXzSo2WoqySI
-	 pf5ukJw+Viacz8Wjh4kGhkseq4taWOBAXzlc1DDo099zbKQXGIotR5FGYyhExXXaeh
-	 kE7lvpoFst9pBqyp8d8L/Vr4gUrpk8bNtGjlrIO454uAOXaYPONlhshgu0OGdIUcNW
-	 ft36YvRYoMxmj6cvKTNVSzCxmuWDclvz3pTZb8dVBl1l95p6bxXBRhIjFawjqtpS7I
-	 bMvaxxtREhRa2uuwXbUmYPR8O9sz53ObNi2PQotO2U6nGFTYhrtdyobDSRQ6Wqf5MV
-	 f/UilygrDyMFQ==
+	s=k20260515; t=1784556991;
+	bh=bOrfQ3lYA2720DIdcg2lgwZAAppgr0gM7i8Eaojwjq8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=M9l2/0LEB2GWQY1CtKBsbLdSJT/yAB7qZ29jms3ke7nnXI9Iv69tyJTQCnwDEuF2I
+	 BrW0Kie0BuwlqXg1NPRo2fO2PmnXhLHzLW1YjNPp4qxsIgQZiYT7T8nuwr6GrFaxvb
+	 IYlx8TawcJvWfkOd+jwUZCT5WS6xKpXWeZlK0nqMu5Zn+FN9AgyK+ep+18QhB/gGrV
+	 fq62Fo2D0oYsmXHTwrbNXOPeQWKL6T7CbmLqc0UNhSnyB8LpAs+ir0nrunWZwNMdAU
+	 aSUS9frX+xSXA5CsOg2JOpYPRvk0WyqAhdcBM0oWXGkyeXC8FtkybA6hvS3RNONaUk
+	 3V2kLT6dZW8jQ==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [PATCH v2 00/13] mm/slab, alloc_tag: reduce obj_ext memory waste
-Date: Mon, 20 Jul 2026 16:16:14 +0200
-Message-Id: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+Date: Mon, 20 Jul 2026 16:16:15 +0200
+Subject: [PATCH v2 01/13] mm/slab: skip kfence objects in allocation
+ profiling
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAK4tXmoC/2WNwQ6CMBAFf4Xs2RpaC4gn/8MQA2WBVdKStjYYw
- r9bMJ48TjJv3gIOLaGDS7KAxUCOjI4gDgmoodY9Mmojg0hFnhZcskYy0zxw9nc3jeRZW5+FFLn
- IijaDuJosdjTvxVv1ZfeKA+W3zGYM5Lyx7/0y8M371bO/euAsZWUtSyWV6qQ6XZ9oNY5HY3uo1
- nX9AH7vk0jBAAAA
-X-Change-ID: 20260714-b4-objext_split-da82426257d5
+Message-Id: <20260720-b4-objext_split-v2-1-2fa7c6f60dbe@kernel.org>
+References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
+In-Reply-To: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
 Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
  Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
@@ -84,14 +83,14 @@ Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CF629C0002
-X-Stat-Signature: du5cswkswpgkw4tzrcxptr7jdirjwoxa
+X-Rspamd-Queue-Id: 971D6140011
 X-Rspam-User: 
-X-HE-Tag: 1784556989-232680
-X-HE-Meta: U2FsdGVkX19yu3iEVweYeZFodDHbwg4C46y9mdXrrA3ErxrJre9ed7zqs+ATP8zjE1YUivceG6SwybWCtAw7TnuvDtV5d7qVtyDmtqpFakxaGYdpsdPcLarQ53zVlyv2lXhRV/n1lOuX0rLxOq6zDc9ewbVvrOnnGP2xKoF9cxDFpwywjDmqw3BbNx9Db+H4v+f0WAeS++67mVlrWQVr6+wQA0xws9KvM24zZWxcrA+yiW8kbdPw6+FFgqYHIkDxEzM0rqH3bCsd0omwC+sXx22lDJpzjVnylr8cTAptUf346dQdfM4pMxGZicaIw4t8yng3OYpwOUl4W9EkQdmV3UMP6OgfOfMLcMThzhn9UFQO0QiVhCaInKNisZHQgMpAT1nCKrO1c/XgQ+kJRsFynYKDb38uak72wgpWaafjPHqVhw+qbw+3Bpd2oo9pxibVIz3B0hZVLSUecFtJVXYU7eTf5b0octTJ3M6dfZ2KA8YbtfCRRqdoyn4YYCz8I6S67CeBTiBeFgsD8ExibfjE4Sv3kpwgOaJhd3ToxPmZONpgqfueMPkIy9A+iG+FWUThdPoGA5ZpRoxiWcv8iDPoYqtyU5RvveWs5nxk3evNWwqaoiagfcxPFtatTonNMOBe4qMcnMrlAXoJAjZIfCqVi8bHPYMINi0Lt0QkriONC0+Z2xz6cGzB/P1wKg9UvT6DgVF+b8xPAs09kpa8ZPKLOF6quJim1hVTQC/p4DpEUknaeIJruvYbtxzbrvrvQDNRxG/dQAzn7r5HRoKjHo1dfsRJB449pVq17N7LKTPJGI8hWkPLS9Lx3J8ccDgiBBWLByEIf73CXzlQLvruwoXahJdK5JPYxgVequrxcMdhcTmrL5Pab4S8cvanqyaNU+BaqjlOHUltzIigVlalIPo4ofWS3TljnTIInLTbfzKxiQDpOYjOQjVnCe2h6O9Jr5qVBUcvNGJxi6q14lGoAbi
- VyHXFooF
- MjVhn3uybOnkzHVxoEMKAu2ieGzFa5BbPuUMM14fbNPTw19s4nf+p3eGpnoje4qXTtgfWBuACwD9d0/jC3Z9A2Zosl2fq/CZSShnReFKr+cCfvzC5iGQkQ2lnZNxrqeLvs3zt46jRaCWjGIXq7jCWa39cdqszYMMPlOwNhgNzrgUUFC4Tx+E3Wfs/HWGlr1L9MTDrDTJ7kgIhusP83uZArcomXIKM4CiqnJF00P7/LG7MJ2lEkcihwFhZJFiUD95eFn/bFuy22/b2sR4P+57dCg4+JY49mmbzsfTmQOzOUDKoqczIvt0XF9lfRc8JQkgdomjIWI5voPc8h8ayZKEKtOVB5tgeKBbG6CFh9Tv/MNykoXs++22c7oe1Cg==
+X-Stat-Signature: ibyss35c948bi1fawm33kpaaru9xac9d
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784556992-815524
+X-HE-Meta: U2FsdGVkX1/NTfMSMjoW/CKUelvI14ioAJK7g91F7Qr9ooq/sz3H1ipwGGO09Zv8vN7SFz3k1eHjBJ8RSFlKLmp2KJeOtCGVyda0fbXb3sq6h/MEQi31hFYwtAJIYI4mn/RslUa3+hcvump6mGlWTlyTg/mSsIlputxAD1oga1lg0Ripwkn9Hc3vkVmXGzKeERwXIh+5NFMeF9MaETTe8CB8hdv6lPPF7m6uX6uVlcs+IPi+F5tOcNPk1c3/VXeFqxIXiwBE6hbmbM3V+LFVwVlh5pAoj3hj6FiwKdxCFLugOGk1Sgq+0UolSQOfveY93qpcgny0BBxkwnHX6YnjIcfg8F3lkporiC3OYQGv9X7r47ZOtTbhbQRUS2sECOHHAoDyLPNKwAlmXnJLuG06EtLeYW1Fpyogzzi0G1GGNjfiq8ybz5jlrw1KwrKjHN+P9BegvtAOzM9cpKuWxmk5ayTu1cNNkrQN510Gm+rc2+hcgA6CDB7Xlu81JHA0LHKceNxazSK34J+J1nlW+K/p3AOioaAsnefhQYBrYLLPq5WS5jQWkxY5NFTCwHc9fMk73tpAwUUYazcyKJRYcQKN4NcgBoHuQSKOYy8VNc94y9kQ7SVyDwKqydUNRpL6IveMuHTTgBo59KarkmGgobW/cHXVOF1R6qB2HBhgviwjfHvBKG/uRZJMLzBu4mRqJi1ev1D8MYTvxuFkAS4knMFu2AtyhPTAXd/O7Gbs6HjlzprQb560WsIRkHHnpArtZBgpp89XMbgVtMcWwG0T8Myth2C2gZ02fOrHTl4Q+dWz6D1uR1pHgdutvASOcxA7jkA2aBzGTIPnmOxc66L5k3cIHLpeRm1N5iELbi2c4EVuWmsoahwU+speaoiQpJjJg16em8o7X7qS6qLlQ/SWE1b7YIQIsdh26UpUxaGhEv1fPgnvbA/hEVkRX4Oymxv6crJXXgdzlCLtjP17EkAmMra
+ rVbgtisE
+ OSIXfKx/LMreqbvnjgwMpa7fhbXax0663cjkI3t3qHh/HImiTLTUvSXjJKEfU18w+M+nrLW3qE6F3F03XYs3aL9fdHWvcYiLJwMJGJcc8etxX8sI3iD9UWq1ach4cn6ApWOhWzo7dodlWj48X9rp7StjYxrzXO9DR6uDGWZE4ta2XcvX6WWwfeuwXodptpVGplf0BTUe6u/SEunrSAgoSX2ehSbhcVBTNbn39U7oix4mVGnRla48Kl/umyUw+VFcrHXBXIRbOcK/aGj9p3Mr6gMfGXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,91 +98,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The recent fixes for objext array handling inspired me to look into this
-finally. It's been bothering me that the memory usage of struct
-slabobj_ext depend only on config options and not whether the fields are
-actually used. So with both CONFIG_MEMCG=y and
-CONFIG_MEM_ALLOC_PROFILING=y there is always objcg field and codetag_ref
-field. And thus:
+struct kfence_metadata only contains struct slabobj_ext with
+CONFIG_MEMCG, which is then used for the "fake" slab's obj_exts field.
+If CONFIG_MEMCG is enabled, the struct can also end up used for memory
+allocation profiling. If CONFIG_MEMCG is disabled but profiling is
+enabled, it will end up allocating its obj_exts via
+prepare_slab_obj_exts_hook() and assigning them to the fake struct slab.
+These will probably then never be freed.
 
-1) Having memory allocation profiling config-enabled but not
-   boot-enabled means wasted memory on unused codetag_refs. This makes
-   it less suitable for a general distro config and the page allocator
-   side doesn't suffer from this, only slab and percpu.
+So things sorta work, but not always in the intended and optimal way.
+The upcoming changes to slabobj_ext layout would additionally need a
+proper refactoring to keep working.
 
-2) Complementary, with memory allocation profiling enabled, there are
-   caches/slabs that don't need the objcg field, so memory is wasted on
-   those.
+However, there's little benefit in accounting KFENCE objects. KFENCE
+allocations are rare and there can be only CONFIG_KFENCE_NUM_OBJECTS
+(default to 255) outstanding ones at any time. For any callsite
+prominent enough in the memory allocation profiling stats, allocations
+served from KFENCE will be lost in the noise.
 
-This series should solve the point 1) fully for slab, pcpuobj_ext
-handling can be perhaps improved similarly, haven't looked into that.
+Thus let's not complicate things and simply stop accounting KFENCE
+objects in allocation profiling and skip them in the related slab hooks.
 
-For 2) it avoids allocating objcg fields for KMALLOC_NORMAL caches where
-we know they are not necessary because kmalloc() with __GFP_ACCOUNT will
-pick a KMALLOC_CGROUP type.
-
-The named kmem_caches are tricky. They can be created with SLAB_ACCOUNT
-and then we know objcg fields are always needed. But also they can be
-created without SLAB_ACCOUNT and then some allocations have
-__GFP_ACCOUNT and some not and we don't know that in advance.
-
-This series introduces a SLAB_MAY_ACCOUNT flag that's currently internal
-only and is applied to all caches (unless kmem accounting is disabled)
-except KMALLOC_NORMAL (unless that aliases KMALLOC_RECLAIM).
-
-As a followup we can make SLAB_MAY_ACCOUNT explicit and add it to to
-caches where we know __GFP_ACCOUNT is used. Then we could only honour
-__GFP_ACCOUNT for those, while warning for an unexpected usage
-elsewhere.
-
-Only lightly tested, need to run at least some microbenchmarks to see if
-the now somewhat more complicated access to objcg is visible or not.
-
-Based on slab/for-next-fixes
-
-Git branch: https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/objext_split
+We also need to skip kfence objects in mark_obj_codetag_empty() in case
+a sheaf is allocated from kfence, per earlier sashiko review.
 
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
-Changes in v2:
-- Apply Suren's R-b:, thanks!
-- Expanded explanation about no longer accounting KFENCE objects (Suren)
-  - Also skip them in in mark_obj_codetag_empty() (sashiko)
-- Update slab_obj_ext() comments (sashiko)
-- Separate slab_obj_ext_objcg() and slab_obj_ext_set_objcg() (Suren)
-- Add SLAB_MAY_ACCOUNT internal flag instead of relying on
-  is_kmalloc_normal(); also handle mem_cgroup_kmem_disabled()
-  - Also fix the SLUB_TINY kmalloc aliasing handling, per Harry.
-- Link to v1: https://patch.msgid.link/20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org
+ Documentation/mm/allocation-profiling.rst |  7 +++++++
+ mm/slub.c                                 | 11 +++++++++++
+ 2 files changed, 18 insertions(+)
 
----
-Vlastimil Babka (SUSE) (13):
-      mm/slab: skip kfence objects in allocation profiling
-      mm/slub: skip handle_failed_objexts_alloc() with profiling disabled
-      mm/slab: remove objs_per_slab()
-      mm: move struct slabobj_ext to mm/slab.h
-      mm/slab: make slab_obj_ext() determine object index
-      mm/slab: abstract slabobj_ext.objcg access
-      mm/slab: abstract slabobj_ext.ref access
-      mm/slab: replace slab.stride with obj_exts_in_object
-      mm/slab: change struct slabobj_ext to a union
-      mm/slab: introduce slab_obj_ext_has_codetag()
-      mm/slab: reduce slabobj_ext memory with allocation profiling disabled
-      mm/slab: add cache_ and slab_needs_objcg() helpers
-      mm/slab: stop allocating objcg pointers when unnecessary
+diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+index 5389d241176a..d02eb54ee8f2 100644
+--- a/Documentation/mm/allocation-profiling.rst
++++ b/Documentation/mm/allocation-profiling.rst
+@@ -112,3 +112,10 @@ break it out by rhashtable type.
+ 
+ - Then, use the following form for your allocations:
+   alloc_hooks_tag(ht->your_saved_tag, kmalloc_noprof(...))
++
++Notes
++=====
++
++- When a slab object is allocated from KFENCE, its accounting is skipped.
++  KFENCE allocations are rare and limited to a small number, so this omission
++  is negligible.
+diff --git a/mm/slub.c b/mm/slub.c
+index 0337e60db5ac..76acb78f2655 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2076,6 +2076,11 @@ static inline void mark_obj_codetag_empty(const void *obj)
+ 		struct slabobj_ext *ext = slab_obj_ext(obj_slab,
+ 						       slab_exts, offs);
+ 
++		if (is_kfence_address(obj)) {
++			put_slab_obj_exts(slab_exts);
++			return;
++		}
++
+ 		if (unlikely(is_codetag_empty(&ext->ref))) {
+ 			put_slab_obj_exts(slab_exts);
+ 			return;
+@@ -2352,6 +2357,9 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags,
+ 	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
+ 		return;
+ 
++	if (is_kfence_address(object))
++		return;
++
+ 	slab = virt_to_slab(object);
+ 	obj_exts = prepare_slab_obj_exts_hook(s, slab, flags, alloc_flags, object);
+ 	/*
+@@ -2399,6 +2407,9 @@ __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p
+ 	for (i = 0; i < objects; i++) {
+ 		unsigned int off = obj_to_index(s, slab, p[i]);
+ 
++		if (is_kfence_address(p[i]))
++			continue;
++
+ 		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
+ 	}
+ 	put_slab_obj_exts(obj_exts);
 
- Documentation/mm/allocation-profiling.rst |   7 ++
- include/linux/memcontrol.h                |  13 ---
- include/linux/slab.h                      |   3 +
- mm/kfence/core.c                          |   5 +-
- mm/kfence/kfence_test.c                   |   2 +-
- mm/memcontrol.c                           |  32 +++---
- mm/slab.h                                 | 185 ++++++++++++++++++++++++------
- mm/slab_common.c                          |  25 +++-
- mm/slub.c                                 | 173 ++++++++++++++++++----------
- 9 files changed, 314 insertions(+), 131 deletions(-)
----
-base-commit: d9e6a7623938968e3752b67e37eaff097e559a54
-change-id: 20260714-b4-objext_split-da82426257d5
+-- 
+2.55.0
 
 
