@@ -4,98 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A1F3C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D5CAC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:19:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 605486B00B1; Mon, 20 Jul 2026 07:12:56 -0400 (EDT)
+	id 59C5B6B00A5; Mon, 20 Jul 2026 07:19:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DCC56B00B5; Mon, 20 Jul 2026 07:12:56 -0400 (EDT)
+	id 54D706B00A6; Mon, 20 Jul 2026 07:19:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51E006B00B7; Mon, 20 Jul 2026 07:12:56 -0400 (EDT)
+	id 43C456B00A7; Mon, 20 Jul 2026 07:19:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EF726B00B1
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:12:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8EC4A0134
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:12:55 +0000 (UTC)
-X-FDA: 85008892710.14.D89CA34
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E07F64000B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:12:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZpAtUeRq;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 199216B00A5
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:19:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8E652C0142
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:19:57 +0000 (UTC)
+X-FDA: 85008910434.13.7B17C99
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 05217100004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:19:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kE76nugT;
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784546396;
+	b=JoSzP1oUDeRJgdqx9uUIXsvfwGIl85ZXml+etWV/FnDCY6sQ98ci9xFYw9VzkXXXRlRIdN
+	MTjuTFigxqYPQcmG1UUS3OESA7mBQGy56mX0sIAL2JUZ7+FnNwixMc9YhsGfMeS5GgTPoH
+	mZL7uiOouvImhonfzI4lrxcRCRPo8h8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kE76nugT;
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784545974;
+	s=arc-20220608; t=1784546396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MDxvOrx4DVj0VV+Y/wV9iOjtsl71lHDlM1UPvEJ30HQ=;
-	b=4yZy6ewxqWZpfxzuu5tUyXNnkU+3SoAHY/fQPD5QZ+nxKlbcPGNQEzWrqzG6mS1nk69irI
-	+7SNwrtdrqvFL7G7XUUWDCVCh4wx874ANmk0E3xWnx5lFFb5htYFVPuoBHmXrcVyqEjPee
-	Y6md8pRsjQJ5UtNBTuNJKGR4CrrJU70=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784545974;
-	b=Uk+ibCcSFBm3333fvPEbgnbaYohQmUfAvwl2szuEb1PU51IjgDXly4al2p2cUVacPpL/y5
-	1ueDBrNSIIM4iPOO3owps7seEGKVKvnqFzIAKW5vCV1r5iyb8LSQ/6RSIj4z88nmm+TJsc
-	FEuVyDTwBavs4XtVzIokGRr2vRmsCS0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZpAtUeRq;
-	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784545971;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MDxvOrx4DVj0VV+Y/wV9iOjtsl71lHDlM1UPvEJ30HQ=;
-	b=ZpAtUeRq8aKa+BH6qVMMoCl8ndmZrk4t43VZkpCSSsf4Gkh9xQkZVmZdMY3bOD4eVC3BEC
-	2VWFSY6QKabWvc8Ax3La9JxEM63qz68wXHlsBAfIP4EXKGoSNo6c1LKcUOCZgebbcXmzzC
-	8pyU2R9O7vhHAM+z6TIsWuNURFOf/M8=
-From: Usama Arif <usama.arif@linux.dev>
-To: Rik van Riel <riel@surriel.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kernel-team@meta.com,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Usama Arif <usamaarif642@gmail.com>
-Subject: Re: [PATCH RFC v3 1/6] x86/mm: add untagged_addr_remote_unlocked()
-Date: Mon, 20 Jul 2026 04:12:37 -0700
-Message-ID: <20260720111238.3313021-1-usama.arif@linux.dev>
-In-Reply-To: <20260717170036.743149-2-riel@surriel.com>
-References: 
+	bh=b9DJpAd7dJus4uCxgZw4x1NB6kjRhyCZJJkvMlelICQ=;
+	b=iB00qD6HRKJvlWPdWTJFylXWKXDOL8VKUXnBIs2pOjt5UGS/eWLJZc61AZ6q/TtxoiRtbG
+	56+C3KUzwkE6azOBMUqgha/oJSzkwRS4hBRIqiakrxFxtUl3lBLBJPuM5Q8azd8G4E7QRU
+	mayCO6VB0+rOUzfFMzBcUafyrOWpRn8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784546391; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=b9DJpAd7dJus4uCxgZw4x1NB6kjRhyCZJJkvMlelICQ=;
+	b=kE76nugTxJbz4oat1q2DMqGAK3PyBRj1ummPnrdyv6IN6PoFxmlc4SCn17WPYx2Fwt1mxSrhzNRKICmY3X4k4nlws0AmGQMsntbsFdTVAOuD5nwTSZVWRT68TQ2weTx8pS45f1RLk1CT5JqSsPXw23Oobq5s8uVrCIoPBSaq9n8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R631e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=46;SR=0;TI=SMTPD_---0X7TBCA6_1784546373;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X7TBCA6_1784546373 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 20 Jul 2026 19:19:49 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
+ Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
+ <gourry@gourry.net>,  "Alistair Popple" <apopple@nvidia.com>,  Lorenzo
+ Stoakes <ljs@kernel.org>,  "Liam R. Howlett" <liam@infradead.org>,
+  Vlastimil Babka <vbabka@kernel.org>,  "Mike Rapoport" <rppt@kernel.org>,
+  Suren Baghdasaryan <surenb@google.com>,  "Michal Hocko"
+ <mhocko@suse.com>,  Karim Manaouil <kmanaouil.dev@gmail.com>,  Frank van
+ der Linden <fvdl@google.com>,  Teja Vojjala <tejavojjala@google.com>,
+  Pravin Tamkhane <pravintamkhane@google.com>,  Kinsey Ho
+ <kinseyho@google.com>,  Wei Xu <weixugc@google.com>,  Matthew Wilcox
+ <willy@infradead.org>,  Davidlohr Bueso <dave@stgolabs.net>,  Vinod Koul
+ <vkoul@kernel.org>,  Bharata B Rao <bharata@amd.com>,  SeongJae Park
+ <sj@kernel.org>,  David Rientjes <rientjes@google.com>,  Xuezheng Chu
+ <xuezhengchu@huawei.com>,  "Yiannis Nikolakopoulos" <yiannis@zptcorp.com>,
+  Dave Hansen <dave.hansen@intel.com>,  Johannes Weiner
+ <hannes@cmpxchg.org>,  John Hubbard <jhubbard@nvidia.com>,  Peter Xu
+ <peterx@redhat.com>,  Rik van Riel <riel@surriel.com>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  Tejun Heo <tj@kernel.org>,  Fan Ni
+ <nifan.cxl@gmail.com>,  Jonathan Cameron <jic23@kernel.org>,  Aneesh Kumar
+ K.V <aneesh.kumar@kernel.org>,  Nathan Lynch <nathan.lynch@amd.com>,
+  Frank Li <Frank.li@nxp.com>,  Dan Williams <djbw@kernel.org>,
+  <linux-mm@kvack.org>,  <linux-kernel@vger.kernel.org>,  Mike Day
+ <michael.day@amd.com>
+Subject: Re: [PATCH RFC v6 3/5] mm/migrate: add copy offload registration
+ infrastructure
+In-Reply-To: <20260630-shivank-batch-migrate-offload-v6-3-da95d7e8b8a2@amd.com>
+	(Shivank Garg's message of "Tue, 30 Jun 2026 07:28:39 +0000")
+References: <20260630-shivank-batch-migrate-offload-v6-0-da95d7e8b8a2@amd.com>
+	<20260630-shivank-batch-migrate-offload-v6-3-da95d7e8b8a2@amd.com>
+Date: Mon, 20 Jul 2026 19:19:31 +0800
+Message-ID: <87wlupx60s.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 05217100004
+X-Stat-Signature: g71cj3uwo5nbzqt1bnrpfybesofjmtwk
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E07F64000B
-X-Stat-Signature: 9mdj3uxttyr96zm5sw9heg1t5fn86um1
-X-HE-Tag: 1784545973-342564
-X-HE-Meta: U2FsdGVkX197FAkxTzrZXwmfERbFf7t/6FwWvJ7u+7cwM+F6iBrLBHIk/37OpN2rKBQmqrB39jsoiX+3fBZePzRCr3pIwcJYTqzaZ3teFrVOU5xssbF2cq+klQbw8lyOOqQWFmTZnv9lXT6fwUQ0MB7Zaal51TPCD8HTN6ysW7Bc7axrwTXkpITszdEnbfbSXxg74hrkW8HMF6iS4LtXs72hFCWWjTIFKNY1oVaIxd8Sggo55Ds59lUV5qAXCmctwK6cQ22a/qjBXaiOZ5P5q6pcW6L8178hCNh3j0oOd1gbTKSjdYjDWjV0CcMg5xowTxprO/NOeWTSnLAbVaUHOstMenstdzLnllS9L+5x5bAvq93WWu8LnoZgbl0TY5gZwq+gbVVHByXS7T6skNGgLPHtcSefU7PTLe15iSbWIcMtpeqq/UK7gk3ocb9Q3t+o0D1DGzAhEq//oJmwRk0Ur6M9PsmBP9SbAM+xRdMQkrjskhG3cRsbhB+HnhYWM5IxMoZaUJtcl23gdtbOgUcCnoEk3TbGXhrkHw2QOacGTWYEOqDeVUawV2rkcd7DP1PDPYMrDJDSoVDYANikr8l1cFrS2Qxajc1mwhA42Wmn1ippY8PFFYSQb6BuKMPy9de7b2SAkXIpMrFolLuwzefqZ9THLY7HrlHpTdcdzXEFayQbJFcBay2f/zrpF1UKy39exOpSix4fUMh7/l/HDxh3+ZSApYtw1B+/XY+VS9Tqv+ntipgpbMpxLtzyGK98Cqr6VexvBgXz+TIFa7/8GrddfVLlt31NhiDSKjOoHc7SfesrUB6qavSroELpuzB/guz62o6+EAyqbsimkykRqPw3/A7LziurjVZykYZtXGJ+58z9dSpDvumV6PUoXdXpBsC8S+eux4srBzB6L2NlCEil+g6hnUZ8RqB7IKcrb5/3flwti9aVmPlGGLu1/hfIuSIyrZIaHV2Ofbp2Wd3ZdyE
- C+K65uwW
- LbSR/1ZWALmXgpXsSBy9vZn+qxrmdxVatfTDEEdQ6giKAn98bX7rkCwcnf5kHSwqf6deDSKYFWGA0vPre9yoFXw5xR7DAUCglWEwepoq5bu/+OiCsvHMEmquVmOO+Q6p9uHWMJkwLCCrS1tyGxCfU+Zj3GFZiuCup1qgszUwxTuaAgX+59KBZS2rq6w4W18mGoEUmWXuNBU4r6TEsCITPCUt88gU6JqwBOab++w8L5Ki+GnDAiXoIemzTA4Rq9168arUsrbNN/kASHb5AWB5BRvK1itZ02H3K0mqoBOg+t7BTGEI4TDr6AdbKvGvqGxylMHxpvKUttRMKg4s=
+X-HE-Tag: 1784546393-190164
+X-HE-Meta: U2FsdGVkX1/mRCyr+G4Azs5sZ/HjG9MXDM38UGLEzeRMInPEC9WY3S/PDZ5grVUpgOPdv0oMA4ShOKZZSqs9W3mILMVoy5tFUiTABoNPqwA8Wnuo5FcKUq4CQT21dkDvFqrql23EAkFUI+AVtUr8SzxN6eDtw2qGGMEXpU4ODyjLgwJpJyx8UGeP75X6eDVZA11d11qKfCh0dd1xCwvZB4nMMNarADsJpBaX++kOHC9XvVuPZh9wU5MP+CSEaFGk4Q/bKVAOe+ZZFzF1z9GXcdOMmkq525z764I5PziFE3CiEdUo1qh38u5kkKeWg/cfNUbifPhlEPIjYU7MlhyY2ZsPOdvHgqLREh5vNWxa54Mdz7uP+ccYP9icf/V+M1JZJW8HLSF/jDvWfRFKe1YNUx6rkiWbC4FZl2F20IR26wgAirFerW3hGA4BbM9BYkxjrQ+GJ+QkhmucU+eygFc/LW7DKjMp2psmYFKgo6LwxgiPzY2JAcK0IeKPrXoV7Lxk6/4r6o+8wM6Gmto04Gk3FBruXYiip11EY2nIVWSM2cH5IEskW4oEVTu3EuNhhohoLjwlQgvCH42W5rSVfW6Rjizz4SkMPEBDSDKMRVTTqDnnJHF86OCE2NSbf6fONb4bILPr3jbj+0s322J9Mur+q/f3EZNnQEs7op3NQEC7ArrMb6d6FVpRj4sP2V0nmPYgkctvTJtTnxrBLuf+kcurBM3W8pFKwjm390RnAgWBeIddo+uxPA3I30eTHCWukbb92AzueVnnA4TsO0kcoYVdPgPsdksxzQ07ZnmyHGXcI2X2qLiODlt2fCzsrcPVqbR3hJrtii24PmOEIsNZjyMlB1fC0G2+f7IqXBmDCLCY/I3fXJFFJuW4fYUYGLQtGNBfxHkpA9WEnwpw8RMT1oj200q7wry7ONlbxg8CrEmsglnnQkHX6RUJNg1X3CP1hu3yoRc5GjzVkvlqky8/VZo
+ TZMdl5xb
+ 5YqmyIup08FRLiINkRFyEAH6IjslunYQBlpNunTeUuKbnlvSl4AUsVneoq8y6YkxGgcQm0l88/FVbd17/Wo1Li0ZKySdw9aBS4h7keTdkWeKtGOFKjnHj3nFV9Vx7I5QedIA4uZpJdponf9kNczsk1HBYNsty944KA/eOpeM2J8twiKioomHg8DWnZKQ8+f1lINEsRRzZv+wDPFYw6fL6zTbSrn1DpYAOHSZHZGJzqgBuDJGA9XKKeGDwLeCfdudqYP8PPhEMzl//Beb0tkjYCP0IB8Kf/ND6l3ybhcxbFeEiBbo+dJVK3pTNuWv9thEg1ZHkDPtVx6emUtVcgGWs9Dtjc28lE/B5+5dJzbsUcEELPBAFoyFnqYdMMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,39 +110,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 13:00:31 -0400 Rik van Riel <riel@surriel.com> wrote:
+Shivank Garg <shivankg@amd.com> writes:
 
-> __access_remote_vm() reads another process's memory under the mmap lock. On
-> large machines that lock is contended by tasks polling /proc/PID/cmdline,
-> /proc/PID/environ, or calling process_vm_readv(), even though the memory
-> they read is almost always resident and could be reached under the per-VMA
-> lock instead.
-> 
-> Looking up the VMA first requires untagging the address.
-> untagged_addr_remote() asserts the mmap lock only because it reads
-> mm->context.untag_mask, which can race with the write in mm_enable_lam().
-> 
-> That mask is set once, when LAM is enabled, and never changes afterwards,
-> so the read itself does not need the lock. It is already read without it,
-> from the context switch path and /proc/PID/status.
-> 
-> Add untagged_addr_remote_unlocked() for callers that have not taken the
-> mmap lock, and annotate access to mm->context.untag_mask with READ_ONCE()
-> and WRITE_ONCE() so the existing lockless reads are explicit and
-> KCSAN-clean. untagged_addr_remote() keeps its assertion and shares the same
-> code.
-> 
-> Assisted-by: Claude:claude-opus-4.8
-> Acked-by: Usama Arif <usamaarif642@gmail.com>
+[snip]
 
-Hi Rik,
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 41b732e78a67..4fed3110ca0a 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -43,6 +43,7 @@
+>  #include <linux/sched/sysctl.h>
+>  #include <linux/memory-tiers.h>
+>  #include <linux/pagewalk.h>
+> +#include <linux/migrate_copy_offload.h>
+>  
+>  #include <asm/tlbflush.h>
+>  
+> @@ -51,12 +52,6 @@
+>  #include "internal.h"
+>  #include "swap.h"
+>  
+> -/* For now, never offload. Wired up in later patch. */
+> -static bool migrate_should_offload(int reason)
+> -{
+> -	return false;
+> -}
+> -
+>  static const struct movable_operations *offline_movable_ops;
+>  static const struct movable_operations *zsmalloc_movable_ops;
+>  
+> @@ -2050,7 +2045,7 @@ static int migrate_pages_batch(struct list_head *from,
+>  
+>  	/* Batch-copy eligible folios before the move phase */
+>  	if (!list_empty(&unmap_batch))
+> -		migrate_folios_mc_copy(&dst_batch, &unmap_batch, nr_batch);
+> +		migrate_offload_batch_copy(&dst_batch, &unmap_batch, nr_batch);
+>  
+>  	retry = 1;
+>  	for (pass = 0; pass < nr_pass && retry; pass++) {
 
-Would you mind changing this to
+Found a difference between v5 and v6 here.  In v5, migrate_pages_batch()
+checks the return value of migrate_offload_batch_copy() and acts
+accordingly. While in v6, it does not.  Why was this changed?
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+IIUC, FOLIO_CONTENT_COPIED is now used to indicate a copy failure.  Is
+this necessary?  Is it possible that some (but not all) folios fail to
+be copied?
 
-in the next revision
+[snip]
 
-Thanks!
- 
+---
+Best Regards,
+Huang, Ying
 
