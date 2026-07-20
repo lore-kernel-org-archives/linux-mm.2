@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 693B0C4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D9D9C4452B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A42CD6B00A0; Mon, 20 Jul 2026 10:16:56 -0400 (EDT)
+	id B2CF56B00A1; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F2CD6B00A1; Mon, 20 Jul 2026 10:16:56 -0400 (EDT)
+	id B050E6B00A2; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 895656B00A2; Mon, 20 Jul 2026 10:16:56 -0400 (EDT)
+	id 9A6086B00A3; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5262A6B00A0
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:16:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CCE3F401E0
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:55 +0000 (UTC)
-X-FDA: 85009356390.10.CB19916
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1F12840004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ag50PqQ6;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E91B6B00A1
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AA07EA0301
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:58 +0000 (UTC)
+X-FDA: 85009356516.01.143867C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0F0844000D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+9vjh6s;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784557017;
+	b=Tm2d1IiUYcqB9ba27Lg56DL/ike1NbwyA3SfVFi9H2Tx2UsdhOf+RVnT9CAU+5lZvADxOA
+	BR29jSOxeyrbJCHlVh4f8GbxtJ4Y8po2v7WzdDZ77ixBhSmhDYSjcbhP++Y/+W/4wDaRJ5
+	xFtpLpo9Ey1QGDsitZmoLLEvAi/KC+I=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+9vjh6s;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784557014;
+	s=arc-20220608; t=1784557017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JVOSCtSkIl9pvKhPgb17Vi/B/0DgmPSgipmixRu4V7k=;
-	b=hxSM+F8E9rt1oOJL6EQgCWCR3k8C8a442Tk/RyXL0Y0WToGBJFxcSszU+2v/hdEPxyxUs2
-	RZDNzarIOQJ+zwwHSXP4deX0HAMmfGJGjvw+MZdfBzdMRppBe3QnZVCJxQM1ORyqhSvCBe
-	9/ZTBkv53/IpZsSfCBHokq2HldL3BgU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784557014;
-	b=0lj5W5YTmBga2tYlkpeTRrFI812Ohoy3W1BjxNysUlrbfIcENTUUrUIXL2w6P55WanC3HJ
-	hAywAh3Aot8w22LiGjBmLM3c3MUcH52z/KFUh7VxUVe+tsO4iqH0s5Tn/ejwOk48cEJFTE
-	UjzduljLcteRa0NzgTJC0XVm09yV17Q=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ag50PqQ6;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=bjoSP6iddXq5PqiuJFnR36EEih/xwOGHSb79nndRhpk=;
+	b=Kc2CQ3MBrpZVXIuvNwRU7My3sxtbujf8ZVkcJ1GMJkXrSdDVsYgGOX3ft3o0gVLfwoEAB4
+	BK/SqUlm3taO93O7ldxdvrG+G2W8JJq2U98+cRtR6sUBJSeqFmL+O9ITPWEAPKY3DD8cre
+	Pfunu+Eg7YGUkQmev8fOd3pKYGie6KQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C18742DA6;
+	by tor.source.kernel.org (Postfix) with ESMTP id A819C60A84;
+	Mon, 20 Jul 2026 14:16:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1B01F000E9;
 	Mon, 20 Jul 2026 14:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3781F00A3A;
-	Mon, 20 Jul 2026 14:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784557013;
-	bh=JVOSCtSkIl9pvKhPgb17Vi/B/0DgmPSgipmixRu4V7k=;
+	s=k20260515; t=1784557016;
+	bh=bjoSP6iddXq5PqiuJFnR36EEih/xwOGHSb79nndRhpk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Ag50PqQ6TBFMx9wWb1CwjdwNFiyxlVEDAPuNyVJCmp8SwKzPz5D9IqsjkzT+S9uGD
-	 Hlzi0EUj39Xvc5J7KPXJBla6yj3isEcuaTB7t/1DeIqCayEkPnHzJrmJ4h4f4sk75e
-	 RRFsr8pvtcasjhBMcLv16O03pV5WL0NSGBK1x0Gx8I7Kzdhs1RRs0Icy+RKfVRa4+w
-	 Fcju+cDSZ4tIiRVTsAF5qwVLku11Ti1SuPJ2ZFLDz/uOhrgFgUux8lWGUmsSq5DwfF
-	 fKWy6RFbyFJOIqqoAGGXwECI65DtUOeO7h/jOOAFXHnYG3FUxT+lsHzvvV0zDyKF7l
-	 BRN6jR9J5stbQ==
+	b=a+9vjh6s3qu0BOkJaj3suWW2z1csNZFV0BtPZnhUHEIoGJBS5KSiGcwnk1Iks8gjB
+	 m2TT14Rmb2TkuX4tC/0hR2o6oKdj+ECei+hB7/v0JUFfK1a1Bjif5cRzPKzpArgJnB
+	 F/Eu9SyTDosipKO0glkdRQVWnKQVr2ph8jvPAHP2snGsgqAljhAESwJZm3oLK5zMjg
+	 1lkq4VUhebyhhtNHmqRVKC50zawjTgscX15PrKG877KXQdPKJeIGLdfM+lr4FvoQZI
+	 7hmvIQUmidozfjtyzthbhwlvNw/QHs4E8wumY8mGcwpUuEKUmDCUDc8iBPPFocVtJA
+	 uVTPgzFqJtSaQ==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 20 Jul 2026 16:16:22 +0200
-Subject: [PATCH v2 08/13] mm/slab: replace slab.stride with
- obj_exts_in_object
+Date: Mon, 20 Jul 2026 16:16:23 +0200
+Subject: [PATCH v2 09/13] mm/slab: change struct slabobj_ext to a union
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-b4-objext_split-v2-8-2fa7c6f60dbe@kernel.org>
+Message-Id: <20260720-b4-objext_split-v2-9-2fa7c6f60dbe@kernel.org>
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
 In-Reply-To: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
@@ -83,14 +82,14 @@ Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1F12840004
-X-Stat-Signature: gobnucson5coj5cas3gfhgwmfemf5byd
+X-Stat-Signature: byijdo7faqfxg7pjzezhnqxf37453h7u
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0F0844000D
 X-Rspam-User: 
-X-HE-Tag: 1784557013-598337
-X-HE-Meta: U2FsdGVkX1+gC46KRQXx/Lu8ptMc56GxiY8IfP8OByPE7Fws2Yig3Tny4vzA8ht0eq7uv3wZ1bhhOdSokYJk19ZoD9YNNTvSVq98tOwrm9JjQ/6mEpfc9HRm07ONVk4Q/3O14feBCb8QzDjGE+bnkjaVdaZZX4uj22ih47PrPQuzTCWFE0Ov/vYvKZH7255UXo9zC/xQjwRYKGidyUFq2JUsgR8nrOafDvceJY+GAPgjbAxr/ta+AYc/LIiS14uzCi0c1JIjJV5E3rgiY96E5ccr1Ha/UM5r7UdDXYNqHoDLL3oKCUViIakaHSHljmqN9TVWYkAVxVlTBwY3Z0uM2GpuqzxvVPIFAnM0S4Qz4xfR92NUWIUmX6oJ/gUJUtDnq7dWCQtOc9np+kImCVF6ZSmMVburNwYfCzbbrDKi4PXJu+bb9XuFV2e7Ex9KgMOkXJjk80H1n8XsBOtdmA9wx5ZhzAxhKhHPNOMDJA8iaPJex+pOg+Si0viCwUcKvHpLnUD87Nk4a0hS5F0B0RaNH5WbWod6Zsl8vfzieG1264zX1u0LGGuEyVXNZEHXQgOYmUdiWYXFmH9Pb7KeRhc3MJFgogIHZH/vclJRUcpXxLJrllu2Y8tY4fMhpIw25y+jHqo1oiIkGyvRsq4ox8o+F6HZPsETI0bKjtug8FPt5vfvD+ZfXBCUQG/uUv2lAkwPyzJP/soufm6Zn0N3fBClDcvpNzRsimDf37YkbGp2nZpdoG1zRTgx27IuNn3R+8CPqjOwEi+YQpEld5p/ajLb0lJyenN8pDsAMbYFxRm73uEqmBVw2+pAF23LJ72szIRvx3i5YJbbNEQck9upPLMG8rXMyNlk49dNHDa0H97gUf/dzXYwOlzSzPcezNhLf1zCuNYsE2ZFTjzp/3xcIpk2HOn93UUoEONb7BRqT405trJ0hys/jxKpmS4rv+Rh9xPyrnyKN9UDd4zEiS77NnZ
- +0CA7F9e
- +yPvehu30+jYhWkqK0kO2JcYsSftROaJWy1jtlg+8npw7T21/RSh8Yzz3LG3bcfJO+lc4AHbMg1xMnnod4U4ssjpqpdU6njNPxnhtbyC3HRUOBsjejSeKvc5IMTPPX2BgmlFAT2lpyeeIpixme4G5DzIU9Oonfk0EETo0vJBIVzU6RTazohgDQed5YvagQ2bA6vLMMnJT0SpgoFm+7Tv/MU7mo0ujn5vIvu7ANwmE9IKfW15eOpQCBanU6HpSlcu8AUmDQE0hzjur/Ep0kJcAV0O/z+7sW+SNuykQSczriRPmSf7rJtxao6Ktc1qPtq/XJCMU
+X-HE-Tag: 1784557016-436092
+X-HE-Meta: U2FsdGVkX1+bXEoR9SMNpC+Z7clHEsAee6VAvDq84Kxw6w80g7xc/HLhmjxFX9hJ30NLMmFGlSXYe/2Ed8xvLOqm3bRdEkjuyRT59h4ORw3r/FQ6JbZ5uWfcKinJ2OZUMc+0OJnUX4bb6HKoxEbybRms3SYkGdJy9hZc5cBHkMHwM4/RotKo4RbbYP6QIkOB7d5Cie3jUggMq3HHk+/yNk0umf7MeEfsZ2t1rlLZw82AwHutlpZhH+WXw7z2jFVR63UemV9eSsWvkEd/UxR6WJQHZipHCbb43JB2kqxnAb7L8c1WxdS1kn/Jc2V2ZMdENYcXJD+RKkoGSeaoQi2IJZJ72jai/glh6LYabZjinCG/2Tv4BGdDEsphezPOBbBKCSerOuBzZai4wxEgo3FsxAUuN+X2OfU11f9dRkpGPlJqM0NMMoZy7TVvSN/spYqyz0n4O372RS8XPZyjv0CuUF2PR5Bhbz2vg/k/v9dNYh8CHOf9k+0BAs+efqGpjotVQ0vO4je4V5YeKwO97r/VVux21XvT3j5w40Oi4dS2lYV8vRQeQEKzFbP13SRTClZu2peccepS9+j5LrZEPSJviuz9jeUzOHCJp9PkvNXyonrir+idzHUEjcB6Bvqkoerzxj06YiVzE5ferOIamr8yVrn0QEbXkO3RW4NnlGN5Bjv/es4EHIvUkHpfagiVl6SKrPl1e+yytI82EW+GtQnlQspFPe3KK80oe5H29r4qhcbIA6HXRsohwUVLVW+c3+dSAAFVvQ8z+EXE2qOVjXs3HBKk89yVLJPhdQXouTk/InqGk1ZTl2i8AtNKpPvpgoPzbX3t59GgZo3jOXZNPUnxzErjX5oOvc9l6tkYcj9IZ8mFrTH3JkJ9Av/Dw0vaFvpjr+FdvoCoOWxQpbGo9eP+j96Opxp4ruNHU4w4YbUQoDAPKUKMHQTB690C/9wW8M/Jt8d80edBySRXNDN97Ay
+ hhDbrKMa
+ fWUQtB7syEzZxvLJLi9BftDpiOCrlgZQn4qG2e8pf1xnV0z97Ge3d34cP7po05dkidwN9rTecFo4n2PjZhoXZF/es4ZU7GwU4bB7+nkS6994CgQiA6F5S0v4HRgsDTGU73RwXduxW4eZR/Dv1wEGE+egiZedDCX/QGYW6Zd1KalMB5ZXOalAjEtbEoEGgC7xN0CQH7KwLQTHlPSsMzCbEFlTpjTU/Ic2RxFz10BZdJh91ulBlqlRj4SCRoXfT47i6eF846kTNRj6x/jMp9g8Y/k6ULJyJNnxh7I2LombwVWsziz0PY1Y9EexXWPJWEVfYfykh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,226 +97,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The stride field is used to convert object index to an slabobj_ext so
-both compact arrays (kmalloc() or in-slab-leftover) and spread
-in-object-padding obj_ext layouts are supported.
+Currently, struct slabobj_ext can hold both objcg pointer and
+codetag_ref (when both are compile-enabled) and there is an array of as
+many slabobj_ext instances as there are objects in a slab.
 
-In practice thus the stride is always sizeof(slabobj_ext) or s->size.
+This makes the layout fixed so even if codetag_ref is unused (because
+memory allocation profiling is disabled), the space for them is
+allocated and wasted. Similarly, some caches (currently kmalloc_normal)
+do not ever need objcg pointers, leading to wasted memory with memory
+allocation profiling enabled.
 
-This simplifies the calculations, but with the upcoming slabobj_ext
-handling changes, it will be easier to stop storing the stride and
-instead just have a flag whether obj_ext is in the object padding.
-obj_exts_in_object() can then rely on this flag and slab_obj_ext()
-can use that to determine the stride.
+To make this more flexible, change the layout so that struct slabobj_ext
+becomes a union of objcg pointer and codetag_ref (to ensure uniform
+size; in practice both are the same size anyway). The slabobj_ext array
+then can have twice as many elements as before. For cache locality
+purposes, the effective memory layout is unchanged, so objcg and codetag
+ref for a given object are still adjacent.
 
-No functional change intended. Performance impact TBD, hopefully
-in the noise.
+cache_obj_ext_size() returns the effective size of (0-2) struct
+slabobj_ext's for a cache, slab_obj_ext_size() for a slab. Currently
+both return a constant value derived from the config options, but will
+be made dynamic later. Replace all sizeof(slabobj_ext) usage with these.
+
+No functional change intended, the layout is still effectively static.
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slab.h | 44 +++++++++++++++++++++++++-------------------
- mm/slub.c | 42 ++++++++++++++++--------------------------
- 2 files changed, 41 insertions(+), 45 deletions(-)
+ mm/slab.h | 49 +++++++++++++++++++++++++++++++++++++++----------
+ mm/slub.c | 19 +++++++++++--------
+ 2 files changed, 50 insertions(+), 18 deletions(-)
 
 diff --git a/mm/slab.h b/mm/slab.h
-index 62d6366d7d79..e586798e4f16 100644
+index e586798e4f16..f8446167e175 100644
 --- a/mm/slab.h
 +++ b/mm/slab.h
-@@ -81,10 +81,10 @@ struct freelist_counters {
- #ifdef CONFIG_64BIT
- 					/*
- 					 * Some optimizations use free bits in 'counters' field
--					 * to save memory. In case ->stride field is not available,
-+					 * to save memory. If these free bits are not available,
- 					 * such optimizations are disabled.
- 					 */
--					unsigned int stride;
-+					unsigned obj_exts_in_object:1;
- #endif
- 				};
- 			};
-@@ -617,22 +617,20 @@ static inline void put_slab_obj_exts(unsigned long obj_exts)
+@@ -550,18 +550,42 @@ static inline bool need_kmalloc_no_objext(void)
  }
  
- #ifdef CONFIG_64BIT
--static inline void slab_set_stride(struct slab *slab, unsigned int stride)
-+static inline bool obj_exts_in_object(struct slab *slab)
- {
--	slab->stride = stride;
--}
--static inline unsigned int slab_get_stride(struct slab *slab)
--{
--	return slab->stride;
+ /*
+- * Extended information for slab objects stored as an array in page->memcg_data
+- * if MEMCG_DATA_OBJEXTS is set.
++ * Extended information for slab objects stored as a pointer to an array in
++ * slab->obj_exts (aliasing page->memcg_data) if MEMCG_DATA_OBJEXTS is set.
+  */
+ struct slabobj_ext {
 +	/*
-+	 * Note we cannot rely on the SLAB_OBJ_EXT_IN_OBJ flag here and need to
-+	 * check the per-slab bit. A cache can have SLAB_OBJ_EXT_IN_OBJ set, but
-+	 * allocations within_slab_leftover are preferred. And those may be
-+	 * possible or not depending on the particular slab's size.
++	 * All elements of the union should be pointer-sized to avoid memory
++	 * waste
 +	 */
-+	return slab->obj_exts_in_object;
- }
- #else
--static inline void slab_set_stride(struct slab *slab, unsigned int stride)
-+static inline bool obj_exts_in_object(struct slab *slab)
- {
--	VM_WARN_ON_ONCE(stride != sizeof(struct slabobj_ext));
--}
--static inline unsigned int slab_get_stride(struct slab *slab)
--{
--	return sizeof(struct slabobj_ext);
-+	return false;
- }
++	union {
+ #ifdef CONFIG_MEMCG
+-	struct obj_cgroup *_objcg;
++		struct obj_cgroup *_objcg;
  #endif
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+-	union codetag_ref _ctref;
++		union codetag_ref _ctref;
+ #endif
++	};
+ } __aligned(8);
  
-@@ -657,8 +655,15 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
++static inline size_t cache_obj_ext_size(struct kmem_cache *s)
++{
++	size_t sz = 0;
++
++	if (IS_ENABLED(CONFIG_MEMCG))
++		sz += 1;
++
++	if (IS_ENABLED(CONFIG_MEM_ALLOC_PROFILING))
++		sz += 1;
++
++	return sizeof(struct slabobj_ext) * sz;
++}
++
++static inline size_t slab_obj_ext_size(struct slab *slab)
++{
++	return cache_obj_ext_size(slab->slab_cache);
++}
++
+ #ifdef CONFIG_SLAB_OBJ_EXT
+ 
+ /*
+@@ -651,18 +675,18 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
+ {
+ 	struct slabobj_ext *obj_ext;
+ 	unsigned int index;
++	unsigned int stride;
+ 
  	VM_WARN_ON_ONCE(obj_exts != slab_obj_exts(slab));
  
  	index = obj_to_index(s, slab, obj);
--	obj_ext = (struct slabobj_ext *)(obj_exts +
--					 slab_get_stride(slab) * index);
-+
-+	if (!obj_exts_in_object(slab)) {
-+		obj_ext = ((struct slabobj_ext *)obj_exts) + index;
-+	} else {
-+		unsigned int stride = s->size;
-+
-+		obj_ext = (struct slabobj_ext *)(obj_exts + index * stride);
-+	}
-+
+ 
+-	if (!obj_exts_in_object(slab)) {
+-		obj_ext = ((struct slabobj_ext *)obj_exts) + index;
+-	} else {
+-		unsigned int stride = s->size;
++	if (!obj_exts_in_object(slab))
++		stride = slab_obj_ext_size(slab);
++	else
++		stride = s->size;
+ 
+-		obj_ext = (struct slabobj_ext *)(obj_exts + index * stride);
+-	}
++	obj_ext = (struct slabobj_ext *)(obj_exts + index * stride);
+ 
  	return kasan_reset_tag(obj_ext);
  }
- 
-@@ -700,9 +705,10 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
- 	return NULL;
+@@ -670,12 +694,14 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
+ #ifdef CONFIG_MEMCG
+ static inline struct obj_cgroup *slab_obj_ext_objcg(struct slabobj_ext *obj_ext)
+ {
++	/* if objcg exists, it comes first, so we don't need to do anything */
+ 	return obj_ext->_objcg;
  }
  
--static inline void slab_set_stride(struct slab *slab, unsigned int stride) { }
--static inline unsigned int slab_get_stride(struct slab *slab) { return 0; }
--
-+static inline bool obj_exts_in_object(struct slab *slab)
-+{
-+	return false;
-+}
- 
- #endif /* CONFIG_SLAB_OBJ_EXT */
- 
+ static inline void slab_obj_ext_set_objcg(struct slabobj_ext *obj_ext,
+ 					  struct obj_cgroup *objcg)
+ {
++	/* if objcg exists, it comes first, so we don't need to do anything */
+ 	obj_ext->_objcg = objcg;
+ }
+ #endif
+@@ -684,6 +710,9 @@ static inline void slab_obj_ext_set_objcg(struct slabobj_ext *obj_ext,
+ static inline union codetag_ref *
+ slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_ext)
+ {
++	if (IS_ENABLED(CONFIG_MEMCG))
++		obj_ext += 1;
++
+ 	return &obj_ext->_ctref;
+ }
+ #endif
 diff --git a/mm/slub.c b/mm/slub.c
-index cf999cbe75d1..f5b3eb44cb8a 100644
+index f5b3eb44cb8a..287cbf3eddcc 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -870,18 +870,6 @@ static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
- #endif
+@@ -803,7 +803,7 @@ static inline bool need_slab_obj_exts(struct kmem_cache *s)
  
- #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
--static bool obj_exts_in_object(struct kmem_cache *s, struct slab *slab)
--{
--	/*
--	 * Note we cannot rely on the SLAB_OBJ_EXT_IN_OBJ flag here and need to
--	 * check the stride. A cache can have SLAB_OBJ_EXT_IN_OBJ set, but
--	 * allocations within_slab_leftover are preferred. And those may be
--	 * possible or not depending on the particular slab's size.
--	 */
--	return obj_exts_in_slab(s, slab) &&
--	       (slab_get_stride(slab) == s->size);
--}
--
- static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
+ static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
  {
- 	unsigned int offset = get_info_end(s);
-@@ -896,16 +884,20 @@ static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
- 
- 	return offset;
+-	return sizeof(struct slabobj_ext) * slab->objects;
++	return slab_obj_ext_size(slab) * slab->objects;
  }
--#else
--static inline bool obj_exts_in_object(struct kmem_cache *s, struct slab *slab)
-+
-+static inline void slab_set_obj_exts_in_object(struct slab *slab)
- {
--	return false;
-+	slab->obj_exts_in_object = 1;
- }
--
-+#else
- static inline unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
- {
- 	return 0;
- }
-+
-+static inline void slab_set_obj_exts_in_object(struct slab *slab)
-+{
-+}
- #endif
  
- #ifdef CONFIG_SLUB_DEBUG
-@@ -1206,7 +1198,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 
+ static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
+@@ -1199,7 +1199,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
  	off += kasan_metadata_size(s, false);
  
--	if (obj_exts_in_object(s, slab))
-+	if (obj_exts_in_object(slab))
- 		off += sizeof(struct slabobj_ext);
+ 	if (obj_exts_in_object(slab))
+-		off += sizeof(struct slabobj_ext);
++		off += slab_obj_ext_size(slab);
  
  	if (off != size_from_object(s))
-@@ -1411,7 +1403,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 
+ 		/* Beginning of the filler is the free pointer */
+@@ -1404,7 +1404,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
  	off += kasan_metadata_size(s, false);
  
--	if (obj_exts_in_object(s, slab))
-+	if (obj_exts_in_object(slab))
- 		off += sizeof(struct slabobj_ext);
+ 	if (obj_exts_in_object(slab))
+-		off += sizeof(struct slabobj_ext);
++		off += slab_obj_ext_size(slab);
  
  	if (size_from_object(s) == off)
-@@ -1439,7 +1431,7 @@ slab_pad_check(struct kmem_cache *s, struct slab *slab)
- 	length = slab_size(slab);
- 	end = start + length;
- 
--	if (obj_exts_in_slab(s, slab) && !obj_exts_in_object(s, slab)) {
-+	if (obj_exts_in_slab(s, slab) && !obj_exts_in_object(slab)) {
- 		remainder = length;
- 		remainder -= obj_exts_offset_in_slab(s, slab);
- 		remainder -= obj_exts_size_in_slab(slab);
-@@ -2261,9 +2253,6 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
- 	void *addr;
- 	unsigned long obj_exts;
- 
--	/* Initialize stride early to avoid memory ordering issues */
--	slab_set_stride(slab, sizeof(struct slabobj_ext));
--
- 	if (!need_slab_obj_exts(s))
+ 		return 1;
+@@ -2094,6 +2094,8 @@ static inline bool mark_failed_objexts_alloc(struct slab *slab)
+ static inline void handle_failed_objexts_alloc(struct slab *slab,
+ 		unsigned long obj_exts, struct slabobj_ext *vec)
+ {
++	unsigned int stride;
++
+ 	if (!mem_alloc_profiling_enabled())
  		return;
  
-@@ -2297,7 +2286,7 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
- 		obj_exts |= MEMCG_DATA_OBJEXTS;
- #endif
- 		slab->obj_exts = obj_exts;
--		slab_set_stride(slab, s->size);
-+		slab_set_obj_exts_in_object(slab);
+@@ -2105,11 +2107,13 @@ static inline void handle_failed_objexts_alloc(struct slab *slab,
+ 	if (obj_exts != OBJEXTS_ALLOC_FAIL)
+ 		return;
+ 
++	stride = slab_obj_ext_size(slab) / sizeof(*vec);
++
+ 	for (unsigned int i = 0; i < slab->objects; i++) {
+ 		union codetag_ref *ref = slab_obj_ext_codetag_ref(slab, vec);
+ 
+ 		set_codetag_empty(ref);
+-		vec++;
++		vec += stride;
  	}
  }
  
-@@ -3410,9 +3399,10 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
- 		stat(s, ORDER_FALLBACK);
- 	}
+@@ -2135,7 +2139,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 	unsigned long new_exts;
+ 	unsigned long old_exts;
+ 	struct slabobj_ext *vec;
+-	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
++	size_t sz = slab_obj_ext_size(slab) * slab->objects;
  
-+	/* Initializes frozen, inuse, and any extra 64bit-only flags */
-+	slab->counters = 0;
-+
- 	slab->objects = oo_objects(oo);
--	slab->inuse = 0;
--	slab->frozen = 0;
- 
- 	slab->slab_cache = s;
- 
-@@ -6545,7 +6535,7 @@ static inline size_t slab_ksize(struct slab *slab)
- 	 */
- 	if (s->flags & (SLAB_TYPESAFE_BY_RCU | SLAB_STORE_USER))
- 		return s->inuse;
--	else if (obj_exts_in_object(s, slab))
-+	else if (obj_exts_in_object(slab))
- 		return s->inuse;
+ 	gfp &= ~OBJCGS_CLEAR_MASK;
  	/*
- 	 * Else we can use all the padding etc for the allocation
+@@ -2278,8 +2282,7 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+ 
+ 		get_slab_obj_exts(obj_exts);
+ 		for_each_object(addr, s, slab_address(slab), slab->objects)
+-			memset(kasan_reset_tag(addr) + offset, 0,
+-			       sizeof(struct slabobj_ext));
++			memset(kasan_reset_tag(addr) + offset, 0, slab_obj_ext_size(slab));
+ 		put_slab_obj_exts(obj_exts);
+ 
+ #ifdef CONFIG_MEMCG
+@@ -7938,7 +7941,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 	aligned_size = ALIGN(size, s->align);
+ #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+ 	if (slab_args_unmergeable(args, s->flags) &&
+-			(aligned_size - size >= sizeof(struct slabobj_ext)))
++			(aligned_size - size >= cache_obj_ext_size(s)))
+ 		s->flags |= SLAB_OBJ_EXT_IN_OBJ;
+ #endif
+ 	size = aligned_size;
 
 -- 
 2.55.0
