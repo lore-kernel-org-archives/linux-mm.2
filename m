@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F22DBC4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 05:08:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57BD9C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 05:08:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5E2E6B0095; Mon, 20 Jul 2026 01:08:15 -0400 (EDT)
+	id 70B596B0096; Mon, 20 Jul 2026 01:08:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E360D6B0096; Mon, 20 Jul 2026 01:08:15 -0400 (EDT)
+	id 6E33E6B0098; Mon, 20 Jul 2026 01:08:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D25286B0098; Mon, 20 Jul 2026 01:08:15 -0400 (EDT)
+	id 5F93A6B0099; Mon, 20 Jul 2026 01:08:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A231D6B0095
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:08:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19B22C071C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:08:15 +0000 (UTC)
-X-FDA: 85007973750.02.2F7B627
-Received: from outbound.qs.icloud.com (qs-2006j-snip4-3.eps.apple.com [57.103.85.224])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2C6F18000C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:08:13 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b="ZH6PEq/n";
-	spf=pass (imf02.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.85.224 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CD566B0096
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:08:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C134E1C0A5E
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:08:21 +0000 (UTC)
+X-FDA: 85007974002.13.C07C187
+Received: from outbound.qs.icloud.com (qs-2006j-snip4-6.eps.apple.com [57.103.85.227])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C92DC180005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:08:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=HdTIZPLJ;
+	spf=pass (imf16.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.85.227 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784524093;
+	s=arc-20220608; t=1784524099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EsyP5irdsQmvLw/lSwMp6yzpUiFqRmMgjYO2e0T/6PY=;
-	b=IhsRbie0ArQF/yclNJCHaijiMVeR/yLTv2EH2Q47raVd8MGbSxsMY5GwIWKFf24h/yX5C/
-	4FFtgJ3PdDr2Lry1sj8aCQtt9k9MBUEssehQmOGLin0h6mFlnqM9wV7Pul1Vrd8KE4ZDht
-	AnG2BDYLurmaiClqzxyeo0Trx6/9Gp0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b="ZH6PEq/n";
-	spf=pass (imf02.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.85.224 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+	bh=oxorjIprI4mpAO6TiEZUTmw1D9wu+4GV0+L2FBilTss=;
+	b=xZjlnJvazfa6xZbE6nfUfaECl3m82cHfYBpBMMaH6B90opGdojjNMqlNPPX7NykauaELtw
+	7TiFxZHhSvP4J8AJQxqQchs/QJA74DaevevVj54ocwuEC2BMufXb6iI9ZNpw1sR3MZ0BTK
+	as0CM8jRl6Zs8IYAdy0/fbEW75hIk8s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784524093;
-	b=qBBTyTBtQfxZ01Cj5YosPKlsTN5AaLqrYjVX6MdaRGtl2kPoU+/14ZT94nfaMxFLCLNHBc
-	rPNrvDkt4x4ZS5lJHRDTSI6rxKjNIiolMmQMKSvIZMZMgfFqCz9HqV7RpEd9nzmc4ObOu6
-	eBBitLWZIJEwbT41V35o7XMIpO8EiGY=
+	t=1784524099;
+	b=BJoU99KLvU8L5r5OO5QZcFU0kade0z+7m+eHFba/AmI0CROokipR1fbGGItjPKvCp1E7zO
+	AtXPf7hImQd8ZWS8pFLJgXkuPUUb+6e7mxyAd0gco/u7c+y8VzznPqw85ptw633JK3xU/T
+	ZqKMhRTCxPgquCXN6bynOXIoebdZwOQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=HdTIZPLJ;
+	spf=pass (imf16.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.85.227 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPS id BCFAA1800094;
-	Mon, 20 Jul 2026 05:08:09 +0000 (UTC)
-X-ICL-RepId: 019f7dec-a959-7740-851f-8b0f8f71ecbf
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhMHVwGXRxCCkEdXgBLVxQEAlodRw5AHVYWWAhOK1sTVRdGCRkIXR0ZHldQXgheH0wcHQ5YBhICWkUBXRcDVxxWRVwYQwldBVccHRxERVsTVRdGCRkIXR0ZCEcfCjADQg5WA0MHRQAtGRxXUF4IXh9MHB0OWAYSHVAcDlEFWwBGCU8BXRoJUwRaEB4ZWwkfFlUNQAUaHQddClVXDw5fAREJHAMJAQlyGVoUXBhTRVEfVEYTGU4bV01QG18CQg8=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1784524092; x=1787116092; bh=EsyP5irdsQmvLw/lSwMp6yzpUiFqRmMgjYO2e0T/6PY=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=ZH6PEq/n7EF6ttWD+sQmQGhBz67cZwgnvFO7VlmkFe57n+8Zwmlr5EphsZODxmOl8hYKo/ykWEKipDaqDchQFniG0jB5oHmHDuVH8035kurVuSXwMLJeWrhrVHV6IpOe0GBLB1zu5Yf4E3Z5YC8BuFWkhbvvbu1Qvn7m8jGxW9X7eo8pn07GkBCDPtDIkV5jhnLzKMBK5BJnlJsZGW/38bj5lrVMiO/r/PO6sYlDF81Riw4XhzOZ6HP7cPHAbANaYLBAeJeCCYCHQoppdGsFaxYJGb2Zd0AUSuzo5BaX1beIYuC4XZZGmP8Th0cd4cwIXo5jc0ntSa9OlyvwUUTIXA==
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPS id 89436180013A;
+	Mon, 20 Jul 2026 05:08:16 +0000 (UTC)
+X-ICL-RepId: 019f7dec-c3da-751e-9eb6-011f49e09339
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhMHVwGXRxCCkEdXgBLVxQEAlodRw5AHVYWWAhOK1sTVRdGCRkIXR0ZHldQXgheH0wcHQ5YBhICWkUBXRcDVxxWRVwYQwldBVccHRxERVsTVRdGCRkIXR0ZCEcfCjADQg5WA0MHRQAtGRxXUF4IXh9MHB0OWAYSHVAcDlEFWwBGCU8BXRoJUwRaEB4ZWwkfFlUNQAUaHQddDVVXDw5fAREJHAMJAQlyGVoUXBhTRVEfVEYTGU4bV01QG18CQg8=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1784524099; x=1787116099; bh=oxorjIprI4mpAO6TiEZUTmw1D9wu+4GV0+L2FBilTss=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=HdTIZPLJfpgSLxqnWXwavTqKBbqneLmo5rYK9L4QUqrDsCOwqDFpGMKBM8By1mBAlgHm2uGgChRFQI6Cecf+5sd+K+HSMq+cEi76FuLZmJqOwHTAY3VZLVjykJl40gkgDsdwyrcnJxWLLk2OblSUWJC+dt1mdkxD8nZZ7kfza5rPAqRQAxWenSspL/d0Mwm+SZNOfvD9CPHjV1BerWWegs0B+UXWGzy7AzoRACohH850NPYFeBZlyj/8bO15C2WUWpZKDFlbNW0hFvqhHYOiWkMPwyj+unnY2IcLaA4Pi63Dibq7juxpKVrKZwC8mGI0eF2vb3twRnz2pCHjQNtHRw==
 Received: from [21.6.122.162] (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPSA id 30CDB1800153;
-	Mon, 20 Jul 2026 05:08:02 +0000 (UTC)
+	by p00-icloudmta-asmtp-us-east-2d-60-percent-7 (Postfix) with ESMTPSA id 04C041800142;
+	Mon, 20 Jul 2026 05:08:09 +0000 (UTC)
 From: Zhang Peng <zippermonkey@icloud.com>
-Date: Mon, 20 Jul 2026 13:07:40 +0800
-Subject: [PATCH v5 3/5] mm/vmscan: extract pageout_one() from
- shrink_folio_list()
+Date: Mon, 20 Jul 2026 13:07:41 +0800
+Subject: [PATCH v5 4/5] mm/vmscan: extract folio unmap logic into
+ folio_try_unmap()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-batch-tlb-flush-v5-3-db943a0d0d6b@icloud.com>
+Message-Id: <20260720-batch-tlb-flush-v5-4-db943a0d0d6b@icloud.com>
 References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com>
 In-Reply-To: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -81,29 +81,29 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>, 
  Zhang Peng <bruzzhang@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784524064; l=4293;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784524064; l=3675;
  i=zippermonkey@icloud.com; s=20260309; h=from:subject:message-id;
- bh=l+BMBCV4bE1SQ4xqKdkiAu5ODtsRbK+KeBkmi8ZvYtM=;
- b=s9/X+XJmXWZJHCGfES1UArzwc9PYINiT2yqXEOrpNsPIR8ow12vpoftGTs9JFz4tFXW8/BwWh
- Rdf4e32+7epDNexK7cWPfQxaFy8jTAF1BtJ+voGRpU+DXH6ZElLoy+i
+ bh=1wbXcA3EwOgkLmlnWmmIkzMkHOobeEr8JUOUrutpQDg=;
+ b=A0Ybc/7n8H9VBZRr6lMHF+lordRq5fKgCvcJzGPaTIFmdjV7Kt2djrb+R+w34345x0tJId+O5
+ eDmYa8PgD6BClRepn7xUiQO66idzQllacf+nVS/AVw6vzDFHQqcY6EG
 X-Developer-Key: i=zippermonkey@icloud.com; a=ed25519;
  pk=tPCLpFnBfIyHsp0k7eaUTUREEa36bQNW/69X+NS8wBU=
-X-Proofpoint-GUID: N5T4eMakfuls9gzg2ocoGR5sco53UcYa
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDA1NCBTYWx0ZWRfXzyk1OZOlY0jB
- PXGCZLeXDDRdTfmZZb89tH6u6ihldkVUk3XA+9PUHITim49G6I5DisTizDnJt1XQwxfE00KxJQQ
- NjdVL+1c1HNTLNj+SybrR9M96ixdk+/iKxcyUWKNK5B8ViNSoXmENTqXbjUN3c3eukZ42BQaqw0
- R7GOI4ds7bNWKPSoNPFN5jpKCW5AIWAPG55crnVrbs43W6CuBnhKu99QQXtZtit3cFBSZzAEjgB
- dQGmfGSo41Oena+wmZMQOwGAcygvjBNAL67xefp8/HO2bQEk5/olPI8h6LiPkhoVUTo1VzFX+5B
- uIktOytflSG50jhLTJB
-X-Proofpoint-ORIG-GUID: N5T4eMakfuls9gzg2ocoGR5sco53UcYa
-X-Stat-Signature: axyzxh86y1muzcjdbnn9x3on5b4aiuyh
-X-Rspamd-Queue-Id: 2C6F18000C
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDA1NCBTYWx0ZWRfXwY1/FyH0WiBA
+ k74iNQLescyWi2rEr4XWd/WubxdgqWEAtqPeXf9mLvJ1yT+6zVSHltWjIKLTa7iZSlcC14ZVoOY
+ 0REYlT5ADNfuDHM9YeoHw08cSyWKT4FCSZvtdnb3cClwYjle5EquaQPSNYPvxvPlCK/ie1F0RGW
+ 486IL/k682lPvsZlnMa60/FqUoLCK8ZLRAN0Ne8ZHpjGooo0EUtYKhHAkCXiWSuJQnZtds/M+QY
+ JkURkqkl6zea6miskrgrFQC6vGjt2rc9gYbsDeUJZWJYq2O3cjNNTZGsKAgvkUx5sPRq7vGd7Ta
+ KgA06dJZpNwiGxjSK4O
+X-Proofpoint-GUID: GG3EJULa8lsx5m573CbJU4TMSUiB9zCl
+X-Proofpoint-ORIG-GUID: GG3EJULa8lsx5m573CbJU4TMSUiB9zCl
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784524093-392495
-X-HE-Meta: U2FsdGVkX184R0jhEaTp71yl5FOdOpb+rUsNE82B81FAMwUL4CLy6SIGOhn+0eMxC0hMYQ8q5zyPMMd2Hgpi1w0Tj167/AZS0A90wZV2W8cmDXGBwHzrt3J3jFaRSOYF/gwpZEA/wtNKn8ejrRJjIUYsiNGeuV7hlYN05D+pwMkA6AQCLov/rCGnSgk5aRSEkBMRVwN5EWo1Kt8s9x/dKrHyLwJO52iI5p6JvwLoreXm6VW6YeU6vDqi4PQS1knG03j9xvvuh9qMWnIrHHq4YzkpDIJl0bFPaczC8NEI+6w83UZxm4GJ0w8JtMvHFdCun+eCmAnY/a8Pc2TP7tbpQWuwRbZ1+DcJsWrzE2D0UTk8fyH7Cj647AT7Pi9KBxk0C0Xh1h++PXsCEUSveY9yQO94xH77iceGIBsHiUJhVzqMaUawl2l1sA90bcgwHGUUXO7CNNIpsgUtLk4H0Ht7CRt5AMIjxC6VsuS46gC3fbQBEENWbsRG4LYfit06dPG9sI8AQC+zSj4arbzMXu+7GKHcVcsiD/a9tNbQm6ZV1C9ag0zEnnilKfE+h6+8sxAQ/My9PlFJG7x8xPj3NihKY3+x9UIG+P2NB9NLkAe5cYtRpflvyvt/uPOQPaMRQyUftX8HsszOfJEWbVeLNLMu/96kwfAjN3NzQRDYW5jK9UiRZNTWwYk87spsmJqtB7lYcIcjtcWyWaE6TQLtNAqoAab8J2+AsWWD0/E9a8/xgR5QAZUvpYijMy0LquS9WGaZDd65qSpAQWm9quMZnKzsjAss+dtbV/yH1+IbZQxOQXd+PpTr4bmiNTd8ZTbegs337LzjnJpFtHDxzYNfLut7pVTvQ7/FS+QQdPC1XnLSsG8XXRNH33rUyfr+NHPIzIbKO2M3HxZ91GeOa9YA3RU4mf5YX/mhiZhEj2dUgnA4oCuQcLC7Vx5Hk8yzRmSf/1jhoBnNRV2WhawfON/WY4i
- PuRRVC/U
- a68eneAu+J0HMPCk1VOO2t3Yy9DHX2ttsMDaQW8zmcC7gGjST9mUo5W51DlIFA1uLJLgEL8oymedVCOVRE/+cYiM/0sOqMbUVpA7RZ0eIkyDFdmvgLQ0NQFGkemSzih34gqEMG0Mn7ZqHD21NjIQVe16sS1coGAxZ8PWLAXncGDe4K9gJPXckGbJIb8l0qSITnG+Q399ARPGRJkYTb1VMOZ3fKFlLWE0xqfTpkwY8Qi9Tr9ppiIBC+b8NFsZGMzy8kZPikPmxCCxelP+r8Wwn0mytHV90iRgdH7EfqXF2l4etZ64UO5nDP638YWvub9xDQ7fPeugWtxXqHQxd9cZFME0EPKM/HjY6J2djpFF1D+IXauVDZg4YEdKd2C19y4nj7JCjsNv6kqwo8eKQMjfoQSatw7NKNT3XyoSJJaGabotAowObNOjHY2Ky90RkMr/wuCuD
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C92DC180005
+X-Stat-Signature: hpo93fiaqroqoyofzqhswwezg5pnfy1b
+X-HE-Tag: 1784524099-136589
+X-HE-Meta: U2FsdGVkX18WkVOhAS/b3e4RQjWtUEwabkg4em2A4NZWu9drtSpy/BP54Wufrjkv9W2/eMw6zFNnszDkpFIgWOULBY4oa7UvbjJOZKftYqfvxkqcr8c7y0zz397fZRr/6bk9W5ytda9n1pl00MkJzErGsxJqGcNC9q6HsNAwqXIzrZ3N9tE07O+1Lh88LPkq84Yf+3q3skAfnTuFdPq2Bhwx8GoFFU2Ue5cHOB5Vnz+CtQ2iIdCTnN2wcuYJ61gl3vnCZWMcJSCZxR3HcFA8W7W7wYAgZLPYA3nOpAE1YK5bJAVvwbZO81ZAnq0WoglvlZG8qW4zvHEQZlPVCfNskD/R8QvWXvGEk5VlA2tkGvJKTAyJfz0xv/E2c2E7Y4Ctacyes2tz+5XnLk/JJLI09qMCmvHAMqmUmhyi5ySMVlG3VoqNbMW/MA2uOavJwWPt7kVMkH02E7EBXJC6xpv0BKjcceDWuB2k7XXNJ01Bkd5d2S4U/i2TqcclaS7Y/GMYTVFCknUs3FFFkVxOoHdzBJktB4oozoUb9z0EIhqpgw46lHlhnzqWWy/txPiAaGLFq8kYlsL569ut8iWqnTG5+3rRFVVE16VU02Rg6ZxnOAoVdd4U9f7bc75lsK6PEs76hCm772dwQeyBGfeLMukD/Vlqkdzj+vzmrkUSVukjk4ZahaFFHbO/r2R9Rk58JZmSkh6JSxe0uqk/Zsa8KmId6SdwbOf8QkAdx41+oQDZVdBt3E2kqcDDSymlsQYr9oUIXO+cWv71WUGkIfept2kM72oPjqzobGxIqa/LXxHxU1925yXdTU/c18LUcNAfIW01LVYey7/SbLDypSve2+QzHnSjWCRskqYyT55/PXm4QGgBawBb1UZOnPPHJJTCe7w8yz14JF7MMM1/Prx4ZRl8oQNMiLvAhP/Hm3CK9bKLu2VUDJ3k6cRm201q81AoPWCsOjaggLdoqCiG1Zbf4a7
+ 3odHF8MR
+ TlqW0lCizpmw0CbmF+SJ7WSb6kYbJQ9rrfVecocdFKbKgZWCfd/auyxscnNWaEI4Ng0oETxHythUOC77Ruh9Ew3AGCfq9hd/3UwRjrEwz6CZdKDMltn4UWx9Lfgz2kWgpNjVfxHf2hDiiExUE2dgVq5p0O3dgbkIhkkMUssCBYK8Jywb1A7RkFRjAYfcZeq2xHTcHc2YouoIvSRr+Zj90RAVmGTLAaATGkhZUOKD8omKGPk3yza9qZZEMtP89uEldRUQ3gyVmRa6kaTswIpOj8JWXHHrUNJmIQcHAhlHblHX8VL9yhH+YKzDjPgkTCV03mGLPPyD0HhidIhoD++wvkUzZ6OUVo8v2CMibZfRRojV/uBT/p+QG9yYOvHbRndxQo8ib3BUt/iktFWlQLppfWPuvWn9c9MYLutNCitHjuHL06DI2zeESPGXO0n3EM7xvimal
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,146 +111,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-shrink_folio_list() contains a self-contained pageout() dispatch state
-machine. Extract it into pageout_one() to reduce the size of
-shrink_folio_list() and make the pageout step independently readable.
+shrink_folio_list() contains a self-contained block that sets up
+TTU flags and calls try_to_unmap(), accounting for failures via
+reclaim_stat. Extract it into folio_try_unmap() to reduce the size
+of shrink_folio_list() and make the unmap step independently readable.
+
+folio_try_unmap() is only called when the folio is actually mapped;
+the !folio_mapped() check stays in the caller, keeping the function's
+semantics clear: it tries to unmap a mapped folio and returns whether
+the unmap succeeded.
 
 No functional change.
 
 Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 ---
- mm/vmscan.c | 104 ++++++++++++++++++++++++++++++++++++------------------------
- 1 file changed, 62 insertions(+), 42 deletions(-)
+ mm/vmscan.c | 65 +++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 35 insertions(+), 30 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a0807dd01c5a..3e18948e90d1 100644
+index 3e18948e90d1..bb479ead1ee0 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -1163,8 +1163,65 @@ static bool folio_try_reclaim_free(struct folio *folio,
- 	return true;
+@@ -1220,6 +1220,38 @@ static bool folio_try_pageout(struct folio *folio,
+ 	return false;
  }
  
-+static bool folio_try_pageout(struct folio *folio,
-+		struct folio_batch *free_folios,
-+		struct scan_control *sc, struct reclaim_stat *stat,
-+		struct swap_iocb **plug, struct list_head *folio_list,
-+		unsigned int *nr_reclaimed)
++static bool folio_try_unmap(struct folio *folio, struct reclaim_stat *stat,
++		unsigned int nr_pages)
 +{
-+	struct address_space *mapping = folio_mapping(folio);
-+	unsigned int nr_pages = folio_nr_pages(folio);
++	enum ttu_flags flags = TTU_BATCH_FLUSH;
++	const bool was_swapbacked = folio_test_swapbacked(folio);
 +
-+	switch (pageout(folio, mapping, plug, folio_list)) {
-+	case PAGE_ACTIVATE:
-+		/*
-+		 * If shmem folio is split when writeback to swap, the
-+		 * tail pages will make their own pass through this
-+		 * function and be accounted then.
-+		 */
-+		if (nr_pages > 1 && !folio_test_large(folio))
-+			sc->nr_scanned -= (nr_pages - 1);
-+		folio_activate_locked(folio, stat);
-+		folio_unlock(folio);
++	if (folio_test_pmd_mappable(folio))
++		flags |= TTU_SPLIT_HUGE_PMD;
++	/*
++	 * Without TTU_SYNC, try_to_unmap will only begin to hold PTL
++	 * from the first present PTE within a large folio. Some
++	 * initial PTEs might be skipped due to races with parallel
++	 * PTE writes in which PTEs can be cleared temporarily before
++	 * being written new present values. This will lead to a large
++	 * folio is still mapped while some subpages have been
++	 * partially unmapped after try_to_unmap; TTU_SYNC helps
++	 * try_to_unmap acquire PTL from the first PTE, eliminating the
++	 * influence of temporary PTE values.
++	 */
++	if (folio_test_large(folio))
++		flags |= TTU_SYNC;
++
++	try_to_unmap(folio, flags);
++	if (folio_mapped(folio)) {
++		stat->nr_unmap_fail += nr_pages;
++		if (!was_swapbacked && folio_test_swapbacked(folio))
++			stat->nr_lazyfree_fail += nr_pages;
 +		return false;
-+	case PAGE_KEEP:
-+		folio_unlock(folio);
-+		return false;
-+	case PAGE_SUCCESS:
-+		if (nr_pages > 1 && !folio_test_large(folio)) {
-+			sc->nr_scanned -= (nr_pages - 1);
-+			nr_pages = 1;
-+		}
-+		stat->nr_pageout += nr_pages;
-+
-+		if (folio_test_writeback(folio))
-+			return false;
-+		if (folio_test_dirty(folio))
-+			return false;
-+
-+		/*
-+		 * A synchronous write - probably a ramdisk.  Go ahead
-+		 * and try to reclaim the folio.
-+		 */
-+		if (!folio_trylock(folio))
-+			return false;
-+		if (folio_test_dirty(folio) ||
-+		    folio_test_writeback(folio)) {
-+			folio_unlock(folio);
-+			return false;
-+		}
-+		fallthrough;
-+	case PAGE_CLEAN:
-+		; /* try to free the folio below */
 +	}
-+	if (folio_try_reclaim_free(folio, free_folios, sc, stat, nr_reclaimed))
-+		return true;
-+	folio_unlock(folio);
-+	return false;
++	return true;
 +}
 +
  /*
-- * shrink_folio_list() returns the number of reclaimed pages
-+ * Reclaimed folios are counted in the return value.
+  * Reclaimed folios are counted in the return value.
   */
- static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		struct pglist_data *pgdat, struct scan_control *sc,
-@@ -1501,53 +1558,16 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 				goto keep_locked;
- 			if (!sc->may_writepage)
- 				goto keep_locked;
+@@ -1494,36 +1526,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		 * The folio is mapped into the page tables of one or more
+ 		 * processes. Try to unmap it here.
+ 		 */
+-		if (folio_mapped(folio)) {
+-			enum ttu_flags flags = TTU_BATCH_FLUSH;
+-			bool was_swapbacked = folio_test_swapbacked(folio);
 -
- 			/*
- 			 * Folio is dirty. Flush the TLB if a writable entry
- 			 * potentially exists to avoid CPU writes after I/O
- 			 * starts and then write it out here.
- 			 */
- 			try_to_unmap_flush_dirty();
--			switch (pageout(folio, mapping, &plug, folio_list)) {
--			case PAGE_KEEP:
--				goto keep_locked;
--			case PAGE_ACTIVATE:
--				/*
--				 * If shmem folio is split when writeback to swap,
--				 * the tail pages will make their own pass through
--				 * this function and be accounted then.
--				 */
--				if (nr_pages > 1 && !folio_test_large(folio)) {
--					sc->nr_scanned -= (nr_pages - 1);
--					nr_pages = 1;
--				}
+-			if (folio_test_pmd_mappable(folio))
+-				flags |= TTU_SPLIT_HUGE_PMD;
+-			/*
+-			 * Without TTU_SYNC, try_to_unmap will only begin to
+-			 * hold PTL from the first present PTE within a large
+-			 * folio. Some initial PTEs might be skipped due to
+-			 * races with parallel PTE writes in which PTEs can be
+-			 * cleared temporarily before being written new present
+-			 * values. This will lead to a large folio is still
+-			 * mapped while some subpages have been partially
+-			 * unmapped after try_to_unmap; TTU_SYNC helps
+-			 * try_to_unmap acquire PTL from the first PTE,
+-			 * eliminating the influence of temporary PTE values.
+-			 */
+-			if (folio_test_large(folio))
+-				flags |= TTU_SYNC;
+-
+-			try_to_unmap(folio, flags);
+-			if (folio_mapped(folio)) {
+-				stat->nr_unmap_fail += nr_pages;
+-				if (!was_swapbacked &&
+-				    folio_test_swapbacked(folio))
+-					stat->nr_lazyfree_fail += nr_pages;
 -				goto activate_locked;
--			case PAGE_SUCCESS:
--				if (nr_pages > 1 && !folio_test_large(folio)) {
--					sc->nr_scanned -= (nr_pages - 1);
--					nr_pages = 1;
--				}
--				stat->nr_pageout += nr_pages;
--
--				if (folio_test_writeback(folio))
--					goto keep;
--				if (folio_test_dirty(folio))
--					goto keep;
--
--				/*
--				 * A synchronous write - probably a ramdisk.  Go
--				 * ahead and try to reclaim the folio.
--				 */
--				if (!folio_trylock(folio))
--					goto keep;
--				if (folio_test_dirty(folio) ||
--				    folio_test_writeback(folio))
--					goto keep_locked;
--				mapping = folio_mapping(folio);
--				fallthrough;
--			case PAGE_CLEAN:
--				; /* try to free the folio below */
 -			}
-+			if (!folio_try_pageout(folio, &free_folios, sc, stat,
-+					      &plug, folio_list, &nr_reclaimed))
-+				goto keep;
-+			continue;
- 		}
+-		}
++		if (folio_mapped(folio) &&
++		    !folio_try_unmap(folio, stat, nr_pages))
++			goto activate_locked;
  
- 		if (!folio_try_reclaim_free(folio, &free_folios, sc, stat,
+ 		/*
+ 		 * Folio is unmapped now so it cannot be newly pinned anymore.
 
 -- 
 2.43.7
