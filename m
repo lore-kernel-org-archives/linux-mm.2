@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB7EAC4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 504ABC4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:27:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BF666B0095; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
+	id 4F1DE6B0096; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8703B6B0096; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
+	id 4C9B66B0098; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78A1C6B0098; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
+	id 3DF386B0099; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 406026B0095
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD8C6807D7
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:03 +0000 (UTC)
-X-FDA: 85008623406.11.C704EA9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DF266B0096
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:26:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5448C070A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:54 +0000 (UTC)
+X-FDA: 85008625548.15.EDC9712
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CDDF6A0007
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hAqI6IVT;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784539561;
-	b=yn+BWj3/Rch0A9Hd4+pakDHDJJnjloXSVkneslqJbYQcpT8I+tzm0URgcLvm+2T918Z+nr
-	qqMlfPDNr4XQsMMZmcULgW+cpfm+TYtnHJGh6yF0nFIhGIMlwhDJj2xSemXemlj3f/x2fB
-	J/9yC8hT7WjquYg332j7ekecIHVmTHQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hAqI6IVT;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id C9AEDC0009
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=awQg76Rh;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784539561;
+	s=arc-20220608; t=1784539612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pxwSkCk/NnriA4A8tW9ob3/fT1s1G4BD/0LrELXEBwY=;
-	b=yQE19tNwtQXhBZGr2OWYkNJylGnxIWlsnjPqbnBe94Kz8ZGMCA89Pjhpj5sbky8ScL04ms
-	1ia3nqSz1zYiJEw/IpKGhT5PkEhKvLltl+fSl48QfTbPsrHXnMuUvlz6QKQD1pb5zCxM/k
-	nt/q5GiyvO42oerKDO3o3IRmqwSBMiU=
+	bh=M2jhTjNXwT/wFHT3j8aQ9cD9kDlxoHh0XcpFGsMlw9Q=;
+	b=xCu/cznH7R014PomEjeRYGQeE3lgezg8j+xK+YoIzvxZGXnD4kogZmI/fG4dNheGLiymCd
+	T08ShviWp94WQdQQsZjIp81MS5Z6Ohbo2wUzrI+g9o3PPDpWifF15X8oTo2mNlBefRans4
+	8WGol/66fri1CU1OlCDmPtjx7B3kB88=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=awQg76Rh;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784539612;
+	b=OEUKIyXvQLoYby+nnfygvsmiOZpwNB5RWsheo0rYUsSoo3kfRzpBJjg7a9Si69jZ0BC1GD
+	Jyu+voN7dr/s256YfYGTbGp3y7cqWCdAsZqGWc8VM6cwX4yfcPJ0s7/DUUsWg+cDA53AhA
+	lvq5P5ZoVnOYcMasYIjEhNlJNrxROpA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F285C40897;
-	Mon, 20 Jul 2026 09:26:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1651F000E9;
-	Mon, 20 Jul 2026 09:25:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2814440BDC;
+	Mon, 20 Jul 2026 09:26:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC961F000E9;
+	Mon, 20 Jul 2026 09:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784539560;
-	bh=pxwSkCk/NnriA4A8tW9ob3/fT1s1G4BD/0LrELXEBwY=;
+	s=k20260515; t=1784539612;
+	bh=M2jhTjNXwT/wFHT3j8aQ9cD9kDlxoHh0XcpFGsMlw9Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hAqI6IVT5rqOoth90nx/dm6qyA3QEwJSVXbD690fTVlV3EXYxyMq2V1xAPBKjF9So
-	 6m1gEolrXPP19tyK8R41Xgh1AxEuHApw2acE9goffXNdOWL6lzkOqHD3GFsymxB/ug
-	 hxSvOrD0l2SsoNxtgcsjHaCoQ1NoB8FcYAuQPYR1po2HUaq5oS0YXXNh/X2Z1E2P5C
-	 fcO8q7jt8ED8D7Qcag0Fh3/WiESNGjLDgBlWixXXXgeC/0IPXTXPNtgjGNvw6hx6fR
-	 Sp4nkhpABlKkHh02WFESw0m+yJhFuDnsvmrCwP04oKioN0sxmxCPSehNe0K3er8fYL
-	 I96hMu5s4DGog==
-Message-ID: <5b37358b-cd6b-47aa-8403-4a24fe105379@kernel.org>
-Date: Mon, 20 Jul 2026 10:25:56 +0100
+	b=awQg76Rhu854IUVSU11q+je5cYfo8bHNwWQgLLF/pO852ZBP/q+a3Q1lKWb1bjV8M
+	 8I0BROcNAXpXWI3FIDE4eGGwxYsPswRkfPQ7x4h7F5jiGxs/IVAdn2k/qWJoxCeIjo
+	 1QjAuuGxatG2efRL5M95Vf0ph7C2/ZyqRvix8wh4RljauAWb/C4y9GZC2Ute+gVk/J
+	 0rZAFfqqrgXg402EdkMcjxwScIH6cKK55du6etmMXDM8pjwygZP3NnbmbDMXDPf+Lu
+	 bbS35ZaV4AfU09i6XyyoPq6Or72MusRfpJmMbyvrRULwttjHXTcQUC8bJgJ+hwzggF
+	 OFkYz7Apy0H8g==
+Message-ID: <cdddc4b1-53f5-4016-a74e-233db909c217@kernel.org>
+Date: Mon, 20 Jul 2026 10:26:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 2/6] mm: mincore: remove special handling for VM_PFNMAP
@@ -127,13 +127,13 @@ In-Reply-To: <20260717091347.1144789-3-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CDDF6A0007
-X-Stat-Signature: h7waeow85zqirhbgpqzfr69rcwbh856d
-X-HE-Tag: 1784539561-417867
-X-HE-Meta: U2FsdGVkX1/wEiiaxQw7BNztYoxyqp5cQa005MaAP9eVEsUpN4f3R3h//zja9hkaoONMeRgc1PrdTW/zNjXAQegWGA1WNa5QVHR+WMlcAuI2EiHrzfefAuBAvRsTW9v2/K723VU0/SMWlszaavFd3D0mTXTQD50WnLqzYTfplqWkPUhcY1cJZDbWmaHk2uLRkjvhrKwdpZJVbgbSGEf46GxhR7qIdiBBVotFlukHoiZKbk9YMtsW9NeYsjlD4T820IyIDukMt/iW4LTZ7XCXMI1P0enhgVKnEXWE5ZVhuc8ivjgbG88csyf2dMV1idz/NxHCsvUwivrj/MDpTckPyVJJXoFOT83aKexAw1gEUcZdjjPDqOBNw7CyYqNProuioaYkrbH8G8kfOidnqY+PL1sVBDaB1qRuv3PEDd5+5nI93JlCYjhZQ5dpi9sBXOjuBv75Xo9XiTGt8B3bJ1umRPg9nCpGaqJrp/4mZWhWfGdphwSKIolnUBSBNxp9esLzaf9jFkBE/SW27EzkObnMWB/AJmyGr2HQi1Z6A8ApZu4Jeil+aQ2uZDttJeaTTyrVsU53/lW9+77nY81at/+Tsu5Fdjl3mV1OJWyRUnKKWVbafJYe34iUp+/iFM8jWf2GSf12gyLw4C0u0cOUmNppYIE085Z6wrF0SsyVkizKXwFKpgsPESfZji0Jq56t4a7Ua8U/pCGVWmkxxAH6y1HYAlZvGVA09l5AmQNMYprRfmlohzVLQrynjmFQjvYDxKxxPY5lPoUssKD0S+xPWiW/fxyeH66zVer/Kyfbbpb83jxyGXniVUg81HAg+efzstqQBZPJj4xW9mA9AAb0xhFnLmekWmLDGUdsIkvN/S2wBE5LCKtQPjbk0gRYQviHAFP4P/qDR+7BKKhu1E7GogMSNUAksMwRh2Qo82Z5rO1ZYvrhNpUipdw9YR74xKDDvl6Jd0Yre2NXaMCXnfa9bGr
- bqjQLqgX
- 8MqiTSnA6a0fdbRTafMS3c/Y98DgIat98OtmipzmnkrKcLL1o7KbaAzd8kRzkR5G23Aln2DPciyrIRQt8/Auqd7/QhqLHxkysSO/GePbEm6+GJUHcgq5YsNGTJWBe7zCBez6wpiratM5eouya1+Q5sl9+h0CkNOa24yDftuN4FC4PClfWmMU8ni+1K5i1iosbyzOjdwBQkJqBx6FOR7xH5swDWhrBPy5+X7kYzdJLsAXAX5Iyi5N9XEjM+N4ApM+JzW5d7jWmcd8xIx+kttw1AiGAFOh+XNi4fQzUJ+rQ/GLdEobv8h+brvK0lCFS7g72yydAbqU7d7G02aDTwi0zzXzaNho3HRxu8LvfUF/fOiYUHcOhvESLXsN/MezW8qV+56FM
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C9AEDC0009
+X-Stat-Signature: dwki6cj3wwaursx9d8pfeh7a8sy1rbqc
+X-HE-Tag: 1784539612-690720
+X-HE-Meta: U2FsdGVkX1/RRnvjLT612BPVEJpn7BJ7eOsVF3rIU4eLtGvPSDhYifGUvOSJSacrtlhtOk5B/DoQGvcbo82VhvE9SIcNSTBYml5JR0Cki22xjRBJuL5gYHbBE6vyMaPSiskzRHo30Dtg+6E2Yec444BlIVvQWE4tnAIC+Sl2zcKIRGeEvATMYCUKMdt3RY4XPPdoE2nm3KkOtsG1UV61/HV+zQxrV5aQyV3MBPZjjKRHoT929ywhiMwVgVRMMxDh+69xLe+OavIEchw4mbmPq0ohAiHsJRFxdvP6n8jsFNU6IIe1UANfSzQ/KpBmv4TIFf/2xOunkmxc6f7TqhGsRfUHp+GlbGET625cI85ZoROPc67mk5qsBKTHb+450v6Ged2ktWNi9e5+ymZ4BVH9dgtNl5batd1NmdUrBxtSjQnOA0k2sF9SSPV4gHM5ffAzuGQJk/wl4BVqkZaB+lShYiXUkOoxxcLn0AtJXhDd/UNxPgfXzst2ZKK+z2po71ELY6vMir2rKIEXWdg7LvjEEdG23YvoSH75yiL4zVEkX9qZLlJ3XgkM4fAxtmjs3x+O8AASsasSnylkcDbV7W+f94/Lw5+MQ4Bf515Ld2jwx/ZWX/ozCR/cF8hcib214fsYfaqiQ8ywV0A9dmNBdZNoY2YAGSNmg/7IztItNFJGF5CuWw+2wB/3fBDXsLZ8KR8aa+YV/kgXl/iXk0EDmFD87X743E1l5zOenHecJiALS7FwnIDxUYEU35yo5+apsdGvzKEu3vkyAoIVnkalzBrlLzGbIHv5fpYkxcBxXPnAC1ljfutepG/dD5tjXVa4IPrs+0Ytbv0c76hOe8u0c20vUsqLN4fEnYK2XCxeZ++K8z1R2T7gAo7vJ5fJcpmUbAvyHxJc3ERhMtk0ZEv8oPLkic0wd2hqTHKatYQ9LDX9/pOow6n/5JsWHEYcQ/QeVxEgOgBaAVR65LKK3Pt8r8z
+ VpT65uGZ
+ VKr1YRtd84j9Ri8Xx/WOv46Jg6HFo47v2Fh4Ko5KWJWIVLZAoiqXrk668YjNVSz7DlZOQl6jifOSCQo1FrkgUkn7CRrFHtZMV+9YU6eNoAwK6RCB1iGOx3rkhJGmbLJu6g5MWLDr3leIDQeOI0aqGnDov6RcJcx07PKjNW9WdSpbwvkSNxbw4A9nYBpcWxlDeT+3yjN6yn6QsOCs+jEXjfMdQ9t3JZA8saMSyGcx1qnlYZAmUQK5QO9TP0uFHff532fIN/FVsX6YsyQJGFJx5FZm1T+G6cxGrznj2wb5ytaWwpBkknUaqfFmawhaodhAmPFx9MrbxKqwsIr7zqK4/4CKahB+kD2wVbkfD6KFZMxntSP1uUqCDuK2PKduCTe8ProRS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,32 +166,12 @@ On 7/17/26 10:13, Kefeng Wang wrote:
 >  }
 >  
 > +static int mincore_pud_range(pud_t *pudp, unsigned long addr, unsigned long end,
-
-s/mincore_pud_range/mincore_pud_entry/
-
 > +		struct mm_walk *walk)
 > +{
 > +	if (pud_is_huge(pudp_get(pudp))) {
 > +		int nr = (end - addr) >> PAGE_SHIFT;
 
-Could be const.
-
-> +		unsigned char *vec = walk->private;
-
-Might be able to just cast that as part of the memset.
-
-> +
-> +		memset(vec, 1, nr);
-> +		walk->action = ACTION_CONTINUE;
-> +		walk->private += nr;
-> +	}
-> +
-> +	return 0;
-> +}
-
-With the rename
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Ah, and best to use an unsigned long here for consistency.
 
 -- 
 Cheers,
