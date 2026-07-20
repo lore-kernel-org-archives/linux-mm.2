@@ -4,139 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428A0C44529
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 18:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1E52C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 18:31:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392216B0092; Mon, 20 Jul 2026 14:29:46 -0400 (EDT)
+	id A73BD6B0093; Mon, 20 Jul 2026 14:31:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 343D66B0093; Mon, 20 Jul 2026 14:29:46 -0400 (EDT)
+	id A4B3B6B0095; Mon, 20 Jul 2026 14:31:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 235D66B0095; Mon, 20 Jul 2026 14:29:46 -0400 (EDT)
+	id 961626B0096; Mon, 20 Jul 2026 14:31:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EA51C6B0092
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E141C160284
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:29:44 +0000 (UTC)
-X-FDA: 85009993488.17.F797529
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 22BC718000C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:29:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=d88fxvTa;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784572183;
-	b=fhTt5mWlyFC2hPZaiEOi4MXwadgehQIncjs8mb1TmG+UXENbPnuTUH5/+2lWWjYRr5CfD6
-	ryIoKLXF5Z0KCaVDyDUiDJUpU4PNd0D1KK+rDWoynmbLxXdZJrnPRMxpYfbTx/g3TL8F4o
-	awNLb/V/AxKnUfj1Gv9/3HrlLz24NVw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=d88fxvTa;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784572183;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6348D6B0093
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:31:08 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C540AA04FE
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:31:07 +0000 (UTC)
+X-FDA: 85009996974.24.030839B
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2AEAB4000F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:31:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=kKnTBaQx;
+	spf=pass (imf11.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784572265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EvlY+ZnuMunvG4k74l6eGWIXWbaZN9lfqhpu+ESLMPs=;
-	b=zK1nQPI+Xjt/pe+CZG51mzsWfEUNbtX8g39FjGihoRcVMhuHhMyIzWVt3xkAiaPkB5YNmh
-	Nks32TF1TwuIh7SoVdJxz5XAVtnel+D+iDSjCwaJagrzzLQBsXxo2ayS37G1SuJiEelyOL
-	bHRWlG5F1VUb3W1iZIZBiv4JUJR13e0=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51c0c45c580so90814121cf.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:29:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784572182; x=1785176982; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EvlY+ZnuMunvG4k74l6eGWIXWbaZN9lfqhpu+ESLMPs=;
-        b=d88fxvTags50Q5UY8Ka8lBoYLjue5p2Dr0XLw02LW2t6920NZHd8tFdNdOfaVHvfS4
-         wdZA2ytGbWPcKepBen3022yg4CzqdOZsvNSqJ6sa3G0WGzOf0D1nZWfdTEjQixsnpuOt
-         I9ysh0d2adLrUnhmaZcJo+LPKNKMYwSth6MRvWLDNdamkPUKdjCQ0QH2EzgsJtbHPVrT
-         fvEAzdW73IQAFYGe3VLPxQ/UrEYQ6kWl7zeTMpkcTEd8G56VWUnSJ0k1v/UROCTVmZ2M
-         FG3k9tTpJpgYyAM+RQdc7xyPyXa2HiPUptheAeGZnfZZp5ZFf85UuRUyVuaMqe4MIJOq
-         poyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784572182; x=1785176982;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EvlY+ZnuMunvG4k74l6eGWIXWbaZN9lfqhpu+ESLMPs=;
-        b=Bggt3ccepdVSJtqLFHtrHqPSufzMMai5pP0B4zOuDpAwn4PqfqFd+S03CCyuAKJ5jU
-         pOpEYtLNQc8siA857n6aH9jIn98rrhqzFIe1qImCkcaBiZ3nQAOVbsxthS0pvt4ceOZe
-         xyo6k4FNj4jk+ye1tIdEqXYxmAVgRKdCZ6cQS6DUQgyX6avvBy8kYBVpecfB/aZ/F5iK
-         foRCfzMYQFe2q2S5emT/jntGGDjb+AMJ5MkrOt78c9Z1mfBgEQfzfy7U34iDnVpxrP3s
-         pCg2gJXjSxgqUtGHbVquByD5vEuiiM89cfSvjk5u6PUAxXZGm961W6fGdkAaIZD4Vp5K
-         ymtQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpCnm6yOIQEms+bFwijQmK67En3TvFJrAh7L35QcTM2FTMLzYfYSbNsEU+x6CQWoS3H20quDznpMg==@kvack.org
-X-Gm-Message-State: AOJu0YxH8eeK+KOHqv0D27Ix6Y8MC0lnerZD9rWYas/g0QS8/N/5a1fO
-	dtXQqsErQKpjVj+IyTZogwMIVK7092ifgR7WH5m+hR5HcxFNcGF2CPmQnFk3uEIwuAI=
-X-Gm-Gg: AfdE7clupECLPpl/SV011a45h6V/CeTiuo+rOCmqtISst5V1D7x0HL3644Gxr95MHoi
-	jOkuey5tz6DnEZRoDUVfe8JHMO//6OvoewmY9L0bDkpJNOjVou/DO355ETSQO2e2aWwUPV2NxpS
-	l7gQACHHEEqlIC7Hfk9V+0JITxP5KO+cTmPQ7tEf0zNwpWbzArNe6e+84jXCNRR6bXtBbfrLqIp
-	uM5TgWjc4i7GnAeqgTeGMSD1Zzj8cZ0AxY1lGbZ/OpYpQwzt5XWIw2q76aUzUzPD4hkR+dlsftI
-	uKhQTGSUxv9QO+ZjTD1sKzHklbbgkad/x1w0NlwmZ7w6ZD8kXli7N9fPYykc5/QenD2NZX7a0TF
-	9MSZgQGT/Zu4JA1nh0yT+PT5GbhK3+ml5n1Kk0wT1BWlWBqBtt/OOFILHOPV4VZMHki4JO2RxQe
-	EC4j5XpfYdXOmBQ2du9OCN2AY+oyaPG6/mXRh2kGegNWbJx+0++/fTG8nnmuTHdxnIm93p
-X-Received: by 2002:ac8:5714:0:b0:51c:1857:b622 with SMTP id d75a77b69052e-5213e082210mr141591671cf.54.1784572182072;
-        Mon, 20 Jul 2026 11:29:42 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214c5cc8d5sm80304611cf.6.2026.07.20.11.29.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 11:29:41 -0700 (PDT)
-Date: Mon, 20 Jul 2026 14:29:36 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>, 
-	Brendan Jackman <jackmanb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	iommu@lists.linux.dev, loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
- header
-Message-ID: <al5ldslYontDDKPJ@gourry-fedora-PF4VCD3F>
-References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
- <alkLSzQvzT9zJbY1@casper.infradead.org>
- <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
- <al5gQgnBCjNCSD_4@casper.infradead.org>
+	bh=64nKL4t7ZOMJQeMJXoupi8lChMlperoUGSuRJb+kKxs=;
+	b=aWSOp20j0w0hQPpaSfiTdtbFe5BDJDrKQzAeKZvNZR8YUJvhesHsusU/03lqLwRWWhNY8p
+	kLV+CIYFhTty7FypO38F5/pr/quFJImlKwJaOpM4ooQzTa0hHctUVENpgRzIZddw1PreRi
+	lTOu9/Qs8ioEmD9Q8BaEJf/FPt3alUs=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784572265;
+	b=HXhwj6HjZmOmXlwfUY19ZAtONOAc/8dn93YQ99IEFP75Y3qFic3WeefWw6bOSn4qTgQpAW
+	86I84t9ev1LWXGHTOw2IiqrsR/X4AEYQnWXXI7hONFL61/R0vU6SUAskxG2P5RYcz2Zaov
+	yy9ZD5+qP/+v5htT2PFoYVM/cQ5NR24=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=kKnTBaQx;
+	spf=pass (imf11.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=1; a=rsa-sha256; t=1784572224; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=aQ0WFfaj+RRG5KYT7uo4r4S+tzBtUUAnScyIeeDChof3v/5+jCIBtA0KRtLZZ/bLoJkKj7aIXSoJPnHWLqkbHCjVy4xitSLw88BjLrRlMtCz27hC+K7L3cJY2MVJvbs9aRNM83WVJGzamwYLP3W352CihZ1crlUqLqkE2iWbS3g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1784572224; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=64nKL4t7ZOMJQeMJXoupi8lChMlperoUGSuRJb+kKxs=; 
+	b=gJ2MPLsspdyw//XfJWZkwlydjoflMbpvM7VZZlMX/eRLpYJCcopp9N0XU7g6KWnX88zgf9+vDGp3bvTRU/+HyEJJsz5vCKjAhePMpxTztT1KtatTRR8OpcTy/PkismFR1jAZ1P5PTCDGHCDWEzjhbGZsm0pIgiqTE5/uP2/TRNw=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
+	dmarc=pass header.from=<adi.sharma@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784572224;
+	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=64nKL4t7ZOMJQeMJXoupi8lChMlperoUGSuRJb+kKxs=;
+	b=kKnTBaQx1r72oiZf0DMEoii58d21jADdLQk24tPRe+kQL/zQ9iL+nTcmUlukaarG
+	/2cRMOkJLd25O0bv0X/DSBTXyNLpq2YTocjessecMpHpBZrfEtdXtDyPfZPO49aVGbk
+	a8kqVtKV7IXXDapjlDIAsxrF6bxalRDQNkbAg0JY=
+Received: from mail.zoho.in by mx.zoho.in
+	with SMTP id 1784572223203771.9033389679731; Tue, 21 Jul 2026 00:00:23 +0530 (IST)
+Received: from  [14.139.128.24] by mail.zoho.in
+	with HTTP;Tue, 21 Jul 2026 00:00:23 +0530 (IST)
+Date: Tue, 21 Jul 2026 00:00:23 +0530
+From: Aditya Sharma <adi.sharma@zohomail.in>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>,
+	"Lorenzo Stoakes" <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	"Vlastimil Babka" <vbabka@kernel.org>,
+	"Mike Rapoport" <rppt@kernel.org>,
+	"Suren Baghdasaryan" <surenb@google.com>,
+	"Michal Hocko" <mhocko@suse.com>,
+	"David Rientjes" <rientjes@google.com>,
+	"Shakeel Butt" <shakeel.butt@linux.dev>,
+	"Jonathan Corbet" <corbet@lwn.net>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	"Steven Rostedt" <rostedt@goodmis.org>,
+	"Masami Hiramatsu" <mhiramat@kernel.org>,
+	"Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
+	"Kees Cook" <kees@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+	"Peter Zijlstra" <peterz@infradead.org>,
+	"Juri Lelli" <juri.lelli@redhat.com>,
+	"Vincent Guittot" <vincent.guittot@linaro.org>,
+	"Dietmar Eggemann" <dietmar.eggemann@arm.com>,
+	"Ben Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>,
+	"Valentin Schneider" <vschneid@redhat.com>,
+	"K Prateek Nayak" <kprateek.nayak@amd.com>,
+	"linux-mm" <linux-mm@kvack.org>,
+	"linux-doc" <linux-doc@vger.kernel.org>,
+	"linux-trace-kernel" <linux-trace-kernel@vger.kernel.org>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"imbrenda" <imbrenda@linux.ibm.com>
+Message-ID: <19f80cb1ed8.13fd666243425.2308143427066829733@zohomail.in>
+In-Reply-To: <d1180a70-f4b4-4c22-9ce5-881cb0e2370d@kernel.org>
+References: <20260719185409.409685-1-adi.sharma@zohomail.in> <d1180a70-f4b4-4c22-9ce5-881cb0e2370d@kernel.org>
+Subject: Re: [RFC PATCH 0/7] mm: defer address-space teardown of large
+ exiting processes to a kthread
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <al5gQgnBCjNCSD_4@casper.infradead.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 22BC718000C
-X-Stat-Signature: okjq7wisrbs8iihosir1jdhjn34zx7b3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Rspamd-Queue-Id: 2AEAB4000F
+X-Stat-Signature: 63h6odfj5ea67czxhins5e81re7r9mh6
 X-Rspam-User: 
-X-HE-Tag: 1784572183-354981
-X-HE-Meta: U2FsdGVkX1+24vs8klqOAT+1VF5q3S1Ss8knpgOvyt219DJ6HqPAQi3jb5GxBWw4bP+ASuMDcIHzWocsrAg1lMEkRY1YNKr9cWJTgJ26zzcWA3kH0SR2ZkG23Cd6uZeozHlAuo5fWrb6eGuriGXzRxrFrIbhPWcC6tyh9FpQ776Z0B7flgQ0TySktxyQsl7cl2MdLJS2OFeXDRRa/mYbfLX12DUBwog6pgoSlP58Eiri+4FycC7cbooV0CtvNoF133yTXbXr7ZO/qMpWtBL4YbgMhewaNalwMjAaujxMwsFQlHuZ/Ap06KVOByIjbk9EESqAafo+pwWh85nMPrIxZLqZyR2kiX+GFO+dS6v3dzSwh4HxJnXMUixCHIUFrfOG75O8HwIyyIOgJs+gI/jQjQwrAuUUQgdFD8NnrZqO18ZtGCBi5WsSouns/l6sO8wpXlaoX8y5kfZYYxiNZK3WZ7rU/Lzm4MAVotOjhEkdxQtl7YjjBC6Af/FJjCuLxdqZ3qImZGs3YrNsf9gSpEFWcYDfqxTB+6LPqtVGTx+Dao/Cer30SYb6CPhD+xoxihl1nAkGJTRidwvGuCsePzbqtJdJSZD6vY6fHYXloEIMX59tszwTDmwbzX+kotYPuGu/naNTGQl1J4YOHxGVD3oYIHm4AbhK6Qa0dWjd90TiV3+AdDTyGaiezHMSwjJU9J8+TcRuapBLusO2R+uA9hsJdMhRmxeS6fRDRGG6ch+vKzOusT85DAIJZfpDzGG7Isnm+HPM42dgMMyXSRnnP5362OWiLa85b5Yv/RAITW9k8C91xmcaXQhzrSjZDTomlZ+uo14nrBvCMWOyUgzt0AhsvqL8dvOTygazr6xt8hux/hqtkaifHLjdpJHwqoJepXllsbOJr9t/r3WjBNMJc6zLsnadQ1j+Uo+ljMkYZIK3r3i4n6QC3KqFlyjeiEOMIXOJOCoMz3LNNr8JJ5thVuj
- lULf3pef
- aqQ0gmyk0ky4EhXpKPUuA5XvsS7XOoHZbepZbfc8Pj8tr0pfOE8Fvdi8WbhtehyMLZ4FO3WTRc76oFS9+QnQ/gTQezJ+dFwE3h3+L/Cq7DXcH7bPaRruSNDs4Kz+uU5UtO5y4NY7yCcDuTkmuubuGH7Da22BuywLowNZ9W+pDdjc91dJCsdpcBLTfr9xra4BanqR6o0yAhKeNVHMy6O9ObmdZOEBxwDr1lBfp0Ty/TOy9Qw9jQYPnDMN95HEs47kAznyDiCrF+XKZI+bK2lhZViM/TiipdX4ddlfzPKCilk8DnG/SV7a7het0Vb5FX+DK8yjXZZD9f1TIGzZGI3VwQJ3lh4cmWiwLOLeIcFKHl6X4WEVpV3JSkoIwTBhlsX/naRG092eNnWC1a4Saw5793XA7Xg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784572264-251962
+X-HE-Meta: U2FsdGVkX18kU1UremlsJCu4qAvOEz0L7hg+PCNr9BDzWviRF2jzxS56yUTMFHUiRRETiY1425z4rtBvHtUGFu+JVIqT1M5iHrdOoVH2dErREkn9mkBpq2j7AZ2irMhkxbY0rKNttG3fKf0NIPIzg8vMC7TKwiVrQmmUaGXsYaFeDnSCFD9ROw7lhjAJ1WrjYsmaRVMHosCWsSCdKa2cwHO88IOUKHKNFzjgU6JUigDycZYRDNRX5mYJOK4BuTlKnjUSVLABLfuxkXIae1FjlxkmgZY2K7OLtXl+JlLnf9GqdSA9sTnMw4P82AWDxjF49gOJcGKJl2YLWpyZR7+0ICvz74fCkQ66nyofLtSGauYfmRAfa/EQr8JDsGGoVtjiL5LkeDn3kU8UZ86hM7wj/06NzFk+8KWtRajtf6d5V5knhFze4+v2Q9RbOOPVNT1Cm42NHb2bY5iyETP/WmYOTDDRbqK5AAEwV3GUS8EooEFAm/ozaZnDBc4AIlPLiH5zD1P5SvSUYkjL8IE2EhZbMXOXghV0YlSPmAC345abRTTOaEzDxunu2gcRJq8lGbQ2vfUmdT7ofGs6n1rovkhX+iUc5pvMONVBhQWCAE0/8gknwyiSV2rq5Xt8jxjrFFWqtt1TSV1kDS3K0MeLyV0sCAC4wrq3iLLcGnAfYzkC45iniB+xWhsBdvqN4qXAjG9OlLHeYTSRv6HNhOUcNZWZUHxuG00odt7brxdSrXDmgBQvYcFx46PEnYDyoLuDmbBUPtAsKiEjRQ+TlCziTGWY5l01Blb4j5pwROAChLrGuAuXOdpefjfRcoGh+1CfsOLNrsezjaewd3WaDofPu1VIup9MMw0bjka+ob9hYDtdgtuJ74oHqepdotO61Ak9vMf853kOet4jwJPiW6VeDp0mooShXVDRolbhfD2JTD6iOeRVQq5fpxYt0rQK2ysKohh5SzenZ0CX60ISu8ONX2A
+ 2Pn8QIRl
+ ibW15Dt6MvJR2qbcCPyZoj0HW+gIm790Xlq/0Jf7CDrcpqEZp3qE6O0KcChfmQdaUF0eC1BcLIcblZJBVGc3C5ZyTCg4f0NDqk2DP0kCq9XlziYloVRfjrWtx1MIxY69p+LUJjIdI3keQFCne/dLbQn1nh6kVc2edGT8obk82ZKNM8aJYuN/QOoJ2f4yu2DOUVAOWaOyAe5wQ35A8yAY87zouNaiQ2Ufa540aNModrH4joUnBH+qwUeclKEDkHHDgVla276/EOG3vZztkeFyADPH1ur4Hf2GDXFqpZ3g2dbHERr5ZhOIXwfU0nhRd09BRX/4d6/XYdp4iQIjSPjOn7peh0bjtYmTePCJBoriSPCuwzyDsKClohm+rAcqmTIxlezZ04tTYRI6LcxFDgZZ0/zTkCWMBCGjArmxQC5zsyMEcUXjBsAzyquaB/cQUZS8ZxBglndNCNUCijUV51BGD1ok19Twfo/DlJxpdEsO8A7FC7+03fy56VgvPMx+/2tjXkJXFlav3MyDYE/2YXdlEVLT+TTCtX8+tKRHiqduvAxXqzfA6Wybpr04KQvBg8ZxLphfm8DQ7jxks40KU6fYAFFOHLoRM8Md4xYK3ppDWHpFt+bX8lm0jjoVEvEkKqrLu1j7BNnlL0eb6K1VeuWzybZFBaYFLn7WTyLwe9YfiRUGkop3JsG9rJ+5hPNu+RIt30bzkm8KYWLhC5tNjb4qQf9Dz8o19BwdelxxEusvUZ3xgQLbCtrZoafE/yxio2+QshIv3HH7FDYQmdkEWWgYnimAe76jDf3zOOSvQ3GU5ohE+VaD1IbLTYtoMt6v4/AyTxq7G5V2kJYp59JXw2L6Gri7WADhCHCTad90W7vNI/4kW9skGlAts4gQ/e4GK+2s3HxILYJhB/2HPq3fa7zg0hAx5GZz1vAD1qbRjAGMHnrrXtBJOXUMc4G3WNRsssdwUKjfRzFZ/feT4jf2wuTqCQO4FUZx6
+ IA/U+jpN
+ 3uKAbl/XQNspUsxkMksW1tQtt8XJxjMpDpxaGsMKwNxkN46o8mTkDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,50 +131,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 06:52:02PM +0100, Matthew Wilcox wrote:
-> 
-> > ... With the ulterior motive that I want to add a new parameter to it
-> > that actually _is_ mm-internal. Namely, alloc_flags, so I can add
-> > ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration of
-> > [0]. So basically this is
-> > about trying to extend the allocator without creating a GFP flag.
-> 
-> Yeah.  I'm not sold on the whole alloc_flags thing, but I'm too busy to
-> sit down and think it through properly to get involved in a proper
-> argument about how it should work.
-> 
-> My entirely unresearched and ill-considered opinion is that the __GFP
-> flags should _be_ the ALLOC flags.  We shoudn't be translating GFP flags
-> into ALLOC flags that are what the allocator actually uses, the
-> translation should be done at compile time.  So if GFP_KERNEL and
-> GFP_ATOMIC need to be composed of different flags with different
-> semantics, then we should do that, not invent a different set of flags
-> that special people can use for special purposes.
-> 
 
-alloc_flags is putting me between a rock and a hard place.
 
-I figured out a clean isolation mechanism with zonelists (new rfc is
-posting today, i'm doing one last proofread), but it required me to
-extend some of the mm/ internal interfaces with a zonelist selector.
+Sent using Zoho Mail
 
-Since Brendan's base work made it in mm-new, i decided to replace
-the zonelist selector with ALLOC_ZONELIST_PRIVATE as the selector
-to avoid *yet more* arguments.
 
-I'll be posting with ALLOC_ZONELIST_PRIVATE on top of mm-new, but
-the churn is getting painful.
+From: David Hildenbrand (Arm) <david@kernel.org>
+To: "Aditya Sharma"<adi.sharma@zohomail.in>, "Andrew Morton"<akpm@linux-foundation.org>, "Lorenzo Stoakes"<ljs@kernel.org>, "Liam R . Howlett"<liam@infradead.org>, "Vlastimil Babka"<vbabka@kernel.org>, "Mike Rapoport"<rppt@kernel.org>, "Suren Baghdasaryan"<surenb@google.com>, "Michal Hocko"<mhocko@suse.com>
+Cc: "David Rientjes"<rientjes@google.com>, "Shakeel Butt"<shakeel.butt@linux.dev>, "Jonathan Corbet"<corbet@lwn.net>, "Shuah Khan"<skhan@linuxfoundation.org>, "Steven Rostedt"<rostedt@goodmis.org>, "Masami Hiramatsu"<mhiramat@kernel.org>, "Mathieu Desnoyers"<mathieu.desnoyers@efficios.com>, "Kees Cook"<kees@kernel.org>, "Ingo Molnar"<mingo@redhat.com>, "Peter Zijlstra"<peterz@infradead.org>, "Juri Lelli"<juri.lelli@redhat.com>, "Vincent Guittot"<vincent.guittot@linaro.org>, "Dietmar Eggemann"<dietmar.eggemann@arm.com>, "Ben Segall"<bsegall@google.com>, "Mel Gorman"<mgorman@suse.de>, "Valentin Schneider"<vschneid@redhat.com>, "K Prateek Nayak"<kprateek.nayak@amd.com>, <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <imbrenda@linux.ibm.com>
+Date: Mon, 20 Jul 2026 13:43:34 +0530
+Subject: Re: [RFC PATCH 0/7] mm: defer address-space teardown of large exiting processes to a kthread
 
-It really seems like we just want an mm/ internal interface that
-exposes struct alloc_context for specific *mm/* callers
-(see: compaction_context, migration_context, etc), and interfaces
-that keep this nonsense transparent for everyone else.
 
-Then if you want access to alloc_context interface, you need to get
-export approval for that component (similar to EXPORT_FOR_MODULES).
+ > QEMU has an rather short implementation for async teardown using
+ > clone(CLONE_VM), which is IIRC essentially the result of Claudios previous
+ > kernel work you note below.
+ > 
+ > So nothing got merged because the problem was solvable in userspace.
 
-Just spitballing here, but the churn is killing me.
+Thanks for this. My related works paragraph is wrong on this then. It
+says that the s390 case was addressed with KVM specific async destruction,
+but what you point to is QEMU's shadow process. I will correct that in v2.
 
-~Gregory
+Yeah, that CLONE_VM trick works, so I would measure and compare them
+and get back.
+
+I plan to measure:
+
+- Memory return latency
+- N concurrent shadow teardowns on N cpus vs the reaper.
+
+One difference between CLONE_VM approach and CONFIG_ASYNC_MM_TEARDOWN
+is that the shadow process has to be created by the process that would
+be torn down itself. If that same behaviour is wanted on a workload
+where we dont own the source, CONFIG_ASYNC_MM_TEARDOWN enables it here
+as well. Also, in the QEMU case, it also means that the deferred teardown
+decision was made without knowing how large the process might become.
+CONFIG_ASYNC_MM_TEARDOWN adds a gate where for the exiting process,
+RSS is evaluated againsts the current backlog before queuing it for
+async teardown.
+
+I will drop a follow up with numbers
+
+Aditya
 
 
