@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 568D9C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:34:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3833AC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:34:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB4CF6B00C9; Mon, 20 Jul 2026 05:34:21 -0400 (EDT)
+	id 2B4A96B00CD; Mon, 20 Jul 2026 05:34:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B660B6B00CB; Mon, 20 Jul 2026 05:34:21 -0400 (EDT)
+	id 28C956B00CF; Mon, 20 Jul 2026 05:34:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A54C66B00CC; Mon, 20 Jul 2026 05:34:21 -0400 (EDT)
+	id 1CA576B00D0; Mon, 20 Jul 2026 05:34:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76B7F6B00C9
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:34:21 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0B4B807DE
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:34:20 +0000 (UTC)
-X-FDA: 85008644280.02.A4A3316
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D31616B00CD
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:34:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F4A91C0935
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:34:27 +0000 (UTC)
+X-FDA: 85008644574.21.260B9C2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1CC7F120005
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:34:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrEyjAsV;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8857E20006
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:34:25 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KL9HwLcI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784540059;
-	b=SbVFL0NVPbfY7HJgFSPd9IduYAzKQBq7B9LOSrXizwsQ53LmVcPhT/WOIwxVB26x/1N1AR
-	DjRGox7bWjb43OmW7yaQV9D7wChKKFN7CKVatPt5uVR5UcbHiXXIiyZKHSl6DGsp/euITf
-	vNryIBmB6DYQ72xTRT2T/1zdVxvLwFE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XrEyjAsV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784540059;
+	s=arc-20220608; t=1784540065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Vi2Y6eFLaZZncWxhzA85l4SRnVsg67aEdWUPdvtHPg=;
-	b=LQS8uFsjEbWxe1apyfjHhbyFnsip4FN6eRLMtLMyIvqSEA8RByO4L/mkkPXJ7GZ3Gjydzd
-	tQRIZ/bTPczXR3xv0eB9kppM0ylhHIoyZsRzAdQ68b0vu5/SBTKfCBkpyNi0RiRYGvsWXn
-	wtkk3WcTYNArcB6uys9LoNmWmMyioSA=
+	bh=qiqkk6rXeNnoqsmRilhTR74TetGVo2qWnVY/kCrNM9Y=;
+	b=QhsHZ1fS6t+4q4GMFyhgaFviMhFGMdmG7TmpCnr9YH58TBvcg++650zbs1NauNxF82rsBv
+	3ewCJcDp2LT91NPUlEN08fl0h/5u6noFrVPQaHzakut88t9u+mxVOGTRudlWcjnzdy/sDa
+	1J3G/XBtKj8pHra6zBdUD0GrXTKvhyo=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KL9HwLcI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784540065;
+	b=xbuUQ5qQpjmf6nQi+AWxc9ps7utNEXBR3t5DUds4MvOwrcwXifGGwyT/XfqmNRcP0B0uz0
+	Q8OmYYSGWKBNWAJtMCV1MMCy3hc9cywp3jtV4alIJfW0Ts82gKjp0AMiG5B0yhlY30dPD7
+	8OwzgNL3ll1gI/zENbaAyNKimpQLoN8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7052541A2F;
-	Mon, 20 Jul 2026 09:34:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964FD1F000E9;
-	Mon, 20 Jul 2026 09:34:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E3BEA43B5A;
+	Mon, 20 Jul 2026 09:34:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CBC1F000E9;
+	Mon, 20 Jul 2026 09:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784540058;
-	bh=2Vi2Y6eFLaZZncWxhzA85l4SRnVsg67aEdWUPdvtHPg=;
+	s=k20260515; t=1784540064;
+	bh=qiqkk6rXeNnoqsmRilhTR74TetGVo2qWnVY/kCrNM9Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=XrEyjAsVS7VocJDQ+FLPK0E0rZI39Dwdh6rT79D3/z1ln1ia/tdKr77fL4myrxBLK
-	 QCQWUROnM69/sB3uDoCeGiQBeNiwcdluPoZxRIXSWGiR+0GOAZDFFmyUgf/FYyV3gf
-	 HvD5TqOH1bEg3Qa8MwMJAKZhS/4iodK/atJcoHnSbIkA/FHqudeoJ3//DpMSC0XnHr
-	 TBogyuFZsbFyB6yg211N9J1s6M1ZF30GQN69+dAoMEkSNKBkA5rRIMJaYX+0P0+fJY
-	 Dol6pOpfcns7rO1KOv7uiHGBe5kUL/8ve9TMFRXRVSaFodFHkbn6V6QbsppKnvs5ZU
-	 K6NXSdswly/Dg==
+	b=KL9HwLcIv8tVa5sPFjWGyTsjHza2tuUE3dpiQXmXF5Y6K55NFaTwY2sSDcqnTzbHQ
+	 bKOWNkU6CGhFzONqd6QNHEDM/4UV3x4tGWZIdmRW/IiAisXLy+YmUFGneBqrGlBIQP
+	 DexRGWtMLkDa6ubxnhaqqCMTZhF6hDTUNhrAMw/pRCdjG/yWhcxEzlL8VvtKQQitsy
+	 vTV5a1/cMQfqh0OuDM6p97pxEH0uTReOmoDIAuO7ALGRCY0XXiJ6ndUJgfNuqWUZ35
+	 1pItIQDNMSBsfh94YEPOxnBIlg83a8DIUQrUazIaOEFrh2OAO+wxn9wn+Sh0ZN1ngA
+	 KA0nHZRk3vAHg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 20 Jul 2026 11:33:29 +0200
-Subject: [PATCH 06/21] binfmt_misc: split out build_interp_argv()
+Date: Mon, 20 Jul 2026 11:33:31 +0200
+Subject: [PATCH 08/21] exec: add AT_FLAGS_TRANSPARENT_INTERP
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-work-bpf-binfmt_misc-ptinterp-v1-6-ddb76c9a508e@kernel.org>
+Message-Id: <20260720-work-bpf-binfmt_misc-ptinterp-v1-8-ddb76c9a508e@kernel.org>
 References: <20260720-work-bpf-binfmt_misc-ptinterp-v1-0-ddb76c9a508e@kernel.org>
 In-Reply-To: <20260720-work-bpf-binfmt_misc-ptinterp-v1-0-ddb76c9a508e@kernel.org>
 To: Farid Zakaria <farid.m.zakaria@gmail.com>, 
@@ -82,22 +82,22 @@ Cc: Daniel Borkmann <daniel@iogearbox.net>,
  jannh@google.com, mail@johnericson.me, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3720; i=brauner@kernel.org;
- h=from:subject:message-id; bh=S1I+8XOcJimoOZpkS+sQ4beHcupitoNVrqmvMwX3N3g=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTFvm7SDFilVPxMX2L7s6q2imjtE3NOdu7jMjk6dyIXq
- 36+qqxVRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQaahn+uweJ89yx/B2WenzB
- +6tnN3+33VscXOLQM3npGlbhHO+pDQz/E7p5tp5b1nuP8fumJ4t9Sh9/1bkc6+mx/1vc0qXxK85
- nsAAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4399; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=HTd4FlQ/ImzVQFbVjYVnYvCT5MQJdjtKW6kGkWqTDs0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTFvm4KV5BpNiyZcrzlW2+61XqH7AVL+Zyn8s6XebLt/
+ 50pcnF+HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZGMjI8Ou737uDJs6/tl9s
+ 0TZMrdH/fPZbgfW8hPl3zdj0V703MWH4H/Tn5s19J6UnMRRbySnOeTyPdYZSgE+Y0hr9DI+j3kV
+ L2QA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 1CC7F120005
+X-Rspamd-Queue-Id: 8857E20006
+X-Stat-Signature: ha8cdmpiyaagtfm6xje6d5eixmyptqtp
 X-Rspam-User: 
-X-Stat-Signature: wggud8tpex5d966b5kzqi3iy16855mh1
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784540058-527155
-X-HE-Meta: U2FsdGVkX19B+k87dZKmgP3H0Pk/o9+6IYo93zdHMigV2iGuVsu31SmJOtCvKar5hBwmc8sl0h1ub0L1u0FgdOTiVcm6gUm2ogsWdFqq8ICSIC/tRYbTDnIjvprQuCjeye196GcpdwOkpNBcTSTF4LQhleKKhXJ40kdO+RkeCmItvNGj65oquqle+WaVzJOFDlc4rg3i8ihQcksmz5aytyKD+oSEa9FfEj9TK9/HwJf4qDbE8CML+KLBSYg9KhRcFAakWGC1gPPK5Phdzvms/FbIiiwh/vK2ix1/rUNzxkEaXbjx6NX2rYYNRYVhABLdhQ32jTOe6HMBCB8O9p3jiBBk0GoeeEJsM+BWAk7ECq73bgimpIBDB03zHC7KF12u7L+R0ZKMuosLnKULj9IK3l3xa3YRUZWrNlSmq62Dmd7cjBqljZAMaM1o+2pebPjS/NHhCqXWzGxGcu1Uy1S5slEapiEl3nX4RfvpERhPn7PpWtjH+hjj58FfL/EQmAD7vEbM0VWRmolywQt4AZvExC+8CmBdoenHMiylGQOCQ+PJuS4/q5sDQEFXQQwAH2aXi8+JcQ+VED6TNKH6TfXXITljPmUf7XDf/Lp/LUMGvv8i1Rb2Da916BkK2XUgFPJIZeML6ClX9GPTG64dmFBmOq9ffrU3JBcC/WO2s2+kIhrnfr3jk+W/nBTxdoGdpxtFmu+ik7OQW73y2RqId2p3uNm3Istv89Xog4rP4sIgQIGegwB6Vxr13Sq91tk6ybWiK0C6qfyPyZ+AvDWVtVXB3eClDQfr2uXS48vroI/gnibYmvNQ1qcSNeF4T622jVt52kznSzX52tOaBLT2O2zVUOZwkCfjG4SgpqnnD3byg2kZaqEo4eh1sobmEUtX/9scGFJGyg/szjXx9fngdgsZaN9/EWE+cFcIwexqjS3Zl5pODPmbYH3qmDEvm1P6pvAoBrbVTZRrDUxOybND5qO
- y0nWS22I
- H+5wh4gSCTnM0/A/c38fOmnq7cuPHDj5yR0KrZu6VflvQCzqTODKGJllLQQ4ZE+E8V2/zGVa2NMekALOyyse4BbGp39RstesEMciAglxP+tYM4ApclVgF9B5QhK6Y4V0VtyTqGOEYQtofgY033ii77yDLsl5XvRbNTCp0SDH5E7XkNW522MmBuHo1+cClk91mOu80wGG9R2bcsbp4E2j9Slsn3SqOeMgFH6A7D/zdEf88S3RwV+xec/Ty+l2ZKPCdGeuq7NBGU1fhhVAWP4nBe/unMn9yj++MZB6g6We2oAFGj3amuadaKkM6Fk6h4aj1BNnLLvi/rFDSweulMOMujBi0SG4QSo6F/2KdDLxsHhf3UbY1HdOBTJ3T9Q==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1784540065-734383
+X-HE-Meta: U2FsdGVkX1/jIBrBk0AfnBue6tvtwlo1RNXJOhba2Ua9k0bAzNlzmp9PCHTPYLA0xbVDQKU7ptfC58YQ7YQ7owB1yLMCZATg63/9wTpEtCWjvd1XuTJQbx4nrMA9Hn4rwbsgs3KEuKezKfXfNFc/Up0bbJsux3M4i019ykO7/EwBnPKoAVS046NzJhd7Hs1jCWhDPCPvSvq/OFb3ExwC5Q6zURpECcF2I/5CLraoYhy1zXjqdb/fGWTK99ffbPI6bvBNifFfQgeeZEC1RDHh5TsZx3373s4Ma8UKIaE5AWIkkw1zQxtA2WytVvNij5HgSg12JMlj1bs3JdlPElyrx1Shp6xSDkH6H81m/W/QfRxmJqTkdM4dXur7+0UNWnYkdu0SvjSBQpRP69v8urbMJjYBF+xzSgXFv90d+YKbM6u84WXSEBDXl9eCstyM5C6H/p4xD2NPkauML8DqoZEuoHhk6W+Hq0K0lsyM5jm0o78d5PD/0DqCGweNApTtD0DpMC/Zzi3bwdar8GU64KUbBA9F0ZV80IUnYLC3onDestTL5z93ofxWlMNCD4g8F64j9IOlV/YX0Lumtrje/1mHFbN3+M6UfYcGngqsWAo1CKt96u4GYYkcsMAtb32ZAS9UkoL+uGxaRcAxSXEXMXIZXfTGyghIlV27Cy4KHGFAgmBQStcb13jUh/eU18FxTjD+BfxFjM3vTbnfOlW3AD9534hI4bVP+WhZ48qEpTeKT63Y/FJPJe/ZI0Zf5tmClq9G6pGyrbVIdWGq/paAb4Td+qzATB8JFx4Ga6x+/lsqcSlxYoxaCq4UgknW856NU0jPjZ9YaOKpKU6FxbusXlwKpp/rHooti0CWjmdN4uKSJCwRjrPfDVHYrp78LblaNZGRGVh6JteLYmfH02UHLnxrcspVlu2VlsC2P1+n+xE/yd/ripks0tXcUREaQMUH+orO9vlkACvg3pq84VdVh0a
+ ad8CXjT7
+ uehFnyzbr6yWbo6wuuFNlImwT3ubo9mxTgu8e2w4u1UHGn1g/+w5LoS4Gq1EiKXQ/wfbaNCsEN4ZW27D5weR58wRCxmy5zjbGLTqYrcUe2KO0Gqp2/Aux4MskgcnHrT4/I5HofSShPozVSkJO+4nDBgGD8aaunDLVtGGSG7lA2vKp/3pVxbFcJjDh5InE0tHsOt8WRKf0tHHksoGbrGQ+tfXgv4EPEm3xBkHg8QpuFTGL7B3SUN7858JJkBobyJ8lnvz8sLUcM58gG0Mz7nbalhP4dOgqkFCsJMK5Ga006b1BKx81qd6xapWAfgEoMtLqNAGy2XTQm0lhAb6iwYmuMJ2u7lIQjvE67GZdBdODB//Oigqx8uzN24emiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,125 +105,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Building the interpreter's argument vector is the bulk of
-load_misc_binary() and the one part of it that is specific to the
-classic dispatch. Move it into its own helper so what remains reads as
-what it is: pick a handler, pick an interpreter, build the invocation,
-open it.
+A transparent binfmt_misc dispatch hands the binary to the interpreter
+through AT_EXECFD and leaves the argument vector exactly as the caller
+built it. The loader on the receiving end has to know which contract it
+got.
 
-No functional change.
+On the classic 'O'/'C' entries the binary's path is spliced into the
+argument vector and the loader consumes arguments. In transparent mode
+nothing was spliced and argv belongs entirely to the program. This
+cannot be inferred from AT_EXECFD alone. Raise a new AT_FLAGS bit
+following the AT_FLAGS_PRESERVE_ARGV0 precedent added for qemu-user in
+commit 2347961b11d4 ("binfmt_misc: pass binfmt_misc flags to the
+interpreter").
+
+The bit also announces that mm->exe_file names the binary rather than
+the interpreter (added in the next commit). A loader that sees the bit
+may finish the identity polish by fixing up AT_PHDR/AT_ENTRY/AT_BASE in
+saved_auxv and fix the code/data markers via one uncapped PR_SET_MM_MAP
+once it has mapped the binary. I've got glibc patches for this as well
+but it's useful for any loader.
+
+BINPRM_FLAGS_TRANSPARENT_INTERP carries the mode from binfmt_misc to
+the ELF loaders. Both create_elf_tables() variants translate it into
+the aux vector bit. Nothing sets the bprm flag yet.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 84 ++++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 54 insertions(+), 30 deletions(-)
+ fs/binfmt_elf.c              | 5 ++++-
+ fs/binfmt_elf_fdpic.c        | 5 ++++-
+ include/linux/binfmts.h      | 4 ++++
+ include/uapi/linux/binfmts.h | 7 +++++++
+ 4 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 63c10066e3a6..f0ccc5d000f6 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -382,40 +382,23 @@ static struct file *entry_open_interpreter(const struct binfmt_misc_entry *e,
- 	return no_free_ptr(interp_file);
- }
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 16a56b6b3f6c..e44230242f3a 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -254,7 +254,10 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
+ 	NEW_AUX_ENT(AT_PHENT, sizeof(struct elf_phdr));
+ 	NEW_AUX_ENT(AT_PHNUM, exec->e_phnum);
+ 	NEW_AUX_ENT(AT_BASE, interp_load_addr);
+-	if (bprm->interp_flags & BINPRM_FLAGS_PRESERVE_ARGV0)
++	/* Transparency preserves the whole argv, argv[0] included. */
++	if (bprm->interp_flags & BINPRM_FLAGS_TRANSPARENT_INTERP)
++		flags |= AT_FLAGS_TRANSPARENT_INTERP;
++	else if (bprm->interp_flags & BINPRM_FLAGS_PRESERVE_ARGV0)
+ 		flags |= AT_FLAGS_PRESERVE_ARGV0;
+ 	NEW_AUX_ENT(AT_FLAGS, flags);
+ 	NEW_AUX_ENT(AT_ENTRY, e_entry);
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index 7e3108489c83..3306d21ab738 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -645,7 +645,10 @@ static int create_elf_fdpic_tables(struct linux_binprm *bprm,
+ 	NEW_AUX_ENT(AT_PHENT,	sizeof(struct elf_phdr));
+ 	NEW_AUX_ENT(AT_PHNUM,	exec_params->hdr.e_phnum);
+ 	NEW_AUX_ENT(AT_BASE,	interp_params->elfhdr_addr);
+-	if (bprm->interp_flags & BINPRM_FLAGS_PRESERVE_ARGV0)
++	/* Transparency preserves the whole argv, argv[0] included. */
++	if (bprm->interp_flags & BINPRM_FLAGS_TRANSPARENT_INTERP)
++		flags |= AT_FLAGS_TRANSPARENT_INTERP;
++	else if (bprm->interp_flags & BINPRM_FLAGS_PRESERVE_ARGV0)
+ 		flags |= AT_FLAGS_PRESERVE_ARGV0;
+ 	NEW_AUX_ENT(AT_FLAGS,	flags);
+ 	NEW_AUX_ENT(AT_ENTRY,	exec_params->entry_addr);
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index 03e1794b5cbb..d4f64d143d1a 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -93,6 +93,10 @@ struct linux_binprm {
+ #define BINPRM_FLAGS_PRESERVE_ARGV0_BIT 3
+ #define BINPRM_FLAGS_PRESERVE_ARGV0 (1 << BINPRM_FLAGS_PRESERVE_ARGV0_BIT)
  
--/*
-- * the loader itself
-+/**
-+ * build_interp_argv - splice the interpreter invocation into the argv
-+ * @bprm: binary that is being executed
-+ * @interpreter: the interpreter selected for this exec
-+ * @flags: invocation flags in effect for this exec
-+ *
-+ * The interpreter becomes argv[0] and the binary its last argument, with an
-+ * optional staged argument in between. The caller's argv[0] is dropped
-+ * unless 'P' keeps it.
-+ *
-+ * Return: 0 on success, a negative error code on failure
-  */
--static int load_misc_binary(struct linux_binprm *bprm)
-+static int build_interp_argv(struct linux_binprm *bprm, const char *interpreter,
-+			     unsigned long flags)
- {
--	struct binfmt_misc_entry *fmt __free(put_binfmt_handler) = NULL;
--	const char *interpreter;
--	struct file *interp_file;
--	struct binfmt_misc *misc;
--	unsigned long flags;
- 	int retval;
- 
--	misc = current_binfmt_misc();
--	if (!READ_ONCE(misc->enabled))
--		return -ENOEXEC;
--
--	fmt = get_binfmt_handler(misc, bprm);
--	if (!fmt)
--		return -ENOEXEC;
--
--	/* Need to be able to load the file after exec */
--	if (bprm->interp_flags & BINPRM_FLAGS_PATH_INACCESSIBLE)
--		return -ENOENT;
--
--	interpreter = entry_select_interpreter(fmt, bprm);
--	if (IS_ERR(interpreter))
--		return PTR_ERR(interpreter);
--
--	flags = entry_invocation_flags(fmt, bprm);
--	if (flags & MISC_FMT_CREDENTIALS)
--		bprm->execfd_creds = 1;
--	if (flags & MISC_FMT_OPEN_BINARY)
--		bprm->have_execfd = 1;
--
- 	/* The entry's own choice - not one accumulated from an earlier level. */
- 	if (flags & MISC_FMT_PRESERVE_ARGV0) {
- 		bprm->interp_flags |= BINPRM_FLAGS_PRESERVE_ARGV0;
-@@ -451,6 +434,47 @@ static int load_misc_binary(struct linux_binprm *bprm)
- 		return retval;
- 	bprm->argc++;
- 
-+	return 0;
-+}
++/* binfmt_misc dispatched to the interpreter transparently */
++#define BINPRM_FLAGS_TRANSPARENT_INTERP_BIT 4
++#define BINPRM_FLAGS_TRANSPARENT_INTERP (1 << BINPRM_FLAGS_TRANSPARENT_INTERP_BIT)
 +
+ /*
+  * This structure defines the functions that are used to load the binary formats that
+  * linux accepts.
+diff --git a/include/uapi/linux/binfmts.h b/include/uapi/linux/binfmts.h
+index c6f9450efc12..aafc07d78b80 100644
+--- a/include/uapi/linux/binfmts.h
++++ b/include/uapi/linux/binfmts.h
+@@ -22,4 +22,11 @@ struct pt_regs;
+ #define AT_FLAGS_PRESERVE_ARGV0_BIT 0
+ #define AT_FLAGS_PRESERVE_ARGV0 (1 << AT_FLAGS_PRESERVE_ARGV0_BIT)
+ 
 +/*
-+ * the loader itself
++ * The interpreter runs transparently: the argument vector and the exe
++ * link belong to the binary passed in AT_EXECFD.
 + */
-+static int load_misc_binary(struct linux_binprm *bprm)
-+{
-+	struct binfmt_misc_entry *fmt __free(put_binfmt_handler) = NULL;
-+	const char *interpreter;
-+	struct file *interp_file;
-+	struct binfmt_misc *misc;
-+	unsigned long flags;
-+	int retval;
++#define AT_FLAGS_TRANSPARENT_INTERP_BIT 1
++#define AT_FLAGS_TRANSPARENT_INTERP (1 << AT_FLAGS_TRANSPARENT_INTERP_BIT)
 +
-+	misc = current_binfmt_misc();
-+	if (!READ_ONCE(misc->enabled))
-+		return -ENOEXEC;
-+
-+	fmt = get_binfmt_handler(misc, bprm);
-+	if (!fmt)
-+		return -ENOEXEC;
-+
-+	/* Need to be able to load the file after exec */
-+	if (bprm->interp_flags & BINPRM_FLAGS_PATH_INACCESSIBLE)
-+		return -ENOENT;
-+
-+	interpreter = entry_select_interpreter(fmt, bprm);
-+	if (IS_ERR(interpreter))
-+		return PTR_ERR(interpreter);
-+
-+	flags = entry_invocation_flags(fmt, bprm);
-+	if (flags & MISC_FMT_CREDENTIALS)
-+		bprm->execfd_creds = 1;
-+	if (flags & MISC_FMT_OPEN_BINARY)
-+		bprm->have_execfd = 1;
-+
-+	retval = build_interp_argv(bprm, interpreter, flags);
-+	if (retval)
-+		return retval;
-+
- 	/* Update interp in case binfmt_script needs it. */
- 	retval = bprm_change_interp(interpreter, bprm);
- 	if (retval < 0)
+ #endif /* _UAPI_LINUX_BINFMTS_H */
 
 -- 
 2.53.0
