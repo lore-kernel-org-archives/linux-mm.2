@@ -4,107 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 227B9C44529
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:24:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83E2C44529
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA55C6B0092; Mon, 20 Jul 2026 15:24:19 -0400 (EDT)
+	id 6C9076B008A; Mon, 20 Jul 2026 15:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7C2B6B0093; Mon, 20 Jul 2026 15:24:19 -0400 (EDT)
+	id 6A04F6B008C; Mon, 20 Jul 2026 15:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB98D6B0095; Mon, 20 Jul 2026 15:24:19 -0400 (EDT)
+	id 569756B0092; Mon, 20 Jul 2026 15:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B05446B0092
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:24:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 425901202B2
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:24:19 +0000 (UTC)
-X-FDA: 85010131038.06.76D8EF7
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 816BD20007
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:24:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cg+fxGp5;
-	spf=pass (imf03.hostedemail.com: domain of 34HVeagcKCJ8OQ9SL9KFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--pratmal.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=34HVeagcKCJ8OQ9SL9KFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--pratmal.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1647C6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:34:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D1458029D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:34:43 +0000 (UTC)
+X-FDA: 85010157246.08.55E9741
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9598A1C0010
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:34:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UjsPH1gv;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784575457;
+	s=arc-20220608; t=1784576081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tr+RxyXd4dPtXqg+ZD5qRc7k0ZVs7iv7vU/1cWUVXKw=;
-	b=HrFcBlvg8d1Oc80n8gPCidM6nCHgOz+rMTbA78dYhd+NUfoItr/fz43jn+r1HGRQvgNE0O
-	vPNOt742XlXL03MCgPAZjzNFYRjum13Gtc47hD/m+B1C+t6KCP0hDR6FexqCfW2SESte5X
-	Yva8F1cjnxpTcZ7ld/cFnrRM3WOTnWo=
+	bh=ZACuuDSyenseZGNg/vBzUwDZvK6auP3eLRTsBQnq+WQ=;
+	b=y+M/+GvAig0fxQ5EeySfTN+gDrjgKphPv8qiEReebojJONy7hk+t2hM1jv0pCgx1gBRFXE
+	9WZz7U+GYmtWB81gKYfM1Jc0Fo9Xi6TDP2DGW6Fj/0stWiT0mnnHNLALlwhL1WJ0Q/zlqZ
+	BNyILH03i5OARI15B0N/aCwGvTkdN9A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784575457;
-	b=xrp69E/2bdnQB7wSx2jBVoIipu9tLNRsgQLf6Ce/SL/BfqFEb4hvZD8IjfmDxc0DMJgeYX
-	xQrcOec01qFhoxYMCiVGqY7hzqlsMgkPLgaa/5JWtgGCkLRD3o6DuMJ16N1/wCand5XECN
-	sIbum6BzDu+bINz9dUxZuJ8MU02K1vY=
+	t=1784576081;
+	b=bJ1QBWl6YQRfQmM3sITNaqXu1dStXoubZ+VRsUewHv85Gv4cUq8A1f4iDXZaXk05UFJjbM
+	YqJ1FgRQBDFjN3ZmTXD1JIK9xEkhOmPU8KflGCYE20U9Icyl7YCUmQ5YOUC31iy2sOf8Jt
+	/FwGq9Wc8DzmqQP5Fwoauhuh2qlVwiE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cg+fxGp5;
-	spf=pass (imf03.hostedemail.com: domain of 34HVeagcKCJ8OQ9SL9KFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--pratmal.bounces.google.com designates 209.85.216.72 as permitted sender) smtp.mailfrom=34HVeagcKCJ8OQ9SL9KFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--pratmal.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e2f61c09dso6812553a91.2
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:24:17 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UjsPH1gv;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8eefd4a8057so64820776d6.0
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:34:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784575456; x=1785180256; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tr+RxyXd4dPtXqg+ZD5qRc7k0ZVs7iv7vU/1cWUVXKw=;
-        b=cg+fxGp5JRb/JLnG9O4maLZ+tXGdDO+JOS77iUx9QD7o6MdVRmMywnvQJvG1zYNbtY
-         5fbn57tqgMKIP7ICJw5KfaOFe9B25a3gtZwnBDUFTHHLC+LnSslLeHSLP9rkakAbxOcg
-         HQmuxOI2lpWRaKy6s0GoloEEYfaAbjRaEL/j92wlHTku31Y/FfLNOWnmINGo8gDSrraz
-         FsYDtB7Et2KjXDESc947u926qHwBaxUpwvtwSaM1rXjlgVCaTrHsaj1+gWhGG12jS7u/
-         kSuEEL1fMrvvL23FZJtusGAul+lp0gNZRGfQ7kFooVbzi0eNj2Mlw3/l0XrEz7W7X6Ys
-         zERQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784575456; x=1785180256;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=gourry.net; s=google; t=1784576081; x=1785180881; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tr+RxyXd4dPtXqg+ZD5qRc7k0ZVs7iv7vU/1cWUVXKw=;
-        b=LsOSxcoipf/rcVwMi0EXf6GQkholPUaw/cZyr9BjJvukg8qmim4iLSXk3mMkRan26p
-         qzrJsv+j6HFmdQwtx3WrpSwwWyFM6RdcCmsbZUhYYLrvnQ6SFjEkyVlSzKC+bG72uZRW
-         Oxn+JNyrQ4K9oAToBWwf6yu6ecKX+8e4ed1Mma9RvXwqSgr6OJsZNpWh2Dusq7qCSove
-         xNxn+jLf2RAblgJT2P79NQGdM8x6Uc0qGn5qBh07sgM1aW9F24A+KUZKFzJFHS8AYKQg
-         MWgZLMn8UBUMtyW+0c6a3C013VCsaq5J1u6W449bJcUpYhDXC8zVrUXewhYJV701i6FM
-         UZIw==
-X-Forwarded-Encrypted: i=1; AHgh+RqFVh0Wrf5R4NnHzWroF8xo6NHmKX7JyNnD5hcvWUlcm0ZrO6DOi/tJKWrVcqCh65NnlYy/X+4GbA==@kvack.org
-X-Gm-Message-State: AOJu0Yx1bjaBrxbrq5ccjjSJxRBAHx4Qp9kTXDllxIZ2gVgrc1buZ/wN
-	NR0F/Tcm+vP+YhvnSP6D+3nrkwvUiFxFvuPfvchTB29T7/xTg4UKNPR3r22mMegisHdwfs93etM
-	U2gKGtZH3wQ==
-X-Received: from dlbqc12.prod.google.com ([2002:a05:7023:a8c:b0:13b:9778:570])
- (user=pratmal job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:c885:b0:380:83fc:4315
- with SMTP id 98e67ed59e1d1-38e4b538938mr16800918a91.21.1784575456165; Mon, 20
- Jul 2026 12:24:16 -0700 (PDT)
-Date: Mon, 20 Jul 2026 19:24:15 +0000
-In-Reply-To: <03f6d16c-0f1c-4123-abb4-81a73eecaff1@arm.com>
-Mime-Version: 1.0
-References: <03f6d16c-0f1c-4123-abb4-81a73eecaff1@arm.com>
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260720192415.4060431-1-pratmal@google.com>
-Subject: Re: [RFC PATCH] mm/page_reporting: Add page_reporting_delay sysctl
-From: pratmal@google.com
-To: Anshuman Khandual <anshuman.khandual@arm.com>, David Hildenbrand <david@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>
-Cc: Greg Thelen <gthelen@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        bh=ZACuuDSyenseZGNg/vBzUwDZvK6auP3eLRTsBQnq+WQ=;
+        b=UjsPH1gvZ9jryp/BS9gmCs19zLWFqp/N7PL1P1bQyB9QSViuHvmMlVqgyz6EJ4qmVr
+         dvvhlXHF4L6f6JwmWRKVbh2cgiDYTR0tHcAqb1bzGB1pw5z+TRHxSx8v2lyVTuBuSE1/
+         09CtE0td491r8dCyEcks9MDgtloCE8u7UPjpRAD7HEu00AgUN4Iv+Q0mH8U85eFf572X
+         T7JxZkI+cw/K7XgOa68FnLF4Q4Qckxxt15wevHA4ZasK50TmEPAB9q7aAcOXaiA/uS8l
+         IV1J89M7lyoOJMvEh65sxxZMCX4z+68CuQzlrmpsos0/JeGv8sxO1xmaOQcWvcinvsM1
+         8BAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784576081; x=1785180881;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZACuuDSyenseZGNg/vBzUwDZvK6auP3eLRTsBQnq+WQ=;
+        b=kZvrG4ccwtXDuQ/2vwf90bovV9dCYwDWdapnqmXVCtZ60KuDCMw7lrc82gRd0Y/lkH
+         5BI/XVZgTqbVB6jSqN+QgJvaCHZK3EedxtOZ7+n8zzruLiL2O3V2fIxWiov5YkqVVENW
+         pYxDquQ0ucQiMhozeQ/+DGdW6elv6w47rIpkWSa6kT9eZ0MIjOLoUGcuN7b092DRjL5S
+         x1ciXDiggl0MQg5uFJAxFfpJ6D1PGj1LwBSPBg0MYBjjXE5lglPNV5q4QijtEW7jqtD4
+         /r2TDiofaTdOsV5wPefk0ulcUT9ih3OD/QE0U9IpYacRqkGnXmW1lnUh+DAoGWSzHGUT
+         o8Ag==
+X-Gm-Message-State: AOJu0YyPJ8ENdF1MDIASKUPrQGpoQcUkmDX377LwHLXYJuxQRaRx9KN6
+	G7TOOj+pufjPhQSJaqiRYGgHaqxFWSF8wayUVmVvyp6IzipNs1/q+WD8jc67ZvygkooatX000Q2
+	EL8gb
+X-Gm-Gg: AfdE7ck7QMje7Ty9UWCfn7kctixjt6ofNh2k1H3R0sjyH7iOvg2kGwBUKanaRV1vsao
+	EETIbQAFcGb/gKj58NnnRSQDmenYDOnWtERxcu1rt9dn1EgAoMRSMXLcbLEEgDop+3Z7QEVyC8p
+	GzNkv71DSWZlHdxpqJYZ3Nn8VTrVF9RhDl2EfPFdedkVi3l3Z+Kb8z3/Swkt6PGZs3ayLQlPVuA
+	EZXrnf1vQbsYeoH3kk/axWZRCd3Wkk+p9VSAgLkM2RaHG4Fbzc5viBoxfBI4L688dNeGEsX9Ja2
+	e4u51hfteM82HLmmvWkvD+vtg4yJPd9OVr1sHk0E9a6W9QbW6ER4AKcgvn6RgTF8LTqLuH0ua2C
+	uBd8HczMkM+SY7DBEIiHJP0Mx06hQTghloUPiCFCs9b72NgnZO47l7Z1pl/HKEWScEl5Dat92ay
+	6g6HGEzzpMYz6oNqq3RyWo+SNys/fHKn8SXi4hh4eYoGdfgRL7mvkyX+x41iIFP+0=
+X-Received: by 2002:a05:620a:72d3:10b0:930:d7ba:7e5c with SMTP id af79cd13be357-930d7ba80a6mr431148485a.21.1784576080645;
+        Mon, 20 Jul 2026 12:34:40 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.34.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 12:34:40 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: Zhigang.Luo@amd.com,
+	arun.george@samsung.com,
+	balbirs@nvidia.com,
+	brendan.jackman@linux.dev,
+	yuzenghui@huawei.com,
+	apopple@nvidia.com,
+	alucerop@amd.com,
+	matthew.brost@intel.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	djbw@kernel.org,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	osandov@osandov.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	pbonzini@redhat.com,
+	osalvador@suse.de,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk,
+	longman@redhat.com,
+	ridong.chen@linux.dev,
+	tj@kernel.org,
+	mkoutny@suse.com,
+	sj@kernel.org,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v5 01/36] mm: refactor find_next_best_node to find_next_best_node_in
+Date: Mon, 20 Jul 2026 15:33:55 -0400
+Message-ID: <20260720193431.3841992-2-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 816BD20007
-X-Stat-Signature: ruay49wughskdyeyt3pb4szekuomkeek
+X-Rspamd-Queue-Id: 9598A1C0010
+X-Stat-Signature: uwwqmz3yzm6dpkkckd4jmyrb7m9s6dgo
 X-Rspam-User: 
-X-HE-Tag: 1784575457-853341
-X-HE-Meta: U2FsdGVkX1/CRDjQOWA0Z8A2YuWSOQcEhU+0jlmuIC8sTZlkdaKyeM1VG1ZOqjhJw/OwmfPJ9TagjoOWzGnT7AGKXAj1aSdfgi2Y6fUweTzxo4JOL1BjnTvyzGIywnC6dHf/pDYaIHQ5x2r7VR8WDjhumraNsUj/qzp/lb9RSkUeVRl0FMMuJRQhs5rUQg9mOm822zCIaLevv8rgaWs2wRcraqcEwqhUB8cOnQWfox1RgapeNOnFY2Q3WXWuM6TCfnnSAx+iT5pRrV1Q0NfM0+zG0QLM80p9LO2QXYvSWn2tbBhRKFCDexN900KwkY7U/uTqXvUuIVFsGWiNz5gi5aQ+t/nz2WX9Ht7ajCo/24uvjD3BiCo9isSFuMxofmmf+UuqlJHRN+ZYI9ihQ5V4UxU4DwFJxPHgp5pt/Nf7VGTl3mLG2m/f+a3ZQUH5Wh4ApauJK2wbNQqyx2Mdeei2XNHU3PgaqKNZ6lLoj6SG+4LPBEgoyxe8HJeFwvF1H0ZweYOKs4Ccu8+RdrdEixdUA9DI3yvAn5Pxpp8wAaYTimzd5WF2VCJhDRUqq0EeTHEcyp3biuEv+Fjg3OhNPTtXJdhk6sJEXsq44blu1Wjmcfa35yo31YcIXm2UCzJHq8HyyH21FE/DWyqW6IKul8Twb5WFnHdAt9+JnZ8Z14TYw/ZshuPc0h8I5qaeAtpdgCCN+jWeUW0dIRDBsTPvH2GEBgLZz142zQHR017DKSk8HuVAgkljN/lOIBiRN86jXwEc7wM1ULmAYRJBa4w8QxZ9I/VxD/b1SL5mPh+9TKQJSdYuRV0yCOzxebt4Vpea1I6vpi8hFeS3JqxW6x31/gXCSla7yslYnDTKph23bCa8krTXXPdqdUqz8i/OY0GjyZf6utSY1jI88pWWMcZ/sJSpIAEO9C4aB+jOdJcjdQhNBPHTQw6W6CiTXTWsIkn+sBDadoTJWRRhfC1sVrJthM1
- 4MCWhzQ9
- e7XeAKknHQW0bVkFXQgeTpMOTsZkbBXo3NvNTl6uePtOVzWbrFgtTHaTMZP/W/7UVxwK4t6FYzOBdBiH2zLSUU0/Vrd/ZEPrJ8z8EFJsPb9ZWiLwN1y445GGdBD0mVGwXgh/TCRTRYO+NOXLoP/pI0n8sXkRbG785WiP3cnMSSudFpFQUj0eRfW0xLz6Us2ScsWdMlQ2LgyCrs2yslWMteJcMfhR9lRb6LpsIx07bKa1ebkSLKU029va9m2d16O4gccTZmEKdX5KwT+mlUdyzjOZBxRkRhMlfJGb1Ayke1X9d+v3/PBiEorFwdIIi4dsfSjvaIHiuM9qpeEbA+nU2Lzsg6hd2s7hi571hb5q4HaeaqEYZxl02heuRr7qjt7V0wEgJADgeSFgeB7BWESDcs/M6ixM037haJPFvRUak4jCznFVyOcSLtt+l3/oAJ7CUonH783tgTQTc2hu3w06lBn7EF14LZ4cOx7SItVVtxXidlt5glkIuG/xvmEUywN4Kg4XEK7Qt+Vh7nosewHpEXSZg+0s/iQPRCSevJswizzgvw2WooZgPDYmSVAUqil+u1uzPtPP1MSAuGGVjsYfO9PGIBY/8XgVwaVfCl8QnP/q7cik7/QsigKNTb4Fw5xBqYGz4JAfv9ox+6SQ=
+X-HE-Tag: 1784576081-635079
+X-HE-Meta: U2FsdGVkX1+I2rNyaI0OzNFHXUTNKFmc995t8H27iHIlkTmpHS7XRy7Rqgia9JRX7FVx2DhxoKbv6/lbthtIcD8HGGsNVw3KrfPhPunAlheSgM8Wvjr0jbhpO01rasEEM0P73yesOvwDpVdblJzuM/FUmbeVRKlKo6r0nqZW80QfzKkJyyiKwZPmNCHvdTS0YVR1h4DBq7yBn7hdNzbfeTB7JRrnobnAbDuO91V7Dv769u9lR9Z2uYg/FyeWbMSgbjOXByyIfiZryH/EBORqbAlXKQNseNMyE7C2O8Um6QM/dJ2C2pwIWT3Lsr1n/ggmQTi8muCJwF2TQF9Es349m+kcvSInLH4VO6jO+DBlPKCl42TPvXUzdO6uNh75Xfd1yIkG8DSjxI1R0idOsp+bTnXdi3++DHZqnlGiWeepwg0W3n6zc7gZ6gXyhF/t45ZnF9G1XE/PRgAJYSodoqLnYFdCzltxEJEGEU//ni625R0t0bOxHPFDOlF8GliuOIoff16p0kzAxp9qreedK/9SMdvDeZYeDL5mug0Q5ld6SDmPCKD66sX1buZQV0gejRM9dzbTGiwehiRXvbp83y2pE1nAbaeR1yD/CR2R2mCaGXQ/El9vhXxCgLxEfCJdFHY4OrPHQzPllDRXzHasrylbalPRSwgwKbVhm77f4yH85cV0XRxZl/IMZjs3ZqQ/Es7bdG4VsDk0wc/yFasUcPn/PMZCKCHeKcDryOeps+6AxtoHE8lI489xm2lcwO3dCB6UF4QtnkFAqRRBDE0EuhX2nZG6tRM+7Oqk8Rw7GJSUL1PR+movjhcGvQUGAGyZAUhzMOqQ8ptDBGZf+bX4ZChDStvg+IhbDWfl7gr43XjS+ImEb+oU0OAGftNI56aIPFqb9usuC8apmPPLNLjGtSFMvTeUqNl2nxyo1aKU6yVK1XR33xo6lSMyQxu++qyn9GUNB1Vlo8lPRCfRJeE2/3G
+ KVUY7M2r
+ XXpl1UmJzmQlJh2uLEihIRppUwWr4fgqf4aaKaIKTVIxAMR0z9EE8JyOFR5jwtflwttMG2siidAZ0MusazgecnghkLd4cPybMJQVQtM/A0scbEuuVC27d0B1rTrW2hHYf0qeSltsDIDxI/+UzfEty1KW4FrtC+KKQLQ3nUPIiSGz2T1oFNbuO80hgY/Np+XBLrsCxM9hp/xiiq7gPC7uUAIyTtt3NdaYUXPfhd/lTA1ehQQ3cAYGLvyY8KyK4YnE43h/mkCBniLHHjxYyly965iXvBWORQBBJFN4l0ATMsxaE97h36mf0EoU/yGXLJcaDLibNMIoVOGkjEAQ4uJGCBUrxWcUQpQIZ9s3andtKrRjB2fdXat0mgRWUZzL2EoyEY1PYlxekl7YUSdhWiEPkLo3D+/b7VbGC/ol7QhqJDnOBcJA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,75 +192,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/16/26 02:41, Anshuman Khandual wrote:
-> On 15/07/26 6:29 PM, David Hildenbrand (Arm) wrote:
->> -#define PAGE_REPORTING_DELAY	(2 * HZ)
->> -static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
->> -
->> Why are you moving that?
-> 
-> +1
+find_next_best_node() picks the next-closest node for a fallback list
+from the full N_MEMORY set. Refactor it into find_next_best_node_in(),
+which takes an explicit candidates nodemask.
 
-I wanted the new definitions grouped together, and the sysctl handler has
-to sit below the enum so it can see PAGE_REPORTING_REQUESTED. But that
-only constrains where the handler goes, not the declaration. I'll leave
-pr_dev_info where it was.
+This enables building fallback lists with non-N_MEMORY candidates.
 
->> +static unsigned int page_reporting_delay = 2000;
->>
->> Maybe "2 * MSEC_PER_SEC;"
->>
->> Would we want to call that page_reporting_delay_ms to make it clearer what we
->> are dealing with?
-> 
-> +1
+No functional change: every caller still selects from N_MEMORY.
 
-Agreed on both. I'll rename the sysctl to page_reporting_delay_ms as well
-in v2.
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ mm/internal.h     |  6 ++++--
+ mm/memory-tiers.c |  7 ++++---
+ mm/page_alloc.c   | 13 ++++++++-----
+ 3 files changed, 16 insertions(+), 10 deletions(-)
 
->> +static int page_reporting_delay_sysctl(const struct ctl_table *table, int write,
->> +				       void *buffer, size_t *lenp, loff_t *ppos)
->>
->> We prefer two tabs here in MM land.
+diff --git a/mm/internal.h b/mm/internal.h
+index f26423de4ca28..96d78a7778e88 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1103,7 +1103,8 @@ extern int node_reclaim_mode;
+ 
+ extern unsigned long node_reclaim(struct pglist_data *pgdat,
+ 				  gfp_t gfp_mask, unsigned int order);
+-extern int find_next_best_node(int node, nodemask_t *used_node_mask);
++extern int find_next_best_node_in(int node, nodemask_t *used_node_mask,
++				  const nodemask_t *candidates);
+ #else
+ #define node_reclaim_mode 0
+ 
+@@ -1112,7 +1113,8 @@ static inline unsigned long node_reclaim(struct pglist_data *pgdat,
+ {
+ 	return 0;
+ }
+-static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
++static inline int find_next_best_node_in(int node, nodemask_t *used_node_mask,
++					 const nodemask_t *candidates)
+ {
+ 	return NUMA_NO_NODE;
+ }
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index 54851d8a195b0..25e121851b586 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -370,7 +370,7 @@ int next_demotion_node(int node, const nodemask_t *allowed_mask)
+ 	 * closest demotion target.
+ 	 */
+ 	nodes_complement(mask, *allowed_mask);
+-	return find_next_best_node(node, &mask);
++	return find_next_best_node_in(node, &mask, &node_states[N_MEMORY]);
+ }
+ 
+ static void disable_all_demotion_targets(void)
+@@ -450,7 +450,7 @@ static void establish_demotion_targets(void)
+ 		memtier = list_next_entry(memtier, list);
+ 		tier_nodes = get_memtier_nodemask(memtier);
+ 		/*
+-		 * find_next_best_node, use 'used' nodemask as a skip list.
++		 * find_next_best_node_in, use 'used' nodemask as a skip list.
+ 		 * Add all memory nodes except the selected memory tier
+ 		 * nodelist to skip list so that we find the best node from the
+ 		 * memtier nodelist.
+@@ -463,7 +463,8 @@ static void establish_demotion_targets(void)
+ 		 * in the preferred mask when allocating pages during demotion.
+ 		 */
+ 		do {
+-			target = find_next_best_node(node, &tier_nodes);
++			target = find_next_best_node_in(node, &tier_nodes,
++							&node_states[N_MEMORY]);
+ 			if (target == NUMA_NO_NODE)
+ 				break;
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f93a6bb9a872d..acf096f525f49 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5743,9 +5743,10 @@ static int numa_zonelist_order_handler(const struct ctl_table *table, int write,
+ static int node_load[MAX_NUMNODES];
+ 
+ /**
+- * find_next_best_node - find the next node that should appear in a given node's fallback list
++ * find_next_best_node_in - find the next node that should appear in a given node's fallback list
+  * @node: node whose fallback list we're appending
+  * @used_node_mask: nodemask_t of already used nodes
++ * @candidates: nodemask_t of nodes eligible for selection
+  *
+  * We use a number of factors to determine which is the next node that should
+  * appear on a given node's fallback list.  The node should not have appeared
+@@ -5757,7 +5758,8 @@ static int node_load[MAX_NUMNODES];
+  *
+  * Return: node id of the found node or %NUMA_NO_NODE if no node is found.
+  */
+-int find_next_best_node(int node, nodemask_t *used_node_mask)
++int find_next_best_node_in(int node, nodemask_t *used_node_mask,
++			   const nodemask_t *candidates)
+ {
+ 	int n, val;
+ 	int min_val = INT_MAX;
+@@ -5767,12 +5769,12 @@ int find_next_best_node(int node, nodemask_t *used_node_mask)
+ 	 * Use the local node if we haven't already, but for memoryless local
+ 	 * node, we should skip it and fall back to other nodes.
+ 	 */
+-	if (!node_isset(node, *used_node_mask) && node_state(node, N_MEMORY)) {
++	if (!node_isset(node, *used_node_mask) && node_isset(node, *candidates)) {
+ 		node_set(node, *used_node_mask);
+ 		return node;
+ 	}
+ 
+-	for_each_node_state(n, N_MEMORY) {
++	for_each_node_mask(n, *candidates) {
+ 
+ 		/* Don't want a node to appear more than once */
+ 		if (node_isset(n, *used_node_mask))
+@@ -5857,7 +5859,8 @@ static void build_zonelists(pg_data_t *pgdat)
+ 	prev_node = local_node;
+ 
+ 	memset(node_order, 0, sizeof(node_order));
+-	while ((node = find_next_best_node(local_node, &used_mask)) >= 0) {
++	while ((node = find_next_best_node_in(local_node, &used_mask,
++					      &node_states[N_MEMORY])) >= 0) {
+ 		/*
+ 		 * We don't want to pressure a particular node.
+ 		 * So adding penalty to the first node in same
+-- 
+2.53.0-Meta
 
-Thanks. Will fix this.
-
->> +	ret = proc_dointvec(table, write, buffer, lenp, ppos);
->> +	if (ret < 0 || !write)
->> +		return ret;
->>
->> Would we want to cap it at reasonable values?
-> 
-> Possibly with a macro PAGE_REPORTING_DELAY_MS_MAX or similar.
-
-Yes. Will fix this in v2.
-
-Will use  proc_douintvec_minmax() with a floor and a ceiling (using a 
-new PAGE_REPORTING_DELAY_MS_MAX macro).
-
->> +	rcu_read_lock();
->> +	prdev = rcu_dereference(pr_dev_info);
->> +	if (prdev && atomic_read(&prdev->state) == PAGE_REPORTING_REQUESTED)
->> +		mod_delayed_work(...);
->> +	rcu_read_unlock();
->>
->> Is that really required? Seems unnecessary given that we expect something in the
->> range of a couple of seconds max.
-> 
-> Agreed.
-
-Our use case is that the delay isn't static. A daemon in the guest watches
-for host memory pressure and drops the delay to expedite reporting, then
-raises it again once the pressure clears. The delay can be tens of seconds
-when we're absorbing churn, so waiting out the current window defeats the
-purpose of the dynamic adjustment. Apologies, I should have clarified this 
-in the original commit message.
-
-I'm happy to drop it or decouple this triggering behavior from the tuning
-behavior. We could probably create a separate sysctl to manually trigger 
-the reporting instead.
-
-Thanks to both of you for the review.
-
-Pratyush Mallick. 
 
