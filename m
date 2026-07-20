@@ -4,106 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47174C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:46:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49BFFC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 13:04:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52FAD6B00AF; Mon, 20 Jul 2026 08:46:19 -0400 (EDT)
+	id F13436B0093; Mon, 20 Jul 2026 09:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B8F76B00B1; Mon, 20 Jul 2026 08:46:19 -0400 (EDT)
+	id EC4F36B0095; Mon, 20 Jul 2026 09:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AE026B00AF; Mon, 20 Jul 2026 08:46:19 -0400 (EDT)
+	id DDA3A6B0098; Mon, 20 Jul 2026 09:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 048046B00AF
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:46:18 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B36680155
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:46:18 +0000 (UTC)
-X-FDA: 85009128036.03.1F00626
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D63C6120002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:46:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HDvhW/pe";
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id B79E76B0093
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:04:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36E1E80182
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:04:08 +0000 (UTC)
+X-FDA: 85009172976.27.292BF66
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 801DF1C0002
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:04:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBjnSe1d;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784551576;
-	b=WdD8Qie5/IdSZ4xwRX/wIajoLj41SBHZUZ8+Ysih+1MujFEUq66r+FOGlDDMN2+9uGEIw1
-	ECenHIu6WgpID4XuvzoRTV0kj9R4PJqvy0ix3D7idwC7qPdcE/rIR1tKRoHCn4afBZw2//
-	t9H9MMJcRPaLCzqi41uITBSNHsbgrXo=
+	t=1784552646;
+	b=OqqywPJbHJ3GFj4f23xO7LcjIQDeGPzbQ74pfjZLnxkoqZMDfwYC0m0cH1yGDkZmzGbdyo
+	Aqb5Nq7dhez3BzqpKK9vg5GGKrEFbDREylEY2D5bbQbgLCuAF+wdcbv4HRAT+/g2QmFg0h
+	DJvvQ/03uorNRHSEWkKRYXxoZOwW68I=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HDvhW/pe";
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBjnSe1d;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784551576;
+	s=arc-20220608; t=1784552646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Mf6ICl8QV0PyvQov1wiSUifOBTOQefLFAPMuDN3x10=;
-	b=IREylhwo4KuZP5pWZg436q9Y0aoAKC0l5eoLpG9l1njwAWAUiuE4Bm2kegwNQK6NAr8X3y
-	MsyfZqXvy/pasmxfDCJ6k5JQCYy0owLxFskVbrcxmDm8uCv6i7BMlEcVaPaECe9aM7IhAp
-	/7epsWlc96M5pk5dsWpxcGsIIL4CcA8=
+	bh=SICMuK0Og2SbVQNzjOkqW0F8oWy8F1pFz/0ehxr0IRE=;
+	b=D2113TT94Tc9o81G88dROnlhSRNz2nZ8XZKArX+t8FdkhtYm0kuCKOcbCmhsfLXDM1tYHx
+	s7bzPsvEVhZSAAPeBpsMmfk5DqQA7grOc4xMxhKo6DR9HBkBE84y9+WXIEWlq5KwYVmGPH
+	ESxuCgQN1vc0LLXn/kcBBr6vlnQfntc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B97243F6F;
-	Mon, 20 Jul 2026 12:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BE51F00A3D;
-	Mon, 20 Jul 2026 12:46:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EEF2B60A84;
+	Mon, 20 Jul 2026 13:04:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B0B1F00A3A;
+	Mon, 20 Jul 2026 13:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784551576;
-	bh=8Mf6ICl8QV0PyvQov1wiSUifOBTOQefLFAPMuDN3x10=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HDvhW/peMepVeAoQL2dW+MaaHo1MGlQYb4TFy3R2tW14fKkWa7VZuh/s7cn77dzVq
-	 sSUYzoDD0SiPfWqY6iHqc1QPDZJF4mfo7RDsW0xED6Ocm1iSrM006ijnC32MukKMJg
-	 +M4A9DHP5vFdtw8YzVwC+FgASQzKKZ/7g8LmG1g7O925c6BlyXO/vrp/UVfT2tnXnB
-	 f88Yo0i+2f8bKWy6EHEkO8A/eC2WpRLdVtXDEkY4qe1PwbwR5P2G2Y25t+7v1ZHSRf
-	 BgXSa4nahdSdUJJPlQDjNhmC9dsQ5Q1yMC0NEV9C+gyKdIxG/GsiVQFZ1uaKW0ckTc
-	 vj+VGSJbrqYpA==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Mon, 20 Jul 2026 21:44:37 +0900
-Subject: [PATCH slab/for-next v4 8/8] slub_kunit: extend the test for
- kfree_rcu_nolock()
+	s=k20260515; t=1784552645;
+	bh=SICMuK0Og2SbVQNzjOkqW0F8oWy8F1pFz/0ehxr0IRE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aBjnSe1d7umy7QyWgAaGrXFQYwN+UFq/JRRmb36ntmzZ5yvuVWJPOdP7rj4h3k/6d
+	 f4vQwoNK1jS1fLdrwfZaOue1WqOy2LCGptMViuqNddcrm5Jc+wV6llXACBr5d7pWof
+	 NLospFh1vtxjjQjNxLL8RP33G/ECbWN+lv46Cw8cUCLXNTQFb0BVoKe+SWcmf3CvHJ
+	 ttJSmx3PPDjCNejLV1REAmWJPZ3XpdCovWMdtMZwkGtAgrwzsicTFrxkTmrVUKnr8b
+	 QJJf0jR6d7pTRXCanwVL+nvaZ5SepqsbizFbuWWGiHC4tWGcQVBNW2DTYBUBgQTgdx
+	 QAnVUOQn7XXVw==
+Date: Mon, 20 Jul 2026 14:03:50 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "linux-mm@kvack.org" <linux-mm@kvack.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [ANNOUNCE/CFP] LPC 2026 Kernel Memory Management Microconference
+ (reminder)
+Message-ID: <al4HTMtzpDHykhbI@lucifer>
+References: <e3dc73df-0032-4e71-ab80-21b29c6efb46@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-kfree_rcu_nolock-v4-8-964e03c41a4e@kernel.org>
-References: <20260720-kfree_rcu_nolock-v4-0-964e03c41a4e@kernel.org>
-In-Reply-To: <20260720-kfree_rcu_nolock-v4-0-964e03c41a4e@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
- "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
- Joel Fernandes <joelagnelf@nvidia.com>, 
- Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>, 
- Shengming Hu <hu.shengming@zte.com.cn>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org, 
- "Harry Yoo (Oracle)" <harry@kernel.org>
-X-Mailer: b4 0.14.3
-X-Stat-Signature: kg7td813ee1fq8ybqwgrewyf94jef7zt
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D63C6120002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e3dc73df-0032-4e71-ab80-21b29c6efb46@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 801DF1C0002
+X-Stat-Signature: q4ffsqp1jmeph4kcnjw4afxo33o9m3sz
 X-Rspam-User: 
-X-HE-Tag: 1784551576-411326
-X-HE-Meta: U2FsdGVkX1/XI+k+0A/H5temdTr1FA323c21xi4TqzpYL7t96pNmEUavtkh9m5S+nJ9/bIkCtLj+fVBV5b5r7NU5GPHj8t931xB4x4otjKCp3pNetdyp3MmCauCuZ794fzjeAGSmodtFA9nCSp7twAM1lBMpFyf3/9QFCl/D1J5BVizppMl1RsSFQh49Z5BxdJ5p5UEfYY8ynB5SZfwdtlSN+QIug2mMF2XtEj/mye+9LffU1bPDuO5S/9TCuI8ICxJmiExwq0ZOcpO8JiN3r8sDOLVNpsH96CQeQuIj/p24fHcWPNdOLPhr6vNP9FhTRDxP0AtYG8y8TpjVFZi9GbB4poPPPIay5KP80Koq9I2EkbJImMpp3yxRQfO0x6iQXU8Sk9ou2s0oiZfoyZ/o48adwcyfg562JCpt9aWriY6X46KC86Gc3BsWpOemWeohgVfWTtpHu+6cH8hYylwuj2mrlSWwFckcy0ivQJhXMywXaWpAX3DDVKANbW5R15jtgzkdWH1GpqZiK+tkxIZGZ2F0rOKPJYqQ2HXrZlAsRLWZW9WSB4dMBL435VAJLWaD3GzYqUjRfUII/wwdS73CaW8jrBUoiseVI1IH49i/nQO/wgkgM61KbfCAt3YbFpi0l6vegm1lsEKTlejHAbVHuLIReksePcPDcgSOZzayFROqmkn5Iqio7v3sP8eEttuckhRHPeVO1erCEqIa9pAYPs9wnuj7S/noALjCBfFCKV49TdB4cNjRRudGxK1dVR75BZk8hXZwlUZ1h7IWhWjGwoZTX5UyS+0oIDvLuuFAv8neapty/taz5yKDpC9pL4zVKeyoEqqTA5DwQe3sJum23MyA/dDmB7r2VbipGXooDsX3REJilQG9T3UkhV4mREVxRbTR1gEaGzijCNazx50BrFslFJbESlenro2+/ApoC+DH4N/wYSKz1JthW85BhlZfej5ybH93YLRdTYg0/43
- kBUmicQT
- 9/5XTQktZDGH3LBqI18hF04tR5+TUxPC+gD9bS5I6XnW2Z9mHxZHq/dDPB/Z1IW7ihWmmn8NfC7XUCJFdTlPE8zCVuwU8HxgxhKO4czxtUBFL4cH7vHqFua0y10JBjPa9ZcNMqkm6iW5fY4PUcsfyRVEYGIU1cnS6vjoVA+1ZgwoQZkfq+uIuIOLi54D2v9O9DKg8QNEkT48Ha1osKf96zOPOKwecW5cTaZlXnCwVQXu8oes4pSSPLx/5lHqANLYg7m9hGyVDTuFDCaHeD2j83LXsDmW9J6Trm7yp
+X-HE-Tag: 1784552646-446634
+X-HE-Meta: U2FsdGVkX1/zfKkNOUdQzJIAhhDw/FkWtMRPxN3LOmXkk/Cm9D6qu51XcYwvNtNeZ6onUBup+jdSLkYdx+2FUucq3H/kl+yrveZ8hHdVScsfzUyfgzjU6TYdMpNSIzsHh5BISOeWKcv5wCa00IFp25+Yzw5wYXGbTtb3aMHcwh6sKnSi6AxzSpXdm5egLhW6DRDIJT/sSeOVd8OjKiVY+PwKoExINFyGu/+fLpyqJyIzqt7ML6Jy1a5tc3uaP3a9hOafLSGRUrtf2BOfxGPAs+ILEw+5ruRQiBU4qoWYCjtoOPz10uNwYVV44TkMAerompK88BK7qqBeSqIhlp2BJWtmxBylEAvO9psz4HW4oiN6ASCP72Gcv5Zo46tUYfF7qkn9NpmFRPYOuKjekDtmlSf32pTPjnF6D5DJohUf+J7dlv6o1laucjWFfTFddMcOtfDFhuyjbsPw3B0muLDyiBsyAAvyWX+vzjVcp/m86mHBAy3djVeS1oCTT3NUkR6mQZhbv7A8vpq/NSs1oaQBX6nV1Vst5Be2e4k6hmrG0f64KWHCBYalhg5SVNhJCHxgfsPyJfY6ccNq5dVg+mpIgtOGSm8M9SBcKXWQFWBkYc1geH9ONfmNsJWG79bwZCb+GUrbVS3EmLDkIf9Jp28duJRqtvwEPAM+GaWju6a+eiZ3Uzt4w0Ye8Slnco5vM7D6aokF9X0RWrukCO7ryA1y7MDrF/j4uCuilzgsezXgKqT9nkoS/HFK3mE46jZlKlCspGv10jOVyxddiW6vElJeVjCD3ZBM01OmEmLs2AG00iJsxVjiFdRS21x4wWfCa7F3ERCPMd5aKs2qypzJak5iZTXebvO+wTEX2L11Md0ToXCjSXu4B6nbvB0EOnOl8mVcCWhPl0ic7X/bFuYwTrTblE8ytN8cUbpdmGIPRgcP9C/qNoUA1QAi1pDaJb3Ba8Yw9xuPNZ58q79znn/XqIX
+ f57uf17R
+ vDwWEXU91AwFRdpbhQH6sAA9y96v/+mewxeubLqR5UyZKUqdS5u9SbK5hbJaCEt5KQiFW5po+WEdKNm7cVL+HukEHaA1m5NgRd5uRZ6vIxrOe7ZI+ufVP8NljRJIraL0SXdMRtcxcoThp2dMNr7RbdbvgyXLR51BqiIBey3rnZK4sq4aiNKW3ukrLPaLir778llTIMMyTnBgoYHSvAgJlWVu7omybtiii3S1em0vVi14QXHmK+Xu4E7cGs/WOWGUtyaUEv4sIj0yZtuj3KSFshoL7CI65U0Imj7zhCyw4hzltX2wTFyHgZfhNL8Jcwvw/N04q/ZR5tw5BwDkXMDhP9jJT25N0miUR3mVaydmFP8lL7RGpOxnQfPEypA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,150 +92,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When slub_kunit is not built-in, call kfree_rcu() and kfree_rcu_nolock()
-to test kfree_rcu_nolock() in slub_kunit.
+Just a reminder for everybody to send their proposals in before the deadline on
+July 24th! :)
 
-Rename the test case as the test covers more _nolock() APIs.
+See below for guidelines.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- lib/tests/slub_kunit.c | 45 +++++++++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+Cheers, Lorenzo
 
-diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index a391467c1aa6..e3b63f0338d5 100644
---- a/lib/tests/slub_kunit.c
-+++ b/lib/tests/slub_kunit.c
-@@ -162,7 +162,10 @@ static void test_kmalloc_redzone_access(struct kunit *test)
- }
- 
- struct test_kfree_rcu_struct {
--	struct rcu_head rcu;
-+	union {
-+		struct rcu_head rcu;
-+		struct kvfree_rcu_head kvrcu;
-+	};
- };
- 
- static void test_kfree_rcu(struct kunit *test)
-@@ -296,7 +299,7 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
- #if defined(CONFIG_PERF_EVENTS) || (defined(CONFIG_KPROBES) && defined(CONFIG_SMP))
- #define NR_ITERATIONS 1000
- #define NR_OBJECTS 1000
--static void *objects[NR_OBJECTS];
-+static struct test_kfree_rcu_struct *objects[NR_OBJECTS];
- 
- struct test_nolock_context {
- 	struct kunit *test;
-@@ -311,13 +314,14 @@ struct test_nolock_context {
- #endif
- };
- 
--static void test_kmalloc_kfree(void)
-+static void test_kmalloc_and_friends(void)
- {
- 	int i, j;
-+	bool can_use_kfree_rcu = !IS_BUILTIN(CONFIG_SLUB_KUNIT_TEST);
- 
- 	for (i = 0; i < NR_ITERATIONS; i++) {
- 		for (j = 0; j < NR_OBJECTS; j++) {
--			gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
-+			gfp_t gfp = (i & 1) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
- 
- 			objects[j] = kmalloc_obj(*objects[j], gfp);
- 			if (!objects[j]) {
-@@ -328,26 +332,35 @@ static void test_kmalloc_kfree(void)
- 			}
- 		}
- 
--		for (j = 0; j < NR_OBJECTS; j++)
--			kfree(objects[j]);
-+		for (j = 0; j < NR_OBJECTS; j++) {
-+			if (can_use_kfree_rcu && (i & 2))
-+				kfree_rcu(objects[j], rcu);
-+			else
-+				kfree(objects[j]);
-+		}
- 	}
- }
- 
- static void test_nolock(struct test_nolock_context *ctx)
- {
--	void *objp;
-+	struct test_kfree_rcu_struct *objp;
- 	gfp_t gfp;
-+	bool can_use_kfree_rcu = !IS_BUILTIN(CONFIG_SLUB_KUNIT_TEST);
- 
- 	/* __GFP_ACCOUNT to test kmalloc_nolock() in alloc_slab_obj_exts() */
--	gfp = (ctx->callback_count % 2) ? 0 : __GFP_ACCOUNT;
--	objp = kmalloc_nolock(64, gfp, NUMA_NO_NODE);
-+	gfp = (ctx->callback_count & 1) ? 0 : __GFP_ACCOUNT;
-+	objp = kmalloc_nolock(sizeof(*objp), gfp, NUMA_NO_NODE);
- 
- 	if (objp)
- 		ctx->alloc_ok++;
- 	else
- 		ctx->alloc_fail++;
- 
--	kfree_nolock(objp);
-+	if (can_use_kfree_rcu && (ctx->callback_count & 2))
-+		kfree_rcu_nolock(objp, kvrcu);
-+	else
-+		kfree_nolock(objp);
-+
- 	ctx->callback_count++;
- }
- #endif
-@@ -397,14 +410,14 @@ static void disable_perf_events(struct test_nolock_context *ctx)
- 	perf_event_release_kernel(ctx->event);
- }
- 
--static void test_kmalloc_kfree_nolock_perf(struct kunit *test)
-+static void test_kmalloc_nolock_and_friends_perf(struct kunit *test)
- {
- 	struct test_nolock_context ctx = { .test = test };
- 
- 	if (!enable_perf_events(&ctx))
- 		kunit_skip(test, "Failed to enable perf event, skipping");
- 
--	test_kmalloc_kfree();
-+	test_kmalloc_and_friends();
- 
- 	disable_perf_events(&ctx);
- 	KUNIT_EXPECT_EQ(test, 0, slab_errors);
-@@ -438,14 +451,14 @@ static void unregister_slab_kprobes(struct test_nolock_context *ctx)
- 	unregister_kprobe(&ctx->kprobe);
- }
- 
--static void test_kmalloc_kfree_nolock_kprobe(struct kunit *test)
-+static void test_kmalloc_nolock_and_friends_kprobe(struct kunit *test)
- {
- 	struct test_nolock_context ctx = { .test = test };
- 
- 	if (!register_slab_kprobes(&ctx))
- 		kunit_skip(test, "Failed to register kprobe, skipping");
- 
--	test_kmalloc_kfree();
-+	test_kmalloc_and_friends();
- 
- 	unregister_slab_kprobes(&ctx);
- 	KUNIT_EXPECT_EQ(test, 0, slab_errors);
-@@ -477,10 +490,10 @@ static struct kunit_case test_cases[] = {
- 	KUNIT_CASE(test_leak_destroy),
- 	KUNIT_CASE(test_krealloc_redzone_zeroing),
- #ifdef CONFIG_PERF_EVENTS
--	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock_perf),
-+	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_perf),
- #endif
- #if defined(CONFIG_KPROBES) && defined(CONFIG_SMP)
--	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock_kprobe),
-+	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends_kprobe),
- #endif
- 	{}
- };
-
--- 
-2.53.0
-
+On Mon, May 18, 2026 at 11:26:21PM +0200, David Hildenbrand (Arm) wrote:
+> Hi,
+>
+> We are happy to announce yet another instance of the
+>
+> 	Kernel Memory Management Microconference [1]
+>
+> Co-lead by Lorenzo Stoakes and myself at the Linux Plumbers Conference
+> (LPC), October 5-7, Prague, Czechia [2].
+>
+> Due to our past experience with remote presentations, we will only
+> accept in-person talks, unfortunately.
+>
+> We are looking for topics that would be of interest to the kernel
+> memory-management community.
+>
+> We are also interested in topic suggestion from outside the core kernel
+> community - if you have something interesting to present related to memory
+> management in userspace, driver code, architectural code or anywhere else that
+> touches kernel memory management we'd love to hear from you!
+>
+> Examples of topics that might be worth discussing this year include:
+>
+>  * Making (m)THP/large folios first-class citizens
+>  * Supporting gigabyte THPs: allocators, compaction, policies
+>  * Better policies: applying eBPF and friends sensibly in MM
+>  * Polishing memory reclaim: making MGLRU less special
+>  * Ongoing challenges with memdescs conversion
+>  * Can we make device memory less special?
+>  * Letting the kernel manage special-purpose memory
+>  * Improving page promotion/demotion for memory tiering
+>  * Challenges with hypervisor live-update integration
+>  * Towards deprecating hugetlb: mshare, memory reserves
+>  * The future of swap: missing pieces, cleanups, and do we still need zram?
+>  * The future of memcg: new resources, optimizations, and cleanups
+>  * Doing more with less memory (RAM is getting expensive ...)
+>
+> Please submit your proposals at:
+>
+> 	https://lpc.events/event/20/abstracts/
+>
+> and select "Kernel Memory Management MC" as the track.
+>
+> Please submit your proposals by July 24th to give us time to schedule talks in
+> advance of the conference.
+>
+> We greatly value interaction - talks are meant to be dialogues between the
+> speaker and the audience. Therefore, plan to leave AT LEAST 1/3 of your slot
+> (likely 30min, tbd) open for discussion. We intend to be strict about enforcing
+> this :)
+>
+> Please ensure your slides aren't too dense - people take away more when you use
+> fewer words, and that also helps the discussion!
+>
+> We are looking forward to your proposals and seeing you in Prague!
+>
+>
+> Note: make sure to register early, ideally before the announcement of topics.
+> Usually the conference organizers ensure that all speakers are able to
+> register, but the conference is very popular and it's been a close run thing in
+> the past, so registering early is the safest option.
+>
+> [1] https://lpc.events/event/20/contributions/2337/
+> [2] https://lpc.events/
+>
+> --
+> Cheers,
+>
+> David
+>
 
