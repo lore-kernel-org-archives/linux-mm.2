@@ -4,82 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CE86C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 08:20:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D6B4C4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 08:24:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B32F6B0095; Mon, 20 Jul 2026 04:20:22 -0400 (EDT)
+	id 038026B008A; Mon, 20 Jul 2026 04:24:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38B466B0096; Mon, 20 Jul 2026 04:20:22 -0400 (EDT)
+	id F2B686B008C; Mon, 20 Jul 2026 04:24:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A1536B0098; Mon, 20 Jul 2026 04:20:22 -0400 (EDT)
+	id E1BCC6B0098; Mon, 20 Jul 2026 04:24:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EFE3B6B0095
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:20:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8BF2C1A078E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:20:21 +0000 (UTC)
-X-FDA: 85008457842.01.E9BF8A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B4C33180003
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:20:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NwhdPR1s;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A3B9B6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:24:20 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A5C61607CC
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:24:20 +0000 (UTC)
+X-FDA: 85008467880.26.BB5A9F1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5B7EF40003
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:24:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QbM2QkUD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784535619;
+	s=arc-20220608; t=1784535858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tzbgMbb/C78JO4vjePFx+V+5HdD6Ov2TmuXxqHSNuU4=;
-	b=YTenWBwuG1+nAoa3+/YPCm1/AHjaA6YN4R0h8UPurYEy3Qz2agxdBtn4Z+WsDALlVD+2rP
-	JEfIVW8oFysEHXFz8QW+g/ZMfoZmDbkTkxe1CK7vaLI1QLWcvYlAcLyCDQ3dJ/UIOrCCiV
-	CJv9p7rHvWcqlSHsiyQjRvo4GrALjq4=
+	bh=/ekzku1wsCsF+sOCtcbQyG65mhhqv0A4ZUR3g0lGJAY=;
+	b=ovsSlRnAQ/y5DgOmIvAA6lWhOxVdtfsEya0STJnzSZQWAiIJTlMEt//fWgQok9NPksAoR9
+	EDSy95G4gG2yhX3xPVWNFXna0B+RjBBTiaAbPg9phq9w+DunGGxME0a9mJdnmCaFnrlVkc
+	J5KBw00X/q/MqtC9yEDvM4ZiGPFU96M=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NwhdPR1s;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QbM2QkUD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784535619;
-	b=vu5VzsC9VDVyDOGNTRxRhIBvO0VG7htBfrk08L36MnwINj9fWGTqycIgcgGXfj37mVK8nc
-	TUsls1nFQk+5FauUgh8EVaQ0K0hoLiK5D9pK427upBP2w+P+ov47jiKmIXXPe0eljgwnkc
-	sdLiMVdHYFk0xrQniGO0oyH8HySfWFI=
+	t=1784535858;
+	b=qRaShKlc/WYw7kIR4N+v0H/YTlHY1jmFLr1X8uLmNTRIrIMjvnX9jLTiabSf9A7PCJQUu9
+	rmRlNv7gnSLV7OKVk/zZONXjHM1pIgDiyKrRu80b7HqT4JkfV7hhB9tISTfuQ3dCN98Wu8
+	FffrVBxYALSd9YumK4D1+S/qxlXTB1s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B35A41A42;
-	Mon, 20 Jul 2026 08:20:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F02C1F00A3A;
-	Mon, 20 Jul 2026 08:20:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C0D51601D9;
+	Mon, 20 Jul 2026 08:24:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFFD1F000E9;
+	Mon, 20 Jul 2026 08:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784535618;
-	bh=tzbgMbb/C78JO4vjePFx+V+5HdD6Ov2TmuXxqHSNuU4=;
+	s=k20260515; t=1784535857;
+	bh=/ekzku1wsCsF+sOCtcbQyG65mhhqv0A4ZUR3g0lGJAY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NwhdPR1sQ3ZoUnZlrIxUVrKB75sTS+u5BMLJYzTiw8DHZLnHa149ZeMmIPmpVxslx
-	 d0Glgm3v9q1C2jpHLfQcgOht5t39wgfNIE9OLdWSzM38uFv6jcgqpEK7IlT971atxk
-	 H5x3YcxK8pPCbJe51ZHiK4uUZSuvD/qoMvz+tZwdFCg/bCjVwamuT4kw8AF+qu3Twz
-	 dQqmpu2r4wbENxBUI0pQSUYaVSVefcYvjVQehOjuzNHVMgpYD2vn2iOUU/e7hA+BGT
-	 2W/hIf7OK7MdyBSc8oveB5qyRAwEW0oWQWU7Ag5VD6TXeinGZfZianBCBhdJ7XvFNs
-	 l9ZAuUKP4cHCQ==
-Message-ID: <5dbd012e-52cd-40cf-b9af-59787e2832b8@kernel.org>
-Date: Mon, 20 Jul 2026 09:20:11 +0100
+	b=QbM2QkUD5uKL3nFBRtsXrKhSrS4fbO90dxM5Ip/R4mwgDxtpVxiQKvcbXVTFmMcmZ
+	 8OC4yQbnxfmgdR+DszkxvcMHvhLf7UAFwtExStMW+jpCjv7y1loqQZD59ZLrQLVPzD
+	 B4FdGUn7u1IRFU3n3kqIdR9KOvPCD5dUnaKume0tO0vem9xd0B++TtAsMYqiFn7mOM
+	 BSISliE84VcxudbbE7x9NuF0LAYDtV/WQ9SlRD1fX1FrHQcA/z8fHO9QpeLSMSux2A
+	 a7d6Z6jCjOUquVpe42mGKH2lBHjeV1a8ZwPnUlMLlwxeouPt2zdcPSWzBbVJl1cOdQ
+	 nx1L6RbB9gkBg==
+Message-ID: <d3b2b0cb-7934-4f9a-ad25-f7af3fdd1d8c@kernel.org>
+Date: Mon, 20 Jul 2026 09:24:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/memory: batch set uffd-wp markers during
- zapping
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org
-Cc: kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, riel@surriel.com, harry@kernel.org,
- jannh@google.com, lance.yang@linux.dev, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260720065508.2695106-1-dev.jain@arm.com>
- <20260720065508.2695106-3-dev.jain@arm.com>
+Subject: Re: [PATCH] mm/folio-compat: Drop superfluous return statements in
+ void compat wrappers
+To: Hongfu Li <hongfu.li@linux.dev>, willy@infradead.org
+Cc: akpm@linux-foundation.org, liam@infradead.org, lihongfu@kylinos.cn,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org
+References: <alpmcNoufw0T2EU5@casper.infradead.org>
+ <20260720013703.4257-1-hongfu.li@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260720065508.2695106-3-dev.jain@arm.com>
+In-Reply-To: <20260720013703.4257-1-hongfu.li@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B4C33180003
-X-Stat-Signature: 1uxe5uqhanymdq3ck3aocfoid3b7ooen
+X-Stat-Signature: 68y8qyjdr7eanj11a9b1f9p8hfawc99y
+X-Rspamd-Queue-Id: 5B7EF40003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784535619-323978
-X-HE-Meta: U2FsdGVkX1+6WZg+W25feljQx6cq64yi16jLmLj3eVZAc9CyZfQB4b4DwIe6fZvPtOC05IQYCB8lQN0b0the9mgK7McmUiLCnPeYNem6T64HUf4wfxp32Ne1DMXcWC3e3DIsapvdctL/XEaD5kkjcK1nrDH0GW4fyLQ6Y9o04itngI5avB43RB0ttRIvZBgBCjOSP40U2ljYooHeB/VMgS8Cb9aOmzaO6jU6+H8fy55gQsMfY8T9msJl1XMmoVmjCnctV6JoEJySzLvZaGQgJNelH63mL/2yhXFLKwkj4ISPV7coUIZ+cd89esu5h43JeqCyzTVCHOe6MQrTVusFcV6rCve/W5HR9P6SQEH6mF+DhaOP2z/5Cg9ilDMkj//tJKphwxB6NgnENdfeSF/duGuho4hEGV8TLlAR15wPnTfgWMmezwC2M/Mi1d4sOlh4viBHHZBbFSmIy66zsrFVqzTayEA0LKy0zeb+IDyiPJJ/668B77l5YSjS/i7mb/41BxTl1Rg6qE8Fq5qWORqZLU37s8TPot8OkiSH+TTVsVqbRBQ/S7a1Yy5sYy9gW2JbnocEq/KWECgt9Q4g2flm5G1P5b1qz68uZHLU7/VOSRASrbVX//Ee01aI5XM0vtu2bT7IypfM/OuOWFF7W0SG+E2Eq3RXtgHxzXnu/BCTgcBpRRnkbuyr9WuyNsbU0WWnXn0aUeiGvF23Tit3AFq2E+vNicm13j94s9CmfV/jaOjVmUCh4rAzs152gsGi0wLsfXFjHnZkysdyiGX503czmowRdP58hRWiE07hbRbFxqQjHHxPMnoFkdO+OvpBs+V2yrU6SLQ1mRx0uhc9wx77wKZaRwemly5KPhCnpjHFXdJ08hXVRJwkAswjdG2FezBk9o/GplE2R0Y4Bc0AvvmGwdw5P64OlSx934UV1ZDGA71R3EixPG3RTfVGWeviscbJSTjmfQ9vE7YxvuZBFlE
- oVaASBoL
- GgoDgP1qezIdT7pJSt5RSRz//rAAh0Zk997WEHs5xcCrI5WV89JhtW0Y2mK+/BSjGXUoCNFk65iDILrc9iUlDLRKtmCsKRGM5UMVVzqi3xZPEW5Z5Y1cGAscDpilU5SVUzCqu5/7oLiRNCt+KMVfLmsnp4hG4xm4V75Q47geO4uJJz+XeZZRO1r2HE8C42Bzk0wKPz7d86NtXmEimAsYAx/rpa7baardALq5YDGDCP+BkTr3rsziywFLuwVRmHaN+Fhh827KNE7nj9r0mp+2myEIC/hD+IZmpKZRnoohw+Zx56ZnZT9ACLqj473Yq8prL7U9BrSi6CHvRE4xUEAlThdfqbQ==
+X-HE-Tag: 1784535858-101460
+X-HE-Meta: U2FsdGVkX1/imsvSsLCxCbsd5YpctIr28ThKN44h/JmIOyYOH6v1l6DAIZvqCPYoJlG2cw/rJOVdEc4OakJ+HsnPK9a7VmVEL24l3/J8zN8PSkLEMBm9ulKlh8J1wLsNPtpgxEly/kd68X2MWdQ87VN4oEDOr+cvQJsQP0YHFETFa7ui/vc2wHgSdCx2qQT+jt13jF2uQWHKJNb+Hp7LDSw5IAk5SyIz+KQPHUOl/nVGGxivfOuZa5YtWqgXaOvaCHwpNR1CPSDJ7kA87BdfaB4OCdhOsuTPPuttLFS3PHOMRmdtHh42VkY1Td0q+6DJroH3FMCT2YUy+9e8uERJUnjLMILJ9496dKSVdaCMWHTQMmaANDYI/LENrrIjyzNIa+ar6l7YAiBNnd0qXgWU6KC/PAuSvZXyPTTjm7B7Qbr1YfKKxrUWMHtB5NlHhQRcnK3VWPypllEO2CiKehzJhnScN16MFk/kqmqbzubQnliUgQjsTx8GTpT51uzBPPRMM9qS0wj2Rfbi8T5rB45mELqBtb4TTHH5T2cqO/xkGqq58gbwlksPj4rgTj/rWO6i58MsgmCR2b+EjBDDtlIAuCGEKXwcYvKHZeWSy7vhiWpIv6Ra3ZJ+4hrObDa/fPa6VIbOowRPwocFQejJ63BrJfRhl6+VGTHUMIqtDsKJFtL11rbDGpsTlUaCo7mLVFjjpzfUEsSarpniQTqA5c59FFuI624XXcWbCQE7GD1LLoQ4NKXt1V1MSoNiYHuvm3k3hhViEWZD58yWP6F0jEZU3gumdB4NFToCcW9jVGM3YLgc8TZ+AktXKgZOmwW67shOUiom6KoPMEi+2rbpo2z5vJJnG8Z0QoAWwxbhawqbGnBhtKRNco4pEg78cGpZG/+yYvVOaBvdK8tHztavaSqco4eq/zf/a8Q3auiaRlE3fgAZQfuVAqvwzHbnHs56jwzGPwMLZcE4ptVtBdVxKxM
+ Z4klR53j
+ 4Gk/FkN/02Ak9uGsj1aoTYC7M/dN2KO+Rrz2NVwu05c2gOYXs3Z3Q1pXbFFCy9SKcAxEFT2p+h6cmmzXbGeie5MsI6/dzRoBCf1L5SGGkuBXerUfqLxQT2JPGS51vDP/dc0pMUaS+gLd5L+jFLPyVI7oEcFwqb4agRzlC79dVfhNDCYvFgacGIi1Beqn0+rUSbITOft6kJJTnD1kZgMG7e31G3XhDF4PLgg4UeqwQIXwl5KUn3dMXID+MWStqo72cFOAw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,29 +140,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/20/26 07:55, Dev Jain wrote:
-> Enable batch setting of uffd-wp PTE markers.
+On 7/20/26 02:37, Hongfu Li wrote:
+>>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>>
+>>> unlock_page(), end_page_writeback() and wait_on_page_writeback()
+>>> are void wrappers forwarding to folio-based functions which also
+>>> return void. Explicit return statements here are syntactically valid
+>>> but unnecessary, and inconsistent with other nearby compat helpers
+>>> such as mark_page_accessed() and set_page_writeback().
+>>>
+>>> Drop all these superfluous return keywords.
+>>
+>> why bother?  this file is temporary scaffolding.  if they offend you so
+>> much, work on removing the need for them.
 > 
-> The code paths passing nr > 1 to zap_install_uffd_wp_if_needed() produce
-> that nr through either folio_pte_batch() or swap_pte_batch(), therefore
-> batching is correct:
+> Thanks a lot for your comments.
 > 
-> 1) All PTEs belong to the same type of VMA: anonymous or non-anonymous,
->    wp-armed or non-wp-armed.
-> 
-> 2) All PTEs are either marked with uffd-wp or not marked with uffd-wp;
->    the same applies to the pte_swp_uffd_any() check.
-> 
-> 3) uffd_supports_wp_marker() is independent of the function parameters.
-> 
-> Use set_pte_at() in a loop instead of set_ptes(), because set_ptes()
-> cannot handle nonpresent to nonpresent conversion for nr_pages > 1.
-> 
-> Rename the helper to cond_install_uffd_wp_ptes().
-> 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> I fully agree with your point. You've already made great progress cleaning
+> up this temporary scaffolding. I will follow your lead and keep working
+> on reducing usages of these helper functions.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+As much as I agree, this patch here is perfectly fine.
 
 -- 
 Cheers,
