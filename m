@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDBCC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A03AC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:11:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 694CE6B00B1; Mon, 20 Jul 2026 07:05:55 -0400 (EDT)
+	id 676256B008A; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 644F36B00B3; Mon, 20 Jul 2026 07:05:55 -0400 (EDT)
+	id 6271C6B008C; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55D7E6B00B4; Mon, 20 Jul 2026 07:05:55 -0400 (EDT)
+	id 53CD56B0092; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 311206B00B1
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:05:55 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9A29D80112
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:05:54 +0000 (UTC)
-X-FDA: 85008875028.05.2DE7313
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BE5AE4000B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:05:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e6xgDC0b;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 2F32B6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B512B140131
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:10:58 +0000 (UTC)
+X-FDA: 85008887796.29.2EA6846
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8157280006
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:10:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lgnctbmE;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784545553;
+	s=arc-20220608; t=1784545855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Rwb7HcnGB5WNSmzxd6c+y3DcrzD5W7xrtCT8bRFoPg=;
-	b=qPdECx5qfMLHog9q96xvuJSMP0+sSlmXclpHlaVdsHAg8+qv38+GnCNzjfeW0kQSTzPsBv
-	yi0QLnzi3xRB92/3kx8bydSIXJEbSqNDOAEKpHXH7R7TV6VmnHLyKmAbyxjlnwWXOPS/2j
-	Y4wvmHU39SrXsVkZe0ZFW7IzRNALXpw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784545553;
-	b=ZrkQ9Uf6Q1zslhOJC7aZdw8m8E/Y7dKRyMNCbOsWnqYldyvO7qhiADmvb+zdY9z7Pl8dWp
-	EZPD1LZ/2EUiR82JyQt84urJVaM2EiTvRWsc3Tumx13ntSInoCpJTHk68KXWyXgI/PRDJ8
-	yvKz8fewHgvw3O5CbjLShFicR4Uf/ls=
+	bh=CY3D2G8Mcf8naJ39Kb2qNt3PpH1v79jSaiicxK5PMgk=;
+	b=yW+bpK6WJJYcNWeQmrKjKAc8s35D6TTg2cfG+8VM93YCZLRxlCUnrUUFcnoGon2NCtFDSV
+	19gPOhasbRzMu8wzo2ckwXMF0pNd2Svj6/PRBgbKB5WtfCSO97iFxN66/qMaRCl5pnhnNG
+	kDILIRQjyzo8/6gdCKqruJyOo0riiGM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e6xgDC0b;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lgnctbmE;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784545855;
+	b=K8AWQac2vhb8N+/QsIfroXjqDJAwpRFBrcKvh0CiMzCjNO8sNgAMrcrHRq7eUO1evSmvNW
+	DZ5UYUwRBaBAD3/ToVqqtA9LWSy3pB9v0X1gJp+4aRYC+PxnqloX7IKj80/6zqBsh2GF8k
+	POqSgqlQGLkfVGaTICJLyCb33hUPMtc=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784545551;
+	t=1784545853;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7Rwb7HcnGB5WNSmzxd6c+y3DcrzD5W7xrtCT8bRFoPg=;
-	b=e6xgDC0bwPSfZwUxWdBpoK9NDV1GuB4FQICPCZuU66T0ZQ5mCC3vWHv7lrGcyhZLhQfNuM
-	D+TcvKkx0O0dfQ6SFJKnbxDAD/Puud6ORuiUd6Y8eI3Xar68e8yb9X9fsnQCjDUfXWpAli
-	EHOReSugzodK7HhScOqtOCP2IDifXCo=
+	bh=CY3D2G8Mcf8naJ39Kb2qNt3PpH1v79jSaiicxK5PMgk=;
+	b=lgnctbmEgU7E4T16WW5A1XlyEAVa/GZA6Cp+b53JNdazm4iMZJZUiRMZNvAUGTH/ONEVGA
+	Xt4rE6RLGfpO/JbaU+UoaMO45oe8wJc+vq4Ys5KPcCbHN0LkMAbdfwNSy10onMJFFp3GfH
+	O9kTSia+Lxwbn90azwujpxqyDHYNvY4=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v2 06/17] mm/mm_init: factor out pfn_to_zone()
+Subject: Re: [PATCH v2 08/17] mm/sparse-vmemmap: support section-based vmemmap
+ optimization
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260720093127.540540-7-songmuchun@bytedance.com>
-Date: Mon, 20 Jul 2026 19:05:36 +0800
+In-Reply-To: <20260720093127.540540-9-songmuchun@bytedance.com>
+Date: Mon, 20 Jul 2026 19:10:23 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Oscar Salvador <osalvador@suse.de>,
  David Hildenbrand <david@kernel.org>,
@@ -77,20 +78,20 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  David Laight <david.laight.linux@gmail.com>,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <E9EBAC23-2052-41ED-A2BA-E5AA3A1E0D6D@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B94645F5-E122-4B48-83DE-B977A64274DA@linux.dev>
 References: <20260720093127.540540-1-songmuchun@bytedance.com>
- <20260720093127.540540-7-songmuchun@bytedance.com>
+ <20260720093127.540540-9-songmuchun@bytedance.com>
 To: Muchun Song <songmuchun@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BE5AE4000B
-X-Stat-Signature: hue537jgietj7zx55h7pussqb1aowg99
 X-Rspam-User: 
-X-HE-Tag: 1784545552-385858
-X-HE-Meta: U2FsdGVkX1+c4w2jWRGECMfGWfH4ancBtvQEZuKsboBgnAQSjDMPAYC874Ir6MbvdDqfHjBq4PhRUCw305UNSYsCeiDaMz94U06E8uZ6tzEzYoPdj3GH7D33snwWg/N/IyFwhZ065iU+QIbra0MSwtGIW5bNwTjDQ1C5+0VVTssc+nN+iqQ8srZ0IHeVoNGiC1u4CfaCElZfg9Fh/Q/gZs061EdQR8EdnXlez/ZIREsDhhiYt51usqthHTJBfHyXNL7hb+gJJM+lD4dHkti/RJH7A3TxzBrCU7EVqnxJylrp7YPFrTTr5SHYGdA3kltzYPtpUobOb0D2xOUzn1ueJmph3CNVbqYAyDVSsMPhbQe5tZ6rYz960Cfm/CGuyDvAIYoWdruCxG+GklWIjjShzZ5xJ6HrfkHXMB2J2CH7ADh8VztOUjzb7eYKA3XN2yeUi23KH1YVtCJ6ESjGATLvHLeSfZALEG0mp12YCLgXPwqUWhnXiGcFvu+ODzmswFI+ngS7j38I8MMb2uGJ2mI9iwaTQWJ6sXpUPvbNODS6H8JcUWmQP08hm9NTINsRmJ8UmCV6uwSu+QXq17xo4wfarWxC3LFWCJxSyT80jsLuv5YL8LyuHae4uroWg7Pe3+jqtMAVENSXits+fRvQKzIHXZfiZQ8Vcb3iYs+fCnVCbuwrUA+fEscrq2PTnVLw2HP7t4sK1UVGgyD/9ZsevFVdyon7T01CVvVmRRs5hU5MGHPUeiL4negl6BNtbakvThIViYXL7293TjXsb2xofrZ3MnITZQl1WPdg4TiCuJLG8gjkgm8VDqg7pqBnldc0z22NpwHda8mKAiTeNd2hEJ5DSdOuFu81VR/GT15Q4YwWQPVYb2CnetQhbn42hMq8qptJj8f+jq51TomPtoLy+Qer3LVXY/9aGJiJXv+upDCxFa0y+i0JSQLfvWHEK6GzxK/VhTT2mwhILjf8BtDep02
- b++t1G04
- +AMvBxw9ugjNLoFGyHLRmovQPD/+UNukAN/2Ch+A4XksVt45CkL4ZezV77DQCrUpC4QPQWynQebrUBc8qTWhWB1WwccGJ3/GB4Zdjxn4+GmNYnSyPT4DnNNEZT8e0CcfG2fnXVvZbWgLFJPsIcXgIFqlTl2JEq/yJ9/DvTK2tmBnKAoev0z8Ey6Kq0bVHpRFSJKP2oZU0S0UbqVa6asn6scqsdOTmD/5lmK0Ty/rFKjqxVrcLrPpc+kcHCikeb/StDtIWE6n3eENR8Bwcvae0iWC0UgGzc8Vrvp3/F37Boqy8KRFQt9VJWb+5HmEj0PGzOtzqe1TZV8hGz/Q+wqeWWlLQZW0/2ugSKFMQIkIvVav7hJnTc0m+YlRR+hxNLp3gAZeu
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8157280006
+X-Stat-Signature: k39n3ue8ioj5e76igiappcoocc4pn6yd
+X-HE-Tag: 1784545855-40094
+X-HE-Meta: U2FsdGVkX18ntGHYXQxd8YY54dAZHCwMudc0CTFmNyNiKjXqiBz/Jjh/fTovM4OjcZwXdU219+Z0b9+i0iv6wFB+pxuB9iPzpLfrlqVIUJVhO+BXx7hOyn/6WeiQUH0wVkLu3znFSlOoro0+EDcxkADvOZ/MWnhBtYLapCGdH6zpCLXSfbLUtz3f3zPzo/PZpzxLbO1PTVxo8ON3jkhOKMp35NMoNBkdsK1IQMllB4enCq2To5nmBTovHfLsxWaEQrmZMxPkD3gARNOguOlmXXoj81fbo4e52devPeFw4hBXcL7WGsJrPk2Tnb/tO3LHZhnH/9MkYHEZao415RkUs5EkoJ5ZbBaRc6NErl607glRJUEmDSEa2P1tBO1AdXTr2V1nmR+V4e3deXWPsRzI54zts5nm21+Je86ix8hRtTUFt/gpmh+UKLyIDXpoZ2pOzt6bfMedYb+jrtCVCI/pvZW/wZ2MigbzHLO5Y73II/xTUHS11mOyWJfkp6agk6mBxmSbr63v6Wn+N9239xoAf6UCEQTdANGd3CW2uLZDBOHrqMevd4KOLk4f1znUixKn7BFKVX+uTZ9YiQ5LYRdRm7PTve2qYnz3B6zkxjreR7PEjQYh2jU2sAnGHNzfDO4mYvevQxUhVHo/Vh3CumGED1Q05O91zfh5qiXwNcwqIc+0kNBE5PuZx1CRlJJgojlP696qW9HYKMh9iGDaUowymg0shl/3t/HqpdFmbqm4BvS8Kki10GKN22pDzNg+/w/WsTVbhzaSQOmw7ObTkD5Mrco2X6Y5F+XtXfdQ2R1QA0kEEOnD8nychYZNdV9E0f1voxQdON00aYvUZBIl7fuiBTojmXJ3i9PugdP2NGEEg+zSaIlbCiUTr5ly3GTHOn7/CQUZImjOpFWmkVl/R1LO3KYYvC/KXP1Gah02l7y4mDySo+LBUVPIOhqAxKx7XbBKpidGe9jgMDIunzr+156
+ N2NiMeh1
+ MBFQupBi7iCMHnsBuur34hXKWwiTD9ttNn27Mwf8R6ozkb+kpsvO2g8VQhX4uhn2UNbgIfGelekHS4gGZQVZvgyB8kU3vFjVtsOKVuQ5GjNboumR0zS1ebNWQVUb4+pUHZHA3Q+LWSOUyh0tjeNrH/HQlOsWhCnnU8Q/dzjUqp58AuZ3ZQFRCMeyAm05QlAG/ssc1FrelCgNqeZWguQm8IO4dmxYgq+j6d4KY+3LxyMfLuzv0IUF2sJij4yeIX29onZhZr9WcVR3dudAqSAKi2YuRHMq540ofccBXjSZPtRKCUUtuyH/B5bSOtrFm20LOI6Ys6aZddNFRodPgh4j9TJqNBCrifd/bhgQwG72zx8rFAkiAMuHYyWI8lRYGkh71rQG8AyzZuAnY/kE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,20 +101,32 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jul 20, 2026, at 17:31, Muchun Song <songmuchun@bytedance.com> wrote:
-> 
-> pfn_to_zone() in hugetlb_vmemmap.c duplicates the zone lookup logic in
-> __init_deferred_page().
-> 
-> Move it to mm_init.c, declare it in mm/internal.h, and reuse it from
-> __init_deferred_page() and HugeTLB early vmemmap initialization instead
-> of open-coding the zone walk there.
+> On Jul 20, 2026, at 17:31, Muchun Song <songmuchun@bytedance.com> =
+wrote:
+>=20
+> Teach sparse-vmemmap population code to use the compound page order
+> when deciding whether a vmemmap page can be optimized.
+>=20
+> With this information, the common sparse-vmemmap population path can
+> allocate or reuse shared tail vmemmap pages directly instead of =
+relying
+> on HugeTLB-specific handling.
+>=20
+> This centralizes vmemmap optimization logic in the sparse-vmemmap =
+code,
+> based on section metadata, and prepares for sharing the same mechanism
+> across different users of vmemmap optimization, including HugeTLB and
+> DAX.
+>=20
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Sashiko said "The commit message states that pfn_to_zone() is declared
-in mm/internal.h, but the patch actually adds the declaration to mm/mm_init.h
-instead". That is indeed an issue. When I was handling the rebase, I forgot
-to update the commit message here due to code conflicts. I will fix this in
-the next version.
+Sashiko reported four issues [1] regarding memory hotplug, but the =
+entire
+series doesn't actually support applying HVO via memory hotplug. =
+Therefore,
+all four of these issues are false positives.
 
-Thanks.
+[1] =
+https://sashiko.dev/#/patchset/20260720093127.540540-1-songmuchun%40byteda=
+nce.com?part=3D8=
 
