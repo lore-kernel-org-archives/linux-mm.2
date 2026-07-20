@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14673C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 06:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C5ABC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 06:58:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DE396B0093; Mon, 20 Jul 2026 02:55:45 -0400 (EDT)
+	id 566F96B0098; Mon, 20 Jul 2026 02:58:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18FB26B0095; Mon, 20 Jul 2026 02:55:45 -0400 (EDT)
+	id 518616B0099; Mon, 20 Jul 2026 02:58:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CD166B0096; Mon, 20 Jul 2026 02:55:45 -0400 (EDT)
+	id 430E06B009B; Mon, 20 Jul 2026 02:58:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7E796B0093
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:55:44 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 64C7140729
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 06:55:44 +0000 (UTC)
-X-FDA: 85008244608.13.349B74A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9AC171C000A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 06:55:42 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H0xKn+bn;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784530542;
-	b=d45o+exTJkE04oUdBUVWA80KuYWFqexiwOmWN7voEM9ui2y3vtVLJrLstQ9O3P4j4e8rmm
-	RHaUHG3Iiwx3+X7Xo1fBOyzlDxmaGH2AKT11RxP5Kj9b6LjhD+taOEKbvHXHDdWAx47uC/
-	CQ4KUgJWTZvSg1zvA67/BOItYIosceQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H0xKn+bn;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 20C606B0098
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:58:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DFEE4072D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 06:58:57 +0000 (UTC)
+X-FDA: 85008252714.14.19BEC8F
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 23CB7180004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 06:58:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jcy5LAak;
+	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784530542;
+	s=arc-20220608; t=1784530736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfjMHd5M81X7Qb2w2Vs0uzlhmtIz9CGSASy3b6Eft7o=;
-	b=VF4+QzvfTfyR7aM6Pi3n2V3UnYPZgE2Ma0WY90SAyov4x5nQsnV8VTFPZFtQQIsIozDioo
-	vsXg4li7O3AsUfX5xayJKomJzYY/drApBqT5smUz2nTjWO/4vcgLw4LizGcAHfESo2kVXH
-	20/0LJdxxltk6MTmz7S+QqSRYCPJsDs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A21E1682;
-	Sun, 19 Jul 2026 23:55:37 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id ADE583F66F;
-	Sun, 19 Jul 2026 23:55:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784530541; bh=0uZCBLA/6tv50+Xe48dX0mngoeuzlIGQwQYeLrBh4lY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0xKn+bngtg4BLC2D/vhC7e1XPwe1FrLhGweIhhaXrq2APRtiYOJ14I9r9//8gzcK
-	 VUZh22RAI1Mvb8nWOKXE3O+LDiw4sx1GDF+N2MKUILSHon9gU06tmW5csVccIFD84P
-	 2GFw2+TaofMRBayEIOFWiv0g5QJXEjDCFkhZEMnQ=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: Dev Jain <dev.jain@arm.com>,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	riel@surriel.com,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH v2 3/3] mm/rmap: batch unmap file folios belonging to uffd-wp VMAs
-Date: Mon, 20 Jul 2026 06:55:07 +0000
-Message-ID: <20260720065508.2695106-4-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260720065508.2695106-1-dev.jain@arm.com>
-References: <20260720065508.2695106-1-dev.jain@arm.com>
+	bh=jxcjZTfCxdOxrLMz+THGBCm+S/NYMN19qenWyxKwTqM=;
+	b=LM/poWBRIjiyC4evYNzqxkvYVQPwVA7AqLGvBWCy6sLs2vNe3Mxj2YV1wTo9kj+WoHws3F
+	nzK0M24Ig5NqH6oNN4Lyn72sO+i+WbBcerFCAhNsgkY+ffS0x81Onvu1SN05Pv0Fmps6PM
+	pzVeh+uWg6H+Ox1I8jxybSGDdOpP9EM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jcy5LAak;
+	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784530736;
+	b=DOlj8Q3oaSwTZnopKqtCp6lxYZRLwzczwG83qt66EBQXbvdEjdhzO9awm7Hy6py+UMq0b8
+	U/BaqoUdcfNaoMK1p9aOO8vKlsGu1jvix/0AIstAzr8u9gfqkJtVfswby4CFBoBzE78sOI
+	uXJZlFYOp5mAMJ2o3VqJu9G/ldJwIp4=
+Message-ID: <c2e74957-46d7-4e87-b0ba-5c1c2c202bf2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784530730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jxcjZTfCxdOxrLMz+THGBCm+S/NYMN19qenWyxKwTqM=;
+	b=jcy5LAakIaLoy8oknD7Y0v2vm4C3A1mefiHvg8tzak2qb0WXiuIrFWQ0eMqJ9mKF4hjUOe
+	Zlk+gVEdVgha/pwINdIeLxXrrzJSKqDUiIZYljjy3mams7qqXSgljLf9oPG8/8iX8tjgml
+	xkQ86I5SyPIA8zQr2gBJWsJHUoJWXeg=
+Date: Mon, 20 Jul 2026 14:58:10 +0800
 MIME-Version: 1.0
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+Subject: Re: [PATCH v6 9/9] mm/page_owner: use memcg_data snapshot to avoid
+ TOCTOU in print_page_owner_memcg()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260714015117.78351-1-ye.liu@linux.dev>
+ <20260714015117.78351-10-ye.liu@linux.dev>
+ <21007313-40dc-46fb-bbf2-453c8eedf3e8@kernel.org>
+ <e3f17e17-495e-423c-9c21-48aace4367d1@linux.dev>
+ <20260719224255.8e2bc60e8a42681fb541e6ad@linux-foundation.org>
+Content-Language: en-US
+In-Reply-To: <20260719224255.8e2bc60e8a42681fb541e6ad@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9AC171C000A
-X-Stat-Signature: 3hqhaojxj94un1h8ibr8okrirpnwpxmy
-X-HE-Tag: 1784530542-309337
-X-HE-Meta: U2FsdGVkX1801y0xX35h3kN+TRuAPC/H2xBZtoWMvfSuKbSbKz9CxHYH5O96EGVxLSEmBRgMFVTsV//79kwqQ+5S6OpDrqFxca0nyyJ+w1er35/99nAyAZhqieFrCVa7Jd4rO+yKRppWe+fVgpEWBbjzkQ7aPGzAZb83zAUQSx5Bt12NLChHDXAo60BygUxgOEZkhiyLdD19nOLD5YJZ9BYP9AYEuURhNz285WKa8/c8z9CxQJvMAMqo/N2jRw+yN4DKeV0Q+ycQ5GrGnq00Fdh/JcF/BVjXQX44uDgDhNh9SSpIf1hONB1AlpOXJ5YqHorlTa0TPwGoPRWMcKEi8M7NQkctHkq0/Ufh/vr6s7xejJChesBwwQrTFkTl7Y+NpP0sGNAeCS7QO2WKmDEQ8/eoTjfE2xxy3CyRVLWyhONSEzzP8jutZtLBTejWd0I0yWmfPDT2Ip+RSBv/vwCgS5F6qRL6lmCv72DA040GljO6bGT4C1uFq5E5u+JLSaBEKP06DgaRSxd1BdmMbxiNrBw7CbmRD0s4FAhkyaqlkC+8xnaen7Pzg7epT74dsmo2CgrWqgfrvpyJF2jUvA9OOwo56Np2QX5eDvP+22o7MD9Y10wn3esSd8XbjuLtP9h3LZDsKUjXj+/QuZipdXcvl6iBgm82HIUT56HaQZ6v8eMdXu9hcD9l4OL/Ierm3kDAGY8EZuN2X3eEVTSJSuf/BjnNaWNbaqYSacf+/NSti+/p9oFXeeEZKodbllNFi9nuft7/j3JwtsktMdlHlkrIBVqpPmUatxcBGAjH/kQCQG5CkJttXbWHQQFnAm6x+V1K3js/51jkBaBjielAXbyjUxchI6fX4B1mKTAiEZSsfcslCKxbHdfClbDlryFuvblzoIxh4RjCR7Y8bVfwegEiTSw8xWLNV5vmihH6XmYA3OmMw1ltfY0oXu7HcIHQnMt3IWCqQmxYx6C15/0SVe+
- TguSY0BF
- P9oqx5tewO//xM9/2Mp0avzzjEL9vZcOP0mnae0H18Q4AYwW1Qy0JjeV00Y0NxPvrAE9GGCANYO6PCxRPowd0OGM34gK8+6Lo6/oPoz1dbd+mRN8kf2jLeq2i8kVbA5Z8aC+eSGI4ae8HrZlLeKeulmh32dqyqT6V75hhfAFo81BXAWp1VPh3BDJ4o+xRGaITrTLp9qJO4V4W4TFzZwcgT12jIOVSKLGMOUu3oV9gqe3U48ChsP9CtIWD7tM8typIrqC6eLc5xlOcUCGnV99CwdEd7iMBcaWiGvf854fCGNVp49znBkUMOxLQjolhH+no+FVn
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 23CB7180004
+X-Stat-Signature: rowjbqziqf1qwwqutkdbu5ykfqdrra4o
+X-HE-Tag: 1784530733-843812
+X-HE-Meta: U2FsdGVkX18WblDoLyRj0yFkhcyejwTGFYzNbhi5bjs1673H2FbS41/IDz/77Sqr8VC6GRMTsC49T0yHsw0mwqFc9h/ieuSBOeXjJv4b525kOsDG/4Nng/8/NpTZIrGsAh2Qe1ATxDI74zInDr/bWgj05FxSyFAskAJn9n6oHDLtr7XipeSEMQcGU6FwW6GPPd4LHIkUaKDoWetugiQ1qVmp09u4Dj9pS9c4wJfHleerlqZVfYXVovH95rD6kxItUVLSHy6gi08aaaS9+doJ/lMVJqqOykl9RtYExTQrvZjMO5N51mPeobi+clNWT+rsaRosEmlL4k6todsn8IbJm+QwlE6lRI/0MK/vcDWiKdb0A9G0EPJ4iySMWtoI3e8t52GN+XCSkramV8njowzGIS1uuXWB/iajngxxB72wJsUTrZt7op3xoK4HqXDVQ0e0MQ9h+oiad57BGJ5gTB6BgNRS94Rmd+sbvaHLJl7L/N6s3ZQoMgGrTaU1LoASdRd9ea/haWivqFhit0kBhQVXdSYBlefKEY/8udKIWVWIuMWxeBcAPuRid7aY8NTvv3qEScvZBRzDurL9CtNZM9flyWw8zm72JlLb8qs1Rd8wu4GWybfx9C3YmDcMiPSy3sRXPFSAWFcXdMdtsa7gCHEsOYCA1lDcxg/TOXE7ybzArQPv7ao9raiO5fKanD2dgkaPlxLpVGYxtvinxidVCUt2IbK9xCf4SEDbnH6PwyD1j71G+HySFoz89uTg77o3x1cx8c/frRhGsa55NGIS1kVcly6KrVeqB7vVrleN3MiCGW5mgxS/EthLAo2Up2Ad22IhW3MGCBzVt5dljpU0rzkm9LngQ+p9MuHJN1LEQWiECf/MGSDOCRkkkaA+DTChPB2BgHijsOR4cJl7ca/6mO8LhlYsrivJUC9j9+lbpu3DJUkh6cpuDvS3rf8cXmTThKuRoO644UnjIvWn9Obv8v2
+ EFjjNzAb
+ 8bVv5q8GU5Qrh7wXH/xuFeDmGWUfeoaDs/byh3J0xrXkRELIJoLhIy29d0vKpg2E4XkG4bfCF91Dzy4zUuW9lmK2/1JzDQMk11ibTfz8G0tmGFBg/oZDMfIf/C9OleDiwgFZPvQPsoB3YqBwRiwJMUGN7026o1DKS/9K5fSh3jW8MMYbAsFiXVBq9HpZegTjrx3E3vP4JOs0aS8zAgvKGK3kNMaErD7545Fsf3sxCxB2RiEtlARQyk9wgzUfBr9JOGcfRtwUt8Q4+C/nSolRkRdyMLuGF/UH6kNQeCKCEtM0bRWzrWKfuwOBWkCn5GdIxIr4F8xVhnpgKw9UWcwrPWcTVa/42oYAjoD6/i5sIVVeTmTTlfKqxAlutOan9gbZ4ikvUvcAYKVCXKcsjqiVJrKcWugBAJ7Stt2CeFQW+98wIVAywwxNc8IkjmeXhOOLDW4zTMkk8L5mIxDgYtIA/3LlTiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,56 +96,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit a67fe41e214f ("mm: rmap: support batched unmapping for file
-large folios") extended batched unmapping for file folios. That also
-required making pte_install_uffd_wp_if_needed() support batching, but
-that was left out for the time being. Correctness was maintained by
-stopping batching if the VMA the folio belongs to is marked uffd-wp.
 
-Now that cond_install_uffd_wp_ptes() supports batching, call it with the
-full batch length and allow folio_unmap_pte_batch() to batch file folios
-belonging to uffd-wp VMAs.
 
-For file folios, if the uffd-wp bit is set, unmapping converts present
-PTEs into uffd-wp markers. We must ensure that the same PTE range is not
-reprocessed by the try_to_unmap_one() loop.
+在 2026/7/20 13:42, Andrew Morton 写道:
+> On Mon, 20 Jul 2026 10:45:56 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+> 
+>>> These points have too much detail that's already in the code. Would just
+>>> mention that we opencode applicable parts of page_memcg_check() and
+>>> PageMemcgKmem() using the snapshot?
+>> Yes,It's a bit wordy.
+>>>
+>>>> This avoids both TOCTOU windows and the assertions entirely.
+>>>>
+>>>> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+>>>
+>>> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>>
+>>> Was all of this reported by sashiko? At least the new-in-v6 was?
+>>> Then:
+>>>
+>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>>>
+>>> But it's no longer a cleanup but a fix, so probably this?
+>>>
+>>> Fixes: fcf8935832b8 ("mm/page_owner: print memcg information")
+>>> Cc: stable@vger.kernel.org
+>>>
+>>> It's not fixing a new regression so I think it's fine to keep it part of
+>>> this series for next release and not need to split out for mm-hotfixes.
+>>>
+>> Hi Andrew,
+>>
+>> Could you please help me revise the above?
+> 
+> Sure, how does this look?
+> 
+Looks great, thank you!
+> 
+> From: Ye Liu <ye.liu@linux.dev>
+> Subject: mm/page_owner: use memcg_data snapshot to avoid TOCTOU in print_page_owner_memcg()
+> Date: Tue, 14 Jul 2026 09:51:08 +0800
+> 
+> print_page_owner_memcg() reads page->memcg_data via READ_ONCE() at the
+> start to guard against tail pages and NULL data.  However, it later
+> re-reads page->memcg_data locklessly in two places:
+> 
+> 1: page_memcg_check(page)
+> 
+> 2: PageMemcgKmem(page) (via folio_memcg_kmem(), which includes
+>    VM_BUG_ON assertions for tail pages and MEMCG_DATA_OBJEXTS)
+> 
+> If the page is concurrently freed and reallocated as a THP tail page or
+> slab page between these calls, the VM_BUG_ON assertions can trigger on
+> CONFIG_DEBUG_VM=y builds, crashing the kernel.
+> 
+> Fix both TOCTOU issues by using the memcg_data snapshot throughout.
+> 
+> Link: https://lore.kernel.org/20260714015117.78351-10-ye.liu@linux.dev
+> Fixes: fcf8935832b8 ("mm/page_owner: print memcg information")
+> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Cc: Brendan Jackman <jackmanb@google.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: <stable@vger.kernel.org>
 
-The page_vma_mapped_walk API ensures this: check_pte() only returns true
-if any PFN in [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the PTE.
-There is no PFN underlying a uffd-wp marker PTE, so check_pte() returns
-false and the walk skips ahead until it reaches a present entry again.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- mm/rmap.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index abeb8e7ceba17..56eaddfc610b1 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1968,9 +1968,6 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	if (pte_unused(pte))
- 		return 1;
- 
--	if (userfaultfd_protected(vma))
--		return 1;
--
- 	/*
- 	 * If unmap fails, we need to restore the ptes. To avoid accidentally
- 	 * upgrading write permissions for ptes that were not originally
-@@ -2348,7 +2345,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 		 * we may want to replace a none pte with a marker pte if
- 		 * it's file-backed, so we don't lose the tracking info.
- 		 */
--		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval, 1);
-+		cond_install_uffd_wp_ptes(vma, address, pvmw.pte, pteval,
-+					  nr_pages);
- 
- 		/* Update high watermark before we lower rss */
- 		update_hiwater_rss(mm);
 -- 
-2.43.0
+Thanks,
+Ye Liu
 
 
