@@ -4,118 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FECFC4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:41:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81ED4C4452A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:41:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 407EE6B00DC; Mon, 20 Jul 2026 10:41:20 -0400 (EDT)
+	id 828826B00DE; Mon, 20 Jul 2026 10:41:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DFD66B00DD; Mon, 20 Jul 2026 10:41:20 -0400 (EDT)
+	id 800426B00DF; Mon, 20 Jul 2026 10:41:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 281026B00DE; Mon, 20 Jul 2026 10:41:20 -0400 (EDT)
+	id 716226B00E0; Mon, 20 Jul 2026 10:41:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB6E46B00DC
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:41:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7AE531A0184
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:41:19 +0000 (UTC)
-X-FDA: 85009417878.18.23D3134
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B3A8F14000F
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:41:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xk2CwfJ8;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 46D296B00DE
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:41:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6A17AA01DC
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:41:48 +0000 (UTC)
+X-FDA: 85009419096.16.372CB37
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 81DD440006
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:41:46 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784558506;
+	b=KX3EchxX9zl21ifQCd5/OVmCj6vj1CzALof0AAr4EsK4rI1lgnphzf4GURek2HGuP6IxL6
+	xiNnHSUxqUIH3i2LepfXlz7KRXqzOFD4LbhzXXiW5wHWbr3aCmstCpD/DBhxcTNHjFZ7bb
+	ieYeUAfK7uPUH7yBNmHzsYMWlRRiogY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784558477;
+	s=arc-20220608; t=1784558506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q+hgooHeYYaYv/oiqa66MnVBmMzHrm3fz5OuZIxN9Pg=;
-	b=hSIna3iGm8q7LUSjoO2Yu/2d1w8SsQ9us5cveVVHcHnZWyhiaiw8qCR4F+9jaVZJVHBrHy
-	+dZ6q1DmJ6TfndyquCGfe9NoE8gUZfZ73OXR7bae7jys6KZGaqYEfp2Atfd/GYdxNsDsBl
-	tG8PQFEJj2//dAyBy2DZVoAjaPFbiVY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784558477;
-	b=IHSkBeR0t3B1BrPp3g5LE2zPx23QBfjF2zoe89f/iP8wEzOHKxTFncvZFT7FOKcsc/4IhU
-	1zNv5zeVMxannzx1vd6wz5fdndQxCwsikvPryGT8kjiK37k/E9ZXbii6VhvZULN2u5+jlB
-	Vs7Q5Rivd3C+EHRoC7cFSjXg2m7DOzg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xk2CwfJ8;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EE3040960;
-	Mon, 20 Jul 2026 14:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2F51F000E9;
-	Mon, 20 Jul 2026 14:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784558476;
-	bh=Q+hgooHeYYaYv/oiqa66MnVBmMzHrm3fz5OuZIxN9Pg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Xk2CwfJ8HL60DsiwzkTy2dmx4IPJaGvy3clwtXHfOLctb/PRF8MP0UeVkjMrXLpqc
-	 X4WS2W9ztgR4zmOxglKsN2/48CgCJRBHJz+cSbkn4tO4QjGaKM+hOEcqKQw0wDRnWT
-	 1YUs3hTGnP3EmFHMzbNR4oBE0n2xLUnb6tj8NCpjKgFm16oYCurumYshQqUxynh/4d
-	 mbxBldGkcKwB30spX3j5PmyTcJ8UQBYh19Cm1HJ2sVAMTNVNTdn44Lw9deeuDJZv0/
-	 +t5EMQKy+EU8TaYggE9ITM6hRmzQNfyNSb6wj0ah73drSYYTUrn74+PvqOFUFb0kSt
-	 yOrY8tOVutBqA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 20 Jul 2026 15:38:41 +0100
-Subject: [PATCH v2 15/15] tools/testing/selftests/mm: add
- MAP_PRIVATE-/dev/zero merge tests
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QBvGmV+RE9PXXNGRO4atdpe4l0EX2pJvKjy235SsHS0=;
+	b=NClc2KwSu/chlYEyVYVxI0URp0TFRVISt2KJSQhsRr07gwjS+nCdb/NxTOUfZDFR6V+oZ0
+	xznAIQyED2HUAVKkUAecc2EtzzUkL+OjgPYx+2tUIZmVd5F0my1eMTOhc2eBjRmmtUWF73
+	/6uMD2v8zDawemnOFHz51acel7UXmIo=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id EEEC468C4E; Mon, 20 Jul 2026 16:41:41 +0200 (CEST)
+Date: Mon, 20 Jul 2026 16:41:41 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org
+Subject: Re: linux-next: manual merge of the mm-unstable tree with the
+ drm-misc-fixes tree
+Message-ID: <20260720144141.GA16699@lst.de>
+References: <al4jGBGNG_QACaNL@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-b4-scalable-cow-virt-pgoff-v2-15-2d549757a76f@kernel.org>
-References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
-In-Reply-To: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, 
- Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4278; i=ljs@kernel.org;
- h=from:subject:message-id; bh=yk0gma+yTZdel+ljE629bRHp848gvZkgeJregd069ZY=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLijN7e2KP42mx2UHD46n83TbO3N4hM99A7xOvx7uKNe
- Wn5+TtndZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiD00ZGVr436T+lTnYI/ak
- hVX305pn4i8W28Q1+z2XUYlY3hn3bC/D/wxL/51db5VPmGhsm7yu7Furo/iUVL5MyQXzWlTV0tf
- u4AcA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B3A8F14000F
-X-Stat-Signature: d8noqwiictkwkdz67p1dym9mg46ge1m9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <al4jGBGNG_QACaNL@sirena.org.uk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: qmu4zz134xgu9snkej7wtp5dzf7m6krs
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 81DD440006
 X-Rspam-User: 
-X-HE-Tag: 1784558477-617210
-X-HE-Meta: U2FsdGVkX19jFWlqgguOtNFkzMM+uPIfvYjzqeq+wv+OJsuqvj/KubgCXm89CG1UKFrGpFrzD2oFttVUNGtr06ebAiMYsHWs2ka1tBXSsfMxpTQeSpCgxF4xWKDRcEq3RsgbJPN8ax7fZsOnW1yQyA+cnTJQH9QcIADtXvWzOea5tX9LJZusvDIDOxmL42eX4FzYBRcykJwdS5ZnfBjjxXg1DlstChVfNdKkBLyQ4BDwnpwtorvl296T+RIudF/HtvaY+lYI9LIFbFPiSPgOeV6SOY0yYy03N/PggUVMdgkqbofJBm/J4cxqn+EC9x4+9im6idTMdfREe9fyGt8gLmpucWPbJjWUNhVmscM79upzvp+7ae+yY7nxkfew4QbdPwNcMODRE5OTgrkM6bSnHJTgWnPu4yGqlvVJHxgBIWmGDVFdVHLTenDkIjvaqTCzW4OrsBM/0Q3eeBmxtYOcqjmw9szUlPE1vFj9qZGgh57gyAC0aKaY8w5TXUUWOWAjYROIT94S9YRuTSO2weUJD0yJlhwQw18oLlI0Jlffs50s/zNnbpxZxRPv7vM85nypwQdNskEoaEnFj3MTX7fODBx6nOUwZ8yLMAb56lPdzQ9AMGhUVROZFmlh0v7vCdqJWjI0fTe8hk7QzftIVdk0hKvCjRwxah4QJ391tFP+B2TDzZ2Fxo7hyE2n8jtnNDweHKEOZmGp1TVUnUcFLfCnHRK7Cnq/VaSPzuZMXMUq629EH73mj8ojOKrvQAg6dz1qxAkBiUhXi/UhJSAQTjJd8MAIqvrDCcVpxo288hD2k+Fm9NHRYtYKWIml65aDbPExkaSlHJpjprDTEH23SJ/PB+FTTft7x+zqzAJYwmLotZLAfN4r1WEM8t2nK5HHszk2SsodjyPC80oTENXu1t8vFYxuWjP4FWlHBdXzxcU1ByyhoVE6xp1DqBibiGQUC8PEeeyMSnPFXPZwhLJc6vx
- 5Kh+kjJa
- G27LGuwaptrpsjRvGi2fl43zfnWIX12SR15DhoyC8z+uWjZuDQMGTL2d7RXOVt+TXJTCBSvmlpTfMjcoWvOWHMr4WlST0PCuxSZNRDnICIWsrGH8M1S2oJeKLi6UfJhh+YVSCow3CE3/ZyKj8/M0LrmQf1ycbCWyFzCYpOrvwGLPXvS+9CpQUlAuZKvP+twqREn+TJUvzHloo8mMD1s9Lt4AMdof8LgHsv0Cg1MLAERJJ7VOnWHTbZs+X6rzxCj5sgbA+oa9fAy80U0uFQA8eKCim76dv1eMy+0eSyY6rOILj9dOGdxeqU2u0ylkk0y3mjMNGPAqWoinCMQxhc1t4BLO8KdFboVRta7iRew/RxrX2C4+HAu+PBQwBSw==
+X-HE-Tag: 1784558506-775502
+X-HE-Meta: U2FsdGVkX19ASkTL9HLJNLIEfUQGS6xikgg72ty9qO9aKalNRqhofcmqUnce0Y9LESTtieOv/uka3x4uCTRlsW1hi+I62wfkj+0oSjPJA4VNE14sHEoW7M5s/9R+81iE8z7fJ0hWIYM13lCxKKzQSxEJfdLjfjI1U9tIrECZ08BYzosJ6AFgqKYnvcKNsa6kWHzEug354H5O4xUBoGr1rPNd6/eRgz1NTCkkI32Lb/WxnaiUO7CRVfHY3otPRy4q4v4oYVt9IZZ5sllZoBz0aOEjP4XeM7TplqAcXir1VtuITPYQ/rXzhTKR0BTXgfoE0e6D6BHAi6oHqBY4d5TL64Nc76RM9/+8UoAYJmr2KeadTveXIP+DjVFm7gqgV0xg9omqArwrmrnN4/qnWjyYk5Xv+dUdzxbjPQL8pKB04klVk1fP3t51dD+/SL/u9w8eVP/Wa2cSUrUu/xRT367W0SuqEaTYvI0wH4GY/unGYhWqErUDqvK88aWXybOTT2uo5EGMeGrCfVlchL3exCbwvDi4YW2iMrpCsvLYo4tsf0DjwJa5wXWiZcgY039EhrFmscixFc4o5o3GRcwci9lNuc6pfZ+39nhNbn+FJ9c4Bw/Xig13WUD0ewEnabHdO4Bsv3WHeirzat1YPMuzR2AYOehibZLIqUSm+p08sZtqo69tTZIwsl7+skhtjnLM90ND3WVBCATDDc52IC7CLzjq+6e04Bt/n/Yj3eJPN8H0hP/gN9PB9QwN6z/HtqQfXfCF3p8o8uESpBaa3a5Swtm+3Jx+P4Ay9Iayz5/PcndEDWjgUVjsBsMKLP4f/VyHgY0XEiHSDeXDU/wrtCWlHmkr7bUr+XgoYFqKj525lB4o3BvEjEbNubVaaNTXrAynjXTHbaxM9W2XWQ8MEGi1LDI+b9MvIXbPqhwt4hIoNPcbDBrIHh9cRuprHWgeVqOpAVk+5ScRYfhjj9a9Xw+dvc+
+ 0i0AhWEm
+ DGEpbbJo/KbnjXv3YI9oFEYyr13bLNbIlp7ClhYCwDuiXCIzZD15I7+RaGKuZ/YF5za0SUrFbTx194Myf2hGJNv7xKfFbpMxW8PUP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,139 +84,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Assert that MAP_PRIVATE-mapped /dev/zero mappings behave like they are
-anonymous.
+On Mon, Jul 20, 2026 at 02:31:04PM +0100, Mark Brown wrote:
+> Hi all,
+> 
+> Today's linux-next merge of the mm-unstable tree got a conflict in:
+> 
+>   drivers/gpu/drm/ttm/ttm_backup.c
+> 
+> between commit:
+> 
+>   a3fdf74ffa596 ("drm/ttm/pool: back up at native page order")
+> 
+> from the drm-misc-fixes tree and commit:
+> 
+>   c6bfdcf16f131 ("shmem: provide a shmem_write_folio wrapper")
+> 
+> from the mm-unstable tree.
+> 
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
 
-We test both unfaulted and faulted/unfaulted merges - each with the regions
-having page offset of 0, which would not merge if the mappings were treated
-as if they were file-backed.
+Much of the code here really should sit in shmem.c instead of having
+random drivers/subsystems poke into the internals of shmem mappings
+and folios.  But I feel like a broken record for saying that again
+and again without any action :(
 
-With the recent change that makes them behave as pure anonymous mappings,
-the merges should succeed as their page offsets are equal to their virtual
-page offsets.
+> 
+> diff --combined drivers/gpu/drm/ttm/ttm_backup.c
+> index 3c067aadc52de,c5b813a563e7f..0000000000000
+> --- a/drivers/gpu/drm/ttm/ttm_backup.c
+> +++ b/drivers/gpu/drm/ttm/ttm_backup.c
+> @@@ -6,10 -6,9 +6,10 @@@
+>   #include <drm/ttm/ttm_backup.h>
+>   
+>   #include <linux/export.h>
+>  -#include <linux/page-flags.h>
+>   #include <linux/swap.h>
+>   
+>  +#include "ttm_pool_internal.h"
+>  +
+>   /*
+>    * Need to map shmem indices to handle since a handle value
+>    * of 0 means error, following the swp_entry_t convention.
+> @@@ -69,23 -68,17 +69,23 @@@ int ttm_backup_copy_page(struct file *b
+>   }
+>   
+>   /**
+>  - * ttm_backup_backup_page() - Backup a page
+>  + * ttm_backup_backup_folio() - Backup a folio
+>    * @backup: The struct backup pointer to use.
+>  - * @page: The page to back up.
+>  - * @writeback: Whether to perform immediate writeback of the page.
+>  + * @folio: The folio to back up.
+>  + * @order: The allocation order of @folio.  Since TTM allocates higher-order
+>  + *         pages without __GFP_COMP, folio_nr_pages(@folio) would always
+>  + *         return 1; the caller must pass the true order explicitly.
+>  + * @writeback: Whether to perform immediate writeback of the folio's pages.
+>    * This may have performance implications.
+>  - * @idx: A unique integer for each page and each struct backup.
+>  + * @idx: A unique integer for the first page of the folio and each struct backup.
+>    * This allows the backup implementation to avoid managing
+>    * its address space separately.
+>  - * @page_gfp: The gfp value used when the page was allocated.
+>  - * This is used for accounting purposes.
+>  + * @folio_gfp: The gfp value used when the folio was allocated.
+>  + * Currently unused.
+>    * @alloc_gfp: The gfp to be used when allocating memory.
+>  + * @nr_pages_backed: Output. On a successful return, set to the number of
+>  + * pages actually backed up, which may be less than (1 << @order)
+>  + * if an -ENOMEM was encountered mid-folio.
+>    *
+>    * Context: If called from reclaim context, the caller needs to
+>    * assert that the shrinker gfp has __GFP_FS set, to avoid
+> @@@ -94,87 -87,53 +94,87 @@@
+>    * that the shrinker gfp has __GFP_IO set, since without it,
+>    * we're not allowed to start backup IO.
+>    *
+>  - * Return: A handle on success. Negative error code on failure.
+>  - *
+>  - * Note: This function could be extended to back up a folio and
+>  - * implementations would then split the folio internally if needed.
+>  - * Drawback is that the caller would then have to keep track of
+>  - * the folio size- and usage.
+>  + * Return: A handle for the first backed-up page on success (handles for
+>  + * subsequent pages follow sequentially). -ENOMEM if no pages could be backed
+>  + * up. Any other negative error code if a non-ENOMEM failure occurred; in that
+>  + * case any pages backed up so far are truncated before returning.
+>    */
+>   s64
+>  -ttm_backup_backup_page(struct file *backup, struct page *page,
+>  -		       bool writeback, pgoff_t idx, gfp_t page_gfp,
+>  -		       gfp_t alloc_gfp)
+>  +ttm_backup_backup_folio(struct file *backup, struct folio *folio,
+>  +			unsigned int order, bool writeback, pgoff_t idx,
+>  +			gfp_t folio_gfp, gfp_t alloc_gfp,
+>  +			pgoff_t *nr_pages_backed)
+>   {
+>   	struct address_space *mapping = backup->f_mapping;
+>  -	unsigned long handle = 0;
+>  +	int nr_pages = 1 << order;
+>   	struct folio *to_folio;
+>  -	int ret;
+>  +	int ret, i;
+>   
+>  -	to_folio = shmem_read_folio_gfp(mapping, idx, alloc_gfp);
+>  -	if (IS_ERR(to_folio))
+>  -		return PTR_ERR(to_folio);
+>  +	*nr_pages_backed = 0;
+>   
+>  -	folio_mark_accessed(to_folio);
+>  -	folio_lock(to_folio);
+>  -	folio_mark_dirty(to_folio);
+>  -	copy_highpage(folio_file_page(to_folio, idx), page);
+>  -	handle = ttm_backup_shmem_idx_to_handle(idx);
+>  +	for (i = 0; i < nr_pages; ) {
+>  +		int to_nr, j;
+>   
+>  -	if (writeback && !folio_mapped(to_folio) &&
+>  -	    folio_clear_dirty_for_io(to_folio)) {
+>  -		folio_set_reclaim(to_folio);
+>  -		ret = shmem_write_folio(to_folio);
+>  -		if (!folio_test_writeback(to_folio))
+>  -			folio_clear_reclaim(to_folio);
+>   		/*
+>  -		 * If writeout succeeds, it unlocks the folio.	errors
+>  -		 * are otherwise dropped, since writeout is only best
+>  -		 * effort here.
+>  +		 * Only inject past the first subpage so *nr_pages_backed is
+>  +		 * always > 0 here, matching a genuine mid-compound -ENOMEM
+>  +		 * and driving the caller's reactive split fallback instead
+>  +		 * of an early, no-progress failure.
+>   		 */
+>  -		if (ret)
+>  +		if (IS_ENABLED(CONFIG_FAULT_INJECTION) && i &&
+>  +		    ttm_backup_fault_inject_folio())
+>  +			to_folio = ERR_PTR(-ENOMEM);
+>  +		else
+>  +			to_folio = shmem_read_folio_gfp(mapping, idx + i, alloc_gfp);
+>  +		if (IS_ERR(to_folio)) {
+>  +			int err = PTR_ERR(to_folio);
+>  +
+>  +			if (err == -ENOMEM && *nr_pages_backed)
+>  +				return ttm_backup_shmem_idx_to_handle(idx);
+>  +
+>  +			if (*nr_pages_backed) {
+>  +				shmem_truncate_range(file_inode(backup),
+>  +						     (loff_t)idx << PAGE_SHIFT,
+>  +						     ((loff_t)(idx + i) << PAGE_SHIFT) - 1);
+>  +				/*
+>  +				 * The pages just truncated are no longer
+>  +				 * backed up; don't let the caller mistake
+>  +				 * them for valid handles.
+>  +				 */
+>  +				*nr_pages_backed = 0;
+>  +			}
+>  +			return err;
+>  +		}
+>  +
+>  +		to_nr = min_t(int, nr_pages - i,
+>  +			      folio_next_index(to_folio) - (idx + i));
+>  +
+>  +		folio_mark_accessed(to_folio);
+>  +		folio_lock(to_folio);
+>  +		folio_mark_dirty(to_folio);
+>  +
+>  +		for (j = 0; j < to_nr; j++)
+>  +			copy_highpage(folio_file_page(to_folio, idx + i + j),
+>  +				      folio_page(folio, i + j));
+>  +
+>  +		if (writeback && !folio_mapped(to_folio) &&
+>  +		    folio_clear_dirty_for_io(to_folio)) {
+>  +			folio_set_reclaim(to_folio);
+> ++			ret = shmem_write_folio(to_folio);
+>  +			if (!folio_test_writeback(to_folio))
+>  +				folio_clear_reclaim(to_folio);
+>  +			if (ret == AOP_WRITEPAGE_ACTIVATE)
+>  +				folio_unlock(to_folio);
+>  +		} else {
+>   			folio_unlock(to_folio);
+>  -	} else {
+>  -		folio_unlock(to_folio);
+>  +		}
+>  +
+>  +		folio_put(to_folio);
+>  +		i += to_nr;
+>  +		*nr_pages_backed = i;
+>   	}
+>   
+>  -	folio_put(to_folio);
+>  -
+>  -	return handle;
+>  +	return ttm_backup_shmem_idx_to_handle(idx);
+>   }
+>   
+>   /**
 
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- tools/testing/selftests/mm/merge.c | 104 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
-index c093e27d0aea..edfbd39ae58e 100644
---- a/tools/testing/selftests/mm/merge.c
-+++ b/tools/testing/selftests/mm/merge.c
-@@ -1362,6 +1362,110 @@ TEST_F(merge, virt_and_page_offset_mismatch_memfd)
- 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 5 * page_size);
- }
- 
-+TEST_F(merge, merge_map_private_dev_zero_unfaulted)
-+{
-+	struct procmap_fd *procmap = &self->procmap;
-+	unsigned int page_size = self->page_size;
-+	char *carveout = self->carveout;
-+	char *ptr, *ptr2;
-+	int fd_zero;
-+
-+	if (access("/dev/zero", F_OK))
-+		SKIP(return, "No /dev/zero.");
-+	fd_zero = open("/dev/zero", O_RDWR);
-+	ASSERT_NE(fd_zero, -1);
-+
-+	/*
-+	 * Map two MAP_PRIVATE-/dev/zero VMAs next to one another with offset 0
-+	 * each.
-+	 *
-+	 * With these being made truly anonymous upon mapping, they will
-+	 * merge. If they were file-backed VMAs the page offsets would prevent
-+	 * merge:
-+	 *
-+	 * |-----||------|    |-------------|
-+	 * | ptr || ptr2 | -> |     ptr     |
-+	 * |-----||------|    |-------------|
-+	 */
-+	ptr = mmap(carveout, 5 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
-+	if (ptr == MAP_FAILED) {
-+		close(fd_zero);
-+		ASSERT_TRUE(false);
-+	}
-+	ptr2 = mmap(&carveout[5 * page_size], 5 * page_size,
-+		   PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
-+	if (ptr2 == MAP_FAILED) {
-+		close(fd_zero);
-+		ASSERT_TRUE(false);
-+	}
-+	close(fd_zero);
-+
-+	/* Assert that they merged. */
-+	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
-+	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
-+	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 10 * page_size);
-+}
-+
-+TEST_F(merge, merge_map_private_dev_zero_faulted_unfaulted)
-+{
-+	struct procmap_fd *procmap = &self->procmap;
-+	unsigned int page_size = self->page_size;
-+	char *carveout = self->carveout;
-+	char *ptr, *ptr2;
-+	int fd_zero;
-+
-+	if (access("/dev/zero", F_OK))
-+		SKIP(return, "No /dev/zero.");
-+	fd_zero = open("/dev/zero", O_RDWR);
-+	ASSERT_NE(fd_zero, -1);
-+
-+	/*
-+	 * Map a MAP_PRIVATE mapping of /dev/zero with page offset 0, then fault
-+	 * it in:
-+	 *
-+	 * |-------------------------------|
-+	 * |           faulted             |
-+	 * |-------------------------------|
-+	 */
-+	ptr = mmap(carveout, 15 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
-+	if (ptr == MAP_FAILED) {
-+		close(fd_zero);
-+		ASSERT_TRUE(false);
-+	}
-+	memset(ptr, 'x', 15 * page_size);
-+
-+	/*
-+	 * Unmap the middle:
-+	 *
-+	 * |---------|           |---------|
-+	 * | faulted |           | faulted |
-+	 * |---------|           |---------|
-+	 */
-+	ASSERT_EQ(munmap(&ptr[5 * page_size], 5 * page_size), 0);
-+
-+	/*
-+	 * Map in a new unfaulted mapping in the middle with page offset 0 -
-+	 * this should merge and would not if it were treated as a file rather
-+	 * than pure anon:
-+	 *
-+	 * |---------|-----------|---------|
-+	 * | faulted | unfaulted | faulted |
-+	 * |---------|-----------|---------|
-+	 */
-+	ptr2 = mmap(&carveout[5 * page_size], 5 * page_size,
-+		    PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE,
-+		    fd_zero, 0);
-+	close(fd_zero);
-+	ASSERT_NE(ptr2, MAP_FAILED);
-+
-+	/* Assert that they merged. */
-+	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
-+	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
-+	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
-+}
-+
- TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
- {
- 	struct procmap_fd *procmap = &self->procmap;
-
--- 
-2.55.0
-
+---end quoted text---
 
