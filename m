@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 618F2C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 07:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA4BCC44529
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 07:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66F0C6B009E; Mon, 20 Jul 2026 03:14:34 -0400 (EDT)
+	id 980696B009F; Mon, 20 Jul 2026 03:16:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 646C16B009F; Mon, 20 Jul 2026 03:14:34 -0400 (EDT)
+	id 931806B00A1; Mon, 20 Jul 2026 03:16:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 584886B00A0; Mon, 20 Jul 2026 03:14:34 -0400 (EDT)
+	id 846EA6B00A2; Mon, 20 Jul 2026 03:16:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 318236B009E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:14:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C266C1406F6
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:14:33 +0000 (UTC)
-X-FDA: 85008292026.11.CE3E192
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 35E1A16000B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:14:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qc2SHIfq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0946B009F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:16:40 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C6E9340732
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:16:39 +0000 (UTC)
+X-FDA: 85008297318.01.8364D44
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 94CEA180007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:16:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784531798;
+	b=BFv8rGMHCSvSyqlPwQOP7quWu82m+4C3cmwiCe11rLUEpPV12SoJV6zM/6q49I5lXXomRA
+	gvOrbNQLtiADsxyAcYXzP9UTdTShdqZ1DdL9q+CL+rAiOm4OSyF/z4pHAeYNWQ9UGj7n8S
+	ZJPJjZvsR0Ehn36Cg9dYIqcf/5vLRbI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784531672;
+	s=arc-20220608; t=1784531798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8c1NwXrdIUkx3pvI3J59TnigPzn4Ew9yA8/E48gML0w=;
-	b=b2XFYbNY/CaMSR3D23k97wPcJO8dYUhr0fcc4ociuJTvhMQk1SUkhLsFmo0sxYGcbDDCBJ
-	Lt3SrZcF55DZI9Tv+awInCxzm/x9OWbShjnIjN9fNMk4Mk8Qb7wWgLszmMdBPmVQXcjPMZ
-	sFwbEX3NiptlRWjLnhWFWU7GyN8CvUk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qc2SHIfq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784531672;
-	b=ROZ/dFDVmeGZHXrhUYhMyy9UzOCxi18mRUrKlmA4I79JGM5osunOPnH6VQ4rLs9fJtp7ys
-	Vpki3lZRsAjZAndH5RVCIj/7Aszp1XdRhfPN0y6+t9uAnxwVLBvaVnin2snuM8117K27qU
-	HKfOOmELJlZZqgWN5lLszRTJnpzi+Lg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BE183601D9;
-	Mon, 20 Jul 2026 07:14:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0064A1F000E9;
-	Mon, 20 Jul 2026 07:14:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784531671;
-	bh=8c1NwXrdIUkx3pvI3J59TnigPzn4Ew9yA8/E48gML0w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Qc2SHIfqPkpRmaLfQdPjU+4iOnjqK8iSvAn5ApPARqUjV/vl/u+KoBHUB85YlZ/FD
-	 lg4Y1hWW1b7PWD0l3LwYX25F7pbuztAnDVpabiqbnovQK3zXE7TWbOZq5IXimi411r
-	 5+xtIgrHltyPrAHhl0eMpHV2DcWX86lNtU0v4CUpZHM1lGJVGTqsst3Z9pKO0S+DRM
-	 wAPZB1+Atkh1xsyHhVr+0sCLrtDId47LU6FkiKcsWFrXgrUebnYPtefQZYGlYksngy
-	 pglpmj3RC+lXTq3HysYz+HdkRpMXS9sSKVaGsNum0/pC3WMyIBMR4wBBzWmC0xpfR1
-	 iX9TdZfJMaM/g==
-Date: Mon, 20 Jul 2026 08:14:08 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	jannh@google.com, pfalcato@suse.de, willy@infradead.org, jack@suse.cz, 
-	linmiaohe@huawei.com, nao.horiguchi@gmail.com, riel@surriel.com, harry@kernel.org, 
-	lance.yang@linux.dev, kees@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	usama.arif@linux.dev, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, peterx@redhat.com, chengming.zhou@linux.dev, 
-	arnd@arndb.de, gregkh@linuxfoundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 01/15] mm/vma: introduce VMA virtual page offset field
- and add helpers
-Message-ID: <al3KlYMbmeR6iDX8@lucifer>
-References: <20260717-b4-scalable-cow-virt-pgoff-v1-1-cf24910ef094@kernel.org>
- <202607191155425057lNrNOYTi44E_jmidmtkn@zte.com.cn>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YC/10U6A/TJBZ1fmIDZOZazaOwF0hZylMcnM5HfXjjg=;
+	b=y8XTdl4OjpTBnE7n/VWQ5tA0IbUKqt3038h2PLHEqlwDI2SycKUiyQfO41L8lpu+dk7m1y
+	w4BS4FwPmwKpoTGyToqXL/LMruYvr608HJ4NC4TWjHf8jiSHwTRJIq2Z6TsRJ73q4mm9Nc
+	0Iq+wN/d6qc+/2e8WFB6lHKHqHxoHjM=
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8AxuvBOy11q_y0FAA--.20516S3;
+	Mon, 20 Jul 2026 15:16:30 +0800 (CST)
+Received: from [10.130.40.83] (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJBxEuRJy11qT50SAA--.31041S2;
+	Mon, 20 Jul 2026 15:16:27 +0800 (CST)
+Subject: Re: [PATCH v1 2/2] LoongArch: mm: Expand modules virtual address
+ space to 2GB
+To: Xi Ruoyao <xry111@xry111.site>, Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Huacai Chen <chenhuacai@kernel.org>, linux-mm@kvack.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260717075715.25513-1-yangtiezhu@loongson.cn>
+ <20260717075715.25513-3-yangtiezhu@loongson.cn> <alySgaaQen6ZtwSo@kernel.org>
+ <ba8b2723b563cd290c5c00fb4ec2402626fba06c.camel@xry111.site>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <8ea92daa-ab71-92fd-4449-af51b5557c22@loongson.cn>
+Date: Mon, 20 Jul 2026 15:16:25 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202607191155425057lNrNOYTi44E_jmidmtkn@zte.com.cn>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 35E1A16000B
-X-Stat-Signature: yrcmfb98ge9ggwftmwuo5ytuea1zikiy
+In-Reply-To: <ba8b2723b563cd290c5c00fb4ec2402626fba06c.camel@xry111.site>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxEuRJy11qT50SAA--.31041S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxAr1UKFW5JF4xXF43ury5KFX_yoWrJF18pF
+	4fAws5Cr48JrnrJw40y3WkWayUu347uFW2qF98Jry29wn8ZFy5AFsxtry3XFy7ur1Fyw42
+	gryvqw4jqa4DAabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+	AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+	rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtw
+	CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+	67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+	0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-
+	UUUUU
 X-Rspam-User: 
-X-HE-Tag: 1784531672-383377
-X-HE-Meta: U2FsdGVkX1/rEaO4QBAIl1Xz4N5p0oxuc0ZGh7yFjb/vay+tqIDLmILYKUM6O55CMmwfhwo+uIkYSxj6o3bIfsvHztG+/xuI190SFFCo3QNUTAa1j05/hvmWGQalMyp6PnQ5ly/KYjc8n+dv7cZNaIU+IwE4YaTLRupJ1aoSmHHnw1eZ2VPCa7/bba1ijoKpg6Y7zMJhy49V7GoYKdFXisEp4IGY96NfPqsbusdlY5gQljK5zKplq5KYeJ+HD3xRCvrgpxTCy5o+AeWsI7Mn5Z0qvTEk6rccXMFSVl7ym79IHDmb1gipAEKo6yOI4F/zrH5VBud0AWbQxU71QTn5/PX3wgaTyluInz4Ebf+xO9pK4yzFhw/z0kFG3k3a+hLlqCxl0tJ0AraIkU4mcClrgXHUfjVCsWv4kBcMWRu9WlBPiQQNBxTLzC7nBf8T/bOpbsmqpmpbZ7QUjnDh3IwbZ8JlygUdWKE1aUc/UEiU4z6G8JjfIm67PItQNMPlDHgMOGCHBnXKQtzAljJfTtz2ecS3SEzdX3DS1RMGGGDrD8Vah/8vtuemm3HIwy4dFCFObCZSwfRgvanKeRtiWpqihl6uSkGG5oq9J5oTLCeFHgIzgZrFA/5rfl7y1hGmigefj6VIGKHBthhJHluWxuH6Axv9mhou6YjXcld9NugSmbu/DM7lQcDjmLyRvh9a7J/Bw+3uNX9ugsdQXYkpLpz5ABM8eqLw/QzP+Mc/HRdxtizOX/zReGdaZob3wuskmgne0RZlFXJc7m+z8r/WZooQfHyB5M1vWwE5YrPL+6dZT4SBZaS517kSLvry3HSqlSnt2CSDo4RgyWu0gDrkbWEZ6DZWG62NHIzcBo3rI3wM5m2Xq2VKsaljSOZrW8ueoHMnfqmaJ9r/kUy9av6IJZ4p5D2aL4iJXT5dV/3iZ5TUszdU+2l1d+OBkQR6y8O7yKNdzMX+1SOt6G/XIOQEIs+
- DNVHdnyv
- xVnzRIVX4ByJLLbkrXLObJhVq9BXa0og47UuLRgpMT0+QaXTPKb9kMghXFtSthlc8LcLip1taJwsUXY/vqBRW4j8oac5USmwJ99FHSy6YivYoWkKimpLdY/LE0xI0woBJIDcQo/xKwOIYH/7M9/uKjPT27ixKD1sa5MX0YZUJV9x2dwE52zZPJKlbiFUTbGLUK1TA3u36eSyYxZruyCnIzFmo8nefeeLRLvV5uZHFVc5HigtlB3yfVH9usHf6ywIc41t1/kyMqVDfBv1jHyw4XArmqLtp/8bgdeq9wjVfnC7ktbP9eaLLUavaIf4Rm3gN3LYc68R922pNt6mGL5OekG6JyAYXNyfPu7xOkO2h7iw4rQ0XSaeIGtGeea5SLK4GIQqXMAex+Zc/hR71VdcnskucxyQQH8UOP5vs
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 94CEA180007
+X-Stat-Signature: ygcm7agwmqhfri6ydecj6sdojgqak8j9
+X-HE-Tag: 1784531796-492848
+X-HE-Meta: U2FsdGVkX1+KdQ+j8nwZSyZce95tATXYZ1l5Z+2ARIm4K20wC/pDW5SqiIbQVgNPLXY5sorfuRcTYfihw9mIsa+mRL8uqEsnGN46tSLNKauWQN9MCC068pN1YKSAPc5uHhn+iX+P9rUtNTp3CQvwZWdh/Z1nokja4ZSmV6rHrfkPHZ7lx7SVLuM/1pD6UF/0ql09y9TnzKem84PYn4LC2bh/MaWKPN+KG3lJx4enxfupptgSCclCciyXDiv0N3dJv8j3y4oz52ud4pfNP+/sTIMkKIqyMcwl6VRfI3OwltyrPHjo/Zan1LiM6fo2+I0pkREB00JrLwkbqhRC3iWK9rhNV6S6UcJfb+Ekck8V6U6gswU7Jl+vwjCAGcA5DiI9w9HmG+LSThh6RKWP9DemKWJZO4LaOx+2KbpS+DdtMBrmFP950VNAPWsBkA0zG0IcK4YCwhWncD93axzUOeaSQRTn121JqM9xyoXjsYNbTToNv4vsyhJhLia1jmTXr3Hru6npKi3ybep73xPIf1tX5/bJWCOcWwxtZYO8U4c5qbQzGJftO0ekna6upkvUHnOrT6hYPpJa72DOl+9vmOmqQaGdNgcop8mAq9hSPYTBJt+QK96YOFdNIOxx9PQdRkwFMTZLnbqwfvqvb9uRNAhUMeuzn1YUl1tNJrcaFib+nGaK+oLewyRTi6+7n+l4RnT674e27rm9XdxjvV9H1DxtztG1jo7rCgqmWgummaQv6WEEqKrrv3FFU/2987QfCZF0Y+3TK42OTxhAp4q6IYbhSTf4/viE1lmXvn+UBPM2jDzvXvhzpnm6JolcSERJrIRadaLwJrepjkhQd1UzgkGCHlUbG4hXUeZcDLfV5Za1mEgT2GGArfGDbPARZMrM05AilQnqK1DVEIPv5DYT8yMOyx+BcYvYrgSVwASraUVKjWk3k3RiAWR1V37T5UxpppMllTSdb75d8CEK5Yw06I0
+ 7ZuhfPiU
+ TybGy3L867KAXnjGw7VClPJBwUyhTbFp3CzE9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,96 +106,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 19, 2026 at 11:55:42AM +0800, xu.xin16@zte.com.cn wrote:
-> > This patch establishes fields within the vm_area_struct type to store the
-> > virtual page offset of VMAs.
-> >
-> > The virtual page offset of a VMA is equal to vma->vm_start >> PAGE_SHIFT if
-> > they are unfaulted or were not remapped, otherwise it is equal to this
-> > value at the point of first fault.
-> >
-> > Currently, anonymous folios belonging to CoW'd MAP_PRIVATE-mapped
-> > file-backed VMAs are tracked by their file offset. By adding virtual offset
-> > as a property of VMAs, we can now track them by their virtual page offset
-> > instead.
-> >
-> > By tracking this, we provide the means by which to eliminate this
-> > inconsistency, and more importantly lay the foundations for future work for
-> > the scalable CoW anonymous rmap rework.
-> >
-> > This patch simply adds the fields and some simple helpers. Subsequent
-> > patches will update mm code to make use of these fields correctly.
-> >
-> > The fields chosen are packed in the VMA such that, for 64-bit kernel
-> > builds, no additional space is taken up.
->
-> It is not necessarily true that no additional memory will be consumed, as it
-> depends on whether the baseline kernel has CONFIG_PER_VMA_LOCK enabled.
+On 2026/7/19 下午11:28, Xi Ruoyao wrote:
+> On Sun, 2026-07-19 at 12:01 +0300, Mike Rapoport wrote:
+>> On Fri, Jul 17, 2026 at 03:57:15PM +0800, Tiezhu Yang wrote:
+>>> Frequent "execmem: unable to allocate memory" warnings are observed
+>>> during kernel module loading when updating the latest kernel.
+>>>
+>>> This is because the modules virtual address region on LoongArch is
+>>> tightly constrained to 256MB, while ARM64 and RISC-V are natively
+>>> configured with a spacious 2GB region.
+>>
+>> The constraint follows architecture ability to address kernel instructions
+>> and data from modules code.
+>>
+>> I don't know what are loongarch requirements, but I remember that arm64
+>> added a layer of relocation support to allow 2G module address space.
+> 
+> IIUC on LoongArch the size of one module is limited to 256MB, but the
+> total size of modules can be up to 2GB, as the module loader creates PLT
+> entries for calls across the module boundary.
+> 
+> I'd seen the "execmem: unable to allocate memory" error loading the
+> large amdgpu module.  But after I stripped the amdgpu module those
+> warnings gone away.  To me this is very strange: shouldn't the module
+> loader just ignore the debug info even if it's not stripped instead of
+> requesting execmem for it???
 
-We are moving to this being permanently enabled.
+Yes, after "strip --strip-debug drivers/gpu/drm/amd/amdgpu/amdgpu.ko",
+there are no "execmem: unable to allocate memory" warnings anymore.
 
-> Moreover, in the future evolution of mm, maintaining this benefit would
-> require that the layout of struct vm_area_struct before __vm_virt_pgoff_lo
-> remains unchanged, which seems impractical.
+But we usually need the debuginfo, here are the details:
 
-It isn't, we are very careful with this struct.
+$ readelf -S drivers/gpu/drm/amd/amdgpu/amdgpu.ko
+There are 78 section headers, starting at offset 0x3acdf0a0:
 
->
-> My personal suggestion is: maybe we could simply add an unsigned long field,
-> say vm_virt_pgoff, without worrying about the increased memory footprint for
-> now. Additionally, it would be helpful to add some comments clarifying the
-> difference between this new field and the existing vm_pgoff, to aid understanding.
+Section Headers:
+   [Nr] Name              Type             Address           Offset
+        Size              EntSize          Flags  Link  Info  Align
+   ...
+   [23] .debug_info       PROGBITS         0000000000000000  00b73fa9
+        000000000bfde1bc  0000000000000000           0     0     1
+   [24] .rela.debug_info  RELA             0000000000000000  280f2e40
+        0000000011f754a8  0000000000000018   I      75    23     8
+   ...
 
-Nope that'd add 64 bytes per VMA for a typical usage which can add up to a lot.
 
->
-> Thanks,
-> Xu Xin
->
-> >
-> > The first field is present on cacheline 0 containing key VMA fields, and
-> > the second on cacheline 3, which contains file-backed reverse mapping
-> > fields.
-> >
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  include/linux/mm.h              | 59 +++++++++++++++++++++++++++++++++++++++++
-> >  include/linux/mm_types.h        |  4 +++
-> >  mm/vma.h                        | 14 ++++++++++
-> >  mm/vma_init.c                   |  1 +
-> >  tools/testing/vma/include/dup.h | 26 ++++++++++++++++++
-> >  5 files changed, 104 insertions(+)
-> >
-> > +static inline pgoff_t vma_last_virt_pgoff(const struct vm_area_struct *vma)
-> > +{
-> > +	return vma_end_virt_pgoff(vma) - 1;
-> > +}
-> > +
-> >  static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
-> >  {
-> >  	return desc->end - desc->start;
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index 939b5ea8c9e0..2710628059b1 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -967,6 +967,7 @@ struct vm_area_struct {
-> >  	 */
-> >  	unsigned int vm_lock_seq;
-> >  #endif
-> > +	unsigned int __vm_virt_pgoff_lo; /* Low 32-bits of virtual pgoff. */
-> >  	/*
-> >  	 * A file's MAP_PRIVATE vma can be in both i_mmap tree and anon_vma
-> >  	 * list, after a COW of one of the file pages.	A MAP_SHARED vma
-> > @@ -1041,6 +1042,9 @@ struct vm_area_struct {
-> >  #ifdef CONFIG_DEBUG_LOCK_ALLOC
-> >  	struct lockdep_map vmlock_dep_map;
-> >  #endif
-> > +#endif
-> > +#ifdef CONFIG_64BIT
-> > +	unsigned int __vm_virt_pgoff_hi;  /* High 32-bits of virtual pgoff. */
-> >  #endif
-> >
+$ objdump -h drivers/gpu/drm/amd/amdgpu/amdgpu.ko
 
-Cheers, Lorenzo
+drivers/gpu/drm/amd/amdgpu/amdgpu.ko:     file format elf64-loongarch
+
+Sections:
+Idx Name          Size      VMA               LMA               File off 
+  Algn
+  ...
+  14 .debug_info   0bfde1bc  0000000000000000  0000000000000000 
+00b73fa9  2**0
+                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  ...
+
+The size of .debug_info is 0x0bfde1bc (191.87 MB),
+the flag of .debug_info is not SHF_EXECINSTR or SHF_ALLOC.
+The size of .rela.debug_info is 0x11f754a8 (287.46 MB),
+the flag of .rela.debug_info is I (SHF_INFO_LINK).
+
+Furthermore, I think the following changes are also necessary:
+
+```
+diff --git a/arch/loongarch/kernel/module.c b/arch/loongarch/kernel/module.c
+index 7d4d571ee55e..5a4cbd27f97d 100644
+--- a/arch/loongarch/kernel/module.c
++++ b/arch/loongarch/kernel/module.c
+@@ -484,6 +484,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char 
+*strtab,
+         Elf_Addr v;
+         Elf_Sym *sym;
+         Elf_Rela *rel = (void *) sechdrs[relsec].sh_addr;
++       Elf_Shdr *dst_sec = sechdrs + sechdrs[relsec].sh_info;
+
+         pr_debug("%s: Applying relocate section %u to %u\n", __func__, 
+relsec,
+                sechdrs[relsec].sh_info);
+@@ -522,6 +523,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const 
+char *strtab,
+
+                 v = sym->st_value + rel[i].r_addend;
+
++               /* Skip advanced address pairing for non-exec sections */
++               if (!(dst_sec->sh_flags & SHF_EXECINSTR))
++                       goto apply_normal;
++
+                 if (type == R_LARCH_PCADD_LO12 || type == 
+R_LARCH_GOT_PCADD_LO12) {
+                         bool found = false;
+                         unsigned int j = idx;
+@@ -562,6 +567,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char 
+*strtab,
+                         idx = j; /* Record the previous j-loop end index */
+                 }
+
++apply_normal:
+                 switch (type) {
+                 case R_LARCH_B26:
+                         err = apply_r_larch_b26(mod, sechdrs, location,
+```
+
+Thanks,
+Tiezhu
+
 
