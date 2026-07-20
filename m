@@ -4,103 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 149EBC44525
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB05BC44527
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:56:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E1E96B00BE; Mon, 20 Jul 2026 05:47:33 -0400 (EDT)
+	id E9E406B009D; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BB336B00CE; Mon, 20 Jul 2026 05:47:33 -0400 (EDT)
+	id E4F0C6B00A7; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ABF36B00D2; Mon, 20 Jul 2026 05:47:33 -0400 (EDT)
+	id D19036B00D6; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE7C26B00BE
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:47:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5FEC11A07AE
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:47:32 +0000 (UTC)
-X-FDA: 85008677544.02.7134662
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AB03320006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:47:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=TfAwzd9h;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf13.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784540850;
-	b=YWj4vXqC26F/9nIuO6UhOCFsnSF0lNMi3OSXbC4Sx6ukQgiM69DoAH94GmBVUZJ7dDFd8D
-	/piuA4TDPPPdS7yd8zLR9G2tWdGsW/s1sHPcTA/khntRqyOT+QmZfedmQQnMnAOYNgDl58
-	8JGCBq4RW2rSUV8cjHa+urMOr3P75m8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=TfAwzd9h;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf13.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C9AA6B009D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 26A26A1012
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:56:46 +0000 (UTC)
+X-FDA: 85008700812.14.1AAE994
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5F70B1A0004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:56:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Bl5kuH71;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784540850;
+	s=arc-20220608; t=1784541404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nYPufc9vJgZQgfGaq7EwQsT9y5mRrKBC2QSET+yH5J4=;
-	b=3KldtYvN47jqu/C1DQaHzgtLGblVWGVN2ODphg741iRgnMqO9F33z61KGPDbYzYssYDfK1
-	ujpFX7eo3xiTIdY7O9oaT1qXogkdglnKIgiTg8I9ISvOHcTZjQes+r8+xdBoqLlaVtXqQT
-	XFa0mn2w05DeGB6WB7T9rlB+VhsKHoI=
-dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=nYPufc9vJgZQgfGaq7EwQsT9y5mRrKBC2QSET+yH5J4=;
-	b=TfAwzd9hM1GQaYzd0y32K6hbhXaqJCx2Hkc6LVK3wz1/UQYG38I66oi18XdZ0DFubo8jO8d9g
-	1U2QeVWzNuxu7WfCq8p2ph1UWke7QsZFuNIRZ8eTT5nonUoM7rrPljJIq3UJFo+0yHLDB4nfmXr
-	9S6FBCBvgKqz+5LMel4dgpw=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4h3bJp4fvQzJ4673;
-	Mon, 20 Jul 2026 17:47:06 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id F130940569;
-	Mon, 20 Jul 2026 17:47:24 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Jul 2026 12:47:24 +0300
-Message-ID: <e01fa50e-b9a7-4c0b-ba70-6088b8d6ddfd@huawei-partners.com>
-Date: Mon, 20 Jul 2026 12:47:23 +0300
+	bh=T4P1uAuS96oO2CYd5dZWKgEcG7rXEBr6r3ZYGLFiIQg=;
+	b=LEwj5R9pdBJiIDb3g0vZJShly/eS4dSc3Ms5DeKga4fuLJ6nZAbILUT/JC4USrH4+TQRhs
+	ElyJ9M/0z01bJnoxusfP1M8JkWi28pSZHNUvHbptHiUZeQG8ks0GbpYxSeretshSEB2+Sg
+	SozHNs4M1oxYsQFo2BBpy9MbdRgPUgs=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Bl5kuH71;
+	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784541404;
+	b=6Fbt2E4xATerEjV8FIuMAWuKBcCOV+S2ZMnQ2GQ22i0UVA17eiIuRoOkdP5HtHQW8V9Qh3
+	pGSomthVJ+cROXIhfY6zhcByMLFvz9XmHdnHQtSDeK2wnzEkRalj1xHeiPzSpmqbgzXGkv
+	v6hxQ5XBbPZTASuYxSgT3DvonK5Cv5k=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cf52d15d88so13229165ad.2
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:56:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784541403; x=1785146203; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=T4P1uAuS96oO2CYd5dZWKgEcG7rXEBr6r3ZYGLFiIQg=;
+        b=Bl5kuH7141Ppa8Cq0dEc4CWvL4d+49IhAiysagBNnuB7K8WjKaxakYdidN1+hdSe4M
+         84zPZ/6ETWmSTwET3KolzsDhkLCaqWzJfYMHlE96rH7VTngebIVgWHun8BsygNA7LNuE
+         2HkNWnkfPlbP9Tpq6EhoytTKdmUdfboWuCYNS4vA9ZnsllInxg221HIoD/U1bVHQjg2Y
+         ve2ASjUpSJlLA65Ep0aNWEFRqkI9fdGj104waITISSoCJ12MP9BN5xHiTpZ7W5oGGDqR
+         BVSa42iJWLeIc7QNLaTAmax9+1xEAxUkXHObTm4rNCNXGijyYZFi6tTiLkrNou32zNns
+         PdKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784541403; x=1785146203;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=T4P1uAuS96oO2CYd5dZWKgEcG7rXEBr6r3ZYGLFiIQg=;
+        b=UbpHc/goaVWppeajdiU2/4mkRcl6WfDah/covLzm4qGccmASRNayx6CsHfkMQRlapc
+         Iu+nZd50uQEUlfJiXhRg8OR6EJKFEBlcN3M6G3l0xb0Pa5d2/GzS723Wt+PZLl/lw3nQ
+         2CJ0BnfbcAg+LIFbgYZ4Y9JsGDz+slDyrfcCQQSw4RmzZcakBm/SXPEFL4VlCJZA2Qt6
+         9aFaqHC9Qu2i2he6CCXMdtAp7pfjiCMid1r5/eruXNHGdhs/7sftrC1dG7mGCMsGrCX5
+         70abZApb/WWqEyma19kP6e5Se+pWBLGKODIKH1uE0roVO2VutYJSicYtL1wPi80XnO1j
+         NIwQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoE9E0clmA/GGMBU9MrM0zCAl0m4OMSZu8ytGWZZRpx78faQ2hdm64zcX5NW8DpyDcf73BNndHFEw==@kvack.org
+X-Gm-Message-State: AOJu0Yxdw0bSaWINABT4eAzqUirNkv0zLACWyDTl7NGxVP3q9UN6E3tD
+	B8QlDpatNbX0hveJN42qJyUnLe+oTT0YVC9n5GbO0ppbprPrOeA8Bb6P
+X-Gm-Gg: AfdE7cl7L+u/kivVH/QeB2GsqbNjdclY0O3zumV3zulG7JDbatsdSZKUAothhFBRr5G
+	KAtvnOAyB4yPEo52lhTp+W+kNo2+SZzDjrrrJCCR9Nk6rndS7RfZLnHG6yJcHwEudMyv1WS1H5t
+	2LW7aoFn09O518kYVw8D+3fz+NYGRdgElBgeGoNABZx5UoKXkxVDyO5hmDkreqDzB+6E9rkKVul
+	qV0iTMoakvmOHBMcga1eY5t/oKyxR+F6567qZWBexsQAbPi5LJRixPc0YCAp9IUphySFXH+WKtE
+	CBhzYOKHqZ1aO4reGltapdGp+pHExZKJrD/YKSb++Kd6EthxGPJPPCxFhwXpOwBpxHLM6iBz5QK
+	5MgMohu9vzuSgNjYvU4PznDqHW+iL4zTBnnCEawRRftl1NY6oPjO3fJHVclMyRpBjrVQNx9XPGt
+	QiYAQf+6TMMDkWSZo7C008keYHJT8=
+X-Received: by 2002:a17:903:440c:b0:2ca:1594:451e with SMTP id d9443c01a7336-2cf3496b583mr155402025ad.31.1784541403123;
+        Mon, 20 Jul 2026 02:56:43 -0700 (PDT)
+Received: from localhost.localdomain ([112.65.87.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344bd3aesm53940335ad.26.2026.07.20.02.56.36
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 20 Jul 2026 02:56:42 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: david@kernel.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	npache@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	daichaobing@sangfor.com.cn,
+	wangkefeng.wang@huawei.com,
+	gutierrez.asier@huawei-partners.com,
+	zengheng4@huawei.com,
+	kasong@tencent.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	lianux.mm@gmail.com,
+	lianux.wang@processmission.com,
+	kunwu.chan@linux.dev
+Subject: Re: [RFC PATCH v3 0/3] mm/damon: introduce DAMOS_SPLIT action
+Date: Mon, 20 Jul 2026 17:56:33 +0800
+Message-ID: <20260720095633.32281-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <59292ba2-e0cc-4e50-bb26-be9c15843a41@kernel.org>
+References: <59292ba2-e0cc-4e50-bb26-be9c15843a41@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 1/3] mm/damon: introduce DAMOS_SPLIT action
-To: Lian Wang <lianux.mm@gmail.com>, <damon@lists.linux.dev>,
-	<linux-mm@kvack.org>
-CC: <sj@kernel.org>, <akpm@linux-foundation.org>,
-	<linux-kernel@vger.kernel.org>, <david@kernel.org>, <ljs@kernel.org>,
-	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <npache@redhat.com>,
-	<ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <ryan.roberts@arm.com>,
-	<daichaobing@sangfor.com.cn>, <wangkefeng.wang@huawei.com>,
-	<zengheng4@huawei.com>, <kasong@tencent.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <lianux.wang@processmission.com>,
-	<kunwu.chan@linux.dev>
-References: <20260720030327.80153-1-lianux.mm@gmail.com>
- <20260720030327.80153-2-lianux.mm@gmail.com>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260720030327.80153-2-lianux.mm@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Queue-Id: AB03320006
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: qqmjj9h3u8w1wtqkopcqigy9syxeuysc
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784540848-700199
-X-HE-Meta: U2FsdGVkX19hmA3jMWFCU4kQgYdSowF1IEq43lt8nN12cEcnkFcn5NAOK19O/MYxUgsw8hOB7sLzqo2tGip+f3ptTnsTKv/4bWXhPKbdsiTZ8Bt1kqInISEBPQfSXmeb8D4Qfp2/LVTpaEswnKo6kUhbPZ4GXDSqBuqKpA8e1GCvkDgWR/EZaAMFq5nXL05AtoOeGA+d7Cde7QKtOUK/UPgcfS6run3X5izSHHINo7Flan/6MGwOVN7jb0gcIuL8sR53s6MhYIm0QyA9vTQyYvChSZEv6NrKMgUcg8h/XsLudRpKnMYiEBkADB+TeP0EZA7DYXHsyuOXSOXlws/cvK67HpTnKacFhDl9azSRWPUxsEG3xWAGHg1ZAIwzw6qor1TXjTavFiUud4MdOuL1cbZG3vr/PVzBEoPmBX9u0drYgA9EJ+NioSHXcg76rKlHPO/UNnEjn58TqZzN57Kg6ohv1OB9OmWXd2klR9zONbQZorEjldbTfhgiMzQRMzBHAGyacDE7DsSEr2EabxicZwg+RBU6lBZr5P77pEKi5P12UAu4FeSD5smk1ZrHQGHAMYcL3+dkrkd0nA9WpzxcpxIgy2dIDLU2JYiIubnTG47pn7KTBJjG1OynPC+mZJYBkfXfXGykVZ/WsUifZXE0+gO+OrUPzIRviVUhXualOhCIRPrh7hQz5CF+X5dIlz0meAMWCuhJd4l0395JezRFcwZDFhv1oCLee8pEli1BCPX0Kt/Ue8auGk39+nQZuTJMNRUkQQ1K3KrVyWopge0+NmsP6FGMlZ+OQEKbAcwDuu9BxcU57S6D35B5a1zXEteaXzZUbKMQ9MHnS6VZY1qg+mCJ2MCDQB5/6r20GDpOKK42oCyuYnjYXHbtf8e+7LH185J47CshqkdVaUxfjP/H0Tr+2+/D2raal94fXszY5Nkuzb2vRXku5yRaU63Om2uax8pBwuA0JjMbADuorwM
- ybkZgu6D
- OqIEnwh22WxXHqLoU4wcWGeeS5yM6YdSj08yK+iIPuWmuKrkXkv0T6RmhUiPgY/rUmY3B2auI40nd8ozV65TWJS+J93VvrIgO5lo8wJBW0pW1BIOfZwis8wpW6VZ332q7yzX342CZLS1ocLB/07skGfUOdZX9UEDwV/yzXCPheDqJZMBZ5+qKSiY6+H/SkObHsvfy0cy9Q6W2dH/HwMMIlljfxs0CYfKtLYHI0jBZHcGZ94vFiHm5wCd4hEFHJtSTNyUYy1sgmkOVV4Rb2oW7sjy2R0cXoi3txGQiaet525ToXskHhiGZePVwd/H0ubVt2X+VGu1utAJvPIibDHDMr8cMP1+9f7g4ZbxbBbAvnzQBXImroopNHXWnwfmV1ZSJtp9LRLctEoG7JK5UNc2Igu7yAbbQxGPuEiU0uYEcAa45TbhmrIs5aYFg8EqIZMCzTX8CQOrEGYjMiV/4gWW+6HRIoGjlWmKlKXxU+TEkA6hhY2DRCwv+x7g8OQOopfq3StA2C1Xp8eerplNTe3xXggV4uqAv+kL4foNm
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5F70B1A0004
+X-Stat-Signature: 9r7nwa8ymhyab8mp46hx8xbwwzpqqk5x
+X-HE-Tag: 1784541404-707695
+X-HE-Meta: U2FsdGVkX1+e/IO/W0jaySzVg4qhmr9idsG1xWwUQf6Cl91nCvB4tNxKBPip43q+7vy1noYl0MuAdwuIDkyaZArbawy0CZ5+AU3Z7TO3BvDG1DzEIdu/9dXwtaRTLnEz9hnTAklltcQBQUBGTZwZj+yYlrWJsp94kcGoq3UHviuhcMG2Axe61kqD/BKbXA6dyD2F3r4+flkoMlsg5tLX7aeDVv/Rt9jEW0gLm6NksMIiJ3PtfUyK+qLCi0b8RKodpgeQm8rS92LJYu8J+6mNVV4xNTPNX7aWUt8/J/KGKGaPTN9JdOaYYwmbR0ONCvRMzxWW366/phkQOvz7MaKRc1hCBTfnAsozRNMoAwWFEp8Ccl57xm/jDXSgJcJAtGGxreiMfizfqWh/su0ko+1ng22MnXXRrxt7xZmBLSH47BrkAVBvx7mmnVZQuVRahqHI/6siCrtRubgvlHitsPfH+AehHJL6ykqr0j0tcRlkc+QQR+78qE0HAcOCAXZCH7Pag1FB+Moot/vl2iAbIEpZiPKaQzCqqTXPrbqWFundTmKPD8MdGI+kwHjv85+mq4LldeRHLE3GahApE8W2c34wg9ck7RNJsd/fZgOd462pE49vLJ2wOL7oGI1kafZCgcGAbzqgaPhgAjeoRrVg5iYl4+Cx8ke/rbbJCvW3Zxtn3zSTWc8DQWU5AqvI5I8HP//s/7hox9rDmHHWJ9UeTj6fpU093bXPeFdPk8vFwggWSZckznflnXrAhRoLnV3jZmipELTW2IwDIujV8L21taE0dqeAG3qbR1U2MPiapvI79cHPjizaJdRVXtsxLKyDsL0BWJt/Ft+oBC2AxD3r0T1XS7DS+L7fWuDoVvyHBHnz6twuTTlQrKCKn96y3RHPEAgu7Jr8+b3YjNK2a/hTiuYaFn4eR1BvOxb2b0/m/fMtSSvuueIAegGHrggqzFU+lac9ueSEyiwTlK5xJUf/5jq
+ ZFXPvN5G
+ aOmfwm8E91R6zYqL903KY2j+zYpHrE6DUwRjwv0af0VvO7G3pCG11dxUoiL1YMBBbtKdzHKbnKcfaD1Ui0TPytgEYYNnrqsNQfaB4erW8pw0S/WNk28mLGnnj/97ELg84r59vdDIrV45qiqgnT+sKTDZZA0IncfbYEpQX7kvThsiZN4awTM7sl+gWjx5gAMH0+f27qIiASAjhDqbhj6un0BJhD/wCJ61aGOHmela2bPCzJJLnh5w9kB00hRwvcweD5gRTnGE9EJP8skEaBw6iMcAOsUC6sXVkhIqL6ORdyjKEgiUlyfj111Ij3gvUYBHvtmC3GA54V9Ip8ibTk0Un5hzpVCBr6ZlnLB3RsRdl0jhSXakC03jRReVDQrfa8Eh+npu98m1RxGULOqHRkDoPZbdY709SjPS32iM8qbVRBxmeHFsW9u8YtvYB/LR+AO6mj1/YEsRPBUHdLnZ9EDrOFHtIvXreLeFd/1NroXXApVkb6oUKR9lDv42StBwdu4TA4n8vIOyE+zLfqj1A3jXO29beuIHGefA8cdQY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,272 +142,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi David,
 
+On 7/20/2026 10:44 AM, David Hildenbrand (Arm) wrote:
+> you give no real motivation and evaluation why this is required or
+> why this gives the user any benefit.
+> A SPLIT with an explicit order is not really want we want and it
+> does not fit the existing primitives.
 
-On 7/20/2026 6:03 AM, Lian Wang wrote:
-> Add a new DAMOS action, DAMOS_SPLIT, that splits large folios in the
-> target region down to a smaller order.  A new per-scheme field and sysfs
-> file, target_order, selects the split target: 0 for order-0 base pages,
-> or 2..HPAGE_PMD_ORDER-1 for a smaller mTHP order (order-1 is rejected at
-> store time since anonymous THPs cannot be split to order-1).
-> 
-> Unlike DAMOS_COLLAPSE which builds large folios, splitting only dismantles
-> them; it allocates nothing, copies nothing, and no THP admission policy
-> applies.  khugepaged deliberately refuses to collapse a folio to a
-> smaller order, leaving the shrink direction to callers like this one.
-> 
-> This patch adds the DAMOS_SPLIT action, the ``order`` field (placed in
-> the existing union alongside target_nid and migrate_dests), its sysfs
-> interface, and documentation.  The vaddr operations set handler is added
-> in the next patch.
-> 
-> Link: https://lore.kernel.org/20260605161422.213817-9-npache@redhat.com/
->  ("mm/khugepaged: skip collapsing mTHP to smaller orders")
-> 
-> 
-> 
-> Co-developed-by: Kunwu Chan <kunwu.chan@linux.dev>
-> Signed-off-by: Kunwu Chan <kunwu.chan@linux.dev>
-> Signed-off-by: Lian Wang (Processmission) <lianux.mm@gmail.com>
-> ---
->  .../ABI/testing/sysfs-kernel-mm-damon         |  7 +++
->  Documentation/mm/damon/design.rst             |  5 ++
->  include/linux/damon.h                         | 15 ++++--
->  mm/damon/core.c                               |  2 +
->  mm/damon/sysfs-schemes.c                      | 48 +++++++++++++++++++
->  tools/testing/selftests/damon/sysfs.py        | 11 +++--
->  6 files changed, 79 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> index 907a504fb64c..ee8e260a631c 100644
-> --- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> @@ -265,6 +265,13 @@ Contact:	SJ Park <sj@kernel.org>
->  Description:	Action's target NUMA node id.  Supported by only relevant
->  		actions.
->  
-> +What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/target_order
-> +Date:		Jul 2026
-> +Contact:	SJ Park <sj@kernel.org>
-Shouldn't this point to your email address?
-> +Description:	Target folio order for the ``split`` action.  Large folios in
-> +		the target region are split down to this order.  Valid values
-> +		are 0 (order-0 base pages) and 2..HPAGE_PMD_ORDER-1.
-> +
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/apply_interval_us
->  Date:		Sep 2023
->  Contact:	SJ Park <sj@kernel.org>
-> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-> index aed6cb1cf483..87a801954b1b 100644
-> --- a/Documentation/mm/damon/design.rst
-> +++ b/Documentation/mm/damon/design.rst
-> @@ -549,6 +549,11 @@ that supports each action are as below.
->     Supported by ``vaddr`` and ``fvaddr`` operations set. When
->     TRANSPARENT_HUGEPAGE is disabled, the application of the action will just
->     fail.
-> + - ``split``: Split each large folio in the region down to the order specified
-> +   by the scheme's ``target_order`` (``0`` for order-0 base pages, or
-> +   ``2..HPAGE_PMD_ORDER-1``).  Supported by ``vaddr`` and ``fvaddr`` operations
-> +   set. When TRANSPARENT_HUGEPAGE is disabled, the application of the action
-> +   will just fail.
->   - ``lru_prio``: Prioritize the region on its LRU lists.
->     Supported by ``paddr`` operations set.
->   - ``lru_deprio``: Deprioritize the region on its LRU lists.
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index f69442a9d431..88b61b900a36 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -110,6 +110,7 @@ struct damon_target {
->   * @DAMOS_HUGEPAGE:	Call ``madvise()`` for the region with MADV_HUGEPAGE.
->   * @DAMOS_NOHUGEPAGE:	Call ``madvise()`` for the region with MADV_NOHUGEPAGE.
->   * @DAMOS_COLLAPSE:	Call ``madvise()`` for the region with MADV_COLLAPSE.
-> + * @DAMOS_SPLIT:	Split each large folio in the region to a smaller order.
->   * @DAMOS_LRU_PRIO:	Prioritize the region on its LRU lists.
->   * @DAMOS_LRU_DEPRIO:	Deprioritize the region on its LRU lists.
->   * @DAMOS_MIGRATE_HOT:  Migrate the regions prioritizing warmer regions.
-> @@ -130,6 +131,7 @@ enum damos_action {
->  	DAMOS_HUGEPAGE,
->  	DAMOS_NOHUGEPAGE,
->  	DAMOS_COLLAPSE,
-> +	DAMOS_SPLIT,
->  	DAMOS_LRU_PRIO,
->  	DAMOS_LRU_DEPRIO,
->  	DAMOS_MIGRATE_HOT,
-> @@ -582,10 +584,15 @@ struct damos {
->  	struct damos_quota quota;
->  	struct damos_watermarks wmarks;
->  	union {
-> -		struct {
-> -			int target_nid;
-> -			struct damos_migrate_dests migrate_dests;
-> -		};
-> +		int target_nid;
-> +		struct damos_migrate_dests migrate_dests;
-Shouldn't we keep target_nid and migrate_dests together using a
-struct, as in the initial code?
-> +		/*
-> +		 * @order: target folio order for DAMOS_SPLIT.
-> +		 * Split large folios down to this order.  0 for
-> +		 * order-0 base pages, 2..HPAGE_PMD_ORDER-1 for
-> +		 * smaller mTHP.  Order-1 is rejected.
-> +		 */
-> +		unsigned int order;
->  	};
->  	struct list_head core_filters;
->  	struct list_head ops_filters;
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 806a67d02a6e..394c62455ad5 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -693,6 +693,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
->  		return NULL;
->  	scheme->pattern = *pattern;
->  	scheme->action = action;
-> +	scheme->order = 0;
->  	scheme->apply_interval_us = apply_interval_us;
->  	/*
->  	 * next_apply_sis will be set when kdamond starts.  While kdamond is
-> @@ -1446,6 +1447,7 @@ static int damos_commit(struct damos *dst, struct damos *src)
->  
->  	dst->pattern = src->pattern;
->  	dst->action = src->action;
-> +	dst->order = src->order;
->  	dst->apply_interval_us = src->apply_interval_us;
->  
->  	err = damos_commit_quota(&dst->quota, &src->quota);
-> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-> index 32f495a96b17..725ed81ccf6c 100644
-> --- a/mm/damon/sysfs-schemes.c
-> +++ b/mm/damon/sysfs-schemes.c
-> @@ -4,7 +4,9 @@
->   */
->  
->  #include <linux/slab.h>
-> +#include <linux/mm.h>
->  #include <linux/numa.h>
-> +#include <linux/huge_mm.h>
->  
->  #include "sysfs-common.h"
->  
-> @@ -2260,6 +2262,7 @@ struct damon_sysfs_scheme {
->  	struct damon_sysfs_stats *stats;
->  	struct damon_sysfs_scheme_regions *tried_regions;
->  	int target_nid;
-> +	unsigned int target_order;
->  	struct damos_sysfs_dests *dests;
->  };
->  
-> @@ -2293,6 +2296,10 @@ static struct damos_sysfs_action_name damos_sysfs_action_names[] = {
->  		.action = DAMOS_COLLAPSE,
->  		.name = "collapse",
->  	},
-> +	{
-> +		.action = DAMOS_SPLIT,
-> +		.name = "split",
-> +	},
->  	{
->  		.action = DAMOS_LRU_PRIO,
->  		.name = "lru_prio",
-> @@ -2326,6 +2333,7 @@ static struct damon_sysfs_scheme *damon_sysfs_scheme_alloc(
->  	scheme->action = action;
->  	scheme->apply_interval_us = apply_interval_us;
->  	scheme->target_nid = NUMA_NO_NODE;
-> +	scheme->target_order = 0;
->  	return scheme;
->  }
->  
-> @@ -2645,6 +2653,40 @@ static ssize_t target_nid_store(struct kobject *kobj,
->  	return err ? err : count;
->  }
->  
-> +static ssize_t target_order_show(struct kobject *kobj,
-> +		struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct damon_sysfs_scheme *scheme = container_of(kobj,
-> +			struct damon_sysfs_scheme, kobj);
-> +
-> +	return sysfs_emit(buf, "%u\n", scheme->target_order);
-> +}
-> +
-> +static ssize_t target_order_store(struct kobject *kobj,
-> +		struct kobj_attribute *attr, const char *buf, size_t count)
-> +{
-> +	struct damon_sysfs_scheme *scheme = container_of(kobj,
-> +			struct damon_sysfs_scheme, kobj);
-> +	unsigned int val;
-> +	int err;
-Move the variable declaration to the top of the function.
-> +
-> +	err = kstrtouint(buf, 0, &val);
-> +	if (err)
-> +		return err;
-> +
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +	/* Valid split targets: 0 (order-0 base pages) or 2..HPAGE_PMD_ORDER-1. */
-> +	if (val != 0 && (val < 2 || val >= HPAGE_PMD_ORDER))
-> +		return -EINVAL;
-> +#else
-> +	if (val != 0)
-> +		return -EINVAL;
-> +#endif
-> +
-> +	scheme->target_order = val;
-> +	return count;
-> +}
-> +
->  static void damon_sysfs_scheme_release(struct kobject *kobj)
->  {
->  	kfree(container_of(kobj, struct damon_sysfs_scheme, kobj));
-> @@ -2659,10 +2701,14 @@ static struct kobj_attribute damon_sysfs_scheme_apply_interval_us_attr =
->  static struct kobj_attribute damon_sysfs_scheme_target_nid_attr =
->  		__ATTR_RW_MODE(target_nid, 0600);
->  
-> +static struct kobj_attribute damon_sysfs_scheme_target_order_attr =
-> +		__ATTR_RW_MODE(target_order, 0600);
-> +
->  static struct attribute *damon_sysfs_scheme_attrs[] = {
->  	&damon_sysfs_scheme_action_attr.attr,
->  	&damon_sysfs_scheme_apply_interval_us_attr.attr,
->  	&damon_sysfs_scheme_target_nid_attr.attr,
-> +	&damon_sysfs_scheme_target_order_attr.attr,
->  	NULL,
->  };
->  ATTRIBUTE_GROUPS(damon_sysfs_scheme);
-> @@ -3011,6 +3057,8 @@ static struct damos *damon_sysfs_mk_scheme(
->  	if (!scheme)
->  		return NULL;
->  
-> +	scheme->order = sysfs_scheme->target_order;
-> +
->  	err = damos_sysfs_add_quota_score(sysfs_quotas->goals, &scheme->quota);
->  	if (err) {
->  		damon_destroy_scheme(scheme);
-> diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-> index 3ffa054b6386..49d3c319dfd8 100755
-> --- a/tools/testing/selftests/damon/sysfs.py
-> +++ b/tools/testing/selftests/damon/sysfs.py
-> @@ -131,11 +131,12 @@ def assert_scheme_committed(scheme, dump):
->              'hugepage': 3,
->              'nohugepage': 4,
->              'collapse': 5,
-> -            'lru_prio': 6,
-> -            'lru_deprio': 7,
-> -            'migrate_hot': 8,
-> -            'migrate_cold': 9,
-> -            'stat': 10,
-> +            'split': 6,
-> +            'lru_prio': 7,
-> +            'lru_deprio': 8,
-> +            'migrate_hot': 9,
-> +            'migrate_cold': 10,
-> +            'stat': 11,
->              }
->      assert_true(dump['action'] == action_val[scheme.action], 'action', dump)
->      assert_true(dump['apply_interval_us'] == scheme. apply_interval_us,
-> 
+Thank you for the direct feedback.  Let me explain where this came
+from -- the cover letter should have included this context.
 
--- 
-Asier Gutierrez
-Huawei
+This started from a real problem at Sangfor.  The scenario is:
 
+  KVM-QEMU virtualization on Kunpeng 920, with KVM guest memory
+  backed by tmpfs shared mappings (THP=always on the host).  An
+  Oracle database runs inside the VM.  DAMON monitors the KVM
+  process on the host to measure the hot-memory ratio.
+
+  The KVM process allocates and uses a large amount of memory.
+  Under the same workload, DAMON reports a significantly higher
+  hot-memory ratio with THP enabled versus THP disabled.  Direct
+  tmpfs write tests inside the VM -- touching at 4K and 2M
+  strides -- show a clear gap between the two cases.
+
+  DAMON parameters used:
+
+    operations=vaddr
+    monitoring_attrs/nr_regions/min=500
+    monitoring_attrs/nr_regions/max=2000
+    monitoring_attrs/intervals/sample_us=500000
+    monitoring_attrs/intervals/aggr_us=20000000
+    monitoring_attrs/intervals/update_us=60000000
+    schemes/0/action=stat
+    schemes/0/access_pattern/nr_accesses/min=1
+    schemes/0/access_pattern/nr_accesses/max=max
+
+The underlying issue is that under PMD-mapped THP, DAMON's monitoring
+granularity is coarser than the actual working set -- a single
+Accessed bit covers 512 base pages.  Before SJ's probe infrastructure
+arrives, there is a gap: DAMON cannot distinguish hot sub-pages from
+cold ones within a single THP.
+
+Split is one possible mechanism to bridge that gap -- by dismantling
+the PMD mapping, each base page gets its own PTE Accessed bit and
+DAMON recovers fine-grain monitoring.  It is not intended to be a
+permanent API, and certainly not "the opposite of collapse".
+
+I did not write this scenario into the cover letter because our test
+results do not yet show a clear quantitative benefit worth claiming,
+and I did not want to oversell.  Without the context, I understand it
+looks like I randomly proposed a new primitive -- that was not the
+intention.
+
+SJ acknowledged [1] that the monitoring problem under THP is real.
+My RFC is a concrete proposal to start the discussion.  If split with
+an explicit order is not the right primitive, I would appreciate your
+thoughts on what the correct DAMOS abstraction for this should be.
+
+[1] https://lore.kernel.org/20260620203915.82947-1-sj@kernel.org/
+
+Thanks,
+Lian Wang
 
