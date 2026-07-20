@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A02C44512
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 02:36:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5CA7C4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 02:39:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E8446B0096; Sun, 19 Jul 2026 22:36:43 -0400 (EDT)
+	id 903626B0099; Sun, 19 Jul 2026 22:39:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9709A6B0098; Sun, 19 Jul 2026 22:36:43 -0400 (EDT)
+	id 8B3A46B009B; Sun, 19 Jul 2026 22:39:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83C5D6B0099; Sun, 19 Jul 2026 22:36:43 -0400 (EDT)
+	id 7A4456B009D; Sun, 19 Jul 2026 22:39:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 583EA6B0096
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 22:36:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C4F011C0A02
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:36:42 +0000 (UTC)
-X-FDA: 85007591844.10.41917E1
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 12BCF100002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:36:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eOkJFHgM;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 53C316B0099
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 22:39:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CEB2B120751
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:39:31 +0000 (UTC)
+X-FDA: 85007598942.03.C443AD7
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C22A480003
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:39:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jRIcjr/U";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	spf=pass (imf30.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784515001;
+	s=arc-20220608; t=1784515170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KusPc2Cpip6sPBv9PieUVxeP0LYiRvmdBMosAeD5k90=;
-	b=zLn+kjloXqEuiEF64UiXRtgmBTlzWCMXToTGa637Lg5FeHBC7f8piQyQ+UDt00l+ZRLNKL
-	E1bJlYcsStihVE/43O6vRAVIVjavuUFxErKxxteVXIB+u2jOTApDCCXVcjaq4ngpPwAtbB
-	7syTI3sdzwKp/Dp4/kfKuzJkw0iTkVo=
+	bh=NRngtLPWkQ7+WF5w95aCgY6CpKHiVyh4kOZhXjYGgs0=;
+	b=ab/lmhlJDPeQQm2zN7e1rBTE9BGfXKI0g8sAwNuqCUWbcjzrJ59loSMJXC1NlnE7uUm/rp
+	u5OdtRzKBwSpzNVF7fVQTUDFbonhlmGu2VqP6Ls/OXPYTqx2F/ya3RsrSI6US2s1wSfkuj
+	ErGFQIplksO7wdUBuksIGNLqhn26jDg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eOkJFHgM;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jRIcjr/U";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	spf=pass (imf30.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784515001;
-	b=JTg86Svzv4U3Squ2U/TLR/1EFldakGMH2Q9qydQskyfiIbPg2853km9mwLd1K2kTulSXjy
-	KNZsstNRQC4sWclXz5Wz0UWzMq5eDfZAwFF8vcY5llzSHmmRRea+vnrfqxs073MsS/0VAr
-	8DKQO410lRgQuEFLUeeWK02sQQ4U+2E=
-Message-ID: <c0265ec9-e983-4547-a166-7c1d30237b73@linux.dev>
+	t=1784515170;
+	b=RLkC+YBNgbiXlb/YSR8NRMJtKz5jSyOCnXhFpuqP2AS8Javaf2gCiNIGw6HdOL0EkmVvst
+	pcybBAEsI3chKzP9WIhTc8BUv6HwCAd61VFIgiqF6Sd69iWoVQR6x4oSskGLaokI1dvl1W
+	ou6UACaOQqDASrng8lQ8RcPDRM86a+0=
+Message-ID: <89050232-0371-48af-9a3c-a9ab2b535c15@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784514998;
+	t=1784515167;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KusPc2Cpip6sPBv9PieUVxeP0LYiRvmdBMosAeD5k90=;
-	b=eOkJFHgM6kcMlXyh79+foKL5z5ba2DkfV7iAXPTnhaKpSyAfu+A4jkqQyailvUNMc/6G4M
-	zWGbF8zey1Q6P6wxgRW81ZPZq542iHED+d3N/jM8OdRtPmCigRL/bxu5+GnNbEoTTCgObo
-	hFa9uZ3fDfD2zOrYYfaVO6DiCuPlLV4=
-Date: Mon, 20 Jul 2026 10:36:14 +0800
+	bh=NRngtLPWkQ7+WF5w95aCgY6CpKHiVyh4kOZhXjYGgs0=;
+	b=jRIcjr/UmTbgoPYTP9G2unjyvVNk+HGHShAGAuNuOPyqToAyb9ldEWWyq4pfmd+fR6DW51
+	dEse5qnVORb02DfEWKNr2UTDHSh/ghhY1n3EoY0+ncdCU42WtKV0oGKhD7NuncMfpTZKn9
+	gm+lvAChMqskhcRk/4Xk5eHb8askwK8=
+Date: Mon, 20 Jul 2026 10:39:17 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/thp: expose deferred split folio memory usage in
- meminfo
+Subject: Re: [PATCH v6 2/9] mm/page_owner: add MR_NEVER to enum migrate_reason
+ and use it for last_migrate_reason
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, driver-core@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-References: <20260717063025.168436-1-ye.liu@linux.dev>
- <46017e29-48a3-4a74-8c5a-0be9d912deaa@kernel.org>
- <dd037379-cf59-468e-8b42-51546bf2e28c@linux.dev>
- <f041f1e0-8ec4-48d4-8656-a6789c8ad379@kernel.org> <aln6SBHcxBY-9Vfl@lucifer>
- <41bc5ca5-08ed-4aba-86a3-d7f44b16e6f5@linux.dev>
- <b6b04cf2-30d0-4511-9bd4-042b176c1b31@kernel.org>
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Jan Kiszka <jan.kiszka@siemens.com>,
+ Kieran Bingham <kbingham@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260714015117.78351-1-ye.liu@linux.dev>
+ <20260714015117.78351-3-ye.liu@linux.dev>
+ <9e0db1c2-06ca-4dba-8fb1-552fab91cb02@kernel.org>
+ <037d58c6-de55-4b69-bb71-905e03985657@kernel.org>
+ <9e9345c8-30a4-4f78-ba55-d7fa073b82d5@kernel.org>
+ <2911979b-193c-4cbc-85ed-f1d04a9977f0@kernel.org>
+ <86ce288c-f82f-4d73-ba51-4d4f4a6ef1e6@kernel.org>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <b6b04cf2-30d0-4511-9bd4-042b176c1b31@kernel.org>
+In-Reply-To: <86ce288c-f82f-4d73-ba51-4d4f4a6ef1e6@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: sb8fzpsfupj8tb317tc91wpumfnr4kdd
-X-Rspamd-Queue-Id: 12BCF100002
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C22A480003
+X-Stat-Signature: 4wr93yyf47do7kj6d633wdf3qqi4ddgz
 X-Rspam-User: 
-X-HE-Tag: 1784515000-527991
-X-HE-Meta: U2FsdGVkX18V3b4t0PROxPgh+EPPsPoieWYiwTdOSe3QBMW7dk4l6d+sVd4xVNw/0v350+XEXS7BD1JpOZiX26FjIjDlzwozZX7m3tOCAS5tKBmU/TKwDOda6nHyAQphEF1QHPmr3e3ybrkEyXwfGBVCFka18h+Tj2dFfzacH1Y5LBW/jPbfnJSuLD2q5kLnfnnrccQ2NtbTL1nWG1ny21QghJT1PCRpziOwjmzkAlWsRdP+DcltxqMZc0U20ojuQq+9QdpID6OEkcNKzpzKIj1ykmd6gvdukIA4XCnQD2cjtEDAdlfhQzqMtJkU64rCye+SH4VMZZ6RLlw05Ct2CmVbBKpjqVTRkPHZMm3mNrk+zZP6/P/TCtZLiHEjPqUOMx0pJ/MZcGFxpxQ2TZg5BOsbElGGixRp2MV92LYNZjNIKHFvOUC9+9gEJKijgJDmVEzPwQyWreIuegTKeEIMn0JMnO3NxPO53GNphJDclptonozc0bkSbOM7Qgm4T5nq5YuM8OUM8lyXiUGzm9jstgsw7JODCilENRFZtcipr9F5P8DJqSnG0ER7+hkRUGry+aocAOk+xotvqgNTs0GNz2niXEkkimoWa7W6de7N4JdCUohsJYZN5RUzSLpvSypsE2Ku4iP+ApiCWFxzTc3RdORx56FUoE8VFYSHBj+1ByKlqucNuDklOjc5R0YNMsdGAoyD0Obnrg53dkbSAqJQLObBRX7uoXrEOe8Dyvk9C54WAVyQMunQ65fRaK6Q43vlZiJsOEl1vuwLXf75ssdTDVEH2gxwQ959PDdlr0a9+4fFP3M1bCRVeIiC/3jZsrlofdt1WASGhn0OgqhoDx03mLoNvw7iKnPqFjAR4w+6+gUnRQl3kzP4F37jMesoxFuM8GkcftEKbd6Jdlyp1zEu7cYcybGHOoJ9/hjHzkBzRI/HuRvAMTeKr0daGuQucpFZb1byzpX7QHt11Tk+ujv
- 1KE2/+Mz
- jBSWCQwMUazkOSzqEnCMMHrbsUQoEuJrZURohZVWo5QL5c+dwvBQMgMorwxzCSTwiko4f8zPdx6LSfLgSwm11Ajkq381NW6gNJh663ft4WT4SufEIhH6Bl5oy0jKTt5SPsm55FV3089JvgrKDvVlWCgq3RbviPX2QhAysn7BXQAkmzPjps1g+44i3Sgx3nN4c4WJXuWyN2ew8mlI7TWVEB0u8SeVENjgZO1aYhjMnxPgw0sU=
+X-HE-Tag: 1784515169-48752
+X-HE-Meta: U2FsdGVkX1//2ho4BtSlay1zzWPyLMwgmp+/fq52CwtUY4VtJRl/L/jPJjC6vPe+Pm5Zc5wb8JceZsrgsyCz5BD2uf1fnWRTpKP/nj5AfXHwo4nO65qiSGDhCg+n0KYgrMEG9SUgDcZ0ABu41AX5bqVxHBpgjsf/IlC5QviJ15TihtOCSrPgQD7XmCowhG/Js4SfeM1FRCAQn4090ZTw6fTX7MzV4nKGL6HfSa9fQVWPUzoTNOlMOIvjAtVFFLu3QCPOI3psWxfW+iAwXcA/GBvlSzMgyuR0v7vpI1z2v3AvblIT049JdKshNRvHR8Bw7DpW+4n972Z9CdyNHczEqfaR2XZmY3zW+0yl+0ohN1Woeyb9yOpVyJAeiyuadITcE3ivKzj+QQWaLCbEqmFObgSrk+4mXiLFp+9SzeNerdB3Zb2jYdsRyFbGopfSoOjnefi9/kSkDSjFyqRyKroBlILmOoPbTBxCDjpHJIlFsYBqRvwC02VXJoNwg7gq898U/JosyqpVsuougfCz0ZHNIkNoZh9i0ZJGRoANW7mQ7jYcNmBXXHUCt00TGHillMlx8Or5PkLWoN7HmFotEtPSX+9gzSKjzwbJS20ZoPt/9XsTud9azoujn1LyPm8tABb3NEQSEdH7lLA494Kex75Y6JTkw33KTj4IAu9fTzOvV35BA/AYjF8H86aNWczKdDL/dvs77aeZubM5KvoLpBWEOkHX7GZDKMymsfzsvYAzONQxkOOu7xn0zDWzbRNPrREotnJbEtSz6eKbDLLl4jp8O4JbjlsObd+ZQhJj2UksN8jJPAgja37hD/yBuUZXfx5deEKw4vKVnwrdoxc/SxDUIbTvhHBDjYMo7x1ermeSqP3U0TZvVNV0hsnZUvtqZdRwo8svyPL4hx+9MSvLDcboBrkVgsMUuhaGukqo4fiUYv8+AcZZJYBXWBirbrE3fljVPU9jFB9WBHx+WWDFGIG
+ hSRKX44S
+ dDvbu2czml2ivCwiOu6KLymTKmFIk5atTZAhIKVvKy5jvxmUnLZl53wxjB6W1fZmX0lf4DfK3dLA3MzvnuIANYiLeOlBz6guo3CxnfHNg7k4M2y4TrGfKis4Zlx+3616zfPVe9DmwC8iPhXO99nsHyRxPWUPVnGHnDDiSxCodeFS8Hk8/SlAfSpmiImrr+TJDvoR1ADUeDFqVXh1QutUEYRve8IRq9KPD6ln2vvPJp9ViKeI2mkNBC7fFNCrw62NE27fwxuNrUMSIp+3yJs+RhmZJnRhx15H/g4zTuzzWcfg/Oy2anxIJx1hYmWq1VdinMtURhYn2CJUSELuLqVpuIamytYz689coSBb6vVE5WVwY0hk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,47 +111,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2026/7/17 18:29, David Hildenbrand (Arm) 写道:
-> On 7/17/26 11:54, Ye Liu wrote:
->>
->>
->> 在 2026/7/17 17:48, Lorenzo Stoakes (ARM) 写道:
->>> On Fri, Jul 17, 2026 at 11:33:05AM +0200, David Hildenbrand (Arm) wrote:
+在 2026/7/14 22:44, David Hildenbrand (Arm) 写道:
+> On 7/14/26 15:49, Vlastimil Babka (SUSE) wrote:
+>> On 7/14/26 15:22, David Hildenbrand (Arm) wrote:
+>>> On 7/14/26 15:09, Vlastimil Babka (SUSE) wrote:
 >>>>
->>>> Don't expose it to user space.
+>>>> It's not used ever as a reason that would be actually passed to migration.
 >>>
->>> Yeah please stop.
+>>> Right, it's a placeholder for "there is no migrate reason because it is unset"
 >>>
->>> We don't want this change, it exposes internal implementation details. It's a
->>> no.
+>>>> So I think the name is more descriptive this way.
 >>>
->>> Next time send an RFC or a discussion thread.
->>>
->> Yes, sending an RFC would be more appropriate.                                                  
->>                                                                                                 
->> I'd also like to ask if it's possible to implement this in                                      
->> `/sys/kernel/debug/deferred_split_pages`, or are you completely against querying this statistic?
+>>> Not sure I agree. The usual translation of -1 -> unset is NONE or UNSET.
+>>
+>> (note it's no longer -1 after the patch.)
+>>
+>>> At least I was confused by "NEVER".
+>>
+>> I won't bikeshed this, so whatever.
 > 
-> It's not pages. It's folios.
+> Just to be clear: if everybody here agrees that MR_NEVER is the right thing to
+> use, fine with me.
 > 
-> You don't know how much memory is there to reclaim. You don't know if it can
-> even be reclaimed.
+> I just stumbled over it and it caught my attention.
 > 
-> You don't even know if there can be any memory reclaimed *at all*, because there
-> are scenarios where we add folios that are actually *not* partially mapped today.
+>>
+>> Just to avoid another extra respin, please also say how the following line
+>> should change, as if we only rename MR_NEVER to MR_NONE, it will be:
+>>
+>> +	EMe(MR_NONE,		"never_migrated")
 > 
-> You don't even know the relationship to memcgs.
+> I would probably just have use "not set".
 > 
->>                                                                                                 
->> How can we quickly identify this situation?                                                     
->> I believe some people will still be confused: where did the memory go?                          
+> And if "last_migrate_reason == MR_NONE" that would imply "never".
 > 
-> Just like other caches that are shrunk on memory pressure.
+> Ye Liu, feel free to keep it as is if you agree that using NEVER is better here.
 > 
-> We do have a "split_deferred" and a "nr_anon_partially_mapped" counter in
-> "/sys/kernel/mm/transparent_hugepage/hugepages-2048kB/", maybe that helps.
 > 
-Thank you, it really helped.
+Let's keep things as they are.
 
 -- 
 Thanks,
