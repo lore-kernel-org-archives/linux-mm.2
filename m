@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E0C5C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:55:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36898C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:55:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE1CD6B0093; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
+	id D8C726B008A; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB3BD6B0096; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
+	id D63466B0095; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 944C16B008A; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
+	id BDE346B008A; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FC616B0088
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 85AB06B0095
 	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A82FA16075B
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF6D01A0271
 	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:55:27 +0000 (UTC)
-X-FDA: 85007790294.17.8AB1963
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 828D540006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:55:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VIThfSyI;
-	spf=pass (imf27.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+X-FDA: 85007790294.21.59F3087
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9C6AD80004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:55:25 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="tSyM/jk/";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784519725;
+	s=arc-20220608; t=1784519726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=am+19/5kAwq2nurOsVBVrTqc8AGbedae4TuQBKH9vBE=;
-	b=oYJ9FfK9ZCFzMaZuQ1tyEi5JY6i/zae6Z366Xp5m9pRNekdFl4q7xHZKUPWCM4WkXhC2B3
-	uuyumONwR4wqmDU9KIj317LdYBtLLIrVYs1gvIUL5LrZ4vhPCQwNcjGc2rlNy9KRhqa6qT
-	smWvwI4QlXPCAtdHskAZzPhHwcg12Ds=
+	bh=BeDXJ1GH6u80+km2Mx/ZY9/6+inc9EkBSDAiip49A38=;
+	b=Nn9HVim5LcI63yqamo2rFCpgs9Mn4pkZ4oUNaw/sjeU96zr3eLH67uXSo4W+q1q60jrKoj
+	/kX+eLV9ykCTZELwQ89coWVAYTNGE1E9eUDERhxCn/zFKQ4A9LhiF3vb+joxaQIs8AgTal
+	jYE2ml+RSqWlSEw/ZB8Fkgai73Wwp+E=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VIThfSyI;
-	spf=pass (imf27.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="tSyM/jk/";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784519725;
-	b=TviVJVyJiQ6lvtKsiggJihnNRHZDOcxK/zis5epe+pExd0hFsEI9x4e0QirtBMP9yhEHr+
-	wPm8uZ3OscsgboPIDukFGkwB8QA7u3YauAUtWmaA3MNxZGu/S6LxUuBiNUkYuEZvtzQfHr
-	lqAqR/yTqhh85zr+AIkH6Oa4tgrUCS8=
+	t=1784519726;
+	b=ldGWakNOJh/homjxLIkUCmWackEVFmy4RIccqCqo+IIS6g7goxvOQi2iCHA6K8WepyOfh+
+	bQGe82QPh95TCW2WGPy3CqlhxZ74Ur1y+Eo02TPhb0YJgAa6F1H2ZbQxNeGbackHW0MMJD
+	lShaV7P4LeZFtR90ZOHXzPPEJo4WAPs=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=am+19/5kAwq2nurOsVBVrTqc8AGbedae4TuQBKH9vBE=;
-	b=VIThfSyIuCRFCFF1v8dCBMlufnInFQsyK07b6P4yTI6Kf3KVmhmgNQwsTP9gDhNCkdgyAteKy
-	0wBjZ1xlSovsYSIJjCIHvVcfg81veu5xGCnWB/FcZbQwabsUr0VWp3pXn01GolPk7uBD9xHMqyk
-	As8O/JD0WSEGN7VJhcK4h9E=
+	bh=BeDXJ1GH6u80+km2Mx/ZY9/6+inc9EkBSDAiip49A38=;
+	b=tSyM/jk/lOLlTHOcSgyBfEdncp3mh7QY9+QjM1ylC7ywQfjuqYHXBVEHdTvvaO3P93AsAOf7E
+	BTFeabim1p3C6Ze6+b0dZ97a62cYRelNCOFvXl3nt3HK9hhwU3LZGVti/trKuNsCOAHdPBJSnij
+	gNBnODcPdv84ZMS1YkDEP3Y=
 Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4h3RHs2r44z12LDF;
-	Mon, 20 Jul 2026 11:45:45 +0800 (CST)
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h3RJ42rRHzcZyH;
+	Mon, 20 Jul 2026 11:45:56 +0800 (CST)
 Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7A08940575;
-	Mon, 20 Jul 2026 11:55:20 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 11A9D40575;
+	Mon, 20 Jul 2026 11:55:21 +0800 (CST)
 Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
  (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Jul
- 2026 11:55:19 +0800
+ 2026 11:55:20 +0800
 From: Jinjiang Tu <tujinjiang@huawei.com>
 To: <akpm@linux-foundation.org>, <ziy@nvidia.com>, <david@kernel.org>,
 	<luizcap@redhat.com>, <willy@infradead.org>, <linmiaohe@huawei.com>,
@@ -74,9 +74,9 @@ To: <akpm@linux-foundation.org>, <ziy@nvidia.com>, <david@kernel.org>,
 	<linux-mm@kvack.org>
 CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
 	<tujinjiang@huawei.com>
-Subject: [PATCH v2 1/3] fs: stable_page_flags(): use BIT_ULL() for KPF flags
-Date: Mon, 20 Jul 2026 11:30:19 +0800
-Message-ID: <20260720033021.4091944-2-tujinjiang@huawei.com>
+Subject: [PATCH v2 2/3] fs: stable_page_flags(): use folio_test_*() helpers
+Date: Mon, 20 Jul 2026 11:30:20 +0800
+Message-ID: <20260720033021.4091944-3-tujinjiang@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260720033021.4091944-1-tujinjiang@huawei.com>
 References: <20260720033021.4091944-1-tujinjiang@huawei.com>
@@ -87,13 +87,13 @@ X-Originating-IP: [10.50.85.135]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 828D540006
-X-Stat-Signature: m35jcwud8eaogtfehe8diacqbori7jnr
-X-HE-Tag: 1784519724-688862
-X-HE-Meta: U2FsdGVkX1+MAh867K8+7G9zGJczf9x/aUiuvS0KVHHnM9iBUNrNwPi/xCalAH6YF3JTcDEeWNm9dlHC9iPYtUxjHsPGbTGsmOhXqa1L2yKGzF1rgKhGHgb89i72QEFyCkbV+9w8CXqKDzbRC2x2iM8lzz6v3a9K0cPTKYByJHxVhxD0ONJoNDJtDe1yiDv5WJXUlYoNbmiBfbuBAPUE2QFav2v3u1GhR8kTJpRoGbiFs7+pp9hAKbQ0xkYdtKGBCkb5xTIOtNJTgOXOIDXU5jg/+uUXNF2lg176xM/Un7JqCktkPUXmcCHr+e9nsVD7RDUWrYeLXLcOYZcDUWQTC+gxQx9S+7Im9/zUDgyUsQJTLyn1vw4a5LyHcEszaYxXslIezUcDPQuzzNQt4zOJoXmBYDJdCrt/wSxBny7ThC7yBspznK+BUZLLF2Q5YYF0DYNEoBQynqITEb6OIf+f6OZNdHzBNGLzgY6SUoM93BrIfT/PMkDRBDDenSa8TL9tGInL1wzLEnVqn5jYe6+A8NhmSq0Qu/AP8LMS4LCDFZHMabvVGt/M5woPzLQOzg7E6cOWoF+fzsHwkUHgDBqdzgNynCbz8i7YyXiI+os8dUVMzLjzFNhSDsG7HT0BEOYnXB8jnafNpJkh3xzaL/2mrJcLXhbcMpqIqV/zui6JzDGF+EOtEyJjOEg3IwdSWpCv9wgbNsSKnJS782A+SFnTJiVilL+lhXfYtrMXlasTzkOSP9U0DGCmCNvblMBIuRdMExHoi8iLNY1RJeTov+2k+GOIbScVXWtp4P4cKCHm4BM4cqhbnBV5KtA3zGjLRoYhdz3AclIZAvLdSB2YmP2fsmtFW9Gf09jGGAkxcvv1dvJAuxssylAqe7GlPenTByqDstEz8YEzm6+P6zOPzuMBbmlmheLu79fIs/kzLgaU6lzpzVF7Q7y2ynj17lEA1SZt9PmMqXhuUOfvwotiv3n
- zZpKRJA+
- /L3I3fIrL2qlsai0KPASjkvBE/4Srk+W53ttvCFDAQJSySWXmtx/R9g74NQq4xW4eaR/FG6z15iKPYaRWN9JGwZim8Ham6yOn+JbEEKvvMXDhyzYGE3IaKWZBQVpHYKHy5meI5iroVBRqr3Ssma5YbvMtlmsPh+sci2b+gjQMtCIvQVedK8shmuFwOqvrisIn+0k5YPi5d9tEhPeyEpnec8bNgZAjSWZAR2k5tx38q4cOU9RBqWQ99yEkpQUK/zHzgG/mWqfNmQeF/pn3u+H3NOdDN5tBcVLSjOPHngtsytB8Fj3142K904y231mDpB3/3zUaRlZJva65rlu2uzVSDQaJsy8i4HYYj7lzduVaGSATQaEqcrvGVeuDWN+UuZ07KJry
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9C6AD80004
+X-Stat-Signature: 9ptu55s8535u9tq8j1ra43spn5fi61d1
+X-HE-Tag: 1784519725-928693
+X-HE-Meta: U2FsdGVkX189mE+Ryq6CnnDVzQLVJ2njatvDF0psWOI+8+giPb+B8l3AlgG0Nenex3RuUkt2JB85Yg7nYQRb1cY9ldcBKrGvvoH0y0UajsyaOPZrpRv9AACD3D6Op5Ygd7reGacx8Sy+hUWAJDlQbBpoFCAslo6SToaNHydVhDEExXRXg+yxx2eDr4JNlmj6iZ6eowy0E1Ladn9n2p117S3+GxqQl2ZoAnyrUqHi6c17Cf+jhQrGl0ZkKPFCykORnVftsWVZh4+lNkH9UMkhsPEov3ztZP4Cwx4EltxhBk1blk0t3Ny3XJS6LkXdY3uJ4ZrHhjVetnRyj/DZJ0GmWMSzSbiTxiMllRGjsbiDaVrARLjM0oiAdxqn/Epo6VY16o8+XTrzrgv8RI/nZ9VfJDgNi7ulJmh07gqZV4EiwaL0etMQHyIwvGa8o6fT3+1K4gtctDzIMk6dHLPmXL0JAsa13RPmSnYgtH6Rbve1RCVWSx1wZt54pQXLfRosZwnbmC9VTFU88uS3Dz0pDlRyAz+xqY1Zx+g1l9RvJGDkENUTQZ8pIwhH0O/y1/HJStrtXML39M8YrKacx+0uTkRZhIEIyLhgCJkSKJYsD2idHMFvY/R4rHso1aGebf57hF+1ZyJJZo7gN3SwXFn8h5lsiHpnXsWIuH0BPdYQCw4cx6BG0Tvo/d/3h32KXMO/RxpDD3iLqgmNWmERWGn+/4xVxn9gLuYxeYkTRb1V04WuD5D1Lb50XjcqbwLc75MpoSfH/wEQIzn3n5nH3w2nJJFwnkeR8u+INuxHvHKRdBIFC1j82Y4mWtC4J/q7pomfhnPwn1I4JpMDnjsCedCewBBmo091Mu3uPCdHBkYgDyufCA4i2PjZJBVUILdwK1mU834Q+FvjH8AQw8Lp/wrRMRnTv+EmthxQK+s8Q4AoaWdI8bfTCRApt0LjkrcmYp4JULDPnmEEudBvWhqr1C7kx4V
+ 0+6kFNW2
+ 6ERN3bkdAIDKAGE93DpgymZYm1dxzEy8TXXSejbS+nLYD1c49xjp2bLzwceTRMKDEXlp4pmgSM6ZfayNjSBb9oIFAJA61rZUumvS5kCNqcuJdMaE3bq7FgomL/8X7eq5f+IhOtVaXNOK3vyDTnJChzZPLOIPFGnzNSFCFVYKMutZvn6dM6zYOUIpcBLVj8tXV/jtEDWK0gnhbnqs7jRHeIGwiDUcSEAitGZSLRybgRhia0iVRlG0eSx4Z0P6CZsMql2vBOLhVmRm7rQ/S0ZlHBTJh8/+wKE+M/GotUZ5EIiDQ4o1oQimSppWwlHO6U6wIyw99ZIiDIlfGetLMT4iu8dhQRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,117 +101,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The stable_page_flags() function currently sets page flag bits using
-"1 << KPF_xxx" for various KPF_* definitions. KPF_* may be larger than 32,
-which will trigger -Wshift-count-overflow warning. All KPF_* values
-currently used in "1 << KPF_xxx" are smaller than 33, so no warning is
-triggered with current code.
+Since commit 304daa8132a9 ("maps4: add /proc/kpageflags interface"),
+/proc/kpageflags directly operates on page->flags to determine page status.
+Later, commit 177975495914 ("proc: export more page flags in
+/proc/kpageflags") started using page helper functions when exposing new
+flags, leading to a mix of both approaches.
 
-Replace all occurrences of "1 << KPF_*" with the BIT_ULL() macro to
-ensure all shifts are performed on a 64-bit unsigned type. This makes
-the code robust, and safe for future extension.
+For tail pages, the original code did not return corresponding status.
+commit 0a71649cb724 ("/proc/kpageflags: return KPF_SLAB for slab tail
+pages") and commit 832fc1de01ae ("/proc/kpageflags: return KPF_BUDDY for
+"tail" buddy pages") made tail slab/buddy pages also return corresponding
+status. Then commit dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
+made all tail pages return the same status as their head page, except for
+hwpoison and mapped flags. It also cached the folio's flags and operate on
+the flags directly to avoid concurrency issues if using folio_test_*()
+helpers.
+
+Since commit 476d87d6a061 ("fs: stable_page_flags(): use snapshot_page()"),
+we can now safely switch to folio_test_*() helpers instead of directly
+operating on flags, which is more readable and consistent with the rest of
+the kernel. Only convert cfolio-specific flags (i.e., anon, ksm, swapcache)
+to folio_test_*() helpers, which reduces redundant code. Keep others
+unchanged due to they aren't folio-specific flags or coverting them doesn't
+cleanup.
 
 No functional change is intended.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 ---
- fs/proc/page.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ fs/proc/page.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
 diff --git a/fs/proc/page.c b/fs/proc/page.c
-index 7d9387143435..ee39b321f1c6 100644
+index ee39b321f1c6..b3c1d7a7604d 100644
 --- a/fs/proc/page.c
 +++ b/fs/proc/page.c
-@@ -157,7 +157,7 @@ u64 stable_page_flags(const struct page *page)
- 	 * it differentiates a memory hole from a page with no flags
- 	 */
- 	if (!page)
--		return 1 << KPF_NOPAGE;
-+		return BIT_ULL(KPF_NOPAGE);
+@@ -148,8 +148,6 @@ u64 stable_page_flags(const struct page *page)
+ 	const struct folio *folio;
+ 	struct page_snapshot ps;
+ 	unsigned long k;
+-	unsigned long mapping;
+-	bool is_anon;
+ 	u64 u = 0;
+ 
+ 	/*
+@@ -161,19 +159,16 @@ u64 stable_page_flags(const struct page *page)
  
  	snapshot_page(&ps, page);
  	folio = &ps.folio_snapshot;
-@@ -170,11 +170,11 @@ u64 stable_page_flags(const struct page *page)
+-
+ 	k = folio->flags.f;
+-	mapping = (unsigned long)folio->mapping;
+-	is_anon = mapping & FOLIO_MAPPING_ANON;
+ 
+ 	/*
  	 * pseudo flags for the well known (anonymous) memory mapped pages
  	 */
  	if (folio_mapped(folio))
--		u |= 1 << KPF_MMAP;
-+		u |= BIT_ULL(KPF_MMAP);
- 	if (is_anon) {
--		u |= 1 << KPF_ANON;
-+		u |= BIT_ULL(KPF_ANON);
- 		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
--			u |= 1 << KPF_KSM;
-+			u |= BIT_ULL(KPF_KSM);
+ 		u |= BIT_ULL(KPF_MMAP);
+-	if (is_anon) {
++	if (folio_test_anon(folio)) {
+ 		u |= BIT_ULL(KPF_ANON);
+-		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
++		if (folio_test_ksm(folio))
+ 			u |= BIT_ULL(KPF_KSM);
  	}
  
- 	/*
-@@ -184,35 +184,35 @@ u64 stable_page_flags(const struct page *page)
- 	if (ps.idx == 0)
- 		u |= kpf_copy_bit(k, KPF_COMPOUND_HEAD, PG_head);
- 	else
--		u |= 1 << KPF_COMPOUND_TAIL;
-+		u |= BIT_ULL(KPF_COMPOUND_TAIL);
- 	if (folio_test_hugetlb(folio))
--		u |= 1 << KPF_HUGE;
-+		u |= BIT_ULL(KPF_HUGE);
- 	else if (folio_test_large(folio) &&
- 	         folio_test_large_rmappable(folio)) {
- 		/* Note: we indicate any THPs here, not just PMD-sized ones */
--		u |= 1 << KPF_THP;
-+		u |= BIT_ULL(KPF_THP);
- 	} else if (is_huge_zero_pfn(ps.pfn)) {
--		u |= 1 << KPF_ZERO_PAGE;
--		u |= 1 << KPF_THP;
-+		u |= BIT_ULL(KPF_ZERO_PAGE);
-+		u |= BIT_ULL(KPF_THP);
- 	} else if (is_zero_pfn(ps.pfn)) {
--		u |= 1 << KPF_ZERO_PAGE;
-+		u |= BIT_ULL(KPF_ZERO_PAGE);
- 	}
+@@ -225,11 +220,10 @@ u64 stable_page_flags(const struct page *page)
+ 	u |= kpf_copy_bit(k, KPF_ACTIVE,	PG_active);
+ 	u |= kpf_copy_bit(k, KPF_RECLAIM,	PG_reclaim);
  
- 	if (ps.flags & PAGE_SNAPSHOT_PG_BUDDY)
--		u |= 1 << KPF_BUDDY;
-+		u |= BIT_ULL(KPF_BUDDY);
+-#define SWAPCACHE ((1 << PG_swapbacked) | (1 << PG_swapcache))
+-	if ((k & SWAPCACHE) == SWAPCACHE)
++	if (folio_test_swapcache(folio))
+ 		u |= BIT_ULL(KPF_SWAPCACHE);
+-	u |= kpf_copy_bit(k, KPF_SWAPBACKED,	PG_swapbacked);
  
- 	if (folio_test_offline(folio))
--		u |= 1 << KPF_OFFLINE;
-+		u |= BIT_ULL(KPF_OFFLINE);
- 	if (folio_test_pgtable(folio))
--		u |= 1 << KPF_PGTABLE;
-+		u |= BIT_ULL(KPF_PGTABLE);
- 	if (folio_test_slab(folio))
--		u |= 1 << KPF_SLAB;
-+		u |= BIT_ULL(KPF_SLAB);
- 
- #if defined(CONFIG_PAGE_IDLE_FLAG) && defined(CONFIG_64BIT)
- 	u |= kpf_copy_bit(k, KPF_IDLE,          PG_idle);
- #else
- 	if (ps.flags & PAGE_SNAPSHOT_PG_IDLE)
--		u |= 1 << KPF_IDLE;
-+		u |= BIT_ULL(KPF_IDLE);
- #endif
- 
- 	u |= kpf_copy_bit(k, KPF_LOCKED,	PG_locked);
-@@ -227,14 +227,14 @@ u64 stable_page_flags(const struct page *page)
- 
- #define SWAPCACHE ((1 << PG_swapbacked) | (1 << PG_swapcache))
- 	if ((k & SWAPCACHE) == SWAPCACHE)
--		u |= 1 << KPF_SWAPCACHE;
-+		u |= BIT_ULL(KPF_SWAPCACHE);
- 	u |= kpf_copy_bit(k, KPF_SWAPBACKED,	PG_swapbacked);
- 
++	u |= kpf_copy_bit(k, KPF_SWAPBACKED,	PG_swapbacked);
  	u |= kpf_copy_bit(k, KPF_UNEVICTABLE,	PG_unevictable);
  	u |= kpf_copy_bit(k, KPF_MLOCKED,	PG_mlocked);
  
- #ifdef CONFIG_MEMORY_FAILURE
--	if (u & (1 << KPF_HUGE))
-+	if (u & BIT_ULL(KPF_HUGE))
- 		u |= kpf_copy_bit(k, KPF_HWPOISON,	PG_hwpoison);
- 	else
- 		u |= kpf_copy_bit(ps.page_snapshot.flags.f, KPF_HWPOISON, PG_hwpoison);
 -- 
 2.43.0
 
