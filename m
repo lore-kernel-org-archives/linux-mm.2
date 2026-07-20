@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D9D9C4452B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 288ACC4452B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2CF56B00A1; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
+	id 9F4ED6B00A2; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B050E6B00A2; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
+	id 956B76B00A3; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A6086B00A3; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
+	id 894B06B00A4; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E91B6B00A1
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:17:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AA07EA0301
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:58 +0000 (UTC)
-X-FDA: 85009356516.01.143867C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0F0844000D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:16:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+9vjh6s;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784557017;
-	b=Tm2d1IiUYcqB9ba27Lg56DL/ike1NbwyA3SfVFi9H2Tx2UsdhOf+RVnT9CAU+5lZvADxOA
-	BR29jSOxeyrbJCHlVh4f8GbxtJ4Y8po2v7WzdDZ77ixBhSmhDYSjcbhP++Y/+W/4wDaRJ5
-	xFtpLpo9Ey1QGDsitZmoLLEvAi/KC+I=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+9vjh6s;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 675866B00A2
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6C094019B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:01 +0000 (UTC)
+X-FDA: 85009356642.11.FDA4E9B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3A9CCA0009
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/pkkBJT";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784557017;
+	s=arc-20220608; t=1784557020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bjoSP6iddXq5PqiuJFnR36EEih/xwOGHSb79nndRhpk=;
-	b=Kc2CQ3MBrpZVXIuvNwRU7My3sxtbujf8ZVkcJ1GMJkXrSdDVsYgGOX3ft3o0gVLfwoEAB4
-	BK/SqUlm3taO93O7ldxdvrG+G2W8JJq2U98+cRtR6sUBJSeqFmL+O9ITPWEAPKY3DD8cre
-	Pfunu+Eg7YGUkQmev8fOd3pKYGie6KQ=
+	bh=p2cb0SC7Ft0dMHSHileX02Rth4klsLBw5vrXUr6czBQ=;
+	b=djxHrL6NCUZu9aq/Vwpf/xGujp3xIb0oCqAkjoj76jCm+EM9prwSixZHoVN5JcKkyOh3ok
+	HxU2kcurr7OqDE1wfW7uePDSAYCPBhx0a7JuKH0L9kzqY0pabyImAlzrN6znUY3abBFojp
+	nogWchB7OX2hZMs3W908GCIVNKOsrXU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/pkkBJT";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784557020;
+	b=sI7mZMEBzJJWFXiwBvRPD7vqy6ybvt9b/ozHvwxkWvwCjQjFWNQG/shXN0/ekowbiqFIUb
+	mcIPxlogtZ7hI5HD1ysNPE3SoHeACrrhNXgGHgGlkg8IMbuQj9NaLQb8jHEtuRNIollHKZ
+	JknTGujdhryPwZvtI4aOjCN5AUJL5bY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A819C60A84;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B6694349F;
+	Mon, 20 Jul 2026 14:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6FF1F00A3A;
 	Mon, 20 Jul 2026 14:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1B01F000E9;
-	Mon, 20 Jul 2026 14:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784557016;
-	bh=bjoSP6iddXq5PqiuJFnR36EEih/xwOGHSb79nndRhpk=;
+	s=k20260515; t=1784557019;
+	bh=p2cb0SC7Ft0dMHSHileX02Rth4klsLBw5vrXUr6czBQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=a+9vjh6s3qu0BOkJaj3suWW2z1csNZFV0BtPZnhUHEIoGJBS5KSiGcwnk1Iks8gjB
-	 m2TT14Rmb2TkuX4tC/0hR2o6oKdj+ECei+hB7/v0JUFfK1a1Bjif5cRzPKzpArgJnB
-	 F/Eu9SyTDosipKO0glkdRQVWnKQVr2ph8jvPAHP2snGsgqAljhAESwJZm3oLK5zMjg
-	 1lkq4VUhebyhhtNHmqRVKC50zawjTgscX15PrKG877KXQdPKJeIGLdfM+lr4FvoQZI
-	 7hmvIQUmidozfjtyzthbhwlvNw/QHs4E8wumY8mGcwpUuEKUmDCUDc8iBPPFocVtJA
-	 uVTPgzFqJtSaQ==
+	b=E/pkkBJTKEu06X2E0MtqbAqYG9hOrori+/Hbw0Q15iKK2xoCJuysaSbUjQnTjr4v/
+	 /sTpoSxqfoJHBP5gshywigUIIVPwl0y6AldIvzDUc1t7LW+t+/Wy2DKN3jL5k9+BZq
+	 iXnq+W94dP+4WXVmojEjornHrVlpBFywNqv2qk4gyo3snXvWHHi8OKPz5ov+g+vpgf
+	 lvtTEVgxdkGSoANsjGKvL28F1b71Tgmpzi6j2LGN7mDAHeEV0OiaP+PajPeWFhHk/q
+	 cQx4wexLQr5akB2uGT+LQagSMZfrbAFm7fJ3e+x4BVBeRZAcBvwIR4MvSxyMZX+joL
+	 4LFq343++leMw==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 20 Jul 2026 16:16:23 +0200
-Subject: [PATCH v2 09/13] mm/slab: change struct slabobj_ext to a union
+Date: Mon, 20 Jul 2026 16:16:24 +0200
+Subject: [PATCH v2 10/13] mm/slab: introduce slab_obj_ext_has_codetag()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-b4-objext_split-v2-9-2fa7c6f60dbe@kernel.org>
+Message-Id: <20260720-b4-objext_split-v2-10-2fa7c6f60dbe@kernel.org>
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
 In-Reply-To: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
@@ -82,14 +82,14 @@ Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: byijdo7faqfxg7pjzezhnqxf37453h7u
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0F0844000D
 X-Rspam-User: 
-X-HE-Tag: 1784557016-436092
-X-HE-Meta: U2FsdGVkX1+bXEoR9SMNpC+Z7clHEsAee6VAvDq84Kxw6w80g7xc/HLhmjxFX9hJ30NLMmFGlSXYe/2Ed8xvLOqm3bRdEkjuyRT59h4ORw3r/FQ6JbZ5uWfcKinJ2OZUMc+0OJnUX4bb6HKoxEbybRms3SYkGdJy9hZc5cBHkMHwM4/RotKo4RbbYP6QIkOB7d5Cie3jUggMq3HHk+/yNk0umf7MeEfsZ2t1rlLZw82AwHutlpZhH+WXw7z2jFVR63UemV9eSsWvkEd/UxR6WJQHZipHCbb43JB2kqxnAb7L8c1WxdS1kn/Jc2V2ZMdENYcXJD+RKkoGSeaoQi2IJZJ72jai/glh6LYabZjinCG/2Tv4BGdDEsphezPOBbBKCSerOuBzZai4wxEgo3FsxAUuN+X2OfU11f9dRkpGPlJqM0NMMoZy7TVvSN/spYqyz0n4O372RS8XPZyjv0CuUF2PR5Bhbz2vg/k/v9dNYh8CHOf9k+0BAs+efqGpjotVQ0vO4je4V5YeKwO97r/VVux21XvT3j5w40Oi4dS2lYV8vRQeQEKzFbP13SRTClZu2peccepS9+j5LrZEPSJviuz9jeUzOHCJp9PkvNXyonrir+idzHUEjcB6Bvqkoerzxj06YiVzE5ferOIamr8yVrn0QEbXkO3RW4NnlGN5Bjv/es4EHIvUkHpfagiVl6SKrPl1e+yytI82EW+GtQnlQspFPe3KK80oe5H29r4qhcbIA6HXRsohwUVLVW+c3+dSAAFVvQ8z+EXE2qOVjXs3HBKk89yVLJPhdQXouTk/InqGk1ZTl2i8AtNKpPvpgoPzbX3t59GgZo3jOXZNPUnxzErjX5oOvc9l6tkYcj9IZ8mFrTH3JkJ9Av/Dw0vaFvpjr+FdvoCoOWxQpbGo9eP+j96Opxp4ruNHU4w4YbUQoDAPKUKMHQTB690C/9wW8M/Jt8d80edBySRXNDN97Ay
- hhDbrKMa
- fWUQtB7syEzZxvLJLi9BftDpiOCrlgZQn4qG2e8pf1xnV0z97Ge3d34cP7po05dkidwN9rTecFo4n2PjZhoXZF/es4ZU7GwU4bB7+nkS6994CgQiA6F5S0v4HRgsDTGU73RwXduxW4eZR/Dv1wEGE+egiZedDCX/QGYW6Zd1KalMB5ZXOalAjEtbEoEGgC7xN0CQH7KwLQTHlPSsMzCbEFlTpjTU/Ic2RxFz10BZdJh91ulBlqlRj4SCRoXfT47i6eF846kTNRj6x/jMp9g8Y/k6ULJyJNnxh7I2LombwVWsziz0PY1Y9EexXWPJWEVfYfykh
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3A9CCA0009
+X-Stat-Signature: k7cow17wo5ke5z4gw4bks1chettz9osn
+X-HE-Tag: 1784557020-425572
+X-HE-Meta: U2FsdGVkX1/GsCHxwlOdo6yPEJcgCjNM+N29o5mNeTNCz+GNdLwINtxoTg6sht2QMHtNkIq+Y54THlZg+ncdQcEY88Ekm2cm4e79qxjfhwwSwJ4e4mFgSg8Tr3tuF2jWlsMC37Q7DwNyGAIxi0dCKJ3tNHOCjU5DmZqVWg/jfqvt9jdP3qM5qxlwjQj3//YT8K8cbBW7HKAJ5IGWr+OOxLxlxkBP9Dq1Y/Vstpgt3hxqu76VCSmmDkskyO/1EyDxSvTA9pYzbGjl6mmtefUL6DNONWvyGECfKQCkt1mNjgA1y5PgxP7kkS9uY+GEpyW4s4AdzLqaOkKMMODrBooaHdiBXdEtiI9WIW20KtvcrVzcWlvimBURY+Y+7nPztXOfAnMeEb1ZClKSNilo1tyWa8xl7+O8GRM5I/O7vRSZQIytpE/AkFdxsam2T+nXNpH7CYD5r/anSzio2AHMLLBKs3/6CU0xm4vkCQumEio33EM3UMYisQTO+UGdHa2M9W8YjxxpSO1NQDodJwn4gaNmJe7+u8J0zDbS2BDW9wdm1F1CcqiCaFdqMK46mO+mWABZSzGgYEa0nao+3ZzQXhLhCC9BlfPdcCWYnNXg/YdoyB4b8hIoFj5dpVpr68CWQJKOq1/VcNiuaTQvFSYxVJGZnFqM25SxPRnq90KOlNMPAaR5DnMe2nytE9SCBbyxkdiuKOaCWXgi5VoZ8yEqlrawQsnEeig48PFaLOfFWk9OaEExUJU5nbOWpb7ArihoNDOmWrHAlGn734mqzfZLqjBRlGU1H2WUmjyROVWqfBClniTpfAgy8JmNTKq0K5Gja9k21TznV9wVvr2/GupCsmNPb8be23mDSro8A/hURreC8CfLrs2tIgmaHJJqORmHgdmIiecFervgNPV/jW97ni2xrS2FKxgG95r3+NevcfE/EIsohG+PJtFSI2tBBOAam/WaFE8RhGsMktznxNuH/PW
+ 96763E52
+ AAq+BD/JdBslGoOHiwsCCsTHYSg8No+4zOQ2r7rPqogGxVde9R4a+rdPi8jCqWGi6LKTtwAkwRILrudKERW3Kxi6EFX/+MtSULif7Bz6B3ZvGqy+sAn8s+8c9TpFJnj1dPE5qQPJ4sNBlyRLqPCXoJnQS6nI9QfNsp6j22BNEsTftVxMR0CEQFh1kFt/2Kta+650Oul5RuqwFtN6k5oLlKselO+V2zGMqS9TGtYOx/to53O/3FDNjuV/5GHKIWoi529z35Hu9LnKR1dHbKzwwK9j9yiEKTK6s4Bmi+MIYznEGI43iaW+CJMzFIVs4B95Q+7WH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,221 +97,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, struct slabobj_ext can hold both objcg pointer and
-codetag_ref (when both are compile-enabled) and there is an array of as
-many slabobj_ext instances as there are objects in a slab.
+mem_alloc_profiling_enabled() allows evaluating (with a static key) if
+memory profiling is currently enabled. mem_profiling_support is a
+variable where false means it's not possible to enable it anymore,
+because the system was booted with "never" or it was later shut down.
+This is possible to query by mem_alloc_profiling_permanently_disabled().
 
-This makes the layout fixed so even if codetag_ref is unused (because
-memory allocation profiling is disabled), the space for them is
-allocated and wasted. Similarly, some caches (currently kmalloc_normal)
-do not ever need objcg pointers, leading to wasted memory with memory
-allocation profiling enabled.
+To make slabobj_ext array size handling dynamic, we need a snapshot of
+mem_alloc_profiling_permanently_disabled() early in boot, so that's not
+affected by a later shutdown. We also need it to be static key based for
+performance. Neither mem_alloc_profiling_enabled() nor
+mem_alloc_profiling_permanently_disabled() satisfy this.
 
-To make this more flexible, change the layout so that struct slabobj_ext
-becomes a union of objcg pointer and codetag_ref (to ensure uniform
-size; in practice both are the same size anyway). The slabobj_ext array
-then can have twice as many elements as before. For cache locality
-purposes, the effective memory layout is unchanged, so objcg and codetag
-ref for a given object are still adjacent.
-
-cache_obj_ext_size() returns the effective size of (0-2) struct
-slabobj_ext's for a cache, slab_obj_ext_size() for a slab. Currently
-both return a constant value derived from the config options, but will
-be made dynamic later. Replace all sizeof(slabobj_ext) usage with these.
-
-No functional change intended, the layout is still effectively static.
+Therefore introduce slab_obj_ext_has_codetag() with an underlying static
+key for that use case. Its state is made to reflect the result of
+mem_alloc_profiling_permanently_disabled() during kmem_cache_init(),
+which does happen after setup_early_mem_profiling().
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slab.h | 49 +++++++++++++++++++++++++++++++++++++++----------
- mm/slub.c | 19 +++++++++++--------
- 2 files changed, 50 insertions(+), 18 deletions(-)
+ mm/slab.h | 16 ++++++++++++++++
+ mm/slub.c | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
 diff --git a/mm/slab.h b/mm/slab.h
-index e586798e4f16..f8446167e175 100644
+index f8446167e175..983cb1119a76 100644
 --- a/mm/slab.h
 +++ b/mm/slab.h
-@@ -550,18 +550,42 @@ static inline bool need_kmalloc_no_objext(void)
- }
- 
- /*
-- * Extended information for slab objects stored as an array in page->memcg_data
-- * if MEMCG_DATA_OBJEXTS is set.
-+ * Extended information for slab objects stored as a pointer to an array in
-+ * slab->obj_exts (aliasing page->memcg_data) if MEMCG_DATA_OBJEXTS is set.
-  */
- struct slabobj_ext {
-+	/*
-+	 * All elements of the union should be pointer-sized to avoid memory
-+	 * waste
-+	 */
-+	union {
- #ifdef CONFIG_MEMCG
--	struct obj_cgroup *_objcg;
-+		struct obj_cgroup *_objcg;
- #endif
- #ifdef CONFIG_MEM_ALLOC_PROFILING
--	union codetag_ref _ctref;
-+		union codetag_ref _ctref;
- #endif
-+	};
+@@ -568,6 +568,22 @@ struct slabobj_ext {
+ 	};
  } __aligned(8);
  
-+static inline size_t cache_obj_ext_size(struct kmem_cache *s)
++#ifdef CONFIG_MEM_ALLOC_PROFILING
++DECLARE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
++			 slab_obj_ext_has_codetag_key);
++
++static inline bool slab_obj_ext_has_codetag(void)
 +{
-+	size_t sz = 0;
-+
-+	if (IS_ENABLED(CONFIG_MEMCG))
-+		sz += 1;
-+
-+	if (IS_ENABLED(CONFIG_MEM_ALLOC_PROFILING))
-+		sz += 1;
-+
-+	return sizeof(struct slabobj_ext) * sz;
++	return static_branch_maybe(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
++				   &slab_obj_ext_has_codetag_key);
 +}
-+
-+static inline size_t slab_obj_ext_size(struct slab *slab)
++#else
++static inline bool slab_obj_ext_has_codetag(void)
 +{
-+	return cache_obj_ext_size(slab->slab_cache);
++	return false;
 +}
++#endif
 +
- #ifdef CONFIG_SLAB_OBJ_EXT
- 
- /*
-@@ -651,18 +675,18 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
+ static inline size_t cache_obj_ext_size(struct kmem_cache *s)
  {
- 	struct slabobj_ext *obj_ext;
- 	unsigned int index;
-+	unsigned int stride;
- 
- 	VM_WARN_ON_ONCE(obj_exts != slab_obj_exts(slab));
- 
- 	index = obj_to_index(s, slab, obj);
- 
--	if (!obj_exts_in_object(slab)) {
--		obj_ext = ((struct slabobj_ext *)obj_exts) + index;
--	} else {
--		unsigned int stride = s->size;
-+	if (!obj_exts_in_object(slab))
-+		stride = slab_obj_ext_size(slab);
-+	else
-+		stride = s->size;
- 
--		obj_ext = (struct slabobj_ext *)(obj_exts + index * stride);
--	}
-+	obj_ext = (struct slabobj_ext *)(obj_exts + index * stride);
- 
- 	return kasan_reset_tag(obj_ext);
- }
-@@ -670,12 +694,14 @@ slab_obj_ext(struct kmem_cache *s, struct slab *slab, unsigned long obj_exts,
- #ifdef CONFIG_MEMCG
- static inline struct obj_cgroup *slab_obj_ext_objcg(struct slabobj_ext *obj_ext)
- {
-+	/* if objcg exists, it comes first, so we don't need to do anything */
- 	return obj_ext->_objcg;
- }
- 
- static inline void slab_obj_ext_set_objcg(struct slabobj_ext *obj_ext,
- 					  struct obj_cgroup *objcg)
- {
-+	/* if objcg exists, it comes first, so we don't need to do anything */
- 	obj_ext->_objcg = objcg;
- }
- #endif
-@@ -684,6 +710,9 @@ static inline void slab_obj_ext_set_objcg(struct slabobj_ext *obj_ext,
- static inline union codetag_ref *
- slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_ext)
- {
-+	if (IS_ENABLED(CONFIG_MEMCG))
-+		obj_ext += 1;
-+
- 	return &obj_ext->_ctref;
- }
- #endif
+ 	size_t sz = 0;
 diff --git a/mm/slub.c b/mm/slub.c
-index f5b3eb44cb8a..287cbf3eddcc 100644
+index 287cbf3eddcc..d78d3e50c877 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -803,7 +803,7 @@ static inline bool need_slab_obj_exts(struct kmem_cache *s)
- 
- static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
- {
--	return sizeof(struct slabobj_ext) * slab->objects;
-+	return slab_obj_ext_size(slab) * slab->objects;
- }
- 
- static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
-@@ -1199,7 +1199,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 	off += kasan_metadata_size(s, false);
- 
- 	if (obj_exts_in_object(slab))
--		off += sizeof(struct slabobj_ext);
-+		off += slab_obj_ext_size(slab);
- 
- 	if (off != size_from_object(s))
- 		/* Beginning of the filler is the free pointer */
-@@ -1404,7 +1404,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 	off += kasan_metadata_size(s, false);
- 
- 	if (obj_exts_in_object(slab))
--		off += sizeof(struct slabobj_ext);
-+		off += slab_obj_ext_size(slab);
- 
- 	if (size_from_object(s) == off)
- 		return 1;
-@@ -2094,6 +2094,8 @@ static inline bool mark_failed_objexts_alloc(struct slab *slab)
- static inline void handle_failed_objexts_alloc(struct slab *slab,
- 		unsigned long obj_exts, struct slabobj_ext *vec)
- {
-+	unsigned int stride;
-+
- 	if (!mem_alloc_profiling_enabled())
- 		return;
- 
-@@ -2105,11 +2107,13 @@ static inline void handle_failed_objexts_alloc(struct slab *slab,
- 	if (obj_exts != OBJEXTS_ALLOC_FAIL)
- 		return;
- 
-+	stride = slab_obj_ext_size(slab) / sizeof(*vec);
-+
- 	for (unsigned int i = 0; i < slab->objects; i++) {
- 		union codetag_ref *ref = slab_obj_ext_codetag_ref(slab, vec);
- 
- 		set_codetag_empty(ref);
--		vec++;
-+		vec += stride;
- 	}
- }
- 
-@@ -2135,7 +2139,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
- 	unsigned long new_exts;
- 	unsigned long old_exts;
- 	struct slabobj_ext *vec;
--	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
-+	size_t sz = slab_obj_ext_size(slab) * slab->objects;
- 
- 	gfp &= ~OBJCGS_CLEAR_MASK;
- 	/*
-@@ -2278,8 +2282,7 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
- 
- 		get_slab_obj_exts(obj_exts);
- 		for_each_object(addr, s, slab_address(slab), slab->objects)
--			memset(kasan_reset_tag(addr) + offset, 0,
--			       sizeof(struct slabobj_ext));
-+			memset(kasan_reset_tag(addr) + offset, 0, slab_obj_ext_size(slab));
- 		put_slab_obj_exts(obj_exts);
- 
- #ifdef CONFIG_MEMCG
-@@ -7938,7 +7941,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 	aligned_size = ALIGN(size, s->align);
- #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
- 	if (slab_args_unmergeable(args, s->flags) &&
--			(aligned_size - size >= sizeof(struct slabobj_ext)))
-+			(aligned_size - size >= cache_obj_ext_size(s)))
- 		s->flags |= SLAB_OBJ_EXT_IN_OBJ;
+@@ -213,6 +213,11 @@ DEFINE_STATIC_KEY_FALSE(slub_debug_enabled);
+ static DEFINE_STATIC_KEY_FALSE(strict_numa);
  #endif
- 	size = aligned_size;
+ 
++#ifdef CONFIG_MEM_ALLOC_PROFILING
++DEFINE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
++			slab_obj_ext_has_codetag_key);
++#endif
++
+ /* Structure holding extra parameters for slab allocations */
+ struct slab_alloc_context {
+ 	unsigned long caller_addr;
+@@ -2425,6 +2430,25 @@ alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+ 		__alloc_tagging_slab_free_hook(s, slab, p, objects);
+ }
+ 
++/*
++ * Make sure the static key used by slab_obj_ext_has_codetag() reflects the
++ * value of !mem_alloc_profiling_permanently_disabled()
++ *
++ * Any later mem alloc profiling shutdown won't be reflected in the static key
++ * because obj_exts with codetags might already exist.
++ */
++static void __init slab_obj_ext_has_codetag_init(void)
++{
++	bool need_codetag = !mem_alloc_profiling_permanently_disabled();
++
++	if (need_codetag != static_key_enabled(&slab_obj_ext_has_codetag_key)) {
++		if (need_codetag)
++			static_branch_enable(&slab_obj_ext_has_codetag_key);
++		else
++			static_branch_disable(&slab_obj_ext_has_codetag_key);
++	}
++}
++
+ #else /* CONFIG_MEM_ALLOC_PROFILING */
+ 
+ static inline void
+@@ -2439,6 +2463,10 @@ alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+ {
+ }
+ 
++static inline void slab_obj_ext_has_codetag_init(void)
++{
++}
++
+ #endif /* CONFIG_MEM_ALLOC_PROFILING */
+ 
+ 
+@@ -8551,6 +8579,8 @@ void __init kmem_cache_init(void)
+ 		boot_kmem_cache_node;
+ 	int node;
+ 
++	slab_obj_ext_has_codetag_init();
++
+ 	if (debug_guardpage_minorder())
+ 		slub_max_order = 0;
+ 
 
 -- 
 2.55.0
