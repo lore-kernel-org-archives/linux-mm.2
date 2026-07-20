@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A03AC44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A11EC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:12:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676256B008A; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
+	id 678D26B00AD; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6271C6B008C; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
+	id 650A26B00AE; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53CD56B0092; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
+	id 51B886B00AF; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F32B6B008A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:10:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B512B140131
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:10:58 +0000 (UTC)
-X-FDA: 85008887796.29.2EA6846
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8157280006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:10:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lgnctbmE;
-	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B7416B00AD
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7D5B16013E
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:12:16 +0000 (UTC)
+X-FDA: 85008891072.09.93EB331
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BB51C100005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:12:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c1Qq1rME;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784545855;
+	s=arc-20220608; t=1784545935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CY3D2G8Mcf8naJ39Kb2qNt3PpH1v79jSaiicxK5PMgk=;
-	b=yW+bpK6WJJYcNWeQmrKjKAc8s35D6TTg2cfG+8VM93YCZLRxlCUnrUUFcnoGon2NCtFDSV
-	19gPOhasbRzMu8wzo2ckwXMF0pNd2Svj6/PRBgbKB5WtfCSO97iFxN66/qMaRCl5pnhnNG
-	kDILIRQjyzo8/6gdCKqruJyOo0riiGM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OFM0nRJoZuBfdWYZNC4phzSZOwI8EnxnT+H9jcsSDNE=;
+	b=MRwzg6QD1ylXY0EwQg0SCtc5skdZgF9WAXFZsmBWrm10YuPwnsGeKR/JG740zJ4k5Zg6y4
+	f/nJt2nG+JIZFdavz52bkLogdY7Phjh8+Fccm9c/5fet9t/HYPK199tvHOkKpxSLY7qNLe
+	HV1XHvyw+Mu5ngWyxenN/Yns52BBLA8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lgnctbmE;
-	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c1Qq1rME;
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784545855;
-	b=K8AWQac2vhb8N+/QsIfroXjqDJAwpRFBrcKvh0CiMzCjNO8sNgAMrcrHRq7eUO1evSmvNW
-	DZ5UYUwRBaBAD3/ToVqqtA9LWSy3pB9v0X1gJp+4aRYC+PxnqloX7IKj80/6zqBsh2GF8k
-	POqSgqlQGLkfVGaTICJLyCb33hUPMtc=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784545853;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CY3D2G8Mcf8naJ39Kb2qNt3PpH1v79jSaiicxK5PMgk=;
-	b=lgnctbmEgU7E4T16WW5A1XlyEAVa/GZA6Cp+b53JNdazm4iMZJZUiRMZNvAUGTH/ONEVGA
-	Xt4rE6RLGfpO/JbaU+UoaMO45oe8wJc+vq4Ys5KPcCbHN0LkMAbdfwNSy10onMJFFp3GfH
-	O9kTSia+Lxwbn90azwujpxqyDHYNvY4=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v2 08/17] mm/sparse-vmemmap: support section-based vmemmap
- optimization
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260720093127.540540-9-songmuchun@bytedance.com>
-Date: Mon, 20 Jul 2026 19:10:23 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>,
- David Laight <david.laight.linux@gmail.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B94645F5-E122-4B48-83DE-B977A64274DA@linux.dev>
-References: <20260720093127.540540-1-songmuchun@bytedance.com>
- <20260720093127.540540-9-songmuchun@bytedance.com>
-To: Muchun Song <songmuchun@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
+	t=1784545935;
+	b=v7oDEB/huhESS5bpbkw6FwMTUYcK6z3SMGqHtxjfHhTlrUk+WrttJjXzOg7mU27evTc9Of
+	s9sH/1jPeFr2fv1wJqJZvTJ5Pegdp/N/rfQC6GyC5Ao8bG8iai3mINjWW3SqqXIPOoQ+fd
+	EaU3E2PfSztdZM+tLDWrDm4cVrJOTDg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1784545931; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=OFM0nRJoZuBfdWYZNC4phzSZOwI8EnxnT+H9jcsSDNE=;
+	b=c1Qq1rMEd10vohr4/PTgTRGqNEesFMCi1p/+SWCMF4bHw1asPO0d2YLqSWeDPPiLNUY6XgUeutnZGFR8PCTV0nWlJsldTsxBEBKTiZnF25+EB4ekkqUxVetRze1NZQXxzqW9aDOukMKV43da0zulnysfKl2zqybOpS9NnQBjg24=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R241e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X7TBAFM_1784545928;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7TBAFM_1784545928 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 20 Jul 2026 19:12:09 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	hannes@cmpxchg.org
+Cc: riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	mhocko@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/3] promote mapped executable folios after first usage for MGLRU
+Date: Mon, 20 Jul 2026 19:11:59 +0800
+Message-ID: <cover.1784509721.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BB51C100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8157280006
-X-Stat-Signature: k39n3ue8ioj5e76igiappcoocc4pn6yd
-X-HE-Tag: 1784545855-40094
-X-HE-Meta: U2FsdGVkX18ntGHYXQxd8YY54dAZHCwMudc0CTFmNyNiKjXqiBz/Jjh/fTovM4OjcZwXdU219+Z0b9+i0iv6wFB+pxuB9iPzpLfrlqVIUJVhO+BXx7hOyn/6WeiQUH0wVkLu3znFSlOoro0+EDcxkADvOZ/MWnhBtYLapCGdH6zpCLXSfbLUtz3f3zPzo/PZpzxLbO1PTVxo8ON3jkhOKMp35NMoNBkdsK1IQMllB4enCq2To5nmBTovHfLsxWaEQrmZMxPkD3gARNOguOlmXXoj81fbo4e52devPeFw4hBXcL7WGsJrPk2Tnb/tO3LHZhnH/9MkYHEZao415RkUs5EkoJ5ZbBaRc6NErl607glRJUEmDSEa2P1tBO1AdXTr2V1nmR+V4e3deXWPsRzI54zts5nm21+Je86ix8hRtTUFt/gpmh+UKLyIDXpoZ2pOzt6bfMedYb+jrtCVCI/pvZW/wZ2MigbzHLO5Y73II/xTUHS11mOyWJfkp6agk6mBxmSbr63v6Wn+N9239xoAf6UCEQTdANGd3CW2uLZDBOHrqMevd4KOLk4f1znUixKn7BFKVX+uTZ9YiQ5LYRdRm7PTve2qYnz3B6zkxjreR7PEjQYh2jU2sAnGHNzfDO4mYvevQxUhVHo/Vh3CumGED1Q05O91zfh5qiXwNcwqIc+0kNBE5PuZx1CRlJJgojlP696qW9HYKMh9iGDaUowymg0shl/3t/HqpdFmbqm4BvS8Kki10GKN22pDzNg+/w/WsTVbhzaSQOmw7ObTkD5Mrco2X6Y5F+XtXfdQ2R1QA0kEEOnD8nychYZNdV9E0f1voxQdON00aYvUZBIl7fuiBTojmXJ3i9PugdP2NGEEg+zSaIlbCiUTr5ly3GTHOn7/CQUZImjOpFWmkVl/R1LO3KYYvC/KXP1Gah02l7y4mDySo+LBUVPIOhqAxKx7XbBKpidGe9jgMDIunzr+156
- N2NiMeh1
- MBFQupBi7iCMHnsBuur34hXKWwiTD9ttNn27Mwf8R6ozkb+kpsvO2g8VQhX4uhn2UNbgIfGelekHS4gGZQVZvgyB8kU3vFjVtsOKVuQ5GjNboumR0zS1ebNWQVUb4+pUHZHA3Q+LWSOUyh0tjeNrH/HQlOsWhCnnU8Q/dzjUqp58AuZ3ZQFRCMeyAm05QlAG/ssc1FrelCgNqeZWguQm8IO4dmxYgq+j6d4KY+3LxyMfLuzv0IUF2sJij4yeIX29onZhZr9WcVR3dudAqSAKi2YuRHMq540ofccBXjSZPtRKCUUtuyH/B5bSOtrFm20LOI6Ys6aZddNFRodPgh4j9TJqNBCrifd/bhgQwG72zx8rFAkiAMuHYyWI8lRYGkh71rQG8AyzZuAnY/kE=
+X-Stat-Signature: kycnm84o5tdt4cu391z9o8ho888ftaoa
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784545933-716009
+X-HE-Meta: U2FsdGVkX1+PO+oGYnZgVebHzUksi4axCW2vzdGfqas3dI4Rq8UD92YFJt8ggjbJj96vHAfLCwC31gRapxxbW8theyQ8mSS8PPrWrOCDCatzXcwaD6ft9I3o+uYGcT8YEeFJBj1Ohohm25kHLKhff5HqI+3lYD92gxhze3uDK1PdF/QsdV3fMYm/EcJz/KZM7p/RxImOil4sr2VCIxaRX6wTwJVQJlgyL0twlV1VibmnGjWiajhxJJCHEJyda7Kt0quPhhkt08UYuoTQE9SyQihbd3bP9b0UyUnmCniionZMLBLfKWaJvG2z5tLRcoVeWVOE810UuTj8Mq1zbTE8fQIp0HnnQOS8lXXNGqzXSCkGnNW4M82WV2Spz5te1zxPKrFoPZsQxiCqcDo060QfvwHBaxgv5EA5MPpIADGHoR/K7Q44O9W5gF79WwDxF5h2YJ9qa3hMrjCTJWj3L/C6QJouqvcUHKiDQKzXh1dEXV0yI/TIKo3209Zdq8cnJArlalCW0bXd50kPbDGNaHgFSXZL2Z79NyqqWpqEhK+O5ePLZ2IoNEbao7eSht8MO4kWL2yTRZFoxo4aXaB+ACPsWroqv4g+nJqKXPJYAq6P6BZzeKlw1AdXDxJOJZyPNEAdVohBnbGe5d767dqYn+uci4ZDvvp03kkjTuvLJB2mlWIEdAdCmAs+r5XED5KjeMUKIWyEJsnII/nvYf4MLJVTvXeUBDrZMfWg3sc76qF9Pzo+QumlzFz+yvvlfc7//xSnEZa7enWzS5VKwwSoq4Q7rQV9tszNQ96J/LNv4S4bVBMvIzy4sg7rVoK0pVHnzdB3+gyiKRpnAR6islrDVLd8ti7Om/FlvAT6VWDSsCDsVer3THDsZ29eoiVqAoWHCoFUSe+RuXu3E8waWgKShAYGVaz4SwQ8oWIBpZCTmnx7rtHq8c0TNPijeIV+wN04SIkaClheCfe4hFu1OOA/zCa
+ S1LolY+g
+ uuziu1uN5/o15Oy2hBPuocJ7Ye76EUv9L/PKE6VS8sDZNZs9+wNLMYhdZt9xg0xlLLVURHZ4rNIJgPIsNU9Q1uexcymjwixjqNusbYg8Xqg2whGEImm2DV8RON+Si8QsNt6ac+xzR5X0ahm3+Hni3AJO41V+kvEzH91V6F2KQCcsQ3y8DiccA9nNl86/Z/VrGkHKO7IqViBl5qvGrwK1k4dohvJourgyRTJzYxiIJMokQkaMvHGCsVqjow1er+C+3TGg5pJ9K44lHE34tSL02RXC9hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,34 +100,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Now MGLRU's protection of mapped executable file folios is less reliable.
+Follow the classical LRU's logic, promoting mapped executable file folios
+after their first usage to give executable code a better chance to stay in
+memory and improve workload performance (See patch 2 for more details).
 
+Changes from v3:
+https://lore.kernel.org/all/cover.1784268206.git.baolin.wang@linux.alibaba.com/
+ - Collect tags from Johannes, Axel, Barry and Kairui. Thanks.
+ - Split the helper addition out into a separate patch (per Johannes).
+ - Set PG_workingset before promoting in lru_gen_set_refs() (per Kairui).
+ - Some code cleanups (per Kairui).
 
-> On Jul 20, 2026, at 17:31, Muchun Song <songmuchun@bytedance.com> =
-wrote:
->=20
-> Teach sparse-vmemmap population code to use the compound page order
-> when deciding whether a vmemmap page can be optimized.
->=20
-> With this information, the common sparse-vmemmap population path can
-> allocate or reuse shared tail vmemmap pages directly instead of =
-relying
-> on HugeTLB-specific handling.
->=20
-> This centralizes vmemmap optimization logic in the sparse-vmemmap =
-code,
-> based on section metadata, and prepares for sharing the same mechanism
-> across different users of vmemmap optimization, including HugeTLB and
-> DAX.
->=20
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Changes from v2:
+https://lore.kernel.org/all/cover.1784197559.git.baolin.wang@linux.alibaba.com/
+ - Add acked tag from David. Thanks.
+ - Rename the exec-file-folio helper and move it into vmscan.c (per David).
 
-Sashiko reported four issues [1] regarding memory hotplug, but the =
-entire
-series doesn't actually support applying HVO via memory hotplug. =
-Therefore,
-all four of these issues are false positives.
+Changes from v1:
+https://lore.kernel.org/all/4b921ed528c483e13c9e22d1ae44ba58b4a15b0b.1784096432.git.baolin.wang@linux.alibaba.com/
+ - Add a new patch to clean up vma flags as preparation.
+ - Add a new helper to check exec file folios (per Kaisui).
+ - Promote exec file folios in lru_gen_set_refs (Per Sashiko).
 
-[1] =
-https://sashiko.dev/#/patchset/20260720093127.540540-1-songmuchun%40byteda=
-nce.com?part=3D8=
+Baolin Wang (3):
+  mm: vmscan: convert folio_referenced() to use vma_flags_t
+  mm: vmscan: add a helper to identify file-backed executable folios
+  mm: mglru: promote mapped executable folios after first usage
+
+ include/linux/rmap.h |  7 +++--
+ mm/rmap.c            | 19 +++++++------
+ mm/vmscan.c          | 63 ++++++++++++++++++++++++++++----------------
+ 3 files changed, 54 insertions(+), 35 deletions(-)
+
+-- 
+2.47.3
+
 
