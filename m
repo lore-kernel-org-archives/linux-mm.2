@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 288ACC4452B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC4FC4452A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F4ED6B00A2; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
+	id 9CD576B00A4; Mon, 20 Jul 2026 10:17:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 956B76B00A3; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
+	id 97E8A6B00A5; Mon, 20 Jul 2026 10:17:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 894B06B00A4; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
+	id 86CC66B00A6; Mon, 20 Jul 2026 10:17:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 675866B00A2
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:17:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6C094019B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:01 +0000 (UTC)
-X-FDA: 85009356642.11.FDA4E9B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3A9CCA0009
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:00 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/pkkBJT";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D8D36B00A4
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:17:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0001E1601C6
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:04 +0000 (UTC)
+X-FDA: 85009356810.03.0BFC9DD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3C31F2000F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:03 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=egnIImWA;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784557020;
+	s=arc-20220608; t=1784557023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p2cb0SC7Ft0dMHSHileX02Rth4klsLBw5vrXUr6czBQ=;
-	b=djxHrL6NCUZu9aq/Vwpf/xGujp3xIb0oCqAkjoj76jCm+EM9prwSixZHoVN5JcKkyOh3ok
-	HxU2kcurr7OqDE1wfW7uePDSAYCPBhx0a7JuKH0L9kzqY0pabyImAlzrN6znUY3abBFojp
-	nogWchB7OX2hZMs3W908GCIVNKOsrXU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/pkkBJT";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=J2QHy+8aDvUuK1lYAmgQR7tOtfpX0R/pRz+K12b83rg=;
+	b=5CTf7lxwwJrMYzWV5BsecCm9erdWqRcLO3URmKBlYBXpYWMr+et9q13+4jAF7iOoveSGtj
+	KJ1zoZ5LkRUWKCTssufAD2WBjkRxhXoEw7vsU2iJksHZCREOZKhvfGOys7G+I3ZlIrqtZv
+	AwHEfwSrhjNfQmeWk1ws7xX+ibSDHfs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784557020;
-	b=sI7mZMEBzJJWFXiwBvRPD7vqy6ybvt9b/ozHvwxkWvwCjQjFWNQG/shXN0/ekowbiqFIUb
-	mcIPxlogtZ7hI5HD1ysNPE3SoHeACrrhNXgGHgGlkg8IMbuQj9NaLQb8jHEtuRNIollHKZ
-	JknTGujdhryPwZvtI4aOjCN5AUJL5bY=
+	t=1784557023;
+	b=eqBJ5GAM8rSam8xqylD2mtl9cXPQqrLDdpVE26RzpzvMT6X1PhHvx3tpaqZiATd3bLWcRu
+	rp4PV0lu7KNu6TuyojaJVJE1/uIIBwS69YofP8H3haAh6fhmZRV6L7FzRqmmwDjr9d6jLm
+	hq2L1X7OvhtXGb5gHQ03fTokciCHAz8=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=egnIImWA;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8B6694349F;
+	by tor.source.kernel.org (Postfix) with ESMTP id CBDD360254;
+	Mon, 20 Jul 2026 14:17:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB38C1F000E9;
 	Mon, 20 Jul 2026 14:16:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6FF1F00A3A;
-	Mon, 20 Jul 2026 14:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784557019;
-	bh=p2cb0SC7Ft0dMHSHileX02Rth4klsLBw5vrXUr6czBQ=;
+	s=k20260515; t=1784557022;
+	bh=J2QHy+8aDvUuK1lYAmgQR7tOtfpX0R/pRz+K12b83rg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=E/pkkBJTKEu06X2E0MtqbAqYG9hOrori+/Hbw0Q15iKK2xoCJuysaSbUjQnTjr4v/
-	 /sTpoSxqfoJHBP5gshywigUIIVPwl0y6AldIvzDUc1t7LW+t+/Wy2DKN3jL5k9+BZq
-	 iXnq+W94dP+4WXVmojEjornHrVlpBFywNqv2qk4gyo3snXvWHHi8OKPz5ov+g+vpgf
-	 lvtTEVgxdkGSoANsjGKvL28F1b71Tgmpzi6j2LGN7mDAHeEV0OiaP+PajPeWFhHk/q
-	 cQx4wexLQr5akB2uGT+LQagSMZfrbAFm7fJ3e+x4BVBeRZAcBvwIR4MvSxyMZX+joL
-	 4LFq343++leMw==
+	b=egnIImWAjekWM0hyh5G7FSbHakblC40grDwPP0aXTYu/nLY3GNOU4WJwFVBI8QzvF
+	 NpjLHTmr9QdDTg1pR3ejvqLf0NPsYbOGW74VEYYtfiVp1V4h5V1UWYu2nv+z0z5J0w
+	 XNAm20w1ucPg26aUEcjVxU0L20wNDXViVjPkoOnaBoKziKP6ZSZ2b3VZ6P8J5DUegw
+	 iaItZCo24oMkV/NtY1OO1xYeBqmQ1WpUgas+y4ly2QnGzsX6NkWIjxmHBb18fgDIZJ
+	 GwoTUKeNPa0trKdMm9oyPvukyGBv5Cc81mEQ7X9+0umyyPbdlGhBhH/RNCjSk54t8P
+	 qQPvI4ATQTkFQ==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 20 Jul 2026 16:16:24 +0200
-Subject: [PATCH v2 10/13] mm/slab: introduce slab_obj_ext_has_codetag()
+Date: Mon, 20 Jul 2026 16:16:25 +0200
+Subject: [PATCH v2 11/13] mm/slab: reduce slabobj_ext memory with
+ allocation profiling disabled
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-b4-objext_split-v2-10-2fa7c6f60dbe@kernel.org>
+Message-Id: <20260720-b4-objext_split-v2-11-2fa7c6f60dbe@kernel.org>
 References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
 In-Reply-To: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
@@ -82,14 +83,14 @@ Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
  linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
+X-Rspamd-Queue-Id: 3C31F2000F
+X-Stat-Signature: o9cqiapgx1qbbjxekowkkag4qk57rehn
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3A9CCA0009
-X-Stat-Signature: k7cow17wo5ke5z4gw4bks1chettz9osn
-X-HE-Tag: 1784557020-425572
-X-HE-Meta: U2FsdGVkX1/GsCHxwlOdo6yPEJcgCjNM+N29o5mNeTNCz+GNdLwINtxoTg6sht2QMHtNkIq+Y54THlZg+ncdQcEY88Ekm2cm4e79qxjfhwwSwJ4e4mFgSg8Tr3tuF2jWlsMC37Q7DwNyGAIxi0dCKJ3tNHOCjU5DmZqVWg/jfqvt9jdP3qM5qxlwjQj3//YT8K8cbBW7HKAJ5IGWr+OOxLxlxkBP9Dq1Y/Vstpgt3hxqu76VCSmmDkskyO/1EyDxSvTA9pYzbGjl6mmtefUL6DNONWvyGECfKQCkt1mNjgA1y5PgxP7kkS9uY+GEpyW4s4AdzLqaOkKMMODrBooaHdiBXdEtiI9WIW20KtvcrVzcWlvimBURY+Y+7nPztXOfAnMeEb1ZClKSNilo1tyWa8xl7+O8GRM5I/O7vRSZQIytpE/AkFdxsam2T+nXNpH7CYD5r/anSzio2AHMLLBKs3/6CU0xm4vkCQumEio33EM3UMYisQTO+UGdHa2M9W8YjxxpSO1NQDodJwn4gaNmJe7+u8J0zDbS2BDW9wdm1F1CcqiCaFdqMK46mO+mWABZSzGgYEa0nao+3ZzQXhLhCC9BlfPdcCWYnNXg/YdoyB4b8hIoFj5dpVpr68CWQJKOq1/VcNiuaTQvFSYxVJGZnFqM25SxPRnq90KOlNMPAaR5DnMe2nytE9SCBbyxkdiuKOaCWXgi5VoZ8yEqlrawQsnEeig48PFaLOfFWk9OaEExUJU5nbOWpb7ArihoNDOmWrHAlGn734mqzfZLqjBRlGU1H2WUmjyROVWqfBClniTpfAgy8JmNTKq0K5Gja9k21TznV9wVvr2/GupCsmNPb8be23mDSro8A/hURreC8CfLrs2tIgmaHJJqORmHgdmIiecFervgNPV/jW97ni2xrS2FKxgG95r3+NevcfE/EIsohG+PJtFSI2tBBOAam/WaFE8RhGsMktznxNuH/PW
- 96763E52
- AAq+BD/JdBslGoOHiwsCCsTHYSg8No+4zOQ2r7rPqogGxVde9R4a+rdPi8jCqWGi6LKTtwAkwRILrudKERW3Kxi6EFX/+MtSULif7Bz6B3ZvGqy+sAn8s+8c9TpFJnj1dPE5qQPJ4sNBlyRLqPCXoJnQS6nI9QfNsp6j22BNEsTftVxMR0CEQFh1kFt/2Kta+650Oul5RuqwFtN6k5oLlKselO+V2zGMqS9TGtYOx/to53O/3FDNjuV/5GHKIWoi529z35Hu9LnKR1dHbKzwwK9j9yiEKTK6s4Bmi+MIYznEGI43iaW+CJMzFIVs4B95Q+7WH
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784557023-873743
+X-HE-Meta: U2FsdGVkX1/izVnCyjDRphMXjMi6pVkpncJRYOZ3r1f0teEs241t2A8LJyR4oYmHBpgPQVV5m5RL3qe7TU7uzg4chgofIRFIpYkSc+11pQHlAZPhEsTvc1vqdfHaDxwLoQUA50sEVRJZj7LMIJXTt9V4L+hy2DoO8Qe59JHSmrygEZzOnCio5yHjMqBQZrVMuvzNOiPz6zuSv4xP86l3PXAR3nlLhC32gPfmzwURZk1eVnsKC1iNknESIvWBuCqy8bKeHvxz43PqJZkVo3mASYaLjCQYFmBDmYussTjXpAOSYF/H7n656c8Ora50Fwx57ib9m+xAXy9tKDKsEp+CkMIm7Gv3aLPQ6NHNf1Bk7jqCj6+AmdsL1GEhxW4oWGo8n1TumnjtZdRjYafHjKTVmr7i4kXKFJg+qWIRKUKJgXgflK8tljDIleQu/C86TxSkGlZ7ldu2cvl9lQsGVVwhZjDcglJpxNo9RfBfU8NDnvZpMcMbtJePkMdet8BAFC032lESyPiWN7lVMsIl2l5FEXYFknIt2rTTrLMnNcEfECeff1tPZiG9HsMVReOolXTubVzbHpVAzQHvYOUEcpbH4DbnUqudHvaUpd6Ah+/OAC9d+5eD29atXcQvUgo6u8W9BzaJ0IVoTz7rL5/zRptd9uNTyaMdb8dosXv/cmLj+QGTlLh5e5eywbJ/QiRaXoAdCJuu7E7O6d6tGg+7V3OrDNVgc8IAYprOW5wYtswEaaA8QHbvMBG6eBXoB0D9maCrX40isvaBLa2WiErl4Q/VPF6OhMl6P5LSTEwBBzIzXAt0Q3jj/0bff02FMcm/+oQNs6eFGQblcqodz51po3zQ8nril0xDyBHXG9WAX1r8g0VDkpsKOouTjCBsKns0CylI1nnzGbQw6aRnYh97Qom5Y6NEt17pFs8VnLFpz6fZvIKSbaamiN89ffp6jLhWutCBLjiLEcNvHNKF1+SiNKb
+ VsD+qpf2
+ 9soakD39PxHDCXklpzvbGIeJdQ4c/1nGyPMKUbBAmPHq6l4wTT7FCSuVooSpJrrksoiUE3eyTbyKv2wuvr0cldvM3Q92KpxnSK5HiCEklF3vnZT8WDrzUWGHMuEttWvFOweq5ZrjIX+/E3w8X/OWxOJH03Mm6AepgmDAHkWaCEtKaX7IkAr0k4aYF+BZRbDuuK0XyhICYNVUoKQ8X3NG0xDxZiZUovuP8qas8vM9mD2Pv5adbBGXzL+qsSwFNGY+daHmj0cN/w9Jh9A5Ny4k6T05WCg8gWgIuDtD3M0KI9EQEGEphKkEw0qDqpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,119 +98,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mem_alloc_profiling_enabled() allows evaluating (with a static key) if
-memory profiling is currently enabled. mem_profiling_support is a
-variable where false means it's not possible to enable it anymore,
-because the system was booted with "never" or it was later shut down.
-This is possible to query by mem_alloc_profiling_permanently_disabled().
-
-To make slabobj_ext array size handling dynamic, we need a snapshot of
-mem_alloc_profiling_permanently_disabled() early in boot, so that's not
-affected by a later shutdown. We also need it to be static key based for
-performance. Neither mem_alloc_profiling_enabled() nor
-mem_alloc_profiling_permanently_disabled() satisfy this.
-
-Therefore introduce slab_obj_ext_has_codetag() with an underlying static
-key for that use case. Its state is made to reflect the result of
-mem_alloc_profiling_permanently_disabled() during kmem_cache_init(),
-which does happen after setup_early_mem_profiling().
+When memory allocation profiling is compiled in but permanently disabled
+on boot with (implicit or explicit) "never" parameter, stop allocating
+(wasting) memory for the codetag_ref parts of slabobj_ext metadata.
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slab.h | 16 ++++++++++++++++
- mm/slub.c | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+)
+ mm/slab.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/slab.h b/mm/slab.h
-index f8446167e175..983cb1119a76 100644
+index 983cb1119a76..c5f37a46434e 100644
 --- a/mm/slab.h
 +++ b/mm/slab.h
-@@ -568,6 +568,22 @@ struct slabobj_ext {
- 	};
- } __aligned(8);
+@@ -591,7 +591,7 @@ static inline size_t cache_obj_ext_size(struct kmem_cache *s)
+ 	if (IS_ENABLED(CONFIG_MEMCG))
+ 		sz += 1;
  
-+#ifdef CONFIG_MEM_ALLOC_PROFILING
-+DECLARE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
-+			 slab_obj_ext_has_codetag_key);
-+
-+static inline bool slab_obj_ext_has_codetag(void)
-+{
-+	return static_branch_maybe(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
-+				   &slab_obj_ext_has_codetag_key);
-+}
-+#else
-+static inline bool slab_obj_ext_has_codetag(void)
-+{
-+	return false;
-+}
-+#endif
-+
- static inline size_t cache_obj_ext_size(struct kmem_cache *s)
- {
- 	size_t sz = 0;
-diff --git a/mm/slub.c b/mm/slub.c
-index 287cbf3eddcc..d78d3e50c877 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -213,6 +213,11 @@ DEFINE_STATIC_KEY_FALSE(slub_debug_enabled);
- static DEFINE_STATIC_KEY_FALSE(strict_numa);
- #endif
+-	if (IS_ENABLED(CONFIG_MEM_ALLOC_PROFILING))
++	if (slab_obj_ext_has_codetag())
+ 		sz += 1;
  
-+#ifdef CONFIG_MEM_ALLOC_PROFILING
-+DEFINE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
-+			slab_obj_ext_has_codetag_key);
-+#endif
-+
- /* Structure holding extra parameters for slab allocations */
- struct slab_alloc_context {
- 	unsigned long caller_addr;
-@@ -2425,6 +2430,25 @@ alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
- 		__alloc_tagging_slab_free_hook(s, slab, p, objects);
- }
- 
-+/*
-+ * Make sure the static key used by slab_obj_ext_has_codetag() reflects the
-+ * value of !mem_alloc_profiling_permanently_disabled()
-+ *
-+ * Any later mem alloc profiling shutdown won't be reflected in the static key
-+ * because obj_exts with codetags might already exist.
-+ */
-+static void __init slab_obj_ext_has_codetag_init(void)
-+{
-+	bool need_codetag = !mem_alloc_profiling_permanently_disabled();
-+
-+	if (need_codetag != static_key_enabled(&slab_obj_ext_has_codetag_key)) {
-+		if (need_codetag)
-+			static_branch_enable(&slab_obj_ext_has_codetag_key);
-+		else
-+			static_branch_disable(&slab_obj_ext_has_codetag_key);
-+	}
-+}
-+
- #else /* CONFIG_MEM_ALLOC_PROFILING */
- 
- static inline void
-@@ -2439,6 +2463,10 @@ alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
- {
- }
- 
-+static inline void slab_obj_ext_has_codetag_init(void)
-+{
-+}
-+
- #endif /* CONFIG_MEM_ALLOC_PROFILING */
- 
- 
-@@ -8551,6 +8579,8 @@ void __init kmem_cache_init(void)
- 		boot_kmem_cache_node;
- 	int node;
- 
-+	slab_obj_ext_has_codetag_init();
-+
- 	if (debug_guardpage_minorder())
- 		slub_max_order = 0;
- 
+ 	return sizeof(struct slabobj_ext) * sz;
 
 -- 
 2.55.0
