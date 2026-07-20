@@ -4,102 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55FC7C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89595C4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:30:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 409BD6B009B; Mon, 20 Jul 2026 05:28:54 -0400 (EDT)
+	id 851E86B008C; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BA4C6B009D; Mon, 20 Jul 2026 05:28:54 -0400 (EDT)
+	id 802E86B0092; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F8296B009E; Mon, 20 Jul 2026 05:28:54 -0400 (EDT)
+	id 719376B0093; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2966B009B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:28:54 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 88B97C0783
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:28:53 +0000 (UTC)
-X-FDA: 85008630546.08.10F4080
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1BCA91C0003
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:28:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=lhrVe85S;
-	spf=pass (imf18.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784539731;
-	b=fzPReCHySli4aKrmU8W8guAzY1lmhx4qpl0PbLamuwvtHCusUlYUkUDDrcCUaC23Lb6cGt
-	pyDY5xVt/Pym65iqvo/leGYtFgshYqOqIpRlT/y6WmGF8h3fLyWmNCMPuuXB3W/KoEvNpW
-	jYdJEW9hOYyFvD+poB4HyOW4CYBxmOw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=huawei-partners.com header.s=dkim header.b=lhrVe85S;
-	spf=pass (imf18.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D4876B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:30:10 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C439EA07A7
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:30:09 +0000 (UTC)
+X-FDA: 85008633738.16.74A1116
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0148210000A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:30:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fyLxYwAI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784539731;
+	s=arc-20220608; t=1784539808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XUHwliFvt2Gn1hvyINNY2v9lEgIqckSiVz0mxRwlukg=;
-	b=JTOWGj/7z+YGdQn5ag/fMuwOGLN5dbWIuqlH3D0yvC+TBvch3ypEPIDWrzgto8XEq1owcO
-	DGEQsfk99oD1D9pZgyj2sWf6lv6Vdgb6dWhak/Ojo4/6jLKlObCQg+wJpLRG05EkUNyats
-	METD73DyjZGrzkPF1zyX1jjUo9WT0eQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=XUHwliFvt2Gn1hvyINNY2v9lEgIqckSiVz0mxRwlukg=;
-	b=lhrVe85So4F1nplZW+dS/HTMHu+U35OXYXBpcPmRehHDm2a6Xzp3Cfh7CM2JvmaKbds49NOZW
-	vxw/Tk4YSp+PzrC17MFdk3bHk2bwiptUEupYUTPHhWhmhWMptG7I5GrhnWqhju5sCKWuvc2O8gu
-	Qg0b4pF8stRNZ0xNioPPvyU=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4h3Zv71bMmzHnH55;
-	Mon, 20 Jul 2026 17:28:19 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2AF654058D;
-	Mon, 20 Jul 2026 17:28:41 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Jul 2026 12:28:40 +0300
-Message-ID: <a168a9f2-953b-4ecb-98ee-ec6b27f4d963@huawei-partners.com>
-Date: Mon, 20 Jul 2026 12:28:40 +0300
+	bh=jiYeVsnBdIvFuQsIGCzuuAuxcFGL3XUJywevOqwgEe4=;
+	b=1SGYm9TvfNwzQPXGXnUEM4ff9hOtlIt8By4swxsa9jNBU5z4oJURbXjVV3l24VS0mYrCGn
+	Qn1atQaxHZ3xvClg8wCGLBiA13pm4zkcGmKRn9DggW5UgokicgLSSPCjPsmgFjvLdk8Gjt
+	A0IwfPPHDnXbrp8gdACnSXbmcR4mmRo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fyLxYwAI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784539808;
+	b=s+6QBm0hc7A/2sCajTlmOR+B3GB8TxJlbe0ZIrg4erc+25p9mpayGjExbMKckUT9mH6l2Q
+	Y4K8/A8id9xSKf6oTa225bBEUMo8LDx1eW0aZ2h6gQcFS2gy9pI4JaeiLSXFIyMhFDOeEc
+	g/EWKke1rYFsHruRGvEmWxq92Qi0ktM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B15F435A8;
+	Mon, 20 Jul 2026 09:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AB91F000E9;
+	Mon, 20 Jul 2026 09:30:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784539807;
+	bh=jiYeVsnBdIvFuQsIGCzuuAuxcFGL3XUJywevOqwgEe4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fyLxYwAIg5Ni1Hk+A0p2yIhUb7gIsYKAJdb8yjiUhm8CLIdJ5Vh1hd96FbCNZLwm8
+	 5pUAFO+AygfYbbH0pW5ennR/j97lDiGgd3TAm0sZDRtqa6IB4/J+qF1QH+GtoQNe8M
+	 P3w+i6/wRs2FHfUOF7UkvcPSZlrTNo7MvWBIrDwugfBrQIropv3e4IRaEnlkqcX8BP
+	 yyJBXPb97xkn/l0eO4kTKcpNzzi4+T8r1y3YJu7bPFcu/n8PFohsRYw9hd0444di1p
+	 C9JIyU/OHWOM8pJVXrjlRMPEKZafOIb53Wky/6b11EUnAGpO8bhmkFzMUOKRTbt/6F
+	 /gsWbWCSXzcOQ==
+Message-ID: <1147ca8f-166a-4236-98b4-0a37442cae1d@kernel.org>
+Date: Mon, 20 Jul 2026 10:30:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 0/3] mm/damon: introduce DAMOS_SPLIT action
-To: Lian Wang <lianux.mm@gmail.com>, <damon@lists.linux.dev>,
-	<linux-mm@kvack.org>
-CC: <sj@kernel.org>, <akpm@linux-foundation.org>,
-	<linux-kernel@vger.kernel.org>, <david@kernel.org>, <ljs@kernel.org>,
-	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <npache@redhat.com>,
-	<ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <ryan.roberts@arm.com>,
-	<daichaobing@sangfor.com.cn>, <wangkefeng.wang@huawei.com>,
-	<zengheng4@huawei.com>, <kasong@tencent.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <lianux.wang@processmission.com>,
-	<kunwu.chan@linux.dev>
-References: <20260720030327.80153-1-lianux.mm@gmail.com>
+Subject: Re: [PATCH v2 2/3] fs: stable_page_flags(): use folio_test_*()
+ helpers
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ ziy@nvidia.com, luizcap@redhat.com, willy@infradead.org,
+ linmiaohe@huawei.com, svetly.todorov@memverge.com, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20260720033021.4091944-1-tujinjiang@huawei.com>
+ <20260720033021.4091944-3-tujinjiang@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260720030327.80153-1-lianux.mm@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260720033021.4091944-3-tujinjiang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0148210000A
+X-Stat-Signature: 7y9qbp9ofcj6a9mikbqmdwabgwh5fybt
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1BCA91C0003
-X-Stat-Signature: fkjyt44rm93y6oefwwoyot8scfywajz7
-X-HE-Tag: 1784539729-143062
-X-HE-Meta: U2FsdGVkX19yicAhs8FI7DJvKx1mUt9iePDeIqF+Y+qqW2mv9m/KvML+u1IFqNutNqg2lXdP8nMzav/AahF0/T62YvCB/OjFHjCCncK+Sr6vpjJ20OeMmPAd2UkcBkZFi3VRxwyoS6AdNoot9d8VryAAZvbXPivzddEmaq2HgIH3cvDQZ2/ynl+kK3p9jkzxustYkbpgnQQPmEyKtsQ+hY38Mun2vF2J2N7D3fWwlLKGLC51w9V86wAUmcOuY5lb6C+J+QPk1qVDMOi+G7CUO4nblH85eXSyLTwAq31hDAY/c9MG6p1pM0PDMrOd+81FxijlUwE0GNKcKjojvZY8x2GG8YsYp19DlQiUZLBzNxiLSey3n6gqvzim9CD1Dcg4SGwayVroSodRE6URMJRuFXojDWXCAOjJqHmekzmUoaAP5DfXb6xSbO07Bh2VWOUI7bMF9sSg/E7taPeyDP7CS7p+tYTvmq6kcRaJy3QOEtOxhviclRzXVFBHhCFU8Z1gmeQPcF3McvCmnVlgJbr7gJ64dNkD2y57CZHprboeS8GNJ5CXPnR/uRfe+hqOjm1mQT6kD+DGfVlBjDcZf0QfSjJAmmtOAVCd+5/zScWT6g9jk7BDugwPLM6NNQFvUnFNgjM5Mv4TZqGM42XB4zO1vmxyU/Y6fJz9s/+H0RTXvfcsWvH1s1Nr65sFYBxQX+7Qbh6dZFDQ+3e40CFcc+8P8RzJ3gYu4gK2D2QqRW8f1vldEfl/PWkOBJFZyoCZw4g9p3EtNwJUlQAAieu5t6KCeIVJlRFo352muU4QC/PfXiGLqM0kLX8HlNvs/6gNWQ5xeA8J6gdeQsVMK7e/Vci4EucJURqyIl+fCg9oIaCl7tfnCU76w8a4LmUr6WiyGAIgcGbXBor9P58TaHNiMtBSQ6TrUS4gpJJKLSDMwPSajg5ux3C4iR7+qRs2I3c+YPlbIwxgzGsDBhn9H4yiRr5
- ARLP4ZuB
- 24/PNbFZTiFLSgEyynHlXFqNd9gTev7SBh/SHKbUUDDY4ouw+SB5dihXy5Fs7ImzJt66VuUMwNRyPY4ptvGDBRBfQky6F190ZGXSLsE52kzHeHYazEP6px5V5Ox/5Q+UTdus2UeEnc4BRKfxSmR8WiM0a+GNgDHAOgjkUXkddyUe9jpkPnzfEiDNhMGM/5Jp96Lf/L79TQp7SNM/iFOLLfUMXAxSt/IYWtHwWfuz/ChJps9RMoYGyg341/tTh3bd7SvMjiMmJZeP9CYWPBymVrZZMc8B9MdJ5lDpCvc3+dBCpwtzxV+gD0dXSYO5+U6ely1isTB9R6JtHSprPhj9qWGydWfdPCGjutsLZDaIJtYU6OZICie4/dVezFOdHD6tjMisVi8rVO50SUAXfMqMChxg47fmbZPCuCJo093XwYbT/COkKiyK2yi1tWCkI6ez9DUeXdldtObxJkSMOvc3FOKALBQdNHgauSZhIBOV0HNa4xHE3yV1VFO52Dp+kSQ5YBWkQgBOx+IZ8clHBSuKQfR3odkEh7GdCxVA9FDrFnZg0MXLfWq2CQLhLuw==
+X-HE-Tag: 1784539807-167725
+X-HE-Meta: U2FsdGVkX19OfPLpFhKgAIVxtkJyQr0omeym9s9CUEQsdB1iMydVc5nblO9aMU7KtTxULaXvLEakB7AZodD4PyQGPqZuLgNHbA7uuo34PMyJW0NQ3K48CXOt/Uaruxd7Mp3mzpbvjJMGNzDGyYVHykkMLpYXgswsykehK6wjUaq+PQiapGgZJiVCYq3b+bBznYSFkwjQSeRGjJuhmAZkm7Rkn4QUH3dhH1bBXOqgMhil4nEZDkPScMSP/XcUxWj3jqG1IkhHTHnrBC7hR0bDPfqLbcvxyg3NNP3AZrTzSAHPojUQuRUPnK7DNJSnJTVseHCtypY3/DOZd31ZmzyzoqvQaN5EPp5Z6KjzUsuvyxmtoYOcq6J2NXso1AGP2cy7L06LX35FTlGukzky6yIP1TXPssP7X8QfqKTIk5YD32xxjyAmTgYHZX36l6AkXUdYZ3yWfwgeEd7kltnNASasY32CcGEuRZaKJjQ20cgfd8VGChLEA8mE+zds+MJjBnD8aF8kdd58GN+Oh1Tf4qxtFrdIMHSQn6JdR1FPR9G4TvCaw9LFcvZjiiHD+VCrL9FTw7pLbZ2JXnvJyGM/c7VEv2oM8zaeP60qmEfRalNMfxZoY3IB20TsoWIuywZ6cI49RTSaNcr/Ih8UClURB2/Lj4yCNLUoKJoOAPEqndOY3H9bQIVaK8sRL8nwFM8tF7IsIF+MsQ7ngFXNpi4LQLDsgaKpj+Xt9JNPInsm68ySLdZgw6Lnba1PIvLqs0mj1UbamOdIpZ9KOjMRXd8JGOusEVdnn8Y4hZBVR7iA8zJNx6az8Nbc7GvdBbaTdwnXPgXvmcCF8OfqjANbl8ZUSiouuR1MyZNIbWFWJ2+/wswM5FJaTy0LUl9S++JaQea/bY1gfySQduJ2JAG+T6HBaBkrZ/j0k4WsdklZlR5qla6O48b40FlVSPEX4uASQApNdZgS+7p7HHGwg+GfS7bfoDj
+ eeeRVi1S
+ JbhpdoFpCXmUI9spJdyHWvFuZNwAEt9uOrlLAUbXotXzcDEjOs2qvaAYeMNjoFAwOvuZFg5m7wJl/nIJ8nWyfaYtqF90/NM2yfAoYs5hUReo3ugW9u6y7jpAlRcAci0aqNW8n6TC3txeiAF4vZm9Bftz4QdcLoT209TMO2eZ7sIDR9d2dC64BcWzpypMmJKv4w86LWe6VI+AKhYGQW5JCndMIP7cdHj3MFMr77Mf94tvCaOtfFRynNvwAa23xcnAcF47GuuPnDyedekdTEJUyuZ57oXVduiJNXVEHzbBZWAwmuOYcSNXmN+i1BjQT+ix/hpt5VJBz1LsBo7vohkjlbXFEVnrV1W4vhvi7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,109 +141,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lian,
+On 7/20/26 04:30, Jinjiang Tu wrote:
+> Since commit 304daa8132a9 ("maps4: add /proc/kpageflags interface"),
+> /proc/kpageflags directly operates on page->flags to determine page status.
+> Later, commit 177975495914 ("proc: export more page flags in
+> /proc/kpageflags") started using page helper functions when exposing new
+> flags, leading to a mix of both approaches.
+> 
+> For tail pages, the original code did not return corresponding status.
+> commit 0a71649cb724 ("/proc/kpageflags: return KPF_SLAB for slab tail
+> pages") and commit 832fc1de01ae ("/proc/kpageflags: return KPF_BUDDY for
+> "tail" buddy pages") made tail slab/buddy pages also return corresponding
+> status. Then commit dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
+> made all tail pages return the same status as their head page, except for
+> hwpoison and mapped flags. It also cached the folio's flags and operate on
+> the flags directly to avoid concurrency issues if using folio_test_*()
+> helpers.
+> 
+> Since commit 476d87d6a061 ("fs: stable_page_flags(): use snapshot_page()"),
+> we can now safely switch to folio_test_*() helpers instead of directly
+> operating on flags, which is more readable and consistent with the rest of
+> the kernel. Only convert cfolio-specific flags (i.e., anon, ksm, swapcache)
+> to folio_test_*() helpers, which reduces redundant code. Keep others
+> unchanged due to they aren't folio-specific flags or coverting them doesn't
+> cleanup.
+> 
+> No functional change is intended.
+> 
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 
-On 7/20/2026 6:03 AM, Lian Wang wrote:
-> DAMOS_SPLIT splits large folios in a target region down to a
-> configured target order, using the existing split_folio_to_order().
-> No new core-mm code or exported symbols are introduced.
-> 
-> Based on mm-unstable at 61cccb8363fc ("mm/swap, PM: hibernate:
-> atomically replace hibernation pin").
-> 
-> Different addresses within a PMD-mapped folio resolve to the same
-> PMD Accessed bit.  Accesses to a small part of the folio can
-> therefore coarsen DAMON's observed hot set relative to the actual
-> working set.
-> 
-> DAMOS already provides promotion actions (HUGEPAGE, COLLAPSE) but
-> has no corresponding demotion action.  DAMOS_SPLIT fills this gap.
-> It is a mechanism, not a policy -- it does not decide which folios
-> to split.  Selection is left to DAMON's existing access patterns,
-> filters, and future probe/PMU signals.
-You should mention why page split is be needed. The fact that page
-collapsing exist doesn't necessarily mean that split should exist.
-
-I agree that it is a nice feature, but it should be backed in the
-cover letter.
-> target_order selects the split target: 0 for order-0 base pages,
-> or a supported smaller mTHP order.  Both anonymous and file-backed
-> folios are supported.  The locking follows split_huge_pages_in_pid()
-> in mm/huge_memory.c.
-> 
-> Tests
-> =====
-> 
-> damos_split.py (VM + Kunpeng 920):
->   anon THP -> order-0 split: PASS
-> 
-> sangfor_exp.py (Kunpeng 920, tmpfs, 4096 MiB):
-> 
->   - Created a 4 GiB PMD-mapped tmpfs workload.
->   - Applied DAMOS_SPLIT with target_order=0.
->   - ShmemPmdMapped dropped from 4194304 KiB to 0 in every round.
->   - Repeated for five rounds without functional failures.
-> 
-> The functional selftest (damos_split.py) is included in this series.
-> Additional experiment scripts and raw results are available on
-> request.  Performance characterization using masim [1] and KMB [2]
-> is in progress.
-> 
-> [1] https://github.com/sjp38/masim
-> [2] https://gitee.com/OpenCloudOS/kernel-multi-bench
-> 
-> Open questions
-> ==============
-> 
-> - Selection policy: this series keeps folio selection outside the
->   action and relies on DAMOS access patterns, filters, and quotas.
->   Is this the appropriate layering for future probe-based signals?
-> 
-> - Hysteresis: khugepaged may re-collapse a just-split folio.
->   Should cooldown live in DAMON policy or khugepaged?
-> 
-> - File-backed folios: adjust target_order upward to filesystem
->   minimum, or keep current "fail and skip"?
-> 
-> Beyond the action API itself, feedback on real workloads that need
-> proactive large-folio demotion is particularly welcome.  Follow-up
-> work will evaluate candidate selection signals, including DAMON
-> probes and hardware-assisted sampling, as well as target-order
-> selection and split/collapse hysteresis.  Those policies are
-> intentionally kept outside this series.
-> Changes since v2 [3]
-> ====================
-> 
-> - Split-only series (collapse deferred).
-> - Dropped SPE feedback (mechanism/policy separation).
-> - DAMOS_MTHP_SPLIT -> DAMOS_SPLIT.
-> - order field in existing union (no struct size increase).
-> - Added functional selftest (damos_split.py).
-> - checkpatch: 0 errors, 0 warnings.
-> 
-> [3] https://lore.kernel.org/20260701123000.00000-1-lianux.mm@gmail.com/
-Could you add v1 as well?
-> 
-> Lian Wang (Processmission) (3):
->   mm/damon: introduce DAMOS_SPLIT action
->   mm/damon/vaddr: implement DAMOS_SPLIT handler
->   selftests/damon: add functional test for DAMOS_SPLIT
-> 
->  .../ABI/testing/sysfs-kernel-mm-damon         |  7 ++
->  Documentation/mm/damon/design.rst             |  5 +
->  include/linux/damon.h                         | 15 ++-
->  mm/damon/core.c                               |  2 +
->  mm/damon/sysfs-schemes.c                      | 48 +++++++
->  mm/damon/vaddr.c                              | 90 +++++++++++++
->  tools/testing/selftests/damon/Makefile        |  1 +
->  tools/testing/selftests/damon/_damon_sysfs.py |  9 +-
->  tools/testing/selftests/damon/damos_split.py  | 99 +++++++++++++++
->  tools/testing/selftests/damon/sysfs.py        | 11 +-
->  10 files changed, 279 insertions(+), 8 deletions(-)
-> 
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Asier Gutierrez
-Huawei
+Cheers,
 
+David
 
