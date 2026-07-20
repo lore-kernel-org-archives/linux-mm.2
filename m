@@ -4,116 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C75B0C4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:19:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 959DCC4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:20:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94F1B6B0088; Sun, 19 Jul 2026 23:19:36 -0400 (EDT)
+	id 7A29F6B008C; Sun, 19 Jul 2026 23:20:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FF6E6B008A; Sun, 19 Jul 2026 23:19:36 -0400 (EDT)
+	id 77B096B0092; Sun, 19 Jul 2026 23:20:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CA2C6B008C; Sun, 19 Jul 2026 23:19:36 -0400 (EDT)
+	id 690846B0093; Sun, 19 Jul 2026 23:20:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 416D46B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:19:36 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB040160389
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:19:35 +0000 (UTC)
-X-FDA: 85007699910.29.6C34D81
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 09239140009
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:19:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gsPGGQjS;
-	spf=pass (imf09.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 34A8D6B008C
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:20:09 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F5C8120504
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:20:08 +0000 (UTC)
+X-FDA: 85007701296.18.3E84D78
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 59B7DC0004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:20:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ndq7pceU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784517574;
+	s=arc-20220608; t=1784517606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=v2IFBQgGLhV/2VZq8Hcmtgn4n+KDnEkgWAqmJMMgNfY=;
-	b=iK7CX0URt78XGWI2zN0gwJm9oZKGpm0reqeGJSIJpM3X9tb0GOuT0HHVpL+sjZOGsK3snw
-	b1TRrIiAvaYOx7rlWsW7pATJWvLmYa01ZAnfnPnYhCYTb2X3dzGSb35Vx9y42rdU12RDX8
-	xcaZ+QqFl5A+4uaJjnaW3Mtx4aen2Hg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/gboBdKcLyKUtNlSvQWR22d9f7N6OeMEtzAkb28zmiU=;
+	b=AD1YiuULgNWjxinlDeS6f7+0LhRtigdqFCyi5u0qaACp5kLx48LitM5JO/4Z6pO8hV68ZK
+	rZUYxWX+rar3ZJ8ci1F6zgt4ePI5hhVNqy9p9PZkhRhWb7dDbFmrhf6gEx+/FT/XdHiDv/
+	F6VU2GFEEXqGy+H+R95ulzsABHDMgFU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gsPGGQjS;
-	spf=pass (imf09.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ndq7pceU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784517574;
-	b=n4r6H4ynMDCZ1hD6IZT9rNz2AI8Fq0hpzQWj5RfcdrXrkZGfuo/PcOEJJu5rtunQQK6fQk
-	rx1yOu7aTyADOqBvWuGgWXUaClG+EDP/TlS+gZpJvAQ8rQo3q8AIlvb44B39FV3cyrFfy7
-	mgI4IfgHO2Hgx43+uf6xT0ZhkM5vBF4=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c95d0a54ea5so7064107a12.0
-        for <linux-mm@kvack.org>; Sun, 19 Jul 2026 20:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784517573; x=1785122373; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v2IFBQgGLhV/2VZq8Hcmtgn4n+KDnEkgWAqmJMMgNfY=;
-        b=gsPGGQjST409XaTstYPTsX5wHBk4ksNAEjmGehdMw1rLw4W2mzkpdODJB2+K8BT8ur
-         NserOVQva5wxyWp0SHP9vg2HrzPfu6aKpiTXdvSnhq6K11bvx2YSmYn3DrnHYwVjBiKI
-         EWXHJYER0swzHvVGRjZ/9ZMwyPqG6jt0NbX9DULn/N1fmIWFd/SUVIdA86itiSRKq7Ce
-         VWKZBv/GBIiepZAJl369KE1oLTyoFWPI+AhAPnd9dGNJaPtgWPblgjUrYChxU+GclRuZ
-         oMO9ZSDfg0h5eGKVBRolqNcsqsylAca0bYn0CXWVmUxI8JrfXVlCFUZHiECCJ6jReF0m
-         67ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784517573; x=1785122373;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v2IFBQgGLhV/2VZq8Hcmtgn4n+KDnEkgWAqmJMMgNfY=;
-        b=hzv+5RTwMSD8TczbQ/EwcNeJYy6n9+GDZynFUA+uIHCWFnIg9WgEy08mjKnf1xj0/P
-         oGJ3c20OcQLWuIi8L6lZ8d2rM7iF6Stbwza/A2pKHz/MjKdJ6Q9nlpA5nm5xTf8xaDK7
-         fAmoZ94T06CUWj2B0IcCT5FGnuXjB6CI8Bqs+9Oj3TQCE+X3nicpni3QoL83gjFRimSA
-         YaVc+f1Gy7TWb0fci4SwiDcE6cEyI/elhTBejWoJmI1/tYSLG+Vh2Suod8R5gu4jRoza
-         C18xm5/URh6LVLTHDwQJMs1/0pDUhcD4AncilEEZKzD479RpNv+DuWtEVaZIV7wVMuGr
-         ut+w==
-X-Forwarded-Encrypted: i=1; AHgh+RpU65/l9//phcAR7kAJ/hnUgPU0msi/lkGkHek3xJaoJImBbY/q9DC9IydgGGGxAKls0RF62iNUHg==@kvack.org
-X-Gm-Message-State: AOJu0YyEOMuzWob92o9fXX7xQNamWZzJcmd9D+BPUeTOWPdQWYL2f32W
-	pTAKvHqkpdNY2K3qJXHo7/ei0n3RLx60DgTjnMaWwF6awAi/2wvpMY6G
-X-Gm-Gg: AfdE7cmIU4U0dS6tlGAtsBgreFy6HYk6/4FftI98Sp1hMttmet8D1L26Dy7YDhyfcZd
-	Z1ltRHZEBwwI/2EnqY3Ork9zhpKnGGGiVKk971jX9c9AFwb3SPbq0jo0aV704OeAR6n2fFMAD0O
-	a5gwjaiM+s4V3qeLuBz84rU1ulIMZQwIWRjS9Q6Q18hr9NiUZpDqSwEBx6rBsGwGdQB5bXEzWjx
-	EyP9BmYZdvIkdwLigqvrsMnngwj2Ui6Txld5xvtssw7q5hDfH6X8Kk0ph6ToFjy8jTnivoEeH7a
-	k/bPUzqx++2Tkbs+ooM0rCobtC3cQP5c44c4aJvaUgfuHBJr1zSfGS9vjTIIuiLndLCthRGWLT0
-	Y5jhDaiGjADIixrIf2O8VOVkEgHr6FIObJt/PQeU7sIULBrIMkL5TVHnsGyqkwLYmdHMr1cGOGv
-	zZSD5UeXDHByMYS+KC
-X-Received: by 2002:a05:6a21:114c:b0:3c3:8f3d:832f with SMTP id adf61e73a8af0-3c3ad9620f6mr12983309637.49.1784517572647;
-        Sun, 19 Jul 2026 20:19:32 -0700 (PDT)
-Received: from localhost.localdomain ([221.227.131.254])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb517aada63sm3827465a12.3.2026.07.19.20.19.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jul 2026 20:19:32 -0700 (PDT)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	baohua@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [RFC PATCH] mm: madvise: use per_vma lock for MADV_COLD/PAGEOUT
-Date: Mon, 20 Jul 2026 11:19:01 +0800
-Message-ID: <20260720031901.1724737-1-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	t=1784517606;
+	b=4c324fCHN2Xc2B7gTUlU575cp8BQN3GKJc3jbRXcLXWf1sXEpA814Z0FIFh1wOJgfR8UA8
+	bGQLOGoQUoPJ3C1d5SmcPLOWe+6sOdweS12TYeiZJMFYfshVtmrsqf+RqK5exGm62mwuvs
+	bp5A9g5xo65177poiEBZv4kMFp5oBWc=
+Message-ID: <2e4e8c63-9d5f-4e5f-afbd-6cc91b5562d3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784517604;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/gboBdKcLyKUtNlSvQWR22d9f7N6OeMEtzAkb28zmiU=;
+	b=ndq7pceU0wscjhjg/FZIExu9er6SIixnjDl75z39pQsF3jNyAwzkUqML/1M8ibrOIm5r5d
+	JgfDIZwKRqnKxZIr/oo5pn9xYFN1WV/b5tZCtFBvDeePrUnmUNXBXXNPYHoVlU2vzHwUw1
+	LsVkb3Miruq4POHgGbFuMZB1EZjulnU=
+Date: Mon, 20 Jul 2026 11:19:41 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH slab/for-next-fixes v3 0/4] mm/slab: fix unbounded
+ recursion in free path with memalloc profiling
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Suren Baghdasaryan <surenb@google.com>, Kees Cook <kees@kernel.org>,
+ Pedro Falcato <pfalcato@suse.de>, Danielle Constantino
+ <dcostantino@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ "Harry Yoo (Oracle)" <harry@kernel.org>
+References: <20260713-kmalloc-no-objext-v3-0-47c7bd138de7@kernel.org>
+ <alkypcRUZa_r6uGV@linux.dev> <c993627d-9071-4fb4-b5fe-e0a49ed26abb@linux.dev>
+ <alpHadRGUeaaMUKJ@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <alpHadRGUeaaMUKJ@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ypgpkmayh4eyaio1j86w4n1cqmt6x3wm
+X-Rspamd-Queue-Id: 59B7DC0004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 09239140009
-X-Stat-Signature: tbu55zteupo5u3abj1nama95ynzpqoqe
-X-HE-Tag: 1784517573-702579
-X-HE-Meta: U2FsdGVkX18J/b+/L6mBQShvT/7yHH3d+GEJ7VHB64sz/68evg7IoHqMiS8od81OuwWgZJlq/g6PmF7yGt39oUpjls/KTO0SISpmbaUT4tzQTiT99tuMu20dfUY71zs2/thzdF7TkNSQtcK5dDA9Nnlnpo8a8lNp2dwGbFdN3zy2TBoe3QAhWogCIMFIApqjtBCQzxK7I45H1gchPNzg6rrzpnqBhwyxTr0tEQXsBgg8NOCLy+QIFf0dXN01JaeR7sxfOSSt4h1kuuDbVevxqfUcenxng88I46ozVmHuMNDdHJh4YFzAUIHJ6xrf65bSA0w6YCOTnv0eIvtJBjBtpfUowQrzm3hLhTEybIVrYKP/7o90/zwJcVPtmwi+xiTxADTdsQP/O9DhS1Vp2neQ09JkSANAUjcrUUmBNx4BhfIUiv9HZIQZFdjeuoVTcAC89bqfdr4QYY3boYLx7Xc7sqWiBTf9gWGJEUBD4txeePETryuvLvhWLVHzTTsSdxaIUr7dfUk9VDlzdlTOg3ntVYIGxDzFfDhEmybWOrzp/DWAwEl3wVtbXwZK5E5XCsFl1q9tUXZNEIQpqaJ+e8PJpoUQDXfYGw6/MUcqB14Eo8txIN1WLVlxxTZ7uh5va0tYdXH5ckfaVilNCjE2R2OCIknTlJlTaXfGvwBetbp42Cr+LETHZ1DHadEdo1Q0hrfUTzl4y3CeMycd3r+w/JnCBQqZlE0mKfq0icUovX/icnkiMgqhY2t75IpBbzHcvGLRItPysskLeU0DiVFno2JJ6m1pM3rCWmgAKX3izeVOUzLv9zGZVTFWyFrDv5scedgT5tvgYUGu1eDLWn2l6WTSEHzAQSRltUvzPf+jGoBGiL71kcsw7R4nN8F19gHYwDoblD7cti+gXxOGNBtijqm/MEICBmc2KcUEA93j2JsGUE0bECqqwCEZCMdXLSyrVIU5Bxkc8+4gNQARQPV+k0W
- Ot5UcdRL
- vgbqCCfKGgZVbzq7DEF7e+VPmcJ5X3/TiEXStHeiYgNAP3XRODAFuedQvTEA5OgytrpER9WYvHXpgXdfj+G+jOoauVIUkyDYZW9/h0I7vnm3gDHaH4Wa+xtf+Nov6ycd27PjLCxyKscNhVQUpgFFz9q7rSwWPxPwlkxeUHjw11YF10Wq+xKqzCs2l1L9PGACNcUNrG+H0r0azTEa8CUYw/jSsGMAw53mYevlkkGXlOtcP+57k3fkiwxlS8S47MiHPGS4G24aZ1EUsvQSzxpq6dp4YdWMF8PBDP9sUykSxYwvz7FHE1AZ5EPXmONBp/xo+HEgsKDjrZTuoVDCyLDoBEn+fzy3nLj+hXVDXcfFTecH1TQeGMWipL+VGtcNdESleZdpwnUtBC1KIPUScmKO+n1e/iFbyWSRH3nZbFCEjgp6lqMFY+ZcMrDMEYcG1Z9Md403CVEu8/PBcS1OEYredU+6WeepeshfGXOV+xRC+XOrJezwU0RNfKpTQWQ==
+X-HE-Tag: 1784517606-536819
+X-HE-Meta: U2FsdGVkX19ybS8UI3gLMI52UfKYAg2PiwFwwHZBLNEF1k4/Lg6Wt3EEhlg9bVNwdzeLuFwMbXuiYvDhr38J5T/PUwBeiU4crMvvbKHG5wUYhCpc/u1D+kpmjbBe9ozdZPNbPnA8iLt47Z/MK/gaIAUdPMm3mPdpSVRtLyo7Iwv2/okSzh7x0rjCfFGoC/p6VaSVeKCrSfDJV10GCd8NQUA3e3ZNIwAV6+tx2ToRpC8PJC4oNg//E2zENL87G4BJx3zjT4Ny8zDB1wYyYVJwrs39erRzr6zcPHeGWyV+X008PpAIk4T1yWWPl5bEXJNa+ta513p6VnfZ1sHtK2Cm9tRF2CdyAgkMBOgJ6m0RMRVf0HC98wnkUv33FyTsxR6v8YZyzmM1uwQBMYDPLh7y1+qUHVNC713QZQWVkipBDY9+lvgEf0+Jp2zhP8wcMc1Ar4KvHb12GNBgnbyDZp1dQ42YmOB7NRG5+yZOhZWs5uKoLroml1i+WmFaawMi1OkNoY7+wxvjZZ3UlOsXUmHihPqaLNyYnVokM6aFpos4LcfM8vpeiILQJObbYVVKwhgSTG5hQVw49JK0I3uCvhE9886KO4X8tPt3Jc6GPh/3HmO+pev1BbZ9DAXTSmefuPto85TxXvPU1UU4wfPfsuwjkyiB3pbAJbYMgVE/MSmrwchZTONpt/XELrFzt4PZ+iL7hmilgQtt+D7OKOxX/JD+5IHJ4yIAkoH+76Mh8kqr9AbhdHGEsLsY2VgP+nwcYUL+kkqP9gKmz7dQKUI5rMRKvkLaMK62M4wzwv7l3P/WRuR91qgI2vCfXuUrrQMrlprzT42cf/1NlASpmqzo+EeXRx2vXuZcmmj4Oph9fwiugpNd0UjBjxoFHoiDgfH2JhGENFTA69OQTiF/t0sUHexfDD8a5kgDlvizAk3YPf2lEhU2Es1D1lKVDPrFknnJvg0iMEszwkNZ3IrjFNnB/I5
+ nbLFYTST
+ v0lCPUgIG7woTlVfZlHL6GAtHcMT4muQyxSzUWtP6zj+l8NE2dW7weebxoiTktZYmeiSA87vzAWJvc/J1ecwcCOfX6QaUaAw9/tlvN+/g1O/tMtYfgnGG89z7iLBZ3lgwOX/yb7eciXiL4hdJ52C0550QCuy6XAbbg4V1/FPsUoLjCkKy2RvlsJOue7+8YiOpOlM3/1DlwjnmHYPxoV40/OBsAJzlF8emc3u+PHGG8arodwXi332tQcuCIY/IoHyzT7ZvTBe2g7UHZdBr2eggByl/9N3DtddBfa9pr0LBZiOrUDO3uZyrgvve+M+XjUcqG1NvYY9wYk+N5frOOuNpFfNGQsPL+0p3m4T1aO4bq6dWJz9E652LBHlGh5JZMlxlFDlHvWlcSehHAkYHSKFpQGZj3HyERUOqZqdiWi4Tq6j19L+5R+2/R+SoI1L4PMXxRJuhleFGtgdF8chg8ZDHvDH3cxDdjRvVKcqCHLmkFtygxmKdfvjKErRgeMMPLE6ifZj8rMB7lD4waiymhAQCsQjhIJFj1OkleTAOOqaXAjdlLKwPzvaAqi85pRPlS4++mECYV+kwlFeRY31QITwKBaZVqjc6XI0/CDNZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,150 +99,469 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vernon Yang <yanglincheng@kylinos.cn>
+Hi Shakeel
 
-MADV_COLD and MADV_PAGEOUT hold the mmap_lock read lock while walking
-the target range. When a concurrent mmap_lock write lock is held,
-MADV_COLD/PAGEOUT must wait and execute serially, even for unrelated
-VMAs.
 
-MADV_FREE/DONTNEED have already achieved this goal using the per_vma
-read lock. With only simple modifications, MADV_COLD/PAGEOUT can also
-use the per_vma read lock to replace the mmap_lock read lock.
+On 2026/7/17 23:18, Shakeel Butt wrote:
+> On Fri, Jul 17, 2026 at 09:16:19AM +0800, Hao Ge wrote:
+>> On 2026/7/17 03:37, Shakeel Butt wrote:
+>>> On Mon, Jul 13, 2026 at 11:28:48PM +0900, Harry Yoo (Oracle) wrote:
+>>>> This is a follow-up fix after the recent discussion [1].
+>>>> See patch 4 for the detailed description on the bug.
+>>>>
+>>>> Based on slab/for-next-fixes (af9ea231c0b45) and is available at
+>>>> git.kernel.org [2].
+>>>>
+>>>> Instead preventing cycles by bumping up the allocation size of obj_exts
+>>>> arrays, it introduces a new kmalloc type called KMALLOC_NO_OBJ_EXT and
+>>>> disallow formation of cycles between kmalloc types when allocating
+>>>> obj_exts arrays. obj_exts arrays of normal kmalloc caches are served
+>>>> from KMALLOC_NO_OBJ_EXT caches (that don't have obj_exts), and all other
+>>>> obj_exts arrays are served from normal kmalloc caches.
+>>>>
+>>>> I tried to reuse SLAB_ALLOC_NO_RECURSE to make kmalloc_slab() select
+>>>> KMALLOC_NO_OBJ_EXT, but it was not great because it does not allow
+>>>> sheaves for those caches. So I introduced a new slab alloc flag
+>>>> SLAB_ALLOC_NO_OBJ_EXT.
+>>>>
+>>>> To avoid huge confusion, I had to decouple "disallowing sheaves"
+>>>> semantics from SLAB_NO_OBJ_EXT and introduced SLAB_NO_SHEAVES.
+>>>>
+>>>> While this cannot be directly backported to v6.18 and v6.12 due to lack
+>>>> of SLAB_ALLOC_* flags and kmalloc_flags(), I don't this will be
+>>>> particularily challenging to backport it. Instead of a new slab alloc
+>>>> flag, we can use __GFP_NO_OBJ_EXT to select KMALLOC_NO_OBJ_EXT as
+>>>> kmalloc caches don't have sheaves in v6.18 anyway.
+>>>>
+>>>> [1] https://lore.kernel.org/linux-mm/9a139365-28e6-4f1e-b35b-7f6091e9aa14@kernel.org
+>>>>
+>>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/log/?h=kmalloc-no-objext-v3r1
+>>>>
+>>>> To: Vlastimil Babka <vbabka@kernel.org>
+>>>> To: Andrew Morton <akpm@linux-foundation.org>
+>>>> To: Hao Li <hao.li@linux.dev>
+>>>> To: Christoph Lameter <cl@gentwo.org>
+>>>> To: David Rientjes <rientjes@google.com>
+>>>> To: Roman Gushchin <roman.gushchin@linux.dev>
+>>>> To: Suren Baghdasaryan <surenb@google.com>
+>>>> To: Hao Ge <hao.ge@linux.dev>
+>>>> To: Kees Cook <kees@kernel.org>
+>>>> To: Pedro Falcato <pfalcato@suse.de>
+>>>> To: Shakeel Butt <shakeel.butt@linux.dev>
+>>>> To: Danielle Constantino <dcostantino@meta.com>
+>>>> To: Liam R. Howlett <liam@infradead.org>
+>>>> Cc: linux-mm@kvack.org
+>>>> Cc: linux-kernel@vger.kernel.org
+>>>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>>> I tested next-20260716 which has this series against next-20260707 which does
+>>> not have the fix. The reproducer were able to trigger the leak/recursion on
+>>> next-20260707 but not on next-20260716. So, you can add:
+>>
+>> Hi Shakeel
+>>
+>>
+>> It seems you have a consistent stable reproduction method or test script.
+>>
+>> Would you mind sharing it if possible?  I'm sorry if this was provided
+>> earlier and I overlooked it.
+>>
+>> I'd like to thoroughly investigate and learn about this problem.
+>>
+>> Thank you very much.
+>>
+>>
+>
+>  From dcb6ca5c051738d64f7a901402f5f257babbc385 Mon Sep 17 00:00:00 2001
+> From: Shakeel Butt <shakeel.butt@linux.dev>
+> Date: Fri, 17 Jul 2026 08:12:11 -0700
+> Subject: [PATCH] slub: repro unbounded recursion in slub objext array
+>   allocation
+>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+>   repro_public/Makefile       |   1 +
+>   repro_public/README.md      | 128 +++++++++++++++++++++++++
+>   repro_public/repro_objext.c | 180 ++++++++++++++++++++++++++++++++++++
+>   repro_public/run_repro.sh   |  26 ++++++
+>   4 files changed, 335 insertions(+)
+>   create mode 100644 repro_public/Makefile
+>   create mode 100644 repro_public/README.md
+>   create mode 100644 repro_public/repro_objext.c
+>   create mode 100755 repro_public/run_repro.sh
+>
+> diff --git a/repro_public/Makefile b/repro_public/Makefile
+> new file mode 100644
+> index 000000000000..0629fc5b6fb7
+> --- /dev/null
+> +++ b/repro_public/Makefile
+> @@ -0,0 +1 @@
+> +obj-m := repro_objext.o
+> diff --git a/repro_public/README.md b/repro_public/README.md
+> new file mode 100644
+> index 000000000000..21ec3f5c01e6
+> --- /dev/null
+> +++ b/repro_public/README.md
+> @@ -0,0 +1,128 @@
+> +# Reproducer: SLUB obj_exts free-recursion / cross-cycle leak
+> +
+> +With `CONFIG_MEM_ALLOC_PROFILING=y` and profiling enabled, every
+> +`KMALLOC_NORMAL` slab gets a `slabobj_ext` (obj_exts) array that is itself
+> +`kmalloc()`'d from a `KMALLOC_NORMAL` cache. `sizeof(struct slabobj_ext) == 16`,
+> +so with the right slab geometry the arrays reference each other:
+> +
+> +- `kmalloc-512` with 64 objs/slab -> array is `64*16 = 1024` bytes -> `kmalloc-1k`
+> +- `kmalloc-1k`  with 32 objs/slab -> array is `32*16 =  512` bytes -> `kmalloc-512`
+> +
+> +A `kmalloc-512` slab and a `kmalloc-1k` slab then hold each other's obj_exts
+> +array (a 2-cycle). Discarding one frees the other's array, which empties and
+> +discards that slab, and so on:
+> +
+> +```
+> +__free_slab() -> unaccount_slab() -> free_slab_obj_exts() -> kfree()
+> +             -> discard_slab() -> __free_slab() ...
+> +```
+> +
+> +At production scale this recurses until the 16 KiB kernel stack overflows
+> +(stack guard page). In a small VM it deterministically manifests as a *leak*:
+> +the mutually-pinned slabs can never be reclaimed, so `kmalloc-512`/`kmalloc-1k`
+> +retain thousands of unreclaimable objects after a shrink storm. Same root cause.
+> +
+> +Related upstream commits:
+> +- `4b8736964640` ("mm/slab: add allocation accounting into slab allocation and
+> +  free paths") — introduced the obj_exts arrays (Fixes:).
+> +- `280ea9c3154b` ("mm/slab: avoid allocating slabobj_ext array from its own
+> +  slab") — bumps the size only when the array would come from the *same* cache
+> +  (`object_size ==`); does NOT break the `kmalloc-512 <-> kmalloc-1k` cross
+> +  cycle, so it is insufficient.
+> +
+> +## Files
+> +
+> +- `repro_objext.c` — the reproducer kernel module.
+> +- `Makefile`       — out-of-tree module makefile (`obj-m := repro_objext.o`).
+> +- `run_repro.sh`   — in-guest driver: enables profiling, prints the slab
+> +  geometry, insmods the module, hammers `shrink`, and reports the leftover
+> +  object counts (all via `/dev/kmsg` so it survives in `dmesg`).
+> +
+> +## Requirements
+> +
+> +Kernel `.config`:
+> +
+> +```
+> +CONFIG_MEM_ALLOC_PROFILING=y      # trigger: obj_exts on KMALLOC_NORMAL slabs
+> +CONFIG_MEMCG=y                    # selects CONFIG_SLAB_OBJ_EXT=y
+> +CONFIG_MODULES=y
+> +CONFIG_MODULE_UNLOAD=y
+> +# CONFIG_SLUB is the default allocator
+> +```
+> +
+> +Tools: a kernel build toolchain (`make`, `gcc`/clang, `binutils`, `bison`,
+> +`flex`, `libelf-dev`, `libssl-dev`, `bc`, `pahole`) and either
+> +[virtme-ng](https://github.com/arighi/virtme-ng) or `qemu-system-x86_64`.
+> +
+> +## Build
+> +
+> +```sh
+> +# 1. Build the kernel under test (with the config options above).
+> +make -C /path/to/kernel -j"$(nproc)" bzImage modules
+> +# ('modules' is needed so Module.symvers includes mem_alloc_profiling_key,
+> +#  which kmalloc() references when profiling is compiled in.)
+> +
+> +# 2. Build the reproducer module against that kernel.
+> +make -C /path/to/kernel M="$PWD" modules   # produces repro_objext.ko
+> +```
+> +
+> +## Run
+> +
+> +Boot the kernel with two boot-cmdline parameters:
+> +
+> +```
+> +slub_min_objects=64            # forces kmalloc-512=64 objs/slab and
+> +                               # kmalloc-1k=32 objs/slab -> the cross-cycle geometry
+> +sysctl.vm.mem_profiling=1      # enables profiling at boot; a runtime
+> +                               # `echo 1 > /proc/sys/vm/mem_profiling` is REJECTED
+> +                               # unless CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT=y
+> +                               # or this boot param is set.
+> +```
+> +
+> +With virtme-ng:
+> +
+> +```sh
+> +cd /path/to/kernel
+> +vng --cpus 8 -m 12G -a "slub_min_objects=64 sysctl.vm.mem_profiling=1" \
+> +    -- bash /path/to/run_repro.sh /path/to/repro_objext.ko
+> +```
+> +
+> +Or, by hand inside any guest booted with the params above:
+> +
+> +```sh
+> +insmod repro_objext.ko n=2000000 rounds=4 shrink=1 keep=0 shrink_iters=8
+> +for i in $(seq 1 80); do
+> +  for c in kmalloc-128 kmalloc-256 kmalloc-512 kmalloc-1k kmalloc-2k kmalloc-4k; do
+> +    echo 1 > /sys/kernel/slab/$c/shrink 2>/dev/null
+> +  done
+> +done
+> +cat /sys/kernel/slab/kmalloc-512/objects
+> +cat /sys/kernel/slab/kmalloc-1k/objects
+> +```
+> +
+> +The module returns `-ECANCELED` on purpose (it does all its work in init and
+> +then unloads itself); the `insmod: Operation canceled` message is expected.
+> +
+> +## Expected results
+> +
+> +Verify the geometry printed by the driver is `k512 objs=64` and `k1k objs=32`
+> +and `profiling_runtime=1`; otherwise the cross-cycle is not exercised.
+> +
+> +- **Buggy kernel** (cross-cycle not fixed): after the shrink storm,
+> +  `kmalloc-512`/`kmalloc-1k` stay pinned at thousands of objects (e.g. ~8000),
+> +  far above the pre-insmod baseline. At production scale/geometry the same
+> +  condition overflows the kernel stack instead.
+> +- **Fixed kernel**: object counts return to the pre-insmod baseline (a few
+> +  hundred); no leak, no recursion.
+> +
+> +## Module parameters
+> +
+> +| param          | default   | meaning                                                   |
+> +|----------------|-----------|-----------------------------------------------------------|
+> +| `n`            | 2000000   | objects per size class per round                          |
+> +| `rounds`       | 4         | warm-up rounds to build obj_exts density                  |
+> +| `keep`         | 0         | keep 1-in-`keep` objects live per round (0 = free all)    |
+> +| `shrink`       | 1         | hammer `kmem_cache_shrink` via sysfs after the churn      |
+> +| `shrink_iters` | 8         | shrink passes per round                                   |
+> +| `size_lo`      | 384       | small request size (-> kmalloc-512)                       |
+> +| `size_hi`      | 768       | large request size (-> kmalloc-1k)                        |
+> diff --git a/repro_public/repro_objext.c b/repro_public/repro_objext.c
+> new file mode 100644
+> index 000000000000..01a53693dbef
+> --- /dev/null
+> +++ b/repro_public/repro_objext.c
+> @@ -0,0 +1,180 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * repro_objext.c — reproduce the SLUB obj_exts free-recursion stack overflow.
+> + *
+> + * Bug: with CONFIG_MEM_ALLOC_PROFILING=y and vm.mem_profiling on,
+> + * every KMALLOC_NORMAL slab gets a slabobj_ext (obj_exts) vector allocated from
+> + * another KMALLOC_NORMAL slab. sizeof(slabobj_ext)==16, so kmalloc-1k's vector
+> + * (objs*16) lands in kmalloc-512 and kmalloc-512's vector lands in kmalloc-1k ->
+> + * cross-referencing chains and a kmalloc-1k<->kmalloc-512 2-cycle. When many such
+> + * slabs are discarded (per-cpu partial flush __put_partials, or kmem_cache_shrink),
+> + * __free_slab()->unaccount_slab()->free_slab_obj_exts()->kfree(vector) empties the
+> + * slab that holds the vector, which discards THAT slab, recursing without bound and
+> + * overflowing the 16 KiB task stack (VMAP guard page).
+> + *
+> + * Boot: append `sysctl.vm.mem_profiling=1` (or =1,compressed) to the kernel cmdline,
+> + * OR echo 1 > /proc/sys/vm/mem_profiling before insmod.
+> + *
+> + * WITHOUT fix: "BUG: TASK stack guard page was hit" recursion -> panic/hang/reboot;
+> + *              "REPRODUCER DONE" is NEVER printed (note: the overflow may also
+> + *              corrupt the console TX path, so the box may just die silently —
+> + *              treat a VM that never prints DONE / dies / reboots as a CRASH).
+> + * WITH fix:    no obj_exts on KMALLOC_NORMAL slabs -> no recursion ->
+> + *              "REPRODUCER DONE no-crash" printed, insmod returns (module unloads).
+> + *
+> + * Tunables (module params):
+> + *   n         objects per size class per round (default 2,000,000)
+> + *   rounds    warm-up rounds to build obj_exts density (default 4)
+> + *   keep      keep 1-in-`keep` objects live after each round to leave slabs at low
+> + *             occupancy (denser cross-referenced partial slabs). 0 = free all.
+> + *   shrink    after the churn, hammer kmem_cache_shrink via
+> + *             /sys/kernel/slab/<cache>/shrink to force the discard cascade.
+> + *   sizes_lo/sizes_hi  the two kmalloc request sizes (default 768 -> kmalloc-1k,
+> + *             384 -> kmalloc-512).
+> + */
+> +#include <linux/module.h>
+> +#include <linux/slab.h>
+> +#include <linux/vmalloc.h>
+> +#include <linux/kernel.h>
+> +#include <linux/fs.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/delay.h>
+> +
+> +static unsigned long n = 2000000;
+> +module_param(n, ulong, 0444);
+> +MODULE_PARM_DESC(n, "objects per size class per round");
+> +
+> +static unsigned int rounds = 4;
+> +module_param(rounds, uint, 0444);
+> +MODULE_PARM_DESC(rounds, "warm-up rounds");
+> +
+> +static unsigned int keep;
+> +module_param(keep, uint, 0444);
+> +MODULE_PARM_DESC(keep, "keep 1-in-keep objects live after each round (0=free all)");
+> +
+> +static unsigned int shrink = 1;
+> +module_param(shrink, uint, 0444);
+> +MODULE_PARM_DESC(shrink, "hammer kmem_cache_shrink via sysfs after churn");
+> +
+> +static unsigned int shrink_iters = 8;
+> +module_param(shrink_iters, uint, 0444);
+> +MODULE_PARM_DESC(shrink_iters, "how many shrink passes");
+> +
+> +static unsigned int size_lo = 384;	/* -> kmalloc-512 */
+> +module_param(size_lo, uint, 0444);
+> +static unsigned int size_hi = 768;	/* -> kmalloc-1k  */
+> +module_param(size_hi, uint, 0444);
+> +
+> +static void **a;	/* kmalloc-1k (size_hi) */
+> +static void **b;	/* kmalloc-512 (size_lo) */
+> +
+> +static void echo_to(const char *path, const char *val)
+> +{
+> +	struct file *f;
+> +	loff_t pos = 0;
+> +
+> +	f = filp_open(path, O_WRONLY, 0);
+> +	if (IS_ERR(f))
+> +		return;
+> +	kernel_write(f, val, strlen(val), &pos);
+> +	filp_close(f, NULL);
+> +}
+> +
+> +/* Force kmem_cache_shrink on the two caches: walks partial lists and discards
+> + * empty slabs -> discard_slab -> __free_slab -> free_slab_obj_exts -> kfree.
+> + * If the freed obj_exts vectors cross-reference, the recursion fires here. */
+> +static void do_shrink(void)
+> +{
+> +	unsigned int i;
+> +	char p1[64], p2[64];
+> +
+> +	snprintf(p1, sizeof(p1), "/sys/kernel/slab/kmalloc-1k/shrink");
+> +	snprintf(p2, sizeof(p2), "/sys/kernel/slab/kmalloc-512/shrink");
+> +	for (i = 0; i < shrink_iters; i++) {
+> +		echo_to(p1, "1\n");
+> +		echo_to(p2, "1\n");
+> +	}
+> +	/* also the cg variants if present (harmless if absent) */
+> +	echo_to("/sys/kernel/slab/kmalloc-rnd-08-1k/shrink", "1\n");
+> +	echo_to("/sys/kernel/slab/kmalloc-rnd-07-512/shrink", "1\n");
+> +}
+> +
+> +static void do_round(unsigned long cnt, bool last)
+> +{
+> +	unsigned long i;
+> +
+> +	for (i = 0; i < cnt; i++) {
+> +		a[i] = kmalloc(size_hi, GFP_KERNEL);
+> +		b[i] = kmalloc(size_lo, GFP_KERNEL);
+> +		if (a[i])
+> +			*(volatile char *)a[i] = 1;
+> +		if (b[i])
+> +			*(volatile char *)b[i] = 1;
+> +	}
+> +	if (last)
+> +		pr_emerg("REPRODUCER: allocated %lu+%lu objs, starting free-storm (keep=%u)\n",
+> +			 cnt, cnt, keep);
+> +
+> +	/* Free-storm. If keep>0, leave 1-in-keep live to keep slabs partial &
+> +	 * densely cross-referenced; those are freed only on the final round. */
+> +	for (i = 0; i < cnt; i++) {
+> +		if (keep && (i % keep) == 0)
+> +			continue;	/* leave this one live for now */
+> +		kfree(a[i]);
+> +		kfree(b[i]);
+> +	}
+> +}
+> +
+> +static int __init repro_init(void)
+> +{
+> +	unsigned int r;
+> +	unsigned long i;
+> +
+> +	pr_emerg("REPRODUCER START n=%lu rounds=%u keep=%u shrink=%u sizes=%u/%u mem_profiling=%d\n",
+> +		 n, rounds, keep, shrink, size_lo, size_hi,
+> +		 IS_ENABLED(CONFIG_MEM_ALLOC_PROFILING));
+> +
+> +	a = vmalloc(n * sizeof(void *));
+> +	b = vmalloc(n * sizeof(void *));
+> +	if (!a || !b) {
+> +		pr_emerg("REPRODUCER: vmalloc failed, reduce n=\n");
+> +		goto out;
+> +	}
+> +
+> +	for (r = 0; r < rounds; r++) {
+> +		do_round(n, r == rounds - 1);
+> +		if (shrink)
+> +			do_shrink();
+> +	}
+> +
+> +	/* Free everything that was kept live, then shrink hard: this is the
+> +	 * discard-cascade moment most likely to hit the recursion. */
+> +	if (keep) {
+> +		pr_emerg("REPRODUCER: freeing kept-live objects then shrinking\n");
+> +		for (i = 0; i < n; i++) {
+> +			if ((i % keep) == 0) {
+> +				kfree(a[i]);
+> +				kfree(b[i]);
+> +			}
+> +		}
+> +	}
+> +	if (shrink) {
+> +		pr_emerg("REPRODUCER: final shrink storm\n");
+> +		do_shrink();
+> +	}
+> +
+> +	pr_emerg("REPRODUCER DONE no-crash (fix present)\n");
+> +out:
+> +	vfree(a);
+> +	vfree(b);
+> +	/* Return error so the module unloads itself; the test only needs init. */
+> +	return -ECANCELED;
+> +}
+> +
+> +static void __exit repro_exit(void) { }
+> +
+> +module_init(repro_init);
+> +module_exit(repro_exit);
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("Reproducer for SLUB obj_exts free-recursion stack overflow");
+> +
+> diff --git a/repro_public/run_repro.sh b/repro_public/run_repro.sh
+> new file mode 100755
+> index 000000000000..08c7e57014bc
+> --- /dev/null
+> +++ b/repro_public/run_repro.sh
+> @@ -0,0 +1,26 @@
+> +#!/bin/bash
+> +# Branch reproducer driver. Arg1 = path to repro_objext.ko built against this kernel.
+> +# All diagnostics go to /dev/kmsg so they survive in the dmesg dump (vng stdout is lossy).
+> +set +e
+> +KO="$1"
+> +L(){ echo "BT| $*" > /dev/kmsg 2>/dev/null; }
+> +k(){ awk '{print $1}' /sys/kernel/slab/$1/objects 2>/dev/null; }
+> +g(){ cat /sys/kernel/slab/$1/$2 2>/dev/null; }
+> +L "===== BRANCHTEST START ====="
+> +L "uname=$(uname -r)"
+> +L "cmdline=$(cat /proc/cmdline)"
+> +echo 1 > /proc/sys/vm/mem_profiling 2>/dev/null
+> +L "profiling_runtime=$(cat /proc/sys/vm/mem_profiling 2>/dev/null)"
+> +L "GEOM k512 objs=$(g kmalloc-512 objs_per_slab) ord=$(g kmalloc-512 order) | k1k objs=$(g kmalloc-1k objs_per_slab) ord=$(g kmalloc-1k order) | k2k objs=$(g kmalloc-2k objs_per_slab) | k256 objs=$(g kmalloc-256 objs_per_slab)"
+> +L "noobjext_caches=$(ls -d /sys/kernel/slab/*no-objext* 2>/dev/null | wc -l)"
+> +L "BEFORE k512=$(k kmalloc-512) k1k=$(k kmalloc-1k)"
+> +insmod "$KO" n=2000000 rounds=4 shrink=1 keep=0 shrink_iters=8
+> +L "insmod_rc=$?"
+> +# extra external shrink storm to force the discard cascade
+> +for i in $(seq 1 80); do for c in kmalloc-128 kmalloc-256 kmalloc-512 kmalloc-1k kmalloc-2k kmalloc-4k; do echo 1 > /sys/kernel/slab/$c/shrink 2>/dev/null; done; done
+> +sleep 1
+> +L "AFTER k512=$(k kmalloc-512) k1k=$(k kmalloc-1k)"
+> +L "===== BRANCHTEST END ====="
+> +echo "=====DMESG DUMP====="
+> +dmesg | grep -E "BT\||REPRODUCER|stack guard|BUG:|Oops|Call Trace|Kernel panic|guard page"
+> +echo "=====BRANCHTEST_DONE====="
 
-Start 16 threads running mmap/unmap on separate VMAs, and benchmark the
-time taken by 10,000 madvise(MADV_COLD/PAGEOUT) calls on another VMA[1].
 
-                before    after
-MADV_COLD        8.09 s   0.07 s
-MADV_PAGEOUT    11.68 s   0.40 s
+Thanks for sharing the full reproducer. I'll study it and reproduce the 
+issue,
 
-[1] https://github.com/vernon2gh/app_and_module/blob/main/madvise/app.c
+which helps me understand the problem greatly.
 
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
----
- mm/madvise.c | 52 ++++++++++++++++++++++++++++------------------------
- 1 file changed, 28 insertions(+), 24 deletions(-)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index cd9bb077072c..795a8a6fb237 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -566,10 +566,19 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 	return 0;
- }
- 
--static const struct mm_walk_ops cold_walk_ops = {
--	.pmd_entry = madvise_cold_or_pageout_pte_range,
--	.walk_lock = PGWALK_RDLOCK,
--};
-+static inline enum page_walk_lock get_walk_lock(enum madvise_lock_mode mode)
-+{
-+	switch (mode) {
-+	case MADVISE_VMA_READ_LOCK:
-+		return PGWALK_VMA_RDLOCK_VERIFY;
-+	case MADVISE_MMAP_READ_LOCK:
-+		return PGWALK_RDLOCK;
-+	default:
-+		/* Other modes don't require fixing up the walk_lock */
-+		WARN_ON_ONCE(1);
-+		return PGWALK_RDLOCK;
-+	}
-+}
- 
- static void madvise_cold_page_range(struct mmu_gather *tlb,
- 		struct madvise_behavior *madv_behavior)
-@@ -577,13 +586,17 @@ static void madvise_cold_page_range(struct mmu_gather *tlb,
- {
- 	struct vm_area_struct *vma = madv_behavior->vma;
- 	struct madvise_behavior_range *range = &madv_behavior->range;
-+	struct mm_walk_ops walk_ops = {
-+		.pmd_entry = madvise_cold_or_pageout_pte_range,
-+	};
- 	struct madvise_walk_private walk_private = {
- 		.pageout = false,
- 		.tlb = tlb,
- 	};
- 
-+	walk_ops.walk_lock = get_walk_lock(madv_behavior->lock_mode);
- 	tlb_start_vma(tlb, vma);
--	walk_page_range_vma(vma, range->start, range->end, &cold_walk_ops,
-+	walk_page_range_vma(vma, range->start, range->end, &walk_ops,
- 			&walk_private);
- 	tlb_end_vma(tlb, vma);
- }
-@@ -611,15 +624,20 @@ static long madvise_cold(struct madvise_behavior *madv_behavior)
- 
- static void madvise_pageout_page_range(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma,
--		struct madvise_behavior_range *range)
-+		struct madvise_behavior *madv_behavior)
- {
-+	struct madvise_behavior_range *range = &madv_behavior->range;
-+	struct mm_walk_ops walk_ops = {
-+		.pmd_entry = madvise_cold_or_pageout_pte_range,
-+	};
- 	struct madvise_walk_private walk_private = {
- 		.pageout = true,
- 		.tlb = tlb,
- 	};
- 
-+	walk_ops.walk_lock = get_walk_lock(madv_behavior->lock_mode);
- 	tlb_start_vma(tlb, vma);
--	walk_page_range_vma(vma, range->start, range->end, &cold_walk_ops,
-+	walk_page_range_vma(vma, range->start, range->end, &walk_ops,
- 			    &walk_private);
- 	tlb_end_vma(tlb, vma);
- }
-@@ -644,7 +662,7 @@ static long madvise_pageout(struct madvise_behavior *madv_behavior)
- 
- 	lru_add_drain();
- 	tlb_gather_mmu(&tlb, madv_behavior->mm);
--	madvise_pageout_page_range(&tlb, vma, &madv_behavior->range);
-+	madvise_pageout_page_range(&tlb, vma, madv_behavior);
- 	tlb_finish_mmu(&tlb);
- 
- 	return 0;
-@@ -783,20 +801,6 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 	return 0;
- }
- 
--static inline enum page_walk_lock get_walk_lock(enum madvise_lock_mode mode)
--{
--	switch (mode) {
--	case MADVISE_VMA_READ_LOCK:
--		return PGWALK_VMA_RDLOCK_VERIFY;
--	case MADVISE_MMAP_READ_LOCK:
--		return PGWALK_RDLOCK;
--	default:
--		/* Other modes don't require fixing up the walk_lock */
--		WARN_ON_ONCE(1);
--		return PGWALK_RDLOCK;
--	}
--}
--
- static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
- {
- 	struct mm_struct *mm = madv_behavior->mm;
-@@ -1748,8 +1752,6 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 	switch (madv_behavior->behavior) {
- 	case MADV_REMOVE:
- 	case MADV_WILLNEED:
--	case MADV_COLD:
--	case MADV_PAGEOUT:
- 	case MADV_POPULATE_READ:
- 	case MADV_POPULATE_WRITE:
- 	case MADV_COLLAPSE:
-@@ -1759,6 +1761,8 @@ static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavi
- 	case MADV_DONTNEED:
- 	case MADV_DONTNEED_LOCKED:
- 	case MADV_FREE:
-+	case MADV_COLD:
-+	case MADV_PAGEOUT:
- 		return MADVISE_VMA_READ_LOCK;
- 	default:
- 		return MADVISE_MMAP_WRITE_LOCK;
--- 
-2.53.0
+Thanks
+
+Best Regards
+
+Hao
+
+
 
 
