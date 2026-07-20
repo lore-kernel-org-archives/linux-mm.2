@@ -4,122 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FA7C44529
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:35:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD702C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:40:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 661A16B0092; Mon, 20 Jul 2026 13:35:15 -0400 (EDT)
+	id 61D706B008A; Mon, 20 Jul 2026 13:40:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 614786B0093; Mon, 20 Jul 2026 13:35:15 -0400 (EDT)
+	id 5A75C6B0093; Mon, 20 Jul 2026 13:40:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 501CB6B0095; Mon, 20 Jul 2026 13:35:15 -0400 (EDT)
+	id 46F1E6B0096; Mon, 20 Jul 2026 13:40:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 260DC6B0092
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:35:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E37180251
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:35:14 +0000 (UTC)
-X-FDA: 85009856148.28.AFE2292
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D56BF2000D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:35:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Sp87H45c;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0A3A16B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:40:46 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C279140239
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:40:46 +0000 (UTC)
+X-FDA: 85009870092.08.52E9CB1
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7498FA0008
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:40:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ejRkfweg;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784568912;
+	s=arc-20220608; t=1784569244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VpgEGbQd7TUjFEcy4MwyOPp2fSwSzsT74h5eZuIrKNc=;
-	b=q9OYlaFt+86zJbJdp3A7i5YJ6NdQsapo4Qk+sBFt4vg6ar79qPf9qlOr2Dg3iCsd/EQ++s
-	9KyauU+Olyr8/mF2PW78OaVd5L/ElElb7vT166cesogd7Rgb/D7YGndvcnrs1PwaOHAH9d
-	BD7YXxF55jy6Jr8Y9MG25W4/aM99bas=
+	bh=STnxksxeYU5ANSzKJlg5+nS1izTc7aC2ZhhV2DsN+ME=;
+	b=nVUbF7u0zirXnKuiHWVWlJJALNendknv/OY0Bg1NkAHnZpUunufwsuBBY2yraydgfMwnoo
+	UDpxCGqkVj5E9rICruOzVKGqAyxI1woh0KQLMJ2KiQ0crI3B6xMlt/fHPce4Sj1GUyB/uj
+	rqDmOfwxZ34ySQaCs5YNGrUKPmzi8IE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Sp87H45c;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ejRkfweg;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784568912;
-	b=VhnsIpm/1+43kkNWaRHWhBubRKuIkcBSKYlhBluc0vuahIbdcOXOeHhSjr7Ra1XZyt0KTm
-	2/64TGpHjO4Ts2BI3IPwu5OI793nmgLFxKgN1bSAmOJP4r0+pI6rDk7ADH5g1/Be3wG/NV
-	YYtnX4CvS9SH5cG5TdEXia5SLZi5VBQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=VpgEGbQd7TUjFEcy4MwyOPp2fSwSzsT74h5eZuIrKNc=; b=Sp87H45crDR89XUlafK04T1y/o
-	I/b/2NpEeAeRnQBadvGb72DkxwlguQl6tUofmiDsjeo5mO/LWih1G6hnM7Z+lEARQGQ+RJPXRNdtv
-	T+qYaVKqv6P0ymHqoZJxZ2NsfuKXkSGiuEh5FnXzLK6BTcK/6+ozaV+vbG2VIbqZxjMEKEuiUPyaZ
-	qfaI2NHjMIz8HQ4xMWNT96PZUDFAGvlnX9dvR9YcBPSbitfgdzv4jTscRR53wthhZTdPUkeCxsK8O
-	pZTPHyLxLMiNK5IFk81GPB93l4sWHbvjCVXCuGG+D2uNfCmeXTYdvQ+1xluzEuJq1iZaEc+jTLi5b
-	H2ezgwrA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wlrt1-00000000359-185o;
-	Mon, 20 Jul 2026 13:34:39 -0400
-Message-ID: <51c0025d2eb885ff1f4775e4d9ffcf34f478f378.camel@surriel.com>
-Subject: Re: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
-From: Rik van Riel <riel@surriel.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- 	kernel-team@meta.com, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes	 <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,  Alexandre Ghiti	
- <alex@ghiti.fr>, linux-riscv@lists.infradead.org
-Date: Mon, 20 Jul 2026 13:34:39 -0400
-In-Reply-To: <46dc1b58-f2de-492a-9da5-a5c429c19a10@linux.dev>
-References: <20260720115741.239657-1-usama.arif@linux.dev>
-	 <13ec2603d5cbfdc493939f182b71e5133c26af54.camel@surriel.com>
-	 <46dc1b58-f2de-492a-9da5-a5c429c19a10@linux.dev>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	t=1784569244;
+	b=rhWxZdA4ghACr63rIKNWru+AnlXn/ytYay0rcx2nzpKthTi1T67W8Dxj63CLjKIl1eR43Z
+	OWnzLJDWAyLUG2+xmpcG58fVwI5NbtbVzPqeKKUjqsS+aYMCdOZ6x9Y7sMU+mfkTPmseQb
+	uatxhbP3lbTSdtXINmDiHR5dh85zxPE=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8efef6533aaso71473556d6.0
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784569243; x=1785174043; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=STnxksxeYU5ANSzKJlg5+nS1izTc7aC2ZhhV2DsN+ME=;
+        b=ejRkfwegsRg00kz6DvuSCByKhbkAlE9exGkRovEA3H5SOjFv/6DC2OSzWk/SOpEWQ6
+         pRQzh4xw3ct0mmdlbridMJhbQxNnQejpKGyv5ny7mOKjjCpdiGjW8/z/COW/j03OHyjz
+         Rg2h3lJTt60rpCQYWkJUADanTnQRG5iQGuBMkaf55kc5ejje2wCh6L0Kw3jbQX96F9VO
+         2FO+F9JyGlzzu+isT2VpZWQ8BOOPHYNPwJ/p0REmmBNtaPM2g6PNJ1UCYwInAHcPpsuv
+         FUAC4KbnoRj1/fU09mWNd11ekOWvi6beCGtOiaRlA2ixmeh9FLnBHKmBf/Fzwl5lP8MW
+         YYOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784569243; x=1785174043;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=STnxksxeYU5ANSzKJlg5+nS1izTc7aC2ZhhV2DsN+ME=;
+        b=ABqY6abkyewnBd1ZZDtkLXHBr4OSOiVoVJSx3S23aLlsCsgvW6dBE/4E9lZkYkhr5R
+         3JMBHWU8ja2ROotXrffeW5JHBrxuq/I/aDwzrhNsAC+0t4l21Vd+FiIPErbYCXlZhCGp
+         Z9RaY8z7/qFCOut/ymCyB59DlqzK4cQ4sIAuxQuBygnJm06H8VCC5Jcn3WIS+xB1DppK
+         vPH9gp4QpMvUgeTh3aK6qTyrFh0JBO2WtQNyfC9WcWXLw+osnURP7+6727rWp+jSBIFn
+         4Cxig3VylsVxc+/5oTVrV6v/6LmSx5zjNh9n9KfWNxDEyzBQ7jSL6S06u3qS7bxIuQ63
+         oroQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpzMMFpxhqOzdaE30rcFH1n4i+gV3MQODWctBUlAwf4QYZNkYVpLZV9rPXNJB3gZY8tfYQKbu5XCA==@kvack.org
+X-Gm-Message-State: AOJu0Ywj+OwYDhU0rqqjhSR4RH1g03o4nWQ7AuG5IkJJSedF3pw3PmZT
+	ZP2v9MS79eyLrSXOYlb0JqILEYahkR5pI3XOwH4qwgk//QX6SgHT9QHkgEM5lM5ys0E=
+X-Gm-Gg: AR+sD11bkIL4tOEFPMNdyRFr3sXQAnbRDAN68lv9ih7gXCMDYWL5CUU9QvqW69Pm3QF
+	CjOCAukp4hq7pKYqWX2a51qpo0LBzzSOlrUe3xOQV09dli8WPqs/KSCUC0JMmKQX0YYENaKcaCB
+	5XcqnRQI4V7ZER3Y/WFVMq0ZOCc9wzgkQz0Ft21oPx5Vz8+9oqoX4pHFt4aR7WhaBk8Ss5XXElA
+	zUc71qntdmCtaaYd4R7dZsnqX/CVWKWbB1P4fJfEYKGGRcAO9ZFfACnZCGupchhprtcwrKAWLtp
+	0VlwSH8uycxhBrO45g/zi5YY6eujx4e7qH3NmCvsEW+w2r3EKgl0v5u5qSxEkpH/bR/PhIXNAkk
+	L90Xo+OE+ZNjRZJO4vbCoP58Zmb81MxKX+aA20i01Dz1MJBGI09XwJ2klF+F/O9nMhFdFc/GjZO
+	L41aqP3bxctilso7+HSo+0JvlB+Mk0NQmlEXXO3ZB3BplbDU7DNjId0eKsgw==
+X-Received: by 2002:a05:6214:54c8:b0:8e9:f62b:8f93 with SMTP id 6a1803df08f44-9077853b82amr163551916d6.57.1784569243441;
+        Mon, 20 Jul 2026 10:40:43 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907786ed2e2sm95014956d6.33.2026.07.20.10.40.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 10:40:42 -0700 (PDT)
+Date: Mon, 20 Jul 2026 13:40:37 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Brendan Jackman <jackmanb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	iommu@lists.linux.dev, loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
+ header
+Message-ID: <al5cqn34Xq19f5HG@gourry-fedora-PF4VCD3F>
+References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
+ <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
+ <alkLSzQvzT9zJbY1@casper.infradead.org>
+ <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D56BF2000D
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
+X-Rspamd-Queue-Id: 7498FA0008
 X-Rspam-User: 
-X-Stat-Signature: od761px9kgtig5s93bndhwqh8xjoztwj
-X-HE-Tag: 1784568912-977827
-X-HE-Meta: U2FsdGVkX1+p3CuKZHHBc6p6nP6aEswJlVAJHAgDf2VjAfT2KPhk9p23M1h1292+xqAVtI8KWdRCm0lCPveyaYGYaiQjCmOjQYFU84FQ5PEt0SugTqSZuqIIuu0NWwOH1CN1jEF0Mw2kJ4LDYfbjF/NtwbHOsOe2Tv7vF8nSkTsWN+i67JmeS1JULYv0jX4i3vOKLDdl6ywD7OCOHyiuAMSZ5f4hnbz7LaL4xKNwvB6C1BOCkEfWcPMi9HyyTuSAhggXT1CWwZbQEv18yfiCOGGC7FqmzsFTqpZRc5jUAAWuPc2J/rGokEdZMcsVGMgm84nDRdeUtWccXUcn5DIK7B960BbSB25+xoEa+if8s62OyknJ9wl0m+ABG2nPA2QoiQxhF0vhiQQvyfrcFZh1jsVVkKLgzMzRqm7QBbTOczAmWPek559Q/KqFSETZj0Q7ZBLCxWcucOsLZptKI79e9NzA09UHAHLPkMPOvc1kQQ1D+C3+Rdxml9pUz9+X12p+7wca5MPZgiDiFdtuE+4LIRCSrYjvURhWlLMBblqzWpTtZis6rQa14/MPsebt6I04NQ0YHlqxh+Sqh7oDjzDt3AMMhcFajn2jK9YWIRq+77tG/Lc2EmtvixzSCl+qKOI0Nbg9Up2NmsLaDNmW1AoAn1ve9rl0TB9X74QUf2A340Od9J4iSUkb0t+HLODoKHOSL9z3VpXccrD2/CeHohQDVBXE+7O83O6fQB5WXCxTJoE7KD99mAVfHpDsnxq0Z+effFauKgMffvgit4bYTff5wHEkF4YGY3DvaWXkEKOaMCXHZT6wEtTwowt/seErT06+bG9+zRR4M6Mtd7pxHj6o3DwThX5kr7q+DyD/T0qpzEnA8Ps16IaJmOW5lKz7VgMLucFYniMcMyznzvmq5J2Uv8Lq5je4zSIhoaYIrno6VdbTC70BmmN/y1xE8OMqR0ZgyUSLgakSdKTNi+Ogter
- 6XAbt4Ou
- cN4/Gk6CJOoA22vrG4l0M9rS8LRJ9+ne8z25p9NSEbjxkPEL3FN+x0UHhcqa5qp/q/6KMKNWcNdML13ExCgoerqoHEyoZKLp0yC34VdTdQRV7Ai0QmklSJfOcspc7AsICgHdXk+s+VRZjRW94HGydOdwitsnl0492R9eFwJra2M42TT8zCa3v5rCxc29gxmdvhK3vzTne5UKdv6FD1HVZp8fqLmmyRWgHrJB/uL/FyCsmUZUdjH928QR2CaLYPxlCaExeoncIdGuIwJ0WrV1i8KrCdFOwKp9XLtyw1hN5GorL4QBO6FHdvRl0IjvWbGpwYGQHr/7rB7nCoNM=
+X-Stat-Signature: 8g94rfcwe617h535dho7181yjwtkp7ag
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784569244-898760
+X-HE-Meta: U2FsdGVkX19xUDFblHzzOYYGNC8u+BPIlhCl0H9xsaqmplSsIo78JL9HwEZ+ZXpG6CUNiut0LYwiJpfLIvDZkK4LRrNEp2t3f+pXAF/Fc3C7bf0bwEwGSSygBrp/7yjuLqppaL07k3JAV8maz2ldBeqyrqXBteJVirXgJd4tpo7Z+Vxvp5pAUAYqg6EqgbUTKAAbvjqfJ0FlG/crLxAmkTX9mb+WHc6ddQZ9IVhcLNHSYXRGoE8aeWZEV+bd6ixjJbqqqx6+Fs4La2lA8/eieE27nVntBBBDMBo4LzwLh3RiuQzTu0jg6EWto1KCE94iEgYzmrxaYfjlcv0cJqKfYL4P0F4CYw+0xE0Pcx4/mGX0eD7Bp1r8FGLguws5OjcG26ag1FhDg1EKm6cc6gAaf6DDxAZPdSWXGWacbnRlvLuVbrutd1R5BipLPNTUYGjEkhLyZcHWUKkG3XRj333NPB8wNULKxeSNJhH1uYsxZj5+yp7PtVTM6pehYNLp4rbUQolx49cYlENRf//MzdFv47AJtsG0+8cKy32npRid1pcsAKZS9BEI0Vd50wVGlXy9IB8XXJZgSr8RHBfHXfACC52wVxCm4uvHDqQpcoOe4MFCKnKKyQnd4NJ+0RcAPYGwxd61yKlP/iC0Xow2ZM55FetgTB62/SCujFyEsi0Tppgp0o+748ELsOjXEZcJd8xg0v1E7uRJnkaQ2lgvogTL6LZkYFmef8vhPMd4If6/I/ycirZR9ITBQnhTpfpDGwvlZcYFfKWT6iqb2LJnCGfttRKxmRuRScbfAPlO8Ag9WkWmpUSCIAmb4Nz6M82vFtVAK+uvd3LR8HLc/68PSNJXjx597u0qvnMoD39xzR4YDB+zy4fwNWNEPHgScpM564hYaApKazFTliyHtk8NKokmkUyw4dEz5Mfu+8nMTVRwjMk0HE5frm79XXz7DPVTO1ubnssLSsNwV5/37EpYFZu
+ Fm2Kkjyw
+ i+8SHKDQb/RnByQ5FmqgZpJftqmLOiaWdznZRu3H48CIAwqJGVQp4fWTpUBZAhCr2lfsUF/Xk5ySlaGHOtYllBqd5IDGOSuHbVlO1iAZBMzu7/1WOLid4A3xNIjibW1+osGpRWHru90+FacCjf8jPbEz63V8CO15N6Y/bn4ZhY0O9v64Ucltl34rPojnbsQqn26tJzR91fwiUCqMWE6AxVNblPlLxBGOUEaFvAnf9ILj8Y+K3Mfi6OEFd26SL8ncejz04BdtF01InxOTlms6q08+P/wAQZgGs9HkB1DDZeYQUyk8/nu+L+JD4oE7ptsFMy25W62SF0cw5erbwpBfWCsI7rtwTwJvUAbpFyzodg3kaqmrbY8ojpwBTWdxIdctnU1SvedTaKM2CDWWKxwR66eIy9qr5UnbdBYbN4GZwL8+NBexMz2Vj/a6b6+gMR9zIwgBnnEGJpksufotYTLKK6maeYZsf2xI/Bww07gibMX81OSAbUYCtr+r7AA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,43 +145,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-07-20 at 17:46 +0100, Usama Arif wrote:
->=20
->=20
-> On 20/07/2026 16:08, Rik van Riel wrote:
-> > On Mon, 2026-07-20 at 04:57 -0700, Usama Arif wrote:
-> > > On Fri, 17 Jul 2026 13:00:32 -0400 Rik van Riel
-> > > <riel@surriel.com>
-> > > wrote:
-> > >=20
-> > >=20
-> > > >=20
-> > > > mm->context.pmlen is set only through PR_SET_TAGGED_ADDR_CTRL
-> > > > and
-> > > > is stable
-> > > > afterwards, so it can be read without the mmap lock, as it
-> > > > already
-> > > > is from
-> > > > untagged_addr() and mm_untag_mask().
-> > > >=20
-> > >=20
-> > > I think it might not be stable? set_tagged_addr_ctrl() can change
-> > > it
-> > > repeatedly until a CLONE_VM operation sets MM_CONTEXT_LOCK_PMLEN.
-> >=20
-> > You're right, ARM tagged addresses seem to work a
->=20
-> ah do you mean RISCV here?
+On Thu, Jul 16, 2026 at 04:57:37PM +0000, Brendan Jackman wrote:
+> On Thu Jul 16, 2026 at 4:48 PM UTC, Matthew Wilcox wrote:
+> > On Thu, Jul 16, 2026 at 02:30:10PM +0000, Brendan Jackman wrote:
+> >> There are no external users for this surface, reduce the scope.
+> >> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> >> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
+> >
+> > Hm.  So what we're saying is that allocations which respect mempolicy are
+> > only for core mm and not for, eg, device drivers to do.  Is that really
+> > what we want to say?  I don't think so, because that's inconsistent
+> > with having just widened __filemap_get_folio_mpol to allow guest_memfd
+> > to specify a mempolicy.
+> 
+> Yeah I agree, mempolicy definitely seems like a "public concept".  All
+> I'm saying here is this specific function doesn't have any external
+> users so it doesn't need to be an external header. 
+> 
+> ... With the ulterior motive that I want to add a new parameter to it
+> that actually _is_ mm-internal. Namely, alloc_flags, so I can add
+> ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration of
+> [0]. So basically this is
+> about trying to extend the allocator without creating a GFP flag.
+> 
+> So I'm envisaging if an external user arises for it later, we'd slap two
+> underscores on the beginning of the internal one, (with the alloc_flags
+> arg), and then bring back the public one as a wrapper.
+> 
+> Does that make sense?
+> 
+> [0]: https://lore.kernel.org/all/20260410151746.61150-1-kalyazin@amazon.com/
+> 
 
-Ugh, I looked at the wrong one.  RISCV is like
-x86, with a dynamic (though a limited number
-of options?) mask.
+fwiw i've been fiddling with a module side mempolicy interface for a bit
+to allow a clean guest_memfd() + mempolicy() interaction [0][1].
 
-Having said that, won't a process have all of
-its VMAs in the masked-off area, so coming in
-from a remote process to a valid memory address
-should already give us a valid address?
+I saw this and thought "maybe, maybe not entirely".
 
---=20
-All Rights Reversed.
+there is definitely some oddities in the mempolicy uapi (internal-only
+flags that are exposed to the uapi is odd) that some of the interface is
+worth internalizing.
+
+(fyi i've converted my private node work on top of the alloc_flags
+ addition + new zonelists, new rfc is being posted today, your recent
+ merges were timely).
+
+~Gregory
+
+[0] https://github.com/gourryinverse/linux/commit/b25bb27602fe512733450a97ac31ef4387b7e727
+[1] https://github.com/gourryinverse/linux/commit/670f7dd81ef33a9385985a54b8ad6bc070b2d581
 
