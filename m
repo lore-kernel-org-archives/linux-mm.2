@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C63EAC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184ACC44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:57:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97A156B00A1; Mon, 20 Jul 2026 11:56:49 -0400 (EDT)
+	id 24F546B00A6; Mon, 20 Jul 2026 11:57:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929CD6B00A5; Mon, 20 Jul 2026 11:56:49 -0400 (EDT)
+	id 1FF356B00A9; Mon, 20 Jul 2026 11:57:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F1FC6B00A6; Mon, 20 Jul 2026 11:56:49 -0400 (EDT)
+	id 0CA616B00AB; Mon, 20 Jul 2026 11:57:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C5426B00A1
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:56:49 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4206CA01DF
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:56:48 +0000 (UTC)
-X-FDA: 85009608096.28.5F67E37
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4DB96120002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:56:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JcYv5lhU;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C9AE46B00A6
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:57:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E72A1A04F6
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:57:36 +0000 (UTC)
+X-FDA: 85009610112.08.421CE9E
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf28.hostedemail.com (Postfix) with ESMTP id ED793C000B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:57:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FpXOhmIn;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784563006;
-	b=PmZARtpJKg8gezR43WqyuVijKOI8D3NZkzTpMG82X8UYD60W6rK/LQxfpfmimo3XbrIV7w
-	qVYkdQ5WSAKrEzENLaof/NZosZ1+lMvZrEiSyazymZ/UOU2Lm+iYNx044Uqhinu/EZE6ha
-	6vdh6YvO6cOveZsZXwtzznPyKrgs48k=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JcYv5lhU;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784563006;
+	s=arc-20220608; t=1784563054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n2pi/xAA08HOnx69PMlTRrck+6Y6k//FzJj5lUPYCGg=;
-	b=a513rivxQD2uFDXUvVQj74qNkjQ51+E6FkfgxGfawQnmXUc+BFMOp6CZ+eeuV6xmfUqI9j
-	xUdqtbep0nFKE0Aoje6Wq2Rbsqyx1DHqMIs9Dj2ayCtKxaygUyb4mYi3Vu+sfw0r8NW3Dx
-	6KnhXtzxE7s3WBMAXo+gHHBux3KDAts=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-476d8e647e9so9382627f8f.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:56:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784563005; cv=none;
+	bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
+	b=aH2NukXm3J4QgjMqME8Zw//q+c61Kj3ZMGynCQygS5ygvh87HgyFjowBbNn9HhB7WH5ePe
+	sBv5PjrQm094ZPkz69B62aWBdKIAlPifkCxW72M8Jv3csvHddCxiL56MxD1/bnW3yOoro8
+	IjH73eKxOeDJVSLhnCj32IOqliw/ox8=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FpXOhmIn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784563054;
+	b=mP2zCpl9D4fh4zO/+C6rKIIm3Aou/Zjxwb/dIOLkX+3ACRd8HaShrJHIpG1ED1lgAJCoPW
+	+oPzROZDPztbLUujEUktLEntEsGNn2qug8megGVPDpLuMLBqk4LWZzkgmfw4a6fUcEd2ax
+	FAzEMJ3k7VOl1Hsnmx+qPs6pQZUIA0k=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49558ce01afso13388235e9.1
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:57:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784563053; cv=none;
         d=google.com; s=arc-20260327;
-        b=gyQXhfeUzCEG5us33dyHuGgJykFyXiVFt8XSvuC/u+nQJRjGdKfwpHUjZNzbYI0apZ
-         u9F9IWUvvLmOoNPuU7+vNmnVY21j34IR92UKXrm0d1s1UAieGThnOoM6GGSJ7DNGzEBm
-         zwOpE8UlTci3IU4KrusAST41W1+IzWgaw2MR1TSwLAAvwA0wwLr8A24VvRGq/aWjvU0N
-         wdOmQDHSkFYKXuBjsoEy7ywHNYensbWwIJGDz+he23Me1ieAhcGkExB3WYM8uQFsjEYR
-         78cw3WOufMyimnPNfPyHVr32MkuIF7/jLFjB6MH4saeZQ5xK2TQfleIV3hdM2bB4UiXz
-         GR5g==
+        b=egi6ntRDQYjtlm8pJ5/w2kzmMyQ1u9xu+L4hVBvzUNGkDMsnFXz/VQFaRgb5N0mr55
+         kha9OXh02MxpGUOaWcjCgxvQ0uyu4lMmZ1H0C6NfxZOL1YA+xjmpMm9vmB/UrEXV6c8Q
+         jSNFLsFqGc3My4xzncoeOV7hehhakHovlwYl7I3Pj765xrBJSTT33Z35Bpwk5jsGOA5E
+         DOX+ylf/Ezm0Ppl4v9kkj1nI1s7M3Nnu3DpmJEvIQ6wQ7jZOzI3qJJfSqR4DK33874D7
+         jAobXWLxTmF3dzCkncOgBBE1PXURDIAFLh4hfGwbYS/mXZ7TtFXxdqtksqdLFOmi7Mn0
+         uldA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=n2pi/xAA08HOnx69PMlTRrck+6Y6k//FzJj5lUPYCGg=;
-        fh=U5bfy5bOfgFOJYjBTJE6tZCC9Zq0KrQshKC8sQgoRVs=;
-        b=AN79y8x0orMDMsQIflB3CcP4ugf66zJCwoep7JZ7cwx2fcW6E9NCv0LvIUpY/b9N0u
-         LpHv2V4UpGdXHWkq0vSLFmUft9e8qUeXO+fKujUxnqwKAqWB8fQ966Tb9B/4uHDARa1O
-         KYXe0AC6vfJDMinOu4giW75zEu65W+OXGXhI1wxhyWW+i7wUibyyQ+qmkKInaH7Se3DK
-         h49OgmVeYEzcRVBCNh13U3wDAWXaj6StaQO/AkmC4y98w2Y8TT55FxZFtiS/kA0Ve2/N
-         9Ueg5I1JmgPeRKrnWKuWCfSgoL9WRJzsBEgJV1EVBUd2msolZqJ5sEYK4P8lGfE4mw+J
-         3gTQ==;
+        bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
+        fh=FVvwRYjfz7/vx+uzCxKf7Xr1STrCjvlfUthu4imdOHE=;
+        b=PtRF0x66R+FimaCTaBsGFy2Gqvsc/b8r1kfz+2iB/Nn74pLWTRwmBw8IfJ+qmJpo3t
+         pfBLFqrXGjyu8CxOZ4jBT5bgE9l48A2HnoynXUfSkb+I2jRGZ8w/tsp2M1Sbz+aJnt9W
+         V9fT2fOHbImYmAhJY9nmTCtD8hjxzXceA8sPt624YCz0cA1+ma02zta+i+Wgmsgurup2
+         ncTYrChlJs1vLuSDKr2DWdzaH5dId+JRHS3Nx39TcXJzj7hfCksdPU7hspKT/8s3wE3i
+         3yyHGjLCY3njxzwmEx3dLXmKqjzHV2Hha4HADGl1S/UA0iKSXmmE/gu39Ca/JYspNYa9
+         Hn8w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784563005; x=1785167805; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1784563053; x=1785167853; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=n2pi/xAA08HOnx69PMlTRrck+6Y6k//FzJj5lUPYCGg=;
-        b=JcYv5lhUBynU3AD+Ni6Vz7/z7kUo+B/dLySRKDZLJIm5qi/SYwxcB9tKbOalFvEQSO
-         7mdRAeAg8vh3ONX7qaAGkLeqVAjMmVlckXbLdcFyt0JdRJraWBiQ8WZs+L1qugclWI5j
-         2JFpYK6l1B5qoFSvqGlgXIwpe0vBSTYcuvrVhzblOTOHfQ4clnyE0fki0IhxX45DPdyY
-         73aOJThAFvpCAJ9xGTs1TqjqqGGX+oZFlb3Ac7yavEuDLrabmxYGhjhDRO9ZBQ9gs+To
-         qMa+vuGxFgjWspWl/1LGDQ9CK7typZbO/UrkbTWOwHg4AgNzD0uhcz3sD0sQWGuhJQfW
-         myPA==
+        bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
+        b=FpXOhmIn5nmLNa6cxO8WIWIeRpzeesxyj14TF7I28RGM+0zkfpv5bL2FYJPDsyBP9f
+         ozO/N2dJu6yEfvDAaoYiUNbE7LRAHnn9ahCp07jGtoOKvfs+S0xx538+lW+HCobJRY3S
+         yWlPpC6xSXtimjNmYVxIokvVtZuZquDiovqCGJzgpHondEBUmVt4DjYItDdl97/zMS54
+         1LetQgRE6nUUNUL3u0LtxOPJSYlH9gnSSQrWHxSs5uePhbfInItrr7fqBdHfJk3wV54n
+         cINt61k3KRWya2T5QvcR24KkwkH9IJ5Hl3c24H5QXEVgTLYWAkMOdwtDvW1pCyxBsogB
+         qeEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784563005; x=1785167805;
+        d=1e100.net; s=20251104; t=1784563053; x=1785167853;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=n2pi/xAA08HOnx69PMlTRrck+6Y6k//FzJj5lUPYCGg=;
-        b=Lk2fqE0xzsh3aHOW8KLSloUt5tlxByWhGQmtJwG9AN4JN38QJQ6exrOOj+iifch8rV
-         sX1qw6DwfS8pIopLxhhKtWJWavsGbAV51gW62yHD6i2U9mgyk+4sTtF5eEewuaEKjSY4
-         bfhOlt2+VDTFXN2j5E3+VylH89UuKcr9RiVZDoh8nuqTvkAzWUw493qe9een5joBJben
-         ZdoAaV2aIilN+n/EM+QusK9iK0hIaUPcqauUb7uKPa5g9r1MNqNLi3inZRvLEhWMOPtN
-         cKdbG6UxGMq3IWtwL0pOD39ore5KmAyuzcrtvwyzzIAERxTBpH6JHOOM6onKyhE7tgoW
-         DMMw==
-X-Forwarded-Encrypted: i=1; AHgh+RrNQMqehOhCv3XOXxpdPCiGq9M1G/8x0cyqndDm++Sli5J02KsQaJ70bTi+oQ1O5JdxloKeznTpwA==@kvack.org
-X-Gm-Message-State: AOJu0YwdSpEau3F4gsOLVnuC13xdYH/yUGUV4ezAlilzHHkHxOsXI9ig
-	93X5BmUFDgz3waBBSruHrMRYYVVJUlvHfQyR+wC+n3pC9KyMLUlwaZrekDzLNSbDcg3PR2z+g2j
-	iaM7wCya1Af6jrhJgf7KDvHcnB7uN33o=
-X-Gm-Gg: AR+sD128T3MeGTS8MyelZgWImX9lRKgonhgoarOt26gn6R9O0Up0zsd+8EiwckOLqny
-	SyZ9tGhBohE+PP+s0cB7XrX2Eg1BrSKuX67wob4Bkm7d4kaiDnIb04J4gO+MQiSvbKLiTeQ8iXb
-	RwOpsTwQ7AUueWS5o9jE/NwOkJ9/YhC21VHxtsF9yXLvYyADZOKNGFonzf1YCdIwbZ9hZ1eI3eP
-	XRTjIJKHF02zJMetZR+EzBP4tjAaDDnzK5NV4qqwiIVLeTA4BNLw4J4ruAhgv9T6ZOHMEPgJHcD
-	ucdrYiyBGm9gsyKZ3A==
-X-Received: by 2002:a05:6000:220a:b0:47f:6fe0:294a with SMTP id
- ffacd0b85a97d-47f6fe02b02mr10096598f8f.23.1784563004542; Mon, 20 Jul 2026
- 08:56:44 -0700 (PDT)
+        bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
+        b=Yc8yG1QaZKRAsiF4mDxEAOARFJFY+XNT+FSvDrxBtMLON1R2/IhdyrfZBNvSWJ/7uB
+         GjY3DXfyR+YPtTCl90rQMUr+yXtDseqz0a3+DNb8TxrrffXrMiJ1GvlPiduHu9YG1fSs
+         yyqq0sPg6CBXNd+qW6uX/W0io6ab14oA3eWNnoBO7xmjbACeSujLgJyUXIS8h0E2YbZ1
+         HHB1h6zfcR6SCveFYlkQZnVNSDQrsmXSsEXJUFoBHK4/QDcOGxtnoCVZVK5kjbXkBz+5
+         bNE5pfJtZ0uG9AmbXzzTouYlpKXOcN4WpO/gZiEQAaQl/tVrWfMAsbrewzfst46T0cCt
+         EcOQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpGhgtTgn/Q9as2gm3vlWtAFs1dSAqf3/FU7P0tKwfRn/Uv6gZoLA9KwqGuVk0ZAWy6RE/pQIhBxg==@kvack.org
+X-Gm-Message-State: AOJu0YxWVs9TjbIb9CQ71cUFL2RFqKweO9xHybeehQkYJ8X/+Y+LVKQ8
+	A06/kVOlTQzZj7FmXBE3w7L3+SgxKxZGUi8S9IrdW9/UFkwHlaIqsRTjQmrYz/X9pNHLfAmzvhS
+	2LrmwOfdhSMI8GJHSjMWkHVcxLQZAqN0=
+X-Gm-Gg: AfdE7cntjy8rN380DV68SWWa/Oq34LqR738gOCooDdTKHf3fnjqVSVOK/7xnraayolH
+	uTQ5YUhfnUZ28QkOOWdjZ7kaxY3y9KM8HMshFoZXGVHfUUxZV3lAHubDXm+tkYC2ljIkJWJSibM
+	lbfWyNaQinq+JhtK5SzbkSe0X76UFJ+l9tcIaSw65DEb95cuOMObSWlKnh63Q/9DuMMAZ2d7zI2
+	x7yiaVzFQVO2HIAMXkBrnQqj7Hv9ZnTRcUwAxRllYTbvfdBZsOmXhP/ajHd6NK6tSQjmH3YKJZ/
+	rxhiU6/0BF+1lBBhXHbmqWL877jt
+X-Received: by 2002:a05:600c:3b24:b0:495:5d6d:9cb3 with SMTP id
+ 5b1f17b1804b1-4955d6d9dcamr68483165e9.37.1784563053362; Mon, 20 Jul 2026
+ 08:57:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-2-alex@ghiti.fr>
-In-Reply-To: <20260718093723.153324-2-alex@ghiti.fr>
+References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-3-alex@ghiti.fr>
+In-Reply-To: <20260718093723.153324-3-alex@ghiti.fr>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 20 Jul 2026 08:56:32 -0700
-X-Gm-Features: AUfX_mxuiyoIjzhEutGTO511_NhirARSYjjeIOZoGjTVYtHHDTkIhdeMfEHtsQY
-Message-ID: <CAKEwX=Nn0dMc1K9drXFVMwt7wMZ2P6KToeh7T3rE1+Xq5yrCFw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: zswap: free synchronous-IO writeback folios directly
+Date: Mon, 20 Jul 2026 08:57:21 -0700
+X-Gm-Features: AUfX_mzE9oSx9gAUE_0Haa5WsqXuVdTKlLnp73bYqy-q2AYPJ21KT8MxigUKzsY
+Message-ID: <CAKEwX=NY=Uvcfm2BT-HGqu8B3OaoC0eePW1M7fW1qH4wpjQ8gw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm: zswap: deferred dropbehind free of writeback folios
 To: Alexandre Ghiti <alex@ghiti.fr>
 Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
 	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
@@ -129,14 +129,14 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4DB96120002
-X-Stat-Signature: j1jf5t9rmom6cphaen1crgpk6dfwpzrg
 X-Rspam-User: 
-X-HE-Tag: 1784563006-599495
-X-HE-Meta: U2FsdGVkX1/b1Jz4U6mG3zYZ4p0aXMIO9/9FbBeubpxOdw6qjNdh5JIQ5OEwr+kOAYzch0NqJ3S41yd372/XxDq0xXsv8WMWSuZQtm3dgjsaGt6DHSY5OpROTHbEd8i1yhBB6Ljx31SW/cUzviC0UPUBD7w+C1GjNiDc2xNYkjZ7ZX+9DsxNrCcfsQeBcH5EkDIRKiK5SBHy7NKzvFff6bPt8J6jzFIWzl6pTTJQbSdNIuG9hZfXBFBPOiDA+jznDdZc81r8QDpBFaEXKwbs7gqstI2vT3IqcdBN+RyYYFCFSzJ4j6F1EDgpaY7loYZM80kA6Oaq6O3jak4koYHPME33T5YrEswN30wcDiIUoIpjIrpVUpZZED68t2niCKqw/fWQOA4mudgNB4YMpXMcSVk68EtlacELtN9fzUgCmue8VCXSwHuiHqJ64eNJauiuhUd64p3Ij779wO+l38plhI2XojzWcclMUV2iD+qjOT7kPGrSND/02ZZxTe0VaReZs5/5nM8GwMjNpO823uRvFmbYdLqHScyR3ERjH5lGSqYN2SGh+CN/TdynVEYR5Pewa8WHtnUQG4eFCfNn15+Ebe0cl9jxIGN8l8eYnkMOSXbWpBbkES7fAIbeuK51m47t8zpzwkWpRCNCnNts0rMt/ix+pp2nthbyUVD9onEJ2HvQjKlsi1OS0JB5ogmpQ+TcxXAsSRviSWzd0hF7aw8R8ikHOhgj6LW+EYvD0LJ1ThP9Lef2Is9OzDK4xFAS/GKo9fGp/lGGy7FUnX3WhBhTbIWIhLqE6kvc2l1GRSH7xQ+Y1Nuz1WVHImYSLKiIS7xJ52C1Fp4vbvRDwRS4gIK7PGM/KGLJAyzE2b3DrKqRLun93vErJ8MytpZNCB2DCmbTyJrLnvwRKdO0cN6ut97tyNGPtJU8w8OOsM2HY8v/eJqVd+Vf1ric9AcIh7cSQOP+OfucbdZNHSYczRIWk/0
- 1fJYpf5P
- Zy/p3iGxKOqeLs6fSLzqjnPhijN8balLy0tU1wQwc8M66lbEM+TJaPULBSXm2C8Nfc9Y3VUE7FtTxUv37igJxosC2pAR0EvPckPSK57So7yfJ4Czgxo89tmy2+bWOtNWKjuSrkiPVl8/NNwohY11ZB7tRiUd8wxOJe1YP/SBs91pNFskHvOKnCWkNNI1uNkiTD4c3phX7SX79eY+ADaie6JRQez+BiBDKKhAPsTzqBo4MnIR/lMFqRC/A3LyR8KTdxyoKteRFpFTMplS0WnRT63D7a8WPcGAXeajAOcd8CLhVeakaxRZD1wAg6kxw5rdrTjZvcNiRXFldPjvDKiSWmLHspNQZqnCVXMxhcOhGNPHYRLaqptgJEG/vjotR9MXuj7q7miOPkUVFsLdo08cUnJPZzA==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: ED793C000B
+X-Stat-Signature: rd67osqrnzjifd31kz6bzeqm7g94opy9
+X-HE-Tag: 1784563054-126780
+X-HE-Meta: U2FsdGVkX1/52H9e2hjIX28BSevIj2LwGQuQss5DS6M+R/V01uPg/yb1W/EsR9PpsPCQaDVkVWHVkxtsFJ2/4cWXyBU39XC2m6WceCB3KDMAZUYerLTf+7HBy9nNxbH5MPRhIAFulI7QZ45TrK1H0zWqoHCT767aih7H04mvrrj05byruTwEYpEp5xGauFAFymSINz3v3UByNZRjKqvjms7Ouz53j3BaI3axgBgz9pXCKt73hTLDfeNEBV0fdFLApX+Q/SVSwduYM2lmKngWKKu8w4o0CGJg9RArjXM+0nhwT0sM8J7DE9t/MaWQD3C47qJmr4YrDUwpqymDPJq/bnbLvf1JQ3GgrNWpIYDx5YmKrPxWvDRb2yJxbYRREwHO5ROV2nL1mT9LHZmdEG5/J21DIe7/wRe99dvjvE6W8fUXTX56TQwFcFQZz90ne1VdrGkmmmW9Iob3w2XsbyJrQrPebqhgcSFEOhBHv2nOFHt3lku/IEmvCc5HBhCX0RipWjGgWuS0/cD0308jRg8cF34GZZGpH1Mj0t2YpI6OAXsuOvrelTvKJpdX+5lCtH6mUGqhkKcg0Jwx4yFd7c/fRYdOFX+sc04HNoBtOg6J9vcP2y106cKS+GFVzy9Qe9reuthB3yyJhX9VFmYBUj9bZPImlac3OPfMLddu+NfFaAkCfbReyXywoMh0en4X+MYSHNim4oVNeIOMUNCZkEpsYc3rgYgwWZ8FamO5dRDRe92N48VeabvJC3+kza+1Dst0k2PFS6B9MeZPYNDIyGIembPrVR95raxNckoXRQ4p1OZd71Nv4ygxkYEVrn3l2nKfFGLnsgCMx2v/Dfv/Ijc60kPx5HtIU4HpFHrCDLGi/KCRTQGUwPNx/6Qm2UBDGPrkZd5U1DH8FGvIfytJHVml4dFvC33QAjODiVFAPjD9NchbKbuoKC1Eljh1seCAV42LhEZ28qHo6BTOxJI5wX2
+ Pxqy0Z6s
+ CU3pq5/+DxUM+5Nubn9Z7t4CyvYdz006LlAGH3RvCrIKByGNws0W76t/M6XWGEz0YGkxt8CmTB2ZgH6FqjIrMVw0aw/nQ+2OwxMMcV29QTuQxI21G6I4fh4nIvDOyqtlv67gChwJSGtvX49j3HlWKLNvOyUujFnUX3O8t7O7TGhKha6k5Jm3ECskiHYmrjogZRWE1no9e3ZOqtG8fslPhJM5U/ksHuajudVCAWlTVO3zMNPPlb7/2RhW6y4sd13A/lT6kaIel/cncyaJ+SrG4RaGW5oijQuHKctuUG7zAlkmTNRkMyR4VPsWJaX/Vhv2Ry+jrhEo0nom0eakeR+BCTxzmyA8ekqv0VHPE+vIoUc/nuySepKmDSXE/p8PS8z9FWqO9G1bIvV+GaV/qVc8eywi8aJGzk3hvbAyDmbUnz80Z1wyhhTX2vUh/pqR8q4LD7zk3ObWR7T3x0b4kRQD5vcuCpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,175 +144,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 18, 2026 at 2:38=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wro=
+On Sat, Jul 18, 2026 at 2:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wro=
 te:
 >
-> When zswap writes an entry back, it allocates a swap cache folio,
-> decompresses the entry into it and writes it out. That folio is cold by
-> construction, but it is currently left on the LRU for page reclaim to fin=
-d
-> and free later. This wastes a reclaim scan and keeps cold memory resident
-> longer than necessary.
+> The previous change frees zswap writeback folios promptly for
+> synchronous-IO swap, where writeback completes in the calling context.
+> Asynchronous block devices and filesystem-backed swap complete
+> writeback in interrupt context, where the folio cannot be freed, so
+> those cold folios are still left on the LRU for reclaim to clean up
+> later.
 >
-> For synchronous-IO swap devices writeback completes in the calling contex=
-t,
-> so the folio can be freed right after the write rather than left behind; =
-do
-> that. Because it is freed directly rather than through reclaim, it is
-> allocated off the LRU: dropping the last reference on a folio still on th=
-e
-> LRU would trip the free-time page-flag checks. A folio that a concurrent
-> swapin has meanwhile claimed is left in place and reclaimed as usual.
+> Free them promptly as well by deferring the work to a workqueue that
+> runs once writeback has completed.
 >
-> Asynchronous and filesystem-backed swap complete writeback in interrupt
-> context, where the folio cannot be freed; they are handled in a later
-> change.
->
+> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+
+No Suggested-by for poor Nhat? :(
+
+Just kidding, of course - thanks for working on this cool idea :)
+
 > ---
->  mm/swap.h       |  3 ++-
->  mm/swap_state.c | 17 +++++++++++------
->  mm/zswap.c      | 36 ++++++++++++++++++++++++++++++++++--
->  3 files changed, 47 insertions(+), 9 deletions(-)
+>  include/linux/zswap.h |  2 ++
+>  mm/filemap.c          | 20 ++++++++++++++++++++
+>  mm/zswap.c            | 34 +++++++++++++++++++++++++++++++---
+>  3 files changed, 53 insertions(+), 3 deletions(-)
 >
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 77d2d14eda42..c617e5a0257f 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -306,7 +306,8 @@ void *swap_cache_get_shadow(swp_entry_t entry);
->  void swap_cache_del_folio(struct folio *folio);
->  struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp=
-_mask,
->                                      unsigned long orders, struct vm_faul=
-t *vmf,
-> -                                    struct mempolicy *mpol, pgoff_t ilx)=
-;
-> +                                    struct mempolicy *mpol, pgoff_t ilx,
-> +                                    bool skip_lru);
->  /* Below helpers require the caller to lock and pass in the swap cluster=
-. */
->  void __swap_cache_add_folio(struct swap_cluster_info *ci,
->                             struct folio *folio, swp_entry_t entry);
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 9c3a5cf99778..048efc7ca612 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -403,7 +403,8 @@ void __swap_cache_replace_folio(struct swap_cluster_i=
-nfo *ci,
->  static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->                                         swp_entry_t targ_entry, gfp_t gfp=
-,
->                                         unsigned int order, struct vm_fau=
-lt *vmf,
-> -                                       struct mempolicy *mpol, pgoff_t i=
-lx)
-> +                                       struct mempolicy *mpol, pgoff_t i=
-lx,
-> +                                       bool skip_lru)
+> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> index 30c193a1207e..23dcde274964 100644
+> --- a/include/linux/zswap.h
+> +++ b/include/linux/zswap.h
+> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+>  void zswap_folio_swapin(struct folio *folio);
+>  bool zswap_is_enabled(void);
+>  bool zswap_never_enabled(void);
+> +void zswap_writeback_dropbehind_folio(struct folio *folio);
+>  #else
+>
+>  struct zswap_lruvec_state {};
+> @@ -58,6 +59,7 @@ static inline void zswap_swapoff(int type) {}
+>  static inline void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg)=
+ {}
+>  static inline void zswap_lruvec_state_init(struct lruvec *lruvec) {}
+>  static inline void zswap_folio_swapin(struct folio *folio) {}
+> +static inline void zswap_writeback_dropbehind_folio(struct folio *folio)=
+ {}
+>
+>  static inline bool zswap_is_enabled(void)
 >  {
->         int err;
->         swp_entry_t entry;
-> @@ -484,7 +485,8 @@ static struct folio *__swap_cache_alloc(struct swap_c=
-luster_info *ci,
->         lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
->
->         /* Caller will initiate read into locked new_folio */
-> -       folio_add_lru(folio);
-> +       if (!skip_lru)
-> +               folio_add_lru(folio);
->         return folio;
->  }
->
-> @@ -507,7 +509,8 @@ static struct folio *__swap_cache_alloc(struct swap_c=
-luster_info *ci,
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index dc3a0e960b9f..548e465b5b9a 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/gfp.h>
+>  #include <linux/mm.h>
+>  #include <linux/swap.h>
+> +#include <linux/zswap.h>
+>  #include <linux/leafops.h>
+>  #include <linux/syscalls.h>
+>  #include <linux/mman.h>
+> @@ -1680,6 +1681,8 @@ EXPORT_SYMBOL_GPL(folio_end_writeback_no_dropbehind=
+);
 >   */
->  struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
->                                      unsigned long orders, struct vm_faul=
-t *vmf,
-> -                                    struct mempolicy *mpol, pgoff_t ilx)
-> +                                    struct mempolicy *mpol, pgoff_t ilx,
-> +                                    bool skip_lru)
+>  void folio_end_writeback(struct folio *folio)
 >  {
->         int order, err;
->         struct folio *ret;
-> @@ -522,7 +525,7 @@ struct folio *swap_cache_alloc_folio(swp_entry_t targ=
-_entry, gfp_t gfp,
->
->         do {
->                 ret =3D __swap_cache_alloc(ci, targ_entry, gfp, order,
-> -                                        vmf, mpol, ilx);
-> +                                        vmf, mpol, ilx, skip_lru);
->                 if (!IS_ERR(ret))
->                         break;
->                 err =3D PTR_ERR(ret);
-> @@ -643,7 +646,8 @@ static struct folio *swap_cache_read_folio(swp_entry_=
-t entry, gfp_t gfp,
->                 folio =3D swap_cache_get_folio(entry);
->                 if (folio)
->                         return folio;
-> -               folio =3D swap_cache_alloc_folio(entry, gfp, BIT(0), NULL=
-, mpol, ilx);
-> +               folio =3D swap_cache_alloc_folio(entry, gfp, BIT(0), NULL=
-, mpol, ilx,
-> +                                              false);
->         } while (PTR_ERR(folio) =3D=3D -EEXIST);
->
->         if (IS_ERR_OR_NULL(folio))
-> @@ -683,7 +687,8 @@ struct folio *swapin_sync(swp_entry_t entry, gfp_t gf=
-p, unsigned long orders,
->                 folio =3D swap_cache_get_folio(entry);
->                 if (folio)
->                         return folio;
-> -               folio =3D swap_cache_alloc_folio(entry, gfp, orders, vmf,=
- mpol, ilx);
-> +               folio =3D swap_cache_alloc_folio(entry, gfp, orders, vmf,=
- mpol, ilx,
-> +                                              false);
->         } while (PTR_ERR(folio) =3D=3D -EEXIST);
->
->         if (IS_ERR(folio))
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 761cd699e0a3..3c494c5a671c 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -972,6 +972,30 @@ static bool zswap_decompress(struct zswap_entry *ent=
-ry, struct folio *folio)
->  /*********************************
->  * writeback code
->  **********************************/
-> +static void zswap_writeback_free_folio(struct folio *folio)
-> +{
-> +       folio_lock(folio);
+> +       bool swap_dropbehind;
 > +
-> +       /* The folio was allocated off the LRU and nothing re-adds it her=
-e. */
-> +       VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
+>         VM_BUG_ON_FOLIO(!folio_test_writeback(folio), folio);
+>
+>         /*
+> @@ -1689,7 +1692,24 @@ void folio_end_writeback(struct folio *folio)
+>          * reused before the folio_wake_bit().
+>          */
+>         folio_get(folio);
 > +
 > +       /*
-> +        * Gate remove_mapping() on folio_test_swapcache(): a racing swap=
-in may
-> +        * have freed the swap slot (folio_free_swap()) and dropped the f=
-olio from
-> +        * the cache, and remove_mapping() must not run on a non-swapcach=
-e folio
-> +        * (it would trip __remove_mapping()'s mapping =3D=3D folio_mappi=
-ng() check).
+> +        * zswap writeback folios are off-LRU, so we must prevent a racin=
+g
+> +        * swapin from removing the folio from the swap cache and keeping=
+ it
+> +        * off-LRU: the writeback flag allows that. Afterwards a swapin m=
+ay win
+> +        * the race, but the folio is already queued and the worker puts =
+it back
+> +        * on the LRU in that case.
 > +        */
-> +       if (folio_test_swapcache(folio) &&
-> +           remove_mapping(swap_address_space(folio->swap), folio))
+> +       swap_dropbehind =3D folio_test_swapcache(folio) &&
+> +                         folio_test_dropbehind(folio);
+> +
+>         folio_end_writeback_no_dropbehind(folio);
+> +
+> +       if (swap_dropbehind) {
+> +               zswap_writeback_dropbehind_folio(folio);
+> +               return;
+> +       }
+> +
+>         folio_end_dropbehind(folio);
+>         folio_put(folio);
+>  }
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 3c494c5a671c..d185da85bb68 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -34,6 +34,7 @@
+>  #include <linux/writeback.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/workqueue.h>
+> +#include <linux/llist.h>
+>  #include <linux/list_lru.h>
+>  #include <linux/zsmalloc.h>
+>
+> @@ -990,12 +991,39 @@ static void zswap_writeback_free_folio(struct folio=
+ *folio)
+>                 goto out;
+>
+>         /* Raced: the folio is now owned by the swapin; put it back on th=
+e LRU. */
+> +       folio_clear_dropbehind(folio);
+>         folio_add_lru(folio);
+>  out:
+>         folio_unlock(folio);
+>         folio_put(folio);
+>  }
+>
+> +static DEFINE_PER_CPU(struct llist_head, zswap_dropbehind_llist);
+> +
+> +static void zswap_dropbehind_workfn(struct work_struct *work)
+> +{
+> +       struct llist_node *pos, *next;
+> +       int cpu;
+> +
+> +       for_each_possible_cpu(cpu) {
+> +               pos =3D llist_del_all(per_cpu_ptr(&zswap_dropbehind_llist=
+, cpu));
+> +               llist_for_each_safe(pos, next, pos) {
+> +                       struct folio *folio =3D container_of((struct list=
+_head *)pos,
+> +                                                          struct folio, =
+lru);
+> +                       zswap_writeback_free_folio(folio);
 
-Hmm I think you also have to test for writeback and dirty here right?
+nit: I wonder if it's worth doing some batching here for the free step.
 
-After a racing swapin freed the swap slot, the folio might be dirtied
-and swapped out again. We probably shouldn't try to remove_mapping()
-such a folio?
-
-We also do similar check for zswap/sync-io devices in pageout handling
-(mm/vmscan.c, shrink_folio_list()), and the other dropbehind handler
-(filemap_end_dropbehind()).
-
-When I was playing with this, I also tested the folio with
-folio_test_active() and folio_mapped(), but I must admit - I do not
-remember why I did it. Could just be me making sure we dont get rid of
-frequently used folio rather than for strict correctness. :)
+i.e, after remove_mapping() succeeds for a folio, we can just add the
+folio to a batch, then call folios_put_refs() in the entire batch :-?
 
