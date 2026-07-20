@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96014C4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 02:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 746B3C44512
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 02:28:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 674CC6B008C; Sun, 19 Jul 2026 22:24:00 -0400 (EDT)
+	id 458E46B0093; Sun, 19 Jul 2026 22:28:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 625CB6B0092; Sun, 19 Jul 2026 22:24:00 -0400 (EDT)
+	id 3E2CB6B0095; Sun, 19 Jul 2026 22:28:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53B436B0093; Sun, 19 Jul 2026 22:24:00 -0400 (EDT)
+	id 31F756B0096; Sun, 19 Jul 2026 22:28:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 224C36B008C
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 22:24:00 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 089026B0093
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 22:28:01 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A824FC06E5
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:23:59 +0000 (UTC)
-X-FDA: 85007559798.22.E783BE7
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4D61D14000A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:23:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="J91TRnw/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60DB5160735
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:28:01 +0000 (UTC)
+X-FDA: 85007569962.22.2B8C1AF
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1C49140006
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:27:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eNR5XIKw;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784514238;
+	s=arc-20220608; t=1784514479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p8X2N36SkSYXjR3Lmfvw9oc82NSEhF0xR/1+TvWCook=;
-	b=mfJMY8kiukQycet6p9Mpt8wbB1A4catJs7/OsRn5NukcOHA3ryqw1eYgcRzBPqzINX14yO
-	Cq8n1bY4IR25gx0xa4hSm9RkfpKNf2BA9HF/7dK09anp3plFLzpRT0hYOL3ja8h2opx/g6
-	cKPyvbJKzr/Qp1PBSMICIRRTYWJ3mE4=
+	bh=AlNhtQCquztP9G9X9Z8iMtH1eSwOYMw8dTp0ZlM181c=;
+	b=5DjSoO9Cdl46sbaItS4zlIAobi4knf7m5D3aumSqINxLxLbR6k9aFwrhJCDPNJ0Gyul0n9
+	yhRRTDlQzCO7LJq3lfwGaxyp7C8IawdC7tgnmEzOqaGtsWfMrwmiU85zvBPB0LHIAKNEUg
+	dHhgo8ysSiWZx8oE2waPfRahA7nZsRw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="J91TRnw/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eNR5XIKw;
+	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784514238;
-	b=ueuO+fa+6xdn0d3KLOQekmakapnYvb76xoP0j8VxDVxMhlYn6E5tCXRf0l5bTxX2hC6hVz
-	dHIHL3RcTNkbsa/caapeAAHDxUeZZh8mATv0m9QG+Cmpp3Ztw0LqE4yNSDJKw4Trbvv1nw
-	vgI1T+n1m8EuN0bOtDGlAY+m/B8rlGU=
-Message-ID: <f39a287a-3f70-4f6b-8c5b-5f6cb78bfda2@linux.dev>
+	t=1784514479;
+	b=6zqXio7crNQSLnxtE+ykAMMO6awv3G7vqeEHQBNvaBvDInr38XUnviLLGuOIjFaLtDtkNK
+	gLuRWcUVEsPkgPoD5pqxcD6W+TOg5eJNYB+2AYvzXdt+2000pV0Y6Las0y10/qXPtptCMN
+	iLGLFTLtqyxLAom6kSLHczYEe+Tm2j8=
+Message-ID: <bb41fe18-71a0-4574-9941-fb30e48bf4c3@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784514233;
+	t=1784514477;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p8X2N36SkSYXjR3Lmfvw9oc82NSEhF0xR/1+TvWCook=;
-	b=J91TRnw/4A5FT66aJBIZ+uOdUSXLsRzfDF3RvMU8zEjoBvqfQAoDKQkOq0W9YGBjOm2SfO
-	G689c4vi4VadKqANJ6lfllc2vTi49Fbw+SaVc6EYEU/Y0ij5BjMCDmMdhCzCUKoJ7BBf9a
-	DXxPAxpQZWms4TkrGowKF3I7Kav/1dU=
-Date: Mon, 20 Jul 2026 10:23:41 +0800
+	bh=AlNhtQCquztP9G9X9Z8iMtH1eSwOYMw8dTp0ZlM181c=;
+	b=eNR5XIKwOUOOp9+tzPCT94JJoXfglAFyTLkEo6lbTOBL7ZmigdZfbK5O+mg/9ghIFh9eBs
+	PW6Mv+3DKHv2p3XIvxukoaCbKBlc0/6zNPw7hJrLWoMq27RNj4Bqk5zw9RYzX1dUUVPpi4
+	763PxCA35hA5D2IQaHJMS9Q+06zHa3Y=
+Date: Mon, 20 Jul 2026 10:27:43 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: shmem: make unused huge shrinker memcg aware
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, hughd@google.com,
- akpm@linux-foundation.org, usama.arif@linux.dev
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260714031918.308-1-qi.zheng@linux.dev>
- <7624107f-6a2d-4959-b2ee-aa362a8972eb@linux.alibaba.com>
- <ac0cd32c-8255-41c6-9814-22a02aa50dbf@linux.dev>
- <d850e8e2-ba53-4876-b92d-88c3d341b8e6@linux.alibaba.com>
+Subject: Re: [PATCH v2 1/4] mm/vmscan: fix anon-only reclaim evicting file
+ pages when swappiness=max
+To: Ridong Chen <ridong.chen@linux.dev>, akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
+ shakeel.butt@linux.dev, ljs@kernel.org, kasong@tencent.com,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hezhongkun.hzk@bytedance.com, muchun.song@linux.dev,
+ dave@stgolabs.net, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260718095251.82937-1-ridong.chen@linux.dev>
+ <20260718095251.82937-2-ridong.chen@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <d850e8e2-ba53-4876-b92d-88c3d341b8e6@linux.alibaba.com>
+In-Reply-To: <20260718095251.82937-2-ridong.chen@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4D61D14000A
-X-Stat-Signature: 3bhuubn8fqtz41gbeqbz4yu8pqo5pg3q
 X-Rspam-User: 
-X-HE-Tag: 1784514236-761831
-X-HE-Meta: U2FsdGVkX1/CZPnfjdp+jYWqHMDFmS1hlSEbDNYi9AliXhzU2gojbV5hW3cZ8sa/6SMIhH2tzQyoF6IbcAIyVpHdOZyGVArFlakJY+FvRO4czDOZB/PUU4GCupth9aSr6x+w4boCv4wfOv572vrNBwxza4fW+YpCijycCvolH41wUTzpV6VXL81Vf1txn17vLl5L41zcIrQGKR5xbd2WfneJDqUCclnyPYw9IhFBgahctN3UUyTI6HcNNyrTlZnlhSTcm2YFC6uGxUqLlfpmwrpLxAWtZ+88RJqb1KHwYOPA+ZYkuEhXmf0vSIn74AAnvaU5xiAuOgv+la9ja2U/DFd6en5mWC92fZTtTmewYT+w0vWFSVDUSVa+YhT+nI0NegRuKrKXmzVgwB3v2fJR0lwOT0PyGTZf6oO+yeEcC8dgRT7o/iBN9oH7bWL7NKlg91Cr6pNGfR8HhbgF9swiK7qZwclQN9Em/x8o5DPqusYNny9mJ7OAWig98ckPZU1Nz4D+WLseLidP6sfD5aSkaROzZHREVZhgDuYYmyUR8VlURWeU79PJDScOna2zw++4Qj1uVt4Q8tFzonknfCHcy6oTh1tZmI+JvGeYsdF4A3zk0ClpmEi12llN3uyw7HzGB3naNxmU/fRbAg5B8+TFoLFXvpUq/cghPVSXMq95yXFlmh5UIDBUDmKuSkm0PMVJrJmu7EruRZ6Bf0RLUByqYc9S1SPt91fB5EoUd6TTTaPiEuA3lKV8L3+6yVC1sGg/B82Ogq5bd5cE2F69++F7WJ3PihgBJJKqO29/DM72fkDCU/4iGQiDGDI+/7Kr2rLpddmmnpIqGujLqhEiBrZA5Bcma2TYS2dmVI2MepTBeR+F8+47+1ZyfgG0UpBAJ9++FlLCA1d1NTpCB1R5YIaZjIfssKp5u7aDj7OHSwjRq5mq1wTYca4Kj0b5ijV2DI4N/MBZlGyRH0MrQagZ10R
- 635HLcNi
- O+A8+QW9HX2jVLwm1mqhXY7dqmhcJWazdhn79jC2w5mdy3jHOSAEeWHO2bP4nobrQ+1VR3/8qlskaWoGoevBxca56BsLthwIs22Jk8jqZUhut0OtG8QZnwFGLTCiFDUyjrhqYhM3mpjmPUSP/+WrRqJUd+KFP4+g/sESAPlxvz04leRQhpR1CEurHE+3IJi+qZTzM/ia7lWUo7OkD13JlFKUKJVCyXd3wqv7sj+wJbRwuF5kjLkrO0uOWuVvWq8kGSg9dzrY93NMGwdljZs9P5r+LyQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1C49140006
+X-Stat-Signature: tuy7gsoq8uerwztrocsuc8kudpxori7x
+X-HE-Tag: 1784514478-666688
+X-HE-Meta: U2FsdGVkX1952NbZPdPcbJFCKn+k/kfjqF5a8xBKzgH8gfRwzjI9VKQkeDp+2ATwu9xycfFvcYZwNwfiUXk5geoVyz4osvKMDePL0w06MznmPnCL/tw8YnnyNxWuV7UU2E1dZhZiRaiGHbfzux5zfJOEC97brymiWSY2VWXbt/RdmiKfjUw4sC4f6Vh8t/bZIoleCXh3n4IJiD6Y4huZ+LpxnxS2RzXN5LzQFOnDvQGWtS5Jp33yyN/sqa4npOUVVIUYrOVpXg2irSwQISu8pKZQR+dMZ19j8GfCAB3/HFtwcZ66yzQzda3/aYFNY63nKEJ+0I37zERZxwqjq8sESqBLx1W5Z+UHsrESUIlRJvKS94VAq/P6vJ86XPaMli3cBNrMDLeSx9vDEAKpaAXXQlZA50uMZuCYTl2c6SxhlUZyLWYzoCrG9nW4EqnbPwclyKgj1lgRa+QR/MEz/k4Yp+oFLGB4kgIbrkwM5pq3UgFC/mTEYveBs9PD3yNtRKs+i/A37Jj21xJ09hU/P3+dNfsRG9n+rfk82CF+p27Xtqpd66/Qp1eIprXR031afwpBstef+0rJleOtNN2CGfTF5k/3vMFBi0ge0jB+7a930Km6qzsrwKKgX2T/dnlOO1NHrUbPsV655ueFGlM1y98rXWiQGFZZBtopNjteIfPZ030VZ284FuB0cflRRllAZSm+CymuzgKgFWZvRVWuEkZXPxgIJUVeuGniYp8n2ktpec699Nvqfa/byMG1RG6Sy927iyGrt19uSdLZZstTwjfoPkOnjB/xIBvjQN5uTOxspJxPEvhOEOBt2IttJHxaeT1T+sByTRuFyvUSfNj4m8qYbebv+g+VT8y35l+psHzJoct/WLdIVKhBMkNL9Nu7D5gcU98tSYrJLo9WAVCp0yA9dFvlXlSrQGfTR8XICbpJJAXpxFux/2MhOpEnrpCpX4MSWwlg7DtntdP+GDYy42S
+ QZEfVZFS
+ 8QflF3T0HLGaEk3gQwurGovLkkQSXIVPJuyEc0QRoLwyg0pCgIPjgkxJ6RW0WrKPzINX9iXtBI8oUuD/gHeJU0tBQq46VyU0tXm/2w1ue1OXk7UOi8NdkD5qxyVBlmtoaSymSVep+GX+OH/OP5lQ4o3inUnIHQzhRT/LEug5Hxke0ZHAW3///m7shwffg1XZCxCrwnODgMaXygsg5RDGxgft6fRKIpTIaXV/ndeqKt55/HunoUuWlO6FMNU6cLuoDjm4oEeFwtOx2BfdsAnxnKMN1reuhuM7ogPHfuk45LTEMw9lAuVx1vz7+aIhSkf6Y7U47
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,172 +94,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Baolin,
 
-On 7/17/26 8:50 PM, Baolin Wang wrote:
-> 
-> 
-> On 7/15/26 5:55 PM, Qi Zheng wrote:
->> Hi Baolin,
-> 
-> Sorry for late reply.
-> 
->> On 7/15/26 5:37 PM, Baolin Wang wrote:
->>> Hi Qi,
->>>
->>> On 7/14/26 11:19 AM, Qi Zheng wrote:
->>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>
->>>> The shmem unused huge shrinker keeps a per-superblock list of inodes 
->>>> whose
->>>> tail huge folio extends beyond i_size. Since that list is not memcg 
->>>> aware,
->>>> reclaim triggered by one memcg can scan inodes from the whole 
->>>> superblock
->>>> and split shmem huge folios charged to unrelated memcgs.
->>>>
->>>> Convert the shrink list to a memcg-aware list_lru. Queue each inode 
->>>> on the
->>>> list_lru sublist matching the memcg and node of the current tail huge
->>>> folio, so non-root memcg reclaim only walks candidates charged to the
->>>> reclaiming memcg. Global reclaim, root memcg reclaim and shmem quota
->>>> reclaim keep global semantics.
->>>>
->>>> The list_lru still tracks inodes while the actual split target is the
->>>> current tail huge folio, so validate the folio memcg/node during 
->>>> scan. If
->>>> the folio no longer matches the reclaim context or splitting cannot
->>>> proceed, requeue the inode according to the current tail folio; if the
->>>> inode is no longer shrinkable, drop the scan entry.
->>>>
->>>> This can be tested with the shrinker debugfs interface by allocating 32
->>>> tmpfs tail THPs in each of two memcgs, then scanning the sb-tmpfs 
->>>> shrinker
->>>> with memcg A's cgroup id:
->>>>
->>>>                 before A scan        after A scan
->>>>    base         A=64M, B=64M         A=0,  B=0
->>>>    patched      A=64M, B=64M         A=0,  B=64M
->>>>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> ---
->>>
->>> Thanks for your patch. This work has been on my TODO list for a while :)
->>>
->>> Overall it looks good. I'll take a closer look and run some tests.
->>
->> Thanks!
->>
->>>
->>>> This patch is based on next-20260701 because it doesn't include this 
->>>> patch:
->>>>
->>>> https://lore.kernel.org/all/20260609123047.1948242-1- 
->>>> usama.arif@linux.dev/
->>>>
->>>> Later on, Usama will consider moving this restriction down into the 
->>>> fs callback.
->>>>
->>>>   include/linux/shmem_fs.h |  14 +-
->>>>   mm/shmem.c               | 379 +++++++++++++++++++++++++++++ 
->>>> +---------
->>>>   2 files changed, 310 insertions(+), 83 deletions(-)
->>>>
->>>> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
->>>> index e729b9b0e38d4..0b14de1e890a9 100644
->>>> --- a/include/linux/shmem_fs.h
->>>> +++ b/include/linux/shmem_fs.h
->>>> @@ -11,6 +11,7 @@
->>>>   #include <linux/fs_parser.h>
->>>>   #include <linux/userfaultfd_k.h>
->>>>   #include <linux/bits.h>
->>>> +#include <linux/list_lru.h>
->>>>   struct swap_iocb;
->>>> @@ -56,6 +57,13 @@ struct shmem_inode_info {
->>>>       struct dquot __rcu    *i_dquot[MAXQUOTAS];
->>>>   #endif
->>>>       struct inode        vfs_inode;
->>>> +
->>>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>>> +    struct list_head    shrinklist_scan;
->>>
->>> Why introduce another list_head member? Why can't we reuse 
->>> 'shrinklist' in this structure? In other words, if we isolate this 
->>> inode from list_lru, then 'inode_info->shrinklist' can be reused to 
->>> link it into the temporary list, right?
->>
->> After list_lru isolation, the shrinker drops the list_lru lock and
->> processes the inode on a local scan list. During that time, shmem
->> faults can make the inode's current tail huge folio change, and
->> shmem_unused_huge_add() may need to queue the same inode again on
->> the active list_lru, possibly under a different memcg/node sublist.
->>
->> If we reused info->shrinklist for the temporary scan list, then while 
->> the inode is being scanned:
->>
->> 1. info->shrinklist would be non-empty because it is on the local scan
->>     list, so shmem_unused_huge_add() could not tell that the inode is no
->>     longer on the active list_lru.
->> 2. Re-adding it to list_lru with the same list_head would corrupt the
->>     local scan list.
-> 
-> Right. Just some preliminary thoughts:
-> 
-> If the current inode needs to be re-added to the list_lru, it means the 
-> inode's i_size has changed. If 'info->shrinklist' is on the temporary 
-> list at this point, we can follow the same logic as the original 'info- 
->  >shrinklist' handling and simply skip the re-adding to list_lru. 
-> Instead, we can let shmem_unused_huge_shrink() get the end folio via 
-> filemap_get_entry(i_size), and then check the memcg and nid — if they 
-> differ from the 'sc', we can re-add the inode back to the list_lru in 
-> shmem_unused_huge_shrink().
 
-That also sounds workable.
+On 7/18/26 5:52 PM, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
+> the reclaim logic is expected to reclaim anonymous pages exclusively.
+> However, due to the current ordering of checks in get_scan_count(),
+> file pages may still be evicted if can_reclaim_anon_pages() returns
+> false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
+> 
+> Reproducer in a cgroup holding 64M of file cache, with no swap configured:
+> 
+>    Before (file cache is wrongly evicted):
+>      # cat memory.stat
+>      anon 196608
+>      file 67178496
+>      pgscan_proactive 0
+>      # echo "64M swappiness=max" > memory.reclaim
+>      # cat memory.stat
+>      anon 208896
+>      file 4096                 <- page cache evicted
+>      pgsteal_proactive 16400
+>      pgscan_proactive 16400
+> 
+>    After (file cache is left intact):
+>      # cat memory.stat
+>      anon 200704
+>      file 67178496
+>      pgscan_proactive 0
+>      # echo "64M swappiness=max" > memory.reclaim
+>      -bash: echo: write error: Resource temporarily unavailable
+>      # cat memory.stat
+>      anon 208896
+>      file 67178496             <- page cache untouched
+>      pgsteal_proactive 0
+>      pgscan_proactive 0
+> 
+> Fix this by bailing out early when SWAPPINESS_ANON_ONLY is set and no
+> anonymous pages are reclaimable, before falling back to file reclaim.
+> 
+> [1] https://lore.kernel.org/cgroups/7ddf3eee-5fe2-45f7-8614-c8936a039e04@linux.dev/
+> 
+> Fixes: 68a1436bde00 ("mm: add swappiness=max arg to memory.reclaim for only anon reclaim")
+> Suggested-by: Qi Zheng <qi.zheng@linux.dev>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
+>   mm/vmscan.c | 18 +++++++++++-------
+>   1 file changed, 11 insertions(+), 7 deletions(-)
+
+Thanks for the fix!
+
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
 
 > 
-> Of course, there may be other races that need to be considered as well.
-
-I will look into it.
-
-> 
-> In any case, we should try to avoid adding too many members to the 
-> 'shmem_inode_info' struct, since when there are many tmpfs files this 
-> could introduce noticeable memory overhead.
-
-Got it.
-
-Thanks,
-Qi
-
-> 
->> 3. Skipping the add would lose the new current tail huge folio if the
->>     scan later drops the old scan entry instead of requeueing it.
->>
->> So isolation removes the inode from the active list_lru and leaves
->> info->shrinklist empty. A concurrent fault can safely add the inode back
->> to the active list_lru with the current folio's memcg/node, while the
->> shrinker still owns the old scan entry through shrinklist_scan. The scan
->> loop then detects that re-add and drops the stale scan entry, leaving
->> the active entry for a later scan.
->>
->>>
->>>> +    struct mem_cgroup    *shrinklist_memcg;
->>>> +    int            shrinklist_nid;
->>>> +    bool            shrinklist_isolated;
->>>
->>> Do we need an extra bool to indicate whether it's isolated? Can't we 
->>> just use 'list_empty(inode_info->shrinklist)'? I may have missed some 
->>> details.
->>
->> list_empty(info->shrinklist) cannot be used for this. That list node 
->> tracks active list_lru membership only. But you are right that the
->> explicit bool is not necessary, we can use list_empty(&info- 
->>  >shrinklist_scan) instead.
->>
->> Thanks,
->> Qi
->>
->>
-> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 35c3bb15ae96..d6b383d96a0c 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2501,6 +2501,17 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+>   	enum scan_balance scan_balance;
+>   	enum lru_list lru;
+>   
+> +	/* Proactive reclaim initiated by userspace for anonymous memory only */
+> +	if (swappiness == SWAPPINESS_ANON_ONLY) {
+> +		WARN_ON_ONCE(!sc->proactive);
+> +		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
+> +			memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
+> +			return;
+> +		}
+> +		scan_balance = SCAN_ANON;
+> +		goto out;
+> +	}
+> +
+>   	/* If we have no swap space, do not bother scanning anon folios. */
+>   	if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
+>   		scan_balance = SCAN_FILE;
+> @@ -2519,13 +2530,6 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+>   		goto out;
+>   	}
+>   
+> -	/* Proactive reclaim initiated by userspace for anonymous memory only */
+> -	if (swappiness == SWAPPINESS_ANON_ONLY) {
+> -		WARN_ON_ONCE(!sc->proactive);
+> -		scan_balance = SCAN_ANON;
+> -		goto out;
+> -	}
+> -
+>   	/*
+>   	 * Do not apply any pressure balancing cleverness when the
+>   	 * system is close to OOM, scan both anon and file equally
 
 
