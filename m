@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7604C4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:43:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84E0EC4452C
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:44:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC73F6B008C; Mon, 20 Jul 2026 08:43:09 -0400 (EDT)
+	id 292C76B0093; Mon, 20 Jul 2026 08:43:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E774A6B0098; Mon, 20 Jul 2026 08:43:09 -0400 (EDT)
+	id 2433C6B0098; Mon, 20 Jul 2026 08:43:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB3E16B009D; Mon, 20 Jul 2026 08:43:09 -0400 (EDT)
+	id 15A3C6B009D; Mon, 20 Jul 2026 08:43:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B7ED36B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:43:09 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2EAC914016C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:43:09 +0000 (UTC)
-X-FDA: 85009120098.16.3B95530
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C10EF12000A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:43:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4M1CtP9Z;
-	spf=pass (imf29.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C96DC6B0093
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:43:58 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25F5716016A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:43:58 +0000 (UTC)
+X-FDA: 85009122156.28.3E88E5E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 879FF14000C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:43:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oUcfoo4I;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784551387;
+	s=arc-20220608; t=1784551436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VvnMsH75BzLyLzw2Se0FFbIlNBhTvJL8or25tQjpDPQ=;
-	b=YqlhVnzyhAy6fwy+Z9hqD6LKK22ZhQ6EolxnJlAM4HG8TD74pc01OC3+a8yGSEYlDXUPmt
-	045GvrIVFg0PQv6lBdhKeRWUSGVZ4L0uMPJphrCcUY+GkXPCTb/MRwdNIfdIOoX5dNIPTy
-	hwbWMcdlZt9RGuMjY9tPsJRtpjqDiuw=
+	bh=1c6LTL5Is7h8D95ocgbXWlW7FM4nVTO6iup7BWbySR4=;
+	b=tbhivVao8FlLtsM70XNc7hFhcNX6O6uhXZxN0/f/6wWRmSpeFESazhehGCACugBMTG44kf
+	dusdFRZw674pr4lgSe6/qYT4p0nMA9HsDWloOejow92Ab/lLJxHLgtGcCGml+RbYc7XDdD
+	bfUgM/9ulP6VioCYwd87rbfU+xVbbqA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784551387;
-	b=s+8qbe0jdzwZ5OooHuPqyhzn57prJkvc5dSAfbBlY1E/9ovt+g4hoUEKPKmTdph0JQjaWP
-	hEh97rDddCN9coTPJN2B77B3FpPKYds/3auyMPH2JFC4GOS3/9JEuW/nZCoq4aZsr4O0VE
-	d0Sq3+0nG0jx0kYpS6eZJcGG0TON/R0=
+	t=1784551436;
+	b=zwUu/lJrXOUwbk6uqOWpSJQrvdCzVghc6JyKQHtzuOrZZ8Wx9RYdaCxXI/r1Silh/dlUbW
+	62tUtxE/3TQ33KEjy6l+TRDDPvCgIXiZDLPXfNiSorskEYiCKFJD4QqLScUZLJfqlhK530
+	frJ5bvVxetISRZfexcArU4XGDcIlIKA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4M1CtP9Z;
-	spf=pass (imf29.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=VvnMsH75BzLyLzw2Se0FFbIlNBhTvJL8or25tQjpDPQ=;
-	b=4M1CtP9ZfftZIIQHUVWox/zEwEoYZse7tNnIZSXLtDMOSuXbNvja64Ca0e2ev1lnuScaqbyCo
-	z0mJTrvvNRvKcXdMGK8Qc7vuA0Mp1LMSPWtuduNXp8N1Uw5zqa5wdBpyIwxf24UBtaDUInPOzK0
-	e5GRuO3REE77b06Gynq9RUQ=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h3g0s6m8yzcb0W;
-	Mon, 20 Jul 2026 20:33:33 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 51BD1202E6;
-	Mon, 20 Jul 2026 20:42:59 +0800 (CST)
-Received: from ubuntu (10.50.87.83) by dggpemf100008.china.huawei.com
- (7.185.36.138) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Jul
- 2026 20:42:58 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <linux-mm@kvack.org>, David Hildenbrand <david@kernel.org>, "Liam R .
- Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
- Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
-	<pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>, Kefeng Wang
-	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v3-fixup 5/6] mm: mincore: fixup improve mincore_hugetlb()
-Date: Mon, 20 Jul 2026 20:42:52 +0800
-Message-ID: <20260720124252.1483984-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260717091347.1144789-6-wangkefeng.wang@huawei.com>
-References: <20260717091347.1144789-6-wangkefeng.wang@huawei.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oUcfoo4I;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E6F2060A7E;
+	Mon, 20 Jul 2026 12:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EA91F000E9;
+	Mon, 20 Jul 2026 12:43:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784551435;
+	bh=1c6LTL5Is7h8D95ocgbXWlW7FM4nVTO6iup7BWbySR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oUcfoo4Icd3uA53Ct4ZXYsqZQsaE057RK+n9XKwQWhRB+hfI6GFRjMc8L+U+z5tUq
+	 3KKP8uiWQhoA/yS7kogZzjr6+izJG3giyyIF0WkRSVdDowTa5ejo/0RPaXxjJNjceh
+	 xdwFW12MQrQXiyeC/dozu/ErLqsu9hfqjEAvR2wlH3WySiOmRq9hXRmgro8DnX8Jf0
+	 ygSdzdmIWdSqtYkSDcidG5waZghMUxQqxriWyl/v5sIg00jAM/BJhFx4YZFwRZh7hr
+	 cTFOouuznp3AFoSSkxVukQhRtyvYKzLld+neAWQtXredy3IwWyHjAe3dVIG2qtDG95
+	 G+ye2STy/aR5Q==
+Date: Mon, 20 Jul 2026 15:43:49 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Brian King <brking@us.ibm.com>, Hannes Reinecke <hare@suse.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Wen Xiong <wenxiong@linux.ibm.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>,
+	John Garry <john.g.garry@oracle.com>
+Subject: Re: [PATCH v2 0/4] scsi: replace __get_free_pages() with kmalloc()
+Message-ID: <al4YBTQ-aUS9_DJJ@kernel.org>
+References: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: C10EF12000A
-X-Stat-Signature: cbqzkz6w4fq8k9wk7mxcuc43nmmqce6z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
+X-Rspamd-Queue-Id: 879FF14000C
+X-Stat-Signature: ce7idttse1g8huuzwpbxw1ybq4q5upnm
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1784551385-461322
-X-HE-Meta: U2FsdGVkX1/IDQ8lEhCsaITYPrPEjSsPv0FSC13pjbxBTa125B8N5elJaQ9NBAWX47jHxE9tgCTnQPY0PYqBEwdWTxYPPMbVTsSc0lIYoBOqSQqK77PMu/kvdY4rqCzEqEuBOEb6oWZiZAckoBKN34GIMRCkGGHHQfJ8VxmpgRyIUtRHwT02WgsGdzWwbunvgqCgRd0o+B64dy81gGXuIcxsaCaggl0rwdDyjF9mWGL/Dd1Z3vVNJO7qvJv7BDWPMEt9+1mJOLmvrbDaN6OLMs/QvUKbqYl4azMJMRC4pGVBwoTXg6BSbIE4+VGI7hl1//MrIiUuZhGWSDTSU8MsCimyZLYSC6obLpE8udqe3bIMAGuIO52skiSoL2voeV9hlvbX3eFJPA9MtfD0LoD6lCAqPnQvSWYopuzZgSXUhYP4v8yO7LePyUr2cZUrc0d305xIgU6jBvzQ0MRPwITy6frmvWagM+r1VlaFRGxTRx+vBAgXoLK86abS7MvSC0xQPh2CbKcnipP15ZStqZ8mtEIuD1kgtmo5jRJ5MuDsWqhmvEwy/Pd6H6IrBJfuFcs91pzGD4TIzrxdjMOXMS8iv6DgTU2Rp2nBrWH96OOq/j3fsak43zL26H2K7UP6R3qrxnjUmzK/ZyWvzbEqZwttf0Z+skEUaF/EPTo4VD1xQsCBfpXi9e6TgbfCBD4aREypo4rroXFMqNZK0ysjvf1d4y05/ZjmrlPtr9EaW1dVdKFdVNuit3PC7dBAJPwYlhiUZ6Q1x2IIMzqML35xer1e1btNrmTBy/FCpMSJiCRRH99KUVDRV88sXCNpgbvIvqKnhfMPXg4CgxdLxC+sF/Rly0VofFuqh6mWuwHAz4/j1WYMyCQ3bw5XTgdfKtSZxq6eFqsLc6DYZRKv2FCjWMmG00YZ+8Ps/iS1Mh0/xYOvFvhJYdxApIDhdaVnzxMoRcKX0M530niJuL/muY0ASsN
- 7OtFZCgL
- JcrWWTRmVOC7i//aIGt7iw7iObnMTcZftrnnEnniEQndwdoyL4Ri+bBm5ivYHKiitvEqxkQhpr5j1Sc25EGEZF2dPRp6omy4SZTyguWpa1S0kk+P6wE7XN2bR6I7pb/IoWoAMuLHZc85nXC72mvvJNcw/hebawXht4WQbZxsyd1McSSkSN4eq5yv2tu7iX46N0ABRZwC42cLgw/q6UN/1tsCb4F5WNhKtgNg31+Mzm3ZT4ol4gYHYiUvxXRsVFe7jFbwVqMcF2P6nPG68OL+88JfbMqyn1AKZzwHU7Bspf/QUC3au6GtRTMVogSASC7nH9dCsRwy+JZp+zkhX1FwYnzkZyQ==
+X-HE-Tag: 1784551436-201934
+X-HE-Meta: U2FsdGVkX1/8avtTJwxzfOEVyNTmZ/iUXcNPD1/BN3O61p7phv6IXsa3pisOFRNGe2xRgEqr/o1SMV8VwLmkL1akVhgpjwDYPXJn9c1crfiXf2ALGnOuduNrwmL/pO4PwYtg+sK88NNwNJ+kZNNOw9gR2P+e0LdFhwzQvW4INPP3XLv2PqCdfIoBvC1q41z7F9UxUH+AGjK45Zcu00akbTIkUM69jdoC1MSdVIh5UzUKX/+YLV3HGe2bDy+SkpCp1rxOwxz+c7S0v7zzum4jV+1ih6jMpgR6Zgp7Obva2GjyZa3558uVYbepn0VfLPXb1EAjzdfBUW45AFcD/ICTOrdtD2PR1o7Fhtw1OvzcagyKkENowQshcIV7X8NLnC95GuIhm8tTWS4zl+vOVvXUWnqKWfXJIV73RPYjXdz0H0ko4m7v+s3pIYJBflAMiGG8l46uuU0xxB1b3co5gbNdDs9M/YDk24ofRNNjXtWijlnAgmwd7iquaHB88rvb7C3WUEqeRS0HNJd385DWOblklSzT7N4tRHnHn9W2HA1RIQZj5xmQR4/OhXvxU3JXwJZFrKzA2fG3ni6We+LM/dR4/RbTUKIcyfZz4GL1f/q16vNs1z7WG2pCEzpJFOWo31qzpEbR8XPkncg7n86sXsjTGyls+KuC/Pyfs65ZRdegHUciJIiFwmIV6jGuW2eUdbyrbB2YscdekUBDIzPt3QaiIiY1skRZOlBCr3RHuMRB+nQSWDa8SJgYJ4N7um+H5SR1NbRBqy9PGy6gYUonNBusQQ2Q79ZRd9cod5k6F1nHwvx/6al0Ejx7859xsWalT6+r9Y+bVGIz4/0ujUPaJnhnTB2Pa1h6dbe/0YHskKYMmmarwciOXmooXy8K3T6cwywuyq/llq4fzWDKBsoIRexxaX43o+ldPkBmV7mb69jIONEUjnSALq2+e4Pv6YxXi8U0yNvkIzRY9g8inUz9D3V
+ M+FkuVFz
+ PMVLrZhZj8J9cwvi+wy1rC/H4KBISqKt6/3VURaCOkjANMkfpU1C9Taa1WcVA0d14qRk72OFpSm8xknJT+LSIdHBNxbJzwFf03Bm5XCgijgGnAa/K4etybt8ZTCzQu9fgW1XVQJD77eiJxpUd8a+tYCFWj5W18U99ds5iFVWcoASt2DvE57HN1w7Qq81/4HbvSOmHd90B3QCmuhacbrAHB1OWXY47kZKECNNTrGi1OkSOfWE4ISEVs0dZm5Pjrokf5sPPMHBvQa0LXUUfTCLAdbMIArkbQy4+MNINRZsYnornOWPRLDU3nqszs+nHvDnHLdbOP0/OdpKVigef0YE9mf6PLSG0Fs4GtcUNKdbneZOg1xmixiQrUJbtavNW/7xRCFNjZYhG+SwjZMnHLtBfhb46WZidScz2mCp2gm065NmFcIm+3ZdBBHvXCaDRR0iAZhLedp8INE6pOqmMn0FEX8OgSFYyjraBHRnmE9nI0xHeXYaaesDjt7Z5ixerYE19Cmjt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,38 +95,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-- change unsigned long nr to const
-- remove a local vec variable
+Gentle ping.
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- mm/mincore.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+On Sat, Jul 04, 2026 at 09:13:33AM +0300, Mike Rapoport (Microsoft) wrote:
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
+> 
+> My initial intention a few month ago was to remove ugly casts [1], but then
+> willy pointed out that Linus objected to something like this [2] and it
+> looks like more than a decade old technical debt.
+> 
+> Largely, anything that doesn't need struct page (or a memdesc in the
+> future) should just use kmalloc() or kvmalloc() to allocate memory.
+> kmalloc() guarantees alignment, physical contiguity and working
+> virt_to_phys() and beside nicer API that returns void * on alloc and
+> doesn't require to know the allocation size on free, kmalloc() provides
+> better debugging capabilities than page allocator.
+> 
+> Another thing is that touching these allocation sites gives the reviewers
+> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+> another size is appropriate.
+> 
+> For larger allocations that don't need physically contiguous memory
+> kvmalloc() can be a better option that __get_free_pages() because under
+> memory pressure it's is easier to allocate several order-0 pages than a
+> physically contiguous chunk with the same number of pages.
+> 
+> And last, but not least, removing needless calls to page allocator should
+> help with memdesc (aka project folio) conversion. There will be way less
+> places to audit to see if the user was actually using struct page.
+> 
+> Also in git:
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/scsi
+> 
+> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/ 
+> 
+> ---
+> v2 changes:
+> * replace GFP_ATOMIC with GFP_NOIO in ipr driver
+> 
+> v1: https://patch.msgid.link/20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org
+> 
+> ---
+> Mike Rapoport (Microsoft) (4):
+>       scsi: target: file: use kmalloc() to allocate temporary protection buffer
+>       scsi: proc: use kmalloc() in proc writers
+>       scsi: ipr: use kmalloc() to allocate IPR dump buffer memory
+>       scsi: sym53c8xx_2: replace __get_free_pages() with kmalloc()
+> 
+>  drivers/scsi/ipr.c                  | 4 ++--
+>  drivers/scsi/scsi_devinfo.c         | 5 +++--
+>  drivers/scsi/scsi_proc.c            | 9 +++++----
+>  drivers/scsi/sym53c8xx_2/sym_hipd.h | 4 ++--
+>  drivers/target/target_core_file.c   | 4 ++--
+>  5 files changed, 14 insertions(+), 12 deletions(-)
+> ---
+> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+> change-id: 20260611-b4-scsi-d0b0eb4895f4
+> 
+> --
+> Sincerely yours,
+> Mike.
+> 
 
-diff --git a/mm/mincore.c b/mm/mincore.c
-index 9ea81638d09f..ff4ac8281768 100644
---- a/mm/mincore.c
-+++ b/mm/mincore.c
-@@ -28,8 +28,7 @@ static int mincore_hugetlb(pte_t *pte, unsigned long hmask, unsigned long addr,
- 			unsigned long end, struct mm_walk *walk)
- {
- #ifdef CONFIG_HUGETLB_PAGE
--	unsigned long nr = (end - addr) >> PAGE_SHIFT;
--	unsigned char *vec = walk->private;
-+	const unsigned long nr = (end - addr) >> PAGE_SHIFT;
- 	unsigned char resident;
- 	spinlock_t *ptl;
- 	pte_t ptep;
-@@ -37,7 +36,7 @@ static int mincore_hugetlb(pte_t *pte, unsigned long hmask, unsigned long addr,
- 	ptl = huge_pte_lock(hstate_vma(walk->vma), walk->mm, pte);
- 	ptep = huge_ptep_get(walk->mm, addr, pte);
- 	resident = !huge_pte_none(ptep) && !pte_is_marker(ptep);
--	memset(vec, resident, nr);
-+	memset(walk->private, resident, nr);
- 	walk->private += nr;
- 	spin_unlock(ptl);
- #else
 -- 
-2.55.0
-
+Sincerely yours,
+Mike.
 
