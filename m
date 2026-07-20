@@ -4,144 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3294AC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 23:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30110C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 23:27:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C67EE6B008C; Mon, 20 Jul 2026 19:19:31 -0400 (EDT)
+	id 43A396B0093; Mon, 20 Jul 2026 19:27:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF1E36B0092; Mon, 20 Jul 2026 19:19:31 -0400 (EDT)
+	id 4126F6B0095; Mon, 20 Jul 2026 19:27:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABC5D6B0093; Mon, 20 Jul 2026 19:19:31 -0400 (EDT)
+	id 303636B0096; Mon, 20 Jul 2026 19:27:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CB516B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:19:31 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4585120348
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 23:19:30 +0000 (UTC)
-X-FDA: 85010723700.18.60E6A03
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E782B20004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 23:19:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rtnCLB+f;
-	spf=pass (imf13.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784589568;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0308E6B0093
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:27:25 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C0C9A0369
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 23:27:25 +0000 (UTC)
+X-FDA: 85010743650.23.DAC238D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B3B1140007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 23:27:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qrCaLyuh;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784590043;
+	b=K6H8FUO4jH1ZiNV/3tVZvvjYmEL0GrxyB/yrNxe9hX5mKmqEyCTjiWFveNl3GmqmN8ruTl
+	RcWcN2FTnVBFZrJsLrY9sWf4kqiEpUz8V+4PrRtZDwlvb4V0aAQf30vvzDcWd+/peePk+g
+	2F4NH/zeDaNmpQyWqGkIKDjmiN+9/RE=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qrCaLyuh;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784590043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PYpxNurdbA4XJ/6Vuk5WIdVnSVbgksTgEkNwHBXbZV0=;
-	b=vpw+VjiwwAmyGilyrKb28ls7V5O34xqnOWD/SbadKd2/VwfoxmPYANmDhRxXiGmsWefYhI
-	lWwi1xycLm0QpKpb8wGPMJXr2GmwNSNBlWsPjcOB9Woqj21CrKbLVnnxj7QxN00RA7rG/v
-	CbHxdip1mVrDA8YBIXKnZEWcU6WyzCU=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784589568;
-	b=s726DYNrWIJHnemJ/Em5MkUIKz7eMfLqSk+MWaNWdJKUpFEwN9eWO+ba8Vc/uZCUxzJ3H9
-	hSq/OzxET9+eSrW3yAgMIhUlOsFpUq5cZKjcoj/MWlz/Fj8ZeKgqXiQUepN7cBuWE9Neer
-	6yGfjBERK4vZUBVVrjgyLiIWzt0aHFg=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rtnCLB+f;
-	spf=pass (imf13.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e071ed6aeso6711301a91.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:19:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784589568; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QomNXSd4XmSziMGR2A4YhsfRI4g3pnRY5pTE4oUhuPa5xNrxaTQL7xdm9AjW4Mnlhi
-         uF0R24iPo4gPQJk93EKgAHKGS5+q6mbKoGNH7tklvVQZAzVRerjbkJd7euN9ILOuiYSG
-         gmLo1tV8ykBO1ZRiOOoOZ1Q8637emgb6T7mTFe3aoWqjLGh0oI6pVI5Inhbssxx0UGfz
-         2y1nQdo7nuBlkuyBQjB3SShMEY1njP5/tXlvCooGLeixdv0w3dCv9KWX82hvlzc67q32
-         Kho4gxAVoPo74hyPnCboOXVO+pthNF0GHu+aw9pe58EEsouWZyM4dfcbaW5rwQvr/RL7
-         mERA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PYpxNurdbA4XJ/6Vuk5WIdVnSVbgksTgEkNwHBXbZV0=;
-        fh=cmKGeqofFutmQiZPH2lDM9twdiMBAl91vNowurILtbg=;
-        b=sX9DHJ6hvRJCNW+sLnDlC25efHm0oKKmD5M9Bt3rjhPWactPaZXephCJcovi40ojc8
-         qM5c1ARkmVl3Sd3geqeTjz0YiIXL0CGF/wpqdz/v/1tsNTJpHuzZKQ757/NHZDtUK65d
-         2QxrppkeUp9BPVOWjhrU8qxaueuTUj7tGpoG/YHsxApndDN/J5eM6nz9Xw6ENOhTozv4
-         zVq/7Rr9FIgtKhJgHViOVW+nnJVLbzSqL19u8/v4vQZosJpj9+65qm7WUYhullIvtDvA
-         srO3ZZZ4XN4wRJmLfxfhjgMiMGpNXokriDucK1mEx3As3uTdcCPcLUX6VF3tsgSI20H1
-         /96g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=q0tMGbUKVmQ24ICOTjdeUvzTZMPaNn3f8k1KcJxmgMY=;
+	b=szEe36UTWYJLO2Hbs56iQwpoFnpfglBeUDdSNu4CfmmM1LvoBhMASYf6VBsOqu/fH2Z3oI
+	R62DUXjyE10m/qwcowqXaMXXWZFYv0j5CL985lXEEGmTnSeNB6J5sMVes8YiFdS2HGTyTH
+	/Sd8swftKEoMwrCTEMNB39RsKerWOyU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6D98F434BE;
+	Mon, 20 Jul 2026 23:27:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0AD1F000E9;
+	Mon, 20 Jul 2026 23:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784589568; x=1785194368; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PYpxNurdbA4XJ/6Vuk5WIdVnSVbgksTgEkNwHBXbZV0=;
-        b=rtnCLB+f7Oay06umppsWolseLD+UMUFBhvvXRZPyoNZDTwPd6ihLjeSMqT5HcHHMM4
-         ZYnG+jT8A7AYVn1TJs8fUhOH9a3DPcRAb4K7GdQFejpZf2ZJ2Fdb/k71SWA3oV7UiRRL
-         AZLXbWnnJsDmKicTH9cOF+MHkqsszTScyAG9iLA9ZstNzTgkJcpivTIjipdmOCiOOHFs
-         Ig8RQk0xxo3ShEd8D+oTZOprb7YhyrMVetWJayv0PmzLUBFyHi72n6SDnxsqeJwM4WNZ
-         R2IueDwUMI4yF77JsNjoONcULXdaF7SF1kICdGuVAH6CMmFVNOojuMcGj27rzjuWkfTA
-         xlLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784589568; x=1785194368;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PYpxNurdbA4XJ/6Vuk5WIdVnSVbgksTgEkNwHBXbZV0=;
-        b=giIfl1N4AOiY2HLCshB7u3KXruOn5hp5VLWrftaRNviFzAk1/w4wDbvP42qFz4hIhl
-         arppTaMe6l5XB6cFWn+uEjTbBhGnRTA8kYELsHedy/wm62Sxiz9PSu3rS5kMs52Q5m7i
-         QFjbtG9veyGB7gX+Th43HL7KWndtCYSI7UKTZ0JKZmTAUh0+Y/4kIMY2Z5znIxppHxoq
-         NSr2cjyLYckh2+qscgzvGyTQa1lUdOLVfP5teBHR7EyINUsB8+frD2kRLmLsNidUSuAV
-         apTrmGh/rtFq8a00rqq7cfhtoBw8nTa+3oZ4Faiw2rNteRgx+5jiMVqbW/WthMZgnBZ1
-         2w3A==
-X-Forwarded-Encrypted: i=1; AHgh+Rpu4ENGk8t2D/E45v2Oi2ljdCu5VRU1x5+Xb6GSubulwy9HgC0X2QXBKkmxw4HOVDkRQU4ElCl5xQ==@kvack.org
-X-Gm-Message-State: AOJu0YyaYPpAdTO6BhSIn3WkStNcYCIuA+Iwhp+QUg7fhTALYOXvpk//
-	B/gZMFWdYF047LpgoaBx4Fti5RGS3+HXFz0/o/uIKQGrsLZFnu8RGW8cXMkVK9/fPuxWJC7LXqT
-	vHyVUYX6XXqJHHWuFkWrkzPFILM+FRIGzGzWcmd2ZNr534+/LWysL5dkkePAt8A==
-X-Gm-Gg: AR+sD10bm9vwakS0hapJgeYDQbbSidoegSnRD8fuKXxHzmqDcV6l8Cf91VcH8ll49pB
-	FcnahWjCfP7u8ccslj3G00xQClCjg2OlsV1unPs9qtVfzR0d4L8UcvGHxMEl5kh63H7+A5uKjEd
-	ZtLHRfZXjsYf/XRnlnbPrberMJc10dUF+mMx+KwBmQ1nF1qS1x+CAEH/1y4lbOgOE35lNWKecnY
-	lAi6J8+ZlGojx0Eg3FAs1anAAaXqItjwcObKrf2I0muzHcj1Nx6ksJ8UWqXNA==
-X-Received: by 2002:a17:90b:5905:b0:381:23d5:693f with SMTP id
- 98e67ed59e1d1-38e4b534bedmr15548062a91.28.1784589567330; Mon, 20 Jul 2026
- 16:19:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260710212616.1351130-1-dmatlack@google.com> <20260710212616.1351130-10-dmatlack@google.com>
- <178433098576.189683.2364970585754668266.b4-review@b4>
-In-Reply-To: <178433098576.189683.2364970585754668266.b4-review@b4>
-From: David Matlack <dmatlack@google.com>
-Date: Mon, 20 Jul 2026 16:19:00 -0700
-X-Gm-Features: AUfX_mzMp9DAjORlO4Z9lJDkbL8nPaOLaXiKeGO1DzMTd_1FqdXSUAFnXR38zlo
-Message-ID: <CALzav=eZYfYYKAGEzk4TsGFLp1TPb2iFePNmqGsjX4jEZNJ9XA@mail.gmail.com>
-Subject: Re: [PATCH v7 09/12] PCI: liveupdate: Inherit ARI Forwarding Enable
- on preserved bridges
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: y5hmsac54waou6ppbd9iaz67hk3uw4p3
+	d=linux-foundation.org; s=korg; t=1784590042;
+	bh=q0tMGbUKVmQ24ICOTjdeUvzTZMPaNn3f8k1KcJxmgMY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=qrCaLyuhWboXRKi0PgpTk6wTfiYmLQFUJV+K9TXPH09nAOEC2xvNOLFHQNjRHx+fO
+	 X2/Sac+5rH4Ig2J9UI4EbvxFk2mM3jLekz4VEbcOy25cKFwzx7tKO+gEpGGMmFnJhH
+	 b447HY0SqRPbDbX23HF8BP1woOZt8DEL+dAAuLFw=
+Date: Mon, 20 Jul 2026 16:27:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Yichong Chen <chenyichong@uniontech.com>, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
+ Hildenbrand <david@kernel.org>, Andrew Barry <abarry@cray.com>, David
+ Gibson <david@gibson.dropbear.id.au>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hugetlb: fix subpool release race
+Message-Id: <20260720162721.fd07cbcb5625c7ad38725a36@linux-foundation.org>
+In-Reply-To: <20260720143130.516711-1-joshua.hahnjy@gmail.com>
+References: <20260720085024.1392261-1-chenyichong@uniontech.com>
+	<20260720143130.516711-1-joshua.hahnjy@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B3B1140007
+X-Stat-Signature: a8oiju7fkfkjix37a3tbrdhd3ophjibo
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E782B20004
-X-HE-Tag: 1784589568-115585
-X-HE-Meta: U2FsdGVkX1/xTwVb92Cfbm5SY4TfQxFdujBg/1TDmJasmUChm+oaZFlzPZNEzfDKUw3K8FCYQzxReCZdPjcAw2KEqGu+JjPzlrAs7hi4IwZHE5sJSMHJLiHeM965IfVHnU+oFt0zehUPxVkfpyOyi1oV5sJ70MGUKSAWjTQIVun60l+uGhV/dRqKvl/vdTaoPTJ3unaOfwwTbysQN/jxxI9GiBhkj9wqwb+jCFUn33WsnuVPL0VKDpIHvhPClpK6qT0rWYOm1DuLJqb9GFhXcGDFr4QS2JFKm2I/S/73y8SDFhl4m0ILgiCcoSgKZI2XIsKZMcsUnNp9XYQvx3v2T12TB164OR4cMjeMv/mccpgfHs3u/QYwNimZIR96lSkNX/sPaNhFxpCye7GWxmC1pDlit9X30ewWJHyvBLEntKu1qn/SSxj5V5P1AYI67MUKN+xjTn6RVnjn7ZVxPJBhP+1X9ysMA530KdmTcYE/GuZBqBNqJS5SjT3pHCc1HkVRx+k+4XfMnsTluHhhgwIZf5O5bWv2RCIAJS/PPxDqZU1bTEgf+zX4UHRNAQLlvuSiD39ZswO+Oy9wir2DbVxiK/ZP+xZMKrJ/DecZQe2mjk9nsGBa064Jwl4YkVR7auc/Mnls2yGX2RFGIP1HWODJiV5QgDnKvGxchVXvwNEjFnpWRj58xvdhxJPHIzWAX7Folxkckcg9XRSKV7P6TiGRg7+wMMtVs2f6V6MjxITnN3XfHHkPMC10I0nmHWYqwOny0C8tYWeViq61BDQdbVKoSfpOs8pY4xGlpbo87NTqallyz7VesCEUaSYtlpFk3GVyNOMpc8rpm+9QqAEd4U5t+0iBWpsFrY4wX3UO+0l3BohPsGkFSDwfWMKXjzIJbi3fka/VcUA76v01rtQUtrxBx4MFu/Bh7tQeSfEt4PP87zPRL92gNpHe0WQCChDB/+XxNgn4QTTaIXbQA25o4ku
- NayGx3CR
- Ar1qW/xUFZlxIHub6eaJ6CGa4Ph+MwsPmXdl63iCt8Ssrv22Ik/c/u5Nw+sgpNndrvAUWcNBray5DQhcP1MPeFalJaz0F32jusSDs7vYxhN9CwYKUNRsjvi+3/Fj3/tRBMixSUMDYuetf60XEYR182nmdm8Mikp370ATKnG11zfGYXKYkTLUg7aovOQV29ibUY6XyowcGXon+3dU+lNmfjRZG9Q/Os0KQahRl0Zc8ekGjHtaoyj94XLPX3YaqNNCNCOKlDCPzBmJOyfftETIwrbx5C+ej50GQIC0+tRfvCo3kQRaYT9rbZi3P0UnFRqJH3LhP
+X-HE-Tag: 1784590043-910079
+X-HE-Meta: U2FsdGVkX1/aR18U6TijbnZnmK5szSQoNWvYI6ljnWEhoSmRZf3ELMXzY/VFVdCsrdt7YuJ4l3xkTzK5JDlHyBrvVE4Wr1MCFsfCrF1ugS5wCOPfKLolgHTPVec8R1KuSDS/2kGOF+Hq0ehYZyoly9a2vPoDr8US7MSexdtvO1NHMuhOQHGf9Twf8tn9wHI3XefmGuRyN78mZTR77/sbrr67A9tP6pybH4E/Fm7Xoxk/ivTnkBLfKMKEok7igK8miJ76JnOK2qToka6sNeEI3dk9R9KlEnSpJFVZ+c66ygBVNLNpYnTN+sUH0DSLOcgKAnczY+pvG5DR5wP0vzLgQ9ppo+rKp6Tg34jmRkpxYm1SOuG3Wlg/Gl4Ev4WDVOXN6s3b8isqf3ZsWcc6gq3r9cd7PbtrvxKwGEV+hanAp0xIKT5ZqEx0gpUNHxv6qQGY2XJCTsHsvBLDfFKxZoG7kG4Ud3hgm8SDpI4ODWcX3bD4T1ZMADc+vk7AuUfyhek9ket7k5Twi9qbbZkFo0Jrr5RDQ8lwaED8XPkNYdVRAB/vQ0HSmUj5RCJfu08nA4BXXi/6bDx44SCQYec3z3p3wUlqp4sh0SyTaJxbp5fDDoe0suOTgdkOwggQwIT4We43fPjpskD5OiSZLsd2pdHe0gNXky8wtJmk3GfUg15MnyrZ9CNKplIG/2z3ccU5qDKLubxInGNNk2Xh8z2QeOOk0XgZd43pAdTGYCZNg5mEnathDCi06Bl0NiwaqBxGbOP6k8a80+OXNsLCaa7QxrgLDpFJazMPurzzcQpdkO/oHPK9zkWS8J+Lha3g46HcNFYHvJau/aQBmjfR2QsPyCwAL44fWKkZXU/82aL7wujyP1LMcynuRGPgbQgc37m8NH7VXRSH6YOoAhhBUAKmL0/Swi7MMXFumSGutLNqw2lAWoTixCo1GrPyIwqDXB5fn0zQW/uTQ16LxuFl+ZN30jQ
+ DkSyroNU
+ X0fhoHsal4NC/rti/Zvz1Xl5vdHpU5QBa/i1yBAu6JuNy5VP2sJ24W/MN9+9ny6q2fQR2lYeGYuvDSAXdo9koCKYJBuhnurvcw2VN7McxxvvBxVNpoefnwKhVnBhKLRuTo0/p1dBufdeEKfwhUDyXST2+wk8fFT7RNRwv6hAsaVofL3dB7ACLOvmUPXRyRFGami5EbGv1hoXX6Z7IuPoOd0h/hrRJ7bACAqEY+ufpsPT/tAvragWJG0Vdc+5aCBvkqaiptKqR6LUn91NmyUBd5Bsv+9+wYHLWrN+xkgI59ynU7Z0pUcM8Zy/ANfg2FAPfImWvzKSeNuCXS5cEEQMkpeaJhsNOBuXcBFlO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +93,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 4:29=E2=80=AFPM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
->
-> On Fri, 10 Jul 2026 21:26:12 +0000, David Matlack <dmatlack@google.com> w=
-rote:
-> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> > index a95bfe5eff77..74a11e520f0d 100644
-> > --- a/drivers/pci/liveupdate.c
-> > +++ b/drivers/pci/liveupdate.c
-> > @@ -816,6 +820,20 @@ int pci_liveupdate_enable_acs(struct pci_dev *dev)
-> >       return 0;
-> >  }
-> >
-> > +int pci_liveupdate_configure_ari(struct pci_dev *dev)
-> > +{
-> > +     u16 val;
-> > +
-> > +     guard(rwsem_read)(&pci_liveupdate.rwsem);
-> > +
-> > +     if (!dev->liveupdate.incoming)
-> > +             return -EINVAL;
-> > +
-> > +     pcie_capability_read_word(dev, PCI_EXP_DEVCTL2, &val);
-> > +     dev->ari_enabled =3D !!(val & PCI_EXP_DEVCTL2_ARI);
->
-> unsigned int    ari_enabled:1;
->
-> Sashiko asks a valid question, what protects other bits in this word
-> during modication?  At a very list a comment is needed.
+On Mon, 20 Jul 2026 07:31:29 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-This was my reply to Sashiko, not sure if you saw it:
+> Hello Yichong, thank you for the patch!
+> 
+> > unlock_or_release_subpool() drops spool->lock before checking whether the
+> > subpool can be freed.  However, subpool_is_free() reads fields that are
+> > updated under spool->lock, including count, used_hpages and rsv_hpages.
+> > 
+> > Another thread can update those fields before the first thread evaluates
+> > subpool_is_free(), allowing both threads to observe the final freeable
+> > state and release the subpool.
+> 
+> I don't think that the race you are mentioning can be hit in practice (i.e.
+> there is no user-visible change for this) since two threads cannot actually
+> observe the freeable state at the same time.
+> 
+> subpool_is_free() does an early exit on spool->count so it will never reach
+> the inside if block and have two threads try to decrement the
+> spool->hstate and free the spool twice. I'm wondering if we need the Fixes
+> tag in this case.
+> 
+> I do think that this is not obvious though, so having the subpool_is_free
+> check inside the locked section makes sense to me too.
+> 
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-.  pci_liveupdate_configure_ari() is called from pci_configure_ari()
-.  which also sets dev->ari_enabled=3D1 and is pre-existing code.
-.
-.  If writing to dev->ari_enabled in this path is indeed unsafe then that
-.  is a pre-existing bug.
-
-I figured that a comment wouldn't be needed for continuing an
-established precedent (it's ok to write to ari_enabled during this
-path).
-
->
-> --
-> Pasha Tatashin <pasha.tatashin@soleen.com>
+Thanks.  Yichong, can you please consider Joshua's observations and
+perhaps resend with a more accurate changelog?
 
