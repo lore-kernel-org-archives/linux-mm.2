@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 031B6C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:35:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E3F6C44529
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:35:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE4726B00A0; Mon, 20 Jul 2026 15:35:10 -0400 (EDT)
+	id DCEEA6B00A1; Mon, 20 Jul 2026 15:35:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6E606B00A1; Mon, 20 Jul 2026 15:35:10 -0400 (EDT)
+	id D80F26B00A3; Mon, 20 Jul 2026 15:35:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5E2D6B00A3; Mon, 20 Jul 2026 15:35:10 -0400 (EDT)
+	id C20C46B00A4; Mon, 20 Jul 2026 15:35:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 763596B00A0
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:35:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE1D9802AA
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:09 +0000 (UTC)
-X-FDA: 85010158338.29.C54C54F
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2D3E31C0004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=G+DGJOBL;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FE3D6B00A1
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:35:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 084441602C6
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:13 +0000 (UTC)
+X-FDA: 85010158506.13.553BE19
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 506A52000A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:11 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=bXoPZJbJ;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784576108;
+	s=arc-20220608; t=1784576111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AbvY/gXh+2/u61eyWpGKI13cVvWaG4WQkB8wV0sMVYg=;
-	b=PGYkIiaWkwVFzSaW+JECGNyPDA4Jn90bQWMGATkLInrhRfO1PXTs9SmesGyerzRXqnUzpK
-	ML9tW96w8qYR0voqM5o2syotg/9dmWK0wP+Cdkc6kQj3SSB0XCmAzT3ga2q413aZtRxCnI
-	ZnDK2XKx6V+KYT9wg/Q2/fVaESBCrW0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=G+DGJOBL;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=zRBuTTcFDLFkxWr76FAXg5UPkm9NjmBW+wSCIxxIlUw=;
+	b=N3Q9Ih5RTStYhF9vztNAx2AvD/zVhDho8uBKEAqlLYR1w+twJDx/s0J+6CrZUCDPPo+wh0
+	nO5yRaJ5ddRRO3EIf/Lcej1oXr1kg98uHwV/NEjA4EOiCiBo8FfKtvaTa1T0tuojQ3crI1
+	DZsm1B9dGOoIXLBI/Yp5rI6Sgl6WwEY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784576108;
-	b=2oo+cw8IbX5Q7o/2xBIs6uEaSHWjFSS/6RZ8DvsElkO8sdBy7z9f/Omj1JjvnPQhu93fnK
-	Z7sUikuTpTPWZR0kM7c41h4pgWV1AQZQgrI6ZvK1gHjrEnWcPKYkNNuzlEjdFdvzMFFTPs
-	YbXZO35Jnrb4OyS7u0rHwsQZkmS8d5Q=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9305a2121a1so722930785a.2
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:35:07 -0700 (PDT)
+	t=1784576111;
+	b=af0QacWfrGRaqyT8UHEQpurz35HQ33uSP/2PsCGd8iK3F3P3+k0rdoC/Ii8puDXNAfsj1l
+	prqg8M97lieg8Zq2X4xKai/Qqgho4t8WEMiOScfAOINmeAbAN8vxEsfufY8mCgpQHdTkME
+	RsAbDEpED7pAnw+EjLYNgEd8+DsMu6M=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=bXoPZJbJ;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8eefd4a8057so64824536d6.0
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:35:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784576107; x=1785180907; darn=kvack.org;
+        d=gourry.net; s=google; t=1784576110; x=1785180910; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=AbvY/gXh+2/u61eyWpGKI13cVvWaG4WQkB8wV0sMVYg=;
-        b=G+DGJOBLjuSUZnmTUGpB/m+NqIUK4+A+AxAJ4qS/iR0zJXRJPiyNlbU8/DxHR8F8fy
-         Ow+V8IhaLSu2rdH/1Yr5e+cdagkhHOcGQ2ohJiRIBmu2sbCSbawZgjb9kvTxj58U58zV
-         xHYOU2OEOZ/iqb0pR7XhrIQ4xXaCsBoGAnegkuoD8PNbu3BnoXW0dSKGR5R/QC0+gvKe
-         OfOBCbvEVTbArRLSUacpMWBOYO29dzRAsUVHDOrbMRyxKdINF/ovsfhsm4OwsXM/vNW3
-         iKCjnaBcGCyiX+lvHLIy9idWS/B2fnzCiLnUV67tlT/Qmnt4YkNStNW7IZp3IxMkfiUY
-         dSJw==
+        bh=zRBuTTcFDLFkxWr76FAXg5UPkm9NjmBW+wSCIxxIlUw=;
+        b=bXoPZJbJL5t3sEhRK87FfQPWf6BoXzfuOrn41H6Jd13efbOmrGvu8BbnoBjCQSfcKH
+         yACmqqoNBqz4sblqdivU4pDyAG9ArilfcL4IVPc2CGdKqpSGgZgVW1f8INCJeGz1QFKA
+         DbH2FevyLepEIiL7G2aJ/mJApumNzcIxVlCZ3RGoWSN2Efz3i1wcjYu5y5knBoxwVK3p
+         WvTc9jX0KYWNZ9/Fck8zvQTdHZaPwVghkg1KbK7FpKLCVzqsS06jcvNqs+bnCb9CTdNr
+         dZSAk2o8Ss/jT89Z8cLo4ME8s31FDO3JHNeLgnjcbxcsU2cHbf1VM7bttgdEoZw8WAvk
+         q8QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784576107; x=1785180907;
+        d=1e100.net; s=20251104; t=1784576110; x=1785180910;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AbvY/gXh+2/u61eyWpGKI13cVvWaG4WQkB8wV0sMVYg=;
-        b=hsUJEKJnVoazWFltQEff/jCZhx4A/SBaSQNuAejq+x/ctoBzPGGkq16VhMECMpL+ui
-         m1ad8VKOe6iHlcmsGX1Bc0HOAmXKgAtA4qaM4EVgkfqNa0yeVNRjwvGVSXDEIVQXXz/2
-         97rFGc796WSLFA+A6WCZ65LsalPwkdJqp3oQX1eQnRZ52cRg9hOqpLR+EtbJ69+DQfUX
-         pjSYOM8Y5N7QFZFOdK8YKhAQUlIZECNDAnJopxn3g3Sos76DOoor5vTgHTThEI/nyxeI
-         Co5y26J+V+wR2ErINUPk95ihdlc6eoHGquTBsJOMn8qYdFIthfbriF21QC7QhnGbkEPI
-         ueKA==
-X-Gm-Message-State: AOJu0YyT/i6cZxmx3P88oDTeKn+kpQouvfbqrGHOjLP+Xa/h8EPlpAzo
-	8w+OXl/FL3K9N87RnYZ53naHbys3sZAOoa+yjdJZXulS10vlukf/h7YJ72VLV8kNS9g1ljapGIY
-	KJjVh
-X-Gm-Gg: AfdE7cnbpymomRnvOXhjL0/1vvcTGxDlRC1tv9GPolWvQld/zZfy9VWeevZXKdy4yC6
-	1gSNkcqk/cMRonyIcjbCqLFuYnevdMJbVWchOEXcCeOlGL9hdVFZpm4llVz3wtKoX0rOk6QZnwc
-	geHMgUyM2+OHapMKx+8QhxPvkBWpgfSkXfYomGAke703BaGdTzjyUbB2ZnYT0chDE/0sfXtjin1
-	tbezNH1Gd4DL05LoHr+fwy8vdNo2jUlYe32yIDM7VzzPb4TQFoLbE8YrrkGaHUZMIQzEIeHULgc
-	ICo+1gnVwQDbisBG0zLWxS3T7vmZ0FcX7oCduW3oupDwkH8yzbuqWccHjnK/LwQsNqZgjmlMbHH
-	yQ38PFPmKSFZ/cCG5Z5Da1vvboJsDdFw29jqVUD5683aPrSnaMcJP+kdCMv/1DwKpuhE4P9HCLC
-	SGwA4Qiqqjw+BpfHPdWifM8DhcWBHKD+uzdz1BC4DYyV/D+EdK68+NHvx4wA0nW0k=
-X-Received: by 2002:a05:620a:44c2:b0:92e:6b95:237a with SMTP id af79cd13be357-930b3f45487mr1592960485a.32.1784576106925;
-        Mon, 20 Jul 2026 12:35:06 -0700 (PDT)
+        bh=zRBuTTcFDLFkxWr76FAXg5UPkm9NjmBW+wSCIxxIlUw=;
+        b=Vfi9sdCdkIToeh8NNk/63u9DKQ3K0gbojA0Ocr4RCMvan+V6XyUFjzmcnl77oYR3uE
+         SKlE58AmWzJf22kmFMzwCpHt/FV4zw+Z/7awlMcUMw+ex9HsIuwCFZglRt3+cGa3NLMX
+         /hxzG67vWpgoEvDdL3GOHrkXWEwGX9GsQf8WhpxYxPm8wy5SV8EUF2MvBEoTG8RyCOD3
+         Krolxwkci1fA5G76Q3SiWg+cWFTCJMyNHTS5r7qISJn+UOyTQriKJQV1nR2BBiQ6qz01
+         eHFnNKmK6KUHf49dA0NTzJDRlMFHC3lu5LEorfHYCd9H3KxQ19fIPoyk2JcRoOzNuIj3
+         9Hxw==
+X-Gm-Message-State: AOJu0YwFqcb6BeGVXPrhmWzX+yiCspto9WoFdjwyXp9qEvO2lfx4f7my
+	NBdT5+6hEbGd8Y2M73MKO0sz2ygM/pCVBm9cnjyEjk7+befZtBxOQw92Ci0tiDVXk4gWpoU5o8o
+	mt3uo
+X-Gm-Gg: AfdE7cnYS5MyzhUqU0iHyJjomAKz7PqQn99DW4lL7t8kess+CqXv+tfHsTD9fZgygsd
+	ltfFXVv5/Q8spDUQrBSDpeJDEKjXa2H6XcXAHZWW4NDZh1aftM+xA96BdpDODm8l3greAlMiWR5
+	9u4x11keaOgdtTIy1/AO5WOGn4R/aaKHxtb1y3w6OoSJfd7u8okwMgN9rVunqhMZEMv6nkYLj+r
+	muCJGojaZttxy4q6xz3mcVHdmWT+ZzidO3ZMQLHnd0EBSRozptg+A6CNJhvjSHHT30pWJuvkSyy
+	1RA3j7bArVg44BHwsAqxlr0xZ4V3I6LRtvg+JB8oTpJ76ULdlpIyJIWJaka5AOCvK3wktk+6oXT
+	TAOFD8A9oUzEHMuFFVicR+za5pRKMZ0xwk1RxWd1xgPNV9x8YDlAnIla/+JYHYAChnWy1bOOrsG
+	4vrrliY8ohOXh2CbLUImdecLmCSi+AWhRzqpRprbihz7gWVTlRDp70AIWqyFXZaRM=
+X-Received: by 2002:a05:620a:3706:b0:92e:f212:98df with SMTP id af79cd13be357-930b3ec8d4emr1550494985a.34.1784576110290;
+        Mon, 20 Jul 2026 12:35:10 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.05
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 12:35:06 -0700 (PDT)
+        Mon, 20 Jul 2026 12:35:09 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: Zhigang.Luo@amd.com,
@@ -169,22 +169,22 @@ Cc: Zhigang.Luo@amd.com,
 	damon@lists.linux.dev,
 	linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v5 11/36] mm/compaction: disallow compaction on private nodes
-Date: Mon, 20 Jul 2026 15:34:05 -0400
-Message-ID: <20260720193431.3841992-12-gourry@gourry.net>
+Subject: [PATCH v5 12/36] mm/page_alloc: clear private node watermarks and system reserves
+Date: Mon, 20 Jul 2026 15:34:06 -0400
+Message-ID: <20260720193431.3841992-13-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
 References: <20260720193431.3841992-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 506A52000A
+X-Stat-Signature: 7oqkxdxmnypz8gp6rgguj85hjmyaqnxn
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2D3E31C0004
-X-Stat-Signature: fzbnorcd49x91cimrd5t8r6rqas9ggym
-X-HE-Tag: 1784576108-106934
-X-HE-Meta: U2FsdGVkX1/h9fd5a5LOQkowHTX2vFBu2MPWfhozfX51ttuMTu3rVGHDmfZWEFt539pZa71NP1qSNqADKCzj25jERWy/D5/VZuOPf3JcTTEchFlfY3wAxoLjHQFppOXqXAAtt5foasisfIT4dNymgT8qZFBYmsCeIeE24Bk7Mvt/15fMQ/Y9IjWFQauIGymNMiT62HEpMfE+IuNKbxdRJxkNGiWk9ZnyJyMtMYdGJkzjqfP7m3iDKaGpJcjkStZ94vGU2MIooyTT/kXlzGlh+F9vBKbAVw3IbgJ5pPt2U7XHkBU4yIQUYj+98eH3IGExXzMTd+ZeRNR03ad5oKfviUhdvraEwZ7xWEXdalBpOFxcEoHCR8QUpM1WApTmPaEKamRqkBV0sZTD2Yhgs1qnV6KSsWDqT74xXwvFDPWONBCjrbmzgp9mmQk1qjV58CmGAyviMHAMpajzPTlyz6uj5SAhVEzF/VboISXv6MXEOBQD3TuhvmrJ8IWarPDwDxwmAo75IjA7QAs1TG4bFgy3jzm87mkWs0Ws+3OYfB/Mpgdy9KY+3zuO7LKPpsTbVY/nHvOMq2g09D8sJvvbiAlx1jBUMLrd3DAMyDYsxJ5xqE5q6tsta4F6FCxJKltzFOVI0NjUq6NlOfkCsQjk8nRTxwnt8Pm3ypwXV3zI2cU0LJCsOa7F9f13eKVBXYuT7mmqrJATBR5UscYNu3lS5T9R0j3c8aeRdJ1lDij42TTrtPJSA2nCX32qGFGz03ckjdW9v36lHOQuEtm/BrH7Bc+raHNwvUYFRlAba/HQVH/0ehlgfS1ZRGioYe4nm2GT+1v+7RO3jnzry9BdCRtTGhlAAcZn8yziiUZrCUTWrqzPd9/I9ExPE300kfS4IQDWFdUTbhTOvF6x5UpKfArvOVUtY8SNwmutJieccyjhUhXzBgAeeIIpzxXjdjbGXvDvxaiIyfTgauT2FFrcnUa8i3l
- C9aaAwTp
- vQGK3FdqdltCWzcOLoROi9RyI8LlzCx6DrDviS66s+zLTA+ISVeMHrK1jXKQrUCuO1ZVboahh/Tsss2hbejHHiyaNWOMlN8VR32YouDlE+kR1bsrtrBw1e5hhTz8RbFK22Aw8oZ+THJrrlVhWWg5zIdYG4wkY0YYDMjecZtjsY/0Ua7NqCEgmXaKLmN2NZacAbMKp/lLehRubISTmbDxFy9/Zy0famNERavQXbONSiZFAs8BRrtds4MTS0FIQs8K1vonWLAohduwV+eOJqX5zeA9XNgCQMbZ5rX90fS02fKnB2J78UambY3KKKD+pumGvkiuAkXuyAQdhTXOLvX5eS7lPhvANTzhGyZcEyRtDmdeCznG6zbAYoviWGTi1tYSf/3Tc
+X-HE-Tag: 1784576111-434844
+X-HE-Meta: U2FsdGVkX1+ZU1OizCecGaG18JnRCJGwNtPK6EZyhkt7dbTWtDk9SWi7tTYH80d6AoLWejvuWif484g1cZK1XR+mE6mzBAPxDbZQdUyK/Ua1nFMsdRObkAJJq4v8WwZLxbC8Nwpubo7R4ebKBnSENukBhpFLHTgxvsOLK1Y59fKVoiGGT9NHQIrgAIiqfV6480k0ZVUBiDApaDQSEAqUaJcXYSL9JZipjiie9oY8bvLjSWmopGs1RgMQRucqV1s0cYxEWuzXtSispBqqhTvn6UTsk5RWidGw0qaGG+r1DeMWiaBRNiRYkHnfadvP6rJZ6TEfKAIXDlrO9nbyHow96HwpMpIQfhKMSccfVIJvWsd4isv3uXJTLoAroYgYhvq47d4LYoyRO6WFVphPlSrADwEfxfIe+YEVDsnaVl60nVKHwN7sIietqplZP905/5jYfUlSu5DBt7f6/sZxcc6TOokdEyLZvFNtBtrNDs/lY3W8IWy1p5goZq9XID68PoUxxGuL8ahQpMHvLxCZH3CVybxTPDiwkFbu4pywQd6WXvNuiVmD+owMx75S691M6aEVC3woWhoY6qpNVJN0S9B455aqx7mN+bN7E9u52dg5SBADT7gelQiMo1qY7lESzYyquyvZ7i0Ezkl6zghhF+MGkNkamW9GonW4dk+zVzHPH2PVjaq8HaX0FJN/sPoLAIa7brI0q9AsFVUb8cNutWEZFvvRItt2eEapIXuI5dIe0ONLV140tKgn8yffYRHRJwOUWbW+DynkNRBRaZyOFiG+aa58kO4BsQ7C+S9qWJf8WSqmJfLRHN3EuhC651i8lqic6ARyk60iBcnDWY4dsCoqe1x/NdStiMjspdvI/60DXCRNcqN2G8LRapp79waJ/gsZy+8me0az7udG/qE5izkblRe1F9+fsafZPOpsebsZaGVFqLTxhXlSv1TOCeRxI3g9+NRtlx2CJXJKihBdKFC
+ L5ZtNOT7
+ fetHkMcktcV2LiSFObmbhK9dMQWXdJ0VECRr8M9fOqLe13ilr+ckEe2Py+odjxykKZ6mBLzatGcK55aJFbokdL+4BKNXp0dKL4zV7WZfwIbewIJSlX2Tug+8V0CQRgbhCzMgF75H8ySwOV1hY9XwcSf3JviqckEvaZTV4HCQDGkNfScpx58LFvwcbp6bAjfZM1uTpF2YBNUGzUf3xZQRE8f1JyMcblz+ophVRZlLjEQeBlCh805AlBPdUc9uRLYW088RuG9ZkAUSxdADY013EE20Qlc6ztTqhvYTmc2DC9HkGpaAsX9drVXTJa/IH/b6mG08dNX3BNZIeUrduPObLiZyL+yqL5GVEMlsDr3N2o7qOxWQelF1KgN5v1RAYjBu2lo6psOdiGF6WOILid+SqxOjph/GgPQLBzo/b1KAGf+x/D3E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,58 +192,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Skip compaction on private nodes. Compaction requires the ability to
-migrate pages, which is not yet supported on private nodes.
+Set private node watermarks to 0 (reclaim isn't supported yet, so they
+are pointless), and do not include private nodes in system reserves.
+
+The oom killer can't actually resolve general system pressure by
+releasing private node capacity, so including them in system reserve
+calculations dilutes DRAM watermarks and causes poor OOM kill behavior.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- mm/compaction.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ mm/page_alloc.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 9f81055a358ed..8c1351cce7bcc 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2462,6 +2462,9 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
- 		    !__cpuset_zone_allowed(zone, gfp_mask))
- 			continue;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 78755a55b1540..2b08bea2379a9 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6555,6 +6555,10 @@ static void calculate_totalreserve_pages(void)
  
-+		if (node_is_private(zone_to_nid(zone)))
+ 		pgdat->totalreserve_pages = 0;
+ 
++		/* private nodes have zero watermarks */
++		if (node_is_private(pgdat->node_id))
 +			continue;
 +
- 		/*
- 		 * Do not consider all the reclaimable memory because we do not
- 		 * want to trash just for a single high order allocation which
-@@ -2853,6 +2856,9 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
- 			!__cpuset_zone_allowed(zone, gfp_mask))
- 				continue;
+ 		for (i = 0; i < MAX_NR_ZONES; i++) {
+ 			struct zone *zone = pgdat->node_zones + i;
+ 			long max = 0;
+@@ -6647,9 +6651,15 @@ static void __setup_per_zone_wmarks(void)
+ 	struct zone *zone;
+ 	unsigned long flags;
  
-+		if (node_is_private(zone_to_nid(zone)))
+-	/* Calculate total number of !ZONE_HIGHMEM and !ZONE_MOVABLE pages */
++	/*
++	 * Calculate total number of !ZONE_HIGHMEM and !ZONE_MOVABLE pages
++	 *
++	 * Private nodes are excluded because they are not in the regular
++	 * allocation fallback path - including them dilutes DRAM watermarks.
++	 */
+ 	for_each_zone(zone) {
+-		if (!is_highmem(zone) && zone_idx(zone) != ZONE_MOVABLE)
++		if (!is_highmem(zone) && zone_idx(zone) != ZONE_MOVABLE &&
++		    !node_is_private(zone_to_nid(zone)))
+ 			lowmem_pages += zone_managed_pages(zone);
+ 	}
+ 
+@@ -6657,6 +6667,16 @@ static void __setup_per_zone_wmarks(void)
+ 		u64 tmp;
+ 
+ 		spin_lock_irqsave(&zone->lock, flags);
++		if (node_is_private(zone_to_nid(zone))) {
++			zone->_watermark[WMARK_MIN] = 0;
++			zone->_watermark[WMARK_LOW] = 0;
++			zone->_watermark[WMARK_HIGH] = 0;
++			zone->_watermark[WMARK_PROMO] = 0;
++			zone->watermark_boost = 0;
++			spin_unlock_irqrestore(&zone->lock, flags);
 +			continue;
++		}
 +
- 		if (prio > MIN_COMPACT_PRIORITY
- 					&& compaction_deferred(zone, order)) {
- 			rc = max_t(enum compact_result, COMPACT_DEFERRED, rc);
-@@ -2922,6 +2928,9 @@ static int compact_node(pg_data_t *pgdat, bool proactive)
- 		.proactive_compaction = proactive,
- 	};
- 
-+	if (node_is_private(pgdat->node_id))
-+		return 0;
-+
- 	for (zoneid = 0; zoneid < MAX_NR_ZONES; zoneid++) {
- 		zone = &pgdat->node_zones[zoneid];
- 		if (!populated_zone(zone))
-@@ -3017,6 +3026,9 @@ static ssize_t compact_store(struct device *dev,
- {
- 	int nid = dev->id;
- 
-+	if (node_is_private(nid))
-+		return -EINVAL;
-+
- 	if (nid >= 0 && nid < nr_node_ids && node_online(nid)) {
- 		/* Flush pending updates to the LRU lists */
- 		lru_add_drain_all();
+ 		tmp = (u64)pages_min * zone_managed_pages(zone);
+ 		tmp = div64_ul(tmp, lowmem_pages);
+ 		if (is_highmem(zone) || zone_idx(zone) == ZONE_MOVABLE) {
 -- 
 2.53.0-Meta
 
