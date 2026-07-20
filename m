@@ -4,105 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E819C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:03:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C87C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:08:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 207DA6B0088; Mon, 20 Jul 2026 13:03:05 -0400 (EDT)
+	id B870F6B0088; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B7EE6B0095; Mon, 20 Jul 2026 13:03:05 -0400 (EDT)
+	id B38686B0098; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 081B16B0098; Mon, 20 Jul 2026 13:03:05 -0400 (EDT)
+	id A26AA6B0099; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF7986B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:03:04 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 66CDC6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3716E1C0218
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:03:04 +0000 (UTC)
-X-FDA: 85009775088.25.44D203D
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EF512100006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:03:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vtHxYiUZ;
-	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D35A7A021D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:08:42 +0000 (UTC)
+X-FDA: 85009789284.25.45E594C
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 053DC4000D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:08:40 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Jo69wKS8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vipinsh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784566981;
+	s=arc-20220608; t=1784567321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QMuWMKqgnkPBUwOMQjhA6e2FQmdsWS/MkwAM17YGiE0=;
-	b=1mrshxkFunqHgCLvPBDlg0Pop3DDWKk6MWYIZKoqepjRW6Fvzmxwkva0uvsl82/CBrSQ+p
-	QYcDrd1Dgp+1vY0x301y8RCuX+g+G2alp86YW4vBNTtKcF7Sobg+I6X1ALxxMLa3d+2jbh
-	uTNjqDHiVvPukQTvjSg95qGi+tlIbp8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784566981;
-	b=6Q7+Tguu6h8IxWqilWj3IW/XDMIUJtDdbbM2q3gjbHV7aB8EMSYKcnjnIah3aPsICrWykg
-	aqilbqye7aZmW9pYV5wHdDGqsdNJFleUUHMm4S127ZR2RZdLoL0Ntg3A7d7yVQPdohA4QB
-	hW12QicMnQK+Sk6LtKB6Hl8gvvz3Iy4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vtHxYiUZ;
-	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784566975;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMuWMKqgnkPBUwOMQjhA6e2FQmdsWS/MkwAM17YGiE0=;
-	b=vtHxYiUZTWBe/9tm3d3ozCfohoThor8P2b7AXRdvys5Cl6mM82JMRs56s9DMK0zdf2hsgs
-	1c67AiCnb+3NQHpKBoWrNnq6WZ/99VwJopyLHTT30dCg6BRPsJfxfsLzxdQ1IaBmrgDUMn
-	Ps/OUQTliWIsniL5NvYd80VXd/H8fvw=
-From: Usama Arif <usama.arif@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	chrisl@kernel.org,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	rientjes@google.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 2/2] mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance cost
-Date: Mon, 20 Jul 2026 10:02:44 -0700
-Message-ID: <20260720170245.939058-1-usama.arif@linux.dev>
-In-Reply-To: <20260717210808.GI6843@cmpxchg.org>
-References: 
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aiMphJN0hEb752W3IjRxFzmLe0gtZmSXKy+eltAZsyI=;
+	b=ak1w7Lh2jDBsD05cFXWyiWYB5KSScujTmpYIyLLHVj5H+B0PS3DVGNDllspDONVHzZj3ih
+	kBLx5EuuPPoGKeNsa+ST1JVqAvd0lLNtsvXXmgQ69nP1KI43SjPdADau0Hqg+8kWFL2vM0
+	dzpugvo+znat3tletuYCwaUf2mFM5RE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Jo69wKS8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vipinsh@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784567321;
+	b=44E6BHHbgKZFCSDOVcaAe7yR0+iVTW3IrUiBJjHQeLUXcuKiiNYRnlYnHQhQxa7HdKOKEU
+	vA1GhbU7nT9w0C5YGhVX/uitkhlHwPfne/71p1yf9JPFdihm2r5HOUG/P3mBVehYtWJxO2
+	oIk/yu/CccO+qqZcUMSBLJn5hyml3s0=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cede6375caso345715ad.0
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:08:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784567320; x=1785172120; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aiMphJN0hEb752W3IjRxFzmLe0gtZmSXKy+eltAZsyI=;
+        b=Jo69wKS8unKJQvhTEcRcjaMQMoRa4Vg7gbwz0PHd9RShqYe2zJK/gEiyzClvVMZf63
+         NJ8kEMRhpGu20wl9O0GUqBEonitpPP+Ndr+4NSU0vUloG+xcfOV6a21nxB2+e5abHR4M
+         CuFtPzGK+fvzYOyVX1kRyCPJQz9ZP9ST7S7Gy58tjIPKgE0U7im/NWnl3xnStH+1D9/E
+         AY6/I/0wR+j0C5pDSg+rqiTH3vKkZhRL1UKelcL6YoCbvyVw06kh6aDlz8LEhO7hwluI
+         Z9ZpiKEFypUBlQfFjLZsX/7xEUfMu9Lx5SKJB/MZYSvHfsIQtOGxyaHZnQhHucnMV4ru
+         w9nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784567320; x=1785172120;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=aiMphJN0hEb752W3IjRxFzmLe0gtZmSXKy+eltAZsyI=;
+        b=Y9cMwCV8NTxtf3+ijtC6R/50IiqvitOpRwPphP/HJJEM1Vf/I1t7yQbQQ3wryWuVqj
+         trxyZEVDYyps32dFwskBIbgKUpamDp99UGZE8hgRdqJ0VIoqUMqbzt+aYWQsLyNegp/r
+         PLiFMPFSeDYkBUDUo3IZNxv3SeT6STc/pxidfjPBZs72VgXDV6B5nsF0x0pqP6Ev9dFm
+         TJIy1agiMwJF4DoVplqPuGQcKHfzQoIajO7HCkMyA3osZIijHh+cqrFr/LDVnkzqvmut
+         JxiUdg76Z/RouneYN4NBMZ8tsjqiTXy5abuddTnV2UgzOikGiXOpGJXVe5LEKf0wW5wC
+         VWMg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3RwWblVBOWhHEel23nyRy0uuNa1XPg8F+nHgBct9siVVSVnpKWUT7+cz5NfWSahtgzV5ptDh4+A==@kvack.org
+X-Gm-Message-State: AOJu0YxouDDB2AINIU/VgyEPRFzNdzb+rd4Bz7+aZ6Ikkm4EODdIhsgJ
+	qvFJcPxvhedqL7MtvcLVESgQoKo6R9hU/u0Jvsbqg/O3Rh6A2jpYflf0bQeHQTZtYQ==
+X-Gm-Gg: AR+sD11iJgMcuI4o3E8F7nI0cOuh1hgtgtGxx2fcJ+Xg3oXZP9vX3Tlua3QfIVEOJel
+	h7N7Mi4jG/ikOw38ZEQxAMYP/48MtAUYOPA20zTq2KFiHI/EeOfM1llVb4WMl+q38jAKPkN22CG
+	PCrlA+iiThfzViz4SpCfNTq3jmxOIEyCk3GtD122SvBDHiYDwZel8Z2pOAmNp0Y+eiXnj6qdOGu
+	BmwJxmpJ7cTiZ0h3/9GSFFXtg9XPLHs33BiQ9FW8vTL5ZD4IvLc28U4m57enVx2NbPgS8oA7N4M
+	XciymKa+72YommsKfWtTjSf2R+un4/wA52ZfTgsYsbQXeILz78PgwdCD7UqzLxucM7MqsIKK/28
+	1rjEhlctCMj/v9JlB44QGBFX+FnMV4MFt6jkbFgZPjRfgkEI5cPvSiAj8jEefqxs3ObBmtTY4VJ
+	7IhQP9y6IRAQlS3GuVd89CJhrKYFWORxXIpRHV
+X-Received: by 2002:a17:903:4084:b0:2cf:4353:f117 with SMTP id d9443c01a7336-2cf7b35e690mr923005ad.0.1784567319236;
+        Mon, 20 Jul 2026 10:08:39 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e92091875sm91751a91.7.2026.07.20.10.08.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 10:08:38 -0700 (PDT)
+Date: Mon, 20 Jul 2026 10:08:33 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, 
+	christian.koenig@amd.com, corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
+	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
+	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
+	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
+	parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, 
+	rananta@google.com, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
+	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com
+Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
+Message-ID: <20260720163452.GC1191959.vipinsh@google.com>
+References: <20260714151505.3466855-1-vipinsh@google.com>
+ <2c03ac97-60a6-4352-a942-27dcebae8d22@linux.dev>
+ <8fd94fad-e457-4839-9e41-ae257a138bee@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EF512100006
-X-Stat-Signature: rhri57uywu9qeh56xnp1gwye8i31z7q1
+In-Reply-To: <8fd94fad-e457-4839-9e41-ae257a138bee@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 053DC4000D
 X-Rspam-User: 
-X-HE-Tag: 1784566980-296413
-X-HE-Meta: U2FsdGVkX18d/e2kca5m8kdxrDlR3C6JE7dqJpymPSahgK52fyk3XsNxQ+/KAfklvS1rHWJn/bpC+0WCe6AfsayVMhXndoweSEws9qu/YGmcfBn5Z5lTKTtmJC86+ZZlD+qH9Nb0S9xIbSKxOWPfNfFjwqFmuDWFDb7mQMekRbr/tzVAeOiAOOSXIL4tvLQHjzpY0jjQ6zeVzERpYyCQ8NCWpBR+jAPx1h8kis7g0JYhLDn1bUzz4xYvOPFnNNrfumfoKsiRO4EM29YoSH1q+WWFAihPAtrdogrdQlYmr6FuFlmVTryXSgzXRjzxdthcJ0rCOX29Xj9BV5Itn0IceN/HpnXcOvlGMX4a4/ySyfIi0MfxUB29JdVmI0PE32KyYfOLsV0rOGcfCEpU75kfvPbzGOZr8CtwgdJhcy53zfRmW7MZZwofZmOEogPXFhbG8SL29+mpFlh/O9FWW3j4s8dLcK7fx7UonzbtClcdEI9YMoVIcw9AH2gYnerlk7oEmb8rhvPeP3Wll6mxqVRqwDm9XuMujN5x2D3zP5ZRltOLWTvL/O0s1/7szQn1VRPRYIW9xyGG6oSsbf+gUWNF79c8Z/esL+uD3QCEeQ8mZ2SrkPbowm14vFE2mQPlXtG/i0rN324vimoOygUc3JbpJIu6dw2o3iCQJb7uW7haYyve0hcSI10zExyOK51kRprW30iLl3Zd620ESiMNZbYQGWc3R1+8ZSVGZ+/AWnWPwthQotUuOu7FBo1NaeDBSCLfN5MAphmqBnKPK86oxjJNttxC+uzN2OMxdtfYBYDmHqKU+6kTMizEHnKXLt2sHq1zUKjeJ6XX0cjUx8Oh2hUFuhyc7g7+ypiZGsSzHgAl8LJkaqvmWLxzZYbDBMga2E3Bs5csA4pCQn52HCImcQaxp8wC3OB49KcY+5V2tdb7mUk27eroFKRPNmhZoVCaFYrHKrL4X5ZSGTFq4KkAGtQ
- HfHapaRZ
- aDYvtgEIEZH5qH107dwTnDg4FBWh4i8n+Xt42eQZZT2tuHMPrEu/PZJsG8f2wZtf56SDszvJgJitXESgNH/C+3fOz1J0djD/v7xspI8WlzxAkccIYD7BtZSlxjYwdCFdwpvr+zAPXqHvl+YbBXSRzoy0/4rC6+P9STzbbSyO2gDWM4h0PA33BcWtqoTiHtIHS6qmL/+7UuhwB4LDUYYnbS0n0yof//ehPocXI5uC9TjFGpf0dqfl/3UWmx7h1PWyhJaBNtqNkj0dHxnpEeiEh8je3olo/8TTdwizfhAYLuFhGfkzNeaQd2nq2+A==
+X-Stat-Signature: nrc4sgm5nq3ahdny7m4ss8cd8udzd4bf
+X-HE-Tag: 1784567320-47352
+X-HE-Meta: U2FsdGVkX18ZA3/dYtw7tgY2helRsJ/zXJttH7orhFqFV4KooA68drkwCIhlSs5nz2JydVF4B44KN9i5aaZo5uZ36FY3xbkmK22W5ovIihh28MUXkSWtqBvSnsrTHpzGa6mI+MBVJuAPQZl1IWfx1ZcVBjvWAaislc4pdr3Ziphu2XLhlyJ73RIsvqirozaHHANXVfcvOKZk4asFe9J9JnWoaSLdrAFI5/PuyxnUWx9ovxfciQbhWVOIT7Ta/coa0NvEW0cm5paUObGTdAlAE6KaBhcHTKqjDEZ0hO4XOghV0Z+wgoHf590By1JSSsh2RAWeM4sfUXlsK9L+Q7LxXFG2OLr3sIK3RPXQkbeyc9OelMJ9i0+2n8sLmeoJceNiCGaOgtGwdx8NZCsgER5MQnjV/UebA04OZ9mch/po76jxSKSPPP+zHFjLT2PfKFnd8/TQk2pn2Qw2ODPNRRBe2AoTsjpZDUk9G1TZK0WY1ASiUBRQX2+H2uOFINkjkTwHEIoZOGARQ83xsYseWfiRr/UmlXvW0O6kCMRaPKydq/m00ItR/dk0oINb8zvmLa9Jg4Ni9bHedj7jzoBn/rjUcuK0QHSvoz26gvIDZFTMSTXHE+Hvq2ePuTZf9Fj69wYp+0wfAdE4Jth4JsY2lJ6UVKtAx2CFQg61Z5Ges4Y+5bcyZ5S6kBJdy8O0lEgDe1c8ZKUGCq/c8zcz7gf1QqiY3yqYL3z350Vr/0C8v1zkBMlDbkOCASaoBrC+/EgIf+gSjPHokGqiZvsOL2ujO2atQ1vHm3bRK0yNATT/4Xk8Ka7P3bob5forfMs0jNXzKMIOhxSq7jEYhMT9DcXn3aDzL0koSYlnEXcdkqGQo/p3iNPCSyv07UsBlD1F8GcogA6eAlyT3kRtwxSNiSX7Q+LbNiV3EQhusjgABOfM6h1YeOcro5BMj33geRzHtSYQWwqqlSbj+ZVozoEVXRmekAD
+ 6X15d/KK
+ gl7++DYCoFThWJbTHHgadoTSAUmC7dQNkbDUl/mMpY7LWSTk9QHM2SkJ4hjkx8obBvLfdZNFDasDbFiSNy0Yknlc5sTvvIV3MzmL3qh67ZvNyDbWJl0Qbaqlsew+Qgj1yzw9wsbGFPHxodVVO1YgDZ9dtJSc1phGv/5QvGaZV6A/W/BCEi719QeJ6FA0Ya0RwrI01Vutvlz/70JJRzUG6JVzk65zGw5x0v0QkVrDfJNhOg9ACKMMFGRwD9kRN+37qhECIOLE3h1DJ5A/qecqQ3AA2Y4DYPnebDQZGq6iZSyVyqTZ2zpQM0wErEj6myIc254pdv5JNCFo7Vv8jIWolAAlYMEIqXp7a6ydMqPHMX4bk55btJMlvNfeOI4zHXgpgr6fgxOofw0xzU9o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,97 +132,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 23:08:08 +0200 Johannes Weiner <hannes@cmpxchg.org> wrote:
+On Thu, Jul 16, 2026 at 06:22:07PM -0700, Yanjun.Zhu wrote:
+> 
+> On 7/16/26 4:24 PM, Yanjun.Zhu wrote:
+> > 
+> > 
+> > On 7/14/26 8:14 AM, Vipin Sharma wrote:
+> > > Testing
+> > > -------
+> > > 
+> > > Tested using VFIO Live Update selftests in both QEMU and bare-metal
+> > > environment (Intel DSA PCIe device).
+> > 
+> > I want to make tests VFIO Live Update selftests in QEMU. But how to
+> > select a PCIe device?
+> > 
+> > what device do the PCI ID 0000:00:04.0 and 0000:6a:01.0 mean in the
+> > following testcase?
 
-> On Fri, Jul 17, 2026 at 06:57:32AM -0700, Usama Arif wrote:
-> > @@ -2303,12 +2301,63 @@ static void prepare_scan_control(pg_data_t *pgdat, struct scan_control *sc)
-> >  	mem_cgroup_flush_stats_ratelimited(sc->target_mem_cgroup);
-> >  
-> >  	/*
-> > -	 * Determine the scan balance between anon and file LRUs.
-> > +	 * Determine the scan balance between anon and file LRUs from per-LRU
-> > +	 * vmstat counters. The raw cost per side is:
-> > +	 *
-> > +	 *	PGROTATE	   - reclaim-driven rotations, bumped from both
-> > +	 *			     shrink_inactive_list and shrink_active_list
-> > +	 *			     (CPU work).
-> > +	 *	NR_VMSCAN_WRITE    - reclaim-driven anon pageout IO.
-> > +	 *	WORKINGSET_RESTORE - refaults of previously-workingset pages.
-> > +	 *
-> > +	 * The two IO terms are weighted by SWAP_CLUSTER_MAX to reflect the
-> > +	 * higher cost of an IO over a rotation.
-> > +	 *
-> > +	 * Reads are lock-free per-cpu sum collations, rstat-aggregated up
-> > +	 * the memcg hierarchy by mem_cgroup_flush_stats_ratelimited() above.
-> > +	 * Use lruvec_page_state_monotonic() so the unsigned subtraction
-> > +	 * `now - prev_cost[f]` yields the correct delta across a signed-long
-> > +	 * wraparound of the underlying counter (a real hazard on 32-bit that
-> > +	 * the clamp in lruvec_page_state() would otherwise turn into a huge
-> > +	 * spurious delta).
-> > +	 *
-> > +	 * The delta against prev_cost is folded into cost_accum, which is
-> > +	 * halved on both sides until their sum is within lrusize/4.
-> > +	 * cost_lock serialises concurrent reclaimers in the same memcg+node.
-> 
-> IMO that's a lot of describing what the code does. Why not stick
-> closer to the original comments?
-> 
-> >  	 */
-> > -	spin_lock_irq(&target_lruvec->lru_lock);
-> > -	sc->anon_cost = target_lruvec->anon_cost;
-> > -	sc->file_cost = target_lruvec->file_cost;
-> > -	spin_unlock_irq(&target_lruvec->lru_lock);
-> > +	spin_lock(&target_lruvec->cost_lock);
-> > +	for (int f = 0; f <= 1; f++) {
-> > +		unsigned long now, delta;
-> > +
-> > +		now = lruvec_page_state_monotonic(target_lruvec, PGROTATE_ANON + f) +
-> > +		      lruvec_page_state_monotonic(target_lruvec,
-> > +						  WORKINGSET_RESTORE_BASE + f) *
-> > +				SWAP_CLUSTER_MAX;
-> > +		if (f == WORKINGSET_ANON)
-> > +			now += lruvec_page_state_monotonic(target_lruvec,
-> > +							   NR_VMSCAN_WRITE) *
-> > +				SWAP_CLUSTER_MAX;
-> 
-> It's hard to prove overflow behavior is correct. I would keep the
-> delta extraction dead simple, then do the weight math on the delta.
-> 
-> > +		delta = now - target_lruvec->prev_cost[f];
-> > +		target_lruvec->prev_cost[f] = now;
-> > +		target_lruvec->cost_accum[f] += delta;
-> > +	}
-> > +	unsigned long lrusize =
-> > +		lruvec_page_state(target_lruvec, NR_INACTIVE_ANON) +
-> > +		lruvec_page_state(target_lruvec, NR_ACTIVE_ANON) +
-> > +		lruvec_page_state(target_lruvec, NR_INACTIVE_FILE) +
-> > +		lruvec_page_state(target_lruvec, NR_ACTIVE_FILE);
-> > +	unsigned long cost_limit = lrusize / 4;
-> > +
-> > +	while (target_lruvec->cost_accum[WORKINGSET_ANON] > cost_limit ||
-> > +	       target_lruvec->cost_accum[WORKINGSET_FILE] > cost_limit ||
-> > +	       target_lruvec->cost_accum[WORKINGSET_ANON] +
-> > +	       target_lruvec->cost_accum[WORKINGSET_FILE] > cost_limit) {
-> > +		target_lruvec->cost_accum[WORKINGSET_ANON] /= 2;
-> > +		target_lruvec->cost_accum[WORKINGSET_FILE] /= 2;
-> 
-> Why do you need to check them individually? Between reclaim cycles,
-> there are no scans->rotations. And I don't see how you could get
-> refault events several times the size of the LRU, let alone in excess
-> of ULONG_MAX.
-> 
-> > +	}
-> > +	sc->anon_cost = target_lruvec->cost_accum[WORKINGSET_ANON];
-> > +	sc->file_cost = target_lruvec->cost_accum[WORKINGSET_FILE];
-> > +	spin_unlock(&target_lruvec->cost_lock);
-> 
-> I realize these long descriptor names make it hard, but I think this
-> can be cleaned up a bit and written in a more idiomatic way.
-> 
+Sorry, this was my copy-paste mistake when combining things from both
+qemu and baremetal. You only need one device not two separate ones.
 
-Thanks for the prototype and the above reivew comments!
+For testing using QEMU, you can use QEMU PCI test device.
 
-I integrated all of them and sent them as v4.
+  -device pci-testdev
 
-And best part of it is, sashiko is happy as well now with v4 lol
+In VM, use `lspci` command to find the BDF of the PCI device. It will show
+output like:
+
+  00:04.0 Unclassified device [00ff]: Red Hat, Inc. QEMU PCI Test Device
+
+Then prefix the domain (generally, 0000) to the BDF and use the testing
+commands.
+
+`0000:6a:01.0` was the BDF of the Intel DSA device on my host. I
+incorrectly mixed two devices during my copy-paste.
+
+Limitation of qemu pci-testdev is that it does not have the DMA
+capability. I used physical host with Intel DSA to verify that the
+device performing DMA during live update gets reset.
+
+> > 
+> In my qemu,
+> 
+> 00:04.0 System peripheral: InnoTek Systemberatung GmbH VirtualBox Guest
+> Service
+>     Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr-
+> Stepping- SERR- FastB2B- DisINTx-
+>     Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort-
+> <MAbort- >SERR- <PERR- INTx-
+>     Interrupt: pin A routed to IRQ 20
+>     Region 0: I/O ports at d040 [size=32]
+>     Region 1: Memory at f0400000 (32-bit, non-prefetchable) [size=4M]
+>     Region 2: Memory at f0800000 (32-bit, prefetchable) [size=16K]
+>     Kernel driver in use: vboxguest
+>     Kernel modules: vboxguest
+> 
+> I am wondering if the above pci device can work well with this patch set or
+> not.
+
+I think you should be able to test Live Update with any PCI device which
+can be attached vfio-pci driver. 
+
+`vfio_pci_liveupdate_kexec_test` will initiate DMA if the VFIO selftest
+framework has the driver for the passed device (Intel DSA) otherwise it
+will just skip over the DMA flow and do the remaining things.
+
+Let me know if you still face some issue in running Live Update, I will
+be happy to provide more details.
+
+Thanks
+Vipin
 
