@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0935C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 22:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26977C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 22:39:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 847286B007B; Mon, 20 Jul 2026 18:16:37 -0400 (EDT)
+	id F29ED6B007B; Mon, 20 Jul 2026 18:39:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1046B008A; Mon, 20 Jul 2026 18:16:37 -0400 (EDT)
+	id F00B46B008A; Mon, 20 Jul 2026 18:39:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69AE26B008C; Mon, 20 Jul 2026 18:16:37 -0400 (EDT)
+	id E19A06B008C; Mon, 20 Jul 2026 18:39:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E7566B007B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:16:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0400F1402D6
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:16:35 +0000 (UTC)
-X-FDA: 85010565192.21.52C9607
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6A62E40002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:16:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NAT4xJHq;
-	spf=pass (imf01.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AFEBB6B007B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 18:39:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 414031A0310
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:39:22 +0000 (UTC)
+X-FDA: 85010622564.11.B647BD8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2DC9380003
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 22:39:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IMUmUWOm;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784585794;
+	s=arc-20220608; t=1784587160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8DU8obaCw0iTM7IFbaaxyEJABTOe4jgbs0pWKQlHlMA=;
-	b=iXjPu55xd5qgEgWhLsKkj4xshv8fiE+ooCH33blFQL2xtVSj0QDz+xlKb6WqdU5BoeLAVc
-	6e+JsLOiAoDpJZv8cVq0KMrNvxCFT0gI80q9L/SBds/1r6LwsxT0jDvhUWmKfqysdBEceU
-	YUEePziVvN+Qv5LzedpgyuZafcXUPNA=
+	bh=n9Hp2lCCEZ9lb9WzpnWx8yXkzJX6L7iH3HYpRFS5fnE=;
+	b=l+AKJZcUJQN6Y2cwfR3KMAl8HBUwGrj4cHwkCe1+OnPmPguBIjHg2zfk1iL62yCQ86sBeN
+	z9hOMyBTHK/215oL1eCNG8YXAei5Kf+JOWdnA1TNGSYffUXVN9EPAkWTnxwnGXu4c9Aro5
+	62Tb1zdQeqVODMHA1PzTBIyeLS2nh3w=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NAT4xJHq;
-	spf=pass (imf01.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IMUmUWOm;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784585794;
-	b=w4BzAZgHwyWqH5Rn4gQADCo+773F3+NIobyx0l+69WmIUIOX9s110tJHQzFe1x7Gs+yGTY
-	3TAH7nUAju2xbPC8KxChChKuD2aoE0N9wyXEONqoqUjP5f8IZjswHapzGuvo36/ZKoIbOa
-	jH+yHXjRRnWQV8+UvTz8ic5hGG5qjOI=
+	t=1784587160;
+	b=OrYODAO6OtG4yQnU2HjQJidqpgNZKztHFrItqrNEdsBJpC/6ISJjnb/DHyi1oei94by6OH
+	F6MZP4SQJK5H/H5+5f3Swc/lPnwpff+UoHPGe1U2blDAIkoEunDjaHds2oqdfyu8QJbaR0
+	ozSJLflxmcrfjr1BGFaD2hosVJwU1c0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AA20A60A7A;
-	Mon, 20 Jul 2026 22:16:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9851F000E9;
-	Mon, 20 Jul 2026 22:16:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784585793;
-	bh=8DU8obaCw0iTM7IFbaaxyEJABTOe4jgbs0pWKQlHlMA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NAT4xJHqv/vfaFe9m1w9iNPwcaMKlEUIvqtLY6RvG6MVhwXPAJ1XmQih2fV21NpUt
-	 MEbuKTBqvw7PsgiKE/xDXbwvU6oPvjiqbinaI4TbkDbrwej1DFCskK3BX2i3W1GBPz
-	 cEmNLNXk+N7Jkmi6vszHvmu70jFH5T2Dcw7SpjbRI7MueIyrTrTZo+q3itraQhEN/Q
-	 f3p6+voUWojJsA7wdMAmuycCxX16UCJUAHSI5DISp+SCwgyHQ2mfhg0yYnUWFbG/+w
-	 32ASHFNn0kzmmXTE/1Sb/C2pqUla5slcBEfnZ4CyGSUhALQS/+g+9z4FE+ByS39weW
-	 m685xUvxDOnxg==
-Date: Mon, 20 Jul 2026 15:16:29 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] mm/percpu-km: fix bitmap overflow and accounting in
- pcpu_create_chunk()
-Message-ID: <al6ePXAJ6iwQYvfx@palisades.local>
-References: <20260709-fix-pcpu_create_chunk-in-percpu-km-v1-1-1f64745a84cc@nvidia.com>
- <DK3N4FET9ORM.327QYW7L79VOK@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DK3N4FET9ORM.327QYW7L79VOK@nvidia.com>
-X-Rspamd-Queue-Id: 6A62E40002
+	by sea.source.kernel.org (Postfix) with ESMTP id AA9B04030E;
+	Mon, 20 Jul 2026 22:39:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558E11F000E9;
+	Mon, 20 Jul 2026 22:39:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784587158;
+	bh=n9Hp2lCCEZ9lb9WzpnWx8yXkzJX6L7iH3HYpRFS5fnE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=IMUmUWOmBd0q+fgNDoomb9dXf9qnFt9omp1Qdq5dnG+Gvz0CxQOs5c8CbsWGX2g9F
+	 lQZuRWMgT0grvsxE3h4FY8sb2ZZdzqkt94oZm9MK+7XnOIH3/eC86U2AmZ9vu4YAI5
+	 4yV2/5lqtSFC8Qax9ZGxFvm9W2w68Y0SF5BeNn40=
+Date: Mon, 20 Jul 2026 15:39:17 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, paulmck@kernel.org,
+ puranjay@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/kmemleak: report RCU-tasks quiescent states during
+ the scan
+Message-Id: <20260720153917.2e428e489cd0873ac6d4e6da@linux-foundation.org>
+In-Reply-To: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
+References: <20260720-kmemleak_rcu_task-v1-1-5b460ade777d@debian.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: rdt4rm6e837e1ceahwx59gfj3hfk9qc7
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784585794-560460
-X-HE-Meta: U2FsdGVkX1+5qmt0+6hc3KmXjdFS48kSWBkQ3MGzHnXyIiw1PIZFGmgXvV/vEyZVxm2ru/IwqrMdcVGOqReXb/h10GHMp/QqnzhbAzoCY+qyum8qq9zPcI7LZdTE4LPwA17uoMb1Y95OqxtMzkS1df30cK8R19OoXwg/VPh7GVYDhsnjeUWtwktc549zM+sKvRUgPKMwKJwQo3eE/vgQDU6RFq8gzAgtuzbssSIOvsmSYbX1vWV2NyLnXIeZLr3FZPHXGYSCynZKafI0iSk/WCxts3+eL8Z7Z7mm2YPqVPAwgvXHkVc7KcBdOx71ppBua0Dy+N269/I2xc7zKuoX5FpyYYgU+fAogwaOvt3qdIxC4VD2my67egRbaK+sn3muDcgpLOisX2vZkJWxcJrUblV8qlvi7sQesRUVkih2fwM6ZjiktrxewiSZeojtCAbqkoNLTYDjyJQXN6rRwqpP701QOfC9IRfi8kJS+f7WxDIFsVAlOC28I+GfeTx/aoq6bGZCFXSdzp42T1qZ1S+nE+t1lAFfuHb7oAg+mhH/FEwrAcorUcAL8SYDKEItRzRqSfhWZ1lnJ2SyZiBIqNbUmB0k/JSTCrRGNFdzNyxyu/Hrjxv10heU8AfG6gCHvSqeTyDJD4pTksFBV8Yd0oEdK0y0m8E0PkE6v6iCeets7WelqH9InCs4uLGqERSiCuBzW4sQXJQ7b9oM3jyKqAQvLc7JgTk+WK/o1XPacbVvkIIE3SA35pPcAJXDj1yVDKz+gsPu8Z16kgetNCQrnkXzsVch6VWcmG3bQqYls7g1NHXjwTXl+6XR8zydXjI4ffWiRr28TV1UAdKZ/bFjAaiB6sQFxfaY4Vlq2WkPXXNHaz6ikzficwr8JvO/MhkiyzkUB4SHqd8k+Sd0PxQjGP8jcFl3Wm0sRLxJBgh2iO5RQGd+9T2XiHODoFCU6dFbolzbiJwrM3X6hlJD6JUqSPe
- 2sDKy6DL
- XIvadMfWa5krW1TMzJRLVxFbDS90nNZiNG9QBv1/cqVg4e6aN37PVbqN5Z9Mh/H3T9RcSs79PbR3e63MO03d2y3O+ZCe9GuTOf84Nn8iTBO98xvlgnY7miGjPWsgId620QJZ5VJ+eui40+WxfYYrydLq9KEHkrpft02MOUFE0dBrHevJAm98G+h4jDIlwnmd68nQJPlYVSfyIPCAivbZZFcfi/QJimHsXcojb/qXMSJGOR6byEGt/53U91eCipf772HEy2TL6ZSrgjYqIKmtrbetzfQ==
+X-Rspamd-Queue-Id: 2DC9380003
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ufbisby4ck5ka9dqcezf46wgozwz7315
+X-HE-Tag: 1784587160-297922
+X-HE-Meta: U2FsdGVkX18lKsYkowRqcdI6x9zJmXiNR/TPIJKFr5LjE3/YQ0a8gYgCr6RJJaM0JQUV7P9D0jvwuJhfQxtSbGbn3Go8UmQA1jskZvuMaMIl3HGFdOHvRKFQWs39zfLEcDebLLNXK5I9r/pt1LSQ3UH9+iXYlcmuj6DoS7S9j8SmyMTnd1wNm6qJOjyxTno78i6MYrBMgCLiPIRroicTKudU/3jlGt7jtQ+kKr8wVr9rQjP7WAjsleVhaLj0bYgXpN41f/kJhcS/1/vmnf4jTuZlElQOegbYOEWLOx+X0CzzKS8dlB3p6KsIS1XciY9PJvNDs47C+Gw8xuJZQM3FBPggsh4gP7XpEk0ESsR0xzYclAMhQFFm6+HPgQDYDa6m4bq9DK5LuSgXkmRD5Xon5FYj2mN/VB+M90xNXYTUrrIBONsv2Ek3nx6im8iIT9BTa87B5mHTIODCO9ccjMdoiYBqKt0iXgrPq+Zz5ONZzldSvKeXJY6Xa0fhGj/tJf4kCts3P7HeyCGmVBkAxRUpq76ZbWnmY4ldG9d3jauj09s6yGv5r5TLmkWLpQjiXFJkwTViZDQxTun8FAwrUz2I0hwgpB4TUFm0bhILCu+Lli/XVhFae9kIsjtmDTd2Kyh9BJgdCXrzig8Nio4CzrUSUD97owMAi2FzIXoCj+4cEVklpIetCwLKj8q65wFYJDC27pN3o00xr5lZ0JJo2UZpcchipno1MHHmlcarbxkOGhuN6ns0xp3hr7NYiuwTPgzWT4Qr/AG+AzdprVz9yLlWYSMgubwC2BxQpLy0UUBqhRo1h053BZ+YSvyYIrbF0/ngmrEXq/xwzfYszd4L96ec8cS9/W0R9K6DwIQtlFSV56gjmr+Eg8V2HZcVWaRZgCA5ToXD3ZiF7vRrR8A7A3CnYWYCiY3lksgx20sth6MTet6SP90vGhMZpOWaMHre69xs0XrhuwyuBKwRmabuGvc
+ r9auzTyr
+ HPC8D+uiKhe8bu5dMaQ77Wp+kXEp4VsuKSDJU9Zb5IDSqgFbuFhFmB7Rlqt18IDpRj7n76bcIbwICleOVqY7w2Rqfj3QXx7/QSV9YeJmPx1JmdCwnas0VPHfio8yRaF+VEND4NYaqqU2kmQVynFCBV9HR5Hf6jYdUTCO3rJfnAituWH5ey7z+Ptv99oK71k0fBEKzqDRvx6ce6kOfbF1uaIYKb+MZZalqZW8Ybc3hYFUwDGlgqn8eTIoteusr8h0kAqbtwW4j1rJycMb0oyhysmYPJFmRXGxXWQ4XvIX2ha45u/s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,35 +91,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zi,
+On Mon, 20 Jul 2026 06:23:45 -0700 Breno Leitao <leitao@debian.org> wrote:
 
-On Mon, Jul 20, 2026 at 03:20:31PM -0400, Zi Yan wrote:
-> On Thu Jul 9, 2026 at 3:12 PM EDT, Zi Yan wrote:
-> > In pcpu_create_chunk(), nr_pages is the total contiguous backing
-> > allocation, i.e., nr_units * pcpu_unit_pages, but pcpu_chunk_populated()
-> > uses it to set chunk->populated, whose size is pcpu_unit_pages, bitmap.
-> > Since bit N in chunk->populated means page offset N inside every unit is
-> > backed. When nr_units > 1, the function writes beyond chunk->populated. Fix
-> > it by using chunk->nr_pages.
-> >
-> > It also fixes the global pcpu_nr_empty_pop_pages accounting, since
-> > pcpu_balance_free() only iterates up to chunk->nr_pages.
-> >
-> > Commit a63d4ac4ab609 ("percpu: make percpu-km set chunk->populated bitmap
-> > properly") introduced the bitmap overflow issue. Later,
-> > commit b539b87fed37f ("percpu: implmeent pcpu_nr_empty_pop_pages and
-> > chunk->nr_populated") added pcpu_nr_empty_pop_pages and caused the
-> > accounting issue.
+> kmemleak_scan() can run for ages on large debug kernels. It was
+> causing some soft-lockups which I got fixed with commit
+> 3175fcfec8b16baeb ("mm/kmemleak: avoid soft lockup when scanning task
+> stacks") with our beloved cond_resched().
 > 
-> A gentle ping on this patch. It would be great to get some feedback.
-> Thanks.
+> I've got the fix above deployed in the Meta fleet, and now I am seeing:
 > 
+>   INFO: rcu_tasks detected stalls on tasks:
+>     task:kmemleak state:R ... nvcsw: 274/274 holdout: 1 idle_cpu: -1/3
+>      scan_block
+>      scan_gray_list
+>      kmemleak_scan
+> 
+> and, worse, blocks the callers waiting on that grace period. Here a BPF
+> struct_ops map free, which waits via synchronize_rcu_mult(call_rcu,
+> call_rcu_tasks), is stuck long enough to also trip the hung task check:
+> 
+>   INFO: task kworker/...:bpf_map_free_deferred blocked for 122 seconds
+>      __wait_rcu_gp
+>      bpf_struct_ops_map_free
+> 
+> Then I've learned that cond_resched() is not an RCU-tasks quiescent
+> state, so, we need to use stronger primitives.
+> 
+> Use cond_resched_tasks_rcu_qs() at the scan reschedule points so the scan
+> reports an RCU-tasks quiescent state as it proceeds.
+> 
+> Inspired by commit b96285e10aad ("tracing: Have osnoise_main() add a
+> quiescent state for task rcu").
 
-Sorry, this is right and I missed it years ago.
+I'll add
 
-Acked-by: Dennis Zhou <dennis@kernel.org>
-
-Thanks,
-Dennis
+Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
+Cc: <stable@vger.kernel.org>
+.
+.
 
 
