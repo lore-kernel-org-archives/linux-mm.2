@@ -4,139 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184ACC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 676DDC44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 16:05:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24F546B00A6; Mon, 20 Jul 2026 11:57:38 -0400 (EDT)
+	id 25E006B009D; Mon, 20 Jul 2026 12:05:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FF356B00A9; Mon, 20 Jul 2026 11:57:38 -0400 (EDT)
+	id 20E526B009E; Mon, 20 Jul 2026 12:05:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CA616B00AB; Mon, 20 Jul 2026 11:57:38 -0400 (EDT)
+	id 0FE936B009F; Mon, 20 Jul 2026 12:05:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9AE46B00A6
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:57:37 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E72A1A04F6
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:57:36 +0000 (UTC)
-X-FDA: 85009610112.08.421CE9E
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ED793C000B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:57:34 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FpXOhmIn;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784563054;
+	by kanga.kvack.org (Postfix) with ESMTP id BE3896B009D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:05:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25116140203
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:05:10 +0000 (UTC)
+X-FDA: 85009629180.26.5845DC4
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3279F1C0004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:05:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B7RK5LHQ;
+	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784563508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
-	b=aH2NukXm3J4QgjMqME8Zw//q+c61Kj3ZMGynCQygS5ygvh87HgyFjowBbNn9HhB7WH5ePe
-	sBv5PjrQm094ZPkz69B62aWBdKIAlPifkCxW72M8Jv3csvHddCxiL56MxD1/bnW3yOoro8
-	IjH73eKxOeDJVSLhnCj32IOqliw/ox8=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FpXOhmIn;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784563054;
-	b=mP2zCpl9D4fh4zO/+C6rKIIm3Aou/Zjxwb/dIOLkX+3ACRd8HaShrJHIpG1ED1lgAJCoPW
-	+oPzROZDPztbLUujEUktLEntEsGNn2qug8megGVPDpLuMLBqk4LWZzkgmfw4a6fUcEd2ax
-	FAzEMJ3k7VOl1Hsnmx+qPs6pQZUIA0k=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49558ce01afso13388235e9.1
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:57:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784563053; cv=none;
-        d=google.com; s=arc-20260327;
-        b=egi6ntRDQYjtlm8pJ5/w2kzmMyQ1u9xu+L4hVBvzUNGkDMsnFXz/VQFaRgb5N0mr55
-         kha9OXh02MxpGUOaWcjCgxvQ0uyu4lMmZ1H0C6NfxZOL1YA+xjmpMm9vmB/UrEXV6c8Q
-         jSNFLsFqGc3My4xzncoeOV7hehhakHovlwYl7I3Pj765xrBJSTT33Z35Bpwk5jsGOA5E
-         DOX+ylf/Ezm0Ppl4v9kkj1nI1s7M3Nnu3DpmJEvIQ6wQ7jZOzI3qJJfSqR4DK33874D7
-         jAobXWLxTmF3dzCkncOgBBE1PXURDIAFLh4hfGwbYS/mXZ7TtFXxdqtksqdLFOmi7Mn0
-         uldA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
-        fh=FVvwRYjfz7/vx+uzCxKf7Xr1STrCjvlfUthu4imdOHE=;
-        b=PtRF0x66R+FimaCTaBsGFy2Gqvsc/b8r1kfz+2iB/Nn74pLWTRwmBw8IfJ+qmJpo3t
-         pfBLFqrXGjyu8CxOZ4jBT5bgE9l48A2HnoynXUfSkb+I2jRGZ8w/tsp2M1Sbz+aJnt9W
-         V9fT2fOHbImYmAhJY9nmTCtD8hjxzXceA8sPt624YCz0cA1+ma02zta+i+Wgmsgurup2
-         ncTYrChlJs1vLuSDKr2DWdzaH5dId+JRHS3Nx39TcXJzj7hfCksdPU7hspKT/8s3wE3i
-         3yyHGjLCY3njxzwmEx3dLXmKqjzHV2Hha4HADGl1S/UA0iKSXmmE/gu39Ca/JYspNYa9
-         Hn8w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784563053; x=1785167853; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
-        b=FpXOhmIn5nmLNa6cxO8WIWIeRpzeesxyj14TF7I28RGM+0zkfpv5bL2FYJPDsyBP9f
-         ozO/N2dJu6yEfvDAaoYiUNbE7LRAHnn9ahCp07jGtoOKvfs+S0xx538+lW+HCobJRY3S
-         yWlPpC6xSXtimjNmYVxIokvVtZuZquDiovqCGJzgpHondEBUmVt4DjYItDdl97/zMS54
-         1LetQgRE6nUUNUL3u0LtxOPJSYlH9gnSSQrWHxSs5uePhbfInItrr7fqBdHfJk3wV54n
-         cINt61k3KRWya2T5QvcR24KkwkH9IJ5Hl3c24H5QXEVgTLYWAkMOdwtDvW1pCyxBsogB
-         qeEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784563053; x=1785167853;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0KyJzAdpvvNft9Y4h33/V64POIpIo0Lhh3rE6JSsSJM=;
-        b=Yc8yG1QaZKRAsiF4mDxEAOARFJFY+XNT+FSvDrxBtMLON1R2/IhdyrfZBNvSWJ/7uB
-         GjY3DXfyR+YPtTCl90rQMUr+yXtDseqz0a3+DNb8TxrrffXrMiJ1GvlPiduHu9YG1fSs
-         yyqq0sPg6CBXNd+qW6uX/W0io6ab14oA3eWNnoBO7xmjbACeSujLgJyUXIS8h0E2YbZ1
-         HHB1h6zfcR6SCveFYlkQZnVNSDQrsmXSsEXJUFoBHK4/QDcOGxtnoCVZVK5kjbXkBz+5
-         bNE5pfJtZ0uG9AmbXzzTouYlpKXOcN4WpO/gZiEQAaQl/tVrWfMAsbrewzfst46T0cCt
-         EcOQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpGhgtTgn/Q9as2gm3vlWtAFs1dSAqf3/FU7P0tKwfRn/Uv6gZoLA9KwqGuVk0ZAWy6RE/pQIhBxg==@kvack.org
-X-Gm-Message-State: AOJu0YxWVs9TjbIb9CQ71cUFL2RFqKweO9xHybeehQkYJ8X/+Y+LVKQ8
-	A06/kVOlTQzZj7FmXBE3w7L3+SgxKxZGUi8S9IrdW9/UFkwHlaIqsRTjQmrYz/X9pNHLfAmzvhS
-	2LrmwOfdhSMI8GJHSjMWkHVcxLQZAqN0=
-X-Gm-Gg: AfdE7cntjy8rN380DV68SWWa/Oq34LqR738gOCooDdTKHf3fnjqVSVOK/7xnraayolH
-	uTQ5YUhfnUZ28QkOOWdjZ7kaxY3y9KM8HMshFoZXGVHfUUxZV3lAHubDXm+tkYC2ljIkJWJSibM
-	lbfWyNaQinq+JhtK5SzbkSe0X76UFJ+l9tcIaSw65DEb95cuOMObSWlKnh63Q/9DuMMAZ2d7zI2
-	x7yiaVzFQVO2HIAMXkBrnQqj7Hv9ZnTRcUwAxRllYTbvfdBZsOmXhP/ajHd6NK6tSQjmH3YKJZ/
-	rxhiU6/0BF+1lBBhXHbmqWL877jt
-X-Received: by 2002:a05:600c:3b24:b0:495:5d6d:9cb3 with SMTP id
- 5b1f17b1804b1-4955d6d9dcamr68483165e9.37.1784563053362; Mon, 20 Jul 2026
- 08:57:33 -0700 (PDT)
+	bh=mPrSCcboo6QNVYmxgmeAVdHNL9zuwh9fX91xHhB4SW4=;
+	b=FxzWMaUrrt7UYQZ386Lld8c2bdsCSqVQKXbjm56FZWmotfD/12iQYQqFK+MThtzJ0f+xEZ
+	/wZcljPqmFsAoZsoftfJyD+Kk1efi5ZmdrS1hjRxJ498nfc4nwDlWioTDP6RkvKVGtI2ZC
+	FOzMr/eV+n/XT8VXoMBFWmxdOY5EemU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784563508;
+	b=l8ioNz59rNVPGtRtXv3D2XF5usQy6jPEaVZfj/hI0VQzywdKsYl5PvZY2pjZ2ohDJCyk+v
+	BmLVQMA5+aY7miJ2bRpSumQnR+tnV2ox6RbiE5vOdPbZ95Y9per0enm5sOzd7OX19va+mD
+	x/YUCL7NylFVyWh38E+7rh1W5jjfMUg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B7RK5LHQ;
+	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=mPrSCcboo6QNVYmxgmeAVdHNL9zuwh9fX91xHhB4SW4=; b=B7RK5LHQ5PkiTZ/V8+0NehtGUn
+	/Mmx5kHqJOPwm/o//qJf3CwzzqqMxD+T87m5steyMNmp6yfkGUaXgMQr08/BNJSqoyG8Y0mTExvbh
+	sjSfIC5J1APVZiUs5ZtZsEvWYNSw8QLDjLnugfkCyaxtMvuAJJlJ3p9OkmofMQaaN9ak6YkSxRz2k
+	Ytqc64i2W7YAWY4/MHYfu2vcJXkepscDDxiXZbfpZ8lwpgV7TVvinfDlFjFDk0tlRwUeQdClVXMJj
+	nlXsmSeoBlJUQefrCnk8iG3y3p/+xmcrfqD2T7WpFbDh/OwMW4+ecSIt0FZB5sVNNmTW/nEfq1TJ1
+	TwLpcMdA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wlqUJ-001YQ9-28;
+	Mon, 20 Jul 2026 16:05:04 +0000
+Date: Mon, 20 Jul 2026 09:04:59 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Liam R. Howlett (Oracle)" <liam@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org
+Subject: Re: [PATCH v2 03/19] maple_tree: Add write lock checking with
+ lockdep sequence numbers
+Message-ID: <al5F7sT-39J_wbbR@gmail.com>
+References: <20260630190843.3563858-1-liam@infradead.org>
+ <20260630190843.3563858-4-liam@infradead.org>
+ <ak5v9UDuieA-dNUh@gmail.com>
+ <dzp5qpqjzc3j2jwnamgbv7j2blqcbp6xq5jnwvkm6hzx6fbjni@2vom3uipdkuo>
 MIME-Version: 1.0
-References: <20260718093723.153324-1-alex@ghiti.fr> <20260718093723.153324-3-alex@ghiti.fr>
-In-Reply-To: <20260718093723.153324-3-alex@ghiti.fr>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 20 Jul 2026 08:57:21 -0700
-X-Gm-Features: AUfX_mzE9oSx9gAUE_0Haa5WsqXuVdTKlLnp73bYqy-q2AYPJ21KT8MxigUKzsY
-Message-ID: <CAKEwX=NY=Uvcfm2BT-HGqu8B3OaoC0eePW1M7fW1qH4wpjQ8gw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm: zswap: deferred dropbehind free of writeback folios
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <dzp5qpqjzc3j2jwnamgbv7j2blqcbp6xq5jnwvkm6hzx6fbjni@2vom3uipdkuo>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3279F1C0004
+X-Stat-Signature: 5hguzzhg7g4nrh5z8qyotab6f3yoynsu
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: ED793C000B
-X-Stat-Signature: rd67osqrnzjifd31kz6bzeqm7g94opy9
-X-HE-Tag: 1784563054-126780
-X-HE-Meta: U2FsdGVkX1/52H9e2hjIX28BSevIj2LwGQuQss5DS6M+R/V01uPg/yb1W/EsR9PpsPCQaDVkVWHVkxtsFJ2/4cWXyBU39XC2m6WceCB3KDMAZUYerLTf+7HBy9nNxbH5MPRhIAFulI7QZ45TrK1H0zWqoHCT767aih7H04mvrrj05byruTwEYpEp5xGauFAFymSINz3v3UByNZRjKqvjms7Ouz53j3BaI3axgBgz9pXCKt73hTLDfeNEBV0fdFLApX+Q/SVSwduYM2lmKngWKKu8w4o0CGJg9RArjXM+0nhwT0sM8J7DE9t/MaWQD3C47qJmr4YrDUwpqymDPJq/bnbLvf1JQ3GgrNWpIYDx5YmKrPxWvDRb2yJxbYRREwHO5ROV2nL1mT9LHZmdEG5/J21DIe7/wRe99dvjvE6W8fUXTX56TQwFcFQZz90ne1VdrGkmmmW9Iob3w2XsbyJrQrPebqhgcSFEOhBHv2nOFHt3lku/IEmvCc5HBhCX0RipWjGgWuS0/cD0308jRg8cF34GZZGpH1Mj0t2YpI6OAXsuOvrelTvKJpdX+5lCtH6mUGqhkKcg0Jwx4yFd7c/fRYdOFX+sc04HNoBtOg6J9vcP2y106cKS+GFVzy9Qe9reuthB3yyJhX9VFmYBUj9bZPImlac3OPfMLddu+NfFaAkCfbReyXywoMh0en4X+MYSHNim4oVNeIOMUNCZkEpsYc3rgYgwWZ8FamO5dRDRe92N48VeabvJC3+kza+1Dst0k2PFS6B9MeZPYNDIyGIembPrVR95raxNckoXRQ4p1OZd71Nv4ygxkYEVrn3l2nKfFGLnsgCMx2v/Dfv/Ijc60kPx5HtIU4HpFHrCDLGi/KCRTQGUwPNx/6Qm2UBDGPrkZd5U1DH8FGvIfytJHVml4dFvC33QAjODiVFAPjD9NchbKbuoKC1Eljh1seCAV42LhEZ28qHo6BTOxJI5wX2
- Pxqy0Z6s
- CU3pq5/+DxUM+5Nubn9Z7t4CyvYdz006LlAGH3RvCrIKByGNws0W76t/M6XWGEz0YGkxt8CmTB2ZgH6FqjIrMVw0aw/nQ+2OwxMMcV29QTuQxI21G6I4fh4nIvDOyqtlv67gChwJSGtvX49j3HlWKLNvOyUujFnUX3O8t7O7TGhKha6k5Jm3ECskiHYmrjogZRWE1no9e3ZOqtG8fslPhJM5U/ksHuajudVCAWlTVO3zMNPPlb7/2RhW6y4sd13A/lT6kaIel/cncyaJ+SrG4RaGW5oijQuHKctuUG7zAlkmTNRkMyR4VPsWJaX/Vhv2Ry+jrhEo0nom0eakeR+BCTxzmyA8ekqv0VHPE+vIoUc/nuySepKmDSXE/p8PS8z9FWqO9G1bIvV+GaV/qVc8eywi8aJGzk3hvbAyDmbUnz80Z1wyhhTX2vUh/pqR8q4LD7zk3ObWR7T3x0b4kRQD5vcuCpw==
+X-HE-Tag: 1784563508-281340
+X-HE-Meta: U2FsdGVkX181sOQstnOR43c9ZJjS2obXpD4jHryaHBGiBixyUk6WM9ywi7Ii8Qnkj4Cws45pqeFAOzTrtgDllWs8MsHmHRisMJ60AWGR4f9nH4jO504v3jaGn1oZNSZ6FmNv3ySg/SxzjR2kxTPT89nB2/lDw/af02JVVpMZvYfExM/BTg4CBlZ7ANjZAZ/6UkGutT9LRBgkHMs7sBwM/R6GljWM1kw/6/nM8z6wTauDxbW5uoLrzW57KIYiuN1OoOLEgOO/BFRoSULRv4AWPYP9lwrxJ7kGDHqdbNL5kn5eULT7aa19j4+p1FqzH7PlvL6KRB26wlQXLBMNasFZ/WvN0iUKToKB6IDPurMt9ww4QunBNzHqZsxWcDaIBleQVTihVXZ/lQnK66YjwXVT+JbUE0v20nxuCrdlEwP/1paIhOva8Lz2mesQI8ekYPr87Yu9mnC5/pg+qIWAQUPCFpAPYkO4v3y16BaR5UEkEqOg/WiiTqVPj16UhQ6Z1/DCImtskqKJBM+9/OqJneL3FWROnL9YLPYWo7DH0qCBpy0p1UUnK7USMmZP48rEgGUUgTiJSTkrmb4JYt3RfN5yfvz7PmghcH1SMn+4hx9f4B64FUS6JT/9yk9wnsOp2o5/4GNRQW7f/qP9Y/+xugMIAnJ9ZdmNKhHCEkKXBYAkf/10nQ3P0cdSmvzogCrce/1czvt0q+4nMlOoPkX2HJvCCrpFQnIaNwKPujdi3JBf7M3jxtNvaJMYjFB7H6GXshpynidU3QkuwIycH7a1VLpVP8vW3XxxPO/zS06SuK4FjoIshjdQ1cDYL2HL/lzdnbRyK7h49Tq2pKOAUJoZR2KQ6n6ioME7xhlxvNjZl5R24SqXjsrv2+A13z8E4RLbY6TdPlZ1eZ33/gcUxzAfFVSnBbke5stI6JnLHOplRmANz+Dk491P/56h8ecQVTNtBUrCFlMBZxSs+8VatY9L6tX
+ mcAgs66F
+ a0rNqcexcDtgDW+94oKnqLfNGc7IeRwKkV6yZESAkVCbJ3oqklyVfOx4aPfVCxRck8cMTHHLJqVxumUfICkVrs1u5huGiyfPyJ+qWtf2VSgddzTDipF+wnhQBsg/aZaLagh0WPslYOryB0S2ecAFCChvR16RDBAzN6AeAODCIUlXBB3phuXxuFANB6YHV0NRDmBO4fKkWPls/PAJdLPqz3b/z57+Tdo7FCSPv2j0oVVseyT1oEIgRPIvq0gijHf2wFphuYV0yhnMlKu+gZIsloGO2NupTpUOYqPzNBw3Oq42tcyc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,149 +98,347 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 18, 2026 at 2:39=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wro=
-te:
->
-> The previous change frees zswap writeback folios promptly for
-> synchronous-IO swap, where writeback completes in the calling context.
-> Asynchronous block devices and filesystem-backed swap complete
-> writeback in interrupt context, where the folio cannot be freed, so
-> those cold folios are still left on the LRU for reclaim to clean up
-> later.
->
-> Free them promptly as well by deferring the work to a workqueue that
-> runs once writeback has completed.
->
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+On Mon, Jul 20, 2026 at 10:03:51AM -0400, Liam R. Howlett (Oracle) wrote:
+> On 26/07/08 08:44AM, Breno Leitao wrote:
+> > Hello Liam,
+>=20
+> Hello!
+>=20
+> >=20
+> > On Tue, Jun 30, 2026 at 03:08:27PM -0400, Liam R. Howlett (Oracle) wrot=
+e:
+> > > +#ifdef CONFIG_RCU_STRICT_GRACE_PERIOD
+> > >  	if (!mt_locked(mas->tree)) {
+> > >  		if (mt_in_rcu(mas->tree))
+> > >  			WARN_ON_ONCE(poll_state_synchronize_rcu(mas->rcu_gp));
+> >=20
+> > Testing next-20260706 on arm64 under a stress-ng + fork/exit/mprotect w=
+orkload,
+> > I'm hitting the new maple_tree write-lock sequence check:
+> >=20
+> >     WARNING: lib/maple_tree.c:1188 at mas_store_prealloc+0x2a8/0xac0
+>=20
+> No, this is not expected and I didn't know about it.  Does it still
+> happen in next?  I'll start looking at this while I wait to hear from
+> your side.
 
-No Suggested-by for poor Nhat? :(
+Yes, I see it on my everyday's test.
 
-Just kidding, of course - thanks for working on this cool idea :)
+>=20
+> That's very odd.  Does anything show up with a lockdep build?
 
-> ---
->  include/linux/zswap.h |  2 ++
->  mm/filemap.c          | 20 ++++++++++++++++++++
->  mm/zswap.c            | 34 +++++++++++++++++++++++++++++++---
->  3 files changed, 53 insertions(+), 3 deletions(-)
->
-> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> index 30c193a1207e..23dcde274964 100644
-> --- a/include/linux/zswap.h
-> +++ b/include/linux/zswap.h
-> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->  void zswap_folio_swapin(struct folio *folio);
->  bool zswap_is_enabled(void);
->  bool zswap_never_enabled(void);
-> +void zswap_writeback_dropbehind_folio(struct folio *folio);
->  #else
->
->  struct zswap_lruvec_state {};
-> @@ -58,6 +59,7 @@ static inline void zswap_swapoff(int type) {}
->  static inline void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg)=
- {}
->  static inline void zswap_lruvec_state_init(struct lruvec *lruvec) {}
->  static inline void zswap_folio_swapin(struct folio *folio) {}
-> +static inline void zswap_writeback_dropbehind_folio(struct folio *folio)=
- {}
->
->  static inline bool zswap_is_enabled(void)
->  {
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index dc3a0e960b9f..548e465b5b9a 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -21,6 +21,7 @@
->  #include <linux/gfp.h>
->  #include <linux/mm.h>
->  #include <linux/swap.h>
-> +#include <linux/zswap.h>
->  #include <linux/leafops.h>
->  #include <linux/syscalls.h>
->  #include <linux/mman.h>
-> @@ -1680,6 +1681,8 @@ EXPORT_SYMBOL_GPL(folio_end_writeback_no_dropbehind=
-);
->   */
->  void folio_end_writeback(struct folio *folio)
->  {
-> +       bool swap_dropbehind;
-> +
->         VM_BUG_ON_FOLIO(!folio_test_writeback(folio), folio);
->
->         /*
-> @@ -1689,7 +1692,24 @@ void folio_end_writeback(struct folio *folio)
->          * reused before the folio_wake_bit().
->          */
->         folio_get(folio);
-> +
-> +       /*
-> +        * zswap writeback folios are off-LRU, so we must prevent a racin=
-g
-> +        * swapin from removing the folio from the swap cache and keeping=
- it
-> +        * off-LRU: the writeback flag allows that. Afterwards a swapin m=
-ay win
-> +        * the race, but the folio is already queued and the worker puts =
-it back
-> +        * on the LRU in that case.
-> +        */
-> +       swap_dropbehind =3D folio_test_swapcache(folio) &&
-> +                         folio_test_dropbehind(folio);
-> +
->         folio_end_writeback_no_dropbehind(folio);
-> +
-> +       if (swap_dropbehind) {
-> +               zswap_writeback_dropbehind_folio(folio);
-> +               return;
-> +       }
-> +
->         folio_end_dropbehind(folio);
->         folio_put(folio);
->  }
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 3c494c5a671c..d185da85bb68 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -34,6 +34,7 @@
->  #include <linux/writeback.h>
->  #include <linux/pagemap.h>
->  #include <linux/workqueue.h>
-> +#include <linux/llist.h>
->  #include <linux/list_lru.h>
->  #include <linux/zsmalloc.h>
->
-> @@ -990,12 +991,39 @@ static void zswap_writeback_free_folio(struct folio=
- *folio)
->                 goto out;
->
->         /* Raced: the folio is now owned by the swapin; put it back on th=
-e LRU. */
-> +       folio_clear_dropbehind(folio);
->         folio_add_lru(folio);
->  out:
->         folio_unlock(folio);
->         folio_put(folio);
->  }
->
-> +static DEFINE_PER_CPU(struct llist_head, zswap_dropbehind_llist);
-> +
-> +static void zswap_dropbehind_workfn(struct work_struct *work)
-> +{
-> +       struct llist_node *pos, *next;
-> +       int cpu;
-> +
-> +       for_each_possible_cpu(cpu) {
-> +               pos =3D llist_del_all(per_cpu_ptr(&zswap_dropbehind_llist=
-, cpu));
-> +               llist_for_each_safe(pos, next, pos) {
-> +                       struct folio *folio =3D container_of((struct list=
-_head *)pos,
-> +                                                          struct folio, =
-lru);
-> +                       zswap_writeback_free_folio(folio);
+Yes, but not sure if this is related. This is happening twice, thus, the
+messy kernel message
 
-nit: I wonder if it's worth doing some batching here for the free step.
+ 01:37:12  perf: interrupt took too long (3127 > 3126), lowering kernel.per=
+f_event_max_sample_rate to 63000
+ 01:37:38 =20
+           ------------[ cut here ]------------
+           WARNING: lib/maple_tree.c:1188 at mas_find+0x620/0x810, CPU#45: =
+stress-ng-sysfs/419993  =1B[36m[warn]=1B[0m
+           Modules linked in: md4(E) vhost_vsock(E) vfio_iommu_type1(E) vfi=
+o(E) act_gact(E) tcp_diag(E) inet_diag(E)
+           ------------[ cut here ]------------
+            cls_bpf(E)
+            evdev(E) ipmi_devintf(E) ipmi_msghandler(E) spi_nor(E) button(E=
+) sch_fq_codel(E) vhost_net(E) tap(E) tun(E)
+           WARNING: lib/maple_tree.c:1188 at mas_store+0x2a8/0x678, CPU#7: =
+stress-ng-sysfs/419987  =1B[36m[warn]=1B[0m
+            mpls_iptunnel(E) vhost(E) tls(E)
+           Modules linked in:
+            vhost_iotlb(E) mpls_gso(E)
+            md4(E)
+            mpls_router(E)
+            vhost_vsock(E)
+            loop(E)
+            vfio_iommu_type1(E)
+            fou(E)
+            vfio(E)
+            efivarfs(E)
+            act_gact(E)
+            autofs4(E)
+            tcp_diag(E)
+            [last unloaded: test_bpf(E)]
+            inet_diag(E)
+          =20
+            cls_bpf(E) evdev(E) ipmi_devintf(E) ipmi_msghandler(E) spi_nor(=
+E) button(E) sch_fq_codel(E) vhost_net(E)
+           CPU: 45 UID: 0 PID: 419993 Comm: stress-ng-sysfs Kdump: loaded T=
+ainted: G            E       7.2.0-rc2-next-20260710upstream-baseline #19 P=
+REEMPT(full)=20
+            tap(E) tun(E) mpls_iptunnel(E)
+           Tainted: [E]=3DUNSIGNED_MODULE
+            vhost(E)
+            tls(E)
+            vhost_iotlb(E) mpls_gso(E) mpls_router(E)
+           pstate: 03401009 (nzcv daif +PAN -UAO +TCO +DIT +SSBS BTYPE=3D--)
+            loop(E) fou(E)
+           pc : mas_find+0x620/0x810
+            efivarfs(E) autofs4(E) [last unloaded: test_bpf(E)]
+           lr : mas_find+0x1c8/0x810
+          =20
+           sp : ffff80011fa579e0
+           x29: ffff80011fa579e0
+           CPU: 7 UID: 0 PID: 419987 Comm: stress-ng-sysfs Kdump: loaded Ta=
+inted: G            E       7.2.0-rc2-next-20260710upstream-baseline #19 PR=
+EEMPT(full)=20
+            x28: 1ffff00023f4af5d x27: 1ffff00023f4af62
+           Tainted: [E]=3DUNSIGNED_MODULE
+           x26: ffff0000b65379a0
+            x25: 00000000000000e7 x24: 1ffff00023f4af6f
+           pstate: 03401009 (nzcv daif +PAN -UAO +TCO +DIT +SSBS BTYPE=3D--)
+          =20
+           x23: dfff800000000000 x22: ffff00011aa90e78
+           pc : mas_store+0x2a8/0x678
+            x21: fffffffffffffffe
+           x20: ffff80011fa57b30
+           lr : mas_store+0x2a0/0x678
+            x19: ffff80011fa57b78
+           sp : ffff80011e9c7810
+            x18: 0000000000000000
+           x29: ffff80011e9c7890
+           x17: ffff800082ef24c4
+            x28: 1fffe000507cf8f2
+            x16: 0000000000000068 x15: 0000000000000001
+            x27: dfff800000000000
+          =20
+          =20
+           x14: 1fffe001310d8da4
+           x26: ffff000283e7c790
+            x13: 0000000000000001
+            x25: 0000000000000097 x24: 1ffff00023d38f40
+            x12: 0000aaf4db60a000
+          =20
+           x11: ffff00015fb58bf0
+           x23: dfff800000000000 x22: ffff0009dd07f178
+            x10: 0000aaf4db60a000
+            x21: ffff000283e7c780
+            x9 : 0000000000000300
+          =20
+          =20
+           x20: ffff80011e9c7a00
+           x8 : 0000000000000000
+            x19: ffff80011e9c79b8 x18: 0000000000000118
+            x7 : ffff8000808bcf34
+          =20
+            x6 : 0000000000000000
+           x17: ffff800082ef24c4
+          =20
+           x5 : 0000000000000000
+            x16: 0000000000000068
+            x4 : 0000000000000001
+            x15: 000000000000000a
+            x3 : 0000aaf4db60a000
+          =20
+           x14: 1ffff00023d38f07
+          =20
+            x13: 0000000000000000
+           x2 : 0000000000000000
+            x12: 0000000000000000
+            x1 : 00000000ffffffff
+          =20
+            x0 : 00000000ffffffff
+           x11: ffff700023d38f11
+          =20
+            x10: dfff800000000000
+           Call trace:
+            x9 : 0000000000000300
+           x8 : 0000000000000000
+            mas_find+0x620/0x810 (P)
+            x7 : 0000000000000000 x6 : ffff8000808bf46c
+           x5 : 0000000000000000 x4 : 0000000000000008 x3 : 0000000000000000
+            unmap_vmas+0x180/0x320
+           x2 : 0000000000000008 x1 : 00000000ffffffff x0 : 00000000ffffffff
+           Call trace:
+            exit_mmap+0x134/0x8f8
+            mas_store+0x2a8/0x678 (P)
+            __mmput+0xb8/0x340
+            dup_mmap+0x698/0x1350
+            mmput+0x60/0x98
+            copy_mm+0xe4/0x3c8
+            do_exit+0x594/0x1a28
+            do_group_exit+0x180/0x220
+            copy_process+0x12f0/0x31e8
+            __arm64_sys_exit_group+0x50/0x58
+            kernel_clone+0x14c/0x768
+            __arm64_sys_clone+0x100/0x140
+            invoke_syscall+0x74/0x188
+            do_el0_svc+0x10c/0x198
+            invoke_syscall+0x74/0x188
+            do_el0_svc+0x10c/0x198
+            el0_svc+0x64/0x260
+            el0_svc+0x64/0x260
+            el0t_64_sync_handler+0x84/0x130
+            el0t_64_sync_handler+0x84/0x130
+            el0t_64_sync+0x198/0x1a0
+            el0t_64_sync+0x198/0x1a0
+           irq event stamp: 251
+           irq event stamp: 265
+           hardirqs last  enabled at (251): [<ffff800080911648>] seqcount_l=
+ockdep_reader_access+0x68/0xc8
+           hardirqs last  enabled at (265): [<ffff800082da75ec>] _raw_spin_=
+unlock_irqrestore+0x44/0xb0
+           hardirqs last disabled at (250): [<ffff80008091160c>] seqcount_l=
+ockdep_reader_access+0x2c/0xc8
+           hardirqs last disabled at (264): [<ffff800082da73c0>] _raw_spin_=
+lock_irqsave+0x38/0x90
+           softirqs last  enabled at (136): [<ffff80008011dfb4>] handle_sof=
+tirqs+0xd8c/0xf08
+           softirqs last disabled at (131): [<ffff8000800103d0>] __do_softi=
+rq+0x20/0x2c
+           softirqs last  enabled at (178): [<ffff800080092ed4>] fpsimd_sav=
+e_and_flush_current_state+0xac/0x100
+           ---[ end trace 0000000000000000 ]---
+           softirqs last disabled at (176): [<ffff800080092e58>] fpsimd_sav=
+e_and_flush_current_state+0x30/0x100
+           ---[ end trace 0000000000000000 ]---
+           =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+           WARNING: possible circular locking dependency detected  =1B[36m[=
+lockdep]=1B[0m
+           7.2.0-rc2-next-20260710upstream-baseline #19 Tainted: G        W=
+   E     =20
+           ------------------------------------------------------
+           stress-ng-sysfs/419983 is trying to acquire lock:
+           ffff000390315b78 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_loc=
+k_killable+0x20/0xe8
+          =20
+but task is already holding lock:
+           ffff0000a1747180 (&root->kernfs_rwsem){++++}-{4:4}, at: kernfs_f=
+op_readdir+0x1e8/0x720
+          =20
+which lock already depends on the new lock.
 
-i.e, after remove_mapping() succeeds for a folio, we can just add the
-folio to a batch, then call folios_put_refs() in the entire batch :-?
+          =20
+the existing dependency chain (in reverse order) is:
+          =20
+-> #3 (&root->kernfs_rwsem){++++}-{4:4}:
+                  down_read+0x68/0x320
+                  kernfs_find_and_get_ns+0x3c/0xf8
+                  sysfs_notify+0x90/0xd0
+                  btrfs_exclop_finish+0x94/0xb8
+                  btrfs_swap_activate+0xedc/0x1900
+                  setup_swap_extents+0x13c/0x4a8
+                  __arm64_sys_swapon+0xb20/0x1490
+                  invoke_syscall+0x74/0x188
+                  do_el0_svc+0x10c/0x198
+                  el0_svc+0x64/0x260
+                  el0t_64_sync_handler+0x84/0x130
+                  el0t_64_sync+0x198/0x1a0
+          =20
+-> #2 (&ei->i_mmap_lock){++++}-{4:4}:
+                  down_read+0x68/0x320
+                  btrfs_page_mkwrite+0x414/0x1088
+                  do_page_mkwrite+0x124/0x258
+                  do_wp_page+0x52c/0x3270
+                  handle_mm_fault+0xa24/0x1bb0
+                  do_page_fault+0x2ac/0xa90
+                  do_mem_abort+0x78/0x198
+                  el0_da+0x78/0x258
+                  el0t_64_sync_handler+0x90/0x130
+                  el0t_64_sync+0x198/0x1a0
+          =20
+-> #1 (sb_pagefaults){.+.+}-{0:0}:
+                  btrfs_page_mkwrite+0x200/0x1088
+                  do_page_mkwrite+0x124/0x258
+                  do_pte_missing+0xa7c/0x2160
+                  handle_mm_fault+0x9c8/0x1bb0
+                  do_page_fault+0x35c/0xa90
+                  do_translation_fault+0x78/0x90
+                  do_mem_abort+0x78/0x198
+                  el0_da+0x78/0x258
+                  el0t_64_sync_handler+0x90/0x130
+                  el0t_64_sync+0x198/0x1a0
+          =20
+-> #0 (&mm->mmap_lock){++++}-{4:4}:
+                  __lock_acquire+0x1b58/0x3418
+                  lock_acquire+0x160/0x3a0
+                  down_read_killable+0x70/0x358
+                  mmap_read_lock_killable+0x20/0xe8
+                  lock_mm_and_find_vma+0x1e4/0x1f0
+                  do_page_fault+0x314/0xa90
+                  do_translation_fault+0x78/0x90
+                  do_mem_abort+0x78/0x198
+                  el1_abort+0x50/0x78
+                  el1h_64_sync_handler+0x50/0x100
+                  el1h_64_sync+0x6c/0x70
+                  filldir64+0x228/0x500
+                  kernfs_fop_readdir+0x444/0x720
+                  iterate_dir+0x1f4/0x370
+                  __arm64_sys_getdents64+0xc0/0x1e0
+                  invoke_syscall+0x74/0x188
+                  do_el0_svc+0x10c/0x198
+                  el0_svc+0x64/0x260
+                  el0t_64_sync_handler+0x84/0x130
+                  el0t_64_sync+0x198/0x1a0
+          =20
+other info that might help us debug this:
+
+           Chain exists of:
+  &mm->mmap_lock --> &ei->i_mmap_lock --> &root->kernfs_rwsem
+
+            Possible unsafe locking scenario:
+
+                  CPU0                    CPU1
+                  ----                    ----
+             rlock(&root->kernfs_rwsem);
+                                          lock(&ei->i_mmap_lock);
+                                          lock(&root->kernfs_rwsem);
+             rlock(&mm->mmap_lock);
+          =20
+ *** DEADLOCK ***
+
+           locks held by stress-ng-sysfs/419983: 3, last CPU#4:
+            #0: ffff0003919b1b30 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_po=
+s+0x1b0/0x240
+            #1: ffff0000bfa8d200 (&type->i_mutex_dir_key#3){++++}-{4:4}, at=
+: iterate_dir+0x164/0x370
+            #2: ffff0000a1747180 (&root->kernfs_rwsem){++++}-{4:4}, at: ker=
+nfs_fop_readdir+0x1e8/0x720
+          =20
+stack backtrace:
+           CPU: 4 UID: 0 PID: 419983 Comm: stress-ng-sysfs Kdump: loaded Ta=
+inted: G        W   E       7.2.0-rc2-next-20260710upstream-baseline #19 PR=
+EEMPT(full)=20
+           Tainted: [W]=3DWARN, [E]=3DUNSIGNED_MODULE
+           Call trace:
+            show_stack+0x24/0x38 (C)
+            __dump_stack+0x28/0x38
+            dump_stack_lvl+0x74/0xa8
+            dump_stack+0x18/0x24
+            print_circular_bug+0x328/0x330
+            check_noncircular+0x17c/0x1a0
+            __lock_acquire+0x1b58/0x3418
+            lock_acquire+0x160/0x3a0
+            down_read_killable+0x70/0x358
+            mmap_read_lock_killable+0x20/0xe8
+            lock_mm_and_find_vma+0x1e4/0x1f0
+            do_page_fault+0x314/0xa90
+            do_translation_fault+0x78/0x90
+            do_mem_abort+0x78/0x198
+            el1_abort+0x50/0x78
+            el1h_64_sync_handler+0x50/0x100
+            el1h_64_sync+0x6c/0x70
+            filldir64+0x228/0x500 (P)
+            kernfs_fop_readdir+0x444/0x720
+            iterate_dir+0x1f4/0x370
+            __arm64_sys_getdents64+0xc0/0x1e0
+            invoke_syscall+0x74/0x188
+            do_el0_svc+0x10c/0x198
+            el0_svc+0x64/0x260
+            el0t_64_sync_handler+0x84/0x130
+            el0t_64_sync+0x198/0x1a0
+ 01:37:47  capability: warning: `stress-ng-cap' uses deprecated v2 capabili=
+ties in a way that may be insecure
+
+> Your
+> trace comment leads me to believe there is a lot of these triggering
+> with CONFIG_RCU_STRICT_GRACE_PERIOD, is that correct?
+
+I don't think this is set in the kernel I am seeing it Why do you think
+CONFIG_RCU_STRICT_GRACE_PERIOD is set?
+
+Thanks,
+--breno
 
