@@ -4,107 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84024C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8CEFC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:35:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1465D6B008C; Sun, 19 Jul 2026 23:26:58 -0400 (EDT)
+	id 8F76F6B0088; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F88A6B0092; Sun, 19 Jul 2026 23:26:58 -0400 (EDT)
+	id 8A8596B008A; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00DD16B0093; Sun, 19 Jul 2026 23:26:57 -0400 (EDT)
+	id 7BDE56B0093; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF0686B008C
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:26:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A3126B0088
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:35:05 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 487F0406DF
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:26:57 +0000 (UTC)
-X-FDA: 85007718474.25.BAE0320
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5ADBD180003
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:26:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=McRk5Ehn;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8BA4C0665
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:35:04 +0000 (UTC)
+X-FDA: 85007738928.25.A94A878
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8BB2B20005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:35:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=agYQBBVl;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784518015;
+	s=arc-20220608; t=1784518503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pcqWYtbj4hnbd0xFCTmQXFIXCByQL/lwaFTPHzhkzbA=;
-	b=bhWzTLfdMKjmNXtExtNRhAGBFfojrJHvytVxdUSCmaOoYRryC2Ib/cCMixdP4YNSWiGpR2
-	hpoa8mPL+IsmVj1nmGqgbKPhduFcSwiE3ZN5ANYSXg1a/gwwrVLo+VGWv8EpYR7hlVwiyo
-	T5oNe9w9C/MET3pXa/2kDhjVIRIdhyg=
+	bh=f2bP+bUhNIo7yhxzRHd509jBvMfe8gZ7euA6b6kD2xg=;
+	b=J06AorYj4XC0wonHMVfHUbSly39CCf+i2Ak3mgqSM7GLmY4UKAANXfGKfToSzDOQXJjhUp
+	YQOxuifvtZubv3rHuKE96qzPFG7UYXMPMj/ZLrtg+ULx4u0tXdMwpWH4tThYrsa8QPJckN
+	te1RHgoQtP/ZeUcm4dJp4qSPJWWbzW4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=McRk5Ehn;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=agYQBBVl;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784518015;
-	b=Qq+G8Jo/UgYnZwHpoatEJdi7p8/23JYFWRW6lnMHpx6hyqgA6RDkHLhg8qSmKwSIu1Uzb/
-	GsKbJHWHP/O4c8nwo1dbo0A8Ngs1rqrVlV41GQ0jKWJI6LrkAn0tzvB0014gbBEB2EREzn
-	9RgWH+vdta8K3r9zL9aLDn31obiyGrc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=pcqWYtbj4hnbd0xFCTmQXFIXCByQL/lwaFTPHzhkzbA=;
-	b=McRk5Ehn0L0nIHaDuVJo17IKRfNyMU4yei5R2Q3Yao3+02ko0lXLbfaZUAwkeSGfEqt6iPYcW
-	qzvQpTFzfUAfhsVGbIOFRf9rttV85U6AGJorekOb7fNknCz4QyEuA8GRTpG5WC/VEnI7u4Lnz1M
-	7vgNypIsUmK29UdWmOlO8eQ=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h3Qg417bYzcb4V;
-	Mon, 20 Jul 2026 11:17:20 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id C697440591;
-	Mon, 20 Jul 2026 11:26:44 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Jul 2026 11:26:44 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Jul 2026 11:26:43 +0800
+	t=1784518503;
+	b=0OZEREgXXYAh2wI/FnzqOrozMmrjEMAemUDv5tcOzzn7GI1i678lz4m3B5ePd+5fEldD6Q
+	vhLsuugkAr+I3Y1U+ItsfIBsGcCssPg+eLSJBrrRw63Lnpy2bTJzJlgU1uevJaJSH0JRF0
+	0kZTYKGnfUxDTmoU0rLjqqcEIPq+rTs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=f2bP+bUhNIo7yhxzRHd509jBvMfe8gZ7euA6b6kD2xg=; b=agYQBBVlNRJnYUiMEWq22PZtYA
+	FbrME6UYB/Hh4v6tnwhw26BbMaIN1s0PpetJvnOFa6P81uo/0u6ZiEr9bmu9DB+SGrFkVGGJrNJed
+	5N+QDWWHzWnLNwLpkSNyAvA2phocWOspIe5/XQwPcoVhPfyf31U4zQfz5Vzk3e6d9/dVDRTq4ka4n
+	GKIsiNSu9pxumiPOjjvbVlYZqc1mL3Ifx26jDC8I/yjfJvVMW28vAN1vts8Q85HJyT4WgHpXsO2yU
+	590YLRlm+jl+eEg/5q/+orZ0nJc04VJG19l8zo7zOHKImIwWwMcnd1c0oLBoizU9JDtTJGgPNRS/b
+	W7wsVm4Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wlem5-0000000A4lY-1EOT;
+	Mon, 20 Jul 2026 03:34:37 +0000
+Date: Mon, 20 Jul 2026 04:34:37 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>,
+	Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, stable@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>
 Subject: Re: [PATCH v3] mm/huge_memory: unlock i_mmap_rwsem before releasing
  after-split folios
-To: Kiryl Shutsemau <kirill@shutemov.name>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
-	"Ryan Roberts" <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
- Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
-	<usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>, Hao Zhang
-	<hao_zhang_kdev@163.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	<stable@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Naoya
- Horiguchi" <nao.horiguchi@gmail.com>
+Message-ID: <al2XTQLWB12sJQG5@casper.infradead.org>
 References: <20260716095424.471052-1-kirill@shutemov.name>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <2680d603-d666-224f-a708-f2136908876e@huawei.com>
-Date: Mon, 20 Jul 2026 11:26:43 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ <20260717195851.609269e143b4b9eb857f2a6a@linux-foundation.org>
 MIME-Version: 1.0
-In-Reply-To: <20260716095424.471052-1-kirill@shutemov.name>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717195851.609269e143b4b9eb857f2a6a@linux-foundation.org>
+X-Stat-Signature: 56hbd9rfo5xtz6q6dbfxx5ogop15ddg5
+X-Rspamd-Queue-Id: 8BB2B20005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5ADBD180003
-X-Stat-Signature: u3qe1rdmp41thb6nowry1emmq98fx7x9
-X-HE-Tag: 1784518013-911301
-X-HE-Meta: U2FsdGVkX18uIyROOH/k1FAHOsl91VIcbTo41myo7qaPEIO/LSqo8duCSmHlR7SzYlyJNpftbjYB/3nKOqaO/GOvFV5UkUfJX7YFtPkYYj9FS5FbGxD1GFetOea2NRBlEb/GQ3Mtk8yIurzmCmaKZOg2MVVzc2+20Ix3jUKwM0qIR27GsARuD5gUjGs0R6SngHUGsDiHVBEMQB7vIP5dbmXXnm28wUPMu/cDVY8oNtXzy5Fyhdv0zwpv473rY8t07iBlwIXhR4GBhzY/1CEkvkoI/0NXQ6te9D3O+oT6elUyeXKKM9UKJ8ODe6ttCmZibSUCX4MgwksAYj0U3LGamYn7P09u+DA07RRyt46J9aUXaYJ/g6aXijOgPwpNNt4RVS5o7QjBt8sxT+/lVpcTpHE+v9zM9/JmLWdPVQ4Reopdn8Uq3ta8CvEGC/dNTWK7Ll3Q9qXbjvRkmYSZ+M3uIBdUMEKnsqt8ilkiOocQg7UpFdB14b6Bq57r6Ek1aAlck5526XqQ+msnr2qrNQD51KjTE29pkxiDKNL55OSmIYKWYXjh4ccttN3nxWLyUuXu3CXAblrOjocIq6kYA2xHpEynQK1YkE+V/sZFJyzkavVkLt6t3KimR0CI4E1cr5zxvhPeOec9WAKuB2CmEAQYDbR8KgmTGYX+MjBPT7rDsVq1VnQiKlo1FngHstC5BYHMRWyOjWDh0L/HwkHnu5ZS1FnHohkpOxkZCjb+9hzlOjvLTHohkm9BqpKUCZQ68QOQkdWS58xpflSvR8vB1pVXT3oQWvYSa1UKin6BLrxLf5PTDpqKeHBbY/cCQncGkY/dFTqbT089f1Goz6iqpF6eXUt1SLhNjRslsxljIK8ZSvQsS+/MdDvyLuSZeoBUhWEhwpha2jvXn9MLWkVq+NHpyBioD8y4UGl2VJCO1v0ATh3ekFbjk2Yz9QhC50P6ucGpFEPRqghOcQrsoe3VBPc
- Q7o6M/cQ
- RW99yuCx81nlm7/bGYaBbsWs3PmsDdO//3EE20lh49czKMQ41ogQ1cOLyu7Nf+oJ/QP8423+psatneFoTI7t3kqrO0thaij5tswhERdlJO157llB4KDr+QbTizswM79v1ogONTyNLIwCuvHaypryUEWhIpKaiu4WKOS0qYES5EcSxutxK1IcVzzPc0cm1DuHtmvEh4UTOIokBHe9tkRWjgBizMuLUUUBjtbvTT7o2reV7I/BVx3reXJDz5IEssiryY288ZUZjlksdIG+ABjJILiZyxW0h7RZaLpmc8+9GhwTg2vLHE777WEggf5o5HIrwrAh8H6ce4+zeOGhylhpYrlkoR19UVKCrbki3J/eTzg/qyllG9808tRGpOEiVRKBytmXjkUMGhM0WKAdb8RRgYGf2wlEi/qTjrmPNi2bPrd4QFFBiD9/amzWwlKXeRxNjYpuah5VXhYxa9VyHPv1eDg4udkV91f+ADRXSo+NcAmORQ1j8ECN87jVEag==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1784518502-939540
+X-HE-Meta: U2FsdGVkX19mDNwn4J9m3GTNgJ4mJJ9TgGJmy9DNb6YHmRjxAgRpykaWDr3RDL/u0q9kNqZGpmTqJWJlkEDfsjkq4ikQzGwLIcx7/1cZHKvQ2t2UrOqWteaUQRJGxIZQ5fcrXCgW3+xenN2egiDVTe+OXIjY244Qz4qztginkJYpFXJRxzhI/HJ7JWEsQJyHvvEd/FshAl+xy3fx6KOiqNOg2UXonW27/TYZuITHu33e3WDi3NlnfwGUbuSBnG4BDFNGVxu6GdWRaK2Cnl1mRR+bh5K7hs/TY2dxpm5PxnSPO6OxWy8qTYcNhaOitRz0IRQ1Ghad+GSbzZSnQrzrC2ymOOT6s3DVrce/tsbnKfX2RCYy8WAIwzAi/PiXIA6qciGR+75cBfgxuJ/dN5nGzGKw+r6uaa0F0oOIilW6YsIYn+wUS8HXTodU0xfXyI1OLIro3qsXNESg/dCE3WuIbE+KXDI1bwjHiUVe5MVF63hu+6/Zt34rFeQzpLVkstnTXom1LwjajGEM5FWFhb10t1BqsPGYYu5eiZbi1wcfR8/NVAPVdG9GxmCfK1TxJpPGwknt5KMpFJtSeqUmKYyhlUEuOyrqo5ahnhwZmA0MuUX0A7Lt6IpguI/g422imV1+d68hMOdDiZjYRFFQVEEB4OucuIb/IwhpZmg+E9OvExeadPmagNkCf3WUnDr/a2YNGd9Lz+/GgjoqyHbLBYBTyZWQQWjpawsOEFWv4Y9i7SeheHmCP+OBnOZgDL1bXq5uH71cUVNSy450iMdxIVGxf32WjucaldnIqQnBKCuC1H83yqEiH932GRjL8hxeFgEMIlcaAm/5uDtTW+A7/UuV6RwWu0ecD8yCCgtq0MbTLNOJ8xBTG7JYOQ6DWB3CzwbccZYTHHaX1QU+D1Tyt9Wv4KrwTKS5X7Z6Ry7heOz7JQqnyfJ1GTgkhlXsAhf10jWElkidnjfvBdsxrgSquQE
+ mUIIUXLy
+ rVqbsPN91WHrZQ4MluyKUXK03WQ+ShSi1W9IkvkaRSUJzKGJu2jmCPvUipGMeR4xQYwmBANbP1D6HwG+g11w+JxPgH0IApp4e/ejWy7LE4cU1Kj3WIuGfyBsN/lPyvMDXPsaYIaznDyi5EvUOLLgdR0re+gyXdZNCrzwXRTVB2N/yXRvDXT3wWSQpRi7EehG0nEosISEA9akGEwbs2HRKrh3rncK75Q6AB7mRVpXRNhwYLZDkWEFbR6o/N1Pq7J/+sMp4toIHjN6V7Vir9sUGFSSzP8kDLPsbX8t+C34a9v7Oqmpn0omtyO/jJ6kTyQ39o6jzDVi5PraLVW3dekpgejkLYUxECWnKdeGWtUxJ6EycBerRtmt2Tkk8UHq/6nZfgjsYZNI4rq+B3J0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,59 +102,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/16 17:54, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> __folio_split() keeps dereferencing the mapping after the split:
-> shmem_uncharge(mapping->host) and remap_page() while the folios are still
-> frozen/locked, and i_mmap_unlock_read(mapping) at the very end, after the
-> after-split folios have been unlocked and freed.
-> 
-> Nothing holds an inode reference across that. The split relies on @folio
-> -- which the beyond-EOF drop loop never removes, as it starts at
-> folio_next(folio) -- staying locked and in the page cache to hold off
-> eviction. But the unlock loop unlocks @folio before i_mmap_unlock_read()
-> runs. If the caller's @lock_at is a tail beyond EOF, as memory_failure()
-> passes when splitting a poisoned tail of a shmem THP that reaches past
-> i_size during truncation, it too is gone from the page cache; so once
-> @folio is unlocked no locked, in-cache folio pins the inode, and a
-> concurrent final iput() can evict and RCU-free it before
-> i_mmap_unlock_read() touches i_mmap_rwsem:
-> 
->   BUG: KASAN: slab-use-after-free in __up_read+0x634/0x790
->    i_mmap_unlock_read include/linux/fs.h:537 [inline]
->    __folio_split+0x732/0x1640 mm/huge_memory.c:4100
->    try_to_split_thp_page+0xab/0x390 mm/memory-failure.c:1675
->    memory_failure+0x1394/0x26e0 mm/memory-failure.c:2470
-> 
->   Freed by task 4601:
->    shmem_free_in_core_inode+0x54/0xb0 mm/shmem.c:5177
->    evict+0x57f/0xac0 fs/inode.c:870
-> 
-> Do every mapping dereference while @folio still pins the inode: drop
-> i_mmap_rwsem right after remap_page(), before the loop that unlocks and
-> frees the after-split folios, and clear @mapping so the exit path does not
-> unlock it again. shmem_uncharge() and remap_page() already run before that
-> point, so after this nothing past the unlock loop touches the inode or the
-> mapping.
-> 
-> This is now a rule the split depends on, alongside keeping @folio frozen
-> until the page cache is updated: no inode or mapping dereference once the
-> after-split folios start being unlocked.
-> 
-> Reported-by: Hao Zhang <zhanghao1@kylinos.cn>
-> Closes: https://lore.kernel.org/linux-mm/20260710071344.GA106129@zh-pc
-> Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
-> Cc: <stable@vger.kernel.org>
-> Co-developed-by: Hao Zhang <zhanghao1@kylinos.cn>
-> Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+On Fri, Jul 17, 2026 at 07:58:51PM -0700, Andrew Morton wrote:
+> (why is mapping_set_update() a) a macro and b) undocumented?)
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+commit 62e72d2cf702
 
-Thanks.
-.
+    So make madvise(..., MADV_COLLAPSE) also call xas_set_lru() to pass the
+    list_lru which we may want to insert xa_node into later.  And move
+    mapping_set_update to mm/internal.h, and turn into a macro to avoid
+    including extra headers in mm/internal.h.
+
+Take it up with Kairui.  And whoever it was added that patch to
+linux-mm.
 
