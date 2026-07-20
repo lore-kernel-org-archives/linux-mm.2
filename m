@@ -4,141 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CC4C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08309C4452B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:27:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AAD46B00A2; Mon, 20 Jul 2026 11:26:43 -0400 (EDT)
+	id 03E7E6B00A5; Mon, 20 Jul 2026 11:27:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45AD06B00A4; Mon, 20 Jul 2026 11:26:43 -0400 (EDT)
+	id 016786B00A6; Mon, 20 Jul 2026 11:27:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3719A6B00A5; Mon, 20 Jul 2026 11:26:43 -0400 (EDT)
+	id E47846B00A7; Mon, 20 Jul 2026 11:27:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F18776B00A2
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:26:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7B9F31401CD
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:26:42 +0000 (UTC)
-X-FDA: 85009532244.16.6A79A86
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 87530180003
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:26:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ok8OBzi/";
-	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784561200;
+	by kanga.kvack.org (Postfix) with ESMTP id AFB016B00A5
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:27:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A4E171401CD
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:27:14 +0000 (UTC)
+X-FDA: 85009533588.19.0047637
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3F43320006
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:27:12 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fOLZbrzy;
+	spf=pass (imf13.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784561232;
+	b=tPiPVf3A+fSmMHm0WFah6uTBtBzWdZJfrMsCZVbk6EukTUmKhsY5URRPt6rsKyo6a3zB35
+	//PLPlveXynoP/FprbKCoAKew+sm440y3I1Y7MFqqCLtGqJaJR1FgLtPBTjAbglE//2jiE
+	+GmoknDypdMbyG1+dDLiaYoSaKK8h9E=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fOLZbrzy;
+	spf=pass (imf13.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784561232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
-	b=U26LTY95l+zyALkSgqUxKa+f9x2cVVZ0NqSKA5CxxWpZHUfcbrvS15NXHIYPA9LoGpmNAX
-	RoAs24gRUmnAOVwY3PAIQ3a8xpfVgP/SsojB65/u4EfQxYqurpPzasipbWS3/uMi6kkev9
-	IXyT0TeuP7HGNLuHGI36Jb5G7sLjjfw=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="ok8OBzi/";
-	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784561200;
-	b=JIo1S4TUOaE3K9uwCGuQyMSttukhpM8bzhq7/0prblDEiePMmQQjp86WGpumLYfqi+BlEa
-	SAR19+sk80eXLf0UKTEWpY0KCkKxzeB8da+vRkNwV2g2nfXaq7hH3hFpRJasqY6/h5Kx2o
-	P3JlGbNArHkvAEiRSwH9h++9koS5i+U=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381216921aaso9938353a91.1
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:26:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784561199; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HNEAUXMxBF5wtbvKwbTTCQsrOQuclXAtJYe2HBTUoR5vwhaoxYcWBf9XXPGYVy4w7V
-         TKOJmJv5Namd1xeG7HL4y4ZDpya/aqFZ+dL9NfKLF3qdOWkjtz5d8xlD3qbX1LoN4bfR
-         GCVkwHPEmJHYHaokWB1zkxNEBew2fDuiFX+u21ev5ejC/FGhpWoNblvj2AWxZ8CAbZwK
-         FAI0/t7jkEwaVRy/TzAHLTZpea5EEDTI+sFig7TGrUxDQbqI8G5KH2sl/4MSTeoposC0
-         ioejATJY7Q0usvtHKGYoqvFX1E++J05KTeF4r5AX4/samm8sAu5uzbHTSulOP4EZCvMg
-         nhDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
-        fh=tv1uX9FK3Ujl0JHd81Ah5C7goHqL/YhNMUD45xuxdpg=;
-        b=Tfb3+kn1v1ZMJFqHj72RuE8PopRRayGd9zOh8+VLDrXyWz5Xnw73AKs/IqS51xoDQy
-         RVnvDz91TqziQLW8lEJraPe+qLfb/SxhfHdaTHToBwjgNx1f8KvgVr64qQ3bxs7UddIK
-         qTl92ly1/r2SHIHG3Y0FzyvkjgSn5dHJz5RjTHlCB4hke+sGUd0B2QjNrSc3nQRb4eNn
-         mlE1TfZm34wxEpSIPiuGnpl/yY3VZV4Cpr2EMPqHKsZmqvuRv6++gv7ojtT901IJfcSI
-         j/atfyFdnra47GzmJ6eUgmCuxbDOSjwO6g3yhvqdlxuWuBZDO5HU+UgIYrA7ZQPUb0xa
-         bl1w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784561199; x=1785165999; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
-        b=ok8OBzi/ZU7J8YD7DWK1g00FCovq9Cy7+cU981UBHs8zGZ+COZj64+albVa7LnD87a
-         JKkbneJs3IeGfX0EcPPRsGaKi2MC1tMkrH8j43QdL7zXioKNXDRNnUEi3zkawyYkNGsk
-         XcXnEkpYcKk7gSHJ3NgbfEHSfopJX8xi/w2Gvto9V4mrD3Tvg7uIL3iZ9hh56xwtiQBo
-         klBDiQDA2bXe9hB4INRw532QXlrS4BBvzINNzgXEGOJdORpN36vXdyI4aExcFwZ1n+pw
-         znhtbAXpNil3fe5gsgXGAs06cmruuOgnkNTFPi+BT8GXhBztAe95oXzddUraQx94d5zm
-         oLzA==
+	bh=mgKSqbnwLevn6hoy4qUeVb3wDzkEMMbiLmxONqaR+dY=;
+	b=8SdBW58UABtiKvPeqOhpyc3ur5MhuBaiyh15AP0lBMJNo0C4QMP0gqDLRSoC9bWJaImj/b
+	pzSvWX9i4BaJSaX59QntEbWY7VdNNH1ctWaAUpcmpJpGnwVBBW2mHiKJx7aXcMEK6veuMq
+	F+UygHIRYkExtaHDQVNEY6TFpBHcaB0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784561231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mgKSqbnwLevn6hoy4qUeVb3wDzkEMMbiLmxONqaR+dY=;
+	b=fOLZbrzyYdhaYGchBT1BCZUUzSBSbvGFjp99JAM+ffsrjFBNDuqsuDqjA8h5y584w6hy8D
+	Aws4hhMz+ldX4MUEpAYaGCWPwlLhTqGzC07ZZUQzZHH0+Yb2KZ4VpkVTlcXMsNz1ZJ/xjC
+	V0v8IWhZAU4/qX8w1Z/VL73Zuh6Go3Y=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-343-Yq71AQMUPc2AkGlpHXwAjQ-1; Mon, 20 Jul 2026 11:27:09 -0400
+X-MC-Unique: Yq71AQMUPc2AkGlpHXwAjQ-1
+X-Mimecast-MFC-AGG-ID: Yq71AQMUPc2AkGlpHXwAjQ_1784561228
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-39d9337b0d3so16949251fa.0
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:27:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784561199; x=1785165999;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ppRDMOFJLBPX6KQmdpRBZE7SlCyjKiRE9PJURFV6vac=;
-        b=etoxq+ynaXEmLE+a/kapTAChDnq61OLtO1zcY48+VMPay4OZ1dxTSvKF4EdrjTHDiq
-         TIyNJPryFulInpV2B7880rs9+nnREckvNIOBwvuxQJYzPMcwzGoT+mJeDvwOIsykFnUS
-         l8tg+AvGke2LFL3yCVAKg3nNqJsrKlK01E/9KoFW/asfXnJxmZ8CC0622P47TxWHj8An
-         GAhhVMN+RHVCM3IEjvhAo3UklgXMMn3RFUsWm35iTGruZfapKT4MQ6fl/I+D1ztvDQaB
-         uosrWCkeh9ajOVChuhg3T7RsUrqCm9ar6lGdwi9273ZpcK7UOQtjOttIuJJNVMBN7t1d
-         sLkA==
-X-Forwarded-Encrypted: i=1; AHgh+RqfkixHrqQSbTKUP5mIVILHeZLUNSVHjuxAggiUR9O9usBCsWE2OuCaM8JNv/Jy4bLnQ70i2ehQQA==@kvack.org
-X-Gm-Message-State: AOJu0YyIudjMp+rI2T2hyUVxcdpE/0+UTPybAWTWy3mB/+7rKlD9RXvK
-	EWUss/8dzLcnGDDfID8a8lNR6Jsl08pAxCB6cykeb3WvzfkBN6UolxsTmUVZ7joDVlORBsvgnBw
-	jmJionhXgamfzjIwDYKn+WNTWBKp1gM9y/HpgnoGa
-X-Gm-Gg: AR+sD134hoNM1gDFBI/2FiLv7Gl+F/xGmLxK3uEGhbNQcKhzDW4zP5cg1x2qsi3MNCx
-	L/3T2AGFKfLW+8W3nofgtnyF7aXlwRScRoEiypSfBDHQH8fsVHo0n341IFlA2QE5I+losMCFDRx
-	SR5/xTtPBvIceycTq5k3kGU9XZjNFgWsIYOwjJCfcbwHcRRrIDj9hA4mESx0kaOrpimlU/bT9Yj
-	tqhwbGHPrLfscFvyzHlaLc+OQfdcydejFI54VL0mxHaj5MrbiGJaB+lat78E0FjppyaKKOGxQUT
-	f0dw1ICnt0DxpwhRJZl0hOBnqA==
-X-Received: by 2002:a17:90b:580c:b0:38e:2524:724f with SMTP id
- 98e67ed59e1d1-38e4b410109mr15364918a91.12.1784561197991; Mon, 20 Jul 2026
- 08:26:37 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784561228; x=1785166028;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mgKSqbnwLevn6hoy4qUeVb3wDzkEMMbiLmxONqaR+dY=;
+        b=f//wCo2foWsdjnX1hrYW/UTQiYgAnf6lPI49PVjTPmW5iWDnCJJ1VtwoluSf1e7JIb
+         1o5QjQKt2hVkn3EHWB9OCCgQXZTvSW2QOFozjGJdChoJw7cZlTltQpEd0WQAARc+bwRQ
+         p3MKhmnt9vOc7goNUrJ2qUSRhW3m58FYBiywz7ONYLu+KxKi+fl+XFIY5D74xF/OkZ0D
+         QFndjZ3MxOyu259Dsdf/s+2/e4aDQDRYIFbo0NjCpdGp3+sFSXaj2FkUovNnq3cfxrTR
+         2E3DvcCmIKzNteorVFaOr39lXNaTp84OeZFZJ/bDkXEB12SRPQEIv7QtYjEkgyHtvUWw
+         1DPw==
+X-Forwarded-Encrypted: i=1; AHgh+RpnP8ABIV8r0+V+zVmVngMPPjrSiPtDfmXQYkZ9LFLY7sWkyo50OshgzyYWpKsBbMNq4H+1ys2s6w==@kvack.org
+X-Gm-Message-State: AOJu0YxTLBqz4eba8NHoH/UEI4S9Axa3FRLJ382N5Sh+PA5snmb+9xYa
+	3Jdt53Coy7rCwdzq5sJCshx2kMQB+GMNzmkefng+HcpSL8yhLERiGLoABCA6uhWOUVjw/aEJJEv
+	ocPuSaWmCREFbUW2m4JehA+lV3+6PtFwxYhyyZ/cxHdqOgVMBki2zVey5kMOkDPf76Uo9w0Vsjr
+	FC00iFksm/ygXJ7FKSKQB/+ti/jqE=
+X-Gm-Gg: AfdE7ckzS1buYaNdw9IIlCaLNtqu9A3VXEc5wG+72aMah+XY8qzJf3W3R2O2Ih3IxGJ
+	6VtJXexIgo8GEe0xV4KNggvrkW1rWLALrc2Wzo7ZAn7QYd98lm95iQVJ/bBb4V6mmjg/pge8/av
+	xvvIIK0hVtNrSef87l3roHz26+VfJX2fvWyAbJTQ8F6CQABqnWdXVMIg==
+X-Received: by 2002:a05:651c:198f:b0:39c:913f:ce9e with SMTP id 38308e7fff4ca-39e9ebd6b94mr32423991fa.6.1784561227580;
+        Mon, 20 Jul 2026 08:27:07 -0700 (PDT)
+X-Received: by 2002:a05:651c:198f:b0:39c:913f:ce9e with SMTP id
+ 38308e7fff4ca-39e9ebd6b94mr32423911fa.6.1784561227180; Mon, 20 Jul 2026
+ 08:27:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260717125023.1895892-1-wangjinchao600@gmail.com>
-In-Reply-To: <20260717125023.1895892-1-wangjinchao600@gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Mon, 20 Jul 2026 17:26:00 +0200
-X-Gm-Features: AUfX_mytGrClEjUL35sTA01mL-vDpdcepD52IC2sE_eAPBJUPR35g0y1m7pBRLg
-Message-ID: <CANpmjNMpKXxk2KsZORakwwdOpDG=pRbtJKi7doBt7QmQwUKdgw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 00/13] mm/kwatch: dynamic hardware watchpoints for
- hunting memory corruption
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>, 
-	Alan Stern <stern@rowland.harvard.edu>, Randy Dunlap <rdunlap@infradead.org>, 
-	Alexander Potapenko <glider@google.com>, Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-doc@vger.kernel.org
+References: <18102ABA-0D8E-4DA0-AC30-544E34E445D5@nvidia.com>
+ <20260609172719.803537-1-usama.arif@linux.dev> <CAA1CXcA84BtQZxOpE0sWgb2ed6y3m0NLKkWD+5MfWS9eF5dqTQ@mail.gmail.com>
+ <a464c20c-8b41-4264-b560-497ed91cbaaa@kernel.org>
+In-Reply-To: <a464c20c-8b41-4264-b560-497ed91cbaaa@kernel.org>
+From: Nico Pache <npache@redhat.com>
+Date: Mon, 20 Jul 2026 09:28:31 -0600
+X-Gm-Features: AUfX_mwZ5uM7fwgr5H5twJKlnrh2Zu-nzokcG8yxCX8jCh3Ri4-874_BMKiBBbA
+Message-ID: <CAA1CXcCsqkV2PrLicY5BnOMp+iJWJxsPn60g_3WXugWQqOFYpg@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting
+ from interacting with KSM
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>, Zi Yan <ziy@nvidia.com>, ljs@kernel.org, 
+	xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	usamaarif642@gmail.com, yuzhao@google.com, aarcange@redhat.com, 
+	akpm@linux-foundation.org, chengming.zhou@linux.dev, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VANAbBUkMncVThcapWGxny-KKILfCpjPUScJuIYu0MU_1784561228
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 87530180003
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3F43320006
+X-Stat-Signature: sgonqb61adhn179hbi5pusw8x9p41i1s
 X-Rspam-User: 
-X-Stat-Signature: t9rbt3yxx13ce793y71z7zqkjkfwg8ye
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784561200-568528
-X-HE-Meta: U2FsdGVkX187LtrUEOPfNKB42FBIhCpuB6/VbvfFmeRiq8uL0U5mULzSBV8NtQA43mzHRfsg6sOdlFBhd1N7pd9z0l4cxugQDia5N+ZdgXWDeruNmEmMSPwBrVxtNjGNIkYH758Zx1w6if0Ww2JyoCNI+pSGpxawf+g8Df39DLQSz8zPeW097UPdDrpxirGnCuc+Z2N3Cq8I7ZUMq703Risns2z9rNXNMsQJZ7rEtmaxKeDwLNnRYOewQXiOvdrsfcF9VkPyKGeaIF3bQVYAES4eU1sXVwzAD8nYGoXSEatxj1saOcSF9xH9CDSj5UPJfbtRX5f0tTOQMG4zkg6eoxVEy5dzpE0yw5cnH4EmoV1cFhEjAN+Jqsc1Pf+tO3mZUNI8E0Puo+Jztc2QrfLP7c1Ukgg8+pUxfWmexEmnDlnsXfd6YAK5owajMQ3ndubFeohEjdJJlBqs2lHcGKVy4I71kmpjYBlSsGY/jG1uJqDhp0giZsHIrgXoffsUGNdqHEM/bPd88duz4dCZjG1PyU4GkqCMbCgXMROJHxEh2aqPooKt4LY8KcRCXISbo812iJHY3H0MJZjxhy6JynpCycdZ7TvHafpGaenXWNu+xlWpZdn851WCFsDMq6VYePs9OiOVN9ks/cxNNqGHU55/i7R9kIs9nYwjNlDDYJy2Rw40wCoOSAshKvJc/N7dF+jGJMfhcBpIzGCl4baJzJKS6GF/DZoaElEZpSbtDn/bfNv/pQBiHKL1RBpSLrbAlXknx0tpKn0SOG+Ns1EJhKeevr2C4QiygMMdgf4PhcXH5VggLM8ilzm3yq2KRjG+vZRVibQfgBe/kgYUygeTscwElw36vBgFcf0M0UbYtNYRiUBBoDXksjfyGOkCkEWOmwuIRZ4sv/R8+MqRlIGuS2bhApYki4JvJKsAKMfWgLO5x1QtC3Q97ObMbulFoXtnij/jz6sf1A4B0Z8pvZ20zYn
- 1ZNpq9Tl
- HIvyV79nPZC6W6Ryb1lLTjU9yK0bXi7Uz/jJdKVILPF4WnoXK6JniIvWdXTcv3ybu5EZBwTjc7M8SfFm6I2X4GPl8i7j/x/9Lct7G14hBTnQP73vNG3XyVlIM+rp3m0ymSqI+vl/ol0swrrxhwa9LYOTeqI/Y5IPUosy329hndneSnNqEzXI27jIWK9Em/GuBi9Cuo39/j5CNvRsBjDDdgscxBPyiRn717Sx3FzELaVHgoVDzlFeMK0wmGE/bl2dBQPYWvrxmmrfZ25MITMzbELPOCJiVc41sM68wyMVr9MeaXLrdsjSv6tveiOVqKJHkvEi1
+X-HE-Tag: 1784561232-297579
+X-HE-Meta: U2FsdGVkX18GfTsZWHskyZtK/plk43krcKRxCWwOaoSea1eHGAcloQG1nn397XC/FWuXzUHHdWp8fb1P4FZ7sUut++1MnHC5UXhKw6JrRCyw1LrzTmFcXpd5aBkK7weXNFAepXn6kqFrlVdP70pYhqat2QcwjwPi4TxIBwacA14Dyk6sOi08xgDlp+zQGcefVC/ZNJeBnKVzEdmmep8BO43zH3ekLL/3/DiLyGjP28hHigYPB5150OpR83Lj3DULk0693QKaIqzpfPdQJT/7QWNR058ib8L918cZ1Y8QbO8owmQqwEGKofBfcqths2+rFHaMClR7cNkT+V3Gou0AfnWNtprA/Uss3OVFEpH/N7YSYGlzBAkbES3Dx3z3/xWI+ID+KbCid67uu4gEvZk+m+PasMRxLzJk8IKjwJor2n82QL4SIvJG9o3ZHSmfNbeZ5wzzzILSm05fL6qPJdeksVJTuj5GPXlc3ILwyYg0MAZeaxAEa1oawUEW9DxwHjy/U2AltG+9mS6bXGvrI9w/zukNAW3nrSn0MVS3uVPPX4bqmYov5n7/BpTo66uFxw2VeMko0AsWFSDmaTrwpGkIw3UKB/O1qx6t10UpkffmvZGNpUqUbzHQ+lILyFFFw/GWdI/AeWe3zptgqtVhlYFmJERkSyxECD0/ubIpygrsW1r31sbUhElDaElJh3gg55jym/feaVBSPhhwDrZhsvs+48eX5ymeLIPS4Yl8Q4k1dQscnV08ffRPoA4qaBRn2uDBnJw7r0FktnCd551WmFxfQ742YJ9bM1mKIN7dmUKArontuV5RuBM17hbFsEMsAmkheHKiBdWxsGb/n01P7z0aR/2XSQbzjDQLOHaBQF/Puz3J+Zc59f+ty3kmdhjpdMqSHX2G6JzBOCRNrIDTlHCmT6wA2Sfnii/Hqy9TSbYovwujdLhTj1brOSYzVxEecK6jiOibOlEyAeHtK58UjOz
+ D5pUbqSy
+ EiDHAPAdMz3ZWKYeUw1FMwiYi8dSXbxswsQrQ+JiitcTXYpdLMBYExw39ly1h5teYyK0CTBaSsgJkZDggi96Hfq+pPnCBf2BPsXjJw2hQkxArtJ+VWup2EScSDCcki6lny+7RnmYTZfGgCw3+gbPilesBgB3O6G9YP91C4r6mvpIJaXNK2yqLYP/yCN9tFTU6cXNd6Iryd3jDrJqygf0xma5Kn2O1xgq5kp6Szef5n2ES9q5ujF03PmzwqOYbAsr78Uf9tBNXbyKz6I3kOGmCAVyFCbnX5FTp6NMOEPOlMz1bh4wFFJpu1tkvniAmkt7OwKabAKyYKQE5DmI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,48 +134,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 at 14:50, Jinchao Wang <wangjinchao600@gmail.com> wrote:
+On Wed, Jul 15, 2026 at 3:30=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 >
-> Motivation
-> ==========
+> On 7/15/26 06:05, Nico Pache wrote:
+> > On Tue, Jun 9, 2026 at 11:27=E2=80=AFAM Usama Arif <usama.arif@linux.de=
+v> wrote:
+> >>
+> >> On Tue, 09 Jun 2026 10:07:20 -0400 Zi Yan <ziy@nvidia.com> wrote:
+> >>
+> >>>
+> >
+> > This would be a good intermediate solution while allowing backward
+> > compatibility.
 >
-> The hardest memory corruption bugs are the silent ones: a rogue writer
-> scribbles over a live object through a stale pointer or a race, and
-
-The stale/dangling pointer (use-after-free) case is the main one you're after?
-
-> the victim crashes in a code path far away from the culprit. Any
-> single developer hits such a bug rarely, but across the kernel's code
-> base and install base they keep arriving, and each one is
-> disproportionately expensive to localize. The question to answer is
-> "who wrote to this object, and from where?", and it is hard to get at
-> with the existing tools:
+> And an absolute horrible user-visible toggle :)
 >
->  - The kernel's own reports - an oops on a clobbered pointer, a
->    BUG_ON, a list-corruption warning - fire at the victim's access,
->    not at the corrupting write.
->  - KASAN/KFENCE catch memory-safety violations: out-of-bounds
->    accesses and use-after-free. But they have a blind spot: a
->    corrupting write can be fully memory-safe - a *valid* pointer, in
+> >
+> >>>
+> >>> Just think out loud. Or just skip huge pages all the time unless memo=
+ry pressure
+> >>> is present. Basically treat KSM as a way of reducing memory pressure =
+by merging
+> >>> pages.
+> >
+> > Hmm interesting. We should decide on future changes before committing
+> > to one direction; however, i think the immediate solution would be
+> > what I currently have prepped for v2.
+> >
+> > My v2 follows my RFC alternative approach: skip zeropage remapping if
+> > the split comes from KSM. It also contains the patch (3) from this
+> > version, which skips zeropage remapping if the shrinker is disabled.
+> >
+> >>
+> >> I do agree with this. I questioned about if it even makes sense to spl=
+it THP
+> >> with KSM in RFC (https://lore.kernel.org/all/20260510114001.600681-1-u=
+sama.arif@linux.dev/)
+> >
+> > This is indeed a good question but I don't know the right solution.
+> >
+> > Perhaps we can discuss it here.
+> >
+> > So far here are the potential solutions:
+> > a) skip zeropage remapping if the split comes from KSM
+> > b) skip zeropage remapping completely if the shrinker is disabled
+> > c) Disable KSM THP splitting completely
+> > d) add a skip_huge_page sysfs toggle
+> > e) only scan THPs when memory pressure is present
+> >
+> > (a)+(b) would be my V2 which I can send out whenever.
+> >
+> > (c) is the nuclear option, but perhaps KSM for THP is rather
+> > inefficient and pointless
+> >
+> > (d) could be used with (a) and (b) and allows more flexibility than (c)
+> >
+> > (e) is a more dynamic approach, and could be combined with (b) and (d)
+> >
+> > Let me know what you think :)
+>
+> Where does the current patch set fall into and what's the problem with it=
+?
 
-Language-semantically speaking, a use-after-free write to recycled
-memory (be it in heap or stack) is NOT memory-safe. The detectors may
-not always catch these (KASAN relies on quarantine for that to
-increase the chances, but yeah, not guaranteed..).
+this series (v1) would be "dont scan VM_MERGEABLE entries when KSM is runni=
+ng"
 
->    bounds, to a live object, written just at the wrong time or to the
->    wrong place - and then they stay silent by design. And even for
->    the bugs they can catch, KASAN's rebuild, overhead and redzones
->    change timing and layout enough that racy corruption often no
->    longer reproduces.
+It stops all VM_MEREABLE entries from being candidates, while the V2 I
+would like to propose goes back to my RFC's alternative solution
+a ) "skip zeropage remapping if the split comes from KSM"
 
-There's also tag-based KASAN (KASAN_SW_TAGS or KASAN_HW_TAGS), of
-which KASAN_SW_TAGS has an x86 version based on LAM (not yet merged
-though? see https://lwn.net/ml/all/cover.1773164688.git.m.wieczorretman@pm.me/).
+I think (a) is better than V1 as it doesnt indiscriminately target all
+VM_MERGEABLE mapping but rather those that are triggering the issue
+(the split).
 
-One property of tag-based schemes (and any other lock+key detection
-scheme) is that upon recycling some memory, the tag (or key) to that
-location changes, and any previous pointer that still has the old tag
-will fault. The caveat with current pointer-tagging schemes is that
-entropy is relatively low (4 bit tags).
+Cheers,
+-- Nico
+
+>
+> --
+> Cheers,
+>
+> David
+>
+
 
