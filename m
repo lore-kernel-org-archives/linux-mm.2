@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DECDDC4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B0B6C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:40:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDB2F6B00CB; Mon, 20 Jul 2026 10:40:05 -0400 (EDT)
+	id 147386B00CD; Mon, 20 Jul 2026 10:40:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB2ED6B00CD; Mon, 20 Jul 2026 10:40:05 -0400 (EDT)
+	id 11E6A6B00CF; Mon, 20 Jul 2026 10:40:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA2AF6B00CE; Mon, 20 Jul 2026 10:40:05 -0400 (EDT)
+	id F295C6B00D0; Mon, 20 Jul 2026 10:40:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC5C46B00CB
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:40:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2D7061401CB
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:40:05 +0000 (UTC)
-X-FDA: 85009414770.25.A745BCF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C54666B00CD
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:40:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 597851201A3
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:40:14 +0000 (UTC)
+X-FDA: 85009415148.11.14D7E4E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6DC0C80004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:40:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihkKAuBs;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784558403;
-	b=SOg5VVlYCk+d3CxfOuf+X7sfYH4TGgXrAN6bItRDyTtAZ9qNgysMYlemMewjkijxsomh74
-	fgV/KkWRKup09JPhLvd0GnpDLtbsyC2hdw+OZ/0cGkt7l8MpXDir3XUmFxAbjcOxJWW8x5
-	q1RQxNQqh2yOU71FWyrH0oZ01Fjnld4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ihkKAuBs;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id A4DD2140009
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:40:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eUOQE5tt;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784558403;
+	s=arc-20220608; t=1784558412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vPRgGgD5Et0gA2LrEPYq7BEyOk+lst4YqtYhmYPtoNM=;
-	b=jdyvtHR1kshzzX8E7EgMjIRbXNPIHrRZmlRaiISTqII4Y799cfdc1rJ07tveuSI69R5H9P
-	PIw5YomJFy7ZTaVFAer7r5bb5UIBvIVSL7h26CVxi3sSWu68BfWBwpIBBiNFfCPg2rZRic
-	32JaXuit292l8cmsCgB5KIEq7xZGH/o=
+	bh=BHrvjp5Lc9CpGwr/Vetfc2dLYK33dJtbQdjvdpaRp9A=;
+	b=DHLhwrmVtV27VpfQWTCrW7k5xZplOyE5XEht+yWMx3pRiD8RuMkXFmp0jow0kLTY6alr4J
+	7AcNHuoL0EyL2XT3wLWzrAh4bmi+txZsne6N8DVN1E6VocO1XWZ1DtGgAHoRAUelcBnQ/r
+	4YrbEli4eZ4ByAzUQb0CJy7Owplb634=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eUOQE5tt;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784558412;
+	b=TzLxECNopzng99d1HinR1Ko90lh7KwQDJ8zeFPai8+dS034HIjgvOl+lCByIbhivpAH1y3
+	1GtZrSVj39hgH7BUr484N/YvNUsV02TTbuVphBdBhW5QA6f2X+VXrxEh6hTfqEMCHthoEi
+	i/MpiTaeXcRArkWQmY9v+LhARU2ZomE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 01D2160A60;
-	Mon, 20 Jul 2026 14:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D781F000E9;
-	Mon, 20 Jul 2026 14:39:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4003660A7C;
+	Mon, 20 Jul 2026 14:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327701F00AC4;
+	Mon, 20 Jul 2026 14:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784558402;
-	bh=vPRgGgD5Et0gA2LrEPYq7BEyOk+lst4YqtYhmYPtoNM=;
+	s=k20260515; t=1784558412;
+	bh=BHrvjp5Lc9CpGwr/Vetfc2dLYK33dJtbQdjvdpaRp9A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ihkKAuBsHS90mOQuGgSPwHFNdRwKJ74q8U3c/CMWBE2s7tVdfeNThLJI3CIWj9xG8
-	 MuecEx7awVv57WZ0cr0OJC7lBeS3VhQnhbZP3bnQeB53Z0N58cAQGQL1DDynQaeDRt
-	 zm2yIiuFyZHtYcPVhR84l6Gmi1/ve5WrxvU8pF90NFnC3By3dMRIYKsJwM4k5zS9X+
-	 lDmNmaA+fejnRImm1m7lte/QNcQMcRXhElPF8/PUVrZ5N84weywzuIki9kqlUznLQo
-	 vlXaEGgCVlTmTioqZ/22/Eev5tF+sMzA0WMwFaH4G33LmnIhEnQWSR6HxsBjMVv9kj
-	 dUUQe+q23Rq9g==
+	b=eUOQE5ttQ5K03GANJHDG0/gYzgnZBdAC/5kwVYJIWYARTVPjDt6T9UHoHGEGXXnZg
+	 DcTmRsq0oeMcLWqWiOoWaq7pPwWFOMq99yCn4BnOgCZQWdxYSAbvNgsimNlY237g8H
+	 PnlTl7Kj1NzINjw10Vhlt/GnzzkTlgIhxMnkVua5HKDEBVlqNDgyOhbVS35cczPGQ7
+	 lAU6S9nnJhOti5tICPs5QUljcaw3ncuKIP0xAM+kVSWfyzXPMf5tTBjevL6x7jkEnh
+	 fQwLv51nJPytWD6tFQXcGnniKJJMUxXluP9eUXvfgQqJ1w9bsuMmOW5S0Tyfaij3NF
+	 8EpnVvuKacXaA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 20 Jul 2026 15:38:33 +0100
-Subject: [PATCH v2 07/15] mm/rmap: track whether the page VMA mapped walk
- is anonymous
+Date: Mon, 20 Jul 2026 15:38:34 +0100
+Subject: [PATCH v2 08/15] mm: introduce and use linear_folio_page_index()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-b4-scalable-cow-virt-pgoff-v2-7-2d549757a76f@kernel.org>
+Message-Id: <20260720-b4-scalable-cow-virt-pgoff-v2-8-2d549757a76f@kernel.org>
 References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
 In-Reply-To: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,22 +99,22 @@ Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3158; i=ljs@kernel.org;
- h=from:subject:message-id; bh=6oAdoFocXqlHeZgV/qOxR/hLOIfpXC9mc/vlgufhmIg=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLijN7MlVZTvFEV9FD4T7j9bE93wWt67FlMDXFW6zebc
- f6P+JjbUcrCIMbFICumyPL8i/j+IJGweZ0X/N1g5rAygQxh4OIUgInETGH4K/HdNCly34tnPbvu
- F7wNkver8spem5J6dMn1qTr3lpWL2TIyXPDf6vJ3WsUZ5Q2JZ6XCl24PS9DrPaHYwtE0K3Zr8+N
- 1HAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4022; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=q7rFBK1JcdRaa6+vbmoVHB13KGgbUIBraCmA/Lc5wG0=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLijN4UrS0+2FbwaKn78nWRBoE3Oy9F6sm88+87wfuiV
+ L965wHLjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzkrwvD/5zbn3m+ZFq4HlTS
+ Ufh7KPnW93MHmawsyxO+Fj6ebbZV0IaRoaNL5lrbBeUl3yM2FOVts5lZYi1TWKK4Rfn6zb3c3Hv
+ uswMA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6DC0C80004
-X-Stat-Signature: nd6aq1ea8x6p9st5wqdthi5x4kj44etq
 X-Rspam-User: 
-X-HE-Tag: 1784558403-31670
-X-HE-Meta: U2FsdGVkX1++dk5iZpKL3/GiBapncNzqtB99Ss4DmFSz9sttnLPG1qxunTX3k0U83DMXnNdBKBjwtCV9uLQ7C+JoQZaaG6A+WT7AmjjgBotHikThc4MYj4H5iDvmkibdUoYNOKgXqKG2gTL+UMj0ZRjIJfVbyU21//WNpkG3owUC8RhT3/hTTy4hVjFaIzx7mnXezZYNcrGVDZ2X4/nX+72J+fanFffHXVwiVJZjRyVnnV7ptxIQS7SWic0pBG9xT4jp1F3wm8D8StdqFGJI/18/l85RgpKqrG/4ukdVPaLhiVmAZIxc8y92+FgRrBzIUsBiqDg0Lp/CM21Q0fCWRVBdjuzsLVYDxcsUhQCrada5uIjwVkBKF4eT5x37Wq4LOvnGsP7LdBK3KY47QwtSOLHKxvDdTmckxcSGpgjHTFYdAOjo0Ox7hyzbbPRfOG4lcxAY8O2iJnPEmjfkCn14YHi/HofS/mpfWiEVs1P4Csj277YN6BI9OvGl3iTdiHag1njvyGylWkcmc57hp3ylIuKmtnjo8fNw83INUNmX+Mul91gSWU4P3836XDly0ci1GRKQJPuxZSIB1egBiDmmXefItxaLyVDZKknpXjD9kozg/q9PHcZmea9x5Gk8/R9nAb+9xFD3jordSIbuK1kO4ROcVWRC6UxGpubqgujfaJ9MVEQYwQ23DoQTJ+BBRdmgEG+ueGQYfoZx7olvPQ3ThxXCo4iwO0l8fvKhgIj3gntfxiDZr+VR3WkruDIe7h3Tfmm3VMtQp3fzxZ9gd5agSRvQKuVifYcyCy2FDK9B/9NUo2t55pQBPtAHhgICw/6VfMzZGC1h4AcH5gL0bFO7tLyKB3X0JlK4TTxQs4Hh4HEyFipAJemdPFE0tPl3zn241HHw6eVRbTV3J2NsADkkYqKthbCdLSM+Ucx3JBgyJtKPzlhx5gYxwlRr9NrTgUej9bcrEOhSTc5Qt0TLn6Y
- XPwTUa61
- d5M+psD/zc49NKwq4jsNPii4dr8vgd5UGhV8jePx52UJsA0r9mdmrC07P17R7TPGqPftdOqVQSmaQ7xoT4WGlGxlwLMUNkFXXkidaBuw6/vqbZyJmQ9cF3RkjFntn112pt76ONQMLAGwKb08ggWbZXgVdpk8FjhkxvMDf+ZsTGv1h3NVW+/Wucf5YuPDvhY6ShLcsokeSfaJoek4FyR6LFlTTZeQzJruXRkJW5guxgOVpjdW88DcA4AZY2YS9GpjCQbNNPV4nufxn4tK20LGt0+SCKurNEkly5cKf8XCJFq3gbL32LbUGZmFER7Vtpy7mqTgq
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A4DD2140009
+X-Stat-Signature: idpcdgpcg5bpw69jwqwhxxobxja7njag
+X-HE-Tag: 1784558412-995818
+X-HE-Meta: U2FsdGVkX188HunVJmcJRW539+hYVuedxtUDkKfsA6EuNXZMde8y4kEgSW3E2KSUwKzQgXd3aPJMEtSpKNFlgCYUTLt20ITJCnHuSe8zX+NerNwh5Kq7SrJVBiFe6YCgLVyf3OB1463f8+kxfiI0J7808+dbPRPjLzTbeXU6ZQpMTc0VA6jd3bL7V6q/L2+x962qifxC2g3meR6YqSUayESxgYts8db5fbtAIajB4cl19N+egKXl1U/Ec6mZqThvrTqp+vQUdyHvFNJTWvbaXZLw3bGidnUoE24X47Bu3LFfIkUQQO5jzyzBqJUi50fwxY4fn+W6rhp0MlgcHl3UiLuIm4HFVW9df2sxwqQ/SsJhBqTXxPszrZBq6lf/kk6RKovvgS6x5SthvKUP4o7CQGMKfm2hsND2ukju4FuM4AcZ3V45Ygzg+KEJQGpWuVWIblNw5y8EszTUQFOJ/VuWmrWfl24W6yLvcgczCuoS8g/GkRt63RFJFd50N+E+6fnb7bQEIsFH9HgCAH69ICFM+ZZjl9sWm66+uQwnZrQ7DR43HQAzibdGhXVTU5yvk2xVjIoOmnUgrrDC0GLi7C6XbUc7iEq3tO5aJO0ZW6p2CPXkQoS7hsbJkaFHC9btbt4707eobhkTObLCayaIkOTLMJTtxI6GC6VTFZxjM0WidQIpBxoT3J0FIyCRvpfeJDOtAtFOFNlxgExcZJoDvuuozPuXai+edxYTeUi/KtPHB0g8JVlUuX6xmOLH2ixbCJMw/j5/1QXNu1sRcbhuBIZMfmiWjoR60RVH4dpwtNpyU2bEdS3ENmiUYCXbsMi4/359ivFf6rt6eMZcbof67WUifirFPC2ssEy76h1c1n5fhi60AKgxpC0RoG2IyzO5M2XAguIKMVsXR2eKOvo+q7cI/MZR8U8I98bl81Z2dauEYPNQrp4moUxXD6DWV2Bl3MjWfZEYhIIQSU2aYqcRxGv
+ PgD8MjHy
+ JnJ5I29/ETxZpY2Zla8FPH4cBKK9KomrmePNYfDTNxQgM2XpnthbumygiP+WlUqVuO8EcOrZQj3cAgJsEA8fkoBkT2SxYo/P/wjzt0Uz/X2x2DLa/Ws9e+2aAswl6qOuUn1Zx/0/cIdcitq4P9YV7uy1qe6z55IrLinu0C2nyRfNeHEplOKM0+H+jcH9yppufHuTfS9loQHF+X94/TP3dGspvajj318XAHVEUcFxMs8IuA2im4Fi5WiGyX1SDCOOkWrGRY2fu4S1+NC807D2X2W1uwxFYPGWCmPMPNRdCsVPa+SkNaDDb09WQH2ZlbBNDO918OawS7m1C53kA6IjBl10RI1Lktt96Y7PeLpylwTuSID2OxefSFcfIHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,98 +122,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the page_vma_mapped_walk structure to track whether the walk is over
-an anonymous folio or not.
+This function is, for now, a placeholder; it will be used in future to
+determine whether to use the virtual page index or not, based on whether
+the folio is anonymous or not.
 
-This is necessary in order to determine the correct VMA page
-offset (virtual or not) in vma_address_end() ready for a subsequent change
-which adjusts which page offset to use depending on this parameter, and
-update the comment slightly.
+Currently it simply wraps linear_page_index(), so this does not change
+behaviour.
+
+We update callers that will, once the change is introduced to track
+anonymous folios by virtual page offset if MAP_PRIVATE file-backed, need to
+determine which index to use based on folio type.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/rmap.h |  2 ++
- mm/internal.h        | 13 ++++++++-----
- mm/rmap.c            |  2 ++
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ include/linux/pagemap.h | 18 ++++++++++++++++++
+ mm/huge_memory.c        |  3 ++-
+ mm/migrate.c            |  6 ++++--
+ mm/userfaultfd.c        |  6 ++++--
+ 4 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 8dc0871e5f00..a48ae9575bd2 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -871,6 +871,7 @@ struct page_vma_mapped_walk {
- 	pte_t *pte;
- 	spinlock_t *ptl;
- 	unsigned int flags;
-+	bool is_anon_walk;
- };
- 
- #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
-@@ -881,6 +882,7 @@ struct page_vma_mapped_walk {
- 		.vma = _vma,						\
- 		.address = _address,					\
- 		.flags = _flags,					\
-+		.is_anon_walk = folio_test_anon(_folio),		\
- 	}
- 
- static inline void page_vma_mapped_walk_done(struct page_vma_mapped_walk *pvmw)
-diff --git a/mm/internal.h b/mm/internal.h
-index 73f90aaa979d..7ed8bde7890d 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1079,22 +1079,25 @@ static inline unsigned long vma_anon_address(const struct vm_area_struct *vma,
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index c9c65ba60ab3..c635c3237f52 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1143,6 +1143,24 @@ static inline pgoff_t linear_virt_page_index(const struct vm_area_struct *vma,
+ 	return pgoff;
  }
  
- /*
-- * Then at what user virtual address will none of the range be found in vma?
-+ * At what user virtual address will none of the range be found in vma?
-  * Assumes that vma_address() already returned a good starting address.
-  */
- static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
- {
--	struct vm_area_struct *vma = pvmw->vma;
--	pgoff_t pgoff;
-+	const struct vm_area_struct *vma = pvmw->vma;
-+	const pgoff_t pgoff = pvmw->pgoff;
-+	pgoff_t pgoff_vma_start;
- 	unsigned long address;
-+	pgoff_t pgoff_end;
++/**
++ * linear_folio_page_index() - Determine the absolute page offset of
++ * @address within @vma from @folio.
++ * @folio: The folio whose linear page index is sought.
++ * @vma: The VMA in which @address resides.
++ * @address: The address whose absolute page offset is required.
++ *
++ * For compatibility, currently identical to linear_page_index().
++ *
++ * Returns: The absolute page offset of @address within @vma.
++ */
++static inline pgoff_t linear_folio_page_index(const struct folio *folio,
++					      const struct vm_area_struct *vma,
++					      const unsigned long address)
++{
++	return linear_page_index(vma, address);
++}
++
+ struct wait_page_key {
+ 	struct folio *folio;
+ 	int bit_nr;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 9b1f3b24f7e0..abc65d608c23 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2887,7 +2887,8 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+ 		}
  
- 	/* Common case, plus ->pgoff is invalid for KSM */
- 	if (pvmw->nr_pages == 1)
- 		return pvmw->address + PAGE_SIZE;
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+-		src_folio->index = linear_page_index(dst_vma, dst_addr);
++		src_folio->index = linear_folio_page_index(src_folio, dst_vma,
++							   dst_addr);
  
--	pgoff = pvmw->pgoff + pvmw->nr_pages;
-+	pgoff_vma_start = vma_start_pgoff(vma);
-+	pgoff_end = pgoff + pvmw->nr_pages;
- 	address = vma->vm_start +
--		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
-+		((pgoff_end - pgoff_vma_start) << PAGE_SHIFT);
- 	/* Check for address beyond vma (or wrapped through 0?) */
- 	if (address < vma->vm_start || address > vma->vm_end)
- 		address = vma->vm_end;
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 5798427d007f..04b657eefb3c 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1240,6 +1240,7 @@ static bool mapping_wrprotect_range_one(struct folio *folio,
- 		.vma		= vma,
- 		.address	= address,
- 		.flags		= PVMW_SYNC,
-+		.is_anon_walk   = false,
- 	};
+ 		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
+ 		/* Follow mremap() behavior and treat the entry dirty after the move */
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 222c8c15f782..37fe7a9b3fac 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -363,8 +363,10 @@ static bool remove_migration_pte(struct folio *folio,
+ 		unsigned long idx = 0;
  
- 	state->cleaned += page_vma_mkclean_one(&pvmw);
-@@ -1317,6 +1318,7 @@ int pfn_mkclean_range(unsigned long pfn, unsigned long nr_pages, pgoff_t pgoff,
- 		.pgoff		= pgoff,
- 		.vma		= vma,
- 		.flags		= PVMW_SYNC,
-+		.is_anon_walk   = false,
- 	};
+ 		/* pgoff is invalid for ksm pages, but they are never large */
+-		if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+-			idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
++		if (folio_test_large(folio) && !folio_test_hugetlb(folio)) {
++			idx += linear_folio_page_index(folio, vma, pvmw.address);
++			idx -= pvmw.pgoff;
++		}
+ 		new = folio_page(folio, idx);
  
- 	if (invalid_mkclean_vma(vma, NULL))
+ #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 8fd24c8b428e..258b03182a78 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1352,7 +1352,8 @@ static long move_present_ptes(struct mm_struct *mm,
+ 		}
+ 
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+-		src_folio->index = linear_page_index(dst_vma, dst_addr);
++		src_folio->index = linear_folio_page_index(src_folio, dst_vma,
++							   dst_addr);
+ 
+ 		orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+ 		/* Set soft dirty bit so userspace can notice the pte was moved */
+@@ -1428,7 +1429,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	 */
+ 	if (src_folio) {
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+-		src_folio->index = linear_page_index(dst_vma, dst_addr);
++		src_folio->index = linear_folio_page_index(src_folio, dst_vma,
++							   dst_addr);
+ 	} else {
+ 		/*
+ 		 * Check if the swap entry is cached after acquiring the src_pte
 
 -- 
 2.55.0
