@@ -4,134 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06CEAC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:44:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB16DC44529
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2D9A6B009D; Mon, 20 Jul 2026 13:44:48 -0400 (EDT)
+	id E22DF6B008A; Mon, 20 Jul 2026 13:52:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADEFA6B009E; Mon, 20 Jul 2026 13:44:48 -0400 (EDT)
+	id DD2F36B008C; Mon, 20 Jul 2026 13:52:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CD566B009F; Mon, 20 Jul 2026 13:44:48 -0400 (EDT)
+	id CC4366B0092; Mon, 20 Jul 2026 13:52:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 68B606B009D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:44:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E37814025A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:44:47 +0000 (UTC)
-X-FDA: 85009880214.01.596AB4D
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 20B13A0017
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:44:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=FsAwEkLh;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id A0A4E6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:52:44 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 142A41A0266
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:52:44 +0000 (UTC)
+X-FDA: 85009900248.06.8ED7CF8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B9460C0002
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:52:41 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Pgyz1YhP;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784569962;
+	b=WlCWOuV6UQ36huEnSKx96FMeIpAVDH/f3zXrSIIEdos3VlAP2A9fiewjMNWEPzwlhJOQ8k
+	FVMThdZG9iubcwXoTahtaqfuLP+mEzU8ArHIwG8ij7GLOX2ZQLglQ3mcqJzth9qsB9kYHv
+	DQCe8T06wIvHFV2Czkz4e3dUhe5j6CM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Pgyz1YhP;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784569486;
+	s=arc-20220608; t=1784569962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fh0Ky+WC8JAb92VghcxhTRFBn6Go7CAcxa18f3039ho=;
-	b=Gu0i9nVvoxn+Spju1U+DMax+nsjwYiPAcfIOBWgPd4jVvV5NU7L6FxLdPZT3zaJjYn2DtV
-	iCNBtcFAyBsrlwj1jcFG6/TCYoMg9R9gBLcS1mgXDM19fEwOH4+wYFawsY3k1BDQpEAwTM
-	SEI3we7gMGPqHvOsN5L+8rFo7Aye6NI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784569486;
-	b=zsmJ+xbsF+BQeKuWeYb1H14iNGOsUSrRN8JykDY3cPAtCh/Pao8w/vm7TueA2L69XbPyNB
-	vIETpj8JW2tPh2BJMYqnkWsMvxPvCOSHoXKZGumSSR+ep8aB3z33zmEE6ijKQaOIpSoeeO
-	XAVTO6C40DRdGAEm3RO6htALZULb1ag=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=FsAwEkLh;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51bfbe05683so94789041cf.2
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784569485; x=1785174285; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Fh0Ky+WC8JAb92VghcxhTRFBn6Go7CAcxa18f3039ho=;
-        b=FsAwEkLhYHOz7uJX50Kl4hXAaymdy9EPVkjNn1obNyS1QDdrGsS6WOi8HI0jLa9iL+
-         bjneWGtWVJmfBvImPsUccczBr3Y2s+tZLGGIWAZUdcSnuWNahT/G4614CNm6KPPautFU
-         aPrdP2s17ruX0IHK+ir1EY7uOOoXC2VLwbVifZfWzxgNgmHDIBD/D0Pu+HujYh0fJo7o
-         ICxIBLNKIluyezlW3QVYoDuqEadWGoTSrdf6xlleBZXcjE5dpTGQepCJvhjIP7d1X6cv
-         H7zWRqhUOpslmck46e5UnOOGVG7li7ppjAJ995LGR8rXoHmpWUkunFuxoevH2pfo0CJb
-         PhjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784569485; x=1785174285;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fh0Ky+WC8JAb92VghcxhTRFBn6Go7CAcxa18f3039ho=;
-        b=HbXbD1tF7PY5U8BU2zpACq5ZCZRM04gZY5BqU2/S+gpmrIaSAPQwIY2aAQGDPsw3p/
-         7ufQvEyxYjJZl/Pfd4eQp1AfbduLTaAclp9zVAcAoUyp1xF+M6pgd2i/HOZciYtnzvsP
-         bpN4RO+8abq8Z4kNq1CfgG9aQ7VWJrtLC+NEXHOr4RFgwTZpuvh9p0Q0F1eAku8TH9Qs
-         hCARK10qT+cQkxHmtHGuHdO1P4P2xNKAVJlNPG6YaQmRIw3EiRzhU1cUBjnmvBWR8xam
-         E5oIT6a/QpD3ccsz1WMJLP/hc7l1CqL2XARMn/v7NKrCfAlsFg/7LoZ1l0fGcbIry2+L
-         XXng==
-X-Forwarded-Encrypted: i=1; AHgh+RqFeatviGP80fuCLzXFB4bD70PmL1jYAf1XARKaWsCNwtco8Nmiyv03GfNtvXEB3KNSqm3aSm9b/Q==@kvack.org
-X-Gm-Message-State: AOJu0YxAI0oO6e5kbsVWMlgBHE7ZronRMWTLEJmgK7xnXzbUP/PSQuPR
-	OPKlDmCoSOgAByiDM3i3fph/8LPvAikavy1mj+zlC7tJ3YL8/+ukwvB7rQ/Tn+uJpBc=
-X-Gm-Gg: AfdE7cludT8Cg/A8sX3phfcZCTeK2jxN8vzN5+A7RAAlyw4qT1rS2spW1O7bKH7Rr3H
-	yc1aMKE39/QX6CrHIJQZZq9CXMdEXFriGOAv2TW4bsZ2YfwmGI63zg1chESav9noOjqiUM1elrO
-	XPi8LxZYe939qSeG9GoBKsvdYlRXj57lwr3XzkYXN23qli3kirWku93/PEDynjH1WKuuqn+9zN2
-	hxzw+C1yZHptlhDl2F9m+0oNtsmNVfl7vyP+SBdhS9fJy+jIlP7jTFn8UjUkUbxKgzGKUWZdfSC
-	gP9WMD2llfNdwiN0CnQztiRiKtjQpiNGuJUEX5SMlmTXTvpCk0Inw/c24MH1wJ9ZXwdo2UI5zS9
-	ByhcAN9Z2pztIwNQX749G2AwcoXEV+ynLUax2SBJZIIVEv7pRBNcJ0Z2j6VEjgTjvumb9k8SVZ2
-	KHT21gLddmXtNyFj83GDvXlXKy4VM8PtqlGtohhjv6f0fKLmAQZtwvPxpimw==
-X-Received: by 2002:a05:622a:1107:b0:51b:fddc:1de8 with SMTP id d75a77b69052e-5213e67e2c1mr141645811cf.65.1784569485065;
-        Mon, 20 Jul 2026 10:44:45 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214cda7dbfsm77462971cf.9.2026.07.20.10.44.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 10:44:44 -0700 (PDT)
-Date: Mon, 20 Jul 2026 13:44:39 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	iommu@lists.linux.dev, loongarch@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 3/3] mm: move __folio_alloc() to page_alloc.h
-Message-ID: <al5eCOfvXR3OZjVi@gourry-fedora-PF4VCD3F>
+	bh=TR847jKAnLLFsDzkJBbc4JtjIxFdfXosjkxGIzB/344=;
+	b=rA+bpTbxuRb3VzCpPUDo/scJlGF9ihDocjoZvxRJLx/XVbo/wq0qGVSDg9+BCTvkhA+OaE
+	rBourq/y/8/ZrOTew2jWCw1tAvfw6wX2zZSv99GCpDOvPnDh6aOBkomhndFZqXtZ8HnatP
+	ERpZzhQ2+L1JLVg5X2xPj37oJDNQBs8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=TR847jKAnLLFsDzkJBbc4JtjIxFdfXosjkxGIzB/344=; b=Pgyz1YhP+1QCN+yvoqIhCvJsgZ
+	Vku7FPO3C6ENm6LxLklvHlmnCqXx5TX224a51MBQhn10peY7b5XcCjBunFF2K6rETht6B+bsYqB4Y
+	5RiaVNBDazOw+qf5wwC/dxGyQuO6wG5lyfPYgPF5sXVHpOBTfnpwtl5j8RxvCPdVfaQ5hIno5b5eX
+	x/aXvnXXmHZ3Rx59JGcV0J+APS8gIb8dAGwuclvNrsFEgeoIqSv1Rb5fjskHhI/LlPQIOH2jf3K6a
+	1uLdDaYaZnMoJoL0qgpL8UH4jF6WLgzXcg2x9KtFJWkm0H1jOwgdWXm4Hua4YKVKC361UVC7KzTSa
+	PMo1oXxg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wls9r-0000000BRPP-0YTi;
+	Mon, 20 Jul 2026 17:52:03 +0000
+Date: Mon, 20 Jul 2026 18:52:02 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Brendan Jackman <jackmanb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Jan Kara <jack@suse.cz>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>,
+	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	iommu@lists.linux.dev, loongarch@lists.linux.dev,
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm: move internal mempolicy APIs to new internal
+ header
+Message-ID: <al5gQgnBCjNCSD_4@casper.infradead.org>
 References: <20260716-folio-alloc-cleanups-v1-0-5363b8e92d33@google.com>
- <20260716-folio-alloc-cleanups-v1-3-5363b8e92d33@google.com>
+ <20260716-folio-alloc-cleanups-v1-1-5363b8e92d33@google.com>
+ <alkLSzQvzT9zJbY1@casper.infradead.org>
+ <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260716-folio-alloc-cleanups-v1-3-5363b8e92d33@google.com>
-X-Stat-Signature: csqyp4xprabg34x37rjiqin1wg9nf96b
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DK05KUIDJVLZ.61UIWOL0K3OT@linux.dev>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B9460C0002
+X-Stat-Signature: 3pngkgqzrpzczof3c8hdey9xws3iojed
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 20B13A0017
-X-HE-Tag: 1784569485-778887
-X-HE-Meta: U2FsdGVkX18uI5ZOuGIPb+ghh2z0difDp1RRTuDIHi4X9vy0A0yuT5HVrjp8CquIrw3aczSNS9oFb2z7859FKwrMQx/XD9zYmwTaiWZLMVaHHGiFrXypoGbMaYU4v/uSdEw9aM8gizR3RgqLHiL2kjNY3a7Q3RyF0m2i2T/fGDEGNFBGTj6VMvKFhsYmVA5af7A5sqS+PstF/EMmJjEK63SXrjN9Xz0ZZXWKqmGtB3VprN7nSK2NYqw03ku+KX3vVe89e7JYG1xTwwLN9kagK/SJdVHFKdk6XAp9HptxFCPGOxHHAbWR6XeEe8I515NvPCVQGz9ewiqPm/ilmjlPBW1wWgJBhGZOwYP8qaSQCvRv6lTWss1xfG+3yPoyxm+2jlsjtqYxMLvB8T8ay+Td8XhyHfdBGJLmwo7ANWHIKMRKhfZPOqOXvGM7lW7ed4nCQ5G49b+89Vx6ymgnpuOUaOfRQLyfuK7BHYQTUApv2vuvoLIoiM8A0JOBzmboX320h/JLZY2ynWOTb01exMk7B0j7Hzf60404/Sa++v0h+PhqRX/0VkfiAt0/KfyS4RUUhJ1Gho/IN4XBBQv7gYxNHhvpEUO/NAE0U1XS44G5lkpIUl50T8tSOn7MnAcBaBseO7KHnKaIk47qUYlM5b9IJd8mHVZuA7sv/Y4OzO2SMnqx/CXF093Ry8Fxgf7Lom8TsVBeoUnp7/fsc2LTV2YT0/bFk/OVzdOgbO6Uwuoij1iV2erHrHwR4rFTtOXV0lSjQ16yxfF/lUsRs9/mhFhnx/U5yMC510jU7FYQOMA3yOI5fCY/8R1/wvGedC2aO5fXEXd1l6kp4J/FCuSri/EKDIsR6lKNAaVB697x7E+M/ptOFN2Hq0K1JcSLHx3PabGddiZAJpXL7RaduYt6nRO7EcKVXLwNFENDeugL1xPoPW+pMHmQs7vphkNIfrMYZhU7hO8New9ppW6CqkPSGT7
- dgtPwfHu
- VirIJRToM9L5o08poGTWwT6wXeAbIa+MYizyYW5FvUEATshh/dRDflJsf9i4h/+395tMU3SF1GB495Gsg/Vpz0DksxRH6GKbdPsqtaCVVrSovdI4WH+ssTCIUjdxOgh/tCsN2UssTOgyqvO1KVcGJL7efV294mNWuQ+Fr/roKcvAkJHhaf5/B45jlNIulfP6b+ELxA3xRs9OWkenSoKBN+IK866c4FygNdIZzjQ0aDbuEJKVoFfsftn/dprDm1eZeNHl8Ygxd63W6t1dMJAfy3+YSv5PLXDL8YIFphFUhn9KCnrVlxwsm+IrXBZGR0jdIMOdtBKTqaelSnTnVme1HpPJEQ5HlRe4FYugblLTjqdcZ+Qg+6OrG3yiMdj6JSd3x0KcvKb8p50zcoNkSlP7kNtxTjZwcikZ1VYWOOkrJm4kbQHKlIrenPenGJNjm0mKPnCbTpyZeA7C9JrZOwrOInMvmNh3Q2gtMunYi0SrA518uzcX2x7hnv0fGHydTralIuvIMEFeLv9tbnl6Xp1l1IPbe+Q==
+X-HE-Tag: 1784569961-737060
+X-HE-Meta: U2FsdGVkX19+R1s1LNJiLsbsx1Fsre9vxNaloxeWXE2WXXioQE9Q1Nm7UXyk41Kg+6x7yDzDQImXaEAqxbUHt2ctiDIqKjl3Z3vA7rGAEKTzstiOjF2UW+GhGacVIRCkI8fBOd2k7gY6HNiDLuCrBWKzB08hdPof+z7AeUjEC8TcMeAMek758agx1QR9wgSnE7afKAx3qUiJh2roYziXemuNnAU2bTmi/HU8s71nnfWcj2i63mWugEyE169O+1XbNTgY/6ywWsCZd0Y7Y6yCplLQ+2BWsD9Q0KIbZznOGd1RBM2TtXh3M/tAhOP+3pqnSwVXKWFtw+7n1bpk+6eYvP+ZvaOl8PPxSFt/yuIcxAub4/QY2rrZISkQ7+yrOd4X0txm5vprwRhWOZ3dZH8sLmuS9G9BeWXdivo1m/rZ6JnK8k5tKxPWnnNHMOCMDG6ShFXwtzbeZgjrQ4NDe3A2eE8f9K6oNgFAMqsZ7wXoAEPRek8v8xN+uLoA/IVnZNpsU/WkrJGasu8sYolG8kuFCUf+Ii8Z+ye4hDG5TLkPTQseU7a9fO67JIffjcjTh/6tAZD1kXy02GL2Y61gsb8W1eAwe6iDOMVIV84ufiqzLoJ3NLCbUR5zhStjE7dWLAknEkIW9OLt5klnXQKqm4pTa6MHZfi08DkmBzU/xDe7ARoMSCOFYxmffCNS3NMKzCxn+pAjRpjpFevzso48N7/w/vTO4IumuGLbiuW5fAEFc7uTNXAEvAG1aED4cLVsrdIZaE/fpv/c3R7vPe8au324my/dJaGGYmXmihPZw9sSM7BVRQZOqzNav3naUb7ldbl+TDSpum8vwyq+jFx6hZJkWnWpgBrIftCAfyI3Gg083cmvS4R3hhL2k04HMa+oRonNYTmvsG3RyRpXmD9LO8GHP82UptYeuFN98gppVaS8DDUcEcSBfNe4ORfOfTQl5A0ERKPRP/QEmtJTqFeR0Qa
+ 0F015kWh
+ G3Vw4MLvSiiSdoS/SI1oRM/AnvPZaLnrWxewWPxfvFU7fH1LqDImcKBtncgwUKLytmPPEoV3bXZP9sFHFs+sGsm6eYYC6qj5IX8pg88ixZ9/X3o2kTzwJrs83okWsgZgEQN48a7X7lxKK0DxSCeo3fnqezJokfXAY/D2KFVGQ/v9VKGOEehFTizCn7Ddd4LECEwq7tZp2a4o1dJlDlVMSq5IicRQ02BGV7PDHCziwPDfQcJjZIqGoXsrJJDpQ1DyMMi3asTP2bCQSu8CegFSsT6KMAMBEzqG3vQKQ83fhV0O7+karDMbMxRRKALTD3B7dHkbhJVT3/DhvZxkBpnz9dGiCTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,19 +131,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 02:30:12PM +0000, Brendan Jackman wrote:
-> This is no longer used outside of mm so reduce the scope.
+On Thu, Jul 16, 2026 at 04:57:37PM +0000, Brendan Jackman wrote:
+> On Thu Jul 16, 2026 at 4:48 PM UTC, Matthew Wilcox wrote:
+> > On Thu, Jul 16, 2026 at 02:30:10PM +0000, Brendan Jackman wrote:
+> >> There are no external users for this surface, reduce the scope.
+> >> -struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
+> >> -		struct mempolicy *mpol, pgoff_t ilx, int nid);
+> >
+> > Hm.  So what we're saying is that allocations which respect mempolicy are
+> > only for core mm and not for, eg, device drivers to do.  Is that really
+> > what we want to say?  I don't think so, because that's inconsistent
+> > with having just widened __filemap_get_folio_mpol to allow guest_memfd
+> > to specify a mempolicy.
 > 
-> Ulterior motive for the move to mm/: A later patch will add an
-> alloc_flags arg here.
+> Yeah I agree, mempolicy definitely seems like a "public concept".  All
+> I'm saying here is this specific function doesn't have any external
+> users so it doesn't need to be an external header. 
+
+I don't think that should be the metric for moving things to internal.h.
+To me, internal.h is a signifier that these interfaces should only be
+used by the MM.  Not that "all current users are within the MM".
+
+> ... With the ulterior motive that I want to add a new parameter to it
+> that actually _is_ mm-internal. Namely, alloc_flags, so I can add
+> ALLOC_UNMAPPED to implement AS_NO_DIRECT_MAP, i.e. the next iteration of
+> [0]. So basically this is
+> about trying to extend the allocator without creating a GFP flag.
+
+Yeah.  I'm not sold on the whole alloc_flags thing, but I'm too busy to
+sit down and think it through properly to get involved in a proper
+argument about how it should work.
+
+My entirely unresearched and ill-considered opinion is that the __GFP
+flags should _be_ the ALLOC flags.  We shoudn't be translating GFP flags
+into ALLOC flags that are what the allocator actually uses, the
+translation should be done at compile time.  So if GFP_KERNEL and
+GFP_ATOMIC need to be composed of different flags with different
+semantics, then we should do that, not invent a different set of flags
+that special people can use for special purposes.
+
+> So I'm envisaging if an external user arises for it later, we'd slap two
+> underscores on the beginning of the internal one, (with the alloc_flags
+> arg), and then bring back the public one as a wrapper.
 > 
+> Does that make sense?
 
-I have a similar commit that is coming in on my next private node rfc,
-i'll reference this, but i wanted to make sure i hit a solid mm-new base
-so sashiko picks it up and people can actually apply it.
-
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-
-Reviewed-by:Gregory Price <gourry@gourry.net>
-
+We have a long history of people just moving stuff around in patches
+without knowing what the intent was if it should be moved.
 
