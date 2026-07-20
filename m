@@ -4,88 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3118C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFE3C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:04:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B21A66B00A4; Mon, 20 Jul 2026 08:04:36 -0400 (EDT)
+	id F42186B00A7; Mon, 20 Jul 2026 08:04:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD28F6B00A6; Mon, 20 Jul 2026 08:04:36 -0400 (EDT)
+	id ECA556B00A9; Mon, 20 Jul 2026 08:04:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EC796B00A7; Mon, 20 Jul 2026 08:04:36 -0400 (EDT)
+	id DB98E6B00AA; Mon, 20 Jul 2026 08:04:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 767CF6B00A4
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:04:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A57B66B00A7
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:04:46 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 056E4A013A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:04:36 +0000 (UTC)
-X-FDA: 85009022952.11.44C1C63
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CD19E4000E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:04:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=A5NekaIJ;
-	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784549074;
-	b=ATUL0BZtImm9j5QL0QIM7uxe+05+9ul9JQE5/KmCEMkSX2UydHnKlJ5VKn+z3YhwR+c15S
-	MTUXW/hT2fNX7fRffRE1N2YKukkwzh8yjkgeNvyQQRr69uqk9b3tu3KEdQ9oToEPmen6wW
-	gFdyMDrX84fC+8Bsf0LrcHrJQ00PWdo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=A5NekaIJ;
-	spf=pass (imf17.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784549074;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DEEB880157
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:04:45 +0000 (UTC)
+X-FDA: 85009023330.11.2224814
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0260C18000D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:04:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kuWl0pF3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of richardycc@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=richardycc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1784549084;
+	b=YaqCva2xmmdqvc/dPXEkmeAIFjRYMIm0YA/OPo9VcbKyLaiLA4zPl0TAJuoCXSObkauaP6
+	2w2bC9LIyrt7tsGo22JBhyYNEcVXJTORRyKIuVAGFSS2F24nyyBQ0dn4Yvmw78Xsubh+1C
+	c2S7laijPdNlfbkDWXX6xH+P8dC/g+M=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kuWl0pF3;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of richardycc@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=richardycc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784549084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6LDfmUcelxmT9nJB/bHRwgrk2ZzY+G3Dy0t3Kxw/TPQ=;
-	b=OYdz0q1i3sKABGcD4ILHC6RgDQJLO+RwAKlD2bxnu1ib0XK0FQEuJqCggiqBNAy2RrHiSI
-	UqZ8MAoMnQ7zfO/vq3+xlrcff2DvZ2rWdy06uzCG0/0g30cUU3OTdrOqHeXpcsWfsZg+xP
-	PMFa/P/OYDESmA2rTvcfs5k4S6w1AVY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1784549068; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=6LDfmUcelxmT9nJB/bHRwgrk2ZzY+G3Dy0t3Kxw/TPQ=;
- b=A5NekaIJyAFlECrGgRgRqQaxnKMRsmqIKIteayYHk3n8ScAbPaqT+ZHSc/k8phL4tbIAW6
- mjHo6VyuJYqG2nS2pM3cX/xVLzO7Y6ASrHr0/m4LSgOCrMY0SbZAYdwG6+ddQeRhySNk45
- JDk92v9+HVl7r2c/Pw9h+D5WJ7FAjleAVBtTq7NzKUNxRu/SmvT+KUjNYPOHBW7oT+Wof2
- EcfP8xw5a/9vssmr/lKe5PjaqqQuGNnoYSuMVxWqLXfshDS4xTa5M6lN5TYj/NA2h834mY
- 7G82HmFecyFcencJqW5uKj/cugYQe9ldqPxU3DddMZpt9aOJt0sl3XDlX/oyyA==
-From: "Li Zhe" <lizhe.67@bytedance.com>
-In-Reply-To: <20260720120259.1545-1-lizhe.67@bytedance.com>
-To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
-	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
-	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
-	<rppt@kernel.org>, <tglx@kernel.org>, <muchun.song@linux.dev>
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+26a5e0eca+5ce75d+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Subject: [PATCH v7 1/9] mm: fix stale ZONE_DEVICE refcount comment
-Date: Mon, 20 Jul 2026 20:02:51 +0800
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-References: <20260720120259.1545-1-lizhe.67@bytedance.com>
-Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
-	<lizhe.67@bytedance.com>
-Message-Id: <20260720120259.1545-3-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CD19E4000E
-X-Stat-Signature: 54yr61k8cketrh36cgtpbwudhes1qi97
+	bh=TXy55DmkWOc0cnDtwa8GfoydZHKPJAbuF/VxXR3GWJE=;
+	b=3Cp4t+X4y5wwxro2o6jj2cXgrvbwX4LB0DRS5Gkjnozd10ynG6brnpI7yvWB7pDYyecPoD
+	RcETr2vS5OJ/Y2pqL+p2euaIcHT3BjHju+AWnbak6W/RyLeq1tz9eAxZ8U6IVJI7OOhDD0
+	Wj06nisaPwBeiL82v5KxjFNCVYASrs8=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so20181e87.1
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:04:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784549082; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Oc4jAt5W8PjSAEKzI/e4uZv1U3m+f9CDHoW658fRus7uZDHxLgaapckssTOwJyhFTh
+         jY40ndNM/b0bfjk9jM42U/hcdCLT27ToyXfEsEcz4ygvqGSA8YQZJSdIQ0OJ9nHi42Bt
+         ClLBJNeQMr3iPxG9++QwWqpyRHtlbmQCclzvqu4N1p6bf+e/UWVrAzwj3bVLxMBF+ouM
+         Sr/9SG17Ya+bKHEirrioIywfzr/Gb3UzB43YwKa32RjPVSggYEzlGmIqiOkiGI7lt5E3
+         V9vpXtvcyIIOpRRSrlEWdNYrkUIWOLLVUVT/2eU5IcmdjGM8JB8iExvaJ4jTvugMTBUE
+         hHyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TXy55DmkWOc0cnDtwa8GfoydZHKPJAbuF/VxXR3GWJE=;
+        fh=m5NFHth9E+hOEZe9djVu7q7tGQ47eiWqvbbel8kzqmg=;
+        b=fP890ft+ptkatNUe/ntDnXUCrXBtIuJx+Dvh2V9K0Ubrq7htwNv/6o/jBnG7Qd+BLI
+         urJjCPRI4ZXaUINUUJ/cqUL0BhWcU5TE0KpQNxDgMQAV+uTP5qk/LnNyndh2oS0sXQKG
+         TuUhF9qmcBtlJaRxwnjY4jK3tzFcBzsmQI0rIyKrPONxgHmApYtev7RGMLCnIMqTq5jK
+         vtpmswJq3kJCQ6MnrhAXq5Z+HntSoAIRari06rYWffIbiRD0GBdOLWdiq4fipgat8O7L
+         Guyrna4xd+yhySXyk9CambPmtkSz53ZLMxJdEWerUbV5SmpA2RNigIF5Ezx82IJRHC/M
+         ty+A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784549082; x=1785153882; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TXy55DmkWOc0cnDtwa8GfoydZHKPJAbuF/VxXR3GWJE=;
+        b=kuWl0pF3nAHaiDibFHiecbH5h51KXh+Qa/4Q1XZO3EUprqYhJK74hm0al1mq1W8n6Q
+         o8jxzgfB6lCm/CMYXPn4Tp649L4g0tZbk5XZrvDy0fwpr9EwC+e/6O44Vwnl3e2D6q2/
+         CI+o3bexsKauS59MAgrjxUgyjRfvhCyQyZQZGe9Y9+oYncZianRAFLpNs0HXUz4ngFAl
+         gf8+vEFU8kn13QmwKLw7I8v6uqohCap7LgrstD7eeHVeIAPnHAZjLcfEGFgqcQgHwnbF
+         o8YA8+gtRNW0vK0V5VGvA/IhHNF7zdVzGqKyi03JLJv6Gepg2AGjFE1I9H209ZM7BUbz
+         hWOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784549082; x=1785153882;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TXy55DmkWOc0cnDtwa8GfoydZHKPJAbuF/VxXR3GWJE=;
+        b=HAtODjTlV56SIUd7KpCSqIZ7xnmeeXlmUSc+CjvmoaKiiyETdlodx2HG2xCRs0q1Og
+         CY7msQ1E3BU9jB1ySxBPPqQrqPtAFyblLwMVkOgc9+lLRBHzQy0mSyiZy+CXnMcIblLH
+         fVbFpNrEqCZlbSsiPeKykZNQQbRwlfgTlIMJ9Gnapto+bxf9vCZ4z0qDXcmkvljDCOp2
+         dLXBcYXBpS+4x9bcqESFCEJCL7aL1FLInqvUNWZ9uCGSMTxMcTfHs61X6WsUiXwtz5P6
+         ZwAsS8BSpB1ABnR+Y21hj5HT8xQqcPUuPQEkJQxXFTrPuHjar0XBZodLntkAyQprEmDa
+         tz4Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rqx+lvDlZVizVHFdQHSg3G+t7sZIGuYr98kUqXI/UZwjtlQoakYi8L4VwHlTtRvOiA9s6KKZOfjZw==@kvack.org
+X-Gm-Message-State: AOJu0YxwrrqBcD5HGCR8hHj0OPxMz0cYT0HftPp7TA65iPZKHCB0lfej
+	XV1L6WOIWe11mf+IOHDE+r51W9Auxp9oLsZZ5LeFzqfjJEBQ5Kee6wSSGompz519WQOguX3oR35
+	+h0f6vw5g8vLQY3FNcdHuUER7k8eZaFxeifg+T2M=
+X-Gm-Gg: AfdE7ckNwzEFu8mVeAK4eqmAH1nCK4sB6wzmZ82hOEvtifpSnVbHjIQvebe5mS7y8bS
+	h6DpJfiBVnbInbvhxFUNy4l7FO0Pog5L1DLViw5vjMlT5IkSr/zwPU1i2MItHOUgbqfbgbH2dp3
+	LzKE95YjbplwGxx04ZKbzUfX60HQi7eVry5Z0eGuG3HuNpQMd8Adzxhsih4fK7NmU5F8DLkXt/l
+	GlP2+zZiB8V4PF+TDOwHzBDhDT++KIwTJjR7Yp7S5vQkTdlEWzGZc7wBxq7EhOiis/oGdKPqB51
+	oXf91m8qXl6AKEU5T2E=
+X-Received: by 2002:a05:6512:138e:b0:5ae:b726:5f1f with SMTP id
+ 2adb3069b0e04-5b2a31c18bemr17328e87.8.1784549081895; Mon, 20 Jul 2026
+ 05:04:41 -0700 (PDT)
+MIME-Version: 1.0
+References: <CALC_0q8rz7U-8x+syTFcWS6Nihxvzd00ruzOThb90P+cDqi=TA@mail.gmail.com>
+ <20260720044103.905191-1-richardycc@google.com> <20260719222306.540829de219e12e21396d260@linux-foundation.org>
+In-Reply-To: <20260719222306.540829de219e12e21396d260@linux-foundation.org>
+From: Richard Chang <richardycc@google.com>
+Date: Mon, 20 Jul 2026 20:04:30 +0800
+X-Gm-Features: AUfX_my09NS_xm5OKHRlizZ_1UguAfn6-JyWEfZ8Wu8DmFLW57L-_oV4BAdJCNI
+Message-ID: <CALC_0q_cap88s5JBzU=bEkN+66VvMi=e+2M1b_JsiTYmV2t21A@mail.gmail.com>
+Subject: Re: [PATCH v4] mm: vmscan: abort proactive reclaim early when
+ freezing for suspend
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Suren Baghdasaryan <surenb@google.com>, 
+	"T . J . Mercier" <tjmercier@google.com>, Martin Liu <liumartin@google.com>, 
+	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 3jx1n6zuibanj3cz83tkmbxc3zyfwbsp
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0260C18000D
 X-Rspam-User: 
-X-HE-Tag: 1784549073-935912
-X-HE-Meta: U2FsdGVkX1+yUmSvqn6/IoJlq59Ojg18QZs87ymbjlbQf7E9dBdnXPAnALB38ZqxLx9RDFQIz30gnFXOvbG2AgMr7QyzTKC34q2eGAqJ2JEq5pzQ/usgxQnAOb89u54BGlq5EdQMqgfJnj3U9xKWyCXSz7A/DnTeK6VDPk3rd1bdqgMKKo+iS6iO4niNK4N0DgLWqIjT9Fa9/rum+hOJX7lfkxxeXiHjOqqS+ZRxdKuuCb+fI+0WAmSeWWC5w0XeTLdnOFpoICvNa0j2pgHSjySOA4QQU16wErwbYaAQoXa1+ZkSLLIsDHec8NaLw3XiCWPFh2QncRimZuhdNaEkgOjuQ4+uPRzk6kdLUB4qndOF7gXtszMSc72wr8IftRTKQ3o+AF4s7xlCEgZHF4K1x3sCMzZfh6MBCfRiyNCO+E26SYEwh7BTPvSQB57vRTmTkqpiDysK8i4YTBkqoyjsexp0dhZS6xL0uDgtGGOSJLw0qfzwn7m1zCd/RF+eL2QR1tuwQBbi/+iAbFO6PV2nw8D46k1FAhbtAYyk924R2sulH0iuQieT1h+YrqyeHtPO6M3DGhBV6miaoCTWGbTxw60+Tvidsq9qe8PFfnUjSDwW9Svl29926IzsgxQYMCjo63TZgwJZ7nrs8sajTjIGyG/PpvvRXprxSQd78J7TiaEAUk2M+ZhpeWme3M5SSPJk8a2SV5VPgxlnk14nSewEY78iMn3fliKItt7pG9RfIDcSjlUJd4QXmSul3rZPv4GicBcJU4JQDXRUOPz/xKb9fR3UZZjrkoFPWOBiKQeMhCdOUC6zE7GbgV143fUzTwRzDUp739Fw6CZOXnIhW8uobGbrFcmuZiUc2A0Zk2XETn5sMpcSg6ugZSsgn+ojeroQjVh4+UF586RelNvF4G/5VpRtXjYvwzVAPsBrI7FyMMNDtl0SCuq1iLamBAlEYivWp4SnaM3F1CsUJu0yBVX
- +JGP10a9
- B5YdR/nJaX0OWN/vi+IexBR/3hnTVcFEZLUXy9tulslv4oCMnGpM6J7hQGVvTmb6/l5TXMhRHQs02AX96WpJyZZsXrthu6K+y2bGq3EGUQBkjcQ9Mw78N35E4H/rFG1HYVo8qTPUoGlJVDAnO3tFODBogx8xldjzdE6CGtmcF5UwVe2JoV5ASQ85rj8WzMLnB4kYcm+Cs+JViXPUYxG80uOT3BrlCiXKpLpU8uHzWOH18tRcqoHadVst4qS3nUk1fgLC7dDE5XLUhF0BIRxxmQhS0COfLL/bQrlwF8AW+yUUhT8T8redXSvHldM6ywUvq5PKJ11KeVWCxw8A+xX284yVTaofMjtV83CJP
+X-HE-Tag: 1784549083-620129
+X-HE-Meta: U2FsdGVkX1/efUzVwx5VLHmgi/FF+VPs3ft7iAMF+SYgsiYvmQ+Y43nGsp6jghDLboYeKAc1dAEUNPzsjUvK00u6Mvf0eF1WvbGUcbSd8czNh1HKjSycjJuPdTaqANdKhRdvmJYni3VpOP1niS1RvnJUQi31vin2dYguxnwHkfaJo5TyUPaq3vlQe8XxSczLjgXzNpaAId8slGqbUeZ9XGzL32UlVJvm+dI+4QReXE9AvM4G4Kfi3IJIyEyzhUIOVO+OZsOlGUe51wXziZGW34Uvy9zYd15fLW/nBR8CXgfKNcnR8ou3Fni+tvGhZcvLPg1r6nPLYiChdTKXozD8qtUngPjCAQQ7cFXv8G+8ldJkDEe/CRiicB3ADIy5ffHwe7GPdt56uJcxh8r0Vz4v3hh1hYEOt4qvG+efnlRO/QNoFwjRY6xhKD+oneE83jvIwo5gmffmrqkP8i7pE8CmdZlruMSmJbbuL6fINe4hvFm8ta0jxBXT/0I3E83AELGzcsD1gc/WNtoA3gHGKGhChdX/Pud4Zhf50MmXFT5ds0AxiBk1RDbXImFTy1FsF8/Yz3JvL1Hy08pfl/h+O5pKHoRwyDN8/PNLqRbOYNP+TCTeXPH6T0+69NySJK1ffYciW+Arg8FfFcahskfOpwCASmeufABNvIG4Q+1G40JrqAykod6aXZIpInuVNg7zZmCVFCnYvqV7MmORC7RkR4JWBAY2f2mMamGY3UM9qhsW3UkDdxORtarVKPEeX/zPLo4iqECbXprOKSkHuFM/EuUZ/AXR7a+3SSxJdNATc8z2+hfnONSCe1XUN69wLBK20QApDbZtUU7vii7gKH/iZAV7184x8KPDtbbtBQ8PTf95L6W6sQ3d9SU8EYePQR/0SgxHwEM/e2MXHfhW9fVSrnFnzLZrS9Zb7xQVTnNUPdPmSKrcYSFIcNxq6+0TKpmQ18IrxCnUhG+IooYmsMyxw9I
+ jRdkqDJQ
+ N02tvHgTl6REc7lxAXinwXT53qYztS7cXxBMFPOVon6BV6hPT6G4OdsSAJ7tD6HgvMZxqPJmRKp4ZNcIbhaOXo5y9LozqVtS9E04DNUUNqUoZzxm1Iax+QKKi82ACmzxmp6UhjYHZpWuX9qrDUO//lJYq1AQyjrHhvhi8sKFuvma+d/dcZYAG9GIsZewEgxYb5rz+yIcEPbUGUdQBg8o1r6MUxjoREvgd30GeaSZ+0kSnLNVC5sA8ktSR4257b7XYyqOTmRi5nykuLyPT2d4rF63qAGzXQoe3o6VUdlBGO86srydlzpSRvPtQ1m09KBDCygs0YDVjYl3Yc2Dhdo1JBd/Lm7B3P8TgWnjHBqNtXn1fQqU8zURP4LasDtX62LcZWzCO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,46 +148,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comment in __init_zone_device_page() still uses the old
-MEMORY_TYPE_* names and implies that FS_DAX pages regain a
-refcount of 1 in the free path. That no longer matches the code.
+Hi Andrew,
+Thanks for pointing that out.
 
-Update the comment to describe the current policy correctly:
-MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free path,
-while the remaining ZONE_DEVICE types start from 0 here and raise the
-count again when the allocator or driver hands the page out.
+On Mon, Jul 20, 2026 at 1:23=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> So 287d5fedb377 led to suspend failures on MGLRU-using kernels.
+>
+> That's a regression which justifies a Fixes: and a cc:stable, don't
+> people agree?
+>
+> AI review asked a couple of serious-sounding questions:
+>         https://sashiko.dev/#/patchset/20260720044103.905191-1-richardycc=
+@google.com
+>
 
-No functional change intended.
+Hi Michal and Oleg,
 
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
----
- mm/mm_init.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
-
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 0f64909e8d20..95808ab5cfdb 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1030,13 +1030,9 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
- 	page->zone_device_data = NULL;
- 
- 	/*
--	 * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
--	 * directly to the driver page allocator which will set the page count
--	 * to 1 when allocating the page.
--	 *
--	 * MEMORY_TYPE_GENERIC and MEMORY_TYPE_FS_DAX pages automatically have
--	 * their refcount reset to one whenever they are freed (ie. after
--	 * their refcount drops to 0).
-+	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
-+	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
-+	 * the count again when the allocator or driver hands the page out.
- 	 */
- 	switch (pgmap->type) {
- 	case MEMORY_DEVICE_FS_DAX:
--- 
-2.20.1
+The -ERESTARTSYS concern raised during the AI review seems reasonable:
+1. Over-Reclaim: If a task has already reclaimed 900MB of a 1GB
+request before being interrupted by a suspend, an -ERESTARTSYS would
+attempt to reclaim another 1GB when resuming, resulting in up to 1.9GB
+of over-reclaim.
+2. Incompatibility Node-Reclaim: Since reclaim_store() unconditionally
+converts any non-zero return value from user_proactive_reclaim() into
+-EAGAIN, it will not restart the syscall for node reclaim.
+Given these constraints, do you think we should keep -EINTR in
+user_proactive_reclaim()?
 
