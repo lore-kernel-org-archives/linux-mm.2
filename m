@@ -4,101 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FB6EC4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 13:07:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1938C4452A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 13:11:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10F5F6B0092; Mon, 20 Jul 2026 09:07:16 -0400 (EDT)
+	id CB0446B008C; Mon, 20 Jul 2026 09:11:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C05D6B0096; Mon, 20 Jul 2026 09:07:16 -0400 (EDT)
+	id C88386B0096; Mon, 20 Jul 2026 09:11:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECD0B6B009B; Mon, 20 Jul 2026 09:07:15 -0400 (EDT)
+	id BA0386B009D; Mon, 20 Jul 2026 09:11:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BED696B0092
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:07:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 550C8120188
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:07:15 +0000 (UTC)
-X-FDA: 85009180830.20.4B261D8
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 09D9380012
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:07:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E9936B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:11:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D71F80182
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:11:40 +0000 (UTC)
+X-FDA: 85009191960.03.A1C0FF8
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D7AC8180014
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:11:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf16.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784552833;
+	s=arc-20220608; t=1784553098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=0kJY7muOD+OALOOAOmMqpvL3t8Yyw3M7anrSxwmFM3E=;
-	b=D45NFlI52oRTPgZA8Jewr57Mjb1E38QnOiGGl+D1wjvKZj7yBxip5fhIQiCTeC2nd8FYS5
-	SQ+ClBsCi0rFAwUAmmOnZZqQpzqEV0ivyLNoXcMjLnNGLj5fmDPxOYz9H+tiFPhek0q2Aw
-	01qHJaZQsqlqM7uZaRi7ERIpEAZvmUk=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=ywdWGkDen/1MpYx1MAdYErzRAMOzgMn5VFnbJ4nGZik=;
+	b=y25QBgnmTI/3dge5ISAplwjMdnIewkmg6KB9oRY5nu5hk2+b9wznGSn/8732/o2Y88ppXZ
+	S4WCICS4uOjVRSwXdajXCcBdPqxjPC9NYn/81QKyIwDv0GuLw26z/oGhCrPwTkHCNzhVyl
+	KtvMD0APqEyCXrciJ3jUIJdmlxcS9is=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf16.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf16.hostedemail.com: domain of hu.shengming@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784552833;
-	b=y6kiglLvnkaqQoEsqWuIkTHLX+zdSJwLc+dR9r8dF9YqLP/FD0CiAOyuPWJ2q0Ay+9Cg8r
-	YRRH6OxNfmDH3rK72CdqII4AfPZdRtIWcKNTDAXnph+ITuPqFXR6icjAFi0xfGcKwfL+BX
-	PO6wCB8ssBELwc9+lfFg+nm0wrvJ4rg=
-X-UUID: e4737b38843b11f1aa26b74ffac11d73-20260720
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP
-	DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:a7d9821b-5224-4c18-86eb-e17116515eae,IP:10,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:35
-X-CID-INFO: VERSION:1.3.12,REQID:a7d9821b-5224-4c18-86eb-e17116515eae,IP:10,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:35
-X-CID-META: VersionHash:e7bac3a,CLOUDID:2100e216361bce3249ee41bc74c42a17,BulkI
-	D:260720205347EDB9HWME,BulkQuantity:1,Recheck:0,SF:17|19|66|78|102|127|865
-	|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,QS:n
-	il,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC
-	:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: e4737b38843b11f1aa26b74ffac11d73-20260720
-X-User: lienze@kylinos.cn
-Received: from ubuntu.. [(61.48.211.50)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1692005296; Mon, 20 Jul 2026 21:06:59 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	enze.li@gmx.com,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH v2] samples/damon/mtier: use damon_addr_range consistently
-Date: Mon, 20 Jul 2026 21:06:42 +0800
-Message-ID: <20260720130642.508355-1-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	t=1784553098;
+	b=ozoCCgBWAFAHRTo/qyAEnOOmnIs1Do1Bvkzwz4xCQYNI26Y9EzXI2JPkaSufEeyin1p9I5
+	I8ETVpUEKVEh12TXbU+wzciCuNbnw6jUUb/sJOV1ynaBtMUyQQxOxMSaBXDv1yF2ZE+yny
+	ieLOGJ0En6JHOcXK969awEPyUqKf8+w=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4h3grY2Nc5z55RJ3;
+	Mon, 20 Jul 2026 21:11:25 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 66KDBNxk039877;
+	Mon, 20 Jul 2026 21:11:23 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp05[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Mon, 20 Jul 2026 21:11:27 +0800 (CST)
+X-Zmail-TransId: 2afc6a5e1e7f293-12308
+X-Mailer: Zmail v1.0
+Message-ID: <20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn>
+Date: Mon, 20 Jul 2026 21:11:27 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>
+Cc: <hao.li@linux.dev>, <cl@gentwo.org>, <rientjes@google.com>,
+        <roman.gushchin@linux.dev>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <zhang.run@zte.com.cn>,
+        <cai.qu@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHYyXSBtbS9zbHViOiBwcmV2ZW50IHBmbWVtYWxsb2Mgb2JqZWN0cyBmcm9tIGVudGVyaW5nIHRoZSBiYXJuwqA=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 66KDBNxk039877
+X-TLS: YES
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Mon, 20 Jul 2026 21:11:25 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A5E1E7D.000/4h3grY2Nc5z55RJ3
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D7AC8180014
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 09D9380012
-X-Stat-Signature: 8dmg8j55zn3of13nr7bn8jqfi65wh5pm
-X-HE-Tag: 1784552830-12335
-X-HE-Meta: U2FsdGVkX1/s417eKEX0FabrcwiSeoq4kfnVu9fI0XgZDj5NcBgchtxmbGncFFLM7oK5Ljr/ydnxj0vLJHf68KWu+QCKyFGC4losKxxIKZEwMlsn9UG8Cz9Jm+PNM19PqLBaXvkkMfe8mANwkvBK9PXzmqP+ag8Eb9cbzXAJ/8ukcCndeoXa1eNCm1OorMNbh1F1xgx7qeu9kCelZzh/NzibFsKEbDSj7YtxMqXUbM1Z69bQdHF78bh6pqxbezprN/uekv4Ig5yhoLSkqMYxC2C5tnDapVxO1hEEGpC74ykOcxB7ULDc8U3rptX0kDgVJkhw0jWgIf++CQzeiJ9ZxzKvpwqDHF7qEVNa1JmhdjR/EnPDnWOc0IBwuH9cTTks06AJs8KHdEmqxVNZFS1XCOYo46rgcFFoGTjBYocdrsGXJ8dmsYgse2A0oD/YGY+3POUi0x+NAiEwhRX4bdKiCR4+320s3FcuVPajksznbrJtbKToJlFUeBr6FcyUsPqm9egU4Ux9FqpjUgaCk6fi/t66ZW5piulC9tj8wSUhBGFACgG01I0+xJbcty0f4L6/t/E63XwInFjnGv9Ljq5iG7gpWfzs2oT+Ok/GOuRzgWrmf1fiT7l/UYjs0VJbf0rJMuWj1rpiuVOWOTDFDqik5Jn1QQd5BjYXy6nl09Zr8ifFqWC4N37kSHnwp9YxpYcs9q75+vI8UsdUtBMGLccucGP6koxdaqMfqb6Kwn5kYP74pdv7OP5mpx8/yVSinAs/T0R+lp+Y9pFOZ3yMO9IxwCPHtC3C0H696NL0jMHQGHSsivMnzorBK16zp9Je82zcf3CtSYJDx2dvvirf2B6rbt0OKQx74A2d+mpve58IOJuaXc+eIJTXhzkbdu4FB/B1+qlyCPq/gIaMwJUgdewES4zzOguIOIkgrdAgoJ+9EVyyKvPpfkQK5H3aSTNWt3wEwAwVkWde5R7sjIo0NPK
- hphB4U85
- iBHIgLZLUE7/2tfCnpyqCFd5nHyaom+rA+oKzoO/404G6I7w=
+X-Stat-Signature: hnt41nyb8dgckx4skiy6htkuuduhpa6a
+X-HE-Tag: 1784553096-904203
+X-HE-Meta: U2FsdGVkX18Hho3LhkD4ynMWBlbmYCB7zG8L/4rWz8LZhURDw8BXyRtNlXyl3kfVS7JTrM9iRHd6iX9UlvM/dVe04h8qd9zJBQetdOHTvMkcaG+BWTXddz0iVwL7oIVu6czWTvXntudzyTOCynaN1ttcGJJESAYUttBgWAthXUmDM0GfafeKbiIft9XdOGFXKW344jmPRB0p5Xx2YkTItr4eXvQZCdIWPFuE/8nGcNgqqD2Wcr8sqq017egCTRunE8jnYGGt81ROyifOx+qUGyMKzwd3I/xeKnkvVDiCUcweZ3Mn0h3/Cj8OzLa5+SlXEDsviIzeNmV5L73WFzbo6iDG3raO7y+YR9gMmcwdjZVGjOkWsCcmxAyPkMAQss1XCjSjJXLUWpQda/3uqgHNBaSoPQifZK3ZMEyWbeVyb9Th5Fk+LVpjHprnX+fdRVJwWcDIQEs+7RhrS4Z8a4PsIFkuafU8D6BGvTlfmQ1YNQUFcd85Z1pMWw24WiMHo+uTkdEh/VY2af0r5M5shm8XqUzQ0aCHKMewsTdnFoEMV15PBHyM8Gh+NpxXFW6Id2FLeriaGIMGxKjypEJIRUQSNtebwYeP9u5TzKLLRAZfMuniRCfZ69433oFkUYHmRO0OwwnXKXb3yuwpt2NLpiVeYChST9G3vENH6BqEvlgymJesgoE9iuEGBIibcS2JYS3Jih6CjfVCSldgEKQGt3eBH/SKEEYrZm6nwAAatH1v2fDkS/NKmQrEblGAtpqqcXPmZ4xwL0cFLIg7H5j/SjgFnNVbhATJp9pQejVhaCJ5era58N4hZempzfzIipzhNeP5bNnehxQyupS/2n1egWIgj3uA0RHBxne71ipe8+9LIXesevpSUqFj8InSCUStbExl+ue/8BIkhRtJ+IibBmsQdRIkXy0VgNvfWr8rzFvX767Kivulbn7Qvm01e2aT4J4gM4eEppsqueMhid9DA+k
+ Y2gPW4uZ
+ jD8K6VkP5Vg2xcO/SvU0A/4bT6R9h0qlYWzTtLrlInzl8lbvu3qXsup7YPEHP5Gg31ZU1YAt8QEgnM3+wP5KCqYN7Vve2vBiYYIl8uI3HBJXcLqY3rsZxf8FkwUvOxuJlvHOIY039nvgygDJj3dc/X66t2IQ73LBadIT63PfHY/Mtz+vdzhQDHsubihKBI0ehU7B8pP4ATUijP7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,69 +96,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The DAMON provides struct damon_addr_range for unified address range
-management.  However, the mtier sample still defines a local struct
-region_range and mixes its usage with struct damon_addr_range in
-damon_sample_mtier_build_ctx().
+From: Shengming Hu <hu.shengming@zte.com.cn>
 
-This patch removes the local struct region_range and changes the
-parameter type of nid_to_phys() to struct damon_addr_range.  It also
-gets rid of the now-redundant local variable and pass the address range
-directly to damon_set_regions().
+kmem_cache_return_sheaf() may refill a partially consumed sheaf before
+placing it in the barn. Without an explicit restriction, this refill may
+draw objects from pfmemalloc slabs and consume emergency reserves.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
+Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
+normal memory. Also add __GFP_NOWARN, as suggested by Hao Li, because this
+refill is a best-effort attempt and failure is acceptable. If the refill
+fails, flush and free the sheaf instead.
+
+Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
 ---
-v2:
-- Fix inaccurate "identical layout" claim in commit message
-- Remove redundant range variable and pass &addr directly to
-  damon_set_regions()
+Changes in v2:
+- add __GFP_NOWARN as suggested by Hao.
+- Link to v1: https://lore.kernel.org/all/20260719113701797vZ3R8NxiqYt8dEfeUxtON@zte.com.cn/
 
- samples/damon/mtier.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+---
+ mm/slub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index ac9c24b92ead..3712287f009c 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -52,12 +52,7 @@ module_param(detect_node_addresses, bool, 0600);
- 
- static struct damon_ctx *ctxs[2];
- 
--struct region_range {
--	phys_addr_t start;
--	phys_addr_t end;
--};
--
--static int nid_to_phys(int target_node, struct region_range *range)
-+static int nid_to_phys(int target_node, struct damon_addr_range *range)
- {
- 	if (!node_online(target_node)) {
- 		pr_err("NUMA node %d is not online\n", target_node);
-@@ -78,8 +73,7 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
- 	struct damos *scheme;
- 	struct damos_quota_goal *quota_goal;
- 	struct damos_filter *filter;
--	struct region_range addr;
--	struct damon_addr_range range;
-+	struct damon_addr_range addr;
- 	int ret;
- 
- 	ctx = damon_new_ctx();
-@@ -123,10 +117,7 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
- 	if (addr.start >= addr.end)
- 		goto free_out;
- 
--	range.start = addr.start;
--	range.end = addr.end;
--
--	ret = damon_set_regions(target, &range, 1, DAMON_MIN_REGION_SZ);
-+	ret = damon_set_regions(target, &addr, 1, DAMON_MIN_REGION_SZ);
- 	if (ret)
- 		goto free_out;
- 
-
-base-commit: c872b70f5d6c742ad34b8e838c92af81c8920b3e
+diff --git a/mm/slub.c b/mm/slub.c
+index 53b4976d3831..357b7522c817 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -5123,7 +5123,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 	 * simply flush and free it.
+ 	 */
+ 	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
+-	    refill_sheaf(s, sheaf, gfp)) {
++	    refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+ 		sheaf_flush_unused(s, sheaf);
+ 		free_empty_sheaf(s, sheaf);
+ 		return;
 -- 
-2.43.0
-
+2.25.1
 
