@@ -4,92 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B5F7C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B94C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:09:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C27F26B0088; Mon, 20 Jul 2026 10:46:12 -0400 (EDT)
+	id 0B7D16B009E; Mon, 20 Jul 2026 11:09:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFEF26B0096; Mon, 20 Jul 2026 10:46:12 -0400 (EDT)
+	id 090756B009F; Mon, 20 Jul 2026 11:09:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3CEE6B0098; Mon, 20 Jul 2026 10:46:12 -0400 (EDT)
+	id EE8766B00A0; Mon, 20 Jul 2026 11:09:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8547A6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:46:12 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D540FC01C4
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:46:11 +0000 (UTC)
-X-FDA: 85009430142.24.1CA803D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 33C1C40009
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:46:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="q4gTrKD/";
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784558770;
-	b=2dsh+MCDD9pCTnlomzVo7MOgIlhb8UXPCzeZkF+Ajk9tilTbyzZqxfsABS4vI+/Ndcxswv
-	84E8utjWstBEVeY3yuTg4HFkFfb6rvqmvbBGq1DQb4HBVyBFx6QsCV88T3/WXlZFKxGWI5
-	FXxYR4iLHLsWglxL6RbfCWOoVhnT3gQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="q4gTrKD/";
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BD4096B009E
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:09:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BCB41C016B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:03 +0000 (UTC)
+X-FDA: 85009487766.06.B735179
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3E94520011
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=fNG3pE53;
+	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784558770;
+	s=arc-20220608; t=1784560141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PfRAFhBZQchppXOO+Jgr0cSkDMbt1DF4C/TUagsgCiA=;
-	b=DDi3aDSgGyLGdFAb3vl2UC6ecL1QtRmeWBq71BlWv2inDyyqOtJsfaQ0NVq3v1mwoWiQut
-	UyAGCHTwus9p53jJPRZqekVbNC0PiJahBwiNLEZNl4vWTDwD6Ms/VzFLYy/jNzlj6DhJFa
-	BEit3kWxuNBJQBLe5XnXkLzrL3UT/nE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=PfRAFhBZQchppXOO+Jgr0cSkDMbt1DF4C/TUagsgCiA=; b=q4gTrKD/JHkF9rdgVeJRopM9/L
-	urB9FO9pjuI91E3n7c9jeYmhfBQk91aQcrjjO1TtyyNPydmLVGxvVs8GYqpkhU6xWo+Hks5uvS6sB
-	lbHDdqdJUCjuYiG8mU+GU49oC7mnX3Kj2F6mfBWxhopOLY7hye2br5fU7IrywpKGXRzGUth0DCKqO
-	83YobtUbSGP3EUD1DQkEyI0UuUvTT/LFgFWKV0uhYRaMArtJ9d8bjgZRIC4ZiJqYnK1EvgzzFLcab
-	03iYunE5zqja9kzp9HTj1eUqgezn+yrRqb7Fy3L6X8ZPqqAF9rs3rAq2uuSLtzcM6NlT1/E509PwL
-	LAH7i8BA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wlpFo-0000000B90V-2Ozj;
-	Mon, 20 Jul 2026 14:46:00 +0000
-Date: Mon, 20 Jul 2026 15:46:00 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Mark Brown <broonie@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, dri-devel@lists.freedesktop.org
-Subject: Re: linux-next: manual merge of the mm-unstable tree with the
- drm-misc-fixes tree
-Message-ID: <al40qCMTxhEP3Kx8@casper.infradead.org>
-References: <al4jGBGNG_QACaNL@sirena.org.uk>
- <20260720144141.GA16699@lst.de>
+	bh=3Kwva7Zy1z1wrcNqc8C7vuOXZAaSl5rSUSt0nXXiyx0=;
+	b=F4tTO0xWuWEpJWbYfEHIfOzt35kVE5rrprPZgdwOqdCa2sPtyCGwIjAsj63WzGl97s6sK5
+	W6OeveYtx4z0a0n6N/MyfEbxHLULaKVfHx16IpzxejJTgbKXDmwXF22PyIu4K31VwfNvtQ
+	euBWYgo9LLMUjdKPCa7po+L+QlnB9pQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784560141;
+	b=HV64cm8ZBiM/h1f5aayTMWXBqz1I7nkM/cIxXtpQ3irXEFkZrytxbe4nnDHvmajWf5qlro
+	I8bDnMCBdw7A4tTbKQPQZoe5TDDVuDMSSXo1S6E9Y9M8eDc9p6MMiFoGsLlJVFApEL5mDp
+	7M28OXbAtzKQ8X7rCdPxxUbWZZhs1TQ=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=fNG3pE53;
+	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=3Kwva7Zy1z1wrcNqc8C7vuOXZAaSl5rSUSt0nXXiyx0=; b=fNG3pE531FrkzSi/ukWn7R+4zt
+	HJOBnGpm49FdsglRvScBkbywX83gyp8V7S5kQSTRP6WYHpX+Mp7RrZ6AkTsKYporq6eqw2avYLlyT
+	ToPD3oazGSH059mpSXDrEu86kIcooInZZqHa0hYEU0lAHKOHtGmTFFgte0T81Va5d4beLSR1BbHpt
+	04iSypL6lC08QrrdfZfDwcFQGdqmIC/2+q0ZGzkh2kJx4Bf3jClleajAkq1gNnCvSDIdAXIDaHedw
+	IPKu879tFoMATr71yu5hOKseko0K+B6XffsCTPI56E+k6uOky4rKAJW2SYpqlKAicaLh6zgfnHoE+
+	3FRSXt1Q==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wlpbG-000000001Qs-0nhT;
+	Mon, 20 Jul 2026 11:08:10 -0400
+Message-ID: <13ec2603d5cbfdc493939f182b71e5133c26af54.camel@surriel.com>
+Subject: Re: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
+From: Rik van Riel <riel@surriel.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ 	kernel-team@meta.com, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes	 <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,  Alexandre Ghiti	
+ <alex@ghiti.fr>, linux-riscv@lists.infradead.org
+Date: Mon, 20 Jul 2026 11:08:08 -0400
+In-Reply-To: <20260720115741.239657-1-usama.arif@linux.dev>
+References: <20260720115741.239657-1-usama.arif@linux.dev>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720144141.GA16699@lst.de>
-X-Stat-Signature: 83i6jeu4xxihamoa97o7qhwwphkrjett
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 33C1C40009
+X-Rspamd-Queue-Id: 3E94520011
+X-Stat-Signature: z6yypr44w9booc4qe8euzwt8e8nmq4mn
 X-Rspam-User: 
-X-HE-Tag: 1784558769-36981
-X-HE-Meta: U2FsdGVkX1+c1G+fEphHPF8Ovu3BNIIVRNjV9kO/QcfhjzvbnD0smAUjsEG4YAB3lkEuWNl4YwnCNzA64pV+Rk/8hlSCmJJEeHTLBHTB2Vx+9JvxbPeNFv1djyqnuENzSjj3yOnVqns8dpxQsJNqV+yOcJD4mHPkzFn6hN7Fv889pbHw91tocD711Mw6TnQO1iohNfLXnnzjyskFUKIXOiTvbK+AvrNX7GLxP8dxLyRz5C5fQZb0Sr++Gc1TCD99yMkIGEcRwQA34lrHGbqooYzRElBUi5DxoX5arZmqOkcKrNKEE8SMJypGapiwDTlucgk4WTC/prl+hNWNkJFunzobvcQygY8i55Sg23lqWRgLlEIm1s+WERjQtUr9WR3neHCVFu5up1xYZdyWAPIwyZt/s22tVUZHZXN1eRvwoWnTKLV3QuT4gnpuBxYZ0ENK+lcbuaulTO3Ppnd2OraQ1+a190HZPKHaOsxsQNFmisMO8KVR85MSDbyIS6p6HaE4uuOQdKHpNxAzqCNGb18LF9MF8FdG9uZLBsHSWrs538Vhr7Ju4CPHweQYlFu7l7t3yRXjfta6PiIrRyksfW9uVtot26pIUnjkf/uNSgbWyBSJpF4GETSokLI1LZZQqVucRH3TqJgObJzM77sC76uv4zhTZh8TDrdbTZVRpYqBpwF6UOnNIyaEhxb5rRbjF/jhZJVPv8mo6CnbemKA66zBCGakTyELq26O4ezaP3WkrCMNQKQsyPoJwGOAZPOcoadaQBvKdu/fQsktcUWK1M+FpYZEpIi3jAdpBIOvGrMA1+dkjOxj/wso9Ydq4Lv10JpUewEHMyRxKnpcb+Z6UrxuBDCKk9M2w56je0lS8o1HIgeTENsD32MrX/pgXsf+SWwh4BkFd4YfF2ExqiTu2DeLJXoiI4ntIEE9pCZgQK7nTDbGRUWNHHz14VIPzULaIaJVDgbu/0h9MiWICBOPNB2
- dPtWU7TK
- WtjQzrrE6e/YML85bE+OF9A9C/opr5g7ItmrAkHZ5TzlO6DpvlI3pk3qFH53EufjiVSqU798AlKTr5lef16yDZUVDiL69+fgSAcCbWbLO8asQpHvlrSvbAnmScaLOku0XVEmAcAJoRk+Zku6QH6zyneWzBJWJKdhwiVjLHw0WPC0fBGTsHStKN1y/OHLVrQycBVjAvw8/q+Jc1MxUwsZiOzgubcRE4G0rsUa69rAXH3j87ywDi8TBh7vx54r8mvoUzUkZzcGn4LSSg00aJipO2umMkA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1784560140-519666
+X-HE-Meta: U2FsdGVkX183ajgK6EV7KWlMqFTu6bAedrRZteszK7x/f97bFdXYCwQ2iEApPXBzuU2p2j5tVJGs2MYpv64mWjvpYZghd0+yrrZMC014ZoPFmU2GdyrwZeXy26Gdh9spNSb+FbAqgJqYdLypc0DnMUfdsBG+rpMgPaXNRsOBNYjGFx070acSALwGVahoPo9OypraTz9+E1+NUs1Jd3dTriP6PNtIjFmXWKz47Oj+tyW3IhOh94IyJDZBQeZl8xyC+TclS+OyIlbsNywrFv/3WeTeSVaPTlUWFVvEsy9fAwHCuIzcAX2fuhO+Y57WsSU38raPbzNmOakbI0bFp5T75YmBD8wejcA3UMY4UmJtA9IDrKDBGQoJIzKyG6jNNSeNH9msUWmBoEn1PVsKRRv455NeFXGEAWSAkDbRLuPA+2BuIpewFZmv8MSHfof8Ke6Wy4C867q4gC3SSK2TOHNPEYtV+NX0LuKjJcRZOmbrnAMMBXGv0TcWVE3waE/v0K5KiE0GnJn0ubXbOIBSqCaTY7+5tBD2zMcc0wg24+Rl+qns/5RTUELwwft4txu+5zJVGew5md1HmC51jw0v14cENLVLPZDI/QdXCEvaDzoyvS3WMz2TTA+jJkSlsdxg5uvwz+ASzi0ukumNs5ZMp/QBJCsRjZfuj41RjJWvtrzCz5zIAjFR0203WhlBgqvSEF8qXcjaitvadTy5C1P1xA38Ps9O3r/PhfuVjGwCIFCFZJePKU+h1bcL8qQDAnAlWBUlJoYjeMlc33jvKL3Azh6yE6MG7EXyx/1mM6ORJ1qKIUpkw5xqvZpsew7hQVjKa2MplWwWBsv6NydMUbBWgxvgzmWh3r++/O/lPDPHds1p01oS3Sq0b72EHjwCMjiYDa1OiyVZ28ApZwj2HOlzFd8XTkX6ytxpbGs562JgBhWta1Zd/+5KtLyd2AUK/6JGZJu8SpRiwT0A0pVBlENOOra
+ AK7+qJHg
+ aw/NpoAoWVkwwdC5tj//s0oihIyBW6A+3mxY+DIKsRd5aW7uzB3RPyXStIgrwaCXOoXGJJI0KW2hJnZY91rLNS1niDK+pUD6Zx4j53E/SaGE3t0Xed6ELnMzJFjR/oC21Xy7lHCMgtsamsDSCbMgG5EB98PWfD1uYL/XuZgk73kUa4r1HzjUHdUiEZRov8E5S1M+t/I2dlopDLg1CG2w8+H53INVkTrhb9UVXVwUFANBmdp3M7j2BPn3l/WgeHaZU/yP9zJ7VOTp3CycYhLFCylvHtXgEXe78g41IEQdWiJB2F9IU0l6MvRDKzADFVMoaMfTf+BSH97q1h4w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,20 +125,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 04:41:41PM +0200, Christoph Hellwig wrote:
-> >   /**
-> >  - * ttm_backup_backup_page() - Backup a page
-> >  + * ttm_backup_backup_folio() - Backup a folio
-> >    * @backup: The struct backup pointer to use.
-> >  - * @page: The page to back up.
-> >  - * @writeback: Whether to perform immediate writeback of the page.
-> >  + * @folio: The folio to back up.
-> >  + * @order: The allocation order of @folio.  Since TTM allocates higher-order
-> >  + *         pages without __GFP_COMP, folio_nr_pages(@folio) would always
-> >  + *         return 1; the caller must pass the true order explicitly.
+On Mon, 2026-07-20 at 04:57 -0700, Usama Arif wrote:
+> On Fri, 17 Jul 2026 13:00:32 -0400 Rik van Riel <riel@surriel.com>
+> wrote:
+>=20
+>=20
+> >=20
+> > mm->context.pmlen is set only through PR_SET_TAGGED_ADDR_CTRL and
+> > is stable
+> > afterwards, so it can be read without the mmap lock, as it already
+> > is from
+> > untagged_addr() and mm_untag_mask().
+> >=20
+>=20
+> I think it might not be stable? set_tagged_addr_ctrl() can change it
+> repeatedly until a CLONE_VM operation sets MM_CONTEXT_LOCK_PMLEN.
 
-Wait, what?  This is just broken.  TTM should change to allocate using
-GFP_COMP.  Why can't graphics people ask questions before writing stupid
-patches?
+You're right, ARM tagged addresses seem to work a
+little differently from x86 LAM.
 
+It looks like on ARM with MTE, the top 8 bits of
+the virtual address are available as tags, meaning
+that address space cannot be used for VMAs.
+
+For purposes of accessing process memory, this
+is a little more stable than LAM, because the
+number of bits we need to mask out of the address
+is always the same when MTE is in use.
+
+At least, I think so. Am I overlooking anything?
+
+I will clean up the changelog like you suggested.
+
+--=20
+All Rights Reversed.
 
