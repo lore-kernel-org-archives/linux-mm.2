@@ -4,130 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5672FC44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30EF2C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:54:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D6CB6B00A3; Mon, 20 Jul 2026 11:49:09 -0400 (EDT)
+	id 270036B008A; Mon, 20 Jul 2026 11:54:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4873D6B00A5; Mon, 20 Jul 2026 11:49:09 -0400 (EDT)
+	id 21FCD6B008C; Mon, 20 Jul 2026 11:54:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3501D6B00A6; Mon, 20 Jul 2026 11:49:09 -0400 (EDT)
+	id 15D056B0092; Mon, 20 Jul 2026 11:54:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EC34B6B00A3
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:49:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 712D816020B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:49:08 +0000 (UTC)
-X-FDA: 85009588776.18.63C9536
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7A0A2100006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:49:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kVVkvYaa;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CDEC96B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:54:19 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 476871A0210
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:54:19 +0000 (UTC)
+X-FDA: 85009601838.29.B601125
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E2B121A000B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:54:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jWSM1UBC;
+	spf=pass (imf19.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784562546;
+	s=arc-20220608; t=1784562857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=89meaKDhwFe10Z71hE7i2nRHODsJTbsiRnn58cHYtjw=;
-	b=fQqDP2RwLKJqS/JNVnXyZ0XOrGMePpnUwMD3+ykN6gJexfMkNU7sWFyUKzoiXofGxx34mk
-	Bk7XIZwo1gsXuviCQ8NpzKDdeS+++LR5Q7Nie7F5ybJCL1uScj6f3sziDaYCr4epLv9+Mt
-	VJC3nqkNKiuSwv0T7eB/rFzcr6MOaAc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784562546;
-	b=rRORXyfQtf22/X15i8ptXTGjKU9jx0ijuKU6YkfTabdzO3wrlB+3Ft/IMSTdDkefkGO92N
-	bkhpBgXFd5CFjGS1jl4szqRGbz9EKHjH0pOgoxy5Idhwt3rf+KTCZb5sW9Wp62L7XvN6hA
-	iITVBwWeJyGSE8KwOp2Qcq2e0Mj2Ye8=
+	bh=8dKvZsK9bN0vSKT1EWr07IiR1IRjCYgsoqnq/4PrwdE=;
+	b=6lLw6WpsPsAi6ERG4L5tkkHaoOXYJcXdqefYHOv8kmKOse2eYiRsrv5ZgkfOMn23Oyp3iO
+	4p58tV/xVGfAN343u63ZUVNZgSlb+xG9CfB7F2q01JOEwQmOLUCcJ6zKngkt5r30VpJ2Bb
+	hmtVTS66Hx9IxtjkJI0Ki+x2IFn5+bY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kVVkvYaa;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e622cc874so763066285a.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784562545; x=1785167345; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=89meaKDhwFe10Z71hE7i2nRHODsJTbsiRnn58cHYtjw=;
-        b=kVVkvYaacl2mSO9tlI2DkaTCwKsCsWKxIl58ILrDhp8oAiudApBl9stewnbJZXRp2U
-         NfXsfKZ4r0dTzb6YMFdsfgqZuaAxbMWiDF6D9eNRHNtGc7nVMG2vAV9qfmw5cm+nVjWY
-         jwvkZqtl7ueL0tYXG/9fkaUCgwq9jIp9Kuhb1OM+y57CiUzva3Q1UPEy03l+vbmsTWEV
-         5NXY9v9o9vZ/oiQUS+LE/Q/yo9f4uTPuV06VO2nZu5n7MaBjRl5CclaBgL3yTKagnEUz
-         8j8YfWNVfAuoGWlyifgmddiX0krueLvEqpX8NylEQJo8Apa55PGUSzhB1NzNv9mI57Ld
-         h8kA==
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jWSM1UBC;
+	spf=pass (imf19.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784562857;
+	b=HBr5Pge6fA/+YA/Lfk6xH2bildFRUG5j6o4VGNXXKseYHPhwXnJwOdCjuQpF/Y8JNwLuxz
+	X8G4noiOt0Wc9Z8fEnUGrYL6L395t925rV3twxC7ppZiWUQ59/8NXgqLPHU+iq03R1jmJg
+	fw41Ux6yjXX66H6UptHTqhsYefQ4rrE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784562856;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8dKvZsK9bN0vSKT1EWr07IiR1IRjCYgsoqnq/4PrwdE=;
+	b=jWSM1UBCnv8WR9HTZ3JIkJ68E72aBSNEx8u7U8rGS7fkwVvtG8IP6BQmT+KGs2MA6omTKA
+	JQR7mQVvnyzsMsaDio/duGSEzyHRQv2hy1UUk94cTCVItGe6Xe2gjrnrTxRYltmJ7UGySu
+	BmxjqUH2xpRYR4YiRgMKaSFwbclc1c4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-VD4z3KtiPum25TaVxdnrgQ-1; Mon, 20 Jul 2026 11:54:12 -0400
+X-MC-Unique: VD4z3KtiPum25TaVxdnrgQ-1
+X-Mimecast-MFC-AGG-ID: VD4z3KtiPum25TaVxdnrgQ_1784562852
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51c21c01cf3so152557441cf.2
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:54:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784562545; x=1785167345;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=89meaKDhwFe10Z71hE7i2nRHODsJTbsiRnn58cHYtjw=;
-        b=cBoFA81tcaCAgFbEV2VIkFmi5icv2rfYOsUxiAO/ikeslKZqFFK2ubpWpET3fwBfEu
-         4W2s9gwVLb5v07nTkc6tmGXpvILuGeVR7lEb+6j2gJKdJ2D51jY8vIK41jiPd6JWo+h+
-         zM9phrjAoRhTBn4D2I06JQ8VoGdvfEsr9X9QdTEdp68HAAwO9nJP9IZzxlsqTm5eeXez
-         OIlEv6FstXRwCS0pjo8UceqoH99yJw5cR0HkxdAMtNmdpeeaffvPjWzcY98MNdKr3+rS
-         5f41ieeTDgDNSsOjD2uuGO6tgQe4TxjGg9hMdUoOSLycSQZKSQL18YPMSLG66JdbxODj
-         V0wQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrNTc23DX26PDOQPaw2qmMRIrhaU+hGhVo0zRTd6JYPAjDEQQcGg6oDG9s97RhaHsCTSOz/kVw5OQ==@kvack.org
-X-Gm-Message-State: AOJu0YyS2611WNqh9xYsRRYwTBwVNKEPdusLjI1MeXXnro2v1dD8GK5T
-	QlcgErlI0TdCjZK3VjvFN9PTDEIUzgdU5ABwU7ST7pY6SsbCX/8yiPSx0AvYNhCViNA=
-X-Gm-Gg: AfdE7cl5rTAulCpZ9peOCI6R/lSN51wOPcr8RHYtxTN99lkXISo1NXlinVs5yVNNIKQ
-	CFI36xuXt2whQu4q41pilrcdGypLAViXLnikGluMyrv1JCMWGhirG9a6sIoGYRCv+ME0af6Qbqh
-	pv1YSzyb4CzsnKikE7arkLCaauw8X5qREoDWF1lFWKIEg7AUaadlHYCpzXW8wkkjmxPMyPM6HtI
-	U6VRpY14nBV4f5wOk5xfhTPGzucPNdcgjj8itmmwJjydngD3Enw7Q88blt2H4drL3JBfqDhhLwr
-	QuqVvjLC1VjxjFFKXpfbUOV6W471aZmyv1Uv139K2MM9nio1Cu/v0jsYu+TZGy01zcFgYIq10eC
-	A21j5dCrtBkvQmV9YFoCE1LvZqCQcyJSpO1Wx+SgVOXSO/eXhfrTxG+kbOQqn58KvS5vFWbvrbM
-	hDk3qh1PH5Z8AJ9E5JtbpeId0McBKvjz3WxGIq1gGQKn90sPJI0VVEmpkUWg==
-X-Received: by 2002:a05:620a:25d4:b0:930:ab28:9459 with SMTP id af79cd13be357-930b41e29bamr1533354985a.56.1784562545561;
-        Mon, 20 Jul 2026 08:49:05 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b54773fbsm894382285a.39.2026.07.20.08.49.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 08:49:05 -0700 (PDT)
-Date: Mon, 20 Jul 2026 11:49:00 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 01/15] mm/vma: introduce VMA virtual page offset field
- and add helpers
-Message-ID: <al5CPpc7XpRX7Vbt@gourry-fedora-PF4VCD3F>
-References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
- <20260720-b4-scalable-cow-virt-pgoff-v2-1-2d549757a76f@kernel.org>
+        d=1e100.net; s=20251104; t=1784562852; x=1785167652;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8dKvZsK9bN0vSKT1EWr07IiR1IRjCYgsoqnq/4PrwdE=;
+        b=HtC8fLHSkluwoBSkFI3h0dN6yQ9jun1CDxk/Hw1b1FtZITp3RWY7vSkgOxxfhJa3xm
+         0vkyJJ6b1+tAPh6d8UScNthTHp/81WPLFe0XO4f0Y++jGCfFjZ0k+umMBbaqqZTcKkzC
+         X3UJ1USJnwagr/h/HlbXHofQF5ZjV2+UPjLQzuEGWc1Kw8AMYWI89z91hpjeqi6viKQa
+         rC9rJ9qJef9dc66KTA06FIACC7GrVUvSo6tEt0ndk1I53MphlSIe3IMVk4P1eP/hltgS
+         IlJgguB4/xDQFYj6XDswGvYyzytwQS4nP0w62VSmy+HJRvRIz8hiDjgijwpf5ErZKIFu
+         grQA==
+X-Gm-Message-State: AOJu0YzRSLGerYrxNrJe9EggJIqAy09qBOpbguXxz7czcxTKo96ARnOp
+	NjB6zR/PNuQ7du4Uup6G+KbniTt+73mfiNaIuEFTqBKp/lcIU9Z5A/Hj5ykRI2bbQSpYVVRRxwX
+	94f1N4xcuq113vGYlfGLrJdja101MClc/n6tLaZU3v5boIYWANSgn
+X-Gm-Gg: AfdE7cmb//ZnBXbr3fIEgTALwrem5TiNKBHR0Vv7LMa01gjZOgJPvT6Ya4AWELutcVu
+	dtU0FzCf1qkv/IRP78a3wtT5YemsRvDM6AotxtHoI+WPK+ib8sroYbNVaALKkFUvwEn3Se+3+VC
+	9gwZHKBh1DKeKANUfFTrc1I6yWKcoDRQCVFT8aqURc/9sS1uZzF8lQxrLRbtHrpKwXs0WIszE2q
+	d9Nq/uhLUFvFvrvDosGsFdWiWvLek9hPQKkLn63CPe7XcDizjIoDD0NUtgdezEkyVmiE8IOaCTo
+	dvvdJ53uiOmmLElyYoots4EuXrPQrVFhcjpYtFDirKW79mLZTCPzRCyMIS6X0s5GBRMj1j4RWVS
+	s
+X-Received: by 2002:ac8:7d07:0:b0:51a:6feb:dc8f with SMTP id d75a77b69052e-5213d2b65a7mr137422891cf.9.1784562851599;
+        Mon, 20 Jul 2026 08:54:11 -0700 (PDT)
+X-Received: by 2002:ac8:7d07:0:b0:51a:6feb:dc8f with SMTP id d75a77b69052e-5213d2b65a7mr137422281cf.9.1784562850813;
+        Mon, 20 Jul 2026 08:54:10 -0700 (PDT)
+Received: from [192.168.2.110] ([70.49.81.60])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214cda7dbfsm75357561cf.9.2026.07.20.08.54.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jul 2026 08:54:10 -0700 (PDT)
+Message-ID: <a8637ae5-1796-4dea-902d-1ae1238261e6@redhat.com>
+Date: Mon, 20 Jul 2026 11:54:07 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720-b4-scalable-cow-virt-pgoff-v2-1-2d549757a76f@kernel.org>
-X-Stat-Signature: wopa84ieyax64jgew1ygrf6cdx486e34
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] mm, swap: Move setup_swap_clusters_info() after
+ SWP_SOLIDSTATE initialization
+To: Kemeng Shi <shikemeng@huaweicloud.com>, chrisl@kernel.org,
+ kasong@tencent.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ baohua@kernel.org, youngjun.park@lge.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260720071342.50742-1-shikemeng@huaweicloud.com>
+ <20260720071342.50742-3-shikemeng@huaweicloud.com>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20260720071342.50742-3-shikemeng@huaweicloud.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PVWqhhX-X3h4YfjpSmF_T4mH4LqgnG6NdGBQ5nJdcyo_1784562852
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7A0A2100006
-X-HE-Tag: 1784562546-236443
-X-HE-Meta: U2FsdGVkX18QtOWlGNSi3yL55dxrf/rg1t0ELLnydadsKALe7FV7TWsn2d3xa3vjBNHOU9abDDjNwsLIdUWMy8EkEVWYdzdEq7fHDhwTlvmmjfFFmmoW2pOz+9gIom5n75w4g0zoaaF1dBpcGSPmtVdF/5ifcmNbhOCeUlb/8D050/Y3UDeAv7dyCofCGu6WJffwWfKUqY1qkUeEVD1Ipp9dksZx5Jlz+PXGRPXv2J4pUAZwbMhOHSfZIOagsVIKBsaJPyzDKIkZoQMb4VNARhuNvakXKTmqI7Agka5DJJ+RMe2eKmnxAZskQgtO8HyUQWBxMjxeKXqf50KV4GV3z7BhujJIT7ehWVaEEZBH+rn+j1R6434/Bni5H///FBuJCATPVNsbso4CY3OcVoQ18PV9QGYjXstSS39hKiiz7eZl40pTKbwQfbG06QWEHXeo2y0tE6zUhwTwRsHE1wMS2FVl+ko5mxE7+DZVnm8SaOecLfTwyj2Muw5u77wB+Q0fR9dr4kS/eHmYvw0FKXXKVWKwAg2kiFhH4MOzchP3ASquc+vW7LqfglzhPO1c7Wzgol+Kz6ZbJjCfU4e5aq3LPYZ7z+35esigIjd1mvsvp/D8mg0NoUMo9zsuviRowhNmck2qVQLtmsT8KUuuPw76wMNpy5CLwO8E9+TNfL6LXJk2V75uMqd90RmmE9nCRG/bT8imwC2e35NmjtUZ0j9H7A68fBPM9laVTphX4VQ8l0+hZ3VL495yR4UAQDtPuv7v+Rh5cQA22u5MFFzm74aqVPQ5fZtsvuVhRcdomz3X3D/QRfo+zePcslQ+U7rkyXuZrL+99/hQ2ipXfn9q6QKZK3KH1OUUYHTvlexT1qZad98vAI/QFwVi39B8eYQ3zL3dYKW9t54HGmosfjcuwXKf5k/T6NncmAUCrRGc/OcdN9WWXHBUwkIOYb/FY0xdiCCUWSI/S5xmNk3m2lD/ni2
- CSZ3PGzg
- 2i88oMWXZ36Vxz/OKNgrKtOq4YLSzt0xsUVrlkEU1z4nDn71Q3txTeb0b30qkjVPm1IBRR2qyxvsJ9CPAxAQwooDkZ5cF5H46QnMB+pjlUmwZAYYuUM4xb/ZL7IOEkecTqFqPVETzD8uHJqIUtdWC/q9ouYqWJ5nOSGJukca27DWq2banlVaVckOdfwyPsbNsUTJDTwwp+FQ3rEn5vjRWcWzIGa930+0M/Yqt6Oh7ZKt73ClSQL+cslw/+L0yfpvA0y27Qknt1n8TxCQI1WQ8vZoxoYkIvDEEsAM9nmbXczK//EqLDWFR8nfQ/mFYPnMoKAi7KYpFEOkVur4NYo8i1lwHvbibV0AiCb4BQ3SpSyNb0LOk6dVHGFg4gr0YzLZZR3IY7lFlpourO9JRsJnjM62l8A==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E2B121A000B
+X-Stat-Signature: 5ucpiziz9ig64d7hpr8fhe41i73s9x37
+X-HE-Tag: 1784562856-719283
+X-HE-Meta: U2FsdGVkX18FW/deDW7NlMwSfBJi0zfc+hgUz6/Lde66xKORb2Z1xkhwnICqIswWMTI5LaVRZjQGxrqPkOr1eqIWn6MqeqPTcfLDkqhJuRLCggxnNaIvgvj0PZPDEghiO/wJz1SWM9HXX3hQHoFvrqOSjG0zdsgjEIHtR4soQmIWJ9dR1aEvqrLoAQUfec2knOBGFK1LipX2LtRUn9XoPSCkI+gh/wxAxCvIDCazC/SJVLBNzQ2JmmGBH2jQsLGU8wX9WPWVeEX6scii8gV4XW9S0ipTXNvE1LDow48AfHpf5bxHBsJKKSJ7G/hkjE3kaLniZ7RDJPPPQFkmqwxK8y/mlPBxyY8OxLfbcUX+C8RdZXdopJiMT3vLefGiuFiuA3mDWTyGFqdQE37myGNxmn6UpdwqEFhBHWECfQoKIM7uzvgx9nUMTQSalt6deuJiJJxFCkQyKCtQp2SZGcv8Vg+MeSamolsQoCg2RdhUvNPmVs4P7Ko7BDsLRSsJid4yu9tkJbNT2On54C1x76r4kNocpg7TMk+eTtxCsMht5uEi2+CrmNmytINum0XzMYAS6BGSOFUCJyxGbfdSCeO79nmRg6T4UsQMJ2Rf6zDhhVZ+7A5BmlPm3mT5J0SB82z2Rvw3rT2/OT6Ep3VhgwLuX7kzpzGozaDajHYFNEXnrnAtgRKU5ok/PCDNTU1xJYUi8H+2K2/2fWKGiBeDj48/Kv/3o563D0TWbp7WQOxUFGLunh38fp2e6Fe8fvdKms6snaLObcAz+1ls6QxFryArFlEUA7IjgHZao7DhpU5QqjxRtDSl0qZGp3sod08AOGqt0evtl4+0IgJq+Btj51uOG+zITHewsvpaX2Z/SbSQo280sZxq3/2V2bToJwxKMbcdiEBPkBGmxgDy4OxQN024BXmcD4zx+zjBEqc7tpITB8AdCYRG7Yj6xlfX7kzDkmtOkw3tfP2tuJPqy3+r4Wc
+ jnB0FGFx
+ 1nL5HKLePVn8qxEWMZfV8QD+OOCz1rUX1Uc1VBYeTlkmyLPTQhw5SLB/Cp1TCCITwG7pvugi91MXpuMJMQEp4aiHoc3B2cuSSuB+pxh+qKaifnzvmXXPTBH71UE48wKZrnU5rz7QDpAlNdIR2U+1sRkTL4yCiXks28f9RNkKL54pra3BppE7hf4cKhsDt7Oq7WKMVOg6+MzjPI/QhqQdJhU8yI5VcoPVsAiKctlvPlsHTic46QxsOCqsU/eqol2tavhjmVtm7jht0KMjzYaP+Fi7RaXkbDr/y+lBFnnO97Z6Q8R9sGGi7c54jhEnnlmvN3hbg6FWF60tKawgq1ovU/j59uEO54DqnIknYeYvttFcly+QFx6aEW5VIrwmnz8hAcn8+wUC0/D+g+dHKhm2Z6R/xhCdHd190hhKdLPylMAdCNMNbuuoWy3pB/Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,22 +132,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 03:38:27PM +0100, Lorenzo Stoakes (ARM) wrote:
+On 2026-07-20 03:13, Kemeng Shi wrote:
+> In setup_swap_clusters_info(), SWP_SOLIDSTATE is used to decide
+> global_cluster allocation. Move setup_swap_clusters_info() after
+> SWP_SOLIDSTATE initialization to avoid unneeded global_cluster
+> allocation.
 > 
-> The virtual page offset of a VMA is equal to vma->vm_start >> PAGE_SHIFT if
-> they are unfaulted or were not remapped, otherwise it is equal to this
-> value at the point of first fault.
+> Fixes: 451c6326105b2 ("mm, swap: clean up swapon process and locking")
+> Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+
+I was about to send the same fix :) (one nit below)
+
+> ---
+>   mm/swapfile.c | 13 ++++++++-----
+>   1 file changed, 8 insertions(+), 5 deletions(-)
 > 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index d29062d9c3cd..81c4040912be 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -3607,11 +3607,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>   
+>   	maxpages = si->max;
+>   
+> -	/* Set up the swap cluster info */
+> -	error = setup_swap_clusters_info(si, swap_header, maxpages);
+> -	if (error)
+> -		goto bad_swap_unlock_inode;
+> -
+>   	if (si->bdev && bdev_stable_writes(si->bdev))
+>   		si->flags |= SWP_STABLE_WRITES;
+>   
+> @@ -3625,6 +3620,14 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>   		inced_nr_rotate_swap = true;
+>   	}
+>   
+> +	/*
+> +	 * Set up the swap cluster info. SWP_SOLIDSTATE is used for
+> +	 * global_cluster allocation
+> +	 */
 
-The latter half of this description is a bit confusing.
+Maybe something like:
 
-Why would the value differ from (vma->vm_start >> PAGE_SHIFT)?
-(because it's file backed?)
+/*
+  * Set up the swap cluster info after SWP_ flags handling as
+  * setup_swap_clusters_info() checks SWP_SOLIDSTATE.
+  */
 
-It sounds like this value can change in response to an event, which
-makes me thing a reader could see two values across two calls?
+As it's minor:
 
-Apologies if i'm fundamentally misunderstanding something.
+Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
 
-~Gregory
+> +	error = setup_swap_clusters_info(si, swap_header, maxpages);
+> +	if (error)
+> +		goto bad_swap_unlock_inode;
+> +
+>   	if ((swap_flags & SWAP_FLAG_DISCARD) &&
+>   	    si->bdev && bdev_max_discard_sectors(si->bdev)) {
+>   		/*
+
 
