@@ -4,111 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BFD0C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A412BC44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:20:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76F876B009F; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
+	id 623856B0088; Mon, 20 Jul 2026 11:19:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 720C46B00A1; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
+	id 5FB296B008A; Mon, 20 Jul 2026 11:19:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65D846B00A2; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
+	id 4EAE46B008C; Mon, 20 Jul 2026 11:19:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C1466B009F
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFA2C1C0165
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:30 +0000 (UTC)
-X-FDA: 85009488900.04.F91471D
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0ABB44000B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kSEW56gy;
-	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1D6D86B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:19:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF2AA1C011F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:19:58 +0000 (UTC)
+X-FDA: 85009515276.24.359B67E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3A64B1C000D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:19:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Em1b5/h8";
+	spf=pass (imf20.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784560169;
+	s=arc-20220608; t=1784560796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gIaMa0p8G4f7glb1Lz6VEdYbpo7o2b5ERWXtcoXZflI=;
-	b=1dGR67oMS64tCMp4R8dxI1OXvUHUTZinko5kfCR/RTDOoGRVH8W1aT5xvH9wlJMWsC2Cq4
-	ShO53wrC4/Mny2PWAJubLHtG0II1YRjNLoXxA229iBleEfq4u2aUe68EE8FGHnSburn3f5
-	pr9O3vNT6i96zs71NMDwokYra8vNzxY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kSEW56gy;
-	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MJBxnIHKok6+v4NSROeyqP/dve9nYPcXS/Eilx2aqxg=;
+	b=Akn3BInksKp4NLLIvcWzN3p7ALspIvgPltvU3BGHUPlCPZunPom0S84ur/IGxs9eQGMegC
+	TRBZrOaT1t9Qk/D/MdkVWOn0IbAPX3gXJ79Gl1W1l27v97P3CcASp+u1qD829W1r2DKOGM
+	1iA4hcfv/nm9uIiS/U4XP3hFCBeO8Hs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784560169;
-	b=NVydciPqFmClWcyRzij8KlXr+glXvilRXgkqA/D/4jatlc0aBC7RoWvvL48VanEqycbZUS
-	3/kZIiODJbGNiVQXVe5+4sT6b5muZMlF0QxSR3yc6o26yk8oEfslLfg13AxbjA5LUIuV96
-	VErWB7Yhu84JuHwwUJIbF6rsc2RVN1M=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84864086bfeso10855192b3a.1
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:09:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784560168; x=1785164968; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gIaMa0p8G4f7glb1Lz6VEdYbpo7o2b5ERWXtcoXZflI=;
-        b=kSEW56gy5IS+CoGG4rUOZCUtIbAUAJRXHlMacLmh9hi8U/u2fnaKag5ffaa1MxBYU3
-         hOtP/ygzi6gEwpgQiPkSzPpNvhb92qVUtsKs8V4jqTC3FghqOFqsWRp10iKHYRG2XsUl
-         Z6BqoxipwNI8BWWPinEMv5tzwVcfXaX3lJTQxXND2LV4xOCYHFksEvvrJ12pRqADqX/c
-         WlVBMSpCkkpVMpYRKfPpjHHMOqF0ObY1CqWSSOZl+lJdiTGRyfp4CcPeKEfvhles5ekq
-         /BanNekMgeucJQVNalm2SJhFKPDvu4ovPAMaU98ChQyYHtboLFkuNKNcznCbWT/U6Mkt
-         NIlw==
+	t=1784560796;
+	b=moRYcy+1DEn2lu1PSVholK/9SRib5nZALADvqThKMdjXCU02ojVtuhJOZYaJxkg/aC5xvU
+	F9+0MP/DpeiYWZu/iHCsz5NtFqDdqInQ8jFrU6MX/H2nFIQIf8cqrCYBbRRDQFKBxjM5my
+	gliSocUjwcyz4/Tls01C7L8sbKehEvI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Em1b5/h8";
+	spf=pass (imf20.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784560795;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MJBxnIHKok6+v4NSROeyqP/dve9nYPcXS/Eilx2aqxg=;
+	b=Em1b5/h8T8f6OrzV0SgBl5L8GE32QESODFd4+uruUpjAHBHAkx/VX8DHbZmIA7LSUvG0YJ
+	x0UF70qZaI0o6ezaTNXkg94tFP4u1zhgoJcFRE7vX816HcDTupgkcLSLciqFlew40KploT
+	8D3QwUOGVz/rsjafrQNdzu1PrP6ijo4=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-216-ykLevozYPXKTltd_2PUALw-1; Mon, 20 Jul 2026 11:19:48 -0400
+X-MC-Unique: ykLevozYPXKTltd_2PUALw-1
+X-Mimecast-MFC-AGG-ID: ykLevozYPXKTltd_2PUALw_1784560787
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-39c84c18406so29162071fa.1
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:19:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784560168; x=1785164968;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gIaMa0p8G4f7glb1Lz6VEdYbpo7o2b5ERWXtcoXZflI=;
-        b=KNf6AmWAJa2EBBYKgrz+/KAicIU3eyjRNXBXaD5kyJ+77xQtjdMbUk6ak4CmNVClre
-         O6enEKFXr59N6fDXQr7KMnHlHLKYXg6azYCzlmaw0gFy5+jdwoeBHgf9ZKWdOJyrM9Wo
-         vLo1Rtf2ZPrMoKhtHbwH3HAsyvolFTLtpPB5aPMOLR1iUB5/gb0m2/84EHs7nYVRvgx+
-         fpIc8aBk9SGgHaq5wQguFoRqHanAY0FjRYeoSW4VVTfLca5uW67NdjxWYIU3KoMNGX8l
-         MfhfxQbBpugRMWGVJVN7981PStp0rXl5D8YI81udeWefQ1znHLqS36x3pOSsZ7Iy4Whk
-         9RRA==
-X-Forwarded-Encrypted: i=1; AHgh+RpodlWaDPSVRFfcwEkxkHPIxsRo3VTLyHxZROSMWEcAAghN6e/QKnPtosdLu9Jsqj4Ie/bJwXl1Lw==@kvack.org
-X-Gm-Message-State: AOJu0YwVeGF0A0vfS0cfiMIBcMjaTbbPLwRroF7zGAhWulH62rtWEJY/
-	oM0Lu77B4ZE3d2HNfcc3n5PzLa4JGoUopWiiisbUOvAQw6Smn8DYB6rOu0Ywwn8H
-X-Gm-Gg: AfdE7ckrv/ghX7KKOoPNpESos7xcHNxL0s/FRUV6qUYcwHVgDk6X/Bo7oTivdMBiq13
-	LrZtxXW8oL7Og44CfbhU0a/t8wwU2mHrIGWngP6N6tNt8yCq70aR0CoiO1zvtvaAG0jeyb29lpV
-	i3SiJuOtzxyD0G+zrwJfIxPfq76ww4Of9elAJv9N3lCG4OUCZe9vTVnGauuHuysFWQubmqczYsR
-	omKWyQic93czV92JqKxY6MShBbKVIzMq6E+0jMW0zQzGazZDW+mg9D34TgHdXJrhlgM5x0VvRAr
-	UoxhVCGq2oP+9ZBsxxG9BrIo+NQJ85JX+zMDh57h440TSK+9bfslmVAt+hjXXQtCDBPN7MIsDKh
-	f5e680ChrlgVJmpLsZjcA8IlbnZMjGMsvOLpRXQbaZVIH1QjlFYXucglIVl+UKR8yhvw7gR6jiw
-	IW5O7KvEU=
-X-Received: by 2002:a05:6a00:170b:b0:848:4b49:27fb with SMTP id d2e1a72fcca58-84c294edfa7mr14233298b3a.78.1784560167816;
-        Mon, 20 Jul 2026 08:09:27 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adcd3dcsm5938032b3a.24.2026.07.20.08.09.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 08:09:27 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/mm_init: remove redundant memset in free_area_init()
-Date: Tue, 21 Jul 2026 00:09:13 +0900
-Message-ID: <20260720150915.756749-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1784560787; x=1785165587;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MJBxnIHKok6+v4NSROeyqP/dve9nYPcXS/Eilx2aqxg=;
+        b=bsYckdp8wADinpu4BoZo27VbOvCcCUoZFabkJMREzwpnXUNxO1EyIv/7ZgREbKNRyT
+         Xz5hXVzP+WDP1fOP8Mt9xEY+VqvMn6sV8CQ1JaZ5BvDz5a+eZiIpKAjAKsr3CgTHCNu4
+         4pBrxuWePM4dpjfVkik99glP4HGXBi9mIuFct6RaASTpm1+qJ4a+xdRrpE+kZ2L9IcH3
+         E1W4s2KVYhpXeIrS6BoVylFwakzC175EFiuq2fYB7mN8uU3W+xpr4ImD4+UUf+HcKLF1
+         qeCjZMKlHhhEXyVF0wsncjtKoeYiO++4XsTo8FL1Mjac1LQY3dyu+DjQpiNZuP9N8kUc
+         8LBw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4SCMf4zMJPVGAe8qracbRiKPGm+U+pDfdkWkbF4eXnQSfJKqxTUBXJs1CkSfdPdWxKaOVd3aTlg==@kvack.org
+X-Gm-Message-State: AOJu0YyDD6EffLOTPG9D/5rTOQ8MAbrdcYIiHKDci7yq8SLzQTp0QiD3
+	4GlNDwUWfhPizKqJYvD4gEiI/Tu6vos1vrFobKRMHIHdOM7BE+DdGgpR/v+nL2bb0dnQbygKVmB
+	Jdjno9JSoMfP54M7dcnF6LGddXPna1jeu0EoicaG624ppL7eXk4GLJeYzb85xm6Aakoc5LY/f47
+	+/tPvnJGa6VlABn/0CKimjEBfkcZ0=
+X-Gm-Gg: AfdE7cnGyC9L9/RCgznGsgKkcEllgowP2crfIxmOBZvese0kisXIW3wWtH0sIWkDXVm
+	f3ijDe1mZ4ETvmZbTLzClMY0lm+8VpQJChXgiXDvJbroizsOQkB3T3uiunni9mF0Oy/NJDjMVFF
+	AuNsFRJKobCF7EH6C+XkYyj8C/+wSl/5VDKC3FIy68dLOfpYwgWWtDPQ==
+X-Received: by 2002:a2e:a593:0:b0:39b:14ba:a5cc with SMTP id 38308e7fff4ca-39eb294c024mr24426941fa.41.1784560786876;
+        Mon, 20 Jul 2026 08:19:46 -0700 (PDT)
+X-Received: by 2002:a2e:a593:0:b0:39b:14ba:a5cc with SMTP id
+ 38308e7fff4ca-39eb294c024mr24426781fa.41.1784560786195; Mon, 20 Jul 2026
+ 08:19:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260720142913.846902-1-pfalcato@suse.de>
+In-Reply-To: <20260720142913.846902-1-pfalcato@suse.de>
+From: Nico Pache <npache@redhat.com>
+Date: Mon, 20 Jul 2026 09:21:11 -0600
+X-Gm-Features: AUfX_mwij4qnWc3sejtxW5RwF5X0vNYb35jGeb18DQDmcyYz4P_vaebLNg1roHk
+Message-ID: <CAA1CXcAk1SYopaokUGbT7RK9+gPNN2Jkm2UrpMaZWShjG3-z8g@mail.gmail.com>
+Subject: Re: [PATCH 0/8] mm/khugepaged: collapse_file() cleanups
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: u8OuMCaGZvNJQON3fpHzP0SBbaNfnNQB8Ok9cWT_K6A_1784560787
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ch8zj7ubnzacs195dtswj1wkh3mh1bkt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0ABB44000B
-X-Rspamd-Server: rspam01
-X-Stat-Signature: fmfmfekqfbpxtqky7tokabzzzrxp74i3
-X-HE-Tag: 1784560168-926171
-X-HE-Meta: U2FsdGVkX18z3U0yJvlG+VSmpeVSWwW5vUMsL6Cvckc6gV3FEkE5tFnrZiFa5P6qLFEve9LvMUB5RSJA1eL5rCeShF6TJMbljTHvy9SY8UMGrvHEyyi+cHJvKS1j5Up2/T2oQZD6ZHonJHA4Yn6wiOJr22bCuNq32vb/VZLqZ3ECOUH/OXEmdiu3pXp8uZJm6WIqKE8kJ9/+XigbPG57NZCfNDOUXTQuqzcxgB7cRZBiWC3d9i/cEOjkWi5mqMRs5sPYuS7FBNwpn7HUm2xTkmJuSHMOWBftPK55/+4XEUaVsSvarWfDGlly+A4S+6WbBzG5ep5Y5XVF1hy9wTObU3uosuTAtQmyGEm+hrQ/duuC2d0RQoQnsJ8T3Y9e0CtVRH7ckvctdIvmMwD50u8DJJDdb73E1/sxleF7/qzLeuGzGaXAIlv/zprKbc8SjjweKDzKuAgQMTU7xoS8Qo4K34HPAhcbGutZkWS2mPIJe85YCAbesHzDUoxrzMCUN2slXIgxk5gX0zs7qmULran6YEDp//+AakqzmQEq6Gtz8ykMpOm0W+a1tifoL2RWEQq0RvhHIPXlYL3D2IteECur0PGuBKOlutmVFX5doMrMfxJrRLGfnuhNc/SFFvHQxbytO2KjQPlwv4oMRZYDf3NEGTwFyM/kgIniMpj80as2/TOXq8jeK7HoNxCI3ZOEMvuetN+8FIyJUG/xxY1O4oBHxTDIsagr3p7EbF/O5dWD8FEEbRUbTC5rvtbXWrRw1Hn6Zd2kTupXe8CCqrcXWwEmOdw6f6W8b5ZLOaOXPcQgrfPKag1fFUtKUGkCBr4zjP6eytTryCpb+9hmxwUlf3+f+qBxWJ1CF6wJJyZfeQtIVTaPIzWpMv8Uv8rv9C3xboNSWUgZI9eSB4N3aQzCFH2AZoj7IZ2mBfZ70B3BCDpIu2VfFgLkkM2M2AL6PA1WO5LXGYUuxjSZ7JdMIYoxelh
- TbxaEgjD
- IyGqfvIIaKWbxgFD1j07OPflVhsKnSnK5It0isimrU2sspsqAIanyY6NYM1uYw4W5rE12E5YuV7Ojaza9/feq40idvMHz+udhTqRLX828ZYpuDw0sqJDsr/KM18CQUBtfL0rEQY9mexhgT1oPXd0vE+kQdIbZvVosFnnOafNSxUmu3P6WZIEXgggnnXyDgxkGM0/3WyvFbHPLh//Ug419+XOUcFe8F8ga9r5v4MYVwJVLZLkbcCoNb7s0u1BFrq4b0nWWXR6KpcZN+jRGMduk9KmAlMy/0qbdvijfbozEEvIAgRBEnfjvAUhKnr5lzO9Ut4jJscbiL4YwD2lS4B3L5f5sb6pputhQ7VmkvcZSr5nYCIYOh+B2ozgXLvZ5TCiFc+oHXs29Hrp6kv9zaSnLhwzrRIVs5Ey2bT6DpB8yrCFEnm7IyISBlyQApOamCr7s7vHIRAwAI7ubDro=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3A64B1C000D
+X-HE-Tag: 1784560796-750204
+X-HE-Meta: U2FsdGVkX19WOyQ1PFvJ38D3zPEKo0xfUGNcgGeiqwz+TYXVnsgvmlBu1qtbSHWB2jnO7O9t0IY4kLwl1PFvpQaXkAC2JY7apTMe0TsYBKUYf1Sz3VHGNJhn5lxeieanQjcOg7s/EJeJULfqvG/HfSmT+SSTuhVhkLQmERfROULiTejcrXOlNQRweFpw1R0QC+J0yqk1vGDi6s0tRdDgde5SNjDvSvmbSHSnnjppK/ncViFBSCebE4+dL7LA9et6UEncKasX50kmlA/BlMJz+GPqixVa3h9/00QfI/VO2d+YupiHeuHCbUif818Vnes6/05blldhHKMNk34VxM6OlgT5U0azazFC0mr9PZUydrSqqwR1be1EEtX6U0Vle4HlIKmP3v8HsycLCqELK7qPIW552a+Kezv0Kj2QDJC4IFsMOnmWgEDf8x40SQvgOI1NDfViv/luRL5TsLQ7fmaZ0RjNQlMRXWNcS9RoKivSgV6yvr5T39z7XURMJnRht/G85bylh9CxdZ1lmHLwnokrAGxVsX0LOiSKpDyl8dvltEBfHboD+/FvVFOWbHdMajoj0MGrFYk9Q8akSYPphilSbw7nyv95AkgkI0wSMFKafLEDifuf/qUziOuOEhHcCEBpJfZnzkKs+HUiTbKvMSD8uwxCQJlrqWcOykqP0ulcMhqD2LbB6v4r4OxMWbeCOAdzHXSpEiRIEJQsaQO07Kh2Vc23HDQhLgb0Vc5FW5RCNFQPP/rclHp2vN9/HlrPK+uy2TBQFF1hIQqrkRscwjjuowHu8CbFHJKS2MI281++4UQKHVa8XaU2GuewoQE7N5j7iaS9QWWm7qR38B4X2KkQqQKmkXJfo+cKFiqCAgiAxpkvZDtRVt9iFd8pmMziA/FB01dd9Ln3z8yanybj/bh2HS/80ovUSkVCB5nJ+IkSV8fVHqPaiJjl6+VJ5x4FgdZEUslFYqlF/j1d1szCgap
+ 1s+6hJyP
+ OZbcWAldg98+Cyu95YyXgZsMHgTJLfj22qe3Tx39abOP95Jdmzbmi3K8AGLneUiiGfmZebfz7fpwVb2L4qAk0OdKbD/XFFBg24BNVc/jXqg4KtAwjqUE6tdoem9eO5ZwIa2TsJPpV+5RSAHH4ZA1NdHoVJskZH+EeeTT47u3bzkjHODZc1rXfLp5lify18YFfrsJF8TeGG01MtA/qdy/wKurpcp+xjW61CGyAuDcRxcKKTwozwo0/W4WpEwBM2fLIdoZcbiScA9JBWz5nuTfKb/RpmU26tppTmexmNvTKuUUyeM5hcUxRo35naWORbNwRrO/RE5atFxnrGf42G6+Z4a3wOzKJgw5ndLmhkyOdNz8Tr48EYnLD3CutmKxT8YLHak7nGU+tExERRoDzQydnfjA+vCxs2eiC0Y0pSv9LcnK62ixh+of32V6Z9DlLHIaY56qFkLapb/NISeG9TlOCxBfoQ0DgHxm90Myrcdbgo9fXr4kYMrbBKzJYnUoel75X4ShiarD8V5ad8r0hD0xBiSE1IuYyNYUhcv+azp45mK0xsTE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,30 +128,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zone_movable_pfn is zero-initialized and only set by
-find_zone_movable_pfns_for_nodes(), which runs once during boot right
-after the memset, so the memset has no effect.
+On Mon, Jul 20, 2026 at 8:33=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> wr=
+ote:
+>
+> Here are a bunch of cleanups for collapse_file() that attempt to aid
+> code readability and understanding. This is part 1 out of N, and only
+> attempts to address the main collapse loop. The exit path is still a
+> mess but I figure it's much easier to review if I send this batch as-is,
+> versus sending the whole thing.
 
-Remove redundant memset. No functional change.
+Hi Pedro,
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- mm/mm_init.c | 1 -
- 1 file changed, 1 deletion(-)
+I have already prepped a cleanup series for collapse_file().
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 711f821f7b3c..144bb4042942 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1844,7 +1844,6 @@ static void __init free_area_init(void)
- 	}
- 
- 	/* Find the PFNs that ZONE_MOVABLE begins at in each node */
--	memset(zone_movable_pfn, 0, sizeof(zone_movable_pfn));
- 	find_zone_movable_pfns_for_nodes();
- 
- 	/* Print out the zone ranges */
--- 
-2.43.0
+I was waiting for my work here
+https://lore.kernel.org/lkml/20260715025941.1571316-1-npache@redhat.com/
+to be reviewed (and in mm-unstable) before sending it out.
+
+Our series have several similarities; for reference, here is my version.
+https://gitlab.com/npache/linux/-/commits/khugepaged_file_refactor?ref_type=
+=3Dheads
+
+Cheers,
+-- Nico
+
+>
+> Based on top of latest mm-unstable.
+>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <liam@infradead.org>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Usama Arif <usama.arif@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Pedro Falcato (8):
+>   mm/khugepaged: separate out windy folio logic from collapse_file
+>   mm/khugepaged: factor out page cache folio reading
+>   mm/khugepaged: factor out and simplify dirty/writeback handling
+>   mm/khugepaged: simplify prepare folio locking and exit paths
+>   mm/khugepaged: add kerneldoc to prepare_collapse_file_folio()
+>   mm/khugepaged: hoist isolation into collapse_isolate_folio()
+>   mm/khugepaged: hoist more code into collapse_isolate_folio()
+>   mm/khugepaged: fix and flesh out try_to_unmap_flush() comment
+>
+>  mm/khugepaged.c | 424 ++++++++++++++++++++++++++++--------------------
+>  1 file changed, 248 insertions(+), 176 deletions(-)
+>
+> --
+> 2.55.0
+>
 
 
