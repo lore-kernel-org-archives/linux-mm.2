@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AF4C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228F3C4452D
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:36:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 089116B00B6; Mon, 20 Jul 2026 15:35:29 -0400 (EDT)
+	id 4892D6B00BA; Mon, 20 Jul 2026 15:35:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F066D6B00B8; Mon, 20 Jul 2026 15:35:28 -0400 (EDT)
+	id 432896B00BC; Mon, 20 Jul 2026 15:35:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D32E46B00B9; Mon, 20 Jul 2026 15:35:28 -0400 (EDT)
+	id 1E91D6B00BD; Mon, 20 Jul 2026 15:35:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 92BBC6B00B6
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:35:28 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F37E5C0234
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:27 +0000 (UTC)
-X-FDA: 85010159094.15.F2FCC8B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D12D86B00BA
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:35:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4745EA0212
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:33 +0000 (UTC)
+X-FDA: 85010159346.11.782C0C4
 Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 413AD120002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=EfrZhJnu;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7BE124000A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:35:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=CyzeHzpD;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784576126;
+	s=arc-20220608; t=1784576131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wWSndD15nfA3ulYoFeibVziNkAccxURrSPvFkTAURcI=;
-	b=uTFQTbZYWVyIu+ly68QG6H0rLHSzrJB3HOuplaYSrI01rmocSY9R6R1d4pJpN3BGcE4i9W
-	oNXrluwSj6FD7uu2KUW7dYW4cLMZEahu7i0qO6p7NOy0eBSxTyv7wjVgTW33SaJ1yRD5A7
-	+j0njRXwJr/Hu3+EbESiIuLWRVYcVSA=
+	bh=5vrQuTcVEPlse/fTzTDhuMYNi8KtlAM6dYGGAEP65OU=;
+	b=W/7t/nTtbs4kK1yX6hj3HnQXqsqMSg6q6FgsLpGJE/M4rb0J9oh1FDAvsxz44op265UM4O
+	Nj5tbDbTxokWRqQYg5OW+IdRBiaocF+7DYeUPEYxQTp/D7ymHPt4iVHdVVesk5CTlWG0e5
+	Tj+0QV5zPn/Y/NIatJisJ+A4NhQc/do=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=EfrZhJnu;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=CyzeHzpD;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784576126;
-	b=AEHV6Wbkq4gc5mxwuqQB8AavM4gxcB4fSrFLVi1TUHHGxithZ6uX5InBluWeVlI0ARcp4X
-	Kon+0j7Fc+OwMMUjy4BkzfDdjdoEui9ek95MZL6R4VUz0ao2Xx97S27QI0uppp64oAKNgW
-	FhihR9+ptn3+cJ/rnUqe2effJN/GddI=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92ed19f4d60so369313085a.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:35:26 -0700 (PDT)
+	t=1784576131;
+	b=pUVvSb+aXRimduUzJHqmuLxHZyxCTX2B1BJtWkkEfi13pRAunRoi3tAWQD9HbMflDWvCjm
+	7BqXO7uuse2rvnCl+mrK2+/MxMCrhUKcv+ao7gdpjzfNbJ4UJrBrv6rghYcxzpth2QmEtL
+	oMIWJylE2/dQd9wSvnhfqFrFdpT/WIg=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e7c6ec9dbso548887585a.0
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:35:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784576125; x=1785180925; darn=kvack.org;
+        d=gourry.net; s=google; t=1784576131; x=1785180931; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wWSndD15nfA3ulYoFeibVziNkAccxURrSPvFkTAURcI=;
-        b=EfrZhJnucUTFXANJwxKsPXv9WCmVGPCHqDz1Tmmg2C61fIWCH4azLUKtThw4zF90ET
-         iMj1qLUlnumlEgM1GW+qQL7ZTk1NkFQCq4sPk4+9kA+Wpr/T2m+FPDNuRVuQfUlffuWE
-         HmIGLnLd5F8vIzt7KxjgV8Szchu++ZcRFKgy0XoOMPi2snrbiccEwrx/BEZfLsaI9CwB
-         JByTO8B9PNM7FpC1dPVpbghK04PPDON3ZzO02hH6jlYF8H9tUmXkEGP45lwv1IPYJpuI
-         2rajkJlKXswXEVQ2GFlnVmQ2mes0agFUa7sleIwTFoT6dgjjlmzgqKBFG6YcMkY6t9PY
-         paKg==
+        bh=5vrQuTcVEPlse/fTzTDhuMYNi8KtlAM6dYGGAEP65OU=;
+        b=CyzeHzpDw2sfBy2qR+1yzUyRaljXkVwAQSYFByM231hv5RbKzsMEHeu8VTif4M1YP6
+         kbkPSsUAwf1IRUh4kmNY/NQJ8AmEAoB6Oa7DBY0G96yfkk/KyRs5Hh/fABWoNvdsu69H
+         qQKTwfCojsIhMyFgd+ZmSqxEzrwjFfkLcrZ+d2v8RbB8sV5QlVN24mJOmqSwvplzyBCh
+         RuVA2F/cHx7yupYa8t7vkmQ8abbqPPD1/1z/VvM2Fj39TL/jIKP638GxrY/KTPv6kavH
+         ipmj7dtBet8f6XU1pmwZT/agtlP/6QXXkjNs3Nl3szXK+/m1N0IbkBoR2794zTF4y5d+
+         s2pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784576125; x=1785180925;
+        d=1e100.net; s=20251104; t=1784576131; x=1785180931;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wWSndD15nfA3ulYoFeibVziNkAccxURrSPvFkTAURcI=;
-        b=aYyRw+ifWOR1aLHqPf8fAS6rJFXte8pbwrCwaFDa0AhgpCcGRKBA76tQHUqRtiwfWx
-         2KZiyV+2mUGsfv8VuAoAbydTBry9XYnJX76OZMVWhIMkLQPjR2dz9XZIaYAh/uGZNgZl
-         Yjxp3lYM7eyRgqNUeuLUL15bfACzJPVoPgt1iae++MR+zCxsLQSfEwyec+fU9EeTbs5o
-         dU9mR7ag60ojtrjGmtNH2Q20uxnYlei7KGU2HQtmGeTpdxPEmXtjYz4V9ZATuDO20Rh0
-         5kazllOgR06YAMISC6xaZZbtte+liYgseDn67Z9D1KPFUPbI0Cjmk5dJcIyOUogHN5Bs
-         buSA==
-X-Gm-Message-State: AOJu0Yw6puLQPJw+9B/HH1ieBSdLTdVmzcQC7Bl76O6rmYzm7bbGU7xJ
-	ak8RUVDFCVQrOcXRYd66mt301TpfZ5Ex7DrJAIfmgAW8mBY9qlBsoI+XfD+DBXCu8vLVjy1qlrY
-	Q1wqG
-X-Gm-Gg: AfdE7cmpdVuGnKUNNLvojY4COXRYtWUHELwmukSTGoPz8vHaBo1JlYTp832ZktZG8CH
-	X/NYR/Qp+ygfyRVBfb21gXytJEv3kKCo+P9WobSdUDWUY28pqaDLP2bp/oA3uUS/5awxcB6Hty3
-	U1DOoH9zXkNNPgU4BzFKtQBlndDiaiVBsxeX7k47IkT/A/kMD72y7+tBeXMUngxFvxYMYik/JEt
-	Ws7u9/6keajr4yGgTcyXImxCKHB2zPikIoIejG1Y2vbks6HiH1HK+1y42sX4Js1mhLynVU0JqDb
-	FtEdHn1ZbsCyXpu1jAk/BhHy8AZ7F0a4HSGMdOwtZ+ZuZK4G/zV7BAR/ygKmsXV0gOWF6W/yb4l
-	txWlmLthqzQLBv9kuqDErGqYTRDlZEDIR6dr0nOkSANvHSjmyrikqGz/PDtiDvAHZbrSZn58cEQ
-	qF/k4grrOlNkQNbh06Cq7NXPxR7gB6SbcQe0A0m9D46f0xgTyM9MwiLm0CHLnVJEA=
-X-Received: by 2002:a05:620a:2913:b0:92e:f2cf:56f9 with SMTP id af79cd13be357-930b4830467mr1569223785a.9.1784576125333;
-        Mon, 20 Jul 2026 12:35:25 -0700 (PDT)
+        bh=5vrQuTcVEPlse/fTzTDhuMYNi8KtlAM6dYGGAEP65OU=;
+        b=PwJjolEs2R+gI2lEGigBQ5pZZrwwZDtj9txd4XNevU+M5DKLC8R43SxOP0cZzJR2Lz
+         28Q9dwKTIsxK89ljdk1Z5ZEtjM9J6v6EKPlJ0aq2SomFHIMMYB21AVT+H1/e38ofoJ6s
+         iK8Jf9/XF8aFXAj3WG19j53cKU9ZkJWhMt0dezhAytc33om+LcVjg4xw9kDceg0AgYpv
+         yQjJrE/V94xCKwEfPOtr4HjgaS1sXKMLGXa7SM645wWD/VAVrZbdbhpAr3ZBqme6GMRT
+         6yaR6zrtpEBqEYKGZbBCq0R8fMZVo6Guwv7tkv0O1ZKLO9RMTkQLJinV2CbKfutMfRVU
+         5PvQ==
+X-Gm-Message-State: AOJu0YxLLxlshcpMy/Z+r0D9KvDLuZEp2pXkc4aIByg3bWckuz+qT1Fm
+	vwrUuwdikqBOSjso+701eV8Wz2Nwx/LGg7KOyw9Cf6/5jBhoClORupAdGqUlbJ+FtpOxrPhbn5f
+	G9d/b
+X-Gm-Gg: AfdE7cly46h7jEc6hOZbWXzU2G6pNiHciFVV4uGTtZJ7/ZnHDp2339xfz+qWjagSUok
+	o2koN2GasQoFUZ6rjj8WOVMM88SAn8pJhrGdxQ+4neE5EVMBK4SQF81rpNIFEFgXFF936+fLydl
+	AHRH2kQhCwkBpCoUN1eYnTKsDxyC+ycUunOqA36YEH23PY9GYVx8gk+C14fIUlHRL4IsW7tHj7D
+	oV/uC46u70LmRhrrOGDaPgWjLg1IqYkPDyAE9WMXb+F4QnkkHcR/5sjPRHlsoUqtKviWmjH+yZz
+	aNg10S+s+7IATw9cOp+WtaFDV1QkylNn3fLtUJk+RZeC5wVqi6MW8wJPTt5F127+DCrFjt3MZ3i
+	xNk7s7Db1w2gBAg6phVKKz39h+EQdceMIMMfSotcatrjY2wZiX5J4MIjSKHYBEeUxoSE7VyljGw
+	e9Liw6DPFJNq/8sRrduh5+dn0BOR2Y4RPFyVPgsNaSPAdHZIocfAyYVT97nB74jZU=
+X-Received: by 2002:a05:620a:4606:b0:92e:c117:5ecb with SMTP id af79cd13be357-930b430a072mr1502942385a.75.1784576130602;
+        Mon, 20 Jul 2026 12:35:30 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.23
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 12:35:24 -0700 (PDT)
+        Mon, 20 Jul 2026 12:35:30 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: Zhigang.Luo@amd.com,
@@ -169,22 +169,22 @@ Cc: Zhigang.Luo@amd.com,
 	damon@lists.linux.dev,
 	linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v5 18/36] mm/gup: disallow longterm pin of private node folios
-Date: Mon, 20 Jul 2026 15:34:12 -0400
-Message-ID: <20260720193431.3841992-19-gourry@gourry.net>
+Subject: [PATCH v5 20/36] mm/memcontrol: account private-node memory in per-node stats
+Date: Mon, 20 Jul 2026 15:34:14 -0400
+Message-ID: <20260720193431.3841992-21-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
 References: <20260720193431.3841992-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 413AD120002
+X-Rspamd-Queue-Id: 7BE124000A
 X-Rspam-User: 
-X-Stat-Signature: ym9mrse1c85r3m9cd87qr7ckc76kkkrh
+X-Stat-Signature: siczkrwbkwmc93w5hjzzmao1r6te484r
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1784576126-831646
-X-HE-Meta: U2FsdGVkX18Ix9F2UFDPtWxmdUppG7tqi/g3aPndCfkK2vwmC0KD0f/zrQwQFVlxOIZRUz6RtaFvt2j5SwwG48ouM88OZnJwUcO0f1vvwjGkfXOxfON5/fFlRrratF4KReeZjm9yIUk9U8gbDSTXOoC45iknvNW6E4YL3UuC4sZdGh51VDywDj0BE7ha2ZmFgpuDreqARQxLaeSAx+K93PmnRaZNIkq2bozLfSw7H9zuFw6VPihiIF+KbtYO344sYiRQdoA8SqeIxGn/ucM58iphts5nWnpTROgzyV7yer+HTF6yZUe/Chm8F4zEwF8ee+jS2fEnTo5TYAEblAaEKK2NPlgKHJmiWQXSsDPJ+OWU03LMc12WCu6yL0m29Vp2gyaVAHaOPZg9D8vBXEcKJqbVfqFrGfFA6+xv+I7GYQmb1k0JUiq2QuuJTWyrj5GtNUHnV5PffLyfOv1HNMfZ+T1TEfvwtBOFz5kym5LQ9SAXHuFbBtR03lf453qWRU1tT5rJZZlUQQ5PpeY03lhNsQYein/bBJIGEepGFUYCbvcq9l9tdILMtB93f9x+qv+1OoHPS/z4zSJq35/LNGFy7UmjJZzin1RIUoHPAhP+q69a0Oxd6nYRRJ4T6Iw10Qn5HArOdf9PCo6Na8XdOeZlVsZB7n7xZ8zcrZ6BKnJC8C2CTqKdrduGf1+k8wlA29QIwBdsm7sZjwwcqkLlQqikb3pzy9qtCzjm8LpsiBUiu8BcuGOryly2mpniu/nnNu5fZD6qJcYpHqiKXrEQ0H4r/Tkydar4Vkk9sl9sPEMW8A6iU/xuVfyVKFg9RlnHx1CgJbJaygeLlrYA06lgCDjF25rxSqH3Y0A+vCUokZ2If4yEYvL4FwjD6twV/RbDps1L5d1flJAq/y6hUwjXFoZz3kuN+c2nEsVEoz+7kBR/vBxGAbGXlPdpXgzoJ4IPW+sq0MKfhcufhhwG4JpO8jt
- qxCVRedn
- Ll6jLbyb9WjhP9Wt3IDIcYW1SepQSGK1dIPtbemKdnng3jsBCC1SKRH31zu188rkzUZxzZeRKxv0QKXhTOqDcY2ZuXDwKCO0jeewJKhrC8F0l7p6mlOJNKXcc3BajI19t0Mk0TQdW7x3JvSrCC2dPrclCa/ErGUmQ1X1bD6N9Br3jTFfcwPsZBfu/bVmSFj+MK+7BQF5reaICE239q0CKteNuL+l2mJWVznpztzrLkU8HgMLR4goEKgn20FI99QjUDlhcsIvGtiWntpxYt3kjZUjD9lOqtKunTlyRqsicB/Ed9q1QKuMNkaF+YHi1IbQRyvnXeYw+LBOMfvjzgqVsQD3rbH/5o1RZHbdR7a5sVh3fFwBt0Tv7TUtjw0BM7jABWpjh
+X-HE-Tag: 1784576131-74812
+X-HE-Meta: U2FsdGVkX1+/LW/aoJakit7E/LU2QYH95aKWUTvZInnEkLxBSuzSx4pVwiiKmF0RBJbHCP3T6OJDR7gzdyM7D6zjN8SVsnpLCz12axGLbqWkc3WhiYoTDZZxU3AAEWDAat7w7GpLUF9APmszzalqEmpwpm3e5HuGnWkA3idzq/++GhxMmrSpUGrRNrAyzCIcNmaonSUHJnU1WnD45lawbtjwsr0fIg4LU1kTkNb/PRLbey9WbHPR5AFTh9WvfmQ24w0skJI1NsOGojhDmk4fK9Nid+F5ffm6JU4+cxe6gpBXldkE9+aCjREZAmNxqrK9wWMFiCcIhYy1w+3AvoaIEdq2Z05Ag6PETgNKLpZaSRnaEbtg6Z5YpkCQDZUhKC3FvHocqfK6xUX4uQPq8N+6u6MOvtXzw8rsGHOkALkUeE7BXQRfexXrlEeJLD/fnsD7gPXXkAWOOZNegTYKfNB65WWnWusS2LUij7vQdULPWdlL1wiMvDsCbQsHa93GgliLRxiWD+f12fRmaR9DJxtgovAWsUzsIgWr0xrRqLEQrN64AoLwciQ0xqlw/RYojbMV48I+42BnRvoCUmlHTrAGQZ0CVRd/bOrgO/cTWV1PzgpmD3TeB1o1zEjPCk8JTZuF3qusAvOq8olSCs87zWdsJO6KboVImfm3yARu8VEtJiDKtR2qAaXSrEmb96o+nus/pqa5bKFR46aMlp8es1QhQnTzB93yptjtmkZy/0YvRqOui2dj6JcNIgPvebe3ZAFSxnku1syyPGZzLPl4ehLhAJXDgGJDpk7B/KjbmpVFLnqBfsw5XuOnSb+F/ZFwB0+W/jA5IxX+9sggrUj3qA43RcpaNQHIxrIiKMVk51fBLIomLFm+ERbX8ZwUkUFX6oPtttscl2hS3h14BhHDsY1BL5nSOb9+KNw9kcpXqC2lyGw+lub9zf2CCOqZEwuT/8mLVNNfzYPupYxf+9d5+zP
+ JYSPu8YV
+ 1ONHVK7Wcm7AXLtaMg/0Zjui8InMLRZn/G2Km1anxg26cYOS3Qkis5SvnqcLCBtqVtcNdhqLvG7kU847qWPfM9adtPM9QSafsRBPuw2qmQCsSUBb4mW5G4UX5DyG+nYajG9BCU0fn6NwWwwTptjiuGDPjzKHhtft0ulSxd67/yWnJ2ST0yVQ8qf46CB7wfnXzHWxMNgrUEZYR703qRDU8o7YFkmk0P3tQq1qUl5QnSk8xVTs98e6SF4pWj/gzF3NCL5juJhdEwZ9NX1tEPfJUQ7hwdXiSazkAxrutqmmgwuwx6zI8kHL+JD7cEMpwB1UAQbdfaRbquzvesnXfAQw4du7HcXhuIzY14oYW7XmKPzwCSrkk9jYGoOmyIOqFApr4Tul2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,116 +192,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-FOLL_LONGTERM on a N_MEMORY_PRIVATE node folio is wrong both ways the
-GUP longterm path resolves it:
+Private nodes folios are charged like any other - the node's per-cpu
+lruvec counters are increment even for N_MEMORY_PRIVATE.
 
-   a ZONE_NORMAL folio would be pinned in place
-   a ZONE_MOVABLE folio would be migrated off first
+The memcg-level totals in memory.stat therefore include this memory,
+but the per-node views do not:
 
-A private node folio should do neither - the pin should fail in place.
+  - mem_cgroup_css_rstat_flush() folds the per-node percpu deltas into the
+    aggregate only for N_MEMORY nodes, so a private node's lruvec aggregate
+    is never refreshed.
 
-Add folio_longterm_pin_forbidden() (true for any private node folio) and
-reject such a pin in check_and_migrate_movable_pages_or_folios() before
-any isolation, so nothing is migrated.
+  - memory.numa_stat (v2) and the v1 numa_stat skip private nodes, so they
+    never emit an Nx= field for one.
 
-The gup-fast path defers a private folio to the slow path via
-folio_allows_longterm_pin().
+So memory.numa_stat does not sum to memory.stat once a cgroup has memory
+on a private node.
+
+Include N_MEMORY_PRIVATE in the flush/display process so private-node
+memory is folded in and reported per node.
+
+This is pure accounting of memory that already exists and is already
+charged, so it is unconditional - regardless of future capabilities.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- mm/gup.c      | 27 +++++++++++++++++++++++++--
- mm/internal.h | 25 +++++++++++++++++++++++++
- 2 files changed, 50 insertions(+), 2 deletions(-)
+ mm/memcontrol-v1.c |  8 ++++++--
+ mm/memcontrol.c    | 11 +++++++++--
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 1d32e9a3dc79c..a7d4de223785c 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -547,10 +547,10 @@ static struct folio *try_grab_folio_fast(struct page *page, int refs,
- 	/*
- 	 * Can't do FOLL_LONGTERM + FOLL_PIN gup fast path if not in a
- 	 * right zone, so fail and let the caller fall back to the slow
--	 * path.
-+	 * path.  Fail for private-node folios here so slow path rejects.
- 	 */
- 	if (unlikely((flags & FOLL_LONGTERM) &&
--		     !folio_is_longterm_pinnable(folio))) {
-+		     !folio_allows_longterm_pin(folio))) {
- 		folio_put_refs(folio, refs);
- 		return NULL;
- 	}
-@@ -2389,12 +2389,35 @@ migrate_longterm_unpinnable_folios(struct list_head *movable_folio_list,
- 	return ret;
- }
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 2dc599484d006..5e464e52dfb9a 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -2132,14 +2132,18 @@ static int memcg_numa_stat_show(struct seq_file *m, void *v)
+ 	const struct numa_stat *stat;
+ 	int nid;
+ 	struct mem_cgroup *memcg = mem_cgroup_from_seq(m);
++	nodemask_t reportable;
  
-+/*
-+ * True if any folio sits on a private node whose folios may not be longterm
-+ * pinned.  Such folios can neither be pinned nor migrated, so the whole pin
-+ * must fail before migration.  Checked before any isolation occurs.
-+ */
-+static bool pofs_has_ltpin_forbidden(struct pages_or_folios *pofs)
-+{
-+	struct folio *folio;
-+	long i = 0;
+ 	mem_cgroup_flush_stats(memcg);
+ 
++	/* Private nodes hold cgroup memory too, report them. */
++	nodes_or(reportable, node_states[N_MEMORY], node_states[N_MEMORY_PRIVATE]);
 +
-+	for (folio = pofs_get_folio(pofs, i); folio;
-+	     folio = pofs_next_folio(folio, pofs, &i)) {
-+		if (folio_longterm_pin_forbidden(folio))
-+			return true;
-+	}
-+	return false;
-+}
-+
- static long
- check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
+ 	for (stat = stats; stat < ARRAY_END(stats); stat++) {
+ 		seq_printf(m, "%s=%lu", stat->name,
+ 			   mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
+ 						   false));
+-		for_each_node_state(nid, N_MEMORY)
++		for_each_node_mask(nid, reportable)
+ 			seq_printf(m, " N%d=%lu", nid,
+ 				   mem_cgroup_node_nr_lru_pages(memcg, nid,
+ 							stat->lru_mask, false));
+@@ -2151,7 +2155,7 @@ static int memcg_numa_stat_show(struct seq_file *m, void *v)
+ 		seq_printf(m, "hierarchical_%s=%lu", stat->name,
+ 			   mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
+ 						   true));
+-		for_each_node_state(nid, N_MEMORY)
++		for_each_node_mask(nid, reportable)
+ 			seq_printf(m, " N%d=%lu", nid,
+ 				   mem_cgroup_node_nr_lru_pages(memcg, nid,
+ 							stat->lru_mask, true));
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index f0dde52dc9e0e..4d79e238bc57d 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4496,6 +4496,7 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
+ 	struct memcg_vmstats_percpu *statc;
+ 	struct aggregate_control ac;
++	nodemask_t reportable;
+ 	int nid;
+ 
+ 	flush_nmi_stats(memcg, parent);
+@@ -4524,7 +4525,9 @@ static void mem_cgroup_css_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 	};
+ 	mem_cgroup_stat_aggregate(&ac);
+ 
+-	for_each_node_state(nid, N_MEMORY) {
++	/* Private nodes must also be accounted or numa_stat is misleading */
++	nodes_or(reportable, node_states[N_MEMORY], node_states[N_MEMORY_PRIVATE]);
++	for_each_node_mask(nid, reportable) {
+ 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+ 		struct lruvec_stats *lstats = pn->lruvec_stats;
+ 		struct lruvec_stats *plstats = NULL;
+@@ -4947,9 +4950,13 @@ static int memory_numa_stat_show(struct seq_file *m, void *v)
  {
- 	LIST_HEAD(movable_folio_list);
- 	unsigned long collected;
+ 	int i;
+ 	struct mem_cgroup *memcg = mem_cgroup_from_seq(m);
++	nodemask_t reportable;
  
-+	if (pofs_has_ltpin_forbidden(pofs)) {
-+		pofs_unpin(pofs);
-+		return -EFAULT;
-+	}
-+
- 	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
- 						       pofs);
- 	if (!collected)
-diff --git a/mm/internal.h b/mm/internal.h
-index cb9f4a8342e32..85c460296cea1 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -110,6 +110,31 @@ static inline bool page_is_private_managed(struct page *page)
- 	return folio_is_private_managed(page_folio(page));
- }
+ 	mem_cgroup_flush_stats(memcg);
  
-+/*
-+ * folio_allows_longterm_pin() - may this folio be long-term GUP-pinned?
-+ *
-+ * checks folio_is_longterm_pinnable() rules plus private node permissions.
-+ * private node permission is checked here to resolve circular header
-+ * dependencies in folio_is_longterm_pinnable.
-+ */
-+static inline bool folio_allows_longterm_pin(struct folio *folio)
-+{
-+	return folio_is_longterm_pinnable(folio) &&
-+	       !folio_is_private_node(folio);
-+}
++	/* Private nodes hold cgroup memory too, report them. */
++	nodes_or(reportable, node_states[N_MEMORY], node_states[N_MEMORY_PRIVATE]);
 +
-+/*
-+ * folio_longterm_pin_forbidden() - must a longterm pin of this folio fail
-+ * outright (neither pinned in place nor migrated off the node)?
-+ *
-+ * True for any folio on a private node: such memory can be neither pinned
-+ * nor migrated, so the pin must be rejected with the folio left in place.
-+ */
-+static inline bool folio_longterm_pin_forbidden(struct folio *folio)
-+{
-+	return folio_is_private_node(folio);
-+}
-+
- /*
-  * Maintains state across a page table move. The operation assumes both source
-  * and destination VMAs already exist and are specified by the user.
+ 	for (i = 0; i < ARRAY_SIZE(memory_stats); i++) {
+ 		int nid;
+ 
+@@ -4957,7 +4964,7 @@ static int memory_numa_stat_show(struct seq_file *m, void *v)
+ 			continue;
+ 
+ 		seq_printf(m, "%s", memory_stats[i].name);
+-		for_each_node_state(nid, N_MEMORY) {
++		for_each_node_mask(nid, reportable) {
+ 			u64 size;
+ 			struct lruvec *lruvec;
+ 
 -- 
 2.53.0-Meta
 
