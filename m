@@ -4,168 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C3EC44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5152C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:22:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 773246B007B; Mon, 20 Jul 2026 15:20:42 -0400 (EDT)
+	id D19D86B008A; Mon, 20 Jul 2026 15:22:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74A0F6B008A; Mon, 20 Jul 2026 15:20:42 -0400 (EDT)
+	id CCB246B008C; Mon, 20 Jul 2026 15:22:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6391F6B008C; Mon, 20 Jul 2026 15:20:42 -0400 (EDT)
+	id BE2C26B0092; Mon, 20 Jul 2026 15:22:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 33AF76B007B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:20:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E73C1202AB
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:20:41 +0000 (UTC)
-X-FDA: 85010121882.18.AC00105
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011021.outbound.protection.outlook.com [40.107.208.21])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D0AB51A0003
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:20:38 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CQ+S4dHO;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784575238;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 833E26B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:22:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 15F9B1A026D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:22:29 +0000 (UTC)
+X-FDA: 85010126418.11.36D4A78
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4D843180004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:22:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=RF8KOPKp;
+	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784575347;
+	b=VjMsPjSmIzq8/yDtxnkcG4tAbjRZkcbRU5sQSofaSUcigRNePccdZ0oN2pQYvIWTKH8yv0
+	aLu46taXs9TuM8+e8F2Lg7uzlvTmQ6AGFP+1VdRM7phZ8LC9jVuiwcNm5SX/dmfLIyQ+rZ
+	vCdvgb4vvmeLK+SxIfxewfTNVYqeQ2E=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=RF8KOPKp;
+	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1784575347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IkzEIC1IqyHuQ9/mMCKgxaucbBPmXznIZGz0CPZhxec=;
-	b=vSgtdmzSRll/msB7b08gl01LTm3jiCXCNZae11Y6OfiRGYgir61Uck0HKiGkAomy8aBNGy
-	/u59AZRY5d5tXcZuzy2iMck9/N3++ke2BZHg7epklVi/fxa0OZqjxMqXO0C0MZ7E0r6eFy
-	f/nMHTSclKjSz2IalqPpCkFjdcBtMHE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784575239;
-	b=tekxZ8gKVjbBSLoG/6UuB8r7STWNpJv09yXjwA+vAqIoZl7qBunrqaF8uyCBDZ/wTSlE8a
-	6spIHKKW5Nn6F0xDRgzQ6asQPkDC8aBrGXOaONan6tsRFBvsalDB05PCFBH9P1rQkuIbZC
-	Yya4qtq8CaJ8rV4T8ouVGQy/u7fU6fg=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=CQ+S4dHO;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HUG1GPLxf+LRrVwF1e0YP50bN98LDdaGXpZZ5+ms767qFjvnpIGijQH4pRFVRGLNYIZsd5uqjV64OfAcM62kv31Mmta9+HEwLjYWhK3PM1HMNZLV0qooSFJOZ/svu6LYMTz+KAnlSABJEWbXdvaQYPVXbfTIi+L/LGHJ+2YD+8k3tBH99BXT2MKlmeSjhdrst6ZA3Nl/le+n6a1cATzOReOx9IyTpd4dLDU2kW0dHeiB/LZrWujQUTu/5T1BJ4EdQcPea5AhbRBoS+2DunyntTDSUzMMvHeRkz+jcW/kPR7K5RbbWl/9xh3Q83OVbUSGZtcVqX/aEbq34uWVOYeAsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IkzEIC1IqyHuQ9/mMCKgxaucbBPmXznIZGz0CPZhxec=;
- b=cHD5kAQ0So0FCBv0IsPfj2I3o2OMwjQhDRZ3en2ecgu4tU6D2M7zBH+gYGtoDJavKh7TGyd2zBNFmFrqCkKptoTHKfCWZsOPEz2H+SsPae0UIXt3upFPAfYa8rZlesoWgWvStNwOpiedssdumFkKJ0SinHFPpUUn+xPqKu/u4ev1gBsRnUgmDZuT9FaNKM84bykGYzrkdlj3Bf6HRW9+FxEY6Al8OGOTjrawSc884cCr/ZY8bHzraJZg2/P1UeaGFZwMbEk9lWb6i78n8w33SjZ66lc1cD1LS0SzTxI19ChfnWixsmF2gR9cztH8TgvAPEaTcnEsgUFBqMMYtmrL8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IkzEIC1IqyHuQ9/mMCKgxaucbBPmXznIZGz0CPZhxec=;
- b=CQ+S4dHOQkm7nlcUap9GoCUybciyDSe0te6MfZe22PNN9VD9yrpAPDuimoKVPva/dEjx2Np1wMANleortLKjrHtjL5bwQrnX3yrMvB6tCEoehKrMdvzVGn9NuTCx9R7v2pA0/llQQSdnDD4pC8d/bCiTXJMEBgQKNwqIP4IbOIMC8xchqdvXNHx8nES1zFvALzdAlxpJmE4ZmnyCyRzhi9Nm1g+8z5z8AUCqZ8gPNiTdYaSDaOCBIVycqDSf1mwXRUxediZ0OKGwoeql59Unz/dsdkSoKYL5yLjsU3tFzCUcBwADkIk1jWHFB9z8q/8cDA0gMvqY7lUA1E8au6t1dw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by LVXPR12MB999196.namprd12.prod.outlook.com (2603:10b6:408:3dc::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.17; Mon, 20 Jul
- 2026 19:20:32 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
- 19:20:32 +0000
+	bh=buSulj0niMnq8+3SEkE2va6OH4OHLuTOlnVTBykjR9Y=;
+	b=VHFRYhft5jXjJScm4dS2lx4x2yOrXL4JWxm2kjbZs5ulBDgWwJ9uckCI4x6FO6AJ2Fmz+3
+	bjr1GXDg5G9nsqN2KuD2xubcXdeANXgri9ehA+pr5eubHFQNwLv+UNa+Pb46kFbSiqNZu4
+	+Fzl7b89ECcoLXzYjSbneTnrw0b/8lA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=buSulj0niMnq8+3SEkE2va6OH4OHLuTOlnVTBykjR9Y=; b=RF8KOPKpqr5W+Gi68jazESixL7
+	yHKrPoTrXZEm/XxyQKZo3DMkebc2werCHOBh7p0MrXnVVg/H5E48HFSW5Qi+SOw1yjZ0bk7tx1ixq
+	gdOP9Usu13lStgDIxxPtVhDdF/k/1e4qd5zi0Uroeyl7xyijJHsaHNr2Cni2CwnXZPVbVsNOOA7N0
+	W/hiIYXCI6rCNZeruFI7+7eN3hOX+m9i5fZcfTpqU78boC743lxmEJ11bMVIrbV66hLMull0tdRQd
+	EOAkkRiGl+Ap7hvS6Vu6iPtEGkcsGCECbPzQP1yU269JAiiteqgB1kVwd1GVnguZGw7We5/d+MFyl
+	1anKhC0A==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wltYs-00000000450-2U7y;
+	Mon, 20 Jul 2026 15:21:58 -0400
+Message-ID: <f32b1d2d272e9eafaf0a68be236c84a0585a62e3.camel@surriel.com>
+Subject: Re: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
+From: Rik van Riel <riel@surriel.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ 	kernel-team@meta.com, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes	 <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,  Alexandre Ghiti	
+ <alex@ghiti.fr>, linux-riscv@lists.infradead.org
+Date: Mon, 20 Jul 2026 15:21:58 -0400
+In-Reply-To: <e9703d2e-f815-4d96-b5ce-074aba281f76@linux.dev>
+References: <20260720115741.239657-1-usama.arif@linux.dev>
+	 <13ec2603d5cbfdc493939f182b71e5133c26af54.camel@surriel.com>
+	 <46dc1b58-f2de-492a-9da5-a5c429c19a10@linux.dev>
+	 <51c0025d2eb885ff1f4775e4d9ffcf34f478f378.camel@surriel.com>
+	 <e9703d2e-f815-4d96-b5ce-074aba281f76@linux.dev>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Jul 2026 15:20:31 -0400
-Message-Id: <DK3N4FET9ORM.327QYW7L79VOK@nvidia.com>
-Subject: Re: [PATCH] mm/percpu-km: fix bitmap overflow and accounting in
- pcpu_create_chunk()
-Cc: "Christoph Lameter" <cl@linux.com>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>, "Zi
- Yan" <ziy@nvidia.com>
-To: "Dennis Zhou" <dennis@kernel.org>, "Tejun Heo" <tj@kernel.org>,
- "Christoph Lameter" <cl@gentwo.org>, "Andrew Morton"
- <akpm@linux-foundation.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260709-fix-pcpu_create_chunk-in-percpu-km-v1-1-1f64745a84cc@nvidia.com>
-In-Reply-To: <20260709-fix-pcpu_create_chunk-in-percpu-km-v1-1-1f64745a84cc@nvidia.com>
-X-ClientProxiedBy: BN1PR14CA0016.namprd14.prod.outlook.com
- (2603:10b6:408:e3::21) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LVXPR12MB999196:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b33bd20-f8c9-471d-b95d-08dee693f76f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|11063799006|56012099006|22082099003|18002099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	Qw5AUgW/+RLU3pO8cNU68S/PKdxa97F6xA4A9LP6xBq1vffgmN5zz7R6zAjMgqdbRFiVnJevj0RofGM0Qtb5K16Su2LTG8VwEeAhwqSO3+AOnX0abMGkw+frStquGGgvqP+F7K+3eC5+Vxk04uEMAgj+M9w9oNjlQWZUq/rT32UVFrNv5xvrow76VvxOjpkOhGGhYb6n1AxKNmGJw2ZTdKdXXjNYCNWCOxXnlAVAgchSjkl05TmNBxR1uGRunbiJcO7JDWNyU3dEuSho6HGO80zy+MONtYAi6REFHaqSyzK1+m4YKt3GqRxwLROBUb7zgJnR4yTVAm8EoqNTkqzX/qAZ1OfFenxjZVsxyRIWpuCkW4szrVLr8/PFLMlzo6EtJNUXhRISwKF2HMiG/E94IeQ8NIiJSzEWXO8gQcbu/uxVwpYcLY9eq3LMtt3rn8H9Zg/si/HV4l4hwGKbrTSVyAAMlqzIlH4XMxcA9d2gv8BZci4wzrvHMuk8FNI7iXxUbeNJNDPAIZC3JHIkpexq0Vbse1Ef2B8zn5j2CKkCMArABAPAjMUrVdfOgecKorD2uGLOsR0sgSXBZe1AAPMz/a8vxgrnkiO60ALyDWacp3wA08kddpubypZClJS6LcyvqD8kMIaRaMn3YQYon8PiFWBSu5hxWaQ10C9IUghDz6c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(11063799006)(56012099006)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aU1OdUNWbnlHb1prQ1FiVGkreS9rYVU4MkFua1o1YnZnZGluTFpSaDdXbmVn?=
- =?utf-8?B?NEp2NWlkR09RL3pqb0QrVkVncVEwRW9KeTJvR1luNUI5SUFzWHcwTHY1VWdH?=
- =?utf-8?B?RGh5dktkbFlkK0F0OVpYNnRZRmVGUy9tcXRoZlhNSWVjcDMxTzhlK1RRWGE3?=
- =?utf-8?B?ZkJwa2hPc2pyM0VxRURnemVuR0pMQ2dtM0hzMk9vdlNnSXl0WE1qQ25ubnVX?=
- =?utf-8?B?Y2p2V2lnT2prZEp5N0ZHV05pUVFQSEtleUMyVVd2Z2pxQUYzUm9Yd0o4MUVu?=
- =?utf-8?B?Ynd6akpDcVQvNjFOQWU3ZnVDMzc2ajdNOExOT3JoU25SYWYvYVNKSXdPcXda?=
- =?utf-8?B?OVRmMWdmNElKM2RBRUVheHpaOHRZRm9CcUN4WXZmZGJLVjF5TVlxSHpJTkEy?=
- =?utf-8?B?SXJHVDY2TWZLNXZkYU8xWVFCOVAzeVgwN0owNHFOZWhFMVFCNkE3UjRSQkc0?=
- =?utf-8?B?T0ZWT0RMMkRMeHZtYkpzaDdSeHZ2Ymh5VnJVWlNCNTZwMmpPRlNickxpNEdW?=
- =?utf-8?B?d2duMWxSQkVZc09MZnFSREQvRXBZNC9GVmVlL2RkVlZXYTJ0Yzk3a1ZHMG93?=
- =?utf-8?B?RDBYdjFUN0gyV3ZiZUs1RFQra3Y5OWUvT0tkQWpXNThXRDlwTEEwTlQ0bnAw?=
- =?utf-8?B?c0pMelRXR1VVT0hKdDNHZmlSZld6UlBOdE9lajNacThyOWhnUytMNzVPWlp1?=
- =?utf-8?B?ZHFVb3h2Vk5SMkNaZ2JzVmQ5RUJOcnNYNVZ1UW1uMmcxeURNQ0dvR0xUNkFp?=
- =?utf-8?B?T1dlTnMyNzhuZ2R0TVlVNEx0MDRxUjU0bkFZQVZmem9BOTl4U0tYNnJobll1?=
- =?utf-8?B?ZGNuZVlPTHozaDQxc21KT2RLbk5aZFFXTm92eGQyYldQREozZTlCTVJDU29w?=
- =?utf-8?B?WGszV1hrQzM0OURTVUNEb3p3ZERWRk9ZK3MzZnVWSjBVVC8yTi9jd3BrREVF?=
- =?utf-8?B?YkR2RjhyMnNhTjRvYXRJV2R5cGFSWjJnK0JLL0ZtZFBiU2ZGcTA0NE5LS2ZS?=
- =?utf-8?B?S1ZsZTd3d091YnpYRHRNWDZIMHVJc29FZXk3b0E5cWR0Tm9rZmdudHk5ekJ0?=
- =?utf-8?B?UFYycEpZTFNGWWFIbkV6cTJGRzZkYmdDSXRUSW9aWXNXNm4wbldHV29ETFBE?=
- =?utf-8?B?Rm42aGtYNXM2aHorV3o0RHZHeExST3F5eGUzamdBYS9FdlAvZnl0NE5RSW9Y?=
- =?utf-8?B?dHE3Y0NLVHErVWwzbXBHd2FmcHU5K25MUVlZVE04dHYzaGZoNlQxbHJFWVM4?=
- =?utf-8?B?aTBSc2tlSGxCaEdBaHQ1cE91Nno0MGtGSEhYcGdmMldpMU9CNUNxZkxOc1I2?=
- =?utf-8?B?VTd1amozODBMTmtOaVAvczdPd0EyVTB0d2JIRG5kc1lkQUhpdzBSUGEzNzlr?=
- =?utf-8?B?a0hxZzMxWnNMY2NxeWdZSnM2eDNhQnhoSjdXS2Q4M2xtR291Nm1JSDhYRER4?=
- =?utf-8?B?NnFrdnNiR3Y4TUdlVGlCSkhPRVlEeHpPbUVZT2E1Z085K3pXZHNrbnRDdll0?=
- =?utf-8?B?Y0VrM1h5eElyY0RGdEdDZDM3bkJya2hqTEtBWUp5bEd5NlZBdG9VUjdTMFRD?=
- =?utf-8?B?QXowM1RlS0FaNlN4cXZwTis2YVNBNXlUNHlFZUM5d2ZyL2dVNDViNlA5c3pQ?=
- =?utf-8?B?d2VNbC8xbEpDb2k5TlF2U1IyYzgxSXppSXVvdVlSdWdDYjZoVmJGdGF0Ny9V?=
- =?utf-8?B?SFBDL2lXNkJHbVNhL25MQ2FvbW5KTkFISmFlRjdwOFd1M3o4VldlYTQrenFm?=
- =?utf-8?B?RjJrL1JaV0dkNjQ4bVdtS3lDRDhocUxhQ291QUZuWEhybWlRL1pMMTV1YWta?=
- =?utf-8?B?eWJLb2xjcTlxTVphVkxaU1M3SlZ2b3BLNWF2L0RzQ1pMZWpqQlVkcHBYcUNU?=
- =?utf-8?B?VDVtcC9TZEFYQkRNL2QwUFRDYXIzM1JwWUVSM0JMWlkwMlNSRUQyUDBEYW1j?=
- =?utf-8?B?dEE0aStTK0xzNjJjNVdBMHU3NmV6QzRoRDAxT2k4TktRaStrUE9wdGpxaXJ0?=
- =?utf-8?B?eEp0K0hjOEdETlFsdU9oSXBybzNyU1FkTENXalJHSEJFcHZyRmxRcndDekhh?=
- =?utf-8?B?Wk5oc3JPa3V3a0FTeHRxKzExRGM4ZHBUV2l2R1FzY2FIM1V0V3hzV3I4OStC?=
- =?utf-8?B?b2l5Q0Z0cmtVQllCU29CRERDSFVxeGE1Qk16U1VrZmMra2NMZUN6bGNpNkE3?=
- =?utf-8?B?M2NScFJYWmozZ2w0eG1naTJjRFNoTUFLS3YvMFVONEs4aGJjRUNJamlJaDEy?=
- =?utf-8?B?T1lqT1pNU3hzZEdVTUtObWZSRFlZZktkWXB3SlJRSE56MTFsREZpN3lKZVdk?=
- =?utf-8?Q?sLYTnIgTIHkVGnNhq+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b33bd20-f8c9-471d-b95d-08dee693f76f
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 19:20:32.0298
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XNdqnBiRyZDOoSPCkZplhsMqu06Np5UNhxVrvPOWqEz10k/SBFQKp82ZkojYTvCl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVXPR12MB999196
-X-Stat-Signature: gxxxg4pmmbb9tqfwdyycnok97htihiob
+X-Stat-Signature: 5be7cjx9f3sejti5traa77neosthyjrk
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4D843180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D0AB51A0003
-X-HE-Tag: 1784575238-128471
-X-HE-Meta: U2FsdGVkX19DniNNa4sJW343oKCiTwQ5vrCfPfzN9i4QOzuRVOtHX/gdcih4FgdCQbAAXEEn8acL+CiRPNJtytYel9MklfBdjjZkSm4jdu9CQ4bzhiWijqQM/qCG7ydnJLmdfRrQmiIoWbddusSME1aupIs4ZihdrzQ3MJ4YfSkDKXox5fE5+4I+6KnfiEAlWpNOSNN9jS5vypmqg4aZyHjBEV4Afixe8AQnTx+++sGdADNezRgug8aZjgssagYCv4V5KCVvkjWx31mLwyGXlzJqjKY5+8f+WEgSw2lGC15WJAuVzqPMAkzqDUiroP4YPNOAXjvi3hTketQ5PqlPrxAkjfNp4rvuEMYT7snIEymhVNyRGm+nsKGa78YV4XGUVWtL2pCFKG7SjgkzOqddtTlMDE6b9c7XWkihuXpbmuPA9zAcQB1SEJEIJAPy/Q9wvSsgQG2jALppLFFTnsOaq4KoRPc0ynAGZZBNkwl2LOfjMwBeI1+V12Ae0rq6UArqPnwfoih0I4PMVdCQGcC6Eq4Sgm+WUK86kOVmTHKN7EHzYhjzYudzk4k4+2LWaicwF9Lno0VO09OTEBpxuO7aVG4BcyQugxkLU0JBedOKCyK3btmIfSiX+R4L55hhr1w+sFcHM/W8DoLzq6Jj6X5qa9fqC/qZxKNHHlcIDsAhydYM7Hyir9OLAQQO2UNt5ZxZHaqJX+uzsBbRLKOmi0E14+g0lEnn5Cs4E6GrPrYCPys9XElhPk1sxdMyGD7CJoFh5d9zCkLdkNCG2cb4fGEi+SewCZU6sju+DA5ZbEKRLz7agMMFUkBByZ+seEzLGI1b/Ry37WiohemVXWT3YDEKx31D5Mz7d8dr95f5G6LT5oubOeUjUuKwGGuWbu2cFW3LykEz13zEWN0nZBbqpJ4p/KDOxJSRRMwFVnz83rVf9wkXUyBnXktW5bU6pchCK97I5/dMxxGgOB2DciUnTLk
- FrVD0eau
- nTxa5X5E12ymdtaLmyPJAGpjWtiIuo8zMWkUY2fPqNsut1V9TkxzgRdnIkI6BCsHRk0xeBQVlDBpj0XGoFHVIF8WMEYKWxMHug7wmrivM1+hgF+5B3HJ/unrwBDfJ1UzL8HrpGuQ3uTBGxkAcrP7hkSbBs4Zc6J2pVMae/veBgq9tUs3URPQmDl8QfM2kpxWJy8OCGTdPGq7xir1BxfYXairzhoEVM8A07UWtENAQ5tTkioHS5nmUvGu4g/lAMMb7YW8oby8+KjBaFl1xOWyDgn4TmBpeb1xyaWm6HmKQ30RnUdrc0EmOqn77GOcfZEfdfSW9fXkMvMPudwXOofI5V/nsKo10qdPs4qdpE/eu1BiH2sPCuU+JnilK1RAcGqecX81od+8jYKJMHfknQd4d0UL4VSv4Uvp1v7fmrRh2leeVTHPVOP16ndFS7yiYIW0h4AaWIqH3x813vHRM1BmbPqS4ukbJ29F9R9LezjjF0WAT7ItijGmuaZvpd1flRL+N/o3TnLlAGEoiGzhraBlq9Ry47w==
+X-HE-Tag: 1784575347-923110
+X-HE-Meta: U2FsdGVkX18dMLOC4oGl3YMP4WuzgadzF2uQWT1ssdauSW9L+JoLSTV3u+FkoKyPXHmr2eIcfdr8ezEARI/eb0GVqzMy+YTpEas3T36XxiznMOFDrXY1umDMVqLuNRZg1IKI4W768vOXtMcCJF5KyglDVc815LNXpKtznVkLXIKEfaqtdoTZRrruKY8ZwdKiQHsttJ0WXJu3ZHDy16/JxpxIHoEAnVXMzcuauWW9URyN5WJcrsH9aAIWWVxCIsESyp984O6lwTwoBfV4VZ6aAHTRJeywH0lBGNLt0F/OdrLKsLVDpFzRGujUqlrY39nWTNhSCwcb04vQB1pBnUdU5g8gY5oNGIWM0oQajDBmLQk/JQs16bu6M1bILuh893On0LhIEAKozT1T5IXoxk0eL4l1RYx6478n71BVBNdOzvBO2shT5KTAGh7Qvc6AypK9wXQakNdxoacj/K5SJVgZm53eTagjo93PJJ10wNGjMlJ5BoATfl9mxokhqPE7GRhNxBsK9jDaN4bQ3yhoQUjLaEeTXOsOgsQUNk/nPbIrxTuiNAPPpZxVnVRuDgHYyykLr4Qw7IfQDt6lEnk6sRnhrmLdCTB6ybHsvrGXeqN9kjGexr8i5t3mJSOBWDr+xMXydVrV2Ny9s+2bUDTajbFLr2y2hckEHsuPFcbZBdmnhb8n/ccXCm3iq0z42amCjTWNI09Is49PQDmvtI8T2RsgiH0mmnIlkHc4NUUlOPKStMGtPNfVULop+2cn46ho8ch70YetjfMCzUOVA/8Tli5eFQCN/3ZIXxZMbyhO7B3TFcbFYnOq8asBpwc7jPX7ArklO4WmFRgIaY/RULH8eDTmLQkXB9VhoTf7H1mR0kVj8LkouAg41xsFsoDfrBbEr1lDWuseVBO/1Z+VXUr/eJFixm+f2qbqJ5/pkjClhT+bnI/i4xVyvtaWKGVgbo+Ys1TNZjCC93tyAsmVdAFJVbE
+ AZfj8f8F
+ hTLUwcr3uQTo0WJIAKQ09ikBRapf1JCXAHrQw/bGcuickBoIsPZFkP8K3Xh8gs/W4//5yxgZQxq8H+ZtsKQWc0PJLMPca7oXPien+CpaVOn0kp7+4XKEIHa+K7bHC3PwUk+Ze638FWX4o4rMAM9tYGioxaq1Er8t1z0DeFm4x/0uFsmQt7lMcb8UdYNG4GHKtqESuSIaYTq2YWm2CTHCBl/h3WspunUiDKcRJ41MRtbUeU5IugmXJzSHMxEJ1BtsW35O4v5PsHjecqHnFCoPtnmbIlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,70 +129,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Jul 9, 2026 at 3:12 PM EDT, Zi Yan wrote:
-> In pcpu_create_chunk(), nr_pages is the total contiguous backing
-> allocation, i.e., nr_units * pcpu_unit_pages, but pcpu_chunk_populated()
-> uses it to set chunk->populated, whose size is pcpu_unit_pages, bitmap.
-> Since bit N in chunk->populated means page offset N inside every unit is
-> backed. When nr_units > 1, the function writes beyond chunk->populated. F=
-ix
-> it by using chunk->nr_pages.
->
-> It also fixes the global pcpu_nr_empty_pop_pages accounting, since
-> pcpu_balance_free() only iterates up to chunk->nr_pages.
->
-> Commit a63d4ac4ab609 ("percpu: make percpu-km set chunk->populated bitmap
-> properly") introduced the bitmap overflow issue. Later,
-> commit b539b87fed37f ("percpu: implmeent pcpu_nr_empty_pop_pages and
-> chunk->nr_populated") added pcpu_nr_empty_pop_pages and caused the
-> accounting issue.
+On Mon, 2026-07-20 at 19:46 +0100, Usama Arif wrote:
+>=20
+> So my understanding from exploring this code is, and hopefully
+> someone
+> in CC from riscv can correct me, for example:
+>=20
+> Tagged pointer:=C2=A0 0xabcd000012345678
+> PMLEN 16:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x0000000012345678
+> PMLEN 7:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0xffcd0000123456=
+78
+>=20
+> The target VMA might be at 0x12345678, but applying PMLEN 7
+> to that tagged pointer does not produce that address.
+>=20
+> Previously, the order was:
+>=20
+> Take mmap read lock.
+> Read pmlen.
+> Untag the address.
+> Look up the VMA.
+>=20
+> Changing PMLEN takes the mmap write lock. The read and write
+> operations were therefore serialized.
+>=20
+> The new order is:
+>=20
+> Read pmlen without mmap lock.
+> Untag the address.
+> Attempt the per-VMA lookup.
+> Possibly take mmap lock later.
+> Continue using the already-untagged address.
+>=20
+> A concurrent PMLEN change can occur between those operations?
 
-A gentle ping on this patch. It would be great to get some feedback.
-Thanks.
+I suppose it could, but what are the possible outcomes here?
 
->
-> Fixes: a63d4ac4ab609 ("percpu: make percpu-km set chunk->populated bitmap=
- properly")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260703-keep-subpage-private-zero=
--at-free-v2-0-2970fe777dd6%40nvidia.com?part=3D1
-> Assisted-by: Codex:GPT-5
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
-> To make nr_units > 1 in percpu-km, we need SMP && !MMU && NEED_PER_CPU_KM=
-.
-> RISC-V can have SMP && !MMU. SH J2 can have it too. The kconfig analysis =
-is
-> done by Codex.
-> ---
->  mm/percpu-km.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/percpu-km.c b/mm/percpu-km.c
-> index 7ffe84adadb9d..65fd5580e4472 100644
-> --- a/mm/percpu-km.c
-> +++ b/mm/percpu-km.c
-> @@ -75,7 +75,7 @@ static struct pcpu_chunk *pcpu_create_chunk(gfp_t gfp)
->  	chunk->base_addr =3D page_address(pages);
-> =20
->  	spin_lock_irqsave(&pcpu_lock, flags);
-> -	pcpu_chunk_populated(chunk, 0, nr_pages);
-> +	pcpu_chunk_populated(chunk, 0, chunk->nr_pages);
->  	spin_unlock_irqrestore(&pcpu_lock, flags);
-> =20
->  	pcpu_stats_chunk_alloc();
->
-> ---
-> base-commit: 59e34180e138a293260301c139cf7ee800978533
-> change-id: 20260709-fix-pcpu_create_chunk-in-percpu-km-6dfa8f28b175
->
-> Best regards,
+- We fail to untag the address, the vma lookup
+  fails, and we fail to access memory.
 
+- The address is already untagged, maps to a
+  VMA, and the access succeeds.
 
+Are there any others?
 
+The VMAs of the process need to be in the bottom
+part of the address space, right? The part where
+untagged addresses sit.
+
+For things like /proc/<pid>/cmdline we should
+automatically get an address without any of the
+high bits set.
+
+For things like ptrace peek / poke, BPF process
+accesses, and others, I really do not know if
+those could get tagged addresses...
+
+What are the failures we need to protect against?
+
+What if something comes in with a tagged address,
+but the process disables tagging while that
+something waits for the mmap_lock?
+
+Does that reproduce the failure case, without
+any locking changes?
+>=20
+
+>=20
 
 --=20
-Best Regards,
-Yan, Zi
-
+All Rights Reversed.
 
