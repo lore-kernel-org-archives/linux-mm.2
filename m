@@ -4,137 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB05BC44527
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 801D8C44527
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9E406B009D; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
+	id 664866B00D6; Mon, 20 Jul 2026 05:59:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4F0C6B00A7; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
+	id 6158A6B00D9; Mon, 20 Jul 2026 05:59:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D19036B00D6; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
+	id 507856B00DB; Mon, 20 Jul 2026 05:59:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9AA6B009D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:56:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 26A26A1012
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:56:46 +0000 (UTC)
-X-FDA: 85008700812.14.1AAE994
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5F70B1A0004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:56:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Bl5kuH71;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 20DAC6B00D6
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:59:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FECDA07C1
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:59:15 +0000 (UTC)
+X-FDA: 85008707070.04.1B0CC24
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 75658C0003
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:59:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Eme9M5Ig;
+	spf=pass (imf22.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784541554;
+	b=DukeLzlJR2285FbZ7phagiCOXgN35TtoNDOQS+EMjIygPnoEb6KDR2BCr+B6IgU1p6G+UJ
+	OUAvoR1eGuODznRimkVLuuPL9yQV6VUG/U+G+knFqZCgCWv09JGrpU8E8RuYyyN/3sttLZ
+	NnvG/ESLjMviyTGlFHE7Q6hPC6ux0vE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Eme9M5Ig;
+	spf=pass (imf22.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784541404;
+	s=arc-20220608; t=1784541554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T4P1uAuS96oO2CYd5dZWKgEcG7rXEBr6r3ZYGLFiIQg=;
-	b=LEwj5R9pdBJiIDb3g0vZJShly/eS4dSc3Ms5DeKga4fuLJ6nZAbILUT/JC4USrH4+TQRhs
-	ElyJ9M/0z01bJnoxusfP1M8JkWi28pSZHNUvHbptHiUZeQG8ks0GbpYxSeretshSEB2+Sg
-	SozHNs4M1oxYsQFo2BBpy9MbdRgPUgs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Bl5kuH71;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784541404;
-	b=6Fbt2E4xATerEjV8FIuMAWuKBcCOV+S2ZMnQ2GQ22i0UVA17eiIuRoOkdP5HtHQW8V9Qh3
-	pGSomthVJ+cROXIhfY6zhcByMLFvz9XmHdnHQtSDeK2wnzEkRalj1xHeiPzSpmqbgzXGkv
-	v6hxQ5XBbPZTASuYxSgT3DvonK5Cv5k=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cf52d15d88so13229165ad.2
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:56:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784541403; x=1785146203; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=T4P1uAuS96oO2CYd5dZWKgEcG7rXEBr6r3ZYGLFiIQg=;
-        b=Bl5kuH7141Ppa8Cq0dEc4CWvL4d+49IhAiysagBNnuB7K8WjKaxakYdidN1+hdSe4M
-         84zPZ/6ETWmSTwET3KolzsDhkLCaqWzJfYMHlE96rH7VTngebIVgWHun8BsygNA7LNuE
-         2HkNWnkfPlbP9Tpq6EhoytTKdmUdfboWuCYNS4vA9ZnsllInxg221HIoD/U1bVHQjg2Y
-         ve2ASjUpSJlLA65Ep0aNWEFRqkI9fdGj104waITISSoCJ12MP9BN5xHiTpZ7W5oGGDqR
-         BVSa42iJWLeIc7QNLaTAmax9+1xEAxUkXHObTm4rNCNXGijyYZFi6tTiLkrNou32zNns
-         PdKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784541403; x=1785146203;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T4P1uAuS96oO2CYd5dZWKgEcG7rXEBr6r3ZYGLFiIQg=;
-        b=UbpHc/goaVWppeajdiU2/4mkRcl6WfDah/covLzm4qGccmASRNayx6CsHfkMQRlapc
-         Iu+nZd50uQEUlfJiXhRg8OR6EJKFEBlcN3M6G3l0xb0Pa5d2/GzS723Wt+PZLl/lw3nQ
-         2CJ0BnfbcAg+LIFbgYZ4Y9JsGDz+slDyrfcCQQSw4RmzZcakBm/SXPEFL4VlCJZA2Qt6
-         9aFaqHC9Qu2i2he6CCXMdtAp7pfjiCMid1r5/eruXNHGdhs/7sftrC1dG7mGCMsGrCX5
-         70abZApb/WWqEyma19kP6e5Se+pWBLGKODIKH1uE0roVO2VutYJSicYtL1wPi80XnO1j
-         NIwQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoE9E0clmA/GGMBU9MrM0zCAl0m4OMSZu8ytGWZZRpx78faQ2hdm64zcX5NW8DpyDcf73BNndHFEw==@kvack.org
-X-Gm-Message-State: AOJu0Yxdw0bSaWINABT4eAzqUirNkv0zLACWyDTl7NGxVP3q9UN6E3tD
-	B8QlDpatNbX0hveJN42qJyUnLe+oTT0YVC9n5GbO0ppbprPrOeA8Bb6P
-X-Gm-Gg: AfdE7cl7L+u/kivVH/QeB2GsqbNjdclY0O3zumV3zulG7JDbatsdSZKUAothhFBRr5G
-	KAtvnOAyB4yPEo52lhTp+W+kNo2+SZzDjrrrJCCR9Nk6rndS7RfZLnHG6yJcHwEudMyv1WS1H5t
-	2LW7aoFn09O518kYVw8D+3fz+NYGRdgElBgeGoNABZx5UoKXkxVDyO5hmDkreqDzB+6E9rkKVul
-	qV0iTMoakvmOHBMcga1eY5t/oKyxR+F6567qZWBexsQAbPi5LJRixPc0YCAp9IUphySFXH+WKtE
-	CBhzYOKHqZ1aO4reGltapdGp+pHExZKJrD/YKSb++Kd6EthxGPJPPCxFhwXpOwBpxHLM6iBz5QK
-	5MgMohu9vzuSgNjYvU4PznDqHW+iL4zTBnnCEawRRftl1NY6oPjO3fJHVclMyRpBjrVQNx9XPGt
-	QiYAQf+6TMMDkWSZo7C008keYHJT8=
-X-Received: by 2002:a17:903:440c:b0:2ca:1594:451e with SMTP id d9443c01a7336-2cf3496b583mr155402025ad.31.1784541403123;
-        Mon, 20 Jul 2026 02:56:43 -0700 (PDT)
-Received: from localhost.localdomain ([112.65.87.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344bd3aesm53940335ad.26.2026.07.20.02.56.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 20 Jul 2026 02:56:42 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: david@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org,
-	akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	npache@redhat.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	ryan.roberts@arm.com,
-	daichaobing@sangfor.com.cn,
-	wangkefeng.wang@huawei.com,
-	gutierrez.asier@huawei-partners.com,
-	zengheng4@huawei.com,
-	kasong@tencent.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	lianux.mm@gmail.com,
-	lianux.wang@processmission.com,
-	kunwu.chan@linux.dev
-Subject: Re: [RFC PATCH v3 0/3] mm/damon: introduce DAMOS_SPLIT action
-Date: Mon, 20 Jul 2026 17:56:33 +0800
-Message-ID: <20260720095633.32281-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <59292ba2-e0cc-4e50-bb26-be9c15843a41@kernel.org>
-References: <59292ba2-e0cc-4e50-bb26-be9c15843a41@kernel.org>
+	bh=kzrfRXAiX4Hu4kXoYmi1n5/DV4H+5STSh8/UbIu5Gxg=;
+	b=Yt6JIAkHmMd366C6Q8jLiJY07rNhATF9yhIR4PrZi6veoh8zdJlg1NbI+zOm3qQ3Cmj3fY
+	xflCB4l8xzA9LWYRP1ZVc6G3yvbDOSxreDkVmpkpYJ/NIAN/Dzo/c8uaD1XtbfLrfd2xR8
+	yHFQ9yKOJ5OYso+SfNRv0DEosX70pr8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 99CFC4339A;
+	Mon, 20 Jul 2026 09:59:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098F51F00A3A;
+	Mon, 20 Jul 2026 09:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1784541552;
+	bh=kzrfRXAiX4Hu4kXoYmi1n5/DV4H+5STSh8/UbIu5Gxg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Eme9M5IgGejVre/xameqf5XfphSy8SLE1OGq9UXSM2PvQxQlY68XQY5/VlVF850I1
+	 HC8nvoVOlXpHITQyzN4K6t1moXiiPIy0d64x6Rlr1pEJfRAIy8FRJWuhhStZrDyEEz
+	 svvr/niVKnQZ1Q/pl76w/WqHtH4tVESOMvezBzMs=
+Date: Mon, 20 Jul 2026 11:59:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SJ Park <sj@kernel.org>, damon@lists.linux.dev, linux-mm@kvack.org,
+	stable@vger.kernel.org, Yikai Zhao <yikai@z1k.dev>
+Subject: Re: [PATCH] mm/damon/reclaim: fix typo in damon_reclaim_timer_fn()
+Message-ID: <2026072041-rearview-unselect-3f92@gregkh>
+References: <20260720094708.243937-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720094708.243937-1-aethernet65535@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5F70B1A0004
-X-Stat-Signature: 9r7nwa8ymhyab8mp46hx8xbwwzpqqk5x
-X-HE-Tag: 1784541404-707695
-X-HE-Meta: U2FsdGVkX1+e/IO/W0jaySzVg4qhmr9idsG1xWwUQf6Cl91nCvB4tNxKBPip43q+7vy1noYl0MuAdwuIDkyaZArbawy0CZ5+AU3Z7TO3BvDG1DzEIdu/9dXwtaRTLnEz9hnTAklltcQBQUBGTZwZj+yYlrWJsp94kcGoq3UHviuhcMG2Axe61kqD/BKbXA6dyD2F3r4+flkoMlsg5tLX7aeDVv/Rt9jEW0gLm6NksMIiJ3PtfUyK+qLCi0b8RKodpgeQm8rS92LJYu8J+6mNVV4xNTPNX7aWUt8/J/KGKGaPTN9JdOaYYwmbR0ONCvRMzxWW366/phkQOvz7MaKRc1hCBTfnAsozRNMoAwWFEp8Ccl57xm/jDXSgJcJAtGGxreiMfizfqWh/su0ko+1ng22MnXXRrxt7xZmBLSH47BrkAVBvx7mmnVZQuVRahqHI/6siCrtRubgvlHitsPfH+AehHJL6ykqr0j0tcRlkc+QQR+78qE0HAcOCAXZCH7Pag1FB+Moot/vl2iAbIEpZiPKaQzCqqTXPrbqWFundTmKPD8MdGI+kwHjv85+mq4LldeRHLE3GahApE8W2c34wg9ck7RNJsd/fZgOd462pE49vLJ2wOL7oGI1kafZCgcGAbzqgaPhgAjeoRrVg5iYl4+Cx8ke/rbbJCvW3Zxtn3zSTWc8DQWU5AqvI5I8HP//s/7hox9rDmHHWJ9UeTj6fpU093bXPeFdPk8vFwggWSZckznflnXrAhRoLnV3jZmipELTW2IwDIujV8L21taE0dqeAG3qbR1U2MPiapvI79cHPjizaJdRVXtsxLKyDsL0BWJt/Ft+oBC2AxD3r0T1XS7DS+L7fWuDoVvyHBHnz6twuTTlQrKCKn96y3RHPEAgu7Jr8+b3YjNK2a/hTiuYaFn4eR1BvOxb2b0/m/fMtSSvuueIAegGHrggqzFU+lac9ueSEyiwTlK5xJUf/5jq
- ZFXPvN5G
- aOmfwm8E91R6zYqL903KY2j+zYpHrE6DUwRjwv0af0VvO7G3pCG11dxUoiL1YMBBbtKdzHKbnKcfaD1Ui0TPytgEYYNnrqsNQfaB4erW8pw0S/WNk28mLGnnj/97ELg84r59vdDIrV45qiqgnT+sKTDZZA0IncfbYEpQX7kvThsiZN4awTM7sl+gWjx5gAMH0+f27qIiASAjhDqbhj6un0BJhD/wCJ61aGOHmela2bPCzJJLnh5w9kB00hRwvcweD5gRTnGE9EJP8skEaBw6iMcAOsUC6sXVkhIqL6ORdyjKEgiUlyfj111Ij3gvUYBHvtmC3GA54V9Ip8ibTk0Un5hzpVCBr6ZlnLB3RsRdl0jhSXakC03jRReVDQrfa8Eh+npu98m1RxGULOqHRkDoPZbdY709SjPS32iM8qbVRBxmeHFsW9u8YtvYB/LR+AO6mj1/YEsRPBUHdLnZ9EDrOFHtIvXreLeFd/1NroXXApVkb6oUKR9lDv42StBwdu4TA4n8vIOyE+zLfqj1A3jXO29beuIHGefA8cdQY
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 75658C0003
+X-Stat-Signature: br74tiqd8yufa1kusun33fxm37s5rtje
+X-HE-Tag: 1784541553-341834
+X-HE-Meta: U2FsdGVkX1+BuqxRUthegqcTR2hNb2kzUaQhzmbrLLPbrik4I3QayrWduoTuQ9ophc3JogBU3OrSZf1q3miiQnHigLIS1PG6qzYyAmJ5kWcCHoOI4xxUX1NMnk0CvZTTi/dpTJVMSQawektb8at5Onm+LcYW0McvTZhpcn5+O2Ja7CrRC8D01YJgX3lWHz4Lo5ue3Vj9yHZxCwHU7ySgwc0JUODdJpTXf6O2R+6tTqSRp3B8ST5XPEo58fwE8MUE5b+FNfEntWfvYnOCUun/XdgG3JIk+3+KHabrXfURuDvE9oAgj12B/yokJKeFj/+jFritymk8afVUVwjCZBcdXm+5nib2vTUlgFmwFp0Qj24jbCOrE88gahOaG5ZykbfolNW+rD7sh2DCEzolPNfCrZmB6IILtIfffLAPMw678rWbX71iBI/4Pg7lSyWjfd9VdRSFnGgwhEu72KUWROiVeShsP778R1PRPghv0DvLlUK621WYF3uNKs6HxL/VRVBMvhntXhUk3hhJW7AFqsbKeQ+auoOMqAPSrZpm0tAetOEPhtn3SE+hsMSXF2TQF4n/+uUqMAP8DkXdZk0NivsuvV/Dgrhu8o72aJaWg3JID5JLEEYXKW7pDbJCzWUWPRNGWgrHR0QINfnbu/AfLSu/uyz989rO8zCRpBEa7mDC/XoltCVCnwvF/40525jInTESm7hvBkSO8MTnEYIqgg4BeJiXJms99GZVleZJkExIntnPU5hMKI/VhuU27T05yrUjvGfMFCiReZXubkcmBT9jI/XE+HnV11Usdj53w7g1v3EE9qathjo2H3EzP49FOhJ3BZI0R9kYP9BMummKKCekUtWkdwuhGn2bvfCO7Z/Mc7NSMvHoScsbMz/z971+5ZXPpPLKgKvMfrb8vbz0aFrU0Lm48HxRO86Ax0JdqEg6lxh4Q+7ngKEdSGqv310bCAxW/J2xCaKKxPRJ23Fn51n
+ 5yU/vUzi
+ Eu/nDwcvXw1Pb874eSWEdZxdZ0vN6WkcMkSxH4CWB6TThEkLLCuOg7bsucJeG10h2a6rY4Wham8TiDHXSr9aaHCIsSfHgMtPwOpTeZozmhkrDmhjTLGGculWiz+2UbdidAEfK1A2l5l6dwWA7WIWWgl0o34FGuPqukP2VrOpx1Uz9z24tj1E7YuEL6+J0w14GojCR7MAgAdVGCoIrB/F14Zi9AIYP3F9moWv6WL3ULt1X257ppVepdLzzBbnbIqCe09sdjD3nnekG7u7uKmGH36zcrQhuHF8SrTToM/i5ffgb4xu16sdZkjp1fqUE/VUDfzfFsW0refqBI3HBBMMLZkQL/tB4eQBWhlCtLPt8tiMKcmj9aLhauVxt2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,66 +87,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On Mon, Jul 20, 2026 at 05:47:08PM +0800, Liew Rui Yan wrote:
+> Commit 2f54908fae211 ("mm/damon/reclaim: detect and use fresh enabled
+> and kdamond_pid values") introduced a typo in damon_reclaim_timer_fn()
+> where '!=' was used instead of '==' (unlike damon_lru_sort_timer_fn()).
+> This caused damon_reclaim to return early during the delayed work,
+> breaking early boot parameter configuration like
+> 'damon_reclaim.enabled=Y'.
+> 
+> Fix this by changing '!=' to '=='.
+> 
+> Fixes: 2f54908fae21 ("mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values")
 
-On 7/20/2026 10:44 AM, David Hildenbrand (Arm) wrote:
-> you give no real motivation and evaluation why this is required or
-> why this gives the user any benefit.
-> A SPLIT with an explicit order is not really want we want and it
-> does not fit the existing primitives.
+Why is this a stable-only patch?  Did something go wrong with the
+backport of this commit that is not in the upstream version?
 
-Thank you for the direct feedback.  Let me explain where this came
-from -- the cover letter should have included this context.
+thanks,
 
-This started from a real problem at Sangfor.  The scenario is:
-
-  KVM-QEMU virtualization on Kunpeng 920, with KVM guest memory
-  backed by tmpfs shared mappings (THP=always on the host).  An
-  Oracle database runs inside the VM.  DAMON monitors the KVM
-  process on the host to measure the hot-memory ratio.
-
-  The KVM process allocates and uses a large amount of memory.
-  Under the same workload, DAMON reports a significantly higher
-  hot-memory ratio with THP enabled versus THP disabled.  Direct
-  tmpfs write tests inside the VM -- touching at 4K and 2M
-  strides -- show a clear gap between the two cases.
-
-  DAMON parameters used:
-
-    operations=vaddr
-    monitoring_attrs/nr_regions/min=500
-    monitoring_attrs/nr_regions/max=2000
-    monitoring_attrs/intervals/sample_us=500000
-    monitoring_attrs/intervals/aggr_us=20000000
-    monitoring_attrs/intervals/update_us=60000000
-    schemes/0/action=stat
-    schemes/0/access_pattern/nr_accesses/min=1
-    schemes/0/access_pattern/nr_accesses/max=max
-
-The underlying issue is that under PMD-mapped THP, DAMON's monitoring
-granularity is coarser than the actual working set -- a single
-Accessed bit covers 512 base pages.  Before SJ's probe infrastructure
-arrives, there is a gap: DAMON cannot distinguish hot sub-pages from
-cold ones within a single THP.
-
-Split is one possible mechanism to bridge that gap -- by dismantling
-the PMD mapping, each base page gets its own PTE Accessed bit and
-DAMON recovers fine-grain monitoring.  It is not intended to be a
-permanent API, and certainly not "the opposite of collapse".
-
-I did not write this scenario into the cover letter because our test
-results do not yet show a clear quantitative benefit worth claiming,
-and I did not want to oversell.  Without the context, I understand it
-looks like I randomly proposed a new primitive -- that was not the
-intention.
-
-SJ acknowledged [1] that the monitoring problem under THP is real.
-My RFC is a concrete proposal to start the discussion.  If split with
-an explicit order is not the right primitive, I would appreciate your
-thoughts on what the correct DAMOS abstraction for this should be.
-
-[1] https://lore.kernel.org/20260620203915.82947-1-sj@kernel.org/
-
-Thanks,
-Lian Wang
+greg k-h
 
