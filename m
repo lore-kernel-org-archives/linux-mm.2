@@ -4,94 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F399BC4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 08:49:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFF9C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 08:52:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAD426B0088; Mon, 20 Jul 2026 04:49:51 -0400 (EDT)
+	id 685606B008C; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D849A6B008A; Mon, 20 Jul 2026 04:49:51 -0400 (EDT)
+	id 635AD6B0092; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC2286B008C; Mon, 20 Jul 2026 04:49:51 -0400 (EDT)
+	id 54BF96B0093; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A7C156B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:49:51 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06698A0E88
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:49:51 +0000 (UTC)
-X-FDA: 85008532182.05.8DDDD9E
-Received: from smtp-42aa.mail.infomaniak.ch (smtp-42aa.mail.infomaniak.ch [84.16.66.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CE00B180003
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:49:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ik.me header.s=20200325 header.b=4ezaj5jQ;
-	spf=pass (imf16.hostedemail.com: domain of nadia.yvette.chambers@ik.me designates 84.16.66.170 as permitted sender) smtp.mailfrom=nadia.yvette.chambers@ik.me;
-	dmarc=pass (policy=reject) header.from=ik.me
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E1746B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9740316075F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:52:01 +0000 (UTC)
+X-FDA: 85008537642.28.907F6C3
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D0FF380006
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:51:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=DWqG8oU4;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf02.hostedemail.com: domain of chenyichong@uniontech.com designates 18.169.211.239 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784537389;
+	s=arc-20220608; t=1784537519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H0fo9bu9ZfFIZs/fyJH7OKdj212Tc7OSNbJXo+DCE4I=;
-	b=VF8Y85cVWac3co6RpIelUZqNyHKA5VyPlRal/7QRXLCKKQM3hw70JWlUycF2aJjxVR3qdA
-	aIVzd1ucc8et4pM4jwEKNdN5oqAV/bdNHTKHIw3+/tVh0o6RTiYpd1ROQ8KYp97J8L3r9+
-	hXF1td77YUrZzGjWPecTqXAkM/IfXyM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qwFdiigprnnr+PXeMatxgrhnDGdTJlNK6vXKjM4agmU=;
+	b=32/IL7wfywCYDjJ4fnOt0OuEH/xqRU10qLYjxMW3DLpPuZKBaunxTp8cPNIM+DlCYddDU9
+	fhysHNUtw2/4lENFj1k4koxNntCM2msFHzMrEGjioJhrNnNKMis8F6oEaV8qlepgw5Sjqw
+	sbzj+2mDr99Gs/Kl5ftC+c+mLUFUVFo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ik.me header.s=20200325 header.b=4ezaj5jQ;
-	spf=pass (imf16.hostedemail.com: domain of nadia.yvette.chambers@ik.me designates 84.16.66.170 as permitted sender) smtp.mailfrom=nadia.yvette.chambers@ik.me;
-	dmarc=pass (policy=reject) header.from=ik.me
+	imf02.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=DWqG8oU4;
+	dmarc=pass (policy=none) header.from=uniontech.com;
+	spf=pass (imf02.hostedemail.com: domain of chenyichong@uniontech.com designates 18.169.211.239 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784537389;
-	b=b/DVhVeDBuYEn2rj65glNPJA/MwyFHIkL/G0PF/2ATG1V/eBDwtbBk9CVjYvvZWqcwzlPm
-	HSp++NFopCzWyAZXkWNIR8aDij30gs3FkWftgPSL3JICV1w6ux49z09qJ6hSJtEtwEejPx
-	z/IxRTm8g4mmGYipDwciW47MDkPlSEI=
-Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4h3Z2f4dmYz1Yh;
-	Mon, 20 Jul 2026 10:49:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
-	t=1784537386; bh=H0fo9bu9ZfFIZs/fyJH7OKdj212Tc7OSNbJXo+DCE4I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=4ezaj5jQe0yzY1mq+uwMlTHoV22A4ThV8aPwaPgz4P5r5W+EmXanu/5dGv+ZAx40r
-	 N7BWk/iU38ejeg1ymoizzOaBDOmkEov21K8G9FaSOvk6vLVSSPON9jGYzhslcuVAMe
-	 UvrsHTGlLqJsCDOtxuWYqG58dsjvKsazF6C/FpL0=
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4h3Z2b60XLzQvv;
-	Mon, 20 Jul 2026 10:49:43 +0200 (CEST)
-Date: Mon, 20 Jul 2026 10:49:42 +0200
-From: Nadia Chambers <nadia.yvette.chambers@ik.me>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, lsf-pc@lists.linux-foundation.org, 
-	linux-mm@kvack.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Usama Arif <usama.arif@linux.dev>
-Subject: Re: [LSF/MM/BPF TOPIC] 64k (or 16k) base page size on x86
-Message-ID: <al3YIwkfheZKUFYE@ik.me>
-References: <aZcmlIF4bmG0twkp@thinkstation>
- <915aafb3-d1ff-4ae9-8751-f78e333a1f5f@kernel.org>
- <aZdCl8byz51Q1-v6@thinkstation>
- <17c5708d-3859-49a5-814e-bc3564bc3ac6@kernel.org>
- <al0xogLqubAZh6SD@ik.me>
- <4d4fbb2b-dfef-4228-9e9f-f967aec4dfd7@kernel.org>
+	t=1784537519;
+	b=jRVSFVam1bExdxchoqLuucb1OW7aEx02JASex0pb/pnas1mt3sOy47voezGTUsoQmYDp2g
+	mii9CZI9eGwqVY7jdOeA1izr5BMGWzIn3Ooi0Sjt3MWxEHVCXYoqVM4C2bQtm3+WUM0cJB
+	T22Erf3Y61pYHjXxKswGHtbuxam2dZQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1784537434;
+	bh=qwFdiigprnnr+PXeMatxgrhnDGdTJlNK6vXKjM4agmU=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=DWqG8oU4Qm3K3ng2oxPuV6Ajskl91wnEtDu0nsfiPjyLj96XJJF0tev6uqa+Cb/sk
+	 mVK92h13cPbajqtywjAt0adYDHCf0vCRdx6vq6mXdMkX19nTyBpLlhpo/DF0MVA9aJ
+	 MNs4mpksGTKT7R5reVT6u4SXAwBQ+eSqXRfqvRH0=
+X-QQ-mid: zesmtpgz5t1784537428ta2b8478f
+X-QQ-Originating-IP: WbfTXFU/kDf3z6rnhpLug4tdERftmKoz3sfgvejAQsU=
+Received: from uniontech.com ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 20 Jul 2026 16:50:25 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 12259026264893774996
+EX-QQ-RecipientCnt: 9
+From: Yichong Chen <chenyichong@uniontech.com>
+To: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Barry <abarry@cray.com>,
+	David Gibson <david@gibson.dropbear.id.au>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Yichong Chen <chenyichong@uniontech.com>
+Subject: [PATCH] hugetlb: fix subpool release race
+Date: Mon, 20 Jul 2026 16:50:24 +0800
+Message-Id: <20260720085024.1392261-1-chenyichong@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4d4fbb2b-dfef-4228-9e9f-f967aec4dfd7@kernel.org>
-Feedback-ID: :3e9ae705af0626a:ham:b89b32586f6d122
-X-Infomaniak-Routing: alpha
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: M83iEva+1QDBMc0d6gBK3mGcaHttUzu+k8lpp1/PT19Z6x1nIJwEFSbb
+	mRmoTP1bsUQrlO0eYD7jQb6KHdvVDABc95eQcov/LrH1VS0ZL2LigOYm1VxtGBng9DJwR5X
+	rymmlWBeFG2GPjNR1zCVIAwcboB8rxw4v5Jy8SAAy/9p+iZ5AsJ9sGUyISExUU9kD/pRnfW
+	wmW6z7iUIjGFlxUunAgeYdv33CfmwAVLEkmGyT/dOmLxkp229WhTd6leVg2klQU9CkI/1md
+	uRdN3BvsdClxR2ia7MyXvKMoeIelOyw5ppJ+5t3Eypo8FznaiO8/ZKaPvaKeS6tMJsSpNvD
+	A9tQxtjJ4YIkEE5+QPTBSEMQwsqjtJzlj/UrOR6Rzf+vQ3qmibjcAUvnd3QK3Yimgo+BRlk
+	IeFSf4Fz5clfupnC439e8D6zSWKR1I8gbBg0mnmaCfxO7wlfcejw6oU8h5SH9hywZmVtTQx
+	nVRE+F0TmPTeTUa70mfjWIyMbt0gZLgTKNX8q5G59cdylHcVm1/oSl6eJtyE/9Qai5iKh50
+	OoubDDuL8aYbUI/ItFIEvOYWRPb4IDSVnJxDX9NCpwp2jABOEN2j6Bx49DJmLDUR93ee3C0
+	oDDGdVIILComINOwSgPbpMGMVhfaCzQfOivaOOJxMTz57KQINu+2Et3i/pmehCf9RYeulUj
+	NeKFjfFwBgZYeFjvkf9q3Ex4kfy+DSsUzz3BhhGdY5I9pZhxIUYgfqshzsV7rGRtDCZlGOO
+	LqY3vHA7AexmTqc7GNvxXIH5tr28cuKOPoqPozs9hDas1zExrDRxapxTC/USuJAtGZ5Fqgz
+	6BieZ9OdC2Z287MEzqrL4w41gmnQT2ysbSRJQNju1C+QWmVB13aLh40N9nRC5j9qzZ/glvn
+	rxeZmq/99A75Nh7f9iaXeIEC+iGCRE7MCffPdb3vdKJQaX2URDurV9nlcXTcyI+m6xKshck
+	O73j42B/0p4t+i18q7Y7cPd2nVaHq3h9U6sI1vG0K2ZK2HJmpoPBppwvxuItvPa/fwcheHu
+	wBzFaftm9tHXAwWXBVEtiLIW4Fh6Wez26NXRPSEA==
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-RECHKSPAM: 0
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CE00B180003
-X-Stat-Signature: jhgpmhzhhbnonn4jcj98psig5optbwbs
-X-HE-Tag: 1784537388-730868
-X-HE-Meta: U2FsdGVkX18U4w1YH4bxvx2oiiXOtN84PY/sicl8/z9SkaRHgrcONs9dii+CoH6DOLWEHq23WcfKtxhb5yAWxBtaeCDmD9nD1QI3V1G0H6VpxNzUXq56o4ePCKnOIclu2BtmfQEmd3YNpBRiQoWN68hbZRn1hxtwpUbopmdeVunrYsrhRCsc3Hl8nmGi0FajILNPH21+JSVQOgbKta1BuUHeBk+IGoih0edKqFZduMSdYOLda6WdRYWLtb4G1a4pOD+jx0UlcjfMrpdzrq9UN3rNLv3KNIdqDqt8fmbMxLXOi6T8DmK0KQTxJFnbHo0p80R6wkKWA6d2ncS4i2yT3ymTZwo17bGjajJ98H7KbTXHk7vIMmNCE8hA9owbLbwqPwT+Veyq6l9Z7j03On8zre02yDIEL6J0wlAzTQrmUN3fbFhahuZXsfi/v6nGc0fgmXH8cUhekhmtwPSRCGZnpr8TAb54wDRsdrwi7fiTKahwKF5H/uuHaug48sKJzzHLtLAhbWgIdNQVDwba2mKfrPhjSUhPNh2M6ZILUS40oHzrV85050IlLZDJbfkg3zGVZsSX7rIqOu//jXKh5WSR7XUP0xmtMZPwXYW7FsaYZpJfKzd4WpWkFFqmjGwfugonsJXKtpJKQtG9xfILx0wiQPeJsD7DDaoju5yLX57mFPhij/ZVz3y0UvZjxdGTEj8g1A3SZDqZclqg+OwcHkh7zbJkp7BfTMNdu3vnYT2REQ8X4muzLeIkP72SPS0v0Gcpvs0qxlipFFlpiaeDzhm9sHax5+kCiS8/zye7HvOjwvY2q1bfzQsGd807CfNvueXTa5XMaC/EvqBTyGs3GktfPaAAgynBzmUu+5b7KmZaDsDBo8SqNg61AvbbGDwTU0zfz3j2PsTZGx8ZAqxGy8t7GWITQEn/jbwzFNsornoOaPRFRR0OU/fxxmbECEeLBLwoTMD1jRfQy0Om90k41+t
- ncbU67sc
- pGZ1Hdq1I75D3YsY9LvLrrsxTkpiudwq+XCPPNm1dDq+B+GObOYkTsl4NL0pgioXJcSCYC4baAeQ8cIwLNrNdDCznbh8zp0gPAKdRh14us0+TyNqBDyuuAEvjkInqbjA3yiCc+UQ1E8HhGExL7pjkgV2N+k+lj+1HBAJuW4g3d2fNdC5X1+sCkH35GFCSn4SRxW2jR6aa0TT6d0UfxSjHPXZC5lzWFgU76tHKIZSOJjGijUkO8gCcS8XX1FyB1KZr620gG2ZwBc39JRDfMURMQQy9ci1rNBZfGhel
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D0FF380006
+X-Stat-Signature: eiqt4yiomc7hzzyjdtsmmdmp5c6jbdap
+X-HE-Tag: 1784537517-296398
+X-HE-Meta: U2FsdGVkX19B7F6d7DJhjfTmzHxDkjPT4zZfrodx59uRoBGAwt3Yk+DE8l4MGwdyWzq+jLSUJassWTxJS3wx9vxCFXXUe8b9kUJ97BrghVhX35ndOCalbqLhFhzxLL/ruoN3/M6Tj7N9dRkPhkhhjL7sBxAeooM0RzpzF6gFJgyflM6JqMIfU/PXroUUJN93/upveDebDbpGpnVa6RU7yARWJDQC91wrSYax5jfZR/jmN0GIZ1HuDoxmfXTmwfPKGGlt4Zc06At/RJSKIZx3MC6rggKJ53jSwYsRlzxXCYoMGklwbUCJDZTYgr73045dJhBWVjvn5rFm/uzqD5Rubaw7T3c7mnAIKcovmxCQoOPTsnBAaN8X1lP3VlAoZw5ruRHnjIk58vV+7j+n8l2ogjBJ1wg8FBE4ls3sy6jB2EL85pgBZwTBankchNj2CnKkpxuBJR0sX37TTHJ0Myc9nUC+MlExOd39lec2gKAYBEvfwz8cseQfs+8bGvx/5Sl7FsUG0sZPLgsVojM03tG9H6OGpXR/y0015bLLagm1y9ghS2USyf1DgGepuj1N4uSLubywNCAQR+gbX2YbWUHsRw0jYajQrFN3q2zCU3p3+FLr/tErDxDeEEhMUypJVmDZCOA5tZ1L9rAF1ttiNhk/5rZHrfJdjvUn/Qu4b2CbQ0NLOwK7oCcQ0zCfZdBVKRKmrTsbA4ZvMkWoF2K6pPbkiV6cXWByiIQlTNRY70umvJvI4EqCSJu8MUtj2s7bY/jg4Dn6JLSD3qyGbZLr4iF8c6C44CcsD+1ONyupBAJsGFIEzYiWC06rfeKocmHdhufYNxA4AHgXrDb7wVyBlK9L8npIetZOAMLFBsERpP1EyACG4QEd6jRD4oGRtD1xc1VRPqbRHC3EhqPhcT9DbVGKE+D+7L3vESLYYrV74vlHXTwon3RNsMCD5+cQfy53aMY19o+jVoZ8+EuWYSHwRDU
+ oAsa/lJ8
+ y4iwr9dO6GTQQAe0XAtc+I8p4bpmfX1+SZEAyOWik7fN94g9AuizBh2HS4LsBPFnSEOkUTq/veezQGL6JQywuJdCh1koh1Z2prW5BxEAmTDBP1H25hFeIq+UokYa6mPE6Y5VSqYH+vIGpaPUwxOjQ4EzI/mBDHbUF1JBwlzZzy68ZhIS9NVqH2cZKo9E8+ULqLwhB+RmxLJ1MLQUmzSl1yzDqwCsBj5xbbIzpjTAfZpEEQ7D/olpZ0WWebQVbyhXtOpXeQtc/XRAf9R9pY56VCGOlgz+niaVMMj2Czx970DFDRCR753pYe7Bhejfn/mz7UiBMxgGH3XCtKRa2/iIdPGhskxeREkUc2v71
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,24 +115,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/19/26 23:24, Nadia Chambers wrote:
->> While it had to be written, it was a straightforward extension of
->> converting ->vm_pgoff to being in MMUPAGE_SIZE (Kiryl's PTE_SIZE) units,
->> recovering offsets into pages usw. Nothing seemed terribly hard to
->> understand about it. Really, the code as it stands rarely approaches
->> what it's doing in such a way that it broadly surveys the layout of vmas
->> and pages and be conscious of whether pages spanned vmas or multiple
->> vmas were representing maps of of fragments of pages, so I'm not
->> convinced there's anything particularly unique to be afraid of here.
+unlock_or_release_subpool() drops spool->lock before checking whether the
+subpool can be freed.  However, subpool_is_free() reads fields that are
+updated under spool->lock, including count, used_hpages and rsv_hpages.
 
-Am Mo 20 Jul 2026 um 09:02:21 +0100, David Hildenbrand (Arm) schrieb:
-> Just to be clear: I don't want this.
+Another thread can update those fields before the first thread evaluates
+subpool_is_free(), allowing both threads to observe the final freeable
+state and release the subpool.
 
-Understood. Maybe it was a different and good experience for me and I
-got my hopes up too far that it might go anywhere from the recent
-efforts in similar directions. But I can work on whatever people
-actually want me to instead.
+Make the free decision while still holding spool->lock.  Keep the actual
+hugetlb_acct_memory() and kfree() calls after dropping the lock.
 
+Fixes: 90481622d757 ("hugepages: fix use after free bug in "quota" handling")
+Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+---
+ mm/hugetlb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
--- nyc
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index e319c6a00555..46ab702c0fc0 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -140,12 +140,14 @@ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+ static inline void unlock_or_release_subpool(struct hugepage_subpool *spool,
+ 						unsigned long irq_flags)
+ {
+-	spin_unlock_irqrestore(&spool->lock, irq_flags);
++	bool free_subpool = subpool_is_free(spool);
+ 
+ 	/* If no pages are used, and no other handles to the subpool
+ 	 * remain, give up any reservations based on minimum size and
+ 	 * free the subpool */
+-	if (subpool_is_free(spool)) {
++	spin_unlock_irqrestore(&spool->lock, irq_flags);
++
++	if (free_subpool) {
+ 		if (spool->min_hpages != -1)
+ 			hugetlb_acct_memory(spool->hstate,
+ 						-spool->min_hpages);
+-- 
+2.51.0
+
 
