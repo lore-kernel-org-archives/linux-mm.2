@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9D7FC44529
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:39:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A87BC44529
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:48:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CE4D6B00DA; Mon, 20 Jul 2026 15:39:46 -0400 (EDT)
+	id B01256B007B; Mon, 20 Jul 2026 15:48:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87F886B00DC; Mon, 20 Jul 2026 15:39:46 -0400 (EDT)
+	id A8B0A6B008A; Mon, 20 Jul 2026 15:48:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76EDB6B00DD; Mon, 20 Jul 2026 15:39:46 -0400 (EDT)
+	id 9545B6B0092; Mon, 20 Jul 2026 15:48:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4933A6B00DA
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:39:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB8CFC026C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:39:45 +0000 (UTC)
-X-FDA: 85010169930.19.4E6EFE6
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C369DC0004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:39:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UEQylVYa;
-	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 68B896B007B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:48:18 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60467C0288
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:48:17 +0000 (UTC)
+X-FDA: 85010191434.28.91A8B13
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 97A1D20005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:48:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Kk4B9AnZ;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784576384;
+	s=arc-20220608; t=1784576895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/qp0qmX7/lG+2iV/7px+x4IwYJSrixYtqlMKjlDaa2k=;
-	b=nf8gTuR1H8YYsVnbi/j13kgGIdoOBjAM6IE2CtfphcbG9INE9yuFilzZzqGN6XQ79HI5AD
-	Dm20qJZhxtBOCj5ECwdEQkle1r5CJufGZYxEymSrXYqLUMZeG39iSb1ZhyafszbHoaX9PW
-	PWSRKIO6QOungXK9Vc1cFZxBlvDaCvk=
+	bh=bY1azwx4jsJQ8qPk/eyE9vAbXOIQ9l1CV/aEbqxCteI=;
+	b=2fDpdQdeJ/aazpmdJXPHoqbuB1dLRSqYxpsEl/ajchOrFd/lNCvKpjzD3n4+1lzcPa4qH7
+	b0tCQb6hJOYWLtUf+2/MmEEb38Lkxn4rtMkn4WfyDgH0O09y+82YO2HB0/PzqL/o+Tbbs6
+	E7cQet3KtN7pHxMuNHRCRGo4Z4zcctc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UEQylVYa;
-	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Kk4B9AnZ;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784576384;
-	b=X7YoLnzDmLqFOVWXqeuKioS4HuHu5DBjY2GFlGb3kdrQTcr1glpPD3R1eft0og707hNaHC
-	yo9jEbCYY6LGtAEJay90IJPkNLQl+qMWo+hA9XrhjRolg7V4vPl/n9g7W2fJ+alIWuXq7b
-	6yuNEfu45DcL71wFPgsn0+6RE2TwxHc=
-Message-ID: <e010eb53-2a7c-46e5-9049-0afc47b09a61@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784576381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/qp0qmX7/lG+2iV/7px+x4IwYJSrixYtqlMKjlDaa2k=;
-	b=UEQylVYahUPHKpHwcBPg9WnwTJ4SqNhc1/GHwwewzeeQTWeJBDq8dQc33sgPNQ5xVM+gpZ
-	rJOtWPzp/R8wroyp2kpT60GUb6BG9zG8ibFxKCiR1JzYty50EqpxtsmyOXaG2NLaOYuYQx
-	jyRfm1vXIHd4Ko6tOlB2ZVX3pIu23H8=
-Date: Mon, 20 Jul 2026 20:39:37 +0100
-MIME-Version: 1.0
-Subject: Re: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- kernel-team@meta.com, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org
-References: <20260720115741.239657-1-usama.arif@linux.dev>
- <13ec2603d5cbfdc493939f182b71e5133c26af54.camel@surriel.com>
- <46dc1b58-f2de-492a-9da5-a5c429c19a10@linux.dev>
- <51c0025d2eb885ff1f4775e4d9ffcf34f478f378.camel@surriel.com>
- <e9703d2e-f815-4d96-b5ce-074aba281f76@linux.dev>
- <f32b1d2d272e9eafaf0a68be236c84a0585a62e3.camel@surriel.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <f32b1d2d272e9eafaf0a68be236c84a0585a62e3.camel@surriel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	t=1784576895;
+	b=htZyFVngUtz2oWl+HR7W+uKOJLwRvTabCIa3BWZB/ciIc+++5K3yregx1hOWBJsX3tJytH
+	BeXXX2wENCkFh/E7TbxDWiyi8QdzCeldyS2nB+oQb5+JWn+awOfXyhnUefSlk0FWChS6IG
+	QgobVNZB+euSl2+Br0pnCmhoCcBDsWA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF9F860A7A;
+	Mon, 20 Jul 2026 19:48:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714FF1F000E9;
+	Mon, 20 Jul 2026 19:48:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1784576894;
+	bh=bY1azwx4jsJQ8qPk/eyE9vAbXOIQ9l1CV/aEbqxCteI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Kk4B9AnZqoB09H/QyCds+vQW8ifZnmBuX+TT7CXqkZYAze8MiNWDEn4/41loU6QuY
+	 hFZkQUANo2EVXCBtP+yWrp+JWh6cfKRs/ZllD0E8MSBKM6mgtRgiZaDeEhLncUVbCG
+	 A3Y+YWhNRQRMWuxYj/yZg2zIy65cBzbKo0kKabBo=
+Date: Mon, 20 Jul 2026 12:48:12 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, Kees Cook
+ <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Arnd
+ Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 00/15] mm/rmap: index MAP_PRIVATE file-backed folios
+ by virt pgoff
+Message-Id: <20260720124812.30e04cc81a56dd6f0346cdf6@linux-foundation.org>
+In-Reply-To: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
+References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 97A1D20005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C369DC0004
-X-Rspamd-Server: rspam01
-X-Stat-Signature: mquuneyppmodpxxi5fmuzx7obur3qgka
-X-HE-Tag: 1784576383-131457
-X-HE-Meta: U2FsdGVkX1/+GpidcmsZG+iMtJRYTuFDSiWBjRzAKPSr1NYSIWOXWspNi1k+uoz18PaoBWZqJnSJoNz0IXMZ26B50ROahN4VhsJnUbNtJP/vpW+7mlRZmQpX9g3mJEYZhEpHn8jERLTQtHCsuaBPZD1A2Nn59pnKst/dd1W0cno53Qll9/csFB/Be11UIihw3kUMfIWVQZ/QSRHdlFm3cyeHvXHkyEG+NypK09VibO5EVJ6vX9sJ1EC1PJup22LvNGB+kzjHfV16hdKcCG2PZeC3goKpAdpz+oi1EaoeqqXzCArCCR8bvY//8+Lmwwtg5Ip8ONeqsBO9FA9Eub9cwMl3DVGmQLauWoSLBBDbvq4a/HN6//cXtpxonN4TlWTOOgEyTAsapoFA2s8+bK8QZggPpidHBDEP9VlTQfq9dWCrsNnG1ldflyAn7VwLguoBhtstn0wz6+Bgg6Z66zFPmdVIAgWCbRPMBygNHtkQQdg8rQC1IG07Slk5S7Hq66V1Bn4T/afrhdiUqjED+l9l02U/gHuhusImMjyVZ9XbX7ZSj/FKQUK8KogtoF1cyUDZSYr+E0ohd+IhQBmv9VpLWM/gBygyhtgNf/GrRuT7DNOcDuPNTQXJN+VsaVKM4xWHFCatONkzVYGTCyp0zH8QxMxfzm27CtAObik8hxJqcHm3fghccynh0aEL+sccgQiMwDOq7OMxxyWvCExB2DhaBhmh+8n3Qrv0uHoLGsmIh/yQBUxbbhjJiVJcthnTruntRv6uiYUPToGonL4msvQZLW5Xyq8mVJ7liza7+rvLL8Dnlj9M/qJxkhawO2oqFh9wz3vR9dJsgFAna0dUUDJpj0/Q5cp6mN+fVvPC8lVl5fEp2oLqdebIVvD1o7gZOg/gKZjlMajsL9sFHr7ag3PpJs04fpvGVtU0LOYl0aRCSiuEV52GDWph2n57pH/CNX1BL3elwfrhA7rBC6etJg3
- F2mAKQ7m
- X1pI8nDkzLNMPKHZj1OOuPnklV38k4wSxIeXVS5ap3zCuwJJR4gTIWboeU+9WOS1aqiK1c3zM9XAGEvG5l3t6/G6PrpRnzZjwZVUcDpd6k92ZcDMr+CF2oXJpAeemHP1DYEhM7gzE9M5mh5L/VWVIDUm2XCORnlnQeYSQU1Pa7ig3MjYQjKFFEZB9zyWksB5xDE9QgJydGSdocLR9oRb9/GIaazT9u1ONaGJUIB287F8TF6MJzSVJZ/dSg7CYRH3vNc64+L65s3fC+/HJfrohwNQeSj0GvdSevsPs
+X-Stat-Signature: ym6prumwdd13w4u1sjjx45wt3q3rzomq
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784576895-391408
+X-HE-Meta: U2FsdGVkX1829r4J3NU8wzr1GYGjGCiOrKnEGt+OHJl+85r4SuAG4zmzs47j1lyRj0pZmD8sbiowzs/4KsBBnDTpwO4pi/7xtEAAy2/ZT2s8ssVBXLYxLwsbGPbIgo1wXsTfDAAAFXpKigYl3EidKE8FW56I8U0OMV/DpSOmL9b9OIEHdJbxpdzk5par+AFfsGG/BMXtDv6Oc/Wl3AaSg8nXGj8ZBMhoaipTo0ZOruYMRiBxE5TJ81AEmOnto/0lCewFfujRxVt6/fgo3vnJb6I9LcZCSNrDewDCcBJfjnYN79wIUIm60wSZaurFwLiywMlRS7VlCQ7dQbEVVyfoz3nRr4r5MH++G8+ibdp4Z1vTllo6QKkmHa5pqn4uENquaMA2nrH0IK69VN+13uttXy0asAHjyOQIKTi+oZhsblb6UQosdoC/OSzgThNbZwZqJVawTf3FW2AD4ybjx1InVMglRim7zPYlBT7d76bUue0atyi6lmvmiwPM33W8d89vZTHA2/ZZzKm8zHB5nYIDvmg/qfBlUuUS7oMAsQQagwKpk1Bt8P/2FSCtEmgxZqevfiGN7hYMex1K0SqiMzvAwPJkxptT32fVCEHBpGYP1nrA8rbZ1MK0NXCp5K4vSqlm0Kr/XWolm9dxEMhOgHUij9ASxvFZa8V3mwrbTigjTEiWf368CWM9/WDM0S/fNSxNyvCeZBLL93Ylvzia6Y0P1QpLytDrOzxzf+L2yiqTMConW1rKXWwUtBm04zKDsN8qgMuLT4pSTFyVRTy+9rTE6PFRLsALrXDSJeLKdRXeHOtJ6cMl33gdZAPt+6xPz28im69Mf1iRHxxg7T8ISQevEjJQYNQQQltoraBMAf4ElnrtuRKfhRw74Q3K8ijdQaskvGPksJKWGLolSFzhCwXZIX3r/+To2BS92SlQNRrrqa8wIa1M4MyZlKcvfCEuGpVB57td0X3NMVj6b38LjeU
+ BaOBAYDm
+ BxJyeHmhht0Fg+MLRwJPWwZnXY9fQPnuXW94WK7tkVzI0bcRhLXLZt3v+wWXdooNcWjOxSrC7ojLKSfXNdKbHPCAIwCkDvDB0zbtWi11bl5k9eUqOqqz6QF5xCJjTpCy15+mfaVyWa/axzLFqN0lLMXZuJjdn9NYbtplKAxPI4f6vv7NaRCAWHpd54mAnrvfRCsaYfNXHocycyUJ22G5fAVmLQqYpuAzF+QF1CKX3PexjjHn5ChaS2XjXuaFri3hCoZ4GPekrbi64+3p3dv+XRqPcmqvHYWMv1SjujDlYmMXEG4oN/JJ1rI1w4Y/LDkuE6wQB0zUnGIaDLRNwxzw5wG23xK6qq+ZLuByLPApgi4iHwPlPLj7JbJ/aGvtefpwQtbXROBDpxmbW4/0Vi7E0gJjYCE5iwcTLcHdgTLz22axiiyO4bxJgUotgixJibFmraP1rH0ZPKYPnREk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,88 +108,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 20 Jul 2026 15:38:26 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
+> In memory management we've managed to manufacture a great deal of confusion
+> around the concept of anonymous memory. We have:
+> 
+> 1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
+>    swap-backed (thus for reclaim purposes, treated as anonymous). These are
+>    simple enough.
+> 
+> 2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
+>    present in the page cache and mapped by an address_space object, but
+>    whose folios are also swap-backed (thus treated as anonymous for reclaim
+>    purposes).
+> 
+> 3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
+>    vma->vm_file set, but whose mmap_prepare callback clears vma->vm_ops to
+>    satisfy vma_is_anonymous(), which results in VMAs that were mmap()'d
+>    referencing a file, but are in every other sense anonymous, including the
+>    folios.
+> 
+> 4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
+>    and have file-backed folios until CoW'd, at which point those CoW'd
+>    folios are anonymous.
+> 
+> This series fixes issues 3 and 4.
 
-On 20/07/2026 20:21, Rik van Riel wrote:
-> On Mon, 2026-07-20 at 19:46 +0100, Usama Arif wrote:
->>
->> So my understanding from exploring this code is, and hopefully
->> someone
->> in CC from riscv can correct me, for example:
->>
->> Tagged pointer:  0xabcd000012345678
->> PMLEN 16:        0x0000000012345678
->> PMLEN 7:         0xffcd000012345678
->>
->> The target VMA might be at 0x12345678, but applying PMLEN 7
->> to that tagged pointer does not produce that address.
->>
->> Previously, the order was:
->>
->> Take mmap read lock.
->> Read pmlen.
->> Untag the address.
->> Look up the VMA.
->>
->> Changing PMLEN takes the mmap write lock. The read and write
->> operations were therefore serialized.
->>
->> The new order is:
->>
->> Read pmlen without mmap lock.
->> Untag the address.
->> Attempt the per-VMA lookup.
->> Possibly take mmap lock later.
->> Continue using the already-untagged address.
->>
->> A concurrent PMLEN change can occur between those operations?
-> 
-> I suppose it could, but what are the possible outcomes here?
-> 
-> - We fail to untag the address, the vma lookup
->   fails, and we fail to access memory.
-> 
-> - The address is already untagged, maps to a
->   VMA, and the access succeeds.
-> 
-> Are there any others?
-> 
-> The VMAs of the process need to be in the bottom
-> part of the address space, right? The part where
-> untagged addresses sit.
-> 
-> For things like /proc/<pid>/cmdline we should
-> automatically get an address without any of the
-> high bits set.
-> 
-> For things like ptrace peek / poke, BPF process
-> accesses, and others, I really do not know if
-> those could get tagged addresses...
-> 
-> What are the failures we need to protect against?
-> 
-> What if something comes in with a tagged address,
-> but the process disables tagging while that
-> something waits for the mmap_lock?
+Thanks, I'll add this to mm-new for review-n-test.
 
-So I think the above question is what needs to be
-answered.
-A tagged pointer can become invalid if PMLEN changes
-before the old mmap-locked lookup too.
-The mmap lock only defined whether the lookup observed
-the old or new mode.
-
-For VMA as you said, it should be ok. I don't know about
-others. I think it would be best to get input from
-RISC-V folks for this. Hopefully its ok..
-If it is ok, then all that would be need to be done
-is to just remove in the commit message that pmlen
-is stable.
-
-> 
-> Does that reproduce the failure case, without
-> any locking changes?
-
-
+AI review seems overloaded at present, might have found a few things:
+	https://sashiko.dev/#/patchset/20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org
 
 
