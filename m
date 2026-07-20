@@ -4,91 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2280C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 16:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 579A5C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 16:54:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D34066B0096; Mon, 20 Jul 2026 12:47:34 -0400 (EDT)
+	id 3F18C6B0092; Mon, 20 Jul 2026 12:54:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE50F6B0098; Mon, 20 Jul 2026 12:47:34 -0400 (EDT)
+	id 3A28D6B0095; Mon, 20 Jul 2026 12:54:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFE4D6B0099; Mon, 20 Jul 2026 12:47:34 -0400 (EDT)
+	id 2B9636B0099; Mon, 20 Jul 2026 12:54:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9989D6B0096
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:47:34 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21C05160226
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:47:34 +0000 (UTC)
-X-FDA: 85009736028.15.191DAF3
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 512168000D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:47:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ICBjY20D;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E41C36B0092
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:54:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A4ACA0432
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:54:05 +0000 (UTC)
+X-FDA: 85009752450.04.B52D254
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9F57520009
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:54:03 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QNUV8Spo;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784566052;
+	s=arc-20220608; t=1784566443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4NxQvnwYlpKK36SWC6+zTzcYERz5XJIYpkhO8WkhgIA=;
-	b=55NyFS/r1/Ar9zCHwGwYjWWB65WZE4MP7owRo4m52GcPlcuj3tbAD78Ea5PbCOibxNNrJ0
-	jfEpfy5+4ynkTVYP8lJCCFnbMUttnjjN7Z4C+c5aLxLC26EPlS1QKMNDPg3OLcIyFT266L
-	Dei0eV61GCrgw/tzJd9MFhPTZ0Nnu44=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784566052;
-	b=lsyYpQBog1wkoQiuv8cBzyjGRrW+/XP99ZR/2i40cBDcab73uf4mkzPd1oIVFg5qOPZv6r
-	UK+pdNpXyoSUp9sZCg3Ga4giuAFDOJIJ90RCYjSaRtlDB11fXCc2nBBAJ6rOT5o5m1iXOp
-	3I6/KBb2HWLEG5ToRQv7qO3yY73eQU8=
+	bh=7AT1fmFCop8IR3V0Q4KON7DzqnonSG1+pmW4Dcgg6CY=;
+	b=K6HtzzktPI9DfyqAoHgcuidoV45lBdhb5V02ihoWAKlnr4aI5SGqbHx3LNBxZxD+Q941re
+	wOx3YvGBT48clA7N57DxHXXGIvf0hyzTpieC++xhLlPPBBXeJha3dOJDShAmOBzdwNaEhj
+	iu6RtBzE3KIaUGzdabpZnWJc9Em1Ms0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ICBjY20D;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <46dc1b58-f2de-492a-9da5-a5c429c19a10@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784566050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4NxQvnwYlpKK36SWC6+zTzcYERz5XJIYpkhO8WkhgIA=;
-	b=ICBjY20DjdrJPYGZwJ25e7LdKK4Pnj3v+NZ8P/FWIrw5qTXFDS3nH94Zq4DFH6zQawGS2v
-	c1sfPFNiRgf9n8LSmFXCHl5gjix/kR4YdHtiuAh9OdlXIdgTXW4QZ3kHJ3hVue3qhGTBZB
-	XlTLcBfDBPHrZPKa7Guw+MzBMIngEkY=
-Date: Mon, 20 Jul 2026 17:46:58 +0100
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QNUV8Spo;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784566443;
+	b=oSOhiZLugPc8BYHaOZpttSWXRYu71oMgiNfdTavDRMNqYi4C+egTNNxAtTbjGksb3nMGao
+	bR//X6szKbKTbjaTlvMty/12dDXSOndgrynoztTNzw+zjuSGr4b/wMReMN1AQnkvStexEa
+	hwhpFp3RwmHzu/IBySH4lo/jwodUdAQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 08A4C60052;
+	Mon, 20 Jul 2026 16:54:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EFD1F000E9;
+	Mon, 20 Jul 2026 16:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784566442;
+	bh=7AT1fmFCop8IR3V0Q4KON7DzqnonSG1+pmW4Dcgg6CY=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=QNUV8Spov+ilPWcBhIFLv4ZpUHhHNBYyXdiG/ZLE/HAGwESwXIpBIapJk0hmLqfTJ
+	 Layw3ucpYBhUzsUOGfUO7wu/AYaf+DVeXxyKfWBkh37dTiqsHOQOsYOndXkNcsDJlA
+	 p0JvI+VmUcu89IpUVry0QKUXBxhK+1EgSYUJ075e6WStlF2SMp2e9Wt8w0DiJlVVOM
+	 UeWf3eu9VmhrjRY5qZqIU99Vn+nUEWmR/ud0x1vbc/0f58lyH8whnMLhvIipseScrb
+	 WYfQWcKXUezRXmM1dUPQK62tk79W+XDJ+tBuAUDjYeNXegtI/KXQmygJGpRsVSz7w3
+	 rLDQKhpfUzYpg==
 MIME-Version: 1.0
-Subject: Re: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- kernel-team@meta.com, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org
-References: <20260720115741.239657-1-usama.arif@linux.dev>
- <13ec2603d5cbfdc493939f182b71e5133c26af54.camel@surriel.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <13ec2603d5cbfdc493939f182b71e5133c26af54.camel@surriel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 512168000D
-X-Stat-Signature: f7tfbh5adxuw7kf6jzq15i5k3wz195bu
+Subject: Re: [PATCH 2/8] mm/khugepaged: factor out page cache folio reading
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260720142913.846902-3-pfalcato@suse.de>
+References: <20260720142913.846902-1-pfalcato@suse.de>
+ <20260720142913.846902-3-pfalcato@suse.de>
+Date: Mon, 20 Jul 2026 17:53:38 +0100
+Message-Id: <178456641833.466529.705177494660463357.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5884; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=KFlk4OhorSFm0o7KQsYObbZZiY9XtU55shBwnuM+HY4=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLigmZksLHbPdaq0z9vduaN4xxe/+OyjgJqi3eKOQUt/
+ hN4fG1rRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACZi8peR4diD0wEreE+civiu
+ ZfroRyKTx4INB0tThQWK5ypv8z9yRYPhf05L/3Vu//aLTc52OxtrL9TanL3i53L8FnfqI9VEhuY
+ qHgA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-HE-Tag: 1784566052-739955
-X-HE-Meta: U2FsdGVkX1+j758YiCdx+Ly52LPX24tAdN+NHB7JWO8pyxCw5pwmdd1iZOJYaVDrxrvTUWGV0dHSXCZyf12M/E43skMhYR4F0TgP3rS6qfZdpG2jhddSbYWmBHyCBKCk2fzzomvDdovXw09vE5xoSs7UJWiImPM7FLxkzIl4IMWiTbkc7bbY+SgtxD5sO0f0wETh83/xGPlpYjP/CKsXI1ghFlm0st0xNWd+rQ/10Oe9F5Y3tV9ZVFWgXnTN6hjBPPbOE/2e7D/rLJm+jIJ15ArkhKwVDYLx3sjM795BeDHy8DHGXCveC9IqJdbC6rLvWsV4ms+cLWuuoXUExKWSCP3oeP0lUPmguKdnM08GsDSlavhzxpfwA5Vn+qLZjSdnb1drkuMNVxjWf1abKrpaigI7s6P6bQWh/v2sbcMcDeHwlmR+MqhnLbQEdwmt/PGLT+8yJlifZKPGYq59VBcxu6iH53Z9u7I6//6FIPQSGGmkq+bNq1VdK1xMPLr6oJoOx94OCAZU73jdC5nt/Z7+hnFWGQvY9aUTgcGDx8z/waOHG9KaOUizLOJaefx0BAK4E6F6wHNlVe2SwfNgOMZrfOpG1dbVNrGjqEKvu4FMz3rh4BcfE7vcN/X9tY65UWkTsJ7db4aszThzBGOyu39K3k2EMRW2XXSD+CRUX51EXuviR+8Ght6DvveHqT12oF6CbRSMCGLyNcmr6anI5Q5tM9zzkXWVTm3BSTEma1gaZG4UNdAyxfYBgIrwt3V+lIbQQ2L/LHrsxMKdwJOiD7/zvAGlB+ZjyLBfbxDeVWqP6Z3yA0Nd0cL3uqdcmD/GvhE5cIfQcHetcBx3f+sgilo89fCWULLqjxnva6ehzUl3R33EkQvaAp27bc7FxLGVLqH1IOHHiXJOsXPVHyfSjrESV7XQtAgS+3tqy7HHhoqJ7alqsuo/inkhyagIhhq3ZVCE0xi+m8pSpJD0O205spv
- iIvMsPcY
- Y7qPgAay/uZdyvQwH4hsozpuotUdcJwoyno77enJQzEIpC/f8q57fAQ+oXrUHFBzCQ3zT3ZNB0gvGS5Ud5JOP/hpSNUQ4xalZqzxCRWuXrSW0Ra1bhKgGGZraNHQyN6UvC1EMg0NZwiSs7T5e6zd1/k4ygxqtQPHXNuCQoIr7TwTzJrde2L0Q0lBkD+jmR4nxnA9LulmS7u67OlhoJ2OXLNKCX6SWyYaiX+zl9+ln6eV1fHWprDfl2qh/Qoqinr3C9HJhqScMfR7XREqKClZ+xgEsExRXr9kNSUWNm84k/87oSvqEwbvq6qLf3f0Vjt0rRjgD
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9F57520009
+X-Stat-Signature: f1c7e88anz9n7omtadgow3xi6psjywif
+X-HE-Tag: 1784566443-810538
+X-HE-Meta: U2FsdGVkX18L2Wurmloyo22QPiynsrjo8SqUxUrwF5Q8qYP82/zM48x2nLoeiHKTggMhjpY7nsHgwtkG/adnbMvA/8BnH7KNcGU6HJ8zqh1ibioBuuVKfo78eUF6R3M4vW3mADXMED4tVpGJz4ffElF2EXQirT+Ti0id7+WTFf0NsQD8F3fXty2OQVRASFmrxHnQqWvTYDpNIqYQl1wc52WjQquM2GnDQiFSTDcsuLuxIkx8HuRBvlizplxfFbGNJt1VFxWqOkXJ68QxI1BtQIsDT8AZ55PweWf+N7daZcXkDf+xGGRV/OrXGBpE/v+OrETKsTM687n2TBUlaYYGxUTlsAJIIp0S7gLg6NotF9BVy+xu1EICanMtZxSZPhGOI97loL+OD17Rt7UPrql3FOYu5VUD+FPNmpToLSOPjpShWQJ1Rej/Rl+vu5ZeeMYNRTkmUgMGF5QNFOyx7zcA2RoQt59jn7j6DSNHhs3GiJA3yUKOpZkCimIvEqXsbcu6ltO79tnVyZWl8sd9J6+hDwt+wv/K4BoOfyVbiRDWyu8HMKPZHe0l6g81Da7EQ4XAqBrHjuNAaWeAG7EArtSLcAZf9TX0canCz/7iBgtoHXs5O5WkmN1C7DypI6HaBLnA1sf3lIrz8YWKP5Q3nqHDxlbcEZNRLajabqG4gjLcBjH3DzImq/rX+zvELre85xzs8kOP7d8thdUMrqq39qndLFDYsbUDHFe/eG5lf0QX28W67ndu6T6p/TuqbAGznA07zixUQOnIPGW4PfuMUERR8T29499wkCv+gOy/vjPmKNicUWTgz6qpwk9rX3h5GKg2unv8FWkWbIqHUutLwOY6PVTy13DGspkBoR8UGril+Wq1ZGrgRAVuwNCANP4de8MDJR8BVsw+iyw8JNdXAu8i7zxQApU0KssZ9SjeUyvNmHlNBpN0rpRAgkDPJpdOCEKiBek6z7Fzlkh0a6z89pG
+ 63BMdZed
+ t7skCgUb8UuXJk2SVkie5sicRKqnjZxwS88zo+dVShkF8pYi6UPt+1BLwJtvvM9sPhxos1bPED5FiYy5+QXf/+p8mtkHpEN5I3qY1ZmvdrPtGKBTc5BNqZVRj42eBINuPMMohZ3jG5agxi29BVz794jAuOLGYmX54YrNDs64yjYihi6TqopTyMXykA2KWPuRuk88oRD8XS+Uj6dIXN7DlcOX7iqFzn1BcSH2p+EPLxInUF+4nE8FWkDLcAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,43 +107,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 20 Jul 2026 15:29:07 +0100, Pedro Falcato <pfalcato@suse.de> wrote:
+> The two mechanisms (shmem, filemap) are quite similar and only change in
+> subtleties. There is no need to have two variants. Factor this out into
+> its own separate function, shared by both paths.
 
+I think this commit message could have some more detail, it's difficult to
+figure out what's new, what's moved, etc. so mentioning that and the broader
+purpose of why you're doing this (iteratively improving file collapse in
+khugepaged) would be nice.
 
-On 20/07/2026 16:08, Rik van Riel wrote:
-> On Mon, 2026-07-20 at 04:57 -0700, Usama Arif wrote:
->> On Fri, 17 Jul 2026 13:00:32 -0400 Rik van Riel <riel@surriel.com>
->> wrote:
->>
->>
->>>
->>> mm->context.pmlen is set only through PR_SET_TAGGED_ADDR_CTRL and
->>> is stable
->>> afterwards, so it can be read without the mmap lock, as it already
->>> is from
->>> untagged_addr() and mm_untag_mask().
->>>
->>
->> I think it might not be stable? set_tagged_addr_ctrl() can change it
->> repeatedly until a CLONE_VM operation sets MM_CONTEXT_LOCK_PMLEN.
-> 
-> You're right, ARM tagged addresses seem to work a
+Also there are multiple subtleties in this patch as noted below, none of which
+you've described here.
 
-ah do you mean RISCV here?
+You should describe every bit of logic you're changing compared to the original
+and why that's OK.
 
-> little differently from x86 LAM.
-> 
-> It looks like on ARM with MTE, the top 8 bits of
-> the virtual address are available as tags, meaning
-> that address space cannot be used for VMAs.
-> 
-> For purposes of accessing process memory, this
-> is a little more stable than LAM, because the
-> number of bits we need to mask out of the address
-> is always the same when MTE is in use.
-> 
-> At least, I think so. Am I overlooking anything?
-> 
-> I will clean up the changelog like you suggested.
-> 
+Or ideally really, separate out the mechnical changes from the logical ones.
 
+> 
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+
+It's a little tricky to figure out what's moved, what's new, etc. don't be
+afraid to break out into even more commits to help reviewers :)
+
+>
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index d4de507ac001..4cc6917a55c7 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2230,42 +2230,63 @@ struct collapse_file_state {
+>  	unsigned int is_shmem : 1;
+>  };
+>  
+
+It'd be nice to add some comments to these bits!
+
+I noticed that you add them later in the series but it'd be good to add them
+earlier and build them out as you go.
+
+> +static struct folio *collapse_read_folio(pgoff_t index, struct collapse_file_state *state)
+
+90 chars here be nice to try to stick to ~80 :) simliar comment to last patch.
+
+Also the name seems to imply you're _always_ reading which isn't the case.
+
+Not sure we need the collapse_ either. Something like 'maybe_read_folio()' with
+the state implying what it's used for?
+
+> +{
+> +	const bool may_bring_uptodate = state->is_shmem;
+
+It's nice to make this self-documenting, but we could make life easier for
+ourselves and avoid the (apparent) inconsistentcy of using this and
+state->is_shmem separately by just doing the full check here:
+
+	const bool bring_uptodate = folio && state->is_shmem &&
+				    !folio_test_uptodate(folio);
+
+(putting the folio decl before it ofc)
+
+> +	struct folio *folio = state->folio;
+> +
+> +	if (!folio || xa_is_value(folio) ||
+> +	   (may_bring_uptodate && !folio_test_uptodate(folio))) {
+
+This X or Y or (A and B) is confusing, separating out bring_uptodate makes it
+easier.
+
+Can make this a guard clause like:
+
+	/* No reason to read the folio. */
+	if (folio && !xa_is_value(folio) && !bring_uptodate)
+		return folio;
+
+Which becomes its own form of self-documentation.
+
+But I'm concerned whether this is correct.
+
+For the shmem case you're going from (xa_is_value(folio) ||
+!folio_test_uptodate(folio)) to (!folio || xa_is_value(folio) ||
+!folio_test_uptodate(folio).
+
+Again you do need to justify these changes somewhere.
+
+> +		xas_unlock_irq(state->xas);
+
+Be nice to have a comment as to why we're unlocking this.
+
+> +		if (state->is_shmem) {
+> +			/* swap in or instantiate fallocated page */
+
+I know it was in the original code but this comment feels superfluous.
+
+> +			if (shmem_get_folio(state->mapping->host, index, 0,
+> +					    &folio, SGP_NOALLOC))
+> +				return NULL;
+
+Looking through the logic I see that this returns NULL which gets checked first
+below and results in SCAN_FAIL, but it's not obvious when first reading the
+patch :)
+
+Argues for more info in commit msg + separation of patches.
+
+> [ ... skip 16 lines ... ]
+>  	enum scan_result result = SCAN_SUCCEED;
+>  	const int is_shmem = state->is_shmem;
+> -	struct folio *folio = state->folio;
+> +	struct folio *folio;
+> +
+> +	folio = collapse_read_folio(index, state);
+
+Again would be nice to have index in state :)
+
+> +	if (!folio)
+> +		return SCAN_FAIL;
+
+Previously we always did the LRU drain regardless of whether shmem_get_folio()
+or page_cache_sync_readahead() failed or not, now you're not doing that.
+
+If an intentional change, you should explain why.
+
+It'd also be nice to separate out mechnical moves from logic changes, as it's
+hard to keep track of the new stuff you're doing vs. the stuff you're just moving around.
+
+> +	if (folio != state->folio) {
+
+Is this always the case when the operation succeeds?
+
+You're going from always doing LRU drain and exit early to - only if folio !=
+state->folio which is a logic change AFAICT.
+
+> +		/*
+> +		 * collapse_read_folio() got a new folio. This folio is locked
+> +		 * and ref'd up. Nothing tricky (dirty, writeback, etc) can
+> +		 * happen, so bail now. But before that, drain the local LRU
+> +		 * add batch. Otherwise, it's very possible folio_isolate_lru()
+> +		 * will not succeed.
+
+Hmm :)
+
+I feel we could collapse this into something more succinct like:
+
+	/*
+	 * We read a new folio which is now locked and pinned. Drain so
+         * folio_isolate_lru() sees it and bail.
+	 */
+
+> +		 */
+> +		lru_add_drain();
+
+This is now out of order compared to the code it replaces for the !is_shmem
+case. Is that OK?
+
+Another thing that'd be nice to cover in the commit msg, it does need to be
+justified.
+
+> [ ... skip 31 lines ... ]
+> -			goto xa_unlocked;
+> -		} else if (folio_test_dirty(folio)) {
+> +		if (folio_test_dirty(folio)) {
+>  			/*
+>  			 * This page is dirty because it hasn't
+>  			 * been flushed since first write.
+
+Th resulting code in prepare_collapse_file_folio() at this point is pretty
+horrible, I realise it might be an interim state but I'm sure it could be done
+better, for instance separating out the is_shmem vs. !is_shmem logic into helper
+functions etc.
+
+Let's definitely try to split this up into more patches so it's easier to follow
+on respin please!
+
+Thanks, Lorenzo
+
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
