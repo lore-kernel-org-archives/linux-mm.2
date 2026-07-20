@@ -4,84 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 173CEC4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2431C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:55:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2C46B0088; Sun, 19 Jul 2026 23:43:53 -0400 (EDT)
+	id 994D06B008C; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CABD6B008A; Sun, 19 Jul 2026 23:43:53 -0400 (EDT)
+	id 96B336B0088; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E3796B008C; Sun, 19 Jul 2026 23:43:53 -0400 (EDT)
+	id 7BE5E6B0093; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F8AF6B0088
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:43:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C3A901406C0
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:43:52 +0000 (UTC)
-X-FDA: 85007761104.13.92C1319
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C08CF1C0002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:43:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kx6j5QYS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 504436B008A
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 93CB1A0732
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:55:27 +0000 (UTC)
+X-FDA: 85007790294.15.A52DA75
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5826D180003
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:55:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=mEbcGjfe;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784519031;
+	s=arc-20220608; t=1784519726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7lEXVEdljxakidze8KbnFPa4EtaHgiEgN8dn9BC8AeE=;
-	b=VTjADHTj0JvWpfsdDjnNRwJ9/DGfyMdWRWMN8A983B2UwP+8AX5lUOgsBYbUf/inPJ5Lxq
-	ektkKFEQIHJOhu0fhTLkASPrtxojxjo2ptr150Yfw0OZN5Dxt/6VSmRV1vqDaoq9FVJG6C
-	XPcwI5Im0aU0/WK/+pm13zfJPbMHIwQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZgzSDGSYwshJBMY2Q9+7FwyqzkGbERSOn9ppxGLEYEk=;
+	b=JtX6u6AbrP0eYerbZmxD1uQUA8IfngfuSiZ09TzUrPt9fnhYkX49eab8Ljbrsu4P4XrZJ7
+	OaHnh2MkKIcyONC9yf6aKlgx7FiJKUSoQmWw3RUGLWVu0pVZeJrSrM8fKMIv++qB/23SCa
+	IAW0liO9ADNvrf5lw+ZTmpFUBFL5mw4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kx6j5QYS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=mEbcGjfe;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784519031;
-	b=dALbOJ6lDGJMFzSLV19pOlC7Db0JfApwnGixtupC6OT+wwmIf2c/eSS2tQ1+f2/vbl4Bjr
-	RbXh9B50W3ix6wwIYhcJnB9dtqbv4Zi+ohYlTRv9dRlbCkJnlK4ugohf3P3z16JlXMemVN
-	OwLt6QGjz9ASie96m9F/9U6f2ouMsIo=
-Date: Mon, 20 Jul 2026 11:43:08 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784519028;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7lEXVEdljxakidze8KbnFPa4EtaHgiEgN8dn9BC8AeE=;
-	b=Kx6j5QYSV/p0XFn5ZOQiiievVQthPII5IrKq3y7kWmKFVLly4nN0c870ivFxoqDuqY1AM3
-	+CZwG5RGoSTVcKCi9T6Nx8a9BV29anl475Stuej91CBxydN3cNjLmw+rCVtEKa/AJ51DE5
-	N9P/qr9jI2MOhFkjDAboZIJYP7579nA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: hu.shengming@zte.com.cn
-Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhang.run@zte.com.cn, 
-	cai.qu@zte.com.cn
-Subject: Re: [PATCH] mm/slub: prevent pfmemalloc objects from entering the
- barn
-Message-ID: <al2Y2YrGJceZ8agI@fedora>
-References: <20260719113701797vZ3R8NxiqYt8dEfeUxtON@zte.com.cn>
+	t=1784519726;
+	b=3kzgUcRCEoUx+DFKOtlRjPB9JTd/Y4yB+StryyeZJR1n4ffWbhY4HXNysQ8N8Np0jJJuUG
+	FjEBUsGWfiQKgLsd2KHqYm7pt6dGOXekRkuXkRkKl+bzAH0EM4z4mVr8/oOhAaDoV3AheU
+	3ozO08WO2pkNX2TqCEjI79vp7+JKiZA=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ZgzSDGSYwshJBMY2Q9+7FwyqzkGbERSOn9ppxGLEYEk=;
+	b=mEbcGjfe+IAXojyBOzEGW70Qc2Ti4Ki0bZ7fK3RlyRMBpRcOvdMHVV8/BntTt2bKudA7yvkFt
+	pMXZi4GSCNJGe78ofK/kwLq2FTtIZhpF12VMg1s9EIxWCSC8dYnwmpnn1yZ/HrNOjgkiOFtX7EZ
+	+T4MhyrivjCFY00fHO6jh4g=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4h3RHv3mPYznTbJ;
+	Mon, 20 Jul 2026 11:45:47 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0C3D24057A;
+	Mon, 20 Jul 2026 11:55:20 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Jul
+ 2026 11:55:19 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <ziy@nvidia.com>, <david@kernel.org>,
+	<luizcap@redhat.com>, <willy@infradead.org>, <linmiaohe@huawei.com>,
+	<svetly.todorov@memverge.com>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH v2 0/3] cleanup for stable_page_flags()
+Date: Mon, 20 Jul 2026 11:30:18 +0800
+Message-ID: <20260720033021.4091944-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260719113701797vZ3R8NxiqYt8dEfeUxtON@zte.com.cn>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C08CF1C0002
-X-Stat-Signature: az967xwpen8f4bq7n5bh1ijeys4dzm9p
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Stat-Signature: ya1micwkh13spemh8chdw48htprwgmgt
+X-Rspamd-Queue-Id: 5826D180003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1784519030-599944
-X-HE-Meta: U2FsdGVkX19etuzOvY3XrgTKZeyhkBoOyZ6aDCcNL4FDh8T6gY63ZJqzx96QzvjJiz4V+BSe/UWX2vwyjtDymzq9WEVTisJb60V+lLh5IarfAm9wyXv6HSgdwh4BOCCSXyvc9lsllBt9A0kneKn2Nw/BxFtQ4NHEFCo1dz3UyfdrcqGdVI0/Wh3rUteybMxdlBkoHZSEQ5wrxL7UKBYhWxNI6UiSsux/kWkcigkzITfXOTuK9HNjxifsR1LOTDxpMrhYEetPhuDoVzv9L/0z8B9oaeWPRm+Y+EtpymmQDrk6bCWRR2v6k3bkLpn8R+VH3+gBHk7JguMUh773jxqZLTaJXjnkeLwYecdNdGTyA/DxKSjLnfx6R91hIU8oEADUlrqjNJI2YrqiLf3ttYr0mrg/x4i2GVFy43sr92XzAzOOs0YL/i2wWmQp0VhGYPaY18Bjhd0ck6tUMxGNOZKw8reyFZLsCcCUyDiFmaBTCa1+14RJpQG/ZFZJKCMxIWS2dTHj4Uu+17xlFP59auPZ3SS5Y2vigwsImgwe3wUIeAj1NebaUBhb21Md1eaqwTJS7RrCJSeABF9sfqIK4POsYDpGrDd+W3woP9cGR+nNI2k251AnoOCQBtOCNMOfI/NeyfP8Vt6QJ280Ps00/PlFVTd3whycAi2KdQnMY7wcG6oIf8TfhzZBB9scFJrkLVcK9j7bq1EN1SFQGxMEqakPGRmzZrM3X8wGUqRSviRO7t9WxGiikHUhupKQD8GkjmTA6SGdDcZpChgHgoDekDzqE276Gx836kx7/zCsQbkStXT+ZUzkoiFLnmMmCvbZx7SAR3txWaaUagvP1QRdiBDz0wl5rCCAzSF6UoqRzLREuCkFU0CGRHpKbOGot6CO8CsQ/p44U2VKnrTXfHTR7Y5o7O5a8u7zhDIbFkeQnNk48EUwqH3QQVTPTwDyhnF+mYArN2m4Phzu2gWVf79VwGj
- QbAb+WCM
- GfhrGZeunnMFsOmP7619n9jqbhtUpr6bRMyiXJJbC1vk7uVF22+g4JUDo89Zl2DijUTpBzr2Izs8/c3ZfVsS45w03teMzkS+Hi8+I3YpkAWeBhW2zeIhiXMNPOxbbdoZ2KZV+4BuvAdeTu4U55Awtun3f9ultRanWuIBvryAf1GRip6gTId+pGKMFaQ0DliYpjWHrXT81dbvoWasv7nuVCi0JLcJEicH17WFu+XCiOiLtIPhPzHMX3WA/S/P8kgKzF8hu2jjrk0ISYIc=
+X-HE-Tag: 1784519724-211554
+X-HE-Meta: U2FsdGVkX18T+EEOayo7in4YIf+cTIFtD+sbA7vpZn+5EvYTljG1FgnJ7F5r2teJxNOFfvhhxgRZvokEI7JP9x16Xbr2xBUyHj1d1jrUbyDg6eBNcMR/+RbCtuWVXCSdRI1e5LdTmVnuV10tQdkL9h0qH7DDjaeEIkOItvFtCFn6LVTRLWGsTD/RFJBSDU5TwHJ02ysPjDxcpjHyY+gOpk5TNf2ANXqmmtkUcVxdzeSA45qfIxQMbFYDWcDpCsvaNziw/vPmmdq4Bi4E7rkX1Zo2apLf61jC7CH2A0Qr/Bahp0lMvbpI7coZ9fJqUABcnwZ6C27TQ1walKrclITlHFwk7IgzkJk+8JX34PDZ1rxcNuUL0c+LDDUGsPFlQNjRqjCEBZ2ahU2wr1nhL7ObO6ZOr+IbyMqtTqjxnckEH/d59goOd3+PB1mvbeJIvHtNl1QOWDKxcSyspGmRs4vMxbMEDwK2cBw3Ugx0lH8APfV0m6thgKX2HabmtnC2fkYfxW5pcKhjj3EK85GBeotNoY4YvF+v4cKvVgm9GIhzth570I3aM/DDgI3j2ORA05hoOk4qz8Q0XxHT1YqFe7qKpM92lbVzHsoKhRUUHi0OcASrVw76zeqt9mQr+B/h2QoXTBscJftKfMgYX6K8D/Gq2bm6LPGHrRfmgS9BLVP73V1BOWZkGjYVImbyv5wEMHcT27EKq9Md6YMGH60lxhQSJPyExtF76cOjzGf2nPfqcmz7a6SedYVsQxfFrEAoUtlnk6x8JnH72YShQ+Y3UvkT4zAlHEKiZjis2iNWsG6RHDF1iLOCtjd9yfLfVEY6wNlSvfZVyxBjucrpCCo4ui2tJSX3PW/j9S2pxFHP3b1ol2hyoyQitwWsVLuaqAg1ksfbUzIfAV9d6E6Whqoy8JJ4h7P/Jr9c0vqMUXx3GfONrZ/hMSJSsZE4wuO7cyKR8NzXxePlCx229oMyiRiLoEj
+ eQdqcdmF
+ VsPiSPyACYdQVKd9ekF93s6xoWS0hw8e7aAfdJHjq1w8OC2aM5Pzv/1/jfBBXZoQmMzUODH6fOIKQKbgWKYFovSRHsfk268c9AdV5LX1bmiPUqpyJoTagcqvPS6g6XgBxVtJ6c/bEVIIMfMZ3WB6z9oMUTa/N7rlp8JglAr7QkltCQ+2n3cpEIGa1+YuKFJB+1BniOI60mdUdKuCXmHUocmmcCBXazHySk6/EhrtWHBP8gklVL81/RL0rVABhdrPG2YwGCW3ewxWjmCwYZKtFbja8Y/4P8sfsBDx/1JSUIY3xlt1q3M2coC9+huoxp7yRvhLbhyAtyuutTEw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,38 +98,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 19, 2026 at 11:37:01AM +0800, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
-> 
-> kmem_cache_return_sheaf() may refill a partially consumed sheaf before
-> placing it in the barn. Without an explicit restriction, this refill may
-> draw objects from pfmemalloc slabs and consume emergency reserves.
-> 
-> Add __GFP_NOMEMALLOC so returned sheaves are refilled only from normal
-> memory. If that fails, flush and free the sheaf instead.
-> 
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> ---
->  mm/slub.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 53b4976d3831..34f17ecbde87 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5123,7 +5123,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
->  	 * simply flush and free it.
->  	 */
->  	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
-> -	    refill_sheaf(s, sheaf, gfp)) {
-> +	    refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC)) {
+This series cleans up stable_page_flags(), see the details in the commit
+message.
 
-maybe we can add __GFP_NOWARN as this is just an refilling attempt?
-refilling failure could be acceptable.
+Changes since v1:
+ * add missing "1 << KPF_*" covertions for patch 1
+ * collect Acked-by for patch 1
+ * only convert folio-specific flags to folio_test_*() helpers
+ * move KPF_IDLE cleanup to a separate patch
 
->  		sheaf_flush_unused(s, sheaf);
->  		free_empty_sheaf(s, sheaf);
->  		return;
-> -- 
-> 2.25.1
+Jinjiang Tu (3):
+  fs: stable_page_flags(): use BIT_ULL() for KPF flags
+  fs: stable_page_flags(): use folio_test_*() helpers
+  fs: stable_page_flags(): simplify KPF_IDLE handling
+
+ fs/proc/page.c | 56 +++++++++++++++++++++-----------------------------
+ 1 file changed, 23 insertions(+), 33 deletions(-)
+
+-- 
+2.43.0
+
 
