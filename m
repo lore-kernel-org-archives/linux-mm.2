@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C52C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:39:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC99C4452A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC9476B00AF; Mon, 20 Jul 2026 10:39:28 -0400 (EDT)
+	id 825276B00B1; Mon, 20 Jul 2026 10:39:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA0776B00B1; Mon, 20 Jul 2026 10:39:28 -0400 (EDT)
+	id 7FC126B00B4; Mon, 20 Jul 2026 10:39:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8F776B00B2; Mon, 20 Jul 2026 10:39:28 -0400 (EDT)
+	id 7142C6B00B5; Mon, 20 Jul 2026 10:39:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A3676B00AF
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:39:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2CAB8A028E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:39:28 +0000 (UTC)
-X-FDA: 85009413216.09.7F65456
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 681471C0004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:39:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PARktKwn;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 486926B00B1
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:39:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 432A8A017F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:39:37 +0000 (UTC)
+X-FDA: 85009413594.12.AC86F34
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9DB7F180007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:39:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjKt750g;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784558366;
+	s=arc-20220608; t=1784558375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mgnvDCamwFs796LwtMmRe0oIoMrcoFkkE3Z0cH2KMyM=;
-	b=5FJBYR9dZ9gqLAiL5jwrjvDnFFiG15aggl3ySiYQESyYdRmYXrWBsHO+S7CSVUj6zPG5G4
-	X48/pF4Fpunci9Dg9N7s7exRSEoM9ZtF2Y5DIGKN01CDiRXGXW4SnUBV+2iks3Z3MVlJCo
-	Ba/XCvolVC13XaoDLqF3P48MVrqf0+Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784558366;
-	b=3SBvbmDYQb/sdvnhQNwzOAuTi9V7+xgwwS5H2hF34Flt+tixGsYwwIhS1BJ1dJnXOfvfOz
-	3iylxuH0AoR5vME9zkrWFVYuori3xFzDJf2qHAWbNjFJ3MahN0/maG3ChiE4VoIODy/vz2
-	qX4bjHnlcidw3Oh0+dbLJkZiy0KqgJI=
+	bh=ZUSSGoClEIjzcszURqrS6Zg8fTue7uAoFYyLToW70HM=;
+	b=xWvcA89NVLJHCYFC3EIWRWEfN+OsyK8zzMpeFgJQa2a7wWqSIWwlwtl3+B4VqhmfSSoa7q
+	ta5HLqhDRdNynspprJFWi9MEg+HgmaVp2orqwzenKzrHEwlqtjG8olTvmgLGb0pzD4VVLI
+	md/rAcU2nR0zczpCQzvaM8c/xeK6kMY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PARktKwn;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjKt750g;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784558375;
+	b=wbjtvuhU+u1dsDNgc2XEnprMET3g4ZuqoE05NPpJZXRu3eyYOIsEdOEGAD7oHHdbnuq3xP
+	aPhggbv/5jtcNXFMBzU+dAlRbDUD3LzyRCj6v+xoh8R3rBiVu8o/5UdnT0MLIwsCxcUteG
+	GIkO04k1mOmF7f3GTI48obRtdcK+0Z8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE6844020D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 351C760A80;
+	Mon, 20 Jul 2026 14:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2961B1F00A3D;
 	Mon, 20 Jul 2026 14:39:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE40C1F00A3A;
-	Mon, 20 Jul 2026 14:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784558365;
-	bh=mgnvDCamwFs796LwtMmRe0oIoMrcoFkkE3Z0cH2KMyM=;
+	s=k20260515; t=1784558374;
+	bh=ZUSSGoClEIjzcszURqrS6Zg8fTue7uAoFYyLToW70HM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=PARktKwnNf8IBlDQKxgtToydOiMnc1qkMBjEP8ybthDMEZZ7nAqAYsFFh7Rg4JTVd
-	 23lkWvslhzpe3DUvTZlXqPlNRbq+vfadGJTqlcBu02bu1gRiPLEpatpEzdCsODXWkF
-	 euv2iYgEIVRLn/43u/IG8iXoIYv9R5uP++DBWseAjGDnWHVGSYPb4Vz63u+nx4haHf
-	 kFUcACtnuHpkMc3NoUn8MBOzfPYy89JhAw0MZaCd0C4l42ZRBk20EMnf0KlxC8AvUi
-	 SMMu92CV2DgVC2quoGEAoo08v10Nawt/ngx9UZBf6eAKvyxg+GEm0r9foEPwXHl3df
-	 3N5n2jzpZ74NA==
+	b=JjKt750gGvIvvCCDyqfcfSAGPc+PHVGCokMeV+gct3LEnzNi8YMP35SlFxFCvwoVS
+	 200vIGpklyJwjo+2AKMYK+NMUyKzimDKzJRlQaAsfb+COjSzW5fa1hx8UfYow8BB9x
+	 20RN1OJuC5Z/3puB+t9keQvwyffX4jtDLJw8uDTS5+PrNEarNhGxNMM5hcB/uvQs/+
+	 FGvVjSES1GX9XaAnHxsWnxSVfcqvetgKGS5oiXbJ1clYQ3y8seohCu2JbGxW7Iz6CM
+	 1JWgI+l0guNQ61x5W7xwVzgKAt6vGi4Nl4nxBReNbxsfOZeQLGBz7lI+xDyDqDvAoN
+	 2XNhX7E3fC5cw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 20 Jul 2026 15:38:29 +0100
-Subject: [PATCH v2 03/15] mm: abstract vma_address() and introduce
- vma_anon_address()
+Date: Mon, 20 Jul 2026 15:38:30 +0100
+Subject: [PATCH v2 04/15] mm: update print_bad_page_map() to show virtual
+ page index
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-b4-scalable-cow-virt-pgoff-v2-3-2d549757a76f@kernel.org>
+Message-Id: <20260720-b4-scalable-cow-virt-pgoff-v2-4-2d549757a76f@kernel.org>
 References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
 In-Reply-To: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,22 +100,22 @@ Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3665; i=ljs@kernel.org;
- h=from:subject:message-id; bh=RyscjNpggtQJ4miTDtxwbhTzbm6OnS6a6lUgnowGnY8=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLijF7/NPfcE+j2tnWlo17rDb9Dl7Zt0U4RvnOyU0Hnc
- aydjMDxjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExkxlRGhvNzGRa5CK71/fHo
- 6R5B4x33JtX/fht3JTs1qYul+8G6oO8MfyW+fgh8tef+zs8ljq5zEhqPOS1YW2jllsY87eSx3K8
- TWFgA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1716; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=T5Gj/piAc/UlxcCiA9iiJMiRS1jgA5HHtjYX3YWMzOQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLijN48/dRy6ZZy60xJlrufNP+JlJWECvE4Nc6WOV99p
+ Dh3+QPpjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzkfBkjw+Uj522mlyXYfYgx
+ iN2xqcK6eMGEw31WqxN9Zp7drrVhdSAjw8UjtiUB7zv3fzr8ZvKqSUvnfHR9svap4cRrUznFCg9
+ NeMsAAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 681471C0004
-X-Stat-Signature: ohxm3ic7rs8msm8tp3zcop1frr8xaymq
 X-Rspam-User: 
-X-HE-Tag: 1784558366-468345
-X-HE-Meta: U2FsdGVkX1/ibJKxE/A7n5BBoWn0QjZ+T9szkAUyyxAXASTbE5UuS8wdJ/9JDbbtoQGhSx0vZZjRFByojWm17SBDB/VR9BLlUFHBNMF+RdBP4eIAJpCNBLD20rlMOP0dHwiyAsxOzbpDH1NXMwHLy8K2I73wM+FOiBw12zzszPO51mUnI3T4gkNI0P6sqdP5JMURoELgGI9707zBWjTxVV3vgdV8gin5ALhCp8cCK/LigvZDjL/A5q01rEwS99DG/Zrh+3wWC+BFe9iw0E/e4LgQI52z4BCLG2MM2MIdKuCUwtgPu1mi02mNit8hStfsj1313pUjmwMKb2r7wG2SfOA/FuFLyy23h1yd7Ox5fQrcN9Px69DYZWOp5oxyz5h6Sk0YoSkT5etT8rx+ntocxsuDfPcQOZ1E0VlklGsINTNG6qi2i7Da9iYO+4XPmpW1HWtYeB7HDi4Z6ehUEwoINXIuYO9P3VxTSiphqVfEwkU2NR+KE7VDdg4JP8i4PkZydqk0MGjicGgOOrNhlgCovfSKk9S3IPKJEdqtVzlfslKeZukYc3KEPU5m1yAKVy58d6+EGEO/v7TWdF6q4aUjkodflDys/+fKYubGJTRRoY2y/fPG3OLnlGkgyH/EhxQrlIQvg1K05apb6w0KHvKTPVFc3psTQpP0CH3Pv1UTCEZ+xu+yzIreUlVxVwlcZXz6rqHEcVDM6jtSxjn5lml4a6VBFWgIhyFkIU1Y+Gy8NkDiyB5jro+RzPT9sL/4zAHAC+C4gJ3S9rZYnWic5hQdGAM4FnL8SXZo4avev4m6sfOv5BLuq2HbAyal/cdg6XLDCgaxa9mn9uhilPjVyEOP4XpRwQw2tpbow0hRFLCk3OiD1low32Qpj5RSEV3LGaJnK+gY+pK3a2CSDHqLaSfJGm0z1bAUmaoAaJnKhA5NcnxlOQIu7RcYqB6AiWxUzfeiEppQ0H24XFlZqDd8mUp
- hSCcj7s9
- bzox4ELRvCicLplmctyLmLT0tAAk5AljYIwnqUd14HkMHH0u5IYsxtVW/nfYBgCqZNO45oGTELnWyIqPPo6vBf7Ra/3GBXFOhf76DX4xDKT+N3GaIdYkQ7ohDNgGUUema0dr3OCgr4lyRIg7QNWHqmF7HjVrLc0kup3dKvZ+JPlRD0MgyeD44E5uuOSY1uPG4k5dB1XO22DJkBNnT23qDFtodhrFIfhiyUxTLBjt1pQHavG4t3D5KfjQnFDqpJAF3wpunHfpIHr9tFUQpbM2aMdZ37VhDc08Ihu+ySMtZlhuVw+g16YfEVTswitXUD63AQ5ca0LNZazN8OXskzcRWP1AkVCX/1JbOwZi4QTfTsMy/ggoDnZ3zkoaK4A==
+X-Rspamd-Queue-Id: 9DB7F180007
+X-Rspamd-Server: rspam01
+X-Stat-Signature: pbqh9179o5uxuogktnsiwh9tjshn5t84
+X-HE-Tag: 1784558375-86557
+X-HE-Meta: U2FsdGVkX1+LZwDaF9+wvwLUYScEDP7bnjpqcHmHV6K1HmqzJRygmMeGkboO3nQZqjvkkaBp5tAB9xBEbjasRlUCb0pPEKiC9TkdzntoAx13ZBbSWliUM0N9QbZtR41oz9ASTkCkpKWYALAuZA3rPK/Z9Lo7OcMBZ6LPFkftXVyHzGzM/H9ifIpOtvzkAZpGdl96Eg8+bJiTacBNR0wGmasZH+QbTFpCwRlL6byHcXF6ens4jThUzcirOKczEtxZcaJ2q57avpwpS/WG6VX9aM3U5qqCrfVjcVlg0TAbS+0vNgv9EoXzi7JNflK1o4rC1AXrF2OI3f+42VNlRqZKSTNfh7U1rdBx+KDtFg/sImG5JwLi0r/BBZTBneNCw8mqgLijU1iTeNolTgRK6BWiBz87Yn0LY9mWmGuSd3BFoP0+YXNPs7BdJ3NaxccyueuW01kYby/JA93p7uhjru3Bns7Q7Tz5qZGinH8b28eiiiqjBezUJYQ286HaCsu4BzqC/4uWPUU5pynmBq6XKe0FBwOKMQvwlVELUgyDBaAbUvA/a2OweRjWsPuAnE5s1c7SbKLlXjJ9qbJY9lTvRXTU8X1g0GBrnTYNMGHF5h+ZQEY/+UhfCDN7mg3HuMN/5vwdC+zTzNrQwkE/+gKHFsz0nDvL6V5aGUxZ57olnDQjFL7gXtXeKFqrZjMGCNRCHDXOv5ue8NLClzU0cEskmPy4iEHpAYHs4cHc7msYDEbkR/HmLzhgwstuil1d5Ggd30zrpQSuzDlGC6N6phNSRWhOSpZr4f1D7ApCHGqC3XG0s5OcI4rWlkpQMoeab+pv5ItPimxvz3sSST9V+PhOJAnX5KHE2Xg5TwbYpd/V5O8Hb9Yjh0W7RMxuFx2hKJgabWhOY43BRErUSqu9lLMfmZ2zNCGdI7QONgdjzCzak7anB8Bm55bShxbKJwO9f2g8jr4kiVwZK2pp7VeJWP8qaIi
+ 29PS/NDU
+ R4F6UEa3sWgX36wNpsR0tafOom/bFNYCRuFGNdtUh8/mT1qGrHrYdoQZVvzyvTUpcIN9JGJkZB+BGoUgCbzVv6jJbDQwOcZtakUu+aI6zUabzYtwxqTeOSM9luAvL3rRSsQLaOrsZjyvBVZbAcQ1hkQCGV+QicezW50h+XKLwoGIuzn3Rtb3zEePoZITWSVG3ZMPAh1n2UYKW9KHCjnWsYM1gstF6bISt2Et/7DN1qKnV8UdVWqzx/wWUaNdkxVsMXljrcaCppT0BreVn11hsmQzw0BmUykhlxw8x3MwmBM/tO65xhWfjIoifaKrDLgZJ5wbQipKhOo99PM/vlhLw7XEu/UoF8cSC3qpdyOC9JtPH3Co=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,97 +123,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce __vma_address() which abstracts the VMA start page offset field
-as pgoff_start, then update vma_address() to use it.
+This is potentially useful debugging information and matches the existing
+page offset provided.
 
-Then introduce vma_anon_address() which does the equivalent of
-vma_address(), only using the virtual page offset of the VMA rather than
-the file-backed one.
-
-Also add an assert to ensure that the function is not called for mappings
-which are file-backed but not MAP_PRIVATE to ensure it is only used in the
-correct places.
-
-This will be necessary for determining the address of a folio's index
-within a VMA when the folio belongs to a MAP_PRIVATE file-backed VMA but
-has been CoW'd, and thus is anonymous, once the anonymous VMA page offset
-field is used for the reverse mapping.
-
-No callers are updated, so no functional change intended.
+Use the raw __linear_virt_page_index() function so as to always output this
+value regardless of whether the mapping is file-backed or not.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/internal.h | 49 +++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 37 insertions(+), 12 deletions(-)
+ mm/memory.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index f26423de4ca2..04acfeffa066 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1005,19 +1005,9 @@ void mlock_drain_remote(int cpu);
- 
- extern pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
- 
--/**
-- * vma_address - Find the virtual address a page range is mapped at
-- * @vma: The vma which maps this object.
-- * @pgoff: The page offset within its object.
-- * @nr_pages: The number of pages to consider.
-- *
-- * If any page in this range is mapped by this VMA, return the first address
-- * where any of these pages appear.  Otherwise, return -EFAULT.
-- */
--static inline unsigned long vma_address(const struct vm_area_struct *vma,
--		pgoff_t pgoff, unsigned long nr_pages)
-+static inline unsigned long __vma_address(const struct vm_area_struct *vma,
-+		pgoff_t pgoff, pgoff_t pgoff_start, unsigned long nr_pages)
+diff --git a/mm/memory.c b/mm/memory.c
+index d5e87624f692..56b244552f13 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -631,13 +631,14 @@ static void print_bad_page_map(struct vm_area_struct *vma,
  {
--	const pgoff_t pgoff_start = vma_start_pgoff(vma);
- 	unsigned long address;
+ 	struct address_space *mapping;
+ 	char entry_str[PTVAL_STR_MAX];
+-	pgoff_t index;
++	pgoff_t index, virt_index;
  
- 	if (pgoff >= pgoff_start) {
-@@ -1035,6 +1025,41 @@ static inline unsigned long vma_address(const struct vm_area_struct *vma,
- 	return address;
- }
+ 	if (is_bad_page_map_ratelimited())
+ 		return;
  
-+/**
-+ * vma_address - Find the virtual address a page range is mapped at.
-+ * @vma: The vma which maps this object.
-+ * @pgoff: The page offset within its object.
-+ * @nr_pages: The number of pages to consider.
-+ *
-+ * If any page in this range is mapped by this VMA, return the first address
-+ * where any of these pages appear.  Otherwise, return -EFAULT.
-+ */
-+static inline unsigned long vma_address(const struct vm_area_struct *vma,
-+		pgoff_t pgoff, unsigned long nr_pages)
-+{
-+	return __vma_address(vma, pgoff, vma_start_pgoff(vma), nr_pages);
-+}
-+
-+/**
-+ * vma_anon_address - Find the address an anonymous folio with index @pgoff_virt
-+ * is mapped at.
-+ * @vma: The vma which maps this object.
-+ * @pgoff_virt: The virtual page index belonging to the folio.
-+ * @nr_pages: The number of pages to consider.
-+ *
-+ * This is only valid for anonymous or MAP_PRIVATE-mapped file-backed VMAs.
-+ *
-+ * Returns: If any page in this range is mapped by this VMA, return the first address
-+ * where any of these pages appear. Otherwise, return -EFAULT.
-+ */
-+static inline unsigned long vma_anon_address(const struct vm_area_struct *vma,
-+		pgoff_t pgoff_virt, unsigned long nr_pages)
-+{
-+	VM_WARN_ON_ONCE(!vma_is_anonymous(vma) && vma_test(vma, VMA_SHARED_BIT));
-+
-+	return __vma_address(vma, pgoff_virt, vma_start_virt_pgoff(vma), nr_pages);
-+}
-+
- /*
-  * Then at what user virtual address will none of the range be found in vma?
-  * Assumes that vma_address() already returned a good starting address.
+ 	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+ 	index = linear_page_index(vma, addr);
++	virt_index = __linear_virt_page_index(vma, addr);
+ 
+ 	ptval_bytes_to_hex_str(entry_str, sizeof(entry_str), entry, entry_size);
+ 	pr_alert("BUG: Bad page map in process %s  %s:%s", current->comm,
+@@ -645,8 +646,9 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+ 	__print_bad_page_map_pgtable(vma->vm_mm, addr);
+ 	if (page)
+ 		dump_page(page, "bad page map");
+-	pr_alert("addr:%px vm_flags:%08lx anon_vma:%px mapping:%px index:%lx\n",
+-		 (void *)addr, vma->vm_flags, vma->anon_vma, mapping, index);
++	pr_alert("addr:%px vm_flags:%08lx anon_vma:%px mapping:%px index:%lx virt_index:%lx\n",
++		 (void *)addr, vma->vm_flags, vma->anon_vma, mapping, index,
++		 virt_index);
+ 	pr_alert("file:%pD fault:%ps mmap:%ps mmap_prepare: %ps read_folio:%ps\n",
+ 		 vma->vm_file,
+ 		 vma->vm_ops ? vma->vm_ops->fault : NULL,
 
 -- 
 2.55.0
