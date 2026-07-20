@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 725CEC44529
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A102FC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:35:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD29E6B0095; Mon, 20 Jul 2026 15:34:52 -0400 (EDT)
+	id 6A2776B0096; Mon, 20 Jul 2026 15:34:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA9BB6B0096; Mon, 20 Jul 2026 15:34:52 -0400 (EDT)
+	id 67B3E6B0098; Mon, 20 Jul 2026 15:34:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4B9C6B0098; Mon, 20 Jul 2026 15:34:52 -0400 (EDT)
+	id 4F4426B0099; Mon, 20 Jul 2026 15:34:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 416156B0095
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:34:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A4019A0864
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:34:51 +0000 (UTC)
-X-FDA: 85010157582.19.2C3C57D
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E02C2100008
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:34:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=HkoLmw7Q;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2AD46B0096
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:34:54 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C8A0402B7
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:34:54 +0000 (UTC)
+X-FDA: 85010157708.11.C34F2B8
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9525280008
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:34:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DwL1KPdD;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784576089;
+	s=arc-20220608; t=1784576092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M3kct1v+57CVZWjeLlS7sPI2XQHwAFOrYnO6UcPWFI4=;
-	b=jUi9J43stGcn9w6XmXlKdzRn6ZmnxdlbMapzkLOOwl1z8NBCVlZ3GtzNVRBA97ebjWXCgZ
-	rj/ESW7BB29QVRkLkrbpQ1RLHRh51uwWCe0lWn1bzO4LHMrLCVoUR7SHG7WSvcAA2ASDaS
-	aVYIHGAMJOw+skuMS/qn21O+GOssvXU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=HkoLmw7Q;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=Q409+JQ/uWnw6WpILbqdiAKa+RhnPorqknZtMcjhbGU=;
+	b=Yq4MRV/xXRWSLS7xfwPoHqXxlI61RCicqkfc4lgKiQh68xWeGaGEfRMM2cWN6KUz28rA7M
+	SgvSV2xSoDBYB+h3Jxk0EUKcVzCFOkFyR6u/fhtwC03T1bDM8BQrDniC8Aolo6uIRRQk0X
+	KKTxj+CISlF1n3tu7EqdgMnKfDcZwuQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784576089;
-	b=LO20m5/fTybNkhABsVLW+jhtIGy6TZkZPbKonK+p9I2kkHFNyMrnL6RUHh1bAzUz8VtOBc
-	9VXnH96poUMNs/LzKWpSEqnaUHGL1UWl+orI4IZ/gY72MmoAnwmgdUlVSpXRhSnkOOUT9f
-	cmKZ8JylemJB2F3MyhftIKDnyloHDIE=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-930c0f9c1b1so259079985a.1
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:34:49 -0700 (PDT)
+	t=1784576092;
+	b=IgxV0zvr6bm4fF77EzuVdkAJiCO5YipGBQUaOYcxAwt9QKdh2PZ6DM1kK/1mlHq71wBXqW
+	Rr6aII3RD0aLR2pd/icN2G3SxpayRNVf59YydA4BLjl3FhiUUuY2hGkUsUQHbCdOiU7w6S
+	k0mBj4dbyylSMH9xFs3GF+kYm+2Rc/4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DwL1KPdD;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-92c7a0a701aso819383885a.3
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784576089; x=1785180889; darn=kvack.org;
+        d=gourry.net; s=google; t=1784576092; x=1785180892; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=M3kct1v+57CVZWjeLlS7sPI2XQHwAFOrYnO6UcPWFI4=;
-        b=HkoLmw7QvMrufWogIECU+4j1mznKHIEhIaTPAmQ5cMeKdNktOsWq+9m3/YE+vS1Ruh
-         8Zq3MmeD5+mJ2AED41NE07ahA+F00Sk2eYVkl61muFMBpzzxLmqw5tKE+tmNiPoHL0AO
-         e+ViENyPjeglX7o5P5X0zRp0klkEIkNRKGELQbx1uC4CtzkM0n+DOZ4PYINVSjXRsTqv
-         nyqJCFIGY1FBjEaO0u4/7b1iBhMziSJxElToihAc+qd7yZ5W6FhPLY4YoN2ZmrIogBZo
-         rstxW6grglUIVEE0N2uAs89tT1HrMbBGPbgOAUwD5TPGiwqGh7dDhTNR+WNX9TxKhoDu
-         bzgw==
+        bh=Q409+JQ/uWnw6WpILbqdiAKa+RhnPorqknZtMcjhbGU=;
+        b=DwL1KPdDWhfYT3k1G4Hq7RInGrouoGiD3B3eCjooYeg/Hi0DJERhG/r3/PrmiqQjlt
+         VgEFCVri8Sf0ER3NT2l2mfK+E4CckFs/59w7r+ZL5O8VWU7EOyVReQ4gu9DVUgqZm+b0
+         XVieakQ9QRVlA7fW+kKKw7gAqc0WCTq28UbWrgJIR/O3p7q7AArWvEN299ht+mjV0t53
+         KGpiizwQhMKmU3CxNxaKgMph6D7qA9g528C1q25d6k2DZ36ozne+ftZ0LEKQM3sY29Cy
+         Mdr9S8BiBLtF8KeVU81lfTs8Dyt5psDDfJppjZ2C/2ciWa3kc5i/J4VGQpZcQJV16r7w
+         8U9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784576089; x=1785180889;
+        d=1e100.net; s=20251104; t=1784576092; x=1785180892;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M3kct1v+57CVZWjeLlS7sPI2XQHwAFOrYnO6UcPWFI4=;
-        b=PqKv7LaTs0BmOtAs4R6qvTCNwcd+wYq+hw7L6IFiWlV+3J2SfHq0JrzalPJrx0qsId
-         GgFhMjNBSC9yaKOzglpb+ar6KtMmUIye+t+PHe0Q93EezcT0yqpMXrUqJSA9Hd7c3+Y1
-         KRGChCIwyZ2VZl9SKhoCpKZZTEoF4t13zqjXb1589r229a3RdG/CqCdmy1QklZxXslo/
-         rTp/Wy6huXLn8sMtjAeawnd30mXfege+4lAQuVbcuCwL+a3QlfGqTBoY+ddoKoppfNvM
-         fPuezrrOF9kBksH7TdONU4A/RfEmOwwudwfFrq2GgvWQyxjNOnN0DYZUvvzZYDxF+8UP
-         yAlg==
-X-Gm-Message-State: AOJu0YyVQNENn1+LUbEi/ugN+Vw8SYdOrj0KiadbExoISt1lsSS8TFtt
-	8Z5pUQj/VTF9meMzcG7Dxiol+LC7FhjGFu9MOOmI3bWVBPvJF5CgtRPsEE3H+BcRMiz7/zxNGZP
-	oq5UR
-X-Gm-Gg: AfdE7cnSaFSzkqkxZcQccy6aM8TLGSdU44MeEfEYDMTslMXvaBxgO76GIHkhWZuLUkC
-	m1YPJJDh7N+ZMyP2aMnL8clSx/MwgJtMW28+fhqCxgsUCI2jU6lBWdurMJbGLugoEZNDIjI9R9q
-	68Q4wQs6OwS8xyjCzCm/ZP2WsNGbLTWCJYWO6/96zyFMZZ9gv+G4DGhxSQJuyV3Ig23u5AXyekX
-	Y5eCJfP+PGDuofJxfmqD5ubYWjLjmpYIVntYQEYecBAwJL1HpAGMtKeoJBaJbDzs5HXy40OgvqO
-	Baja2nLYvYkiaVgHr8kyP7X1oo3wqWFuGtQztHteRW4S/KngCQ2g6pA6za/Owfv4a9TOkSssB/Z
-	l0yCmlTcbxiMFDbfssKWtTTaD/BQWsIuXmc0InvrCRfDUboPo5KhUZRvxz5auxKQET2yT4mrkeN
-	HqbUN+l9P9DNO6bor9LvoVKrZZ+fy/SbqJfxo/j4YNqpxVYXynlSpbP1prYekK3NNC8brMH5mYF
+        bh=Q409+JQ/uWnw6WpILbqdiAKa+RhnPorqknZtMcjhbGU=;
+        b=MI2LTvPAF6m8wEnrLEoa7a/umEGwIB4iFIiZMkRKCBwPZbISOA5tkz8KBjS4GEo0L/
+         u0yuE42/lUmPg6wLSIXEY2/HK8RzB58/557SnvAcHFn0Kt8EXjUOJFBasA6gfGLd6SlQ
+         nBV9o9CR9ZfkWVSZrYvsuM5OT7MTXwFJ+g5KhHIyXtGkmEq9rjbJrf6MKAmCNY1wInKb
+         9SIOUq7nCYB962q7vPngQ0UtgU3RP5sCHblCAywM3pBMYLQR9ilh/+15p7UYHUFrLguL
+         0aimSxV6RkfqIb9u5Y5J6bw82jT2fgNQzNPCO6Tah/iSr3IP6bSdz3I7GQCzlTzxiN8O
+         UoSQ==
+X-Gm-Message-State: AOJu0YwkMYcVyCde/un88ZFBQYWMr8/RG7IfOY+Oqt55yIkiWRYg3dro
+	sBHBsNJKtqj1krKoBTF5ApPu5HHkcpzgx/FdkxijCxUKANqEi+C2hdJg3UFkcq0sfBAlIVOzzhp
+	SjG1e
+X-Gm-Gg: AfdE7cn0xd10PanETnzUiaFeI0+iIP0tUgFL+BErPoL7Zt8YecnB8MvNzBfptzN+eg4
+	8lyb86TLPkROPimi6vOFXAKBThUdgBD3C+PkFD2VrvWU9fpL9qieZ594a8S4MJuF2nB8q/FYnp3
+	OeZPMMaNHuKy1TFGyPPr7lkKB8ArQgWT7u6uNjD3/N0RlEDlgMLrh//R6m/Ryde73eluycfkQjM
+	GaUQ5gNqxxiAN97IujklQJeYX4lh3pCqv+f6H7SnxFodYAOAeqNXIBxgjZslMCfKO65BmnCm/pv
+	Mpx/C2zc60djwKKgBYf073w3Voez0D2/TjBmnPhhcZ2WPOneUbgYJcwbSmFS9PIxCYq2z4YbywA
+	nllYCn45BQSIBGq7WNWEgSXJjKM4Mt0CMx3QoA0obx3LGFKKxggRl/RU5IpI2wv4q2+zftulyaf
+	zi4TA1FOSk18v7x19JIYTAIJTeZO2wAuN6eLTtPWUdTwf2Ir1Vd4W67M39HurZsEIcwK0eOHaDN
 	Q==
-X-Received: by 2002:a05:620a:690c:b0:930:9c0c:657 with SMTP id af79cd13be357-930b41e29c5mr1450539485a.60.1784576089026;
-        Mon, 20 Jul 2026 12:34:49 -0700 (PDT)
+X-Received: by 2002:a05:620a:2711:b0:930:a6ac:3a8f with SMTP id af79cd13be357-930b41e067cmr1638750885a.57.1784576091600;
+        Mon, 20 Jul 2026 12:34:51 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.34.47
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.34.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 12:34:48 -0700 (PDT)
+        Mon, 20 Jul 2026 12:34:51 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: Zhigang.Luo@amd.com,
@@ -170,22 +170,22 @@ Cc: Zhigang.Luo@amd.com,
 	damon@lists.linux.dev,
 	linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v5 04/36] numa: introduce N_MEMORY_PRIVATE
-Date: Mon, 20 Jul 2026 15:33:58 -0400
-Message-ID: <20260720193431.3841992-5-gourry@gourry.net>
+Subject: [PATCH v5 05/36] mm: add ZONELIST_PRIVATE(_NOFALLBACK) for N_MEMORY_PRIVATE nodes.
+Date: Mon, 20 Jul 2026 15:33:59 -0400
+Message-ID: <20260720193431.3841992-6-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
 References: <20260720193431.3841992-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E02C2100008
 X-Rspam-User: 
-X-Stat-Signature: djsd5ge4ugqmu9ki9sq9oe633ajnmy35
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784576089-790356
-X-HE-Meta: U2FsdGVkX18QIPS9SEpAUBIDtzxdBNss0Guinzz5A6FGqAAjEdkDyLWQevu9Mca9AaitM/Rt6Vj3DQftOjoxNk7SvBSLKrJAEydpd2SMa0HyiRv98Kv3v4UWM5I6gpneLNLGCLFdj4XNONFc0/e/nZqafv1knTmVG7BCZ+hE2Qwq0rs7oe+XJ3RRYkwwhw0lBhcceXEtU/OMwoy/W1uD2d9ZuT2GtvBO7joI0comzdYzKp2/TL/thzgETxRTpisgTIsn5y16Vc5JUCywOdwrQG5+kTXcfTz3OAsUn9wLQlLE187HeMXxYk8LFzorkoIM/YbrMmFtoQFjpF+cophP0U7NmMmmDxOEVwyBm+zFQQbFhm17vwt8l2D46ae7RKW23WNcKtIG6rNsKsCnmWHMx/7QfvwL/wI+p172ik0gGydnPlKHGAiC6t9NhsUgXcFRKW4t1xpTxLzF5bOdsFH0Y+FtLaN1k61JU4ubQuaEwMtOsQ+w6Q8IZE6US6RXEm82JNH5ybiPD3urcRcDJQMHv4BwnF0SrfN1NeoYKvUKl+r1mGw5+/oy/EAyCOulkepKLKlxC7DrffiK2XWmQYRj12Ew3WDz+H5nkFUyC5HG4I6xuBEytgq7Y2GjzaqZKkS2CQ4j1icEP8pEycv8Mr7TLMLn0aQrKQS9INGU52fZJjObvMAfh1ytYg59nuYcFnHohWKJbOzYnDQM4SZqFWId8VZREhGQ8WsaaUYV3bBWWLl2P9ceHuogtIQ7NODArRA/WMw9KemDRfibmwSN4vcB5rTjNZyTZYhPZ3mNS1ATfyAkm3iEWgsumhj2+dEcYJRS2HZ7p76F/0B1dudrr9GE20SZJrL4OC73HJav9eJSQikOGmktBtWijRTVcr4X/9g5HrG/WSsoaO0wM/8xB7i1grB8/f3QGHBC04Vzcm760XD8ZZt8csSPkqvkmawc2bDhKaB6ZPqS4Buk5DXcSNm
- 2SikwmK/
- ECw8nizn0Be5f0esYwof83dSmuZMpSmT/8ZNEbSCFn2DijwZ40ltjSne/8dGK8D3lBInX2Oevr0OAl9NqfTnP182oz4wSEpqHeHQuEmUEPAPpPQ7SgISAo8vKrgkohlLbhjScgBLkjrtAzcFYbTt47zIuU6SQN5lB4kDJWvz7V4c+gLa237K82qdhEbOTbUGS6fI4uGD0+fA2moN6IDWdO8RYh9fP19JP+uTvXnJkS3mVaBSCk4RhrbOHCyQ39hlECdv9glndMGs8KqExuEVK5Tf0s3cAzD3Lup3ONKzKxJHVO83kykHuieeA35uyDxILoYa9Gdn55O48Ee9190CDC+Rz7LDIVlwMVDatlTNterEZAMF+18TDUeUahWUxZ+HYtuDoRa/Ppri3WUA7TT3eDAE/CwxhPu/Hzj8IfGAlydS4Osw83BGuTqJxHlqj6oheoQCVevGD6AdeohdRXJL+S50ncqhtynFDjGbSathsWvWDX4M=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9525280008
+X-Stat-Signature: q18zw5nbizb9qt4osjybdkfa16845ani
+X-HE-Tag: 1784576092-800016
+X-HE-Meta: U2FsdGVkX19/HXyV9T9x87oSUwcopXR0FOEzsXbmFUYJNY10diV9XD4HuQ33aD0WpuqsFXloju9uKC3Dt4JKcacOxiZOB7OrShoM/l6rJ99jGg8R3RxWAdUkqSgSmZFcxPtYOQRSK/y2L4IKeI/DT99lTok/hVxVL5FufF5VfVXi31alPVpCX50a4jPlOaQl3WsnoQMdi/YWHCGxk4X3lfLYS03kWQbpnRBp06oRhpXF3oosn6giOwaX0KB49iguK/aTCySUCfWUDer4SUqlxG9/SGfW/9Ir6yFnamKpqrwFMP3nsJtchMRjd4iC+hqieEbqoom/XZiNkqOz7gMMOQtgS12ZN6x9JVSPpeiJphyMtSfGBs7K6QUzkZTSHuAnva+Po/5Sa6mL4iuIcjCE2b3HVJTbi39p9AeylxNcZUupwGFu/lUOWstS7cX0rm2VeHeXj4GPg1tccCBg6TtxoEEWYFu+8g8wYf7lC90rAo9hQaEJWMQZ+wKTq/X3oSeNPJpLhPp+8Qoo2Tiym4Jhh0o2ag+tvAjUylBMB5Jq2/TzzHGfIWM47B+ebaBgpCIcAfeZP+hdtk5dcdHXPHmJxDkUjwH3DAnY7e3cmAitEpSqE62E0c/d/OKlHG0QevBXjxEa3Ut8KlVV5nAlM5KjUlIpbzNd3mQSFy/ZZYB708kLW4mKAxueNhqvhl2Hk4KAaEPxsaFD6W48rOjTdspRbTZSe4UfPl/BEhXx0Gcmdm4CHOCwLKKFtpRVlwm3tWX8UlsAl0KgN5oAGMKzsmVqhOpsiGi6/YqqYovrbMAAVnhD7tJLzkaDiNghsNdd8U2s7ypteBemylR2io96qooLBVWIiSXnQsI7B0Yxni7PuJODgaYAqPDeV/IB1VdUQn+w2lXBN/WjDo5+xmnI2APzKLZItn/8k6q0VAMGwGWoAlQGdlmTEhWTT0HoEAN2erQPi83YjkDk/YMob4o/ReD
+ YsM9c4zS
+ O0CRFEsxoPwaDIEkBYcKtyIFM1TiuoiILaLwvv2yD1QFsgcNxkELKbDnYS2toUUA4fld2WcE5bRH9MZFnFNZfDq/6lGG59HfF5vShOlRTNzdCcHi+m2Fj4n7ayrvI0yxMg203lkuBmkbnZRN/sNuDwjpInEE3wGCdgVWvsFk0HYqOzM9N20b3yx/CsqQhGsrDhQDAZfOi8UVlEV5K2WK9/k6TS5Ib3NzmO0kN5Q0UHbLYwAvf+izsiSERMdnPMbINC8NqEynobbukdOGpsf7NLGRA7Omq++lP4h7vtAJGm6v+oVkMlHkgVPFmWUogE7ZUQxQhEepFFSZ2kinj4U/KdwW0DXP/D4u4mYBcbK2rZDKe4NYh2id2zGIYifW9E2BSwYGNOTUrwDMs985/nLGR9rKUpd50eAajFaAtLSQRdq253d8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,406 +193,279 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some devices want to hotplug their memory onto a node, but not have it
-exposed as "general purpose".  The intent is to re-use portions of mm/
-services for management without exposing it for general consumption.
+N_MEMORY_PRIVATE nodes must be invisible to ordinary allocation,
+no allocations may reach one unless explicitly called for.
 
-N_MEMORY nodes are intended to contain general System RAM, so they
-are unsuited for this purpose.
+Make this isolation structural in the zonelists: N_MEMORY_PRIVATE
+nodes are excluded from FALLBACK and NOFALLBACK entirely, making
+them effectively invisible to all normal callers of page_alloc.
 
-Create N_MEMORY_PRIVATE for memory nodes whose memory is not intended
-for general consumption.
+Add ZONELIST_PRIVATE, which spans (N_MEMORY | N_MEMORY_PRIVATE).
+When !CONFIG_NUMA, it aliases ZONELIST_FALLBACK and compiles out.
 
-N_MEMORY and N_MEMORY_PRIVATE are mutually exclusive states.
+Add ZONELIST_PRIVATE_NOFALLBACK as the __GFP_THISNODE target for
+private node allocations.
 
-This commit adds basic infrastructure for N_MEMORY_PRIVATE nodes:
+Zonelist selection rides the allocator's alloc_flags.  Add
+ALLOC_ZONELIST_PRIVATE and resolve it in select_zonelist(), which
+prepare_alloc_pages() applies from ac->alloc_flags; the default
+(ALLOC_DEFAULT) keeps node_zonelist()'s gfp-based selection.
 
-  - struct node_private:
-      Per-node container stored in NODE_DATA(nid) storing the owner.
+Add explicit private-node alloc() functions to prevent open-coding
+(both ride ALLOC_ZONELIST_PRIVATE through the alloc_flags-carrying
+entry points):
+   - alloc_pages_node_private_noprof()
+   - folio_alloc_node_private_noprof()
 
-  - folio/page_is_private_node():
-       true if it resides on a private node
+alloc_contig_range adds an explicit node_is_private() guard because
+it dervices its target zones from PFNs rather than zonelists. All
+in-tree callers use N_MEMORY ranges, but the check prevents future
+callers from violating node isolation.
 
-  - folio/page_is_private_managed():
-      common predicate for checking private node or zone device
-      Used to combine common filtering locations.
-
-  - Registration API: node_private_register()/unregister()
-
-  - sysfs attribute exposing N_MEMORY_PRIVATE node state.
-
-  - fix node_state() and helpers to return false for N_MEMORY_PRIVATE
-    when !CONFIG_NUMA (mutually exclusive w/ N_MEMORY)
+Important note:  By design this zonelist isolates N_MEMORY_PRIVATE
+from unintentional allocations, but does NOT isolate private-node
+allocations from falling back to non-private nodes.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- Documentation/ABI/stable/sysfs-devices-node |  10 ++
- drivers/base/node.c                         | 113 ++++++++++++++++++++
- include/linux/mmzone.h                      |  15 +++
- include/linux/node_private.h                |  82 ++++++++++++++
- include/linux/nodemask.h                    |   7 +-
- mm/internal.h                               |  12 +++
- 6 files changed, 236 insertions(+), 3 deletions(-)
- create mode 100644 include/linux/node_private.h
+ include/linux/gfp.h    | 11 ++++++++
+ include/linux/mmzone.h | 11 +++++++-
+ mm/mm_init.c           |  2 +-
+ mm/page_alloc.c        | 64 ++++++++++++++++++++++++++++++++++++++++--
+ mm/page_alloc.h        | 26 +++++++++++++++++
+ 5 files changed, 109 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
-index 2d0e023f22a71..8a36fbc3d4028 100644
---- a/Documentation/ABI/stable/sysfs-devices-node
-+++ b/Documentation/ABI/stable/sysfs-devices-node
-@@ -29,6 +29,16 @@ Description:
- 		Nodes that have regular or high memory.
- 		Depends on CONFIG_HIGHMEM.
- 
-+What:		/sys/devices/system/node/has_private_memory
-+Contact:	Linux Memory Management list <linux-mm@kvack.org>
-+Description:
-+		Nodes that have private (N_MEMORY_PRIVATE) memory: memory
-+		hotplugged by a driver onto a CPU-less node and isolated from
-+		the page allocator's normal and fallback zonelists.  A node is
-+		listed here for as long as it holds private memory; it is never
-+		listed in has_memory at the same time (the two states are
-+		mutually exclusive).  See Documentation/mm/numa_private_nodes.rst.
-+
- What:		/sys/devices/system/node/nodeX
- Date:		October 2002
- Contact:	Linux Memory Management list <linux-mm@kvack.org>
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 3da91929ad4e3..94cd51f51b7e8 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -22,6 +22,7 @@
- #include <linux/swap.h>
- #include <linux/slab.h>
- #include <linux/memblock.h>
-+#include <linux/node_private.h>
- 
- static const struct bus_type node_subsys = {
- 	.name = "node",
-@@ -868,6 +869,116 @@ void register_memory_blocks_under_node_hotplug(int nid, unsigned long start_pfn,
- 			   (void *)&nid, register_mem_block_under_node_hotplug);
- 	return;
- }
-+
-+static DEFINE_MUTEX(node_private_lock);
-+
-+/**
-+ * node_private_register - Register a private node
-+ * @nid: Node identifier
-+ * @np: The node_private structure (driver-allocated, driver-owned)
-+ *
-+ * Register an owner for a private node. If an owner is already registered
-+ * (different np), return -EBUSY.
-+ *
-+ * Re-registration with the same np is allowed.
-+ *
-+ * The caller owns the node_private memory and must ensure it remains valid
-+ * until after node_private_unregister() returns.
-+ *
-+ * Returns 0 on success, negative errno on failure.
-+ */
-+int node_private_register(int nid, struct node_private *np)
-+{
-+	struct node_private *existing;
-+	pg_data_t *pgdat;
-+	int ret = 0;
-+
-+	if (!np || !node_possible(nid))
-+		return -EINVAL;
-+
-+	mutex_lock(&node_private_lock);
-+	mem_hotplug_begin();
-+
-+	/* N_MEMORY_PRIVATE and N_MEMORY are mutually exclusive */
-+	if (node_state(nid, N_MEMORY)) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	pgdat = NODE_DATA(nid);
-+	existing = rcu_dereference_protected(pgdat->node_private,
-+					     lockdep_is_held(&node_private_lock));
-+
-+	/* If it exists, restrict to single owner */
-+	if (existing) {
-+		if (existing != np)
-+			ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	rcu_assign_pointer(pgdat->node_private, np);
-+out:
-+	mem_hotplug_done();
-+	mutex_unlock(&node_private_lock);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(node_private_register);
-+
-+/**
-+ * node_private_unregister - Unregister a private node
-+ * @nid: Node identifier
-+ *
-+ * Unregister the driver from a private node.
-+ *
-+ * Only succeeds if all memory has been offlined (N_MEMORY_PRIVATE cleared).
-+ *
-+ * N_MEMORY_PRIVATE state is cleared by offline_pages() when the last
-+ * memory is offlined, not by this function.
-+ *
-+ * After this returns, the node_private pointer is no longer visible and
-+ * an RCU grace period has elapsed, so the driver may free its context.
-+ *
-+ * Return: 0 if unregistered, -EBUSY if N_MEMORY_PRIVATE is still set.
-+ */
-+int node_private_unregister(int nid)
-+{
-+	struct node_private *np;
-+	pg_data_t *pgdat;
-+
-+	if (!node_possible(nid))
-+		return 0;
-+
-+	mutex_lock(&node_private_lock);
-+	mem_hotplug_begin();
-+
-+	pgdat = NODE_DATA(nid);
-+	np = rcu_dereference_protected(pgdat->node_private,
-+				       lockdep_is_held(&node_private_lock));
-+	if (!np) {
-+		mem_hotplug_done();
-+		mutex_unlock(&node_private_lock);
-+		return 0;
-+	}
-+
-+	/*
-+	 * Only unregister if N_MEMORY_PRIVATE is cleared (only occurs when
-+	 * the last memory block is offlined in offline_pages())
-+	 */
-+	if (node_is_private(nid)) {
-+		mem_hotplug_done();
-+		mutex_unlock(&node_private_lock);
-+		return -EBUSY;
-+	}
-+
-+	rcu_assign_pointer(pgdat->node_private, NULL);
-+
-+	mem_hotplug_done();
-+	mutex_unlock(&node_private_lock);
-+
-+	synchronize_rcu();
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(node_private_unregister);
- #endif /* CONFIG_MEMORY_HOTPLUG */
- 
- /**
-@@ -966,6 +1077,7 @@ static struct node_attr node_state_attr[] = {
- 	[N_HIGH_MEMORY] = _NODE_ATTR(has_high_memory, N_HIGH_MEMORY),
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index a327e58c313f8..f3e867de744f6 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -204,6 +204,17 @@ static inline void arch_free_page(struct page *page, int order) { }
+ static inline void arch_alloc_page(struct page *page, int order) { }
  #endif
- 	[N_MEMORY] = _NODE_ATTR(has_memory, N_MEMORY),
-+	[N_MEMORY_PRIVATE] = _NODE_ATTR(has_private_memory, N_MEMORY_PRIVATE),
- 	[N_CPU] = _NODE_ATTR(has_cpu, N_CPU),
- 	[N_GENERIC_INITIATOR] = _NODE_ATTR(has_generic_initiator,
- 					   N_GENERIC_INITIATOR),
-@@ -979,6 +1091,7 @@ static struct attribute *node_state_attrs[] = {
- 	&node_state_attr[N_HIGH_MEMORY].attr.attr,
- #endif
- 	&node_state_attr[N_MEMORY].attr.attr,
-+	&node_state_attr[N_MEMORY_PRIVATE].attr.attr,
- 	&node_state_attr[N_CPU].attr.attr,
- 	&node_state_attr[N_GENERIC_INITIATOR].attr.attr,
- 	NULL
+ 
++/* Allocate from an N_MEMORY_PRIVATE node (selects the private zonelist). */
++struct page *alloc_pages_node_private_noprof(gfp_t gfp, unsigned int order,
++		int nid);
++#define alloc_pages_node_private(...)				\
++	alloc_hooks(alloc_pages_node_private_noprof(__VA_ARGS__))
++
++struct folio *folio_alloc_node_private_noprof(gfp_t gfp, unsigned int order,
++		int nid);
++#define folio_alloc_node_private(...)				\
++	alloc_hooks(folio_alloc_node_private_noprof(__VA_ARGS__))
++
+ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 				nodemask_t *nodemask, int nr_pages,
+ 				struct page **page_array);
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 0507193b3ae34..9815e48c03b97 100644
+index 9815e48c03b97..654c5111f7cec 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -26,6 +26,8 @@
- #include <linux/sizes.h>
- #include <asm/page.h>
- 
-+struct node_private;
-+
- /* Free memory management - zoned buddy allocator.  */
- #ifndef CONFIG_ARCH_FORCE_MAX_ORDER
- #define MAX_PAGE_ORDER 10
-@@ -1596,12 +1598,25 @@ typedef struct pglist_data {
- 	atomic_long_t		vm_stat[NR_VM_NODE_STAT_ITEMS];
+@@ -1392,13 +1392,22 @@ enum {
  #ifdef CONFIG_NUMA
- 	struct memory_tier __rcu *memtier;
-+	struct node_private __rcu *node_private;
+ 	/*
+ 	 * The NUMA zonelists are doubled because we need zonelists that
+-	 * restrict the allocations to a single node for __GFP_THISNODE.
++	 * restrict the allocations to a single node for __GFP_THISNODE
++	 * and N_MEMORY_PRIVATE nodes (isolated from default lists).
+ 	 */
+ 	ZONELIST_NOFALLBACK,	/* zonelist without fallback (__GFP_THISNODE) */
++	ZONELIST_PRIVATE,	/* N_MEMORY_PRIVATE access, falls back to DRAM */
++	ZONELIST_PRIVATE_NOFALLBACK, /* N_MEMORY_PRIVATE access, __GFP_THISNODE */
  #endif
- #ifdef CONFIG_MEMORY_FAILURE
- 	struct memory_failure_stats mf_stats;
- #endif
- } pg_data_t;
+ 	MAX_ZONELISTS
+ };
  
-+#ifdef CONFIG_NUMA
-+static inline bool pgdat_is_private(pg_data_t *pgdat)
-+{
-+	return !!pgdat->node_private;
-+}
-+#else
-+static inline bool pgdat_is_private(pg_data_t *pgdat)
-+{
-+	return false;
-+}
++#ifndef CONFIG_NUMA
++/* Without NUMA only ZONELIST_FALLBACK exists so everything collapses there */
++#define ZONELIST_PRIVATE		ZONELIST_FALLBACK
++#define ZONELIST_PRIVATE_NOFALLBACK	ZONELIST_FALLBACK
 +#endif
 +
- #define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
- #define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
+ /*
+  * This struct contains information about a zone in a zonelist. It is stored
+  * here to avoid dereferences into large structures and lookups of tables
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 711f821f7b3c7..adb50647d29ca 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2701,7 +2701,7 @@ void __init mm_core_init(void)
+ 	init_zero_page_pfn();
  
-diff --git a/include/linux/node_private.h b/include/linux/node_private.h
-new file mode 100644
-index 0000000000000..475496c84249f
---- /dev/null
-+++ b/include/linux/node_private.h
-@@ -0,0 +1,82 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_NODE_PRIVATE_H
-+#define _LINUX_NODE_PRIVATE_H
+ 	/* Initializations relying on SMP setup */
+-	BUILD_BUG_ON(MAX_ZONELISTS > 2);
++	BUILD_BUG_ON(MAX_ZONELISTS > 4);
+ 	build_all_zonelists(NULL);
+ 	page_alloc_init_cpuhp();
+ 	alloc_tag_sec_init();
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index aa35bbe5d4c3e..78755a55b1540 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5040,7 +5040,7 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
+ 		unsigned int *alloc_flags)
+ {
+ 	ac->highest_zoneidx = gfp_zone(gfp_mask);
+-	ac->zonelist = node_zonelist(preferred_nid, gfp_mask);
++	ac->zonelist = select_zonelist(preferred_nid, gfp_mask, ac->alloc_flags);
+ 	ac->nodemask = nodemask;
+ 	ac->migratetype = gfp_migratetype(gfp_mask);
+ 
+@@ -5346,7 +5346,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+ 	unsigned int fastpath_alloc_flags = alloc_flags;
+ 
+ 	/* Other flags could be supported later if needed. */
+-	if (WARN_ON(alloc_flags & ~(ALLOC_NOLOCK | ALLOC_NO_CODETAG)))
++	if (WARN_ON(alloc_flags & ~(ALLOC_NOLOCK | ALLOC_NO_CODETAG | ALLOC_ZONELIST_PRIVATE)))
+ 		return NULL;
+ 
+ 	if (!alloc_order_allowed(gfp, order, alloc_flags))
+@@ -5457,6 +5457,22 @@ struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+ }
+ EXPORT_SYMBOL(__folio_alloc_node_noprof);
+ 
++struct page *alloc_pages_node_private_noprof(gfp_t gfp, unsigned int order,
++		int nid)
++{
++	return __alloc_pages_noprof(gfp, order, nid, NULL,
++				   ALLOC_ZONELIST_PRIVATE);
++}
++EXPORT_SYMBOL_GPL(alloc_pages_node_private_noprof);
 +
-+#include <linux/mm.h>
-+#include <linux/nodemask.h>
++struct folio *folio_alloc_node_private_noprof(gfp_t gfp, unsigned int order,
++		int nid)
++{
++	return __folio_alloc_noprof(gfp, order, nid, NULL,
++				   ALLOC_ZONELIST_PRIVATE);
++}
++EXPORT_SYMBOL_GPL(folio_alloc_node_private_noprof);
 +
-+struct page;
+ /*
+  * Common helper functions. Never use with __GFP_HIGHMEM because the returned
+  * address cannot represent highmem pages. Use alloc_pages and then kmap if
+@@ -5854,9 +5870,21 @@ static void build_zonelists_in_node_order(pg_data_t *pgdat, int *node_order,
+ static void build_thisnode_zonelists(pg_data_t *pgdat)
+ {
+ 	struct zoneref *zonerefs;
+-	int nr_zones;
++	int nr_zones = 0;
+ 
++	/*
++	 * NOFALLBACK: the node's own zones. EMPTY for private nodes so a
++	 * stray __GFP_THISNODE allocation can't violate isolation.
++	 */
+ 	zonerefs = pgdat->node_zonelists[ZONELIST_NOFALLBACK]._zonerefs;
++	if (!node_is_private(pgdat->node_id))
++		nr_zones = build_zonerefs_node(pgdat, zonerefs);
++	zonerefs += nr_zones;
++	zonerefs->zone = NULL;
++	zonerefs->zone_idx = 0;
 +
-+/**
-+ * struct node_private - Per-node container for N_MEMORY_PRIVATE nodes
-+ *
-+ * Allocated by the driver and passed to node_private_register().
-+ * The driver owns the memory and must ensure it remains valid until after
-+ * node_private_unregister() returns.
-+ *
-+ * @owner: Opaque driver identifier
-+ * @caps: NODE_PRIVATE_CAP_* service opt-ins for the node (zero by default;
-+ *	  individual capabilities are defined and consumed by later changes)
-+ */
-+struct node_private {
-+	void *owner;
-+	unsigned long caps;
-+};
++	/* PRIVATE_NOFALLBACK: the node's own zones, private nodes included. */
++	zonerefs = pgdat->node_zonelists[ZONELIST_PRIVATE_NOFALLBACK]._zonerefs;
+ 	nr_zones = build_zonerefs_node(pgdat, zonerefs);
+ 	zonerefs += nr_zones;
+ 	zonerefs->zone = NULL;
+@@ -5899,11 +5927,28 @@ static void build_node_zonelist(pg_data_t *pgdat, const nodemask_t *candidates,
+ static void build_zonelists(pg_data_t *pgdat)
+ {
+ 	static int node_order[MAX_NUMNODES];
++	nodemask_t tier_nodes;
+ 	int local_node = pgdat->node_id;
+ 	int node, nr_nodes = 0;
+ 
+ 	memset(node_order, 0, sizeof(node_order));
+ 
++	/*
++	 * Zonelists: FALLBACK, NOFALLBACK, PRIVATE
++	 *
++	 * FALLBACK:   Allocation order for all nodes.  Private nodes have lists
++	 *             but never appear as an entry in any list. Allocations
++	 *             targeting a private node w/ FALLBACK land on N_MEMORY.
++	 *
++	 * NOFALLBACK: A list for each node containing only itself.
++	 *             Allocations targeting a private node w/ NOFALLBACK
++	 *             will always fail (their NOFALLBACK is empty)
++	 *
++	 * PRIVATE:    (N_MEMORY | N_MEMORY_PRIVATE) - allows access to
++	 *             private nodes, and falls back to normal memory unless
++	 *             __GFP_THISNODE otherwise constrains it.
++	 */
 +
+ 	build_node_zonelist(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK,
+ 			    true, node_order, &nr_nodes);
+ 	build_thisnode_zonelists(pgdat);
+@@ -5912,6 +5957,10 @@ static void build_zonelists(pg_data_t *pgdat)
+ 	for (node = 0; node < nr_nodes; node++)
+ 		pr_cont("%d ", node_order[node]);
+ 	pr_cont("\n");
++
++	nodes_or(tier_nodes, node_states[N_MEMORY], node_states[N_MEMORY_PRIVATE]);
++	build_node_zonelist(pgdat, &tier_nodes, ZONELIST_PRIVATE, false,
++			    node_order, &nr_nodes);
+ }
+ 
+ #ifdef CONFIG_HAVE_MEMORYLESS_NODES
+@@ -7282,6 +7331,15 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+ 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
+ 		return -EINVAL;
+ 
++	/*
++	 * Private nodes are kept unreachable via the zonelists, but
++	 * alloc_contig works directly on a zone derived from the caller's
++	 * pfn range, bypassing that.  Reject this operation explicitly
++	 * rather than silently carving memory out of an isolated node.
++	 */
++	if (unlikely(node_is_private(zone_to_nid(cc.zone))))
++		return -EBUSY;
++
+ 	/*
+ 	 * What we do here is we mark all pageblocks in range as
+ 	 * MIGRATE_ISOLATE.  Because pageblock and max order pages may
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index 23fc79ce97b60..741448d83ce77 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -57,6 +57,9 @@
+  */
+ #define ALLOC_NO_CODETAG       0x1000
+ 
++/* Select the N_MEMORY_PRIVATE zonelist family (see select_zonelist()). */
++#define ALLOC_ZONELIST_PRIVATE 0x2000
++
+ /* Flags that allow allocations below the min watermark. */
+ #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+ 
+@@ -95,6 +98,29 @@ struct alloc_context {
+ 	unsigned int alloc_flags;
+ };
+ 
 +#ifdef CONFIG_NUMA
-+#include <linux/mmzone.h>
++static_assert(ZONELIST_PRIVATE + 1 == ZONELIST_PRIVATE_NOFALLBACK);
++#endif
 +
-+static inline bool folio_is_private_node(struct folio *folio)
++/*
++ * select_zonelist - resolve the zonelist for an allocation
++ *
++ * The default matches node_zonelist(); ALLOC_ZONELIST_PRIVATE selects the
++ * private-node family so an allocation may reach an N_MEMORY_PRIVATE node.
++ */
++static inline struct zonelist *
++select_zonelist(int nid, gfp_t gfp, unsigned int alloc_flags)
 +{
-+	return node_state(folio_nid(folio), N_MEMORY_PRIVATE);
-+}
++#ifdef CONFIG_NUMA
++	if (alloc_flags & ALLOC_ZONELIST_PRIVATE) {
++		int idx = ZONELIST_PRIVATE + !!(gfp & __GFP_THISNODE);
 +
-+static inline bool page_is_private_node(struct page *page)
-+{
-+	return node_state(page_to_nid(page), N_MEMORY_PRIVATE);
-+}
-+
-+static inline bool node_is_private(int nid)
-+{
-+	return node_state(nid, N_MEMORY_PRIVATE);
-+}
-+
-+#else /* !CONFIG_NUMA */
-+
-+static inline bool folio_is_private_node(struct folio *folio)
-+{
-+	return false;
-+}
-+
-+static inline bool page_is_private_node(struct page *page)
-+{
-+	return false;
-+}
-+
-+static inline bool node_is_private(int nid)
-+{
-+	return false;
-+}
-+
-+#endif /* CONFIG_NUMA */
-+
-+#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
-+
-+int node_private_register(int nid, struct node_private *np);
-+int node_private_unregister(int nid);
-+
-+#else /* !CONFIG_NUMA || !CONFIG_MEMORY_HOTPLUG */
-+
-+static inline int node_private_register(int nid, struct node_private *np)
-+{
-+	return -ENODEV;
-+}
-+
-+static inline int node_private_unregister(int nid)
-+{
-+	return 0;
-+}
-+
-+#endif /* CONFIG_NUMA && CONFIG_MEMORY_HOTPLUG */
-+
-+#endif /* _LINUX_NODE_PRIVATE_H */
-diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index b842aa5255464..ba3e6c570a112 100644
---- a/include/linux/nodemask.h
-+++ b/include/linux/nodemask.h
-@@ -391,6 +391,7 @@ enum node_states {
- 	N_HIGH_MEMORY = N_NORMAL_MEMORY,
- #endif
- 	N_MEMORY,		/* The node has memory(regular, high, movable) */
-+	N_MEMORY_PRIVATE,	/* The node's memory is private */
- 	N_CPU,		/* The node has one or more cpus */
- 	N_GENERIC_INITIATOR,	/* The node has one or more Generic Initiators */
- 	NR_NODE_STATES
-@@ -457,7 +458,7 @@ static __always_inline void node_set_offline(int nid)
- 
- static __always_inline int node_state(int node, enum node_states state)
- {
--	return node == 0;
-+	return node == 0 && state != N_MEMORY_PRIVATE;
- }
- 
- static __always_inline void node_set_state(int node, enum node_states state)
-@@ -470,11 +471,11 @@ static __always_inline void node_clear_state(int node, enum node_states state)
- 
- static __always_inline int num_node_state(enum node_states state)
- {
--	return 1;
-+	return state == N_MEMORY_PRIVATE ? 0 : 1;
- }
- 
- #define for_each_node_state(node, __state) \
--	for ( (node) = 0; (node) == 0; (node) = 1)
-+	for ((node) = 0; (node) == 0 && (__state) != N_MEMORY_PRIVATE; (node) = 1)
- 
- #define first_online_node	0
- #define first_memory_node	0
-diff --git a/mm/internal.h b/mm/internal.h
-index 96d78a7778e88..cb9f4a8342e32 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -12,6 +12,7 @@
- #include <linux/mm.h>
- #include <linux/mm_inline.h>
- #include <linux/mmu_notifier.h>
-+#include <linux/node_private.h>
- #include <linux/pagemap.h>
- #include <linux/pagewalk.h>
- #include <linux/rmap.h>
-@@ -98,6 +99,17 @@ extern int sysctl_min_unmapped_ratio;
- extern int sysctl_min_slab_ratio;
- #endif
- 
-+/* folio_is_private_managed() - folio has special mm management rules */
-+static inline bool folio_is_private_managed(struct folio *folio)
-+{
-+	return folio_is_zone_device(folio) || folio_is_private_node(folio);
-+}
-+
-+static inline bool page_is_private_managed(struct page *page)
-+{
-+	return folio_is_private_managed(page_folio(page));
++		return &NODE_DATA(nid)->node_zonelists[idx];
++	}
++#endif
++	return node_zonelist(nid, gfp);
 +}
 +
  /*
-  * Maintains state across a page table move. The operation assumes both source
-  * and destination VMAs already exist and are specified by the user.
+  * This function returns the order of a free page in the buddy system. In
+  * general, page_zone(page)->lock must be held by the caller to prevent the
 -- 
 2.53.0-Meta
 
