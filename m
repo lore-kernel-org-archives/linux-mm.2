@@ -4,120 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B94C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BFD0C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:09:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B7D16B009E; Mon, 20 Jul 2026 11:09:04 -0400 (EDT)
+	id 76F876B009F; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 090756B009F; Mon, 20 Jul 2026 11:09:04 -0400 (EDT)
+	id 720C46B00A1; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE8766B00A0; Mon, 20 Jul 2026 11:09:03 -0400 (EDT)
+	id 65D846B00A2; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4096B009E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:09:03 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BCB41C016B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:03 +0000 (UTC)
-X-FDA: 85009487766.06.B735179
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3E94520011
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:00 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=fNG3pE53;
-	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 3C1466B009F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:09:31 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFA2C1C0165
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:30 +0000 (UTC)
+X-FDA: 85009488900.04.F91471D
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0ABB44000B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:09:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kSEW56gy;
+	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784560141;
+	s=arc-20220608; t=1784560169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Kwva7Zy1z1wrcNqc8C7vuOXZAaSl5rSUSt0nXXiyx0=;
-	b=F4tTO0xWuWEpJWbYfEHIfOzt35kVE5rrprPZgdwOqdCa2sPtyCGwIjAsj63WzGl97s6sK5
-	W6OeveYtx4z0a0n6N/MyfEbxHLULaKVfHx16IpzxejJTgbKXDmwXF22PyIu4K31VwfNvtQ
-	euBWYgo9LLMUjdKPCa7po+L+QlnB9pQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784560141;
-	b=HV64cm8ZBiM/h1f5aayTMWXBqz1I7nkM/cIxXtpQ3irXEFkZrytxbe4nnDHvmajWf5qlro
-	I8bDnMCBdw7A4tTbKQPQZoe5TDDVuDMSSXo1S6E9Y9M8eDc9p6MMiFoGsLlJVFApEL5mDp
-	7M28OXbAtzKQ8X7rCdPxxUbWZZhs1TQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=gIaMa0p8G4f7glb1Lz6VEdYbpo7o2b5ERWXtcoXZflI=;
+	b=1dGR67oMS64tCMp4R8dxI1OXvUHUTZinko5kfCR/RTDOoGRVH8W1aT5xvH9wlJMWsC2Cq4
+	ShO53wrC4/Mny2PWAJubLHtG0II1YRjNLoXxA229iBleEfq4u2aUe68EE8FGHnSburn3f5
+	pr9O3vNT6i96zs71NMDwokYra8vNzxY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=fNG3pE53;
-	spf=pass (imf31.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=3Kwva7Zy1z1wrcNqc8C7vuOXZAaSl5rSUSt0nXXiyx0=; b=fNG3pE531FrkzSi/ukWn7R+4zt
-	HJOBnGpm49FdsglRvScBkbywX83gyp8V7S5kQSTRP6WYHpX+Mp7RrZ6AkTsKYporq6eqw2avYLlyT
-	ToPD3oazGSH059mpSXDrEu86kIcooInZZqHa0hYEU0lAHKOHtGmTFFgte0T81Va5d4beLSR1BbHpt
-	04iSypL6lC08QrrdfZfDwcFQGdqmIC/2+q0ZGzkh2kJx4Bf3jClleajAkq1gNnCvSDIdAXIDaHedw
-	IPKu879tFoMATr71yu5hOKseko0K+B6XffsCTPI56E+k6uOky4rKAJW2SYpqlKAicaLh6zgfnHoE+
-	3FRSXt1Q==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wlpbG-000000001Qs-0nhT;
-	Mon, 20 Jul 2026 11:08:10 -0400
-Message-ID: <13ec2603d5cbfdc493939f182b71e5133c26af54.camel@surriel.com>
-Subject: Re: [PATCH RFC v3 2/6] riscv/mm: add untagged_addr_remote_unlocked()
-From: Rik van Riel <riel@surriel.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- 	kernel-team@meta.com, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes	 <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka	 <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan	 <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,  Alexandre Ghiti	
- <alex@ghiti.fr>, linux-riscv@lists.infradead.org
-Date: Mon, 20 Jul 2026 11:08:08 -0400
-In-Reply-To: <20260720115741.239657-1-usama.arif@linux.dev>
-References: <20260720115741.239657-1-usama.arif@linux.dev>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kSEW56gy;
+	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784560169;
+	b=NVydciPqFmClWcyRzij8KlXr+glXvilRXgkqA/D/4jatlc0aBC7RoWvvL48VanEqycbZUS
+	3/kZIiODJbGNiVQXVe5+4sT6b5muZMlF0QxSR3yc6o26yk8oEfslLfg13AxbjA5LUIuV96
+	VErWB7Yhu84JuHwwUJIbF6rsc2RVN1M=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84864086bfeso10855192b3a.1
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:09:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784560168; x=1785164968; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gIaMa0p8G4f7glb1Lz6VEdYbpo7o2b5ERWXtcoXZflI=;
+        b=kSEW56gy5IS+CoGG4rUOZCUtIbAUAJRXHlMacLmh9hi8U/u2fnaKag5ffaa1MxBYU3
+         hOtP/ygzi6gEwpgQiPkSzPpNvhb92qVUtsKs8V4jqTC3FghqOFqsWRp10iKHYRG2XsUl
+         Z6BqoxipwNI8BWWPinEMv5tzwVcfXaX3lJTQxXND2LV4xOCYHFksEvvrJ12pRqADqX/c
+         WlVBMSpCkkpVMpYRKfPpjHHMOqF0ObY1CqWSSOZl+lJdiTGRyfp4CcPeKEfvhles5ekq
+         /BanNekMgeucJQVNalm2SJhFKPDvu4ovPAMaU98ChQyYHtboLFkuNKNcznCbWT/U6Mkt
+         NIlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784560168; x=1785164968;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gIaMa0p8G4f7glb1Lz6VEdYbpo7o2b5ERWXtcoXZflI=;
+        b=KNf6AmWAJa2EBBYKgrz+/KAicIU3eyjRNXBXaD5kyJ+77xQtjdMbUk6ak4CmNVClre
+         O6enEKFXr59N6fDXQr7KMnHlHLKYXg6azYCzlmaw0gFy5+jdwoeBHgf9ZKWdOJyrM9Wo
+         vLo1Rtf2ZPrMoKhtHbwH3HAsyvolFTLtpPB5aPMOLR1iUB5/gb0m2/84EHs7nYVRvgx+
+         fpIc8aBk9SGgHaq5wQguFoRqHanAY0FjRYeoSW4VVTfLca5uW67NdjxWYIU3KoMNGX8l
+         MfhfxQbBpugRMWGVJVN7981PStp0rXl5D8YI81udeWefQ1znHLqS36x3pOSsZ7Iy4Whk
+         9RRA==
+X-Forwarded-Encrypted: i=1; AHgh+RpodlWaDPSVRFfcwEkxkHPIxsRo3VTLyHxZROSMWEcAAghN6e/QKnPtosdLu9Jsqj4Ie/bJwXl1Lw==@kvack.org
+X-Gm-Message-State: AOJu0YwVeGF0A0vfS0cfiMIBcMjaTbbPLwRroF7zGAhWulH62rtWEJY/
+	oM0Lu77B4ZE3d2HNfcc3n5PzLa4JGoUopWiiisbUOvAQw6Smn8DYB6rOu0Ywwn8H
+X-Gm-Gg: AfdE7ckrv/ghX7KKOoPNpESos7xcHNxL0s/FRUV6qUYcwHVgDk6X/Bo7oTivdMBiq13
+	LrZtxXW8oL7Og44CfbhU0a/t8wwU2mHrIGWngP6N6tNt8yCq70aR0CoiO1zvtvaAG0jeyb29lpV
+	i3SiJuOtzxyD0G+zrwJfIxPfq76ww4Of9elAJv9N3lCG4OUCZe9vTVnGauuHuysFWQubmqczYsR
+	omKWyQic93czV92JqKxY6MShBbKVIzMq6E+0jMW0zQzGazZDW+mg9D34TgHdXJrhlgM5x0VvRAr
+	UoxhVCGq2oP+9ZBsxxG9BrIo+NQJ85JX+zMDh57h440TSK+9bfslmVAt+hjXXQtCDBPN7MIsDKh
+	f5e680ChrlgVJmpLsZjcA8IlbnZMjGMsvOLpRXQbaZVIH1QjlFYXucglIVl+UKR8yhvw7gR6jiw
+	IW5O7KvEU=
+X-Received: by 2002:a05:6a00:170b:b0:848:4b49:27fb with SMTP id d2e1a72fcca58-84c294edfa7mr14233298b3a.78.1784560167816;
+        Mon, 20 Jul 2026 08:09:27 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adcd3dcsm5938032b3a.24.2026.07.20.08.09.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 08:09:27 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/mm_init: remove redundant memset in free_area_init()
+Date: Tue, 21 Jul 2026 00:09:13 +0900
+Message-ID: <20260720150915.756749-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 3E94520011
-X-Stat-Signature: z6yypr44w9booc4qe8euzwt8e8nmq4mn
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784560140-519666
-X-HE-Meta: U2FsdGVkX183ajgK6EV7KWlMqFTu6bAedrRZteszK7x/f97bFdXYCwQ2iEApPXBzuU2p2j5tVJGs2MYpv64mWjvpYZghd0+yrrZMC014ZoPFmU2GdyrwZeXy26Gdh9spNSb+FbAqgJqYdLypc0DnMUfdsBG+rpMgPaXNRsOBNYjGFx070acSALwGVahoPo9OypraTz9+E1+NUs1Jd3dTriP6PNtIjFmXWKz47Oj+tyW3IhOh94IyJDZBQeZl8xyC+TclS+OyIlbsNywrFv/3WeTeSVaPTlUWFVvEsy9fAwHCuIzcAX2fuhO+Y57WsSU38raPbzNmOakbI0bFp5T75YmBD8wejcA3UMY4UmJtA9IDrKDBGQoJIzKyG6jNNSeNH9msUWmBoEn1PVsKRRv455NeFXGEAWSAkDbRLuPA+2BuIpewFZmv8MSHfof8Ke6Wy4C867q4gC3SSK2TOHNPEYtV+NX0LuKjJcRZOmbrnAMMBXGv0TcWVE3waE/v0K5KiE0GnJn0ubXbOIBSqCaTY7+5tBD2zMcc0wg24+Rl+qns/5RTUELwwft4txu+5zJVGew5md1HmC51jw0v14cENLVLPZDI/QdXCEvaDzoyvS3WMz2TTA+jJkSlsdxg5uvwz+ASzi0ukumNs5ZMp/QBJCsRjZfuj41RjJWvtrzCz5zIAjFR0203WhlBgqvSEF8qXcjaitvadTy5C1P1xA38Ps9O3r/PhfuVjGwCIFCFZJePKU+h1bcL8qQDAnAlWBUlJoYjeMlc33jvKL3Azh6yE6MG7EXyx/1mM6ORJ1qKIUpkw5xqvZpsew7hQVjKa2MplWwWBsv6NydMUbBWgxvgzmWh3r++/O/lPDPHds1p01oS3Sq0b72EHjwCMjiYDa1OiyVZ28ApZwj2HOlzFd8XTkX6ytxpbGs562JgBhWta1Zd/+5KtLyd2AUK/6JGZJu8SpRiwT0A0pVBlENOOra
- AK7+qJHg
- aw/NpoAoWVkwwdC5tj//s0oihIyBW6A+3mxY+DIKsRd5aW7uzB3RPyXStIgrwaCXOoXGJJI0KW2hJnZY91rLNS1niDK+pUD6Zx4j53E/SaGE3t0Xed6ELnMzJFjR/oC21Xy7lHCMgtsamsDSCbMgG5EB98PWfD1uYL/XuZgk73kUa4r1HzjUHdUiEZRov8E5S1M+t/I2dlopDLg1CG2w8+H53INVkTrhb9UVXVwUFANBmdp3M7j2BPn3l/WgeHaZU/yP9zJ7VOTp3CycYhLFCylvHtXgEXe78g41IEQdWiJB2F9IU0l6MvRDKzADFVMoaMfTf+BSH97q1h4w=
+X-Rspamd-Queue-Id: 0ABB44000B
+X-Rspamd-Server: rspam01
+X-Stat-Signature: fmfmfekqfbpxtqky7tokabzzzrxp74i3
+X-HE-Tag: 1784560168-926171
+X-HE-Meta: U2FsdGVkX18z3U0yJvlG+VSmpeVSWwW5vUMsL6Cvckc6gV3FEkE5tFnrZiFa5P6qLFEve9LvMUB5RSJA1eL5rCeShF6TJMbljTHvy9SY8UMGrvHEyyi+cHJvKS1j5Up2/T2oQZD6ZHonJHA4Yn6wiOJr22bCuNq32vb/VZLqZ3ECOUH/OXEmdiu3pXp8uZJm6WIqKE8kJ9/+XigbPG57NZCfNDOUXTQuqzcxgB7cRZBiWC3d9i/cEOjkWi5mqMRs5sPYuS7FBNwpn7HUm2xTkmJuSHMOWBftPK55/+4XEUaVsSvarWfDGlly+A4S+6WbBzG5ep5Y5XVF1hy9wTObU3uosuTAtQmyGEm+hrQ/duuC2d0RQoQnsJ8T3Y9e0CtVRH7ckvctdIvmMwD50u8DJJDdb73E1/sxleF7/qzLeuGzGaXAIlv/zprKbc8SjjweKDzKuAgQMTU7xoS8Qo4K34HPAhcbGutZkWS2mPIJe85YCAbesHzDUoxrzMCUN2slXIgxk5gX0zs7qmULran6YEDp//+AakqzmQEq6Gtz8ykMpOm0W+a1tifoL2RWEQq0RvhHIPXlYL3D2IteECur0PGuBKOlutmVFX5doMrMfxJrRLGfnuhNc/SFFvHQxbytO2KjQPlwv4oMRZYDf3NEGTwFyM/kgIniMpj80as2/TOXq8jeK7HoNxCI3ZOEMvuetN+8FIyJUG/xxY1O4oBHxTDIsagr3p7EbF/O5dWD8FEEbRUbTC5rvtbXWrRw1Hn6Zd2kTupXe8CCqrcXWwEmOdw6f6W8b5ZLOaOXPcQgrfPKag1fFUtKUGkCBr4zjP6eytTryCpb+9hmxwUlf3+f+qBxWJ1CF6wJJyZfeQtIVTaPIzWpMv8Uv8rv9C3xboNSWUgZI9eSB4N3aQzCFH2AZoj7IZ2mBfZ70B3BCDpIu2VfFgLkkM2M2AL6PA1WO5LXGYUuxjSZ7JdMIYoxelh
+ TbxaEgjD
+ IyGqfvIIaKWbxgFD1j07OPflVhsKnSnK5It0isimrU2sspsqAIanyY6NYM1uYw4W5rE12E5YuV7Ojaza9/feq40idvMHz+udhTqRLX828ZYpuDw0sqJDsr/KM18CQUBtfL0rEQY9mexhgT1oPXd0vE+kQdIbZvVosFnnOafNSxUmu3P6WZIEXgggnnXyDgxkGM0/3WyvFbHPLh//Ug419+XOUcFe8F8ga9r5v4MYVwJVLZLkbcCoNb7s0u1BFrq4b0nWWXR6KpcZN+jRGMduk9KmAlMy/0qbdvijfbozEEvIAgRBEnfjvAUhKnr5lzO9Ut4jJscbiL4YwD2lS4B3L5f5sb6pputhQ7VmkvcZSr5nYCIYOh+B2ozgXLvZ5TCiFc+oHXs29Hrp6kv9zaSnLhwzrRIVs5Ey2bT6DpB8yrCFEnm7IyISBlyQApOamCr7s7vHIRAwAI7ubDro=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,38 +116,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-07-20 at 04:57 -0700, Usama Arif wrote:
-> On Fri, 17 Jul 2026 13:00:32 -0400 Rik van Riel <riel@surriel.com>
-> wrote:
->=20
->=20
-> >=20
-> > mm->context.pmlen is set only through PR_SET_TAGGED_ADDR_CTRL and
-> > is stable
-> > afterwards, so it can be read without the mmap lock, as it already
-> > is from
-> > untagged_addr() and mm_untag_mask().
-> >=20
->=20
-> I think it might not be stable? set_tagged_addr_ctrl() can change it
-> repeatedly until a CLONE_VM operation sets MM_CONTEXT_LOCK_PMLEN.
+zone_movable_pfn is zero-initialized and only set by
+find_zone_movable_pfns_for_nodes(), which runs once during boot right
+after the memset, so the memset has no effect.
 
-You're right, ARM tagged addresses seem to work a
-little differently from x86 LAM.
+Remove redundant memset. No functional change.
 
-It looks like on ARM with MTE, the top 8 bits of
-the virtual address are available as tags, meaning
-that address space cannot be used for VMAs.
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ mm/mm_init.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-For purposes of accessing process memory, this
-is a little more stable than LAM, because the
-number of bits we need to mask out of the address
-is always the same when MTE is in use.
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 711f821f7b3c..144bb4042942 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1844,7 +1844,6 @@ static void __init free_area_init(void)
+ 	}
+ 
+ 	/* Find the PFNs that ZONE_MOVABLE begins at in each node */
+-	memset(zone_movable_pfn, 0, sizeof(zone_movable_pfn));
+ 	find_zone_movable_pfns_for_nodes();
+ 
+ 	/* Print out the zone ranges */
+-- 
+2.43.0
 
-At least, I think so. Am I overlooking anything?
-
-I will clean up the changelog like you suggested.
-
---=20
-All Rights Reversed.
 
