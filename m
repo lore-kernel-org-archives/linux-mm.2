@@ -4,100 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F891C4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31774C4452A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:29:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DB646B008C; Mon, 20 Jul 2026 10:29:21 -0400 (EDT)
+	id 4B4686B0093; Mon, 20 Jul 2026 10:29:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B3566B0093; Mon, 20 Jul 2026 10:29:21 -0400 (EDT)
+	id 465226B00B8; Mon, 20 Jul 2026 10:29:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A25A6B00B8; Mon, 20 Jul 2026 10:29:21 -0400 (EDT)
+	id 3A2B06B00B9; Mon, 20 Jul 2026 10:29:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 11F8A6B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:29:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BE3A801B9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0865C6B0093
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:29:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 71A5A1A0100
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:22 +0000 (UTC)
+X-FDA: 85009387764.27.B3E263D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 88BE318000B
 	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:20 +0000 (UTC)
-X-FDA: 85009387680.23.2E3C1B7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A76D31C0007
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=v2SA3G9y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Dj8vYSKu;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=v2SA3G9y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Dj8vYSKu;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784557760;
+	b=19XDcpJgkC6Oub5nn0pcIvlGu/iLvxIxgMeBTihuHLdlTSnOh3e/O1eNm1Nj4Xb+ytvs7s
+	N7D90+VtfUIm+wQdKfXThB7xqEkKEsil+WVKLVp/OFU3Jxzf+UG2QpVeN0BAoTqp2I6x7U
+	L90roAFUfOAeEPjdY3KKMlk6fOhwV4w=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784557758;
+	s=arc-20220608; t=1784557760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=yVNSjruTRvkgKwULiFKDTtGJLmy5SDueID1ZIQoyfW4=;
-	b=naqnI9sCNjZhUR/CHo96fZuZVRdG39rnV/lDaFwa5fKoQHoouwIcUs4Tc5HOEk+BufsI3Q
-	1V4VGG6U7znG7Z0/qlTPtQDviPt4mMM/D3o9es0FCUI4glCAKoSl4h20D0dgBaxReXWWmT
-	EjaAsbAHyg/UXdZw3d/V/SulhKZlijg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784557758;
-	b=tTpe9Dns8Iutc5h4GNhzeOxdiNJepLf4IIGPML6pDDEuvcWIJEt4P93wg5FV+F92soFTWD
-	2wlwaDyh4vlt7mUHMwa4pUuv1WKCBI0Rs84lEPT3HIEEILgWjqrBfbPQcUGxjXgTHKn5iC
-	RmeD2rVxHNkzEUnffnwFCey5Yg41DaE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=v2SA3G9y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Dj8vYSKu;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=v2SA3G9y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Dj8vYSKu;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	 in-reply-to:in-reply-to:references:references;
+	bh=6jw26bfvEtpWwnQSBK7mlilSHgh5pzTE57OWg4AH6io=;
+	b=NFXgO0Q6EdmTInQn1NToPcOeDeO+79Wonxv7B3rkAJ1uVlNzuQgQX9i3Wy2QiO17m2+PGP
+	NiTbrlOUfuGs3/MunPpA5lArxnpjEWFaBzCu+kL51l2ucT8aSWdZlzXDcxynlnnzpH5sO6
+	kyrdqmy+hY0pYBLA2jH12n40WAH1Gfk=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 150733E09;
-	Mon, 20 Jul 2026 14:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784557757; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yVNSjruTRvkgKwULiFKDTtGJLmy5SDueID1ZIQoyfW4=;
-	b=v2SA3G9yXNOvtCol/w9ycYvhZKF3BS5tghx4427DetpsYQkDgsVow2bELlfb/r72nB8HWN
-	nws+XJwmrWvuFDZCEwe1ZHVozq+ckMCoonY/KGHjF5/vSN31h52IJcp8eWoVkdwMcc2FnO
-	Xa5NybIaXqkIlEpTiP6Btm324B7RTtM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784557757;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yVNSjruTRvkgKwULiFKDTtGJLmy5SDueID1ZIQoyfW4=;
-	b=Dj8vYSKuzxxNYUwY+x02bgtF2KBZIgdvPuzC9fr8Gy/kcDqptOpN+snje/C3mwy6vcntGt
-	VRDyomCgJsYozKCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784557757; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yVNSjruTRvkgKwULiFKDTtGJLmy5SDueID1ZIQoyfW4=;
-	b=v2SA3G9yXNOvtCol/w9ycYvhZKF3BS5tghx4427DetpsYQkDgsVow2bELlfb/r72nB8HWN
-	nws+XJwmrWvuFDZCEwe1ZHVozq+ckMCoonY/KGHjF5/vSN31h52IJcp8eWoVkdwMcc2FnO
-	Xa5NybIaXqkIlEpTiP6Btm324B7RTtM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784557757;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yVNSjruTRvkgKwULiFKDTtGJLmy5SDueID1ZIQoyfW4=;
-	b=Dj8vYSKuzxxNYUwY+x02bgtF2KBZIgdvPuzC9fr8Gy/kcDqptOpN+snje/C3mwy6vcntGt
-	VRDyomCgJsYozKCQ==
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5229D79FCB;
+	Mon, 20 Jul 2026 14:29:19 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1A0CE779AA;
-	Mon, 20 Jul 2026 14:29:16 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B27D779AA;
+	Mon, 20 Jul 2026 14:29:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NcfTArwwXmrKTQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 20 Jul 2026 14:29:16 +0000
+	id wC8BD74wXmrKTQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 20 Jul 2026 14:29:18 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -114,20 +80,29 @@ Cc: Pedro Falcato <pfalcato@suse.de>,
 	Usama Arif <usama.arif@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/8] mm/khugepaged: collapse_file() cleanups
-Date: Mon, 20 Jul 2026 15:29:05 +0100
-Message-ID: <20260720142913.846902-1-pfalcato@suse.de>
+Subject: [PATCH 2/8] mm/khugepaged: factor out page cache folio reading
+Date: Mon, 20 Jul 2026 15:29:07 +0100
+Message-ID: <20260720142913.846902-3-pfalcato@suse.de>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260720142913.846902-1-pfalcato@suse.de>
+References: <20260720142913.846902-1-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A76D31C0007
-X-Stat-Signature: rg8z8qrny67gfw5ei9zp71rzx588kn54
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 88BE318000B
+X-Stat-Signature: ege3myx9ymtbsbzriih9w76en9p3sii6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1784557758-592757
-X-HE-Meta: U2FsdGVkX19Jvgopj1RkhsQwt+IqknLKcJzY6dviiMxsoXjSpmlCkiJBO776Ejl5jhjy8eVQtPiTIlNqFc/K6E4RBlgHo76pLMIuRZKZZFd84fLYZ/igjXUWcUe5rTZOeiOi/bDJycive2FUNjpb5IEA0wLx+Ei19cByshUfEX0lXQSD6UHGJvNs31djYzVmJ48nCH1jlhefUYUnrW7jZRYeA+MUL5XR6R5ru8M4XzibYRJcGn4zqutD8SeiQlle/DwVrcQHW6LLEFwlwBQlpW9JSqp31eohDUiAp6mf8nRXLPvorOsDzpLtZWJ53SbpdYvjFuP2jksLU5SMig2Ry5Ba/kBZ1XqXnx27cvfY4G+Zd7IXKKeO+P+ApZkD+zeO7/Lw5DbexkCn5KLh8dGmvXC9pR4gcgIwmEqO21jebWZqSIuLamBswOltwxB5bEfBiB1MZNI3bvODIrqlQZC12SYAbplQWpUZqxGU3z2uiNubEn4oT+9slIeIQ53Tnq1q7ElvkI9gA2nJPbh9erMdBz3Wdclh8Sc5OERtO6K6SkBQVsJEEc1qyDNG0f5SCi2/hJTaw3KAY3Gy6lQl1JPDntlf5dQ0x/ioZE7kctRCiW8nJptlLagn/dew8ZKICd/VjlLGUyRmQcL9js8O64LqXg/7XXKwLM5hBNXPqMgmFaRSasIB78tYSWoQ3sRumIb/6nNA1O7fQ4knisNgp1e7vSdnruqSftQGtvDF13BcaRAc3CTs0+8JnGM7HONHxbhxpNIk2RAcqrD5xt/2e20ZBPzF4GVokOyFchQKIMdp/3vcXFbaElnOOb3Arv8tSxdx/C2khY7+vsrGGTuK2m86P7/b/nytq3Ccd3nZY4AKg961bbImGjHO97R1hgeQZ/tVcWj1sWU8ZUM9FO+BWFEcr65cHjdlTEm4cUnNKybmjG5gMQrmBliTG58sGVnQX7OCJNfRk3sgnsL5XrdvJxF
- 549EiERL
- TOcDcRtvvZ57cTTJdg8OFENibS4V5dTxBM4xoNoYHN5k5glGvxbJ0yKNEUlmvP/1gA6yCa53XLye5Uj7zwCH6Bf5lPc6II2fSARPFfRSh6/gMjsqFUPkwehoI0pVdqW0EOUBin2fIIl4YHGjZMAW7aNg7Qjum6lyN7UnyI90vAICs3gdbksTtn+ZqB7lYFYrfPDk5iwjugJ2XvLb16kBJcjeYojuTBOMnCPsyqmZGWZaAxZdJuxF0dCEao4NEPgzhCiSaUpKYg4BBdMw2XBYpsI77Of++4az/hGkXps+khpxgU5Tt+Vp8PjIf1T5/n0nvEc2jUT8qMfMo+dWObXcYKWdBJXFt1GvbDXuGT6FuawMha/mFs9a5p3cZ5jcDSLG0HbaOQfjNb+X/eA9+PFIysDyRiI2vhd4MiWdIyWg5holbbXp7v4zAocMxO4Gxz/KoMh2vjzPRS+fyfJEz6DweFXZHtPwbNKWUJxAamY54bSgJ4N4R9+ToI8vptc//vgL3lLiOTMDeuslneLf0I5GJ4CcxvV6VT2V7T5pjsm3cVZu+HhnEE2OpcUNV5hCCUHdiTXD4eEQkZ9YdKms=
+X-HE-Tag: 1784557760-877459
+X-HE-Meta: U2FsdGVkX18lTs+dnWZ2YJlV9we/FI0msbem0e+wGhzReVNEg0ITEFEEE9nbHUmVymczHSji9TUYWtoPpCw1pk0aq+22ECFX454ztEcQv1Ad71myCZJgv3xjVsxAuyl/DTHXeFle/sduZNE35qCch2tQ4WNZCq1EaxJ0rzBf6pLFoDdYbXdyjZ0gq9R8jFS9Lf9bOC6v81HKbhhCDkmJHmfTfqfWSDfCxv/+amV/AgvREbcEMhQx+j6Uw0lxBTxdc56z6IyMW6Nk5vdSI6tgaGgN2MzJJGrew5xymQhg59KEdB3aARDN+x7D324McIHEtq/N7kAUapnyJ8XQjo/7jGM+zKcEJeOUPIZO+6cHutiBMA0jn3NyAdbAKBS7v/UoAgRq9j1DJEkt6zFvDpZatUZPaDcI8aYGoUKM5rXQW+gMnNx/gv02lwC+3oWm0hnH6NOjgnmerI2uUnCdtYvuX+K2eLBKRsnUT59/xhMMAbG92sPlPuclGI3IvRs0Qarpfw0noC4UIbcbJRPkN1u82xvfr86C+FE4JRFbhJQsLiBr2g3SUP7tMrVE7t0Q3a8fbpKMx/4z7BiydhDvaOT+xa7fq/bHDK/u2i0eZZW9YcrpWggwLiTagLsvWjOVfv7SPvOWAebSuH2pTdzZyzhg4UKSYJKM6/bMXykDYUe53yl9z5UMpWAeGSJ1xmMzEQHC2JAms/k457PeKzfCcFa1i3TDKwKXhdJa4tYLAyR5l5nF7XyU8Wp1CZ5KwZON3Q2sKJNzA80+nS74eTTghdb5SqTb6j3RqAUrrMKkVANtVIL55lcsTcBuHYTYfi4IHK8Tld2w5w2O7cuq7H2+rNfaob5/L9aLqY+Ze0z9QBcFFfrvK5t3LqTVALQtJ+JO9ipS9JdPoYQlvH+VY9y35fFU63Btp5XnLxTIbN/2Y7NWPMqn8KfWF2eBTvpRS1lA2afgs/9X2Vy+Ijubj4F1U/d
+ cCP88VZe
+ KHxZBedzT1HJ2v37jxeW8jV7lNHUaq3E8XAqgUXs3vvchcfzQrX18MSWWwSSmWrnHCww7Sbr03qH83PyYeklfB820/kJfNwdvzi88aIYETX6BR3z2uhm6p6vvqw8xoDDoDu7q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,38 +110,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Here are a bunch of cleanups for collapse_file() that attempt to aid
-code readability and understanding. This is part 1 out of N, and only
-attempts to address the main collapse loop. The exit path is still a
-mess but I figure it's much easier to review if I send this batch as-is,
-versus sending the whole thing.
+The two mechanisms (shmem, filemap) are quite similar and only change in
+subtleties. There is no need to have two variants. Factor this out into
+its own separate function, shared by both paths.
 
-Based on top of latest mm-unstable.
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+---
+ mm/khugepaged.c | 67 ++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 44 insertions(+), 23 deletions(-)
 
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Liam R. Howlett" <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Usama Arif <usama.arif@linux.dev>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Pedro Falcato (8):
-  mm/khugepaged: separate out windy folio logic from collapse_file
-  mm/khugepaged: factor out page cache folio reading
-  mm/khugepaged: factor out and simplify dirty/writeback handling
-  mm/khugepaged: simplify prepare folio locking and exit paths
-  mm/khugepaged: add kerneldoc to prepare_collapse_file_folio()
-  mm/khugepaged: hoist isolation into collapse_isolate_folio()
-  mm/khugepaged: hoist more code into collapse_isolate_folio()
-  mm/khugepaged: fix and flesh out try_to_unmap_flush() comment
-
- mm/khugepaged.c | 424 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 248 insertions(+), 176 deletions(-)
-
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index d4de507ac001..4cc6917a55c7 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2230,42 +2230,63 @@ struct collapse_file_state {
+ 	unsigned int is_shmem : 1;
+ };
+ 
++static struct folio *collapse_read_folio(pgoff_t index, struct collapse_file_state *state)
++{
++	const bool may_bring_uptodate = state->is_shmem;
++	struct folio *folio = state->folio;
++
++	if (!folio || xa_is_value(folio) ||
++	   (may_bring_uptodate && !folio_test_uptodate(folio))) {
++		xas_unlock_irq(state->xas);
++		if (state->is_shmem) {
++			/* swap in or instantiate fallocated page */
++			if (shmem_get_folio(state->mapping->host, index, 0,
++					    &folio, SGP_NOALLOC))
++				return NULL;
++		} else {
++			page_cache_sync_readahead(state->mapping, &state->file->f_ra,
++						  state->file, index,
++						  state->end - index);
++			folio = filemap_lock_folio(state->mapping, index);
++			if (IS_ERR(folio))
++				return NULL;
++		}
++	}
++
++	return folio;
++}
++
+ static enum scan_result prepare_collapse_file_folio(pgoff_t index, struct collapse_file_state *state)
+ {
+ 	struct address_space *mapping = state->mapping;
+ 	enum scan_result result = SCAN_SUCCEED;
+ 	const int is_shmem = state->is_shmem;
+-	struct folio *folio = state->folio;
++	struct folio *folio;
++
++	folio = collapse_read_folio(index, state);
++	if (!folio)
++		return SCAN_FAIL;
++	if (folio != state->folio) {
++		/*
++		 * collapse_read_folio() got a new folio. This folio is locked
++		 * and ref'd up. Nothing tricky (dirty, writeback, etc) can
++		 * happen, so bail now. But before that, drain the local LRU
++		 * add batch. Otherwise, it's very possible folio_isolate_lru()
++		 * will not succeed.
++		 */
++		lru_add_drain();
++		goto xa_unlocked;
++	}
+ 
+ 	if (is_shmem) {
+-		if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
+-			xas_unlock_irq(state->xas);
+-			/* swap in or instantiate fallocated page */
+-			if (shmem_get_folio(mapping->host, index, 0,
+-					&folio, SGP_NOALLOC))
+-				result = SCAN_FAIL;
+-			/* drain lru cache to help folio_isolate_lru() */
+-			lru_add_drain();
+-			goto xa_unlocked;
+-		} else if (folio_trylock(folio)) {
++		if (folio_trylock(folio)) {
+ 			folio_get(folio);
+ 		} else {
+ 			result = SCAN_PAGE_LOCK;
+ 			goto xa_locked;
+ 		}
+ 	} else {	/* !is_shmem */
+-		if (!folio || xa_is_value(folio)) {
+-			xas_unlock_irq(state->xas);
+-			page_cache_sync_readahead(mapping, &state->file->f_ra,
+-						  state->file, index,
+-						  state->end - index);
+-			/* drain lru cache to help folio_isolate_lru() */
+-			lru_add_drain();
+-			folio = filemap_lock_folio(mapping, index);
+-			if (IS_ERR(folio))
+-				result = SCAN_FAIL;
+-			goto xa_unlocked;
+-		} else if (folio_test_dirty(folio)) {
++		if (folio_test_dirty(folio)) {
+ 			/*
+ 			 * This page is dirty because it hasn't
+ 			 * been flushed since first write.
 -- 
 2.55.0
 
