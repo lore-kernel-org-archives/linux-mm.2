@@ -4,92 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80BF8C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 08:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A10DC4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 08:16:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 555886B008A; Mon, 20 Jul 2026 04:13:46 -0400 (EDT)
+	id 421246B0088; Mon, 20 Jul 2026 04:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 505CA6B008C; Mon, 20 Jul 2026 04:13:46 -0400 (EDT)
+	id 3D1116B0092; Mon, 20 Jul 2026 04:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CEBF6B0093; Mon, 20 Jul 2026 04:13:46 -0400 (EDT)
+	id 2C0936B0093; Mon, 20 Jul 2026 04:16:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 148DE6B008A
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:13:46 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9966CA1002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:13:45 +0000 (UTC)
-X-FDA: 85008441210.30.B3E6A44
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EA08E20008
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:13:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y8IgDzk2;
+	by kanga.kvack.org (Postfix) with ESMTP id E9EE26B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:16:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60BFD1406BF
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:16:22 +0000 (UTC)
+X-FDA: 85008447804.29.D9BAF85
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8BD2320007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:16:20 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tmu2ds2P;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784535223;
+	s=arc-20220608; t=1784535380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lz64nxvRHnxb4ksQjjT3naqJCvqJl53tkNdxM+mLsqc=;
-	b=zaJtfk0vRQbXdAbXf504ErY0eOr9UmNU8QJWIzbXmrXENPM1Ca5yGQgeUEGuOlv7LbV1pq
-	7nygB6F8gyIZl1IMjVGHcHodE9QNxNKOAiXl7BBfq2A1yjN2iWZgyFX7o0duBMm4gOqEFk
-	ZCXw7GVzPAx2C6Mj0+m+mIZleHrhIIk=
+	bh=zAAiznWAE34Wx4w+Hs+s7p3pGYO+pyU7VbYpIEPy5ro=;
+	b=FfdRNKYQmp4RLG53m8I5rJLSUU30JNkEiwCmoX93pnAi2NwlIULjISQ29AEGUBCJLUcI80
+	KPwMdgQAyW4yaF3xHdu/lQUK2ql9oApMdI0FsXZDwxnZVrDRLytoazzxV6wqoWGK+JnXXs
+	f/2qH7/nV3Ojhu/qBRY6P0YijPiLpuo=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y8IgDzk2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tmu2ds2P;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784535223;
-	b=TzWFf1dpcGyUkqJO8/UeJpTArPI9xLQnGCTb4lXVfFYgLNwaVFLVKa+90WwlHeF95CnVoG
-	2/nfBaK2g1DWPPp2W0lJYXA2U2hfIO1qNACSM5eTzv1u5eCL3tjSW5SDpMSC8A19/1Xfk7
-	huSBmJBi9OCCVd5HKDzP/Rj1sSn7TVI=
+	t=1784535380;
+	b=r9akC4I10GDjzeMNnsBvOdW6e89KGLkl1Gndh3xp5Dr+jYpXWrwqjHjTnNkJSsKwTqXJRr
+	Y55FvOyItrCMsrCaHWdrQBA0U1s7Yyz3y0l8Crpni0v/ilSqhH/3vcaRRyzgkZGSYcZCR4
+	Bpd/uDU2MXEynmHXQR2ezUglm64txXM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A82A60103;
-	Mon, 20 Jul 2026 08:13:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B988D1F000E9;
-	Mon, 20 Jul 2026 08:13:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B7781437FE;
+	Mon, 20 Jul 2026 08:16:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C641F000E9;
+	Mon, 20 Jul 2026 08:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784535223;
-	bh=Lz64nxvRHnxb4ksQjjT3naqJCvqJl53tkNdxM+mLsqc=;
+	s=k20260515; t=1784535379;
+	bh=zAAiznWAE34Wx4w+Hs+s7p3pGYO+pyU7VbYpIEPy5ro=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Y8IgDzk2B+MRXLL2XaNtPhyozX76XtuObQQNMZJidmsfE9nO6ezXK0f6/4cGyJO10
-	 Br5bVrxUi32jEYAjgLMcnl1c3XE5kkVK0INSHZEzrVp91vhYvaBJaL5GQtdgTBJHvc
-	 nYSNPH63+iswtNlH6B3B1qA8LdkZrgM5OB2SwxcqUE/lmOegjUy4b5cZuWx6z352wF
-	 oOVO0nmDfMhou0iACJzxNpkFNI2Y7buBrxmcAlgGmuGMilZKyIfRlqachpVf5wJ/FO
-	 EWEgOILoKj0eS8/FPdcvp1cRfxSwI9TDM3QB6UmKBIJerYhGyaW1jl8x53phv5MJxh
-	 wfglJVo9v8C1A==
-Message-ID: <d1180a70-f4b4-4c22-9ce5-881cb0e2370d@kernel.org>
-Date: Mon, 20 Jul 2026 09:13:34 +0100
+	b=Tmu2ds2PcLIqfDtJgNJq3itmcvTcEDkSaCXfgzQytix2JZMJK6a1rSgksiQxKBStb
+	 fCyAzyU4/P75dhHm+rULbScI7mj/+l8XrIxsX8ylcuyoRlisuJicDN5iIwIaJFKPRX
+	 VJm6wOO7cfNh+NQzyYb9eIHIPMj08OfGQxFgit7WKtsTAl9/UCWy1bkvWRW1EwioWh
+	 2DmCfRTQd1mVGWL36zwsm+XQt83AzLupzTwd8aj8qbrsOlMdQsW9NaRJ6t3+ZFmA/z
+	 OLejJ+YAVQWeVOqCcGsalx+8O7tXj0fYZi8mVyEvENipMCFqtgqdNrdB9AILGiMTO7
+	 zWyF5luLRYQYw==
+Message-ID: <6adafb9c-b966-473b-90ba-3432b5574039@kernel.org>
+Date: Mon, 20 Jul 2026 09:16:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/7] mm: defer address-space teardown of large exiting
- processes to a kthread
-To: Aditya Sharma <adi.sharma@zohomail.in>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: David Rientjes <rientjes@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-kernel@vger.kernel.org, imbrenda@linux.ibm.com
-References: <20260719185409.409685-1-adi.sharma@zohomail.in>
+Subject: Re: [PATCH v7 1/7] arm64/hugetlb: Extend batching of multiple
+ CONT_PTE in a single PTE setup
+To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org
+Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ Wen Jiang <jiangwen6@xiaomi.com>, Leo Yan <leo.yan@arm.com>
+References: <20260715120813.3609949-1-jiangwen6@xiaomi.com>
+ <20260715120813.3609949-2-jiangwen6@xiaomi.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260719185409.409685-1-adi.sharma@zohomail.in>
+In-Reply-To: <20260715120813.3609949-2-jiangwen6@xiaomi.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EA08E20008
-X-Stat-Signature: pwbyparodh1fbjzuudt7hg5a99xiupkz
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1784535223-478417
-X-HE-Meta: U2FsdGVkX1/FNoM8EMR2huNHabYSgTsMgvN7OhHvqmCObgx6PWNusOT/Hom3ZEktdoKXhzuv/+Lgzbp2V5/sgUhrmVYeVYV36xjJDpTSrKHwQjlll39MMsf9Z200nmg0WVrb7fFS6beY5dTJ2EgrVpLrRcwKliHqvc2mq4GqtpQB4RiaRB/Xx77M2SMFF2azkexwD6d8SI33TzwdbpEGIVmMjg3nQOb1fnd8WtwN+TFhrGbJ5uZEbKGmsby9pLDvxHwthCU3J/4ON+qXh6tiRCykzuU4nfMcHCJDjrWVQ87V2TfzlvtB0cXtkKgDQo+J4nEJKIqdjKd2JbvD/pBp7v9qsBHI8jKjQMe36EjWdYrJZMUwZInwHkygs8nWPxI2NMl25+kLfCRNnzVVCvYaYg88HTr/GB/6MPrwsPaksswqxUx9exAb6kwyIb6qH0/abmRKF0cly6F1Zi9EfGRGHQAONrUCLYFpG+xBLbqiQ+KaeMFvCPLzCm1PpKZvajBBtg+dtZYFnGqZ3AxIAWjC5Wj1J6hoefCl0Ep+upqTkIe4lhxDexSGwxpdpTikwzGLdlPQgblyXOdqD7O6F9jUGllfoPEUtlNcL5VjVhukR6yxVM1NP9P4pJmB0EMEh36X6wgxz88nq20ihUx/xFyt2+GXepNDOelwKic82EpWbKbahBPvM4mnAIA4w5wNC/HIWYJGcmTScYapcItdpu7nYt79bByQndIzqcYmpkG90eHlxhQbJgDm09mMSab1cBiBelXkdAL8tYhRbTasBM88SoNHLddeyQNvnuMh9u0RVL0XPXbD5u2Cy5bzD0Cb0P1GW3g6onEHqd1qRHKw9QE2vMqbOGqD0diPyBijYFTclePeNPZWMB7Ha+dHKb3uLHt903dhL8AGugbWQi6OeRNIrTrs+dA+SoZ81vbdMMEN7UjGRS3gnUZou8HKbIdvIQ0ZkRTjemesWUX5CnusKS2
- LiqFwMuY
- V7yK83mLhzrYN3j/IPNjPJNGFV9g7N/1I+rQmkQszQ9nIjkNtoFKgUcxP4ypXaFPySjAXc4sW6ntg5JuQaD1+TifBHL01hUuKplZonbshgkfK5mBtDGG4F/NpqRmQnKZhcjDIB+reCpXZzrl0igMATDMlTun/yWULmCrNxsfWxKNHyNWmc8ZwrikNJCwvbUHuonES/KGDp56Hq+p7k3hD9SVv0Je/dFWd7nSDkP3TXTJGg2fetmdENVsi4RQHx0UUqGzl7tfjlE37xAcaYE0atvW+P5qLrV/v3AmAnXXvcrj3U+2J2K/3OQ355IbQaOCrU0yJ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8BD2320007
+X-Stat-Signature: 8atmuecjh5s3eixuxyk44ri3yfx39uum
+X-HE-Tag: 1784535380-76096
+X-HE-Meta: U2FsdGVkX1/zS8gP4DjYIvxM4lS4kcM6GIrD3gIoukxVyTvMIQLW6d65dwnWwIvgd5J9XDVMSw3YUwK2f3j8bgms1oXACn3nUYIMDqWLbxtPvIvAElW8t26WuLxbvF9vwbfGhHpeNqZjOm+6s8w0ELw7ox/mT7sV++GIN8c43USGnnXcdaWd6qCKIirkZqoJwDeajJj0FZpvH92zsxL3Ovk7r6qGX1yyHLcYPzMFfaqymZfqT3PGHMEBU+Q1nGfYpTXwneVne009RgpUN9i78Q5tXmTE67lGQUzERYg8e//ZFpaKDoZi/9Ynt9zTRUs2wVEh5EBogHyYkn3SSFW0kX3caxFIyFkKS30y6lHPbjUdBhWWeo2e1GCgvDaY4OBqKh79xfyORrsLESI09gQ2C0skJWVlfCa/31XWyVjozRlnmZ2wlaqJrfiN1KjswAuSW4CrMZAEvvDc/rMVY1varsW3/JDfGhGy2/R3NWqO6lN0e8zk9q+LnC5JqGL28K/Sk7rFTojIFXRXQ0W7DJU12k81plCuBytnpytdDJbSXP2sH0UqXXPWLk5AE5R8SpuI7KZ6UTaUHZDYojy3KkzASais1A1B0sv3swBxVlUHK6ELgxSsFtWi6qY4pEwB82ReJ4zpu2d13ElxJLq16Ve0b8ESZMeBbLXhEce7v8k6A9FH72ANBIoCuTa7fY3ZY8+zSjDRKmiPEBJYRM1nb9Z6G3Ac1IkZuxQbCXi/8qRhDC6w0PjwiLZR2y7Hhjch8vwB7gjzu1k9BThKaq9nWgwGYeWlElFagQzT8+a/DGPXEVeox3gfP0onHxllZ4Vv5YaN0AZHoHt6SAI78QSpad2yHZRtKNdUL18b3nvk+dkPrf7yDOLacJxnY7riNbuZ4LprAx920RXkTIgM7BrO/OpHDfNV1N3Ro8dCQm7NQzDhSExEa6CNu2Fn7/zVvrfFIymPfp6kQ5KLsCcgxoDjtQ0
+ v3nCBj4f
+ TME1eF1F31cUmEiyT/sFo6bUuqSCg+vy1PV2JFhcq2zLLaT3MdiPRhRbSH1zdPxTbEYB/p6s36+nWZ2bqaKrd7XskisyepRGUlzD0Q/EZeHfPsZx2Ai7/GSG281n3/MnJBfEA6EKpL8GnXllk+Tb1BrHR0f8id616bjuPoSIMpCLloTMmCk25HrqbjSVLIncqyeDnuoFFS8MYmlAwlTN+2a5bx6yaL4iIbaBbYwpLKuaStYy1miu7I3rVq69EWj8lu7r1JdLNhMOS1otXwIbqfeh1izOOzSfscAuguyyIjrtdE/CcUxdnEbb/hWaWXFSTFqvrD+IXzjvA6KJ/u8C6fG6JAK1down0YnzVYMqyGtmEOih5Ec9dgqz4FAsY0CNjqAZAzPcVA3vNH9V8TNXOR4Kx4Q2CJ8ILcvah/JCNJgoWeiEwRFgF2yI9htmA4v0ULvBMw7TiIEPhjMJfiH8DEFL2i3IYIr9YcdikVozxuN5U07kp6A9jA5aqJOerfm8eRZ9U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,30 +143,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/19/26 19:54, Aditya Sharma wrote:
-> Address-space teardown on process exit runs synchronously in the dying
-> task's context: exit_mm() -> mmput() -> __mmput() -> exit_mmap() walks
-> page tables, updates rmap, frees the RSS and drops file references, all
-> on the exiting CPU. For a multi-GB process that is hundreds of
-> milliseconds of exit-path latency, paid by whoever is waiting on the
-> death: a supervisor's kill-and-respawn cycle, a shell's waitpid(), an
-> orchestrator reaping a fleet of workers. On the test box below, killing
-> a 16GB process costs ~280ms before the parent's waitpid() returns.
+On 7/15/26 13:08, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
-> This series adds CONFIG_ASYNC_MM_TEARDOWN: an opt-in, default-off path
-> that defers __mmput() of large exiting processes to a dedicated kernel
-> thread (mm_reaper), so the exiting CPU is released as soon as the task
-> is reaped and the teardown runs off to the side.
+> For sizes aligned to CONT_PTE_SIZE and smaller than PMD_SIZE,
+> we can handle CONT_PTE_SIZE groups together.
+> 
+> These additional sizes are mapping spans used by non-hugetlbfs(vmalloc)
+> mm code, not new HugeTLB hstate sizes.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Tested-by: Leo Yan <leo.yan@arm.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  arch/arm64/mm/hugetlbpage.c | 15 +++++++++++++++
 
-QEMU has an rather short implementation for async teardown using
-clone(CLONE_VM), which is IIRC essentially the result of Claudios previous
-kernel work you note below.
+Huh, why are we touching hugetlbpage.c, which is HUGETLB-only material:
 
-So nothing got merged because the problem was solvable in userspace.
+$ cat arch/arm64/mm/Makefile  | grep hugetlbpage
+obj-$(CONFIG_HUGETLB_PAGE)      += hugetlbpage.o
 
-Without something like CONFIG_ASYNC_MM_TEARDOWN in the kernel.
-
-[1] https://github.com/qemu/qemu/blob/master/system/async-teardown.c
+Something is off here, if vmalloc ends up reusing some of these helpers, they
+should probably get moved out here into common arm64 code.
 
 -- 
 Cheers,
