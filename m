@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDF69C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62CD3C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:04:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF9586B00A0; Mon, 20 Jul 2026 08:03:47 -0400 (EDT)
+	id 2BDD86B00A2; Mon, 20 Jul 2026 08:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA9756B00A2; Mon, 20 Jul 2026 08:03:47 -0400 (EDT)
+	id 26D536B00A4; Mon, 20 Jul 2026 08:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998A46B00A3; Mon, 20 Jul 2026 08:03:47 -0400 (EDT)
+	id 137FA6B00A5; Mon, 20 Jul 2026 08:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 53FBC6B00A0
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:03:47 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0C641A0162
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:03:46 +0000 (UTC)
-X-FDA: 85009020852.03.B8AB0C5
-Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3E454120002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:03:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CECEB6B00A2
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:04:07 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 567F51C0082
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:04:07 +0000 (UTC)
+X-FDA: 85009021734.22.D545E1F
+Received: from va-2-114.ptr.blmpb.com (va-2-114.ptr.blmpb.com [209.127.231.114])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6093112000A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:04:05 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=gkCwPRf5;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784549024;
-	b=CGFKyT6ZFtqrtUPwmIA+CE8vDw553R1dsKxjK0Im3FsPrtBe7UgiemoG+5/OHHlbn2JC2L
-	53RtsUjRM0Czyok8J/J1tWHy47IIqHOPsCVGqFEa0O2oiNQvWrZ52LQF9HHpB39sQ3SWOe
-	NhLVPC5GeFOZFV7Ai8HTAtgDNQI90ns=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=gkCwPRf5;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=R9LyQKxT;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784549024;
+	s=arc-20220608; t=1784549045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YZqNbH2if8hUjJ9Tg0ji4lns0q8vnGSCzJjMbirHpIY=;
-	b=vZkpAp65HwLcErlodUAZYDv9I6sD3pjXAVZBaTwLSYKgztqfS3nQZogsiAHy8cdgv+2J6s
-	zBLCnJouC3TmP6SBEmy23iAyZXbZRPlQymY52FwBIm0kSlbE5Sr9TqEpDKsiVjm4e2oVl1
-	sqW9z+Rg34nelSlbwBBZBFoL5Kj8LDk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YZqNbH2if8hUjJ9Tg0ji4lns0q8vnGSCzJjMbirHpIY=;
+	b=zv2MPWXRfoJVYsLOT6pwhtuvTcu3uuE6FPE1Zf/R+kF7WwfuTyE3t36l/qazS3OnPlRdwc
+	qmg2SawMBjJKKtNMs7taN0+ggjXUWUax9OWcWmup9ApGeqF25/TT07pTej6Hk7i8yO8A7+
+	6fQJPT2Awkn2HT8AHZ4Xpa8Z/yRvw0Q=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=R9LyQKxT;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784549045;
+	b=LX9Vfx1dgIeJcg4uVIxhW+BBk7xqEC/CkVy0YoLKYWSbU6jT28XJvqP1zHF5klbQsarYYm
+	D3iIbNIx74imDarAcLIaPm3iFWmXH6DyR6PgldMd/7IgaxEm3qzDuaNdOZ4dOG3FtF3j8G
+	1ChsqVvtQfWNUnJAB/BqrqMo7KDck0E=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1784549017; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1784549040; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
  bh=YZqNbH2if8hUjJ9Tg0ji4lns0q8vnGSCzJjMbirHpIY=;
- b=gkCwPRf5OYelaxFVRtKt2pX6aAr6564lfQVdWzI/8u1zpF+AsHXRRIKPToXgWn98sN+/DA
- iYK5wbbtKeSe5lSuHiD5cUWQ1Vh/ojJmqoOoZTrfQXppfYLWjYf5fwQnIK3jmB61mLdZhF
- PnhLSlRBoVW/dt19LEKrvQPlDz3qOez/E1DYr1E2fbkwBW+B8ZbXcXQQj+G+VFNBSr/jHn
- b96y96OxdjRHVwUDBAcmnFB0pUq8hPCEsbRQfXVZ2BHUfDnmrS/ou/qz+oTIpU/2YYFyRN
- 47TyiJOUkhXGqT8FS2hNb08QIoB4r9RQea4uhn0GgAZ3I4JN5UsgTwArRfKDAA==
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26a5e0e98+9b7e7e+kvack.org+lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: [PATCH v7 0/9] mm: optimize zone-device memmap initialization
-Date: Mon, 20 Jul 2026 20:02:49 +0800
-Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
-	<lizhe.67@bytedance.com>
-Message-Id: <20260720120259.1545-1-lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
+ b=R9LyQKxTPN3H2L1JCHoN1dqj96A2F7ISe8vHbP3QT2+gy9T3DoxeIlj1osYxd+DlitoM5T
+ sqR/fDs/ZvPvlpTCqToTIhY6m1kuHP6+wdXRVbO7yUnw8NPxoelOPRslQODPLo2l7F3pcK
+ p0GJACLNfaThTkYnO053O8NklLD8U4Ag1MGtsQC3hqZ4GpCfe++yxiIaCGFB2QleQUudX0
+ yK5EV37qiyzAhzP7u9fSSaxg9vo4/iN2HNDE/h+tb/L9MSHStHrmNsZpze6E6G5YJKWPvR
+ AitjrMU3pUX5rOU1QI/7daI21aLvYGYBWIBEWAD1c8bhN9wUTDF4hJnOeYfifA==
 To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
 	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
 	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
 	<rppt@kernel.org>, <tglx@kernel.org>, <muchun.song@linux.dev>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3E454120002
-X-Stat-Signature: p1e5xhjzn7t7aq13i4ym8so3nm34w3br
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: [PATCH v7 0/9] mm: optimize zone-device memmap initialization
+Message-Id: <20260720120259.1545-2-lizhe.67@bytedance.com>
+In-Reply-To: <20260720120259.1545-1-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26a5e0eae+98e1cd+kvack.org+lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+References: <20260720120259.1545-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>, 
+	<lizhe.67@bytedance.com>
+Date: Mon, 20 Jul 2026 20:02:50 +0800
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
 X-Rspam-User: 
-X-HE-Tag: 1784549023-783991
-X-HE-Meta: U2FsdGVkX192GynAbS3B1yqNO/TWCfJj637PLIb6CFHJTuX/4IU1n9N/i+5OtQa7HfqE5sjh+raX0E+xWiBPDAm9tYo4r2Fr3gPIuppi0qvyqu8ALywmM2vfi48ydZgmuUVaLuu8/rEjfnVewaKShXae0eyEIZA31+NfpFA/zfOmrx9jrNqbp6eFRqpEwvJ3yW4aZG0P79t+XYR1E2XVgjgF/GRqZzJacWEKQEoRzDdPWPdxtbrgEqzMozAAwuoMjtKEkHmUvQMG6Wm92Y9mxlEtKoRP1cJhQ704an4y5NHCfhKpmSYkFxyMQz7PvycWHRIjAj9tQcd+pX4FafTJD+dqvJxQGS0xv2sEy37Be4HQExOYZLROb+b85AWM55LjrBgl45We4bShvKTylSAcMcvafapuwtuqmU9c7JVa7M8q83fv8HJiufgbViQJhUc+oALDDsN7NJirG/eqEqYp2HpVQxFQqxwVmFKwN0OgZusJoNoAh1v4vC5ua3VwD3Fwn8f8mINWbC+i+laE6J8BUYIYtxot1E1rVRY8w5jfGfB3+hF4m17S73Ggn1lXgVL7TzAf8zeml8v81pSQqUg0+xTAble4lG4iMO9yelkX/CTxT6jOBIkYTIbbDaCAXkdMTmCjeqNHx7ghUUygr9zP4WX64Qls3Xo5cHy5+qcSwrfcNHitZZSXqq/B37Qde9mn8G6nNvdkmuAEWA2DI+ILE95M7y8p81guU8sNYzpWOe6UpePqtSZ6YX9xLKVGUhTuVWMEfxy53bzeC8mQNksBBlw1x1HCMveJy1FH33+PlKAgVgHd+c/mweh9meQYUaXkJKBDV3OzFn6n9PGeuGAJh2WCUpV7YP3p3oycfm6RChT2uFqRO4869EcZuhE5Q8scFsG2lGr0DwKtdYOIy3DRzL4zG/GAJif4jVnyBtHYnY+KB/5nx9HFHcSP3pOQRd3eQ9jq8Znzq8E+k8cSA7u
- t0NZwyCa
- wgbo5ZXzo+IKhMhmZv05tqCmHpUqmGcvRyk2ZN7s6csX3cTqynJxQPxsitjFDAuxtTqKbulRBLV+H0Su8KppXsai4A+LwbAV5QOOJ6yk+EGHChi0nctg+SBiMvr/9EIpLO59QLxUadddUswRuAE6G3jpCcagKSAFUPGhn0yNXsC0fmzMa//5LOf8ySx9WUJxt9yXyGAi2rHQtAY2zBF6M62zmeSP+/ujN8N6k497SaTJ3fLiaC8aFEeqHpMz+HPdL/0MpKwW+uFisb7uFYu3M6JQj/Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6093112000A
+X-Stat-Signature: ye7g35o16xbfhsyjc7xwy3x84p8wo7qf
+X-HE-Tag: 1784549045-942145
+X-HE-Meta: U2FsdGVkX1+rpb5FEJQNKg3IblBKgd1tDsmSlhWNLQHyRB/jBt/fx9h2bBoVwNXFK4iWZpnJNbd8N2xPcrwxZ3adVP1AlR/b8g7oAIlQLpcQD0wzKNjPIb+8EoTCSxrqYmIfPPW3qdIglXZVTtt56k/w7KH42EuoYAtotNPzwpTzJ3lIBuRRlaCQ7XAmbjJHdwMxrcA+WDakRefac4Tnt2a+PSrnMUP3OL040unNgmXiyHmfWFUQkKj2f/8hMvw4eLZXgD3B11HIUUY31X7p9mcIw9L5cHdabqlzdimbOe94awtAb72TTpBJl6EA/JvdxQ0vMWOjrbJfgdbvtDybRF/NrtDjyj8M0enOYi5ENZDoth4z1G7g1r2hCNF2KGgQfMNIMTpm6dY6DvB393miWjnLYKZfrb+HWZk9eWhUOsvDf2gF6dFpPvcOgzmM3pR4nfIK0KjRVu11nmj8clCNITQRsBpp0HduOHGSf3KFVRNxwbjWCf9uYzrq+F7aS6OXoJgUbIHfe0ArDSHcNGdBG0NUiWnhw+HDub1sxOR8t9A2KZt40fTiuUeUDFBe2vt9W7gCsZKtpch82puKmWa33VK1oixj2cmzAFfQBbHiCp6mVm2NeC+bW75rToeRNOjQVuY6GObwrxZmC1CCoU2Q8HwX5MDL3vkn4NWlxmQdiSi8EdjY77jf7KMdgM3L88e6X/91JXJC3Op5B0j97jyL1EXEzrCB3M4Ll+xkMnGWZgsbCtMdAsnhqa5mBrrW2Tabhp3W/Xs/nHfWe72xXGdjrMAYSApUxggZHMJc/+wOISinB+GqJSCQHrpRvxZOkwjl2XNvRy8ewI7XvZmauklBR54bAWCYS6GA3jjghogKpbAWYw1MxjjmW+2jVayBoYe8XOp/ZPl2wvuGoqPEbFhntgUn0+rUyhNTk/b7MjmqeSxak6dFeQz7p4NSvlOZBvBBSdOZtcADmvI5i68xg3c
+ ZPKafLpR
+ 9ghXtvNDZG84IIPpInpE5EuwVmgpqQeyUEQdbjP4gNKF9ef+nXRLMzfhA38iH1ABofT5DXghl2+qHGnfyQDzhrP/eAEPfawlq/MMruBR4bdNVSoH7ceHtfQh5P9acBX4pGBs1wgKzMQUmdNGLHBazdg6y7Pdw4Mx7Ui3hflxtWnBUTHpxJ9JRLcU7YwPaD8FAxWRWATkDJxj4Y7pQIK+1zk9sALiiOyun0bx4fMKNglif2mXQum1GiWclR/6eYbtVHEcfp2e5xZOwn6AduKBzW75Qsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
