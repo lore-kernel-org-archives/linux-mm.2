@@ -4,100 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 297F6C4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB7EAC4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:26:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED86B6B0093; Mon, 20 Jul 2026 05:24:42 -0400 (EDT)
+	id 8BF666B0095; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E88796B0095; Mon, 20 Jul 2026 05:24:42 -0400 (EDT)
+	id 8703B6B0096; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC4F36B0096; Mon, 20 Jul 2026 05:24:42 -0400 (EDT)
+	id 78A1C6B0098; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B329E6B0093
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:24:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27528C077B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:24:42 +0000 (UTC)
-X-FDA: 85008620004.01.32798A5
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AB4AC20009
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:24:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	spf=pass (imf03.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 406026B0095
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:26:04 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD8C6807D7
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:03 +0000 (UTC)
+X-FDA: 85008623406.11.C704EA9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CDDF6A0007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:26:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hAqI6IVT;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784539561;
+	b=yn+BWj3/Rch0A9Hd4+pakDHDJJnjloXSVkneslqJbYQcpT8I+tzm0URgcLvm+2T918Z+nr
+	qqMlfPDNr4XQsMMZmcULgW+cpfm+TYtnHJGh6yF0nFIhGIMlwhDJj2xSemXemlj3f/x2fB
+	J/9yC8hT7WjquYg332j7ekecIHVmTHQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hAqI6IVT;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784539480;
+	s=arc-20220608; t=1784539561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=R0zr1bqamzT2qGYmUL4eh2Pe+oPLRxJPpQlwDfLCMUQ=;
-	b=cXl6lqDaDHEgYiFzUgbqFIct6Tu7e2GyaPzTZhySuZ5BgFJzTXCcYAlypiSp/rrDVvrD1E
-	uPQr1drPoZ2WSqlwdKKvwROPP6zghvB04mynApuzAARUGSVxYXVj5UmJsfLkuyPIOuCtez
-	KKZf35zRxH2FwXiXUvh81t1KpEGs0EU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784539480;
-	b=egwnsvy+be3xPK8fFAq+VvsyijkF7fYZMSkoyn+r0zVQQngLxTgsCLhhMjdwFBZOGrY845
-	ZhD7jJpN96Tw2IRLc+8U358gUmFCIvBRZcSlaa2kBZGHoPNM2Or7mSYS7dzJGvoMfKaiHJ
-	J7ViVN5QE320HF6On6QM/VavvXZsRfw=
-X-UUID: c762971e841c11f1aa26b74ffac11d73-20260720
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:067bea3c-795b-47d9-b4ee-297a79d01cc8,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:067bea3c-795b-47d9-b4ee-297a79d01cc8,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:be2d59487f0c83131b6ccef6496139c7,BulkI
-	D:260720172146CJUOA45I,BulkQuantity:1,Recheck:0,SF:17|19|66|78|102|127|850
-	|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:40
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: c762971e841c11f1aa26b74ffac11d73-20260720
-X-User: lienze@kylinos.cn
-Received: from localhost.localdomain [(39.156.73.11)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1126628943; Mon, 20 Jul 2026 17:24:16 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	enze.li@gmx.com,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH] samples/damon/mtier: use damon_addr_range consistently
-Date: Mon, 20 Jul 2026 17:23:55 +0800
-Message-ID: <20260720092355.237599-1-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pxwSkCk/NnriA4A8tW9ob3/fT1s1G4BD/0LrELXEBwY=;
+	b=yQE19tNwtQXhBZGr2OWYkNJylGnxIWlsnjPqbnBe94Kz8ZGMCA89Pjhpj5sbky8ScL04ms
+	1ia3nqSz1zYiJEw/IpKGhT5PkEhKvLltl+fSl48QfTbPsrHXnMuUvlz6QKQD1pb5zCxM/k
+	nt/q5GiyvO42oerKDO3o3IRmqwSBMiU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F285C40897;
+	Mon, 20 Jul 2026 09:26:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1651F000E9;
+	Mon, 20 Jul 2026 09:25:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784539560;
+	bh=pxwSkCk/NnriA4A8tW9ob3/fT1s1G4BD/0LrELXEBwY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hAqI6IVT5rqOoth90nx/dm6qyA3QEwJSVXbD690fTVlV3EXYxyMq2V1xAPBKjF9So
+	 6m1gEolrXPP19tyK8R41Xgh1AxEuHApw2acE9goffXNdOWL6lzkOqHD3GFsymxB/ug
+	 hxSvOrD0l2SsoNxtgcsjHaCoQ1NoB8FcYAuQPYR1po2HUaq5oS0YXXNh/X2Z1E2P5C
+	 fcO8q7jt8ED8D7Qcag0Fh3/WiESNGjLDgBlWixXXXgeC/0IPXTXPNtgjGNvw6hx6fR
+	 Sp4nkhpABlKkHh02WFESw0m+yJhFuDnsvmrCwP04oKioN0sxmxCPSehNe0K3er8fYL
+	 I96hMu5s4DGog==
+Message-ID: <5b37358b-cd6b-47aa-8403-4a24fe105379@kernel.org>
+Date: Mon, 20 Jul 2026 10:25:56 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/6] mm: mincore: remove special handling for VM_PFNMAP
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Zi Yan <ziy@nvidia.com>
+References: <20260717091347.1144789-1-wangkefeng.wang@huawei.com>
+ <20260717091347.1144789-3-wangkefeng.wang@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260717091347.1144789-3-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rmz4wmazjngwf46z7g9ke1y8kgffaekj
-X-Rspamd-Queue-Id: AB4AC20009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1784539470-248546
-X-HE-Meta: U2FsdGVkX1/x0It4E5+5C/1FmIE+cKjZKyGukV3Am1ni5pPmRigy1ajSkY6k7Vjhg5X49VKnNxsx97p5HT/cPFlvKToWsWzsqWtDuB+zFRvT8lv1ueO+VOxjse6a8UYVrONpHfo50qGJLDAlQrMo3noBh0+dezUBSasfBmaCysn4KSn8HA/X5IFEWrQ8ePmFA1a1nll1OrmAQBs5i1drAws0i/vhPW9Fw0+J3tCNHNp9BlkhIfO1le6Kn3CJQrGsAUAc9dfOh26H3rPCteN1zBbJJQ7S3sJb3MwkqkZDCmk9n0dugpYbwfsRnWoK1DavCmsJMZR2huH1fnN1ZZMkTgBcvb2xm7QN4ajCYUwAbxjI/on4TU6QoVp8UwtlTvk0rMNhyqpnvcatMSDDxyWHlFAw0vXX9Rbg6sV4ErQ9KJzipuL7cIcU1pCzyKfbgbA86DqQf5f0A5m852kQNaO9swhLzOWmwdonmT7ob8y5GcsClGQi2u61tgVHxjubiHEtzrKFMSSr0IcXZYqEDYWZr2rBRumoy/GvI6FDRe7SJfV/MOZuezb+dkWkait+pVkSiZiZCDSAq2/H55dvF9LrSkicp6mO9GFTyULeY0RUYh9CbY6tkpH3d5xf7awf4HrUl8nxMWoXQLvrdStlbmx+gSdi/v8g233WaYvreK7f1W/j4gQG+0linLxx2sDVuka356Oe32X2T/n4SzI7gyC4SuuRXhwYJTqU2hnF8DpqUyhkWf9hppw9OUrBuNfr339CeQ76VuPxWx/U2YYRmD9idaMtX4FujknkIRRVp687DISQTuFQk4lMZpSxZLdMQUAyywmKenm2m7zQFm347GDFfj27CF4LfXm5zhtsiVHEjoLQ0vCjnEOv8FflUMtpmGLEbgM68kfm5ciEs6ybz3wzPtCsrd0L/HZ+ZzsaCcMUSzXnLBlKE0cGcyCpNdJmU7PdL5y3A2FW/TDz3EfM7W8
- DeN7uivK
- 2XlmTkAYBGpHBUmSoVDuNqxefOmiytQ2L6rcpaQQOZ2MFunk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CDDF6A0007
+X-Stat-Signature: h7waeow85zqirhbgpqzfr69rcwbh856d
+X-HE-Tag: 1784539561-417867
+X-HE-Meta: U2FsdGVkX1/wEiiaxQw7BNztYoxyqp5cQa005MaAP9eVEsUpN4f3R3h//zja9hkaoONMeRgc1PrdTW/zNjXAQegWGA1WNa5QVHR+WMlcAuI2EiHrzfefAuBAvRsTW9v2/K723VU0/SMWlszaavFd3D0mTXTQD50WnLqzYTfplqWkPUhcY1cJZDbWmaHk2uLRkjvhrKwdpZJVbgbSGEf46GxhR7qIdiBBVotFlukHoiZKbk9YMtsW9NeYsjlD4T820IyIDukMt/iW4LTZ7XCXMI1P0enhgVKnEXWE5ZVhuc8ivjgbG88csyf2dMV1idz/NxHCsvUwivrj/MDpTckPyVJJXoFOT83aKexAw1gEUcZdjjPDqOBNw7CyYqNProuioaYkrbH8G8kfOidnqY+PL1sVBDaB1qRuv3PEDd5+5nI93JlCYjhZQ5dpi9sBXOjuBv75Xo9XiTGt8B3bJ1umRPg9nCpGaqJrp/4mZWhWfGdphwSKIolnUBSBNxp9esLzaf9jFkBE/SW27EzkObnMWB/AJmyGr2HQi1Z6A8ApZu4Jeil+aQ2uZDttJeaTTyrVsU53/lW9+77nY81at/+Tsu5Fdjl3mV1OJWyRUnKKWVbafJYe34iUp+/iFM8jWf2GSf12gyLw4C0u0cOUmNppYIE085Z6wrF0SsyVkizKXwFKpgsPESfZji0Jq56t4a7Ua8U/pCGVWmkxxAH6y1HYAlZvGVA09l5AmQNMYprRfmlohzVLQrynjmFQjvYDxKxxPY5lPoUssKD0S+xPWiW/fxyeH66zVer/Kyfbbpb83jxyGXniVUg81HAg+efzstqQBZPJj4xW9mA9AAb0xhFnLmekWmLDGUdsIkvN/S2wBE5LCKtQPjbk0gRYQviHAFP4P/qDR+7BKKhu1E7GogMSNUAksMwRh2Qo82Z5rO1ZYvrhNpUipdw9YR74xKDDvl6Jd0Yre2NXaMCXnfa9bGr
+ bqjQLqgX
+ 8MqiTSnA6a0fdbRTafMS3c/Y98DgIat98OtmipzmnkrKcLL1o7KbaAzd8kRzkR5G23Aln2DPciyrIRQt8/Auqd7/QhqLHxkysSO/GePbEm6+GJUHcgq5YsNGTJWBe7zCBez6wpiratM5eouya1+Q5sl9+h0CkNOa24yDftuN4FC4PClfWmMU8ni+1K5i1iosbyzOjdwBQkJqBx6FOR7xH5swDWhrBPy5+X7kYzdJLsAXAX5Iyi5N9XEjM+N4ApM+JzW5d7jWmcd8xIx+kttw1AiGAFOh+XNi4fQzUJ+rQ/GLdEobv8h+brvK0lCFS7g72yydAbqU7d7G02aDTwi0zzXzaNho3HRxu8LvfUF/fOiYUHcOhvESLXsN/MezW8qV+56FM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,51 +141,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The DAMON provides struct damon_addr_range for unified address range
-management.  However, the mtier sample still defines a local struct
-region_range with an identical layout (start and end as phys_addr_t) and
-mixes its usage with struct damon_addr_range in
-damon_sample_mtier_build_ctx().
+On 7/17/26 10:13, Kefeng Wang wrote:
+> As David pointed out, "it’s hard to believe that someone depends
+> on pages in VM_PFNMAP to *not* be present", so remove the historical
+> behavior that always reports VM_PFNMAP pages as non-resident.
+> 
+> Adding mincore_pud_range() allows the page table walker to traverse
+> the full page table hierarchy without splitting a huge PUD, enabling
+> much more precise identification of resident pages in PFNMAP VMAs.
+> 
+> Link: https://lore.kernel.org/linux-mm/0e619d71-1c3d-4534-8376-2982c7348c31@kernel.org/
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  mm/mincore.c | 24 ++++++++++++++++--------
+>  1 file changed, 16 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/mincore.c b/mm/mincore.c
+> index 53b982803771..3fccaa5c96f8 100644
+> --- a/mm/mincore.c
+> +++ b/mm/mincore.c
+> @@ -160,6 +160,21 @@ static int mincore_unmapped_range(unsigned long addr, unsigned long end,
+>  	return 0;
+>  }
+>  
+> +static int mincore_pud_range(pud_t *pudp, unsigned long addr, unsigned long end,
 
-This patch removes the local struct region_range and changes the
-parameter type of nid_to_phys() to struct damon_addr_range.
+s/mincore_pud_range/mincore_pud_entry/
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- samples/damon/mtier.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+> +		struct mm_walk *walk)
+> +{
+> +	if (pud_is_huge(pudp_get(pudp))) {
+> +		int nr = (end - addr) >> PAGE_SHIFT;
 
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index ac9c24b92ead..67f20b52dc7b 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -52,12 +52,7 @@ module_param(detect_node_addresses, bool, 0600);
- 
- static struct damon_ctx *ctxs[2];
- 
--struct region_range {
--	phys_addr_t start;
--	phys_addr_t end;
--};
--
--static int nid_to_phys(int target_node, struct region_range *range)
-+static int nid_to_phys(int target_node, struct damon_addr_range *range)
- {
- 	if (!node_online(target_node)) {
- 		pr_err("NUMA node %d is not online\n", target_node);
-@@ -78,8 +73,7 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
- 	struct damos *scheme;
- 	struct damos_quota_goal *quota_goal;
- 	struct damos_filter *filter;
--	struct region_range addr;
--	struct damon_addr_range range;
-+	struct damon_addr_range range, addr;
- 	int ret;
- 
- 	ctx = damon_new_ctx();
+Could be const.
 
-base-commit: c872b70f5d6c742ad34b8e838c92af81c8920b3e
+> +		unsigned char *vec = walk->private;
+
+Might be able to just cast that as part of the memset.
+
+> +
+> +		memset(vec, 1, nr);
+> +		walk->action = ACTION_CONTINUE;
+> +		walk->private += nr;
+> +	}
+> +
+> +	return 0;
+> +}
+
+With the rename
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
 -- 
-2.47.3
+Cheers,
 
+David
 
