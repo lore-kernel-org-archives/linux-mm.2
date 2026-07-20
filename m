@@ -4,96 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36898C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 03:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF65BC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 04:35:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8C726B008A; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
+	id 8A59E6B0088; Mon, 20 Jul 2026 00:35:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63466B0095; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
+	id 856976B008A; Mon, 20 Jul 2026 00:35:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDE346B008A; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
+	id 74C176B008C; Mon, 20 Jul 2026 00:35:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 85AB06B0095
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 23:55:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF6D01A0271
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:55:27 +0000 (UTC)
-X-FDA: 85007790294.21.59F3087
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9C6AD80004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 03:55:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="tSyM/jk/";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49CF36B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 00:35:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ADBC3A087E
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:35:50 +0000 (UTC)
+X-FDA: 85007892060.01.F671805
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E7AC71C0004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:35:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K+XZc51l;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784519726;
+	s=arc-20220608; t=1784522148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BeDXJ1GH6u80+km2Mx/ZY9/6+inc9EkBSDAiip49A38=;
-	b=Nn9HVim5LcI63yqamo2rFCpgs9Mn4pkZ4oUNaw/sjeU96zr3eLH67uXSo4W+q1q60jrKoj
-	/kX+eLV9ykCTZELwQ89coWVAYTNGE1E9eUDERhxCn/zFKQ4A9LhiF3vb+joxaQIs8AgTal
-	jYE2ml+RSqWlSEw/ZB8Fkgai73Wwp+E=
+	bh=mdWX6Ff2gVM1G5blx3T+Y3zQJjFhvHV4u/q40zy5x+8=;
+	b=JGXWV032XOb+isLOtk9D5ol+CCRxwJ+Fad3Tx5mRCOj4YJrItMqtqV/hfReExwTndsc1vH
+	Nl7+goJrhrr2PMVh14L2hznd/Jh0TOHsYIJJUTcbpel7B0eYKw2+w50QUaxfrPTv94k8wD
+	MaKnKrBsFs07U7r5z/UAGCHenq5A+9c=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="tSyM/jk/";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf30.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K+XZc51l;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784519726;
-	b=ldGWakNOJh/homjxLIkUCmWackEVFmy4RIccqCqo+IIS6g7goxvOQi2iCHA6K8WepyOfh+
-	bQGe82QPh95TCW2WGPy3CqlhxZ74Ur1y+Eo02TPhb0YJgAa6F1H2ZbQxNeGbackHW0MMJD
-	lShaV7P4LeZFtR90ZOHXzPPEJo4WAPs=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=BeDXJ1GH6u80+km2Mx/ZY9/6+inc9EkBSDAiip49A38=;
-	b=tSyM/jk/lOLlTHOcSgyBfEdncp3mh7QY9+QjM1ylC7ywQfjuqYHXBVEHdTvvaO3P93AsAOf7E
-	BTFeabim1p3C6Ze6+b0dZ97a62cYRelNCOFvXl3nt3HK9hhwU3LZGVti/trKuNsCOAHdPBJSnij
-	gNBnODcPdv84ZMS1YkDEP3Y=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h3RJ42rRHzcZyH;
-	Mon, 20 Jul 2026 11:45:56 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 11A9D40575;
-	Mon, 20 Jul 2026 11:55:21 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Jul
- 2026 11:55:20 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <akpm@linux-foundation.org>, <ziy@nvidia.com>, <david@kernel.org>,
-	<luizcap@redhat.com>, <willy@infradead.org>, <linmiaohe@huawei.com>,
-	<svetly.todorov@memverge.com>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<tujinjiang@huawei.com>
-Subject: [PATCH v2 2/3] fs: stable_page_flags(): use folio_test_*() helpers
-Date: Mon, 20 Jul 2026 11:30:20 +0800
-Message-ID: <20260720033021.4091944-3-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260720033021.4091944-1-tujinjiang@huawei.com>
-References: <20260720033021.4091944-1-tujinjiang@huawei.com>
+	t=1784522148;
+	b=AOC9iu+0uUUbAzso1ngbhewhY69vTq/MNX26K+87SqKRDRkakSQVmhW6aQZbu7/hmU1xIu
+	PtF03x0fa373M5am/5xn7pttnbJ/4MY87voYXX+K6Hmu5DMQfa8TnvN0AMUk/8yFF2HlOu
+	iv/GCiWO/2eMV0qyW6VKBFFfGnL0Fkg=
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8423f236418so4804446b3a.1
+        for <linux-mm@kvack.org>; Sun, 19 Jul 2026 21:35:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784522148; x=1785126948; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mdWX6Ff2gVM1G5blx3T+Y3zQJjFhvHV4u/q40zy5x+8=;
+        b=K+XZc51l5LK9qXNP10DaCx6dLwpikLAumpFqKDdIQZDIWlEPJzALJlWCgTzhStDvyc
+         osSE/p2p/dV1F26l+bsHoEk5347T3q7zlvOtRtnFu94CQpyNsZxdKvupmDQw/G2Z1bff
+         e6F+qaCWeIQ/rLO7OJ+qS+J8IVh55fwwYEE/09Szkz65v9bM7s8NifM9o2eE3HXyZvUz
+         LJ3CoWWlcBhV07czoMwR/dBv7z/uvIMl8VnQE9GlTGg3ljjPgPYzVXyti0tn6a+r3EwS
+         YiXNk8+KFbDEt/DVNaf7J7zg67xQBUd/xOxgocaoQ0LJFl0XuJsvgBShCcTfyCUX7q6A
+         7GPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784522148; x=1785126948;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mdWX6Ff2gVM1G5blx3T+Y3zQJjFhvHV4u/q40zy5x+8=;
+        b=IDblL5RjbcjXMo5bP0mKueXolTEaNKCeWEwCJAezHLQzoHJFh7frthXKlkzcURZ3MA
+         TSRTb0M3yzZcwlwY5LpAiNt4g8t0OpAAViY5LtPQa/vsMjBA2u1WqARSG4q9zAKliwqI
+         DPbunh0TeKRq9T5RumQdVBuUgd5vPnc9yooyk1xHw1m0wfH3JyEeULCqoDVNHU1SQH2g
+         SMyxioJCBnZyqyf+k/0N6eFk/inikxluG0YRX2YYr9NPwKGnn4GLy4QNJkH8h9e7RwnU
+         KM4Sr813TZ6XnmugLKR6qfil59IlEwKhF3PzfvmF61kQ3tUFy0MkzIeN3uz2T/o8WANB
+         w3DQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpl+stLGSn6Z0JTCD3DvBCnq4Xf4m9t2GAUltAxfVKkU56xHUyJRUTRE8FkmfNXBJNF9HmcdoJHVA==@kvack.org
+X-Gm-Message-State: AOJu0YzBM9SGsftDt2cpdUUOHTLZH9ecY9v8wpU/eOord6Or22KKNldN
+	Eay6nC5vkm9EZTygHYow5qLkx9l2gx1HEnIPpB2WmzIqOo+RIxoqeqtl
+X-Gm-Gg: AfdE7cmXDlPQ4XH5kfV5ljkEfC9zPTgvf5vkIEPWcbipPJ5qG4XQtBfvvCe32rjxu/f
+	BhT2fCyngJ2GtssPlOTCkBdqYr9WhPKvF1YJiKnH3x7/31ezCqgfU63gTFZEhDvxyZubYLLoriM
+	4zmWq3rUndIeL+ju12GeJYSbabhgyUeYj2XMcW9V/2hmfc0oYfVQJWXv8oBRE0d88GIsutZa7JN
+	U3j8U7hMFN2NlRW6fsS9m+wGA8GdyZdYU1dFugpRbZZXoMo+1FfKnDeHB+meOazDrdAGEC+dyZq
+	dBWOEbYmftkL3MidJKUdBy5mU4pzAVYilYEDnFxr7DE8RQ5efCj9UpyojX6+pS/lze0NDTBZ3Zl
+	kR7HHtRq1bZZWNT/345b3pG9xIz3ss/WUUnO00RlWFqwJEnJ5Z6KqgKewEYqBTyTqDz3DqsZLx6
+	GwvWy2nTmewvCraJpzi+yX3L+d0UGqiiMs5D/gaDQH7qUtw80=
+X-Received: by 2002:a05:6a00:3e29:b0:848:7fea:93aa with SMTP id d2e1a72fcca58-84c292a0ec9mr11937266b3a.21.1784522147429;
+        Sun, 19 Jul 2026 21:35:47 -0700 (PDT)
+Received: from KASONG-MC4 ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adcaa0bsm4970874b3a.20.2026.07.19.21.35.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Jul 2026 21:35:46 -0700 (PDT)
+Date: Mon, 20 Jul 2026 12:35:40 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Kiryl Shutsemau <kirill@shutemov.name>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Hao Zhang <zhanghao1@kylinos.cn>, 
+	Hao Zhang <hao_zhang_kdev@163.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, stable@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v3] mm/huge_memory: unlock i_mmap_rwsem before releasing
+ after-split folios
+Message-ID: <al2b9eCBD3Rip7vk@KASONG-MC4>
+References: <20260716095424.471052-1-kirill@shutemov.name>
+ <20260717195851.609269e143b4b9eb857f2a6a@linux-foundation.org>
+ <al2XTQLWB12sJQG5@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <al2XTQLWB12sJQG5@casper.infradead.org>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E7AC71C0004
+X-Stat-Signature: 7gezsz31jfmbz76kzrtimtm1n3ppj7gu
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9C6AD80004
-X-Stat-Signature: 9ptu55s8535u9tq8j1ra43spn5fi61d1
-X-HE-Tag: 1784519725-928693
-X-HE-Meta: U2FsdGVkX189mE+Ryq6CnnDVzQLVJ2njatvDF0psWOI+8+giPb+B8l3AlgG0Nenex3RuUkt2JB85Yg7nYQRb1cY9ldcBKrGvvoH0y0UajsyaOPZrpRv9AACD3D6Op5Ygd7reGacx8Sy+hUWAJDlQbBpoFCAslo6SToaNHydVhDEExXRXg+yxx2eDr4JNlmj6iZ6eowy0E1Ladn9n2p117S3+GxqQl2ZoAnyrUqHi6c17Cf+jhQrGl0ZkKPFCykORnVftsWVZh4+lNkH9UMkhsPEov3ztZP4Cwx4EltxhBk1blk0t3Ny3XJS6LkXdY3uJ4ZrHhjVetnRyj/DZJ0GmWMSzSbiTxiMllRGjsbiDaVrARLjM0oiAdxqn/Epo6VY16o8+XTrzrgv8RI/nZ9VfJDgNi7ulJmh07gqZV4EiwaL0etMQHyIwvGa8o6fT3+1K4gtctDzIMk6dHLPmXL0JAsa13RPmSnYgtH6Rbve1RCVWSx1wZt54pQXLfRosZwnbmC9VTFU88uS3Dz0pDlRyAz+xqY1Zx+g1l9RvJGDkENUTQZ8pIwhH0O/y1/HJStrtXML39M8YrKacx+0uTkRZhIEIyLhgCJkSKJYsD2idHMFvY/R4rHso1aGebf57hF+1ZyJJZo7gN3SwXFn8h5lsiHpnXsWIuH0BPdYQCw4cx6BG0Tvo/d/3h32KXMO/RxpDD3iLqgmNWmERWGn+/4xVxn9gLuYxeYkTRb1V04WuD5D1Lb50XjcqbwLc75MpoSfH/wEQIzn3n5nH3w2nJJFwnkeR8u+INuxHvHKRdBIFC1j82Y4mWtC4J/q7pomfhnPwn1I4JpMDnjsCedCewBBmo091Mu3uPCdHBkYgDyufCA4i2PjZJBVUILdwK1mU834Q+FvjH8AQw8Lp/wrRMRnTv+EmthxQK+s8Q4AoaWdI8bfTCRApt0LjkrcmYp4JULDPnmEEudBvWhqr1C7kx4V
- 0+6kFNW2
- 6ERN3bkdAIDKAGE93DpgymZYm1dxzEy8TXXSejbS+nLYD1c49xjp2bLzwceTRMKDEXlp4pmgSM6ZfayNjSBb9oIFAJA61rZUumvS5kCNqcuJdMaE3bq7FgomL/8X7eq5f+IhOtVaXNOK3vyDTnJChzZPLOIPFGnzNSFCFVYKMutZvn6dM6zYOUIpcBLVj8tXV/jtEDWK0gnhbnqs7jRHeIGwiDUcSEAitGZSLRybgRhia0iVRlG0eSx4Z0P6CZsMql2vBOLhVmRm7rQ/S0ZlHBTJh8/+wKE+M/GotUZ5EIiDQ4o1oQimSppWwlHO6U6wIyw99ZIiDIlfGetLMT4iu8dhQRw==
+X-HE-Tag: 1784522148-701291
+X-HE-Meta: U2FsdGVkX1/5ysBEmIkkqXWc7JWaZwJk+++3zfBTk408JAI5VAfE6zRAKqlgV7iDsOeKl9oiUdqbg5M3BJCsd2TGyylSmF1pfWC6QlfSxmH3+0x6ujK2bnsCdwI6LU9o/51ihZJq1korI2+NbaZV7XhniKG1HmAb1R7xHU5y0gQxbe9W7evuzKkxukTPzXwU9bABfnlqFqqmwzfJ0cMku1eQI5+m3r41GZS+QTzjI479+A8uK0jI56js+lCpP0rEB2PWoGh8AFmF0aQuppVj4bDIu5K2xJG5YSGbI107iD1hNl+3k/53tURgRGHUE5FpeMZziNsnc5UOafekQVPhMnNKArSuNdC9fd9btZuYNB7tDNGVggnNk3VhNqLj0ZQzBLHOcvsYXJkNNW2iMoeRAczQrTen5mu7V+8EgyPDyG39ABmO5UGa4y1Gn7kz+E8IUrtEMnbUBYNNWc/cdq847Y/w50aFvbwI3IMoUSodxGgjhWXi2LFAQyRsu2PgoerHDuGzZQNXUZVhmHRWVnreGPytAoqO0tbMrFka/coik88b1y4TYwTGqjt5wg90rdk/uZ+3A9e8+eg1j8LHpGiIa72Tc3D5Z4Kw4Dbi2p0N9x+R5t8uV8Tx7DodG6OyLs2fowr8UkYeyYBcpKIS9/yNObvgb97wRY5HZnPWXMG0O57O1UlH+AEoOvMNNcWZqURJYblQPDXBpP6viaYJ/hLcRU1I+MADwT5yN+G015obcgd+bdPBH9cXNvvcPIPOit8DRWiAFG1Exps+b37u5caDzlqPuKawKPAFi73R8PoZqIPOE0xQ/P73ZA5pp3fXeQfh5aiaSH91jb4+e9Pw5qJBMdLu8HXLDgX7MYZWlQUtK15z9ZQ8g3uE07eN9h4QSBnuEj40RF10zg78A5HoT8ezOtC0L2MJ6tYZfP9zQNSd8kvI0Jg0DO+f0enDMS61XrSSCOYJ53tUnJIbHazLza0
+ VD0rl0Nu
+ ufYqQIHj35XSXCSPy4/WMIvMPE7qUa5LGYzME/v0eAXt4gi+iCjGMS7B8yPcaMvk7RNGJ70JG29CpAVusJLHRvAgZEyP6rlrTxVHJTbd3poAOH3W3lbwuFa7fqnyty7uZYVIlFL6g8yqToR219pBR5qggSv4HoD0H3RxWKGDpWYjkdcrRgCvOApYndp6dkMNPXJRBE3U4AVQ5e6+Qfn9TJlVlHguN0uffRV1pHQxtLSnzFCbLd2lIIEAKRTumkbEyrnLlM63Ki1Gk88V5TykctfcIw+G3vV3hiXyz1ldkD9rXhDsCYixCoAjKDRjHmNNapOhqdXOUUQE7gP0MNXbRnq/sDcT63fBknnkWKjcG7uIS+JNDg4f7j4VTY9jODF676vGeCtQYbC1Qxxrx0OvaSUBBa8jpon/N1sbdhCeLZmedEaHsyvr/JepCCWSShcvHMYnvjxjn0hCyCP67KPSJMh5ofH/J6bmq6ksyKSF/y7ifPpD1XrBXakAALGGQ2jTCK9Sz6KQsl3wVp8FcCLZXvzBb/QUovkzwhj41RcVxF2ih0kAr22Oxhqe87A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,87 +129,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 304daa8132a9 ("maps4: add /proc/kpageflags interface"),
-/proc/kpageflags directly operates on page->flags to determine page status.
-Later, commit 177975495914 ("proc: export more page flags in
-/proc/kpageflags") started using page helper functions when exposing new
-flags, leading to a mix of both approaches.
+On Mon, Jul 20, 2026 at 04:34:37AM +0800, Matthew Wilcox wrote:
+> On Fri, Jul 17, 2026 at 07:58:51PM -0700, Andrew Morton wrote:
+> > (why is mapping_set_update() a) a macro and b) undocumented?)
+> 
+> commit 62e72d2cf702
+> 
+>     So make madvise(..., MADV_COLLAPSE) also call xas_set_lru() to pass the
+>     list_lru which we may want to insert xa_node into later.  And move
+>     mapping_set_update to mm/internal.h, and turn into a macro to avoid
+>     including extra headers in mm/internal.h.
+> 
+> Take it up with Kairui.  And whoever it was added that patch to
+> linux-mm.
 
-For tail pages, the original code did not return corresponding status.
-commit 0a71649cb724 ("/proc/kpageflags: return KPF_SLAB for slab tail
-pages") and commit 832fc1de01ae ("/proc/kpageflags: return KPF_BUDDY for
-"tail" buddy pages") made tail slab/buddy pages also return corresponding
-status. Then commit dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
-made all tail pages return the same status as their head page, except for
-hwpoison and mapped flags. It also cached the folio's flags and operate on
-the flags directly to avoid concurrency issues if using folio_test_*()
-helpers.
+Right, I initially wanted to make it a inline helper, since this function
+were a macro and later become a static helper, so it should be super cheap
+in the hot path. That requires to include extra headers in internal.h
+and that looked a bit more uglier and every internel.h user will have
+extra header dependency. Moving it to pagemap.h also looked confusing
+along size other mapping_set_* helper, they are completely different
+things, and this help should stay in mm/.
 
-Since commit 476d87d6a061 ("fs: stable_page_flags(): use snapshot_page()"),
-we can now safely switch to folio_test_*() helpers instead of directly
-operating on flags, which is more readable and consistent with the rest of
-the kernel. Only convert cfolio-specific flags (i.e., anon, ksm, swapcache)
-to folio_test_*() helpers, which reduces redundant code. Keep others
-unchanged due to they aren't folio-specific flags or coverting them doesn't
-cleanup.
+So I just partially restored how it was before b64e74e95aa6, It was
+never documented though.
 
-No functional change is intended.
-
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
----
- fs/proc/page.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
-
-diff --git a/fs/proc/page.c b/fs/proc/page.c
-index ee39b321f1c6..b3c1d7a7604d 100644
---- a/fs/proc/page.c
-+++ b/fs/proc/page.c
-@@ -148,8 +148,6 @@ u64 stable_page_flags(const struct page *page)
- 	const struct folio *folio;
- 	struct page_snapshot ps;
- 	unsigned long k;
--	unsigned long mapping;
--	bool is_anon;
- 	u64 u = 0;
- 
- 	/*
-@@ -161,19 +159,16 @@ u64 stable_page_flags(const struct page *page)
- 
- 	snapshot_page(&ps, page);
- 	folio = &ps.folio_snapshot;
--
- 	k = folio->flags.f;
--	mapping = (unsigned long)folio->mapping;
--	is_anon = mapping & FOLIO_MAPPING_ANON;
- 
- 	/*
- 	 * pseudo flags for the well known (anonymous) memory mapped pages
- 	 */
- 	if (folio_mapped(folio))
- 		u |= BIT_ULL(KPF_MMAP);
--	if (is_anon) {
-+	if (folio_test_anon(folio)) {
- 		u |= BIT_ULL(KPF_ANON);
--		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
-+		if (folio_test_ksm(folio))
- 			u |= BIT_ULL(KPF_KSM);
- 	}
- 
-@@ -225,11 +220,10 @@ u64 stable_page_flags(const struct page *page)
- 	u |= kpf_copy_bit(k, KPF_ACTIVE,	PG_active);
- 	u |= kpf_copy_bit(k, KPF_RECLAIM,	PG_reclaim);
- 
--#define SWAPCACHE ((1 << PG_swapbacked) | (1 << PG_swapcache))
--	if ((k & SWAPCACHE) == SWAPCACHE)
-+	if (folio_test_swapcache(folio))
- 		u |= BIT_ULL(KPF_SWAPCACHE);
--	u |= kpf_copy_bit(k, KPF_SWAPBACKED,	PG_swapbacked);
- 
-+	u |= kpf_copy_bit(k, KPF_SWAPBACKED,	PG_swapbacked);
- 	u |= kpf_copy_bit(k, KPF_UNEVICTABLE,	PG_unevictable);
- 	u |= kpf_copy_bit(k, KPF_MLOCKED,	PG_mlocked);
- 
--- 
-2.43.0
-
+We can make it a function for sure, open to suggestions on this.
 
