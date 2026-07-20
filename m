@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF578C4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33B55C4452A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:17:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2CFB6B00A7; Mon, 20 Jul 2026 10:17:11 -0400 (EDT)
+	id 365B16B00B2; Mon, 20 Jul 2026 10:17:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADDBC6B00A9; Mon, 20 Jul 2026 10:17:11 -0400 (EDT)
+	id 3166F6B00B3; Mon, 20 Jul 2026 10:17:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B486B00AA; Mon, 20 Jul 2026 10:17:11 -0400 (EDT)
+	id 205BA6B00B4; Mon, 20 Jul 2026 10:17:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 77D636B00A7
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:17:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2F47A01C8
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:10 +0000 (UTC)
-X-FDA: 85009357020.08.1E0002D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4E26380010
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIzxc26D;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EDF486B00B2
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:17:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E3921401B9
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:37 +0000 (UTC)
+X-FDA: 85009358154.16.556A4AC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BC7B41C0010
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:17:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AbSIsfXs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784557029;
+	s=arc-20220608; t=1784557055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zNnHaVXxj/mvFCRCqUFR4sjoNHHhPJC/qg6efDIn92M=;
-	b=uhbjMbNbBgDkhnE5J3oUbwLd0ZsMvqkb1aNhuAYk5wQst6MaoVRqIkJemZHHYPOUU3Tkhm
-	dWitbbQ8hIfy/V2djVExMpEQuUcq3/MQvLbVtU1MmxGFoJazzj99xw9dP2Gri+32fAB0JG
-	kYOpvQs2OqjPjxTCY99Dk90Ai1gq+0E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784557029;
-	b=KUdjNABzdKfJ/vET3hYRPzskRCgaktHSwnXfCe0tfpNqyjPgq1FPIHA8bc95OHndQqMCXM
-	Vu6gqq6x4m7Su4MwDLHHBVOqrkNIRnvjapEWuSo93VI53WRTUq2kldSj+khH1a2NnF5eSM
-	WI7H3mymcgbCFvAa4A4cO2P8j9uTt+0=
+	bh=Bcg+lq4YYVZFe9NUBLJTEPf7ouJ+niHtp2yRG82CKTY=;
+	b=BdfGqxmoz3PxLnALQkQyAZgq08b2H7EuKbLyARWN+AIzp/jRIzLIHMHybl8BsAqizb3/j6
+	v02Vn25g2KKsf7o5C+osEKapE+Uo3G6Ihz5PXlY7L7mitWeoK879pyNXXe7xvHDt/DK5QM
+	cNDP8LRJRNIr6jUMkTlgcq6YoWrgQoY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KIzxc26D;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AbSIsfXs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784557055;
+	b=4R5JsP0hwWB9b1NXB6fdhrnd0nLLiPAiZHwxnobKCLL5HitnVK6Xsk7HBDI2LQvBmoieQU
+	tmlnHwX/fLFHiZT0Iu4EimrNU9VqBcBGV7EXvcuBvDj6erbWvtoguCvLJNSenU6nWTzOpV
+	b+lyIod/rPtEDknGUkfaV+2CnLfwuGc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7A9260A7B;
-	Mon, 20 Jul 2026 14:17:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080271F000E9;
-	Mon, 20 Jul 2026 14:17:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 180B4401CE;
+	Mon, 20 Jul 2026 14:17:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4E21F000E9;
+	Mon, 20 Jul 2026 14:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784557028;
-	bh=zNnHaVXxj/mvFCRCqUFR4sjoNHHhPJC/qg6efDIn92M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KIzxc26DhH1045e+ExrzClszygTXStN9ECH4U/XdwnS8Yusfg53YVrEKplbAB88oc
-	 4X+Df9BjB+OdTt+/vJnXkTl4OX5SBWervBjCoAA748KRgWIZhdBX/djV/P7R8F1YM/
-	 tIsk4nrzCIQ1zt8B/G5PRTp/VhZHNtwvuUhscDZsaHynVXz3lybUDVJRWT842UFc5I
-	 H8DRaiXxjTn0fWntsAXEQq0EPBS4RMl0wgaTYpU1fHKm1VIZAkmg2bjW3Em7oGJfA8
-	 LZT3aAjEa3WdIoDoB+W6P0Scq2wxGAktVuXYVe9SBwmjsnNgQS5VD5Cy3uV/D2FTaX
-	 MUHPhfGNWXbng==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 20 Jul 2026 16:16:27 +0200
-Subject: [PATCH v2 13/13] mm/slab: stop allocating objcg pointers when
- unnecessary
+	s=k20260515; t=1784557055;
+	bh=Bcg+lq4YYVZFe9NUBLJTEPf7ouJ+niHtp2yRG82CKTY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AbSIsfXsTm2pEHE0IhoMOmYWOzpgccCL+cwyYwc3EBZlQXevSkmZMQT9DAkyTaoN2
+	 pk9RzrmeBTk0pru8CDGx0ovU+nnAoy1uDCu/0gZ6Qchz/EEvumGNEmurbcl7NZtwvI
+	 AH+38QgBOeTbmyvU34y0y+97xFIBupMQgIR7QwSY0iBC7iAoD9C0imzhS9IqayGr5F
+	 bwjZHDhVguSrYLKNfB98zFH5AWMdDoTkVd5NAem2eLP0fwq0BFCinys1jVXrLIVYfk
+	 aMzp33zKlRIV4c+922gFHvpuE9PWmS2ZTt8du9/iZKNbOLiLc+ii3xHWA00h1J7Ufw
+	 rHlvqTYJcsR7A==
+Message-ID: <32ffd484-6fb4-418e-b30a-7e2344dfe35f@kernel.org>
+Date: Mon, 20 Jul 2026 23:17:17 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-b4-objext_split-v2-13-2fa7c6f60dbe@kernel.org>
-References: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
-In-Reply-To: <20260720-b4-objext_split-v2-0-2fa7c6f60dbe@kernel.org>
-To: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Li <hao.li@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4E26380010
-X-Stat-Signature: y8wof353nrxsixbba7sby7put1yz6btj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/slub: prevent pfmemalloc objects from entering the
+ barn
+To: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+References: <20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------a7k9JHHmnpHlPMfnRu0AhtCJ"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BC7B41C0010
 X-Rspam-User: 
-X-HE-Tag: 1784557029-325388
-X-HE-Meta: U2FsdGVkX1+Ck3X94yrvrV7M16Edit0QU7nwm/zyzpxEE/X4YAGueseys7wTAKBaQgPQAP4SnCnYwLFw6GoVNEn1ER3kj7BSKA71topTwErbxvmeZ9r1gV24eYWvKi4gPheU0VcHUTfcUSpQR+PYFwWmIlABOOcYljqYmkgyo1uTRepgyj00BZPzp/P4eT0HrxL0+t45GC1a1vUvghyPTdECaJ1EWVHer/5N2myRhiSyr51ufcIZB82x48JBmUPlq+ysYAkl8w2ai1PYwMKl4Kif9JZwSqGbOvNeaa1LA1v7SsC2CzrGhwNNGXvaFAb3WXKyslrGuxeeqrBflmxphtPD197x8FMRYW1V/qzXE6AYStHOGvxPCwF20KZsfam7eyd2XcPSbhjPWtTaaHcfZ0JyuTmGbgSPIG/AFF+OL5uYSsQhW4g1R1UN0OaPY6hqontussuTZ8Hi0/lBKkEajANMZI33Bntoexw6wDgC/16mkvS+pL5oNheHhonmFfOtx9527PWzpKTYlYh+E5Xabs3I0fRt/Xhi1LZOXKbzYyNxJTonzhokdE/g8aJnzzEDPCMDiFHj/vycvXxpSrzmwxCQ6xn9J2jd53K/LcHso4W41Gg8bwuI++WMm96Zl5ijTh3IGxE/W7d7WtyUi4e3P7SEBFXF6p1Q8HRJAyV0I8OK4NPKnfiQEvgEXgc8JB3A1c4Pl3cFyv0I/TELrwVJM7KlmUOEj/jc5iPzF7Eeeb0JjAod7F7Ez33eMp0S5iE56gGpnYz+/KgLgsLfWABlAqvr2j1Zy8dvJwlgRDmTNcO8EA2B3ANnJZNH8nWkzsiitM7vuzMMOuijL6LtupJSf6gvzsVqDkv+erigj6JG/isBIC49wbTesHBDgKDBq2xDgdShvFijGiYRTWmKMPFOfEQUqVZuVHrFF2pRiBKddfX/iZuLxisx2WgojekcHzSblwvXua453y7TDD5C7iP
- RimE304a
- +dylerhLLPNzr09u1at2+tfKn8GycRZn+xdNN/LtrgdI8++nu5qoRTfRHH7o+ep7nrwGnnevj5nWljbk2T1UByGB1LFm5rDaVcQ+20wwRcHEuOFVJ1CRyAWqz6SLsiCCom2OVtzgBBNL5jH1C+Bd9AcX64mKMMo4+es/5qRwS36Ek3+hbgUBPh/KMJ1TTNFqHfd5l3SlUFJA5iWPouN4WyMO1K+BzXP19sDsmJ1h36rlFZ1FHrAhIzRYwyw==
+X-Stat-Signature: xdj8nnjmfzbwyb3iidd99qcfw4dqcakr
+X-HE-Tag: 1784557055-327888
+X-HE-Meta: U2FsdGVkX1/8o6t0oSitdgTAIqsF66lrmCiblT077odkuVcMlWlBZfeoWBQzEdXREBCfJsbqZagv559zWuYpnSivtkxMGD2mNKJZySl+P5nHrGgSV2S1uvaZPs/g2jsstc9JVveahIJkw5BBn0OkBEAN66TLqrSz4Woouq4MSkKAH44j4nljautMpzkdFyk23R6sfEStsel5SuGVqRBsF1qIWq8mEwMTEZtMDh51XienlLFOd+VAsV0R3iCSkpFG0gi9ePx9SypTNtJu+oWyVROSsqKx5Rm+5xmabT2XKWy8nnZ8zT4an/MQTvmQUfYr3eGc/yJIr0q0Wf6aZUHQda9yTgXsg3XHGqvPez0zrN5ARONdlDTaSJfoktq0G+FQNfjFLskFJvS1nn9BjlhAsW3kmKheNB4ZyzbAvNHsTCGzPOk9yRW85JRA+EPvAGlYf7t6MtReDRFwWnjwJMlZ8BXuHeR6f+qjYk1KQCvDJecdrfGC3lYG29hzUQKfSOZ5+zciBiFYLOe/SCW6PvYnkOXUOYXx1p42hHnuO0OmASUeB0nXmjUxY8pJgj1Pwm5OrYfrEp+qrxqHPt6wMSwmvsx1bEh4K3P/khb4WRMzqpW5KxgQfs/NW6gN/SUDhPRGieFOh+zTl59zn8veTShQnW4s9nDQ5WgbPM6ZRfm6W8r6h9GzQcg8qYJmaC0A7FWKIOD82NadquK2cOUYkAVETy0gLY71nbmpEMdHpNVD10JkaPbjukbYtuQqsGVQxWIgDFvT6qpd63y2OygPEMWWfjXbsMqqN817A1ELWnjfuQ+NblyWbevOFQCZ8ZxMXFXoUTgfzBqDO+2benlxdad2+S0uKqvdnZPJZjMvXVE4fBEixZRlZnTAjJIPDFNAy66bqJ9LEMKkFaVKiXG97ecnbt1UuyPn3zRjbC2TbLndXyDiRLXzMpfEvYMswSZJS37rINWajhXLiX4SMtq7AxU
+ jrhSxmQs
+ dnsLLtu0veTFKQyRvuzcDsh9wi7BiXCSHwtpewGT08HaT5vLZrih96n/2+kn6HxAv9cWkaxrBVQD20z/0W19kZVsgJSV62YkmLCk9f94MJf2AISXdcmdLV21pVjcjxgRvhJYBqZj7tmRexy2RvlJxTBljLWeC+E/tDxNOEQyW8I+rtUss1xJDET4KEDNUBWrjfsoeUciNAIcZeiq5g4LL9Outm/GBNC5C1jTyVUs4e1fihDi9osjCkiYofYP/UkToU5F/DyWMtT/vQvjb+nJDndO7BJJ6NbG/C5RyD2V0Q/KCit0vYMb7aC9Ql3dEvTpYoojBZiUGNVKia4Hl1vGf1/AsTmGVEXmtis2BFDRyz5l7MQWW2G1TC86OcjDFPp5r84iEAiywdw6q39HlxUVS04j53c4+C4ypDqPj9y/5zNiWPW4YC9C7CG8HFw5SyY3HPCjhaP7AGSWLTe6/MYYIIwCukq/ttf7tOl6LqcfMnzOs1Nd6gE5wA6skRDgWl0yQ53wZHuOxd2b9smsZP7Hf/wPFl3j8uW+cPO4n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,107 +95,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Start using the slab_needs_objcg() helper to calculate slabobj_ext size.
-Caches that we know to never need objcg pointers (currently
-KMALLOC_NORMAL caches) will thus stop wasting memory on them when memory
-allocation profiling is enabled.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------a7k9JHHmnpHlPMfnRu0AhtCJ
+Content-Type: multipart/mixed; boundary="------------URmXiOWeRnM7023fUf4kisMU";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+Message-ID: <32ffd484-6fb4-418e-b30a-7e2344dfe35f@kernel.org>
+Subject: Re: [PATCH v2] mm/slub: prevent pfmemalloc objects from entering the
+ barn
+References: <20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn>
+In-Reply-To: <20260720211127124sYtTNbvsxCXN9_pDh-pwt@zte.com.cn>
 
-For things to work properly, we need to also add slab_needs_objcg()
-checks to mem_cgroup_from_obj_slab() and memcg_slab_free_hook(), because
-when obj_exts array exists for a slab only due to mem_alloc profiling,
-we would otherwise attempt to access a non-existing objcg pointer in
-that slab.
+--------------URmXiOWeRnM7023fUf4kisMU
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-The function __memcg_slab_post_alloc_hook() should not be possible to
-call for a slab where slab_needs_objcg() is false, but add a DEBUG_VM
-check there to prevent breaking this assumption accidentally.
 
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
- mm/memcontrol.c |  6 ++++++
- mm/slab.h       | 14 +++++++++++---
- mm/slub.c       |  3 +++
- 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index cb1e97b4edc1..aace85fb99f9 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2871,6 +2871,9 @@ struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
- 	if (!obj_exts)
- 		return NULL;
- 
-+	if (!slab_needs_objcg(slab))
-+		return NULL;
-+
- 	get_slab_obj_exts(obj_exts);
- 	obj_ext = slab_obj_ext(slab->slab_cache, slab, obj_exts, p);
- 	objcg = slab_obj_ext_objcg(obj_ext);
-@@ -3580,6 +3583,9 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 
- 		slab = virt_to_slab(p[i]);
- 
-+		if (IS_ENABLED(CONFIG_DEBUG_VM) && WARN_ON_ONCE(!slab_needs_objcg(slab)))
-+			continue;
-+
- 		if (!slab_obj_exts(slab) &&
- 		    alloc_slab_obj_exts(slab, s, flags, slab_alloc_flags)) {
- 			continue;
-diff --git a/mm/slab.h b/mm/slab.h
-index 65b44902c06e..18c2a807f023 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -615,7 +615,7 @@ static inline size_t cache_obj_ext_size(struct kmem_cache *s)
- {
- 	size_t sz = 0;
- 
--	if (IS_ENABLED(CONFIG_MEMCG))
-+	if (cache_needs_objcg(s))
- 		sz += 1;
- 
- 	if (slab_obj_ext_has_codetag())
-@@ -626,7 +626,15 @@ static inline size_t cache_obj_ext_size(struct kmem_cache *s)
- 
- static inline size_t slab_obj_ext_size(struct slab *slab)
- {
--	return cache_obj_ext_size(slab->slab_cache);
-+	size_t sz = 0;
-+
-+	if (slab_needs_objcg(slab))
-+		sz += 1;
-+
-+	if (slab_obj_ext_has_codetag())
-+		sz += 1;
-+
-+	return sizeof(struct slabobj_ext) * sz;
- }
- 
- #ifdef CONFIG_SLAB_OBJ_EXT
-@@ -753,7 +761,7 @@ static inline void slab_obj_ext_set_objcg(struct slabobj_ext *obj_ext,
- static inline union codetag_ref *
- slab_obj_ext_codetag_ref(struct slab *slab, struct slabobj_ext *obj_ext)
- {
--	if (IS_ENABLED(CONFIG_MEMCG))
-+	if (slab_needs_objcg(slab))
- 		obj_ext += 1;
- 
- 	return &obj_ext->_ctref;
-diff --git a/mm/slub.c b/mm/slub.c
-index 30435e2509ea..e6148b73b92f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2512,6 +2512,9 @@ void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
- 	if (likely(!obj_exts))
- 		return;
- 
-+	if (!slab_needs_objcg(slab))
-+		return;
-+
- 	get_slab_obj_exts(obj_exts);
- 	__memcg_slab_free_hook(s, slab, p, objects, obj_exts);
- 	put_slab_obj_exts(obj_exts);
+On 7/20/26 10:11 PM, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
+>=20
+> kmem_cache_return_sheaf() may refill a partially consumed sheaf before
+> placing it in the barn. Without an explicit restriction, this refill ma=
+y
+> draw objects from pfmemalloc slabs and consume emergency reserves.
+>=20
+> Add __GFP_NOMEMALLOC so that returned sheaves are refilled only from
+> normal memory. Also add __GFP_NOWARN, as suggested by Hao Li, because t=
+his
 
--- 
-2.55.0
+normal memory -> non-pfmemalloc slabs?
 
+> refill is a best-effort attempt and failure is acceptable. If the refil=
+l
+> fails, flush and free the sheaf instead.
+>
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+> ---
+
+Overall looks good to me.
+
+Probably worth adding Fixes: and Cc: stable to make processes' life
+slightly easier under low memory situations?
+
+Given that the API is not widely used yet I'm not sure how bad it would
+be in practice, but the fix is quite simple.
+
+> Changes in v2:
+> - add __GFP_NOWARN as suggested by Hao.
+> - Link to v1: https://lore.kernel.org/all/20260719113701797vZ3R8NxiqYt8=
+dEfeUxtON@zte.com.cn/
+>=20
+> ---
+>  mm/slub.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 53b4976d3831..357b7522c817 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -5123,7 +5123,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s=
+, gfp_t gfp,
+>  	 * simply flush and free it.
+>  	 */
+>  	if (!barn || data_race(barn->nr_full) >=3D MAX_FULL_SHEAVES ||
+> -	    refill_sheaf(s, sheaf, gfp)) {
+> +	    refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC | __GFP_NOWARN)) {
+>  		sheaf_flush_unused(s, sheaf);
+>  		free_empty_sheaf(s, sheaf);
+>  		return;
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------URmXiOWeRnM7023fUf4kisMU--
+
+--------------a7k9JHHmnpHlPMfnRu0AhtCJ
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCal4t9AAKCRCGXBN6rc5S
+1tiRAP9uy7YoCzN7G79L8h0HvO3ST9NZoN48h2vB9G0bq4jkQQEAoNuZ8D/in+Fy
+tqqPNLkBMGA1aasMpcs+zqafFkJMeQ4=
+=v6oj
+-----END PGP SIGNATURE-----
+
+--------------a7k9JHHmnpHlPMfnRu0AhtCJ--
 
