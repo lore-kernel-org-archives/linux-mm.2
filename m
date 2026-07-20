@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A6A3C4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:29:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1B91C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:29:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7D356B00BD; Mon, 20 Jul 2026 10:29:40 -0400 (EDT)
+	id 5783F6B00BE; Mon, 20 Jul 2026 10:29:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C55606B00BE; Mon, 20 Jul 2026 10:29:40 -0400 (EDT)
+	id 529246B00BF; Mon, 20 Jul 2026 10:29:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6AA06B00BF; Mon, 20 Jul 2026 10:29:40 -0400 (EDT)
+	id 43FFA6B00C0; Mon, 20 Jul 2026 10:29:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 85A686B00BD
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:29:40 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB84A1201E8
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:39 +0000 (UTC)
-X-FDA: 85009388478.30.FF03C3F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 18EE36B00BE
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:29:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92E0B1C012B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:45 +0000 (UTC)
+X-FDA: 85009388730.03.5202C36
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ECEE7120007
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CXeOidXW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=In7xaeto;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CXeOidXW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=In7xaeto;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 948C320007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:29:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="F4/kNHtf";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="IVH/Cz9M";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="F4/kNHtf";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="IVH/Cz9M";
+	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784557778;
+	s=arc-20220608; t=1784557783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMzkkAq1z2Y80PcJnVoa9xD0YS9/V3IeR5uFiuqgrfM=;
-	b=BUnild/+BO3uh/XUecn4w1XYCpLNghtERheQ1soBUWmVDfvVzsxa+TUiqoPzBH+w0gxsl0
-	NNCsQ3iceo/Uv7rb/RUkP1K80HQ+yaItqiC7moaXbzP/bRPNEd6mSWzPdvF2kpfybyfuLF
-	aZqcWKN5fnka0eRZ0Zev9mVAmO0KnwQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CXeOidXW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=In7xaeto;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CXeOidXW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=In7xaeto;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=OJE+9lZzjBh6Jglu9uhAVEd2RMCplNuIFAAggzteniA=;
+	b=Sa+JJ95dVXq6uu4R/Tz88qluqbHBTEvFdPBWZ2YcyPhPp/HX9IgeYGfvgpRF+MBGYGo78K
+	wNBLK7P1cD+YJD18O5JTmIcLbBw3o/svBjnucbA7y4jTvzWSIXjivlhfs/LAsas5qXA4me
+	mRpKLH6T5jGsO7Gz3h3jMheT+/Lc7XI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784557778;
-	b=0nqDgcIb/9ivQq/rcIGv4dSVyA7pe+/hmFg3i4dlTjWtsT7s9h5IP3Ny68n6oWfXc8TGvh
-	9ykyYrwWemZb8mnW0tdRvVTkmCOxudgDMdF7JxpapQyziV2UmYzWDi1AZHp1nUisT4JQ31
-	RuNoGA1mnVbiQWIDnUz1Rdbbf563IMs=
+	t=1784557783;
+	b=V8n1eEX5hRX8vxMfeg5Rs4uKnI1AD3McK7+aTs7W6BNmpYPDDlXz9NSCaGOoQLiVqYT1Q6
+	1fAQgi4C4lsGe9JhL7J+LJVzMlYrrbYDe6mi78SFyxMdCQW+6ksFvjKwPJkFYQQfQNg4Cg
+	gou2PKLfPi4q7/g8nVjjrxFzEzaOBps=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="F4/kNHtf";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="IVH/Cz9M";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="F4/kNHtf";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="IVH/Cz9M";
+	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A1F7E79FD1;
-	Mon, 20 Jul 2026 14:29:22 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0046279FCB;
+	Mon, 20 Jul 2026 14:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784557762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1784557766; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wMzkkAq1z2Y80PcJnVoa9xD0YS9/V3IeR5uFiuqgrfM=;
-	b=CXeOidXWIbvLnTUq+SygjrSElZGh74hLlnQs02aGIQzCcp+CtKjgvYqU7fAA2oZG7D8RIH
-	74CJOB1GIKVgKf2bMgMwZwvDHdjckJe4kA6mFNrbHpkSh43uYTgPP/3Igmwon/bW/u89eI
-	acIwvWc38EfYNBZUO9fEfn2ZIUj+bpI=
+	bh=OJE+9lZzjBh6Jglu9uhAVEd2RMCplNuIFAAggzteniA=;
+	b=F4/kNHtfryO0CG7lEx/YsClXVlnOiVsDbFjQ/58/kXndEa6KCtm+IFQCf+5y2AREyh6VQS
+	wPTwa9HJdaXtCLUA2wsz9hCjDhjyVxapNzXoBrI69AgD8mwQ2mEhtajas2wd4cJ3TgV1TQ
+	vPjeA9riOZENzmXrgQrrD6NSBM2uvdg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784557762;
+	s=susede2_ed25519; t=1784557766;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wMzkkAq1z2Y80PcJnVoa9xD0YS9/V3IeR5uFiuqgrfM=;
-	b=In7xaetoG+Iy1MF6i3VsDFgW8+ruD5cI7ODn8GIJ6Xk37B2EWcPFWmvTR7+1zx2rzWbx8M
-	fXGMc1nfoULf8YCw==
+	bh=OJE+9lZzjBh6Jglu9uhAVEd2RMCplNuIFAAggzteniA=;
+	b=IVH/Cz9McsHkxDnzOacIPsRLqvfjMtn8k/LvzEI9ixGJjN2BtmnL9OevStXAjFEWQGl0aP
+	2yxEgaresH93GYCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784557762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1784557766; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wMzkkAq1z2Y80PcJnVoa9xD0YS9/V3IeR5uFiuqgrfM=;
-	b=CXeOidXWIbvLnTUq+SygjrSElZGh74hLlnQs02aGIQzCcp+CtKjgvYqU7fAA2oZG7D8RIH
-	74CJOB1GIKVgKf2bMgMwZwvDHdjckJe4kA6mFNrbHpkSh43uYTgPP/3Igmwon/bW/u89eI
-	acIwvWc38EfYNBZUO9fEfn2ZIUj+bpI=
+	bh=OJE+9lZzjBh6Jglu9uhAVEd2RMCplNuIFAAggzteniA=;
+	b=F4/kNHtfryO0CG7lEx/YsClXVlnOiVsDbFjQ/58/kXndEa6KCtm+IFQCf+5y2AREyh6VQS
+	wPTwa9HJdaXtCLUA2wsz9hCjDhjyVxapNzXoBrI69AgD8mwQ2mEhtajas2wd4cJ3TgV1TQ
+	vPjeA9riOZENzmXrgQrrD6NSBM2uvdg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784557762;
+	s=susede2_ed25519; t=1784557766;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wMzkkAq1z2Y80PcJnVoa9xD0YS9/V3IeR5uFiuqgrfM=;
-	b=In7xaetoG+Iy1MF6i3VsDFgW8+ruD5cI7ODn8GIJ6Xk37B2EWcPFWmvTR7+1zx2rzWbx8M
-	fXGMc1nfoULf8YCw==
+	bh=OJE+9lZzjBh6Jglu9uhAVEd2RMCplNuIFAAggzteniA=;
+	b=IVH/Cz9McsHkxDnzOacIPsRLqvfjMtn8k/LvzEI9ixGJjN2BtmnL9OevStXAjFEWQGl0aP
+	2yxEgaresH93GYCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D51E779AA;
-	Mon, 20 Jul 2026 14:29:21 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F3576779AA;
+	Mon, 20 Jul 2026 14:29:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QIsWI8EwXmrKTQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 20 Jul 2026 14:29:21 +0000
+	id kOipN8QwXmrKTQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 20 Jul 2026 14:29:24 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -122,22 +122,22 @@ Cc: Pedro Falcato <pfalcato@suse.de>,
 	Usama Arif <usama.arif@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/8] mm/khugepaged: add kerneldoc to prepare_collapse_file_folio()
-Date: Mon, 20 Jul 2026 15:29:10 +0100
-Message-ID: <20260720142913.846902-6-pfalcato@suse.de>
+Subject: [PATCH 8/8] mm/khugepaged: fix and flesh out try_to_unmap_flush() comment
+Date: Mon, 20 Jul 2026 15:29:13 +0100
+Message-ID: <20260720142913.846902-9-pfalcato@suse.de>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260720142913.846902-1-pfalcato@suse.de>
 References: <20260720142913.846902-1-pfalcato@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 948C320007
+X-Stat-Signature: 4ictmfoqe1x6ig351g4oi8u8b4g9ssy6
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: ECEE7120007
-X-Stat-Signature: pz61hab4sxrf3kmy5dfebkgdniq5anio
-X-HE-Tag: 1784557777-476703
-X-HE-Meta: U2FsdGVkX18ZBuZMT9ajglCMx7KICnFBenG48X6oWtTlg4udQlZFFYt3cT73UeyDkq6IWLW3n9JgEAFBBXR7C/6b23YnCesl33ANu/ROPwSEUPm3eXmRAUEMZaADYjxa/SkNCQYhAP4/+5ASIYmaSox5SIyRRg4BXMXOcpgyn2KpX4140l9b3B1j47w3DiQejxVq6GX5/7s+6SvXEvRI839vwQ1ujfHUS1je/WoiEU5mV0lT59l0SEuAv5T8p2dvIDfTOaZ870dUHT4kiCSwY1Yx2X9luChLWU0/7O59jSyO00NJ4onBRaM/sWrKpHQYkPBQtHzsbNq5Olphpt6KFj43ExVUDaDsjveKNm7ModDooGb4VxsUq4kE1YUz97u5UAIzlqJOhTV+h0gYjYyilVuMVktSSi8ElxceRMoZ18XoELZuyH+QnXkVozaumIjUf4y2xF/SNS9H/T7Clx+l/O9m1yDv3on2yaVnqSahh9+mKWV7XwEXjFAnmOUn5JkCQuTCGielabAMl8cAPur08WWDt+AsX5E37ewrkjxobXWVvcu/u3xqbHusIQ/g0DUFiHuRYVmaWIYRLTiuigbJB0Gmc0kTT26FaidHcp9ApLK/F4El3qv6xvBvQV7DfNtjWmgiP2pP3jJVMAe/GGXOHu7OnWfVN1RQp94biu4qUlPR6RQWesr825YkQjUdCUVgHuHArv401GDpaPXTjSrx7ZBV1vHRllmc014GSGFmmfZBid2GDSmTgIhnuX5vajWBgYEu8zfOrvMSM9yORPHPae45TC9miL9kKp5PbzlqYTnd1nlH0e6tSD80QwfywpjbllZeSDUfGKAeE1OHUp34J/94qt7kHG/YKOXbD38zg4MiqEfQO1ByJ44AYmaDRQorw4G5PGEy4qEuDeGUxcuoBqlw2n0BiBA4MdaTx108i9q+3YfOyiHYT9oS6aXeaHNpI3JTsbKEaSdX72JM6x+
- 1aPRAa7I
- BatSBjWMF3DNXf4nH/xqpCGqbTHoMukN61B/8T0z10Bd3j0RKEu9GqHPC3UjEhRo8ZyWrUaefZ5GJLpsvf3eeGnHkMZDgsLe6kYRA/jbLGrVQ5GnH2gUdcOibA49g8uYDiC2/zbQubxfcCXhVKfp8l5Ew8UJ6ZBm/wnnzBxB8LE/M5EKgbouzavP6JUFNlXF0qadswvFpAkMRmWUupEKO1Q9s+jB97AxPEGnfZvD5P59iTcQVeVVRdlefirPlGMI4kzMqF9TL+pOXKFDnl5NRhFiZpZf/9Z77n/ZRv+yG2nd6pdqNJyXgE9Q14Q==
+X-HE-Tag: 1784557783-217657
+X-HE-Meta: U2FsdGVkX1+bflb09fzz3KQAfKdp80eKqTKLVAQQHoFvdEsDy/vYGfWBNbdD9lAuJyp3ZiKcnF89gz3j7rHdBI5TYnnmlFnXuTXprA81TlAodWavNfMe+Z+rRkP5siZ1E5n9hLMPGY+NNNb/LGZpavpVrBPdVH9p3pGvvzIsHSApiqKQpN13rtYrlhZuwQ/iBRCL3g5kzBsNgWUsbxpKHvXD9LWX45WL6FJ2IDKp0P3hklihtoBvcvSRAdc8ACip1pofJZaQloAdYVxKgg4U6b9IXpth7ulgnjQSWhW6WEOrXeO3idCk2ZgvvDjdtgnwOLvPjViHVsXYqhp8XeiXeDL58GdbrinXC0SdcjtTwkz8xBJQl6rdmFQyXyLHs6UgxWFSFIgPsPST5418QXCjn2cwfUP4TYuIuapWDWsYD0z1k0JhmX8O4M/bO2apZgyMHYl9j/qFIkmBd5vGokRfMRqzy00PCBvq+wfdxWst2LgGQ/5KEESzg9wP6hy4B6w+nwr87CAqVSxXPZPu8GkT8YR4lmGa1qpi/60olRDjuZs3NPximSbsPLF9cCbeozVMO8gK32QdA1som6Su9HkX7bnXwg4SaK0a+nQqlAHccErOYIoHG92RcyjWJVU2p+Rp23j1nEAn82g4FdjIwiEZQjwAmvaFEH5B/hjXQzuEh56Sww2s0BB/UCDJ2j7T2bOVdlYvu4Mgv/tLabk/9ESeYAzvxn2ufHStwwmykH6SGR+/J5/vdie7WlzSef++zMUbvmlfi2z6sS/3Ba1qojmZcuxNJ/yjYBJvmxnGdYrPBvtBGaHTTz8QgDbXoY8oF9Zw3IzaWoQuVwIRFCzH7aA10aZ8knpPrdtPggX4GtBGT84DvCEYRJ0HU7JhcpxzOpClX04dtFyYNZfuZWCV+yqURLsyYSPMoccZd0nWeWndvA4JVkwpRwLupOXY29F3EsyT9e4tV5mz4vJz9LHVmp1
+ mUi2IpuG
+ ZokxywfPRyaFwkTiqiB25KiHlCkzRFhYCDqsr/qf8FIqZ/n/1HLiOA7E/j7TDEN1oFhQdaUIY4yWet3yWEcz1xSpEkKQMfi+huWHODN+orIGbAyF7Y9QOOvhJxeI+P7AjuVBDXeHH0OI/n5XGPYYtYgwF1JHWLY/6SeonBCm8OeV2ygp0WcRmFiO+dn/CxrYrpeeHWQDWmMoWWNtm4YrRZDavS5G/wCHzbxmb4f+hdGFhDrVVvU7DHLLJve9lUF8Ija85kbICEgw5fARXQHNWIhn0dsanAoOwNAOxJ2GSLNBwm1+gUj0erq+5tg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,39 +145,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The input-output expectations are not entirely clear, thus document it.
+Instead of vaguely handwaving that it should probably be done, flesh out
+any correctness concerns with try_to_unmap batching, flushing and its
+interaction with the rest of collapse_file().
 
 Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
- mm/khugepaged.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ mm/khugepaged.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index d170b64378e6..db1f765b6ead 100644
+index a09e4e4e1943..1999e094df20 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -2256,6 +2256,21 @@ static struct folio *collapse_read_folio(pgoff_t index, struct collapse_file_sta
- 	return folio;
- }
+@@ -2560,15 +2560,19 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ xa_unlocked:
  
+ 	/*
+-	 * If collapse is successful, flush must be done now before copying.
+-	 * If collapse is unsuccessful, does flush actually need to be done?
+-	 * Do it anyway, to clear the state.
++	 * try_to_unmap() flush must be done now before copying, regardless
++	 * of success or not. In case of success, folios are about to be
++	 * copied and collapsed onto a single large folio. In that case,
++	 * stale TLB entries need to be flushed out, so no racing write may
++	 * get lost. In case of failure, stale TLB entries need to be flushed
++	 * out before putting the folio (which can possibly free it).
+ 	 */
+ 	try_to_unmap_flush();
+ 
+ 	if (result == SCAN_SUCCEED && nr_none &&
+ 	    !shmem_charge(mapping->host, nr_none))
+ 		result = SCAN_FAIL;
 +
-+/**
-+ * prepare_collapse_file_folio() - Prepare the collapsing of a single file folio
-+ * @index: folio index in the page cache
-+ * @state: helper struct of state being passed back and forth.
-+ *
-+ * prepare_collapse_file_folio() helps prepare the THP collapsing of file folios
-+ * (both shmem and !shmem), including the reading of folios, initial tests for
-+ * dirty/writeback, locking, etc.
-+ *
-+ * Context: Expects @state->mapping->i_pages->xa_lock to be held. Releases the same xa_lock.
-+ *          On success, returns a refcounted and locked folio in @state->folio (that may
-+ *          not be the same that was passed in).
-+ * Return: Appropriate scan_result value (on success, SCAN_SUCCEED).
-+ */
- static enum scan_result prepare_collapse_file_folio(pgoff_t index, struct collapse_file_state *state)
- {
- 	struct address_space *mapping = state->mapping;
+ 	if (result != SCAN_SUCCEED) {
+ 		nr_none = 0;
+ 		goto rollback;
 -- 
 2.55.0
 
