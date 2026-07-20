@@ -4,127 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C87C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:08:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB310C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 17:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B870F6B0088; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
+	id 9F96B6B008C; Mon, 20 Jul 2026 13:26:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B38686B0098; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
+	id 9AA866B0092; Mon, 20 Jul 2026 13:26:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A26AA6B0099; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
+	id 872F46B0093; Mon, 20 Jul 2026 13:26:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 66CDC6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:08:43 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D35A7A021D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:08:42 +0000 (UTC)
-X-FDA: 85009789284.25.45E594C
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 053DC4000D
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:08:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Jo69wKS8;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vipinsh@google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FE506B008C
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 13:26:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B98C3120260
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:26:17 +0000 (UTC)
+X-FDA: 85009833594.05.F71B0CF
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EE486100002
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:26:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nZDksBNJ;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784567321;
+	s=arc-20220608; t=1784568376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aiMphJN0hEb752W3IjRxFzmLe0gtZmSXKy+eltAZsyI=;
-	b=ak1w7Lh2jDBsD05cFXWyiWYB5KSScujTmpYIyLLHVj5H+B0PS3DVGNDllspDONVHzZj3ih
-	kBLx5EuuPPoGKeNsa+ST1JVqAvd0lLNtsvXXmgQ69nP1KI43SjPdADau0Hqg+8kWFL2vM0
-	dzpugvo+znat3tletuYCwaUf2mFM5RE=
+	bh=xuNoMT9tYeRPYMpWqWaN4lATHuSPR1MQ4bXWUnUxpyA=;
+	b=ykx7rwLQJXkYNE//WP5Xf/i58vt1EDF7o6K+rRSG/kYEFIuEE/T2NL1PzvbJuoyBGxG3Z5
+	Bzc599h2Kb+/evk+HZ90+nl5lHB0c164jHzx6gSUdVRzI6gzUlWGjadEC06b84j/dIgTA/
+	zv9aUpVZ9OmDwtgU3EYXjt5hiKsD5PE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Jo69wKS8;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vipinsh@google.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nZDksBNJ;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784567321;
-	b=44E6BHHbgKZFCSDOVcaAe7yR0+iVTW3IrUiBJjHQeLUXcuKiiNYRnlYnHQhQxa7HdKOKEU
-	vA1GhbU7nT9w0C5YGhVX/uitkhlHwPfne/71p1yf9JPFdihm2r5HOUG/P3mBVehYtWJxO2
-	oIk/yu/CccO+qqZcUMSBLJn5hyml3s0=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cede6375caso345715ad.0
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:08:40 -0700 (PDT)
+	t=1784568376;
+	b=ACgQQO9de12VSnH+324P8dnqmOJK4Hvp9lUnVWAIU6vMAtC0Je7kLiCV+mM7n2v2vpjrxl
+	pUuLJl5v53ZgM9wVKrz5rYbbJQeSZKqlSKwVJQPYvZpeowADsow04RyGCMWla6m9DSBeT2
+	jit+SPqPBP7YV02m5m17D+UTfVMJ1dI=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92ed3993c1eso430764285a.1
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:26:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784567320; x=1785172120; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aiMphJN0hEb752W3IjRxFzmLe0gtZmSXKy+eltAZsyI=;
-        b=Jo69wKS8unKJQvhTEcRcjaMQMoRa4Vg7gbwz0PHd9RShqYe2zJK/gEiyzClvVMZf63
-         NJ8kEMRhpGu20wl9O0GUqBEonitpPP+Ndr+4NSU0vUloG+xcfOV6a21nxB2+e5abHR4M
-         CuFtPzGK+fvzYOyVX1kRyCPJQz9ZP9ST7S7Gy58tjIPKgE0U7im/NWnl3xnStH+1D9/E
-         AY6/I/0wR+j0C5pDSg+rqiTH3vKkZhRL1UKelcL6YoCbvyVw06kh6aDlz8LEhO7hwluI
-         Z9ZpiKEFypUBlQfFjLZsX/7xEUfMu9Lx5SKJB/MZYSvHfsIQtOGxyaHZnQhHucnMV4ru
-         w9nA==
+        d=gourry.net; s=google; t=1784568375; x=1785173175; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xuNoMT9tYeRPYMpWqWaN4lATHuSPR1MQ4bXWUnUxpyA=;
+        b=nZDksBNJE1rc68bhz1ALAg4ZC4NWcrWwdaC1PF8/1wAXE7PAbfU9GtIC5WOMNeneQs
+         oEsv7rexCjm/7b1ytk87DtQPzhu8zHjHKwD528s1tTbGSOdMDqTy1oZPFt1IVlE7gmN3
+         0/a7/PK23LAl9wF7jmTX+9Tin7yqIRSvn4zwgEwJE1acsqoQmSqTX8vdX3wcW2h8x7Xq
+         VAVhJ636PKCSR+NzX+2F5p50/p3tcA8pT/0GZX9o9eACd+pan4uI0iLAgSsbbuMEAbXc
+         ZmUOLIR0e4TrZxI2Hu99j67bp2CJOvr4F2BMHAQUeq2nq8bgO9+rUV6Kz6Boz7xOaggh
+         2MPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784567320; x=1785172120;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=aiMphJN0hEb752W3IjRxFzmLe0gtZmSXKy+eltAZsyI=;
-        b=Y9cMwCV8NTxtf3+ijtC6R/50IiqvitOpRwPphP/HJJEM1Vf/I1t7yQbQQ3wryWuVqj
-         trxyZEVDYyps32dFwskBIbgKUpamDp99UGZE8hgRdqJ0VIoqUMqbzt+aYWQsLyNegp/r
-         PLiFMPFSeDYkBUDUo3IZNxv3SeT6STc/pxidfjPBZs72VgXDV6B5nsF0x0pqP6Ev9dFm
-         TJIy1agiMwJF4DoVplqPuGQcKHfzQoIajO7HCkMyA3osZIijHh+cqrFr/LDVnkzqvmut
-         JxiUdg76Z/RouneYN4NBMZ8tsjqiTXy5abuddTnV2UgzOikGiXOpGJXVe5LEKf0wW5wC
-         VWMg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr3RwWblVBOWhHEel23nyRy0uuNa1XPg8F+nHgBct9siVVSVnpKWUT7+cz5NfWSahtgzV5ptDh4+A==@kvack.org
-X-Gm-Message-State: AOJu0YxouDDB2AINIU/VgyEPRFzNdzb+rd4Bz7+aZ6Ikkm4EODdIhsgJ
-	qvFJcPxvhedqL7MtvcLVESgQoKo6R9hU/u0Jvsbqg/O3Rh6A2jpYflf0bQeHQTZtYQ==
-X-Gm-Gg: AR+sD11iJgMcuI4o3E8F7nI0cOuh1hgtgtGxx2fcJ+Xg3oXZP9vX3Tlua3QfIVEOJel
-	h7N7Mi4jG/ikOw38ZEQxAMYP/48MtAUYOPA20zTq2KFiHI/EeOfM1llVb4WMl+q38jAKPkN22CG
-	PCrlA+iiThfzViz4SpCfNTq3jmxOIEyCk3GtD122SvBDHiYDwZel8Z2pOAmNp0Y+eiXnj6qdOGu
-	BmwJxmpJ7cTiZ0h3/9GSFFXtg9XPLHs33BiQ9FW8vTL5ZD4IvLc28U4m57enVx2NbPgS8oA7N4M
-	XciymKa+72YommsKfWtTjSf2R+un4/wA52ZfTgsYsbQXeILz78PgwdCD7UqzLxucM7MqsIKK/28
-	1rjEhlctCMj/v9JlB44QGBFX+FnMV4MFt6jkbFgZPjRfgkEI5cPvSiAj8jEefqxs3ObBmtTY4VJ
-	7IhQP9y6IRAQlS3GuVd89CJhrKYFWORxXIpRHV
-X-Received: by 2002:a17:903:4084:b0:2cf:4353:f117 with SMTP id d9443c01a7336-2cf7b35e690mr923005ad.0.1784567319236;
-        Mon, 20 Jul 2026 10:08:39 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e92091875sm91751a91.7.2026.07.20.10.08.38
+        d=1e100.net; s=20251104; t=1784568375; x=1785173175;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xuNoMT9tYeRPYMpWqWaN4lATHuSPR1MQ4bXWUnUxpyA=;
+        b=P9pG7qT6URr4UVMWepDJ6fuvJT4ogEXaNN7fnnZ0GCpR+wy6av0FJAARpZEYzkzSrA
+         96eIT9DXAbAWox6s0PPTmp1k+VuvAMirMw+nd18OuR8HQKa4dVWb2PnE51bb+/HyO2tR
+         xADKXVlAZ7PHlDNs3I/3YhzPWsFyIseG6hnHSwybC0Fz22fqOn9L0+DBlTTi6F+lt10f
+         Fzt9NK+Ns9TYSmuM+ovC75gIM9oklz+voxog0cuOr2Xvbp8igkZ1wUbmbvmDBQFUD+xr
+         knQklGqt+KxRxWR74TsGGRj0Aj33t5d8o77/yD3+luAVXK79XnM71vRhlR0/awUVUe+1
+         6j9w==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3jh/r1nFX8/phHY6WjqlX3zP6fbf5Gtr7kYPmB1g+oYunLof04Vnd7smfZRaTFoMwEHwEYwTA/w==@kvack.org
+X-Gm-Message-State: AOJu0YxHiVmj7KPc4OJb9aV4gqLNdZCuwyaq5OrxU3lDzkzuN6I6WzbO
+	A89RoXoMjhcZthDOlDsu2V8wgL9GddVQ66az2adimCAlCgAZO+2uu0CEVqjSTV9ib2c=
+X-Gm-Gg: AfdE7cmuwXSzMGCps2FBl87QL3JeV3d+wJZhadC3mZZrGJgEsbU6ztlbxjO1waOP+4X
+	0ckuNAm3vpOF6aZxtEYFazblEylB8Q8+evj1hN1FaB9dCW8wM3hwb1fVch2UIl/QBy0yx4jA3xh
+	pPoVs5MG8oCUlobg/Ji7nAXPy8QrR4LM28viSESg1enQARTIBIMDgMtFUJ83gzMl0XLExxMS1hJ
+	9GZf+9qYBhzS5QahGgk+5aypMlI/z3XMRKaGhhClszw42lFXUv/vzvQj6v6Ecllj2m35uPq0SKm
+	v7n+5TYIdoWt1oKLC+wOfzlz0fx0+iUh1C96xjRdYHRrSqMspVFza3iDSoGLG2cYdOF+dGgqpVe
+	+W68VghJfIP5UEktyjYS2gfuXiNvCwPYTG98EvedhDBU5BDPKOy3uH2DUe6o2GPAXndRE+HhqV9
+	ESv9SwpF/EgwELJkQ5TLAKrqZOX7uhV8gLW/MTGqnBQGUa4OE9nZiuUNBWBg==
+X-Received: by 2002:a05:620a:6ccd:b0:915:5cbd:1d96 with SMTP id af79cd13be357-930b3ea9fbdmr1533624685a.33.1784568375015;
+        Mon, 20 Jul 2026 10:26:15 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b54773fbsm912994185a.39.2026.07.20.10.26.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 10:08:38 -0700 (PDT)
-Date: Mon, 20 Jul 2026 10:08:33 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
-	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, 
-	christian.koenig@amd.com, corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
-	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
-	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
-	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
-	parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, 
-	rananta@google.com, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
-	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com
-Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
-Message-ID: <20260720163452.GC1191959.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <2c03ac97-60a6-4352-a942-27dcebae8d22@linux.dev>
- <8fd94fad-e457-4839-9e41-ae257a138bee@linux.dev>
+        Mon, 20 Jul 2026 10:26:14 -0700 (PDT)
+Date: Mon, 20 Jul 2026 13:26:09 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 01/15] mm/vma: introduce VMA virtual page offset field
+ and add helpers
+Message-ID: <al5ZPYH-0T6IPXox@gourry-fedora-PF4VCD3F>
+References: <20260720-b4-scalable-cow-virt-pgoff-v2-0-2d549757a76f@kernel.org>
+ <20260720-b4-scalable-cow-virt-pgoff-v2-1-2d549757a76f@kernel.org>
+ <al5CPpc7XpRX7Vbt@gourry-fedora-PF4VCD3F>
+ <al5Surm6fPIl4LNA@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8fd94fad-e457-4839-9e41-ae257a138bee@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 053DC4000D
+In-Reply-To: <al5Surm6fPIl4LNA@lucifer>
 X-Rspam-User: 
-X-Stat-Signature: nrc4sgm5nq3ahdny7m4ss8cd8udzd4bf
-X-HE-Tag: 1784567320-47352
-X-HE-Meta: U2FsdGVkX18ZA3/dYtw7tgY2helRsJ/zXJttH7orhFqFV4KooA68drkwCIhlSs5nz2JydVF4B44KN9i5aaZo5uZ36FY3xbkmK22W5ovIihh28MUXkSWtqBvSnsrTHpzGa6mI+MBVJuAPQZl1IWfx1ZcVBjvWAaislc4pdr3Ziphu2XLhlyJ73RIsvqirozaHHANXVfcvOKZk4asFe9J9JnWoaSLdrAFI5/PuyxnUWx9ovxfciQbhWVOIT7Ta/coa0NvEW0cm5paUObGTdAlAE6KaBhcHTKqjDEZ0hO4XOghV0Z+wgoHf590By1JSSsh2RAWeM4sfUXlsK9L+Q7LxXFG2OLr3sIK3RPXQkbeyc9OelMJ9i0+2n8sLmeoJceNiCGaOgtGwdx8NZCsgER5MQnjV/UebA04OZ9mch/po76jxSKSPPP+zHFjLT2PfKFnd8/TQk2pn2Qw2ODPNRRBe2AoTsjpZDUk9G1TZK0WY1ASiUBRQX2+H2uOFINkjkTwHEIoZOGARQ83xsYseWfiRr/UmlXvW0O6kCMRaPKydq/m00ItR/dk0oINb8zvmLa9Jg4Ni9bHedj7jzoBn/rjUcuK0QHSvoz26gvIDZFTMSTXHE+Hvq2ePuTZf9Fj69wYp+0wfAdE4Jth4JsY2lJ6UVKtAx2CFQg61Z5Ges4Y+5bcyZ5S6kBJdy8O0lEgDe1c8ZKUGCq/c8zcz7gf1QqiY3yqYL3z350Vr/0C8v1zkBMlDbkOCASaoBrC+/EgIf+gSjPHokGqiZvsOL2ujO2atQ1vHm3bRK0yNATT/4Xk8Ka7P3bob5forfMs0jNXzKMIOhxSq7jEYhMT9DcXn3aDzL0koSYlnEXcdkqGQo/p3iNPCSyv07UsBlD1F8GcogA6eAlyT3kRtwxSNiSX7Q+LbNiV3EQhusjgABOfM6h1YeOcro5BMj33geRzHtSYQWwqqlSbj+ZVozoEVXRmekAD
- 6X15d/KK
- gl7++DYCoFThWJbTHHgadoTSAUmC7dQNkbDUl/mMpY7LWSTk9QHM2SkJ4hjkx8obBvLfdZNFDasDbFiSNy0Yknlc5sTvvIV3MzmL3qh67ZvNyDbWJl0Qbaqlsew+Qgj1yzw9wsbGFPHxodVVO1YgDZ9dtJSc1phGv/5QvGaZV6A/W/BCEi719QeJ6FA0Ya0RwrI01Vutvlz/70JJRzUG6JVzk65zGw5x0v0QkVrDfJNhOg9ACKMMFGRwD9kRN+37qhECIOLE3h1DJ5A/qecqQ3AA2Y4DYPnebDQZGq6iZSyVyqTZ2zpQM0wErEj6myIc254pdv5JNCFo7Vv8jIWolAAlYMEIqXp7a6ydMqPHMX4bk55btJMlvNfeOI4zHXgpgr6fgxOofw0xzU9o=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EE486100002
+X-Stat-Signature: mz497g3rufeyqme1pm84cmr8etbsb6yk
+X-HE-Tag: 1784568375-724552
+X-HE-Meta: U2FsdGVkX1+EFtlJ3DfISUCA830JceOKFZex8cnKakBqu+DDUWyR5oEqMVWIEUj91m2Pom+/u4TRqXyfkMdjgbNVhw8bxqOGjizCADsIzTQlQdVcvIzKAlv946ooErT5Q+FP7rmP+FkriGd/n/DoBd/Zk3agDc3+290xZ6/SClEZILw3WyOdF2Ivjtkz8MqTqgaWEqNIGZw28mziWn/jDoqM09F/Lrf6EYjF/Sggk+GSBiR3de0ttZHi37SKDOK33vrSQ9+2iHnRxa886nlZ501AnFXYAbpVq4GHMgFMrDpEmtSJAJds8n8fSbpteFI5IBaOvgV1cJvpXC45udfh5A4lM2ozQVcbdepANlpKOZZ6jKNv189cw1GOVUamN2AUy9UMCBm6WgjRh61DF65qHWpW2ZFsMLx3RoiksLX2xnevxLc/SWVaFzPgn8raRMxLEI1iR/gRmoMyg8iHYussGtiFS6rmjBoBWzWIHNsMBOCQxnkM+O8k6J2/ziudGwbfz87yazWxWgb8Hc8TPeBLLRfInCYV+52/xko04MJAzHmSSXFzVHyx24ExYvL13AlCg7dZ9cYzRTWQCm7mAF4cZAwE5O5BKnyaBkwsfmzPV6ZdwGp6fW+LFWjbX15l5KoBLR+uAl9Iebhn2e2Kc4Nft/vmKuTXdxmUOEShl/aB69k4DxATz88KY69PVBLGqtc2bGsSBRn/vBoVxQKFpp62IaLHloQc0j0Yzc8SXlKZp5OOFJv7eZwN2ntvcPvQRVDwb4nsbFdka+JLW6BBBKKm5r5OxmjCnuG4EEdo2fdkt1akIvZFo+GyG5+oyzLjWxvAmF6EG1K2gQ2Bk/TWib3n8+H+HL8sIy5Rek1KFDpezgocMBmrxMR6D0BYCrHypJpj0ssYj6yQB0fsjevzbulwcoFV7pBTVKJNde6SE9AwjJcqiBtokkQCCEeQuSuQzr1txZDrHOeHLxtVJa3y28e
+ 6RnJRYDu
+ 8BMC5jZzw/pPLgbg8SCj2k8Gb8APB1ye1Xlo7EXu4BUeL6W/3OeR7eOghKlUgMwPf4tijdFGtLZ0oUE6+vm+cqy6pkdkwX8GgWZ8y3AneSAXDKm7+XDKeD1gv0s6TM0SO5VS2DpnoqTjSfsnY16fkq33fYfnlgrOC6nIWb9+qM/M30b8aNuL39zgoqT0BWFcMKDH9OBsaIrQ+YKA4P6IVN325+TKkjw7B7YKtjOiGbszMv8BwzkLknNbyhpiLXQNG5Ro97232PDcOGjmCn7/TwCJnEVz6ehcI07Q/nzKf98K5OROgsdt8LhTXhJhedSJlkP/d4JAf+/Q4x3vI71TAu3ZwUZyUfJV8eGpMV18RuxfRRirIv+PeytNhL9LdEDPHr/6kk72BDEX9Brg3yCl5tiG41w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,75 +137,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 16, 2026 at 06:22:07PM -0700, Yanjun.Zhu wrote:
+On Mon, Jul 20, 2026 at 05:56:52PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Jul 20, 2026 at 11:49:00AM -0400, Gregory Price wrote:
+> > On Mon, Jul 20, 2026 at 03:38:27PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > >
+> > > The virtual page offset of a VMA is equal to vma->vm_start >> PAGE_SHIFT if
+> > > they are unfaulted or were not remapped, otherwise it is equal to this
+> > > value at the point of first fault.
+> > >
+> >
+> > The latter half of this description is a bit confusing.
+> >
+> > Why would the value differ from (vma->vm_start >> PAGE_SHIFT)?
+> > (because it's file backed?
 > 
-> On 7/16/26 4:24 PM, Yanjun.Zhu wrote:
-> > 
-> > 
-> > On 7/14/26 8:14 AM, Vipin Sharma wrote:
-> > > Testing
-> > > -------
-> > > 
-> > > Tested using VFIO Live Update selftests in both QEMU and bare-metal
-> > > environment (Intel DSA PCIe device).
-> > 
-> > I want to make tests VFIO Live Update selftests in QEMU. But how to
-> > select a PCIe device?
-> > 
-> > what device do the PCI ID 0000:00:04.0 and 0000:6a:01.0 mean in the
-> > following testcase?
-
-Sorry, this was my copy-paste mistake when combining things from both
-qemu and baremetal. You only need one device not two separate ones.
-
-For testing using QEMU, you can use QEMU PCI test device.
-
-  -device pci-testdev
-
-In VM, use `lspci` command to find the BDF of the PCI device. It will show
-output like:
-
-  00:04.0 Unclassified device [00ff]: Red Hat, Inc. QEMU PCI Test Device
-
-Then prefix the domain (generally, 0000) to the BDF and use the testing
-commands.
-
-`0000:6a:01.0` was the BDF of the Intel DSA device on my host. I
-incorrectly mixed two devices during my copy-paste.
-
-Limitation of qemu pci-testdev is that it does not have the DMA
-capability. I used physical host with Intel DSA to verify that the
-device performing DMA during live update gets reset.
-
-> > 
-> In my qemu,
+> Because the VMA gets remapped.
 > 
-> 00:04.0 System peripheral: InnoTek Systemberatung GmbH VirtualBox Guest
-> Service
->     Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr-
-> Stepping- SERR- FastB2B- DisINTx-
->     Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort-
-> <MAbort- >SERR- <PERR- INTx-
->     Interrupt: pin A routed to IRQ 20
->     Region 0: I/O ports at d040 [size=32]
->     Region 1: Memory at f0400000 (32-bit, non-prefetchable) [size=4M]
->     Region 2: Memory at f0800000 (32-bit, prefetchable) [size=16K]
->     Kernel driver in use: vboxguest
->     Kernel modules: vboxguest
+> If it's remapped when it's unfaulted, then virtual page offset gets updated, if
+> it's faulted then not.
 > 
-> I am wondering if the above pci device can work well with this patch set or
-> not.
 
-I think you should be able to test Live Update with any PCI device which
-can be attached vfio-pci driver. 
+ahhhhh the wording is just wonky then
 
-`vfio_pci_liveupdate_kexec_test` will initiate DMA if the VFIO selftest
-framework has the driver for the passed device (Intel DSA) otherwise it
-will just skip over the DMA flow and do the remaining things.
+when faulted or remapped, x is...
+when unfaulted or unremapped, x is...
 
-Let me know if you still face some issue in running Live Update, I will
-be happy to provide more details.
+instead of
 
-Thanks
-Vipin
+x is ... if unfaulted or were not remapped, otherwise...
+
+Sort of a complex combination of 3 negatives there.
+
+~Gregory
+
 
