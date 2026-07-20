@@ -4,103 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 811CCC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:39:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0474AC44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 15:40:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E71A6B00A4; Mon, 20 Jul 2026 11:39:21 -0400 (EDT)
+	id BA3316B00AA; Mon, 20 Jul 2026 11:40:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 696626B00A6; Mon, 20 Jul 2026 11:39:21 -0400 (EDT)
+	id B542A6B00AB; Mon, 20 Jul 2026 11:40:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 586206B00A9; Mon, 20 Jul 2026 11:39:21 -0400 (EDT)
+	id A91616B00AC; Mon, 20 Jul 2026 11:40:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2044B6B00A4
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:39:21 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A2ACF40208
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:39:20 +0000 (UTC)
-X-FDA: 85009564080.16.0648276
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F1666B00AA
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:40:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08E82A0213
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:40:14 +0000 (UTC)
+X-FDA: 85009566348.17.FDA7ADB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C6E34100006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:39:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fk5FRTXh;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6A7164000B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:40:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AhRzioJ3;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784561958;
+	s=arc-20220608; t=1784562012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n5bH/9377EtYx8zqYNxrB7m5M0kzmX6G4jQdu82VE5U=;
-	b=Lh6M9g6dqakoeoUPDAdVatbMJmwqdCvIZOks4s1UVMgdRJoYzMsoC3xkVfk495Mz3PU5Lv
-	aNlvJKuryHOq5VyUBNyUm6XsX6FlRZW2Dib7XymjckEMTRcD/DTUyOTYO3wsoOj0dAn6ns
-	Zzn686GZW3TURAQldWI2RIY2dsutsG0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fk5FRTXh;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=nZcL0NS9UpRaSCtUj7Rad5Ll15ZwncTALu4PwSS61ks=;
+	b=uERdXS6AI2Y2z2cAoASzwieGzExh7bzFjqX1sfdmuh3EWrm/SqDAk9wpZ6cEC5/pbXEiDH
+	LK6XSiJ8+Ev5bxQ71PpbIAlZDocttxkmXFxVBPer7XXm9ZaXlOiBbSV7HxfTTh9S7b3ZYq
+	K2x1uE/hEpgP0XxqHckydMNmCm6rp44=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784561958;
-	b=p+jt9CFqZtpUeHLOA9L0veCJTySqH4dVrNe3kNHY4ijIvhWYWnJE3cNYrash4XYsTlPUVo
-	KOvGxuRNOKh7SQqkjH1QRKping6vGYz1noRhVUcYudJpoCMfw1kRlzJWZyw+c52cPolBiu
-	bFE8ARyjAZXGg2upOdoOjS9CQlhioTU=
+	t=1784562012;
+	b=KYW7bv2AxPJR71Y+F7y2qlLzQKFI+wNc9/KxjethMYs8EURnDY2MjxLujXqL5GctkmHujL
+	1To1n/52a2tYSJi+lm/hnWvviaW1ZLSqDobhWLWhZsoJGxUtaS2yAP74RHwpergO3MlBMV
+	HxGV0a2M/SPV82iIWFDHHwc1LIcys5I=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AhRzioJ3;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1705442ADC;
-	Mon, 20 Jul 2026 15:39:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5B51F000E9;
-	Mon, 20 Jul 2026 15:39:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 95DBC44033;
+	Mon, 20 Jul 2026 15:40:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110041F00A3A;
+	Mon, 20 Jul 2026 15:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784561958;
-	bh=n5bH/9377EtYx8zqYNxrB7m5M0kzmX6G4jQdu82VE5U=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=Fk5FRTXh2raEm1DxfQaisaV2AfW0qy/1+a6EkAH9LRKes74TNqxHU7F/sizyjq4Yo
-	 d6OZZsykJJzNjhUiS3yq0oC5nIp9lmtsj6EtwS3FtMvauMRWSXbBkUiLC6/1pastad
-	 9L5LnHmNeb16NKhKcmRokRvKs/TKyhkkjbQ0ugXmpJb2SrinwOLuNVQ3yoFBAYATRA
-	 tfIa15D4wgoNjycvXYUbDGLbJXi3sWVbd3e/C+2nSfLHzilVkKY0j+sinCifgoXOdu
-	 tTCNt28SUq6KuUn3hfNrQZ6jLCYawXwNZroiJMnbgPKy3+6Rz4QTStvUYrb3rJ+TJ3
-	 HpUo2Jy66nVjw==
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/8] mm/khugepaged: separate out windy folio logic from
- collapse_file
+	s=k20260515; t=1784562011;
+	bh=nZcL0NS9UpRaSCtUj7Rad5Ll15ZwncTALu4PwSS61ks=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AhRzioJ3AvZdj57ZXtxcMS5TWOIf5mfSLiqb/67iqOEuXyC6f26btHfgKs9XzC+md
+	 Ho3YMKgvb7AvtURE70XzahSq0oa4tePUOpHsy8JQMTJFw3NJZ+B56+N9msQrTk8t21
+	 XzDIxPVom5N3NfQsy1gFa/066CEc7yyVdPLEqVr9CjKDEqcKRQ+PeIDFTo857H/d2T
+	 tN9F8rZvBh++bfiZU+mkMOexdvmc4eHYXSHuCWVhgUr38qiXGaQLhLEVWiB4brBJ4J
+	 rI7bxUI6oByu0GRZ5OJQBOkVpQhfPNsm1aI2LLdsoBctL2/86uRxDLECVLo6OP1405
+	 BEXJP6ArM/lsg==
+Date: Mon, 20 Jul 2026 16:39:54 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260720142913.846902-2-pfalcato@suse.de>
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/8] mm/khugepaged: separate out windy folio logic from
+ collapse_file
+Message-ID: <al5BLXCh-k7xx8b2@lucifer>
 References: <20260720142913.846902-1-pfalcato@suse.de>
  <20260720142913.846902-2-pfalcato@suse.de>
-Date: Mon, 20 Jul 2026 16:38:55 +0100
-Message-Id: <178456193510.466529.13761189910586879195.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4209; i=ljs@kernel.org;
- h=from:subject:message-id; bh=LBY3Lq4B7/dhbrD+6OYFIVX9N1R+BzafiQtXgVQ2Ur4=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLiHEX6/h1Ktl9w85vO7wZuOcVDOR3Oj97tOpEQ13dP/
- qlJ2MuqjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExE4Q7D/3yDHenWb1/PtSk5
- XLDh+9wAblbLGZbSVikX2WbcuSnxLoThn5nonsyT090/vbC4Mbf78wL1J3d5JQ3PSLWdPMk4aW3
- GGkYA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: C6E34100006
+ <178456193510.466529.13761189910586879195.b4-review@b4>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178456193510.466529.13761189910586879195.b4-review@b4>
+X-Stat-Signature: ui5yrroccwrq58d5x9doqwzof4g6dyj1
 X-Rspam-User: 
-X-Stat-Signature: 1sb6hcc3fpnmyarz466mfkg4m6n6w1hc
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784561958-115171
-X-HE-Meta: U2FsdGVkX1/kz4xgAS2z9U05R2LIaBws+Dms3oW/wB7sn/h8NKZxqw4xF3S0RRf2NmZO06U2ynpjVwRUTagwe7T3DvyAODE6WKys5PCLwf7aUa9AIYziTcnigXSrVkli00n0iExT14WCnz+EvvprYj/8RXw1pRgjTCUEdHtiLhHXko2uS/Eoq1/7RseU2/7eZiZDEG/qpeHBSkfGMBhQDjGVgxUdEatBos6KU/RggbAADslFl1w8yF11aYQRqnqTR7F5DwWFinKp5MkliiYy95prTfjFNl386P6t+24cbBpd+lp9cJxPURVYh/v16RE91scKR2YZmrmiD/E5Mu3gPZCOhuo3zmL33i2+Kq57N+sF5k8Lx0iNMvUgPk21WP2LfigJdXD8DlogepTPtK7ZlvsakbtpTazH6GqjbwZaUO2R0lJFn3vtR4Ns3QHZi8KKdUbcXeCHNwpIvTUI5X/B4aeHt7YYRBOlpksAEqufpIO7pZJ5Wo3QDfyCb5Z6836uSA8PLPrD/4pbDK75YTj9hrhhK3vRJ8d084/0SI8b+mek3mwRRgB4FV/E8IwfeEJA2L+p6IAB1h3CThuzmgE+CxNWLH5mh61AFts1w4GZ/hqR4s7z7F/+CgEnUfGiezO+z6+h8sfP/uQG6Y+Mn3MJFLgxu7OOGL5moNdhGCAmcEI7vG2QleXeZQo7/v5YIHQKNS6zsOoS+ai5ef45toimSQO9KkHI+WY3WeWS9ypLhVqlNipxbBwom5sse2QIgw9IqUO7f1XEAi1Yr71F5iKGOsAWVuSPw1yCWYEqg0WXgAr868+Rs/ahRuxC0dA7Wi4i9QW8AmLgb+9j/lrclZH85yA1VI/4E0dRX4NVcJE9azIw/qDqytsXI6dotGAtsnlElOHlCgjKNnP5io9Yj0fea/CknYENy8pzZ/nVGtEnGvcx/wNvzkHy9Aumjk/RDGl8D1oi687z0nEAonLOyPh
- oxNNEIoa
- ii+vfakRBCqpcbGsxwxtQly4StZlFjkJksoqoLo3y/6ysnAigVbY8Mzind6AVK4VQJQo59UPPPCPjhW9MOVmghihxiIDCnGkXbOm5Bg8RTiIGmZcodJvgoNzgBLq6IbDk+FRPjjrd1D1lcJ6eSjt9N+fvySjHYOm1tuYpWCoIzeCXyjxHn5u02uzO9ZH/s2SYKIzshWe9k+qtY47vVMm79kdT01Buk2oXeSK068AW6Lo7t0uc9eT4AaEikV8p96CDqlR72LeWCUikb1V+A73O0XIXC5Is1NI2bSZG
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6A7164000B
+X-HE-Tag: 1784562012-445936
+X-HE-Meta: U2FsdGVkX1/OuPuawbB2qWHQoUFu0SkC2PuTEx7N5GlLIXxl3QfYcy1PjzAp+kTdkpVfdL0vcuTpTEzI3gkNbqnE3xcQtq3sDBmzxgYM5uthSrigBGt3Qc4bEZoA8BBLkSlp1B2klw8gjKEMJO96SHjzs1mUyqj/XvQ4LLIf1WKMHidAOF39Mat+jvoQiF1MtMMCsqFrD/NB1tL/KZ9UPCP0nY0REu1OOLewoQVakXDw+BEdbEFr4Pquq/B8XPNeQM0J+ciJZxUebcxzmYVWJSZMFc7ZQPo5nNYzMyrRtzF+flqwLXoxXRgDHE+lx+26q+ZGBXOT5tMGPR1K++KLxeMWapMS/42WQj7hO+nAdr9HN396onG34/reBT4DFbTfhzPHT29Oamqn9HXpK7oRKvDNU1h6ZDnmaDMmfwkIwUq5yH9KCERsWQV1jIYhUWQE5LgQk5AE6muZ3VVZ15wjdZKc4OQQZMJEmDMdTGUWq1k218Tf8DaJTenbkrdVvmyTMOJ9ew7oiWkkL/cdDisqv94WYaHru/yZl84QQWtH3mM8lnIJhiusF49onFkYu+Sb/hwX9AlQPbHLDWjQpUSCtD68WZQG1O1PlXqAkdZ6+JBMI0fsiJCbM3A5P2DmHMysGT4gQSl73eTFOYJUuyREAE4OQ91amxnRy6agQVzr71tvA3C7eQN7fK9b39dxVaUeQS/cBgDncdhmzyOftU3twxAvchDUUDLo3kEwj04SQ9S8ikT66BZfVM0yxD1aJhLK05rwPYROUc9us9J3DQ8kjDIfPCQCeHTLJYQ92VQXL18aMUeVJsIczVLWBIvO4PF37FxB1hqx644kl1phqc9wxfTAvvE3qQL4cE8pK2NwS/kdMcTVGWwhvDbkYOOvF3jIj6tCYQ9O+nzskq5Jv8Y9LC74gXmu3sq12MuZqiOXCqdWqqBw33uaU1anDq69cF+NSI4k9kSRlJ6Be6ICToE
+ pr6faSyu
+ +c2XUZbbfl+wK371/Cvd2I4E1xdxsblZs5x6ottpEu3r2+tOXUdaznua8Ie7M5n9D3Pc5BNnriuSf5hCqwfucrZijCo726ZZL51HbXwMBzDzJsKHrne9VZchNsVj2k5lFE/0IZlQExpZ17uTJHNvNLw0qzcVmNYzAhd2PD2UZmI1kxOO0S9ikLm4WyByuMyLx5WaqizofT8L8pbuxPM2wEOzfk6RCjRNyAyzqjMI1f7vwkDJRtVg8xxeryVZsWqN0evymqbBBwVz0PMldgRVapQ7o6Y4/FCuVyvmKujT02AIeNFw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,152 +97,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Jul 2026 15:29:06 +0100, Pedro Falcato <pfalcato@suse.de> wrote:
-> Separate out complex folio-related logic from the main collapse_file()
-> loop, and introduce a new helper struct to help marshal arguments back
-> and forth.
-> 
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-
-THANK YOU for doing this :) even looking into this bit of code is horrifying so
-I can see you're putting yourself through it to make these changes... :)
-
-I checked carefully and the logic looks to be identical, just various nits
-etc. below.
-
+On Mon, Jul 20, 2026 at 04:38:55PM +0100, Lorenzo Stoakes (ARM) wrote:
+> NIT: This is 101 chars,
 >
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 27e8f3077e80..d4de507ac001 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2218,6 +2218,92 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
->  	i_mmap_unlock_read(mapping);
->  }
->  
-> +struct collapse_file_state {
+> NIT: This is 101 chars,
 
-You had me at helper struct ;)
-
-> +	/* in-out parameter */
-
-I think we can drop this comment, though hm it is useful to know this is updated
-and the 'product' of the operation.
-
-Maybe something like:
-
-struct collapse_file_state {
-	/* Inputs */
-	struct file *file;
-	struct address_space *mapping;
-	struct xa_state *xas;
-	const pgoff_t pgoff_start, pgoff_end;
-
-	struct folio *folio;
-};
-
-Renaming index -> pgoff_start and end -> pgoff_end and keeping them both in the
-struct rather than passing the index as a separate parameter implies the folio
-is separate?
-
-(Though any such renames should be a separate patch...)
-
-> +	struct folio *folio;
-> +	/* in parameters */
-> +	struct address_space *mapping;
-> +	struct file *file;
-> +	struct xa_state *xas;
-
-Can we just make these input fields const + have the code tell you they're input
-only? Though perhaps callers expect non-const (esp. the pointers, ugh.
-
-> +	/* collapse end index */
-
-This feels a little superfluous? Feels odd not to have a start too but I guess
-not necessary.
-
-> +	pgoff_t end;
-> +	unsigned int is_shmem : 1;
-> +};
-> +
-> +static enum scan_result prepare_collapse_file_folio(pgoff_t index, struct collapse_file_state *state)
-
-NIT - this is 101 chars :)
-
-Either:
-
-static enum scan_result
-prepare_collapse_file_folio(pgoff_t index, struct collapse_file_state *state)
-
-OR:
-
-static enum scan_result prepare_collapse_file_folio(pgoff_t index,
-		struct collapse_file_state *state)
-
-Resolves this :)
-
-Also - why are we passing index and not just putting that in the helper struct?
-
-> [ ... skip 54 lines ... ]
-> +		} else if (folio_test_writeback(folio)) {
-> +			xas_unlock_irq(state->xas);
-> +			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
-> +			goto xa_unlocked;
-> +		} else if (folio_trylock(folio)) {
-> +			folio_get(folio);
-
-I see you drop the xas_unlock_irq(&xas) here because xa_locked has you covered
-below, slight inconsistency in terms of the mechnical change but I think
-unavoidable.
-
-> +		} else {
-> +			result = SCAN_PAGE_LOCK;
-> +			goto xa_locked;
-
-I wonder if we could do away with this goto? That makes it match the
-removed code less but you are already having to do that as above.
-
-> +		}
-> +	}
-> +
-> +xa_locked:
-> +	xas_unlock_irq(state->xas);
-> +xa_unlocked:
-> +	state->folio = folio;
-> +	return result;
-> +}
-
-I'm guessing this will get some more cleanup in subsequent patches? As a little
-long as-is.
-
-But obviously makes sense to separate out into broadly mechanical moves first.
-
-> @@ -2298,87 +2391,29 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> [ ... skip 95 lines ... ]
->  		}
->  
-> +		/* At this point folio can be NULL, or a value. */
-> +		state.folio = folio;
-> +		result = prepare_collapse_file_folio(index, &state);
-> +		folio = state.folio;
-
-This is a little ugly, but I think probably necessarily at this point in the
-operation!
-
-> +		if (result != SCAN_SUCCEED)
-> +			goto xa_unlocked;
->  		/*
->  		 * The folio must be locked, so we can drop the i_pages lock
->  		 * without racing with truncate.
-
-I looked through the rest of the logic and it all seems to be correct!
+(Please forgive this, b4 review converted my nits into tags and I couldn't undo
+it so just sent it :P)
 
 Cheers, Lorenzo
-
-NIT: This is 101 chars,
-
-NIT: This is 101 chars,
-
--- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
