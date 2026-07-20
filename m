@@ -4,116 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD88C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:02:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6E7FC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68C026B0088; Mon, 20 Jul 2026 07:02:29 -0400 (EDT)
+	id AD7C86B00B0; Mon, 20 Jul 2026 07:05:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63D606B008C; Mon, 20 Jul 2026 07:02:29 -0400 (EDT)
+	id A89406B00B1; Mon, 20 Jul 2026 07:05:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5072E6B008A; Mon, 20 Jul 2026 07:02:29 -0400 (EDT)
+	id 99E666B00B3; Mon, 20 Jul 2026 07:05:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D3736B00AE
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:02:29 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8B0516010E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:02:28 +0000 (UTC)
-X-FDA: 85008866376.22.29D8DF8
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E7CAD16000C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:02:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="X36/+1en";
-	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 71B1E6B00B0
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:05:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF5C1120120
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:05:18 +0000 (UTC)
+X-FDA: 85008873516.24.08CF1C4
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1C269140007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:05:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RK0CYnUC;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784545346;
+	s=arc-20220608; t=1784545517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+LqOLf1bSbbTbtCruD1zKjWdUcVSyhnCC+ieNQDkuA=;
-	b=WbM2Lq4HzPXTrB8POkz+k2rfBkWhO5396L0XnR4cEokQq2uiPdMZdwH6i0GUfBArXUqdRY
-	CKqA5dOLK5zrPe/b/Cs17yG0n66VJ1lFJtKQMZUvhmBHP5ROkOcUo1ZQYKqtz4rHD3tGF9
-	AiEjyor2XAqxFrpisCP+cFmcSyaPgtU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="X36/+1en";
-	spf=pass (imf08.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=LE7lXg74pYORpbuFx4QOJ0MptzoQRSngymT9gqZ/79o=;
+	b=nbUcGEB1jZH7dcYhaqZPerhY6PLuhHSZj9ZYwUF0p/wGNsVQ38LHHiLIoac6H2ArK3w5GB
+	6aBoSRqZtmlL+Wgun180N30QebJlIyy8huVWIq+MNbdZYbm2NVuy4asVWczt6S2zxHvOTM
+	d0uihksA+87d5pDx2hhBsgqu/J/rD1M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784545346;
-	b=d0TrWrnf3NCxPELCL2PX8tJW0I8Gt68HcYipleS2pDHDUK/J9x+Oou8ozDQDs7au5X9QFr
-	Zmeaf5skPYl84X6GRN0qLsLDTwKhW2wvplLZAQG55MCHreloOEA4v/bzS+N9J+ZhdStsRG
-	gaQHN955oa+VwNCbsr7TVksn7BWz36E=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c999f162c9aso6210887a12.3
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:02:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784545346; x=1785150146; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x+LqOLf1bSbbTbtCruD1zKjWdUcVSyhnCC+ieNQDkuA=;
-        b=X36/+1enWKS9kR0c8L55UMS1sF0gFBcgdxT91F0uwF6kGGhkFMs19lRoOb36Z3Mz6F
-         641Ox41k6QwSK0EM31TxWVMqG0MMlZyNSUVNhDu9OtBIGEHI09Tw8yOk3s0D+h0mvrfn
-         jkS9rTMankxy9uq182cj8NTcJYsNt+jHTcmr52JDRdTC5Svvdqvkkt00pW/9z7jy+aHv
-         jwr4msOaPBB2AhDrPgcVbDXHe7FnshnkHuE2GnVkywAPxFcdOUQPJZw1TWM3/ENIzrgg
-         xzGhNmBu3BVVUTCrwjqPxZ+cDobrG8dKz/M5fVKr2m2zCpCfZGLvdjHGA9PwIJ6m+CDp
-         vB+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784545346; x=1785150146;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x+LqOLf1bSbbTbtCruD1zKjWdUcVSyhnCC+ieNQDkuA=;
-        b=ovZXgUAgLK2iBItl+fnEkK0FVtTNgCh6mHABwOJDno2JOP6MiLvUPWLYq9KRZJWHez
-         dw5IGde7w+zQVmDWIHvqx/UWN4jUwp81DD/wM3mqTW077uImwtPz3AMB0gA98SFqLgyT
-         capoZkH1UIse/29IranwarbBL1NUbmfljKlrPpJhZxk1wH/4kv7ZGI91ingf1l1Me4XB
-         438YDYtZ8rSHKzv2jdil1H06Uc1EGhpzH/t/jPUlNkAhcMr7P/07XkQfALZXiKWd1fLJ
-         UUE1V5Albas/ip7VlZ+a1WZ4Z1TmRfDijKpMysCGR98VL28Iw3umlhDqtkbzzH/fTrhV
-         gfFw==
-X-Forwarded-Encrypted: i=1; AHgh+RpaUcfavkV1H5QaFr9KkWSETeHePBn7QJIz+I2nxYhuYILKtOkcSIlnNmHFUX1ntXfRQcyKV3tgNw==@kvack.org
-X-Gm-Message-State: AOJu0YyNbFixa/S1zD9iZGIDQ9X617aRQrTcwh/XXa1skCgZo3j9285q
-	DM4VQ0eVwHCzeCnSuKsrR5GpnSWDZcKnPXo489d+xVqGYp2xJ45ZIFzH
-X-Gm-Gg: AfdE7ck0Wznod41fHdfKr0OKTBOzZjbOJQzhWwIEVa7RBeUBthFpN/jq4GY6UwmEkC9
-	IkFpX6qBnMVIVDhlYR4UZtu9iUB2Ob2SWBsEIXc0wCx/o/1cBllSR7HY3LcWiz+r97ynj+5QeQ5
-	wiLnlxFROBIadUk4Lb8UlCvXCvhzJ8W7Ptm/4sJ/YHseFD0247ua4GZf3yEvyi8DM89lS3aLF9T
-	W6nTq2pMwhDn6UiVthAJO4ERwEgcudb29fOrvRUjoAGi/MnDaL1+bDyk2aJJN3btmGq1iubjU/s
-	1bCJfIGH4O7CCUKWIn1FUcejnF0YadYjaBIlwt8mnYR4X3+M1czv8ka+FfCKVNnaLd9CfV2FOxC
-	KvEm7hsgmRwF8gxNi/8JLP2EpxVcxm6DklQ7sCRNdNphJBGcSpRVJdN3lQkxS9ZNsfeWZqTTMNj
-	3Rv7Wbpqs6BRWmlYuXMsndXrentTzzGeg/v4uKwlfd
-X-Received: by 2002:a05:6a21:478c:b0:3bf:b182:94e with SMTP id adf61e73a8af0-3c3ad66b538mr15799239637.5.1784545345587;
-        Mon, 20 Jul 2026 04:02:25 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:8d9:11d7:8597:c44b:bbf0:2c09])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce29c2c93sm31585842c88.3.2026.07.20.04.02.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 04:02:24 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org,
-	stable@vger.kernel.org,
-	yikai@z1k.dev
-Subject: Re: [PATCH] mm/damon/reclaim: fix typo in damon_reclaim_timer_fn()
-Date: Mon, 20 Jul 2026 19:02:32 +0800
-Message-ID: <20260720110232.312053-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <2026072041-rearview-unselect-3f92@gregkh>
-References: <2026072041-rearview-unselect-3f92@gregkh>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	t=1784545517;
+	b=MmLDFjIz8XwPi9uOwPJp+VXwhqGi+D+Awjdg9AGXqKrJNuLQW4KZWloxGEmlxlRBdmXK9I
+	7i3tBHsplIp5GirLMBP5q/bh3GZlyh9IyRH1aEzY1DGLMQ/mFWsVzTGOIZMK3Oq6cwbv+t
+	oAfLHXRseVF/c2MtxEnfvXZsCp9lMEE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RK0CYnUC;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784545515;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LE7lXg74pYORpbuFx4QOJ0MptzoQRSngymT9gqZ/79o=;
+	b=RK0CYnUCMrkf7s5idwexHk4YSU/n6GI0NkkE16RN6kbocii8IM+z4dsvTuE517nvs1+97m
+	qNv/bV5xJHM1Kp6qtLRJu1xVmamUvZpcfZJnI3VPkbP51b00WscxYogMSymtIZHVyB9vX5
+	IJQy6tUT2NwLd6nk7RQiKzCssUU2dNY=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v2 06/17] mm/mm_init: factor out pfn_to_zone()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260720093127.540540-7-songmuchun@bytedance.com>
+Date: Mon, 20 Jul 2026 19:04:35 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>,
+ David Laight <david.laight.linux@gmail.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <3E402DBA-58EC-4FA9-B1D6-33DC7185AE19@linux.dev>
+References: <20260720093127.540540-1-songmuchun@bytedance.com>
+ <20260720093127.540540-7-songmuchun@bytedance.com>
+To: Muchun Song <songmuchun@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 1rtuab1o6r75dwapkscpqdbo3bp4b7g5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E7CAD16000C
-X-Rspamd-Server: rspam01
-X-Stat-Signature: bzdd8eusfrfzcxnow71sr6deyg6d6nuq
-X-HE-Tag: 1784545346-350940
-X-HE-Meta: U2FsdGVkX18sDDSYPD9naI/ACyHpAGSh+JdAGFnDM46FPIC3wXIeuI/1H593IlcksOP1X5NzyW2gSt4QgSb10iJ0cck5o+eum5AbA2nzKCSec3RwjofQITV2rk+KJa1dixMUIz+E3dYf8MFnUMislg393LSaOBsuZstwlA+lJSjx+tEd8QgiId94ikK6V96c3N1s3HWNzp2mDLT84OaK9gNypRYEwpjFcw9YqEdItbt8x5iUOWe5ZXQsEySdRkR8Ywero2A8IX1EpToFV3gcY7R+POYq8JJGFcPDjzNv8/lqVgs+mN9Mrm8cnRBqlVczzZyrAneaO/MyJNUn85W/ruWK/dYDfi0gX50riZmdG5KTbUxOycEbwMyDd2Ic+xSIonSGGhYHMnrR7JJIpzo3PB0toEsHzW1ZR87WebddC+urVHXvy2yrPzJ4Hg8KyznienZbdwL81CRON8yTiil9VzRmiMJ5t4/Nk0FwAjQTMpUWpuCfimEpmmT/H+47ks9dOpkFTPrDzuVExqz/Bbsw+TzyrC0Wwg9ipB0m/0aOD3/5BzCIiOkWVvdrjPwDr/DG/yaI3NspHiwUae/gxRnV4Ptzp2Fr8qJ0I+G4CqbLEfdq94mY34sI8LRL834SxWFKr9hWNqp7DTPhMZVgqoVL5FTDcoGrvlBOvwSBAehXen/XXkcznMJ9FZHfm71qkIrSUR4LAF0Ff4zJifSCf/wU9R/CzG9I8yMjYHbU5vS2sJsKPlEFVT4Ob4bBHneOIg8ItEs66LlPUl3Fu36V2equnZc8l1T8TUE2wrLfIwOH70RHhpxiI6v0iZ9ezWWaG/sxNtj1OidiLMyU1LLjXOC1yYICv8YHPFH+ClFJMIaZz5PcdE9Z/oMyNUQDuik4urYNoa4U6QPBigqk2GSYeSR88HLTIe/x54qyRcalpqqaQvqGJKTOYTTZdd8TcVvJKSqQa2HdW3xhxVgclZ7izmf
- 2gLzvhso
- ITo/UMSLLC9o9PIr+EQySboEe3AweEU/LrQw8TDnpFycYZWvlXb+xMyZgJUhSE3pqdmkHaW0PCrWjflhQKJYFePzCHKVhp7xdhhJWkPfN34h+oNjqC8F3VlxCkVBqLam9bH4ESscik7NhwpxYMoSLgpJGSw6/FgqZs684201nvU2kiWNyhAj5U1JYAxHUkgIvLwW1nOkoS06LyewKRq4/cd+DkY/iBr0a+53XWelKKeeEveWLuMUAU4vOEu/mINvwnFmbGrgmdY6FP9Bucg5TcZnVnlTWe8Rixp5C1uUc7Ia3CZNeM6eKu+JwREGsgbW/PT3bGEMrl7wtEfpJZ15hNek6lEp6GuH8n4PosGI8az6x43yo3oAkdctiL9PN7e1L2fGtf/l1aIZ8QxeL7qU3SwkjsJSPKPoTs5xYdLgdf6kywS0AfCIFsGIH/7MhGb8cwMwc88lItTOigBXrrU1uM9WBe55DYPCJ119e
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1C269140007
+X-HE-Tag: 1784545516-641924
+X-HE-Meta: U2FsdGVkX1+jYzSEXgaPLzkE6ZVaXEU8Z79M92s9H3xzQQsA2ZFK3k+Ov+MByI08Tyx12OM61jMKZh/nzYQnBzxJjAynsi/lwua0LhkNThldZRwUchgst3qFASdq+Wtegq4jw2IGoQ3rUSH0HUrBebfDPU+d2BH6mQRCVlId1ZQWpAPBgU8lE3mV8aI1Pq0LVgIWy/zesZEFOsCt6h5IItzZ1MdAYbNXpQ5QCyjvi75jzL+69LQi91vIjuSRo+gfM/z/s+zYd8tId/EMd25zkvr7rqqQs5kTUPQnjF9RJa01wYCL5nwSJsTMAtPvYcuRzeo+qTOcxwjyaYnt69uRE1/4JkFl/xH2Rc+i23xhwytyNUeGU41NxTyU/dh85V1wJjpxcgBLlZSfMNKYqnQIjE7AqXSePYSk4B53bzO3drK242RhMEACmT3hOfCD5Q513e02JANuVf7+LnfLCLJsJtR9v21wUmvN3YX50Ip6gV3K6Mre27NqRcbTv8mhj/rkhBd7kEgZDdWe2VV00D+ysHZUiTSm5Song45YT3t0YXjoBb659aChu2rSMeNNrL0DBr3jhD5rPz4ZlfGtPxB4ugN+i0+KzbqtKpMik4CI9Y13rE+RjOHporOzmFObtI1XWUUhBV6yt/oj/+UtgdZz++mzZdu5YKBCpc7SU6ABNbzAEowf1JuwnNAvRdN+QEE7og+KO8PJ5T1iiIWHKg+JQPQ7l3eWJyaY//rlvE7HsWrdoXgRo/Z7p57al1Bi13Ij8nseeRO7VFf0EkyTUkZFichUHhaYtaKxM0o1AwyK6DTDkRQF7KErkXJvcundJQ0yv9Psug05mts4olGWTUEU1rINu4p2aJ005j+0se7JcaxB+tww0uJup9q1SKZZXbGB2NUn62BaHNOafwizWdKOkYU6YBqJNtbbqq5g7A8n7Tq3apiJk/p6Dfnhu3PjhckPW4GwfR1u+98yDJoSFbM
+ Krw4Q70w
+ ws8BhEOqGEzQ3ttD7Hw79o/UKmjse/q6yUcA9vDpfW2vxuqGUGmzQ1gCzBhgCkU+WhWkp0zC5wOzc2RRikXvxNslCh8q3ezbZd5P9eSLhFV/b3dn9PwuJCDDNOX6xjGgfN9VKxwHLLzEbun3WKEkuNPhJIK4T8OLwU2g4wET5vWmcLBeei8l78J2vaK2Ixvvxe4tJ3E/+oqsjOupi023A5xJssgS2SCoERRTEQxxYnbx9L4WcLFYDPN6IsrWy5HH7HiBZdEypd1t9/KlxqvyJ6cj5kS3/6gN020OVTKz3qrz5gaHcsF5eLMdzYxXUygD6P5nInh4VLu0FOGBvPibfqoGFJpFcZqZcpR9WDN1y6ztcZjsxkgmQuBsct872MH7one/R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,28 +98,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Greg,
 
-On Mon, 20 Jul 2026 11:59:03 +0200, Greg KH wrote:
 
-> Why is this a stable-only patch?  Did something go wrong with the
-> backport of this commit that is not in the upstream version?
+> On Jul 20, 2026, at 17:31, Muchun Song <songmuchun@bytedance.com> wrote:
+> 
+> pfn_to_zone() in hugetlb_vmemmap.c duplicates the zone lookup logic in
+> __init_deferred_page().
+> 
+> Move it to mm_init.c, declare it in mm/internal.h, and reuse it from
+> __init_deferred_page() and HugeTLB early vmemmap initialization instead
+> of open-coding the zone walk there.
 
-Sorry for the confusion!
+Sashiko said "the declaration is actually in mm/mm_init.h". That is indeed
+an issue. When I was handling the rebase, I forgot to update the commit
+message here due to code conflicts. I will fix this in the next version.
 
-This is a stable-only patch because this specific function was removed
-in mainline starting from v6.2.
-
-Therefore, this bug only affects v6.1.176 and v6.1.177 stable branches.
-Mainline does not have this function anymore.
-
-    $ git tag --contains 2f54908fae21
-    v6.1.176
-    v6.1.177
-
-Let me know if you want me to resend with this explanation
-explicitly noted in the commit message.
-
-Best regards,
-Rui Yan
+Thanks.
 
