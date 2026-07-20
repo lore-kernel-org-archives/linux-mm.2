@@ -4,110 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFF9C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 08:52:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC39C44529
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:12:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 685606B008C; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
+	id 375FC6B0088; Mon, 20 Jul 2026 05:12:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 635AD6B0092; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
+	id 34D9F6B008A; Mon, 20 Jul 2026 05:12:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54BF96B0093; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
+	id 263E56B008C; Mon, 20 Jul 2026 05:12:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E1746B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 04:52:02 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9740316075F
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:52:01 +0000 (UTC)
-X-FDA: 85008537642.28.907F6C3
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D0FF380006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:51:57 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=DWqG8oU4;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf02.hostedemail.com: domain of chenyichong@uniontech.com designates 18.169.211.239 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0359B6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:12:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E8A914071F
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:12:02 +0000 (UTC)
+X-FDA: 85008588084.08.8DB619E
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6C6D740005
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:11:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784538720;
+	b=I63rtx+/lQQeYNU+MmJKbywCHQmooy4SvFIa8iecVeoQC1hNpuE7gNhWQHWU5Pb1xL2tNf
+	ZlOUXPzep3TP10kHUKcljstJpvSeo3HNKPlYhDGALZqesChdtT0WQ0fSkKTYpoIjhboAnr
+	M9oQBDuynJfL7wF3UefcZZrQwNmjwbE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.51 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784537519;
+	s=arc-20220608; t=1784538720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qwFdiigprnnr+PXeMatxgrhnDGdTJlNK6vXKjM4agmU=;
-	b=32/IL7wfywCYDjJ4fnOt0OuEH/xqRU10qLYjxMW3DLpPuZKBaunxTp8cPNIM+DlCYddDU9
-	fhysHNUtw2/4lENFj1k4koxNntCM2msFHzMrEGjioJhrNnNKMis8F6oEaV8qlepgw5Sjqw
-	sbzj+2mDr99Gs/Kl5ftC+c+mLUFUVFo=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=DWqG8oU4;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf02.hostedemail.com: domain of chenyichong@uniontech.com designates 18.169.211.239 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784537519;
-	b=jRVSFVam1bExdxchoqLuucb1OW7aEx02JASex0pb/pnas1mt3sOy47voezGTUsoQmYDp2g
-	mii9CZI9eGwqVY7jdOeA1izr5BMGWzIn3Ooi0Sjt3MWxEHVCXYoqVM4C2bQtm3+WUM0cJB
-	T22Erf3Y61pYHjXxKswGHtbuxam2dZQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1784537434;
-	bh=qwFdiigprnnr+PXeMatxgrhnDGdTJlNK6vXKjM4agmU=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=DWqG8oU4Qm3K3ng2oxPuV6Ajskl91wnEtDu0nsfiPjyLj96XJJF0tev6uqa+Cb/sk
-	 mVK92h13cPbajqtywjAt0adYDHCf0vCRdx6vq6mXdMkX19nTyBpLlhpo/DF0MVA9aJ
-	 MNs4mpksGTKT7R5reVT6u4SXAwBQ+eSqXRfqvRH0=
-X-QQ-mid: zesmtpgz5t1784537428ta2b8478f
-X-QQ-Originating-IP: WbfTXFU/kDf3z6rnhpLug4tdERftmKoz3sfgvejAQsU=
-Received: from uniontech.com ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 20 Jul 2026 16:50:25 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 12259026264893774996
-EX-QQ-RecipientCnt: 9
-From: Yichong Chen <chenyichong@uniontech.com>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Barry <abarry@cray.com>,
-	David Gibson <david@gibson.dropbear.id.au>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yichong Chen <chenyichong@uniontech.com>
-Subject: [PATCH] hugetlb: fix subpool release race
-Date: Mon, 20 Jul 2026 16:50:24 +0800
-Message-Id: <20260720085024.1392261-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PnmzFgZfhE1Jp7fyBRSesXFLlfdtMYnvxjhosjCEu4c=;
+	b=NutTv6pn+QPjFhX0fw+Yohwcm9W9GuS4GkycV6WNozjqkFE/7Fu+ZTVbNW9WUxb0mmeZ9o
+	0F3Ub9q9LYtygVhIbAPcEPgB6nemXy8kt3cJqwJtdV/Xa4Rzcqeo2Hd7Cf7EShgjoqvprn
+	yDDGd+YS0wGLRDQhwMPu8us5xl4wW+Y=
+Received: from unknown (HELO lgeamrelo01.lge.com) (156.147.1.125)
+	by 156.147.23.51 with ESMTP; 20 Jul 2026 18:11:54 +0900
+X-Original-SENDERIP: 156.147.1.125
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.1.125 with ESMTP; 20 Jul 2026 18:11:54 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Mon, 20 Jul 2026 18:11:54 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
+	baoquan.he@linux.dev, baohua@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] mm, swap: Fix potential NULL dereference when trying
+ a sleep table allocation
+Message-ID: <al3mWmCN3lNv8jMu@yjaykim-PowerEdge-T330>
+References: <20260720071342.50742-1-shikemeng@huaweicloud.com>
+ <20260720071342.50742-2-shikemeng@huaweicloud.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: M83iEva+1QDBMc0d6gBK3mGcaHttUzu+k8lpp1/PT19Z6x1nIJwEFSbb
-	mRmoTP1bsUQrlO0eYD7jQb6KHdvVDABc95eQcov/LrH1VS0ZL2LigOYm1VxtGBng9DJwR5X
-	rymmlWBeFG2GPjNR1zCVIAwcboB8rxw4v5Jy8SAAy/9p+iZ5AsJ9sGUyISExUU9kD/pRnfW
-	wmW6z7iUIjGFlxUunAgeYdv33CfmwAVLEkmGyT/dOmLxkp229WhTd6leVg2klQU9CkI/1md
-	uRdN3BvsdClxR2ia7MyXvKMoeIelOyw5ppJ+5t3Eypo8FznaiO8/ZKaPvaKeS6tMJsSpNvD
-	A9tQxtjJ4YIkEE5+QPTBSEMQwsqjtJzlj/UrOR6Rzf+vQ3qmibjcAUvnd3QK3Yimgo+BRlk
-	IeFSf4Fz5clfupnC439e8D6zSWKR1I8gbBg0mnmaCfxO7wlfcejw6oU8h5SH9hywZmVtTQx
-	nVRE+F0TmPTeTUa70mfjWIyMbt0gZLgTKNX8q5G59cdylHcVm1/oSl6eJtyE/9Qai5iKh50
-	OoubDDuL8aYbUI/ItFIEvOYWRPb4IDSVnJxDX9NCpwp2jABOEN2j6Bx49DJmLDUR93ee3C0
-	oDDGdVIILComINOwSgPbpMGMVhfaCzQfOivaOOJxMTz57KQINu+2Et3i/pmehCf9RYeulUj
-	NeKFjfFwBgZYeFjvkf9q3Ex4kfy+DSsUzz3BhhGdY5I9pZhxIUYgfqshzsV7rGRtDCZlGOO
-	LqY3vHA7AexmTqc7GNvxXIH5tr28cuKOPoqPozs9hDas1zExrDRxapxTC/USuJAtGZ5Fqgz
-	6BieZ9OdC2Z287MEzqrL4w41gmnQT2ysbSRJQNju1C+QWmVB13aLh40N9nRC5j9qzZ/glvn
-	rxeZmq/99A75Nh7f9iaXeIEC+iGCRE7MCffPdb3vdKJQaX2URDurV9nlcXTcyI+m6xKshck
-	O73j42B/0p4t+i18q7Y7cPd2nVaHq3h9U6sI1vG0K2ZK2HJmpoPBppwvxuItvPa/fwcheHu
-	wBzFaftm9tHXAwWXBVEtiLIW4Fh6Wez26NXRPSEA==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+In-Reply-To: <20260720071342.50742-2-shikemeng@huaweicloud.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D0FF380006
-X-Stat-Signature: eiqt4yiomc7hzzyjdtsmmdmp5c6jbdap
-X-HE-Tag: 1784537517-296398
-X-HE-Meta: U2FsdGVkX19B7F6d7DJhjfTmzHxDkjPT4zZfrodx59uRoBGAwt3Yk+DE8l4MGwdyWzq+jLSUJassWTxJS3wx9vxCFXXUe8b9kUJ97BrghVhX35ndOCalbqLhFhzxLL/ruoN3/M6Tj7N9dRkPhkhhjL7sBxAeooM0RzpzF6gFJgyflM6JqMIfU/PXroUUJN93/upveDebDbpGpnVa6RU7yARWJDQC91wrSYax5jfZR/jmN0GIZ1HuDoxmfXTmwfPKGGlt4Zc06At/RJSKIZx3MC6rggKJ53jSwYsRlzxXCYoMGklwbUCJDZTYgr73045dJhBWVjvn5rFm/uzqD5Rubaw7T3c7mnAIKcovmxCQoOPTsnBAaN8X1lP3VlAoZw5ruRHnjIk58vV+7j+n8l2ogjBJ1wg8FBE4ls3sy6jB2EL85pgBZwTBankchNj2CnKkpxuBJR0sX37TTHJ0Myc9nUC+MlExOd39lec2gKAYBEvfwz8cseQfs+8bGvx/5Sl7FsUG0sZPLgsVojM03tG9H6OGpXR/y0015bLLagm1y9ghS2USyf1DgGepuj1N4uSLubywNCAQR+gbX2YbWUHsRw0jYajQrFN3q2zCU3p3+FLr/tErDxDeEEhMUypJVmDZCOA5tZ1L9rAF1ttiNhk/5rZHrfJdjvUn/Qu4b2CbQ0NLOwK7oCcQ0zCfZdBVKRKmrTsbA4ZvMkWoF2K6pPbkiV6cXWByiIQlTNRY70umvJvI4EqCSJu8MUtj2s7bY/jg4Dn6JLSD3qyGbZLr4iF8c6C44CcsD+1ONyupBAJsGFIEzYiWC06rfeKocmHdhufYNxA4AHgXrDb7wVyBlK9L8npIetZOAMLFBsERpP1EyACG4QEd6jRD4oGRtD1xc1VRPqbRHC3EhqPhcT9DbVGKE+D+7L3vESLYYrV74vlHXTwon3RNsMCD5+cQfy53aMY19o+jVoZ8+EuWYSHwRDU
- oAsa/lJ8
- y4iwr9dO6GTQQAe0XAtc+I8p4bpmfX1+SZEAyOWik7fN94g9AuizBh2HS4LsBPFnSEOkUTq/veezQGL6JQywuJdCh1koh1Z2prW5BxEAmTDBP1H25hFeIq+UokYa6mPE6Y5VSqYH+vIGpaPUwxOjQ4EzI/mBDHbUF1JBwlzZzy68ZhIS9NVqH2cZKo9E8+ULqLwhB+RmxLJ1MLQUmzSl1yzDqwCsBj5xbbIzpjTAfZpEEQ7D/olpZ0WWebQVbyhXtOpXeQtc/XRAf9R9pY56VCGOlgz+niaVMMj2Czx970DFDRCR753pYe7Bhejfn/mz7UiBMxgGH3XCtKRa2/iIdPGhskxeREkUc2v71
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6C6D740005
+X-Stat-Signature: osaw8t4qpmskxqiakcn67srtjs57x1ut
+X-HE-Tag: 1784538719-648944
+X-HE-Meta: U2FsdGVkX1++pVOAxXKUo519Sssrjv3DoTgzCASnGzq62RrSRkhV27x9bKe6tNfhxIYdLdFBhgjtsGcg/KYjNrxdVb/rVsYLNQyDZCFKhiAHWEw8FTTJDY+nv8pKMVFSmE5sqZAJeCVvq8V/xB/YdCKPUw6YXzgyx/zsUpNPvoyVcezni9b+Eidkm2bTZrrkNeNKkXyHSpm4diI4L0G0qvzHxfAudJsJHL+HK9PZDXqfppQNb/S4OLMLFbm8WPL7fQ3/N5IQPd4B09WIAMykZ4nF1Acg8pr6199lTSPmiHH+dlP6u4FVpBWjdVuPwNjqBAdKdauBpFhhyHg884KtyW7trZOpr26fv0SdaPQZIyrebCsd5zBjVFIw98s8aWKEnMHRIZIQThVIs2NgYRfsVdc7RoprEK8DEGT7jV69Jo2Q53FsUKGY30B9ksQqIQYawXEbWKS2EHN3/QeXBAjQY0EpsClabA6q9KcA3R+vN9TsWdS6PCHAZmEbII0TaWPzV+KiqnkPHVvfwV5towQdSUS0u1cScs9doV3rpUCz8UhEVilSKfzTOhUtIrfuLePevQ3Mz0GlWk37xHDHu9SZL73kQjHyiY+UxDaE0CgtSVj0PT3lsTzm6z0d0vDcfFV4B0jPRSshAtx3CE4pCq2cUsO+mgJbHVURk6iuxa44mOft2KfFgJL4gMbpMtsgRo+JYhOaU/zqOroSXrv75RDkBvAOdGjmp2IjR9RZblUODQXRuLI8EJZs31W2hK1lbE2WolWfYYU6dG8fTV/6PBhI5GLVeOd+6aGCVLoDc9NqdXiLODIfgUM0YcF+MjeDtAy/9E/Vps7wEXGTKA87Ic/Lcy6UbANTKXjzbhJPehXmZ6J+/7YaJeXpphFgucBbG7yZOjBN7iDVHntWlIm7Z1iijTu1ZTwGNSZOCJdHsiLkMGXjMzqJC4rCSMhKhG9VzGnsosRvD5NxoOTSpDj9w2Z
+ B0Tw2wWi
+ 5KVi2lbGn97xwifsO60QESNmchPsJIjMtbAlMcq4GLwiOTsuOqpUYRlZk8+88rPwR8DPzkTK74MfDeYnM9SsUIUNokqKW6Lxu5vFOWK/ttVyfY7AbDMgWdisT/afnNZ4Ue4bjlYUBCR0mCvO/EgjsEyTPHZc0KXz5rXTGkX/+fMk3TXKN+gMVIEzqwtkrI+0czfGQiuuMrNhIzqLGf/xSmn3iWG9Ta/2i8377kQw1cU5JRqU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,45 +88,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-unlock_or_release_subpool() drops spool->lock before checking whether the
-subpool can be freed.  However, subpool_is_free() reads fields that are
-updated under spool->lock, including count, used_hpages and rsv_hpages.
+On Mon, Jul 20, 2026 at 03:13:39PM +0800, Kemeng Shi wrote:
 
-Another thread can update those fields before the first thread evaluates
-subpool_is_free(), allowing both threads to observe the final freeable
-state and release the subpool.
+Hello Kemeng Shi,
 
-Make the free decision while still holding spool->lock.  Keep the actual
-hugetlb_acct_memory() and kfree() calls after dropping the lock.
+Good catch!
 
-Fixes: 90481622d757 ("hugepages: fix use after free bug in "quota" handling")
-Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
----
- mm/hugetlb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+it indeed looks like a possible race condition 
+(though I haven't verified it at runtime either).
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index e319c6a00555..46ab702c0fc0 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -140,12 +140,14 @@ static inline bool subpool_is_free(struct hugepage_subpool *spool)
- static inline void unlock_or_release_subpool(struct hugepage_subpool *spool,
- 						unsigned long irq_flags)
- {
--	spin_unlock_irqrestore(&spool->lock, irq_flags);
-+	bool free_subpool = subpool_is_free(spool);
- 
- 	/* If no pages are used, and no other handles to the subpool
- 	 * remain, give up any reservations based on minimum size and
- 	 * free the subpool */
--	if (subpool_is_free(spool)) {
-+	spin_unlock_irqrestore(&spool->lock, irq_flags);
-+
-+	if (free_subpool) {
- 		if (spool->min_hpages != -1)
- 			hugetlb_acct_memory(spool->hstate,
- 						-spool->min_hpages);
--- 
-2.51.0
+> The root cause of this issue is because multi-tables are updated in non
+> atomic context. To be more specific, the issue could be triggerred as
+> following:
 
+Here the cluster is isolated (CLUSTER_FLAG_NONE).
+
+> swap_alloc_fast         swap_cluster_populate()
+>                          /* Try a sleep allocation */
+>                          spin_unlock(&ci->lock);
+
+And from here, the table becomes visible,
+
+>                          swap_cluster_alloc_table()
+>                           rcu_assign_pointer(ci->table, table);
+
+All entry on this cluster is freed(e.g process dead) , 
+so this might be the free cluster.
+
+>  ci = swap_cluster_lock(si, offset)
+>  cluster_is_usable(ci, order）
+
+Since it's a normal cluster (CLUSTER_FLAG_NONE) and the table exists,
+it passes here...
+
+>   if (!cluster_table_is_alloced(ci)) // ok 
+>  alloc_swap_scan_cluster()
+>   cluster_scan_range()
+>    __swap_table_get()
+> 
+>                           /* free table when more table allocation fails */
+>                           ci->memcg_table = kzalloc_obj(*ci->memcg_table,
+>                                                         gfp);
+>                           if (!ci->memcg_table)
+>                            swap_cluster_free_table()
+
+Nullified
+
+>                             rcu_assign_pointer(ci->table, NULL);
+
+Now it happens.
+
+>     table = rcu_dereference_check(ci->table, lockdep_is_held(&ci->lock));
+>      atomic_long_read(&table[off]); // NULL dereference
+> 
+> Fix the issue by updating allocated tables in atomic context.
+> 
+> Fixes: 2fe7a6f5024b8 ("mm/memcg, swap: store cgroup id in cluster table directly")
+> Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+> ---
+>  mm/swapfile.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 615d90867111..d29062d9c3cd 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -490,6 +490,20 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+>  	return 0;
+>  }
+>  
+> +static void swap_cluster_copy_table(struct swap_cluster_info *d_ci,
+> +				    struct swap_cluster_info *s_ci)
+> +{
+> +	rcu_assign_pointer(d_ci->table, rcu_access_pointer(s_ci->table));
+> +
+> +#ifdef CONFIG_MEMCG
+> +	d_ci->memcg_table = s_ci->memcg_table;
+> +#endif
+> +
+> +#if !SWAP_TABLE_HAS_ZEROFLAG
+> +	d_ci->zero_bitmap = s_ci->zero_bitmap;
+> +#endif
+> +}
+> +
+>  /*
+>   * Sanity check to ensure nothing leaked, and the specified range is empty.
+>   * One special case is that bad slots can't be freed, so check the number of
+> @@ -527,6 +541,7 @@ static struct swap_cluster_info *
+>  swap_cluster_populate(struct swap_info_struct *si,
+>  			 struct swap_cluster_info *ci)
+>  {
+> +	struct swap_cluster_info tmp_ci;
+>  	int ret;
+
+IMHO, How about resolving everything inside swap_cluster_alloc_table() instead?
+
+We could consider the following two things.
+
+- Assign the table at the very end inside swap_cluster_alloc_table().
+- Handle the table freeing properly if subsequent allocations fail.
+
+Rather than allocating a temp_ci (which adds special handling
+for this case), wouldn't it be better to maintain the original intention
+of the swap_cluster_alloc_table() function?
+
+Although this is not a hot path and table allocation will usually succeed with
+the ATOMIC allocator, this approach would also save the memcpy overhead
+and stack memory usage.
+
+(Another option might be checking memcg_table and zero_bitmap inside
+cluster_table_is_alloced(). However, I personally dislike this idea as
+it might introduce side effects regarding its coverage.)
+
+Your current approach is also a good direction, but please review this
+idea as well :)
+
+Thanks,
+Youngjun
 
