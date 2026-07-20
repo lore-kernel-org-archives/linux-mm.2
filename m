@@ -4,143 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CAFCC44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 21:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D38CC44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 21:58:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92EB06B007B; Mon, 20 Jul 2026 17:55:22 -0400 (EDT)
+	id E3ED26B008A; Mon, 20 Jul 2026 17:58:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DFA56B008A; Mon, 20 Jul 2026 17:55:22 -0400 (EDT)
+	id DEF886B008C; Mon, 20 Jul 2026 17:58:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AA0C6B008C; Mon, 20 Jul 2026 17:55:22 -0400 (EDT)
+	id CB72B6B0092; Mon, 20 Jul 2026 17:58:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B4B46B007B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:55:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97B20402E9
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:55:21 +0000 (UTC)
-X-FDA: 85010511642.04.BEC68E1
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A5C4D20004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:55:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=i5Njji5u;
-	spf=pass (imf03.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CE536B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 17:58:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 17A741C03DE
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:58:52 +0000 (UTC)
+X-FDA: 85010520504.23.81E5C89
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1463540007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 21:58:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dTJjealc;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf12.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1784584728;
+	b=fhSld9MSXU6BlEfxTdvsYf99ZegBbNfK73bn5wf0pXTvxSSLGhHdNZ1B5I/qZF+QJCzYmB
+	x3cXmaOo8scuR4u9G8ilndaa4DSy0he+oGt9CycpeIf0XwiNyKMP8JkwkU/kpgTFJxpPr+
+	bBSS21D8acaR7x9Hl34vZJA0FzvMsgQ=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dTJjealc;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf12.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784584519;
+	s=arc-20220608; t=1784584728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9mE0sfVA6cta9/M5CvPkkpA0kKt/DbFANSsjRo5aapo=;
-	b=NsfEpl91QvWg4WzonxYOf2LgN/CAtbg5VaryBSwv6FKFxsWu08B5ogTKizwUdKrHkyYdsI
-	uCx44pIe8nS47YiNC64NxGB6zVP9MlNlxSC/BquNVDP1KS8Ag9KWST05JH3J/YarkVtmxV
-	eoXqMLn+93pND4ieSPH7Tq+lrypjxPc=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=i5Njji5u;
-	spf=pass (imf03.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1784584519;
-	b=BexAKOGPQ+nr8Fy7DCniVQreHglFA0Ym6sucOeisLm9Vi5N12VW95CSjA7u3M6TvDHwNav
-	9mLGPK6crIyzY+kyX9ZtzACCZhlNDkl/RbdfLmk2ISxI0WcbK4WMUxQJyZC1rqX6muL0yz
-	I20GOO4Y+LK6hbNWu1FN+xUVlbBB/7U=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38101f85591so3514742a91.1
-        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:55:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784584518; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dSyDU4xF7AZ0/cenT04QN95+m9TzqVBXf2Uq1SW1Xn0ltoIOaow0L3kDrV1mR/7oOm
-         tvuhTjhHpwWwo1Hb6B9ml0Uf4441RoaYK6KIOcQeRh51HYjNepBU0Mi9240C8oc1s2tW
-         rHKiuTrbN8P85uHvfqu8IzLShSgjWmk07qfjuWha7NM8kY4FIY0QMUlHFP87VxSIIHpa
-         GrFm1g3fRnEqRwPJt/ZtW03Sd3QYEGhtEc5udisTbK6T4PCtNTMtt6w8/LxdP3fUolf+
-         R4k2EmhZG07H73XqJ86Kw0P4Q2y6DEOVxcmsZap5LTNWJ1YkoJHKLTSp3rjmqceVcDK0
-         qEGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9mE0sfVA6cta9/M5CvPkkpA0kKt/DbFANSsjRo5aapo=;
-        fh=KMUXFAbJXaRFLxEPTmmAg7shuMILBNck8IVoRcKx/2M=;
-        b=sUIRZ3CBAEu9cF7Kgq0liGg+SUBqErm/j7YU/vYELU6lWynaKzz0eCUZJYnyfwS5KS
-         ZYafF5KRLGV7O46d2j/NWNT0QAfN4PDWtpKiKUF15fCYQghJ2FS89GFlEaT8uYgufl33
-         8MXvKvQKpf1x46aKzzn+gnY56QXgKCGLPdjukL11bQjziLDLGmbkB7tX6tWil/O8zXFT
-         QHzKjUKk62mMHGcVdsPPUol8Lgjcq0AeOJnBLvAGQ+c66OSAORkhh/U4+pw86jqq0ne7
-         yQBOqHLBnitOAl1vE8Pxcd6Euvcu4v5OuehjM1rWhAkODCHO5puy7H1LpDjbQWyP9zDw
-         waBQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784584518; x=1785189318; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9mE0sfVA6cta9/M5CvPkkpA0kKt/DbFANSsjRo5aapo=;
-        b=i5Njji5uvKxVGKFYWB66DElJ2zBo7W9fOSXfMQ0ej91GHZwPkhRwthP5xUTtjPux7l
-         AbnblsYgsqfiCqpGSu3VqDsq2Y7v2Ui6UJjGUew5QAZO62pP7oKEWwRnC5+t699sXWfS
-         VAchkvHISxpx/qHdBMmOnYpAcxoBt2tZfQe7XMPny8QIfEVuAqXmgGgDpeiOw64Y0QDk
-         VhmeIQ9uffq5/Dgjo6vltOtyq1LRmWziu4s6smRrT5ZQNeF5hR+UZ146uqKs5g0/Uawy
-         dHqXwj2tlhQ7ZFqze6jpmWppnR9umzDm9BajqpaJUzqBFAAQvb/c1kFBx/C1bY9dcF1b
-         HHMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784584518; x=1785189318;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9mE0sfVA6cta9/M5CvPkkpA0kKt/DbFANSsjRo5aapo=;
-        b=dOBLI8lVLMEYp3WsU0OxU67IUrxzpn51dqLgP5KM2TLCaU6UV1YG2WXT05qzreBAYU
-         VB0cTR3toqYO9Ut0zE2pJvOH0yzKvHgVs5u4U95dF+u20xwapR83FH0NsXak9dAOeRr1
-         27331gs7fYUIht2n9hda+b+8otfHk4UbufYEgWCr4tCYSEwhCszgyQeLUUxD7mbowKwZ
-         vZJ1St1So4NNyVYgwrCRKJ2SM0sZN7jRwH1Ft2lrourJpRBDCWj1CyLe3Gef8ZWf3PsH
-         vmGfpETYoO1vpd5VVU/vR6Qp1s8UzxDI3LQL77mPxuQKhqTPSqgwHVcBGkMbr9I53RWe
-         gcsA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq8sQLqLfMA1Cx2ESzmiEpaypDOWd34UeKDPPMA1BSe5x+sBF0wH3/orfUuI2XDXm4LFREgswWuqQ==@kvack.org
-X-Gm-Message-State: AOJu0YxCoKRE+4prvDHJKuxPWGMRRfawQW8wIzPgbyPhi9yJtXQ8ygmf
-	MqeI3lOQIWGkH/7gBwvCJ/uNjMPtKeK0asQQN6VlRQpCxHVm7dRcAP23DCDguaG5LqsuPora/Jm
-	GwuXXh1qKd7ohBKs3F50vVVtjIZ0BYxuL8FCit+9a
-X-Gm-Gg: AR+sD13w4vRBGL0O9EQiOo066Z9eUO8KAdmLZ3mPK4MBkvgSxKJHop+hyAZF/hR9FB8
-	FhHDqs6PsIgvOSwGT1YqogglQSQyIvhyJ3+RPNYBSKeLx0BBS7NVm/stWnpgKP95A2zZ8uWOQEI
-	g6xiZ64/7Ls5YNXnDnXuVjbMQjBFR8i11y10RvgDkGBv0XvOK9hDVW8OXGoAGCe6ER4Mv4+YXPx
-	BzudwUU3EIxkKRyz1VkM4ekiuD0qhHfFez21SMwMWSrPeiGo6lrllBTm2rNRPxHDgN4BdHI
-X-Received: by 2002:a17:90b:1d01:b0:380:8bb9:aba9 with SMTP id
- 98e67ed59e1d1-38e3d13426cmr20701271a91.3.1784584518042; Mon, 20 Jul 2026
- 14:55:18 -0700 (PDT)
+	bh=kcybMXwKlnxAnDP0zZx4Y3rgM2lg7dnGIdT/lSeqogE=;
+	b=dqwQjj/eIqaAzRcMOVjJ6cnGcYEB4dvNSXxSRk/z86aZIujmFdvs+mo4RkU+Ty4CVlEjpf
+	5mosJZAN2T8Kj60RMMkp+/4fm7UMGzuQKKEXPIJnvv5JhVyMRhmd4ttDsM1uAgm9iujhqL
+	ip3JCaYYuDEzDH0wy2wT3QVtwdGyLQo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784584728; x=1816120728;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=BMERtOHxs4n+1uX5kyt1mB7o9X5p08QoPt7Uv7v5eW4=;
+  b=dTJjealcH6DXWypW9Cq89ffsNTX6CbQrWX8IESm3xUduwr2t29wUmA6C
+   8kpQ1oHM9ZVRTF4pLuvnICebQvsAjN257Ae4mj3M8ZuPrXFH8A2jlKJiL
+   Rdm8C8bjgXvktQZJzelVQ4j5rieqCm5iUzP7x/DrY/kUF0/XppfARAr0T
+   NcUg8M8uzh+faSrP10GH9LV87JlgL7MwA2hNY6LI0ZTIBZwwQN8fXAE9v
+   /++87QV0TKHnZp3mzlVnz/ZWQ/V6VkG43cN8020Abve047MWNdSJOzkhp
+   lV5utMw6WrlPyBOpr7MUYiEiAoQfz7EIUTB93mxVmfVhtVZ9A76CBm2k8
+   w==;
+X-CSE-ConnectionGUID: sxnOYkUlT9WNCH2P3lVPmg==
+X-CSE-MsgGUID: ryWZLvBnQj617cno3i8LeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="72711402"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="72711402"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 14:58:47 -0700
+X-CSE-ConnectionGUID: tBOiHuHEQfqyo8T6x5VvLA==
+X-CSE-MsgGUID: HVOLiDf6TvCanD0/Jvz+ZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="257627567"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 14:58:47 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 20 Jul 2026 14:58:46 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 20 Jul 2026 14:58:46 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.31) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 20 Jul 2026 14:58:45 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ntJbmzS+vNeVZESiQL02rz9UbUhNi5qSEyJqOMYjhcIlquDq993qvV/qXHP+vIj2DSJ0Aw33Ke2m08QPGyfbbjawHy1xRUGZDotV40ZGAhY/w9PyexjcOOXM44WupAwiUUI8BaDRAtNUE2iMl8jM7yKqRptRWCv3vkjOUD+2K+VKLmxapBnGaMW+hg9MkmQamctymx+7LCWV758p1i6acTQrnftyxnzuX2ZIZ3fRgqF/9HE/nbL4MJeIsWrlNV1abwrQGtNOVe/tNuiW47ETsuSL5mNlNB4Pap71UXmyREFgBbkFvD+Ydh8AsNe8PzoEMAr9mVPZYgTnA/V7IkfBeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kcybMXwKlnxAnDP0zZx4Y3rgM2lg7dnGIdT/lSeqogE=;
+ b=ekEQ10o7kwRKdXZ3pbvUgJKLJtjSEVJhIqhSGX32FxOboYGfgzru9uheKAlu7uDuHc+cZnrPZk535mi1GIsD9AqTMIlApAf9BlmGvW33tqysHjUyi6Zq0RmRsyJorl+NkVQjdQ8FpY1pC4JG5tkeEOf9H4ryyKgLnUhaIaMMhBAgX4eiGfwZQGC1Atceiw692q1JoqWi2J/fGa54QRPEMmCjZ+ik6yc+AwD3KV3FDh+lJPlXt8Tcbdxm36OWgKG8eyYsyRzJOItarKI03W5riwh5XfLhQgUrophOqnqBi21kHnwqtIL4un9Ywb5AQ6F+C1ILFfD8/1BdhDAfO6QMuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by MN6PR11MB8169.namprd11.prod.outlook.com (2603:10b6:208:47d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
+ 2026 21:58:37 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
+ 21:58:37 +0000
+Date: Mon, 20 Jul 2026 14:58:34 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Christoph Hellwig <hch@lst.de>
+CC: Mark Brown <broonie@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Linux Kernel Mailing List
+	<linux-kernel@vger.kernel.org>, Linux Next Mailing List
+	<linux-next@vger.kernel.org>, Hugh Dickins <hughd@google.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, <linux-mm@kvack.org>
+Subject: Re: linux-next: manual merge of the mm-unstable tree with the
+ drm-misc-fixes tree
+Message-ID: <al6aCizqqilqQGZ4@gsse-cloud1.jf.intel.com>
+References: <al4jGBGNG_QACaNL@sirena.org.uk>
+ <20260720144141.GA16699@lst.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260720144141.GA16699@lst.de>
+X-ClientProxiedBy: MW4PR04CA0260.namprd04.prod.outlook.com
+ (2603:10b6:303:88::25) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-References: <20260710212616.1351130-1-dmatlack@google.com> <20260710212616.1351130-4-dmatlack@google.com>
- <178432481253.189683.3297727348836286619.b4-review@b4>
-In-Reply-To: <178432481253.189683.3297727348836286619.b4-review@b4>
-From: David Matlack <dmatlack@google.com>
-Date: Mon, 20 Jul 2026 14:54:51 -0700
-X-Gm-Features: AUfX_mzVY7YuVDoFqhrPV6EULV5udJxArm79VLoT9W377bOVTdCDKuzAWRnUCOk
-Message-ID: <CALzav=e1Gcu-9TD7F--41cYqKBrStKOE4VqQ4K3PKdNuYnNmcQ@mail.gmail.com>
-Subject: Re: [PATCH v7 03/12] PCI: liveupdate: Track incoming preserved PCI devices
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A5C4D20004
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|MN6PR11MB8169:EE_
+X-MS-Office365-Filtering-Correlation-Id: f97dfc72-5f4c-4081-e599-08dee6aa0d41
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|3023799007|10067099003|5023799004|56012099006|4143699003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: F7i+v1nK2Gt/hRNdGYXOc+0UpCcfri5aKeLVIAXBBb513RVOvda4ZhvTxDHUR6lCuTOFUkcuP3OJqEUqm1SPNJtv36L123H/iH/ERC0Rbz6l3hIxoZopV5OzOeazACjH+hgsCrU8j39jDmTmneXg8rwP3lbWaZy/yEmzRkIWA+Lwr6oFeysQBzrxx62FTz0lKqbTS2vr0lJV9IsKVzWHKXstdzf2FFZQsrbqLG/eBpLUXVpUSCsq/arMGFQJf6ynjH8HZCjuNY7EOdmqAIHneBBnh7Tpz2ibKUfWUahydOPZBIvk3m5RoynSkQOBvidRyhAfnZCFHlOc+Cl3yQAvoojiauk4rSCetwJEK1+Yp8U8F9DxN8ZCYwudhKhsmbRO5X4DUNH0qr9zw7w2kK7ompEILivea55llKgBxVaEotr42czGQeUuUzAJXyPrFFANAFO9R/beO1IUt3eM5JS9UgotTv5eGyQ/KVxkrM8P0rDTB+6SNB4De78C4GH0En5qbRYKAtDlmpZ6JAoinqQr4UO40LcUNK6QiCA+SmfoIFVN9ulimW3OYyeSBNOhDiWDBeYgc17q0jPdTQOY2X0MJudYBWiaPYZivl3ZAI15ato3FV73O/ZTRzE29zI1+pbgA3lBVmaAhXLVdcsxG/h2+Dw/Lyoy3/lTdrWTYWklFJI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(3023799007)(10067099003)(5023799004)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?z0F/iwzmiKvK9X2pjPp29l37FU3Wppoz8AhslEkRO8DWnGrzuMDJY5rIjOE2?=
+ =?us-ascii?Q?0nBJliGhQ9XRhmvBHCchbvbfFSqfttnBAKK6Y+DoJnqTcQlpq45SMzW2lMNz?=
+ =?us-ascii?Q?g2v6mbMZFvyuaGM56H2aAxmECPKgYjgizW6U8ldFs++Vs6a09LCIcoDI2HEI?=
+ =?us-ascii?Q?PiWm9tu6Rhg+dB/1u+g/fM6oS2MHcWFIXpG8PqsM5s9a0ghf0oYLVLv9PUp0?=
+ =?us-ascii?Q?qKgOoyrQL+CfZvJZpTkyH6G2MtvxfhxQ4JU3o6Rgc7CuHJ5TJn7sA4bzXusD?=
+ =?us-ascii?Q?ZfqtjUfx35vlfx2Ao1Fa3KlIkXtEjaDBJsC3bQA9RerPjFxWCydK3mJEcJPR?=
+ =?us-ascii?Q?hUQytCr3iS9Xj4o3JBwjgnUVljwxh/Wf+YNMF+qpunvPjlvdRSwRTf3WvCcB?=
+ =?us-ascii?Q?kwpX6cbAufl0sqny8MVLbmltr4jxjcjVUBg5OLaIQHOOjLuqQrRB0/fS0Y0Y?=
+ =?us-ascii?Q?cHpqDOj99shMWQhHNPc9JXNedkCBcq03NEPP8ujnD4LqYaTzY6rgMOnK5Nm+?=
+ =?us-ascii?Q?hKCFHF1P3ayjRdZ2qqZ6lt41xQDt8KdA+nbQlLRaZRzKZDzTTl5/v22QDDvd?=
+ =?us-ascii?Q?vx60oST+lMbiqTTrEkBAFhci13EovitFaS8HRgk2IhKM0OHk/L5WeOVJla+w?=
+ =?us-ascii?Q?54cGvjPNW2PBmW1jSZ4R+yyQ8iIeJpMkAHni8FdYj78fYY7iJ3H84W7MivfN?=
+ =?us-ascii?Q?1PKiLnB7VJQd+/adGb6KLaxzcZDPABVuRzBqvKJ0698Rp39eRbNUMLmPf+De?=
+ =?us-ascii?Q?xtPW69qp2/4/PUuqrHEe3nUtJqYaYvWoEti/osFeYT3id2KSql0BgEEo4Vs0?=
+ =?us-ascii?Q?i8qoGc/UsQjO9oDBHjvh0+R2eg0b9kVFomIpAq3Yd56ADIbaUfoLJGpUG8Mt?=
+ =?us-ascii?Q?WxyhnMY2QHOUq0MfEVFWat640/U14ty+1BXtXyupCU/+U8D/mQGRFhj6EhAV?=
+ =?us-ascii?Q?cDYvnzQV/vMTuikivrWToHl+LkqRBgrXxImTfFaNH1rguaJoHHicFwk0lvFy?=
+ =?us-ascii?Q?lMxOzw8OKoMzDM2wQ7x/W1WrR9mBSfWRx3Ib1FFqBcsz9tHiRHpjj44/Lmvy?=
+ =?us-ascii?Q?hjziFY9A17An6HSgyPgBKNsgBuO5DLLI2BQslj5Uxy66x9/H1NuJ3Rh6tMDz?=
+ =?us-ascii?Q?BDH+b+WRyaUbP1pSDHzHNMPiwmopCNZdHRA6BPIZvvrC5LmWY7TTYZm65Ew1?=
+ =?us-ascii?Q?5R2Ba7NkdGys5viPTVybirlLNohlZIp27hZYi2/65Z9/7ANo7urkhMr1Y6Yc?=
+ =?us-ascii?Q?ktNfbh3deHFksTld6MGBAhOa8HUFI9kSaMwzkZ6h9CRiTc4h53DAIMDqjkpk?=
+ =?us-ascii?Q?CDg/GqcjCZIkVReV1gwdCHedtZeqrcUHQzTldvUPV3jwk/S//T3AvPdnfbVY?=
+ =?us-ascii?Q?YvrZQHDYBsmR6y2g+Gl4/lRP6eJLi5yLWDygeff5YQ7cGzBJLnInZof5+k42?=
+ =?us-ascii?Q?qTZYByfrq8Kc6lyz/LRoJvRTxeGZVVXw5MJ1Qcj1I2NG2CFUUyeZyf76pbNS?=
+ =?us-ascii?Q?rMa5rSp51EHEXb6LlAqa0UmZgp3HC8bChXgV4Wbv0QMcgGCe5detnqFJaHOb?=
+ =?us-ascii?Q?n0G+kivfQ0vWgpQSgPmAxAsxYoPHoorJGo40/qsdQQMsAY1mCboBWzg0VhkV?=
+ =?us-ascii?Q?PCQjCcw6IsBezxL9Jqcnw1Td2yLjgO9CnnPEmwi91BgdtOi0T7fhPIT1eptQ?=
+ =?us-ascii?Q?gQIhBQc/sJFeYuB+lv3FJvKkbpmkdwf9cm7HqRKDDqZbDoJ9db+D5alfBieI?=
+ =?us-ascii?Q?mtFpJQP2SrZe4wtReZdtY8RaGmipODE=3D?=
+X-Exchange-RoutingPolicyChecked: gVVr2ZVmeUNjUu8K/VJM3/1GRSaXAUGMppV84zrq8V9Ed2WUidKTrXumO2GqTEwjQcTpNeE8pyejc+JQ8YD6Lag11BWMCysHKFmDTatD+EN+DhEXwUgOhipdFRQYvTIj+tHKiaaaSOQabHdWASLmE+R5KVpiEqz66GHT1py+MdPM1yK149j2WP0FkancA3UxNXTx+Cv5yuC79y2f4EE/4BcKEnL219MHIBn9PmehktS648MmXuA9g+zk2DHdQ10/u8XdGrySaafAIqdsHNT6Zqbbxwxgx1WY1T74q5k82ILokVgng0D+cN6BxggPrZ0Gn1NhZA7mG8BuEXNdJHZIUg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: f97dfc72-5f4c-4081-e599-08dee6aa0d41
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 21:58:37.5819
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QrigBZSSnQaWzjNTipFy5Ex5xve9CHqJQ0ZzN1MvcWNtxQ+qH2b25DJ4/rdCCCtkzEiOwkyA6RO9y145jUZKsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8169
+X-OriginatorOrg: intel.com
+X-Stat-Signature: a6uhihe9edrrdo3iga7zzssyipkdo5q3
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1463540007
 X-Rspam-User: 
-X-Stat-Signature: 5t6p8yf7sfydortohep88k1sxsyjxb5o
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784584519-424974
-X-HE-Meta: U2FsdGVkX19rIRnusK0v9jBv7tw/vDh2RO5NX8MSWSj3VeEIUWJMPjqDbgDrAXz/bdilubsCba8akFcd86zGHqHoTLIvexg82VIPP68L3MRv+J6rSYT6rDPNK2hp0noa4zd6fMr24NrJxBaToIBUEW4UCjgRervTEWKCK1Jnu7cNJMYIpYqU195RdLkFWbVe98/BXEI+v6ygUDXmaarb0LiUEVAonU2ZrqD4dRx8PfTeMrz+ZAt27perEDNQAHdwFbrocZBY5If+F3g7bKrGbMmkz070qC1BKpEIO8POs590uDDXyU8QQrxYzf5lLlbsuKL4WECkjR22eM7UIqgkqXZW8XdB58vpuDGcbgE1waEOMdMrSZ8hrO1Kq30zs4yvn5/UvDY8Jh69trmHAgHEXIucUJGU+i6st0rdfzOy5FqUYLXL6+Z5ZsFM6UAJzjIyfRQu06eEITVattJbl7+unFOyQWQy+nYrE6vhA2FmGDj2/9fXuWxW45PK894WPD3gTYtSgx1n9LZChflRm7P7uEHQfdj6qLO/YszhiK4FM7qD/0q3WTd3/AqZRVV7ZgNkXAJHPDWk/mYzthq/ID15U852EM7jZfEJVRk8xSZUqcRMRgt5W+nprLl2/shztzD3KM+zDky4PLW2tX7spfh5B7romb5bBtAc+Sn5rbuofksTFRwpsujFmzVTpvIL3vV65UNhW0pd6fG7g/06CQSnF/MJ7mZMVQaTvIYvyiRNmfrjW4VaypjPQHQTw+o62DxzQRkkAaOLHTHTwPj84gTKv2qoplmCfDVicwLHxV4JY5Is0rUuWbOGGY/LTuCBFMMHrsADxR6oeGpFHNEMF0id6zsUqSxeXn4mH7i84+wV36/Jz1T3hVB0EL06c0X8SAo7b51V8oeYXY1EZqOh9Ad31SWSEe5VrolEX2jnkDcveTmouc1m9wo3+VLIZCyw+rJE95ZcB9mEDqxMy9iJe1U
- I7yia5jZ
- lAlnAB9fZsP6DnsGSFovNoHoU4V7Xpg6JKRhc01m0HXAqrnW+4vWBAlzYtB/9Bi6r34FdChLZvkNLI/dV37MPIxbYu9F7VtgsctvdtdC4dePtSzw0uQNXEiXQZtqPrzy+j4IK/qCrOlS2W5lPXE27fhFQScC/3DJbZ1EYhPoh1jz4KYvDI8iB87zwSr9wP90Tmi4ghEJq5LsLyEjbE8UX6DpXcozV11hjHijpqh2A0hZN4qE1WWI3scnfLid76GOH66GyxgR5Vgz00BPDKLMJTXU/p2VVilHKje7IK5ukl9CH3HH/fTQlKUmIYRihL7sLAIFW
+X-HE-Tag: 1784584727-187983
+X-HE-Meta: U2FsdGVkX1+aZPf5bS5AErKrTHLG2JzH+3fvU14Zg/wa1oGjqfsoNuFQkIbj8Rj98+8MG33Yq942NDpOAKRmMe7KWfgi8jiVos9+JUnBZsgRDrf4NOtzhp/UZplp6OdYoIlY0LU1yute+fP55/2t5ga2qVW2IP/0fvBvv15AwzKRdO7+eu4vuhsABqx+dQPUc/VhvcqRQQrNXIUDbv8dgwBzR17BZyNJGaAgFyH+mXw+otJh1jAVxcMiJau8P25Yaim3RUDvhgswniZ+kStC/VZT0jELQFBSlO8e4+yck0D9EQRaTrEvWECoBJeZSilg55lMKUXSG6lbGNwcgc3vbcljHKsCSnZp5dQjcajAY/XovhhjHDVfx2uFJmr+gHwkAXF0ghHtwLPL+CzMFVlnjnOeYy0mFVuY7iGYf+XpbFlEJN0wSRBTreszR3Ax6Gc4fZ2tptgH+fVecW7NCE8fjMHP52ov6+phmaHG3qGjA4KdKavO70MVSgqrM7Lfgb78Nba6dToDP8ZjpYd0rngc2PZ/UY/aRUoGzJNHO6Pq205g/+IzhxDaMET2eYLrmpVJ5r/efOoxUjn7TM/uTBnYIAW40cENxL9VCZPdQYQiTF83Gsto7XVCZOLDpk9I/G2Ij1W+eNILqXeiKbCCM8BV8KliAWsCmjrI2XHUP02a2orT0o0q46hjKZmXi5I7HNwgXRS6z57y20mqzC35t8uWdf1A/LBunJxlwW6u8ht5uiWxF6gpZgOodVRYKI9x4/JpAPjHOkYAq/xtEzV1SswpQ8DwAWywZB6Jx7GGODVEN2+ejW5nPavcobuFqM8HY5557M7WR/HX7bxZ/oQ25nnCdNxrlb+IKhabHe5FKxFa9l0v5iWPW5FNLt8lX3N3jnsLkDseyPgzkPDAXhMk24xSDtAkaB8YVd5V8CyJvfRvU1JCxffKAL3ZjuD4kHH1JYQ0rcDzpXEunLe/XJH01H0
+ 1zWQZJgV
+ zjJHDclGXvGD4N8D4/INpoHw3rOAOxGb3xJ0s7iFc9lx4Nqu1RXZyFgr+dP7UQsvO/ok81qRFAXcUGFz3cupe/ftN2aHRZbkAHhXCtnrNLvxftmrEoY/6GLcBCzquj6b6j4htHasAW+KFI6nB9iTSaubFeyYfDIkm042LaPtM5DNGjoMIvfaAuHRrad/zwbA1eVr51aEZDCKnEDLBtRYnW1XSpaGXUuyxlONWGlVrUzKOmALZ1tYDNLuTFL1hx/UVjnaLhf4CXFoh/zPvAc9GiwvehHbKFhjYbjdghMFFTGk//URaOdA7Wawdw5fNCl7kyhlCqaOsJGRKMxZqYhYhwaVIS3L7nFcyGdgjf97HzJnSRzuLaonI088bfsnHCd1AWoG1GSx8vx9W4PZXkeMyWCXjEHAf0LWXX0/aN1Oa19/jeInQYt77UZkDaJHEvJUWh/DNNdopZMuATow2hUoTiJNPS1iNyZirdR6O90MiebifYxw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,49 +194,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 17, 2026 at 2:47=E2=80=AFPM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
->
-> On Fri, 10 Jul 2026 21:26:06 +0000, David Matlack <dmatlack@google.com> w=
-rote:
-> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> > index 03075ce06ac9..df6a02240aa4 100644
-> > --- a/drivers/pci/liveupdate.c
-> > +++ b/drivers/pci/liveupdate.c
-> > @@ -298,6 +377,87 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev=
-)
-> > [ ... skip 76 lines ... ]
-> > +     /*
-> > +      * Hold the ref on the incoming FLB until pci_liveupdate_finish()=
- so
-> > +      * that dev->liveupdate.incoming cannot get freed while the PCI c=
-ore
-> > +      * has a pointer to it. It's better to leak the incoming FLB than=
- do a
-> > +      * use-after-free if driver does not call pci_liveupdate_finish()=
-.
-> > +      */
->
-> I am confused by this. Each preserved PCI device must have an associated
-> FD preserved with it via LUO. I.e., vfiofd would need to be preserved. If
-> the vfiofd was not reclaimed, and finish is not possible, that vfiofd
-> would still be owned by LUO, and therefore PCI FLB refcount would stay
-> positive.
->
-> However, if finish is possible, and this is the last vfiofd that is
-> finished, FLB will be freed as soon as the reference count reaches zero,
-> which I would think is the expected behavior.
->
-> What is the point of holding a reference here, instead of only for the
-> duration of FLB access, i.e. to make sure we are accessing a valid data?
+On Mon, Jul 20, 2026 at 04:41:41PM +0200, Christoph Hellwig wrote:
+> On Mon, Jul 20, 2026 at 02:31:04PM +0100, Mark Brown wrote:
+> > Hi all,
+> > 
+> > Today's linux-next merge of the mm-unstable tree got a conflict in:
+> > 
+> >   drivers/gpu/drm/ttm/ttm_backup.c
+> > 
+> > between commit:
+> > 
+> >   a3fdf74ffa596 ("drm/ttm/pool: back up at native page order")
+> > 
+> > from the drm-misc-fixes tree and commit:
+> > 
+> >   c6bfdcf16f131 ("shmem: provide a shmem_write_folio wrapper")
+> > 
+> > from the mm-unstable tree.
+> > 
+> > I fixed it up (see below) and can carry the fix as necessary. This
+> > is now fixed as far as linux-next is concerned, but any non trivial
+> > conflicts should be mentioned to your upstream maintainer when your tree
+> > is submitted for merging.  You may also want to consider cooperating
+> > with the maintainer of the conflicting tree to minimise any particularly
+> > complex conflicts.
+> 
+> Much of the code here really should sit in shmem.c instead of having
+> random drivers/subsystems poke into the internals of shmem mappings
+> and folios.  But I feel like a broken record for saying that again
+> and again without any action :(
+> 
 
-The duration of the access is from here until pci_liveupdate_finish()
-because that it when the pointer (dev->liveupdate.incoming) is
-cleared. So that is why the PCI core holds the reference from here
-until pci_liveupdate_finish().
+Do you have a suggestion of what parts to move over to shmem.c?
 
-We could avoid this by deleteing dev->liveupdate.incoming and,
-instead, fetching the incoming FLB and doing the xarray lookup every
-atime the PCI core needs to access the device's incoming ser struct,
-but that would be inefficient.
+Pretty much all of this? I can take a look at this in a follow up?
+
+Matt
+
+> > 
+> > diff --combined drivers/gpu/drm/ttm/ttm_backup.c
+> > index 3c067aadc52de,c5b813a563e7f..0000000000000
+> > --- a/drivers/gpu/drm/ttm/ttm_backup.c
+> > +++ b/drivers/gpu/drm/ttm/ttm_backup.c
+> > @@@ -6,10 -6,9 +6,10 @@@
+> >   #include <drm/ttm/ttm_backup.h>
+> >   
+> >   #include <linux/export.h>
+> >  -#include <linux/page-flags.h>
+> >   #include <linux/swap.h>
+> >   
+> >  +#include "ttm_pool_internal.h"
+> >  +
+> >   /*
+> >    * Need to map shmem indices to handle since a handle value
+> >    * of 0 means error, following the swp_entry_t convention.
+> > @@@ -69,23 -68,17 +69,23 @@@ int ttm_backup_copy_page(struct file *b
+> >   }
+> >   
+> >   /**
+> >  - * ttm_backup_backup_page() - Backup a page
+> >  + * ttm_backup_backup_folio() - Backup a folio
+> >    * @backup: The struct backup pointer to use.
+> >  - * @page: The page to back up.
+> >  - * @writeback: Whether to perform immediate writeback of the page.
+> >  + * @folio: The folio to back up.
+> >  + * @order: The allocation order of @folio.  Since TTM allocates higher-order
+> >  + *         pages without __GFP_COMP, folio_nr_pages(@folio) would always
+> >  + *         return 1; the caller must pass the true order explicitly.
+> >  + * @writeback: Whether to perform immediate writeback of the folio's pages.
+> >    * This may have performance implications.
+> >  - * @idx: A unique integer for each page and each struct backup.
+> >  + * @idx: A unique integer for the first page of the folio and each struct backup.
+> >    * This allows the backup implementation to avoid managing
+> >    * its address space separately.
+> >  - * @page_gfp: The gfp value used when the page was allocated.
+> >  - * This is used for accounting purposes.
+> >  + * @folio_gfp: The gfp value used when the folio was allocated.
+> >  + * Currently unused.
+> >    * @alloc_gfp: The gfp to be used when allocating memory.
+> >  + * @nr_pages_backed: Output. On a successful return, set to the number of
+> >  + * pages actually backed up, which may be less than (1 << @order)
+> >  + * if an -ENOMEM was encountered mid-folio.
+> >    *
+> >    * Context: If called from reclaim context, the caller needs to
+> >    * assert that the shrinker gfp has __GFP_FS set, to avoid
+> > @@@ -94,87 -87,53 +94,87 @@@
+> >    * that the shrinker gfp has __GFP_IO set, since without it,
+> >    * we're not allowed to start backup IO.
+> >    *
+> >  - * Return: A handle on success. Negative error code on failure.
+> >  - *
+> >  - * Note: This function could be extended to back up a folio and
+> >  - * implementations would then split the folio internally if needed.
+> >  - * Drawback is that the caller would then have to keep track of
+> >  - * the folio size- and usage.
+> >  + * Return: A handle for the first backed-up page on success (handles for
+> >  + * subsequent pages follow sequentially). -ENOMEM if no pages could be backed
+> >  + * up. Any other negative error code if a non-ENOMEM failure occurred; in that
+> >  + * case any pages backed up so far are truncated before returning.
+> >    */
+> >   s64
+> >  -ttm_backup_backup_page(struct file *backup, struct page *page,
+> >  -		       bool writeback, pgoff_t idx, gfp_t page_gfp,
+> >  -		       gfp_t alloc_gfp)
+> >  +ttm_backup_backup_folio(struct file *backup, struct folio *folio,
+> >  +			unsigned int order, bool writeback, pgoff_t idx,
+> >  +			gfp_t folio_gfp, gfp_t alloc_gfp,
+> >  +			pgoff_t *nr_pages_backed)
+> >   {
+> >   	struct address_space *mapping = backup->f_mapping;
+> >  -	unsigned long handle = 0;
+> >  +	int nr_pages = 1 << order;
+> >   	struct folio *to_folio;
+> >  -	int ret;
+> >  +	int ret, i;
+> >   
+> >  -	to_folio = shmem_read_folio_gfp(mapping, idx, alloc_gfp);
+> >  -	if (IS_ERR(to_folio))
+> >  -		return PTR_ERR(to_folio);
+> >  +	*nr_pages_backed = 0;
+> >   
+> >  -	folio_mark_accessed(to_folio);
+> >  -	folio_lock(to_folio);
+> >  -	folio_mark_dirty(to_folio);
+> >  -	copy_highpage(folio_file_page(to_folio, idx), page);
+> >  -	handle = ttm_backup_shmem_idx_to_handle(idx);
+> >  +	for (i = 0; i < nr_pages; ) {
+> >  +		int to_nr, j;
+> >   
+> >  -	if (writeback && !folio_mapped(to_folio) &&
+> >  -	    folio_clear_dirty_for_io(to_folio)) {
+> >  -		folio_set_reclaim(to_folio);
+> >  -		ret = shmem_write_folio(to_folio);
+> >  -		if (!folio_test_writeback(to_folio))
+> >  -			folio_clear_reclaim(to_folio);
+> >   		/*
+> >  -		 * If writeout succeeds, it unlocks the folio.	errors
+> >  -		 * are otherwise dropped, since writeout is only best
+> >  -		 * effort here.
+> >  +		 * Only inject past the first subpage so *nr_pages_backed is
+> >  +		 * always > 0 here, matching a genuine mid-compound -ENOMEM
+> >  +		 * and driving the caller's reactive split fallback instead
+> >  +		 * of an early, no-progress failure.
+> >   		 */
+> >  -		if (ret)
+> >  +		if (IS_ENABLED(CONFIG_FAULT_INJECTION) && i &&
+> >  +		    ttm_backup_fault_inject_folio())
+> >  +			to_folio = ERR_PTR(-ENOMEM);
+> >  +		else
+> >  +			to_folio = shmem_read_folio_gfp(mapping, idx + i, alloc_gfp);
+> >  +		if (IS_ERR(to_folio)) {
+> >  +			int err = PTR_ERR(to_folio);
+> >  +
+> >  +			if (err == -ENOMEM && *nr_pages_backed)
+> >  +				return ttm_backup_shmem_idx_to_handle(idx);
+> >  +
+> >  +			if (*nr_pages_backed) {
+> >  +				shmem_truncate_range(file_inode(backup),
+> >  +						     (loff_t)idx << PAGE_SHIFT,
+> >  +						     ((loff_t)(idx + i) << PAGE_SHIFT) - 1);
+> >  +				/*
+> >  +				 * The pages just truncated are no longer
+> >  +				 * backed up; don't let the caller mistake
+> >  +				 * them for valid handles.
+> >  +				 */
+> >  +				*nr_pages_backed = 0;
+> >  +			}
+> >  +			return err;
+> >  +		}
+> >  +
+> >  +		to_nr = min_t(int, nr_pages - i,
+> >  +			      folio_next_index(to_folio) - (idx + i));
+> >  +
+> >  +		folio_mark_accessed(to_folio);
+> >  +		folio_lock(to_folio);
+> >  +		folio_mark_dirty(to_folio);
+> >  +
+> >  +		for (j = 0; j < to_nr; j++)
+> >  +			copy_highpage(folio_file_page(to_folio, idx + i + j),
+> >  +				      folio_page(folio, i + j));
+> >  +
+> >  +		if (writeback && !folio_mapped(to_folio) &&
+> >  +		    folio_clear_dirty_for_io(to_folio)) {
+> >  +			folio_set_reclaim(to_folio);
+> > ++			ret = shmem_write_folio(to_folio);
+> >  +			if (!folio_test_writeback(to_folio))
+> >  +				folio_clear_reclaim(to_folio);
+> >  +			if (ret == AOP_WRITEPAGE_ACTIVATE)
+> >  +				folio_unlock(to_folio);
+> >  +		} else {
+> >   			folio_unlock(to_folio);
+> >  -	} else {
+> >  -		folio_unlock(to_folio);
+> >  +		}
+> >  +
+> >  +		folio_put(to_folio);
+> >  +		i += to_nr;
+> >  +		*nr_pages_backed = i;
+> >   	}
+> >   
+> >  -	folio_put(to_folio);
+> >  -
+> >  -	return handle;
+> >  +	return ttm_backup_shmem_idx_to_handle(idx);
+> >   }
+> >   
+> >   /**
+> 
+> 
+> ---end quoted text---
 
