@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D45C4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 05:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36FC3C4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 05:54:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7F006B0088; Mon, 20 Jul 2026 01:42:59 -0400 (EDT)
+	id 11E4A6B0088; Mon, 20 Jul 2026 01:54:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E12F6B008A; Mon, 20 Jul 2026 01:42:59 -0400 (EDT)
+	id 0CE916B008A; Mon, 20 Jul 2026 01:54:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 884676B008C; Mon, 20 Jul 2026 01:42:59 -0400 (EDT)
+	id F27426B008C; Mon, 20 Jul 2026 01:54:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 57A9B6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:42:59 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6E701406D5
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:42:58 +0000 (UTC)
-X-FDA: 85008061236.21.F214446
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8E5E6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:54:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F6AC120783
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:54:42 +0000 (UTC)
+X-FDA: 85008090804.01.629CBBA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CC3CA80002
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:42:56 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u+euP0CG;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 46CA0180007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:54:40 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pov8w++x;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784526177;
+	s=arc-20220608; t=1784526880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q+S1mGES7WPFX17qfsQ0UaEG3UvF5m9koKB2T3Ujw8A=;
-	b=LWfP42N6jEk5nq7ZyMTm1vzbrrphup+VeR92Dnf38QxbVOM5/7padCfOG6lQW7QhL0ojb0
-	xkf+rm6vyHSWL3rGtXrx8JtV/CFsMu0Xewl8SVb6to3gIRg525MNFUB/+XGiUTt5N9JFtf
-	9FDNGvFqLscOkDbgoAwSBxVT9lLl3/w=
+	bh=Vv5OoFLFLqo6apFeODcZIfFoAiaXPCnVVI60/8Q5tKM=;
+	b=NkHOKmUqU6DCfyVcWvORszs6H7ksgRFZwFF6wMvNJy+AKtcXQQCNHYkpTCZDVUehV/yk4n
+	GOAn84GNxMqi36NaRVVT9WW0/dWvr8O4+bvqwoohcsW+tBCxfaG+kCZJrMKL+kU3OL5dY/
+	3IinZ8EJHM8iHtLRMJbg+gqxilTB8+E=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u+euP0CG;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pov8w++x;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784526177;
-	b=2piOV2HI1fHZ0+0EHFkw8P7S7fbyb5jIJWM+IHYdjFrleZeHRpAU8Zbphq0JTxPI6BE5pc
-	vF3NW1ShI7kSw7NMZ2/4iCZc/Sug1bJ4kJeTmQff0QirRFSfiJSRsWT6IuPuqQfXiK5UVQ
-	du3DVi/XMXza8vojx64HAp5/AYyLDcY=
+	t=1784526880;
+	b=Hq5XmOywbwCUlcYQ71XlgPf59tlfi4DagZ2DNUgPriYNlpaP6FkuYbpNkG9Ffo5Au00+G+
+	DaZsNG9gJXz14aftQyn4ZVVqT7vA5Rl84Nr7ShrO4RX9hN+wfzEd647cTQzGFZJKG9plEI
+	fYT3M8HCJjlyOQyVf/hq3Mzg/P9i0FQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 49C3F60103;
-	Mon, 20 Jul 2026 05:42:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98FD1F000E9;
-	Mon, 20 Jul 2026 05:42:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B895B60103;
+	Mon, 20 Jul 2026 05:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C32B1F000E9;
+	Mon, 20 Jul 2026 05:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784526176;
-	bh=Q+S1mGES7WPFX17qfsQ0UaEG3UvF5m9koKB2T3Ujw8A=;
+	d=linux-foundation.org; s=korg; t=1784526879;
+	bh=Vv5OoFLFLqo6apFeODcZIfFoAiaXPCnVVI60/8Q5tKM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=u+euP0CGJuyGXiEpj1CFp/mtlnGZ8bFF1xr8YiE7rfFZU8pp89brbNM6+s+9hF+Cp
-	 qMlBVmrOkt56Kezq8lC4STXPkj7RI8D+bskVdz86DGccjmPXEVEMJ6vugAZSHqzYeX
-	 lbrbqmuRTrX86Na7dX/8KvBIJumhyamzMGIb650s=
-Date: Sun, 19 Jul 2026 22:42:55 -0700
+	b=pov8w++xeZevdsFadUk7ss39KjD08TW37Hn9WpoETxN/x+3rJjbZPz0DVqqNTKq9B
+	 vVCHiepmPkpzuMCGf7Mhd9OXm+2d9h3r1k2uGQZvt74eE2fUrMNmUVI/QsA488KDJc
+	 vyt7+eko4EjwqMbfqAuJfNzLY5Iv3l8OA8QzE6IQ=
+Date: Sun, 19 Jul 2026 22:54:38 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 9/9] mm/page_owner: use memcg_data snapshot to avoid
- TOCTOU in print_page_owner_memcg()
-Message-Id: <20260719224255.8e2bc60e8a42681fb541e6ad@linux-foundation.org>
-In-Reply-To: <e3f17e17-495e-423c-9c21-48aace4367d1@linux.dev>
-References: <20260714015117.78351-1-ye.liu@linux.dev>
-	<20260714015117.78351-10-ye.liu@linux.dev>
-	<21007313-40dc-46fb-bbf2-453c8eedf3e8@kernel.org>
-	<e3f17e17-495e-423c-9c21-48aace4367d1@linux.dev>
+To: Yichong Chen <chenyichong@uniontech.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Mike Kravetz
+ <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hugetlbfs: release subpool on fill_super failure
+Message-Id: <20260719225438.041287a56c87effe61796483@linux-foundation.org>
+In-Reply-To: <20260720021900.1376309-1-chenyichong@uniontech.com>
+References: <20260720021900.1376309-1-chenyichong@uniontech.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CC3CA80002
-X-Stat-Signature: nhkgkaga1r5h6jsj5efc4oup4ao7jz49
-X-HE-Tag: 1784526176-209588
-X-HE-Meta: U2FsdGVkX1/hieTlVQGkiAO26DPLmjoe74kjyHr1Vtathv5kXKB+RhZ/DLWBeRAbY+tFLSW+uPd/tMu+oCvuPQgN/TTozFmdj4i1yCLKtO3Zs1pRtKIL6G2na799P391uaE7h9RggDNGFVkwsli0p2dK66986/wmH+vCu4mt6WCxkFV4467XAHa6JaElXfyRHe6lX38jUAaOoZh6FHqUjWuiOvXqyG9NgXuML4wE28umTkiA6NbFlXmlJZql9Ih0rroJLaV5/6e2nTEjz8B8mIiSOHCtKjf7o8CKjFt+EQRjlXZXqog18tJHNnkOS2kuBbbLIHxGAxQRJOajLFn3J9iXvZGOzO1Vw/EdnIcuJGnqKxKmZrNsLWfxu2V74M3tAvXkE5X0aoKaFaLcGVRhiLiK+CTZCjRckGk1YkvruJtjIN4wJdKZLfZahSPytQzFHbZNM1YheO5US8TC/2kBoIoNxuMKcmtWaGUzlvYt/1WVDUrYTNxNXbOV990/zAAIUepwPE1Nao2H0+CfypNz/lSf58ZeAvqsue3c/c8+ULeKYedIWdtrosTwMMsFtoTTXP8V5zbbYcjaYvUVlKqyYVX8Mk7QGvFZc+QF7M8nMdVnv5CKnAOxBOjXO0Q9QRpkHNLqVhup7Yp+lCetvm5L2wG+ErZ2DJ3AcTwB9ZXzznMejEJ59Tf0ILxk08kgwHexYu41iTziz28jXBZZ8DBoiLdbtt+1UKIlQlZ+7TkmlVBgLclilnQ00WZZQSimHo/Svo8N85lcuTTsEeLAul1DIe9BkW+ODfblDhkSrdYK0t+71OWAkdrypmL1sRQEP6Z8bOiBXQOEYpQJSaS8DMYYMSeUpVTVECbuf5zu4rdVumhZ0bvB2Ttz1aBZEGKX2Cw44ZGmZUxkJ1ja7kUcYhhKksoidSvyrdbovKhrFjj8NKZlxhTXmVOYgq7RKEVAe9GPa5j2klfa/PUwTh/Q6jR
- gm87SK/Q
- FaWT/YVTWjAvlhbg0x3bz5aOLG2dXW9ycirhg28g4HLTP1gv9qz7pLOVq2ijjAgrI5ZuZqExxfQQKIt/qcR7tIhHEx+8whPT9ty1akk815WJ2EXaDXLCe1Bgs3R6QzOL3lBUXx31fMcJUCMAwAxZllkX75l3D88MAKJl4MaOPVttoQ300NuzwzlnngrPH1JkqIevvL/kieyrX1f7EoGa27wq08B0D+QGrQlWbhm0pOeyDpQNkGR9zwXNcWJe5LlOesuYQ/U0ZRwEYgU4VEIF57mKPNroxuLIUmVlSa1j1NiDzBxHZKA4UpuPYyHhcyk19dGL++PjGTpntxC2URSQN3dC9jkvGx0HcJ2Js9m3VEokT7VakHoL1YapDWK89mCmiBFBBybRpKnmpwwcYhXk7V6IXrY0KiIumPz5ejrJUdyBfXz0L3VE8cwzSAlhCfQbRwm4gzQYwkW7FEo0hzpldKJgEwDi9kEsl86gNernSYkdox8U=
+X-Rspamd-Queue-Id: 46CA0180007
+X-Stat-Signature: 1jxea5bodarqeoop1mn5frnx7mk9qnph
+X-HE-Tag: 1784526880-515163
+X-HE-Meta: U2FsdGVkX1/ob1oN08Pw/LH3JhRj/ekeu7mPr9gL0virEIVw8gOWBusaeRxvXT2ScFw1XZRj23WKC14XNJ/ZtFJ72B5EmfikfoueW4KP2LT7dKNMLlHVA3Twdv9AXbWJ9cyzhGy4FkbINgNoePRzNLJIQtVc+DUbhvmXWUvZqeWZMUayYsUESaG71W2KwX+RKiJiVglytfmqEEj3tKVqp18oIuotazQFgHaZDS43G49nhNg1+ghtrssYK6eH1/XyB0JezWP8E4k6A9WB9aF5trPoeKQJOFmkO55+kwvy0BUjyY6VyKr3AsNhz+10bPLjoLjDMEoiwwBnOW42uCE9Xno4JbY/Yex/xs9LhRIKlFFStR7fO5YGi2ZWQzvajNWn92hzTsyvEdDI3k1BYJ74Hbl9bTm2QXCV3o1QK/GM5kFYaSifL4XUC3KmHc4WFTYB658yMC0utdiM3VMeKPjIBEDIwr2kwx9RLY9RUqNtyFJ3v38IYySSqFyt49uTbhhXU7Uc8TrfWtQqvflqCF6Eky+JuXJJF12DrlBFBBi5emlsrWLa1UK9cqE2g7NMmjapHPRFFjP5qkvGaTAnEyFdHzohaGBxycbju6vvNdoyxThz4pM1t3ElnQapUW23THShIXLV8X/30/lT7zh+S3ddTDCEDSGAFi79jBVN0uvBd5OvE36jfwpil3gZ1Y9+HxlAYwPydI/fqeviQP+61CG9hcs3T9gbHmn9uDUO2lyTR/peRtYHvK2fjV1QtT7rxGWSBv3VEmlQGQij28voOWnKKxFP37P2RlD25BBt+IYC0+MghyD7YC4Dxr0X0n8P+O1e0Kc44oVGmAZc2go+KpUCVgTW2ug6vDpRBmtV1bpiPv+IYrqLhci8wM77c4cDoJN5+BFPxpL77rtrWibsG+9YhOKBPFD0Eo7CtILpWJ4Fk1XtOAfd0klkXMDAxvHTyvnUGTplvo043VdGjMimlST
+ AHh377VB
+ buC89vuwBF9UQ05CMM6zYNZsbniDLQPiqfvs89cpK5Lx6A/+7mJGsoD47I4yuO9RREhkl7nNWwW80uOEYs0bFzHuh99Rr4De0vkwtyiz0AT4Oa6tdbrueK4dVxJ6iTcVlOTqBpK0ICGi8NrqxEkjLtiRAVc3dI9UsD/YTJR61UHeim9oKJbQNPDcBfvTfzD27J2ffYrf3C7mnve9WdeujmxKKbmW81QY83+x73giWxNizEQ9E036DSUwi5zgAwheLS8/l+2BHYABDVJhhXNigtYvDUs3UdncFBqcp5H9CoR1FNi4zjrtLre74aALvll52gXrL1FqBrlOwC2Vggg53JdO+9gso6LESbM4dOwWyQozCsNms4rLYLkbX//FcgGB8dM8RC0sgQhFbW4Fw+b9acXcnsgsGXxUVZ4hJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,68 +90,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Jul 2026 10:45:56 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+On Mon, 20 Jul 2026 10:18:59 +0800 Yichong Chen <chenyichong@uniontech.com> wrote:
 
-> > These points have too much detail that's already in the code. Would just
-> > mention that we opencode applicable parts of page_memcg_check() and
-> > PageMemcgKmem() using the snapshot?
-> Yes,It's a bit wordy.
-> > 
-> >> This avoids both TOCTOU windows and the assertions entirely.
-> >>
-> >> Signed-off-by: Ye Liu <ye.liu@linux.dev>
-> > 
-> > Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> > 
-> > Was all of this reported by sashiko? At least the new-in-v6 was?
-> > Then:
-> > 
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > 
-> > But it's no longer a cleanup but a fix, so probably this?
-> > 
-> > Fixes: fcf8935832b8 ("mm/page_owner: print memcg information")
-> > Cc: stable@vger.kernel.org
-> > 
-> > It's not fixing a new regression so I think it's fine to keep it part of
-> > this series for next release and not need to split out for mm-hotfixes.
-> > 
-> Hi Andrew,
+> hugetlbfs_fill_super() allocates a hugepage subpool when size or
+> min_size mount options are specified.  hugepage_new_subpool() may also
+> reserve huge pages for min_size.
 > 
-> Could you please help me revise the above?
+> If root dentry creation fails after the subpool is created, the failure
+> path frees the subpool with kfree().  This bypasses
+> hugepage_put_subpool() and can leave min_size reservations charged.
+> 
+> Use hugepage_put_subpool() on the failure path, matching the normal
+> put_super path.
 
-Sure, how does this look?
+lgtm, thanks.
 
+This might have led AI review to find a pre-existing bug in
+mm/hugetlb.c:unlock_or_release_subpool():
 
-From: Ye Liu <ye.liu@linux.dev>
-Subject: mm/page_owner: use memcg_data snapshot to avoid TOCTOU in print_page_owner_memcg()
-Date: Tue, 14 Jul 2026 09:51:08 +0800
+	https://sashiko.dev/#/patchset/20260720021900.1376309-1-chenyichong@uniontech.com
 
-print_page_owner_memcg() reads page->memcg_data via READ_ONCE() at the
-start to guard against tail pages and NULL data.  However, it later
-re-reads page->memcg_data locklessly in two places:
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -1419,7 +1419,8 @@ hugetlbfs_fill_super(struct super_block *sb, struct fs_context *fc)
+>  		goto out_free;
+>  	return 0;
+>  out_free:
+> -	kfree(sbinfo->spool);
+> +	if (sbinfo->spool)
+> +		hugepage_put_subpool(sbinfo->spool);
 
-1: page_memcg_check(page)
+Both callers of hugepage_put_subpool do this NULL check.  We could move
+that check into hugepage_put_subpool().
 
-2: PageMemcgKmem(page) (via folio_memcg_kmem(), which includes
-   VM_BUG_ON assertions for tail pages and MEMCG_DATA_OBJEXTS)
+>  	kfree(sbinfo);
+>  	return -ENOMEM;
+>  }
 
-If the page is concurrently freed and reallocated as a THP tail page or
-slab page between these calls, the VM_BUG_ON assertions can trigger on
-CONFIG_DEBUG_VM=y builds, crashing the kernel.
-
-Fix both TOCTOU issues by using the memcg_data snapshot throughout.
-
-Link: https://lore.kernel.org/20260714015117.78351-10-ye.liu@linux.dev
-Fixes: fcf8935832b8 ("mm/page_owner: print memcg information")
-Signed-off-by: Ye Liu <ye.liu@linux.dev>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: David Hildenbrand (Arm) <david@kernel.org>
-Cc: <stable@vger.kernel.org>
 
