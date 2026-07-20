@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A11EC44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:12:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668E0C44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 11:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 678D26B00AD; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
+	id 391AF6B00AE; Mon, 20 Jul 2026 07:12:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 650A26B00AE; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
+	id 31BE26B00B0; Mon, 20 Jul 2026 07:12:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B886B00AF; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
+	id 1E3EB6B00B2; Mon, 20 Jul 2026 07:12:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B7416B00AD
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:12:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7D5B16013E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:12:16 +0000 (UTC)
-X-FDA: 85008891072.09.93EB331
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BB51C100005
+	by kanga.kvack.org (Postfix) with ESMTP id EB2136B00AE
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 07:12:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72C43160133
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:12:18 +0000 (UTC)
+X-FDA: 85008891156.29.F85CA8A
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5CDB912000C
 	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 11:12:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c1Qq1rME;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dD3FoSJx;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784545935;
+	s=arc-20220608; t=1784545936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=OFM0nRJoZuBfdWYZNC4phzSZOwI8EnxnT+H9jcsSDNE=;
-	b=MRwzg6QD1ylXY0EwQg0SCtc5skdZgF9WAXFZsmBWrm10YuPwnsGeKR/JG740zJ4k5Zg6y4
-	f/nJt2nG+JIZFdavz52bkLogdY7Phjh8+Fccm9c/5fet9t/HYPK199tvHOkKpxSLY7qNLe
-	HV1XHvyw+Mu5ngWyxenN/Yns52BBLA8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Kx0HHACCJBu4qLsNxTSVWqhiiV39FZzOaFUJs4a+Yho=;
+	b=cofXWh7RHdyfh5Hd18BxW/teoQ52hfykihKyAYjT8Nvb2/qbKD1mF05MWQUDbdz+sjSw00
+	33thgAzEs+ikLLN8wuPQSiu+V+xf0WbT7w4DybfpLptuJsC5lDQDekephKhkkERHO8eFLM
+	jYCJ5GeGfSp49Lzn/yF75THPjd9oFY8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c1Qq1rME;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dD3FoSJx;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784545935;
-	b=v7oDEB/huhESS5bpbkw6FwMTUYcK6z3SMGqHtxjfHhTlrUk+WrttJjXzOg7mU27evTc9Of
-	s9sH/1jPeFr2fv1wJqJZvTJ5Pegdp/N/rfQC6GyC5Ao8bG8iai3mINjWW3SqqXIPOoQ+fd
-	EaU3E2PfSztdZM+tLDWrDm4cVrJOTDg=
+	t=1784545936;
+	b=ratspYOriINpuztZS6OxVhkTnti/AWc14vLblABCjoOj6aMB4PzGuZzR+wj8nt93wFjVX8
+	X1nn3mpi4AsT9o31NwvwR3o/rUTIoBYvaK77FfuHEqxhojUgGnn5VUcZQ/uU9gv9GdstRe
+	ePj3xMAVxzsiUNsESrVUkDDW6Kc+Mcw=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
 	t=1784545931; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=OFM0nRJoZuBfdWYZNC4phzSZOwI8EnxnT+H9jcsSDNE=;
-	b=c1Qq1rMEd10vohr4/PTgTRGqNEesFMCi1p/+SWCMF4bHw1asPO0d2YLqSWeDPPiLNUY6XgUeutnZGFR8PCTV0nWlJsldTsxBEBKTiZnF25+EB4ekkqUxVetRze1NZQXxzqW9aDOukMKV43da0zulnysfKl2zqybOpS9NnQBjg24=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R241e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X7TBAFM_1784545928;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7TBAFM_1784545928 cluster:ay36)
+	bh=Kx0HHACCJBu4qLsNxTSVWqhiiV39FZzOaFUJs4a+Yho=;
+	b=dD3FoSJxl/FcgXvy3d/ubJ0Ggf0sQmD0LZ7KLcoKxs1XCt7VJVzZAk3vln0yO+Oq9opKjG5vYxdTY+krUC4XLtXKxYdYMNXEdrpHJLWaV3xCMVuxYAokZdkTbE3eIPF9OMuqscAliapAuyuqGPVCW5ZWhp+F/wkWR5D+Y9euTbU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X7THEvM_1784545929;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X7THEvM_1784545929 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 20 Jul 2026 19:12:09 +0800
+          Mon, 20 Jul 2026 19:12:10 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -79,20 +79,22 @@ Cc: riel@surriel.com,
 	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/3] promote mapped executable folios after first usage for MGLRU
-Date: Mon, 20 Jul 2026 19:11:59 +0800
-Message-ID: <cover.1784509721.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH v4 1/3] mm: vmscan: convert folio_referenced() to use vma_flags_t
+Date: Mon, 20 Jul 2026 19:12:00 +0800
+Message-ID: <2bd39e16ec19e3e3c4716aa9a1a25775c26cac57.1784509721.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <cover.1784509721.git.baolin.wang@linux.alibaba.com>
+References: <cover.1784509721.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB51C100005
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5CDB912000C
 X-Rspam-User: 
-X-Stat-Signature: kycnm84o5tdt4cu391z9o8ho888ftaoa
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1784545933-716009
-X-HE-Meta: U2FsdGVkX1+PO+oGYnZgVebHzUksi4axCW2vzdGfqas3dI4Rq8UD92YFJt8ggjbJj96vHAfLCwC31gRapxxbW8theyQ8mSS8PPrWrOCDCatzXcwaD6ft9I3o+uYGcT8YEeFJBj1Ohohm25kHLKhff5HqI+3lYD92gxhze3uDK1PdF/QsdV3fMYm/EcJz/KZM7p/RxImOil4sr2VCIxaRX6wTwJVQJlgyL0twlV1VibmnGjWiajhxJJCHEJyda7Kt0quPhhkt08UYuoTQE9SyQihbd3bP9b0UyUnmCniionZMLBLfKWaJvG2z5tLRcoVeWVOE810UuTj8Mq1zbTE8fQIp0HnnQOS8lXXNGqzXSCkGnNW4M82WV2Spz5te1zxPKrFoPZsQxiCqcDo060QfvwHBaxgv5EA5MPpIADGHoR/K7Q44O9W5gF79WwDxF5h2YJ9qa3hMrjCTJWj3L/C6QJouqvcUHKiDQKzXh1dEXV0yI/TIKo3209Zdq8cnJArlalCW0bXd50kPbDGNaHgFSXZL2Z79NyqqWpqEhK+O5ePLZ2IoNEbao7eSht8MO4kWL2yTRZFoxo4aXaB+ACPsWroqv4g+nJqKXPJYAq6P6BZzeKlw1AdXDxJOJZyPNEAdVohBnbGe5d767dqYn+uci4ZDvvp03kkjTuvLJB2mlWIEdAdCmAs+r5XED5KjeMUKIWyEJsnII/nvYf4MLJVTvXeUBDrZMfWg3sc76qF9Pzo+QumlzFz+yvvlfc7//xSnEZa7enWzS5VKwwSoq4Q7rQV9tszNQ96J/LNv4S4bVBMvIzy4sg7rVoK0pVHnzdB3+gyiKRpnAR6islrDVLd8ti7Om/FlvAT6VWDSsCDsVer3THDsZ29eoiVqAoWHCoFUSe+RuXu3E8waWgKShAYGVaz4SwQ8oWIBpZCTmnx7rtHq8c0TNPijeIV+wN04SIkaClheCfe4hFu1OOA/zCa
- S1LolY+g
- uuziu1uN5/o15Oy2hBPuocJ7Ye76EUv9L/PKE6VS8sDZNZs9+wNLMYhdZt9xg0xlLLVURHZ4rNIJgPIsNU9Q1uexcymjwixjqNusbYg8Xqg2whGEImm2DV8RON+Si8QsNt6ac+xzR5X0ahm3+Hni3AJO41V+kvEzH91V6F2KQCcsQ3y8DiccA9nNl86/Z/VrGkHKO7IqViBl5qvGrwK1k4dohvJourgyRTJzYxiIJMokQkaMvHGCsVqjow1er+C+3TGg5pJ9K44lHE34tSL02RXC9hw==
+X-Stat-Signature: ipk153omj3k7x3oku5bde71ifhj6198t
+X-HE-Tag: 1784545933-805236
+X-HE-Meta: U2FsdGVkX1/88YaDXMUjF5YfEn+0+mepe1Ba32PrV3f5ewx4mpGMraOCqredjJ1JgBcX4/9wNqagxYrxtRgpMvI4QUKNkH7hpinwNuM+Kcs4k78+iF73+0nL9GOt12qnRK7mST01ypJaL1peSQPMKxooILQIIx0FKXhRxgFZX/NB2xsXtTu1o1pLyCA69ehuaUcMckyEEVEi1uNV3hb8zNoVxj0428z98Mg8ttj+oL+E5zoWkckmVR7U4J7lmeM89/2atM0iC8VE6GlGtCZiOb/1h3gORgezNwOcQGLmkh80OjCRD7Xvwn6qus4raZqL5Jm9bktqma5u9kGoQDmr/Bf91jzKRcMdIb8HMjFudenlDwGaDOgEMBQupHdnIln+yN2Ht9GJZUG8t4Ct4bQ7ojlBZQdQ5gTlvMkWE3wxRuMfAOkna9jrT9L7Ub/+2QTAbx5ogipbEyhSrfMKOSTo07JLokgLOIKDW4rN/ubG9Ym57xymzbK2puo6i3LoY0H8CdkUdE4Q5ifHmUiDjgumu8iHvvfUIBbC9KErNODv0dqHn8RDxyth+BRFFzbfjWM9Y4zBbQE1SanDTvUyXT4Q8YS9fVOV1dxpPluNjLrMqgc7co59d9mR0eGK7e7x0gx2NtjLOn6nXIx991XkGE4J7YmAzXnETPVZNIwxK3ydX9fgSomyWnDCK/Pay/cDFVw+X7Lls5R8iBJ/r668vJXVlS/IuD7a5lxiXpnSqq+hSkarcr7DQeNZxMskR6HTF1RkS7KIWQiqcw/6kxdq5WHvaoxZhZ5panNOdO+gjE929LhcMkgQs2TDwJqXNnUQnUxlvcTwi7b6Jd2pjyL6P/g/I4UVynMnGlryvuChAVtK9xFC3PuvllR04joEV1T94F33b661k1AV1X+EeWi22yVNWlrSJ3TBj2nl0RyDGhm5ePO4126kgoBRGpwgP0tfatDwgQWcIaj0wovcswycCWM
+ UKOXFt2S
+ I68CiDGIMYZS12/SYTOSuzayXXhVvArCQd4+BqwYc4YWnSdERZg1O5KEsG/oP+D7VqLwBhjYTAF1ZdCWQsZ6MqoSj8WtWU7PL+0ATI7ouuTlFlOx0i+ZJJBpiQpdklpH/zbSG02gjG1UV09nKAus7oJVp4/c5bRhoYY+TD9nuNnXiuxv5joBXaGtDOkB+U9/H5/jf1ElokbOhBzOs0mLu4qMBu+fqhd8MNqmcn798QZBYAzdhXQe13CLiu+YCO+piYBJBVGpt6S7e8oxNuWu909T43a6/gMc/eBEdWgThj4tCVN3blRPvukcf7Uiljk1kMw/PJXg1E5P7MLTaDOjX2ofZBy0lblXjgiRk5EbAKJaWTblsk4ETGiRHJ3vqvHlPYbRVercWcMR2bOVFmTcLwYMnkCUx00+JIuazIE/WYpTI7T8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,39 +102,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now MGLRU's protection of mapped executable file folios is less reliable.
-Follow the classical LRU's logic, promoting mapped executable file folios
-after their first usage to give executable code a better chance to stay in
-memory and improve workload performance (See patch 2 for more details).
+Replace use of the legacy vm_flags_t flags with vma_flags_t values for
+folio_referenced() and related logic. This is also a preparation for the
+following changes.
 
-Changes from v3:
-https://lore.kernel.org/all/cover.1784268206.git.baolin.wang@linux.alibaba.com/
- - Collect tags from Johannes, Axel, Barry and Kairui. Thanks.
- - Split the helper addition out into a separate patch (per Johannes).
- - Set PG_workingset before promoting in lru_gen_set_refs() (per Kairui).
- - Some code cleanups (per Kairui).
+No functional changes.
 
-Changes from v2:
-https://lore.kernel.org/all/cover.1784197559.git.baolin.wang@linux.alibaba.com/
- - Add acked tag from David. Thanks.
- - Rename the exec-file-folio helper and move it into vmscan.c (per David).
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+---
+ include/linux/rmap.h |  7 +++----
+ mm/rmap.c            | 19 +++++++++++--------
+ mm/vmscan.c          | 14 +++++++-------
+ 3 files changed, 21 insertions(+), 19 deletions(-)
 
-Changes from v1:
-https://lore.kernel.org/all/4b921ed528c483e13c9e22d1ae44ba58b4a15b0b.1784096432.git.baolin.wang@linux.alibaba.com/
- - Add a new patch to clean up vma flags as preparation.
- - Add a new helper to check exec file folios (per Kaisui).
- - Promote exec file folios in lru_gen_set_refs (Per Sashiko).
-
-Baolin Wang (3):
-  mm: vmscan: convert folio_referenced() to use vma_flags_t
-  mm: vmscan: add a helper to identify file-backed executable folios
-  mm: mglru: promote mapped executable folios after first usage
-
- include/linux/rmap.h |  7 +++--
- mm/rmap.c            | 19 +++++++------
- mm/vmscan.c          | 63 ++++++++++++++++++++++++++++----------------
- 3 files changed, 54 insertions(+), 35 deletions(-)
-
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f00..e090aa09825d 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -843,7 +843,7 @@ static inline int folio_try_share_anon_rmap_pmd(struct folio *folio,
+  * Called from mm/vmscan.c to handle paging out
+  */
+ int folio_referenced(struct folio *, int is_locked,
+-			struct mem_cgroup *memcg, vm_flags_t *vm_flags);
++		struct mem_cgroup *memcg, vma_flags_t *vma_flags);
+ 
+ void try_to_migrate(struct folio *folio, enum ttu_flags flags);
+ void try_to_unmap(struct folio *, enum ttu_flags flags);
+@@ -975,10 +975,9 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
+ #define anon_vma_prepare(vma)	(0)
+ 
+ static inline int folio_referenced(struct folio *folio, int is_locked,
+-				  struct mem_cgroup *memcg,
+-				  vm_flags_t *vm_flags)
++		struct mem_cgroup *memcg, vma_flags_t *vma_flags)
+ {
+-	*vm_flags = 0;
++	vma_flags_clear_all(vma_flags);
+ 	return 0;
+ }
+ 
+diff --git a/mm/rmap.c b/mm/rmap.c
+index ad820fe86f7d..73c2fe2d1946 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -907,7 +907,7 @@ pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address)
+ struct folio_referenced_arg {
+ 	int mapcount;
+ 	int referenced;
+-	vm_flags_t vm_flags;
++	vma_flags_t vma_flags;
+ 	struct mem_cgroup *memcg;
+ };
+ 
+@@ -926,7 +926,7 @@ static bool folio_referenced_one(struct folio *folio,
+ 		address = pvmw.address;
+ 		nr = 1;
+ 
+-		if (vma->vm_flags & VM_LOCKED) {
++		if (vma_test(vma, VMA_LOCKED_BIT)) {
+ 			ptes++;
+ 			pra->mapcount--;
+ 
+@@ -947,7 +947,7 @@ static bool folio_referenced_one(struct folio *folio,
+ 			/* Restore the mlock which got missed */
+ 			mlock_vma_folio(folio, vma);
+ 			page_vma_mapped_walk_done(&pvmw);
+-			pra->vm_flags |= VM_LOCKED;
++			vma_flags_set(&pra->vma_flags, VMA_LOCKED_BIT);
+ 			return false; /* To break the loop */
+ 		}
+ 
+@@ -1015,8 +1015,11 @@ static bool folio_referenced_one(struct folio *folio,
+ 		referenced++;
+ 
+ 	if (referenced) {
++		vma_flags_t vma_flags = vma->flags;
++
+ 		pra->referenced++;
+-		pra->vm_flags |= vma->vm_flags & ~VM_LOCKED;
++		vma_flags_clear(&vma_flags, VMA_LOCKED_BIT);
++		vma_flags_set_mask(&pra->vma_flags, vma_flags);
+ 	}
+ 
+ 	if (!pra->mapcount)
+@@ -1054,7 +1057,7 @@ static bool invalid_folio_referenced_vma(struct vm_area_struct *vma, void *arg)
+  * @folio: The folio to test.
+  * @is_locked: Caller holds lock on the folio.
+  * @memcg: target memory cgroup
+- * @vm_flags: A combination of all the vma->vm_flags which referenced the folio.
++ * @vma_flags: A combination of all the vma->flags which referenced the folio.
+  *
+  * Quick test_and_clear_referenced for all mappings of a folio,
+  *
+@@ -1062,7 +1065,7 @@ static bool invalid_folio_referenced_vma(struct vm_area_struct *vma, void *arg)
+  * the function bailed out due to rmap lock contention.
+  */
+ int folio_referenced(struct folio *folio, int is_locked,
+-		     struct mem_cgroup *memcg, vm_flags_t *vm_flags)
++		struct mem_cgroup *memcg, vma_flags_t *vma_flags)
+ {
+ 	bool we_locked = false;
+ 	struct folio_referenced_arg pra = {
+@@ -1078,7 +1081,7 @@ int folio_referenced(struct folio *folio, int is_locked,
+ 	};
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(folio_is_zone_device(folio), folio);
+-	*vm_flags = 0;
++	vma_flags_clear_all(vma_flags);
+ 	if (!pra.mapcount)
+ 		return 0;
+ 
+@@ -1092,7 +1095,7 @@ int folio_referenced(struct folio *folio, int is_locked,
+ 	}
+ 
+ 	rmap_walk(folio, &rwc);
+-	*vm_flags = pra.vm_flags;
++	vma_flags_set_mask(vma_flags, pra.vma_flags);
+ 
+ 	if (we_locked)
+ 		folio_unlock(folio);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index b7ef032e78a0..11357b86ba2c 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -861,16 +861,16 @@ static enum folio_references folio_check_references(struct folio *folio,
+ 						  struct scan_control *sc)
+ {
+ 	int referenced_ptes, referenced_folio;
+-	vm_flags_t vm_flags;
++	vma_flags_t vma_flags;
+ 
+ 	referenced_ptes = folio_referenced(folio, 1, sc->target_mem_cgroup,
+-					   &vm_flags);
++					   &vma_flags);
+ 
+ 	/*
+ 	 * The supposedly reclaimable folio was found to be in a VM_LOCKED vma.
+ 	 * Let the folio, now marked Mlocked, be moved to the unevictable list.
+ 	 */
+-	if (vm_flags & VM_LOCKED)
++	if (vma_flags_test(&vma_flags, VMA_LOCKED_BIT))
+ 		return FOLIOREF_ACTIVATE;
+ 
+ 	/*
+@@ -914,7 +914,7 @@ static enum folio_references folio_check_references(struct folio *folio,
+ 		/*
+ 		 * Activate file-backed executable folios after first usage.
+ 		 */
+-		if ((vm_flags & VM_EXEC) && folio_is_file_lru(folio))
++		if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio))
+ 			return FOLIOREF_ACTIVATE;
+ 
+ 		return FOLIOREF_KEEP;
+@@ -2063,7 +2063,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ {
+ 	unsigned long nr_taken;
+ 	unsigned long nr_scanned;
+-	vm_flags_t vm_flags;
++	vma_flags_t vma_flags;
+ 	LIST_HEAD(l_hold);	/* The folios which were snipped off */
+ 	LIST_HEAD(l_active);
+ 	LIST_HEAD(l_inactive);
+@@ -2107,7 +2107,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ 
+ 		/* Referenced or rmap lock contention: rotate */
+ 		if (folio_referenced(folio, 0, sc->target_mem_cgroup,
+-				     &vm_flags) != 0) {
++				     &vma_flags) != 0) {
+ 			/*
+ 			 * Identify referenced, file-backed active folios and
+ 			 * give them one more trip around the active list. So
+@@ -2117,7 +2117,7 @@ static void shrink_active_list(unsigned long nr_to_scan,
+ 			 * IO, plus JVM can create lots of anon VM_EXEC folios,
+ 			 * so we ignore them here.
+ 			 */
+-			if ((vm_flags & VM_EXEC) && folio_is_file_lru(folio)) {
++			if (vma_flags_test(&vma_flags, VMA_EXEC_BIT) && folio_is_file_lru(folio)) {
+ 				nr_rotated += folio_nr_pages(folio);
+ 				list_add(&folio->lru, &l_active);
+ 				continue;
 -- 
 2.47.3
 
