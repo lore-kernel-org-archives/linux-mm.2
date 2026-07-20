@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E8AAC4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:40:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7F1EC44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:42:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FE6E6B0092; Mon, 20 Jul 2026 08:40:31 -0400 (EDT)
+	id B41F26B0099; Mon, 20 Jul 2026 08:42:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AF176B0099; Mon, 20 Jul 2026 08:40:31 -0400 (EDT)
+	id AF2C56B009D; Mon, 20 Jul 2026 08:42:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C4B16B009B; Mon, 20 Jul 2026 08:40:31 -0400 (EDT)
+	id A09C86B009E; Mon, 20 Jul 2026 08:42:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 189576B0092
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:40:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B7A7A014E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:40:30 +0000 (UTC)
-X-FDA: 85009113420.29.EC5D2FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C43A11C0004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:40:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ecxIasuA;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DB496B0099
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:42:12 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 075F8A0128
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:42:12 +0000 (UTC)
+X-FDA: 85009117704.20.2FFD529
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A737D40002
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:42:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=N8GzFteM;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784551228;
+	s=arc-20220608; t=1784551330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6gSJYyG5tqoS/xfJ/ocf6PHpv571KSG20n/AuJPymfo=;
-	b=NPu9tDUbh33M/fc2M+7H/ZeHjB1BrOnZUFBop6coEbkTeclMmxHDWLzWJtIF3ja6ESoz0p
-	3cI6og/q3vtJa+IDWJhUlmivLNKtb5g7MN7fE4W526PCfeqDs6PB9J1OVS/VJ4mt2HprYT
-	/F45ojuEOM3IInFYi4r2ukL99JoYuvE=
+	bh=dPyzWaumtS4ZliY6OKFoGM1oZkZyNW2wA2zSbARXhho=;
+	b=JUWwDeBfK2IV/iTDjJc38yTGh80i4Ty/QWS980ZiKIyeecIUjwqvoqUM5dgp9MzGW1+zgY
+	GJXBpSgmJDPg48dHbCkeqPVt/yyxZ1IrtzB5vHrelqak6tGH7MxcFJiKSzGJodyWisP8Vq
+	2M4Zd7HVD9xX0/GkdxvLnDsGWtt/fjg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784551228;
-	b=NcgUAyetD+zVhhNo2SdaXqmQ9BprS2z3Wkssm4GcbPHmxpOrXEbTiHdSXJx/V85SEs6i9N
-	t/Oe98x3tJQx9fHWGlo7gYcmTXOmuqu+iaSPjvSspDI7BB2PHec/kTxIfhRqgcb9EvqBeO
-	14uY7SY4PWpoGGAPvkq+tEYWB2aPK/A=
+	t=1784551330;
+	b=5wfc6NAtMXwAoX3+FtsD4HteYxsrB1GjRqqLiBZm+MfvH2N7k1nAipcnvPM5uR2Z+BM5dd
+	KTZAAUOikpNIJvsCL2/x8lzziqbt0NFIOE6CKwrg4hwydoEl9Icv/QtCO3W6A4/aKETvMz
+	u5XhbEeXOAcGEwWB0RrJ7EGEi0J+BpY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ecxIasuA;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1FFBB60A76;
-	Mon, 20 Jul 2026 12:40:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54A81F000E9;
-	Mon, 20 Jul 2026 12:40:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784551227;
-	bh=6gSJYyG5tqoS/xfJ/ocf6PHpv571KSG20n/AuJPymfo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=ecxIasuA0P8PpS9EavsmRZ74Bo1ipvZL31wrcSQpUaUWw8cpPGkk40TmYO+yO9DlY
-	 M/msTR4My1TuHQhB3uUJGRqHQFYThOHMHJNo1Oc/2kNm5gkE8gvw1rAaDlvDgP4ILp
-	 8TxD9gB7yxMUu0ge2JqO/zTc7mYK0iKRnDHXQMYMcySe0zCXVMD+5N13HD2nIgULqf
-	 mY7N9+E8n5m/+e5eBzGLcuIJ/brp7rdgPRcQWOyMhKHnI1fsOw0cLSLEKPlSZ3zTOd
-	 DSbo1DAhRH15t/cLxwMc79K1Fo/lqPC3FzpbJxFs1XNKwgTqB2nIg68/ZCdY3cf4j5
-	 Y9eBlBJISLlBA==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Cc: Farid Zakaria <farid.m.zakaria@gmail.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
- Kees Cook <kees@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, Jonathan Corbet <corbet@lwn.net>, 
- linux-mm@kvack.org, bpf@vger.kernel.org, jannh@google.com, 
- mail@johnericson.me, stable@vger.kernel.org
-In-Reply-To: <20260720-beglichen-kognitiv-organismus-5e1e55326c56@brauner>
-References: <20260720-beglichen-kognitiv-organismus-5e1e55326c56@brauner>
-Subject: Re: [PATCH] binfmt_misc: set have_execfd only once the interpreter
- is opened
-Message-Id: <20260720-atemschutz-kaufanreiz-bezaubern-ba50b64e6eda@brauner>
-Date: Mon, 20 Jul 2026 14:39:42 +0200
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=N8GzFteM;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=dPyzWaumtS4ZliY6OKFoGM1oZkZyNW2wA2zSbARXhho=;
+	b=N8GzFteMlKy6Gl57k9Fhlu4QOOcuEBHAZxm5icOQKh1DdfiWCE40V2ILYM3YHkDYAhY21vWn0
+	/hdHCP6DUna/McG9phIB3xzCsZo0wv4x3M7NlyP9X6+C3sjw9t6Nra8nl5W2xKrAmULcoTCZz+P
+	kr3L3PUdiAfdVQnIJSg6AYs=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4h3fzl37MjzcZyH;
+	Mon, 20 Jul 2026 20:32:35 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id C922740561;
+	Mon, 20 Jul 2026 20:42:00 +0800 (CST)
+Received: from ubuntu (10.50.87.83) by dggpemf100008.china.huawei.com
+ (7.185.36.138) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Jul
+ 2026 20:42:00 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, David Hildenbrand <david@kernel.org>, "Liam R .
+ Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+	<pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>, Kefeng Wang
+	<wangkefeng.wang@huawei.com>
+Subject: [PATCH v3-fixup 2/6] mm: mincore: fixup for remove special handling for VM_PFNMAP
+Date: Mon, 20 Jul 2026 20:41:51 +0800
+Message-ID: <20260720124151.1483820-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260717091347.1144789-3-wangkefeng.wang@huawei.com>
+References: <20260717091347.1144789-3-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=947; i=brauner@kernel.org;
- h=from:subject:message-id; bh=+Cmv+ibbGaHqbmFp4DK6NU/RMqv3p9IzAGf7vvtFqoM=;
- b=kA0DAAoWkcYbwGV43KIByyZiAGpeFzigvU9VQJeNJJWZJLdTmcBRaJNg56EYC+1uIDhtNA2MS
- Ih1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmpeFzgACgkQkcYbwGV43KJ3ZgEAjybq
- L1I5/9t8lCZCgjKwIWelalu/62YFIKz6ujfc6vIBALyCtTQh2A0vT/iAZK6JWds3c8MVq0f0Oar
- VPQj3vKoJ
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C43A11C0004
-X-Stat-Signature: jyeekg9gcbni16pt4bgur3bk714qpygc
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A737D40002
+X-Stat-Signature: g8j47hizgmpj9o1ut7e4zg7wo5kbpwk6
 X-Rspam-User: 
-X-HE-Tag: 1784551228-511625
-X-HE-Meta: U2FsdGVkX1+noH3jzuYhuwRwzGzEYammo88zX+Ihq07PRq6MpvvVqDUDO3XsDEc4q2k1SbOTzAgidKekwozrZhD84osLzTx3EMIO5CixC25sUNPCD2wcNOfJrZWEOOTpS98HzzbXfcFSxrkzxP3piJlXYjTutuUVLuCdqzCh9Hey5sToW6u25UZpopRNkNNNdtg9HZfcYX+r8/UizKXNmYUkfpkzvnP8rU/LzJOxOXrulNcMqLS2yx+hXrGRaTaQRrBrxuR9CEvj3Xmzki7/n/A3gLLa6Fcdvjhmi/4VJwBLD6GUzCUet5A8Nwl/SW6sXPCeMW+3H9PglnP3uYaAJaUxGo/Ev1+iRCbLeYi6yTdZXXPOlFZCYC8Lkkm6bfVxE2l8obW9RWwkKgnnN7cW1p40+NLERY2yKJb0IdI8pyDdZnCjnyA93HWwy3SfGty8xKVn33sW6zmz1gy9c286xUUrJz7zvK86Q7jpIES9K+tg3nCSVNTURLxFlzyXyNF2ljkACXYLKz0+MYcdaHQssHhIOBjzzRKEgQXRKf7gpIbsDL+be+auTHo+GBGVg1EaHxU65ulOhjxG5AT6SgDbAPV0mV6v790H8DwOESbWwT7JE7WhjJXkEHl9P813sflQaAnO7XuBNJjHJCRUfp4WBDP+HTXBHOBfTxOT4fWMwsX1w0jJ9ktB1x2vo8auxKJCUCSpNMKprDrLnmbgELENi22V1frYfnNuwDleLzbojyVMrFqyWGh2nxrl6ExSYazJKT/ziPL+Xd6LIvhdURJ0OoG6iwnu590TqqXTDZyZ9iLCtNaRwdOMl5MgA/HDGun2Z7gorLG28I1QIt2yLETlYToHLoulpIbjzSynZZbs+HnQ90CX0aFmSRDWL9bAsb/pi+Q6zaRzEicajVFqatmryHXQaiWPisctDKkg+o9OT/gyTggXjii61Jz44T39hXCh8r5EsbJy3FMxy67y93q
- T/hpLpM/
- GasCf6VzkMZ+GUR9WLwhaLPF/BzB2sk4OheVo99YUEF9R058C5imG6gH9Ca9JyT7jPuWYAWwIqNR9P86Lxsnw3lffVd5CExlS3shYLw2sXz3NtYwB7S/XznBwtmYoi8J7aKXki1t/HcEvEGj0nVDTo8QhRf1zSN8jchcg5dxhJuPXh5LTJHggxn+04gNGam4HZzI3xUCVAzfPenKD+wtidPhsA/X2VMkLDJE7glQv0TrXDpMF1rx9jo6+YFOUkZa1qe95qQPfuAz4wbkpj0LzQoWU4yzo9ij7pgD6oDYUH5JWnxIde0tPCVS43ITHca1uTBnPsLsuVVBILh9+JT50nrJHISa59ZnlSW873sTTyB3V5M89NNeSft1WcKNk11NB6irI/Pgj9PK23BZHrYTRf8pT9WcsQK7KmMJA
+X-HE-Tag: 1784551328-432429
+X-HE-Meta: U2FsdGVkX18/PwVgFM3QZFl8INi6keucPwDbSvW21P1dd/ZoP9l3LaYnM6OQb0A37OxzWUsOQoDH2NAdiA2L0v93sw719rm10acUo6lh1+BSJTk3KedBok7RHEzZfsRmHoej/Pchfo+iDP8QHhGjGpmVWjMk1wuuS3R2VOQkBXsL0j8kOrInCA1ruJsvg+e/0v1HUv6cZNf0kVFsFK5MdVqGLaG2A8+7K7xhOT1WRN/K3wwXYaM+mnajDJmLW0c5qh0FuJxDGikTmf6XuFtgSli7zR3xf+5+jsj6fd2YTYgrQvbdL/lgWYxYua/UnjHLsIjv+x5Dvj0ET96ojPazGvvuaKcUQVflqJQ7n/Ei5LzhowUT7PhY9Ifp0DhHidILNqwjLErGtlhfQh6as3eBM6KWHq6kbrRyospy0yzvwcU0WDQKq+sXn93jx0b5se+x2eRVBC8HyrwqZd5uiIrcrBWG1gSRKLDDwOAgZKcbdMM7u2S2elIkM6qjHtq5C1pjFwtbcWnAXDCZ+oiVSzKSModDInRLiJE1nPnpjTcjSaME4JgL7UhxmdnQDZhUTu/YrJNWMYvLjSJZrQ7x8WKc/Gv3L4fDLM+uhb6BqW3yVFJtJHs/HkgnkgbzIIsR586mnLmBgB7ZgMZiD2KM0paLdQMv8wrZKNndvj7EgmXT9712rUGCFQojRodTbWoln4s5NMmpi4vXRGhKqXDS6W+7d361YglVxpVPLchF6zvYyzWoEaxqLnrn8gpqiLB7Wth9VYppWHFeZFLN4hq2sugpOxdbOC3E0iyHDXwYD9pU/J2/9BLoXIEyRtOMP+WnfSuNcy6wKOEjdALhhN51k4UBKdCTY6j09ndeOtOamaafh3ip77UgZBKsEUunLuxqnCXlVx5zo/wipVJB9xhX3ZUnfz+CGCUKvIUEYW6Dtf8yCwiHm1f4bICNLRMNk+3k5ZH5Px61YGDfwtOARB07rRq
+ PLr1iNYu
+ mXKCbYLaziI6e0Dkg5slaWK8djg/u4WgZYP4VqdNG6WLZUsMsnZUppbvmaPMgKdQK6Pecd4XLxjQkRNMLgzRQJoFX0VB3JMHLqK8jr0wS5mNinBFZ+Y9npiwGv+P5yrth9AcGt+udDGni6zNurZ/Uc3GUxBQRbzseSp0i829/QYbcfk2lizP0cu2GM9DMp4TURvDGI5JON9qH8aymD5FgaMGniRnxR3c3ku5IWtqyQB6GIqp9w65ht0Nd/5K0Wloy/holL01e7uP91TahghN/ntB0UqanNwkF+9RV1WWkpCuQOsoX5JW5VJLBqu+qcohnOUPx89qSVsSIiJy/80XFklwwuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,29 +100,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Jul 2026 14:36:49 +0200, Christian Brauner wrote:
-> binfmt_misc: set have_execfd only once the interpreter is opened
+Address David's comments
+- rename mincore_pud_range to mincore_pud_entry
+- change int nr to const unsigned long
+- remove a local vec variable
 
-Moving this into vfs.fixes.
-
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
+ mm/mincore.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] binfmt_misc: set have_execfd only once the interpreter is opened
-      https://git.kernel.org/vfs/vfs/c/d1e8308f6a1c
+diff --git a/mm/mincore.c b/mm/mincore.c
+index d7841a38b54a..9ea81638d09f 100644
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -146,16 +146,15 @@ static int mincore_unmapped_range(unsigned long addr, unsigned long end,
+ 	return 0;
+ }
+ 
+-static int mincore_pud_range(pud_t *pudp, unsigned long addr, unsigned long end,
++static int mincore_pud_entry(pud_t *pudp, unsigned long addr, unsigned long end,
+ 		struct mm_walk *walk)
+ {
+ 	if (pud_is_huge(pudp_get(pudp))) {
+-		int nr = (end - addr) >> PAGE_SHIFT;
+-		unsigned char *vec = walk->private;
++		const unsigned long nr = (end - addr) >> PAGE_SHIFT;
+ 
+-		memset(vec, 1, nr);
+-		walk->action = ACTION_CONTINUE;
++		memset(walk->private, 1, nr);
+ 		walk->private += nr;
++		walk->action = ACTION_CONTINUE;
+ 	}
+ 
+ 	return 0;
+@@ -233,7 +232,7 @@ static inline bool can_do_mincore(struct vm_area_struct *vma)
+ }
+ 
+ static const struct mm_walk_ops mincore_walk_ops = {
+-	.pud_entry		= mincore_pud_range,
++	.pud_entry		= mincore_pud_entry,
+ 	.pmd_entry		= mincore_pte_range,
+ 	.pte_hole		= mincore_unmapped_range,
+ 	.hugetlb_entry		= mincore_hugetlb,
+-- 
+2.55.0
 
 
