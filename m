@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD38C4452A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF16C4452A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 14:03:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B7FA6B008C; Mon, 20 Jul 2026 10:02:52 -0400 (EDT)
+	id 7E1E46B0092; Mon, 20 Jul 2026 10:03:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78FD86B0092; Mon, 20 Jul 2026 10:02:52 -0400 (EDT)
+	id 7B8756B0095; Mon, 20 Jul 2026 10:03:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A7F96B0093; Mon, 20 Jul 2026 10:02:52 -0400 (EDT)
+	id 6D6276B0092; Mon, 20 Jul 2026 10:03:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47C586B008C
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:02:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE036A0258
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:02:51 +0000 (UTC)
-X-FDA: 85009320942.05.E7CAFE1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2DD1316000B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:02:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Djn3dfxO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D173D6B0092
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 10:03:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BA09120184
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:03:56 +0000 (UTC)
+X-FDA: 85009323672.01.17E566A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 835864000B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 14:03:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Y4SS0WKA;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784556170;
+	s=arc-20220608; t=1784556234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yKKxZDz+u8LI8/34wYmR2oM7z0KSY/HN/W8OYGduMZk=;
-	b=xgwxyNAKx+p3HSrp44SP2PIVM0pd9gEvIRt2Z8EXRmrlTzfvmRhtRVH87kjieCi/PrvOld
-	TcTtxMwrHcKg9O7ODgqBul5arQ38jpSiY3eTzTJweKHTpsv0RoEm0fYocRl7L3PK8Ct2Tj
-	9L3b9GU8YuymM1eHMSWnm0ltXJ4kkVQ=
+	bh=u3FtMQ2QOU38YdAkrHE8mqaCXRSA5UpaTZ5/LtQ8iEI=;
+	b=0outokUQqs4O6FYt2+kCqL45kct8eUOS1MZA5btBS0OBiqH57w4E02TQylpkMS7gg70Zc/
+	y/qgCZ8pW3kunoD3aoD1cBA3/RIrcX56IM9MxDqKV11KRSFMTtClvyFmhouDmJirs1nDB/
+	5bFm5Nn4U0XXxENzEgeDTeHd58izBqQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Djn3dfxO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Y4SS0WKA;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784556170;
-	b=GKoO1VR04YGjIGHsG0N/NY8SncYEmc1RiNkY/KIz+LNv/JEk+BM8OHbanDy97ZbemIzPoz
-	l1lTXkLEoSYC/GtKYmz3JQg1eH1HSO87SEwZZfbBX8TX3rwN3tjgIgPvq7CNFokk9B6WbY
-	NMjxzGl3bIS/ZVjd9J+2mvN6VJPgp+Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 77CF260103;
-	Mon, 20 Jul 2026 14:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ED01F000E9;
-	Mon, 20 Jul 2026 14:02:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784556169;
-	bh=yKKxZDz+u8LI8/34wYmR2oM7z0KSY/HN/W8OYGduMZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Djn3dfxOSf7mNj+ZvGG0w1kmAwKAGVjg3iwG1qimaK66yMHkvyQ9hRjcQ2wpXoLRt
-	 U9QZzHtvoOAMcgxl0MI/3H3z5no5G1ufwRoALeu50vtYeD6kVmdogknz0X1ADi9g5m
-	 qqRkAddxQ8PJ8AkkO4jznYwEwtexaJ0FjIzXHLZf4i1J5DJ75O0OHDsou0NtSCK13u
-	 Y1xGQ63rzlvBBmo3kjBPDVZ5zB2jdnx2u0IrzMhBgtXCupXpzMc8dJelrWfXS5QA6r
-	 REmjt54GuwOq2drvFtSI8iA/WM0REVH5fVTlMm78xhf0Up563EvkvuJ7TQYwArwtss
-	 TC+DNe06SxYhQ==
-Date: Mon, 20 Jul 2026 07:02:45 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Paul Sherman <shermanpauldylan@gmail.com>
-Cc: linux-mm@kvack.org, tj@kernel.org, vbabka@suse.cz, dennis@kernel.org,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH] mm/percpu: allow embed allocator when total size fits in
- vmalloc
-Message-ID: <al4qhdtunscCLpOG@palisades.local>
-References: <20260717231616.9126-1-shermanpauldylan@gmail.com>
- <20260719055928.1939-1-shermanpauldylan@gmail.com>
+	t=1784556234;
+	b=x34+6ZlzTIYBRY5658/S7P5T9mveR10CZMa0JiVLoEmaUw7HtTdJjjo4txgPnLLP9/ldO4
+	Vlt7vi4F+q1Rdn7zNW2q36EiV75U7XpWbe5W/QdJPCRsH05B/KEv8qEPWtJ8BFpDIksK1U
+	J4FbcGhFFIA2S6pvppHzL2z7Ed9TtC8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=u3FtMQ2QOU38YdAkrHE8mqaCXRSA5UpaTZ5/LtQ8iEI=; b=Y4SS0WKAiZUEIWVWbInUENw/Jy
+	VUXX/V0hfaVPt72bdhqIJ/UV7UMhdZ/FB6PElpTULGbDRPAQmACFueq6dY3YbyVhaqUWxuuJJeuv+
+	uYYlEaS0cnLgMgYGLh5gPZ63QCqKjwMFS5co2nUUVrnilHaMNOq2eAUsNf/FTZ6HNO/0lwjHuwn5D
+	m7oqSL2W1F2ffolm0CE/sTqVuliaa2oYJuJuxyTFdZHuLxq3Cbdgc1fDU+QKpCtUxApLiTjmQkQDG
+	ktIHt5TEvFdmb10yqKJdMiE2FVv/x58gn6XzY6oafBc53V0dQD/6jzYydH1Op1zFpkYnJq81krAUe
+	reubQfWg==;
+Received: from [12.151.47.154] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wlob1-00000006u35-2D4S;
+	Mon, 20 Jul 2026 14:03:51 +0000
+Date: Mon, 20 Jul 2026 10:03:51 -0400
+From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org
+Subject: Re: [PATCH v2 03/19] maple_tree: Add write lock checking with
+ lockdep sequence numbers
+Message-ID: <dzp5qpqjzc3j2jwnamgbv7j2blqcbp6xq5jnwvkm6hzx6fbjni@2vom3uipdkuo>
+References: <20260630190843.3563858-1-liam@infradead.org>
+ <20260630190843.3563858-4-liam@infradead.org>
+ <ak5v9UDuieA-dNUh@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260719055928.1939-1-shermanpauldylan@gmail.com>
+In-Reply-To: <ak5v9UDuieA-dNUh@gmail.com>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2DD1316000B
+X-Rspamd-Queue-Id: 835864000B
 X-Rspam-User: 
-X-Stat-Signature: r99yrur5qxiyr4g5dzxoiqu9p457y184
-X-HE-Tag: 1784556170-333652
-X-HE-Meta: U2FsdGVkX1/D3qqbIzclIGsNO48vPUHJzIZYgoJtKPujKCueTe+PxogD1dw4uDxt/8h1ISNAt4jDKVf1FlP3t6MpRL+HwdXDfQh4W+JeCjcpqK9icZQf7IHRbe4Hr3Qy+NVbJR0AvtDIyRfNaikb07K2Z1w3/GOaRtkPbzeM/zvJPcaJJ3MJg1hyzJO3GEBnBlh3BJTk3LhKD/x6zavo2EwkntrU+Oe91H9AK1zuSQ9KB3USf6tjq6m2VG+33rXsH+Mu9raIlGvOf1p1wLMYn2mUdTvRVKO3acgxGWh4lluZJtfO7N+yQt2rpdvN7JzsDeHRTYCdXsdojLAAZ5UTxUD+eooohJJ5/2NQOZuL4mP+3W/pjBSM3NlxIbgsZ0iH7c97cz/ErIOurWjWL8rLDzOhhRGYlV8wank3UbcAUDEkcFBrVCQcR+OD3os3r/nyOupUSxEm7GILL6pqEzYFQOWCuz7AXPEEoFqZOSrjrexnX35wW8bEfBAQfeoISt5B4yx+Q6on4CL94oTZlT2+HyHWkk70WtgRPSH1IY2N7tjuyr1a7PAMm1mZgXRP3n0dVxZmUvBRkgzWWLFA8htzXSI3bSVzaSUI3pF3Fsc/xgE2Ty/ono0gV7Ml9KHm9VIJxXues+NxU7jYQIOTQ/6d04aAM+selJEJbHuGX1nk70HXyyjaNP3lS7m5M+x4UOkXumP6MZTLPHyI26T6UEr2ncgbh0QqZ7RnrBr6Ew3cynDOI9+xHSUswnOuRbtEHu42VPiz3Xud5+ijPuBeE3bKGA2bFBKTIRmElov7WF3nx0D8QMs0aHKSPvzQsCuuI10vAseuGt0NdG+bSKPuUrQ3mmZ6/mpcS0a6LCMYNo8WxYRyNuUKVgALwhnFWbtymoXEFqtTDO1peS98QbsMjxoIa28kLvnvoDViok7w/XfrhjKSt5JyYT0zpK1LZ2cmlRvW9AA11NGVS9DaKnCpA3n
- aBX081+O
- Z5G1Z9Mqhxas4GII7nZD9xDLdzKQBi6zEM5TRTUw6XOMOqLbLOg74EqOzGoLWgsYu6M4RWbU6v+qNBQbEaiuV54M7MKZbYe4htyHINN/MomZPaNb+QfUAvgoMk2t82I04JtoIDOQOhb8b5WvzODi7H+sEdQenc29BEWj0vfJmEbVhjPtfBL5e1sbF5BW5DUdUFrJU+68Q86+7GtTi9l78m+chMB1Yyikp1MqUlWulANvr8n4=
+X-Stat-Signature: gfzq8kimsabu6oc16xcwtzsj5uo144e7
+X-HE-Tag: 1784556233-803245
+X-HE-Meta: U2FsdGVkX19ohoQlbo7VkSqjAyVBTrcUMfsRj902m5x5PQWkgwldrWPpPFM4e0ekXuo7vSgOzOs96TTx3TnyTIOMYU4Ns2KIIBFwYpDIuaka5qSsmETAwPbnWdFx/fOO0S54nF08J6/CCEaKFEsCbqS0ftfsnO2YLcb1C+vFXZpS4tXlXROS3nw02aUXw6HpdcEB58k2tdeoiwRaXFXAz3hTt7+s8umo5bgsc74sw8kfPtby/ZrVMfGqqq//yuqAkmNQ3TQXdOUHWmWtEWTHDe5GcdW2p99hXKcCA0t5JDKx9N7J7nC7FAMZNFZ40AEzbGeWWbFcvU+sf9MP1ku8K0kEaTrRfrwkRImTZSRhDfjhQNLsmH4xckkUhUJbcnh/xm11TaKO7EOVEGSTboZ3pSYiK5sgAOGflAM/UHcNEMXfselAbe5z2ArNOfmy0COL5KTGQeIJsQxWDllURTxJlgsRdu7GAghc+HsZ99raNy1zqTstyNRTzXb7h3zKFka0PilL7BmFWuAcV5mkSQrEYTVqxI+awp+TiH9WD6rW387nylJfZnQf0XybLAnOe7z2orNow/bzdUYhWlsWy72LzbOE4TDDmHFblRQc2V/z6lndjBbK0PlGdxplrh/cSs/t8C3vxx2dQX/m9wHlaZdnQIoNw3x3tZ3mVBL6BcULd+x/x4Swkx5r3rO2nUZKqejpol0hFX0hwPd7u2E2QaNGLH5jAwEKG7g2qWrknJFmPV3B8mO2Oou3plRwp6MahCqK621hgR6xACNvUO/OGJ2X+/6fYLlSjYbebcYykLqY1Okd4JJf283kRB8Gwi5PEoPdLEsPgCbhirbBNQ+xCrZ2kQ9jmTPXmkWTYuWlJuzq0QCLsMIA6LIWk5KjyRvSLE78kaOJbNJ4gXfj4zSSm4VsCSJX4resKVnIe16wKfmxDxmMj4Np2WQZ2fZr1MlGjf9xjciCfUGOzMw1/MXy20b
+ VBMcsaet
+ byK/RefJns+jPtRwmljLg+kRlMxA7ESZi3WU0FIQsHEiS0/BJWjz0cYpw6/w5qFKWowiNtywDgoOMMiGs3A+b6nUjUvzbWp96vl6M0rFivQinglxXM6ZT7kbpAh3DpDSBxvj0LChG0IWMD81MvHRFib0l0gGUIduFp5XxCxm1WMUWh/U7Ss+aKtokby+RfSCCqtYi2N308h1yuYYIj+MTTdPusdnQ/T/Q6oKqTe4NSucbxUIH+0ksRKM17QDXUlKew7P/fdb2RTSqkV5xNkMZHrQuXu3cXIB0ILoi+Ub6lwKMCh+q+MM4IhWEsSJgicjgQ4FcxtN5+Xs6DJCQxf2o+ZVkO6TGsQ/eXMBf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,68 +94,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Paul,
+On 26/07/08 08:44AM, Breno Leitao wrote:
+> Hello Liam,
 
-On Sat, Jul 18, 2026 at 10:59:28PM -0700, Paul Sherman wrote:
-> Andrew,
+Hello!
+
 > 
-> Thank you for the encouraging words on the initial submission.
+> On Tue, Jun 30, 2026 at 03:08:27PM -0400, Liam R. Howlett (Oracle) wrote:
+> > +#ifdef CONFIG_RCU_STRICT_GRACE_PERIOD
+> >  	if (!mt_locked(mas->tree)) {
+> >  		if (mt_in_rcu(mas->tree))
+> >  			WARN_ON_ONCE(poll_state_synchronize_rcu(mas->rcu_gp));
 > 
-> Tejun,
+> Testing next-20260706 on arm64 under a stress-ng + fork/exit/mprotect workload,
+> I'm hitting the new maple_tree write-lock sequence check:
 > 
-> Further testing on SG2042 (Sv39, 4 NUMA nodes, 128GB) showed that
-> the proposed change allows the embedded first chunk to be created
-> successfully, but later dynamic chunk population consistently fails
-> in pcpu_populate_chunk(), with warnings originating from
-> __vmap_pages_range_noflush(). Reverting the patch eliminates those
-> warnings on the same hardware.
+>     WARNING: lib/maple_tree.c:1188 at mas_store_prealloc+0x2a8/0xac0
+
+No, this is not expected and I didn't know about it.  Does it still
+happen in next?  I'll start looking at this while I wait to hear from
+your side.
+
 > 
-> Looking through the code, my current understanding is that dynamic
-> chunks inherit the first chunk's layout through the shared
-> pcpu_unit_offsets[] table, while vmalloc reservations are driven by
-> pcpu_group_offsets[]. That led me to wonder whether I've encountered
-> a fundamental allocator invariant rather than merely an implementation
-> detail.
+> It fires from several core mm paths — fork (dup_mmap), exit (exit_mmap),
+> and mprotect (__split_vma) — across multiple processes. The two cleanest
+> traces are both in the mprotect path:
 > 
-> Is the requirement that all chunks share a single pcpu_unit_offsets[]
-> layout fundamental to the percpu allocator design, or is there an
-> intended mechanism for decoupling the embedded first-chunk layout from
-> dynamic chunk vmalloc mappings?
+>     WARNING: lib/maple_tree.c:1188 at mas_store_prealloc+0x2a8/0xac0, CPU#67
+>     Call trace:
+>      mas_store_prealloc+0x2a8/0xac0 (P)
+>      vma_iter_store_new+0x2b4/0x3c8
+>      vma_complete+0x258/0x7c0
+>      __split_vma+0x64c/0x770
+>      vma_modify+0x11fc/0x1808
+>      vma_modify_flags+0x18c/0x220
+>      mprotect_fixup+0x22c/0x4e8
+>      do_mprotect_pkey+0x558/0x720
+>      __arm64_sys_mprotect+0x88/0xa8
+> 
+>     WARNING: lib/maple_tree.c:1188 at mas_prev+0x160/0x1a8, CPU#67
+>     Call trace:
+>      mas_prev+0x160/0x1a8 (P)
+>      __split_vma+0x658/0x770
+>      vma_modify+0x11fc/0x1808
+>      vma_modify_flags+0x18c/0x220
+>      mprotect_fixup+0x22c/0x4e8
+>      do_mprotect_pkey+0x558/0x720
+>      __arm64_sys_mprotect+0x88/0xa8
+> 
+> Is this a known issue?
 > 
 
-Percpu memory is essentially an offset-based virtual address space. We
-build the unit and group offsets when setting up the first chunk at
-boot, and those offsets remain fixed for the lifetime of the machine.
-Consequently, every later chunk must reproduce the same relative virtual
-layout.
-
-The embedded first chunk works because its sparse addresses already
-exist in the linear map. However, pcpu_setup_first_chunk() saves that
-layout in pcpu_group_offsets, which is subsequently passed to
-pcpu_get_vm_areas() when creating dynamic chunks. On this machine the
-resulting span is larger than the vmalloc area, so allowing the embedded
-setup to succeed means that new dynamic chunks will fail once the first
-chunk is exhausted.
-
-Machines have grown considerably since this design was introduced.
-Supporting an embedded layout like this would probably require a purely
-direct-mapped backend, with congruent physical ranges reserved at boot
-for future chunks. That may be reasonable for a particular machine if
-percpu growth can be bounded and the reservation is small relative to
-available memory, but I don�t think it generalizes based solely on the
-ratio between chunk size and total memory. We would also need to
-guarantee the required physical placement and decide how much space to
-reserve for lifetime percpu growth.
-
-As is, this patch isn't correct, but it might inspire new work.
+That's very odd.  Does anything show up with a lockdep build?  Your
+trace comment leads me to believe there is a lot of these triggering
+with CONFIG_RCU_STRICT_GRACE_PERIOD, is that correct?
 
 Thanks,
-Dennis
-
-> The answer will help determine whether the correct next step is to
-> withdraw the patch and instead document the existing invariant, or
-> whether there's a larger design direction worth investigating.
-> 
-> Thanks,
-> Paul
+Liam
 
