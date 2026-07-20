@@ -4,89 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 746B3C44512
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 02:28:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D558C44512
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 02:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 458E46B0093; Sun, 19 Jul 2026 22:28:02 -0400 (EDT)
+	id B171A6B0088; Sun, 19 Jul 2026 22:32:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E2CB6B0095; Sun, 19 Jul 2026 22:28:02 -0400 (EDT)
+	id AEEBE6B008A; Sun, 19 Jul 2026 22:32:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31F756B0096; Sun, 19 Jul 2026 22:28:02 -0400 (EDT)
+	id A2B886B008C; Sun, 19 Jul 2026 22:32:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 089026B0093
-	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 22:28:01 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60DB5160735
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:28:01 +0000 (UTC)
-X-FDA: 85007569962.22.2B8C1AF
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1C49140006
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:27:58 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eNR5XIKw;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 6836F6B0088
+	for <linux-mm@kvack.org>; Sun, 19 Jul 2026 22:32:20 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DA863160719
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:32:19 +0000 (UTC)
+X-FDA: 85007580798.29.DC839A1
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B540020007
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:32:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oYYjtgH3;
+	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784514479;
+	s=arc-20220608; t=1784514738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AlNhtQCquztP9G9X9Z8iMtH1eSwOYMw8dTp0ZlM181c=;
-	b=5DjSoO9Cdl46sbaItS4zlIAobi4knf7m5D3aumSqINxLxLbR6k9aFwrhJCDPNJ0Gyul0n9
-	yhRRTDlQzCO7LJq3lfwGaxyp7C8IawdC7tgnmEzOqaGtsWfMrwmiU85zvBPB0LHIAKNEUg
-	dHhgo8ysSiWZx8oE2waPfRahA7nZsRw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eNR5XIKw;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=5zQIBCc7A0jp8hH0iRn/IpZGk9QLI5Bvnk2tEw8qHXE=;
+	b=iBfb7Rz1+gchbARwMjJA6afLNL/LOxDkHxfxdFF/burloqmmUaPGWxAhtXZMygXUt8gGoS
+	60bV9VQ/p9BA+s/ilZ45uYt9LAOdB1/JoFF/ms0fGAjntyIiB/BnyNQt7mp/CrFXBOZdsi
+	k/lu42E+Y+bYoC+8W+nlJ5qT4T7fYno=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784514479;
-	b=6zqXio7crNQSLnxtE+ykAMMO6awv3G7vqeEHQBNvaBvDInr38XUnviLLGuOIjFaLtDtkNK
-	gLuRWcUVEsPkgPoD5pqxcD6W+TOg5eJNYB+2AYvzXdt+2000pV0Y6Las0y10/qXPtptCMN
-	iLGLFTLtqyxLAom6kSLHczYEe+Tm2j8=
-Message-ID: <bb41fe18-71a0-4574-9941-fb30e48bf4c3@linux.dev>
+	t=1784514738;
+	b=pGaOk0zG3yih/R6o/QxzuTriM28ucYUP9WbzLut/dbPxbJtBkzewhRxRHGY785jj2+IQbV
+	OBF9Gqshlf6feKvy3i0bzMWs09nwqjPlXzOiH2aVZRR7Zxqz1P+HLmCUHTvrTF8ndiRWP7
+	XznMsQSXDxszOpJNeMeCjsU4+7RrVVs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oYYjtgH3;
+	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <c32645fe-4c66-428f-b027-0271cd99f76b@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784514477;
+	t=1784514733;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AlNhtQCquztP9G9X9Z8iMtH1eSwOYMw8dTp0ZlM181c=;
-	b=eNR5XIKwOUOOp9+tzPCT94JJoXfglAFyTLkEo6lbTOBL7ZmigdZfbK5O+mg/9ghIFh9eBs
-	PW6Mv+3DKHv2p3XIvxukoaCbKBlc0/6zNPw7hJrLWoMq27RNj4Bqk5zw9RYzX1dUUVPpi4
-	763PxCA35hA5D2IQaHJMS9Q+06zHa3Y=
-Date: Mon, 20 Jul 2026 10:27:43 +0800
+	bh=5zQIBCc7A0jp8hH0iRn/IpZGk9QLI5Bvnk2tEw8qHXE=;
+	b=oYYjtgH3YIMhc0f428t7smjHTRH5wJAoZbkfNarNMiRs81bcV+Hk2K7ci2ydaKrfo42gee
+	e+IcpGliv1TIwnBByPrfzyCXXdyy2XFy+CQ/4P7HaLQBP4LrQLSdz5v/+6tk0eb60COEmY
+	FRcFzr/eP8OkYGtytAilNXuQVgkS2vg=
+Date: Mon, 20 Jul 2026 10:31:29 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/4] mm/vmscan: fix anon-only reclaim evicting file
- pages when swappiness=max
-To: Ridong Chen <ridong.chen@linux.dev>, akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org, david@kernel.org, mhocko@kernel.org,
- shakeel.butt@linux.dev, ljs@kernel.org, kasong@tencent.com,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hezhongkun.hzk@bytedance.com, muchun.song@linux.dev,
- dave@stgolabs.net, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260718095251.82937-1-ridong.chen@linux.dev>
- <20260718095251.82937-2-ridong.chen@linux.dev>
+Subject: Re: [PATCH] mm/thp: expose deferred split folio memory usage in
+ meminfo
+To: Johannes Weiner <hannes@cmpxchg.org>, liuye <liuye@kylinos.cn>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org
+References: <20260717063025.168436-1-ye.liu@linux.dev>
+ <alngSdkM6iEGpETe@lucifer> <102bada7-66ae-415d-abc8-12d5939b7ebb@linux.dev>
+ <70294b26-86e1-4de0-832f-d5cb488cdb3e@kylinos.cn>
+ <20260717102909.GA6843@cmpxchg.org>
+Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260718095251.82937-2-ridong.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <20260717102909.GA6843@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1C49140006
-X-Stat-Signature: tuy7gsoq8uerwztrocsuc8kudpxori7x
-X-HE-Tag: 1784514478-666688
-X-HE-Meta: U2FsdGVkX1952NbZPdPcbJFCKn+k/kfjqF5a8xBKzgH8gfRwzjI9VKQkeDp+2ATwu9xycfFvcYZwNwfiUXk5geoVyz4osvKMDePL0w06MznmPnCL/tw8YnnyNxWuV7UU2E1dZhZiRaiGHbfzux5zfJOEC97brymiWSY2VWXbt/RdmiKfjUw4sC4f6Vh8t/bZIoleCXh3n4IJiD6Y4huZ+LpxnxS2RzXN5LzQFOnDvQGWtS5Jp33yyN/sqa4npOUVVIUYrOVpXg2irSwQISu8pKZQR+dMZ19j8GfCAB3/HFtwcZ66yzQzda3/aYFNY63nKEJ+0I37zERZxwqjq8sESqBLx1W5Z+UHsrESUIlRJvKS94VAq/P6vJ86XPaMli3cBNrMDLeSx9vDEAKpaAXXQlZA50uMZuCYTl2c6SxhlUZyLWYzoCrG9nW4EqnbPwclyKgj1lgRa+QR/MEz/k4Yp+oFLGB4kgIbrkwM5pq3UgFC/mTEYveBs9PD3yNtRKs+i/A37Jj21xJ09hU/P3+dNfsRG9n+rfk82CF+p27Xtqpd66/Qp1eIprXR031afwpBstef+0rJleOtNN2CGfTF5k/3vMFBi0ge0jB+7a930Km6qzsrwKKgX2T/dnlOO1NHrUbPsV655ueFGlM1y98rXWiQGFZZBtopNjteIfPZ030VZ284FuB0cflRRllAZSm+CymuzgKgFWZvRVWuEkZXPxgIJUVeuGniYp8n2ktpec699Nvqfa/byMG1RG6Sy927iyGrt19uSdLZZstTwjfoPkOnjB/xIBvjQN5uTOxspJxPEvhOEOBt2IttJHxaeT1T+sByTRuFyvUSfNj4m8qYbebv+g+VT8y35l+psHzJoct/WLdIVKhBMkNL9Nu7D5gcU98tSYrJLo9WAVCp0yA9dFvlXlSrQGfTR8XICbpJJAXpxFux/2MhOpEnrpCpX4MSWwlg7DtntdP+GDYy42S
- QZEfVZFS
- 8QflF3T0HLGaEk3gQwurGovLkkQSXIVPJuyEc0QRoLwyg0pCgIPjgkxJ6RW0WrKPzINX9iXtBI8oUuD/gHeJU0tBQq46VyU0tXm/2w1ue1OXk7UOi8NdkD5qxyVBlmtoaSymSVep+GX+OH/OP5lQ4o3inUnIHQzhRT/LEug5Hxke0ZHAW3///m7shwffg1XZCxCrwnODgMaXygsg5RDGxgft6fRKIpTIaXV/ndeqKt55/HunoUuWlO6FMNU6cLuoDjm4oEeFwtOx2BfdsAnxnKMN1reuhuM7ogPHfuk45LTEMw9lAuVx1vz7+aIhSkf6Y7U47
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B540020007
+X-Stat-Signature: kokh7bfk4q8f3ux5kywtpnt1575o65ke
+X-HE-Tag: 1784514737-38487
+X-HE-Meta: U2FsdGVkX1+lY4IAAok0I8H48iTjnD6IuLfbRqzEunwPYkJRMeAPYS2M6+vj1V3NALQKZgorolJkO26QEBZihQBGcIVVFwP6TO0zWeMc8M+O0KwfrSHAgVU870rh7VJnP+GkApSEU9eu2fKUjmnyW87Kz4Eygl9Rp5a9wwCNNOdVeOse4qGnfoaxP5p55bP+huen3PuCiV4bpdQjWBMSXqXLWjllQ5Mn4ecLVheG1kQ2n70kM7Kj9Nmq5G19x8gTHRjx9OwpCRAdvJkWATJ9YgcRbJCyW9m6sOViKEPLZGdz5TLYWacSDxbsG5Ts4qNrSAmBkX91/oXx+2lbVsv8mwqW8HfQ3regSFzayDm0EFAqgQBEAz+aSkeJqhR24Gb0A+nWrrDQFhboTWLvlLGImV4Q8I5FoLZ53m8bE1234qGhZf1SnEJ2C0AF7JEjiLgCjzeaY08v73vy8kLwl+wf6g2Oy/gFmofREZbjqJsaoggiHa0jSjeTNfW7HLFSqaNfabg+j6SCVjqnwMEWFEQxWwQmysVh3JJCVQ7fAwdRE+SZaQvHuvNOzumLptb/eo529pkYoG/95oy7oiXhtyQ6uWIj+ArGQz6p6rq4Xihvsz++B9FI/yuzgw/o6OrlQGQPnOLjU4LZOsC/F3fJn3MVGiPZ462Qnh+oyNQFyuuCWp3fgpZfOBsoa7VujzyNhRoo4P3xn8/3BzSOsm+MUcPSong1fwhU7ofw9yO8iI95vO/RY1y3N1YmpJ4nBEmfhv6+q4/kxD28ucKiLrqOzIHd38w68I7qAf5NEfHkOAO3SKgAcFwJc9pZNfyei30Dp/OKVuxzyEIGuwWCt/hdt2x4ERtlxJp9H9DudOqXDKWwx7YqdSpxKogFN4ReQijKp4ZXmwcGHXm5Tya+x73T3+86l4RXN7ojq3ob+MJcX8ShcCqP4z++wsMYCfaw2KwEMHdwiKS6JRMTpyrRWVcRxqe
+ G1Hk0hx2
+ KJvJnYbbfsZig3y6j0VI+DuMTs4UQOHz229sp3Qcsj4MslzlHJM5Mmpxt9XuiMLdQEhfnxlo/ax+D4fmiys6UCIutLqL2L9nARXPEm4lVJSYDgwp0Vrh+FugavtYl1hUnx2rF6zZCpNtiuNNtZKpTJJnkAiVad/q1ZghhotgzJfDeS9DW1LRix+I6djutc5J+IDLH4i59tU20JMC8BTkRr/BtTBGxqg0k6lGs2rP23mzWnlU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,97 +110,129 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 7/18/26 5:52 PM, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
+在 2026/7/17 18:29, Johannes Weiner 写道:
+> Hello,
 > 
-> As Qi mentioned [1], when swappiness=max (SWAPPINESS_ANON_ONLY) is set,
-> the reclaim logic is expected to reclaim anonymous pages exclusively.
-> However, due to the current ordering of checks in get_scan_count(),
-> file pages may still be evicted if can_reclaim_anon_pages() returns
-> false, which contradicts the semantics of SWAPPINESS_ANON_ONLY.
+> On Fri, Jul 17, 2026 at 05:38:10PM +0800, liuye wrote:
+>>
+>> 在 2026/7/17 17:24, Ye Liu 写道:
+>>>
+>>> 在 2026/7/17 16:08, Lorenzo Stoakes (ARM) 写道:
+>>>> +cc Johannes
+>>>>
+>>>> On Fri, Jul 17, 2026 at 02:30:22PM +0800, Ye Liu wrote:
+>>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>>
+>>>>> Folios on the deferred split list hold physical memory that is
+>>>>> invisible in meminfo. When a THP becomes partially mapped, the
+>>>>> unmapped pages are removed from AnonPages but remain physically
+>>>>> allocated until the shrinker splits the folio. This creates a
+>>>>> memory accounting gap where used memory cannot be attributed to
+>>>>> any meminfo field.
+>>>> Is this really that much of an issue? You're not giving any use cases here.
+>>>>
+>>>> What real-world use case motivated this?
+>>>>
+>>> I have indeed encountered this situation in a customer environment,                           
 > 
-> Reproducer in a cgroup holding 64M of file cache, with no swap configured:
+> We have run into this before as well. It's not super
+> rare. Applications do partial unmaps or protection changes with no
+> awareness for THPs. The issue is likely to stick around with legacy
+> software for some time.
 > 
->    Before (file cache is wrongly evicted):
->      # cat memory.stat
->      anon 196608
->      file 67178496
->      pgscan_proactive 0
->      # echo "64M swappiness=max" > memory.reclaim
->      # cat memory.stat
->      anon 208896
->      file 4096                 <- page cache evicted
->      pgsteal_proactive 16400
->      pgscan_proactive 16400
+> Do note that all information is there if you know how to look for
+> it. But it is cumbersome and somewhat inconsistent, so I'm not opposed
+> to fixing it:
 > 
->    After (file cache is left intact):
->      # cat memory.stat
->      anon 200704
->      file 67178496
->      pgscan_proactive 0
->      # echo "64M swappiness=max" > memory.reclaim
->      -bash: echo: write error: Resource temporarily unavailable
->      # cat memory.stat
->      anon 208896
->      file 67178496             <- page cache untouched
->      pgsteal_proactive 0
->      pgscan_proactive 0
+>>> but the environment is complex, and I cannot clearly explain why this memory                  
+>>> black hole occurs in that scenario.                                                           
+>>> However, I will provide an example to reproduce it below.                                     
+>>> Use case: The system has 100GB of memory. A user-space program requests 80GB of memory.       
+>>> For each 2MB block, only one page is retained, and the mapping of all other pages is unmapped,
+>>> while the process continues to run.                                                           
+>>> You'll find that in meminfo, MemFree: only 12GB remains,                                      
+>>> but the process actually uses very little memory.                                             
+>>> This creates a memory black hole situation.                                                   
+>>> Below is the test program I used, from AI.                                                    
+>>>
+>>
+>> ps -p $(pgrep -d, test) -o pid,comm,%mem,rss,vsz
+>>     PID COMMAND         %MEM   RSS    VSZ
+>>    9358 test             0.1 165220 166032
+>>
+>>
+>> MemTotal:       101606276 kB
+>> MemFree:        13172092 kB
+>> MemAvailable:   13569668 kB
+>> Buffers:            5352 kB
+>> Cached:          1169520 kB
+>> SwapCached:            0 kB
+>> Active:         84730404 kB
+>> Inactive:        1129792 kB
+>> Active(anon):   84730404 kB
 > 
-> Fix this by bailing out early when SWAPPINESS_ANON_ONLY is set and no
-> anonymous pages are reclaimable, before falling back to file reclaim.
+> This shows actually allocated anon+shmem.
 > 
-> [1] https://lore.kernel.org/cgroups/7ddf3eee-5fe2-45f7-8614-c8936a039e04@linux.dev/
+>> Inactive(anon):        0 kB
+>> Active(file):          0 kB
+>> Inactive(file):  1129792 kB
+>> Unevictable:        6192 kB
+>> Mlocked:              32 kB
+>> SwapTotal:       4194300 kB
+>> SwapFree:        4194300 kB
+>> Zswap:                 0 kB
+>> Zswapped:              0 kB
+>> Dirty:                24 kB
+>> Writeback:             0 kB
+>> AnonPages:        969280 kB
 > 
-> Fixes: 68a1436bde00 ("mm: add swappiness=max arg to memory.reclaim for only anon reclaim")
-> Suggested-by: Qi Zheng <qi.zheng@linux.dev>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->   mm/vmscan.c | 18 +++++++++++-------
->   1 file changed, 11 insertions(+), 7 deletions(-)
+> This shows anon *mapped*.
+> 
+>> Mapped:           308848 kB
+>> Shmem:             45076 kB
+> 
+> This shows that your (in)active anon *isn't* driven by shmem.
+> 
+>> KReclaimable:      96144 kB
+>> Slab:             269540 kB
+>> SReclaimable:      96144 kB
+>> SUnreclaim:       173396 kB
+>> KernelStack:       27584 kB
+>> PageTables:       187408 kB
+>> SecPageTables:         0 kB
+>> NFS_Unstable:          0 kB
+>> Bounce:                0 kB
+>> WritebackTmp:          0 kB
+>> CommitLimit:    54997436 kB
+>> Committed_AS:    6628776 kB
+>> VmallocTotal:   261087232 kB
+>> VmallocUsed:       38696 kB
+>> VmallocChunk:          0 kB
+>> Percpu:            42800 kB
+>> HardwareCorrupted:     0 kB
+>> AnonHugePages:    413696 kB
+> 
+> This shows anon pmd-mapped.
+> 
+>> ShmemHugePages:        0 kB
+>> ShmemPmdMapped:        0 kB
+>> FileHugePages:    172032 kB
+>> FilePmdMapped:     28672 kB
+> 
+> This shows both allocated huge pages and the pmd-mapped portion.
+> 
+> So you *can* work it out by looking at the LRU ((in)active) and
+> cross-checking the shmem position. But it is awkward, granted.
+Yes, R&D personnel may be able to draw conclusions through analysis, 
+but this is indeed not very intuitive for operations and maintenance personnel.
+> 
+> IMO if there is a case to be made, it's doing the same split we do for
+> file and shmem - AnonHugePages (allocated) and AnonPmdMapped.
 
-Thanks for the fix!
+This also adds a new field, which doesn't seem to be welcomed.
 
-Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..d6b383d96a0c 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2501,6 +2501,17 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
->   	enum scan_balance scan_balance;
->   	enum lru_list lru;
->   
-> +	/* Proactive reclaim initiated by userspace for anonymous memory only */
-> +	if (swappiness == SWAPPINESS_ANON_ONLY) {
-> +		WARN_ON_ONCE(!sc->proactive);
-> +		if (!can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
-> +			memset(nr, 0, sizeof(*nr) * NR_LRU_LISTS);
-> +			return;
-> +		}
-> +		scan_balance = SCAN_ANON;
-> +		goto out;
-> +	}
-> +
->   	/* If we have no swap space, do not bother scanning anon folios. */
->   	if (!sc->may_swap || !can_reclaim_anon_pages(memcg, pgdat->node_id, sc)) {
->   		scan_balance = SCAN_FILE;
-> @@ -2519,13 +2530,6 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
->   		goto out;
->   	}
->   
-> -	/* Proactive reclaim initiated by userspace for anonymous memory only */
-> -	if (swappiness == SWAPPINESS_ANON_ONLY) {
-> -		WARN_ON_ONCE(!sc->proactive);
-> -		scan_balance = SCAN_ANON;
-> -		goto out;
-> -	}
-> -
->   	/*
->   	 * Do not apply any pressure balancing cleverness when the
->   	 * system is close to OOM, scan both anon and file equally
+-- 
+Thanks,
+Ye Liu
 
 
