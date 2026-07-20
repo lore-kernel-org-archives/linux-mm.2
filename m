@@ -4,94 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C541C44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:35:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDCBDC44520
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 12:37:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CC4B6B0088; Mon, 20 Jul 2026 08:35:23 -0400 (EDT)
+	id EE3D26B0095; Mon, 20 Jul 2026 08:37:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47D556B008A; Mon, 20 Jul 2026 08:35:23 -0400 (EDT)
+	id E93B06B0096; Mon, 20 Jul 2026 08:37:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3940F6B008C; Mon, 20 Jul 2026 08:35:23 -0400 (EDT)
+	id DABEF6B0099; Mon, 20 Jul 2026 08:37:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B7436B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:35:23 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8721D120177
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:35:22 +0000 (UTC)
-X-FDA: 85009100484.09.D0AFB87
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 39546120007
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:35:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BHmMBDG0;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B528D6B0095
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 08:37:29 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 40DB5A0121
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:37:29 +0000 (UTC)
+X-FDA: 85009105818.05.CB899D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 94F064000D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:37:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GY7bQ3bN;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784550921;
+	s=arc-20220608; t=1784551047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7P6FSrJnctHNX6YaWSkPu2oDA9U5IPJvuGGW2Jl2di4=;
-	b=r9WCDhBaNghbl85zfVxQVGXb+e7RUOZjpbxA5ndyQKmb7tnuP7g/Qo+wxOZY+KJuHBTEAa
-	Gp7E3QlPBW3oSe17Kb6qmlaauCthU8MF6ra+5cG3qlQbmPSmVakCToXkX7ZR5kG+SQPbA2
-	SZwyIXqKvGrV3XFUYpbWn+I7ivZwSRo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BHmMBDG0;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:references:dkim-signature;
+	bh=K5qltyN+MfU8aQCuenvbMxWg7poDhOA/J+jqlFW5yPc=;
+	b=uQWapVbtOB829iePw7bYM6P3iZiWa1Z2fmSpJcxvcRRg7eCVCIT+Q4eP6ucgRIS9vpU1Jw
+	BmZxksBR5c7uI1QqLOICNTwtmktP/DILEep1noakocETXDiLqtsl+zT4mSH+OhvkeQ/s2p
+	4hTiaxgtgHuYaHlUL14vBL8SR9XIZcQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784550921;
-	b=14tQQGFkQwk11R9BJ/xBxSVUdMt3y/Hepqod3cEnDFkvBlQ9OZRhY4cDihT97QHuTorJL3
-	ABaZ4vaCwr4EsTcaHaBRmkDYQN2Sht8xm1xiZ/yVS1tRvs15W44kF+MuRc9eiDBi27bgVq
-	4oOOvO4oqXlDnwb1Dy7PaZ3URaBz2ww=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784550918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7P6FSrJnctHNX6YaWSkPu2oDA9U5IPJvuGGW2Jl2di4=;
-	b=BHmMBDG0ofSXSJZ/mc8RStgaP1ISNssG2tFAsnYucOgi2KOAeWAFQSG+AoowhJj73/oC//
-	1j3eZ1ltEtZeJuJ7Boh/Uqcl2ro+d9+1t22RahDENh9++XWd5AnjrKaUVAC+DrMEfNEdfS
-	tUS+tOBYMEwMkP6fO4ksTYwKjKfkVlo=
-From: Usama Arif <usama.arif@linux.dev>
-To: Rik van Riel <riel@surriel.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kernel-team@meta.com,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
+	t=1784551047;
+	b=eNBsHSpN8FFNl2EkLjaAsXbh1ke/SO4qDMgGiYkCOkMhA32rOYQpxWmy4pQh8GiNn22n1R
+	mTpFAJiQQCSBXavAg0xUydY9N7f/hThStIaCcBelG7XaQJd61Gqb2M90HsyJicT2YWl6Oi
+	MuAPchkQcvXO+PtGsrf2B9vNI59FLXQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GY7bQ3bN;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7AA50418E8;
+	Mon, 20 Jul 2026 12:37:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487B21F00A3A;
+	Mon, 20 Jul 2026 12:37:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784551046;
+	bh=K5qltyN+MfU8aQCuenvbMxWg7poDhOA/J+jqlFW5yPc=;
+	h=From:To:Cc:Subject:Date;
+	b=GY7bQ3bNSoNb1of3AfVAdlHJ9ktb8mfCWC9IazeVyU+pGlqJ0c5td2EXlAWQJgcWx
+	 Glqj0qYMMPMZVPOvHvIFSRVyOaETXSBGgBmMRrD7HXZuQFcu0HCb+3IU504UHEX04V
+	 3Q1lQ5JxV3lsPBE6iIJnU62ilAY2BgBSWYDrto+JKpJNFAKqK/TfnyVjTpA6TnkGHP
+	 UCxjLC/vxD4mcSQ3WONPqjncQ3keEU9JLbLexlsu05rKuSczIQe/7fCTmgOmRDqAcU
+	 wHd2Dc4Q1VS3J6uOdVaCyPE4A8UU+GFZ4kbtYelxOdfascgaZyU83cGuRO42y0YVWB
+	 EbmX2zLAg5TMA==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>,
+	Farid Zakaria <farid.m.zakaria@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
 	linux-mm@kvack.org,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH RFC v3 4/6] mm/gup: add get_user_page_vma() to fault in a page under a held lock
-Date: Mon, 20 Jul 2026 05:35:04 -0700
-Message-ID: <20260720123505.1234897-1-usama.arif@linux.dev>
-In-Reply-To: <20260717170036.743149-5-riel@surriel.com>
-References: 
+	bpf@vger.kernel.org,
+	jannh@google.com,
+	mail@johnericson.me,
+	stable@vger.kernel.org
+Subject: [PATCH] binfmt_misc: set have_execfd only once the interpreter is opened
+Date: Mon, 20 Jul 2026 14:36:49 +0200
+Message-ID: <20260720-beglichen-kognitiv-organismus-5e1e55326c56@brauner>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2761; i=brauner@kernel.org; h=from:subject:message-id; bh=kj0AZ5A6Jop+KqbA2yhJS4V30yHrTSQgJ33ZorM7qxg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTFiVWs5Dt2bv61zvhvq3ayPlU//fbNo8386xXu6AiYT c1hSJjg2lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjAR35uMDC9NZtew1vfVX9+x VaVEuqRRsUI4Tz9hkdxeY+3ffCF+kxgZdh9wCJn9qsjQISlJfMPProP2Imra74+ziJildO1cnx7 ECwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 94F064000D
+X-Stat-Signature: 97qhuuqakzffdhp3txaigsn9x3zdii9q
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 39546120007
-X-Stat-Signature: ceshydg8ij7iry8uzy79opgr3bt5jc8j
-X-HE-Tag: 1784550920-844354
-X-HE-Meta: U2FsdGVkX19K+MXxxOPUfhr0ZBkYrsK0Cf7gfXhDuUAnhYB1oVcDeWa3D1bPO1BGKxHtl26YWBQJT779npQuimh6NhyFqRG0NRTjmaVsi2T4f7OUt214C4gNlGNdhwh5amYMP0f87J6n1ZQhFbJbVr2q4tT99Tzp7C3djnEhoQqmiINeKUYPlvCuNbCcShEJhDijRH+KTdObclTbHcEXHoweYGbT9VjQAokXCMzI444/THjUbYodgV7njatlCQlXhmwpWFv9VW8AW0tHwXiXFTgkIVBzV+LqWcewkLf1xuPQrz1VP6qAObSaEiMolnZ3xkGMJByaS61Cj9pGyeFavrZut3xJrCzCEAGogFJAVkQrL1Tqal8iLC8YfyFf18Li3dAaRs7cZjMPDDo2hM4ZT2D+tlh7l5wM/v0owPGON9w7uSHkj/KmZ41KAY8FgYgg6wKGRaoNodMcnJdH3fvFH/jPJKg9AHBaSCumrLufpSxUYj5HTNhatA8JMs1kaVdhw7KaDV+GskLQ+dHEYZFtA4oP1Tpxn66lo/7wAtqvZwi3yj3VFX5mxII+e1zuwzZGRLQoqP3o3CIxucqW852kqecuGUsoikC9M2fNLOGFYeTbkwK+7ep3C2mTtbxegahy3gmd1ZP57OiJ4GLRBVl6FapmYDr9Tl6aVu9QECTnRTLk/vz2ytCnzNnJ06Unxj0ghGE4+ESVFkhGsEi7ZMDEH9T4O+o8KCSMoNhYDW+AHLeWSYU+hsW2MGyQOIS8AcHYGwKUZNSjmd6rcvHkJeGETAY1Wn/qacpmvURmASAJT+JZExazGOE0AwxCnbkWJSzCx+dcMSkQzec5Gf2iDui3oJ3oetzs3ZlJeKh+FGvPXZdfZnVNySXMRKygKn82RK20D4ARQdbBMKtO+BCKBVyfeqM+ed412urpcdle1MdYOd3Vpm3/IHosHhG1MyIzNfAnSbSPbOQHKjFyYPefHHV
- qU3Nk/dX
- T/h9VZFuBe/VcAGKyg2e5/ESaXHAXfyIiloT1wx6RV3iWaaj+S6BZL/f75wdikvWRPqXzet9x+7h4BAWQaNOTOHZeQAYjzm81AeKn+2qztRVZDDwGVxowdcJfF/G/mYrRdPI21+Jhz1co4bcPY6tTz8oteAOtrYSegt5MdMGNXS/dDKg7DuGJPncQr6vdTlN3/NBSFi+l53DWTFekF9MBc7E0vT/06VEy5kjtOHwd3QTzKeHetfEuAexOr1cNgC+9lf+bSLFmv680lWZKgQEANhaUh5uba90ehQkK8D3T3a1Xlyp0R2P/foDxkQ==
+X-HE-Tag: 1784551047-229424
+X-HE-Meta: U2FsdGVkX19UwvH+2wCK9nXzFQZlHxEQsKj8CKPym3QRQzNoNiECykaBdE/jUXTUXa2hKH3ewZu91GRCpUJoAWiMHNZt4VeGLUxqn5CsZ7XKG05on/5F/dyMXpqNFXUGvHT6iSYrNACV/QZmvB80K/WcYrm1TXav7Afh+yhTZox1TtegoeCUYYfT8VWNkt7dJMPtBjAG8SRw1RnXIFY6eF4PMTGRDuVnr/AHtsQOL3NLlFYzVpN/MXx1xe7YmuK8wt9KNzrS9QtSC36G4tr0++0xXd4g8DhMJ4VXEva6Yk3+Vpy1xo/s5e6tEweWSBMrQSxg8nvnPaTGONsFQAHHz5l+VnYQ3sJWdqLCh9XWnT0Itnbfp2mdBt/E1GJxlkSbczKUUFrSWqEIHZARU04/e2WJX+2q2buboTAbuPvVQPbBVHjwc9YEyLZN776G1KZKowy8p0Z1OiDChz7kW7ouAhWXPhwt8Y37Q2I4Wi57wkMucpXoACIHgvRBuejUpI9QwKTKdNMv1VsTXv7+vwLlIF0Ac+ipas2mw10mfQR6tq7OKjCVVyXtRPihE7h6JARI8HKsehuQkIXwEo0JKLMtGJw0bqhIrOIhsC9qez0u0R95PFg5wnITqA+xbrdRz3zSV2QbP8+shDZ/p2f59PimydffrPWqi6wolnZHW6HOsBRFH7fIf9ga6I5n3liFbGQ12LP6A/8SYSess5qH1QW1foyo6ixy9vqflBqZSqP80OzSkrde7sXQw9IGl5W4ET1Ri+CUCdsxC46QzPn7XQyrDnsFttN0l9yCU57qpuK1SixKJLvgSPdoagcuVPgEheZSw5pIUV9eLqbIwyzljaUZhTRN7E3DI9kgIncKvfXUKruC8o8OZFWf3lhZqOzlOk1GL9nWBKUEzihvRkOYEl7EL0eMhY7mq+lI5x2gZVUaq7W64okHEdAwPBYhBFH5rUiYATlItT0Hl8AF8UO2rk4
+ l9+MAc9/
+ 8Fg5fL3flNyauHDbexfldwLeUmRQxMeBJN0mHOias9pdpMiQL2uS9B+YFIXyT8EzvfyGtxuBv52o14fLYKUxOAuTCHJsrUsTDl5zDQaC6pL2nyjBOpmzfHbwqft0ijcti7h3U8helQJl0XowXLSQyFblhopXiVydh7AjnyWH7lu0VowPOsivrC6FMPcusGQjLqGhD1DjJgandbX9osGSydNguV/2zJq2C/Kr3DXtnc3rTznCjPIMP2lpAcfykmf8yQE39cqwPGsTUjPd23i/zB6cc1VfKH6E8mPTz77dXZ3zouWqXCy8Yv6u3sgzx/TPuZOHLVZ5qj4Xq+HrWZ5pNVuWFBlIJE2hKK4qd1wupgvbi/xJECgpKVaSL50ktkQJiuLz8yF5yi/8QLeSQBq9tdwQtae3lKIKPl5n9Io0sUY2hAks4WMc0zMb/VDM45jUvRSThl9WBwjGVv/EpKUSb5uvirQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,299 +101,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Jul 2026 13:00:34 -0400 Rik van Riel <riel@surriel.com> wrote:
+load_misc_binary() raises bprm->have_execfd as soon as it sees the 'O'
+(or 'C') flag. This happens well before it opens the interpreter. If
+that open fails the flag stays set on the bprm. binfmt_misc is at the
+head of the format list so an interpreter open failure that returns
+-ENOEXEC lets the search fall through to a later format. This means it
+runs the matched binary directly having never staged an interpreter. So
+bprm->executable is NULL while have_execfd falsely claims a descriptor
+is present.
 
-> __access_remote_vm() needs a single page from a VMA it has already
-> looked up and locked, faulting it in when necessary, under either the
-> mmap lock or the per-VMA lock. get_user_pages_remote() does not fit: it
-> hard codes the mmap lock and re-looks-up the VMA, neither of which is
-> wanted here.
-> 
-> Add get_user_page_vma(), a simplified __get_user_pages() that walks the
-> page tables with follow_page_mask(), faults a missing page in with
-> faultin_page(), and on success returns it with a reference and the
-> caller's lock still held. Like __get_user_pages() it runs
-> check_vma_flags(), so callers need not pre-check the VMA.
-> 
-> A VM_IO/VM_PFNMAP VMA is the exception to that check: it can still hold
-> COWed pages that have a struct page, so follow_page_mask() is allowed to
-> look for one. Memory with no struct page -- a raw PFN, or a present PFN
-> reported as -EEXIST -- is returned as -EFAULT, so the caller can reach it
-> through vma->vm_ops->access().
-> 
-> The caller sets FOLL_VMA_LOCK when it holds the per-VMA lock rather than
-> the mmap lock, which reaches the fault code as FAULT_FLAG_VMA_LOCK.
-> 
-> Anything that cannot complete under the per-VMA lock -- a dropped fault,
-> a userfaultfd VMA (uffd assumes current is the faulting task), a hard
-> error, or ->access() memory -- releases the lock and returns -EAGAIN,
-> so the caller retries under the mmap lock.
-> 
-> faultin_page() reports these retries as -EAGAIN for both lock types;
-> only the mmap caller records the dropped lock in *locked. A
-> VM_FAULT_ERROR that decodes to no errno warns and returns -EFAULT
-> rather than BUG(), since the mmap-lock retry produces the definitive
-> result.
-> 
-> Assisted-by: Claude:claude-opus-4.8
-> Signed-off-by: Rik van Riel <riel@surriel.com>
-> ---
->  mm/gup.c      | 154 +++++++++++++++++++++++++++++++++++++++++++-------
->  mm/internal.h |   6 +-
->  2 files changed, 139 insertions(+), 21 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 0692119b7904..69b834a71708 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1082,7 +1082,13 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
->  /*
->   * mmap_lock must be held on entry.  If @flags has FOLL_UNLOCKABLE but not
+Consequently, begin_new_exec() dereferences the missing executable:
 
-Does the above line also need to be changed? mmap_lock is not held on entry in
-faultin_page() if passing FOLL_VMA_LOCK, right?
+  would_dump(bprm, bprm->executable);
 
->   * FOLL_NOWAIT, the mmap_lock may be released.  If it is, *@locked will be set
-> - * to 0 and -EBUSY returned.
-> + * to 0 and -EAGAIN returned.
-> + *
-> + * The return value does not depend on the lock type: a fault that made
-> + * progress but needs a retry (VM_FAULT_RETRY / VM_FAULT_COMPLETED) is reported
-> + * as -EAGAIN for both the mmap lock and the per-VMA lock (FOLL_VMA_LOCK). Only
-> + * the *@locked side effect is lock-type specific, as the per-VMA lock path has
-> + * no unlockable mmap_lock to drop.
->   */
->  static int faultin_page(struct vm_area_struct *vma,
->  		unsigned long address, unsigned int flags, bool unshare,
-> @@ -1097,6 +1103,8 @@ static int faultin_page(struct vm_area_struct *vma,
->  		fault_flags |= FAULT_FLAG_WRITE;
->  	if (flags & FOLL_REMOTE)
->  		fault_flags |= FAULT_FLAG_REMOTE;
-> +	if (flags & FOLL_VMA_LOCK)
-> +		fault_flags |= FAULT_FLAG_VMA_LOCK;
->  	if (flags & FOLL_UNLOCKABLE) {
->  		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
->  		/*
-> @@ -1125,41 +1133,147 @@ static int faultin_page(struct vm_area_struct *vma,
->  
->  	ret = handle_mm_fault(vma, address, fault_flags, NULL);
->  
-> +	/*
-> +	 * A fully completed fault (VM_FAULT_COMPLETED) or one that needs a retry
-> +	 * (VM_FAULT_RETRY) has released the lock it was holding. Report both as
-> +	 * -EAGAIN so the caller retries: the mmap lock caller retakes it here,
-> +	 * the per-VMA lock caller (FOLL_VMA_LOCK) falls back to the mmap lock.
-> +	 *
-> +	 * Dropping the mmap lock is recorded in *@locked. There is no such lock
-> +	 * to drop under the per-VMA lock, where @locked is not used, so leave it
-> +	 * alone in that case.
-> +	 */
->  	if (ret & VM_FAULT_COMPLETED) {
-> -		/*
-> -		 * With FAULT_FLAG_RETRY_NOWAIT we'll never release the
-> -		 * mmap lock in the page fault handler. Sanity check this.
-> -		 */
-> -		WARN_ON_ONCE(fault_flags & FAULT_FLAG_RETRY_NOWAIT);
-> -		*locked = 0;
-> -
-> -		/*
-> -		 * We should do the same as VM_FAULT_RETRY, but let's not
-> -		 * return -EBUSY since that's not reflecting the reality of
-> -		 * what has happened - we've just fully completed a page
-> -		 * fault, with the mmap lock released.  Use -EAGAIN to show
-> -		 * that we want to take the mmap lock _again_.
-> -		 */
-> +		if (!(flags & FOLL_VMA_LOCK)) {
-> +			/*
-> +			 * With FAULT_FLAG_RETRY_NOWAIT we'll never release the
-> +			 * mmap lock in the page fault handler. Sanity check this.
-> +			 */
-> +			WARN_ON_ONCE(fault_flags & FAULT_FLAG_RETRY_NOWAIT);
-> +			*locked = 0;
-> +		}
->  		return -EAGAIN;
->  	}
->  
->  	if (ret & VM_FAULT_ERROR) {
->  		int err = vm_fault_to_errno(ret, flags);
->  
-> -		if (err)
-> -			return err;
-> -		BUG();
-> +		/*
-> +		 * VM_FAULT_ERROR always decodes to an errno; a zero here would
-> +		 * mean handle_mm_fault() returned an unexpected combination.
-> +		 * Report -EFAULT rather than crash: under the per-VMA lock the
-> +		 * mmap lock retry produces the definitive result.
-> +		 */
-> +		VM_WARN_ON_ONCE(!err);
-> +		return err ? err : -EFAULT;
->  	}
->  
->  	if (ret & VM_FAULT_RETRY) {
-> -		if (!(fault_flags & FAULT_FLAG_RETRY_NOWAIT))
-> +		if (!(flags & FOLL_VMA_LOCK) &&
-> +		    !(fault_flags & FAULT_FLAG_RETRY_NOWAIT))
->  			*locked = 0;
-> -		return -EBUSY;
-> +		return -EAGAIN;
->  	}
->  
->  	return 0;
->  }
->  
-> +/*
-> + * get_user_page_vma - get one page from @vma, whose lock the caller already
-> + * holds: the mmap lock, or (with FOLL_VMA_LOCK) the per-VMA lock. Walks the
-> + * page tables, faulting the page in if needed, and on success returns it with
-> + * a reference and the lock still held.
-> + *
-> + * Runs check_vma_flags() like __get_user_pages(), so callers need not pre-check
-> + * the VMA; most rejections are returned as their error. A VM_IO/VM_PFNMAP VMA
-> + * is the exception: a COWed page with a struct page is returned, while a raw
-> + * PFN has none and yields -EFAULT, to be reached via vma->vm_ops->access().
-> + *
-> + * Under FOLL_VMA_LOCK, anything that cannot be finished under the per-VMA lock
-> + * (a dropped fault, userfaultfd, a hard error, or ->access() memory) releases
-> + * the lock and returns -EAGAIN, so the caller retries under the mmap lock.
-> + */
-> +struct page *get_user_page_vma(struct vm_area_struct *vma, unsigned long addr,
-> +			       unsigned int gup_flags)
-> +{
-> +	bool vma_locked = gup_flags & FOLL_VMA_LOCK;
-> +	unsigned long page_mask;
-> +	struct page *page;
-> +	int locked = 1;
-> +	bool pfnmap;
-> +	int ret;
-> +
-> +	/*
-> +	 * Validate the VMA up front, like __get_user_pages(). A VM_IO/VM_PFNMAP
-> +	 * VMA is not rejected outright: it can hold COWed pages that have a
-> +	 * struct page, so let follow_page_mask() look for one, and treat only
-> +	 * its struct-page-less PFNs as unreachable. Any other rejection
-> +	 * (secretmem, bad permissions, ...) is final.
-> +	 */
-> +	ret = check_vma_flags(vma, gup_flags);
-> +	if (ret && !(vma->vm_flags & (VM_IO | VM_PFNMAP)))
+and NULL derefs. Had it not, the hand-off later in the same function
+would have failed anyway. FD_ADD(0, bprm->executable) rejects a NULL
+file with -ENOMEM. Both sites are past the point of no return so the
+exec cannot be unwound either way.
 
-Do you need to somehow restructure check_vma_flags()?
+This can be reached by unprivileged users as binfmt_misc can be mounted
+in user namespaces. So a user can register an 'O' entry whose
+interpreter lives on a FUSE mount, have the FUSE server fail the open
+with -ENOEXEC and execute a native ELF file that matches the entry.
 
-The first thing that check_vma_flags() does is:
+have_execfd only means anything alongside the executable it describes
+which is not set until the interpreter has been opened and staged.
+So lets raise it there, next to execfd_creds, which is already set at
+that point. An open failure now leaves it clear, so the fallback format
+derives credentials from the binary and emits no AT_EXECFD, as it would
+for any native exec. The argv rewrite load_misc_binary() performs before
+the open is still not undone. This means the binary sees the interpreter
+path in argv[0] and its own path in argv[1] but that predates this
+change and only became observable once the exec stopped faulting.
 
-	if (vm_flags & (VM_IO | VM_PFNMAP))
-		return -EFAULT;
+Fixes: bc2bf338d54b ("exec: Remove recursion from search_binary_handler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/binfmt_misc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-check_vma_flags() returns before evaluating VM_READ,
-FOLL_FORCE, FOLL_ANON or the architecture permission check.
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index 84349fcb93f1..5de615ca7a75 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -228,9 +228,6 @@ static int load_misc_binary(struct linux_binprm *bprm)
+ 			goto ret;
+ 	}
+ 
+-	if (fmt->flags & MISC_FMT_OPEN_BINARY)
+-		bprm->have_execfd = 1;
+-
+ 	/* make argv[1] be the path to the binary */
+ 	retval = copy_string_kernel(bprm->interp, bprm);
+ 	if (retval < 0)
+@@ -260,6 +257,8 @@ static int load_misc_binary(struct linux_binprm *bprm)
+ 		goto ret;
+ 
+ 	bprm->interpreter = interp_file;
++	if (fmt->flags & MISC_FMT_OPEN_BINARY)
++		bprm->have_execfd = 1;
+ 	if (fmt->flags & MISC_FMT_CREDENTIALS)
+ 		bprm->execfd_creds = 1;
+ 
+-- 
+2.53.0
 
-The code then ignores that early error and may return a COWed
-page through follow_page_mask(). A non-FOLL_FORCE caller
-can therefore read a COWed page from a PROT_NONE PFNMAP VMA.
-
-> +		goto fail;
-> +	pfnmap = ret;
-> +
-> +	for (;;) {
-> +		if (fatal_signal_pending(current)) {
-> +			ret = -EINTR;
-> +			goto fail;
-> +		}
-> +		cond_resched();
-> +
-> +		page = follow_page_mask(vma, addr,
-> +					gup_flags | FOLL_TOUCH | FOLL_GET,
-> +					&page_mask);
-> +		if (!IS_ERR_OR_NULL(page))
-> +			return page;
-
-__get_user_pages() does
-
-	flush_anon_page(vma, subpage, start + j * PAGE_SIZE);
-	flush_dcache_page(subpage);
-
-before returning the page. Do you need to that here as well above?
-
-> +
-> +		/*
-> +		 * No struct page: a raw PFN of a VM_IO/VM_PFNMAP VMA, whether
-> +		 * seen by the up-front check (@pfnmap) or reported as -EEXIST
-> +		 * for a present PFN. Return -EFAULT so the caller reaches it
-> +		 * through vma->vm_ops->access().
-> +		 */
-> +		if (pfnmap || PTR_ERR(page) == -EEXIST) {
-> +			ret = -EFAULT;
-> +			goto fail;
-> +		}
-> +		/* A hard error from the walk itself. */
-> +		if (page && PTR_ERR(page) != -EMLINK) {
-> +			ret = PTR_ERR(page);
-> +			goto fail;
-> +		}
-> +
-> +		/*
-> +		 * The page is not present, or needs unsharing. A remote fault
-> +		 * under the per-VMA lock cannot deliver userfaultfd (which
-> +		 * assumes current is the faulting task), so fall back for those.
-> +		 */
-> +		if (vma_locked && userfaultfd_armed(vma)) {
-> +			ret = -EAGAIN;
-> +			goto fail;
-> +		}
-> +		ret = faultin_page(vma, addr, gup_flags | FOLL_REMOTE | FOLL_GET,
-> +				   PTR_ERR(page) == -EMLINK, &locked);
-> +		if (ret == -EAGAIN)
-> +			return ERR_PTR(-EAGAIN);	/* fault released the per-VMA lock */
-> +		if (ret)
-> +			goto fail;
-> +	}
-> +
-> +fail:
-> +	/*
-> +	 * Under the per-VMA lock the caller cannot reach ->access() or act on a
-> +	 * hard error (both need the mmap lock), so release the lock and have it
-> +	 * retry there; the mmap-lock pass produces the definitive error.
-> +	 */
-> +	if (vma_locked) {
-> +		vma_end_read(vma);
-> +		return ERR_PTR(-EAGAIN);
-> +	}
-> +	return ERR_PTR(ret);
-> +}
-> +
->  /*
->   * Writing to file-backed mappings which require folio dirty tracking using GUP
->   * is a fundamentally broken operation, as kernel write access to GUP mappings
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 181e79f1d6a2..0899a37907c1 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1595,6 +1595,8 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
->   */
->  int __must_check try_grab_folio(struct folio *folio, int refs,
->  				unsigned int flags);
-> +struct page *get_user_page_vma(struct vm_area_struct *vma, unsigned long addr,
-> +			       unsigned int gup_flags);
->  
->  /*
->   * mm/huge_memory.c
-> @@ -1641,11 +1643,13 @@ enum {
->  	FOLL_UNLOCKABLE = 1 << 21,
->  	/* VMA lookup+checks compatible with MADV_POPULATE_(READ|WRITE) */
->  	FOLL_MADV_POPULATE = 1 << 22,
-> +	/* caller holds the per-VMA lock, not the mmap lock */
-> +	FOLL_VMA_LOCK = 1 << 23,
->  };
->  
->  #define INTERNAL_GUP_FLAGS (FOLL_TOUCH | FOLL_TRIED | FOLL_REMOTE | FOLL_PIN | \
->  			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE | \
-> -			    FOLL_MADV_POPULATE)
-> +			    FOLL_MADV_POPULATE | FOLL_VMA_LOCK)
->  
->  /*
->   * Indicates for which pages that are write-protected in the page table,
-> -- 
-> 2.53.0-Meta
-> 
-> 
 
