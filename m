@@ -4,85 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36FC3C4451B
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 05:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9185C4451B
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 06:03:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11E4A6B0088; Mon, 20 Jul 2026 01:54:43 -0400 (EDT)
+	id AF30B6B0088; Mon, 20 Jul 2026 02:03:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CE916B008A; Mon, 20 Jul 2026 01:54:43 -0400 (EDT)
+	id ACA846B008A; Mon, 20 Jul 2026 02:03:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F27426B008C; Mon, 20 Jul 2026 01:54:42 -0400 (EDT)
+	id 9E0F36B008C; Mon, 20 Jul 2026 02:03:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C8E5E6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 01:54:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F6AC120783
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:54:42 +0000 (UTC)
-X-FDA: 85008090804.01.629CBBA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 46CA0180007
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:54:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pov8w++x;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 718C76B0088
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:03:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0DA5516074B
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 06:03:46 +0000 (UTC)
+X-FDA: 85008113652.03.6CDAB8F
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C7F11C0004
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 06:03:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=P2d2KH1z;
+	spf=pass (imf28.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784526880;
+	s=arc-20220608; t=1784527424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vv5OoFLFLqo6apFeODcZIfFoAiaXPCnVVI60/8Q5tKM=;
-	b=NkHOKmUqU6DCfyVcWvORszs6H7ksgRFZwFF6wMvNJy+AKtcXQQCNHYkpTCZDVUehV/yk4n
-	GOAn84GNxMqi36NaRVVT9WW0/dWvr8O4+bvqwoohcsW+tBCxfaG+kCZJrMKL+kU3OL5dY/
-	3IinZ8EJHM8iHtLRMJbg+gqxilTB8+E=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pov8w++x;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=EOa2sTI0h7gbpAoJrm7HoBQ8Xn3bVAsybwlbAeYP1CM=;
+	b=THLM4PSw7fuUXVGv7/49FylqzQAg9n2iaePSdsl5XpGIGN/3njWCYc1ElrhBWvW+H2azd6
+	HrgYkv9GkVLabxwUcJTWW2rgyWmnQE20bvTHhblvAnD/OPQlp9dpy7VM3D5YHYTvFQI97D
+	oMltEktrQ/G4BqOa1xylr1LYqPdgLsk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784526880;
-	b=Hq5XmOywbwCUlcYQ71XlgPf59tlfi4DagZ2DNUgPriYNlpaP6FkuYbpNkG9Ffo5Au00+G+
-	DaZsNG9gJXz14aftQyn4ZVVqT7vA5Rl84Nr7ShrO4RX9hN+wfzEd647cTQzGFZJKG9plEI
-	fYT3M8HCJjlyOQyVf/hq3Mzg/P9i0FQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B895B60103;
-	Mon, 20 Jul 2026 05:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C32B1F000E9;
-	Mon, 20 Jul 2026 05:54:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784526879;
-	bh=Vv5OoFLFLqo6apFeODcZIfFoAiaXPCnVVI60/8Q5tKM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=pov8w++xeZevdsFadUk7ss39KjD08TW37Hn9WpoETxN/x+3rJjbZPz0DVqqNTKq9B
-	 vVCHiepmPkpzuMCGf7Mhd9OXm+2d9h3r1k2uGQZvt74eE2fUrMNmUVI/QsA488KDJc
-	 vyt7+eko4EjwqMbfqAuJfNzLY5Iv3l8OA8QzE6IQ=
-Date: Sun, 19 Jul 2026 22:54:38 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yichong Chen <chenyichong@uniontech.com>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Mike Kravetz
- <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hugetlbfs: release subpool on fill_super failure
-Message-Id: <20260719225438.041287a56c87effe61796483@linux-foundation.org>
-In-Reply-To: <20260720021900.1376309-1-chenyichong@uniontech.com>
-References: <20260720021900.1376309-1-chenyichong@uniontech.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	t=1784527424;
+	b=I8OY+dvtLI7C6eWJ9vkk10yRn8yznfOm3xJV3wvw0GibNaM4LgMXwYRinZIq3FbTNhA4L8
+	6BBj19/WnTnggALACQSBacPlMNQZoGIAgsAYNZmsznI6mJai7+PuqlxiT1w4mnf+zGaMa1
+	x6BcjHqVNT0VTB9r1RZBCvaGwhEh7f8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=P2d2KH1z;
+	spf=pass (imf28.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <dbaa0a54-cf81-4644-b47b-b60a2083cb30@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784527421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EOa2sTI0h7gbpAoJrm7HoBQ8Xn3bVAsybwlbAeYP1CM=;
+	b=P2d2KH1zoFc6CCaHQHoU8kOPKNHeAvz9g/bVcgWvG/bw3S1HxPQ2RSo2VN937qAZdANCte
+	2KUtW9JMpWaQVpUU8jryQ2SwqH/midwu37hzmQBll6FFLCGOytcNjEKb67I3ljNAHhNCYz
+	2g/mIfmjrb9xtmY7nJp0gAlyuoWOYuc=
+Date: Mon, 20 Jul 2026 14:03:32 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v2 4/4] mm/mglru: fix anon-only reclaim evicting file
+ pages when swappiness=max
+To: Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@kernel.org,
+ mhocko@kernel.org, shakeel.butt@linux.dev, ljs@kernel.org,
+ kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hezhongkun.hzk@bytedance.com, muchun.song@linux.dev,
+ dave@stgolabs.net, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260718095251.82937-1-ridong.chen@linux.dev>
+ <20260718095251.82937-5-ridong.chen@linux.dev>
+ <CAGsJ_4zGRtDEGnQwmFqXrEcm93UrHaX8A_awJgu=b8ikceT8fA@mail.gmail.com>
+ <c9ad9052-4f9e-42a5-a6f6-17877aad18e4@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <c9ad9052-4f9e-42a5-a6f6-17877aad18e4@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 46CA0180007
-X-Stat-Signature: 1jxea5bodarqeoop1mn5frnx7mk9qnph
-X-HE-Tag: 1784526880-515163
-X-HE-Meta: U2FsdGVkX1/ob1oN08Pw/LH3JhRj/ekeu7mPr9gL0virEIVw8gOWBusaeRxvXT2ScFw1XZRj23WKC14XNJ/ZtFJ72B5EmfikfoueW4KP2LT7dKNMLlHVA3Twdv9AXbWJ9cyzhGy4FkbINgNoePRzNLJIQtVc+DUbhvmXWUvZqeWZMUayYsUESaG71W2KwX+RKiJiVglytfmqEEj3tKVqp18oIuotazQFgHaZDS43G49nhNg1+ghtrssYK6eH1/XyB0JezWP8E4k6A9WB9aF5trPoeKQJOFmkO55+kwvy0BUjyY6VyKr3AsNhz+10bPLjoLjDMEoiwwBnOW42uCE9Xno4JbY/Yex/xs9LhRIKlFFStR7fO5YGi2ZWQzvajNWn92hzTsyvEdDI3k1BYJ74Hbl9bTm2QXCV3o1QK/GM5kFYaSifL4XUC3KmHc4WFTYB658yMC0utdiM3VMeKPjIBEDIwr2kwx9RLY9RUqNtyFJ3v38IYySSqFyt49uTbhhXU7Uc8TrfWtQqvflqCF6Eky+JuXJJF12DrlBFBBi5emlsrWLa1UK9cqE2g7NMmjapHPRFFjP5qkvGaTAnEyFdHzohaGBxycbju6vvNdoyxThz4pM1t3ElnQapUW23THShIXLV8X/30/lT7zh+S3ddTDCEDSGAFi79jBVN0uvBd5OvE36jfwpil3gZ1Y9+HxlAYwPydI/fqeviQP+61CG9hcs3T9gbHmn9uDUO2lyTR/peRtYHvK2fjV1QtT7rxGWSBv3VEmlQGQij28voOWnKKxFP37P2RlD25BBt+IYC0+MghyD7YC4Dxr0X0n8P+O1e0Kc44oVGmAZc2go+KpUCVgTW2ug6vDpRBmtV1bpiPv+IYrqLhci8wM77c4cDoJN5+BFPxpL77rtrWibsG+9YhOKBPFD0Eo7CtILpWJ4Fk1XtOAfd0klkXMDAxvHTyvnUGTplvo043VdGjMimlST
- AHh377VB
- buC89vuwBF9UQ05CMM6zYNZsbniDLQPiqfvs89cpK5Lx6A/+7mJGsoD47I4yuO9RREhkl7nNWwW80uOEYs0bFzHuh99Rr4De0vkwtyiz0AT4Oa6tdbrueK4dVxJ6iTcVlOTqBpK0ICGi8NrqxEkjLtiRAVc3dI9UsD/YTJR61UHeim9oKJbQNPDcBfvTfzD27J2ffYrf3C7mnve9WdeujmxKKbmW81QY83+x73giWxNizEQ9E036DSUwi5zgAwheLS8/l+2BHYABDVJhhXNigtYvDUs3UdncFBqcp5H9CoR1FNi4zjrtLre74aALvll52gXrL1FqBrlOwC2Vggg53JdO+9gso6LESbM4dOwWyQozCsNms4rLYLkbX//FcgGB8dM8RC0sgQhFbW4Fw+b9acXcnsgsGXxUVZ4hJ
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C7F11C0004
+X-Stat-Signature: xymba9xt6bu1jik1zgb5ds9yrd4x9k9w
+X-HE-Tag: 1784527423-713069
+X-HE-Meta: U2FsdGVkX18ZlF1CqUZrsQFUBxXwukcm4VulkMZeaFO78VjKBf55sygrhiHY+3GUBBh4dy3LiBu4rY9LVguhdBuVJFuxkSLqJJSGYZsxDea6tGRMvx7cqqg59EJORMF21bpXlebmNb0mfyqMiF4YhrxvYg/DIDULI/ULvaWcDFoRfWbiuHExL7m2kOoKc452I05x5tJOMWedCOzxHXQC0wvJ+KhD9kQeY4bDTplqEz93ZmES56U/X4bMN8Smrd0L9Vx/UV93HrhCUdHxUJ3dIHayhF9r6zVaQFcdY6KDXYk8SzHFiXrYyT1WKPRKADnCpX7aQc/a0Kw7jlyLnc8WyKvIPHlvuhJhSLQ/+CyIEd1Z38EKFsW7DIh2Nbb0mFD4PTjxjm1JXYMHoPySCIPd2bDwrAggARm8HQVG0xM79MRqUU3I/TfDO3iqmm1mNaT6rqOJYPkxU+k/lB4qpYC+Wz2CQryRLgcJM1Vl/hXH9M7DD9eJ9G6GdF6CZ58CI0AKJBZgM9/nLh3eKUe5dGkfcl8PVrxVqSaOyzejmWMmySq6qG2a3rBElQFXmYs+w+hZJK8CjDDDN49g9eswDW7Jq0wozvZQiEGIXro2qb7XwffmD1PFW+czvdTefMqSRYIqyZMF3lMOuw6D9ttTAFXj/26H/A/u9jzQwAtEAMu5uMgdpNoI/q9vt00VI5MPxbRjXq68AjR1xAg9pqwyte50RUCfttGRRfOrHVbmHSaz0WscJYpc7Ap8RnXLTh/pFp3+JcDljQvwz7Ihf25Jlewk8zMwgQs0R18pXhL4DsNbUVr4SoJV8KDNG0MEgd9BTYc44Yb92JktjygxqwqathOQpPrn4w7PeMmQ0TgWRJGvoGCk6UDMbfjzbhHkCfCBhdorqF+64q3iqT8rnJDq5/E60bRR4jT/IksMcxDxTtVQExeOOQTcruZYa8MDNsQExLM1CA1YRj8mA8GdKCgZDSh
+ J2qU67+f
+ dXJMYAU7Mc7sT5ObuZcgK7nn35doLyabgLWg1462ruwvPSfMzCxnU8EQIgZdWMn/r9udFikrUlrgqrrGBLdrMndX0FYR52BlZNmxEvmJy3WOAFT9eO6N7ewq5FEgUrZzNXMf5hdgPK8jtf0h38CaEuZFM5kmAb74QEyqTYrLds2ZoFnrXC7hYJ52rjd+wfAsn804U3SdW/5JgUpWWCntLRYPita6KHsUn1ibRU9nsOK8vAVylZbBviKLIwyRGpjlVJ1CvU4MaJo8e4NSBHMF7oO1vhnWqRORT6eyeRUkJUkfJkkfoB7I0x5tVpdo6IJgS77Fm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,41 +96,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Jul 2026 10:18:59 +0800 Yichong Chen <chenyichong@uniontech.com> wrote:
 
-> hugetlbfs_fill_super() allocates a hugepage subpool when size or
-> min_size mount options are specified.  hugepage_new_subpool() may also
-> reserve huge pages for min_size.
+
+On 7/20/2026 10:48 AM, Qi Zheng wrote:
 > 
-> If root dentry creation fails after the subpool is created, the failure
-> path frees the subpool with kfree().  This bypasses
-> hugepage_put_subpool() and can leave min_size reservations charged.
 > 
-> Use hugepage_put_subpool() on the failure path, matching the normal
-> put_super path.
+> On 7/18/26 9:43 PM, Barry Song wrote:
+>> On Sat, Jul 18, 2026 at 5:54 PM Ridong Chen <ridong.chen@linux.dev> 
+>> wrote:
+>>>
+>>> From: Ridong Chen <chenridong@xiaomi.com>
+>>>
+>>> The previous patch fixes this issue for the traditional LRU, which also
+>>> exists in MGLRU [1]. Fix this by checking whether swappiness is
+>>> SWAPPINESS_ANON_ONLY in get_swappiness() first, and returning 0 from
+>>> get_nr_to_scan() when swappiness is SWAPPINESS_ANON_ONLY and anon pages
+>>> cannot be reclaimed, to avoid useless work.
+>>
+>> Is this intended to avoid unnecessary work, or to prevent file folios
+>> from being reclaimed incorrectly?
+> 
+> Based on the test results below, it seems primarily intended to prevent
+> file pages from being mistakenly reclaimed. Also, bailing out early in
+> the SWAPPINESS_ANON_ONLY + !can_reclaim_anon_pages case is to avoid
+> unnecessary work.
+> 
+> Hi Ridong, perhaps the commit message could be clearer. ;)
+> 
 
-lgtm, thanks.
+Thanks for the feedback. Let me clarify:
 
-This might have led AI review to find a pre-existing bug in
-mm/hugetlb.c:unlock_or_release_subpool():
+When SWAPPINESS_ANON_ONLY is set, get_swappiness() returns the 
+swappiness value, and get_type_to_scan() can always return LRU_GEN_ANON. 
+So if anonymous pages cannot be reclaimed, we bail out early to avoid 
+unnecessary work. In that case, get_nr_to_scan() just returns 0.
 
-	https://sashiko.dev/#/patchset/20260720021900.1376309-1-chenyichong@uniontech.com
+If we do not return early in get_nr_to_scan() under the 
+SWAPPINESS_ANON_ONLY + !can_reclaim_anon_pages condition, then in 
+isolate_folios(), it may fall back to scanning file pages, but this only 
+happens when scanned = 0, which is not the usual case.
 
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -1419,7 +1419,8 @@ hugetlbfs_fill_super(struct super_block *sb, struct fs_context *fc)
->  		goto out_free;
->  	return 0;
->  out_free:
-> -	kfree(sbinfo->spool);
-> +	if (sbinfo->spool)
-> +		hugepage_put_subpool(sbinfo->spool);
 
-Both callers of hugepage_put_subpool do this NULL check.  We could move
-that check into hugepage_put_subpool().
+```
+shrink_one
+try_to_shrink_lruvec
+   get_swappiness // return SWAPPINESS_ANON_ONLY if swappiness=max
+   get_nr_to_scan // return 0 if anon can't be reclaimed, skip
+   evict_folios
+     isolate_folios // !scanned falling back to anyther type if !scanned
+```
 
->  	kfree(sbinfo);
->  	return -ENOMEM;
->  }
+I'll update the commit message to make this clearer in the next version.
+
+>>
+>>>
+>>> The test result:
+>>> Before fix:
+>>>
+>>>    # cat /sys/kernel/mm/lru_gen/enabled
+>>>    0x0007
+>>>    # cat memory.stat
+>>>    anon 204800
+>>>    file 67108864
+>>>    ...
+>>>    pgsteal_proactive 0
+>>>    pgscan_proactive 0
+>>>
+>>>    # echo "64M swappiness=max" > memory.reclaim
+>>>    # cat memory.stat
+>>>    anon 208896
+>>>    file 0
+>>>    ...
+>>>    pgsteal_proactive 16384
+>>>    pgscan_proactive 16384
+>>>
+>>> After fix:
+>>>
+>>>    # cat memory.stat
+>>>    anon 188416
+>>>    file 67215360
+>>>    kernel 1970176
+>>>    ...
+>>>    pgsteal_proactive 0
+>>>    pgscan_proactive 0
+>>>
+>>>    # echo "64M swappiness=max" > memory.reclaim
+>>>    -bash: echo: write error: Resource temporarily unavailable
+>>>    # cat memory.stat
+>>>    anon 204800
+>>>    file 67215360
+>>>    ...
+>>>    pgsteal_proactive 0
+>>>    pgscan_proactive 0
+>>>
+>>> [1] https://sashiko.dev/#/patchset/20260717113300.214717-1- 
+>>> ridong.chen@linux.dev
+>>>
+>>> Fixes: 68a1436bde00 ("mm: add swappiness=max arg to memory.reclaim 
+>>> for only anon reclaim")
+>>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>>> ---
+>>>   mm/vmscan.c | 14 +++++++++++++-
+>>>   1 file changed, 13 insertions(+), 1 deletion(-)
+>>>
+> 
+> Overall, this looks good to me.
+> 
+> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+> 
+> Thanks,
+> Qi
+> 
+> 
+
+-- 
+Best regards
+Ridong
 
 
