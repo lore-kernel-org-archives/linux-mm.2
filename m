@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB65C44520
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 16:42:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35913C44524
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 16:42:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00BE26B0088; Mon, 20 Jul 2026 12:42:27 -0400 (EDT)
+	id ED8AC6B008A; Mon, 20 Jul 2026 12:42:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFE556B008A; Mon, 20 Jul 2026 12:42:26 -0400 (EDT)
+	id E88CB6B008C; Mon, 20 Jul 2026 12:42:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCBB36B008C; Mon, 20 Jul 2026 12:42:26 -0400 (EDT)
+	id D78096B0092; Mon, 20 Jul 2026 12:42:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A261F6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:42:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 195E5140210
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:42:26 +0000 (UTC)
-X-FDA: 85009723092.30.55C634A
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B0F6AA000B
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:42:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLIaxvWS;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 995AF6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:42:29 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFB5A1A0229
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:42:28 +0000 (UTC)
+X-FDA: 85009723176.23.7A40F5E
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2E838C000D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 16:42:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bSf73LT6;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784565744;
+	s=arc-20220608; t=1784565747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=uI/n7bOub8/eal9d62FXJWHN8yIRBZEqO6SD2vX8Vuc=;
-	b=XnLI1B7FeTGcZOkNzNrMuiEQ6nNyZzQuOUv4KyzNujuIETBjxpVaBU8Jqw3fIHZjt27ZiJ
-	fRZbVCj+C6rmb45nf+HoSz5gUMyXfHJse6OhY8tXO8I52pRCNoy1kBGOreatxhMPFTVLjE
-	Tarkkii4slMlFXPUdrg87WN3G1lSelM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLIaxvWS;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EqMnQVIkWoxb+RrEs+jMVyYBu0LSbT8WfW7w+P6K7uQ=;
+	b=Rphwr4QYG4Hcrly3ukSL9vDMIvrI/mOwDD5JrS+nq7gDCGfdVy0E3gdq0rD04kd1pdM24s
+	NRyCtgOD3d44e7/lGUCnrR0xsgBbh5k5ClRtijzcXbxfMgxwW2HKRxDh5ACCPlwZsf6oAN
+	CWL9bCuZ0YE5cKOo1OUwHFUjxUZ1ziA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784565744;
-	b=MNLw0zw4zUrikUrS8LCBBCKkUsTwdGw5CXimydR0FsABHmVTHKAOJFjbZ4yWyC4PabEHyt
-	vikKVXWsPE69O3CQIv6/Tu0AjLS47L4kxOw2+sNOVdapg+Lgb9LDwaZtK0bJbHnKCBP/VK
-	+CjkUt6sMPgJsNBjRq6bWyE1ZmclEOY=
+	t=1784565747;
+	b=fpiH3D6al1neIk79qoVube/DBOEt07jEEIN88UIJgN14n68XRhUGGofRsJTYZTswWAmiqg
+	kWYI1ZhTJuHTfouyii4ChFguxkFLUzKqERlsJIU/rXu5ekE5cSXUStV5gC/KgYFMW5gtct
+	KAVNCpg3byYcq3vz7IXwXYR67hAAtNQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bSf73LT6;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784565739;
+	t=1784565743;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uI/n7bOub8/eal9d62FXJWHN8yIRBZEqO6SD2vX8Vuc=;
-	b=ZLIaxvWS5hkQiwmoKnd9/WsapkSxEqj46MueXoclEXeNG4sJlLq6wsi2XkQOvceIc1HxSg
-	JZw2xpq9G8fMpueXhhukgUUwXQa28Il+bvD9w730pMM1u0SjaJ/5NkkpL2Op6FqNK3Dvpr
-	OZZ4KkniaJXfXYmh66dSlYzXLmI5V0A=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EqMnQVIkWoxb+RrEs+jMVyYBu0LSbT8WfW7w+P6K7uQ=;
+	b=bSf73LT6zmv6iHRzh1nyG6HQ5XmmTwZZ07TNO0fiFD3dsGWdYHcv3gwPKWOmvfUK0/+1eJ
+	3meZXRvGIYrzUoY7rsap1WGZOkw9i86k/1/MJkiRzvub+OTV74RSAJfuouRFSJPCf3BpGf
+	Q316LzrD3OIedsEgeruFH6ijtO5euzc=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -86,21 +87,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	rientjes@google.com,
 	kernel-team@meta.com
 Cc: Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v4 0/2] mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance cost
-Date: Mon, 20 Jul 2026 09:41:21 -0700
-Message-ID: <20260720164207.450685-1-usama.arif@linux.dev>
+Subject: [PATCH v4 1/2] mm/vmstat, mm/memcontrol: add _monotonic vmstat readers
+Date: Mon, 20 Jul 2026 09:41:22 -0700
+Message-ID: <20260720164207.450685-2-usama.arif@linux.dev>
+In-Reply-To: <20260720164207.450685-1-usama.arif@linux.dev>
+References: <20260720164207.450685-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2E838C000D
+X-Stat-Signature: gj3b55xr75o5dpy3ideq36sonouo9j4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B0F6AA000B
-X-Stat-Signature: urs6uygic7n91cj337ybtmt1bsej4fax
-X-HE-Tag: 1784565742-251515
-X-HE-Meta: U2FsdGVkX19BwGQOo6rL4Jllv0//xbzggsxTfZ3JazoVrs3ebFv3l04LXRudPER0CbAkbSZeiymoU2ADKEOKAxFruYI7OIzC1C1RSRWbnJh2ISUsEilvw3nsqnQ3svTx7MaX20Cx9Dlubs7RXd1Ads8JBIUC4TXeZWPxuYAtfEC98Ql5x5aKXrWmaPgbTaIi6c+fqltd21kPxIgvBsuN+oaPe8ts0BMNVw/ZZYMJEfI++XwTRqrKDKBxQZNSw0XvYfUwZsTGtucS6T+mUSiegligeScIhw0LeypQuzsvo1+sFSkZTBEjARzmIKUN2ckqU++kSj6gBQ6l4ol9Lqsy9wpGj1yKyeBHj0ojWjC+4aUR+XWD8GYRIn9d606YaUdterfhafbYbcQwTZUQCW8HYXGDQi16rnej/ALiRssFOW/MnXUxIe7hkrTihRUYBnx+Jmk7H3HnHtj0tgfNxPIQEVsmOMHBliFtZ8uHTrfVBlU/zRe4QmHh5Q9lB8asU4aQ4XGe6jwFUp8aa8YV+2zD8FbpJRvc4Y7DesEx+3nxl8GGRYtqO0H8o+fgCXkzEJrdb33V8cmJuCDd46ZJhH+ytEYvPyZY8fRw568NTwBCRTOCxxHy+ZP6cYchLvozLHk/ZqrHu/DOQl0py8UIlvFOP+w5toFojwKmfwVaGQVJhKLZzMrtYyGVz8tJiH0rfz8E4httnSCtcGTF+e7dmA2ie3rOj+b8gFb1hgW8deF4ubPEo6H3QGyFBu4HXXRs4aI9exscHzh0cIAoBUqHnzL4naWqU2Q/v9j/xQStRiMEirvmZ4K63/VUbJTO2s21QRoCPMkRSCuezPXLopNakkJJr9Il4909WDJS+ue7F9heAP4tC7IX3yaKGhSYt8rOPvJtFFRUA3rwXHIPrbAe6vwWQvALh+NULx4FUny94yf7iYONQoLgXec6RRBxNBRF0VuesdUGv7WDh+8jmUcWK1P
- 3y4YkQLe
- 9QzyDU7SbVMIZqJFqV9Z6wUF2pg8ZnAeWwI0ThL2xxHV9sq5Tlco2xRpsfQ0lKZGcgpnR1E8lll1Vj5bBX+KVVXeMdfKtPuObjPYVCjN8CfOwjhmXAHiIi+RB3bM5MCg31AFvcBWNZYh8gJyfBzL83d1iTrGwc5MBHP7stKDikGwcZSZJXDSD0tfVIek67whMYJ87s3zQsc2VrsO+MpM8OlQwBt2OJptWubHgSUTZu4kcgoTfx9Px1a857YSmuotoqfu+tobr5ZwDEIG0JP8Rgy+vfmEZpILljIWQ0Tc9VjrDNud3QHq0kUkKxIF2zdP8Rn3849iVO/TGO8c=
+X-HE-Tag: 1784565747-536789
+X-HE-Meta: U2FsdGVkX1/VuzvDWLXfHSPb6dAhHUNA7LQ1ygc2pVuQ6QX3cbEifAzg1w1+qGHg6WcjQVQ3XSx4mCURPq8htkvBo0Up0ZPch0E6TNJHSIRP42/9zWfP4x9O5OJKLmG560pi64Nj8jzEj/Oi/DWvJ6qD4/fBVrcZHTJUNz5cJnPPQ/MZ7CzCheAQPHKHw4Ul3wn5tJ4slPDWPAU+vHOZsgHPBRthvTWtEr8LJ2b2uWH5dMx4ToSkt/hTatwQo32uvldXz4t0RVLMVdt40KaFp4yjTBjCEVR3RdtGlB/2ACxw9qt0ebJTrBDnNqjg4eB8YpwnwddBQceJz++crDTD62mUJN+EZge/ZqM0yNixgzOO+Xh5zqPbpp8vgqFMHCUHeZVnCSRPXIBe5qxQmr42DSEwhpzClZD92ftVWxuq5cD7lpswoN+cQvht5eMbPE9S6Oa0tAAQTLtZdJrJOin2FlzkZjiPeCVRpeGixNISGEEPY1XrAoXm6VKNNmW4v1uGdB4haPHTMPKX9hwIAfwUHjwUHgcSnJIJnzEMjkCUe5zZ9nDRYAYJ10kXzmRTWkk7lISPHWeSYUQxyFmm/nXRUsjqyIg9u+8lT4WE471BA0XZkYgTpQtsvaiTnkhwnw/REP4X28KqxaIimVIIcLLFSF96HyTsOlpWuSb/xFwZos73bMryuT6dkDdW3jPPd6CVmR/5P7fviVxiPIv7j6t2LEDOL9D+kt1LvQGwIhQWi8WTlfzMvZ5W+A2FtKGIgtpE0CDE7jykpwgaFRAzllXCoNQtu5RhTmIc1+4zmclg6hEqK2sVJDTnQgKeNJfNIu/MYRzZQIs+uLKRDtO7/XL5J50pq0EFD4tW0on9Bu5TBHaKJvguGtcmxpUA68IDHTAGiqkNvNB96itr35Svu07ZC9WVlGLiA+CcxtwV7TT7e4225BDmfCHPH9ek4qW/Q2HDq1USdiTvZj8ViE2H/we
+ ENFgDzOS
+ MaUypXz1blKi6BF/7+nXx0fBPFBJCZcaMXEMsSTyCcy+m1Pd3cI0mL8FRrJVrBZW4SVoCbKLcDdvb6shBjYQMA/2NA7Xq7owmpKJC8t2xGk0B+NF9dlGb94kFJa5CP+kkA0GeUFVVGi2q65CJ1czbayRIbZe9fQcqmFgHGy0lVEKyJOuMdtS7uP6et3wW9vwEVuLTOI2vgjnGXkJtH18OjJrcoI0mwiG5tSASSqtlF3/CoILDwKm9gBxayLaNDFsWIdhqrmLbz5MqOGFrqgetwD8He/yOX/AmPKbGXeDG2dTuSWo7YFlp6nZgBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,244 +110,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The anon/file scan balance heuristic in get_scan_count() is fed by two
-scalars in struct lruvec (anon_cost, file_cost) that every reclaim
-producer updates under lruvec->lru_lock. The cost-recording work
-itself is trivial, but it both contends for and contributes to
-contention on lru_lock - which is often a contention point on
-memory-pressured workloads. Specifically:
+lruvec_page_state(), node_page_state(), and global_node_page_state()
+all clamp negative reads to zero on CONFIG_SMP so that a transient
+per-CPU delta skew presents as zero pages rather than
+as a garbage unsigned value. This is the right behaviour for
+non-monotonic page-count readers.
 
-- shrink_inactive_list() re-acquires lru_lock at function exit just
-  to call lru_note_cost_unlock_irq().
-- shrink_active_list() does the same after rotation accounting.
-- workingset_refault() takes folio_lruvec_lock_irq() purely to
-  record the refault cost.
-- prepare_scan_control() snapshots anon_cost/file_cost under
-  lru_lock.
-- lru_note_cost_unlock_irq() itself walks parent_lruvec() and
-  re-acquires lru_lock on every ancestor, multiplying the cost
-  of every update by memcg-hierarchy depth.
+It is however incorrect for callers that snapshot a monotonically-
+incremented event counter and compute a delta from two samples.
+Once the underlying signed long wraps past LONG_MAX, the clamped read
+drops to zero while the previously-recorded snapshot still holds the
+pre-wrap value; the unsigned subtraction then underflows into a
+~2^31 spurious delta for 32-bit architecture and corrupts the
+caller's accumulator.
 
-This series removes those producer-side acquisitions entirely. The
-rotation inputs become per-LRU PGROTATE_{ANON,FILE} vmstat counters.
-NR_VMSCAN_WRITE already captures reclaim-driven pageout at writeout();
-charge it through lruvec_stat_mod_folio() so it is available per lruvec
-and aggregated through the memcg hierarchy. Reclaim does not submit
-filesystem folios for writeback from this path, so pageout contributes
-only to anon cost. WORKINGSET_RESTORE_* already captures the refault
-input.
+Add non-clamping siblings that return the underlying state value
+cast to unsigned long:
 
-prepare_scan_control() reads the raw cost signals without lru_lock:
+  global_node_page_state_monotonic()
+  node_page_state_monotonic()
+  lruvec_page_state_monotonic()
 
-  anon = PGROTATE_ANON +
-         (NR_VMSCAN_WRITE + WORKINGSET_RESTORE_ANON) * SWAP_CLUSTER_MAX
-  file = PGROTATE_FILE +
-         WORKINGSET_RESTORE_FILE * SWAP_CLUSTER_MAX
+With both samples read via the _monotonic variant, unsigned modular
+subtraction stays correct across a signed-long wraparound as long
+as the true growth between two samples fits in unsigned long
+(< 2^32 on 32-bit, < 2^64 on 64-bit); the 32-bit bound is the
+practically-reachable one that motivates this helper.
 
-It folds the deltas into a per-lruvec accumulator. A dedicated
-per-lruvec cost_lock, not touched by isolate_lru_folios(),
-move_folios_to_lru(), or folio_add_lru(), serialises the accumulator
-RMW and the lrusize/4 halving check. Hierarchy aggregation is implicit
-in rstat propagation, so the parent_lruvec() walk and the
-lru_reparent_memcg() cost-splice both disappear.
+The variants are only safe for monotonically-incremented counters.
+Non-monotonic page-count readers must keep using the existing
+clamped helpers so transient negative reads still present as zero.
 
-Moving accumulation and decay to the reclaim side also improves the
-cost model across reclaim gaps. With producer-side decay, events that
-happen while reclaim is idle still age each other before reclaim ever
-samples the costs. If a workload refaults a large anon set and then a
-smaller file set before reclaim runs again, the later file activity can
-age the earlier anon activity out of the cost model. The new scheme
-observes the whole between-reclaim delta and decays anon and file
-proportionally, so the scan-balance history better represents what
-happened since the last reclaim pass.
+This is a prerequisite for the following patch which
+replaces the producer-side anon_cost/file_cost accumulators with a
+read-side accumulator in prepare_scan_control() that samples
+monotonic per-LRU vmstat counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*,
+WORKINGSET_RESTORE_*) via lruvec_page_state_monotonic() and folds
+the unsigned modular delta into a per-lruvec cost_accum[].
 
-Trade-offs:
-  - Cost reads see rstat-aggregated values that can lag until periodic /
-    reader-triggered flushing.
-  - Per-lruvec footprint grows by 4 unsigned longs + a spinlock (a
-    struct lru_cost { count, last_rotated, last_io } per side), which
-    is a small cost.
-  - NR_VMSCAN_WRITE now also updates the folio's lruvec/memcg stat,
-    adding memcg stat accounting to the reclaim writeout path while
-    preserving the existing node-level total.
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+ include/linux/memcontrol.h |  8 ++++++++
+ include/linux/vmstat.h     | 16 ++++++++++++++++
+ mm/memcontrol.c            | 36 ++++++++++++++++++++++++++++++++++++
+ mm/vmstat.c                | 11 +++++++++++
+ 4 files changed, 71 insertions(+)
 
-== Numbers ==
-
-Tested on a 176-core, 256 GB host. The benchmark drives sustained
-swap-out/refault inside a tight memcg using vm-scalability/usemem:
-
-  usemem -n 16 --prealloc --prefault --random $((256*1024*1024))
-
-run inside a two-level memcg with memory.max=512M on the leaf
-(4 GB anon working set has to fit in 512 MB -> continuous
-shrink_inactive_list + workingset_refault). A 16 GB swap file
-is used. Measurement is a 30 s `perf lock record -a` window
-over otherwise-idle hardware.
-
-Workload rates are identical on both kernels (the bench drives the
-same memory pressure):
-
-                          baseline    patched      delta
-  pgscan_direct  / s      172,662     171,817      ~0%
-  pgsteal_direct / s       67,162      66,306      ~0%
-  workingset_refault_anon / s
-                           40,696      39,830      ~0%
-
-perf lock contention (total wait per 30 s window):
-
-  Lock Name                Before      After     % change
-  shrink_lruvec+0x770     722.84 ms    0         -100% (eliminated)
-        (= lru_note_cost_unlock_irq)
-  workingset_refault+0x167 385.26 ms   0         -100% (eliminated)
-        (= lru_note_cost_refault)
-  shrink_node+0x4ad       689.43 ms    26.95 ms  -96%
-  shrink_active_list      208.34 ms    15.97 ms  -92%
-  lru_add_drain_cpu+0x34    1.96 s    917.71 ms  -53%
-
-  Total LRU lock wait      ~4.23 s     ~1.66 s   -61%
-
-The two specific contention sites the patch removes
-(shrink_lruvec+0x770 = lru_note_cost_unlock_irq;
-workingset_refault+0x167 = lru_note_cost_refault) are completely
-absent from the patched perf-lock-contention output.
-Secondary reductions in shrink_node, shrink_active_list,
-lru_add_drain_cpu and pgrefill/pgactivate look like knock-on
-effects from removing the cost-recording overhead and the
-parent_lruvec walk.
-
-The remaining ~1.66 s of LRU lock wait on the patched kernel is
-dominated by the per-CPU pagevec drain (lru_add_drain_cpu) and the
-main reclaim path in shrink_lruvec.
-
-The numbers above can be reproduced using the script in [1].
-
-== Series structure ==
-
-  1. mm/vmstat, mm/memcontrol: add _monotonic vmstat readers
-     Non-clamping siblings of lruvec_page_state() / node_page_state() /
-     global_node_page_state() for callers that snapshot a
-     monotonically-incremented counter and subtract two samples.
-     Unsigned modular subtraction on the raw wrapping value stays
-     correct across a signed-long overflow that the existing clamp
-     would otherwise turn into a huge spurious delta (a real hazard
-     on 32-bit).
-
-  2. mm/vmscan: reduce lru_lock contention via vmstat-derived
-     scan-balance cost
-     The optimization described above; samples PGROTATE_*,
-     NR_VMSCAN_WRITE (for anon) and WORKINGSET_RESTORE_* via
-     lruvec_page_state_monotonic() from patch 1. MGLRU also updates
-     PGROTATE_* so the counters remain meaningful with either reclaim
-     implementation, although MGLRU does not consume this cost signal.
-
-== Alternatives considered ==
-
-1. cost_lock for both producer and consumer (no vmstat indirection):
-   Keep the producer loop, just swap lru_lock for a new per-lruvec
-   cost_lock. Decouples cost from LRU manipulation, but producers
-   still synchronously contend on cost_lock, the parent_lruvec()
-   walk is still required (O(memcg-depth) acquisitions per recording,
-   now on cost_lock), and lru_reparent_memcg() still needs explicit
-   cost-splice. We can do much better and this series removes the
-   producer lock entirely and gets hierarchy propagation for "free"
-   via rstat.
-
-2. Attempt to switch to using MGLRU's scan model:
-   MGLRU has no anon_cost/file_cost at all. It replaces the cost
-   heuristic with generation-based aging: per-LRU sequence numbers
-   (min_seq/max_seq) age folios into generations, and the
-   older-generation type is the one to scan. So
-   lru_note_cost_unlock_irq() / lru_note_cost_refault() are simply
-   not called when lru_gen_enabled() — by design it sidesteps every
-   concern this patch addresses.
-   But MGLRU is not a substitute for fixing classic LRU:
-     - It relies on a lot of things including per-lruvec generation
-       lists, bloom filters, mm_struct walk infrastructure, working-set
-       protection tiers and a whole sysfs interface. Replacing
-       classic LRU's cost recording with the MGLRU model would
-       mean dragging in all of that.
-     - It changes scan-balance semantics, not just the locking, so
-       it's a heuristic change we would need to evaluate separately.
-       There are known regressions (database/anon-heavy workloads
-       sensitive to swappiness, or file-cache-dominated workloads
-       where MGLRU's bloom-filter protection differs from classic
-       refault tracking).
-   This series keeps classic LRU's scan-balance model and fixes where
-   its cost history is sampled and aged.
-
-3. Atomic cost counter:
-   lrusize/4 halving has no clean atomic form, and the parent
-   walk still has to run explicitly. Reusing vmstats gives per-CPU
-   aggregation AND rstat hierarchy propagation for free.
-
-4. Drop cost_lock from the existing patch and reuse lru_lock in the
-   consumer (prepare_scan_control()):
-   Saves 1 lock space per lruvec but re-couples the cost path to LRU
-   manipulation, though just from the consumer side this time.
-   prepare_scan_control() runs at the start of every shrink_lruvec()
-   cycle, so under sustained memory pressure it would take lru_lock
-   on the hot path and block isolate_lru_folios() /
-   move_folios_to_lru() / folio_add_lru() i.e. when reclaim is
-   in flight. A dedicated cost_lock is never taken by anyone except
-   the consumer cost calculation.
-
-[1] https://gist.github.com/uarif1/a4eb33a86c5b2d7bbc55b42f0956e884
-
-v3 -> v4: https://lore.kernel.org/all/20260717135807.3476029-1-usama.arif@linux.dev/
-- Fold the two per-lruvec cost arrays (prev_cost[], cost_accum[]) into
-  a struct lru_cost { count, last_rotated, last_io } cost[ANON_AND_FILE]
-  in struct lruvec. (Johannes)
-- Sample rotated and io separately in prepare_scan_control() and
-  compute the raw per-counter deltas before applying the
-  SWAP_CLUSTER_MAX weighting, rather than sampling a pre-weighted sum
-  and taking a delta from it. Easier to reason about the overflow
-  behaviour. (Johannes)
-- Drop the per-side checks in the halving loop; anon > limit implies
-  anon + file > limit for unsigned counters, so only the sum check
-  is needed. (Johannes)
-- Trim the prepare_scan_control() comment back to something close to
-  the original wording. (Johannes)
-
-v2 -> v3: https://lore.kernel.org/all/20260713163443.3562378-1-usama.arif@linux.dev/
-- Reuse NR_VMSCAN_WRITE for anon pageout cost instead of adding
-  PGRECLAIM_PAGEOUT_{ANON,FILE}. Reclaim no longer writes filesystem
-  folios from this path, so there is no file pageout cost. (Johannes)
-- Charge NR_VMSCAN_WRITE through the lruvec/memcg stats and remove the
-  now-unused reclaim_stat.nr_pageout plumbing.
-- Account PGROTATE_{ANON,FILE} in the MGLRU eviction path so the new
-  counters remain meaningful regardless of the active LRU implementation.
-  (sashiko)
-- MGLRU updates PGROTATE_{ANON,FILE} so the counters remain meaningful
-  with it. (sashiko)
-
-v1 -> v2: https://lore.kernel.org/all/20260706122954.3552990-1-usama.arif@linux.dev/
-- Sample via the newly introduced lruvec_page_state_monotonic()
-  to fix a 32-bit delta underflow when the underlying signed
-  long wraps past LONG_MAX (Johannes and sashiko)
-
-RFC -> v1: https://lore.kernel.org/all/20260626122009.75334-1-usama.arif@linux.dev/
-- Document in coverletter and commit message  how the read-side vmstat accumulator
-  improves cost-model aging across reclaim gaps (Johannes)
-- Fully decay the cost_accum below lrusize / 4 using a while loop (sashiko)
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index e1f46a0016fc..b40bc4f6fe4a 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -931,6 +931,8 @@ unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+ bool memcg_stat_item_valid(int idx);
+ bool memcg_vm_event_item_valid(enum vm_event_item idx);
+ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
++unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
++					  enum node_stat_item idx);
+ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 				      enum node_stat_item idx);
  
-Usama Arif (2):
-  mm/vmstat, mm/memcontrol: add _monotonic vmstat readers
-  mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance
-    cost
-
- include/linux/memcontrol.h |  8 ++++
- include/linux/mmzone.h     | 15 +++++-
- include/linux/swap.h       |  3 --
- include/linux/vmstat.h     | 17 ++++++-
- mm/memcontrol-v1.c         |  4 +-
- mm/memcontrol.c            | 39 ++++++++++++++++
- mm/mmzone.c                |  1 +
- mm/swap.c                  | 69 ----------------------------
- mm/vmscan.c                | 93 ++++++++++++++++++++++++++++++++------
- mm/vmstat.c                | 13 ++++++
- mm/workingset.c            |  5 --
- 11 files changed, 171 insertions(+), 96 deletions(-)
-
+@@ -1378,6 +1380,12 @@ static inline unsigned long lruvec_page_state(struct lruvec *lruvec,
+ 	return node_page_state(lruvec_pgdat(lruvec), idx);
+ }
+ 
++static inline unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
++							enum node_stat_item idx)
++{
++	return node_page_state_monotonic(lruvec_pgdat(lruvec), idx);
++}
++
+ static inline unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 						    enum node_stat_item idx)
+ {
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..fb8c76289e02 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -194,6 +194,19 @@ unsigned long global_node_page_state_pages(enum node_stat_item item)
+ 	return x;
+ }
+ 
++/*
++ * Non-clamping variant of global_node_page_state() intended for callers that
++ * snapshot a monotonically-incremented counter and subtract two samples.
++ * Returns the raw wrapping value so that unsigned modular subtraction stays
++ * correct across a signed-long overflow (a real hazard on 32-bit) that the
++ * clamp in global_node_page_state() would otherwise turn into a huge spurious
++ * delta. Do NOT use for non-monotonic page-count reads.
++ */
++static inline unsigned long global_node_page_state_monotonic(enum node_stat_item item)
++{
++	return (unsigned long)atomic_long_read(&vm_node_stat[item]);
++}
++
+ static inline unsigned long global_node_page_state(enum node_stat_item item)
+ {
+ 	VM_WARN_ON_ONCE(vmstat_item_in_bytes(item));
+@@ -259,11 +272,14 @@ extern unsigned long node_page_state(struct pglist_data *pgdat,
+ 						enum node_stat_item item);
+ extern unsigned long node_page_state_pages(struct pglist_data *pgdat,
+ 					   enum node_stat_item item);
++extern unsigned long node_page_state_monotonic(struct pglist_data *pgdat,
++					       enum node_stat_item item);
+ extern void fold_vm_numa_events(void);
+ #else
+ #define sum_zone_node_page_state(node, item) global_zone_page_state(item)
+ #define node_page_state(node, item) global_node_page_state(item)
+ #define node_page_state_pages(node, item) global_node_page_state_pages(item)
++#define node_page_state_monotonic(node, item) global_node_page_state_monotonic(item)
+ static inline void fold_vm_numa_events(void)
+ {
+ }
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 56cd4af08232..b4a357c5f7e0 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -502,6 +502,42 @@ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx)
+ 	return x;
+ }
+ 
++/**
++ * lruvec_page_state_monotonic - non-clamping lruvec stat read for delta sampling
++ * @lruvec: the LRU vector to read from
++ * @idx: the node_stat_item to read
++ *
++ * Returns the raw state[idx] value cast to unsigned long, skipping the
++ * clamp-negative-to-zero step in lruvec_page_state(). Intended for callers
++ * that snapshot a monotonically-incremented counter and subtract two
++ * samples: unsigned modular arithmetic then yields the correct delta across
++ * a signed-long wraparound (a real hazard on 32-bit) that the clamp would
++ * otherwise turn into a huge spurious delta.
++ *
++ * Do NOT use for non-monotonic page-count reads where a transient negative
++ * reading from per-CPU delta skew must present as zero.
++ *
++ * XXX: This helper (and its node/global peers) exists because we place
++ * monotonically-incremented event counters (PGROTATE_*, PGRECLAIM_PAGEOUT_*)
++ * into enum node_stat_item.
++ */
++unsigned long lruvec_page_state_monotonic(struct lruvec *lruvec,
++					  enum node_stat_item idx)
++{
++	struct mem_cgroup_per_node *pn;
++	int i;
++
++	if (mem_cgroup_disabled())
++		return node_page_state_monotonic(lruvec_pgdat(lruvec), idx);
++
++	i = memcg_stats_index(idx);
++	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
++		return 0;
++
++	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
++	return (unsigned long)READ_ONCE(pn->lruvec_stats->state[i]);
++}
++
+ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 				      enum node_stat_item idx)
+ {
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f534972f517d..c4364f0eb08a 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1024,6 +1024,17 @@ unsigned long node_page_state(struct pglist_data *pgdat,
+ 
+ 	return node_page_state_pages(pgdat, item);
+ }
++
++/*
++ * Non-clamping variant of node_page_state() intended for callers that
++ * snapshot a monotonically-incremented counter and subtract two samples.
++ * See global_node_page_state_monotonic() for the rationale.
++ */
++unsigned long node_page_state_monotonic(struct pglist_data *pgdat,
++					enum node_stat_item item)
++{
++	return (unsigned long)atomic_long_read(&pgdat->vm_stat[item]);
++}
+ #endif
+ 
+ /*
 -- 
 2.53.0-Meta
 
