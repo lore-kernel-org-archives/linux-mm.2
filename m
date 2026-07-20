@@ -4,100 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8345FC44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:35:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68B7AC44527
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 09:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 639936B00E0; Mon, 20 Jul 2026 05:35:10 -0400 (EDT)
+	id 5D38F6B00C8; Mon, 20 Jul 2026 05:43:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 573406B00E1; Mon, 20 Jul 2026 05:35:10 -0400 (EDT)
+	id 5AADA6B00CE; Mon, 20 Jul 2026 05:43:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EEAA6B00E2; Mon, 20 Jul 2026 05:35:10 -0400 (EDT)
+	id 4738D6B00D0; Mon, 20 Jul 2026 05:43:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 08F2B6B00E0
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:35:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8D787807DC
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:35:09 +0000 (UTC)
-X-FDA: 85008646338.20.0E2F171
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BD60540004
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:35:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CE5DXy4k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ABE46B00C8
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 05:43:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A1B521C0884
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:43:52 +0000 (UTC)
+X-FDA: 85008668304.13.0238F95
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D2BFD180002
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 09:43:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m5+uKxnt;
+	spf=pass (imf06.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784540107;
-	b=Kl4O+VsL+j3/N3YHPSz+7M6VpHiX1FXhf9vx+H4hX5A/Z2BxbnZQRR8rHZ7iQ0LTsWdPqN
-	6P+fRd4cVK/hdmmhkE4jakt71s+JathIqvOrZcpIQoCska/J1H/zBCT/f8G7kB/DXBB6ie
-	lCtwtGWO9IBh0rmoTPmu6jPWWllXiQw=
+	t=1784540630;
+	b=pfGlVGvISuIC+F7zbManxwZGGEE1KKDXwL4EKrMVr46uI60I29l0ZkfIDctyz1ufiiZIJy
+	IYZTPcAmEG+fp/0r0q94vY3zBc4py8OSk8K+2GaGLXUuFOxmjbkpTYXAGg8OU4WM4wMmGH
+	AaCwZigZp7R8o7rUWux419UqobppxGE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CE5DXy4k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m5+uKxnt;
+	spf=pass (imf06.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784540107;
+	s=arc-20220608; t=1784540630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B6JaCQcV8O+LfMG8OzzqYe5U+TWtCj2Zt7kHSq9d4Fw=;
-	b=nsw2HP+Q7eYIP84QzLIU74NML3uHahYXDw9zzKMS0/iO5t24N0xQxOsF0yQL/4rL8pdijW
-	d2jeMZWIB7y670HGLTAJAQ2otyuXqoNUMWTmyGs3f+FjCWh9wbCqzMKCfCsrEGd7YGUWbd
-	bG1DlV6KFTNASSb3Wn6Ee/8QtPE5oPo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A55B4396B;
-	Mon, 20 Jul 2026 09:35:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3509A1F000E9;
-	Mon, 20 Jul 2026 09:35:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784540107;
-	bh=B6JaCQcV8O+LfMG8OzzqYe5U+TWtCj2Zt7kHSq9d4Fw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=CE5DXy4kPwdEQyYig4MniIz4zKm3a95jCEgF/pbnav0bNwpAoZoL7202DiwyHA3GK
-	 Y5J07MvnCijLc3v9yrxtpvcqt6k8nyHtxH62ZzcEpZlNG6sMPcVwpL85VyO+Pp9/fe
-	 UsYy5bbGfeq5KL7IBNYrO1BWwWKXZMhphZo8Fh3/SdQo7uBTK3V+wYpJDUKIWdLdtf
-	 USp6s14f6bVx2En1DaT6tsKmhB/R1hTYhrgHYdvur9auQFBO4NhPXu7L5bkjReWVR2
-	 3p2R6wmlxMdlmsK1bjZZ6cPsduVEQMlWjxyI6sxqROdVhYQDtoEp5XnRdKDTrXI8hI
-	 NED8/pNMIt+Yw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 20 Jul 2026 11:33:44 +0200
-Subject: [PATCH 21/21] binfmt_misc: document loader substitution
+	bh=kAmuH3TrSH/JKaELSX3UxD4gJHLMVKkSvtSAo6OO6Tg=;
+	b=o0QcB7nvwsyVrkk/P4bTzATGIuGsDk60e4WlzCDFvRwILyizxJCkSXgAt3U4lnyG1mfmQ5
+	U1JYlo0t7Wvfewgwwu8YTCha2+wd3VW48EsRKQ/CYG1+pKsPJYsxb5v0nY87WbqPEtC1Kn
+	CZQytjVWgPvPbt4u2vtOXBXEdj8mC8k=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8485b358552so10626364b3a.2
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 02:43:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784540630; x=1785145430; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kAmuH3TrSH/JKaELSX3UxD4gJHLMVKkSvtSAo6OO6Tg=;
+        b=m5+uKxntMmyeaLn6GQXzOq+Fgk47nixeKwRraMds2Ec7E1treMe5hviLYXcDLpky+5
+         zhPkAg6ZTaJivpL/azhTKTQt9xPofuaRxz8Jyf7BvOZqA+gkCQki/L3YyiNoKzIojUmD
+         a3wTMTN2BwTHmrSIlJA84UELscWMDAqBY2trKm/KE79yPI9BLN31p1+SYCPkUR+qwG3d
+         AXaIS6sbwGjy/5DExi6ZdSQJ/a81HWvBL+o6OejnDc96bvmwxJHpFKPZXV2XSzd6D+Qm
+         +VwHKURO7PIrpfkh0C40zkOPbiCQWut98507/WZ6FGhpz1+KDQDLWaNKZ+b4w41SqVM/
+         WIQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784540630; x=1785145430;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kAmuH3TrSH/JKaELSX3UxD4gJHLMVKkSvtSAo6OO6Tg=;
+        b=mB0xSR8fF2uJdFtsPDrftHXwQWGsc7nJXXSrtllSjXs4i8sGeoAPz0UMmytzTADrdM
+         JJ5CmbULUPrfhNHWt8ga4CiNdbVXYsCETEPHraNvoGNwDPspXpSzEBOTOESTS3OQtufZ
+         eTHP+Sg1kSbpewvP2SBwcp1L7FO38st8QlvdTgyh/YE/p/XaidgkXrdeC+eGrttBiesj
+         rCBVyClOF1wed+Y5nDeVp6xsUGK7v3PI2Ph4Htqtfhiehgi6Py+9SMQm20yLY9eNbURq
+         3J95zLAH3/JHePymcjnlCoLr6flZ4xtB/eqIRrN6Q6tI7u0VEmLif0EsK41HvFST9quf
+         esag==
+X-Forwarded-Encrypted: i=1; AHgh+RpatXAn7ksl77aUDz8x2DHJdEUBH3/4rDuce1SlBvtXYAx6Li7ASMEpFtCm2kJ8tIXqc3ZuxADBTA==@kvack.org
+X-Gm-Message-State: AOJu0YwtllFdm79FDBJYbPAxmPzUKxO0jQ5XPEs7YTkdCfM+NwOkxhb0
+	orzSC+3LNcgD+F9f3f05P20grLhKRBmiD6qJRIiMfvZ3lajnU/N0aPB4
+X-Gm-Gg: AfdE7cn7oR9DvP9rBGaFob4DvhwLb4HGlXomA9zyhiA1TwacYTM9yORFcg7+Wv7v6iR
+	wK19waKRYju8jkQTxbOkp/vSdb27dME+41110p2u7uABifD3OOj4ew2LLDOZ5WUXVW1s8DC53zp
+	rIKpS10TkeSfi4GPtcN0RZBkhWbjqbQRYLat1I5T9eGGrKLLe81lHn8d42o37t7AiD1qb0//OIa
+	ZjhNn9wW0Ynl5MCfMpCD8AF/5yErPq38FLKxl7PJfdcPjXdvcuXH/hyraZrLFahcfdIRMaNTZRo
+	KSwFApi3a95AaYCyNwae/bIXYbR8wjFHVDqlW4HdN6SS4MMtG9g1wma6QE5Pfdpf9tKvLxPhcW7
+	04uaT0EvqRGzzi2pXv2/za32oSi6ty+os0pMwn6PIbkLNT7Yxw8UfEPbDZBDB1YjZGQJ3mOBBdC
+	BEiey2ZQ9cxfYPHAhyppucpRHXuVU=
+X-Received: by 2002:a05:6a00:2ea4:b0:848:5010:ad39 with SMTP id d2e1a72fcca58-84c2948a214mr13304609b3a.46.1784540629544;
+        Mon, 20 Jul 2026 02:43:49 -0700 (PDT)
+Received: from localhost.localdomain ([112.65.87.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2ad89d0csm5369285b3a.6.2026.07.20.02.43.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 20 Jul 2026 02:43:49 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: gutierrez.asier@huawei-partners.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	npache@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	daichaobing@sangfor.com.cn,
+	wangkefeng.wang@huawei.com,
+	zengheng4@huawei.com,
+	kasong@tencent.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	lianux.mm@gmail.com,
+	lianux.wang@processmission.com,
+	kunwu.chan@linux.dev
+Subject: Re: [RFC PATCH v3 0/3] mm/damon: introduce DAMOS_SPLIT action
+Date: Mon, 20 Jul 2026 17:43:40 +0800
+Message-ID: <20260720094340.31733-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <a168a9f2-953b-4ecb-98ee-ec6b27f4d963@huawei-partners.com>
+References: <a168a9f2-953b-4ecb-98ee-ec6b27f4d963@huawei-partners.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260720-work-bpf-binfmt_misc-ptinterp-v1-21-ddb76c9a508e@kernel.org>
-References: <20260720-work-bpf-binfmt_misc-ptinterp-v1-0-ddb76c9a508e@kernel.org>
-In-Reply-To: <20260720-work-bpf-binfmt_misc-ptinterp-v1-0-ddb76c9a508e@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>, 
- linux-fsdevel@vger.kernel.org
-Cc: Daniel Borkmann <daniel@iogearbox.net>, 
- Alexei Starovoitov <ast@kernel.org>, Kees Cook <kees@kernel.org>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, bpf@vger.kernel.org, 
- jannh@google.com, mail@johnericson.me, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3659; i=brauner@kernel.org;
- h=from:subject:message-id; bh=0j319FPLkEeRXmctLHltffws9S9bb83D0lCdaC6N404=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTFvm42NDdgDVKvt+Y5aFrkKnDmclOYb3Lyq0un1a5eS
- 63TTNbsKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmMjDrYwM72cvrFp77PQ3L9e/
- 7G/+dMVN2tK93EP7xyEbRlljqxVXvjMyTEjcyDr3YdtR29kazf0bFFxeO/wUmfxUfNfKq9P28Xx
- g4AEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: BD60540004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: ze559mtsgk5jdm57okstmq3ekdj3w335
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1784540107-663597
-X-HE-Meta: U2FsdGVkX18O9vw1F1dYsakIXFx/BjbuYx+e651X/JF21rRDDMKzUiyXjGyq96uwfRt9xotP7nMQLTBUj5B/LG482YRQp4c0nzQQ+vBoM5fshBA9n4ZpV4nmQ+p5YmT4kEHbVLKGcokwBrEg3uR3pSd0dk7T702X8Q9/ZsK01eoXxf6artM/skPGa6P/EOn9+9CRkYo9GBfkoiBA+8AIEWrtAutuhIrjejteBClPaoJLhXk6YLEQBQ8iZ2qdMvVHrRz5UfkUUqH0gcXTy+YiUqP6aofeIwkVlAuVGCyuMALX7jUzi7NttTBLUD1CqYLvKPe7O5XDWSgTuu9lFX/d/SVTPr/1Kfm9acHwMP2uRa3wGwOK7HkL7erbaHEl1uCoX1zi6zrnx2HTQIeL4nuz2PdBWlEu576rg8FT2UwYY6TiWi0QvF7ahL8aIdkSKFnsjdcuzvLdIG5b9Ee+rTBGFgCbDrJtYi7d76j4TUNpZE0s3vWfOZLUuM2olHqcIedqt410tUCnFN0J5wgp2iyvXcQjLvbFTRrZGMjMIOOZlGoSPSLe02+V0mLDdCux8cwOsooRPlVPKG/3IvY+mLxKlzmSy3cA8d44LyEA31NJIu+7s3spq0cfsa75E+hvmQT13y+i+6GgddPPKQog3arvWwRMk9avKNyjJvDq/xToGUwBnBAP8AGtiQakNoWX1LG7Io1qfld3x9opGGEcQMKOcpbARNyLRqN6mVfvqftPYNXFaFc1KmO6mv70MpGxDQx59/32SFnmt0gQtVIO4mYAU6PNZVtjKBRpy9vtUWS9ciLvtARnx8hbjfwCMf1pwdNMKfLeRx+KabStem9hpFswxm7dIAcdvbrN+d3cOc//3AEeuoPYvxPxT8rm2BpiEB8g+qOZUSZ7oDXKpdgLP3eYxbgbkCkWKacsb6vXBjS7UNIuaoZ8kIxUv1THHZBShXJgwgS47nwEkO+6801id9J
- KX+1EPcv
- yn0ekv9lIb54JdfFUc/9NRYVg+z4H5wfF7/DvyX9WJiAeLwqF9IgHJgZaHfnuNaDx+05LNoU/EUXkrjq/k13vsDTfS0iT5R57HS3Nu3t1qCbKjtMy4CBBzjgvh2yZfyvJF3dQAn0HlJi660YgwiY4mzKvSOhCRZeGIsAO5VKPyaWmzNJU7ibeFNkprYUZ7L2SQNfIcllvauRJ6ItcYlSeNABm4yVB0y+g6i0Eqa7B6uu+C4FekEANT3GPNSEpSmyrJWmWYpNWFeMBA8sP8WlF5u9eAtiFBrW5LfZZPrj5w3Ex9PqEbzZaOj4M1B8fySqjzMJkt79T4y1OxZw0rHl4omSNun5HpXF/X0qeixmz1v82FGRc/yblETGfQw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D2BFD180002
+X-Stat-Signature: 357s3fdez7sx3tje8tunk1fnp4h3nhwh
+X-HE-Tag: 1784540630-620562
+X-HE-Meta: U2FsdGVkX1+Em7+F90HURjoAcYieGaaGZDJ2bA+0Qq7MIsQOSJTjgZlvONFcLLQ6wSRbBlqyi29IFsPFcdUOCfvCZpq0LiLdajR0OabiPdCAy6NslNPl4++Fu5ygGPveftR3Dz3iZ/kfLhpGFyaUU2GG8qNcUHZpk3S/ELfqGsmgxFKV6Gan9N8Ouq0M8bitse5aEaG/41avNcrn0AI/2As1e/XBi/E7AD5kQy5CqgRvAZv41WF4fR23GOK5jGBsKFOfZHSzNAbBD+coy6LL4y0F5pmusBuVlFuEu3KiJ/1Hc5pr8Bkg3sFpvzbhiFkr6i+5/Z41xocx/K+6T91BHprV1M7l3wR9li0GMdrlnQPSKXDSW9KqOSZt7ZVH/unH76uPwrEVU1/+PGsg04tYed3mH4SclsOgglSme1i9KevjTVYAEoAgracLI4BySsDfrAev0/oVx2rkF0n+1Czvcerb4VGAbB0db73EEMKlm1FLf1mYMxQZ0l9ttMsLjpTgJdE3GejkGyLrVtAsqPQH401Pa/oIjJdcDDkELwFyqU433h5oUt80Jiw8W99MDYI2Gb6F8yg0ziXvJYBUQARGcJaN4ySpn5Q/lnpsjAGUXnJ8l+tjOURpVmtkQR18+CD2JYip5j37sF+94v+6AO9J5tLqKBEp4V70t216zRUkIDCbeni8IxXhIVm5EOtLq1Hw9qWwVFOXfGkSC7HZTCFdfeHWjj9o3SFjvbJfbqab09MXsmwneYNrAIJqdyYoJTqXX5p2zIjCHAnAlurogAbLhOBH37YCcqjR8E8EIi0E5SgT64F4eT7GWz5IToujogk7Gzo/OO/SwwucCNBsV3sNj+rYw32KDdVpr8omPad+ZJonygs4M3OnUYsH+KABLPIL3iYaJn5M6wchI20pI/r5sGgvOE+2+j420S2ytd75fSNrOT7HBIKHhMfgtGChSD6IYnqnqmH0VtuSl/2riNZ
+ +Qxqt5Be
+ CANLazGHH4DsbrV9qK44NiwMpNrPIU5/p9znqPdCci5tf7v9eBG4IqFpwd9E6didexd9wZeDEewwelraeUJ53NeZeT/i9VmaXCV3Tx//TAR4Le9AD38rnepOZwG/jIZexwTtQ/RJhilwIjueGP+ssgzCfwTayWox6CejrbJZx6W6u86eRqeH0zWYCdMJlcmCLQrmB78CrKJSIQsSm3ujIeNmSKus+FBVswqvglxbaJ+XcEG7m4Eva+lG6NkUnt8uQZREnH2SVMC/bAtoql9dk66MdVLv6ypMHvxDs6a4/+sOblTeOiiEUW8etdGrEmN+i2gTU98mL3yM0NrPaRplpNVf91ZzaO7sY4/dAmfSw2pW3zAxBvQTS1A/iYAk3MRRiM/k8UHi/y7/zh/2ccQnupqWpJzYSfyUEmU1I6Eh15SyaJOq/THaNusjzGtTZSWMQgNfgCtyQN3GpngswQ5H+YomAX4TkZvV0bLE8C8QoqBzYijZ4gyfbeBuaxBUV9fgnoEytZTCAwSUrbNs9ajABW68oawsYejByTXAG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,83 +142,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Describe the L mode next to the transparent one.
+Hi Asier,
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- Documentation/admin-guide/binfmt-misc.rst | 50 +++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+Thanks for the quick feedback.
 
-diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-index 8c861bf0c56c..b468a148cdab 100644
---- a/Documentation/admin-guide/binfmt-misc.rst
-+++ b/Documentation/admin-guide/binfmt-misc.rst
-@@ -100,6 +100,13 @@ Here is what the fields mean:
-             ``AT_FLAGS_TRANSPARENT_INTERP`` contract. Combining ``T``
-             with ``P`` is rejected: transparency preserves the whole
-             argument vector, argv[0] included.
-+      ``L`` - loader substitution
-+            Do not run the interpreter on the binary at all: load the
-+            binary itself as a fully native exec and substitute the
-+            interpreter for the loader named in the binary's
-+            ``PT_INTERP``. See the "Loader substitution" section
-+            below. ``L`` rejects ``T``, ``P``, ``O`` and ``C``;
-+            ``F`` composes.
- 
- 
- There are some restrictions:
-@@ -246,6 +253,49 @@ execution is the address space layout. The interpreter occupies the main-image
- position and the program lives in the mmap region.
- 
- 
-+Loader substitution
-+-------------------
-+
-+The ``L`` flag turns the execution model around. Instead of running the
-+registered interpreter with the binary as its payload the kernel loads
-+the matched binary itself as the main image and substitutes the registered
-+interpreter for the loader named in the binary's ``PT_INTERP``.
-+
-+Because the exec is native, there is no dispatch identity to
-+reconstruct and no contract the substitute has to implement. A stock
-+dynamic loader works unchanged. The argument vector is untouched,
-+credentials and ``AT_SECURE`` derive from the binary, there is no
-+``AT_EXECFD`` and no marker in the aux vector, the binary sits in the
-+main-image slot with the native brk placement so ``/proc/pid/maps``,
-+core dumps and perf mmap records have the native shape, and the
-+identity is already complete when ``PTRACE_EVENT_EXEC`` stops the
-+tracee. So launching under a debugger works, not just attaching. ``L``
-+entries are for ELF binaries of a native architecture. Foreign-arch
-+emulation and non-ELF payloads remain the domain of the classic and
-+transparent modes.
-+
-+The override applies when the format that finally claims the file is
-+ELF with a ``PT_INTERP``. A matched binary without one or an
-+interpreter-less ``ET_DYN`` drops the override and runs natively. A
-+file claimed by another format is handled by that format as if the entry
-+had not matched. A format that cannot consume the override at
-+all instead refuses the exec with ``ENOEXEC`` before the point of no
-+return, so the substitution is never silently ignored where it would
-+have applied.
-+
-+A wrong-architecture ELF fails the whole exec with ``ENOEXEC`` exactly
-+as if no entry had matched. A substitute that is not ELF of the right
-+architecture fails with ``ELIBBAD``. The usual ``PT_INTERP`` sanity
-+checks on the binary still apply. But the segment's content is otherwise
-+irrelevant.
-+
-+``L`` rejects the classic-dispatch flags ``T``, ``P``, ``O`` and ``C``
-+at registration. ``F`` composes and is valuable. The substitute is
-+opened at registration time, so later mount namespace or path changes
-+cannot redirect it. As with ``C``, register only trusted interpreters.
-+The substituted loader runs with credentials derived from the binary.
-+
-+
- Hints
- -----
- 
+On 7/20/2026 12:28 PM, Gutierrez Asier wrote:
+> You should mention why page split is be needed. The fact that page
+> collapsing exist doesn't necessarily mean that split should exist.
 
--- 
-2.53.0
+Fair point.  The underlying problem I'm trying to address is that
+DAMON's vaddr monitoring loses accuracy under PMD-mapped THP:
+multiple sampled addresses share a single Accessed bit, so the
+observed hot set is coarser than the true working set.  Split is one
+way to restore fine-grain monitoring -- by dismantling the PMD
+mapping, each base page gets its own PTE Accessed bit and DAMON can
+see the real access distribution again.
 
+Split is not the only possible approach, and it is certainly not
+intended to be "the opposite of collapse".  It is just one concrete
+proposal to start the discussion.  What I really care about is
+whether the community agrees that this monitoring granularity problem
+is worth solving.  If there are better ways to address it, I'm very
+open to that direction.
+
+The RFC is as much about the problem as it is about the mechanism.
+Feedback on real workloads that suffer from this coarsening, and on
+alternative approaches, is exactly what I'm hoping for.
+
+> Could you add v1 as well?
+
+Good catch, will add in the next revision.
+
+[1] https://lore.kernel.org/20260620203915.82947-1-sj@kernel.org/
+
+Thanks,
+Lian Wang
 
