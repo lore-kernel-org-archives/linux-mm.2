@@ -4,136 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6928AC44515
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6293C44515
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Jul 2026 19:58:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 141306B00D8; Mon, 20 Jul 2026 15:49:29 -0400 (EDT)
+	id 65A206B00D4; Mon, 20 Jul 2026 15:58:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CAEF6B00D9; Mon, 20 Jul 2026 15:49:29 -0400 (EDT)
+	id 60B366B00D5; Mon, 20 Jul 2026 15:58:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFE206B00DA; Mon, 20 Jul 2026 15:49:28 -0400 (EDT)
+	id 4D39C6B00D7; Mon, 20 Jul 2026 15:58:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BEEA6B00D8
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:49:28 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09296A02B1
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:49:28 +0000 (UTC)
-X-FDA: 85010194416.02.050C1CC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D81F24000E
-	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:49:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Qj/Mtlqt";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zMHoX60t;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Qj/Mtlqt";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zMHoX60t;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 1CFC26B00D4
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 15:58:49 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 91BD7A02C4
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:58:48 +0000 (UTC)
+X-FDA: 85010217936.06.B123DC3
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BF9214000D
+	for <linux-mm@kvack.org>; Mon, 20 Jul 2026 19:58:46 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=osandov-com.20251104.gappssmtp.com header.s=20251104 header.b=jF4Fbkza
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784576966;
+	s=arc-20220608; t=1784577526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sahaS+eSnRRANxBUZMw2i+88rgrcxJQtqcGtszC7BNA=;
-	b=uNVkOYXV2sh3nG9sMLYhmUe8PJOzrvb7XUeUfcJ5XopOdE7y5YEHKbxTFAmf3Ty78r9mkc
-	LT2yDwTOgj6+/mRUDI5ZRHSICxeTjK3qY9cOUJG80OAobfsGeIiEg/aO9/XbgQ+HnHw0EB
-	GOjQQDu+6x9zEwu4fDFSnFlPps9VkOY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784576966;
-	b=sKKaGAUKbxg/5enUI+/1eLW8O02QfOBuYp2PrL+/uPqEkbGxxGdO0wvP0Ahzxp/1ekKJ2G
-	suOULLrw8+egDXjM+9lssfwpDaUBq7yuKub6htK2iKWhJnMXLdhfzw8eyOFjHceD2QcZ16
-	RVhshFX+lFb7zx+Pcpn4ZCOVAsRrCxQ=
+	bh=HcwVCKMCsgSSFOSFUSeqAhsycxUaPnb4s9hCiCZnUoQ=;
+	b=figopr+yVlo0lLy0nh6jORTOwmLttnz325T1xkUSoxYUMvKFdN+aJXkJ20QQ8OPMjPpxL/
+	IXW2KsKuan2fBEuHp/0I6U2r+tNoRI3qo+lXIE5vGIfouGhgyj031JWdfZZrsuWg3mlQ91
+	F7UlTcpMDjui1QGOnQjOdREs4UBeqdc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Qj/Mtlqt";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zMHoX60t;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Qj/Mtlqt";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zMHoX60t;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 30D777A138;
-	Mon, 20 Jul 2026 19:49:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784576964; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sahaS+eSnRRANxBUZMw2i+88rgrcxJQtqcGtszC7BNA=;
-	b=Qj/MtlqtSzigt07XoXJd2XOTVfsNBPBYXpzrmvkziJ0hW88Lm1V0g9admG4giDyCkCo5fs
-	oMz3Ak1c5MVUn/R7pfdT45gDveCCTDY5a81I2cqM8641V50rO0hRILnfUki7o0SAbaQp0L
-	1YdLOovscQ8nsxlp1+7/IWlbk9JJXgQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784576964;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sahaS+eSnRRANxBUZMw2i+88rgrcxJQtqcGtszC7BNA=;
-	b=zMHoX60t53GzbqDKHxPsQ1jfQ6JSA4/KXRbtQ7KPCJe5ZTobD2oa7ZD31DGxGmvtDsu5kv
-	qt/V/0NPoGSwTEDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784576964; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sahaS+eSnRRANxBUZMw2i+88rgrcxJQtqcGtszC7BNA=;
-	b=Qj/MtlqtSzigt07XoXJd2XOTVfsNBPBYXpzrmvkziJ0hW88Lm1V0g9admG4giDyCkCo5fs
-	oMz3Ak1c5MVUn/R7pfdT45gDveCCTDY5a81I2cqM8641V50rO0hRILnfUki7o0SAbaQp0L
-	1YdLOovscQ8nsxlp1+7/IWlbk9JJXgQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784576964;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sahaS+eSnRRANxBUZMw2i+88rgrcxJQtqcGtszC7BNA=;
-	b=zMHoX60t53GzbqDKHxPsQ1jfQ6JSA4/KXRbtQ7KPCJe5ZTobD2oa7ZD31DGxGmvtDsu5kv
-	qt/V/0NPoGSwTEDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 34123779AA;
-	Mon, 20 Jul 2026 19:49:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hfILCcN7Xmr0BwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 20 Jul 2026 19:49:23 +0000
-Date: Mon, 20 Jul 2026 20:49:21 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Nico Pache <npache@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] mm/khugepaged: collapse_file() cleanups
-Message-ID: <al56t4zyjYlCl-20@pedro-suse.lan>
-References: <20260720142913.846902-1-pfalcato@suse.de>
- <CAA1CXcAk1SYopaokUGbT7RK9+gPNN2Jkm2UrpMaZWShjG3-z8g@mail.gmail.com>
+	imf07.hostedemail.com;
+	dkim=pass header.d=osandov-com.20251104.gappssmtp.com header.s=20251104 header.b=jF4Fbkza;
+	dmarc=none;
+	spf=none (imf07.hostedemail.com: domain of osandov@osandov.com has no SPF policy when checking 209.85.214.175) smtp.mailfrom=osandov@osandov.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784577526;
+	b=Yq7DPN0CrOzj8LUkWsJpiC4+TbGEgzy6g4PMj8cJUCj/X8nElPh2xvuhmUEmIRyh2YJQjP
+	YHddGO+l7lla5A/mr4I0/cywfMJQN9SME0ok1GQNyMwTqDDVdAuoZcrqGeSnkxPW2RVrhw
+	Dcd3wwlQIgO49LcHfMEN5xDKpBHN2P4=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ceeee8c46bso18850375ad.2
+        for <linux-mm@kvack.org>; Mon, 20 Jul 2026 12:58:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1784577525; x=1785182325; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HcwVCKMCsgSSFOSFUSeqAhsycxUaPnb4s9hCiCZnUoQ=;
+        b=jF4FbkzaPEKpAh/aZ+5LcosnfB9HUDNNzlgBpdGOJled6YfhaMWEYZBBoqZvMIEB43
+         UfGu3IBqBr913qV8cWNUjsdRMh4b4wXXzkJvXmznp9I6Iqui1Pl1PBxRGS6hlmA+4/ww
+         mqbGLPL1YaK7BCVlit7kXaOzi+Pb7CNiJHPk+3u/X5m5LPLQTSU+dCpVJtvLtQEXyr8H
+         wPpvwb2+GLJ6gMAepg+gNza3l1aBph30t3hXi6S9EwFtTHzdbzaPh/ItT9h8BWGExy4r
+         0HRBmrUjf6TU/JvGKEz8aFgdJsQUcx6zmrHsDACe8j7qgUeBIU4I9fwQxqD4uATX9Ufg
+         z7tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784577525; x=1785182325;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HcwVCKMCsgSSFOSFUSeqAhsycxUaPnb4s9hCiCZnUoQ=;
+        b=aJf6dbyHoSvFef1qZr7AiA5FYmQTEvLPw7al8gEe50hU8L49zUNdKMStEUYH4NCsPB
+         E8w1oP/vlmMls2yb1TS1ZQl+mloFWWpWT79NCzeD2NbOnqnDNTJNvLN1VGW0mcRnqgAC
+         3iTTd29VChQcodY7k0qBGXZN3O0eWnQ1g1yvHcuCgk9gAOe0ftK6Y1IZuiRXZGNbf86I
+         XD4x/rq04w+0KJC/pT6JbiqzWVachJ4TKhKoOFfq4Ry71TwIVBBvxJJe59kLtHJl/E3l
+         koW1RGM4Q2QDHlOOeAKxPDN7tH8lNz6P2n+dA891S6RNiVT6Gyf5xCP9GSpdUwFIYLzE
+         KxdQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrL7mMKB16wBwYIvYIaz3MW3LpNSXA4lXJdRCdtxVG4GdFODw7gfbob38G7W7tHamXaj1xk5kGVaQ==@kvack.org
+X-Gm-Message-State: AOJu0YzjpFdy0wr03TjyncUAin7b8zb2YYr9nh4PZ6CcKYJIW8bPoUz6
+	afUNmZ7sjYerHHaekujEw3cSQGvw5e+6/OFu5d+m8YU94qXgCeuFwM+aaLHhaOKw/h0=
+X-Gm-Gg: AR+sD133sO/IMDFoLa/jD1ENL135u7dJsaE7I5m/rv6qJ+cFou+Lg8JzjxtqxyU6xSq
+	/S8Os34oNn9B/gDLMX2VA/7LIe0VMBmIeLFtpbCOx5RUKY2w2JjHiBMknrX6X+2rz4dsIrW3+KD
+	TRBlC6WR+BpzMK1aLKos1wsoNF5XFizOoyqFab0EqdtkyWySWAJ3TlUlKl1l2O5KC7a47+BWB5J
+	KIUbowY2jpmcHDF4wk/v0Sf55vpUwGqwIBenkV8AQZlHaVWEa8ZK9+YjIzULWXMhqlt7Eh+JRJb
+	dUqKErB5RAjgE0fK7fOkub0rri8Ky2EYFsxKTdnEWpZAhpPv3TVylGmKXJXttwX5JieMadccks9
+	ERFy8yzW5V5BkdGET/AsaeizhkyisaTMAtMoEDEd4CmqtP0Dm3+N/ayuvIIb4170x1Z7SOmix7a
+	f7c4q25sPdCXqZDk4m
+X-Received: by 2002:a17:903:1905:b0:2c4:397:dd7a with SMTP id d9443c01a7336-2cf80472f4amr2950035ad.4.1784577525668;
+        Mon, 20 Jul 2026 12:58:45 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:500::5ee8])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3142a1e348bsm41134232eec.25.2026.07.20.12.58.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 12:58:44 -0700 (PDT)
+Date: Mon, 20 Jul 2026 12:58:42 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Ye Liu <liuye@kylinos.cn>, Hao Li <hao.li@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH RFC 05/12] mm/slab: abstract slabobj_ext.objcg access
+Message-ID: <al598nIY_tliPubo@telecaster>
+References: <20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org>
+ <20260715-b4-objext_split-v1-5-9a49c4ccf4c3@kernel.org>
+ <976e4d7b-24d6-4047-a405-e86c2feb45d3@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA1CXcAk1SYopaokUGbT7RK9+gPNN2Jkm2UrpMaZWShjG3-z8g@mail.gmail.com>
-X-Rspamd-Action: no action
+In-Reply-To: <976e4d7b-24d6-4047-a405-e86c2feb45d3@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BF9214000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D81F24000E
-X-Stat-Signature: ixwmps11ajx59og515yzyojik5zz8tb4
-X-HE-Tag: 1784576965-456690
-X-HE-Meta: U2FsdGVkX1+qYXzzIhjH2p2yU1yRPDpD0r/GjmTfvA784HMaakWJHttvFe5z/x5B9a4fSyYJgzY1ds50qFNcVtjSwaFQGWKtyVpwbABqFogSb/BI6WDW4Gg8wTuxDazPonDtIW80eq5bw0DFTBa9orS/UHoH8UX8ke4RMqn7ZoJCaIgrpvPZoqEyTD0hr3jDeJFLRyRqjfBc8AHAlulLrvNc2JXVIYtshdO53zLecVCeBiHt38/liXaG/PDdYiIHASdLnpVvCb0qoQKnWFr0A75SHxGLQTAlzOU2S2J9e9f4twpFTjpItpTROU6+1LzYhz6xQf/u5dCNYWxjrWOn4imXW6bRO8oIIgmw5cfPulwB3gXEO4wotRW2ErVbsDNO2O/I44Ph9BR86zPKJDnFWsB+VBpa8tJY7fQEz+9yuZJGDlgwG4I81X2lIUq8b9evIBXWPGvXn1nOkOGXrlGL1RTFgiuu4ReU4fBLRYaB0wG8DqasTtVfSP9WHm2RnJE7o9+hg2scICzttcz/UOZMarclmIDPB7JRhZbteqbRatrbRXe1KCJKTvmv79reLfYuYRK83AevJSJXQirQr1FXh6RZ7pBd2ZK4xQQ3oZh7nsMguxXqw1toul/0FlPCegtAztIvmZY6XpmE8WehmJ9aV2FW8dzeyqCm8zTG22dC2mWe3iWegPGOQa7GMsQnptJuvajnuN0sRzspuHMzyclZNToGmh88cLqeR7pRzyRzlrF5ri4EsPIX4YLhbyzEi6+QgaSXtFfMYuJlW2c4FkVpdfMUBYZliqnAPAU5pfB2htrXeMuw0xyaItqnX49quu6jViTbjCrn0hJ544rvbPvBCkBSe3Moq0Vnzj1aw64uOeiUWXU1QSEqrMcBAqH+ZyTWCcGcmu6wCM7gFZHsPFks5LeK7wnKBENd8tuNZ9nVWa5O2HJfJxozAcHHb+Zh4W5mURzrMuLF+OBXS5Jb5ny
- R5wArBNv
- +oktuaxPCZlcW/K1FyB2iLg61kjW6U7IbncOZj2i0athI7bW1tRPARG+qcxzPavxc96lYBww79N02TxPKR+E6fmzlNt4kJD8jWnohjzmcLL+Hn4lrid8gM5Qy9jBkEWQY7BYxMCyQ3BPCwX4f+z2obXEmEHl8gVSVq96c46yu+1SS+khiqQCrKR4dRvAi5M5J+ZhL4iNCBnJ9XClGgqMrfhLpaGq0ZEhTlwn/JqOkqkmD3pEmRadaKXC155WR8MACBxb0u2DFRYH3636vo3EO7VwtGUPk6uMxBaNm24ANMA/pnxY6C/5EdyYZBfeOe05C9He31s4vA1/Q5Kpbbi5WJ4ebcdLDlC+yAdl2YYk4LqbPs0vbRl3WRTE2JnzM6VeAhHx0XIHmBCTuH4qN9caLh42JcA==
+X-Stat-Signature: kz8zpjgjgh7mzn6snh7sipb6t1hxztmb
+X-HE-Tag: 1784577526-248471
+X-HE-Meta: U2FsdGVkX18w9g7kv5WsWHn8e0YRkeuiDn1S76FuJin75jUpvdFHoN2KcVz2SYSvjDQ7aAClPffTGeFYPGeRqQXGX4Y1WLPXK9LR7N1ZtTKQb3nBRDUL6pOgeWE0dGVza+hrRsqcLk0Bdy/9jA0GfpdIRpP2CdLUEQP22oOTEd0WwDt7S5iTPRdQgAn0dFbrOZ9J5XbuIDKeAZggaZYEnhhre0xFeueH7bjKHASPnxq/6SnfLeGl7wkBxnH/EF5LCb13KvQgZtbrPxewb3cJ4UjeMhWe0plj5MaWj2Ig2c+8o6nvQ9m6dr/bxIeoxsbaijgegKwYGvhmPlcwoh6w/OcsLviSyMtO+tQ5sQNx2Jy90CV67F7+HRLeVpa671FWcBSI5fwN8OwvYBXsd3pZz0pR8vD0mgv+DtUuA1Ep9lDw5g8Xhx3wLocfJhae08BOzWnQ2XEiOALq80eBwXx/gtJ9dMFObUmu+mq90aPNaexPylk3pCEymAkvofBgfUmZmtZVU+v6zJfNrZOzTeIWgGjkTZfvuqhQOJgKHJct6XcKGAxE/jUXn3Cx8eZHY7uGLyvU/4XMvHg9WwW5cpNzWUCTIxx1+Zv1ot0SsbOF0N7oAVnH2rK6Sw0CQvl5tVPJEJlaXqgkSqh+3LlNsLClwCvv62EKH4F2WFR6ec8dv06+WLye/ETuxlEmVYoLgerELP8VEJXGTuw+veDGm0JWwmQCKFCKrlZWQgyDcQn1UwZUHjDI3OZoUsnPvzITozZFO4g3XPlpMb6pKP7t/KpwNYQzJmzozWhUAKj8gqSRmVa0PVbISsgGY+ms185s1T4I9USazZxUzRDp3EY6H289/2/90/a3TMqJiUm529f9AhHdR9oXMtyAd6+nHpVqHPFDX9oyfgi9/iG8tf5mAxKfYjuUSl3WyE+nQiGgrT4ev3cobWq1RkUb1Tk9no3tvc0llQtqDtfmDHq6Zke1hIY
+ iao7lEz1
+ XHBhzJIFTR2OFuuUC0D11FKb9fsc4tYA0gu7K98M8q8BcUXpqEG3kA1m13BUYALl/k5wbMPnOY4iR2gv9cR+GAkS4vZ/p3CSM1E8BG8ddn2KTEgjOVSrxBQjGYi3dxHBCgBG3YZ9u7lNTB4hLHcUg3VQuBLoXxRiGBMEu/6H5BKoKTg2/tJU79VRv27z19H88nMFTvRCIiTm3NAF2qoj4NaYeY4sV/q/amjYhWCBwPFCzpM6g4+4acQz88WASfqBI+RWhBqlA9UpakWwE3wNt8dqFmd5yu1bVgY4VToyWLY2+S9lH0MJ6rk/LryKgZGDRnxoV48eQN8BI/CcogfOMRdB2eC+l3D3+4kEphaM0WA5MN3zFJ7akUT0zd6OvGYGi1CkOfwlNQ43lyqog3wHNxmVAwM40uwRFeNz3pd3WIJd9ZtCGKKvBRkV90GUZXxVKVOGJI/pKHRVHRCT+sazLQTBwgKYceQqxH4wK6DNoggaUVAcrVZcteR0QH69ob3bkDU1/LUxch6Nqfslix03UDjIAkQATgMhtDaHN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,34 +128,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 20, 2026 at 09:21:11AM -0600, Nico Pache wrote:
-> On Mon, Jul 20, 2026 at 8:33 AM Pedro Falcato <pfalcato@suse.de> wrote:
-> >
-> > Here are a bunch of cleanups for collapse_file() that attempt to aid
-> > code readability and understanding. This is part 1 out of N, and only
-> > attempts to address the main collapse loop. The exit path is still a
-> > mess but I figure it's much easier to review if I send this batch as-is,
-> > versus sending the whole thing.
+On Fri, Jul 17, 2026 at 12:00:29PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 7/15/26 12:10, Vlastimil Babka (SUSE) wrote:
+> > In preparation for changes to the structure, abstract access to the
+> > objcg field with a slab_obj_ext_objcgp() function.
+> > Rename the field to _objcg to make an unexpected direct access a compile
+> > error.
+> > 
+> > No functional change intended.
+> > 
+> > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > 
-> Hi Pedro,
+> Hm sashiko finds [1] that this is breaks tools/mm/show_page_info.py
 > 
-> I have already prepped a cleanup series for collapse_file().
+> But I think it was already buggy. get_memcg_info() is supposed to return
+> memcg info for a page but in case of MEMCG_DATA_OBJEXTS there's no such info
+> for the whole page, there is only for individual slab objects and it doesn't
+> know which object so it effectively gets the first one. I think it should
+> just stop handling MEMCG_DATA_OBJEXTS, but that's a fix that should be sent
+> unrelated to this series.
 > 
-> I was waiting for my work here
-> https://lore.kernel.org/lkml/20260715025941.1571316-1-npache@redhat.com/
-> to be reviewed (and in mm-unstable) before sending it out.
+> There's also tools/cgroup/memcg_slabinfo.py and that I think has been
+> already broken with memalloc profiling as it assuems slab.memcg_data is
+> still a raw struct obj_cgroup * and not struct slabobj_ext.
 > 
-> Our series have several similarities; for reference, here is my version.
-> https://gitlab.com/npache/linux/-/commits/khugepaged_file_refactor?ref_type=heads
+> I think it will be easier to fix it at once to handle the layout after this
+> series than trying to fix it first to handle the pre-series layout and then
+> update it with every relevant change.
+> 
+> [1]
+> https://sashiko.dev/#/patchset/20260715-b4-objext_split-v1-0-9a49c4ccf4c3@kernel.org?part=5
 
-Ugh, this is awkward. Do you have any suggestions on next steps?
-
-I can try and take in some of your work on top of this series. But that might
-be hairy.
-
-This situation really does suck (I've definitely been there), but I would
-prefer not to drop the patchset.
-
--- 
-Pedro
+FWIW, if these scripts were in the drgn repo with test cases, these
+breakages would be caught by our CI and someone (usually me) would fix
+them up promptly :)
 
