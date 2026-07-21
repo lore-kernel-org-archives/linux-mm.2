@@ -4,102 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF27C44529
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DAFC44529
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 09:26:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9598E6B00B1; Tue, 21 Jul 2026 05:23:51 -0400 (EDT)
+	id 9AC3A6B00B5; Tue, 21 Jul 2026 05:26:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 931216B00B5; Tue, 21 Jul 2026 05:23:51 -0400 (EDT)
+	id 983B66B00B7; Tue, 21 Jul 2026 05:26:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 849E76B00B6; Tue, 21 Jul 2026 05:23:51 -0400 (EDT)
+	id 8C3426B00B8; Tue, 21 Jul 2026 05:26:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DDFD6B00B1
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:23:51 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C6750160401
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:23:50 +0000 (UTC)
-X-FDA: 85012246620.25.6D9C746
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D023B4000B
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:23:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="3yo5xc/m";
-	spf=pass (imf04.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D7D76B00B5
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 05:26:07 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7824A0467
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:26:06 +0000 (UTC)
+X-FDA: 85012252332.28.08164CE
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D98191A0003
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 09:26:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JGeNhTOH;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784625829;
+	s=arc-20220608; t=1784625965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8XzIw7gZRttLMSyjjTDa5uCrHYP0E7vjE31XbWW5ny4=;
-	b=V4LyGA5cICie/wjeohoaJ56ResJXOCHV3ureZjNIX7IdgARD2Zh4wJqxaepvYSK/9Kgf2t
-	22q1qmp3zpcZj+lkgYXENxJNFp+//4VhTUcUy7TBAGSOsGDR0a6CbMKwRj0M+al/ST+44e
-	4gZweTGx/jFc1efhR1YVQYhWHnSW56k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784625829;
-	b=Kla/JBKqM07Oi0dcmi4TzH8gOf7xIn5ADojJiFtTuQB6QT+Qi6a49tK5GS8Zf5syDGUCOB
-	vdU8muiQGS4c8wtpYNxivQ9ioNdhIYl8+VKg4gBz/iykOB7X6u8Orm2PqtWQ55ZtwwCbno
-	/WoT4U4IBYXw6XnfMY6FSwzs+bGP3Gk=
+	bh=vB+JRQVHlMG5MWvo+GPIUeB91lIMDz4d0A4B5NQYUB4=;
+	b=LbCkGjto/uX9rFbW60wxO5EHedI6v/XsFVz9eXcERsbNe6H+6GNsGMbvsLKxd3jkZOZVH+
+	BhdGi8BLByYfxbSdvSbMnKheneWR6Ue2kFQIuRbOPcVhHRWGrtLlm+FXRBOoayb9Up59iR
+	9TVWBqjnOLdQdlNUvry2OFm6fxOp5Co=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="3yo5xc/m";
-	spf=pass (imf04.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=8XzIw7gZRttLMSyjjTDa5uCrHYP0E7vjE31XbWW5ny4=;
-	b=3yo5xc/mSw5KaZCHUE1kDcQbJK/3R42b0Z5+IWLerLM5ObcWveJLPHtuAKwL1gRM/QBHGa5Bs
-	q0aYE4MqVHufVJ50Mf0FP8QC7yoeuz0c/TA9pguWMSY4eKbHqlIg9ZrwNL9wSRgR8IQPflktVXv
-	ahhzzZ0UJNxQ4aFdvHeeYKo=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4h4BXM26S6znTbk;
-	Tue, 21 Jul 2026 17:14:11 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2569A4055B;
-	Tue, 21 Jul 2026 17:23:43 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 21 Jul 2026 17:23:41 +0800
-Message-ID: <8a1c8c38-e89b-4e22-9b46-aa53b0ed30f8@huawei.com>
-Date: Tue, 21 Jul 2026 17:23:38 +0800
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JGeNhTOH;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784625965;
+	b=1cmoGaVjtdUqNb3JayvCAsvmytqGa1kC/7PGYeNNM+BqIrTD0ZG7H0iOSMuH0hzTnrBrB9
+	EHQmIXRxjWND5zBV9MEEtzeYSnvwkbW2odhxc8iQ2dDAvMvz+P1uoCfMH30WcjyctogR7o
+	F55FrsuRWy6Mfr38yvGxAEBz0kJhuzk=
+Message-ID: <c64a1eac-4127-4774-bcb7-b386860b2924@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784625962;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vB+JRQVHlMG5MWvo+GPIUeB91lIMDz4d0A4B5NQYUB4=;
+	b=JGeNhTOH+a/B8Oj13NkMY6wxt3WLgc8dgCHmbJys6SpwisQ/le7wFr9agOxoaW6+Aduta+
+	tuFCGwosAbVWHQk/vdTBCkc7GdTxl+PBRWiLRQtxtUijnQZ1Vbgjy66bC0j5xgr+HF2A4S
+	2R6uYsF7mCYhDyDLEpPzu01CNTwjQDM=
+Date: Tue, 21 Jul 2026 17:25:37 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 15/15] arm64: vdso: Expose sigreturn address on vdso
- to the kernel
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-CC: <catalin.marinas@arm.com>, <will@kernel.org>, <kees@kernel.org>,
-	<oleg@redhat.com>, <luto@amacapital.net>, <wad@chromium.org>,
-	<thuth@redhat.com>, <peterz@infradead.org>, <mark.rutland@arm.com>,
-	<linusw@kernel.org>, <ada.coupriediaz@arm.com>, <kevin.brodsky@arm.com>,
-	<yeoreum.yun@arm.com>, <anshuman.khandual@arm.com>, <james.morse@arm.com>,
-	<tglx@kernel.org>, <broonie@kernel.org>, <pengcan@kylinos.cn>,
-	<ryan.roberts@arm.com>, <liqiang01@kylinos.cn>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-References: <20260721081858.1169276-1-ruanjinjie@huawei.com>
- <20260721081858.1169276-16-ruanjinjie@huawei.com>
- <20260721104810-0a8ab042-2705-43e8-90d2-74e221f3fab5@linutronix.de>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <20260721104810-0a8ab042-2705-43e8-90d2-74e221f3fab5@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500011.china.huawei.com (7.185.36.131)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D023B4000B
-X-Stat-Signature: mhgc7qk1krfn86sxyxccx7qqhaaj11pt
+Subject: Re: [PATCH v2 2/2] mm: shmem: make unused huge shrinker memcg aware
+To: hughd@google.com, baolin.wang@linux.alibaba.com,
+ akpm@linux-foundation.org, usama.arif@linux.dev,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1784621804.git.zhengqi.arch@bytedance.com>
+ <889581093179462979dbfb5458620fcca531787b.1784621804.git.zhengqi.arch@bytedance.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <889581093179462979dbfb5458620fcca531787b.1784621804.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: D98191A0003
 X-Rspam-User: 
-X-HE-Tag: 1784625827-214179
-X-HE-Meta: U2FsdGVkX1/PZ+NxiA/cR+zGk/NUC25laOKYgZIlz4ZKU05zhs7UQcly1hHyF5TqgtevrPU2P8rL+w/Pm0bbq0dE4yeorxKBaseooYKHhvJLJrHk2jRlpzP9SPa5JSlzDkyPG7q2d7k141J9i1epgM2eoyTiLCKLGwOkp6c+QWbKLb0cqhy4NfdYpvq1rVfi4ZgekxJQEAKT2KCzTdR7u2J/RVgwgHXbuXJj+wRj3bAFI3O0LJ99ZffRQWDwGcv+eB8wFo6BwkFqjaLZp/POD5f6ChJiyt9XxawhxTjzYgaWm0l5zo9O81Rds2ljMYVNgzhtGNCM10WMxNhw4Wzc8OQKcuHnUXIXSj93FokPBQyczbLpBv4Z74nxDex/bbi42oBFhiokhCw+xDf8aiA9nhYlO1zF9tkZeO9GKyVc+C5n29EJgFi16NKfUiGieIz1dPf5CGnIqGWBM6y/jHG/BPxiQTYe0+qdJpLcow5yROr9tpkwfpesCxQRI86AC0WFerIf/5CqNKol8fu/5iddnauqAdNyFP9PvBfNhzBnnzRx3+rjgtPtAWYp/7dnJ2ToHXXO4Z2jt/IrouxbiTGwGgnVUbKFBzsvPSjO0MfJuBcd+kMTuj/uTLD6Gz1QwI5t6fyUmsSerUIAQkfQZ1Vr/gXhLEx4z6gYLs0XYAXiFHdYswO/ZoHz8VkqrOc7u2WkA8oSVvFKSeRPNQK0M3DdZlnsyI2wWJK7qNBlgxBLYFScAOZPiqIlH/y5kLXO6sgNvBUAF5LLM03Qg9kQfNiOPrgnZbmwUaYvVHB7l32AX/qVJlkItoFvivcg3iQ6/hlTJpOzFq8LKqQZZvgxDYA8LyX5KQRVWiSZn4+p88ArPbLnME7HVA6GimVx4YSF06hTjJ5SgOgqw6wiTdsWPl6q8VMK4geiGEq28SoeraKT0TouQR0zQMx4Ji6h5BGBQMiGHU9QsRmVU/hIOTFBZsf
- RDexgThu
- GdXhK6aUrHAK+XFdI7+UpPD9H3XirUvfBbfMdg/soGLH+K2C5Sh+77eT8j0UrzLBCwPsXCIABcA4OvyvmeQKFoPUp/+WMXZ6NOKheABMa6myzThfSI7Dzsu/d7HQn3CmpDdOF9O/zEbBqsh8zYDwp3zF3ap3XRc9ny5IrVM8lg9cK7gRhT6WEgcFdhMar8SlvZ0YaKVFdpgMdVH/DtNhOEQjcinXD04G0GPSNc4YpOIZUf272V+QAe41xqIl9E+aUEBcq/92T+6tn3szNQWVtGPbGTIjC1YpbXA++gjAFMWySmF6zb9hwyCJvtylnx3pGur9tKiTG6EyO1lwf5WCg6ijSh3SZ2gnfAF5TiCmTmg1SSoKUjBl8Vqvrzpjb1Z3OgxSB4VPk6bmjgHkFyJZHoq9Y5Q9Bw/BYv8ZcS/HkecOyyVo=
+X-Stat-Signature: 67jye8qyixqy3cuziq6iwnud8h7yb9bn
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1784625964-89751
+X-HE-Meta: U2FsdGVkX19xueWDlGuWoB+guPiVxR2JpnsILQMzc9eLn6/oppagt8Kib3esi61tnkEiptEfsmJNS8w57nrFlM/FiMOO2A6Ee/rsIqWjEe1P+x4tjvsfLa92zIdJdlloLPQyMuhI7B5MbQ8vq9d80m2tcbAmFLBCbrFpBevTG9YHeW0bgK/Ie8ia9rRq+6cxgZYXCgMY2gtU46etdiYbAb5BNI88/yiWhyU8W0Cf755dFmcTNC1BKPzQXJS19nhjzTQmVhhNkxVh0EeTOdRl3TkThGcS+aLlDZU/6pJoF/pXtX0QNNYlv5yD0b8NjJtBpZZJ1Otfd9dUnOSpGIBILYrEZUziGjLsCE6YN9IAyuKWvMzviIRfHT4xD6C3sCfv+mcCmpQ3iNf8g9X5FmpuQFr0ptlQ22qkgsrCHHWmTmwhDq6rQ2nw9JK8zv2ZHGN1sQK4VlaOEAVdNxeJnVM10JuNpClGtvysmpo3fYWmZdT3EUZ9B5QFr7RPZrRUxKVJd5UviBZT0R7fSGGWTr4WqwPp/kVqUGm1/73Z3skHwGPMD9RRtdOI4zcO1NlfIQ80YmA3IKFwFZzjKMU2CWba+qeKgjgnyNv4tVe83xbY48xsDRfAvVnvWOUWP+/tG+zQB+jldu7fKrpLznkhc8L92XqTBQUbHvbeyxZSAB34i0w4dosW/7rM+usfAiceUoS+v0BgZUsFmJ+N4AnqZLSrAYahJULNSLFGawvUWWRV8eVBdE0apS8CfIQRpICtImCXk0FtLqrNntKttlCtti5qvHKMcMltOgashYr2/fRbRzEGTulafSrW1baD6VwDma4vhbyMiiwytxBxhuyZqA9gjINppRf2TNPRAGSJI0HzszQvz8iG+P1TN2zbwk+dF1X3mPeeJHYfHHtS3VzA/m9nLXP9vs+bVIMi2Yh2ZqndZ2mHV64HHCbm9nROpIuOqgsWIguALehPNUaw03/afsn
+ DnftNh5+
+ DKdkyAcL++xrP1S6hM0B9mwjFEe4+ZuRS0gB+K67h0j9MmOUeLdRajkUirIHfYvimIjxfQZBuW6Vyk4ya0NN/M6iyn4z9ZN65zV+Zb4xyqw2bIMs46BovKMr28sCws6wUomR2A7mEd2Er3q2JuihvtUZ6IWqU4eRglzTFn6TwqLru02dYUS4tQRqB7FC4GMeTBDNx9MMEusm3rmtsWjbPERR/Rp/LhFUXbbCNVHghHmhIcBdQ5qcC4f9g091roUox2JVMvgf7aifRUVFvZ15HB1XHGOgHrl/nDJTC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,80 +90,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+sashiko left two review comments about this [1], but they look like 
+false positives.
 
+[1]. 
+https://sashiko.dev/#/patchset/cover.1784621804.git.zhengqi.arch%40bytedance.com
 
-On 7/21/2026 4:51 PM, Thomas Weißschuh wrote:
-> On Tue, Jul 21, 2026 at 04:18:58PM +0800, Jinjie Ruan wrote:
->> Syscall User Dispatch (SUD) must not intercept the signal trampoline
->> code, otherwise returning from a signal with a locked selector may
->> cause infinite recursion into the signal handler.
->>
->> Provide an arm64 implementation of arch_syscall_is_vdso_sigreturn()
->> to exclude these sigreturn syscalls from dispatch.
->>
->> For native 64-bit tasks, check whether the current PC matches the 'svc #0'
->> instruction inside the vDSO sigreturn trampoline (defined in
->> arch/arm64/kernel/vdso/sigreturn.S as below).
->>
->> 	SYM_CODE_START(__kernel_rt_sigreturn)
->> 		mov     x8, #__NR_rt_sigreturn
->> 		svc     #0
->> 	SYM_CODE_END(__kernel_rt_sigreturn)
-> 
-> With the new label this code snippet here shouldnt be needed anymore.
+ > > +static bool is_shmem_unused_huge_match(struct folio *folio,
+ > > +				       struct shrink_control *sc)
+ > > +{
+ > > +	struct mem_cgroup *memcg = NULL;
+ > > +	bool match;
+ > > +
+ > > +	/*
+ > > +	 * Only non-root memcg reclaim needs to match the folio charge 
+against
+ > > +	 * sc->memcg. Skip the folio memcg check for the following cases:
+ > > +	 * 1. shmem quota reclaim (sc == NULL)
+ > > +	 * 2. global shrinker reclaim
+ > > +	 * 3. root memcg reclaim
+ > > +	 */
+ > > +	if (!sc || !sc->memcg || mem_cgroup_is_root(sc->memcg))
+ > > +		return true;
+ > > +
+ > > +	if (folio_nid(folio) != sc->nid)
+ > > +		return false;
+ > > +
+ > > +	memcg = get_mem_cgroup_from_folio(folio);
+ > > +	match = memcg == sc->memcg;
+ > Does this strict equality check fail when a memcg is offlined 
+(reparented)?
+ > When a memcg is offlined (e.g., a container exits), its list_lru 
+items are
+ > reparented to its online parent. During memory pressure, the parent 
+memcg runs
+ > its shrinker, making sc->memcg the parent. However, the folio remains 
+charged
+ > to the offline child memcg.
+ > Consequently, get_mem_cgroup_from_folio() returns the offline child 
+memcg, and
+ > this strict equality check fails.
 
-You're right, the code itself is already clear.
+No, get_mem_cgroup_from_folio() should returns parent memcg, not the
+child memcg.
 
-> 
->> For COMPAT tasks, verify that the instruction falls within the dedicated
->> 'sigpage' range, since compat signal handlers use this architecture-
->> specific page (not the vDSO) for their return trampoline. This prevents
->> SUD from incorrectly dispatching syscalls issued during signal return.
->>
->> Suggested-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
->> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> Suggested-by: kemal <kmal@cock.li>
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
->> ---
->>  arch/arm64/Kconfig                 |  1 +
->>  arch/arm64/include/asm/elf.h       |  1 +
->>  arch/arm64/kernel/vdso.c           | 16 ++++++++++++++++
->>  arch/arm64/kernel/vdso/sigreturn.S |  1 +
->>  arch/arm64/kernel/vdso/vdso.lds.S  |  1 +
->>  5 files changed, 20 insertions(+)
->>
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index aea686dce3d5..a41d2b593899 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -86,6 +86,7 @@ config ARM64
->>  	select ARCH_SUPPORTS_SCHED_SMT
->>  	select ARCH_SUPPORTS_SCHED_CLUSTER
->>  	select ARCH_SUPPORTS_SCHED_MC
->> +	select ARCH_SUPPORTS_SYSCALL_USER_DISPATCH
-> 
-> From the subject and description I would not have expected this to be in here.
-> Split into its own patch?
+ > > +static void shmem_unused_huge_requeue(struct inode *inode, struct 
+folio *folio)
+ > > +{
+ > > +	struct shmem_inode_info *info = SHMEM_I(inode);
+ > > +	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+ > > +	struct mem_cgroup *memcg;
+ > > +	int nid = folio_nid(folio);
+ > > +
+ > > +	memcg = shmem_unused_huge_alloc_lru(sbinfo, folio, GFP_NOWAIT);
+ > > +	if (IS_ERR(memcg))
+ > > +		goto drop;
+ > > +
+ > > +	spin_lock(&info->lock);
+ > > +	/* Requeue the inode to shrinklist */
+ > > +	list_del_init(&info->shrinklist);
+ > > +	list_lru_add(&sbinfo->shrinklist, &info->shrinklist, nid, memcg);
+ > > +	info->shrinklist_memcg = memcg;
+ > Can this cause a livelock under memory pressure?
+ > Because the memcg match failed in is_shmem_unused_huge_match(),
+ > shmem_unused_huge_shrink() calls this function to place the inode 
+back on the
+ > list. This attempts to requeue it using the offline child memcg.
+ > list_lru_add() transparently routes it back to the parent's list, but
+ > info->shrinklist_memcg records the child memcg. In the next shrinker 
+pass, the
+ > match fails again, creating an infinite requeue loop during reclaim.
 
-If ARCH_SUPPORTS_SYSCALL_USER_DISPATCH is not implemented, then it seems
-pointless to implement arch_syscall_is_vdso_sigreturn() separately, or
-perhaps we should revise the title to indicate support for SUD on arm64?
+No, shmem_unused_huge_alloc_lru also returns the parent memcg:
 
-> 
->>  	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
->>  	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
->>  	select ARCH_WANT_DEFAULT_BPF_JIT
-> 
-> (...)
-> 
-> For the rest:
-> 
-> Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-
-Thanks for the review.
-
-> 
-> 
-> Thomas
+shmem_unused_huge_alloc_lru
+--> get_mem_cgroup_from_folio
+     --> folio_memcg(folio)
+         --> obj_cgroup_memcg(folio_objcg(folio))
+             --> objcg->memcg  /* reparented to the parent memcg */
 
 
