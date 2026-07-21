@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91F48C44532
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D002C44532
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 14:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F3FC6B009D; Tue, 21 Jul 2026 10:14:46 -0400 (EDT)
+	id 9A11B6B009E; Tue, 21 Jul 2026 10:14:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CBAF6B009E; Tue, 21 Jul 2026 10:14:46 -0400 (EDT)
+	id 978AA6B009F; Tue, 21 Jul 2026 10:14:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B99E6B009F; Tue, 21 Jul 2026 10:14:46 -0400 (EDT)
+	id 8B5456B00A0; Tue, 21 Jul 2026 10:14:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32E6B6B009D
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:14:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 964171401A1
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:45 +0000 (UTC)
-X-FDA: 85012979730.21.E881601
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 624226B009E
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:14:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3632C01A0
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:48 +0000 (UTC)
+X-FDA: 85012979856.18.AA3DAA5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D8146140012
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gSdt31W1;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784643283;
-	b=AjxP4oet33VY3mgtX5vF7p74tt9NcYFoyBDIr5v+qnDrXILfITvYRsq/Q7H50ePm/30no5
-	OJ6EpU2Pif+PyEy1A3HCiuaK+LK5p4LIC0RZArxoLIrprIHLMEty0gq1RTiy8Eqjc6OC+O
-	QR/TV3lqzRbzJzyy94tuXMFwWvHLnqM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gSdt31W1;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id EE1AF14000F
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 14:14:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CuvplyGD;
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784643283;
+	s=arc-20220608; t=1784643286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=duxkptqHCs8NlPAFgm0agkM0Ne79nLrUlXWxBx15U2k=;
-	b=HQFDgCG0ynGcNYyqXkPI+N42zg6KProUa5peOPXHrTh74h+LVkbYuPBMTeT5VMJFSyM5wY
-	MYOWtXXNlmKeqfUZ8vm7O0wMp5aUDIZ8RcNey4ggPg8F98fhOqL2AuDWuBqD01xP4UgezW
-	BRZjrL6Jio+PQuVrSKklRKPr6Y2K9C8=
+	bh=wxkLWep5VFtYgEm6sKvmi+7h5j3tv8fHaNY2zfaitRA=;
+	b=PujC/cl7V2zPGuAB4+CtocJ9yxOA8HfGrBe8PAnsllPH84Ozue6n37qNjxucTci73o0gbS
+	6FLLe1rfoPyNx0KpqMJVg/wFBV2+DKEm57FCGYjCGp/I5/VwQK7bR8Vzc5JR6x9pJhiKWY
+	YDgXb/EMab/A4SQnO/CKSCRN3lOUt8g=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1784643286;
+	b=RWqcvBzoJkPMsWIOclpnggSmJ0aEHHHfn6YdWRSUBIFw7K8hg3gO5eC+mijMGUZUTWimpO
+	zbCyI55/W0FEthFv0DlgnfFNlrqGyEsz+m3RDyhEoRjUxYq6bfm3rLtYWq4sZQSAUZ+4bY
+	EvlcXwqE5bsaOs1QMO+yFGSRlhPUAbs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CuvplyGD;
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 74645600D8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 84C1260204;
+	Tue, 21 Jul 2026 14:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECA31F000E9;
 	Tue, 21 Jul 2026 14:14:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E54C1F00A3D;
-	Tue, 21 Jul 2026 14:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784643283;
-	bh=duxkptqHCs8NlPAFgm0agkM0Ne79nLrUlXWxBx15U2k=;
+	s=k20260515; t=1784643286;
+	bh=wxkLWep5VFtYgEm6sKvmi+7h5j3tv8fHaNY2zfaitRA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gSdt31W17nVihKiXN+zywJvxfCcz1NRvt4sjbDXGtHJNnRe9N/yGaD5fC9MSwIJxi
-	 Rv4cXnm3PK356bgiea74LNfkr8MdD+1H+gMQcRQb34aOe9hxZX12zyAHtyZdU08vlm
-	 sNyWMrq6CYiBvjeAGCWKy3dKSX8w9wLtm3h1g+AqChnfic59F5T4vGufzbanrsNxiX
-	 wiLlE9Ajes5sokGmAHW6/xxw3dt0Vbcs2s81EbgKdbmD1NST2/qwSp0LICiDB1piCt
-	 gNLnoRQ+xkmUurpTwOZCKTRUb7P+nUH9qicxCGYPo8K+3NCDaEXWYaaKObtinsryiX
-	 pw2gKxUWq8f0Q==
+	b=CuvplyGDyiHknI6ZZQm/KoAxwwhS1a9bTYsgo72rx1bC6sBqyiHeSVFaF9xrMqZcm
+	 8yXTwJwtzy1Zrum/wIhcxLCl1dqkye8g4nnF/JGIFMuQPE6cfwnBqRWMDIVbyt9EW6
+	 P8dOx0VkIEIapmsHtOwvmbT+tG23t0/yl0xP1U3YKBcQtLXLKR/CzRs89ej8fbq1Oa
+	 SVlcOrX8dk48vC4MYSR7JLk7EPdQQ+lw0OVWO1I8FZpxrY5DvSWQhUwiSFSNiBjJkx
+	 RaDb+B5usm247fasankfgqS4/ehXng7ru8uPSVeva5qgiMbmldLw8Ft3f47Rm3ESw2
+	 yUx0ZshQGXwdg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 21 Jul 2026 16:13:47 +0200
-Subject: [PATCH v2 05/21] binfmt_misc: split out entry_open_interpreter()
- and build_interp_argv()
+Date: Tue, 21 Jul 2026 16:13:48 +0200
+Subject: [PATCH v2 06/21] exec: release the replaced file with
+ do_close_execat()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260721-work-bpf-binfmt_misc-ptinterp-v2-5-e57866e4ae0f@kernel.org>
+Message-Id: <20260721-work-bpf-binfmt_misc-ptinterp-v2-6-e57866e4ae0f@kernel.org>
 References: <20260721-work-bpf-binfmt_misc-ptinterp-v2-0-e57866e4ae0f@kernel.org>
 In-Reply-To: <20260721-work-bpf-binfmt_misc-ptinterp-v2-0-e57866e4ae0f@kernel.org>
 To: Farid Zakaria <farid.m.zakaria@gmail.com>, 
@@ -83,22 +83,22 @@ Cc: Daniel Borkmann <daniel@iogearbox.net>,
  jannh@google.com, mail@johnericson.me, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5121; i=brauner@kernel.org;
- h=from:subject:message-id; bh=k/hMy0kVcRHGLKQwOzJAwZZ8svOPTcyroGFEZc0+CGM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTF1+1nCTN6+O/osnQz4flezpEGHOwi/iliIjy/pFtfG
- xw68HBxRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwES8XzL8M1y2mVlcJIYpUKhA
- 4CvTE/2bGVu3PZn/8uHuzllsl1U/MTD8M5/ZInTAd59dmcSnf7X3P3x3PWHh+UFv4bKve49GW1s
- 0cwMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1262; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=lHTPa0Kuv7ZBQP62Z8DPWg8DZoMxaet8DMO+ZA80gC8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTF1+2fteMG09TlmvtEFxoyWx/1m3BJ/gNrvNXcoieiX
+ rXX+JJlOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZyMpbhv/djHxPD1YfvK6ct
+ nnJ5ljrjsQlndAsSm2/uuLX5yHM1hqkM/ysVP870cDyYVXDjqINIePWvYx2ml4sE51tJrU6pa/m
+ 6nREA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 7ntyzzygtgu5xch5gfebzf8895cyjqnt
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D8146140012
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EE1AF14000F
+X-Stat-Signature: 8bwc3omeyqguk9qqcsdcue1dsjwdfrnh
 X-Rspam-User: 
-X-HE-Tag: 1784643283-670999
-X-HE-Meta: U2FsdGVkX19gO+a/EmUrqwq5Lo82Mqrr42JzAdl3U3L8fKBKJQ9Q6mGi6ebHIziiol8C3PrtzgFz8EIUSvL5QmkC9czTE9Hmw2FW4WWeldxYYWMCVPjUGZHt65ipRLUSV4v5f4EiHT0xZKfnSwXqRAw0R2Un8+yweRzMfWHRPh6LQPJr6lNxPzAvGX+8dr9CZxQ3DunrQfCsKN61ucvcPkhhoJq/fFoe6aoNsXj7dCX8oAWMkibpb7I+skcno0AxUOcPuxAtK2+Oymj8LmlLHAepdMsXCBvOvTtGa+CPZyqPX3tvNbFnaHHlJ0xMlh6a8JAMQpIgB0A1AejmEJp/TJHn0dYblH+uLJWyJYhESJpxz3zdLUqlLO4u8FlbNEB6fP1VEc4hZx5PerIVlVQZcjvV/MZmQ9xLqtfz6AX7G/vtKqxzI+HumzoLIskwH8u4Ri9eJXfmINW9xrf0flgTj5QpjoNjtD0brltLnBlmeaoGZq97kWXt8FaWqknete9fLF8lGRS06Qy4GjC6O3ZpiNArBqLjykU4XDjCX0/NOjJ3950pjQZj2eyO6LExVNNPsz/kyHuuW+tZ4TjqIIOOi1PAEQAO6AJ797a41TdpE5pBhL89/X25RbMW/x8Updb7MQJDp93K5IWMbfjxpWlIx9oIXPdgLd6EdZVTU8lPJkgSySzmrcU2nY660L1UObFVW5eMhTZKBb5RZZy15zPVrS7bdxCohmEfOmJR/kXc/x58hN1j1ePwfKIMPvd/FQd85g8itkkOogdFfkAQ72E85n7G7LELkrXyKaQQOT0vFAtzqjXJJgJ4QZrDq9IZ1zOo5CVU7lRkwVADqD8x8AIkgSay1l6Z9gyDKYzCXohf/NBWjE4V36j1fvL5ZYGzJiihO2uNmNrnMpxYP2/3mtapNqLQX7RCBjCBbTxamLyShULZVZgLujZ++EDAkQJbfjIhxjXkxN/Kmn6xaA4cl8i
- VQGY7vDU
- MWXnn5GPeEOXj+ZEdLRK3lAh7fR6pAXpfDVcF8vb9AYakJNse/6fcRncka2FJfdqAR84K1UCSsO2jCWAd8UfJzrZ4e19R5GX7e08khnrEqtdM5twpuvQ6OCrVV9H24p9hHZo65BSrV3/g9B5JjXygaHGYzFMK1iQAHsA6/KjCmNbvcRSI4E0iR5Fwk0wrMVADMFBTjUXt4tLM5Iqh2VufnEjuz3rC9Rbw+I9D/Zlqq3UZPA+B9dW0oK+1xK4HYWw54uLCTxMOSpts7+9/+KNa7jBILhfDQRGXYyMNjEuVmbTjmrx3ZvMNjBzUaUhP8uN2OyUA69z/HfxxBxbS+jSm1y1d9LHjqZFhW3zfysasl3EK2D4yhB1xAriCI+Wwj5JFTRP6gM2AWkfc1d8=
+X-HE-Tag: 1784643286-939533
+X-HE-Meta: U2FsdGVkX1+nxKd9uN9UB4/OYDFZSQiBeuHHdez1MlBX3lggxf6GC25bSbpefZSARmf5s06l1o5eHVcvsbvBRkDsTdzgRDBYIq7JpKLCQjEMXI/gucaZ29Hxxhs4I3u7mZ98iObhlwagH86hv2gHxIm26H2dpZYFV+Ioli23WARtD09LlFkKhLgZ7iaDW0d6QkZajIInLKFHwKI9snUsXAtj3oTMlAGFtDpJ4AKiLSfTc1HoQULmNhXQncaLbuVizMH37GvMkoWTlFyYkgj2Q4sROysggO/jzF5KBpUuul8Bi80MUSjSz97UnfBu4IsZmmICRbtQr5Sg5zYapvLytrctcuzeI+ddt0pLm7b2YXh1UxieDgyETbTzWuZ3+kLjqBKFXNW7/tvMwUwvgax6xe7mprKHK89CMcDz8lftCQ+1cAgDG5DTLjZM9du0NlPHueaRAVicXUjM/uCcwhu/qUYzr8YxJi/H7qmvq44MRQaY2DITF1HOMYUdqjqCONzWPbSs/S7WJqmtA8pkPaLN6K27KbWOwg/JR2iZK/rTSZ3aJLzjtbkVO0QKMltM/fgNYeykx3AhqJHl7x3HeTqhtDESv5eIzv5ChIgv6uxbcS7aX+yPb5+bUVwSStudaCAfaTubRZM/ewR3GPvCzzhs34Un5cjRgYNOnUbwIb/N1K1USxpiEMj7O1vJMsWG44dNf19Y/HwJlbvY2WDV4Nhvvtcas8VyKamXoARvnpXqVexlt04JyPDgg8yRj+Ov1q+DErYFC1wG1+Ki69hTVRe5lTkk5lsGCJcpIoWeEOfKZ7OWqb5Jsgwk+gydaE4Q89G018XJKjij6UKJDpDUf8vndXvHZfOicEspd+DTO2QKCqmtoCs52HCqQoHaA6DlYBJ6dgsrCy0AWySvndDbAmC5RXtdiYrNtDFUUhWY/9pgQiHIMA1sPw4Um9+15Q9NjFKujtQnZO2VPeXQki66uER
+ FJQcKFii
+ IgOCH7WobTdnKagxRO3uwESq4gD76r6EwbhmE1TUsTfPFIk3SUxq+4yG2/Sx2SZ0djmzwSMOJeNI4nZvUAuSjn9QendnSgEw35zkeN2gsUI+pyxmwau+sBaMmx9kleVbLk+eiL/qvngLONVDenN8CG3JTSHngKOJQ67sW3miUBftpncQaTBU88Y4uxxLuz1iPbihgWRkbBj5XetWa36LjMATgsA3/aFClwH0y9unFlNUF331bgrxaAFVnyN2Zu0UDuPfxS08kZGNXOiCIKub4NgRyT4UZX1X558IvWz8h8YMxdUiAKeru0ro1HRlzu5H6U7pXNlg9nBhK8QaTC/ltnJ9adOSYVDjIzc0RUPLaEbvputo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,166 +106,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Opening the interpreter is a property of the matched entry: an 'F' entry
-hands out a clone of the file it pre-opened at registration time, any
-other entry opens the selected path. Give that its own helper instead of
-an if/else in the middle of load_misc_binary(), and let it fail early
-rather than carrying an ERR_PTR through the successful branch.
+When the format search stages an interpreter exec_binprm() swaps it
+in and releases the file it replaces. Dropping the write denial the
+open took is done manually ahead of both release paths. The one path
+that keeps the file silently relies on it not being called.
 
-Building the interpreter's argument vector is the bulk of what remains
-and the one part of load_misc_binary() that is specific to the classic
-dispatch. Move it into its own helper too, so the dispatch reads as what
-it is: pick a handler, pick an interpreter, build the invocation, open
-it.
+Let's just use do_close_execat() on the two paths that release the file
+and drop the denial explicitly on the one that does not.
 
 No functional change.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 110 ++++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 76 insertions(+), 34 deletions(-)
+ fs/exec.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index dc2ee012da10..304109a5091f 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -353,35 +353,52 @@ static unsigned long entry_invocation_flags(const struct binfmt_misc_entry *e,
- 	return flags;
- }
+diff --git a/fs/exec.c b/fs/exec.c
+index 41e1684d999c..061e0f9fb4ef 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1735,15 +1735,17 @@ static int exec_binprm(struct linux_binprm *bprm)
+ 		bprm->file = bprm->interpreter;
+ 		bprm->interpreter = NULL;
  
--/*
-- * the loader itself
-+/**
-+ * entry_open_interpreter - open the entry's interpreter for execution
-+ * @e: matched binary type handler
-+ * @interpreter: the interpreter selected for this exec
-+ *
-+ * An 'F' entry hands out a clone of the file it pre-opened at registration,
-+ * any other entry opens the selected path.
-+ *
-+ * Return: the opened interpreter on success, an ERR_PTR on failure
-  */
--static int load_misc_binary(struct linux_binprm *bprm)
-+static struct file *entry_open_interpreter(const struct binfmt_misc_entry *e,
-+					   const char *interpreter)
- {
--	struct binfmt_misc_entry *fmt __free(put_binfmt_handler) = NULL;
--	const char *interpreter;
--	struct file *interp_file;
--	struct binfmt_misc *misc;
--	unsigned long flags;
-+	struct file *interp_file __free(fput) = NULL;
- 	int retval;
+-		exe_file_allow_write_access(exec);
+ 		if (unlikely(bprm->have_execfd)) {
+ 			if (bprm->executable) {
+-				fput(exec);
++				do_close_execat(exec);
+ 				return -ENOEXEC;
+ 			}
++			/* Only the reference is kept, for AT_EXECFD. */
++			exe_file_allow_write_access(exec);
+ 			bprm->executable = exec;
+-		} else
+-			fput(exec);
++		} else {
++			do_close_execat(exec);
++		}
+ 	}
  
--	misc = current_binfmt_misc();
--	if (!READ_ONCE(misc->enabled))
--		return -ENOEXEC;
-+	if (!(e->flags & MISC_FMT_OPEN_FILE))
-+		return open_exec(interpreter);
- 
--	fmt = get_binfmt_handler(misc, bprm);
--	if (!fmt)
--		return -ENOEXEC;
-+	interp_file = file_clone_open(e->interp_file);
-+	if (IS_ERR(interp_file))
-+		return interp_file;
- 
--	/* Need to be able to load the file after exec */
--	if (bprm->interp_flags & BINPRM_FLAGS_PATH_INACCESSIBLE)
--		return -ENOENT;
-+	retval = exe_file_deny_write_access(interp_file);
-+	if (retval)
-+		return ERR_PTR(retval);
- 
--	interpreter = entry_select_interpreter(fmt, bprm);
--	if (IS_ERR(interpreter))
--		return PTR_ERR(interpreter);
-+	return no_free_ptr(interp_file);
-+}
- 
--	flags = entry_invocation_flags(fmt, bprm);
-+/**
-+ * build_interp_argv - splice the interpreter invocation into the argv
-+ * @bprm: binary that is being executed
-+ * @interpreter: the interpreter selected for this exec
-+ * @flags: invocation flags in effect for this exec
-+ *
-+ * The interpreter becomes argv[0] and the binary its last argument, with an
-+ * optional staged argument in between. The caller's argv[0] is dropped
-+ * unless 'P' keeps it.
-+ *
-+ * Return: 0 on success, a negative error code on failure
-+ */
-+static int build_interp_argv(struct linux_binprm *bprm, const char *interpreter,
-+			     unsigned long flags)
-+{
-+	int retval;
- 
- 	/* The entry's own choice - not one accumulated from an earlier level. */
- 	if (flags & MISC_FMT_PRESERVE_ARGV0) {
-@@ -418,24 +435,49 @@ static int load_misc_binary(struct linux_binprm *bprm)
- 		return retval;
- 	bprm->argc++;
- 
-+	return 0;
-+}
-+
-+/*
-+ * the loader itself
-+ */
-+static int load_misc_binary(struct linux_binprm *bprm)
-+{
-+	struct binfmt_misc_entry *fmt __free(put_binfmt_handler) = NULL;
-+	const char *interpreter;
-+	struct file *interp_file;
-+	struct binfmt_misc *misc;
-+	unsigned long flags;
-+	int retval;
-+
-+	misc = current_binfmt_misc();
-+	if (!READ_ONCE(misc->enabled))
-+		return -ENOEXEC;
-+
-+	fmt = get_binfmt_handler(misc, bprm);
-+	if (!fmt)
-+		return -ENOEXEC;
-+
-+	/* Need to be able to load the file after exec */
-+	if (bprm->interp_flags & BINPRM_FLAGS_PATH_INACCESSIBLE)
-+		return -ENOENT;
-+
-+	interpreter = entry_select_interpreter(fmt, bprm);
-+	if (IS_ERR(interpreter))
-+		return PTR_ERR(interpreter);
-+
-+	flags = entry_invocation_flags(fmt, bprm);
-+
-+	retval = build_interp_argv(bprm, interpreter, flags);
-+	if (retval)
-+		return retval;
-+
- 	/* Update interp in case binfmt_script needs it. */
- 	retval = bprm_change_interp(interpreter, bprm);
- 	if (retval < 0)
- 		return retval;
- 
--	if (fmt->flags & MISC_FMT_OPEN_FILE) {
--		interp_file = file_clone_open(fmt->interp_file);
--		if (!IS_ERR(interp_file)) {
--			int err = exe_file_deny_write_access(interp_file);
--
--			if (err) {
--				fput(interp_file);
--				interp_file = ERR_PTR(err);
--			}
--		}
--	} else {
--		interp_file = open_exec(interpreter);
--	}
-+	interp_file = entry_open_interpreter(fmt, interpreter);
- 	if (IS_ERR(interp_file))
- 		return PTR_ERR(interp_file);
- 
+ 	audit_bprm(bprm);
 
 -- 
 2.53.0
