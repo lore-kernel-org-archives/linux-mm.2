@@ -4,99 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A0BC4452B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 17:16:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE728C4451C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Jul 2026 17:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30DB96B0099; Tue, 21 Jul 2026 13:16:58 -0400 (EDT)
+	id 951106B00A0; Tue, 21 Jul 2026 13:18:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BDBE6B00A0; Tue, 21 Jul 2026 13:16:58 -0400 (EDT)
+	id 902C16B00A3; Tue, 21 Jul 2026 13:18:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 185A26B00A1; Tue, 21 Jul 2026 13:16:58 -0400 (EDT)
+	id 7CA8C6B00A6; Tue, 21 Jul 2026 13:18:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D8EBE6B0099
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:16:57 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B897A0503
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:16:57 +0000 (UTC)
-X-FDA: 85013438874.14.4F82AD4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CEA354000C
-	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:16:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=INSdq0Jh;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4F4846B00A0
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 13:18:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D900780250
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:18:26 +0000 (UTC)
+X-FDA: 85013442612.12.4333ADA
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 04AF140010
+	for <linux-mm@kvack.org>; Tue, 21 Jul 2026 17:18:24 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IMNANpi5;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1784654215;
+	s=arc-20220608; t=1784654305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4p0jLk0hWrusAXNcO2QsKnQrXyxqVvMPo+V5GGUXDvw=;
-	b=sb69JJPKwSHw8i1VkwFlXZsWP1nYSNOZR74LqV7GIX7r25mAEjU+jgmAPtbe1hWdUR9Z1l
-	vAe/1yq3GD4B8Z0I+i52mSPXvfnLEE/u/BtXuH6wR/ZqYqPywQMeea2dRQ0SF24njMxrY0
-	sMrnVJEtYDFnzvNdFXgaPL6S0jBjIkU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=INSdq0Jh;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=SiPzgqRnSOFoo7wTJovboHrNHjQGCGe0NFhohlpad+8=;
+	b=1bWha/J6rF59p3NSgJdU4x5F2gcXeg+9G6dECffhsG4LhmnKLGOMcFdhDZL10HfWgGi57f
+	PT5EW4hQ232VzT0vGtmEyRcT0fCrvI5jj7t2IVPilsAxZ15LUK6TC/MFQ6TJswmkmxNxlr
+	a0ZrMFgRSgnLJGHtHh69/ldSjt9jvwQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1784654215;
-	b=MAIkVQa8okOBN14EAUDAJxbLwiRfw6PVselFRy/VJpWqb1s7mdPYdZ3n4XnTT5Ji158Xzt
-	cKGTmRo7Eqo3aQMVsH5B4Q6AOFgHi6xMWrZdR+HgrT6Cuw2/cOmyKR/2aWZROjGeqjYpZx
-	o8W8PwnW504hMlbSddofB+OhU9Wyu60=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C225040656;
-	Tue, 21 Jul 2026 17:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275181F000E9;
-	Tue, 21 Jul 2026 17:16:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784654214;
-	bh=4p0jLk0hWrusAXNcO2QsKnQrXyxqVvMPo+V5GGUXDvw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=INSdq0JhbWOwLqdV8BEGL9GB/JoFkWjXSauwNsyuu0/ZvV0n69zWiQHOVcKvEIq3t
-	 7o3StUAGsExB9s1uDIwsX+4k5bLRf/3+XpuEzsbAn2h63XzAx3JvRQO9cRNFLxpKut
-	 AlvHpfivgYBnJBB60Vf6Pi3CYj6puhivnrOTdrOFLaOA8uuVuHBu4rN+sl3nkkrUaN
-	 LixGSj8SYkp9pgjvM6bB8H+VuM0YEVaY9qzvl9O5TORwUUTuAFFYqQbbnz/pAs9A51
-	 cyTYtfpI8afsVrs8guyGUInKpw5Hy2EohG3rmFbIebgmkXzLKH20xBRH7X/ZnW/tj+
-	 foio8xWfb5fig==
-Date: Tue, 21 Jul 2026 18:16:33 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: linux-mm@kvack.org, Albert Ou <aou@eecs.berkeley.edu>, 
-	Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Brendan Jackman <jackmanb@google.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
-	Ingo Molnar <mingo@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Michal Hocko <mhocko@suse.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
-	x86@kernel.org, Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH RFC 01/18] x86/mm/pat: Don't gate cpa_lock on
- debug_pagealloc_enabled()
-Message-ID: <al-oTOKY7vkdPHr5@lucifer>
-References: <20260721-generic-set-memory-v0-1-v1-0-2c1fc62306b3@kernel.org>
- <20260721-generic-set-memory-v0-1-v1-1-2c1fc62306b3@kernel.org>
+	t=1784654305;
+	b=XMsIabWaNmtBRrQYPpknpyevVduwjJNV6Bnx4iMuLhIIVIgdGTom9i5BPV1LAlpcvY8ctS
+	HPbjAXoPhZWjx1J2uZKy1WM6InIDEHTdClUod9pmxW0A+jErVCS7W2836k5URDBpvSwYzn
+	k31qkCEKEHJdgmAPkJMHYULwyOgQpMc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=IMNANpi5;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c0006ea8eso89837651cf.1
+        for <linux-mm@kvack.org>; Tue, 21 Jul 2026 10:18:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784654304; x=1785259104; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SiPzgqRnSOFoo7wTJovboHrNHjQGCGe0NFhohlpad+8=;
+        b=IMNANpi5MuXwwNi32IasGZ2jEl4v287W7x5rrCkZGSRJ9jh7SE4orOiymnFy2sxMja
+         Z6YathVhxo38lxN9R7fhtUYIe1VMvrIEUK0Mh/LTe3m02MwTNopSy00vS+KYOrjvMMH/
+         RtQzl6pKN8BKuvso8PrFjxl+shWW2vS1bsPYW4vbfIokKc636hhXeGNIKcQ3qntc/rQZ
+         CBvUtNJTobeXXNcQYSFGNcZxyQFPpQNV6WwVPrM9ISCtiSLxSoxfsxgCAoASt/IAlv1f
+         Nnoj1OIPtS9p/JPlrsV8Rj2XQSi+oGyDKtQK8JH5hRZYwlmBuHW3IZoYSG+SFsMMkbXQ
+         84MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784654304; x=1785259104;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SiPzgqRnSOFoo7wTJovboHrNHjQGCGe0NFhohlpad+8=;
+        b=ovEKSd/SFMltNEzhtLbPyjJ3m3gSgfJBdIbIX3rzpnREGP2+4YswA3ctRSjgqKKYQh
+         yAISyFW51kRFUvAAcm2zg2HqGEn9N0Zx3ch+/VXsZQDRDvcXwFecojh7CXBj/UNPHQuu
+         Zx5RzejTrDA/DIhRO2+jTffTLlm+pFBMy8EUvb40TWjSBwwsWIS7qHuRkcdAWA5Ncqbj
+         Kjr92W9L3t8/LXhbSw05qe1nTZV+xe/mb0r5Hdrh0Y/No1MQgE/eAgTAGP0ASqjZ8KDd
+         42nUxssPktND3istMi0FoL5ecFyPhAXiF+pn4cKymTVunKHj0Mtauh/0t1zqiMatWUSu
+         5dMw==
+X-Gm-Message-State: AOJu0Yy+QZr0CJbdVhWskuav9io7AIxQ6rhX53Tepv3Q8jZla9lXsXqy
+	MMaOWdl1TVPytp9OFowneuLnM+Io68Sv1SEALx/oOc8UTuu6ye9odfJ99BlitZfUfvw=
+X-Gm-Gg: AfdE7cmRoTc9piItuyxQPr3UTXg/D1ANwzdJVoJ0xBEL5FxIi/giwm9vip88JNGSgKD
+	2rjQrKiCF+Hb/OKpmnhgnOn4KlzyeWkJXTH/KDOL0P116zlIOHrA3Mi0nAGj4++FFUg/zfoDk4i
+	V/CwJff58Zl28idgQBwKhEky8gcQofDELNfzg/WVl1MUcIC6eFpRgHvpj+/VkFF2Ga3XE+GW5Pf
+	QZv7b8Ypt7PIgzigPh0yfQFOM/+oqTkRZibonmRQp6JerQJkal4SHtbrubcExVAd4cs6ZD0q+aQ
+	isuOHbkUCP1Gfd6sqRW8+qOkQRGWkz2TXp+2x6xci9QIuusCZFrWpzNLldgx1uJcNebrCkpXk+k
+	YqRGM2HTHqN80bu70bVB7IEqgM3dI+1hBsqnpa2g/3iVXZ3NbEZvdG+Qe6O5MgpmKytX9KE89ts
+	q0/Hx2Gcc3DjadS3Wh890hq63Bwluk1jrZLJ4LTiRodnJ5T+XS9YnPOAtndQ==
+X-Received: by 2002:a05:622a:5789:b0:527:7521:3f8 with SMTP id d75a77b69052e-52775210a4dmr13363251cf.44.1784654304162;
+        Tue, 21 Jul 2026 10:18:24 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5214f504892sm98076131cf.20.2026.07.21.10.18.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 10:18:23 -0700 (PDT)
+Date: Tue, 21 Jul 2026 13:18:17 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Zenghui Yu <yuzenghui@huawei.com>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
+	balbirs@nvidia.com, brendan.jackman@linux.dev, apopple@nvidia.com, alucerop@amd.com, 
+	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, 
+	vishal.l.verma@intel.com, dave.jiang@intel.com, alison.schofield@intel.com, 
+	osandov@osandov.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
+	hannes@cmpxchg.org, ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+Message-ID: <al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <a9c52bb6-5e04-1d41-913a-685a7be3fad4@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260721-generic-set-memory-v0-1-v1-1-2c1fc62306b3@kernel.org>
+In-Reply-To: <a9c52bb6-5e04-1d41-913a-685a7be3fad4@huawei.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 04AF140010
+X-Stat-Signature: k4dxcim1ugm8jm7wztjx1u3hx68c4oe4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CEA354000C
-X-Rspamd-Server: rspam01
-X-Stat-Signature: bntnetyrbrjjy61ejd7wgxrkib5i1gaj
-X-HE-Tag: 1784654215-456783
-X-HE-Meta: U2FsdGVkX19pB4Kpj+TIw7A1CC2cS7sIonKJ9VVID3nJcQcMxvi4/sQxpopUvnD/5BEfBe5bzd0qxPHw28KBNbzpeT7YIh196nvpzoJBI7DGYKzp4sRzfyW/UMpWJi1omlLatDDzT+/iN4sXBosCzjI3BGcTVpjAPjHASAl4hgucefOmVtoDhXtrJJ/EVGadwrsiT28c2i5t7fGYExDw8yvqVCMXnyruzCViZ9sgAuW0gahSQReQ28QwrgLuYaGLui0XlNxYGef9FGWT61/hBl7TJwlmFhTVSYjHThp9w2v3VNs12nGf5l1k4ZEXHhUZGNNDLqhOOSiHANoSiU6cXJ29WdJcabNUs9psgMeliJM5UgLdw4xMUAPNF/m4+gJqtL3ZruUWwj1osAoVRccCKpYs2C/cLlESGWsKK9tkcwXHoK3zz+6pWaM61eZUWrA06UfqjBLRfjffXBJL6ZlnujUiifvV5up/YxkFDRhvWpcZEN2cC6kJmabgE6yYKDkBdTc6DmE40JdsrfMHZzSINIoSftSq4Z7Okwq0fVZltuwUhZUUNsfOGvgVRjXq5ipe4sSO/7jDzQtG8hOqjpNQRFTvr5WtUiGRv8VKOQqxfvJMt9lq1HkzIwp1ySIhu72F8YocuctpdjqFbGrcVNifER84zgzIUicszqEyO6SrElPBrPtCLtPDRckR82xmLRGeGF/XDSB1p/m/bcePEebxLfMypZ5+S1C6mVthH+Ftpvt6nhiQKR3rmANEvkB9RjjXGHDELk9wQy6WYfDFcI/arIpg4MMcsJsdnVlcjowM7ykL2cLKid/a0gBDRiEgH91WZ3MxI4rlsb0Ps3SEEw4N2nBQPXRfPF3HIXfsr1wrYZw6Wt8GKf87Xga4XkYsu/P8Z7f28kWxNj6+lsXRO2fsrQ8OTp2Z5CXQIkOfXnbfC6pqVmqELD8TwD0JzKyoRunOpFKlElmpWPSrWz9vVUK
- h1B35sGN
- NoKr+EME1h0DtTnMyJq4cvGTzy/ArXKp4I36VZVu/KIoCrRdoPjLDp0/EKmdsqdWkf3fThOJueiDvV01RrTDgF33EFkF1tJwJNqF8aXFj5Ib+G4qe0N6STG4gs7DZv0+5v2Gvj3Qemkd3GXg3zZw/xnGOPZaTFGqNvEOjc6uqRrYvLk1tQgUmPGKO+ox67EW0W8Yc6arlDuSC59yiGpVIok8t1NonezLNBcJ1hmqClnr3CyfL1x4DUOjI3qn/yHXK+lezX3Jedzb/28crIDdlObdqjg5oZMosJqt85MB6IKVaGHbUeXVOcI3YPdZo5Cd8dO3FQ824CNZLqZ6EULKoyUE7SND2gKub6GvZNJfOTzHya1nMD7SgKmWX7veO+42Lp/GOBom31iGXRGhI+xmAdX0f9k3+3o2oW6HB28aVkWQmQD7Lk6XY5kiOCQ==
+X-HE-Tag: 1784654304-11639
+X-HE-Meta: U2FsdGVkX18yswJgle8lHc87gK75qxsvuwdBgdY/xfT7zcV07M5hPX202CftseDKJrY0K1C9YxbvC0/4iaY2sTaTOuA1ntBhtqkDBqtdlCxB94yRjhZyWoYwySBf2MZnIsclPyYuhJ47fdXpU5c+7TtWzKs2YCq2f6wKctGcwt/pEeKpBn5czxPqJxwenfsBViIbjIMhZotzx6md+mE4rfloM3FV2XKqYOW1QuVKRAv/3L9cAdgIYbi541kvMlna7iNyPD+Z64lgkiY5aiIt6Q8yFUqNYlkMynI8sCra68jeuQIP1U4oDcxa7lEZzwHvB4trzs3lvozktRoa29R+9UdfZENVwzCi0D2k8UCfEjX/yxJen9BN0DGbcd0p9+BfrfcZafSZru/ZOhevs6ejqOHSmyML+fehU6L5cPMrRt5hn4kgyeB9BQG/enBcdPG/T2EEGoKAAsn3ZkZ0Xfmk4xQdVHrzUBf8g4Af2VTNmKJrPZzyH9aYQUndBY95/uzi5QPIsvj9PtIEd6Ng+13faotq5FJHkjvq/MiCIO5F/1K2wxdmyLXczN4AlwdcyPnHnyPSZKapPAnlCuAGoodLBz4PKkAf/qp3GtHWOLKWA5gC6Exk/19yjbstjpil510wFAOD4sBczNLTWtZlKQvEovE3tQtvjbbIQ8M93E4t2Xurboqsd9YSWNae8yc03azNyo/h6RpjnqVnAbFFfQwlBqhQN3RUDyVNWPgXLq44vb2pkRhqegu4wXj58bdUl8pWm9d+wBCBxkXWhTFL1RkoMD7kx40qT76tH94v+cqnJgIel6n5cEWtimTRr8ECiJ+RqaxmMvxfiionioWJQqYmBdRzCJ4dtflmINQn5j6ADSL35ZmQqSzeGL1AMMhMUFa/v4PCLG4K6U6cTcsRHvPPE1dd+ShVJDC1xMPnwBFWTMEmiHWcfcQDXfWayw1BYA1VcP9B70Irl33J2pqdAsV
+ XeP0ScVf
+ wJ0quH4KLqb5BBlHyzkxA6Uvg/YOB9Xu6eAP+cJMalV5DsOAD8qepCX13gIieOu26f2EFdhrC3YY35gG9bG8ND3wZj3DipVRIRAdCJraTDHh8TD9i3lSDpQ9olEDiHZgqUzWKQJYUOcrpwVXsGGwFO6QDksxTCqHCPMUGCso7ffLRNzMwHO7C5gtQSTl/+ZBRTuJt5gAoAoUiHog+BLN2xih/ExD/1m9nEs3Teg+KMjmL0RGLqN2+vJNl0IBYra/ovkVmWDP8FbYSxvPsi9ruxgzUyjQcXb530HaI13TBQ8OfxLX+YTsRJNg8iIZmBcDd5OI7fSnEq3f5hCwSEpvkSN7GHYdHjjRPDaijrE8Ae4ylzxz7O545pus9H9Vy/YAinhInLtBX6N9a3DeRA59fldOOl36jiPWrFEaKWP6ONl687HX56Qq4/YGflGQdkiz4CFvmH0KTNQHcuVI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,95 +138,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 21, 2026 at 07:23:24PM +0300, Mike Rapoport (Microsoft) wrote:
-> The splitting and merging of kernel page table mappings between small and
-> large is protected by cpa_lock. The merging is relatively new but the
-> splitting is ancient.
->
-> The splitting has a locking optimization: since DEBUG_PAGEALLOC forces all
-> mappings to 4k, there are no large pages to split. So the code that *might*
-> cause a split can just skip the locking (and a few other things).
->
-> This is entertaining, but it adds complexity and makes for weird locking
-> rules. Plus it's all for a debugging feature which makes the kernel super
-> slow in the first place. Optimizing something which is already super slow
-> and not used in production is not the best way to spend our complexity
-> budget.
->
-> Stop gating cpa_lock on debug_pagealloc_enabled() to simplify the code
-> and the locking rules.
->
-> [ dhansen: flesh out changelog ]
->
-> Suggested-by: Dave Hansen <dave.hansen@intel.com>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Link: https://patch.msgid.link/20260715144519.934289-1-rppt@kernel.org
-> Link: https://lore.kernel.org/all/aab44f08-89f8-47fe-bee4-0ab6b25968c6@intel.com/
+On Tue, Jul 21, 2026 at 09:26:09PM +0800, Zenghui Yu wrote:
+> On 2026/7/21 3:33, Gregory Price wrote:
+> >   KVM: guest_memfd: bind backing memory to a NUMA node at creation
+> >   KVM: selftests: add a guest_memfd FLAG_BIND_NODE test
+> 
+> I can't find the last patch in my inbox or on the lore. Not sure what went
+> wrong.
+> 
+> Thanks,
+> Zenghui
 
-Hmm this patch is already taken separately though? ([0]) (obv. commented there
-already with review feedback).
+Apologies, my email account got rate-limited to the number of recipients.
 
-Intended to be with this series as some kind of background or? Probably better
-to separate out given it's a live patch
+It should be in everyone's box shortly.
 
-Thanks, Lorenzo
-
-[0]:https://lore.kernel.org/all/20260715144519.934289-1-rppt@kernel.org/
-
-
-> ---
->  arch/x86/mm/pat/set_memory.c | 19 +++++++------------
->  1 file changed, 7 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index d023a40a1e03..e8316f5ffa8a 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -62,10 +62,9 @@ enum cpa_warn {
->  static const int cpa_warn_level = CPA_PROTECT;
->
->  /*
-> - * Serialize cpa() (for !DEBUG_PAGEALLOC which uses large identity mappings)
-> - * using cpa_lock. So that we don't allow any other cpu, with stale large tlb
-> - * entries change the page attribute in parallel to some other cpu
-> - * splitting a large page entry along with changing the attribute.
-> + * Serialize cpa() using cpa_lock so that we don't allow any other cpu, with
-> + * stale large tlb entries, to change the page attribute in parallel to some
-> + * other cpu splitting a large page entry along with changing the attribute.
->   */
->  static DEFINE_SPINLOCK(cpa_lock);
->
-> @@ -1235,11 +1234,9 @@ static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
->  {
->  	struct ptdesc *ptdesc;
->
-> -	if (!debug_pagealloc_enabled())
-> -		spin_unlock(&cpa_lock);
-> +	spin_unlock(&cpa_lock);
->  	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
-> -	if (!debug_pagealloc_enabled())
-> -		spin_lock(&cpa_lock);
-> +	spin_lock(&cpa_lock);
->  	if (!ptdesc)
->  		return -ENOMEM;
->
-> @@ -2023,11 +2020,9 @@ static int __change_page_attr_set_clr(struct cpa_data *cpa, int primary)
->  		if (cpa->flags & (CPA_ARRAY | CPA_PAGES_ARRAY))
->  			cpa->numpages = 1;
->
-> -		if (!debug_pagealloc_enabled())
-> -			spin_lock(&cpa_lock);
-> +		spin_lock(&cpa_lock);
->  		ret = __change_page_attr(cpa, primary);
-> -		if (!debug_pagealloc_enabled())
-> -			spin_unlock(&cpa_lock);
-> +		spin_unlock(&cpa_lock);
->  		if (ret)
->  			goto out;
->
->
-> --
-> 2.53.0
->
+~Gregory
 
